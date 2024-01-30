@@ -21,6 +21,7 @@ import {
   ResponseDiscriminator,
   Story,
   Utterance,
+  Variable,
 } from '@voiceflow/dtos';
 import { UnleashFeatureFlagService } from '@voiceflow/nestjs-common';
 import {
@@ -53,6 +54,7 @@ import { IntentService } from '@/intent/intent.service';
 import { PromptService } from '@/prompt/prompt.service';
 import { ResponseService } from '@/response/response.service';
 import { StoryService } from '@/story/story.service';
+import { VariableService } from '@/variable/variable.service';
 import { VersionService } from '@/version/version.service';
 
 import { EnvironmentCMSExportImportDataDTO } from './dtos/environment-cms-export-import-data.dto';
@@ -84,6 +86,8 @@ export class EnvironmentService {
     private readonly version: VersionService,
     @Inject(ResponseService)
     private readonly response: ResponseService,
+    @Inject(VariableService)
+    private readonly variable: VariableService,
     @Inject(AttachmentService)
     private readonly attachment: AttachmentService,
     @Inject(FunctionService)
@@ -96,7 +100,7 @@ export class EnvironmentService {
 
   /* Helpers */
 
-  private convertCMSResourcesToLegacyIntentsAndSlots({
+  private convertCMSResourcesToLegacyResources({
     intents,
     entities,
     variables,
@@ -138,10 +142,12 @@ export class EnvironmentService {
         isVoiceAssistant,
       }
     );
+    const legacyVariables = Realtime.Adapters.variableToLegacyVariableAdapter.mapFromDB(this.entitySerializer.iterable(variables));
 
     return {
       legacySlots,
       legacyIntents,
+      legacyVariables,
     };
   }
 
@@ -189,15 +195,18 @@ export class EnvironmentService {
       this.postgresEM.transactional(() => this.findOneCMSData(projectID.toHexString(), environmentID)),
     ]);
 
-    const { legacyIntents, legacySlots } = this.convertCMSResourcesToLegacyIntentsAndSlots({
+    const cmsVariablesEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_VARIABLES, { workspaceID: project.teamID });
+
+    const { legacySlots, legacyIntents, legacyVariables } = this.convertCMSResourcesToLegacyResources({
       ...cmsData,
-      // TODO: add variables when they are supported
-      variables: [],
       isVoiceAssistant:
         Realtime.legacyPlatformToProjectType(project.platform, project.type, project.nlu).type === Platform.Constants.ProjectType.VOICE,
     });
 
-    await this.version.patchOnePlatformData(environmentID, { intents: legacyIntents, slots: legacySlots });
+    await Promise.all([
+      this.version.patchOnePlatformData(environmentID, { intents: legacyIntents, slots: legacySlots }),
+      cmsVariablesEnabled ? this.version.patchOne(environmentID, { variables: legacyVariables }) : Promise.resolve(),
+    ]);
 
     // fetching version to get updated platformData
     const version = await this.version.findOneOrFail(environmentID);
@@ -291,6 +300,7 @@ export class EnvironmentService {
     }
 
     const cmsFunctionsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_FUNCTIONS, { userID, workspaceID });
+    const cmsVariablesEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_VARIABLES, { userID, workspaceID });
 
     return {
       version,
@@ -301,9 +311,10 @@ export class EnvironmentService {
         ...this.intent.prepareExportData(data.cms),
         ...this.response.prepareExportData(data.cms),
         ...this.attachment.prepareExportData(data.cms),
-      }),
 
-      ...(cmsFunctionsEnabled && data.cms && this.functionService.prepareExportData(data.cms)),
+        ...(cmsVariablesEnabled && this.variable.prepareExportData(data.cms)),
+        ...(cmsFunctionsEnabled && this.functionService.prepareExportData(data.cms)),
+      }),
     };
   }
 
@@ -323,6 +334,7 @@ export class EnvironmentService {
 
   prepareExportCMSData(cms: EnvironmentCMSEntities, { userID, workspaceID }: { userID: number; workspaceID: number }) {
     const cmsFunctionsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_FUNCTIONS, { userID, workspaceID });
+    const cmsVariablesEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_VARIABLES, { userID, workspaceID });
 
     return {
       ...this.entity.prepareExportData(cms),
@@ -330,6 +342,7 @@ export class EnvironmentService {
       ...this.response.prepareExportData(cms),
       ...this.attachment.prepareExportData(cms),
 
+      ...(cmsVariablesEnabled && this.variable.prepareExportData(cms)),
       ...(cmsFunctionsEnabled && this.functionService.prepareExportData(cms)),
     };
   }
@@ -345,6 +358,7 @@ export class EnvironmentService {
     }: { userID: number; backup?: boolean; workspaceID: number; assistantID: string; environmentID: string }
   ): EnvironmentCMSExportImportDataDTO {
     const cmsFunctionsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_FUNCTIONS, { userID, workspaceID });
+    const cmsVariablesEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_VARIABLES, { userID, workspaceID });
 
     const prepareDataContext = { userID, backup, assistantID, environmentID };
 
@@ -387,6 +401,8 @@ export class EnvironmentService {
           { functions: cms.functions, functionPaths: cms.functionPaths, functionVariables: cms.functionVariables },
           prepareDataContext
         )),
+
+      ...(cmsVariablesEnabled && cms.variables && this.variable.prepareImportData({ variables: cms.variables }, prepareDataContext)),
     };
   }
 
@@ -452,6 +468,17 @@ export class EnvironmentService {
             ),
           ]
         : []),
+
+      ...(importData.variables?.length
+        ? [
+            this.variable.importManyWithSubResources(
+              {
+                variables: importData.variables,
+              },
+              { flush: false }
+            ),
+          ]
+        : []),
     ]);
 
     await this.postgresEM.flush();
@@ -463,6 +490,7 @@ export class EnvironmentService {
       { prompts },
       { entities, entityVariants },
       { intents, utterances, requiredEntities },
+      { variables },
       { responses, responseVariants, responseAttachments, responseDiscriminators },
       { attachments, cardButtons },
       { functions, functionPaths, functionVariables },
@@ -471,6 +499,7 @@ export class EnvironmentService {
       this.prompt.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
       this.entity.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
       this.intent.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
+      this.variable.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
       this.response.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
       this.attachment.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
       this.functionService.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
@@ -484,6 +513,7 @@ export class EnvironmentService {
       triggers,
       functions,
       responses,
+      variables,
       utterances,
       attachments,
       cardButtons,
@@ -503,6 +533,7 @@ export class EnvironmentService {
     prompts = [],
     triggers = [],
     entities = [],
+    variables = [],
     responses = [],
     functions = [],
     utterances = [],
@@ -523,6 +554,7 @@ export class EnvironmentService {
     entities?: Entity[];
     functions?: FunctionType[];
     responses?: Response[];
+    variables?: Variable[];
     utterances?: Utterance[];
     attachments?: AnyAttachment[];
     cardButtons?: CardButton[];
@@ -535,6 +567,7 @@ export class EnvironmentService {
     responseDiscriminators?: ResponseDiscriminator[];
   }) {
     // ORDER MATTERS
+    await this.variable.upsertManyWithSubResources({ variables });
     await this.attachment.upsertManyWithSubResources({ attachments, cardButtons });
     await this.entity.upsertManyWithSubResources({ entities, entityVariants });
     await this.response.upsertManyWithSubResources({ responses, responseVariants, responseAttachments, responseDiscriminators });
@@ -546,8 +579,6 @@ export class EnvironmentService {
 
   async deleteOneCMSData(assistantID: string, environmentID: string) {
     // needs to be done in multiple operations to avoid locks in reference tables
-
-    // ORDER MATTERS
     await Promise.all([
       this.story.deleteManyByEnvironment(assistantID, environmentID),
       this.intent.deleteManyByEnvironment(assistantID, environmentID),
@@ -561,6 +592,7 @@ export class EnvironmentService {
 
     await Promise.all([
       this.prompt.deleteManyByEnvironment(assistantID, environmentID),
+      this.variable.deleteManyByEnvironment(assistantID, environmentID),
       this.attachment.deleteManyByEnvironment(assistantID, environmentID),
     ]);
   }
@@ -615,6 +647,7 @@ export class EnvironmentService {
 
     const [
       { stories, triggers },
+      { variables },
       { attachments, cardButtons },
       { prompts },
       { responses, responseVariants, responseAttachments, responseDiscriminators },
@@ -623,6 +656,7 @@ export class EnvironmentService {
       { functions, functionPaths, functionVariables },
     ] = await Promise.all([
       this.story.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload, { flush: false }),
+      this.variable.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload, { flush: false }),
       this.attachment.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload, { flush: false }),
       this.prompt.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload, { flush: false }),
       this.response.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload, { flush: false }),
@@ -645,6 +679,7 @@ export class EnvironmentService {
       diagrams: targetDiagrams,
       functions,
       responses,
+      variables,
       utterances,
       attachments,
       cardButtons,
@@ -680,16 +715,19 @@ export class EnvironmentService {
       const targetProject = await this.projectORM.findOneOrFail(targetVersion.projectID);
 
       if (convertToLegacyFormat) {
-        const { legacySlots, legacyIntents } = this.convertCMSResourcesToLegacyIntentsAndSlots({
+        const cmsVariablesEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_VARIABLES, { workspaceID: targetProject.teamID });
+
+        const { legacySlots, legacyIntents, legacyVariables } = this.convertCMSResourcesToLegacyResources({
           ...result,
-          // TODO: add variables when they are supported
-          variables: [],
           isVoiceAssistant:
             Realtime.legacyPlatformToProjectType(targetProject.platform, targetProject.type, targetProject.nlu).type ===
             Platform.Constants.ProjectType.VOICE,
         });
 
-        await this.version.patchOnePlatformData(targetVersion.id, { intents: legacyIntents, slots: legacySlots });
+        await Promise.all([
+          this.version.patchOnePlatformData(targetVersion.id, { intents: legacyIntents, slots: legacySlots }),
+          cmsVariablesEnabled ? this.version.patchOne(targetVersion.id, { variables: legacyVariables }) : Promise.resolve(),
+        ]);
 
         // refetching version to get updated platformData
         targetVersion = await this.version.findOneOrFail(targetVersion.id);

@@ -1,16 +1,25 @@
 import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { BaseSelectProps, defaultMenuLabelRenderer, Menu, Select, System } from '@voiceflow/ui';
 import React from 'react';
 
+import { Diagram } from '@/ducks';
+import { useFeature } from '@/hooks/feature';
+import { useSelector } from '@/hooks/store.hook';
+
 export interface VariableSelectProps extends BaseSelectProps {
   value?: string | null;
-  options: string[];
-  creatable?: boolean;
   onChange: (value: string) => void;
   onCreate: (value: string) => Promise<string>;
+  creatable?: boolean;
 }
 
-const VariableSelectV2: React.FC<VariableSelectProps> = ({ value, options, onChange, onCreate: onCreateProp, ...props }) => {
+const VariableSelectV2: React.FC<VariableSelectProps> = ({ value, onChange, onCreate: onCreateProp, ...props }) => {
+  const cmsVariables = useFeature(Realtime.FeatureFlag.CMS_VARIABLES);
+
+  const variables = useSelector(Diagram.active.allEntitiesAndVariablesSelector);
+  const variablesMap = useSelector(Diagram.active.entitiesAndVariablesMapSelector);
+
   const onCreate = async (value: string) => {
     const newVariable = await onCreateProp(value);
 
@@ -20,17 +29,22 @@ const VariableSelectV2: React.FC<VariableSelectProps> = ({ value, options, onCha
   return (
     <Select
       value={value}
-      options={options}
+      options={variables}
       onSelect={onChange}
       onCreate={onCreate}
       creatable={false}
       searchable
       placeholder="Select or create variable"
-      getOptionLabel={(value) => value && `{${value}}`}
       inDropdownSearch
       alwaysShowCreate
       renderOptionLabel={(option, searchLabel, _, getOptionValue, config) =>
-        defaultMenuLabelRenderer<string, string>(option, searchLabel, (value) => value, getOptionValue, config)
+        defaultMenuLabelRenderer(
+          option,
+          searchLabel,
+          (value) => (cmsVariables.isEnabled ? value && variablesMap[value]?.name : value),
+          getOptionValue,
+          config
+        )
       }
       clearOnSelectActive
       renderEmpty={({ search }) => <Menu.NotFound>{!search ? 'No variables exist in your assistant. ' : 'No variables found. '}</Menu.NotFound>}
@@ -46,6 +60,9 @@ const VariableSelectV2: React.FC<VariableSelectProps> = ({ value, options, onCha
       )}
       createInputPlaceholder="variables"
       {...props}
+      getOptionKey={(option) => option.id}
+      getOptionValue={(option) => (cmsVariables.isEnabled ? option?.id : option?.name)}
+      getOptionLabel={(value) => (cmsVariables.isEnabled ? value && variablesMap[value] && `{${variablesMap[value].name}}` : value && `{${value}}`)}
     />
   );
 };

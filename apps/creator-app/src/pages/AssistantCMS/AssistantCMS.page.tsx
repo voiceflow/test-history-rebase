@@ -18,6 +18,9 @@ const AssistantCMSIntent = withSuspense({ loader: <CMSPageLoader /> })(
 const AssistantCMSEntity = withSuspense({ loader: <CMSPageLoader /> })(
   lazy({ name: 'CMSEntity', factory: () => import('./pages/CMSEntity/CMSEntity.page') })
 );
+const AssistantCMSVariable = withSuspense({ loader: <CMSPageLoader /> })(
+  lazy({ name: 'CMSVariable', factory: () => import('./pages/CMSVariable/CMSVariable.page') })
+);
 const AssistantCMSFunction = withSuspense({ loader: <CMSPageLoader /> })(
   lazy({ name: 'CMSFunction', factory: () => import('./pages/CMSFunction/CMSFunction.page') })
 );
@@ -31,6 +34,7 @@ const AssistantCMS = () => {
 
   const { isEnabled: isKbEnabled } = useFeature(Realtime.FeatureFlag.KNOWLEDGE_BASE);
   const { isEnabled: isFunctionsCmsEnabled } = useFeature(Realtime.FeatureFlag.CMS_FUNCTIONS);
+  const { isEnabled: isCMSVariablesEnabled } = useFeature(Realtime.FeatureFlag.CMS_VARIABLES);
 
   React.useEffect(() => {
     if (isKbEnabled) {
@@ -46,9 +50,11 @@ const AssistantCMS = () => {
 
         <Route path={Path.CMS_ENTITY} component={AssistantCMSEntity} />
 
-        {isFunctionsCmsEnabled && <Route path={Path.CMS_FUNCTION} component={AssistantCMSFunction} />}
-
         {isKbEnabled && <Route path={Path.CMS_KNOWLEDGE_BASE} component={AssistantCMSKnowledgeBase} />}
+
+        {isCMSVariablesEnabled && <Route path={Path.CMS_VARIABLE} component={AssistantCMSVariable} />}
+
+        {isFunctionsCmsEnabled && <Route path={Path.CMS_FUNCTION} component={AssistantCMSFunction} />}
 
         <Redirect to={Path.CMS_INTENT} />
       </Switch>

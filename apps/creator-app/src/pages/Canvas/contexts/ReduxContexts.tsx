@@ -9,8 +9,7 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as UI from '@/ducks/ui';
 import * as VersionV2 from '@/ducks/versionV2';
-import { useCustomIntentMapSelector } from '@/hooks/intent.hook';
-import { createHookContext, createSelectorContext } from '@/utils/redux';
+import { createSelectorContext } from '@/utils/redux';
 
 export const {
   Context: FullScreenModeContext,
@@ -42,7 +41,11 @@ export const {
   Consumer: AccountLinkingConsumer,
 } = createSelectorContext(VersionV2.active.alexa.accountLinkingSelector);
 
-export const { Context: IntentMapContext, Provider: IntentMapProvider, Consumer: IntentMapConsumer } = createHookContext(useCustomIntentMapSelector);
+export const {
+  Context: IntentMapContext,
+  Provider: IntentMapProvider,
+  Consumer: IntentMapConsumer,
+} = createSelectorContext(Designer.Intent.selectors.mapWithFormattedBuiltInName);
 
 export const {
   Context: FunctionMapContext,

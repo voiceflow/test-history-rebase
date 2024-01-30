@@ -9,11 +9,11 @@ import * as Errors from '@/config/errors';
 import { CMSRoute } from '@/config/routes';
 import { NLPTrainStageType } from '@/constants/platforms';
 import { TrainingContext } from '@/contexts/TrainingContext';
+import { Designer } from '@/ducks';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
 import { useDispatch, useSelector, useTrackingEvents } from '@/hooks';
-import { useGetOneEntityByIDSelector } from '@/hooks/entity.hook';
 import { createPlatformSelector } from '@/utils/platform';
 import { getModelsDiffs, isModelChanged, ModelDiff } from '@/utils/prototypeModel';
 
@@ -75,7 +75,7 @@ export const TrainingModelProvider: React.FC<React.PropsWithChildren> = ({ child
 
   const versionID = useSelector(Session.activeVersionIDSelector);
   const projectID = useSelector(Session.activeProjectIDSelector);
-  const getSlot = useGetOneEntityByIDSelector();
+  const getSlot = useSelector(Designer.Entity.selectors.getOneByID);
 
   const isTrained = !isModelChanged(trainingState.diff) && (!training.job || training.job.stage.type === NLPTrainStageType.SUCCESS);
 

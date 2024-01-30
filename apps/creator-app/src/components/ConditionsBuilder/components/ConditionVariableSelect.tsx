@@ -16,7 +16,7 @@ const ConditionVariableSelect: React.FC<ConditionVariableSelectProps> = ({ value
 
     <VariableSelect
       value={value}
-      onChange={(value: string) => onChange({ value })}
+      onChange={(value) => onChange({ value })}
       placeholder="Select or create variable"
       inputStopProp={inputStopProp}
       createInputPlaceholder="Search options"

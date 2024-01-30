@@ -5,7 +5,7 @@ import React, { useMemo } from 'react';
 
 import { entitiesVariablesMapsAtom } from '@/atoms/other.atom';
 import { CMSFormListItem } from '@/components/CMS/CMSForm/CMSFormListItem/CMSFormListItem.component';
-import useMarkupWithVariables from '@/components/MarkupInput/MarkupInputWithVariables/MarkupInputWithVariables.hook';
+import { useMarkupWithVariables } from '@/components/MarkupInput/MarkupInputWithVariables/MarkupInputWithVariables.hook';
 import { MediaType } from '@/components/MediaLibrary/MediaLibrary.enum';
 import { Designer } from '@/ducks';
 import { usePopperModifiers } from '@/hooks/popper.hook';

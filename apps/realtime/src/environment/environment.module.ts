@@ -15,6 +15,7 @@ import { ResponseModule } from '@/response/response.module';
 import { ResponseDiscriminatorModule } from '@/response/response-discriminator/response-discriminator.module';
 import { ResponseVariantModule } from '@/response/response-variant/response-variant.module';
 import { StoryModule } from '@/story/story.module';
+import { VariableModule } from '@/variable/variable.module';
 import { VersionModule } from '@/version/version.module';
 
 import { EnvironmentService } from './environment.service';
@@ -32,6 +33,7 @@ import { EnvironmentPrivateHTTPController } from './environment-private.http.con
     DiagramModule,
     ResponseModule,
     FunctionModule,
+    VariableModule,
     UtteranceModule,
     AttachmentModule,
     EntityVariantModule,

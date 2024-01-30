@@ -126,27 +126,30 @@ class Manager extends EventEmitter<Events> {
 
   create(type: string, factory: () => React.FC<T.VoidInternalProps>): T.RegisteredModal<T.VoidInternalProps>;
 
-  create<Props extends EmptyObject>(factory: () => React.FC<T.VoidInternalProps<Props>>): T.RegisteredModal<T.VoidInternalProps<Props>>;
+  create<Props extends EmptyObject>(factory: () => React.FC<T.VoidInternalProps<Props>>): T.RegisteredModal<T.VoidInternalProps<Props>, Props>;
 
-  create<Props extends EmptyObject>(type: string, factory: () => React.FC<T.VoidInternalProps<Props>>): T.RegisteredModal<T.VoidInternalProps<Props>>;
+  create<Props extends EmptyObject>(
+    type: string,
+    factory: () => React.FC<T.VoidInternalProps<Props>>
+  ): T.RegisteredModal<T.VoidInternalProps<Props>, Props>;
 
   create<Props extends void, Result>(
     factory: () => React.FC<T.ResultInternalProps<Result, Props>>
-  ): T.RegisteredModal<T.ResultInternalProps<Result, Props>>;
+  ): T.RegisteredModal<T.ResultInternalProps<Result, Props>, Props, Result>;
 
   create<Props extends void, Result>(
     type: string,
     factory: () => React.FC<T.ResultInternalProps<Result, Props>>
-  ): T.RegisteredModal<T.ResultInternalProps<Result, Props>>;
+  ): T.RegisteredModal<T.ResultInternalProps<Result, Props>, Props, Result>;
 
   create<Props extends EmptyObject, Result>(
     factory: () => React.FC<T.ResultInternalProps<Result, Props>>
-  ): T.RegisteredModal<T.ResultInternalProps<Result, Props>>;
+  ): T.RegisteredModal<T.ResultInternalProps<Result, Props>, Props, Result>;
 
   create<Props extends EmptyObject, Result>(
     type: string,
     factory: () => React.FC<T.ResultInternalProps<Result, Props>>
-  ): T.RegisteredModal<T.ResultInternalProps<Result, Props>>;
+  ): T.RegisteredModal<T.ResultInternalProps<Result, Props>, Props, Result>;
 
   create(
     ...args:
@@ -165,7 +168,7 @@ class Manager extends EventEmitter<Events> {
 
     this.register(type, MemoizedComponent);
 
-    return Object.assign(MemoizedComponent, { __vfModalType: type });
+    return Object.assign(MemoizedComponent, { __vfModalType: type } as any);
   }
 
   open<Result>(id: string, type: string, options?: { options?: T.OpenOptions }): Promise<Result>;
@@ -176,7 +179,7 @@ class Manager extends EventEmitter<Events> {
 
   open<Props extends EmptyObject>(
     id: string,
-    modal: T.RegisteredModal<T.VoidInternalProps<Props>>,
+    modal: T.RegisteredModal<T.VoidInternalProps<Props>, Props>,
     options: { props: Props; options?: T.OpenOptions }
   ): Promise<void>;
 
@@ -184,7 +187,7 @@ class Manager extends EventEmitter<Events> {
 
   open<Props extends EmptyObject, Result>(
     id: string,
-    modal: T.RegisteredModal<T.ResultInternalProps<Result, Props>>,
+    modal: T.RegisteredModal<T.ResultInternalProps<Result, Props>, Props, Result>,
     options: { props: Props; options?: T.OpenOptions }
   ): void;
 
@@ -195,9 +198,13 @@ class Manager extends EventEmitter<Events> {
   open(
     ...args:
       | [id: string, type: string, options?: { props?: never; options?: T.OpenOptions }]
-      | [id: string, modal: T.RegisteredModal<T.VoidInternalProps>, options?: { props?: never; options?: T.OpenOptions }]
+      | [id: string, modal: T.RegisteredModal<T.VoidInternalProps, any>, options?: { props?: never; options?: T.OpenOptions }]
       | [id: string, type: string, options: { props: AnyRecord; options?: T.OpenOptions }]
-      | [id: string, modal: T.RegisteredModal<T.ResultInternalProps<unknown, unknown>>, options: { props: AnyRecord; options?: T.OpenOptions }]
+      | [
+          id: string,
+          modal: T.RegisteredModal<T.ResultInternalProps<unknown, unknown>, any, any>,
+          options: { props: AnyRecord; options?: T.OpenOptions }
+        ]
   ): Promise<unknown> {
     const [id, modal, { props = {}, options = {} } = {}] = args;
     const type = typeof modal === 'string' ? modal : modal.__vfModalType;

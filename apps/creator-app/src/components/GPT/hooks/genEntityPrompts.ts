@@ -8,10 +8,10 @@ import { useTeardown } from '@voiceflow/ui';
 import { mlGatewayClient } from '@/client/ml-gateway';
 import * as SlateEditor from '@/components/SlateEditable/editor';
 import { CUSTOM_SLOT_TYPE } from '@/constants';
+import * as Designer from '@/ducks/designer';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useActiveProjectType, useSelector } from '@/hooks';
-import { useEntityMapByNameSelector } from '@/hooks/entity.hook';
 import { slotToString, transformVariablesToReadable } from '@/utils/slot';
 
 import { GenApi, useGen } from './gen';
@@ -32,7 +32,7 @@ export const useGenVoiceEntityPrompts = ({
   intentInputs: Platform.Base.Models.Intent.Input[];
 }): GenApi<Platform.Common.Voice.Models.Intent.Prompt> => {
   const variables = useSelector(DiagramV2.active.allSlotsAndVariablesNormalizedSelector);
-  const slotNameMap = useEntityMapByNameSelector();
+  const slotNameMap = useSelector(Designer.Entity.selectors.mapByName);
   const defaultVoice = useSelector(VersionV2.active.voice.defaultVoiceSelector);
 
   const api = useGen<Platform.Common.Voice.Models.Intent.Prompt>({

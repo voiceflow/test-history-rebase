@@ -16,15 +16,15 @@ export const IntentRepromptInput: React.FC<IIntentRepromptInput> = ({ value, onV
   const editor = useCreateConst(() => SlateEditor.createEditor([SlateEditor.PluginType.VARIABLE, SlateEditor.PluginType.LINK]));
   const entitiesMap = useSelector(Designer.selectors.slateEntitiesMapByID);
 
-  const editEntityModal = useEntityEditModal();
-  const createEntityModal = useEntityCreateModal();
+  const entityEditModal = useEntityEditModal();
+  const entityCreateModal = useEntityCreateModal();
 
   const onClickEntity = usePersistFunction((entity: SlateEditor.VariableItem) => {
-    requestAnimationFrame(() => editEntityModal.openVoid({ entityID: entity.id }));
+    requestAnimationFrame(() => entityEditModal.openVoid({ entityID: entity.id }));
   });
 
   const onCreateEntity = usePersistFunction(async (name: string) => {
-    const entity = await createEntityModal.open({ name, folderID: null });
+    const entity = await entityCreateModal.open({ name, folderID: null });
 
     return {
       id: entity.id,

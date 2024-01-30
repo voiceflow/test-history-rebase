@@ -2,9 +2,14 @@ import { GOOGLE_CLIENT_ID } from '@/config';
 import { GooglePromptType } from '@/constants';
 
 export const initialize = async () => {
-  await new Promise((resolve) => gapi.load('client:auth2', resolve));
+  await new Promise((resolve) => {
+    gapi.load('client:auth2', resolve);
+  });
 
-  await new Promise((resolve) => gapi.auth2.init({ client_id: GOOGLE_CLIENT_ID }).then(resolve));
+  await new Promise((resolve) => {
+    // eslint-disable-next-line promise/catch-or-return
+    gapi.auth2.init({ client_id: GOOGLE_CLIENT_ID }).then(resolve);
+  });
 };
 
 export const getClient = (scopes: string[], prompt?: GooglePromptType) => {

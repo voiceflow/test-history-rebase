@@ -9,6 +9,7 @@ export { default as domainAdapter } from './domain';
 export * as Identity from './identity';
 export * from './legacy/entity-to-legacy-slot.adapter';
 export * from './legacy/intent-to-legacy-intent/intent-to-legacy-intent.adapter';
+export * from './legacy/variable-to-legacy-variable.adapter';
 export { default as noteAdapter } from './note';
 export { default as productAdapter } from './product';
 export { default as projectAdapter } from './project';

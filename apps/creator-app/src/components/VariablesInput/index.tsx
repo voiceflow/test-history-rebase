@@ -1,4 +1,5 @@
 import composeRef from '@seznam/compose-react-refs';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { InputRenderer, InputVariant, toast, useSetup } from '@voiceflow/ui';
 import React from 'react';
 
@@ -8,6 +9,8 @@ import * as DiagramV2 from '@/ducks/diagramV2';
 import { CanvasCreationType } from '@/ducks/tracking/constants';
 import * as Version from '@/ducks/versionV2';
 import { useDispatch, useRAF, useSelector } from '@/hooks';
+import { useFeature } from '@/hooks/feature';
+import { useVariableCreateModal } from '@/hooks/modal.hook';
 import { getErrorMessage } from '@/utils/error';
 
 import * as S from './styles';
@@ -56,12 +59,25 @@ const VariablesInput = React.forwardRef<TextEditorRef, VariablesInputProps>(
     const containerRef = React.useRef<HTMLDivElement>(null);
     const textEditorRef = React.useRef<TextEditorRef>(null);
 
-    const variables = useSelector(DiagramV2.active.allSlotsAndVariablesSelector);
+    const variables = useSelector(DiagramV2.active.allEntitiesAndVariablesSelector);
     const addGlobalVariable = useDispatch(Version.addGlobalVariable);
+
+    const cmsVariables = useFeature(Realtime.FeatureFlag.CMS_VARIABLES);
+    const variableCreateModal = useVariableCreateModal();
 
     const onAddVariable = React.useCallback(
       async (name?: string) => {
         if (!name) return null;
+
+        if (cmsVariables.isEnabled) {
+          try {
+            const variable = await variableCreateModal.open({ name, folderID: null });
+
+            return { ...variable, isVariable: true };
+          } catch {
+            return null;
+          }
+        }
 
         try {
           await addGlobalVariable(name, CanvasCreationType.EDITOR);

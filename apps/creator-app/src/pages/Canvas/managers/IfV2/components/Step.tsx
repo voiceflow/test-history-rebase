@@ -4,6 +4,7 @@ import React from 'react';
 
 import { useSyncedLookup } from '@/hooks';
 import Step, { ElseStepItemV2, Item, Section } from '@/pages/Canvas/components/Step';
+import { ActiveDiagramNormalizedEntitiesAndVariablesContext } from '@/pages/Canvas/contexts';
 import { NoMatchV2 } from '@/pages/Canvas/managers/components';
 import { ConnectedStep } from '@/pages/Canvas/managers/types';
 import { expressionPreview } from '@/utils/expression';
@@ -12,6 +13,7 @@ import { NODE_CONFIG } from '../constants';
 
 const IfStep: ConnectedStep<Realtime.NodeData.IfV2, Realtime.NodeData.IfV2BuiltInPorts> = ({ ports, data, engine, palette }) => {
   const noMatchPortID = ports.out.builtIn[BaseModels.PortType.NO_MATCH];
+  const entitiesAndVariables = React.useContext(ActiveDiagramNormalizedEntitiesAndVariablesContext)!;
 
   const hasNoMatchLink = !!noMatchPortID && engine.hasLinksByPortID(noMatchPortID); // also show the else port if a link exists
   const expressionsByPortID = useSyncedLookup(ports.out.dynamic, data.expressions);
@@ -26,11 +28,11 @@ const IfStep: ConnectedStep<Realtime.NodeData.IfV2, Realtime.NodeData.IfV2BuiltI
 
           return {
             name: expression.name,
-            label: expression.value.length > 0 ? expressionPreview(expression) : null,
+            label: expression.value.length > 0 ? expressionPreview(expression, entitiesAndVariables.byKey) : null,
             portID,
           };
         }),
-    [ports.out.dynamic, expressionsByPortID]
+    [ports.out.dynamic, expressionsByPortID, entitiesAndVariables.byKey]
   );
 
   return (

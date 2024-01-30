@@ -3,7 +3,7 @@ import { Box, Divider, Section, SlateEditor, Surface } from '@voiceflow/ui-next'
 import { markupFactory } from '@voiceflow/utils-designer';
 import React from 'react';
 
-import useMarkupWithVariables from '@/components/MarkupInput/MarkupInputWithVariables/MarkupInputWithVariables.hook';
+import { useMarkupWithVariables } from '@/components/MarkupInput/MarkupInputWithVariables/MarkupInputWithVariables.hook';
 import { Designer } from '@/ducks';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
 

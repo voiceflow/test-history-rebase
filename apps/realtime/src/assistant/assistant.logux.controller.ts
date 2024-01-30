@@ -53,6 +53,9 @@ export class AssistantLoguxController {
       // prompt
       promptReplaceMeta,
 
+      // variable
+      variableReplaceMeta,
+
       // intent
       intentReplaceMeta,
       utteranceReplaceMeta,
@@ -106,6 +109,7 @@ export class AssistantLoguxController {
       responses,
       assistant,
       functions,
+      variables,
       utterances,
       attachments,
       cardButtons,
@@ -135,6 +139,9 @@ export class AssistantLoguxController {
 
       // prompt
       Actions.Prompt.Replace({ data: this.entitySerializer.iterable(prompts), context }, promptReplaceMeta),
+
+      // variable
+      Actions.Variable.Replace({ data: this.entitySerializer.iterable(variables), context }, variableReplaceMeta),
 
       // intent
       Actions.Intent.Replace({ data: this.entitySerializer.iterable(intents), context }, intentReplaceMeta),

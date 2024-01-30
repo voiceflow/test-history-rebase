@@ -12,7 +12,7 @@ interface VoiceOption<V> {
   label: string;
 }
 
-export interface VoiceOptionGroup<V> {
+interface VoiceOptionGroup<V> {
   label: string;
   value?: string;
   options: Array<VoiceOptionGroup<V> | VoiceOption<V>>;
@@ -26,7 +26,7 @@ interface GetVoiceOptionsParams {
 const DEFAULT_VOICE_CODE = 'default';
 
 // ex inbound string standard-B
-export const prettifyGoogleVoicesShort = (voiceCode: string): string => {
+const prettifyGoogleVoicesShort = (voiceCode: string): string => {
   if (voiceCode === DEFAULT_VOICE_CODE) return voiceCode;
 
   const splitCode = voiceCode.split('-');
@@ -47,7 +47,7 @@ export const prettifyGoogleVoicesLong = (voiceCode: string): string => {
   return `${GoogleConstants.LocaleCodeToCountryLanguage[localeCode] || localeCode || ''} ${voiceType}`.trim();
 };
 
-export const prettifyAzureVoiceID = (voiceID: string): string => voiceID.split('-')[2].replace('Neural', '');
+const prettifyAzureVoiceID = (voiceID: string): string => voiceID.split('-')[2].replace('Neural', '');
 
 export const prettifyVoice = (voiceID: string): string => {
   const lowerCasedVoiceID = voiceID.toLowerCase();
@@ -110,7 +110,7 @@ export const getGoogleDialogflowVoiceOptions = ({ locales, usePremiumVoice }: Ge
     }));
 };
 
-export const getAzureVoiceOptions = (): VoiceOptionGroup<string>[] =>
+const getAzureVoiceOptions = (): VoiceOptionGroup<string>[] =>
   Object.values(VoiceflowConstants.AZURE_LOCALE_VOICE_META).map(({ language, voices }) => ({
     value: language,
     label: language,
@@ -155,7 +155,7 @@ export const getPlatformVoiceOptions = (platform: Platform.Constants.PlatformTyp
     getGeneralVoiceOptions
   )(params);
 
-export const isVoiceOptionsGroup = <V>(options: VoiceOptionGroup<V> | VoiceOption<V>): options is VoiceOptionGroup<V> => {
+const isVoiceOptionsGroup = <V>(options: VoiceOptionGroup<V> | VoiceOption<V>): options is VoiceOptionGroup<V> => {
   return !!(options as VoiceOptionGroup<V>).options;
 };
 

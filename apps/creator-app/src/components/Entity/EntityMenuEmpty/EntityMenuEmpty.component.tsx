@@ -7,11 +7,11 @@ import { useEntityCreateModal } from '@/hooks/modal.hook';
 import type { IEntityMenuEmpty } from './EntityMenuEmpty.interface';
 
 export const EntityMenuEmpty: React.FC<IEntityMenuEmpty> = ({ width, onCreated }) => {
-  const createModal = useEntityCreateModal();
+  const entityCreateModal = useEntityCreateModal();
 
   const onCreate = async () => {
     try {
-      const entity = await createModal.open({ folderID: null });
+      const entity = await entityCreateModal.open({ folderID: null });
 
       onCreated?.(entity);
     } catch {

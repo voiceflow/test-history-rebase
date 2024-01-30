@@ -25,6 +25,7 @@ export { default as Success } from './Success';
 export * as Tokens from './Tokens';
 export * as Topic from './Topic';
 export { default as Upgrade } from './Upgrade';
+export * as Variable from './Variable';
 export { default as VariablePrompt } from './VariablePrompt';
 export * as VariableStates from './VariableStates';
 export * as Workspace from './Workspace';

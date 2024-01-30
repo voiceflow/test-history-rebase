@@ -4,9 +4,9 @@ import { Flex, stopPropagation, System, useDidUpdateEffect } from '@voiceflow/ui
 import React from 'react';
 
 import IntentSelect from '@/components/IntentSelect';
+import * as Designer from '@/ducks/designer';
 import * as Transcript from '@/ducks/transcript';
 import { useDispatch, useSelector, useTrackingEvents } from '@/hooks';
-import { useGetOnePlatformIntentWithUtterancesByIDSelector } from '@/hooks/intent.hook';
 import { useIntentEditModal } from '@/hooks/modal.hook';
 import { utteranceTextToString } from '@/utils/utterance.util';
 
@@ -45,7 +45,7 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, utterance, onToggl
   const [initialUtterances, setInitialUtterances] = React.useState<Array<Platform.Base.Models.Intent.Input | Utterance> | null>(null);
 
   const transcript = useSelector(Transcript.currentTranscriptSelector);
-  const getIntentByID = useGetOnePlatformIntentWithUtterancesByIDSelector();
+  const getIntentByID = useSelector(Designer.Intent.selectors.getOneWithUtterances);
   const dispatchAddUtteranceToIntent = useDispatch(Transcript.setUtteranceAddedTo);
 
   const editModal = useIntentEditModal();

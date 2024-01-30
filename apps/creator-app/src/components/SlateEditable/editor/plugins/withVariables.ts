@@ -1,4 +1,4 @@
-import { Nullable, READABLE_VARIABLE_REGEXP, SLOT_REGEXP } from '@voiceflow/common';
+import { Nullable, READABLE_VARIABLE_REGEXP } from '@voiceflow/common';
 import { slate } from '@voiceflow/internal';
 import * as Normal from 'normal-store';
 import { Descendant, Editor, Element, Range, Text, Transforms } from 'slate';
@@ -39,7 +39,7 @@ export const withVariablesPlugin: Plugin = (EditorAPI: EditorAPIType) => (editor
 
   editor.registerPrismLanguage(PrismLanguage.VARIABLES);
 
-  editor.registerTextProcessingMiddleware(() => (next) => (nodes, { fromDraftJS }) => {
+  editor.registerTextProcessingMiddleware(() => (next) => (nodes) => {
     const { variables } = editor.pluginsOptions[PluginType.VARIABLES] ?? {};
 
     const variablesNameMap = variables
@@ -47,14 +47,12 @@ export const withVariablesPlugin: Plugin = (EditorAPI: EditorAPIType) => (editor
       : null;
 
     return nodes.flatMap((node) => {
-      if (!Text.isText(node) || (!variablesNameMap && !fromDraftJS)) {
+      if (!Text.isText(node) || !variablesNameMap) {
         return next([node]);
       }
 
-      const regexp = fromDraftJS ? SLOT_REGEXP : READABLE_VARIABLE_REGEXP;
-
-      return matchAndProcessTextNodeToElement({ type: ElementType.VARIABLE, node, next, regexp }, (match, textNode) => {
-        const variable = fromDraftJS ? { id: match[2], name: match[1], isSlot: match[1] !== match[2] } : variablesNameMap?.[match[1]] ?? '';
+      return matchAndProcessTextNodeToElement({ type: ElementType.VARIABLE, node, next, regexp: READABLE_VARIABLE_REGEXP }, (match, textNode) => {
+        const variable = variablesNameMap?.[match[1]] ?? null;
 
         // skip if not exists
         if (!variable) {

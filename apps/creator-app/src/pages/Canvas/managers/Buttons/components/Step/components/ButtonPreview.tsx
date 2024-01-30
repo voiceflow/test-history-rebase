@@ -3,7 +3,7 @@ import { Box, Preview, stopPropagation, Tag } from '@voiceflow/ui';
 import React from 'react';
 
 import { Permission } from '@/constants/permissions';
-import { useOnOpenEntityEditModal } from '@/hooks/entity.hook';
+import { useEntityEditModal } from '@/hooks/modal.hook';
 import { usePermission } from '@/hooks/permission';
 import { EntityPrompt } from '@/pages/Canvas/types';
 import { copyWithToast } from '@/utils/clipboard';
@@ -16,7 +16,7 @@ interface ButtonsPreviewProps {
 
 const ButtonPreview: React.FC<ButtonsPreviewProps> = ({ prompts, onOpenEditor, onClose }) => {
   const [canOpenEditor] = usePermission(Permission.CANVAS_OPEN_EDITOR);
-  const onOpenEntityEditModal = useOnOpenEntityEditModal();
+  const entityEditModal = useEntityEditModal();
 
   return (
     <Preview onClick={stopPropagation()}>
@@ -31,7 +31,7 @@ const ButtonPreview: React.FC<ButtonsPreviewProps> = ({ prompts, onOpenEditor, o
               <Box mb="4px">
                 <Tag
                   color={prompt.color}
-                  onClick={() => canOpenEditor && onOpenEntityEditModal({ entityID: prompt.entityID })}
+                  onClick={() => canOpenEditor && entityEditModal.openVoid({ entityID: prompt.entityID })}
                 >{`{${prompt.name}}`}</Tag>
               </Box>
 

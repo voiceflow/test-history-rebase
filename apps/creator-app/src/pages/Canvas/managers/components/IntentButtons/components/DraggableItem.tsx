@@ -8,9 +8,8 @@ import React from 'react';
 import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandlers } from '@/components/DraggableList';
 import IntentSelect from '@/components/IntentSelect';
 import VariablesInput from '@/components/VariablesInput';
-import { Diagram } from '@/ducks';
+import { Designer, Diagram } from '@/ducks';
 import { useAutoScrollNodeIntoView } from '@/hooks';
-import { useOnePlatformIntentByIDSelector } from '@/hooks/intent.hook';
 import { useSelector } from '@/hooks/store.hook';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { getPlatformValue } from '@/utils/platform';
@@ -47,9 +46,8 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
 ) => {
   const autofocus = latestCreatedKey === itemKey || editor.data.buttons.length === 1;
 
+  const intent = useSelector(Designer.Intent.selectors.oneWithFormattedBuiltNameByID, { id: item.payload.intentID });
   const entitiesAndVariables = useSelector(Diagram.active.allSlotsAndVariablesNormalizedSelector);
-
-  const intent = useOnePlatformIntentByIDSelector({ id: item.payload.intentID });
 
   const [sectionRef, scrollIntoView] = useAutoScrollNodeIntoView<HTMLDivElement>({ condition: autofocus, options: { block: 'end' } });
 

@@ -1,10 +1,15 @@
 import { BaseNode, BaseUtils } from '@voiceflow/base-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import VariableSelectV2 from '@/components/VariableSelectV2';
 import VariablesInput from '@/components/VariablesInput';
-import { useVariableCreation } from '@/hooks';
+import { Version } from '@/ducks';
+import { CanvasCreationType } from '@/ducks/tracking';
+import { useFeature } from '@/hooks/feature';
+import { useCreateVariableModal, useVariableCreateModal } from '@/hooks/modal.hook';
+import { useDispatch } from '@/hooks/store.hook';
 import * as AI from '@/pages/Canvas/managers/components/AI';
 
 interface SetSectionProps {
@@ -32,7 +37,29 @@ export const MEMORY_SELECT_OPTIONS: AI.MemorySelectOption[] = [
 ];
 
 const SetSection: React.FC<SetSectionProps> = ({ set, source, onUpdate, onRemove, removeDisabled, isDeprecated }) => {
-  const { variables, createVariable } = useVariableCreation();
+  const cmsVariables = useFeature(Realtime.FeatureFlag.CMS_VARIABLES);
+  const variableCreateModal = useVariableCreateModal();
+  const createVariableModal = useCreateVariableModal();
+
+  const addVariable = useDispatch(Version.addGlobalVariable);
+
+  const createVariable = async (name: string): Promise<string> => {
+    if (cmsVariables.isEnabled) {
+      const variable = await variableCreateModal.open({ name, folderID: null });
+
+      return variable.id;
+    }
+
+    if (!name) {
+      const [variable] = await createVariableModal.open({ single: true, creationType: CanvasCreationType.EDITOR });
+
+      return variable;
+    }
+
+    await addVariable(name, CanvasCreationType.EDITOR);
+
+    return name;
+  };
 
   return (
     <SectionV2.ListItem action={<SectionV2.RemoveButton onClick={onRemove} disabled={removeDisabled} />}>
@@ -55,12 +82,11 @@ const SetSection: React.FC<SetSectionProps> = ({ set, source, onUpdate, onRemove
           </>
         )}
         <VariableSelectV2
-          disabled={isDeprecated}
           value={set.variable}
           prefix="APPLY TO"
-          options={variables}
           onCreate={createVariable}
           onChange={(variable) => onUpdate({ variable })}
+          disabled={isDeprecated}
           placeholder="Select variable"
         />
       </Box.FlexColumn>

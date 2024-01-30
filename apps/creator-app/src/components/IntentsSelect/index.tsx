@@ -3,7 +3,8 @@ import { Menu } from '@voiceflow/ui';
 import React from 'react';
 
 import TagSelect from '@/components/TagSelect';
-import { useAllCustomIntentsSelector, useCustomIntentMapSelector } from '@/hooks/intent.hook';
+import { Designer } from '@/ducks';
+import { useSelector } from '@/hooks/store.hook';
 
 interface IntentsSelectProps {
   value: string[];
@@ -11,8 +12,8 @@ interface IntentsSelectProps {
 }
 
 const IntentsSelect: React.FC<IntentsSelectProps> = ({ value, onChange }) => {
-  const intents = useAllCustomIntentsSelector();
-  const intentsMap = useCustomIntentMapSelector();
+  const intents = useSelector(Designer.Intent.selectors.allWithFormattedBuiltInNames);
+  const intentsMap = useSelector(Designer.Intent.selectors.mapWithFormattedBuiltInName);
 
   return (
     <TagSelect

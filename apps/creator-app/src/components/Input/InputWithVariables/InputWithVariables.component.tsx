@@ -28,9 +28,9 @@ export const InputWithVariables = forwardRef<SlateEditorRef, IInputWithVariables
     const pluginsOptions = useMemo<SlateEditor.ISlateEditor['pluginsOptions']>(
       () => ({
         [SlateEditor.PluginType.VARIABLE]: {
+          canEdit: true,
           canCreate: canCreateVariables,
           variablesMap,
-          canEdit: true,
           maxVariableWidth,
         },
         [SlateEditor.PluginType.SINGLE_LINE]: { nowrap: true },

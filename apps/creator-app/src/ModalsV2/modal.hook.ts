@@ -9,13 +9,16 @@ import * as T from './types';
 export function useModal(): T.VoidPublicAPI;
 export function useModal(type: string, id?: string): T.VoidPublicAPI;
 export function useModal(component: T.RegisteredModal<T.VoidInternalProps>, id?: string): T.VoidPublicAPI;
-export function useModal<Props extends EmptyObject>(component: T.RegisteredModal<T.VoidInternalProps<Props>>, id?: string): T.PropsPublicAPI<Props>;
+export function useModal<Props extends EmptyObject>(
+  component: T.RegisteredModal<T.VoidInternalProps<Props>, Props>,
+  id?: string
+): T.PropsPublicAPI<Props>;
 export function useModal<Props extends void, Result>(
-  component: T.RegisteredModal<T.ResultInternalProps<Result, Props>>,
+  component: T.RegisteredModal<T.ResultInternalProps<Result, Props>, Props, Result>,
   id?: string
 ): T.ResultPublicAPI<void, Result>;
 export function useModal<Props extends EmptyObject, Result>(
-  component: T.RegisteredModal<T.ResultInternalProps<Result, Props>>,
+  component: T.RegisteredModal<T.ResultInternalProps<Result, Props>, Props, Result>,
   id?: string
 ): T.PropsResultPublicAPI<Omit<Props, keyof T.InternalProps<T.ResultInternalAPI<Props, Result>>>, Result>;
 export function useModal<Props extends EmptyObject>(type: string, id?: string): T.PropsPublicAPI<Props>;
@@ -36,11 +39,6 @@ export function useModal(
       props ? manager.open(modalID, type, { props, options }) : manager.open(modalID, type, { options }),
     []
   );
-  const openDynamic = React.useCallback((modal: string | T.AnyModal, props?: AnyRecord, options?: T.OpenOptions) => {
-    const type = typeof modal === 'string' ? modal : modal.__vfModalType || '';
-    const modalID = Utils.id.cuid.slug();
-    return props ? manager.open(modalID, type, { props, options }) : manager.open(modalID, type, { options });
-  }, []);
   const close = React.useCallback(() => manager.close(modalID, type, 'hook'), []);
   const remove = React.useCallback(() => manager.remove(modalID, type), []);
   const openVoid = React.useCallback((props?: AnyRecord, options?: T.OpenOptions) => open(props, options).catch(() => null), []);
@@ -58,7 +56,6 @@ export function useModal(
     open,
     close,
     remove,
-    openDynamic,
     opened: rendered && !modal?.closing,
     hidden: modals.state.allKeys[0] !== combinedID,
     animated: modals.animated,

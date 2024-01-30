@@ -16,6 +16,7 @@ export const CMSMenu: React.FC = () => {
   const onLinkClick = useOnLinkClick();
   const { isEnabled: isKbEnabled } = useFeature(Realtime.FeatureFlag.KNOWLEDGE_BASE);
   const { isEnabled: isFunctionsCmsEnabled } = useFeature(Realtime.FeatureFlag.CMS_FUNCTIONS);
+  const { isEnabled: isCMSVariablesEnabled } = useFeature(Realtime.FeatureFlag.CMS_VARIABLES);
 
   const { updateActiveCMSRoute } = useCMSRoute();
 
@@ -26,9 +27,9 @@ export const CMSMenu: React.FC = () => {
   const intentsCount = useSelector(Designer.Intent.selectors.countWithoutFallback);
   const entitiesCount = useSelector(Designer.Entity.selectors.count);
   const functionsCount = useSelector(Designer.Function.selectors.count);
+  const variablesCount = useSelector(Designer.Variable.selectors.count);
   const knowledgeBaseCount = useSelector(Designer.KnowledgeBase.Document.selectors.count);
   // const responsesCount = useSelector(Designer.Response.selectors.count);
-  // const variablesCount = useSelector(Designer.Variable.selectors.count);
 
   const isItemActive = (path: string) => !!matchPath(location.pathname, { path, exact: false });
 
@@ -86,24 +87,29 @@ export const CMSMenu: React.FC = () => {
           isActive={isItemActive(AbsolutePath.ASSISTANT_CMS_FLOWS.pathname)}
         />
 
-        <SecondaryNavigation.Item
-          icon="Variable"
-          label="Variables"
-          caption={String(variablesCount)}
-          onClick={onTabClick(AssistantCMSRoute.VARIABLES)}
-          isActive={isItemActive(AbsolutePath.ASSISTANT_CMS_VARIABLES.pathname)}
-        />
-       */}
+      */}
 
-      {isFunctionsCmsEnabled && (
+      {(isFunctionsCmsEnabled || isCMSVariablesEnabled) && (
         <SecondaryNavigation.Section title="Content">
-          <SecondaryNavigation.Item
-            icon="Code"
-            label="Functions"
-            caption={String(functionsCount)}
-            onClick={onTabClick(Path.CMS_FUNCTION, CMSRoute.FUNCTION)}
-            isActive={isItemActive(Path.CMS_FUNCTION)}
-          />
+          {isCMSVariablesEnabled && (
+            <SecondaryNavigation.Item
+              icon="Variable"
+              label="Variables"
+              caption={String(variablesCount)}
+              onClick={onTabClick(Path.CMS_VARIABLE, CMSRoute.VARIABLE)}
+              isActive={isItemActive(Path.CMS_VARIABLE)}
+            />
+          )}
+
+          {isFunctionsCmsEnabled && (
+            <SecondaryNavigation.Item
+              icon="Code"
+              label="Functions"
+              caption={String(functionsCount)}
+              onClick={onTabClick(Path.CMS_FUNCTION, CMSRoute.FUNCTION)}
+              isActive={isItemActive(Path.CMS_FUNCTION)}
+            />
+          )}
         </SecondaryNavigation.Section>
       )}
 

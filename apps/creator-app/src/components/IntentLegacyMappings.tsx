@@ -6,9 +6,10 @@ import { Flex, SvgIcon, System, Tag, Tooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import Section, { Header, HeaderContent, StatusContent } from '@/components/Section';
+import { Designer } from '@/ducks';
 import { styled } from '@/hocs/styled';
-import { useGetOneEntityByIDSelector } from '@/hooks/entity.hook';
 import { useConfirmModal } from '@/hooks/modal.hook';
+import { useSelector } from '@/hooks/store.hook';
 
 // TODO: Deprecate this component once legacy mapping is completely deprecated
 
@@ -46,7 +47,7 @@ interface LegacyMappingsProps {
 }
 
 const LegacyMappings: React.FC<LegacyMappingsProps> = ({ intent, onDelete, mappings = [], isNested = false }) => {
-  const getSlotByID = useGetOneEntityByIDSelector();
+  const getSlotByID = useSelector(Designer.Entity.selectors.getOneByID);
 
   const confirmModal = useConfirmModal();
 

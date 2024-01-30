@@ -13,19 +13,17 @@ export const entityNameSpellingValidator = validatorZodFactory(EntityDTO.shape.n
 
 export const entityNameUniqEntitiesValidator = validatorFactory(
   (name: string, { entities, entityID }: { entities: Entity[]; entityID: string | null }) =>
-    entities.every((entity) => entity.id === entityID || entity.name.toLocaleLowerCase() !== name.toLocaleLowerCase()),
-  () => `'Entity name already exists.`
+    entities.every((entity) => entity.id === entityID || entity.name !== name),
+  () => `Entity name already exists.`
 );
 
 export const entityNameUniqVariablesValidator = validatorFactory(
-  (name: string, { variables }: { variables: Variable[] }) =>
-    variables.every((variable) => variable.name.toLocaleLowerCase() !== name.toLocaleLowerCase()),
-  (name) => `You have a variable defined with the '${name}' name already. Entity/Variable/Intent name must be unique.`
+  (name: string, { variables }: { variables: Variable[] }) => variables.every((variable) => variable.name !== name),
+  () => `Variable name already exists.`
 );
 
 export const entityNameUniqIntentsValidator = validatorFactory(
-  (name: string, { intents }: { intents: Intent[] }) =>
-    intents.every((intent) => intent.name.toLocaleLowerCase() !== name.toLocaleLowerCase()),
+  (name: string, { intents }: { intents: Intent[] }) => intents.every((intent) => intent.name !== name),
   () => `Intent name already exists.`
 );
 

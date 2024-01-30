@@ -1,4 +1,5 @@
 import composeRef from '@seznam/compose-react-refs';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { SvgIconTypes, toast, useSetup } from '@voiceflow/ui';
 import React from 'react';
 
@@ -8,6 +9,8 @@ import * as DiagramV2 from '@/ducks/diagramV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { CanvasCreationType } from '@/ducks/tracking/constants';
 import * as VersionV2 from '@/ducks/versionV2';
+import { useFeature } from '@/hooks/feature';
+import { useVariableCreateModal } from '@/hooks/modal.hook';
 import { useActiveProjectTypeConfig } from '@/hooks/platformConfig';
 import { useDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
@@ -29,13 +32,15 @@ interface SSMLWithVarsProps {
 }
 
 const SSMLWithVars = React.forwardRef<TextEditorRef, SSMLWithVarsProps>(({ icon = 'alexa', voice, autofocus, ...props }, ref) => {
+  const cmsVariables = useFeature(Realtime.FeatureFlag.CMS_VARIABLES);
+  const variableCreateModal = useVariableCreateModal();
   const projectTypeConfig = useActiveProjectTypeConfig();
 
   const ssmlRef = React.useRef<TextEditorRef>(null);
 
   const locales = useSelector(VersionV2.active.localesSelector);
   const platform = useSelector(ProjectV2.active.platformSelector);
-  const variables = useSelector(DiagramV2.active.allSlotsAndVariablesSelector);
+  const variables = useSelector(DiagramV2.active.allEntitiesAndVariablesSelector);
   const projectType = useSelector(ProjectV2.active.projectTypeSelector);
   const defaultVoice = useSelector(VersionV2.active.voice.defaultVoiceSelector);
 
@@ -44,6 +49,16 @@ const SSMLWithVars = React.forwardRef<TextEditorRef, SSMLWithVarsProps>(({ icon 
 
   const onAddVariable = React.useCallback(
     async (name: string) => {
+      if (cmsVariables.isEnabled) {
+        try {
+          const variable = await variableCreateModal.open({ name, folderID: null });
+
+          return { ...variable, isVariable: true };
+        } catch {
+          return null;
+        }
+      }
+
       try {
         await addGlobalVariable(name, CanvasCreationType.EDITOR);
 
@@ -53,7 +68,7 @@ const SSMLWithVars = React.forwardRef<TextEditorRef, SSMLWithVarsProps>(({ icon 
         return null;
       }
     },
-    [addGlobalVariable]
+    [addGlobalVariable, variableCreateModal.open]
   );
 
   useSetup(() => {

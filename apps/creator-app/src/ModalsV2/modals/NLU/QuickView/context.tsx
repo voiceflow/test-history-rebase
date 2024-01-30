@@ -6,9 +6,9 @@ import { matchPath, useLocation } from 'react-router-dom';
 import { Path } from '@/config/routes';
 import { InteractionModelTabType } from '@/constants';
 import { NLUContext } from '@/contexts/NLUContext';
+import { Designer } from '@/ducks';
 import * as Router from '@/ducks/router';
 import { activeProjectIDSelector } from '@/ducks/session';
-import { useAllEntitiesOrderedByNameSelector } from '@/hooks/entity.hook';
 import { useOrderedIntents } from '@/hooks/intent.hook';
 import { useDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
@@ -94,7 +94,7 @@ export const NLUQuickViewProvider: React.FC<React.PropsWithChildren> = ({ childr
 
   const { renameItem, deleteItem: deleteNLUItem, canDeleteItem, canRenameItem, nameChangeTransform } = React.useContext(NLUContext);
 
-  const sortedSlots = useAllEntitiesOrderedByNameSelector();
+  const sortedSlots = useSelector(Designer.Entity.selectors.allOrderedByName);
   const sortedIntents = useOrderedIntents();
   const [sortedVariables] = useOrderedVariables();
 

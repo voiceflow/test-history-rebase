@@ -1,4 +1,4 @@
-import type { Entity, Intent } from '@voiceflow/dtos';
+import type { Entity, Intent, Variable } from '@voiceflow/dtos';
 
 import { useModal } from '@/ModalsV2/modal.hook';
 import type { Props as ConfirmProps } from '@/ModalsV2/modals/Confirm';
@@ -9,12 +9,12 @@ import type { Props as ErrorProps } from '@/ModalsV2/modals/Error';
 import type { IntentBulkImportUtterancesModalProps } from '@/ModalsV2/modals/Intent/IntentBulkImportUtterances.modal';
 import type { IIntentCreateModal } from '@/ModalsV2/modals/Intent/IntentCreate/IntentCreate.interface';
 import type { IIntentEditModal } from '@/ModalsV2/modals/Intent/IntentEdit.modal';
-import type { Result as SlotsBulkImportResult } from '@/ModalsV2/modals/NLU/BulkImport/Slots';
-import type { Props as BulkImportUtterancesProps, Result as BulkImportUtterancesResult } from '@/ModalsV2/modals/NLU/BulkImport/Utterances';
 import type { NLUVariableCreateProps } from '@/ModalsV2/modals/NLU/Variable/Create';
 import type { PaymentModalProps } from '@/ModalsV2/modals/Payment';
 import type { Props as SuccessProps } from '@/ModalsV2/modals/Success';
 import type { UpgradeModal } from '@/ModalsV2/modals/Upgrade';
+import type { IVariableCreateModal } from '@/ModalsV2/modals/Variable/VariableCreate.modal';
+import type { IVariableEditModal } from '@/ModalsV2/modals/Variable/VariableEdit.modal';
 import type { Props as VariablePromptProps, Result as VariablePromptResult } from '@/ModalsV2/modals/VariablePrompt';
 
 export { useModal } from '@/ModalsV2/modal.hook';
@@ -26,16 +26,16 @@ export const useUpgradeModal = () => useModal<UpgradeModal>('Upgrade');
 export const useAddSeatsModal = () => useModal('AddSeats');
 export const usePaymentModal = () => useModal<PaymentModalProps>('Payment');
 
-export const useBulkImportUtterancesModal = () => useModal<BulkImportUtterancesProps, BulkImportUtterancesResult>('BulkImportUtterances');
-
 export const useCreateVariableModal = () => useModal<NLUVariableCreateProps, string[]>('NLUVariableCreate');
 export const useVariablePromptModal = () => useModal<VariablePromptProps, VariablePromptResult>('VariablePrompt');
 
-export const useBulkImportSlotsModal = () => useModal<void, SlotsBulkImportResult>('BulkImportSlots');
 export const useCreateVariableStateModal = () => useModal('VariableStateCreate');
 
 export const useEntityEditModal = () => useModal<IEntityEditModal>('EntityEditModal');
 export const useEntityCreateModal = () => useModal<IEntityCreateModal, Entity>('EntityCreateModal');
+
+export const useVariableEditModal = () => useModal<IVariableEditModal>('VariableEditModal');
+export const useVariableCreateModal = () => useModal<IVariableCreateModal, Variable>('VariableCreateModal');
 
 export const useIntentEditModal = () => useModal<IIntentEditModal>('IntentEditModal');
 export const useIntentCreateModal = () => useModal<IIntentCreateModal, Intent>('IntentCreateModal');

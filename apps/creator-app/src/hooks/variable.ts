@@ -4,34 +4,12 @@ import React from 'react';
 
 import { VariableType } from '@/constants';
 import * as DiagramV2 from '@/ducks/diagramV2';
-import { CanvasCreationType } from '@/ducks/tracking';
 import * as VersionV2 from '@/ducks/versionV2';
-import { useCreateVariableModal, useVariablePromptModal } from '@/hooks/modal.hook';
+import { useVariablePromptModal } from '@/hooks/modal.hook';
 import { useActiveProjectTypeConfig } from '@/hooks/platformConfig';
 import { useDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
 import { addVariablePrefix, deepVariableReplacement, deepVariableSearch } from '@/utils/variable';
-
-export const useVariableCreation = () => {
-  const createVariableModal = useCreateVariableModal();
-
-  const variables = useSelector(DiagramV2.active.allSlotNamesAndVariablesSelector);
-  const addVariable = useDispatch(VersionV2.addGlobalVariable);
-
-  const createVariable = async (item: string): Promise<string> => {
-    if (!item) {
-      const [variable] = await createVariableModal.open({ single: true, creationType: CanvasCreationType.EDITOR });
-
-      return variable;
-    }
-
-    await addVariable(item, CanvasCreationType.EDITOR);
-
-    return item;
-  };
-
-  return { variables, createVariable };
-};
 
 export interface OrderedVariable {
   id: string;
@@ -42,6 +20,9 @@ export interface OrderedVariable {
 const createVariablesList = (type: VariableType, variables: string[]) =>
   variables.map((variable) => ({ id: addVariablePrefix(type, variable), name: variable, type }));
 
+/**
+ * @deprecated should be removed with CMS_VARIABLES feature flag
+ */
 export const useOrderedVariables = () => {
   const builtInVariables = useActiveProjectTypeConfig().project.globalVariables;
   const localVariables = useSelector(DiagramV2.active.localVariablesSelector);
@@ -64,6 +45,9 @@ export const useOrderedVariables = () => {
   }, [localVariables, globalVariables]);
 };
 
+/**
+ * @deprecated should be removed with CMS_VARIABLES feature flag
+ */
 export const useDeleteVariable = () => {
   const [, variablesMap] = useOrderedVariables();
 

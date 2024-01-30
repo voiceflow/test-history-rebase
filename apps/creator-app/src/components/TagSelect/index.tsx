@@ -43,8 +43,8 @@ const customMenuLabelRenderer = <Option extends unknown>(
 
 const defaultGetter = (option: unknown) => option;
 
+function TagSelect<Option extends object>(props: TagSelectProps<Option>): React.ReactElement;
 function TagSelect<Option extends Primitive>(props: PrimitiveTagSelectProps<Option>): React.ReactElement;
-function TagSelect<Option>(props: TagSelectProps<Option>): React.ReactElement;
 function TagSelect({
   id,
   value,

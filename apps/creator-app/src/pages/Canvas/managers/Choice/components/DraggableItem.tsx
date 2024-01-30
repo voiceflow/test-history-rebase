@@ -8,8 +8,10 @@ import React from 'react';
 import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandlers } from '@/components/DraggableList';
 import LegacyMappings from '@/components/IntentLegacyMappings';
 import IntentSelect from '@/components/IntentSelect';
+import { Designer } from '@/ducks';
 import { useAutoScrollNodeIntoView } from '@/hooks';
-import { useAllPlatformIntentsSelector, useIntent } from '@/hooks/intent.hook';
+import { useIntent } from '@/hooks/intent.hook';
+import { useSelector } from '@/hooks/store.hook';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 
 import { Actions } from '../../components';
@@ -27,7 +29,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
   { item, index, editor, itemKey, onUpdate, isDragging, onContextMenu, connectedDragRef, latestCreatedKey, isDraggingPreview, isContextMenuOpen },
   ref
 ) => {
-  const intents = useAllPlatformIntentsSelector();
+  const intents = useSelector(Designer.Intent.selectors.allWithFormattedBuiltInNames);
 
   const { intent, strengthLevel, onOpenIntentEditModal } = useIntent(item.intent);
 

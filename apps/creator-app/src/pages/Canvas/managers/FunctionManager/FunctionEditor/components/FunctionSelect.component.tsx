@@ -6,6 +6,7 @@ import React from 'react';
 import { CMSRoute } from '@/config/routes';
 import * as Router from '@/ducks/router';
 import { useDispatch } from '@/hooks';
+import { useGoToCMSResourceModal } from '@/hooks/cms-resource.hook';
 import { useDeferredSearch } from '@/hooks/search.hook';
 import * as ModalsV2 from '@/ModalsV2';
 import { FunctionMapContext } from '@/pages/Canvas/contexts';
@@ -18,7 +19,6 @@ interface FunctionSelectProps {
 
 export const FunctionSelect = ({ onChange, functionID }: FunctionSelectProps) => {
   const goToCMSResource = useDispatch(Router.goToCMSResource);
-  const goToCMSResourceModal = useDispatch(Router.goToCMSResourceModal);
   const functionMap = React.useContext(FunctionMapContext)!;
   const functionData = getItemFromMap(functionMap, functionID!);
   const search = useDeferredSearch({
@@ -27,8 +27,10 @@ export const FunctionSelect = ({ onChange, functionID }: FunctionSelectProps) =>
   });
   const hasSelectedFunction = !!functionID;
 
+  const goToCMSFunctionCreateModal = useGoToCMSResourceModal(CMSRoute.FUNCTION);
+
   const onCreateFunction = () => {
-    goToCMSResourceModal(CMSRoute.FUNCTION, ModalsV2.Function.CreateModalID, { name: search.value });
+    goToCMSFunctionCreateModal(ModalsV2.Function.Create, { name: search.value, folderID: null });
   };
 
   return (

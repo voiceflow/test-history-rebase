@@ -22,18 +22,17 @@ export interface CreateData {
   folderID: string | null;
   datatype: VariableDatatype;
   description: string | null;
-  assistantID: string;
   defaultValue: string | null;
 }
 
 export interface PatchData {
   name?: string;
-  datatype?: VariableDatatype;
+  color?: string;
   isArray?: boolean;
+  folderID?: string | null;
+  datatype?: VariableDatatype;
   description?: string | null;
   defaultValue?: string | null;
-  color?: string;
-  folderID?: string | null;
 }
 
 /**
@@ -51,6 +50,18 @@ export namespace CreateOne {
 }
 
 export const CreateOne = variableAction.crud.createOne<CreateOne.Request, CreateOne.Response>();
+
+/* CreateMany */
+
+export namespace CreateMany {
+  export interface Request extends DesignerAction {
+    data: CreateData[];
+  }
+
+  export interface Response extends CreateResponse<Variable[]>, DesignerAction {}
+}
+
+export const CreateMany = variableAction.crud.createMany<CreateMany.Request, CreateMany.Response>();
 
 /* PatchOne */
 

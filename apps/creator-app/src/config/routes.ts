@@ -81,6 +81,7 @@ export enum CMSRoute {
   INTENT = 'intent',
   ENTITY = 'entity',
   FUNCTION = 'function',
+  VARIABLE = 'variable',
   KNOWLEDGE_BASE = 'knowledge-base',
 }
 
@@ -269,6 +270,7 @@ export const Path = {
   CMS_INTENT: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CMS, CMSRoute.INTENT),
   CMS_ENTITY: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CMS, CMSRoute.ENTITY),
   CMS_FUNCTION: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CMS, CMSRoute.FUNCTION),
+  CMS_VARIABLE: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CMS, CMSRoute.VARIABLE),
   CMS_KNOWLEDGE_BASE: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CMS, CMSRoute.KNOWLEDGE_BASE),
 
   CMS_RESOURCE: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CMS, ':resourceType'),

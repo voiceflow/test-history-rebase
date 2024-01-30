@@ -1,20 +1,48 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import VariableSelectV2 from '@/components/VariableSelectV2';
 import VariablesInput from '@/components/VariablesInput';
-import { useMapManager, useVariableCreation } from '@/hooks';
+import { Version } from '@/ducks';
+import { CanvasCreationType } from '@/ducks/tracking';
+import { useMapManager } from '@/hooks';
+import { useFeature } from '@/hooks/feature';
+import { useCreateVariableModal, useVariableCreateModal } from '@/hooks/modal.hook';
+import { useDispatch } from '@/hooks/store.hook';
 
 import { mappingFactory } from '../constants';
 import { BaseFormProps } from '../types';
 import * as S from './styles';
 
 const ParametersSection: React.FC<BaseFormProps> = ({ editor }) => {
+  const cmsVariables = useFeature(Realtime.FeatureFlag.CMS_VARIABLES);
+  const variableCreateModal = useVariableCreateModal();
+  const createVariableModal = useCreateVariableModal();
+
+  const addVariable = useDispatch(Version.addGlobalVariable);
+
+  const createVariable = async (name: string): Promise<string> => {
+    if (cmsVariables.isEnabled) {
+      const variable = await variableCreateModal.open({ name, folderID: null });
+
+      return variable.id;
+    }
+
+    if (!name) {
+      const [variable] = await createVariableModal.open({ single: true, creationType: CanvasCreationType.EDITOR });
+
+      return variable;
+    }
+
+    await addVariable(name, CanvasCreationType.EDITOR);
+
+    return name;
+  };
+
   const mapManager = useMapManager(editor.data.mapping ?? [], (mapping) => editor.onChange({ mapping }), {
     factory: mappingFactory,
   });
-
-  const { variables, createVariable } = useVariableCreation();
 
   return (
     <SectionV2.ActionCollapseSection
@@ -34,7 +62,6 @@ const ParametersSection: React.FC<BaseFormProps> = ({ editor }) => {
               <VariableSelectV2
                 value={mapping.var}
                 prefix="APPLY TO"
-                options={variables}
                 onCreate={createVariable}
                 onChange={(value) => onUpdate({ var: value })}
                 placeholder="Select variable"

@@ -39,33 +39,33 @@ export const FunctionEditForm: React.FC<IFunctionEditForm> = ({ functionID }) =>
     <>
       <FunctionVariableSection
         title="Input variables"
+        autoFocusKey={autofocus.key}
         functionVariables={inputVariables}
         onFunctionVariableAdd={() => onVariableAdd(FunctionVariableKind.INPUT)}
         onDeleteFunctionVariable={deleteFunctionVariable}
         onFunctionVariableChange={patchFunctionVariable}
-        autoFocusKey={autofocus.key}
       />
 
       <Divider noPadding />
 
       <FunctionVariableSection
         title="Output variables"
+        autoFocusKey={autofocus.key}
         functionVariables={outputVariables}
         onFunctionVariableAdd={() => onVariableAdd(FunctionVariableKind.OUTPUT)}
         onDeleteFunctionVariable={deleteFunctionVariable}
         onFunctionVariableChange={patchFunctionVariable}
-        autoFocusKey={autofocus.key}
       />
 
       <Divider noPadding />
 
       <FunctionPathSection
         title="Paths"
+        autoFocusKey={autofocus.key}
         functionPaths={functionPaths}
         onFunctionPathAdd={onPathAdd}
         onDeleteFunctionPath={deleteFunctionPath}
         onFunctionPathChange={patchFunctionPath}
-        autoFocusKey={autofocus.key}
       />
 
       <Divider noPadding />

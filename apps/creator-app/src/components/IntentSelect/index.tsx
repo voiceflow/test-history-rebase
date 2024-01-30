@@ -4,9 +4,9 @@ import * as Platform from '@voiceflow/platform-config';
 import { Alert, BaseSelectProps, isUIOnlyMenuItemOption, Menu, Select, System, toast, UIOnlyMenuItemOption } from '@voiceflow/ui';
 import React from 'react';
 
-import * as ProjectV2 from '@/ducks/projectV2';
+import { Designer, Project } from '@/ducks';
 import { useSelector } from '@/hooks';
-import { useAllPlatformIntentsSelector, useCustomIntentMapSelector, useIntentNameProcessor, useOnOpenIntentCreateModal } from '@/hooks/intent.hook';
+import { useIntentNameProcessor, useOnOpenIntentCreateModal } from '@/hooks/intent.hook';
 import { ClassName } from '@/styles/constants';
 import { applyPlatformIntentNameFormatting, intentFilter, isCustomizableBuiltInIntent } from '@/utils/intent';
 
@@ -38,9 +38,9 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
   createInputPlaceholder = 'intents',
   ...props
 }) => {
-  const platform = useSelector(ProjectV2.active.platformSelector);
-  const intentsMap = useCustomIntentMapSelector();
-  const allIntents = useAllPlatformIntentsSelector();
+  const platform = useSelector(Project.active.platformSelector);
+  const intentsMap = useSelector(Designer.Intent.selectors.mapWithFormattedBuiltInName);
+  const allIntents = useSelector(Designer.Intent.selectors.allWithFormattedBuiltInNames);
 
   const intentNameProcessor = useIntentNameProcessor();
   const onOpenIntentCreateModal = useOnOpenIntentCreateModal();

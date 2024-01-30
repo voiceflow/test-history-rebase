@@ -48,6 +48,7 @@ module.exports = {
     'sonarjs/no-nested-template-literals': 'off',
 
     'import/extensions': ['error', 'ignorePackages', { ts: 'never', js: 'never', tsx: 'never', jsx: 'never' }],
+    // 'import/no-unused-modules': [1, { unusedExports: true }],
   },
   settings: {
     'import/resolver': {

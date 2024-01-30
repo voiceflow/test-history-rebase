@@ -156,6 +156,8 @@ import { VersionModule } from './version/version.module';
         subprotocol: Realtime.Subprotocol.CURRENT_VERSION,
 
         supports: '>= 1.4',
+
+        timeout: 90000,
       }),
     }),
     SyncModule.registerAsync({

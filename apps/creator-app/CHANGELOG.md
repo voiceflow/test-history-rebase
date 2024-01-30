@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1376.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1376.0...@voiceflow/creator-app@1.1376.1) (2024-01-30)
+
+### Bug Fixes
+
+* fixes empty workspace logic (BUG-732) ([#7723](https://github.com/voiceflow/creator-app/issues/7723)) ([12e1cbf](https://github.com/voiceflow/creator-app/commit/12e1cbfd0ccbc0e74f4737833140883baf9b38fd))
+
 # [1.1376.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1375.4...@voiceflow/creator-app@1.1376.0) (2024-01-30)
 
 ### Features

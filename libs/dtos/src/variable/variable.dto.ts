@@ -2,7 +2,6 @@ import { z } from 'zod';
 
 import { CMSTabularResourceDTO } from '@/common';
 
-import { SystemVariable } from './system-variable.enum';
 import { VARIABLE_NAME_MAX_LENGTH } from './variable.constant';
 import { VariableDatatype } from './variable-datatype.enum';
 import { VariableNameTransformDTO } from './variable-name.dto';
@@ -13,8 +12,8 @@ export const VariableDTO = CMSTabularResourceDTO.extend({
     'Name cannot exceed 64 characters.'
   ),
   color: z.string(),
-  system: z.nativeEnum(SystemVariable).nullable(),
   isArray: z.boolean(),
+  isSystem: z.boolean(),
   datatype: z.nativeEnum(VariableDatatype),
   description: z.string().nullable(),
   defaultValue: z.string().nullable(),

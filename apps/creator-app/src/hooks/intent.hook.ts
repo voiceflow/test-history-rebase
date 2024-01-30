@@ -5,34 +5,12 @@ import React from 'react';
 
 import { Designer } from '@/ducks';
 import * as ProjectV2 from '@/ducks/projectV2';
-import { IDSelectorParam } from '@/ducks/utils/crudV2';
 import { useIntentCreateModal, useIntentEditModal } from '@/hooks/modal.hook';
 import { getIntentStrengthLevel, validateIntentName } from '@/utils/intent';
 import { isIntentBuiltIn } from '@/utils/intent.util';
 
-import { useAllEntitiesSelector } from './entity.hook';
 import { useActiveProjectTypeConfig } from './platformConfig';
 import { useSelector } from './redux';
-
-export const useIntentMapSelector = () => useSelector(Designer.Intent.selectors.mapWithFormattedBuiltInName);
-export const useAllIntentsSelector = () => useSelector(Designer.Intent.selectors.allWithFormattedBuiltInNames);
-export const useAllCustomIntentsSelector = () => useSelector(Designer.Intent.selectors.allWithFormattedBuiltInNames);
-export const useCustomIntentMapSelector = () => useSelector(Designer.Intent.selectors.mapWithFormattedBuiltInName);
-export const useAllPlatformIntentsSelector = () => useSelector(Designer.Intent.selectors.allWithFormattedBuiltInNames);
-
-export const useOneIntentByIDSelector = (params: IDSelectorParam) => useSelector(Designer.Intent.selectors.oneWithFormattedBuiltNameByID, params);
-
-export const useOnePlatformIntentByIDSelector = (params: IDSelectorParam) =>
-  useSelector(Designer.Intent.selectors.oneWithFormattedBuiltNameByID, params);
-
-export const useOnePlatformIntentWithUtterancesByIDSelector = (params: IDSelectorParam) =>
-  useSelector(Designer.Intent.selectors.oneWithUtterances, params);
-
-export const useGetOnePlatformIntentByIDSelector = () => useSelector(Designer.Intent.selectors.getOneWithFormattedBuiltNameByID);
-
-export const useGetOnePlatformIntentWithUtterancesByIDSelector = () => useSelector(Designer.Intent.selectors.getOneWithUtterances);
-
-export const useAllIntentsWithUtterancesSelector = () => useSelector(Designer.Intent.selectors.allWithUtterances);
 
 export const useOnOpenIntentCreateModal = () => {
   const intentCreateModal = useIntentCreateModal();
@@ -54,7 +32,7 @@ export const useOnOpenIntentEditModal = () => {
 };
 
 export const useOrderedIntents = () => {
-  const allIntents = useAllCustomIntentsSelector();
+  const allIntents = useSelector(Designer.Intent.selectors.allWithFormattedBuiltInNames);
 
   return React.useMemo(() => _sortBy(Utils.array.inferUnion(allIntents), (intent) => intent.name.toLowerCase()), [allIntents]);
 };
@@ -62,7 +40,7 @@ export const useOrderedIntents = () => {
 export const useIntent = (intentID: Nullish<string>) => {
   const onOpenIntentEditModal = useOnOpenIntentEditModal();
 
-  const intent = useOnePlatformIntentWithUtterancesByIDSelector({ id: intentID });
+  const intent = useSelector(Designer.Intent.selectors.oneWithUtterances, { id: intentID });
 
   const intentIsBuiltIn = React.useMemo(() => !!intent && isIntentBuiltIn(intent.id), [intent?.id]);
 
@@ -88,8 +66,8 @@ export const useIntent = (intentID: Nullish<string>) => {
 };
 
 export const useIntentNameProcessor = () => {
-  const intents = useAllIntentsSelector();
-  const entities = useAllEntitiesSelector();
+  const intents = useSelector(Designer.Intent.selectors.allWithFormattedBuiltInNames);
+  const entities = useSelector(Designer.Entity.selectors.all);
   const platform = useSelector(ProjectV2.active.platformSelector);
 
   return usePersistFunction((name: string, intentID?: string) => {

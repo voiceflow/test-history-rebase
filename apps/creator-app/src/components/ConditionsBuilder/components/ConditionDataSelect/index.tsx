@@ -27,7 +27,7 @@ const ConditionDataSelect: React.FC<ConditionDataSelectProps> = ({ expression, i
     (key: number) => (values: { value: string }) => {
       onChange({
         ...expression,
-        value: expression.value.map((data: any, index: number) => (index === key ? { ...data, ...values } : data)) as Realtime.ExpressionTupleV2,
+        value: expression.value.map((data: any, index) => (index === key ? { ...data, ...values } : data)) as Realtime.ExpressionTupleV2,
       });
     },
     [onChange]

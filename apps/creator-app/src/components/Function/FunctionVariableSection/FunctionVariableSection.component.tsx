@@ -2,32 +2,34 @@ import { Box, Section } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { CMSFormListItem } from '@/components/CMS/CMSForm/CMSFormListItem/CMSFormListItem.component';
+import { stopPropagation } from '@/utils/handler.util';
 
 import { FunctionResourceInput } from '../FunctionResourceInput/FunctionResourceInput.component';
 import type { IFunctionVariableSection } from './FunctionVariableSection.interface';
 
 export const FunctionVariableSection: React.FC<IFunctionVariableSection> = ({
   title,
+  autoFocusKey,
   functionVariables,
   onFunctionVariableAdd,
   onDeleteFunctionVariable,
   onFunctionVariableChange,
-  autoFocusKey,
 }) => {
-  const variableSize = !!functionVariables?.length;
+  const hasVariables = !!functionVariables.length;
+
   return (
     <>
-      <Box py={11} pb={variableSize ? 0 : 11} direction="column">
+      <Box pt={11} pb={hasVariables ? 0 : 11}>
         <Section.Header.Container
-          onHeaderClick={variableSize ? undefined : onFunctionVariableAdd}
-          variant={variableSize ? 'active' : 'basic'}
           title={title}
+          variant={hasVariables ? 'active' : 'basic'}
+          onHeaderClick={hasVariables ? undefined : onFunctionVariableAdd}
         >
-          <Section.Header.Button iconName="Plus" onClick={variableSize ? onFunctionVariableAdd : undefined} />
+          <Section.Header.Button iconName="Plus" onClick={stopPropagation(onFunctionVariableAdd)} />
         </Section.Header.Container>
       </Box>
 
-      {variableSize && (
+      {hasVariables && (
         <Box pb={10} direction="column">
           {functionVariables.map((functionVariable, index) => (
             <CMSFormListItem pt={9} pb={7} key={index} onRemove={() => onDeleteFunctionVariable(functionVariable.id)}>

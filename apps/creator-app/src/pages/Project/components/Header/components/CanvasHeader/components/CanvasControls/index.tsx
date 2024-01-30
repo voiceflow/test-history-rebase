@@ -8,7 +8,7 @@ import { Permission } from '@/constants/permissions';
 import { SearchContext } from '@/contexts/SearchContext';
 import { Designer } from '@/ducks';
 import * as Router from '@/ducks/router';
-import { useDispatch, usePermission, useSelector, useTrackingEvents } from '@/hooks';
+import { useDispatch, useFeature, usePermission, useSelector, useTrackingEvents } from '@/hooks';
 import { Hotkey, HOTKEY_LABEL_MAP } from '@/keymap';
 import * as ModalsV2 from '@/ModalsV2';
 import { MarkupContext } from '@/pages/Project/contexts';
@@ -22,6 +22,8 @@ const CanvasHeader: React.FC = () => {
   const nluQuickViewModal = ModalsV2.useModal(ModalsV2.NLU.QuickView);
 
   const hasUnreadComments = useSelector(Designer.Thread.selectors.hasUnreadComments);
+
+  const cmsVariables = useFeature(Realtime.FeatureFlag.CMS_VARIABLES);
 
   const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
   const [canUseHintFeatures] = usePermission(Permission.CANVAS_HINT_FEATURES);
@@ -101,7 +103,7 @@ const CanvasHeader: React.FC = () => {
           />
         )}
 
-        {canEditCanvas && (
+        {canEditCanvas && !cmsVariables.isEnabled && (
           <Page.Header.IconButton
             icon="variables"
             active={nluQuickViewModal.opened}

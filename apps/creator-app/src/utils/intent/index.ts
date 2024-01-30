@@ -1,6 +1,6 @@
 import { AlexaConstants } from '@voiceflow/alexa-types';
 import { BaseButton, BaseModels } from '@voiceflow/base-types';
-import { Nullable, Nullish, SLOT_REGEXP } from '@voiceflow/common';
+import { Nullable, Nullish } from '@voiceflow/common';
 import { Entity, Intent } from '@voiceflow/dtos';
 import { DFESConstants } from '@voiceflow/google-dfes-types';
 import { GoogleConstants } from '@voiceflow/google-types';
@@ -8,19 +8,13 @@ import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { StrengthGauge } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
-import _isPlainObject from 'lodash/isPlainObject';
-import _sample from 'lodash/sample';
 
 import { FILTERED_AMAZON_INTENTS } from '@/constants';
 import { getPlatformIntentNameFormatter } from '@/platforms/selectors';
 
 import { formatBuiltInIntentName } from '../intent.util';
-import { getBuiltInSynonyms } from '../slot';
 
 export * from './platform';
-export * from './utterance';
-
-export const NEW_INTENT_NAME = 'intent';
 
 const AMAZON_INTENT_PREFIX = 'AMAZON.';
 
@@ -124,9 +118,6 @@ export const getBuiltInIntents = Realtime.Utils.platform.createPlatformSelector(
 export const applyPlatformIntentNameFormatting = (name: string, platform: Platform.Constants.PlatformType): string =>
   getPlatformIntentNameFormatter(platform)(name);
 
-export const removeSlotRefFromInput = (text: string, slotDetails: Realtime.Slot): string =>
-  text.replace(SLOT_REGEXP, (match, inner) => (inner.match(slotDetails.name) ? slotDetails.name : match));
-
 export const getIntentStrengthLevel = (count: number) => getIntentConfidenceStrengthLevel(count);
 
 export const getIntentClarityStrengthLevel = (count: number) => {
@@ -190,37 +181,6 @@ export const getGoToIntentMeta = ({
   };
 };
 
-export const fillEntities = (
-  utterances: string,
-  {
-    type,
-    locales,
-    slotsMap,
-    platform,
-  }: {
-    type: Platform.Constants.ProjectType;
-    locales: string[];
-    slotsMap: Record<string, Realtime.Slot>;
-    platform: Platform.Constants.PlatformType;
-  }
-) => {
-  const projectConfig = Platform.Config.getTypeConfig({ type, platform });
-
-  const locale =
-    locales.find((l) => projectConfig.project.locale.utteranceRecommendations.includes(l)) ??
-    projectConfig.project.locale.utteranceRecommendations[0];
-
-  const voiceflowLocale = projectConfig.utils.locale.toVoiceflowLocale(locale);
-
-  return utterances.replace(SLOT_REGEXP, (_match, name: string, id: string) => {
-    const slot = slotsMap[id];
-    const synonyms = slot?.inputs.flatMap((input) => [input.value, ...input.synonyms]) ?? [];
-    const builtInSynonyms = getBuiltInSynonyms(slot.type ?? '', voiceflowLocale, platform) ?? [];
-
-    return _sample([...synonyms, ...builtInSynonyms]) ?? name;
-  });
-};
-
 export const isPromptEmpty = (prompt?: unknown): boolean => {
   if (!prompt) return true;
 
@@ -235,35 +195,4 @@ export const isPromptEmpty = (prompt?: unknown): boolean => {
   return true;
 };
 
-export const isDefaultIntentName = (name?: string | null) => !name || name.toLowerCase().startsWith(NEW_INTENT_NAME);
-
-export const getUniqSlots = (inputs: Platform.Base.Models.Intent.Input[]): string[] => [...new Set(inputs.flatMap(({ slots }) => slots || []))];
-
-export const intentProcessorFactory =
-  (projectConfig: Platform.Base.Type.Config) =>
-  ({ inputs = [], slots, ...intent }: Platform.Base.Models.Intent.Model): Platform.Base.Models.Intent.Model => {
-    let nextSlots = slots;
-
-    if (!_isPlainObject(slots)) {
-      const allKeys = getUniqSlots(inputs);
-      const byKey = Object.fromEntries(allKeys.map((id) => [id, projectConfig.utils.intent.slotFactory({ id })]));
-
-      nextSlots = { byKey, allKeys };
-    }
-
-    return {
-      ...intent,
-      slots: nextSlots,
-      inputs,
-    };
-  };
-
-export const applySingleIntentNameFormatting = (
-  platform: Platform.Constants.PlatformType,
-  intent: Platform.Base.Models.Intent.Model
-): Platform.Base.Models.Intent.Model => ({ ...intent, name: fmtIntentName(intent, platform) });
-
-export const applyIntentNameFormatting = (
-  platform: Platform.Constants.PlatformType,
-  intents: Platform.Base.Models.Intent.Model[]
-): Platform.Base.Models.Intent.Model[] => intents.map((intent) => applySingleIntentNameFormatting(platform, intent));
+export const isDefaultIntentName = (name?: string | null) => !name || name.toLowerCase().startsWith('intent');

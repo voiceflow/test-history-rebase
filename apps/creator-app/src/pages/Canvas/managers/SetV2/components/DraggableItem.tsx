@@ -6,7 +6,12 @@ import React from 'react';
 import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandlers } from '@/components/DraggableList';
 import VariableSelectV2 from '@/components/VariableSelectV2';
 import VariablesInput from '@/components/VariablesInput';
-import { useAutoScrollNodeIntoView, useExpressionValidator, useVariableCreation } from '@/hooks';
+import { Diagram, Version } from '@/ducks';
+import { CanvasCreationType } from '@/ducks/tracking';
+import { useAutoScrollNodeIntoView, useExpressionValidator } from '@/hooks';
+import { useFeature } from '@/hooks/feature';
+import { useCreateVariableModal, useVariableCreateModal } from '@/hooks/modal.hook';
+import { useDispatch, useSelector } from '@/hooks/store.hook';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
 
@@ -22,6 +27,31 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
   { item, index, editor, itemKey, isDragging, onContextMenu, onUpdate, latestCreatedKey, connectedDragRef, isDraggingPreview, isContextMenuOpen },
   ref
 ) => {
+  const variablesMap = useSelector(Diagram.active.entitiesAndVariablesMapSelector);
+  const cmsVariables = useFeature(Realtime.FeatureFlag.CMS_VARIABLES);
+  const variableCreateModal = useVariableCreateModal();
+  const createVariableModal = useCreateVariableModal();
+
+  const addVariable = useDispatch(Version.addGlobalVariable);
+
+  const createVariable = async (name: string): Promise<string> => {
+    if (cmsVariables.isEnabled) {
+      const variable = await variableCreateModal.open({ name, folderID: null });
+
+      return variable.id;
+    }
+
+    if (!name) {
+      const [variable] = await createVariableModal.open({ single: true, creationType: CanvasCreationType.EDITOR });
+
+      return variable;
+    }
+
+    await addVariable(name, CanvasCreationType.EDITOR);
+
+    return name;
+  };
+
   const expressionValidator = useExpressionValidator();
 
   const updateExpression = ({ text: expression }: { text: string }) => {
@@ -32,7 +62,6 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
 
   const autofocus = latestCreatedKey === itemKey || editor.data.sets.length === 1;
 
-  const { variables, createVariable } = useVariableCreation();
   const [sectionRef, scrollSectionIntoView] = useAutoScrollNodeIntoView<HTMLDivElement>({ condition: autofocus, options: { block: 'end' } });
 
   return (
@@ -47,7 +76,12 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
                 ref={composeRef(ref, sectionRef) as React.Ref<HTMLDivElement>}
                 header={
                   <SectionV2.Header ref={connectedDragRef} sticky sticked={sticked && !collapsed && !isDraggingPreview && !isDragging}>
-                    <SectionV2.Title bold={!collapsed}>Set {item.variable ? `{${item.variable}}` : `variable ${index + 1}`} </SectionV2.Title>
+                    <SectionV2.Title bold={!collapsed}>
+                      Set{' '}
+                      {item.variable
+                        ? `{${cmsVariables.isEnabled ? variablesMap[item.variable]?.name ?? item.variable : item.variable}}`
+                        : `variable ${index + 1}`}{' '}
+                    </SectionV2.Title>
 
                     <SectionV2.CollapseArrowIcon collapsed={collapsed} />
                   </SectionV2.Header>
@@ -66,7 +100,6 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
                     <VariableSelectV2
                       value={item.variable}
                       prefix="APPLY TO"
-                      options={variables}
                       onCreate={createVariable}
                       onChange={(variable) => onUpdate({ variable })}
                       placeholder="Select variable"

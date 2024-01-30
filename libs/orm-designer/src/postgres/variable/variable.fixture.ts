@@ -11,7 +11,7 @@ export const variable: EntityDTO<VariableEntity> = {
   updatedAt: new Date(),
   datatype: VariableDatatype.NUMBER,
   description: 'description',
-  system: null,
+  isSystem: false,
   isArray: false,
   color: '#000000',
   assistant: { id: 'assistant-1' } as any,

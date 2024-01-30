@@ -55,7 +55,9 @@ const checkLogicalExpression = (expression: estree.Expression, variables: string
 };
 
 export const useExpressionValidator = () => {
-  const variables = useSelector(DiagramV2.active.allSlotNamesAndVariablesSelector);
+  const variables = useSelector(DiagramV2.active.allEntitiesAndVariablesSelector);
+  const variablesMap = useSelector(DiagramV2.active.entitiesAndVariablesMapSelector);
+  const variableNames = React.useMemo(() => variables.map(({ name }) => name), [variables]);
 
   const [error, setError] = React.useState<string>('');
 
@@ -63,7 +65,7 @@ export const useExpressionValidator = () => {
 
   const validate = (text: string) => {
     try {
-      const { body } = parseScript(`"use strict";\n${transformVariableToString(text)}`, { tolerant: true });
+      const { body } = parseScript(`"use strict";\n${transformVariableToString(text, variablesMap)}`, { tolerant: true });
 
       body.forEach((node) => {
         if (!('expression' in node)) return;
@@ -72,15 +74,15 @@ export const useExpressionValidator = () => {
 
         switch (expression.type) {
           case Syntax.BinaryExpression:
-            checkBinaryExpression(expression.left, expression.right, variables);
+            checkBinaryExpression(expression.left, expression.right, variableNames);
             break;
           case Syntax.LogicalExpression:
-            checkLogicalExpression(expression, variables);
+            checkLogicalExpression(expression, variableNames);
             break;
           case Syntax.CallExpression:
             break;
           default:
-            checkIdentifierExpression(transformVariableToString(text), expression.type, variables);
+            checkIdentifierExpression(transformVariableToString(text, variablesMap), expression.type, variableNames);
             break;
         }
       });

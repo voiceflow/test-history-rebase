@@ -3,7 +3,6 @@ import { Entity, Enum, Index, PrimaryKey, Property, Unique, wrap } from '@mikro-
 import type { EntityCreateParams, ToJSONWithForeignKeys } from '@/types';
 
 import { Environment, PostgresCMSTabularEntity } from '../common';
-import { SystemVariable } from './system-variable.enum';
 import { VariableJSONAdapter } from './variable.adapter';
 import { VariableDatatype } from './variable-datatype.enum';
 
@@ -26,11 +25,11 @@ export class VariableEntity extends PostgresCMSTabularEntity {
   @Property()
   color: string;
 
-  @Enum({ items: () => SystemVariable, default: null, nullable: true })
-  system: SystemVariable | null;
-
   @Property()
   isArray: boolean;
+
+  @Property({ default: false })
+  isSystem = false;
 
   @Enum(() => VariableDatatype)
   datatype: VariableDatatype;
@@ -43,8 +42,8 @@ export class VariableEntity extends PostgresCMSTabularEntity {
 
   constructor({
     color,
-    system,
     isArray,
+    isSystem,
     datatype,
     description,
     defaultValue,
@@ -54,15 +53,15 @@ export class VariableEntity extends PostgresCMSTabularEntity {
 
     ({
       color: this.color,
-      system: this.system,
       isArray: this.isArray,
+      isSystem: this.isSystem,
       datatype: this.datatype,
       description: this.description,
       defaultValue: this.defaultValue,
     } = VariableEntity.fromJSON({
       color,
-      system,
       isArray,
+      isSystem,
       datatype,
       description,
       defaultValue,

@@ -126,7 +126,7 @@ export const EntityCreateModal = modalsManager.create<IEntityCreateModal, Entity
           <Modal.Header title="Create entity" onClose={api.onClose} />
 
           <Scroll style={{ display: 'block' }}>
-            <Modal.Body gap={20}>
+            <Modal.Body gap={16}>
               <CMSFormName
                 value={nameState.value}
                 error={nameState.error}
@@ -141,12 +141,12 @@ export const EntityCreateModal = modalsManager.create<IEntityCreateModal, Entity
                 name={nameState.value}
                 color={color}
                 disabled={closePrevented}
-                typeError={classifierState.error}
                 classifier={classifierState.value}
-                typeMinWidth={188}
                 onColorChange={setColor}
+                classifierError={classifierState.error}
                 onClassifierClick={classifierState.resetError}
                 onClassifierChange={onClassifierChange}
+                classifierMinWidth={188}
               />
             </Modal.Body>
 

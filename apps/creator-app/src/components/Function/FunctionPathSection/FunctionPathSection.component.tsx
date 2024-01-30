@@ -2,6 +2,7 @@ import { Box, Section } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { CMSFormListItem } from '@/components/CMS/CMSForm/CMSFormListItem/CMSFormListItem.component';
+import { stopPropagation } from '@/utils/handler.util';
 
 import { FunctionResourceInput } from '../FunctionResourceInput/FunctionResourceInput.component';
 import type { IFunctionPathSection } from './FunctionPathSection.interface';
@@ -14,27 +15,28 @@ export const FunctionPathSection: React.FC<IFunctionPathSection> = ({
   onDeleteFunctionPath,
   onFunctionPathChange,
 }) => {
-  const pathsSize = !!functionPaths?.length;
+  const hasPaths = !!functionPaths.length;
+
   return (
     <>
-      <Box py={11} pb={pathsSize ? 0 : 11} direction="column">
-        <Section.Header.Container onHeaderClick={pathsSize ? undefined : onFunctionPathAdd} variant={pathsSize ? 'active' : 'basic'} title={title}>
-          <Section.Header.Button iconName="Plus" onClick={pathsSize ? onFunctionPathAdd : undefined} />
+      <Box pt={11} pb={hasPaths ? 0 : 11}>
+        <Section.Header.Container variant={hasPaths ? 'active' : 'basic'} title={title} onHeaderClick={hasPaths ? undefined : onFunctionPathAdd}>
+          <Section.Header.Button iconName="Plus" onClick={stopPropagation(onFunctionPathAdd)} />
         </Section.Header.Container>
       </Box>
 
-      {pathsSize && (
+      {hasPaths && (
         <Box pb={10} direction="column">
-          {functionPaths?.map((functionPath, index) => (
+          {functionPaths.map((functionPath, index) => (
             <CMSFormListItem pt={9} pb={7} key={index} onRemove={() => onDeleteFunctionPath(functionPath.id)}>
               <FunctionResourceInput
                 value={functionPath.name}
+                autoFocus={functionPath.id === autoFocusKey}
                 description={functionPath.label || ''}
-                onDescriptionChange={(label) => onFunctionPathChange(functionPath.id, { label })}
                 onValueChange={(name) => onFunctionPathChange(functionPath.id, { name })}
                 namePlaceholder="Enter return value to activate path"
+                onDescriptionChange={(label) => onFunctionPathChange(functionPath.id, { label })}
                 descriptionPlaceholder="Add on-canvas label (optional)"
-                autoFocus={functionPath.id === autoFocusKey}
               />
             </CMSFormListItem>
           ))}

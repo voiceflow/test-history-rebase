@@ -2,7 +2,7 @@ import type { Entity } from '@voiceflow/dtos';
 import { Box, EditorButton, Popper } from '@voiceflow/ui-next';
 import React from 'react';
 
-import { EntityMenu } from '@/components/Entity/EntityMenu';
+import { EntityMenu } from '@/components/Entity/EntityMenu/EntityMenu.component';
 import { usePopperModifiers } from '@/hooks/popper.hook';
 import { stopPropagation } from '@/utils/handler.util';
 

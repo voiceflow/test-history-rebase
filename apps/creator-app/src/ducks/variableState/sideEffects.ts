@@ -145,12 +145,12 @@ export const applyVariableState =
 
     const platform = ProjectV2.active.platformSelector(state);
     const projectID = Session.activeProjectIDSelector(state);
-    const allVariableNames = Diagram.active.allSlotNamesAndVariablesSelector(state);
+    const entitiesAndVariables = Diagram.active.allEntitiesAndVariablesSelector(state);
 
     let variables: Store = {};
 
-    allVariableNames.forEach((name) => {
-      variables[name] = 0;
+    entitiesAndVariables.forEach((entityOrVar) => {
+      variables[entityOrVar.name] = 0;
     });
 
     variables = {

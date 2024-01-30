@@ -2,9 +2,8 @@ import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import * as DiagramV2 from '@/ducks/diagramV2';
+import { Designer, Diagram } from '@/ducks';
 import * as Domain from '@/ducks/domain';
-import { useIntentMapSelector } from '@/hooks/intent.hook';
 import { useSelector } from '@/hooks/redux';
 import { getDiagramName } from '@/utils/diagram';
 
@@ -12,9 +11,9 @@ import { Topic } from './types';
 
 export const useTopics = () => {
   const rootDomain = useSelector(Domain.rootDomainSelector);
-  const intentsMap = useIntentMapSelector();
-  const diagramMap = useSelector(DiagramV2.diagramMapSelector);
-  const sharedNodes = useSelector(DiagramV2.sharedNodesSelector);
+  const intentsMap = useSelector(Designer.Intent.selectors.mapWithFormattedBuiltInName);
+  const diagramMap = useSelector(Diagram.diagramMapSelector);
+  const sharedNodes = useSelector(Diagram.sharedNodesSelector);
 
   return React.useMemo(() => {
     if (!rootDomain?.id) return { topics: [], domainID: null };

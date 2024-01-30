@@ -57,6 +57,7 @@ import { ThreadModule } from './thread/thread.module';
 import { UploadModule } from './upload/upload.module';
 import { UserModule } from './user/user.module';
 import { UserService } from './user/user.service';
+import { VariableModule } from './variable/variable.module';
 import { VariableStateModule } from './variable-state/variable-state.module';
 import { VersionModule } from './version/version.module';
 
@@ -250,6 +251,7 @@ import { VersionModule } from './version/version.module';
     BackupModule,
     PrototypeProgramModule,
     OrganizationBillingModule,
+    VariableModule,
   ],
   providers: [
     {

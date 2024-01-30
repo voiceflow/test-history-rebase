@@ -12,7 +12,12 @@ export const ModalHeaderMore: React.FC<IModalHeaderMore> = ({ width = 83, option
     {({ onClose }) => (
       <Menu width={width}>
         {options.map((item) => (
-          <Menu.Item key={item.name} label={item.name} onClick={Utils.functional.chain(onClose, item.onClick)} />
+          <Menu.Item
+            key={item.name}
+            label={item.name}
+            onClick={item.disabled ? undefined : Utils.functional.chain(onClose, item.onClick)}
+            disabled={item.disabled}
+          />
         ))}
       </Menu>
     )}

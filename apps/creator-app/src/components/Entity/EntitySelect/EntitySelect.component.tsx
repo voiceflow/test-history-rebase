@@ -11,7 +11,7 @@ import type { IEntitySelect } from './EntitySelect.interface';
 export const EntitySelect: React.FC<IEntitySelect> = ({ onSelect, entityID, menuProps, excludeEntitiesIDs: excludeEntitiesIDsProp }) => {
   const entity = useSelector(Designer.Entity.selectors.oneByID, { id: entityID });
 
-  const editEntityModal = useEntityEditModal();
+  const entityEditModal = useEntityEditModal();
 
   const excludeEntitiesIDs = React.useMemo(
     () => [...(entityID ? [entityID] : []), ...(excludeEntitiesIDsProp ?? [])],
@@ -24,7 +24,7 @@ export const EntitySelect: React.FC<IEntitySelect> = ({ onSelect, entityID, menu
       label="Entity"
       placeholder="Select entity to capture"
       prefixIconName={entity ? 'EditS' : undefined}
-      onPrefixIconClick={() => entity && editEntityModal.openVoid({ entityID: entity.id })}
+      onPrefixIconClick={() => entity && entityEditModal.openVoid({ entityID: entity.id })}
     >
       {({ onClose, referenceRef }) => (
         <EntityMenu

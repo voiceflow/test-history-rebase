@@ -8,15 +8,10 @@ import { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
 import { Header } from './components';
 import { useAceEditor } from './hooks';
 
-const Form: React.FC<NodeEditorV2Props<Realtime.NodeData.Code, Realtime.NodeData.CodeBuiltInPorts>> = ({
-  platform,
-  data,
-  onChange,
-  isFullscreen,
-}) => {
+const Form: React.FC<NodeEditorV2Props<Realtime.NodeData.Code, Realtime.NodeData.CodeBuiltInPorts>> = ({ data, onChange, isFullscreen }) => {
   const [editorState, onUpdateEditorState] = useLinkedState(data.code);
 
-  const aceEditorRef = useAceEditor(platform, isFullscreen);
+  const aceEditorRef = useAceEditor(isFullscreen);
 
   const onUpdateCode = React.useCallback(() => onChange({ code: editorState }), [editorState, onChange]);
 

@@ -1,24 +1,24 @@
 import { AnyRecord } from '@voiceflow/common';
 
-export interface SupportChat {
+interface SupportChat {
   initialized: boolean;
   initChat: VoidFunction;
 }
 
-export interface AJAXOptions {
+interface AJAXOptions {
   function: string;
   settings: AnyRecord;
 
   settings_extra?: AnyRecord;
 }
 
-export interface SupportUserClass {
+interface SupportUserClass {
   new (user: unknown): unknown;
 }
 
-export type AuthResponse = [unknown, string];
+type AuthResponse = [unknown, string];
 
-export interface SupportAPI {
+interface SupportAPI {
   getActiveUser: (flag: boolean, callback: () => Promise<void>) => void;
   activeUser: (user?: unknown) => unknown;
   ajax: (options: AJAXOptions, callback: (response: AuthResponse) => void) => void;

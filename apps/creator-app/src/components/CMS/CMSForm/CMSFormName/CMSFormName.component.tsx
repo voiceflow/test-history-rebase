@@ -12,8 +12,12 @@ export const CMSFormName: React.FC<ICMSFormName> = ({
   disabled,
   transform = transformCMSResourceName,
   autoFocus,
+  rightLabel,
   placeholder,
+  containerRef,
   onValueChange,
+  onPointerEnter,
+  onPointerLeave,
 }) => {
   const input = useInput({
     error,
@@ -27,7 +31,16 @@ export const CMSFormName: React.FC<ICMSFormName> = ({
 
   return (
     <Box direction="column">
-      <TextField {...input.attributes} itemRef="" label="Name" placeholder={placeholder} errorMessage={input.errorMessage} />
+      <TextField
+        {...input.attributes}
+        label="Name"
+        rightLabel={rightLabel}
+        placeholder={placeholder}
+        containerRef={containerRef}
+        errorMessage={input.errorMessage}
+        onPointerEnter={onPointerEnter}
+        onPointerLeave={onPointerLeave}
+      />
     </Box>
   );
 };

@@ -5,10 +5,13 @@ import React from 'react';
 
 import VariableSelectV2 from '@/components/VariableSelectV2';
 import * as Documentation from '@/config/documentation';
-import * as Tracking from '@/ducks/tracking';
+import { Designer, Version } from '@/ducks';
+import { CanvasCreationType } from '@/ducks/tracking';
 import * as VersionV2 from '@/ducks/versionV2';
-import { useActiveProjectTypeConfig, useSelector, useVariableCreation } from '@/hooks';
-import { useAllEntitiesSelector, useOnOpenEntityCreateModal } from '@/hooks/entity.hook';
+import { useActiveProjectTypeConfig } from '@/hooks';
+import { useFeature } from '@/hooks/feature';
+import { useCreateVariableModal, useEntityCreateModal, useVariableCreateModal } from '@/hooks/modal.hook';
+import { useDispatch, useSelector } from '@/hooks/store.hook';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { useIntentScope } from '@/pages/Canvas/managers/hooks';
 import { getPlatformNoMatchFactory } from '@/utils/noMatch';
@@ -22,12 +25,35 @@ const QueryEditor: React.FC<{ disableAnimation: boolean }> = ({ disableAnimation
   const editor = EditorV2.useEditor<Realtime.NodeData.CaptureV2, Realtime.NodeData.CaptureV2BuiltInPorts>();
   const projectConfig = useActiveProjectTypeConfig();
 
-  const allEntities = useAllEntitiesSelector();
+  const allEntities = useSelector(Designer.Entity.selectors.all);
   const defaultVoice = useSelector(VersionV2.active.voice.defaultVoiceSelector);
-  const { variables, createVariable } = useVariableCreation();
+
+  const cmsVariables = useFeature(Realtime.FeatureFlag.CMS_VARIABLES);
+  const entityCreateModal = useEntityCreateModal();
+  const variableCreateModal = useVariableCreateModal();
+  const createVariableModal = useCreateVariableModal();
+
+  const addVariable = useDispatch(Version.addGlobalVariable);
+
+  const createVariable = async (name: string): Promise<string> => {
+    if (cmsVariables.isEnabled) {
+      const variable = await variableCreateModal.open({ name, folderID: null });
+
+      return variable.id;
+    }
+
+    if (!name) {
+      const [variable] = await createVariableModal.open({ single: true, creationType: CanvasCreationType.EDITOR });
+
+      return variable;
+    }
+
+    await addVariable(name, CanvasCreationType.EDITOR);
+
+    return name;
+  };
 
   const options = useEntitiesOptions(allEntities);
-  const onOpenEntityCreateModal = useOnOpenEntityCreateModal();
 
   const onSelect = (slotID: string | null) => {
     if (!slotID || slotID === ENTIRE_USER_REPLY_ID) return;
@@ -41,10 +67,9 @@ const QueryEditor: React.FC<{ disableAnimation: boolean }> = ({ disableAnimation
 
   const onCreate = async (name = '') => {
     try {
-      const entity = await onOpenEntityCreateModal({
+      const entity = await entityCreateModal.open({
         name: name === ENTIRE_USER_REPLY_LABEL ? '' : name,
         folderID: null,
-        creationType: Tracking.CanvasCreationType.EDITOR,
       });
 
       onSelect(entity.id);
@@ -90,7 +115,6 @@ const QueryEditor: React.FC<{ disableAnimation: boolean }> = ({ disableAnimation
                     <VariableSelectV2
                       value={editor.data.variable}
                       prefix={<SvgIcon icon="setV2" color="#6e849ad9" />}
-                      options={variables}
                       onCreate={createVariable}
                       onChange={(variable) => editor.onChange({ variable })}
                     />

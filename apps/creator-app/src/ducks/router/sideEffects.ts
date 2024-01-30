@@ -1,4 +1,4 @@
-import { AnyRecord, Struct } from '@voiceflow/common';
+import { Struct } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
 import { generatePath } from 'react-router-dom';
 
@@ -14,7 +14,6 @@ import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
 import { globalVariablesSelector } from '@/ducks/versionV2/selectors/active';
 import { SyncThunk, Thunk } from '@/store/types';
-import * as Query from '@/utils/query';
 import { addVariablePrefix, removeVariablePrefix } from '@/utils/variable';
 
 import {
@@ -363,6 +362,9 @@ export const goToNLUQuickView =
     dispatch(goTo(generatePath(Path.CANVAS_MODEL, { domainID, versionID, diagramID, modelType: entityType })));
   };
 
+/**
+ * @deprecated should be removed with CMS_VARIABLES feature flag
+ */
 export const goToNLUQuickViewEntity =
   (entityType: InteractionModelTabType, entityID: string): SyncThunk =>
   (dispatch, getState) => {
@@ -468,7 +470,7 @@ export const goToTargetTranscript =
   };
 
 export const goToCMSResource =
-  (resourceType: CMSRoute, resourceID?: string): SyncThunk =>
+  (resourceType: CMSRoute, resourceID?: string, routeState?: Struct): SyncThunk =>
   (dispatch, getState) => {
     const state = getState();
 
@@ -477,21 +479,9 @@ export const goToCMSResource =
     Errors.assertVersionID(versionID);
 
     if (!resourceID) {
-      dispatch(goTo(generatePath(Path.CMS_RESOURCE, { versionID, resourceType })));
+      dispatch(goTo(generatePath(Path.CMS_RESOURCE, { versionID, resourceType }), routeState));
       return;
     }
 
-    dispatch(goTo(generatePath(Path.CMS_RESOURCE_ACTIVE, { versionID, resourceID, resourceType })));
-  };
-
-export const goToCMSResourceModal =
-  (resourceType: CMSRoute, modalID: string, modalProps?: AnyRecord): SyncThunk =>
-  (dispatch, getState) => {
-    const state = getState();
-
-    const versionID = Session.activeVersionIDSelector(state);
-
-    Errors.assertVersionID(versionID);
-
-    dispatch(goTo(`${generatePath(Path.CMS_RESOURCE, { versionID, resourceType })}${Query.stringify({ modal_id: modalID })}`, { modalProps }));
+    dispatch(goTo(generatePath(Path.CMS_RESOURCE_ACTIVE, { versionID, resourceID, resourceType }), routeState));
   };

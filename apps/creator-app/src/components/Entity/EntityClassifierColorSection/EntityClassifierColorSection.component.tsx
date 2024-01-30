@@ -9,19 +9,19 @@ export const EntityClassifierColorSection: React.FC<IEntityClassifierColorSectio
   name,
   color,
   disabled,
-  typeError,
   classifier,
-  typeMinWidth,
   onColorChange,
+  classifierError,
   onClassifierClick,
   onClassifierChange,
+  classifierMinWidth,
 }) => (
   <Box gap={20}>
     <EntityClassifierDropdown
       value={classifier}
-      error={typeError}
+      error={classifierError}
       onClick={onClassifierClick}
-      minWidth={typeMinWidth}
+      minWidth={classifierMinWidth}
       disabled={disabled}
       onValueChange={onClassifierChange}
     />

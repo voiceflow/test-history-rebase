@@ -37,9 +37,9 @@ export const CMSEntityEditor: React.FC = () => {
             name={entity.name}
             color={entity.color}
             classifier={entity.classifier}
-            typeMinWidth={177}
             onColorChange={(color) => patchEntity({ color })}
             onClassifierChange={(classifier) => patchEntity({ classifier })}
+            classifierMinWidth={177}
           />
         </Box>
 

@@ -9,11 +9,10 @@ import { useSelector } from '@/hooks/store.hook';
 
 import { useCMSManager } from '../../contexts/CMSManager';
 import { useCMSRouteFolders } from '../../contexts/CMSRouteFolders';
-import { useCMSResourceOpenModal } from '../../hooks/cms-resource.hook';
 import { container, content, drawer } from './CMSResourceEditor.css';
 import type { ICMSResourceEditor } from './CMSResourceEditor.interface';
 
-export const CMSResourceEditor: React.FC<ICMSResourceEditor> = ({ Editor, modals: modalsMapper, children, drawerNode }) => {
+export const CMSResourceEditor: React.FC<ICMSResourceEditor> = ({ Editor, children, drawerNode }) => {
   const navigate = useHistory();
   const pathMatch = useRouteMatch<{ resourceID: string }>(Path.CMS_RESOURCE_ACTIVE);
   const cmsManager = useCMSManager();
@@ -23,7 +22,6 @@ export const CMSResourceEditor: React.FC<ICMSResourceEditor> = ({ Editor, modals
   const setDrawerNode = useSetAtom(drawerNode);
   const resourceSelectors = useAtomValue(cmsManager.selectors);
   const [activeID, setActiveID] = useAtom(tableState.activeID);
-  useCMSResourceOpenModal(modalsMapper);
 
   const hasResourceItem = useSelector((state) => !!resourceSelectors.oneByID(state, { id: activeID }));
 

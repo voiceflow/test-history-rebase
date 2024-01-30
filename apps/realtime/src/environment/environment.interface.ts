@@ -16,6 +16,7 @@ import {
   ResponseEntity,
   StoryEntity,
   UtteranceEntity,
+  VariableEntity,
 } from '@voiceflow/orm-designer';
 
 export interface EnvironmentCMSEntities {
@@ -24,6 +25,7 @@ export interface EnvironmentCMSEntities {
   prompts: PromptEntity[];
   entities: EntityEntity[];
   triggers: AnyTriggerEntity[];
+  variables: VariableEntity[];
   functions: FunctionEntity[];
   responses: ResponseEntity[];
   utterances: UtteranceEntity[];

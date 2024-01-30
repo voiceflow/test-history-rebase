@@ -3,15 +3,14 @@ import React from 'react';
 
 import { CMSRoute } from '@/config/routes';
 import { CMS_FUNCTIONS_LEARN_MORE } from '@/constants/link.constant';
-import * as Router from '@/ducks/router';
-import { useDispatch } from '@/hooks';
+import { useGoToCMSResourceModal } from '@/hooks/cms-resource.hook';
 import * as ModalsV2 from '@/ModalsV2';
 
 export const EmptyFunction = () => {
-  const goToCMSResourceModal = useDispatch(Router.goToCMSResourceModal);
+  const goToCMSFunctionCreateModal = useGoToCMSResourceModal(CMSRoute.FUNCTION);
 
   const onCreateFunction = () => {
-    goToCMSResourceModal(CMSRoute.FUNCTION, ModalsV2.Function.CreateModalID);
+    goToCMSFunctionCreateModal(ModalsV2.Function.Create, { folderID: null });
   };
 
   return (

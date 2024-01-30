@@ -56,4 +56,6 @@ export enum FeatureFlag {
   HYBRID_CLASSIFY = 'hybrid_classify',
 
   AI_CAPTURE = 'ai_capture',
+
+  CMS_VARIABLES = 'cms_variables',
 }

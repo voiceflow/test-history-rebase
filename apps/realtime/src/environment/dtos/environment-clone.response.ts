@@ -13,6 +13,7 @@ import {
   ResponseDiscriminatorDTO,
   ResponseDTO,
   UtteranceDTO,
+  VariableDTO,
   VersionDTO,
 } from '@voiceflow/dtos';
 import { z } from 'zod';
@@ -26,6 +27,7 @@ export const EnvironmentCloneResponse = z
     diagrams: z.array(DiagramDTO),
     responses: z.array(ResponseDTO),
     functions: z.array(FunctionDTO),
+    variables: z.array(VariableDTO),
     utterances: z.array(UtteranceDTO),
     functionPaths: z.array(FunctionPathDTO),
     liveDiagramIDs: z.array(z.string()),

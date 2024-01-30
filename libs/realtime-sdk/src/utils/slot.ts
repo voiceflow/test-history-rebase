@@ -1,7 +1,5 @@
-import { Slot } from '@realtime-sdk/models';
 import { AlexaConstants } from '@voiceflow/alexa-types';
 import { BuiltinSlot, CustomSlot, READABLE_VARIABLE_REGEXP, SLOT_REGEXP, Utils } from '@voiceflow/common';
-import { Entity } from '@voiceflow/dtos';
 import { DFESConstants } from '@voiceflow/google-dfes-types';
 import { GoogleConstants } from '@voiceflow/google-types';
 import * as Platform from '@voiceflow/platform-config/backend';
@@ -72,49 +70,16 @@ export const transformVariablesToReadable = (text?: string, variablesMap?: Parti
   return text.replace(SLOT_REGEXP, (_, _name, id) => `{${variablesMap[id]?.name ?? id}}`).trim();
 };
 
-export const transformVariableToString = (text?: string) => text?.replace(SLOT_REGEXP, '$1').trim() || '';
+export const transformVariableToString = (text?: string, variablesMap?: Partial<Record<string, { id: string; name: string }>>) => {
+  if (!text?.trim()) return '';
+
+  if (!variablesMap) return text.replace(SLOT_REGEXP, '$1').trim();
+
+  return text.replace(SLOT_REGEXP, (_, _name, id) => `${variablesMap[id]?.name ?? id}`).trim();
+};
+
 export const transformVariablesFromReadableWithoutTrim = (text = '') => text.replace(READABLE_VARIABLE_REGEXP, '{{[$1].$1}}');
 export const transformVariablesFromReadable = (text: string) => transformVariablesFromReadableWithoutTrim(text).trim();
 
 export const isVariable = (text?: string | null) => !!(text && text.match(READABLE_VARIABLE_REGEXP));
 export const slotToString = <T extends { id: string; name: string }>(slot: T): string => `{{[${slot.name}].${slot.id}}}`;
-
-export const validateSlotName = ({
-  slots,
-  intents,
-  slotName,
-  slotType,
-}: {
-  slots: Array<Slot | Entity>;
-  intents: Platform.Base.Models.Intent.Model[];
-  slotName: string;
-  slotType: string | null;
-}) => {
-  if (!slotName.trim()) {
-    return 'Entity must have a name';
-  }
-
-  if (!/[A-Za-z]/.test(slotName)) {
-    return 'Entity name must contain at least one letter';
-  }
-
-  if (slotName.length > 32) {
-    return 'Entity name cannot exceed 32 characters';
-  }
-
-  if (!slotType) {
-    return 'Entity must have a type';
-  }
-
-  const lowerCasedSlotName = slotName.toLowerCase();
-
-  if (slots.some(({ name }) => name.toLowerCase() === lowerCasedSlotName)) {
-    return `Entity name already exists.`;
-  }
-
-  if (intents.some(({ name }) => name.toLowerCase() === lowerCasedSlotName)) {
-    return `Intent name already exists.`;
-  }
-
-  return null;
-};

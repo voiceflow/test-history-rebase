@@ -1113,17 +1113,6 @@
           "nullable": false,
           "mappedType": "string"
         },
-        "system": {
-          "name": "system",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "enumItems": ["intent_confidence", "last_response", "last_utterance", "sessions", "timestamp", "user_id"],
-          "mappedType": "enum"
-        },
         "is_array": {
           "name": "is_array",
           "type": "boolean",
@@ -1131,6 +1120,16 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "mappedType": "boolean"
+        },
+        "is_system": {
+          "name": "is_system",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
           "mappedType": "boolean"
         },
         "datatype": {

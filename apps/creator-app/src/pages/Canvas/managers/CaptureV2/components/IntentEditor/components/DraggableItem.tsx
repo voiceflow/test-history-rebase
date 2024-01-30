@@ -6,16 +6,10 @@ import React from 'react';
 
 import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandlers } from '@/components/DraggableList';
 import EntityPromptSection from '@/components/EntityPromptSection';
-import * as Tracking from '@/ducks/tracking';
+import * as Designer from '@/ducks/designer';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useActiveProjectTypeConfig, useAutoScrollNodeIntoView, useSelector } from '@/hooks';
-import {
-  useAllEntitiesByIDsSelector,
-  useAllEntitiesWithoutIDsSelector,
-  useOneEntityWithVariantsByIDSelector,
-  useOnOpenEntityCreateModal,
-  useOnOpenEntityEditModal,
-} from '@/hooks/entity.hook';
+import { useEntityCreateModal, useEntityEditModal } from '@/hooks/modal.hook';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
 import { isDialogflowPlatform, isGooglePlatform } from '@/utils/typeGuards';
@@ -55,15 +49,14 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
 ) => {
   const projectConfig = useActiveProjectTypeConfig();
 
-  const entity = useOneEntityWithVariantsByIDSelector({ id: item.id });
-  const usedEntities = useAllEntitiesByIDsSelector({ ids: selectedSlotIDs });
+  const entity = useSelector(Designer.Entity.selectors.oneWithVariantByID, { id: item.id });
+  const usedEntities = useSelector(Designer.Entity.selectors.allByIDs, { ids: selectedSlotIDs });
   const defaultVoice = useSelector(VersionV2.active.voice.defaultVoiceSelector);
-  const unusedEntities = useAllEntitiesWithoutIDsSelector({ ids: selectedSlotIDs });
-
-  const onOpenEntityEditModal = useOnOpenEntityEditModal();
+  const unusedEntities = useSelector(Designer.Entity.selectors.allWithoutIDs, { ids: selectedSlotIDs });
 
   const options = useEntitiesOptions(unusedEntities, entity);
-  const onOpenEntityCreateModal = useOnOpenEntityCreateModal();
+  const entityEditModal = useEntityEditModal();
+  const entityCreateModal = useEntityCreateModal();
 
   const onSelect = (slotID?: string | null) => {
     if (!slotID) return;
@@ -80,10 +73,9 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
 
   const onCreate = async (name = '') => {
     try {
-      const entity = await onOpenEntityCreateModal({
+      const entity = await entityCreateModal.open({
         name,
         folderID: null,
-        creationType: Tracking.CanvasCreationType.EDITOR,
       });
 
       onSelect(entity.id);
@@ -131,7 +123,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
                     <SectionV2.Content bottomOffset={2.5}>
                       <EntitySelector
                         value={item.id}
-                        onEdit={entity ? () => onOpenEntityEditModal({ entityID: entity.id }) : undefined}
+                        onEdit={entity ? () => entityEditModal.openVoid({ entityID: entity.id }) : undefined}
                         options={options}
                         onCreate={onCreate}
                         onSelect={onSelect}

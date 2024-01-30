@@ -23,6 +23,9 @@ const validateVariableName = (name: string, variables: string[]) => {
   return error;
 };
 
+/**
+ * @deprecated should be removed with CMS_VARIABLES feature flag
+ */
 export const addGlobalVariable =
   (variable: string, creationType: CanvasCreationType): Thunk =>
   async (dispatch, getState) => {
@@ -41,6 +44,9 @@ export const addGlobalVariable =
     dispatch(Tracking.trackVariableCreated({ creationType, variableType: VariableType.GLOBAL }));
   };
 
+/**
+ * @deprecated should be removed with CMS_VARIABLES feature flag
+ */
 export const addManyGlobalVariables =
   (newVariables: string[], creationType: CanvasCreationType): Thunk<string[]> =>
   async (dispatch, getState) => {
@@ -71,12 +77,18 @@ export const addManyGlobalVariables =
     return validNewVariables;
   };
 
+/**
+ * @deprecated should be removed with CMS_VARIABLES feature flag
+ */
 export const removeGlobalVariable =
   (variable: string): Thunk =>
   async (dispatch, getState) => {
     await dispatch.sync(Realtime.version.variable.removeGlobal({ ...getActiveVersionContext(getState()), variable }));
   };
 
+/**
+ * @deprecated should be removed with CMS_VARIABLES feature flag
+ */
 export const removeGlobalVariables =
   (variables: string[]): Thunk =>
   async (dispatch, getState) => {

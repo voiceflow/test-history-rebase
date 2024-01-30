@@ -55,7 +55,7 @@ export const EntityEditModal = modalsManager.create<IEntityEditModal>(
           <>
             {entity ? (
               <Scroll style={{ display: 'block' }}>
-                <Modal.Body gap={20}>
+                <Modal.Body gap={16}>
                   <CMSFormName
                     value={entity.name}
                     transform={transformVariableName}
@@ -68,9 +68,9 @@ export const EntityEditModal = modalsManager.create<IEntityEditModal>(
                     name={entity.name}
                     color={entity.color}
                     classifier={entity.classifier}
-                    typeMinWidth={188}
                     onColorChange={(color) => patchEntity({ color })}
                     onClassifierChange={(classifier) => patchEntity({ classifier })}
+                    classifierMinWidth={188}
                   />
                 </Modal.Body>
 

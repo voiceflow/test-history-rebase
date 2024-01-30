@@ -14,7 +14,7 @@ import type { IEntityMenu } from './EntityMenu.interface';
 export const EntityMenu: React.FC<IEntityMenu> = ({ width, onClose, onSelect: onSelectProp, excludeEntitiesIDs }) => {
   const storeEntities = useSelector(Designer.Entity.selectors.all);
   const entityEditModal = useEntityEditModal();
-  const entitiesCreateModal = useEntityCreateModal();
+  const entityCreateModal = useEntityCreateModal();
 
   const [listNode, setListNode] = useState<HTMLDivElement | null>(null);
   const [isCreating, setIsCreating] = useState(false);
@@ -45,7 +45,7 @@ export const EntityMenu: React.FC<IEntityMenu> = ({ width, onClose, onSelect: on
     setIsCreating(true);
 
     try {
-      const entity = await entitiesCreateModal.open({ name: search.value, folderID: null });
+      const entity = await entityCreateModal.open({ name: search.value, folderID: null });
 
       onSelect(entity);
     } catch {

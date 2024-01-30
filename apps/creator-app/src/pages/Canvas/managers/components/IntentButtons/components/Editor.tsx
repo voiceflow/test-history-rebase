@@ -6,8 +6,9 @@ import { Button, createDividerMenuItemOption } from '@voiceflow/ui';
 import React from 'react';
 
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
+import { Designer } from '@/ducks';
 import { useMapManager, useToggle } from '@/hooks';
-import { useAllPlatformIntentsSelector } from '@/hooks/intent.hook';
+import { useSelector } from '@/hooks/store.hook';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import useButtonLayoutOption from '@/pages/Canvas/managers/hooks/useButtonLayoutOption';
 import { intentButtonFactory } from '@/utils/intent';
@@ -28,7 +29,7 @@ const Editor: React.FC = () => {
 
   const [isDragging, toggleDragging] = useToggle(false);
 
-  const intents = useAllPlatformIntentsSelector();
+  const intents = useSelector(Designer.Intent.selectors.allWithFormattedBuiltInNames);
 
   const mapManager = useMapManager(buttons, (buttons) => editor.onChange({ buttons }), {
     factory: intentButtonFactory,

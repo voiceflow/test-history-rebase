@@ -1,3 +1,5 @@
+import { useHistory } from 'react-router-dom';
+
 import { useGetAtomValue } from '@/hooks/atom.hook';
 import { useModal } from '@/hooks/modal.hook';
 import { Modals } from '@/ModalsV2';
@@ -9,6 +11,8 @@ import { useGetCMSResourcePath } from '../../hooks/cms-resource.hook';
 export const useFunctionCMSManager = useCMSManager<CMSFunction>;
 
 export const useOnFunctionCreate = () => {
+  const history = useHistory();
+
   const cmsManager = useFunctionCMSManager();
   const createModal = useModal(Modals.Function.Create);
   const getAtomValue = useGetAtomValue();
@@ -16,11 +20,12 @@ export const useOnFunctionCreate = () => {
 
   return async ({ name }: { name?: string } = {}) => {
     try {
-      await createModal.open({
+      const fn = await createModal.open({
         name: name || getAtomValue(cmsManager.originalSearch),
         folderID: getAtomValue(cmsManager.folderID),
-        getResourcePath: (resourceID: string) => getCMSResourcePath(resourceID),
       });
+
+      history.push(getCMSResourcePath(fn.id).path);
     } catch {
       // closed
     }

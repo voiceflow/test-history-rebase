@@ -6,7 +6,6 @@ interface BaseProcessorOptions {
   pasted?: boolean;
 }
 export interface TextProcessorOptions extends BaseProcessorOptions {
-  fromDraftJS?: boolean;
   originalText: string;
 }
 export interface DataProcessorOptions extends BaseProcessorOptions {

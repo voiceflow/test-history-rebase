@@ -1,6 +1,6 @@
 import { ExpressionData, ExpressionV2, LogicGroupData } from '@realtime-sdk/models';
+import { transformVariablesToReadable } from '@realtime-sdk/utils/slot';
 import { BaseNode } from '@voiceflow/base-types';
-import { SLOT_REGEXP } from '@voiceflow/common';
 import isVarName from 'is-var-name';
 import isNumber from 'lodash/isNumber';
 // eslint-disable-next-line you-dont-need-lodash-underscore/is-string
@@ -136,7 +136,7 @@ const EXPRESSIONV2_OPERATION_SYMBOL_MAP: Record<string, string> = {
   [BaseNode.Utils.ExpressionTypeV2.IS_EMPTY]: 'is empty',
 };
 
-export const expressionfyLogicUnit = (expression: ExpressionV2): string => {
+export const expressionfyLogicUnit = (expression: ExpressionV2, variablesMap: Record<string, { id: string; name: string }>): string => {
   if (expression.type === BaseNode.Utils.ExpressionTypeV2.VALUE) {
     if (!expression.value) {
       return '';
@@ -153,7 +153,7 @@ export const expressionfyLogicUnit = (expression: ExpressionV2): string => {
   }
 
   if (expression.type === BaseNode.Utils.ExpressionTypeV2.VARIABLE) {
-    return `{${expression.value?.replace(SLOT_REGEXP, '$1')}}`;
+    return variablesMap[expression.value]?.name ?? expression.value;
   }
 
   if (expression.type === BaseNode.Utils.ExpressionTypeV2.ADVANCE) {
@@ -161,40 +161,46 @@ export const expressionfyLogicUnit = (expression: ExpressionV2): string => {
       return '';
     }
 
-    return expression.value.replace(SLOT_REGEXP, '{$1}');
+    return transformVariablesToReadable(expression.value, variablesMap);
   }
 
   return `${expression.value}`;
 };
 
-export const expressionfyLogicInterface = (exp: ExpressionV2 | LogicGroupData): string => {
+export const expressionfyLogicInterface = (
+  exp: ExpressionV2 | LogicGroupData,
+  variablesMap: Record<string, { id: string; name: string }>
+): string => {
   switch (exp.logicInterface) {
     case BaseNode.Utils.ConditionsLogicInterface.VALUE:
     case BaseNode.Utils.ConditionsLogicInterface.VARIABLE:
       return (exp.value as Array<ExpressionV2>).reduce((acc: string, curr: ExpressionV2) => {
         // eslint-disable-next-line no-param-reassign, sonarjs/no-nested-template-literals
-        acc = `${acc}${acc ? ` ${EXPRESSIONV2_OPERATION_SYMBOL_MAP[exp.type!]} ` : ''}${expressionfyLogicUnit(curr)}`;
+        acc = `${acc}${acc ? ` ${EXPRESSIONV2_OPERATION_SYMBOL_MAP[exp.type!]} ` : ''}${expressionfyLogicUnit(curr, variablesMap)}`;
 
         return acc;
       }, '');
     case BaseNode.Utils.ConditionsLogicInterface.LOGIC_GROUP:
-      return expressionPreview(exp as LogicGroupData);
+      return expressionPreview(exp as LogicGroupData, variablesMap);
     default:
-      return expressionfyLogicUnit(exp as ExpressionV2);
+      return expressionfyLogicUnit(exp as ExpressionV2, variablesMap);
   }
 };
 
-export const expressionPreview = (expression: ExpressionData | LogicGroupData): string => {
+export const expressionPreview = (
+  expression: ExpressionData | LogicGroupData,
+  variablesMap: Record<string, { id: string; name: string }>
+): string => {
   if (expression.type) {
     return (expression.value as Array<ExpressionV2 | LogicGroupData>).reduce((acc: string, curr: ExpressionV2 | LogicGroupData) => {
       // eslint-disable-next-line no-param-reassign, sonarjs/no-nested-template-literals
-      acc = `${acc}${acc ? ` ${EXPRESSIONV2_OPERATION_SYMBOL_MAP[expression.type!]} ` : ''}(${expressionfyLogicInterface(curr)})`;
+      acc = `${acc}${acc ? ` ${EXPRESSIONV2_OPERATION_SYMBOL_MAP[expression.type!]} ` : ''}(${expressionfyLogicInterface(curr, variablesMap)})`;
 
       return acc;
     }, '');
   }
 
-  return expression.value.length > 0 ? expressionfyLogicInterface(expression?.value[0]) : '';
+  return expression.value.length > 0 ? expressionfyLogicInterface(expression?.value[0], variablesMap) : '';
 };
 
 export const sanitizeSetValue = (exp: string, type: BaseNode.Utils.ExpressionTypeV2) => {

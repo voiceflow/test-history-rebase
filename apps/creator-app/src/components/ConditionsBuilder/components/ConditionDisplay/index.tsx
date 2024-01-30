@@ -2,6 +2,8 @@ import { BaseNode } from '@voiceflow/base-types';
 import { Box, SvgIcon, Text } from '@voiceflow/ui';
 import React from 'react';
 
+import { Diagram } from '@/ducks';
+import { useSelector } from '@/hooks/store.hook';
 import { transformVariableToString } from '@/utils/slot';
 
 import { ExpressionDisplayLabel } from '../../constants';
@@ -18,12 +20,22 @@ export interface ConditionDisplayProps {
   isLogicGroup?: boolean;
 }
 const ConditionDisplay: React.FC<ConditionDisplayProps> = ({ expression, isActive, onDelete, error, isLogicGroup }) => {
+  const entitiesAndVariablesMap = useSelector(Diagram.active.entitiesAndVariablesMapSelector);
+
   const firstValue = expression?.value?.[0]?.value;
   const secondValue = expression?.value?.[1]?.value;
   const logicType = expression.type;
 
-  const leftValue = isVariable(String(firstValue)) ? transformVariableToString(String(firstValue)) : firstValue;
-  const rightValue = isVariable(String(secondValue)) ? transformVariableToString(String(secondValue)) : secondValue;
+  const transformValue = (value: typeof firstValue, variables: typeof entitiesAndVariablesMap) => {
+    if (isVariable(String(value))) {
+      return transformVariableToString(String(value), variables);
+    }
+
+    return typeof value === 'string' ? entitiesAndVariablesMap[value]?.name ?? value : value;
+  };
+
+  const leftValue = React.useMemo(() => transformValue(firstValue, entitiesAndVariablesMap), [firstValue, entitiesAndVariablesMap]);
+  const rightValue = React.useMemo(() => transformValue(secondValue, entitiesAndVariablesMap), [firstValue, entitiesAndVariablesMap]);
 
   const placeholder = !leftValue && expression.value[0]?.type === BaseNode.Utils.ExpressionTypeV2.VARIABLE ? 'Variable' : 'Value';
 

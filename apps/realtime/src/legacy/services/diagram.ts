@@ -75,7 +75,13 @@ class DiagramService extends AbstractControl {
   public access = new AccessCache('diagram', this.clients, this.services);
 
   public async get(versionID: string, diagramID: string): Promise<BaseModels.Diagram.Model> {
-    return this.models.diagram.findByVersionIDAndDiagramID(versionID, diagramID).then(this.models.diagram.adapter.fromDB);
+    const diagram = await this.models.diagram.findByVersionIDAndDiagramID(versionID, diagramID);
+
+    if (!diagram) {
+      throw new Error(`Diagram ${diagramID} not found`);
+    }
+
+    return this.models.diagram.adapter.fromDB(diagram);
   }
 
   public async getMany(versionID: string, diagramIDs: string[]): Promise<BaseModels.Diagram.Model[]> {

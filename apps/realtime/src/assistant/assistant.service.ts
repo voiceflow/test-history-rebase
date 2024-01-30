@@ -215,9 +215,11 @@ export class AssistantService extends MutableService<AssistantORM> {
       project.aiAssistSettings = { ...project.aiAssistSettings, aiPlayground: false };
     }
 
+    const importData = this.environment.prepareImportData(data, { userID, backup, assistantID, workspaceID, environmentID });
+
     return {
       ...data,
-      ...this.environment.prepareImportData(data, { userID, backup, assistantID, workspaceID, environmentID }),
+      ...importData,
       project,
       variableStates: data.variableStates?.map((variableState) => ({ ...Utils.object.omit(variableState, ['_id']), projectID: assistantID })),
     };
@@ -413,9 +415,10 @@ export class AssistantService extends MutableService<AssistantORM> {
     project.members = [];
     project.previewVersion = undefined;
 
-    return {
-      ...this.environment.prepareExportData(data, { userID, workspaceID: data.project.teamID, centerDiagrams }),
+    const exportData = this.environment.prepareExportData(data, { userID, workspaceID: data.project.teamID, centerDiagrams });
 
+    return {
+      ...exportData,
       project,
       _version: String(data._version),
       variableStates: this.entitySerializer.iterable(data.variableStates),
@@ -465,6 +468,8 @@ export class AssistantService extends MutableService<AssistantORM> {
         withPrototypePrograms ? await this.prototypeProgramORM.findMany(programIDs) : Promise.resolve([]),
       ]);
 
+      const exportVersion = project._version ?? LATEST_PROJECT_VERSION;
+
       return this.prepareExportData(
         {
           cms,
@@ -472,7 +477,7 @@ export class AssistantService extends MutableService<AssistantORM> {
           version,
           diagrams,
           programs,
-          _version: project._version ?? LATEST_PROJECT_VERSION,
+          _version: exportVersion,
           variableStates,
           prototypePrograms,
         },

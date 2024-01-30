@@ -303,7 +303,11 @@ export class EnvironmentService {
     const cmsVariablesEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_VARIABLES, { userID, workspaceID });
 
     return {
-      version,
+      version: {
+        ...version,
+        _version: version?._version ?? 1,
+      },
+
       diagrams: Object.fromEntries(diagrams.map((diagram) => [diagram.diagramID, diagram])),
 
       ...(data.cms && {

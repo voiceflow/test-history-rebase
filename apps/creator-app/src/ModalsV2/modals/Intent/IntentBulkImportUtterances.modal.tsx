@@ -66,7 +66,15 @@ export const IntentBulkImportUtterancesModal = modalsManager.create<IntentBulkIm
       };
 
       return (
-        <Modal.Container type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} onEscClose={api.onEscClose}>
+        <Modal.Container
+          type={type}
+          opened={opened}
+          hidden={hidden}
+          animated={animated}
+          onExited={api.remove}
+          onEscClose={api.onEscClose}
+          onEnterSubmit={onImportClick}
+        >
           <Modal.Header title="Bulk import utterances" onClose={api.onClose} />
 
           <Scroll style={{ display: 'block' }}>

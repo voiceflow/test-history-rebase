@@ -123,7 +123,7 @@ export const EntityCreateModal = modalsManager.create<IEntityCreateModal, Entity
           onEscClose={api.onEscClose}
           onEnterSubmit={onSubmit}
         >
-          <Modal.Header title="Create entity" onClose={api.onClose} />
+          <Modal.Header title="Create entity" onClose={api.onClose} testID="create-entity" />
 
           <Scroll style={{ display: 'block' }}>
             <Modal.Body gap={16}>
@@ -135,6 +135,7 @@ export const EntityCreateModal = modalsManager.create<IEntityCreateModal, Entity
                 transform={transformVariableName}
                 placeholder="Enter entity name"
                 onValueChange={nameState.setValue}
+                testID="entity__name"
               />
 
               <EntityClassifierColorSection
@@ -178,10 +179,17 @@ export const EntityCreateModal = modalsManager.create<IEntityCreateModal, Entity
             />
           </Scroll>
 
-          <Modal.Footer>
-            <Modal.Footer.Button variant="secondary" onClick={api.onClose} disabled={closePrevented} label="Cancel" />
+          <Modal.Footer testID="create-entity">
+            <Modal.Footer.Button variant="secondary" onClick={api.onClose} disabled={closePrevented} label="Cancel" testID="create-entity" />
 
-            <Modal.Footer.Button label="Create entity" variant="primary" onClick={onSubmit} disabled={closePrevented} isLoading={closePrevented} />
+            <Modal.Footer.Button
+              label="Create entity"
+              variant="primary"
+              onClick={onSubmit}
+              disabled={closePrevented}
+              isLoading={closePrevented}
+              testID="create-entity"
+            />
           </Modal.Footer>
         </Modal.Container>
       );

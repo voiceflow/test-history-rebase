@@ -76,7 +76,12 @@ export const EntityMenu: React.FC<IEntityMenu> = ({ width, onClose, onSelect: on
         search.hasItems && (
           <ActionButtons
             firstButton={
-              <ActionButtons.Button label={isCreating ? 'Creating entity...' : 'Create entity'} onClick={onCreate} disabled={isCreating} />
+              <ActionButtons.Button
+                label={isCreating ? 'Creating entity...' : 'Create entity'}
+                onClick={onCreate}
+                disabled={isCreating}
+                testID="entity-menu__create"
+              />
             }
           />
         )
@@ -98,12 +103,14 @@ export const EntityMenu: React.FC<IEntityMenu> = ({ width, onClose, onSelect: on
                 data-index={virtualRow.index}
                 searchValue={search.deferredValue}
                 suffixButton={{ iconName: 'EditS', onClick: () => onEdit(entity) }}
+                // TODO: this doesn't appear to work
+                testID="entity-menu__item"
               />
             );
           })}
         </VirtualizedContent>
       ) : (
-        <Menu.CreateItem label={search.value} onClick={onCreate} disabled={isCreating} />
+        <Menu.CreateItem label={search.value} onClick={onCreate} disabled={isCreating} testID="entity-menu__item--add" />
       )}
     </Menu>
   );

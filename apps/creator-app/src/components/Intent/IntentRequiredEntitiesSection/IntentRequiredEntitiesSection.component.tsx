@@ -23,8 +23,15 @@ export const IntentRequiredEntitiesSection: React.FC<IIntentRequiredEntities> = 
             title="Required entities"
             variant={entitiesSize ? 'active' : 'basic'}
             onHeaderClick={entitiesSize ? undefined : onOpen}
+            testID="intent__required-entities"
           >
-            <Section.Header.Button ref={ref} isActive={isOpen} iconName="Plus" onClick={stopPropagation(onOpen)} />
+            <Section.Header.Button
+              ref={ref}
+              isActive={isOpen}
+              iconName="Plus"
+              onClick={stopPropagation(onOpen)}
+              testID="intent__required-entities__add"
+            />
           </Section.Header.Container>
         )}
       >

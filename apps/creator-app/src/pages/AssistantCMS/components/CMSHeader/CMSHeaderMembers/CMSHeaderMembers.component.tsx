@@ -25,6 +25,7 @@ export const CMSHeaderMembers: React.FC = () => {
         variant: getMemberColorByCreatorID(viewer.creatorID),
       }))}
       onButtonClick={canInviteMembers ? () => inviteModal.openVoid() : undefined}
+      testID="cms-header__members"
     />
   );
 };

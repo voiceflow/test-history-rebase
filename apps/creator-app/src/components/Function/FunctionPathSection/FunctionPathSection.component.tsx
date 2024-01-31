@@ -20,15 +20,20 @@ export const FunctionPathSection: React.FC<IFunctionPathSection> = ({
   return (
     <>
       <Box pt={11} pb={hasPaths ? 0 : 11}>
-        <Section.Header.Container variant={hasPaths ? 'active' : 'basic'} title={title} onHeaderClick={hasPaths ? undefined : onFunctionPathAdd}>
-          <Section.Header.Button iconName="Plus" onClick={stopPropagation(onFunctionPathAdd)} />
+        <Section.Header.Container
+          variant={hasPaths ? 'active' : 'basic'}
+          title={title}
+          onHeaderClick={hasPaths ? undefined : onFunctionPathAdd}
+          testID="function__paths"
+        >
+          <Section.Header.Button iconName="Plus" onClick={stopPropagation(onFunctionPathAdd)} testID="function__paths" />
         </Section.Header.Container>
       </Box>
 
       {hasPaths && (
         <Box pb={10} direction="column">
           {functionPaths.map((functionPath, index) => (
-            <CMSFormListItem pt={9} pb={7} key={index} onRemove={() => onDeleteFunctionPath(functionPath.id)}>
+            <CMSFormListItem pt={9} pb={7} key={index} onRemove={() => onDeleteFunctionPath(functionPath.id)} testID="function__paths__list-item">
               <FunctionResourceInput
                 value={functionPath.name}
                 autoFocus={functionPath.id === autoFocusKey}

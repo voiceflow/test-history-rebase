@@ -15,6 +15,7 @@ export const AIGenerateBaseButton = <Option extends AIGenerateBaseButtonOption =
   fullWidth = true,
   isLoading,
   hoverOpen,
+  testID,
 }: IAIGenerateBaseButton<Option>): React.ReactElement => {
   const onDebouncedMouseEnter = useDebouncedCallback(150, (toggle: VoidFunction) => toggle());
 
@@ -35,6 +36,7 @@ export const AIGenerateBaseButton = <Option extends AIGenerateBaseButtonOption =
           isHovering={isOpen}
           onMouseLeave={Utils.functional.chain(hoverOpen && isOpen ? onClose : null, onDebouncedMouseEnter.cancel)}
           onMouseEnter={() => hoverOpen && !isOpen && onDebouncedMouseEnter(onOpen)}
+          testID={testID}
         >
           {popper}
         </Button>
@@ -44,7 +46,14 @@ export const AIGenerateBaseButton = <Option extends AIGenerateBaseButtonOption =
         <Menu minWidth={referenceRef.current?.clientWidth} maxWidth={referenceRef.current?.clientWidth}>
           {options.map(
             (option) =>
-              option && <Menu.Item key={option.id} label={option.label} onClick={stopPropagation(Utils.functional.chain(option.onClick, onClose))} />
+              option && (
+                <Menu.Item
+                  key={option.id}
+                  label={option.label}
+                  onClick={stopPropagation(Utils.functional.chain(option.onClick, onClose))}
+                  testID={`${testID}__menu-item`}
+                />
+              )
           )}
         </Menu>
       )}

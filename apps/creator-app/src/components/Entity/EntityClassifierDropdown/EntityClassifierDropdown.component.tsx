@@ -27,6 +27,7 @@ export const EntityClassifierDropdown: React.FC<IEntityClassifierDropdown> = ({ 
         disabled={disabled}
         placeholder="Select type"
         errorMessage={error ?? undefined}
+        testID="entity__classifier"
       >
         {({ onClose, referenceRef }) => (
           <Menu
@@ -42,6 +43,7 @@ export const EntityClassifierDropdown: React.FC<IEntityClassifierDropdown> = ({ 
                       label={label}
                       onClick={Utils.functional.chain(onClose, () => onValueChange(value))}
                       searchValue={search.deferredValue}
+                      testID="entity__classifier__menu-item--custom"
                     />
                     <Divider fullWidth />
                   </React.Fragment>
@@ -51,6 +53,7 @@ export const EntityClassifierDropdown: React.FC<IEntityClassifierDropdown> = ({ 
                     label={label}
                     onClick={Utils.functional.chain(onClose, () => onValueChange(value))}
                     searchValue={search.deferredValue}
+                    testID="entity__classifier__menu-item"
                   />
                 )
               )

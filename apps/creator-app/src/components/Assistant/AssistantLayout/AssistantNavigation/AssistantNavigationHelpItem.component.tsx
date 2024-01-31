@@ -16,7 +16,7 @@ export const AssistantNavigationHelpItem: React.FC = () => {
       placement="right-end"
       referenceElement={({ ref, isOpen, onOpen }) => (
         <div ref={ref}>
-          <PrimaryNavigation.Item isActive={isOpen} onClick={onOpen} iconName="Info" />
+          <PrimaryNavigation.Item isActive={isOpen} onClick={onOpen} iconName="Info" testID="assistant__navigation__item--help" />
         </div>
       )}
     >

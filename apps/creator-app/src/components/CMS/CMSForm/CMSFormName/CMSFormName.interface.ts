@@ -10,4 +10,5 @@ export interface ICMSFormName {
   onValueChange: (value: string) => void;
   onPointerEnter?: React.PointerEventHandler<HTMLInputElement>;
   onPointerLeave?: React.PointerEventHandler<HTMLInputElement>;
+  testID?: string;
 }

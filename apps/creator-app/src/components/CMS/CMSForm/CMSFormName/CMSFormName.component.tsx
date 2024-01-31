@@ -18,6 +18,7 @@ export const CMSFormName: React.FC<ICMSFormName> = ({
   onValueChange,
   onPointerEnter,
   onPointerLeave,
+  testID,
 }) => {
   const input = useInput({
     error,
@@ -40,6 +41,7 @@ export const CMSFormName: React.FC<ICMSFormName> = ({
         errorMessage={input.errorMessage}
         onPointerEnter={onPointerEnter}
         onPointerLeave={onPointerLeave}
+        testID={testID}
       />
     </Box>
   );

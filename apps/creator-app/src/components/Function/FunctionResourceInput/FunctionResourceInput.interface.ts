@@ -7,4 +7,5 @@ export interface IFunctionResourceInput {
   description: string;
   autoFocus?: boolean;
   value: string;
+  testID?: string;
 }

@@ -15,7 +15,7 @@ import { openInternalURLInANewTab } from '@/utils/window';
 
 import { ICMSKnowledgeBaseAddDataSourceButton } from './CMSKnowledgeBaseAddDataSourceButton.interface';
 
-export const CMSKnowledgeBaseAddDataSourceButton: React.FC<ICMSKnowledgeBaseAddDataSourceButton> = ({ variant = 'primary' }) => {
+export const CMSKnowledgeBaseAddDataSourceButton: React.FC<ICMSKnowledgeBaseAddDataSourceButton> = ({ variant = 'primary', testID }) => {
   const urlsModal = useModal(Modals.KnowledgeBase.Import.Url);
   const filesModal = useModal(Modals.KnowledgeBase.Import.File);
   const sitemapModal = useModal(Modals.KnowledgeBase.Import.Sitemap);
@@ -64,7 +64,7 @@ export const CMSKnowledgeBaseAddDataSourceButton: React.FC<ICMSKnowledgeBaseAddD
     <Popper
       modifiers={modifiers}
       referenceElement={({ ref, popper, isOpen, onOpen }) => (
-        <Button ref={ref} variant={variant} label="Add data source" isActive={isOpen} onClick={() => onOpen()}>
+        <Button ref={ref} variant={variant} label="Add data source" isActive={isOpen} onClick={() => onOpen()} testID={testID}>
           {popper}
         </Button>
       )}

@@ -6,7 +6,7 @@ import { useCMSManager } from '../../contexts/CMSManager';
 import { container } from './CMSEmpty.css';
 import type { ICMSEmpty } from './CMSEmpty.interface';
 
-export const CMSEmpty: React.FC<ICMSEmpty> = ({ button: buttonProp, children, searchTitle, illustration, ...props }) => {
+export const CMSEmpty: React.FC<ICMSEmpty> = ({ button: buttonProps, children, searchTitle, illustration, ...props }) => {
   const store = useStore();
   const cmsManager = useCMSManager();
 
@@ -32,7 +32,7 @@ export const CMSEmpty: React.FC<ICMSEmpty> = ({ button: buttonProp, children, se
       <div className={container}>
         <EmptyPage
           {...props}
-          button={buttonProp ? { ...buttonProp, onClick: () => buttonProp?.onClick(store.get(cmsManager.originalSearch)) } : undefined}
+          button={buttonProps ? { ...buttonProps, onClick: () => buttonProps?.onClick(store.get(cmsManager.originalSearch)) } : undefined}
           linkTarget="_blank"
           illustration={illustration}
         />

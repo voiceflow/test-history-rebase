@@ -64,7 +64,7 @@ export const IntentCreateModal = modalsManager.create<IIntentCreateModal, Intent
           onEscClose={api.onEscClose}
           onEnterSubmit={onSubmit}
         >
-          <Modal.Header title="Create intent" onClose={api.onClose} />
+          <Modal.Header title="Create intent" onClose={api.onClose} testID="create-intent" />
 
           <Scroll style={{ display: 'block' }}>
             <Modal.Body gap={16}>
@@ -74,6 +74,7 @@ export const IntentCreateModal = modalsManager.create<IIntentCreateModal, Intent
                 autoFocus
                 placeholder="Enter intent name"
                 onValueChange={intentForm.nameState.setValue}
+                testID="intent__name"
               />
 
               <CMSFormDescription
@@ -82,6 +83,7 @@ export const IntentCreateModal = modalsManager.create<IIntentCreateModal, Intent
                 minRows={1}
                 onValueChange={intentForm.descriptionState.setValue}
                 placeholder={descriptionPlaceholder}
+                testID="intent__description"
               />
             </Modal.Body>
 
@@ -159,10 +161,17 @@ export const IntentCreateModal = modalsManager.create<IIntentCreateModal, Intent
                 </Box> */}
           </Scroll>
 
-          <Modal.Footer>
-            <Modal.Footer.Button variant="secondary" onClick={api.onClose} disabled={closePrevented} label="Cancel" />
+          <Modal.Footer testID="create-intent">
+            <Modal.Footer.Button variant="secondary" onClick={api.onClose} disabled={closePrevented} label="Cancel" testID="create-intent" />
 
-            <Modal.Footer.Button label="Create intent" variant="primary" onClick={onSubmit} disabled={closePrevented} isLoading={closePrevented} />
+            <Modal.Footer.Button
+              label="Create intent"
+              variant="primary"
+              onClick={onSubmit}
+              disabled={closePrevented}
+              isLoading={closePrevented}
+              testID="create-intent"
+            />
           </Modal.Footer>
         </Modal.Container>
       );

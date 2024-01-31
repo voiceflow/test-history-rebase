@@ -5,7 +5,15 @@ import { useInput } from '@/hooks/input.hook';
 
 import type { ICMSFormDescription } from './CMSFormDescription.interface';
 
-export const CMSFormDescription: React.FC<ICMSFormDescription> = ({ value, error, minRows = 4, maxRows = 17, placeholder, onValueChange }) => {
+export const CMSFormDescription: React.FC<ICMSFormDescription> = ({
+  value,
+  error,
+  minRows = 4,
+  maxRows = 17,
+  placeholder,
+  onValueChange,
+  testID,
+}) => {
   const input = useInput<string, HTMLTextAreaElement>({
     error,
     value,
@@ -15,7 +23,7 @@ export const CMSFormDescription: React.FC<ICMSFormDescription> = ({ value, error
   return (
     <Box direction="column">
       <InputFormControl id={input.id} label="Description" errorMessage={input.errorMessage}>
-        <TextArea {...input.attributes} minRows={minRows} maxRows={maxRows} placeholder={placeholder} />
+        <TextArea {...input.attributes} minRows={minRows} maxRows={maxRows} placeholder={placeholder} testID={testID} />
       </InputFormControl>
     </Box>
   );

@@ -36,6 +36,7 @@ export const CMSVariableEditor: React.FC = () => {
       onTitleChange={(name) => patchVariable({ name: name.trim() })}
       headerActions={<CMSEditorMoreButton>{({ onClose }) => getMoreMenu({ id: variableID, onClose })}</CMSEditorMoreButton>}
       titleTransform={transformVariableName}
+      testID="cms-editor"
     >
       <Scroll style={{ display: 'block' }}>
         <Box px={24} py={20} direction="column">
@@ -52,6 +53,7 @@ export const CMSVariableEditor: React.FC = () => {
           value={variable.description ?? ''}
           placeholder="Enter variable description"
           onValueChange={(description) => patchVariable({ description })}
+          testID="variable__description"
         />
       </Scroll>
     </Editor>

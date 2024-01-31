@@ -3,4 +3,5 @@ export interface ICMSEditorDescription {
   placeholder: string;
   showDivider?: boolean;
   onValueChange: (value: string) => void;
+  testID: string;
 }

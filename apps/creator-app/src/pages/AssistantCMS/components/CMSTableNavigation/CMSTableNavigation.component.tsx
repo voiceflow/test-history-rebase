@@ -38,6 +38,7 @@ export const CMSTableNavigation: React.FC<ICMSTableNavigation> = ({ label, items
         ...items,
       ]}
       onImportClick={onImportClick}
+      testID="cms-table__navigation"
     >
       {children}
     </Table.Navigation>

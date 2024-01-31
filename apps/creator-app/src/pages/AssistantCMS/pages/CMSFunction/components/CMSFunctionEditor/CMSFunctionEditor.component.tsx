@@ -51,11 +51,12 @@ export const CMSFunctionEditor: React.FC = () => {
       title={functionResource?.name ?? ''}
       onTitleChange={(name) => patchFunction({ name: name.trim() })}
       titleTransform={transformCMSResourceName}
+      testID="cms-editor"
       headerActions={
         <Box align="center">
-          <CMSEditorMoreButton>{({ onClose }) => getMoreMenu({ id: functionID, onClose })}</CMSEditorMoreButton>
+          <CMSEditorMoreButton testID="cms-editor__header__context">{({ onClose }) => getMoreMenu({ id: functionID, onClose })}</CMSEditorMoreButton>
           <Box ml={8}>
-            <SquareButton size="medium" onClick={() => navigate.push(getFolderPath())} iconName="CloseM" />
+            <SquareButton size="medium" onClick={() => navigate.push(getFolderPath())} iconName="CloseM" testID="cms-editor__header__close" />
           </Box>
         </Box>
       }
@@ -67,6 +68,7 @@ export const CMSFunctionEditor: React.FC = () => {
           value={functionResource?.description ?? ''}
           placeholder="Enter a description"
           onValueChange={(value) => patchFunction({ description: value })}
+          testID="function__description"
         />
 
         <CMSFunctionImageUpload onValueChange={(value) => patchFunction({ image: value })} value={functionResource?.image} />

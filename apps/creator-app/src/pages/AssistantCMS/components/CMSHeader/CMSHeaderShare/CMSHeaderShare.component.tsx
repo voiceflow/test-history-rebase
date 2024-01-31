@@ -12,7 +12,7 @@ export const CMSHeaderShare: React.FC = () => {
     <SharePopper placement="bottom-start" modifiers={{ offset: { offset: '0,1' } }} preventOverflowPadding={16}>
       {({ ref, onToggle, isOpened }) => (
         <div ref={ref}>
-          <Header.Button.Secondary label="Share" isActive={isOpened} onClick={() => onToggle()} />
+          <Header.Button.Secondary label="Share" isActive={isOpened} onClick={() => onToggle()} testID="cms-header__share" />
         </div>
       )}
     </SharePopper>

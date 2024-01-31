@@ -37,8 +37,18 @@ export const EntityVariantsSection = <T extends EntityVariantsSectionItem>({
   return (
     <>
       <Box pt={11} pb={variantsSize ? 0 : 11}>
-        <Section.Header.Container title="Values" variant={variantsSize ? 'active' : 'basic'} onHeaderClick={variantsSize ? undefined : onAdd}>
-          <Section.Header.Button onClick={stopPropagation(onAdd)} disabled={disabled || aiGenerate.fetching} iconName="Plus" />
+        <Section.Header.Container
+          title="Values"
+          variant={variantsSize ? 'active' : 'basic'}
+          onHeaderClick={variantsSize ? undefined : onAdd}
+          testID="entity__variants"
+        >
+          <Section.Header.Button
+            onClick={stopPropagation(onAdd)}
+            disabled={disabled || aiGenerate.fetching}
+            iconName="Plus"
+            testID="entity__variants__add"
+          />
         </Section.Header.Container>
       </Box>
 
@@ -50,6 +60,7 @@ export const EntityVariantsSection = <T extends EntityVariantsSectionItem>({
             collapseLabel="values"
             estimatedItemSize={53}
             autoScrollToTopRevision={autoScrollToTopRevision}
+            testID="entity__variants"
             renderItem={({ item, virtualizer, virtualItem }) => (
               <CMSFormVirtualListItem
                 pt={9}
@@ -59,6 +70,7 @@ export const EntityVariantsSection = <T extends EntityVariantsSectionItem>({
                 index={virtualItem.index}
                 onRemove={() => onRemove(item.id)}
                 removeDisabled={(classifier === CUSTOM_SLOT_TYPE && variantsSize === 1) || disabled || aiGenerate.fetching}
+                testID="entity__variants__list-item"
               >
                 {renderVariantInput({ item, disabled, onEmpty: listEmpty.container(virtualItem.index) })}
               </CMSFormVirtualListItem>
@@ -74,6 +86,7 @@ export const EntityVariantsSection = <T extends EntityVariantsSectionItem>({
             isLoading={aiGenerate.fetching}
             onGenerate={aiGenerate.onGenerate}
             hasExtraContext={!!name || !!classifier || !listEmpty.value}
+            testID="entity__variants__ai-generate"
           />
         </Box>
       )}

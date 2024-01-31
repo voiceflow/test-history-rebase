@@ -7,4 +7,5 @@ export interface IFunctionVariableSection {
   onDeleteFunctionVariable: (functionVariableID: string) => void;
   autoFocusKey: string;
   title: string;
+  testID: string;
 }

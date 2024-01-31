@@ -30,6 +30,7 @@ export const CMSEntityEditor: React.FC = () => {
       onTitleChange={(name) => patchEntity({ name: name.trim() })}
       headerActions={<CMSEditorMoreButton>{({ onClose }) => getMoreMenu({ id: entityID, onClose })}</CMSEditorMoreButton>}
       titleTransform={transformVariableName}
+      testID="cms-editor"
     >
       <Scroll style={{ display: 'block' }}>
         <Box px={24} py={20} direction="column">
@@ -53,6 +54,7 @@ export const CMSEntityEditor: React.FC = () => {
           value={entity.description ?? ''}
           placeholder="Enter entity description"
           onValueChange={(description) => patchEntity({ description })}
+          testID="entity__description"
         />
       </Scroll>
     </Editor>

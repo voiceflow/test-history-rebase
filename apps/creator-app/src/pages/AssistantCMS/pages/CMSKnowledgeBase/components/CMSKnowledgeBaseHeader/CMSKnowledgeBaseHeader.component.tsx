@@ -17,10 +17,10 @@ export const CMSKnowledgeBaseHeader: React.FC = () => {
       searchPlaceholder="Search data sources"
       rightActions={
         <>
-          <Header.Button.IconSecondary iconName="Settings" onClick={() => settingsModal.openVoid()} />
-          <Header.Button.Secondary iconName="PlayS" label="Preview" onClick={() => previewModal.openVoid()} />
+          <Header.Button.IconSecondary iconName="Settings" onClick={() => settingsModal.openVoid()} testID="cms-header__settings" />
+          <Header.Button.Secondary iconName="PlayS" label="Preview" onClick={() => previewModal.openVoid()} testID="cms-header__preview" />
 
-          <CMSKnowledgeBaseAddDataSourceButton />
+          <CMSKnowledgeBaseAddDataSourceButton testID="cms-header__add-source" />
         </>
       }
     />

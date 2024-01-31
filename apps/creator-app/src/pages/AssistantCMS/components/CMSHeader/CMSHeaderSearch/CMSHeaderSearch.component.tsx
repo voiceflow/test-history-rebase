@@ -24,5 +24,5 @@ export const CMSHeaderSearch: React.FC<ICMSHeaderSearch> = ({ placeholder }) => 
     { allowInputs: true, preventDefault: true }
   );
 
-  return <SearchInput ref={inputRef} variant="dark" value={search} placeholder={placeholder} onValueChange={setSearch} />;
+  return <SearchInput ref={inputRef} variant="dark" value={search} placeholder={placeholder} onValueChange={setSearch} testID="cms-header__search" />;
 };

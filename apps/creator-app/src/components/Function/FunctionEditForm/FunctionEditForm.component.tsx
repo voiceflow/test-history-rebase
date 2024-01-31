@@ -44,6 +44,7 @@ export const FunctionEditForm: React.FC<IFunctionEditForm> = ({ functionID }) =>
         onFunctionVariableAdd={() => onVariableAdd(FunctionVariableKind.INPUT)}
         onDeleteFunctionVariable={deleteFunctionVariable}
         onFunctionVariableChange={patchFunctionVariable}
+        testID="function__input-variables"
       />
 
       <Divider noPadding />
@@ -55,6 +56,7 @@ export const FunctionEditForm: React.FC<IFunctionEditForm> = ({ functionID }) =>
         onFunctionVariableAdd={() => onVariableAdd(FunctionVariableKind.OUTPUT)}
         onDeleteFunctionVariable={deleteFunctionVariable}
         onFunctionVariableChange={patchFunctionVariable}
+        testID="function__output-variables"
       />
 
       <Divider noPadding />

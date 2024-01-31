@@ -67,7 +67,7 @@ export const FunctionCreateModal = modalsManager.create<IFunctionCreateModal, Fu
           onEscClose={api.onEscClose}
           onEnterSubmit={onSubmit}
         >
-          <Modal.Header title="Create function" onClose={api.onClose} />
+          <Modal.Header title="Create function" onClose={api.onClose} testID="create-function" />
           <Modal.Body gap={16}>
             <CMSFormName
               value={nameState.value}
@@ -75,6 +75,7 @@ export const FunctionCreateModal = modalsManager.create<IFunctionCreateModal, Fu
               autoFocus
               placeholder="Enter function name"
               onValueChange={nameState.setValue}
+              testID="function__name"
             />
 
             <TextArea
@@ -83,12 +84,20 @@ export const FunctionCreateModal = modalsManager.create<IFunctionCreateModal, Fu
               disabled={closePrevented}
               className={textareaStyles}
               placeholder="Enter a description (optional)"
+              testID="function__description"
             />
           </Modal.Body>
-          <Modal.Footer>
-            <Modal.Footer.Button variant="secondary" onClick={api.onClose} disabled={closePrevented} label="Cancel" />
+          <Modal.Footer testID="create-function">
+            <Modal.Footer.Button variant="secondary" onClick={api.onClose} disabled={closePrevented} label="Cancel" testID="create-function" />
 
-            <Modal.Footer.Button label="Create function" variant="primary" onClick={onSubmit} disabled={closePrevented} isLoading={closePrevented} />
+            <Modal.Footer.Button
+              label="Create function"
+              variant="primary"
+              onClick={onSubmit}
+              disabled={closePrevented}
+              isLoading={closePrevented}
+              testID="create-function"
+            />
           </Modal.Footer>
         </Modal.Container>
       );

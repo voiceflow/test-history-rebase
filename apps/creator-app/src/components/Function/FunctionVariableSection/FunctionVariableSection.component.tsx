@@ -14,6 +14,7 @@ export const FunctionVariableSection: React.FC<IFunctionVariableSection> = ({
   onFunctionVariableAdd,
   onDeleteFunctionVariable,
   onFunctionVariableChange,
+  testID,
 }) => {
   const hasVariables = !!functionVariables.length;
 
@@ -24,15 +25,16 @@ export const FunctionVariableSection: React.FC<IFunctionVariableSection> = ({
           title={title}
           variant={hasVariables ? 'active' : 'basic'}
           onHeaderClick={hasVariables ? undefined : onFunctionVariableAdd}
+          testID={testID}
         >
-          <Section.Header.Button iconName="Plus" onClick={stopPropagation(onFunctionVariableAdd)} />
+          <Section.Header.Button iconName="Plus" onClick={stopPropagation(onFunctionVariableAdd)} testID={testID} />
         </Section.Header.Container>
       </Box>
 
       {hasVariables && (
-        <Box pb={10} direction="column">
+        <Box pb={10} direction="column" testID={`${testID}__list`}>
           {functionVariables.map((functionVariable, index) => (
-            <CMSFormListItem pt={9} pb={7} key={index} onRemove={() => onDeleteFunctionVariable(functionVariable.id)}>
+            <CMSFormListItem pt={9} pb={7} key={index} onRemove={() => onDeleteFunctionVariable(functionVariable.id)} testID={`${testID}__list-item`}>
               <FunctionResourceInput
                 onDescriptionChange={(description) => onFunctionVariableChange(functionVariable.id, { description })}
                 onValueChange={(name) => onFunctionVariableChange(functionVariable.id, { name })}
@@ -41,6 +43,7 @@ export const FunctionVariableSection: React.FC<IFunctionVariableSection> = ({
                 namePlaceholder="Enter variable name"
                 value={functionVariable.name}
                 autoFocus={functionVariable.id === autoFocusKey}
+                testID="function__variable"
               />
             </CMSFormListItem>
           ))}

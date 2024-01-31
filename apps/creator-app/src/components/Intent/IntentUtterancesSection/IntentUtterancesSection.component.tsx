@@ -53,6 +53,7 @@ export const IntentUtterancesSection: React.FC<IIntentUtterancesSection> = ({
               </Box>
             ) : undefined
           }
+          testID="intent__utterances"
         >
           <Tooltip
             placement="top"
@@ -64,6 +65,7 @@ export const IntentUtterancesSection: React.FC<IIntentUtterancesSection> = ({
                 iconName="BulkUpload"
                 onMouseEnter={onOpen}
                 onMouseLeave={onClose}
+                testID="intent__utterances__bulk-import"
               />
             )}
           >
@@ -74,7 +76,7 @@ export const IntentUtterancesSection: React.FC<IIntentUtterancesSection> = ({
             )}
           </Tooltip>
 
-          <Section.Header.Button iconName="Plus" onClick={stopPropagation(onUtteranceAdd)} />
+          <Section.Header.Button iconName="Plus" onClick={stopPropagation(onUtteranceAdd)} testID="intent__utterances__add" />
         </Section.Header.Container>
       </Box>
 
@@ -84,6 +86,7 @@ export const IntentUtterancesSection: React.FC<IIntentUtterancesSection> = ({
           collapseLabel="sample phrases"
           estimatedItemSize={36}
           autoScrollToTopRevision={autoScrollToTopRevision}
+          testID="intent__utterances"
           renderItem={({ item, virtualizer, virtualItem }) => (
             <CMSFormVirtualListItem
               py={2}
@@ -95,6 +98,7 @@ export const IntentUtterancesSection: React.FC<IIntentUtterancesSection> = ({
               onRemove={() => onUtteranceRemove(item.id)}
               removeDisabled={utterancesSize === 1}
               contentContainerProps={{ pt: 6 }}
+              testID="intent__utterances__list-item"
             >
               <IntentUtteranceInput
                 value={item.text}

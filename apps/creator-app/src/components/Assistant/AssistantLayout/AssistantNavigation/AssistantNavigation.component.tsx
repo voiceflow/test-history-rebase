@@ -16,14 +16,20 @@ export const AssistantNavigation: React.FC = () => {
   useAssistantNavigationHotkeys(items);
 
   return (
-    <PrimaryNavigation>
+    <PrimaryNavigation testID="assistant__navigation">
       <PrimaryNavigation.Section>
         <PrimaryNavigation.Header menuProps={{ numberOfItemsToShow: logoOptions.length }}>
           {logoOptions.map((option) => option && (option.divider ? <Menu.Divider key={option.key} /> : <Menu.Item key={option.key} {...option} />))}
         </PrimaryNavigation.Header>
 
-        {items.map(({ path, iconName, isActive }) => (
-          <PrimaryNavigation.Item key={path} onClick={onLinkClick(path)} isActive={isActive} iconName={iconName} />
+        {items.map(({ path, iconName, isActive, testID }) => (
+          <PrimaryNavigation.Item
+            key={path}
+            onClick={onLinkClick(path)}
+            isActive={isActive}
+            iconName={iconName}
+            testID={`assistant__navigation__item--${testID}`}
+          />
         ))}
       </PrimaryNavigation.Section>
 

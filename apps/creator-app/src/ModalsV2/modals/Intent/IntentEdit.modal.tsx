@@ -61,6 +61,7 @@ export const IntentEditModal = modalsManager.create<IIntentEditModal>(
             onClose={api.onClose}
             leftButton={<Modal.HeaderMenu items={intents} activeID={intentID} onSelect={onIntentSelect} notFoundLabel="intents" />}
             secondaryButton={<Modal.HeaderMore options={[{ name: 'Delete', onClick: onIntentDelete }]} />}
+            testID="edit-intent"
           />
 
           {intent ? (
@@ -72,6 +73,7 @@ export const IntentEditModal = modalsManager.create<IIntentEditModal>(
                   autoFocus={!newUtterances?.length}
                   placeholder="Enter intent name"
                   onValueChange={onNameChange}
+                  testID="intent__name"
                 />
 
                 <CMSFormDescription
@@ -79,6 +81,7 @@ export const IntentEditModal = modalsManager.create<IIntentEditModal>(
                   minRows={1}
                   placeholder={descriptionPlaceholder}
                   onValueChange={onDescriptionChange}
+                  testID="intent__description"
                 />
               </Modal.Body>
 
@@ -90,8 +93,8 @@ export const IntentEditModal = modalsManager.create<IIntentEditModal>(
             <Modal.Body>Intent not found</Modal.Body>
           )}
 
-          <Modal.Footer>
-            <Modal.Footer.Button label="Close" variant="secondary" onClick={api.onClose} disabled={closePrevented} />
+          <Modal.Footer testID="edit-intent">
+            <Modal.Footer.Button label="Close" variant="secondary" onClick={api.onClose} disabled={closePrevented} testID="edit-intent" />
           </Modal.Footer>
         </Modal.Container>
       );

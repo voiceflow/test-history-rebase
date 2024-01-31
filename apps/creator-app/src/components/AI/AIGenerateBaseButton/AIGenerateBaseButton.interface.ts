@@ -16,4 +16,5 @@ export interface IAIGenerateBaseButton<Option extends AIGenerateBaseButtonOption
   isLoading?: boolean;
   fullWidth?: boolean;
   hoverOpen?: boolean;
+  testID?: string;
 }

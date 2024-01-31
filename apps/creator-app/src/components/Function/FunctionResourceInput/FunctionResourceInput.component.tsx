@@ -15,6 +15,7 @@ export const FunctionResourceInput: React.FC<IFunctionResourceInput> = ({
   namePlaceholder,
   description,
   autoFocus,
+  testID,
 }) => {
   const descriptionInput = useInput({
     onSave: (value) => onDescriptionChange(value),
@@ -44,6 +45,7 @@ export const FunctionResourceInput: React.FC<IFunctionResourceInput> = ({
           placeholder: descriptionPlaceholder,
           multiple: true,
         }}
+        testID={testID}
       />
     </FocusIndicator.Container>
   );

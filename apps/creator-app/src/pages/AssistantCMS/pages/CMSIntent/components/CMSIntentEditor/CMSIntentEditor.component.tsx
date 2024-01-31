@@ -47,6 +47,7 @@ export const CMSIntentEditor: React.FC = () => {
         onTitleChange={(name) => patchIntent({ name: name.trim() })}
         titleTransform={transformCMSResourceName}
         headerActions={<CMSEditorMoreButton>{({ onClose }) => getMoreMenu({ id: intentID, onClose })}</CMSEditorMoreButton>}
+        testID="cms-editor"
       >
         <Scroll style={{ display: 'block' }}>
           <Box gap={8} px={24} pb={4} width="100%">
@@ -55,6 +56,7 @@ export const CMSIntentEditor: React.FC = () => {
               text={getIntentConfidenceMessage(notEmptyUtterances.length)}
               score={Math.round(getIntentConfidenceProgress(notEmptyUtterances.length))}
               level={getIntentConfidenceLevel(notEmptyUtterances.length)}
+              testID="intent__confidence"
             />
           </Box>
 
@@ -66,6 +68,7 @@ export const CMSIntentEditor: React.FC = () => {
             placeholder={descriptionPlaceholder}
             value={intent.description ?? ''}
             onValueChange={(description) => patchIntent({ description })}
+            testID="intent__description"
           />
         </Scroll>
       </Editor>

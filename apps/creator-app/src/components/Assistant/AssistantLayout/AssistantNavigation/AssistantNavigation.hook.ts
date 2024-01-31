@@ -29,33 +29,39 @@ export const useAssistantNavigationItems = () => {
         path: Path.PROJECT_DOMAIN,
         isActive: isItemActive(Path.PROJECT_DOMAIN),
         iconName: 'Designer',
+        testID: 'designer',
       },
       ...conditionalArrayItems<IAssistantNavigationItem>(canEditProject, {
         path: Path.PROJECT_CMS,
         isActive: isItemActive(Path.PROJECT_CMS),
         iconName: 'Content',
+        testID: 'cms',
       }),
       ...conditionalArrayItems<IAssistantNavigationItem>(canViewConversations, {
         path: Path.CONVERSATIONS,
         isActive: isItemActive(Path.CONVERSATIONS),
         iconName: 'Transcripts',
+        testID: 'transcripts',
       }),
       {
         path: Path.PROJECT_ANALYTICS,
         isActive: isItemActive(Path.PROJECT_ANALYTICS),
         iconName: 'Measure',
+        testID: 'analytics',
       },
 
       ...conditionalArrayItems<IAssistantNavigationItem>(canEditAPIKey || viewerAPIKeyAccess.isEnabled, {
         path: Path.PUBLISH_API,
         isActive: isItemActive(Path.PUBLISH_API),
         iconName: 'Api',
+        testID: 'publishing',
       }),
 
       ...conditionalArrayItems<IAssistantNavigationItem>(canEditProject, {
         path: Path.PROJECT_SETTINGS,
         isActive: isItemActive(Path.PROJECT_SETTINGS),
         iconName: 'Settings',
+        testID: 'settings',
       }),
     ];
   }, [location, canViewConversations, canEditAPIKey, viewerAPIKeyAccess.isEnabled, canEditProject]);

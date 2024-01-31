@@ -4,4 +4,5 @@ export interface IAssistantNavigationItem {
   path: string;
   isActive: boolean;
   iconName: IconName;
+  testID: string;
 }

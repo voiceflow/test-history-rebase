@@ -5,4 +5,5 @@ export interface ICMSFormDescription {
   maxRows?: number;
   placeholder: string;
   onValueChange: (value: string) => void;
+  testID?: string;
 }

@@ -50,6 +50,7 @@ export const EntityEditModal = modalsManager.create<IEntityEditModal>(
             onClose={api.onClose}
             leftButton={<Modal.HeaderMenu items={entities} activeID={entityID} onSelect={onEntitySelect} notFoundLabel="entities" />}
             secondaryButton={<Modal.HeaderMore options={[{ name: 'Delete', onClick: onEntityDelete }]} />}
+            testID="edit-entity"
           />
 
           <>
@@ -62,6 +63,7 @@ export const EntityEditModal = modalsManager.create<IEntityEditModal>(
                     autoFocus
                     placeholder="Enter entity name"
                     onValueChange={onNameChange}
+                    testID="entity__name"
                   />
 
                   <EntityClassifierColorSection
@@ -83,8 +85,8 @@ export const EntityEditModal = modalsManager.create<IEntityEditModal>(
             )}
           </>
 
-          <Modal.Footer>
-            <Modal.Footer.Button label="Close" variant="secondary" onClick={api.onClose} />
+          <Modal.Footer testID="edit-entity">
+            <Modal.Footer.Button label="Close" variant="secondary" onClick={api.onClose} testID="edit-entity" />
           </Modal.Footer>
         </Modal.Container>
       );

@@ -65,6 +65,7 @@ export const EntityVariantInput: React.FC<IEntityVariantInput> = ({
           onKeyUp: onEnterPress(valueInput),
           placeholder: 'Add synonyms, comma separated',
         }}
+        testID="entity__variant"
       />
     </FocusIndicator.Container>
   );

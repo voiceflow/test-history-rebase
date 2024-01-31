@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.260.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.259.2...@voiceflow/realtime@1.260.0) (2024-01-31)
+
+### Features
+
+* remove legacy threads (CV3-000) ([#7697](https://github.com/voiceflow/creator-app/issues/7697)) ([80bc956](https://github.com/voiceflow/creator-app/commit/80bc9568868c6fa770bad375e0a4ff9c940dabe7))
+
 ## [1.259.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.259.1...@voiceflow/realtime@1.259.2) (2024-01-30)
 
 ### Bug Fixes

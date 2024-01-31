@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.25.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.24.1...@voiceflow/sdk-logux-designer@2.25.0) (2024-01-31)
+
+### Features
+
+* remove legacy threads (CV3-000) ([#7697](https://github.com/voiceflow/creator-app/issues/7697)) ([80bc956](https://github.com/voiceflow/creator-app/commit/80bc9568868c6fa770bad375e0a4ff9c940dabe7))
+
 ## [2.24.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.24.0...@voiceflow/sdk-logux-designer@2.24.1) (2024-01-30)
 
 **Note:** Version bump only for package @voiceflow/sdk-logux-designer

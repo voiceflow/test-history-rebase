@@ -8,12 +8,13 @@ status = [
   "ci/circleci: analyze-dependencies",
   "ci/circleci: dependency-tests",
   "ci/circleci: build",
-  "ci/circleci: run-e2e-tests",
-  "ci/circleci: build-e2e-tests",
+  # "ci/circleci: run-e2e-tests",
+  "ci/circleci: run-smoke-tests",
+  # "ci/circleci: build-e2e-tests",
   "ci/circleci: provision-env",
   "ci/circleci: prepare-env",
 ]
 delete_merged_branches = true
 use_squash_merge = true
 cut_body_after = "### Implementation details. How do you make this change?"
-required_approvals=1
+required_approvals = 1

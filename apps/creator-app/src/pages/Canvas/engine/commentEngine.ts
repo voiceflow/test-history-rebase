@@ -49,11 +49,6 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
     return !!this.target;
   }
 
-  // TODO: remove when new threads are enabled by default
-  get newThreadsEnabled() {
-    return this.engine.isFeatureEnabled(Realtime.FeatureFlag.THREAD_COMMENTS);
-  }
-
   isFocused(threadID: string) {
     return this.focusTarget === threadID;
   }
@@ -148,43 +143,23 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
   }
 
   createComment = (threadID: string, comment: Realtime.NewComment) => {
-    if (this.newThreadsEnabled) {
-      this.dispatch(Designer.Thread.ThreadComment.effect.createOne(threadID, comment));
-    } else {
-      this.dispatch.partialSync(Realtime.thread.comment.create.started({ ...this.engine.context, threadID, comment }));
-    }
+    this.dispatch(Designer.Thread.ThreadComment.effect.createOne(threadID, comment));
   };
 
-  updateComment = (threadID: string, commentID: string, comment: Realtime.NewComment) => {
-    if (this.newThreadsEnabled) {
-      this.dispatch.partialSync(Designer.Thread.ThreadComment.action.PatchOne({ id: commentID, context: this.engine.context, patch: comment }));
-    } else {
-      this.dispatch.partialSync(Realtime.thread.comment.update({ ...this.engine.context, threadID, commentID, comment }));
-    }
+  updateComment = (commentID: string, comment: Realtime.NewComment) => {
+    this.dispatch.partialSync(Designer.Thread.ThreadComment.action.PatchOne({ id: commentID, context: this.engine.context, patch: comment }));
   };
 
-  deleteComment = (threadID: string, commentID: string) => {
-    if (this.newThreadsEnabled) {
-      this.dispatch(Designer.Thread.ThreadComment.effect.deleteOne(commentID));
-    } else {
-      this.dispatch.partialSync(Realtime.thread.comment.delete({ ...this.engine.context, threadID, commentID }));
-    }
+  deleteComment = (commentID: string) => {
+    this.dispatch(Designer.Thread.ThreadComment.effect.deleteOne(commentID));
   };
 
   resolveThread = (threadID: string) => {
-    if (this.newThreadsEnabled) {
-      this.dispatch.partialSync(Designer.Thread.action.PatchOne({ context: this.engine.context, id: threadID, patch: { resolved: true } }));
-    } else {
-      this.dispatch.partialSync(Realtime.thread.crud.patch({ ...this.engine.context, key: threadID, value: { resolved: true } }));
-    }
+    this.dispatch.partialSync(Designer.Thread.action.PatchOne({ context: this.engine.context, id: threadID, patch: { resolved: true } }));
   };
 
   unresolveThread = (threadID: string) => {
-    if (this.newThreadsEnabled) {
-      this.dispatch.partialSync(Designer.Thread.action.PatchOne({ context: this.engine.context, id: threadID, patch: { resolved: false } }));
-    } else {
-      this.dispatch.partialSync(Realtime.thread.crud.patch({ ...this.engine.context, key: threadID, value: { resolved: false } }));
-    }
+    this.dispatch.partialSync(Designer.Thread.action.PatchOne({ context: this.engine.context, id: threadID, patch: { resolved: false } }));
   };
 
   startThread() {
@@ -266,35 +241,18 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
     const { projectID, diagramID } = this.engine.context;
     const creatorID = this.engine.select(Account.userIDSelector)!;
 
-    if (this.newThreadsEnabled) {
-      const threadData: Actions.Thread.CreateData = {
-        nodeID: this.targetNodeID,
-        position,
-        resolved: false,
-        comments: [{ text, mentions, authorID: creatorID }],
-        diagramID,
-        assistantID: projectID,
-      };
+    const threadData: Actions.Thread.CreateData = {
+      nodeID: this.targetNodeID,
+      position,
+      resolved: false,
+      comments: [{ text, mentions, authorID: creatorID }],
+      diagramID,
+      assistantID: projectID,
+    };
 
-      const { data: thread } = await this.dispatch(waitAsync(Actions.Thread.CreateOne, { data: threadData, context: this.engine.context }));
+    const { data: thread } = await this.dispatch(waitAsync(Actions.Thread.CreateOne, { data: threadData, context: this.engine.context }));
 
-      this.setFocus(thread.id);
-    } else {
-      const newComment = { text, mentions, creatorID };
-      const thread: Realtime.NewThread = {
-        projectID,
-        diagramID,
-        nodeID: this.targetNodeID,
-        creatorID,
-        position,
-        resolved: false,
-        comments: [newComment],
-        deleted: false,
-      };
-
-      const createdThread = await this.dispatch(waitAsync(Realtime.thread.create, { ...this.engine.context, thread }));
-      this.setFocus(createdThread.id);
-    }
+    this.setFocus(thread.id);
 
     this.resetCreating();
   }
@@ -344,11 +302,7 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
 
     const nodeID = targetNodeID || null;
 
-    if (this.newThreadsEnabled) {
-      await this.dispatch.partialSync(Designer.Thread.action.PatchOne({ context: this.engine.context, id: threadID, patch: { nodeID, position } }));
-    } else {
-      await this.dispatch.partialSync(Realtime.thread.crud.patch({ ...this.engine.context, key: threadID, value: { nodeID, position } }));
-    }
+    await this.dispatch.partialSync(Designer.Thread.action.PatchOne({ context: this.engine.context, id: threadID, patch: { nodeID, position } }));
 
     this.log.debug('location saved', this.log.slug(threadID));
   }
@@ -365,15 +319,9 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
     const anchorCoords = node.instance.getThreadAnchorCoords()!;
     const coords = anchorCoords.add(thread.position);
 
-    if (this.newThreadsEnabled) {
-      await this.dispatch.partialSync(
-        Designer.Thread.action.PatchOne({ context: this.engine.context, id: threadID, patch: { nodeID: null, position: coords.point } })
-      );
-    } else {
-      await this.dispatch.partialSync(
-        Realtime.thread.crud.patch({ ...this.engine.context, key: threadID, value: { nodeID: null, position: coords.point } })
-      );
-    }
+    await this.dispatch.partialSync(
+      Designer.Thread.action.PatchOne({ context: this.engine.context, id: threadID, patch: { nodeID: null, position: coords.point } })
+    );
 
     this.log.debug('new thread location saved', this.log.slug(threadID));
   }

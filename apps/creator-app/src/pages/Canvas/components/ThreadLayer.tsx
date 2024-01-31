@@ -1,4 +1,3 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { AutoPanningStateContext } from '@/contexts/AutoPanningContext';
@@ -28,7 +27,7 @@ const ThreadLayer: React.FC = () => {
   const threadIDs = useSelector(Designer.Thread.selectors.allOpenedIDsForActiveDiagram);
   const commentsVisible = useSelector(UI.isCommentsVisible);
 
-  const updateUnreadComments = useDispatch(Realtime.thread.comment.updateUnreadComments);
+  const updateUnreadComment = useDispatch(Designer.Thread.action.UpdateUnreadComment);
   const toggleCommentVisibility = useDispatch(UI.toggleCommentVisibility);
 
   const [isCanvasMoving, setIsCanvasMoving] = React.useState<boolean>(false);
@@ -103,7 +102,7 @@ const ThreadLayer: React.FC = () => {
     if (!isCommentingMode) {
       focusThread.resetFocus();
     } else {
-      updateUnreadComments(false);
+      updateUnreadComment(false);
       trackEvents.trackCommentingOpen();
     }
   }, [isCommentingMode]);

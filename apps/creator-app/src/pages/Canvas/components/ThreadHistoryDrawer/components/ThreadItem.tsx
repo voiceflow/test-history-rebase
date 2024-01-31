@@ -49,7 +49,7 @@ const ThreadItem: React.FC<ThreadItemProps> = ({ thread }) => {
   return (
     <ItemContainer ref={containerRef} isFocused={isFocused} onClick={onClick}>
       <Box.FlexApart height={42}>
-        <Commenter creatorID={'creatorID' in comment ? comment.creatorID : comment.authorID} />
+        <Commenter creatorID={comment.authorID} />
 
         {thread.resolved && (
           <TippyTooltip content="Mark Unresolved" offset={[0, 1]}>

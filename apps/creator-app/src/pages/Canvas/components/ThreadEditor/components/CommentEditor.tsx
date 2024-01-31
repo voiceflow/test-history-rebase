@@ -1,5 +1,4 @@
 import { ThreadComment } from '@voiceflow/dtos';
-import { Comment as LegacyComment } from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { useSetup } from '@/hooks';
@@ -9,7 +8,7 @@ import Content from './Content';
 import EditableComment from './EditableComment';
 
 interface CommentEditorProps {
-  comment: ThreadComment | LegacyComment;
+  comment: ThreadComment;
   isActive?: boolean;
   isEditing?: boolean;
   withResolve?: boolean;
@@ -24,9 +23,9 @@ const CommentEditor: React.FC<CommentEditorProps> = ({ comment, isActive, isEdit
 
   const onPost = async (text: string, mentions: number[]) => {
     if (text) {
-      await engine.comment.updateComment(comment.threadID, comment.id, { text, mentions });
+      await engine.comment.updateComment(comment.id, { text, mentions });
     } else {
-      await engine.comment.deleteComment(comment.threadID, comment.id);
+      await engine.comment.deleteComment(comment.id);
     }
 
     setEditingID(null);
@@ -44,7 +43,7 @@ const CommentEditor: React.FC<CommentEditorProps> = ({ comment, isActive, isEdit
         onPost={onPost}
         onEdit={() => setEditingID(comment.id)}
         comment={comment}
-        onDelete={() => engine.comment.deleteComment(comment.threadID, comment.id)}
+        onDelete={() => engine.comment.deleteComment(comment.id)}
         onCancel={() => setEditingID(null)}
         isEditing={isEditing}
         onResolve={withResolve ? () => engine.comment.resolveThread(comment.threadID) : undefined}

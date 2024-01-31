@@ -11,7 +11,6 @@ import buildNoteActionControls from './note';
 import buildOrganizationActionControls from './organization';
 import buildPortActionControls from './port';
 import buildProjectActionControls from './project';
-import buildThreadActionControls from './thread';
 import buildTranscriptActionControls from './transcript';
 import buildVariableStateActionControls from './variableState';
 import buildVersionActionControls from './version';
@@ -31,7 +30,6 @@ const buildActions = (options: LoguxControlOptions) => ({
   ...buildOrganizationActionControls(options),
   ...buildVariableStateActionControls(options),
   ...buildNoteActionControls(options),
-  ...buildThreadActionControls(options),
   ...buildTranscriptActionControls(options),
   ...buildDomainActionControls(options),
 });

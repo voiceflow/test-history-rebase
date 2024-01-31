@@ -1,5 +1,4 @@
 import { Thread } from '@voiceflow/dtos';
-import { Thread as LegacyThread } from '@voiceflow/realtime-sdk';
 import { stopPropagation, useOnClickOutside } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
@@ -17,7 +16,7 @@ import { NEW_THREAD_EDITOR } from './constants';
 export type { EditableCommentRef } from './components';
 
 export interface ThreadEditorProps {
-  thread?: LegacyThread | Thread;
+  thread?: Thread;
   replyRef?: React.RefObject<EditableCommentRef>;
   isFocused: boolean;
   schedulePopperUpdate?: VoidFunction;

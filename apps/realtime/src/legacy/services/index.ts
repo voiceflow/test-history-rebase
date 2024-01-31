@@ -19,7 +19,6 @@ import CustomBlockService from './customBlock';
 import DiagramService from './diagram';
 import DomainService from './domain';
 import FeatureService from './feature';
-import LegacyThreadService from './legacy-thread';
 import LockService from './lock';
 import MigrateService from './migrate';
 import NoteService from './note';
@@ -37,7 +36,6 @@ export interface ServiceMap extends BaseServiceMap {
   lock: LockService;
   user: UserService;
   thread: ThreadService;
-  legacyThread: LegacyThreadService;
   domain: DomainService;
   viewer: ViewerService;
   billing: BillingService;
@@ -94,7 +92,6 @@ const buildServices = ({ config, clients, models, log, injectedServices }: Optio
     note: new NoteService(serviceOptions),
     lock: new LockService(serviceOptions),
     user: injectedServices.user,
-    legacyThread: new LegacyThreadService(serviceOptions),
     thread: injectedServices.thread,
     viewer: new ViewerService(serviceOptions),
     domain: new DomainService(serviceOptions),

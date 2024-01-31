@@ -21,7 +21,6 @@ import recent, * as Recent from '@/ducks/recent';
 import reportTag, * as ReportTag from '@/ducks/reportTag';
 import * as Router from '@/ducks/router';
 import session, * as Session from '@/ducks/session';
-import threadV2, * as ThreadV2 from '@/ducks/threadV2';
 import tracking, * as Tracking from '@/ducks/tracking';
 import transcript, * as Transcript from '@/ducks/transcript';
 import ui, * as UI from '@/ducks/ui';
@@ -60,7 +59,6 @@ const getCombinedReducer = (browserHistory: BrowserHistory) =>
     form: formReducer,
     [ProjectListV2.STATE_KEY]: projectListV2,
     [WorkspaceV2.STATE_KEY]: workspaceV2,
-    [ThreadV2.STATE_KEY]: threadV2,
     [Account.STATE_KEY]: account,
     [Prototype.STATE_KEY]: prototype,
     [Session.STATE_KEY]: session,

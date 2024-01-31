@@ -18,7 +18,8 @@ const baseThreadReducer = reducerWithInitialState<ThreadState>(INITIAL_STATE)
   )
   .case(Actions.Thread.DeleteOne, (state, { id }) => removeOne(state, id))
   .case(Actions.Thread.DeleteMany, (state, { ids }) => removeMany(state, ids))
-  .case(Actions.Thread.Replace, (state, { data }) => ({ ...state, ...normalize(data) }));
+  .case(Actions.Thread.Replace, (state, { data }) => ({ ...state, ...normalize(data) }))
+  .case(Actions.Thread.UpdateUnreadComment, (state, hasUnreadComments) => ({ ...state, hasUnreadComments }));
 
 export const threadReducer = compositeReducer(baseThreadReducer, {
   [ThreadComment.STATE_KEY]: ThreadComment.reducer,

@@ -12,7 +12,6 @@ export * as product from './product';
 export * as project from './project';
 export * as projectList from './projectList';
 export * as protocol from './protocol';
-export * as thread from './thread';
 export * as transcript from './transcript';
 export * as actionUtils from './utils';
 export * as variableState from './variableState';

@@ -6,7 +6,6 @@ import { intentUpdateAtTransducer } from '@/ducks/designer/intent/intent.transdu
 import { InvalidatorLookup, ReverterLookup } from '@/store/types';
 
 import { invalidatorTransducer, reverterTransducer } from './history';
-import { legacyThreadTransducer } from './legacy-thread';
 import resetTransducer from './reset';
 import { threadTransducer } from './thread';
 
@@ -21,7 +20,6 @@ const stateTransducer = (reverters: ReverterLookup, invalidators: InvalidatorLoo
     intentUpdateAtTransducer,
     functionUpdateAtTransducer,
     threadTransducer,
-    legacyThreadTransducer,
     reverterTransducer(getClientNodeID, reverters),
     invalidatorTransducer(getClientNodeID, invalidators)
   );

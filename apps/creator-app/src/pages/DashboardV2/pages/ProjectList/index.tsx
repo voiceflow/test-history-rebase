@@ -17,7 +17,7 @@ import { ProjectIdentityProvider } from '@/pages/Project/contexts/ProjectIdentit
 
 import { Sidebar } from '../../components';
 import { getProjectStatusAndMembers } from '../../utils';
-import { Banner, EmptySearch, EmptyWorkspace, Header, TemplateSection } from './components';
+import { Banner, EmptySearch, Header, TemplateSection } from './components';
 import { SortByOptions, SortOptionType } from './constants';
 import * as S from './styles';
 import { getProjectSortFunction } from './utils';
@@ -64,7 +64,6 @@ const ProjectList: React.FC = () => {
 
   const hasProjects = !!projectToRender.length;
   const emptySearch = !!search && !hasProjects;
-  const emptyWorkspace = !search && !hasProjects;
   const showTemplates = !emptySearch && canCreateAssistant && projects.length < 3;
 
   const renderProjectListPage = () => (
@@ -120,18 +119,6 @@ const ProjectList: React.FC = () => {
         <TrialExpiredPage />
         {renderProjectListPage()}
       </>
-    );
-  }
-
-  if (emptyWorkspace) {
-    return (
-      <Page white renderHeader={() => <Header />} renderSidebar={() => <Sidebar />}>
-        <S.Content fullHeight>
-          {canCreateAssistant && <Banner />}
-          {!canCreateAssistant && <EmptyWorkspace />}
-          {canCreateAssistant && <TemplateSection />}
-        </S.Content>
-      </Page>
     );
   }
 

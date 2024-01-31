@@ -1,14 +1,11 @@
 import { Utils } from '@voiceflow/common';
 import type { Thread } from '@voiceflow/dtos';
-import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { createSelector } from 'reselect';
 
 import * as Account from '@/ducks/account';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Domain from '@/ducks/domain';
-import { featureSelectorFactory } from '@/ducks/feature';
-import * as ThreadLegacySelectors from '@/ducks/threadV2/selectors';
 import * as UI from '@/ducks/ui';
 
 import { getAllByThreadID as getAllCommentsByThreadID } from '../thread-comment/selectors/other.select';
@@ -69,9 +66,4 @@ export const getIDsByNodeID = createSelector(
   (threads) => (nodeID: string) => threads.filter((thread) => thread.nodeID === nodeID).map(({ id }) => id)
 );
 
-const _hasUnreadComments = createSelector([root], ({ hasUnreadComments, allKeys }) => hasUnreadComments && !!allKeys.length);
-
-export const hasUnreadComments = featureSelectorFactory(FeatureFlag.THREAD_COMMENTS)(
-  ThreadLegacySelectors.hasUnreadCommentsSelector,
-  _hasUnreadComments
-);
+export const hasUnreadComments = createSelector([root], ({ hasUnreadComments, allKeys }) => hasUnreadComments && !!allKeys.length);

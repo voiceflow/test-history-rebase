@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import type { Thread } from '@voiceflow/dtos';
 
 import { createCRUD } from '@/crud/crud.action';
@@ -105,3 +106,7 @@ export const AddOne = threadAction.crud.addOne<AddOne>();
 export interface AddMany extends AddManyRequest<Thread>, LegacyVersionAction {}
 
 export const AddMany = threadAction.crud.addMany<AddMany>();
+
+/* UpdateUnreadComments */
+
+export const UpdateUnreadComment = Utils.protocol.createAction<boolean>(threadAction('UPDATE_UNREAD_COMMENTS'));

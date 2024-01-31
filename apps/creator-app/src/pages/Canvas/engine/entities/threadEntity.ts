@@ -44,7 +44,7 @@ const threadEntitySelector = createSelector(
   }
 );
 
-class ThreadEntity extends ResourceEntity<{ thread: Thread | Realtime.Thread; node: Realtime.Node | null }, ThreadInstance> {
+class ThreadEntity extends ResourceEntity<{ thread: Thread; node: Realtime.Node | null }, ThreadInstance> {
   diagramID: string;
 
   threadOrder: number;

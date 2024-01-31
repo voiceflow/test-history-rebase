@@ -40,15 +40,10 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
     const { workspaceID, projectID, versionID } = ctx.params;
     const creatorID = Number(ctx.userId);
 
-    const isNewThread = this.services.feature.isEnabled(Realtime.FeatureFlag.THREAD_COMMENTS, { userID: creatorID, workspaceID });
-
-    const [legacyThreads, projectMembers, dbCreator, { threads, threadComments }] = await Promise.all([
-      this.services.legacyThread.getAll(creatorID, projectID),
+    const [projectMembers, dbCreator, { threads, threadComments }] = await Promise.all([
       this.services.identity.private.findAllProjectMembersForProject(projectID),
       this.services.project.getCreator(creatorID, projectID, versionID),
-      isNewThread
-        ? this.services.requestContext.createAsync(() => this.services.thread.findAllWithCommentsByAssistant(projectID))
-        : Promise.resolve({ threads: [], threadComments: [] }),
+      this.services.requestContext.createAsync(() => this.services.thread.findAllWithCommentsByAssistant(projectID)),
     ]);
 
     const templateDiagram = dbCreator.version.templateDiagramID
@@ -84,12 +79,8 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
 
     return [
       Realtime.note.load({ ...actionContext, notes }),
-      ...(isNewThread
-        ? [
-            Actions.Thread.Replace({ context: actionContext, data: threads }),
-            Actions.ThreadComment.Replace({ context: actionContext, data: threadComments }),
-          ]
-        : [Realtime.thread.crud.replace({ ...actionContext, values: legacyThreads })]),
+      Actions.Thread.Replace({ context: actionContext, data: threads }),
+      Actions.ThreadComment.Replace({ context: actionContext, data: threadComments }),
       Realtime.customBlock.crud.replace({ ...actionContext, values: customBlocks }),
       Realtime.domain.crud.replace({ ...actionContext, values: domains }),
       Realtime.canvasTemplate.crud.replace({ ...actionContext, values: canvasTemplates }),

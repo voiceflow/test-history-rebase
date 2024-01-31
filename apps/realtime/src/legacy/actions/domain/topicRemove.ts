@@ -33,7 +33,7 @@ class TopicRemove extends AbstractDomainResourceControl<Realtime.domain.TopicRem
 
   protected finally = async (ctx: Context<ContextData>, { payload }: Action<Realtime.domain.TopicRemovePayload>) => {
     const { creatorID, clientID } = ctx.data;
-    const { versionID, topicID, projectID, workspaceID } = payload;
+    const { versionID, topicID } = payload;
 
     const removedDiagramIDs = [topicID, ...ctx.data.subtopicIDs];
 
@@ -41,19 +41,9 @@ class TopicRemove extends AbstractDomainResourceControl<Realtime.domain.TopicRem
       this.unlockAllTopics(versionID, [topicID, ...ctx.data.subtopicIDs]),
       this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID),
       this.services.domain.setUpdatedBy(payload.versionID, payload.domainID, ctx.data.creatorID),
-      ...(this.services.feature.isEnabled(Realtime.FeatureFlag.THREAD_COMMENTS, { userID: creatorID, workspaceID })
-        ? [
-            this.services.requestContext.createAsync(() =>
-              this.services.thread.deleteManyByDiagramsAndBroadcast({ userID: creatorID, clientID }, payload, removedDiagramIDs)
-            ),
-          ]
-        : [
-            this.server.processAs(
-              creatorID,
-              clientID,
-              Realtime.thread.removeManyByDiagramIDs({ projectID, diagramIDs: removedDiagramIDs, workspaceID })
-            ),
-          ]),
+      this.services.requestContext.createAsync(() =>
+        this.services.thread.deleteManyByDiagramsAndBroadcast({ userID: creatorID, clientID }, payload, removedDiagramIDs)
+      ),
     ]);
   };
 

@@ -1,6 +1,5 @@
 import { Nullable } from '@voiceflow/common';
 import { ThreadComment } from '@voiceflow/dtos';
-import { Comment as LegacyComment } from '@voiceflow/realtime-sdk';
 import { Box, Dropdown, FlexEnd, IconButton, IconButtonVariant, Menu, swallowEvent, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
@@ -9,7 +8,7 @@ import PostButton from './PostButton';
 export interface CommentActionsProps {
   onPost: VoidFunction;
   onEdit?: VoidFunction;
-  comment?: Nullable<ThreadComment | LegacyComment>;
+  comment?: Nullable<ThreadComment>;
   onDelete?: VoidFunction;
   onResolve?: VoidFunction;
   isPosting?: boolean;

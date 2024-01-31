@@ -48,8 +48,6 @@ export enum FeatureFlag {
 
   VERSIONED_KB_SETTINGS = 'versioned_kb_settings',
 
-  THREAD_COMMENTS = 'thread_comments',
-
   VFFILE_ASSISTANT_TEMPLATE = 'vffile_assistant_template',
 
   // LLM/AI

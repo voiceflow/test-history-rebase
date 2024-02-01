@@ -1,19 +1,21 @@
 import { Box, CheckboxControl, Dropdown, Menu, MenuItem, Tooltip, useTooltipModifiers } from '@voiceflow/ui-next';
 import React from 'react';
 
+import { ZendeskFilterBase } from '@/models/KnowledgeBase.model';
+
 import { captionStyles } from './KBZendeskFilterSelect.css';
 
-export interface IKBZendeskFilterSelect {
+export interface IKBZendeskFilterSelect<T extends ZendeskFilterBase> {
   label: string;
   placeholder?: string;
-  value: string[];
-  options: string[];
+  value: T[];
+  options: T[];
   disabled?: boolean;
-  onValueChange: (value: string[]) => void;
+  onValueChange: (value: T[]) => void;
   hasTooltip?: boolean;
 }
 
-export const KBZendeskFilterSelect: React.FC<IKBZendeskFilterSelect> = ({
+export const KBZendeskFilterSelect = <T extends ZendeskFilterBase>({
   label,
   placeholder,
   value,
@@ -21,7 +23,7 @@ export const KBZendeskFilterSelect: React.FC<IKBZendeskFilterSelect> = ({
   options,
   onValueChange,
   hasTooltip,
-}) => {
+}: IKBZendeskFilterSelect<T>): React.ReactElement => {
   const [search, setSearch] = React.useState('');
   const [isSelectAll, setIsSelectAll] = React.useState(true);
   const modifiers = useTooltipModifiers([{ name: 'offset', options: { offset: [-10, 28] } }]);
@@ -68,7 +70,7 @@ export const KBZendeskFilterSelect: React.FC<IKBZendeskFilterSelect> = ({
                             <MenuItem
                               key={index}
                               onClick={() => onValueChange(value.includes(option) ? value.filter((item) => item !== option) : [...value, option])}
-                              label={option}
+                              label={option.name}
                               checkbox={
                                 <CheckboxControl
                                   id="checkbox"
@@ -113,13 +115,13 @@ export const KBZendeskFilterSelect: React.FC<IKBZendeskFilterSelect> = ({
                     }
                   >
                     {options
-                      .filter((option) => option.includes(search.toLowerCase()))
+                      .filter((option) => option.name.includes(search.toLowerCase()))
                       .map((option, index) => {
                         return (
                           <MenuItem
                             key={index + 1}
                             onClick={() => onValueChange(value.includes(option) ? value.filter((item) => item !== option) : [...value, option])}
-                            label={option}
+                            label={option.name}
                             checkbox={
                               <CheckboxControl
                                 id="checkbox"

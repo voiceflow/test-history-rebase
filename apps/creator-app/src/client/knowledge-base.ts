@@ -1,6 +1,6 @@
 import { BaseModels } from '@voiceflow/base-types';
 
-import { DBKnowledgeBaseDocument, KnowledgeBaseIntegration, ZendeskFilters } from '@/models/KnowledgeBase.model';
+import { DBKnowledgeBaseDocument, KnowledgeBaseIntegration, ZendeskCountFilters, ZendeskFilters } from '@/models/KnowledgeBase.model';
 
 import api, { apiV3 } from './api';
 
@@ -69,6 +69,6 @@ export const knowledgeBaseClient = {
   getIntegrationFilters: (projectID: string, integrationType: string) =>
     apiV3.fetch.get<ZendeskFilters>(`/projects/${projectID}/knowledge-base/integrations/${integrationType}/filters`).then(({ data }) => data),
 
-  getIntegrationDocumentCount: (projectID: string, integrationType: string, filters: ZendeskFilters) =>
+  getIntegrationDocumentCount: (projectID: string, integrationType: string, filters: ZendeskCountFilters) =>
     apiV3.fetch.post<number>(`/projects/${projectID}/knowledge-base/integrations/${integrationType}/count`, { filters }).then(({ data }) => data),
 };

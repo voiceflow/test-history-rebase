@@ -1,7 +1,7 @@
 import { knowledgeBaseClient } from '@/client/knowledge-base';
 import * as Errors from '@/config/errors';
 import * as Session from '@/ducks/session';
-import type { KnowledgeBaseIntegration, ZendeskFilters } from '@/models/KnowledgeBase.model';
+import type { KnowledgeBaseIntegration, ZendeskCountFilters, ZendeskFilters } from '@/models/KnowledgeBase.model';
 import type { Thunk } from '@/store/types';
 
 import * as Actions from './integration.action';
@@ -75,7 +75,7 @@ export const getIntegrationFilters =
   };
 
 export const getIntegrationDocumentCount =
-  (integrationType: string, filters: ZendeskFilters): Thunk<number> =>
+  (integrationType: string, filters: ZendeskCountFilters): Thunk<number> =>
   async (_, getState) => {
     const state = getState();
 

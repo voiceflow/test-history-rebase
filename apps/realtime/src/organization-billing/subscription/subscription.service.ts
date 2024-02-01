@@ -11,7 +11,7 @@ export class BillingSubscriptionService {
   ) {}
 
   async findOne(subscriptionID: string) {
-    const subscription = await this.billingClient.private.getSubscription(subscriptionID);
+    const { subscription } = await this.billingClient.private.getSubscription(subscriptionID);
 
     return {
       id: subscription.id,
@@ -61,7 +61,7 @@ export class BillingSubscriptionService {
     };
   }
 
-  listInvoices(subscriptionID: string, { cursor, limit }: { cursor?: string; limit?: number } = {}) {
-    return this.billingClient.private.getSubscriptionInvoices(subscriptionID, { cursor, limit });
+  getInvoices(subscriptionID: string, { cursor, limit }: { cursor?: string; limit?: number } = {}) {
+    return this.billingClient.private.getSubscriptionInvoices(subscriptionID, { ...(cursor && { cursor }), ...(limit && { limit }) });
   }
 }

@@ -1,11 +1,14 @@
-import { Controller, Get, HttpStatus, Inject, Param } from '@nestjs/common';
+import { Controller, Get, HttpStatus, Inject, Param, Query } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { SubscriptionDTO } from '@voiceflow/dtos';
-import { ZodApiResponse } from '@voiceflow/nestjs-common';
+import { ZodApiQuery, ZodApiResponse } from '@voiceflow/nestjs-common';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { Permission } from '@voiceflow/sdk-auth';
 import { Authorize } from '@voiceflow/sdk-auth/nestjs';
 
+import { invoiceAdapter } from './adapters/invoice.adapter';
+import { GetInvoicesRequestQuery } from './dto/get-invoices-request.dto';
+import { GetInvoicesResponse } from './dto/get-invoices-response.dto';
 import { BillingSubscriptionService } from './subscription.service';
 
 @Controller(':organizationID/billing/subscription')
@@ -22,10 +25,32 @@ export class BillingSubscriptionHTTPController {
     summary: 'Returns billing subscription',
     description: 'Returns billing subscription for the given subscriptionID',
   })
-  @ZodApiResponse({ status: HttpStatus.OK, schema: SubscriptionDTO })
   @ApiParam({ name: 'organizationID', type: 'string' })
   @ApiParam({ name: 'subscriptionID', type: 'string' })
+  @ZodApiResponse({ status: HttpStatus.OK, schema: SubscriptionDTO })
   async findOne(@Param('subscriptionID') subscriptionID: string): Promise<SubscriptionDTO> {
     return this.service.findOne(subscriptionID).then(Realtime.Adapters.Billing.subscription.fromDB);
+  }
+
+  @Get(':subscriptionID/invoices')
+  @Authorize.Permissions([Permission.ORGANIZATION_READ])
+  @ApiOperation({
+    summary: 'Returns billing subscription invoices',
+    description: 'Returns billing subscription invoices for the given subscriptionID',
+  })
+  @ApiParam({ name: 'organizationID', type: 'string' })
+  @ApiParam({ name: 'subscriptionID', type: 'string' })
+  @ZodApiQuery({ schema: GetInvoicesRequestQuery })
+  @ZodApiResponse({ status: HttpStatus.OK, schema: GetInvoicesResponse })
+  async getInvoices(@Param('subscriptionID') subscriptionID: string, @Query() query: GetInvoicesRequestQuery): Promise<GetInvoicesResponse> {
+    const { invoices, nextCursor, hasMore } = await this.service.getInvoices(subscriptionID, { cursor: query.cursor, limit: query.limit });
+
+    const invoicesResponse = invoices.map(invoiceAdapter.fromDB);
+
+    return {
+      invoices: invoicesResponse,
+      nextCursor,
+      hasMore,
+    };
   }
 }

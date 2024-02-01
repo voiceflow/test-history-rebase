@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1379.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1378.1...@voiceflow/creator-app@1.1379.0) (2024-02-01)
+
+### Features
+
+* add testIDs to v3 views (DX-969) ([#7726](https://github.com/voiceflow/creator-app/issues/7726)) ([b5b6ba3](https://github.com/voiceflow/creator-app/commit/b5b6ba3e3fc110293b005ef60cc5b186ae8d9c62))
+
 ## [1.1378.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1378.0...@voiceflow/creator-app@1.1378.1) (2024-01-31)
 
 ### Bug Fixes

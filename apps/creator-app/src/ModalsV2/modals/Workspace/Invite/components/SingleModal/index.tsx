@@ -10,7 +10,7 @@ import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
 import { VoidInternalProps } from '@/ModalsV2/types';
-import CardDetails from '@/pages/DashboardV2/pages/MembersAndBilling/pages/Billing/CardDetails';
+import CardDetails from '@/pages/DashboardV2/pages/MembersAndBilling/pages/LegacyBilling/CardDetails';
 import * as currency from '@/utils/currency';
 import { isEditorUserRole } from '@/utils/role';
 

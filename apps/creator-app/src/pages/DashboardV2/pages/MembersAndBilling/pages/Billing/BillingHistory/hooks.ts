@@ -1,19 +1,12 @@
+import { InvoiceDTO } from '@voiceflow/dtos';
 import { toast } from '@voiceflow/ui';
 import React from 'react';
 
-import workspaceClient from '@/client/workspace';
-import * as WorkspaceV2 from '@/ducks/workspaceV2';
+import { designerClient } from '@/client/designer';
+import * as Organization from '@/ducks/organization';
 import { useSelector } from '@/hooks';
-import { Billing } from '@/models';
 
-export interface BillingHistoryAPI {
-  data: Billing.PastInvoice[];
-  status: Status;
-  hasMore: boolean;
-  isReady: boolean;
-  loadMore: () => Promise<void>;
-}
-
+// eslint-disable-next-line no-restricted-syntax
 export enum Status {
   IDLE = 'IDLE',
   ERROR = 'ERROR',
@@ -22,21 +15,44 @@ export enum Status {
   LOADING_MORE = 'LOADING_MORE',
 }
 
+export interface BillingHistoryAPI {
+  data: InvoiceDTO[];
+  status: Status;
+  hasMore: boolean;
+  nextCursor: string | null;
+  isReady: boolean;
+  loadMore: () => Promise<void>;
+}
+
+export interface BillingHistory {
+  data: InvoiceDTO[];
+  hasMore: boolean;
+  nextCursor: string | null;
+}
+
 export const useBillingHistory = (): BillingHistoryAPI => {
-  const workspace = useSelector(WorkspaceV2.active.workspaceSelector);
+  const organization = useSelector(Organization.active.organizationSelector);
 
   const [status, setStatus] = React.useState(Status.IDLE);
-  const [billingHistory, setBillingHistory] = React.useState<Billing.InvoiceList | null>(null);
+  const [billingHistory, setBillingHistory] = React.useState<BillingHistory | null>(null);
 
   const loadInvoiceData = async (cursor?: string) => {
-    if (!workspace) return;
+    if (!organization || !organization.chargebeeSubscriptionID) return;
 
     try {
-      const newData = await workspaceClient.getInvoices(workspace.id, cursor ?? null, 10);
+      const { invoices, nextCursor, hasMore } = await designerClient.billing.subscription.getInvoices(
+        organization.id,
+        organization.chargebeeSubscriptionID,
+        {
+          ...(cursor && { cursor }),
+          limit: 10,
+        }
+      );
 
       setBillingHistory((prevHistory) => ({
-        data: cursor ? [...(prevHistory?.data ?? []), ...newData.data] : newData.data,
-        hasMore: newData.hasMore,
+        data: cursor ? [...(prevHistory?.data ?? []), ...invoices] : invoices,
+        hasMore,
+        nextCursor,
       }));
 
       setStatus(Status.FETCHED);
@@ -60,10 +76,11 @@ export const useBillingHistory = (): BillingHistoryAPI => {
     setStatus(Status.FETCHING);
 
     loadInvoiceData();
-  }, [workspace?.id, workspace?.plan, workspace?.seats]);
+  }, [organization?.chargebeeSubscriptionID, organization?.subscription?.plan, organization?.subscription?.editorSeats]);
 
   return {
     data: billingHistory?.data ?? [],
+    nextCursor: billingHistory?.nextCursor ?? null,
     status,
     hasMore: !!billingHistory?.hasMore,
     isReady: !!billingHistory?.data,

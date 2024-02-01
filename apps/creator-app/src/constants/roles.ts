@@ -21,7 +21,7 @@ export enum VirtualRole {
   ORGANIZATION_ADMIN = 'organization_admin',
 
   /**
-   * locked project viewer
+   * locked project viewer, yeet
    */
   LOCKED_PROJECT_VIEWER = 'locked_project_viewer',
 }

@@ -1,6 +1,6 @@
 import { BaseModels } from '@voiceflow/base-types';
 
-import { DBKnowledgeBaseDocument } from '@/models/KnowledgeBase.model';
+import { DBKnowledgeBaseDocument, KnowledgeBaseIntegration, ZendeskFilters } from '@/models/KnowledgeBase.model';
 
 import api, { apiV3 } from './api';
 
@@ -53,4 +53,22 @@ export const knowledgeBaseClient = {
     apiV3.fetch
       .post<DBKnowledgeBaseDocument>(`/projects/${projectID}/knowledge-base/documents/${documentID}/file`, formData)
       .then(({ data }) => data),
+
+  getAllIntegrations: (projectID: string) =>
+    apiV3.fetch.get<KnowledgeBaseIntegration[]>(`/projects/${projectID}/knowledge-base/integrations`).then(({ data }) => data),
+
+  createOneIntegration: (projectID: string, integrationType: string) =>
+    apiV3.fetch.post<KnowledgeBaseIntegration>(`/projects/${projectID}/knowledge-base/integrations/${integrationType}`).then(({ data }) => data),
+
+  deleteOneIntegration: (projectID: string, integrationID: string) =>
+    apiV3.fetch.delete(`/projects/${projectID}/knowledge-base/integrations/${integrationID}`),
+
+  getIntegrationAuthUrl: (projectID: string, integrationType: string) =>
+    apiV3.fetch.get<string>(`/projects/${projectID}/knowledge-base/integrations/${integrationType}/auth-redirect-url`).then(({ data }) => data),
+
+  getIntegrationFilters: (projectID: string, integrationType: string) =>
+    apiV3.fetch.get<ZendeskFilters>(`/projects/${projectID}/knowledge-base/integrations/${integrationType}/filters`).then(({ data }) => data),
+
+  getIntegrationDocumentCount: (projectID: string, integrationType: string, filters: ZendeskFilters) =>
+    apiV3.fetch.post<number>(`/projects/${projectID}/knowledge-base/integrations/${integrationType}/count`, { filters }).then(({ data }) => data),
 };

@@ -1,4 +1,4 @@
-import { Box, UploadArea } from '@voiceflow/ui-next';
+import { Box, Scroll, UploadArea } from '@voiceflow/ui-next';
 import React, { useState } from 'react';
 
 import { Modal } from '@/components/Modal';
@@ -89,32 +89,34 @@ export const KBImportFile = modalsManager.create('KBImportFile', () => ({ api, t
     >
       <Modal.Header title="Import file" onClose={api.onClose} />
 
-      <Box direction="column" mt={20} mb={24} mx={24} gap={6}>
-        <div>
-          <Box mb={6}>
-            <KBFieldLabel>File(s)</KBFieldLabel>
-          </Box>
-          <UploadArea
-            files={files.length ? files : undefined}
-            label="Drop file(s) here or"
-            error={!!error}
-            variant="secondary"
-            caption={error ? undefined : caption}
-            onUpload={onUpload}
-            disabled={closePrevented}
-            maxFiles={100}
-            className={uploadAreaStyles}
-            errorMessage={error}
-            acceptedFileTypes={{
-              [MediaMimeType.TEXT_PLAIN]: MEDIA_FILE_TYPES.TXT,
-              [MediaMimeType.APPLICATION_PDF]: MEDIA_FILE_TYPES.PDF,
-              [MediaMimeType.APPLICATION_DOCX]: MEDIA_FILE_TYPES.DOCX,
-              [MediaMimeType.APPLICATION_MSWORD]: MEDIA_FILE_TYPES.DOC,
-            }}
-            onCloseButtonClick={onClear}
-          />
-        </div>
-      </Box>
+      <Scroll style={{ display: 'block' }}>
+        <Box direction="column" mt={20} mb={24} mx={24} gap={6}>
+          <div>
+            <Box mb={6}>
+              <KBFieldLabel>File(s)</KBFieldLabel>
+            </Box>
+            <UploadArea
+              files={files.length ? files : undefined}
+              label="Drop file(s) here or"
+              error={!!error}
+              variant="secondary"
+              caption={error ? undefined : caption}
+              onUpload={onUpload}
+              disabled={closePrevented}
+              maxFiles={100}
+              className={uploadAreaStyles}
+              errorMessage={error}
+              acceptedFileTypes={{
+                [MediaMimeType.TEXT_PLAIN]: MEDIA_FILE_TYPES.TXT,
+                [MediaMimeType.APPLICATION_PDF]: MEDIA_FILE_TYPES.PDF,
+                [MediaMimeType.APPLICATION_DOCX]: MEDIA_FILE_TYPES.DOCX,
+                [MediaMimeType.APPLICATION_MSWORD]: MEDIA_FILE_TYPES.DOC,
+              }}
+              onCloseButtonClick={onClear}
+            />
+          </div>
+        </Box>
+      </Scroll>
 
       <Modal.Footer>
         <Modal.Footer.Button label="Cancel" variant="secondary" onClick={api.onClose} />

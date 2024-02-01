@@ -15,13 +15,3 @@ export const textareaStyles = style({
 export const errorTextStyles = style({
   overflowWrap: 'break-word',
 });
-
-export const textareaBoxStyles = style({
-  maxHeight: 'calc(100vh - (32px * 2) - 56px - 80px - 84px - 44px - 16px)',
-  flexGrow: 1,
-  overflowY: 'auto',
-  scrollbarWidth: 'none',
-  '::-webkit-scrollbar': {
-    display: 'none',
-  },
-});

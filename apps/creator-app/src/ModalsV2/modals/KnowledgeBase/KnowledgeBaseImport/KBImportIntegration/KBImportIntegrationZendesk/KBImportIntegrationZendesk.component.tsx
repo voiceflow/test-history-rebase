@@ -1,5 +1,5 @@
 import { BaseModels } from '@voiceflow/base-types';
-import { Box, Divider } from '@voiceflow/ui-next';
+import { Box, Divider, Scroll } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { Modal } from '@/components/Modal';
@@ -17,12 +17,14 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
   const [locale, setLocale] = React.useState<string[]>([]);
   const [category, setCategory] = React.useState<string[]>([]);
   const [label, setLabel] = React.useState<string[]>([]);
+  const [userSegment, setUserSegment] = React.useState<string[]>([]);
   const [numDataSources, setNumDataSources] = React.useState(140);
 
   const BRAND_ID_OPTIONS = ['Brand 1', 'Brand 2', 'Brand 3'];
   const LOCALE_OPTIONS = ['English', 'French', 'German', 'Spanish'];
   const CATEGORY_OPTIONS = ['Category 1', 'Category 2', 'Category 3'];
   const LABEL_OPTIONS = ['Label 1', 'Label 2', 'Label 3'];
+  const USER_SEGMENT_OPTIONS = ['User Segment 1', 'User Segment 2', 'User Segment 3'];
 
   React.useEffect(() => {
     disableClose();
@@ -37,9 +39,13 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
     setLocale([]);
     setCategory([]);
     setLabel([]);
+    setUserSegment([]);
   };
 
-  const areFilters = React.useMemo(() => brandId.length || locale.length || category.length || label.length, [brandId, locale, category, label]);
+  const areFilters = React.useMemo(
+    () => brandId.length || locale.length || category.length || label.length || userSegment.length,
+    [brandId, locale, category, label, userSegment]
+  );
 
   const importDataSources = () => {
     disableClose();
@@ -53,51 +59,69 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
 
   return (
     <>
-      <Modal.Header title="Import from Zendesk" onClose={onClose} />
+      <Modal.Header title="Import from Zendesk" onClose={onClose} leftButton={<Modal.Header.Icon iconName="Zendesk" />} />
 
-      <Box direction="column" pt={20}>
-        <Box pb={16} pl={24}>
-          <Divider noPadding label={areFilters ? `Reset filters` : 'Filters'} onLabelClick={areFilters ? stopPropagation(resetFilters) : undefined} />
+      <Scroll style={{ display: 'block' }}>
+        <Box direction="column" pt={20}>
+          <Box pb={16} pl={24}>
+            <Divider
+              noPadding
+              label={areFilters ? `Reset filters` : 'Filters'}
+              onLabelClick={areFilters ? stopPropagation(resetFilters) : undefined}
+            />
+          </Box>
+          <Box direction="column" gap={16} px={24} pb={24}>
+            <KBZendeskFilterSelect
+              label="Brand ID"
+              value={brandId}
+              options={BRAND_ID_OPTIONS}
+              disabled={disabled}
+              onValueChange={setBrandId}
+              placeholder="Select brands (optional)"
+            />
+            <KBZendeskFilterSelect
+              label="Locale"
+              value={locale}
+              options={LOCALE_OPTIONS}
+              disabled={disabled || !brandId.length}
+              onValueChange={setLocale}
+              placeholder="Select locale (optional)"
+              hasTooltip={!brandId.length}
+            />
+            <KBZendeskFilterSelect
+              label="Categories"
+              value={category}
+              options={CATEGORY_OPTIONS}
+              disabled={disabled || !locale.length}
+              onValueChange={setCategory}
+              placeholder="Select category (optional)"
+              hasTooltip={!locale.length}
+            />
+            <KBZendeskFilterSelect
+              label="Labels"
+              value={label}
+              options={LABEL_OPTIONS}
+              disabled={disabled || !category.length}
+              onValueChange={setLabel}
+              placeholder="Select labels (optional)"
+              hasTooltip={!category.length}
+            />
+            <KBZendeskFilterSelect
+              label="User segments"
+              value={userSegment}
+              options={USER_SEGMENT_OPTIONS}
+              disabled={disabled || !label.length}
+              onValueChange={setUserSegment}
+              placeholder="Select user segments (optional)"
+              hasTooltip={!label.length}
+            />
+          </Box>
+          <Divider noPadding />
+          <Box px={24} pb={24} pt={20}>
+            <KBRefreshRateSelect value={refreshRate} onValueChange={setRefreshRate} disabled={disabled} />
+          </Box>
         </Box>
-        <Box direction="column" gap={16} px={24} pb={24}>
-          <KBZendeskFilterSelect
-            label="Brand ID"
-            value={brandId}
-            options={BRAND_ID_OPTIONS}
-            disabled={disabled}
-            onValueChange={setBrandId}
-            placeholder="Select brands (optional)"
-          />
-          <KBZendeskFilterSelect
-            label="Locale"
-            value={locale}
-            options={LOCALE_OPTIONS}
-            disabled={disabled || !brandId.length}
-            onValueChange={setLocale}
-            placeholder="Select locale (optional)"
-          />
-          <KBZendeskFilterSelect
-            label="Categories"
-            value={category}
-            options={CATEGORY_OPTIONS}
-            disabled={disabled || !locale.length}
-            onValueChange={setCategory}
-            placeholder="Select category (optional)"
-          />
-          <KBZendeskFilterSelect
-            label="Labels"
-            value={label}
-            options={LABEL_OPTIONS}
-            disabled={disabled || !category.length}
-            onValueChange={setLabel}
-            placeholder="Select labels (optional)"
-          />
-        </Box>
-        <Divider noPadding />
-        <Box px={24} pb={24} pt={20}>
-          <KBRefreshRateSelect value={refreshRate} onValueChange={setRefreshRate} disabled={disabled} />
-        </Box>
-      </Box>
+      </Scroll>
 
       <Modal.Footer>
         <Modal.Footer.Button label="Cancel" variant="secondary" onClick={onClose} disabled={disabled} />

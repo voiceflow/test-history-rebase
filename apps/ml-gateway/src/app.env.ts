@@ -31,6 +31,7 @@ export const EnvironmentVariables = BaseEnvironmentVariables.extend({
   ANTHROPIC_API_KEY: z.string().optional(),
 
   /* request throttler */
+  /* Fake comment */
   REQUEST_THROTTLER_TTL: z.string().optional().default('60000').transform(Number),
   REQUEST_THROTTLER_LIMIT: z.string().optional().default('1000').transform(Number),
 })

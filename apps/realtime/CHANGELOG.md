@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.263.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.262.1...@voiceflow/realtime@1.263.0) (2024-02-01)
+
+### Features
+
+* new invoice list (CV3-850) ([#7732](https://github.com/voiceflow/creator-app/issues/7732)) ([267c9eb](https://github.com/voiceflow/creator-app/commit/267c9ebf3ec96730cac444d6aebadf856eeaf656))
+
 ## [1.262.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.262.0...@voiceflow/realtime@1.262.1) (2024-02-01)
 
 ### Bug Fixes

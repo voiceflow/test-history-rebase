@@ -54,6 +54,7 @@ export class ConditionPredicateEntity extends PostgresCMSObjectEntity {
   toJSON(...args: any[]): ToJSONWithForeignKeys<ConditionPredicateEntity> {
     return ConditionPredicateJSONAdapter.fromDB({
       ...wrap<ConditionPredicateEntity>(this).toObject(...args),
+      updatedBy: this.updatedBy,
       assistant: this.assistant,
       condition: this.condition,
     });

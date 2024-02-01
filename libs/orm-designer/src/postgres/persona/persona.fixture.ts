@@ -13,8 +13,8 @@ export const persona: EntityDTO<PersonaEntity> = {
   maxLength: 140,
   systemPrompt: 'You are a helpful assistant',
   assistant: { id: 'assistant-1' } as any,
-  createdByID: 1,
-  updatedByID: 2,
+  createdBy: { id: 1 } as any,
+  updatedBy: { id: 2 } as any,
   folder: null,
   environmentID: 'environment-1',
 };

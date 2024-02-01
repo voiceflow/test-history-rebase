@@ -54,6 +54,7 @@ export class FunctionPathEntity extends PostgresCMSObjectEntity {
     return FunctionPatchJSONAdapter.fromDB({
       ...wrap<FunctionPathEntity>(this).toObject(...args),
       function: this.function,
+      updatedBy: this.updatedBy,
       assistant: this.assistant,
     });
   }

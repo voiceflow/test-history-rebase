@@ -11,7 +11,7 @@ import type {
   DeleteOneRequest,
   ReplaceRequest,
 } from '@/crud/crud.interface';
-import type { DesignerAction } from '@/types';
+import type { DesignerAction, WithoutMeta } from '@/types';
 
 const responseAttachmentAction = createCRUD('response_attachment');
 
@@ -48,7 +48,7 @@ export namespace CreateCardOne {
     data: CreateCardData;
   }
 
-  export interface Response extends CreateResponse<ResponseCardAttachment>, DesignerAction {}
+  export interface Response extends CreateResponse<WithoutMeta<ResponseCardAttachment>>, DesignerAction {}
 }
 
 export const CreateCardOne = responseAttachmentAction.crud.createOne<CreateCardOne.Request, CreateCardOne.Response>(
@@ -62,7 +62,7 @@ export namespace CreateMediaOne {
     data: CreateMediaData;
   }
 
-  export interface Response extends CreateResponse<ResponseMediaAttachment>, DesignerAction {}
+  export interface Response extends CreateResponse<WithoutMeta<ResponseMediaAttachment>>, DesignerAction {}
 }
 
 export const CreateMediaOne = responseAttachmentAction.crud.createOne<CreateMediaOne.Request, CreateMediaOne.Response>(

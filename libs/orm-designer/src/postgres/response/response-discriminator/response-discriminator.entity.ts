@@ -73,6 +73,7 @@ export class ResponseDiscriminatorEntity extends PostgresCMSObjectEntity {
     return ResponseDiscriminatorJSONAdapter.fromDB({
       ...wrap<ResponseDiscriminatorEntity>(this).toObject(...args),
       response: this.response,
+      updatedBy: this.updatedBy,
       assistant: this.assistant,
     });
   }

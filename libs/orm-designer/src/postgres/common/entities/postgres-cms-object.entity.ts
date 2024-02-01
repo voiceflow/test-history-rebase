@@ -1,7 +1,7 @@
-import { ManyToOne, Property } from '@mikro-orm/core';
+import { ManyToOne, Property, ref } from '@mikro-orm/core';
 
 import { UserStubEntity } from '@/postgres/stubs/user.stub';
-import type { EntityCreateParams } from '@/types';
+import type { EntityCreateParams, Ref } from '@/types';
 
 import { PostgresCMSCreatableEntity } from './postgres-cms-creatable.entity';
 
@@ -10,12 +10,12 @@ export abstract class PostgresCMSObjectEntity extends PostgresCMSCreatableEntity
   updatedAt: Date;
 
   @ManyToOne(() => UserStubEntity, { name: 'updated_by_id', nullable: true, default: null })
-  updatedByID: number | null = null;
+  updatedBy: Ref<UserStubEntity> | null = null;
 
   constructor({ updatedAt = new Date().toJSON(), updatedByID, ...data }: EntityCreateParams<PostgresCMSObjectEntity>) {
     super(data);
 
     this.updatedAt = new Date(updatedAt);
-    this.updatedByID = updatedByID;
+    this.updatedBy = updatedByID === null ? null : ref(UserStubEntity, updatedByID);
   }
 }

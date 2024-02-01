@@ -23,12 +23,12 @@ import { match } from 'ts-pattern';
 import { EntitySerializer } from '@/common';
 import { assistantBroadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
 import { ResponseAttachmentService } from '@/response/response-attachment/response-attachment.service';
-import { deepSetCreatorID } from '@/utils/creator.util';
 import { cloneManyEntities } from '@/utils/entity.util';
 
 import type { AttachmentAnyImportData, AttachmentCreateData, AttachmentPatchData } from './attachment.interface';
 import { CardAttachmentService } from './card-attachment.service';
 import { CardButtonService } from './card-button/card-button.service';
+import { AttachmentExportImportDataDTO } from './dtos/attachment-export-import-data.dto';
 import { MediaAttachmentService } from './media-attachment.service';
 
 @Injectable()
@@ -86,14 +86,14 @@ export class AttachmentService {
 
   /* Upsert */
 
-  async upsertOne(data: AnyAttachment, options?: ORMMutateOptions) {
+  async upsertOne(data: AttachmentAnyImportData, options?: ORMMutateOptions) {
     return match(data)
       .with({ type: AttachmentType.CARD }, ({ type: _, ...data }) => this.cardAttachment.upsertOne(data, options))
       .with({ type: AttachmentType.MEDIA }, ({ type: _, ...data }) => this.mediaAttachment.upsertOne(data, options))
       .exhaustive();
   }
 
-  async upsertMany(data: AnyAttachment[], { flush = true }: ORMMutateOptions = {}) {
+  async upsertMany(data: AttachmentAnyImportData[], { flush = true }: ORMMutateOptions = {}) {
     const cardAttachmentsData = data.filter((item) => item.type === AttachmentType.CARD).map(({ type: _, ...data }) => data);
     const mediaAttachmentsData = data.filter((item) => item.type === AttachmentType.MEDIA).map(({ type: _, ...data }) => data);
 
@@ -109,7 +109,12 @@ export class AttachmentService {
     return [...cardAttachment, ...mediaAttachments];
   }
 
-  async upsertManyWithSubResources({ attachments, cardButtons }: { attachments: AnyAttachment[]; cardButtons: CardButton[] }) {
+  async upsertManyWithSubResources(
+    data: { attachments: AnyAttachment[]; cardButtons: CardButton[] },
+    meta: { userID: number; assistantID: string; environmentID: string }
+  ) {
+    const { attachments, cardButtons } = this.prepareImportData(data, meta);
+
     await this.upsertMany(attachments);
     await this.cardButton.upsertMany(cardButtons);
   }
@@ -132,10 +137,28 @@ export class AttachmentService {
 
   /* Export */
 
-  prepareExportData({ attachments, cardButtons }: { attachments: AnyAttachmentEntity[]; cardButtons: CardButtonEntity[] }) {
+  prepareExportData(
+    {
+      attachments,
+      cardButtons,
+    }: {
+      attachments: AnyAttachmentEntity[];
+      cardButtons: CardButtonEntity[];
+    },
+    { backup }: { backup?: boolean } = {}
+  ): AttachmentExportImportDataDTO {
+    if (backup) {
+      return {
+        attachments: this.entitySerializer.iterable(attachments),
+        cardButtons: this.entitySerializer.iterable(cardButtons),
+      };
+    }
+
     return {
-      attachments: this.entitySerializer.iterable(attachments),
-      cardButtons: this.entitySerializer.iterable(cardButtons),
+      attachments: this.entitySerializer.iterable(attachments, {
+        omit: ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'],
+      }) as AttachmentExportImportDataDTO['attachments'],
+      cardButtons: this.entitySerializer.iterable(cardButtons, { omit: ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'] }),
     };
   }
 
@@ -178,23 +201,48 @@ export class AttachmentService {
   /* Import */
 
   prepareImportData(
-    { attachments, cardButtons }: { attachments: AttachmentAnyImportData[]; cardButtons: ToJSONWithForeignKeys<CardButtonEntity>[] },
+    { attachments, cardButtons }: AttachmentExportImportDataDTO,
     { userID, backup, assistantID, environmentID }: { userID: number; backup?: boolean; assistantID: string; environmentID: string }
-  ) {
+  ): { attachments: AttachmentAnyImportData[]; cardButtons: ToJSONWithForeignKeys<CardButtonEntity>[] } {
     const createdAt = new Date().toJSON();
 
-    return {
-      attachments: attachments.map<AttachmentAnyImportData>((item) =>
-        backup
-          ? { ...item, assistantID, environmentID }
-          : { ...deepSetCreatorID(item, userID), createdAt, updatedAt: createdAt, assistantID, environmentID }
-      ),
+    if (backup) {
+      return {
+        attachments: attachments.map((item) => ({
+          ...item,
+          updatedAt: item.updatedAt ?? createdAt,
+          updatedByID: item.updatedByID ?? userID,
+          assistantID,
+          environmentID,
+        })),
+        cardButtons: cardButtons.map((item) => ({
+          ...item,
+          updatedAt: item.updatedAt ?? createdAt,
+          updatedByID: item.updatedByID ?? userID,
+          assistantID,
+          environmentID,
+        })),
+      };
+    }
 
-      cardButtons: cardButtons.map<ToJSONWithForeignKeys<CardButtonEntity>>((item) =>
-        backup
-          ? { ...item, assistantID, environmentID }
-          : { ...deepSetCreatorID(item, userID), createdAt, updatedAt: createdAt, assistantID, environmentID }
-      ),
+    return {
+      attachments: attachments.map((item) => ({
+        ...item,
+        createdAt,
+        updatedAt: createdAt,
+        updatedByID: userID,
+        assistantID,
+        environmentID,
+      })),
+
+      cardButtons: cardButtons.map((item) => ({
+        ...item,
+        createdAt,
+        updatedAt: createdAt,
+        updatedByID: userID,
+        assistantID,
+        environmentID,
+      })),
     };
   }
 

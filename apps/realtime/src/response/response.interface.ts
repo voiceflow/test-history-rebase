@@ -12,7 +12,6 @@ import type { CreateOneForUserData } from '@/common/types';
 
 import {
   ResponseJSONVariantCreateWithSubResourcesData,
-  ResponsePromptVariantCreateWithSubResourcesData,
   ResponseTextVariantCreateWithSubResourcesData,
 } from './response-variant/response-variant.interface';
 
@@ -20,7 +19,6 @@ export interface ResponseCreateWithSubResourcesData extends CreateOneForUserData
   variants: Array<
     | ResponseTextVariantCreateWithSubResourcesData<'assistantID' | 'environmentID' | 'discriminatorID'>
     | ResponseJSONVariantCreateWithSubResourcesData<'assistantID' | 'environmentID' | 'discriminatorID'>
-    | ResponsePromptVariantCreateWithSubResourcesData<'assistantID' | 'environmentID' | 'discriminatorID'>
   >;
 }
 

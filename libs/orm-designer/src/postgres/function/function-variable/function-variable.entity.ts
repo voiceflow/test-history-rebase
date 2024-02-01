@@ -60,6 +60,7 @@ export class FunctionVariableEntity extends PostgresCMSObjectEntity {
     return FunctionVariableJSONAdapter.fromDB({
       ...wrap<FunctionVariableEntity>(this).toObject(...args),
       function: this.function,
+      updatedBy: this.updatedBy,
       assistant: this.assistant,
     });
   }

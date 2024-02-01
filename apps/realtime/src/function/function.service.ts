@@ -21,7 +21,6 @@ import { Actions } from '@voiceflow/sdk-logux-designer';
 import { CMSTabularService, EntitySerializer } from '@/common';
 import type { CreateOneForUserData } from '@/common/types';
 import { assistantBroadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
-import { deepSetCreatorID } from '@/utils/creator.util';
 import { cloneManyEntities } from '@/utils/entity.util';
 
 import { FunctionExportImportDataDTO } from './dtos/function-export-import-data.dto';
@@ -68,19 +67,30 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
 
   /* Export */
 
-  prepareExportData({
-    functions,
-    functionPaths,
-    functionVariables,
-  }: {
-    functions: FunctionEntity[];
-    functionPaths: FunctionPathEntity[];
-    functionVariables: FunctionVariableEntity[];
-  }) {
+  prepareExportData(
+    {
+      functions,
+      functionPaths,
+      functionVariables,
+    }: {
+      functions: FunctionEntity[];
+      functionPaths: FunctionPathEntity[];
+      functionVariables: FunctionVariableEntity[];
+    },
+    { backup }: { backup?: boolean } = {}
+  ): FunctionExportImportDataDTO {
+    if (backup) {
+      return {
+        functions: this.entitySerializer.iterable(functions),
+        functionPaths: this.entitySerializer.iterable(functionPaths),
+        functionVariables: this.entitySerializer.iterable(functionVariables),
+      };
+    }
+
     return {
-      functions: this.entitySerializer.iterable(functions),
-      functionPaths: this.entitySerializer.iterable(functionPaths),
-      functionVariables: this.entitySerializer.iterable(functionVariables),
+      functions: this.entitySerializer.iterable(functions, { omit: ['assistantID', 'environmentID'] }),
+      functionPaths: this.entitySerializer.iterable(functionPaths, { omit: ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'] }),
+      functionVariables: this.entitySerializer.iterable(functionVariables, { omit: ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'] }),
     };
   }
 
@@ -160,47 +170,72 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
   prepareImportData(
     { functions, functionPaths, functionVariables }: FunctionExportImportDataDTO,
     { userID, backup, assistantID, environmentID }: { userID: number; backup?: boolean; assistantID: string; environmentID: string }
-  ) {
-    const createdAt = new Date();
+  ): {
+    functions: ToJSONWithForeignKeys<FunctionEntity>[];
+    functionPaths: ToJSONWithForeignKeys<FunctionPathEntity>[];
+    functionVariables: ToJSONWithForeignKeys<FunctionVariableEntity>[];
+  } {
+    const createdAt = new Date().toJSON();
 
-    const byCreatedAt = (itemA: { createdAt: string }, itemB: { createdAt: string }) =>
+    if (backup) {
+      return {
+        functions: functions.map((item) => ({
+          ...item,
+          assistantID,
+          environmentID,
+        })),
+
+        functionPaths: functionPaths.map((item) => ({
+          ...item,
+          updatedAt: item.updatedAt ?? createdAt,
+          updatedByID: item.updatedByID ?? userID,
+          assistantID,
+          environmentID,
+        })),
+
+        functionVariables: functionVariables.map((item) => ({
+          ...item,
+          updatedAt: item.updatedAt ?? createdAt,
+          updatedByID: item.updatedByID ?? userID,
+          assistantID,
+          environmentID,
+        })),
+      };
+    }
+
+    const sortByCreatedAt = (itemA: { createdAt: string }, itemB: { createdAt: string }) =>
       new Date(itemA.createdAt).getTime() - new Date(itemB.createdAt).getTime();
-
-    functionPaths.sort(byCreatedAt);
-    functionVariables.sort(byCreatedAt);
 
     const staggerDate = (date: Date, delta: number): string => new Date(date.getTime() + delta).toJSON();
 
     return {
-      functions: functions.map<ToJSONWithForeignKeys<FunctionEntity>>((item) =>
-        backup
-          ? { ...item, assistantID, environmentID }
-          : { ...deepSetCreatorID(item, userID), createdAt: createdAt.toJSON(), updatedAt: createdAt.toJSON(), assistantID, environmentID }
-      ),
+      functions: functions.map((item) => ({
+        ...item,
+        createdAt,
+        updatedAt: createdAt,
+        createdByID: userID,
+        updatedByID: userID,
+        assistantID,
+        environmentID,
+      })),
 
-      functionPaths: functionPaths.map<ToJSONWithForeignKeys<FunctionPathEntity>>((item, idx) =>
-        backup
-          ? { ...item, assistantID, environmentID }
-          : {
-              ...deepSetCreatorID(item, userID),
-              createdAt: staggerDate(createdAt, idx),
-              updatedAt: createdAt.toJSON(),
-              assistantID,
-              environmentID,
-            }
-      ),
+      functionPaths: [...functionPaths].sort(sortByCreatedAt).map((item, index) => ({
+        ...item,
+        createdAt: staggerDate(new Date(createdAt), index),
+        updatedAt: createdAt,
+        assistantID,
+        updatedByID: userID,
+        environmentID,
+      })),
 
-      functionVariables: functionVariables.map<ToJSONWithForeignKeys<FunctionVariableEntity>>((item, idx) =>
-        backup
-          ? { ...item, assistantID, environmentID }
-          : {
-              ...deepSetCreatorID(item, userID),
-              createdAt: staggerDate(createdAt, idx),
-              updatedAt: createdAt.toJSON(),
-              assistantID,
-              environmentID,
-            }
-      ),
+      functionVariables: [...functionVariables].sort(sortByCreatedAt).map((item, index) => ({
+        ...item,
+        createdAt: staggerDate(new Date(createdAt), index),
+        updatedAt: createdAt,
+        assistantID,
+        updatedByID: userID,
+        environmentID,
+      })),
     };
   }
 
@@ -451,15 +486,12 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
 
   /* Upsert */
 
-  async upsertManyWithSubResources({
-    functions,
-    functionPaths,
-    functionVariables,
-  }: {
-    functions: FunctionType[];
-    functionPaths: FunctionPath[];
-    functionVariables: FunctionVariable[];
-  }) {
+  async upsertManyWithSubResources(
+    data: { functions: FunctionType[]; functionPaths: FunctionPath[]; functionVariables: FunctionVariable[] },
+    meta: { userID: number; assistantID: string; environmentID: string }
+  ) {
+    const { functions, functionPaths, functionVariables } = this.prepareImportData(data, meta);
+
     await this.upsertMany(functions);
     await this.functionPath.upsertMany(functionPaths);
     await this.functionVariable.upsertMany(functionVariables);

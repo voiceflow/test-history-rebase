@@ -18,5 +18,4 @@ export const ResponseCreateVariant: React.FC<IResponseCreateVariant> = ({ varian
       />
     ))
     .with({ type: ResponseVariantType.JSON }, () => <Text>TODO: Not implemented</Text>)
-    .with({ type: ResponseVariantType.PROMPT }, () => <Text>TODO: Not implemented</Text>)
     .exhaustive();

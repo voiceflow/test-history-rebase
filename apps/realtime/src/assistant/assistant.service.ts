@@ -50,6 +50,11 @@ import { VersionService } from '@/version/version.service';
 
 import { CreateFromTemplateData } from './assistant.interface';
 import { AssistantSerializer } from './assistant.serializer';
+import {
+  adjustCMSTabularEntitiesUpdatedFieldsMap,
+  buildCMSTabularEntitiesUpdatedFieldsMap,
+  updateCMSTabularResourcesWithUpdatedFields,
+} from './assistant.util';
 import { AssistantExportImportDataDTO } from './dtos/assistant-export-import-data.dto';
 
 @Injectable()
@@ -218,9 +223,9 @@ export class AssistantService extends MutableService<AssistantORM> {
     const importData = this.environment.prepareImportData(data, { userID, backup, assistantID, workspaceID, environmentID });
 
     return {
-      ...data,
       ...importData,
       project,
+      _version: data._version,
       variableStates: data.variableStates?.map((variableState) => ({ ...Utils.object.omit(variableState, ['_id']), projectID: assistantID })),
     };
   }
@@ -404,10 +409,17 @@ export class AssistantService extends MutableService<AssistantORM> {
     },
     {
       userID,
+      backup,
       withPrograms,
       centerDiagrams = true,
       withPrototypePrograms,
-    }: { userID: number; withPrograms?: boolean; centerDiagrams?: boolean; withPrototypePrograms?: boolean }
+    }: {
+      userID: number;
+      backup?: boolean;
+      withPrograms?: boolean;
+      centerDiagrams?: boolean;
+      withPrototypePrograms?: boolean;
+    }
   ): AssistantExportImportDataDTO {
     const project = this.projectSerializer.serialize(data.project);
 
@@ -415,7 +427,7 @@ export class AssistantService extends MutableService<AssistantORM> {
     project.members = [];
     project.previewVersion = undefined;
 
-    const exportData = this.environment.prepareExportData(data, { userID, workspaceID: data.project.teamID, centerDiagrams });
+    const exportData = this.environment.prepareExportData(data, { backup, userID, workspaceID: data.project.teamID, centerDiagrams });
 
     return {
       ...exportData,
@@ -433,6 +445,7 @@ export class AssistantService extends MutableService<AssistantORM> {
 
   public async exportJSON({
     userID,
+    backup,
     assistantID,
     environmentID,
     centerDiagrams,
@@ -440,6 +453,7 @@ export class AssistantService extends MutableService<AssistantORM> {
     prototypePrograms: withPrototypePrograms,
   }: {
     userID: number;
+    backup?: boolean;
     programs?: boolean;
     assistantID?: string;
     environmentID: string;
@@ -448,7 +462,7 @@ export class AssistantService extends MutableService<AssistantORM> {
   }) {
     return this.postgresEM.transactional(async () => {
       const resolvedEnvironmentID = await this.resolveEnvironmentIDAlias(environmentID, assistantID);
-      const { projectID } = await this.version.findOneOrFail(resolvedEnvironmentID);
+      const projectID = await this.version.findOneProjectID(resolvedEnvironmentID);
 
       const [project, variableStates] = await Promise.all([
         this.project.findOneOrFail(projectID.toJSON()),
@@ -481,8 +495,46 @@ export class AssistantService extends MutableService<AssistantORM> {
           variableStates,
           prototypePrograms,
         },
-        { userID, centerDiagrams, withPrograms, withPrototypePrograms }
+        { backup, userID, centerDiagrams, withPrograms, withPrototypePrograms }
       );
+    });
+  }
+
+  public async exportCMS({ userID, assistantID, environmentID }: { userID: number; assistantID?: string; environmentID: string }) {
+    return this.postgresEM.transactional(async () => {
+      const resolvedEnvironmentID = await this.resolveEnvironmentIDAlias(environmentID, assistantID);
+      const projectID = await this.version.findOneProjectID(resolvedEnvironmentID);
+      const workspaceID = await this.project.findOneWorkspaceID(projectID.toJSON());
+
+      const [assistant, cmsData] = await Promise.all([
+        this.findOneOrFail(projectID.toJSON()),
+        this.environment.findOneCMSData(projectID.toJSON(), environmentID),
+      ]);
+
+      const intentsUpdatedFieldsMap = buildCMSTabularEntitiesUpdatedFieldsMap(cmsData.intents);
+      adjustCMSTabularEntitiesUpdatedFieldsMap(intentsUpdatedFieldsMap, cmsData.utterances, (utterance) => utterance.intent.id);
+      adjustCMSTabularEntitiesUpdatedFieldsMap(intentsUpdatedFieldsMap, cmsData.requiredEntities, (utterance) => utterance.intent.id);
+
+      const entitiesUpdatedFieldsMap = buildCMSTabularEntitiesUpdatedFieldsMap(cmsData.entities);
+      adjustCMSTabularEntitiesUpdatedFieldsMap(entitiesUpdatedFieldsMap, cmsData.entityVariants, (entityVariant) => entityVariant.entity.id);
+
+      const functionsUpdatedFieldsMap = buildCMSTabularEntitiesUpdatedFieldsMap(cmsData.functions);
+      adjustCMSTabularEntitiesUpdatedFieldsMap(functionsUpdatedFieldsMap, cmsData.functionPaths, (functionPath) => functionPath.function.id);
+      adjustCMSTabularEntitiesUpdatedFieldsMap(
+        functionsUpdatedFieldsMap,
+        cmsData.functionVariables,
+        (functionVariable) => functionVariable.function.id
+      );
+
+      const exportData = this.environment.prepareExportCMSData(cmsData, { userID, workspaceID });
+
+      return {
+        ...exportData,
+        intents: updateCMSTabularResourcesWithUpdatedFields(intentsUpdatedFieldsMap, exportData.intents),
+        entities: updateCMSTabularResourcesWithUpdatedFields(entitiesUpdatedFieldsMap, exportData.entities),
+        functions: updateCMSTabularResourcesWithUpdatedFields(functionsUpdatedFieldsMap, exportData.functions ?? []),
+        assistant: this.assistantSerializer.nullable(assistant),
+      };
     });
   }
 
@@ -699,7 +751,7 @@ export class AssistantService extends MutableService<AssistantORM> {
           }),
         };
 
-        await this.environment.upsertCMSData(cmsData);
+        await this.environment.upsertCMSData(cmsData, { userID, assistantID: project.id, environmentID: version.id });
 
         await this.version.patchOnePlatformData(version.id, {
           slots: _.uniqBy([...version.platformData.slots, ...nlu.slots], (intent) => intent.key),

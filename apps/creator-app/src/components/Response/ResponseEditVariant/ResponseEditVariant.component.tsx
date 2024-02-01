@@ -10,5 +10,4 @@ export const ResponseEditVariant: React.FC<IResponseEditVariant> = ({ variant, t
   match(variant)
     .with({ type: ResponseVariantType.TEXT }, (data) => <ResponseEditTextVariant {...props} {...textVariantProps} variant={data} />)
     .with({ type: ResponseVariantType.JSON }, () => <Text>TODO: Not implemented</Text>)
-    .with({ type: ResponseVariantType.PROMPT }, () => <Text>TODO: Not implemented</Text>)
     .exhaustive();

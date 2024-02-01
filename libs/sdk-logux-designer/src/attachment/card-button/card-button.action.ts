@@ -11,7 +11,7 @@ import type {
   PatchOneRequest,
   ReplaceRequest,
 } from '@/crud/crud.interface';
-import type { DesignerAction } from '@/types';
+import type { DesignerAction, WithoutMeta } from '@/types';
 
 const cardButtonAction = createCRUD('card_button');
 
@@ -35,7 +35,7 @@ export namespace Create {
     data: CreateData;
   }
 
-  export interface Response extends CreateResponse<CardButton>, DesignerAction {}
+  export interface Response extends CreateResponse<WithoutMeta<CardButton>>, DesignerAction {}
 }
 
 export const Create = cardButtonAction.crud.createOne<Create.Request, Create.Response>();

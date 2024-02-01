@@ -1,8 +1,9 @@
 import { Entity, Property, wrap } from '@mikro-orm/core';
 
 import { CreatedByID, PostgresCreatableEntity } from '@/postgres/common';
-import type { EntityCreateParams, ToJSONWithForeignKeys } from '@/types';
+import type { EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
 
+import type { UserStubEntity } from '../stubs/user.stub';
 import { BackupJSONAdapter } from './backup.adapter';
 
 @Entity({ schema: 'app_cxd', tableName: 'backup' })
@@ -14,11 +15,11 @@ export class BackupEntity extends PostgresCreatableEntity {
   @Property()
   name: string;
 
+  @CreatedByID()
+  createdBy: Ref<UserStubEntity>;
+
   @Property({ name: 's3_object_ref' })
   s3ObjectRef: string;
-
-  @CreatedByID()
-  createdByID: number;
 
   @Property()
   assistantID: string;
@@ -27,14 +28,17 @@ export class BackupEntity extends PostgresCreatableEntity {
     super();
 
     ({
-      assistantID: this.assistantID,
       name: this.name,
+      createdBy: this.createdBy,
+      assistantID: this.assistantID,
       s3ObjectRef: this.s3ObjectRef,
-      createdByID: this.createdByID,
     } = BackupEntity.fromJSON(data));
   }
 
   toJSON(...args: any[]): ToJSONWithForeignKeys<BackupEntity> {
-    return BackupJSONAdapter.fromDB(wrap<BackupEntity>(this).toObject(...args));
+    return BackupJSONAdapter.fromDB({
+      ...wrap<BackupEntity>(this).toObject(...args),
+      createdBy: this.createdBy,
+    });
   }
 }

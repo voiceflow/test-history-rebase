@@ -7,7 +7,6 @@ import {
   AnyAttachment,
   AnyResponseAttachment,
   AnyResponseVariant,
-  AnyTrigger,
   CardButton,
   Entity,
   EntityVariant,
@@ -15,11 +14,9 @@ import {
   FunctionPath,
   FunctionVariable,
   Intent,
-  Prompt,
   RequiredEntity,
   Response,
   ResponseDiscriminator,
-  Story,
   Utterance,
   Variable,
 } from '@voiceflow/dtos';
@@ -51,9 +48,7 @@ import { DiagramUtil } from '@/diagram/diagram.util';
 import { EntityService } from '@/entity/entity.service';
 import { FunctionService } from '@/function/function.service';
 import { IntentService } from '@/intent/intent.service';
-import { PromptService } from '@/prompt/prompt.service';
 import { ResponseService } from '@/response/response.service';
-import { StoryService } from '@/story/story.service';
 import { VariableService } from '@/variable/variable.service';
 import { VersionService } from '@/version/version.service';
 
@@ -70,14 +65,10 @@ export class EnvironmentService {
     private readonly mongoEM: EntityManager,
     @Inject(getEntityManagerToken(DatabaseTarget.POSTGRES))
     private readonly postgresEM: EntityManager,
-    @Inject(StoryService)
-    private readonly story: StoryService,
     @Inject(IntentService)
     private readonly intent: IntentService,
     @Inject(EntityService)
     private readonly entity: EntityService,
-    @Inject(PromptService)
-    private readonly prompt: PromptService,
     @Inject(DiagramService)
     private readonly diagram: DiagramService,
     @Inject(UnleashFeatureFlagService)
@@ -186,7 +177,7 @@ export class EnvironmentService {
 
   /* Prototype */
   async preparePrototype(environmentID: string) {
-    const projectID = await this.version.findProjectID(environmentID);
+    const projectID = await this.version.findOneProjectID(environmentID);
 
     const [project, diagrams, cmsData] = await Promise.all([
       this.projectORM.findOneOrFail(projectID),
@@ -246,7 +237,6 @@ export class EnvironmentService {
     const cmsData = this.prepareImportCMSData(data, { userID, backup, assistantID, workspaceID, environmentID });
 
     return {
-      ...data,
       ...cmsData,
       version,
       diagrams: Object.values(data.diagrams).map((diagram) => ({ ...diagram, diagramID: diagram.diagramID ?? diagram._id })),
@@ -281,13 +271,31 @@ export class EnvironmentService {
 
   /* Export  */
 
+  public prepareExportCMSData(
+    data: EnvironmentCMSEntities,
+    { userID, backup, workspaceID }: { userID: number; backup?: boolean; workspaceID: number }
+  ) {
+    const cmsFunctionsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_FUNCTIONS, { userID, workspaceID });
+    const cmsVariablesEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_VARIABLES, { userID, workspaceID });
+
+    return {
+      ...this.entity.prepareExportData(data, { backup }),
+      ...this.intent.prepareExportData(data, { backup }),
+      ...this.response.prepareExportData(data, { backup }),
+      ...this.attachment.prepareExportData(data, { backup }),
+
+      ...(cmsVariablesEnabled && this.variable.prepareExportData(data, { backup })),
+      ...(cmsFunctionsEnabled && this.functionService.prepareExportData(data, { backup })),
+    };
+  }
+
   public prepareExportData(
     data: {
       cms: EnvironmentCMSEntities | null;
       version: VersionEntity;
       diagrams: DiagramEntity[];
     },
-    { userID, workspaceID, centerDiagrams = true }: { userID: number; workspaceID: number; centerDiagrams?: boolean }
+    { userID, backup, workspaceID, centerDiagrams = true }: { userID: number; backup?: boolean; workspaceID: number; centerDiagrams?: boolean }
   ): EnvironmentExportImportDTO {
     const version = this.entitySerializer.serialize(data.version);
     const diagrams = this.entitySerializer
@@ -299,9 +307,6 @@ export class EnvironmentService {
       delete version.prototype.settings.variableStateID;
     }
 
-    const cmsFunctionsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_FUNCTIONS, { userID, workspaceID });
-    const cmsVariablesEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_VARIABLES, { userID, workspaceID });
-
     return {
       version: {
         ...version,
@@ -310,15 +315,7 @@ export class EnvironmentService {
 
       diagrams: Object.fromEntries(diagrams.map((diagram) => [diagram.diagramID, diagram])),
 
-      ...(data.cms && {
-        ...this.entity.prepareExportData(data.cms),
-        ...this.intent.prepareExportData(data.cms),
-        ...this.response.prepareExportData(data.cms),
-        ...this.attachment.prepareExportData(data.cms),
-
-        ...(cmsVariablesEnabled && this.variable.prepareExportData(data.cms)),
-        ...(cmsFunctionsEnabled && this.functionService.prepareExportData(data.cms)),
-      }),
+      ...(data.cms && this.prepareExportCMSData(data.cms, { userID, backup, workspaceID })),
     };
   }
 
@@ -334,23 +331,6 @@ export class EnvironmentService {
     };
   }
 
-  /* CMS data  */
-
-  prepareExportCMSData(cms: EnvironmentCMSEntities, { userID, workspaceID }: { userID: number; workspaceID: number }) {
-    const cmsFunctionsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_FUNCTIONS, { userID, workspaceID });
-    const cmsVariablesEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_VARIABLES, { userID, workspaceID });
-
-    return {
-      ...this.entity.prepareExportData(cms),
-      ...this.intent.prepareExportData(cms),
-      ...this.response.prepareExportData(cms),
-      ...this.attachment.prepareExportData(cms),
-
-      ...(cmsVariablesEnabled && this.variable.prepareExportData(cms)),
-      ...(cmsFunctionsEnabled && this.functionService.prepareExportData(cms)),
-    };
-  }
-
   prepareImportCMSData(
     cms: EnvironmentCMSExportImportDataDTO,
     {
@@ -360,7 +340,7 @@ export class EnvironmentService {
       assistantID,
       environmentID,
     }: { userID: number; backup?: boolean; workspaceID: number; assistantID: string; environmentID: string }
-  ): EnvironmentCMSExportImportDataDTO {
+  ) {
     const cmsFunctionsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_FUNCTIONS, { userID, workspaceID });
     const cmsVariablesEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_VARIABLES, { userID, workspaceID });
 
@@ -410,7 +390,7 @@ export class EnvironmentService {
     };
   }
 
-  async importCMSData(importData: Partial<EnvironmentCMSExportImportDataDTO>) {
+  async importCMSData(importData: ReturnType<EnvironmentService['prepareImportCMSData']>) {
     await Promise.all([
       ...(importData.attachments?.length
         ? [
@@ -490,8 +470,6 @@ export class EnvironmentService {
 
   async findOneCMSData(assistantID: string, environmentID: string) {
     const [
-      { stories, triggers },
-      { prompts },
       { entities, entityVariants },
       { intents, utterances, requiredEntities },
       { variables },
@@ -499,8 +477,6 @@ export class EnvironmentService {
       { attachments, cardButtons },
       { functions, functionPaths, functionVariables },
     ] = await Promise.all([
-      this.story.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
-      this.prompt.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
       this.entity.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
       this.intent.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
       this.variable.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
@@ -510,11 +486,8 @@ export class EnvironmentService {
     ]);
 
     return {
-      stories,
       intents,
-      prompts,
       entities,
-      triggers,
       functions,
       responses,
       variables,
@@ -531,60 +504,54 @@ export class EnvironmentService {
     };
   }
 
-  async upsertCMSData({
-    stories = [],
-    intents = [],
-    prompts = [],
-    triggers = [],
-    entities = [],
-    variables = [],
-    responses = [],
-    functions = [],
-    utterances = [],
-    attachments = [],
-    cardButtons = [],
-    functionPaths = [],
-    entityVariants = [],
-    requiredEntities = [],
-    responseVariants = [],
-    functionVariables = [],
-    responseAttachments = [],
-    responseDiscriminators = [],
-  }: {
-    stories?: Story[];
-    intents?: Intent[];
-    prompts?: Prompt[];
-    triggers?: AnyTrigger[];
-    entities?: Entity[];
-    functions?: FunctionType[];
-    responses?: Response[];
-    variables?: Variable[];
-    utterances?: Utterance[];
-    attachments?: AnyAttachment[];
-    cardButtons?: CardButton[];
-    functionPaths?: FunctionPath[];
-    entityVariants?: EntityVariant[];
-    requiredEntities?: RequiredEntity[];
-    responseVariants?: AnyResponseVariant[];
-    functionVariables?: FunctionVariable[];
-    responseAttachments?: AnyResponseAttachment[];
-    responseDiscriminators?: ResponseDiscriminator[];
-  }) {
+  async upsertCMSData(
+    {
+      intents = [],
+      entities = [],
+      variables = [],
+      responses = [],
+      functions = [],
+      utterances = [],
+      attachments = [],
+      cardButtons = [],
+      functionPaths = [],
+      entityVariants = [],
+      requiredEntities = [],
+      responseVariants = [],
+      functionVariables = [],
+      responseAttachments = [],
+      responseDiscriminators = [],
+    }: {
+      intents?: Intent[];
+      entities?: Entity[];
+      functions?: FunctionType[];
+      responses?: Response[];
+      variables?: Variable[];
+      utterances?: Utterance[];
+      attachments?: AnyAttachment[];
+      cardButtons?: CardButton[];
+      functionPaths?: FunctionPath[];
+      entityVariants?: EntityVariant[];
+      requiredEntities?: RequiredEntity[];
+      responseVariants?: AnyResponseVariant[];
+      functionVariables?: FunctionVariable[];
+      responseAttachments?: AnyResponseAttachment[];
+      responseDiscriminators?: ResponseDiscriminator[];
+    },
+    meta: { userID: number; assistantID: string; environmentID: string }
+  ) {
     // ORDER MATTERS
-    await this.variable.upsertManyWithSubResources({ variables });
-    await this.attachment.upsertManyWithSubResources({ attachments, cardButtons });
-    await this.entity.upsertManyWithSubResources({ entities, entityVariants });
-    await this.response.upsertManyWithSubResources({ responses, responseVariants, responseAttachments, responseDiscriminators });
-    await this.intent.upsertManyWithSubResources({ intents, utterances, requiredEntities });
-    await this.story.upsertManyWithSubResources({ stories, triggers });
-    await this.prompt.upsertManyWithSubResources({ prompts });
-    await this.functionService.upsertManyWithSubResources({ functions, functionPaths, functionVariables });
+    await this.variable.upsertManyWithSubResources({ variables }, meta);
+    await this.attachment.upsertManyWithSubResources({ attachments, cardButtons }, meta);
+    await this.entity.upsertManyWithSubResources({ entities, entityVariants }, meta);
+    await this.response.upsertManyWithSubResources({ responses, responseVariants, responseAttachments, responseDiscriminators }, meta);
+    await this.intent.upsertManyWithSubResources({ intents, utterances, requiredEntities }, meta);
+    await this.functionService.upsertManyWithSubResources({ functions, functionPaths, functionVariables }, meta);
   }
 
   async deleteOneCMSData(assistantID: string, environmentID: string) {
     // needs to be done in multiple operations to avoid locks in reference tables
     await Promise.all([
-      this.story.deleteManyByEnvironment(assistantID, environmentID),
       this.intent.deleteManyByEnvironment(assistantID, environmentID),
       this.functionService.deleteManyByEnvironment(assistantID, environmentID),
     ]);
@@ -595,7 +562,6 @@ export class EnvironmentService {
     ]);
 
     await Promise.all([
-      this.prompt.deleteManyByEnvironment(assistantID, environmentID),
       this.variable.deleteManyByEnvironment(assistantID, environmentID),
       this.attachment.deleteManyByEnvironment(assistantID, environmentID),
     ]);
@@ -650,19 +616,15 @@ export class EnvironmentService {
     await this.deleteOneCMSData(cmsCloneManyPayload.targetAssistantID, cmsCloneManyPayload.targetEnvironmentID);
 
     const [
-      { stories, triggers },
       { variables },
       { attachments, cardButtons },
-      { prompts },
       { responses, responseVariants, responseAttachments, responseDiscriminators },
       { entities, entityVariants },
       { intents, utterances, requiredEntities },
       { functions, functionPaths, functionVariables },
     ] = await Promise.all([
-      this.story.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload, { flush: false }),
       this.variable.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload, { flush: false }),
       this.attachment.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload, { flush: false }),
-      this.prompt.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload, { flush: false }),
       this.response.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload, { flush: false }),
       this.entity.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload, { flush: false }),
       this.intent.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload, { flush: false }),
@@ -675,10 +637,7 @@ export class EnvironmentService {
 
     return {
       version: targetVersion,
-      stories,
-      prompts,
       intents,
-      triggers,
       entities,
       diagrams: targetDiagrams,
       functions,

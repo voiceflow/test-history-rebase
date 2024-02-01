@@ -58,6 +58,7 @@ export class ConditionAssertionEntity extends PostgresCMSObjectEntity {
   toJSON(...args: any[]): ToJSONWithForeignKeys<ConditionAssertionEntity> {
     return ConditionAssertionJSONAdapter.fromDB({
       ...wrap<ConditionAssertionEntity>(this).toObject(...args),
+      updatedBy: this.updatedBy,
       assistant: this.assistant,
       condition: this.condition,
     });

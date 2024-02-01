@@ -11,7 +11,7 @@ import type {
   PatchOneRequest,
   ReplaceRequest,
 } from '@/crud/crud.interface';
-import type { DesignerAction } from '@/types';
+import type { DesignerAction, WithoutMeta } from '@/types';
 
 const functionPathAction = createCRUD('function_path');
 
@@ -37,7 +37,7 @@ export namespace CreateOne {
     data: CreateData;
   }
 
-  export interface Response extends CreateResponse<FunctionPath>, DesignerAction {}
+  export interface Response extends CreateResponse<WithoutMeta<FunctionPath>>, DesignerAction {}
 }
 
 export const CreateOne = functionPathAction.crud.createOne<CreateOne.Request, CreateOne.Response>();

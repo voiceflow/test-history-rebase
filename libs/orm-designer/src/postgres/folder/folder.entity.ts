@@ -56,6 +56,7 @@ export class FolderEntity extends PostgresCMSObjectEntity {
     return FolderJSONAdapter.fromDB({
       ...wrap<FolderEntity>(this).toObject(...args),
       parent: this.parent ?? null,
+      updatedBy: this.updatedBy,
       assistant: this.assistant,
     });
   }

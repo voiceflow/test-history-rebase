@@ -23,9 +23,9 @@ import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { CMSTabularService, EntitySerializer } from '@/common';
 import { assistantBroadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
-import { deepSetCreatorID } from '@/utils/creator.util';
 import { cloneManyEntities } from '@/utils/entity.util';
 
+import { ResponseExportImportDataDTO } from './dtos/response-export-import-data.dto';
 import { ResponseAnyAttachmentImportData, ResponseAnyVariantImportData, ResponseCreateWithSubResourcesData } from './response.interface';
 import { ResponseAttachmentService } from './response-attachment/response-attachment.service';
 import { ResponseDiscriminatorService } from './response-discriminator/response-discriminator.service';
@@ -74,22 +74,40 @@ export class ResponseService extends CMSTabularService<ResponseORM> {
 
   /* Export */
 
-  prepareExportData({
-    responses,
-    responseVariants,
-    responseAttachments,
-    responseDiscriminators,
-  }: {
-    responses: ResponseEntity[];
-    responseVariants: AnyResponseVariantEntity[];
-    responseAttachments: AnyResponseAttachmentEntity[];
-    responseDiscriminators: ResponseDiscriminatorEntity[];
-  }) {
+  prepareExportData(
+    {
+      responses,
+      responseVariants,
+      responseAttachments,
+      responseDiscriminators,
+    }: {
+      responses: ResponseEntity[];
+      responseVariants: AnyResponseVariantEntity[];
+      responseAttachments: AnyResponseAttachmentEntity[];
+      responseDiscriminators: ResponseDiscriminatorEntity[];
+    },
+    { backup }: { backup?: boolean } = {}
+  ): ResponseExportImportDataDTO {
+    if (backup) {
+      return {
+        responses: this.entitySerializer.iterable(responses),
+        responseVariants: this.entitySerializer.iterable(responseVariants),
+        responseAttachments: this.entitySerializer.iterable(responseAttachments),
+        responseDiscriminators: this.entitySerializer.iterable(responseDiscriminators),
+      };
+    }
+
     return {
-      responses: this.entitySerializer.iterable(responses),
-      responseVariants: this.entitySerializer.iterable(responseVariants),
-      responseAttachments: this.entitySerializer.iterable(responseAttachments),
-      responseDiscriminators: this.entitySerializer.iterable(responseDiscriminators),
+      responses: this.entitySerializer.iterable(responses, { omit: ['assistantID', 'environmentID'] }),
+      responseVariants: this.entitySerializer.iterable(responseVariants, {
+        omit: ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'],
+      }) as ResponseExportImportDataDTO['responseVariants'],
+      responseAttachments: this.entitySerializer.iterable(responseAttachments, {
+        omit: ['assistantID', 'environmentID'],
+      }) as ResponseExportImportDataDTO['responseAttachments'],
+      responseDiscriminators: this.entitySerializer.iterable(responseDiscriminators, {
+        omit: ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'],
+      }),
     };
   }
 
@@ -139,43 +157,83 @@ export class ResponseService extends CMSTabularService<ResponseORM> {
   /* Import */
 
   prepareImportData(
-    {
-      responses,
-      responseVariants,
-      responseAttachments,
-      responseDiscriminators,
-    }: {
-      responses: ToJSONWithForeignKeys<ResponseEntity>[];
-      responseVariants: ResponseAnyVariantImportData[];
-      responseAttachments: ResponseAnyAttachmentImportData[];
-      responseDiscriminators: ToJSONWithForeignKeys<ResponseDiscriminatorEntity>[];
-    },
+    { responses, responseVariants, responseAttachments, responseDiscriminators }: ResponseExportImportDataDTO,
     { userID, backup, assistantID, environmentID }: { userID: number; backup?: boolean; assistantID: string; environmentID: string }
-  ) {
+  ): {
+    responses: ToJSONWithForeignKeys<ResponseEntity>[];
+    responseVariants: ResponseAnyVariantImportData[];
+    responseAttachments: ResponseAnyAttachmentImportData[];
+    responseDiscriminators: ToJSONWithForeignKeys<ResponseDiscriminatorEntity>[];
+  } {
     const createdAt = new Date().toJSON();
 
+    if (backup) {
+      return {
+        responses: responses.map((item) => ({
+          ...item,
+          assistantID,
+          environmentID,
+        })),
+
+        responseVariants: responseVariants.map((item) => ({
+          ...item,
+          updatedAt: item.updatedAt ?? createdAt,
+          updatedByID: item.updatedByID ?? userID,
+          assistantID,
+          environmentID,
+        })),
+
+        responseAttachments: responseAttachments.map((item) => ({
+          ...item,
+          assistantID,
+          environmentID,
+        })),
+
+        responseDiscriminators: responseDiscriminators.map((item) => ({
+          ...item,
+          updatedAt: item.updatedAt ?? createdAt,
+          updatedByID: item.updatedByID ?? userID,
+          assistantID,
+          environmentID,
+        })),
+      };
+    }
+
     return {
-      responses: responses.map<ToJSONWithForeignKeys<ResponseEntity>>((item) =>
-        backup
-          ? { ...item, assistantID, environmentID }
-          : { ...deepSetCreatorID(item, userID), createdAt, updatedAt: createdAt, assistantID, environmentID }
-      ),
+      responses: responses.map((item) => ({
+        ...item,
+        createdAt,
+        updatedAt: createdAt,
+        createdByID: userID,
+        updatedByID: userID,
+        assistantID,
+        environmentID,
+      })),
 
-      responseVariants: responseVariants.map<ResponseAnyVariantImportData>((item) =>
-        backup
-          ? { ...item, assistantID, environmentID }
-          : { ...deepSetCreatorID(item, userID), createdAt, updatedAt: createdAt, assistantID, environmentID }
-      ),
+      responseVariants: responseVariants.map((item) => ({
+        ...item,
+        createdAt,
+        updatedAt: createdAt,
+        updatedByID: userID,
+        assistantID,
+        environmentID,
+      })),
 
-      responseAttachments: responseAttachments.map<ResponseAnyAttachmentImportData>((item) =>
-        backup ? { ...item, assistantID, environmentID } : { ...deepSetCreatorID(item, userID), createdAt, assistantID, environmentID }
-      ),
+      responseAttachments: responseAttachments.map((item) => ({
+        ...item,
+        createdAt,
+        assistantID,
+        environmentID,
+      })),
 
-      responseDiscriminators: responseDiscriminators.map<ToJSONWithForeignKeys<ResponseDiscriminatorEntity>>((item) =>
-        backup
-          ? { ...item, assistantID, environmentID }
-          : { ...deepSetCreatorID(item, userID), createdAt, updatedAt: createdAt, assistantID, environmentID }
-      ),
+      responseDiscriminators: responseDiscriminators.map((item) => ({
+        ...item,
+        createdAt,
+        updatedAt: createdAt,
+        updatedByID: userID,
+        assistantID,
+        environmentID,
+      })),
     };
   }
 
@@ -419,17 +477,17 @@ export class ResponseService extends CMSTabularService<ResponseORM> {
 
   /* Upsert */
 
-  async upsertManyWithSubResources({
-    responses,
-    responseVariants,
-    responseAttachments,
-    responseDiscriminators,
-  }: {
-    responses: Response[];
-    responseVariants: AnyResponseVariant[];
-    responseAttachments: AnyResponseAttachment[];
-    responseDiscriminators: ResponseDiscriminator[];
-  }) {
+  async upsertManyWithSubResources(
+    data: {
+      responses: Response[];
+      responseVariants: AnyResponseVariant[];
+      responseAttachments: AnyResponseAttachment[];
+      responseDiscriminators: ResponseDiscriminator[];
+    },
+    meta: { userID: number; assistantID: string; environmentID: string }
+  ) {
+    const { responses, responseVariants, responseAttachments, responseDiscriminators } = this.prepareImportData(data, meta);
+
     await this.upsertMany(responses);
     await this.responseDiscriminator.upsertMany(responseDiscriminators);
     await this.responseVariant.upsertMany(responseVariants);

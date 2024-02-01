@@ -7,7 +7,7 @@ export const cardAttachment: EntityDTO<CardAttachmentEntity> = {
   id: 'card-attachment-1',
   createdAt: new Date(),
   updatedAt: new Date(),
-  updatedByID: 1,
+  updatedBy: { id: 1 } as any,
   title: ['first card'],
   description: ['card description'],
   buttonOrder: ['card-button-1', 'card-button-2'],

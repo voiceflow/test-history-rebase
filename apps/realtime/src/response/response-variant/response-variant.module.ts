@@ -12,7 +12,6 @@ import {
 
 import { EntitySerializer } from '@/common';
 
-import { PromptModule } from '../../prompt/prompt.module';
 import { ResponseAttachmentModule } from '../response-attachment/response-attachment.module';
 import { ResponseJSONVariantService } from './response-json-variant.service';
 import { ResponsePromptVariantService } from './response-prompt-variant.service';
@@ -30,7 +29,6 @@ import { ResponseVariantService } from './response-variant.service';
     ResponseJSONVariantORM.register(),
     ResponsePromptVariantORM.register(),
     ResponseDiscriminatorORM.register(),
-    PromptModule,
     ResponseAttachmentModule,
   ],
   exports: [ResponseVariantService, ResponseJSONVariantService, ResponseTextVariantService, ResponsePromptVariantService],

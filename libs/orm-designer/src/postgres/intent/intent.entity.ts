@@ -52,6 +52,8 @@ export class IntentEntity extends PostgresCMSTabularEntity {
     return IntentJSONAdapter.fromDB({
       ...wrap<IntentEntity>(this).toObject(...args),
       folder: this.folder ?? null,
+      updatedBy: this.updatedBy,
+      createdBy: this.createdBy,
       assistant: this.assistant,
     });
   }

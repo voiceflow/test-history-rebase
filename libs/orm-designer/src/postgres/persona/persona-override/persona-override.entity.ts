@@ -65,6 +65,7 @@ export class PersonaOverrideEntity extends PostgresCMSObjectEntity {
     return PersonaOverrideJSONAdapter.fromDB({
       ...wrap<PersonaOverrideEntity>(this).toObject(...args),
       persona: this.persona,
+      updatedBy: this.updatedBy,
       assistant: this.assistant,
     });
   }

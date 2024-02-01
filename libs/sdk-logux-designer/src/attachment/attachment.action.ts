@@ -12,7 +12,7 @@ import type {
   PatchOneRequest,
   ReplaceRequest,
 } from '@/crud/crud.interface';
-import type { DesignerAction } from '@/types';
+import type { DesignerAction, WithoutMeta } from '@/types';
 
 const attachmentAction = createCRUD('attachment');
 
@@ -53,7 +53,7 @@ export namespace CreateCardOne {
     data: CreateCardData;
   }
 
-  export interface Response extends CreateResponse<CardAttachment>, DesignerAction {}
+  export interface Response extends CreateResponse<WithoutMeta<CardAttachment>>, DesignerAction {}
 }
 
 export const CreateCardOne = attachmentAction.crud.createOne<CreateCardOne.Request, CreateCardOne.Response>(

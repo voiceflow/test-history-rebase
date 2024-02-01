@@ -62,6 +62,7 @@ export class BaseTriggerEntity extends PostgresCMSObjectEntity {
       ...wrap<BaseTriggerEntity>(this).toObject(...args),
       story: this.story,
       assistant: this.assistant,
+      updatedBy: this.updatedBy,
     });
   }
 }
@@ -96,6 +97,7 @@ export class EventTriggerEntity extends BaseTriggerEntity {
       story: this.story,
       event: this.event,
       assistant: this.assistant,
+      updatedBy: this.updatedBy,
     });
   }
 }
@@ -130,6 +132,7 @@ export class IntentTriggerEntity extends BaseTriggerEntity {
       story: this.story,
       intent: this.intent,
       assistant: this.assistant,
+      updatedBy: this.updatedBy,
     });
   }
 }

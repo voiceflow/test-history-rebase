@@ -4,13 +4,18 @@ import { CMSObjectResourceDTO } from '@/common';
 
 import { TriggerTarget } from './trigger-target.enum';
 
-const BaseTriggerDTO = CMSObjectResourceDTO.extend({
-  name: z.string().min(1, 'Name is required.').max(255, 'Name is too long.'),
-  target: z.nativeEnum(TriggerTarget),
-  storyID: z.string(),
-  assistantID: z.string(),
-  environmentID: z.string(),
-}).strict();
+const BaseTriggerDTO = CMSObjectResourceDTO.partial({
+  updatedAt: true,
+  updatedByID: true,
+})
+  .extend({
+    name: z.string().min(1, 'Name is required.').max(255, 'Name is too long.'),
+    target: z.nativeEnum(TriggerTarget),
+    storyID: z.string(),
+    assistantID: z.string().optional(),
+    environmentID: z.string().optional(),
+  })
+  .strict();
 
 export const EventTriggerDTO = BaseTriggerDTO.extend({
   target: z.literal(TriggerTarget.EVENT),

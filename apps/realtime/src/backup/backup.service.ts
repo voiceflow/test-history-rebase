@@ -53,7 +53,12 @@ export class BackupService extends MutableService<BackupORM> {
   async createOneForUser(userID: number, versionID: string, name: string) {
     return this.postgresEM.transactional(async () => {
       const version = await this.version.findOneOrFail(versionID);
-      const vfFile = await this.assistant.exportJSON({ userID, assistantID: version.projectID.toHexString(), environmentID: versionID });
+      const vfFile = await this.assistant.exportJSON({
+        userID,
+        backup: true,
+        assistantID: version.projectID.toHexString(),
+        environmentID: versionID,
+      });
 
       const filename = `${versionID}-${dayjs(Date.now()).format('YYYY-MM-DD_HH-mm-ss')}.json`;
 

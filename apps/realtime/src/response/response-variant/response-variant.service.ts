@@ -1,6 +1,6 @@
 /* eslint-disable no-await-in-loop, max-params */
 import type { EntityManager } from '@mikro-orm/core';
-import { Primary } from '@mikro-orm/core';
+import { Primary, ref } from '@mikro-orm/core';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
@@ -15,7 +15,14 @@ import type {
   PromptEntity,
   ResponseDiscriminatorEntity,
 } from '@voiceflow/orm-designer';
-import { DatabaseTarget, PromptORM, ResponseDiscriminatorORM, ResponseVariantORM, ResponseVariantType } from '@voiceflow/orm-designer';
+import {
+  DatabaseTarget,
+  PromptORM,
+  ResponseDiscriminatorORM,
+  ResponseVariantORM,
+  ResponseVariantType,
+  UserStubEntity,
+} from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 import { match } from 'ts-pattern';
 
@@ -23,7 +30,6 @@ import { EntitySerializer, UpsertManyData } from '@/common';
 import { assistantBroadcastContext, groupByAssistant, toEntityID, toEntityIDs } from '@/common/utils';
 import { uniqCMSResourceIDs } from '@/utils/cms.util';
 
-import { PromptService } from '../../prompt/prompt.service';
 import { ResponseAttachmentService } from '../response-attachment/response-attachment.service';
 import { ResponseJSONVariantService } from './response-json-variant.service';
 import { ResponsePromptVariantService } from './response-prompt-variant.service';
@@ -49,8 +55,6 @@ export class ResponseVariantService {
     protected readonly responseDiscriminatorORM: ResponseDiscriminatorORM,
     @Inject(LoguxService)
     protected readonly logux: LoguxService,
-    @Inject(PromptService)
-    protected readonly prompt: PromptService,
     @Inject(ResponseAttachmentService)
     protected readonly responseAttachment: ResponseAttachmentService,
     @Inject(ResponseJSONVariantService)
@@ -114,7 +118,7 @@ export class ResponseVariantService {
       }
 
       // eslint-disable-next-line no-param-reassign
-      discriminator.updatedByID = userID;
+      discriminator.updatedBy = ref(UserStubEntity, userID);
       // eslint-disable-next-line no-param-reassign
       discriminator.variantOrder = variantOrder;
     });
@@ -167,7 +171,9 @@ export class ResponseVariantService {
     return match(data)
       .with({ type: ResponseVariantType.JSON }, (data) => this.responseJSONVariant.createOne(data, options))
       .with({ type: ResponseVariantType.TEXT }, (data) => this.responseTextVariant.createOne(data, options))
-      .with({ type: ResponseVariantType.PROMPT }, (data) => this.responsePromptVariant.createOne(data, options))
+      .with({ type: ResponseVariantType.PROMPT }, () => {
+        throw new Error('Not implemented');
+      })
       .exhaustive();
   }
 
@@ -185,7 +191,9 @@ export class ResponseVariantService {
     return match(data)
       .with({ type: ResponseVariantType.JSON }, (data) => this.responseJSONVariant.createOneForUser(userID, data, options))
       .with({ type: ResponseVariantType.TEXT }, (data) => this.responseTextVariant.createOneForUser(userID, data, options))
-      .with({ type: ResponseVariantType.PROMPT }, (data) => this.responsePromptVariant.createOneForUser(userID, data, options))
+      .with({ type: ResponseVariantType.PROMPT }, () => {
+        throw new Error('Not implemented');
+      })
       .exhaustive();
   }
 
@@ -206,32 +214,7 @@ export class ResponseVariantService {
 
     // TODO: add condition
     for (const { attachments, ...variantData } of data) {
-      let variantPayload: ResponseAnyVariantCreateData;
-
-      if (variantData.type === ResponseVariantType.PROMPT && 'prompt' in variantData) {
-        const prompt = await this.promptORM.createOneForUser(
-          userID,
-          {
-            ...variantData.prompt,
-            name: variantData.prompt.name ?? 'Prompt for response',
-            folderID: null,
-            assistantID: variantData.assistantID,
-            environmentID: variantData.environmentID,
-          },
-          { flush: false }
-        );
-
-        variantPayload = {
-          ...Utils.object.omit(variantData, ['prompt']),
-          promptID: prompt.id,
-          conditionID: null,
-          attachmentOrder: [],
-        };
-
-        prompts.push(prompt);
-      } else {
-        variantPayload = { ...variantData, conditionID: null, attachmentOrder: [] };
-      }
+      const variantPayload: ResponseAnyVariantCreateData = { ...variantData, conditionID: null, attachmentOrder: [] };
 
       const responseVariant = await this.createOneForUser(userID, variantPayload, { flush: false });
       const responseVariantAttachments = await this.responseAttachment.createMany(
@@ -287,9 +270,9 @@ export class ResponseVariantService {
     }
   ) {
     await Promise.all([
-      this.prompt.broadcastAddMany(authMeta, {
-        add: Utils.object.pick(add, ['prompts']),
-      }),
+      // this.prompt.broadcastAddMany(authMeta, {
+      //   add: Utils.object.pick(add, ['prompts']),
+      // }),
 
       this.responseAttachment.broadcastAddMany(authMeta, {
         add: Utils.object.pick(add, ['responseAttachments']),

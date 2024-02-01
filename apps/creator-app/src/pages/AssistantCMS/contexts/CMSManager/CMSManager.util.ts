@@ -5,7 +5,7 @@ import type { CMSFolder, CMSResource, CMSResourceSearchContext } from './CMSMana
 
 export const localeCompareSort = (left: string, right: string): number => right.toLocaleLowerCase().localeCompare(left.toLocaleLowerCase());
 
-export const updatedAtSort = <Item extends CMSResource>(left: Item | CMSFolder, right: Item | CMSFolder): number =>
+export const updatedAtSort = <Item extends CMSResource>(left: Item, right: Item): number =>
   new Date(left.updatedAt).getTime() - new Date(right.updatedAt).getTime();
 
 export const withOptionalSort =

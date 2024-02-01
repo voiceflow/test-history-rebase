@@ -2,6 +2,7 @@ import { ManyToOne, PrimaryKeyType, Property } from '@mikro-orm/core';
 
 import type { AssistantEntity } from '@/postgres/assistant/assistant.entity';
 import { FolderEntity } from '@/postgres/folder/folder.entity';
+import type { UserStubEntity } from '@/postgres/stubs/user.stub';
 import type { CMSCompositePK, EntityCreateParams, Ref } from '@/types';
 
 import { PostgresCMSTabularJSONAdapter } from '../adapters/postgres-cms-tabular.adapter';
@@ -18,11 +19,11 @@ export abstract class PostgresCMSTabularEntity extends PostgresCMSObjectEntity {
   @Assistant()
   assistant: Ref<AssistantEntity>;
 
-  @CreatedByID()
-  createdByID: number;
-
   @UpdatedByID()
-  updatedByID: number;
+  updatedBy: Ref<UserStubEntity>;
+
+  @CreatedByID()
+  createdBy: Ref<UserStubEntity>;
 
   @Environment()
   environmentID: string;
@@ -45,8 +46,8 @@ export abstract class PostgresCMSTabularEntity extends PostgresCMSObjectEntity {
       name: this.name,
       folder: this.folder,
       assistant: this.assistant,
-      createdByID: this.createdByID,
-      updatedByID: this.updatedByID,
+      updatedBy: this.updatedBy,
+      createdBy: this.createdBy,
       environmentID: this.environmentID,
     } = PostgresCMSTabularJSONAdapter.toDB(data));
   }

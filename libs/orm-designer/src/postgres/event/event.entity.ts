@@ -39,6 +39,8 @@ export class EventEntity extends PostgresCMSTabularEntity {
     return EventJSONAdapter.fromDB({
       ...wrap<EventEntity>(this).toObject(...args),
       folder: this.folder ?? null,
+      updatedBy: this.updatedBy,
+      createdBy: this.createdBy,
       assistant: this.assistant,
     });
   }

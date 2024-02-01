@@ -146,25 +146,25 @@ export class MigrationService {
           });
         }
 
-        await this.environment.upsertCMSData({
-          intents: migrationResult.cms.intents,
-          prompts: [],
-          stories: [],
-          triggers: [],
-          entities: migrationResult.cms.entities,
-          functions: [],
-          responses: migrationResult.cms.responses,
-          utterances: migrationResult.cms.utterances,
-          cardButtons: [],
-          attachments: [],
-          functionPaths: [],
-          entityVariants: migrationResult.cms.entityVariants,
-          requiredEntities: migrationResult.cms.requiredEntities,
-          responseVariants: migrationResult.cms.responseVariants,
-          functionVariables: [],
-          responseAttachments: [],
-          responseDiscriminators: migrationResult.cms.responseDiscriminators,
-        });
+        await this.environment.upsertCMSData(
+          {
+            intents: migrationResult.cms.intents,
+            entities: migrationResult.cms.entities,
+            functions: [],
+            responses: migrationResult.cms.responses,
+            utterances: migrationResult.cms.utterances,
+            cardButtons: [],
+            attachments: [],
+            functionPaths: [],
+            entityVariants: migrationResult.cms.entityVariants,
+            requiredEntities: migrationResult.cms.requiredEntities,
+            responseVariants: migrationResult.cms.responseVariants,
+            functionVariables: [],
+            responseAttachments: [],
+            responseDiscriminators: migrationResult.cms.responseDiscriminators,
+          },
+          { userID: creatorID, assistantID: version.projectID, environmentID: version._id }
+        );
 
         await Promise.all(
           migrationResult.diagrams.map(({ diagramID, ...data }) =>

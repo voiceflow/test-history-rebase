@@ -2,7 +2,6 @@ import {
   AnyAttachmentEntity,
   AnyResponseAttachmentEntity,
   AnyResponseVariantEntity,
-  AnyTriggerEntity,
   CardButtonEntity,
   EntityEntity,
   EntityVariantEntity,
@@ -10,21 +9,16 @@ import {
   FunctionPathEntity,
   FunctionVariableEntity,
   IntentEntity,
-  PromptEntity,
   RequiredEntityEntity,
   ResponseDiscriminatorEntity,
   ResponseEntity,
-  StoryEntity,
   UtteranceEntity,
   VariableEntity,
 } from '@voiceflow/orm-designer';
 
 export interface EnvironmentCMSEntities {
-  stories: StoryEntity[];
   intents: IntentEntity[];
-  prompts: PromptEntity[];
   entities: EntityEntity[];
-  triggers: AnyTriggerEntity[];
   variables: VariableEntity[];
   functions: FunctionEntity[];
   responses: ResponseEntity[];

@@ -14,6 +14,7 @@ import { VersionIDAlias } from '@/version/version.constant';
 
 import { AssistantSerializer } from './assistant.serializer';
 import { AssistantService } from './assistant.service';
+import { AssistantExportCMSResponse } from './dtos/assistant-export-cms.response';
 import { AssistantExportImportDataDTO } from './dtos/assistant-export-import-data.dto';
 import { AssistantExportJSONQuery } from './dtos/assistant-export-json.query';
 import { AssistantFindEnvironmentsResponse } from './dtos/assistant-find-environments.response';
@@ -42,6 +43,29 @@ export class AssistantPublicHTTPController {
   @ZodApiResponse({ status: HttpStatus.OK, schema: AssistantFindEnvironmentsResponse })
   async findEnvironments(@Param('assistantID') assistantID: string): Promise<AssistantFindEnvironmentsResponse> {
     return this.environment.findManyForAssistantID(assistantID);
+  }
+
+  @Get('export-cms/:environmentID')
+  @Authorize.Permissions<Request<{ environmentID: string }>>([Permission.PROJECT_READ], (request) => ({
+    id: request.params.environmentID,
+    kind: 'version',
+  }))
+  @ApiParam({
+    name: 'environmentID',
+    type: 'string',
+    description: `Accepts environmentID or environment id alias (${Object.values(VersionIDAlias).join(', ')})`,
+  })
+  @ApiHeader({
+    name: 'assistantID',
+    schema: { type: 'string', description: 'Required if environment id alias is used' },
+  })
+  @ZodApiResponse({ status: HttpStatus.CREATED, schema: AssistantExportCMSResponse })
+  exportCMS(
+    @UserID() userID: number,
+    @Param('environmentID') environmentID: string,
+    @Headers('assistantID') assistantID: string | undefined
+  ): Promise<AssistantExportCMSResponse> {
+    return this.service.exportCMS({ userID, assistantID, environmentID });
   }
 
   @Get('export-json/:environmentID')

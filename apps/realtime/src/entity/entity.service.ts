@@ -22,9 +22,9 @@ import { Actions } from '@voiceflow/sdk-logux-designer';
 import { CMSTabularService, EntitySerializer } from '@/common';
 import { assistantBroadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
 import { RequiredEntityService } from '@/intent/required-entity/required-entity.service';
-import { deepSetCreatorID } from '@/utils/creator.util';
 import { cloneManyEntities } from '@/utils/entity.util';
 
+import type { EntityExportImportDataDTO } from './dtos/entity-export-import-data.dto';
 import type { EntityCreateData } from './entity.interface';
 import { EntityVariantService } from './entity-variant/entity-variant.service';
 
@@ -63,10 +63,20 @@ export class EntityService extends CMSTabularService<EntityORM> {
 
   /* Export */
 
-  prepareExportData({ entities, entityVariants }: { entities: EntityEntity[]; entityVariants: EntityVariantEntity[] }) {
+  prepareExportData(
+    { entities, entityVariants }: { entities: EntityEntity[]; entityVariants: EntityVariantEntity[] },
+    { backup }: { backup?: boolean } = {}
+  ): EntityExportImportDataDTO {
+    if (backup) {
+      return {
+        entities: this.entitySerializer.iterable(entities),
+        entityVariants: this.entitySerializer.iterable(entityVariants),
+      };
+    }
+
     return {
-      entities: this.entitySerializer.iterable(entities),
-      entityVariants: this.entitySerializer.iterable(entityVariants),
+      entities: this.entitySerializer.iterable(entities, { omit: ['assistantID', 'environmentID'] }),
+      entityVariants: this.entitySerializer.iterable(entityVariants, { omit: ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'] }),
     };
   }
 
@@ -109,23 +119,51 @@ export class EntityService extends CMSTabularService<EntityORM> {
   /* Import */
 
   prepareImportData(
-    { entities, entityVariants }: { entities: ToJSONWithForeignKeys<EntityEntity>[]; entityVariants: ToJSONWithForeignKeys<EntityVariantEntity>[] },
+    { entities, entityVariants }: EntityExportImportDataDTO,
     { userID, backup, assistantID, environmentID }: { userID: number; backup?: boolean; assistantID: string; environmentID: string }
-  ) {
+  ): {
+    entities: ToJSONWithForeignKeys<EntityEntity>[];
+    entityVariants: ToJSONWithForeignKeys<EntityVariantEntity>[];
+  } {
     const createdAt = new Date().toJSON();
 
-    return {
-      entities: entities.map<ToJSONWithForeignKeys<EntityEntity>>((item) =>
-        backup
-          ? { ...item, assistantID, environmentID }
-          : { ...deepSetCreatorID(item, userID), createdAt, updatedAt: createdAt, assistantID, environmentID }
-      ),
+    if (backup) {
+      return {
+        entities: entities.map((item) => ({
+          ...item,
+          assistantID,
+          environmentID,
+        })),
 
-      entityVariants: entityVariants.map<ToJSONWithForeignKeys<EntityVariantEntity>>((item) =>
-        backup
-          ? { ...item, assistantID, environmentID }
-          : { ...deepSetCreatorID(item, userID), createdAt, updatedAt: createdAt, assistantID, environmentID }
-      ),
+        entityVariants: entityVariants.map((item) => ({
+          ...item,
+          updatedAt: item.updatedAt ?? createdAt,
+          updatedByID: item.updatedByID ?? userID,
+          assistantID,
+          environmentID,
+        })),
+      };
+    }
+
+    return {
+      entities: entities.map((item) => ({
+        ...item,
+        createdAt,
+        updatedAt: createdAt,
+        createdByID: userID,
+        updatedByID: userID,
+        assistantID,
+        environmentID,
+      })),
+
+      entityVariants: entityVariants.map((item) => ({
+        ...item,
+        createdAt,
+        updatedAt: createdAt,
+        updatedByID: userID,
+        assistantID,
+        environmentID,
+      })),
     };
   }
 
@@ -291,8 +329,14 @@ export class EntityService extends CMSTabularService<EntityORM> {
 
   /* Upsert */
 
-  async upsertManyWithSubResources({ entities, entityVariants }: { entities: Entity[]; entityVariants: EntityVariant[] }) {
+  async upsertManyWithSubResources(
+    data: { entities: Entity[]; entityVariants: EntityVariant[] },
+    meta: { userID: number; assistantID: string; environmentID: string }
+  ) {
+    const { entities, entityVariants } = this.prepareImportData(data, meta);
+
     await this.upsertMany(entities);
+
     await this.entityVariant.upsertMany(entityVariants);
   }
 }

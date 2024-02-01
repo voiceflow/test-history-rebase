@@ -9,10 +9,6 @@ export const PromptResponseVariantWithPromptDTO = PromptResponseVariantDTO.exten
 
 export type PromptResponseVariantWithPrompt = z.infer<typeof PromptResponseVariantWithPromptDTO>;
 
-export const AnyResponseVariantWithDataDTO = z.union([
-  JSONResponseVariantDTO,
-  TextResponseVariantDTO,
-  PromptResponseVariantWithPromptDTO,
-]);
+export const AnyResponseVariantWithDataDTO = z.union([JSONResponseVariantDTO, TextResponseVariantDTO]);
 
 export type AnyResponseVariantWithData = z.infer<typeof AnyResponseVariantWithDataDTO>;

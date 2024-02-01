@@ -11,7 +11,7 @@ import type {
   PatchOneRequest,
   ReplaceRequest,
 } from '@/crud/crud.interface';
-import type { DesignerAction } from '@/types';
+import type { DesignerAction, WithoutMeta } from '@/types';
 
 const requiredEntityAction = createCRUD('required_entity');
 
@@ -33,7 +33,7 @@ export namespace CreateOne {
     data: CreateData;
   }
 
-  export interface Response extends CreateResponse<RequiredEntity>, DesignerAction {}
+  export interface Response extends CreateResponse<WithoutMeta<RequiredEntity>>, DesignerAction {}
 }
 
 export const CreateOne = requiredEntityAction.crud.createOne<CreateOne.Request, CreateOne.Response>();
@@ -45,7 +45,7 @@ export namespace CreateMany {
     data: CreateData[];
   }
 
-  export interface Response extends CreateResponse<RequiredEntity[]>, DesignerAction {}
+  export interface Response extends CreateResponse<WithoutMeta<RequiredEntity>[]>, DesignerAction {}
 }
 
 export const CreateMany = requiredEntityAction.crud.createMany<CreateMany.Request, CreateMany.Response>();

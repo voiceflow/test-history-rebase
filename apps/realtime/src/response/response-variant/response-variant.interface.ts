@@ -1,7 +1,6 @@
 import type { ResponseJSONVariantORM, ResponsePromptVariantORM, ResponseTextVariantORM, ResponseVariantType } from '@voiceflow/orm-designer';
 
 import type { CreateOneForUserData, PatchOneData } from '@/common/types';
-import { PromptCreateData } from '@/prompt/prompt.interface';
 
 import type { ResponseCardAttachmentCreateOneData, ResponseMediaAttachmentCreateOneData } from '../response-attachment/response-attachment.interface';
 
@@ -47,15 +46,9 @@ export type ResponseTextVariantCreateWithSubResourcesData<Exclude extends keyof 
 export type ResponseJSONVariantCreateWithSubResourcesData<Exclude extends keyof ResponseJSONVariantCreateData = never> =
   ResponseBaseVariantCreateWithSubResourcesData & Omit<ResponseJSONVariantCreateData, 'attachmentOrder' | 'conditionID' | Exclude>;
 
-export type ResponsePromptVariantCreateWithSubResourcesData<Exclude extends keyof ResponsePromptVariantCreateData = never> =
-  ResponseBaseVariantCreateWithSubResourcesData &
-    Omit<ResponsePromptVariantCreateData, 'attachmentOrder' | 'conditionID' | 'promptID' | Exclude> &
-    (Pick<ResponsePromptVariantCreateData, 'promptID'> | { prompt: Pick<PromptCreateData, 'text' | 'personaID'> & { name?: string } });
-
 export type ResponseAnyVariantCreateWithSubResourcesData =
   | ResponseTextVariantCreateWithSubResourcesData
-  | ResponseJSONVariantCreateWithSubResourcesData
-  | ResponsePromptVariantCreateWithSubResourcesData;
+  | ResponseJSONVariantCreateWithSubResourcesData;
 
 export interface ResponseTextVariantCreateOptions {
   discriminatorOrderInsertIndex?: number;

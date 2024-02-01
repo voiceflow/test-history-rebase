@@ -8,7 +8,7 @@ export const utterance: EntityDTO<UtteranceEntity> = {
   id: 'utterance-1',
   createdAt: new Date(),
   updatedAt: new Date(),
-  updatedByID: 1,
+  updatedBy: { id: 1 } as any,
   language: Language.ENGLISH_US,
   text: ['i am hungry'],
   intent: { id: 'intent-id' } as any,

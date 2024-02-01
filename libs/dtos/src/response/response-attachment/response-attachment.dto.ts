@@ -6,8 +6,8 @@ import { CMSCreatableResourceDTO } from '@/common';
 const BaseResponseAttachmentDTO = CMSCreatableResourceDTO.extend({
   type: z.nativeEnum(AttachmentType),
   variantID: z.string(),
-  assistantID: z.string(),
-  environmentID: z.string(),
+  assistantID: z.string().optional(),
+  environmentID: z.string().optional(),
 }).strict();
 
 export const ResponseCardAttachmentDRO = BaseResponseAttachmentDTO.extend({

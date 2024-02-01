@@ -47,6 +47,7 @@ export class AssistantEntity extends PostgresCMSObjectEntity {
   toJSON(...args: any[]): ToJSONWithForeignKeys<AssistantEntity> {
     return AssistantJSONAdapter.fromDB({
       ...wrap<AssistantEntity>(this).toObject(...args),
+      updatedBy: this.updatedBy,
       workspace: this.workspace,
       activePersona: this.activePersona ?? null,
     });

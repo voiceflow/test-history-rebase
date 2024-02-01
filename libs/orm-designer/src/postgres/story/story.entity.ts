@@ -100,6 +100,8 @@ export class StoryEntity extends PostgresCMSTabularEntity {
       flow: this.flow ?? null,
       folder: this.folder ?? null,
       assignee: this.assignee ?? null,
+      createdBy: this.createdBy,
+      updatedBy: this.updatedBy,
       assistant: this.assistant,
     });
   }

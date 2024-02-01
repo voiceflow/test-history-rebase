@@ -74,7 +74,7 @@ export const INTENTS_TABLE_CONFIG: TableConfig<IntentTableColumn, CMSFolder | CM
       name: 'Updated',
       sorter: withFolderSort(updatedAtSort),
 
-      cell: ({ item }) => <CMSTableCellFromNowTooltip updatedAt={item.updatedAt} />,
+      cell: ({ item }) => <Table.Cell.GroupEmpty item={item} label={({ updatedAt }) => <CMSTableCellFromNowTooltip updatedAt={updatedAt} />} />,
     },
   },
 };

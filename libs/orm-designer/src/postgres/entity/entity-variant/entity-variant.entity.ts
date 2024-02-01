@@ -65,6 +65,7 @@ export class EntityVariantEntity extends PostgresCMSObjectEntity {
     return EntityVariantJSONAdapter.fromDB({
       ...wrap<EntityVariantEntity>(this).toObject(...args),
       entity: this.entity,
+      updatedBy: this.updatedBy,
       assistant: this.assistant,
     });
   }

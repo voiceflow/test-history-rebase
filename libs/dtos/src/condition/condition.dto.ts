@@ -6,8 +6,8 @@ import { ConditionType } from './condition-type.enum';
 
 const BaseConditionDTO = CMSBaseResourceDTO.extend({
   type: z.nativeEnum(ConditionType),
-  assistantID: z.string(),
-  environmentID: z.string(),
+  assistantID: z.string().optional(),
+  environmentID: z.string().optional(),
 }).strict();
 
 export const PromptConditionDTO = BaseConditionDTO.extend({

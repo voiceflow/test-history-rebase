@@ -89,6 +89,7 @@ export class ExpressionConditionEntity extends BaseConditionEntity {
   toJSON(...args: any[]): ToJSONWithForeignKeys<ExpressionConditionEntity> {
     return ExpressionConditionJSONAdapter.fromDB({
       ...wrap<ExpressionConditionEntity>(this).toObject(...args),
+      updatedBy: this.updatedBy,
       assistant: this.assistant,
     });
   }
@@ -127,6 +128,7 @@ export class PromptConditionEntity extends BaseConditionEntity {
     return PromptConditionJSONAdapter.fromDB({
       ...wrap<PromptConditionEntity>(this).toObject(...args),
       prompt: this.prompt ?? null,
+      updatedBy: this.updatedBy,
       assistant: this.assistant,
     });
   }
@@ -152,6 +154,7 @@ export class ScriptConditionEntity extends BaseConditionEntity {
   toJSON(...args: any[]): ToJSONWithForeignKeys<ScriptConditionEntity> {
     return ScriptConditionJSONAdapter.fromDB({
       ...wrap<ScriptConditionEntity>(this).toObject(...args),
+      updatedBy: this.updatedBy,
       assistant: this.assistant,
     });
   }

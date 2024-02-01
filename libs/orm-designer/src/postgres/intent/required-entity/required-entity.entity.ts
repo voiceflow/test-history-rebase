@@ -65,6 +65,7 @@ export class RequiredEntityEntity extends PostgresCMSObjectEntity {
       entity: this.entity,
       intent: this.intent,
       reprompt: this.reprompt ?? null,
+      updatedBy: this.updatedBy,
       assistant: this.assistant,
     });
   }

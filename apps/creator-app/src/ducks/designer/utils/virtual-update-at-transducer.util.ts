@@ -1,3 +1,4 @@
+import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 import * as Normal from 'normal-store';
 import { ActionCreator } from 'typescript-fsa';
@@ -11,6 +12,7 @@ import type { STATE_KEY as INTENT_STATE_KEY } from '@/ducks/designer/intent/inte
 import type { STATE_KEY as PERSONA_STATE_KEY } from '@/ducks/designer/persona/persona.state';
 import type { STATE_KEY as RESPONSE_STATE_KEY } from '@/ducks/designer/response/response.state';
 import type { STATE_KEY as STORY_STATE_KEY } from '@/ducks/designer/story/story.state';
+import { isFeatureEnabledSelector } from '@/ducks/feature';
 import { Transducer } from '@/ducks/transducers/types';
 import type { State } from '@/store/types';
 
@@ -171,6 +173,12 @@ export const referenceVirtualUpdateAtTransducerFactory: IReferenceVirtualUpdateA
         );
       if (actions.Replace.match(action)) {
         const nextState = rootReducer(state, action);
+
+        // this logic is done on the backend
+        if (isFeatureEnabledSelector(nextState)(FeatureFlag.HTTP_ASSISTANT_CMS)) {
+          return nextState;
+        }
+
         const referenceIDs = action.payload.data.map((data) => data.id);
 
         let rootState = nextState[DESIGNER_STATE_KEY][rootStateKey];
@@ -193,7 +201,7 @@ export const referenceVirtualUpdateAtTransducerFactory: IReferenceVirtualUpdateA
           const rootResourceID = getRootID(reference, rootState, acc);
           const rootResource = Normal.get(rootState, rootResourceID);
 
-          if (!rootResource) return acc;
+          if (!rootResource?.updatedAt) return acc;
 
           if (!reference.updatedAt || new Date(reference.updatedAt) <= new Date(rootResource.updatedAt)) return acc;
 

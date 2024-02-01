@@ -1,7 +1,7 @@
 import { createSmartMultiAdapter } from 'bidirectional-adapter';
 
 import { AssistantEntity } from '@/postgres/assistant';
-import { PostgresCMSCreatableJSONAdapter, ref } from '@/postgres/common';
+import { PostgresCMSObjectJSONAdapter, ref } from '@/postgres/common';
 import { BaseConditionEntity } from '@/postgres/condition';
 import { PromptEntity } from '@/postgres/prompt';
 import type { CMSKeyRemap, EntityObject, ToJSONWithForeignKeys } from '@/types';
@@ -23,7 +23,7 @@ export const BaseResponseVariantJSONAdapter = createSmartMultiAdapter<
   CMSKeyRemap<[['condition', 'conditionID'], ['discriminator', 'discriminatorID']]>
 >(
   ({ condition, assistant, discriminator, ...data }) => ({
-    ...PostgresCMSCreatableJSONAdapter.fromDB(data),
+    ...PostgresCMSObjectJSONAdapter.fromDB(data),
 
     ...(condition !== undefined && { conditionID: condition?.id ?? null }),
 
@@ -32,7 +32,7 @@ export const BaseResponseVariantJSONAdapter = createSmartMultiAdapter<
     ...(discriminator !== undefined && { discriminatorID: discriminator.id }),
   }),
   ({ conditionID, assistantID, environmentID, discriminatorID, ...data }) => ({
-    ...PostgresCMSCreatableJSONAdapter.toDB(data),
+    ...PostgresCMSObjectJSONAdapter.toDB(data),
 
     ...(assistantID !== undefined && { assistant: ref(AssistantEntity, assistantID) }),
 

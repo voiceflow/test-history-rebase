@@ -38,10 +38,6 @@ export const PromptResponseVariantCreateDTO = z.union([
 
 export type PromptResponseVariantCreate = z.infer<typeof PromptResponseVariantCreateDTO>;
 
-export const AnyResponseVariantCreateDTO = z.union([
-  JSONResponseVariantCreateDTO,
-  TextResponseVariantCreateDTO,
-  PromptResponseVariantCreateDTO,
-]);
+export const AnyResponseVariantCreateDTO = z.union([JSONResponseVariantCreateDTO, TextResponseVariantCreateDTO]);
 
 export type AnyResponseVariantCreate = z.infer<typeof AnyResponseVariantCreateDTO>;

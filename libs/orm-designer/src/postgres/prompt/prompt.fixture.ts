@@ -10,8 +10,8 @@ export const prompt: EntityDTO<PromptEntity> = {
   text: ['hello world'],
   persona: { id: 'persona-override-1' } as any,
   assistant: { id: 'assistant-1' } as any,
-  createdByID: 1,
-  updatedByID: 2,
+  createdBy: { id: 1 } as any,
+  updatedBy: { id: 2 } as any,
   folder: null,
   environmentID: 'environment-1',
 };

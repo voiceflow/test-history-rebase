@@ -1,11 +1,11 @@
-import type { JSONResponseVariant, PromptResponseVariantWithPrompt, TextResponseVariant } from '@voiceflow/dtos';
+import type { JSONResponseVariant, TextResponseVariant } from '@voiceflow/dtos';
 
 import type { IResponseCreateTextVariant } from '../ResponseCreateTextVariant/ResponseCreateTextVariant.interface';
 
 type CreateVariant<T> = Omit<T, 'conditionID' | 'discriminatorID' | 'assistantID' | 'createdAt' | 'updatedAt' | 'environmentID' | 'updatedByID'>;
 
 export interface IResponseCreateVariant {
-  variant: CreateVariant<TextResponseVariant> | CreateVariant<PromptResponseVariantWithPrompt> | CreateVariant<JSONResponseVariant>;
+  variant: CreateVariant<TextResponseVariant> | CreateVariant<JSONResponseVariant>;
   autoFocus?: boolean;
   removeButton?: React.ReactNode;
   autoFocusIfEmpty?: boolean;

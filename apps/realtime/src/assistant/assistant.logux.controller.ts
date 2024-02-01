@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Controller, Inject } from '@nestjs/common';
+import { UnleashFeatureFlagService } from '@voiceflow/nestjs-common';
 import { Action, AuthMeta, AuthMetaPayload, Broadcast, Channel, Context, LoguxService, Payload } from '@voiceflow/nestjs-logux';
+import { FeatureFlag } from '@voiceflow/realtime-sdk/backend';
 import { Permission } from '@voiceflow/sdk-auth';
 import { Authorize } from '@voiceflow/sdk-auth/nestjs';
 import { Actions, Channels } from '@voiceflow/sdk-logux-designer';
@@ -25,10 +27,12 @@ export class AssistantLoguxController {
     private readonly projectSerializer: ProjectSerializer,
     @Inject(AssistantSerializer)
     private readonly assistantSerializer: AssistantSerializer,
-    @Inject(AssistantViewerService)
-    private readonly viewerService: AssistantViewerService,
     @Inject(LoguxService)
-    private readonly logux: LoguxService
+    private readonly logux: LoguxService,
+    @Inject(AssistantViewerService)
+    private readonly viewer: AssistantViewerService,
+    @Inject(UnleashFeatureFlagService)
+    private readonly unleash: UnleashFeatureFlagService
   ) {}
 
   @Channel(Channels.assistant)
@@ -37,8 +41,16 @@ export class AssistantLoguxController {
     kind: 'project',
   }))
   @UseRequestContext()
-  async subscribe(@Context() ctx: Context.Channel<Channels.AssistantParams>) {
+  async subscribe(@Context() ctx: Context.Channel<Channels.AssistantParams>, @AuthMeta() authMeta: AuthMetaPayload) {
     const { assistantID, environmentID } = ctx.params;
+
+    const { workspace } = await this.service.findOneOrFail(assistantID);
+
+    if (this.unleash.isEnabled(FeatureFlag.HTTP_ASSISTANT_CMS, { userID: authMeta.userID, workspaceID: workspace.id })) {
+      Object.assign(ctx.data, { subscribed: true });
+
+      return [];
+    }
 
     // The creation order must be the same as the order of the returned actions
     const [
@@ -49,9 +61,6 @@ export class AssistantLoguxController {
       // entity
       entityReplaceMeta,
       entityVariantReplaceMeta,
-
-      // prompt
-      promptReplaceMeta,
 
       // variable
       variableReplaceMeta,
@@ -66,10 +75,6 @@ export class AssistantLoguxController {
       responseDiscriminatorReplaceMeta,
       responseVariantReplaceMeta,
       responseAttachmentReplaceMeta,
-
-      // story
-      storyReplaceMeta,
-      triggerReplaceMeta,
 
       // function
       functionReplaceMeta,
@@ -95,17 +100,11 @@ export class AssistantLoguxController {
       { id: ctx.server.log.generateId() },
       { id: ctx.server.log.generateId() },
       { id: ctx.server.log.generateId() },
-      { id: ctx.server.log.generateId() },
-      { id: ctx.server.log.generateId() },
-      { id: ctx.server.log.generateId() },
     ] as const;
 
     const {
-      stories,
       intents,
-      prompts,
       entities,
-      triggers,
       responses,
       assistant,
       functions,
@@ -137,9 +136,6 @@ export class AssistantLoguxController {
       Actions.Entity.Replace({ data: this.entitySerializer.iterable(entities), context }, entityReplaceMeta),
       Actions.EntityVariant.Replace({ data: this.entitySerializer.iterable(entityVariants), context }, entityVariantReplaceMeta),
 
-      // prompt
-      Actions.Prompt.Replace({ data: this.entitySerializer.iterable(prompts), context }, promptReplaceMeta),
-
       // variable
       Actions.Variable.Replace({ data: this.entitySerializer.iterable(variables), context }, variableReplaceMeta),
 
@@ -157,10 +153,6 @@ export class AssistantLoguxController {
       Actions.ResponseVariant.Replace({ data: this.entitySerializer.iterable(responseVariants), context }, responseVariantReplaceMeta),
       Actions.ResponseAttachment.Replace({ data: this.entitySerializer.iterable(responseAttachments), context }, responseAttachmentReplaceMeta),
 
-      // story
-      Actions.Story.Replace({ data: this.entitySerializer.iterable(stories), context }, storyReplaceMeta),
-      Actions.Trigger.Replace({ data: this.entitySerializer.iterable(triggers), context }, triggerReplaceMeta),
-
       // function
       Actions.Function.Replace({ data: this.entitySerializer.iterable(functions), context }, functionReplaceMeta),
       Actions.FunctionPath.Replace({ data: this.entitySerializer.iterable(functionPaths), context }, functionPathReplaceMeta),
@@ -177,9 +169,9 @@ export class AssistantLoguxController {
 
     const { assistantID, environmentID } = ctx.params;
 
-    await this.viewerService.addViewer({ viewerID: authMeta.userID, assistantID, environmentID });
+    await this.viewer.addViewer({ viewerID: authMeta.userID, assistantID, environmentID });
 
-    const viewers = await this.viewerService.getAllViewers({ assistantID, environmentID });
+    const viewers = await this.viewer.getAllViewers({ assistantID, environmentID });
 
     await this.logux.processAs(
       Actions.AssistantAwareness.ReplaceViewers({ viewers, context: { assistantID, environmentID, broadcastOnly: true } }),
@@ -191,9 +183,9 @@ export class AssistantLoguxController {
   async unsubscribe(@Context() ctx: Context.Channel<Channels.AssistantParams>, @AuthMeta() authMeta: AuthMetaPayload) {
     const { assistantID, environmentID } = ctx.params;
 
-    await this.viewerService.removeViewer({ viewerID: authMeta.userID, assistantID, environmentID });
+    await this.viewer.removeViewer({ viewerID: authMeta.userID, assistantID, environmentID });
 
-    const viewers = await this.viewerService.getAllViewers({ assistantID, environmentID });
+    const viewers = await this.viewer.getAllViewers({ assistantID, environmentID });
 
     await this.logux.processAs(
       Actions.AssistantAwareness.ReplaceViewers({ viewers, context: { assistantID, environmentID, broadcastOnly: true } }),

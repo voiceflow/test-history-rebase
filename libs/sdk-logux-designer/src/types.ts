@@ -26,3 +26,5 @@ export interface LegacyVersionActionContext {
 export interface LegacyVersionAction {
   context: LegacyVersionActionContext;
 }
+
+export type WithoutMeta<T> = Omit<T, 'updatedAt' | 'updatedByID' | 'assistantID' | 'environmentID'>;

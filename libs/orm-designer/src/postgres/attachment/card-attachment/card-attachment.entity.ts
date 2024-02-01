@@ -79,6 +79,7 @@ export class CardAttachmentEntity extends PostgresCMSObjectEntity {
       ...CardAttachmentJSONAdapter.fromDB({
         ...wrap<CardAttachmentEntity>(this).toObject(...args),
         media: this.media ?? null,
+        updatedBy: this.updatedBy,
         assistant: this.assistant,
       }),
     };

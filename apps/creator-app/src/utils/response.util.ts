@@ -6,7 +6,6 @@ import type {
   JSONResponseVariantCreate,
   Prompt,
   PromptCreate,
-  PromptResponseVariant,
   PromptResponseVariantCreate,
   PromptResponseVariantWithPrompt,
   ResponseCardAttachment,
@@ -78,9 +77,6 @@ export const isTextResponseVariant = (responseVariant: AnyResponseVariant): resp
 export const isJSONResponseVariant = (responseVariant: AnyResponseVariant): responseVariant is JSONResponseVariant =>
   responseVariant.type === ResponseVariantType.JSON;
 
-export const isPromptResponseVariant = (responseVariant: AnyResponseVariant): responseVariant is PromptResponseVariant =>
-  responseVariant.type === ResponseVariantType.PROMPT;
-
 export const isJSONResponseVariantEmpty = (responseVariant: JSONResponseVariant | PartialJSONResponseVariant) => isMarkupEmpty(responseVariant.json);
 
 export const isTextResponseVariantEmpty = (responseVariant: TextResponseVariant | PartialTextResponseVariant) => isMarkupEmpty(responseVariant.text);
@@ -97,14 +93,12 @@ export const isAnyResponseVariantWithDataEmpty = (responseVariant: AnyResponseVa
 
 export const getResponseVariantWithData = ({
   variant,
-  promptsMap,
 }: {
   variant: AnyResponseVariant;
   promptsMap: Record<string, Prompt>;
 }): AnyResponseVariantWithData => {
   return match(variant)
     .when(isJSONResponseVariant, (variant) => ({ ...variant }))
-    .when(isPromptResponseVariant, (variant): AnyResponseVariantWithData => ({ ...variant, prompt: promptsMap[variant.promptID || ''] }))
     .when(isTextResponseVariant, (variant) => ({ ...variant }))
     .exhaustive();
 };

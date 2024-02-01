@@ -4,11 +4,10 @@ import { markupToString } from '@voiceflow/utils-designer';
 import { createSelector } from 'reselect';
 
 import { createCurriedSelector } from '@/ducks/utils/selector';
-import { isCardResponseAttachment, isPromptResponseVariant, isTextResponseVariant } from '@/utils/response.util';
+import { isCardResponseAttachment, isTextResponseVariant } from '@/utils/response.util';
 
 import { getOneByID as getAttachmentByID } from '../attachment/attachment.select';
 import { map as entityMap } from '../entity/selectors/crud.select';
-import { getOneByID as getOnePromptByID } from '../prompt/prompt.select';
 import { allByIDs as allResponseAttachmentByIDs } from '../response/response-attachment/response-attachment.select';
 import { oneByLanguageChannelResponseID as oneResponseDiscriminatorByLanguageChannelResponseID } from '../response/response-discriminator/response-discriminator.select';
 import { getOneByID as getOneResponseVariantByID } from '../response/response-variant/response-variant.select';
@@ -31,10 +30,9 @@ export const allResponseAttachmentWithAttachmentByIDs = createSelector(
 export const allStringResponseVariantsByLanguageChannelResponseID = createSelector(
   oneResponseDiscriminatorByLanguageChannelResponseID,
   getOneResponseVariantByID,
-  getOnePromptByID,
   variableMap,
   entityMap,
-  (discriminator, getVariantByID, getPrompt, variablesMap, entitiesMap) =>
+  (discriminator, getVariantByID, variablesMap, entitiesMap) =>
     discriminator?.variantOrder
       .map((variantID) => {
         const variant = getVariantByID({ id: variantID });
@@ -43,14 +41,6 @@ export const allStringResponseVariantsByLanguageChannelResponseID = createSelect
 
         if (isTextResponseVariant(variant)) {
           return markupToString.fromDB(variant.text, { entitiesMapByID: entitiesMap, variablesMapByID: variablesMap });
-        }
-
-        if (isPromptResponseVariant(variant)) {
-          const prompt = getPrompt({ id: variant.promptID });
-
-          if (!prompt) return null;
-
-          return markupToString.fromDB(prompt.text, { entitiesMapByID: entitiesMap, variablesMapByID: variablesMap });
         }
 
         return markupToString.fromDB(variant.json, { entitiesMapByID: entitiesMap, variablesMapByID: variablesMap });

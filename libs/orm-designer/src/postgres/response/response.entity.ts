@@ -21,6 +21,8 @@ export class ResponseEntity extends PostgresCMSTabularEntity {
     return ResponseJSONAdapter.fromDB({
       ...wrap<ResponseEntity>(this).toObject(...args),
       folder: this.folder ?? null,
+      updatedBy: this.updatedBy,
+      createdBy: this.createdBy,
       assistant: this.assistant,
     });
   }

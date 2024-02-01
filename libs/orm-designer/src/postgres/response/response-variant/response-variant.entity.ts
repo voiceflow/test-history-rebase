@@ -97,6 +97,7 @@ export class BaseResponseVariantEntity extends PostgresCMSObjectEntity {
       ...wrap<BaseResponseVariantEntity>(this).toObject(...args),
       assistant: this.assistant,
       condition: this.condition ?? null,
+      updatedBy: this.updatedBy,
       discriminator: this.discriminator,
     });
   }
@@ -127,6 +128,7 @@ export class JSONResponseVariantEntity extends BaseResponseVariantEntity {
       ...wrap<JSONResponseVariantEntity>(this).toObject(...args),
       assistant: this.assistant,
       condition: this.condition ?? null,
+      updatedBy: this.updatedBy,
       discriminator: this.discriminator,
     });
   }
@@ -174,6 +176,7 @@ export class PromptResponseVariantEntity extends BaseResponseVariantEntity {
       prompt: this.prompt ?? null,
       assistant: this.assistant,
       condition: this.condition ?? null,
+      updatedBy: this.updatedBy,
       discriminator: this.discriminator,
     });
   }
@@ -214,12 +217,10 @@ export class TextResponseVariantEntity extends BaseResponseVariantEntity {
       ...wrap<TextResponseVariantEntity>(this).toObject(...args),
       assistant: this.assistant,
       condition: this.condition ?? null,
+      updatedBy: this.updatedBy,
       discriminator: this.discriminator,
     });
   }
 }
 
-export type AnyResponseVariantEntity =
-  | PromptResponseVariantEntity
-  | TextResponseVariantEntity
-  | JSONResponseVariantEntity;
+export type AnyResponseVariantEntity = TextResponseVariantEntity | JSONResponseVariantEntity;

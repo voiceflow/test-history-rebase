@@ -56,6 +56,7 @@ export class MediaAttachmentEntity extends PostgresCMSObjectEntity {
 
       ...MediaAttachmentJSONAdapter.fromDB({
         ...wrap<MediaAttachmentEntity>(this).toObject(...args),
+        updatedBy: this.updatedBy,
         assistant: this.assistant,
       }),
     };

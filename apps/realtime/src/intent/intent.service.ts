@@ -10,14 +10,12 @@ import type {
   AnyResponseAttachmentEntity,
   AnyResponseVariantEntity,
   IntentEntity,
-  IntentTriggerEntity,
   ORMMutateOptions,
   PKOrEntity,
   PromptEntity,
   RequiredEntityEntity,
   ResponseDiscriminatorEntity,
   ResponseEntity,
-  StoryEntity,
   ToJSONWithForeignKeys,
   UtteranceEntity,
 } from '@voiceflow/orm-designer';
@@ -26,10 +24,9 @@ import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { CMSTabularService, EntitySerializer } from '@/common';
 import { assistantBroadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
-import { TriggerService } from '@/story/trigger/trigger.service';
-import { deepSetCreatorID } from '@/utils/creator.util';
 import { cloneManyEntities } from '@/utils/entity.util';
 
+import { IntentExportImportDataDTO } from './dtos/intent-export-import-data.dto';
 import type { IntentCreateData } from './intent.interface';
 import { RequiredEntityService } from './required-entity/required-entity.service';
 import { UtteranceService } from './utterance/utterance.service';
@@ -43,8 +40,6 @@ export class IntentService extends CMSTabularService<IntentORM> {
     protected readonly orm: IntentORM,
     @Inject(LoguxService)
     private readonly logux: LoguxService,
-    @Inject(TriggerService)
-    private readonly trigger: TriggerService,
     @Inject(UtteranceService)
     private readonly utterance: UtteranceService,
     @Inject(RequiredEntityService)
@@ -73,19 +68,30 @@ export class IntentService extends CMSTabularService<IntentORM> {
 
   /* Export */
 
-  prepareExportData({
-    intents,
-    utterances,
-    requiredEntities,
-  }: {
-    intents: IntentEntity[];
-    utterances: UtteranceEntity[];
-    requiredEntities: RequiredEntityEntity[];
-  }) {
+  prepareExportData(
+    {
+      intents,
+      utterances,
+      requiredEntities,
+    }: {
+      intents: IntentEntity[];
+      utterances: UtteranceEntity[];
+      requiredEntities: RequiredEntityEntity[];
+    },
+    { backup }: { backup?: boolean } = {}
+  ): IntentExportImportDataDTO {
+    if (backup) {
+      return {
+        intents: this.entitySerializer.iterable(intents),
+        utterances: this.entitySerializer.iterable(utterances),
+        requiredEntities: this.entitySerializer.iterable(requiredEntities),
+      };
+    }
+
     return {
-      intents: this.entitySerializer.iterable(intents),
-      utterances: this.entitySerializer.iterable(utterances),
-      requiredEntities: this.entitySerializer.iterable(requiredEntities),
+      intents: this.entitySerializer.iterable(intents, { omit: ['assistantID', 'environmentID'] }),
+      utterances: this.entitySerializer.iterable(utterances, { omit: ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'] }),
+      requiredEntities: this.entitySerializer.iterable(requiredEntities, { omit: ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'] }),
     };
   }
 
@@ -130,35 +136,69 @@ export class IntentService extends CMSTabularService<IntentORM> {
   /* Import */
 
   prepareImportData(
-    {
-      intents,
-      utterances,
-      requiredEntities,
-    }: {
-      intents: ToJSONWithForeignKeys<IntentEntity>[];
-      utterances: ToJSONWithForeignKeys<UtteranceEntity>[];
-      requiredEntities: ToJSONWithForeignKeys<RequiredEntityEntity>[];
-    },
+    { intents, utterances, requiredEntities }: IntentExportImportDataDTO,
     { userID, backup, assistantID, environmentID }: { userID: number; backup?: boolean; assistantID: string; environmentID: string }
-  ) {
+  ): {
+    intents: ToJSONWithForeignKeys<IntentEntity>[];
+    utterances: ToJSONWithForeignKeys<UtteranceEntity>[];
+    requiredEntities: ToJSONWithForeignKeys<RequiredEntityEntity>[];
+  } {
     const createdAt = new Date().toJSON();
 
+    if (backup) {
+      return {
+        intents: intents.map((item) => ({
+          ...item,
+          assistantID,
+          environmentID,
+        })),
+
+        utterances: utterances.map((item) => ({
+          ...item,
+          updatedAt: item.updatedAt ?? createdAt,
+          updatedByID: item.updatedByID ?? userID,
+          assistantID,
+          environmentID,
+        })),
+
+        requiredEntities: requiredEntities.map((item) => ({
+          ...item,
+          updatedAt: item.updatedAt ?? createdAt,
+          updatedByID: item.updatedByID ?? userID,
+          assistantID,
+          environmentID,
+        })),
+      };
+    }
+
     return {
-      intents: intents.map<ToJSONWithForeignKeys<IntentEntity>>((item) =>
-        backup
-          ? { ...item, assistantID, environmentID }
-          : { ...deepSetCreatorID(item, userID), createdAt, updatedAt: createdAt, assistantID, environmentID }
-      ),
+      intents: intents.map((item) => ({
+        ...item,
+        createdAt,
+        updatedAt: createdAt,
+        createdByID: userID,
+        updatedByID: userID,
+        assistantID,
+        environmentID,
+      })),
 
-      utterances: utterances.map<ToJSONWithForeignKeys<UtteranceEntity>>((item) =>
-        backup
-          ? { ...item, assistantID, environmentID }
-          : { ...deepSetCreatorID(item, userID), createdAt, updatedAt: createdAt, assistantID, environmentID }
-      ),
+      utterances: utterances.map((item) => ({
+        ...item,
+        createdAt,
+        updatedAt: createdAt,
+        updatedByID: userID,
+        assistantID,
+        environmentID,
+      })),
 
-      requiredEntities: requiredEntities.map<ToJSONWithForeignKeys<RequiredEntityEntity>>((item) =>
-        backup ? { ...item, assistantID, environmentID } : { ...deepSetCreatorID(item, userID), createdAt, assistantID, environmentID }
-      ),
+      requiredEntities: requiredEntities.map((item) => ({
+        ...item,
+        createdAt,
+        updatedAt: createdAt,
+        updatedByID: userID,
+        assistantID,
+        environmentID,
+      })),
     };
   }
 
@@ -318,14 +358,12 @@ export class IntentService extends CMSTabularService<IntentORM> {
   /* Delete */
 
   async collectRelationsToDelete(intents: PKOrEntity<IntentEntity>[]) {
-    const [triggers, utterances, requiredEntities] = await Promise.all([
-      this.trigger.findManyByIntents(intents),
+    const [utterances, requiredEntities] = await Promise.all([
       this.utterance.findManyByIntents(intents),
       this.requiredEntity.findManyByIntents(intents),
     ]);
 
     return {
-      triggers,
       utterances,
       requiredEntities,
     };
@@ -337,14 +375,11 @@ export class IntentService extends CMSTabularService<IntentORM> {
 
       const relations = await this.collectRelationsToDelete(intents);
 
-      const sync = await this.trigger.syncOnDelete(relations.triggers, { flush: false });
-
       await this.deleteMany(intents, { flush: false });
 
       await this.orm.em.flush();
 
       return {
-        sync,
         delete: { ...relations, intents },
       };
     });
@@ -353,23 +388,21 @@ export class IntentService extends CMSTabularService<IntentORM> {
   async broadcastDeleteMany(
     authMeta: AuthMetaPayload,
     {
-      sync,
       delete: del,
     }: {
-      sync: { stories: StoryEntity[] };
       delete: {
         intents: IntentEntity[];
-        triggers: IntentTriggerEntity[];
+        // triggers: IntentTriggerEntity[];
         utterances: UtteranceEntity[];
         requiredEntities: RequiredEntityEntity[];
       };
     }
   ) {
     await Promise.all([
-      this.trigger.broadcastDeleteMany(authMeta, {
-        sync: Utils.object.pick(sync, ['stories']),
-        delete: Utils.object.pick(del, ['triggers']),
-      }),
+      // this.trigger.broadcastDeleteMany(authMeta, {
+      //   sync: Utils.object.pick(sync, ['stories']),
+      //   delete: Utils.object.pick(del, ['triggers']),
+      // }),
 
       this.utterance.broadcastDeleteMany(authMeta, {
         delete: Utils.object.pick(del, ['utterances']),
@@ -401,15 +434,12 @@ export class IntentService extends CMSTabularService<IntentORM> {
 
   /* Upsert */
 
-  async upsertManyWithSubResources({
-    intents,
-    utterances,
-    requiredEntities,
-  }: {
-    intents: Intent[];
-    utterances: Utterance[];
-    requiredEntities: RequiredEntity[];
-  }) {
+  async upsertManyWithSubResources(
+    data: { intents: Intent[]; utterances: Utterance[]; requiredEntities: RequiredEntity[] },
+    meta: { userID: number; assistantID: string; environmentID: string }
+  ) {
+    const { intents, utterances, requiredEntities } = this.prepareImportData(data, meta);
+
     await this.upsertMany(intents);
     await this.utterance.upsertMany(utterances);
     await this.requiredEntity.upsertMany(requiredEntities);

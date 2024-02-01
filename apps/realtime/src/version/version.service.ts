@@ -148,9 +148,10 @@ export class VersionService extends MutableService<VersionORM> {
     );
   }
 
-  async findProjectID(versionID: string): Promise<ObjectId> {
-    const version = await this.orm.findOneOrFail(versionID, { fields: ['projectID'] });
-    return version.projectID;
+  async findOneProjectID(versionID: string): Promise<ObjectId> {
+    const { projectID } = await this.orm.findOneOrFail(versionID, { fields: ['projectID'] });
+
+    return projectID;
   }
 
   async exists(versionID: string): Promise<boolean> {

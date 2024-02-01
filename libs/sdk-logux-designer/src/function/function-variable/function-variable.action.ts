@@ -11,7 +11,7 @@ import type {
   PatchOneRequest,
   ReplaceRequest,
 } from '@/crud/crud.interface';
-import type { DesignerAction } from '@/types';
+import type { DesignerAction, WithoutMeta } from '@/types';
 
 const functionVariableAction = createCRUD('function_variable');
 
@@ -38,7 +38,7 @@ export namespace CreateOne {
     data: CreateData;
   }
 
-  export interface Response extends CreateResponse<FunctionVariable>, DesignerAction {}
+  export interface Response extends CreateResponse<WithoutMeta<FunctionVariable>>, DesignerAction {}
 }
 
 export const CreateOne = functionVariableAction.crud.createOne<CreateOne.Request, CreateOne.Response>();

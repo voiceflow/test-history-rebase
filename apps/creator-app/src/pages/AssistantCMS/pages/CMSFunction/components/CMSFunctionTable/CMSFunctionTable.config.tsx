@@ -58,7 +58,7 @@ export const FUNCTION_TABLE_CONFIG: TableConfig<FunctionTableColumn, CMSFolder |
       name: 'Updated',
       sorter: withFolderSort(updatedAtSort),
 
-      cell: ({ item }) => <CMSTableCellFromNowTooltip updatedAt={item.updatedAt} />,
+      cell: ({ item }) => <Table.Cell.GroupEmpty item={item} label={({ updatedAt }) => <CMSTableCellFromNowTooltip updatedAt={updatedAt} />} />,
     },
   },
 };

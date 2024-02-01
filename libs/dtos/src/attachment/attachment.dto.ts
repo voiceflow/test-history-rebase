@@ -5,11 +5,16 @@ import { CMSObjectResourceDTO, MarkupDTO } from '@/common';
 import { AttachmentType } from './attachment-type.enum';
 import { MediaDatatype } from './media-datatype.enum';
 
-const BaseAttachmentDTO = CMSObjectResourceDTO.extend({
-  type: z.nativeEnum(AttachmentType),
-  assistantID: z.string(),
-  environmentID: z.string(),
-}).strict();
+const BaseAttachmentDTO = CMSObjectResourceDTO.partial({
+  updatedAt: true,
+  updatedByID: true,
+})
+  .extend({
+    type: z.nativeEnum(AttachmentType),
+    assistantID: z.string().optional(),
+    environmentID: z.string().optional(),
+  })
+  .strict();
 
 export const CardAttachmentDTO = BaseAttachmentDTO.extend({
   type: z.literal(AttachmentType.CARD),

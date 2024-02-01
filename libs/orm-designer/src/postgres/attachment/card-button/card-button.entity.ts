@@ -50,6 +50,7 @@ export class CardButtonEntity extends PostgresCMSObjectEntity {
     return CardButtonJSONAdapter.fromDB({
       ...wrap<CardButtonEntity>(this).toObject(...args),
       card: this.card,
+      updatedBy: this.updatedBy,
       assistant: this.assistant,
     });
   }

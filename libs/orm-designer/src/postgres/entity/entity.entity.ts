@@ -51,6 +51,8 @@ export class EntityEntity extends PostgresCMSTabularEntity {
     return EntityJSONAdapter.fromDB({
       ...wrap<EntityEntity>(this).toObject(...args),
       folder: this.folder ?? null,
+      updatedBy: this.updatedBy,
+      createdBy: this.createdBy,
       assistant: this.assistant,
     });
   }

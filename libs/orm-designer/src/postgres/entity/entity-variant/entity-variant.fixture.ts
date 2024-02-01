@@ -8,7 +8,7 @@ export const entityVariant: EntityDTO<EntityVariantEntity> = {
   id: 'entity-variant-1',
   createdAt: new Date(),
   updatedAt: new Date(),
-  updatedByID: 1,
+  updatedBy: { id: 1 } as any,
   language: Language.ENGLISH_US,
   value: 'car',
   synonyms: ['vehicle', 'sedan', 'automobile'],

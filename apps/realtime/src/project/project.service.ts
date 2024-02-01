@@ -23,6 +23,12 @@ export class ProjectService extends MutableService<ProjectORM> {
     super();
   }
 
+  async findOneWorkspaceID(projectID: string) {
+    const { teamID } = await this.orm.findOneOrFail(projectID, { fields: ['teamID'] });
+
+    return teamID;
+  }
+
   findManyByWorkspaceID(workspaceID: number) {
     return this.orm.find({ teamID: workspaceID });
   }

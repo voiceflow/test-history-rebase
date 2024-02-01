@@ -10,9 +10,9 @@ import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { CMSTabularService, EntitySerializer } from '@/common';
 import { assistantBroadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
-import { deepSetCreatorID } from '@/utils/creator.util';
 import { cloneManyEntities } from '@/utils/entity.util';
 
+import type { VariableExportImportDataDTO } from './dtos/variable-export-import-data.dto';
 import type { VariableCreateData } from './variable.interface';
 
 @Injectable()
@@ -42,9 +42,15 @@ export class VariableService extends CMSTabularService<VariableORM> {
 
   /* Export */
 
-  prepareExportData({ variables }: { variables: VariableEntity[] }) {
+  prepareExportData({ variables }: { variables: VariableEntity[] }, { backup }: { backup?: boolean } = {}): VariableExportImportDataDTO {
+    if (backup) {
+      return {
+        variables: this.entitySerializer.iterable(variables),
+      };
+    }
+
     return {
-      variables: this.entitySerializer.iterable(variables),
+      variables: this.entitySerializer.iterable(variables, { omit: ['assistantID', 'environmentID'] }),
     };
   }
 
@@ -83,17 +89,31 @@ export class VariableService extends CMSTabularService<VariableORM> {
   /* Import */
 
   prepareImportData(
-    { variables }: { variables: ToJSONWithForeignKeys<VariableEntity>[] },
+    { variables }: VariableExportImportDataDTO,
     { userID, backup, assistantID, environmentID }: { userID: number; backup?: boolean; assistantID: string; environmentID: string }
-  ) {
+  ): { variables: ToJSONWithForeignKeys<VariableEntity>[] } {
     const createdAt = new Date().toJSON();
 
+    if (backup) {
+      return {
+        variables: variables.map((item) => ({
+          ...item,
+          assistantID,
+          environmentID,
+        })),
+      };
+    }
+
     return {
-      variables: variables.map<ToJSONWithForeignKeys<VariableEntity>>((item) =>
-        backup
-          ? { ...item, assistantID, environmentID }
-          : { ...deepSetCreatorID(item, userID), createdAt, updatedAt: createdAt, assistantID, environmentID }
-      ),
+      variables: variables.map((item) => ({
+        ...item,
+        createdAt,
+        updatedAt: createdAt,
+        createdByID: userID,
+        updatedByID: userID,
+        assistantID,
+        environmentID,
+      })),
     };
   }
 
@@ -197,7 +217,9 @@ export class VariableService extends CMSTabularService<VariableORM> {
 
   /* Upsert */
 
-  async upsertManyWithSubResources({ variables }: { variables: Variable[] }) {
+  async upsertManyWithSubResources(data: { variables: Variable[] }, meta: { userID: number; assistantID: string; environmentID: string }) {
+    const { variables } = this.prepareImportData(data, meta);
+
     await this.upsertMany(variables);
   }
 }

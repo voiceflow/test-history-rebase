@@ -38,6 +38,8 @@ export class PromptEntity extends PostgresCMSTabularEntity {
       ...wrap<PromptEntity>(this).toObject(...args),
       folder: this.folder ?? null,
       persona: this.persona ?? null,
+      updatedBy: this.updatedBy,
+      createdBy: this.createdBy,
       assistant: this.assistant,
     });
   }

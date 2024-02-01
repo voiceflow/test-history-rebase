@@ -44,7 +44,7 @@ export class BackupHTTPController {
     @UserID() creatorID: number,
     @Body(new ZodValidationPipe(BackupCreateRequest)) { versionID, name }: BackupCreateRequest
   ): Promise<Backup> {
-    return this.service.createOneForUser(creatorID, versionID, name).then(this.entitySerializer.serialize);
+    return this.service.createOneForUser(creatorID, versionID, name).then((backup) => this.entitySerializer.serialize(backup));
   }
 
   @Delete(':backupID')
@@ -72,7 +72,7 @@ export class BackupHTTPController {
   @Authorize.Permissions([Permission.PROJECT_UPDATE])
   @ZodApiResponse({ status: HttpStatus.CREATED, schema: BackupDTO })
   restoreOne(@Param('backupID') backupID: number, @Query('clientID') clientID: string, @UserID() userID: number): Promise<Backup> {
-    return this.service.restoreBackupAndEjectUsers({ clientID, userID }, backupID).then(this.entitySerializer.serialize);
+    return this.service.restoreBackupAndEjectUsers({ clientID, userID }, backupID).then((backup) => this.entitySerializer.serialize(backup));
   }
 
   @Post(':backupID/preview')

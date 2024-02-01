@@ -17,8 +17,7 @@ import {
 export class ResponseVariantORM extends PostgresCMSObjectUnionORM(
   BaseResponseVariantEntity,
   JSONResponseVariantEntity,
-  TextResponseVariantEntity,
-  PromptResponseVariantEntity
+  TextResponseVariantEntity
 ) {
   findManyByEnvironment(
     assistant: PKOrEntity<AssistantEntity>,

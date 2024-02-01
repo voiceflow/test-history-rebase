@@ -6,7 +6,7 @@ export const functionPath: EntityDTO<FunctionPathEntity> = {
   id: 'function-path-1',
   createdAt: new Date(),
   updatedAt: new Date(),
-  updatedByID: 1,
+  updatedBy: { id: 1 } as any,
   name: 'first_function_path',
   label: 'First Function Path',
   function: { id: 'function-1' } as any,

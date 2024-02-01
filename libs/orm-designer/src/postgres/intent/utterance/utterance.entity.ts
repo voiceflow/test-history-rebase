@@ -55,6 +55,7 @@ export class UtteranceEntity extends PostgresCMSObjectEntity {
     return UtteranceJSONAdapter.fromDB({
       ...wrap<UtteranceEntity>(this).toObject(...args),
       intent: this.intent,
+      updatedBy: this.updatedBy,
       assistant: this.assistant,
     });
   }

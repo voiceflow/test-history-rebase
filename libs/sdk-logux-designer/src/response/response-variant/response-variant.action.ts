@@ -24,7 +24,7 @@ import type {
   PatchOneRequest,
   ReplaceRequest,
 } from '@/crud/crud.interface';
-import type { DesignerAction } from '@/types';
+import type { DesignerAction, WithoutMeta } from '@/types';
 
 const responseVariantAction = createCRUD('response_variant');
 
@@ -79,7 +79,7 @@ export namespace CreatePromptOne {
     options?: CreateOptions;
   }
 
-  export interface Response extends CreateResponse<PromptResponseVariant>, DesignerAction {}
+  export interface Response extends CreateResponse<WithoutMeta<PromptResponseVariant>>, DesignerAction {}
 }
 
 export const CreatePromptOne = responseVariantAction.crud.createOne<CreatePromptOne.Request, CreatePromptOne.Response>(
@@ -94,7 +94,7 @@ export namespace CreateTextOne {
     options?: CreateOptions;
   }
 
-  export interface Response extends CreateResponse<TextResponseVariant>, DesignerAction {}
+  export interface Response extends CreateResponse<WithoutMeta<TextResponseVariant>>, DesignerAction {}
 }
 
 export const CreateTextOne = responseVariantAction.crud.createOne<CreateTextOne.Request, CreateTextOne.Response>(
@@ -109,7 +109,7 @@ export namespace CreatePromptMany {
     options?: CreateOptions;
   }
 
-  export interface Response extends CreateResponse<PromptResponseVariant[]>, DesignerAction {}
+  export interface Response extends CreateResponse<WithoutMeta<PromptResponseVariant>[]>, DesignerAction {}
 }
 
 export const CreatePromptMany = responseVariantAction.crud.createMany<
@@ -125,7 +125,7 @@ export namespace CreateTextMany {
     options?: CreateOptions;
   }
 
-  export interface Response extends CreateResponse<TextResponseVariant[]>, DesignerAction {}
+  export interface Response extends CreateResponse<WithoutMeta<TextResponseVariant>[]>, DesignerAction {}
 }
 
 export const CreateTextMany = responseVariantAction.crud.createMany<CreateTextMany.Request, CreateTextMany.Response>(

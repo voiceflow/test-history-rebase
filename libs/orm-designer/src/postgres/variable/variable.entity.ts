@@ -73,6 +73,8 @@ export class VariableEntity extends PostgresCMSTabularEntity {
       ...wrap<VariableEntity>(this).toObject(...args),
       folder: this.folder ?? null,
       assistant: this.assistant,
+      updatedBy: this.updatedBy,
+      createdBy: this.createdBy,
     });
   }
 }

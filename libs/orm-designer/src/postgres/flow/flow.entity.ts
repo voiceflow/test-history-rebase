@@ -32,6 +32,8 @@ export class FlowEntity extends PostgresCMSTabularEntity {
     return FlowJSONAdapter.fromDB({
       ...wrap<FlowEntity>(this).toObject(...args),
       folder: this.folder ?? null,
+      updatedBy: this.updatedBy,
+      createdBy: this.createdBy,
       assistant: this.assistant,
     });
   }

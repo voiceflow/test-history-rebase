@@ -15,8 +15,8 @@ export const variable: EntityDTO<VariableEntity> = {
   isArray: false,
   color: '#000000',
   assistant: { id: 'assistant-1' } as any,
-  createdByID: 1,
-  updatedByID: 2,
+  createdBy: { id: 1 } as any,
+  updatedBy: { id: 2 } as any,
   folder: null,
   environmentID: 'environment-1',
 };

@@ -44,6 +44,8 @@ export class FunctionEntity extends PostgresCMSTabularEntity {
     return FunctionJSONAdapter.fromDB({
       ...wrap<FunctionEntity>(this).toObject(...args),
       folder: this.folder ?? null,
+      updatedBy: this.updatedBy,
+      createdBy: this.createdBy,
       assistant: this.assistant,
     });
   }

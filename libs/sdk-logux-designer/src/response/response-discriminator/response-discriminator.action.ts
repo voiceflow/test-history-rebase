@@ -11,7 +11,7 @@ import type {
   PatchOneRequest,
   ReplaceRequest,
 } from '@/crud/crud.interface';
-import type { DesignerAction } from '@/types';
+import type { DesignerAction, WithoutMeta } from '@/types';
 
 const responseDiscriminatorAction = createCRUD('response_discriminator');
 
@@ -37,7 +37,7 @@ export namespace CreateOne {
     data: CreateData;
   }
 
-  export interface Response extends CreateResponse<ResponseDiscriminator>, DesignerAction {}
+  export interface Response extends CreateResponse<WithoutMeta<ResponseDiscriminator>>, DesignerAction {}
 }
 
 export const CreateOne = responseDiscriminatorAction.crud.createOne<CreateOne.Request, CreateOne.Response>();

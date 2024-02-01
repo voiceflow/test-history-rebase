@@ -62,6 +62,7 @@ export class EventMappingEntity extends PostgresCMSObjectEntity {
       ...wrap<EventMappingEntity>(this).toObject(...args),
       event: this.event,
       variable: this.variable ?? null,
+      updatedBy: this.updatedBy,
       assistant: this.assistant,
     });
   }

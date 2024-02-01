@@ -10,11 +10,9 @@ import { IntentModule } from '@/intent/intent.module';
 import { RequiredEntityModule } from '@/intent/required-entity/required-entity.module';
 import { UtteranceModule } from '@/intent/utterance/utterance.module';
 import { ProjectSerializer } from '@/project/project.serializer';
-import { PromptModule } from '@/prompt/prompt.module';
 import { ResponseModule } from '@/response/response.module';
 import { ResponseDiscriminatorModule } from '@/response/response-discriminator/response-discriminator.module';
 import { ResponseVariantModule } from '@/response/response-variant/response-variant.module';
-import { StoryModule } from '@/story/story.module';
 import { VariableModule } from '@/variable/variable.module';
 import { VersionModule } from '@/version/version.module';
 
@@ -25,10 +23,8 @@ import { EnvironmentPrivateHTTPController } from './environment-private.http.con
   imports: [
     ProjectORM.register(),
     AssistantORM.register(),
-    StoryModule,
     EntityModule,
     IntentModule,
-    PromptModule,
     VersionModule,
     DiagramModule,
     ResponseModule,

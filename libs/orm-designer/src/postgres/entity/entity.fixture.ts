@@ -14,8 +14,8 @@ export const entity: EntityDTO<EntityEntity> = {
   variants: [],
   assistant: { id: 'assistant-1' } as any,
   folder: null,
-  createdByID: 1,
-  updatedByID: 2,
+  createdBy: { id: 1 } as any,
+  updatedBy: { id: 2 } as any,
   description: null,
   environmentID: 'environment-1',
 };

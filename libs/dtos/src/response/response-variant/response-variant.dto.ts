@@ -6,13 +6,18 @@ import { CardLayout } from './card-layout.enum';
 import { ResponseContext } from './response-context.enum';
 import { ResponseVariantType } from './response-variant-type.enum';
 
-const BaseResponseVariantDTO = CMSObjectResourceDTO.extend({
-  conditionID: z.string().nullable(),
-  assistantID: z.string(),
-  environmentID: z.string(),
-  attachmentOrder: z.array(z.string()),
-  discriminatorID: z.string(),
-}).strict();
+const BaseResponseVariantDTO = CMSObjectResourceDTO.partial({
+  updatedAt: true,
+  updatedByID: true,
+})
+  .extend({
+    conditionID: z.string().nullable(),
+    assistantID: z.string().optional(),
+    environmentID: z.string().optional(),
+    attachmentOrder: z.array(z.string()),
+    discriminatorID: z.string(),
+  })
+  .strict();
 
 // models
 
@@ -41,10 +46,6 @@ export const PromptResponseVariantDTO = BaseResponseVariantDTO.extend({
 
 export type PromptResponseVariant = z.infer<typeof PromptResponseVariantDTO>;
 
-export const AnyResponseVariantDTO = z.union([
-  JSONResponseVariantDTO,
-  TextResponseVariantDTO,
-  PromptResponseVariantDTO,
-]);
+export const AnyResponseVariantDTO = z.union([JSONResponseVariantDTO, TextResponseVariantDTO]);
 
 export type AnyResponseVariant = z.infer<typeof AnyResponseVariantDTO>;

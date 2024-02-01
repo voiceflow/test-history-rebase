@@ -49,10 +49,8 @@ import { ProductUpdateModule } from './product-update/product-update.module';
 import { ProjectModule } from './project/project.module';
 import { ProjectPlatformModule } from './project/project-platform/project-platform.module';
 import { ProjectListModule } from './project-list/project-list.module';
-import { PromptModule } from './prompt/prompt.module';
 import { PrototypeProgramModule } from './prototype-program/prototype-program.module';
 import { ResponseModule } from './response/response.module';
-import { StoryModule } from './story/story.module';
 import { ThreadModule } from './thread/thread.module';
 import { UploadModule } from './upload/upload.module';
 import { UserModule } from './user/user.module';
@@ -232,10 +230,8 @@ import { VersionModule } from './version/version.module';
     SerializerModule,
     LegacyModule,
     UserModule,
-    StoryModule,
     EntityModule,
     IntentModule,
-    PromptModule,
     UploadModule,
     ResponseModule,
     AssistantModule,

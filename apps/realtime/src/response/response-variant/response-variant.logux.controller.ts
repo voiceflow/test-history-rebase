@@ -1,6 +1,6 @@
 import { Controller, Inject } from '@nestjs/common';
 import { Action, AuthMeta, AuthMetaPayload, Broadcast, Payload } from '@voiceflow/nestjs-logux';
-import type { JSONResponseVariantEntity, PromptResponseVariantEntity, TextResponseVariantEntity } from '@voiceflow/orm-designer';
+import type { JSONResponseVariantEntity, TextResponseVariantEntity } from '@voiceflow/orm-designer';
 import { ResponseVariantType } from '@voiceflow/orm-designer';
 import { Permission } from '@voiceflow/sdk-auth';
 import { Authorize } from '@voiceflow/sdk-auth/nestjs';
@@ -46,44 +46,6 @@ export class ResponseVariantLoguxController {
         options
       )
       .then(([result]) => ({ data: this.entitySerializer.serialize(result as JSONResponseVariantEntity), context }));
-  }
-
-  @Action.Async(Actions.ResponseVariant.CreatePromptOne)
-  @Authorize.Permissions<Actions.ResponseVariant.CreatePromptOne.Request>([Permission.PROJECT_UPDATE], ({ context }) => ({
-    id: context.environmentID,
-    kind: 'version',
-  }))
-  @UseRequestContext()
-  createPromptOne(
-    @Payload() { data, context, options }: Actions.ResponseVariant.CreatePromptOne.Request,
-    @AuthMeta() authMeta: AuthMetaPayload
-  ): Promise<Actions.ResponseVariant.CreatePromptOne.Response> {
-    return this.service
-      .createManyAndBroadcast(
-        authMeta,
-        [{ ...data, type: ResponseVariantType.PROMPT, assistantID: context.assistantID, environmentID: context.environmentID }],
-        options
-      )
-      .then(([result]) => ({ data: this.entitySerializer.serialize(result as PromptResponseVariantEntity), context }));
-  }
-
-  @Action.Async(Actions.ResponseVariant.CreatePromptMany)
-  @Authorize.Permissions<Actions.ResponseVariant.CreatePromptMany.Request>([Permission.PROJECT_UPDATE], ({ context }) => ({
-    id: context.environmentID,
-    kind: 'version',
-  }))
-  @UseRequestContext()
-  createPromptMany(
-    @Payload() { data, context, options }: Actions.ResponseVariant.CreatePromptMany.Request,
-    @AuthMeta() authMeta: AuthMetaPayload
-  ): Promise<Actions.ResponseVariant.CreatePromptMany.Response> {
-    return this.service
-      .createManyAndBroadcast(
-        authMeta,
-        data.map((item) => ({ ...item, type: ResponseVariantType.PROMPT, assistantID: context.assistantID, environmentID: context.environmentID })),
-        options
-      )
-      .then((result) => ({ data: this.entitySerializer.iterable(result as PromptResponseVariantEntity[]), context }));
   }
 
   @Action.Async(Actions.ResponseVariant.CreateTextOne)

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1381.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1381.3...@voiceflow/creator-app@1.1381.4) (2024-02-01)
+
+### Bug Fixes
+
+* fixes assistant channel load [bugfix] (CT-000) ([#7741](https://github.com/voiceflow/creator-app/issues/7741)) ([79f447c](https://github.com/voiceflow/creator-app/commit/79f447c67eba749b096d619ad5583ac45488b446))
+
 ## [1.1381.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1381.2...@voiceflow/creator-app@1.1381.3) (2024-02-01)
 
 ### Bug Fixes

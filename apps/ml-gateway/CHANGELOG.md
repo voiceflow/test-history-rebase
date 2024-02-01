@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.76.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.75.2...@voiceflow/ml-gateway@1.76.0) (2024-02-01)
+
+### Features
+
+* optimize cms load (CT-000) ([#7737](https://github.com/voiceflow/creator-app/issues/7737)) ([7795c7b](https://github.com/voiceflow/creator-app/commit/7795c7b0e04020696b16d7d54d7646d7bead48db))
+
 ## [1.75.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.75.1...@voiceflow/ml-gateway@1.75.2) (2024-01-30)
 
 **Note:** Version bump only for package @voiceflow/ml-gateway

@@ -1,18 +1,31 @@
-import type { IconName } from '@voiceflow/icons';
 import { Switch } from '@voiceflow/ui';
 import { Box, Scroll } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { Modal } from '@/components/Modal';
+import { Designer } from '@/ducks';
+import { useDispatch } from '@/hooks/store.hook';
 import manager from '@/ModalsV2/manager';
+import { KnowledgeBaseIntegration } from '@/models/KnowledgeBase.model';
 
+import { INTEGRATION_PLATFORMS_MAPPER } from '../KnowledgeBaseImport/KBImportIntegration/KBImportIntegrationPlatform/KBImportIntegrationPlatform.constant';
 import { KBImportIntegrationWaiting } from '../KnowledgeBaseImport/KBImportIntegration/KBImportIntegrationWaiting/KBImportIntegrationWaiting.component';
 import { KBIntegration } from './KBIntegration/KBIntegration.component';
 import { modalStyles } from './KnowledgeBaseManageIntegrations.css';
 
 export const KBManageIntegrations = manager.create('KBManageIntegrations', () => ({ api, type, opened, hidden, animated, closePrevented }) => {
   const [screen, setScreen] = React.useState<'integrations' | 'reconnect'>('integrations');
-  const INTEGRATIONS = [{ platform: 'Zendesk help center', icon: 'ZendeskColor', name: 'Ron Weasly', date: '2024-01-07T14:00:00.000Z' }];
+  const [integrations, setIntegrations] = React.useState<KnowledgeBaseIntegration[]>([]);
+
+  const getAll = useDispatch(Designer.KnowledgeBase.Integration.effect.getAll);
+
+  const getIntegrations = async () => {
+    setIntegrations(await getAll());
+  };
+
+  React.useEffect(() => {
+    getIntegrations();
+  }, [getAll]);
 
   return (
     <Modal.Container
@@ -30,17 +43,21 @@ export const KBManageIntegrations = manager.create('KBManageIntegrations', () =>
             <Modal.Header title="Manage integrations" onClose={api.onClose} />
 
             <Box py={20} pl={24} direction="column" gap={16}>
-              {INTEGRATIONS.map(({ platform, icon, name, date }, index) => (
-                <KBIntegration
-                  key={platform}
-                  platform={platform}
-                  icon={icon as IconName}
-                  name={name}
-                  date={date}
-                  border={index !== 0}
-                  onReconnect={() => setScreen('reconnect')}
-                />
-              ))}
+              {integrations.map(({ id, type, creatorName, createdAt }, index) => {
+                const platform = INTEGRATION_PLATFORMS_MAPPER[type];
+                return (
+                  <KBIntegration
+                    key={id}
+                    type={type}
+                    platform={platform.label}
+                    icon={platform.icon}
+                    name={creatorName}
+                    date={createdAt}
+                    border={index !== 0}
+                    onReconnect={() => setScreen('reconnect')}
+                  />
+                );
+              })}
             </Box>
 
             <Modal.Footer>

@@ -21,7 +21,6 @@ import DomainService from './domain';
 import FeatureService from './feature';
 import LockService from './lock';
 import MigrateService from './migrate';
-import NoteService from './note';
 import OrganizationService from './organization';
 import ProjectService from './project';
 import VariableService from './variable';
@@ -32,7 +31,6 @@ import VoiceflowService from './voiceflow';
 import WorkspaceService, { WorkspaceSettingsService } from './workspace';
 
 export interface ServiceMap extends BaseServiceMap {
-  note: NoteService;
   lock: LockService;
   user: UserService;
   thread: ThreadService;
@@ -89,7 +87,6 @@ const buildServices = ({ config, clients, models, log, injectedServices }: Optio
 
   const serviceMap: ServiceMap = {
     sync: {} as any, // TODO: need to remove off service map
-    note: new NoteService(serviceOptions),
     lock: new LockService(serviceOptions),
     user: injectedServices.user,
     thread: injectedServices.thread,

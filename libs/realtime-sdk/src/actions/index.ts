@@ -5,7 +5,6 @@ export * as diagram from './diagram';
 export * as domain from './domain';
 export * as link from './link';
 export * as node from './node';
-export * as note from './note';
 export * as organization from './organization';
 export * as port from './port';
 export * as product from './product';

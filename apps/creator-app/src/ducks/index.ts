@@ -11,7 +11,6 @@ import diagramV2, * as DiagramV2 from '@/ducks/diagramV2';
 import domain, * as Domain from '@/ducks/domain';
 import feature, * as Feature from '@/ducks/feature';
 import history, * as History from '@/ducks/history';
-import note, * as Note from '@/ducks/note';
 import notifications, * as Notifications from '@/ducks/notifications';
 import organizations, * as Organizations from '@/ducks/organization';
 import projectListV2, * as ProjectListV2 from '@/ducks/projectListV2';
@@ -75,7 +74,6 @@ const getCombinedReducer = (browserHistory: BrowserHistory) =>
     [VersionV2.STATE_KEY]: versionV2,
     [ReportTag.STATE_KEY]: reportTag,
     [Transcript.STATE_KEY]: transcript,
-    [Note.STATE_KEY]: note,
     [History.STATE_KEY]: history,
     [Domain.STATE_KEY]: domain,
     [CanvasTemplate.STATE_KEY]: canvasTemplate,

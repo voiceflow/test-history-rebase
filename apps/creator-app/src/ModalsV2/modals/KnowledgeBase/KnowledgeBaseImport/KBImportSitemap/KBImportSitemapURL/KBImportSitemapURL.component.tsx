@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, TextField } from '@voiceflow/ui-next';
+import { Box, Scroll, TextField } from '@voiceflow/ui-next';
 import React, { useState } from 'react';
 
 import { Modal } from '@/components/Modal';
@@ -71,24 +71,26 @@ export const KBImportSitemapURL: React.FC<IKBImportSitemapURL> = ({
     <>
       <Modal.Header title="Import from sitemap" onClose={onClose} />
 
-      <Box mt={20} mx={24} mb={24} direction="column" gap={16}>
-        <Box direction="column">
-          <TextField
-            label="Sitemap URL"
-            error={!!error}
-            value={sitemapURL}
-            caption={!error ? 'e.g. https://www.domain.com/sitemap.xml' : undefined}
-            autoFocus
-            disabled={closePrevented}
-            placeholder="Enter sitemap URL"
-            errorMessage={error}
-            onValueChange={setSitemapURL}
-            onKeyDown={onKeyDown}
-          />
-        </Box>
+      <Scroll style={{ display: 'block' }}>
+        <Box mt={20} mx={24} mb={24} direction="column" gap={16}>
+          <Box direction="column">
+            <TextField
+              label="Sitemap URL"
+              error={!!error}
+              value={sitemapURL}
+              caption={!error ? 'e.g. https://www.domain.com/sitemap.xml' : undefined}
+              autoFocus
+              disabled={closePrevented}
+              placeholder="Enter sitemap URL"
+              errorMessage={error}
+              onValueChange={setSitemapURL}
+              onKeyDown={onKeyDown}
+            />
+          </Box>
 
-        {isRefreshEnabled && <KBRefreshRateSelect value={refreshRate} disabled={closePrevented} onValueChange={setRefreshRate} />}
-      </Box>
+          {isRefreshEnabled && <KBRefreshRateSelect value={refreshRate} disabled={closePrevented} onValueChange={setRefreshRate} />}
+        </Box>
+      </Scroll>
 
       <Modal.Footer>
         <Modal.Footer.Button label="Cancel" variant="secondary" onClick={onClose} disabled={closePrevented} />

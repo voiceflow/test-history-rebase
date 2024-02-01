@@ -95,6 +95,7 @@ export const CMSKnowledgeBaseTableNavigation: React.FC = () => {
           referenceElement={({ ref, onOpen, onClose }) => (
             <SquareButton
               ref={ref}
+              size="medium"
               iconName="Integration"
               onMouseEnter={onOpen}
               onMouseLeave={onClose}

@@ -1,9 +1,11 @@
-import { Box, LoadingSpinner, Text, toast } from '@voiceflow/ui-next';
+import { Box, LoadingSpinner, Scroll, Text, toast, Tokens } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { Modal } from '@/components/Modal';
 
 import { IKBImportIntegrationWaiting } from './KBImportIntegrationWaiting.interface';
+
+const { colors } = Tokens;
 
 export const KBImportIntegrationWaiting: React.FC<IKBImportIntegrationWaiting> = ({ onContinue, onClose, disabled }) => {
   const onConnected = () => {
@@ -17,12 +19,14 @@ export const KBImportIntegrationWaiting: React.FC<IKBImportIntegrationWaiting> =
 
   return (
     <>
-      <Modal.Header title="Import from Zendesk" onClose={onClose} />
+      <Modal.Header title="Import from Zendesk" onClose={onClose} leftButton={<Modal.Header.Icon iconName="Zendesk" />} />
 
-      <Box height="150px" direction="column" justify="center" align="center" gap={8}>
-        <LoadingSpinner />
-        <Text>Awaiting authorization...</Text>
-      </Box>
+      <Scroll style={{ display: 'block' }}>
+        <Box height="150px" direction="column" justify="center" align="center" gap={8}>
+          <LoadingSpinner size="large" />
+          <Text color={colors.neutralDark.neutralsDark900}>Awaiting authorization...</Text>
+        </Box>
+      </Scroll>
 
       <Modal.Footer>
         <Modal.Footer.Button label="Cancel" variant="secondary" onClick={onClose} disabled={disabled} />

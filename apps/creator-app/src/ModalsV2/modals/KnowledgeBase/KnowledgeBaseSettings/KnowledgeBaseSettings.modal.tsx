@@ -1,6 +1,6 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import { Box, Button, Popper, Text, toast } from '@voiceflow/ui-next';
+import { Box, Button, Popper, Scroll, Text, toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { Modal } from '@/components/Modal';
@@ -111,57 +111,59 @@ export const KnowledgeBaseSettings = manager.create('KnowledgeBaseSettingsV2', (
     >
       <Modal.Header title="Knowledge base settings" onClose={api.onClose} />
 
-      <Box pt={12} pr={24} pb={24} direction="column" overflow="auto">
-        <KBSettingsModelSelect
-          value={model}
-          disabled={!settings}
-          onValueChange={(model) => onPatch('summarization', { model: model as any })}
-          activeTooltipLabel={activeTooltipLabel}
-          setTooltipActiveLabel={setActiveTooltipLabel}
-        />
+      <Scroll style={{ display: 'block' }}>
+        <Box pt={12} pr={24} pb={24} direction="column" overflow="auto">
+          <KBSettingsModelSelect
+            value={model}
+            disabled={!settings}
+            onValueChange={(model) => onPatch('summarization', { model: model as any })}
+            activeTooltipLabel={activeTooltipLabel}
+            setTooltipActiveLabel={setActiveTooltipLabel}
+          />
 
-        <KBSettingsTemperature
-          value={settings?.summarization.temperature ?? DEFAULT_SETTINGS.summarization.temperature}
-          disabled={!settings}
-          onValueChange={(temperature) => onPatch('summarization', { temperature })}
-          activeTooltipLabel={activeTooltipLabel}
-          setTooltipActiveLabel={setActiveTooltipLabel}
-        />
+          <KBSettingsTemperature
+            value={settings?.summarization.temperature ?? DEFAULT_SETTINGS.summarization.temperature}
+            disabled={!settings}
+            onValueChange={(temperature) => onPatch('summarization', { temperature })}
+            activeTooltipLabel={activeTooltipLabel}
+            setTooltipActiveLabel={setActiveTooltipLabel}
+          />
 
-        <KBSettingsTokens
-          model={model}
-          value={settings?.summarization.maxTokens ?? DEFAULT_SETTINGS.summarization.maxTokens}
-          disabled={!settings}
-          onValueChange={(maxTokens) => onPatch('summarization', { maxTokens })}
-          activeTooltipLabel={activeTooltipLabel}
-          setTooltipActiveLabel={setActiveTooltipLabel}
-        />
+          <KBSettingsTokens
+            model={model}
+            value={settings?.summarization.maxTokens ?? DEFAULT_SETTINGS.summarization.maxTokens}
+            disabled={!settings}
+            onValueChange={(maxTokens) => onPatch('summarization', { maxTokens })}
+            activeTooltipLabel={activeTooltipLabel}
+            setTooltipActiveLabel={setActiveTooltipLabel}
+          />
 
-        <KBSettingsChunkLimit
-          value={settings?.search.limit ?? DEFAULT_SETTINGS.search.limit}
-          disabled={!settings}
-          onValueChange={(limit) => onPatch('search', { limit })}
-          activeTooltipLabel={activeTooltipLabel}
-          setTooltipActiveLabel={setActiveTooltipLabel}
-        />
+          <KBSettingsChunkLimit
+            value={settings?.search.limit ?? DEFAULT_SETTINGS.search.limit}
+            disabled={!settings}
+            onValueChange={(limit) => onPatch('search', { limit })}
+            activeTooltipLabel={activeTooltipLabel}
+            setTooltipActiveLabel={setActiveTooltipLabel}
+          />
 
-        {/* TODO: removed for first release, but prob should be added back in */}
-        {/* <KBSettingsInstructions
+          {/* TODO: removed for first release, but prob should be added back in */}
+          {/* <KBSettingsInstructions
           value={settings?.summarization.instruction ?? DEFAULT_SETTINGS.summarization.instruction}
           onValueChange={(instruction: string) => onPatch('summarization', { instruction })}
         /> */}
 
-        {SYSTEM_PROMPT_AI_MODELS.has(model) && (
-          <KBSettingsSystemPrompt
-            value={settings?.summarization.system ?? DEFAULT_SETTINGS.summarization.system}
-            disabled={!settings}
-            className={systemPromptStyles}
-            onValueChange={(system) => onPatch('summarization', { system })}
-            activeTooltipLabel={activeTooltipLabel}
-            setTooltipActiveLabel={setActiveTooltipLabel}
-          />
-        )}
-      </Box>
+          {SYSTEM_PROMPT_AI_MODELS.has(model) && (
+            <KBSettingsSystemPrompt
+              value={settings?.summarization.system ?? DEFAULT_SETTINGS.summarization.system}
+              disabled={!settings}
+              className={systemPromptStyles}
+              onValueChange={(system) => onPatch('summarization', { system })}
+              activeTooltipLabel={activeTooltipLabel}
+              setTooltipActiveLabel={setActiveTooltipLabel}
+            />
+          )}
+        </Box>
+      </Scroll>
 
       <Modal.Footer>
         <Popper

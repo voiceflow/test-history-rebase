@@ -32,12 +32,14 @@ export const KBIntegration: React.FC<IKBIntegration> = ({ name, icon, platform, 
     <>
       {border && <Divider noPadding />}
       <Box pr={16} justify="space-between">
-        <Box gap={16} pr={16}>
+        <Box gap={16} pr={16} justify="center">
           <Box align="center">
             <Icon name={icon} height={36} width={36} />
           </Box>
-          <Box direction="column">
-            <Text weight="semiBold">{platform}</Text>
+          <Box direction="column" justify="center">
+            <Text weight="semiBold" color={colors.neutralDark.neutralsDark900}>
+              {platform}
+            </Text>
             <Box>
               <Text variant="caption" color={colors.neutralDark.neutralsDark100}>
                 {`Connected ${formatFromNow(fromNow)}`}

@@ -1,6 +1,6 @@
 import { BaseUtils } from '@voiceflow/base-types';
 import { useDidUpdateEffect, useForceUpdate, useLocalStorageState, useSessionStorageState, useToggle } from '@voiceflow/ui';
-import { Box, Link, Text, TextArea, toast, Tokens } from '@voiceflow/ui-next';
+import { Box, Link, Scroll, Text, TextArea, toast, Tokens } from '@voiceflow/ui-next';
 import React from 'react';
 import { generatePath, useHistory } from 'react-router';
 
@@ -151,28 +151,30 @@ export const KnowledgeBasePreviewQuestion = manager.create(
               }
             />
 
-            <Box pt={20} px={24} pb={24} direction="column" gap={6}>
-              <Text variant="fieldLabel" color={Tokens.colors.neutralDark.neutralsDark100}>
-                Question
-              </Text>
+            <Scroll style={{ display: 'block' }}>
+              <Box pt={20} px={24} pb={24} direction="column" gap={6}>
+                <Text variant="fieldLabel" color={Tokens.colors.neutralDark.neutralsDark100}>
+                  Question
+                </Text>
 
-              <TextArea
-                id={KB_PREVIEW_QUESTION_INPUT_ELEMENT_ID}
-                ref={questionRef}
-                value={question}
-                disabled={closePrevented}
-                autoFocus
-                minHeight={16}
-                maxHeight={136}
-                className={textareaStyles}
-                placeholder="Enter question..."
-                onValueChange={setQuestion}
-                onKeyDown={onKeyDown}
-                caption={questionError}
-                error={!!questionError}
-                onFocus={() => setQuestionError('')}
-              />
-            </Box>
+                <TextArea
+                  id={KB_PREVIEW_QUESTION_INPUT_ELEMENT_ID}
+                  ref={questionRef}
+                  value={question}
+                  disabled={closePrevented}
+                  autoFocus
+                  minHeight={16}
+                  maxHeight={136}
+                  className={textareaStyles}
+                  placeholder="Enter question..."
+                  onValueChange={setQuestion}
+                  onKeyDown={onKeyDown}
+                  caption={questionError}
+                  error={!!questionError}
+                  onFocus={() => setQuestionError('')}
+                />
+              </Box>
+            </Scroll>
 
             <Modal.Footer>
               {response ? (

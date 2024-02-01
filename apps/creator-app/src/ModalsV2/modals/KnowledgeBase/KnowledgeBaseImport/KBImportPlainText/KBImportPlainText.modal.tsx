@@ -1,4 +1,4 @@
-import { Box, TextArea } from '@voiceflow/ui-next';
+import { Box, Scroll, TextArea } from '@voiceflow/ui-next';
 import { validatorFactory } from '@voiceflow/utils-designer';
 import React from 'react';
 
@@ -54,17 +54,19 @@ export const KBImportPlainText = manager.create('KBImportPlainText', () => ({ ap
     >
       <Modal.Header title="Import text" onClose={api.onClose} />
 
-      <Box mt={20} mx={24} mb={24} direction="column" gap={6}>
-        <KBFieldLabel>Content</KBFieldLabel>
+      <Scroll style={{ display: 'block' }}>
+        <Box mt={20} mx={24} mb={24} direction="column" gap={6}>
+          <KBFieldLabel>Content</KBFieldLabel>
 
-        <TextArea.AutoSize
-          {...input.attributes}
-          disabled={closePrevented}
-          caption={input.errorMessage ?? undefined}
-          className={textareaStyles}
-          placeholder="Enter or paste text here..."
-        />
-      </Box>
+          <TextArea.AutoSize
+            {...input.attributes}
+            disabled={closePrevented}
+            caption={input.errorMessage ?? undefined}
+            className={textareaStyles}
+            placeholder="Enter or paste text here..."
+          />
+        </Box>
+      </Scroll>
 
       <Modal.Footer>
         <Modal.Footer.Button label="Cancel" variant="secondary" onClick={api.onClose} disabled={closePrevented} />

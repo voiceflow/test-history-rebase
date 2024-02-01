@@ -32,7 +32,11 @@ const AssistantChannelSubscriptionGate: React.FC<AssistantChannelSubscriptionGat
   const [cmsFetched, setCMSFetched] = React.useState(!httpAssistantCMS.isEnabled || isLoaded);
 
   React.useEffect(() => {
-    if (!httpAssistantCMS.isEnabled) return undefined;
+    if (!httpAssistantCMS.isEnabled) {
+      setCMSFetched(isLoaded);
+
+      return undefined;
+    }
 
     if (!isLoaded) {
       setCMSFetched(false);
@@ -108,7 +112,7 @@ const AssistantChannelSubscriptionGate: React.FC<AssistantChannelSubscriptionGat
       skip = true;
       unsubscribe();
     };
-  }, [isLoaded]);
+  }, [isLoaded, httpAssistantCMS.isEnabled]);
 
   return (
     <LoadingGate

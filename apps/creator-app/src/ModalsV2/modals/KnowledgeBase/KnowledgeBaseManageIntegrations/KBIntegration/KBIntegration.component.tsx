@@ -3,14 +3,18 @@ import { Box, Divider, DotSeparator, Icon, Menu, MenuItem, notify, Popper, Squar
 import dayjs from 'dayjs';
 import React from 'react';
 
+import { Designer } from '@/ducks';
 import { useConfirmV2Modal } from '@/hooks/modal.hook';
+import { useDispatch } from '@/hooks/store.hook';
 
 import { IKBIntegration } from './KBIntegration.interface';
 import { formatFromNow } from './KBIntegration.utils';
 
 const { colors } = Tokens;
 
-export const KBIntegration: React.FC<IKBIntegration> = ({ name, icon, platform, date, border, onReconnect }) => {
+export const KBIntegration: React.FC<IKBIntegration> = ({ name, icon, platform, date, border, type, onReconnect }) => {
+  const deleteIntegration = useDispatch(Designer.KnowledgeBase.Integration.effect.deleteOne);
+
   const fromNow = dayjs(date).fromNow();
   const confirmModal = useConfirmV2Modal();
 

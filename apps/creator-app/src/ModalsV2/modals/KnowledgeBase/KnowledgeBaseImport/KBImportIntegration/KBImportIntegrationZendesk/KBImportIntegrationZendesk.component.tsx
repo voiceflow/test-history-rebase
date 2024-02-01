@@ -3,8 +3,18 @@ import { Box, Divider, Scroll } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { Modal } from '@/components/Modal';
+import { Designer } from '@/ducks';
 import { useHotkey } from '@/hooks/hotkeys';
+import { useDispatch } from '@/hooks/store.hook';
 import { Hotkey } from '@/keymap';
+import {
+  ZendeskFilterBase,
+  ZendeskFilterBrand,
+  ZendeskFilterLabel,
+  ZendeskFilterLocale,
+  ZendeskFilters,
+  ZendeskFilterUserSegment,
+} from '@/models/KnowledgeBase.model';
 import { stopPropagation } from '@/utils/handler.util';
 
 import { KBRefreshRateSelect } from '../../components/KBRefreshRateSelect/KBRefreshRateSelect.component';
@@ -13,38 +23,68 @@ import { KBZendeskFilterSelect } from './KBZendeskFilterSelect.component';
 
 export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> = ({ onClose, enableClose, disableClose, disabled }) => {
   const [refreshRate, setRefreshRate] = React.useState(BaseModels.Project.KnowledgeBaseDocumentRefreshRate.NEVER);
-  const [brandId, setBrandId] = React.useState<string[]>([]);
-  const [locale, setLocale] = React.useState<string[]>([]);
-  const [category, setCategory] = React.useState<string[]>([]);
-  const [label, setLabel] = React.useState<string[]>([]);
-  const [userSegment, setUserSegment] = React.useState<string[]>([]);
+  const [filters, setFilters] = React.useState<ZendeskFilters>({});
+  const [brands, setBrands] = React.useState<ZendeskFilterBrand[]>([]);
+  const [locales, setLocales] = React.useState<ZendeskFilterLocale[]>([]);
+  const [categories, setCategories] = React.useState<ZendeskFilterBase[]>([]);
+  const [labels, setLabels] = React.useState<ZendeskFilterLabel[]>([]);
+  const [userSegments, setUserSegments] = React.useState<ZendeskFilterUserSegment[]>([]);
   const [numDataSources, setNumDataSources] = React.useState(140);
 
-  const BRAND_ID_OPTIONS = ['Brand 1', 'Brand 2', 'Brand 3'];
-  const LOCALE_OPTIONS = ['English', 'French', 'German', 'Spanish'];
-  const CATEGORY_OPTIONS = ['Category 1', 'Category 2', 'Category 3'];
-  const LABEL_OPTIONS = ['Label 1', 'Label 2', 'Label 3'];
-  const USER_SEGMENT_OPTIONS = ['User Segment 1', 'User Segment 2', 'User Segment 3'];
+  const getDocumentCount = useDispatch(Designer.KnowledgeBase.Integration.effect.getIntegrationDocumentCount);
+  const getFilters = useDispatch(Designer.KnowledgeBase.Integration.effect.getIntegrationFilters);
+
+  let brandIdOptions = [] as ZendeskFilterBrand[];
+  let localeOptions = [] as ZendeskFilterLocale[];
+  let labelOptions = [] as ZendeskFilterLabel[];
+  let userSegmentOptions = [] as ZendeskFilterUserSegment[];
+
+  const updateDocumentCount = async () => {
+    disableClose();
+    const filters = {
+      labels,
+      locales,
+      brands,
+      userSegments,
+    };
+    const numDocs = await getDocumentCount('zendesk', filters);
+    setNumDataSources(numDocs);
+    enableClose();
+  };
 
   React.useEffect(() => {
-    disableClose();
-    setTimeout(() => {
-      setNumDataSources(140 - (brandId.length + locale.length + category.length + label.length) * 10);
-      enableClose();
-    }, 1000);
-  }, [brandId, locale, category, label]);
+    updateDocumentCount();
+  }, [brands, locales, categories, labels]);
+
+  const getDocumentFilters = async () => {
+    const filters = await getFilters('zendesk');
+    setFilters(filters);
+    brandIdOptions = filters.brands || [];
+    localeOptions = filters.locales || [];
+    labelOptions = filters.labels || [];
+    userSegmentOptions = filters.userSegments || [];
+  };
+
+  React.useEffect(() => {
+    getDocumentFilters();
+  }, []);
+
+  const categoryOptions = React.useMemo(
+    () => locales.flatMap((l) => filters?.categories?.[l.locale]).filter((item): item is ZendeskFilterBase => item !== undefined),
+    [filters, locales]
+  );
 
   const resetFilters = () => {
-    setBrandId([]);
-    setLocale([]);
-    setCategory([]);
-    setLabel([]);
-    setUserSegment([]);
+    setBrands([]);
+    setLocales([]);
+    setCategories([]);
+    setLabels([]);
+    setUserSegments([]);
   };
 
   const areFilters = React.useMemo(
-    () => brandId.length || locale.length || category.length || label.length || userSegment.length,
-    [brandId, locale, category, label, userSegment]
+    () => brands.length || locales.length || categories.length || labels.length || userSegments.length,
+    [brands, locales, categories, labels, userSegments]
   );
 
   const importDataSources = () => {
@@ -73,47 +113,47 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
           <Box direction="column" gap={16} px={24} pb={24}>
             <KBZendeskFilterSelect
               label="Brand ID"
-              value={brandId}
-              options={BRAND_ID_OPTIONS}
+              value={brands}
+              options={brandIdOptions}
               disabled={disabled}
-              onValueChange={setBrandId}
+              onValueChange={setBrands}
               placeholder="Select brands (optional)"
             />
             <KBZendeskFilterSelect
               label="Locale"
-              value={locale}
-              options={LOCALE_OPTIONS}
-              disabled={disabled || !brandId.length}
-              onValueChange={setLocale}
+              value={locales}
+              options={localeOptions}
+              disabled={disabled || !brands.length}
+              onValueChange={setLocales}
               placeholder="Select locale (optional)"
-              hasTooltip={!brandId.length}
+              hasTooltip={!brands.length}
             />
             <KBZendeskFilterSelect
               label="Categories"
-              value={category}
-              options={CATEGORY_OPTIONS}
-              disabled={disabled || !locale.length}
-              onValueChange={setCategory}
+              value={categories}
+              options={categoryOptions}
+              disabled={disabled || !locales.length}
+              onValueChange={setCategories}
               placeholder="Select category (optional)"
-              hasTooltip={!locale.length}
+              hasTooltip={!locales.length}
             />
             <KBZendeskFilterSelect
               label="Labels"
-              value={label}
-              options={LABEL_OPTIONS}
-              disabled={disabled || !category.length}
-              onValueChange={setLabel}
+              value={labels}
+              options={labelOptions}
+              disabled={disabled || !categories.length}
+              onValueChange={setLabels}
               placeholder="Select labels (optional)"
-              hasTooltip={!category.length}
+              hasTooltip={!categories.length}
             />
             <KBZendeskFilterSelect
               label="User segments"
-              value={userSegment}
-              options={USER_SEGMENT_OPTIONS}
-              disabled={disabled || !label.length}
-              onValueChange={setUserSegment}
+              value={userSegments}
+              options={userSegmentOptions}
+              disabled={disabled || !labels.length}
+              onValueChange={setUserSegments}
               placeholder="Select user segments (optional)"
-              hasTooltip={!label.length}
+              hasTooltip={!labels.length}
             />
           </Box>
           <Divider noPadding />

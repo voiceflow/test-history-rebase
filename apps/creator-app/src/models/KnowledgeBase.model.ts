@@ -18,7 +18,7 @@ export interface KnowledgeBaseDocument extends Omit<DBKnowledgeBaseDocument, 'st
 }
 
 export interface DBKnowledgeBaseIntegration {
-  type: string;
+  type: BaseModels.Project.IntegrationTypes;
   state: string;
   creatorID: string;
   creatorName: string;
@@ -28,7 +28,7 @@ export interface DBKnowledgeBaseIntegration {
 
 export interface KnowledgeBaseIntegration {
   id: string;
-  type: string;
+  type: BaseModels.Project.IntegrationTypes;
   state: string;
   creatorID: string;
   creatorName: string;
@@ -66,4 +66,8 @@ export interface ZendeskBaseFilters {
 
 export interface ZendeskFilters extends ZendeskBaseFilters {
   categories?: ZendeskFilterCategory;
+}
+
+export interface ZendeskCountFilters extends ZendeskBaseFilters {
+  categories?: ZendeskFilterBase[];
 }

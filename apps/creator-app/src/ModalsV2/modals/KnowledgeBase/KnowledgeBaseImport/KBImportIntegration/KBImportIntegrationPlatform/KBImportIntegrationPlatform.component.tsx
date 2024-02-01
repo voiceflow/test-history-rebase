@@ -1,3 +1,4 @@
+import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import { Box, Dropdown, Menu, MenuItem, Scroll } from '@voiceflow/ui-next';
 import React from 'react';
@@ -6,7 +7,7 @@ import { Modal } from '@/components/Modal';
 import { useHotkey } from '@/hooks/hotkeys';
 import { Hotkey } from '@/keymap';
 
-import { INTEGRATION_PLATFORMS, INTEGRATION_PLATFORMS_MAPPER, KBImportPlatformType } from './KBImportIntegrationPlatform.constant';
+import { INTEGRATION_PLATFORMS, INTEGRATION_PLATFORMS_MAPPER } from './KBImportIntegrationPlatform.constant';
 import { IKBImportIntegrationPlatform } from './KBImportIntegrationPlatform.interface';
 
 export const KBImportIntegrationPlatform: React.FC<IKBImportIntegrationPlatform> = ({ onClose, onContinue, disabled, platform, setPlatform }) => {
@@ -21,7 +22,7 @@ export const KBImportIntegrationPlatform: React.FC<IKBImportIntegrationPlatform>
     onContinue();
   };
 
-  const onSetPlatform = (value: KBImportPlatformType) => {
+  const onSetPlatform = (value: BaseModels.Project.IntegrationTypes) => {
     setPlatform(value);
     setError('');
   };

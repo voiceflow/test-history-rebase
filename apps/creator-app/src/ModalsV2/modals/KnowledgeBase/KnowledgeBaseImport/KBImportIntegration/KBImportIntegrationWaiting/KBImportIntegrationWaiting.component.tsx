@@ -2,20 +2,31 @@ import { Box, LoadingSpinner, notify, Scroll, Text, Tokens } from '@voiceflow/ui
 import React from 'react';
 
 import { Modal } from '@/components/Modal';
+import { Designer } from '@/ducks';
+import { useDispatch } from '@/hooks/store.hook';
+import { openURLInANewTab } from '@/utils/window';
 
 import { IKBImportIntegrationWaiting } from './KBImportIntegrationWaiting.interface';
 
 const { colors } = Tokens;
 
 export const KBImportIntegrationWaiting: React.FC<IKBImportIntegrationWaiting> = ({ onContinue, onClose, disabled }) => {
+  const getAuthUrl = useDispatch(Designer.KnowledgeBase.Integration.effect.getIntegrationAuthUrl);
+
+  const onConnectZendesk = async () => {
+    const authUrl = await getAuthUrl('zendesk');
+    openURLInANewTab(authUrl);
+  };
+
   const onConnected = () => {
     onContinue();
     notify.short.success('Connected to Zendesk');
   };
 
   React.useEffect(() => {
+    onConnectZendesk();
     setTimeout(onConnected, 5000);
-  }, []);
+  }, [getAuthUrl]);
 
   return (
     <>

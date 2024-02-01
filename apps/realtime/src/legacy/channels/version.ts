@@ -61,7 +61,6 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
     );
     const customBlocks = Realtime.Adapters.customBlockAdapter.mapFromDB(Object.values(dbCreator.version.customBlocks ?? {}));
 
-    const notes = Realtime.Adapters.noteAdapter.mapFromDB(dbCreator.version.notes ? Object.values(dbCreator.version.notes) : []);
     const domains = Realtime.Adapters.domainAdapter.mapFromDB(dbCreator.version.domains ?? []);
     const diagrams = Realtime.Adapters.diagramAdapter.mapFromDB(dbCreator.diagrams, { rootDiagramID: dbCreator.version.rootDiagramID });
     const variableStates = Realtime.Adapters.variableStateAdapter.mapFromDB(dbCreator.variableStates);
@@ -78,7 +77,6 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
     const actionContext = { projectID, versionID, workspaceID };
 
     return [
-      Realtime.note.load({ ...actionContext, notes }),
       Actions.Thread.Replace({ context: actionContext, data: threads }),
       Actions.ThreadComment.Replace({ context: actionContext, data: threadComments }),
       Realtime.customBlock.crud.replace({ ...actionContext, values: customBlocks }),

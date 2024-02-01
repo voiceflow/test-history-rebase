@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1381.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1380.0...@voiceflow/creator-app@1.1381.0) (2024-02-01)
+
+### Features
+
+* optimize cms load (CT-000) ([#7737](https://github.com/voiceflow/creator-app/issues/7737)) ([7795c7b](https://github.com/voiceflow/creator-app/commit/7795c7b0e04020696b16d7d54d7646d7bead48db))
+
 # [1.1380.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1379.0...@voiceflow/creator-app@1.1380.0) (2024-02-01)
 
 ### Features

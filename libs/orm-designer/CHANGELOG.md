@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.31.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.30.0...@voiceflow/orm-designer@2.31.0) (2024-02-01)
+
+### Features
+
+* optimize cms load (CT-000) ([#7737](https://github.com/voiceflow/creator-app/issues/7737)) ([7795c7b](https://github.com/voiceflow/creator-app/commit/7795c7b0e04020696b16d7d54d7646d7bead48db))
+
 # [2.30.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.29.0...@voiceflow/orm-designer@2.30.0) (2024-01-30)
 
 ### Features

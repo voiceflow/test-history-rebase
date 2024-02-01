@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.26.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.25.1...@voiceflow/sdk-logux-designer@2.26.0) (2024-02-01)
+
+### Features
+
+* optimize cms load (CT-000) ([#7737](https://github.com/voiceflow/creator-app/issues/7737)) ([7795c7b](https://github.com/voiceflow/creator-app/commit/7795c7b0e04020696b16d7d54d7646d7bead48db))
+
 ## [2.25.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.25.0...@voiceflow/sdk-logux-designer@2.25.1) (2024-02-01)
 
 **Note:** Version bump only for package @voiceflow/sdk-logux-designer

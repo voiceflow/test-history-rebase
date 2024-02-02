@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1383.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1382.1...@voiceflow/creator-app@1.1383.0) (2024-02-02)
+
+### Features
+
+* implement cancel subscription (CV3-849) ([#7744](https://github.com/voiceflow/creator-app/issues/7744)) ([2d47c65](https://github.com/voiceflow/creator-app/commit/2d47c65b850811c37a1281967e7ad90bef2d870d))
+
 ## [1.1382.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1382.0...@voiceflow/creator-app@1.1382.1) (2024-02-02)
 
 ### Bug Fixes

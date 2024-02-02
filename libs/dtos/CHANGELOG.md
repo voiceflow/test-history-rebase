@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.30.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.29.0...@voiceflow/dtos@1.30.0) (2024-02-02)
+
+### Features
+
+* improve workspace feature loading (CT-000) ([#7746](https://github.com/voiceflow/creator-app/issues/7746)) ([a06e72a](https://github.com/voiceflow/creator-app/commit/a06e72a0537658a65ace2f1b9ffa20b579f307b3))
+
 # [1.29.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.28.0...@voiceflow/dtos@1.29.0) (2024-02-01)
 
 ### Features

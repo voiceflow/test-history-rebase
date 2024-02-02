@@ -3,19 +3,22 @@ import React from 'react';
 
 import { Modal } from '@/components/Modal';
 import { Designer } from '@/ducks';
-import { useDispatch } from '@/hooks/store.hook';
-import { openURLInANewTab } from '@/utils/window';
+import { useDispatch, useSelector } from '@/hooks/store.hook';
+import { openURLInANewWindow } from '@/utils/window';
 
 import { IKBImportIntegrationWaiting } from './KBImportIntegrationWaiting.interface';
 
 const { colors } = Tokens;
 
 export const KBImportIntegrationWaiting: React.FC<IKBImportIntegrationWaiting> = ({ onContinue, onClose, disabled }) => {
-  const getAuthUrl = useDispatch(Designer.KnowledgeBase.Integration.effect.getIntegrationAuthUrl);
+  // const getAuthUrl = useDispatch(Designer.KnowledgeBase.Integration.effect.getIntegrationAuthUrl);
+
+  const integrations = useSelector(Designer.KnowledgeBase.Integration.selectors.all);
+  const getAll = useDispatch(Designer.KnowledgeBase.Integration.effect.getAll);
 
   const onConnectZendesk = async () => {
-    const authUrl = await getAuthUrl('zendesk');
-    openURLInANewTab(authUrl);
+    const authUrl = 'https://www.voiceflow.com'; // await getAuthUrl('zendesk');
+    openURLInANewWindow(authUrl);
   };
 
   const onConnected = () => {
@@ -25,8 +28,13 @@ export const KBImportIntegrationWaiting: React.FC<IKBImportIntegrationWaiting> =
 
   React.useEffect(() => {
     onConnectZendesk();
-    setTimeout(onConnected, 5000);
-  }, [getAuthUrl]);
+
+    while (!integrations.length) {
+      setTimeout(getAll, 2000);
+    }
+    onConnected();
+  }, []);
+  // }, [getAuthUrl]);
 
   return (
     <>

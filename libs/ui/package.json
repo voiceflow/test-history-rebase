@@ -50,7 +50,7 @@
     "@seznam/compose-react-refs": "^1.0.6",
     "@tippyjs/react": "^4.2.6",
     "@types/pluralize": "^0.0.31",
-    "@voiceflow/base-types": "2.101.5",
+    "@voiceflow/base-types": "2.103.0",
     "@voiceflow/common": "8.2.7",
     "@voiceflow/internal": "3.2.3",
     "@voiceflow/legacy-react-popper": "1.3.11",

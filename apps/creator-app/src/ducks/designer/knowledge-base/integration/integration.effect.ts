@@ -1,7 +1,7 @@
 import { knowledgeBaseClient } from '@/client/knowledge-base';
 import * as Errors from '@/config/errors';
 import * as Session from '@/ducks/session';
-import type { KnowledgeBaseIntegration, ZendeskCountFilters, ZendeskFilters } from '@/models/KnowledgeBase.model';
+import type { KnowledgeBaseIntegration, ZendeskCountFilters, ZendeskFilters, ZendeskFilterUserSegment } from '@/models/KnowledgeBase.model';
 import type { Thunk } from '@/store/types';
 
 import * as Actions from './integration.action';
@@ -20,20 +20,16 @@ export const getAll = (): Thunk<KnowledgeBaseIntegration[]> => async (dispatch, 
   return integrations;
 };
 
-export const createOne =
-  (integrationType: string): Thunk<KnowledgeBaseIntegration> =>
-  async (dispatch, getState) => {
+export const importIntegration =
+  (integrationType: string, refreshRate: string, filters: ZendeskCountFilters = {}): Thunk =>
+  async (_, getState) => {
     const state = getState();
 
     const projectID = Session.activeProjectIDSelector(state);
 
     Errors.assertProjectID(projectID);
 
-    const integration = await knowledgeBaseClient.createOneIntegration(projectID, integrationType);
-
-    dispatch(Actions.AddOne({ data: integration }));
-
-    return integration;
+    await knowledgeBaseClient.importIntegration(projectID, integrationType, { filters, refreshRate });
   };
 
 export const deleteOne =
@@ -73,6 +69,16 @@ export const getIntegrationFilters =
 
     return knowledgeBaseClient.getIntegrationFilters(projectID, integrationType);
   };
+
+export const getIntegrationUserSegments = (): Thunk<ZendeskFilterUserSegment[]> => async (_, getState) => {
+  const state = getState();
+
+  const projectID = Session.activeProjectIDSelector(state);
+
+  Errors.assertProjectID(projectID);
+
+  return knowledgeBaseClient.getUserSegmentFilters(projectID);
+};
 
 export const getIntegrationDocumentCount =
   (integrationType: string, filters: ZendeskCountFilters): Thunk<number> =>

@@ -1,4 +1,4 @@
-import { appendMany, appendOne, removeOne } from 'normal-store';
+import { appendMany, removeOne } from 'normal-store';
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
 
 import * as Actions from './integration.action';
@@ -10,5 +10,4 @@ export const integrationReducer = reducerWithInitialState<KnowledgeBaseIntegrati
     integrations,
   }))
   .case(Actions.AddMany, (state, { data }) => appendMany(state, data))
-  .case(Actions.AddOne, (state, { data }) => appendOne(state, data.id, data))
   .case(Actions.DeleteOne, (state, { id }) => removeOne(state, id));

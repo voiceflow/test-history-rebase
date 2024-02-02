@@ -27,3 +27,5 @@ export const onOpenURLInANewTabFactory = (url: string) => (): void => openURLInA
  * opens internal url in a new tab, noopener and noreferrer is not set
  */
 export const onOpenInternalURLInANewTabFactory = (url: string) => (): void => openInternalURLInANewTab(url);
+
+export const openURLInANewWindow = (url: string): void => window.open(getValidHref(url), 'name', 'height=200,width=150')?.focus();

@@ -1,3 +1,4 @@
+/* eslint-disable promise/always-return */
 import { Utils } from '@voiceflow/common';
 import { Box, Divider, DotSeparator, Icon, Menu, MenuItem, notify, Popper, SquareButton, Text, Tokens } from '@voiceflow/ui-next';
 import dayjs from 'dayjs';
@@ -19,7 +20,13 @@ export const KBIntegration: React.FC<IKBIntegration> = ({ name, icon, platform, 
   const confirmModal = useConfirmV2Modal();
 
   const onConfirmRemove = () => {
-    notify.short.info(`Integration removed`, { showIcon: false });
+    deleteIntegration(type)
+      .then(() => {
+        notify.short.info(`Integration removed`, { showIcon: false });
+      })
+      .catch(() => {
+        notify.short.error(`Error removing integration.`, { showIcon: false });
+      });
   };
 
   const onRemove = () => {
@@ -49,9 +56,19 @@ export const KBIntegration: React.FC<IKBIntegration> = ({ name, icon, platform, 
                 {`Connected ${formatFromNow(fromNow)}`}
               </Text>
               <DotSeparator light px={8} />
-              <Text variant="caption" color={colors.neutralDark.neutralsDark100}>
-                {name}
-              </Text>
+              <Tooltip.Overflow
+                referenceElement={({ ref, onOpen, onClose }) => (
+                  <Text ref={ref} onMouseEnter={onOpen} onMouseLeave={onClose} overflow variant="caption" color={colors.neutralDark.neutralsDark100}>
+                    {name}
+                  </Text>
+                )}
+              >
+                {() => (
+                  <Text variant="caption" breakWord>
+                    {name}
+                  </Text>
+                )}
+              </Tooltip.Overflow>
             </Box>
           </Box>
         </Box>

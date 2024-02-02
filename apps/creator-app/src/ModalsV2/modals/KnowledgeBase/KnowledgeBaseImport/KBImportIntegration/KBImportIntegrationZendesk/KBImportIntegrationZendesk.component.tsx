@@ -33,11 +33,13 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
 
   const getDocumentCount = useDispatch(Designer.KnowledgeBase.Integration.effect.getIntegrationDocumentCount);
   const getFilters = useDispatch(Designer.KnowledgeBase.Integration.effect.getIntegrationFilters);
+  const getUserSegments = useDispatch(Designer.KnowledgeBase.Integration.effect.getIntegrationUserSegments);
+  const importIntegration = useDispatch(Designer.KnowledgeBase.Integration.effect.importIntegration);
 
   let brandIdOptions = [] as ZendeskFilterBrand[];
   let localeOptions = [] as ZendeskFilterLocale[];
   let labelOptions = [] as ZendeskFilterLabel[];
-  let userSegmentOptions = [] as ZendeskFilterUserSegment[];
+  const userSegmentOptions = [] as ZendeskFilterUserSegment[];
 
   const updateDocumentCount = async () => {
     disableClose();
@@ -45,6 +47,7 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
       labels,
       locales,
       brands,
+      categories,
       userSegments,
     };
     const numDocs = await getDocumentCount('zendesk', filters);
@@ -62,7 +65,6 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
     brandIdOptions = filters.brands || [];
     localeOptions = filters.locales || [];
     labelOptions = filters.labels || [];
-    userSegmentOptions = filters.userSegments || [];
   };
 
   React.useEffect(() => {
@@ -73,6 +75,15 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
     () => locales.flatMap((l) => filters?.categories?.[l.locale]).filter((item): item is ZendeskFilterBase => item !== undefined),
     [filters, locales]
   );
+
+  const getUserSegmentOptions = async () => {
+    setUserSegments(await getUserSegments());
+  };
+
+  React.useEffect(() => {
+    if (!labels.length) return;
+    getUserSegmentOptions();
+  }, [labels]);
 
   const resetFilters = () => {
     setBrands([]);
@@ -89,10 +100,16 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
 
   const importDataSources = () => {
     disableClose();
-    setTimeout(() => {
-      enableClose();
-      onClose();
-    }, 5000);
+    const filters = {
+      labels,
+      locales,
+      brands,
+      categories,
+      userSegments,
+    };
+    importIntegration('zendesk', refreshRate, filters);
+    enableClose();
+    onClose();
   };
 
   useHotkey(Hotkey.MODAL_SUBMIT, importDataSources, { preventDefault: true });

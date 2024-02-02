@@ -1,6 +1,7 @@
 import { BaseNode } from '@voiceflow/base-types';
 import { Nullable, Struct } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
+import type { NodeData } from '@voiceflow/realtime-sdk';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { CustomScrollbarsTypes, OptionsMenuOption, SvgIconTypes } from '@voiceflow/ui';
 import React from 'react';
@@ -25,7 +26,7 @@ export { NodeEntityResource };
 export type PortDescriptor = Partial<Omit<Realtime.Port, 'id'>>;
 
 interface BaseConnectedProps<T, O extends Realtime.BuiltInPortRecord> {
-  data: Realtime.NodeData<T>;
+  data: NodeData<T>;
   ports: Realtime.NodePorts<O>;
   engine: Engine;
   nluType: Platform.Constants.NLUType;

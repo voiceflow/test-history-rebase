@@ -127,4 +127,4 @@ const Project: React.FC = () => {
   );
 };
 
-export default withBatchLoadingGate(VersionSubscriptionGate, WorkspaceFeatureLoadingGate)(Project);
+export default withBatchLoadingGate(WorkspaceFeatureLoadingGate, VersionSubscriptionGate)(Project);

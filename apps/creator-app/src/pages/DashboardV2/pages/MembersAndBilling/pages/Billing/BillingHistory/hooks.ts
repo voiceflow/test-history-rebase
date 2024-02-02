@@ -1,4 +1,4 @@
-import { InvoiceDTO } from '@voiceflow/dtos';
+import { Invoice } from '@voiceflow/dtos';
 import { toast } from '@voiceflow/ui';
 import React from 'react';
 
@@ -16,7 +16,7 @@ export enum Status {
 }
 
 export interface BillingHistoryAPI {
-  data: InvoiceDTO[];
+  data: Invoice[];
   status: Status;
   hasMore: boolean;
   nextCursor: string | null;
@@ -25,7 +25,7 @@ export interface BillingHistoryAPI {
 }
 
 export interface BillingHistory {
-  data: InvoiceDTO[];
+  data: Invoice[];
   hasMore: boolean;
   nextCursor: string | null;
 }

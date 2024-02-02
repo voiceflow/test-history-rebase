@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1382.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1382.0...@voiceflow/creator-app@1.1382.1) (2024-02-02)
+
+### Bug Fixes
+
+* hide voiceflow assistant (CT-000) ([#7742](https://github.com/voiceflow/creator-app/issues/7742)) ([659a97e](https://github.com/voiceflow/creator-app/commit/659a97efebb5f83218ed416dbb397b826ba20d32))
+
 # [1.1382.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1381.4...@voiceflow/creator-app@1.1382.0) (2024-02-01)
 
 ### Features

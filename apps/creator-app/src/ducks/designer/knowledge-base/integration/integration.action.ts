@@ -21,12 +21,6 @@ export interface DeleteOne extends CRUD.DeleteOneRequest {}
 
 export const DeleteOne = integrationAction.crud.deleteOne<DeleteOne>();
 
-/* AddOne */
-
-export interface AddOne extends CRUD.AddOneRequest<KnowledgeBaseIntegration> {}
-
-export const AddOne = integrationAction.crud.addOne<AddOne>();
-
 /* AddMany */
 
 export interface AddMany extends CRUD.AddManyRequest<KnowledgeBaseIntegration> {}

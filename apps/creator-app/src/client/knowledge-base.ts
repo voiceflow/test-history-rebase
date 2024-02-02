@@ -1,6 +1,12 @@
 import { BaseModels } from '@voiceflow/base-types';
 
-import { DBKnowledgeBaseDocument, KnowledgeBaseIntegration, ZendeskCountFilters, ZendeskFilters } from '@/models/KnowledgeBase.model';
+import {
+  DBKnowledgeBaseDocument,
+  KnowledgeBaseIntegration,
+  ZendeskCountFilters,
+  ZendeskFilters,
+  ZendeskFilterUserSegment,
+} from '@/models/KnowledgeBase.model';
 
 import api, { apiV3 } from './api';
 
@@ -57,8 +63,8 @@ export const knowledgeBaseClient = {
   getAllIntegrations: (projectID: string) =>
     apiV3.fetch.get<KnowledgeBaseIntegration[]>(`/projects/${projectID}/knowledge-base/integrations`).then(({ data }) => data),
 
-  createOneIntegration: (projectID: string, integrationType: string) =>
-    apiV3.fetch.post<KnowledgeBaseIntegration>(`/projects/${projectID}/knowledge-base/integrations/${integrationType}`).then(({ data }) => data),
+  importIntegration: (projectID: string, integrationType: string, data: { filters: ZendeskCountFilters; refreshRate: string }) =>
+    apiV3.fetch.post(`/projects/${projectID}/knowledge-base/integrations/${integrationType}`, data),
 
   deleteOneIntegration: (projectID: string, integrationID: string) =>
     apiV3.fetch.delete(`/projects/${projectID}/knowledge-base/integrations/${integrationID}`),
@@ -68,6 +74,9 @@ export const knowledgeBaseClient = {
 
   getIntegrationFilters: (projectID: string, integrationType: string) =>
     apiV3.fetch.get<ZendeskFilters>(`/projects/${projectID}/knowledge-base/integrations/${integrationType}/filters`).then(({ data }) => data),
+
+  getUserSegmentFilters: (projectID: string) =>
+    apiV3.fetch.get<ZendeskFilterUserSegment[]>(`/projects/${projectID}/knowledge-base/integrations/zendesk/user-segments`).then(({ data }) => data),
 
   getIntegrationDocumentCount: (projectID: string, integrationType: string, filters: ZendeskCountFilters) =>
     apiV3.fetch.post<number>(`/projects/${projectID}/knowledge-base/integrations/${integrationType}/count`, { filters }).then(({ data }) => data),

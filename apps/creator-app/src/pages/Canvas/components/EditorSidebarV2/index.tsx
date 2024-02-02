@@ -2,7 +2,7 @@ import { stopImmediatePropagation } from '@voiceflow/ui';
 import React from 'react';
 
 import Drawer from '@/components/Drawer';
-import HideVoiceflowAssistant from '@/components/HideVoiceflowAssistant';
+import { useHideVoiceflowAssistant } from '@/hooks';
 
 import { useEditorSidebarV2 } from './hooks';
 
@@ -11,10 +11,10 @@ export { EditorSidebarContext } from './context';
 const EditorSidebarV2 = () => {
   const api = useEditorSidebarV2();
 
+  useHideVoiceflowAssistant({ hide: api.isOpened });
+
   return (
     <React.Fragment key={api.focus.target ?? 'unknown'}>
-      {api.isOpened && <HideVoiceflowAssistant />}
-
       <Drawer
         open={api.isOpened}
         width={api.width}

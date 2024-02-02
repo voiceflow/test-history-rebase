@@ -4,11 +4,10 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 import Drawer from '@/components/Drawer';
-import HideVoiceflowAssistant from '@/components/HideVoiceflowAssistant';
 import { BlockType } from '@/constants';
 import { NamespaceProvider } from '@/contexts/NamespaceContext';
 import * as CreatorV2 from '@/ducks/creatorV2';
-import { useActiveProjectConfig, useRAF, useTheme } from '@/hooks';
+import { useActiveProjectConfig, useHideVoiceflowAssistant, useRAF, useTheme } from '@/hooks';
 import { LockedBlockOverlay } from '@/pages/Canvas/components/LockedEditorOverlay';
 import { EngineContext, ManagerContext } from '@/pages/Canvas/contexts';
 import BlockEditor from '@/pages/Canvas/editors/BlockEditor';
@@ -77,6 +76,8 @@ const EditSidebar = () => {
       });
     }
   }, [isOpen, blocKID]);
+
+  useHideVoiceflowAssistant({ hide: isOpen || fullScreen });
 
   let editor = null;
 
@@ -164,7 +165,6 @@ const EditSidebar = () => {
       </Drawer>
 
       {fullScreen && <EditorModal onClose={() => setFullScreen(false)}>{editor}</EditorModal>}
-      {isOpen && <HideVoiceflowAssistant />}
     </SidebarProvider>
   );
 };

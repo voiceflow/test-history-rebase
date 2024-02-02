@@ -2,7 +2,7 @@ import { BaseModels } from '@voiceflow/base-types';
 
 import {
   DBKnowledgeBaseDocument,
-  KnowledgeBaseIntegration,
+  DBKnowledgeBaseIntegration,
   ZendeskCountFilters,
   ZendeskFilters,
   ZendeskFilterUserSegment,
@@ -61,7 +61,7 @@ export const knowledgeBaseClient = {
       .then(({ data }) => data),
 
   getAllIntegrations: (projectID: string) =>
-    apiV3.fetch.get<KnowledgeBaseIntegration[]>(`/projects/${projectID}/knowledge-base/integrations`).then(({ data }) => data),
+    apiV3.fetch.get<DBKnowledgeBaseIntegration[]>(`/projects/${projectID}/knowledge-base/integrations`).then(({ data }) => data),
 
   importIntegration: (projectID: string, integrationType: string, data: { filters: ZendeskCountFilters; refreshRate: string }) =>
     apiV3.fetch.post(`/projects/${projectID}/knowledge-base/integrations/${integrationType}`, data),

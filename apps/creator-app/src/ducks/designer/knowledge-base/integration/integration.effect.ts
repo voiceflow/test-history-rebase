@@ -5,6 +5,7 @@ import type { KnowledgeBaseIntegration, ZendeskCountFilters, ZendeskFilters, Zen
 import type { Thunk } from '@/store/types';
 
 import * as Actions from './integration.action';
+import { integrationAdapter } from './integration.adapter';
 
 export const getAll = (): Thunk<KnowledgeBaseIntegration[]> => async (dispatch, getState) => {
   const state = getState();
@@ -13,7 +14,8 @@ export const getAll = (): Thunk<KnowledgeBaseIntegration[]> => async (dispatch, 
 
   Errors.assertProjectID(projectID);
 
-  const integrations = await knowledgeBaseClient.getAllIntegrations(projectID);
+  const dbIntegrations = await knowledgeBaseClient.getAllIntegrations(projectID);
+  const integrations = integrationAdapter.mapFromDB(dbIntegrations);
 
   dispatch(Actions.AddMany({ data: integrations }));
 

@@ -64,4 +64,8 @@ export class BillingSubscriptionService {
   getInvoices(subscriptionID: string, { cursor, limit }: { cursor?: string; limit?: number } = {}) {
     return this.billingClient.private.getSubscriptionInvoices(subscriptionID, { ...(cursor && { cursor }), ...(limit && { limit }) });
   }
+
+  cancel(subscriptionID: string) {
+    return this.billingClient.private.cancelSubscription(subscriptionID);
+  }
 }

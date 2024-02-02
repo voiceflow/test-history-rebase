@@ -2,14 +2,14 @@ import React from 'react';
 
 import * as S from './styles';
 
-interface BillingSeatsInputProps {
+interface SeatsInputProps {
   onChange: (seats: number) => void;
   value: number;
   error?: boolean;
   min?: number;
 }
 
-const BillingSeatsInput: React.FC<BillingSeatsInputProps> = ({ value, onChange, error, min = 0 }) => {
+const SeatsInput: React.FC<SeatsInputProps> = ({ value, onChange, error, min = 0 }) => {
   const [inputValue, setInputValue] = React.useState(String(value));
 
   const onPlusClick = () => {
@@ -51,4 +51,4 @@ const BillingSeatsInput: React.FC<BillingSeatsInputProps> = ({ value, onChange, 
   );
 };
 
-export default BillingSeatsInput;
+export default SeatsInput;

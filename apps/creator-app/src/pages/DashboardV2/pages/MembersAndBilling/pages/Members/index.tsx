@@ -22,7 +22,7 @@ const DashboardV2TeamAndBillingMembers: React.FC = () => {
 
   const inviteModal = ModalsV2.useModal(ModalsV2.Workspace.Invite);
   const paymentModal = ModalsV2.useModal(ModalsV2.Payment);
-  const addSeatsModal = ModalsV2.useModal(ModalsV2.Billing.AddSeats);
+  const addSeatsModal = ModalsV2.useModal(ModalsV2.LegacyBilling.AddSeats);
 
   return (
     <S.Container>

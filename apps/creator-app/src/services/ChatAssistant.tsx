@@ -1,12 +1,11 @@
 import { UserRole } from '@voiceflow/internal';
 import React from 'react';
 
-import HideVoiceflowAssistant from '@/components/HideVoiceflowAssistant';
 import { CLOUD_ENV } from '@/config';
 import * as Account from '@/ducks/account';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useSelector } from '@/hooks';
+import { useHideVoiceflowAssistant, useSelector } from '@/hooks';
 import VoiceflowAssistant from '@/vendors/voiceflowAssistant';
 
 const ChatAssistant: React.FC = () => {
@@ -38,6 +37,8 @@ const ChatAssistant: React.FC = () => {
     });
   }, [user.email, user.name, user.image, userRole]);
 
+  useHideVoiceflowAssistant({ hide: !isLoggedIn });
+
   React.useEffect(() => {
     VoiceflowAssistant.setActiveProject(activeProject);
   }, [activeProject?.id, activeProject?.name, activeProject?.locales]);
@@ -46,7 +47,7 @@ const ChatAssistant: React.FC = () => {
     VoiceflowAssistant.setActiveWorkspace(activeWorkspace);
   }, [activeWorkspace?.id, activeWorkspace?.name, activeWorkspace?.plan]);
 
-  return !isLoggedIn ? <HideVoiceflowAssistant /> : null;
+  return null;
 };
 
 export default React.memo(ChatAssistant);

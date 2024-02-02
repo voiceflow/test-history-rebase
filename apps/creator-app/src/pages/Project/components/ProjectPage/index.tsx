@@ -1,10 +1,9 @@
 import React from 'react';
 import { useRouteMatch } from 'react-router-dom';
 
-import HideVoiceflowAssistant from '@/components/HideVoiceflowAssistant';
 import { BlockType } from '@/constants';
 import * as UI from '@/ducks/ui';
-import { useSelector } from '@/hooks';
+import { useHideVoiceflowAssistant, useSelector } from '@/hooks';
 import { MarkupContext } from '@/pages/Project/contexts';
 import { useDisableModes } from '@/pages/Project/hooks';
 
@@ -19,6 +18,8 @@ const ProjectPage: React.FC<React.PropsWithChildren<{ sidebarPadding?: boolean }
   const canvasOnly = useSelector(UI.isCanvasOnlyShowingSelector);
   const onDisableModes = useDisableModes();
   const isDiagramRoute = useRouteMatch(DIAGRAM_ROUTES);
+
+  useHideVoiceflowAssistant({ hide: canvasOnly });
 
   const isCreatingMarkupText = markup?.creatingType === BlockType.MARKUP_TEXT;
 
@@ -45,7 +46,6 @@ const ProjectPage: React.FC<React.PropsWithChildren<{ sidebarPadding?: boolean }
       isCreatingMarkupText={isCreatingMarkupText}
     >
       {children}
-      {canvasOnly && <HideVoiceflowAssistant />}
     </S.Page>
   );
 };

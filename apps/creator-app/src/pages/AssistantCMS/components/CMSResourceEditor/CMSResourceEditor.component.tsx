@@ -6,6 +6,7 @@ import { Redirect, useHistory, useRouteMatch } from 'react-router-dom';
 import { Path } from '@/config/routes';
 import { useGetAtomValue } from '@/hooks/atom.hook';
 import { useSelector } from '@/hooks/store.hook';
+import { useHideVoiceflowAssistant } from '@/hooks/voiceflowAssistant';
 
 import { useCMSManager } from '../../contexts/CMSManager';
 import { useCMSRouteFolders } from '../../contexts/CMSRouteFolders';
@@ -36,6 +37,8 @@ export const CMSResourceEditor: React.FC<ICMSResourceEditor> = ({ Editor, childr
   const onContentClick = (event: React.MouseEvent<HTMLDivElement> & { __editorClick?: boolean }) => {
     Object.assign(event, { __editorClick: true });
   };
+
+  useHideVoiceflowAssistant({ hide: !!pathMatch });
 
   useEffect(() => {
     setActiveID(pathMatch?.params.resourceID ?? null);

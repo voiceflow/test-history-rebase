@@ -14,9 +14,9 @@ import * as date from '@/utils/date';
 
 import CardDetails from './CardDetails';
 
-const EditorSeats: React.FC = () => {
+const LegacyBillingEditorSeats: React.FC = () => {
   const { planSubscription, refetchPlanSubscription, paymentSource } = Payment.usePaymentAPI();
-  const scheduleSeatModal = ModalsV2.useModal(ModalsV2.Billing.ScheduleSeatChange);
+  const scheduleSeatModal = ModalsV2.useModal(ModalsV2.LegacyBilling.ScheduleSeatChange);
   const seats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);
   const isTrial = useSelector(WorkspaceV2.active.isOnTrialSelector);
   const trialEndAt = useSelector(WorkspaceV2.active.organizationTrialEndAtSelector);
@@ -138,4 +138,4 @@ const EditorSeats: React.FC = () => {
   );
 };
 
-export default EditorSeats;
+export default LegacyBillingEditorSeats;

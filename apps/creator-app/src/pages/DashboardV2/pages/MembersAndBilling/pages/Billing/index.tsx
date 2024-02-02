@@ -2,32 +2,36 @@
 import { Box, Spinner } from '@voiceflow/ui';
 import React from 'react';
 
+import { Permission } from '@/constants/permissions';
+import * as Organization from '@/ducks/organization';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-// import CancelSubscription from './CancelSubscription';
 // import EditorSeats from './EditorSeats';
 // import PaymentDetails from './PaymentDetails';
 // import PaymentFailed from './PaymentFailed';
-import { useSelector } from '@/hooks';
+import { usePermission, useSelector } from '@/hooks';
 
 // import { Permission } from '@/constants/permissions';
 // import * as WorkspaceV2 from '@/ducks/workspaceV2';
 // import { usePermission, useSelector } from '@/hooks';
 import BillingHistory from './BillingHistory/BillingHistory.component';
 import { useBillingHistory } from './BillingHistory/hooks';
+import CancelSubscription from './CancelSubscription';
+
 // const PAYMENT_FAILED_STRIPE_STATUS = new Set([StripeStatuses.UNPAID, StripeStatuses.PAST_DUE]);
 
 const DashboardV2Billing: React.FC = () => {
   const organizationID = useSelector(WorkspaceV2.active.organizationIDSelector);
+  const subscription = useSelector(Organization.active.chargebeeSubscriptionSelector)!;
 
-  // const [canManageSeats] = usePermission(Permission.BILLING_SEATS);
-  // const isProOrTeamPlan = useSelector(WorkspaceV2.active.isProOrTeamSelector);
-  // const isTrial = useSelector(WorkspaceV2.active.isOnTrialSelector);
+  const [canManageSeats] = usePermission(Permission.BILLING_SEATS);
+  const isProOrTeamPlan = useSelector(WorkspaceV2.active.isProOrTeamSelector);
+  const isTrial = useSelector(WorkspaceV2.active.isOnTrialSelector);
   // const stripeStatus = useSelector(WorkspaceV2.active.stripeStatusSelector);
 
   // const paymentAPI = Payment.usePaymentAPI();
   const billingHistory = useBillingHistory();
   // const isReady = billingHistory.isReady && paymentAPI.isReady;
-  const isReady = billingHistory.isReady && organizationID;
+  const isReady = billingHistory.isReady && organizationID && subscription;
 
   // const showPaymentFailed = PAYMENT_FAILED_STRIPE_STATUS.has(stripeStatus as StripeStatuses) && isProOrTeamPlan && !isTrial;
 
@@ -57,7 +61,9 @@ const DashboardV2Billing: React.FC = () => {
         />
       )}
 
-      {/* {canManageSeats && isProOrTeamPlan && !isTrial && <CancelSubscription planSubscription={paymentAPI.planSubscription} />} */}
+      {canManageSeats && isProOrTeamPlan && !isTrial && (
+        <CancelSubscription nextBillingDate={subscription.nextBillingDate ?? null} subscriptionStatus={subscription.status} />
+      )}
     </Box>
   );
 };

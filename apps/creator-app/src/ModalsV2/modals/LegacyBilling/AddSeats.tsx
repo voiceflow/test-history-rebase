@@ -4,8 +4,8 @@ import pluralize from 'pluralize';
 import React from 'react';
 
 import * as Workspace from '@/components/Workspace';
-import { PaymentProvider } from '@/contexts/PaymentContext';
 import * as Payment from '@/contexts/PaymentContext';
+import { PaymentProvider } from '@/contexts/PaymentContext';
 import { UpgradePrompt } from '@/ducks/tracking/constants';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useTrackingEvents } from '@/hooks/';
@@ -14,9 +14,9 @@ import * as currency from '@/utils/currency';
 import { onOpenBookDemoPage } from '@/utils/upgrade';
 
 import manager from '../../manager';
-import SeatsInput from './SeatsInput';
+import SeatsInput from '../Billing/SeatsInput';
 
-const AddSeats = manager.create('AddSeats', () =>
+const AddSeats = manager.create('LegacyBillingAddSeats', () =>
   withProvider(PaymentProvider)(({ api, type, opened, hidden, animated, closePrevented }) => {
     const isPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
     const isOnProTrial = useSelector(WorkspaceV2.active.isOnProTrialSelector);

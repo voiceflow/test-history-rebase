@@ -106,3 +106,20 @@ export interface SubscriptionBillingPeriod {
   amountDue?: number;
   items: InvoiceLineItem[];
 }
+
+// eslint-disable-next-line no-restricted-syntax
+export enum ChargebeeSubscriptionStatus {
+  FUTURE = 'future',
+  INTRIAL = 'in_trial',
+  ACTIVE = 'active',
+  NON_RENEWING = 'non_renewing',
+  PAUSED = 'paused',
+  CANCELLED = 'cancelled',
+  TRANSFERRED = 'transferred',
+}
+
+// eslint-disable-next-line no-restricted-syntax
+export enum ChargebeeBillingPeriod {
+  MONTH = 'month',
+  YEAR = 'year',
+}

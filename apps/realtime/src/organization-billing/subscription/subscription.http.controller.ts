@@ -1,4 +1,4 @@
-import { Controller, Get, HttpStatus, Inject, Param, Query } from '@nestjs/common';
+import { Controller, Get, HttpStatus, Inject, Param, Put, Query } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { SubscriptionDTO } from '@voiceflow/dtos';
 import { ZodApiQuery, ZodApiResponse } from '@voiceflow/nestjs-common';
@@ -52,5 +52,18 @@ export class BillingSubscriptionHTTPController {
       nextCursor,
       hasMore,
     };
+  }
+
+  @Put(':subscriptionID/cancel')
+  @Authorize.Permissions([Permission.ORGANIZATION_UPDATE])
+  @ApiOperation({
+    summary: 'Cancels billing subscription',
+    description: 'Cancels billing subscription for the given subscriptionID',
+  })
+  @ApiParam({ name: 'organizationID', type: 'string' })
+  @ApiParam({ name: 'subscriptionID', type: 'string' })
+  @ZodApiResponse({ status: HttpStatus.OK })
+  async cancel(@Param('subscriptionID') subscriptionID: string): Promise<void> {
+    await this.service.cancel(subscriptionID);
   }
 }

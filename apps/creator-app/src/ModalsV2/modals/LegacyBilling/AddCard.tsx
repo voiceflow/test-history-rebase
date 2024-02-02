@@ -7,11 +7,11 @@ import { CardHolderInfo, PaymentProvider, usePaymentAPI } from '@/contexts/Payme
 
 import manager from '../../manager';
 
-interface BillingAddCardProps {
+interface AddCardProps {
   update?: boolean;
 }
 
-const BillingAddCard = manager.create<BillingAddCardProps>('BillingAddCard', () =>
+const AddCard = manager.create<AddCardProps>('LegacyBillingAddCard', () =>
   withProvider(PaymentProvider)(({ api, type, opened, hidden, update, animated }) => {
     const paymentAPI = usePaymentAPI();
 
@@ -58,4 +58,4 @@ const BillingAddCard = manager.create<BillingAddCardProps>('BillingAddCard', () 
   })
 );
 
-export default BillingAddCard;
+export default AddCard;

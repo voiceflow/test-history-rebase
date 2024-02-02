@@ -1,5 +1,5 @@
 import { Identity } from '@realtime-sdk/models';
-import type { SubscriptionDTO } from '@voiceflow/dtos';
+import type { Subscription } from '@voiceflow/dtos';
 import { PlanType } from '@voiceflow/internal';
 import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter';
 
@@ -16,7 +16,7 @@ function getDaysLeftToTrialEnd(trialEndDate: Date) {
   return Math.max(0, daysLeft);
 }
 
-const subscriptionAdapter = createMultiAdapter<Identity.Subscription, SubscriptionDTO>(
+const subscriptionAdapter = createMultiAdapter<Identity.Subscription, Subscription>(
   ({ id, billingPeriodUnit, status, nextBillingAt, subscriptionItems, metaData }) => {
     const planItem = subscriptionItems?.find((item) => item.itemType === 'plan');
     const trialEnd = planItem?.trialEnd;
@@ -24,7 +24,7 @@ const subscriptionAdapter = createMultiAdapter<Identity.Subscription, Subscripti
     const plan = planItem?.itemPriceID ? planItem.itemPriceID.split('-')[0] : PlanType.STARTER;
     const isTrial = planItem?.itemPriceID?.includes('trial') || metaData?.downgraded;
 
-    const result: SubscriptionDTO = {
+    const result: Subscription = {
       id,
       billingPeriodUnit: billingPeriodUnit ?? null,
       editorSeats: planItem?.quantity ?? 0,

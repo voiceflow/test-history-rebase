@@ -1,4 +1,4 @@
-import { SubscriptionDTO } from '@voiceflow/dtos';
+import { Subscription } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
 
@@ -60,7 +60,7 @@ export const removeActiveOrganizationAdmin =
   };
 
 export const loadActiveOrganizationSubscription =
-  (organizationID: string, chargebeeSubscriptionID: string): Thunk<SubscriptionDTO | null> =>
+  (organizationID: string, chargebeeSubscriptionID: string): Thunk<Subscription | null> =>
   async (dispatch) => {
     try {
       const subscription = await designerClient.billing.subscription.findOne(organizationID, chargebeeSubscriptionID);

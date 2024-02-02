@@ -1,4 +1,4 @@
-import { InvoiceDTO } from '@voiceflow/dtos';
+import { Invoice } from '@voiceflow/dtos';
 import { Box, SectionV2 } from '@voiceflow/ui';
 import { Link } from '@voiceflow/ui-next';
 import React from 'react';
@@ -10,7 +10,7 @@ import { Status } from './hooks';
 import * as S from './styles';
 
 interface BillingHistoryProps {
-  data: InvoiceDTO[];
+  data: Invoice[];
   status: Status;
   hasMore: boolean;
   loadMore: VoidFunction;

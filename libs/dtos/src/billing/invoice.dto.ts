@@ -5,4 +5,4 @@ export const InvoiceDTO = z.object({
   date: z.string().nullable(),
 });
 
-export type InvoiceDTO = z.infer<typeof InvoiceDTO>;
+export type Invoice = z.infer<typeof InvoiceDTO>;

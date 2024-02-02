@@ -1,6 +1,6 @@
 import { Controller, Get, HttpStatus, Inject, Param, Put, Query } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
-import { SubscriptionDTO } from '@voiceflow/dtos';
+import { Subscription, SubscriptionDTO } from '@voiceflow/dtos';
 import { ZodApiQuery, ZodApiResponse } from '@voiceflow/nestjs-common';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { Permission } from '@voiceflow/sdk-auth';
@@ -28,7 +28,7 @@ export class BillingSubscriptionHTTPController {
   @ApiParam({ name: 'organizationID', type: 'string' })
   @ApiParam({ name: 'subscriptionID', type: 'string' })
   @ZodApiResponse({ status: HttpStatus.OK, schema: SubscriptionDTO })
-  async findOne(@Param('subscriptionID') subscriptionID: string): Promise<SubscriptionDTO> {
+  async findOne(@Param('subscriptionID') subscriptionID: string): Promise<Subscription> {
     return this.service.findOne(subscriptionID).then(Realtime.Adapters.Billing.subscription.fromDB);
   }
 

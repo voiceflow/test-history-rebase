@@ -49,4 +49,4 @@ const ExportCanvas: React.FC = () => {
   );
 };
 
-export default withBatchLoadingGate(VersionSubscriptionGate, WorkspaceFeatureLoadingGate, InitializeExportGate)(ExportCanvas);
+export default withBatchLoadingGate(WorkspaceFeatureLoadingGate, VersionSubscriptionGate, InitializeExportGate)(ExportCanvas);

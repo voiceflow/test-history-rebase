@@ -19,4 +19,4 @@ export const SubscriptionDTO = z.object({
   editorSeats: z.number(),
 });
 
-export type SubscriptionDTO = z.infer<typeof SubscriptionDTO>;
+export type Subscription = z.infer<typeof SubscriptionDTO>;

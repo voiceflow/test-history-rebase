@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1384.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1384.2...@voiceflow/creator-app@1.1384.3) (2024-02-03)
+
+### Bug Fixes
+
+* collaboration gate infinite load (BUG-747) ([931c27b](https://github.com/voiceflow/creator-app/commit/931c27b60155c9a88398908e69fd30a9344e9ba1))
+
 ## [1.1384.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1384.1...@voiceflow/creator-app@1.1384.2) (2024-02-03)
 
 ### Reverts

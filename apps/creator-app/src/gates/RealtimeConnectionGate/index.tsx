@@ -17,14 +17,15 @@ const RealtimeConnectionGate: React.FC<React.PropsWithChildren> = ({ children })
   const [reconnecting, setReconnecting] = React.useState(false);
 
   React.useEffect(() => client.on(ConnectionStatus.RECONNECTING, () => setReconnecting(true)), []);
-  React.useEffect(
-    () =>
-      client.on(ConnectionStatus.CONNECTED, () => {
-        setReady(true);
-        setReconnecting(false);
-      }),
-    []
-  );
+  React.useEffect(() => {
+    const ready = () => {
+      setReady(true);
+      setReconnecting(false);
+    };
+
+    if (client.isSynced()) ready();
+    client.on(ConnectionStatus.CONNECTED, ready);
+  }, []);
 
   useLoguxSetup(client, {
     onLogout: () => setReady(false),

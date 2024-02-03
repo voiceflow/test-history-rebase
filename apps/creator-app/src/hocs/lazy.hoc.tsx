@@ -2,6 +2,8 @@ import { Crypto } from '@voiceflow/common';
 import { FullSpinner } from '@voiceflow/ui';
 import React from 'react';
 
+import logger from '@/utils/logger';
+
 const getForceRefreshKey = (hash: string) => `component-has-force-refreshed:${hash}`;
 
 interface ILazy<T extends React.ComponentType<any>> {
@@ -29,6 +31,7 @@ export const lazy = <T extends React.ComponentType<any>>({ name, factory }: ILaz
       }
 
       sessionStorage.setItem(forceRefreshKey, '1');
+      logger.warn('[reload] lazy Component');
       window.location.reload();
 
       return { default: FullSpinner as React.ComponentType<any> };

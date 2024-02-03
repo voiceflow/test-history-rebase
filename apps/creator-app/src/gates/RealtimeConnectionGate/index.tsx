@@ -4,6 +4,7 @@ import { ConnectionStatus } from '@/client/logux';
 import LoadingGate from '@/components/LoadingGate';
 import { withSessionGate } from '@/hocs/session';
 import { useLoguxSetup, useRealtimeClient } from '@/hooks';
+import logger from '@/utils/logger';
 
 import RealtimeTimeoutControl from './components/RealtimeTimeoutControl';
 
@@ -17,19 +18,21 @@ const RealtimeConnectionGate: React.FC<React.PropsWithChildren> = ({ children })
   const [reconnecting, setReconnecting] = React.useState(false);
 
   React.useEffect(() => client.on(ConnectionStatus.RECONNECTING, () => setReconnecting(true)), []);
-  React.useEffect(
-    () =>
-      client.on(ConnectionStatus.CONNECTED, () => {
-        setReady(true);
-        setReconnecting(false);
-      }),
-    []
-  );
+  React.useEffect(() => {
+    const ready = () => {
+      setReady(true);
+      setReconnecting(false);
+    };
+
+    if (client.connected) ready();
+    client.on(ConnectionStatus.CONNECTED, ready);
+  }, []);
 
   useLoguxSetup(client, {
     onLogout: () => setReady(false),
     onLogoutFail: () => {
       // force reload if unable to teardown session
+      logger.warn('[reload] onLogoutFail');
       window.location.reload();
     },
   });

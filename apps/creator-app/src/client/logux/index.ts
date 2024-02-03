@@ -51,6 +51,10 @@ class LoguxClient extends Client {
     this.clientEmitter.emit(status);
   }
 
+  isSynced() {
+    return this.connected && this.state === 'synchronized';
+  }
+
   start(): VoidFunction {
     const teardownStateChangeListener = this.on('state', this.stateChangeListener);
     const teardownErrorListener = this.node.catch(this.errorListener);

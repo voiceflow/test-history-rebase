@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1384.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1384.1...@voiceflow/creator-app@1.1384.2) (2024-02-03)
+
+### Reverts
+
+* Revert "fix: collaboration qol updates (BUG-747) (#7748)" ([b50bfc5](https://github.com/voiceflow/creator-app/commit/b50bfc561eb547a03ec29801692c7d4beeb0a8e1)), closes [#7748](https://github.com/voiceflow/creator-app/issues/7748)
+
 ## [1.1384.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1384.0...@voiceflow/creator-app@1.1384.1) (2024-02-03)
 
 ### Bug Fixes

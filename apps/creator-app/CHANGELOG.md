@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1384.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1384.0...@voiceflow/creator-app@1.1384.1) (2024-02-03)
+
+### Bug Fixes
+
+* collaboration qol updates (BUG-747) ([#7748](https://github.com/voiceflow/creator-app/issues/7748)) ([b740fc1](https://github.com/voiceflow/creator-app/commit/b740fc16b66cbeac7e6ea24358b592cc25bb3806)), closes [/github.com/voiceflow/creator-app/blob/164437761886352a82981aec60ca674db2155076/apps/creator-app/src/client/realtime.ts#L16-L24](https://github.com//github.com/voiceflow/creator-app/blob/164437761886352a82981aec60ca674db2155076/apps/creator-app/src/client/realtime.ts/issues/L16-L24)
+
 # [1.1384.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1383.0...@voiceflow/creator-app@1.1384.0) (2024-02-02)
 
 ### Features

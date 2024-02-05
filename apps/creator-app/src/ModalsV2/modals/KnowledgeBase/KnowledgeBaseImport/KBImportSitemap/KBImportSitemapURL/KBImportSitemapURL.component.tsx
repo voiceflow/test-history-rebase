@@ -61,6 +61,11 @@ export const KBImportSitemapURL: React.FC<IKBImportSitemapURL> = ({
     }
   };
 
+  const onChangeSitemapValue = (value: string) => {
+    setError('');
+    setSitemapURL(value);
+  };
+
   const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       onContinue();
@@ -83,7 +88,7 @@ export const KBImportSitemapURL: React.FC<IKBImportSitemapURL> = ({
               disabled={closePrevented}
               placeholder="Enter sitemap URL"
               errorMessage={error}
-              onValueChange={setSitemapURL}
+              onValueChange={onChangeSitemapValue}
               onKeyDown={onKeyDown}
             />
           </Box>

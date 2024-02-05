@@ -62,6 +62,7 @@ export const KBIntegration: React.FC<IKBIntegration> = ({ name, icon, platform, 
           {({ onClose, referenceRef }) => (
             <Menu minWidth={referenceRef.current?.clientWidth}>
               <MenuItem label="Reconnect" prefixIconName="Sync" onClick={() => onReconnect()} />
+              <Divider />
               <MenuItem label="Remove" prefixIconName="Trash" onClick={Utils.functional.chainVoid(onClose, onRemove)} />
             </Menu>
           )}

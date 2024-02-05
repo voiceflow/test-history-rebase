@@ -2,6 +2,7 @@ import { Switch } from '@voiceflow/ui';
 import React, { useState } from 'react';
 
 import { Modal } from '@/components/Modal';
+import * as Tracking from '@/ducks/tracking';
 import manager from '@/ModalsV2/manager';
 
 import { KBImportIntegrationPlatform } from './KBImportIntegrationPlatform/KBImportIntegrationPlatform.component';
@@ -12,6 +13,8 @@ import { KBImportIntegrationZendesk } from './KBImportIntegrationZendesk/KBImpor
 export const KBImportIntegration = manager.create('KBImportIntegration', () => ({ api, type, opened, hidden, animated, closePrevented }) => {
   const [platform, setPlatform] = useState<KBImportPlatformType | null>(null);
   const [screen, setScreen] = useState<'platform' | 'authenticate' | 'zendesk'>('platform');
+
+  Tracking.trackAiKnowledgeBaseIntegrationSelected({ IntegrationType: 'zendesk' });
 
   return (
     <Modal.Container type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} onEscClose={api.onEscClose}>

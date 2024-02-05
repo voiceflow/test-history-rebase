@@ -182,6 +182,9 @@ export enum EventName {
   AI_KNOWLEDGE_BASE_QUESTION_PREVIEWED = 'AI - KB Question Previewed',
   AI_KNOWLEDGE_BASE_SEARCH = 'AI - KB Search',
   AI_KNOWLEDGE_BASE_ERROR = 'AI - KB Error',
+  AI_KNOWLEDGE_BASE_INTEGRATION_CONNECTED = 'AI - KB Integration Connected',
+  AI_KNOWLEDGE_BASE_INTEGRATION_SELECTED = 'AI - KB Integration Selected',
+  AI_KNOWLEDGE_BASE_INTEGRATION_FILTERS_USED = 'AI - KB Integration Filters Used',
 
   // Project API
   API_PAGE_OPEN = 'API - Page Open',

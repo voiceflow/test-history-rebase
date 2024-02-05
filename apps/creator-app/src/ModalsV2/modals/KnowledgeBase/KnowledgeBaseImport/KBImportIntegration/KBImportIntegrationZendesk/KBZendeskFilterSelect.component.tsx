@@ -1,7 +1,7 @@
-import { Box, CheckboxControl, Dropdown, Menu, MenuItem, Text, Tooltip, useTooltipModifiers } from '@voiceflow/ui-next';
+import { Box, CheckboxControl, Dropdown, Menu, MenuItem, Tooltip, useTooltipModifiers } from '@voiceflow/ui-next';
 import React from 'react';
 
-import { captionStyles, filterLabelStyles } from './KBZendeskFilterSelect.css';
+import { captionStyles } from './KBZendeskFilterSelect.css';
 
 export interface IKBZendeskFilterSelect {
   label: string;
@@ -47,10 +47,7 @@ export const KBZendeskFilterSelect: React.FC<IKBZendeskFilterSelect> = ({
             placement="left-start"
             referenceElement={({ onOpen, onClose, ref }) => (
               <Box ref={ref} onMouseEnter={onOpen} onMouseLeave={onClose} direction="column">
-                <Text variant="tableHeader" className={filterLabelStyles}>
-                  {label}
-                </Text>
-                <Dropdown value={value.join(', ')} disabled={disabled} placeholder={placeholder}>
+                <Dropdown value={value.join(', ')} label={label} disabled={disabled} placeholder={placeholder}>
                   {() => {
                     return (
                       <Menu
@@ -99,10 +96,7 @@ export const KBZendeskFilterSelect: React.FC<IKBZendeskFilterSelect> = ({
           </Tooltip>
         ) : (
           <>
-            <Text variant="tableHeader" className={filterLabelStyles}>
-              {label}
-            </Text>
-            <Dropdown value={value.join(', ')} disabled={disabled} placeholder={placeholder}>
+            <Dropdown value={value.join(', ')} label={label} disabled={disabled} placeholder={placeholder}>
               {({ onClose }) => {
                 return (
                   <Menu

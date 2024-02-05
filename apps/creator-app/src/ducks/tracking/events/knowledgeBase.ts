@@ -51,3 +51,15 @@ export const trackAiKnowledgeBaseSearch = createProjectEventTracker<{ SearchTerm
 export const trackAiKnowledgeBaseError = createProjectEventTracker<{ ErrorType: 'Import' | 'Load' }>((eventInfo) =>
   client.analytics.track(createProjectEvent(EventName.AI_KNOWLEDGE_BASE_ERROR, eventInfo))
 );
+
+export const trackAiKnowledgeBaseIntegrationConnected = createProjectEventTracker<{ IntegrationType: string }>((eventInfo) =>
+  client.analytics.track(createProjectEvent(EventName.AI_KNOWLEDGE_BASE_INTEGRATION_CONNECTED, eventInfo))
+);
+
+export const trackAiKnowledgeBaseIntegrationSelected = createProjectEventTracker<{ IntegrationType: string }>((eventInfo) =>
+  client.analytics.track(createProjectEvent(EventName.AI_KNOWLEDGE_BASE_INTEGRATION_SELECTED, eventInfo))
+);
+
+export const trackAiKnowledgeBaseIntegrationFiltersUsed = createProjectEventTracker<{ Filters: object }>((eventInfo) =>
+  client.analytics.track(createProjectEvent(EventName.AI_KNOWLEDGE_BASE_INTEGRATION_FILTERS_USED, eventInfo))
+);

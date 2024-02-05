@@ -22,7 +22,7 @@ export const KBImportIntegrationWaiting: React.FC<IKBImportIntegrationWaiting> =
       <Modal.Header title="Import from Zendesk" onClose={onClose} leftButton={<Modal.Header.Icon iconName="Zendesk" />} />
 
       <Scroll style={{ display: 'block' }}>
-        <Box height="150px" direction="column" justify="center" align="center" gap={8}>
+        <Box height="150px" direction="column" justify="center" align="center" gap={12}>
           <LoadingSpinner size="large" />
           <Text color={colors.neutralDark.neutralsDark900}>Awaiting authorization...</Text>
         </Box>

@@ -11,8 +11,9 @@ export const createOne =
     const state = getState();
 
     const context = getActiveAssistantContext(state);
-
+    console.log({ context, data });
     const response = await dispatch(waitAsync(Actions.Flow.CreateOne, { context, data }));
+    console.log({ response });
 
     return response.data;
   };

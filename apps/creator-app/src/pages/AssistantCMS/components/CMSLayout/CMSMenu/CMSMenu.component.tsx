@@ -99,6 +99,15 @@ export const CMSMenu: React.FC = () => {
 
       {(isFunctionsCmsEnabled || isCMSVariablesEnabled) && (
         <SecondaryNavigation.Section title="Content">
+          <SecondaryNavigation.Item
+            icon="Component"
+            label="Components"
+            caption={String(variablesCount)}
+            onClick={onTabClick(Path.CMS_COMPONENT, CMSRoute.COMPONENT)}
+            isActive={isItemActive(Path.CMS_COMPONENT)}
+            testID="cms-menu__item--variables"
+          />
+
           {isCMSVariablesEnabled && (
             <SecondaryNavigation.Item
               icon="Variable"

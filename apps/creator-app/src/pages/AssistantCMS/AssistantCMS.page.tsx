@@ -21,6 +21,9 @@ const AssistantCMSEntity = withSuspense({ loader: <CMSPageLoader /> })(
 const AssistantCMSVariable = withSuspense({ loader: <CMSPageLoader /> })(
   lazy({ name: 'CMSVariable', factory: () => import('./pages/CMSVariable/CMSVariable.page') })
 );
+const AssistantCMSComponent = withSuspense({ loader: <CMSPageLoader /> })(
+  lazy({ name: 'CMSComponent', factory: () => import('./pages/CMSComponent/CMSComponent.page') })
+);
 const AssistantCMSFunction = withSuspense({ loader: <CMSPageLoader /> })(
   lazy({ name: 'CMSFunction', factory: () => import('./pages/CMSFunction/CMSFunction.page') })
 );
@@ -51,6 +54,8 @@ const AssistantCMS = () => {
         <Route path={Path.CMS_ENTITY} component={AssistantCMSEntity} />
 
         {isKbEnabled && <Route path={Path.CMS_KNOWLEDGE_BASE} component={AssistantCMSKnowledgeBase} />}
+
+        <Route path={Path.CMS_COMPONENT} component={AssistantCMSComponent} />
 
         {isCMSVariablesEnabled && <Route path={Path.CMS_VARIABLE} component={AssistantCMSVariable} />}
 

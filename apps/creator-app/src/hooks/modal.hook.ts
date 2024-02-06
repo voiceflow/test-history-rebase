@@ -1,4 +1,4 @@
-import type { Entity, Folder, Intent, Variable } from '@voiceflow/dtos';
+import type { Entity, Flow, Folder, Intent, Variable } from '@voiceflow/dtos';
 
 import { useModal } from '@/ModalsV2/modal.hook';
 import type { Props as ConfirmProps } from '@/ModalsV2/modals/Confirm';
@@ -39,6 +39,8 @@ export const useVariableEditModal = () => useModal<IVariableEditModal>('Variable
 export const useVariableCreateModal = () => useModal<IVariableCreateModal, Variable>('VariableCreateModal');
 
 export const useFolderCreateModal = () => useModal<IFolderCreateModal, Folder>('FolderCreateModal');
+
+export const useComponentCreateModal = () => useModal<IVariableCreateModal, Flow>('ComponentCreateModal');
 
 export const useIntentEditModal = () => useModal<IIntentEditModal>('IntentEditModal');
 export const useIntentCreateModal = () => useModal<IIntentCreateModal, Intent>('IntentCreateModal');

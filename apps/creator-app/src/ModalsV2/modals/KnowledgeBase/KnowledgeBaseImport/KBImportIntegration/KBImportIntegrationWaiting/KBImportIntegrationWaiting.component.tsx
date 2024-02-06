@@ -11,7 +11,7 @@ import { IKBImportIntegrationWaiting } from './KBImportIntegrationWaiting.interf
 
 const { colors } = Tokens;
 
-export const KBImportIntegrationWaiting: React.FC<IKBImportIntegrationWaiting> = ({ onContinue, onFail, onClose, disabled, reconnect }) => {
+export const KBImportIntegrationWaiting: React.FC<IKBImportIntegrationWaiting> = ({ onContinue, onFail, onClose, disabled, reconnect = false }) => {
   const getAuthUrl = useDispatch(Designer.KnowledgeBase.Integration.effect.getIntegrationAuthUrl);
   const getAuthReconnectUrl = useDispatch(Designer.KnowledgeBase.Integration.effect.getIntegrationAuthReconnectUrl);
 
@@ -21,7 +21,9 @@ export const KBImportIntegrationWaiting: React.FC<IKBImportIntegrationWaiting> =
   const getAll = useDispatch(Designer.KnowledgeBase.Integration.effect.getAll);
 
   const onConnectZendesk = async () => {
-    const authUrl = reconnect ? await getAuthReconnectUrl('zendesk') : await getAuthUrl('zendesk');
+    const authUrl = reconnect
+      ? await getAuthReconnectUrl(BaseModels.Project.IntegrationTypes.ZENDESK)
+      : await getAuthUrl(BaseModels.Project.IntegrationTypes.ZENDESK);
 
     const popup = openURLInANewPopupWindow(authUrl);
     setPopupWindow(popup);

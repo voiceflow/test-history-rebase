@@ -1,4 +1,4 @@
-import { Table, toast } from '@voiceflow/ui-next';
+import { notify, Table } from '@voiceflow/ui-next';
 import { useAtomValue, useSetAtom } from 'jotai';
 import pluralize from 'pluralize';
 import React from 'react';
@@ -28,7 +28,7 @@ export const CMSResourceActionsButtonDelete: React.FC = () => {
     await deleteMany(Array.from(selectedIDs));
     setSelectedIDs(new Set());
 
-    toast.info(`${pluralize(folderScope, numSelected, true)} deleted`, { showIcon: false });
+    notify.short.info(`${pluralize(folderScope, numSelected, true)} deleted`, { showIcon: false });
   };
 
   const onClick = () => {

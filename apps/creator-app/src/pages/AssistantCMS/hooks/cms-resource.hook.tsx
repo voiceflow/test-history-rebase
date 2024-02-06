@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { Divider, MenuItem, toast, usePersistFunction } from '@voiceflow/ui-next';
+import { Divider, MenuItem, notify, usePersistFunction } from '@voiceflow/ui-next';
 import { useAtomValue } from 'jotai';
 import React from 'react';
 
@@ -62,7 +62,7 @@ export const useCMSResourceGetMoreMenu = ({
     const onConfirmDelete = async () => {
       await deleteResource(id);
 
-      toast.info(`1 ${folderScope} deleted`, { showIcon: false });
+      notify.short.info(`1 ${folderScope} deleted`, { showIcon: false });
     };
 
     const onDelete = () => {
@@ -78,7 +78,7 @@ export const useCMSResourceGetMoreMenu = ({
     const onCopyLink = () => {
       clipboardCopy(`${window.location.origin}${path}`);
 
-      toast.success(`Copied`);
+      notify.short.success(`Copied`);
 
       onClose();
     };

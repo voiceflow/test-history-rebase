@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { Box, Divider, DotSeparator, Icon, Menu, MenuItem, Popper, SquareButton, Text, toast, Tokens } from '@voiceflow/ui-next';
+import { Box, Divider, DotSeparator, Icon, Menu, MenuItem, notify, Popper, SquareButton, Text, Tokens } from '@voiceflow/ui-next';
 import dayjs from 'dayjs';
 import React from 'react';
 
@@ -15,7 +15,7 @@ export const KBIntegration: React.FC<IKBIntegration> = ({ name, icon, platform, 
   const confirmModal = useConfirmV2Modal();
 
   const onConfirmRemove = () => {
-    toast.info(`Integration removed`, { showIcon: false });
+    notify.short.info(`Integration removed`, { showIcon: false });
   };
 
   const onRemove = () => {

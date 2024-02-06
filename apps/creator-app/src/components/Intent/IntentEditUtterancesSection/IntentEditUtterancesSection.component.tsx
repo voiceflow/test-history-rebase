@@ -1,5 +1,5 @@
 import type { Utterance } from '@voiceflow/dtos';
-import { Box, toast } from '@voiceflow/ui-next';
+import { Box, notify } from '@voiceflow/ui-next';
 import pluralize from 'pluralize';
 import React, { useEffect } from 'react';
 
@@ -67,7 +67,7 @@ export const IntentEditUtterancesSection: React.FC<IIntentEditUtterancesSection>
 
       autofocus.setKey(result[result.length - 1].id);
 
-      toast.success(`Added ${pluralize('utterance', result.length, true)}`);
+      notify.short.success(`Added ${pluralize('utterance', result.length, true)}`);
     })();
   }, []);
 

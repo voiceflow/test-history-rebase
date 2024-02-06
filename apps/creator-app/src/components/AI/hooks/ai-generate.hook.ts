@@ -1,7 +1,7 @@
 import { Utils } from '@voiceflow/common';
 import { WorkspaceQuotaName } from '@voiceflow/dtos';
 import { isNetworkError, logger } from '@voiceflow/ui';
-import { toast, usePersistFunction } from '@voiceflow/ui-next';
+import { notify, usePersistFunction } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { useGenOptions } from '@/components/GPT';
@@ -79,16 +79,16 @@ export const useAIGenerate: AIGenerate = ({
 
       await onGenerated(items.slice(0, options.quantity))?.catch(Utils.functional.noop);
 
-      toast.success(successGeneratedMessage);
+      notify.short.success(successGeneratedMessage);
     } catch (error) {
       logger.error(error);
 
       if (isNetworkError(error) && error.statusCode === AIGenerateServerErrorStatusCode.QUOTA_REACHED) {
-        toast.error("You've reached your beta access token limit for AI Assist features");
+        notify.short.error("You've reached your beta access token limit for AI Assist features");
         return;
       }
 
-      toast.error('Unable to generate, try again');
+      notify.short.error('Unable to generate, try again');
     } finally {
       setFetching(false);
     }

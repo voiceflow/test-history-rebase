@@ -1,4 +1,4 @@
-import { Box, LoadingSpinner, Scroll, Text, toast, Tokens } from '@voiceflow/ui-next';
+import { Box, LoadingSpinner, notify, Scroll, Text, Tokens } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { Modal } from '@/components/Modal';
@@ -10,7 +10,7 @@ const { colors } = Tokens;
 export const KBImportIntegrationWaiting: React.FC<IKBImportIntegrationWaiting> = ({ onContinue, onClose, disabled }) => {
   const onConnected = () => {
     onContinue();
-    toast.success('Connected to Zendesk');
+    notify.short.success('Connected to Zendesk');
   };
 
   React.useEffect(() => {

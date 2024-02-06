@@ -1,4 +1,4 @@
-import { Collapsible, CollapsibleHeader, CollapsibleHeaderButton, toast, UploadArea } from '@voiceflow/ui-next';
+import { Collapsible, CollapsibleHeader, CollapsibleHeaderButton, notify, UploadArea } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { designerClient } from '@/client/designer';
@@ -16,7 +16,7 @@ export const CMSFunctionImageUpload: React.FC<ICMSFunctionImageUpload> = ({ valu
       const { url } = await designerClient.upload.image({ image: file });
       onValueChange(url);
     } catch {
-      toast.error('Something went wrong. Please try again.');
+      notify.short.error('Something went wrong. Please try again.');
     }
 
     setIsLoading(false);

@@ -1,6 +1,6 @@
 import { type AnyRecord } from '@voiceflow/common';
-import { toast, usePersistFunction } from '@voiceflow/ui-next';
-import type { Options as ToastOptions } from '@voiceflow/ui-next/build/esm/contexts/ToastContext/Toast.context';
+import { notify, usePersistFunction } from '@voiceflow/ui-next';
+import type { Options as NotifyOptions } from '@voiceflow/ui-next/build/esm/contexts/Notify/Notify.context';
 import { IValidator, IValidatorErrorResult, IValidatorSuccessResult, IValidatorWithContext } from '@voiceflow/utils-designer';
 import { useEffect } from 'react';
 import { UnionToIntersection } from 'utility-types';
@@ -89,7 +89,7 @@ export const useValidateWarningOnUnmount = ({
   validator,
 }: {
   prefix?: string | null;
-  options?: ToastOptions;
+  options?: NotifyOptions;
   validator: null | (() => ValidateResult<{ [key: string]: ValidatorErrorSetterTuple }>);
 }) => {
   const persistedValidator = usePersistFunction(validator);
@@ -106,7 +106,7 @@ export const useValidateWarningOnUnmount = ({
 
       if (!message) return;
 
-      toast.warning(`${prefix ?? ''} ${message}`, options);
+      notify.short.warning(`${prefix ?? ''} ${message}`, options);
     },
     []
   );

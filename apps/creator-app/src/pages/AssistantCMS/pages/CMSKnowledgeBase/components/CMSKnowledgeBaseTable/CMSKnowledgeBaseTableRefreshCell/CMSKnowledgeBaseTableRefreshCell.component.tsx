@@ -1,6 +1,6 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import { Box, Link, Menu, MenuItem, Popper, Text, toast, Tokens, Tooltip } from '@voiceflow/ui-next';
+import { Box, Link, Menu, MenuItem, notify, Popper, Text, Tokens, Tooltip } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { UpgradeTooltipPlanPermission } from '@/config/planPermission';
@@ -34,7 +34,7 @@ export const CMSKnowledgeBaseTableRefreshCell: React.FC<ICMSKnowledgeBaseTableRe
 
   const onSetRefreshRate = async (refreshRate: BaseModels.Project.KnowledgeBaseDocumentRefreshRate) => {
     await patchManyRefreshRate([item.id], refreshRate);
-    toast.success(`Updated`, { delay: 2000, isClosable: false });
+    notify.short.success(`Updated`, { delay: 2000, isClosable: false });
   };
 
   const upgradeTooltip =

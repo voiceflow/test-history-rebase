@@ -1,4 +1,4 @@
-import { toast } from '@voiceflow/ui-next';
+import { notify } from '@voiceflow/ui-next';
 
 export const clipboardCopy = (text?: string | null): void => {
   try {
@@ -19,5 +19,5 @@ export const clipboardCopyWithToast =
   (text: string, toastMessage = 'Copied') =>
   (): void => {
     clipboardCopy(text);
-    toast.success(toastMessage);
+    notify.short.success(toastMessage);
   };

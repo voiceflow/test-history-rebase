@@ -1,4 +1,4 @@
-import { Divider, Scroll, toast } from '@voiceflow/ui-next';
+import { Divider, notify, Scroll } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { CMSFormName } from '@/components/CMS/CMSForm/CMSFormName/CMSFormName.component';
@@ -40,7 +40,7 @@ export const EntityEditModal = modalsManager.create<IEntityEditModal>(
 
         await deleteEntity();
 
-        toast.info('Deleted', { showIcon: false });
+        notify.short.info('Deleted', { showIcon: false });
       };
 
       return (

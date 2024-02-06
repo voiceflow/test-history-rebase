@@ -1,6 +1,6 @@
 import { BaseUtils } from '@voiceflow/base-types';
 import { useDidUpdateEffect, useForceUpdate, useLocalStorageState, useSessionStorageState, useToggle } from '@voiceflow/ui';
-import { Box, Link, Scroll, Text, TextArea, toast, Tokens } from '@voiceflow/ui-next';
+import { Box, Link, notify, Scroll, Text, TextArea, Tokens } from '@voiceflow/ui-next';
 import React from 'react';
 import { generatePath, useHistory } from 'react-router';
 
@@ -81,16 +81,16 @@ export const KnowledgeBasePreviewQuestion = manager.create(
           })
           .catch((error) => {
             if (error?.response?.status === 429) {
-              toast.error('Too many requests, please wait and try again', { isClosable: false });
+              notify.short.error('Too many requests, please wait and try again', { isClosable: false });
             } else if (error?.response?.status === 402) {
-              toast.error(
+              notify.short.error(
                 <>
                   Out of tokens. <Link variant="secondary" href={REQUEST_MORE_TOKENS} label="Request more tokens." />
                 </>,
                 { isClosable: false }
               );
             } else {
-              toast.error('Unable to reach knowledge base.', { isClosable: false });
+              notify.short.error('Unable to reach knowledge base.', { isClosable: false });
             }
           });
 

@@ -61,7 +61,9 @@ export const getIntegrationAuthUrl =
 
     const redirectURL = `${CREATOR_APP_ENDPOINT}${Path.ZENDESK_CALLBACK}`;
 
-    return knowledgeBaseClient.getIntegrationAuthUrl(projectID, integrationType, redirectURL);
+    const data = await knowledgeBaseClient.getIntegrationAuthUrl(projectID, integrationType, redirectURL);
+
+    return data.data.url;
   };
 
 export const getIntegrationAuthReconnectUrl =
@@ -75,7 +77,9 @@ export const getIntegrationAuthReconnectUrl =
 
     const redirectURL = `${CREATOR_APP_ENDPOINT}${Path.ZENDESK_CALLBACK}`;
 
-    return knowledgeBaseClient.getIntegrationAuthReconnectUrl(projectID, integrationType, redirectURL);
+    const data = await knowledgeBaseClient.getIntegrationAuthReconnectUrl(projectID, integrationType, redirectURL);
+
+    return data.data.url;
   };
 
 export const getIntegrationFilters =

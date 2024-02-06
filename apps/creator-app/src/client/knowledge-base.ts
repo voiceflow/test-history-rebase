@@ -75,7 +75,7 @@ export const knowledgeBaseClient = {
       url: `/projects/${projectID}/knowledge-base/integrations/${integrationType}/auth-redirect-url`,
       params: { redirectURL },
     });
-    return apiV3.fetch.get<string>(url).then(({ data }) => data);
+    return apiV3.fetch.get<{ data: { url: string } }>(url).then(({ data }) => data);
   },
 
   getIntegrationAuthReconnectUrl: (projectID: string, integrationType: string, redirectURL: string) => {
@@ -84,7 +84,7 @@ export const knowledgeBaseClient = {
       url: `/projects/${projectID}/knowledge-base/integrations/${integrationType}/auth-reconnect-redirect-url`,
       params: { redirectURL },
     });
-    return apiV3.fetch.get<string>(url).then(({ data }) => data);
+    return apiV3.fetch.get<{ data: { url: string } }>(url).then(({ data }) => data);
   },
 
   getIntegrationFilters: (projectID: string, integrationType: string) =>

@@ -24,6 +24,10 @@ export const DocumentNameURL: React.FC<IDocumentNameURL> = ({ data, search }) =>
       />
     )}
   >
-    {() => <Text breakWord>{data.url}</Text>}
+    {() => (
+      <Text variant="caption" breakWord>
+        {data.url}
+      </Text>
+    )}
   </Tooltip.Overflow>
 );

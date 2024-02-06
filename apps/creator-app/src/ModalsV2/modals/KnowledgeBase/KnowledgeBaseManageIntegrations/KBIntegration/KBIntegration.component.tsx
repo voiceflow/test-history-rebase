@@ -1,6 +1,6 @@
 /* eslint-disable promise/always-return */
 import { Utils } from '@voiceflow/common';
-import { Box, Divider, DotSeparator, Icon, Menu, MenuItem, notify, Popper, SquareButton, Text, Tokens } from '@voiceflow/ui-next';
+import { Box, Divider, DotSeparator, Icon, Menu, MenuItem, notify, Popper, SquareButton, Text, Tokens, Tooltip } from '@voiceflow/ui-next';
 import dayjs from 'dayjs';
 import React from 'react';
 

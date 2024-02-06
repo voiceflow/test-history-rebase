@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.266.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.265.0...@voiceflow/realtime@1.266.0) (2024-02-06)
+
+### Features
+
+* extremely fast data fetching pattern [bugfix] (CT-000) ([#7739](https://github.com/voiceflow/creator-app/issues/7739)) ([ba29e83](https://github.com/voiceflow/creator-app/commit/ba29e83c14a7637546e8984916317bdb85a20995))
+
 # [1.265.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.264.0...@voiceflow/realtime@1.265.0) (2024-02-02)
 
 ### Features

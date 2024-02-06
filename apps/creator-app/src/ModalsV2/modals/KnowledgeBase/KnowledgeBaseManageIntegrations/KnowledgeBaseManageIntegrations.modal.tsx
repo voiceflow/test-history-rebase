@@ -43,7 +43,7 @@ export const KBManageIntegrations = manager.create('KBManageIntegrations', () =>
             <Modal.Header title="Manage integrations" onClose={api.onClose} />
 
             <Box py={20} pl={24} direction="column" gap={16}>
-              {integrations.map(({ id, type, creatorName, createdAt }, index) => {
+              {integrations.map(({ id, type, createdAt, creatorID }, index) => {
                 const platform = INTEGRATION_PLATFORMS_MAPPER[type];
                 return (
                   <KBIntegration
@@ -51,7 +51,7 @@ export const KBManageIntegrations = manager.create('KBManageIntegrations', () =>
                     type={type}
                     platform={platform.label}
                     icon={platform.icon}
-                    name={creatorName}
+                    creatorID={creatorID}
                     date={createdAt}
                     border={index !== 0}
                     onReconnect={() => setScreen('reconnect')}
@@ -66,7 +66,13 @@ export const KBManageIntegrations = manager.create('KBManageIntegrations', () =>
           </Switch.Pane>
 
           <Switch.Pane value="reconnect">
-            <KBImportIntegrationWaiting onContinue={() => setScreen('integrations')} onClose={api.onClose} disabled={closePrevented} />
+            <KBImportIntegrationWaiting
+              onContinue={() => setScreen('integrations')}
+              onFail={() => setScreen('integrations')}
+              reconnect
+              onClose={api.onClose}
+              disabled={closePrevented}
+            />
           </Switch.Pane>
         </Switch>
       </Scroll>

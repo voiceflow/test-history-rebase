@@ -5,15 +5,18 @@ import dayjs from 'dayjs';
 import React from 'react';
 
 import { Designer } from '@/ducks';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useConfirmV2Modal } from '@/hooks/modal.hook';
-import { useDispatch } from '@/hooks/store.hook';
+import { useDispatch, useSelector } from '@/hooks/store.hook';
 
 import { IKBIntegration } from './KBIntegration.interface';
 import { formatFromNow } from './KBIntegration.utils';
 
 const { colors } = Tokens;
 
-export const KBIntegration: React.FC<IKBIntegration> = ({ name, icon, platform, date, border, type, onReconnect }) => {
+export const KBIntegration: React.FC<IKBIntegration> = ({ creatorID, icon, platform, date, border, type, onReconnect }) => {
+  const member = useSelector(WorkspaceV2.active.memberByIDSelector, { creatorID });
+
   const deleteIntegration = useDispatch(Designer.KnowledgeBase.Integration.effect.deleteOne);
 
   const fromNow = dayjs(date).fromNow();
@@ -59,13 +62,13 @@ export const KBIntegration: React.FC<IKBIntegration> = ({ name, icon, platform, 
               <Tooltip.Overflow
                 referenceElement={({ ref, onOpen, onClose }) => (
                   <Text ref={ref} onMouseEnter={onOpen} onMouseLeave={onClose} overflow variant="caption" color={colors.neutralDark.neutralsDark100}>
-                    {name}
+                    {member?.name || 'Unknown'}
                   </Text>
                 )}
               >
                 {() => (
                   <Text variant="caption" breakWord>
-                    {name}
+                    {member?.name || 'Unknown'}
                   </Text>
                 )}
               </Tooltip.Overflow>

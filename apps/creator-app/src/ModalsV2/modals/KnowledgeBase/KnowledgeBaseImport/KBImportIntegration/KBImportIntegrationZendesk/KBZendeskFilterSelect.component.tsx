@@ -49,7 +49,7 @@ export const KBZendeskFilterSelect = <T extends ZendeskFilterBase>({
             placement="left-start"
             referenceElement={({ onOpen, onClose, ref }) => (
               <Box ref={ref} onMouseEnter={onOpen} onMouseLeave={onClose} direction="column">
-                <Dropdown value={value.join(', ')} label={label} disabled={disabled} placeholder={placeholder}>
+                <Dropdown value={value.map((item) => item.name).join(', ')} label={label} disabled={disabled} placeholder={placeholder}>
                   {() => {
                     return (
                       <Menu
@@ -98,7 +98,7 @@ export const KBZendeskFilterSelect = <T extends ZendeskFilterBase>({
           </Tooltip>
         ) : (
           <>
-            <Dropdown value={value.join(', ')} label={label} disabled={disabled} placeholder={placeholder}>
+            <Dropdown value={value.map((item) => item.name).join(', ')} label={label} disabled={disabled} placeholder={placeholder}>
               {({ onClose }) => {
                 return (
                   <Menu
@@ -115,7 +115,7 @@ export const KBZendeskFilterSelect = <T extends ZendeskFilterBase>({
                     }
                   >
                     {options
-                      .filter((option) => option.name.includes(search.toLowerCase()))
+                      .filter((option) => !search || option.name.toLowerCase().includes(search.toLowerCase()))
                       .map((option, index) => {
                         return (
                           <MenuItem

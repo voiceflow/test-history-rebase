@@ -30,7 +30,12 @@ export const KBImportIntegration = manager.create('KBImportIntegration', () => (
         </Switch.Pane>
 
         <Switch.Pane value="authenticate">
-          <KBImportIntegrationWaiting onContinue={() => setScreen('zendesk')} onClose={api.onClose} disabled={closePrevented} />
+          <KBImportIntegrationWaiting
+            onContinue={() => setScreen('zendesk')}
+            onFail={() => setScreen('platform')}
+            onClose={api.onClose}
+            disabled={closePrevented}
+          />
         </Switch.Pane>
 
         <Switch.Pane value="zendesk">

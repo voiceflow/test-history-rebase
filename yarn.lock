@@ -10286,7 +10286,7 @@ __metadata:
       optional: true
     undici:
       optional: true
-  checksum: 01898acf837992268d331d49894f13812afc8ae361a6e9190a426b77c6d29c40e1ad4ee3153839cc8f3f980e3081ee167f380d74648149d8a132a3cae6515524
+  checksum: d40c1d35ec209efe316d7661c23c9e16168a45419b9753c002b46bacd9ee9aab35d02f98e9c744d3044df607d22f100da1f9a3efbe8cc602eaa032f97d9247bc
   languageName: node
   linkType: hard
 

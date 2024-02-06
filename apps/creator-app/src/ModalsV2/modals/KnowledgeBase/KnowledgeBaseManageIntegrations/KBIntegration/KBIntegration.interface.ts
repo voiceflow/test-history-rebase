@@ -2,7 +2,7 @@ import { BaseModels } from '@voiceflow/base-types';
 import type { IconName } from '@voiceflow/icons';
 
 export interface IKBIntegration {
-  name: string;
+  creatorID: number;
   platform: string;
   date: string;
   icon: IconName;

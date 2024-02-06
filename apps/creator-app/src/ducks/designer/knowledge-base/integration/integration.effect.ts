@@ -1,5 +1,7 @@
 import { knowledgeBaseClient } from '@/client/knowledge-base';
+import { CREATOR_APP_ENDPOINT } from '@/config';
 import * as Errors from '@/config/errors';
+import { Path } from '@/config/routes';
 import * as Session from '@/ducks/session';
 import type { KnowledgeBaseIntegration, ZendeskCountFilters, ZendeskFilters, ZendeskFilterUserSegment } from '@/models/KnowledgeBase.model';
 import type { Thunk } from '@/store/types';
@@ -57,7 +59,23 @@ export const getIntegrationAuthUrl =
 
     Errors.assertProjectID(projectID);
 
-    return knowledgeBaseClient.getIntegrationAuthUrl(projectID, integrationType);
+    const redirectURL = `${CREATOR_APP_ENDPOINT}${Path.ZENDESK_CALLBACK}`;
+
+    return knowledgeBaseClient.getIntegrationAuthUrl(projectID, integrationType, redirectURL);
+  };
+
+export const getIntegrationAuthReconnectUrl =
+  (integrationType: string): Thunk<string> =>
+  async (_, getState) => {
+    const state = getState();
+
+    const projectID = Session.activeProjectIDSelector(state);
+
+    Errors.assertProjectID(projectID);
+
+    const redirectURL = `${CREATOR_APP_ENDPOINT}${Path.ZENDESK_CALLBACK}`;
+
+    return knowledgeBaseClient.getIntegrationAuthReconnectUrl(projectID, integrationType, redirectURL);
   };
 
 export const getIntegrationFilters =
@@ -92,4 +110,14 @@ export const getIntegrationDocumentCount =
     Errors.assertProjectID(projectID);
 
     return knowledgeBaseClient.getIntegrationDocumentCount(projectID, integrationType, filters);
+  };
+
+export const createOne =
+  (integrationType: string, code: string, authState: string): Thunk<void> =>
+  async (dispatch, _) => {
+    const redirectUrl = `${CREATOR_APP_ENDPOINT}${Path.ZENDESK_CALLBACK}`;
+
+    await knowledgeBaseClient.createOneIntegration(integrationType, { code, state: authState, redirectUrl });
+
+    dispatch(getAll());
   };

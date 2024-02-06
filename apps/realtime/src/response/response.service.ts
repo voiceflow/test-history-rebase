@@ -10,6 +10,7 @@ import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
 import type {
   AnyResponseAttachmentEntity,
   AnyResponseVariantEntity,
+  AssistantEntity,
   ORMMutateOptions,
   PKOrEntity,
   PromptEntity,
@@ -56,12 +57,28 @@ export class ResponseService extends CMSTabularService<ResponseORM> {
 
   /* Find */
 
-  async findManyWithSubResourcesByEnvironment(assistantID: string, environmentID: string) {
+  async findManyWithSubResourcesByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
     const [responses, responseVariants, responseAttachments, responseDiscriminators] = await Promise.all([
-      this.findManyByEnvironment(assistantID, environmentID),
-      this.responseVariant.findManyByEnvironment(assistantID, environmentID),
-      this.responseAttachment.findManyByEnvironment(assistantID, environmentID),
-      this.responseDiscriminator.findManyByEnvironment(assistantID, environmentID),
+      this.findManyByEnvironment(assistant, environmentID),
+      this.responseVariant.findManyByEnvironment(assistant, environmentID),
+      this.responseAttachment.findManyByEnvironment(assistant, environmentID),
+      this.responseDiscriminator.findManyByEnvironment(assistant, environmentID),
+    ]);
+
+    return {
+      responses,
+      responseVariants,
+      responseAttachments,
+      responseDiscriminators,
+    };
+  }
+
+  async findManyWithSubResourcesJSONByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+    const [responses, responseVariants, responseAttachments, responseDiscriminators] = await Promise.all([
+      this.orm.findAllJSON({ assistant, environmentID }),
+      this.responseVariant.findManyJSONByEnvironment(assistant, environmentID),
+      this.responseAttachment.findManyJSONByEnvironment(assistant, environmentID),
+      this.responseDiscriminator.findManyJSONByEnvironment(assistant, environmentID),
     ]);
 
     return {
@@ -88,26 +105,42 @@ export class ResponseService extends CMSTabularService<ResponseORM> {
     },
     { backup }: { backup?: boolean } = {}
   ): ResponseExportImportDataDTO {
+    const json = {
+      responses: this.entitySerializer.iterable(responses),
+      responseVariants: this.entitySerializer.iterable(responseVariants),
+      responseAttachments: this.entitySerializer.iterable(responseAttachments),
+      responseDiscriminators: this.entitySerializer.iterable(responseDiscriminators),
+    };
+
     if (backup) {
-      return {
-        responses: this.entitySerializer.iterable(responses),
-        responseVariants: this.entitySerializer.iterable(responseVariants),
-        responseAttachments: this.entitySerializer.iterable(responseAttachments),
-        responseDiscriminators: this.entitySerializer.iterable(responseDiscriminators),
-      };
+      return json;
     }
 
+    return this.prepareExportJSONData(json);
+  }
+
+  prepareExportJSONData({
+    responses,
+    responseVariants,
+    responseAttachments,
+    responseDiscriminators,
+  }: {
+    responses: ToJSONWithForeignKeys<ResponseEntity>[];
+    responseVariants: ToJSONWithForeignKeys<AnyResponseVariantEntity>[];
+    responseAttachments: ToJSONWithForeignKeys<AnyResponseAttachmentEntity>[];
+    responseDiscriminators: ToJSONWithForeignKeys<ResponseDiscriminatorEntity>[];
+  }): ResponseExportImportDataDTO {
     return {
-      responses: this.entitySerializer.iterable(responses, { omit: ['assistantID', 'environmentID'] }),
-      responseVariants: this.entitySerializer.iterable(responseVariants, {
-        omit: ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'],
-      }) as ResponseExportImportDataDTO['responseVariants'],
-      responseAttachments: this.entitySerializer.iterable(responseAttachments, {
-        omit: ['assistantID', 'environmentID'],
-      }) as ResponseExportImportDataDTO['responseAttachments'],
-      responseDiscriminators: this.entitySerializer.iterable(responseDiscriminators, {
-        omit: ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'],
-      }),
+      responses: responses.map((item) => Utils.object.omit(item, ['assistantID', 'environmentID'])),
+      responseVariants: responseVariants.map((item) =>
+        Utils.object.omit(item, ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'])
+      ) as ResponseExportImportDataDTO['responseVariants'],
+      responseAttachments: responseAttachments.map((item) =>
+        Utils.object.omit(item, ['assistantID', 'environmentID'])
+      ) as ResponseExportImportDataDTO['responseAttachments'],
+      responseDiscriminators: responseDiscriminators.map((item) =>
+        Utils.object.omit(item, ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'])
+      ),
     };
   }
 

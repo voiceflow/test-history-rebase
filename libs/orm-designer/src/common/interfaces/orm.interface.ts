@@ -1,9 +1,9 @@
 import type { FilterQuery, FindOptions, Loaded, Primary } from '@mikro-orm/core';
 
-import type { ORMMutateOptions, PKEntity, Ref } from '@/types';
+import type { Constructor, ORMMutateOptions, PKEntity, Ref } from '@/types';
 
 export interface ORM<Entity extends PKEntity, ConstructorParam extends object> {
-  _entity?: Entity;
+  _Entity: Constructor<[data: ConstructorParam], Entity>;
 
   find<Hint extends string = never>(
     where: FilterQuery<Entity>,

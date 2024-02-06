@@ -2,9 +2,10 @@ import type { EntityManager } from '@mikro-orm/core';
 import { Primary } from '@mikro-orm/core';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
+import { Utils } from '@voiceflow/common';
 import { Variable } from '@voiceflow/dtos';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
-import type { ORMMutateOptions, ToJSONWithForeignKeys, VariableEntity } from '@voiceflow/orm-designer';
+import type { AssistantEntity, ORMMutateOptions, PKOrEntity, ToJSONWithForeignKeys, VariableEntity } from '@voiceflow/orm-designer';
 import { DatabaseTarget, VariableORM } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
@@ -32,8 +33,16 @@ export class VariableService extends CMSTabularService<VariableORM> {
 
   /* Find */
 
-  async findManyWithSubResourcesByEnvironment(assistantID: string, environmentID: string) {
-    const [variables] = await Promise.all([this.findManyByEnvironment(assistantID, environmentID)]);
+  async findManyWithSubResourcesByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+    const variables = await this.findManyByEnvironment(assistant, environmentID);
+
+    return {
+      variables,
+    };
+  }
+
+  async findManyWithSubResourcesJSONByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+    const variables = await this.orm.findAllJSON({ assistant, environmentID });
 
     return {
       variables,
@@ -43,14 +52,20 @@ export class VariableService extends CMSTabularService<VariableORM> {
   /* Export */
 
   prepareExportData({ variables }: { variables: VariableEntity[] }, { backup }: { backup?: boolean } = {}): VariableExportImportDataDTO {
+    const json = {
+      variables: this.entitySerializer.iterable(variables),
+    };
+
     if (backup) {
-      return {
-        variables: this.entitySerializer.iterable(variables),
-      };
+      return json;
     }
 
+    return this.prepareExportJSONData(json);
+  }
+
+  prepareExportJSONData({ variables }: { variables: ToJSONWithForeignKeys<VariableEntity>[] }): VariableExportImportDataDTO {
     return {
-      variables: this.entitySerializer.iterable(variables, { omit: ['assistantID', 'environmentID'] }),
+      variables: variables.map((item) => Utils.object.omit(item, ['assistantID', 'environmentID'])),
     };
   }
 

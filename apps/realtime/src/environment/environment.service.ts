@@ -34,6 +34,7 @@ import {
   ResponseDiscriminatorEntity,
   ResponseEntity,
   ToJSON,
+  ToJSONWithForeignKeys,
   UtteranceEntity,
   VariableEntity,
   VersionEntity,
@@ -289,6 +290,24 @@ export class EnvironmentService {
     };
   }
 
+  public prepareExportCMSJSONData(
+    data: { [Key in keyof EnvironmentCMSEntities]: ToJSONWithForeignKeys<EnvironmentCMSEntities[Key][number]>[] },
+    { userID, workspaceID }: { userID: number; workspaceID: number }
+  ) {
+    const cmsFunctionsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_FUNCTIONS, { userID, workspaceID });
+    const cmsVariablesEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_VARIABLES, { userID, workspaceID });
+
+    return {
+      ...this.entity.prepareExportJSONData(data),
+      ...this.intent.prepareExportJSONData(data),
+      ...this.response.prepareExportJSONData(data),
+      ...this.attachment.prepareExportJSONData(data),
+
+      ...(cmsVariablesEnabled && this.variable.prepareExportJSONData(data)),
+      ...(cmsFunctionsEnabled && this.functionService.prepareExportJSONData(data)),
+    };
+  }
+
   public prepareExportData(
     data: {
       cms: EnvironmentCMSEntities | null;
@@ -483,6 +502,42 @@ export class EnvironmentService {
       this.response.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
       this.attachment.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
       this.functionService.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
+    ]);
+
+    return {
+      intents,
+      entities,
+      functions,
+      responses,
+      variables,
+      utterances,
+      attachments,
+      cardButtons,
+      functionPaths,
+      entityVariants,
+      requiredEntities,
+      responseVariants,
+      functionVariables,
+      responseAttachments,
+      responseDiscriminators,
+    };
+  }
+
+  async findOneCMSDataJSON(assistantID: string, environmentID: string) {
+    const [
+      { entities, entityVariants },
+      { intents, utterances, requiredEntities },
+      { variables },
+      { responses, responseVariants, responseAttachments, responseDiscriminators },
+      { attachments, cardButtons },
+      { functions, functionPaths, functionVariables },
+    ] = await Promise.all([
+      this.entity.findManyWithSubResourcesJSONByEnvironment(assistantID, environmentID),
+      this.intent.findManyWithSubResourcesJSONByEnvironment(assistantID, environmentID),
+      this.variable.findManyWithSubResourcesJSONByEnvironment(assistantID, environmentID),
+      this.response.findManyWithSubResourcesJSONByEnvironment(assistantID, environmentID),
+      this.attachment.findManyWithSubResourcesJSONByEnvironment(assistantID, environmentID),
+      this.functionService.findManyWithSubResourcesJSONByEnvironment(assistantID, environmentID),
     ]);
 
     return {

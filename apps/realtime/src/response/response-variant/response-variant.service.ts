@@ -161,6 +161,10 @@ export class ResponseVariantService {
     return this.orm.findManyByEnvironment(assistant, environmentID);
   }
 
+  findManyJSONByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+    return this.orm.findAllJSON({ assistant, environmentID });
+  }
+
   findManyByDiscriminators(discriminators: PKOrEntity<ResponseDiscriminatorEntity>[]): Promise<AnyResponseVariantEntity[]> {
     return this.orm.findManyByDiscriminators(discriminators);
   }

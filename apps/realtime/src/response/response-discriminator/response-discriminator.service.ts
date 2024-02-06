@@ -54,6 +54,10 @@ export class ResponseDiscriminatorService extends CMSObjectService<ResponseDiscr
     return this.orm.findManyByEnvironment(assistant, environmentID);
   }
 
+  findManyJSONByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+    return this.orm.findAllJSON({ assistant, environmentID });
+  }
+
   /* Create */
 
   async createManyAndSync(userID: number, data: CreateOneForUserData<ResponseDiscriminatorORM>[]) {

@@ -19,7 +19,7 @@ export const MongoORM = <Entity extends MongoEntity, ConstructorParam extends ob
   @Injectable()
   @Module({})
   class MongoORM implements ORM<Entity, ConstructorParam> {
-    _entity?: Entity;
+    _Entity = Entity;
 
     static register(): DynamicModule {
       const ormModule = MikroOrmModule.forFeature([Entity], DatabaseTarget.MONGO);

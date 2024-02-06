@@ -38,7 +38,7 @@ export interface ORMDeleteOptions extends ORMMutateOptions {}
 
 export type ORMParam<T> = T extends ORM<any, infer Param> ? Param : never;
 
-export type ORMEntity<T> = T extends { _entity?: infer Entity } ? Entity : never;
+export type ORMEntity<T> = T extends { _Entity: Constructor<any, infer Entity> } ? Entity : never;
 
 export type RelationKeys<T> = keyof {
   [K in keyof T as Exclude<T[K], null | undefined> extends Relation<EntityPKValue> ? K : never]: true;

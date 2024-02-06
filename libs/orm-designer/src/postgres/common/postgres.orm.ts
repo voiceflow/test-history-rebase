@@ -1,4 +1,13 @@
-import type { FilterQuery, FindOneOptions, FindOneOrFailOptions, FindOptions, Loaded, Primary } from '@mikro-orm/core';
+import {
+  type FilterQuery,
+  type FindOneOptions,
+  type FindOneOrFailOptions,
+  type FindOptions,
+  type Loaded,
+  type Primary,
+  type QBFilterQuery,
+  ReferenceType,
+} from '@mikro-orm/core';
 import { getEntityManagerToken, MikroOrmModule } from '@mikro-orm/nestjs';
 import type { EntityManager } from '@mikro-orm/postgresql';
 import type { DynamicModule } from '@nestjs/common';
@@ -7,13 +16,13 @@ import { Inject } from '@nestjs/common';
 import type { ORM } from '@/common';
 import { DatabaseTarget } from '@/common/enums/database-target.enum';
 import type { BaseEntity } from '@/common/interfaces/base-entity.interface';
-import type { Constructor, ORMMutateOptions, Ref } from '@/types';
+import type { Constructor, ORMMutateOptions, Ref, ToJSONWithForeignKeys } from '@/types';
 
 export const PostgresORM = <Entity extends BaseEntity, ConstructorParam extends object>(
   Entity: Constructor<[data: ConstructorParam], Entity>
 ) => {
   class PostgresORM implements ORM<Entity, ConstructorParam> {
-    _entity?: Entity;
+    _Entity = Entity;
 
     static register(): DynamicModule {
       const ormModule = MikroOrmModule.forFeature([Entity], DatabaseTarget.POSTGRES);
@@ -60,6 +69,29 @@ export const PostgresORM = <Entity extends BaseEntity, ConstructorParam extends 
         ids.map((item) => PostgresORM.primaryKeyToFilterQuery(item)),
         options
       );
+    }
+
+    async findAllJSON(where: QBFilterQuery<Entity>): Promise<ToJSONWithForeignKeys<Entity>[]> {
+      const res = (await this.em.qb(this._Entity.name).select('*').where(where).getKnexQuery()) as any[];
+
+      const meta = this.em.getMetadata().get(this._Entity.name);
+      const dbFieldProperties = Object.fromEntries(
+        Object.values(meta.properties)
+          .filter((property) => property.fieldNames)
+          .map((property) => [property.fieldNames[0], property])
+      );
+
+      const arr = res.map((item) =>
+        Object.fromEntries(
+          Object.entries(item).map((entry) => {
+            const property = dbFieldProperties[entry[0]];
+
+            return [`${property.name}${property.reference !== ReferenceType.SCALAR ? 'ID' : ''}`, entry[1]];
+          })
+        )
+      );
+
+      return arr as any[];
     }
 
     findOneOrFail<Hint extends string = never>(id: Primary<Entity>, options?: FindOneOrFailOptions<Entity, Hint>) {

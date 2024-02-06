@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Button, SquareButton, Table, toast, Tooltip } from '@voiceflow/ui-next';
+import { Box, Button, notify, SquareButton, Table, Tooltip } from '@voiceflow/ui-next';
 import { useAtomValue, useSetAtom } from 'jotai';
 import pluralize from 'pluralize';
 import React from 'react';
@@ -53,7 +53,7 @@ export const CMSKnowledgeBaseTableNavigation: React.FC = () => {
     await deleteMany(Array.from(selectedIDs));
     setSelectedIDs(new Set());
 
-    toast.info(`${pluralize('data source', numSelected, true)} deleted`, { showIcon: false });
+    notify.short.info(`${pluralize('data source', numSelected, true)} deleted`, { showIcon: false });
   };
 
   const onDataSourcesDelete = () => {

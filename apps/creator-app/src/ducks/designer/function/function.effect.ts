@@ -1,7 +1,7 @@
 import type { Function as FunctionType } from '@voiceflow/dtos';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 import { DataTypes, download } from '@voiceflow/ui';
-import { toast } from '@voiceflow/ui-next';
+import { notify } from '@voiceflow/ui-next';
 
 import { designerClient } from '@/client/designer';
 import { testFunction } from '@/client/generalRuntime';
@@ -46,7 +46,7 @@ export const duplicateOne =
     try {
       const duplicated = await dispatch(waitAsync(Actions.Function.DuplicateOne, { context, data: { functionID } }));
 
-      toast.success('Duplicated');
+      notify.short.success('Duplicated');
 
       dispatch(Tracking.trackCMSFunctionDuplicated({ functionID }));
 
@@ -108,7 +108,7 @@ export const exportMany =
 
       download(`${fileName}_${dateNow}.json`, JSON.stringify(result), DataTypes.JSON);
     } catch {
-      toast.error('Something went wrong. Please try again.');
+      notify.short.error('Something went wrong. Please try again.');
       dispatch(Tracking.trackCMSFunctionsError({ ErrorType: 'Export' }));
     }
   };
@@ -127,13 +127,13 @@ export const importMany =
       });
 
       if (!functions.length) {
-        toast.error('Failed to import');
+        notify.short.error('Failed to import');
         dispatch(Tracking.trackCMSFunctionsError({ ErrorType: 'Import' }));
 
         return;
       }
 
-      toast.success('Imported');
+      notify.short.success('Imported');
 
       const trackingName = functions.length === 1 ? { function_name: functions[0].name } : { function_names: functions.map((func) => func.name) };
 
@@ -141,7 +141,7 @@ export const importMany =
         dispatch(Tracking.trackCMSFunctionsImported({ count: functions.length, ...trackingName }));
       }
     } catch {
-      toast.error('Failed to import');
+      notify.short.error('Failed to import');
       dispatch(Tracking.trackCMSFunctionsError({ ErrorType: 'Import' }));
     }
   };

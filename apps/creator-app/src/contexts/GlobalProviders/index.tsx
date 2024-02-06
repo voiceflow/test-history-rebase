@@ -1,6 +1,6 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { Upload } from '@voiceflow/ui';
-import { ToastContainer } from '@voiceflow/ui-next';
+import { NotifyContainer } from '@voiceflow/ui-next';
 import { ConnectedRouter } from 'connected-react-router';
 import { History } from 'history';
 import React from 'react';
@@ -61,7 +61,7 @@ const GlobalProviders: React.FC<GlobalProvidersProps> = ({ history, store, persi
                                         <PlatformProvider>
                                           <ModalsV2.Provider>
                                             <Upload.Provider client={client.upload} onError={datadogRum.addError}>
-                                              <ToastContainer />
+                                              <NotifyContainer />
                                               <RealtimeStatus />
                                               <Modal.Placeholder />
 

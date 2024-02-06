@@ -1,6 +1,6 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import { Divider, MenuItem, toast } from '@voiceflow/ui-next';
+import { Divider, MenuItem, notify } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { Designer } from '@/ducks';
@@ -24,7 +24,7 @@ export const CMSKnowledgeBaseRowActions: React.FC<ICMSKnowledgeBaseRowActions> =
   const onConfirmDelete = async () => {
     await deleteOne(id);
 
-    toast.info(`1 data source deleted`, { showIcon: false });
+    notify.short.info(`1 data source deleted`, { showIcon: false });
   };
 
   const onDelete = () => {
@@ -39,7 +39,7 @@ export const CMSKnowledgeBaseRowActions: React.FC<ICMSKnowledgeBaseRowActions> =
 
   const onCopyLink = () => {
     clipboardCopy(`${window.location.origin}${getCMSResourcePath(id).path}`);
-    toast.success(`Copied`);
+    notify.short.success(`Copied`);
     onClose();
   };
 

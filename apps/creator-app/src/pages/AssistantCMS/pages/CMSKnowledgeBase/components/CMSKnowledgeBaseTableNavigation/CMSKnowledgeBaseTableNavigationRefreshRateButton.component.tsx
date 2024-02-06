@@ -1,6 +1,6 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import { Box, Button, Menu, Popper, Table, toast, Tooltip } from '@voiceflow/ui-next';
+import { Box, Button, Menu, notify, Popper, Table, Tooltip } from '@voiceflow/ui-next';
 import { useSetAtom } from 'jotai';
 import React from 'react';
 
@@ -26,7 +26,7 @@ export const CMSKnowledgeBaseTableNavigationRefreshRateButton: React.FC<{
     const selectedIDs = getAtomValue(tableState.selectedIDs);
     setSelectedIDs(new Set());
     await patchManyRefreshRate(Array.from(selectedIDs), refreshRate);
-    toast.success(`Updated`, { delay: 2000, isClosable: false });
+    notify.short.success(`Updated`, { delay: 2000, isClosable: false });
   };
 
   if (upgradeTooltip) {

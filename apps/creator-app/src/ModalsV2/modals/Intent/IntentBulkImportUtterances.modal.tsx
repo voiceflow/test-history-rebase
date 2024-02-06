@@ -1,5 +1,5 @@
 import { Utterance } from '@voiceflow/dtos';
-import { InputFormControl, Scroll, TextArea, toast } from '@voiceflow/ui-next';
+import { InputFormControl, notify, Scroll, TextArea } from '@voiceflow/ui-next';
 import pluralize from 'pluralize';
 import React, { useMemo } from 'react';
 
@@ -49,11 +49,11 @@ export const IntentBulkImportUtterancesModal = modalsManager.create<IntentBulkIm
           api.enableClose();
           api.close();
 
-          toast.success(`${pluralize('utterance', lines.length, true)} imported`);
+          notify.short.success(`${pluralize('utterance', lines.length, true)} imported`);
         } catch (err) {
           api.enableClose();
 
-          toast.error(`Failed to import ${pluralize('utterance', lines.length)}`);
+          notify.short.error(`Failed to import ${pluralize('utterance', lines.length)}`);
         }
       };
 

@@ -1,6 +1,6 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import { Box, Button, Popper, Scroll, Text, toast } from '@voiceflow/ui-next';
+import { Box, Button, notify, Popper, Scroll, Text } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { Modal } from '@/components/Modal';
@@ -66,12 +66,12 @@ export const KnowledgeBaseSettings = manager.create('KnowledgeBaseSettingsV2', (
       //   trackingEvents.trackAiKnowledgeBaseSettingsModified({ Mod_Type: 'Instruction', LLM_Updated: model });
       // }
 
-      toast.success('Saved');
+      notify.short.success('Saved');
 
       api.enableClose();
       api.close();
     } catch {
-      toast.error('Unable to save Knowledge Base settings');
+      notify.short.error('Unable to save Knowledge Base settings');
 
       api.enableClose();
     }
@@ -81,9 +81,9 @@ export const KnowledgeBaseSettings = manager.create('KnowledgeBaseSettingsV2', (
     try {
       await patchSettings(DEFAULT_SETTINGS);
 
-      toast.success('Restored to default');
+      notify.short.success('Restored to default');
     } catch {
-      toast.error('Unable to restore Knowledge Base settings');
+      notify.short.error('Unable to restore Knowledge Base settings');
     }
   };
 
@@ -92,7 +92,7 @@ export const KnowledgeBaseSettings = manager.create('KnowledgeBaseSettingsV2', (
       try {
         await getSettings();
       } catch {
-        toast.error('Unable to fetch latest knowledge base settings');
+        notify.short.error('Unable to fetch latest knowledge base settings');
       }
     })();
   }, []);

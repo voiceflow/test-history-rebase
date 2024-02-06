@@ -48,9 +48,7 @@ export const FunctionSelect = ({ onChange, functionID }: FunctionSelectProps) =>
               actionButtons={
                 search.hasItems && <ActionButtons firstButton={<ActionButtons.Button label="Create function" onClick={onCreateFunction} />} />
               }
-              searchSection={
-                <Search placeholder="Search" value={search.value} onValueChange={search.setValue} onSuffixIconClick={() => search.setValue('')} />
-              }
+              searchSection={<Search placeholder="Search" value={search.value} onValueChange={search.setValue} />}
               width={referenceRef.current?.clientWidth}
             >
               {search.hasItems ? (

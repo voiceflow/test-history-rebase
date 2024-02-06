@@ -1,4 +1,4 @@
-import { Divider, Scroll, Text, toast, Tooltip, useTooltipModifiers, Variable } from '@voiceflow/ui-next';
+import { Divider, notify, Scroll, Text, Tooltip, useTooltipModifiers, Variable } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { CMSFormName } from '@/components/CMS/CMSForm/CMSFormName/CMSFormName.component';
@@ -41,7 +41,7 @@ export const VariableEditModal = modalsManager.create<IVariableEditModal>(
 
         await deleteVariable();
 
-        toast.info('Deleted', { showIcon: false });
+        notify.short.info('Deleted', { showIcon: false });
       };
 
       const tooltipModifiers = useTooltipModifiers([{ name: 'offset', options: { offset: [0, 27] } }]);

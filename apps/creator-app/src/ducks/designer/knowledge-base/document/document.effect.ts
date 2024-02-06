@@ -1,6 +1,6 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 import { BaseModels } from '@voiceflow/base-types';
-import { toast } from '@voiceflow/ui-next';
+import { notify } from '@voiceflow/ui-next';
 import pluralize from 'pluralize';
 
 import { knowledgeBaseClient } from '@/client/knowledge-base';
@@ -123,7 +123,7 @@ export const loadAll = (): Thunk => async (dispatch) => {
   } catch (error) {
     dispatch(Actions.SetFetchStatus({ status: 'error' }));
     Tracking.trackAiKnowledgeBaseError({ ErrorType: 'Load' });
-    toast.error('Unable to fetch knowledge base');
+    notify.short.error('Unable to fetch knowledge base');
   }
 };
 
@@ -154,7 +154,7 @@ export const resyncMany =
         })
       );
     } catch {
-      toast.error('Failed to sync data source');
+      notify.short.error('Failed to sync data source');
     }
   };
 
@@ -179,7 +179,7 @@ export const retryOne =
 
       await knowledgeBaseClient.retryDocument(projectID, documentID);
     } catch {
-      toast.error('Failed to retry data source');
+      notify.short.error('Failed to retry data source');
     }
   };
 
@@ -207,7 +207,7 @@ const createManyFromFormData =
 
       Tracking.trackAiKnowledgeBaseError({ ErrorType: 'Import' });
 
-      toast.warning(`Couldn't import ${pluralize('data source', erroredCount, true)}`);
+      notify.short.warning(`Couldn't import ${pluralize('data source', erroredCount, true)}`);
     }
 
     if (documents.length) {
@@ -272,7 +272,7 @@ export const createManyFromData =
 
       Tracking.trackAiKnowledgeBaseError({ ErrorType: 'Import' });
 
-      toast.warning(`Couldn't import ${pluralize('data source', erroredCount, true)}`);
+      notify.short.warning(`Couldn't import ${pluralize('data source', erroredCount, true)}`);
     }
 
     if (documents.length) {
@@ -389,7 +389,7 @@ export const deleteMany =
     if (removed.length !== documentIDs.length) {
       const erroredCount = documentIDs.length - removed.length;
 
-      toast.warning(`${pluralize('data source', erroredCount, true)} could not be deleted`);
+      notify.short.warning(`${pluralize('data source', erroredCount, true)} could not be deleted`);
     }
   };
 

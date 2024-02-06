@@ -1,5 +1,5 @@
 import { BaseModels } from '@voiceflow/base-types';
-import { toast, useCreateConst } from '@voiceflow/ui-next';
+import { notify, useCreateConst } from '@voiceflow/ui-next';
 import { useEffect, useMemo, useRef } from 'react';
 
 import { Designer } from '@/ducks';
@@ -43,22 +43,22 @@ export const useKBDocumentSync = () => {
 
   useEffect(() => {
     if (processing) {
-      const toastID = toast.info('Syncing', { isLoading: true, autoClose: false, toastId: 'KB_SYNCING_ID' });
+      const toastID = notify.short.info('Syncing', { isLoading: true, autoClose: false, toastId: 'KB_SYNCING_ID' });
       syncingToastID.current = toastID;
     }
 
     if (!processing) {
       if (syncingToastID.current) {
-        toast.dismiss(syncingToastID.current);
+        notify.short.dismiss(syncingToastID.current);
         syncingToastID.current = null;
         showSyncedToast.current = false;
 
         const allDocumentsSucceed = getAllProcessingDocumentsSucceed();
 
         if (allDocumentsSucceed) {
-          toast.success('Synced');
+          notify.short.success('Synced');
         } else {
-          toast.info('All data sources processed', { showIcon: false });
+          notify.short.info('All data sources processed', { showIcon: false });
         }
       }
 

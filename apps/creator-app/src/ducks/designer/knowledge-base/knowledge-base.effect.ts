@@ -1,6 +1,6 @@
 import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { toast } from '@voiceflow/ui-next';
+import { notify } from '@voiceflow/ui-next';
 
 import api from '@/client/api';
 import { knowledgeBaseClient } from '@/client/knowledge-base';
@@ -52,7 +52,7 @@ export const patchSettings =
       Errors.assertProjectID(versionID);
 
       await api.fetch.patch<BaseModels.Project.KnowledgeBaseSettings>(`/versions/${versionID}/knowledge-base/settings`, patch).catch(() => {
-        toast.error('Unable to save Knowledge Base settings');
+        notify.short.error('Unable to save Knowledge Base settings');
       });
     } else {
       const projectID = Session.activeProjectIDSelector(state);

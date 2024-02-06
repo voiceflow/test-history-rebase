@@ -1,5 +1,5 @@
 import { UtteranceText } from '@voiceflow/dtos';
-import { Divider, Scroll, toast } from '@voiceflow/ui-next';
+import { Divider, notify, Scroll } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { CMSFormDescription } from '@/components/CMS/CMSForm/CMSFormDescription/CMSFormDescription.component';
@@ -51,7 +51,7 @@ export const IntentEditModal = modalsManager.create<IIntentEditModal>(
 
         await deleteIntent();
 
-        toast.info('Deleted', { showIcon: false });
+        notify.short.info('Deleted', { showIcon: false });
       };
 
       return (

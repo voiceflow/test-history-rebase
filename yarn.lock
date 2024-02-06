@@ -9304,9 +9304,9 @@ __metadata:
     "@voiceflow/sdk-logux-designer": "workspace:*"
     "@voiceflow/sdk-usage-analytics": 1.12.0
     "@voiceflow/slate-serializer": 1.6.0
-    "@voiceflow/style": ^1.6.0
+    "@voiceflow/style": 1.7.0
     "@voiceflow/ui": "workspace:*"
-    "@voiceflow/ui-next": "npm:@voiceflow/ui@2.160.0"
+    "@voiceflow/ui-next": "npm:@voiceflow/ui@2.166.0"
     "@voiceflow/utils-designer": "workspace:*"
     "@voiceflow/voiceflow-types": 3.26.39
     apl-viewhost-web: 2023.1.0-1
@@ -10511,9 +10511,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voiceflow/style@npm:^1.6.0":
-  version: 1.6.0
-  resolution: "@voiceflow/style@npm:1.6.0"
+"@voiceflow/style@npm:1.7.0":
+  version: 1.7.0
+  resolution: "@voiceflow/style@npm:1.7.0"
   dependencies:
     "@vanilla-extract/css": 1.13.0
     "@vanilla-extract/dynamic": 2.0.3
@@ -10522,7 +10522,7 @@ __metadata:
     type-fest: 3.13.1
   peerDependencies:
     react: ^18
-  checksum: e0b299e0213dd121299545fe9563adc2689d76d394e288fe5ba35e69297ac399fe8077ef4fe7f8601f25e82e5c0ebbff207ff8efa123c251126ebeffcac43453
+  checksum: 72d90fc6acb992c85f655b372bd0d640c89c7058fd7b19429e2906d368e76ff9c21d084faee4ea66a46b2af7e5f15b005f4f5c75fa8af59aeef9502e51902383
   languageName: node
   linkType: hard
 
@@ -10590,9 +10590,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voiceflow/ui-next@npm:@voiceflow/ui@2.160.0":
-  version: 2.160.0
-  resolution: "@voiceflow/ui@npm:2.160.0"
+"@voiceflow/ui-next@npm:@voiceflow/ui@2.166.0":
+  version: 2.166.0
+  resolution: "@voiceflow/ui@npm:2.166.0"
   dependencies:
     "@codemirror/autocomplete": 6.9.1
     "@codemirror/commands": 6.3.0
@@ -10616,6 +10616,7 @@ __metadata:
     react-collapsed: 4.0.2
     react-dismissable-layers: 0.3.2
     react-dropzone: 14.2.3
+    react-lottie-player: 1.5.6
     react-popper: 2.3.0
     react-slider: 2.0.4
     react-textarea-autosize: 8.5.0
@@ -10631,7 +10632,7 @@ __metadata:
     jotai-molecules: ^1
     react: ^18
     react-dom: ^18
-  checksum: 9ff75213634cd4c7b918e696c4d42873b25efb820864e1ef7834fe150c9616a61db4ad197786db85f4b6e661cbb6200a94afaec88e24d01ca30bc96b804013d4
+  checksum: 5ed2b30c661a4855330e403e4df58dc619c4480757bd884353d44c72e46d49816900b14e3369adc9137d12bd6660ccbc69634a7190c1d07faad7886e7fc87716
   languageName: node
   linkType: hard
 
@@ -22342,6 +22343,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lottie-web@npm:^5.7.6":
+  version: 5.12.2
+  resolution: "lottie-web@npm:5.12.2"
+  checksum: af5bc3bc405fd760de8b17a36158d5a8c3e8c586c711d0c63681ddf056b65bc6b54ea36b1fcad782fb02dbe12e696a40e0ba72daf41b8f10ab5b5d1113793636
+  languageName: node
+  linkType: hard
+
 "loupe@npm:^2.3.1, loupe@npm:^2.3.6":
   version: 2.3.6
   resolution: "loupe@npm:2.3.6"
@@ -27524,6 +27532,19 @@ __metadata:
   version: 3.0.4
   resolution: "react-lifecycles-compat@npm:3.0.4"
   checksum: a904b0fc0a8eeb15a148c9feb7bc17cec7ef96e71188280061fc340043fd6d8ee3ff233381f0e8f95c1cf926210b2c4a31f38182c8f35ac55057e453d6df204f
+  languageName: node
+  linkType: hard
+
+"react-lottie-player@npm:1.5.6":
+  version: 1.5.6
+  resolution: "react-lottie-player@npm:1.5.6"
+  dependencies:
+    fast-deep-equal: ^3.1.3
+    lottie-web: ^5.7.6
+    rfdc: ^1.3.0
+  peerDependencies:
+    react: ^16.0.0 || ^17.0.0 || ^18.0.0
+  checksum: cd4d8bc11e8e68a5ee9037824684727a1580e2dc19b94c5ab92c73b43d31f1465aa76e76c8c418ee422b79855096c3e9556cc70ce12b66e789894ee169e2acd5
   languageName: node
   linkType: hard
 

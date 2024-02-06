@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1386.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1385.1...@voiceflow/creator-app@1.1386.0) (2024-02-06)
+
+### Features
+
+* use new notify system (DX-1018) ([#7754](https://github.com/voiceflow/creator-app/issues/7754)) ([9761722](https://github.com/voiceflow/creator-app/commit/97617227461e94771419df527a2fe6503b702a6c))
+
 ## [1.1385.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1385.0...@voiceflow/creator-app@1.1385.1) (2024-02-06)
 
 **Note:** Version bump only for package @voiceflow/creator-app

@@ -1,0 +1,27 @@
+import { toast } from '@voiceflow/ui-next';
+import React from 'react';
+import { useLocation } from 'react-router-dom';
+
+import { Designer } from '@/ducks';
+import { useDispatch } from '@/hooks';
+import * as Query from '@/utils/query';
+
+export const ZendeskCallback: React.FC = () => {
+  const location = useLocation();
+
+  const postZendeskToken = useDispatch(Designer.KnowledgeBase.Integration.effect.createOne);
+
+  React.useEffect(() => {
+    const query = Query.parse(location.search);
+
+    if (query.code && query.state) {
+      postZendeskToken('zendesk', query.code, query.state);
+    } else if (query.error) {
+      toast.error(`Zendesk authentication failed: ${query.error}`);
+    } else {
+      toast.genericError();
+    }
+  }, []);
+
+  return null;
+};

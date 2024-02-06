@@ -24,22 +24,24 @@ import { KBZendeskFilterSelect } from './KBZendeskFilterSelect.component';
 export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> = ({ onClose, enableClose, disableClose, disabled }) => {
   const [refreshRate, setRefreshRate] = React.useState(BaseModels.Project.KnowledgeBaseDocumentRefreshRate.NEVER);
   const [filters, setFilters] = React.useState<ZendeskFilters>({});
+  const [numDataSources, setNumDataSources] = React.useState<number | null>(null);
+
   const [brands, setBrands] = React.useState<ZendeskFilterBrand[]>([]);
   const [locales, setLocales] = React.useState<ZendeskFilterLocale[]>([]);
   const [categories, setCategories] = React.useState<ZendeskFilterBase[]>([]);
   const [labels, setLabels] = React.useState<ZendeskFilterLabel[]>([]);
   const [userSegments, setUserSegments] = React.useState<ZendeskFilterUserSegment[]>([]);
-  const [numDataSources, setNumDataSources] = React.useState(140);
+
+  const [brandIdOptions, setBrandIdOptions] = React.useState<ZendeskFilterBrand[]>([]);
+  const [localeOptions, setLocaleOptions] = React.useState<ZendeskFilterLocale[]>([]);
+  const [categoryOptions, setCategoryOptions] = React.useState<ZendeskFilterBase[]>([]);
+  const [labelOptions, setLabelOptions] = React.useState<ZendeskFilterLabel[]>([]);
+  const [userSegmentOptions, setUserSegmentOptions] = React.useState<ZendeskFilterUserSegment[]>([]);
 
   const getDocumentCount = useDispatch(Designer.KnowledgeBase.Integration.effect.getIntegrationDocumentCount);
   const getFilters = useDispatch(Designer.KnowledgeBase.Integration.effect.getIntegrationFilters);
   const getUserSegments = useDispatch(Designer.KnowledgeBase.Integration.effect.getIntegrationUserSegments);
   const importIntegration = useDispatch(Designer.KnowledgeBase.Integration.effect.importIntegration);
-
-  let brandIdOptions = [] as ZendeskFilterBrand[];
-  let localeOptions = [] as ZendeskFilterLocale[];
-  let labelOptions = [] as ZendeskFilterLabel[];
-  const userSegmentOptions = [] as ZendeskFilterUserSegment[];
 
   const updateDocumentCount = async () => {
     disableClose();
@@ -51,7 +53,7 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
       userSegments,
     };
     const numDocs = await getDocumentCount('zendesk', filters);
-    setNumDataSources(numDocs);
+    setTimeout(() => setNumDataSources(numDocs), 2000);
     enableClose();
   };
 
@@ -62,22 +64,22 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
   const getDocumentFilters = async () => {
     const filters = await getFilters('zendesk');
     setFilters(filters);
-    brandIdOptions = filters.brands || [];
-    localeOptions = filters.locales || [];
-    labelOptions = filters.labels || [];
+    setBrandIdOptions(filters.brands || []);
+    setLocaleOptions(filters.locales || []);
+    setLabelOptions(filters.labels || []);
   };
 
   React.useEffect(() => {
     getDocumentFilters();
   }, []);
 
-  const categoryOptions = React.useMemo(
-    () => locales.flatMap((l) => filters?.categories?.[l.locale]).filter((item): item is ZendeskFilterBase => item !== undefined),
-    [filters, locales]
-  );
+  React.useEffect(() => {
+    const options = locales.flatMap((l) => filters?.categories?.[l.locale]).filter((item): item is ZendeskFilterBase => item !== undefined);
+    setCategoryOptions(options);
+  }, [filters, locales]);
 
   const getUserSegmentOptions = async () => {
-    setUserSegments(await getUserSegments());
+    setUserSegmentOptions(await getUserSegments());
   };
 
   React.useEffect(() => {

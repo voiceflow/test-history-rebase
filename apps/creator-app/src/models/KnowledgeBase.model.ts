@@ -20,9 +20,7 @@ export interface KnowledgeBaseDocument extends Omit<DBKnowledgeBaseDocument, 'st
 export interface DBKnowledgeBaseIntegration {
   type: BaseModels.Project.IntegrationTypes;
   state: string;
-  creatorID: string;
-  creatorName: string;
-  creatorEmail: string;
+  creatorID: number;
   createdAt: string;
 }
 
@@ -30,9 +28,7 @@ export interface KnowledgeBaseIntegration {
   id: string;
   type: BaseModels.Project.IntegrationTypes;
   state: string;
-  creatorID: string;
-  creatorName: string;
-  creatorEmail: string;
+  creatorID: number;
   createdAt: string;
 }
 

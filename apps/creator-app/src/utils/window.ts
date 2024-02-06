@@ -28,4 +28,11 @@ export const onOpenURLInANewTabFactory = (url: string) => (): void => openURLInA
  */
 export const onOpenInternalURLInANewTabFactory = (url: string) => (): void => openInternalURLInANewTab(url);
 
-export const openURLInANewWindow = (url: string): void => window.open(getValidHref(url), 'name', 'height=200,width=150')?.focus();
+export const openURLInANewPopupWindow = (url: string): Window | null => {
+  const width = 800;
+  const height = 600;
+  const left = window.screenX + (window.outerWidth - width) / 2;
+  const top = window.screenY + (window.outerHeight - height) / 2.5;
+
+  return window.open(getValidHref(url), 'popup', `width=${width},height=${height},left=${left},top=${top},popup=true,noopener=false`);
+};

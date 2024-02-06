@@ -1,40 +1,64 @@
+import { BaseModels } from '@voiceflow/base-types';
 import { Box, LoadingSpinner, notify, Scroll, Text, Tokens } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { Modal } from '@/components/Modal';
 import { Designer } from '@/ducks';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
-import { openURLInANewWindow } from '@/utils/window';
+import { openURLInANewPopupWindow } from '@/utils/window';
 
 import { IKBImportIntegrationWaiting } from './KBImportIntegrationWaiting.interface';
 
 const { colors } = Tokens;
 
-export const KBImportIntegrationWaiting: React.FC<IKBImportIntegrationWaiting> = ({ onContinue, onClose, disabled }) => {
-  // const getAuthUrl = useDispatch(Designer.KnowledgeBase.Integration.effect.getIntegrationAuthUrl);
+export const KBImportIntegrationWaiting: React.FC<IKBImportIntegrationWaiting> = ({ onContinue, onFail, onClose, disabled, reconnect }) => {
+  const getAuthUrl = useDispatch(Designer.KnowledgeBase.Integration.effect.getIntegrationAuthUrl);
+  const getAuthReconnectUrl = useDispatch(Designer.KnowledgeBase.Integration.effect.getIntegrationAuthReconnectUrl);
+
+  const [popupWindow, setPopupWindow] = React.useState<Window | null>(null);
 
   const integrations = useSelector(Designer.KnowledgeBase.Integration.selectors.all);
   const getAll = useDispatch(Designer.KnowledgeBase.Integration.effect.getAll);
 
   const onConnectZendesk = async () => {
-    const authUrl = 'https://www.voiceflow.com'; // await getAuthUrl('zendesk');
-    openURLInANewWindow(authUrl);
+    const authUrl = reconnect ? await getAuthReconnectUrl('zendesk') : await getAuthUrl('zendesk');
+
+    const popup = openURLInANewPopupWindow(authUrl);
+    setPopupWindow(popup);
+
+    setTimeout(() => onConnected(false), 300000);
   };
 
-  const onConnected = () => {
-    onContinue();
-    notify.short.success('Connected to Zendesk');
+  const onConnected = (success?: boolean) => {
+    popupWindow?.close();
+    if (success) onContinue();
+    else onFail();
   };
 
   React.useEffect(() => {
-    onConnectZendesk();
+    if (!popupWindow) return;
 
-    while (!integrations.length) {
-      setTimeout(getAll, 2000);
-    }
-    onConnected();
-  }, []);
-  // }, [getAuthUrl]);
+    const checkPopup = setInterval(() => {
+      const today = new Date();
+      const integrationCreatedAt = integrations.find((item) => item.type === BaseModels.Project.IntegrationTypes.ZENDESK)?.createdAt;
+
+      const createdWithFiveMinutes = integrationCreatedAt ? today.getTime() - new Date(integrationCreatedAt).getTime() > 5 * 60 * 1000 : false;
+
+      if (createdWithFiveMinutes) {
+        clearInterval(checkPopup);
+        onConnected(true);
+        notify.short.success('Connected to Zendesk');
+      } else if (!popupWindow || !popupWindow.closed) return;
+      else {
+        getAll();
+      }
+      clearInterval(checkPopup);
+    }, 2000);
+  }, [popupWindow]);
+
+  React.useEffect(() => {
+    onConnectZendesk();
+  }, [getAuthUrl]);
 
   return (
     <>

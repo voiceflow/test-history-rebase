@@ -17,6 +17,7 @@ export enum RootRoute {
   INVITE = 'invite',
   RUNTIME = 'runtime',
   SSO = 'sso',
+  INTEGRATIONS = 'integrations',
 }
 
 export enum LoginRoute {
@@ -25,6 +26,10 @@ export enum LoginRoute {
 
 export enum SSORoute {
   CALLBACK = 'callback',
+}
+
+export enum IntegrationsRoute {
+  ZENDESK = 'zendesk',
 }
 
 export enum ProjectRoute {
@@ -137,6 +142,8 @@ export const Path = {
 
   LOGIN: toPath(RootRoute.LOGIN),
   LOGIN_SSO_CALLBACK: toPath(RootRoute.LOGIN, LoginRoute.SSO, SSORoute.CALLBACK),
+
+  ZENDESK_CALLBACK: toPath(RootRoute.INTEGRATIONS, IntegrationsRoute.ZENDESK),
 
   SIGNUP: toPath(RootRoute.SIGNUP),
 

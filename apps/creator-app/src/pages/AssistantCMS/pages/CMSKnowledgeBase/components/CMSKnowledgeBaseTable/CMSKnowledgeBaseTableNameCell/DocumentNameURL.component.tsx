@@ -13,7 +13,7 @@ export const DocumentNameURL: React.FC<IDocumentNameURL> = ({ data, search }) =>
     referenceElement={({ ref, onOpen, onClose }) => (
       <Table.Cell.Link
         ref={ref}
-        href={data.url}
+        href={data?.source === BaseModels.Project.IntegrationTypes.ZENDESK ? data.name : data.url}
         label={data.name}
         target="blank"
         overflow

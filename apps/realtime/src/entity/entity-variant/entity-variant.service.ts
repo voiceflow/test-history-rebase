@@ -41,6 +41,10 @@ export class EntityVariantService extends CMSObjectService<EntityVariantORM> {
     return this.orm.findManyByEnvironment(assistant, environmentID);
   }
 
+  findManyJSONByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+    return this.orm.findAllJSON({ assistant, environmentID });
+  }
+
   /* Create */
 
   async createManyAndSync(userID: number, data: CreateManyForUserData<EntityVariantORM>) {

@@ -3,8 +3,7 @@ import { Primary } from '@mikro-orm/core';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
-import type { AssistantEntity, IntentEntity, PKOrEntity, UtteranceEntity } from '@voiceflow/orm-designer';
-import { DatabaseTarget, UtteranceORM } from '@voiceflow/orm-designer';
+import { AssistantEntity, DatabaseTarget, IntentEntity, PKOrEntity, UtteranceEntity, UtteranceORM } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { CMSObjectService, EntitySerializer } from '@/common';
@@ -36,6 +35,9 @@ export class UtteranceService extends CMSObjectService<UtteranceORM> {
     return this.orm.findManyByEnvironment(assistant, environmentID);
   }
 
+  findManyJSONByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+    return this.orm.findAllJSON({ assistant, environmentID });
+  }
   /* Create */
 
   async createManyAndSync(userID: number, data: CreateManyForUserData<UtteranceORM>) {

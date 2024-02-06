@@ -14,7 +14,7 @@ export class EntitySerializer implements BaseSerializer<BaseEntity, Record<strin
   ): Omit<ReturnType<Entity['toJSON']>, Key>;
 
   serialize<Entity extends BaseEntity>(entity: Entity, options?: { omit?: Array<keyof ReturnType<Entity['toJSON']>> }) {
-    const json = entity.toJSON() as any;
+    const json = (entity.toJSON?.() ?? entity) as any;
 
     return options?.omit ? Utils.object.omit(json, options.omit) : json;
   }

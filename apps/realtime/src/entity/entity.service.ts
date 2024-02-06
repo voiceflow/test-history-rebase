@@ -8,6 +8,7 @@ import { Utils } from '@voiceflow/common';
 import { Entity, EntityVariant } from '@voiceflow/dtos';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
 import type {
+  AssistantEntity,
   EntityEntity,
   EntityVariantEntity,
   IntentEntity,
@@ -49,10 +50,22 @@ export class EntityService extends CMSTabularService<EntityORM> {
 
   /* Find */
 
-  async findManyWithSubResourcesByEnvironment(assistantID: string, environmentID: string) {
+  async findManyWithSubResourcesByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
     const [entities, entityVariants] = await Promise.all([
-      this.findManyByEnvironment(assistantID, environmentID),
-      this.entityVariant.findManyByEnvironment(assistantID, environmentID),
+      this.findManyByEnvironment(assistant, environmentID),
+      this.entityVariant.findManyByEnvironment(assistant, environmentID),
+    ]);
+
+    return {
+      entities,
+      entityVariants,
+    };
+  }
+
+  async findManyWithSubResourcesJSONByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+    const [entities, entityVariants] = await Promise.all([
+      this.orm.findAllJSON({ assistant, environmentID }),
+      this.entityVariant.findManyJSONByEnvironment(assistant, environmentID),
     ]);
 
     return {
@@ -67,16 +80,28 @@ export class EntityService extends CMSTabularService<EntityORM> {
     { entities, entityVariants }: { entities: EntityEntity[]; entityVariants: EntityVariantEntity[] },
     { backup }: { backup?: boolean } = {}
   ): EntityExportImportDataDTO {
+    const json = {
+      entities: this.entitySerializer.iterable(entities),
+      entityVariants: this.entitySerializer.iterable(entityVariants),
+    };
+
     if (backup) {
-      return {
-        entities: this.entitySerializer.iterable(entities),
-        entityVariants: this.entitySerializer.iterable(entityVariants),
-      };
+      return json;
     }
 
+    return this.prepareExportJSONData(json);
+  }
+
+  prepareExportJSONData({
+    entities,
+    entityVariants,
+  }: {
+    entities: ToJSONWithForeignKeys<EntityEntity>[];
+    entityVariants: ToJSONWithForeignKeys<EntityVariantEntity>[];
+  }): EntityExportImportDataDTO {
     return {
-      entities: this.entitySerializer.iterable(entities, { omit: ['assistantID', 'environmentID'] }),
-      entityVariants: this.entitySerializer.iterable(entityVariants, { omit: ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'] }),
+      entities: entities.map((item) => Utils.object.omit(item, ['assistantID', 'environmentID'])),
+      entityVariants: entityVariants.map((item) => Utils.object.omit(item, ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'])),
     };
   }
 

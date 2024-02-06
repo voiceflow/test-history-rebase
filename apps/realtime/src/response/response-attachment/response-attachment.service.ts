@@ -134,6 +134,10 @@ export class ResponseAttachmentService {
     return this.orm.findManyByEnvironment(assistant, environmentID);
   }
 
+  findManyJSONByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+    return this.orm.findAllJSON({ assistant, environmentID });
+  }
+
   async findManyByAttachments(attachments: PKOrEntity<AnyAttachmentEntity>[]): Promise<AnyResponseAttachmentEntity[]> {
     return (
       await Promise.all([

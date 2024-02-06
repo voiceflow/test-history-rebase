@@ -9,6 +9,7 @@ import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
 import type {
   AnyResponseAttachmentEntity,
   AnyResponseVariantEntity,
+  AssistantEntity,
   IntentEntity,
   ORMMutateOptions,
   PKOrEntity,
@@ -52,11 +53,25 @@ export class IntentService extends CMSTabularService<IntentORM> {
 
   /* Find */
 
-  async findManyWithSubResourcesByEnvironment(assistantID: string, environmentID: string) {
+  async findManyWithSubResourcesByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
     const [intents, utterances, requiredEntities] = await Promise.all([
-      this.findManyByEnvironment(assistantID, environmentID),
-      this.utterance.findManyByEnvironment(assistantID, environmentID),
-      this.requiredEntity.findManyByEnvironment(assistantID, environmentID),
+      this.findManyByEnvironment(assistant, environmentID),
+      this.utterance.findManyByEnvironment(assistant, environmentID),
+      this.requiredEntity.findManyByEnvironment(assistant, environmentID),
+    ]);
+
+    return {
+      intents,
+      utterances,
+      requiredEntities,
+    };
+  }
+
+  async findManyWithSubResourcesJSONByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+    const [intents, utterances, requiredEntities] = await Promise.all([
+      this.orm.findAllJSON({ assistant, environmentID }),
+      this.utterance.findManyJSONByEnvironment(assistant, environmentID),
+      this.requiredEntity.findManyJSONByEnvironment(assistant, environmentID),
     ]);
 
     return {
@@ -80,18 +95,32 @@ export class IntentService extends CMSTabularService<IntentORM> {
     },
     { backup }: { backup?: boolean } = {}
   ): IntentExportImportDataDTO {
+    const json = {
+      intents: this.entitySerializer.iterable(intents),
+      utterances: this.entitySerializer.iterable(utterances),
+      requiredEntities: this.entitySerializer.iterable(requiredEntities),
+    };
+
     if (backup) {
-      return {
-        intents: this.entitySerializer.iterable(intents),
-        utterances: this.entitySerializer.iterable(utterances),
-        requiredEntities: this.entitySerializer.iterable(requiredEntities),
-      };
+      return json;
     }
 
+    return this.prepareExportJSONData(json);
+  }
+
+  prepareExportJSONData({
+    intents,
+    utterances,
+    requiredEntities,
+  }: {
+    intents: ToJSONWithForeignKeys<IntentEntity>[];
+    utterances: ToJSONWithForeignKeys<UtteranceEntity>[];
+    requiredEntities: ToJSONWithForeignKeys<RequiredEntityEntity>[];
+  }): IntentExportImportDataDTO {
     return {
-      intents: this.entitySerializer.iterable(intents, { omit: ['assistantID', 'environmentID'] }),
-      utterances: this.entitySerializer.iterable(utterances, { omit: ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'] }),
-      requiredEntities: this.entitySerializer.iterable(requiredEntities, { omit: ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'] }),
+      intents: intents.map((item) => Utils.object.omit(item, ['assistantID', 'environmentID'])),
+      utterances: utterances.map((item) => Utils.object.omit(item, ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'])),
+      requiredEntities: requiredEntities.map((item) => Utils.object.omit(item, ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'])),
     };
   }
 

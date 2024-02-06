@@ -72,15 +72,25 @@ export class AttachmentService {
     ).flat();
   }
 
-  async findManyWithSubResourcesByEnvironment(assistantID: string, environmentID: string) {
+  async findManyWithSubResourcesByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
     const [attachments, cardButtons] = await Promise.all([
-      this.findManyByEnvironment(assistantID, environmentID),
-      this.cardButton.findManyByEnvironment(assistantID, environmentID),
+      this.findManyByEnvironment(assistant, environmentID),
+      this.cardButton.findManyByEnvironment(assistant, environmentID),
     ]);
 
     return {
       attachments,
       cardButtons,
+    };
+  }
+
+  async findManyWithSubResourcesJSONByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+    // TODO: we can't use findAllJSON here cause attachments have virtual type field, so we need entity to proper initialize it
+    const { attachments, cardButtons } = await this.findManyWithSubResourcesByEnvironment(assistant, environmentID);
+
+    return {
+      attachments: this.entitySerializer.iterable(attachments),
+      cardButtons: this.entitySerializer.iterable(cardButtons),
     };
   }
 
@@ -147,18 +157,30 @@ export class AttachmentService {
     },
     { backup }: { backup?: boolean } = {}
   ): AttachmentExportImportDataDTO {
+    const json = {
+      attachments: this.entitySerializer.iterable(attachments),
+      cardButtons: this.entitySerializer.iterable(cardButtons),
+    };
+
     if (backup) {
-      return {
-        attachments: this.entitySerializer.iterable(attachments),
-        cardButtons: this.entitySerializer.iterable(cardButtons),
-      };
+      return json;
     }
 
+    return this.prepareExportJSONData(json);
+  }
+
+  prepareExportJSONData({
+    attachments,
+    cardButtons,
+  }: {
+    attachments: ToJSONWithForeignKeys<AnyAttachmentEntity>[];
+    cardButtons: ToJSONWithForeignKeys<CardButtonEntity>[];
+  }): AttachmentExportImportDataDTO {
     return {
-      attachments: this.entitySerializer.iterable(attachments, {
-        omit: ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'],
-      }) as AttachmentExportImportDataDTO['attachments'],
-      cardButtons: this.entitySerializer.iterable(cardButtons, { omit: ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'] }),
+      attachments: attachments.map((item) =>
+        Utils.object.omit(item, ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'])
+      ) as AttachmentExportImportDataDTO['attachments'],
+      cardButtons: cardButtons.map((item) => Utils.object.omit(item, ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'])),
     };
   }
 

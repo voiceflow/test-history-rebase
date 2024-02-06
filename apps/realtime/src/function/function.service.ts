@@ -8,6 +8,7 @@ import { Utils } from '@voiceflow/common';
 import { Function as FunctionType, FunctionPath, FunctionVariable } from '@voiceflow/dtos';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
 import type {
+  AssistantEntity,
   FunctionEntity,
   FunctionPathEntity,
   FunctionVariableEntity,
@@ -51,11 +52,25 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
 
   /* Find */
 
-  async findManyWithSubResourcesByEnvironment(assistantID: string, environmentID: string) {
+  async findManyWithSubResourcesByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
     const [functions, functionPaths, functionVariables] = await Promise.all([
-      this.findManyByEnvironment(assistantID, environmentID),
-      this.functionPath.findManyByEnvironment(assistantID, environmentID),
-      this.functionVariable.findManyByEnvironment(assistantID, environmentID),
+      this.findManyByEnvironment(assistant, environmentID),
+      this.functionPath.findManyByEnvironment(assistant, environmentID),
+      this.functionVariable.findManyByEnvironment(assistant, environmentID),
+    ]);
+
+    return {
+      functions,
+      functionPaths,
+      functionVariables,
+    };
+  }
+
+  async findManyWithSubResourcesJSONByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+    const [functions, functionPaths, functionVariables] = await Promise.all([
+      this.orm.findAllJSON({ assistant, environmentID }),
+      this.functionPath.findManyJSONByEnvironment(assistant, environmentID),
+      this.functionVariable.findManyJSONByEnvironment(assistant, environmentID),
     ]);
 
     return {
@@ -79,18 +94,32 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
     },
     { backup }: { backup?: boolean } = {}
   ): FunctionExportImportDataDTO {
+    const json = {
+      functions: this.entitySerializer.iterable(functions),
+      functionPaths: this.entitySerializer.iterable(functionPaths),
+      functionVariables: this.entitySerializer.iterable(functionVariables),
+    };
+
     if (backup) {
-      return {
-        functions: this.entitySerializer.iterable(functions),
-        functionPaths: this.entitySerializer.iterable(functionPaths),
-        functionVariables: this.entitySerializer.iterable(functionVariables),
-      };
+      return json;
     }
 
+    return this.prepareExportJSONData(json);
+  }
+
+  prepareExportJSONData({
+    functions,
+    functionPaths,
+    functionVariables,
+  }: {
+    functions: ToJSONWithForeignKeys<FunctionEntity>[];
+    functionPaths: ToJSONWithForeignKeys<FunctionPathEntity>[];
+    functionVariables: ToJSONWithForeignKeys<FunctionVariableEntity>[];
+  }): FunctionExportImportDataDTO {
     return {
-      functions: this.entitySerializer.iterable(functions, { omit: ['assistantID', 'environmentID'] }),
-      functionPaths: this.entitySerializer.iterable(functionPaths, { omit: ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'] }),
-      functionVariables: this.entitySerializer.iterable(functionVariables, { omit: ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'] }),
+      functions: functions.map((item) => Utils.object.omit(item, ['assistantID', 'environmentID'])),
+      functionPaths: functionPaths.map((item) => Utils.object.omit(item, ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'])),
+      functionVariables: functionVariables.map((item) => Utils.object.omit(item, ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'])),
     };
   }
 

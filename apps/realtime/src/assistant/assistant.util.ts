@@ -1,9 +1,9 @@
-export const buildCMSTabularEntitiesUpdatedFieldsMap = <Resource extends { id: string; updatedAt: Date; updatedBy: { id: number } }>(
+export const buildCMSTabularEntitiesUpdatedFieldsMap = <Resource extends { id: string; updatedAt: string; updatedByID: number }>(
   resources: Resource[]
-) => Object.fromEntries(resources.map((resource) => [resource.id, { updatedAt: resource.updatedAt, updatedByID: resource.updatedBy.id }]));
+) => Object.fromEntries(resources.map((resource) => [resource.id, { updatedAt: resource.updatedAt, updatedByID: resource.updatedByID }]));
 
-export const adjustCMSTabularEntitiesUpdatedFieldsMap = <Reference extends { updatedAt: Date; updatedBy: { id: number } | null }>(
-  map: Partial<Record<string, { updatedAt: Date; updatedByID: number }>>,
+export const adjustCMSTabularEntitiesUpdatedFieldsMap = <Reference extends { updatedAt: string; updatedByID: number | null }>(
+  map: Partial<Record<string, { updatedAt: string; updatedByID: number }>>,
   references: Reference[],
   getRootID: (reference: Reference) => string
 ) => {
@@ -13,17 +13,17 @@ export const adjustCMSTabularEntitiesUpdatedFieldsMap = <Reference extends { upd
     const rootID = getRootID(reference);
     const updatedFields = map[rootID];
 
-    if (!updatedFields || reference.updatedBy === null || reference.updatedAt <= updatedFields.updatedAt) continue;
+    if (!updatedFields || reference.updatedByID === null || new Date(reference.updatedAt) <= new Date(updatedFields.updatedAt)) continue;
 
     // eslint-disable-next-line no-param-reassign
     map[rootID] = {
       updatedAt: reference.updatedAt,
-      updatedByID: reference.updatedBy.id,
+      updatedByID: reference.updatedByID,
     };
   }
 };
 
 export const updateCMSTabularResourcesWithUpdatedFields = <Resource extends { id: string; updatedAt: string; updatedByID: number }>(
-  map: Partial<Record<string, { updatedAt: Date; updatedByID: number }>>,
+  map: Partial<Record<string, { updatedAt: string; updatedByID: number }>>,
   resources: Resource[]
 ) => resources.map((resource) => ({ ...resource, ...map[resource.id] }));

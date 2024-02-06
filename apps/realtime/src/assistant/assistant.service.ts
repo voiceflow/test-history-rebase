@@ -508,25 +508,25 @@ export class AssistantService extends MutableService<AssistantORM> {
 
       const [assistant, cmsData] = await Promise.all([
         this.findOneOrFail(projectID.toJSON()),
-        this.environment.findOneCMSData(projectID.toJSON(), environmentID),
+        this.environment.findOneCMSDataJSON(projectID.toJSON(), environmentID),
       ]);
 
       const intentsUpdatedFieldsMap = buildCMSTabularEntitiesUpdatedFieldsMap(cmsData.intents);
-      adjustCMSTabularEntitiesUpdatedFieldsMap(intentsUpdatedFieldsMap, cmsData.utterances, (utterance) => utterance.intent.id);
-      adjustCMSTabularEntitiesUpdatedFieldsMap(intentsUpdatedFieldsMap, cmsData.requiredEntities, (utterance) => utterance.intent.id);
+      adjustCMSTabularEntitiesUpdatedFieldsMap(intentsUpdatedFieldsMap, cmsData.utterances, (utterance) => utterance.intentID);
+      adjustCMSTabularEntitiesUpdatedFieldsMap(intentsUpdatedFieldsMap, cmsData.requiredEntities, (utterance) => utterance.intentID);
 
       const entitiesUpdatedFieldsMap = buildCMSTabularEntitiesUpdatedFieldsMap(cmsData.entities);
-      adjustCMSTabularEntitiesUpdatedFieldsMap(entitiesUpdatedFieldsMap, cmsData.entityVariants, (entityVariant) => entityVariant.entity.id);
+      adjustCMSTabularEntitiesUpdatedFieldsMap(entitiesUpdatedFieldsMap, cmsData.entityVariants, (entityVariant) => entityVariant.entityID);
 
       const functionsUpdatedFieldsMap = buildCMSTabularEntitiesUpdatedFieldsMap(cmsData.functions);
-      adjustCMSTabularEntitiesUpdatedFieldsMap(functionsUpdatedFieldsMap, cmsData.functionPaths, (functionPath) => functionPath.function.id);
+      adjustCMSTabularEntitiesUpdatedFieldsMap(functionsUpdatedFieldsMap, cmsData.functionPaths, (functionPath) => functionPath.functionID);
       adjustCMSTabularEntitiesUpdatedFieldsMap(
         functionsUpdatedFieldsMap,
         cmsData.functionVariables,
-        (functionVariable) => functionVariable.function.id
+        (functionVariable) => functionVariable.functionID
       );
 
-      const exportData = this.environment.prepareExportCMSData(cmsData, { userID, workspaceID });
+      const exportData = this.environment.prepareExportCMSJSONData(cmsData, { userID, workspaceID });
 
       return {
         ...exportData,

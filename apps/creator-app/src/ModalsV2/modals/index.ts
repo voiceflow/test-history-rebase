@@ -3,6 +3,7 @@ export { default as APLPreview } from './APLPreview';
 export * as Billing from './Billing';
 export * as Board from './Board';
 export * as Canvas from './Canvas';
+export * as Component from './Component';
 export { default as Confirm } from './Confirm';
 export * from './ConfirmV2/ConfirmV2.modal';
 export * as Conversation from './Conversation';

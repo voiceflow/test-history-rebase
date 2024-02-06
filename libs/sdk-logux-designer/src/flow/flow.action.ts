@@ -44,6 +44,18 @@ export namespace CreateOne {
 
 export const CreateOne = flowAction.crud.createOne<CreateOne.Request, CreateOne.Response>();
 
+/* CreateMany */
+
+export namespace CreateMany {
+  export interface Request extends DesignerAction {
+    data: CreateData[];
+  }
+
+  export interface Response extends CreateResponse<Flow[]>, DesignerAction {}
+}
+
+export const CreateMany = flowAction.crud.createMany<CreateMany.Request, CreateMany.Response>();
+
 /* PatchOne */
 
 export interface PatchOne extends PatchOneRequest<PatchData>, DesignerAction {}

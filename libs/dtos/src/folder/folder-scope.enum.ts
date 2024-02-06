@@ -9,6 +9,7 @@ export const FolderScope = {
   RESPONSE: 'response',
   STORY: 'story',
   VARIABLE: 'variable',
+  COMPONENT: 'component',
   KNOWLEDGE_BASE: 'knowledge-base',
 } as const;
 

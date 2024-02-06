@@ -1,4 +1,4 @@
-import { toast } from '@voiceflow/ui-next';
+import { notify } from '@voiceflow/ui-next';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 
@@ -17,9 +17,9 @@ export const ZendeskCallback: React.FC = () => {
     if (query.code && query.state) {
       postZendeskToken('zendesk', query.code, query.state);
     } else if (query.error) {
-      toast.error(`Zendesk authentication failed: ${query.error}`);
+      notify.short.error(`Zendesk authentication failed: ${query.error}`);
     } else {
-      toast.genericError();
+      notify.short.genericError();
     }
   }, []);
 

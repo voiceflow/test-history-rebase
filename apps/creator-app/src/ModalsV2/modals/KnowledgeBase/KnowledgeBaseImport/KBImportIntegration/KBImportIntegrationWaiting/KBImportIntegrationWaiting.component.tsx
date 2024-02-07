@@ -48,6 +48,10 @@ export const KBImportIntegrationWaiting: React.FC<IKBImportIntegrationWaiting> =
       const today = new Date();
       const integrationCreatedAt = integrations.find((item) => item.type === BaseModels.Project.IntegrationTypes.ZENDESK)?.createdAt;
       // eslint-disable-next-line no-console
+      console.log(integrations);
+      // eslint-disable-next-line no-console
+      console.log(integrations.find((item) => item.type === BaseModels.Project.IntegrationTypes.ZENDESK));
+      // eslint-disable-next-line no-console
       console.log('integration Created At');
       // eslint-disable-next-line no-console
       console.log(integrationCreatedAt);

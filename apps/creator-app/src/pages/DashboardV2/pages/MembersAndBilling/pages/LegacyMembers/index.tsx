@@ -1,17 +1,18 @@
-import { Button, ButtonVariant, FlexCenter } from '@voiceflow/ui';
+import { Button, ButtonVariant, FlexCenter, withProvider } from '@voiceflow/ui';
 import React from 'react';
 
 import { bannerBg } from '@/assets';
 import * as Workspace from '@/components/Workspace';
 import { Permission } from '@/constants/permissions';
+import * as Payment from '@/contexts/PaymentContext';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { usePermission, useSelector } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 
-import List from './List.component';
-import * as S from './styles';
+import List from '../Members/List.component';
+import * as S from '../Members/styles';
 
-const DashboardV2MembersAndBillingMembers: React.FC = () => {
+const DashboardV2MembersAndBillingLegacyMembers: React.FC = () => {
   const membersCount = useSelector(WorkspaceV2.active.allNormalizedMembersCountSelector);
   const isOnPaidPlanSelector = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
   const isOnProTrial = useSelector(WorkspaceV2.active.isOnProTrialSelector);
@@ -21,7 +22,7 @@ const DashboardV2MembersAndBillingMembers: React.FC = () => {
 
   const inviteModal = ModalsV2.useModal(ModalsV2.Workspace.Invite);
   const paymentModal = ModalsV2.useModal(ModalsV2.Payment);
-  const addSeatsModal = ModalsV2.useModal(ModalsV2.Billing.AddSeats);
+  const addSeatsModal = ModalsV2.useModal(ModalsV2.LegacyBilling.AddSeats);
 
   return (
     <S.Container>
@@ -62,4 +63,4 @@ const DashboardV2MembersAndBillingMembers: React.FC = () => {
   );
 };
 
-export default DashboardV2MembersAndBillingMembers;
+export default withProvider(Payment.PaymentProvider)(DashboardV2MembersAndBillingLegacyMembers);

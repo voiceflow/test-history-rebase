@@ -5,7 +5,6 @@ import React from 'react';
 import { Permission } from '@/constants/permissions';
 import * as Organization from '@/ducks/organization';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-// import EditorSeats from './EditorSeats';
 // import PaymentDetails from './PaymentDetails';
 // import PaymentFailed from './PaymentFailed';
 import { usePermission, useSelector } from '@/hooks';
@@ -16,6 +15,7 @@ import { usePermission, useSelector } from '@/hooks';
 import BillingHistory from './BillingHistory/BillingHistory.component';
 import { useBillingHistory } from './BillingHistory/hooks';
 import CancelSubscription from './CancelSubscription';
+import EditorSeats from './EditorSeats';
 
 // const PAYMENT_FAILED_STRIPE_STATUS = new Set([StripeStatuses.UNPAID, StripeStatuses.PAST_DUE]);
 
@@ -47,7 +47,12 @@ const DashboardV2Billing: React.FC = () => {
     <Box>
       {/* {showPaymentFailed && <PaymentFailed date={billingHistory?.data[0]?.date} />} */}
 
-      {/* <EditorSeats /> */}
+      <EditorSeats
+        nextBillingDate={subscription.nextBillingDate ?? null}
+        pricePerEditor={subscription.pricePerEditor}
+        billingPeriod={subscription.billingPeriodUnit ?? null}
+        editorSeats={subscription.editorSeats}
+      />
 
       {/* {paymentAPI.paymentSource && <PaymentDetails source={paymentAPI.paymentSource} refetch={paymentAPI.refetchPaymentSource} />} */}
 

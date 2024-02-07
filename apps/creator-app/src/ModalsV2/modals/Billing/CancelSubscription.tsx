@@ -2,7 +2,6 @@ import { PlanType } from '@voiceflow/internal';
 import { Box, Button, Modal, System, toast } from '@voiceflow/ui';
 import React from 'react';
 
-import { designerClient } from '@/client/designer';
 import { PLAN_INFO_LINK } from '@/constants';
 import * as Organization from '@/ducks/organization';
 import { useDispatch, useSelector } from '@/hooks';
@@ -11,7 +10,7 @@ import { useTrackingEvents } from '@/hooks/tracking';
 import manager from '../../manager';
 
 const CancelSubscription = manager.create('BillingCancelSubscription', () => ({ api, type, opened, hidden, animated, closePrevented }) => {
-  const loadSubscription = useDispatch(Organization.loadActiveOrganizationSubscription);
+  const cancelSubscription = useDispatch(Organization.cancelSubscription);
   const organization = useSelector(Organization.active.organizationSelector);
   const [tracking] = useTrackingEvents();
 
@@ -21,9 +20,7 @@ const CancelSubscription = manager.create('BillingCancelSubscription', () => ({ 
     api.preventClose();
 
     try {
-      await designerClient.billing.subscription.cancel(organization.id, organization.subscription.id);
-
-      await loadSubscription(organization.id, organization.subscription.id);
+      await cancelSubscription(organization.id, organization.subscription.id);
 
       tracking.trackPlanChanged({ currentPlan: (organization.subscription.plan as PlanType) ?? PlanType.PRO, newPlan: PlanType.STARTER });
       toast.success(`Subscription cancelled. Pro features will be available until ${organization.subscription.nextBillingDate}`);

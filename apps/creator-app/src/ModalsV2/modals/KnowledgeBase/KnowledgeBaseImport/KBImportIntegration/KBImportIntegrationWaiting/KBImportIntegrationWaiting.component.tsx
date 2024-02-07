@@ -38,13 +38,25 @@ export const KBImportIntegrationWaiting: React.FC<IKBImportIntegrationWaiting> =
   };
 
   React.useEffect(() => {
+    // eslint-disable-next-line no-console
+    console.log('POPUP WINDOW');
+    // eslint-disable-next-line no-console
+    console.log(popupWindow);
     if (!popupWindow) return;
 
     const checkPopup = setInterval(() => {
       const today = new Date();
       const integrationCreatedAt = integrations.find((item) => item.type === BaseModels.Project.IntegrationTypes.ZENDESK)?.createdAt;
+      // eslint-disable-next-line no-console
+      console.log('integration Created At');
+      // eslint-disable-next-line no-console
+      console.log(integrationCreatedAt);
 
       const createdWithFiveMinutes = integrationCreatedAt ? today.getTime() - new Date(integrationCreatedAt).getTime() > 5 * 60 * 1000 : false;
+      // eslint-disable-next-line no-console
+      console.log('createdWIthinFiveMinutes');
+      // eslint-disable-next-line no-console
+      console.log(createdWithFiveMinutes);
 
       if (createdWithFiveMinutes) {
         clearInterval(checkPopup);

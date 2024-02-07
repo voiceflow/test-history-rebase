@@ -8,3 +8,5 @@ export const HEARTBEAT_EXPIRE_TIMEOUT = 30;
 export const THROTTLER_REDIS_NAMESPACE = 'throttler';
 export const PUBLISHER_REDIS_NAMESPACE = 'publisher';
 export const SUBSCRIBER_REDIS_NAMESPACE = 'subscriber';
+
+// Test comment

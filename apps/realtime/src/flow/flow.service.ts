@@ -2,10 +2,11 @@ import type { EntityManager } from '@mikro-orm/core';
 import { Primary } from '@mikro-orm/core';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
+import { Utils } from '@voiceflow/common';
 import { Flow } from '@voiceflow/dtos';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
-import type { FlowEntity, ORMMutateOptions, ToJSONWithForeignKeys } from '@voiceflow/orm-designer';
-import { DatabaseTarget, FlowORM } from '@voiceflow/orm-designer';
+import type { AssistantEntity, FlowEntity, ORMMutateOptions, ToJSONWithForeignKeys } from '@voiceflow/orm-designer';
+import { DatabaseTarget, FlowORM, PKOrEntity } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { CMSTabularService, EntitySerializer } from '@/common';
@@ -40,6 +41,14 @@ export class FlowService extends CMSTabularService<FlowORM> {
     };
   }
 
+  async findManyWithSubResourcesJSONByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+    const flows = await this.orm.findAllJSON({ assistant, environmentID });
+
+    return {
+      flows,
+    };
+  }
+
   /* Export */
 
   prepareExportData({ flows }: { flows: FlowEntity[] }, { backup }: { backup?: boolean } = {}): FlowExportImportDataDTO {
@@ -51,6 +60,12 @@ export class FlowService extends CMSTabularService<FlowORM> {
 
     return {
       flows: this.entitySerializer.iterable(flows, { omit: ['assistantID', 'environmentID'] }),
+    };
+  }
+
+  prepareExportJSONData({ flows }: { flows: ToJSONWithForeignKeys<FlowEntity>[] }): FlowExportImportDataDTO {
+    return {
+      flows: flows.map((item) => Utils.object.omit(item, ['assistantID', 'environmentID'])),
     };
   }
 

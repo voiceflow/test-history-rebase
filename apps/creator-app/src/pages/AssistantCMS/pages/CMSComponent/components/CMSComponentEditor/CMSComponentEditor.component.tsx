@@ -1,4 +1,4 @@
-import { Editor, IEditorAPI, Scroll } from '@voiceflow/ui-next';
+import { Box, Button, Divider, Editor, IEditorAPI, Scroll } from '@voiceflow/ui-next';
 import React, { useRef } from 'react';
 
 import { CMSEditorDescription } from '@/components/CMS/CMSEditor/CMSEditorDescription/CMSEditorDescription.component';
@@ -39,6 +39,12 @@ export const CMSComponentEditor: React.FC = () => {
       testID="cms-editor"
     >
       <Scroll style={{ display: 'block' }}>
+        <Box px={24} py={20} direction="column">
+          <Button name="aiGenerate" label="Edit component" variant="primary" fullWidth />
+        </Box>
+
+        <Divider noPadding />
+
         <CMSEditorDescription
           value={component.description ?? ''}
           placeholder="Enter component description"

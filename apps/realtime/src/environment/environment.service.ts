@@ -293,6 +293,7 @@ export class EnvironmentService {
     const cmsFoldersEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_FOLDERS, { userID, workspaceID });
     const cmsFunctionsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_FUNCTIONS, { userID, workspaceID });
     const cmsVariablesEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_VARIABLES, { userID, workspaceID });
+    const cmsComponentsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_COMPONENTS, { userID, workspaceID });
 
     return {
       ...this.entity.prepareExportData(data, { backup }),
@@ -303,8 +304,7 @@ export class EnvironmentService {
       ...(cmsFoldersEnabled && this.folder.prepareExportData(data, { backup })),
       ...(cmsVariablesEnabled && this.variable.prepareExportData(data, { backup })),
       ...(cmsFunctionsEnabled && this.functionService.prepareExportData(data, { backup })),
-      /* TODO FF */
-      ...this.flow.prepareExportData(data, { backup }),
+      ...(cmsComponentsEnabled && this.flow.prepareExportData(data, { backup })),
     };
   }
 
@@ -315,6 +315,7 @@ export class EnvironmentService {
     const cmsFoldersEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_FOLDERS, { userID, workspaceID });
     const cmsFunctionsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_FUNCTIONS, { userID, workspaceID });
     const cmsVariablesEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_VARIABLES, { userID, workspaceID });
+    const cmsComponentsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_COMPONENTS, { userID, workspaceID });
 
     return {
       ...this.entity.prepareExportJSONData(data),
@@ -325,6 +326,7 @@ export class EnvironmentService {
       ...(cmsFoldersEnabled && this.folder.prepareExportJSONData(data)),
       ...(cmsVariablesEnabled && this.variable.prepareExportJSONData(data)),
       ...(cmsFunctionsEnabled && this.functionService.prepareExportJSONData(data)),
+      ...(cmsComponentsEnabled && this.flow.prepareExportJSONData(data)),
     };
   }
 
@@ -383,6 +385,7 @@ export class EnvironmentService {
     const cmsFoldersEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_FOLDERS, { userID, workspaceID });
     const cmsFunctionsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_FUNCTIONS, { userID, workspaceID });
     const cmsVariablesEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_VARIABLES, { userID, workspaceID });
+    const cmsComponentsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_COMPONENTS, { userID, workspaceID });
 
     const prepareDataContext = { userID, backup, assistantID, environmentID };
 
@@ -429,8 +432,8 @@ export class EnvironmentService {
       ...(cmsVariablesEnabled && cms.variables && this.variable.prepareImportData({ variables: cms.variables }, prepareDataContext)),
 
       ...(cmsFoldersEnabled && cms.folders && this.folder.prepareImportData({ folders: cms.folders }, prepareDataContext)),
-      /* TODO FF */
-      ...(cms.flows && this.flow.prepareImportData({ flows: cms.flows }, prepareDataContext)),
+
+      ...(cmsComponentsEnabled && cms.flows && this.flow.prepareImportData({ flows: cms.flows }, prepareDataContext)),
     };
   }
 
@@ -582,6 +585,7 @@ export class EnvironmentService {
 
   async findOneCMSDataJSON(assistantID: string, environmentID: string) {
     const [
+      { flows },
       { entities, entityVariants },
       { intents, utterances, requiredEntities },
       { folders },
@@ -590,6 +594,7 @@ export class EnvironmentService {
       { attachments, cardButtons },
       { functions, functionPaths, functionVariables },
     ] = await Promise.all([
+      this.flow.findManyWithSubResourcesJSONByEnvironment(assistantID, environmentID),
       this.entity.findManyWithSubResourcesJSONByEnvironment(assistantID, environmentID),
       this.intent.findManyWithSubResourcesJSONByEnvironment(assistantID, environmentID),
       this.folder.findManyWithSubResourcesJSONByEnvironment(assistantID, environmentID),
@@ -601,6 +606,7 @@ export class EnvironmentService {
 
     return {
       folders,
+      flows,
       intents,
       entities,
       functions,

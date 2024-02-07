@@ -20,6 +20,7 @@ export const CMSMenu: React.FC = () => {
   const { isEnabled: isKbEnabled } = useFeature(Realtime.FeatureFlag.KNOWLEDGE_BASE);
   const { isEnabled: isFunctionsCmsEnabled } = useFeature(Realtime.FeatureFlag.CMS_FUNCTIONS);
   const { isEnabled: isCMSVariablesEnabled } = useFeature(Realtime.FeatureFlag.CMS_VARIABLES);
+  const { isEnabled: isCMSComponentsEnabled } = useFeature(Realtime.FeatureFlag.CMS_COMPONENTS);
 
   const { updateActiveCMSRoute } = useCMSRoute();
 
@@ -97,16 +98,18 @@ export const CMSMenu: React.FC = () => {
 
       */}
 
-      {(isFunctionsCmsEnabled || isCMSVariablesEnabled) && (
+      {(isFunctionsCmsEnabled || isCMSVariablesEnabled || isCMSComponentsEnabled) && (
         <SecondaryNavigation.Section title="Content">
-          <SecondaryNavigation.Item
-            icon="Component"
-            label="Components"
-            caption={String(variablesCount)}
-            onClick={onTabClick(Path.CMS_COMPONENT, CMSRoute.COMPONENT)}
-            isActive={isItemActive(Path.CMS_COMPONENT)}
-            testID="cms-menu__item--variables"
-          />
+          {isCMSComponentsEnabled && (
+            <SecondaryNavigation.Item
+              icon="Component"
+              label="Components"
+              caption={String(variablesCount)}
+              onClick={onTabClick(Path.CMS_COMPONENT, CMSRoute.COMPONENT)}
+              isActive={isItemActive(Path.CMS_COMPONENT)}
+              testID="cms-menu__item--variables"
+            />
+          )}
 
           {isCMSVariablesEnabled && (
             <SecondaryNavigation.Item

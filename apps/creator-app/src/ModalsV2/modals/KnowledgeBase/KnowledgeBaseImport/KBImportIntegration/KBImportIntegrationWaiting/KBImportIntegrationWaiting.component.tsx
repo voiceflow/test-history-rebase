@@ -68,6 +68,11 @@ export const KBImportIntegrationWaiting: React.FC<IKBImportIntegrationWaiting> =
       }
       clearInterval(checkPopup);
     }, 2000);
+
+    // eslint-disable-next-line consistent-return
+    return () => {
+      clearInterval(checkPopup);
+    };
   }, [popupWindow]);
 
   React.useEffect(() => {

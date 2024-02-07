@@ -45,7 +45,6 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
   const importIntegration = useDispatch(Designer.KnowledgeBase.Integration.effect.importIntegration);
 
   const updateDocumentCount = async () => {
-    disableClose();
     const filters = {
       labels,
       locales,
@@ -54,8 +53,7 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
       userSegments,
     };
     const numDocs = await getDocumentCount('zendesk', filters);
-    setTimeout(() => setNumDataSources(numDocs), 2000);
-    enableClose();
+    setNumDataSources(numDocs);
   };
 
   React.useEffect(() => {

@@ -102,15 +102,3 @@ export const useKBIntegrationSync = () => {
 
   return hasIntegrations;
 };
-
-export const useKBIntegrationDocumentSync = () => {
-  const getAll = useDispatch(Designer.KnowledgeBase.Document.effect.getAll);
-
-  useEffect(() => {
-    const checkDocuments = setInterval(() => {
-      getAll().catch(() => {});
-    }, 3000);
-
-    setTimeout(() => clearInterval(checkDocuments), 300000);
-  }, []);
-};

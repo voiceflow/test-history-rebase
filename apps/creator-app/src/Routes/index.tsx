@@ -58,6 +58,7 @@ const Routes: React.FC = () => {
         <Route exact path={Path.WORKSPACE_ACCEPT_INVITE} component={WorkspaceAcceptInvite} />
         <Redirect exact from={Path.WORKSPACE} to={Path.DASHBOARD} />
         <PrivateRoute path={[Path.WORKSPACE, Path.DASHBOARD]} component={Workspace} />
+
         <PrivateRoute exact path={Path.ZENDESK_CALLBACK} component={ZendeskCallback} />
 
         <Redirect exact from={Path.PROJECT_DEMO} to={Path.PUBLIC_PROTOTYPE} />

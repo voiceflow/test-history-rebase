@@ -28,6 +28,10 @@ export enum SSORoute {
   CALLBACK = 'callback',
 }
 
+export enum IntegrationsRoute {
+  ZENDESK = 'zendesk',
+}
+
 export enum ProjectRoute {
   CMS = 'cms',
   DOMAIN = 'domain',
@@ -100,11 +104,6 @@ export enum WorkspaceRoute {
   INTEGRATIONS = 'integrations',
   ORGANIZATION = 'organization',
   ACCEPT_INVITE = 'accept-invite',
-  INTEGRATE_KB = 'integrate-kb',
-}
-
-export enum WorkspaceIntegrateKBRoute {
-  ZENDESK = 'zendesk',
 }
 
 export enum WorkspaceOrganizationRoute {
@@ -169,7 +168,7 @@ export const Path = {
   WORKSPACE_DEVELOPER_SETTINGS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.SETTINGS, WorkspaceSettingsRoute.DEVELOPER),
   WORKSPACE_SSO_SETTINGS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.SETTINGS, WorkspaceSettingsRoute.SSO),
   WORKSPACE_ACCEPT_INVITE: toPath(RootRoute.WORKSPACE, WorkspaceRoute.ACCEPT_INVITE),
-  ZENDESK_CALLBACK: toPath(RootRoute.WORKSPACE, WorkspaceRoute.INTEGRATE_KB, WorkspaceIntegrateKBRoute.ZENDESK),
+  ZENDESK_CALLBACK: toPath(RootRoute.INTEGRATIONS, IntegrationsRoute.ZENDESK),
 
   DASHBOARD: toPath(RootRoute.DASHBOARD),
 

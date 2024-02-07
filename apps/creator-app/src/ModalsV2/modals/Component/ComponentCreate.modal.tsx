@@ -30,9 +30,7 @@ export const ComponentCreateModal = modalsManager.create<IComponentCreateModal, 
         name: [componentNameValidator, nameState.setError],
       });
 
-      const [description, setDescription] = useState<string>(
-        '(32px * 2) - 200px - 20px - 20px - 80px - 20px (32px * 2) - 200px - 20px - 20px - 80px - 20px (32px * 2) - 200px - 20px - 20px - 80px - 20px (32px * 2) - 200px - 20px - 20px - 80px - 20px (32px * 2) - 200px - 20px - 20px - 80px - 20px (32px * 2) - 200px - 20px - 20px - 80px - 20px (32px * 2) - 200px - 20px - 20px - 80px - 20px (32px * 2) - 200px - 20px - 20px - 80px - 20px (32px * 2) - 200px - 20px - 20px - 80px - 20px (32px * 2) - 200px - 20px - 20px - 80px - 20px (32px * 2) - 200px - 20px - 20px - 80px - 20px (32px * 2) - 200px - 20px - 20px - 80px - 20px (32px * 2) - 200px - 20px - 20px - 80px - 20px (32px * 2) - 200px - 20px - 20px - 80px - 20px (32px * 2) - 200px - 20px - 20px - 80px - 20px (32px * 2) - 200px - 20px - 20px - 80px - 20px (32px * 2) - 200px - 20px - 20px - 80px - 20px (32px * 2) - 200px - 20px - 20px - 80px - 20px (32px * 2) - 200px - 20px - 20px - 80px - 20px (32px * 2) - 200px - 20px - 20px - 80px - 20px (32px * 2) - 200px - 20px - 20px - 80px - 20px (32px * 2) - 200px - 20px - 20px - 80px - 20px (32px * 2) - 200px - 20px - 20px - 80px - 20px '
-      );
+      const [description, setDescription] = useState<string>('');
 
       const onCreate = validator.container(
         async (data) => {

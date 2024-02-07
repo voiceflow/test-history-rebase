@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.354.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.353.2...@voiceflow/realtime-sdk@1.354.0) (2024-02-07)
+
+### Features
+
+* implement schedule seats (CV3-848) ([#7751](https://github.com/voiceflow/creator-app/issues/7751)) ([07dfa6c](https://github.com/voiceflow/creator-app/commit/07dfa6cbdc5a4f63c8425ecc60af893a6c68996c))
+
 ## [1.353.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.353.1...@voiceflow/realtime-sdk@1.353.2) (2024-02-07)
 
 **Note:** Version bump only for package @voiceflow/realtime-sdk

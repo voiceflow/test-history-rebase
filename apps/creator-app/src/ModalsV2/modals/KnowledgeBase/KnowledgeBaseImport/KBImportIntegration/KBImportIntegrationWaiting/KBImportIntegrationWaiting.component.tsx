@@ -45,6 +45,10 @@ export const KBImportIntegrationWaiting: React.FC<IKBImportIntegrationWaiting> =
     if (!popupWindow) return;
 
     const checkPopup = setInterval(() => {
+      // eslint-disable-next-line no-console
+      console.log('new interval call');
+      // eslint-disable-next-line no-console
+      console.log(popupWindow);
       const today = new Date();
       const integrationCreatedAt = integrations.find((item) => item.type === BaseModels.Project.IntegrationTypes.ZENDESK)?.createdAt;
       // eslint-disable-next-line no-console
@@ -66,9 +70,11 @@ export const KBImportIntegrationWaiting: React.FC<IKBImportIntegrationWaiting> =
         clearInterval(checkPopup);
         onConnected(true);
         notify.short.success('Connected to Zendesk');
-      } else if (!popupWindow || !popupWindow.closed) return;
-      else {
+      } else if (!popupWindow || !popupWindow.closed) {
+        // eslint-disable-next-line no-console
+        console.log('refetching integrations');
         getAll();
+        return;
       }
       clearInterval(checkPopup);
     }, 2000);

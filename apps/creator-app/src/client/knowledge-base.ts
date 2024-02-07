@@ -97,12 +97,12 @@ export const knowledgeBaseClient = {
 
   getUserSegmentFilters: (projectID: string, filters: ZendeskCountFilters) =>
     apiV3.fetch
-      .post<{ data: ZendeskFilterUserSegment[] }>(`/projects/${projectID}/knowledge-base/integrations/zendesk/user-segments`, { filters })
+      .post<{ data: ZendeskFilterUserSegment[] }>(`/projects/${projectID}/knowledge-base/integrations/zendesk/user-segments`, { data: filters })
       .then(({ data }) => data),
 
   getIntegrationDocumentCount: (projectID: string, integrationType: string, filters: ZendeskCountFilters) =>
     apiV3.fetch
-      .post<{ data: { count: number } }>(`/projects/${projectID}/knowledge-base/integrations/${integrationType}/count`, { filters })
+      .post<{ data: { count: number } }>(`/projects/${projectID}/knowledge-base/integrations/${integrationType}/count`, { data: filters })
       .then(({ data }) => data),
 
   createOneIntegration: (integrationType: string, data: { code: string; state: string; redirectUrl: string }) => {

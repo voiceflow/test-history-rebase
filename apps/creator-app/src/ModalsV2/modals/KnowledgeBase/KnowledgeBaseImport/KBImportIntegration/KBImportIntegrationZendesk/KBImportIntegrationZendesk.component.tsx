@@ -113,7 +113,10 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
     [brands, locales, categories, labels, userSegments]
   );
 
-  const canSubmit = React.useMemo(() => !!(categories.length && brands.length && locales.length), [categories, brands, locales]);
+  const canSubmit = React.useMemo(
+    () => !!categories.length || !!labels.length || (!brands.length && !locales.length),
+    [categories, brands, locales, labels]
+  );
 
   const importDataSources = () => {
     const filters = {

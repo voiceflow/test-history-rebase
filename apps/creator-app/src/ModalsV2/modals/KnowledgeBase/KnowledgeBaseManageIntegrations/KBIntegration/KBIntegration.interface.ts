@@ -9,4 +9,5 @@ export interface IKBIntegration {
   border?: boolean;
   type: BaseModels.Project.IntegrationTypes;
   onReconnect: () => void;
+  onDelete: () => void;
 }

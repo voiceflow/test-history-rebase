@@ -14,7 +14,7 @@ import { formatFromNow } from './KBIntegration.utils';
 
 const { colors } = Tokens;
 
-export const KBIntegration: React.FC<IKBIntegration> = ({ creatorID, icon, platform, date, border, type, onReconnect }) => {
+export const KBIntegration: React.FC<IKBIntegration> = ({ creatorID, icon, platform, date, border, type, onReconnect, onDelete }) => {
   const member = useSelector(WorkspaceV2.active.memberByIDSelector, { creatorID });
 
   const deleteIntegration = useDispatch(Designer.KnowledgeBase.Integration.effect.deleteOne);
@@ -25,9 +25,11 @@ export const KBIntegration: React.FC<IKBIntegration> = ({ creatorID, icon, platf
   const onConfirmRemove = () => {
     deleteIntegration(type)
       .then(() => {
+        onDelete();
         notify.short.info(`Integration removed`, { showIcon: false });
       })
       .catch(() => {
+        onDelete();
         notify.short.error(`Error removing integration.`, { showIcon: false });
       });
   };

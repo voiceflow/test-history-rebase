@@ -23,6 +23,10 @@ export const KBManageIntegrations = manager.create('KBManageIntegrations', () =>
     setIntegrations(await getAll());
   };
 
+  const updateIntegrations = () => {
+    getIntegrations();
+  };
+
   React.useEffect(() => {
     getIntegrations();
   }, [getAll]);
@@ -55,6 +59,7 @@ export const KBManageIntegrations = manager.create('KBManageIntegrations', () =>
                     date={createdAt}
                     border={index !== 0}
                     onReconnect={() => setScreen('reconnect')}
+                    onDelete={updateIntegrations}
                   />
                 );
               })}

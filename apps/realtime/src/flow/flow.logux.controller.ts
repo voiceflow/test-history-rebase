@@ -28,7 +28,6 @@ export class FlowLoguxController {
     @Payload() { data, context }: Actions.Flow.CreateOne.Request,
     @AuthMeta() authMeta: AuthMetaPayload
   ): Promise<Actions.Flow.CreateOne.Response> {
-    console.log('CreateOne', data);
     return this.service
       .createManyAndBroadcast(authMeta, [{ ...data, diagramID: '', assistantID: context.assistantID, environmentID: context.environmentID }])
       .then(([result]) => ({ data: this.entitySerializer.nullable(result), context }));
@@ -44,13 +43,34 @@ export class FlowLoguxController {
     @Payload() { data, context }: Actions.Flow.CreateMany.Request,
     @AuthMeta() authMeta: AuthMetaPayload
   ): Promise<Actions.Flow.CreateMany.Response> {
-    console.log('CreateMany', data);
     return this.service
       .createManyAndBroadcast(
         authMeta,
         data.map((item) => ({ ...item, diagramID: '', assistantID: context.assistantID, environmentID: context.environmentID }))
       )
       .then((results) => ({ data: this.entitySerializer.iterable(results), context }));
+  }
+
+  @Action.Async(Actions.Flow.DuplicateOne)
+  @Authorize.Permissions<Actions.Flow.DuplicateOne.Request>([Permission.PROJECT_UPDATE], ({ context }) => ({
+    id: context.environmentID,
+    kind: 'version',
+  }))
+  @UseRequestContext()
+  async duplicateOne(
+    @Payload() { data, context }: Actions.Flow.DuplicateOne.Request,
+    @AuthMeta() authMeta: AuthMetaPayload
+  ): Promise<Actions.Flow.DuplicateOne.Response> {
+    return this.service
+      .duplicateOneAndBroadcast(authMeta, {
+        flowID: { id: data.flowID, environmentID: context.environmentID },
+        assistantID: context.assistantID,
+        userID: authMeta.userID,
+      })
+      .then((result) => ({
+        data: this.entitySerializer.nullable(result),
+        context,
+      }));
   }
 
   @Action(Actions.Flow.PatchOne)

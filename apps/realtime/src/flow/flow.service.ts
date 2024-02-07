@@ -222,4 +222,30 @@ export class FlowService extends CMSTabularService<FlowORM> {
 
     await this.upsertMany(flows);
   }
+
+  /* Duplicate */
+
+  async duplicateOneAndBroadcast(
+    authMeta: AuthMetaPayload,
+    { flowID, assistantID }: { flowID: Primary<FlowEntity>; assistantID: string; userID: number }
+  ) {
+    const duplicateFlowResource = await this.findOneOrFail(flowID);
+
+    const flow = await this.createOneForUser(authMeta.userID, {
+      assistantID,
+      environmentID: duplicateFlowResource.environmentID,
+      name: `${duplicateFlowResource.name} (copy)`,
+      description: duplicateFlowResource.description,
+      diagramID: duplicateFlowResource.diagramID ?? null,
+      folderID: duplicateFlowResource.folder?.id ?? null,
+    });
+
+    await this.broadcastAddMany(authMeta, {
+      add: {
+        flows: [flow],
+      },
+    });
+
+    return flow;
+  }
 }

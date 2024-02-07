@@ -84,6 +84,9 @@ export class AssistantLoguxController {
       functionPathReplaceMeta,
       functionVariableReplaceMeta,
 
+      // flow
+      flowReplaceMeta,
+
       // assistant
       assistantAddMeta,
     ] = [
@@ -107,6 +110,7 @@ export class AssistantLoguxController {
     ] as const;
 
     const {
+      flows,
       intents,
       folders,
       entities,
@@ -165,6 +169,9 @@ export class AssistantLoguxController {
       Actions.Function.Replace({ data: this.entitySerializer.iterable(functions), context }, functionReplaceMeta),
       Actions.FunctionPath.Replace({ data: this.entitySerializer.iterable(functionPaths), context }, functionPathReplaceMeta),
       Actions.FunctionVariable.Replace({ data: this.entitySerializer.iterable(functionVariables), context }, functionVariableReplaceMeta),
+
+      // flows
+      Actions.Flow.Replace({ data: this.entitySerializer.iterable(flows), context }, flowReplaceMeta),
 
       // assistant - should be last
       Actions.Assistant.AddOne({ data: serializedAssistant, context: { workspaceID: serializedAssistant.workspaceID } }, assistantAddMeta),

@@ -94,6 +94,9 @@ const AssistantChannelSubscriptionGate: React.FC<AssistantChannelSubscriptionGat
       store.dispatch.local(Actions.FunctionPath.Replace({ data: cms.functionPaths ?? [], context }));
       store.dispatch.local(Actions.FunctionVariable.Replace({ data: cms.functionVariables ?? [], context }));
 
+      // flow
+      store.dispatch.local(Actions.Flow.Replace({ data: cms.flows ?? [], context }));
+
       // assistant - should be last
       store.dispatch.local(Actions.Assistant.AddOne({ data: cms.assistant, context: { workspaceID: cms.assistant.workspaceID } }));
 

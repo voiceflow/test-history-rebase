@@ -10,6 +10,7 @@ import {
   CardButton,
   Entity,
   EntityVariant,
+  Flow,
   Function as FunctionType,
   FunctionPath,
   FunctionVariable,
@@ -47,6 +48,7 @@ import { EntitySerializer } from '@/common';
 import { DiagramService } from '@/diagram/diagram.service';
 import { DiagramUtil } from '@/diagram/diagram.util';
 import { EntityService } from '@/entity/entity.service';
+import { FlowService } from '@/flow/flow.service';
 import { FolderService } from '@/folder/folder.service';
 import { FunctionService } from '@/function/function.service';
 import { IntentService } from '@/intent/intent.service';
@@ -87,6 +89,8 @@ export class EnvironmentService {
     private readonly attachment: AttachmentService,
     @Inject(FunctionService)
     private readonly functionService: FunctionService,
+    @Inject(FlowService)
+    private readonly flow: FlowService,
     @Inject(EntitySerializer)
     private readonly entitySerializer: EntitySerializer,
     @Optional()
@@ -295,6 +299,8 @@ export class EnvironmentService {
       ...this.attachment.prepareExportData(data, { backup }),
 
       ...(cmsFunctionsEnabled && this.functionService.prepareExportData(data, { backup })),
+      /* TODO FF */
+      ...this.flow.prepareExportData(data, { backup }),
     };
   }
 
@@ -415,6 +421,12 @@ export class EnvironmentService {
           { functions: cms.functions, functionPaths: cms.functionPaths, functionVariables: cms.functionVariables },
           prepareDataContext
         )),
+
+      ...(cmsVariablesEnabled && cms.variables && this.variable.prepareImportData({ variables: cms.variables }, prepareDataContext)),
+
+      ...(cmsFoldersEnabled && cms.folders && this.folder.prepareImportData({ folders: cms.folders }, prepareDataContext)),
+      /* TODO FF */
+      ...(cms.flows && this.flow.prepareImportData({ flows: cms.flows }, prepareDataContext)),
     };
   }
 
@@ -506,6 +518,17 @@ export class EnvironmentService {
             ),
           ]
         : []),
+
+      ...(importData.flows?.length
+        ? [
+            this.flow.importManyWithSubResources(
+              {
+                flows: importData.flows,
+              },
+              { flush: false }
+            ),
+          ]
+        : []),
     ]);
 
     await this.postgresEM.flush();
@@ -516,6 +539,7 @@ export class EnvironmentService {
       { folders },
       { entities, entityVariants },
       { intents, utterances, requiredEntities },
+      { flows },
       { variables },
       { responses, responseVariants, responseAttachments, responseDiscriminators },
       { attachments, cardButtons },
@@ -524,6 +548,7 @@ export class EnvironmentService {
       this.folder.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
       this.entity.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
       this.intent.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
+      this.flow.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
       this.variable.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
       this.response.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
       this.attachment.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
@@ -532,6 +557,7 @@ export class EnvironmentService {
 
     return {
       folders,
+      flows,
       intents,
       entities,
       functions,
@@ -591,6 +617,7 @@ export class EnvironmentService {
 
   async upsertCMSData(
     {
+      flows = [],
       intents = [],
       entities = [],
       variables = [],
@@ -607,6 +634,7 @@ export class EnvironmentService {
       responseAttachments = [],
       responseDiscriminators = [],
     }: {
+      flows?: Flow[];
       intents?: Intent[];
       entities?: Entity[];
       functions?: FunctionType[];
@@ -632,6 +660,7 @@ export class EnvironmentService {
     await this.response.upsertManyWithSubResources({ responses, responseVariants, responseAttachments, responseDiscriminators }, meta);
     await this.intent.upsertManyWithSubResources({ intents, utterances, requiredEntities }, meta);
     await this.functionService.upsertManyWithSubResources({ functions, functionPaths, functionVariables }, meta);
+    await this.flow.upsertManyWithSubResources({ flows }, meta);
   }
 
   async deleteOneCMSData(assistantID: string, environmentID: string) {
@@ -640,6 +669,8 @@ export class EnvironmentService {
       this.intent.deleteManyByEnvironment(assistantID, environmentID),
       this.functionService.deleteManyByEnvironment(assistantID, environmentID),
     ]);
+
+    await Promise.all([this.flow.deleteManyByEnvironment(assistantID, environmentID)]);
 
     await Promise.all([
       this.entity.deleteManyByEnvironment(assistantID, environmentID),
@@ -703,6 +734,7 @@ export class EnvironmentService {
 
     const [
       { folders },
+      { flows },
       { variables },
       { attachments, cardButtons },
       { responses, responseVariants, responseAttachments, responseDiscriminators },
@@ -711,6 +743,7 @@ export class EnvironmentService {
       { functions, functionPaths, functionVariables },
     ] = await Promise.all([
       this.folder.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload, { flush: false }),
+      this.flow.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload, { flush: false }),
       this.variable.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload, { flush: false }),
       this.attachment.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload, { flush: false }),
       this.response.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload, { flush: false }),
@@ -724,6 +757,7 @@ export class EnvironmentService {
     await this.postgresEM.flush();
 
     return {
+      flows,
       version: targetVersion,
       intents,
       folders,

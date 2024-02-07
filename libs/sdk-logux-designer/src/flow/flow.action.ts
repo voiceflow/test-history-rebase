@@ -80,6 +80,22 @@ export interface DeleteMany extends DeleteManyRequest, DesignerAction {}
 
 export const DeleteMany = flowAction.crud.deleteMany<DeleteMany>();
 
+/* Duplicate */
+
+export namespace DuplicateOne {
+  export interface Request extends DesignerAction {
+    data: { flowID: string };
+  }
+
+  export interface Response extends DesignerAction {
+    data: CreateOne.Response['data'];
+  }
+}
+
+export const DuplicateOne = Utils.protocol.createAsyncAction<DuplicateOne.Request, DuplicateOne.Response>(
+  flowAction('DUPLICATE_ONE')
+);
+
 /**
  * system-sent events
  */

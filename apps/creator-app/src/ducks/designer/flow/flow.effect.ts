@@ -1,5 +1,6 @@
 import type { Flow } from '@voiceflow/dtos';
 import { Actions } from '@voiceflow/sdk-logux-designer';
+import { toast } from '@voiceflow/ui-next';
 
 import { waitAsync } from '@/ducks/utils';
 import { getActiveAssistantContext } from '@/ducks/versionV2/utils';
@@ -11,11 +12,22 @@ export const createOne =
     const state = getState();
 
     const context = getActiveAssistantContext(state);
-    console.log({ context, data });
     const response = await dispatch(waitAsync(Actions.Flow.CreateOne, { context, data }));
-    console.log({ response });
 
     return response.data;
+  };
+
+export const duplicateOne =
+  (componentID: string): Thunk<Actions.Flow.DuplicateOne.Response['data']> =>
+  async (dispatch, getState) => {
+    const state = getState();
+
+    const context = getActiveAssistantContext(state);
+    const duplicated = await dispatch(waitAsync(Actions.Flow.DuplicateOne, { context, data: { flowID: componentID } }));
+
+    toast.success('Duplicated');
+
+    return duplicated.data;
   };
 
 export const patchOne =

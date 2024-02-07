@@ -96,6 +96,12 @@ export const knowledgeBaseClient = {
   getIntegrationDocumentCount: (projectID: string, integrationType: string, filters: ZendeskCountFilters) =>
     apiV3.fetch.post<number>(`/projects/${projectID}/knowledge-base/integrations/${integrationType}/count`, { filters }).then(({ data }) => data),
 
-  createOneIntegration: (integrationType: string, data: { code: string; state: string; redirectUrl: string }) =>
-    apiV3.fetch.post(`/integrations/${integrationType}/callback`, data),
+  createOneIntegration: (integrationType: string, data: { code: string; state: string; redirectUrl: string }) => {
+    // eslint-disable-next-line dot-notation
+    const url = apiV3.fetch['axios'].getUri({
+      url: `projects/integrations/${integrationType}/callback`,
+      params: data,
+    });
+    return apiV3.fetch.get<{ data: { url: string } }>(url).then(({ data }) => data);
+  },
 };

@@ -63,8 +63,11 @@ export const knowledgeBaseClient = {
   getAllIntegrations: (projectID: string) =>
     apiV3.fetch.get<{ data: DBKnowledgeBaseIntegration[] }>(`/projects/${projectID}/knowledge-base/integrations`).then(({ data }) => data),
 
-  importIntegration: (projectID: string, integrationType: string, data: { filters: ZendeskCountFilters; refreshRate: string }) =>
-    apiV3.fetch.post(`/projects/${projectID}/knowledge-base/integrations/${integrationType}`, data),
+  importIntegration: (
+    projectID: string,
+    integrationType: BaseModels.Project.IntegrationTypes,
+    data: { filters: ZendeskCountFilters; refreshRate: string }
+  ) => apiV3.fetch.post(`/projects/${projectID}/knowledge-base/integrations/${integrationType}`, { data }),
 
   deleteOneIntegration: (projectID: string, integrationID: string) =>
     apiV3.fetch.delete(`/projects/${projectID}/knowledge-base/integrations/${integrationID}`),

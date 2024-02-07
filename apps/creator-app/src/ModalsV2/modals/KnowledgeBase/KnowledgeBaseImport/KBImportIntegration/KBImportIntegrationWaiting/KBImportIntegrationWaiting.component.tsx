@@ -47,22 +47,14 @@ export const KBImportIntegrationWaiting: React.FC<IKBImportIntegrationWaiting> =
       const integrationCreatedAt = integrations.find((item) => item.type === BaseModels.Project.IntegrationTypes.ZENDESK)?.createdAt;
 
       const timeDiff = integrationCreatedAt ? today.getTime() - new Date(integrationCreatedAt).getTime() : null;
-      // eslint-disable-next-line no-console
-      console.log(`timeDifference: ${timeDiff}`);
 
       const createdWithFiveMinutes = timeDiff && timeDiff < 5 * 60 * 1000;
-      // eslint-disable-next-line no-console
-      console.log('createdWIthinFiveMinutes');
-      // eslint-disable-next-line no-console
-      console.log(createdWithFiveMinutes);
 
       if (createdWithFiveMinutes) {
         clearInterval(checkPopup);
         onConnected(true);
         notify.short.success('Connected to Zendesk');
       } else if (!popupWindow || !popupWindow.closed) {
-        // eslint-disable-next-line no-console
-        console.log('refetching integrations');
         integrations = await getAll();
         return;
       }

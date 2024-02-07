@@ -1,3 +1,5 @@
+import { BaseModels } from '@voiceflow/base-types';
+
 import { knowledgeBaseClient } from '@/client/knowledge-base';
 import { CREATOR_APP_ENDPOINT } from '@/config';
 import * as Errors from '@/config/errors';
@@ -26,7 +28,7 @@ export const getAll = (): Thunk<KnowledgeBaseIntegration[]> => async (dispatch, 
 };
 
 export const importIntegration =
-  (integrationType: string, refreshRate: string, filters: ZendeskCountFilters = {}): Thunk =>
+  (integrationType: BaseModels.Project.IntegrationTypes, refreshRate: string, filters: ZendeskCountFilters = {}): Thunk =>
   async (_, getState) => {
     const state = getState();
 

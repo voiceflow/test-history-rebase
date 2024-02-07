@@ -9,6 +9,8 @@ interface IDocumentNameURL {
 }
 
 export const DocumentNameURL: React.FC<IDocumentNameURL> = ({ data, search }) => {
+  // eslint-disable-next-line no-console
+  console.log(data);
   return (
     <Tooltip.Overflow
       referenceElement={({ ref, onOpen, onClose }) => (

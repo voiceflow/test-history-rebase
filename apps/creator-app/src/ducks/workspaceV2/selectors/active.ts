@@ -51,6 +51,10 @@ export const organizationTrialEndAtSelector = createSelector(
   [localOrganizationSelector, Feature.isFeatureEnabledSelector],
   (organization, isFeatureEnabled) => {
     if (isFeatureEnabled(Realtime.FeatureFlag.PRO_REVERSE_TRIAL)) {
+      if (organization?.subscription) {
+        return organization.subscription.trial?.endAt ?? null;
+      }
+
       return organization?.trial?.endAt ?? null;
     }
     return null;
@@ -67,7 +71,9 @@ export const isOnProTrialSelector = createSelector(
   (workspace, isOnTrial) => isOnTrial && workspace?.plan === PlanType.PRO
 );
 
-export const numberOfSeatsSelector = createSelector([workspaceSelector], (workspace) => workspace?.seats ?? 1);
+export const numberOfSeatsSelector = createSelector([workspaceSelector, localOrganizationSelector], (workspace, organization) => {
+  return organization?.subscription ? organization.subscription.editorSeats : workspace?.seats ?? 1;
+});
 
 export const planSelector = createSelector(
   [workspaceSelector, localOrganizationSelector],
@@ -82,7 +88,10 @@ export const isProOrTeamSelector = createSelector([planSelector], (plan) => plan
 
 export const isOnPaidPlanSelector = createSelector([planSelector], (plan) => plan && PAID_PLANS.includes(plan as any));
 
-export const planSeatLimitsSelector = createSelector([workspaceSelector], (workspace) => workspace?.planSeatLimits);
+export const planSeatLimitsSelector = createSelector(
+  [workspaceSelector, localOrganizationSelector],
+  (workspace, organization) => organization?.subscription?.planSeatLimits ?? workspace?.planSeatLimits
+);
 
 export const nameSelector = createSelector([workspaceSelector], (workspace) => workspace?.name);
 
@@ -109,7 +118,10 @@ export const viewerPlanSeatLimitsSelector = createSelector(
 
 export const editorPlanSeatLimitsSelector = createSelector([planSeatLimitsSelector], (planSeatLimits) => planSeatLimits?.editor ?? 1);
 
-export const variableStatesLimitSelector = createSelector([workspaceSelector], (workspace) => workspace?.variableStatesLimit);
+export const variableStatesLimitSelector = createSelector(
+  [workspaceSelector, localOrganizationSelector],
+  (workspace, organization) => organization?.subscription?.variableStatesLimit ?? workspace?.variableStatesLimit
+);
 
 export const organizationIDSelector = createSelector([workspaceSelector], (workspace) => workspace?.organizationID ?? null);
 

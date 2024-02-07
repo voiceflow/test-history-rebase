@@ -19,14 +19,12 @@ export interface BillingHistoryAPI {
   data: Invoice[];
   status: Status;
   hasMore: boolean;
-  nextCursor: string | null;
   isReady: boolean;
   loadMore: () => Promise<void>;
 }
 
 export interface BillingHistory {
   data: Invoice[];
-  hasMore: boolean;
   nextCursor: string | null;
 }
 
@@ -40,18 +38,13 @@ export const useBillingHistory = (): BillingHistoryAPI => {
     if (!organization || !organization.chargebeeSubscriptionID) return;
 
     try {
-      const { invoices, nextCursor, hasMore } = await designerClient.billing.subscription.getInvoices(
-        organization.id,
-        organization.chargebeeSubscriptionID,
-        {
-          ...(cursor && { cursor }),
-          limit: 10,
-        }
-      );
+      const { invoices, nextCursor } = await designerClient.billing.subscription.getInvoices(organization.id, organization.chargebeeSubscriptionID, {
+        ...(cursor && { cursor }),
+        limit: 10,
+      });
 
       setBillingHistory((prevHistory) => ({
         data: cursor ? [...(prevHistory?.data ?? []), ...invoices] : invoices,
-        hasMore,
         nextCursor,
       }));
 
@@ -63,7 +56,7 @@ export const useBillingHistory = (): BillingHistoryAPI => {
   };
 
   const loadMore = async () => {
-    if (!billingHistory?.hasMore) return;
+    if (!billingHistory?.nextCursor) return;
 
     setStatus(Status.LOADING_MORE);
 
@@ -80,9 +73,8 @@ export const useBillingHistory = (): BillingHistoryAPI => {
 
   return {
     data: billingHistory?.data ?? [],
-    nextCursor: billingHistory?.nextCursor ?? null,
+    hasMore: !!billingHistory?.nextCursor,
     status,
-    hasMore: !!billingHistory?.hasMore,
     isReady: !!billingHistory?.data,
     loadMore,
   };

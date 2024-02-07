@@ -3,7 +3,6 @@ import { z } from 'nestjs-zod/z';
 
 export const GetInvoicesResponse = z.object({
   invoices: z.array(InvoiceDTO),
-  hasMore: z.boolean(),
   nextCursor: z.string().nullable(),
 });
 

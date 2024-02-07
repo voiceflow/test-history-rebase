@@ -17,6 +17,13 @@ export const SubscriptionDTO = z.object({
 
   plan: z.string(),
   editorSeats: z.number(),
+  pricePerEditor: z.number(),
+
+  planSeatLimits: z.object({
+    editor: z.number(),
+    viewer: z.number(),
+  }),
+  variableStatesLimit: z.number().nullable(),
 });
 
 export type Subscription = z.infer<typeof SubscriptionDTO>;

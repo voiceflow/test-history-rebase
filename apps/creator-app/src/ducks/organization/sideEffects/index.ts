@@ -72,3 +72,36 @@ export const loadActiveOrganizationSubscription =
       return null;
     }
   };
+
+export const updateSeats = (organizationID: string, chargebeeSubscriptionID: string, seats: number): Thunk<void> => {
+  return async (dispatch) => {
+    try {
+      await designerClient.billing.subscription.updateSeats(organizationID, chargebeeSubscriptionID, { seats });
+      await dispatch(loadActiveOrganizationSubscription(organizationID, chargebeeSubscriptionID));
+    } catch (err) {
+      toast.error(getErrorMessage(err, 'Failed to update seats'));
+    }
+  };
+};
+
+export const scheduleSeatsUpdate = (organizationID: string, chargebeeSubscriptionID: string, seats: number): Thunk<void> => {
+  return async (dispatch) => {
+    try {
+      await designerClient.billing.subscription.scheduleSeatsUpdate(organizationID, chargebeeSubscriptionID, { seats });
+      await dispatch(loadActiveOrganizationSubscription(organizationID, chargebeeSubscriptionID));
+    } catch (err) {
+      toast.error(getErrorMessage(err, 'Failed to schedule seats update'));
+    }
+  };
+};
+
+export const cancelSubscription = (organizationID: string, chargebeeSubscriptionID: string): Thunk<void> => {
+  return async (dispatch) => {
+    try {
+      await designerClient.billing.subscription.cancel(organizationID, chargebeeSubscriptionID);
+      await dispatch(loadActiveOrganizationSubscription(organizationID, chargebeeSubscriptionID));
+    } catch (err) {
+      toast.error(getErrorMessage(err, 'Failed to cancel subscription'));
+    }
+  };
+};

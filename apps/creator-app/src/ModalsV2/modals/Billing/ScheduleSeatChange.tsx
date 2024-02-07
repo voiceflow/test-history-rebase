@@ -1,48 +1,48 @@
 import { BillingPeriod } from '@voiceflow/internal';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { Alert, Button, Modal, SectionV2, Text, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Workspace from '@/components/Workspace';
-import * as Session from '@/ducks/session';
+import * as Organization from '@/ducks/organization';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useSyncDispatch } from '@/hooks/realtime';
-import { useSelector } from '@/hooks/redux';
+import { useDispatch, useSelector } from '@/hooks';
 import { useTrackingEvents } from '@/hooks/tracking';
+import { ChargebeeBillingPeriod } from '@/models';
 import * as currency from '@/utils/currency';
 
 import manager from '../../manager';
 import SeatsInput from './SeatsInput';
 
 interface ScheduleSeatChangeProps {
-  billingPeriod?: BillingPeriod;
+  billingPeriod: string | null;
   pricePerEditor: number;
-  nextBillingDate: string;
+  nextBillingDate: string | null;
   scheduleOrCurrentEditorSeats: number;
 }
 
 const ScheduleSeatChange = manager.create<ScheduleSeatChangeProps>(
-  'ScheduleSeatChange',
+  'BillingScheduleSeatChange',
   () =>
     ({ api, type, opened, hidden, animated, nextBillingDate, pricePerEditor, scheduleOrCurrentEditorSeats, billingPeriod, closePrevented }) => {
       const [tracking] = useTrackingEvents();
 
-      const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
+      const organization = useSelector(Organization.active.organizationSelector);
       const editorPlanSeatLimits = useSelector(WorkspaceV2.active.editorPlanSeatLimitsSelector);
-
-      const changeSeats = useSyncDispatch(Realtime.workspace.changeSeats);
+      const scheduleSeatsUpdate = useDispatch(Organization.scheduleSeatsUpdate);
 
       const [numSeats, setNumSeats] = React.useState(scheduleOrCurrentEditorSeats);
 
-      const isAnnual = billingPeriod === BillingPeriod.ANNUALLY;
+      const isAnnual = billingPeriod === ChargebeeBillingPeriod.YEAR;
       const isReducing = numSeats < scheduleOrCurrentEditorSeats;
       const isIncreasing = numSeats > scheduleOrCurrentEditorSeats;
 
       const onScheduleSeatChange = async () => {
         api.preventClose();
 
+        if (!organization?.subscription) return;
+
         try {
-          await changeSeats({ seats: numSeats, schedule: true, workspaceID });
+          await scheduleSeatsUpdate(organization?.id, organization?.subscription?.id, numSeats);
 
           tracking.trackSeatChange({ reduced: isReducing, scheduled: true });
 

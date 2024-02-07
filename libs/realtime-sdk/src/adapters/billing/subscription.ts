@@ -1,37 +1,30 @@
 import { Identity } from '@realtime-sdk/models';
+import { to_DD_MMM_YYYY } from '@realtime-sdk/utils/date';
+import { findPlanItem, getDaysLeftToTrialEnd, getPlanFromPriceID, getWorkspacePlanLimits, isChargebeeTrial } from '@realtime-sdk/utils/subscription';
 import type { Subscription } from '@voiceflow/dtos';
 import { PlanType } from '@voiceflow/internal';
 import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter';
 
-const getDateWithoutTimezone = (date: Date) => new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
-
-const ONE_DAY = 1000 * 60 * 60 * 24;
-
-function getDaysLeftToTrialEnd(trialEndDate: Date) {
-  const trialEndDateWithoutTimezone = getDateWithoutTimezone(trialEndDate);
-  const today = getDateWithoutTimezone(new Date());
-
-  const daysLeft = Math.ceil((trialEndDateWithoutTimezone.getTime() - today.getTime()) / ONE_DAY);
-
-  return Math.max(0, daysLeft);
-}
-
 const subscriptionAdapter = createMultiAdapter<Identity.Subscription, Subscription>(
   ({ id, billingPeriodUnit, status, nextBillingAt, subscriptionItems, metaData }) => {
-    const planItem = subscriptionItems?.find((item) => item.itemType === 'plan');
+    const planItem = findPlanItem(subscriptionItems);
     const trialEnd = planItem?.trialEnd;
 
-    const plan = planItem?.itemPriceID ? planItem.itemPriceID.split('-')[0] : PlanType.STARTER;
-    const isTrial = planItem?.itemPriceID?.includes('trial') || metaData?.downgraded;
+    const plan = getPlanFromPriceID(planItem?.itemPriceID);
+    const isTrial = isChargebeeTrial(planItem, metaData);
+    const planLimits = getWorkspacePlanLimits(plan as PlanType);
 
     const result: Subscription = {
       id,
       billingPeriodUnit: billingPeriodUnit ?? null,
-      editorSeats: planItem?.quantity ?? 0,
-      plan: metaData?.downgraded ? PlanType.PRO : plan,
-      nextBillingDate: nextBillingAt ? new Date(nextBillingAt).toJSON() : null,
+      editorSeats: planItem?.quantity ?? 1,
+      pricePerEditor: planItem?.unitPrice ? planItem.unitPrice / 100 : 0,
+      plan: metaData?.downgradedFromTrial ? PlanType.PRO : plan,
+      nextBillingDate: nextBillingAt ? to_DD_MMM_YYYY(new Date(nextBillingAt)) : null,
       status,
       trial: isTrial && trialEnd ? { daysLeft: getDaysLeftToTrialEnd(new Date(trialEnd)), endAt: new Date(trialEnd).toJSON() } : null,
+      planSeatLimits: planLimits.seatLimits,
+      variableStatesLimit: planLimits.variableStatesLimit,
     };
 
     return result;

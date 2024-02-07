@@ -1,4 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { NotFoundException } from '@voiceflow/exception';
+import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { BillingClient } from '@voiceflow/sdk-billing';
 
 const fromUnixTimestamp = (timestamp: number) => timestamp * 1000;
@@ -67,5 +69,21 @@ export class BillingSubscriptionService {
 
   cancel(subscriptionID: string) {
     return this.billingClient.private.cancelSubscription(subscriptionID);
+  }
+
+  async updateSeats(subscriptionID: string, editorSeats: number, changeOption: 'immediately' | 'end_of_term') {
+    const subscription = await this.findOne(subscriptionID);
+
+    const planItem = Realtime.Utils.subscription.findPlanItem(subscription.subscriptionItems);
+
+    if (!planItem) {
+      throw new NotFoundException('Unable to update seats');
+    }
+
+    return this.billingClient.private.updateSubscriptionItem(subscriptionID, planItem.itemPriceID, {
+      itemPriceID: planItem.itemPriceID,
+      quantity: editorSeats,
+      changeOption,
+    });
   }
 }

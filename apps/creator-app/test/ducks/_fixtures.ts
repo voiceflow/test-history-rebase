@@ -5,6 +5,7 @@ import * as Domain from '@/ducks/domain';
 import * as Feature from '@/ducks/feature';
 import * as History from '@/ducks/history';
 import * as Notifications from '@/ducks/notifications';
+import * as Organization from '@/ducks/organization';
 import * as ProjectListV2 from '@/ducks/projectListV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Prototype from '@/ducks/prototype';
@@ -56,4 +57,5 @@ export const MOCK_STATE: State = {
   [WorkspaceV2.STATE_KEY]: createCRUDState(),
   [VariableState.STATE_KEY]: { ...VariableState.INITIAL_STATE, selectedState: null },
   [History.STATE_KEY]: History.INITIAL_STATE,
+  [Organization.STATE_KEY]: Organization.INITIAL_STATE,
 };

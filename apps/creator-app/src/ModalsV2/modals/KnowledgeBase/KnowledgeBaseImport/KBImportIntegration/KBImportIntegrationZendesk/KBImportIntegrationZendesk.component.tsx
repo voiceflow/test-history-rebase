@@ -113,8 +113,9 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
     [brands, locales, categories, labels, userSegments]
   );
 
+  const canSubmit = React.useMemo(() => !!(categories.length && brands.length && locales.length), [categories, brands, locales]);
+
   const importDataSources = () => {
-    disableClose();
     const filters = {
       labels,
       locales,
@@ -202,7 +203,7 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
         <Modal.Footer.Button
           label={`Import ${numDataSources || ''} data sources`}
           onClick={importDataSources}
-          disabled={disabled}
+          disabled={disabled || canSubmit}
           isLoading={disabled}
         />
       </Modal.Footer>

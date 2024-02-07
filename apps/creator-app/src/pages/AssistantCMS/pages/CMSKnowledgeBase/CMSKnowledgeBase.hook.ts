@@ -109,8 +109,8 @@ export const useKBIntegrationDocumentSync = () => {
   useEffect(() => {
     const checkDocuments = setInterval(() => {
       getAll().catch(() => {});
-    }, 15000);
+    }, 3000);
 
-    setTimeout(() => clearInterval(checkDocuments), 420000);
+    setTimeout(() => clearInterval(checkDocuments), 300000);
   }, []);
 };

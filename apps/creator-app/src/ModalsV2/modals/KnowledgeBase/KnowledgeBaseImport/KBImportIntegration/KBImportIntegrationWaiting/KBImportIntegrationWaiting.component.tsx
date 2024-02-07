@@ -4,7 +4,8 @@ import React from 'react';
 
 import { Modal } from '@/components/Modal';
 import { Designer } from '@/ducks';
-import { useDispatch, useSelector } from '@/hooks/store.hook';
+import { useDispatch } from '@/hooks/store.hook';
+import { KnowledgeBaseIntegration } from '@/models/KnowledgeBase.model';
 import { openURLInANewPopupWindow } from '@/utils/window';
 
 import { IKBImportIntegrationWaiting } from './KBImportIntegrationWaiting.interface';
@@ -17,7 +18,6 @@ export const KBImportIntegrationWaiting: React.FC<IKBImportIntegrationWaiting> =
 
   const [popupWindow, setPopupWindow] = React.useState<Window | null>(null);
 
-  const integrations = useSelector(Designer.KnowledgeBase.Integration.selectors.all);
   const getAll = useDispatch(Designer.KnowledgeBase.Integration.effect.getAll);
 
   const onConnectZendesk = async () => {
@@ -38,17 +38,11 @@ export const KBImportIntegrationWaiting: React.FC<IKBImportIntegrationWaiting> =
   };
 
   React.useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.log('POPUP WINDOW');
-    // eslint-disable-next-line no-console
-    console.log(popupWindow);
     if (!popupWindow) return;
 
-    const checkPopup = setInterval(() => {
-      // eslint-disable-next-line no-console
-      console.log('new interval call');
-      // eslint-disable-next-line no-console
-      console.log(popupWindow);
+    let integrations: KnowledgeBaseIntegration[] = [];
+
+    const checkPopup = setInterval(async () => {
       const today = new Date();
       const integrationCreatedAt = integrations.find((item) => item.type === BaseModels.Project.IntegrationTypes.ZENDESK)?.createdAt;
       // eslint-disable-next-line no-console
@@ -73,7 +67,7 @@ export const KBImportIntegrationWaiting: React.FC<IKBImportIntegrationWaiting> =
       } else if (!popupWindow || !popupWindow.closed) {
         // eslint-disable-next-line no-console
         console.log('refetching integrations');
-        getAll();
+        integrations = await getAll();
         return;
       }
       clearInterval(checkPopup);

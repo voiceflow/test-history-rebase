@@ -21,7 +21,7 @@ import { KBRefreshRateSelect } from '../../components/KBRefreshRateSelect/KBRefr
 import { IKBImportIntegrationZendesk } from './KBImportIntegrationZendesk.interface';
 import { KBZendeskFilterSelect } from './KBZendeskFilterSelect.component';
 
-export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> = ({ onClose, enableClose, disabled }) => {
+export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> = ({ onClose, enableClose, disableClose, disabled }) => {
   const [refreshRate, setRefreshRate] = React.useState(BaseModels.Project.KnowledgeBaseDocumentRefreshRate.NEVER);
   const [filters, setFilters] = React.useState<ZendeskFilters>({});
   const [numDataSources, setNumDataSources] = React.useState<number | null>(null);

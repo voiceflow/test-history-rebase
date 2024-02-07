@@ -1,3 +1,4 @@
+export * from './component.util';
 export * from './entity.util';
 export * from './intent.util';
 export * from './markup.util';

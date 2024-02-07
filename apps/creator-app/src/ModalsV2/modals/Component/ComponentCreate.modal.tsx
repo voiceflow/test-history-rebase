@@ -1,13 +1,15 @@
 import type { Flow as FlowType } from '@voiceflow/dtos';
 import { toast } from '@voiceflow/ui';
-import { Scroll, TextArea } from '@voiceflow/ui-next';
+import { Box, InputFormControl, Scroll, TextArea } from '@voiceflow/ui-next';
+import { componentNameValidator } from '@voiceflow/utils-designer';
 import React, { useState } from 'react';
 
 import { CMSFormName } from '@/components/CMS/CMSForm/CMSFormName/CMSFormName.component';
 import { Modal } from '@/components/Modal';
 import { Designer } from '@/ducks';
 import { useInputState } from '@/hooks/input.hook';
-import { useDispatch } from '@/hooks/store.hook';
+import { useDispatch, useGetValueSelector } from '@/hooks/store.hook';
+import { useValidators } from '@/hooks/validate.hook';
 
 import { modalsManager } from '../../manager';
 import { textareaStyles } from './ComponentCreate.css';
@@ -22,29 +24,41 @@ export const ComponentCreateModal = modalsManager.create<IComponentCreateModal, 
   () =>
     ({ api, type: typeProp, name: nameProp, opened, hidden, animated, folderID, closePrevented }) => {
       const createOne = useDispatch(Designer.Flow.effect.createOne);
-
+      const getComponents = useGetValueSelector(Designer.Flow.selectors.all);
       const nameState = useInputState({ value: nameProp ?? '' });
-      const [description, setDescription] = useState<string>('');
+      const validator = useValidators({
+        name: [componentNameValidator, nameState.setError],
+      });
 
-      const onCreate = async ({ name }: Pick<FlowType, 'name'>) => {
-        api.preventClose();
+      const [description, setDescription] = useState<string>(
+        '(32px * 2) - 200px - 20px - 20px - 80px - 20px (32px * 2) - 200px - 20px - 20px - 80px - 20px (32px * 2) - 200px - 20px - 20px - 80px - 20px (32px * 2) - 200px - 20px - 20px - 80px - 20px (32px * 2) - 200px - 20px - 20px - 80px - 20px (32px * 2) - 200px - 20px - 20px - 80px - 20px (32px * 2) - 200px - 20px - 20px - 80px - 20px (32px * 2) - 200px - 20px - 20px - 80px - 20px (32px * 2) - 200px - 20px - 20px - 80px - 20px (32px * 2) - 200px - 20px - 20px - 80px - 20px (32px * 2) - 200px - 20px - 20px - 80px - 20px (32px * 2) - 200px - 20px - 20px - 80px - 20px (32px * 2) - 200px - 20px - 20px - 80px - 20px (32px * 2) - 200px - 20px - 20px - 80px - 20px (32px * 2) - 200px - 20px - 20px - 80px - 20px (32px * 2) - 200px - 20px - 20px - 80px - 20px (32px * 2) - 200px - 20px - 20px - 80px - 20px (32px * 2) - 200px - 20px - 20px - 80px - 20px (32px * 2) - 200px - 20px - 20px - 80px - 20px (32px * 2) - 200px - 20px - 20px - 80px - 20px (32px * 2) - 200px - 20px - 20px - 80px - 20px (32px * 2) - 200px - 20px - 20px - 80px - 20px (32px * 2) - 200px - 20px - 20px - 80px - 20px '
+      );
 
-        try {
-          const component = await createOne({
-            name,
-            folderID,
-            description: description?.trim() || '',
-          });
+      const onCreate = validator.container(
+        async (data) => {
+          api.preventClose();
 
-          api.resolve(component);
-          api.enableClose();
-          api.close();
-        } catch (e) {
-          toast.genericError();
+          try {
+            const component = await createOne({
+              ...data,
+              folderID,
+              description: description?.trim() || '',
+            });
 
-          api.enableClose();
-        }
-      };
+            api.resolve(component);
+
+            api.enableClose();
+            api.close();
+          } catch (e) {
+            toast.genericError();
+
+            api.enableClose();
+          }
+        },
+        () => ({
+          components: getComponents(),
+        })
+      );
 
       const onSubmit = () => onCreate({ name: nameState.value });
 
@@ -73,14 +87,18 @@ export const ComponentCreateModal = modalsManager.create<IComponentCreateModal, 
                 onValueChange={nameState.setValue}
               />
 
-              <TextArea
-                value={description}
-                onValueChange={setDescription}
-                disabled={closePrevented}
-                className={textareaStyles}
-                placeholder="Enter a description (optional)"
-                testID="function__description"
-              />
+              <Box direction="column">
+                <InputFormControl label="Description">
+                  <TextArea
+                    value={description}
+                    onValueChange={setDescription}
+                    disabled={closePrevented}
+                    className={textareaStyles}
+                    placeholder="Enter description (optional)"
+                    testID="function__description"
+                  />
+                </InputFormControl>
+              </Box>
             </Modal.Body>
           </Scroll>
 

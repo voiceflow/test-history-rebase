@@ -1,6 +1,6 @@
 import type { Flow } from '@voiceflow/dtos';
 import { Actions } from '@voiceflow/sdk-logux-designer';
-import { toast } from '@voiceflow/ui-next';
+import { notify } from '@voiceflow/ui-next';
 
 import { waitAsync } from '@/ducks/utils';
 import { getActiveAssistantContext } from '@/ducks/versionV2/utils';
@@ -25,7 +25,7 @@ export const duplicateOne =
     const context = getActiveAssistantContext(state);
     const duplicated = await dispatch(waitAsync(Actions.Flow.DuplicateOne, { context, data: { flowID: componentID } }));
 
-    toast.success('Duplicated');
+    notify.short.success('Duplicated');
 
     return duplicated.data;
   };

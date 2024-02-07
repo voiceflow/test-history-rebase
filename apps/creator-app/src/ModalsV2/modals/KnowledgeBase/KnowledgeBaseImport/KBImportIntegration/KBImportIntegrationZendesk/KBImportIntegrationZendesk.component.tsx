@@ -119,6 +119,14 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
     [categories, brands, locales, labels]
   );
 
+  const checkForDocuments = () => {
+    const checkDocuments = setInterval(() => {
+      getAll().catch(() => {});
+    }, 30000);
+
+    setTimeout(() => clearInterval(checkDocuments), 120000);
+  };
+
   const importDataSources = async () => {
     disableClose();
     const filters = {
@@ -131,11 +139,7 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
     const status = await importIntegration(BaseModels.Project.IntegrationTypes.ZENDESK, refreshRate, filters);
 
     if (status === 200) {
-      const checkDocuments = setInterval(() => {
-        getAll().catch(() => {});
-      }, 3000);
-
-      setTimeout(() => clearInterval(checkDocuments), 300000);
+      setTimeout(() => checkForDocuments(), 5000);
       onClose();
     } else {
       notify.short.error('Failed to import data sources');

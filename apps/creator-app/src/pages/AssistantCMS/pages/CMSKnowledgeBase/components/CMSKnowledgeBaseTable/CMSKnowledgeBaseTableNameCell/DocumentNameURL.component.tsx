@@ -15,7 +15,7 @@ export const DocumentNameURL: React.FC<IDocumentNameURL> = ({ data, search }) =>
         ref={ref}
         href={data?.source === BaseModels.Project.IntegrationTypes.ZENDESK ? data.name : data.url}
         label={data.name}
-        target="blank"
+        target="_blank"
         overflow
         isSelectable
         highlight={search}

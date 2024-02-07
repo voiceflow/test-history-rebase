@@ -214,7 +214,7 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
         <Modal.Footer.Button
           label={`Import ${numDataSources === null ? '' : numDataSources} data sources`}
           onClick={importDataSources}
-          disabled={disabled || !canSubmit}
+          disabled={disabled || !canSubmit || !numDataSources}
           isLoading={disabled}
         />
       </Modal.Footer>

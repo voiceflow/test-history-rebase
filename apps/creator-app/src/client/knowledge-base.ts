@@ -88,13 +88,19 @@ export const knowledgeBaseClient = {
   },
 
   getIntegrationFilters: (projectID: string, integrationType: string) =>
-    apiV3.fetch.get<ZendeskFilters>(`/projects/${projectID}/knowledge-base/integrations/${integrationType}/filters`).then(({ data }) => data),
+    apiV3.fetch
+      .get<{ data: ZendeskFilters }>(`/projects/${projectID}/knowledge-base/integrations/${integrationType}/filters`)
+      .then(({ data }) => data),
 
-  getUserSegmentFilters: (projectID: string) =>
-    apiV3.fetch.get<ZendeskFilterUserSegment[]>(`/projects/${projectID}/knowledge-base/integrations/zendesk/user-segments`).then(({ data }) => data),
+  getUserSegmentFilters: (projectID: string, filters: ZendeskCountFilters) =>
+    apiV3.fetch
+      .post<{ data: ZendeskFilterUserSegment[] }>(`/projects/${projectID}/knowledge-base/integrations/zendesk/user-segments`, { filters })
+      .then(({ data }) => data),
 
   getIntegrationDocumentCount: (projectID: string, integrationType: string, filters: ZendeskCountFilters) =>
-    apiV3.fetch.post<number>(`/projects/${projectID}/knowledge-base/integrations/${integrationType}/count`, { filters }).then(({ data }) => data),
+    apiV3.fetch
+      .post<{ data: { count: number } }>(`/projects/${projectID}/knowledge-base/integrations/${integrationType}/count`, { filters })
+      .then(({ data }) => data),
 
   createOneIntegration: (integrationType: string, data: { code: string; state: string; redirectUrl: string }) => {
     // eslint-disable-next-line dot-notation

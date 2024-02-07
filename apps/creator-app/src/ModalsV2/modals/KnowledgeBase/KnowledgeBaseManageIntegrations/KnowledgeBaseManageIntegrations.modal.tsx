@@ -1,4 +1,4 @@
-import { Switch } from '@voiceflow/ui';
+import { Switch, useDidUpdateEffect } from '@voiceflow/ui';
 import { Box, Scroll } from '@voiceflow/ui-next';
 import React from 'react';
 
@@ -22,6 +22,12 @@ export const KBManageIntegrations = manager.create('KBManageIntegrations', () =>
   const getIntegrations = async () => {
     setIntegrations(await getAll());
   };
+
+  useDidUpdateEffect(() => {
+    if (integrations.length === 0) {
+      api.close();
+    }
+  }, [integrations]);
 
   const updateIntegrations = () => {
     getIntegrations();

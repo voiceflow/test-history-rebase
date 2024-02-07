@@ -45,16 +45,12 @@ export const KBImportIntegrationWaiting: React.FC<IKBImportIntegrationWaiting> =
     const checkPopup = setInterval(async () => {
       const today = new Date();
       const integrationCreatedAt = integrations.find((item) => item.type === BaseModels.Project.IntegrationTypes.ZENDESK)?.createdAt;
-      // eslint-disable-next-line no-console
-      console.log(integrations);
-      // eslint-disable-next-line no-console
-      console.log(integrations.find((item) => item.type === BaseModels.Project.IntegrationTypes.ZENDESK));
-      // eslint-disable-next-line no-console
-      console.log('integration Created At');
-      // eslint-disable-next-line no-console
-      console.log(integrationCreatedAt);
 
-      const createdWithFiveMinutes = integrationCreatedAt ? today.getTime() - new Date(integrationCreatedAt).getTime() > 5 * 60 * 1000 : false;
+      const timeDiff = integrationCreatedAt ? today.getTime() - new Date(integrationCreatedAt).getTime() : null;
+      // eslint-disable-next-line no-console
+      console.log(`timeDifference: ${timeDiff}`);
+
+      const createdWithFiveMinutes = timeDiff ? timeDiff > 5 * 60 * 1000 : false;
       // eslint-disable-next-line no-console
       console.log('createdWIthinFiveMinutes');
       // eslint-disable-next-line no-console

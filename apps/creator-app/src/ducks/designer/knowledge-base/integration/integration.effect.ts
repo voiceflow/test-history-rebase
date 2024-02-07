@@ -17,7 +17,8 @@ export const getAll = (): Thunk<KnowledgeBaseIntegration[]> => async (dispatch, 
   Errors.assertProjectID(projectID);
 
   const dbIntegrations = await knowledgeBaseClient.getAllIntegrations(projectID);
-  const integrations = integrationAdapter.mapFromDB(dbIntegrations);
+
+  const integrations = integrationAdapter.mapFromDB(dbIntegrations.data);
 
   dispatch(Actions.AddMany({ data: integrations }));
 

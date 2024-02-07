@@ -169,7 +169,7 @@ export const Path = {
   WORKSPACE_DEVELOPER_SETTINGS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.SETTINGS, WorkspaceSettingsRoute.DEVELOPER),
   WORKSPACE_SSO_SETTINGS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.SETTINGS, WorkspaceSettingsRoute.SSO),
   WORKSPACE_ACCEPT_INVITE: toPath(RootRoute.WORKSPACE, WorkspaceRoute.ACCEPT_INVITE),
-  ZENDESK_CALLBACK: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.INTEGRATE_KB, WorkspaceIntegrateKBRoute.ZENDESK),
+  ZENDESK_CALLBACK: toPath(RootRoute.WORKSPACE, WorkspaceRoute.INTEGRATE_KB, WorkspaceIntegrateKBRoute.ZENDESK),
 
   DASHBOARD: toPath(RootRoute.DASHBOARD),
 

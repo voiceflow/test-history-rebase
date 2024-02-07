@@ -2,7 +2,9 @@ import { Editor, IEditorAPI, Scroll } from '@voiceflow/ui-next';
 import React, { useRef } from 'react';
 
 import { CMSEditorDescription } from '@/components/CMS/CMSEditor/CMSEditorDescription/CMSEditorDescription.component';
+import { CMSRoute } from '@/config/routes';
 import { Designer } from '@/ducks';
+import { goToCMSResource } from '@/ducks/router';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
 
 import { CMSEditorMoreButton } from '../../../../components/CMSEditorMoreButton/CMSEditorMoreButton.components';
@@ -11,10 +13,16 @@ import { useCMSActiveResourceID } from '../../../../hooks/cms-table.hook';
 
 export const CMSComponentEditor: React.FC = () => {
   const editorRef = useRef<IEditorAPI>(null);
+  const duplicateOne = useDispatch(Designer.Flow.effect.duplicateOne);
 
   const componentID = useCMSActiveResourceID();
   const getMoreMenu = useCMSResourceGetMoreMenu({
     onRename: () => editorRef.current?.startTitleEditing(),
+    onDuplicate: async (id) => {
+      const data = await duplicateOne(id);
+
+      goToCMSResource(CMSRoute.COMPONENT, data.id);
+    },
   });
 
   const component = useSelector(Designer.Flow.selectors.oneByID, { id: componentID });

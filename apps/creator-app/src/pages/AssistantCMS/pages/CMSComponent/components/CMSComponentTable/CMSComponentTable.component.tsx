@@ -2,6 +2,8 @@ import { Table } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { CMS_COMPONENT_LEARN_MORE } from '@/constants/link.constant';
+import { Designer } from '@/ducks';
+import { useDispatch } from '@/hooks';
 
 import { CMSEmpty } from '../../../../components/CMSEmpty/CMSEmpty.component';
 import { useCMSRowItemClick, useCMSRowItemContextMenu, useCMSRowItemNavigate } from '../../../../hooks/cms-row-item.hook';
@@ -15,8 +17,10 @@ export const CMSComponentTable: React.FC = () => {
   const onRowClick = useCMSRowItemClick();
   const cmsManager = useComponentCMSManager();
   const onRowNavigate = useCMSRowItemNavigate();
+  const duplicateOne = useDispatch(Designer.Flow.effect.duplicateOne);
   const rowContextMenu = useCMSRowItemContextMenu({
     nameColumnType: ComponentTableColumn.NAME,
+    onDuplicate: duplicateOne,
   });
 
   return (

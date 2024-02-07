@@ -108,7 +108,7 @@ export class MigrationService {
     yield MigrationState.STARTED;
 
     try {
-      await this.postgresEM.transactional(async () => {
+      const migrationResult = await this.postgresEM.transactional(async () => {
         const [project, diagrams, assistant, cmsData] = await Promise.all([
           this.projectLegacy.get(creatorID, projectID),
           this.legacy.models.diagram.findManyByVersionID(versionID).then(this.legacy.models.diagram.adapter.mapFromDB),
@@ -166,22 +166,24 @@ export class MigrationService {
           { userID: creatorID, assistantID: version.projectID, environmentID: version._id }
         );
 
-        await Promise.all(
-          migrationResult.diagrams.map(({ diagramID, ...data }) =>
-            this.legacy.models.diagram.updateOne(
-              this.legacy.models.diagram.adapter.toDB({ versionID, diagramID }),
-              this.legacy.models.diagram.adapter.toDB(Utils.object.omit(data, ['_id']))
-            )
-          )
-        );
-
-        await this.legacy.models.version.updateByID(
-          versionID,
-          this.legacy.models.version.adapter.toDB({ ...migrationResult.version, _version: targetSchemaVersion })
-        );
-
-        await this.migrationCache.setActiveSchemaVersion(versionID, targetSchemaVersion);
+        return migrationResult;
       });
+
+      await Promise.all(
+        migrationResult.diagrams.map(({ diagramID, ...data }) =>
+          this.legacy.models.diagram.updateOne(
+            this.legacy.models.diagram.adapter.toDB({ versionID, diagramID }),
+            this.legacy.models.diagram.adapter.toDB(Utils.object.omit(data, ['_id']))
+          )
+        )
+      );
+
+      await this.legacy.models.version.updateByID(
+        versionID,
+        this.legacy.models.version.adapter.toDB({ ...migrationResult.version, _version: targetSchemaVersion })
+      );
+
+      await this.migrationCache.setActiveSchemaVersion(versionID, targetSchemaVersion);
 
       yield MigrationState.DONE;
     } catch (err) {

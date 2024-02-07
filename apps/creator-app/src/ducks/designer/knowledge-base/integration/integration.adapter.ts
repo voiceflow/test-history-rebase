@@ -5,7 +5,7 @@ import { DBKnowledgeBaseIntegration, KnowledgeBaseIntegration } from '@/models/K
 export const integrationAdapter = createMultiAdapter<DBKnowledgeBaseIntegration, KnowledgeBaseIntegration>(
   ({ ...rest }) => ({
     ...rest,
-    id: rest.type,
+    id: `${rest.creatorID}-${rest.type}`,
   }),
   ({ id, ...rest }) => ({
     ...rest,

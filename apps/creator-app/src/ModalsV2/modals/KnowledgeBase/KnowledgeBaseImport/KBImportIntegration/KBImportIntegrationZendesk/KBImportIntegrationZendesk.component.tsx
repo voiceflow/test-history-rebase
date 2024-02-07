@@ -25,6 +25,7 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
   const [refreshRate, setRefreshRate] = React.useState(BaseModels.Project.KnowledgeBaseDocumentRefreshRate.NEVER);
   const [filters, setFilters] = React.useState<ZendeskFilters>({});
   const [numDataSources, setNumDataSources] = React.useState<number | null>(null);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const [brands, setBrands] = React.useState<ZendeskFilterBrand[]>([]);
   const [locales, setLocales] = React.useState<ZendeskFilterLocale[]>([]);
@@ -45,6 +46,7 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
   const importIntegration = useDispatch(Designer.KnowledgeBase.Integration.effect.importIntegration);
 
   const updateDocumentCount = async () => {
+    setIsLoading(true);
     const filters = {
       labels,
       locales,
@@ -52,8 +54,9 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
       categories,
       userSegments,
     };
-    const numDocs = await getDocumentCount('zendesk', filters);
-    setNumDataSources(numDocs);
+    await getDocumentCount('zendesk', filters)
+      .then((numDocs) => setNumDataSources(numDocs))
+      .finally(() => setIsLoading(false));
   };
 
   React.useEffect(() => {
@@ -215,7 +218,7 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
           label={`Import ${numDataSources === null ? '' : numDataSources} data sources`}
           onClick={importDataSources}
           disabled={disabled || !canSubmit || !numDataSources}
-          isLoading={disabled}
+          isLoading={disabled || isLoading}
         />
       </Modal.Footer>
     </>

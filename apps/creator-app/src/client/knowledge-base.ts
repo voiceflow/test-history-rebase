@@ -69,8 +69,8 @@ export const knowledgeBaseClient = {
     data: { filters: ZendeskCountFilters; refreshRate: string }
   ) => apiV3.fetch.post(`/projects/${projectID}/knowledge-base/integrations/${integrationType}`, { data }),
 
-  deleteOneIntegration: (projectID: string, integrationID: string) =>
-    apiV3.fetch.delete(`/projects/${projectID}/knowledge-base/integrations/${integrationID}`),
+  deleteOneIntegration: (projectID: string, integrationType: string) =>
+    apiV3.fetch.delete(`/projects/${projectID}/knowledge-base/integrations/${integrationType}`),
 
   getIntegrationAuthUrl: (projectID: string, integrationType: string, redirectUrl: string) => {
     // eslint-disable-next-line dot-notation

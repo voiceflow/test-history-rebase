@@ -28,7 +28,7 @@ export const getAll = (): Thunk<KnowledgeBaseIntegration[]> => async (dispatch, 
 };
 
 export const importIntegration =
-  (integrationType: BaseModels.Project.IntegrationTypes, refreshRate: string, filters: ZendeskCountFilters = {}): Thunk =>
+  (integrationType: BaseModels.Project.IntegrationTypes, refreshRate: string, filters: ZendeskCountFilters = {}): Thunk<number> =>
   async (_, getState) => {
     const state = getState();
 
@@ -36,7 +36,9 @@ export const importIntegration =
 
     Errors.assertProjectID(projectID);
 
-    await knowledgeBaseClient.importIntegration(projectID, integrationType, { filters, refreshRate });
+    const data = await knowledgeBaseClient.importIntegration(projectID, integrationType, { filters, refreshRate });
+
+    return data.status;
   };
 
 export const deleteOne =

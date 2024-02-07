@@ -1,5 +1,5 @@
 import { BaseModels } from '@voiceflow/base-types';
-import { Box, Divider, Scroll } from '@voiceflow/ui-next';
+import { Box, Divider, notify, Scroll } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { Modal } from '@/components/Modal';
@@ -116,7 +116,7 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
     [categories, brands, locales, labels]
   );
 
-  const importDataSources = () => {
+  const importDataSources = async () => {
     disableClose();
     const filters = {
       labels,
@@ -125,16 +125,20 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
       categories,
       userSegments,
     };
-    importIntegration(BaseModels.Project.IntegrationTypes.ZENDESK, refreshRate, filters);
+    const status = await importIntegration(BaseModels.Project.IntegrationTypes.ZENDESK, refreshRate, filters);
 
-    const checkDocuments = setInterval(() => {
-      getAll().catch(() => {});
-    }, 3000);
+    if (status === 200) {
+      const checkDocuments = setInterval(() => {
+        getAll().catch(() => {});
+      }, 3000);
 
-    setTimeout(() => clearInterval(checkDocuments), 300000);
+      setTimeout(() => clearInterval(checkDocuments), 300000);
+      onClose();
+    } else {
+      notify.short.error('Failed to import data sources');
+    }
 
     enableClose();
-    onClose();
   };
 
   useHotkey(Hotkey.MODAL_SUBMIT, importDataSources, { preventDefault: true });
@@ -208,7 +212,7 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
       <Modal.Footer>
         <Modal.Footer.Button label="Cancel" variant="secondary" onClick={onClose} disabled={disabled} />
         <Modal.Footer.Button
-          label={`Import ${numDataSources || ''} data sources`}
+          label={`Import ${numDataSources === null ? '' : numDataSources} data sources`}
           onClick={importDataSources}
           disabled={disabled || !canSubmit}
           isLoading={disabled}

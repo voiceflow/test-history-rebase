@@ -74,12 +74,24 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
   }, []);
 
   React.useEffect(() => {
-    const options = locales.flatMap((l) => filters?.categories?.[l.locale]).filter((item): item is ZendeskFilterBase => item !== undefined);
+    const options = locales
+      .flatMap((l) => {
+        return filters?.categories?.[l.locale.toLowerCase()];
+      })
+      .filter((item): item is ZendeskFilterBase => item !== undefined);
+
     setCategoryOptions(options);
   }, [filters, locales]);
 
   const getUserSegmentOptions = async () => {
-    setUserSegmentOptions(await getUserSegments());
+    const filters = {
+      labels,
+      locales,
+      brands,
+      categories,
+    };
+    const options = await getUserSegments(filters);
+    setUserSegmentOptions(options);
   };
 
   React.useEffect(() => {

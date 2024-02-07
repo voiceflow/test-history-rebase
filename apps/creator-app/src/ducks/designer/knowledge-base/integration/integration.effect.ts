@@ -92,18 +92,24 @@ export const getIntegrationFilters =
 
     Errors.assertProjectID(projectID);
 
-    return knowledgeBaseClient.getIntegrationFilters(projectID, integrationType);
+    const data = await knowledgeBaseClient.getIntegrationFilters(projectID, integrationType);
+
+    return data.data;
   };
 
-export const getIntegrationUserSegments = (): Thunk<ZendeskFilterUserSegment[]> => async (_, getState) => {
-  const state = getState();
+export const getIntegrationUserSegments =
+  (filters: ZendeskCountFilters): Thunk<ZendeskFilterUserSegment[]> =>
+  async (_, getState) => {
+    const state = getState();
 
-  const projectID = Session.activeProjectIDSelector(state);
+    const projectID = Session.activeProjectIDSelector(state);
 
-  Errors.assertProjectID(projectID);
+    Errors.assertProjectID(projectID);
 
-  return knowledgeBaseClient.getUserSegmentFilters(projectID);
-};
+    const data = await knowledgeBaseClient.getUserSegmentFilters(projectID, filters);
+
+    return data.data;
+  };
 
 export const getIntegrationDocumentCount =
   (integrationType: string, filters: ZendeskCountFilters): Thunk<number> =>
@@ -114,7 +120,9 @@ export const getIntegrationDocumentCount =
 
     Errors.assertProjectID(projectID);
 
-    return knowledgeBaseClient.getIntegrationDocumentCount(projectID, integrationType, filters);
+    const data = await knowledgeBaseClient.getIntegrationDocumentCount(projectID, integrationType, filters);
+
+    return data.data.count;
   };
 
 export const createOne =

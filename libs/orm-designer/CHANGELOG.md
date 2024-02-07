@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.32.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.32.0...@voiceflow/orm-designer@2.32.1) (2024-02-07)
+
+### Bug Fixes
+
+* maps synonyms null strings (BUG-735) ([#7756](https://github.com/voiceflow/creator-app/issues/7756)) ([c92a044](https://github.com/voiceflow/creator-app/commit/c92a04436495a4bf4b5cd006be4fd6d2386276e7))
+
 # [2.32.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.31.0...@voiceflow/orm-designer@2.32.0) (2024-02-06)
 
 ### Features

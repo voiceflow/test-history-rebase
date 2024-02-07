@@ -121,7 +121,7 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
       categories,
       userSegments,
     };
-    importIntegration('zendesk', refreshRate, filters);
+    importIntegration(BaseModels.Project.IntegrationTypes.ZENDESK, refreshRate, filters);
     enableClose();
     onClose();
   };

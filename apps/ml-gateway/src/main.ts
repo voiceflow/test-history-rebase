@@ -55,5 +55,4 @@ async function bootstrap() {
 }
 bootstrap();
 
-// Test comment
 

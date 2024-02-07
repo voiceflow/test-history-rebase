@@ -15,7 +15,6 @@ import {
   ZendeskFilters,
   ZendeskFilterUserSegment,
 } from '@/models/KnowledgeBase.model';
-import { useKBIntegrationDocumentSync } from '@/pages/AssistantCMS/pages/CMSKnowledgeBase/CMSKnowledgeBase.hook';
 import { stopPropagation } from '@/utils/handler.util';
 
 import { KBRefreshRateSelect } from '../../components/KBRefreshRateSelect/KBRefreshRateSelect.component';
@@ -40,6 +39,7 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
   const [userSegmentOptions, setUserSegmentOptions] = React.useState<ZendeskFilterUserSegment[]>([]);
 
   const getDocumentCount = useDispatch(Designer.KnowledgeBase.Integration.effect.getIntegrationDocumentCount);
+  const getAll = useDispatch(Designer.KnowledgeBase.Document.effect.getAll);
   const getFilters = useDispatch(Designer.KnowledgeBase.Integration.effect.getIntegrationFilters);
   const getUserSegments = useDispatch(Designer.KnowledgeBase.Integration.effect.getIntegrationUserSegments);
   const importIntegration = useDispatch(Designer.KnowledgeBase.Integration.effect.importIntegration);
@@ -117,6 +117,7 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
   );
 
   const importDataSources = () => {
+    disableClose();
     const filters = {
       labels,
       locales,
@@ -125,11 +126,16 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
       userSegments,
     };
     importIntegration(BaseModels.Project.IntegrationTypes.ZENDESK, refreshRate, filters);
+
+    const checkDocuments = setInterval(() => {
+      getAll().catch(() => {});
+    }, 3000);
+
+    setTimeout(() => clearInterval(checkDocuments), 300000);
+
     enableClose();
     onClose();
   };
-
-  useKBIntegrationDocumentSync();
 
   useHotkey(Hotkey.MODAL_SUBMIT, importDataSources, { preventDefault: true });
 

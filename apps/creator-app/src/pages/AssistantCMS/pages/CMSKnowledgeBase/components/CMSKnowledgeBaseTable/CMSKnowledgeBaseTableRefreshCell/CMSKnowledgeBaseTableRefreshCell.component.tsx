@@ -6,7 +6,7 @@ import React from 'react';
 import { UpgradeTooltipPlanPermission } from '@/config/planPermission';
 import { Permission } from '@/constants/permissions';
 import { Designer } from '@/ducks';
-import { useDispatch } from '@/hooks';
+import { useDispatch, useSelector } from '@/hooks';
 import { usePermission } from '@/hooks/permission';
 import { useStore } from '@/hooks/redux';
 import { stopPropagation } from '@/utils/handler.util';
@@ -16,11 +16,17 @@ import { ICMSKnowledgeBaseTableRefreshCell } from './CMSKnowledgeBaseTableRefres
 
 export const CMSKnowledgeBaseTableRefreshCell: React.FC<ICMSKnowledgeBaseTableRefreshCell> = ({ item }) => {
   const refreshRatePermission = usePermission(Permission.KB_REFRESH_RATE);
+  const integrations = useSelector(Designer.KnowledgeBase.Integration.selectors.all);
   const store = useStore();
   const patchManyRefreshRate = useDispatch(Designer.KnowledgeBase.Document.effect.patchManyRefreshRate);
   const [isUpgradeModalOpen, setIsUpgradeModalOpen] = React.useState(false);
 
-  if (item.data?.type !== BaseModels.Project.KnowledgeBaseDocumentType.URL) {
+  const hasNeededIntegrations =
+    item?.data?.type === BaseModels.Project.KnowledgeBaseDocumentType.URL && item.data.source
+      ? integrations.find((integration) => integration.type === (item.data as BaseModels.Project.KnowledgeBaseURL)?.source)
+      : true;
+
+  if (item.data?.type !== BaseModels.Project.KnowledgeBaseDocumentType.URL || !hasNeededIntegrations) {
     return (
       <Box>
         <Text color={Tokens.colors.neutralDark.neutralsDark50}>—</Text>

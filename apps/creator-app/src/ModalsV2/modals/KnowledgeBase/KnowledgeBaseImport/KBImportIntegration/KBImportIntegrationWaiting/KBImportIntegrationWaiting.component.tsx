@@ -50,7 +50,7 @@ export const KBImportIntegrationWaiting: React.FC<IKBImportIntegrationWaiting> =
       // eslint-disable-next-line no-console
       console.log(`timeDifference: ${timeDiff}`);
 
-      const createdWithFiveMinutes = timeDiff ? timeDiff > 5 * 60 * 1000 : false;
+      const createdWithFiveMinutes = timeDiff ? timeDiff < 5 * 60 * 1000 : false;
       // eslint-disable-next-line no-console
       console.log('createdWIthinFiveMinutes');
       // eslint-disable-next-line no-console

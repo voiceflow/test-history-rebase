@@ -15,6 +15,7 @@ import {
   ZendeskFilters,
   ZendeskFilterUserSegment,
 } from '@/models/KnowledgeBase.model';
+import { useKBIntegrationDocumentSync } from '@/pages/AssistantCMS/pages/CMSKnowledgeBase/CMSKnowledgeBase.hook';
 import { stopPropagation } from '@/utils/handler.util';
 
 import { KBRefreshRateSelect } from '../../components/KBRefreshRateSelect/KBRefreshRateSelect.component';
@@ -125,6 +126,8 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
     enableClose();
     onClose();
   };
+
+  useKBIntegrationDocumentSync();
 
   useHotkey(Hotkey.MODAL_SUBMIT, importDataSources, { preventDefault: true });
 

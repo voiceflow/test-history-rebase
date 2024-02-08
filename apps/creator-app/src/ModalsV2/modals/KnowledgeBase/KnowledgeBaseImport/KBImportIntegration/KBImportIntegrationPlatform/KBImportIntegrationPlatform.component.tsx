@@ -9,6 +9,7 @@ import { Designer } from '@/ducks';
 import { useHotkey } from '@/hooks/hotkeys';
 import { useInputState } from '@/hooks/input.hook';
 import { useSelector } from '@/hooks/store.hook';
+import { useTrackingEvents } from '@/hooks/tracking';
 import { useValidators } from '@/hooks/validate.hook';
 import { Hotkey } from '@/keymap';
 
@@ -18,6 +19,7 @@ import { KBImportIntegrationSubdomainInput } from './KBImportIntegrationSubdomai
 
 export const KBImportIntegrationPlatform: React.FC<IKBImportIntegrationPlatform> = ({ onClose, disabled, onContinue }) => {
   const integrations = useSelector(Designer.KnowledgeBase.Integration.selectors.all);
+  const [trackingEvents] = useTrackingEvents();
 
   const platform = useInputState<BaseModels.Project.IntegrationTypes | null>({ value: null });
   const subdomain = useInputState();
@@ -33,7 +35,7 @@ export const KBImportIntegrationPlatform: React.FC<IKBImportIntegrationPlatform>
       composeValidators(
         validatorFactory(
           (value: string, { platform }: { platform: BaseModels.Project.IntegrationTypes | null }) =>
-            platform !== BaseModels.Project.IntegrationTypes.ZENDESK || value,
+            platform !== BaseModels.Project.IntegrationTypes.ZENDESK || value || integrations.find((integration) => integration.type === platform),
           'Subdomain is required.'
         ),
         validatorFactory(
@@ -50,6 +52,8 @@ export const KBImportIntegrationPlatform: React.FC<IKBImportIntegrationPlatform>
     const result = validator.validate({ platform: platform.value, subdomain: subdomain.value });
 
     if (!result.success || !result.data.platform) return;
+
+    trackingEvents.trackAiKnowledgeBaseIntegrationSelected({ IntegrationType: result.data.platform });
 
     onContinue({
       platform: result.data.platform,
@@ -91,9 +95,10 @@ export const KBImportIntegrationPlatform: React.FC<IKBImportIntegrationPlatform>
             </Dropdown>
           </Box>
 
-          {platform.value === BaseModels.Project.IntegrationTypes.ZENDESK && (
-            <KBImportIntegrationSubdomainInput value={subdomain.value} error={subdomain.error} onValueChange={subdomain.setValue} />
-          )}
+          {platform.value === BaseModels.Project.IntegrationTypes.ZENDESK &&
+            !integrations.find((integration) => integration.type === platform.value) && (
+              <KBImportIntegrationSubdomainInput value={subdomain.value} error={subdomain.error} onValueChange={subdomain.setValue} />
+            )}
         </Box>
       </Scroll>
 

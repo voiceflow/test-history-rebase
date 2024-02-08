@@ -7,6 +7,7 @@ import { Designer } from '@/ducks';
 import { useHotkey } from '@/hooks/hotkeys';
 import { useDispatch } from '@/hooks/store.hook';
 import { useTimer } from '@/hooks/timer.hook';
+import { useTrackingEvents } from '@/hooks/tracking';
 import { Hotkey } from '@/keymap';
 import {
   ZendeskFilterBase,
@@ -27,6 +28,7 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
   const [filters, setFilters] = React.useState<ZendeskFilters>({});
   const [numDataSources, setNumDataSources] = React.useState<number | null>(null);
   const [isLoading, setIsLoading] = React.useState(false);
+  const [trackingEvents] = useTrackingEvents();
 
   const [brands, setBrands] = React.useState<ZendeskFilterBrand[]>([]);
   const [locales, setLocales] = React.useState<ZendeskFilterLocale[]>([]);
@@ -148,6 +150,8 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
       categories,
       userSegments,
     };
+
+    trackingEvents.trackAiKnowledgeBaseIntegrationFiltersUsed({ Filters: filters });
     const status = await importIntegration(BaseModels.Project.IntegrationTypes.ZENDESK, refreshRate, filters);
 
     enableClose();

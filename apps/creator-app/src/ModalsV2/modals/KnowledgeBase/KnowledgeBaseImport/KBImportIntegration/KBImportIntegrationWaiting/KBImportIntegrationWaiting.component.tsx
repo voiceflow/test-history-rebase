@@ -5,6 +5,7 @@ import React from 'react';
 import { Modal } from '@/components/Modal';
 import { Designer } from '@/ducks';
 import { useDispatch } from '@/hooks/store.hook';
+import { useTrackingEvents } from '@/hooks/tracking';
 import { KnowledgeBaseIntegration } from '@/models/KnowledgeBase.model';
 import { openURLInANewPopupWindow } from '@/utils/window';
 
@@ -22,6 +23,7 @@ export const KBImportIntegrationWaiting: React.FC<IKBImportIntegrationWaiting> =
 }) => {
   const getAuthUrl = useDispatch(Designer.KnowledgeBase.Integration.effect.getIntegrationAuthUrl);
   const getAuthReconnectUrl = useDispatch(Designer.KnowledgeBase.Integration.effect.getIntegrationAuthReconnectUrl);
+  const [trackingEvents] = useTrackingEvents();
 
   const [popupWindow, setPopupWindow] = React.useState<Window | null>(null);
 
@@ -39,6 +41,7 @@ export const KBImportIntegrationWaiting: React.FC<IKBImportIntegrationWaiting> =
 
       setTimeout(() => onConnected(false), 300000);
     } catch {
+      trackingEvents.trackAiKnowledgeBaseIntegrationFailed({ IntegrationType: 'zendesk' });
       notify.short.error('Failed to connect to Zendesk. Please try again.');
       onFail();
     }
@@ -48,8 +51,10 @@ export const KBImportIntegrationWaiting: React.FC<IKBImportIntegrationWaiting> =
     popupWindow?.close();
 
     if (success) {
+      trackingEvents.trackAiKnowledgeBaseIntegrationConnected({ IntegrationType: 'zendesk' });
       onContinue();
     } else {
+      trackingEvents.trackAiKnowledgeBaseIntegrationFailed({ IntegrationType: 'zendesk' });
       notify.short.error('Failed to connect to Zendesk. Please try again.');
       onFail();
     }

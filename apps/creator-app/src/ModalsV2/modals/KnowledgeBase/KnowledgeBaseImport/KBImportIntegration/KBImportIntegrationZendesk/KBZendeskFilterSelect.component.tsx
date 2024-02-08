@@ -1,6 +1,7 @@
 import { Box, CheckboxControl, Dropdown, Menu, MenuItem, Tooltip, useTooltipModifiers } from '@voiceflow/ui-next';
 import React from 'react';
 
+import { useDeferredSearch } from '@/hooks/search.hook';
 import { ZendeskFilterBase } from '@/models/KnowledgeBase.model';
 
 import { captionStyles } from './KBZendeskFilterSelect.css';
@@ -24,9 +25,13 @@ export const KBZendeskFilterSelect = <T extends ZendeskFilterBase>({
   onValueChange,
   hasTooltip,
 }: IKBZendeskFilterSelect<T>): React.ReactElement => {
-  const [search, setSearch] = React.useState('');
   const [isSelectAll, setIsSelectAll] = React.useState(true);
   const modifiers = useTooltipModifiers([{ name: 'offset', options: { offset: [-10, 28] } }]);
+
+  const search = useDeferredSearch({
+    items: options,
+    searchBy: (item) => item.name,
+  });
 
   const onSelectAll = (onClose: VoidFunction) => () => {
     onValueChange(options);
@@ -53,7 +58,7 @@ export const KBZendeskFilterSelect = <T extends ZendeskFilterBase>({
                   {() => {
                     return (
                       <Menu
-                        searchSection={<Menu.Search onValueChange={setSearch} placeholder="Search" value={search} key={0} />}
+                        searchSection={<Menu.Search onValueChange={search.setValue} placeholder="Search" value={search.value} key={0} />}
                         actionButtons={
                           <Menu.ActionButtons
                             firstButton={
@@ -64,26 +69,7 @@ export const KBZendeskFilterSelect = <T extends ZendeskFilterBase>({
                             }
                           />
                         }
-                      >
-                        {options.map((option, index) => {
-                          return (
-                            <MenuItem
-                              key={index}
-                              onClick={() => onValueChange(value.includes(option) ? value.filter((item) => item !== option) : [...value, option])}
-                              label={option.name}
-                              checkbox={
-                                <CheckboxControl
-                                  id="checkbox"
-                                  value={value.includes(option)}
-                                  onChange={() =>
-                                    onValueChange(value.includes(option) ? value.filter((item) => item !== option) : [...value, option])
-                                  }
-                                />
-                              }
-                            />
-                          );
-                        })}
-                      </Menu>
+                      ></Menu>
                     );
                   }}
                 </Dropdown>
@@ -102,7 +88,7 @@ export const KBZendeskFilterSelect = <T extends ZendeskFilterBase>({
               {({ onClose }) => {
                 return (
                   <Menu
-                    searchSection={<Menu.Search onValueChange={setSearch} placeholder="Search" value={search} key={0} />}
+                    searchSection={<Menu.Search onValueChange={search.setValue} placeholder="Search" value={search.value} key={0} />}
                     actionButtons={
                       <Menu.ActionButtons
                         firstButton={
@@ -114,9 +100,8 @@ export const KBZendeskFilterSelect = <T extends ZendeskFilterBase>({
                       />
                     }
                   >
-                    {options
-                      .filter((option) => !search || option.name.toLowerCase().includes(search.toLowerCase()))
-                      .map((option, index) => {
+                    {search.hasItems &&
+                      search.items.map((option, index) => {
                         return (
                           <MenuItem
                             key={index + 1}

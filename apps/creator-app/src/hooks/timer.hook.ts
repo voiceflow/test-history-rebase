@@ -9,11 +9,11 @@ interface TimerAPI {
 }
 
 interface UseTimer {
-  (callback: VoidFunction): TimerAPI;
-  <State extends Record<string, any>>(callback: (state: State) => void, state: State): TimerAPI;
+  (callback: (data: { unmounted: boolean }) => void): TimerAPI;
+  <State extends Record<string, any>>(callback: (data: { state: State; unmounted: boolean }) => void, state: State): TimerAPI;
 }
 
-export const useTimer: UseTimer = (callback: (state: Record<string, any>) => void, state = {}) => {
+export const useTimer: UseTimer = (callback: (data: { state: Record<string, any>; unmounted: boolean }) => void, state = {}) => {
   const ref = useRef({
     timer: null as number | null,
     state,
@@ -41,7 +41,7 @@ export const useTimer: UseTimer = (callback: (state: Record<string, any>) => voi
         window.clearTimeout(ref.current.timer);
       }
 
-      ref.current.timer = window.setTimeout(() => ref.current.callback(ref.current.state), time);
+      ref.current.timer = window.setTimeout(() => ref.current.callback({ state: ref.current.state, unmounted: ref.current.unmounted }), time);
     },
 
     stop: () => {
@@ -55,7 +55,7 @@ export const useTimer: UseTimer = (callback: (state: Record<string, any>) => voi
         throw new Error('Callback is not defined');
       }
 
-      ref.current.callback(ref.current.state);
+      ref.current.callback({ state: ref.current.state, unmounted: ref.current.unmounted });
     },
 
     resetState: (newState = state) => {

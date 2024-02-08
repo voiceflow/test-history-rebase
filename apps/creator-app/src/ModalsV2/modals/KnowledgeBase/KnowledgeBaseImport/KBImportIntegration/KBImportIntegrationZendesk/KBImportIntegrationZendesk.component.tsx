@@ -123,13 +123,13 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
   );
 
   const checkForInitialDocumentsTimer = useTimer(
-    async (state) => {
+    async ({ state, unmounted }) => {
       try {
         await getAll();
       } catch {
         // ignore
       } finally {
-        if (state.count < 5) {
+        if (state.count < 5 && !unmounted) {
           checkForInitialDocumentsTimer.start(30000);
         }
 

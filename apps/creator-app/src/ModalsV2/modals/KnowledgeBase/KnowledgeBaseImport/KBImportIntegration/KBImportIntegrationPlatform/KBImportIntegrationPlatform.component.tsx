@@ -2,7 +2,7 @@ import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import { Box, Dropdown, Menu, MenuItem, Scroll, useCreateConst } from '@voiceflow/ui-next';
 import { composeValidators, validatorFactory } from '@voiceflow/utils-designer';
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { Modal } from '@/components/Modal';
 import { Designer } from '@/ducks';
@@ -26,6 +26,11 @@ export const KBImportIntegrationPlatform: React.FC<IKBImportIntegrationPlatform>
 
   const platformInfo = platform.value && INTEGRATION_PLATFORMS_MAPPER[platform.value];
 
+  const hasZendeskIntegration = useMemo(
+    () => !!integrations.find((integration) => integration.type === platform.value),
+    [integrations, platform.value]
+  );
+
   const validator = useValidators({
     platform: useCreateConst(() => [
       validatorFactory((platform: BaseModels.Project.IntegrationTypes | null) => platform, 'Platform is required.'),
@@ -34,14 +39,18 @@ export const KBImportIntegrationPlatform: React.FC<IKBImportIntegrationPlatform>
     subdomain: useCreateConst(() => [
       composeValidators(
         validatorFactory(
-          (value: string, { platform }: { platform: BaseModels.Project.IntegrationTypes | null }) =>
-            platform !== BaseModels.Project.IntegrationTypes.ZENDESK || value || integrations.find((integration) => integration.type === platform),
+          (
+            value: string,
+            { platform, hasZendeskIntegration }: { platform: BaseModels.Project.IntegrationTypes | null; hasZendeskIntegration: boolean }
+          ) => platform !== BaseModels.Project.IntegrationTypes.ZENDESK || value || hasZendeskIntegration,
           'Subdomain is required.'
         ),
         validatorFactory(
-          (value: string, { platform }: { platform: BaseModels.Project.IntegrationTypes | null }) =>
-            platform !== BaseModels.Project.IntegrationTypes.ZENDESK ||
-            value.match(/^[\da-z](?:[\da-z-]{0,61}[\da-z])?$/ || integrations.find((integration) => integration.type === platform)),
+          (
+            value: string,
+            { platform, hasZendeskIntegration }: { platform: BaseModels.Project.IntegrationTypes | null; hasZendeskIntegration: boolean }
+          ) =>
+            platform !== BaseModels.Project.IntegrationTypes.ZENDESK || value.match(/^[\da-z](?:[\da-z-]{0,61}[\da-z])?$/ || hasZendeskIntegration),
           'Subdomain is not valid.'
         )
       ),
@@ -50,7 +59,7 @@ export const KBImportIntegrationPlatform: React.FC<IKBImportIntegrationPlatform>
   });
 
   const onSubmit = () => {
-    const result = validator.validate({ platform: platform.value, subdomain: subdomain.value });
+    const result = validator.validate({ platform: platform.value, subdomain: subdomain.value }, { platform: platform.value, hasZendeskIntegration });
 
     if (!result.success || !result.data.platform) return;
 
@@ -59,7 +68,7 @@ export const KBImportIntegrationPlatform: React.FC<IKBImportIntegrationPlatform>
     onContinue({
       platform: result.data.platform,
       subdomain: result.data.subdomain,
-      authenticate: !integrations.find((integration) => integration.type === result.data.platform),
+      authenticate: !hasZendeskIntegration,
     });
   };
 
@@ -96,10 +105,9 @@ export const KBImportIntegrationPlatform: React.FC<IKBImportIntegrationPlatform>
             </Dropdown>
           </Box>
 
-          {platform.value === BaseModels.Project.IntegrationTypes.ZENDESK &&
-            !integrations.find((integration) => integration.type === platform.value) && (
-              <KBImportIntegrationSubdomainInput value={subdomain.value} error={subdomain.error} onValueChange={subdomain.setValue} />
-            )}
+          {platform.value === BaseModels.Project.IntegrationTypes.ZENDESK && !hasZendeskIntegration && (
+            <KBImportIntegrationSubdomainInput value={subdomain.value} error={subdomain.error} onValueChange={subdomain.setValue} />
+          )}
         </Box>
       </Scroll>
 

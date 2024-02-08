@@ -26,11 +26,11 @@ interface ValidatorsOptions {
 }
 
 interface ValidatorsAPI<InputStates extends { [key: string]: ValidatorErrorSetterTuple }> {
-  validate: ValidatorsContext<InputStates> extends void | Partial<ValidatorsData<InputStates>>
+  validate: ValidatorsContext<InputStates> extends void
     ? (data: ValidatorsData<InputStates>, context?: ValidatorsOptions) => ValidateResult<InputStates>
     : (data: ValidatorsData<InputStates>, context: ValidatorsContext<InputStates> & ValidatorsOptions) => ValidateResult<InputStates>;
 
-  container: ValidatorsContext<InputStates> extends void | Partial<ValidatorsData<InputStates>>
+  container: ValidatorsContext<InputStates> extends void
     ? (callback: (fields: ValidatorsData<InputStates>) => void) => (fields: ValidatorsData<InputStates>) => void
     : (
         callback: (fields: ValidatorsData<InputStates>) => void,

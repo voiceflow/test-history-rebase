@@ -1,3 +1,4 @@
+import { Organization } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 
 import { HEARTBEAT_EXPIRE_TIMEOUT } from '@/constants';
@@ -142,7 +143,7 @@ class WorkspaceService extends AbstractControl {
     await this.services.billing.deleteWorkspaceQuotas(creatorID, workspaceID).catch((error) => this.log.warn(error, 'delete workspace quotas error'));
   }
 
-  private async getOrganization(creatorID: number, workspaceID: string): Promise<Realtime.Organization | undefined> {
+  private async getOrganization(creatorID: number, workspaceID: string): Promise<Organization | undefined> {
     const client = await this.services.voiceflow.client.getByUserID(creatorID);
 
     return client.identity.workspace.getOrganization(workspaceID);

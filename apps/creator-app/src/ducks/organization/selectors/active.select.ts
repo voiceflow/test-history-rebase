@@ -4,7 +4,7 @@ import { createSelector } from 'reselect';
 import { createCurriedSelector, creatorIDParamSelector } from '@/ducks/utils';
 import { organizationIDSelector } from '@/ducks/workspaceV2/selectors/active';
 
-import { getOrganizationByIDSelector } from './crud';
+import { getOrganizationByIDSelector } from './crud.select';
 
 export const organizationSelector = createSelector([getOrganizationByIDSelector, organizationIDSelector], (getOrganizationByID, organizationID) =>
   getOrganizationByID({ id: organizationID })

@@ -12,7 +12,6 @@ export * from './Markup';
 export * from './Node';
 export * from './NodeData';
 export * from './Note';
-export * from './Organization';
 export * from './Port';
 export * from './Product';
 export * from './Project';

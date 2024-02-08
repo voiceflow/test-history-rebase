@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import { Organization } from '@voiceflow/dtos';
 import { Box, Button, Modal, Select, Text } from '@voiceflow/ui';
 import React from 'react';
 
@@ -8,7 +8,7 @@ interface WorkspaceOrganizationProps {
   onNext: VoidFunction;
   onClose: VoidFunction;
   onSelect: (value: string | null) => void;
-  organizations: Realtime.Organization[];
+  organizations: Organization[];
 }
 
 const WorkspaceOrganization: React.FC<WorkspaceOrganizationProps> = ({ value, onClose, onNext, onSelect, organizations }) => {

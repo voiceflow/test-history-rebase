@@ -8,7 +8,7 @@ import { createSelector } from 'reselect';
 import { ENTERPRISE_PLANS, PAID_PLANS, PRO_AND_TEAM_PLANS, PROJECTS_DEFAULT_LIMIT, VIEWERS_DEFAULT_LIMIT } from '@/constants';
 import { userIDSelector } from '@/ducks/account/selectors';
 import * as Feature from '@/ducks/feature';
-import { getOrganizationByIDSelector } from '@/ducks/organization/selectors/crud';
+import { getOrganizationByIDSelector } from '@/ducks/organization/selectors/crud.select';
 import { allEditorMemberIDs as allProjectsEditorMemberIDs } from '@/ducks/projectV2/selectors/base';
 import * as Session from '@/ducks/session';
 import { createCurriedSelector, creatorIDParamSelector } from '@/ducks/utils';

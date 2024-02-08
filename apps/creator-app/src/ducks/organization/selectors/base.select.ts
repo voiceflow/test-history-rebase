@@ -6,7 +6,7 @@ import { userIDSelector } from '@/ducks/account/selectors';
 import { idParamSelector } from '@/ducks/utils/crudV2';
 import { isAdminUserRole } from '@/utils/role';
 
-import { allOrganizationsSelector, getOrganizationByIDSelector } from './crud';
+import { allOrganizationsSelector, getOrganizationByIDSelector } from './crud.select';
 
 export const currentMemberRoleByIDSelector = createSelector(
   [getOrganizationByIDSelector, idParamSelector, Account.userIDSelector],

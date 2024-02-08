@@ -64,11 +64,16 @@ export const KBImportIntegrationWaiting: React.FC<IKBImportIntegrationWaiting> =
     const bc = new BroadcastChannel(ZENDESK_CALLBACK_CHANNEL);
 
     bc.onmessage = (event) => {
+      // eslint-disable-next-line no-console
+      console.log(event.data);
       if (event.data === 'success') {
         onConnected(true);
         notify.short.success('Connected to Zendesk');
       } else if (event.data === 'fail') {
         onConnected(false);
+        notify.short.error('Failed to connect to Zendesk. Please try again.');
+      } else {
+        popupWindow?.close();
       }
       bc.close();
     };

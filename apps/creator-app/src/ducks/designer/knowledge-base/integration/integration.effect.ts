@@ -67,7 +67,6 @@ export const getIntegrationAuthUrl =
     const { data } = await knowledgeBaseClient.getIntegrationAuthUrl({
       ...payload,
       projectID,
-      redirectUrl: `${CREATOR_APP_ENDPOINT}${Path.ZENDESK_CALLBACK}`,
       integrationType,
     });
 
@@ -85,7 +84,6 @@ export const getIntegrationAuthReconnectUrl =
 
     const { data } = await knowledgeBaseClient.getIntegrationAuthReconnectUrl({
       projectID,
-      redirectUrl: `${CREATOR_APP_ENDPOINT}${Path.ZENDESK_CALLBACK}`,
       integrationType,
     });
 

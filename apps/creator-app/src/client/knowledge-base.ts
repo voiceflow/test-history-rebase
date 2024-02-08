@@ -75,39 +75,20 @@ export const knowledgeBaseClient = {
   deleteOneIntegration: (projectID: string, integrationType: string) =>
     apiV3.fetch.delete(`/projects/${projectID}/knowledge-base/integrations/${integrationType}`),
 
-  getIntegrationAuthUrl: ({
-    subdomain,
-    projectID,
-    redirectUrl,
-    integrationType,
-  }: {
-    subdomain?: string;
-    projectID: string;
-    redirectUrl: string;
-    integrationType: string;
-  }) => {
+  getIntegrationAuthUrl: ({ subdomain, projectID, integrationType }: { subdomain?: string; projectID: string; integrationType: string }) => {
     // eslint-disable-next-line dot-notation
     const url = apiV3.fetch['axios'].getUri({
       url: `/projects/${projectID}/knowledge-base/integrations/${integrationType}/auth-redirect-url`,
-      params: { redirectUrl, subdomain },
+      params: { subdomain },
     });
 
     return apiV3.fetch.get<{ data: { url: string } }>(url).then(({ data }) => data);
   },
 
-  getIntegrationAuthReconnectUrl: ({
-    projectID,
-    redirectUrl,
-    integrationType,
-  }: {
-    projectID: string;
-    redirectUrl: string;
-    integrationType: string;
-  }) => {
+  getIntegrationAuthReconnectUrl: ({ projectID, integrationType }: { projectID: string; integrationType: string }) => {
     // eslint-disable-next-line dot-notation
     const url = apiV3.fetch['axios'].getUri({
       url: `/projects/${projectID}/knowledge-base/integrations/${integrationType}/auth-reconnect-redirect-url`,
-      params: { redirectUrl },
     });
 
     return apiV3.fetch.get<{ data: { url: string } }>(url).then(({ data }) => data);

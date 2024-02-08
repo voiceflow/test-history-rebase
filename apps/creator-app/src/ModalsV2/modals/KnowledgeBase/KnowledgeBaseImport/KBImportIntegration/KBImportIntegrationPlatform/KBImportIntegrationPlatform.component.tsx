@@ -40,7 +40,8 @@ export const KBImportIntegrationPlatform: React.FC<IKBImportIntegrationPlatform>
         ),
         validatorFactory(
           (value: string, { platform }: { platform: BaseModels.Project.IntegrationTypes | null }) =>
-            platform !== BaseModels.Project.IntegrationTypes.ZENDESK || value.match(/^[\da-z](?:[\da-z-]{0,61}[\da-z])?$/),
+            platform !== BaseModels.Project.IntegrationTypes.ZENDESK ||
+            value.match(/^[\da-z](?:[\da-z-]{0,61}[\da-z])?$/ || integrations.find((integration) => integration.type === platform)),
           'Subdomain is not valid.'
         )
       ),

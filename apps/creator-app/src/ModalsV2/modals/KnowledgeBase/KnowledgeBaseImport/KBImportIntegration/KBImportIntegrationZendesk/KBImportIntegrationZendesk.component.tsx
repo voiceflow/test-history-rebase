@@ -60,10 +60,6 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
       .finally(() => setIsLoading(false));
   };
 
-  React.useEffect(() => {
-    updateDocumentCount();
-  }, [brands, locales, categories, labels]);
-
   const getDocumentFilters = async () => {
     const filters = await getFilters('zendesk');
     setFilters(filters);
@@ -138,6 +134,7 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
 
     if (status === 200) {
       notify.short.success('Importing data sources from Zendesk.');
+      onClose();
       onSuccess();
     } else {
       notify.short.error('Failed to import data sources');
@@ -166,6 +163,7 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
               options={brandIdOptions}
               disabled={disabled}
               onValueChange={setBrands}
+              onClose={() => updateDocumentCount()}
               placeholder="Select brands (optional)"
             />
             <KBZendeskFilterSelect
@@ -174,6 +172,7 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
               options={localeOptions}
               disabled={disabled || !brands.length}
               onValueChange={setLocales}
+              onClose={() => updateDocumentCount()}
               placeholder="Select locale (optional)"
               hasTooltip={!brands.length}
             />
@@ -183,6 +182,7 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
               options={categoryOptions}
               disabled={disabled || !locales.length}
               onValueChange={setCategories}
+              onClose={() => updateDocumentCount()}
               placeholder="Select category (optional)"
               hasTooltip={!locales.length}
             />
@@ -192,6 +192,7 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
               options={labelOptions}
               disabled={disabled || !categories.length}
               onValueChange={setLabels}
+              onClose={() => updateDocumentCount()}
               placeholder="Select labels (optional)"
               hasTooltip={!categories.length}
             />
@@ -201,6 +202,7 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
               options={userSegmentOptions}
               disabled={disabled || !labels.length}
               onValueChange={setUserSegments}
+              onClose={() => updateDocumentCount()}
               placeholder="Select user segments (optional)"
               hasTooltip={!labels.length}
             />

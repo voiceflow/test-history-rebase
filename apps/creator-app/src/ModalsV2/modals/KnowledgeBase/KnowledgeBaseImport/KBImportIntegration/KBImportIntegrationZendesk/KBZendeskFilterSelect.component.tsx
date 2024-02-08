@@ -12,6 +12,7 @@ export interface IKBZendeskFilterSelect<T extends ZendeskFilterBase> {
   options: T[];
   disabled?: boolean;
   onValueChange: (value: T[]) => void;
+  onClose?: VoidFunction;
   hasTooltip?: boolean;
 }
 
@@ -23,6 +24,7 @@ export const KBZendeskFilterSelect = <T extends ZendeskFilterBase>({
   options,
   onValueChange,
   hasTooltip,
+  onClose,
 }: IKBZendeskFilterSelect<T>): React.ReactElement => {
   const [search, setSearch] = React.useState('');
   const modifiers = useTooltipModifiers([{ name: 'offset', options: { offset: [-10, 28] } }]);
@@ -46,7 +48,13 @@ export const KBZendeskFilterSelect = <T extends ZendeskFilterBase>({
             placement="left-start"
             referenceElement={({ onOpen, onClose, ref }) => (
               <Box ref={ref} onMouseEnter={onOpen} onMouseLeave={onClose} direction="column">
-                <Dropdown value={value.map((item) => item.name).join(', ')} label={label} disabled={disabled} placeholder={placeholder}>
+                <Dropdown
+                  value={value.map((item) => item.name).join(', ')}
+                  label={label}
+                  disabled={disabled}
+                  placeholder={placeholder}
+                  onClose={onClose}
+                >
                   {() => {
                     return (
                       <Menu searchSection={<Menu.Search onValueChange={setSearch} placeholder="Search" value={search} key={0} />}>

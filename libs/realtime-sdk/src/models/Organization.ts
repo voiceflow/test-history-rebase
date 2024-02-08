@@ -18,4 +18,5 @@ export interface Organization {
   trial: { daysLeft: number; endAt: string } | null;
   chargebeeSubscriptionID: string | null;
   subscription?: Subscription | null;
+  scheduledSubscription?: Subscription | null;
 }

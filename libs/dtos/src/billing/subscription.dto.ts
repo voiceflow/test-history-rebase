@@ -24,6 +24,7 @@ export const SubscriptionDTO = z.object({
     viewer: z.number(),
   }),
   variableStatesLimit: z.number().nullable(),
+  hasScheduledChanges: z.boolean().optional(),
 });
 
 export type Subscription = z.infer<typeof SubscriptionDTO>;

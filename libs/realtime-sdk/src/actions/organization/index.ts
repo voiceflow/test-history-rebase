@@ -22,6 +22,10 @@ export interface ReplaceSubscriptionPayload extends BaseOrganizationPayload {
   subscription: Organization['subscription'];
 }
 
+export interface ReplaceScheduledSubscriptionPayload extends BaseOrganizationPayload {
+  subscription: Organization['subscription'];
+}
+
 export const crud = createCRUDActions<Organization, BaseCreatorPayload>(organizationType);
 
 export const updateName = Utils.protocol.createAction<UpdateOrganizationNamePayload>(organizationType('UPDATE_NAME'));
@@ -29,6 +33,10 @@ export const updateName = Utils.protocol.createAction<UpdateOrganizationNamePayl
 export const updateImage = Utils.protocol.createAction<UpdateOrganizationImagePayload>(organizationType('UPDATE_IMAGE'));
 
 export const replaceSubscription = Utils.protocol.createAction<ReplaceSubscriptionPayload>(organizationType('REPLACE_SUBSCRIPTION'));
+
+export const replaceScheduledSubscription = Utils.protocol.createAction<ReplaceScheduledSubscriptionPayload>(
+  organizationType('REPLACE_SCHEDULED_SUBSCRIPTION')
+);
 
 export const getTargetedOrganizations = (action: AnyAction): string[] | null => {
   const targets = getCRUDActionTargets(crud, action);

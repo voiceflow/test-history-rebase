@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { NotFoundException } from '@voiceflow/exception';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { BillingClient } from '@voiceflow/sdk-billing';
+import { SubscriptionsControllerGetSubscription200Subscription } from '@voiceflow/sdk-billing/generated';
 
 const fromUnixTimestamp = (timestamp: number) => timestamp * 1000;
 
@@ -12,9 +13,7 @@ export class BillingSubscriptionService {
     private readonly billingClient: BillingClient
   ) {}
 
-  async findOne(subscriptionID: string) {
-    const { subscription } = await this.billingClient.private.getSubscription(subscriptionID);
-
+  private parseSubscription(subscription: SubscriptionsControllerGetSubscription200Subscription) {
     return {
       id: subscription.id,
       status: subscription.status,
@@ -60,7 +59,20 @@ export class BillingSubscriptionService {
         feature: item.feature,
       })),
       metaData: subscription.meta_data,
+      hasScheduledChanges: subscription.has_scheduled_changes,
     };
+  }
+
+  async findOne(subscriptionID: string) {
+    const { subscription } = await this.billingClient.private.getSubscription(subscriptionID);
+
+    return this.parseSubscription(subscription);
+  }
+
+  async getSubscriptionWithScheduledChanges(subscriptionID: string) {
+    const { subscription } = await this.billingClient.private.getSubscriptionScheduledChanges(subscriptionID);
+
+    return this.parseSubscription(subscription);
   }
 
   getInvoices(subscriptionID: string, { cursor, limit }: { cursor?: string; limit?: number } = {}) {

@@ -16,11 +16,10 @@ interface BillingEditorSeatsProps {
   nextBillingDate: string | null;
   pricePerEditor: number;
   billingPeriod: string | null;
-  editorSeats: number;
+  scheduledEditorSeats?: number;
 }
 
-const BillingEditorSeats: React.FC<BillingEditorSeatsProps> = ({ nextBillingDate, pricePerEditor, billingPeriod, editorSeats }) => {
-  // const { refetchPlanSubscription } = Payment.usePaymentAPI();
+const BillingEditorSeats: React.FC<BillingEditorSeatsProps> = ({ nextBillingDate, pricePerEditor, billingPeriod, scheduledEditorSeats }) => {
   const scheduleSeatModal = ModalsV2.useModal(ModalsV2.Billing.ScheduleSeatChange);
   const seats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);
   const isTrial = useSelector(WorkspaceV2.active.isOnTrialSelector);
@@ -30,15 +29,14 @@ const BillingEditorSeats: React.FC<BillingEditorSeatsProps> = ({ nextBillingDate
   const usedViewerSeats = useSelector(WorkspaceV2.active.usedViewerSeatsSelector);
   const [canScheduleSeats] = usePermission(Permission.BILLING_SEATS_SCHEDULE);
 
-  // FIXME: Billing api doesnt return this information yet. https://voiceflow.atlassian.net/browse/CV3-986
-  const scheduledSeat = editorSeats !== seats;
+  const hasScheduledSeats = scheduledEditorSeats && scheduledEditorSeats !== seats;
 
   const openScheduleSeatModal = async () => {
     await scheduleSeatModal.openVoid({
       nextBillingDate,
       pricePerEditor,
       billingPeriod,
-      scheduleOrCurrentEditorSeats: scheduledSeat ? editorSeats : seats,
+      scheduleOrCurrentEditorSeats: hasScheduledSeats ? scheduledEditorSeats : seats,
     });
   };
 
@@ -72,7 +70,7 @@ const BillingEditorSeats: React.FC<BillingEditorSeatsProps> = ({ nextBillingDate
                 {showBillingDateDescription && (
                   <>
                     Your next billing date is <Text color="#132144">{nextBillingDate}.</Text>{' '}
-                    {scheduledSeat && <Link onClick={openScheduleSeatModal}>Seat changes are scheduled</Link>}
+                    {hasScheduledSeats && <Link onClick={openScheduleSeatModal}>Seat changes are scheduled</Link>}
                   </>
                 )}
               </Page.Section.Description>

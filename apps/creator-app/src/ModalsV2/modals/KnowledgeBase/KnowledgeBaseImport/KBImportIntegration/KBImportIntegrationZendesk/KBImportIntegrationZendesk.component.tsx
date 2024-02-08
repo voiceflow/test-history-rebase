@@ -150,18 +150,16 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
     };
     const status = await importIntegration(BaseModels.Project.IntegrationTypes.ZENDESK, refreshRate, filters);
 
+    enableClose();
     if (status === 200) {
       checkForInitialDocumentsTimer.resetState();
       checkForInitialDocumentsTimer.start(3000);
 
       notify.short.success('Importing data sources from Zendesk.');
-
       onClose();
     } else {
       notify.short.error('Failed to import data sources');
     }
-
-    enableClose();
   };
 
   useHotkey(Hotkey.MODAL_SUBMIT, importDataSources, { preventDefault: true });

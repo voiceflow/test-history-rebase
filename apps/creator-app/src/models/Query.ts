@@ -65,6 +65,6 @@ export namespace Query {
   }>;
 
   export type ZendeskCallackResource = Partial<{
-    status: string;
+    message: string;
   }>;
 }

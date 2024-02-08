@@ -13,10 +13,7 @@ export const ZendeskCallback: React.FC = () => {
 
     const query = Query.parse(location.search);
 
-    // eslint-disable-next-line no-console
-    console.log(query);
-
-    const status = query?.status === 'success' ? 'success' : 'fail';
+    const status = query?.message === 'SUCCESS' ? 'success' : 'fail';
 
     bc.postMessage(status);
 

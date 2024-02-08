@@ -25,18 +25,15 @@ export const KBZendeskFilterSelect = <T extends ZendeskFilterBase>({
   hasTooltip,
 }: IKBZendeskFilterSelect<T>): React.ReactElement => {
   const [search, setSearch] = React.useState('');
-  const [isSelectAll, setIsSelectAll] = React.useState(true);
   const modifiers = useTooltipModifiers([{ name: 'offset', options: { offset: [-10, 28] } }]);
 
   const onSelectAll = (onClose: VoidFunction) => () => {
     onValueChange(options);
     onClose();
-    setIsSelectAll(false);
   };
 
   const onDeselectAll = () => {
     onValueChange([]);
-    setIsSelectAll(true);
   };
 
   return (
@@ -52,19 +49,7 @@ export const KBZendeskFilterSelect = <T extends ZendeskFilterBase>({
                 <Dropdown value={value.map((item) => item.name).join(', ')} label={label} disabled={disabled} placeholder={placeholder}>
                   {() => {
                     return (
-                      <Menu
-                        searchSection={<Menu.Search onValueChange={setSearch} placeholder="Search" value={search} key={0} />}
-                        actionButtons={
-                          <Menu.ActionButtons
-                            firstButton={
-                              <Menu.ActionButtons.Button
-                                label={isSelectAll ? 'Select all' : 'Unselect all'}
-                                onClick={isSelectAll ? onSelectAll(onClose) : onDeselectAll}
-                              />
-                            }
-                          />
-                        }
-                      >
+                      <Menu searchSection={<Menu.Search onValueChange={setSearch} placeholder="Search" value={search} key={0} />}>
                         {options.map((option, index) => {
                           return (
                             <MenuItem
@@ -107,8 +92,8 @@ export const KBZendeskFilterSelect = <T extends ZendeskFilterBase>({
                       <Menu.ActionButtons
                         firstButton={
                           <Menu.ActionButtons.Button
-                            label={value.length ? 'Unselect all' : 'Select all'}
-                            onClick={value.length ? onDeselectAll : onSelectAll(onClose)}
+                            label={value.length > 0 ? 'Unselect all' : 'Select all'}
+                            onClick={value.length > 0 ? onDeselectAll : onSelectAll(onClose)}
                           />
                         }
                       />

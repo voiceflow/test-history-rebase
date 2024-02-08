@@ -1,7 +1,8 @@
 export interface IKBImportIntegrationWaiting {
-  onClose: VoidFunction;
-  onContinue: VoidFunction;
   onFail: VoidFunction;
+  onClose: VoidFunction;
   disabled?: boolean;
   reconnect?: boolean;
+  subdomain?: string;
+  onContinue: VoidFunction;
 }

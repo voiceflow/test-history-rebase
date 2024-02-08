@@ -38,6 +38,9 @@ export const knowledgeBaseClient = {
 
   deleteOneDocument: (projectID: string, documentID: string) => apiV3.fetch.delete(`/projects/${projectID}/knowledge-base/documents/${documentID}`),
 
+  deleteManyDocuments: (projectID: string, documentIDs: string[]) =>
+    apiV3.fetch.post<{ deletedDocumentIDs: string[] }>(`/projects/${projectID}/knowledge-base/documents/delete-many`, { documentIDs }),
+
   createOneDocumentFromFormFile: (projectID: string, formData: FormData) =>
     apiV3.fetch.post<DBKnowledgeBaseDocument>(`/projects/${projectID}/knowledge-base/documents/file`, formData).then(({ data }) => data),
 
@@ -72,21 +75,41 @@ export const knowledgeBaseClient = {
   deleteOneIntegration: (projectID: string, integrationType: string) =>
     apiV3.fetch.delete(`/projects/${projectID}/knowledge-base/integrations/${integrationType}`),
 
-  getIntegrationAuthUrl: (projectID: string, integrationType: string, redirectUrl: string) => {
+  getIntegrationAuthUrl: ({
+    subdomain,
+    projectID,
+    redirectUrl,
+    integrationType,
+  }: {
+    subdomain?: string;
+    projectID: string;
+    redirectUrl: string;
+    integrationType: string;
+  }) => {
     // eslint-disable-next-line dot-notation
     const url = apiV3.fetch['axios'].getUri({
       url: `/projects/${projectID}/knowledge-base/integrations/${integrationType}/auth-redirect-url`,
-      params: { redirectUrl },
+      params: { redirectUrl, subdomain },
     });
+
     return apiV3.fetch.get<{ data: { url: string } }>(url).then(({ data }) => data);
   },
 
-  getIntegrationAuthReconnectUrl: (projectID: string, integrationType: string, redirectUrl: string) => {
+  getIntegrationAuthReconnectUrl: ({
+    projectID,
+    redirectUrl,
+    integrationType,
+  }: {
+    projectID: string;
+    redirectUrl: string;
+    integrationType: string;
+  }) => {
     // eslint-disable-next-line dot-notation
     const url = apiV3.fetch['axios'].getUri({
       url: `/projects/${projectID}/knowledge-base/integrations/${integrationType}/auth-reconnect-redirect-url`,
       params: { redirectUrl },
     });
+
     return apiV3.fetch.get<{ data: { url: string } }>(url).then(({ data }) => data);
   },
 
@@ -111,6 +134,7 @@ export const knowledgeBaseClient = {
       url: `projects/integrations/${integrationType}/callback`,
       params: data,
     });
+
     return apiV3.fetch.get<{ data: { url: string } }>(url).then(({ data }) => data);
   },
 };

@@ -38,11 +38,11 @@ export const replaceTextDocument =
 
     const dbDocument = await knowledgeBaseClient.replaceDocument(projectID, documentID, formData);
 
-    dispatch(Actions.SetProcessingDocumentIDs({ processingDocumentIDs: [documentID] }));
+    dispatch.local(Actions.SetProcessingDocumentIDs({ processingDocumentIDs: [documentID] }));
 
     Tracking.trackAiKnowledgeBaseSourceUpdated({ documentIDs: [documentID], Update_Type: 'Text' });
 
-    dispatch(
+    dispatch.local(
       Actions.UpdateMany({
         update: [{ ...documentAdapter.fromDB(dbDocument), updatedAt: new Date().toJSON() }],
       })
@@ -70,7 +70,7 @@ export const patchManyRefreshRate =
 
     Tracking.trackAiKnowledgeBaseSourceUpdated({ documentIDs, Update_Type: 'Refresh rate' });
 
-    dispatch(
+    dispatch.local(
       Actions.UpdateMany({
         update: documents.map((document) => ({ ...document, updatedAt: new Date().toJSON() })),
       })
@@ -87,7 +87,7 @@ export const getAll = (): Thunk<KnowledgeBaseDocument[]> => async (dispatch, get
   const dbDocuments = await knowledgeBaseClient.getAllDocuments(projectID);
   const documents = documentAdapter.mapFromDB(dbDocuments);
 
-  dispatch(Actions.AddMany({ data: documents }));
+  dispatch.local(Actions.AddMany({ data: documents }));
 
   return documents;
 };
@@ -108,20 +108,20 @@ export const getAllPendingDocuments = (): Thunk<KnowledgeBaseDocument[]> => asyn
   const dbDocuments = await knowledgeBaseClient.getAllDocuments(projectID, documentIDs);
   const documents = documentAdapter.mapFromDB(dbDocuments);
 
-  dispatch(Actions.AddMany({ data: documents }));
+  dispatch.local(Actions.AddMany({ data: documents }));
 
   return documents;
 };
 
 export const loadAll = (): Thunk => async (dispatch) => {
   try {
-    dispatch(Actions.SetFetchStatus({ status: 'loading' }));
+    dispatch.local(Actions.SetFetchStatus({ status: 'loading' }));
 
     await dispatch(getAll());
 
-    dispatch(Actions.SetFetchStatus({ status: 'success' }));
+    dispatch.local(Actions.SetFetchStatus({ status: 'success' }));
   } catch (error) {
-    dispatch(Actions.SetFetchStatus({ status: 'error' }));
+    dispatch.local(Actions.SetFetchStatus({ status: 'error' }));
     Tracking.trackAiKnowledgeBaseError({ ErrorType: 'Load' });
     notify.short.error('Unable to fetch knowledge base');
   }
@@ -136,7 +136,7 @@ export const resyncMany =
 
     if (!documents.length) return;
 
-    dispatch(Actions.SetProcessingDocumentIDs({ processingDocumentIDs: documentIDs }));
+    dispatch.local(Actions.SetProcessingDocumentIDs({ processingDocumentIDs: documentIDs }));
 
     try {
       const projectID = Session.activeProjectIDSelector(getState());
@@ -147,7 +147,7 @@ export const resyncMany =
 
       Tracking.trackAiKnowledgeBaseSourceResync({ documentIDs });
 
-      dispatch(
+      dispatch.local(
         Actions.PatchMany({
           ids: documents.map((doc) => doc.id),
           patch: { status: BaseModels.Project.KnowledgeBaseDocumentStatus.PENDING, updatedAt: new Date().toJSON() },
@@ -161,9 +161,9 @@ export const resyncMany =
 export const retryOne =
   (documentID: string): Thunk =>
   async (dispatch, getState) => {
-    dispatch(Actions.SetProcessingDocumentIDs({ processingDocumentIDs: [documentID] }));
+    dispatch.local(Actions.SetProcessingDocumentIDs({ processingDocumentIDs: [documentID] }));
 
-    dispatch(
+    dispatch.local(
       Actions.PatchOne({
         id: documentID,
         patch: { status: BaseModels.Project.KnowledgeBaseDocumentStatus.PENDING, updatedAt: new Date().toJSON() },
@@ -198,9 +198,9 @@ const createManyFromFormData =
       .filter((res): res is PromiseFulfilledResult<DBKnowledgeBaseDocument> => res.status === 'fulfilled')
       .map((res) => documentAdapter.fromDB(res.value));
 
-    dispatch(Actions.SetProcessingDocumentIDs({ processingDocumentIDs: documents.map((d) => d.id) }));
+    dispatch.local(Actions.SetProcessingDocumentIDs({ processingDocumentIDs: documents.map((d) => d.id) }));
 
-    dispatch(Actions.AddMany({ data: documents }));
+    dispatch.local(Actions.AddMany({ data: documents }));
 
     if (manyFormData.length !== documents.length) {
       const erroredCount = manyFormData.length - documents.length;
@@ -263,9 +263,9 @@ export const createManyFromData =
       .filter((res): res is PromiseFulfilledResult<DBKnowledgeBaseDocument> => res.status === 'fulfilled')
       .map((res) => documentAdapter.fromDB(res.value));
 
-    dispatch(Actions.SetProcessingDocumentIDs({ processingDocumentIDs: documents.map((d) => d.id) }));
+    dispatch.local(Actions.SetProcessingDocumentIDs({ processingDocumentIDs: documents.map((d) => d.id) }));
 
-    dispatch(Actions.AddMany({ data: documents }));
+    dispatch.local(Actions.AddMany({ data: documents }));
 
     if (data.length !== documents.length) {
       const erroredCount = data.length - documents.length;
@@ -297,7 +297,7 @@ export const getOne =
     const dbDocument = await knowledgeBaseClient.getOneDocument(projectID, documentID);
     const document = documentAdapter.fromDB(dbDocument);
 
-    dispatch(Actions.AddOne({ data: document }));
+    dispatch.local(Actions.AddOne({ data: document }));
 
     return document;
   };
@@ -366,7 +366,7 @@ export const deleteOne =
 
     Tracking.trackAiKnowledgeBaseSourceDeleted({ documentIDs: [documentID] });
 
-    dispatch(Actions.DeleteOne({ id: documentID }));
+    dispatch.local(Actions.DeleteOne({ id: documentID }));
   };
 
 export const deleteMany =
@@ -378,16 +378,14 @@ export const deleteMany =
 
     Errors.assertProjectID(projectID);
 
-    const result = await Promise.allSettled(documentIDs.map((id) => knowledgeBaseClient.deleteOneDocument(projectID, id)));
+    const { data } = await knowledgeBaseClient.deleteManyDocuments(projectID, documentIDs);
 
-    const removed = documentIDs.filter((_, index) => result[index].status === 'fulfilled');
+    Tracking.trackAiKnowledgeBaseSourceDeleted({ documentIDs: data.deletedDocumentIDs });
 
-    Tracking.trackAiKnowledgeBaseSourceDeleted({ documentIDs });
+    dispatch.local(Actions.DeleteMany({ ids: data.deletedDocumentIDs }));
 
-    dispatch(Actions.DeleteMany({ ids: removed }));
-
-    if (removed.length !== documentIDs.length) {
-      const erroredCount = documentIDs.length - removed.length;
+    if (data.deletedDocumentIDs.length !== documentIDs.length) {
+      const erroredCount = documentIDs.length - data.deletedDocumentIDs.length;
 
       notify.short.warning(`${pluralize('data source', erroredCount, true)} could not be deleted`);
     }

@@ -52,7 +52,7 @@ const Routes: React.FC = () => {
         <PublicRoute exact path={Path.SIGNUP} component={Signup} />
         <PrivateRoute exact path={Path.ONBOARDING} component={Onboarding} />
 
-        <PrivateRoute exact path={Path.ZENDESK_CALLBACK} component={ZendeskCallback} />
+        <PrivateRoute exact path={Path.ZENDESK_CALLBACK} component={ZendeskCallback} screenSizeWarning={false} />
 
         <Route exact path={Path.CREATOR_TERMS} component={Legal} />
 

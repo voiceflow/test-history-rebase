@@ -78,11 +78,11 @@ export const KBManageIntegrations = manager.create('KBManageIntegrations', () =>
 
           <Switch.Pane value="reconnect">
             <KBImportIntegrationWaiting
-              onContinue={() => setScreen('integrations')}
               onFail={() => setScreen('integrations')}
-              reconnect
               onClose={api.onClose}
               disabled={closePrevented}
+              reconnect
+              onContinue={() => setScreen('integrations')}
             />
           </Switch.Pane>
         </Switch>

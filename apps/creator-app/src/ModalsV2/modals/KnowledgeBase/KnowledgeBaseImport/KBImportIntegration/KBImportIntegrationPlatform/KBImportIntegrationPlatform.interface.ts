@@ -3,14 +3,12 @@ import type { IconName } from '@voiceflow/icons';
 
 export interface IKBImportIntegrationPlatform {
   onClose: VoidFunction;
-  onContinue: VoidFunction;
   disabled?: boolean;
-  setPlatform: (platform: BaseModels.Project.IntegrationTypes) => void;
-  platform: BaseModels.Project.IntegrationTypes | null;
+  onContinue: (data: { platform: BaseModels.Project.IntegrationTypes; subdomain?: string; authenticate: boolean }) => void;
 }
 
 export interface KBImportIntegrationPlatformItem {
+  icon: IconName;
   label: string;
   value: BaseModels.Project.IntegrationTypes;
-  icon: IconName;
 }

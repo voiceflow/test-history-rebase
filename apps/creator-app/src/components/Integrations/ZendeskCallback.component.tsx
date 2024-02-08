@@ -1,3 +1,4 @@
+import { FullSpinner } from '@voiceflow/ui';
 import { notify } from '@voiceflow/ui-next';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
@@ -23,5 +24,5 @@ export const ZendeskCallback: React.FC = () => {
     }
   }, []);
 
-  return null;
+  return <FullSpinner message="Connecting..." />;
 };

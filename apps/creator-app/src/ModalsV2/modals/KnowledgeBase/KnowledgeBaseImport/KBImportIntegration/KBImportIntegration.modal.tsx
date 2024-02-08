@@ -3,9 +3,7 @@ import { Switch } from '@voiceflow/ui';
 import React, { useState } from 'react';
 
 import { Modal } from '@/components/Modal';
-import { Designer } from '@/ducks';
-import * as Tracking from '@/ducks/tracking';
-import { useSelector } from '@/hooks/store.hook';
+import { useTrackingEvents } from '@/hooks/tracking';
 import manager from '@/ModalsV2/manager';
 
 import { KBImportIntegrationPlatform } from './KBImportIntegrationPlatform/KBImportIntegrationPlatform.component';
@@ -13,36 +11,48 @@ import { KBImportIntegrationWaiting } from './KBImportIntegrationWaiting/KBImpor
 import { KBImportIntegrationZendesk } from './KBImportIntegrationZendesk/KBImportIntegrationZendesk.component';
 
 export const KBImportIntegration = manager.create('KBImportIntegration', () => ({ api, type, opened, hidden, animated, closePrevented }) => {
-  const [platform, setPlatform] = useState<BaseModels.Project.IntegrationTypes | null>(null);
-  const [screen, setScreen] = useState<'platform' | 'authenticate' | 'zendesk'>('platform');
+  const [screen, setScreen] = useState<'platform' | 'authenticate' | BaseModels.Project.IntegrationTypes>('platform');
+  const [trackingEvents] = useTrackingEvents();
+  const [subdomain, setSubdomain] = useState<string | undefined>();
 
-  const integrations = useSelector(Designer.KnowledgeBase.Integration.selectors.all);
+  const onPlatformContinue = ({
+    platform,
+    subdomain,
+    authenticate,
+  }: {
+    platform: BaseModels.Project.IntegrationTypes;
+    subdomain?: string;
+    authenticate: boolean;
+  }) => {
+    setSubdomain(subdomain);
 
-  Tracking.trackAiKnowledgeBaseIntegrationSelected({ IntegrationType: 'zendesk' });
+    if (authenticate) {
+      setScreen('authenticate');
+    } else {
+      setScreen(platform);
+    }
+
+    trackingEvents.trackAiKnowledgeBaseIntegrationSelected({ IntegrationType: 'zendesk' });
+  };
 
   return (
     <Modal.Container type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} onEscClose={api.onEscClose}>
       <Switch active={screen}>
         <Switch.Pane value="platform">
-          <KBImportIntegrationPlatform
-            platform={platform}
-            setPlatform={setPlatform}
-            onContinue={integrations.length ? () => setScreen('zendesk') : () => setScreen('authenticate')}
-            onClose={api.onClose}
-            disabled={closePrevented}
-          />
+          <KBImportIntegrationPlatform onClose={api.onClose} disabled={closePrevented} onContinue={onPlatformContinue} />
         </Switch.Pane>
 
         <Switch.Pane value="authenticate">
           <KBImportIntegrationWaiting
-            onContinue={() => setScreen('zendesk')}
             onFail={() => setScreen('platform')}
             onClose={api.onClose}
             disabled={closePrevented}
+            subdomain={subdomain}
+            onContinue={() => setScreen(BaseModels.Project.IntegrationTypes.ZENDESK)}
           />
         </Switch.Pane>
 
-        <Switch.Pane value="zendesk">
+        <Switch.Pane value={BaseModels.Project.IntegrationTypes.ZENDESK}>
           <KBImportIntegrationZendesk onClose={api.onClose} enableClose={api.enableClose} disableClose={api.preventClose} disabled={closePrevented} />
         </Switch.Pane>
       </Switch>

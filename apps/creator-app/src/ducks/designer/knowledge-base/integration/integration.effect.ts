@@ -56,7 +56,7 @@ export const deleteOne =
   };
 
 export const getIntegrationAuthUrl =
-  (integrationType: string): Thunk<string> =>
+  (integrationType: string, payload?: { subdomain?: string }): Thunk<string> =>
   async (_, getState) => {
     const state = getState();
 
@@ -64,11 +64,14 @@ export const getIntegrationAuthUrl =
 
     Errors.assertProjectID(projectID);
 
-    const redirectURL = `${CREATOR_APP_ENDPOINT}${Path.ZENDESK_CALLBACK}`;
+    const { data } = await knowledgeBaseClient.getIntegrationAuthUrl({
+      ...payload,
+      projectID,
+      redirectUrl: `${CREATOR_APP_ENDPOINT}${Path.ZENDESK_CALLBACK}`,
+      integrationType,
+    });
 
-    const data = await knowledgeBaseClient.getIntegrationAuthUrl(projectID, integrationType, redirectURL);
-
-    return data.data.url;
+    return data.url;
   };
 
 export const getIntegrationAuthReconnectUrl =
@@ -80,11 +83,13 @@ export const getIntegrationAuthReconnectUrl =
 
     Errors.assertProjectID(projectID);
 
-    const redirectURL = `${CREATOR_APP_ENDPOINT}${Path.ZENDESK_CALLBACK}`;
+    const { data } = await knowledgeBaseClient.getIntegrationAuthReconnectUrl({
+      projectID,
+      redirectUrl: `${CREATOR_APP_ENDPOINT}${Path.ZENDESK_CALLBACK}`,
+      integrationType,
+    });
 
-    const data = await knowledgeBaseClient.getIntegrationAuthReconnectUrl(projectID, integrationType, redirectURL);
-
-    return data.data.url;
+    return data.url;
   };
 
 export const getIntegrationFilters =
@@ -96,9 +101,9 @@ export const getIntegrationFilters =
 
     Errors.assertProjectID(projectID);
 
-    const data = await knowledgeBaseClient.getIntegrationFilters(projectID, integrationType);
+    const { data } = await knowledgeBaseClient.getIntegrationFilters(projectID, integrationType);
 
-    return data.data;
+    return data;
   };
 
 export const getIntegrationUserSegments =
@@ -110,9 +115,9 @@ export const getIntegrationUserSegments =
 
     Errors.assertProjectID(projectID);
 
-    const data = await knowledgeBaseClient.getUserSegmentFilters(projectID, filters);
+    const { data } = await knowledgeBaseClient.getUserSegmentFilters(projectID, filters);
 
-    return data.data;
+    return data;
   };
 
 export const getIntegrationDocumentCount =
@@ -124,9 +129,9 @@ export const getIntegrationDocumentCount =
 
     Errors.assertProjectID(projectID);
 
-    const data = await knowledgeBaseClient.getIntegrationDocumentCount(projectID, integrationType, filters);
+    const { data } = await knowledgeBaseClient.getIntegrationDocumentCount(projectID, integrationType, filters);
 
-    return data.data.count;
+    return data.count;
   };
 
 export const createOne =

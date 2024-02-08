@@ -195,7 +195,7 @@ interface UseInputStateOptions<Value, Error> {
   error?: Error | null;
 }
 
-interface UseInputStateAPI<Value, Error> {
+export interface UseInputStateAPI<Value, Error> {
   value: Value;
   error: Error | null;
   setValue: (value: Value | ((prevValue: Value) => Value)) => void;

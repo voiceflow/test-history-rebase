@@ -1,36 +1,70 @@
-import type { ClientCRUDPayload } from '@realtime-sdk/actions/utils';
-import { createCRUDActions } from '@realtime-sdk/actions/utils';
-import type { BaseCreatorPayload, BaseOrganizationPayload } from '@realtime-sdk/types';
-import { Utils } from '@voiceflow/common';
+import type { Organization } from '@voiceflow/dtos';
 
-import { organizationType } from './utils';
+import type { CreatorAction } from '@/creator/creator.action';
+import { createCRUD } from '@/crud/crud.action';
+import type {
+  AddOneRequest,
+  CreateResponse,
+  DeleteOneRequest,
+  PatchOneRequest,
+  ReplaceRequest,
+} from '@/crud/crud.interface';
 
-export * as member from './member';
+export const organizationAction = createCRUD('organization');
 
-export type ClientOrganizationCRUDPayload = ClientCRUDPayload<Organization, BaseCreatorPayload>;
+/**
+ * user-sent events
+ */
 
-export interface UpdateOrganizationNamePayload extends BaseOrganizationPayload {
-  name: string;
+/* CreateOne */
+
+export namespace CreateOne {
+  export interface Request extends CreatorAction {
+    data: Omit<Organization, 'id' | 'createdAt' | 'updatedAt'>;
+  }
+
+  export interface Response extends CreatorAction, CreateResponse<Organization> {}
 }
 
-export interface UpdateOrganizationImagePayload extends BaseOrganizationPayload {
-  image: string;
+export const CreateOne = organizationAction.crud.createOne<CreateOne.Request, CreateOne.Response>();
+
+/* PatchOne */
+
+interface PatchData {
+  name?: string;
+  activePersonaID?: string;
 }
 
-export interface ReplaceSubscriptionPayload extends BaseOrganizationPayload {
-  subscription: Organization['subscription'];
-}
+export interface PatchOne extends PatchOneRequest<PatchData>, CreatorAction {}
 
-export const crud = createCRUDActions<Organization, BaseCreatorPayload>(organizationType);
+export const PatchOne = organizationAction.crud.patchOne<PatchOne>();
 
-export const updateName = Utils.protocol.createAsyncAction<UpdateOrganizationNamePayload>(
-  organizationType('UPDATE_NAME')
-);
+/* DeleteOne */
 
-export const updateImage = Utils.protocol.createAsyncAction<UpdateOrganizationImagePayload>(
-  organizationType('UPDATE_IMAGE')
-);
+export interface DeleteOne extends DeleteOneRequest, CreatorAction {}
 
-export const replaceSubscription = Utils.protocol.createAsyncAction<ReplaceSubscriptionPayload>(
-  organizationType('REPLACE_SUBSCRIPTION')
-);
+export const DeleteOne = organizationAction.crud.deleteOne<DeleteOne>();
+
+/**
+ * system-sent events
+ */
+
+/* Replace */
+
+export interface Replace extends ReplaceRequest<Organization>, CreatorAction {}
+
+export const Replace = organizationAction.crud.replace<Replace>();
+
+/**
+ * system events
+ */
+
+/**
+ * universal events
+ */
+
+/* Add */
+
+export interface AddOne extends AddOneRequest<Organization>, CreatorAction {}
+
+export const AddOne = organizationAction.crud.addOne<AddOne>();

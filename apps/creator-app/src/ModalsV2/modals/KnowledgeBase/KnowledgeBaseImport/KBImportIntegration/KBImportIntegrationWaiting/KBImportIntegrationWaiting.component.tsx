@@ -71,7 +71,7 @@ export const KBImportIntegrationWaiting: React.FC<IKBImportIntegrationWaiting> =
 
       const timeDiff = integrationCreatedAt ? today.getTime() - new Date(integrationCreatedAt).getTime() : null;
 
-      const createdWithFiveMinutes = timeDiff ? timeDiff > 5 * 60 * 1000 : false;
+      const createdWithFiveMinutes = timeDiff && timeDiff < 5 * 60 * 1000;
 
       if (createdWithFiveMinutes) {
         clearInterval(checkPopup);

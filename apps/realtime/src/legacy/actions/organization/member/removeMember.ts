@@ -7,10 +7,8 @@ import { AbstractOrganizationChannelControl } from '../utils';
 class RemoveWorkspaceMember extends AbstractOrganizationChannelControl<Realtime.organization.member.BaseMemberPayload> {
   protected actionCreator = Realtime.organization.member.remove;
 
-  protected process = async (ctx: Context, { payload }: Action<Realtime.organization.member.BaseMemberPayload>) => {
-    const { creatorID } = ctx.data;
-
-    await this.services.organization.member.remove(creatorID, payload.organizationID, payload.creatorID);
+  protected process = async (_: Context, { payload }: Action<Realtime.organization.member.BaseMemberPayload>) => {
+    await this.services.organizationMember.remove(payload.organizationID, payload.creatorID);
   };
 }
 

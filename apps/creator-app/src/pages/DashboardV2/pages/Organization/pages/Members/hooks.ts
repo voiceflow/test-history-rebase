@@ -7,6 +7,7 @@ import * as Normal from 'normal-store';
 import React from 'react';
 
 import client from '@/client';
+import { designerClient } from '@/client/designer';
 import * as Organization from '@/ducks/organization';
 import * as Session from '@/ducks/session';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
@@ -85,8 +86,8 @@ export const useWorkspacesAndMembers = () => {
     setLoading(true);
 
     try {
-      const workspaces = await client.identity.organization.getWorkspaces(organizationID);
-
+      // TODO: [organization refactor] fix types
+      const workspaces = (await designerClient.organization.getOrganizationWorkspaces(organizationID)) as unknown as Realtime.Identity.Workspace[];
       const hasActiveWorkspace = workspaces.some(({ id }) => id === sessionActiveWorkspaceID);
 
       setWorkspaces(workspaces);

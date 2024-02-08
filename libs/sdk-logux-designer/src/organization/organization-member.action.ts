@@ -1,5 +1,5 @@
 import { MEMBER_KEY } from '@realtime-sdk/constants';
-import { BaseOrganizationPayload } from '@realtime-sdk/types';
+import type { BaseOrganizationPayload } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
 
 import { organizationType } from './utils';

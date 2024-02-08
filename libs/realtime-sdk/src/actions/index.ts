@@ -6,7 +6,6 @@ export * as domain from './domain';
 export * as feature from './feature';
 export * as link from './link';
 export * as node from './node';
-export * as organization from './organization';
 export * as port from './port';
 export * as product from './product';
 export * as project from './project';

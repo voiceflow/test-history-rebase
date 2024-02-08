@@ -1,12 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
-import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { IdentityClient } from '@voiceflow/sdk-identity';
 
 @Injectable()
 export class OrganizationMemberService {
   constructor(@Inject(IdentityClient) private readonly identityClient: IdentityClient) {}
 
-  public async getAll(organizationID: string): Promise<Realtime.OrganizationMember[]> {
+  public async getAll(organizationID: string) {
     return this.identityClient.organizationMember.findAll(organizationID);
   }
 

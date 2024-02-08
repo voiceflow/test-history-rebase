@@ -7,8 +7,8 @@ import { AbstractOrganizationChannelControl } from './utils';
 class UpdateOrganizationName extends AbstractOrganizationChannelControl<Realtime.organization.UpdateOrganizationNamePayload> {
   protected actionCreator = Realtime.organization.updateName;
 
-  protected process = async (ctx: Context, { payload }: Action<Realtime.organization.UpdateOrganizationNamePayload>) => {
-    await this.services.organization.updateName(ctx.data.creatorID, payload.organizationID, payload.name);
+  protected process = async (_: Context, { payload }: Action<Realtime.organization.UpdateOrganizationNamePayload>) => {
+    await this.services.organization.updateName(payload.organizationID, payload.name);
   };
 }
 

@@ -35,6 +35,7 @@ export const updateActiveOrganizationImage =
     Errors.assertOrganizationID(organizationID);
 
     try {
+      // TODO: [organization refactor] move to async action on logux
       const { image } = await client.identity.organization.updateImage(organizationID, formData);
       await dispatch.sync(Realtime.organization.updateImage({ organizationID, image }));
 

@@ -5,6 +5,7 @@ import {
   BackupClient,
   BillingSubscriptionClient,
   FunctionClient,
+  OrganizationClient,
   PrivateAssistantClient,
   PrivateEnvironmentClient,
   PrivateProjectClient,
@@ -18,6 +19,7 @@ export class DesignerClient extends BaseClient('https://realtime-api.voiceflow.c
   project: ProjectClient,
   function: FunctionClient,
   assistant: AssistantClient,
+  organization: OrganizationClient,
   billing: NestedClient({
     subscription: BillingSubscriptionClient,
   }),

@@ -68,7 +68,7 @@ export const KBImportIntegrationWaiting: React.FC<IKBImportIntegrationWaiting> =
       if (event.data === 'success') {
         onConnected(true);
         notify.short.success('Connected to Zendesk');
-      } else {
+      } else if (event.data === 'fail') {
         onConnected(false);
 
         notify.short.error('Failed to connect to Zendesk. Please try again.');

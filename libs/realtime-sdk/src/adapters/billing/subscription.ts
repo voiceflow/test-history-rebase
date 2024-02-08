@@ -6,7 +6,7 @@ import { PlanType } from '@voiceflow/internal';
 import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter';
 
 const subscriptionAdapter = createMultiAdapter<Identity.Subscription, Subscription>(
-  ({ id, billingPeriodUnit, status, nextBillingAt, subscriptionItems, metaData }) => {
+  ({ id, billingPeriodUnit, status, nextBillingAt, subscriptionItems, metaData, hasScheduledChanges }) => {
     const planItem = findPlanItem(subscriptionItems);
     const trialEnd = planItem?.trialEnd;
 
@@ -25,6 +25,7 @@ const subscriptionAdapter = createMultiAdapter<Identity.Subscription, Subscripti
       trial: isTrial && trialEnd ? { daysLeft: getDaysLeftToTrialEnd(new Date(trialEnd)), endAt: new Date(trialEnd).toJSON() } : null,
       planSeatLimits: planLimits.seatLimits,
       variableStatesLimit: planLimits.variableStatesLimit,
+      hasScheduledChanges,
     };
 
     return result;

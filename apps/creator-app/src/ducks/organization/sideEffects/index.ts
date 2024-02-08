@@ -9,6 +9,8 @@ import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { Thunk } from '@/store/types';
 import { getErrorMessage } from '@/utils/error';
 
+import { chargebeeScheduledSubscriptionSelector, chargebeeSubscriptionSelector } from '../selectors/active';
+
 export const updateActiveOrganizationName =
   (name: string): Thunk =>
   async (dispatch, getState) => {
@@ -73,11 +75,37 @@ export const loadActiveOrganizationSubscription =
     }
   };
 
-export const updateSeats = (organizationID: string, chargebeeSubscriptionID: string, seats: number): Thunk<void> => {
-  return async (dispatch) => {
+export const loadActiveOrganizationSchduledSubscription =
+  (organizationID: string, chargebeeSubscriptionID: string): Thunk<Subscription | null> =>
+  async (dispatch) => {
     try {
+      const subscription = await designerClient.billing.subscription.getSubscriptionScheduledChanges(organizationID, chargebeeSubscriptionID);
+
+      dispatch(Realtime.organization.replaceScheduledSubscription({ organizationID, subscription }));
+
+      return subscription;
+    } catch {
+      return null;
+    }
+  };
+
+export const updateSeats = (organizationID: string, chargebeeSubscriptionID: string, seats: number): Thunk<void> => {
+  return async (dispatch, getState) => {
+    try {
+      const subscription = chargebeeSubscriptionSelector(getState());
       await designerClient.billing.subscription.updateSeats(organizationID, chargebeeSubscriptionID, { seats });
-      await dispatch(loadActiveOrganizationSubscription(organizationID, chargebeeSubscriptionID));
+
+      if (!subscription) return;
+
+      dispatch(
+        Realtime.organization.replaceSubscription({
+          organizationID,
+          subscription: {
+            ...subscription,
+            editorSeats: seats,
+          },
+        })
+      );
     } catch (err) {
       toast.error(getErrorMessage(err, 'Failed to update seats'));
     }
@@ -85,10 +113,26 @@ export const updateSeats = (organizationID: string, chargebeeSubscriptionID: str
 };
 
 export const scheduleSeatsUpdate = (organizationID: string, chargebeeSubscriptionID: string, seats: number): Thunk<void> => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     try {
       await designerClient.billing.subscription.scheduleSeatsUpdate(organizationID, chargebeeSubscriptionID, { seats });
-      await dispatch(loadActiveOrganizationSubscription(organizationID, chargebeeSubscriptionID));
+
+      const scheduledSubscription = chargebeeScheduledSubscriptionSelector(getState());
+      const subscription = chargebeeSubscriptionSelector(getState());
+
+      const sub = scheduledSubscription || subscription;
+
+      if (!sub) return;
+
+      dispatch(
+        Realtime.organization.replaceScheduledSubscription({
+          organizationID,
+          subscription: {
+            ...sub,
+            editorSeats: seats,
+          },
+        })
+      );
     } catch (err) {
       toast.error(getErrorMessage(err, 'Failed to schedule seats update'));
     }
@@ -96,10 +140,9 @@ export const scheduleSeatsUpdate = (organizationID: string, chargebeeSubscriptio
 };
 
 export const cancelSubscription = (organizationID: string, chargebeeSubscriptionID: string): Thunk<void> => {
-  return async (dispatch) => {
+  return async () => {
     try {
       await designerClient.billing.subscription.cancel(organizationID, chargebeeSubscriptionID);
-      await dispatch(loadActiveOrganizationSubscription(organizationID, chargebeeSubscriptionID));
     } catch (err) {
       toast.error(getErrorMessage(err, 'Failed to cancel subscription'));
     }

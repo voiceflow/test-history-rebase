@@ -35,6 +35,19 @@ export class BillingSubscriptionHTTPController {
     return this.service.findOne(subscriptionID).then(Realtime.Adapters.Billing.subscription.fromDB);
   }
 
+  @Get(':subscriptionID/scheduled-changes')
+  @Authorize.Permissions([Permission.ORGANIZATION_READ])
+  @ApiOperation({
+    summary: 'Returns billing subscription',
+    description: 'Returns billing subscription for the given subscriptionID',
+  })
+  @ApiParam({ name: 'organizationID', type: 'string' })
+  @ApiParam({ name: 'subscriptionID', type: 'string' })
+  @ZodApiResponse({ status: HttpStatus.OK, schema: SubscriptionDTO })
+  async getSubscriptionScheduledChanges(@Param('subscriptionID') subscriptionID: string): Promise<Subscription> {
+    return this.service.getSubscriptionWithScheduledChanges(subscriptionID).then(Realtime.Adapters.Billing.subscription.fromDB);
+  }
+
   @Get(':subscriptionID/invoices')
   @Authorize.Permissions([Permission.ORGANIZATION_READ])
   @ApiOperation({

@@ -16,6 +16,7 @@ import BillingHistory from './BillingHistory/BillingHistory.component';
 import { useBillingHistory } from './BillingHistory/hooks';
 import CancelSubscription from './CancelSubscription';
 import EditorSeats from './EditorSeats';
+import { useScheduledSubscription } from './hooks/useScheduledSubscription';
 
 // const PAYMENT_FAILED_STRIPE_STATUS = new Set([StripeStatuses.UNPAID, StripeStatuses.PAST_DUE]);
 
@@ -28,10 +29,9 @@ const DashboardV2Billing: React.FC = () => {
   const isTrial = useSelector(WorkspaceV2.active.isOnTrialSelector);
   // const stripeStatus = useSelector(WorkspaceV2.active.stripeStatusSelector);
 
-  // const paymentAPI = Payment.usePaymentAPI();
+  const scheduledSubscription = useScheduledSubscription();
   const billingHistory = useBillingHistory();
-  // const isReady = billingHistory.isReady && paymentAPI.isReady;
-  const isReady = billingHistory.isReady && organizationID && subscription;
+  const isReady = billingHistory.isReady && organizationID && subscription && scheduledSubscription.isReady;
 
   // const showPaymentFailed = PAYMENT_FAILED_STRIPE_STATUS.has(stripeStatus as StripeStatuses) && isProOrTeamPlan && !isTrial;
 
@@ -51,7 +51,7 @@ const DashboardV2Billing: React.FC = () => {
         nextBillingDate={subscription.nextBillingDate ?? null}
         pricePerEditor={subscription.pricePerEditor}
         billingPeriod={subscription.billingPeriodUnit ?? null}
-        editorSeats={subscription.editorSeats}
+        scheduledEditorSeats={scheduledSubscription.data?.editorSeats}
       />
 
       {/* {paymentAPI.paymentSource && <PaymentDetails source={paymentAPI.paymentSource} refetch={paymentAPI.refetchPaymentSource} />} */}

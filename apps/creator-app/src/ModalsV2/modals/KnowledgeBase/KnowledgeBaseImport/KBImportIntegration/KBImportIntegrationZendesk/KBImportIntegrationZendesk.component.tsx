@@ -26,6 +26,7 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
   const [filters, setFilters] = React.useState<ZendeskFilters>({});
   const [numDataSources, setNumDataSources] = React.useState<number | null>(null);
   const [isLoading, setIsLoading] = React.useState(false);
+  const [isLoadingFilters, setIsLoadingFilters] = React.useState(false);
 
   const [brands, setBrands] = React.useState<ZendeskFilterBrand[]>([]);
   const [locales, setLocales] = React.useState<ZendeskFilterLocale[]>([]);
@@ -64,11 +65,13 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
   }, [brands, locales, categories, labels]);
 
   const getDocumentFilters = async () => {
+    setIsLoadingFilters(true);
     const filters = await getFilters('zendesk');
     setFilters(filters);
     setBrandIdOptions(filters.brands || []);
     setLocaleOptions(filters.locales || []);
     setLabelOptions(filters.labels || []);
+    setIsLoadingFilters(false);
   };
 
   React.useEffect(() => {
@@ -92,7 +95,9 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
       brands,
       categories,
     };
+    setIsLoadingFilters(true);
     const options = await getUserSegments(filters);
+    setIsLoadingFilters(false);
     setUserSegmentOptions(options);
   };
 
@@ -170,7 +175,7 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
               label="Brand ID"
               value={brands}
               options={brandIdOptions}
-              disabled={disabled}
+              disabled={disabled || isLoadingFilters}
               onValueChange={setBrands}
               placeholder="Select brands (optional)"
             />
@@ -178,7 +183,7 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
               label="Locale"
               value={locales}
               options={localeOptions}
-              disabled={disabled || !brands.length}
+              disabled={disabled || !brands.length || isLoadingFilters}
               onValueChange={setLocales}
               placeholder="Select locale (optional)"
               hasTooltip={!brands.length}
@@ -187,7 +192,7 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
               label="Categories"
               value={categories}
               options={categoryOptions}
-              disabled={disabled || !locales.length}
+              disabled={disabled || !locales.length || isLoadingFilters}
               onValueChange={setCategories}
               placeholder="Select category (optional)"
               hasTooltip={!locales.length}
@@ -196,7 +201,7 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
               label="Labels"
               value={labels}
               options={labelOptions}
-              disabled={disabled || !categories.length}
+              disabled={disabled || !categories.length || isLoadingFilters}
               onValueChange={setLabels}
               placeholder="Select labels (optional)"
               hasTooltip={!categories.length}
@@ -205,7 +210,7 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
               label="User segments"
               value={userSegments}
               options={userSegmentOptions}
-              disabled={disabled || !labels.length}
+              disabled={disabled || !labels.length || isLoadingFilters}
               onValueChange={setUserSegments}
               placeholder="Select user segments (optional)"
               hasTooltip={!labels.length}

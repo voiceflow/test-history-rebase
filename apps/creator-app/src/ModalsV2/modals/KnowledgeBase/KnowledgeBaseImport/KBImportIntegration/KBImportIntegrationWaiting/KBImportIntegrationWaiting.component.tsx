@@ -3,10 +3,10 @@ import { Box, LoadingSpinner, notify, Scroll, Text, Tokens } from '@voiceflow/ui
 import React from 'react';
 
 import { Modal } from '@/components/Modal';
+import { ZENDESK_CALLBACK_CHANNEL } from '@/constants';
 import { Designer } from '@/ducks';
 import { useDispatch } from '@/hooks/store.hook';
 import { useTrackingEvents } from '@/hooks/tracking';
-import { KnowledgeBaseIntegration } from '@/models/KnowledgeBase.model';
 import { openURLInANewPopupWindow } from '@/utils/window';
 
 import { IKBImportIntegrationWaiting } from './KBImportIntegrationWaiting.interface';
@@ -27,8 +27,6 @@ export const KBImportIntegrationWaiting: React.FC<IKBImportIntegrationWaiting> =
 
   const [popupWindow, setPopupWindow] = React.useState<Window | null>(null);
   const [timeout, setTimeoutObject] = React.useState<NodeJS.Timeout | null>(null);
-
-  const getAll = useDispatch(Designer.KnowledgeBase.Integration.effect.getAll);
 
   const onConnectZendesk = async () => {
     try {
@@ -63,37 +61,26 @@ export const KBImportIntegrationWaiting: React.FC<IKBImportIntegrationWaiting> =
   };
 
   React.useEffect(() => {
-    if (!popupWindow) return;
+    setTimeout(onConnected, 5000);
+    const bc = new BroadcastChannel(ZENDESK_CALLBACK_CHANNEL);
 
-    let integrations: KnowledgeBaseIntegration[] = [];
-
-    const checkPopup = setInterval(async () => {
-      const today = new Date();
-      const integrationCreatedAt = integrations.find((item) => item.type === BaseModels.Project.IntegrationTypes.ZENDESK)?.createdAt;
-
-      const timeDiff = integrationCreatedAt ? today.getTime() - new Date(integrationCreatedAt).getTime() : null;
-
-      const createdWithFiveMinutes = timeDiff && timeDiff < 5 * 60 * 1000;
-
-      if (createdWithFiveMinutes) {
-        clearInterval(checkPopup);
+    bc.onmessage = (event) => {
+      if (event.data === 'success') {
         onConnected(true);
-
         notify.short.success('Connected to Zendesk');
-      } else if (!popupWindow || !popupWindow.closed) {
-        integrations = await getAll();
+      } else {
+        onConnected(false);
 
-        return;
+        notify.short.error('Failed to connect to Zendesk. Please try again.');
       }
-      clearInterval(checkPopup);
-    }, 2000);
-
-    // eslint-disable-next-line consistent-return
-    return () => {
-      clearInterval(checkPopup);
-      if (timeout) clearTimeout(timeout);
+      bc.close();
     };
-  }, [popupWindow]);
+
+    return () => {
+      if (timeout) clearTimeout(timeout);
+      bc.close();
+    };
+  }, []);
 
   React.useEffect(() => {
     onConnectZendesk();

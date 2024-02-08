@@ -138,6 +138,7 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
 
     if (status === 200) {
       notify.short.success('Importing data sources from Zendesk.');
+      onClose();
       onSuccess();
     } else {
       notify.short.error('Failed to import data sources');

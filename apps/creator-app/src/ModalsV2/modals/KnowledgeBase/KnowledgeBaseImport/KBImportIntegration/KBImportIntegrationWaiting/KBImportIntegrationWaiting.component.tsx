@@ -48,6 +48,8 @@ export const KBImportIntegrationWaiting: React.FC<IKBImportIntegrationWaiting> =
   };
 
   const onConnected = (success?: boolean) => {
+    // eslint-disable-next-line no-console
+    console.log(popupWindow);
     popupWindow?.close();
 
     if (success) {
@@ -55,7 +57,6 @@ export const KBImportIntegrationWaiting: React.FC<IKBImportIntegrationWaiting> =
       onContinue();
     } else {
       trackingEvents.trackAiKnowledgeBaseIntegrationFailed({ IntegrationType: 'zendesk' });
-      notify.short.error('Failed to connect to Zendesk. Please try again.');
       onFail();
     }
   };

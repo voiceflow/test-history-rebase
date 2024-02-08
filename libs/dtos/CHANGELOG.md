@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.32.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.31.0...@voiceflow/dtos@1.32.0) (2024-02-08)
+
+### Features
+
+* implement schedule seats check (CV3-986) ([#7767](https://github.com/voiceflow/creator-app/issues/7767)) ([4fa1d66](https://github.com/voiceflow/creator-app/commit/4fa1d66afb4b9bdd7e4f6de5628583f4c8b3aa8d))
+
 # [1.31.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.30.0...@voiceflow/dtos@1.31.0) (2024-02-07)
 
 ### Features

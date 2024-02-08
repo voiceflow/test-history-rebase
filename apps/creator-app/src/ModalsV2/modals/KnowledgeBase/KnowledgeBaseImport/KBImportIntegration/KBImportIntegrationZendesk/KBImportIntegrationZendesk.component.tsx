@@ -6,6 +6,7 @@ import { Modal } from '@/components/Modal';
 import { Designer } from '@/ducks';
 import { useHotkey } from '@/hooks/hotkeys';
 import { useDispatch } from '@/hooks/store.hook';
+import { useTimer } from '@/hooks/timer.hook';
 import { Hotkey } from '@/keymap';
 import {
   ZendeskFilterBase,
@@ -119,16 +120,27 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
     [categories, brands, locales, labels]
   );
 
-  const checkForDocuments = () => {
-    const checkDocuments = setInterval(() => {
-      getAll().catch(() => {});
-    }, 30000);
+  const checkForInitialDocumentsTimer = useTimer(
+    async (state) => {
+      try {
+        await getAll();
+      } catch {
+        // ignore
+      } finally {
+        if (state.count < 5) {
+          checkForInitialDocumentsTimer.start(30000);
+        }
 
-    setTimeout(() => clearInterval(checkDocuments), 120000);
-  };
+        // eslint-disable-next-line no-param-reassign
+        state.count += 1;
+      }
+    },
+    { count: 0 }
+  );
 
   const importDataSources = async () => {
     disableClose();
+
     const filters = {
       labels,
       locales,
@@ -139,8 +151,11 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
     const status = await importIntegration(BaseModels.Project.IntegrationTypes.ZENDESK, refreshRate, filters);
 
     if (status === 200) {
-      setTimeout(() => checkForDocuments(), 5000);
+      checkForInitialDocumentsTimer.resetState();
+      checkForInitialDocumentsTimer.start(3000);
+
       notify.short.success('Importing data sources from Zendesk.');
+
       onClose();
     } else {
       notify.short.error('Failed to import data sources');

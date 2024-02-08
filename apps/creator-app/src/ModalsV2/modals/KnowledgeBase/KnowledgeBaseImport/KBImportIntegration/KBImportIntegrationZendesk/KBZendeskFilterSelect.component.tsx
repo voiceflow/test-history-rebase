@@ -107,8 +107,8 @@ export const KBZendeskFilterSelect = <T extends ZendeskFilterBase>({
                       <Menu.ActionButtons
                         firstButton={
                           <Menu.ActionButtons.Button
-                            label={isSelectAll ? 'Select all' : 'Unselect all'}
-                            onClick={isSelectAll ? onSelectAll(onClose) : onDeselectAll}
+                            label={value.length ? 'Unselect all' : 'Select all'}
+                            onClick={value.length ? onDeselectAll : onSelectAll(onClose)}
                           />
                         }
                       />

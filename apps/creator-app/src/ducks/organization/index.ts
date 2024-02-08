@@ -1,6 +1,5 @@
-export * from './constants';
-export { default } from './reducers';
-export * from './reducers';
+export * from './organization.constants';
+export * from './organization.effect';
+export { default } from './organization.reducer';
+export * from './organization.types';
 export * from './selectors';
-export * from './sideEffects';
-export * from './types';

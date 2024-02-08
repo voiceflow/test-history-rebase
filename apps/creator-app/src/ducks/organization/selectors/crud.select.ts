@@ -1,6 +1,6 @@
 import { createCRUDSelectors } from '@/ducks/utils/crudV2';
 
-import { STATE_KEY } from '../constants';
+import { STATE_KEY } from '../organization.constants';
 
 export const {
   all: allOrganizationsSelector,

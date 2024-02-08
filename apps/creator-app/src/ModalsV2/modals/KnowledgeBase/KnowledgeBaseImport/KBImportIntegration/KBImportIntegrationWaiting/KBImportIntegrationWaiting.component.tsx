@@ -26,6 +26,7 @@ export const KBImportIntegrationWaiting: React.FC<IKBImportIntegrationWaiting> =
   const [trackingEvents] = useTrackingEvents();
 
   const [popupWindow, setPopupWindow] = React.useState<Window | null>(null);
+  const [timeout, setTimeoutObject] = React.useState<NodeJS.Timeout | null>(null);
 
   const getAll = useDispatch(Designer.KnowledgeBase.Integration.effect.getAll);
 
@@ -39,7 +40,8 @@ export const KBImportIntegrationWaiting: React.FC<IKBImportIntegrationWaiting> =
 
       setPopupWindow(popup);
 
-      setTimeout(() => onConnected(false), 300000);
+      const closeTimeout = setTimeout(() => onConnected(false), 300000);
+      setTimeoutObject(closeTimeout);
     } catch {
       trackingEvents.trackAiKnowledgeBaseIntegrationFailed({ IntegrationType: 'zendesk' });
       notify.short.error('Failed to connect to Zendesk. Please try again.');
@@ -89,6 +91,7 @@ export const KBImportIntegrationWaiting: React.FC<IKBImportIntegrationWaiting> =
     // eslint-disable-next-line consistent-return
     return () => {
       clearInterval(checkPopup);
+      if (timeout) clearTimeout(timeout);
     };
   }, [popupWindow]);
 

@@ -17,21 +17,25 @@ export const useTimer: UseTimer = (callback: (data: { state: Record<string, any>
   const ref = useRef({
     timer: null as number | null,
     state,
+    started: false,
     callback,
     unmounted: false,
+    initialState: state,
   });
 
   ref.current.callback = callback;
+  ref.current.initialState = state;
 
-  useEffect(() => {
-    return () => {
+  useEffect(
+    () => () => {
       ref.current.unmounted = true;
 
       if (ref.current.timer) {
         window.clearTimeout(ref.current.timer);
       }
-    };
-  }, []);
+    },
+    []
+  );
 
   return useCreateConst(() => ({
     start: (time: number) => {
@@ -58,7 +62,7 @@ export const useTimer: UseTimer = (callback: (data: { state: Record<string, any>
       ref.current.callback({ state: ref.current.state, unmounted: ref.current.unmounted });
     },
 
-    resetState: (newState = state) => {
+    resetState: (newState = ref.current.initialState) => {
       ref.current.state = newState;
     },
   }));

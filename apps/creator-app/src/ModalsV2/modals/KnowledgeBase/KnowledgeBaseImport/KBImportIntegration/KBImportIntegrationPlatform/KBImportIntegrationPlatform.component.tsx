@@ -50,7 +50,7 @@ export const KBImportIntegrationPlatform: React.FC<IKBImportIntegrationPlatform>
             value: string,
             { platform, hasZendeskIntegration }: { platform: BaseModels.Project.IntegrationTypes | null; hasZendeskIntegration: boolean }
           ) =>
-            platform !== BaseModels.Project.IntegrationTypes.ZENDESK || value.match(/^[\da-z](?:[\da-z-]{0,61}[\da-z])?$/ || hasZendeskIntegration),
+            platform !== BaseModels.Project.IntegrationTypes.ZENDESK || value.match(/^[\da-z](?:[\da-z-]{0,61}[\da-z])?$/) || hasZendeskIntegration,
           'Subdomain is not valid.'
         )
       ),

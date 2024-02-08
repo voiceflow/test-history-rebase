@@ -43,11 +43,10 @@ interface IUseValidators {
 }
 
 export const useValidators: IUseValidators = (validatorsMap) => {
-  const validate = (fields: AnyRecord = {}, { validateOnly, ...params }: ValidatorsOptions = {}) => {
+  const validate = (fields: AnyRecord = {}, { validateOnly, ...context }: ValidatorsOptions = {}) => {
     const errors: { [key: string]: IValidatorErrorResult } = {};
     const data: AnyRecord = {};
     let success = true;
-    const context = { ...fields, ...params };
 
     Object.entries(fields).forEach(([key, value]) => {
       const [validator, setError] = validatorsMap[key] ?? [];

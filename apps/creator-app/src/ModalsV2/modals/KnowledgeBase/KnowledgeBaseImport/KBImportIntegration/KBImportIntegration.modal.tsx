@@ -11,7 +11,7 @@ import { KBImportIntegrationWaiting } from './KBImportIntegrationWaiting/KBImpor
 import { KBImportIntegrationZendesk } from './KBImportIntegrationZendesk/KBImportIntegrationZendesk.component';
 
 export const KBImportIntegration = manager.create('KBImportIntegration', () => ({ api, type, opened, hidden, animated, closePrevented }) => {
-  const [screen, setScreen] = useState<'platform' | 'authenticate' | BaseModels.Project.IntegrationTypes>('platform');
+  const [screen, setScreen] = useState<'select-platform' | 'authenticate' | BaseModels.Project.IntegrationTypes>('select-platform');
   const [trackingEvents] = useTrackingEvents();
   const [subdomain, setSubdomain] = useState<string | undefined>();
 
@@ -24,6 +24,8 @@ export const KBImportIntegration = manager.create('KBImportIntegration', () => (
     subdomain?: string;
     authenticate: boolean;
   }) => {
+    trackingEvents.trackAiKnowledgeBaseIntegrationSelected({ IntegrationType: platform });
+
     setSubdomain(subdomain);
 
     if (authenticate) {
@@ -31,20 +33,18 @@ export const KBImportIntegration = manager.create('KBImportIntegration', () => (
     } else {
       setScreen(platform);
     }
-
-    trackingEvents.trackAiKnowledgeBaseIntegrationSelected({ IntegrationType: 'zendesk' });
   };
 
   return (
     <Modal.Container type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} onEscClose={api.onEscClose}>
       <Switch active={screen}>
-        <Switch.Pane value="platform">
+        <Switch.Pane value="select-platform">
           <KBImportIntegrationPlatform onClose={api.onClose} disabled={closePrevented} onContinue={onPlatformContinue} />
         </Switch.Pane>
 
         <Switch.Pane value="authenticate">
           <KBImportIntegrationWaiting
-            onFail={() => setScreen('platform')}
+            onFail={() => setScreen('select-platform')}
             onClose={api.onClose}
             disabled={closePrevented}
             subdomain={subdomain}
@@ -53,7 +53,13 @@ export const KBImportIntegration = manager.create('KBImportIntegration', () => (
         </Switch.Pane>
 
         <Switch.Pane value={BaseModels.Project.IntegrationTypes.ZENDESK}>
-          <KBImportIntegrationZendesk onClose={api.onClose} enableClose={api.enableClose} disableClose={api.preventClose} disabled={closePrevented} />
+          <KBImportIntegrationZendesk
+            onClose={api.onClose}
+            disabled={closePrevented}
+            onSuccess={() => api.resolve()}
+            enableClose={api.enableClose}
+            disableClose={api.preventClose}
+          />
         </Switch.Pane>
       </Switch>
     </Modal.Container>

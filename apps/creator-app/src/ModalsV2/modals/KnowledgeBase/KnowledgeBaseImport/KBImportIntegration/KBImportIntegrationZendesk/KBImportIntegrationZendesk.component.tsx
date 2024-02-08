@@ -6,7 +6,6 @@ import { Modal } from '@/components/Modal';
 import { Designer } from '@/ducks';
 import { useHotkey } from '@/hooks/hotkeys';
 import { useDispatch } from '@/hooks/store.hook';
-import { useTimer } from '@/hooks/timer.hook';
 import { useTrackingEvents } from '@/hooks/tracking';
 import { Hotkey } from '@/keymap';
 import {
@@ -23,7 +22,7 @@ import { KBRefreshRateSelect } from '../../components/KBRefreshRateSelect/KBRefr
 import { IKBImportIntegrationZendesk } from './KBImportIntegrationZendesk.interface';
 import { KBZendeskFilterSelect } from './KBZendeskFilterSelect.component';
 
-export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> = ({ onClose, enableClose, disableClose, disabled }) => {
+export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> = ({ onClose, onSuccess, enableClose, disableClose, disabled }) => {
   const [refreshRate, setRefreshRate] = React.useState(BaseModels.Project.KnowledgeBaseDocumentRefreshRate.NEVER);
   const [filters, setFilters] = React.useState<ZendeskFilters>({});
   const [numDataSources, setNumDataSources] = React.useState<number | null>(null);
@@ -43,7 +42,6 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
   const [userSegmentOptions, setUserSegmentOptions] = React.useState<ZendeskFilterUserSegment[]>([]);
 
   const getDocumentCount = useDispatch(Designer.KnowledgeBase.Integration.effect.getIntegrationDocumentCount);
-  const getAll = useDispatch(Designer.KnowledgeBase.Document.effect.getAll);
   const getFilters = useDispatch(Designer.KnowledgeBase.Integration.effect.getIntegrationFilters);
   const getUserSegments = useDispatch(Designer.KnowledgeBase.Integration.effect.getIntegrationUserSegments);
   const importIntegration = useDispatch(Designer.KnowledgeBase.Integration.effect.importIntegration);
@@ -122,24 +120,6 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
     [categories, brands, locales, labels]
   );
 
-  const checkForInitialDocumentsTimer = useTimer(
-    async ({ state, unmounted }) => {
-      try {
-        await getAll();
-      } catch {
-        // ignore
-      } finally {
-        if (state.count < 5 && !unmounted) {
-          checkForInitialDocumentsTimer.start(30000);
-        }
-
-        // eslint-disable-next-line no-param-reassign
-        state.count += 1;
-      }
-    },
-    { count: 0 }
-  );
-
   const importDataSources = async () => {
     disableClose();
 
@@ -155,12 +135,10 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
     const status = await importIntegration(BaseModels.Project.IntegrationTypes.ZENDESK, refreshRate, filters);
 
     enableClose();
-    if (status === 200) {
-      checkForInitialDocumentsTimer.resetState();
-      checkForInitialDocumentsTimer.start(3000);
 
+    if (status === 200) {
       notify.short.success('Importing data sources from Zendesk.');
-      onClose();
+      onSuccess();
     } else {
       notify.short.error('Failed to import data sources');
     }
@@ -236,6 +214,7 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
 
       <Modal.Footer>
         <Modal.Footer.Button label="Cancel" variant="secondary" onClick={onClose} disabled={disabled} />
+
         <Modal.Footer.Button
           label={`Import ${numDataSources === null ? '' : numDataSources} data sources`}
           onClick={importDataSources}

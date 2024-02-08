@@ -61,7 +61,6 @@ export const KBImportIntegrationWaiting: React.FC<IKBImportIntegrationWaiting> =
   };
 
   React.useEffect(() => {
-    setTimeout(onConnected, 5000);
     const bc = new BroadcastChannel(ZENDESK_CALLBACK_CHANNEL);
 
     bc.onmessage = (event) => {

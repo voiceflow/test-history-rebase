@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.33.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.32.1...@voiceflow/orm-designer@2.33.0) (2024-02-09)
+
+### Features
+
+* connect kb integrations endpoints [bugfix] (CV3-896) ([#7743](https://github.com/voiceflow/creator-app/issues/7743)) ([d745bef](https://github.com/voiceflow/creator-app/commit/d745bef085d92f82e0896a10a6fcccfc01f224ac))
+
 ## [2.32.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.32.0...@voiceflow/orm-designer@2.32.1) (2024-02-07)
 
 ### Bug Fixes

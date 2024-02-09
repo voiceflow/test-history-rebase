@@ -13,6 +13,7 @@
     "@types/supertest",
     "@voiceflow/logger",
     "@voiceflow/vite-config",
+    "@voiceflow/fetch",
     "express",
     "undici",
     "supertest"

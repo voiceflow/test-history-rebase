@@ -1,6 +1,6 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { stopImmediatePropagation } from '@voiceflow/ui';
-import { Box, Button, Divider, Editor, Scroll } from '@voiceflow/ui-next';
+import { Box, Divider, Editor, Scroll } from '@voiceflow/ui-next';
 import React from 'react';
 
 import EditorV3 from '@/pages/Canvas/components/EditorV3';

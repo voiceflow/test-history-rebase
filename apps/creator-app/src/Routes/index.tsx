@@ -2,6 +2,7 @@ import { Box, Button, FullSpinner, Page404 } from '@voiceflow/ui';
 import React, { Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
+import { ZendeskCallback } from '@/components/Integrations/ZendeskCallback.component';
 import { LegacyPath, Path } from '@/config/routes';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
@@ -50,6 +51,8 @@ const Routes: React.FC = () => {
         <PublicRoute exact path={Path.LOGIN_SSO_CALLBACK} component={LoginSSOCallback} />
         <PublicRoute exact path={Path.SIGNUP} component={Signup} />
         <PrivateRoute exact path={Path.ONBOARDING} component={Onboarding} />
+
+        <PrivateRoute exact path={Path.ZENDESK_CALLBACK} component={ZendeskCallback} screenSizeWarning={false} />
 
         <Route exact path={Path.CREATOR_TERMS} component={Legal} />
 

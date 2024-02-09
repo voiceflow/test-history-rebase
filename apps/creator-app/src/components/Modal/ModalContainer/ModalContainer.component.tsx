@@ -51,8 +51,8 @@ export const ModalContainer = React.forwardRef<HTMLDivElement, IModalContainer>(
     });
 
     useHotkeyList([
-      { hotkey: Hotkey.MODAL_CLOSE, callback: usePersistFunction(onEscClose), preventDefault: true },
-      { hotkey: Hotkey.MODAL_SUBMIT, callback: usePersistFunction(onEnterSubmit), allowInputs: true, preventDefault: true },
+      { hotkey: Hotkey.MODAL_CLOSE, callback: usePersistFunction(onEscClose), disable: !onEscClose, preventDefault: true },
+      { hotkey: Hotkey.MODAL_SUBMIT, callback: usePersistFunction(onEnterSubmit), disable: !onEnterSubmit, allowInputs: true, preventDefault: true },
     ]);
 
     return (

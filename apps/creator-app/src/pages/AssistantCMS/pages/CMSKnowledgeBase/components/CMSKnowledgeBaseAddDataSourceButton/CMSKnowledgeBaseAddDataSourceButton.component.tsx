@@ -6,9 +6,11 @@ import React from 'react';
 import { MenuItemWithTooltip } from '@/components/Menu/MenuItemWithTooltip/MenuItemWithTooltip.component';
 import { TooltipContentLearn } from '@/components/Tooltip/TooltipContentLearn/TooltipContentLearn.component';
 import { CMS_KNOWLEDGE_BASE_LEARN_MORE } from '@/constants/link.constant';
-import { useFeature } from '@/hooks';
+import { Designer } from '@/ducks';
+import { useDispatch, useFeature, useSelector } from '@/hooks';
 import { useModal } from '@/hooks/modal.hook';
 import { usePopperModifiers } from '@/hooks/popper.hook';
+import { useTimer } from '@/hooks/timer.hook';
 import { Modals } from '@/ModalsV2';
 import { stopPropagation } from '@/utils/handler.util';
 import { openInternalURLInANewTab } from '@/utils/window';
@@ -16,6 +18,10 @@ import { openInternalURLInANewTab } from '@/utils/window';
 import { ICMSKnowledgeBaseAddDataSourceButton } from './CMSKnowledgeBaseAddDataSourceButton.interface';
 
 export const CMSKnowledgeBaseAddDataSourceButton: React.FC<ICMSKnowledgeBaseAddDataSourceButton> = ({ variant = 'primary', testID }) => {
+  const getAll = useDispatch(Designer.KnowledgeBase.Document.effect.getAll);
+
+  const docsCount = useSelector(Designer.KnowledgeBase.Document.selectors.count);
+
   const urlsModal = useModal(Modals.KnowledgeBase.Import.Url);
   const filesModal = useModal(Modals.KnowledgeBase.Import.File);
   const sitemapModal = useModal(Modals.KnowledgeBase.Import.Sitemap);
@@ -23,6 +29,28 @@ export const CMSKnowledgeBaseAddDataSourceButton: React.FC<ICMSKnowledgeBaseAddD
   const integrationModal = useModal(Modals.KnowledgeBase.Import.Integration);
 
   const { isEnabled: isIntegrationsEnabled } = useFeature(Realtime.FeatureFlag.KNOWLEDGE_BASE_INTEGRATIONS);
+
+  const checkForInitialDocumentsTimer = useTimer(
+    async ({ state, unmounted }) => {
+      let shouldStop = false;
+
+      try {
+        const result = await getAll();
+
+        shouldStop = result.length !== docsCount;
+      } catch {
+        // ignore
+      } finally {
+        if (!shouldStop && state.count < 5 && !unmounted) {
+          checkForInitialDocumentsTimer.start(5000);
+        }
+
+        // eslint-disable-next-line no-param-reassign
+        state.count += 1;
+      }
+    },
+    { count: 0 }
+  );
 
   const options = [
     {
@@ -51,7 +79,16 @@ export const CMSKnowledgeBaseAddDataSourceButton: React.FC<ICMSKnowledgeBaseAddD
     },
     {
       label: 'Integration',
-      onClick: () => integrationModal.openVoid(),
+      onClick: async () => {
+        try {
+          await integrationModal.open();
+
+          checkForInitialDocumentsTimer.resetState();
+          checkForInitialDocumentsTimer.start(3000);
+        } catch {
+          // closed
+        }
+      },
       tooltipLabel: `Connect and import data from external platforms like Zendesk.`,
       onTooltipLearnClick: () => openInternalURLInANewTab(CMS_KNOWLEDGE_BASE_LEARN_MORE),
       shouldRender: () => isIntegrationsEnabled,

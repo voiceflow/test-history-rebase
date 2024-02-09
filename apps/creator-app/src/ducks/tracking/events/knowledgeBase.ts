@@ -2,6 +2,7 @@ import { BaseModels } from '@voiceflow/base-types';
 import { AIModel } from '@voiceflow/dtos';
 
 import client from '@/client';
+import { ZendeskCountFilters } from '@/models/KnowledgeBase.model';
 
 import { EventName } from '../constants';
 import { createProjectEvent, createProjectEventTracker } from '../utils';
@@ -56,10 +57,14 @@ export const trackAiKnowledgeBaseIntegrationConnected = createProjectEventTracke
   client.analytics.track(createProjectEvent(EventName.AI_KNOWLEDGE_BASE_INTEGRATION_CONNECTED, eventInfo))
 );
 
+export const trackAiKnowledgeBaseIntegrationFailed = createProjectEventTracker<{ IntegrationType: string }>((eventInfo) =>
+  client.analytics.track(createProjectEvent(EventName.AI_KNOWLEDGE_BASE_INTEGRATION_CONNECTED, eventInfo))
+);
+
 export const trackAiKnowledgeBaseIntegrationSelected = createProjectEventTracker<{ IntegrationType: string }>((eventInfo) =>
   client.analytics.track(createProjectEvent(EventName.AI_KNOWLEDGE_BASE_INTEGRATION_SELECTED, eventInfo))
 );
 
-export const trackAiKnowledgeBaseIntegrationFiltersUsed = createProjectEventTracker<{ Filters: object }>((eventInfo) =>
+export const trackAiKnowledgeBaseIntegrationFiltersUsed = createProjectEventTracker<{ Filters: ZendeskCountFilters }>((eventInfo) =>
   client.analytics.track(createProjectEvent(EventName.AI_KNOWLEDGE_BASE_INTEGRATION_FILTERS_USED, eventInfo))
 );

@@ -1,19 +1,21 @@
 import { Box, CheckboxControl, Dropdown, Menu, MenuItem, Tooltip, useTooltipModifiers } from '@voiceflow/ui-next';
 import React from 'react';
 
+import { ZendeskFilterBase } from '@/models/KnowledgeBase.model';
+
 import { captionStyles } from './KBZendeskFilterSelect.css';
 
-export interface IKBZendeskFilterSelect {
+export interface IKBZendeskFilterSelect<T extends ZendeskFilterBase> {
   label: string;
   placeholder?: string;
-  value: string[];
-  options: string[];
+  value: T[];
+  options: T[];
   disabled?: boolean;
-  onValueChange: (value: string[]) => void;
+  onValueChange: (value: T[]) => void;
   hasTooltip?: boolean;
 }
 
-export const KBZendeskFilterSelect: React.FC<IKBZendeskFilterSelect> = ({
+export const KBZendeskFilterSelect = <T extends ZendeskFilterBase>({
   label,
   placeholder,
   value,
@@ -21,25 +23,22 @@ export const KBZendeskFilterSelect: React.FC<IKBZendeskFilterSelect> = ({
   options,
   onValueChange,
   hasTooltip,
-}) => {
+}: IKBZendeskFilterSelect<T>): React.ReactElement => {
   const [search, setSearch] = React.useState('');
-  const [isSelectAll, setIsSelectAll] = React.useState(true);
-  const modifiers = useTooltipModifiers([{ name: 'offset', options: { offset: [-10, 28] } }]);
+  const modifiers = useTooltipModifiers([{ name: 'offset', options: { offset: [0, 28] } }]);
 
   const onSelectAll = (onClose: VoidFunction) => () => {
     onValueChange(options);
     onClose();
-    setIsSelectAll(false);
   };
 
   const onDeselectAll = () => {
     onValueChange([]);
-    setIsSelectAll(true);
   };
 
   return (
     <Box width="100%" direction="column">
-      <Box pb={6} direction="column">
+      <Box direction="column">
         {hasTooltip && disabled ? (
           <Tooltip
             width={168}
@@ -47,28 +46,16 @@ export const KBZendeskFilterSelect: React.FC<IKBZendeskFilterSelect> = ({
             placement="left-start"
             referenceElement={({ onOpen, onClose, ref }) => (
               <Box ref={ref} onMouseEnter={onOpen} onMouseLeave={onClose} direction="column">
-                <Dropdown value={value.join(', ')} label={label} disabled={disabled} placeholder={placeholder}>
+                <Dropdown value={value.map((item) => item.name).join(', ')} label={label} disabled={disabled} placeholder={placeholder}>
                   {() => {
                     return (
-                      <Menu
-                        searchSection={<Menu.Search onValueChange={setSearch} placeholder="Search" value={search} key={0} />}
-                        actionButtons={
-                          <Menu.ActionButtons
-                            firstButton={
-                              <Menu.ActionButtons.Button
-                                label={isSelectAll ? 'Select all' : 'Unselect all'}
-                                onClick={isSelectAll ? onSelectAll(onClose) : onDeselectAll}
-                              />
-                            }
-                          />
-                        }
-                      >
+                      <Menu searchSection={<Menu.Search onValueChange={setSearch} placeholder="Search" value={search} key={0} />}>
                         {options.map((option, index) => {
                           return (
                             <MenuItem
                               key={index}
                               onClick={() => onValueChange(value.includes(option) ? value.filter((item) => item !== option) : [...value, option])}
-                              label={option}
+                              label={option.name}
                               checkbox={
                                 <CheckboxControl
                                   id="checkbox"
@@ -96,7 +83,7 @@ export const KBZendeskFilterSelect: React.FC<IKBZendeskFilterSelect> = ({
           </Tooltip>
         ) : (
           <>
-            <Dropdown value={value.join(', ')} label={label} disabled={disabled} placeholder={placeholder}>
+            <Dropdown value={value.map((item) => item.name).join(', ')} label={label} disabled={disabled} placeholder={placeholder}>
               {({ onClose }) => {
                 return (
                   <Menu
@@ -105,21 +92,21 @@ export const KBZendeskFilterSelect: React.FC<IKBZendeskFilterSelect> = ({
                       <Menu.ActionButtons
                         firstButton={
                           <Menu.ActionButtons.Button
-                            label={isSelectAll ? 'Select all' : 'Unselect all'}
-                            onClick={isSelectAll ? onSelectAll(onClose) : onDeselectAll}
+                            label={value.length > 0 ? 'Unselect all' : 'Select all'}
+                            onClick={value.length > 0 ? onDeselectAll : onSelectAll(onClose)}
                           />
                         }
                       />
                     }
                   >
                     {options
-                      .filter((option) => option.includes(search.toLowerCase()))
+                      .filter((option) => !search || option.name.toLowerCase().includes(search.toLowerCase()))
                       .map((option, index) => {
                         return (
                           <MenuItem
                             key={index + 1}
                             onClick={() => onValueChange(value.includes(option) ? value.filter((item) => item !== option) : [...value, option])}
-                            label={option}
+                            label={option.name}
                             checkbox={
                               <CheckboxControl
                                 id="checkbox"

@@ -1,17 +1,14 @@
+import { BaseModels } from '@voiceflow/base-types';
 import type { IconName } from '@voiceflow/icons';
-
-import { KBImportPlatformType } from './KBImportIntegrationPlatform.constant';
 
 export interface IKBImportIntegrationPlatform {
   onClose: VoidFunction;
-  onContinue: VoidFunction;
   disabled?: boolean;
-  setPlatform: (platform: KBImportPlatformType) => void;
-  platform: KBImportPlatformType | null;
+  onContinue: (data: { platform: BaseModels.Project.IntegrationTypes; subdomain?: string; authenticate: boolean }) => void;
 }
 
 export interface KBImportIntegrationPlatformItem {
-  label: string;
-  value: KBImportPlatformType;
   icon: IconName;
+  label: string;
+  value: BaseModels.Project.IntegrationTypes;
 }

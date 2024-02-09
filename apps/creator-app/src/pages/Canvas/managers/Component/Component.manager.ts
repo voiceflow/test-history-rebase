@@ -5,18 +5,21 @@ import * as Documentation from '@/config/documentation';
 import { NodeManagerConfigV3 } from '../types';
 import { ComponentEditor } from './ComponentEditor/Component.editor';
 import { NODE_CONFIG } from './ComponentManager.constants';
-import { Action, ActionEditor } from './components';
-import ComponentStep from './ComponentStep/Component.step';
+import { TemporaryVersionSwitch } from './ComponentStep/TemporaryVersionSwitch.step';
+import { Action, ActionEditor } from './legacy/components';
+import LegacyComponentEditor from './legacy/components/Editor';
 
 const ComponentManager: NodeManagerConfigV3<Realtime.NodeData.Component, Realtime.NodeData.ComponentBuiltInPorts> = {
   ...NODE_CONFIG,
 
   label: 'Component',
 
-  step: ComponentStep,
+  step: TemporaryVersionSwitch,
   action: Action,
 
+  editorV2: LegacyComponentEditor,
   editorV3: ComponentEditor,
+  editorV3FeaturFlag: Realtime.FeatureFlag.CMS_COMPONENTS,
 
   actionEditor: ActionEditor,
 

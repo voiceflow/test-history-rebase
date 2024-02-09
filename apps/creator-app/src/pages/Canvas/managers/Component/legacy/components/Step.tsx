@@ -11,9 +11,9 @@ import { DiagramMapContext } from '@/pages/Canvas/contexts';
 import { ConnectedStep } from '@/pages/Canvas/managers/types';
 import perf, { PerfAction } from '@/performance';
 
-import { NODE_CONFIG } from '../constants';
+import { NODE_CONFIG } from '../../ComponentManager.constants';
 
-const ComponentStep: ConnectedStep<Realtime.NodeData.Component, Realtime.NodeData.ComponentBuiltInPorts> = ({ ports, data, palette }) => {
+const LegacyComponentStep: ConnectedStep<Realtime.NodeData.Component, Realtime.NodeData.ComponentBuiltInPorts> = ({ ports, data, palette }) => {
   const diagramMap = React.useContext(DiagramMapContext)!;
   const goToDiagramHistoryPush = useDispatch(Router.goToDiagramHistoryPush);
 
@@ -42,4 +42,4 @@ const ComponentStep: ConnectedStep<Realtime.NodeData.Component, Realtime.NodeDat
   );
 };
 
-export default ComponentStep;
+export default LegacyComponentStep;

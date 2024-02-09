@@ -3,8 +3,8 @@ import React from 'react';
 
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 
-import { Actions } from '../../components';
-import { NodeEditorV2 } from '../../types';
+import { Actions } from '../../../components';
+import { NodeEditorV2 } from '../../../types';
 import RootEditor from './RootEditor';
 
 const Editor: NodeEditorV2<Realtime.NodeData.Component, Realtime.NodeData.ComponentBuiltInPorts> = () => (

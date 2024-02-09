@@ -104,10 +104,10 @@ export const CMSMenu: React.FC = () => {
             <SecondaryNavigation.Item
               icon="Component"
               label="Components"
-              caption={String(variablesCount)}
+              caption={String(flowsCount)}
               onClick={onTabClick(Path.CMS_COMPONENT, CMSRoute.COMPONENT)}
               isActive={isItemActive(Path.CMS_COMPONENT)}
-              testID="cms-menu__item--variables"
+              testID="cms-menu__item--components"
             />
           )}
 
@@ -115,7 +115,7 @@ export const CMSMenu: React.FC = () => {
             <SecondaryNavigation.Item
               icon="Variable"
               label="Variables"
-              caption={String(flowsCount)}
+              caption={String(variablesCount)}
               onClick={onTabClick(Path.CMS_VARIABLE, CMSRoute.VARIABLE)}
               isActive={isItemActive(Path.CMS_VARIABLE)}
               testID={tid(TEST_ID, 'variables')}

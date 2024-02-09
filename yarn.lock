@@ -9544,15 +9544,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voiceflow/fetch@npm:1.5.4":
-  version: 1.5.4
-  resolution: "@voiceflow/fetch@npm:1.5.4"
-  peerDependencies:
-    "@voiceflow/exception": "*"
-  checksum: ca75fb1f7f69ef0864ac5ea89208d9f04238454d05a0889faea3411b04a61cf8c2ca03991c6a373a5118d86f0cc37fde78b51c164daca57f8c7fdfc677d35206
-  languageName: node
-  linkType: hard
-
 "@voiceflow/git-branch-check@npm:1.4.1":
   version: 1.4.1
   resolution: "@voiceflow/git-branch-check@npm:1.4.1"
@@ -9681,6 +9672,7 @@ __metadata:
     "@voiceflow/common": 8.2.7
     "@voiceflow/dtos": "workspace:*"
     "@voiceflow/exception": 1.5.3
+    "@voiceflow/fetch": 1.5.2
     "@voiceflow/logger": 2.0.0
     "@voiceflow/nestjs-common": 2.38.5
     "@voiceflow/nestjs-env": 1.6.2
@@ -10065,7 +10057,7 @@ __metadata:
     "@voiceflow/common": 8.2.7
     "@voiceflow/dtos": "workspace:*"
     "@voiceflow/exception": 1.5.3
-    "@voiceflow/fetch": 1.5.4
+    "@voiceflow/fetch": 1.5.2
     "@voiceflow/internal": 3.2.3
     "@voiceflow/logger": 2.0.0
     "@voiceflow/nestjs-common": 2.38.5

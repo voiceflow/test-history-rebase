@@ -15,7 +15,7 @@ import CarouselManager from './Carousel';
 import ChoiceManager from './Choice';
 import CodeManager from './Code';
 import CombinedManager from './Combined';
-import ComponentManager from './Component';
+import ComponentManager from './Component/Component.manager';
 import CustomBlockPointerManager from './CustomBlockPointer';
 import CustomPayloadManager from './CustomPayload';
 import DeprecatedManager from './Deprecated';

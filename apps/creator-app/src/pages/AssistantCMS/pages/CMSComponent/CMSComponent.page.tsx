@@ -4,11 +4,13 @@ import React from 'react';
 
 import { Path } from '@/config/routes';
 import { Designer } from '@/ducks';
+import { Modals } from '@/ModalsV2';
 
 import { withCMSManagerProvider } from '../../contexts/CMSManager';
 import { withCMSRouteFolders } from '../../contexts/CMSRouteFolders';
 import { withCMSInitialTableState } from '../../hocs/CMSInitialTableState.hoc';
 import { withCMSResourceEditor } from '../../hocs/CMSResourceEditor.hoc';
+import { withCMSResourceModals } from '../../hocs/CMSResourceModals.hoc';
 import { componentSearch } from './CMSComponent.util';
 import { CMSComponentEditor } from './components/CMSComponentEditor/CMSComponentEditor.component';
 import { CMSComponentHeader } from './components/CMSComponentHeader/CMSComponentHeader.component';
@@ -54,5 +56,7 @@ export default Utils.functional.compose(
 
   withCMSResourceEditor({
     Editor: CMSComponentEditor,
-  })
+  }),
+
+  withCMSResourceModals([Modals.Component.Create, ({ result, history, getCMSResourcePath }) => history.push(getCMSResourcePath(result.id).path)])
 )(CMSComponent);

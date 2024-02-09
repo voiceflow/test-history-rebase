@@ -1,4 +1,5 @@
 import { Controller, Inject } from '@nestjs/common';
+import { Utils } from '@voiceflow/common';
 import { Action, AuthMeta, AuthMetaPayload, Broadcast, Payload } from '@voiceflow/nestjs-logux';
 import { Permission } from '@voiceflow/sdk-auth';
 import { Authorize } from '@voiceflow/sdk-auth/nestjs';
@@ -28,8 +29,11 @@ export class FlowLoguxController {
     @Payload() { data, context }: Actions.Flow.CreateOne.Request,
     @AuthMeta() authMeta: AuthMetaPayload
   ): Promise<Actions.Flow.CreateOne.Response> {
+    // TODO: remove hardcoded diagramID. Only here for the review env to work
     return this.service
-      .createManyAndBroadcast(authMeta, [{ ...data, diagramID: '', assistantID: context.assistantID, environmentID: context.environmentID }])
+      .createManyAndBroadcast(authMeta, [
+        { ...data, diagramID: Utils.id.cuid.slug(), assistantID: context.assistantID, environmentID: context.environmentID },
+      ])
       .then(([result]) => ({ data: this.entitySerializer.nullable(result), context }));
   }
 
@@ -43,10 +47,11 @@ export class FlowLoguxController {
     @Payload() { data, context }: Actions.Flow.CreateMany.Request,
     @AuthMeta() authMeta: AuthMetaPayload
   ): Promise<Actions.Flow.CreateMany.Response> {
+    // TODO: remove hardcoded diagramID. Only here for the review env to work
     return this.service
       .createManyAndBroadcast(
         authMeta,
-        data.map((item) => ({ ...item, diagramID: '', assistantID: context.assistantID, environmentID: context.environmentID }))
+        data.map((item) => ({ ...item, diagramID: Utils.id.cuid.slug(), assistantID: context.assistantID, environmentID: context.environmentID }))
       )
       .then((results) => ({ data: this.entitySerializer.iterable(results), context }));
   }

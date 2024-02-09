@@ -9,7 +9,7 @@ import { DiagramMapContext } from '@/pages/Canvas/contexts';
 
 import Step from '../../../components/Step';
 import { ConnectedAction } from '../../types';
-import { NODE_CONFIG } from '../ComponentManager.constants';
+import { NODE_CONFIG } from '../constants';
 import ActionPreview from './ActionPreview';
 
 const Action: ConnectedAction<Realtime.NodeData.Component, Realtime.NodeData.ComponentBuiltInPorts> = ({

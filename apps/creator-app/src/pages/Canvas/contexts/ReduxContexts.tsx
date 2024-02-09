@@ -47,6 +47,8 @@ export const {
   Consumer: IntentMapConsumer,
 } = createSelectorContext(Designer.Intent.selectors.mapWithFormattedBuiltInName);
 
+export const { Context: FlowMapContext, Provider: FlowMapProvider, Consumer: FlowMapConsumer } = createSelectorContext(Designer.Flow.selectors.map);
+
 export const {
   Context: FunctionMapContext,
   Provider: FunctionMapProvider,
@@ -148,16 +150,18 @@ export const ReduxContextsProviders: React.FC<React.PropsWithChildren> = ({ chil
                             <ActionsRouteMatchProvider>
                               <DomainMapProvider>
                                 <CustomBlockMapProvider>
-                                  <FunctionMapProvider>
-                                    <FunctionVariableMapProvider>
-                                      <FunctionPathMapProvider>
-                                        <ActiveDiagramNormalizedEntitiesAndVariablesProvider>
-                                          {/* comment to have a children on a new line */}
-                                          {children}
-                                        </ActiveDiagramNormalizedEntitiesAndVariablesProvider>
-                                      </FunctionPathMapProvider>
-                                    </FunctionVariableMapProvider>
-                                  </FunctionMapProvider>
+                                  <FlowMapProvider>
+                                    <FunctionMapProvider>
+                                      <FunctionVariableMapProvider>
+                                        <FunctionPathMapProvider>
+                                          <ActiveDiagramNormalizedEntitiesAndVariablesProvider>
+                                            {/* comment to have a children on a new line */}
+                                            {children}
+                                          </ActiveDiagramNormalizedEntitiesAndVariablesProvider>
+                                        </FunctionPathMapProvider>
+                                      </FunctionVariableMapProvider>
+                                    </FunctionMapProvider>
+                                  </FlowMapProvider>
                                 </CustomBlockMapProvider>
                               </DomainMapProvider>
                             </ActionsRouteMatchProvider>

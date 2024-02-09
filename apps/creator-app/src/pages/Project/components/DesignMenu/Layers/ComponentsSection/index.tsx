@@ -1,3 +1,4 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { CustomScrollbarsTypes, Link, SvgIcon, useConst, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 import { XYCoord } from 'react-dnd';
@@ -8,7 +9,7 @@ import VirtualList from '@/components/VirtualList';
 import * as Documentation from '@/config/documentation';
 import { DragItem } from '@/constants';
 import { Permission } from '@/constants/permissions';
-import { useDidUpdateEffect, usePermission } from '@/hooks';
+import { useDidUpdateEffect, useFeature, usePermission } from '@/hooks';
 
 import Header from '../../Header';
 import { BOTTOM_PADDING, HEADER_MIN_HEIGHT, HORIZONTAL_DRAG_OFFSET, ITEM_HEIGHT, SEARCH_INPUT_HEIGHT } from '../constants';
@@ -24,6 +25,7 @@ interface ComponentsSectionProps {
 }
 
 const ComponentsSection: React.FC<ComponentsSectionProps> = ({ collapsed, setSectionHeight }) => {
+  const cmsComponent = useFeature(Realtime.FeatureFlag.CMS_COMPONENTS);
   const listRef = React.useRef<VariableSizeList<ComponentItem[]>>(null);
   const scrollBarsRef = React.useRef<CustomScrollbarsTypes.Scrollbars>(null);
 
@@ -42,7 +44,6 @@ const ComponentsSection: React.FC<ComponentsSectionProps> = ({ collapsed, setSec
     searchComponentsItems,
     onClearLastCreatedDiagramID,
   } = useComponents();
-
   const isSearch = !!searchMatchValue;
 
   const components = isSearch ? searchComponentsItems : componentsItems;
@@ -85,7 +86,7 @@ const ComponentsSection: React.FC<ComponentsSectionProps> = ({ collapsed, setSec
   return (
     <DraggableList
       type={DragItem.COMPONENTS}
-      canDrag={canDrag}
+      canDrag={cmsComponent.isEnabled ? false : canDrag}
       itemProps={{
         isSearch,
         activeDiagramID,

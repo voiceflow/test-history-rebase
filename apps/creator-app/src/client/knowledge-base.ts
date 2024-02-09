@@ -1,6 +1,12 @@
 import { BaseModels } from '@voiceflow/base-types';
 
-import { DBKnowledgeBaseDocument } from '@/models/KnowledgeBase.model';
+import {
+  DBKnowledgeBaseDocument,
+  DBKnowledgeBaseIntegration,
+  ZendeskCountFilters,
+  ZendeskFilters,
+  ZendeskFilterUserSegment,
+} from '@/models/KnowledgeBase.model';
 
 import api, { apiV3 } from './api';
 
@@ -32,6 +38,9 @@ export const knowledgeBaseClient = {
 
   deleteOneDocument: (projectID: string, documentID: string) => apiV3.fetch.delete(`/projects/${projectID}/knowledge-base/documents/${documentID}`),
 
+  deleteManyDocuments: (projectID: string, documentIDs: string[]) =>
+    apiV3.fetch.post<{ deletedDocumentIDs: string[] }>(`/projects/${projectID}/knowledge-base/documents/delete-many`, { documentIDs }),
+
   createOneDocumentFromFormFile: (projectID: string, formData: FormData) =>
     apiV3.fetch.post<DBKnowledgeBaseDocument>(`/projects/${projectID}/knowledge-base/documents/file`, formData).then(({ data }) => data),
 
@@ -53,4 +62,79 @@ export const knowledgeBaseClient = {
     apiV3.fetch
       .post<DBKnowledgeBaseDocument>(`/projects/${projectID}/knowledge-base/documents/${documentID}/file`, formData)
       .then(({ data }) => data),
+
+  getAllIntegrations: (projectID: string) =>
+    apiV3.fetch.get<{ data: DBKnowledgeBaseIntegration[] }>(`/projects/${projectID}/knowledge-base/integrations`).then(({ data }) => data),
+
+  importIntegration: (
+    projectID: string,
+    integrationType: BaseModels.Project.IntegrationTypes,
+    data: { filters: ZendeskCountFilters; refreshRate: string }
+  ) => apiV3.fetch.post(`/projects/${projectID}/knowledge-base/integrations/${integrationType}`, { data }),
+
+  deleteOneIntegration: (projectID: string, integrationType: string) =>
+    apiV3.fetch.delete(`/projects/${projectID}/knowledge-base/integrations/${integrationType}`),
+
+  getIntegrationAuthUrl: ({
+    subdomain,
+    redirectUrl,
+    projectID,
+    integrationType,
+  }: {
+    subdomain?: string;
+    projectID: string;
+    integrationType: string;
+    redirectUrl: string;
+  }) => {
+    // eslint-disable-next-line dot-notation
+    const url = apiV3.fetch['axios'].getUri({
+      url: `/projects/${projectID}/knowledge-base/integrations/${integrationType}/auth-redirect-url`,
+      params: { redirectUrl, subdomain },
+    });
+
+    return apiV3.fetch.get<{ data: { url: string } }>(url).then(({ data }) => data);
+  },
+
+  getIntegrationAuthReconnectUrl: ({
+    projectID,
+    integrationType,
+    redirectUrl,
+  }: {
+    projectID: string;
+    integrationType: string;
+    redirectUrl: string;
+  }) => {
+    // eslint-disable-next-line dot-notation
+    const url = apiV3.fetch['axios'].getUri({
+      url: `/projects/${projectID}/knowledge-base/integrations/${integrationType}/auth-reconnect-redirect-url`,
+      params: { redirectUrl },
+    });
+
+    return apiV3.fetch.get<{ data: { url: string } }>(url).then(({ data }) => data);
+  },
+
+  getIntegrationFilters: (projectID: string, integrationType: string) =>
+    apiV3.fetch
+      .get<{ data: ZendeskFilters }>(`/projects/${projectID}/knowledge-base/integrations/${integrationType}/filters`)
+      .then(({ data }) => data),
+
+  getUserSegmentFilters: (projectID: string, filters: ZendeskCountFilters) =>
+    apiV3.fetch
+      .post<{ data: ZendeskFilterUserSegment[] }>(`/projects/${projectID}/knowledge-base/integrations/zendesk/user-segments`, { data: { filters } })
+      .then(({ data }) => data),
+
+  getIntegrationDocumentCount: (projectID: string, integrationType: string, filters: ZendeskCountFilters) =>
+    apiV3.fetch
+      .post<{ data: { count: number } }>(`/projects/${projectID}/knowledge-base/integrations/${integrationType}/count`, { data: { filters } })
+      .then(({ data }) => data),
+
+  createOneIntegration: (integrationType: string, data: { code: string; state: string; redirectUrl: string }) => {
+    // eslint-disable-next-line dot-notation
+    const url = apiV3.fetch['axios'].getUri({
+      url: `projects/integrations/${integrationType}/callback`,
+      params: data,
+    });
+
+    return apiV3.fetch.get<{ data: { url: string } }>(url).then(({ data }) => data);
+  },
 };

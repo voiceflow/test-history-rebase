@@ -17,6 +17,7 @@ export enum RootRoute {
   INVITE = 'invite',
   RUNTIME = 'runtime',
   SSO = 'sso',
+  INTEGRATIONS = 'integrations',
 }
 
 export enum LoginRoute {
@@ -25,6 +26,10 @@ export enum LoginRoute {
 
 export enum SSORoute {
   CALLBACK = 'callback',
+}
+
+export enum IntegrationsRoute {
+  ZENDESK = 'zendesk',
 }
 
 export enum ProjectRoute {
@@ -163,6 +168,7 @@ export const Path = {
   WORKSPACE_DEVELOPER_SETTINGS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.SETTINGS, WorkspaceSettingsRoute.DEVELOPER),
   WORKSPACE_SSO_SETTINGS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.SETTINGS, WorkspaceSettingsRoute.SSO),
   WORKSPACE_ACCEPT_INVITE: toPath(RootRoute.WORKSPACE, WorkspaceRoute.ACCEPT_INVITE),
+  ZENDESK_CALLBACK: toPath(RootRoute.INTEGRATIONS, IntegrationsRoute.ZENDESK),
 
   DASHBOARD: toPath(RootRoute.DASHBOARD),
 

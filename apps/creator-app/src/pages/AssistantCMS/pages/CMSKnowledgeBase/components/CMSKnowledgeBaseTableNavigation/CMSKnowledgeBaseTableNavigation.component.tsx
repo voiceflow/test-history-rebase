@@ -16,7 +16,7 @@ import { Modals } from '@/ModalsV2';
 import { CMSResourceActionsButton } from '@/pages/AssistantCMS/components/CMSResourceActions/CMSResourceActionsButton/CMSResourceActionsButton.component';
 import { CMSTableNavigation } from '@/pages/AssistantCMS/components/CMSTableNavigation/CMSTableNavigation.component';
 
-import { useKnowledgeBaseCMSManager } from '../../CMSKnowledgeBase.hook';
+import { useKBIntegrationSync, useKnowledgeBaseCMSManager } from '../../CMSKnowledgeBase.hook';
 import { CMSKnowledgeBaseTableNavigationRefreshRateButton } from './CMSKnowledgeBaseTableNavigationRefreshRateButton.component';
 
 export const CMSKnowledgeBaseTableNavigation: React.FC = () => {
@@ -37,6 +37,7 @@ export const CMSKnowledgeBaseTableNavigation: React.FC = () => {
   const effects = useAtomValue(cmsManager.effects);
   const count = useAtomValue(cmsManager.dataToRenderSize);
   const deleteMany = useDispatch(effects.deleteMany);
+  const hasIntegrations = useKBIntegrationSync();
 
   const onResync = async () => {
     const selectedIDs = getAtomValue(tableState.selectedIDs);
@@ -89,7 +90,7 @@ export const CMSKnowledgeBaseTableNavigation: React.FC = () => {
         </>
       }
     >
-      {isIntegrationsEnabled && (
+      {isIntegrationsEnabled && hasIntegrations && (
         <Tooltip
           placement="bottom"
           referenceElement={({ ref, onOpen, onClose }) => (

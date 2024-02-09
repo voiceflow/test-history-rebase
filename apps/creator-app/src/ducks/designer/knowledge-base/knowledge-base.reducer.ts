@@ -2,6 +2,7 @@ import compositeReducer from 'composite-reducer';
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
 
 import * as Document from './document';
+import * as Integration from './integration';
 import * as Actions from './knowledge-base.action';
 import { INITIAL_STATE, type KnowledgeBaseOnlyState } from './knowledge-base.state';
 
@@ -17,4 +18,5 @@ const knowledgeBaseBaseReducer = reducerWithInitialState<KnowledgeBaseOnlyState>
 
 export const knowledgeBaseReducer = compositeReducer(knowledgeBaseBaseReducer, {
   [Document.STATE_KEY]: Document.reducer,
+  [Integration.STATE_KEY]: Integration.reducer,
 });

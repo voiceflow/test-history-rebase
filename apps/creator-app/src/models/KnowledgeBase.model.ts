@@ -16,3 +16,54 @@ export interface KnowledgeBaseDocument extends Omit<DBKnowledgeBaseDocument, 'st
   status: BaseModels.Project.KnowledgeBaseDocumentStatus;
   statusData: unknown;
 }
+
+export interface DBKnowledgeBaseIntegration {
+  type: BaseModels.Project.IntegrationTypes;
+  state: string;
+  creatorID: number;
+  createdAt: string;
+}
+
+export interface KnowledgeBaseIntegration {
+  id: string;
+  type: BaseModels.Project.IntegrationTypes;
+  state: string;
+  creatorID: number;
+  createdAt: string;
+}
+
+export interface ZendeskFilterBase {
+  id: number;
+  name: string;
+}
+
+export interface ZendeskFilterLabel extends ZendeskFilterBase {}
+
+export interface ZendeskFilterBrand extends ZendeskFilterBase {}
+
+export interface ZendeskFilterLocale extends ZendeskFilterBase {
+  locale: string;
+}
+
+export interface ZendeskFilterUserSegment extends ZendeskFilterBase {
+  userType: string;
+}
+
+export interface ZendeskFilterCategory {
+  [locale: string]: ZendeskFilterBase[];
+}
+
+export interface ZendeskBaseFilters {
+  labels?: ZendeskFilterLabel[];
+  locales?: ZendeskFilterLocale[];
+  brands?: ZendeskFilterBrand[];
+  userSegments?: ZendeskFilterUserSegment[];
+}
+
+export interface ZendeskFilters extends ZendeskBaseFilters {
+  categories?: ZendeskFilterCategory;
+}
+
+export interface ZendeskCountFilters extends ZendeskBaseFilters {
+  categories?: ZendeskFilterBase[];
+}

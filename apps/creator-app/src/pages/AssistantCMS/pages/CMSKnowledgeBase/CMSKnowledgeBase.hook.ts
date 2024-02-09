@@ -88,3 +88,17 @@ export const useKBDocumentSync = () => {
     };
   }, [processing]);
 };
+
+export const useKBIntegrationSync = () => {
+  const integrations = useSelector(Designer.KnowledgeBase.Integration.selectors.all);
+
+  const getAll = useDispatch(Designer.KnowledgeBase.Integration.effect.getAll);
+
+  const hasIntegrations = useMemo(() => integrations.length > 0, [integrations]);
+
+  useEffect(() => {
+    getAll().catch(() => {});
+  }, []);
+
+  return hasIntegrations;
+};

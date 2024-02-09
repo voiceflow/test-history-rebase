@@ -8,22 +8,28 @@ interface IDocumentNameURL {
   search: string;
 }
 
-export const DocumentNameURL: React.FC<IDocumentNameURL> = ({ data, search }) => (
-  <Tooltip.Overflow
-    referenceElement={({ ref, onOpen, onClose }) => (
-      <Table.Cell.Link
-        ref={ref}
-        href={data.url}
-        label={data.name}
-        target="blank"
-        overflow
-        isSelectable
-        highlight={search}
-        onMouseEnter={onOpen}
-        onMouseLeave={onClose}
-      />
-    )}
-  >
-    {() => <Text breakWord>{data.url}</Text>}
-  </Tooltip.Overflow>
-);
+export const DocumentNameURL: React.FC<IDocumentNameURL> = ({ data, search }) => {
+  return (
+    <Tooltip.Overflow
+      referenceElement={({ ref, onOpen, onClose }) => (
+        <Table.Cell.Link
+          ref={ref}
+          href={data?.source === BaseModels.Project.IntegrationTypes.ZENDESK ? `https://${data.name}` : data.url}
+          label={data.name}
+          target="_blank"
+          overflow
+          isSelectable
+          highlight={search}
+          onMouseEnter={onOpen}
+          onMouseLeave={onClose}
+        />
+      )}
+    >
+      {() => (
+        <Text variant="caption" breakWord>
+          {data.url}
+        </Text>
+      )}
+    </Tooltip.Overflow>
+  );
+};

@@ -1,21 +1,37 @@
+/* eslint-disable promise/always-return */
 import { Utils } from '@voiceflow/common';
-import { Box, Divider, DotSeparator, Icon, Menu, MenuItem, notify, Popper, SquareButton, Text, Tokens } from '@voiceflow/ui-next';
+import { Box, Divider, DotSeparator, Icon, Menu, MenuItem, notify, Popper, SquareButton, Text, Tokens, Tooltip } from '@voiceflow/ui-next';
 import dayjs from 'dayjs';
 import React from 'react';
 
+import { Designer } from '@/ducks';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useConfirmV2Modal } from '@/hooks/modal.hook';
+import { useDispatch, useSelector } from '@/hooks/store.hook';
 
 import { IKBIntegration } from './KBIntegration.interface';
 import { formatFromNow } from './KBIntegration.utils';
 
 const { colors } = Tokens;
 
-export const KBIntegration: React.FC<IKBIntegration> = ({ name, icon, platform, date, border, onReconnect }) => {
+export const KBIntegration: React.FC<IKBIntegration> = ({ creatorID, icon, platform, date, border, type, onReconnect, onDelete }) => {
+  const member = useSelector(WorkspaceV2.active.memberByIDSelector, { creatorID });
+
+  const deleteIntegration = useDispatch(Designer.KnowledgeBase.Integration.effect.deleteOne);
+
   const fromNow = dayjs(date).fromNow();
   const confirmModal = useConfirmV2Modal();
 
   const onConfirmRemove = () => {
-    notify.short.info(`Integration removed`, { showIcon: false });
+    deleteIntegration(type)
+      .then(() => {
+        onDelete();
+        notify.short.info(`Integration removed`, { showIcon: false });
+      })
+      .catch(() => {
+        onDelete();
+        notify.short.error(`Error removing integration`, { showIcon: false });
+      });
   };
 
   const onRemove = () => {
@@ -23,7 +39,7 @@ export const KBIntegration: React.FC<IKBIntegration> = ({ name, icon, platform, 
       body: `Removing integrations will not delete data sources previously imported through them. You’ll need to remove data sources from the knowledge base table view.`,
       title: `Remove integration`,
       confirm: onConfirmRemove,
-      confirmButtonLabel: 'Delete',
+      confirmButtonLabel: 'Remove',
       confirmButtonVariant: 'alert',
     });
   };
@@ -41,13 +57,34 @@ export const KBIntegration: React.FC<IKBIntegration> = ({ name, icon, platform, 
               {platform}
             </Text>
             <Box>
-              <Text variant="caption" color={colors.neutralDark.neutralsDark100}>
-                {`Connected ${formatFromNow(fromNow)}`}
-              </Text>
-              <DotSeparator light px={8} />
-              <Text variant="caption" color={colors.neutralDark.neutralsDark100}>
-                {name}
-              </Text>
+              <Tooltip.Overflow
+                referenceElement={({ ref, onOpen, onClose }) => (
+                  <Box maxWidth={252}>
+                    <Box style={{ flexShrink: 0 }}>
+                      <Text variant="caption" color={colors.neutralDark.neutralsDark100}>
+                        {`Connected ${formatFromNow(fromNow)}`}
+                      </Text>
+                    </Box>
+                    <DotSeparator light px={8} />
+                    <Text
+                      ref={ref}
+                      onMouseEnter={onOpen}
+                      onMouseLeave={onClose}
+                      variant="caption"
+                      color={colors.neutralDark.neutralsDark100}
+                      overflow
+                    >
+                      {member?.name || 'Unknown'}
+                    </Text>
+                  </Box>
+                )}
+              >
+                {() => (
+                  <Text variant="caption" breakWord>
+                    {member?.name || 'Unknown'}
+                  </Text>
+                )}
+              </Tooltip.Overflow>
             </Box>
           </Box>
         </Box>

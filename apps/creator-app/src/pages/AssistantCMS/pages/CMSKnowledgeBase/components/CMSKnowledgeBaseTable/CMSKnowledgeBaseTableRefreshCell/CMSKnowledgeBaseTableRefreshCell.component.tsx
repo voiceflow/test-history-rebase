@@ -6,19 +6,29 @@ import React from 'react';
 import { UpgradeTooltipPlanPermission } from '@/config/planPermission';
 import { Permission } from '@/constants/permissions';
 import { Designer } from '@/ducks';
-import { useDispatch } from '@/hooks';
+import { useDispatch, useSelector } from '@/hooks';
 import { usePermission } from '@/hooks/permission';
 import { useStore } from '@/hooks/redux';
 import { stopPropagation } from '@/utils/handler.util';
 
 import { refreshRateOptions } from '../../../CMSKnowledgeBase.constants';
+import { captionStyles } from './CMSKnowledgeBaseTableRefreshCell.css';
 import { ICMSKnowledgeBaseTableRefreshCell } from './CMSKnowledgeBaseTableRefreshCell.interface';
 
 export const CMSKnowledgeBaseTableRefreshCell: React.FC<ICMSKnowledgeBaseTableRefreshCell> = ({ item }) => {
   const refreshRatePermission = usePermission(Permission.KB_REFRESH_RATE);
+  const integrations = useSelector(Designer.KnowledgeBase.Integration.selectors.all);
   const store = useStore();
   const patchManyRefreshRate = useDispatch(Designer.KnowledgeBase.Document.effect.patchManyRefreshRate);
   const [isUpgradeModalOpen, setIsUpgradeModalOpen] = React.useState(false);
+
+  const hasNeededIntegrations = React.useMemo(
+    () =>
+      item?.data?.type === BaseModels.Project.KnowledgeBaseDocumentType.URL && item.data.source
+        ? integrations.find((integration) => integration.type === (item.data as BaseModels.Project.KnowledgeBaseURL)?.source)
+        : true,
+    [integrations, item]
+  );
 
   if (item.data?.type !== BaseModels.Project.KnowledgeBaseDocumentType.URL) {
     return (
@@ -70,6 +80,37 @@ export const CMSKnowledgeBaseTableRefreshCell: React.FC<ICMSKnowledgeBaseTableRe
               {upgradeTooltip.upgradeButtonText && (
                 <Tooltip.Button onClick={() => upgradeTooltip.onUpgrade(store.dispatch)}>{upgradeTooltip.title}</Tooltip.Button>
               )}
+            </Box>
+          )}
+        </Tooltip>
+      </Box>
+    );
+  }
+
+  if (!hasNeededIntegrations) {
+    return (
+      <Box width="100%">
+        <Tooltip
+          placement="bottom"
+          referenceElement={({ ref, onOpen, onClose }) => (
+            <Box width="100%" height="100%" align="center">
+              <Link
+                ref={ref}
+                disabled
+                size="medium"
+                weight="regular"
+                onMouseEnter={onOpen}
+                onMouseLeave={onClose}
+                onClick={stopPropagation(() => {})}
+                label={(item.data as BaseModels.Project.KnowledgeBaseURL).refreshRate || 'Never'}
+                style={{ textTransform: 'capitalize' }}
+              />
+            </Box>
+          )}
+        >
+          {() => (
+            <Box direction="column">
+              <Tooltip.Caption className={captionStyles}>Integration removed</Tooltip.Caption>
             </Box>
           )}
         </Tooltip>

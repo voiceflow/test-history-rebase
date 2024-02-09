@@ -437,3 +437,5 @@ export enum StepMenuType {
 }
 
 export const DASHBOARD_V2_RELEASE_DATE = '2023-03-16T17:00:00.000Z';
+
+export const ZENDESK_CALLBACK_CHANNEL = 'zendesk_callback_channel';

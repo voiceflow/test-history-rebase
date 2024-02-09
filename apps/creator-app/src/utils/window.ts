@@ -27,3 +27,12 @@ export const onOpenURLInANewTabFactory = (url: string) => (): void => openURLInA
  * opens internal url in a new tab, noopener and noreferrer is not set
  */
 export const onOpenInternalURLInANewTabFactory = (url: string) => (): void => openInternalURLInANewTab(url);
+
+export const openURLInANewPopupWindow = (url: string): Window | null => {
+  const width = 800;
+  const height = 600;
+  const left = window.screenX + (window.outerWidth - width) / 2;
+  const top = window.screenY + (window.outerHeight - height) / 2.5;
+
+  return window.open(getValidHref(url), 'popup', `width=${width},height=${height},left=${left},top=${top},popup=true,noopener=false`);
+};

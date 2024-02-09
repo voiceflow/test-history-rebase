@@ -14,9 +14,10 @@ export type PrivateRouteProps<T extends object> = {
   name?: string;
   exact?: boolean;
   component: React.ComponentType<T>;
+  screenSizeWarning?: boolean;
 } & Omit<T, keyof RouteComponentProps>;
 
-const PrivateRoute = <T extends object>({ component: Component, ...rest }: PrivateRouteProps<T>) => {
+const PrivateRoute = <T extends object>({ component: Component, screenSizeWarning, ...rest }: PrivateRouteProps<T>) => {
   const authToken = useSelector(authTokenSelector);
   const verified = useSelector(userVerifiedSelector);
 
@@ -41,7 +42,7 @@ const PrivateRoute = <T extends object>({ component: Component, ...rest }: Priva
         }
 
         return (
-          <PrivateCapabilitiesGate>
+          <PrivateCapabilitiesGate screenSizeWarning={screenSizeWarning}>
             <ErrorBoundary>
               <Component {...props} {...(rest as T)} />
             </ErrorBoundary>

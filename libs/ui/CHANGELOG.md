@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.303.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.302.0...@voiceflow/ui@1.303.0) (2024-02-09)
+
+### Features
+
+* all test IDs added ([#7768](https://github.com/voiceflow/creator-app/issues/7768)) ([d3ac137](https://github.com/voiceflow/creator-app/commit/d3ac137ef0f969747e7db774312dbac6109cbde8))
+
 # [1.302.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.301.3...@voiceflow/ui@1.302.0) (2024-02-09)
 
 ### Features

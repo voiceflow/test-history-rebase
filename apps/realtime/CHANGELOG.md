@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.269.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.269.0...@voiceflow/realtime@1.269.1) (2024-02-09)
+
+### Bug Fixes
+
+* ml gateway error (CT-000) ([#7770](https://github.com/voiceflow/creator-app/issues/7770)) ([9dc6ed0](https://github.com/voiceflow/creator-app/commit/9dc6ed0f3a7d7de04f574dbab2e4a60f661bd205))
+
 # [1.269.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.268.0...@voiceflow/realtime@1.269.0) (2024-02-09)
 
 ### Features

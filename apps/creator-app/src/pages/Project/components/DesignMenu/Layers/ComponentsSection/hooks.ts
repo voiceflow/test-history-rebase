@@ -1,13 +1,16 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
+import { Flow } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
 import { BlockType } from '@/constants';
 import * as CreatorV2 from '@/ducks/creatorV2';
+import * as Designer from '@/ducks/designer';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as VersionV2 from '@/ducks/versionV2';
+import { useFeature } from '@/hooks';
 import { useDnDReorder } from '@/hooks/dnd';
 import { useEventualEngine } from '@/hooks/engine';
 import { useDispatch, useLocalDispatch } from '@/hooks/realtime';
@@ -41,6 +44,9 @@ export const useComponents = (): ComponentsAPI => {
   const getDiagramByID = useSelector(DiagramV2.getDiagramByIDSelector);
   const activeDiagramID = useSelector(CreatorV2.activeDiagramIDSelector);
   const lastCreatedDiagramID = useSelector(DiagramV2.lastCreatedIDSelector);
+
+  const cmsComponentsEnabled = useFeature(Realtime.FeatureFlag.CMS_COMPONENTS);
+  const cmsComponents = useSelector(Designer.Flow.selectors.all);
 
   const reorderComponents = useDispatch(VersionV2.reorderComponents);
   const setLastCreatedDiagramID = useLocalDispatch(DiagramV2.setLastCreatedID);
@@ -86,7 +92,14 @@ export const useComponents = (): ComponentsAPI => {
       };
     };
 
-    return components.map(createComponentItem);
+    const createComponentItemFromCMS = (component: Flow): ComponentItem => ({
+      id: component.id,
+      name: component.name,
+      isFolder: false,
+      children: [],
+    });
+
+    return cmsComponentsEnabled.isEnabled ? cmsComponents.map(createComponentItemFromCMS) : components.map(createComponentItem);
   }, [folders, components, getDiagramByID]);
 
   const [searchComponentsItems, searchOpenedComponents] = React.useMemo(() => {

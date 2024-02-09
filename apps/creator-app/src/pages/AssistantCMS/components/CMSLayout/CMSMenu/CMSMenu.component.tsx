@@ -25,9 +25,9 @@ export const CMSMenu: React.FC = () => {
   const { updateActiveCMSRoute } = useCMSRoute();
 
   const name = useSelector(ProjectV2.active.nameSelector);
-  // const flowsCount = useSelector(Designer.Flow.selectors.count);
   // const storiesCount = useSelector(Designer.Story.selectors.count);
   // const promptsCount = useSelector(Designer.Prompt.selectors.count);
+  const flowsCount = useSelector(Designer.Flow.selectors.count);
   const intentsCount = useSelector(Designer.Intent.selectors.countWithoutFallback);
   const entitiesCount = useSelector(Designer.Entity.selectors.count);
   const functionsCount = useSelector(Designer.Function.selectors.count);
@@ -115,7 +115,7 @@ export const CMSMenu: React.FC = () => {
             <SecondaryNavigation.Item
               icon="Variable"
               label="Variables"
-              caption={String(variablesCount)}
+              caption={String(flowsCount)}
               onClick={onTabClick(Path.CMS_VARIABLE, CMSRoute.VARIABLE)}
               isActive={isItemActive(Path.CMS_VARIABLE)}
               testID={tid(TEST_ID, 'variables')}

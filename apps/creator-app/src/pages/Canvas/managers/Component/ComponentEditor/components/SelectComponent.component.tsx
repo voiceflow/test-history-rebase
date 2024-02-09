@@ -42,7 +42,7 @@ export const SelectComponent = ({ onChange, diagramID, nodeID }: SelectComponent
       <Box justify="center" align="center" pt={20} px={24} direction="column">
         <Dropdown
           value={componentData?.name || null}
-          placeholder="Select a component"
+          placeholder="Select existing component"
           onPrefixIconClick={hasSelectedComponent ? () => goToCMSResource(CMSRoute.COMPONENT, componentData.id) : undefined}
           prefixIconName={hasSelectedComponent ? 'EditS' : undefined}
           prefixIcon={hasSelectedComponent}
@@ -83,13 +83,13 @@ export const SelectComponent = ({ onChange, diagramID, nodeID }: SelectComponent
         </Dropdown>
       </Box>
 
-      {diagramID && (
+      {hasSelectedComponent && (
         <Box px={24} pt={10}>
           <Button label="Edit component" fullWidth onClick={goToDiagram} />
         </Box>
       )}
 
-      {!diagramID && (
+      {!hasSelectedComponent && (
         <>
           <Box py={12} px={24}>
             <Divider label="Or" centeredLabel noPadding />

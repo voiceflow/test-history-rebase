@@ -16,7 +16,6 @@ const ComponentStep: ConnectedStep<Realtime.NodeData.Component, Realtime.NodeDat
   const componentMap = React.useContext(FlowMapContext)!;
   const diagramID = data.diagramID || undefined;
   const goToDiagram = useGoToDiagram({ diagramID, nodeID: data.nodeID });
-
   const [componentData] = useMemoizedPropertyFilter(Object.values(componentMap), { diagramID });
 
   return (

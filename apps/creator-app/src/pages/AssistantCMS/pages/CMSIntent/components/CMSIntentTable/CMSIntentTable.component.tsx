@@ -1,7 +1,9 @@
+import { tid } from '@voiceflow/style';
 import { Table } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { CMS_INTENT_LEARN_MORE } from '@/constants/link.constant';
+import { EMPTY_TEST_ID, TABLE_TEST_ID } from '@/pages/AssistantCMS/AssistantCMS.constant';
 import { isIntentBuiltIn } from '@/utils/intent.util';
 
 import { CMSEmpty } from '../../../../components/CMSEmpty/CMSEmpty.component';
@@ -24,7 +26,7 @@ export const CMSIntentTable: React.FC = () => {
   return (
     <CMSEmpty
       title="No intents exist"
-      button={{ label: 'Create intent', onClick: (search) => onCreate({ name: search }) }}
+      button={{ label: 'Create intent', onClick: (search) => onCreate({ name: search }), testID: tid(EMPTY_TEST_ID, 'create-intent') }}
       searchTitle="No intents found"
       description="Intents are reusable collections of user says that aim to capture a users intention. "
       illustration="NoContent"
@@ -37,6 +39,7 @@ export const CMSIntentTable: React.FC = () => {
         onRowNavigate={onRowNavigate}
         rowContextMenu={rowContextMenu}
         columnsOrderAtom={intentColumnsOrderAtom}
+        testID={TABLE_TEST_ID}
       />
     </CMSEmpty>
   );

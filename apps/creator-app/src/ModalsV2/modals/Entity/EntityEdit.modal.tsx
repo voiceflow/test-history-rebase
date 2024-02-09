@@ -1,3 +1,4 @@
+import { tid } from '@voiceflow/style';
 import { Divider, notify, Scroll } from '@voiceflow/ui-next';
 import React from 'react';
 
@@ -10,6 +11,8 @@ import { useDispatch, useSelector } from '@/hooks/store.hook';
 import { transformVariableName } from '@/utils/variable.util';
 
 import { modalsManager } from '../../manager';
+
+const TEST_ID = 'edit-entity-modal';
 
 export interface IEntityEditModal {
   entityID: string;
@@ -44,13 +47,31 @@ export const EntityEditModal = modalsManager.create<IEntityEditModal>(
       };
 
       return (
-        <Modal.Container type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} onEscClose={api.onEscClose}>
+        <Modal.Container
+          type={type}
+          opened={opened}
+          hidden={hidden}
+          animated={animated}
+          onExited={api.remove}
+          onEscClose={api.onEscClose}
+          testID={TEST_ID}
+        >
           <Modal.Header
             title="Edit entity"
             onClose={api.onClose}
-            leftButton={<Modal.HeaderMenu items={entities} activeID={entityID} onSelect={onEntitySelect} notFoundLabel="entities" />}
-            secondaryButton={<Modal.HeaderMore options={[{ name: 'Delete', onClick: onEntityDelete }]} />}
-            testID="edit-entity"
+            leftButton={
+              <Modal.HeaderMenu
+                items={entities}
+                activeID={entityID}
+                onSelect={onEntitySelect}
+                notFoundLabel="entities"
+                testID={tid(TEST_ID, 'select-entity')}
+              />
+            }
+            secondaryButton={
+              <Modal.HeaderMore options={[{ name: 'Delete', onClick: onEntityDelete, testID: 'delete' }]} testID={tid(TEST_ID, 'more')} />
+            }
+            testID={tid(TEST_ID, 'header')}
           />
 
           <>
@@ -63,7 +84,7 @@ export const EntityEditModal = modalsManager.create<IEntityEditModal>(
                     autoFocus
                     placeholder="Enter entity name"
                     onValueChange={onNameChange}
-                    testID="entity__name"
+                    testID={tid('entity', 'name')}
                   />
 
                   <EntityClassifierColorSection
@@ -81,12 +102,12 @@ export const EntityEditModal = modalsManager.create<IEntityEditModal>(
                 <EntityEditVariantsSection entity={entity} />
               </Scroll>
             ) : (
-              <Modal.Body>Entity not found</Modal.Body>
+              <Modal.Body testID={tid(TEST_ID, 'not-found')}>Entity not found</Modal.Body>
             )}
           </>
 
-          <Modal.Footer testID="edit-entity">
-            <Modal.Footer.Button label="Close" variant="secondary" onClick={api.onClose} testID="edit-entity" />
+          <Modal.Footer>
+            <Modal.Footer.Button label="Close" variant="secondary" onClick={api.onClose} testID={tid(TEST_ID, 'close')} />
           </Modal.Footer>
         </Modal.Container>
       );

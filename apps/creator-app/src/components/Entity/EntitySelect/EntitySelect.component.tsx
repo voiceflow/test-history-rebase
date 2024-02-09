@@ -8,7 +8,7 @@ import { useSelector } from '@/hooks/store.hook';
 import { EntityMenu } from '../EntityMenu/EntityMenu.component';
 import type { IEntitySelect } from './EntitySelect.interface';
 
-export const EntitySelect: React.FC<IEntitySelect> = ({ onSelect, entityID, menuProps, excludeEntitiesIDs: excludeEntitiesIDsProp }) => {
+export const EntitySelect: React.FC<IEntitySelect> = ({ onSelect, entityID, menuProps, excludeEntitiesIDs: excludeEntitiesIDsProp, testID }) => {
   const entity = useSelector(Designer.Entity.selectors.oneByID, { id: entityID });
 
   const entityEditModal = useEntityEditModal();
@@ -25,6 +25,7 @@ export const EntitySelect: React.FC<IEntitySelect> = ({ onSelect, entityID, menu
       placeholder="Select entity to capture"
       prefixIconName={entity ? 'EditS' : undefined}
       onPrefixIconClick={() => entity && entityEditModal.openVoid({ entityID: entity.id })}
+      testID={testID}
     >
       {({ onClose, referenceRef }) => (
         <EntityMenu

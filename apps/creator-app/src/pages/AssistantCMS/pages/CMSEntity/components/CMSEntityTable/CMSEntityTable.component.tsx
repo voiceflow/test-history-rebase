@@ -1,7 +1,9 @@
+import { tid } from '@voiceflow/style';
 import { Table } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { CMS_ENTITY_LEARN_MORE } from '@/constants/link.constant';
+import { EMPTY_TEST_ID, TABLE_TEST_ID } from '@/pages/AssistantCMS/AssistantCMS.constant';
 
 import { CMSEmpty } from '../../../../components/CMSEmpty/CMSEmpty.component';
 import { useCMSRowItemClick, useCMSRowItemContextMenu, useCMSRowItemNavigate } from '../../../../hooks/cms-row-item.hook';
@@ -20,7 +22,7 @@ export const CMSEntityTable: React.FC = () => {
   return (
     <CMSEmpty
       title="No entities exist"
-      button={{ label: 'Create entity', onClick: (search) => onCreate({ name: search }) }}
+      button={{ label: 'Create entity', onClick: (search) => onCreate({ name: search }), testID: tid(EMPTY_TEST_ID, 'create-entity') }}
       searchTitle="No entities found"
       description="Entities help your assistant know which data to pluck out from the users response. "
       illustration="NoContent"
@@ -33,6 +35,7 @@ export const CMSEntityTable: React.FC = () => {
         onRowNavigate={onRowNavigate}
         rowContextMenu={rowContextMenu}
         columnsOrderAtom={entityColumnsOrderAtom}
+        testID={TABLE_TEST_ID}
       />
     </CMSEmpty>
   );

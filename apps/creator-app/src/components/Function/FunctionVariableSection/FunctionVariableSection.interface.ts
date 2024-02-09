@@ -1,11 +1,11 @@
 import type { FunctionVariable } from '@voiceflow/dtos';
+import { BaseProps } from '@voiceflow/ui-next';
 
-export interface IFunctionVariableSection {
+export interface IFunctionVariableSection extends BaseProps {
   functionVariables: FunctionVariable[];
   onFunctionVariableChange: (id: string, functionVariable: Partial<FunctionVariable>) => void;
   onFunctionVariableAdd: () => void;
   onDeleteFunctionVariable: (functionVariableID: string) => void;
   autoFocusKey: string;
   title: string;
-  testID: string;
 }

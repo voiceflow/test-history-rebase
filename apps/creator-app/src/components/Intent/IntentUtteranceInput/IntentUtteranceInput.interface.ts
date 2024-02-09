@@ -1,6 +1,7 @@
 import type { UtteranceText } from '@voiceflow/dtos';
+import { BaseProps } from '@voiceflow/ui-next';
 
-export interface IIntentUtteranceInput {
+export interface IIntentUtteranceInput extends BaseProps {
   value: UtteranceText;
   error?: string | null;
   autoFocus?: boolean;

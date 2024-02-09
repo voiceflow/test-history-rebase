@@ -1,4 +1,5 @@
 import { BaseUtils } from '@voiceflow/base-types';
+import { tid } from '@voiceflow/style';
 import { useDidUpdateEffect, useForceUpdate, useLocalStorageState, useSessionStorageState, useToggle } from '@voiceflow/ui';
 import { Box, Link, notify, Scroll, Text, TextArea, Tokens } from '@voiceflow/ui-next';
 import React from 'react';
@@ -17,6 +18,7 @@ import { KBPreviewQuestionResponse } from './KBPreviewQuestionResponse.component
 import { KBPreviewSettings } from './KBPreviewSettings.component';
 import { popperStyles, textareaStyles } from './KnowledgeBasePreviewQuestion.css';
 
+const TEST_ID = 'knowledge-base-preview-modal';
 const KB_PREVIEW_QUESTION_INPUT_ELEMENT_ID = 'kb-preview-question-input-id';
 
 export const KnowledgeBasePreviewQuestion = manager.create(
@@ -133,11 +135,13 @@ export const KnowledgeBasePreviewQuestion = manager.create(
           onEscClose={api.onEscClose}
           onExiting={() => setShowSettings(false)}
           className={popperStyles}
+          testID={TEST_ID}
         >
           <>
             <Modal.Header
               title="Knowledge base preview"
               onClose={api.onClose}
+              testID={tid(TEST_ID, 'header')}
               secondaryButton={
                 showSettings && (
                   <KBPreviewSettings
@@ -146,6 +150,7 @@ export const KnowledgeBasePreviewQuestion = manager.create(
                     settings={settings}
                     setSettings={setSettings}
                     onToggle={togglePreviewSettings}
+                    testID={tid(TEST_ID, 'settings')}
                   />
                 )
               }
@@ -172,18 +177,38 @@ export const KnowledgeBasePreviewQuestion = manager.create(
                   caption={questionError}
                   error={!!questionError}
                   onFocus={() => setQuestionError('')}
+                  testID={tid(TEST_ID, 'question')}
                 />
               </Box>
             </Scroll>
 
             <Modal.Footer>
               {response ? (
-                <Modal.Footer.Button label="Re-use last question" variant="secondary" onClick={onSetPreviousQuestion} disabled={closePrevented} />
+                <Modal.Footer.Button
+                  label="Re-use last question"
+                  variant="secondary"
+                  onClick={onSetPreviousQuestion}
+                  disabled={closePrevented}
+                  testID={tid(TEST_ID, 'retry-question')}
+                />
               ) : (
-                <Modal.Footer.Button label="Cancel" variant="secondary" onClick={api.onClose} disabled={closePrevented} />
+                <Modal.Footer.Button
+                  label="Cancel"
+                  variant="secondary"
+                  onClick={api.onClose}
+                  disabled={closePrevented}
+                  testID={tid(TEST_ID, 'cancel')}
+                />
               )}
 
-              <Modal.Footer.Button label="Send" variant="primary" onClick={onSend} disabled={closePrevented} isLoading={closePrevented} />
+              <Modal.Footer.Button
+                label="Send"
+                variant="primary"
+                onClick={onSend}
+                disabled={closePrevented}
+                isLoading={closePrevented}
+                testID={tid(TEST_ID, 'send')}
+              />
             </Modal.Footer>
           </>
 
@@ -194,6 +219,7 @@ export const KnowledgeBasePreviewQuestion = manager.create(
               response={response?.output}
               hasResponse={hasResponse}
               onSourceClick={handleSourceClick}
+              testID={tid(TEST_ID, 'response')}
             />
           )}
         </Modal.Container>

@@ -1,6 +1,7 @@
 import composeRef from '@seznam/compose-react-refs';
 import { BaseModels, BaseUtils } from '@voiceflow/base-types';
-import { Box, Divider, Popper, SquareButton } from '@voiceflow/ui-next';
+import { tid } from '@voiceflow/style';
+import { BaseProps, Box, Divider, Popper, SquareButton } from '@voiceflow/ui-next';
 import React, { useEffect } from 'react';
 
 import { SYSTEM_PROMPT_AI_MODELS } from '@/config/ai-model';
@@ -28,7 +29,7 @@ type KnowledgeBaseSettings = BaseModels.Project.KnowledgeBaseSettings & {
   summarization: AIModelParams & AIContextParams;
 };
 
-export interface IPreviewSettings {
+export interface IPreviewSettings extends BaseProps {
   initialSettings: KnowledgeBaseSettings;
   settings: BaseModels.Project.KnowledgeBaseSettings;
   isOpen: boolean;
@@ -36,7 +37,7 @@ export interface IPreviewSettings {
   onToggle: () => void;
 }
 
-export const KBPreviewSettings: React.FC<IPreviewSettings> = ({ initialSettings, settings, isOpen, setSettings, onToggle: handleToggle }) => {
+export const KBPreviewSettings: React.FC<IPreviewSettings> = ({ initialSettings, settings, isOpen, setSettings, onToggle: handleToggle, testID }) => {
   const buttonRef = React.useRef<HTMLButtonElement>(null);
   const [activeTooltipLabel, setTooltipActiveLabel] = React.useState<string | null>(null);
 
@@ -124,7 +125,7 @@ export const KBPreviewSettings: React.FC<IPreviewSettings> = ({ initialSettings,
     <Popper
       placement="right"
       referenceElement={({ ref, popper, onToggle }) => (
-        <SquareButton ref={composeRef(ref, buttonRef)} onClick={onToggle} isActive={isOpen} iconName={isOpen ? 'Minus' : 'Settings'}>
+        <SquareButton ref={composeRef(ref, buttonRef)} onClick={onToggle} isActive={isOpen} iconName={isOpen ? 'Minus' : 'Settings'} testID={testID}>
           {popper}
         </SquareButton>
       )}
@@ -137,6 +138,7 @@ export const KBPreviewSettings: React.FC<IPreviewSettings> = ({ initialSettings,
       onOpen={handleToggle}
       onClose={handleToggle}
       className={popperStyles}
+      testID={tid(testID, 'menu')}
       modifiers={[
         { name: 'preventOverflow', options: { boundary: globalThis.document?.body, padding: 32 } },
         { name: 'offset', options: { offset: [-20, 57] } },

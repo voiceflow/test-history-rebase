@@ -1,3 +1,4 @@
+import { tid } from '@voiceflow/style';
 import { Box, Scroll, TextArea } from '@voiceflow/ui-next';
 import { validatorFactory } from '@voiceflow/utils-designer';
 import React from 'react';
@@ -11,6 +12,8 @@ import manager from '@/ModalsV2/manager';
 
 import { KBFieldLabel } from '../components/KBFieldLabel/KBFieldLabel.component';
 import { submitButtonStyles, textareaStyles } from './KBImportPlainText.css';
+
+const TEST_ID = tid('knowledge-base', 'import-plain-text-modal');
 
 export const KBImportPlainText = manager.create('KBImportPlainText', () => ({ api, type, opened, hidden, animated, closePrevented }) => {
   const textState = useInputState();
@@ -51,8 +54,9 @@ export const KBImportPlainText = manager.create('KBImportPlainText', () => ({ ap
       onExited={api.remove}
       onEscClose={api.onEscClose}
       onEnterSubmit={onSubmit}
+      testID={TEST_ID}
     >
-      <Modal.Header title="Import text" onClose={api.onClose} />
+      <Modal.Header title="Import text" onClose={api.onClose} testID={tid(TEST_ID, 'header')} />
 
       <Scroll style={{ display: 'block' }}>
         <Box mt={20} mx={24} mb={24} direction="column" gap={6}>
@@ -64,12 +68,13 @@ export const KBImportPlainText = manager.create('KBImportPlainText', () => ({ ap
             caption={input.errorMessage ?? undefined}
             className={textareaStyles}
             placeholder="Enter or paste text here..."
+            testID={tid(TEST_ID, 'content')}
           />
         </Box>
       </Scroll>
 
       <Modal.Footer>
-        <Modal.Footer.Button label="Cancel" variant="secondary" onClick={api.onClose} disabled={closePrevented} />
+        <Modal.Footer.Button label="Cancel" variant="secondary" onClick={api.onClose} disabled={closePrevented} testID={tid(TEST_ID, 'cancel')} />
 
         <Modal.Footer.Button
           className={submitButtonStyles}
@@ -77,6 +82,7 @@ export const KBImportPlainText = manager.create('KBImportPlainText', () => ({ ap
           onClick={onSubmit}
           disabled={closePrevented}
           isLoading={closePrevented}
+          testID={tid(TEST_ID, 'import')}
         />
       </Modal.Footer>
     </Modal.Container>

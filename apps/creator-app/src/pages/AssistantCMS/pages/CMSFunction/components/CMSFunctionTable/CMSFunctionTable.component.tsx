@@ -1,3 +1,4 @@
+import { tid } from '@voiceflow/style';
 import { useSessionStorageState } from '@voiceflow/ui';
 import { Table } from '@voiceflow/ui-next';
 import { useAtomValue } from 'jotai';
@@ -7,6 +8,7 @@ import { CMS_FUNCTIONS_LEARN_MORE } from '@/constants/link.constant';
 import { Designer } from '@/ducks';
 import * as Tracking from '@/ducks/tracking';
 import { useDispatch } from '@/hooks';
+import { EMPTY_TEST_ID, TABLE_TEST_ID } from '@/pages/AssistantCMS/AssistantCMS.constant';
 
 import { CMSEmpty } from '../../../../components/CMSEmpty/CMSEmpty.component';
 import { useCMSRowItemClick, useCMSRowItemContextMenu, useCMSRowItemNavigate } from '../../../../hooks/cms-row-item.hook';
@@ -46,7 +48,7 @@ export const CMSFunctionTable: React.FC = () => {
   return (
     <CMSEmpty
       title="No functions exist"
-      button={{ label: 'Create function', onClick: (search) => onCreate({ name: search }) }}
+      button={{ label: 'Create function', onClick: (search) => onCreate({ name: search }), testID: tid(EMPTY_TEST_ID, 'create-function') }}
       searchTitle="No functions found"
       description="Functions can be used to create reusable code, make API calls, and transforming data. "
       illustration="Functions"
@@ -59,6 +61,7 @@ export const CMSFunctionTable: React.FC = () => {
         onRowNavigate={onRowNavigate}
         rowContextMenu={rowContextMenu}
         columnsOrderAtom={functionColumnsOrderAtom}
+        testID={TABLE_TEST_ID}
       />
     </CMSEmpty>
   );

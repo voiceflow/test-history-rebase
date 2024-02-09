@@ -1,4 +1,5 @@
 import { Utils } from '@voiceflow/common';
+import { tid } from '@voiceflow/style';
 import { Button, Menu, Popper } from '@voiceflow/ui-next';
 import React from 'react';
 
@@ -51,7 +52,7 @@ export const AIGenerateBaseButton = <Option extends AIGenerateBaseButtonOption =
                   key={option.id}
                   label={option.label}
                   onClick={stopPropagation(Utils.functional.chain(option.onClick, onClose))}
-                  testID={`${testID}__menu-item`}
+                  testID={tid(testID, 'menu-item')}
                 />
               )
           )}

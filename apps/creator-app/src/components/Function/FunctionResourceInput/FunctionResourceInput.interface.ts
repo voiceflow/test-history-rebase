@@ -1,4 +1,6 @@
-export interface IFunctionResourceInput {
+import { BaseProps } from '@voiceflow/ui-next';
+
+export interface IFunctionResourceInput extends BaseProps {
   onDescriptionChange: (description: string) => void;
   onValueChange: (value: string) => void;
   onEmpty?: (isEmpty: boolean) => void;
@@ -7,5 +9,4 @@ export interface IFunctionResourceInput {
   description: string;
   autoFocus?: boolean;
   value: string;
-  testID?: string;
 }

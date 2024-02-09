@@ -1,3 +1,4 @@
+import { tid } from '@voiceflow/style';
 import { Popper, PopperTypes, useSessionStorageState } from '@voiceflow/ui';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
@@ -22,6 +23,7 @@ interface SharePopperProps {
 }
 
 const PERSISTED_SESSION_SHARE_TAB = 'persisted_session_share_tab';
+const TEST_ID = 'share-menu';
 
 const SharePopper: React.FC<SharePopperProps> = ({ children, placement, modifiers, preventOverflowPadding = 24 }) => {
   const sharePopper = React.useContext(SharePopperContext);
@@ -74,21 +76,30 @@ const SharePopper: React.FC<SharePopperProps> = ({ children, placement, modifier
         initialTab={sharePopper?.data?.defaultTab ?? persistedTab}
         preventClose={() => isClosePrevented}
         preventOverflowPadding={preventOverflowPadding}
+        testID={TEST_ID}
         renderNav={() => (
-          <Nav>
+          <Nav data-testid={tid(TEST_ID, 'navigation')}>
             {canSharePrototype && (
-              <NavItem onClick={() => setPersistedTab(ShareProjectTab.PROTOTYPE)} to={ShareProjectTab.PROTOTYPE}>
+              <NavItem
+                onClick={() => setPersistedTab(ShareProjectTab.PROTOTYPE)}
+                to={ShareProjectTab.PROTOTYPE}
+                data-testid={tid(TEST_ID, 'tab', 'share-prototype')}
+              >
                 Share prototype
               </NavItem>
             )}
 
             {canAddCollaborators && (
-              <NavItem onClick={() => setPersistedTab(ShareProjectTab.INVITE)} to={ShareProjectTab.INVITE}>
+              <NavItem
+                onClick={() => setPersistedTab(ShareProjectTab.INVITE)}
+                to={ShareProjectTab.INVITE}
+                data-testid={tid(TEST_ID, 'tab', 'invite-collaborators')}
+              >
                 Invite teammates
               </NavItem>
             )}
 
-            <NavItem onClick={() => setPersistedTab(ShareProjectTab.EXPORT)} to={ShareProjectTab.EXPORT}>
+            <NavItem onClick={() => setPersistedTab(ShareProjectTab.EXPORT)} to={ShareProjectTab.EXPORT} data-testid={tid(TEST_ID, 'tab', 'export')}>
               Export as…
             </NavItem>
           </Nav>
@@ -108,9 +119,12 @@ const SharePopper: React.FC<SharePopperProps> = ({ children, placement, modifier
         renderFooter={() => (
           <Footer>
             <Switch>
-              <Route path={ShareProjectTab.PROTOTYPE} render={() => <Project.SharePrototype.Footer isCanvas />} />
+              <Route path={ShareProjectTab.PROTOTYPE} render={() => <Project.SharePrototype.Footer isCanvas testID={tid(TEST_ID, 'prototype')} />} />
               <Route path={ShareProjectTab.INVITE} render={() => <InviteFooter />} />
-              <Route path={ShareProjectTab.EXPORT} render={() => <Project.Export.Footer origin={Tracking.ModelExportOriginType.SHARE_MENU} />} />
+              <Route
+                path={ShareProjectTab.EXPORT}
+                render={() => <Project.Export.Footer origin={Tracking.ModelExportOriginType.SHARE_MENU} testID={tid(TEST_ID, 'export')} />}
+              />
             </Switch>
           </Footer>
         )}

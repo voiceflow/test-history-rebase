@@ -1,5 +1,6 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
+import { tid } from '@voiceflow/style';
 import { Box, Dropdown, Menu, Text, Tokens, Tooltip } from '@voiceflow/ui-next';
 import React from 'react';
 
@@ -14,6 +15,7 @@ export const KBRefreshRateSelect: React.FC<IRefreshRateSelect> = ({
   value = BaseModels.Project.KnowledgeBaseDocumentRefreshRate.NEVER,
   onValueChange,
   disabled,
+  testID,
 }) => {
   const store = useStore();
   const refreshRatePermission = usePermission(Permission.KB_REFRESH_RATE);
@@ -34,7 +36,12 @@ export const KBRefreshRateSelect: React.FC<IRefreshRateSelect> = ({
   const dropdown = ({ ref, onOpen }: { ref?: React.Ref<any>; onOpen?: VoidFunction; onClose?: VoidFunction }) => (
     <>
       <Box ref={ref} grow={1} direction="column" onMouseEnter={onOpen}>
-        <Dropdown value={Utils.string.capitalizeFirstLetter(value)} label="Refresh rate" disabled={disabled || !refreshRatePermission.allowed}>
+        <Dropdown
+          value={Utils.string.capitalizeFirstLetter(value)}
+          label="Refresh rate"
+          disabled={disabled || !refreshRatePermission.allowed}
+          testID={testID}
+        >
           {({ onClose }) => (
             <Menu>
               {rateOrder.map((rate) => (
@@ -42,6 +49,7 @@ export const KBRefreshRateSelect: React.FC<IRefreshRateSelect> = ({
                   key={rate}
                   label={Utils.string.capitalizeFirstLetter(rate)}
                   onClick={Utils.functional.chainVoid(onClose, () => onValueChange(rate))}
+                  testID={tid(testID, 'menu-item')}
                 />
               ))}
             </Menu>

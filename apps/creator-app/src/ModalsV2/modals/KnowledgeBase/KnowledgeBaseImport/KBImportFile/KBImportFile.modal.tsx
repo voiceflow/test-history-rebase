@@ -1,3 +1,4 @@
+import { tid } from '@voiceflow/style';
 import { Box, Scroll, UploadArea } from '@voiceflow/ui-next';
 import React, { useState } from 'react';
 
@@ -9,6 +10,8 @@ import { useDispatch } from '@/hooks/store.hook';
 import modalsManager from '../../../../manager';
 import { KBFieldLabel } from '../components/KBFieldLabel/KBFieldLabel.component';
 import { uploadAreaStyles } from './KBImportFile.css';
+
+const TEST_ID = tid('knowledge-base', 'import-file-modal');
 
 export const KBImportFile = modalsManager.create('KBImportFile', () => ({ api, type, opened, hidden, animated, closePrevented }) => {
   const fileSizeLimitMB = 10;
@@ -86,8 +89,9 @@ export const KBImportFile = modalsManager.create('KBImportFile', () => ({ api, t
       onExited={api.remove}
       onEscClose={api.onEscClose}
       onEnterSubmit={onSubmit}
+      testID={TEST_ID}
     >
-      <Modal.Header title="Import file" onClose={api.onClose} />
+      <Modal.Header title="Import file" onClose={api.onClose} testID={tid(TEST_ID, 'header')} />
 
       <Scroll style={{ display: 'block' }}>
         <Box direction="column" mt={20} mb={24} mx={24} gap={6}>
@@ -113,15 +117,16 @@ export const KBImportFile = modalsManager.create('KBImportFile', () => ({ api, t
                 [MediaMimeType.APPLICATION_MSWORD]: MEDIA_FILE_TYPES.DOC,
               }}
               onCloseButtonClick={onClear}
+              testID={tid(TEST_ID, 'file')}
             />
           </div>
         </Box>
       </Scroll>
 
       <Modal.Footer>
-        <Modal.Footer.Button label="Cancel" variant="secondary" onClick={api.onClose} />
+        <Modal.Footer.Button label="Cancel" variant="secondary" onClick={api.onClose} testID={tid(TEST_ID, 'cancel')} />
 
-        <Modal.Footer.Button label="Import" onClick={onSubmit} disabled={closePrevented} isLoading={closePrevented} />
+        <Modal.Footer.Button label="Import" onClick={onSubmit} disabled={closePrevented} isLoading={closePrevented} testID={tid(TEST_ID, 'import')} />
       </Modal.Footer>
     </Modal.Container>
   );

@@ -1,4 +1,5 @@
 import { BaseModels } from '@voiceflow/base-types';
+import { tid } from '@voiceflow/style';
 import { Box, LoadingSpinner, notify, Scroll, Text, Tokens } from '@voiceflow/ui-next';
 import React from 'react';
 
@@ -20,6 +21,7 @@ export const KBImportIntegrationWaiting: React.FC<IKBImportIntegrationWaiting> =
   reconnect = false,
   subdomain,
   onContinue,
+  testID,
 }) => {
   const getAuthUrl = useDispatch(Designer.KnowledgeBase.Integration.effect.getIntegrationAuthUrl);
   const getAuthReconnectUrl = useDispatch(Designer.KnowledgeBase.Integration.effect.getIntegrationAuthReconnectUrl);
@@ -101,17 +103,18 @@ export const KBImportIntegrationWaiting: React.FC<IKBImportIntegrationWaiting> =
         title="Import from Zendesk"
         onClose={onClose}
         leftButton={<Modal.Header.Icon iconName="Zendesk" iconProps={{ name: 'Zendesk', width: '24.33px' }} />}
+        testID={tid(testID, 'header')}
       />
 
       <Scroll style={{ display: 'block' }}>
         <Box height="150px" direction="column" justify="center" align="center" gap={12}>
-          <LoadingSpinner size="large" />
+          <LoadingSpinner size="large" testID={tid(testID, 'loading')} />
           <Text color={colors.neutralDark.neutralsDark900}>Awaiting authorization...</Text>
         </Box>
       </Scroll>
 
       <Modal.Footer>
-        <Modal.Footer.Button label="Cancel" variant="secondary" onClick={onClose} disabled={disabled} />
+        <Modal.Footer.Button label="Cancel" variant="secondary" onClick={onClose} disabled={disabled} testID={tid(testID, 'cancel')} />
       </Modal.Footer>
     </>
   );

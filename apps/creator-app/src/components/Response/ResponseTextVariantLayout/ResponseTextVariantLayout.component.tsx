@@ -1,3 +1,4 @@
+import { tid } from '@voiceflow/style';
 import { Box, SlateEditor } from '@voiceflow/ui-next';
 import React from 'react';
 
@@ -19,7 +20,7 @@ export const ResponseTextVariantLayout: React.FC<IResponseTextVariantLayout> = (
       <ResponseTextInput
         {...props}
         toolbar={
-          <Box pl={12} mr={-8} height="36px" align="center">
+          <Box pl={12} mr={-8} height="36px" align="center" testID={tid(props.testID, 'toolbar')}>
             {/* <Box pl={24} mr={-8} height="36px" align="center"> */}
             {/* <ResponseVariantTypeDropdown value={variantType} onValueChange={onChangeVariantType} /> */}
 

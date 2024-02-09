@@ -1,3 +1,4 @@
+import { tid } from '@voiceflow/style';
 import { Box, CodeEditor, CodeEditorWrapper } from '@voiceflow/ui-next';
 import { TCodeData } from '@voiceflow/ui-next/build/cjs/components/Inputs/CodeEditor/CodeEditorInput/types';
 import { useSetAtom } from 'jotai/react';
@@ -18,6 +19,7 @@ import { openURLInANewTab } from '@/utils/window';
 
 import { cmsFunctionCodeEditorStyle } from './CMSFunctionCodeEditor.css';
 
+const TEST_ID = tid('function', 'code');
 export const CMSFunctionCodeEditor: React.FC<{ functionID: string }> = ({ functionID }) => {
   const functionData = useSelector(Designer.Function.selectors.getOneByID)({ id: functionID })!;
   const patchFunction = useDispatch(Designer.Function.effect.patchOne);
@@ -48,6 +50,7 @@ export const CMSFunctionCodeEditor: React.FC<{ functionID: string }> = ({ functi
         title="Function editor"
         showExpandButton={true}
         headerButtonProps={{ iconName: 'Question', onClick: () => openURLInANewTab(Documentation.FUNCTION) }}
+        testID={tid(TEST_ID, 'editor')}
         codeEditor={
           <CodeEditor
             className={cmsFunctionCodeEditorStyle}
@@ -58,9 +61,10 @@ export const CMSFunctionCodeEditor: React.FC<{ functionID: string }> = ({ functi
             isFunctionEditor
             autofocus
             autoFocusLineNumber={3}
+            testID={TEST_ID}
           />
         }
-        bottomButtonProps={{ label: 'Run', onClick: () => testModal.open({ functionID }) }}
+        bottomButtonProps={{ label: 'Run', onClick: () => testModal.open({ functionID }), testID: tid(TEST_ID, 'run') }}
       />
     </Box>
   );

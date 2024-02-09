@@ -1,3 +1,4 @@
+import { tid } from '@voiceflow/style';
 import { Box, DataNotification, Divider, Editor, IEditorAPI, PopperProvider, Scroll } from '@voiceflow/ui-next';
 import { useAtomValue } from 'jotai';
 import React, { useMemo, useRef } from 'react';
@@ -7,6 +8,7 @@ import { useIntentDescriptionPlaceholder } from '@/components/Intent/IntentDescr
 import { IntentEditForm } from '@/components/Intent/IntentEditForm/IntentEditForm.component';
 import { Designer } from '@/ducks';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
+import { EDITOR_TEST_ID } from '@/pages/AssistantCMS/AssistantCMS.constant';
 import { transformCMSResourceName } from '@/utils/cms.util';
 import { getIntentConfidenceLevel, getIntentConfidenceMessage, getIntentConfidenceProgress, isIntentBuiltIn } from '@/utils/intent.util';
 import { isUtteranceTextEmpty } from '@/utils/utterance.util';
@@ -47,7 +49,7 @@ export const CMSIntentEditor: React.FC = () => {
         onTitleChange={(name) => patchIntent({ name: name.trim() })}
         titleTransform={transformCMSResourceName}
         headerActions={<CMSEditorMoreButton>{({ onClose }) => getMoreMenu({ id: intentID, onClose })}</CMSEditorMoreButton>}
-        testID="cms-editor"
+        testID={EDITOR_TEST_ID}
       >
         <Scroll style={{ display: 'block' }}>
           <Box gap={8} px={24} pb={4} width="100%">
@@ -56,7 +58,7 @@ export const CMSIntentEditor: React.FC = () => {
               text={getIntentConfidenceMessage(notEmptyUtterances.length)}
               score={Math.round(getIntentConfidenceProgress(notEmptyUtterances.length))}
               level={getIntentConfidenceLevel(notEmptyUtterances.length)}
-              testID="intent__confidence"
+              testID={tid('intent', 'confidence')}
             />
           </Box>
 
@@ -68,7 +70,7 @@ export const CMSIntentEditor: React.FC = () => {
             placeholder={descriptionPlaceholder}
             value={intent.description ?? ''}
             onValueChange={(description) => patchIntent({ description })}
-            testID="intent__description"
+            testID={tid('intent', 'description')}
           />
         </Scroll>
       </Editor>

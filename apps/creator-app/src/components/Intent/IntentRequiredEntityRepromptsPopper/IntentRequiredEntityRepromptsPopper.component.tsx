@@ -1,4 +1,5 @@
 import { ResponseVariantType, TextResponseVariant } from '@voiceflow/dtos';
+import { tid } from '@voiceflow/style';
 import { Box, Divider, EditorButton, InputFormControl, Popper, Scroll, Section, useConst, usePopperContext } from '@voiceflow/ui-next';
 import React, { useMemo } from 'react';
 
@@ -14,6 +15,9 @@ import { isUtteranceLikeEmpty } from '@/utils/utterance.util';
 
 import { editorButtonStyle } from './IntentRequiredEntityRepromptsPopper.css';
 import type { IIntentRequiredEntityRepromptsPopper } from './IntentRequiredEntityRepromptsPopper.interface';
+
+const TEST_ID = 'required-entity';
+const REPROMPT_SETTINGS_TEST_ID = 'reprompt-settings';
 
 export const IntentRequiredEntityRepromptsPopper: React.FC<IIntentRequiredEntityRepromptsPopper> = ({
   entityID,
@@ -59,6 +63,7 @@ export const IntentRequiredEntityRepromptsPopper: React.FC<IIntentRequiredEntity
     <Popper
       placement="left-start"
       modifiers={modifiers}
+      testID={REPROMPT_SETTINGS_TEST_ID}
       referenceElement={({ ref, isOpen, onOpen }) => (
         <Box ref={ref} width="100%">
           <EditorButton
@@ -69,6 +74,7 @@ export const IntentRequiredEntityRepromptsPopper: React.FC<IIntentRequiredEntity
             fullWidth
             buttonClassName={editorButtonStyle}
             warningTooltipContent="Missing reprompt"
+            testID={tid(TEST_ID, 'input')}
           />
         </Box>
       )}
@@ -88,6 +94,7 @@ export const IntentRequiredEntityRepromptsPopper: React.FC<IIntentRequiredEntity
                   entityID={entityID}
                   onSelect={({ id }) => onEntityReplace({ oldEntityID: entityID, entityID: id })}
                   excludeEntitiesIDs={entityIDs}
+                  testID={tid(REPROMPT_SETTINGS_TEST_ID, 'entity')}
                 />
               </InputFormControl>
             </Box>
@@ -95,8 +102,8 @@ export const IntentRequiredEntityRepromptsPopper: React.FC<IIntentRequiredEntity
             <Divider noPadding />
 
             <Box pt={11} direction="column">
-              <Section.Header.Container title="Reprompts" variant="active">
-                <Section.Header.Button iconName="Plus" onClick={onRepromptAdd} />
+              <Section.Header.Container title="Reprompts" variant="active" testID={tid(REPROMPT_SETTINGS_TEST_ID, ['reprompts', 'header'])}>
+                <Section.Header.Button iconName="Plus" onClick={onRepromptAdd} testID={tid(REPROMPT_SETTINGS_TEST_ID, ['reprompts', 'add'])} />
               </Section.Header.Container>
             </Box>
 
@@ -109,6 +116,7 @@ export const IntentRequiredEntityRepromptsPopper: React.FC<IIntentRequiredEntity
                 isLoading={aiGenerateTextVariant.fetching}
                 onGenerate={aiGenerateTextVariant.onGenerate}
                 hasExtraContext={!!entity?.name || !!entity?.classifier || !!intentName || !isUtterancesEmpty}
+                testID={tid(REPROMPT_SETTINGS_TEST_ID, ['reprompts', 'ai-generate'])}
               />
             </Box>
           </Scroll>

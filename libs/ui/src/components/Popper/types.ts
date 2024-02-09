@@ -51,4 +51,5 @@ export interface Props {
   disableLayers?: boolean;
   initialOpened?: boolean;
   preventOverflowPadding?: number;
+  testID?: string;
 }

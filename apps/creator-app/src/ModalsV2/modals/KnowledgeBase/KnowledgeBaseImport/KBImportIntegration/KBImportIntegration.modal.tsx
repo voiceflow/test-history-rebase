@@ -1,4 +1,5 @@
 import { BaseModels } from '@voiceflow/base-types';
+import { tid } from '@voiceflow/style';
 import { Switch } from '@voiceflow/ui';
 import React, { useState } from 'react';
 
@@ -9,6 +10,8 @@ import manager from '@/ModalsV2/manager';
 import { KBImportIntegrationPlatform } from './KBImportIntegrationPlatform/KBImportIntegrationPlatform.component';
 import { KBImportIntegrationWaiting } from './KBImportIntegrationWaiting/KBImportIntegrationWaiting.component';
 import { KBImportIntegrationZendesk } from './KBImportIntegrationZendesk/KBImportIntegrationZendesk.component';
+
+const TEST_ID = tid('knowledge-base', 'import-integration-modal');
 
 export const KBImportIntegration = manager.create('KBImportIntegration', () => ({ api, type, opened, hidden, animated, closePrevented }) => {
   const [screen, setScreen] = useState<'select-platform' | 'authenticate' | BaseModels.Project.IntegrationTypes>('select-platform');
@@ -36,10 +39,18 @@ export const KBImportIntegration = manager.create('KBImportIntegration', () => (
   };
 
   return (
-    <Modal.Container type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} onEscClose={api.onEscClose}>
+    <Modal.Container
+      type={type}
+      opened={opened}
+      hidden={hidden}
+      animated={animated}
+      onExited={api.remove}
+      onEscClose={api.onEscClose}
+      testID={TEST_ID}
+    >
       <Switch active={screen}>
         <Switch.Pane value="select-platform">
-          <KBImportIntegrationPlatform onClose={api.onClose} disabled={closePrevented} onContinue={onPlatformContinue} />
+          <KBImportIntegrationPlatform onClose={api.onClose} disabled={closePrevented} onContinue={onPlatformContinue} testID={TEST_ID} />
         </Switch.Pane>
 
         <Switch.Pane value="authenticate">
@@ -49,6 +60,7 @@ export const KBImportIntegration = manager.create('KBImportIntegration', () => (
             disabled={closePrevented}
             subdomain={subdomain}
             onContinue={() => setScreen(BaseModels.Project.IntegrationTypes.ZENDESK)}
+            testID={TEST_ID}
           />
         </Switch.Pane>
 
@@ -59,6 +71,7 @@ export const KBImportIntegration = manager.create('KBImportIntegration', () => (
             onSuccess={() => api.resolve()}
             enableClose={api.enableClose}
             disableClose={api.preventClose}
+            testID={TEST_ID}
           />
         </Switch.Pane>
       </Switch>

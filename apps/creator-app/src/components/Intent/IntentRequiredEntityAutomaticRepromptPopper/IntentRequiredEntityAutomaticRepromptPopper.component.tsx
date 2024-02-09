@@ -1,4 +1,5 @@
 import type { Entity } from '@voiceflow/dtos';
+import { tid } from '@voiceflow/style';
 import { Box, EditorButton, Popper } from '@voiceflow/ui-next';
 import React from 'react';
 
@@ -31,6 +32,7 @@ export const IntentRequiredEntityAutomaticRepromptPopper: React.FC<IIntentRequir
             isActive={isOpen}
             fullWidth
             buttonClassName={editorButtonDropdownRecipe({ isActive: isOpen })}
+            testID={tid('required-entity', 'input')}
           />
         </Box>
       )}

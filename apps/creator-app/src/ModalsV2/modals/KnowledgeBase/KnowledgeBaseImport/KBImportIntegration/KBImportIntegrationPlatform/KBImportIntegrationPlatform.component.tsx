@@ -1,5 +1,6 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
+import { tid } from '@voiceflow/style';
 import { Box, Dropdown, Menu, MenuItem, Scroll, useCreateConst } from '@voiceflow/ui-next';
 import { composeValidators, validatorFactory } from '@voiceflow/utils-designer';
 import React, { useMemo } from 'react';
@@ -17,7 +18,7 @@ import { INTEGRATION_PLATFORMS, INTEGRATION_PLATFORMS_MAPPER } from './KBImportI
 import { IKBImportIntegrationPlatform } from './KBImportIntegrationPlatform.interface';
 import { KBImportIntegrationSubdomainInput } from './KBImportIntegrationSubdomainInput.component';
 
-export const KBImportIntegrationPlatform: React.FC<IKBImportIntegrationPlatform> = ({ onClose, disabled, onContinue }) => {
+export const KBImportIntegrationPlatform: React.FC<IKBImportIntegrationPlatform> = ({ onClose, disabled, onContinue, testID }) => {
   const ZENDESK_URL_REGEX = /^(?:https:\/\/)?(?:www\.)?([\da-z](?:[\da-z-]{0,61}[\da-z])?)\.zendesk\.com/;
 
   const integrations = useSelector(Designer.KnowledgeBase.Integration.selectors.all);
@@ -79,7 +80,7 @@ export const KBImportIntegrationPlatform: React.FC<IKBImportIntegrationPlatform>
 
   return (
     <Box direction="column">
-      <Modal.Header title="Integrate with platform" onClose={onClose} />
+      <Modal.Header title="Integrate with platform" onClose={onClose} testID={tid(testID, 'header')} />
 
       <Scroll style={{ display: 'block' }}>
         <Box gap={16} pt={20} px={24} pb={24} direction="column">
@@ -92,6 +93,7 @@ export const KBImportIntegrationPlatform: React.FC<IKBImportIntegrationPlatform>
               placeholder="Select a platform"
               errorMessage={platform.error ?? undefined}
               prefixIconName={platformInfo?.icon}
+              testID={tid(testID, 'platform')}
             >
               {({ referenceRef, onClose }) => (
                 <Menu width={referenceRef.current?.clientWidth}>
@@ -101,6 +103,7 @@ export const KBImportIntegrationPlatform: React.FC<IKBImportIntegrationPlatform>
                       label={item.label}
                       onClick={Utils.functional.chainVoid(onClose, () => platform.setValue(item.value))}
                       prefixIconName={item.icon}
+                      testID={tid(testID, ['platform', 'menu-item'])}
                     />
                   ))}
                 </Menu>
@@ -109,15 +112,15 @@ export const KBImportIntegrationPlatform: React.FC<IKBImportIntegrationPlatform>
           </Box>
 
           {platform.value === BaseModels.Project.IntegrationTypes.ZENDESK && !hasZendeskIntegration && (
-            <KBImportIntegrationSubdomainInput value={url.value} error={url.error} onValueChange={url.setValue} />
+            <KBImportIntegrationSubdomainInput value={url.value} error={url.error} onValueChange={url.setValue} testID={tid(testID, 'subdomain')} />
           )}
         </Box>
       </Scroll>
 
       <Modal.Footer>
-        <Modal.Footer.Button label="Cancel" variant="secondary" onClick={onClose} disabled={disabled} />
+        <Modal.Footer.Button label="Cancel" variant="secondary" onClick={onClose} disabled={disabled} testID={tid(testID, 'cancel')} />
 
-        <Modal.Footer.Button label="Connect" onClick={onSubmit} disabled={disabled} isLoading={disabled} />
+        <Modal.Footer.Button label="Connect" onClick={onSubmit} disabled={disabled} isLoading={disabled} testID={tid(testID, 'connect')} />
       </Modal.Footer>
     </Box>
   );

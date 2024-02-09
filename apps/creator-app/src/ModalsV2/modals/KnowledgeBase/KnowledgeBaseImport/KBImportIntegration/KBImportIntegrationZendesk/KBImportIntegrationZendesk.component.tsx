@@ -1,4 +1,5 @@
 import { BaseModels } from '@voiceflow/base-types';
+import { tid } from '@voiceflow/style';
 import { Box, Divider, notify, Scroll } from '@voiceflow/ui-next';
 import React from 'react';
 
@@ -22,7 +23,14 @@ import { KBRefreshRateSelect } from '../../components/KBRefreshRateSelect/KBRefr
 import { IKBImportIntegrationZendesk } from './KBImportIntegrationZendesk.interface';
 import { KBZendeskFilterSelect } from './KBZendeskFilterSelect.component';
 
-export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> = ({ onClose, onSuccess, enableClose, disableClose, disabled }) => {
+export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> = ({
+  onClose,
+  onSuccess,
+  enableClose,
+  disableClose,
+  disabled,
+  testID,
+}) => {
   const [refreshRate, setRefreshRate] = React.useState(BaseModels.Project.KnowledgeBaseDocumentRefreshRate.NEVER);
   const [filters, setFilters] = React.useState<ZendeskFilters>({});
   const [numDataSources, setNumDataSources] = React.useState<number | null>(null);
@@ -153,6 +161,7 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
         title="Import from Zendesk"
         onClose={onClose}
         leftButton={<Modal.Header.Icon iconName="Zendesk" iconProps={{ name: 'Zendesk', width: '24.33px' }} />}
+        testID={tid(testID, 'header')}
       />
 
       <Scroll style={{ display: 'block' }}>
@@ -172,6 +181,7 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
               disabled={disabled}
               onValueChange={setBrands}
               placeholder="Select brands (optional)"
+              testID={tid(testID, 'brands')}
             />
             <KBZendeskFilterSelect
               label="Locales"
@@ -181,6 +191,7 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
               onValueChange={setLocales}
               placeholder="Select locales (optional)"
               hasTooltip={!brands.length}
+              testID={tid(testID, 'locales')}
             />
             <KBZendeskFilterSelect
               label="Categories"
@@ -190,6 +201,7 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
               onValueChange={setCategories}
               placeholder="Select categories (optional)"
               hasTooltip={!locales.length}
+              testID={tid(testID, 'categories')}
             />
             <KBZendeskFilterSelect
               label="Labels"
@@ -199,6 +211,7 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
               onValueChange={setLabels}
               placeholder="Select labels (optional)"
               hasTooltip={!categories.length}
+              testID={tid(testID, 'labels')}
             />
             <KBZendeskFilterSelect
               label="User segments"
@@ -207,23 +220,25 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
               disabled={disabled}
               onValueChange={setUserSegments}
               placeholder="Select user segments (optional)"
+              testID={tid(testID, 'user-segments')}
             />
           </Box>
           <Divider noPadding />
           <Box px={24} pb={24} pt={20}>
-            <KBRefreshRateSelect value={refreshRate} onValueChange={setRefreshRate} disabled={disabled} />
+            <KBRefreshRateSelect value={refreshRate} onValueChange={setRefreshRate} disabled={disabled} testID={tid(testID, 'refresh-rate')} />
           </Box>
         </Box>
       </Scroll>
 
       <Modal.Footer>
-        <Modal.Footer.Button label="Cancel" variant="secondary" onClick={onClose} disabled={disabled} />
+        <Modal.Footer.Button label="Cancel" variant="secondary" onClick={onClose} disabled={disabled} testID={tid(testID, 'cancel')} />
 
         <Modal.Footer.Button
           label={`Import ${numDataSources === null ? '' : numDataSources} data sources`}
           onClick={importDataSources}
           disabled={disabled || !canSubmit || !numDataSources || isLoading}
           isLoading={disabled || isLoading}
+          testID={tid(testID, 'import')}
         />
       </Modal.Footer>
     </>

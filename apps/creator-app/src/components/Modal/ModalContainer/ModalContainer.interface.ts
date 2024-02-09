@@ -1,6 +1,7 @@
+import { BaseProps } from '@voiceflow/ui-next';
 import type { ExitHandler } from 'react-transition-group/Transition';
 
-export interface IModalContainer {
+export interface IModalContainer extends BaseProps {
   type?: string;
   width?: string;
   hidden: boolean;

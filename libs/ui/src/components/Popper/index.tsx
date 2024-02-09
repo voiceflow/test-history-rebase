@@ -35,6 +35,7 @@ const Popper: React.FC<T.Props> = ({
   disableLayers,
   initialOpened,
   preventOverflowPadding = 16,
+  testID,
 }) => {
   const theme = useTheme();
   const nestedTheme = useNestedPopperTheme(zIndex);
@@ -85,7 +86,7 @@ const Popper: React.FC<T.Props> = ({
               positionFixed
             >
               {({ ref, style, scheduleUpdate }) => (
-                <div ref={ref} style={{ ...style, zIndex: zIndex ?? theme.zIndex.popper }}>
+                <div ref={ref} style={{ ...style, zIndex: zIndex ?? theme.zIndex.popper }} data-testid={testID}>
                   <Container className={ClassName.POPPER} width={width} height={height} maxWidth={maxWidth} maxHeight={maxHeight}>
                     {renderNav?.({ ...rendererProps, scheduleUpdate })}
 

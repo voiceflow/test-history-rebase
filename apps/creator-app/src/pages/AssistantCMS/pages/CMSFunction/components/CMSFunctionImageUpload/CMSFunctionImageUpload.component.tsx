@@ -1,3 +1,4 @@
+import { tid } from '@voiceflow/style';
 import { Collapsible, CollapsibleHeader, CollapsibleHeaderButton, notify, UploadArea } from '@voiceflow/ui-next';
 import React from 'react';
 
@@ -26,7 +27,7 @@ export const CMSFunctionImageUpload: React.FC<ICMSFunctionImageUpload> = ({ valu
       isEmpty={!value}
       noBottomPadding
       header={<CollapsibleHeader label="Image">{({ isOpen }) => <CollapsibleHeaderButton isOpen={isOpen} />}</CollapsibleHeader>}
-      testID="function__image-section"
+      testID={tid('function', ['image', 'section'])}
     >
       <UploadArea
         acceptedFileTypes={{ 'image/*': MEDIA_FILE_TYPES.IMAGE }}
@@ -36,7 +37,7 @@ export const CMSFunctionImageUpload: React.FC<ICMSFunctionImageUpload> = ({ valu
         className={uploadArea}
         imagePreview={value ?? undefined}
         maxFiles={1}
-        testID="function__image"
+        testID={tid('function', 'image')}
       />
     </Collapsible>
   );

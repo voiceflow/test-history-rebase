@@ -1,5 +1,6 @@
 import { CUSTOM_SLOT_TYPE, Utils } from '@voiceflow/common';
 import type { Entity, EntityVariant } from '@voiceflow/dtos';
+import { tid } from '@voiceflow/style';
 import { toast } from '@voiceflow/ui';
 import { Divider, Scroll, useConst } from '@voiceflow/ui-next';
 import { entityNameValidator, entityVariantsValidator, validatorFactory } from '@voiceflow/utils-designer';
@@ -18,6 +19,8 @@ import { useValidators } from '@/hooks/validate.hook';
 import { transformVariableName } from '@/utils/variable.util';
 
 import { modalsManager } from '../../manager';
+
+const TEST_ID = 'create-entity-modal';
 
 export interface IEntityCreateModal {
   name?: string;
@@ -122,8 +125,9 @@ export const EntityCreateModal = modalsManager.create<IEntityCreateModal, Entity
           onExited={api.remove}
           onEscClose={api.onEscClose}
           onEnterSubmit={onSubmit}
+          testID={TEST_ID}
         >
-          <Modal.Header title="Create entity" onClose={api.onClose} testID="create-entity" />
+          <Modal.Header title="Create entity" onClose={api.onClose} testID={tid(TEST_ID, 'header')} />
 
           <Scroll style={{ display: 'block' }}>
             <Modal.Body gap={16}>
@@ -135,7 +139,7 @@ export const EntityCreateModal = modalsManager.create<IEntityCreateModal, Entity
                 transform={transformVariableName}
                 placeholder="Enter entity name"
                 onValueChange={nameState.setValue}
-                testID="entity__name"
+                testID={tid('entity', 'name')}
               />
 
               <EntityClassifierColorSection
@@ -179,8 +183,8 @@ export const EntityCreateModal = modalsManager.create<IEntityCreateModal, Entity
             />
           </Scroll>
 
-          <Modal.Footer testID="create-entity">
-            <Modal.Footer.Button variant="secondary" onClick={api.onClose} disabled={closePrevented} label="Cancel" testID="create-entity" />
+          <Modal.Footer>
+            <Modal.Footer.Button variant="secondary" onClick={api.onClose} disabled={closePrevented} label="Cancel" testID={tid(TEST_ID, 'cancel')} />
 
             <Modal.Footer.Button
               label="Create entity"
@@ -188,7 +192,7 @@ export const EntityCreateModal = modalsManager.create<IEntityCreateModal, Entity
               onClick={onSubmit}
               disabled={closePrevented}
               isLoading={closePrevented}
-              testID="create-entity"
+              testID={tid(TEST_ID, 'create')}
             />
           </Modal.Footer>
         </Modal.Container>

@@ -1,3 +1,4 @@
+import { tid } from '@voiceflow/style';
 import { Box, ColorPickerForm, Entity } from '@voiceflow/ui-next';
 import React from 'react';
 
@@ -7,6 +8,8 @@ import { uiCustomThemeAdapter } from '@/utils/custom-theme.util';
 
 import { entityStyles } from './EntityColorPicker.css';
 import type { IEntityColorPicker } from './EntityColorPicker.interface';
+
+const TEST_ID = tid('entity', 'color');
 
 export const EntityColorPicker: React.FC<IEntityColorPicker> = ({ name, value, disabled, onValueChange }) => {
   const colors = useSelector(Project.active.customThemesSelector);
@@ -19,7 +22,7 @@ export const EntityColorPicker: React.FC<IEntityColorPicker> = ({ name, value, d
 
   return (
     <Box mb={8} gap={15} direction="column" justify="start" align="end" alignSelf="baseline" overflow="hidden">
-      <Entity label={name} color={value} className={entityStyles({ isVisible: !!name })} />
+      <Entity label={name} color={value} className={entityStyles({ isVisible: !!name })} testID={tid(TEST_ID, 'preview')} />
 
       <ColorPickerForm
         onChange={onValueChange}
@@ -29,6 +32,7 @@ export const EntityColorPicker: React.FC<IEntityColorPicker> = ({ name, value, d
         onAddCustomTheme={(theme) => onAddCustomTheme(uiCustomThemeAdapter.toDB(theme))}
         onDeleteCustomTheme={(theme) => onDeleteCustomTheme(uiCustomThemeAdapter.toDB(theme))}
         onUpdateCustomTheme={(theme) => onUpdateCustomTheme(uiCustomThemeAdapter.toDB(theme))}
+        testID={TEST_ID}
       />
     </Box>
   );

@@ -1,3 +1,4 @@
+import { tid } from '@voiceflow/style';
 import { notify, Table } from '@voiceflow/ui-next';
 import { useAtomValue, useSetAtom } from 'jotai';
 import pluralize from 'pluralize';
@@ -6,6 +7,7 @@ import React from 'react';
 import { useGetAtomValue } from '@/hooks/atom.hook';
 import { useConfirmV2Modal } from '@/hooks/modal.hook';
 import { useDispatch } from '@/hooks/store.hook';
+import { TABLE_TEST_ID } from '@/pages/AssistantCMS/AssistantCMS.constant';
 
 import { useCMSManager } from '../../../contexts/CMSManager';
 import { CMSResourceActionsButton } from '../CMSResourceActionsButton/CMSResourceActionsButton.component';
@@ -44,5 +46,5 @@ export const CMSResourceActionsButtonDelete: React.FC = () => {
     });
   };
 
-  return <CMSResourceActionsButton label="Delete" iconName="Trash" onClick={onClick} />;
+  return <CMSResourceActionsButton label="Delete" iconName="Trash" onClick={onClick} testID={tid(TABLE_TEST_ID, 'delete-selection')} />;
 };

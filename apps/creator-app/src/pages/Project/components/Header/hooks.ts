@@ -1,5 +1,6 @@
 import { Nullable } from '@voiceflow/common';
 import { MenuTypes } from '@voiceflow/ui';
+import { BaseProps } from '@voiceflow/ui-next';
 
 import { DESKTOP_APP_LINK } from '@/constants';
 import * as Router from '@/ducks/router';
@@ -17,7 +18,7 @@ export const useLogoButtonOptions = ({
   uiToggle,
   shortcuts,
   toggleSearch,
-}: { uiToggle?: boolean; shortcuts?: boolean; toggleSearch?: () => void } = {}): Nullable<MenuTypes.OptionWithoutValue>[] => {
+}: { uiToggle?: boolean; shortcuts?: boolean; toggleSearch?: () => void } = {}): Nullable<MenuTypes.OptionWithoutValue & BaseProps>[] => {
   const projectID = useSelector(Session.activeProjectIDSelector)!;
 
   const goToDashboard = useDispatch(Router.goToDashboard);

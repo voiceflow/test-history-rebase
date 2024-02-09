@@ -1,4 +1,5 @@
 import type { Utterance } from '@voiceflow/dtos';
+import { tid } from '@voiceflow/style';
 import { Box, notify } from '@voiceflow/ui-next';
 import pluralize from 'pluralize';
 import React, { useEffect } from 'react';
@@ -92,7 +93,7 @@ export const IntentEditUtterancesSection: React.FC<IIntentEditUtterancesSection>
             isLoading={aiGenerate.fetching}
             onGenerate={aiGenerate.onGenerate}
             hasExtraContext={!!intent.name || !listEmpty.value}
-            testID="intent__utterances__ai-generate"
+            testID={tid('intent', ['utterances', 'ai-generate'])}
           />
         </Box>
       )}

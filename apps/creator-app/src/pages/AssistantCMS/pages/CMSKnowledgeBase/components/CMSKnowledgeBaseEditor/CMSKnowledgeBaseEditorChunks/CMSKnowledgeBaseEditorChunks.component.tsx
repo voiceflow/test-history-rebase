@@ -1,8 +1,11 @@
+import { tid } from '@voiceflow/style';
 import { Box, Collapsible, CollapsibleHeader, CollapsibleHeaderButton, TextArea } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { chunkBoxStyles, contentStyles, dividerStyles, headerStyles, sectionBox } from './CMSKnowledgeBaseEditorChunks.css';
 import { ICMSKnowledgeBaseEditorChunks } from './CMSKnowledgeBaseEditorChunks.interface';
+
+const TEST_ID = tid('document', 'chunks');
 
 export const CMSKnowledgeBaseEditorChunks: React.FC<ICMSKnowledgeBaseEditorChunks> = ({ chunks, disabled }) => {
   if (!chunks) return null;
@@ -16,15 +19,23 @@ export const CMSKnowledgeBaseEditorChunks: React.FC<ICMSKnowledgeBaseEditorChunk
         contentClassName={contentStyles}
         containerClassName={sectionBox}
         dividerClassName={dividerStyles}
+        testID={TEST_ID}
         header={
-          <CollapsibleHeader label="Chunks" isDisabled={disabled} caption={chunks.length.toString()} className={headerStyles} isSection>
-            {({ isOpen }) => <CollapsibleHeaderButton disabled={disabled} isOpen={isOpen} />}
+          <CollapsibleHeader
+            label="Chunks"
+            isDisabled={disabled}
+            caption={chunks.length.toString()}
+            className={headerStyles}
+            isSection
+            testID={tid(TEST_ID, 'header')}
+          >
+            {({ isOpen }) => <CollapsibleHeaderButton disabled={disabled} isOpen={isOpen} testID={tid(TEST_ID, 'toggle-collapsed')} />}
           </CollapsibleHeader>
         }
       >
         <Box gap={12} direction="column" pb={24}>
           {chunks.map(({ content, chunkID }) => (
-            <TextArea.AutoSize key={chunkID} variant="chunk" value={content} disabled />
+            <TextArea.AutoSize key={chunkID} variant="chunk" value={content} disabled testID={tid(TEST_ID, 'item')} />
           ))}
         </Box>
       </Collapsible>

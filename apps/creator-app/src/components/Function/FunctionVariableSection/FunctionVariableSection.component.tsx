@@ -1,3 +1,4 @@
+import { tid } from '@voiceflow/style';
 import { Box, Section } from '@voiceflow/ui-next';
 import React from 'react';
 
@@ -25,16 +26,22 @@ export const FunctionVariableSection: React.FC<IFunctionVariableSection> = ({
           title={title}
           variant={hasVariables ? 'active' : 'basic'}
           onHeaderClick={hasVariables ? undefined : onFunctionVariableAdd}
-          testID={testID}
+          testID={tid(testID, 'header')}
         >
-          <Section.Header.Button iconName="Plus" onClick={stopPropagation(onFunctionVariableAdd)} testID={testID} />
+          <Section.Header.Button iconName="Plus" onClick={stopPropagation(onFunctionVariableAdd)} testID={tid(testID, 'add')} />
         </Section.Header.Container>
       </Box>
 
       {hasVariables && (
-        <Box pb={10} direction="column" testID={`${testID}__list`}>
+        <Box pb={10} direction="column" testID={tid(testID, 'list')}>
           {functionVariables.map((functionVariable, index) => (
-            <CMSFormListItem pt={9} pb={7} key={index} onRemove={() => onDeleteFunctionVariable(functionVariable.id)} testID={`${testID}__list-item`}>
+            <CMSFormListItem
+              pt={9}
+              pb={7}
+              key={index}
+              onRemove={() => onDeleteFunctionVariable(functionVariable.id)}
+              testID={tid(testID, 'list-item')}
+            >
               <FunctionResourceInput
                 onDescriptionChange={(description) => onFunctionVariableChange(functionVariable.id, { description })}
                 onValueChange={(name) => onFunctionVariableChange(functionVariable.id, { name })}
@@ -43,7 +50,7 @@ export const FunctionVariableSection: React.FC<IFunctionVariableSection> = ({
                 namePlaceholder="Enter variable name"
                 value={functionVariable.name}
                 autoFocus={functionVariable.id === autoFocusKey}
-                testID="function__variable"
+                testID={tid('function', 'variable')}
               />
             </CMSFormListItem>
           ))}

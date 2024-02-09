@@ -6,7 +6,14 @@ import { match } from 'ts-pattern';
 import { ResponseCreateTextVariant } from '../ResponseCreateTextVariant/ResponseCreateTextVariant.component';
 import type { IResponseCreateVariant } from './ResponseCreateVariant.interface';
 
-export const ResponseCreateVariant: React.FC<IResponseCreateVariant> = ({ variant, autoFocus, removeButton, autoFocusIfEmpty, textVariantProps }) =>
+export const ResponseCreateVariant: React.FC<IResponseCreateVariant> = ({
+  variant,
+  autoFocus,
+  removeButton,
+  autoFocusIfEmpty,
+  textVariantProps,
+  testID,
+}) =>
   match(variant)
     .with({ type: ResponseVariantType.TEXT }, (data) => (
       <ResponseCreateTextVariant
@@ -15,6 +22,7 @@ export const ResponseCreateVariant: React.FC<IResponseCreateVariant> = ({ varian
         autoFocus={autoFocus}
         removeButton={removeButton}
         autoFocusIfEmpty={autoFocusIfEmpty}
+        testID={testID}
       />
     ))
     .with({ type: ResponseVariantType.JSON }, () => <Text>TODO: Not implemented</Text>)

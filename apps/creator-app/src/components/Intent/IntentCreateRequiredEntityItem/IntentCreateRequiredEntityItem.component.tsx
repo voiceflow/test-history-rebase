@@ -1,3 +1,4 @@
+import { tid } from '@voiceflow/style';
 import React from 'react';
 
 import { CMSFormListButtonRemove } from '@/components/CMS/CMSForm/CMSFormListButtonRemove/CMSFormListButtonRemove.component';
@@ -49,7 +50,13 @@ export const IntentCreateRequiredEntityItem: React.FC<IIntentCreateRequiredEntit
         <div key={reprompt.id}>
           <ResponseCreateVariant
             variant={reprompt}
-            removeButton={<CMSFormListButtonRemove disabled={reprompts.length === 1} onClick={() => onRepromptDelete(reprompt.id)} />}
+            removeButton={
+              <CMSFormListButtonRemove
+                disabled={reprompts.length === 1}
+                onClick={() => onRepromptDelete(reprompt.id)}
+                testID={tid('required-entity', ['reprompt', 'remove'])}
+              />
+            }
             autoFocusIfEmpty
             textVariantProps={{
               attachments: attachments[reprompt.id] ?? [],
@@ -61,6 +68,7 @@ export const IntentCreateRequiredEntityItem: React.FC<IIntentCreateRequiredEntit
               onAttachmentDuplicate: (attachmentID) => onRepromptAttachmentDuplicate(reprompt.id, attachmentID),
               onResponseAttachmentRemove: (attachmentID) => onRepromptsAttachmentRemove(reprompt.id, attachmentID),
             }}
+            testID={tid('required-entity', 'reprompt')}
           />
         </div>
       ))}

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.302.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.301.3...@voiceflow/ui@1.302.0) (2024-02-09)
+
+### Features
+
+* connect kb integrations endpoints [bugfix] (CV3-896) ([#7743](https://github.com/voiceflow/creator-app/issues/7743)) ([d745bef](https://github.com/voiceflow/creator-app/commit/d745bef085d92f82e0896a10a6fcccfc01f224ac))
+
 ## [1.301.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.301.2...@voiceflow/ui@1.301.3) (2024-01-19)
 
 **Note:** Version bump only for package @voiceflow/ui

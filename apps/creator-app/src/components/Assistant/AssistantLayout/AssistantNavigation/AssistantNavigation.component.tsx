@@ -1,3 +1,4 @@
+import { tid } from '@voiceflow/style';
 import { Menu, PrimaryNavigation } from '@voiceflow/ui-next';
 import React from 'react';
 
@@ -6,6 +7,8 @@ import { useLogoButtonOptions } from '@/pages/Project/components/Header/hooks';
 
 import { useAssistantNavigationHotkeys, useAssistantNavigationItems } from './AssistantNavigation.hook';
 import { AssistantNavigationHelpItem } from './AssistantNavigationHelpItem.component';
+
+const TEST_ID = 'assistant-navigation';
 
 export const AssistantNavigation: React.FC = () => {
   const onLinkClick = useOnLinkClick();
@@ -16,25 +19,27 @@ export const AssistantNavigation: React.FC = () => {
   useAssistantNavigationHotkeys(items);
 
   return (
-    <PrimaryNavigation testID="assistant__navigation">
+    <PrimaryNavigation testID={TEST_ID}>
       <PrimaryNavigation.Section>
-        <PrimaryNavigation.Header menuProps={{ numberOfItemsToShow: logoOptions.length }}>
-          {logoOptions.map((option) => option && (option.divider ? <Menu.Divider key={option.key} /> : <Menu.Item key={option.key} {...option} />))}
+        <PrimaryNavigation.Header menuProps={{ numberOfItemsToShow: logoOptions.length }} testID={tid(TEST_ID, 'home')}>
+          {logoOptions.map(
+            (option) =>
+              option &&
+              (option.divider ? (
+                <Menu.Divider key={option.key} />
+              ) : (
+                <Menu.Item key={option.key} {...option} testID={tid(TEST_ID, ['home', 'menu-item'], option.testID || option.key)} />
+              ))
+          )}
         </PrimaryNavigation.Header>
 
         {items.map(({ path, iconName, isActive, testID }) => (
-          <PrimaryNavigation.Item
-            key={path}
-            onClick={onLinkClick(path)}
-            isActive={isActive}
-            iconName={iconName}
-            testID={`assistant__navigation__item--${testID}`}
-          />
+          <PrimaryNavigation.Item key={path} onClick={onLinkClick(path)} isActive={isActive} iconName={iconName} testID={tid(TEST_ID, testID)} />
         ))}
       </PrimaryNavigation.Section>
 
       <PrimaryNavigation.Section>
-        <AssistantNavigationHelpItem />
+        <AssistantNavigationHelpItem testID={tid(TEST_ID, 'help')} />
       </PrimaryNavigation.Section>
     </PrimaryNavigation>
   );

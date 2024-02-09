@@ -1,5 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import type { Intent } from '@voiceflow/dtos';
+import { tid } from '@voiceflow/style';
 import { Box, Divider, Scroll } from '@voiceflow/ui-next';
 import React from 'react';
 
@@ -19,6 +20,8 @@ import { useAutoScrollListItemIntoView } from '@/hooks/scroll.hook';
 import { modalsManager } from '../../../manager';
 import { useIntentForm } from './IntentCreate.hook';
 import { IIntentCreateModal } from './IntentCreate.interface';
+
+const TEST_ID = 'create-intent-modal';
 
 export const IntentCreateModal = modalsManager.create<IIntentCreateModal, Intent>(
   'IntentCreateModal',
@@ -63,8 +66,9 @@ export const IntentCreateModal = modalsManager.create<IIntentCreateModal, Intent
           onExited={api.remove}
           onEscClose={api.onEscClose}
           onEnterSubmit={onSubmit}
+          testID={TEST_ID}
         >
-          <Modal.Header title="Create intent" onClose={api.onClose} testID="create-intent" />
+          <Modal.Header title="Create intent" onClose={api.onClose} testID={tid(TEST_ID, 'header')} />
 
           <Scroll style={{ display: 'block' }}>
             <Modal.Body gap={16}>
@@ -74,7 +78,7 @@ export const IntentCreateModal = modalsManager.create<IIntentCreateModal, Intent
                 autoFocus
                 placeholder="Enter intent name"
                 onValueChange={intentForm.nameState.setValue}
-                testID="intent__name"
+                testID={tid('intent', 'name')}
               />
 
               <CMSFormDescription
@@ -83,7 +87,7 @@ export const IntentCreateModal = modalsManager.create<IIntentCreateModal, Intent
                 minRows={1}
                 onValueChange={intentForm.descriptionState.setValue}
                 placeholder={descriptionPlaceholder}
-                testID="intent__description"
+                testID={tid('intent', 'description')}
               />
             </Modal.Body>
 
@@ -127,6 +131,7 @@ export const IntentCreateModal = modalsManager.create<IIntentCreateModal, Intent
                       gap={4}
                       align="center"
                       onRemove={() => intentForm.onEntityRemove(item.entityID)}
+                      testID={tid('intent', ['require-entities', 'item'])}
                     >
                       <IntentCreateRequiredEntityItem
                         entityID={item.entityID}
@@ -161,8 +166,8 @@ export const IntentCreateModal = modalsManager.create<IIntentCreateModal, Intent
                 </Box> */}
           </Scroll>
 
-          <Modal.Footer testID="create-intent">
-            <Modal.Footer.Button variant="secondary" onClick={api.onClose} disabled={closePrevented} label="Cancel" testID="create-intent" />
+          <Modal.Footer>
+            <Modal.Footer.Button variant="secondary" onClick={api.onClose} disabled={closePrevented} label="Cancel" testID={tid(TEST_ID, 'cancel')} />
 
             <Modal.Footer.Button
               label="Create intent"
@@ -170,7 +175,7 @@ export const IntentCreateModal = modalsManager.create<IIntentCreateModal, Intent
               onClick={onSubmit}
               disabled={closePrevented}
               isLoading={closePrevented}
-              testID="create-intent"
+              testID={tid(TEST_ID, 'create')}
             />
           </Modal.Footer>
         </Modal.Container>

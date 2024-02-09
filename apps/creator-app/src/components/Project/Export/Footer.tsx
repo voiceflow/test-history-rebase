@@ -1,4 +1,6 @@
+import { tid } from '@voiceflow/style';
 import { Box, System } from '@voiceflow/ui';
+import { BaseProps } from '@voiceflow/ui-next';
 import React from 'react';
 
 import PlatformUploadButton from '@/components/PlatformUploadButton';
@@ -12,14 +14,14 @@ import { usePermissionAction } from '@/hooks/permission';
 
 import { Context } from './Context';
 
-interface FooterProps {
+interface FooterProps extends BaseProps {
   origin: Tracking.ModelExportOriginType;
   linkURL?: string;
   withoutLink?: boolean;
   selectedItems?: string[];
 }
 
-export const Footer: React.FC<FooterProps> = ({ origin, linkURL, selectedItems }) => {
+export const Footer: React.FC<FooterProps> = ({ origin, linkURL, selectedItems, testID }) => {
   const { onExport, exportType, isExporting, canvasExportFormat, exportNLPType, exportIntents } = React.useContext(Context)!;
 
   const noModelData = exportType === ExportType.MODEL && exportIntents.length === 0 && !selectedItems?.length;
@@ -65,7 +67,9 @@ export const Footer: React.FC<FooterProps> = ({ origin, linkURL, selectedItems }
 
   return (
     <Box.FlexApart fullWidth>
-      <System.Link.Anchor href={linkURL || Documentation.PROJECT_EXPORT}>Learn More</System.Link.Anchor>
+      <System.Link.Anchor href={linkURL || Documentation.PROJECT_EXPORT} data-testid={tid(testID, 'learn-more')}>
+        Learn More
+      </System.Link.Anchor>
       <PlatformUploadButton icon="arrowSpin" label="Export" onClick={onExportClick} isActive={!!isExporting} disabled={noModelData} />
     </Box.FlexApart>
   );

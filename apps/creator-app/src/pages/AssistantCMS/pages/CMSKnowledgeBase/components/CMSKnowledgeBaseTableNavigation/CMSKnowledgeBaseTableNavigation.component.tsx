@@ -1,4 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { tid } from '@voiceflow/style';
 import { Box, Button, notify, SquareButton, Table, Tooltip } from '@voiceflow/ui-next';
 import { useAtomValue, useSetAtom } from 'jotai';
 import pluralize from 'pluralize';
@@ -13,6 +14,7 @@ import { useConfirmV2Modal, useModal } from '@/hooks/modal.hook';
 import { usePermission } from '@/hooks/permission';
 import { useDispatch } from '@/hooks/store.hook';
 import { Modals } from '@/ModalsV2';
+import { TABLE_TEST_ID } from '@/pages/AssistantCMS/AssistantCMS.constant';
 import { CMSResourceActionsButton } from '@/pages/AssistantCMS/components/CMSResourceActions/CMSResourceActionsButton/CMSResourceActionsButton.component';
 import { CMSTableNavigation } from '@/pages/AssistantCMS/components/CMSTableNavigation/CMSTableNavigation.component';
 
@@ -101,6 +103,7 @@ export const CMSKnowledgeBaseTableNavigation: React.FC = () => {
               onMouseEnter={onOpen}
               onMouseLeave={onClose}
               onClick={() => manageIntegrationsModal.openVoid()}
+              testID={tid(TABLE_TEST_ID, 'integrations')}
             />
           )}
         >

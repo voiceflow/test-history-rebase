@@ -1,4 +1,5 @@
 import { UtteranceText } from '@voiceflow/dtos';
+import { tid } from '@voiceflow/style';
 import { Divider, notify, Scroll } from '@voiceflow/ui-next';
 import React from 'react';
 
@@ -12,6 +13,8 @@ import { useDispatch, useSelector } from '@/hooks/store.hook';
 import { isIntentBuiltIn } from '@/utils/intent.util';
 
 import { modalsManager } from '../../manager';
+
+const TEST_ID = 'edit-intent-modal';
 
 export interface IIntentEditModal {
   intentID: string;
@@ -55,13 +58,31 @@ export const IntentEditModal = modalsManager.create<IIntentEditModal>(
       };
 
       return (
-        <Modal.Container type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} onEscClose={api.onEscClose}>
+        <Modal.Container
+          type={type}
+          opened={opened}
+          hidden={hidden}
+          animated={animated}
+          onExited={api.remove}
+          onEscClose={api.onEscClose}
+          testID={TEST_ID}
+        >
           <Modal.Header
             title="Edit intent"
             onClose={api.onClose}
-            leftButton={<Modal.HeaderMenu items={intents} activeID={intentID} onSelect={onIntentSelect} notFoundLabel="intents" />}
-            secondaryButton={<Modal.HeaderMore options={[{ name: 'Delete', onClick: onIntentDelete }]} />}
-            testID="edit-intent"
+            leftButton={
+              <Modal.HeaderMenu
+                items={intents}
+                activeID={intentID}
+                onSelect={onIntentSelect}
+                notFoundLabel="intents"
+                testID={tid(TEST_ID, 'select-intent')}
+              />
+            }
+            secondaryButton={
+              <Modal.HeaderMore options={[{ name: 'Delete', onClick: onIntentDelete, testID: 'delete' }]} testID={tid(TEST_ID, 'more')} />
+            }
+            testID={tid(TEST_ID, 'header')}
           />
 
           {intent ? (
@@ -73,7 +94,7 @@ export const IntentEditModal = modalsManager.create<IIntentEditModal>(
                   autoFocus={!newUtterances?.length}
                   placeholder="Enter intent name"
                   onValueChange={onNameChange}
-                  testID="intent__name"
+                  testID={tid('intent', 'name')}
                 />
 
                 <CMSFormDescription
@@ -81,7 +102,7 @@ export const IntentEditModal = modalsManager.create<IIntentEditModal>(
                   minRows={1}
                   placeholder={descriptionPlaceholder}
                   onValueChange={onDescriptionChange}
-                  testID="intent__description"
+                  testID={tid('intent', 'description')}
                 />
               </Modal.Body>
 
@@ -90,11 +111,11 @@ export const IntentEditModal = modalsManager.create<IIntentEditModal>(
               <IntentEditForm intent={intent} newUtterances={newUtterances} />
             </Scroll>
           ) : (
-            <Modal.Body>Intent not found</Modal.Body>
+            <Modal.Body testID={tid(TEST_ID, 'not-found')}>Intent not found</Modal.Body>
           )}
 
-          <Modal.Footer testID="edit-intent">
-            <Modal.Footer.Button label="Close" variant="secondary" onClick={api.onClose} disabled={closePrevented} testID="edit-intent" />
+          <Modal.Footer>
+            <Modal.Footer.Button label="Close" variant="secondary" onClick={api.onClose} disabled={closePrevented} testID={tid(TEST_ID, 'close')} />
           </Modal.Footer>
         </Modal.Container>
       );

@@ -1,3 +1,4 @@
+import { tid } from '@voiceflow/style';
 import { Box, Divider, Editor, IEditorAPI, Scroll } from '@voiceflow/ui-next';
 import React, { useRef } from 'react';
 
@@ -6,6 +7,7 @@ import { EntityClassifierColorSection } from '@/components/Entity/EntityClassifi
 import { EntityEditVariantsSection } from '@/components/Entity/EntityEditVariantsSection/EntityEditVariantsSection.component';
 import { Designer } from '@/ducks';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
+import { EDITOR_TEST_ID } from '@/pages/AssistantCMS/AssistantCMS.constant';
 import { transformVariableName } from '@/utils/variable.util';
 
 import { CMSEditorMoreButton } from '../../../../components/CMSEditorMoreButton/CMSEditorMoreButton.components';
@@ -30,7 +32,7 @@ export const CMSEntityEditor: React.FC = () => {
       onTitleChange={(name) => patchEntity({ name: name.trim() })}
       headerActions={<CMSEditorMoreButton>{({ onClose }) => getMoreMenu({ id: entityID, onClose })}</CMSEditorMoreButton>}
       titleTransform={transformVariableName}
-      testID="cms-editor"
+      testID={EDITOR_TEST_ID}
     >
       <Scroll style={{ display: 'block' }}>
         <Box px={24} py={20} direction="column">
@@ -54,7 +56,7 @@ export const CMSEntityEditor: React.FC = () => {
           value={entity.description ?? ''}
           placeholder="Enter entity description"
           onValueChange={(description) => patchEntity({ description })}
-          testID="entity__description"
+          testID={tid('entity', 'description')}
         />
       </Scroll>
     </Editor>

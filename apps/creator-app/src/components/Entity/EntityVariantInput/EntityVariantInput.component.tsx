@@ -1,3 +1,4 @@
+import { tid } from '@voiceflow/style';
 import { FocusIndicator, Input } from '@voiceflow/ui-next';
 import React, { useMemo } from 'react';
 
@@ -65,7 +66,7 @@ export const EntityVariantInput: React.FC<IEntityVariantInput> = ({
           onKeyUp: onEnterPress(valueInput),
           placeholder: 'Add synonyms, comma separated',
         }}
-        testID="entity__variant"
+        testID={tid('entity', 'variant')}
       />
     </FocusIndicator.Container>
   );

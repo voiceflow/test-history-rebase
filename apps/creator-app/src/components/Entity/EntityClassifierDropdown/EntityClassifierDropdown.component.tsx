@@ -1,4 +1,5 @@
 import { CUSTOM_SLOT_TYPE, Utils } from '@voiceflow/common';
+import { tid } from '@voiceflow/style';
 import { Box, Divider, Dropdown, Menu, Search } from '@voiceflow/ui-next';
 import React from 'react';
 
@@ -7,6 +8,8 @@ import { useDeferredSearch } from '@/hooks/search.hook';
 import { useSelector } from '@/hooks/store.hook';
 
 import type { IEntityClassifierDropdown } from './EntityClassifierDropdown.interface';
+
+const TEST_ID = tid('entity', 'classifier');
 
 export const EntityClassifierDropdown: React.FC<IEntityClassifierDropdown> = ({ error, value, onClick, minWidth, disabled, onValueChange }) => {
   const entityClassifiers = useSelector(Version.active.entityTypesSelector);
@@ -27,12 +30,12 @@ export const EntityClassifierDropdown: React.FC<IEntityClassifierDropdown> = ({ 
         disabled={disabled}
         placeholder="Select type"
         errorMessage={error ?? undefined}
-        testID="entity__classifier"
+        testID={TEST_ID}
       >
         {({ onClose, referenceRef }) => (
           <Menu
             width={referenceRef.current?.clientWidth}
-            searchSection={<Search value={search.value} onValueChange={search.setValue} placeholder="Search" />}
+            searchSection={<Search value={search.value} onValueChange={search.setValue} placeholder="Search" testID={tid(TEST_ID, 'search')} />}
             numberOfItemsToShow={6}
           >
             {search.hasItems ? (
@@ -43,7 +46,7 @@ export const EntityClassifierDropdown: React.FC<IEntityClassifierDropdown> = ({ 
                       label={label}
                       onClick={Utils.functional.chain(onClose, () => onValueChange(value))}
                       searchValue={search.deferredValue}
-                      testID="entity__classifier__menu-item--custom"
+                      testID={tid(TEST_ID, 'menu-item', 'custom')}
                     />
                     <Divider fullWidth />
                   </React.Fragment>
@@ -53,12 +56,12 @@ export const EntityClassifierDropdown: React.FC<IEntityClassifierDropdown> = ({ 
                     label={label}
                     onClick={Utils.functional.chain(onClose, () => onValueChange(value))}
                     searchValue={search.deferredValue}
-                    testID="entity__classifier__menu-item"
+                    testID={tid(TEST_ID, 'menu-item')}
                   />
                 )
               )
             ) : (
-              <Menu.NotFound label="types" />
+              <Menu.NotFound label="types" testID={tid(TEST_ID, 'not-found')} />
             )}
           </Menu>
         )}

@@ -1,4 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { tid } from '@voiceflow/style';
 import { Box, Scroll, TextField } from '@voiceflow/ui-next';
 import React, { useState } from 'react';
 
@@ -23,6 +24,7 @@ export const KBImportSitemapURL: React.FC<IKBImportSitemapURL> = ({
   disableClose,
   setSitemapURL,
   closePrevented,
+  testID,
 }) => {
   const getURLsFromSitemap = useDispatch(Designer.KnowledgeBase.Document.effect.getURLsFromSitemap);
   const { isEnabled: isRefreshEnabled } = useFeature(Realtime.FeatureFlag.KB_REFRESH);
@@ -74,7 +76,7 @@ export const KBImportSitemapURL: React.FC<IKBImportSitemapURL> = ({
 
   return (
     <>
-      <Modal.Header title="Import from sitemap" onClose={onClose} />
+      <Modal.Header title="Import from sitemap" onClose={onClose} testID={tid(testID, 'header')} />
 
       <Scroll style={{ display: 'block' }}>
         <Box mt={20} mx={24} mb={24} direction="column" gap={16}>
@@ -90,15 +92,18 @@ export const KBImportSitemapURL: React.FC<IKBImportSitemapURL> = ({
               errorMessage={error}
               onValueChange={onChangeSitemapValue}
               onKeyDown={onKeyDown}
+              testID={tid(testID, 'sitemap-url')}
             />
           </Box>
 
-          {isRefreshEnabled && <KBRefreshRateSelect value={refreshRate} disabled={closePrevented} onValueChange={setRefreshRate} />}
+          {isRefreshEnabled && (
+            <KBRefreshRateSelect value={refreshRate} disabled={closePrevented} onValueChange={setRefreshRate} testID={tid(testID, 'refresh-rate')} />
+          )}
         </Box>
       </Scroll>
 
       <Modal.Footer>
-        <Modal.Footer.Button label="Cancel" variant="secondary" onClick={onClose} disabled={closePrevented} />
+        <Modal.Footer.Button label="Cancel" variant="secondary" onClick={onClose} disabled={closePrevented} testID={tid(testID, 'cancel')} />
 
         <Modal.Footer.Button
           label="Continue"
@@ -106,6 +111,7 @@ export const KBImportSitemapURL: React.FC<IKBImportSitemapURL> = ({
           disabled={closePrevented}
           isLoading={closePrevented}
           className={submitButtonStyles}
+          testID={tid(testID, 'continue')}
         />
       </Modal.Footer>
     </>

@@ -1,4 +1,5 @@
 import { UtteranceText } from '@voiceflow/dtos';
+import { tid } from '@voiceflow/style';
 import { Box, Gauge, Scroll, Section, Text, Tooltip } from '@voiceflow/ui-next';
 import React, { useMemo } from 'react';
 
@@ -11,6 +12,8 @@ import { isUtteranceTextEmpty } from '@/utils/utterance.util';
 
 import { IntentUtteranceInput } from '../IntentUtteranceInput/IntentUtteranceInput.component';
 import type { IIntentUtterancesSection } from './IntentUtterancesSection.interface';
+
+const TEST_ID = tid('intent', 'utterances');
 
 export const IntentUtterancesSection: React.FC<IIntentUtterancesSection> = ({
   utterances,
@@ -53,7 +56,7 @@ export const IntentUtterancesSection: React.FC<IIntentUtterancesSection> = ({
               </Box>
             ) : undefined
           }
-          testID="intent__utterances"
+          testID={tid(TEST_ID, 'header')}
         >
           <Tooltip
             placement="top"
@@ -65,7 +68,7 @@ export const IntentUtterancesSection: React.FC<IIntentUtterancesSection> = ({
                 iconName="BulkUpload"
                 onMouseEnter={onOpen}
                 onMouseLeave={onClose}
-                testID="intent__utterances__bulk-import"
+                testID={tid(TEST_ID, 'bulk-import')}
               />
             )}
           >
@@ -76,7 +79,7 @@ export const IntentUtterancesSection: React.FC<IIntentUtterancesSection> = ({
             )}
           </Tooltip>
 
-          <Section.Header.Button iconName="Plus" onClick={stopPropagation(onUtteranceAdd)} testID="intent__utterances__add" />
+          <Section.Header.Button iconName="Plus" onClick={stopPropagation(onUtteranceAdd)} testID={tid(TEST_ID, 'add')} />
         </Section.Header.Container>
       </Box>
 
@@ -86,7 +89,7 @@ export const IntentUtterancesSection: React.FC<IIntentUtterancesSection> = ({
           collapseLabel="sample phrases"
           estimatedItemSize={36}
           autoScrollToTopRevision={autoScrollToTopRevision}
-          testID="intent__utterances"
+          testID={TEST_ID}
           renderItem={({ item, virtualizer, virtualItem }) => (
             <CMSFormVirtualListItem
               py={2}
@@ -98,7 +101,7 @@ export const IntentUtterancesSection: React.FC<IIntentUtterancesSection> = ({
               onRemove={() => onUtteranceRemove(item.id)}
               removeDisabled={utterancesSize === 1}
               contentContainerProps={{ pt: 6 }}
-              testID="intent__utterances__list-item"
+              testID={tid(TEST_ID, 'item')}
             >
               <IntentUtteranceInput
                 value={item.text}
@@ -108,6 +111,7 @@ export const IntentUtterancesSection: React.FC<IIntentUtterancesSection> = ({
                 onValueEmpty={onUtteranceEmpty(virtualItem.index)}
                 onValueChange={(text) => onUtteranceChange(item.id, { text })}
                 onEntityAdded={onRequiredEntityAdd}
+                testID={tid(TEST_ID, ['item', 'input'])}
               />
             </CMSFormVirtualListItem>
           )}

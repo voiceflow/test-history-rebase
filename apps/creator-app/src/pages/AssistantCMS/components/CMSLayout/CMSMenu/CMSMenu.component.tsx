@@ -1,4 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { tid } from '@voiceflow/style';
 import { SecondaryNavigation } from '@voiceflow/ui-next';
 import React from 'react';
 import { matchPath, useLocation } from 'react-router-dom';
@@ -10,6 +11,8 @@ import { useFeature } from '@/hooks';
 import { useOnLinkClick } from '@/hooks/navigation.hook';
 import { useSelector } from '@/hooks/store.hook';
 import { useCMSRoute } from '@/pages/AssistantCMS/hooks/cms-route.hook';
+
+const TEST_ID = 'cms-menu';
 
 export const CMSMenu: React.FC = () => {
   const location = useLocation();
@@ -39,7 +42,7 @@ export const CMSMenu: React.FC = () => {
   };
 
   return (
-    <SecondaryNavigation title={name ?? ''} testID="cms-menu">
+    <SecondaryNavigation title={name ?? ''} testID={TEST_ID}>
       {isKbEnabled && (
         <SecondaryNavigation.Section title="Agent" isCollapsible={false}>
           <SecondaryNavigation.Item
@@ -48,7 +51,7 @@ export const CMSMenu: React.FC = () => {
             caption={String(knowledgeBaseCount)}
             onClick={onTabClick(Path.CMS_KNOWLEDGE_BASE, CMSRoute.KNOWLEDGE_BASE)}
             isActive={isItemActive(Path.CMS_KNOWLEDGE_BASE)}
-            testID="cms-menu__item--knowledge-base"
+            testID={tid(TEST_ID, 'knowledge-base')}
           />
         </SecondaryNavigation.Section>
       )}
@@ -60,7 +63,7 @@ export const CMSMenu: React.FC = () => {
           caption={String(storiesCount)}
           onClick={onTabClick(AssistantCMSRoute.STORIES)}
           isActive={isItemActive(AbsolutePath.ASSISTANT_CMS_STORIES.pathname)}
-          testID="cms-menu__item--storyboard"
+          testID={tid(TEST_ID, 'storyboard')}
         />
       </SecondaryNavigation.Section>
 
@@ -71,7 +74,7 @@ export const CMSMenu: React.FC = () => {
           caption={String(responsesCount)}
           onClick={onTabClick(AssistantCMSRoute.RESPONSES)}
           isActive={isItemActive(AbsolutePath.ASSISTANT_CMS_RESPONSES.pathname)}
-          testID="cms-menu__item--responses"
+          testID={tid(TEST_ID, 'responses')}
         />
 
         <SecondaryNavigation.Item
@@ -80,7 +83,7 @@ export const CMSMenu: React.FC = () => {
           caption={String(promptsCount)}
           onClick={onTabClick(AssistantCMSRoute.PROMPTS)}
           isActive={isItemActive(AbsolutePath.ASSISTANT_CMS_PROMPTS.pathname)}
-          testID="cms-menu__item--prompts"
+          testID={tid(TEST_ID, 'prompts')}
         />
 
         <SecondaryNavigation.Item
@@ -89,7 +92,7 @@ export const CMSMenu: React.FC = () => {
           onClick={onTabClick(AssistantCMSRoute.FLOWS)}
           caption={String(flowsCount)}
           isActive={isItemActive(AbsolutePath.ASSISTANT_CMS_FLOWS.pathname)}
-          testID="cms-menu__item--flows"
+          testID={tid(TEST_ID, 'flows')}
         />
 
       */}
@@ -103,7 +106,7 @@ export const CMSMenu: React.FC = () => {
               caption={String(variablesCount)}
               onClick={onTabClick(Path.CMS_VARIABLE, CMSRoute.VARIABLE)}
               isActive={isItemActive(Path.CMS_VARIABLE)}
-              testID="cms-menu__item--variables"
+              testID={tid(TEST_ID, 'variables')}
             />
           )}
 
@@ -114,7 +117,7 @@ export const CMSMenu: React.FC = () => {
               caption={String(functionsCount)}
               onClick={onTabClick(Path.CMS_FUNCTION, CMSRoute.FUNCTION)}
               isActive={isItemActive(Path.CMS_FUNCTION)}
-              testID="cms-menu__item--functions"
+              testID={tid(TEST_ID, 'functions')}
             />
           )}
         </SecondaryNavigation.Section>
@@ -127,7 +130,7 @@ export const CMSMenu: React.FC = () => {
           caption={String(intentsCount)}
           onClick={onTabClick(Path.CMS_INTENT, CMSRoute.INTENT)}
           isActive={isItemActive(Path.CMS_INTENT)}
-          testID="cms-menu__item--intents"
+          testID={tid(TEST_ID, 'intents')}
         />
 
         <SecondaryNavigation.Item
@@ -136,7 +139,7 @@ export const CMSMenu: React.FC = () => {
           caption={String(entitiesCount)}
           onClick={onTabClick(Path.CMS_ENTITY, CMSRoute.ENTITY)}
           isActive={isItemActive(Path.CMS_ENTITY)}
-          testID="cms-menu__item--entities"
+          testID={tid(TEST_ID, 'entities')}
         />
       </SecondaryNavigation.Section>
     </SecondaryNavigation>

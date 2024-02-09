@@ -1,4 +1,5 @@
 import type { Function as FunctionType } from '@voiceflow/dtos';
+import { tid } from '@voiceflow/style';
 import { toast } from '@voiceflow/ui';
 import { TextArea } from '@voiceflow/ui-next';
 import { validatorFactory } from '@voiceflow/utils-designer';
@@ -14,6 +15,8 @@ import { useValidators } from '@/hooks/validate.hook';
 
 import { modalsManager } from '../../manager';
 import { textareaStyles } from './FunctionCreate.css';
+
+const TEST_ID = 'create-function';
 
 export interface IFunctionCreateModal {
   name?: string;
@@ -66,8 +69,9 @@ export const FunctionCreateModal = modalsManager.create<IFunctionCreateModal, Fu
           onExited={api.remove}
           onEscClose={api.onEscClose}
           onEnterSubmit={onSubmit}
+          testID={TEST_ID}
         >
-          <Modal.Header title="Create function" onClose={api.onClose} testID="create-function" />
+          <Modal.Header title="Create function" onClose={api.onClose} testID={tid(TEST_ID, 'header')} />
           <Modal.Body gap={16}>
             <CMSFormName
               value={nameState.value}
@@ -75,7 +79,7 @@ export const FunctionCreateModal = modalsManager.create<IFunctionCreateModal, Fu
               autoFocus
               placeholder="Enter function name"
               onValueChange={nameState.setValue}
-              testID="function__name"
+              testID={tid('function', 'name')}
             />
 
             <TextArea
@@ -84,11 +88,11 @@ export const FunctionCreateModal = modalsManager.create<IFunctionCreateModal, Fu
               disabled={closePrevented}
               className={textareaStyles}
               placeholder="Enter a description (optional)"
-              testID="function__description"
+              testID={tid('function', 'description')}
             />
           </Modal.Body>
-          <Modal.Footer testID="create-function">
-            <Modal.Footer.Button variant="secondary" onClick={api.onClose} disabled={closePrevented} label="Cancel" testID="create-function" />
+          <Modal.Footer>
+            <Modal.Footer.Button variant="secondary" onClick={api.onClose} disabled={closePrevented} label="Cancel" testID={tid(TEST_ID, 'cancel')} />
 
             <Modal.Footer.Button
               label="Create function"
@@ -96,7 +100,7 @@ export const FunctionCreateModal = modalsManager.create<IFunctionCreateModal, Fu
               onClick={onSubmit}
               disabled={closePrevented}
               isLoading={closePrevented}
-              testID="create-function"
+              testID={tid(TEST_ID, 'create')}
             />
           </Modal.Footer>
         </Modal.Container>

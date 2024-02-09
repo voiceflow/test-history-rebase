@@ -1,3 +1,4 @@
+import { tid } from '@voiceflow/style';
 import { Collapsible, CollapsibleHeader, CollapsibleHeaderButton, TextArea } from '@voiceflow/ui-next';
 import React from 'react';
 
@@ -16,10 +17,10 @@ export const CMSEditorDescription: React.FC<ICMSEditorDescription> = ({ value, s
       isEmpty={!value}
       showDivider={showDivider}
       noBottomPadding
-      testID={`${testID}__section`}
+      testID={tid(testID, 'section')}
       header={
         <CollapsibleHeader className="sss" label="Description">
-          {({ isOpen }) => <CollapsibleHeaderButton isOpen={isOpen} />}
+          {({ isOpen }) => <CollapsibleHeaderButton isOpen={isOpen} testID={tid(testID, 'toggle-collapsed')} />}
         </CollapsibleHeader>
       }
     >

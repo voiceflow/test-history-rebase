@@ -1,3 +1,4 @@
+import { tid } from '@voiceflow/style';
 import { Header } from '@voiceflow/ui-next';
 import React from 'react';
 
@@ -7,6 +8,7 @@ import { useModal } from '@/hooks/modal.hook';
 import { usePermission } from '@/hooks/permission';
 import { useSelector } from '@/hooks/store.hook';
 import { Modals } from '@/ModalsV2';
+import { HEADER_TEST_ID } from '@/pages/AssistantCMS/AssistantCMS.constant';
 import { getMemberColorByCreatorID, isMemberColorImage } from '@/utils/member.util';
 
 export const CMSHeaderMembers: React.FC = () => {
@@ -25,7 +27,7 @@ export const CMSHeaderMembers: React.FC = () => {
         variant: getMemberColorByCreatorID(viewer.creatorID),
       }))}
       onButtonClick={canInviteMembers ? () => inviteModal.openVoid() : undefined}
-      testID="cms-header__members"
+      testID={tid(HEADER_TEST_ID, 'members')}
     />
   );
 };

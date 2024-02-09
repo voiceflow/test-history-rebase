@@ -1,4 +1,5 @@
 import { FunctionVariableKind } from '@voiceflow/dtos';
+import { tid } from '@voiceflow/style';
 import { Divider } from '@voiceflow/ui-next';
 import React from 'react';
 
@@ -9,6 +10,8 @@ import { useDispatch, useSelector } from '@/hooks/store.hook';
 import { FunctionPathSection } from '../FunctionPathSection/FunctionPathSection.component';
 import { FunctionVariableSection } from '../FunctionVariableSection/FunctionVariableSection.component';
 import type { IFunctionEditForm } from './FunctionEditForm.interface';
+
+const TEST_ID = 'function';
 
 export const FunctionEditForm: React.FC<IFunctionEditForm> = ({ functionID }) => {
   const autofocus = useInputAutoFocusKey();
@@ -44,7 +47,7 @@ export const FunctionEditForm: React.FC<IFunctionEditForm> = ({ functionID }) =>
         onFunctionVariableAdd={() => onVariableAdd(FunctionVariableKind.INPUT)}
         onDeleteFunctionVariable={deleteFunctionVariable}
         onFunctionVariableChange={patchFunctionVariable}
-        testID="function__input-variables"
+        testID={tid(TEST_ID, 'input-variables')}
       />
 
       <Divider noPadding />
@@ -56,7 +59,7 @@ export const FunctionEditForm: React.FC<IFunctionEditForm> = ({ functionID }) =>
         onFunctionVariableAdd={() => onVariableAdd(FunctionVariableKind.OUTPUT)}
         onDeleteFunctionVariable={deleteFunctionVariable}
         onFunctionVariableChange={patchFunctionVariable}
-        testID="function__output-variables"
+        testID={tid(TEST_ID, 'output-variables')}
       />
 
       <Divider noPadding />

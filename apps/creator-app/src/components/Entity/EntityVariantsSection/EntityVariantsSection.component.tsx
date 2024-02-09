@@ -1,4 +1,5 @@
 import { CUSTOM_SLOT_TYPE } from '@voiceflow/common';
+import { tid } from '@voiceflow/style';
 import { Box, Scroll, Section } from '@voiceflow/ui-next';
 import { isEntityVariantLikeEmpty } from '@voiceflow/utils-designer';
 import React from 'react';
@@ -11,6 +12,8 @@ import { useIsListEmpty } from '@/hooks/list.hook';
 import { stopPropagation } from '@/utils/handler.util';
 
 import type { EntityVariantsSectionItem, IEntityVariantsSection } from './EntityVariantsSection.interface';
+
+const TEST_ID = tid('entity', 'variants');
 
 export const EntityVariantsSection = <T extends EntityVariantsSectionItem>({
   name,
@@ -41,13 +44,13 @@ export const EntityVariantsSection = <T extends EntityVariantsSectionItem>({
           title="Values"
           variant={variantsSize ? 'active' : 'basic'}
           onHeaderClick={variantsSize ? undefined : onAdd}
-          testID="entity__variants"
+          testID={tid(TEST_ID, 'header')}
         >
           <Section.Header.Button
             onClick={stopPropagation(onAdd)}
             disabled={disabled || aiGenerate.fetching}
             iconName="Plus"
-            testID="entity__variants__add"
+            testID={tid(TEST_ID, 'add')}
           />
         </Section.Header.Container>
       </Box>
@@ -60,7 +63,7 @@ export const EntityVariantsSection = <T extends EntityVariantsSectionItem>({
             collapseLabel="values"
             estimatedItemSize={53}
             autoScrollToTopRevision={autoScrollToTopRevision}
-            testID="entity__variants"
+            testID={TEST_ID}
             renderItem={({ item, virtualizer, virtualItem }) => (
               <CMSFormVirtualListItem
                 pt={9}
@@ -70,7 +73,7 @@ export const EntityVariantsSection = <T extends EntityVariantsSectionItem>({
                 index={virtualItem.index}
                 onRemove={() => onRemove(item.id)}
                 removeDisabled={(classifier === CUSTOM_SLOT_TYPE && variantsSize === 1) || disabled || aiGenerate.fetching}
-                testID="entity__variants__list-item"
+                testID={tid(TEST_ID, 'list-item')}
               >
                 {renderVariantInput({ item, disabled, onEmpty: listEmpty.container(virtualItem.index) })}
               </CMSFormVirtualListItem>
@@ -86,7 +89,7 @@ export const EntityVariantsSection = <T extends EntityVariantsSectionItem>({
             isLoading={aiGenerate.fetching}
             onGenerate={aiGenerate.onGenerate}
             hasExtraContext={!!name || !!classifier || !listEmpty.value}
-            testID="entity__variants__ai-generate"
+            testID={tid(TEST_ID, 'ai-generate')}
           />
         </Box>
       )}

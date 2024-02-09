@@ -1,6 +1,7 @@
 import { BaseModels } from '@voiceflow/base-types';
+import { BaseProps } from '@voiceflow/ui-next';
 
-export interface IKBImportSitemapURL {
+export interface IKBImportSitemapURL extends BaseProps {
   onClose: VoidFunction;
   addURLs: (urls: string[]) => void;
   sitemapURL: string;

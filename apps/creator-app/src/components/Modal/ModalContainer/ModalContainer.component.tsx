@@ -26,6 +26,7 @@ export const ModalContainer = React.forwardRef<HTMLDivElement, IModalContainer>(
       containerClassName,
       onEscClose,
       onEnterSubmit,
+      testID,
     },
     ref
   ) => {
@@ -39,6 +40,7 @@ export const ModalContainer = React.forwardRef<HTMLDivElement, IModalContainer>(
             `modal--${type ?? 'unknown'}`,
             className
           )}
+          testID={testID}
         >
           {children}
         </UIModal.Container>

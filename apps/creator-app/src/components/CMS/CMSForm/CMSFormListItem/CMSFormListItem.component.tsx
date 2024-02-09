@@ -1,4 +1,4 @@
-import { clsx } from '@voiceflow/style';
+import { clsx, tid } from '@voiceflow/style';
 import { Box, forwardRef } from '@voiceflow/ui-next';
 import React from 'react';
 
@@ -13,7 +13,12 @@ export const CMSFormListItem = forwardRef<HTMLDivElement, ICMSFormListItem>('CMS
         {children}
       </Box>
 
-      <CMSFormListButtonRemove onClick={onRemove} disabled={removeDisabled} className={buttonStyle({ showOnHover })} />
+      <CMSFormListButtonRemove
+        onClick={onRemove}
+        disabled={removeDisabled}
+        className={buttonStyle({ showOnHover })}
+        testID={tid(props.testID, 'remove')}
+      />
     </Box>
   )
 );

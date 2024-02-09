@@ -1,10 +1,14 @@
+import { tid } from '@voiceflow/style';
 import { Box, TextArea } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { CMS_KNOWLEDGE_BASE_LEARN_MORE } from '@/constants/link.constant';
 import { useLinkedState } from '@/hooks/state.hook';
 
+import { SETTINGS_TEST_ID } from '../KnowledgeBase.constant';
 import { KBSettingLabel } from './KBSettingLabel.component';
+
+const TEST_ID = tid(SETTINGS_TEST_ID, 'instructions');
 
 export interface IKBSettingsInstructions {
   value: string;
@@ -50,6 +54,7 @@ export const KBSettingsInstructions: React.FC<IKBSettingsInstructions> = ({
           className={className}
           placeholder="Enter LLM instructions"
           onValueChange={setValue}
+          testID={TEST_ID}
         />
       </Box>
     </Box>

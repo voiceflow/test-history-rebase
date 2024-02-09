@@ -1,4 +1,5 @@
 import type { Entity } from '@voiceflow/dtos';
+import { tid } from '@voiceflow/style';
 import { Box, Popper, Section } from '@voiceflow/ui-next';
 import React from 'react';
 
@@ -6,6 +7,8 @@ import { EntityMenu } from '@/components/Entity/EntityMenu/EntityMenu.component'
 import { stopPropagation } from '@/utils/handler.util';
 
 import type { IIntentRequiredEntities } from './IntentRequiredEntitiesSection.interface';
+
+const TEST_ID = tid('intent', 'required-entities');
 
 export const IntentRequiredEntitiesSection: React.FC<IIntentRequiredEntities> = ({ onAdd, children, entityIDs }) => {
   const onSelect = (entity: Entity) => {
@@ -23,15 +26,9 @@ export const IntentRequiredEntitiesSection: React.FC<IIntentRequiredEntities> = 
             title="Required entities"
             variant={entitiesSize ? 'active' : 'basic'}
             onHeaderClick={entitiesSize ? undefined : onOpen}
-            testID="intent__required-entities"
+            testID={tid(TEST_ID, 'header')}
           >
-            <Section.Header.Button
-              ref={ref}
-              isActive={isOpen}
-              iconName="Plus"
-              onClick={stopPropagation(onOpen)}
-              testID="intent__required-entities__add"
-            />
+            <Section.Header.Button ref={ref} isActive={isOpen} iconName="Plus" onClick={stopPropagation(onOpen)} testID={tid(TEST_ID, 'add')} />
           </Section.Header.Container>
         )}
       >

@@ -1,6 +1,7 @@
 import { BaseModels } from '@voiceflow/base-types';
+import { BaseProps } from '@voiceflow/ui-next';
 
-export interface IKBImportSitemapPreview {
+export interface IKBImportSitemapPreview extends BaseProps {
   urls: string;
   refreshRate: BaseModels.Project.KnowledgeBaseDocumentRefreshRate;
   onBack: VoidFunction;

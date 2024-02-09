@@ -24,6 +24,7 @@ export const IntentUtteranceInput = forwardRef<SlateEditorRef, IIntentUtteranceI
       onEnterPress: onEnterPressProp,
       onValueChange,
       onEntityAdded,
+      testID,
     },
     ref
   ) => {
@@ -106,6 +107,7 @@ export const IntentUtteranceInput = forwardRef<SlateEditorRef, IIntentUtteranceI
         onValueChange={onChange}
         pluginsOptions={pluginsOptions}
         onKeyDownCapture={onKeyDownCapture}
+        testID={testID}
         editableContainer={({ editable }) => (
           <FocusIndicator.Container pl={24} overflow="hidden">
             <Box width="100%" direction="column" align="center">

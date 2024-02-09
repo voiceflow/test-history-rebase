@@ -1,7 +1,8 @@
 import { BaseModels } from '@voiceflow/base-types';
 import type { IconName } from '@voiceflow/icons';
+import { BaseProps } from '@voiceflow/ui-next';
 
-export interface IKBImportIntegrationPlatform {
+export interface IKBImportIntegrationPlatform extends BaseProps {
   onClose: VoidFunction;
   disabled?: boolean;
   onContinue: (data: { platform: BaseModels.Project.IntegrationTypes; subdomain?: string; authenticate: boolean }) => void;

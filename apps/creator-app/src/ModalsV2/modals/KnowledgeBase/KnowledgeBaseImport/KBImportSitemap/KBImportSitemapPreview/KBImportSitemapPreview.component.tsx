@@ -1,4 +1,5 @@
 import { BaseModels } from '@voiceflow/base-types';
+import { tid } from '@voiceflow/style';
 import { Box, TextArea } from '@voiceflow/ui-next';
 import pluralize from 'pluralize';
 import React, { useState } from 'react';
@@ -23,6 +24,7 @@ export const KBImportSitemapPreview: React.FC<IKBImportSitemapPreview> = ({
   enableClose,
   disableClose,
   closePrevented,
+  testID,
 }) => {
   const [error, setError] = useState<string | null>(null);
 
@@ -69,7 +71,12 @@ export const KBImportSitemapPreview: React.FC<IKBImportSitemapPreview> = ({
 
   return (
     <>
-      <Modal.Header title="Review & confirm URLs" onClose={onClose} leftButton={<Modal.Header.LeftButton iconName="ArrowLeft" onClick={onBack} />} />
+      <Modal.Header
+        title="Review & confirm URLs"
+        onClose={onClose}
+        leftButton={<Modal.Header.LeftButton iconName="ArrowLeft" onClick={onBack} />}
+        testID={tid(testID, 'header')}
+      />
 
       <Box mt={20} direction="column" className={textareaBoxStyles}>
         <Box mx={24} direction="column" gap={6} grow={1}>
@@ -85,13 +92,14 @@ export const KBImportSitemapPreview: React.FC<IKBImportSitemapPreview> = ({
               captionClassName={errorTextStyles}
               horizontalScroll
               onKeyDown={onKeyDown}
+              testID={tid(testID, 'urls')}
             />
           </Box>
         </Box>
       </Box>
 
       <Modal.Footer>
-        <Modal.Footer.Button label="Cancel" variant="secondary" onClick={onClose} disabled={closePrevented} />
+        <Modal.Footer.Button label="Cancel" variant="secondary" onClick={onClose} disabled={closePrevented} testID={tid(testID, 'cancel')} />
 
         <Modal.Footer.Button
           label={`Import ${count} URLs`}
@@ -99,6 +107,7 @@ export const KBImportSitemapPreview: React.FC<IKBImportSitemapPreview> = ({
           disabled={closePrevented}
           isLoading={closePrevented}
           className={submitButtonStyles}
+          testID={tid(testID, 'import')}
         />
       </Modal.Footer>
     </>

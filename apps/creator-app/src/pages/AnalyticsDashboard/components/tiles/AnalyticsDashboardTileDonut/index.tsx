@@ -1,4 +1,5 @@
 import { Box, DonutChart, SectionV2, Switch } from '@voiceflow/ui';
+import { BaseProps } from '@voiceflow/ui-next';
 import React from 'react';
 
 import * as Router from '@/ducks/router';
@@ -9,9 +10,8 @@ import { DonutChartResult, QueryResult } from '../../../types';
 import AnalyticsDashboardChartEmpty from '../AnalyticsDashboardTileEmpty';
 import * as S from './styles';
 
-interface AnalyticsDashboardChartDonutProps {
+interface AnalyticsDashboardChartDonutProps extends BaseProps {
   query: QueryResult<DonutChartResult>;
-  testID?: string;
 }
 
 const Chart = ({ query, testID }: AnalyticsDashboardChartDonutProps) => {

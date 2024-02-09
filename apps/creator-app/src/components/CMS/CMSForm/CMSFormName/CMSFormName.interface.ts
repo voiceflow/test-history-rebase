@@ -1,4 +1,6 @@
-export interface ICMSFormName {
+import { BaseProps } from '@voiceflow/ui-next';
+
+export interface ICMSFormName extends BaseProps {
   value: string;
   error?: string | null;
   disabled?: boolean;
@@ -10,5 +12,4 @@ export interface ICMSFormName {
   onValueChange: (value: string) => void;
   onPointerEnter?: React.PointerEventHandler<HTMLInputElement>;
   onPointerLeave?: React.PointerEventHandler<HTMLInputElement>;
-  testID?: string;
 }

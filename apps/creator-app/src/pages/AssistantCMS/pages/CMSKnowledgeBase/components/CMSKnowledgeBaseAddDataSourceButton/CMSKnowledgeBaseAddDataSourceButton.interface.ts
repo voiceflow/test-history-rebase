@@ -1,4 +1,5 @@
-export interface ICMSKnowledgeBaseAddDataSourceButton {
+import { BaseProps } from '@voiceflow/ui-next';
+
+export interface ICMSKnowledgeBaseAddDataSourceButton extends BaseProps {
   variant?: 'primary' | 'secondary';
-  testID?: string;
 }

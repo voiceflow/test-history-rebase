@@ -1,3 +1,4 @@
+import { tid } from '@voiceflow/style';
 import { Table } from '@voiceflow/ui-next';
 import { atom, useAtomValue } from 'jotai';
 import React, { useMemo } from 'react';
@@ -6,6 +7,7 @@ import * as Project from '@/ducks/projectV2';
 import { useOnLinkClick } from '@/hooks/navigation.hook';
 import { useSelector } from '@/hooks/store.hook';
 
+import { TABLE_TEST_ID } from '../../AssistantCMS.constant';
 import { useCMSManager } from '../../contexts/CMSManager';
 import { useCMSRouteFolders } from '../../contexts/CMSRouteFolders';
 import { CMSResourceActions } from '../CMSResourceActions';
@@ -38,7 +40,7 @@ export const CMSTableNavigation: React.FC<ICMSTableNavigation> = ({ label, items
         ...items,
       ]}
       onImportClick={onImportClick}
-      testID="cms-table__navigation"
+      testID={tid(TABLE_TEST_ID, 'navigation')}
     >
       {children}
     </Table.Navigation>

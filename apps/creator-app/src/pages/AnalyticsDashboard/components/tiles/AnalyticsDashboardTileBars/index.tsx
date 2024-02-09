@@ -1,13 +1,13 @@
 import { BarChart, Box, SectionV2, Switch } from '@voiceflow/ui';
+import { BaseProps } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { QueryState } from '../../../constants';
 import { BarChartResult, QueryResult } from '../../../types';
 import AnalyticsDashboardChartEmpty from '../AnalyticsDashboardTileEmpty';
 
-interface AnalyticsDashboardChartBarProps {
+interface AnalyticsDashboardChartBarProps extends BaseProps {
   query: QueryResult<Array<BarChartResult<string>>>;
-  testID?: string;
 }
 
 const Chart = ({ query, testID }: AnalyticsDashboardChartBarProps) => {

@@ -1,3 +1,4 @@
+import { tid } from '@voiceflow/style';
 import { Box, Divider, Editor, IEditorAPI, Scroll } from '@voiceflow/ui-next';
 import { isSystemVariableName } from '@voiceflow/utils-designer';
 import React, { useRef } from 'react';
@@ -7,6 +8,7 @@ import { VariableColorSection } from '@/components/Variable/VariableColorSection
 import { VariableDefaultValueSection } from '@/components/Variable/VariableDefaultValueSection/VariableDefaultValueSection.component';
 import { Designer } from '@/ducks';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
+import { EDITOR_TEST_ID } from '@/pages/AssistantCMS/AssistantCMS.constant';
 import { transformVariableName } from '@/utils/variable.util';
 
 import { CMSEditorMoreButton } from '../../../../components/CMSEditorMoreButton/CMSEditorMoreButton.components';
@@ -36,7 +38,7 @@ export const CMSVariableEditor: React.FC = () => {
       onTitleChange={(name) => patchVariable({ name: name.trim() })}
       headerActions={<CMSEditorMoreButton>{({ onClose }) => getMoreMenu({ id: variableID, onClose })}</CMSEditorMoreButton>}
       titleTransform={transformVariableName}
-      testID="cms-editor"
+      testID={EDITOR_TEST_ID}
     >
       <Scroll style={{ display: 'block' }}>
         <Box px={24} py={20} direction="column">
@@ -53,7 +55,7 @@ export const CMSVariableEditor: React.FC = () => {
           value={variable.description ?? ''}
           placeholder="Enter variable description"
           onValueChange={(description) => patchVariable({ description })}
-          testID="variable__description"
+          testID={tid('variable', 'description')}
         />
       </Scroll>
     </Editor>

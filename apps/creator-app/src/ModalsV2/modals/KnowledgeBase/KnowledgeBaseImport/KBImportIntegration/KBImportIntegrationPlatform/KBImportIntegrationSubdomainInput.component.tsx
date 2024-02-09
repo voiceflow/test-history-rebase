@@ -1,15 +1,15 @@
-import { Box, TextField } from '@voiceflow/ui-next';
+import { BaseProps, Box, TextField } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { useInput } from '@/hooks/input.hook';
 
-interface IKBImportIntegrationSubdomainInput {
+interface IKBImportIntegrationSubdomainInput extends BaseProps {
   value: string;
   error: string | null;
   onValueChange: (value: string) => void;
 }
 
-export const KBImportIntegrationSubdomainInput: React.FC<IKBImportIntegrationSubdomainInput> = ({ value, error, onValueChange }) => {
+export const KBImportIntegrationSubdomainInput: React.FC<IKBImportIntegrationSubdomainInput> = ({ value, error, onValueChange, testID }) => {
   const input = useInput({
     value,
     error,
@@ -25,6 +25,7 @@ export const KBImportIntegrationSubdomainInput: React.FC<IKBImportIntegrationSub
         caption={input.errored ? undefined : 'e.g. https://company.zendesk.com'}
         placeholder="Enter url"
         errorMessage={input.errorMessage}
+        testID={testID}
       />
     </Box>
   );

@@ -1,5 +1,6 @@
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { Entity } from '@voiceflow/dtos';
+import { tid } from '@voiceflow/style';
 import { ActionButtons, Menu, MENU_ITEM_MIN_HEIGHT, Search, VirtualizedContent } from '@voiceflow/ui-next';
 import React, { useMemo, useState } from 'react';
 
@@ -10,6 +11,8 @@ import { useSelector } from '@/hooks/store.hook';
 
 import { EntityMenuEmpty } from '../EntityMenuEmpty/EntityMenuEmpty.component';
 import type { IEntityMenu } from './EntityMenu.interface';
+
+const TEST_ID = 'entity-menu';
 
 export const EntityMenu: React.FC<IEntityMenu> = ({ width, onClose, onSelect: onSelectProp, excludeEntitiesIDs }) => {
   const storeEntities = useSelector(Designer.Entity.selectors.all);
@@ -71,7 +74,8 @@ export const EntityMenu: React.FC<IEntityMenu> = ({ width, onClose, onSelect: on
       listRef={setListNode}
       minWidth={search.hasItems ? undefined : 0}
       maxHeight={310}
-      searchSection={<Search value={search.value} placeholder="Search" onValueChange={search.setValue} />}
+      searchSection={<Search value={search.value} placeholder="Search" onValueChange={search.setValue} testID={tid(TEST_ID, 'search')} />}
+      testID={TEST_ID}
       actionButtons={
         search.hasItems && (
           <ActionButtons
@@ -80,7 +84,7 @@ export const EntityMenu: React.FC<IEntityMenu> = ({ width, onClose, onSelect: on
                 label={isCreating ? 'Creating entity...' : 'Create entity'}
                 onClick={onCreate}
                 disabled={isCreating}
-                testID="entity-menu__create"
+                testID={tid(TEST_ID, 'create')}
               />
             }
           />
@@ -103,14 +107,13 @@ export const EntityMenu: React.FC<IEntityMenu> = ({ width, onClose, onSelect: on
                 data-index={virtualRow.index}
                 searchValue={search.deferredValue}
                 suffixButton={{ iconName: 'EditS', onClick: () => onEdit(entity) }}
-                // TODO: this doesn't appear to work
-                testID="entity-menu__item"
+                testID={tid(TEST_ID, 'item')}
               />
             );
           })}
         </VirtualizedContent>
       ) : (
-        <Menu.CreateItem label={search.value} onClick={onCreate} disabled={isCreating} testID="entity-menu__item--add" />
+        <Menu.CreateItem label={search.value} onClick={onCreate} disabled={isCreating} testID={tid(TEST_ID, 'item', 'add')} />
       )}
     </Menu>
   );

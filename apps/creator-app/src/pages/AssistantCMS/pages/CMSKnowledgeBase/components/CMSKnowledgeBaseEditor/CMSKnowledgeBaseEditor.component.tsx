@@ -1,9 +1,11 @@
 import { BaseModels } from '@voiceflow/base-types';
+import { tid } from '@voiceflow/style';
 import { Box, Editor, TabLoader, usePersistFunction } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { Designer } from '@/ducks';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
+import { EDITOR_TEST_ID } from '@/pages/AssistantCMS/AssistantCMS.constant';
 
 import { CMSEditorMoreButton } from '../../../../components/CMSEditorMoreButton/CMSEditorMoreButton.components';
 import { useCMSActiveResourceID } from '../../../../hooks/cms-table.hook';
@@ -88,10 +90,11 @@ export const CMSKnowledgeBaseEditor: React.FC = () => {
           {({ onClose }) => (documentID ? <CMSKnowledgeBaseRowActions id={documentID} onClose={onClose} /> : null)}
         </CMSEditorMoreButton>
       }
+      testID={EDITOR_TEST_ID}
     >
       {loading || !document || pendingStatusSet.has(document.status) ? (
         <Box width="100%" height="calc(100vh - 56px - 56px - 57px)">
-          <TabLoader variant="dark" />
+          <TabLoader variant="dark" testID={tid(EDITOR_TEST_ID, 'loading')} />
         </Box>
       ) : (
         !!document && (

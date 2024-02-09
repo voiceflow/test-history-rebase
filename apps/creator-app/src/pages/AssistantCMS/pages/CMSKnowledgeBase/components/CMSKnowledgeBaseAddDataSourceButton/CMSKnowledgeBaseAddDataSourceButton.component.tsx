@@ -1,5 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { tid } from '@voiceflow/style';
 import { Button, Menu, Popper } from '@voiceflow/ui-next';
 import React from 'react';
 
@@ -58,24 +59,28 @@ export const CMSKnowledgeBaseAddDataSourceButton: React.FC<ICMSKnowledgeBaseAddD
       onClick: () => plainTextModal.openVoid(),
       tooltipLabel: 'Copy and paste, or manually add text directly into your knowledge base.',
       onTooltipLearnClick: () => openInternalURLInANewTab(CMS_KNOWLEDGE_BASE_LEARN_MORE),
+      testID: 'plain-text',
     },
     {
       label: 'Upload file',
       onClick: () => filesModal.openVoid(),
       tooltipLabel: 'Supported file formats: .pdf, .txt, .docx. Max file size: 10mb.',
       onTooltipLearnClick: () => openInternalURLInANewTab(CMS_KNOWLEDGE_BASE_LEARN_MORE),
+      testID: 'upload-file',
     },
     {
       label: 'URL(s)',
       onClick: () => urlsModal.openVoid(),
       tooltipLabel: 'Import web page content from public URLs directly into your knowledge base.',
       onTooltipLearnClick: () => openInternalURLInANewTab(CMS_KNOWLEDGE_BASE_LEARN_MORE),
+      testID: 'url',
     },
     {
       label: 'Sitemap',
       onClick: () => sitemapModal.openVoid(),
       tooltipLabel: `Import your website's sitemap URL to automatically fetch and organize the URLs of your website's pages.`,
       onTooltipLearnClick: () => openInternalURLInANewTab(CMS_KNOWLEDGE_BASE_LEARN_MORE),
+      testID: 'sitemap',
     },
     {
       label: 'Integration',
@@ -92,6 +97,7 @@ export const CMSKnowledgeBaseAddDataSourceButton: React.FC<ICMSKnowledgeBaseAddD
       tooltipLabel: `Connect and import data from external platforms like Zendesk.`,
       onTooltipLearnClick: () => openInternalURLInANewTab(CMS_KNOWLEDGE_BASE_LEARN_MORE),
       shouldRender: () => isIntegrationsEnabled,
+      testID: 'integration',
     },
   ];
 
@@ -100,6 +106,7 @@ export const CMSKnowledgeBaseAddDataSourceButton: React.FC<ICMSKnowledgeBaseAddD
   return (
     <Popper
       modifiers={modifiers}
+      testID={tid(testID, 'menu')}
       referenceElement={({ ref, popper, isOpen, onOpen }) => (
         <Button ref={ref} variant={variant} label="Add data source" isActive={isOpen} onClick={() => onOpen()} testID={testID}>
           {popper}
@@ -116,6 +123,7 @@ export const CMSKnowledgeBaseAddDataSourceButton: React.FC<ICMSKnowledgeBaseAddD
                 label={option.label}
                 tooltip={{ width: 200 }}
                 onClick={stopPropagation(Utils.functional.chain(option.onClick, onClose))}
+                testID={tid(testID, 'menu-item', option.testID)}
               >
                 {() => (
                   <TooltipContentLearn label={option.tooltipLabel} onLearnClick={() => option.onTooltipLearnClick && option?.onTooltipLearnClick()} />

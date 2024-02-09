@@ -1,4 +1,5 @@
 import { AreaChart, Box, SectionV2, Switch, Text } from '@voiceflow/ui';
+import { BaseProps } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { QueryState } from '../../../constants';
@@ -7,10 +8,9 @@ import AnalyticsDashboardChartEmpty from '../AnalyticsDashboardTileEmpty';
 import DeltaLabel from './DeltaLabel';
 import { getGraphColor, periodToAreaChartFormatter } from './utils';
 
-interface AnalyticsDashboardChartGraphProps {
+interface AnalyticsDashboardChartGraphProps extends BaseProps {
   query: QueryResult<GraphResult>;
   size: 'small' | 'large';
-  testID?: string;
 }
 
 const Chart = ({ query, size, testID }: AnalyticsDashboardChartGraphProps) => {

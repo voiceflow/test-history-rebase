@@ -1,5 +1,6 @@
 import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { tid } from '@voiceflow/style';
 import { Box, Scroll, TextArea } from '@voiceflow/ui-next';
 import pluralize from 'pluralize';
 import React, { useMemo } from 'react';
@@ -16,6 +17,8 @@ import { KBFieldLabel } from '../components/KBFieldLabel/KBFieldLabel.component'
 import { KBRefreshRateSelect } from '../components/KBRefreshRateSelect/KBRefreshRateSelect.component';
 import { filterWhitespace, sanitizeURLs, urlsValidator } from '../KnowledgeBaseImport.utils';
 import { errorTextStyles, textareaStyles } from './KBImportUrl.css';
+
+const TEST_ID = tid('knowledge-base', 'import-url-modal');
 
 export const KBImportUrl = manager.create('KBImportURL', () => ({ api, type, opened, hidden, animated, closePrevented }) => {
   const { isEnabled: isRefreshEnabled } = useFeature(Realtime.FeatureFlag.KB_REFRESH);
@@ -75,8 +78,9 @@ export const KBImportUrl = manager.create('KBImportURL', () => ({ api, type, ope
       onExited={api.remove}
       onEscClose={api.onEscClose}
       onEnterSubmit={onSubmit}
+      testID={TEST_ID}
     >
-      <Modal.Header title="Import from URL(s)" onClose={api.onClose} />
+      <Modal.Header title="Import from URL(s)" onClose={api.onClose} testID={tid(TEST_ID, 'header')} />
 
       <Scroll style={{ display: 'block' }}>
         <Box mt={20} mb={24} direction="column" gap={16} width="100%">
@@ -92,20 +96,28 @@ export const KBImportUrl = manager.create('KBImportURL', () => ({ api, type, ope
                 placeholder="Enter URL(s)"
                 captionClassName={errorTextStyles}
                 horizontalScroll
+                testID={tid(TEST_ID, 'urls')}
               />
             </Box>
           </Box>
 
           <Box mx={24}>
-            {isRefreshEnabled && <KBRefreshRateSelect value={refreshRate} disabled={closePrevented} onValueChange={setRefreshRate} />}
+            {isRefreshEnabled && (
+              <KBRefreshRateSelect
+                value={refreshRate}
+                disabled={closePrevented}
+                onValueChange={setRefreshRate}
+                testID={tid(TEST_ID, 'refresh-rate')}
+              />
+            )}
           </Box>
         </Box>
       </Scroll>
 
       <Modal.Footer>
-        <Modal.Footer.Button label="Cancel" variant="secondary" onClick={api.onClose} disabled={closePrevented} />
+        <Modal.Footer.Button label="Cancel" variant="secondary" onClick={api.onClose} disabled={closePrevented} testID={tid(TEST_ID, 'cancel')} />
 
-        <Modal.Footer.Button label="Import" onClick={onSubmit} disabled={closePrevented} isLoading={closePrevented} />
+        <Modal.Footer.Button label="Import" onClick={onSubmit} disabled={closePrevented} isLoading={closePrevented} testID={tid(TEST_ID, 'import')} />
       </Modal.Footer>
     </Modal.Container>
   );

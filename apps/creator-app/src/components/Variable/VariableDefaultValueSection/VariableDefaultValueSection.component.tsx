@@ -1,3 +1,4 @@
+import { tid } from '@voiceflow/style';
 import { Box, Input, Section, Text, Tooltip, usePopperModifiers } from '@voiceflow/ui-next';
 import React from 'react';
 
@@ -9,6 +10,8 @@ import { popperPaddingModifierFactory } from '@/utils/popper.util';
 import { onOpenInternalURLInANewTabFactory } from '@/utils/window';
 
 import type { IVariableDefaultValueSection } from './VariableDefaultValueSection.interface';
+
+const TEST_ID = tid('variable', 'default-value');
 
 export const VariableDefaultValueSection: React.FC<IVariableDefaultValueSection> = ({ value, disabled, onValueChange }) => {
   const modifiers = usePopperModifiers([popperPaddingModifierFactory({ padding: 3 })]);
@@ -44,6 +47,7 @@ export const VariableDefaultValueSection: React.FC<IVariableDefaultValueSection>
                 onClick={stopPropagation(() => (hasValue ? onValueChange(null) : onValueChange('')))}
                 iconName={hasValue ? 'Minus' : 'Plus'}
                 disabled={disabled}
+                testID={tid(TEST_ID, 'toggle-enabled')}
               />
               {popper}
             </Section.Header.Container>
@@ -60,7 +64,7 @@ export const VariableDefaultValueSection: React.FC<IVariableDefaultValueSection>
 
       {hasValue && (
         <Box pt={7} px={24} pb={24} direction="column">
-          <Input placeholder="Enter default value" {...input.attributes} />
+          <Input placeholder="Enter default value" {...input.attributes} testID={TEST_ID} />
         </Box>
       )}
     </>

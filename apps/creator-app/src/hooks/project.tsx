@@ -41,6 +41,10 @@ export const useDeleteProject = ({ boardID, projectID }: { boardID?: string; pro
   }, [canManageProjects]);
 };
 
+interface ProjectOption extends MenuTypes.Option {
+  testID?: string;
+}
+
 export const useProjectOptions = ({
   canvas,
   boardID,
@@ -61,7 +65,7 @@ export const useProjectOptions = ({
   onDuplicated?: () => void;
   withConvertToDomain?: boolean;
   // eslint-disable-next-line sonarjs/cognitive-complexity
-}): MenuTypes.Option[] => {
+}): ProjectOption[] => {
   const sharePopper = React.useContext(SharePopperContext);
 
   const isPreviewer = useIsPreviewer();
@@ -186,24 +190,29 @@ export const useProjectOptions = ({
 
   if (!canvas) {
     return [
-      ...Utils.array.conditionalItem(withRenameOption, { label: 'Rename', onClick: onRename }),
+      ...Utils.array.conditionalItem(withRenameOption, { label: 'Rename', onClick: onRename, testID: 'rename' }),
 
-      ...Utils.array.conditionalItem(withDuplicateOption, { label: 'Duplicate', onClick: onDuplicate }),
+      ...Utils.array.conditionalItem(withDuplicateOption, { label: 'Duplicate', onClick: onDuplicate, testID: 'duplicate' }),
 
-      ...Utils.array.conditionalItem(withDownloadOption, { label: 'Download (.vf)', onClick: onExport }),
+      ...Utils.array.conditionalItem(withDownloadOption, { label: 'Download (.vf)', onClick: onExport, testID: 'download' }),
 
-      ...Utils.array.conditionalItem(withCopyCloneLinkOption, { label: 'Copy clone link', onClick: onClone }),
+      ...Utils.array.conditionalItem(withCopyCloneLinkOption, { label: 'Copy clone link', onClick: onClone, testID: 'copy-clone-link' }),
 
       ...Utils.array.conditionalItem(hasDivider1, { label: 'divider-1', divider: true }),
 
       ...Utils.array.conditionalItem(withInviteOption && canAddCollaborators, {
         label: 'Manage access',
         onClick: () => projectID && projectMembersModal.openVoid({ projectID }),
+        testID: 'manage-access',
       }),
 
-      ...Utils.array.conditionalItem(withSettingsOption, { label: 'Settings', onClick: () => goToSettings(targetVersionID) }),
+      ...Utils.array.conditionalItem(withSettingsOption, { label: 'Settings', onClick: () => goToSettings(targetVersionID), testID: 'settings' }),
 
-      ...Utils.array.conditionalItem(withDeleteOption, { label: 'divider-2', divider: true }, { label: 'Delete', onClick: onDelete }),
+      ...Utils.array.conditionalItem(
+        withDeleteOption,
+        { label: 'divider-2', divider: true },
+        { label: 'Delete', onClick: onDelete, testID: 'delete' }
+      ),
     ];
   }
 
@@ -211,15 +220,28 @@ export const useProjectOptions = ({
     ...Utils.array.conditionalItem(withHistoryOption, {
       label: 'Backup history',
       onClick: () => targetVersionID && goToBackups(targetVersionID),
+      testID: 'backups',
     }),
 
-    ...Utils.array.conditionalItem(withSettingsOption, { label: 'Assistant settings', onClick: () => goToSettings(targetVersionID) }),
+    ...Utils.array.conditionalItem(withSettingsOption, {
+      label: 'Assistant settings',
+      onClick: () => goToSettings(targetVersionID),
+      testID: 'settings',
+    }),
 
-    ...Utils.array.conditionalItem(withInviteOption, { label: 'Invite collaborators', onClick: () => sharePopper?.open(ShareProjectTab.INVITE) }),
+    ...Utils.array.conditionalItem(withInviteOption, {
+      label: 'Invite collaborators',
+      onClick: () => sharePopper?.open(ShareProjectTab.INVITE),
+      testID: 'invite-collaborators',
+    }),
 
-    ...Utils.array.conditionalItem(withImportOption, { label: 'Import', onClick: partialImport }),
+    ...Utils.array.conditionalItem(withImportOption, { label: 'Import', onClick: partialImport, testID: 'import' }),
 
-    ...Utils.array.conditionalItem(withExportOption, { label: 'Export as...', onClick: () => sharePopper?.open(ShareProjectTab.EXPORT) }),
+    ...Utils.array.conditionalItem(withExportOption, {
+      label: 'Export as...',
+      onClick: () => sharePopper?.open(ShareProjectTab.EXPORT),
+      testID: 'export',
+    }),
 
     ...Utils.array.conditionalItem(
       (withHistoryOption || withSettingsOption || withInviteOption || withExportOption) && (withRenameOption || withDuplicateOption),
@@ -229,11 +251,15 @@ export const useProjectOptions = ({
       }
     ),
 
-    ...Utils.array.conditionalItem(withRenameOption, { label: 'Rename assistant', onClick: onRename }),
+    ...Utils.array.conditionalItem(withRenameOption, { label: 'Rename assistant', onClick: onRename, testID: 'rename' }),
 
-    ...Utils.array.conditionalItem(withDuplicateOption, { label: 'Duplicate assistant', onClick: onDuplicate }),
+    ...Utils.array.conditionalItem(withDuplicateOption, { label: 'Duplicate assistant', onClick: onDuplicate, testID: 'duplicate' }),
 
-    ...Utils.array.conditionalItem(withDuplicateOption && !hideExports.isEnabled, { label: 'Copy clone link', onClick: onClone }),
+    ...Utils.array.conditionalItem(withDuplicateOption && !hideExports.isEnabled, {
+      label: 'Copy clone link',
+      onClick: onClone,
+      testID: 'copy-clone-link',
+    }),
   ];
 };
 

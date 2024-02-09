@@ -1,4 +1,5 @@
 import type { Nullable } from '@voiceflow/common';
+import { BaseProps } from '@voiceflow/ui-next';
 import type React from 'react';
 
 export interface AIGenerateBaseButtonOption {
@@ -7,7 +8,7 @@ export interface AIGenerateBaseButtonOption {
   onClick: React.MouseEventHandler<HTMLDivElement>;
 }
 
-export interface IAIGenerateBaseButton<Option extends AIGenerateBaseButtonOption = AIGenerateBaseButtonOption> {
+export interface IAIGenerateBaseButton<Option extends AIGenerateBaseButtonOption = AIGenerateBaseButtonOption> extends BaseProps {
   options: Nullable<Option>[];
   subtext?: string;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
@@ -16,5 +17,4 @@ export interface IAIGenerateBaseButton<Option extends AIGenerateBaseButtonOption
   isLoading?: boolean;
   fullWidth?: boolean;
   hoverOpen?: boolean;
-  testID?: string;
 }

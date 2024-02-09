@@ -1,16 +1,20 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
+import { tid } from '@voiceflow/style';
 import { Divider, MenuItem, notify } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { Designer } from '@/ducks';
 import { useConfirmV2Modal } from '@/hooks/modal.hook';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
+import { CMS_TEST_ID } from '@/pages/AssistantCMS/AssistantCMS.constant';
 import { useGetCMSResourcePath } from '@/pages/AssistantCMS/hooks/cms-resource.hook';
 import { clipboardCopy } from '@/utils/clipboard.util';
 import { stopPropagation } from '@/utils/handler.util';
 
 import { ICMSKnowledgeBaseRowActions } from './CMSKnowledgeBaseRowActions.interface';
+
+const TEST_ID = tid(CMS_TEST_ID, 'context-menu');
 
 export const CMSKnowledgeBaseRowActions: React.FC<ICMSKnowledgeBaseRowActions> = ({ id, onClose }) => {
   const document = useSelector(Designer.KnowledgeBase.Document.selectors.oneByID, { id });
@@ -45,13 +49,23 @@ export const CMSKnowledgeBaseRowActions: React.FC<ICMSKnowledgeBaseRowActions> =
 
   return (
     <>
-      <MenuItem label="Copy link" onClick={Utils.functional.chainVoid(onClose, onCopyLink)} prefixIconName="Link" />
+      <MenuItem
+        label="Copy link"
+        onClick={Utils.functional.chainVoid(onClose, onCopyLink)}
+        prefixIconName="Link"
+        testID={tid(TEST_ID, 'copy-link')}
+      />
       {isURL && (
-        <MenuItem label="Re-sync" onClick={stopPropagation(Utils.functional.chainVoid(onClose, () => resyncMany([id])))} prefixIconName="Sync" />
+        <MenuItem
+          label="Re-sync"
+          onClick={stopPropagation(Utils.functional.chainVoid(onClose, () => resyncMany([id])))}
+          prefixIconName="Sync"
+          testID={tid(TEST_ID, 're-sync')}
+        />
       )}
       <Divider />
 
-      <MenuItem label="Delete" onClick={Utils.functional.chainVoid(onClose, onDelete)} prefixIconName="Trash" />
+      <MenuItem label="Delete" onClick={Utils.functional.chainVoid(onClose, onDelete)} prefixIconName="Trash" testID={tid(TEST_ID, 'delete')} />
     </>
   );
 };

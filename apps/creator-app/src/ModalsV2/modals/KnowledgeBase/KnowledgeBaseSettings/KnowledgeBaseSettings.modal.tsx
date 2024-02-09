@@ -1,5 +1,6 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
+import { tid } from '@voiceflow/style';
 import { Box, Button, notify, Popper, Scroll, Text } from '@voiceflow/ui-next';
 import React from 'react';
 
@@ -11,6 +12,7 @@ import { useDispatch, useSelector } from '@/hooks/store.hook';
 import { useTrackingEvents } from '@/hooks/tracking';
 
 import manager from '../../../manager';
+import { SETTINGS_TEST_ID } from '../KnowledgeBase.constant';
 import { KBSettingsChunkLimit } from './KBSettingsChunkLimit.component';
 // import { KBSettingsInstructions } from './KBSettingsInstructions.component';
 import { KBSettingsModelSelect } from './KBSettingsModelSelect.component';
@@ -108,8 +110,9 @@ export const KnowledgeBaseSettings = manager.create('KnowledgeBaseSettingsV2', (
       onExited={api.remove}
       onEscClose={api.onEscClose}
       onEnterSubmit={save}
+      testID={SETTINGS_TEST_ID}
     >
-      <Modal.Header title="Knowledge base settings" onClose={api.onClose} />
+      <Modal.Header title="Knowledge base settings" onClose={api.onClose} testID={tid(SETTINGS_TEST_ID, 'header')} />
 
       <Scroll style={{ display: 'block' }}>
         <Box pt={12} pr={24} pb={24} direction="column" overflow="auto">
@@ -168,9 +171,17 @@ export const KnowledgeBaseSettings = manager.create('KnowledgeBaseSettingsV2', (
       <Modal.Footer>
         <Popper
           placement="bottom-start"
+          testID={tid(SETTINGS_TEST_ID, ['reset', 'confirmation'])}
           referenceElement={({ onToggle, isOpen, ref }) => (
             <div ref={ref}>
-              <Modal.Footer.Button variant="secondary" onClick={onToggle} isActive={isOpen} disabled={closePrevented} label="Reset to default" />
+              <Modal.Footer.Button
+                variant="secondary"
+                onClick={onToggle}
+                isActive={isOpen}
+                disabled={closePrevented}
+                label="Reset to default"
+                testID={tid(SETTINGS_TEST_ID, 'reset')}
+              />
             </div>
           )}
         >
@@ -179,7 +190,15 @@ export const KnowledgeBaseSettings = manager.create('KnowledgeBaseSettingsV2', (
               <Text variant="basic">This action can’t be undone, please confirm you’d like to continue.</Text>
 
               <Box justify="space-between" gap={8}>
-                <Button label="No" size="medium" fullWidth variant="secondary" onClick={onClose} disabled={closePrevented} />
+                <Button
+                  label="No"
+                  size="medium"
+                  fullWidth
+                  variant="secondary"
+                  onClick={onClose}
+                  disabled={closePrevented}
+                  testID={tid(SETTINGS_TEST_ID, ['reset', 'confirmation', 'no'])}
+                />
 
                 <Button
                   label="Yes"
@@ -188,13 +207,21 @@ export const KnowledgeBaseSettings = manager.create('KnowledgeBaseSettingsV2', (
                   variant="primary"
                   onClick={Utils.functional.chain(onClose, onResetToDefault)}
                   disabled={closePrevented}
+                  testID={tid(SETTINGS_TEST_ID, ['reset', 'confirmation', 'yes'])}
                 />
               </Box>
             </Box>
           )}
         </Popper>
 
-        <Modal.Footer.Button label="Save" variant="primary" onClick={save} disabled={!settings || closePrevented} isLoading={closePrevented} />
+        <Modal.Footer.Button
+          label="Save"
+          variant="primary"
+          onClick={save}
+          disabled={!settings || closePrevented}
+          isLoading={closePrevented}
+          testID={tid(SETTINGS_TEST_ID, 'save')}
+        />
       </Modal.Footer>
     </Modal.Container>
   );

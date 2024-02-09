@@ -1,3 +1,4 @@
+import { tid } from '@voiceflow/style';
 import { Box, Editor, IEditorAPI, Scroll, SquareButton } from '@voiceflow/ui-next';
 import React, { useRef } from 'react';
 import { useHistory } from 'react-router';
@@ -9,6 +10,7 @@ import { Designer } from '@/ducks';
 import * as Router from '@/ducks/router';
 import { useGetAtomValue } from '@/hooks/atom.hook';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
+import { EDITOR_TEST_ID } from '@/pages/AssistantCMS/AssistantCMS.constant';
 import { useCMSManager } from '@/pages/AssistantCMS/contexts/CMSManager';
 import { useCMSRouteFolders } from '@/pages/AssistantCMS/contexts/CMSRouteFolders';
 import { transformCMSResourceName } from '@/utils/cms.util';
@@ -51,12 +53,12 @@ export const CMSFunctionEditor: React.FC = () => {
       title={functionResource?.name ?? ''}
       onTitleChange={(name) => patchFunction({ name: name.trim() })}
       titleTransform={transformCMSResourceName}
-      testID="cms-editor"
+      testID={EDITOR_TEST_ID}
       headerActions={
         <Box align="center">
-          <CMSEditorMoreButton testID="cms-editor__header__context">{({ onClose }) => getMoreMenu({ id: functionID, onClose })}</CMSEditorMoreButton>
+          <CMSEditorMoreButton testID={tid(EDITOR_TEST_ID, 'more')}>{({ onClose }) => getMoreMenu({ id: functionID, onClose })}</CMSEditorMoreButton>
           <Box ml={8}>
-            <SquareButton size="medium" onClick={() => navigate.push(getFolderPath())} iconName="CloseM" testID="cms-editor__header__close" />
+            <SquareButton size="medium" onClick={() => navigate.push(getFolderPath())} iconName="CloseM" testID={tid(EDITOR_TEST_ID, 'close')} />
           </Box>
         </Box>
       }
@@ -68,7 +70,7 @@ export const CMSFunctionEditor: React.FC = () => {
           value={functionResource?.description ?? ''}
           placeholder="Enter a description"
           onValueChange={(value) => patchFunction({ description: value })}
-          testID="function__description"
+          testID={tid('function', 'description')}
         />
 
         <CMSFunctionImageUpload onValueChange={(value) => patchFunction({ image: value })} value={functionResource?.image} />

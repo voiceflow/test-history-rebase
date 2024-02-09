@@ -1,4 +1,5 @@
 import { Utils } from '@voiceflow/common';
+import { tid } from '@voiceflow/style';
 import { Divider, MenuItem, notify, usePersistFunction } from '@voiceflow/ui-next';
 import { useAtomValue } from 'jotai';
 import React from 'react';
@@ -9,8 +10,11 @@ import { useConfirmV2Modal } from '@/hooks/modal.hook';
 import { useDispatch, useGetValueSelector } from '@/hooks/store.hook';
 import { clipboardCopy } from '@/utils/clipboard.util';
 
+import { CMS_TEST_ID } from '../AssistantCMS.constant';
 import { useCMSManager } from '../contexts/CMSManager/CMSManager.hook';
 import { useCMSRouteFolders } from '../contexts/CMSRouteFolders';
+
+const TEST_ID = tid(CMS_TEST_ID, 'context-menu');
 
 export interface ICMSResourceGetMoreMenu {
   onShare?: (resourceID: string) => void;
@@ -86,28 +90,52 @@ export const useCMSResourceGetMoreMenu = ({
     return (
       <>
         {!!onRename && canRename(id) && (
-          <MenuItem label="Rename" onClick={Utils.functional.chainVoid(onClose, () => onRename(id))} prefixIconName="Edit" />
+          <MenuItem
+            label="Rename"
+            onClick={Utils.functional.chainVoid(onClose, () => onRename(id))}
+            prefixIconName="Edit"
+            testID={tid(TEST_ID, 'rename')}
+          />
         )}
 
         {!!onDuplicate && (
-          <MenuItem label="Duplicate" onClick={Utils.functional.chainVoid(onClose, () => onDuplicate(id))} prefixIconName="Duplicate" />
+          <MenuItem
+            label="Duplicate"
+            onClick={Utils.functional.chainVoid(onClose, () => onDuplicate(id))}
+            prefixIconName="Duplicate"
+            testID={tid(TEST_ID, 'duplicate')}
+          />
         )}
 
         {!isFolder && onShare && (
-          <MenuItem label="Share" onClick={Utils.functional.chainVoid(onClose, () => onShare(id))} prefixIconName="Community" />
+          <MenuItem
+            label="Share"
+            onClick={Utils.functional.chainVoid(onClose, () => onShare(id))}
+            prefixIconName="Community"
+            testID={tid(TEST_ID, 'share')}
+          />
         )}
 
-        {onExport && <MenuItem label="Export" onClick={Utils.functional.chainVoid(onClose, () => onExport(id))} prefixIconName="Export" />}
+        {onExport && (
+          <MenuItem
+            label="Export"
+            onClick={Utils.functional.chainVoid(onClose, () => onExport(id))}
+            prefixIconName="Export"
+            testID={tid(TEST_ID, 'export')}
+          />
+        )}
 
-        {hasScopeFolders && <MenuItem label="Move to..." onClick={Utils.functional.chainVoid(onClose)} prefixIconName="MoveTo" />}
+        {hasScopeFolders && (
+          <MenuItem label="Move to..." onClick={Utils.functional.chainVoid(onClose)} prefixIconName="MoveTo" testID={tid(TEST_ID, 'move-to')} />
+        )}
 
-        <MenuItem label="Copy link" onClick={onCopyLink} prefixIconName="Link" />
+        <MenuItem label="Copy link" onClick={onCopyLink} prefixIconName="Link" testID={tid(TEST_ID, 'copy-link')} />
 
         {canDelete(id) && (
           <>
             <Divider />
 
-            <MenuItem label="Delete" onClick={Utils.functional.chainVoid(onClose, onDelete)} prefixIconName="Trash" />
+            <MenuItem label="Delete" onClick={Utils.functional.chainVoid(onClose, onDelete)} prefixIconName="Trash" testID={tid(TEST_ID, 'delete')} />
           </>
         )}
       </>

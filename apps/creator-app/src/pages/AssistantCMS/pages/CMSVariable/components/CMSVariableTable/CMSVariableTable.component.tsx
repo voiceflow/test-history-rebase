@@ -1,8 +1,10 @@
+import { tid } from '@voiceflow/style';
 import { Table } from '@voiceflow/ui-next';
 import { isSystemVariableName } from '@voiceflow/utils-designer';
 import React from 'react';
 
 import { CMS_VARIABLE_LEARN_MORE } from '@/constants/link.constant';
+import { EMPTY_TEST_ID, TABLE_TEST_ID } from '@/pages/AssistantCMS/AssistantCMS.constant';
 
 import { CMSEmpty } from '../../../../components/CMSEmpty/CMSEmpty.component';
 import { useCMSRowItemClick, useCMSRowItemContextMenu, useCMSRowItemNavigate } from '../../../../hooks/cms-row-item.hook';
@@ -25,7 +27,7 @@ export const CMSVariableTable: React.FC = () => {
   return (
     <CMSEmpty
       title="No variables exist"
-      button={{ label: 'Create variable', onClick: (search) => onCreate({ name: search }) }}
+      button={{ label: 'Create variable', onClick: (search) => onCreate({ name: search }), testID: tid(EMPTY_TEST_ID, 'create-variable') }}
       searchTitle="No variables found"
       description="Variables are like containers that hold information. You can store data in them and use or remember it later. "
       illustration="NoContent"
@@ -38,6 +40,7 @@ export const CMSVariableTable: React.FC = () => {
         onRowNavigate={onRowNavigate}
         rowContextMenu={rowContextMenu}
         columnsOrderAtom={variableColumnsOrderAtom}
+        testID={TABLE_TEST_ID}
       />
     </CMSEmpty>
   );

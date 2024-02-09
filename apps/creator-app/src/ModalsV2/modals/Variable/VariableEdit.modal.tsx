@@ -1,3 +1,4 @@
+import { tid } from '@voiceflow/style';
 import { Divider, notify, Scroll, Text, Tooltip, useTooltipModifiers, Variable } from '@voiceflow/ui-next';
 import React from 'react';
 
@@ -11,6 +12,8 @@ import { useDispatch, useSelector } from '@/hooks/store.hook';
 import { transformVariableName } from '@/utils/variable.util';
 
 import { modalsManager } from '../../manager';
+
+const TEST_ID = 'edit-variable-modal';
 
 export interface IVariableEditModal {
   variableID: string;
@@ -47,12 +50,34 @@ export const VariableEditModal = modalsManager.create<IVariableEditModal>(
       const tooltipModifiers = useTooltipModifiers([{ name: 'offset', options: { offset: [0, 27] } }]);
 
       return (
-        <Modal.Container type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} onEscClose={api.onEscClose}>
+        <Modal.Container
+          type={type}
+          opened={opened}
+          hidden={hidden}
+          animated={animated}
+          onExited={api.remove}
+          onEscClose={api.onEscClose}
+          testID={TEST_ID}
+        >
           <Modal.Header
             title="Edit variable"
             onClose={api.onClose}
-            leftButton={<Modal.HeaderMenu items={variables} activeID={variableID} onSelect={onVariableSelect} notFoundLabel="variables" />}
-            secondaryButton={<Modal.HeaderMore options={[{ name: 'Delete', onClick: onEntityDelete, disabled: variable?.isSystem }]} />}
+            leftButton={
+              <Modal.HeaderMenu
+                items={variables}
+                activeID={variableID}
+                onSelect={onVariableSelect}
+                notFoundLabel="variables"
+                testID={tid(TEST_ID, 'select-variable')}
+              />
+            }
+            secondaryButton={
+              <Modal.HeaderMore
+                options={[{ name: 'Delete', onClick: onEntityDelete, disabled: variable?.isSystem, testID: 'delete' }]}
+                testID={tid(TEST_ID, 'more')}
+              />
+            }
+            testID={tid(TEST_ID, 'header')}
           />
 
           <>
@@ -74,6 +99,7 @@ export const VariableEditModal = modalsManager.create<IVariableEditModal>(
                         rightLabel={<Variable label={variable.name} color={variable.color} />}
                         onPointerEnter={variable.isSystem ? onOpen : undefined}
                         onPointerLeave={onClose}
+                        testID={tid('variable', 'name')}
                       />
                     )}
                   >
@@ -95,12 +121,12 @@ export const VariableEditModal = modalsManager.create<IVariableEditModal>(
                 <VariableDefaultValueSection value={variable.defaultValue} onValueChange={(defaultValue) => patchVariable({ defaultValue })} />
               </Scroll>
             ) : (
-              <Modal.Body>Variable not found</Modal.Body>
+              <Modal.Body testID={tid(TEST_ID, 'not-found')}>Variable not found</Modal.Body>
             )}
           </>
 
           <Modal.Footer>
-            <Modal.Footer.Button label="Close" variant="secondary" onClick={api.onClose} />
+            <Modal.Footer.Button label="Close" variant="secondary" onClick={api.onClose} testID={tid(TEST_ID, 'close')} />
           </Modal.Footer>
         </Modal.Container>
       );

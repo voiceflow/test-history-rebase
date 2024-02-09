@@ -9,7 +9,7 @@ import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { Environment } from '@voiceflow/common';
-import { configureApp, LoggerPlugin } from '@voiceflow/nestjs-common';
+import { configureApp, corsConfig, LoggerPlugin } from '@voiceflow/nestjs-common';
 import { ENVIRONMENT_VARIABLES } from '@voiceflow/nestjs-env';
 import { LoguxFactory } from '@voiceflow/nestjs-logux';
 import { setAutoFreeze } from 'immer';
@@ -25,7 +25,7 @@ async function bootstrap() {
   const __dirname = isE2E ? path.dirname(fileURLToPath(import.meta.url)) : '';
 
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
-    cors: isE2E ? true : { origin: [/\.voiceflow\.com$/, 'https://creator-local.development.voiceflow.com:3002'] },
+    cors: corsConfig(isE2E),
     bufferLogs: true,
     httpsOptions: isE2E
       ? {

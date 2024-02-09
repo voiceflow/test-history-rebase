@@ -1,3 +1,4 @@
+import { tid } from '@voiceflow/style';
 import { Box, TextField } from '@voiceflow/ui-next';
 import React from 'react';
 
@@ -14,7 +15,7 @@ export const VariableDescriptionInput: React.FC<IVariableDescriptionInput> = ({ 
 
   return (
     <Box direction="column">
-      <TextField {...input.attributes} label="Description" placeholder="Enter description (optional)" />
+      <TextField {...input.attributes} label="Description" placeholder="Enter description (optional)" testID={tid('variable', 'description')} />
     </Box>
   );
 };

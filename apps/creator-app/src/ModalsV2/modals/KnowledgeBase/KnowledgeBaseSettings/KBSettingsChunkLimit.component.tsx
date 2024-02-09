@@ -1,9 +1,13 @@
+import { tid } from '@voiceflow/style';
 import { Box, Slider } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { CMS_KNOWLEDGE_BASE_LEARN_MORE } from '@/constants/link.constant';
 
+import { SETTINGS_TEST_ID } from '../KnowledgeBase.constant';
 import { KBSettingLabel } from './KBSettingLabel.component';
+
+const TEST_ID = tid(SETTINGS_TEST_ID, 'chunk-limit');
 
 export interface IKBSettingsChunkLimit {
   value: number;
@@ -40,6 +44,7 @@ export const KBSettingsChunkLimit: React.FC<IKBSettingsChunkLimit> = ({
         endLabel="10"
         startLabel="1"
         onValueChange={onValueChange}
+        testID={TEST_ID}
       />
     </div>
   </Box>

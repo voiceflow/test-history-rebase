@@ -1,3 +1,4 @@
+import { tid } from '@voiceflow/style';
 import { Box, ColorPickerForm } from '@voiceflow/ui-next';
 import React from 'react';
 
@@ -26,6 +27,7 @@ export const VariableColorPicker: React.FC<IVariableColorPicker> = ({ value, dis
         onAddCustomTheme={(theme) => onAddCustomTheme(uiCustomThemeAdapter.toDB(theme))}
         onDeleteCustomTheme={(theme) => onDeleteCustomTheme(uiCustomThemeAdapter.toDB(theme))}
         onUpdateCustomTheme={(theme) => onUpdateCustomTheme(uiCustomThemeAdapter.toDB(theme))}
+        testID={tid('variable', 'color')}
       />
     </Box>
   );

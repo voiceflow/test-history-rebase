@@ -1,4 +1,6 @@
+import { tid } from '@voiceflow/style';
 import { Button, ButtonVariant, System, toast, ToastCallToAction } from '@voiceflow/ui';
+import { BaseProps } from '@voiceflow/ui-next';
 import React from 'react';
 
 import * as Documentation from '@/config/documentation';
@@ -14,7 +16,7 @@ import { TrainingModelContext } from '@/pages/Project/contexts';
 import { Identifier } from '@/styles/constants';
 import { copy } from '@/utils/clipboard';
 
-interface FooterProps {
+interface FooterProps extends BaseProps {
   isCanvas?: boolean;
 }
 
@@ -27,7 +29,7 @@ const getTestableLink = (versionID: string | null, selectedPersonaID: string | n
   return testableLink;
 };
 
-export const Footer: React.FC<FooterProps> = ({ isCanvas }) => {
+export const Footer: React.FC<FooterProps> = ({ isCanvas, testID }) => {
   const versionID = useSelector(Session.activeVersionIDSelector);
   const compilePrototype = useDispatch(Prototype.compilePrototype);
   const layoutType = useSelector(Prototype.prototypeLayoutSelector);
@@ -96,11 +98,13 @@ export const Footer: React.FC<FooterProps> = ({ isCanvas }) => {
       <DropdownContainer>
         <span>
           {canSharePrototype && testableLink ? (
-            <System.Link.Anchor href={testableLink} onClick={onRenderPrototype}>
+            <System.Link.Anchor href={testableLink} onClick={onRenderPrototype} data-testid={tid(testID, 'open-link')}>
               Open link in new tab
             </System.Link.Anchor>
           ) : (
-            <System.Link.Anchor href={Documentation.PROTOTYPE_SHARE}>Learn More</System.Link.Anchor>
+            <System.Link.Anchor href={Documentation.PROTOTYPE_SHARE} data-testid={tid(testID, 'learn-more')}>
+              Learn More
+            </System.Link.Anchor>
           )}
         </span>
       </DropdownContainer>

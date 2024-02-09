@@ -1,4 +1,5 @@
-import { Box, Chunk, Collapsible, CollapsibleHeader, CollapsibleHeaderButton, Divider, Section, TextArea } from '@voiceflow/ui-next';
+import { tid } from '@voiceflow/style';
+import { BaseProps, Box, Chunk, Collapsible, CollapsibleHeader, CollapsibleHeaderButton, Divider, Section, TextArea } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { clipboardCopyWithToast } from '@/utils/clipboard.util';
@@ -11,7 +12,7 @@ import {
   sourcesHeaderStyles,
 } from './KnowledgeBasePreviewQuestion.css';
 
-export interface IKBPreviewQuestionResponse {
+export interface IKBPreviewQuestionResponse extends BaseProps {
   loading: boolean;
   sources: { source: { name: string }; content: string }[] | undefined;
   response?: string;
@@ -19,17 +20,24 @@ export interface IKBPreviewQuestionResponse {
   onSourceClick: (sourceName: string) => void;
 }
 
-export const KBPreviewQuestionResponse: React.FC<IKBPreviewQuestionResponse> = ({ sources, loading, response = '', hasResponse, onSourceClick }) => {
+export const KBPreviewQuestionResponse: React.FC<IKBPreviewQuestionResponse> = ({
+  sources,
+  loading,
+  response = '',
+  hasResponse,
+  onSourceClick,
+  testID,
+}) => {
   return (
-    <Box direction="column" className={responseBoxStyles}>
+    <Box direction="column" className={responseBoxStyles} testID={testID}>
       <Box direction="column" width="100%" pt={11} pb={7} height="100%">
         <Section.Header.Container title="Response" variant="active">
-          <Section.Header.Button iconName="Copy" disabled={loading} onClick={clipboardCopyWithToast(response)} />
+          <Section.Header.Button iconName="Copy" disabled={loading} onClick={clipboardCopyWithToast(response)} testID={tid(testID, 'copy')} />
         </Section.Header.Container>
       </Box>
 
       <Box width="100%" direction="column" pb={24} px={24}>
-        <TextArea minRows={1} value={response} disabled={loading} />
+        <TextArea minRows={1} value={response} disabled={loading} testID={tid(testID, 'content')} />
       </Box>
 
       {hasResponse && (
@@ -45,13 +53,21 @@ export const KBPreviewQuestionResponse: React.FC<IKBPreviewQuestionResponse> = (
               containerClassName={sourcesContainerStyles}
               header={
                 <CollapsibleHeader label="Sources" caption={sources?.length.toString()} className={sourcesHeaderStyles}>
-                  {({ isOpen }) => <CollapsibleHeaderButton isOpen={isOpen} disabled={loading} />}
+                  {({ isOpen }) => (
+                    <CollapsibleHeaderButton isOpen={isOpen} disabled={loading} testID={tid(testID, ['sources', 'toggle-collapsed'])} />
+                  )}
                 </CollapsibleHeader>
               }
             >
               <Box direction="column" gap={16} pb={24}>
                 {sources?.map(({ source, content }, index) => (
-                  <Chunk key={index} label={source.name} content={content} onClick={() => onSourceClick(source.name)} />
+                  <Chunk
+                    key={index}
+                    label={source.name}
+                    content={content}
+                    onClick={() => onSourceClick(source.name)}
+                    testID={tid(testID, ['sources', 'chunk'])}
+                  />
                 ))}
               </Box>
             </Collapsible>

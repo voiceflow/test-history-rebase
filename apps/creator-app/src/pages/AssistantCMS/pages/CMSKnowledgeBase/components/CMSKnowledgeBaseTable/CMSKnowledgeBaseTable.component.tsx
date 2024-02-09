@@ -1,4 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { tid } from '@voiceflow/style';
 import { useSessionStorageState } from '@voiceflow/ui';
 import { Box, Link, Table, usePersistFunction } from '@voiceflow/ui-next';
 import { atom, useAtomValue } from 'jotai';
@@ -10,6 +11,7 @@ import { useDispatch } from '@/hooks';
 import { useGetAtomValue } from '@/hooks/atom.hook';
 import { useFeature } from '@/hooks/feature';
 import { useGetValueSelector } from '@/hooks/store.hook';
+import { EMPTY_TEST_ID, TABLE_TEST_ID } from '@/pages/AssistantCMS/AssistantCMS.constant';
 import { CMSEmpty } from '@/pages/AssistantCMS/components/CMSEmpty/CMSEmpty.component';
 import { useCMSRowItemClick, useCMSRowItemNavigate } from '@/pages/AssistantCMS/hooks/cms-row-item.hook';
 
@@ -68,11 +70,11 @@ export const CMSKnowledgeBaseTable: React.FC = () => {
         <Box direction="column" align="center" justify="center">
           <div>
             Add data sources to your assistant to build a knowledge base of material.{` `}
-            <Link inline label="Learn more" href={CMS_KNOWLEDGE_BASE_LEARN_MORE} target="_blank" />
+            <Link inline label="Learn more" href={CMS_KNOWLEDGE_BASE_LEARN_MORE} target="_blank" testID={tid(EMPTY_TEST_ID, 'learn-more')} />
           </div>
 
           <Box width="100%" justify="center" my={16}>
-            <CMSKnowledgeBaseAddDataSourceButton />
+            <CMSKnowledgeBaseAddDataSourceButton testID={tid(EMPTY_TEST_ID, 'add-source')} />
           </Box>
         </Box>
       }
@@ -85,6 +87,7 @@ export const CMSKnowledgeBaseTable: React.FC = () => {
         onRowNavigate={onRowNavigate}
         rowContextMenu={onRowContextMenu}
         columnsOrderAtom={columnsOrderAtom}
+        testID={TABLE_TEST_ID}
       />
     </CMSEmpty>
   );

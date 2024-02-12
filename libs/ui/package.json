@@ -101,5 +101,11 @@
   "peerDependencies": {
     "react-router": "5.3.4",
     "react-router-dom": "5.3.4"
+  },
+  "engines": {
+    "node": "16.20"
+  },
+  "volta": {
+    "extends": "../../package.json"
   }
 }

@@ -171,7 +171,7 @@
   },
   "packageManager": "yarn@3.2.1",
   "engines": {
-    "node": ">=16.20"
+    "node": "16.20"
   },
   "volta": {
     "node": "16.20.0",

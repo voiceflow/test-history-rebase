@@ -18,5 +18,11 @@
   },
   "dependencies": {
     "@voiceflow/eslint-config": "7.1.0"
+  },
+  "engines": {
+    "node": "16.20"
+  },
+  "volta": {
+    "extends": "../../package.json"
   }
 }

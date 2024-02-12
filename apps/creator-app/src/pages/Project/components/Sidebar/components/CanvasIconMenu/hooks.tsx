@@ -165,6 +165,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
         tooltip: isHotkeyItem ? { content: <TippyTooltip.WithHotkey hotkey={String(hotkeyIndex)}>{item.label}</TippyTooltip.WithHotkey> } : undefined,
         onClick: isHotkeyItem ? item.onAction : undefined,
         divider: item.divider,
+        withBadge: item.withBadge,
       };
     });
 
@@ -172,7 +173,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
       hotkeys,
       options,
     };
-  }, [canViewConversations, canEditProject, disableIntegration.isEnabled, knowledgeBase]);
+  }, [canViewConversations, canEditProject, disableIntegration.isEnabled, knowledgeBase, hasUnreadTranscripts]);
 
   const aiUsage = GPT.useAIUsage();
   const aiUsageTooltip = GPT.useAIUsageTooltip({ onOpenModal: () => tokenPurchaseModal.openVoid({ workspaceID }) });

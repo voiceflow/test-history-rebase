@@ -12,7 +12,6 @@ export interface UIState {
   canvasNavigation: ControlScheme;
   canvasOnly: boolean;
   zoomType: ZoomType;
-  isLoadingProjects: boolean;
   commentsVisible: boolean;
   topicThreadsOnly?: boolean;
   domainThreadsOnly?: boolean;

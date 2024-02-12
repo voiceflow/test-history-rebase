@@ -33,6 +33,7 @@ export const initializeVersion =
     }
 
     dispatch(Session.setActiveProjectID(projectID));
+    // TODO: [replay] set session active version id here is causing some issues
     dispatch(Session.setActiveVersionID(versionID));
   };
 

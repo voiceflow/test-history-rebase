@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 
 import { CanvasAPI } from '@/components/Canvas';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { VersionSubscriptionGate, WorkspaceFeatureLoadingGate } from '@/gates';
+import { VersionSubscriptionGate } from '@/gates';
 import { withBatchLoadingGate } from '@/hocs/withBatchLoadingGate';
 import { useHideVoiceflowAssistant, useSelector } from '@/hooks';
 import LinkLayer from '@/pages/Canvas/components/LinkLayer';
@@ -49,4 +49,4 @@ const ExportCanvas: React.FC = () => {
   );
 };
 
-export default withBatchLoadingGate(WorkspaceFeatureLoadingGate, VersionSubscriptionGate, InitializeExportGate)(ExportCanvas);
+export default withBatchLoadingGate(VersionSubscriptionGate, InitializeExportGate)(ExportCanvas);

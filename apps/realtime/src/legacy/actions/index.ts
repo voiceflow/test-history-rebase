@@ -5,6 +5,7 @@ import buildCreatorActionControls from './creator';
 import buildCustomBlockActionControls from './customBlock';
 import buildDiagramActionControls from './diagram';
 import buildDomainActionControls from './domain';
+import buildFeatureActionControls from './feature';
 import buildLinkActionControls from './link';
 import buildNodeActionControls from './node';
 import buildOrganizationActionControls from './organization';
@@ -30,6 +31,7 @@ const buildActions = (options: LoguxControlOptions) => ({
   ...buildVariableStateActionControls(options),
   ...buildTranscriptActionControls(options),
   ...buildDomainActionControls(options),
+  ...buildFeatureActionControls(options),
 });
 
 export default buildActions;

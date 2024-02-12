@@ -5,7 +5,7 @@ import storageLocal from 'redux-persist/lib/storage';
 import * as Session from '@/ducks/session';
 import { Reducer, RootReducer } from '@/store/types';
 
-import { AnyUIAction, SetCanvasNavigation, SetLoadingProjects, SetZoomType, ToggleBlockMenuSection, ToggleFullScreenMode, UIAction } from './actions';
+import { AnyUIAction, SetCanvasNavigation, SetZoomType, ToggleBlockMenuSection, ToggleFullScreenMode, UIAction } from './actions';
 import { INITIAL_STATE, STATE_KEY } from './constants';
 import { UIState } from './types';
 
@@ -103,11 +103,6 @@ export const toggleDomainThreadsOnlyReducer: Reducer<UIState> = (state) => ({
   domainThreadsOnly: !state.domainThreadsOnly,
 });
 
-export const setLoadingProjectsReducer: Reducer<UIState, SetLoadingProjects> = (state, { payload: isLoadingProjects }) => ({
-  ...state,
-  isLoadingProjects,
-});
-
 const uiReducer: RootReducer<UIState, AnyUIAction | Session.SetActiveWorkspaceID> = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case UIAction.TOGGLE_BLOCK_MENU_SECTION:
@@ -128,8 +123,6 @@ const uiReducer: RootReducer<UIState, AnyUIAction | Session.SetActiveWorkspaceID
       return toggleFullScreenModeReducer(state, action);
     case UIAction.SET_ZOOM_TYPE:
       return setZoomTypeReducer(state, action);
-    case UIAction.SET_LOADING_PROJECTS:
-      return setLoadingProjectsReducer(state, action);
     case UIAction.TOGGLE_COMMENT_VISIBILITY:
       return toggleCommentingVisibility(state);
     case UIAction.TOGGLE_MENTIONED_THREADS_ONLY:

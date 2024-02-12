@@ -229,6 +229,7 @@ export function createStoreCreator(client, options = {}) {
           if (meta.added) saveHistory(meta);
         } else {
           await replay(meta.id);
+
           if (meta.reasons.includes('replay')) {
             log.changeMeta(meta.id, {
               reasons: meta.reasons.filter((i) => i !== 'replay'),

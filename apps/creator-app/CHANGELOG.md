@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1392.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1391.6...@voiceflow/creator-app@1.1392.0) (2024-02-12)
+
+### Features
+
+* apply default values to prototype tool variable state (CV3-985) ([#7769](https://github.com/voiceflow/creator-app/issues/7769)) ([3fae627](https://github.com/voiceflow/creator-app/commit/3fae6271a5dcab19ee76f727142f5b8a794c1d18))
+
 ## [1.1391.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1391.5...@voiceflow/creator-app@1.1391.6) (2024-02-12)
 
 **Note:** Version bump only for package @voiceflow/creator-app

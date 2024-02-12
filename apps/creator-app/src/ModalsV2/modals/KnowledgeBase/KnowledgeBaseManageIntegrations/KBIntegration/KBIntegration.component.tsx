@@ -1,4 +1,3 @@
-/* eslint-disable promise/always-return */
 import { Utils } from '@voiceflow/common';
 import { Box, Divider, DotSeparator, Icon, Menu, MenuItem, notify, Popper, SquareButton, Text, Tokens, Tooltip } from '@voiceflow/ui-next';
 import dayjs from 'dayjs';
@@ -14,7 +13,19 @@ import { formatFromNow } from './KBIntegration.utils';
 
 const { colors } = Tokens;
 
-export const KBIntegration: React.FC<IKBIntegration> = ({ creatorID, icon, platform, date, border, type, onReconnect, onDelete }) => {
+export const KBIntegration: React.FC<IKBIntegration> = ({
+  type,
+  date,
+  icon,
+  border,
+  platform,
+  disabled,
+  onRemoved,
+  creatorID,
+  onReconnect,
+  enableClose,
+  preventClose,
+}) => {
   const member = useSelector(WorkspaceV2.active.memberByIDSelector, { creatorID });
 
   const deleteIntegration = useDispatch(Designer.KnowledgeBase.Integration.effect.deleteOne);
@@ -22,16 +33,19 @@ export const KBIntegration: React.FC<IKBIntegration> = ({ creatorID, icon, platf
   const fromNow = dayjs(date).fromNow();
   const confirmModal = useConfirmV2Modal();
 
-  const onConfirmRemove = () => {
-    deleteIntegration(type)
-      .then(() => {
-        onDelete();
-        notify.short.info(`Integration removed`, { showIcon: false });
-      })
-      .catch(() => {
-        onDelete();
-        notify.short.error(`Error removing integration`, { showIcon: false });
-      });
+  const onConfirmRemove = async () => {
+    preventClose();
+
+    try {
+      await deleteIntegration(type);
+
+      onRemoved();
+      notify.short.info(`Integration removed`, { showIcon: false });
+    } catch {
+      notify.short.error(`Error removing integration`, { showIcon: false });
+    }
+
+    enableClose();
   };
 
   const onRemove = () => {
@@ -91,7 +105,7 @@ export const KBIntegration: React.FC<IKBIntegration> = ({ creatorID, icon, platf
         <Popper
           placement="bottom-start"
           referenceElement={({ ref, popper, isOpen, onOpen }) => (
-            <SquareButton ref={ref} isActive={isOpen} onClick={() => onOpen()} iconName="More">
+            <SquareButton ref={ref} isActive={isOpen} onClick={() => onOpen()} iconName="More" disabled={disabled}>
               {popper}
             </SquareButton>
           )}

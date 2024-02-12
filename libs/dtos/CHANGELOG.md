@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.33.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.33.0...@voiceflow/dtos@1.33.1) (2024-02-12)
+
+### Bug Fixes
+
+* missing exports related to CMS variables (CV3-942) ([#7772](https://github.com/voiceflow/creator-app/issues/7772)) ([e168eda](https://github.com/voiceflow/creator-app/commit/e168eda295740b287943ac3aa7457b8ae7b2efb4))
+
 # [1.33.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.32.0...@voiceflow/dtos@1.33.0) (2024-02-12)
 
 ### Features

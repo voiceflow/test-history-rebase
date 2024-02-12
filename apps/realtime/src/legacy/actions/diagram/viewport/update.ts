@@ -7,7 +7,7 @@ import { AbstractActionControl } from '@/legacy/actions/utils';
 type UpdateViewportPayload = Realtime.actionUtils.CRUDValuePayload<Realtime.ViewportModel>;
 
 class UpdateViewport extends AbstractActionControl<UpdateViewportPayload> {
-  protected actionCreator = Realtime.diagram.viewport.crud.update;
+  protected actionCreator = Realtime.diagram.viewport.update;
 
   protected access = (ctx: Context, action: Action<UpdateViewportPayload>): Promise<boolean> =>
     this.services.version.access.canRead(ctx.data.creatorID, action.payload.value.versionID);

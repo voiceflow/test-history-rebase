@@ -1,29 +1,27 @@
+import { getOne } from 'normal-store';
 import { createSelector } from 'reselect';
 
-import { ZOOM_FACTOR } from '@/components/Canvas/constants';
 import * as Creator from '@/ducks/creatorV2';
-import { createCurriedSelector } from '@/ducks/utils';
-import { createCRUDSelectors } from '@/ducks/utils/crudV2';
+import { activeVersionIDSelector } from '@/ducks/session/selectors';
+import { createCurriedSelector, createRootSelector, diagramIDParamSelector } from '@/ducks/utils';
 
 import { STATE_KEY } from './constants';
+import { getViewportKey } from './utils';
 
-const { byID: _viewportByIDSelector } = createCRUDSelectors(STATE_KEY);
+const rootSelector = createRootSelector(STATE_KEY);
 
-export const viewportByIDSelector = createSelector([_viewportByIDSelector], (viewport) => {
-  if (!viewport) {
-    return {
-      x: 0,
-      y: 0,
-      zoom: ZOOM_FACTOR,
-    };
+export const viewportByDiagramIDSelector = createSelector(
+  [rootSelector, activeVersionIDSelector, diagramIDParamSelector],
+  (state, versionID, diagramID) => {
+    if (!versionID) return null;
+
+    return getOne(state, getViewportKey(diagramID, versionID));
   }
+);
 
-  return viewport;
-});
-
-export const getViewportByIDSelector = createCurriedSelector(viewportByIDSelector);
+export const getViewportByDiagramIDSelector = createCurriedSelector(viewportByDiagramIDSelector);
 
 export const activeDiagramViewportSelector = createSelector(
-  [Creator.activeDiagramIDSelector, getViewportByIDSelector],
-  (diagramID, getViewportByID) => (diagramID ? getViewportByID({ id: diagramID }) : null)
+  [Creator.activeDiagramIDSelector, getViewportByDiagramIDSelector],
+  (diagramID, getViewportByID) => (diagramID ? getViewportByID({ diagramID }) : null)
 );

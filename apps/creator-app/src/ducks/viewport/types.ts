@@ -1,5 +1,4 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { Normalized } from 'normal-store';
 
-import { CRUDState } from '@/ducks/utils/crudV2';
-
-export interface ViewportState extends CRUDState<Realtime.ViewportModel> {}
+export interface ViewportState extends Normalized<Realtime.ViewportModel> {}

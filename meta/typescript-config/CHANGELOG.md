@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.1](https://github.com/voiceflow/creator-app/compare/@voiceflow-meta/typescript-config@2.2.0...@voiceflow-meta/typescript-config@2.2.1) (2024-02-12)
+
+**Note:** Version bump only for package @voiceflow-meta/typescript-config
+
 # [2.2.0](https://github.com/voiceflow/creator-app/compare/@voiceflow-meta/typescript-config@2.1.0...@voiceflow-meta/typescript-config@2.2.0) (2024-01-25)
 
 ### Features

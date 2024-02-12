@@ -419,7 +419,7 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
    * update the store entry for the viewport
    */
   updateViewport(diagramID: string, x: number, y: number, zoom: number): void {
-    const action = Realtime.diagram.viewport.crud.update({ key: diagramID, value: { id: diagramID, x, y, zoom, versionID: this.context.versionID } });
+    const action = Realtime.diagram.viewport.update({ key: diagramID, value: { id: diagramID, x, y, zoom, versionID: this.context.versionID } });
 
     this.emitter.emit(CanvasAction.IDLE);
     this.store.dispatch(action);

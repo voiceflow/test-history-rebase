@@ -1,11 +1,10 @@
-import { createRootCRUDReducer } from '@/ducks/utils/crudV2';
+import { createRootReducer } from '@/ducks/utils';
 
 import { INITIAL_STATE } from '../constants';
-import crudReducers from './crud';
-import rehydrateViewport from './rehydrate';
+import { rehydrateViewportReducer } from './rehydrate';
+import { updateViewportReducer } from './update';
 
-const versionReducer = createRootCRUDReducer(INITIAL_STATE, crudReducers)
-  .immerCase(...rehydrateViewport)
+export const viewportReducer = createRootReducer(INITIAL_STATE)
+  .immerCase(...updateViewportReducer)
+  .immerCase(...rehydrateViewportReducer)
   .build();
-
-export default versionReducer;

@@ -222,7 +222,8 @@ export class EnvironmentService {
       assistantID,
       workspaceID,
       environmentID,
-    }: { userID: number; backup?: boolean; workspaceID: number; assistantID: string; environmentID: string }
+      centerDiagrams,
+    }: { userID: number; backup?: boolean; workspaceID: number; assistantID: string; environmentID: string; centerDiagrams?: boolean }
   ) {
     const createdAt = new Date().toJSON();
 
@@ -235,12 +236,18 @@ export class EnvironmentService {
       delete version.prototype.settings.variableStateID;
     }
 
+    const diagrams = Object.values(data.diagrams).map((diagram) => {
+      const newDiagram = { ...diagram, diagramID: diagram.diagramID ?? diagram._id };
+
+      return centerDiagrams ? this.diagramUtil.center(newDiagram) : newDiagram;
+    });
+
     const cmsData = this.prepareImportCMSData(data, { userID, backup, assistantID, workspaceID, environmentID });
 
     return {
       ...cmsData,
       version,
-      diagrams: Object.values(data.diagrams).map((diagram) => ({ ...diagram, diagramID: diagram.diagramID ?? diagram._id })),
+      diagrams,
     };
   }
 

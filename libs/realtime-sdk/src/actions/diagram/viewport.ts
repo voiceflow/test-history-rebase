@@ -13,4 +13,4 @@ export interface RehydrateViewportPayload {
 
 export const rehydrate = Utils.protocol.createAction<RehydrateViewportPayload>(diagramViewportType('REHYDRATE'));
 
-export const crud = createCRUDActions<ViewportModel>(diagramViewportType);
+export const { update } = createCRUDActions<ViewportModel>(diagramViewportType);

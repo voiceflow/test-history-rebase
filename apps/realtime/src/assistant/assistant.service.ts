@@ -186,8 +186,17 @@ export class AssistantService extends MutableService<AssistantORM> {
       assistantID,
       workspaceID,
       environmentID,
+      centerDiagrams,
       settingsAiAssist,
-    }: { userID: number; backup?: boolean; workspaceID: number; assistantID: string; environmentID: string; settingsAiAssist: boolean }
+    }: {
+      userID: number;
+      backup?: boolean;
+      workspaceID: number;
+      assistantID: string;
+      environmentID: string;
+      centerDiagrams?: boolean;
+      settingsAiAssist: boolean;
+    }
   ) {
     const createdAt = new Date().toJSON();
 
@@ -220,7 +229,7 @@ export class AssistantService extends MutableService<AssistantORM> {
       project.aiAssistSettings = { ...project.aiAssistSettings, aiPlayground: false };
     }
 
-    const importData = this.environment.prepareImportData(data, { userID, backup, assistantID, workspaceID, environmentID });
+    const importData = this.environment.prepareImportData(data, { userID, backup, assistantID, workspaceID, environmentID, centerDiagrams });
 
     return {
       ...importData,
@@ -235,12 +244,14 @@ export class AssistantService extends MutableService<AssistantORM> {
     userID,
     workspaceID,
     projectListID,
+    centerDiagrams,
     projectOverride = {},
   }: {
     data: AssistantExportImportDataDTO;
     userID: number;
     workspaceID: number;
     projectListID?: string | null;
+    centerDiagrams?: boolean;
     projectOverride?: Partial<Omit<ToJSON<ProjectEntity>, 'id' | '_id' | 'teamID'>>;
   }) {
     const workspaceProperties = await this.fetchWorkspacePropertiesWithDefaults(workspaceID);
@@ -253,6 +264,7 @@ export class AssistantService extends MutableService<AssistantORM> {
       workspaceID,
       assistantID,
       environmentID,
+      centerDiagrams,
       settingsAiAssist: workspaceProperties.settingsAiAssist,
     });
 
@@ -729,6 +741,7 @@ export class AssistantService extends MutableService<AssistantORM> {
         userID,
         workspaceID,
         projectListID,
+        centerDiagrams: true,
         projectOverride,
       }));
 

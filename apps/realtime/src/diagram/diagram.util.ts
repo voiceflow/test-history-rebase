@@ -4,9 +4,9 @@ import { NodeType } from '@voiceflow/dtos';
 import { DiagramEntity, DiagramNode, ToJSON } from '@voiceflow/orm-designer';
 
 export class DiagramUtil {
-  getCenterPoint(diagram: ToJSON<DiagramEntity>): [number, number] {
+  getCenterPoint<T extends Pick<ToJSON<DiagramEntity>, 'nodes'>>(diagram: T): [number, number] {
     const CENTER_X_OFFSET = 700;
-    const CENTER_Y_OFFSET = 200;
+    const CENTER_Y_OFFSET = 300;
     const CENTER_OFFSET_MULTIPLIER = 0.8;
 
     const startNode = Object.values(diagram.nodes).find((node) => node.type === NodeType.START);
@@ -16,7 +16,7 @@ export class DiagramUtil {
     return [(CENTER_X_OFFSET - startNode.coords![0]) * CENTER_OFFSET_MULTIPLIER, CENTER_Y_OFFSET - startNode.coords![1] * CENTER_OFFSET_MULTIPLIER];
   }
 
-  center(diagram: ToJSON<DiagramEntity>) {
+  center<T extends Pick<ToJSON<DiagramEntity>, 'nodes' | 'offsetX' | 'offsetY'>>(diagram: T): T {
     const centeredPosition = this.getCenterPoint(diagram);
 
     const [offsetX, offsetY] = centeredPosition;
@@ -47,7 +47,7 @@ export class DiagramUtil {
     return { ...node, data: { ...node.data, ports: node.data.ports.map(cleanPortTarget) } };
   }
 
-  cleanupNodes(diagram: ToJSON<DiagramEntity>) {
+  cleanupNodes<T extends Pick<ToJSON<DiagramEntity>, 'nodes'>>(diagram: T): T {
     const validNodesMap = new Map<string, boolean>();
 
     const cleanedNodes = Object.entries(diagram.nodes).reduce<[string, DiagramNode][]>((acc, [nodeID, node]) => {

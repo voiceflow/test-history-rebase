@@ -127,7 +127,7 @@ class DiagramEngine extends EngineConsumer {
     } else if (isActive) {
       coords = new Coords([rect.width / 2, rect.height / 2]);
     } else {
-      const viewport = this.select(Viewport.viewportByIDSelector, { id: diagramID });
+      const viewport = this.select(Viewport.viewportByDiagramIDSelector, { diagramID });
 
       if (viewport) {
         const scale = viewport.zoom / 100;

@@ -32,14 +32,15 @@ export const variableNameValidator = composeValidators(
 );
 
 export interface VariableDeclaration {
-  name: string;
   defaultValue: string | null;
-  datatype: VariableDatatype;
   isSystem: boolean;
+
+  datatype?: VariableDatatype;
+  isArray?: boolean;
 }
 
-export function parseCMSVariableDefaultValue(declare: VariableDeclaration) {
-  const { name, datatype, defaultValue, isSystem } = declare;
+export function parseCMSVariableDefaultValue(name: string, declare: VariableDeclaration) {
+  const { datatype, defaultValue, isSystem } = declare;
 
   if (!defaultValue) return defaultValue;
 

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/utils-designer@1.9.2...@voiceflow/utils-designer@1.9.3) (2024-02-12)
+
+### Bug Fixes
+
+* type definition of parse default values is incompatible with `general-runtime` (CV3-942) ([#7775](https://github.com/voiceflow/creator-app/issues/7775)) ([713b9ef](https://github.com/voiceflow/creator-app/commit/713b9ef960394efc01c94e7a7370a47e23cd1a55))
+
 ## [1.9.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/utils-designer@1.9.1...@voiceflow/utils-designer@1.9.2) (2024-02-12)
 
 **Note:** Version bump only for package @voiceflow/utils-designer

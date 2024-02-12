@@ -1,5 +1,5 @@
 import type { Entity, Intent, Variable } from '@voiceflow/dtos';
-import { SystemVariable, VariableDTO } from '@voiceflow/dtos';
+import { SYSTEM_VARIABLE_TYPE_MAP, SystemVariable, VariableDatatype, VariableDTO } from '@voiceflow/dtos';
 
 import { composeValidators, validatorFactory, validatorZodFactory } from './validator/validator.util';
 
@@ -30,3 +30,33 @@ export const variableNameValidator = composeValidators(
   variableNameUniqEntitiesValidator,
   variableNameUniqIntentsValidator
 );
+
+export interface VariableDeclaration {
+  name: string;
+  defaultValue: string | null;
+  datatype: VariableDatatype;
+  isSystem: boolean;
+}
+
+export function parseCMSVariableDefaultValue(declare: VariableDeclaration) {
+  const { name, datatype, defaultValue, isSystem } = declare;
+
+  if (!defaultValue) return defaultValue;
+
+  const type = isSystem && isSystemVariableName(name) ? SYSTEM_VARIABLE_TYPE_MAP[name] : datatype;
+
+  switch (type) {
+    case VariableDatatype.BOOLEAN:
+      return defaultValue.toLowerCase() === 'true';
+    case VariableDatatype.DATE:
+      return new Date(defaultValue);
+    case VariableDatatype.NUMBER:
+      return parseFloat(defaultValue);
+    case VariableDatatype.TEXT:
+    case VariableDatatype.IMAGE:
+    case VariableDatatype.ANY:
+      return defaultValue;
+    default:
+      throw new Error(`Received unexpected variable type '${type}'`);
+  }
+}

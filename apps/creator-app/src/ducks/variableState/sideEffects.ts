@@ -1,5 +1,6 @@
 import { SystemVariable } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { parseCMSVariableDefaultValue } from '@voiceflow/utils-designer';
 
 import * as Errors from '@/config/errors';
 import * as Diagram from '@/ducks/diagramV2';
@@ -13,6 +14,7 @@ import { getActiveVersionContext } from '@/ducks/versionV2/utils';
 import { Store, VariableValue } from '@/models';
 import { SyncThunk, Thunk } from '@/store/types';
 
+import { Designer } from '..';
 import { updateSelectedVariableState, updateVariables } from './actions';
 import { ALL_PROJECT_VARIABLES_ID } from './constants';
 import { getVariableStateByIDSelector, selectedVariableStateSelector } from './selectors';
@@ -147,10 +149,13 @@ export const applyVariableState =
     const projectID = Session.activeProjectIDSelector(state);
     const entitiesAndVariables = Diagram.active.allEntitiesAndVariablesSelector(state);
 
+    const cmsVariablesMapByName = Designer.Variable.selectors.mapByName(state);
+
     let variables: Store = {};
 
     entitiesAndVariables.forEach((entityOrVar) => {
-      variables[entityOrVar.name] = 0;
+      const declare = cmsVariablesMapByName[entityOrVar.name];
+      variables[entityOrVar.name] = !declare ? 0 : parseCMSVariableDefaultValue(declare.name, declare) ?? 0;
     });
 
     variables = {

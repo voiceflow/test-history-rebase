@@ -3,6 +3,7 @@ export * as creator from './creator';
 export * as customBlock from './customBlock';
 export * as diagram from './diagram';
 export * as domain from './domain';
+export * as feature from './feature';
 export * as link from './link';
 export * as node from './node';
 export * as organization from './organization';

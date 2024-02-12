@@ -17,7 +17,6 @@ export const INITIAL_STATE: UIState = {
   canvasNavigation: IS_MAC ? ControlScheme.TRACKPAD : ControlScheme.MOUSE,
   canvasOnly: false,
   zoomType: ZoomType.REGULAR,
-  isLoadingProjects: false,
   commentsVisible: true,
   canvasGrid: true,
   fullScreenMode: false,

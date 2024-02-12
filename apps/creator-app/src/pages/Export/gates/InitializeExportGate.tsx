@@ -20,12 +20,14 @@ const InitializeExportGate: React.FC<React.PropsWithChildren> = ({ children }) =
   const setActiveDiagramID = useDispatch(Session.setActiveDiagramID);
 
   React.useEffect(() => {
+    // TODO: [replay issue] - remove dispatch from gate use effect
     setActiveDomainID(domainID ?? rootDomainID);
     setActiveDiagramID(routeDiagramID);
   }, [routeDiagramID, domainID, rootDomainID]);
 
   React.useEffect(() => {
     if (versionID && diagramID) {
+      // TODO: [replay issue] - remove dispatch from gate use effect
       initialize(versionID, diagramID).then(() => setLoaded(true));
     }
   }, [versionID, diagramID]);

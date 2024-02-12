@@ -48,6 +48,11 @@ class WorkspaceChannel extends AbstractChannelControl<Realtime.Channels.Workspac
     return Realtime.Adapters.projectListAdapter.mapFromDB(normalizedLists);
   }
 
+  private async getFeatures(creatorID: number, workspaceID: string, organizationID: string) {
+    const creatorClient = await this.services.creator.client.getByUserID(creatorID);
+    return creatorClient.feature.getStatuses({ workspaceID, organizationID });
+  }
+
   protected access = async (ctx: ChannelContext<Realtime.Channels.WorkspaceChannelParams>): Promise<boolean> => {
     return this.services.workspace.access.canRead(Number(ctx.userId), ctx.params.workspaceID);
   };
@@ -72,12 +77,15 @@ class WorkspaceChannel extends AbstractChannelControl<Realtime.Channels.Workspac
 
     const workspace = Realtime.Adapters.workspaceAdapter.fromDB(dbWorkspace);
 
+    const features = await this.getFeatures(creatorID, workspaceID, workspace.organizationID ?? '');
+
     return [
       Realtime.workspace.crud.update({ key: workspace.id, value: workspace }),
       Realtime.project.crud.replace({ values: projects, workspaceID }),
       Realtime.projectList.crud.replace({ values: projectLists, workspaceID }),
       Realtime.project.awareness.loadViewers({ viewers: viewersPerProject, workspaceID }),
       Realtime.workspace.quotas.loadAll({ workspaceID, quotas: workspaceQuotas }),
+      Realtime.feature.loadWorkspaceFeatures({ features, workspaceID }),
     ];
   };
 }

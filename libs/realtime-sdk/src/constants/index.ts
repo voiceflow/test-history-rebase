@@ -53,6 +53,7 @@ export const QUOTAS_KEY = 'quotas';
 export const WORKSPACE_SETTINGS_KEY = 'workspace_settings';
 export const DASHBOARD_KANBAN_KEY = 'dashboard_kanban';
 export const ORGANIZATION_KEY = 'organization';
+export const FEATURES_KEY = 'feature';
 
 export const DEFAULT_PROJECT_LIST_NAME = 'Default List';
 

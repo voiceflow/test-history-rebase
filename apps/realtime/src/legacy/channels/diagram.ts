@@ -121,6 +121,19 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
         workspaceID: ctx.params.workspaceID,
       })
     );
+
+    const client = await this.services.creator.client.getByUserID(creatorID);
+    const hasUnreadTranscripts = await client.transcript.getHasUnreadTranscripts(ctx.params.projectID);
+
+    await this.server.processAs(
+      user.creator_id,
+      clientID,
+      Realtime.transcript.updateUnreadTranscripts({
+        unreadTranscripts: hasUnreadTranscripts,
+        projectID: ctx.params.projectID,
+        workspaceID: ctx.params.workspaceID,
+      })
+    );
   };
 
   unsubscribe = async (ctx: DiagramChannelContext): Promise<void> => {

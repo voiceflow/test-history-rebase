@@ -19,8 +19,6 @@ export const isCanvasOnlyShowingSelector = createSelector(rootSelector, ({ canva
 
 export const isFullScreenMode = createSelector(rootSelector, ({ fullScreenMode }) => fullScreenMode);
 
-export const isLoadingProjectsSelector = createSelector(rootSelector, ({ isLoadingProjects }) => isLoadingProjects);
-
 export const isCommentsVisible = createSelector(rootSelector, ({ commentsVisible }) => commentsVisible);
 
 export const isTopicThreadsOnly = createSelector(rootSelector, ({ topicThreadsOnly }) => topicThreadsOnly);

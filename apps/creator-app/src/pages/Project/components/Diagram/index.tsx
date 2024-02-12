@@ -3,7 +3,6 @@ import React from 'react';
 import { Route, Switch } from 'react-router';
 
 import { Path } from '@/config/routes';
-import * as Transcripts from '@/ducks/transcript';
 import * as UI from '@/ducks/ui';
 import { withBatchLoadingGate } from '@/hocs/withBatchLoadingGate';
 import { useDispatch, useEventualEngine, useSelector, useTeardown } from '@/hooks';
@@ -25,7 +24,6 @@ import DiagramGate from './gates/DiagramGate';
 const Diagram: React.FC = () => {
   const canvasOnly = useSelector(UI.isCanvasOnlyShowingSelector);
   const toggleCanvasOnly = useDispatch(UI.toggleCanvasOnly);
-  const checkUnreadTranscripts = useDispatch(Transcripts.updateHasUnreadTranscripts);
   const getManager = useManager();
 
   const engine = useEventualEngine();
@@ -39,10 +37,6 @@ const Diagram: React.FC = () => {
       toggleCanvasOnly();
     }
   }, [isDesignMode]);
-
-  React.useEffect(() => {
-    checkUnreadTranscripts();
-  }, []);
 
   useTeardown(() => {
     engine()?.teardown();

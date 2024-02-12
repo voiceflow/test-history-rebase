@@ -10,5 +10,4 @@ export { default as PermissionGate } from './PermissionGate';
 export { default as PrivateCapabilitiesGate } from './PrivateCapabilitiesGate';
 export { default as RealtimeConnectionGate } from './RealtimeConnectionGate';
 export { default as VersionSubscriptionGate } from './VersionSubscriptionGate';
-export { default as WorkspaceFeatureLoadingGate } from './WorkspaceFeatureLoadingGate';
 export { default as WorkspaceSubscriptionGate } from './WorkspaceSubscriptionGate';

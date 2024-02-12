@@ -11,7 +11,7 @@ import { Permission } from '@/constants/permissions';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as UI from '@/ducks/ui';
-import { VersionSubscriptionGate, WorkspaceFeatureLoadingGate } from '@/gates';
+import { VersionSubscriptionGate } from '@/gates';
 import { lazy } from '@/hocs/lazy';
 import { withBatchLoadingGate } from '@/hocs/withBatchLoadingGate';
 import { withWorkspaceOrProjectAssetsSuspense } from '@/hocs/withWorkspaceOrProjectAssetsSuspense';
@@ -127,4 +127,4 @@ const Project: React.FC = () => {
   );
 };
 
-export default withBatchLoadingGate(WorkspaceFeatureLoadingGate, VersionSubscriptionGate)(Project);
+export default withBatchLoadingGate(VersionSubscriptionGate)(Project);

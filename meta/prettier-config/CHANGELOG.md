@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.1](https://github.com/voiceflow/creator-app/compare/@voiceflow-meta/prettier-config@2.1.0...@voiceflow-meta/prettier-config@2.1.1) (2024-02-12)
+
+**Note:** Version bump only for package @voiceflow-meta/prettier-config
+
 # 2.1.0 (2023-10-12)
 
 ### Features

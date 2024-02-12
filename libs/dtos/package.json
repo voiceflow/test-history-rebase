@@ -43,6 +43,12 @@
   "peerDependencies": {
     "zod": "^3.20.0"
   },
+  "engines": {
+    "node": "16.20"
+  },
+  "volta": {
+    "extends": "../../package.json"
+  },
   "tsd": {
     "directory": "src"
   }

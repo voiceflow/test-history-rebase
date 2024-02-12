@@ -87,6 +87,12 @@
   "optionalDependencies": {
     "@voiceflow/ml-gateway": "workspace:*"
   },
+  "engines": {
+    "node": "16.20"
+  },
+  "volta": {
+    "extends": "../../package.json"
+  },
   "clean-package": {
     "remove": [
       "optionalDependencies"

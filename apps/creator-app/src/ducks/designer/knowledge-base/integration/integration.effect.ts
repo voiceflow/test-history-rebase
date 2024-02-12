@@ -22,7 +22,7 @@ export const getAll = (): Thunk<KnowledgeBaseIntegration[]> => async (dispatch, 
 
   const integrations = integrationAdapter.mapFromDB(dbIntegrations.data);
 
-  dispatch(Actions.AddMany({ data: integrations }));
+  dispatch.local(Actions.AddMany({ data: integrations }));
 
   return integrations;
 };
@@ -52,7 +52,7 @@ export const deleteOne =
 
     await knowledgeBaseClient.deleteOneIntegration(projectID, integrationType);
 
-    dispatch(Actions.DeleteOne({ id: integrationType }));
+    dispatch.local(Actions.DeleteOne({ id: integrationType }));
   };
 
 export const getIntegrationAuthUrl =

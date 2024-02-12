@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.356.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.356.4...@voiceflow/realtime-sdk@1.356.5) (2024-02-12)
+
+### Bug Fixes
+
+* replay optimizations (CT-000) ([#7752](https://github.com/voiceflow/creator-app/issues/7752)) ([439d4c6](https://github.com/voiceflow/creator-app/commit/439d4c62457ed73d24854d5144777cb1741b183b))
+
 ## [1.356.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.356.3...@voiceflow/realtime-sdk@1.356.4) (2024-02-12)
 
 **Note:** Version bump only for package @voiceflow/realtime-sdk

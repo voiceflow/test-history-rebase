@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.33.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.32.0...@voiceflow/dtos@1.33.0) (2024-02-12)
+
+### Features
+
+* surveyor context typing (CV3-942) ([#7761](https://github.com/voiceflow/creator-app/issues/7761)) ([3ebae86](https://github.com/voiceflow/creator-app/commit/3ebae86a5705de420ca8f0ba5aa563fd981753ec))
+
 # [1.32.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.31.0...@voiceflow/dtos@1.32.0) (2024-02-08)
 
 ### Features

@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.270.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.270.0...@voiceflow/realtime@1.270.1) (2024-02-12)
+
+**Note:** Version bump only for package @voiceflow/realtime
+
 # [1.270.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.269.1...@voiceflow/realtime@1.270.0) (2024-02-09)
 
 ### Features

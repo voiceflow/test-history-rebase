@@ -14,8 +14,6 @@ import { isIntentBuiltIn } from '@/utils/intent.util';
 
 import { modalsManager } from '../../manager';
 
-const TEST_ID = 'edit-intent-modal';
-
 export interface IIntentEditModal {
   intentID: string;
   newUtterances?: UtteranceText[];
@@ -25,6 +23,8 @@ export const IntentEditModal = modalsManager.create<IIntentEditModal>(
   'IntentEditModal',
   () =>
     ({ api, type, opened, hidden, intentID, animated, newUtterances, closePrevented }) => {
+      const TEST_ID = 'edit-intent-modal';
+
       const intent = useSelector(Designer.Intent.selectors.oneWithFormattedBuiltNameByID, { id: intentID });
       const intents = useSelector(Designer.Intent.selectors.allWithoutFallback);
 

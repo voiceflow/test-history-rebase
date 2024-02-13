@@ -5,9 +5,9 @@ import React from 'react';
 import { chunkBoxStyles, contentStyles, dividerStyles, headerStyles, sectionBox } from './CMSKnowledgeBaseEditorChunks.css';
 import { ICMSKnowledgeBaseEditorChunks } from './CMSKnowledgeBaseEditorChunks.interface';
 
-const TEST_ID = tid('document', 'chunks');
-
 export const CMSKnowledgeBaseEditorChunks: React.FC<ICMSKnowledgeBaseEditorChunks> = ({ chunks, disabled }) => {
+  const TEST_ID = tid('document', 'chunks');
+
   if (!chunks) return null;
 
   return (

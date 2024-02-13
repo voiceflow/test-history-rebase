@@ -21,12 +21,12 @@ import { modalsManager } from '../../../manager';
 import { useIntentForm } from './IntentCreate.hook';
 import { IIntentCreateModal } from './IntentCreate.interface';
 
-const TEST_ID = 'create-intent-modal';
-
 export const IntentCreateModal = modalsManager.create<IIntentCreateModal, Intent>(
   'IntentCreateModal',
   () =>
     ({ api, type, name: nameProp, opened, hidden, folderID, animated, closePrevented }) => {
+      const TEST_ID = 'create-intent-modal';
+
       const intentForm = useIntentForm({ nameProp, folderID, api });
 
       const aiGenerate = useAIGenerateUtterances({

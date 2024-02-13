@@ -4,8 +4,8 @@ import { createSelector } from 'reselect';
 
 import * as Account from '@/ducks/account';
 import * as CreatorV2 from '@/ducks/creatorV2';
-import * as DiagramV2 from '@/ducks/diagramV2';
-import * as Domain from '@/ducks/domain';
+import { diagramMapSelector } from '@/ducks/diagramV2/selectors/base';
+import { domainSelector as activeDomainSelector } from '@/ducks/domain/selectors/active';
 import * as UI from '@/ducks/ui';
 
 import { getAllByThreadID as getAllCommentsByThreadID } from '../thread-comment/selectors/other.select';
@@ -22,7 +22,7 @@ export const countForActiveDiagram = createSelector(allForActiveDiagram, (thread
 
 export const getOrderForActiveDiagram = createSelector(idsForActiveDiagram, (threads) => (threadID: string) => threads.indexOf(threadID) + 1);
 
-export const allAvailable = createSelector([all, DiagramV2.diagramMapSelector], (threads, diagramMap) =>
+export const allAvailable = createSelector([all, diagramMapSelector], (threads, diagramMap) =>
   threads.filter((thread) => !!diagramMap[thread.diagramID]).reverse()
 );
 
@@ -32,7 +32,7 @@ const threadFilter = createSelector(
     UI.isDomainThreadsOnly,
     UI.isMentionedThreadsOnly,
     Account.userIDSelector,
-    Domain.active.domainSelector,
+    activeDomainSelector,
     CreatorV2.activeDiagramIDSelector,
     getAllCommentsByThreadID,
   ],

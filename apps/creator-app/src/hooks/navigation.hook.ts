@@ -21,6 +21,7 @@ interface LinkClickOptions<S extends string> {
   target?: string;
   search?: string;
   replace?: boolean;
+  ignoreMetaKey?: boolean;
 }
 
 interface OnLinkClick {
@@ -36,13 +37,13 @@ export const useOnLinkClick = (): OnLinkClick => {
   const getResolvedPath = useGetResolvedPath();
 
   return useCallback(
-    (to, { state, target, params, search, replace: replaceProp } = {}) =>
+    (to, { state, target, params, search, replace: replaceProp, ignoreMetaKey } = {}) =>
       (event) => {
         event.preventDefault();
 
         const pathname = getResolvedPath(to, params);
 
-        if (target === '_blank' || event.metaKey) {
+        if (!ignoreMetaKey && (target === '_blank' || event.metaKey)) {
           const newWindow = window.open(`${pathname}${search ?? ''}`, '_blank');
 
           if (!event.metaKey) {

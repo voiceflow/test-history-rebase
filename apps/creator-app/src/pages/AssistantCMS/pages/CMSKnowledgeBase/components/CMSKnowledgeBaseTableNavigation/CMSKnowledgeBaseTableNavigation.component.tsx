@@ -37,7 +37,6 @@ export const CMSKnowledgeBaseTableNavigation: React.FC = () => {
   const setSelectedIDs = useSetAtom(tableState.selectedIDs);
 
   const effects = useAtomValue(cmsManager.effects);
-  const count = useAtomValue(cmsManager.dataToRenderSize);
   const deleteMany = useDispatch(effects.deleteMany);
   const hasIntegrations = useKBIntegrationSync();
 
@@ -78,7 +77,7 @@ export const CMSKnowledgeBaseTableNavigation: React.FC = () => {
 
   return (
     <CMSTableNavigation
-      label={`All data sources (${count})`}
+      label="All data sources"
       actions={
         <>
           {isRefreshEnabled && (

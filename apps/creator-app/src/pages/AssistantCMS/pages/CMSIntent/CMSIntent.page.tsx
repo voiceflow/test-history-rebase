@@ -29,7 +29,8 @@ const CMSIntent: React.FC = () => (
 
 export default Utils.functional.compose(
   withCMSRouteFolders({
-    countSelector: Designer.Intent.selectors.countByFolderID,
+    pathname: Path.CMS_INTENT,
+    folderScope: FolderScope.INTENT,
   }),
 
   withCMSInitialTableState({
@@ -39,11 +40,10 @@ export default Utils.functional.compose(
 
   withCMSManagerProvider({
     search: intentSearch,
-    pathname: Path.CMS_INTENT,
-    folderScope: FolderScope.INTENT,
 
     effects: {
       patchOne: Designer.Intent.effect.patchOne,
+      patchMany: Designer.Intent.effect.patchMany,
       deleteOne: Designer.Intent.effect.deleteOne,
       deleteMany: Designer.Intent.effect.deleteMany,
     },
@@ -51,6 +51,7 @@ export default Utils.functional.compose(
     selectors: {
       oneByID: Designer.Intent.selectors.oneWithFormattedBuiltNameByID,
       allByFolderID: Designer.Intent.selectors.allByFolderID,
+      allByFolderIDs: Designer.Intent.selectors.allByFolderIDs,
     },
   }),
 

@@ -189,14 +189,16 @@ export class VariableService extends CMSTabularService<VariableORM> {
 
   async deleteManyAndSync(ids: Primary<VariableEntity>[]) {
     return this.postgresEM.transactional(async () => {
-      const variables = await this.findMany(ids);
+      const variables = await this.orm.findMany(ids);
 
-      await this.deleteMany(variables, { flush: false });
+      const variablesWithoutSystem = variables.filter((variable) => !variable.isSystem);
+
+      await this.deleteMany(variablesWithoutSystem, { flush: false });
 
       await this.orm.em.flush();
 
       return {
-        delete: { variables },
+        delete: { variables: variablesWithoutSystem },
       };
     });
   }

@@ -9,9 +9,9 @@ import { uiCustomThemeAdapter } from '@/utils/custom-theme.util';
 import { entityStyles } from './EntityColorPicker.css';
 import type { IEntityColorPicker } from './EntityColorPicker.interface';
 
-const TEST_ID = tid('entity', 'color');
-
 export const EntityColorPicker: React.FC<IEntityColorPicker> = ({ name, value, disabled, onValueChange }) => {
+  const TEST_ID = tid('entity', 'color');
+
   const colors = useSelector(Project.active.customThemesSelector);
 
   const onAddCustomTheme = useDispatch(Project.addCustomThemeToProject);

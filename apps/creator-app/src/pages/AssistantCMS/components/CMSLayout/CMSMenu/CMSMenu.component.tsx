@@ -12,9 +12,9 @@ import { useOnLinkClick } from '@/hooks/navigation.hook';
 import { useSelector } from '@/hooks/store.hook';
 import { useCMSRoute } from '@/pages/AssistantCMS/hooks/cms-route.hook';
 
-const TEST_ID = 'cms-menu';
-
 export const CMSMenu: React.FC = () => {
+  const TEST_ID = 'cms-menu';
+
   const location = useLocation();
   const onLinkClick = useOnLinkClick();
   const { isEnabled: isKbEnabled } = useFeature(Realtime.FeatureFlag.KNOWLEDGE_BASE);

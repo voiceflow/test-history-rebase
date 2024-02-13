@@ -9,9 +9,9 @@ import { useSelector } from '@/hooks/store.hook';
 
 import type { IEntityClassifierDropdown } from './EntityClassifierDropdown.interface';
 
-const TEST_ID = tid('entity', 'classifier');
-
 export const EntityClassifierDropdown: React.FC<IEntityClassifierDropdown> = ({ error, value, onClick, minWidth, disabled, onValueChange }) => {
+  const TEST_ID = tid('entity', 'classifier');
+
   const entityClassifiers = useSelector(Version.active.entityTypesSelector);
   const entityClassifiersMap = useSelector(Version.active.entityTypesMapSelector);
 
@@ -26,16 +26,16 @@ export const EntityClassifierDropdown: React.FC<IEntityClassifierDropdown> = ({ 
         value={value ? entityClassifiersMap[value]?.label : null}
         label="Data type"
         error={!!error}
+        testID={TEST_ID}
         onClick={onClick}
         disabled={disabled}
         placeholder="Select type"
         errorMessage={error ?? undefined}
-        testID={TEST_ID}
       >
         {({ onClose, referenceRef }) => (
           <Menu
             width={referenceRef.current?.clientWidth}
-            searchSection={<Search value={search.value} onValueChange={search.setValue} placeholder="Search" testID={tid(TEST_ID, 'search')} />}
+            searchSection={<Search value={search.value} testID={tid(TEST_ID, 'search')} onValueChange={search.setValue} placeholder="Search" />}
             numberOfItemsToShow={6}
           >
             {search.hasItems ? (

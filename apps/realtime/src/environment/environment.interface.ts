@@ -5,6 +5,7 @@ import {
   CardButtonEntity,
   EntityEntity,
   EntityVariantEntity,
+  FolderEntity,
   FunctionEntity,
   FunctionPathEntity,
   FunctionVariableEntity,
@@ -17,6 +18,7 @@ import {
 } from '@voiceflow/orm-designer';
 
 export interface EnvironmentCMSEntities {
+  folders: FolderEntity[];
   intents: IntentEntity[];
   entities: EntityEntity[];
   variables: VariableEntity[];

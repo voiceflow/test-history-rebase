@@ -5,6 +5,7 @@ import * as ReactRedux from 'react-redux';
 import { Persistor } from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react';
 
+import { StoreAtomProvider } from '@/components/StoreAtomProvider.component';
 import { Store } from '@/store/types';
 
 export interface StoreProviderProps extends React.PropsWithChildren {
@@ -20,7 +21,10 @@ export interface StoreProviderProps extends React.PropsWithChildren {
 const StoreProvider: React.FC<StoreProviderProps> = ({ store, realtime, persistor, children }) => (
   <ClientContext.Provider value={realtime}>
     <ReactRedux.Provider store={store}>
-      <PersistGate persistor={persistor}>{children}</PersistGate>
+      <PersistGate persistor={persistor}>
+        <StoreAtomProvider />
+        {children}
+      </PersistGate>
     </ReactRedux.Provider>
   </ClientContext.Provider>
 );

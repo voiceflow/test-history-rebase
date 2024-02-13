@@ -7,6 +7,7 @@ import * as Errors from '@/config/errors';
 import { CMSRoute, Path } from '@/config/routes';
 import { InteractionModelTabType, PageProgressBar, VariableType } from '@/constants';
 import * as Creator from '@/ducks/creatorV2';
+import * as Designer from '@/ducks/designer';
 import { localVariablesSelector } from '@/ducks/diagramV2/selectors/active';
 import * as DomainSelectors from '@/ducks/domain/selectors';
 import * as ProjectV2 from '@/ducks/projectV2';
@@ -483,5 +484,16 @@ export const goToCMSResource =
       return;
     }
 
-    dispatch(goTo(generatePath(Path.CMS_RESOURCE_ACTIVE, { versionID, resourceID, resourceType }), routeState));
+    const resourceSelector = Designer.utils.getCMSResourceOneByIDSelector(resourceType);
+
+    const resource = resourceSelector(state, { id: resourceID });
+    const folderIDs = Designer.Folder.selectors.idsChainByLeafFolderID(state, { folderID: resource?.folderID ?? null });
+
+    const folderPaths = folderIDs.map((id) => `folder/${id}`).join('/');
+
+    if (folderPaths) {
+      dispatch(goTo(generatePath(`${Path.CMS_RESOURCE}/${folderPaths}/${resourceID}`, { versionID, resourceType }), routeState));
+    } else {
+      dispatch(goTo(generatePath(Path.CMS_RESOURCE_ACTIVE, { versionID, resourceID, resourceType }), routeState));
+    }
   };

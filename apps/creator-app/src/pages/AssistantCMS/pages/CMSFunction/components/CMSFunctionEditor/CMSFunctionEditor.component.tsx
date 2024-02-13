@@ -12,7 +12,6 @@ import { useGetAtomValue } from '@/hooks/atom.hook';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
 import { EDITOR_TEST_ID } from '@/pages/AssistantCMS/AssistantCMS.constant';
 import { useCMSManager } from '@/pages/AssistantCMS/contexts/CMSManager';
-import { useCMSRouteFolders } from '@/pages/AssistantCMS/contexts/CMSRouteFolders';
 import { transformCMSResourceName } from '@/utils/cms.util';
 
 import { CMSEditorMoreButton } from '../../../../components/CMSEditorMoreButton/CMSEditorMoreButton.components';
@@ -28,7 +27,6 @@ export const CMSFunctionEditor: React.FC = () => {
   const cmsManager = useCMSManager();
   const functionID = useCMSActiveResourceID();
   const getAtomValue = useGetAtomValue();
-  const routeFolders = useCMSRouteFolders();
 
   const functionResource = useSelector(Designer.Function.selectors.oneByID, { id: functionID });
 
@@ -45,7 +43,7 @@ export const CMSFunctionEditor: React.FC = () => {
       goToCMSResource(CMSRoute.FUNCTION, data.functionResource.id);
     },
   });
-  const getFolderPath = () => getAtomValue(routeFolders.activeFolderURL) ?? getAtomValue(cmsManager.url);
+  const getFolderPath = () => getAtomValue(cmsManager.url);
 
   return (
     <Editor

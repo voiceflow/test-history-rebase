@@ -26,4 +26,4 @@ export const documentReducer = reducerWithInitialState<DocumentState>(INITIAL_ST
     )
   )
   .case(Actions.SetFetchStatus, (state, { status }) => ({ ...state, fetchStatus: status }))
-  .case(Actions.SetProcessingDocumentIDs, (state, { processingDocumentIDs }) => ({ ...state, processingDocumentIDs }));
+  .case(Actions.SetProcessingIDs, (state, { processingIDs }) => ({ ...state, processingIDs }));

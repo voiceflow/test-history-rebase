@@ -1,4 +1,4 @@
-import type { Entity, Intent, Variable } from '@voiceflow/dtos';
+import type { Entity, Folder, Intent, Variable } from '@voiceflow/dtos';
 
 import { useModal } from '@/ModalsV2/modal.hook';
 import type { Props as ConfirmProps } from '@/ModalsV2/modals/Confirm';
@@ -6,6 +6,7 @@ import type { IConformV2Modal } from '@/ModalsV2/modals/ConfirmV2/ConfirmV2.inte
 import type { IEntityCreateModal } from '@/ModalsV2/modals/Entity/EntityCreate.modal';
 import type { IEntityEditModal } from '@/ModalsV2/modals/Entity/EntityEdit.modal';
 import type { Props as ErrorProps } from '@/ModalsV2/modals/Error';
+import type { IFolderCreateModal } from '@/ModalsV2/modals/Folder/FolderCreate.modal';
 import type { IntentBulkImportUtterancesModalProps } from '@/ModalsV2/modals/Intent/IntentBulkImportUtterances.modal';
 import type { IIntentCreateModal } from '@/ModalsV2/modals/Intent/IntentCreate/IntentCreate.interface';
 import type { IIntentEditModal } from '@/ModalsV2/modals/Intent/IntentEdit.modal';
@@ -36,6 +37,8 @@ export const useEntityCreateModal = () => useModal<IEntityCreateModal, Entity>('
 
 export const useVariableEditModal = () => useModal<IVariableEditModal>('VariableEditModal');
 export const useVariableCreateModal = () => useModal<IVariableCreateModal, Variable>('VariableCreateModal');
+
+export const useFolderCreateModal = () => useModal<IFolderCreateModal, Folder>('FolderCreateModal');
 
 export const useIntentEditModal = () => useModal<IIntentEditModal>('IntentEditModal');
 export const useIntentCreateModal = () => useModal<IIntentCreateModal, Intent>('IntentCreateModal');

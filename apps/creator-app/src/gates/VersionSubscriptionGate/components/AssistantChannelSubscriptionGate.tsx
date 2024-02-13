@@ -68,6 +68,9 @@ const AssistantChannelSubscriptionGate: React.FC<AssistantChannelSubscriptionGat
       store.dispatch.local(Actions.Attachment.Replace({ data: (cms.attachments ?? []) as AnyAttachment[], context }));
       store.dispatch.local(Actions.CardButton.Replace({ data: (cms.cardButtons ?? []) as CardButton[], context }));
 
+      // folder
+      store.dispatch.local(Actions.Folder.Replace({ data: cms.folders ?? [], context }));
+
       // entity
       store.dispatch.local(Actions.Entity.Replace({ data: cms.entities ?? [], context }));
       store.dispatch.local(Actions.EntityVariant.Replace({ data: cms.entityVariants ?? [], context }));

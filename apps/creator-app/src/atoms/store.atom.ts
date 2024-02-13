@@ -4,9 +4,9 @@ import { atom } from 'jotai/vanilla';
 import { State as AppState } from '@/ducks';
 import { store } from '@/setupStore';
 
-export const storAtom = atom(store.getState());
+export const storeAtom = atom(store.getState());
 
-storAtom.onMount = (setValue) => {
+storeAtom.onMount = (setValue) => {
   const callback = () => setValue(store.getState());
 
   const unsubscribe = store.subscribe(callback);
@@ -16,4 +16,4 @@ storAtom.onMount = (setValue) => {
   return unsubscribe;
 };
 
-export const atomWithSelector = <State>(selector: (appState: AppState) => State): Atom<State> => atom((get) => selector(get(storAtom)));
+export const atomWithSelector = <State>(selector: (appState: AppState) => State): Atom<State> => atom((get) => selector(get(storeAtom)));

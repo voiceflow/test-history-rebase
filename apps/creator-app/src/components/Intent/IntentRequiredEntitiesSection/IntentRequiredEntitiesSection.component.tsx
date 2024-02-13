@@ -8,9 +8,9 @@ import { stopPropagation } from '@/utils/handler.util';
 
 import type { IIntentRequiredEntities } from './IntentRequiredEntitiesSection.interface';
 
-const TEST_ID = tid('intent', 'required-entities');
-
 export const IntentRequiredEntitiesSection: React.FC<IIntentRequiredEntities> = ({ onAdd, children, entityIDs }) => {
+  const TEST_ID = tid('intent', 'required-entities');
+
   const onSelect = (entity: Entity) => {
     onAdd(entity.id);
   };
@@ -32,7 +32,7 @@ export const IntentRequiredEntitiesSection: React.FC<IIntentRequiredEntities> = 
           </Section.Header.Container>
         )}
       >
-        {({ onClose }) => <EntityMenu onClose={onClose} onSelect={onSelect} excludeEntitiesIDs={entityIDs} />}
+        {({ onClose }) => <EntityMenu onClose={onClose} onSelect={onSelect} excludeIDs={entityIDs} />}
       </Popper>
 
       <Box direction="column">{children}</Box>

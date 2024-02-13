@@ -14,6 +14,7 @@ export interface DBKnowledgeBaseDocument extends Omit<BaseModels.Project.Knowled
 export interface KnowledgeBaseDocument extends Omit<DBKnowledgeBaseDocument, 'status'> {
   id: string;
   status: BaseModels.Project.KnowledgeBaseDocumentStatus;
+  folderID: string | null;
   statusData: unknown;
 }
 

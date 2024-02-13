@@ -60,4 +60,4 @@ export const allWithoutFallback = createSelector(allWithFormattedBuiltInNames, (
 
 export const countWithoutFallback = createSelector(allWithoutFallback, (intents) => intents.length);
 
-export const { allByFolderID, countByFolderID } = createByFolderIDSelectors(allWithoutFallback);
+export const { allByFolderID, allByFolderIDs, countByFolderID } = createByFolderIDSelectors(allWithoutFallback);

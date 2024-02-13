@@ -25,7 +25,9 @@ export const CMS_VARIABLE_TABLE_CONFIG: TableConfig<VariableTableColumn, CMSFold
       name: 'Name',
       sorter: withFolderSort<CMSVariable>(withFieldLocaleCompareSort('name')),
 
-      cell: ({ item, type }) => <CMSTableNameCell type={type} name={item.name} itemID={item.id} nameTransform={transformVariableName} />,
+      cell: ({ item, type }) => (
+        <CMSTableNameCell type={type} name={item.name} itemID={item.id} isFolder={item.group} nameTransform={transformVariableName} />
+      ),
     },
 
     [VariableTableColumn.DESCRIPTION]: {

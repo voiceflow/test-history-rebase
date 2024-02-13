@@ -1,6 +1,7 @@
+import { useAtomValue } from 'jotai';
 import { ScopeProvider } from 'jotai-molecules';
 import React, { useMemo } from 'react';
-import { Redirect, Route, Switch, useParams, useRouteMatch } from 'react-router-dom';
+import { Redirect, Route, Switch, useParams } from 'react-router-dom';
 
 import { Designer } from '@/ducks';
 import { useSelector } from '@/hooks/store.hook';
@@ -9,35 +10,37 @@ import { CMSRouteFoldersScope } from './CMSRouteFolders.atom';
 import { useCMSRouteFolders } from './CMSRouteFolders.hook';
 import type { ICMSRouteFoldersProvider } from './CMSRouteFolders.interface';
 
-const CMSFoldersRoutesRoute: React.FC<ICMSRouteFoldersProvider> = ({ Component, countSelector }) => {
+const CMSFoldersRoutesRoute: React.FC<ICMSRouteFoldersProvider> = ({ pathname, folderScope, Component }) => {
   const { folderID: activeFolderID = null } = useParams<{ folderID: string }>();
 
-  const { folders } = useCMSRouteFolders();
+  const routeFolders = useCMSRouteFolders();
   const activeFolder = useSelector(Designer.Folder.selectors.oneByID, { id: activeFolderID });
 
-  const value = useMemo(() => ({ folders, countSelector, activeFolderID: activeFolder?.id ?? null }), [folders, activeFolder, countSelector]);
+  const value = useMemo(
+    () => ({ folders: routeFolders.folders, pathname, folderScope, folderID: activeFolder?.id ?? null }),
+    [routeFolders.folders, pathname, folderScope, activeFolder]
+  );
 
   if (activeFolderID && !activeFolder) return <Redirect to="../.." />;
 
   return (
-    <ScopeProvider key={String(activeFolder?.id)} scope={CMSRouteFoldersScope} value={value}>
-      <CMSRouteFoldersRoutes Component={Component} countSelector={countSelector} />
+    <ScopeProvider key={activeFolderID} scope={CMSRouteFoldersScope} value={value}>
+      <CMSRouteFoldersRoutes pathname={pathname} folderScope={folderScope} Component={Component} />
     </ScopeProvider>
   );
 };
 
-const CMSRouteFoldersRoutes: React.FC<ICMSRouteFoldersProvider> = ({ Component, countSelector }) => {
-  const match = useRouteMatch();
+const CMSRouteFoldersRoutes: React.FC<ICMSRouteFoldersProvider> = ({ Component, ...props }) => {
+  const routeFolders = useCMSRouteFolders();
+  const pathname = useAtomValue(routeFolders.activeFolderPathname);
 
   return (
     <Switch>
-      <Route path={`${match.url}/folder/:folderID`} render={() => <CMSFoldersRoutesRoute Component={Component} countSelector={countSelector} />} />
+      <Route path={`${pathname}/folder/:folderID`} render={() => <CMSFoldersRoutesRoute {...props} Component={Component} />} />
 
-      <Route path={match.url} component={Component} />
+      <Route path={`${pathname}/:resourceID?`} component={Component} />
     </Switch>
   );
 };
 
-export const CMSRouteFoldersProvider: React.FC<ICMSRouteFoldersProvider> = ({ Component, countSelector }) => (
-  <CMSRouteFoldersRoutes Component={Component} countSelector={countSelector} />
-);
+export const CMSRouteFoldersProvider: React.FC<ICMSRouteFoldersProvider> = (props) => <CMSFoldersRoutesRoute {...props} />;

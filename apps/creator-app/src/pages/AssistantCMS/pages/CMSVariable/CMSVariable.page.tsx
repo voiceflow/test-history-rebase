@@ -28,7 +28,8 @@ const CMSVariable: React.FC = () => (
 
 export default Utils.functional.compose(
   withCMSRouteFolders({
-    countSelector: Designer.Variable.selectors.countByFolderID,
+    pathname: Path.CMS_VARIABLE,
+    folderScope: FolderScope.VARIABLE,
   }),
 
   withCMSInitialTableState({
@@ -37,11 +38,10 @@ export default Utils.functional.compose(
 
   withCMSManagerProvider({
     search: variableSearch,
-    pathname: Path.CMS_VARIABLE,
-    folderScope: FolderScope.VARIABLE,
 
     effects: {
       patchOne: Designer.Variable.effect.patchOne,
+      patchMany: Designer.Variable.effect.patchMany,
       deleteOne: Designer.Variable.effect.deleteOne,
       deleteMany: Designer.Variable.effect.deleteMany,
     },
@@ -49,6 +49,7 @@ export default Utils.functional.compose(
     selectors: {
       oneByID: Designer.Variable.selectors.oneByID,
       allByFolderID: Designer.Variable.selectors.allByFolderID,
+      allByFolderIDs: Designer.Variable.selectors.allByFolderIDs,
     },
   }),
 

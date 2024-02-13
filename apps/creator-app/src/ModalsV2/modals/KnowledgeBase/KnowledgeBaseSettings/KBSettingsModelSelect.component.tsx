@@ -11,8 +11,6 @@ import { SETTINGS_TEST_ID } from '../KnowledgeBase.constant';
 import { KBSettingLabel } from './KBSettingLabel.component';
 import { KBSettingsModelItem } from './KBSettingsModelItem.component';
 
-const TEST_ID = tid(SETTINGS_TEST_ID, 'model');
-
 export interface IKBSettingsModelSelect {
   value: AIModel;
   disabled?: boolean;
@@ -28,6 +26,8 @@ export const KBSettingsModelSelect: React.FC<IKBSettingsModelSelect> = ({
   setTooltipActiveLabel,
   onValueChange,
 }) => {
+  const TEST_ID = tid(SETTINGS_TEST_ID, 'model');
+
   const modelConfig = AI_MODEL_CONFIG_MAP[value];
 
   return (

@@ -39,7 +39,7 @@ export const IntentRequiredEntityAutomaticRepromptPopper: React.FC<IIntentRequir
     >
       {({ onClose }) => (
         <div onPointerDown={stopPropagation()}>
-          <EntityMenu onClose={onClose} onSelect={onEntitySelect} excludeEntitiesIDs={entityIDs} />
+          <EntityMenu onClose={onClose} onSelect={onEntitySelect} excludeIDs={entityIDs} />
         </div>
       )}
     </Popper>

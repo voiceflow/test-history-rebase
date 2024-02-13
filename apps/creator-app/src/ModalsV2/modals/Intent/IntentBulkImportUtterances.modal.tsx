@@ -10,8 +10,6 @@ import { utteranceTextFactory } from '@/utils/utterance.util';
 
 import { modalsManager } from '../../manager';
 
-const TEST_ID = 'bulk-import-utterances-modal';
-
 export interface IntentBulkImportUtterancesModalProps {
   onImport: (utterances: Pick<Utterance, 'text'>[]) => Promise<Utterance[]> | void;
 }
@@ -20,6 +18,8 @@ export const IntentBulkImportUtterancesModal = modalsManager.create<IntentBulkIm
   'IntentBulkImportUtterancesModal',
   () =>
     ({ api, type, opened, hidden, animated, onImport, closePrevented }) => {
+      const TEST_ID = 'bulk-import-utterances-modal';
+
       const state = useInputState();
 
       const input = useInput<string, HTMLTextAreaElement>({

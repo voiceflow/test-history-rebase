@@ -23,6 +23,12 @@ export const patchOne =
     throw new Error('unsupported');
   };
 
+export const patchMany =
+  (_documentIDs: string[], _data: Partial<KnowledgeBaseDocument>): Thunk =>
+  async () => {
+    throw new Error('unsupported');
+  };
+
 export const replaceTextDocument =
   (documentID: string, fileContent: string): Thunk<void> =>
   async (dispatch, getState) => {
@@ -38,7 +44,7 @@ export const replaceTextDocument =
 
     const dbDocument = await knowledgeBaseClient.replaceDocument(projectID, documentID, formData);
 
-    dispatch.local(Actions.SetProcessingDocumentIDs({ processingDocumentIDs: [documentID] }));
+    dispatch.local(Actions.SetProcessingIDs({ processingIDs: [documentID] }));
 
     Tracking.trackAiKnowledgeBaseSourceUpdated({ documentIDs: [documentID], Update_Type: 'Text' });
 
@@ -92,7 +98,7 @@ export const getAll = (): Thunk<KnowledgeBaseDocument[]> => async (dispatch, get
   return documents;
 };
 
-export const getAllPendingDocuments = (): Thunk<KnowledgeBaseDocument[]> => async (dispatch, getState) => {
+export const getAllPending = (): Thunk<KnowledgeBaseDocument[]> => async (dispatch, getState) => {
   const state = getState();
 
   const projectID = Session.activeProjectIDSelector(state);
@@ -136,7 +142,7 @@ export const resyncMany =
 
     if (!documents.length) return;
 
-    dispatch.local(Actions.SetProcessingDocumentIDs({ processingDocumentIDs: documentIDs }));
+    dispatch.local(Actions.SetProcessingIDs({ processingIDs: documentIDs }));
 
     try {
       const projectID = Session.activeProjectIDSelector(getState());
@@ -161,7 +167,7 @@ export const resyncMany =
 export const retryOne =
   (documentID: string): Thunk =>
   async (dispatch, getState) => {
-    dispatch.local(Actions.SetProcessingDocumentIDs({ processingDocumentIDs: [documentID] }));
+    dispatch.local(Actions.SetProcessingIDs({ processingIDs: [documentID] }));
 
     dispatch.local(
       Actions.PatchOne({
@@ -198,7 +204,7 @@ const createManyFromFormData =
       .filter((res): res is PromiseFulfilledResult<DBKnowledgeBaseDocument> => res.status === 'fulfilled')
       .map((res) => documentAdapter.fromDB(res.value));
 
-    dispatch.local(Actions.SetProcessingDocumentIDs({ processingDocumentIDs: documents.map((d) => d.id) }));
+    dispatch.local(Actions.SetProcessingIDs({ processingIDs: documents.map((d) => d.id) }));
 
     dispatch.local(Actions.AddMany({ data: documents }));
 
@@ -263,7 +269,7 @@ export const createManyFromData =
       .filter((res): res is PromiseFulfilledResult<DBKnowledgeBaseDocument> => res.status === 'fulfilled')
       .map((res) => documentAdapter.fromDB(res.value));
 
-    dispatch.local(Actions.SetProcessingDocumentIDs({ processingDocumentIDs: documents.map((d) => d.id) }));
+    dispatch.local(Actions.SetProcessingIDs({ processingIDs: documents.map((d) => d.id) }));
 
     dispatch.local(Actions.AddMany({ data: documents }));
 

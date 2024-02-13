@@ -16,9 +16,6 @@ import { isUtteranceLikeEmpty } from '@/utils/utterance.util';
 import { editorButtonStyle } from './IntentRequiredEntityRepromptsPopper.css';
 import type { IIntentRequiredEntityRepromptsPopper } from './IntentRequiredEntityRepromptsPopper.interface';
 
-const TEST_ID = 'required-entity';
-const REPROMPT_SETTINGS_TEST_ID = 'reprompt-settings';
-
 export const IntentRequiredEntityRepromptsPopper: React.FC<IIntentRequiredEntityRepromptsPopper> = ({
   entityID,
   children,
@@ -31,6 +28,9 @@ export const IntentRequiredEntityRepromptsPopper: React.FC<IIntentRequiredEntity
   onEntityReplace,
   onRepromptsGenerated,
 }) => {
+  const TEST_ID = 'required-entity';
+  const REPROMPT_SETTINGS_TEST_ID = 'reprompt-settings';
+
   const entity = useSelector(Designer.Entity.selectors.oneByID, { id: entityID });
   const popperContext = usePopperContext();
 
@@ -91,10 +91,10 @@ export const IntentRequiredEntityRepromptsPopper: React.FC<IIntentRequiredEntity
             <Box direction="column" py={20} px={24}>
               <InputFormControl>
                 <EntitySelect
+                  testID={tid(REPROMPT_SETTINGS_TEST_ID, 'entity')}
                   entityID={entityID}
                   onSelect={({ id }) => onEntityReplace({ oldEntityID: entityID, entityID: id })}
-                  excludeEntitiesIDs={entityIDs}
-                  testID={tid(REPROMPT_SETTINGS_TEST_ID, 'entity')}
+                  excludeIDs={entityIDs}
                 />
               </InputFormControl>
             </Box>

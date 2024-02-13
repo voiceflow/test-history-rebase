@@ -1,20 +1,20 @@
 import { Utils } from '@voiceflow/common';
+import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { tid } from '@voiceflow/style';
-import { Divider, MenuItem, notify, usePersistFunction } from '@voiceflow/ui-next';
-import { useAtomValue } from 'jotai';
+import { Divider, MenuItem, notify, Table, usePersistFunction } from '@voiceflow/ui-next';
+import { useAtomValue, useSetAtom } from 'jotai';
+import pluralize from 'pluralize';
 import React from 'react';
 
 import { Designer } from '@/ducks';
 import { useGetAtomValue } from '@/hooks/atom.hook';
+import { useFeature } from '@/hooks/feature';
 import { useConfirmV2Modal } from '@/hooks/modal.hook';
-import { useDispatch, useGetValueSelector } from '@/hooks/store.hook';
+import { useDispatch, useGetValueSelector, useStore } from '@/hooks/store.hook';
 import { clipboardCopy } from '@/utils/clipboard.util';
 
 import { CMS_TEST_ID } from '../AssistantCMS.constant';
 import { useCMSManager } from '../contexts/CMSManager/CMSManager.hook';
-import { useCMSRouteFolders } from '../contexts/CMSRouteFolders';
-
-const TEST_ID = tid(CMS_TEST_ID, 'context-menu');
 
 export interface ICMSResourceGetMoreMenu {
   onShare?: (resourceID: string) => void;
@@ -25,20 +25,114 @@ export interface ICMSResourceGetMoreMenu {
   canRename?: (resourceID: string) => boolean;
 }
 
-export const useGetCMSResourcePath = () => {
+export const useCMSResourceGetPath = () => {
   const cmsManager = useCMSManager();
   const getAtomValue = useGetAtomValue();
-  const cmsRouteFolders = useCMSRouteFolders();
 
   return usePersistFunction((resourceID: string) => {
-    const basePath = getAtomValue(cmsRouteFolders.activeFolderURL) ?? getAtomValue(cmsManager.url);
+    const baseURL = getAtomValue(cmsManager.url);
     const isFolder = getAtomValue(cmsManager.folders).some((folder) => getAtomValue(folder).id === resourceID);
 
     return {
-      path: `${basePath}${isFolder ? `/folder/${resourceID}` : `/${resourceID}`}`,
+      path: `${baseURL}${isFolder ? `/folder/${resourceID}` : `/${resourceID}`}`,
       isFolder,
     };
   });
+};
+
+/**
+ * returns a getter that returns all selected resources including nested resources
+ */
+export const useGetAllNestedResources = () => {
+  const store = useStore();
+  const cmsManager = useCMSManager();
+  const getAtomValue = useGetAtomValue();
+
+  return (ids: string[]) => {
+    const folderScope = getAtomValue(cmsManager.folderScope);
+
+    const allByIDsSelector = Designer.utils.getCMSResourceAllByIDsSelector(folderScope);
+    const allByFolderIDsSelector = Designer.utils.getCMSResourceAllByFolderIDsSelector(folderScope);
+
+    const cmsFolderIDs = new Set(getAtomValue(cmsManager.folders).map((folder) => getAtomValue(folder).id));
+
+    const folderIDs = ids.filter((id) => cmsFolderIDs.has(id));
+    const resourceIDs = ids.filter((id) => !cmsFolderIDs.has(id));
+
+    const allFolderIDs = folderIDs.flatMap((id) => [
+      id,
+      ...Designer.Folder.selectors.allDeeplyNestedIDsByScopeAndParentID(store.getState(), { folderScope, parentID: id }),
+    ]);
+
+    return {
+      folderIDs,
+      folderScope,
+      resourceIDs,
+      allFolderIDs,
+      allResources: [
+        ...allByIDsSelector(store.getState(), { ids: resourceIDs }),
+        ...allByFolderIDsSelector(store.getState(), { folderIDs: allFolderIDs }),
+      ],
+    };
+  };
+};
+
+export const useCMSResourceOnDeleteMany = () => {
+  const tableState = Table.useStateMolecule();
+  const cmsManager = useCMSManager();
+  const confirmModal = useConfirmV2Modal();
+  const setSelectedIDs = useSetAtom(tableState.selectedIDs);
+
+  const effects = useAtomValue(cmsManager.effects);
+
+  const folderDeleteMany = useDispatch(Designer.Folder.effect.deleteMany);
+  const resourceDeleteMany = useDispatch(effects.deleteMany);
+  const getAllNestedResources = useGetAllNestedResources();
+
+  return (ids: string[]) => {
+    const { folderIDs, folderScope, resourceIDs, allFolderIDs, allResources } = getAllNestedResources(ids);
+
+    let allResourcesSize = allResources.length;
+
+    // handle the case when there are no resources to delete
+    if (!allResourcesSize && !folderIDs.length) {
+      setSelectedIDs(new Set());
+
+      notify.short.info(`No ${pluralize(folderScope, 0)} to delete`, { showIcon: false });
+
+      return;
+    }
+
+    let label: string;
+
+    if (!allResourcesSize && folderIDs.length) {
+      allResourcesSize = allFolderIDs.length;
+      label = pluralize('folder', allFolderIDs.length);
+    } else {
+      label = pluralize(folderScope, allResourcesSize);
+    }
+
+    confirmModal.openVoid({
+      body: `Deleted ${label} won’t be recoverable unless you restore a previous agent backup. Please confirm that you want to continue.`,
+      title: `Delete ${label} (${allResourcesSize})`,
+      confirm: async () => {
+        if (folderIDs.length) {
+          await folderDeleteMany(folderIDs);
+        }
+
+        // no need to delete resources nested in folders, as they will be deleted with the folders
+        if (resourceIDs.length) {
+          await resourceDeleteMany(resourceIDs);
+        }
+
+        setSelectedIDs(new Set());
+
+        notify.short.info(`${allResourcesSize} ${label} deleted`, { showIcon: false });
+      },
+      confirmButtonLabel: 'Delete forever',
+      confirmButtonVariant: 'alert',
+    });
+  };
 };
 
 export const useCMSResourceGetMoreMenu = ({
@@ -49,35 +143,26 @@ export const useCMSResourceGetMoreMenu = ({
   canDelete = () => true,
   canRename = () => true,
 }: ICMSResourceGetMoreMenu = {}) => {
+  const TEST_ID = tid(CMS_TEST_ID, 'context-menu');
+
+  const tableState = Table.useStateMolecule();
+  const cmsFolders = useFeature(FeatureFlag.CMS_FOLDERS);
   const cmsManager = useCMSManager();
   const folderScope = useAtomValue(cmsManager.folderScope);
-  const confirmModal = useConfirmV2Modal();
-  const resourceEffects = useAtomValue(cmsManager.effects);
-  const getCMSResourcePath = useGetCMSResourcePath();
+  const actionStates = useAtomValue(cmsManager.actionStates);
+  const setSelectedIDs = useSetAtom(tableState.selectedIDs);
+  const setMoveToIsOpen = useSetAtom(actionStates.moveToIsOpen);
+  const cmsResourceGetPath = useCMSResourceGetPath();
 
-  const getHasScopeFolders = useGetValueSelector(Designer.Folder.selectors.hasScopeFolders, { folderScope });
+  const getHasByScope = useGetValueSelector(Designer.Folder.selectors.hasByScope, { folderScope });
 
-  const deleteResource = useDispatch(resourceEffects.deleteOne);
+  const onDeleteManyResources = useCMSResourceOnDeleteMany();
 
   return usePersistFunction(({ id, onClose }: { id: string; onClose: VoidFunction }) => {
-    const hasScopeFolders = getHasScopeFolders();
-    const { path, isFolder } = getCMSResourcePath(id);
+    const hasByScope = getHasByScope();
+    const { path, isFolder } = cmsResourceGetPath(id);
 
-    const onConfirmDelete = async () => {
-      await deleteResource(id);
-
-      notify.short.info(`1 ${folderScope} deleted`, { showIcon: false });
-    };
-
-    const onDelete = () => {
-      confirmModal.openVoid({
-        body: `Deleted ${folderScope} won’t be recoverable unless you restore a previous agent backup. Please confirm that you want to continue.`,
-        title: `Delete ${folderScope}`,
-        confirm: onConfirmDelete,
-        confirmButtonLabel: 'Delete forever',
-        confirmButtonVariant: 'alert',
-      });
-    };
+    const onDelete = () => onDeleteManyResources([id]);
 
     const onCopyLink = () => {
       clipboardCopy(`${window.location.origin}${path}`);
@@ -85,6 +170,11 @@ export const useCMSResourceGetMoreMenu = ({
       notify.short.success(`Copied`);
 
       onClose();
+    };
+
+    const onMoveTo = () => {
+      setSelectedIDs(new Set([id]));
+      setMoveToIsOpen(true);
     };
 
     return (
@@ -125,8 +215,13 @@ export const useCMSResourceGetMoreMenu = ({
           />
         )}
 
-        {hasScopeFolders && (
-          <MenuItem label="Move to..." onClick={Utils.functional.chainVoid(onClose)} prefixIconName="MoveTo" testID={tid(TEST_ID, 'move-to')} />
+        {cmsFolders.isEnabled && hasByScope && (
+          <MenuItem
+            label="Move to..."
+            onClick={Utils.functional.chainVoid(onClose, onMoveTo)}
+            prefixIconName="MoveTo"
+            testID={tid(TEST_ID, 'move-to')}
+          />
         )}
 
         <MenuItem label="Copy link" onClick={onCopyLink} prefixIconName="Link" testID={tid(TEST_ID, 'copy-link')} />

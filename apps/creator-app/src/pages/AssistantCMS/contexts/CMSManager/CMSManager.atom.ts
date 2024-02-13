@@ -2,6 +2,7 @@ import { atom } from 'jotai';
 import { splitAtom } from 'jotai/utils';
 import { createScope, molecule } from 'jotai-molecules';
 import { generatePath } from 'react-router-dom';
+import { createSelector } from 'reselect';
 
 import { atomWithSelector } from '@/atoms/store.atom';
 import { Designer } from '@/ducks';
@@ -12,29 +13,28 @@ export const CMSResourceScope = createScope<CMSManagerConfig<any, any>>({
   search: () => false,
   effects: {
     patchOne: () => undefined,
+    patchMany: () => undefined,
     deleteOne: () => undefined,
     deleteMany: () => undefined,
   } as any,
   pathname: '',
   folderID: null,
-  selectors: { oneByID: () => null, allByFolderID: () => [] },
+  selectors: { oneByID: () => null, allByFolderID: () => [], allByFolderIDs: () => [] },
   versionID: '',
   folderScope: '' as any,
   searchContext: atom({}),
 });
+
+const allCMSFoldersSelector = createSelector(Designer.Folder.selectors.allByScopeAndParentID, (folders) =>
+  folders.map<CMSFolder>((folder) => ({ ...folder, group: true }))
+);
 
 export const CMSResourceMolecule = molecule<CMSManager<any>>((_, getScope) => {
   const scope = getScope(CMSResourceScope);
 
   const items = splitAtom(atomWithSelector((state) => scope.selectors.allByFolderID(state, { folderID: scope.folderID })));
 
-  const folders = splitAtom(
-    atomWithSelector((state) =>
-      Designer.Folder.selectors
-        .allByScopeAndFolderID(state, { folderID: scope.folderID, folderScope: scope.folderScope })
-        .map<CMSFolder>((folder) => ({ ...folder, group: true }))
-    )
-  );
+  const folders = splitAtom(atomWithSelector((state) => allCMSFoldersSelector(state, { parentID: scope.folderID, folderScope: scope.folderScope })));
 
   const originalSearch = atom('');
 
@@ -67,14 +67,19 @@ export const CMSResourceMolecule = molecule<CMSManager<any>>((_, getScope) => {
 
   const isEmpty = atom((get) => get(itemsSize) === 0 && get(foldersSize) === 0);
 
-  const isSearchEmpty = atom((get) => get(dataToRenderSize) === 0 && get(search) !== '' && !get(isEmpty));
+  const isSearch = atom((get) => get(search) !== '');
+
+  const isSearchEmpty = atom((get) => get(dataToRenderSize) === 0 && get(isSearch) && !get(isEmpty));
 
   const effects = atom(() => scope.effects);
-  const pathname = atom(scope.pathname);
+  const pathname = atom(() => scope.pathname);
   const selectors = atom(() => scope.selectors);
-  const versionID = atom(scope.versionID);
+  const versionID = atom(() => scope.versionID);
+  const actionStates = atom(() => ({
+    moveToIsOpen: atom(false),
+  }));
 
-  const url = atom((get) => generatePath(get(pathname), { versionID: get(versionID) }));
+  const url = atom((get) => generatePath(get(pathname), { versionID: get(versionID), folderID: get(folderID) ?? '' }));
 
   return {
     url,
@@ -83,6 +88,7 @@ export const CMSResourceMolecule = molecule<CMSManager<any>>((_, getScope) => {
     isEmpty,
     folders,
     effects,
+    isSearch,
     pathname,
     folderID,
     itemsSize,
@@ -90,6 +96,7 @@ export const CMSResourceMolecule = molecule<CMSManager<any>>((_, getScope) => {
     versionID,
     foldersSize,
     folderScope,
+    actionStates,
     dataToRender,
     isSearchEmpty,
     originalSearch,

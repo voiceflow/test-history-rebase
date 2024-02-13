@@ -51,6 +51,8 @@ export type CMSResourceCountSelector = (state: AppState) => number;
 
 export type CMSResourceByIDSelector<Item extends CMSResource> = (state: AppState, params: { id: string | null }) => Item | null;
 
+export type CMSResourceByIDsSelector<Item extends CMSResource> = (state: AppState, params: { folderIDs: string[] }) => Item[];
+
 export type CMSResourcesByFolderIDSelector<Item extends CMSResource> = (state: AppState, params: { folderID: string | null }) => Array<Item>;
 
 export interface CMSResourceSearchContext {
@@ -98,12 +100,13 @@ export interface CMSManagerConfig<Item extends CMSResource, SearchContext extend
    * resource redux effects
    */
   effects: {
-    patchOne: (resourceOrFolderID: string, resource: Partial<Item>) => Thunk;
+    patchOne: (resourceID: string, resource: Partial<Item>) => Thunk;
+    patchMany: (resourceIDs: string[], resource: Partial<Item>) => Thunk;
 
-    deleteOne: (resourceOrFolderID: string) => Thunk;
-    deleteMany: (resourceOrFolderID: string[]) => Thunk;
+    deleteOne: (resourceID: string) => Thunk;
+    deleteMany: (resourceID: string[]) => Thunk;
 
-    exportMany?: (resourceOrFolderID: string[]) => Thunk;
+    exportMany?: (resourceID: string[]) => Thunk;
   };
 
   /**
@@ -112,11 +115,12 @@ export interface CMSManagerConfig<Item extends CMSResource, SearchContext extend
   selectors: {
     oneByID: CMSResourceByIDSelector<Item>;
     allByFolderID: CMSResourcesByFolderIDSelector<Item>;
+    allByFolderIDs: CMSResourceByIDsSelector<Item>;
   };
 }
 
 export interface CMSManagerStaticConfig<Item extends CMSResource, SearchContext extends CMSResourceSearchContext = CMSResourceSearchContext>
-  extends Omit<CMSManagerConfig<Item, SearchContext>, 'folderID' | 'versionID'> {}
+  extends Omit<CMSManagerConfig<Item, SearchContext>, 'folderID' | 'versionID' | 'folderScope' | 'pathname'> {}
 
 export interface ICMSManagerProvider<Item extends CMSResource, SearchContext extends CMSResourceSearchContext = CMSResourceSearchContext>
   extends React.PropsWithChildren {
@@ -148,6 +152,11 @@ export interface CMSManager<Item extends CMSResource> {
    * true if there's no items and folders selected from redux
    */
   isEmpty: Atom<boolean>;
+
+  /**
+   * a boolean atom to indicate if the search field is empty
+   */
+  isSearch: Atom<boolean>;
 
   /**
    * opened folder id from the url
@@ -203,16 +212,28 @@ export interface CMSManager<Item extends CMSResource> {
    * resource redux effects
    */
   effects: Atom<{
-    patchOne: (resourceOrFolderID: string, resource: Partial<Item>) => Thunk;
+    patchOne: (resourceID: string, resource: Partial<Item>) => Thunk;
+    patchMany: (resourceIDs: string[], resource: Partial<Item>) => Thunk;
 
-    deleteOne: (resourceOrFolderID: string) => Thunk;
-    deleteMany: (resourceOrFolderID: string[]) => Thunk;
+    deleteOne: (resourceID: string) => Thunk;
+    deleteMany: (resourceID: string[]) => Thunk;
 
-    exportMany?: (resourceOrFolderID: string[]) => Thunk;
+    exportMany?: (resourceID: string[]) => Thunk;
   }>;
 
+  /**
+   * resource selectors
+   */
   selectors: Atom<{
     oneByID: CMSResourceByIDSelector<Item>;
     allByFolderID: CMSResourcesByFolderIDSelector<Item>;
+    allByFolderIDs: CMSResourceByIDsSelector<Item>;
+  }>;
+
+  /**
+   * resource actions
+   */
+  actionStates: Atom<{
+    moveToIsOpen: PrimitiveAtom<boolean>;
   }>;
 }

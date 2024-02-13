@@ -9,9 +9,9 @@ import manager from '@/ModalsV2/manager';
 import { KBImportSitemapPreview } from './KBImportSitemapPreview/KBImportSitemapPreview.component';
 import { KBImportSitemapURL } from './KBImportSitemapURL/KBImportSitemapURL.component';
 
-const TEST_ID = tid('knowledge-base', 'import-sitemap-modal');
-
 export const KBImportSitemap = manager.create('KBImportSitemap', () => ({ api, type, opened, hidden, animated, closePrevented }) => {
+  const TEST_ID = tid('knowledge-base', 'import-sitemap-modal');
+
   const [urls, setURLs] = useState('');
   const [screen, setScreen] = useState<'sitemap' | 'url-review'>('sitemap');
   const [sitemapURL, setSitemapURL] = useState('');

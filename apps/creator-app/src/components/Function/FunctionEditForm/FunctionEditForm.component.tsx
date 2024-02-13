@@ -11,9 +11,9 @@ import { FunctionPathSection } from '../FunctionPathSection/FunctionPathSection.
 import { FunctionVariableSection } from '../FunctionVariableSection/FunctionVariableSection.component';
 import type { IFunctionEditForm } from './FunctionEditForm.interface';
 
-const TEST_ID = 'function';
-
 export const FunctionEditForm: React.FC<IFunctionEditForm> = ({ functionID }) => {
+  const TEST_ID = 'function';
+
   const autofocus = useInputAutoFocusKey();
   const functionPaths = useSelector(Designer.Function.FunctionPath.selectors.allByFunctionID, { functionID });
   const inputVariables = useSelector(Designer.Function.FunctionVariable.selectors.inputByFunctionID, { functionID });

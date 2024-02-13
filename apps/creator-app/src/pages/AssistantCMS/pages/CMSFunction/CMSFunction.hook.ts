@@ -6,7 +6,7 @@ import { Modals } from '@/ModalsV2';
 
 import { useCMSManager } from '../../contexts/CMSManager';
 import type { CMSFunction } from '../../contexts/CMSManager/CMSManager.interface';
-import { useGetCMSResourcePath } from '../../hooks/cms-resource.hook';
+import { useCMSResourceGetPath } from '../../hooks/cms-resource.hook';
 
 export const useFunctionCMSManager = useCMSManager<CMSFunction>;
 
@@ -16,7 +16,7 @@ export const useOnFunctionCreate = () => {
   const cmsManager = useFunctionCMSManager();
   const createModal = useModal(Modals.Function.Create);
   const getAtomValue = useGetAtomValue();
-  const getCMSResourcePath = useGetCMSResourcePath();
+  const cmsResourceGetPath = useCMSResourceGetPath();
 
   return async ({ name }: { name?: string } = {}) => {
     try {
@@ -25,7 +25,7 @@ export const useOnFunctionCreate = () => {
         folderID: getAtomValue(cmsManager.folderID),
       });
 
-      history.push(getCMSResourcePath(fn.id).path);
+      history.push(cmsResourceGetPath(fn.id).path);
     } catch {
       // closed
     }

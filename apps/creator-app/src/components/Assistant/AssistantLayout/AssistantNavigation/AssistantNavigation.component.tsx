@@ -8,9 +8,9 @@ import { useLogoButtonOptions } from '@/pages/Project/components/Header/hooks';
 import { useAssistantNavigationHotkeys, useAssistantNavigationItems } from './AssistantNavigation.hook';
 import { AssistantNavigationHelpItem } from './AssistantNavigationHelpItem.component';
 
-const TEST_ID = 'assistant-navigation';
-
 export const AssistantNavigation: React.FC = () => {
+  const TEST_ID = 'assistant-navigation';
+
   const onLinkClick = useOnLinkClick();
 
   const items = useAssistantNavigationItems();

@@ -4,21 +4,19 @@ import { createScope, molecule } from 'jotai-molecules';
 import { atomWithSelector } from '@/atoms/store.atom';
 import { Designer } from '@/ducks';
 
-import { CMSResourceMolecule } from '../CMSManager/CMSManager.atom';
 import type { CMSRouteFolder, ICMSRouteFolders, ICMSRouteFoldersScope } from './CMSRouteFolders.interface';
 
 export const CMSRouteFoldersScope = createScope<ICMSRouteFoldersScope>({
   folders: atom([]),
-  countSelector: () => 0,
-  activeFolderID: null,
+  pathname: '',
+  folderID: null,
+  folderScope: '' as any,
 });
 
-export const CMSRouteFoldersMolecule = molecule<ICMSRouteFolders>((getMolecule, getScope): ICMSRouteFolders => {
+export const CMSRouteFoldersMolecule = molecule<ICMSRouteFolders>((_getMolecule, getScope): ICMSRouteFolders => {
   const scope = getScope(CMSRouteFoldersScope);
-  const cmsManager = getMolecule(CMSResourceMolecule);
 
-  const countAtom = atomWithSelector((state) => scope.countSelector(state, { folderID: scope.activeFolderID }));
-  const folderAtom = atomWithSelector((state) => Designer.Folder.selectors.oneByID(state, { id: scope.activeFolderID }));
+  const folderAtom = atomWithSelector((state) => Designer.Folder.selectors.oneByID(state, { id: scope.folderID }));
 
   const routeFolder = atom<CMSRouteFolder | null>((get) => {
     const folders = get(scope.folders);
@@ -26,18 +24,18 @@ export const CMSRouteFoldersMolecule = molecule<ICMSRouteFolders>((getMolecule, 
 
     if (!folder) return null;
 
-    const count = get(countAtom);
+    const parentFolderPathname = folders.map((folder) => `folder/${folder.id}`).join('/');
 
     return {
       id: folder.id,
-      url: `${get(cmsManager.url)}/${[...folders, { id: folder.id }].map((folder) => `folder/${folder.id}`).join('/')}`,
       name: folder.name,
-      count,
+      pathname: `${scope.pathname}${parentFolderPathname ? `/${parentFolderPathname}` : ''}/folder/:folderID`,
     };
   });
 
   const activeFolderID = atom((get) => get(routeFolder)?.id ?? null);
-  const activeFolderURL = atom((get) => get(routeFolder)?.url ?? null);
+  const activeFolderScope = atom(() => scope.folderScope);
+  const activeFolderPathname = atom((get) => get(routeFolder)?.pathname ?? scope.pathname);
 
   const foldersAtom = atom((get) => {
     const folder = get(routeFolder);
@@ -50,7 +48,9 @@ export const CMSRouteFoldersMolecule = molecule<ICMSRouteFolders>((getMolecule, 
 
   return {
     folders: foldersAtom,
+    rootPathname: atom(() => scope.pathname),
     activeFolderID,
-    activeFolderURL,
+    activeFolderScope,
+    activeFolderPathname,
   };
 });

@@ -1,7 +1,6 @@
 import type { Function as FunctionType } from '@voiceflow/dtos';
 import { tid } from '@voiceflow/style';
-import { toast } from '@voiceflow/ui';
-import { TextArea } from '@voiceflow/ui-next';
+import { notify, TextArea } from '@voiceflow/ui-next';
 import { validatorFactory } from '@voiceflow/utils-designer';
 import React, { useState } from 'react';
 
@@ -16,8 +15,6 @@ import { useValidators } from '@/hooks/validate.hook';
 import { modalsManager } from '../../manager';
 import { textareaStyles } from './FunctionCreate.css';
 
-const TEST_ID = 'create-function';
-
 export interface IFunctionCreateModal {
   name?: string;
   folderID: string | null;
@@ -27,6 +24,8 @@ export const FunctionCreateModal = modalsManager.create<IFunctionCreateModal, Fu
   'FunctionCreateModal',
   () =>
     ({ api, type: typeProp, name: nameProp, opened, hidden, animated, folderID, closePrevented }) => {
+      const TEST_ID = 'create-function';
+
       const createOne = useDispatch(Designer.Function.effect.createOne);
 
       const [description, setDescription] = useState('');
@@ -52,7 +51,7 @@ export const FunctionCreateModal = modalsManager.create<IFunctionCreateModal, Fu
           api.enableClose();
           api.close();
         } catch (e) {
-          toast.genericError();
+          notify.short.genericError();
 
           api.enableClose();
         }

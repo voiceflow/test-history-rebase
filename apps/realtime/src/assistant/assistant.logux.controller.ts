@@ -58,6 +58,9 @@ export class AssistantLoguxController {
       attachmentReplaceMeta,
       cardButtonReplaceMeta,
 
+      // folder
+      folderReplaceMeta,
+
       // entity
       entityReplaceMeta,
       entityVariantReplaceMeta,
@@ -100,10 +103,12 @@ export class AssistantLoguxController {
       { id: ctx.server.log.generateId() },
       { id: ctx.server.log.generateId() },
       { id: ctx.server.log.generateId() },
+      { id: ctx.server.log.generateId() },
     ] as const;
 
     const {
       intents,
+      folders,
       entities,
       responses,
       assistant,
@@ -131,6 +136,9 @@ export class AssistantLoguxController {
       // attachments
       Actions.Attachment.Replace({ data: this.entitySerializer.iterable(attachments), context }, attachmentReplaceMeta),
       Actions.CardButton.Replace({ data: this.entitySerializer.iterable(cardButtons), context }, cardButtonReplaceMeta),
+
+      // folder
+      Actions.Folder.Replace({ data: this.entitySerializer.iterable(folders), context }, folderReplaceMeta),
 
       // entity
       Actions.Entity.Replace({ data: this.entitySerializer.iterable(entities), context }, entityReplaceMeta),

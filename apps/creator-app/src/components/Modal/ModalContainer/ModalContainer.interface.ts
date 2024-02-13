@@ -12,7 +12,7 @@ export interface IModalContainer extends BaseProps {
   onExited?: ExitHandler<HTMLDivElement>;
   onExiting?: ExitHandler<HTMLDivElement>;
   className?: string;
-  containerClassName?: string;
   onEscClose?: VoidFunction;
   onEnterSubmit?: VoidFunction;
+  containerClassName?: string;
 }

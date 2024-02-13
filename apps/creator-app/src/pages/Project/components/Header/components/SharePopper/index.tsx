@@ -22,10 +22,10 @@ interface SharePopperProps {
   preventOverflowPadding?: number;
 }
 
-const PERSISTED_SESSION_SHARE_TAB = 'persisted_session_share_tab';
-const TEST_ID = 'share-menu';
-
 const SharePopper: React.FC<SharePopperProps> = ({ children, placement, modifiers, preventOverflowPadding = 24 }) => {
+  const TEST_ID = 'share-menu';
+  const PERSISTED_SESSION_SHARE_TAB = 'persisted_session_share_tab';
+
   const sharePopper = React.useContext(SharePopperContext);
   const activeProjectID = useSelector(Session.activeProjectIDSelector);
 

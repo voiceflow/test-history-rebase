@@ -48,9 +48,10 @@ export const CMS_KNOWLEDGE_BASE_TABLE_CONFIG: TableConfig<KnowledgeBaseTableColu
           <Table.Cell.GroupEmpty
             item={item}
             label={({ updatedAt, data }) => {
-              if (data && data?.type === BaseModels.Project.KnowledgeBaseDocumentType.URL) {
+              if (data?.type === BaseModels.Project.KnowledgeBaseDocumentType.URL) {
                 return <CMSTableCellFromNowTooltip updatedAt={data.lastSuccessUpdate || updatedAt.toString()} />;
               }
+
               return <CMSTableCellFromNowTooltip updatedAt={updatedAt.toString()} />;
             }}
           />

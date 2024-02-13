@@ -12,9 +12,9 @@ import { useSelector } from '@/hooks/store.hook';
 import { EntityMenuEmpty } from '../EntityMenuEmpty/EntityMenuEmpty.component';
 import type { IEntityMenu } from './EntityMenu.interface';
 
-const TEST_ID = 'entity-menu';
+export const EntityMenu: React.FC<IEntityMenu> = ({ width, onClose, onSelect: onSelectProp, excludeIDs }) => {
+  const TEST_ID = 'entity-menu';
 
-export const EntityMenu: React.FC<IEntityMenu> = ({ width, onClose, onSelect: onSelectProp, excludeEntitiesIDs }) => {
   const storeEntities = useSelector(Designer.Entity.selectors.all);
   const entityEditModal = useEntityEditModal();
   const entityCreateModal = useEntityCreateModal();
@@ -23,10 +23,10 @@ export const EntityMenu: React.FC<IEntityMenu> = ({ width, onClose, onSelect: on
   const [isCreating, setIsCreating] = useState(false);
 
   const entities = useMemo(() => {
-    if (!excludeEntitiesIDs) return storeEntities;
+    if (!excludeIDs) return storeEntities;
 
-    return storeEntities.filter((entity) => !excludeEntitiesIDs.includes(entity.id));
-  }, [storeEntities, excludeEntitiesIDs]);
+    return storeEntities.filter((entity) => !excludeIDs.includes(entity.id));
+  }, [storeEntities, excludeIDs]);
 
   const search = useDeferredSearch({
     items: entities,

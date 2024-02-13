@@ -14,6 +14,7 @@ export const trackAiKnowledgeBaseOpen = createProjectEventTracker(({ ...eventInf
 export const trackAiKnowledgeBaseSourceAdded = createProjectEventTracker<{
   Type: BaseModels.Project.KnowledgeBaseDocumentType;
   refreshRate?: string;
+  numberOfDocuments?: number;
 }>(({ ...eventInfo }) => client.analytics.track(createProjectEvent(EventName.AI_KNOWLEDGE_BASE_DATA_SOURCE_ADDED, eventInfo)));
 
 export const trackAiKnowledgeBaseSourceUpdated = createProjectEventTracker<{ documentIDs: string[]; Update_Type: 'Refresh rate' | 'Text' }>(

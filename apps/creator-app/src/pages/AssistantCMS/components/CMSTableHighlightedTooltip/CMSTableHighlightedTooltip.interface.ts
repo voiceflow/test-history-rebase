@@ -1,4 +1,5 @@
 export interface ICMSTableHighlightedTooltip {
-  label: string;
+  label: React.ReactNode;
   search: string;
+  caption?: React.ReactNode;
 }

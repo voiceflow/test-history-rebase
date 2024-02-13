@@ -8,8 +8,6 @@ import { useLinkedState } from '@/hooks/state.hook';
 import { SETTINGS_TEST_ID } from '../KnowledgeBase.constant';
 import { KBSettingLabel } from './KBSettingLabel.component';
 
-const TEST_ID = tid(SETTINGS_TEST_ID, 'instructions');
-
 export interface IKBSettingsInstructions {
   value: string;
   disabled?: boolean;
@@ -31,6 +29,8 @@ export const KBSettingsInstructions: React.FC<IKBSettingsInstructions> = ({
   onValueChange,
   onValueType,
 }) => {
+  const TEST_ID = tid(SETTINGS_TEST_ID, 'instructions');
+
   const [value, setValue] = useLinkedState(propValue);
 
   return (

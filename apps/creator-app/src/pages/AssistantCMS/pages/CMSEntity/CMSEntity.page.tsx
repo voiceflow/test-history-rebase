@@ -29,7 +29,8 @@ const CMSEntity: React.FC = () => (
 
 export default Utils.functional.compose(
   withCMSRouteFolders({
-    countSelector: Designer.Entity.selectors.countByFolderID,
+    pathname: Path.CMS_ENTITY,
+    folderScope: FolderScope.ENTITY,
   }),
 
   withCMSInitialTableState({
@@ -39,11 +40,10 @@ export default Utils.functional.compose(
 
   withCMSManagerProvider({
     search: entitySearch,
-    pathname: Path.CMS_ENTITY,
-    folderScope: FolderScope.ENTITY,
 
     effects: {
       patchOne: Designer.Entity.effect.patchOne,
+      patchMany: Designer.Entity.effect.patchMany,
       deleteOne: Designer.Entity.effect.deleteOne,
       deleteMany: Designer.Entity.effect.deleteMany,
     },
@@ -51,6 +51,7 @@ export default Utils.functional.compose(
     selectors: {
       oneByID: Designer.Entity.selectors.oneByID,
       allByFolderID: Designer.Entity.selectors.allByFolderID,
+      allByFolderIDs: Designer.Entity.selectors.allByFolderIDs,
     },
   }),
 

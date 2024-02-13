@@ -3,6 +3,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { parseCMSVariableDefaultValue } from '@voiceflow/utils-designer';
 
 import * as Errors from '@/config/errors';
+import * as Designer from '@/ducks/designer';
 import * as Diagram from '@/ducks/diagramV2';
 import * as Domain from '@/ducks/domain/selectors';
 import * as ProjectV2 from '@/ducks/projectV2';
@@ -14,7 +15,6 @@ import { getActiveVersionContext } from '@/ducks/versionV2/utils';
 import { Store, VariableValue } from '@/models';
 import { SyncThunk, Thunk } from '@/store/types';
 
-import { Designer } from '..';
 import { updateSelectedVariableState, updateVariables } from './actions';
 import { ALL_PROJECT_VARIABLES_ID } from './constants';
 import { getVariableStateByIDSelector, selectedVariableStateSelector } from './selectors';

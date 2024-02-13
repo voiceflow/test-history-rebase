@@ -1,7 +1,7 @@
 import { Utils } from '@voiceflow/common';
 import type { Intent, Utterance, UtteranceText } from '@voiceflow/dtos';
 import { AttachmentType, CardLayout, Language, ResponseVariantType, TextResponseVariant } from '@voiceflow/dtos';
-import { toast, useCreateConst } from '@voiceflow/ui';
+import { notify, useCreateConst } from '@voiceflow/ui-next';
 import { intentDescriptionValidator, intentNameValidator, intentUtterancesValidator, markupFactory } from '@voiceflow/utils-designer';
 import { useMemo, useState } from 'react';
 import { match } from 'ts-pattern';
@@ -296,7 +296,7 @@ export const useIntentForm = ({
         api.enableClose();
         api.close();
       } catch (e) {
-        toast.genericError();
+        notify.short.genericError();
 
         api.enableClose();
       }

@@ -13,8 +13,6 @@ import { transformVariableName } from '@/utils/variable.util';
 
 import { modalsManager } from '../../manager';
 
-const TEST_ID = 'edit-variable-modal';
-
 export interface IVariableEditModal {
   variableID: string;
 }
@@ -23,6 +21,8 @@ export const VariableEditModal = modalsManager.create<IVariableEditModal>(
   'VariableEditModal',
   () =>
     ({ api, type, opened, hidden, animated, variableID }) => {
+      const TEST_ID = 'edit-variable-modal';
+
       const variable = useSelector(Designer.Variable.selectors.oneByID, { id: variableID });
       const variables = useSelector(Designer.Variable.selectors.all);
 

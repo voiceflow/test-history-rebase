@@ -11,9 +11,9 @@ import { KBImportIntegrationPlatform } from './KBImportIntegrationPlatform/KBImp
 import { KBImportIntegrationWaiting } from './KBImportIntegrationWaiting/KBImportIntegrationWaiting.component';
 import { KBImportIntegrationZendesk } from './KBImportIntegrationZendesk/KBImportIntegrationZendesk.component';
 
-const TEST_ID = tid('knowledge-base', 'import-integration-modal');
-
 export const KBImportIntegration = manager.create('KBImportIntegration', () => ({ api, type, opened, hidden, animated, closePrevented }) => {
+  const TEST_ID = tid('knowledge-base', 'import-integration-modal');
+
   const [screen, setScreen] = useState<'select-platform' | 'authenticate' | BaseModels.Project.IntegrationTypes>('select-platform');
   const [trackingEvents] = useTrackingEvents();
   const [subdomain, setSubdomain] = useState<string | undefined>();

@@ -8,12 +8,13 @@ export const documentAdapter = createMultiAdapter<DBKnowledgeBaseDocument, Knowl
     id: rest.documentID,
     data,
     status: status.type,
+    folderID: null,
     statusData: status.data,
   }),
   ({ id, data, status, statusData, ...rest }) => ({
     ...rest,
-    documentID: id,
     data,
     status: { type: status, data: statusData },
+    documentID: id,
   })
 );

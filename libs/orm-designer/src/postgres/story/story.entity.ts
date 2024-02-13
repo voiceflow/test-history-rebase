@@ -18,7 +18,7 @@ import { PostgresCMSTabularEntity } from '../common';
 import { FlowEntity } from '../flow';
 import { StoryJSONAdapter } from './story.adapter';
 import { StoryStatus } from './story-status.enum';
-import type { BaseTriggerEntity } from './trigger/trigger.entity';
+import type { BaseStoryTriggerEntity } from './story-trigger/story-trigger.entity';
 
 @Entity({ tableName: 'designer.story' })
 @Unique({ properties: ['id', 'environmentID'] })
@@ -43,8 +43,8 @@ export class StoryEntity extends PostgresCMSTabularEntity {
   @Property()
   isStart: boolean;
 
-  @OneToMany('BaseTriggerEntity', (value: BaseTriggerEntity) => value.story)
-  triggers = new Collection<BaseTriggerEntity>(this);
+  @OneToMany('BaseStoryTriggerEntity', (value: BaseStoryTriggerEntity) => value.story)
+  triggers = new Collection<BaseStoryTriggerEntity>(this);
 
   @Property()
   isEnabled: boolean;

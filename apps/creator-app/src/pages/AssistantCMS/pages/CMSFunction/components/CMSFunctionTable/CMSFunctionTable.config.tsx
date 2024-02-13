@@ -25,7 +25,7 @@ export const FUNCTION_TABLE_CONFIG: TableConfig<FunctionTableColumn, CMSFolder |
       name: 'Name',
       sorter: withFolderSort<CMSFunction>(withFieldLocaleCompareSort('name')),
 
-      cell: ({ item, type }) => <CMSTableNameCell type={type} name={item.name} itemID={item.id} />,
+      cell: ({ item, type }) => <CMSTableNameCell type={type} name={item.name} isFolder={item.group} itemID={item.id} />,
     },
 
     [FunctionTableColumn.DESCRIPTION]: {

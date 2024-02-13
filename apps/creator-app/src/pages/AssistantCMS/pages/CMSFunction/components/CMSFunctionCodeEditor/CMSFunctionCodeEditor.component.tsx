@@ -1,8 +1,8 @@
 import { tid } from '@voiceflow/style';
 import { Box, CodeEditor, CodeEditorWrapper } from '@voiceflow/ui-next';
 import { TCodeData } from '@voiceflow/ui-next/build/cjs/components/Inputs/CodeEditor/CodeEditorInput/types';
-import { useSetAtom } from 'jotai/react';
-import React from 'react';
+import React, { useContext } from 'react';
+import { DismissableLayerContext } from 'react-dismissable-layers';
 import { useHistory } from 'react-router';
 
 import * as Documentation from '@/config/documentation';
@@ -13,23 +13,23 @@ import { useDispatch, useSelector } from '@/hooks/store.hook';
 import { Hotkey } from '@/keymap';
 import { Modals, useModal } from '@/ModalsV2';
 import { useCMSManager } from '@/pages/AssistantCMS/contexts/CMSManager';
-import { useCMSRouteFolders } from '@/pages/AssistantCMS/contexts/CMSRouteFolders';
-import { isEditorMenuOpen as isEditorMenuOpenAtom } from '@/pages/AssistantCMS/pages/CMSFunction/CMSFunction.atoms';
 import { openURLInANewTab } from '@/utils/window';
 
 import { cmsFunctionCodeEditorStyle } from './CMSFunctionCodeEditor.css';
 
-const TEST_ID = tid('function', 'code');
 export const CMSFunctionCodeEditor: React.FC<{ functionID: string }> = ({ functionID }) => {
-  const functionData = useSelector(Designer.Function.selectors.getOneByID)({ id: functionID })!;
-  const patchFunction = useDispatch(Designer.Function.effect.patchOne);
+  const TEST_ID = tid('function', 'code');
+
+  const navigate = useHistory();
   const testModal = useModal(Modals.Function.Test);
   const cmsManager = useCMSManager();
   const getAtomValue = useGetAtomValue();
-  const routeFolders = useCMSRouteFolders();
-  const navigate = useHistory();
-  const getFolderPath = () => getAtomValue(routeFolders.activeFolderURL) ?? getAtomValue(cmsManager.url);
-  const setIsEditorMenuOpen = useSetAtom(isEditorMenuOpenAtom);
+  const dismissableLayer = useContext(DismissableLayerContext);
+
+  const functionData = useSelector(Designer.Function.selectors.getOneByID)({ id: functionID })!;
+  const patchFunction = useDispatch(Designer.Function.effect.patchOne);
+
+  const getFolderURL = () => getAtomValue(cmsManager.url);
 
   const onCodeChange = ([newCode]: TCodeData) => {
     if (typeof newCode === 'string' && functionData?.code !== newCode) {
@@ -38,11 +38,11 @@ export const CMSFunctionCodeEditor: React.FC<{ functionID: string }> = ({ functi
   };
 
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    dismissableLayer.dismissAllGlobally();
     event.stopPropagation();
-    setIsEditorMenuOpen(false);
   };
 
-  useHotkey(Hotkey.ESC_CLOSE, () => navigate.push(getFolderPath()));
+  useHotkey(Hotkey.ESC_CLOSE, () => navigate.push(getFolderURL()));
 
   return (
     <Box width="calc(100% - 350px)" height="calc(100% - 110px)" px={12} py={12} onClick={handleClick}>

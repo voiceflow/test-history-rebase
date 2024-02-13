@@ -1,6 +1,7 @@
 import { usePersistFunction } from '@voiceflow/ui';
 import Mousetrap from 'mousetrap';
 import React from 'react';
+import { flushSync } from 'react-dom';
 
 import HOTKEY_MAPPING, { Hotkey } from '@/keymap';
 
@@ -30,6 +31,14 @@ export const useHotkeyList = (hotkeys: HotkeyItem[], deps: unknown[] = []) => {
     const callbackFactory = (callback: Callback, options?: Omit<Options, 'action' | 'disable'>) => (event: KeyboardEvent) => {
       if (options?.preventDefault) {
         event.preventDefault();
+      }
+
+      if (options?.allowInputs) {
+        flushSync(() => {
+          if (document.activeElement instanceof HTMLInputElement) {
+            document.activeElement.blur();
+          }
+        });
       }
 
       return callback(event);

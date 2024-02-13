@@ -11,9 +11,9 @@ import modalsManager from '../../../../manager';
 import { KBFieldLabel } from '../components/KBFieldLabel/KBFieldLabel.component';
 import { uploadAreaStyles } from './KBImportFile.css';
 
-const TEST_ID = tid('knowledge-base', 'import-file-modal');
-
 export const KBImportFile = modalsManager.create('KBImportFile', () => ({ api, type, opened, hidden, animated, closePrevented }) => {
+  const TEST_ID = tid('knowledge-base', 'import-file-modal');
+
   const fileSizeLimitMB = 10;
 
   const createManyFromFile = useDispatch(Designer.KnowledgeBase.Document.effect.createManyFromFile);

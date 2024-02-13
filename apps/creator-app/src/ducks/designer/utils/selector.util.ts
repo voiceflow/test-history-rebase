@@ -17,6 +17,10 @@ export const languageParamSelector = (_: any, { language }: { language: Nullish<
 
 export const folderIDParamSelector = (_: any, { folderID }: { folderID: string | null }) => folderID;
 
+export const folderIDsParamSelector = (_: any, { folderIDs }: { folderIDs: string[] }) => folderIDs;
+
+export const parentIDParamSelector = (_: any, { parentID }: { parentID: string | null }) => parentID;
+
 export const intentIDParamSelector = (_: any, { intentID }: { intentID: string | null }) => intentID;
 
 export const intentIDsParamSelector = (_: any, { intentIDs }: { intentIDs: string[] }) => intentIDs;
@@ -70,8 +74,13 @@ export const createByFolderIDSelectors = <Type extends { folderID: string | null
     resources.filter((resource) => resource.folderID === folderID)
   );
 
+  const allByFolderIDs = createSelector([all, folderIDsParamSelector], (resources, folderIDs) =>
+    resources.filter((resource) => !!resource.folderID && folderIDs.includes(resource.folderID))
+  );
+
   return {
     allByFolderID,
+    allByFolderIDs,
     countByFolderID: createSelector([allByFolderID], (resources) => resources.length),
   };
 };

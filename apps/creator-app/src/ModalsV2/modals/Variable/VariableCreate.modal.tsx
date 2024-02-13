@@ -1,7 +1,6 @@
 import type { Variable as VariableType } from '@voiceflow/dtos';
 import { VariableDatatype } from '@voiceflow/dtos';
-import { toast } from '@voiceflow/ui';
-import { Divider, Scroll, Tokens, Variable } from '@voiceflow/ui-next';
+import { Divider, notify, Scroll, Tokens, Variable } from '@voiceflow/ui-next';
 import { variableNameValidator } from '@voiceflow/utils-designer';
 import React, { useState } from 'react';
 
@@ -62,7 +61,7 @@ export const VariableCreateModal = modalsManager.create<IVariableCreateModal, Va
             api.enableClose();
             api.close();
           } catch (e) {
-            toast.genericError();
+            notify.short.genericError();
 
             api.enableClose();
           }

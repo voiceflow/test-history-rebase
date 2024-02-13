@@ -6,7 +6,7 @@ import { setDisplayName, wrapDisplayName } from 'recompose';
 import { modalsManager } from '@/ModalsV2/manager';
 import { AnyModal } from '@/ModalsV2/types';
 
-import { useGetCMSResourcePath } from '../hooks/cms-resource.hook';
+import { useCMSResourceGetPath } from '../hooks/cms-resource.hook';
 
 type ModalDefinition<Modal extends AnyModal> =
   | Modal
@@ -15,7 +15,7 @@ type ModalDefinition<Modal extends AnyModal> =
       successHandler: (props: {
         history: ReturnType<typeof useHistory>;
         result: Modal['__vfModalResult'];
-        getCMSResourcePath: ReturnType<typeof useGetCMSResourcePath>;
+        cmsResourceGetPath: ReturnType<typeof useCMSResourceGetPath>;
       }) => void
     ];
 
@@ -43,7 +43,7 @@ export const withCMSResourceModals: IWithCMSResourceModals =
     return setDisplayName(wrapDisplayName(Component, 'withCMSResourceModals'))(() => {
       const history = useHistory();
       const location = useLocation();
-      const getCMSResourcePath = useGetCMSResourcePath();
+      const cmsResourceGetPath = useCMSResourceGetPath();
 
       useEffect(() => {
         if (
@@ -61,7 +61,7 @@ export const withCMSResourceModals: IWithCMSResourceModals =
 
         modalsManager
           .open(Utils.id.cuid(), location.state.cmsResourceModalType, { props: cmsResourceModalProps ?? {} })
-          .then((result) => modal[1]({ history, result, getCMSResourcePath }))
+          .then((result) => modal[1]({ history, result, cmsResourceGetPath }))
           .catch(() => {});
       }, [location.state]);
 

@@ -18,9 +18,9 @@ import { KBRefreshRateSelect } from '../components/KBRefreshRateSelect/KBRefresh
 import { filterWhitespace, sanitizeURLs, urlsValidator } from '../KnowledgeBaseImport.utils';
 import { errorTextStyles, textareaStyles } from './KBImportUrl.css';
 
-const TEST_ID = tid('knowledge-base', 'import-url-modal');
-
 export const KBImportUrl = manager.create('KBImportURL', () => ({ api, type, opened, hidden, animated, closePrevented }) => {
+  const TEST_ID = tid('knowledge-base', 'import-url-modal');
+
   const { isEnabled: isRefreshEnabled } = useFeature(Realtime.FeatureFlag.KB_REFRESH);
   const createManyFromData = useDispatch(Designer.KnowledgeBase.Document.effect.createManyFromData);
 

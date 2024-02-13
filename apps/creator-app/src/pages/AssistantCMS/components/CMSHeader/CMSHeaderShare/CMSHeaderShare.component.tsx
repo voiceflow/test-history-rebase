@@ -7,9 +7,9 @@ import { useFeature } from '@/hooks';
 import { HEADER_TEST_ID } from '@/pages/AssistantCMS/AssistantCMS.constant';
 import SharePopper from '@/pages/Project/components/Header/components/SharePopper';
 
-const TEST_ID = tid(HEADER_TEST_ID, 'share');
-
 export const CMSHeaderShare: React.FC = () => {
+  const TEST_ID = tid(HEADER_TEST_ID, 'share');
+
   const hideExports = useFeature(Realtime.FeatureFlag.HIDE_EXPORTS);
 
   return !hideExports.isEnabled ? (

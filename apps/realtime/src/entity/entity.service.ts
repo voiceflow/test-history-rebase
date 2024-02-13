@@ -292,12 +292,25 @@ export class EntityService extends CMSTabularService<EntityORM> {
     };
   }
 
+  async syncRelationsOnDelete(
+    relations: { entityVariants: EntityVariantEntity[]; requiredEntities: RequiredEntityEntity[] },
+    { flush = true }: ORMMutateOptions = {}
+  ) {
+    const sync = await this.requiredEntity.syncOnDelete(relations.requiredEntities, { flush: false });
+
+    if (flush) {
+      await this.orm.em.flush();
+    }
+
+    return sync;
+  }
+
   async deleteManyAndSync(ids: Primary<EntityEntity>[]) {
     return this.postgresEM.transactional(async () => {
       const entities = await this.findMany(ids);
       const relations = await this.collectRelationsToDelete(entities);
 
-      const sync = await this.requiredEntity.syncOnDelete(relations.requiredEntities, { flush: false });
+      const sync = await this.syncRelationsOnDelete(relations, { flush: false });
 
       await this.deleteMany(entities, { flush: false });
 

@@ -18,13 +18,13 @@ import { KBPreviewQuestionResponse } from './KBPreviewQuestionResponse.component
 import { KBPreviewSettings } from './KBPreviewSettings.component';
 import { popperStyles, textareaStyles } from './KnowledgeBasePreviewQuestion.css';
 
-const TEST_ID = 'knowledge-base-preview-modal';
-const KB_PREVIEW_QUESTION_INPUT_ELEMENT_ID = 'kb-preview-question-input-id';
-
 export const KnowledgeBasePreviewQuestion = manager.create(
   'KnowledgeBasePreviewQuestion',
   () =>
     ({ api, type, opened, hidden, animated, closePrevented }) => {
+      const TEST_ID = 'knowledge-base-preview-modal';
+      const KB_PREVIEW_QUESTION_INPUT_ELEMENT_ID = 'kb-preview-question-input-id';
+
       const [trackingEvents] = useTrackingEvents();
       const questionRef = React.useRef<HTMLTextAreaElement>(null);
 
@@ -38,7 +38,7 @@ export const KnowledgeBasePreviewQuestion = manager.create(
       const [hasResponse, setHasResponse] = React.useState(false);
       const [previousQuestion, setPreviousQuestion] = useLocalStorageState('persist:kb-preview:last-question', '');
       const history = useHistory();
-      const getOneDocumentByName = useSelector(Designer.KnowledgeBase.selectors.getOneDocumentByName);
+      const getOneByName = useSelector(Designer.KnowledgeBase.Document.selectors.getOneByName);
       const [isPreviewSettingsOpen, togglePreviewSettings] = useToggle(false);
       const [showSettings, setShowSettings] = React.useState(true);
 
@@ -55,7 +55,7 @@ export const KnowledgeBasePreviewQuestion = manager.create(
       const displayableSources = React.useMemo(() => response?.chunks?.filter((chunk) => chunk.source), [response?.chunks]);
 
       const handleSourceClick = (sourceName: string) => {
-        const documentID = getOneDocumentByName(sourceName)?.id;
+        const documentID = getOneByName(sourceName)?.id;
 
         if (!documentID || !versionID) return;
 

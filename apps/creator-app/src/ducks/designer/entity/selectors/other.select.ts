@@ -6,7 +6,7 @@ import { createByFolderIDSelectors } from '../../utils/selector.util';
 import { getAllByEntityID as getAllVariantsByEntityID } from '../entity-variant/entity-variant.select';
 import { all, oneByID } from './crud.select';
 
-export const { allByFolderID, countByFolderID } = createByFolderIDSelectors(all);
+export const { allByFolderID, allByFolderIDs, countByFolderID } = createByFolderIDSelectors(all);
 
 export const mapByName = createSelector(all, (entities) => Object.fromEntries(entities.map((entity) => [entity.name, entity])));
 

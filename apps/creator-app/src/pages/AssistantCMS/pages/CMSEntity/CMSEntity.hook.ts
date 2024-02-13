@@ -5,7 +5,7 @@ import { useEntityCreateModal } from '@/hooks/modal.hook';
 
 import { useCMSManager } from '../../contexts/CMSManager';
 import type { CMSEntity } from '../../contexts/CMSManager/CMSManager.interface';
-import { useGetCMSResourcePath } from '../../hooks/cms-resource.hook';
+import { useCMSResourceGetPath } from '../../hooks/cms-resource.hook';
 
 export const useEntityCMSManager = useCMSManager<CMSEntity>;
 
@@ -14,7 +14,7 @@ export const useOnEntityCreate = () => {
   const cmsManager = useEntityCMSManager();
   const getAtomValue = useGetAtomValue();
   const entityCreateModal = useEntityCreateModal();
-  const getCMSResourcePath = useGetCMSResourcePath();
+  const cmsResourceGetPath = useCMSResourceGetPath();
 
   return async ({ name }: { name?: string } = {}) => {
     try {
@@ -23,7 +23,7 @@ export const useOnEntityCreate = () => {
         folderID: getAtomValue(cmsManager.folderID),
       });
 
-      history.push(getCMSResourcePath(entity.id).path);
+      history.push(cmsResourceGetPath(entity.id).path);
     } catch {
       // closed
     }

@@ -5,5 +5,5 @@ import { hocComponentFactory } from '@/utils/hoc.util';
 import type { ICMSRouteFoldersProvider } from './CMSRouteFolders.interface';
 import { CMSRouteFoldersProvider } from './CMSRouteFolders.provider';
 
-export const withCMSRouteFolders = (config: Omit<ICMSRouteFoldersProvider, 'Component'>) => (Component: React.FC) =>
-  hocComponentFactory(Component, 'withCMSRouteFolders')(() => <CMSRouteFoldersProvider {...config} Component={Component} />);
+export const withCMSRouteFolders = (props: Omit<ICMSRouteFoldersProvider, 'Component'>) => (Component: React.FC) =>
+  hocComponentFactory(Component, 'withCMSRouteFolders')(() => <CMSRouteFoldersProvider {...props} Component={Component} />);

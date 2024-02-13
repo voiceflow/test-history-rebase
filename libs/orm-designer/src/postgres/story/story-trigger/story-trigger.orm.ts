@@ -4,11 +4,18 @@ import { PostgresCMSObjectORM } from '@/postgres/common/postgres-cms-object.orm'
 import { PostgresCMSObjectUnionORM } from '@/postgres/common/postgres-union.orm';
 import type { PKOrEntity } from '@/types';
 
-import type { AnyTriggerEntity } from './trigger.entity';
-import { BaseTriggerEntity, EventTriggerEntity, IntentTriggerEntity } from './trigger.entity';
+import type { AnyStoryTriggerEntity } from './story-trigger.entity';
+import { BaseStoryTriggerEntity, EventStoryTriggerEntity, IntentStoryTriggerEntity } from './story-trigger.entity';
 
-export class TriggerORM extends PostgresCMSObjectUnionORM(BaseTriggerEntity, EventTriggerEntity, IntentTriggerEntity) {
-  findManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string): Promise<AnyTriggerEntity[]> {
+export class StoryTriggerORM extends PostgresCMSObjectUnionORM(
+  BaseStoryTriggerEntity,
+  EventStoryTriggerEntity,
+  IntentStoryTriggerEntity
+) {
+  findManyByEnvironment(
+    assistant: PKOrEntity<AssistantEntity>,
+    environmentID: string
+  ): Promise<AnyStoryTriggerEntity[]> {
     return this.find({ assistant, environmentID }, { orderBy: { createdAt: 'DESC' } });
   }
 
@@ -17,7 +24,7 @@ export class TriggerORM extends PostgresCMSObjectUnionORM(BaseTriggerEntity, Eve
   }
 }
 
-export class EventTriggerORM extends PostgresCMSObjectORM(EventTriggerEntity) {
+export class EventStoryTriggerORM extends PostgresCMSObjectORM(EventStoryTriggerEntity) {
   findManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
     return this.find({ assistant, environmentID }, { orderBy: { createdAt: 'DESC' } });
   }
@@ -27,7 +34,7 @@ export class EventTriggerORM extends PostgresCMSObjectORM(EventTriggerEntity) {
   }
 }
 
-export class IntentTriggerORM extends PostgresCMSObjectORM(IntentTriggerEntity) {
+export class IntentStoryTriggerORM extends PostgresCMSObjectORM(IntentStoryTriggerEntity) {
   findManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
     return this.find({ assistant, environmentID }, { orderBy: { createdAt: 'DESC' } });
   }

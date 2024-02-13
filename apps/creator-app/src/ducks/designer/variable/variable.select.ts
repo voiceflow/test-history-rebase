@@ -9,6 +9,6 @@ export const { hasOneByID, hasAllByIDs, oneByID, getOneByID, allByIDs, getAllByI
 
 export const mapByName = createSelector(all, (variables) => Object.fromEntries(variables.map((variable) => [variable.name, variable])));
 
-export const { allByFolderID, countByFolderID } = createByFolderIDSelectors(all);
+export const { allByFolderID, allByFolderIDs, countByFolderID } = createByFolderIDSelectors(all);
 
 export const names = createSelector([all], (variables) => variables.map((variable) => variable.name));

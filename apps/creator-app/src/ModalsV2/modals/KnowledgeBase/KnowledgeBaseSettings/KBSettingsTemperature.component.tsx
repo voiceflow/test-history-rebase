@@ -7,8 +7,6 @@ import { CMS_KNOWLEDGE_BASE_LEARN_MORE } from '@/constants/link.constant';
 import { SETTINGS_TEST_ID } from '../KnowledgeBase.constant';
 import { KBSettingLabel } from './KBSettingLabel.component';
 
-const TEST_ID = tid(SETTINGS_TEST_ID, 'temperature');
-
 export interface IKBSettingsTemperature {
   value: number;
   disabled?: boolean;
@@ -24,6 +22,8 @@ export const KBSettingsTemperature: React.FC<IKBSettingsTemperature> = ({
   setTooltipActiveLabel,
   onValueChange,
 }) => {
+  const TEST_ID = tid(SETTINGS_TEST_ID, 'temperature');
+
   const paddedDecimalString = (value: number | string, padding = 2) => {
     const [start, end = ''] = String(value).split('.');
 

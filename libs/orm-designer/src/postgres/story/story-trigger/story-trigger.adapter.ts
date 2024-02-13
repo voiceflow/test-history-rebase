@@ -7,12 +7,12 @@ import type { CMSKeyRemap, EntityObject, ToJSONWithForeignKeys } from '@/types';
 import { EventEntity } from '../../event/event.entity';
 import { IntentEntity } from '../../intent/intent.entity';
 import { StoryEntity } from '../story.entity';
-import type { BaseTriggerEntity, EventTriggerEntity, IntentTriggerEntity } from './trigger.entity';
-import { TriggerTarget } from './trigger-target.enum';
+import type { BaseStoryTriggerEntity, EventStoryTriggerEntity, IntentStoryTriggerEntity } from './story-trigger.entity';
+import { StoryTriggerTarget } from './story-trigger-target.enum';
 
-export const BaseTriggerJSONAdapter = createSmartMultiAdapter<
-  EntityObject<BaseTriggerEntity>,
-  ToJSONWithForeignKeys<BaseTriggerEntity>,
+export const BaseStoryTriggerJSONAdapter = createSmartMultiAdapter<
+  EntityObject<BaseStoryTriggerEntity>,
+  ToJSONWithForeignKeys<BaseStoryTriggerEntity>,
   [],
   [],
   CMSKeyRemap<[['story', 'storyID']]>
@@ -39,54 +39,54 @@ export const BaseTriggerJSONAdapter = createSmartMultiAdapter<
   })
 );
 
-export const EventTriggerJSONAdapter = createSmartMultiAdapter<
-  EntityObject<EventTriggerEntity>,
-  ToJSONWithForeignKeys<EventTriggerEntity>,
+export const EventStoryTriggerJSONAdapter = createSmartMultiAdapter<
+  EntityObject<EventStoryTriggerEntity>,
+  ToJSONWithForeignKeys<EventStoryTriggerEntity>,
   [],
   [],
   CMSKeyRemap<[['event', 'eventID'], ['story', 'storyID']]>
 >(
   ({ event, target, ...data }) => ({
-    ...BaseTriggerJSONAdapter.fromDB(data),
+    ...BaseStoryTriggerJSONAdapter.fromDB(data),
 
     ...(event !== undefined && { eventID: event.id }),
 
-    ...(target !== undefined && { target: TriggerTarget.EVENT }),
+    ...(target !== undefined && { target: StoryTriggerTarget.EVENT }),
   }),
   ({ target, eventID, ...data }) => ({
-    ...BaseTriggerJSONAdapter.toDB(data),
+    ...BaseStoryTriggerJSONAdapter.toDB(data),
 
     ...(eventID !== undefined &&
       data.environmentID && {
         event: ref(EventEntity, { id: eventID, environmentID: data.environmentID }),
       }),
 
-    ...(target !== undefined && { target: TriggerTarget.EVENT }),
+    ...(target !== undefined && { target: StoryTriggerTarget.EVENT }),
   })
 );
 
-export const IntentTriggerJSONAdapter = createSmartMultiAdapter<
-  EntityObject<IntentTriggerEntity>,
-  ToJSONWithForeignKeys<IntentTriggerEntity>,
+export const IntentStoryTriggerJSONAdapter = createSmartMultiAdapter<
+  EntityObject<IntentStoryTriggerEntity>,
+  ToJSONWithForeignKeys<IntentStoryTriggerEntity>,
   [],
   [],
   CMSKeyRemap<[['intent', 'intentID'], ['story', 'storyID']]>
 >(
   ({ intent, target, ...data }) => ({
-    ...BaseTriggerJSONAdapter.fromDB(data),
+    ...BaseStoryTriggerJSONAdapter.fromDB(data),
 
     ...(intent !== undefined && { intentID: intent.id }),
 
-    ...(target !== undefined && { target: TriggerTarget.INTENT }),
+    ...(target !== undefined && { target: StoryTriggerTarget.INTENT }),
   }),
   ({ target, intentID, ...data }) => ({
-    ...BaseTriggerJSONAdapter.toDB(data),
+    ...BaseStoryTriggerJSONAdapter.toDB(data),
 
     ...(intentID !== undefined &&
       data.environmentID && {
         intent: ref(IntentEntity, { id: intentID, environmentID: data.environmentID }),
       }),
 
-    ...(target !== undefined && { target: TriggerTarget.INTENT }),
+    ...(target !== undefined && { target: StoryTriggerTarget.INTENT }),
   })
 );

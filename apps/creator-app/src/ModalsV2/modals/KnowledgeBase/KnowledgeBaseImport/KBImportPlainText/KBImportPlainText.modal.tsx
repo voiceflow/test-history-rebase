@@ -13,9 +13,9 @@ import manager from '@/ModalsV2/manager';
 import { KBFieldLabel } from '../components/KBFieldLabel/KBFieldLabel.component';
 import { submitButtonStyles, textareaStyles } from './KBImportPlainText.css';
 
-const TEST_ID = tid('knowledge-base', 'import-plain-text-modal');
-
 export const KBImportPlainText = manager.create('KBImportPlainText', () => ({ api, type, opened, hidden, animated, closePrevented }) => {
+  const TEST_ID = tid('knowledge-base', 'import-plain-text-modal');
+
   const textState = useInputState();
 
   const createManyFromText = useDispatch(Designer.KnowledgeBase.Document.effect.createManyFromText);

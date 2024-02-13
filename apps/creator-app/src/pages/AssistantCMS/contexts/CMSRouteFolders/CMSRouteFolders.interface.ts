@@ -1,29 +1,29 @@
+import { FolderScope } from '@voiceflow/dtos';
 import type { Atom } from 'jotai';
-
-import type { State as AppState } from '@/ducks';
 
 export interface CMSRouteFolder {
   id: string;
-  url: string;
   name: string;
-  count: number;
+  pathname: string;
 }
-
-type CountSelector = (state: AppState, params: { folderID: string | null }) => number;
 
 export interface ICMSRouteFolders {
   folders: Atom<CMSRouteFolder[]>;
+  rootPathname: Atom<string>;
   activeFolderID: Atom<null | string>;
-  activeFolderURL: Atom<null | string>;
+  activeFolderScope: Atom<FolderScope>;
+  activeFolderPathname: Atom<string>;
 }
 
 export interface ICMSRouteFoldersScope {
   folders: Atom<CMSRouteFolder[]>;
-  countSelector: CountSelector;
-  activeFolderID: null | string;
+  pathname: string;
+  folderID: null | string;
+  folderScope: FolderScope;
 }
 
 export interface ICMSRouteFoldersProvider {
+  pathname: string;
   Component: React.FC;
-  countSelector: CountSelector;
+  folderScope: FolderScope;
 }

@@ -27,7 +27,9 @@ export const CMS_ENTITY_TABLE_CONFIG: TableConfig<EntityTableColumn, CMSFolder |
       name: 'Name',
       sorter: withFolderSort<CMSEntity>(withFieldLocaleCompareSort('name')),
 
-      cell: ({ item, type }) => <CMSTableNameCell type={type} name={item.name} itemID={item.id} nameTransform={transformVariableName} />,
+      cell: ({ item, type }) => (
+        <CMSTableNameCell type={type} name={item.name} itemID={item.id} isFolder={item.group} nameTransform={transformVariableName} />
+      ),
     },
 
     [EntityTableColumn.DESCRIPTION]: {

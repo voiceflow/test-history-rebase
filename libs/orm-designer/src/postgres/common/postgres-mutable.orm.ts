@@ -1,4 +1,5 @@
 import type { DeleteOptions, FilterQuery, UpdateOptions } from '@mikro-orm/core';
+import { Utils } from '@voiceflow/common';
 
 import type { MutableORM } from '@/common';
 import type { BaseEntity } from '@/common/interfaces/base-entity.interface';
@@ -27,8 +28,16 @@ export const PostgresMutableORM = <Entity extends BaseEntity, ConstructorParam e
       { flush = true }: ORMMutateOptions = {}
     ): Promise<void> {
       const entityRef = isEntity(entity) ? entity : this.getReference(entity);
+      const { primaryKeys } = this.em.getMetadata(Entity);
 
-      Object.assign(entityRef, Entity.fromJSON(patch));
+      // to update composite references properly we need to add primary key into patch data adapter
+      const patchData = Entity.fromJSON({ ...Utils.object.pick(entity, primaryKeys as any[]), ...patch });
+
+      Object.assign(
+        entityRef,
+        // remove primary keys from patch data if they are not changed
+        Utils.object.omit(patchData, primaryKeys.filter((pk) => !Utils.object.hasProperty(patch, pk)) as any[])
+      );
 
       if (flush) {
         await this.em.flush();

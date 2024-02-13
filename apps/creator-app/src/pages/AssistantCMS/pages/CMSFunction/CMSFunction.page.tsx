@@ -30,7 +30,8 @@ const CMSFunction: React.FC = () => (
 
 export default Utils.functional.compose(
   withCMSRouteFolders({
-    countSelector: Designer.Function.selectors.countByFolderID,
+    pathname: Path.CMS_FUNCTION,
+    folderScope: FolderScope.FUNCTION,
   }),
 
   withCMSInitialTableState({
@@ -39,11 +40,10 @@ export default Utils.functional.compose(
 
   withCMSManagerProvider({
     search: functionSearch,
-    pathname: Path.CMS_FUNCTION,
-    folderScope: FolderScope.FUNCTION,
 
     effects: {
       patchOne: Designer.Function.effect.patchOne,
+      patchMany: Designer.Function.effect.patchMany,
       deleteOne: Designer.Function.effect.deleteOne,
       deleteMany: Designer.Function.effect.deleteMany,
       exportMany: Designer.Function.effect.exportMany,
@@ -52,6 +52,7 @@ export default Utils.functional.compose(
     selectors: {
       oneByID: Designer.Function.selectors.oneByID,
       allByFolderID: Designer.Function.selectors.allByFolderID,
+      allByFolderIDs: Designer.Function.selectors.allByFolderIDs,
     },
   }),
 
@@ -59,5 +60,5 @@ export default Utils.functional.compose(
     Editor: CMSFunctionEditor,
   }),
 
-  withCMSResourceModals([Modals.Function.Create, ({ result, history, getCMSResourcePath }) => history.push(getCMSResourcePath(result.id).path)])
+  withCMSResourceModals([Modals.Function.Create, ({ result, history, cmsResourceGetPath }) => history.push(cmsResourceGetPath(result.id).path)])
 )(CMSFunction);

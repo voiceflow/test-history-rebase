@@ -13,8 +13,6 @@ import { stopPropagation } from '@/utils/handler.util';
 
 import type { EntityVariantsSectionItem, IEntityVariantsSection } from './EntityVariantsSection.interface';
 
-const TEST_ID = tid('entity', 'variants');
-
 export const EntityVariantsSection = <T extends EntityVariantsSectionItem>({
   name,
   onAdd,
@@ -26,6 +24,8 @@ export const EntityVariantsSection = <T extends EntityVariantsSectionItem>({
   renderVariantInput,
   autoScrollToTopRevision,
 }: IEntityVariantsSection<T>): React.ReactElement => {
+  const TEST_ID = tid('entity', 'variants');
+
   const listEmpty = useIsListEmpty(variants, isEntityVariantLikeEmpty);
   const aiGenerate = useAIGenerateEntityVariants({
     examples: variants,

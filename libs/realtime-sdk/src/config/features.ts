@@ -58,4 +58,6 @@ export enum FeatureFlag {
   CMS_VARIABLES = 'cms_variables',
 
   HTTP_ASSISTANT_CMS = 'http_assistant_cms',
+
+  CMS_FOLDERS = 'cms_folders',
 }

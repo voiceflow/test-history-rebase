@@ -1,8 +1,7 @@
 import { CUSTOM_SLOT_TYPE, Utils } from '@voiceflow/common';
 import type { Entity, EntityVariant } from '@voiceflow/dtos';
 import { tid } from '@voiceflow/style';
-import { toast } from '@voiceflow/ui';
-import { Divider, Scroll, useConst } from '@voiceflow/ui-next';
+import { Divider, notify, Scroll, useConst } from '@voiceflow/ui-next';
 import { entityNameValidator, entityVariantsValidator, validatorFactory } from '@voiceflow/utils-designer';
 import React, { useState } from 'react';
 
@@ -20,8 +19,6 @@ import { transformVariableName } from '@/utils/variable.util';
 
 import { modalsManager } from '../../manager';
 
-const TEST_ID = 'create-entity-modal';
-
 export interface IEntityCreateModal {
   name?: string;
   folderID: string | null;
@@ -31,6 +28,8 @@ export const EntityCreateModal = modalsManager.create<IEntityCreateModal, Entity
   'EntityCreateModal',
   () =>
     ({ api, type: typeProp, name: nameProp, opened, hidden, animated, folderID, closePrevented }) => {
+      const TEST_ID = 'create-entity-modal';
+
       const getIntents = useGetValueSelector(Designer.Intent.selectors.allWithFormattedBuiltInNames);
       const getEntities = useGetValueSelector(Designer.Entity.selectors.all);
       const getVariables = useGetValueSelector(Designer.Variable.selectors.all);
@@ -98,7 +97,7 @@ export const EntityCreateModal = modalsManager.create<IEntityCreateModal, Entity
             api.enableClose();
             api.close();
           } catch (e) {
-            toast.genericError();
+            notify.short.genericError();
 
             api.enableClose();
           }

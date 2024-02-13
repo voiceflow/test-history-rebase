@@ -17,16 +17,16 @@ export const ModalContainer = React.forwardRef<HTMLDivElement, IModalContainer>(
       type,
       hidden,
       opened,
+      testID,
       stacked = false,
       animated = true,
       children,
       onExited,
       onExiting,
       className,
-      containerClassName,
       onEscClose,
       onEnterSubmit,
-      testID,
+      containerClassName,
     },
     ref
   ) => {

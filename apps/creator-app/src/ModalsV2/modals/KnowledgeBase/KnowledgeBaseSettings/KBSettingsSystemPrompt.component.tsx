@@ -8,8 +8,6 @@ import { useLinkedState } from '@/hooks/state.hook';
 import { SETTINGS_TEST_ID } from '../KnowledgeBase.constant';
 import { KBSettingLabel } from './KBSettingLabel.component';
 
-const TEST_ID = tid(SETTINGS_TEST_ID, 'system-prompt');
-
 export interface IKBSettingsSystemPrompt {
   value: string;
   disabled?: boolean;
@@ -31,6 +29,8 @@ export const KBSettingsSystemPrompt: React.FC<IKBSettingsSystemPrompt> = ({
   onValueChange,
   onValueType,
 }) => {
+  const TEST_ID = tid(SETTINGS_TEST_ID, 'system-prompt');
+
   const [value, setValue] = useLinkedState(propValue);
 
   return (

@@ -9,8 +9,6 @@ import { CMS_KNOWLEDGE_BASE_LEARN_MORE } from '@/constants/link.constant';
 import { SETTINGS_TEST_ID } from '../KnowledgeBase.constant';
 import { KBSettingLabel } from './KBSettingLabel.component';
 
-const TEST_ID = tid(SETTINGS_TEST_ID, 'tokens');
-
 export interface IKBSettingsTokens {
   value: number;
   model: BaseUtils.ai.GPT_MODEL;
@@ -28,6 +26,8 @@ export const KBSettingsTokens: React.FC<IKBSettingsTokens> = ({
   activeTooltipLabel,
   setTooltipActiveLabel,
 }) => {
+  const TEST_ID = tid(SETTINGS_TEST_ID, 'tokens');
+
   const modelConfig = AI_MODEL_CONFIG_MAP[model];
 
   useEffect(() => {

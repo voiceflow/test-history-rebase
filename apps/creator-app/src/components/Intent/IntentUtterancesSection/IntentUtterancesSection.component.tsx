@@ -13,8 +13,6 @@ import { isUtteranceTextEmpty } from '@/utils/utterance.util';
 import { IntentUtteranceInput } from '../IntentUtteranceInput/IntentUtteranceInput.component';
 import type { IIntentUtterancesSection } from './IntentUtterancesSection.interface';
 
-const TEST_ID = tid('intent', 'utterances');
-
 export const IntentUtterancesSection: React.FC<IIntentUtterancesSection> = ({
   utterances,
   autoFocusKey,
@@ -27,6 +25,8 @@ export const IntentUtterancesSection: React.FC<IIntentUtterancesSection> = ({
   onUtteranceImportMany,
   autoScrollToTopRevision,
 }) => {
+  const TEST_ID = tid('intent', 'utterances');
+
   const bulkImportUtterancesModal = useIntentBulkImportUtterancesModal();
 
   const onUtteranceEnterPress = (event: React.KeyboardEvent<HTMLDivElement>, value: UtteranceText) => {

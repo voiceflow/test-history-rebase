@@ -12,8 +12,6 @@ import { transformVariableName } from '@/utils/variable.util';
 
 import { modalsManager } from '../../manager';
 
-const TEST_ID = 'edit-entity-modal';
-
 export interface IEntityEditModal {
   entityID: string;
 }
@@ -22,6 +20,8 @@ export const EntityEditModal = modalsManager.create<IEntityEditModal>(
   'EntityEditModal',
   () =>
     ({ api, type, opened, hidden, entityID, animated }) => {
+      const TEST_ID = 'edit-entity-modal';
+
       const entity = useSelector(Designer.Entity.selectors.oneByID, { id: entityID });
       const entities = useSelector(Designer.Entity.selectors.all);
 

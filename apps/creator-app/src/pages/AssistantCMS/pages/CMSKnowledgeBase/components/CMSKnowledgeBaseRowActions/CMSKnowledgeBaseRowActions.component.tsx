@@ -8,21 +8,21 @@ import { Designer } from '@/ducks';
 import { useConfirmV2Modal } from '@/hooks/modal.hook';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
 import { CMS_TEST_ID } from '@/pages/AssistantCMS/AssistantCMS.constant';
-import { useGetCMSResourcePath } from '@/pages/AssistantCMS/hooks/cms-resource.hook';
+import { useCMSResourceGetPath } from '@/pages/AssistantCMS/hooks/cms-resource.hook';
 import { clipboardCopy } from '@/utils/clipboard.util';
 import { stopPropagation } from '@/utils/handler.util';
 
 import { ICMSKnowledgeBaseRowActions } from './CMSKnowledgeBaseRowActions.interface';
 
-const TEST_ID = tid(CMS_TEST_ID, 'context-menu');
-
 export const CMSKnowledgeBaseRowActions: React.FC<ICMSKnowledgeBaseRowActions> = ({ id, onClose }) => {
+  const TEST_ID = tid(CMS_TEST_ID, 'context-menu');
+
   const document = useSelector(Designer.KnowledgeBase.Document.selectors.oneByID, { id });
   const confirmModal = useConfirmV2Modal();
 
   const deleteOne = useDispatch(Designer.KnowledgeBase.Document.effect.deleteOne);
   const resyncMany = useDispatch(Designer.KnowledgeBase.Document.effect.resyncMany);
-  const getCMSResourcePath = useGetCMSResourcePath();
+  const cmsResourceGetPath = useCMSResourceGetPath();
   const isURL = document?.data?.type === BaseModels.Project.KnowledgeBaseDocumentType.URL;
 
   const onConfirmDelete = async () => {
@@ -42,7 +42,7 @@ export const CMSKnowledgeBaseRowActions: React.FC<ICMSKnowledgeBaseRowActions> =
   };
 
   const onCopyLink = () => {
-    clipboardCopy(`${window.location.origin}${getCMSResourcePath(id).path}`);
+    clipboardCopy(`${window.location.origin}${cmsResourceGetPath(id).path}`);
     notify.short.success(`Copied`);
     onClose();
   };

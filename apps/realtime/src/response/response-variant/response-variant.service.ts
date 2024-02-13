@@ -424,10 +424,9 @@ export class ResponseVariantService {
     return this.postgresEM.transactional(async () => {
       const responseVariants = await this.findMany(ids);
 
-      const [relations, sync] = await Promise.all([
-        this.collectRelationsToDelete(responseVariants),
-        this.syncOnDelete(userID, responseVariants, { flush: false }),
-      ]);
+      const relations = await this.collectRelationsToDelete(responseVariants);
+
+      const sync = await this.syncOnDelete(userID, responseVariants, { flush: false });
 
       await this.deleteMany(responseVariants, { flush: false });
 

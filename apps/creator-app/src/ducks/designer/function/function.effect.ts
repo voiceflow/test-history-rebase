@@ -67,6 +67,16 @@ export const patchOne =
     await dispatch.sync(Actions.Function.PatchOne({ context, id, patch }));
   };
 
+export const patchMany =
+  (ids: string[], patch: Actions.Function.PatchData): Thunk =>
+  async (dispatch, getState) => {
+    const state = getState();
+
+    const context = getActiveAssistantContext(state);
+
+    await dispatch.sync(Actions.Function.PatchMany({ context, ids, patch }));
+  };
+
 export const deleteOne =
   (id: string): Thunk =>
   async (dispatch, getState) => {

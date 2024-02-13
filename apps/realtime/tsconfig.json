@@ -10,7 +10,8 @@
     "noUnusedLocals": true,
     "paths": {
       "@/*": ["src/*"]
-    }
+    },
+    "noErrorTruncation": true
   },
   "exclude": ["node_modules/**/*", "build/**/*", "test/**/*.d.ts"]
 }

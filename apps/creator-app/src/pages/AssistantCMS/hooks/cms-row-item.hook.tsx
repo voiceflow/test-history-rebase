@@ -5,19 +5,19 @@ import { useHistory } from 'react-router';
 
 import { useGetResolvedPath, useOnLinkClick } from '@/hooks/navigation.hook';
 
-import { useCMSResourceGetMoreMenu, useGetCMSResourcePath } from './cms-resource.hook';
+import { useCMSResourceGetMoreMenu, useCMSResourceGetPath } from './cms-resource.hook';
 import { useCMSRenameColumn } from './cms-table.hook';
 
 export const useCMSRowItemClick = (onClick?: (resourceID: string) => void) => {
   const onLinkClick = useOnLinkClick();
   const dismissableLayer = useContext(DismissableLayerContext);
-  const getCMSResourcePath = useGetCMSResourcePath();
+  const cmsResourceGetPath = useCMSResourceGetPath();
 
   return usePersistFunction((resourceID: string, event: React.MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
     dismissableLayer.dismissAllGlobally();
 
-    const { path, isFolder } = getCMSResourcePath(resourceID);
+    const { path, isFolder } = cmsResourceGetPath(resourceID);
 
     if (isFolder) {
       onLinkClick(path)(event);
@@ -34,10 +34,10 @@ export const useCMSRowItemNavigate = () => {
   const getResolvedPath = useGetResolvedPath();
   const dismissableLayer = useContext(DismissableLayerContext);
 
-  const getCMSResourcePath = useGetCMSResourcePath();
+  const cmsResourceGetPath = useCMSResourceGetPath();
 
   return usePersistFunction((resourceID: string) => {
-    const { path } = getCMSResourcePath(resourceID);
+    const { path } = cmsResourceGetPath(resourceID);
 
     history.push(getResolvedPath(path));
     dismissableLayer.dismissAllGlobally();

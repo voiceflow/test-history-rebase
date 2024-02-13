@@ -6,11 +6,11 @@ export const STATE_KEY = 'document';
 
 export interface DocumentState extends Normalized<KnowledgeBaseDocument> {
   fetchStatus: 'idle' | 'loading' | 'success' | 'error';
-  processingDocumentIDs: string[];
+  processingIDs: string[];
 }
 
 export const INITIAL_STATE: DocumentState = {
   ...createEmpty(),
   fetchStatus: 'idle',
-  processingDocumentIDs: [],
+  processingIDs: [],
 };

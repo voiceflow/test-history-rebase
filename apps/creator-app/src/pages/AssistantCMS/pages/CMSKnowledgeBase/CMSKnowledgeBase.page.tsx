@@ -35,8 +35,8 @@ export default Utils.functional.compose(
   }),
 
   withCMSRouteFolders({
-    // TODO: use countByFolderID selector when it's available
-    countSelector: Designer.KnowledgeBase.Document.selectors.count,
+    pathname: Path.CMS_KNOWLEDGE_BASE,
+    folderScope: FolderScope.KNOWLEDGE_BASE,
   }),
 
   withCMSInitialTableState({
@@ -45,11 +45,10 @@ export default Utils.functional.compose(
 
   withCMSManagerProvider({
     search: knowledgeBaseSearch,
-    pathname: Path.CMS_KNOWLEDGE_BASE,
-    folderScope: FolderScope.KNOWLEDGE_BASE,
 
     effects: {
       patchOne: Designer.KnowledgeBase.Document.effect.patchOne,
+      patchMany: Designer.KnowledgeBase.Document.effect.patchMany,
       deleteOne: Designer.KnowledgeBase.Document.effect.deleteOne,
       deleteMany: Designer.KnowledgeBase.Document.effect.deleteMany,
     },
@@ -58,6 +57,7 @@ export default Utils.functional.compose(
       oneByID: Designer.KnowledgeBase.Document.selectors.oneByID,
       // TODO: use allByFolderID selector when it's available
       allByFolderID: Designer.KnowledgeBase.Document.selectors.all,
+      allByFolderIDs: Designer.KnowledgeBase.Document.selectors.all,
     },
   }),
 

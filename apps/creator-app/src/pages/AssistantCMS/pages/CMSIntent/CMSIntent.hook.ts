@@ -5,7 +5,7 @@ import { useIntentCreateModal } from '@/hooks/modal.hook';
 
 import { useCMSManager } from '../../contexts/CMSManager';
 import type { CMSIntent } from '../../contexts/CMSManager/CMSManager.interface';
-import { useGetCMSResourcePath } from '../../hooks/cms-resource.hook';
+import { useCMSResourceGetPath } from '../../hooks/cms-resource.hook';
 
 export const useIntentCMSManager = useCMSManager<CMSIntent>;
 
@@ -14,7 +14,7 @@ export const useOnIntentCreate = () => {
   const cmsManager = useIntentCMSManager();
   const createModal = useIntentCreateModal();
   const getAtomValue = useGetAtomValue();
-  const getCMSResourcePath = useGetCMSResourcePath();
+  const cmsResourceGetPath = useCMSResourceGetPath();
 
   return async ({ name }: { name?: string } = {}) => {
     try {
@@ -23,7 +23,7 @@ export const useOnIntentCreate = () => {
         folderID: getAtomValue(cmsManager.folderID),
       });
 
-      history.push(getCMSResourcePath(intent.id).path);
+      history.push(cmsResourceGetPath(intent.id).path);
     } catch {
       // closed
     }

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1393.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1393.0...@voiceflow/creator-app@1.1393.1) (2024-02-13)
+
+### Bug Fixes
+
+* add onClose to filter dropdowns [bugfix] (CV3-995) ([#7773](https://github.com/voiceflow/creator-app/issues/7773)) ([8d2c14d](https://github.com/voiceflow/creator-app/commit/8d2c14d32dc63deea1d6c0da6adac7721210f4dd))
+
 # [1.1393.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1392.0...@voiceflow/creator-app@1.1393.0) (2024-02-13)
 
 ### Features

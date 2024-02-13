@@ -33,6 +33,12 @@ export const knowledgeBaseClient = {
     return apiV3.fetch.get<DBKnowledgeBaseDocument[]>(url).then(({ data }) => data);
   },
 
+  getManyDocuments: (projectID: string, documentIDs?: string[]) => {
+    return apiV3.fetch
+      .post<DBKnowledgeBaseDocument[]>(`/projects/${projectID}/knowledge-base/documents/retrieve-many`, { documentIDs })
+      .then(({ data }) => data);
+  },
+
   createOneDocument: (projectID: string, data: BaseModels.Project.KnowledgeBaseDocument['data']) =>
     apiV3.fetch.post<DBKnowledgeBaseDocument>(`/projects/${projectID}/knowledge-base/documents`, { data }).then(({ data }) => data),
 

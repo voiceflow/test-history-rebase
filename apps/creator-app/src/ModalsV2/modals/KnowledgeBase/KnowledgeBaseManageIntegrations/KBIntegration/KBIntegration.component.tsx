@@ -39,6 +39,7 @@ export const KBIntegration: React.FC<IKBIntegration> = ({
     try {
       await deleteIntegration(type);
 
+      enableClose();
       onRemoved();
       notify.short.info(`Integration removed`, { showIcon: false });
     } catch {

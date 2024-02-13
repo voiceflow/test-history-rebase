@@ -36,8 +36,11 @@ export const importIntegration =
 
     Errors.assertProjectID(projectID);
 
-    const data = await knowledgeBaseClient.importIntegration(projectID, integrationType, { filters, refreshRate });
-
+    const data = await knowledgeBaseClient.importIntegration(projectID, integrationType, { filters, refreshRate }).catch(() => {
+      return {
+        status: 500,
+      };
+    });
     return data.status;
   };
 

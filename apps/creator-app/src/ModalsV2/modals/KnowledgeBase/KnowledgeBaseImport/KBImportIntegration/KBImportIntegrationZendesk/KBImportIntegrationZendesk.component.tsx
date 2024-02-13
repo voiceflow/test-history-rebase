@@ -34,7 +34,9 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
   const [refreshRate, setRefreshRate] = React.useState(BaseModels.Project.KnowledgeBaseDocumentRefreshRate.NEVER);
   const [filters, setFilters] = React.useState<ZendeskFilters>({});
   const [numDataSources, setNumDataSources] = React.useState<number | null>(null);
-  const [isLoading, setIsLoading] = React.useState(false);
+  const [isLoadingDocumentCount, setIsLoadingDocumentCount] = React.useState(false);
+  const [isLoadingFilters, setIsLoadingFilters] = React.useState(true);
+  const [isLoadingUserSegments, setIsLoadingUserSegments] = React.useState(false);
   const [trackingEvents] = useTrackingEvents();
 
   const [brands, setBrands] = React.useState<ZendeskFilterBrand[]>([]);
@@ -43,10 +45,7 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
   const [labels, setLabels] = React.useState<ZendeskFilterLabel[]>([]);
   const [userSegments, setUserSegments] = React.useState<ZendeskFilterUserSegment[]>([]);
 
-  const [brandIdOptions, setBrandIdOptions] = React.useState<ZendeskFilterBrand[]>([]);
-  const [localeOptions, setLocaleOptions] = React.useState<ZendeskFilterLocale[]>([]);
   const [categoryOptions, setCategoryOptions] = React.useState<ZendeskFilterBase[]>([]);
-  const [labelOptions, setLabelOptions] = React.useState<ZendeskFilterLabel[]>([]);
   const [userSegmentOptions, setUserSegmentOptions] = React.useState<ZendeskFilterUserSegment[]>([]);
 
   const getDocumentCount = useDispatch(Designer.KnowledgeBase.Integration.effect.getIntegrationDocumentCount);
@@ -54,36 +53,49 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
   const getUserSegments = useDispatch(Designer.KnowledgeBase.Integration.effect.getIntegrationUserSegments);
   const importIntegration = useDispatch(Designer.KnowledgeBase.Integration.effect.importIntegration);
 
+  const areFilters = React.useMemo(
+    () => brands.length || locales.length || categories.length || labels.length || userSegments.length,
+    [brands, locales, categories, labels, userSegments]
+  );
+
   const updateDocumentCount = async () => {
-    setIsLoading(true);
-    const filters = {
+    setIsLoadingDocumentCount(true);
+    const countFilters = {
       labels,
       locales,
-      brands,
+      brands: brands || filters.brands,
       categories,
       userSegments,
     };
-    await getDocumentCount('zendesk', filters)
+    await getDocumentCount('zendesk', countFilters)
       .then((numDocs) => setNumDataSources(numDocs))
-      .finally(() => setIsLoading(false));
+      .finally(() => setIsLoadingDocumentCount(false));
   };
 
-  React.useEffect(() => {
-    updateDocumentCount();
-  }, [brands, locales, categories, labels, userSegments]);
-
   const getDocumentFilters = async () => {
+    setIsLoadingFilters(true);
     const filters = await getFilters('zendesk');
     getUserSegmentOptions();
     setFilters(filters);
-    setBrandIdOptions(filters.brands || []);
-    setLocaleOptions(filters.locales || []);
-    setLabelOptions(filters.labels || []);
+    setIsLoadingFilters(false);
+    updateDocumentCount();
+  };
+
+  const resetFilters = () => {
+    setBrands([]);
+    setLocales([]);
+    setCategories([]);
+    setLabels([]);
+    setUserSegments([]);
   };
 
   React.useEffect(() => {
     getDocumentFilters();
   }, []);
+
+  React.useEffect(() => {
+    getUserSegmentOptions();
+  }, [labels, locales, brands, categories]);
 
   React.useEffect(() => {
     const options = locales
@@ -96,56 +108,43 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
   }, [filters, locales]);
 
   const getUserSegmentOptions = async () => {
-    const filters = {
+    setIsLoadingUserSegments(true);
+    const segmentFilters = {
       labels,
       locales,
-      brands,
+      brands: filters.brands || brands,
       categories,
     };
-    const options = await getUserSegments(filters);
+    const options = await getUserSegments(segmentFilters);
     setUserSegmentOptions(options);
+    setIsLoadingUserSegments(false);
   };
-
-  React.useEffect(() => {
-    getUserSegmentOptions();
-  }, [labels, locales, brands, categories]);
-
-  const resetFilters = () => {
-    setBrands([]);
-    setLocales([]);
-    setCategories([]);
-    setLabels([]);
-    setUserSegments([]);
-  };
-
-  const areFilters = React.useMemo(
-    () => brands.length || locales.length || categories.length || labels.length || userSegments.length,
-    [brands, locales, categories, labels, userSegments]
-  );
-
-  const canSubmit = React.useMemo(
-    () => !!categories.length || !!labels.length || (!brands.length && !locales.length),
-    [categories, brands, locales, labels]
-  );
 
   const importDataSources = async () => {
     disableClose();
 
-    const filters = {
+    const importFilters = {
       labels,
       locales,
-      brands,
+      brands: brands || filters.brands,
       categories,
       userSegments,
     };
 
-    trackingEvents.trackAiKnowledgeBaseIntegrationFiltersUsed({ Filters: filters });
-    const status = await importIntegration(BaseModels.Project.IntegrationTypes.ZENDESK, refreshRate, filters);
+    trackingEvents.trackAiKnowledgeBaseIntegrationFiltersUsed({ Filters: importFilters });
 
+    const timeout = setTimeout(() => {
+      enableClose();
+      notify.short.error('Failed to import data sources');
+    }, 300000);
+
+    const status = await importIntegration(BaseModels.Project.IntegrationTypes.ZENDESK, refreshRate, importFilters);
+
+    clearTimeout(timeout);
     enableClose();
 
     if (status === 200) {
-      notify.short.success('Importing data sources from Zendesk');
+      notify.short.info('Importing data sources from Zendesk', { showIcon: false });
       onClose();
       onSuccess();
     } else {
@@ -169,6 +168,7 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
           <Box pb={16} pl={24}>
             <Divider
               noPadding
+              isLabelDisabled={disabled}
               label={areFilters ? `Reset filters` : 'Filters'}
               onLabelClick={areFilters ? stopPropagation(resetFilters) : undefined}
             />
@@ -177,18 +177,20 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
             <KBZendeskFilterSelect
               label="Brands"
               value={brands}
-              options={brandIdOptions}
-              disabled={disabled}
+              options={filters.brands || []}
+              disabled={disabled || isLoadingFilters}
               onValueChange={setBrands}
+              onDropdownClose={updateDocumentCount}
               placeholder="Select brands (optional)"
               testID={tid(testID, 'brands')}
             />
             <KBZendeskFilterSelect
               label="Locales"
               value={locales}
-              options={localeOptions}
-              disabled={disabled || !brands.length}
+              options={filters.locales || []}
+              disabled={disabled || !brands.length || isLoadingFilters}
               onValueChange={setLocales}
+              onDropdownClose={updateDocumentCount}
               placeholder="Select locales (optional)"
               hasTooltip={!brands.length}
               testID={tid(testID, 'locales')}
@@ -197,8 +199,9 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
               label="Categories"
               value={categories}
               options={categoryOptions}
-              disabled={disabled || !locales.length}
+              disabled={disabled || !locales.length || isLoadingFilters}
               onValueChange={setCategories}
+              onDropdownClose={updateDocumentCount}
               placeholder="Select categories (optional)"
               hasTooltip={!locales.length}
               testID={tid(testID, 'categories')}
@@ -206,9 +209,10 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
             <KBZendeskFilterSelect
               label="Labels"
               value={labels}
-              options={labelOptions}
-              disabled={disabled || !categories.length}
+              options={filters.labels || []}
+              disabled={disabled || !categories.length || isLoadingFilters}
               onValueChange={setLabels}
+              onDropdownClose={updateDocumentCount}
               placeholder="Select labels (optional)"
               hasTooltip={!categories.length}
               testID={tid(testID, 'labels')}
@@ -217,8 +221,9 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
               label="User segments"
               value={userSegments}
               options={userSegmentOptions}
-              disabled={disabled}
+              disabled={disabled || isLoadingFilters || isLoadingUserSegments}
               onValueChange={setUserSegments}
+              onDropdownClose={updateDocumentCount}
               placeholder="Select user segments (optional)"
               testID={tid(testID, 'user-segments')}
             />
@@ -236,8 +241,8 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
         <Modal.Footer.Button
           label={`Import ${numDataSources === null ? '' : numDataSources} data sources`}
           onClick={importDataSources}
-          disabled={disabled || !canSubmit || !numDataSources || isLoading}
-          isLoading={disabled || isLoading}
+          disabled={disabled || !numDataSources || isLoadingDocumentCount}
+          isLoading={disabled || isLoadingDocumentCount}
           testID={tid(testID, 'import')}
         />
       </Modal.Footer>

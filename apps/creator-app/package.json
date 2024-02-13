@@ -102,7 +102,7 @@
     "@voiceflow/slate-serializer": "1.6.0",
     "@voiceflow/style": "1.7.0",
     "@voiceflow/ui": "workspace:*",
-    "@voiceflow/ui-next": "npm:@voiceflow/ui@2.171.0",
+    "@voiceflow/ui-next": "npm:@voiceflow/ui@2.172.0",
     "@voiceflow/utils-designer": "workspace:*",
     "@voiceflow/voiceflow-types": "3.26.42",
     "apl-viewhost-web": "2023.1.0-1",

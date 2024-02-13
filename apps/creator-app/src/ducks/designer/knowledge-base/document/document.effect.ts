@@ -111,7 +111,7 @@ export const getAllPending = (): Thunk<KnowledgeBaseDocument[]> => async (dispat
 
   if (documentIDs.length === 0) return [];
 
-  const dbDocuments = await knowledgeBaseClient.getAllDocuments(projectID, documentIDs);
+  const dbDocuments = await knowledgeBaseClient.getManyDocuments(projectID, documentIDs);
   const documents = documentAdapter.mapFromDB(dbDocuments);
 
   dispatch.local(Actions.AddMany({ data: documents }));
@@ -217,7 +217,10 @@ const createManyFromFormData =
     }
 
     if (documents.length) {
-      Tracking.trackAiKnowledgeBaseSourceAdded({ Type: documents[0].data?.type ?? BaseModels.Project.KnowledgeBaseDocumentType.TEXT });
+      Tracking.trackAiKnowledgeBaseSourceAdded({
+        Type: documents[0].data?.type ?? BaseModels.Project.KnowledgeBaseDocumentType.TEXT,
+        numberOfDocuments: documents.length,
+      });
     }
 
     return documents;
@@ -285,6 +288,7 @@ export const createManyFromData =
       Tracking.trackAiKnowledgeBaseSourceAdded({
         Type: documents[0].data?.type ?? BaseModels.Project.KnowledgeBaseDocumentType.URL,
         refreshRate: (data[0] as BaseModels.Project.KnowledgeBaseURL)?.refreshRate,
+        numberOfDocuments: documents.length,
       });
     }
 

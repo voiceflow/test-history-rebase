@@ -46,7 +46,7 @@ export const getFirstStep = ({
   }
 };
 
-export const getSpecificFlowType = (query: Query, flow: OnboardingType, loginFlow: boolean, isFirstSession: boolean) => {
+export const getSpecificFlowType = (flow: OnboardingType, loginFlow: boolean, isFirstSession: boolean) => {
   if (flow === OnboardingType.join) {
     return SpecificFlowType.login_invite;
   }
@@ -64,9 +64,6 @@ export const getSpecificFlowType = (query: Query, flow: OnboardingType, loginFlo
   }
   if (loginFlow && isFirstSession && flow === OnboardingType.creator) {
     return SpecificFlowType.login_creator_new;
-  }
-  if (query?.ob_payment) {
-    return SpecificFlowType.login_payment_new;
   }
   if (loginFlow) {
     return SpecificFlowType.login_vanilla_new;
@@ -97,7 +94,6 @@ export const getNumberOfSteps = ({
       return !hasWorkspaces || isAdminOfEnterprisePlan || IS_PRIVATE_CLOUD ? 2 : 3;
     case SpecificFlowType.login_creator_new:
     case SpecificFlowType.login_student_new:
-    case SpecificFlowType.login_payment_new:
       return 5;
     case SpecificFlowType.login_vanilla_new:
       return 4;
@@ -106,22 +102,13 @@ export const getNumberOfSteps = ({
   }
 };
 
-export const extractQueryParams = ({ ob_plan, ob_period, invite, ob_seats, ob_payment }: Query, isLoggedIn: boolean) => {
+export const extractQueryParams = ({ ob_period, invite, ob_seats }: Query) => {
   const configurations = {
     plan: PlanType.PRO,
     period: BillingPeriod.ANNUALLY,
     flow: invite ? OnboardingType.join : OnboardingType.create,
     seats: ob_seats ?? 0,
   };
-
-  if (ob_plan && Object.values(PlanType).includes(ob_plan)) {
-    configurations.plan = ob_plan;
-  }
-
-  // Wants to upgrade an existing workspace
-  if (isLoggedIn && ob_payment) {
-    configurations.flow = OnboardingType.general_upgrade;
-  }
 
   if (ob_period && Object.values(BillingPeriod).includes(ob_period)) {
     configurations.period = ob_period;

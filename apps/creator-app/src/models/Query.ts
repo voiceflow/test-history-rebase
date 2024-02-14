@@ -1,4 +1,4 @@
-import { BillingPeriod, PlanType } from '@voiceflow/internal';
+import { BillingPeriod } from '@voiceflow/internal';
 
 export type Query = Query.Onboarding &
   Query.Dashboard &
@@ -12,9 +12,7 @@ export type Query = Query.Onboarding &
 
 export namespace Query {
   export type Onboarding = Partial<{
-    ob_plan: PlanType;
     ob_period: BillingPeriod;
-    ob_payment: boolean;
     ob_seats: number;
     invite: string;
     email: string;

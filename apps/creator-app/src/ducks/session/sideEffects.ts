@@ -1,6 +1,5 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { Utils } from '@voiceflow/common';
-import { matchPath } from 'react-router-dom';
 
 import client from '@/client';
 import { CREATOR_APP_ENDPOINT } from '@/config';
@@ -127,14 +126,6 @@ export const restoreSession = (): Thunk => async (dispatch, getState) => {
     dispatch(updateAccount({ ...userAccount, created: userAccount.createdAt, creator_id: userAccount.creatorID }));
 
     dispatch(identifyUser(userAccount));
-
-    const location = locationSelector(state);
-    const search = QueryUtil.parse(location.search);
-    const isVerifyingPath = matchPath(location.pathname, { path: '/account/confirm/:token' });
-
-    if (search.ob_plan && !isVerifyingPath?.isExact) {
-      dispatch(goToOnboarding());
-    }
   } catch (err) {
     datadogRum.addError(err);
 
@@ -168,7 +159,7 @@ const setSession =
     if (redirectTo) {
       dispatch(goTo(redirectTo));
       // Show join workspace onboarding on first login of an invite
-    } else if ((search.invite && user.first_login) || search.ob_plan) {
+    } else if (search.invite && user.first_login) {
       dispatch(goToOnboarding());
     } else if (search.invite || !user.first_login) {
       dispatch(goToDashboardWithSearch(location.search));

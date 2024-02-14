@@ -17,7 +17,6 @@ export enum OnboardingType {
 export enum SpecificFlowType {
   login_vanilla_new = 'login_vanilla_new',
   login_student_new = 'login_student_new',
-  login_payment_new = 'login_payment_new',
   login_student_existing = 'login_student_existing',
   login_invite = 'login_invite',
   create_workspace = 'create_workspace',

@@ -113,7 +113,6 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
   const account = useSelector(Account.userSelector);
   const firstLogin = useSelector(Account.isFirstLoginSelector);
   const currentWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
-  const isLoggedIn = useSelector(Account.isLoggedInSelector);
   const paymentAPI = Payment.usePaymentAPI();
   const checkoutWorkspace = useDispatch(WorkspaceV2.checkout);
   const createWorkspace = useDispatch(WorkspaceV2.createWorkspace);
@@ -133,7 +132,7 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
   const [trackingEvents] = useTrackingEvents();
   const [isFinalizing, setIsFinalizing] = React.useState(false);
   const hasFixedPeriod = !!query.ob_period;
-  const { plan, period, flow, seats } = OnboardingUtils.extractQueryParams(query, isLoggedIn);
+  const { plan, period, flow, seats } = OnboardingUtils.extractQueryParams(query);
   const isFirstSession = firstLogin;
   const successModal = ModalsV2.useModal(ModalsV2.Success);
   const creatingRef = React.useRef(false);
@@ -161,7 +160,7 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
     [workspaces, account.creator_id]
   );
 
-  const specificFlowType = OnboardingUtils.getSpecificFlowType(query, flow, isLoginFlow, isFirstSession);
+  const specificFlowType = OnboardingUtils.getSpecificFlowType(flow, isLoginFlow, isFirstSession);
   const upgradingAWorkspace = UPGRADING_WORKSPACE_SPECIFIC_FLOWS.has(specificFlowType);
   const numberOfSteps = OnboardingUtils.getNumberOfSteps({
     specificFlowType,
@@ -509,7 +508,7 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
 
   const alreadyHasFreeWorkspace = workspaces.length > 0;
 
-  const redirectToDashboard = isLoginFlow && !sendingRequests && alreadyHasFreeWorkspace && !search.ob_payment;
+  const redirectToDashboard = isLoginFlow && !sendingRequests && alreadyHasFreeWorkspace;
   return redirectToDashboard ? <Redirect to={Path.DASHBOARD} /> : <OnboardingContext.Provider value={api}>{children}</OnboardingContext.Provider>;
 };
 

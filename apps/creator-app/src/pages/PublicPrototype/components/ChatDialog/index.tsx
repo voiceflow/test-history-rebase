@@ -6,7 +6,7 @@ import React from 'react';
 import { PrototypeLayout, PrototypeStatus } from '@/constants/prototype';
 import { useCanASR, useTheme } from '@/hooks';
 import { ChatDisplay } from '@/pages/Prototype/components';
-import { ASRSpeechbar, UncontrolledSpeechBar } from '@/pages/Prototype/components/PrototypeSpeechBar';
+import { ASRSpeechBar, UncontrolledSpeechBar } from '@/pages/Prototype/components/PrototypeSpeechBar';
 import { Interaction, Message, OnInteraction, PMStatus } from '@/pages/Prototype/types';
 
 import {
@@ -25,7 +25,6 @@ export interface ChatDialogProps {
   input: string;
   color?: string;
   isIdle?: boolean;
-  locale: string;
   layout: PrototypeLayout;
   onMute: VoidFunction;
   onPause: VoidFunction;
@@ -44,7 +43,7 @@ export interface ChatDialogProps {
   onStepBack: VoidFunction;
   onContinue: VoidFunction;
   buttonsOnly: boolean;
-  isListening?: boolean;
+  isListening: boolean;
   interactions: Interaction[];
   onInteraction: OnInteraction;
   onInputChange: (input: string) => void;
@@ -53,6 +52,7 @@ export interface ChatDialogProps {
   onStopListening: VoidFunction;
   onStartListening: VoidFunction;
   interimTranscript: string;
+  processingTranscription: boolean;
   onCheckMicrophonePermission?: VoidFunction;
   isMicrophonePermissionGranted?: boolean;
   isSpeechSpeechRecognitionSupported?: boolean;
@@ -65,7 +65,6 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
   onMute,
   isIdle,
   layout,
-  locale,
   onPause,
   onStart,
   isMuted,
@@ -91,12 +90,13 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
   onStopListening,
   onStartListening,
   interimTranscript,
+  processingTranscription,
   onCheckMicrophonePermission,
   isMicrophonePermissionGranted,
   isSpeechSpeechRecognitionSupported,
 }) => {
   const theme = useTheme();
-  const [canUseASR] = useCanASR();
+  const canUseASR = useCanASR();
 
   const showInputContainer = !buttonsOnly || !isIdle || testEnded || layout !== PrototypeLayout.TEXT_DIALOG;
   const showInput = !buttonsOnly || (buttonsOnly && pmStatus === PMStatus.WAITING_USER_INTERACTION && interactions.length === 0);
@@ -171,17 +171,20 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
                       ) : (
                         <SpeechBarContainer>
                           {canUseASR ? (
-                            <ASRSpeechbar
-                              onTranscript={(text) => onInteraction({ request: text })}
+                            <ASRSpeechBar
+                              listening={isListening}
+                              onStopListening={onStopListening}
+                              onStartListening={onStartListening}
+                              processingTranscription={processingTranscription}
                               onCheckMicrophonePermission={onCheckMicrophonePermission}
                               isMicrophonePermissionGranted={isMicrophonePermissionGranted}
-                              locale={locale}
                             />
                           ) : (
                             <UncontrolledSpeechBar
                               disabled={isIdle}
                               isMobile={isMobile}
                               isListening={isListening}
+                              colorScheme={color}
                               isSupported={isSpeechSpeechRecognitionSupported}
                               finalTranscript={finalTranscript}
                               onStopListening={onStopListening}
@@ -189,7 +192,6 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
                               interimTranscript={interimTranscript}
                               onCheckMicrophonePermission={onCheckMicrophonePermission}
                               isMicrophonePermissionGranted={isMicrophonePermissionGranted}
-                              colorScheme={color}
                             />
                           )}
                         </SpeechBarContainer>

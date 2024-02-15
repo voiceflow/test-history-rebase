@@ -27,7 +27,6 @@ interface PrototypeProps {
 const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state, actions, settings, onInteract, globalDelayInMilliseconds }) => {
   const startPrototype = useStartPublicPrototype(settings);
   const resetPrototype = useResetPrototype();
-  const [canUseASR] = useCanASR();
   const [isCustomizedPrototypeAllowed] = useGuestPermission(settings.plan, Permission.CUSTOMIZE_PROTOTYPE);
   const interactedRef = React.useRef(false);
   const [input, setInput] = React.useState<string>('');
@@ -97,26 +96,9 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state
     [onInteract, onInteraction]
   );
 
-  const {
-    isListening,
-    isSupported: isSpeechSpeechRecognitionSupported,
-    finalTranscript,
-    onStopListening,
-    onStartListening,
-    interimTranscript,
-    onCheckMicrophonePermission,
-    isMicrophonePermissionGranted,
-  } = useSpeechRecognition({ locale, onTranscript, askOnSetup: isVoicePrototype });
-
-  const {
-    listening: listeningASR,
-    onStopListening: onStopListeningASR,
-    onStartListening: onStartListeningASR,
-  } = useASR({
-    locale,
-    enabled: isVoicePrototype,
-    onTranscript,
-  });
+  const asr = useASR({ locale, enabled: isVoicePrototype, onTranscript });
+  const canUseASR = useCanASR();
+  const speechRecognition = useSpeechRecognition({ locale, onTranscript, askOnSetup: isVoicePrototype });
 
   const checkPMStatus = React.useCallback((...args: PMStatus[]) => args.includes(prototypeMachineStatus as PMStatus), [prototypeMachineStatus]);
 
@@ -169,11 +151,12 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state
   }, [isMuted]);
 
   const brandColor = isCustomizedPrototypeAllowed ? settings.brandColor : undefined;
+
   return (
     <Layout
       layout={layout}
       isVisuals={isVisuals}
-      isListening={isListening}
+      isListening={canUseASR ? asr.listening : speechRecognition.isListening}
       renderSplashScreen={({ isMobile }) => (
         <SplashScreen
           logoURL={isCustomizedPrototypeAllowed ? settings.brandImage : undefined}
@@ -191,23 +174,25 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state
         <Footer onMute={onMute} isMuted={isMuted} onReset={resetPrototype} onFullScreen={toggleFullScreen}>
           {canUseASR ? (
             <ASRSpeechBar
-              locale={locale}
-              onTranscript={onTranscript}
-              onCheckMicrophonePermission={onCheckMicrophonePermission}
-              isMicrophonePermissionGranted={isMicrophonePermissionGranted}
+              listening={asr.listening}
+              onStopListening={asr.onStopListening}
+              onStartListening={asr.onStartListening}
+              processingTranscription={asr.processingTranscription}
+              onCheckMicrophonePermission={speechRecognition.onCheckMicrophonePermission}
+              isMicrophonePermissionGranted={speechRecognition.isMicrophonePermissionGranted}
             />
           ) : (
             <UncontrolledSpeechBar
               disabled={isIdle}
-              isListening={isListening}
-              isSupported={isSpeechSpeechRecognitionSupported}
+              isListening={speechRecognition.isListening}
+              isSupported={speechRecognition.isSupported}
               colorScheme={brandColor}
-              finalTranscript={finalTranscript}
-              onStopListening={onStopListening}
-              onStartListening={onStartListening}
-              interimTranscript={interimTranscript}
-              onCheckMicrophonePermission={onCheckMicrophonePermission}
-              isMicrophonePermissionGranted={isMicrophonePermissionGranted}
+              finalTranscript={speechRecognition.finalTranscript}
+              onStopListening={speechRecognition.onStopListening}
+              onStartListening={speechRecognition.onStartListening}
+              interimTranscript={speechRecognition.interimTranscript}
+              onCheckMicrophonePermission={speechRecognition.onCheckMicrophonePermission}
+              isMicrophonePermissionGranted={speechRecognition.isMicrophonePermissionGranted}
             />
           )}
         </Footer>
@@ -218,20 +203,17 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state
         isVisuals ? (
           <Visuals
             isMobile={isMobile}
-            listeningASR={listeningASR}
+            listening={canUseASR ? asr.listening : speechRecognition.isListening}
             isFullScreen={isFullScreen}
-            onStopListening={isMobile ? onStopListeningASR : onStopListening}
-            onStartListening={isMobile ? onStartListeningASR : onStartListening}
+            onStopListening={canUseASR ? asr.onStopListening : speechRecognition.onStopListening}
+            onStartListening={canUseASR ? asr.onStartListening : speechRecognition.onStartListening}
           />
         ) : (
           <ChatDialog
-            pmStatus={prototypeMachineStatus}
             audio={audioController.audio}
-            locale={locale}
             input={input}
             color={brandColor}
             layout={layout}
-            buttonsOnly={settings.buttonsOnly}
             onMute={onMute}
             isIdle={isIdle}
             onPause={onPause}
@@ -239,6 +221,7 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state
             buttons={settings.buttons}
             isMuted={isMuted}
             onReset={resetState}
+            pmStatus={prototypeMachineStatus}
             messages={messages}
             isMobile={isMobile}
             avatarURL={isCustomizedPrototypeAllowed ? settings.avatar : undefined}
@@ -246,18 +229,20 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state
             testEnded={isFinished}
             onContinue={onContinue}
             onStepBack={onStepBack}
-            isListening={isListening}
+            buttonsOnly={settings.buttonsOnly}
+            isListening={canUseASR ? asr.listening : speechRecognition.isListening}
             interactions={interactions}
             onInputChange={setInput}
             onInteraction={sendInteraction}
             prototypeStatus={status}
-            finalTranscript={finalTranscript}
-            onStopListening={onStopListening}
-            onStartListening={onStartListening}
-            interimTranscript={interimTranscript}
-            onCheckMicrophonePermission={onCheckMicrophonePermission}
-            isMicrophonePermissionGranted={isMicrophonePermissionGranted}
-            isSpeechSpeechRecognitionSupported={isSpeechSpeechRecognitionSupported}
+            finalTranscript={speechRecognition.finalTranscript}
+            onStopListening={canUseASR ? asr.onStopListening : speechRecognition.onStopListening}
+            onStartListening={canUseASR ? asr.onStartListening : speechRecognition.onStartListening}
+            interimTranscript={speechRecognition.interimTranscript}
+            processingTranscription={asr.processingTranscription}
+            onCheckMicrophonePermission={speechRecognition.onCheckMicrophonePermission}
+            isMicrophonePermissionGranted={speechRecognition.isMicrophonePermissionGranted}
+            isSpeechSpeechRecognitionSupported={speechRecognition.isSupported}
           />
         )
       }

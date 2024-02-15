@@ -30,7 +30,8 @@ const CMSFlow: React.FC = () => (
 
 export default Utils.functional.compose(
   withCMSRouteFolders({
-    countSelector: Designer.Flow.selectors.countByFolderID,
+    pathname: Path.CMS_FLOW,
+    folderScope: FolderScope.FLOW,
   }),
 
   withCMSInitialTableState({
@@ -39,11 +40,10 @@ export default Utils.functional.compose(
 
   withCMSManagerProvider({
     search: flowSearch,
-    pathname: Path.CMS_FLOW,
-    folderScope: FolderScope.FLOW,
 
     effects: {
       patchOne: Designer.Flow.effect.patchOne,
+      patchMany: Designer.Flow.effect.patchMany,
       deleteOne: Designer.Flow.effect.deleteOne,
       deleteMany: Designer.Flow.effect.deleteMany,
     },
@@ -51,6 +51,7 @@ export default Utils.functional.compose(
     selectors: {
       oneByID: Designer.Flow.selectors.oneByID,
       allByFolderID: Designer.Flow.selectors.allByFolderID,
+      allByFolderIDs: Designer.Flow.selectors.allByFolderIDs,
     },
   }),
 
@@ -58,5 +59,5 @@ export default Utils.functional.compose(
     Editor: CMSFlowEditor,
   }),
 
-  withCMSResourceModals([Modals.Flow.Create, ({ result, history, getCMSResourcePath }) => history.push(getCMSResourcePath(result.id).path)])
+  withCMSResourceModals([Modals.Flow.Create, ({ result, history, cmsResourceGetPath }) => history.push(cmsResourceGetPath(result.id).path)])
 )(CMSFlow);

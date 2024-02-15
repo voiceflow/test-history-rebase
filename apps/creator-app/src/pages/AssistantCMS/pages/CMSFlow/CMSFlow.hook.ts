@@ -5,7 +5,7 @@ import { useFlowCreateModal } from '@/hooks/modal.hook';
 
 import { useCMSManager } from '../../contexts/CMSManager';
 import type { CMSFlow } from '../../contexts/CMSManager/CMSManager.interface';
-import { useGetCMSResourcePath } from '../../hooks/cms-resource.hook';
+import { useCMSResourceGetPath } from '../../hooks/cms-resource.hook';
 
 export const useFlowCMSManager = useCMSManager<CMSFlow>;
 
@@ -13,7 +13,7 @@ export const useOnFlowCreate = () => {
   const history = useHistory();
   const cmsManager = useFlowCMSManager();
   const getAtomValue = useGetAtomValue();
-  const getCMSResourcePath = useGetCMSResourcePath();
+  const getCMSResourcePath = useCMSResourceGetPath();
   const flowCreateModal = useFlowCreateModal();
 
   return async ({ name }: { name?: string } = {}) => {

@@ -42,7 +42,7 @@ export const FolderMenu: React.FC<IFolderMenu> = ({ width, scope, parentID, onCl
 
   const virtualizer = useVirtualizer({
     count: search.items.length,
-    estimateSize: (index) => MENU_ITEM_MIN_HEIGHT + (foldersToSearch[index].id === ROOT_FOLDER_ID ? 9 : 0),
+    estimateSize: (index) => MENU_ITEM_MIN_HEIGHT + (index !== search.items.length - 1 && search.items[index]?.id === ROOT_FOLDER_ID ? 9 : 0),
     getScrollElement: () => listNode,
   });
 

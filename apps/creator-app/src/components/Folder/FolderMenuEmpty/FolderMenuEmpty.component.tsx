@@ -23,7 +23,7 @@ export const FolderMenuEmpty: React.FC<IFolderMenuEmpty> = ({ width, scope, pare
     <Surface px={24} pt={24} pb={8} width={width ? `${width}px` : undefined} justify="center" minWidth={0}>
       <EmptyPage
         title="No folder exist"
-        button={{ label: 'Create folder', onClick: () => onCreate }}
+        button={{ label: 'Create folder', onClick: onCreate }}
         description="Folders are organization layers across all CMS pages. "
         illustration="NoContent"
         learnMoreLink={CMS_FOLDER_LEARN_MORE}

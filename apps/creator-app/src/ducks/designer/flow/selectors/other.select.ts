@@ -5,7 +5,7 @@ import { diagramIDParamSelector } from '@/ducks/utils';
 import { createByFolderIDSelectors } from '../../utils/selector.util';
 import { all, oneByID } from './crud.select';
 
-export const { allByFolderID, countByFolderID } = createByFolderIDSelectors(all);
+export const { allByFolderID, allByFolderIDs, countByFolderID } = createByFolderIDSelectors(all);
 
 export const nameByID = createSelector(oneByID, (flow) => flow?.name ?? null);
 

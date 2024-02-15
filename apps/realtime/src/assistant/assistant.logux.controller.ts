@@ -107,6 +107,7 @@ export class AssistantLoguxController {
       { id: ctx.server.log.generateId() },
       { id: ctx.server.log.generateId() },
       { id: ctx.server.log.generateId() },
+      { id: ctx.server.log.generateId() },
     ] as const;
 
     const {

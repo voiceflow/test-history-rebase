@@ -5,6 +5,8 @@ export interface ICMSFormDescription extends BaseProps {
   error?: string | null;
   minRows?: number;
   maxRows?: number;
+  disabled?: boolean;
   placeholder: string;
+  className?: string;
   onValueChange: (value: string) => void;
 }

@@ -11,31 +11,31 @@ import { CMSEditorMoreButton } from '../../../../components/CMSEditorMoreButton/
 import { useCMSResourceGetMoreMenu } from '../../../../hooks/cms-resource.hook';
 import { useCMSActiveResourceID } from '../../../../hooks/cms-table.hook';
 
-export const CMSComponentEditor: React.FC = () => {
+export const CMSFlowEditor: React.FC = () => {
   const editorRef = useRef<IEditorAPI>(null);
   const duplicateOne = useDispatch(Designer.Flow.effect.duplicateOne);
 
-  const componentID = useCMSActiveResourceID();
+  const flowID = useCMSActiveResourceID();
   const getMoreMenu = useCMSResourceGetMoreMenu({
     onRename: () => editorRef.current?.startTitleEditing(),
     onDuplicate: async (id) => {
       const data = await duplicateOne(id);
 
-      goToCMSResource(CMSRoute.COMPONENT, data.id);
+      goToCMSResource(CMSRoute.FLOW, data.id);
     },
   });
 
-  const component = useSelector(Designer.Flow.selectors.oneByID, { id: componentID });
-  const patchComponent = useDispatch(Designer.Flow.effect.patchOne, componentID);
+  const flow = useSelector(Designer.Flow.selectors.oneByID, { id: flowID });
+  const patchFlow = useDispatch(Designer.Flow.effect.patchOne, flowID);
 
-  if (!component) return null;
+  if (!flow) return null;
 
   return (
     <Editor
       ref={editorRef}
-      title={component.name}
-      onTitleChange={(name) => patchComponent({ name: name.trim() })}
-      headerActions={<CMSEditorMoreButton>{({ onClose }) => getMoreMenu({ id: componentID, onClose })}</CMSEditorMoreButton>}
+      title={flow.name}
+      onTitleChange={(name) => patchFlow({ name: name.trim() })}
+      headerActions={<CMSEditorMoreButton>{({ onClose }) => getMoreMenu({ id: flowID, onClose })}</CMSEditorMoreButton>}
       testID="cms-editor"
     >
       <Scroll style={{ display: 'block' }}>
@@ -46,9 +46,9 @@ export const CMSComponentEditor: React.FC = () => {
         <Divider noPadding />
 
         <CMSEditorDescription
-          value={component.description ?? ''}
+          value={flow.description ?? ''}
           placeholder="Enter component description"
-          onValueChange={(description) => patchComponent({ description })}
+          onValueChange={(description) => patchFlow({ description })}
           testID="component__description"
         />
       </Scroll>

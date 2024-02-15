@@ -7,27 +7,27 @@ import { CMSTableLastEditedCell } from '../../../../components/CMSTableLastEdite
 import { CMSTableNameCell } from '../../../../components/CMSTableNameCell/CMSTableNameCell.component';
 import type { CMSFlow, CMSFolder } from '../../../../contexts/CMSManager/CMSManager.interface';
 import { updatedAtSort, withFieldLocaleCompareSort, withFolderSort } from '../../../../contexts/CMSManager/CMSManager.util';
-import { ComponentTableColumn } from './CMSComponentTable.constant';
+import { FlowTableColumn } from './CMSFlowTable.constant';
 
-export const CMS_COMPONENT_TABLE_CONFIG: TableConfig<ComponentTableColumn, CMSFolder | CMSFlow> = {
+export const CMS_COMPONENT_TABLE_CONFIG: TableConfig<FlowTableColumn, CMSFolder | CMSFlow> = {
   columns: {
-    [ComponentTableColumn.SELECT]: {
-      type: ComponentTableColumn.SELECT,
+    [FlowTableColumn.SELECT]: {
+      type: FlowTableColumn.SELECT,
       name: 'Select',
       cell: ({ item }) => <Table.Cell.Select item={item} />,
       header: () => <Table.Header.Cell.Select />,
     },
 
-    [ComponentTableColumn.NAME]: {
-      type: ComponentTableColumn.NAME,
+    [FlowTableColumn.NAME]: {
+      type: FlowTableColumn.NAME,
       name: 'Name',
       sorter: withFolderSort<CMSFlow>(withFieldLocaleCompareSort('name')),
 
       cell: ({ item, type }) => <CMSTableNameCell type={type} name={item.name} itemID={item.id} />,
     },
 
-    [ComponentTableColumn.DESCRIPTION]: {
-      type: ComponentTableColumn.DESCRIPTION,
+    [FlowTableColumn.DESCRIPTION]: {
+      type: FlowTableColumn.DESCRIPTION,
       name: 'Description',
       sorter: withFolderSort<CMSFlow>(withFieldLocaleCompareSort('description')),
 
@@ -39,15 +39,15 @@ export const CMS_COMPONENT_TABLE_CONFIG: TableConfig<ComponentTableColumn, CMSFo
       ),
     },
 
-    [ComponentTableColumn.LAST_EDITOR]: {
-      type: ComponentTableColumn.LAST_EDITOR,
+    [FlowTableColumn.LAST_EDITOR]: {
+      type: FlowTableColumn.LAST_EDITOR,
       name: 'Last editor',
 
       cell: ({ item }) => <Table.Cell.GroupEmpty item={item} label={({ updatedByID }) => <CMSTableLastEditedCell creatorID={updatedByID} />} />,
     },
 
-    [ComponentTableColumn.UPDATED]: {
-      type: ComponentTableColumn.UPDATED,
+    [FlowTableColumn.UPDATED]: {
+      type: FlowTableColumn.UPDATED,
       name: 'Updated',
       sorter: withFolderSort(updatedAtSort),
 

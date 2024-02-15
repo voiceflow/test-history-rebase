@@ -7,10 +7,10 @@ import { useGoToCMSResourceModal } from '@/hooks/cms-resource.hook';
 import * as ModalsV2 from '@/ModalsV2';
 
 export const EmptyComponent = () => {
-  const goToCMSComponentCreateModal = useGoToCMSResourceModal(CMSRoute.COMPONENT);
+  const goToCMSComponentCreateModal = useGoToCMSResourceModal(CMSRoute.FLOW);
 
   const onCreateComponent = () => {
-    goToCMSComponentCreateModal(ModalsV2.Component.Create, { folderID: null });
+    goToCMSComponentCreateModal(ModalsV2.Flow.Create, { folderID: null });
   };
 
   return (

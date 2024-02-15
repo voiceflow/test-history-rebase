@@ -12,7 +12,9 @@ export const CMSFormDescription: React.FC<ICMSFormDescription> = ({
   maxRows = 17,
   placeholder,
   onValueChange,
+  className,
   testID,
+  disabled,
 }) => {
   const input = useInput<string, HTMLTextAreaElement>({
     error,
@@ -23,7 +25,15 @@ export const CMSFormDescription: React.FC<ICMSFormDescription> = ({
   return (
     <Box direction="column">
       <InputFormControl id={input.id} label="Description" errorMessage={input.errorMessage}>
-        <TextArea {...input.attributes} minRows={minRows} maxRows={maxRows} placeholder={placeholder} testID={testID} />
+        <TextArea
+          {...input.attributes}
+          placeholder={placeholder}
+          className={className}
+          disabled={disabled}
+          minRows={minRows}
+          maxRows={maxRows}
+          testID={testID}
+        />
       </InputFormControl>
     </Box>
   );

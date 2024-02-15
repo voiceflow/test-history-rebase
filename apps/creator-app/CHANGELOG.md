@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1394.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1393.2...@voiceflow/creator-app@1.1394.0) (2024-02-15)
+
+### Features
+
+* use browser asr when possible (CV3-993) ([#7774](https://github.com/voiceflow/creator-app/issues/7774)) ([0fd293e](https://github.com/voiceflow/creator-app/commit/0fd293edb69ba4d1f43bc2cf7c91631c0b8a753a))
+
 ## [1.1393.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1393.1...@voiceflow/creator-app@1.1393.2) (2024-02-14)
 
 ### Bug Fixes

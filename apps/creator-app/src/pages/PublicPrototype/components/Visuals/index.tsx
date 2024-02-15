@@ -15,13 +15,13 @@ import { getScale } from './utils';
 
 interface VisualsProps {
   isMobile?: boolean;
+  listening: boolean;
   isFullScreen?: boolean;
   onStopListening: () => void;
   onStartListening: () => void;
-  listeningASR: boolean;
 }
 
-const Visuals: React.FC<VisualsProps> = ({ isMobile, isFullScreen, onStopListening, onStartListening, listeningASR }) => {
+const Visuals: React.FC<VisualsProps> = ({ isMobile, isFullScreen, onStopListening, onStartListening, listening }) => {
   const data = useSelector(Prototype.prototypeVisualDataSelector);
   const device = useSelector(Prototype.prototypeVisualDeviceSelector);
 
@@ -66,7 +66,7 @@ const Visuals: React.FC<VisualsProps> = ({ isMobile, isFullScreen, onStopListeni
 
   return (
     <Container ref={onContainerRef} isMobile={isMobile}>
-      {isMobile && <ListenerContainer listeningASR={listeningASR} />}
+      {isMobile && <ListenerContainer listening={listening} />}
       {!!containerRef.current && (
         <>
           {data?.visualType === BaseNode.Visual.VisualType.IMAGE && (

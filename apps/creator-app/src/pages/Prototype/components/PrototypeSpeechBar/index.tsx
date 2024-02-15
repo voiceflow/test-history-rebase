@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { useCanASR, useSpeechRecognition } from '@/hooks';
+import { useASR, useCanASR, useSpeechRecognition } from '@/hooks';
 
-import { ASRSpeechbar, UncontrolledSpeechBar } from './components';
+import { ASRSpeechBar, UncontrolledSpeechBar } from './components';
 
-export { ASRSpeechbar, UncontrolledSpeechBar } from './components';
+export { ASRSpeechBar, UncontrolledSpeechBar } from './components';
 
 export interface PrototypeSpeechBarProps {
   locale: string;
@@ -12,44 +12,29 @@ export interface PrototypeSpeechBarProps {
 }
 
 const PrototypeSpeechBar: React.FC<PrototypeSpeechBarProps> = ({ locale, onTranscript }) => {
-  const [canUseASR] = useCanASR();
+  const asr = useASR({ locale, onTranscript });
+  const canUseASR = useCanASR();
+  const speechRecognition = useSpeechRecognition({ locale, askOnSetup: true, onTranscript });
 
-  const {
-    isListening,
-    isSupported,
-    finalTranscript,
-    onStopListening,
-    onStartListening,
-    interimTranscript,
-    onCheckMicrophonePermission,
-    isMicrophonePermissionGranted,
-  } = useSpeechRecognition({
-    locale,
-    askOnSetup: true,
-    onTranscript,
-  });
-
-  if (canUseASR) {
-    return (
-      <ASRSpeechbar
-        onTranscript={onTranscript}
-        onCheckMicrophonePermission={onCheckMicrophonePermission}
-        locale={locale}
-        isMicrophonePermissionGranted={isMicrophonePermissionGranted}
-      />
-    );
-  }
-
-  return (
+  return canUseASR ? (
+    <ASRSpeechBar
+      listening={asr.listening}
+      onStopListening={asr.onStopListening}
+      onStartListening={asr.onStartListening}
+      processingTranscription={asr.processingTranscription}
+      onCheckMicrophonePermission={speechRecognition.onCheckMicrophonePermission}
+      isMicrophonePermissionGranted={speechRecognition.isMicrophonePermissionGranted}
+    />
+  ) : (
     <UncontrolledSpeechBar
-      isListening={isListening}
-      isSupported={isSupported}
-      finalTranscript={finalTranscript}
-      onStopListening={onStopListening}
-      onStartListening={onStartListening}
-      interimTranscript={interimTranscript}
-      onCheckMicrophonePermission={onCheckMicrophonePermission}
-      isMicrophonePermissionGranted={isMicrophonePermissionGranted}
+      isListening={speechRecognition.isListening}
+      isSupported={speechRecognition.isSupported}
+      finalTranscript={speechRecognition.finalTranscript}
+      onStopListening={speechRecognition.onStopListening}
+      onStartListening={speechRecognition.onStartListening}
+      interimTranscript={speechRecognition.interimTranscript}
+      onCheckMicrophonePermission={speechRecognition.onCheckMicrophonePermission}
+      isMicrophonePermissionGranted={speechRecognition.isMicrophonePermissionGranted}
     />
   );
 };

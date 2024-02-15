@@ -1,7 +1,7 @@
 import { css, styled } from '@/hocs/styled';
 
 interface ListenerContainerProps {
-  listeningASR: boolean;
+  listening: boolean;
 }
 
 const ListenerContainer = styled.div<ListenerContainerProps>`
@@ -11,8 +11,8 @@ const ListenerContainer = styled.div<ListenerContainerProps>`
   position: absolute;
   z-index: 100;
 
-  ${({ listeningASR }) =>
-    listeningASR &&
+  ${({ listening }) =>
+    listening &&
     css`
       outline: 5px solid #5d9df5;
       outline-offset: -5px;

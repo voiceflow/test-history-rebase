@@ -1,20 +1,27 @@
 import { IS_MOBILE, useCache } from '@voiceflow/ui';
 import React from 'react';
 
-import { useASR, useDebouncedCallback, useHotkey } from '@/hooks';
+import { useDebouncedCallback, useHotkey } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import ASRContent from '@/pages/Prototype/components/PrototypeSpeechBar/components/ASRContent';
 
 interface ASRSpeechBarProps {
-  onTranscript: (text: string) => void;
+  listening: boolean;
+  onStopListening: VoidFunction;
+  onStartListening: VoidFunction;
+  processingTranscription: boolean;
   onCheckMicrophonePermission?: () => void;
   isMicrophonePermissionGranted?: boolean;
-  locale: string;
 }
 
-const ASRSpeechBar: React.FC<ASRSpeechBarProps> = ({ onTranscript, isMicrophonePermissionGranted, onCheckMicrophonePermission, locale }) => {
-  const { listening, onStopListening, onStartListening, processingTranscription } = useASR({ onTranscript, locale });
-
+const ASRSpeechBar: React.FC<ASRSpeechBarProps> = ({
+  listening,
+  onStopListening,
+  onStartListening,
+  processingTranscription,
+  onCheckMicrophonePermission,
+  isMicrophonePermissionGranted,
+}) => {
   const cache = useCache({ onStopListening, onStartListening });
 
   const onDebouncedStopListening = useDebouncedCallback(100, () => cache.current.onStopListening(), [], { leading: true, trailing: false });
@@ -25,13 +32,13 @@ const ASRSpeechBar: React.FC<ASRSpeechBarProps> = ({ onTranscript, isMicrophoneP
 
   return (
     <ASRContent
-      isMicrophoneAvailable={isMicrophonePermissionGranted}
-      listeningASR={listening}
-      processingTranscription={processingTranscription}
-      isMobile={IS_MOBILE}
-      onCheckMicrophonePermission={onCheckMicrophonePermission}
-      onListen={onDebouncedStartListening}
       onStop={onDebouncedStopListening}
+      isMobile={IS_MOBILE}
+      onListen={onDebouncedStartListening}
+      listeningASR={listening}
+      isMicrophoneAvailable={isMicrophonePermissionGranted}
+      processingTranscription={processingTranscription}
+      onCheckMicrophonePermission={onCheckMicrophonePermission}
     />
   );
 };

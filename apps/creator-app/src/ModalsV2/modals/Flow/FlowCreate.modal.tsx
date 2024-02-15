@@ -1,9 +1,11 @@
 import type { Flow as FlowType } from '@voiceflow/dtos';
+import { tid } from '@voiceflow/style';
 import { toast } from '@voiceflow/ui';
-import { Box, InputFormControl, Scroll, TextArea } from '@voiceflow/ui-next';
+import { Box, Scroll } from '@voiceflow/ui-next';
 import { componentNameValidator } from '@voiceflow/utils-designer';
 import React, { useState } from 'react';
 
+import { CMSFormDescription } from '@/components/CMS/CMSForm/CMSFormDescription/CMSFormDescription.component';
 import { CMSFormName } from '@/components/CMS/CMSForm/CMSFormName/CMSFormName.component';
 import { Modal } from '@/components/Modal';
 import { Designer } from '@/ducks';
@@ -12,15 +14,16 @@ import { useDispatch, useGetValueSelector } from '@/hooks/store.hook';
 import { useValidators } from '@/hooks/validate.hook';
 
 import { modalsManager } from '../../manager';
-import { textareaStyles } from './ComponentCreate.css';
+import { textareaStyles } from './FlowCreate.css';
 
-export interface IComponentCreateModal {
+const TEST_ID = 'component-create';
+export interface IFlowCreateModal {
   name?: string;
   folderID: string | null;
 }
 
-export const ComponentCreateModal = modalsManager.create<IComponentCreateModal, FlowType>(
-  'ComponentCreateModal',
+export const FlowCreateModal = modalsManager.create<IFlowCreateModal, FlowType>(
+  'FlowCreateModal',
   () =>
     ({ api, type: typeProp, name: nameProp, opened, hidden, animated, folderID, closePrevented }) => {
       const createOne = useDispatch(Designer.Flow.effect.createOne);
@@ -86,16 +89,15 @@ export const ComponentCreateModal = modalsManager.create<IComponentCreateModal, 
               />
 
               <Box direction="column">
-                <InputFormControl label="Description">
-                  <TextArea
-                    value={description}
-                    onValueChange={setDescription}
-                    disabled={closePrevented}
-                    className={textareaStyles}
-                    placeholder="Enter description (optional)"
-                    testID="function__description"
-                  />
-                </InputFormControl>
+                <CMSFormDescription
+                  value={description}
+                  className={textareaStyles}
+                  testID={tid(TEST_ID, 'description')}
+                  disabled={closePrevented}
+                  placeholder="Enter description (optional)"
+                  onValueChange={setDescription}
+                  maxRows={20}
+                />
               </Box>
             </Modal.Body>
           </Scroll>

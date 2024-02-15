@@ -11,20 +11,20 @@ import { withCMSRouteFolders } from '../../contexts/CMSRouteFolders';
 import { withCMSInitialTableState } from '../../hocs/CMSInitialTableState.hoc';
 import { withCMSResourceEditor } from '../../hocs/CMSResourceEditor.hoc';
 import { withCMSResourceModals } from '../../hocs/CMSResourceModals.hoc';
-import { componentSearch } from './CMSComponent.util';
-import { CMSComponentEditor } from './components/CMSComponentEditor/CMSComponentEditor.component';
-import { CMSComponentHeader } from './components/CMSComponentHeader/CMSComponentHeader.component';
-import { CMSComponentTable } from './components/CMSComponentTable/CMSComponentTable.component';
-import { ComponentTableColumn } from './components/CMSComponentTable/CMSComponentTable.constant';
-import { CMSComponentTableNavigation } from './components/CMSComponentTableNavigation/CMSComponentTableNavigation.component';
+import { flowSearch } from './CMSFlow.util';
+import { CMSFlowEditor } from './components/CMSFlowEditor/CMSFlowEditor.component';
+import { CMSFlowHeader } from './components/CMSFlowHeader/CMSFlowHeader.component';
+import { CMSFlowTable } from './components/CMSFlowTable/CMSFlowTable.component';
+import { FlowTableColumn } from './components/CMSFlowTable/CMSFlowTable.constant';
+import { CMSFlowTableNavigation } from './components/CMSFlowTableNavigation/CMSFlowTableNavigation.component';
 
-const CMSComponent: React.FC = () => (
+const CMSFlow: React.FC = () => (
   <>
-    <CMSComponentHeader />
+    <CMSFlowHeader />
 
-    <CMSComponentTableNavigation />
+    <CMSFlowTableNavigation />
 
-    <CMSComponentTable />
+    <CMSFlowTable />
   </>
 );
 
@@ -34,13 +34,13 @@ export default Utils.functional.compose(
   }),
 
   withCMSInitialTableState({
-    orderBy: ComponentTableColumn.NAME,
+    orderBy: FlowTableColumn.NAME,
   }),
 
   withCMSManagerProvider({
-    search: componentSearch,
-    pathname: Path.CMS_COMPONENT,
-    folderScope: FolderScope.COMPONENT,
+    search: flowSearch,
+    pathname: Path.CMS_FLOW,
+    folderScope: FolderScope.FLOW,
 
     effects: {
       patchOne: Designer.Flow.effect.patchOne,
@@ -55,8 +55,8 @@ export default Utils.functional.compose(
   }),
 
   withCMSResourceEditor({
-    Editor: CMSComponentEditor,
+    Editor: CMSFlowEditor,
   }),
 
-  withCMSResourceModals([Modals.Component.Create, ({ result, history, getCMSResourcePath }) => history.push(getCMSResourcePath(result.id).path)])
-)(CMSComponent);
+  withCMSResourceModals([Modals.Flow.Create, ({ result, history, getCMSResourcePath }) => history.push(getCMSResourcePath(result.id).path)])
+)(CMSFlow);

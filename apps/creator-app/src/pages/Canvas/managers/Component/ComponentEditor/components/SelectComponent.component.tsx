@@ -31,10 +31,10 @@ export const SelectComponent = ({ onChange, diagramID, nodeID }: SelectComponent
   });
   const hasSelectedComponent = !!diagramID;
 
-  const goToCMSComponentCreateModal = useGoToCMSResourceModal(CMSRoute.COMPONENT);
+  const goToCMSComponentCreateModal = useGoToCMSResourceModal(CMSRoute.FLOW);
 
   const onCreateComponent = () => {
-    goToCMSComponentCreateModal(ModalsV2.Component.Create, { name: search.value, folderID: null });
+    goToCMSComponentCreateModal(ModalsV2.Flow.Create, { name: search.value, folderID: null });
   };
 
   return (
@@ -43,7 +43,7 @@ export const SelectComponent = ({ onChange, diagramID, nodeID }: SelectComponent
         <Dropdown
           value={componentData?.name || null}
           placeholder="Select existing component"
-          onPrefixIconClick={hasSelectedComponent ? () => goToCMSResource(CMSRoute.COMPONENT, componentData.id) : undefined}
+          onPrefixIconClick={hasSelectedComponent ? () => goToCMSResource(CMSRoute.FLOW, componentData.id) : undefined}
           prefixIconName={hasSelectedComponent ? 'EditS' : undefined}
           prefixIcon={hasSelectedComponent}
         >
@@ -62,7 +62,7 @@ export const SelectComponent = ({ onChange, diagramID, nodeID }: SelectComponent
                     label={componentItem?.name}
                     key={componentItem.id}
                     suffixButton={{
-                      onClick: () => goToCMSResource(CMSRoute.COMPONENT, componentItem.id),
+                      onClick: () => goToCMSResource(CMSRoute.FLOW, componentItem.id),
                       iconName: 'EditS',
                     }}
                     onClick={Utils.functional.chain(

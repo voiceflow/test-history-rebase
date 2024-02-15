@@ -1,6 +1,6 @@
 import { Enum } from '@voiceflow/dtos';
 
-export const ComponentTableColumn = {
+export const FlowTableColumn = {
   NAME: 'name',
   SELECT: 'select',
   UPDATED: 'updated',
@@ -8,4 +8,4 @@ export const ComponentTableColumn = {
   LAST_EDITOR: 'last-editor',
 } as const;
 
-export type ComponentTableColumn = Enum<typeof ComponentTableColumn>;
+export type FlowTableColumn = Enum<typeof FlowTableColumn>;

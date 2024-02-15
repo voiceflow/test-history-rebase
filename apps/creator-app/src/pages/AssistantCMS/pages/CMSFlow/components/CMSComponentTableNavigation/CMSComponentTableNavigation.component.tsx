@@ -4,10 +4,10 @@ import React from 'react';
 import { CMSTableNavigation } from '@/pages/AssistantCMS/components/CMSTableNavigation/CMSTableNavigation.component';
 
 import { CMSResourceActions } from '../../../../components/CMSResourceActions';
-import { useComponentCMSManager } from '../../CMSComponent.hook';
+import { useFlowCMSManager } from '../../CMSFlow.hook';
 
-export const CMSComponentTableNavigation: React.FC = () => {
-  const cmsManager = useComponentCMSManager();
+export const CMSFlowTableNavigation: React.FC = () => {
+  const cmsManager = useFlowCMSManager();
   const count = useAtomValue(cmsManager.dataToRenderSize);
 
   return (

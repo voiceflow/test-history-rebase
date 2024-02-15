@@ -104,9 +104,9 @@ export const CMSMenu: React.FC = () => {
             icon="Component"
             label="Components"
             caption={String(flowsCount)}
-            onClick={onTabClick(Path.CMS_COMPONENT, CMSRoute.COMPONENT)}
-            isActive={isItemActive(Path.CMS_COMPONENT)}
-            testID="cms-menu__item--variables"
+            onClick={onTabClick(Path.CMS_FLOW, CMSRoute.FLOW)}
+            isActive={isItemActive(Path.CMS_FLOW)}
+            testID={tid(TEST_ID, 'components')}
           />
         )}
 

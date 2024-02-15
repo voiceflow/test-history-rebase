@@ -38,7 +38,8 @@ export const useVariableCreateModal = () => useModal<IVariableCreateModal, Varia
 
 export const useFolderCreateModal = () => useModal<IFolderCreateModal, Folder>('FolderCreateModal');
 
-export const useComponentCreateModal = () => useModal<IVariableCreateModal, Flow>('ComponentCreateModal');
+export const useFlowEditModal = () => useModal<IVariableEditModal>('FlowEditModal');
+export const useFlowCreateModal = () => useModal<IVariableCreateModal, Flow>('FlowCreateModal');
 
 export const useIntentEditModal = () => useModal<IIntentEditModal>('IntentEditModal');
 export const useIntentCreateModal = () => useModal<IIntentCreateModal, Intent>('IntentCreateModal');

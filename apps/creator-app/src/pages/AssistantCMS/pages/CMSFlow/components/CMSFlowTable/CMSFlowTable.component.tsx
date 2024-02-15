@@ -7,19 +7,19 @@ import { useDispatch } from '@/hooks';
 
 import { CMSEmpty } from '../../../../components/CMSEmpty/CMSEmpty.component';
 import { useCMSRowItemClick, useCMSRowItemContextMenu, useCMSRowItemNavigate } from '../../../../hooks/cms-row-item.hook';
-import { useComponentCMSManager, useOnComponentCreate } from '../../CMSComponent.hook';
-import { componentColumnsOrderAtom } from './CMSComponentTable.atom';
-import { CMS_COMPONENT_TABLE_CONFIG } from './CMSComponentTable.config';
-import { ComponentTableColumn } from './CMSComponentTable.constant';
+import { useFlowCMSManager, useOnFlowCreate } from '../../CMSFlow.hook';
+import { flowColumnsOrderAtom } from './CMSFlowTable.atom';
+import { CMS_COMPONENT_TABLE_CONFIG } from './CMSFlowTable.config';
+import { FlowTableColumn } from './CMSFlowTable.constant';
 
-export const CMSComponentTable: React.FC = () => {
-  const onCreate = useOnComponentCreate();
+export const CMSFlowTable: React.FC = () => {
+  const onCreate = useOnFlowCreate();
   const onRowClick = useCMSRowItemClick();
-  const cmsManager = useComponentCMSManager();
+  const cmsManager = useFlowCMSManager();
   const onRowNavigate = useCMSRowItemNavigate();
   const duplicateOne = useDispatch(Designer.Flow.effect.duplicateOne);
   const rowContextMenu = useCMSRowItemContextMenu({
-    nameColumnType: ComponentTableColumn.NAME,
+    nameColumnType: FlowTableColumn.NAME,
     onDuplicate: duplicateOne,
   });
 
@@ -38,7 +38,7 @@ export const CMSComponentTable: React.FC = () => {
         onRowClick={onRowClick}
         onRowNavigate={onRowNavigate}
         rowContextMenu={rowContextMenu}
-        columnsOrderAtom={componentColumnsOrderAtom}
+        columnsOrderAtom={flowColumnsOrderAtom}
       />
     </CMSEmpty>
   );

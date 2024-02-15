@@ -1,4 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
+import { Actions } from '@voiceflow/sdk-logux-designer';
 import { Context } from '@voiceflow/socket-utils';
 import { AxiosError } from 'axios';
 import { Action } from 'typescript-fsa';
@@ -18,12 +19,12 @@ class DowngradeWorkspaceTrial extends AbstractWorkspaceChannelControl<Realtime.w
 
       const [workspace, organizations] = await Promise.all([
         this.services.workspace.get(payload.workspaceID).then(Realtime.Adapters.workspaceAdapter.fromDB),
-        this.services.organization.getAll().then(Realtime.Adapters.Identity.organization.mapFromDB),
+        this.services.organization.getAll(),
       ]);
 
       await Promise.all([
         ctx.sendBack(Realtime.workspace.crud.update({ key: payload.workspaceID, value: workspace })),
-        ctx.sendBack(Realtime.organization.crud.replace({ values: organizations })),
+        ctx.sendBack(Actions.Organization.Replace({ data: organizations })),
       ]);
 
       ctx.data.succedeed = true;

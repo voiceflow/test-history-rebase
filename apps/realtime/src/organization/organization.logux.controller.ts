@@ -1,15 +1,18 @@
-import { Controller } from '@nestjs/common';
-import { Action, Channel } from '@voiceflow/nestjs-logux';
-import * as Realtime from '@voiceflow/realtime-sdk/backend';
+import { Controller, Inject } from '@nestjs/common';
+import { Action, Broadcast, Channel, Payload } from '@voiceflow/nestjs-logux';
 import { Permission } from '@voiceflow/sdk-auth';
 import { Authorize } from '@voiceflow/sdk-auth/nestjs';
-import { Channels } from '@voiceflow/sdk-logux-designer';
+import { Actions, Channels } from '@voiceflow/sdk-logux-designer';
 
-import { InjectRequestContext } from '@/common';
+import { InjectRequestContext, UseRequestContext } from '@/common';
+
+import { OrganizationService } from './organization.service';
 
 @Controller()
 @InjectRequestContext()
 export class OrganizationLoguxController {
+  constructor(@Inject(OrganizationService) private readonly organizationService: OrganizationService) {}
+
   @Channel(Channels.organization)
   @Authorize.Permissions<Channels.OrganizationParams>([Permission.ORGANIZATION_READ], ({ organizationID }) => ({
     id: organizationID,
@@ -19,21 +22,14 @@ export class OrganizationLoguxController {
     // subscribe only. Organization channel is used only for authorization
   }
 
-  @Action.Async(Realtime.organization.updateName)
-  @Authorize.Permissions<Actions.Assistant.CreateOne.Request>([Permission.WORKSPACE_PROJECT_CREATE], ({ context }) => ({
-    id: context.workspaceID,
-    kind: 'workspace',
+  @Action(Actions.Organization.PatchOne)
+  @Authorize.Permissions<Actions.Organization.PatchOne>([Permission.ORGANIZATION_UPDATE], ({ id: organizationID }) => ({
+    id: organizationID,
+    kind: 'organization',
   }))
   @UseRequestContext()
-  createOne(
-    @Payload() { data, context }: Actions.Assistant.CreateOne.Request,
-    @AuthMeta() authMeta: AuthMetaPayload
-  ): Promise<Actions.Assistant.CreateOne.Response> {
-    return this.service
-      .createOneFromTemplateAndBroadcast(authMeta, { ...data, workspaceID: this.assistantSerializer.decodeWorkspaceID(context.workspaceID) })
-      .then(({ project, assistant }) => ({
-        data: { project: this.projectSerializer.nullable(project), assistant: this.assistantSerializer.nullable(assistant) },
-        context: { workspaceID: context.workspaceID },
-      }));
+  @Broadcast<Actions.EntityVariant.PatchOne>(({ id }) => ({ channel: Channels.organization.build({ organizationID: id }) }))
+  async patchOne(@Payload() { id, patch }: Actions.Organization.PatchOne): Promise<void> {
+    await this.organizationService.patchOne(id, patch);
   }
 }

@@ -10,7 +10,9 @@ import type {
   ReplaceRequest,
 } from '@/crud/crud.interface';
 
-export const organizationAction = createCRUD('organization');
+import { ORGANIZATION_KEY } from './organization.constants';
+
+export const organizationAction = createCRUD(ORGANIZATION_KEY);
 
 /**
  * user-sent events
@@ -33,6 +35,7 @@ export const CreateOne = organizationAction.crud.createOne<CreateOne.Request, Cr
 interface PatchData {
   name?: string;
   activePersonaID?: string;
+  image?: string;
 }
 
 export interface PatchOne extends PatchOneRequest<PatchData>, CreatorAction {}

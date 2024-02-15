@@ -1,5 +1,6 @@
 import { SendBackActions } from '@logux/server';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
+import { Actions } from '@voiceflow/sdk-logux-designer';
 import { ChannelContext } from '@voiceflow/socket-utils';
 
 import { AbstractChannelControl } from './utils';
@@ -17,12 +18,12 @@ class CreatorChannel extends AbstractChannelControl<Realtime.Channels.CreatorCha
 
     const [workspaces, organizations] = await Promise.all([
       this.services.workspace.getAll(Number(ctx.userId)).then(Realtime.Adapters.workspaceAdapter.mapFromDB),
-      this.services.organization.getAll().then(Realtime.Adapters.Identity.organization.mapFromDB),
+      this.services.organization.getAll(),
     ]);
 
     return [
       [Realtime.workspace.crud.replace({ values: workspaces }), workspacesMeta],
-      [Realtime.organization.crud.replace({ values: organizations }), organizationsMeta],
+      [Actions.Organization.Replace({ data: organizations }), organizationsMeta],
     ];
   };
 }

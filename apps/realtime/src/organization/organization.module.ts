@@ -10,5 +10,6 @@ import { OrganizationMemberService } from './organization-member.service';
   imports: [OrganizationBillingModule],
   providers: [OrganizationService, OrganizationMemberService],
   controllers: [OrganizationHTTPController, OrganizationLoguxController],
+  exports: [OrganizationService],
 })
 export class OrganizationModule {}

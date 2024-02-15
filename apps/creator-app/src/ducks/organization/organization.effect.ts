@@ -1,5 +1,5 @@
 import { Subscription } from '@voiceflow/dtos';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import { Actions } from '@voiceflow/sdk-logux-designer';
 import { toast } from '@voiceflow/ui';
 
 import client from '@/client';
@@ -20,7 +20,7 @@ export const updateActiveOrganizationName =
     Errors.assertOrganizationID(organizationID);
 
     try {
-      await dispatch.sync(Realtime.organization.updateName({ organizationID, name }));
+      await dispatch.sync(Actions.Organization.PatchOne({ id: organizationID, patch: { name } }));
     } catch (err) {
       toast.error(getErrorMessage(err, 'Invalid organization name'));
     }
@@ -35,9 +35,9 @@ export const updateActiveOrganizationImage =
     Errors.assertOrganizationID(organizationID);
 
     try {
-      // TODO: [organization refactor] move to async action on logux
+      // TODO: [organization refactor] move this to organization http endpoint
       const { image } = await client.identity.organization.updateImage(organizationID, formData);
-      await dispatch.sync(Realtime.organization.updateImage({ organizationID, image }));
+      await dispatch.sync(Actions.Organization.PatchOne({ id: organizationID, patch: { image } }));
 
       return image;
     } catch (err) {
@@ -56,7 +56,7 @@ export const removeActiveOrganizationAdmin =
     Errors.assertOrganizationID(organizationID);
 
     try {
-      await dispatch.sync(Realtime.organization.member.remove({ organizationID, creatorID }));
+      await dispatch.sync(Actions.OrganizationMember.DeleteOne({ organizationID, id: creatorID }));
     } catch (err) {
       toast.genericError();
     }
@@ -66,9 +66,9 @@ export const loadActiveOrganizationSubscription =
   (organizationID: string, chargebeeSubscriptionID: string): Thunk<Subscription | null> =>
   async (dispatch) => {
     try {
-      const subscription = await designerClient.billing.subscription.findOne(organizationID, chargebeeSubscriptionID);
+      const subscription = (await designerClient.billing.subscription.findOne(organizationID, chargebeeSubscriptionID)) as Subscription;
 
-      dispatch(Realtime.organization.replaceSubscription({ organizationID, subscription }));
+      await dispatch.local(Actions.OrganizationSubscription.Replace({ organizationID, subscription }));
 
       return subscription;
     } catch {

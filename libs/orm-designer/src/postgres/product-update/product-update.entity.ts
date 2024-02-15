@@ -5,13 +5,13 @@ import { PostgresEntity } from '@/postgres/common';
 import type { EntityCreateParams, ToJSONWithForeignKeys } from '@/types';
 
 import { UserStubEntity } from '../stubs/user.stub';
-import { ProductUpdateJSONAdapter } from './product-update.adapter';
+import { ProductUpdateEntityAdapter } from './product-update-entity.adapter';
 
 @Entity({ schema: 'public', tableName: 'product_updates' })
 @Unique({ properties: ['id'] })
 export class ProductUpdateEntity extends PostgresEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<ProductUpdateEntity>>>(data: JSON) {
-    return ProductUpdateJSONAdapter.toDB<JSON>(data);
+    return ProductUpdateEntityAdapter.toDB<JSON>(data);
   }
 
   @Property({ name: 'type', nullable: true, type: 'varchar', length: 255 })
@@ -42,7 +42,7 @@ export class ProductUpdateEntity extends PostgresEntity {
   }
 
   toJSON(...args: any[]): ToJSONWithForeignKeys<ProductUpdateEntity> {
-    return ProductUpdateJSONAdapter.fromDB({
+    return ProductUpdateEntityAdapter.fromDB({
       ...wrap<ProductUpdateEntity>(this).toObject(...args),
       creator: this.creator,
     });

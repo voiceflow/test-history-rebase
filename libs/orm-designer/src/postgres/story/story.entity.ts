@@ -16,7 +16,7 @@ import type { EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
 
 import { PostgresCMSTabularEntity } from '../common';
 import { FlowEntity } from '../flow';
-import { StoryJSONAdapter } from './story.adapter';
+import { StoryEntityAdapter } from './story-entity.adapter';
 import { StoryStatus } from './story-status.enum';
 import type { BaseStoryTriggerEntity } from './story-trigger/story-trigger.entity';
 
@@ -25,7 +25,7 @@ import type { BaseStoryTriggerEntity } from './story-trigger/story-trigger.entit
 @Index({ properties: ['environmentID'] })
 export class StoryEntity extends PostgresCMSTabularEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<StoryEntity>>>(data: JSON) {
-    return StoryJSONAdapter.toDB<JSON>(data);
+    return StoryEntityAdapter.toDB<JSON>(data);
   }
 
   @Enum({ items: () => StoryStatus, default: null, nullable: true })
@@ -95,7 +95,7 @@ export class StoryEntity extends PostgresCMSTabularEntity {
   }
 
   toJSON(...args: any[]): ToJSONWithForeignKeys<StoryEntity> {
-    return StoryJSONAdapter.fromDB({
+    return StoryEntityAdapter.fromDB({
       ...wrap<StoryEntity>(this).toObject(...args),
       flow: this.flow ?? null,
       folder: this.folder ?? null,

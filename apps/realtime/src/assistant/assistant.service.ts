@@ -19,7 +19,7 @@ import {
   ProgramEntity,
   ProgramORM,
   ProjectEntity,
-  ProjectJSONAdapter,
+  ProjectEntityAdapter,
   ProjectTemplateORM,
   PrototypeProgramEntity,
   PrototypeProgramORM,
@@ -592,7 +592,7 @@ export class AssistantService extends MutableService<AssistantORM> {
     const assistantID = targetAssistantID ?? new ObjectId().toJSON();
     const environmentID = targetVersionOverride._id ?? new ObjectId().toJSON();
 
-    const sourceProjectJSON = ProjectJSONAdapter.fromDB(sourceProject);
+    const sourceProjectJSON = ProjectEntityAdapter.fromDB(sourceProject);
 
     const project = await this.project.createOne({
       ...Utils.object.omit(sourceProjectJSON, ['privacy', 'apiPrivacy', 'prototype', 'liveVersion', 'previewVersion']),

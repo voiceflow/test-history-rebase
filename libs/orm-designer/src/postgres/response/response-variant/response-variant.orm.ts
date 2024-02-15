@@ -1,8 +1,8 @@
 /* eslint-disable max-classes-per-file */
 import type { PromptEntity } from '@/main';
 import type { AssistantEntity } from '@/postgres/assistant';
-import { PostgresCMSObjectORM } from '@/postgres/common/postgres-cms-object.orm';
-import { PostgresCMSObjectUnionORM } from '@/postgres/common/postgres-union.orm';
+import { PostgresCMSObjectORM } from '@/postgres/common/orms/postgres-cms-object.orm';
+import { PostgresCMSObjectUnionORM } from '@/postgres/common/orms/postgres-union.orm';
 import type { PKOrEntity } from '@/types';
 
 import type { ResponseDiscriminatorEntity } from '../response-discriminator/response-discriminator.entity';

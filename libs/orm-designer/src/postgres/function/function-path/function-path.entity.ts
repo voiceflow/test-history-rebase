@@ -5,13 +5,13 @@ import { Assistant, CreatedAt, Environment, PostgresCMSObjectEntity } from '@/po
 import type { CMSCompositePK, EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
 
 import { FunctionEntity } from '../function.entity';
-import { FunctionPatchJSONAdapter } from './function-path.adapter';
+import { FunctionPatchEntityAdapter } from './function-path-entity.adapter';
 
 @Entity({ tableName: 'designer.function_path' })
 @Unique({ properties: ['id', 'environmentID'] })
 export class FunctionPathEntity extends PostgresCMSObjectEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<FunctionPathEntity>>>(data: JSON) {
-    return FunctionPatchJSONAdapter.toDB<JSON>(data);
+    return FunctionPatchEntityAdapter.toDB<JSON>(data);
   }
 
   @CreatedAt({ columnType: 'timestamptz' })
@@ -51,7 +51,7 @@ export class FunctionPathEntity extends PostgresCMSObjectEntity {
   }
 
   toJSON(...args: any[]): ToJSONWithForeignKeys<FunctionPathEntity> {
-    return FunctionPatchJSONAdapter.fromDB({
+    return FunctionPatchEntityAdapter.fromDB({
       ...wrap<FunctionPathEntity>(this).toObject(...args),
       function: this.function,
       updatedBy: this.updatedBy,

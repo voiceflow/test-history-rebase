@@ -6,7 +6,7 @@ import type { EntityCreateParams } from '@/types';
 
 import type { ProgramCommand } from './interfaces/program-command.interface';
 import type { ProgramLine } from './interfaces/program-line.interface';
-import { ProgramJSONAdapter } from './program.adapter';
+import { ProgramEntityAdapter } from './program-entity.adapter';
 
 export abstract class AbstractProgramEntity extends MongoObjectEntity {
   @Property({ nullable: true })
@@ -57,7 +57,7 @@ export abstract class AbstractProgramEntity extends MongoObjectEntity {
       diagramID: this.diagramID,
       versionID: this.versionID,
       variables: this.variables,
-    } = ProgramJSONAdapter.toDB({
+    } = ProgramEntityAdapter.toDB({
       name,
       lines,
       startId,

@@ -1,4 +1,4 @@
-import { PostgresCMSObjectORM } from '@/postgres/common/postgres-cms-object.orm';
+import { PostgresCMSObjectORM } from '@/postgres/common/orms/postgres-cms-object.orm';
 import type { PKOrEntity } from '@/types';
 
 import type { WorkspaceStubEntity } from '../stubs/workspace.stub';

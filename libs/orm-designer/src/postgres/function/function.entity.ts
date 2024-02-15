@@ -3,7 +3,7 @@ import { Collection, Entity, Index, OneToMany, Property, Unique, wrap } from '@m
 import type { EntityCreateParams, ToJSONWithForeignKeys } from '@/types';
 
 import { PostgresCMSTabularEntity } from '../common';
-import { FunctionJSONAdapter } from './function.adapter';
+import { FunctionEntityAdapter } from './function-entity.adapter';
 import type { FunctionPathEntity } from './function-path/function-path.entity';
 import type { FunctionVariableEntity } from './function-variable/function-variable.entity';
 
@@ -12,7 +12,7 @@ import type { FunctionVariableEntity } from './function-variable/function-variab
 @Index({ properties: ['environmentID'] })
 export class FunctionEntity extends PostgresCMSTabularEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<FunctionEntity>>>(data: JSON) {
-    return FunctionJSONAdapter.toDB<JSON>(data);
+    return FunctionEntityAdapter.toDB<JSON>(data);
   }
 
   @Property({ type: 'text' })
@@ -41,7 +41,7 @@ export class FunctionEntity extends PostgresCMSTabularEntity {
   }
 
   toJSON(...args: any[]): ToJSONWithForeignKeys<FunctionEntity> {
-    return FunctionJSONAdapter.fromDB({
+    return FunctionEntityAdapter.fromDB({
       ...wrap<FunctionEntity>(this).toObject(...args),
       folder: this.folder ?? null,
       updatedBy: this.updatedBy,

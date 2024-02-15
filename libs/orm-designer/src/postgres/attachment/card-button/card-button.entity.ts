@@ -7,14 +7,14 @@ import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/comm
 import type { CMSCompositePK, EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
 
 import { CardAttachmentEntity } from '../card-attachment/card-attachment.entity';
-import { CardButtonJSONAdapter } from './card-button.adapter';
+import { CardButtonEntityAdapter } from './card-button-entity.adapter';
 
 @Entity({ tableName: 'designer.card_button' })
 @Unique({ properties: ['id', 'environmentID'] })
 @Index({ properties: ['environmentID'] })
 export class CardButtonEntity extends PostgresCMSObjectEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<CardButtonEntity>>>(data: JSON) {
-    return CardButtonJSONAdapter.toDB<JSON>(data);
+    return CardButtonEntityAdapter.toDB<JSON>(data);
   }
 
   @ManyToOne(() => CardAttachmentEntity, {
@@ -47,7 +47,7 @@ export class CardButtonEntity extends PostgresCMSObjectEntity {
   }
 
   toJSON(...args: any[]): ToJSONWithForeignKeys<CardButtonEntity> {
-    return CardButtonJSONAdapter.fromDB({
+    return CardButtonEntityAdapter.fromDB({
       ...wrap<CardButtonEntity>(this).toObject(...args),
       card: this.card,
       updatedBy: this.updatedBy,

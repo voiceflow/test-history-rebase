@@ -8,10 +8,10 @@ import type { CMSCompositePK, EntityCreateParams, Ref, ToJSONWithForeignKeys } f
 
 import { StoryEntity } from '../story.entity';
 import {
-  BaseStoryTriggerJSONAdapter,
-  EventStoryTriggerJSONAdapter,
-  IntentStoryTriggerJSONAdapter,
-} from './story-trigger.adapter';
+  BaseStoryTriggerEntityAdapter,
+  EventStoryTriggerEntityAdapter,
+  IntentStoryTriggerEntityAdapter,
+} from './story-trigger-entity.adapter';
 import { StoryTriggerTarget } from './story-trigger-target.enum';
 
 const TABLE_NAME = 'designer.trigger';
@@ -25,7 +25,7 @@ const TABLE_NAME = 'designer.trigger';
 @Index({ properties: ['environmentID'] })
 export class BaseStoryTriggerEntity extends PostgresCMSObjectEntity {
   static fromJSON(data: Partial<ToJSONWithForeignKeys<BaseStoryTriggerEntity>>) {
-    return BaseStoryTriggerJSONAdapter.toDB(data);
+    return BaseStoryTriggerEntityAdapter.toDB(data);
   }
 
   @Property()
@@ -62,7 +62,7 @@ export class BaseStoryTriggerEntity extends PostgresCMSObjectEntity {
   }
 
   toJSON(...args: any[]): ToJSONWithForeignKeys<BaseStoryTriggerEntity> {
-    return BaseStoryTriggerJSONAdapter.fromDB({
+    return BaseStoryTriggerEntityAdapter.fromDB({
       ...wrap<BaseStoryTriggerEntity>(this).toObject(...args),
       story: this.story,
       assistant: this.assistant,
@@ -77,7 +77,7 @@ export class BaseStoryTriggerEntity extends PostgresCMSObjectEntity {
 })
 export class EventStoryTriggerEntity extends BaseStoryTriggerEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<EventStoryTriggerEntity>>>(data: JSON) {
-    return EventStoryTriggerJSONAdapter.toDB<JSON>(data);
+    return EventStoryTriggerEntityAdapter.toDB<JSON>(data);
   }
 
   target: typeof StoryTriggerTarget.EVENT = StoryTriggerTarget.EVENT;
@@ -96,7 +96,7 @@ export class EventStoryTriggerEntity extends BaseStoryTriggerEntity {
   }
 
   toJSON(...args: any[]): ToJSONWithForeignKeys<EventStoryTriggerEntity> {
-    return EventStoryTriggerJSONAdapter.fromDB({
+    return EventStoryTriggerEntityAdapter.fromDB({
       ...wrap<EventStoryTriggerEntity>(this).toObject(...args),
       story: this.story,
       event: this.event,
@@ -112,7 +112,7 @@ export class EventStoryTriggerEntity extends BaseStoryTriggerEntity {
 })
 export class IntentStoryTriggerEntity extends BaseStoryTriggerEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<IntentStoryTriggerEntity>>>(data: JSON) {
-    return IntentStoryTriggerJSONAdapter.toDB<JSON>(data);
+    return IntentStoryTriggerEntityAdapter.toDB<JSON>(data);
   }
 
   target: typeof StoryTriggerTarget.INTENT = StoryTriggerTarget.INTENT;
@@ -131,7 +131,7 @@ export class IntentStoryTriggerEntity extends BaseStoryTriggerEntity {
   }
 
   toJSON(...args: any[]): ToJSONWithForeignKeys<IntentStoryTriggerEntity> {
-    return IntentStoryTriggerJSONAdapter.fromDB({
+    return IntentStoryTriggerEntityAdapter.fromDB({
       ...wrap<IntentStoryTriggerEntity>(this).toObject(...args),
       story: this.story,
       intent: this.intent,

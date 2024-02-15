@@ -4,7 +4,7 @@ import type { ObjectId } from '@mikro-orm/mongodb';
 import { cleanupUndefinedFields, MongoEntity } from '@/mongo/common';
 import type { EntityCreateParams, ToJSON, ToJSONWithForeignKeys } from '@/types';
 
-import { DiagramJSONAdapter } from './diagram.adapter';
+import { DiagramEntityAdapter } from './diagram-entity.adapter';
 import type { DiagramMenuItem } from './interfaces/diagram-menu-item.interface';
 import type { DiagramNode } from './interfaces/diagram-node.interface';
 
@@ -12,7 +12,7 @@ import type { DiagramNode } from './interfaces/diagram-node.interface';
 @Unique({ properties: ['diagramID', 'versionID'] })
 export class DiagramEntity extends MongoEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<DiagramEntity>>>(data: JSON) {
-    return DiagramJSONAdapter.toDB<JSON>(data);
+    return DiagramEntityAdapter.toDB<JSON>(data);
   }
 
   @Property()
@@ -132,6 +132,6 @@ export class DiagramEntity extends MongoEntity {
   }
 
   toJSON(): ToJSON<DiagramEntity> {
-    return DiagramJSONAdapter.fromDB(this);
+    return DiagramEntityAdapter.fromDB(this);
   }
 }

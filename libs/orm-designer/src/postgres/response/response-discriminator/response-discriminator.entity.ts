@@ -19,14 +19,14 @@ import type { CMSCompositePK, EntityCreateParams, Ref, ToJSONWithForeignKeys } f
 
 import { ResponseEntity } from '../response.entity';
 import type { BaseResponseVariantEntity } from '../response-variant/response-variant.entity';
-import { ResponseDiscriminatorJSONAdapter } from './response-discriminator.adapter';
+import { ResponseDiscriminatorEntityAdapter } from './response-discriminator-entity.adapter';
 
 @Entity({ tableName: 'designer.response_discriminator' })
 @Unique({ properties: ['id', 'environmentID'] })
 @Index({ properties: ['environmentID'] })
 export class ResponseDiscriminatorEntity extends PostgresCMSObjectEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<ResponseDiscriminatorEntity>>>(data: JSON) {
-    return ResponseDiscriminatorJSONAdapter.toDB<JSON>(data);
+    return ResponseDiscriminatorEntityAdapter.toDB<JSON>(data);
   }
 
   @Enum(() => Channel)
@@ -70,7 +70,7 @@ export class ResponseDiscriminatorEntity extends PostgresCMSObjectEntity {
   }
 
   toJSON(...args: any[]): ToJSONWithForeignKeys<ResponseDiscriminatorEntity> {
-    return ResponseDiscriminatorJSONAdapter.fromDB({
+    return ResponseDiscriminatorEntityAdapter.fromDB({
       ...wrap<ResponseDiscriminatorEntity>(this).toObject(...args),
       response: this.response,
       updatedBy: this.updatedBy,

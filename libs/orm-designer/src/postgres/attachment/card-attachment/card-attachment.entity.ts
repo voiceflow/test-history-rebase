@@ -20,14 +20,14 @@ import type { CMSCompositePK, EntityCreateParams, Ref, ToJSONWithForeignKeys } f
 import { AttachmentType } from '../attachment-type.enum';
 import type { CardButtonEntity } from '../card-button/card-button.entity';
 import { MediaAttachmentEntity } from '../media-attachment/media-attachment.entity';
-import { CardAttachmentJSONAdapter } from './card-attachment.adapter';
+import { CardAttachmentEntityAdapter } from './card-attachment-entity.adapter';
 
 @Entity({ tableName: 'designer.card_attachment' })
 @Unique({ properties: ['id', 'environmentID'] })
 @Index({ properties: ['environmentID'] })
 export class CardAttachmentEntity extends PostgresCMSObjectEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<CardAttachmentEntity>>>(data: JSON) {
-    return CardAttachmentJSONAdapter.toDB<JSON>(data);
+    return CardAttachmentEntityAdapter.toDB<JSON>(data);
   }
 
   @Property({ type: MarkupType })
@@ -76,7 +76,7 @@ export class CardAttachmentEntity extends PostgresCMSObjectEntity {
     return {
       type: AttachmentType.CARD,
 
-      ...CardAttachmentJSONAdapter.fromDB({
+      ...CardAttachmentEntityAdapter.fromDB({
         ...wrap<CardAttachmentEntity>(this).toObject(...args),
         media: this.media ?? null,
         updatedBy: this.updatedBy,

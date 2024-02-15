@@ -5,7 +5,7 @@ import { FolderEntity } from '@/postgres/folder/folder.entity';
 import type { UserStubEntity } from '@/postgres/stubs/user.stub';
 import type { CMSCompositePK, EntityCreateParams, Ref } from '@/types';
 
-import { PostgresCMSTabularJSONAdapter } from '../adapters/postgres-cms-tabular.adapter';
+import { PostgresCMSTabularEntityAdapter } from '../adapters/postgres-cms-tabular-entity.adapter';
 import { Assistant } from '../decorators/assistant.decorator';
 import { CreatedByID } from '../decorators/created-by-id.decorator';
 import { Environment } from '../decorators/environment.decorator';
@@ -49,6 +49,6 @@ export abstract class PostgresCMSTabularEntity extends PostgresCMSObjectEntity {
       updatedBy: this.updatedBy,
       createdBy: this.createdBy,
       environmentID: this.environmentID,
-    } = PostgresCMSTabularJSONAdapter.toDB(data));
+    } = PostgresCMSTabularEntityAdapter.toDB(data));
   }
 }

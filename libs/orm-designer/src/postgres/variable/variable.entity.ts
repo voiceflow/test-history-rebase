@@ -3,15 +3,15 @@ import { Entity, Enum, Index, PrimaryKey, Property, Unique, wrap } from '@mikro-
 import type { EntityCreateParams, ToJSONWithForeignKeys } from '@/types';
 
 import { Environment, PostgresCMSTabularEntity } from '../common';
-import { VariableJSONAdapter } from './variable.adapter';
 import { VariableDatatype } from './variable-datatype.enum';
+import { VariableEntityAdapter } from './variable-entity.adapter';
 
 @Entity({ tableName: 'designer.variable' })
 @Unique({ properties: ['id', 'environmentID'] })
 @Index({ properties: ['environmentID'] })
 export class VariableEntity extends PostgresCMSTabularEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<VariableEntity>>>(data: JSON) {
-    return VariableJSONAdapter.toDB<JSON>(data);
+    return VariableEntityAdapter.toDB<JSON>(data);
   }
 
   // legacy built-in intents uses type as id, so increase length to 64
@@ -69,7 +69,7 @@ export class VariableEntity extends PostgresCMSTabularEntity {
   }
 
   toJSON(...args: any[]): ToJSONWithForeignKeys<VariableEntity> {
-    return VariableJSONAdapter.fromDB({
+    return VariableEntityAdapter.fromDB({
       ...wrap<VariableEntity>(this).toObject(...args),
       folder: this.folder ?? null,
       assistant: this.assistant,

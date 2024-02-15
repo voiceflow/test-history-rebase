@@ -8,14 +8,14 @@ import type { CMSCompositePK, EntityCreateParams, Ref, ToJSONWithForeignKeys } f
 
 import { PromptConditionEntity } from '../condition.entity';
 import { ConditionOperation } from '../condition-operation.enum';
-import { ConditionPredicateJSONAdapter } from './condition-predicate.adapter';
+import { ConditionPredicateEntityAdapter } from './condition-predicate-entity.adapter';
 
 @Entity({ tableName: 'designer.condition_predicate' })
 @Unique({ properties: ['id', 'environmentID'] })
 @Index({ properties: ['environmentID'] })
 export class ConditionPredicateEntity extends PostgresCMSObjectEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<ConditionPredicateEntity>>>(data: JSON) {
-    return ConditionPredicateJSONAdapter.toDB<JSON>(data);
+    return ConditionPredicateEntityAdapter.toDB<JSON>(data);
   }
 
   @Property({ type: MarkupType })
@@ -52,7 +52,7 @@ export class ConditionPredicateEntity extends PostgresCMSObjectEntity {
   }
 
   toJSON(...args: any[]): ToJSONWithForeignKeys<ConditionPredicateEntity> {
-    return ConditionPredicateJSONAdapter.fromDB({
+    return ConditionPredicateEntityAdapter.fromDB({
       ...wrap<ConditionPredicateEntity>(this).toObject(...args),
       updatedBy: this.updatedBy,
       assistant: this.assistant,

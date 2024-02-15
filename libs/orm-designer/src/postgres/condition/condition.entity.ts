@@ -18,13 +18,13 @@ import type { CMSCompositePK, EntityCreateParams, Ref, ToJSONWithForeignKeys } f
 import type { AssistantEntity } from '../assistant';
 import { Assistant, Environment, PostgresCMSObjectEntity } from '../common';
 import { PromptEntity } from '../prompt';
-import {
-  BaseConditionJSONAdapter,
-  ExpressionConditionJSONAdapter,
-  PromptConditionJSONAdapter,
-  ScriptConditionJSONAdapter,
-} from './condition.adapter';
 import type { ConditionAssertionEntity } from './condition-assertion/condition-assertion.entity';
+import {
+  BaseConditionEntityAdapter,
+  ExpressionConditionEntityAdapter,
+  PromptConditionEntityAdapter,
+  ScriptConditionEntityAdapter,
+} from './condition-entity.adapter';
 import type { ConditionPredicateEntity } from './condition-predicate/condition-predicate.entity';
 import { ConditionType } from './condition-type.enum';
 
@@ -37,7 +37,7 @@ import { ConditionType } from './condition-type.enum';
 @Index({ properties: ['environmentID'] })
 export class BaseConditionEntity extends PostgresCMSObjectEntity {
   static fromJSON(data: Partial<ToJSONWithForeignKeys<BaseConditionEntity>>) {
-    return BaseConditionJSONAdapter.toDB(data);
+    return BaseConditionEntityAdapter.toDB(data);
   }
 
   @Enum(() => ConditionType)
@@ -62,14 +62,14 @@ export class BaseConditionEntity extends PostgresCMSObjectEntity {
   }
 
   toJSON(): ToJSONWithForeignKeys<BaseConditionEntity> {
-    return BaseConditionJSONAdapter.fromDB(this);
+    return BaseConditionEntityAdapter.fromDB(this);
   }
 }
 
 @Entity({ discriminatorValue: ConditionType.EXPRESSION })
 export class ExpressionConditionEntity extends BaseConditionEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<ExpressionConditionEntity>>>(data: JSON) {
-    return ExpressionConditionJSONAdapter.toDB<JSON>(data);
+    return ExpressionConditionEntityAdapter.toDB<JSON>(data);
   }
 
   type: typeof ConditionType.EXPRESSION = ConditionType.EXPRESSION;
@@ -87,7 +87,7 @@ export class ExpressionConditionEntity extends BaseConditionEntity {
   }
 
   toJSON(...args: any[]): ToJSONWithForeignKeys<ExpressionConditionEntity> {
-    return ExpressionConditionJSONAdapter.fromDB({
+    return ExpressionConditionEntityAdapter.fromDB({
       ...wrap<ExpressionConditionEntity>(this).toObject(...args),
       updatedBy: this.updatedBy,
       assistant: this.assistant,
@@ -98,7 +98,7 @@ export class ExpressionConditionEntity extends BaseConditionEntity {
 @Entity({ discriminatorValue: ConditionType.PROMPT })
 export class PromptConditionEntity extends BaseConditionEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<PromptConditionEntity>>>(data: JSON) {
-    return PromptConditionJSONAdapter.toDB<JSON>(data);
+    return PromptConditionEntityAdapter.toDB<JSON>(data);
   }
 
   type: typeof ConditionType.PROMPT = ConditionType.PROMPT;
@@ -125,7 +125,7 @@ export class PromptConditionEntity extends BaseConditionEntity {
   }
 
   toJSON(...args: any[]): ToJSONWithForeignKeys<PromptConditionEntity> {
-    return PromptConditionJSONAdapter.fromDB({
+    return PromptConditionEntityAdapter.fromDB({
       ...wrap<PromptConditionEntity>(this).toObject(...args),
       prompt: this.prompt ?? null,
       updatedBy: this.updatedBy,
@@ -137,7 +137,7 @@ export class PromptConditionEntity extends BaseConditionEntity {
 @Entity({ discriminatorValue: ConditionType.SCRIPT })
 export class ScriptConditionEntity extends BaseConditionEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<ScriptConditionEntity>>>(data: JSON) {
-    return ScriptConditionJSONAdapter.toDB<JSON>(data);
+    return ScriptConditionEntityAdapter.toDB<JSON>(data);
   }
 
   type: typeof ConditionType.SCRIPT = ConditionType.SCRIPT;
@@ -152,7 +152,7 @@ export class ScriptConditionEntity extends BaseConditionEntity {
   }
 
   toJSON(...args: any[]): ToJSONWithForeignKeys<ScriptConditionEntity> {
-    return ScriptConditionJSONAdapter.fromDB({
+    return ScriptConditionEntityAdapter.fromDB({
       ...wrap<ScriptConditionEntity>(this).toObject(...args),
       updatedBy: this.updatedBy,
       assistant: this.assistant,

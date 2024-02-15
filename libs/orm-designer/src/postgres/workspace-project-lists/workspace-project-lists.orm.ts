@@ -1,4 +1,4 @@
-import { PostgresMutableORM } from '@/postgres/common/postgres-mutable.orm';
+import { PostgresMutableORM } from '@/postgres/common/orms/postgres-mutable.orm';
 import type { WorkspaceStubEntity } from '@/postgres/stubs/workspace.stub';
 import type { MutableEntityData, PKOrEntity } from '@/types';
 

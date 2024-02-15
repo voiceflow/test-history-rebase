@@ -7,14 +7,14 @@ import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/comm
 import type { CMSCompositePK, EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
 
 import { AttachmentType } from '../attachment-type.enum';
-import { MediaAttachmentJSONAdapter } from './media-attachment.adapter';
+import { MediaAttachmentEntityAdapter } from './media-attachment-entity.adapter';
 import { MediaDatatype } from './media-datatype.enum';
 
 @Entity({ tableName: 'designer.media_attachment' })
 @Unique({ properties: ['id', 'environmentID'] })
 export class MediaAttachmentEntity extends PostgresCMSObjectEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<MediaAttachmentEntity>>>(data: JSON) {
-    return MediaAttachmentJSONAdapter.toDB<JSON>(data);
+    return MediaAttachmentEntityAdapter.toDB<JSON>(data);
   }
 
   @Property({ type: MarkupType })
@@ -54,7 +54,7 @@ export class MediaAttachmentEntity extends PostgresCMSObjectEntity {
     return {
       type: AttachmentType.MEDIA,
 
-      ...MediaAttachmentJSONAdapter.fromDB({
+      ...MediaAttachmentEntityAdapter.fromDB({
         ...wrap<MediaAttachmentEntity>(this).toObject(...args),
         updatedBy: this.updatedBy,
         assistant: this.assistant,

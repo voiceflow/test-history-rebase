@@ -15,13 +15,13 @@ import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/comm
 import type { CMSCompositePK, EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
 
 import { EntityEntity } from '../entity.entity';
-import { EntityVariantJSONAdapter } from './entity-variant.adapter';
+import { EntityVariantEntityAdapter } from './entity-variant-entity.adapter';
 
 @EntityDecorator({ tableName: 'designer.entity_variant' })
 @Index({ properties: ['environmentID'] })
 export class EntityVariantEntity extends PostgresCMSObjectEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<EntityVariantEntity>>>(data: JSON) {
-    return EntityVariantJSONAdapter.toDB<JSON>(data);
+    return EntityVariantEntityAdapter.toDB<JSON>(data);
   }
 
   @Enum(() => Language)
@@ -62,7 +62,7 @@ export class EntityVariantEntity extends PostgresCMSObjectEntity {
   }
 
   toJSON(...args: any[]): ToJSONWithForeignKeys<EntityVariantEntity> {
-    return EntityVariantJSONAdapter.fromDB({
+    return EntityVariantEntityAdapter.fromDB({
       ...wrap<EntityVariantEntity>(this).toObject(...args),
       entity: this.entity,
       updatedBy: this.updatedBy,

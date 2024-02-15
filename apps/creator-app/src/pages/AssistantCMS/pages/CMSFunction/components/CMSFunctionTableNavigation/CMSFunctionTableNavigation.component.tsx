@@ -1,4 +1,3 @@
-import { Box } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { Designer } from '@/ducks';
@@ -16,19 +15,17 @@ export const CMSFunctionTableNavigation: React.FC = () => {
   const onImportClickHandler = () => filesModal.open({ onSave: ([file]: File[]) => importMany(file) });
 
   return (
-    <Box>
-      <CMSTableNavigation
-        label="All functions"
-        onImportClick={onImportClickHandler}
-        actions={
-          <>
-            <CMSResourceActions.CreateFolder />
-            <CMSResourceActions.MoveToFolder />
-            <CMSResourceActions.Export />
-            <CMSResourceActions.Delete />
-          </>
-        }
-      />
-    </Box>
+    <CMSTableNavigation
+      label="All functions"
+      onImportClick={onImportClickHandler}
+      actions={
+        <>
+          <CMSResourceActions.CreateFolder />
+          <CMSResourceActions.MoveToFolder />
+          <CMSResourceActions.Export />
+          <CMSResourceActions.Delete />
+        </>
+      }
+    />
   );
 };

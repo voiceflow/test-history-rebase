@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.35.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.34.0...@voiceflow/orm-designer@2.35.0) (2024-02-15)
+
+### Features
+
+* rename *JSONAdapter to *EntityAdapter (CT-000) ([#7777](https://github.com/voiceflow/creator-app/issues/7777)) ([284f02f](https://github.com/voiceflow/creator-app/commit/284f02fee6155946e5701a0b87bc95a50737f325))
+
 # [2.34.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.33.1...@voiceflow/orm-designer@2.34.0) (2024-02-13)
 
 ### Features

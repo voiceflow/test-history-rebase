@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.272.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.271.0...@voiceflow/realtime@1.272.0) (2024-02-15)
+
+### Features
+
+* rename *JSONAdapter to *EntityAdapter (CT-000) ([#7777](https://github.com/voiceflow/creator-app/issues/7777)) ([284f02f](https://github.com/voiceflow/creator-app/commit/284f02fee6155946e5701a0b87bc95a50737f325))
+
 # [1.271.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.270.6...@voiceflow/realtime@1.271.0) (2024-02-13)
 
 ### Features

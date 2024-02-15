@@ -14,7 +14,6 @@ import { useDispatch, useGetValueSelector } from '@/hooks/store.hook';
 import { useValidators } from '@/hooks/validate.hook';
 
 import { modalsManager } from '../../manager';
-import { textareaStyles } from './FlowCreate.css';
 
 const TEST_ID = 'component-create';
 export interface IFlowCreateModal {
@@ -91,12 +90,11 @@ export const FlowCreateModal = modalsManager.create<IFlowCreateModal, FlowType>(
               <Box direction="column">
                 <CMSFormDescription
                   value={description}
-                  className={textareaStyles}
                   testID={tid(TEST_ID, 'description')}
                   disabled={closePrevented}
                   placeholder="Enter description (optional)"
                   onValueChange={setDescription}
-                  maxRows={20}
+                  maxRows={25}
                 />
               </Box>
             </Modal.Body>

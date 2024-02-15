@@ -31,6 +31,8 @@ export const threadIDParamSelector = (_: any, { threadID }: { threadID: string |
 
 export const functionIDParamSelector = (_: any, { functionID }: { functionID: string | null }) => functionID;
 
+export const diagramIDParamSelector = (_: any, { diagramID }: { diagramID: string | null }) => diagramID;
+
 export const responseIDParamSelector = (_: any, { responseID }: { responseID: Nullish<string> }) => responseID;
 
 export const folderScopeParamSelector = (_: any, { folderScope }: { folderScope: FolderScope }) => folderScope;

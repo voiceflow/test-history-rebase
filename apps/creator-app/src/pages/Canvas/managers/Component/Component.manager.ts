@@ -9,7 +9,7 @@ import { TemporaryVersionSwitch } from './ComponentStep/TemporaryVersionSwitch.s
 import { Action, ActionEditor } from './legacy/components';
 import LegacyComponentEditor from './legacy/components/Editor';
 
-const ComponentManager: NodeManagerConfigV3<Realtime.NodeData.Component, Realtime.NodeData.ComponentBuiltInPorts> = {
+export const ComponentManager: NodeManagerConfigV3<Realtime.NodeData.Component, Realtime.NodeData.ComponentBuiltInPorts> = {
   ...NODE_CONFIG,
 
   label: 'Component',
@@ -26,5 +26,3 @@ const ComponentManager: NodeManagerConfigV3<Realtime.NodeData.Component, Realtim
   tooltipText: 'Points the conversation to an existing Component.',
   tooltipLink: Documentation.COMPONENT_STEP,
 };
-
-export default ComponentManager;

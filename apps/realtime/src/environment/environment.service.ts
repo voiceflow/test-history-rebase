@@ -678,9 +678,8 @@ export class EnvironmentService {
     await Promise.all([
       this.intent.deleteManyByEnvironment(assistantID, environmentID),
       this.functionService.deleteManyByEnvironment(assistantID, environmentID),
+      this.flow.deleteManyByEnvironment(assistantID, environmentID),
     ]);
-
-    await Promise.all([this.flow.deleteManyByEnvironment(assistantID, environmentID)]);
 
     await Promise.all([
       this.entity.deleteManyByEnvironment(assistantID, environmentID),

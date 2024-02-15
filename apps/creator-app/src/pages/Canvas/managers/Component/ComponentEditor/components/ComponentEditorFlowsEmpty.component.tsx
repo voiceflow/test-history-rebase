@@ -6,7 +6,7 @@ import { CMS_COMPONENT_LEARN_MORE } from '@/constants/link.constant';
 import { useGoToCMSResourceModal } from '@/hooks/cms-resource.hook';
 import * as ModalsV2 from '@/ModalsV2';
 
-export const EmptyComponent = () => {
+export const ComponentEditorFlowsEmpty = () => {
   const goToCMSComponentCreateModal = useGoToCMSResourceModal(CMSRoute.FLOW);
 
   const onCreateComponent = () => {

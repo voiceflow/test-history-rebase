@@ -7,10 +7,10 @@ import type { CMSCompositePK, EntityCreateParams, Ref, ToJSONWithForeignKeys } f
 
 import { BaseResponseVariantEntity } from '../response-variant/response-variant.entity';
 import {
-  BaseResponseAttachmentJSONAdapter,
-  ResponseCardAttachmentJSONAdapter,
-  ResponseMediaAttachmentJSONAdapter,
-} from './response-attachment.adapter';
+  BaseResponseAttachmentEntityAdapter,
+  ResponseCardAttachmentEntityAdapter,
+  ResponseMediaAttachmentEntityAdapter,
+} from './response-attachment-entity.adapter';
 
 const TABLE_NAME = 'designer.response_attachment';
 
@@ -22,7 +22,7 @@ const TABLE_NAME = 'designer.response_attachment';
 @Unique({ properties: ['id', 'environmentID'] })
 export class BaseResponseAttachmentEntity extends PostgresCMSCreatableEntity {
   static fromJSON(data: Partial<ToJSONWithForeignKeys<BaseResponseAttachmentEntity>>) {
-    return BaseResponseAttachmentJSONAdapter.toDB(data);
+    return BaseResponseAttachmentEntityAdapter.toDB(data);
   }
 
   @Enum(() => AttachmentType)
@@ -55,7 +55,7 @@ export class BaseResponseAttachmentEntity extends PostgresCMSCreatableEntity {
   }
 
   toJSON(...args: any[]): ToJSONWithForeignKeys<BaseResponseAttachmentEntity> {
-    return BaseResponseAttachmentJSONAdapter.fromDB({
+    return BaseResponseAttachmentEntityAdapter.fromDB({
       ...wrap<BaseResponseAttachmentEntity>(this).toObject(...args),
       variant: this.variant,
       assistant: this.assistant,
@@ -69,7 +69,7 @@ export class BaseResponseAttachmentEntity extends PostgresCMSCreatableEntity {
 })
 export class ResponseCardAttachmentEntity extends BaseResponseAttachmentEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<ResponseCardAttachmentEntity>>>(data: JSON) {
-    return ResponseCardAttachmentJSONAdapter.toDB<JSON>(data);
+    return ResponseCardAttachmentEntityAdapter.toDB<JSON>(data);
   }
 
   type: typeof AttachmentType.CARD = AttachmentType.CARD;
@@ -88,7 +88,7 @@ export class ResponseCardAttachmentEntity extends BaseResponseAttachmentEntity {
   }
 
   toJSON(...args: any[]): ToJSONWithForeignKeys<ResponseCardAttachmentEntity> {
-    return ResponseCardAttachmentJSONAdapter.fromDB({
+    return ResponseCardAttachmentEntityAdapter.fromDB({
       ...wrap<ResponseCardAttachmentEntity>(this).toObject(...args),
       card: this.card,
       variant: this.variant,
@@ -103,7 +103,7 @@ export class ResponseCardAttachmentEntity extends BaseResponseAttachmentEntity {
 })
 export class ResponseMediaAttachmentEntity extends BaseResponseAttachmentEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<ResponseMediaAttachmentEntity>>>(data: JSON) {
-    return ResponseMediaAttachmentJSONAdapter.toDB<JSON>(data);
+    return ResponseMediaAttachmentEntityAdapter.toDB<JSON>(data);
   }
 
   type: typeof AttachmentType.MEDIA = AttachmentType.MEDIA;
@@ -122,7 +122,7 @@ export class ResponseMediaAttachmentEntity extends BaseResponseAttachmentEntity 
   }
 
   toJSON(...args: any[]): ToJSONWithForeignKeys<ResponseMediaAttachmentEntity> {
-    return ResponseMediaAttachmentJSONAdapter.fromDB({
+    return ResponseMediaAttachmentEntityAdapter.fromDB({
       ...wrap<ResponseMediaAttachmentEntity>(this).toObject(...args),
       media: this.media,
       variant: this.variant,

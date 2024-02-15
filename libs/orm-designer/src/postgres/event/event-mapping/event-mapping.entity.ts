@@ -8,14 +8,14 @@ import { VariableEntity } from '@/postgres/variable';
 import type { CMSCompositePK, EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
 
 import { EventEntity } from '../event.entity';
-import { EventMappingJSONAdapter } from './event-mapping.adapter';
+import { EventMappingEntityAdapter } from './event-mapping-entity.adapter';
 
 @Entity({ tableName: 'designer.event_mapping' })
 @Unique({ properties: ['id', 'environmentID'] })
 @Index({ properties: ['environmentID'] })
 export class EventMappingEntity extends PostgresCMSObjectEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<EventMappingEntity>>>(data: JSON) {
-    return EventMappingJSONAdapter.toDB<JSON>(data);
+    return EventMappingEntityAdapter.toDB<JSON>(data);
   }
 
   @Property({ type: MarkupType })
@@ -58,7 +58,7 @@ export class EventMappingEntity extends PostgresCMSObjectEntity {
   }
 
   toJSON(...args: any[]): ToJSONWithForeignKeys<EventMappingEntity> {
-    return EventMappingJSONAdapter.fromDB({
+    return EventMappingEntityAdapter.fromDB({
       ...wrap<EventMappingEntity>(this).toObject(...args),
       event: this.event,
       variable: this.variable ?? null,

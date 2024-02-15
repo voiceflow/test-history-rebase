@@ -3,14 +3,14 @@ import { Entity, Index, Property, Unique, wrap } from '@mikro-orm/core';
 import type { EntityCreateParams, ToJSONWithForeignKeys } from '@/types';
 
 import { PostgresCMSTabularEntity } from '../common';
-import { FlowJSONAdapter } from './flow.adapter';
+import { FlowEntityAdapter } from './flow-entity.adapter';
 
 @Entity({ tableName: 'designer.flow' })
 @Unique({ properties: ['id', 'environmentID'] })
 @Index({ properties: ['environmentID'] })
 export class FlowEntity extends PostgresCMSTabularEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<FlowEntity>>>(data: JSON) {
-    return FlowJSONAdapter.toDB<JSON>(data);
+    return FlowEntityAdapter.toDB<JSON>(data);
   }
 
   @Property({ type: 'varchar', length: 24 })
@@ -29,7 +29,7 @@ export class FlowEntity extends PostgresCMSTabularEntity {
   }
 
   toJSON(...args: any[]): ToJSONWithForeignKeys<FlowEntity> {
-    return FlowJSONAdapter.fromDB({
+    return FlowEntityAdapter.fromDB({
       ...wrap<FlowEntity>(this).toObject(...args),
       folder: this.folder ?? null,
       updatedBy: this.updatedBy,

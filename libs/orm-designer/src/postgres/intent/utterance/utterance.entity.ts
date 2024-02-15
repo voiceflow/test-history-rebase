@@ -6,7 +6,7 @@ import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/comm
 import type { CMSCompositePK, EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
 
 import { IntentEntity } from '../intent.entity';
-import { UtteranceJSONAdapter } from './utterance.adapter';
+import { UtteranceEntityAdapter } from './utterance-entity.adapter';
 import type { UtteranceText } from './utterance-text.dto';
 import { UtteranceTextType } from './utterance-text.dto';
 
@@ -15,7 +15,7 @@ import { UtteranceTextType } from './utterance-text.dto';
 @Index({ properties: ['environmentID'] })
 export class UtteranceEntity extends PostgresCMSObjectEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<UtteranceEntity>>>(data: JSON) {
-    return UtteranceJSONAdapter.toDB<JSON>(data);
+    return UtteranceEntityAdapter.toDB<JSON>(data);
   }
 
   @Property({ type: UtteranceTextType })
@@ -52,7 +52,7 @@ export class UtteranceEntity extends PostgresCMSObjectEntity {
   }
 
   toJSON(...args: any[]): ToJSONWithForeignKeys<UtteranceEntity> {
-    return UtteranceJSONAdapter.fromDB({
+    return UtteranceEntityAdapter.fromDB({
       ...wrap<UtteranceEntity>(this).toObject(...args),
       intent: this.intent,
       updatedBy: this.updatedBy,

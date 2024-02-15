@@ -11,12 +11,12 @@ import type { VersionDomain } from './interfaces/version-domain.interface';
 import type { VersionFolder, VersionFolderItem } from './interfaces/version-folder.interface';
 import type { VersionKnowledgeBase } from './interfaces/version-knowledge-base.interface';
 import type { VersionNote } from './interfaces/version-note.interface';
-import { VersionJSONAdapter } from './version.adapter';
+import { VersionEntityAdapter } from './version-entity.adapter';
 
 @Entity({ collection: 'versions' })
 export class VersionEntity extends MongoObjectEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<VersionEntity>>>(data: JSON) {
-    return VersionJSONAdapter.toDB<JSON>(data);
+    return VersionEntityAdapter.toDB<JSON>(data);
   }
 
   @Property()
@@ -172,6 +172,6 @@ export class VersionEntity extends MongoObjectEntity {
   }
 
   toJSON(): ToJSON<VersionEntity> {
-    return VersionJSONAdapter.fromDB(this);
+    return VersionEntityAdapter.fromDB(this);
   }
 }

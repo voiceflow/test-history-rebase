@@ -1,4 +1,4 @@
-import { PostgresCMSObjectORM } from '@/postgres/common/postgres-cms-object.orm';
+import { PostgresCMSObjectORM } from '@/postgres/common/orms/postgres-cms-object.orm';
 
 import { ConditionAssertionEntity } from './condition-assertion.entity';
 

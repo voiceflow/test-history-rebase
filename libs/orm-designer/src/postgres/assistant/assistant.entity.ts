@@ -5,13 +5,13 @@ import type { EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
 import { PostgresCMSObjectEntity } from '../common/entities/postgres-cms-object.entity';
 import { PersonaEntity } from '../persona/persona.entity';
 import { WorkspaceStubEntity } from '../stubs/workspace.stub';
-import { AssistantJSONAdapter } from './assistant.adapter';
+import { AssistantEntityAdapter } from './assistant-entity.adapter';
 
 @Entity({ tableName: 'designer.assistant' })
 @Unique({ properties: ['id'] })
 export class AssistantEntity extends PostgresCMSObjectEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<AssistantEntity>>>(data: JSON) {
-    return AssistantJSONAdapter.toDB<JSON>(data);
+    return AssistantEntityAdapter.toDB<JSON>(data);
   }
 
   @Property()
@@ -45,7 +45,7 @@ export class AssistantEntity extends PostgresCMSObjectEntity {
   }
 
   toJSON(...args: any[]): ToJSONWithForeignKeys<AssistantEntity> {
-    return AssistantJSONAdapter.fromDB({
+    return AssistantEntityAdapter.fromDB({
       ...wrap<AssistantEntity>(this).toObject(...args),
       updatedBy: this.updatedBy,
       workspace: this.workspace,

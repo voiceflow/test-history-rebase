@@ -4,12 +4,12 @@ import { CreatedByID, PostgresCreatableEntity } from '@/postgres/common';
 import type { EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
 
 import type { UserStubEntity } from '../stubs/user.stub';
-import { BackupJSONAdapter } from './backup.adapter';
+import { BackupEntityAdapter } from './backup-entity.adapter';
 
 @Entity({ schema: 'app_cxd', tableName: 'backup' })
 export class BackupEntity extends PostgresCreatableEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<BackupEntity>>>(data: JSON) {
-    return BackupJSONAdapter.toDB<JSON>(data);
+    return BackupEntityAdapter.toDB<JSON>(data);
   }
 
   @Property()
@@ -36,7 +36,7 @@ export class BackupEntity extends PostgresCreatableEntity {
   }
 
   toJSON(...args: any[]): ToJSONWithForeignKeys<BackupEntity> {
-    return BackupJSONAdapter.fromDB({
+    return BackupEntityAdapter.fromDB({
       ...wrap<BackupEntity>(this).toObject(...args),
       createdBy: this.createdBy,
     });

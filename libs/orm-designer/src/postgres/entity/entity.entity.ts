@@ -3,14 +3,14 @@ import { Collection, Entity as EntityDecorator, Index, OneToMany, PrimaryKey, Pr
 import type { EntityCreateParams, ToJSONWithForeignKeys } from '@/types';
 
 import { Environment, PostgresCMSTabularEntity } from '../common';
-import { EntityJSONAdapter } from './entity.adapter';
+import { EntityEntityAdapter } from './entity-entity.adapter';
 import type { EntityVariantEntity } from './entity-variant/entity-variant.entity';
 
 @EntityDecorator({ tableName: 'designer.entity' })
 @Index({ properties: ['environmentID'] })
 export class EntityEntity extends PostgresCMSTabularEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<EntityEntity>>>(data: JSON) {
-    return EntityJSONAdapter.toDB<JSON>(data);
+    return EntityEntityAdapter.toDB<JSON>(data);
   }
 
   // legacy entityIDs could be longer than 24 chars
@@ -48,7 +48,7 @@ export class EntityEntity extends PostgresCMSTabularEntity {
   }
 
   toJSON(...args: any[]): ToJSONWithForeignKeys<EntityEntity> {
-    return EntityJSONAdapter.fromDB({
+    return EntityEntityAdapter.fromDB({
       ...wrap<EntityEntity>(this).toObject(...args),
       folder: this.folder ?? null,
       updatedBy: this.updatedBy,

@@ -12,12 +12,12 @@ import type { ProjectMember } from './interfaces/project-member.interface';
 import type { ProjectNLUSettings } from './interfaces/project-nlu-settings.interface';
 import type { ProjectReportTag } from './interfaces/project-report-tag.interface';
 import type { ProjectSticker } from './interfaces/project-sticker.interface';
-import { ProjectJSONAdapter } from './project.adapter';
+import { ProjectEntityAdapter } from './project-entity.adapter';
 
 @Entity({ collection: 'projects' })
 export class ProjectEntity extends MongoEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<ProjectEntity>>>(data: JSON) {
-    return ProjectJSONAdapter.toDB<JSON>(data);
+    return ProjectEntityAdapter.toDB<JSON>(data);
   }
 
   @Property({ nullable: true })
@@ -180,6 +180,6 @@ export class ProjectEntity extends MongoEntity {
   }
 
   toJSON(): ToJSON<ProjectEntity> {
-    return ProjectJSONAdapter.fromDB(this);
+    return ProjectEntityAdapter.fromDB(this);
   }
 }

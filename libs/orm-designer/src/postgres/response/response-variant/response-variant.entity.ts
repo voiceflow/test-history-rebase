@@ -25,11 +25,11 @@ import { ResponseDiscriminatorEntity } from '../response-discriminator/response-
 import { CardLayout } from './card-layout.enum';
 import { ResponseContext } from './response-context.enum';
 import {
-  BaseResponseVariantJSONAdapter,
-  JSONResponseVariantJSONAdapter,
-  PromptResponseVariantJSONAdapter,
-  TextResponseVariantJSONAdapter,
-} from './response-variant.adapter';
+  BaseResponseVariantEntityAdapter,
+  JSONResponseVariantEntityAdapter,
+  PromptResponseVariantEntityAdapter,
+  TextResponseVariantEntityAdapter,
+} from './response-variant-entity.adapter';
 import { ResponseVariantType } from './response-variant-type.enum';
 
 const TABLE_NAME = 'designer.response_variant';
@@ -43,7 +43,7 @@ const TABLE_NAME = 'designer.response_variant';
 @Index({ properties: ['environmentID'] })
 export class BaseResponseVariantEntity extends PostgresCMSObjectEntity {
   static fromJSON(data: Partial<ToJSONWithForeignKeys<BaseResponseVariantEntity>>) {
-    return BaseResponseVariantJSONAdapter.toDB(data);
+    return BaseResponseVariantEntityAdapter.toDB(data);
   }
 
   @Enum(() => ResponseVariantType)
@@ -93,7 +93,7 @@ export class BaseResponseVariantEntity extends PostgresCMSObjectEntity {
   }
 
   toJSON(...args: any[]): ToJSONWithForeignKeys<BaseResponseVariantEntity> {
-    return BaseResponseVariantJSONAdapter.fromDB({
+    return BaseResponseVariantEntityAdapter.fromDB({
       ...wrap<BaseResponseVariantEntity>(this).toObject(...args),
       assistant: this.assistant,
       condition: this.condition ?? null,
@@ -109,7 +109,7 @@ export class BaseResponseVariantEntity extends PostgresCMSObjectEntity {
 })
 export class JSONResponseVariantEntity extends BaseResponseVariantEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<JSONResponseVariantEntity>>>(data: JSON) {
-    return JSONResponseVariantJSONAdapter.toDB<JSON>(data);
+    return JSONResponseVariantEntityAdapter.toDB<JSON>(data);
   }
 
   type: typeof ResponseVariantType.JSON = ResponseVariantType.JSON;
@@ -124,7 +124,7 @@ export class JSONResponseVariantEntity extends BaseResponseVariantEntity {
   }
 
   toJSON(...args: any[]): ToJSONWithForeignKeys<JSONResponseVariantEntity> {
-    return JSONResponseVariantJSONAdapter.fromDB({
+    return JSONResponseVariantEntityAdapter.fromDB({
       ...wrap<JSONResponseVariantEntity>(this).toObject(...args),
       assistant: this.assistant,
       condition: this.condition ?? null,
@@ -140,7 +140,7 @@ export class JSONResponseVariantEntity extends BaseResponseVariantEntity {
 })
 export class PromptResponseVariantEntity extends BaseResponseVariantEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<PromptResponseVariantEntity>>>(data: JSON) {
-    return PromptResponseVariantJSONAdapter.toDB<JSON>(data);
+    return PromptResponseVariantEntityAdapter.toDB<JSON>(data);
   }
 
   type: typeof ResponseVariantType.PROMPT = ResponseVariantType.PROMPT;
@@ -171,7 +171,7 @@ export class PromptResponseVariantEntity extends BaseResponseVariantEntity {
   }
 
   toJSON(...args: any[]): ToJSONWithForeignKeys<PromptResponseVariantEntity> {
-    return PromptResponseVariantJSONAdapter.fromDB({
+    return PromptResponseVariantEntityAdapter.fromDB({
       ...wrap<PromptResponseVariantEntity>(this).toObject(...args),
       prompt: this.prompt ?? null,
       assistant: this.assistant,
@@ -188,7 +188,7 @@ export class PromptResponseVariantEntity extends BaseResponseVariantEntity {
 })
 export class TextResponseVariantEntity extends BaseResponseVariantEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<TextResponseVariantEntity>>>(data: JSON) {
-    return TextResponseVariantJSONAdapter.toDB<JSON>(data);
+    return TextResponseVariantEntityAdapter.toDB<JSON>(data);
   }
 
   type: typeof ResponseVariantType.TEXT = ResponseVariantType.TEXT;
@@ -213,7 +213,7 @@ export class TextResponseVariantEntity extends BaseResponseVariantEntity {
   }
 
   toJSON(...args: any[]): ToJSONWithForeignKeys<TextResponseVariantEntity> {
-    return TextResponseVariantJSONAdapter.fromDB({
+    return TextResponseVariantEntityAdapter.fromDB({
       ...wrap<TextResponseVariantEntity>(this).toObject(...args),
       assistant: this.assistant,
       condition: this.condition ?? null,

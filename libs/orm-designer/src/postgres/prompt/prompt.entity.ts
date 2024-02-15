@@ -6,13 +6,13 @@ import type { EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
 
 import { PostgresCMSTabularEntity } from '../common';
 import { PersonaOverrideEntity } from '../persona';
-import { PromptJSONAdapter } from './prompt.adapter';
+import { PromptEntityAdapter } from './prompt-entity.adapter';
 
 @Entity({ tableName: 'designer.prompt' })
 @Unique({ properties: ['id', 'environmentID'] })
 export class PromptEntity extends PostgresCMSTabularEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<PromptEntity>>>(data: JSON) {
-    return PromptJSONAdapter.toDB<JSON>(data);
+    return PromptEntityAdapter.toDB<JSON>(data);
   }
 
   @Property({ type: MarkupType })
@@ -34,7 +34,7 @@ export class PromptEntity extends PostgresCMSTabularEntity {
   }
 
   toJSON(...args: any[]): ToJSONWithForeignKeys<PromptEntity> {
-    return PromptJSONAdapter.fromDB({
+    return PromptEntityAdapter.fromDB({
       ...wrap<PromptEntity>(this).toObject(...args),
       folder: this.folder ?? null,
       persona: this.persona ?? null,

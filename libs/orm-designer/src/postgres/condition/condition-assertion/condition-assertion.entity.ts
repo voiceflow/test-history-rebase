@@ -8,14 +8,14 @@ import type { CMSCompositePK, EntityCreateParams, Ref, ToJSONWithForeignKeys } f
 
 import { ExpressionConditionEntity } from '../condition.entity';
 import { ConditionOperation } from '../condition-operation.enum';
-import { ConditionAssertionJSONAdapter } from './condition-assertion.adapter';
+import { ConditionAssertionEntityAdapter } from './condition-assertion-entity.adapter';
 
 @Entity({ tableName: 'designer.condition_assertion' })
 @Unique({ properties: ['id', 'environmentID'] })
 @Index({ properties: ['environmentID'] })
 export class ConditionAssertionEntity extends PostgresCMSObjectEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<ConditionAssertionEntity>>>(data: JSON) {
-    return ConditionAssertionJSONAdapter.toDB<JSON>(data);
+    return ConditionAssertionEntityAdapter.toDB<JSON>(data);
   }
 
   @Property({ type: MarkupType })
@@ -56,7 +56,7 @@ export class ConditionAssertionEntity extends PostgresCMSObjectEntity {
   }
 
   toJSON(...args: any[]): ToJSONWithForeignKeys<ConditionAssertionEntity> {
-    return ConditionAssertionJSONAdapter.fromDB({
+    return ConditionAssertionEntityAdapter.fromDB({
       ...wrap<ConditionAssertionEntity>(this).toObject(...args),
       updatedBy: this.updatedBy,
       assistant: this.assistant,

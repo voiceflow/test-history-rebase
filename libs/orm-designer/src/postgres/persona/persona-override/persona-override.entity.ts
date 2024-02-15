@@ -6,14 +6,14 @@ import type { CMSCompositePK, EntityCreateParams, Ref, ToJSONWithForeignKeys } f
 
 import { PersonaEntity } from '../persona.entity';
 import { PersonaModel } from '../persona-model.enum';
-import { PersonaOverrideJSONAdapter } from './persona-override.adapter';
+import { PersonaOverrideEntityAdapter } from './persona-override-entity.adapter';
 
 @Entity({ tableName: 'designer.persona_override' })
 @Unique({ properties: ['id', 'environmentID'] })
 @Index({ properties: ['environmentID'] })
 export class PersonaOverrideEntity extends PostgresCMSObjectEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<PersonaOverrideEntity>>>(data: JSON) {
-    return PersonaOverrideJSONAdapter.toDB<JSON>(data);
+    return PersonaOverrideEntityAdapter.toDB<JSON>(data);
   }
 
   @Property({ default: null, nullable: true })
@@ -62,7 +62,7 @@ export class PersonaOverrideEntity extends PostgresCMSObjectEntity {
   }
 
   toJSON(...args: any[]): ToJSONWithForeignKeys<PersonaOverrideEntity> {
-    return PersonaOverrideJSONAdapter.fromDB({
+    return PersonaOverrideEntityAdapter.fromDB({
       ...wrap<PersonaOverrideEntity>(this).toObject(...args),
       persona: this.persona,
       updatedBy: this.updatedBy,

@@ -3,15 +3,15 @@ import { Collection, Entity, Index, OneToMany, Property, Unique, wrap } from '@m
 import { PostgresCreatableEntity, SoftDelete } from '@/postgres/common';
 import type { EntityCreateParams, ToJSONWithForeignKeys } from '@/types';
 
-import { ThreadJSONAdapter } from './thread.adapter';
 import type { ThreadCommentEntity } from './thread-comment/thread-comment.entity';
+import { ThreadEntityAdapter } from './thread-entity.adapter';
 
 @Entity({ schema: 'app_cxd', tableName: 'thread' })
 @Unique({ properties: ['id'] })
 @SoftDelete()
 export class ThreadEntity extends PostgresCreatableEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<ThreadEntity>>>(data: JSON) {
-    return ThreadJSONAdapter.toDB<JSON>(data);
+    return ThreadEntityAdapter.toDB<JSON>(data);
   }
 
   @Property({ name: 'node_id', nullable: true, type: 'text' })
@@ -53,6 +53,6 @@ export class ThreadEntity extends PostgresCreatableEntity {
   }
 
   toJSON(...args: any[]): ToJSONWithForeignKeys<ThreadEntity> {
-    return ThreadJSONAdapter.fromDB(wrap<ThreadEntity>(this).toObject(...args));
+    return ThreadEntityAdapter.fromDB(wrap<ThreadEntity>(this).toObject(...args));
   }
 }

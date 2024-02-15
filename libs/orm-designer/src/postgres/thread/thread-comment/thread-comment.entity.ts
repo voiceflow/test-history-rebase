@@ -6,7 +6,7 @@ import type { EntityCreateParams, ResolvedForeignKeys, ResolveForeignKeysParams,
 
 import { UserStubEntity } from '../../stubs/user.stub';
 import { ThreadEntity } from '../thread.entity';
-import { ThreadCommentJSONAdapter } from './thread-comment.adapter';
+import { ThreadCommentEntityAdapter } from './thread-comment-entity.adapter';
 
 @Entity({ schema: 'app_cxd', tableName: 'thread_comment' })
 @SoftDelete()
@@ -24,7 +24,7 @@ export class ThreadCommentEntity extends PostgresCreatableEntity {
   }
 
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<ThreadCommentEntity>>>(data: JSON) {
-    return ThreadCommentJSONAdapter.toDB<JSON>(data);
+    return ThreadCommentEntityAdapter.toDB<JSON>(data);
   }
 
   @OneToOne(() => UserStubEntity, { name: 'author_id' })
@@ -57,7 +57,7 @@ export class ThreadCommentEntity extends PostgresCreatableEntity {
   }
 
   toJSON(...args: any[]): ToJSONWithForeignKeys<ThreadCommentEntity> {
-    return ThreadCommentJSONAdapter.fromDB({
+    return ThreadCommentEntityAdapter.fromDB({
       ...wrap<ThreadCommentEntity>(this).toObject(...args),
       text: this.text,
       author: this.author,

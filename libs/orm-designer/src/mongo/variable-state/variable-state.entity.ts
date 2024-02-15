@@ -6,12 +6,12 @@ import { cleanupUndefinedFields, MongoEntity } from '@/mongo/common';
 import type { EntityCreateParams, ToJSON, ToJSONWithForeignKeys } from '@/types';
 
 import type { VariableStateStartFrom } from './interfaces/variable-state-start-from.interface';
-import { VariableStateJSONAdapter } from './variable-state.adapter';
+import { VariableStateEntityAdapter } from './variable-state-entity.adapter';
 
 @Entity({ collection: 'variable-states' })
 export class VariableStateEntity extends MongoEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<VariableStateEntity>>>(data: JSON) {
-    return VariableStateJSONAdapter.toDB<JSON>(data);
+    return VariableStateEntityAdapter.toDB<JSON>(data);
   }
 
   @Property()
@@ -45,6 +45,6 @@ export class VariableStateEntity extends MongoEntity {
   }
 
   toJSON(): ToJSON<VariableStateEntity> {
-    return VariableStateJSONAdapter.fromDB(this);
+    return VariableStateEntityAdapter.fromDB(this);
   }
 }

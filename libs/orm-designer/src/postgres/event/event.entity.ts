@@ -3,7 +3,7 @@ import { Collection, Entity, Index, OneToMany, Property, Unique, wrap } from '@m
 import type { EntityCreateParams, ToJSONWithForeignKeys } from '@/types';
 
 import { PostgresCMSTabularEntity } from '../common';
-import { EventJSONAdapter } from './event.adapter';
+import { EventEntityAdapter } from './event-entity.adapter';
 import type { EventMappingEntity } from './event-mapping/event-mapping.entity';
 
 @Entity({ tableName: 'designer.event' })
@@ -11,7 +11,7 @@ import type { EventMappingEntity } from './event-mapping/event-mapping.entity';
 @Index({ properties: ['environmentID'] })
 export class EventEntity extends PostgresCMSTabularEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<EventEntity>>>(data: JSON) {
-    return EventJSONAdapter.toDB<JSON>(data);
+    return EventEntityAdapter.toDB<JSON>(data);
   }
 
   @OneToMany('EventMappingEntity', (value: EventMappingEntity) => value.event)
@@ -36,7 +36,7 @@ export class EventEntity extends PostgresCMSTabularEntity {
   }
 
   toJSON(...args: any[]): ToJSONWithForeignKeys<EventEntity> {
-    return EventJSONAdapter.fromDB({
+    return EventEntityAdapter.fromDB({
       ...wrap<EventEntity>(this).toObject(...args),
       folder: this.folder ?? null,
       updatedBy: this.updatedBy,

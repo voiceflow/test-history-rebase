@@ -1,5 +1,5 @@
 import type { AssistantEntity } from '@/main';
-import { PostgresCMSObjectORM } from '@/postgres/common/postgres-cms-object.orm';
+import { PostgresCMSObjectORM } from '@/postgres/common/orms/postgres-cms-object.orm';
 import type { PKOrEntity } from '@/types';
 
 import type { CardAttachmentEntity } from '../card-attachment/card-attachment.entity';

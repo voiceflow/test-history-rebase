@@ -5,13 +5,13 @@ import { PostgresMutableEntity, SoftDelete } from '@/postgres/common';
 import { WorkspaceStubEntity } from '@/postgres/stubs/workspace.stub';
 import type { EntityCreateParams, ToJSONWithForeignKeys } from '@/types';
 
-import { WorkspaceProjectListsJSONAdapter } from './workspace-project-lists.adapter';
+import { WorkspaceProjectListsEntityAdapter } from './workspace-project-lists-entity.adapter';
 
 @Entity({ schema: 'app_cxd', tableName: 'workspace_project_lists' })
 @SoftDelete()
 export class WorkspaceProjectListsEntity extends PostgresMutableEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<WorkspaceProjectListsEntity>>>(data: JSON) {
-    return WorkspaceProjectListsJSONAdapter.toDB<JSON>(data);
+    return WorkspaceProjectListsEntityAdapter.toDB<JSON>(data);
   }
 
   @OneToOne(() => WorkspaceStubEntity, { name: 'workspace_id', unique: 'workspace_project_lists_workspace_id_idx' })
@@ -33,7 +33,7 @@ export class WorkspaceProjectListsEntity extends PostgresMutableEntity {
   }
 
   toJSON(...args: any[]): ToJSONWithForeignKeys<WorkspaceProjectListsEntity> {
-    return WorkspaceProjectListsJSONAdapter.fromDB({
+    return WorkspaceProjectListsEntityAdapter.fromDB({
       ...wrap<WorkspaceProjectListsEntity>(this).toObject(...args),
       workspace: this.workspace,
     });

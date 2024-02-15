@@ -7,13 +7,13 @@ import { ResponseEntity } from '@/postgres/response';
 import type { CMSCompositePK, EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
 
 import { IntentEntity } from '../intent.entity';
-import { RequiredEntityJSONAdapter } from './required-entity.adapter';
+import { RequiredEntityEntityAdapter } from './required-entity-entity.adapter';
 
 @EntityDecorator({ tableName: 'designer.required_entity' })
 @Index({ properties: ['environmentID'] })
 export class RequiredEntityEntity extends PostgresCMSObjectEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<RequiredEntityEntity>>>(data: JSON) {
-    return RequiredEntityJSONAdapter.toDB<JSON>(data);
+    return RequiredEntityEntityAdapter.toDB<JSON>(data);
   }
 
   @ManyToOne(() => EntityEntity, {
@@ -60,7 +60,7 @@ export class RequiredEntityEntity extends PostgresCMSObjectEntity {
   }
 
   toJSON(...args: any[]): ToJSONWithForeignKeys<RequiredEntityEntity> {
-    return RequiredEntityJSONAdapter.fromDB({
+    return RequiredEntityEntityAdapter.fromDB({
       ...wrap<RequiredEntityEntity>(this).toObject(...args),
       entity: this.entity,
       intent: this.intent,

@@ -3,7 +3,7 @@ import { Entity, Enum, Index, Property, Unique, wrap } from '@mikro-orm/core';
 import type { EntityCreateParams, ToJSONWithForeignKeys } from '@/types';
 
 import { PostgresCMSTabularEntity } from '../common/entities/postgres-cms-tabular.entity';
-import { PersonaJSONAdapter } from './persona.adapter';
+import { PersonaEntityAdapter } from './persona-entity.adapter';
 import { PersonaModel } from './persona-model.enum';
 import type { PersonaOverrideEntity } from './persona-override/persona-override.entity';
 
@@ -15,7 +15,7 @@ export class PersonaEntity
   implements Omit<PersonaOverrideEntity, 'persona' | 'toJSON'>
 {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<PersonaEntity>>>(data: JSON) {
-    return PersonaJSONAdapter.toDB<JSON>(data);
+    return PersonaEntityAdapter.toDB<JSON>(data);
   }
 
   @Enum(() => PersonaModel)
@@ -42,7 +42,7 @@ export class PersonaEntity
   }
 
   toJSON(...args: any[]): ToJSONWithForeignKeys<PersonaEntity> {
-    return PersonaJSONAdapter.fromDB({
+    return PersonaEntityAdapter.fromDB({
       ...wrap<PersonaEntity>(this).toObject(...args),
       folder: this.folder ?? null,
       updatedBy: this.updatedBy,

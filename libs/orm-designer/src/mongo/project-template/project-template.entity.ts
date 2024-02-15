@@ -4,12 +4,12 @@ import type { ObjectId } from '@mikro-orm/mongodb';
 import { MongoEntity } from '@/mongo/common';
 import type { EntityCreateParams, ToJSON, ToJSONWithForeignKeys } from '@/types';
 
-import { ProjectTemplateJSONAdapter } from './project-template.adapter';
+import { ProjectTemplateEntityAdapter } from './project-template-entity.adapter';
 
 @Entity({ collection: 'templates' })
 export class ProjectTemplateEntity extends MongoEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<ProjectTemplateEntity>>>(data: JSON) {
-    return ProjectTemplateJSONAdapter.toDB<JSON>(data);
+    return ProjectTemplateEntityAdapter.toDB<JSON>(data);
   }
 
   @Property()
@@ -46,6 +46,6 @@ export class ProjectTemplateEntity extends MongoEntity {
   }
 
   toJSON(): ToJSON<ProjectTemplateEntity> {
-    return ProjectTemplateJSONAdapter.fromDB(this);
+    return ProjectTemplateEntityAdapter.fromDB(this);
   }
 }

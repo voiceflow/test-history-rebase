@@ -6,7 +6,7 @@ import type { AssistantEntity } from '../assistant/assistant.entity';
 import { Assistant } from '../common/decorators/assistant.decorator';
 import { Environment } from '../common/decorators/environment.decorator';
 import { PostgresCMSObjectEntity } from '../common/entities/postgres-cms-object.entity';
-import { FolderJSONAdapter } from './folder.adapter';
+import { FolderEntityAdapter } from './folder-entity.adapter';
 import { FolderScope } from './folder-scope.enum';
 
 @Entity({ tableName: 'designer.folder' })
@@ -14,7 +14,7 @@ import { FolderScope } from './folder-scope.enum';
 @Index({ properties: ['environmentID'] })
 export class FolderEntity extends PostgresCMSObjectEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<FolderEntity>>>(data: JSON) {
-    return FolderJSONAdapter.toDB<JSON>(data);
+    return FolderEntityAdapter.toDB<JSON>(data);
   }
 
   @Property()
@@ -53,7 +53,7 @@ export class FolderEntity extends PostgresCMSObjectEntity {
   }
 
   toJSON(...args: any[]): ToJSONWithForeignKeys<FolderEntity> {
-    return FolderJSONAdapter.fromDB({
+    return FolderEntityAdapter.fromDB({
       ...wrap<FolderEntity>(this).toObject(...args),
       parent: this.parent ?? null,
       updatedBy: this.updatedBy,

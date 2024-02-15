@@ -1,3 +1,3 @@
-export * from './flow.adapter';
 export * from './flow.entity';
 export * from './flow.orm';
+export * from './flow-entity.adapter';

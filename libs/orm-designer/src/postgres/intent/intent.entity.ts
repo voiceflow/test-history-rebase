@@ -3,7 +3,7 @@ import { ArrayType, Collection, Entity, Index, OneToMany, PrimaryKey, Property, 
 import type { EntityCreateParams, ToJSONWithForeignKeys } from '@/types';
 
 import { Environment, PostgresCMSTabularEntity } from '../common';
-import { IntentJSONAdapter } from './intent.adapter';
+import { IntentEntityAdapter } from './intent-entity.adapter';
 import type { RequiredEntityEntity } from './required-entity/required-entity.entity';
 import type { UtteranceEntity } from './utterance/utterance.entity';
 
@@ -12,7 +12,7 @@ import type { UtteranceEntity } from './utterance/utterance.entity';
 @Index({ properties: ['environmentID'] })
 export class IntentEntity extends PostgresCMSTabularEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<IntentEntity>>>(data: JSON) {
-    return IntentJSONAdapter.toDB<JSON>(data);
+    return IntentEntityAdapter.toDB<JSON>(data);
   }
 
   // legacy built-in intents uses type as id, so increase length to 64
@@ -49,7 +49,7 @@ export class IntentEntity extends PostgresCMSTabularEntity {
   }
 
   toJSON(...args: any[]): ToJSONWithForeignKeys<IntentEntity> {
-    return IntentJSONAdapter.fromDB({
+    return IntentEntityAdapter.fromDB({
       ...wrap<IntentEntity>(this).toObject(...args),
       folder: this.folder ?? null,
       updatedBy: this.updatedBy,

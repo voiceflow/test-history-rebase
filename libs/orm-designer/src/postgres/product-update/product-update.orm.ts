@@ -1,4 +1,4 @@
-import { PostgresMutableORM } from '@/postgres/common/postgres-mutable.orm';
+import { PostgresMutableORM } from '@/postgres/common/orms/postgres-mutable.orm';
 
 import { ProductUpdateEntity } from './product-update.entity';
 

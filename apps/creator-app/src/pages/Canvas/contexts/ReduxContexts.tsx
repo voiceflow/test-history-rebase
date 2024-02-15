@@ -47,7 +47,11 @@ export const {
   Consumer: IntentMapConsumer,
 } = createSelectorContext(Designer.Intent.selectors.mapWithFormattedBuiltInName);
 
-export const { Context: FlowMapContext, Provider: FlowMapProvider, Consumer: FlowMapConsumer } = createSelectorContext(Designer.Flow.selectors.map);
+export const {
+  Context: FlowMapByDiagramIDContext,
+  Provider: FlowMapByDiagramIDProvider,
+  Consumer: FlowMapByDiagramIDConsumer,
+} = createSelectorContext(Designer.Flow.selectors.mapByDiagramID);
 
 export const {
   Context: FunctionMapContext,
@@ -150,7 +154,7 @@ export const ReduxContextsProviders: React.FC<React.PropsWithChildren> = ({ chil
                             <ActionsRouteMatchProvider>
                               <DomainMapProvider>
                                 <CustomBlockMapProvider>
-                                  <FlowMapProvider>
+                                  <FlowMapByDiagramIDProvider>
                                     <FunctionMapProvider>
                                       <FunctionVariableMapProvider>
                                         <FunctionPathMapProvider>
@@ -161,7 +165,7 @@ export const ReduxContextsProviders: React.FC<React.PropsWithChildren> = ({ chil
                                         </FunctionPathMapProvider>
                                       </FunctionVariableMapProvider>
                                     </FunctionMapProvider>
-                                  </FlowMapProvider>
+                                  </FlowMapByDiagramIDProvider>
                                 </CustomBlockMapProvider>
                               </DomainMapProvider>
                             </ActionsRouteMatchProvider>

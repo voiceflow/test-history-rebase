@@ -1,11 +1,11 @@
 import { Collapsible, CollapsibleHeader, CollapsibleHeaderButton, TextArea } from '@voiceflow/ui-next';
 import React from 'react';
 
-interface DescriptionProps {
+interface ComponentEditorDescriptionProps {
   description?: string | null;
 }
 
-export const Description: React.FC<DescriptionProps> = ({ description }) => {
+export const ComponentEditorDescription: React.FC<ComponentEditorDescriptionProps> = ({ description }) => {
   if (!description?.length) return null;
 
   return (
@@ -17,7 +17,7 @@ export const Description: React.FC<DescriptionProps> = ({ description }) => {
         </CollapsibleHeader>
       }
     >
-      <TextArea minRows={4} maxRows={17} variant="chunk" readOnly value={description || ''} placeholder="Enter intent description" />
+      <TextArea minRows={4} maxRows={17} variant="chunk" readOnly value={description || ''} placeholder="Enter component description" />
     </Collapsible>
   );
 };

@@ -19,10 +19,8 @@ const EditSidebar: React.FC = () => {
   const getSidebar = () => {
     if (!node) return <Sidebar />;
 
-    const { isV3 } = getEditorWithCorrectVersion(node.type);
-
-    if (isV3) return <EditorV3.Sidebar />;
-    if (!isV3) return <EditorSidebarV2 />;
+    const { isV3, Editor } = getEditorWithCorrectVersion(node.type);
+    if (Editor) return isV3 ? <EditorV3.Sidebar /> : <EditorSidebarV2 />;
 
     return <Sidebar />;
   };

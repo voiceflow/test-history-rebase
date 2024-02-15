@@ -86,7 +86,7 @@ const ComponentsSection: React.FC<ComponentsSectionProps> = ({ collapsed, setSec
   return (
     <DraggableList
       type={DragItem.COMPONENTS}
-      canDrag={cmsComponent.isEnabled ? false : canDrag}
+      canDrag={!cmsComponent.isEnabled && canDrag}
       itemProps={{
         isSearch,
         activeDiagramID,

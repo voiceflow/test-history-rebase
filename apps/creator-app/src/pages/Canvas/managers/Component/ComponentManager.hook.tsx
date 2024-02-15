@@ -7,11 +7,11 @@ import perf, { PerfAction } from '@/performance';
 import { DiagramMapContext } from '../../contexts';
 
 interface useGoToDiagramProps {
-  diagramID?: string;
-  nodeID: string;
+  diagramID: string | null | undefined;
+  activeNodeID: string;
 }
 
-export const useGoToDiagram = ({ diagramID, nodeID }: useGoToDiagramProps) => {
+export const useGoToDiagram = ({ diagramID, activeNodeID }: useGoToDiagramProps) => {
   const goToDiagramHistoryPush = useDispatch(Router.goToDiagramHistoryPush);
   const diagramMap = React.useContext(DiagramMapContext)!;
 
@@ -19,7 +19,7 @@ export const useGoToDiagram = ({ diagramID, nodeID }: useGoToDiagramProps) => {
     if (diagramID && diagramMap[diagramID]) {
       perf.action(PerfAction.COMPONENT_NODE__LINK_CLICK);
 
-      goToDiagramHistoryPush(diagramID, undefined, nodeID);
+      goToDiagramHistoryPush(diagramID, undefined, activeNodeID);
     }
   };
 };

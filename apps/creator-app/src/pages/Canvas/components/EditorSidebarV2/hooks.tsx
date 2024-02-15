@@ -61,26 +61,11 @@ export const useGetEditorWithCorrectVersion = () => {
   return (nodeType: Realtime.BlockType) => {
     const manager = getManager(nodeType);
     const { editorV3, editorV2 } = manager;
-
-    const hasEditorV3FeatureFlagEnabled = manager.editorV3FeaturFlag && isEnabled(manager.editorV3FeaturFlag);
-
-    if (manager.editorV3FeaturFlag) {
-      return {
-        Editor: hasEditorV3FeatureFlagEnabled ? manager.editorV3 : manager.editorV2,
-        isV3: hasEditorV3FeatureFlagEnabled,
-      };
-    }
-
-    if (editorV3) {
-      return {
-        Editor: editorV3,
-        isV3: true,
-      };
-    }
+    const isV3 = manager.editorV3FeaturFlag ? isEnabled(manager.editorV3FeaturFlag) : !!editorV3;
 
     return {
-      Editor: editorV2,
-      isV3: false,
+      isV3,
+      Editor: isV3 ? editorV3 : editorV2,
     };
   };
 };

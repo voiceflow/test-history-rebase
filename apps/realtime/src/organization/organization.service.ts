@@ -3,18 +3,32 @@ import { Organization } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { IdentityClient } from '@voiceflow/sdk-identity';
 
+import { UserService } from '@/user/user.service';
+
 import { organizationAdapter } from './organization.adapter';
 
 @Injectable()
 export class OrganizationService {
-  constructor(@Inject(IdentityClient) private readonly identityClient: IdentityClient) {}
+  constructor(
+    @Inject(UserService)
+    private readonly user: UserService,
+    @Inject(IdentityClient)
+    private readonly identityClient: IdentityClient
+  ) {}
 
-  public async getAll(): Promise<Organization[]> {
-    const allOrganizations = (await this.identityClient.organization.findManyByUserID({
-      members: true,
-      trial: true,
-      subscription: true,
-    })) as Realtime.Identity.Organization[];
+  public async getAll(creatorID: number): Promise<Organization[]> {
+    const token = await this.user.getTokenByID(creatorID);
+
+    const allOrganizations = (await this.identityClient.organization.findManyByUserID(
+      {
+        members: true,
+        trial: true,
+        subscription: true,
+      },
+      {
+        headers: { Authorization: token },
+      }
+    )) as Realtime.Identity.Organization[];
     return organizationAdapter.mapFromDB(allOrganizations);
   }
 

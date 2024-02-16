@@ -20,7 +20,7 @@ export const updateActiveOrganizationName =
     Errors.assertOrganizationID(organizationID);
 
     try {
-      await dispatch.sync(Actions.Organization.PatchOne({ id: organizationID, patch: { name } }));
+      await dispatch.sync(Actions.Organization.PatchOne({ id: organizationID, patch: { name }, context: { organizationID } }));
     } catch (err) {
       toast.error(getErrorMessage(err, 'Invalid organization name'));
     }
@@ -37,7 +37,7 @@ export const updateActiveOrganizationImage =
     try {
       // TODO: [organization refactor] move this to organization http endpoint
       const { image } = await client.identity.organization.updateImage(organizationID, formData);
-      await dispatch.sync(Actions.Organization.PatchOne({ id: organizationID, patch: { image } }));
+      await dispatch.sync(Actions.Organization.PatchOne({ id: organizationID, patch: { image }, context: { organizationID } }));
 
       return image;
     } catch (err) {
@@ -56,7 +56,7 @@ export const removeActiveOrganizationAdmin =
     Errors.assertOrganizationID(organizationID);
 
     try {
-      await dispatch.sync(Actions.OrganizationMember.DeleteOne({ organizationID, id: creatorID }));
+      await dispatch.sync(Actions.OrganizationMember.DeleteOne({ id: creatorID, context: { organizationID } }));
     } catch (err) {
       toast.genericError();
     }
@@ -68,7 +68,7 @@ export const loadActiveOrganizationSubscription =
     try {
       const subscription = (await designerClient.billing.subscription.findOne(organizationID, chargebeeSubscriptionID)) as Subscription;
 
-      await dispatch.local(Actions.OrganizationSubscription.Replace({ organizationID, subscription }));
+      await dispatch.local(Actions.OrganizationSubscription.Replace({ subscription, context: { organizationID } }));
 
       return subscription;
     } catch {
@@ -83,7 +83,7 @@ export const loadActiveOrganizationSchduledSubscription =
       const subscription = await designerClient.billing.subscription.getSubscriptionScheduledChanges(organizationID, chargebeeSubscriptionID);
 
       // TODO: [organization refactor] replace with scheduledSubscription
-      dispatch(Actions.OrganizationSubscription.Replace({ organizationID, subscription }));
+      dispatch(Actions.OrganizationSubscription.Replace({ subscription, context: { organizationID } }));
 
       return subscription;
     } catch {
@@ -101,11 +101,11 @@ export const updateSeats = (organizationID: string, chargebeeSubscriptionID: str
 
       dispatch(
         Actions.OrganizationSubscription.Replace({
-          organizationID,
           subscription: {
             ...subscription,
             editorSeats: seats,
           },
+          context: { organizationID },
         })
       );
     } catch (err) {
@@ -129,11 +129,11 @@ export const scheduleSeatsUpdate = (organizationID: string, chargebeeSubscriptio
       dispatch(
         // TODO: [organization refactor] replace with scheduledSubscription
         Actions.OrganizationSubscription.Replace({
-          organizationID,
           subscription: {
             ...sub,
             editorSeats: seats,
           },
+          context: { organizationID },
         })
       );
     } catch (err) {

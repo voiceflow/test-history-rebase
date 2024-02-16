@@ -3,7 +3,7 @@ import { PlanType } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter';
 
-import { findPlanItem, getDaysLeftToTrialEnd, getPlanFromPriceID, getWorkspacePlanLimits, isChargebeeTrial } from './subscription.utils';
+import { findPlanItem, getDaysLeftToTrialEnd, getPlanFromPriceID, getWorkspacePlanLimits, isChargebeeTrial } from '../subscription.utils';
 
 const subscriptionAdapter = createMultiAdapter<Realtime.Identity.Subscription, Subscription>(
   ({ id, billingPeriodUnit, status, nextBillingAt, subscriptionItems, metaData, hasScheduledChanges }) => {

@@ -18,7 +18,7 @@ class CreatorChannel extends AbstractChannelControl<Realtime.Channels.CreatorCha
 
     const [workspaces, organizations] = await Promise.all([
       this.services.workspace.getAll(Number(ctx.userId)).then(Realtime.Adapters.workspaceAdapter.mapFromDB),
-      this.services.organization.getAll(),
+      this.services.organization.getAll(Number(ctx.userId)),
     ]);
 
     return [

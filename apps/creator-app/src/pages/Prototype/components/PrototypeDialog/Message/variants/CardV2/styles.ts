@@ -51,8 +51,8 @@ export const CardDescription = styled.div`
   margin-top: 4px;
 
   display: -webkit-box;
-  max-height: 40px;
-  -webkit-line-clamp: 2;
+  max-height: 80px;
+  -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;

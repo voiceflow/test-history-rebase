@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1395.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1394.2...@voiceflow/creator-app@1.1395.0) (2024-02-16)
+
+### Features
+
+* update card step lines shown (CV3-1013) ([#7784](https://github.com/voiceflow/creator-app/issues/7784)) ([914bda8](https://github.com/voiceflow/creator-app/commit/914bda8a104de710d4cbf9812897102e893effa9))
+
 ## [1.1394.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1394.1...@voiceflow/creator-app@1.1394.2) (2024-02-15)
 
 ### Bug Fixes

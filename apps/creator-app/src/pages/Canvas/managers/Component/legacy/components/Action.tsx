@@ -27,7 +27,6 @@ const Action: ConnectedAction<Realtime.NodeData.Component, Realtime.NodeData.Com
   const { isEnabled: isCMSComponentsEnabled } = useFeature(Realtime.FeatureFlag.CMS_COMPONENTS);
 
   const map = isCMSComponentsEnabled ? flowMapByDiagramID : diagramMap;
-
   const diagram = data.diagramID ? map[data.diagramID] : null;
   const isEmpty = !diagram;
 

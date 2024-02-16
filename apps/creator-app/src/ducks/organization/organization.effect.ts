@@ -9,7 +9,7 @@ import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { Thunk } from '@/store/types';
 import { getErrorMessage } from '@/utils/error';
 
-import { chargebeeScheduledSubscriptionSelector, chargebeeSubscriptionSelector } from '../selectors/active';
+import { chargebeeScheduledSubscriptionSelector, chargebeeSubscriptionSelector } from './subscription/subscription.select';
 
 export const updateActiveOrganizationName =
   (name: string): Thunk =>
@@ -82,7 +82,8 @@ export const loadActiveOrganizationSchduledSubscription =
     try {
       const subscription = await designerClient.billing.subscription.getSubscriptionScheduledChanges(organizationID, chargebeeSubscriptionID);
 
-      dispatch(Realtime.organization.replaceScheduledSubscription({ organizationID, subscription }));
+      // TODO: [organization refactor] replace with scheduledSubscription
+      dispatch(Actions.OrganizationSubscription.Replace({ organizationID, subscription }));
 
       return subscription;
     } catch {
@@ -99,7 +100,7 @@ export const updateSeats = (organizationID: string, chargebeeSubscriptionID: str
       if (!subscription) return;
 
       dispatch(
-        Realtime.organization.replaceSubscription({
+        Actions.OrganizationSubscription.Replace({
           organizationID,
           subscription: {
             ...subscription,
@@ -126,7 +127,8 @@ export const scheduleSeatsUpdate = (organizationID: string, chargebeeSubscriptio
       if (!sub) return;
 
       dispatch(
-        Realtime.organization.replaceScheduledSubscription({
+        // TODO: [organization refactor] replace with scheduledSubscription
+        Actions.OrganizationSubscription.Replace({
           organizationID,
           subscription: {
             ...sub,

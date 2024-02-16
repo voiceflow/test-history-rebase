@@ -1,9 +1,10 @@
 import { UserRole } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { Actions } from '@voiceflow/sdk-logux-designer';
 import { toast } from '@voiceflow/ui';
 
 import * as Errors from '@/config/errors';
-import { organizationByIDSelector } from '@/ducks/organization/selectors';
+import { organizationByIDSelector } from '@/ducks/organization';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import { waitAsync } from '@/ducks/utils';
@@ -102,11 +103,11 @@ export const updateMember =
     const state = getState();
 
     const workspace = workspaceByIDSelector(state, { id: workspaceID });
-    const organizationMember = organizationByIDSelector(state, { id: workspace?.organizationID })?.members.byKey[creatorID] ?? null;
+    const organizationMember = organizationByIDSelector(state, { id: workspace?.organizationID })?.members.find((m) => m.creatorID) ?? null;
 
     try {
       if (workspace?.organizationID && isAdminUserRole(organizationMember?.role)) {
-        await dispatch.sync(Realtime.organization.member.remove({ organizationID: workspace.organizationID, creatorID }));
+        await dispatch.sync(Actions.OrganizationMember.DeleteOne({ organizationID: workspace.organizationID, id: creatorID }));
       }
 
       await dispatch.sync(Realtime.workspace.member.patch({ workspaceID, creatorID, member: { role } }));

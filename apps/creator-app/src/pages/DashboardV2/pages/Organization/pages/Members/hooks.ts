@@ -18,7 +18,7 @@ import { isAdminUserRole, isEditorUserRole } from '@/utils/role';
 export const useWorkspacesAndMembers = () => {
   const organizationID = useSelector(WorkspaceV2.active.organizationIDSelector);
   const sessionActiveWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
-  const getOrganizationMemberByID = useSelector(Organization.active.getMemberByIDSelector);
+  const getOrganizationMemberByID = useSelector(Organization.getMemberByIDSelector);
 
   const deleteMember = useDispatch(WorkspaceV2.deleteMember);
   const updateMember = useDispatch(WorkspaceV2.updateMember);

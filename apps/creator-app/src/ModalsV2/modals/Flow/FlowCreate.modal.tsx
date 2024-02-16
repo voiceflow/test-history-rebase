@@ -15,7 +15,6 @@ import { useValidators } from '@/hooks/validate.hook';
 
 import { modalsManager } from '../../manager';
 
-const TEST_ID = 'component-create';
 export interface IFlowCreateModal {
   name?: string;
   folderID: string | null;
@@ -25,6 +24,7 @@ export const FlowCreateModal = modalsManager.create<IFlowCreateModal, FlowType>(
   'FlowCreateModal',
   () =>
     ({ api, type: typeProp, name: nameProp, opened, hidden, animated, folderID, closePrevented }) => {
+      const TEST_ID = 'component-create';
       const createOne = useDispatch(Designer.Flow.effect.createOne);
       const getComponents = useGetValueSelector(Designer.Flow.selectors.all);
       const nameState = useInputState({ value: nameProp ?? '' });
@@ -32,7 +32,7 @@ export const FlowCreateModal = modalsManager.create<IFlowCreateModal, FlowType>(
         name: [componentNameValidator, nameState.setError],
       });
 
-      const [description, setDescription] = useState<string>('');
+      const [description, setDescription] = useState('');
 
       const onCreate = validator.container(
         async (data) => {
@@ -42,7 +42,7 @@ export const FlowCreateModal = modalsManager.create<IFlowCreateModal, FlowType>(
             const component = await createOne({
               ...data,
               folderID,
-              description: description?.trim() || '',
+              description: description.trim(),
             });
 
             api.resolve(component);

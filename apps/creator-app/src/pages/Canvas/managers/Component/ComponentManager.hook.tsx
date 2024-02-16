@@ -6,12 +6,12 @@ import perf, { PerfAction } from '@/performance';
 
 import { DiagramMapContext } from '../../contexts';
 
-interface useGoToDiagramProps {
+interface UseGoToDiagramProps {
   diagramID: string | null | undefined;
   activeNodeID: string;
 }
 
-export const useGoToDiagram = ({ diagramID, activeNodeID }: useGoToDiagramProps) => {
+export const useGoToDiagram = ({ diagramID, activeNodeID }: UseGoToDiagramProps) => {
   const goToDiagramHistoryPush = useDispatch(Router.goToDiagramHistoryPush);
   const diagramMap = React.useContext(DiagramMapContext)!;
 

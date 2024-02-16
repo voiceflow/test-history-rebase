@@ -1,7 +1,7 @@
 import { Table } from '@voiceflow/ui-next';
 import React from 'react';
 
-import { CMS_COMPONENT_LEARN_MORE } from '@/constants/link.constant';
+import { CMS_FLOW_LEARN_MORE } from '@/constants/link.constant';
 import { Designer } from '@/ducks';
 import { useDispatch } from '@/hooks';
 
@@ -30,7 +30,7 @@ export const CMSFlowTable: React.FC = () => {
       searchTitle="No components found"
       description="Components are saved sets of blocks that you can reuse across your agent. "
       illustration="VFComponent"
-      learnMoreLink={CMS_COMPONENT_LEARN_MORE}
+      learnMoreLink={CMS_FLOW_LEARN_MORE}
     >
       <Table
         config={CMS_COMPONENT_TABLE_CONFIG}

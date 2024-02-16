@@ -23,6 +23,6 @@ export const CMS_ENTITY_LEARN_MORE = 'https://learn.voiceflow.com/hc/en-us/artic
 export const CMS_INTENT_LEARN_MORE = 'https://learn.voiceflow.com/hc/en-us/articles/22213856020237-Intents';
 export const CMS_FOLDER_LEARN_MORE = 'https://learn.voiceflow.com/hc/en-us/articles';
 export const CMS_VARIABLE_LEARN_MORE = 'https://learn.voiceflow.com/hc/en-us/articles';
-export const CMS_COMPONENT_LEARN_MORE = 'https://learn.voiceflow.com/hc/en-us/articles/9178425818893-Component';
+export const CMS_FLOW_LEARN_MORE = 'https://learn.voiceflow.com/hc/en-us/articles/9178425818893-Component';
 export const CMS_FUNCTIONS_LEARN_MORE = 'https://learn.voiceflow.com/hc/en-us/articles/22213937640589-Function';
 export const CMS_KNOWLEDGE_BASE_LEARN_MORE = 'https://learn.voiceflow.com/hc/en-us/articles/22213924437517-Knowledge-Base';

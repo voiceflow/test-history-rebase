@@ -12,7 +12,11 @@ import { ComponentEditorDescription } from './components/ComponentEditorDescript
 import { ComponentEditorFlowSelect } from './components/ComponentEditorFlowSelect.component';
 import { ComponentEditorFlowsEmpty } from './components/ComponentEditorFlowsEmpty.component';
 
-export const ComponentEditorBase = () => {
+interface ComponentEditorBaseProps {
+  headerActions?: JSX.Element;
+}
+
+export const ComponentEditorBase: React.FC<ComponentEditorBaseProps> = ({ headerActions }) => {
   const editor = EditorV3.useEditor<Realtime.NodeData.Component>();
   const flows = useSelector(Designer.Flow.selectors.all);
   const flow = useSelector(Designer.Flow.selectors.byDiagramID, {
@@ -21,13 +25,13 @@ export const ComponentEditorBase = () => {
   const hasFlows = flows.length > 0;
 
   return (
-    <Editor title="Component" className={editorStyles} readOnly={true} headerActions={<EditorV3.HeaderActions />}>
+    <Editor title="Component" className={editorStyles} readOnly={true} headerActions={headerActions}>
       <Scroll>
         <Box direction="column" width="100%" maxHeight="calc(100vh - 56px * 2)" onPaste={stopImmediatePropagation()}>
           {hasFlows ? (
             <>
               <ComponentEditorFlowSelect
-                flowID={editor.data.diagramID}
+                diagramID={editor.data.diagramID}
                 activeNodeID={editor.data.nodeID}
                 onSelect={(flow) => editor.onChange({ diagramID: flow.diagramID })}
               />

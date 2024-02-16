@@ -1,3 +1,4 @@
+import { tid } from '@voiceflow/style';
 import { Box, Button, Divider, Editor, IEditorAPI, Scroll } from '@voiceflow/ui-next';
 import React, { useRef } from 'react';
 
@@ -6,6 +7,7 @@ import { CMSRoute } from '@/config/routes';
 import { Designer } from '@/ducks';
 import { goToCMSResource } from '@/ducks/router';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
+import { EDITOR_TEST_ID } from '@/pages/AssistantCMS/AssistantCMS.constant';
 
 import { CMSEditorMoreButton } from '../../../../components/CMSEditorMoreButton/CMSEditorMoreButton.components';
 import { useCMSResourceGetMoreMenu } from '../../../../hooks/cms-resource.hook';
@@ -36,11 +38,11 @@ export const CMSFlowEditor: React.FC = () => {
       title={flow.name}
       onTitleChange={(name) => patchFlow({ name: name.trim() })}
       headerActions={<CMSEditorMoreButton>{({ onClose }) => getMoreMenu({ id: flowID, onClose })}</CMSEditorMoreButton>}
-      testID="cms-editor"
+      testID={EDITOR_TEST_ID}
     >
       <Scroll style={{ display: 'block' }}>
         <Box px={24} py={20} direction="column">
-          <Button name="aiGenerate" label="Edit component" variant="primary" fullWidth />
+          <Button label="Edit component" variant="primary" fullWidth />
         </Box>
 
         <Divider noPadding />
@@ -49,7 +51,7 @@ export const CMSFlowEditor: React.FC = () => {
           value={flow.description ?? ''}
           placeholder="Enter component description"
           onValueChange={(description) => patchFlow({ description })}
-          testID="component__description"
+          testID={tid('flow', 'description')}
         />
       </Scroll>
     </Editor>

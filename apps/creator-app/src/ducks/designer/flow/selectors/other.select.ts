@@ -1,3 +1,4 @@
+import { Flow } from '@voiceflow/dtos';
 import { createSelector } from 'reselect';
 
 import { diagramIDParamSelector } from '@/ducks/utils';
@@ -9,8 +10,8 @@ export const { allByFolderID, allByFolderIDs, countByFolderID } = createByFolder
 
 export const nameByID = createSelector(oneByID, (flow) => flow?.name ?? null);
 
-export const byDiagramID = createSelector(all, diagramIDParamSelector, (flows, diagramID) => {
-  return flows.find((flow) => flow.diagramID === diagramID);
-});
-
-export const mapByDiagramID = createSelector(all, (flows) => Object.fromEntries(flows.map((flow) => [flow.diagramID, flow])));
+export const mapByDiagramID = createSelector(
+  all,
+  (flows): Partial<Record<string, Flow>> => Object.fromEntries(flows.map((flow) => [flow.diagramID, flow]))
+);
+export const byDiagramID = createSelector(mapByDiagramID, diagramIDParamSelector, (map, diagramID) => (diagramID ? map[diagramID] : null));

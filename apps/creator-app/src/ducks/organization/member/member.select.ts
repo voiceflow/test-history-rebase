@@ -5,9 +5,14 @@ import { Account } from '@/ducks';
 import { userIDSelector } from '@/ducks/account';
 import { createCurriedSelector, creatorIDParamSelector } from '@/ducks/utils';
 import { idParamSelector } from '@/ducks/utils/crudV2';
+import { organizationIDSelector } from '@/ducks/workspaceV2/selectors/active';
 import { isAdminUserRole } from '@/utils/role';
 
-import { allOrganizationsSelector, getOrganizationByIDSelector, organizationSelector } from '../organization.select';
+import { allOrganizationsSelector, getOrganizationByIDSelector } from '../organization.select';
+
+export const organizationSelector = createSelector([getOrganizationByIDSelector, organizationIDSelector], (getOrganizationByID, organizationID) =>
+  getOrganizationByID({ id: organizationID })
+);
 
 export const membersSelector = createSelector([organizationSelector], (organization) => organization?.normalizedMembers);
 

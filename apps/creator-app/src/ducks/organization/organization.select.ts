@@ -4,7 +4,6 @@ import * as Normal from 'normal-store';
 import { createSelector } from 'reselect';
 
 import { createCRUDSelectors } from '@/ducks/utils/crudV2';
-import { organizationIDSelector } from '@/ducks/workspaceV2/selectors/active';
 
 import { STATE_KEY } from './organization.state';
 
@@ -34,8 +33,4 @@ export const allOrganizationsSelector = createSelector(
       return [...acc, { ...organization, normalizedMembers }];
     }, []);
   }
-);
-
-export const organizationSelector = createSelector([getOrganizationByIDSelector, organizationIDSelector], (getOrganizationByID, organizationID) =>
-  getOrganizationByID({ id: organizationID })
 );

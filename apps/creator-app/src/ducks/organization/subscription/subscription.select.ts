@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-import { organizationSelector } from '../organization.select';
+import { organizationSelector } from '../member/member.select';
 
 export const chargebeeSubscriptionIDSelector = createSelector([organizationSelector], (organization) => organization?.chargebeeSubscriptionID);
 

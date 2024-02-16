@@ -4,7 +4,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 
 import client from '@/client';
 import { DATADOG_SITE } from '@/config';
-import { getOrganizationByIDSelector } from '@/ducks/organization';
+import { getOrganizationByIDSelector } from '@/ducks/organization/organization.select';
 import { EventName } from '@/ducks/tracking/constants';
 import { organizationTrialEndAtSelector } from '@/ducks/workspaceV2/selectors/active';
 import { isAdminUserRole, isEditorUserRole, isViewerUserRole } from '@/utils/role';

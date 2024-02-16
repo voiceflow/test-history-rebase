@@ -4,7 +4,7 @@ import { Actions } from '@voiceflow/sdk-logux-designer';
 import { toast } from '@voiceflow/ui';
 
 import * as Errors from '@/config/errors';
-import { organizationByIDSelector } from '@/ducks/organization';
+import { organizationByIDSelector } from '@/ducks/organization/organization.select';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import { waitAsync } from '@/ducks/utils';

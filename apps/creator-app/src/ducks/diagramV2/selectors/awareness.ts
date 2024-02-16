@@ -10,7 +10,7 @@ import { activeDiagramIDSelector } from '@/ducks/creatorV2/selectors';
 import { awarenessViewersSelector } from '@/ducks/projectV2/selectors/active';
 import { createCurriedSelector, createParameterSelector, creatorIDParamSelector } from '@/ducks/utils';
 import { idParamSelector, idsParamSelector } from '@/ducks/utils/crudV2';
-import * as WorkspaceV2 from '@/ducks/workspaceV2';
+import { getDistinctMemberByCreatorIDSelector, hasWorkspaceSelector } from '@/ducks/workspaceV2/selectors/active';
 
 import { INITIAL_DIAGRAM_VIEWERS } from '../constants';
 import { rootDiagramSelector } from './base';
@@ -27,14 +27,11 @@ export const diagramNormalizedViewersByIDSelector = createSelector([awarenessVie
   diagramID && awarenessViewers && Utils.object.hasProperty(awarenessViewers, diagramID) ? awarenessViewers[diagramID] : INITIAL_DIAGRAM_VIEWERS
 );
 
-export const allViewersCountSelector = createSelector(
-  [awarenessViewersSelector, WorkspaceV2.active.hasWorkspaceSelector],
-  (viewers, hasWorkspace) => {
-    if (!hasWorkspace || !viewers) return 1;
+export const allViewersCountSelector = createSelector([awarenessViewersSelector, hasWorkspaceSelector], (viewers, hasWorkspace) => {
+  if (!hasWorkspace || !viewers) return 1;
 
-    return new Set(Object.values(viewers).flatMap((diagramViewers) => diagramViewers.allKeys)).size || 1;
-  }
-);
+  return new Set(Object.values(viewers).flatMap((diagramViewers) => diagramViewers.allKeys)).size || 1;
+});
 
 export const isOnlyViewerSelector = createSelector([allViewersCountSelector], (viewersCount) => viewersCount === 1);
 
@@ -112,7 +109,7 @@ const activeDiagramLockOwnerClientNodeIDCreatorIDSelector = createSelector(
 );
 
 export const activeDiagramLockOwnerSelector = createSelector(
-  [Account.userIDSelector, activeDiagramLockOwnerClientNodeIDCreatorIDSelector, WorkspaceV2.active.getDistinctMemberByCreatorIDSelector],
+  [Account.userIDSelector, activeDiagramLockOwnerClientNodeIDCreatorIDSelector, getDistinctMemberByCreatorIDSelector],
   (creatorID, [clientNodeID, lockOwnerID], getWorkspaceMember) => {
     if (!lockOwnerID || !clientNodeID) return null;
     if (creatorID === lockOwnerID) return null;

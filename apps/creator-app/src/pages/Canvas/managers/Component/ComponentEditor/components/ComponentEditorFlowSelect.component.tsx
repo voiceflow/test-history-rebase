@@ -4,12 +4,12 @@ import { ActionButtons, Box, Button, Divider, Dropdown, Menu, Search } from '@vo
 import React from 'react';
 
 import { CMSRoute } from '@/config/routes';
-import { Designer } from '@/ducks';
 import * as Router from '@/ducks/router';
-import { useDispatch, useSelector } from '@/hooks';
+import { useDispatch } from '@/hooks';
 import { useGoToCMSResourceModal } from '@/hooks/cms-resource.hook';
 import { useDeferredSearch } from '@/hooks/search.hook';
 import * as ModalsV2 from '@/ModalsV2';
+import { FlowMapByDiagramIDContext } from '@/pages/Canvas/contexts';
 
 import { useGoToDiagram } from '../../ComponentManager.hook';
 
@@ -19,8 +19,9 @@ interface IComponentEditorFlowSelect {
   activeNodeID: string;
 }
 export const ComponentEditorFlowSelect: React.FC<IComponentEditorFlowSelect> = ({ flowID, onSelect, activeNodeID }) => {
-  const flow = useSelector(Designer.Flow.selectors.oneByID, { id: flowID });
-  const flows = useSelector(Designer.Flow.selectors.all);
+  const flowMapByDiagramID = React.useContext(FlowMapByDiagramIDContext)!;
+  const flow = flowMapByDiagramID[flowID || ''];
+  const flows = Object.values(flowMapByDiagramID);
   const goToDiagram = useGoToDiagram({ diagramID: flow?.diagramID, activeNodeID });
   const goToCMSResource = useDispatch(Router.goToCMSResource);
 

@@ -13,7 +13,6 @@ import client from '@/client';
 import { Modal } from '@/components/Modal';
 import RealtimeStatus from '@/components/RealtimeStatus';
 import { AccountLoadingGate, AccountSubscriptionGate, CapabilitiesGate, FeatureLoadingGate, MaintenanceGate, RealtimeConnectionGate } from '@/gates';
-import BillingSubscriptionGate from '@/gates/BillingSubscriptionGate';
 import * as ModalsV2 from '@/ModalsV2';
 import THEME from '@/styles/theme';
 
@@ -68,12 +67,10 @@ const GlobalProviders: React.FC<GlobalProvidersProps> = ({ history, store, persi
                                               <AccountLoadingGate>
                                                 <RealtimeConnectionGate>
                                                   <AccountSubscriptionGate>
-                                                    <BillingSubscriptionGate>
-                                                      <VoiceflowAssistantVisibilityProvider>
-                                                        {/* to keep on a new line */}
-                                                        {children}
-                                                      </VoiceflowAssistantVisibilityProvider>
-                                                    </BillingSubscriptionGate>
+                                                    <VoiceflowAssistantVisibilityProvider>
+                                                      {/* to keep on a new line */}
+                                                      {children}
+                                                    </VoiceflowAssistantVisibilityProvider>
                                                   </AccountSubscriptionGate>
                                                 </RealtimeConnectionGate>
                                               </AccountLoadingGate>

@@ -6,5 +6,4 @@ export const chargebeeSubscriptionIDSelector = createSelector([organizationSelec
 
 export const chargebeeSubscriptionSelector = createSelector([organizationSelector], (organization) => organization?.subscription);
 
-// TODO: [organization refactor]: change to scheduled subscription
-export const chargebeeScheduledSubscriptionSelector = createSelector([organizationSelector], (organization) => organization?.subscription);
+export const chargebeeScheduledSubscriptionSelector = createSelector([organizationSelector], (organization) => organization?.scheduledSubscription);

@@ -4,26 +4,24 @@ import * as Normal from 'normal-store';
 import { createOrganizationReducer } from '../organization.utils';
 
 export const replaceScheduledSubscriptionReducer = createOrganizationReducer(
-  Actions.OrganizationSubscription.Replace,
-  (state, { organizationID, subscription }) => {
+  Actions.OrganizationSubscription.ReplaceScheduled,
+  (state, { context, scheduledSubscription }) => {
+    const { organizationID } = context;
     const organization = Normal.getOne(state, organizationID);
 
     if (!organization) return;
 
-    if (organization.chargebeeSubscriptionID === subscription?.id) {
-      // TODO: [organization refactor] replace with scheduledSubscription
-      organization.subscription = subscription;
+    if (organization.chargebeeSubscriptionID === scheduledSubscription?.id) {
+      organization.scheduledSubscription = scheduledSubscription;
     }
   }
 );
 
-export const replaceSubscriptionReducer = createOrganizationReducer(
-  Actions.OrganizationSubscription.Replace,
-  (state, { organizationID, subscription }) => {
-    const organization = Normal.getOne(state, organizationID);
+export const replaceSubscriptionReducer = createOrganizationReducer(Actions.OrganizationSubscription.Replace, (state, { context, subscription }) => {
+  const { organizationID } = context;
+  const organization = Normal.getOne(state, organizationID);
 
-    if (organization && organization?.chargebeeSubscriptionID === subscription?.id) {
-      organization.subscription = subscription;
-    }
+  if (organization && organization?.chargebeeSubscriptionID === subscription?.id) {
+    organization.subscription = subscription;
   }
-);
+});

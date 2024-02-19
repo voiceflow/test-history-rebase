@@ -1,6 +1,6 @@
 import { Controller, Inject } from '@nestjs/common';
 import { Subscription } from '@voiceflow/dtos';
-import { Action, Broadcast, Channel, Context, Payload } from '@voiceflow/nestjs-logux';
+import { Action, AuthMeta, AuthMetaPayload, Broadcast, Channel, Context, Payload } from '@voiceflow/nestjs-logux';
 import { Permission } from '@voiceflow/sdk-auth';
 import { Authorize } from '@voiceflow/sdk-auth/nestjs';
 import { Actions, Channels } from '@voiceflow/sdk-logux-designer';
@@ -27,16 +27,17 @@ export class OrganizationLoguxController {
   async subscribe(@Context() ctx: Context.Channel<Channels.OrganizationParams>) {
     const { subscriptionID } = ctx.params;
     const [subscriptionsMeta] = [{ id: ctx.server.log.generateId() }];
-    let subscription: Subscription | null = null;
 
     if (subscriptionID) {
-      subscription = await this.billingSubscriptionService
+      const subscription = await this.billingSubscriptionService
         .findOne(subscriptionID)
         .then(subscriptionAdapter.fromDB)
         .catch(() => null);
+
+      return [[Actions.OrganizationSubscription.Replace({ subscription, context: ctx.params }), subscriptionsMeta]];
     }
 
-    return [[Actions.OrganizationSubscription.Replace({ subscription, context: ctx.params }), subscriptionsMeta]];
+    return [];
   }
 
   @Action(Actions.Organization.PatchOne)
@@ -48,7 +49,7 @@ export class OrganizationLoguxController {
   @Broadcast<Actions.Organization.PatchOne>(({ context }) => ({
     channel: Channels.organization.build({ ...context, subscriptionID: context.subscriptionID ?? '' }),
   }))
-  async patchOne(@Payload() { id, patch }: Actions.Organization.PatchOne): Promise<void> {
-    await this.organizationService.patchOne(id, patch);
+  async patchOne(@Payload() { id, patch }: Actions.Organization.PatchOne, @AuthMeta() authMeta: AuthMetaPayload): Promise<void> {
+    await this.organizationService.patchOne(authMeta.userID, id, patch);
   }
 }

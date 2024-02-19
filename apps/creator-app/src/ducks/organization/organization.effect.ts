@@ -76,14 +76,13 @@ export const loadActiveOrganizationSubscription =
     }
   };
 
-export const loadActiveOrganizationSchduledSubscription =
+export const loadActiveOrganizationScheduledSubscription =
   (organizationID: string, chargebeeSubscriptionID: string): Thunk<Subscription | null> =>
   async (dispatch) => {
     try {
       const subscription = await designerClient.billing.subscription.getSubscriptionScheduledChanges(organizationID, chargebeeSubscriptionID);
 
-      // TODO: [organization refactor] replace with scheduledSubscription
-      dispatch(Actions.OrganizationSubscription.Replace({ subscription, context: { organizationID } }));
+      dispatch(Actions.OrganizationSubscription.ReplaceScheduled({ scheduledSubscription: subscription, context: { organizationID } }));
 
       return subscription;
     } catch {
@@ -127,9 +126,8 @@ export const scheduleSeatsUpdate = (organizationID: string, chargebeeSubscriptio
       if (!sub) return;
 
       dispatch(
-        // TODO: [organization refactor] replace with scheduledSubscription
-        Actions.OrganizationSubscription.Replace({
-          subscription: {
+        Actions.OrganizationSubscription.ReplaceScheduled({
+          scheduledSubscription: {
             ...sub,
             editorSeats: seats,
           },

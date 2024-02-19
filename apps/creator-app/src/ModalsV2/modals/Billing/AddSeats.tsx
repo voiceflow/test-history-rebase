@@ -25,7 +25,7 @@ const AddSeats = manager.create('BillingAddSeats', () => ({ api, type, opened, h
   const [trackingEvents] = useTrackingEvents();
 
   const [numSeats, setNumSeats] = React.useState(numberOfSeats);
-  const { nextBillingDate, billingPeriodUnit, pricePerEditor } = subscription;
+  const { nextBillingDate, billingPeriodUnit, pricePerEditor } = subscription || {};
 
   const isAnnual = billingPeriodUnit === ChargebeeBillingPeriod.YEAR;
 

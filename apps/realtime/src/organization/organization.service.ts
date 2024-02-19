@@ -29,24 +29,34 @@ export class OrganizationService {
         headers: { Authorization: token },
       }
     )) as Realtime.Identity.Organization[];
+
     return organizationAdapter.mapFromDB(allOrganizations);
   }
 
-  public async patchOne(organizationID: string, values: Partial<Organization>): Promise<void> {
-    await this.identityClient.organization.patchOne(organizationID, values);
+  public async patchOne(creatorID: number, organizationID: string, values: Partial<Organization>): Promise<void> {
+    const token = await this.user.getTokenByID(creatorID);
+
+    await this.identityClient.organization.patchOne(organizationID, values, {
+      headers: { Authorization: token },
+    });
   }
 
-  public async getWorkspaces(organizationID: string): Promise<Realtime.Identity.Workspace[]> {
+  public async getWorkspaces(creatorID: number, organizationID: string): Promise<Realtime.Identity.Workspace[]> {
+    const token = await this.user.getTokenByID(creatorID);
+
     // This method returns all workspaces for an organization
     // TODO [organization refactor] create adapter for workspaces
-    return (await this.identityClient.organization.findAllByOrganizationID(organizationID)).map((w) => ({
-      id: w.id,
-      name: w.name,
-      image: w.image || '',
-      settings: w.settings,
-      organizationID: w.organizationID,
-      createdAt: w.createdAt,
-      updatedAt: w.updatedAt,
-    }));
+    return (await this.identityClient.organization.findAllByOrganizationID(organizationID)).map(
+      (w) => ({
+        id: w.id,
+        name: w.name,
+        image: w.image || '',
+        settings: w.settings,
+        organizationID: w.organizationID,
+        createdAt: w.createdAt,
+        updatedAt: w.updatedAt,
+      }),
+      { headers: { Authorization: token } }
+    );
   }
 }

@@ -1,5 +1,7 @@
 import type { Organization } from '@voiceflow/dtos';
-import type { Normalized } from 'normal-store';
+import { createEmpty, type Normalized } from 'normal-store';
+
+export const INITIAL_STATE: OrganizationState = createEmpty();
 
 export interface OrganizationState extends Normalized<Organization> {}
 

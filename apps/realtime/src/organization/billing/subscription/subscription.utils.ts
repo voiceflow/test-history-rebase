@@ -4,15 +4,12 @@ import { PLAN_INFO } from '@voiceflow/schema-types';
 
 export const isPlanType = (plan: any): plan is PlanType => plan in PlanType;
 
-export const getWorkspacePlanLimits = (plan: PlanType) => {
+export const getWorkspaceSeatsLimits = (plan: PlanType) => {
   const platInfo = PLAN_INFO[plan];
 
   return {
-    seatLimits: {
-      editor: platInfo.editorLimit,
-      viewer: platInfo.viewerLimit,
-    },
-    variableStatesLimit: platInfo.variableStatesLimit,
+    editor: platInfo.editorLimit,
+    viewer: platInfo.viewerLimit,
   };
 };
 
@@ -44,4 +41,20 @@ export const getPlanFromPriceID = (priceID: string | undefined) => {
 
 export const isChargebeeTrial = (planItem: Realtime.Identity.SubscriptionItem | undefined, metaData: Record<string, unknown> | undefined) => {
   return planItem?.itemPriceID.includes('trial') || metaData?.downgradedFromTrial;
+};
+
+export const findSwitchEntitlement = (entitlements: Realtime.Identity.SubscriptionEntitlement[] | undefined, itemID: string) => {
+  const entitlement = entitlements?.find((entitlement) => entitlement.featureID === itemID);
+
+  if (!entitlement?.value) return null;
+
+  return entitlement?.value === 'true';
+};
+
+export const findRangeEntitlement = (entitlements: Realtime.Identity.SubscriptionEntitlement[] | undefined, itemID: string) => {
+  const entitlement = entitlements?.find((entitlement) => entitlement.featureID === itemID);
+
+  if (!entitlement?.value) return null;
+
+  return entitlement?.value === 'Unlimited' ? Number.MAX_SAFE_INTEGER : Number(entitlement.value);
 };

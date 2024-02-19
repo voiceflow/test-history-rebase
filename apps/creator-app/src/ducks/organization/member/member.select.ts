@@ -29,7 +29,7 @@ export const currentMemberRoleByIDSelector = createSelector(
   (getOrganization, organizationID, userID) => {
     if (userID !== null) {
       const organization = getOrganization({ id: organizationID ?? null });
-      return organization?.normalizedMembers.byKey[userID]?.role ?? null;
+      return organization?.normalizedMembers?.byKey?.[userID]?.role ?? null;
     }
 
     return null;

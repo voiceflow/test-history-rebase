@@ -1,11 +1,9 @@
 import { Utils } from '@voiceflow/common';
 import type { Entity, Variable } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { SlateEditor } from '@voiceflow/ui-next';
+import { SlateEditor, Tokens } from '@voiceflow/ui-next';
 import uniqBy from 'lodash/uniqBy';
 import { createSelector } from 'reselect';
-
-import { DEFAULT_VARIABLE_COLOR } from '@/constants/variable';
 
 import { allVariablesSelector } from '../../diagramV2/selectors/active';
 import { isFeatureEnabledSelector } from '../../feature';
@@ -28,7 +26,7 @@ export const slateLegacyVariableFactory =
     id: value,
     name: value,
     kind: variant,
-    color: DEFAULT_VARIABLE_COLOR,
+    color: Tokens.colors.neutralDark.neutralsDark200,
     variant,
   });
 

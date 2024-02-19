@@ -1,13 +1,9 @@
 import { getScrollbarWidth } from '@voiceflow/ui';
-import _isNumber from 'lodash/isNumber';
-import _isString from 'lodash/isString';
 
 import { IS_E2E_TEST } from '@/config';
 import { Point } from '@/types';
 
-import { copy } from './clipboard';
-
-export { swallowKeyPress, withEnterPress, withInputBlur, withKeyPress, withTargetValue } from '@voiceflow/ui';
+export { withEnterPress, withInputBlur, withKeyPress, withTargetValue } from '@voiceflow/ui';
 
 declare global {
   interface HTMLElement {
@@ -26,7 +22,7 @@ declare global {
 
 const rootPosition = { left: 0, top: 0 };
 
-export const getBoundingClientOffset = (element: HTMLElement | Window | Document) => {
+const getBoundingClientOffset = (element: HTMLElement | Window | Document) => {
   if (element === window || element === document || element === document.body) {
     return rootPosition;
   }
@@ -47,17 +43,6 @@ export const mouseEventOffset = (
 
   return [cx - rect.left, cy - rect.top];
 };
-
-/**
- * Get the CSS Value
- */
-export function getCSSValue(node: Element | null, property: string) {
-  if (!node) {
-    return '';
-  }
-
-  return window.getComputedStyle(node).getPropertyValue(property);
-}
 
 /**
  * Set the offset of the element depending on the width of the scroll
@@ -130,46 +115,6 @@ export const scrollTo = (node: HTMLElement | null, { top = 0, left = 0, ...opts 
   }
 };
 
-export const copyJSONPath = (copyEvent: { name: string; namespace: string[] }) => {
-  const totalPath = copyEvent.namespace.slice();
-
-  if (copyEvent.name !== '') {
-    totalPath.push(copyEvent.name);
-  }
-
-  copy(totalPath.join('.'));
-};
-
-export const moveCursorToEnd = (el: HTMLInputElement) => {
-  if (_isNumber(el.selectionStart)) {
-    const valueLength = el.value.length;
-    el.selectionStart = valueLength;
-    el.selectionEnd = valueLength;
-  } else if (el.createTextRange === undefined) {
-    el.focus();
-    const range = el.createTextRange!();
-    range.collapse(false);
-    range.select();
-  }
-};
-
-export const readFileAsync = (file: File): Promise<string> =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-
-    reader.onload = () => {
-      if (_isString(reader.result)) {
-        resolve(reader.result);
-      } else {
-        reject();
-      }
-    };
-
-    reader.onerror = reject;
-
-    reader.readAsText(file);
-  });
-
 export const upload = (onChange: (files: FileList) => void, options: { accept?: string; multiple?: boolean } = {}) => {
   const element = document.createElement('input');
 
@@ -199,14 +144,6 @@ export const upload = (onChange: (files: FileList) => void, options: { accept?: 
     element.click();
 
     document.body.removeChild(element);
-  }
-};
-
-export const unhighlightAllText = () => {
-  if (window.getSelection) {
-    window.getSelection()?.removeAllRanges();
-  } else if (document.selection) {
-    document.selection.empty();
   }
 };
 

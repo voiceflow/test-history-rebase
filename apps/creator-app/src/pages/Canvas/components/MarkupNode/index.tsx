@@ -2,7 +2,6 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import cn from 'classnames';
 import React from 'react';
 
-import { BlockType, MarkupBlockType } from '@/constants';
 import NodeDragTarget from '@/pages/Canvas/components/Node/components/NodeDragTarget';
 import { useNodeDrag } from '@/pages/Canvas/components/Node/hooks';
 import { CANVAS_MARKUP_CREATING_CLASSNAME, ContextMenuTarget } from '@/pages/Canvas/constants';
@@ -33,7 +32,7 @@ const MarkupNode = () => {
       data: resolved.data,
     };
   });
-  const { markupNode: NodeComponent } = getManager(nodeEntity.nodeType as MarkupBlockType);
+  const { markupNode: NodeComponent } = getManager(nodeEntity.nodeType as Realtime.MarkupBlockType);
 
   const { onClick, onMouseDown, onDragStart } = useNodeDrag({ skipDrag });
 
@@ -51,7 +50,7 @@ const MarkupNode = () => {
 
   nodeEntity.useInstance(instance);
 
-  const isText = nodeEntity.nodeType === BlockType.MARKUP_TEXT;
+  const isText = nodeEntity.nodeType === Realtime.BlockType.MARKUP_TEXT;
 
   return (
     <>

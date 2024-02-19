@@ -3,7 +3,7 @@ import React from 'react';
 
 import client from '@/client';
 import JobInterface from '@/components/JobInterface';
-import { PROJECT_API_LINK } from '@/constants/links';
+import { PROJECT_API_LINK } from '@/constants/link.constant';
 import { PublishContext } from '@/contexts/PublishContext';
 import * as Project from '@/ducks/projectV2';
 import { activeProjectIDSelector } from '@/ducks/session';

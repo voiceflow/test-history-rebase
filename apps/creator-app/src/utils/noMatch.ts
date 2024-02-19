@@ -18,14 +18,14 @@ export const emptyNoMatchFactory = (): Realtime.NodeData.ChatNoMatch | Realtime.
   reprompts: [],
 });
 
-export const chatNoMatchFactory = ({ reprompts, ...options }: NoMatchFactoryOptions = {}): Realtime.NodeData.ChatNoMatch => ({
+const chatNoMatchFactory = ({ reprompts, ...options }: NoMatchFactoryOptions = {}): Realtime.NodeData.ChatNoMatch => ({
   ...BASE_NO_MATCH,
   reprompts: reprompts
     ? reprompts.map((prompt) => Platform.Common.Chat.CONFIG.utils.prompt.factory({ content: prompt, ...options }))
     : [Platform.Common.Chat.CONFIG.utils.prompt.factory(options)],
 });
 
-export const voiceNoMatchFactory = ({ reprompts, ...options }: NoMatchFactoryOptions = {}): Realtime.NodeData.VoiceNoMatch => ({
+const voiceNoMatchFactory = ({ reprompts, ...options }: NoMatchFactoryOptions = {}): Realtime.NodeData.VoiceNoMatch => ({
   ...BASE_NO_MATCH,
   reprompts: reprompts
     ? reprompts.map((prompt) => Platform.Common.Voice.CONFIG.utils.prompt.textFactory({ content: prompt, ...options }))

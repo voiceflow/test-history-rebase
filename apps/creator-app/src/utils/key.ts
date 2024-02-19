@@ -2,7 +2,6 @@
 import { IS_TEST } from '@/config';
 
 let lastKey = new Date().getTime();
-const globalCache = new Map();
 
 function getKey(object: any, cache: Map<any, string>) {
   if (IS_TEST) {
@@ -30,8 +29,6 @@ function getKey(object: any, cache: Map<any, string>) {
       return `${object}`;
   }
 }
-
-export const generateKey = (object: any) => getKey(object, globalCache);
 
 export function generateLocalKey() {
   const cache = new Map();

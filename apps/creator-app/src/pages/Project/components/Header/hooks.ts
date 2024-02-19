@@ -2,7 +2,7 @@ import { Nullable } from '@voiceflow/common';
 import { MenuTypes } from '@voiceflow/ui';
 import { BaseProps } from '@voiceflow/ui-next';
 
-import { DESKTOP_APP_LINK } from '@/constants';
+import { DESKTOP_APP_LINK } from '@/constants/link.constant';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as UI from '@/ducks/ui';

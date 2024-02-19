@@ -6,7 +6,6 @@ import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandlers } from '@/components/DraggableList';
-import LegacyMappings from '@/components/IntentLegacyMappings';
 import IntentSelect from '@/components/IntentSelect';
 import { Designer } from '@/ducks';
 import { useAutoScrollNodeIntoView } from '@/hooks';
@@ -103,8 +102,6 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
                     <SectionV2.Divider inset />
 
                     <Actions.Section portID={editor.node.ports.out.dynamic[index]} editor={editor} />
-
-                    <LegacyMappings intent={intent} mappings={item.mappings} onDelete={() => onUpdate({ mappings: [] })} />
                   </>
                 )}
               </SectionV2.CollapseSection>

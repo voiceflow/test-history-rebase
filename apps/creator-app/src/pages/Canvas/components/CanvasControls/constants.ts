@@ -1,7 +1,7 @@
 import { SvgIconTypes } from '@voiceflow/ui';
 
 import * as Documentation from '@/config/documentation';
-import { DISCORD_COMMUNITY_LINK, DOCS_LINK, YOUTUBE_CHANNEL_LINK } from '@/constants';
+import { DISCORD_COMMUNITY_LINK, DOCS_LINK, YOUTUBE_CHANNEL_LINK } from '@/constants/link.constant';
 import * as Tracking from '@/ducks/tracking';
 
 export interface StaticResource {

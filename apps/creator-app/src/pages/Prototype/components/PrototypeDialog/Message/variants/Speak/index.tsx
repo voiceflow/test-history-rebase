@@ -3,9 +3,9 @@ import cn from 'classnames';
 import Markdown, { MarkdownToJSX } from 'markdown-to-jsx';
 import React from 'react';
 
-import { ALL_URLS_REGEX, NEW_LINE_REGEX, SSML_TAG_REGEX } from '@/constants';
 import perf, { PerfAction } from '@/performance';
 import { ClassName } from '@/styles/constants';
+import { ALL_URLS_REGEX } from '@/utils/string.util';
 
 import BaseMessage, { BaseMessageProps } from '../../Base';
 
@@ -29,7 +29,11 @@ const Speak: React.FC<SpeakProps> = ({ ai, src, audio, voice, message, className
   const audioPlayer = AudioPlayer.useAudioPlayer({ audioURL: src });
 
   const formattedMessage = React.useMemo(
-    () => message.replace(SSML_TAG_REGEX, '').replace(ALL_URLS_REGEX, '[$1]($1)').replace(NEW_LINE_REGEX, '  \n'), // double spaces is a "Line Return" in the markdown
+    () =>
+      message
+        .replace(/<\/?[^>]+(>|$)/g, '')
+        .replace(ALL_URLS_REGEX, '[$1]($1)')
+        .replace(/\n/g, '  \n'), // double spaces is a "Line Return" in the markdown
     [message]
   );
 

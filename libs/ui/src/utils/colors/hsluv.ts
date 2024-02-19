@@ -216,7 +216,6 @@ const xyzToLuv = (tuple: xyz): luv => {
   const Z: number = tuple[2];
 
   // This divider fix avoids a crash on Python (divide by zero except.)
-  // TODO FIXME this nan handling is nonsense
   const divider: number = X + 15 * Y + 3 * Z;
   const varU: number = divider === 0 ? NaN : (4 * X) / divider;
   const varV: number = divider === 0 ? NaN : (9 * Y) / divider;

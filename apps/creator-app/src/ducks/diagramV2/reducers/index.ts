@@ -15,7 +15,7 @@ import insertManyStepsReducer from './insertManySteps';
 import insertStepReducer from './insertStep';
 import isolateStepsReducer from './isolateSteps';
 import loadSharedNodesReducer from './loadSharedNodes';
-import { addMenuItemReducer, removeMenuItemReducer, reorderMenuItemReducer, reorderMenuNodeReducer } from './menuItem';
+import { addMenuItemReducer, removeMenuItemReducer, reorderMenuItemReducer } from './menuItem';
 import reloadSharedNodesReducer from './reloadSharedNodes';
 import removeDiagramReducer from './removeDiagram';
 import removeManyDiagramsReducer from './removeManyDiagrams';
@@ -42,7 +42,6 @@ const realtimeDiagramReducer = createRootCRUDReducer(INITIAL_STATE, {
   .immerCase(...addMenuItemReducer)
   .immerCase(...removeMenuItemReducer)
   .immerCase(...reorderMenuItemReducer)
-  .immerCase(...reorderMenuNodeReducer)
 
   // nodes
   .immerCase(...addBlockReducer)

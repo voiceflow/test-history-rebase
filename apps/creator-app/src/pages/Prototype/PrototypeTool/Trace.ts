@@ -136,9 +136,7 @@ class TraceController {
 
   private context: Prototype.Context | null = null;
 
-  // BEGIN FIXME - MVP - Custom Blocks
   private prototypeID: string | null = null;
-  // END FIXME - MVP - Custom Blocks
 
   private streamState: StreamState = { src: null, offset: 0, token: null };
 
@@ -166,9 +164,8 @@ class TraceController {
 
   public start() {
     this.startPrototypeEngine();
-    // BEGIN FIXME - MVP - Custom Blocks
+
     this.prototypeID = Utils.id.objectID();
-    // END FIXME - MVP - Custom Blocks
   }
 
   public next = async (request: BaseRequest | null = null): Promise<void> => {
@@ -454,11 +451,9 @@ class TraceController {
     const engine = this.props.getEngine();
     const node = engine?.getNodeByID(trace.payload.blockID);
 
-    // BEGIN FIXME - MVP - Custom Blocks
     if (engine && node && node.type === BlockType.CUSTOM_BLOCK_POINTER) {
       engine.dispatcher.dispatch(TrackingEvents.trackCustomBlockPrototyped({ prototypeID: `${this.prototypeID}` }));
     }
-    // END FIXME - MVP - Custom Blocks
 
     if (!this.isPublicPrototype) {
       await this.waitNode(trace.payload.blockID);

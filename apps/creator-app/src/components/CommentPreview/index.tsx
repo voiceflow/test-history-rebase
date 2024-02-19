@@ -1,10 +1,10 @@
 import { Link, Text } from '@voiceflow/ui';
 import React from 'react';
 
-import { ALL_URLS_REGEX } from '@/constants';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector, useTheme } from '@/hooks';
 import { isAnyLink, matchAllAndProcess } from '@/utils/string';
+import { ALL_URLS_REGEX } from '@/utils/string.util';
 
 import { Container } from './components';
 

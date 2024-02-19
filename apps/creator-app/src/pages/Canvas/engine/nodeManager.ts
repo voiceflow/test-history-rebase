@@ -19,7 +19,7 @@ import * as VersionV2 from '@/ducks/versionV2';
 import * as ModalsV2 from '@/ModalsV2';
 import { Pair, Point } from '@/types';
 import { Coords } from '@/utils/geometry';
-import { centerNodeGroup, getNodesGroupCenter, isCommandNode } from '@/utils/node';
+import { centerNodeGroup, getNodesGroupCenter } from '@/utils/node';
 import { isMarkupBlockType, isMarkupOrCombinedBlockType } from '@/utils/typeGuards';
 
 import NodeEntity from './entities/nodeEntity';
@@ -507,7 +507,6 @@ class NodeManager extends EngineConsumer {
 
     this.log.info(this.log.success('added node'), this.log.slug(nodeID));
 
-    // FIXME: - MVP - Custom Blocks
     if (type === BlockType.CUSTOM_BLOCK_POINTER) {
       this.dispatch(TrackingEvents.trackCustomBlockPointerCreated());
     }
@@ -1097,7 +1096,7 @@ class NodeManager extends EngineConsumer {
   }
 
   private isRemovingDefaultCommand(nodes: Realtime.Node[]): boolean {
-    const commandNodes = nodes.filter(isCommandNode);
+    const commandNodes = nodes.filter(Realtime.Utils.node.isCommandNode);
     const commandNodesIDs = commandNodes.map(({ id }) => id);
     const commandNodeData = commandNodesIDs.map((nodeID) => this.engine.getDataByNodeID<Realtime.NodeData.Command>(nodeID));
     // if the deleted node is not a help intent or a stop intent

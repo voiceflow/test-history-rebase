@@ -5,7 +5,7 @@ import AddManyDiagramControl from './addMany';
 import { ComponentCreateControl, ComponentDuplicateControl, ComponentRemoveControl } from './component';
 import HeartbeatDiagramControl from './heartbeat';
 import { LockEntitiesControl, UnlockEntitiesControl, UpdateLockedEntitiesControl } from './locks';
-import { AddMenuItemControl, RemoveMenuItemControl, ReorderMenuItemControl, ReorderMenuNodeControl } from './menuItem';
+import { AddMenuItemControl, RemoveMenuItemControl, ReorderMenuItemControl } from './menuItem';
 import PatchDiagramControl from './patch';
 import ReloadSharedNodesControl from './reloadSharedNodes';
 import RemoveDiagramControl from './remove';
@@ -50,7 +50,6 @@ const buildDiagramActionControls = (options: LoguxControlOptions) => ({
   addMenuItemControl: new AddMenuItemControl(options),
   removeMenuItemControl: new RemoveMenuItemControl(options),
   reorderMenuItemControl: new ReorderMenuItemControl(options),
-  reorderMenuNodeControl: new ReorderMenuNodeControl(options),
 
   // other
   templateCreateControl: new TemplateCreateControl(options),

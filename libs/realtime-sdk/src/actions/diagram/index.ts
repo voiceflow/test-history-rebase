@@ -76,18 +76,6 @@ export const removeLocalVariable = Utils.protocol.createAction<LocalVariablePayl
 
 // menu items
 
-/**
- * @deprecated use `ReorderMenuNodePayload` instead
- */
-export interface ReorderMenuNodePayload extends BaseDiagramPayload {
-  nodeID: string;
-  toIndex: number;
-}
-/**
- * @deprecated use `reorderMenuItem` instead
- */
-export const reorderMenuNode = Utils.protocol.createAction<ReorderMenuNodePayload>(diagramType('REORDER_MENU_NODE'));
-
 export interface BaseMenuItemPayload extends BaseDiagramPayload {
   sourceID: string;
 }

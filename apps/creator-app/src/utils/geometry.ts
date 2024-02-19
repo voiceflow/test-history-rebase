@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import { Pair, Point, Quad } from '@/types';
 
 export interface CartesianPlane {

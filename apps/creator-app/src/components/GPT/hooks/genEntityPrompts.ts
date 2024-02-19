@@ -7,7 +7,6 @@ import { useTeardown } from '@voiceflow/ui';
 
 import { mlGatewayClient } from '@/client/ml-gateway';
 import * as SlateEditor from '@/components/SlateEditable/editor';
-import { CUSTOM_SLOT_TYPE } from '@/constants';
 import * as Designer from '@/ducks/designer';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as VersionV2 from '@/ducks/versionV2';
@@ -49,7 +48,7 @@ export const useGenVoiceEntityPrompts = ({
 
       const { results } = await mlGatewayClient.generation.generateEntityReprompt({
         ...options,
-        type: ('type' in entity ? entity.type : entity.classifier) ?? CUSTOM_SLOT_TYPE,
+        type: ('type' in entity ? entity.type : entity.classifier) ?? Realtime.CUSTOM_SLOT_TYPE,
         name: entity.name,
         intentName,
         intentInputs: intentInputs.map((input) => transformVariablesToReadable(input.text, variables.byKey)).filter(Boolean),
@@ -105,7 +104,7 @@ export const useGenChatEntityPrompts = ({
     generate: async (options) => {
       const { results } = await mlGatewayClient.generation.generateEntityReprompt({
         ...options,
-        type: ('type' in entity ? entity.type : entity.classifier) ?? CUSTOM_SLOT_TYPE,
+        type: ('type' in entity ? entity.type : entity.classifier) ?? Realtime.CUSTOM_SLOT_TYPE,
         name: entity.name,
         intentName,
         intentInputs: intentInputs.map((input) => transformVariablesToReadable(input.text, variables.byKey)).filter(Boolean),

@@ -3,7 +3,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, stopPropagation, Text, TippyTooltip, TippyTooltipProps } from '@voiceflow/ui';
 import React from 'react';
 
-import { BOOK_DEMO_LINK, REQUEST_MORE_TOKENS } from '@/constants';
+import { BOOK_DEMO_LINK, REQUEST_MORE_TOKENS_LINK } from '@/constants/link.constant';
 import { Permission } from '@/constants/permissions';
 import * as Workspace from '@/ducks/workspaceV2';
 import { useDispatch, useFeature, usePermission, useSelector, useTrackingEvents } from '@/hooks';
@@ -77,7 +77,7 @@ export const useAIUsageTooltip = ({ onOpenModal }: { onOpenModal: VoidFunction }
           {gptQuota.consumed.toLocaleString()} <Text color="#A2A7A8">/ {gptQuota.quota.toLocaleString()} tokens used.</Text>
         </Box>
 
-        {showOldButton && <TippyTooltip.FooterButton buttonText="Request more tokens" onClick={() => openURLInANewTab(REQUEST_MORE_TOKENS)} />}
+        {showOldButton && <TippyTooltip.FooterButton buttonText="Request more tokens" onClick={() => openURLInANewTab(REQUEST_MORE_TOKENS_LINK)} />}
 
         {showUgradeButton && (
           <TippyTooltip.FooterButton

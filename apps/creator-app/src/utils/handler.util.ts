@@ -1,4 +1,4 @@
-export const withHandler =
+const withHandler =
   <E extends Event | React.BaseSyntheticEvent, O = never>(task: (event: E, options?: O) => void) =>
   <T extends E>(callback?: ((event: T) => void) | null, options?: O) =>
   // eslint-disable-next-line consistent-return

@@ -11,7 +11,6 @@ export * from './files';
 export * from './focus';
 export * from './hotkeys';
 export * from './hover';
-export * from './imperativeApi';
 export * from './keygen';
 export * from './lazy';
 export * from './lifecycle';

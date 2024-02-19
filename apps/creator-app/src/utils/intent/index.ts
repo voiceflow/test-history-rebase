@@ -9,7 +9,6 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { StrengthGauge } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
-import { FILTERED_AMAZON_INTENTS } from '@/constants';
 import { getPlatformIntentNameFormatter } from '@/platforms/selectors';
 
 import { formatBuiltInIntentName } from '../intent.util';
@@ -50,6 +49,17 @@ export const intentFilter = (
   if (intent.id === activeIntent?.id) return true;
 
   if (isCustomizableBuiltInIntent(intent)) {
+    const FILTERED_AMAZON_INTENTS = [
+      'ScrollUpIntent',
+      'ScrollRightIntent',
+      'ScrollLeftIntent',
+      'ScrollDownIntent',
+      'PageUpIntent',
+      'PageDownIntent',
+      'NavigateSettingsIntent',
+      'NavigateHomeIntent',
+    ];
+
     return !FILTERED_AMAZON_INTENTS.includes(intent.name.replace(AMAZON_INTENT_PREFIX, ''));
   }
 

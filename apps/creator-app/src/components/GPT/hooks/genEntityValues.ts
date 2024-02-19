@@ -3,7 +3,6 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { useTeardown } from '@voiceflow/ui';
 
 import { mlGatewayClient } from '@/client/ml-gateway';
-import { CUSTOM_SLOT_TYPE } from '@/constants';
 import { isDefaultSlotName } from '@/utils/slot';
 
 import { GenApi, useGen } from './gen';
@@ -37,7 +36,7 @@ export const useGenEntityValues = ({
       const { results } = await mlGatewayClient.generation.generateEntityValue({
         ...options,
         name: (isDefaultName ? null : entityName) ?? '',
-        type: entityType || CUSTOM_SLOT_TYPE,
+        type: entityType || Realtime.CUSTOM_SLOT_TYPE,
       });
 
       return results.map(([entityName, ...synonyms]) => ({ id: Utils.id.cuid.slug(), value: entityName, synonyms: synonyms.join(',') }));

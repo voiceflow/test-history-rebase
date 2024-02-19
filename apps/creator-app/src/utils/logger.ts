@@ -1,3 +1,4 @@
+// eslint-disable-next-line max-classes-per-file
 import loglevel from 'loglevel';
 import moize from 'moize';
 

@@ -4,9 +4,9 @@ import { Box, Scroll, TextField } from '@voiceflow/ui-next';
 import React, { useState } from 'react';
 
 import { Modal } from '@/components/Modal';
-import { HTTPS_URL_REGEX } from '@/constants';
 import { Designer } from '@/ducks';
 import { useDispatch, useFeature } from '@/hooks';
+import { HTTPS_URL_REGEX } from '@/utils/string.util';
 
 import { KBRefreshRateSelect } from '../../components/KBRefreshRateSelect/KBRefreshRateSelect.component';
 import { sanitizeURL } from '../../KnowledgeBaseImport.utils';

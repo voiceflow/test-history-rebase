@@ -565,14 +565,6 @@ class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Mode
     await this.atomicUpdateOne(this.versionIDDiagramIDFilter(versionID, diagramID), [Atomic.pull([{ path: 'menuItems', match: { sourceID } }])]);
   }
 
-  /**
-   * @deprecated should be removed with Subprotocol 1.3.0
-   */
-  async reorderMenuNodeIDs(versionID: string, diagramID: string, { index, nodeID }: { index: number; nodeID: string }) {
-    await this.atomicUpdateOne(this.versionIDDiagramIDFilter(versionID, diagramID), [Atomic.pull([{ path: 'menuNodeIDs', match: nodeID }])]);
-    await this.atomicUpdateOne(this.versionIDDiagramIDFilter(versionID, diagramID), [Atomic.push([{ path: 'menuNodeIDs', value: nodeID, index }])]);
-  }
-
   async reorderMenuItems(versionID: string, diagramID: string, { index, sourceID }: { index: number; sourceID: string }) {
     const diagram = await this.findOneAndAtomicUpdate(this.versionIDDiagramIDFilter(versionID, diagramID), [
       Atomic.pull([{ path: 'menuItems', match: { sourceID } }]),

@@ -8,7 +8,7 @@ import { generatePath, useHistory } from 'react-router';
 import client from '@/client';
 import { Modal } from '@/components/Modal';
 import { Path } from '@/config/routes';
-import { REQUEST_MORE_TOKENS } from '@/constants';
+import { REQUEST_MORE_TOKENS_LINK } from '@/constants/link.constant';
 import { Designer, Session } from '@/ducks';
 import { useSelector, useTrackingEvents } from '@/hooks';
 
@@ -87,7 +87,7 @@ export const KnowledgeBasePreviewQuestion = manager.create(
             } else if (error?.response?.status === 402) {
               notify.short.error(
                 <>
-                  Out of tokens. <Link variant="secondary" href={REQUEST_MORE_TOKENS} label="Request more tokens." />
+                  Out of tokens. <Link variant="secondary" href={REQUEST_MORE_TOKENS_LINK} label="Request more tokens." />
                 </>,
                 { isClosable: false }
               );

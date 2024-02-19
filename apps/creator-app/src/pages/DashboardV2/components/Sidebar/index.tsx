@@ -6,7 +6,7 @@ import { generatePath } from 'react-router-dom';
 import NavigationSidebar from '@/components/NavigationSidebar';
 import TrialCountdownCard from '@/components/TrialCountdownCard';
 import { Path } from '@/config/routes';
-import { BOOK_DEMO_LINK, CHANGELOG_LINK, DISCORD_LINK, GET_HELP, LEARN, TEMPLATES_LINK } from '@/constants';
+import { BOOK_DEMO_LINK, CHANGELOG_LINK, DISCORD_LINK, GET_HELP_LINK, LEARN_LINK, TEMPLATES_LINK } from '@/constants/link.constant';
 import { Permission } from '@/constants/permissions';
 import * as Sessions from '@/ducks/session';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
@@ -56,7 +56,7 @@ const DashboardNavigationSidebar: React.FC = () => {
 
         <S.Group>
           <System.Link.Anchor
-            href={LEARN}
+            href={LEARN_LINK}
             color={System.Link.Color.INHERIT}
             onClick={trackEventFactory(null, 'trackDashboardLinkClicked', { linkType: 'Learn' })}
           >
@@ -98,7 +98,7 @@ const DashboardNavigationSidebar: React.FC = () => {
 
         <S.Group>
           <System.Link.Anchor
-            href={GET_HELP}
+            href={GET_HELP_LINK}
             color={System.Link.Color.INHERIT}
             onClick={trackEventFactory(null, 'trackDashboardLinkClicked', { linkType: 'Get Help' })}
           >

@@ -14,7 +14,8 @@ import {
 } from '@voiceflow/ui';
 import React from 'react';
 
-import { ALL_PERSONA_ID, TEST_WITH_PERSONAS } from '@/constants';
+import { ALL_PERSONA_ID } from '@/constants';
+import { PERSONAS_LEARN_MORE } from '@/constants/link.constant';
 import * as Prototype from '@/ducks/prototype';
 import * as VariableState from '@/ducks/variableState';
 import { useCreateVariableState, useDispatch, useSelector } from '@/hooks';
@@ -23,7 +24,7 @@ import ManageVariableStatesModal from '@/ModalsV2/modals/VariableStates/Manage';
 
 import * as S from './styles';
 
-export const ALL = { id: ALL_PERSONA_ID, name: 'All personas' } as const;
+const ALL = { id: ALL_PERSONA_ID, name: 'All personas' } as const;
 
 type PersonaOption = Nullish<{ label: string; value: string }>;
 
@@ -101,7 +102,7 @@ const PersonasSelect: React.FC<PersonasSelectProps> = ({ preventClose, enableClo
               Define preset variables for specific scenarios or use cases when testing your project
             </Box>
             <Box py="11px">
-              <System.Link.Anchor href={TEST_WITH_PERSONAS} color="#3D82E2">
+              <System.Link.Anchor href={PERSONAS_LEARN_MORE} color="#3D82E2">
                 Learn more
               </System.Link.Anchor>
             </Box>

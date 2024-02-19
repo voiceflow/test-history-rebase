@@ -3,8 +3,6 @@ import client from '@/client';
 import { EventName } from '../constants';
 import { createProjectEvent, createProjectEventTracker } from '../utils';
 
-// FIXME: MVP - Custom blocks
-
 export const trackNewCustomBlockCreated = createProjectEventTracker((eventInfo) =>
   client.analytics.track(createProjectEvent(EventName.NEW_CUSTOM_BLOCK_CREATED, eventInfo))
 );

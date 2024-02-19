@@ -4,7 +4,6 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 
 import ComponentSelect from '@/components/ComponentSelect';
-import LegacyMappings from '@/components/IntentLegacyMappings';
 import IntentSelect from '@/components/IntentSelect';
 import * as Documentation from '@/config/documentation';
 import { Designer } from '@/ducks';
@@ -63,8 +62,6 @@ const CommandEditor: React.FC = () => {
           />
         </Box.Flex>
       </SectionV2.SimpleSection>
-
-      <LegacyMappings intent={intent} mappings={commandNodeData?.mappings} onDelete={() => onChange({ mappings: [] })} />
     </EditorV2>
   );
 };

@@ -54,7 +54,7 @@ const TextStep: ConnectedStep<Realtime.NodeData.Text, Realtime.NodeData.TextBuil
         ) : (
           <Item
             v2
-            label={items[0].content}
+            label={items[0]?.content}
             portID={nextPortID}
             palette={palette}
             placeholder="Enter text reply"

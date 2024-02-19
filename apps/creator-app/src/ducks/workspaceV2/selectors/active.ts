@@ -23,7 +23,6 @@ export const workspaceSelector = createSelector([getWorkspaceByIDSelector, Sessi
 
 export const hasWorkspaceSelector = createSelector([workspaceSelector], (workspace) => !!workspace);
 
-// TODO: move into organization duck when migrated to new trial system
 export const organizationTrialDaysLeftSelector = createSelector(
   [workspaceSelector, getOrganizationByIDSelector],
   (workspace, getOrganizationByID) => {
@@ -34,9 +33,7 @@ export const organizationTrialDaysLeftSelector = createSelector(
       return organization.subscription.trial?.daysLeft ?? null;
     }
 
-    // FIXME: this is a hack to get the trial days left for the organization.
-    // As we are still migrating the trial system, we need to check both the workspace and the organization.
-    return workspace?.organizationTrialDaysLeft ?? organization?.trial?.daysLeft ?? null;
+    return organization?.trial?.daysLeft ?? null;
   }
 );
 

@@ -10,7 +10,7 @@ import { useKnowledgeBase } from '@/components/GPT/hooks/feature';
 import { SidebarIconMenuItem } from '@/components/SidebarIconMenu';
 import { PRIVATE_LLM_MODELS } from '@/config';
 import { Path } from '@/config/routes';
-import { BOOK_DEMO_LINK, DISCORD_COMMUNITY_LINK, DOCS_LINK, YOUTUBE_CHANNEL_LINK } from '@/constants';
+import { BOOK_DEMO_LINK, DISCORD_COMMUNITY_LINK, DOCS_LINK, YOUTUBE_CHANNEL_LINK } from '@/constants/link.constant';
 import { Permission } from '@/constants/permissions';
 import { VoiceflowAssistantVisibilityContext } from '@/contexts/VoiceflowAssistantVisibility';
 import * as Router from '@/ducks/router';

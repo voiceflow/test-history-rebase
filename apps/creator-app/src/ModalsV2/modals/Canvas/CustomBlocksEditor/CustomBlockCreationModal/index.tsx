@@ -1,4 +1,3 @@
-// BEGIN FIXME: MVP - Custom blocks
 import { Modal, toast } from '@voiceflow/ui';
 import React from 'react';
 
@@ -40,4 +39,3 @@ const CustomBlockCreationModal = manager.create<{}>('CanvasCustomBlockCreationMo
 });
 
 export default CustomBlockCreationModal;
-// END FIXME: MVP - Custom blocks

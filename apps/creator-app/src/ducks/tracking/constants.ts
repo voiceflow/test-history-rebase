@@ -141,11 +141,9 @@ export enum EventName {
   BLOCK_TEMPLATE_CREATED = 'Block Template Created',
   BLOCK_TEMPLATE_USED = 'Block Template Used',
 
-  // BEGIN FIXME: MVP - Custom blocks
   NEW_CUSTOM_BLOCK_CREATED = 'New custom block created',
   CUSTOM_BLOCK_POINTER_CREATED = 'Custom block pointer created',
   CUSTOM_BLOCK_PROTOTYPED = 'Custom block prototyped',
-  // END FIXME: MVP - Custom blocks
 
   // BEGIN Web Chat Configuration
   WEBCHAT_CONFIGURATION_SNIPPET_COPIED = 'Web Chat Configuration - Snippet Copied',

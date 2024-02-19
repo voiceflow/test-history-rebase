@@ -8,11 +8,11 @@ import React from 'react';
 import OverflowMenu from '@/components/OverflowMenu';
 import Section from '@/components/Section';
 import VariablesInput from '@/components/VariablesInput';
-import { HTTPS_URL_REGEX } from '@/constants';
 import * as History from '@/ducks/history';
 import { useActiveProjectPlatform, useDispatch, useEnableDisable } from '@/hooks';
 import { Content, Controls, FormControl } from '@/pages/Canvas/components/Editor';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
+import { HTTPS_URL_REGEX } from '@/utils/string.util';
 
 import { HelpMessage, HelpTooltip, VisualsForm } from './components';
 

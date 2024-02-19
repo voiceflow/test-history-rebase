@@ -2,12 +2,12 @@
 
 import { BaseText } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
+import { BlockType, MarkupBlockType } from '@voiceflow/realtime-sdk';
 import React from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
 import type { Editor } from 'slate';
 
 import { SlateEditorAPI, SlatePluginType, useSetupSlateEditor } from '@/components/SlateEditable';
-import { BlockType, MarkupBlockType } from '@/constants';
 import * as Router from '@/ducks/router';
 import { useForceUpdate, useSetup, useTeardown } from '@/hooks';
 import { DEFAULT_BACKGROUND_COLOR } from '@/pages/Canvas/managers/MarkupText/constants';

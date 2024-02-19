@@ -1,4 +1,5 @@
-const SPACE_REGEXP = / /g;
+import { SPACE_REGEXP } from '@/utils/string.util';
+
 const VFNLU_NOT_VALID_CHARS_REGEXP = /[$%&()*+:?~]/g;
 const ALEXA_NOT_VALID_CHARS_REGEXP = /[^A-Z_a-z]/g;
 

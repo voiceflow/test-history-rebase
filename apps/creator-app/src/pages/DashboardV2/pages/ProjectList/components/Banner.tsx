@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { bannerBg } from '@/assets';
-import { YOUTUBE_CHANNEL_LINK_2 } from '@/constants';
+import { YOUTUBE_CHANNEL_LINK } from '@/constants/link.constant';
 import { openURLInANewTab } from '@/utils/window';
 
 import * as S from '../styles';
@@ -14,7 +14,7 @@ const Banner: React.FC = () => (
     closeKey="dashboard-learn-banner"
     buttonText="Start Course"
     backgroundImage={bannerBg}
-    onClick={() => openURLInANewTab(YOUTUBE_CHANNEL_LINK_2)}
+    onClick={() => openURLInANewTab(YOUTUBE_CHANNEL_LINK)}
   />
 );
 

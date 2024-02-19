@@ -1,7 +1,8 @@
 import { Text, TextButton } from '@voiceflow/ui';
 import React from 'react';
 
-import { PLAN_INFO_LINK, TEAM_PLUS_PLANS } from '@/constants';
+import { TEAM_PLUS_PLANS } from '@/constants';
+import { PRICING_LINK } from '@/constants/link.constant';
 import { Permission } from '@/constants/permissions';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { usePermission } from '@/hooks/permission';
@@ -28,7 +29,7 @@ const TakenSeatsMessage: React.FC<TakenSeatsMessageProps> = ({ error = false, se
 
   const handleNeedMoreClick = () => {
     if (!isPlanFactory(TEAM_PLUS_PLANS)(activePlan)) {
-      openURLInANewTab(PLAN_INFO_LINK);
+      openURLInANewTab(PRICING_LINK);
       return;
     }
 

@@ -370,13 +370,6 @@ class DiagramService extends AbstractControl {
     await this.models.diagram.reorderMenuItems(versionID, diagramID, payload);
   }
 
-  /**
-   * @deprecated should be removed with Subprotocol 1.3.0
-   */
-  public async reorderMenuNodeIDs(versionID: string, diagramID: string, payload: { index: number; nodeID: string }): Promise<void> {
-    await this.models.diagram.reorderMenuNodeIDs(versionID, diagramID, payload);
-  }
-
   public getSharedNodes(diagrams: BaseModels.Diagram.Model[]): Realtime.diagram.sharedNodes.DiagramSharedNodeMap {
     const sharedNodes: Realtime.diagram.sharedNodes.DiagramSharedNodeMap = {};
 

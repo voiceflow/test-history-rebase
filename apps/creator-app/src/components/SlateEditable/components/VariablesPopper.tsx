@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text } from 'slate';
 
-import { SPACE_REGEXP } from '@/constants';
+import { SPACE_REGEXP } from '@/utils/string.util';
 
 import { usePluginOptions, useSlateEditor } from '../contexts';
 import { EditorAPI, PluginType } from '../editor';

@@ -1,7 +1,7 @@
 import { Nullable, READABLE_VARIABLE_REGEXP, SLOT_REGEXP, Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
 
-import { STRICT_LINKS_REGEXS, URL_ONLY_REGEX, VALID_LINKS_REGEXS } from '@/constants';
+import { STRICT_LINKS_REGEXS, URL_ONLY_REGEX, VALID_LINKS_REGEXS } from '@/utils/string.util';
 
 export const isString = (value?: unknown): value is string => typeof value === 'string';
 

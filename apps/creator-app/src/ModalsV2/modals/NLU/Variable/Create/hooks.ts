@@ -1,10 +1,10 @@
 import { toast } from '@voiceflow/ui';
 import React from 'react';
 
-import { SPACE_REGEXP } from '@/constants';
 import { CanvasCreationType } from '@/ducks/tracking';
 import * as Version from '@/ducks/versionV2';
 import { useDispatch } from '@/hooks/realtime';
+import { SPACE_REGEXP } from '@/utils/string.util';
 
 const formatVarName = (name: string) => name.trim().replace(SPACE_REGEXP, '_');
 

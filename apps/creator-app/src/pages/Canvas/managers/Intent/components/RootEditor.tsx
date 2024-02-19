@@ -5,7 +5,6 @@ import { SectionV2 } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
-import LegacyMappings from '@/components/IntentLegacyMappings';
 import IntentSelect from '@/components/IntentSelect';
 import * as Documentation from '@/config/documentation';
 import { useIntent } from '@/hooks/intent.hook';
@@ -65,8 +64,6 @@ const RootEditor: React.FC = () => {
 
       <SectionV2.Divider />
       <AvailabilitySection isEnabled={isGlobalIntent} onChange={onChangeAvailability} />
-
-      <LegacyMappings intent={intent} mappings={editor.data.mappings} onDelete={() => patchPlatformData({ mappings: [] })} />
     </EditorV2>
   );
 };

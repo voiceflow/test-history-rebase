@@ -4,7 +4,7 @@ import React from 'react';
 
 import client from '@/client';
 import { designerClient } from '@/client/designer';
-import { LEARN_PARTIAL_IMPORT } from '@/constants';
+import { PARTIAL_IMPORT_LEARN_MORE } from '@/constants/link.constant';
 import * as Domain from '@/ducks/domain';
 import * as Session from '@/ducks/session';
 import { lazyComponent } from '@/hocs/lazy';
@@ -87,7 +87,7 @@ const PartialImportManager = manager.create<PartialImportManagerProps>(
                   <b>Last Updated:</b> {dayjs(next.project.updatedAt).format('h:mmA, MMM D, YYYY')}
                 </Box>
                 <Box color={ThemeColor.SECONDARY}>
-                  Select resources to import. <System.Link.Anchor href={LEARN_PARTIAL_IMPORT}>Learn More</System.Link.Anchor>
+                  Select resources to import. <System.Link.Anchor href={PARTIAL_IMPORT_LEARN_MORE}>Learn More</System.Link.Anchor>
                 </Box>
                 <hr />
                 <DiffManager diff={diff} setDiff={setDiff} />

@@ -67,18 +67,7 @@ module.exports = {
       },
     },
     {
-      files: [
-        '*.story.*',
-        '*.unit.*',
-        '*.it.*',
-        'src/utils/testing/**/*',
-        'test/**/*',
-        'cypress/**/*',
-        'config/**/*',
-        '*.config.mjs',
-        '*.config.js',
-        '.*rc.js',
-      ],
+      files: ['*.story.*', '*.unit.*', '*.it.*', 'src/utils/testing/**/*', 'test/**/*', 'config/**/*', '*.config.mjs', '*.config.js', '.*rc.js'],
       extends: ['@voiceflow/eslint-config/utility'],
       rules: {
         // off
@@ -100,10 +89,6 @@ module.exports = {
       rules: {
         'no-unused-expressions': 'off',
       },
-    },
-    {
-      files: ['cypress/**/*'],
-      extends: ['@voiceflow/eslint-config/cypress'],
     },
     {
       files: ['*.jsx', '*.tsx'],

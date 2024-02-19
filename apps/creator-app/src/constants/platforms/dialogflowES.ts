@@ -1,7 +1,3 @@
-export const DIALOGFLOW_ES_LEARN_MORE = 'https://cloud.google.com/dialogflow/es/docs/agents-overview';
-export const getDialogflowESAgentUrl = (projectID: string) => `https://dialogflow.cloud.google.com/#/editAgent/${projectID}/`;
-export const getDialogflowESProjectConsoleUrl = (projectID: string) => `https://dialogflow.cloud.google.com/#/editAgent/${projectID}/`;
-
 export enum DialogflowESStageType {
   IDLE = 'IDLE',
   ERROR = 'ERROR',

@@ -2,8 +2,8 @@ import { Nullable } from '@voiceflow/common';
 import { isLinkElement } from '@voiceflow/slate-serializer';
 import { Descendant, Editor, Element, Location, Node, Point, Range, Text, Transforms } from 'slate';
 
-import { ALL_URLS_REGEX } from '@/constants';
 import { isAnyLink } from '@/utils/string';
+import { ALL_URLS_REGEX } from '@/utils/string.util';
 
 import { DEFAULT_COLOR, ElementType, TextProperty } from '../../constants';
 import type { EditorAPIType } from '../editorAPI';

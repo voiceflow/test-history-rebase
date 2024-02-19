@@ -2,10 +2,9 @@ import { Box, Button, Link, Modal, useSetup } from '@voiceflow/ui';
 import React from 'react';
 
 import { takeoffGraphic } from '@/assets';
+import { CHANGELOG_LINK } from '@/constants/link.constant';
 
 import manager from '../manager';
-
-const CHANGELOG_LINK = 'https://www.notion.so/voiceflow/Voiceflow-Changelog-b5e32e269b204106b5b51014cd049346';
 
 interface RefreshProps {
   version: number | string;

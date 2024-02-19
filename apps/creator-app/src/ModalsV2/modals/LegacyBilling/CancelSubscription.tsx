@@ -3,7 +3,7 @@ import { Box, Button, Modal, System, toast, withProvider } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
-import { PLAN_INFO_LINK } from '@/constants';
+import { PRICING_LINK } from '@/constants/link.constant';
 import { PaymentProvider, usePaymentAPI } from '@/contexts/PaymentContext';
 import { useTrackingEvents } from '@/hooks/tracking';
 import { useActiveWorkspace } from '@/hooks/workspace';
@@ -43,7 +43,7 @@ const CancelSubscription = manager.create('LegacyBillingCancelSubscription', () 
         <Modal.Body centered>
           <Box>
             Downgrading will result in limited feature access. We recommend you review the{' '}
-            <System.Link.Anchor href={PLAN_INFO_LINK}>pricing page</System.Link.Anchor> to see what's included in our tiers. If you're all set, click
+            <System.Link.Anchor href={PRICING_LINK}>pricing page</System.Link.Anchor> to see what's included in our tiers. If you're all set, click
             the button below to cancel your subscription.
           </Box>
         </Modal.Body>

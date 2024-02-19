@@ -5,7 +5,6 @@ import React from 'react';
 
 import * as GPT from '@/components/GPT';
 import TextArea from '@/components/TextArea';
-import { DialogType } from '@/constants';
 import { useActiveProjectType } from '@/hooks/platformConfig';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { PromptsSection, PromptsSectionRef } from '@/pages/Canvas/managers/components';
@@ -46,7 +45,7 @@ const RootEditor: React.FC = () => {
             This <b>speak</b> step does not function properly on text/chat based projects. Use a <b>text</b> step instead.
           </Alert>
           {editor.data.dialogs.map((dialog, index) => (
-            <TextArea key={index} value={dialog.type === DialogType.VOICE ? dialog.content : dialog.url} readOnly disabled></TextArea>
+            <TextArea key={index} value={dialog.type === Realtime.DialogType.VOICE ? dialog.content : dialog.url} readOnly disabled></TextArea>
           ))}
         </Box.FlexColumn>
       </EditorV2>
@@ -55,7 +54,7 @@ const RootEditor: React.FC = () => {
 
   return (
     <EditorV2
-      header={<EditorV2.DefaultHeader title={getLabelByType(isVoiceEditor ? DialogType.VOICE : DialogType.AUDIO)} />}
+      header={<EditorV2.DefaultHeader title={getLabelByType(isVoiceEditor ? Realtime.DialogType.VOICE : Realtime.DialogType.AUDIO)} />}
       footer={
         <EditorV2.DefaultFooter>
           <EditorV2.FooterActionsButton actions={[canvasVisibilityOption]} />

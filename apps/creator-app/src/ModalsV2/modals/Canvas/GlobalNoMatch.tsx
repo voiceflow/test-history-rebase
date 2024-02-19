@@ -8,7 +8,7 @@ import { AIPromptSettings } from '@/components/AI/AIPromptSettings/AIPromptSetti
 import { useProjectAIPlayground } from '@/components/GPT/hooks/feature';
 import PromptInput from '@/components/PromptInput';
 import RadioGroup from '@/components/RadioGroup';
-import { LEARN_NO_MATCH } from '@/constants';
+import { NO_MATCH_LEARN_MORE } from '@/constants/link.constant';
 import * as Tracking from '@/ducks/tracking';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useActiveProjectTypeConfig, useDispatch, useHotkey, useSelector, useTrackingEvents } from '@/hooks';
@@ -97,7 +97,7 @@ const GlobalNoMatchModal = manager.create('GlobalNoMatchModal', () => ({ api, ty
 
       <Modal.Footer>
         <Box.FlexApart fullWidth>
-          <System.Link.Anchor href={LEARN_NO_MATCH}>Learn More</System.Link.Anchor>
+          <System.Link.Anchor href={NO_MATCH_LEARN_MORE}>Learn More</System.Link.Anchor>
           <Button variant={Button.Variant.PRIMARY} disabled={closePrevented} squareRadius onClick={onSubmit}>
             Save
           </Button>

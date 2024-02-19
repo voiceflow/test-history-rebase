@@ -2,7 +2,7 @@ import { PlanType } from '@voiceflow/internal';
 import { Box, Button, Modal, System, toast } from '@voiceflow/ui';
 import React from 'react';
 
-import { PLAN_INFO_LINK } from '@/constants';
+import { PRICING_LINK } from '@/constants/link.constant';
 import * as Organization from '@/ducks/organization';
 import { useDispatch, useSelector } from '@/hooks';
 import { useTrackingEvents } from '@/hooks/tracking';
@@ -40,8 +40,8 @@ const CancelSubscription = manager.create('BillingCancelSubscription', () => ({ 
       <Modal.Body centered>
         <Box>
           Downgrading will result in limited feature access. We recommend you review the{' '}
-          <System.Link.Anchor href={PLAN_INFO_LINK}>pricing page</System.Link.Anchor> to see what's included in our tiers. If you're all set, click
-          the button below to cancel your subscription.
+          <System.Link.Anchor href={PRICING_LINK}>pricing page</System.Link.Anchor> to see what's included in our tiers. If you're all set, click the
+          button below to cancel your subscription.
         </Box>
       </Modal.Body>
 

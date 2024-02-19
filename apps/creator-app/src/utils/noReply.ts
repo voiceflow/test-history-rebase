@@ -14,14 +14,14 @@ const BASE_NO_REPLY: BaseNode.Utils.BaseStepNoReply = {
   randomize: false,
 };
 
-export const chatNoReplyFactory = ({ reprompts, ...options }: NoReplyFactoryOptions = {}): ChatNode.Utils.StepNoReply => ({
+const chatNoReplyFactory = ({ reprompts, ...options }: NoReplyFactoryOptions = {}): ChatNode.Utils.StepNoReply => ({
   ...BASE_NO_REPLY,
   reprompts: reprompts
     ? reprompts.map((prompt) => Platform.Common.Chat.CONFIG.utils.prompt.factory({ content: prompt, ...options }))
     : [Platform.Common.Chat.CONFIG.utils.prompt.factory(options)],
 });
 
-export const voiceNoReplyFactory = ({ reprompts, ...options }: NoReplyFactoryOptions = {}): Realtime.NodeData.VoiceNoReply => ({
+const voiceNoReplyFactory = ({ reprompts, ...options }: NoReplyFactoryOptions = {}): Realtime.NodeData.VoiceNoReply => ({
   ...BASE_NO_REPLY,
   reprompts: reprompts
     ? reprompts.map((prompt) => Platform.Common.Voice.CONFIG.utils.prompt.textFactory({ content: prompt, ...options }))

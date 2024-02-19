@@ -6,7 +6,6 @@ import React from 'react';
 import SlotSelect, { SlotOption } from '@/components/SlotSelect';
 import VariableSelect from '@/components/VariableSelect';
 import * as Documentation from '@/config/documentation';
-import { CUSTOM_SLOT_TYPE } from '@/constants';
 import { useMapManager } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 
@@ -39,7 +38,7 @@ const CaptureEditor: React.FC = () => {
 
       <SectionV2.Divider inset />
 
-      {editor.data.slot === CUSTOM_SLOT_TYPE && (
+      {editor.data.slot === Realtime.CUSTOM_SLOT_TYPE && (
         <>
           <SectionV2.ActionListSection
             title={<SectionV2.Title bold={hasReplies}>User replies</SectionV2.Title>}

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.273.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.272.0...@voiceflow/realtime@1.273.0) (2024-02-19)
+
+### Features
+
+* cleanup creator (CT-000) ([#7782](https://github.com/voiceflow/creator-app/issues/7782)) ([a435531](https://github.com/voiceflow/creator-app/commit/a435531a93feba041f37235d7d0886984c1e5e3d))
+
 # [1.272.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.271.0...@voiceflow/realtime@1.272.0) (2024-02-15)
 
 ### Features

@@ -1,7 +1,7 @@
 import * as Normal from 'normal-store';
 import { createSelector } from 'reselect';
 
-import { Account } from '@/ducks';
+import * as Account from '@/ducks/account';
 import { userIDSelector } from '@/ducks/account';
 import { createCurriedSelector, creatorIDParamSelector } from '@/ducks/utils';
 import { idParamSelector } from '@/ducks/utils/crudV2';

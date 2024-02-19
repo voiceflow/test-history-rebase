@@ -6,7 +6,13 @@ import uniqBy from 'lodash/uniqBy';
 import subscriptionAdapter from './billing/subscription/adapters/subscription.adapter';
 
 export const organizationMemberSimpleAdapter = createSimpleAdapter<Realtime.Identity.OrganizationMember, OrganizationMember>(
-  ({ user, membership }) => ({ name: user.name, role: membership.role, email: user.email, image: user.image, creatorID: user.id }),
+  ({ user, membership }) => ({
+    name: user.name,
+    role: membership.role,
+    email: user.email,
+    image: user.image,
+    creatorID: user.id,
+  }),
   notImplementedAdapter.transformer
 );
 

@@ -3,7 +3,9 @@ import * as Normal from 'normal-store';
 
 import { createOrganizationReducer } from '../organization.utils';
 
-export const removeMemberReducer = createOrganizationReducer(Actions.OrganizationMember.DeleteOne, (state, { organizationID, id }) => {
+export const removeMemberReducer = createOrganizationReducer(Actions.OrganizationMember.DeleteOne, (state, { context, id }) => {
+  const { organizationID } = context;
+
   const organization = Normal.getOne(state, organizationID);
 
   if (!organization) return;

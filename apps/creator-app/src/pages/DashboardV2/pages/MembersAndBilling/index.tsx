@@ -12,6 +12,7 @@ import { Header } from './components';
 import { Billing, LegacyBilling, LegacyMembers, Members } from './pages';
 import * as S from './styles';
 
+// FIXME: remove FF https://voiceflow.atlassian.net/browse/CV3-994
 const MembersAndBilling: React.FC = () => {
   const organization = useSelector(Organization.active.organizationSelector);
 

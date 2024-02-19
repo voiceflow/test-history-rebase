@@ -5,6 +5,7 @@ export * from './chargebee.hook';
 export * from './dnd';
 export * from './dragPreview';
 export * from './engine';
+export * from './entitlements';
 export * from './expression';
 export * from './feature';
 export * from './files';

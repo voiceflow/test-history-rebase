@@ -68,6 +68,7 @@ export const isOnProTrialSelector = createSelector(
   (workspace, isOnTrial) => isOnTrial && workspace?.plan === PlanType.PRO
 );
 
+// FIXME: remove FF https://voiceflow.atlassian.net/browse/CV3-994
 export const numberOfSeatsSelector = createSelector([workspaceSelector, localOrganizationSelector], (workspace, organization) => {
   return organization?.subscription ? organization.subscription.editorSeats : workspace?.seats ?? 1;
 });
@@ -85,6 +86,7 @@ export const isProOrTeamSelector = createSelector([planSelector], (plan) => plan
 
 export const isOnPaidPlanSelector = createSelector([planSelector], (plan) => plan && PAID_PLANS.includes(plan as any));
 
+// FIXME: remove FF https://voiceflow.atlassian.net/browse/CV3-994
 export const planSeatLimitsSelector = createSelector(
   [workspaceSelector, localOrganizationSelector],
   (workspace, organization) => organization?.subscription?.planSeatLimits ?? workspace?.planSeatLimits
@@ -104,7 +106,10 @@ export const dashboardKanbanSettingsSelector = createSelector([settingsSelector]
 
 export const isLockedSelector = createSelector([stateSelector], (state) => state === Realtime.WorkspaceActivationState.LOCKED);
 
-export const projectsLimitSelector = createSelector([workspaceSelector], (workspace) => workspace?.projects ?? PROJECTS_DEFAULT_LIMIT);
+export const projectsLimitSelector = createSelector(
+  [workspaceSelector, localOrganizationSelector],
+  (workspace, organization) => organization?.subscription?.entitlements.agents ?? workspace?.projects ?? PROJECTS_DEFAULT_LIMIT
+);
 
 export const quotasSelector = createSelector([workspaceSelector], (workspace) => workspace?.quotas);
 
@@ -115,9 +120,10 @@ export const viewerPlanSeatLimitsSelector = createSelector(
 
 export const editorPlanSeatLimitsSelector = createSelector([planSeatLimitsSelector], (planSeatLimits) => planSeatLimits?.editor ?? 1);
 
+// FIXME: remove FF https://voiceflow.atlassian.net/browse/CV3-994
 export const variableStatesLimitSelector = createSelector(
   [workspaceSelector, localOrganizationSelector],
-  (workspace, organization) => organization?.subscription?.variableStatesLimit ?? workspace?.variableStatesLimit
+  (workspace, organization) => organization?.subscription?.entitlements.userPersonas ?? workspace?.variableStatesLimit
 );
 
 export const organizationIDSelector = createSelector([workspaceSelector], (workspace) => workspace?.organizationID ?? null);

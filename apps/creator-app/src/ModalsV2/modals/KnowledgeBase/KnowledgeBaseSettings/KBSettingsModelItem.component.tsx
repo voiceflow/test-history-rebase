@@ -3,13 +3,10 @@ import { BaseProps, Box, HotKeys, Menu, Tooltip } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { MenuItemWithTooltip } from '@/components/Menu/MenuItemWithTooltip/MenuItemWithTooltip.component';
-import { ADVANCED_AI_MODELS, AIModelConfig } from '@/config/ai-model';
+import { AIModelConfig } from '@/config/ai-model';
 import { getAdvancedAiModelUpgradeModal } from '@/config/planPermission/advancedAIModels';
-import { Permission } from '@/constants/permissions';
-import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useSelector } from '@/hooks';
+import { useAIModelEntitlement } from '@/hooks';
 import { useUpgradeModal } from '@/hooks/modal.hook';
-import { usePermission } from '@/hooks/permission';
 
 export interface IKBSettingsModelItem extends BaseProps {
   model: AIModelConfig;
@@ -17,16 +14,10 @@ export interface IKBSettingsModelItem extends BaseProps {
 }
 
 export const KBSettingsModelItem: React.FC<IKBSettingsModelItem> = ({ model, onClick, testID }) => {
-  const advancedLLMModelsPermission = usePermission(Permission.ADVANCED_LLM_MODELS);
-
-  const isTrial = useSelector(WorkspaceV2.active.isOnTrialSelector);
-  const isEnterprise = useSelector(WorkspaceV2.active.isEnterpriseSelector);
-
+  const aiModelEntitlement = useAIModelEntitlement();
   const upgradeModal = useUpgradeModal();
 
-  const isReverseTrial = isTrial && !isEnterprise;
-
-  const locked = (!advancedLLMModelsPermission.allowed || isReverseTrial) && ADVANCED_AI_MODELS.has(model.type);
+  const locked = !aiModelEntitlement.isAllowed(model.type);
 
   if (model.hidden) return null;
 

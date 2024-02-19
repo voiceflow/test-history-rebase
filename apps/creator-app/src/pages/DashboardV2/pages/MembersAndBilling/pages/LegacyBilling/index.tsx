@@ -16,6 +16,7 @@ import PaymentFailed from './PaymentFailed';
 
 const PAYMENT_FAILED_STRIPE_STATUS = new Set([StripeStatuses.UNPAID, StripeStatuses.PAST_DUE]);
 
+// FIXME: remove FF https://voiceflow.atlassian.net/browse/CV3-994 (remove all legacy billing)
 const DashboardVLegacy2Billing: React.FC = () => {
   const [canManageSeats] = usePermission(Permission.BILLING_SEATS);
   const isProOrTeamPlan = useSelector(WorkspaceV2.active.isProOrTeamSelector);

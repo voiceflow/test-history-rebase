@@ -12,6 +12,7 @@ import * as ModalsV2 from '@/ModalsV2';
 import List from '../Members/List.component';
 import * as S from '../Members/styles';
 
+// FIXME: remove FF https://voiceflow.atlassian.net/browse/CV3-994
 const DashboardV2MembersAndBillingLegacyMembers: React.FC = () => {
   const membersCount = useSelector(WorkspaceV2.active.allNormalizedMembersCountSelector);
   const isOnPaidPlanSelector = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);

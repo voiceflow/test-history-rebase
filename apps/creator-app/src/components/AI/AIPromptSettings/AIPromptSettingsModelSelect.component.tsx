@@ -4,12 +4,9 @@ import { Box, SectionV2, Select, ThemeColor, TippyTooltip } from '@voiceflow/ui'
 import React from 'react';
 
 import { PRIVATE_LLM_MODELS } from '@/config';
-import { ADVANCED_AI_MODELS, AI_MODEL_CONFIG_MAP } from '@/config/ai-model';
-import { Permission } from '@/constants/permissions';
-import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useSelector } from '@/hooks';
+import { AI_MODEL_CONFIG_MAP } from '@/config/ai-model';
+import { useAIModelEntitlement } from '@/hooks';
 import { usePaymentModal } from '@/hooks/modal.hook';
-import { usePermission } from '@/hooks/permission';
 
 interface IAIPromptSettingsModelSelect {
   value: AIModel;
@@ -17,13 +14,7 @@ interface IAIPromptSettingsModelSelect {
 }
 
 export const AIPromptSettingsModelSelect: React.FC<IAIPromptSettingsModelSelect> = ({ value, onValueChange }) => {
-  const isTrial = useSelector(WorkspaceV2.active.isOnTrialSelector);
-  const isEnterprise = useSelector(WorkspaceV2.active.isEnterpriseSelector);
-
-  const advancedLLMModels = usePermission(Permission.ADVANCED_LLM_MODELS);
-
-  const isReverseTrial = isTrial && !isEnterprise;
-
+  const aiModelEntitlement = useAIModelEntitlement();
   const paymentModal = usePaymentModal();
 
   const options = React.useMemo(() => {
@@ -34,17 +25,17 @@ export const AIPromptSettingsModelSelect: React.FC<IAIPromptSettingsModelSelect>
         return !PRIVATE_LLM_MODELS.size || PRIVATE_LLM_MODELS.has(model.type);
       })
       .map((model) => {
-        const privilaged = (!advancedLLMModels.allowed || isReverseTrial) && ADVANCED_AI_MODELS.has(model.type);
+        const privilaged = aiModelEntitlement.isAllowed(model.type);
 
         return {
           name: model.name,
           info: !PRIVATE_LLM_MODELS.size && model.info,
           value: model.type,
-          disabled: model.disabled || privilaged,
+          disabled: model.disabled || !privilaged,
           privilaged,
         };
       });
-  }, [advancedLLMModels.allowed, isReverseTrial]);
+  }, [aiModelEntitlement.isAllowed]);
 
   return (
     <SectionV2.Content pb={8}>
@@ -66,7 +57,7 @@ export const AIPromptSettingsModelSelect: React.FC<IAIPromptSettingsModelSelect>
             </Box.FlexApart>
           );
 
-          if (model.privilaged) {
+          if (!model.privilaged) {
             return (
               <TippyTooltip
                 style={{ width: '100%' }}

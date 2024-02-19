@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1396.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1396.0...@voiceflow/creator-app@1.1396.1) (2024-02-19)
+
+### Bug Fixes
+
+* app crash when text step is empty (BUG-766) ([#7783](https://github.com/voiceflow/creator-app/issues/7783)) ([4f44157](https://github.com/voiceflow/creator-app/commit/4f44157177b347213986085af7dc569a8e4b928e))
+
 # [1.1396.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1395.0...@voiceflow/creator-app@1.1396.0) (2024-02-19)
 
 ### Features

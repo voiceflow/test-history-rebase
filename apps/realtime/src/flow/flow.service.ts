@@ -4,13 +4,15 @@ import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
 import { Flow } from '@voiceflow/dtos';
+import { HashedIDService } from '@voiceflow/nestjs-common';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
 import type { AssistantEntity, FlowEntity, ORMMutateOptions, ToJSONWithForeignKeys } from '@voiceflow/orm-designer';
-import { DatabaseTarget, FlowORM, PKOrEntity } from '@voiceflow/orm-designer';
+import { AssistantORM, DatabaseTarget, FlowORM, PKOrEntity } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { CMSTabularService, EntitySerializer } from '@/common';
 import { assistantBroadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
+import { DiagramService } from '@/diagram/diagram.service';
 import { cloneManyEntities } from '@/utils/entity.util';
 
 import type { FlowExportImportDataDTO } from './dtos/flow-export-import-data.dto';
@@ -18,6 +20,7 @@ import type { FlowCreateData } from './flow.interface';
 
 @Injectable()
 export class FlowService extends CMSTabularService<FlowORM> {
+  // eslint-disable-next-line max-params
   constructor(
     @Inject(getEntityManagerToken(DatabaseTarget.POSTGRES))
     private readonly postgresEM: EntityManager,
@@ -26,7 +29,13 @@ export class FlowService extends CMSTabularService<FlowORM> {
     @Inject(LoguxService)
     private readonly logux: LoguxService,
     @Inject(EntitySerializer)
-    protected readonly entitySerializer: EntitySerializer
+    protected readonly entitySerializer: EntitySerializer,
+    @Inject(DiagramService)
+    protected readonly diagram: DiagramService,
+    @Inject(HashedIDService)
+    private readonly hashedID: HashedIDService,
+    @Inject(AssistantORM)
+    protected readonly assistantORM: AssistantORM
   ) {
     super();
   }
@@ -151,10 +160,20 @@ export class FlowService extends CMSTabularService<FlowORM> {
 
   /* Create */
 
-  async createManyAndSync(userID: number, data: FlowCreateData[]) {
+  async createManyAndSync(
+    userID: number,
+    data: FlowCreateData[],
+    meta: { versionID: string; projectID: string; workspaceID: string; clientID: string; userID: number }
+  ) {
     return this.postgresEM.transactional(async () => {
-      const flows = await this.createManyForUser(userID, data, { flush: false });
-
+      const diagrams = await this.diagram.createManyEmptyComponents(data.length, meta);
+      console.log('W00T 4', diagrams);
+      const flows = await this.createManyForUser(
+        userID,
+        data.map((item, index) => ({ ...item, diagramID: diagrams[index].id })),
+        { flush: false }
+      );
+      console.log('W00T 5', flows);
       await this.orm.em.flush();
 
       return {
@@ -177,8 +196,18 @@ export class FlowService extends CMSTabularService<FlowORM> {
     ]);
   }
 
-  async createManyAndBroadcast(authMeta: AuthMetaPayload, data: FlowCreateData[]) {
-    const result = await this.createManyAndSync(authMeta.userID, data);
+  async createManyAndBroadcast(authMeta: AuthMetaPayload, data: FlowCreateData[], meta: { versionID: string; projectID: string }) {
+    const assistant = await this.assistantORM.findOneOrFail(meta.projectID);
+    console.log('W00T 1', authMeta.userID, data, {
+      ...authMeta,
+      ...meta,
+      workspaceID: this.hashedID.encodeWorkspaceID(assistant.workspace.id),
+    });
+    const result = await this.createManyAndSync(authMeta.userID, data, {
+      ...authMeta,
+      ...meta,
+      workspaceID: this.hashedID.encodeWorkspaceID(assistant.workspace.id),
+    });
 
     await this.broadcastAddMany(authMeta, result);
 

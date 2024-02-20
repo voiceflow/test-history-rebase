@@ -136,7 +136,7 @@ const getDiagramToCreate =
     const platform = ProjectV2.active.platformSelector(state);
     const projectType = ProjectV2.active.projectTypeSelector(state);
     const schemaVersion = schemaVersionSelector(state);
-
+    // MOVE below THIS TO UTILS
     const nodeIDMap = nodes.reduce<Record<string, boolean>>((acc, node) => Object.assign(acc, { [node.id]: true }), {});
     const allNodesLinks = nodes.flatMap((node) => linksByNodeIDSelector(state, { id: node.id }));
     const incomingLinks = allNodesLinks.filter(({ source, target }) => nodeIDMap[target.nodeID] && !nodeIDMap[source.nodeID]);
@@ -196,6 +196,7 @@ export const convertToComponent =
     const state = getState();
     const activeComponents = componentsSelector(state);
 
+    // move below to utils convertSelectionToComponent
     const name = `Component ${activeComponents.length + 1}`;
     const component = Realtime.Utils.diagram.componentDiagramFactory(name, startCoords);
 
@@ -214,6 +215,7 @@ export const convertToComponent =
         startNodeNextPort.target = connectedNode.nodeID;
       }
     }
+    // up to here
 
     const diagram = await dispatch(
       waitAsync(Realtime.diagram.componentCreate, {

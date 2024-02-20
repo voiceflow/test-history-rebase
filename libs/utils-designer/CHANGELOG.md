@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.10.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/utils-designer@1.9.3...@voiceflow/utils-designer@1.10.0) (2024-02-20)
+
+### Features
+
+* variables migration [bugfix] (CT-000) ([#7747](https://github.com/voiceflow/creator-app/issues/7747)) ([d686429](https://github.com/voiceflow/creator-app/commit/d686429924401adbf4b944cbec92db47637a19b9))
+
 ## [1.9.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/utils-designer@1.9.2...@voiceflow/utils-designer@1.9.3) (2024-02-12)
 
 ### Bug Fixes

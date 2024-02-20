@@ -2,12 +2,12 @@ import { Body, Controller, Get, HttpStatus, Inject, Param, Put, Query } from '@n
 import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { Subscription, SubscriptionDTO } from '@voiceflow/dtos';
 import { ZodApiBody, ZodApiQuery, ZodApiResponse } from '@voiceflow/nestjs-common';
-import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { Permission } from '@voiceflow/sdk-auth';
 import { Authorize } from '@voiceflow/sdk-auth/nestjs';
 import { ZodValidationPipe } from 'nestjs-zod';
 
 import { invoiceAdapter } from './adapters/invoice.adapter';
+import subscriptionAdapter from './adapters/subscription.adapter';
 import { GetInvoicesRequestQuery } from './dto/get-invoices-request.dto';
 import { GetInvoicesResponse } from './dto/get-invoices-response.dto';
 import { ScheduleSeatsUpdateRequest } from './dto/schedule-seats-update-request.dto';
@@ -32,7 +32,7 @@ export class BillingSubscriptionHTTPController {
   @ApiParam({ name: 'subscriptionID', type: 'string' })
   @ZodApiResponse({ status: HttpStatus.OK, schema: SubscriptionDTO })
   async findOne(@Param('subscriptionID') subscriptionID: string): Promise<Subscription> {
-    return this.service.findOne(subscriptionID).then(Realtime.Adapters.Billing.subscription.fromDB);
+    return this.service.findOne(subscriptionID).then(subscriptionAdapter.fromDB);
   }
 
   @Get(':subscriptionID/scheduled-changes')
@@ -45,7 +45,7 @@ export class BillingSubscriptionHTTPController {
   @ApiParam({ name: 'subscriptionID', type: 'string' })
   @ZodApiResponse({ status: HttpStatus.OK, schema: SubscriptionDTO })
   async getSubscriptionScheduledChanges(@Param('subscriptionID') subscriptionID: string): Promise<Subscription> {
-    return this.service.getSubscriptionWithScheduledChanges(subscriptionID).then(Realtime.Adapters.Billing.subscription.fromDB);
+    return this.service.getSubscriptionWithScheduledChanges(subscriptionID).then(subscriptionAdapter.fromDB);
   }
 
   @Get(':subscriptionID/invoices')

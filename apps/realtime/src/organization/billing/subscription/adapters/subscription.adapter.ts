@@ -22,21 +22,22 @@ const subscriptionAdapter = createMultiAdapter<Realtime.Identity.Subscription, S
     const isTrial = isChargebeeTrial(planItem, metaData);
     const seatLimits = getWorkspaceSeatsLimits(plan as PlanType);
 
-    const agentExports = findSwitchEntitlement(subscriptionEntitlements, 'agent-exports');
     const agents = findRangeEntitlement(subscriptionEntitlements, 'agents');
+    const interactionsLimit = findRangeEntitlement(subscriptionEntitlements, 'interactions-limit');
+    const tokensLimit = findRangeEntitlement(subscriptionEntitlements, 'tokens-limit');
+    const transcriptHistory = findRangeEntitlement(subscriptionEntitlements, 'transcript-history');
+    const userPersonas = findRangeEntitlement(subscriptionEntitlements, 'user-personas');
+    const workspaces = findRangeEntitlement(subscriptionEntitlements, 'workspaces');
+
+    const agentExports = findSwitchEntitlement(subscriptionEntitlements, 'agent-exports');
     const claude1 = findSwitchEntitlement(subscriptionEntitlements, 'claude-1');
     const claude2 = findSwitchEntitlement(subscriptionEntitlements, 'claude-2');
     const claudeInstant = findSwitchEntitlement(subscriptionEntitlements, 'claude-instant');
     const gpt = findSwitchEntitlement(subscriptionEntitlements, 'chatgpt');
     const gpt4 = findSwitchEntitlement(subscriptionEntitlements, 'gpt-4-model');
     const gpt4Turbo = findSwitchEntitlement(subscriptionEntitlements, 'gpt-4-turbo');
-    const interactionsLimit = findRangeEntitlement(subscriptionEntitlements, 'interactions-limit');
     const knowledgeBaseUpload = findSwitchEntitlement(subscriptionEntitlements, 'knowledge-base-upload');
     const prototypeLinks = findSwitchEntitlement(subscriptionEntitlements, 'prototype-links');
-    const tokensLimit = findRangeEntitlement(subscriptionEntitlements, 'tokens-limit');
-    const transcriptHistory = findRangeEntitlement(subscriptionEntitlements, 'transcript-history');
-    const userPersonas = findRangeEntitlement(subscriptionEntitlements, 'user-personas');
-    const workspaces = findRangeEntitlement(subscriptionEntitlements, 'workspaces');
 
     const result: Subscription = {
       id,
@@ -49,21 +50,21 @@ const subscriptionAdapter = createMultiAdapter<Realtime.Identity.Subscription, S
       trial: isTrial && trialEnd ? { daysLeft: getDaysLeftToTrialEnd(new Date(trialEnd)), endAt: new Date(trialEnd).toJSON() } : null,
       planSeatLimits: seatLimits,
       entitlements: {
-        agentExports,
         agents,
+        interactionsLimit,
+        tokensLimit,
+        transcriptHistory,
+        userPersonas,
+        workspaces,
+        agentExports,
         claude1,
         claude2,
         claudeInstant,
         gpt,
         gpt4,
         gpt4Turbo,
-        interactionsLimit,
         knowledgeBaseUpload,
         prototypeLinks,
-        tokensLimit,
-        transcriptHistory,
-        userPersonas,
-        workspaces,
       },
       hasScheduledChanges,
     };

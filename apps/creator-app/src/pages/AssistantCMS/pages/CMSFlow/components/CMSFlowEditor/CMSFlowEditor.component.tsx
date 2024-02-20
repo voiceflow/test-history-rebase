@@ -6,6 +6,7 @@ import { CMSEditorDescription } from '@/components/CMS/CMSEditor/CMSEditorDescri
 import { CMSRoute } from '@/config/routes';
 import { Designer } from '@/ducks';
 import { goToCMSResource } from '@/ducks/router';
+import * as Router from '@/ducks/router';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
 import { EDITOR_TEST_ID } from '@/pages/AssistantCMS/AssistantCMS.constant';
 
@@ -16,6 +17,7 @@ import { useCMSActiveResourceID } from '../../../../hooks/cms-table.hook';
 export const CMSFlowEditor: React.FC = () => {
   const editorRef = useRef<IEditorAPI>(null);
   const duplicateOne = useDispatch(Designer.Flow.effect.duplicateOne);
+  const goToDiagramHistoryPush = useDispatch(Router.goToDiagramHistoryPush);
 
   const flowID = useCMSActiveResourceID();
   const getMoreMenu = useCMSResourceGetMoreMenu({
@@ -42,7 +44,12 @@ export const CMSFlowEditor: React.FC = () => {
     >
       <Scroll style={{ display: 'block' }}>
         <Box px={24} py={20} direction="column">
-          <Button label="Edit component" variant="primary" fullWidth />
+          <Button
+            onClick={() => flow.diagramID && goToDiagramHistoryPush(flow.diagramID, undefined)}
+            label="Edit component"
+            variant="primary"
+            fullWidth
+          />
         </Box>
 
         <Divider noPadding />

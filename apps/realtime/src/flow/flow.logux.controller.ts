@@ -14,7 +14,6 @@ export class FlowLoguxController {
   constructor(
     @Inject(FlowService)
     private readonly service: FlowService,
-    @Inject(FlowService)
     @Inject(EntitySerializer)
     private readonly entitySerializer: EntitySerializer
   ) {}

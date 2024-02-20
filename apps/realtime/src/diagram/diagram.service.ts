@@ -3,8 +3,12 @@ import { BaseNode } from '@voiceflow/base-types';
 import { LoguxService } from '@voiceflow/nestjs-logux';
 import { DiagramEntity, DiagramNode, DiagramORM, ToJSON } from '@voiceflow/orm-designer';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
+import { ObjectId } from 'bson';
+import { Optional } from 'utility-types';
 
 import { MutableService } from '@/common';
+
+type PrimitiveDiagram = Omit<Optional<ToJSON<DiagramEntity>, '_id' | 'diagramID'>, 'id'>;
 
 @Injectable()
 export class DiagramService extends MutableService<DiagramORM> {
@@ -46,6 +50,16 @@ export class DiagramService extends MutableService<DiagramORM> {
     return sharedNodes;
   }
 
+  private insertNewDiagramToDB = (data: PrimitiveDiagram): Omit<ToJSON<DiagramEntity>, 'id'> => {
+    const _id = data._id ?? new ObjectId().toHexString();
+
+    return {
+      ...data,
+      _id,
+      diagramID: _id,
+    };
+  };
+
   public async reloadSharedNodes(
     diagrams: ToJSON<DiagramEntity>[],
     meta: { versionID: string; projectID: string; workspaceID: string; clientID: string; userID: number }
@@ -73,28 +87,23 @@ export class DiagramService extends MutableService<DiagramORM> {
   }
 
   public async createManyEmptyComponents(
-    total: number,
+    components: string[],
     meta: { versionID: string; projectID: string; workspaceID: string; clientID: string; userID: number }
   ) {
-    const diagrams = Array.from({ length: total }).map(() => ({
-      ...Realtime.Utils.diagram.componentDiagramFactory(''),
-      diagramID: '',
-      versionID: meta.versionID,
-      creatorID: meta.userID,
-    }));
-    console.log('W00T 3', diagrams);
-    try {
-      const result = await this.orm.createMany(diagrams);
-      console.log('W00T 3.5', result);
-      this.reloadSharedNodes(
-        result.map((item) => item.toJSON()),
-        meta
-      );
-      console.log('W00T 3.8');
-      return result;
-    } catch (e) {
-      console.error('W00T err', e);
-    }
+    const diagrams = components.map((name) =>
+      this.insertNewDiagramToDB({
+        ...Realtime.Utils.diagram.componentDiagramFactory(name),
+        versionID: meta.versionID,
+        creatorID: meta.userID,
+      })
+    );
+    const result = await this.orm.createMany(diagrams);
+
+    this.reloadSharedNodes(
+      result.map((item) => item.toJSON()),
+      meta
+    );
+    return result;
   }
 
   // createManyComponents

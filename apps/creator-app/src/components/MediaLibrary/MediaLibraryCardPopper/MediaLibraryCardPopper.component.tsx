@@ -53,21 +53,19 @@ export const MediaLibraryCardPopper: React.FC<IMediaLibraryCardPopper> = ({ card
 
       <Divider />
 
-      <Box mt={12} direction="column">
-        <Section.Header.Container title="Buttons" variant="active">
-          <Section.Header.Button iconName="Plus" onClick={onAddButton} />
-        </Section.Header.Container>
+      <Section.Header.Container pt={12} title="Buttons" variant="active">
+        <Section.Header.Button iconName="Plus" onClick={onAddButton} />
+      </Section.Header.Container>
 
-        <Box pl={12} pr={16} direction="column">
-          {buttons.map((button) => (
-            <CardPopperButtonEditor
-              key={button.id}
-              label={button.label}
-              onRemove={() => removeButton(button.id)}
-              onLabelChange={(label) => patchButton(button.id, { label })}
-            />
-          ))}
-        </Box>
+      <Box pl={12} pr={16} direction="column">
+        {buttons.map((button) => (
+          <CardPopperButtonEditor
+            key={button.id}
+            label={button.label}
+            onRemove={() => removeButton(button.id)}
+            onLabelChange={(label) => patchButton(button.id, { label })}
+          />
+        ))}
       </Box>
     </Surface>
   );

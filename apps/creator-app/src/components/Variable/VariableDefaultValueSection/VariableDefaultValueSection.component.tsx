@@ -32,26 +32,29 @@ export const VariableDefaultValueSection: React.FC<IVariableDefaultValueSection>
         width={200}
         modifiers={modifiers}
         placement="left-start"
-        referenceElement={({ ref, popper, onOpen, onClose, isOpen }) => (
-          <Box ref={ref} pt={11} pb={hasValue ? 0 : 11} onMouseEnter={hasValue ? undefined : onOpen} onMouseLeave={onClose}>
-            <Section.Header.Container
-              title={(className) => (
-                <Text className={className} onMouseEnter={hasValue ? onOpen : undefined}>
-                  Default value
-                </Text>
-              )}
-              variant={isOpen || hasValue ? 'active' : 'basic'}
-              onHeaderClick={hasValue ? undefined : () => onValueChange('')}
-            >
-              <Section.Header.Button
-                onClick={stopPropagation(() => (hasValue ? onValueChange(null) : onValueChange('')))}
-                iconName={hasValue ? 'Minus' : 'Plus'}
-                disabled={disabled}
-                testID={tid(TEST_ID, 'toggle-enabled')}
-              />
-              {popper}
-            </Section.Header.Container>
-          </Box>
+        referenceElement={({ ref, popper, onOpen, onClose }) => (
+          <Section.Header.Container
+            pt={11}
+            pb={hasValue ? 0 : 11}
+            ref={ref}
+            variant={hasValue ? 'active' : 'basic'}
+            onMouseEnter={hasValue ? undefined : onOpen}
+            onMouseLeave={onClose}
+            onHeaderClick={hasValue ? undefined : () => onValueChange('')}
+            title={(className) => (
+              <Text className={className} onMouseEnter={hasValue ? onOpen : undefined}>
+                Default value
+              </Text>
+            )}
+          >
+            <Section.Header.Button
+              testID={tid(TEST_ID, 'toggle-enabled')}
+              onClick={stopPropagation(() => (hasValue ? onValueChange(null) : onValueChange('')))}
+              iconName={hasValue ? 'Minus' : 'Plus'}
+              disabled={disabled}
+            />
+            {popper}
+          </Section.Header.Container>
         )}
       >
         {() => (

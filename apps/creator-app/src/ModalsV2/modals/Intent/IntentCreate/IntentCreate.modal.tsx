@@ -75,19 +75,19 @@ export const IntentCreateModal = modalsManager.create<IIntentCreateModal, Intent
               <CMSFormName
                 value={intentForm.nameState.value}
                 error={intentForm.nameState.error}
+                testID={tid('intent', 'name')}
                 autoFocus
                 placeholder="Enter intent name"
                 onValueChange={intentForm.nameState.setValue}
-                testID={tid('intent', 'name')}
               />
 
               <CMSFormDescription
                 value={intentForm.descriptionState.value}
                 error={intentForm.descriptionState.error}
-                minRows={1}
-                onValueChange={intentForm.descriptionState.setValue}
-                placeholder={descriptionPlaceholder}
                 testID={tid('intent', 'description')}
+                minRows={1}
+                placeholder={descriptionPlaceholder}
+                onValueChange={intentForm.descriptionState.setValue}
               />
             </Modal.Body>
 
@@ -171,11 +171,11 @@ export const IntentCreateModal = modalsManager.create<IIntentCreateModal, Intent
 
             <Modal.Footer.Button
               label="Create intent"
+              testID={tid(TEST_ID, 'create')}
               variant="primary"
               onClick={onSubmit}
               disabled={closePrevented}
               isLoading={closePrevented}
-              testID={tid(TEST_ID, 'create')}
             />
           </Modal.Footer>
         </Modal.Container>

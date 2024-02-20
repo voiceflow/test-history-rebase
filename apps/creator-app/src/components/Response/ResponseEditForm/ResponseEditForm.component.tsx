@@ -63,52 +63,52 @@ export const ResponseEditForm: React.FC<IResponseEditForm> = ({ responseID }) =>
 
       <Divider />
 
-      <Box pt={11} pb={hasVariants ? 0 : 11}>
-        <Section.Header.Container
-          title={(className) => (
-            <Tooltip
-              width={200}
-              inline
-              placement="left-start"
-              modifiers={titleModifiers}
-              referenceElement={({ ref, onOpen, onClose, popper }) => (
-                <span ref={ref} className={className} onMouseEnter={onOpen} onMouseLeave={onClose}>
-                  {popper}
-                  Variants
-                </span>
-              )}
-            >
-              {() => (
-                <TooltipContentLearn
-                  label={
-                    <Box gap={8} direction="column">
-                      <span>Variant responses will be selected randomly when you run your agent.</span>
-                      {/* TODO: uncomment when conditions are supported */}
-                      {/* <span>
+      <Section.Header.Container
+        pt={11}
+        pb={hasVariants ? 0 : 11}
+        variant="active"
+        title={(className) => (
+          <Tooltip
+            width={200}
+            inline
+            placement="left-start"
+            modifiers={titleModifiers}
+            referenceElement={({ ref, onOpen, onClose, popper }) => (
+              <span ref={ref} className={className} onMouseEnter={onOpen} onMouseLeave={onClose}>
+                {popper}
+                Variants
+              </span>
+            )}
+          >
+            {() => (
+              <TooltipContentLearn
+                label={
+                  <Box gap={8} direction="column">
+                    <span>Variant responses will be selected randomly when you run your agent.</span>
+                    {/* TODO: uncomment when conditions are supported */}
+                    {/* <span>
                           If you add a condition to a variant, it will become a ‘conditional response’. This means if
                           the attached condition is true, the agent will delivery that specific variant.
                         </span> */}
-                    </Box>
-                  }
-                  // TODO: add link to docs
-                  onLearnClick={Utils.functional.noop}
-                />
-              )}
-            </Tooltip>
-          )}
-          variant="active"
-        >
-          {!hasVariants && (
-            <ResponseEditFormSectionGenerateButton
-              type={rootVariant.type}
-              onClick={() => aiGenerateTextVariant.onGenerate({ quantity: 3 })}
-              loading={aiGenerateTextVariant.fetching}
-            />
-          )}
+                  </Box>
+                }
+                // TODO: add link to docs
+                onLearnClick={Utils.functional.noop}
+              />
+            )}
+          </Tooltip>
+        )}
+      >
+        {!hasVariants && (
+          <ResponseEditFormSectionGenerateButton
+            type={rootVariant.type}
+            onClick={() => aiGenerateTextVariant.onGenerate({ quantity: 3 })}
+            loading={aiGenerateTextVariant.fetching}
+          />
+        )}
 
-          <Section.Header.Button iconName="Plus" onClick={onAddVariant} disabled={aiGenerateTextVariant.fetching} />
-        </Section.Header.Container>
-      </Box>
+        <Section.Header.Button iconName="Plus" onClick={onAddVariant} disabled={aiGenerateTextVariant.fetching} />
+      </Section.Header.Container>
 
       {!hasVariants ? (
         <Divider />

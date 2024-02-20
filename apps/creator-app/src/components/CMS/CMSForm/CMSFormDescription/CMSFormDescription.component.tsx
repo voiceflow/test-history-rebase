@@ -8,16 +8,18 @@ import type { ICMSFormDescription } from './CMSFormDescription.interface';
 export const CMSFormDescription: React.FC<ICMSFormDescription> = ({
   value,
   error,
+  testID,
   minRows = 4,
   maxRows = 17,
+  disabled,
   placeholder,
   onValueChange,
-  testID,
 }) => {
   const input = useInput<string, HTMLTextAreaElement>({
     error,
     value,
     onSave: onValueChange,
+    disabled,
   });
 
   return (

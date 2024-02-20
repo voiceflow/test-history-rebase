@@ -1,5 +1,5 @@
 import { tid } from '@voiceflow/style';
-import { Box, Divider, Editor, IEditorAPI, Scroll } from '@voiceflow/ui-next';
+import { Box, Divider, Editor, IEditorAPI, Scroll, Text } from '@voiceflow/ui-next';
 import { isSystemVariableName } from '@voiceflow/utils-designer';
 import React, { useRef } from 'react';
 
@@ -22,7 +22,19 @@ export const CMSVariableEditor: React.FC = () => {
   const getMoreMenu = useCMSResourceGetMoreMenu({
     onRename: () => editorRef.current?.startTitleEditing(),
     canRename: (resourceID) => !isSystemVariableName(resourceID),
-    canDelete: (resourceID) => !isSystemVariableName(resourceID),
+    canDelete: (resourceID) => {
+      const allowed = !isSystemVariableName(resourceID);
+
+      if (allowed) return true;
+
+      return {
+        allowed: false,
+        tooltip: {
+          placement: 'left',
+          children: () => <Text variant="caption">Built-in variables can’t be deleted</Text>,
+        },
+      };
+    },
   });
 
   const variable = useSelector(Designer.Variable.selectors.oneByID, { id: variableID });
@@ -34,11 +46,11 @@ export const CMSVariableEditor: React.FC = () => {
     <Editor
       ref={editorRef}
       title={variable.name}
+      testID={EDITOR_TEST_ID}
       readOnly={variable.isSystem}
       onTitleChange={(name) => patchVariable({ name: name.trim() })}
       headerActions={<CMSEditorMoreButton>{({ onClose }) => getMoreMenu({ id: variableID, onClose })}</CMSEditorMoreButton>}
       titleTransform={transformVariableName}
-      testID={EDITOR_TEST_ID}
     >
       <Scroll style={{ display: 'block' }}>
         <Box px={24} py={20} direction="column">
@@ -53,9 +65,9 @@ export const CMSVariableEditor: React.FC = () => {
 
         <CMSEditorDescription
           value={variable.description ?? ''}
+          testID={tid('variable', 'description')}
           placeholder="Enter variable description"
           onValueChange={(description) => patchVariable({ description })}
-          testID={tid('variable', 'description')}
         />
       </Scroll>
     </Editor>

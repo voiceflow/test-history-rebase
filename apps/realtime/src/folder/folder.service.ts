@@ -272,15 +272,11 @@ export class FolderService extends CMSObjectService<FolderORM> {
 
       const systemVariables = relations.variables.filter((variable) => variable.isSystem);
 
-      // moving system variables to the top level
-      systemVariables.forEach((variable) => {
-        // eslint-disable-next-line no-param-reassign
-        variable.folder = null;
-      });
-
-      await this.deleteMany(folders, { flush: false });
+      await this.variable.patchMany(systemVariables, { folderID: null }, { flush: false });
 
       await this.orm.em.flush();
+
+      await this.deleteMany(folders);
 
       return {
         sync: { ...entitySync, variables: systemVariables },

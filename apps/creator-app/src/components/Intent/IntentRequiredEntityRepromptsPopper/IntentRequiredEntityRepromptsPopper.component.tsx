@@ -101,11 +101,9 @@ export const IntentRequiredEntityRepromptsPopper: React.FC<IIntentRequiredEntity
 
             <Divider noPadding />
 
-            <Box pt={11} direction="column">
-              <Section.Header.Container title="Reprompts" variant="active" testID={tid(REPROMPT_SETTINGS_TEST_ID, ['reprompts', 'header'])}>
-                <Section.Header.Button iconName="Plus" onClick={onRepromptAdd} testID={tid(REPROMPT_SETTINGS_TEST_ID, ['reprompts', 'add'])} />
-              </Section.Header.Container>
-            </Box>
+            <Section.Header.Container pt={11} title="Reprompts" testID={tid(REPROMPT_SETTINGS_TEST_ID, ['reprompts', 'header'])} variant="active">
+              <Section.Header.Button iconName="Plus" testID={tid(REPROMPT_SETTINGS_TEST_ID, ['reprompts', 'add'])} onClick={onRepromptAdd} />
+            </Section.Header.Container>
 
             <Box gap={12} pr={24} direction="column">
               {children}

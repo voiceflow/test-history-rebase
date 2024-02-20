@@ -5,7 +5,7 @@ import React from 'react';
 
 import { useActiveProjectTypeConfig } from '@/hooks';
 import Step, { NoMatchStepItemV2, NoReplyStepItemV2, Section } from '@/pages/Canvas/components/Step';
-import { EntityMapContext } from '@/pages/Canvas/contexts';
+import { ActiveDiagramNormalizedEntitiesAndVariablesContext, EntityMapContext } from '@/pages/Canvas/contexts';
 import { ConnectedStep } from '@/pages/Canvas/managers/types';
 import { transformSlotIntoPrompt } from '@/pages/Canvas/utils';
 
@@ -16,6 +16,7 @@ const CaptureV2Step: ConnectedStep<Realtime.NodeData.CaptureV2, Realtime.NodeDat
   const projectConfig = useActiveProjectTypeConfig();
 
   const entityMap = React.useContext(EntityMapContext)!;
+  const entityAndVariableMap = React.useContext(ActiveDiagramNormalizedEntitiesAndVariablesContext)!;
 
   const slots: CaptureSlot[] = React.useMemo(() => {
     const allSlots = data.intent?.slots.map((intentSlot) => ({
@@ -31,6 +32,8 @@ const CaptureV2Step: ConnectedStep<Realtime.NodeData.CaptureV2, Realtime.NodeDat
 
   const onOpenEditor = () => engine.setActive(data.nodeID);
 
+  const variableOrEntity = data.variable ? entityAndVariableMap.byKey[data.variable] : null;
+
   return (
     <Step nodeID={data.nodeID}>
       <Section>
@@ -39,9 +42,9 @@ const CaptureV2Step: ConnectedStep<Realtime.NodeData.CaptureV2, Realtime.NodeDat
             label={
               <>
                 Capture user reply{' '}
-                {data.variable && (
+                {variableOrEntity && !variableOrEntity.isSlot && (
                   <>
-                    to <Text>{`{${data.variable}}`}</Text>
+                    to <Text>{`{${variableOrEntity.name}}`}</Text>
                   </>
                 )}
               </>

@@ -9,7 +9,7 @@ export const FolderDTO = CMSObjectResourceDTO.partial({
   updatedByID: true,
 })
   .extend({
-    name: z.string().min(1, 'Name is required.').max(255, 'Name is too long.'),
+    name: z.string().max(255, 'Name is too long.'),
     scope: z.nativeEnum(FolderScope),
     parentID: z.string().nullable(),
     assistantID: z.string().optional(),

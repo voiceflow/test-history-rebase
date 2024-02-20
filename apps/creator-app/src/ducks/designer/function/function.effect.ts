@@ -7,13 +7,13 @@ import { designerClient } from '@/client/designer';
 import { testFunction } from '@/client/generalRuntime';
 import type { FunctionTestResponse } from '@/client/generalRuntime/types';
 import { realtimeClient } from '@/client/realtime';
-import * as Tracking from '@/ducks/tracking';
 import { waitAsync } from '@/ducks/utils';
 import { getActiveAssistantContext } from '@/ducks/versionV2/utils';
 import type { Thunk } from '@/store/types';
 import * as date from '@/utils/date';
 
 import * as FunctionSelect from './function.select';
+import * as FunctionTracking from './function.tracking';
 import * as FunctionPathSelect from './function-path/function-path.select';
 import * as FunctionVariableSelect from './function-variable/function-variable.select';
 
@@ -27,11 +27,11 @@ export const createOne =
     try {
       const response = await dispatch(waitAsync(Actions.Function.CreateOne, { context, data }));
 
-      dispatch(Tracking.trackCMSFunctionCreated({ functionID: response.data.id }));
+      dispatch(FunctionTracking.created({ id: response.data.id }));
 
       return response.data;
     } catch (e) {
-      dispatch(Tracking.trackCMSFunctionsError({ ErrorType: 'Create' }));
+      dispatch(FunctionTracking.error({ errorType: 'Create' }));
       throw e;
     }
   };
@@ -48,11 +48,11 @@ export const duplicateOne =
 
       notify.short.success('Duplicated');
 
-      dispatch(Tracking.trackCMSFunctionDuplicated({ functionID }));
+      dispatch(FunctionTracking.duplicated({ id: functionID }));
 
       return duplicated.data;
     } catch (e) {
-      dispatch(Tracking.trackCMSFunctionsError({ ErrorType: 'Duplicate' }));
+      dispatch(FunctionTracking.error({ errorType: 'Duplicate' }));
       throw e;
     }
   };
@@ -86,7 +86,7 @@ export const deleteOne =
 
     await dispatch.sync(Actions.Function.DeleteOne({ context, id }));
 
-    dispatch(Tracking.trackCMSFunctionsDeleted({ count: 1 }));
+    dispatch(FunctionTracking.deleted({ count: 1 }));
   };
 
 export const deleteMany =
@@ -98,7 +98,7 @@ export const deleteMany =
 
     await dispatch.sync(Actions.Function.DeleteMany({ context, ids }));
 
-    dispatch(Tracking.trackCMSFunctionsDeleted({ count: ids.length }));
+    dispatch(FunctionTracking.deleted({ count: ids.length }));
   };
 
 export const exportMany =
@@ -114,12 +114,12 @@ export const exportMany =
 
       const result = await designerClient.function.exportJSON(context.environmentID, { ids });
 
-      dispatch(Tracking.trackCMSFunctionsExported({ count: ids.length }));
+      dispatch(FunctionTracking.exported({ count: ids.length }));
 
       download(`${fileName}_${dateNow}.json`, JSON.stringify(result), DataTypes.JSON);
     } catch {
       notify.short.error('Something went wrong. Please try again.');
-      dispatch(Tracking.trackCMSFunctionsError({ ErrorType: 'Export' }));
+      dispatch(FunctionTracking.error({ errorType: 'Export' }));
     }
   };
 
@@ -138,21 +138,17 @@ export const importMany =
 
       if (!functions.length) {
         notify.short.error('Failed to import');
-        dispatch(Tracking.trackCMSFunctionsError({ ErrorType: 'Import' }));
+        dispatch(FunctionTracking.error({ errorType: 'Import' }));
 
         return;
       }
 
       notify.short.success('Imported');
 
-      const trackingName = functions.length === 1 ? { function_name: functions[0].name } : { function_names: functions.map((func) => func.name) };
-
-      if (functions.length) {
-        dispatch(Tracking.trackCMSFunctionsImported({ count: functions.length, ...trackingName }));
-      }
+      dispatch(FunctionTracking.imported({ names: functions.map((func) => func.name) }));
     } catch {
       notify.short.error('Failed to import');
-      dispatch(Tracking.trackCMSFunctionsError({ ErrorType: 'Import' }));
+      dispatch(FunctionTracking.error({ errorType: 'Import' }));
     }
   };
 

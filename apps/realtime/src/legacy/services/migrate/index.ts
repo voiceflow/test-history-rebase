@@ -143,6 +143,7 @@ class MigrateService extends AbstractControl {
             intents: [],
             entities: [],
             assistant: null,
+            variables: [],
             responses: [],
             utterances: [],
             entityVariants: [],

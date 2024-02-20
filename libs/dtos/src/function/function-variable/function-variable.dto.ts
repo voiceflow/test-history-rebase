@@ -9,7 +9,7 @@ export const FunctionVariableDTO = CMSObjectResourceDTO.partial({
   updatedByID: true,
 })
   .extend({
-    name: z.string().min(1, 'Name is required.').max(255, 'Name is too long.'),
+    name: z.string().max(255, 'Name is too long.'),
     type: z.nativeEnum(FunctionVariableKind),
     functionID: z.string(),
     description: z.string().nullable(),

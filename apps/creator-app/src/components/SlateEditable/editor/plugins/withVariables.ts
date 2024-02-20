@@ -27,6 +27,7 @@ export interface VariablesOptions {
   variables?: Normal.Normalized<VariableItem>;
   creatable?: boolean;
   withSlots?: boolean;
+  cmsVariables?: boolean;
 }
 
 export interface VariablesEditorAPI {
@@ -96,11 +97,13 @@ export const withVariablesPlugin: Plugin = (EditorAPI: EditorAPIType) => (editor
       return;
     }
 
+    const { cmsVariables } = editor.pluginsOptions[PluginType.VARIABLES] ?? {};
+
     // replace variable element with text node
     EditorAPI.withoutNormalizing(editor, () => {
       const pathRef = EditorAPI.pathRef(editor, path);
 
-      Transforms.insertNodes(editor, { text: `{${node.name}}` }, { at: pathRef.current! });
+      Transforms.insertNodes(editor, { text: `{${cmsVariables ? node.id : node.name}}` }, { at: pathRef.current! });
       Transforms.removeNodes(editor, { at: pathRef.current! });
 
       pathRef.unref();

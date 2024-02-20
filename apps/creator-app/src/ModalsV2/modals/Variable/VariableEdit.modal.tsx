@@ -2,11 +2,11 @@ import { tid } from '@voiceflow/style';
 import { Divider, notify, Scroll, Text, Tooltip, useTooltipModifiers, Variable } from '@voiceflow/ui-next';
 import React from 'react';
 
+import { CMSFormDescription } from '@/components/CMS/CMSForm/CMSFormDescription/CMSFormDescription.component';
 import { CMSFormName } from '@/components/CMS/CMSForm/CMSFormName/CMSFormName.component';
 import { Modal } from '@/components/Modal';
 import { VariableColorSection } from '@/components/Variable/VariableColorSection/VariableColorSection.component';
 import { VariableDefaultValueSection } from '@/components/Variable/VariableDefaultValueSection/VariableDefaultValueSection.component';
-import { VariableDescriptionInput } from '@/components/Variable/VariableDescriptionInput/VariableDescriptionInput.component';
 import { Designer } from '@/ducks';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
 import { transformVariableName } from '@/utils/variable.util';
@@ -90,16 +90,16 @@ export const VariableEditModal = modalsManager.create<IVariableEditModal>(
                     referenceElement={({ ref, onOpen, onClose }) => (
                       <CMSFormName
                         value={variable.name}
+                        testID={tid('variable', 'name')}
                         disabled={variable.isSystem}
                         transform={transformVariableName}
                         autoFocus
                         placeholder="Enter variable name"
                         containerRef={ref}
                         onValueChange={onNameChange}
-                        rightLabel={<Variable label={variable.name} color={variable.color} />}
                         onPointerEnter={variable.isSystem ? onOpen : undefined}
                         onPointerLeave={onClose}
-                        testID={tid('variable', 'name')}
+                        rightLabel={<Variable label={variable.name} color={variable.color} />}
                       />
                     )}
                   >
@@ -111,7 +111,13 @@ export const VariableEditModal = modalsManager.create<IVariableEditModal>(
                     )}
                   </Tooltip>
 
-                  <VariableDescriptionInput value={variable.description} onValueChange={(description) => patchVariable({ description })} />
+                  <CMSFormDescription
+                    value={variable.description ?? ''}
+                    testID={tid(TEST_ID, 'description')}
+                    minRows={1}
+                    placeholder="Enter description (optional)"
+                    onValueChange={(description) => patchVariable({ description })}
+                  />
 
                   <VariableColorSection color={variable.color} onColorChange={(color) => patchVariable({ color })} />
                 </Modal.Body>

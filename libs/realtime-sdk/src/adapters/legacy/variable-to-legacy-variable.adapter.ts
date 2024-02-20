@@ -26,12 +26,35 @@ const variableNameToDatatype = (variableName: string): VariableDatatype => {
   }
 };
 
+const variableNameToDescription = (variableName: string): string | null => {
+  switch (variableName) {
+    case SystemVariable.LOCALE:
+      return 'The locale of the user (eg. en-US, en-CA, it-IT, fr-FR, ...).';
+    case SystemVariable.USER_ID:
+      return "The user's unique ID.";
+    case SystemVariable.PLATFORM:
+      return 'The platform your assistant is running on (voiceflow, alexa, ...).';
+    case SystemVariable.LAST_RESPONSE:
+      return "The assistant's last response (text/speak) in a string.";
+    case SystemVariable.LAST_UTTERANCE:
+      return "The user's last utterance in a text string.";
+    case SystemVariable.SESSIONS:
+      return 'The number of times a particular user has opened the app.';
+    case SystemVariable.TIMESTAMP:
+      return 'UNIX timestamp (number of seconds since January 1st, 1970 at UTC).';
+    case SystemVariable.INTENT_CONFIDENCE:
+      return 'The confidence interval (measured as a value from 0 to 100) for the most recently matched intent.';
+    default:
+      return null;
+  }
+};
+
 const adapter = createSimpleAdapter<Variable, string, [], [ToDBOptions]>(
   (variable) => variable.name,
   (variableName, { creatorID, assistantID, environmentID }) => ({
     id: variableName,
     name: variableName,
-    color: '',
+    color: '#515A63',
     isArray: false,
     isSystem: isSystemVariableName(variableName),
     folderID: null,
@@ -41,7 +64,7 @@ const adapter = createSimpleAdapter<Variable, string, [], [ToDBOptions]>(
     createdByID: creatorID,
     assistantID,
     updatedByID: creatorID,
-    description: null,
+    description: variableNameToDescription(variableName),
     defaultValue: null,
     environmentID,
   })

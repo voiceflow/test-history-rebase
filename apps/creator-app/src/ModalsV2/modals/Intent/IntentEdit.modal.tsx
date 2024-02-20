@@ -69,20 +69,18 @@ export const IntentEditModal = modalsManager.create<IIntentEditModal>(
         >
           <Modal.Header
             title="Edit intent"
+            testID={tid(TEST_ID, 'header')}
             onClose={api.onClose}
             leftButton={
               <Modal.HeaderMenu
                 items={intents}
+                testID={tid(TEST_ID, 'select-intent')}
                 activeID={intentID}
                 onSelect={onIntentSelect}
                 notFoundLabel="intents"
-                testID={tid(TEST_ID, 'select-intent')}
               />
             }
-            secondaryButton={
-              <Modal.HeaderMore options={[{ name: 'Delete', onClick: onIntentDelete, testID: 'delete' }]} testID={tid(TEST_ID, 'more')} />
-            }
-            testID={tid(TEST_ID, 'header')}
+            secondaryButton={<Modal.HeaderMore options={[{ name: 'Delete', onClick: onIntentDelete }]} testID={tid(TEST_ID, 'more')} />}
           />
 
           {intent ? (
@@ -90,19 +88,19 @@ export const IntentEditModal = modalsManager.create<IIntentEditModal>(
               <Modal.Body gap={16}>
                 <CMSFormName
                   value={intent.name}
+                  testID={tid('intent', 'name')}
                   disabled={isIntentBuiltIn(intentID)}
                   autoFocus={!newUtterances?.length}
                   placeholder="Enter intent name"
                   onValueChange={onNameChange}
-                  testID={tid('intent', 'name')}
                 />
 
                 <CMSFormDescription
                   value={intent.description ?? ''}
+                  testID={tid('intent', 'description')}
                   minRows={1}
                   placeholder={descriptionPlaceholder}
                   onValueChange={onDescriptionChange}
-                  testID={tid('intent', 'description')}
                 />
               </Modal.Body>
 
@@ -115,7 +113,7 @@ export const IntentEditModal = modalsManager.create<IIntentEditModal>(
           )}
 
           <Modal.Footer>
-            <Modal.Footer.Button label="Close" variant="secondary" onClick={api.onClose} disabled={closePrevented} testID={tid(TEST_ID, 'close')} />
+            <Modal.Footer.Button label="Close" testID={tid(TEST_ID, 'close')} variant="secondary" onClick={api.onClose} disabled={closePrevented} />
           </Modal.Footer>
         </Modal.Container>
       );

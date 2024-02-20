@@ -1,14 +1,15 @@
 import type { Variable as VariableType } from '@voiceflow/dtos';
 import { VariableDatatype } from '@voiceflow/dtos';
+import { tid } from '@voiceflow/style';
 import { Divider, notify, Scroll, Tokens, Variable } from '@voiceflow/ui-next';
 import { variableNameValidator } from '@voiceflow/utils-designer';
 import React, { useState } from 'react';
 
+import { CMSFormDescription } from '@/components/CMS/CMSForm/CMSFormDescription/CMSFormDescription.component';
 import { CMSFormName } from '@/components/CMS/CMSForm/CMSFormName/CMSFormName.component';
 import { Modal } from '@/components/Modal';
 import { VariableColorSection } from '@/components/Variable/VariableColorSection/VariableColorSection.component';
 import { VariableDefaultValueSection } from '@/components/Variable/VariableDefaultValueSection/VariableDefaultValueSection.component';
-import { VariableDescriptionInput } from '@/components/Variable/VariableDescriptionInput/VariableDescriptionInput.component';
 import { Designer } from '@/ducks';
 import { useInputState } from '@/hooks/input.hook';
 import { useDispatch, useGetValueSelector } from '@/hooks/store.hook';
@@ -26,6 +27,8 @@ export const VariableCreateModal = modalsManager.create<IVariableCreateModal, Va
   'VariableCreateModal',
   () =>
     ({ api, type: typeProp, name: nameProp, opened, hidden, animated, folderID, closePrevented }) => {
+      const TEST_ID = 'create-variable-modal';
+
       const getIntents = useGetValueSelector(Designer.Intent.selectors.allWithFormattedBuiltInNames);
       const getEntities = useGetValueSelector(Designer.Entity.selectors.all);
       const getVariables = useGetValueSelector(Designer.Variable.selectors.all);
@@ -35,7 +38,7 @@ export const VariableCreateModal = modalsManager.create<IVariableCreateModal, Va
       const nameState = useInputState({ value: nameProp ?? '' });
       const [color, setColor] = useState(Tokens.colors.neutralDark.neutralsDark200);
       const [datatype] = useState<VariableDatatype>(VariableDatatype.ANY);
-      const [description, setDescription] = useState<string | null>(null);
+      const [description, setDescription] = useState('');
       const [defaultValue, setDefaultValue] = useState<string | null>(null);
 
       const validator = useValidators({
@@ -53,7 +56,7 @@ export const VariableCreateModal = modalsManager.create<IVariableCreateModal, Va
               isArray: false,
               datatype,
               folderID,
-              description: description?.trim() || '',
+              description,
               defaultValue,
             });
 
@@ -103,7 +106,14 @@ export const VariableCreateModal = modalsManager.create<IVariableCreateModal, Va
                 rightLabel={nameState.value ? <Variable label={nameState.value} color={color} /> : undefined}
               />
 
-              <VariableDescriptionInput value={description} disabled={closePrevented} onValueChange={setDescription} />
+              <CMSFormDescription
+                value={description ?? ''}
+                testID={tid(TEST_ID, 'description')}
+                minRows={1}
+                disabled={closePrevented}
+                placeholder="Enter description (optional)"
+                onValueChange={setDescription}
+              />
 
               <VariableColorSection color={color} disabled={closePrevented} onColorChange={setColor} />
             </Modal.Body>
@@ -114,9 +124,16 @@ export const VariableCreateModal = modalsManager.create<IVariableCreateModal, Va
           </Scroll>
 
           <Modal.Footer>
-            <Modal.Footer.Button variant="secondary" onClick={api.onClose} disabled={closePrevented} label="Cancel" />
+            <Modal.Footer.Button testID={tid(TEST_ID, 'cancel')} variant="secondary" onClick={api.onClose} disabled={closePrevented} label="Cancel" />
 
-            <Modal.Footer.Button label="Create variable" variant="primary" onClick={onSubmit} disabled={closePrevented} isLoading={closePrevented} />
+            <Modal.Footer.Button
+              label="Create variable"
+              testID={tid(TEST_ID, 'create')}
+              variant="primary"
+              onClick={onSubmit}
+              disabled={closePrevented}
+              isLoading={closePrevented}
+            />
           </Modal.Footer>
         </Modal.Container>
       );

@@ -104,9 +104,18 @@ const VariablesInput = React.forwardRef<TextEditorRef, VariablesInputProps>(
 
     const pluginProps = React.useMemo(
       () => ({
-        [PluginType.VARIABLES]: { space, variables, creatable, characters, onAddVariable, createInputPlaceholder, onVariableAdded },
+        [PluginType.VARIABLES]: {
+          space,
+          variables,
+          creatable,
+          characters,
+          cmsVariables: cmsVariables.isEnabled,
+          onAddVariable,
+          onVariableAdded,
+          createInputPlaceholder,
+        },
       }),
-      [space, variables, creatable, characters, onAddVariable, createInputPlaceholder, onVariableAdded]
+      [space, variables, creatable, characters, onAddVariable, createInputPlaceholder, onVariableAdded, cmsVariables.isEnabled]
     );
 
     const onBlurCallback = React.useCallback(

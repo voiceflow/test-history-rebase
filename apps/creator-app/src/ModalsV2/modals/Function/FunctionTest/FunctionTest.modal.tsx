@@ -6,7 +6,6 @@ import React, { useState } from 'react';
 import { FunctionTestResponse } from '@/client/generalRuntime/types';
 import { Modal } from '@/components/Modal';
 import { Designer } from '@/ducks';
-import * as Tracking from '@/ducks/tracking';
 import { useDispatch, useSelector } from '@/hooks';
 import { modalsManager } from '@/ModalsV2/manager';
 
@@ -29,11 +28,11 @@ export const FunctionTestModal = modalsManager.create<IFunctionTestModal, Functi
       const { current: initialValues } = React.useRef(inputVariables.reduce<Map>((acc, variable) => ({ ...acc, [variable.id]: '' }), {} as Map));
 
       const testOne = useDispatch(Designer.Function.effect.testOne);
+      const trackError = useDispatch(Designer.Function.tracking.error);
+      const trackTestExecuted = useDispatch(Designer.Function.tracking.testExecuted);
+
       const [isUploading, setIsUploading] = useState<boolean>(false);
       const [hasBeenExecuted, setHasBeenExecuted] = useState<boolean>(false);
-
-      const trackCMSFunctionsError = useDispatch(Tracking.trackCMSFunctionsError);
-      const trackCMSFunctionsTestExecuted = useDispatch(Tracking.trackCMSFunctionsTestExecuted);
 
       const [storedVariables, setStoredVariables] = useLocalStorageState<Map>(TEST_FUNCTION_MODAL_STORAGE_KEY, initialValues);
       const [localVariables, setLocalVariables] = useState<Map>(initialValues);
@@ -67,15 +66,15 @@ export const FunctionTestModal = modalsManager.create<IFunctionTestModal, Functi
           setTestResponse(response);
 
           if (response.success) {
-            trackCMSFunctionsTestExecuted({ Success: 'Yes' });
+            trackTestExecuted({ success: 'Yes' });
           }
 
           if (response.success === false) {
             setIsTraceOpened(true);
-            trackCMSFunctionsTestExecuted({ Success: 'No' });
+            trackTestExecuted({ success: 'No' });
           }
         } catch (e) {
-          trackCMSFunctionsError({ ErrorType: 'Execute' });
+          trackError({ errorType: 'Execute' });
         } finally {
           setStoredVariables(localVariables);
           setLocalVariables(initialValues);

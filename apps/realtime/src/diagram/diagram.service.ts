@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { BaseNode } from '@voiceflow/base-types';
+import { LoguxService } from '@voiceflow/nestjs-logux';
 import { DiagramEntity, DiagramNode, DiagramORM, ToJSON } from '@voiceflow/orm-designer';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 
@@ -45,9 +46,20 @@ export class DiagramService extends MutableService<DiagramORM> {
     return sharedNodes;
   }
 
+  public async reloadSharedNodes(
+    diagrams: ToJSON<DiagramEntity>[],
+    meta: { versionID: string; projectID: string; workspaceID: string; clientID: string; userID: number }
+  ): Promise<void> {
+    const sharedNodes = DiagramService.getAllSharedNodes(diagrams);
+
+    await this.logux.processAs(Realtime.diagram.sharedNodes.reload({ ...meta, sharedNodes }), meta);
+  }
+
   constructor(
     @Inject(DiagramORM)
-    protected readonly orm: DiagramORM
+    protected readonly orm: DiagramORM,
+    @Inject(LoguxService)
+    private readonly logux: LoguxService
   ) {
     super();
   }
@@ -59,4 +71,38 @@ export class DiagramService extends MutableService<DiagramORM> {
   public async deleteManyByVersionID(versionID: string) {
     return this.orm.deleteManyByVersionID(versionID);
   }
+
+  public async createManyEmptyComponents(
+    total: number,
+    meta: { versionID: string; projectID: string; workspaceID: string; clientID: string; userID: number }
+  ) {
+    const diagrams = Array.from({ length: total }).map(() => ({
+      ...Realtime.Utils.diagram.componentDiagramFactory(''),
+      diagramID: '',
+      versionID: meta.versionID,
+      creatorID: meta.userID,
+    }));
+    console.log('W00T 3', diagrams);
+    try {
+      const result = await this.orm.createMany(diagrams);
+      console.log('W00T 3.5', result);
+      this.reloadSharedNodes(
+        result.map((item) => item.toJSON()),
+        meta
+      );
+      console.log('W00T 3.8');
+      return result;
+    } catch (e) {
+      console.error('W00T err', e);
+    }
+  }
+
+  // createManyComponents
+  // This will call this.createMany
+  // componentDiagramFactory
+  // and the reloadSharedNodes
+  // Realtime.Utils.diagram.componentDiagramFactory
+
+  // same for duplicate
+  // convert as well
 }

@@ -10,8 +10,8 @@ export const createOne =
   (data: Actions.Flow.CreateData): Thunk<Flow> =>
   async (dispatch, getState) => {
     const state = getState();
-
     const context = getActiveAssistantContext(state);
+
     const response = await dispatch(waitAsync(Actions.Flow.CreateOne, { context, data }));
 
     return response.data;

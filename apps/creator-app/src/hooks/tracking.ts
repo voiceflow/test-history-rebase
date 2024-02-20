@@ -1,5 +1,6 @@
 import * as Platform from '@voiceflow/platform-config';
-import React from 'react';
+import { useSessionStorageState } from '@voiceflow/ui';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Dispatch } from 'redux';
 
@@ -7,6 +8,7 @@ import * as NLU from '@/config/nlu';
 import { NLUImportOrigin } from '@/constants';
 import * as Tracking from '@/ducks/tracking';
 import * as TrackingEvents from '@/ducks/tracking/events';
+import { EventTracker } from '@/ducks/tracking/types';
 import { NLUImportModel } from '@/models';
 
 const wrapDispatch = <T extends Record<string, (...args: any[]) => any>>(
@@ -79,4 +81,16 @@ export const useModelTracking = () => {
       }
     }
   };
+};
+
+export const useTrackPageOpenedFirstTime = (name: string, action: EventTracker<void>) => {
+  const dispatch = useDispatch();
+  const [isPageOpened, setPageOpened] = useSessionStorageState(name, false);
+
+  useEffect(() => {
+    if (!isPageOpened) {
+      dispatch(action as any);
+      setPageOpened(true);
+    }
+  }, []);
 };

@@ -9,7 +9,7 @@ export const PersonaOverrideDTO = CMSObjectResourceDTO.partial({
   updatedByID: true,
 })
   .extend({
-    name: z.string().min(1, 'Name is required.').max(255, 'Name is too long.').nullable(),
+    name: z.string().max(255, 'Name is too long.').nullable(),
     model: z.nativeEnum(AIModel).nullable(),
     maxLength: z.number().nullable(),
     personaID: z.string(),

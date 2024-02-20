@@ -1,5 +1,5 @@
 import { tid } from '@voiceflow/style';
-import { Table } from '@voiceflow/ui-next';
+import { Table, Text } from '@voiceflow/ui-next';
 import { isSystemVariableName } from '@voiceflow/utils-designer';
 import React from 'react';
 
@@ -20,7 +20,19 @@ export const CMSVariableTable: React.FC = () => {
   const onRowNavigate = useCMSRowItemNavigate();
   const rowContextMenu = useCMSRowItemContextMenu({
     canRename: (resourceID) => !isSystemVariableName(resourceID),
-    canDelete: (resourceID) => !isSystemVariableName(resourceID),
+    canDelete: (resourceID) => {
+      const allowed = !isSystemVariableName(resourceID);
+
+      if (allowed) return true;
+
+      return {
+        allowed: false,
+        tooltip: {
+          placement: 'left',
+          children: () => <Text variant="caption">Built-in variables can’t be deleted</Text>,
+        },
+      };
+    },
     nameColumnType: VariableTableColumn.NAME,
   });
 

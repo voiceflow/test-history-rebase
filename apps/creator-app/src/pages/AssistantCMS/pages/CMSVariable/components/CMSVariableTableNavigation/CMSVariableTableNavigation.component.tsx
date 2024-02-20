@@ -3,6 +3,7 @@ import React from 'react';
 import { CMSTableNavigation } from '@/pages/AssistantCMS/components/CMSTableNavigation/CMSTableNavigation.component';
 
 import { CMSResourceActions } from '../../../../components/CMSResourceActions';
+import { CMSVariableTableNavigationButtonDelete } from './CMSVariableTableNavigationButtonDelete';
 
 export const CMSVariableTableNavigation: React.FC = () => {
   return (
@@ -12,7 +13,7 @@ export const CMSVariableTableNavigation: React.FC = () => {
         <>
           <CMSResourceActions.CreateFolder />
           <CMSResourceActions.MoveToFolder />
-          <CMSResourceActions.Delete />
+          <CMSVariableTableNavigationButtonDelete />
         </>
       }
     />

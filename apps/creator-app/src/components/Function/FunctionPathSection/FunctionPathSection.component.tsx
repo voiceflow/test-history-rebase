@@ -22,16 +22,16 @@ export const FunctionPathSection: React.FC<IFunctionPathSection> = ({
 
   return (
     <>
-      <Box pt={11} pb={hasPaths ? 0 : 11}>
-        <Section.Header.Container
-          testID={tid(TEST_ID, 'header')}
-          title={title}
-          variant={hasPaths ? 'active' : 'basic'}
-          onHeaderClick={hasPaths ? undefined : onFunctionPathAdd}
-        >
-          <Section.Header.Button iconName="Plus" onClick={stopPropagation(onFunctionPathAdd)} testID={tid(TEST_ID, 'add')} />
-        </Section.Header.Container>
-      </Box>
+      <Section.Header.Container
+        pt={11}
+        pb={hasPaths ? 0 : 11}
+        title={title}
+        testID={tid(TEST_ID, 'header')}
+        variant={hasPaths ? 'active' : 'basic'}
+        onHeaderClick={hasPaths ? undefined : onFunctionPathAdd}
+      >
+        <Section.Header.Button iconName="Plus" onClick={stopPropagation(onFunctionPathAdd)} testID={tid(TEST_ID, 'add')} />
+      </Section.Header.Container>
 
       {hasPaths && (
         <Box pb={10} direction="column">

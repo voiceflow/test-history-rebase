@@ -5,7 +5,7 @@ import { useHistory } from 'react-router';
 
 import { useGetResolvedPath, useOnLinkClick } from '@/hooks/navigation.hook';
 
-import { useCMSResourceGetMoreMenu, useCMSResourceGetPath } from './cms-resource.hook';
+import { ICMSResourceGetMoreMenu, useCMSResourceGetMoreMenu, useCMSResourceGetPath } from './cms-resource.hook';
 import { useCMSRenameColumn } from './cms-table.hook';
 
 export const useCMSRowItemClick = (onClick?: (resourceID: string) => void) => {
@@ -44,31 +44,15 @@ export const useCMSRowItemNavigate = () => {
   });
 };
 
-export interface CMSRowItemContextMenuProps<ColumnType extends string> {
-  onShare?: (resourceID: string) => void;
-  onExport?: (resourceID: string) => void;
-  onDuplicate?: (resourceID: string) => void;
-  canRename?: (resourceID: string) => boolean;
-  canDelete?: (resourceID: string) => boolean;
+export interface CMSRowItemContextMenuProps<ColumnType extends string> extends Omit<ICMSResourceGetMoreMenu, 'onRename'> {
   nameColumnType?: ColumnType;
 }
 
-export const useCMSRowItemContextMenu = <ColumnType extends string>({
-  onShare,
-  onExport,
-  onDuplicate,
-  canDelete = () => true,
-  canRename = () => true,
-  nameColumnType,
-}: CMSRowItemContextMenuProps<ColumnType> = {}) => {
+export const useCMSRowItemContextMenu = <ColumnType extends string>({ nameColumnType, ...props }: CMSRowItemContextMenuProps<ColumnType> = {}) => {
   const onRename = useCMSRenameColumn(nameColumnType);
 
   return useCMSResourceGetMoreMenu({
-    onShare,
-    onRename,
-    onExport,
-    onDuplicate,
-    canDelete,
-    canRename: (id) => !!nameColumnType && canRename(id),
+    ...props,
+    onRename: nameColumnType ? onRename : undefined,
   });
 };

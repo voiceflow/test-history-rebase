@@ -9,7 +9,7 @@ const BaseTriggerDTO = CMSObjectResourceDTO.partial({
   updatedByID: true,
 })
   .extend({
-    name: z.string().min(1, 'Name is required.').max(255, 'Name is too long.'),
+    name: z.string().max(255, 'Name is too long.'),
     target: z.nativeEnum(TriggerTarget),
     storyID: z.string(),
     assistantID: z.string().optional(),

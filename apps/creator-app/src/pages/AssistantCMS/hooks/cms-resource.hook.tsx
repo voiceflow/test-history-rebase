@@ -1,11 +1,13 @@
 import { Utils } from '@voiceflow/common';
 import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { tid } from '@voiceflow/style';
-import { Divider, MenuItem, notify, Table, usePersistFunction } from '@voiceflow/ui-next';
+import { Divider, IMenuItem, MenuItem, notify, Table, usePersistFunction } from '@voiceflow/ui-next';
 import { useAtomValue, useSetAtom } from 'jotai';
 import pluralize from 'pluralize';
 import React from 'react';
 
+import { MenuItemWithTooltip } from '@/components/Menu/MenuItemWithTooltip/MenuItemWithTooltip.component';
+import { IMenuItemWithTooltip } from '@/components/Menu/MenuItemWithTooltip/MenuItemWithTooltip.interface';
 import { Designer } from '@/ducks';
 import { useGetAtomValue } from '@/hooks/atom.hook';
 import { useFeature } from '@/hooks/feature';
@@ -16,13 +18,22 @@ import { clipboardCopy } from '@/utils/clipboard.util';
 import { CMS_TEST_ID } from '../AssistantCMS.constant';
 import { useCMSManager } from '../contexts/CMSManager/CMSManager.hook';
 
+interface AllowingActionConfig {
+  allowed: true;
+}
+
+interface DisallowingActionConfig {
+  allowed: false;
+  tooltip?: IMenuItemWithTooltip['tooltip'] & { children: IMenuItemWithTooltip['children'] };
+}
+
 export interface ICMSResourceGetMoreMenu {
   onShare?: (resourceID: string) => void;
   onExport?: (resourceID: string) => void;
   onRename?: (resourceID: string) => void;
+  canDelete?: (resourceID: string) => boolean | AllowingActionConfig | DisallowingActionConfig;
+  canRename?: (resourceID: string) => boolean | AllowingActionConfig | DisallowingActionConfig;
   onDuplicate?: (resourceID: string) => void;
-  canDelete?: (resourceID: string) => boolean;
-  canRename?: (resourceID: string) => boolean;
 }
 
 export const useCMSResourceGetPath = () => {
@@ -139,9 +150,9 @@ export const useCMSResourceGetMoreMenu = ({
   onShare,
   onExport,
   onRename,
-  onDuplicate,
   canDelete = () => true,
   canRename = () => true,
+  onDuplicate,
 }: ICMSResourceGetMoreMenu = {}) => {
   const TEST_ID = tid(CMS_TEST_ID, 'context-menu');
 
@@ -177,41 +188,62 @@ export const useCMSResourceGetMoreMenu = ({
       setMoveToIsOpen(true);
     };
 
+    const renderActionConfig = (value: boolean | AllowingActionConfig | DisallowingActionConfig, action: IMenuItem) => {
+      const config: AllowingActionConfig | DisallowingActionConfig = typeof value === 'boolean' ? { allowed: value } : value;
+
+      return config.allowed ? (
+        <MenuItem {...action} />
+      ) : (
+        config.tooltip && (
+          <MenuItemWithTooltip {...action} tooltip={config.tooltip} onClick={undefined} disabled>
+            {config.tooltip.children}
+          </MenuItemWithTooltip>
+        )
+      );
+    };
+
+    const renameAction = renderActionConfig(canRename(id), {
+      label: 'Rename',
+      testID: tid(TEST_ID, 'rename'),
+      onClick: Utils.functional.chainVoid(onClose, () => onRename?.(id)),
+      prefixIconName: 'Edit',
+    });
+
+    const deleteAction = renderActionConfig(canDelete(id), {
+      label: 'Delete',
+      testID: tid(TEST_ID, 'delete'),
+      onClick: Utils.functional.chainVoid(onClose, onDelete),
+      prefixIconName: 'Trash',
+    });
+
     return (
       <>
-        {!!onRename && canRename(id) && (
-          <MenuItem
-            label="Rename"
-            onClick={Utils.functional.chainVoid(onClose, () => onRename(id))}
-            prefixIconName="Edit"
-            testID={tid(TEST_ID, 'rename')}
-          />
-        )}
+        {onRename && renameAction}
 
         {!!onDuplicate && (
           <MenuItem
             label="Duplicate"
+            testID={tid(TEST_ID, 'duplicate')}
             onClick={Utils.functional.chainVoid(onClose, () => onDuplicate(id))}
             prefixIconName="Duplicate"
-            testID={tid(TEST_ID, 'duplicate')}
           />
         )}
 
         {!isFolder && onShare && (
           <MenuItem
             label="Share"
+            testID={tid(TEST_ID, 'share')}
             onClick={Utils.functional.chainVoid(onClose, () => onShare(id))}
             prefixIconName="Community"
-            testID={tid(TEST_ID, 'share')}
           />
         )}
 
         {onExport && (
           <MenuItem
             label="Export"
+            testID={tid(TEST_ID, 'export')}
             onClick={Utils.functional.chainVoid(onClose, () => onExport(id))}
             prefixIconName="Export"
-            testID={tid(TEST_ID, 'export')}
           />
         )}
 
@@ -226,11 +258,11 @@ export const useCMSResourceGetMoreMenu = ({
 
         <MenuItem label="Copy link" onClick={onCopyLink} prefixIconName="Link" testID={tid(TEST_ID, 'copy-link')} />
 
-        {canDelete(id) && (
+        {!!deleteAction && (
           <>
             <Divider />
 
-            <MenuItem label="Delete" onClick={Utils.functional.chainVoid(onClose, onDelete)} prefixIconName="Trash" testID={tid(TEST_ID, 'delete')} />
+            {deleteAction}
           </>
         )}
       </>

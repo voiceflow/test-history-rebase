@@ -42,6 +42,7 @@ export const usePartialImport = () => {
           cms: {
             intents: [],
             entities: [],
+            variables: [],
             assistant: null,
             responses: [],
             utterances: [],

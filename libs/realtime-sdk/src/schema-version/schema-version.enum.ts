@@ -155,6 +155,11 @@ export const SchemaVersion = {
    * migrates project to assistant, migrates platform data slots and intents to cms resources
    */
   V5_00: 5.0,
+
+  /**
+   * migrates legacy variables to cms variables
+   */
+  V6_00: 6.0,
 } as const;
 
 export type SchemaVersion = (typeof SchemaVersion)[keyof typeof SchemaVersion];

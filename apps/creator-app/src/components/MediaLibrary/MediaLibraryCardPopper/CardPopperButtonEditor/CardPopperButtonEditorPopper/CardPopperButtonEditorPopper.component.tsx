@@ -11,8 +11,9 @@ export const CardPopperButtonEditorPopper: React.FC<ICardPopperButtonEditorPoppe
   return (
     <Popper placement="left-start" referenceElement={referenceElement} {...props} modifiers={modifiers}>
       {() => (
-        <Surface width="300px" pt={11}>
-          <Section.Header.Container title="Button label" variant="active" />
+        <Surface width="300px">
+          <Section.Header.Container pt={11} title="Button label" variant="active" />
+
           <Box px={24} pb={20}>
             <InputWithVariables value={label} autoFocus placeholder="Untitled button" onValueChange={onLabelChange} singleLine />
           </Box>

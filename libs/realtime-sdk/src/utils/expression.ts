@@ -149,11 +149,13 @@ export const expressionfyLogicUnit = (expression: ExpressionV2, variablesMap: Re
     const strValue = expression.value.toString();
     const strNumberValue = +strValue;
 
-    return Number.isNaN(strNumberValue) ? `'${strValue.replace(SINGLE_BRACKET_REGEXP, "\\'")}'` : strValue;
+    return Number.isNaN(strNumberValue)
+      ? transformVariablesToReadable(`'${strValue.replace(SINGLE_BRACKET_REGEXP, "\\'")}'`, variablesMap)
+      : strValue;
   }
 
   if (expression.type === BaseNode.Utils.ExpressionTypeV2.VARIABLE) {
-    return variablesMap[expression.value]?.name ?? expression.value;
+    return variablesMap[expression.value]?.name ?? transformVariablesToReadable(expression.value, variablesMap);
   }
 
   if (expression.type === BaseNode.Utils.ExpressionTypeV2.ADVANCE) {
@@ -164,7 +166,7 @@ export const expressionfyLogicUnit = (expression: ExpressionV2, variablesMap: Re
     return transformVariablesToReadable(expression.value, variablesMap);
   }
 
-  return `${expression.value}`;
+  return transformVariablesToReadable(`${expression.value}`, variablesMap);
 };
 
 export const expressionfyLogicInterface = (

@@ -31,7 +31,7 @@ export const CMSFormName: React.FC<ICMSFormName> = ({
   });
 
   return (
-    <Box direction="column">
+    <Box direction="column" onPointerEnter={onPointerEnter} onPointerLeave={onPointerLeave}>
       <TextField
         {...input.attributes}
         label="Name"
@@ -39,8 +39,6 @@ export const CMSFormName: React.FC<ICMSFormName> = ({
         placeholder={placeholder}
         containerRef={containerRef}
         errorMessage={input.errorMessage}
-        onPointerEnter={onPointerEnter}
-        onPointerLeave={onPointerLeave}
         testID={testID}
       />
     </Box>

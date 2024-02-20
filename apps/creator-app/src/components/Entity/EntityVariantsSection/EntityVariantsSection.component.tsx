@@ -39,31 +39,31 @@ export const EntityVariantsSection = <T extends EntityVariantsSectionItem>({
 
   return (
     <>
-      <Box pt={11} pb={variantsSize ? 0 : 11}>
-        <Section.Header.Container
-          title="Values"
-          variant={variantsSize ? 'active' : 'basic'}
-          onHeaderClick={variantsSize ? undefined : onAdd}
-          testID={tid(TEST_ID, 'header')}
-        >
-          <Section.Header.Button
-            onClick={stopPropagation(onAdd)}
-            disabled={disabled || aiGenerate.fetching}
-            iconName="Plus"
-            testID={tid(TEST_ID, 'add')}
-          />
-        </Section.Header.Container>
-      </Box>
+      <Section.Header.Container
+        pt={11}
+        pb={variantsSize ? 0 : 11}
+        title="Values"
+        testID={tid(TEST_ID, 'header')}
+        variant={variantsSize ? 'active' : 'basic'}
+        onHeaderClick={variantsSize ? undefined : onAdd}
+      >
+        <Section.Header.Button
+          testID={tid(TEST_ID, 'add')}
+          onClick={stopPropagation(onAdd)}
+          disabled={disabled || aiGenerate.fetching}
+          iconName="Plus"
+        />
+      </Section.Header.Container>
 
       {!!variantsSize && (
         <Scroll style={{ display: 'block' }} maxHeight="299px">
           <CMSFormCollapsibleList
             items={variants}
+            testID={TEST_ID}
             itemsLimit={5}
             collapseLabel="values"
             estimatedItemSize={53}
             autoScrollToTopRevision={autoScrollToTopRevision}
-            testID={TEST_ID}
             renderItem={({ item, virtualizer, virtualItem }) => (
               <CMSFormVirtualListItem
                 pt={9}
@@ -85,11 +85,11 @@ export const EntityVariantsSection = <T extends EntityVariantsSectionItem>({
       {!!variantsSize && (
         <Box px={16} pb={16} pt={8}>
           <AIGenerateEntityVariant
+            testID={tid(TEST_ID, 'ai-generate')}
             disabled={disabled || aiGenerate.fetching}
             isLoading={aiGenerate.fetching}
             onGenerate={aiGenerate.onGenerate}
             hasExtraContext={!!name || !!classifier || !listEmpty.value}
-            testID={tid(TEST_ID, 'ai-generate')}
           />
         </Box>
       )}

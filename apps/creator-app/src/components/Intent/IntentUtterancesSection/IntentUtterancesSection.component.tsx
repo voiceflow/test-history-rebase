@@ -41,55 +41,52 @@ export const IntentUtterancesSection: React.FC<IIntentUtterancesSection> = ({
 
   return (
     <>
-      <Box pt={11} pb={utterancesSize ? 0 : 11} direction="column">
-        <Section.Header.Container
-          title="Utterances"
-          variant={utterancesSize ? 'active' : 'basic'}
-          onHeaderClick={utterancesSize ? undefined : onUtteranceAdd}
-          primaryContent={
-            utterancesSize ? (
-              <Box width="42px">
-                <Gauge
-                  level={getIntentConfidenceLevel(notEmptyUtterances.length)}
-                  progress={getIntentConfidenceProgress(notEmptyUtterances.length)}
-                />
-              </Box>
-            ) : undefined
-          }
-          testID={tid(TEST_ID, 'header')}
+      <Section.Header.Container
+        pt={11}
+        pb={utterancesSize ? 0 : 11}
+        title="Utterances"
+        testID={tid(TEST_ID, 'header')}
+        variant={utterancesSize ? 'active' : 'basic'}
+        onHeaderClick={utterancesSize ? undefined : onUtteranceAdd}
+        primaryContent={
+          utterancesSize ? (
+            <Box width="42px">
+              <Gauge level={getIntentConfidenceLevel(notEmptyUtterances.length)} progress={getIntentConfidenceProgress(notEmptyUtterances.length)} />
+            </Box>
+          ) : undefined
+        }
+      >
+        <Tooltip
+          placement="top"
+          referenceElement={({ ref, isOpen, onOpen, onClose }) => (
+            <Section.Header.Button
+              ref={ref}
+              onClick={() => bulkImportUtterancesModal.openVoid({ onImport: onUtteranceImportMany })}
+              testID={tid(TEST_ID, 'bulk-import')}
+              isActive={isOpen || bulkImportUtterancesModal.opened}
+              iconName="BulkUpload"
+              onMouseEnter={onOpen}
+              onMouseLeave={onClose}
+            />
+          )}
         >
-          <Tooltip
-            placement="top"
-            referenceElement={({ ref, isOpen, onOpen, onClose }) => (
-              <Section.Header.Button
-                ref={ref}
-                onClick={() => bulkImportUtterancesModal.openVoid({ onImport: onUtteranceImportMany })}
-                isActive={isOpen || bulkImportUtterancesModal.opened}
-                iconName="BulkUpload"
-                onMouseEnter={onOpen}
-                onMouseLeave={onClose}
-                testID={tid(TEST_ID, 'bulk-import')}
-              />
-            )}
-          >
-            {() => (
-              <Text variant="caption" breakWord>
-                Bulk import
-              </Text>
-            )}
-          </Tooltip>
+          {() => (
+            <Text variant="caption" breakWord>
+              Bulk import
+            </Text>
+          )}
+        </Tooltip>
 
-          <Section.Header.Button iconName="Plus" onClick={stopPropagation(onUtteranceAdd)} testID={tid(TEST_ID, 'add')} />
-        </Section.Header.Container>
-      </Box>
+        <Section.Header.Button iconName="Plus" onClick={stopPropagation(onUtteranceAdd)} testID={tid(TEST_ID, 'add')} />
+      </Section.Header.Container>
 
       <Scroll style={{ display: 'block' }} maxHeight="394px">
         <CMSFormCollapsibleList
           items={utterances}
+          testID={TEST_ID}
           collapseLabel="sample phrases"
           estimatedItemSize={36}
           autoScrollToTopRevision={autoScrollToTopRevision}
-          testID={TEST_ID}
           renderItem={({ item, virtualizer, virtualItem }) => (
             <CMSFormVirtualListItem
               py={2}

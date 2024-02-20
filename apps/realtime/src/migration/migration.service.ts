@@ -127,6 +127,7 @@ export class MigrationService {
               entities: this.entitySerializer.iterable(cmsData.entities),
               assistant: this.assistantSerializer.nullable(assistant),
               responses: this.entitySerializer.iterable(cmsData.responses),
+              variables: this.entitySerializer.iterable(cmsData.variables),
               utterances: this.entitySerializer.iterable(cmsData.utterances),
               entityVariants: this.entitySerializer.iterable(cmsData.entityVariants),
               requiredEntities: this.entitySerializer.iterable(cmsData.requiredEntities),
@@ -150,6 +151,7 @@ export class MigrationService {
           {
             intents: migrationResult.cms.intents,
             entities: migrationResult.cms.entities,
+            variables: migrationResult.cms.variables,
             functions: [],
             responses: migrationResult.cms.responses,
             utterances: migrationResult.cms.utterances,

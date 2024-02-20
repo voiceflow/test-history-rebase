@@ -21,16 +21,16 @@ export const FunctionVariableSection: React.FC<IFunctionVariableSection> = ({
 
   return (
     <>
-      <Box pt={11} pb={hasVariables ? 0 : 11}>
-        <Section.Header.Container
-          title={title}
-          variant={hasVariables ? 'active' : 'basic'}
-          onHeaderClick={hasVariables ? undefined : onFunctionVariableAdd}
-          testID={tid(testID, 'header')}
-        >
-          <Section.Header.Button iconName="Plus" onClick={stopPropagation(onFunctionVariableAdd)} testID={tid(testID, 'add')} />
-        </Section.Header.Container>
-      </Box>
+      <Section.Header.Container
+        pt={11}
+        pb={hasVariables ? 0 : 11}
+        title={title}
+        testID={tid(testID, 'header')}
+        variant={hasVariables ? 'active' : 'basic'}
+        onHeaderClick={hasVariables ? undefined : onFunctionVariableAdd}
+      >
+        <Section.Header.Button iconName="Plus" onClick={stopPropagation(onFunctionVariableAdd)} testID={tid(testID, 'add')} />
+      </Section.Header.Container>
 
       {hasVariables && (
         <Box pb={10} direction="column" testID={tid(testID, 'list')}>

@@ -154,8 +154,9 @@ export const applyVariableState =
     let variables: Store = {};
 
     entitiesAndVariables.forEach((entityOrVar) => {
-      const declare = cmsVariablesMapByName[entityOrVar.name];
-      variables[entityOrVar.name] = !declare ? 0 : parseCMSVariableDefaultValue(declare.name, declare) ?? 0;
+      const variable = cmsVariablesMapByName[entityOrVar.name];
+
+      variables[entityOrVar.name] = variable ? parseCMSVariableDefaultValue(variable.name, variable) ?? 0 : 0;
     });
 
     variables = {

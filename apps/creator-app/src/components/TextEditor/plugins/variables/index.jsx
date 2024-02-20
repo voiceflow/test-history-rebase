@@ -50,7 +50,7 @@ const variablesPlugin = (globalStore, { characters = '' } = {}) => {
       />
     ),
     fromTextConvertor: fromTextConvertor(),
-    fromPastedTextConvertor: fromTextConvertor(),
+    fromPastedTextConvertor: fromTextConvertor({ buffer: true }),
   };
 };
 

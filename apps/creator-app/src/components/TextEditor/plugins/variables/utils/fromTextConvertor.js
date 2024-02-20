@@ -45,8 +45,8 @@ export const matchVariables = (text = '', { withoutTrim } = {}) => {
 };
 
 const fromTextConvertor =
-  () =>
-  ({ variables = [] } = {}) =>
+  ({ buffer } = {}) =>
+  ({ variables = [], cmsVariables } = {}) =>
   (next) =>
   (value, { cursor, entityMap, entityRanges, withoutTrim }) => {
     const matchedVariables = matchVariables(value, { withoutTrim });
@@ -64,9 +64,14 @@ const fromTextConvertor =
       }
 
       const key = genKey();
-      const entity = variablesIdMap[data.id] || variablesNameMap[data.name];
 
-      const strEntity = entity ? `{${entity.name}}` : `{${data.name}}`;
+      let entity = variablesIdMap[data.id] || variablesNameMap[data.name];
+      let strEntity = entity ? `{${entity.name}}` : `{${data.name}}`;
+
+      if (cmsVariables) {
+        entity = buffer ? variablesNameMap[data.name] : variablesIdMap[data.id];
+        strEntity = entity ? `{${entity.name}}` : `{${data.id}}`;
+      }
 
       if (entity) {
         entityMap[key] = {

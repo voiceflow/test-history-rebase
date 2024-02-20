@@ -1,5 +1,4 @@
 export * from './canvas';
-export * from './cms';
 export * from './component';
 export * from './conversations';
 export * from './customBlock';

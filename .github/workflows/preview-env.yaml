@@ -1,7 +1,7 @@
 name: PR-label -> preview dev env
 
 env:
-  COMPONENTS: creator-app,realtime,ml-gateway,showcase
+  COMPONENTS: creator-app,realtime,ml-gateway
 
 on:
   pull_request:

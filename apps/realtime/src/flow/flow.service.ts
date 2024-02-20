@@ -166,14 +166,15 @@ export class FlowService extends CMSTabularService<FlowORM> {
     meta: { versionID: string; projectID: string; workspaceID: string; clientID: string; userID: number }
   ) {
     return this.postgresEM.transactional(async () => {
-      const diagrams = await this.diagram.createManyEmptyComponents(data.length, meta);
-      console.log('W00T 4', diagrams);
+      const diagrams = await this.diagram.createManyEmptyComponents(
+        data.map(({ name }) => name),
+        meta
+      );
       const flows = await this.createManyForUser(
         userID,
         data.map((item, index) => ({ ...item, diagramID: diagrams[index].id })),
         { flush: false }
       );
-      console.log('W00T 5', flows);
       await this.orm.em.flush();
 
       return {
@@ -198,11 +199,6 @@ export class FlowService extends CMSTabularService<FlowORM> {
 
   async createManyAndBroadcast(authMeta: AuthMetaPayload, data: FlowCreateData[], meta: { versionID: string; projectID: string }) {
     const assistant = await this.assistantORM.findOneOrFail(meta.projectID);
-    console.log('W00T 1', authMeta.userID, data, {
-      ...authMeta,
-      ...meta,
-      workspaceID: this.hashedID.encodeWorkspaceID(assistant.workspace.id),
-    });
     const result = await this.createManyAndSync(authMeta.userID, data, {
       ...authMeta,
       ...meta,

@@ -3,7 +3,7 @@ import { useFormik } from 'formik';
 import React from 'react';
 
 import * as Billing from '@/components/Billing';
-import { CardHolderInfo, PaymentProvider, usePaymentAPI } from '@/contexts/PaymentContext';
+import * as PaymentContext from '@/contexts/PaymentContext';
 
 import manager from '../../manager';
 
@@ -12,10 +12,10 @@ interface AddCardProps {
 }
 
 const AddCard = manager.create<AddCardProps>('LegacyBillingAddCard', () =>
-  withProvider(PaymentProvider)(({ api, type, opened, hidden, update, animated }) => {
-    const paymentAPI = usePaymentAPI();
+  withProvider(PaymentContext.legacy.PaymentProvider)(({ api, type, opened, hidden, update, animated }) => {
+    const paymentAPI = PaymentContext.legacy.usePaymentAPI();
 
-    const onSubmitForm = async (values: CardHolderInfo) => {
+    const onSubmitForm = async (values: PaymentContext.legacy.CardHolderInfo) => {
       api.preventClose();
 
       const source = await paymentAPI.createFullSource(values);

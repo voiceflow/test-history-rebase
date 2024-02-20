@@ -64,4 +64,4 @@ const DashboardV2MembersAndBillingLegacyMembers: React.FC = () => {
   );
 };
 
-export default withProvider(Payment.PaymentProvider)(DashboardV2MembersAndBillingLegacyMembers);
+export default withProvider(Payment.legacy.PaymentProvider)(DashboardV2MembersAndBillingLegacyMembers);

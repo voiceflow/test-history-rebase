@@ -12,10 +12,8 @@ import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector, useSyncDispatch } from '@/hooks';
 import { DBPaymentSource, PlanSubscription } from '@/models';
 
-import { MAX_POLL_COUNT, POLL_INTERVAL, STRIPE_ELEMENT_OPTIONS } from './constants';
-import { CardHolderInfo, PaymentAPIContextType } from './types';
-
-export * from './types';
+import { MAX_POLL_COUNT, POLL_INTERVAL, STRIPE_ELEMENT_OPTIONS } from './PaymentContext.constants';
+import { CardHolderInfo, PaymentAPIContextType } from './PaymentContext.types';
 
 const stripePromise = loadStripe(STRIPE_KEY);
 
@@ -185,13 +183,3 @@ export const PaymentProvider: React.FC<React.PropsWithChildren> = ({ children })
     <PaymentApiProvider>{children}</PaymentApiProvider>
   </StripeProvider>
 );
-
-export const usePaymentAPI = () => {
-  const paymentAPI = React.useContext(PaymentAPIContext);
-
-  if (!paymentAPI) {
-    throw new Error('Payment API is not available');
-  }
-
-  return paymentAPI;
-};

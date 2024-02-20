@@ -5,7 +5,6 @@ import React from 'react';
 
 import * as Workspace from '@/components/Workspace';
 import * as Payment from '@/contexts/PaymentContext';
-import { PaymentProvider } from '@/contexts/PaymentContext';
 import { UpgradePrompt } from '@/ducks/tracking/constants';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useTrackingEvents } from '@/hooks/';
@@ -17,13 +16,13 @@ import manager from '../../manager';
 import SeatsInput from '../Billing/SeatsInput';
 
 const AddSeats = manager.create('LegacyBillingAddSeats', () =>
-  withProvider(PaymentProvider)(({ api, type, opened, hidden, animated, closePrevented }) => {
+  withProvider(Payment.legacy.PaymentProvider)(({ api, type, opened, hidden, animated, closePrevented }) => {
     const isPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
     const isOnProTrial = useSelector(WorkspaceV2.active.isOnProTrialSelector);
     const numberOfSeats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);
     const editorPlanSeatLimits = useSelector(WorkspaceV2.active.editorPlanSeatLimitsSelector);
 
-    const paymentAPI = Payment.usePaymentAPI();
+    const paymentAPI = Payment.legacy.usePaymentAPI();
     const [trackingEvents] = useTrackingEvents();
 
     const { unitPrice, billingPeriod } = Workspace.useSubscriptionInfo();

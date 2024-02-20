@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { PaymentProvider } from '@/contexts/PaymentContext';
+import * as Payment from '@/contexts/PaymentContext';
 import { UpgradePrompt } from '@/ducks/tracking';
 
 import manager from '../../manager';
@@ -15,9 +15,9 @@ const PaymentModal = manager.create<PaymentModalProps>('Payment', () => (props) 
   // TODO (chargebee billing): add logic to render new payment modal based on organization chargebee subscription
 
   return (
-    <PaymentProvider>
+    <Payment.legacy.PaymentProvider>
       <LegacyPayment {...props} />
-    </PaymentProvider>
+    </Payment.legacy.PaymentProvider>
   );
 });
 

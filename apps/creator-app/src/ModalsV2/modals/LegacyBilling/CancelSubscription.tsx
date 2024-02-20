@@ -4,17 +4,17 @@ import React from 'react';
 
 import client from '@/client';
 import { PRICING_LINK } from '@/constants/link.constant';
-import { PaymentProvider, usePaymentAPI } from '@/contexts/PaymentContext';
+import * as Payment from '@/contexts/PaymentContext';
 import { useTrackingEvents } from '@/hooks/tracking';
 import { useActiveWorkspace } from '@/hooks/workspace';
 
 import manager from '../../manager';
 
 const CancelSubscription = manager.create('LegacyBillingCancelSubscription', () =>
-  withProvider(PaymentProvider)(({ api, type, opened, hidden, animated, closePrevented }) => {
+  withProvider(Payment.legacy.PaymentProvider)(({ api, type, opened, hidden, animated, closePrevented }) => {
     const workspace = useActiveWorkspace();
     const [tracking] = useTrackingEvents();
-    const paymentAPI = usePaymentAPI();
+    const paymentAPI = Payment.legacy.usePaymentAPI();
 
     const onCancel = async () => {
       if (!workspace) return;

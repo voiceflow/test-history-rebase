@@ -4,7 +4,7 @@ import React from 'react';
 
 import * as Billing from '@/components/Billing';
 import { ACTIVE_PAID_PLAN, UNLIMITED_EDITORS_CONST } from '@/constants';
-import { usePaymentAPI } from '@/contexts/PaymentContext';
+import * as Payment from '@/contexts/PaymentContext';
 import { PlanPricesContext } from '@/contexts/PlanPricesContext';
 import * as Sessions from '@/ducks/session';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
@@ -19,7 +19,7 @@ import { PaymentModalAPIProps } from '../types';
 import { PaymentModal } from './PaymentModal.component';
 
 const LegacyPayment = ({ id, api, type, opened, hidden, animated, closePrevented, promptType, isTrialExpired }: PaymentModalAPIProps) => {
-  const paymentAPI = usePaymentAPI();
+  const paymentAPI = Payment.legacy.usePaymentAPI();
   const planPrices = React.useContext(PlanPricesContext);
   const [trackingEvents] = useTrackingEvents();
 

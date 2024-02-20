@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.359.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.358.0...@voiceflow/realtime-sdk@1.359.0) (2024-02-20)
+
+### Features
+
+* implement permissions based on cb entitlements (CV3-867) ([#7780](https://github.com/voiceflow/creator-app/issues/7780)) ([5fccecd](https://github.com/voiceflow/creator-app/commit/5fccecd944df7430c38f51cfc5c88262b83aee5a))
+* variables migration [bugfix] (CT-000) ([#7747](https://github.com/voiceflow/creator-app/issues/7747)) ([d686429](https://github.com/voiceflow/creator-app/commit/d686429924401adbf4b944cbec92db47637a19b9))
+
 # [1.358.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.357.1...@voiceflow/realtime-sdk@1.358.0) (2024-02-19)
 
 ### Features

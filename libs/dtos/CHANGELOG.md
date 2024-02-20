@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.34.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.33.2...@voiceflow/dtos@1.34.0) (2024-02-20)
+
+### Features
+
+* implement permissions based on cb entitlements (CV3-867) ([#7780](https://github.com/voiceflow/creator-app/issues/7780)) ([5fccecd](https://github.com/voiceflow/creator-app/commit/5fccecd944df7430c38f51cfc5c88262b83aee5a))
+* variables migration [bugfix] (CT-000) ([#7747](https://github.com/voiceflow/creator-app/issues/7747)) ([d686429](https://github.com/voiceflow/creator-app/commit/d686429924401adbf4b944cbec92db47637a19b9))
+
 ## [1.33.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.33.1...@voiceflow/dtos@1.33.2) (2024-02-12)
 
 **Note:** Version bump only for package @voiceflow/dtos

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1398.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1398.0...@voiceflow/creator-app@1.1398.1) (2024-02-21)
+
+### Bug Fixes
+
+* bulk action checkbox (COR-1023) ([#7787](https://github.com/voiceflow/creator-app/issues/7787)) ([6c89f28](https://github.com/voiceflow/creator-app/commit/6c89f28e97add7fe0cac024ec09ff2706c262814))
+
 # [1.1398.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1397.0...@voiceflow/creator-app@1.1398.0) (2024-02-20)
 
 ### Features

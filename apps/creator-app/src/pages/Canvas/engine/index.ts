@@ -391,6 +391,10 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
     return this.linkCreation.isDrawing || this.groupSelection.isDrawing || this.drag.hasTarget || this.drag.hasGroup || this.isInteractionDisabled;
   }
 
+  get CMSComponentsEnabled() {
+    return this.isFeatureEnabled(Realtime.FeatureFlag.CMS_COMPONENTS);
+  }
+
   addClass(className: string): void {
     this.components.container?.addClass(className);
     this.log.debug(this.log.init('added class'), this.log.value(className));
@@ -677,7 +681,8 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
 
     await this.store.dispatch(
       History.transaction(async () => {
-        const { name, diagramID, incomingLinkSource, outgoingLinkTarget } = await this.store.dispatch(DiagramV2.convertToComponent(clipboardData));
+        const Action = this.CMSComponentsEnabled ? Designer.Flow.effect.createOneFromSelection : DiagramV2.convertToComponent;
+        const { name, diagramID, incomingLinkSource, outgoingLinkTarget } = await this.store.dispatch(Action(clipboardData));
 
         // TODO: would be good if we could have the removal of these targets
         // and link creation as part of the component creation operation

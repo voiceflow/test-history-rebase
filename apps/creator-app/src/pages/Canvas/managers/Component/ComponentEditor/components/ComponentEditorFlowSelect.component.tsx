@@ -10,8 +10,7 @@ import { useDispatch, useSelector } from '@/hooks';
 import { useGoToCMSResourceModal } from '@/hooks/cms-resource.hook';
 import { useDeferredSearch } from '@/hooks/search.hook';
 import * as ModalsV2 from '@/ModalsV2';
-
-import { useGoToDiagram } from '../../ComponentManager.hook';
+import perf, { PerfAction } from '@/performance';
 
 interface IComponentEditorFlowSelect {
   diagramID?: string | null;
@@ -21,8 +20,16 @@ interface IComponentEditorFlowSelect {
 export const ComponentEditorFlowSelect: React.FC<IComponentEditorFlowSelect> = ({ diagramID, onSelect, activeNodeID }) => {
   const flows = useSelector(Designer.Flow.selectors.all);
   const flow = useSelector(Designer.Flow.selectors.byDiagramID, { diagramID: diagramID ?? null });
-  const goToDiagram = useGoToDiagram({ diagramID: flow?.diagramID, activeNodeID });
+
   const goToCMSResource = useDispatch(Router.goToCMSResource);
+
+  const goToDiagramHistoryPush = useDispatch(Router.goToDiagramHistoryPush);
+
+  const onClick = () => {
+    perf.action(PerfAction.COMPONENT_NODE__LINK_CLICK);
+
+    if (diagramID) goToDiagramHistoryPush(diagramID, undefined, activeNodeID);
+  };
 
   const search = useDeferredSearch({
     items: flows,
@@ -79,7 +86,7 @@ export const ComponentEditorFlowSelect: React.FC<IComponentEditorFlowSelect> = (
 
       {flow ? (
         <Box px={24} pt={10}>
-          <Button label="Edit component" fullWidth onClick={goToDiagram} />
+          <Button label="Edit component" fullWidth onClick={onClick} />
         </Box>
       ) : (
         <>

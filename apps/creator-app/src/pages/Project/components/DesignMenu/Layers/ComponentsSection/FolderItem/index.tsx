@@ -18,7 +18,7 @@ export interface FolderItemProps extends ItemComponentProps<ComponentItem>, Drag
 
 const FolderItem: React.ForwardRefRenderFunction<HTMLElement, FolderItemProps> = (
   {
-    item: { id: diagramID, name },
+    item: { id, diagramID, name },
     isSearch,
     isDragging,
     isDragActive,
@@ -31,7 +31,7 @@ const FolderItem: React.ForwardRefRenderFunction<HTMLElement, FolderItemProps> =
   },
   ref
 ) => {
-  const isActive = activeDiagramID === diagramID;
+  const isActive = activeDiagramID === (diagramID || id);
 
   return (
     <ComponentItemName

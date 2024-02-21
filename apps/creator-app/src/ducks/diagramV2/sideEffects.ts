@@ -136,9 +136,9 @@ const getDiagramToCreate =
     const platform = ProjectV2.active.platformSelector(state);
     const projectType = ProjectV2.active.projectTypeSelector(state);
     const schemaVersion = schemaVersionSelector(state);
-    // MOVE below THIS TO UTILS
-    const nodeIDMap = nodes.reduce<Record<string, boolean>>((acc, node) => Object.assign(acc, { [node.id]: true }), {});
     const allNodesLinks = nodes.flatMap((node) => linksByNodeIDSelector(state, { id: node.id }));
+
+    const nodeIDMap = nodes.reduce<Record<string, boolean>>((acc, node) => Object.assign(acc, { [node.id]: true }), {});
     const incomingLinks = allNodesLinks.filter(({ source, target }) => nodeIDMap[target.nodeID] && !nodeIDMap[source.nodeID]);
     const outgoingLinks = allNodesLinks.filter(({ source, target }) => !nodeIDMap[target.nodeID] && nodeIDMap[source.nodeID]);
 

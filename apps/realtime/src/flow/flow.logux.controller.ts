@@ -25,14 +25,23 @@ export class FlowLoguxController {
   }))
   @UseRequestContext()
   createOne(
-    @Payload() { data, context }: Actions.Flow.CreateOne.Request,
+    @Payload() { data: { diagram, ...flow }, context }: Actions.Flow.CreateOne.Request,
     @AuthMeta() authMeta: AuthMetaPayload
   ): Promise<Actions.Flow.CreateOne.Response> {
     return this.service
-      .createManyAndBroadcast(authMeta, [{ ...data, assistantID: context.assistantID, environmentID: context.environmentID }], {
-        projectID: context.assistantID,
-        versionID: context.environmentID,
-      })
+      .createManyAndBroadcast(
+        authMeta,
+        [
+          {
+            flow: { ...flow, assistantID: context.assistantID, environmentID: context.environmentID },
+            diagram,
+          },
+        ],
+        {
+          projectID: context.assistantID,
+          versionID: context.environmentID,
+        }
+      )
       .then(([result]) => ({ data: this.entitySerializer.nullable(result), context }));
   }
 
@@ -49,7 +58,10 @@ export class FlowLoguxController {
     return this.service
       .createManyAndBroadcast(
         authMeta,
-        data.map((item) => ({ ...item, assistantID: context.assistantID, environmentID: context.environmentID })),
+        data.map(({ diagram, ...flow }) => ({
+          flow: { ...flow, assistantID: context.assistantID, environmentID: context.environmentID },
+          diagram,
+        })),
         {
           projectID: context.assistantID,
           versionID: context.environmentID,

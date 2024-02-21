@@ -7,6 +7,7 @@ import { ObjectId } from 'bson';
 import { Optional } from 'utility-types';
 
 import { MutableService } from '@/common';
+import { FlowAndDiagram } from '@/flow/flow.interface';
 
 type PrimitiveDiagram = Omit<Optional<ToJSON<DiagramEntity>, '_id' | 'diagramID'>, 'id'>;
 
@@ -86,23 +87,46 @@ export class DiagramService extends MutableService<DiagramORM> {
     return this.orm.deleteManyByVersionID(versionID);
   }
 
-  public async createManyEmptyComponents(
-    components: string[],
+  public async createOneComponentWithDiagram(
+    data: FlowAndDiagram,
     meta: { versionID: string; projectID: string; workspaceID: string; clientID: string; userID: number }
   ) {
-    const diagrams = components.map((name) =>
-      this.insertNewDiagramToDB({
-        ...Realtime.Utils.diagram.componentDiagramFactory(name),
-        versionID: meta.versionID,
-        creatorID: meta.userID,
-      })
-    );
-    const result = await this.orm.createMany(diagrams);
+    const diagram = this.insertNewDiagramToDB({
+      ...Realtime.Utils.diagram.componentDiagramFactory(data.flow.name),
+      ...data.diagram,
+      versionID: meta.versionID,
+      creatorID: meta.userID,
+    });
+    console.log('WOOT 2 createOneComponentWithDiagram', diagram);
+
+    const result = await this.orm.createMany([diagram]);
 
     this.reloadSharedNodes(
       result.map((item) => item.toJSON()),
       meta
     );
+
+    return result;
+  }
+
+  public async createOneEmptyComponent(
+    name: string,
+    meta: { versionID: string; projectID: string; workspaceID: string; clientID: string; userID: number }
+  ) {
+    const diagram = this.insertNewDiagramToDB({
+      ...Realtime.Utils.diagram.componentDiagramFactory(name),
+      versionID: meta.versionID,
+      creatorID: meta.userID,
+    });
+    console.log('WOOT 2 createOneEmptyComponent', diagram);
+
+    const result = await this.orm.createMany([diagram]);
+
+    this.reloadSharedNodes(
+      result.map((item) => item.toJSON()),
+      meta
+    );
+
     return result;
   }
 

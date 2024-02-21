@@ -18,6 +18,7 @@ import { useSelector } from '@/hooks/redux';
 
 export interface ComponentItem {
   id: string;
+  diagramID?: string;
   name: string;
   children: ComponentItem[];
   isFolder: boolean;
@@ -44,7 +45,6 @@ export const useComponents = (): ComponentsAPI => {
   const getDiagramByID = useSelector(DiagramV2.getDiagramByIDSelector);
   const activeDiagramID = useSelector(CreatorV2.activeDiagramIDSelector);
   const lastCreatedDiagramID = useSelector(DiagramV2.lastCreatedIDSelector);
-
   const cmsComponentsEnabled = useFeature(Realtime.FeatureFlag.CMS_COMPONENTS);
   const cmsComponents = useSelector(Designer.Flow.selectors.all);
 
@@ -54,7 +54,7 @@ export const useComponents = (): ComponentsAPI => {
   const getEngine = useEventualEngine();
 
   const dndReorder = useDnDReorder({
-    getID: (item: ComponentItem) => item.id,
+    getID: (item: ComponentItem) => item.diagramID || item.id,
     onPersist: (fromID: string, toIndex: number) => reorderComponents({ fromID, toIndex }),
     onReorder: (fromID: string, toIndex: number) => reorderComponents({ fromID, toIndex, skipPersist: true }),
   });
@@ -70,7 +70,7 @@ export const useComponents = (): ComponentsAPI => {
 
     if (!engine || !item) return;
 
-    engine.merge.setVirtualSource(BlockType.COMPONENT, { name: item.name, diagramID: item.id } as Realtime.NodeData<any>);
+    engine.merge.setVirtualSource(BlockType.COMPONENT, { name: item.name, diagramID: item.diagramID || item.id } as Realtime.NodeData<any>);
   });
 
   const onDragEnd = usePersistFunction(() => {
@@ -93,8 +93,9 @@ export const useComponents = (): ComponentsAPI => {
     };
 
     const createComponentItemFromCMS = (component: Flow): ComponentItem => ({
-      id: component.id,
+      diagramID: component.diagramID,
       name: component.name,
+      id: component.id,
       isFolder: false,
       children: [],
     });
@@ -119,7 +120,7 @@ export const useComponents = (): ComponentsAPI => {
         parentItems.push(component);
       } else if (matchedChildren.length) {
         parentItems.push({ ...component, children: matchedChildren });
-        openedComponents[component.id] = true;
+        openedComponents[component.diagramID || component.id] = true;
       }
     };
 

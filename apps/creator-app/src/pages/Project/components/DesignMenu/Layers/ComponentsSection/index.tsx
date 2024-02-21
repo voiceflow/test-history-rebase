@@ -55,7 +55,7 @@ const ComponentsSection: React.FC<ComponentsSectionProps> = ({ collapsed, setSec
 
   const itemSize = React.useCallback((index: number) => ITEM_HEIGHT + (components.length - 1 === index ? BOTTOM_PADDING : 0), [components.length]);
   const getDNDItemKey = useConst((item: ComponentItem) => item.id);
-  const getVirtualItemKey = useConst((index: number, data: ComponentItem[]) => data[index].id);
+  const getVirtualItemKey = useConst((index: number, data: ComponentItem[]) => data[index].diagramID || data[index].id);
 
   useDidUpdateEffect(() => {
     listRef.current?.resetAfterIndex(Math.max(components.length - 2, 0));
@@ -63,8 +63,8 @@ const ComponentsSection: React.FC<ComponentsSectionProps> = ({ collapsed, setSec
 
   useDidUpdateEffect(() => {
     if (!activeDiagramID || !listRef.current || !scrollBarsRef.current) return;
-
-    const index = components.findIndex(({ id }) => id === activeDiagramID);
+    // TODO refactor (diagramID || id) to just diagramID a few weeks after this is merged
+    const index = components.findIndex(({ id, diagramID }) => (diagramID || id) === activeDiagramID);
 
     if (index === -1) return;
 

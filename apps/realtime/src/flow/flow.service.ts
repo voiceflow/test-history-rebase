@@ -16,7 +16,7 @@ import { DiagramService } from '@/diagram/diagram.service';
 import { cloneManyEntities } from '@/utils/entity.util';
 
 import type { FlowExportImportDataDTO } from './dtos/flow-export-import-data.dto';
-import type { FlowCreateData } from './flow.interface';
+import type { FlowAndDiagram } from './flow.interface';
 
 @Injectable()
 export class FlowService extends CMSTabularService<FlowORM> {
@@ -162,19 +162,26 @@ export class FlowService extends CMSTabularService<FlowORM> {
 
   async createManyAndSync(
     userID: number,
-    data: FlowCreateData[],
+    data: FlowAndDiagram[],
     meta: { versionID: string; projectID: string; workspaceID: string; clientID: string; userID: number }
   ) {
     return this.postgresEM.transactional(async () => {
-      const diagrams = await this.diagram.createManyEmptyComponents(
-        data.map(({ name }) => name),
-        meta
-      );
-      const flows = await this.createManyForUser(
-        userID,
-        data.map((item, index) => ({ ...item, diagramID: diagrams[index].id })),
-        { flush: false }
-      );
+      const flowsToCreate = data.map(async (item) => {
+        const [{ id, ...rest }] = item.diagram
+          ? await this.diagram.createOneComponentWithDiagram(item, meta)
+          : await this.diagram.createOneEmptyComponent(item.flow.name, meta);
+        console.log('WOOT 1', id, rest);
+        return this.createOneForUser(userID, {
+          diagramID: id,
+          name: item.flow.name,
+          assistantID: meta.projectID,
+          folderID: item.flow.folderID,
+          environmentID: meta.versionID,
+          description: item.flow.description,
+        });
+      });
+      const flows = await Promise.all(flowsToCreate);
+      console.log('WOOT 3', flows);
       await this.orm.em.flush();
 
       return {
@@ -197,7 +204,7 @@ export class FlowService extends CMSTabularService<FlowORM> {
     ]);
   }
 
-  async createManyAndBroadcast(authMeta: AuthMetaPayload, data: FlowCreateData[], meta: { versionID: string; projectID: string }) {
+  async createManyAndBroadcast(authMeta: AuthMetaPayload, data: FlowAndDiagram[], meta: { versionID: string; projectID: string }) {
     const assistant = await this.assistantORM.findOneOrFail(meta.projectID);
     const result = await this.createManyAndSync(authMeta.userID, data, {
       ...authMeta,

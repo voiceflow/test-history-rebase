@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import type { Flow } from '@voiceflow/dtos';
+import type { Diagram, Flow } from '@voiceflow/dtos';
 
 import { createCRUD } from '@/crud/crud.action';
 import type {
@@ -26,6 +26,10 @@ export interface CreateData {
   name: string;
   folderID: string | null;
   description: string | null;
+  diagram?: Omit<
+    Diagram,
+    '_id' | 'creatorID' | 'versionID' | 'intentStepIDs' | 'menuNodeIDs' | 'children' | 'diagramID'
+  >;
 }
 
 /**

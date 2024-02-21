@@ -51,6 +51,7 @@ export const KBSettingsModelItem: React.FC<IKBSettingsModelItem> = ({ model, onC
       onClick={onClick}
       disabled={model.disabled}
       prefixIconName={model.icon}
+      testID={testID}
     />
   );
 };

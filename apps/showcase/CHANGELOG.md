@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.56.18](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.56.17...@voiceflow/showcase@1.56.18) (2024-02-21)
+
+### Bug Fixes
+
+* remove unused tracking (CT-000) ([#7786](https://github.com/voiceflow/creator-app/issues/7786)) ([c683cd9](https://github.com/voiceflow/creator-app/commit/c683cd9244cf62fcb7662a5d2ab62ef8672d9750))
+
 ## [1.56.17](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.56.16...@voiceflow/showcase@1.56.17) (2024-02-19)
 
 **Note:** Version bump only for package @voiceflow/showcase

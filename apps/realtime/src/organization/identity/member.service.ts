@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { IdentityClient } from '@voiceflow/sdk-identity';
 
 @Injectable()
-export class OrganizationMemberService {
+export class OrganizationIdentityMemberService {
   constructor(@Inject(IdentityClient) private readonly identityClient: IdentityClient) {}
 
   public async getAll(organizationID: string) {

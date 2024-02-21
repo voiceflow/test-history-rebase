@@ -1,3 +1,4 @@
+import { BillingPlan } from '@voiceflow/dtos';
 import { BillingPeriod } from '@voiceflow/internal';
 import { useAsyncMountUnmount, useSmartReducerV2 } from '@voiceflow/ui';
 import { atom, useAtom } from 'jotai';
@@ -6,6 +7,7 @@ import React from 'react';
 import { designerClient } from '@/client/designer';
 import * as Billing from '@/components/Billing';
 import * as Organization from '@/ducks/organization';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector, useTrackingEvents } from '@/hooks';
 import { onOpenBookDemoPage } from '@/utils/upgrade';
 import { getClient as getChargebeeClient, initialize as initializeChargebee } from '@/vendors/chargebee';
@@ -22,6 +24,7 @@ const proPlanPrices = atom<Record<BillingPeriod, number>>({
 export const Payment = ({ promptType, isTrialExpired, ...modalProps }: PaymentModalAPIProps) => {
   const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
   const [trackingEvents] = useTrackingEvents();
+  const organizationID = useSelector(WorkspaceV2.active.organizationIDSelector);
 
   const [prices, setPrices] = useAtom(proPlanPrices);
 
@@ -50,9 +53,26 @@ export const Payment = ({ promptType, isTrialExpired, ...modalProps }: PaymentMo
   };
 
   const onSubmitCard = async (card: Billing.CardForm.Values) => {
-    // TODO (chargebee billing): implement submit card
-    // eslint-disable-next-line no-console
-    console.log({ card });
+    if (!organizationID) return;
+
+    modalProps.api.preventClose();
+
+    try {
+      await designerClient.billing.billing.upsertCard(organizationID, {
+        json: {
+          firstName: card.name,
+          lastLame: card.name,
+          billingAddr1: card.address,
+          billingCity: card.city,
+          billingState: card.state,
+          billingCountry: card.country,
+          tempToken: card.cardAuthorization?.token,
+        },
+      });
+    } finally {
+      modalProps.api.enableClose();
+      modalProps.api.close();
+    }
   };
 
   const onBillingNext = () => {
@@ -60,7 +80,8 @@ export const Payment = ({ promptType, isTrialExpired, ...modalProps }: PaymentMo
   };
 
   const fetchPlans = async () => {
-    const plans = await designerClient.billing.plan.getAllPlans();
+    const { billing: billingClient } = designerClient.billing;
+    const plans = (await billingClient.getAllPlans()) as BillingPlan[];
     const proPlan = plans.find((plan) => plan.id === 'pro');
     const monthlyProPlanPrice = proPlan?.price.find((p) => p.period === BillingPeriod.MONTHLY)?.price;
     const annuallyProPlanPrice = proPlan?.price.find((p) => p.period === BillingPeriod.ANNUALLY)?.price;

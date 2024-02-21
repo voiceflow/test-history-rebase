@@ -26,7 +26,8 @@ export const CardForm: React.FC<I.Props> = ({ form, disabled, paymentGateway }) 
     setCardError('Card is required');
   }, [form.submitCount]);
 
-  const touchedErrors = useFormikTouchedErrors(form);
+  // TODO: fix me
+  const touchedErrors = useFormikTouchedErrors(form as any);
 
   return (
     <Box.Flex column gap={16} fullWidth>

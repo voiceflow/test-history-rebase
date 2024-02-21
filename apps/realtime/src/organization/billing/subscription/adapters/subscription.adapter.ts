@@ -14,9 +14,10 @@ import {
 } from '../subscription.utils';
 
 const subscriptionAdapter = createMultiAdapter<Realtime.Identity.Subscription, Subscription>(
-  ({ id, billingPeriodUnit, status, nextBillingAt, subscriptionItems, metaData, hasScheduledChanges, subscriptionEntitlements }) => {
+  ({ id, billingPeriodUnit, status, nextBillingAt, subscriptionItems, metaData, hasScheduledChanges, subscriptionEntitlements, ...rest }) => {
     const planItem = findPlanItem(subscriptionItems);
     const trialEnd = planItem?.trialEnd;
+    const { customerID } = rest as any;
 
     const plan = getPlanFromPriceID(planItem?.itemPriceID);
     const isTrial = isChargebeeTrial(planItem, metaData);
@@ -39,8 +40,10 @@ const subscriptionAdapter = createMultiAdapter<Realtime.Identity.Subscription, S
     const knowledgeBaseUpload = findSwitchEntitlement(subscriptionEntitlements, 'knowledge-base-upload');
     const prototypeLinks = findSwitchEntitlement(subscriptionEntitlements, 'prototype-links');
 
-    const result: Subscription = {
+    const result: Subscription & { customerID: string } = {
       id,
+
+      customerID,
 
       // status
       status,

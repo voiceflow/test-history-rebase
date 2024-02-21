@@ -8,13 +8,13 @@ import { InjectRequestContext, UseRequestContext } from '@/common';
 
 import subscriptionAdapter from './billing/subscription/adapters/subscription.adapter';
 import { BillingSubscriptionService } from './billing/subscription/subscription.service';
-import { OrganizationService } from './organization.service';
+import { OrganizationIdentityService } from './identity/identity.service';
 
 @Controller()
 @InjectRequestContext()
 export class OrganizationLoguxController {
   constructor(
-    @Inject(OrganizationService) private readonly organizationService: OrganizationService,
+    @Inject(OrganizationIdentityService) private readonly organizationService: OrganizationIdentityService,
     @Inject(BillingSubscriptionService) private readonly billingSubscriptionService: BillingSubscriptionService
   ) {}
 

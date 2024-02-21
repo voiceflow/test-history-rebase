@@ -5,10 +5,10 @@ import { IdentityClient } from '@voiceflow/sdk-identity';
 
 import { UserService } from '@/user/user.service';
 
-import { organizationAdapter } from './organization.adapter';
+import { organizationAdapter } from './identity.adapter';
 
 @Injectable()
-export class OrganizationService {
+export class OrganizationIdentityService {
   constructor(
     @Inject(UserService)
     private readonly user: UserService,
@@ -30,7 +30,18 @@ export class OrganizationService {
       }
     )) as Realtime.Identity.Organization[];
 
+    // eslint-disable-next-line no-console
+    console.log(
+      'SUBSCRIPTIONS',
+      allOrganizations.map((o) => o.subscription)
+    );
+
     return organizationAdapter.mapFromDB(allOrganizations);
+  }
+
+  public async getOrganization(creatorID: number, organizationID: string): Promise<Organization | null> {
+    const allOrganizations = await this.getAll(creatorID);
+    return allOrganizations.find((o) => o.id === organizationID) || null;
   }
 
   public async patchOne(creatorID: number, organizationID: string, values: Partial<Organization>): Promise<void> {

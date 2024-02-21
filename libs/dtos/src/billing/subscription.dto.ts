@@ -34,6 +34,8 @@ export const SubscriptionDTO = z.object({
     viewer: z.number(),
   }),
 
+  customerID: z.string(),
+
   entitlements: SubscriptionEntitlementsDTO,
 });
 

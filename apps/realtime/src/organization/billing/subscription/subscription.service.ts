@@ -50,6 +50,8 @@ export class BillingSubscriptionService {
       customer: subscription.customer && {
         cfOrganizationID: subscription.customer.cf_organization_id,
       },
+      // TODO: remove this as any when platform fix types
+      customerID: (subscription as any).customer_id,
       subscriptionEntitlements: subscription.subscription_entitlements?.map((item) => ({
         itemID: item.item_id,
         itemType: item.item_type,

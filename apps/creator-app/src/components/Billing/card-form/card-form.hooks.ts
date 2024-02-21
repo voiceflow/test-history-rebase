@@ -34,22 +34,19 @@ export const useStripeCard = ({ form, setCardError }: FormProps) => {
 export const useChargebeeCard = ({ form, setCardError }: FormProps) => {
   const cardRef = React.useRef<any>(null);
 
-  // eslint-disable-next-line sonarjs/no-identical-functions
   const onChange = (event: any) => {
     if (event.error) {
       setCardError(event.error.message);
       form.setFieldValue('cardCompleted', false);
     } else {
       form.setFieldValue('cardCompleted', event.complete);
-      setCardError(event.empty ? 'Card is required' : '');
+      setCardError('');
     }
   };
 
   const onBlur = async () => {
-    form.setFieldValue('cardCompleted', true);
-
-    // eslint-disable-next-line no-console
-    console.log('current', cardRef.current);
+    form.setFieldTouched('cardCompleted', true);
+    let completed = form.values.cardCompleted;
 
     try {
       const cardTokenData = await cardRef.current.tokenize();
@@ -58,12 +55,14 @@ export const useChargebeeCard = ({ form, setCardError }: FormProps) => {
         vaultToken: cardTokenData.vaultToken,
         additionalInformation: cardTokenData.additional_information,
       });
+      completed = true;
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error('cannot save card', error);
+      setCardError((error as any).message);
+      form.setFieldValue('cardCompleted', false);
+      completed = false;
     }
 
-    if (form.values.cardCompleted || form.errors.cardCompleted) return;
+    if (completed) return;
 
     setCardError('Card is required');
   };

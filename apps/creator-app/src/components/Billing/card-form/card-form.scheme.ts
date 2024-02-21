@@ -23,5 +23,9 @@ export const INITIAL_VALUES: Values = {
   country: '',
   address: '',
   cardCompleted: false,
-  cardAuthorization: undefined,
+  cardAuthorization: {
+    additionalInformation: undefined,
+    token: '',
+    vaultToken: '',
+  },
 };

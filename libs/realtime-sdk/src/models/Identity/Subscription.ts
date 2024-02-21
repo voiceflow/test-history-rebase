@@ -53,6 +53,8 @@ export interface Subscription {
     cfOrganizationID?: string;
   };
 
+  customerID: string;
+
   subscriptionEntitlements?: SubscriptionEntitlement[];
 
   metaData?: Record<string, unknown>;

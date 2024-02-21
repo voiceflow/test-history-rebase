@@ -4,7 +4,7 @@ import { ServiceManagerOptions, SocketServer } from '@voiceflow/socket-utils';
 
 import type { AssistantService } from '@/assistant/assistant.service';
 import { CreatorService } from '@/creator/creator.service';
-import { OrganizationService } from '@/organization/organization.service';
+import { OrganizationIdentityService } from '@/organization/identity/identity.service';
 import type { ProjectService } from '@/project/project.service';
 import type { ProjectListService } from '@/project-list/project-list.service';
 import type { ThreadService } from '@/thread/thread.service';
@@ -29,7 +29,7 @@ interface Options extends ServiceManagerOptions<LoguxControlOptions['config']> {
     hashedID: HashedIDService;
     assistant: AssistantService;
     projectList: ProjectListService;
-    organization: OrganizationService;
+    organization: OrganizationIdentityService;
     requestContext: {
       createAsync: <T>(callback: () => Promise<T>) => Promise<T>;
     };

@@ -14,7 +14,7 @@ import { Action } from 'typescript-fsa';
 import { AssistantService } from '@/assistant/assistant.service';
 import { CreatorService } from '@/creator/creator.service';
 import { createLogger } from '@/logger';
-import { OrganizationService } from '@/organization/organization.service';
+import { OrganizationIdentityService } from '@/organization/identity/identity.service';
 import { ProjectService } from '@/project/project.service';
 import { ProjectListService } from '@/project-list/project-list.service';
 import { ThreadService } from '@/thread/thread.service';
@@ -55,8 +55,8 @@ export class LegacyService implements OnApplicationBootstrap, OnApplicationShutd
     private readonly threadService: ThreadService,
     @Inject(HashedIDService)
     private readonly hashedID: HashedIDService,
-    @Inject(OrganizationService)
-    private readonly organization: OrganizationService
+    @Inject(OrganizationIdentityService)
+    private readonly organization: OrganizationIdentityService
   ) {
     this.serviceManager = new ServiceManager({
       server: Object.assign(this.server, {

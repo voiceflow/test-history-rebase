@@ -3,7 +3,7 @@ import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { createMultiAdapter, createSimpleAdapter, notImplementedAdapter } from 'bidirectional-adapter';
 import uniqBy from 'lodash/uniqBy';
 
-import subscriptionAdapter from './billing/subscription/adapters/subscription.adapter';
+import subscriptionAdapter from '../billing/subscription/adapters/subscription.adapter';
 
 export const organizationMemberSimpleAdapter = createSimpleAdapter<Realtime.Identity.OrganizationMember, OrganizationMember>(
   ({ user, membership }) => ({

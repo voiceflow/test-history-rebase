@@ -250,8 +250,10 @@ export const VOICEFLOW_CDN_ENDPOINT =
   window.VF_OVERRIDE_VOICEFLOW_CDN_ENDPOINT || process.env.VF_OVERRIDE_VOICEFLOW_CDN_ENDPOINT || 'https://cdn.voiceflow.com';
 
 // chargebee
-export const CHARGEBEE_SITE = window.VF_OVERRIDE_CHARGEBEE_SITE || process.env.VF_OVERRIDE_CHARGEBEE_SITE || '';
-export const CHARGEBEE_PUBLISHABLE_KEY = window.VF_OVERRIDE_CHARGEBEE_PUBLISHABLE_KEY || process.env.VF_OVERRIDE_CHARGEBEE_PUBLISHABLE_KEY || '';
+export const CHARGEBEE_SITE = window.VF_OVERRIDE_CHARGEBEE_SITE || process.env.VF_OVERRIDE_CHARGEBEE_SITE || 'voiceflow-test';
+export const CHARGEBEE_PUBLISHABLE_KEY =
+  // eslint-disable-next-line no-secrets/no-secrets
+  window.VF_OVERRIDE_CHARGEBEE_PUBLISHABLE_KEY || process.env.VF_OVERRIDE_CHARGEBEE_PUBLISHABLE_KEY || 'test_cuKSwNLFyBjTFrPobq68ScdQsncuG6OfW60';
 
 // datadog
 // TODO: move into env var

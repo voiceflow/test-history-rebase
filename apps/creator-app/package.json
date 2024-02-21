@@ -61,6 +61,7 @@
     "immutable": "3.7.6"
   },
   "dependencies": {
+    "@chargebee/chargebee-js-react-wrapper": "^0.6.3",
     "@chargebee/chargebee-js-types": "^1.0.1",
     "@datadog/browser-logs": "5.9.0",
     "@datadog/browser-rum": "5.9.0",

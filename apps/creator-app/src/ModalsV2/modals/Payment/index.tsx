@@ -1,10 +1,12 @@
 import React from 'react';
 
-import * as Payment from '@/contexts/PaymentContext';
+import * as PaymentContext from '@/contexts/PaymentContext';
+import * as Organization from '@/ducks/organization';
 import { UpgradePrompt } from '@/ducks/tracking';
+import { useSelector } from '@/hooks';
 
 import manager from '../../manager';
-import { LegacyPayment } from './components';
+import { LegacyPayment, Payment } from './components';
 
 export interface PaymentModalProps {
   promptType?: UpgradePrompt;
@@ -12,12 +14,16 @@ export interface PaymentModalProps {
 }
 
 const PaymentModal = manager.create<PaymentModalProps>('Payment', () => (props) => {
-  // TODO (chargebee billing): add logic to render new payment modal based on organization chargebee subscription
+  const chargebeeSubscriptionID = useSelector(Organization.chargebeeSubscriptionIDSelector);
+
+  if (chargebeeSubscriptionID) {
+    return <Payment {...props} />;
+  }
 
   return (
-    <Payment.legacy.PaymentProvider>
+    <PaymentContext.legacy.PaymentProvider>
       <LegacyPayment {...props} />
-    </Payment.legacy.PaymentProvider>
+    </PaymentContext.legacy.PaymentProvider>
   );
 });
 

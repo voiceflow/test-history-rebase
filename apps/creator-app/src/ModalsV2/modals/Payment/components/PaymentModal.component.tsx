@@ -18,6 +18,7 @@ export interface PaymentModalProps extends PaymentModalAPIProps {
   periodPrice: number;
   usedEditorSeats: number;
   editorPlanSeatLimits: number;
+  paymentGateway: 'stripe' | 'chargebee';
   onBillingNext: VoidFunction;
   onContactSales: VoidFunction;
   onBack: VoidFunction;
@@ -40,6 +41,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
   animated,
   closePrevented,
   hasCard,
+  paymentGateway,
   onBack,
   onBillingNext,
   onContactSales,
@@ -89,7 +91,14 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
         </Switch.Pane>
 
         <Switch.Pane value={Step.PAYMENT}>
-          <PaymentStep period={state.period} price={price} onClose={api.onClose} onSubmit={onSubmitCard} editorSeats={state.editorSeats} />
+          <PaymentStep
+            period={state.period}
+            price={price}
+            onClose={api.onClose}
+            onSubmit={onSubmitCard}
+            editorSeats={state.editorSeats}
+            paymentGateway={paymentGateway}
+          />
         </Switch.Pane>
       </Switch>
     </Modal>

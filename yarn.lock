@@ -2239,6 +2239,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@chargebee/chargebee-js-react-wrapper@npm:^0.6.3":
+  version: 0.6.3
+  resolution: "@chargebee/chargebee-js-react-wrapper@npm:0.6.3"
+  peerDependencies:
+    react: ^18.0.0 || ^17.0.0
+    react-dom: ^18.0.0 || ^17.0.0
+  checksum: 2f91413d3149ae3d8db814a886e5ad5a392a72d15631a0ba25ebed03a3831c1cfb923cdfa9f92a5d289f8435cf94369c1ba9b4bb4743e964c95bf006f7910de9
+  languageName: node
+  linkType: hard
+
 "@chargebee/chargebee-js-types@npm:^1.0.1":
   version: 1.0.1
   resolution: "@chargebee/chargebee-js-types@npm:1.0.1"
@@ -9165,6 +9175,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@voiceflow/creator-app@workspace:apps/creator-app"
   dependencies:
+    "@chargebee/chargebee-js-react-wrapper": ^0.6.3
     "@chargebee/chargebee-js-types": ^1.0.1
     "@datadog/browser-logs": 5.9.0
     "@datadog/browser-rum": 5.9.0

@@ -142,6 +142,7 @@ const LegacyPayment = ({ id, api, type, opened, hidden, animated, closePrevented
       editorPlanSeatLimits={editorPlanSeatLimits}
       isTrialExpired={isTrialExpired}
       promptType={promptType}
+      paymentGateway="stripe"
       onSubmitCard={onSubmitCard}
       onBack={onBack}
       onBillingNext={onBillingNext}

@@ -12,9 +12,10 @@ import PlanCard from './PlanCard';
 interface PaymentStepProps {
   price: number;
   period: BillingPeriod;
+  editorSeats: number;
+  paymentGateway: 'stripe' | 'chargebee';
   onClose: VoidFunction;
   onSubmit: (values: Billing.CardForm.Values) => Promise<void>;
-  editorSeats: number;
 }
 
 const PaymentStep: React.FC<PaymentStepProps> = ({ price, onSubmit, period, onClose, editorSeats }) => {
@@ -38,7 +39,7 @@ const PaymentStep: React.FC<PaymentStepProps> = ({ price, onSubmit, period, onCl
           </PlanCard>
         </Box>
 
-        <Billing.CardForm.Base form={form} />
+        <Billing.CardForm.Base form={form} paymentGateway="chargebee" />
       </Modal.Body>
 
       <Modal.Footer gap={12}>

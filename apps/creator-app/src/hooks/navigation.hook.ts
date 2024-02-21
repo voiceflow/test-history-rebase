@@ -39,8 +39,6 @@ export const useOnLinkClick = (): OnLinkClick => {
   return useCallback(
     (to, { state, target, params, search, replace: replaceProp, ignoreMetaKey } = {}) =>
       (event) => {
-        event.preventDefault();
-
         const pathname = getResolvedPath(to, params);
 
         if (!ignoreMetaKey && (target === '_blank' || event.metaKey)) {

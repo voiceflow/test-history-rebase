@@ -3,10 +3,6 @@ import client from '@/client';
 import { EventName } from '../constants';
 import { createProjectEvent, createProjectEventTracker } from '../utils';
 
-export const trackProjectGenerateAIFeatureToggled = createProjectEventTracker<{ enabled: boolean; flag: string }>((eventInfo) =>
-  client.analytics.track(createProjectEvent(EventName.AI_FEATURE_TOGGLED, { ...eventInfo, scope: 'project' }))
-);
-
 export const trackAIQuotaCheck = createProjectEventTracker<{ quota: number; consume: number }>((eventInfo) =>
   client.analytics.track(createProjectEvent(EventName.AI_QUOTA_CHECK, eventInfo))
 );

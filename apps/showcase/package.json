@@ -71,6 +71,7 @@
   "volta": {
     "extends": "../../package.json"
   },
+  "cienabled": "false",
   "dockerfile": "Dockerfile.nginx",
   "serviceName": "showcase"
 }

@@ -32,15 +32,12 @@ export enum EventName {
   PROJECT_MOVE_TYPE_CHANGED = 'Move Type',
   PROJECT_BLOCK_TEST_START = 'Start Test from Block',
   PROJECT_CANVAS_PROTOTYPE_END = 'Prototype Test Completed',
-  PROJECT_DUPLICATE = 'Duplicate Project',
   PROJECT_DELETE = 'Delete Project',
-  PROJECT_GOOGLE_PUBLISH_PAGE = 'Google Publish Page',
   PROJECT_API_PAGE = 'API Page',
   PROJECT_CODE_EXPORT_PAGE = 'Code Export Page',
   PROJECT_VERSION_PAGE = 'Version Page',
   PROJECT_EXIT = 'Project Exit',
   PROJECT_NEW_UTTERANCE_CREATED = 'New Utterance Created',
-  PROJECT_UTTERANCE_BULK_IMPORT = 'Utterance Bulk Import',
   PROJECT_NEW_STEP_CREATED = 'New Step Created',
   PROJECT_NLU_IMPORT = 'NLU Imported',
   PROJECT_NLU_IMPORT_FAILED = 'NLU Import Failed',
@@ -77,25 +74,16 @@ export enum EventName {
   ONBOARDING_PERSONALIZE = 'Onboarding - Personalize',
   ONBOARDING_COLLABORATORS = 'Onboarding - Collaborators',
 
-  REFERRAL_SIGNUP = 'Referral Signup',
-
   EXPORT_BUTTON_CLICK = 'Export Button Click',
   UPGRADE_PROMPT = 'Upgrade Prompt',
   UPGRADE_MODAL = 'Upgrade Modal',
   CONTACT_SALES = 'Contact Sales',
 
-  UPGRADE = 'Upgrade',
-
   IMM_NAVIGATION = 'IMM Navigation',
-  PROJECT_RESTORE = 'Project Restore',
-  VERSION_PREVIEW = 'Version Preview',
   BACKUP_PREVIEW = 'Backup Preview',
-  INTENTS_EDIT = 'Intents Edit',
   INTENT_CREATED = 'Intents Created',
-  NLU_ENTITIES_EDIT = 'NLU Entity Edited',
 
   ENTITY_CREATED = 'Entity Created',
-  VERSION_MANUALLY_CREATED = 'Version Manually Created',
   BACKUP_MANUALLY_CREATED = 'Backup Manually Created',
   VARIABLE_CREATED = 'Variable Created',
 
@@ -152,13 +140,10 @@ export enum EventName {
   // END Web Chat Configuration
 
   // GPT Events
-  AI_FEATURE_TOGGLED = 'AI Feature Toggled',
   AI_QUOTA_CHECK = 'AI Quota Check',
   AI_QUOTA_DEPLETED = 'AI Quota Depleted',
   NON_AI_NO_MATCH_GENERATE = 'Non AI No Match Generate',
   AI_RESULT_JUDGEMENT = 'AI Result Judgement',
-  GENERATE_NO_MATCH_DISCLAIMER_ACCEPTED = 'Generate No Match disclaimer accepted',
-  GENERATE_STEP_DISCLAIMER_ACCEPTED = 'Generate Step disclaimer accepted',
 
   // Dashboard
   DASHBOARD_LINK_CLICKED = 'Dashboard Link Clicked',
@@ -175,14 +160,12 @@ export enum EventName {
   AI_KNOWLEDGE_BASE_DATA_SOURCE_DELETED = 'AI - KB Data Source Deleted',
   AI_KNOWLEDGE_BASE_DATA_SOURCE_STATUS_UPDATED = 'AI - KB Data Source Status Updated',
   AI_KNOWLEDGE_BASE_DATA_SOURCE_RESYNC = 'AI - KB Data Source Resync',
-  AI_KNOWLEDGE_BASE_DATA_SOURCE_ERROR = 'AI - KB Data Source Error',
   AI_KNOWLEDGE_BASE_SETTINGS_MODIFIED = 'AI - KB Settings Modified',
   AI_KNOWLEDGE_BASE_QUESTION_PREVIEWED = 'AI - KB Question Previewed',
   AI_KNOWLEDGE_BASE_SEARCH = 'AI - KB Search',
   AI_KNOWLEDGE_BASE_ERROR = 'AI - KB Error',
   AI_KNOWLEDGE_BASE_INTEGRATION_SELECTED = 'AI - KB Integration Selected',
   AI_KNOWLEDGE_BASE_INTEGRATION_CONNECTED = 'AI - KB Integration Connected',
-  AI_KNOWLEDGE_BASE_INTEGRATION_FAILED = 'AI - KB Integration Failed',
   AI_KNOWLEDGE_BASE_INTEGRATION_FILTERS_USED = 'AI - KB Integration Filters Used',
 
   // Project API

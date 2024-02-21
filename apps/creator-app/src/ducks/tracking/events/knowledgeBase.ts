@@ -25,10 +25,6 @@ export const trackAiKnowledgeBaseSourceDeleted = createProjectEventTracker<{ doc
   client.analytics.track(createProjectEvent(EventName.AI_KNOWLEDGE_BASE_DATA_SOURCE_DELETED, eventInfo))
 );
 
-export const trackAiKnowledgeBaseSourceError = createProjectEventTracker<{ documentID: string }>((eventInfo) =>
-  client.analytics.track(createProjectEvent(EventName.AI_KNOWLEDGE_BASE_DATA_SOURCE_ERROR, eventInfo))
-);
-
 export const trackAiKnowledgeBaseSourceStatusUpdated = createProjectEventTracker<{ documentID: string }>((eventInfo) =>
   client.analytics.track(createProjectEvent(EventName.AI_KNOWLEDGE_BASE_DATA_SOURCE_STATUS_UPDATED, eventInfo))
 );

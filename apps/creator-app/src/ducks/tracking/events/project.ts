@@ -126,14 +126,6 @@ export const trackProjectExported = createVersionEventTracker<{ exportType: Expo
     )
 );
 
-export const trackProjectRestore = createProjectEventTracker<{ versionID: string }>((eventInfo) =>
-  client.analytics.track(createVersionEvent(EventName.PROJECT_RESTORE, eventInfo))
-);
-
-export const trackVersionPreview = createProjectEventTracker<{ versionID: string }>((eventInfo) =>
-  client.analytics.track(createVersionEvent(EventName.VERSION_PREVIEW, eventInfo))
-);
-
 export const trackBackupPreview = createProjectEventTracker<{ versionID: string; backupID: number }>((eventInfo) =>
   client.analytics.track(createVersionEvent(EventName.BACKUP_PREVIEW, eventInfo))
 );
@@ -155,10 +147,6 @@ export const trackActiveProjectExportInteractionModel = createVersionEventTracke
   nlpType: NLP.Constants.NLPType;
 }>(({ nlpType, ...eventInfo }) =>
   client.analytics.track(createVersionEvent(EventName.INTERACTION_MODEL_EXPORTED, { ...eventInfo, nlp_provider: nlpType }))
-);
-
-export const trackActiveProjectGooglePublishPage = createVersionEventTracker((eventInfo) =>
-  client.analytics.track(createVersionEvent(EventName.PROJECT_GOOGLE_PUBLISH_PAGE, eventInfo))
 );
 
 export const trackActiveProjectApiPage = createVersionEventTracker((eventInfo) =>

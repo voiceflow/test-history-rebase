@@ -41,14 +41,6 @@ export const trackNewUtteranceCreatedProjectNLUImport = createWorkspaceEventTrac
   )
 );
 
-export const trackProjectNLUImport = createProjectEventTracker<{
-  origin: NLUImportOrigin;
-  importNLPType: NLP.Constants.NLPType;
-  targetNLUType: Platform.Constants.NLUType;
-}>(({ importNLPType, targetNLUType, ...eventInfo }) =>
-  client.analytics.track(createProjectEvent(EventName.PROJECT_NLU_IMPORT, { ...eventInfo, nlu_type: targetNLUType, nlp_provider: importNLPType }))
-);
-
 export const trackProjectNLUImportFailed = createProjectEventTracker<{
   origin: NLUImportOrigin;
   importNLPType: NLP.Constants.NLPType;

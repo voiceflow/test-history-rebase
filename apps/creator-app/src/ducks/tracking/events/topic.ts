@@ -16,7 +16,7 @@ export const trackTopicConversion = createVersionEventTracker<{ diagramID: strin
 );
 
 export const trackSubtopicCreated = createVersionEventTracker<{ topicID: string }>(({ topicID, ...eventInfo }) =>
-  client.analytics.track(createProjectEvent(EventName.TOPIC_CREATED, { ...eventInfo, topic_id: topicID }))
+  client.analytics.track(createProjectEvent(EventName.SUBTOPIC_CREATED, { ...eventInfo, topic_id: topicID }))
 );
 
 export const trackTopicMovedDomain = createVersionEventTracker<{ topicID: string; originDomain: string; destinationDomain: string }>(

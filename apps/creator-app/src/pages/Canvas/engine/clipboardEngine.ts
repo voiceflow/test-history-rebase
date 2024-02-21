@@ -14,8 +14,6 @@ import * as Designer from '@/ducks/designer';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
-import { CanvasCreationType } from '@/ducks/tracking/constants';
-import * as TrackingEvents from '@/ducks/tracking/events';
 import * as VersionV2 from '@/ducks/versionV2';
 import * as Clipboard from '@/utils/clipboard';
 import { synchronous as synchronousCrypto } from '@/utils/crypto';
@@ -94,16 +92,6 @@ class ClipboardEngine extends EngineConsumer {
       return JSON.parse(decryptedData) as ClipboardContext;
     },
 
-    trackClipboardEvents: ({ entities = [], intents = [] }: Partial<ClipboardContext>): void => {
-      entities.forEach(() => {
-        this.dispatch(TrackingEvents.trackEntityCreated({ creationType: CanvasCreationType.PASTE }));
-      });
-
-      intents.forEach(() => {
-        this.dispatch(TrackingEvents.trackIntentCreated({ creationType: CanvasCreationType.PASTE }));
-      });
-    },
-
     importClipboardContext: async ({
       data,
       entities,
@@ -147,8 +135,6 @@ class ClipboardEngine extends EngineConsumer {
         this.dispatch(Designer.Intent.effect.createMany(validIntents)),
         this.dispatch(CustomBlock.addManyCustomBlocks(validCustomBlocks)),
       ]);
-
-      this.internal.trackClipboardEvents({ intents: validIntents, entities: validSlots });
 
       return this.dispatch(
         VersionV2.importProjectContext({

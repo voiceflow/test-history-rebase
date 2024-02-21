@@ -1,19 +1,11 @@
 import client from '@/client';
 import { BlockType, InteractionModelTabType, StepMenuType } from '@/constants';
 
-import { CanvasCreationType, EventName, IntentEditType, NLUEntityCreationType, NoMatchCreationType, VariableType } from '../constants';
+import { CanvasCreationType, EventName, NoMatchCreationType, VariableType } from '../constants';
 import { createProjectEvent, createProjectEventTracker, createVersionEvent, createVersionEventTracker } from '../utils';
 
 export const trackCanvasSeeShortcutsModalOpened = createProjectEventTracker((eventInfo) =>
   client.analytics.track(createProjectEvent(EventName.CANVAS_SHORTCUTS_MODAL_OPENED, eventInfo))
-);
-
-export const trackEntityCreated = createProjectEventTracker<{ creationType: CanvasCreationType }>(({ creationType, ...eventInfo }) =>
-  client.analytics.track(createProjectEvent(EventName.ENTITY_CREATED, { ...eventInfo, creation_type: creationType }))
-);
-
-export const trackVersionManuallyCreated = createVersionEventTracker((eventInfo) =>
-  client.analytics.track(createVersionEvent(EventName.VERSION_MANUALLY_CREATED, eventInfo))
 );
 
 export const trackBackupManuallyCreated = createVersionEventTracker((eventInfo) =>
@@ -56,18 +48,6 @@ export const trackIMMNavigation = createProjectEventTracker<{ tabName: Interacti
   client.analytics.track(createProjectEvent(EventName.IMM_NAVIGATION, { ...eventInfo, tab_name: tabName }))
 );
 
-export const trackIntentEdit = createProjectEventTracker<{ creationType: IntentEditType }>(({ creationType, ...eventInfo }) =>
-  client.analytics.track(createProjectEvent(EventName.INTENTS_EDIT, { ...eventInfo, creation_type: creationType }))
-);
-
-export const trackIntentCreated = createProjectEventTracker<{ creationType: CanvasCreationType }>(({ creationType, ...eventInfo }) =>
-  client.analytics.track(createProjectEvent(EventName.INTENT_CREATED, { ...eventInfo, creation_type: creationType }))
-);
-
-export const trackNLUEntityEdit = createProjectEventTracker<{ creationType: NLUEntityCreationType }>(({ creationType, ...eventInfo }) =>
-  client.analytics.track(createProjectEvent(EventName.NLU_ENTITIES_EDIT, { ...eventInfo, creation_type: creationType }))
-);
-
 export const trackVariableCreated = createProjectEventTracker<{ diagramID?: string; variableType: VariableType; creationType: CanvasCreationType }>(
   ({ diagramID, variableType, creationType, ...eventInfo }) =>
     client.analytics.track(
@@ -78,24 +58,6 @@ export const trackVariableCreated = createProjectEventTracker<{ diagramID?: stri
         creation_type: creationType,
       })
     )
-);
-
-export const trackNewUtteranceCreated = createProjectEventTracker<{
-  intentID?: string;
-  creationType: CanvasCreationType;
-}>(({ intentID, creationType, ...eventInfo }) =>
-  client.analytics.track(
-    createProjectEvent(EventName.PROJECT_NEW_UTTERANCE_CREATED, { ...eventInfo, intent_id: intentID, creation_type: creationType })
-  )
-);
-
-export const trackUtteranceBulkImport = createProjectEventTracker<{
-  intentID: string;
-  creationType: CanvasCreationType;
-}>(({ intentID, creationType, ...eventInfo }) =>
-  client.analytics.track(
-    createProjectEvent(EventName.PROJECT_UTTERANCE_BULK_IMPORT, { ...eventInfo, intent_id: intentID, creation_type: creationType })
-  )
 );
 
 export const trackNewStepCreated = createProjectEventTracker<{

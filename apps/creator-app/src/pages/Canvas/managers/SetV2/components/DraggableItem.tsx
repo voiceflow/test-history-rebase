@@ -6,12 +6,10 @@ import React from 'react';
 import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandlers } from '@/components/DraggableList';
 import VariableSelectV2 from '@/components/VariableSelectV2';
 import VariablesInput from '@/components/VariablesInput';
-import { Diagram, Version } from '@/ducks';
-import { CanvasCreationType } from '@/ducks/tracking';
+import { Diagram } from '@/ducks';
 import { useAutoScrollNodeIntoView, useExpressionValidator } from '@/hooks';
-import { useFeature } from '@/hooks/feature';
-import { useCreateVariableModal, useVariableCreateModal } from '@/hooks/modal.hook';
-import { useDispatch, useSelector } from '@/hooks/store.hook';
+import { useVariableCreateModal } from '@/hooks/modal.hook';
+import { useSelector } from '@/hooks/store.hook';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
 
@@ -28,28 +26,13 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
   ref
 ) => {
   const variablesMap = useSelector(Diagram.active.entitiesAndVariablesMapSelector);
-  const cmsVariables = useFeature(Realtime.FeatureFlag.CMS_VARIABLES);
-  const variableCreateModal = useVariableCreateModal();
-  const createVariableModal = useCreateVariableModal();
 
-  const addVariable = useDispatch(Version.addGlobalVariable);
+  const variableCreateModal = useVariableCreateModal();
 
   const createVariable = async (name: string): Promise<string> => {
-    if (cmsVariables.isEnabled) {
-      const variable = await variableCreateModal.open({ name, folderID: null });
+    const variable = await variableCreateModal.open({ name, folderID: null });
 
-      return variable.id;
-    }
-
-    if (!name) {
-      const [variable] = await createVariableModal.open({ single: true, creationType: CanvasCreationType.EDITOR });
-
-      return variable;
-    }
-
-    await addVariable(name, CanvasCreationType.EDITOR);
-
-    return name;
+    return variable.id;
   };
 
   const expressionValidator = useExpressionValidator();
@@ -77,10 +60,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
                 header={
                   <SectionV2.Header ref={connectedDragRef} sticky sticked={sticked && !collapsed && !isDraggingPreview && !isDragging}>
                     <SectionV2.Title bold={!collapsed}>
-                      Set{' '}
-                      {item.variable
-                        ? `{${cmsVariables.isEnabled ? variablesMap[item.variable]?.name ?? item.variable : item.variable}}`
-                        : `variable ${index + 1}`}{' '}
+                      Set {item.variable ? `{${variablesMap[item.variable]?.name ?? item.variable}}` : `variable ${index + 1}`}{' '}
                     </SectionV2.Title>
 
                     <SectionV2.CollapseArrowIcon collapsed={collapsed} />

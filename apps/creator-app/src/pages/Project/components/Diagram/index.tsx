@@ -1,8 +1,6 @@
 import { useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
-import { Route, Switch } from 'react-router';
 
-import { Path } from '@/config/routes';
 import * as UI from '@/ducks/ui';
 import { withBatchLoadingGate } from '@/hocs/withBatchLoadingGate';
 import { useDispatch, useEventualEngine, useSelector, useTeardown } from '@/hooks';
@@ -18,7 +16,7 @@ import ReadOnlyBadge from '@/pages/Prototype/components/ReadOnlyBadge';
 import DiagramSync from '../DiagramSync';
 import DomainSync from '../DomainSync';
 import MarkupImageLoading from '../MarkupImageLoading';
-import { HotKeys, NLUQuickViewRoute } from './components';
+import { HotKeys } from './components';
 import DiagramGate from './gates/DiagramGate';
 
 const Diagram: React.FC = () => {
@@ -73,11 +71,6 @@ const Diagram: React.FC = () => {
 
         <PrototypeOverlay />
       </ManagerProvider>
-
-      {/* modals  */}
-      <Switch>
-        <Route path={[Path.CANVAS_MODEL_ENTITY, Path.CANVAS_MODEL]} component={NLUQuickViewRoute} />
-      </Switch>
     </ProjectPage>
   );
 };

@@ -3,7 +3,6 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Canvas, Popper, swallowEvent, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import { useFeature } from '@/hooks/feature';
 import { ActiveDiagramNormalizedEntitiesAndVariablesContext } from '@/pages/Canvas/contexts';
 import { transformVariablesToReadable } from '@/utils/slot';
 
@@ -20,7 +19,6 @@ const Action: ConnectedAction<Realtime.NodeData.SetV2, Realtime.NodeData.SetV2Bu
   isActive,
   onOpenEditor,
 }) => {
-  const cmsVariables = useFeature(Realtime.FeatureFlag.CMS_VARIABLES);
   const entitiesAndVariables = React.useContext(ActiveDiagramNormalizedEntitiesAndVariablesContext)!;
 
   const setsToPreview = React.useMemo(() => data.sets.filter((set) => set.variable), [data.sets]);
@@ -44,14 +42,13 @@ const Action: ConnectedAction<Realtime.NodeData.SetV2, Realtime.NodeData.SetV2Bu
           port={<Step.ActionPort portID={ports.out.builtIn[BaseModels.PortType.NEXT]} />}
           label={
             <Canvas.Action.Label secondary={isEmpty}>
-              {isEmpty
+              {!firstStep?.variable
                 ? 'Set variable'
                 : data.name ||
-                  `Set {${
-                    cmsVariables.isEnabled && firstStep.variable
-                      ? entitiesAndVariables.byKey[firstStep.variable]?.name ?? firstStep.variable
-                      : firstStep.variable
-                  }} to ${transformVariablesToReadable(String(firstStep.expression) || "''", entitiesAndVariables.byKey)}`}
+                  `Set {${entitiesAndVariables.byKey[firstStep.variable]?.name ?? firstStep.variable}} to ${transformVariablesToReadable(
+                    String(firstStep.expression) || "''",
+                    entitiesAndVariables.byKey
+                  )}`}
             </Canvas.Action.Label>
           }
           nodeID={data.nodeID}

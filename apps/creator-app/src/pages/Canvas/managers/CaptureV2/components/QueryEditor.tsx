@@ -5,13 +5,11 @@ import React from 'react';
 
 import VariableSelectV2 from '@/components/VariableSelectV2';
 import * as Documentation from '@/config/documentation';
-import { Designer, Version } from '@/ducks';
-import { CanvasCreationType } from '@/ducks/tracking';
+import { Designer } from '@/ducks';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useActiveProjectTypeConfig } from '@/hooks';
-import { useFeature } from '@/hooks/feature';
-import { useCreateVariableModal, useEntityCreateModal, useVariableCreateModal } from '@/hooks/modal.hook';
-import { useDispatch, useSelector } from '@/hooks/store.hook';
+import { useEntityCreateModal, useVariableCreateModal } from '@/hooks/modal.hook';
+import { useSelector } from '@/hooks/store.hook';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { useIntentScope } from '@/pages/Canvas/managers/hooks';
 import { getPlatformNoMatchFactory } from '@/utils/noMatch';
@@ -28,29 +26,13 @@ const QueryEditor: React.FC<{ disableAnimation: boolean }> = ({ disableAnimation
   const allEntities = useSelector(Designer.Entity.selectors.all);
   const defaultVoice = useSelector(VersionV2.active.voice.defaultVoiceSelector);
 
-  const cmsVariables = useFeature(Realtime.FeatureFlag.CMS_VARIABLES);
   const entityCreateModal = useEntityCreateModal();
   const variableCreateModal = useVariableCreateModal();
-  const createVariableModal = useCreateVariableModal();
-
-  const addVariable = useDispatch(Version.addGlobalVariable);
 
   const createVariable = async (name: string): Promise<string> => {
-    if (cmsVariables.isEnabled) {
-      const variable = await variableCreateModal.open({ name, folderID: null });
+    const variable = await variableCreateModal.open({ name, folderID: null });
 
-      return variable.id;
-    }
-
-    if (!name) {
-      const [variable] = await createVariableModal.open({ single: true, creationType: CanvasCreationType.EDITOR });
-
-      return variable;
-    }
-
-    await addVariable(name, CanvasCreationType.EDITOR);
-
-    return name;
+    return variable.id;
   };
 
   const options = useEntitiesOptions(allEntities);

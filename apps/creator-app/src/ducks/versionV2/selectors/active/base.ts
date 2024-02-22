@@ -2,8 +2,6 @@ import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { createSelector } from 'reselect';
 
-import { names as cmsNamesSelector } from '@/ducks/designer/variable/variable.select';
-import { featureSelectorFactory } from '@/ducks/feature';
 import { projectConfigSelector } from '@/ducks/projectV2/selectors/active';
 import { createParameterSelector } from '@/ducks/utils';
 import { isKey } from '@/utils/object';
@@ -42,13 +40,6 @@ export const schemaVersionSelector = createSelector(
 export const invocationNameSelector = createSelector([publishingSelector], (publishing) => publishing?.invocationName ?? null);
 
 export const carouselLayoutSelector = createSelector([settingsSelector], (settings) => settings?.defaultCarouselLayout ?? null);
-
-/**
- * @deprecated should be removed with CMS_VARIABLES feature flag
- */
-
-const _globalVariablesSelector = createSelector([versionSelector], (version) => version?.variables ?? []);
-export const globalVariablesSelector = featureSelectorFactory(Realtime.FeatureFlag.CMS_VARIABLES)(_globalVariablesSelector, cmsNamesSelector);
 
 export const templateDiagramIDSelector = createSelector([versionSelector], (version) => version?.templateDiagramID ?? null);
 

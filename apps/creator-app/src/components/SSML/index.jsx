@@ -1,6 +1,5 @@
 import { Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, OverflowText, Select, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
@@ -8,7 +7,6 @@ import React from 'react';
 import { PluginType } from '@/components/TextEditor';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useHasPremiumVoice, useSelector } from '@/hooks';
-import { useFeature } from '@/hooks/feature';
 import { ClassName } from '@/styles/constants';
 import { isAzureVoiceOption, prettifyGoogleVoicesLong, prettifyVoice, voiceOptionsFilter } from '@/utils/voice';
 
@@ -52,7 +50,6 @@ const SSML = (
   const { canChangeVoice } = platformSSMLMeta;
   const voiceOptions = React.useMemo(() => platformSSMLMeta.voiceOptions(locales, hasPremiumVoice), []);
   const hasProjectLevelVoice = platform === Platform.Constants.PlatformType.GOOGLE;
-  const cmsVariables = useFeature(Realtime.FeatureFlag.CMS_VARIABLES);
 
   const voiceSelectLabel = Utils.string.capitalizeFirstLetter(
     hasProjectLevelVoice ? prettifyGoogleVoicesLong(defaultVoice) : prettifyVoice(voice) || 'Select Voice'
@@ -157,24 +154,12 @@ const SSML = (
         variables,
         creatable,
         characters,
-        cmsVariables: cmsVariables.isEnabled,
         onAddVariable,
         suggestOnSelection: false,
         createInputPlaceholder,
       },
     }),
-    [
-      additionalXMLControlsRenderer,
-      space,
-      variables,
-      creatable,
-      characters,
-      onAddVariable,
-      createInputPlaceholder,
-      withVariablesPlugin,
-      platformTags,
-      cmsVariables.isEnabled,
-    ]
+    [additionalXMLControlsRenderer, space, variables, creatable, characters, onAddVariable, createInputPlaceholder, withVariablesPlugin, platformTags]
   );
 
   const onBlurCallback = React.useCallback(

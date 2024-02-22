@@ -1,21 +1,17 @@
 import { Struct } from '@voiceflow/common';
-import * as Platform from '@voiceflow/platform-config';
 import { generatePath } from 'react-router-dom';
 
 import { PageProgress } from '@/components/PageProgressBar/utils';
 import * as Errors from '@/config/errors';
 import { CMSRoute, Path } from '@/config/routes';
-import { InteractionModelTabType, PageProgressBar, VariableType } from '@/constants';
+import { PageProgressBar } from '@/constants';
 import * as Creator from '@/ducks/creatorV2';
 import * as Designer from '@/ducks/designer';
-import { localVariablesSelector } from '@/ducks/diagramV2/selectors/active';
 import * as DomainSelectors from '@/ducks/domain/selectors';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
-import { globalVariablesSelector } from '@/ducks/versionV2/selectors/active';
 import { SyncThunk, Thunk } from '@/store/types';
-import { addVariablePrefix, removeVariablePrefix } from '@/utils/variable';
 
 import {
   goTo,
@@ -347,67 +343,6 @@ export const goToConversationsPage = (): Thunk => async (dispatch, getState) => 
   Errors.assertVersionID(versionID);
   dispatch(goToConversations(versionID));
 };
-
-export const goToNLUQuickView =
-  (entityType?: InteractionModelTabType): SyncThunk =>
-  (dispatch, getState) => {
-    const state = getState();
-    const domainID = Session.activeDomainIDSelector(state);
-    const versionID = Session.activeVersionIDSelector(state);
-    const diagramID = Session.activeDiagramIDSelector(state);
-
-    Errors.assertDiagramID(domainID);
-    Errors.assertVersionID(versionID);
-    Errors.assertDiagramID(diagramID);
-
-    dispatch(goTo(generatePath(Path.CANVAS_MODEL, { domainID, versionID, diagramID, modelType: entityType })));
-  };
-
-/**
- * @deprecated should be removed with CMS_VARIABLES feature flag
- */
-export const goToNLUQuickViewEntity =
-  (entityType: InteractionModelTabType, entityID: string): SyncThunk =>
-  (dispatch, getState) => {
-    const state = getState();
-    const domainID = Session.activeDomainIDSelector(state);
-    const versionID = Session.activeVersionIDSelector(state);
-    const diagramID = Session.activeDiagramIDSelector(state);
-
-    Errors.assertDiagramID(domainID);
-    Errors.assertVersionID(versionID);
-    Errors.assertDiagramID(diagramID);
-
-    let modelEntityID = entityID;
-
-    // entity is variable and it's not prefixed with variable type
-    if (entityType === InteractionModelTabType.VARIABLES && entityID === removeVariablePrefix(entityID)) {
-      const meta = ProjectV2.active.metaSelector(state);
-      const localVariables = localVariablesSelector(state);
-      const globalVariables = globalVariablesSelector(state);
-      const builtInVariables: string[] = Platform.Config.getTypeConfig(meta).project.globalVariables;
-
-      if (localVariables.includes(entityID)) {
-        modelEntityID = addVariablePrefix(VariableType.LOCAL, entityID);
-      } else if (globalVariables.includes(entityID)) {
-        modelEntityID = addVariablePrefix(VariableType.GLOBAL, entityID);
-      } else if (builtInVariables.includes(entityID)) {
-        modelEntityID = addVariablePrefix(VariableType.BUILT_IN, entityID);
-      }
-    }
-
-    dispatch(
-      goTo(
-        generatePath(Path.CANVAS_MODEL_ENTITY, {
-          domainID,
-          versionID,
-          diagramID,
-          modelType: entityType,
-          modelEntityID: encodeURIComponent(modelEntityID),
-        })
-      )
-    );
-  };
 
 export const goToCurrentCanvasNode =
   (nodeID: string, nodeSubPath?: string, routeState?: Struct): SyncThunk =>

@@ -17,7 +17,6 @@ export * as Intent from './Intent';
 export * as KnowledgeBase from './KnowledgeBase';
 export * as LegacyBilling from './LegacyBilling';
 export { default as Loading } from './Loading';
-export * as NLU from './NLU';
 export { default as Payment } from './Payment';
 export * as Platform from './Platform';
 export * as Project from './Project';

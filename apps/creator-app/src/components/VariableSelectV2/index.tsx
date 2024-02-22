@@ -1,10 +1,8 @@
 import { Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { BaseSelectProps, defaultMenuLabelRenderer, Menu, Select, System } from '@voiceflow/ui';
 import React from 'react';
 
 import { Diagram } from '@/ducks';
-import { useFeature } from '@/hooks/feature';
 import { useSelector } from '@/hooks/store.hook';
 
 export interface VariableSelectProps extends BaseSelectProps {
@@ -15,8 +13,6 @@ export interface VariableSelectProps extends BaseSelectProps {
 }
 
 const VariableSelectV2: React.FC<VariableSelectProps> = ({ value, onChange, onCreate: onCreateProp, ...props }) => {
-  const cmsVariables = useFeature(Realtime.FeatureFlag.CMS_VARIABLES);
-
   const variables = useSelector(Diagram.active.allEntitiesAndVariablesSelector);
   const variablesMap = useSelector(Diagram.active.entitiesAndVariablesMapSelector);
 
@@ -38,13 +34,7 @@ const VariableSelectV2: React.FC<VariableSelectProps> = ({ value, onChange, onCr
       inDropdownSearch
       alwaysShowCreate
       renderOptionLabel={(option, searchLabel, _, getOptionValue, config) =>
-        defaultMenuLabelRenderer(
-          option,
-          searchLabel,
-          (value) => (cmsVariables.isEnabled ? value && variablesMap[value]?.name : value),
-          getOptionValue,
-          config
-        )
+        defaultMenuLabelRenderer(option, searchLabel, (value) => value && variablesMap[value]?.name, getOptionValue, config)
       }
       clearOnSelectActive
       renderEmpty={({ search }) => <Menu.NotFound>{!search ? 'No variables exist in your assistant. ' : 'No variables found. '}</Menu.NotFound>}
@@ -61,8 +51,8 @@ const VariableSelectV2: React.FC<VariableSelectProps> = ({ value, onChange, onCr
       createInputPlaceholder="variables"
       {...props}
       getOptionKey={(option) => option.id}
-      getOptionValue={(option) => (cmsVariables.isEnabled ? option?.id : option?.name)}
-      getOptionLabel={(value) => (cmsVariables.isEnabled ? value && variablesMap[value] && `{${variablesMap[value].name}}` : value && `{${value}}`)}
+      getOptionValue={(option) => option?.id}
+      getOptionLabel={(value) => value && variablesMap[value] && `{${variablesMap[value].name}}`}
     />
   );
 };

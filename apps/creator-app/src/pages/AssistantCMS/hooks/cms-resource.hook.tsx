@@ -1,5 +1,4 @@
 import { Utils } from '@voiceflow/common';
-import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { tid } from '@voiceflow/style';
 import { Divider, IMenuItem, MenuItem, notify, Table, usePersistFunction } from '@voiceflow/ui-next';
 import { useAtomValue, useSetAtom } from 'jotai';
@@ -10,7 +9,6 @@ import { MenuItemWithTooltip } from '@/components/Menu/MenuItemWithTooltip/MenuI
 import { IMenuItemWithTooltip } from '@/components/Menu/MenuItemWithTooltip/MenuItemWithTooltip.interface';
 import { Designer } from '@/ducks';
 import { useGetAtomValue } from '@/hooks/atom.hook';
-import { useFeature } from '@/hooks/feature';
 import { useConfirmV2Modal } from '@/hooks/modal.hook';
 import { useDispatch, useGetValueSelector, useStore } from '@/hooks/store.hook';
 import { clipboardCopy } from '@/utils/clipboard.util';
@@ -157,7 +155,6 @@ export const useCMSResourceGetMoreMenu = ({
   const TEST_ID = tid(CMS_TEST_ID, 'context-menu');
 
   const tableState = Table.useStateMolecule();
-  const cmsFolders = useFeature(FeatureFlag.CMS_FOLDERS);
   const cmsManager = useCMSManager();
   const folderScope = useAtomValue(cmsManager.folderScope);
   const actionStates = useAtomValue(cmsManager.actionStates);
@@ -247,7 +244,7 @@ export const useCMSResourceGetMoreMenu = ({
           />
         )}
 
-        {cmsFolders.isEnabled && hasByScope && (
+        {hasByScope && (
           <MenuItem
             label="Move to..."
             onClick={Utils.functional.chainVoid(onClose, onMoveTo)}

@@ -2,7 +2,6 @@ import React from 'react';
 
 import * as Project from '@/components/Project';
 import { ExportProvider } from '@/contexts/ExportContext';
-import { NLUProvider } from '@/contexts/NLUContext';
 import { PrototypeJobProvider } from '@/contexts/PrototypeJobContext';
 import { PublishProvider } from '@/contexts/PublishContext';
 import { SearchProvider } from '@/contexts/SearchContext';
@@ -22,17 +21,15 @@ const Providers: React.FC<React.PropsWithChildren> = ({ children }) => (
             <ExportProvider>
               <TrainingProvider>
                 <Project.Export.Provider>
-                  <NLUProvider>
-                    <TrainingModelProvider>
-                      <SelectionProvider>
-                        <SearchProvider>
-                          <AnalyticsDashboardProvider>
-                            <SharePopperProvider>{children}</SharePopperProvider>
-                          </AnalyticsDashboardProvider>
-                        </SearchProvider>
-                      </SelectionProvider>
-                    </TrainingModelProvider>
-                  </NLUProvider>
+                  <TrainingModelProvider>
+                    <SelectionProvider>
+                      <SearchProvider>
+                        <AnalyticsDashboardProvider>
+                          <SharePopperProvider>{children}</SharePopperProvider>
+                        </AnalyticsDashboardProvider>
+                      </SearchProvider>
+                    </SelectionProvider>
+                  </TrainingModelProvider>
                 </Project.Export.Provider>
               </TrainingProvider>
             </ExportProvider>

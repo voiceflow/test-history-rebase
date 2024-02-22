@@ -10,7 +10,6 @@ import type { IFolderCreateModal } from '@/ModalsV2/modals/Folder/FolderCreate.m
 import type { IntentBulkImportUtterancesModalProps } from '@/ModalsV2/modals/Intent/IntentBulkImportUtterances.modal';
 import type { IIntentCreateModal } from '@/ModalsV2/modals/Intent/IntentCreate/IntentCreate.interface';
 import type { IIntentEditModal } from '@/ModalsV2/modals/Intent/IntentEdit.modal';
-import type { NLUVariableCreateProps } from '@/ModalsV2/modals/NLU/Variable/Create';
 import type { PaymentModalProps } from '@/ModalsV2/modals/Payment';
 import type { Props as SuccessProps } from '@/ModalsV2/modals/Success';
 import type { UpgradeModal } from '@/ModalsV2/modals/Upgrade';
@@ -27,7 +26,6 @@ export const useUpgradeModal = () => useModal<UpgradeModal>('Upgrade');
 export const useAddSeatsModal = () => useModal('AddSeats');
 export const usePaymentModal = () => useModal<PaymentModalProps>('Payment');
 
-export const useCreateVariableModal = () => useModal<NLUVariableCreateProps, string[]>('NLUVariableCreate');
 export const useVariablePromptModal = () => useModal<VariablePromptProps, VariablePromptResult>('VariablePrompt');
 
 export const useCreateVariableStateModal = () => useModal('VariableStateCreate');

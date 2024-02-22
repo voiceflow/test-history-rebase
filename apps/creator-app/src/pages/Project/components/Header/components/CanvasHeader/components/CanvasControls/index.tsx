@@ -3,14 +3,12 @@ import { Box, Dropdown, stopPropagation, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import Page from '@/components/Page';
-import { BlockType, InteractionModelTabType } from '@/constants';
+import { BlockType } from '@/constants';
 import { Permission } from '@/constants/permissions';
 import { SearchContext } from '@/contexts/SearchContext';
 import { Designer } from '@/ducks';
-import * as Router from '@/ducks/router';
-import { useDispatch, useFeature, usePermission, useSelector, useTrackingEvents } from '@/hooks';
+import { usePermission, useSelector } from '@/hooks';
 import { Hotkey, HOTKEY_LABEL_MAP } from '@/keymap';
-import * as ModalsV2 from '@/ModalsV2';
 import { MarkupContext } from '@/pages/Project/contexts';
 import { useCommentingMode, useCommentingToggle, useDisableModes } from '@/pages/Project/hooks';
 import { ClassName } from '@/styles/constants';
@@ -19,21 +17,15 @@ import { MoveTypePopover } from './components';
 
 const CanvasHeader: React.FC = () => {
   const markup = React.useContext(MarkupContext)!;
-  const nluQuickViewModal = ModalsV2.useModal(ModalsV2.NLU.QuickView);
 
   const hasUnreadComments = useSelector(Designer.Thread.selectors.hasUnreadComments);
-
-  const cmsVariables = useFeature(Realtime.FeatureFlag.CMS_VARIABLES);
 
   const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
   const [canUseHintFeatures] = usePermission(Permission.CANVAS_HINT_FEATURES);
 
   const onDisableModes = useDisableModes();
-  const goToNLUQuickView = useDispatch(Router.goToNLUQuickView);
   const isCommentingMode = useCommentingMode();
   const onToggleCommenting = useCommentingToggle();
-
-  const [, trackingEventsWrapper] = useTrackingEvents();
 
   const isMarkupTextActive = markup.creatingType === BlockType.MARKUP_TEXT;
   const isMarkupMediaActive = Realtime.Utils.typeGuards.isMarkupMediaBlockType(markup.creatingType);
@@ -100,18 +92,6 @@ const CanvasHeader: React.FC = () => {
             onClick={onToggleCommenting}
             className={`${ClassName.CANVAS_CONTROL}--commenting`}
             withBadge={hasUnreadComments}
-          />
-        )}
-
-        {canEditCanvas && !cmsVariables.isEnabled && (
-          <Page.Header.IconButton
-            icon="variables"
-            active={nluQuickViewModal.opened}
-            onClick={trackingEventsWrapper(() => goToNLUQuickView(InteractionModelTabType.VARIABLES), 'trackCanvasControlInteractionModel')}
-            tooltip={{
-              content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.OPEN_CMS_MODAL]}>Variables</TippyTooltip.WithHotkey>,
-              offset: [0, -6],
-            }}
           />
         )}
 

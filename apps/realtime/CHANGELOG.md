@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.276.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.275.0...@voiceflow/realtime@1.276.0) (2024-02-22)
+
+### Features
+
+* update chat template to have default utterances (COR-1052) ([#7801](https://github.com/voiceflow/creator-app/issues/7801)) ([25fca83](https://github.com/voiceflow/creator-app/commit/25fca83c7c934a977a5eaaaa9eac3fed99b42422))
+
 # [1.275.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.274.0...@voiceflow/realtime@1.275.0) (2024-02-22)
 
 ### Features

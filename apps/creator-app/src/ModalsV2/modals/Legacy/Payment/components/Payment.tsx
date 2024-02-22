@@ -2,9 +2,8 @@ import { BillingPeriod } from '@voiceflow/internal';
 import { toast, useAsyncMountUnmount, useSmartReducerV2 } from '@voiceflow/ui';
 import React from 'react';
 
-import * as Billing from '@/components/Billing';
 import { ACTIVE_PAID_PLAN, UNLIMITED_EDITORS_CONST } from '@/constants';
-import * as Payment from '@/contexts/PaymentContext';
+import * as PaymentContext from '@/contexts/PaymentContext';
 import { PlanPricesContext } from '@/contexts/PlanPricesContext';
 import * as Sessions from '@/ducks/session';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
@@ -14,12 +13,13 @@ import { useSelector } from '@/hooks/redux';
 import { getErrorMessage } from '@/utils/error';
 import { onOpenBookDemoPage } from '@/utils/upgrade';
 
+import * as CardForm from '../../Billing/components/CardForm';
 import { Step } from '../constants';
 import { PaymentModalAPIProps } from '../types';
 import { PaymentModal } from './PaymentModal.component';
 
-const LegacyPayment = ({ id, api, type, opened, hidden, animated, closePrevented, promptType, isTrialExpired }: PaymentModalAPIProps) => {
-  const paymentAPI = Payment.legacy.usePaymentAPI();
+export const Payment = ({ id, api, type, opened, hidden, animated, closePrevented, promptType, isTrialExpired }: PaymentModalAPIProps) => {
+  const paymentAPI = PaymentContext.legacy.usePaymentAPI();
   const planPrices = React.useContext(PlanPricesContext);
   const [trackingEvents] = useTrackingEvents();
 
@@ -80,7 +80,7 @@ const LegacyPayment = ({ id, api, type, opened, hidden, animated, closePrevented
     }
   };
 
-  const onSubmitCard = async (cardValues: Billing.CardForm.Values) => {
+  const onSubmitCard = async (cardValues: CardForm.Values) => {
     api.preventClose();
 
     let sourceID: string | undefined;
@@ -142,7 +142,6 @@ const LegacyPayment = ({ id, api, type, opened, hidden, animated, closePrevented
       editorPlanSeatLimits={editorPlanSeatLimits}
       isTrialExpired={isTrialExpired}
       promptType={promptType}
-      paymentGateway="stripe"
       onSubmitCard={onSubmitCard}
       onBack={onBack}
       onBillingNext={onBillingNext}
@@ -150,5 +149,3 @@ const LegacyPayment = ({ id, api, type, opened, hidden, animated, closePrevented
     />
   );
 };
-
-export default LegacyPayment;

@@ -5,24 +5,22 @@ import { useFormik } from 'formik';
 import pluralize from 'pluralize';
 import React from 'react';
 
-import * as Billing from '@/components/Billing';
-
+import * as CardForm from '../../Billing/components/CardForm';
 import PlanCard from './PlanCard';
 
 interface PaymentStepProps {
   price: number;
   period: BillingPeriod;
   editorSeats: number;
-  paymentGateway: 'stripe' | 'chargebee';
   onClose: VoidFunction;
-  onSubmit: (values: Billing.CardForm.Values) => Promise<void>;
+  onSubmit: (values: CardForm.Values) => Promise<void>;
 }
 
 const PaymentStep: React.FC<PaymentStepProps> = ({ price, onSubmit, period, onClose, editorSeats }) => {
   const form = useFormik({
     onSubmit,
-    initialValues: Billing.CardForm.INITIAL_VALUES,
-    validationSchema: Billing.CardForm.SCHEME,
+    initialValues: CardForm.INITIAL_VALUES,
+    validationSchema: CardForm.SCHEME,
     enableReinitialize: true,
   });
 
@@ -39,7 +37,7 @@ const PaymentStep: React.FC<PaymentStepProps> = ({ price, onSubmit, period, onCl
           </PlanCard>
         </Box>
 
-        <Billing.CardForm.Base form={form} paymentGateway="chargebee" />
+        <CardForm.Base form={form} paymentGateway="chargebee" />
       </Modal.Body>
 
       <Modal.Footer gap={12}>

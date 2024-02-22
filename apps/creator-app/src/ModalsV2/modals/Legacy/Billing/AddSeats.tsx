@@ -12,8 +12,8 @@ import { useSelector } from '@/hooks/redux';
 import * as currency from '@/utils/currency';
 import { onOpenBookDemoPage } from '@/utils/upgrade';
 
-import manager from '../../manager';
-import SeatsInput from '../Billing/SeatsInput';
+import manager from '../../../manager';
+import SeatsInput from '../../Billing/SeatsInput';
 
 const AddSeats = manager.create('LegacyBillingAddSeats', () =>
   withProvider(Payment.legacy.PaymentProvider)(({ api, type, opened, hidden, animated, closePrevented }) => {

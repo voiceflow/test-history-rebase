@@ -8,7 +8,7 @@ import * as Payment from '@/contexts/PaymentContext';
 import { useTrackingEvents } from '@/hooks/tracking';
 import { useActiveWorkspace } from '@/hooks/workspace';
 
-import manager from '../../manager';
+import manager from '../../../manager';
 
 const CancelSubscription = manager.create('LegacyBillingCancelSubscription', () =>
   withProvider(Payment.legacy.PaymentProvider)(({ api, type, opened, hidden, animated, closePrevented }) => {

@@ -1,8 +1,7 @@
 import { Modal, Switch, System } from '@voiceflow/ui';
 import React from 'react';
 
-import * as Billing from '@/components/Billing';
-
+import * as CardForm from '../../Billing/components/CardForm';
 import { Step } from '../constants';
 import { PaymentModalAPIProps, PaymentModalState, PaymentModalStateAPI, ProPrices } from '../types';
 import BillingStep from './BillingStep';
@@ -18,12 +17,10 @@ export interface PaymentModalProps extends PaymentModalAPIProps {
   periodPrice: number;
   usedEditorSeats: number;
   editorPlanSeatLimits: number;
-  paymentGateway: 'stripe' | 'chargebee';
   onBillingNext: VoidFunction;
   onContactSales: VoidFunction;
   onBack: VoidFunction;
-  // TODO: move billing types
-  onSubmitCard: (values: Billing.CardForm.Values) => Promise<void>;
+  onSubmitCard: (values: CardForm.Values) => Promise<void>;
 }
 
 export const PaymentModal: React.FC<PaymentModalProps> = ({
@@ -41,7 +38,6 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
   animated,
   closePrevented,
   hasCard,
-  paymentGateway,
   onBack,
   onBillingNext,
   onContactSales,
@@ -91,14 +87,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
         </Switch.Pane>
 
         <Switch.Pane value={Step.PAYMENT}>
-          <PaymentStep
-            period={state.period}
-            price={price}
-            onClose={api.onClose}
-            onSubmit={onSubmitCard}
-            editorSeats={state.editorSeats}
-            paymentGateway={paymentGateway}
-          />
+          <PaymentStep period={state.period} price={price} onClose={api.onClose} onSubmit={onSubmitCard} editorSeats={state.editorSeats} />
         </Switch.Pane>
       </Switch>
     </Modal>

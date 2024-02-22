@@ -11,8 +11,8 @@ import { useSelector } from '@/hooks/redux';
 import { useTrackingEvents } from '@/hooks/tracking';
 import * as currency from '@/utils/currency';
 
-import manager from '../../manager';
-import SeatsInput from '../Billing/SeatsInput';
+import manager from '../../../manager';
+import SeatsInput from '../../Billing/SeatsInput';
 
 interface ScheduleSeatChangeProps {
   billingPeriod?: BillingPeriod;

@@ -2,10 +2,10 @@ import { Button, Modal, SectionV2, withProvider } from '@voiceflow/ui';
 import { useFormik } from 'formik';
 import React from 'react';
 
-import * as Billing from '@/components/Billing';
 import * as PaymentContext from '@/contexts/PaymentContext';
 
-import manager from '../../manager';
+import manager from '../../../manager';
+import * as CardForm from './components/CardForm';
 
 interface AddCardProps {
   update?: boolean;
@@ -27,8 +27,8 @@ const AddCard = manager.create<AddCardProps>('LegacyBillingAddCard', () =>
 
     const form = useFormik({
       onSubmit: onSubmitForm,
-      initialValues: Billing.CardForm.INITIAL_VALUES,
-      validationSchema: Billing.CardForm.SCHEME,
+      initialValues: CardForm.INITIAL_VALUES,
+      validationSchema: CardForm.SCHEME,
       enableReinitialize: true,
     });
 
@@ -40,7 +40,7 @@ const AddCard = manager.create<AddCardProps>('LegacyBillingAddCard', () =>
           </Modal.Header>
 
           <SectionV2.SimpleSection headerProps={{ topUnit: 3 }}>
-            <Billing.CardForm.Base form={form} disabled={form.isSubmitting} />
+            <CardForm.Base form={form} disabled={form.isSubmitting} />
           </SectionV2.SimpleSection>
 
           <Modal.Footer gap={8}>

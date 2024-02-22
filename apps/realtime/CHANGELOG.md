@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.275.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.274.0...@voiceflow/realtime@1.275.0) (2024-02-22)
+
+### Features
+
+* remove folders and variables FFs (COR-1024) ([#7788](https://github.com/voiceflow/creator-app/issues/7788)) ([6a9c934](https://github.com/voiceflow/creator-app/commit/6a9c9348384e8b972a4a1a2b2b5568199baf3799))
+
 # [1.274.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.273.0...@voiceflow/realtime@1.274.0) (2024-02-20)
 
 ### Features

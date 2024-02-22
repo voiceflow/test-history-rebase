@@ -1,7 +1,5 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import * as Platform from '@voiceflow/platform-config';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import _unionBy from 'lodash/unionBy';
 import { normalize } from 'normal-store';
 import { createSelector } from 'reselect';
@@ -10,9 +8,7 @@ import { activeDiagramIDSelector } from '@/ducks/creatorV2/selectors';
 import { all as allEntitiesSelector } from '@/ducks/designer/entity/selectors/crud.select';
 import { all as allCMSVariablesSelector } from '@/ducks/designer/variable/variable.select';
 import { topicIDsSelector } from '@/ducks/domain/selectors/active';
-import { featureSelectorFactory } from '@/ducks/feature';
-import { metaSelector } from '@/ducks/projectV2/selectors/active';
-import { componentsSelector, globalVariablesSelector, templateDiagramIDSelector } from '@/ducks/versionV2/selectors/active';
+import { componentsSelector, templateDiagramIDSelector } from '@/ducks/versionV2/selectors/active';
 
 import { getDiagramByIDSelector, getDiagramsByIDsSelector } from './base';
 
@@ -41,31 +37,7 @@ export const localVariablesSelector = createSelector(
   (getDiagram, activeDiagramID) => getDiagram({ id: activeDiagramID })?.variables ?? []
 );
 
-/**
- * @deprecated should be removed with CMS_VARIABLES feature flag
- */
-export const allVariablesSelector = createSelector(
-  [globalVariablesSelector, localVariablesSelector, metaSelector],
-  (globalVariables, activeDiagramVariables, meta) => [
-    ...Platform.Config.getTypeConfig(meta).project.globalVariables,
-    ...globalVariables,
-    ...activeDiagramVariables,
-  ]
-);
-
-const legacyAllEntitiesAndVariablesSelector = createSelector(
-  [allEntitiesSelector, allVariablesSelector],
-  (slots, allVariables): Array<{ id: string; name: string; color?: string; isVariable: boolean }> =>
-    _unionBy(
-      [
-        ...slots.map((slot) => ({ id: slot.id, name: slot.name, color: slot.color, isVariable: false })),
-        ...allVariables.map((variable) => ({ id: variable, name: variable, color: undefined, isVariable: true })),
-      ],
-      (item) => item.name
-    )
-);
-
-const newAllEntitiesAndVariablesSelector = createSelector(
+export const allEntitiesAndVariablesSelector = createSelector(
   [allEntitiesSelector, allCMSVariablesSelector, localVariablesSelector],
   (entities, variables, localVariables): Array<{ id: string; name: string; color?: string; isVariable: boolean }> =>
     _unionBy(
@@ -76,11 +48,6 @@ const newAllEntitiesAndVariablesSelector = createSelector(
       ],
       (item) => item.name
     )
-);
-
-export const allEntitiesAndVariablesSelector = featureSelectorFactory(Realtime.FeatureFlag.CMS_VARIABLES)(
-  legacyAllEntitiesAndVariablesSelector,
-  newAllEntitiesAndVariablesSelector
 );
 
 export const entitiesAndVariablesMapSelector = createSelector(allEntitiesAndVariablesSelector, (variables) =>

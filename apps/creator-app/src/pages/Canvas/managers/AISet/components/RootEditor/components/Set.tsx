@@ -1,15 +1,10 @@
 import { BaseNode, BaseUtils } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import VariableSelectV2 from '@/components/VariableSelectV2';
 import VariablesInput from '@/components/VariablesInput';
-import { Version } from '@/ducks';
-import { CanvasCreationType } from '@/ducks/tracking';
-import { useFeature } from '@/hooks/feature';
-import { useCreateVariableModal, useVariableCreateModal } from '@/hooks/modal.hook';
-import { useDispatch } from '@/hooks/store.hook';
+import { useVariableCreateModal } from '@/hooks/modal.hook';
 import * as AI from '@/pages/Canvas/managers/components/AI';
 
 interface SetSectionProps {
@@ -37,28 +32,12 @@ export const MEMORY_SELECT_OPTIONS: AI.MemorySelectOption[] = [
 ];
 
 const SetSection: React.FC<SetSectionProps> = ({ set, source, onUpdate, onRemove, removeDisabled, isDeprecated }) => {
-  const cmsVariables = useFeature(Realtime.FeatureFlag.CMS_VARIABLES);
   const variableCreateModal = useVariableCreateModal();
-  const createVariableModal = useCreateVariableModal();
-
-  const addVariable = useDispatch(Version.addGlobalVariable);
 
   const createVariable = async (name: string): Promise<string> => {
-    if (cmsVariables.isEnabled) {
-      const variable = await variableCreateModal.open({ name, folderID: null });
+    const variable = await variableCreateModal.open({ name, folderID: null });
 
-      return variable.id;
-    }
-
-    if (!name) {
-      const [variable] = await createVariableModal.open({ single: true, creationType: CanvasCreationType.EDITOR });
-
-      return variable;
-    }
-
-    await addVariable(name, CanvasCreationType.EDITOR);
-
-    return name;
+    return variable.id;
   };
 
   return (

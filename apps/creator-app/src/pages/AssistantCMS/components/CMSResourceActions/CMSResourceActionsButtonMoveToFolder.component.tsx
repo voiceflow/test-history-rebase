@@ -1,21 +1,17 @@
 import { Utils } from '@voiceflow/common';
 import { Folder } from '@voiceflow/dtos';
-import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { notify, Popper, Table } from '@voiceflow/ui-next';
 import { useAtomValue, useSetAtom } from 'jotai';
 import React, { useMemo } from 'react';
 
 import { FolderMenu } from '@/components/Folder/FolderMenu/FolderMenu.component';
 import { Designer } from '@/ducks';
-import { useFeature } from '@/hooks/feature';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
 import { useCMSManager } from '@/pages/AssistantCMS/contexts/CMSManager';
 
 import { CMSResourceActionsButton } from './CMSResourceActionsButton/CMSResourceActionsButton.component';
 
 export const CMSResourceActionsButtonMoveToFolder: React.FC = () => {
-  const cmsFolders = useFeature(FeatureFlag.CMS_FOLDERS);
-
   const tableState = Table.useStateMolecule();
   const cmsManager = useCMSManager();
 
@@ -55,7 +51,7 @@ export const CMSResourceActionsButtonMoveToFolder: React.FC = () => {
     }
   };
 
-  if (!cmsFolders.isEnabled || !hasFolders) return null;
+  if (!hasFolders) return null;
 
   return (
     <Popper

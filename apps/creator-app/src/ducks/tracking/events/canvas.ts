@@ -1,5 +1,5 @@
 import client from '@/client';
-import { BlockType, InteractionModelTabType, StepMenuType } from '@/constants';
+import { BlockType, StepMenuType } from '@/constants';
 
 import { CanvasCreationType, EventName, NoMatchCreationType, VariableType } from '../constants';
 import { createProjectEvent, createProjectEventTracker, createVersionEvent, createVersionEventTracker } from '../utils';
@@ -42,10 +42,6 @@ export const trackNewThreadCreated = createVersionEventTracker((eventInfo) =>
 
 export const trackNewThreadReply = createVersionEventTracker((eventInfo) =>
   client.analytics.track(createVersionEvent(EventName.PROJECT_NEW_THREAD_REPLY, eventInfo))
-);
-
-export const trackIMMNavigation = createProjectEventTracker<{ tabName: InteractionModelTabType }>(({ tabName, ...eventInfo }) =>
-  client.analytics.track(createProjectEvent(EventName.IMM_NAVIGATION, { ...eventInfo, tab_name: tabName }))
 );
 
 export const trackVariableCreated = createProjectEventTracker<{ diagramID?: string; variableType: VariableType; creationType: CanvasCreationType }>(

@@ -190,8 +190,6 @@ export class EnvironmentService {
       this.postgresEM.transactional(() => this.findOneCMSData(projectID.toHexString(), environmentID)),
     ]);
 
-    const cmsVariablesEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_VARIABLES, { workspaceID: project.teamID });
-
     const { legacySlots, legacyIntents, legacyVariables } = this.convertCMSResourcesToLegacyResources({
       ...cmsData,
       isVoiceAssistant:
@@ -200,7 +198,7 @@ export class EnvironmentService {
 
     await Promise.all([
       this.version.patchOnePlatformData(environmentID, { intents: legacyIntents, slots: legacySlots }),
-      cmsVariablesEnabled ? this.version.patchOne(environmentID, { variables: legacyVariables }) : Promise.resolve(),
+      this.version.patchOne(environmentID, { variables: legacyVariables }),
     ]);
 
     // fetching version to get updated platformData
@@ -286,18 +284,16 @@ export class EnvironmentService {
     data: EnvironmentCMSEntities,
     { userID, backup, workspaceID }: { userID: number; backup?: boolean; workspaceID: number }
   ) {
-    const cmsFoldersEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_FOLDERS, { userID, workspaceID });
     const cmsFunctionsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_FUNCTIONS, { userID, workspaceID });
-    const cmsVariablesEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_VARIABLES, { userID, workspaceID });
 
     return {
       ...this.entity.prepareExportData(data, { backup }),
       ...this.intent.prepareExportData(data, { backup }),
+      ...this.folder.prepareExportData(data, { backup }),
       ...this.response.prepareExportData(data, { backup }),
+      ...this.variable.prepareExportData(data, { backup }),
       ...this.attachment.prepareExportData(data, { backup }),
 
-      ...(cmsFoldersEnabled && this.folder.prepareExportData(data, { backup })),
-      ...(cmsVariablesEnabled && this.variable.prepareExportData(data, { backup })),
       ...(cmsFunctionsEnabled && this.functionService.prepareExportData(data, { backup })),
     };
   }
@@ -306,18 +302,16 @@ export class EnvironmentService {
     data: { [Key in keyof EnvironmentCMSEntities]: ToJSONWithForeignKeys<EnvironmentCMSEntities[Key][number]>[] },
     { userID, workspaceID }: { userID: number; workspaceID: number }
   ) {
-    const cmsFoldersEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_FOLDERS, { userID, workspaceID });
     const cmsFunctionsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_FUNCTIONS, { userID, workspaceID });
-    const cmsVariablesEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_VARIABLES, { userID, workspaceID });
 
     return {
       ...this.entity.prepareExportJSONData(data),
+      ...this.folder.prepareExportJSONData(data),
       ...this.intent.prepareExportJSONData(data),
       ...this.response.prepareExportJSONData(data),
+      ...this.variable.prepareExportJSONData(data),
       ...this.attachment.prepareExportJSONData(data),
 
-      ...(cmsFoldersEnabled && this.folder.prepareExportJSONData(data)),
-      ...(cmsVariablesEnabled && this.variable.prepareExportJSONData(data)),
       ...(cmsFunctionsEnabled && this.functionService.prepareExportJSONData(data)),
     };
   }
@@ -374,13 +368,15 @@ export class EnvironmentService {
       environmentID,
     }: { userID: number; backup?: boolean; workspaceID: number; assistantID: string; environmentID: string }
   ) {
-    const cmsFoldersEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_FOLDERS, { userID, workspaceID });
     const cmsFunctionsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_FUNCTIONS, { userID, workspaceID });
-    const cmsVariablesEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_VARIABLES, { userID, workspaceID });
 
     const prepareDataContext = { userID, backup, assistantID, environmentID };
 
     return {
+      ...(cms.folders && this.folder.prepareImportData({ folders: cms.folders }, prepareDataContext)),
+
+      ...(cms.variables && this.variable.prepareImportData({ variables: cms.variables }, prepareDataContext)),
+
       ...(cms.attachments &&
         cms.cardButtons &&
         this.attachment.prepareImportData({ attachments: cms.attachments, cardButtons: cms.cardButtons }, prepareDataContext)),
@@ -419,10 +415,6 @@ export class EnvironmentService {
           { functions: cms.functions, functionPaths: cms.functionPaths, functionVariables: cms.functionVariables },
           prepareDataContext
         )),
-
-      ...(cmsVariablesEnabled && cms.variables && this.variable.prepareImportData({ variables: cms.variables }, prepareDataContext)),
-
-      ...(cmsFoldersEnabled && cms.folders && this.folder.prepareImportData({ folders: cms.folders }, prepareDataContext)),
     };
   }
 
@@ -775,8 +767,6 @@ export class EnvironmentService {
       const targetProject = await this.projectORM.findOneOrFail(targetVersion.projectID);
 
       if (convertToLegacyFormat) {
-        const cmsVariablesEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_VARIABLES, { workspaceID: targetProject.teamID });
-
         const { legacySlots, legacyIntents, legacyVariables } = this.convertCMSResourcesToLegacyResources({
           ...result,
           isVoiceAssistant:
@@ -786,7 +776,7 @@ export class EnvironmentService {
 
         await Promise.all([
           this.version.patchOnePlatformData(targetVersion.id, { intents: legacyIntents, slots: legacySlots }),
-          cmsVariablesEnabled ? this.version.patchOne(targetVersion.id, { variables: legacyVariables }) : Promise.resolve(),
+          this.version.patchOne(targetVersion.id, { variables: legacyVariables }),
         ]);
 
         // refetching version to get updated platformData

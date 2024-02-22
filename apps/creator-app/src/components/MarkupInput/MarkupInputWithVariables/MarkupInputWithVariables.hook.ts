@@ -1,15 +1,13 @@
 import type { Markup } from '@voiceflow/dtos';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { SlateEditor, useCreateConst, usePersistFunction } from '@voiceflow/ui-next';
 import type { SlateEditorRef } from '@voiceflow/ui-next/build/cjs/components/Inputs/SlateEditor';
 import { useMemo, useRef } from 'react';
 import type { Descendant } from 'slate';
 
 import { Designer } from '@/ducks';
-import { slateLegacyVariableFactory, slateVariableItemFactory } from '@/ducks/designer/selectors';
-import { useFeature } from '@/hooks/feature';
+import { slateVariableItemFactory } from '@/ducks/designer/selectors';
 import { useInput } from '@/hooks/input.hook';
-import { useCreateVariableModal, useEntityEditModal, useVariableCreateModal, useVariableEditModal } from '@/hooks/modal.hook';
+import { useEntityEditModal, useVariableCreateModal, useVariableEditModal } from '@/hooks/modal.hook';
 import { useSelector } from '@/hooks/store.hook';
 import { markupToSlate } from '@/utils/markup.util';
 
@@ -40,11 +38,9 @@ export const useMarkupWithVariables = ({
 }) => {
   const editor = useCreateConst(() => SlateEditor.createEditor([SlateEditor.PluginType.VARIABLE, ...plugins]));
   const emptyRef = useRef(false);
-  const cmsVariables = useFeature(Realtime.FeatureFlag.CMS_VARIABLES);
   const entityEditModal = useEntityEditModal();
   const variableEditModal = useVariableEditModal();
   const variableCreateModal = useVariableCreateModal();
-  const createLegacyVariableModal = useCreateVariableModal();
 
   const variablesMap = useSelector(
     (state) => pluginOptions?.[SlateEditor.PluginType.VARIABLE]?.variablesMap ?? Designer.selectors.uniqueSlateEntitiesAndVariablesMapByID(state)
@@ -86,22 +82,16 @@ export const useMarkupWithVariables = ({
   });
 
   const onCreateVariable = usePersistFunction(async (name: string) => {
-    if (cmsVariables.isEnabled) {
-      const variable = await variableCreateModal.open({ name, folderID: null });
+    const variable = await variableCreateModal.open({ name, folderID: null });
 
-      return slateVariableItemFactory(SlateEditor.VariableElementVariant.VARIABLE)(variable);
-    }
-
-    const [firstVar] = await createLegacyVariableModal.open({ name });
-
-    return slateLegacyVariableFactory(SlateEditor.VariableElementVariant.VARIABLE)(firstVar);
+    return slateVariableItemFactory(SlateEditor.VariableElementVariant.VARIABLE)(variable);
   });
 
   const pluginsOptions = useMemo<SlateEditor.ISlateEditor['pluginsOptions']>(
     () => ({
       ...pluginOptions,
       [SlateEditor.PluginType.VARIABLE]: {
-        onClick: cmsVariables.isEnabled ? onClickVariable : undefined,
+        onClick: onClickVariable,
         ...pluginOptions?.[SlateEditor.PluginType.VARIABLE],
         onCreate: onCreateVariable,
         variablesMap,

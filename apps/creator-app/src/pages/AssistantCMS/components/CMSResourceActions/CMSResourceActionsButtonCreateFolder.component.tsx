@@ -1,13 +1,11 @@
 import { Utils } from '@voiceflow/common';
 import { Folder } from '@voiceflow/dtos';
-import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { notify, Table } from '@voiceflow/ui-next';
 import { useAtomValue, useSetAtom } from 'jotai';
 import React from 'react';
 
 import { Designer } from '@/ducks';
 import { useGetAtomValue } from '@/hooks/atom.hook';
-import { useFeature } from '@/hooks/feature';
 import { useFolderCreateModal } from '@/hooks/modal.hook';
 import { useDispatch, useGetValueSelector } from '@/hooks/store.hook';
 import { useCMSManager } from '@/pages/AssistantCMS/contexts/CMSManager';
@@ -15,7 +13,6 @@ import { useCMSManager } from '@/pages/AssistantCMS/contexts/CMSManager';
 import { CMSResourceActionsButton } from './CMSResourceActionsButton/CMSResourceActionsButton.component';
 
 export const CMSResourceActionsButtonCreateFolder: React.FC = () => {
-  const cmsFolders = useFeature(FeatureFlag.CMS_FOLDERS);
   const createModal = useFolderCreateModal();
 
   const tableState = Table.useStateMolecule();
@@ -60,8 +57,6 @@ export const CMSResourceActionsButtonCreateFolder: React.FC = () => {
       notify.short.error(`Couldn't move selected items to the '${folder.name}' folder. Please try again.`);
     }
   };
-
-  if (!cmsFolders.isEnabled) return null;
 
   return <CMSResourceActionsButton label="Create folder" iconName="Folder" onClick={onClick} />;
 };

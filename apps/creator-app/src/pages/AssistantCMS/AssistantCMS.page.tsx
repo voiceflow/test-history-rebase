@@ -34,7 +34,6 @@ const AssistantCMS = () => {
 
   const { isEnabled: isKbEnabled } = useFeature(Realtime.FeatureFlag.KNOWLEDGE_BASE);
   const { isEnabled: isFunctionsCmsEnabled } = useFeature(Realtime.FeatureFlag.CMS_FUNCTIONS);
-  const { isEnabled: isCMSVariablesEnabled } = useFeature(Realtime.FeatureFlag.CMS_VARIABLES);
 
   React.useEffect(() => {
     if (isKbEnabled) {
@@ -50,9 +49,9 @@ const AssistantCMS = () => {
 
         <Route path={Path.CMS_ENTITY} component={AssistantCMSEntity} />
 
-        {isKbEnabled && <Route path={Path.CMS_KNOWLEDGE_BASE} component={AssistantCMSKnowledgeBase} />}
+        <Route path={Path.CMS_VARIABLE} component={AssistantCMSVariable} />
 
-        {isCMSVariablesEnabled && <Route path={Path.CMS_VARIABLE} component={AssistantCMSVariable} />}
+        {isKbEnabled && <Route path={Path.CMS_KNOWLEDGE_BASE} component={AssistantCMSKnowledgeBase} />}
 
         {isFunctionsCmsEnabled && <Route path={Path.CMS_FUNCTION} component={AssistantCMSFunction} />}
 

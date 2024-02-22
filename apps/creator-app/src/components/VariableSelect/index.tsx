@@ -1,14 +1,9 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
-import { BaseSelectProps, Select, toast } from '@voiceflow/ui';
+import { BaseSelectProps, Select } from '@voiceflow/ui';
 import React from 'react';
 
 import * as DiagramV2 from '@/ducks/diagramV2';
-import { CanvasCreationType } from '@/ducks/tracking/constants';
-import * as Version from '@/ducks/versionV2';
-import { useDispatch, useSelector } from '@/hooks';
-import { useFeature } from '@/hooks/feature';
+import { useSelector } from '@/hooks';
 import { useVariableCreateModal } from '@/hooks/modal.hook';
-import { getErrorMessage } from '@/utils/error';
 
 export interface VariableSelectProps extends BaseSelectProps {
   value?: string | null;
@@ -19,33 +14,17 @@ export interface VariableSelectProps extends BaseSelectProps {
 }
 
 const VariableSelect: React.FC<VariableSelectProps> = ({ value, onChange, ...props }) => {
-  const cmsVariables = useFeature(Realtime.FeatureFlag.CMS_VARIABLES);
   const variableCreateModal = useVariableCreateModal();
   const variables = useSelector(DiagramV2.active.allEntitiesAndVariablesSelector);
   const variablesMap = useSelector(DiagramV2.active.entitiesAndVariablesMapSelector);
-  const addVariable = useDispatch(Version.addGlobalVariable);
 
   const onCreate = async (name: string) => {
-    if (!name) return;
-
-    if (cmsVariables.isEnabled) {
-      try {
-        const variable = await variableCreateModal.open({ name, folderID: null });
-
-        onChange(variable.id);
-      } catch {
-        // do nothing
-      }
-
-      return;
-    }
-
     try {
-      await addVariable(name, CanvasCreationType.EDITOR);
+      const variable = await variableCreateModal.open({ name, folderID: null });
 
-      onChange(name);
-    } catch (err) {
-      toast.error(getErrorMessage(err));
+      onChange(variable.id);
+    } catch {
+      // do nothing
     }
   };
 
@@ -61,8 +40,8 @@ const VariableSelect: React.FC<VariableSelectProps> = ({ value, onChange, ...pro
       onSelect={onChange}
       onCreate={onCreate}
       getOptionKey={(option) => option.id}
-      getOptionValue={(option) => (cmsVariables.isEnabled ? option?.id : option?.name)}
-      getOptionLabel={(value) => (cmsVariables.isEnabled ? value && variablesMap[value]?.name : value)}
+      getOptionValue={(option) => option?.id}
+      getOptionLabel={(value) => value && variablesMap[value]?.name}
     />
   );
 };

@@ -17,7 +17,6 @@ export enum Hotkey {
   ESC_CLOSE = 'ESC_CLOSE',
 
   USER_SPEECH = 'USER_SPEECH',
-  OPEN_CMS_MODAL = 'OPEN_CMS_MODAL',
   OPEN_MANUAL_SAVE_MODAL = 'OPEN_MANUAL_SAVE_MODAL',
   CLOSE_DESIGN_MENU = 'CLOSE_DESIGN_MENU',
   TOGGLE_DESIGN_MENU_LOCK = 'TOGGLE_DESIGN_MENU_LOCK',
@@ -113,7 +112,6 @@ const HOTKEY_MAPPING: Record<Hotkey, string | string[]> = {
   [Hotkey.SAVE_BACKUP]: [`${SpecialKey.CTRL} + S`, `${SpecialKey.META} + S`],
   [Hotkey.MOVE_BACKWARD]: SpecialKey.LEFT,
   [Hotkey.UPLOAD_PROJECT]: [`${SpecialKey.CTRL}+u`, `${SpecialKey.META}+u`],
-  [Hotkey.OPEN_CMS_MODAL]: 'm',
   [Hotkey.OPEN_COMMENTING]: 'c',
   [Hotkey.ADD_MARKUP_NOTE]: 'n',
   [Hotkey.ADD_MARKUP_IMAGE]: 'i',

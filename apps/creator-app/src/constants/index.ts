@@ -144,10 +144,6 @@ export enum ExportType {
   MODEL = 'model',
 }
 
-export enum InteractionModelTabType {
-  VARIABLES = 'variables',
-}
-
 export enum JobStatus {
   IDLE = 'IDLE',
   ACTIVE = 'ACTIVE',

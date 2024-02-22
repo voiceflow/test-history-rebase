@@ -19,7 +19,6 @@ export const CMSMenu: React.FC = () => {
   const onLinkClick = useOnLinkClick();
   const { isEnabled: isKbEnabled } = useFeature(Realtime.FeatureFlag.KNOWLEDGE_BASE);
   const { isEnabled: isFunctionsCmsEnabled } = useFeature(Realtime.FeatureFlag.CMS_FUNCTIONS);
-  const { isEnabled: isCMSVariablesEnabled } = useFeature(Realtime.FeatureFlag.CMS_VARIABLES);
 
   const { updateActiveCMSRoute } = useCMSRoute();
 
@@ -97,31 +96,27 @@ export const CMSMenu: React.FC = () => {
 
       */}
 
-      {(isFunctionsCmsEnabled || isCMSVariablesEnabled) && (
-        <SecondaryNavigation.Section title="Content">
-          {isCMSVariablesEnabled && (
-            <SecondaryNavigation.Item
-              icon="Variable"
-              label="Variables"
-              caption={String(variablesCount)}
-              onClick={onTabClick(Path.CMS_VARIABLE, CMSRoute.VARIABLE)}
-              isActive={isItemActive(Path.CMS_VARIABLE)}
-              testID={tid(TEST_ID, 'variables')}
-            />
-          )}
+      <SecondaryNavigation.Section title="Content">
+        <SecondaryNavigation.Item
+          icon="Variable"
+          label="Variables"
+          caption={String(variablesCount)}
+          onClick={onTabClick(Path.CMS_VARIABLE, CMSRoute.VARIABLE)}
+          isActive={isItemActive(Path.CMS_VARIABLE)}
+          testID={tid(TEST_ID, 'variables')}
+        />
 
-          {isFunctionsCmsEnabled && (
-            <SecondaryNavigation.Item
-              icon="Code"
-              label="Functions"
-              caption={String(functionsCount)}
-              onClick={onTabClick(Path.CMS_FUNCTION, CMSRoute.FUNCTION)}
-              isActive={isItemActive(Path.CMS_FUNCTION)}
-              testID={tid(TEST_ID, 'functions')}
-            />
-          )}
-        </SecondaryNavigation.Section>
-      )}
+        {isFunctionsCmsEnabled && (
+          <SecondaryNavigation.Item
+            icon="Code"
+            label="Functions"
+            caption={String(functionsCount)}
+            onClick={onTabClick(Path.CMS_FUNCTION, CMSRoute.FUNCTION)}
+            isActive={isItemActive(Path.CMS_FUNCTION)}
+            testID={tid(TEST_ID, 'functions')}
+          />
+        )}
+      </SecondaryNavigation.Section>
 
       <SecondaryNavigation.Section title="Natural language">
         <SecondaryNavigation.Item

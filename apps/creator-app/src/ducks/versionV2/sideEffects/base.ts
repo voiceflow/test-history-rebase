@@ -16,7 +16,6 @@ import { getActivePlatformVersionContext } from '../utils';
 import { platformFactory } from './utils';
 
 export * from './components';
-export * from './variables';
 
 /**
  * called after successfully subscribing to a realtime "version" channel

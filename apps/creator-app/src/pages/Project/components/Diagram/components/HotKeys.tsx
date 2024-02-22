@@ -1,4 +1,3 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { CANVAS_ZOOM_DELTA } from '@/constants';
@@ -6,7 +5,7 @@ import { Permission } from '@/constants/permissions';
 import { HotkeysContext } from '@/contexts/HotkeysContext';
 import * as Router from '@/ducks/router';
 import * as UI from '@/ducks/ui';
-import { useDispatch, useEventualEngine, useFeature, useHotkeyList, usePermission, useSelector, useTrackingEvents } from '@/hooks';
+import { useDispatch, useEventualEngine, useHotkeyList, usePermission, useSelector } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import * as ModalsV2 from '@/ModalsV2';
 import { MarkupContext } from '@/pages/Project/contexts';
@@ -22,16 +21,13 @@ const HotKeys: React.FC = () => {
   const isCanvasOnly = useSelector(UI.isCanvasOnlyShowingSelector);
 
   const goToPrototype = useDispatch(Router.goToCurrentPrototype);
-  const goToNLUQuickView = useDispatch(Router.goToNLUQuickView);
   const toggleCanvasOnly = useDispatch(UI.toggleCanvasOnly);
 
   const manualSaveModal = ModalsV2.useModal(ModalsV2.Project.ManualSaveBackup);
 
   const activeModalID = ModalsV2.useActiveModalID();
 
-  const cmsVariables = useFeature(Realtime.FeatureFlag.CMS_VARIABLES);
   const getEngine = useEventualEngine();
-  const [trackingEvents] = useTrackingEvents();
 
   const onDisableModes = useDisableModes();
   const onToggleCommenting = useCommentingToggle();
@@ -57,11 +53,6 @@ const HotKeys: React.FC = () => {
     getEngine()?.focusHome();
   };
 
-  const onOpenImModel = () => {
-    goToNLUQuickView();
-    trackingEvents.trackCanvasControlInteractionModel();
-  };
-
   const disableEditHotkeys = !canEditCanvas;
   const disableCanvasHotkeys = !!activeModalID;
   const disableHintHotkeys = disableCanvasHotkeys || !showHintFeatures;
@@ -75,7 +66,6 @@ const HotKeys: React.FC = () => {
       { hotkey: Hotkey.ROOT_NODE, callback: onFocusHome, preventDefault: true, disable: disableCanvasHotkeys },
       { hotkey: Hotkey.MOVE_MODE, callback: onDisableModes, preventDefault: true },
       { hotkey: Hotkey.SHOW_HIDE_UI, callback: toggleCanvasOnly, preventDefault: true },
-      { hotkey: Hotkey.OPEN_CMS_MODAL, callback: onOpenImModel, preventDefault: true, disable: disableEditHotkeys || cmsVariables.isEnabled },
       { hotkey: Hotkey.OPEN_COMMENTING, callback: onToggleCommenting, preventDefault: true, disable: disableHintHotkeys },
       { hotkey: Hotkey.ADD_MARKUP_NOTE, callback: markup.toggleTextCreating, preventDefault: true, disable: disableHintHotkeys },
       { hotkey: Hotkey.ADD_MARKUP_IMAGE, callback: markup.triggerMediaUpload, preventDefault: true, disable: disableHintHotkeys },

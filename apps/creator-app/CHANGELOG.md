@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1398.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1398.3...@voiceflow/creator-app@1.1398.4) (2024-02-22)
+
+### Bug Fixes
+
+* add missing testID for KB model menu (DX-1079) ([#7798](https://github.com/voiceflow/creator-app/issues/7798)) ([b41c0ef](https://github.com/voiceflow/creator-app/commit/b41c0ef384fe693f524f3459129e38b3cc60839e))
+
 ## [1.1398.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1398.2...@voiceflow/creator-app@1.1398.3) (2024-02-21)
 
 ### Bug Fixes

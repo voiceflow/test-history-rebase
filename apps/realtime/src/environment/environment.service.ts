@@ -289,7 +289,6 @@ export class EnvironmentService {
     { userID, backup, workspaceID }: { userID: number; backup?: boolean; workspaceID: number }
   ) {
     const cmsFunctionsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_FUNCTIONS, { userID, workspaceID });
-    const cmsVariablesEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_VARIABLES, { userID, workspaceID });
     const cmsComponentsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_COMPONENTS, { userID, workspaceID });
 
     return {
@@ -310,7 +309,6 @@ export class EnvironmentService {
     { userID, workspaceID }: { userID: number; workspaceID: number }
   ) {
     const cmsFunctionsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_FUNCTIONS, { userID, workspaceID });
-    const cmsVariablesEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_VARIABLES, { userID, workspaceID });
     const cmsComponentsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_COMPONENTS, { userID, workspaceID });
 
     return {
@@ -379,7 +377,6 @@ export class EnvironmentService {
     }: { userID: number; backup?: boolean; workspaceID: number; assistantID: string; environmentID: string }
   ) {
     const cmsFunctionsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_FUNCTIONS, { userID, workspaceID });
-    const cmsVariablesEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_VARIABLES, { userID, workspaceID });
     const cmsComponentsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_COMPONENTS, { userID, workspaceID });
 
     const prepareDataContext = { userID, backup, assistantID, environmentID };
@@ -427,10 +424,6 @@ export class EnvironmentService {
           { functions: cms.functions, functionPaths: cms.functionPaths, functionVariables: cms.functionVariables },
           prepareDataContext
         )),
-
-      ...(cmsVariablesEnabled && cms.variables && this.variable.prepareImportData({ variables: cms.variables }, prepareDataContext)),
-
-      ...(cmsFoldersEnabled && cms.folders && this.folder.prepareImportData({ folders: cms.folders }, prepareDataContext)),
 
       ...(cmsComponentsEnabled && cms.flows && this.flow.prepareImportData({ flows: cms.flows }, prepareDataContext)),
     };

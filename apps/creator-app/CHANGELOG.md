@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1401.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1400.2...@voiceflow/creator-app@1.1401.0) (2024-02-23)
+
+### Features
+
+* persist test data after modal closes and use session storage (COR-1047) ([#7797](https://github.com/voiceflow/creator-app/issues/7797)) ([0ecdc49](https://github.com/voiceflow/creator-app/commit/0ecdc49ef39722b8194c4bbceb4b22b0c8b659a8))
+
 ## [1.1400.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1400.1...@voiceflow/creator-app@1.1400.2) (2024-02-23)
 
 **Note:** Version bump only for package @voiceflow/creator-app

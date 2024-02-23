@@ -4,12 +4,15 @@ import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import * as Errors from '@/config/errors';
+import * as Designer from '@/ducks/designer';
 import * as DiagramV2 from '@/ducks/diagramV2';
+import * as Feature from '@/ducks/feature';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import { waitAsync } from '@/ducks/utils';
 import * as Workspace from '@/ducks/workspaceV2';
 import { SyncThunk, Thunk } from '@/store/types';
+import { isString } from '@/utils/string.util';
 
 import { active } from '../selectors';
 import { getActivePlatformVersionContext } from '../utils';
@@ -47,15 +50,20 @@ export const importProjectContext =
     diagrams: Realtime.Diagram[];
     sourceVersionID: string;
   }): Thunk<{ data: Realtime.NodeData<unknown>; node: Realtime.Node }[]> =>
-  async (dispatch) => {
+  async (dispatch, getState) => {
     let mappedNodes = nodes;
+    const state = getState();
+    const isCMSComponentsEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.CMS_COMPONENTS);
 
     await Promise.all(
       diagrams
         // only components can be imported/duplicated
         .filter(({ type }) => type === BaseModels.Diagram.DiagramType.COMPONENT)
         .map(async (diagram) => {
-          const newDiagramID = await dispatch(DiagramV2.duplicateComponent(sourceVersionID, diagram.id));
+          const Action = isCMSComponentsEnabled ? Designer.Flow.effect.duplicateOne : DiagramV2.duplicateComponent;
+          const result = await dispatch(Action(sourceVersionID, diagram.id));
+
+          const newDiagramID = isString(result) ? result : result.diagramID;
 
           mappedNodes = mappedNodes.map((node) =>
             Realtime.Utils.node.isDiagramNode(node.data) && node.data.diagramID === diagram.id

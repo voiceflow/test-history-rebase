@@ -74,13 +74,17 @@ export const PatchMany = flowAction.crud.patchMany<PatchMany>();
 
 /* DeleteOne */
 
-export interface DeleteOne extends DeleteOneRequest, DesignerAction {}
+export interface DeleteOne extends DeleteOneRequest, DesignerAction {
+  deleteDiagram?: boolean;
+}
 
 export const DeleteOne = flowAction.crud.deleteOne<DeleteOne>();
 
 /* DeleteMany */
 
-export interface DeleteMany extends DeleteManyRequest, DesignerAction {}
+export interface DeleteMany extends DeleteManyRequest, DesignerAction {
+  deleteDiagram?: boolean;
+}
 
 export const DeleteMany = flowAction.crud.deleteMany<DeleteMany>();
 
@@ -88,7 +92,7 @@ export const DeleteMany = flowAction.crud.deleteMany<DeleteMany>();
 
 export namespace DuplicateOne {
   export interface Request extends DesignerAction {
-    data: { flowID: string };
+    data: { flowID: string; sourceVersionID: string };
   }
 
   export interface Response extends DesignerAction {

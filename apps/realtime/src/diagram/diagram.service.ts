@@ -97,7 +97,6 @@ export class DiagramService extends MutableService<DiagramORM> {
       versionID: meta.versionID,
       creatorID: meta.userID,
     });
-    console.log('WOOT 2 createOneComponentWithDiagram', diagram);
 
     const result = await this.orm.createMany([diagram]);
 
@@ -118,7 +117,6 @@ export class DiagramService extends MutableService<DiagramORM> {
       versionID: meta.versionID,
       creatorID: meta.userID,
     });
-    console.log('WOOT 2 createOneEmptyComponent', diagram);
 
     const result = await this.orm.createMany([diagram]);
 
@@ -129,13 +127,4 @@ export class DiagramService extends MutableService<DiagramORM> {
 
     return result;
   }
-
-  // createManyComponents
-  // This will call this.createMany
-  // componentDiagramFactory
-  // and the reloadSharedNodes
-  // Realtime.Utils.diagram.componentDiagramFactory
-
-  // same for duplicate
-  // convert as well
 }

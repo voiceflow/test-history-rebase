@@ -2,8 +2,8 @@ import { Table } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { CMS_FLOW_LEARN_MORE } from '@/constants/link.constant';
-import { Designer } from '@/ducks';
-import { useDispatch } from '@/hooks';
+import { Designer, Session } from '@/ducks';
+import { useDispatch, useSelector } from '@/hooks';
 
 import { CMSEmpty } from '../../../../components/CMSEmpty/CMSEmpty.component';
 import { useCMSRowItemClick, useCMSRowItemContextMenu, useCMSRowItemNavigate } from '../../../../hooks/cms-row-item.hook';
@@ -18,9 +18,10 @@ export const CMSFlowTable: React.FC = () => {
   const cmsManager = useFlowCMSManager();
   const onRowNavigate = useCMSRowItemNavigate();
   const duplicateOne = useDispatch(Designer.Flow.effect.duplicateOne);
+  const activeVersionID = useSelector(Session.activeVersionIDSelector)!;
   const rowContextMenu = useCMSRowItemContextMenu({
     nameColumnType: FlowTableColumn.NAME,
-    onDuplicate: duplicateOne,
+    onDuplicate: (flowID) => duplicateOne(activeVersionID, flowID, { notification: true }),
   });
 
   return (

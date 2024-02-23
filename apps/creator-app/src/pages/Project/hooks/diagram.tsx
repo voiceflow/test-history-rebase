@@ -1,14 +1,16 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { BaseModels } from '@voiceflow/base-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { MenuTypes, toast, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Errors from '@/config/errors';
 import { Permission } from '@/constants/permissions';
+import { Designer } from '@/ducks';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Domain from '@/ducks/domain';
 import * as Session from '@/ducks/session';
-import { useDispatch, useLinkedState, usePermission, useSelector, useToggle } from '@/hooks';
+import { useDispatch, useFeature, useLinkedState, usePermission, useSelector, useToggle } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 
 import TopicDomainPopper from '../components/DesignMenu/Layers/TopicsSection/TopicDomainPopper';
@@ -32,11 +34,16 @@ interface DiagramRenameOptions {
 
 export const useDiagramRename = ({ diagramID, autoSelect, diagramName, onNameChanged }: DiagramRenameOptions): DiagramRenameApi => {
   const inputRef = React.useRef<HTMLInputElement>(null);
+  const { isEnabled: isCMSComponentsEnabled } = useFeature(Realtime.FeatureFlag.CMS_COMPONENTS);
   const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
   const [localName, _setLocalName] = useLinkedState(diagramName ?? '');
   const [renameEnabled, toggleRenameEnabled] = useToggle(false);
+  const flow = useSelector(Designer.Flow.selectors.byDiagramID, { diagramID })!;
 
   const renameDiagram = useDispatch(DiagramV2.renameDiagram);
+  const patchFlow = useDispatch(Designer.Flow.effect.patchOne);
+  const renameFlow = (_: string, name: string) => patchFlow(flow.id, { name });
+  const rename = isCMSComponentsEnabled ? renameFlow : renameDiagram;
 
   const setLocalName = React.useCallback(
     (name: string) => {
@@ -64,7 +71,7 @@ export const useDiagramRename = ({ diagramID, autoSelect, diagramName, onNameCha
 
     const nextName = localName.trim() || diagramName || 'Unnamed Diagram';
 
-    renameDiagram(diagramID, nextName);
+    rename(diagramID, nextName);
     toggleRenameEnabled(false);
 
     onNameChangedPersisted(nextName);
@@ -108,13 +115,18 @@ export const useDiagramOptions = ({
   isSubtopic,
   rootTopicID,
 }: DiagramOptionsOptions): MenuTypes.OptionWithoutValue[] => {
+  const { isEnabled: isCMSComponentsEnabled } = useFeature(Realtime.FeatureFlag.CMS_COMPONENTS);
   const duplicateComponent = useDispatch(DiagramV2.duplicateComponent);
+  const duplicateCMSComponent = useDispatch(Designer.Flow.effect.duplicateOne);
   const deleteTopicDiagram = useDispatch(DiagramV2.deleteTopicDiagram);
   const deleteSubtopicDiagram = useDispatch(DiagramV2.deleteSubtopicDiagram);
   const deleteComponentDiagram = useDispatch(DiagramV2.deleteComponentDiagram);
+  const deleteCMSComponent = useDispatch(Designer.Flow.effect.deleteOne);
   const convertComponentToTopic = useDispatch(DiagramV2.convertComponentToTopic);
+  const convertCMSComponentToTopic = useDispatch(Designer.Flow.effect.convertOneToTopic);
 
   const diagram = useSelector(DiagramV2.diagramByIDSelector, { id: diagramID });
+  const flow = useSelector(Designer.Flow.selectors.byDiagramID, { diagramID });
   const domains = useSelector(Domain.allDomainsSelector);
   const rootDiagramID = useSelector(Domain.active.rootDiagramIDSelector);
   const activeDomainID = useSelector(Session.activeDomainIDSelector);
@@ -132,7 +144,11 @@ export const useDiagramOptions = ({
       return;
     }
 
-    duplicateComponent(activeVersionID, diagramID, { openDiagram: true });
+    if (isCMSComponentsEnabled && flow?.id) {
+      duplicateCMSComponent(activeVersionID, flow.id, { openDiagram: true });
+    } else {
+      duplicateComponent(activeVersionID, diagramID, { openDiagram: true });
+    }
   }, [activeVersionID, diagramID]);
 
   const onConvertToTopic = React.useCallback(() => {
@@ -142,7 +158,11 @@ export const useDiagramOptions = ({
       return;
     }
 
-    convertComponentToTopic(diagramID);
+    if (isCMSComponentsEnabled && flow?.id) {
+      convertCMSComponentToTopic(flow?.id);
+    } else {
+      convertComponentToTopic(diagramID);
+    }
   }, [diagramID]);
 
   const isTopic = diagram?.type === BaseModels.Diagram.DiagramType.TOPIC;
@@ -175,7 +195,11 @@ export const useDiagramOptions = ({
           errorModal.openVoid({ error: `Another user is currently using this ${label}. Please wait until they're done before deleting` });
 
         if (!isTopic) {
-          deleteComponentDiagram(diagramID).catch(onError);
+          if (isCMSComponentsEnabled && flow?.id) {
+            deleteCMSComponent(flow.id, { goToRootDiagram: true }).catch(onError);
+          } else {
+            deleteComponentDiagram(diagramID).catch(onError);
+          }
         } else if (isSubtopic) {
           if (rootTopicID) deleteSubtopicDiagram(diagramID, rootTopicID).catch(onError);
         } else {
@@ -183,7 +207,7 @@ export const useDiagramOptions = ({
         }
       },
     });
-  }, [diagramID, diagram, isTopic, isSubtopic, rootTopicID, deleteComponentDiagram, deleteSubtopicDiagram, deleteTopicDiagram]);
+  }, [diagramID, diagram, isTopic, isSubtopic, rootTopicID, deleteComponentDiagram, deleteCMSComponent, deleteSubtopicDiagram, deleteTopicDiagram]);
 
   return React.useMemo<MenuTypes.OptionWithoutValue[]>(() => {
     if (!canEditCanvas) {

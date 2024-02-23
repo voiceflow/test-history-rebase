@@ -1,5 +1,4 @@
 import { Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { Preview, stopPropagation, Text } from '@voiceflow/ui';
 import React from 'react';
 
@@ -7,20 +6,17 @@ import { Permission } from '@/constants/permissions';
 import { useHotkey } from '@/hooks/hotkeys';
 import { usePermission } from '@/hooks/permission';
 import { Hotkey } from '@/keymap';
-import { ActiveDiagramNormalizedEntitiesAndVariablesContext } from '@/pages/Canvas/contexts';
-import { transformVariablesToReadable } from '@/utils/slot';
 
 interface ActionPreviewProps {
-  sets: Realtime.NodeData.SetExpressionV2[];
+  sets: Array<{ id: string; variable: { id: string; name: string }; expression: string }>;
   onClose: VoidFunction;
   onRemove: VoidFunction;
   onOpenEditor: VoidFunction;
 }
 
 const ActionPreview: React.FC<ActionPreviewProps> = ({ sets, onClose, onRemove, onOpenEditor }) => {
-  const entitiesAndVariables = React.useContext(ActiveDiagramNormalizedEntitiesAndVariablesContext)!;
-
   const [canOpenEditor] = usePermission(Permission.CANVAS_OPEN_EDITOR);
+
   useHotkey(Hotkey.DELETE, onRemove);
 
   return (
@@ -34,8 +30,7 @@ const ActionPreview: React.FC<ActionPreviewProps> = ({ sets, onClose, onRemove, 
           sets.map((set) => (
             <Preview.ContentItem key={set.id}>
               <Preview.Text>
-                <Text opacity={0.5}>Set</Text> {`{${set.variable}}`} <Text opacity={0.5}>to</Text>{' '}
-                {transformVariablesToReadable(String(set.expression) || "''", entitiesAndVariables.byKey)}
+                <Text opacity={0.5}>Set</Text> {`{${set.variable.name}}`} <Text opacity={0.5}>to</Text> {set.expression}
               </Preview.Text>
             </Preview.ContentItem>
           ))

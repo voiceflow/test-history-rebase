@@ -21,15 +21,30 @@ const Action: ConnectedAction<Realtime.NodeData.SetV2, Realtime.NodeData.SetV2Bu
 }) => {
   const entitiesAndVariables = React.useContext(ActiveDiagramNormalizedEntitiesAndVariablesContext)!;
 
-  const setsToPreview = React.useMemo(() => data.sets.filter((set) => set.variable), [data.sets]);
-  const firstStep = setsToPreview[0];
+  const previews = React.useMemo(
+    () =>
+      data.sets.reduce<Array<{ id: string; variable: { id: string; name: string }; expression: string }>>((acc, set) => {
+        if (!set.variable) return acc;
 
-  const isEmpty = !setsToPreview.length;
+        const variable = entitiesAndVariables.byKey[set.variable];
+
+        if (!variable) return acc;
+
+        return [
+          ...acc,
+          { id: set.id, variable, expression: transformVariablesToReadable(String(set.expression) || "''", entitiesAndVariables.byKey) },
+        ];
+      }, []),
+    [(data.sets, entitiesAndVariables)]
+  );
+
+  const isEmpty = !previews.length;
+  const firstPreview = previews[0];
 
   return (
     <Popper
       placement="top-start"
-      renderContent={({ onClose }) => <ActionPreview sets={setsToPreview} onClose={onClose} onRemove={onRemove} onOpenEditor={onOpenEditor} />}
+      renderContent={({ onClose }) => <ActionPreview sets={previews} onClose={onClose} onRemove={onRemove} onOpenEditor={onOpenEditor} />}
     >
       {({ ref, onToggle, isOpened }) => (
         <Canvas.Action
@@ -42,13 +57,7 @@ const Action: ConnectedAction<Realtime.NodeData.SetV2, Realtime.NodeData.SetV2Bu
           port={<Step.ActionPort portID={ports.out.builtIn[BaseModels.PortType.NEXT]} />}
           label={
             <Canvas.Action.Label secondary={isEmpty}>
-              {!firstStep?.variable
-                ? 'Set variable'
-                : data.name ||
-                  `Set {${entitiesAndVariables.byKey[firstStep.variable]?.name ?? firstStep.variable}} to ${transformVariablesToReadable(
-                    String(firstStep.expression) || "''",
-                    entitiesAndVariables.byKey
-                  )}`}
+              {!firstPreview?.variable ? 'Set variable' : data.name || `Set {${firstPreview.variable.name}} to ${firstPreview.expression}`}
             </Canvas.Action.Label>
           }
           nodeID={data.nodeID}

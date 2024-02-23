@@ -215,16 +215,6 @@ export const Path = {
     CanvasRoute.NODE,
     ':nodeID'
   ),
-  CANVAS_MODEL: toPath(
-    RootRoute.PROJECT,
-    ':versionID',
-    ProjectRoute.DOMAIN,
-    ':domainID',
-    DomainRoute.CANVAS,
-    ':diagramID',
-    CanvasRoute.MODEL,
-    ':modelType?'
-  ),
   CANVAS_COMMENTING: toPath(
     RootRoute.PROJECT,
     ':versionID',
@@ -244,17 +234,6 @@ export const Path = {
     CanvasRoute.COMMENTING,
     ':threadID',
     ':commentID?'
-  ),
-  CANVAS_MODEL_ENTITY: toPath(
-    RootRoute.PROJECT,
-    ':versionID',
-    ProjectRoute.DOMAIN,
-    ':domainID',
-    DomainRoute.CANVAS,
-    ':diagramID',
-    CanvasRoute.MODEL,
-    ':modelType',
-    ':modelEntityID?'
   ),
 
   PUBLISH_DIALOGFLOW: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.DIALOGFLOW),

@@ -1,4 +1,5 @@
 import { Nullable, Utils } from '@voiceflow/common';
+import { Enum } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, MenuTypes, TippyTooltip, Utils as UIUtils } from '@voiceflow/ui';
 import React from 'react';
@@ -26,16 +27,18 @@ import * as ModalsV2 from '@/ModalsV2';
 import { useCMSRoute } from '@/pages/AssistantCMS/hooks/cms-route.hook';
 import { onOpenInternalURLInANewTabFactory } from '@/utils/window';
 
-export enum CanvasOptionType {
-  HELP = 'HELP',
-  SETTINGS = 'SETTINGS',
-  DESIGNER = 'DESIGNER',
-  INTEGRATION = 'INTEGRATION',
-  AI_SETTINGS = 'AI_SETTINGS',
-  CONVERSATION = 'CONVERSATION',
-  ANALYTICS_DASHBOARD = 'ANALYTICS_DASHBOARD',
-  PROJECT_CMS = 'PROJECT_CMS',
-}
+const CanvasOptionType = {
+  HELP: 'HELP',
+  SETTINGS: 'SETTINGS',
+  DESIGNER: 'DESIGNER',
+  INTEGRATION: 'INTEGRATION',
+  AI_SETTINGS: 'AI_SETTINGS',
+  PROJECT_CMS: 'PROJECT_CMS',
+  CONVERSATION: 'CONVERSATION',
+  ANALYTICS_DASHBOARD: 'ANALYTICS_DASHBOARD',
+} as const;
+
+type CanvasOptionType = Enum<typeof CanvasOptionType>;
 
 const RouteCanvasOptionMap: Record<CanvasOptionType, string[]> = {
   [CanvasOptionType.HELP]: [],
@@ -43,9 +46,9 @@ const RouteCanvasOptionMap: Record<CanvasOptionType, string[]> = {
   [CanvasOptionType.SETTINGS]: [Path.PROJECT_SETTINGS],
   [CanvasOptionType.AI_SETTINGS]: [],
   [CanvasOptionType.INTEGRATION]: [Path.PROJECT_PUBLISH],
+  [CanvasOptionType.PROJECT_CMS]: [Path.PROJECT_CMS],
   [CanvasOptionType.CONVERSATION]: [Path.CONVERSATIONS],
   [CanvasOptionType.ANALYTICS_DASHBOARD]: [Path.PROJECT_ANALYTICS],
-  [CanvasOptionType.PROJECT_CMS]: [Path.PROJECT_CMS],
 };
 
 interface SidebarHotkeyMenuItem extends SidebarIconMenuItem {
@@ -64,7 +67,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
   const viewerAPIKeyAccess = useFeature(Realtime.FeatureFlag.ALLOW_VIEWER_APIKEY_ACCESS);
   const hideExports = useFeature(Realtime.FeatureFlag.HIDE_EXPORTS);
   const knowledgeBase = useKnowledgeBase();
-  const { redirectToActiveRoute: goToActiveCMSRoute } = useCMSRoute();
+  const { goToActiveCMSRoute } = useCMSRoute();
 
   const match = useRouteMatch();
   const hasUnreadTranscripts = useSelector(Transcript.hasUnreadTranscriptsSelector);

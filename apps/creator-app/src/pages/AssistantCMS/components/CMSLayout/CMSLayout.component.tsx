@@ -3,7 +3,7 @@ import React from 'react';
 import { AssistantLayout } from '@/components/Assistant/AssistantLayout/AssistantLayout.component';
 
 import { container, content, menu, sidebar } from './CMSLayout.css';
-import { CMSMenu } from './CMSMenu/CMSMenu.component';
+import { CMSLayoutMenu } from './CMSLayoutMenu.component';
 
 interface CMSLayoutProps extends React.PropsWithChildren {}
 
@@ -12,7 +12,7 @@ export const CMSLayout: React.FC<CMSLayoutProps> = ({ children }) => (
     <div className={container}>
       <aside className={sidebar}>
         <div className={menu}>
-          <CMSMenu />
+          <CMSLayoutMenu />
         </div>
       </aside>
 

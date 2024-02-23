@@ -8,7 +8,7 @@ export const useCMSRoute = () => {
   const [activeCMSRoute, updateActiveCMSRoute] = useSessionStorageState('cms-active-route', CMSRoute.INTENT);
   const goToCMSResource = useDispatch(Router.goToCMSResource);
 
-  const redirectToActiveRoute = () => goToCMSResource(activeCMSRoute);
+  const goToActiveCMSRoute = () => goToCMSResource(activeCMSRoute);
 
-  return { activeCMSRoute, updateActiveCMSRoute, redirectToActiveRoute };
+  return { activeCMSRoute, updateActiveCMSRoute, goToActiveCMSRoute };
 };

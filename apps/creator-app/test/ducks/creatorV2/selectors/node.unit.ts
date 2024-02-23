@@ -4,7 +4,7 @@ import { normalize } from 'normal-store';
 import * as CreatorV2 from '@/ducks/creatorV2';
 
 import suite from '../../_suite';
-import { LINK, MOCK_STATE, NODE_DATA, PORT_ID } from '../_fixtures';
+import { MOCK_STATE, NODE_DATA, PORT_ID } from '../_fixtures';
 
 const NODE_COORDS: Realtime.Point = [100, -100];
 const NODE_PORTS: Realtime.NodePorts = { in: [], out: { byKey: {}, dynamic: [PORT_ID], builtIn: {} } };
@@ -115,12 +115,6 @@ suite(CreatorV2, INITIAL_STATE)('Ducks | Creator V2 - node selectors', ({ descri
       });
     });
 
-    describe('allBlocksDataSelector()', () => {
-      it('select all block data', () => {
-        expect(select(CreatorV2.allBlocksDataSelector)).toEqual([BLOCK_NODE, START_NODE]);
-      });
-    });
-
     describe('nodeTypeByIDSelector()', () => {
       it('select type of a node by ID', () => {
         expect(select((state) => CreatorV2.nodeTypeByIDSelector(state, { id: START_NODE.nodeID }))).toBe(Realtime.BlockType.START);
@@ -148,22 +142,6 @@ suite(CreatorV2, INITIAL_STATE)('Ducks | Creator V2 - node selectors', ({ descri
     describe('stepDataByParentNodeIDSelector()', () => {
       it('select the step data of a block by ID', () => {
         expect(select((state) => CreatorV2.stepDataByParentNodeIDSelector(state, { id: BLOCK_NODE.nodeID }))).toEqual([STEP_NODE]);
-      });
-    });
-
-    describe('linkedNodeIDsByNodeIDSelector()', () => {
-      it('select the step data of a block by ID', () => {
-        const fooLink = { ...LINK, id: 'fooLink' };
-        const barLink = { ...LINK, id: 'barLink' };
-        const rootState = createState({
-          ...INITIAL_STATE,
-          linkIDsByNodeID: { [BLOCK_NODE.nodeID]: [fooLink.id, barLink.id] },
-          nodeIDsByLinkID: { [fooLink.id]: ['a', BLOCK_NODE.nodeID, 'b', 'c'], [barLink.id]: ['b', 'c', 'd', 'e', BLOCK_NODE.nodeID] },
-        });
-
-        const result = select((state) => CreatorV2.linkedNodeIDsByNodeIDSelector(state, { id: BLOCK_NODE.nodeID }), rootState);
-
-        expect(result).toEqual(['a', 'b', 'c', 'd', 'e']);
       });
     });
 

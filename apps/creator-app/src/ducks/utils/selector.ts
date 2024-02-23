@@ -1,4 +1,3 @@
-import moize from 'moize';
 import { createCachedSelector as reReselectCreateCachedSelector, FlatObjectCache } from 're-reselect';
 import { createSelector } from 'reselect';
 
@@ -11,7 +10,8 @@ export const createSubSelector = <T extends Record<string, any>, K extends keyof
 export const createRootSelectorFactory =
   <S extends Record<string, any>>() =>
   <K extends keyof S>(stateKey: K): ((state: S) => S[K]) =>
-    moize(({ [stateKey]: state }) => state);
+  ({ [stateKey]: state }) =>
+    state;
 
 export const createRootSelector = createRootSelectorFactory<State>();
 

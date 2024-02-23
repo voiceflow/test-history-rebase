@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.276.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.276.3...@voiceflow/realtime@1.276.4) (2024-02-23)
+
+### Bug Fixes
+
+* upsert variables on prepare prototype [bugfix] (CT-000) ([#7812](https://github.com/voiceflow/creator-app/issues/7812)) ([094890e](https://github.com/voiceflow/creator-app/commit/094890efa1f55bd971dff98bbe4c2a7ae02b0f7d))
+
 ## [1.276.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.276.2...@voiceflow/realtime@1.276.3) (2024-02-23)
 
 ### Bug Fixes

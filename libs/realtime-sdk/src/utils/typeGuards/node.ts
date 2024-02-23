@@ -58,15 +58,23 @@ export const isDiagramMenuDBNode = createDBNodeTypeGuard<BaseNode.Start.Step | B
   BaseNode.NodeType.INTENT,
 ]);
 
+export const isURLNodeData = createNodeDataTypeGuard<NodeData<NodeData.Url>>(BlockType.URL);
+export const isExitNodeData = createNodeDataTypeGuard<NodeData<NodeData.Exit>>(BlockType.EXIT);
+export const isCodeNodeData = createNodeDataTypeGuard<NodeData<NodeData.Code>>(BlockType.CODE);
+export const isSetV2NodeData = createNodeDataTypeGuard<NodeData<NodeData.SetV2>>(BlockType.SETV2);
 export const isStartNodeData = createNodeDataTypeGuard<NodeData<NodeData.Start>>(BlockType.START);
 export const isIntentNodeData = createNodeDataTypeGuard<NodeData<NodeData.Intent>>(BlockType.INTENT);
 export const isCardV2NodeData = createNodeDataTypeGuard<NodeData<NodeData.CardV2>>(BlockType.CARDV2);
 export const isCarouselNodeData = createNodeDataTypeGuard<NodeData<NodeData.Carousel>>(BlockType.CAROUSEL);
+export const isGoToNodeNodeData = createNodeDataTypeGuard<NodeData<NodeData.GoToNode>>(BlockType.GO_TO_NODE);
 export const isRandomV1NodeData = createNodeDataTypeGuard<NodeData<NodeData.Random>>(BlockType.RANDOM);
 export const isRandomV2NodeData = createNodeDataTypeGuard<NodeData<NodeData.RandomV2>>(BlockType.RANDOMV2);
 export const isComponentNodeData = createNodeDataTypeGuard<NodeData<NodeData.Component>>(BlockType.COMPONENT);
 export const isStartingNodesData = createNodeDataTypeGuard<NodeData<NodeData.Start | NodeData.Combined>>(STARTING_NODES);
+export const isGoToDomainNodeData = createNodeDataTypeGuard<NodeData<NodeData.GoToDomain>>(BlockType.GO_TO_DOMAIN);
+export const isGoToIntentNodeData = createNodeDataTypeGuard<NodeData<NodeData.GoToIntent>>(BlockType.GO_TO_INTENT);
 export const isMarkupTextNodeData = createNodeDataTypeGuard<NodeData<Markup.NodeData.Text>>(BlockType.MARKUP_TEXT);
+export const isIntegrationNodeData = createNodeDataTypeGuard<NodeData<NodeData.Integration>>(BlockType.INTEGRATION);
 export const isMarkupMediaNodeData = createNodeDataTypeGuard<NodeData<Markup.NodeData.Media>>(MARKUP_MEDIA_NODES);
 export const isMarkupImageNodeData = createNodeDataTypeGuard<NodeData<Markup.NodeData.Image>>(BlockType.MARKUP_IMAGE);
 export const isMarkupVideoNodeData = createNodeDataTypeGuard<NodeData<Markup.NodeData.Video>>(BlockType.MARKUP_VIDEO);

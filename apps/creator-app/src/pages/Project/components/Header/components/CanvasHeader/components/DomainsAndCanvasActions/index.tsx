@@ -1,3 +1,4 @@
+import { tid } from '@voiceflow/style';
 import { Box, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
@@ -99,7 +100,7 @@ const DomainsAndCanvasActions: React.FC = () => {
 
   return (
     <Container>
-      {!canEditCanvas && <ViewOnly>View only</ViewOnly>}
+      {!canEditCanvas && <ViewOnly data-testid={tid('canvas', ['header', 'view-only'])}>View only</ViewOnly>}
 
       {showEditorIcons ? (
         <Box.Flex gap={5}>

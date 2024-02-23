@@ -16,13 +16,6 @@
       "dockerfile": "Dockerfile"
     },
     {
-      "name": "showcase",
-      "modified": true,
-      "component_name": "showcase",
-      "directory": "apps",
-      "dockerfile": "Dockerfile"
-    },
-    {
       "name": "ml-gateway",
       "modified": false,
       "component_name": "ml-gateway",
@@ -33,7 +26,6 @@
   "build_all_services": false,
   "packages_to_build": [
     "realtime-sdk",
-    "showcase",
     "creator-app",
     "realtime"
   ],

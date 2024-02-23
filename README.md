@@ -13,7 +13,6 @@ Tools, suites and services that support automated testing of the Voiceflow platf
 
 ### Applications
 
-- [`showcase`](./apps/showcase/README.md) - legacy component library documentation
 - [`realtime`](./apps/realtime/README.md) - API for realtime communication with `designer-app`
 - [`ml-gateway`](./apps/ml-gateway/README.md) - API gateway for interfacing with ML services
 - [`creator-app`](./apps/creator-app/README.md) - frontend webapp for Voiceflow creator experience

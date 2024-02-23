@@ -25,7 +25,7 @@ export const CMSFlowEditor: React.FC = () => {
   const getMoreMenu = useCMSResourceGetMoreMenu({
     onRename: () => editorRef.current?.startTitleEditing(),
     onDuplicate: async (id) => {
-      const data = await duplicateOne(activeVersionID, id, { notification: true });
+      const data = await duplicateOne(activeVersionID, id);
 
       goToCMSResource(CMSRoute.FLOW, data.id);
     },

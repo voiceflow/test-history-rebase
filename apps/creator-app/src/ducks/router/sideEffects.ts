@@ -179,6 +179,17 @@ export const goToDomainRootDiagram = (): Thunk => async (dispatch, getState) => 
   await dispatch(goToCanvasSwitchRealtime({ diagramID: rootDiagramID, domainID, versionID }));
 };
 
+export const goToRootDiagramIfActive =
+  (diagramID: string): Thunk =>
+  async (dispatch, getState) => {
+    const state = getState();
+    const activeDiagramID = Creator.activeDiagramIDSelector(state);
+
+    if (diagramID === activeDiagramID) {
+      await dispatch(goToDomainRootDiagram());
+    }
+  };
+
 export const goToRootDomain = (): Thunk => async (dispatch, getState) => {
   const state = getState();
 

@@ -21,7 +21,7 @@ export const CMSFlowTable: React.FC = () => {
   const activeVersionID = useSelector(Session.activeVersionIDSelector)!;
   const rowContextMenu = useCMSRowItemContextMenu({
     nameColumnType: FlowTableColumn.NAME,
-    onDuplicate: (flowID) => duplicateOne(activeVersionID, flowID, { notification: true }),
+    onDuplicate: (flowID) => duplicateOne(activeVersionID, flowID),
   });
 
   return (

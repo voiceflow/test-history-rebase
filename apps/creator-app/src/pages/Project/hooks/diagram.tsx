@@ -9,6 +9,7 @@ import { Permission } from '@/constants/permissions';
 import { Designer } from '@/ducks';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Domain from '@/ducks/domain';
+import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import { useDispatch, useFeature, useLinkedState, usePermission, useSelector, useToggle } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
@@ -122,11 +123,13 @@ export const useDiagramOptions = ({
   const deleteSubtopicDiagram = useDispatch(DiagramV2.deleteSubtopicDiagram);
   const deleteComponentDiagram = useDispatch(DiagramV2.deleteComponentDiagram);
   const deleteCMSComponent = useDispatch(Designer.Flow.effect.deleteOne);
+  const goToRootDiagramIfActive = useDispatch(Router.goToRootDiagramIfActive);
+  const goToDiagram = useDispatch(Router.goToDiagram);
   const convertComponentToTopic = useDispatch(DiagramV2.convertComponentToTopic);
   const convertCMSComponentToTopic = useDispatch(Designer.Flow.effect.convertOneToTopic);
 
   const diagram = useSelector(DiagramV2.diagramByIDSelector, { id: diagramID });
-  const flow = useSelector(Designer.Flow.selectors.byDiagramID, { diagramID });
+  const flow = useSelector(Designer.Flow.selectors.byDiagramID, { diagramID })!;
   const domains = useSelector(Domain.allDomainsSelector);
   const rootDiagramID = useSelector(Domain.active.rootDiagramIDSelector);
   const activeDomainID = useSelector(Session.activeDomainIDSelector);
@@ -137,7 +140,7 @@ export const useDiagramOptions = ({
   const errorModal = ModalsV2.useModal(ModalsV2.Error);
   const confirmModal = ModalsV2.useModal(ModalsV2.Confirm);
 
-  const onDuplicate = React.useCallback(() => {
+  const onDuplicate = React.useCallback(async () => {
     if (!diagramID || !activeVersionID) {
       datadogRum.addError(!activeVersionID ? Errors.noActiveVersionID() : Errors.noActiveDiagramID());
       toast.genericError();
@@ -145,7 +148,8 @@ export const useDiagramOptions = ({
     }
 
     if (isCMSComponentsEnabled && flow?.id) {
-      duplicateCMSComponent(activeVersionID, flow.id, { openDiagram: true });
+      const duplicated = await duplicateCMSComponent(activeVersionID, flow.id);
+      goToDiagram(duplicated.diagramID);
     } else {
       duplicateComponent(activeVersionID, diagramID, { openDiagram: true });
     }
@@ -160,6 +164,7 @@ export const useDiagramOptions = ({
 
     if (isCMSComponentsEnabled && flow?.id) {
       convertCMSComponentToTopic(flow?.id);
+      goToRootDiagramIfActive(flow.diagramID);
     } else {
       convertComponentToTopic(diagramID);
     }
@@ -196,7 +201,8 @@ export const useDiagramOptions = ({
 
         if (!isTopic) {
           if (isCMSComponentsEnabled && flow?.id) {
-            deleteCMSComponent(flow.id, true).catch(onError);
+            deleteCMSComponent(flow.id).catch(onError);
+            goToRootDiagramIfActive(flow.diagramID);
           } else {
             deleteComponentDiagram(diagramID).catch(onError);
           }

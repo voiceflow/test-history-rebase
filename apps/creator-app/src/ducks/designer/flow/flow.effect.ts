@@ -5,17 +5,16 @@ import { logger } from '@voiceflow/ui';
 import { notify, Nullable } from '@voiceflow/ui-next';
 
 import PageProgressBar, { PageProgress } from '@/components/PageProgressBar';
-import { activeDiagramIDSelector, linksByNodeIDSelector } from '@/ducks/creatorV2';
-import { setLastCreatedID } from '@/ducks/diagramV2';
+import { linksByNodeIDSelector } from '@/ducks/creatorV2';
+import { setLastCreatedID } from '@/ducks/diagramV2/actions';
 import * as ProjectV2 from '@/ducks/projectV2';
-import * as Router from '@/ducks/router';
-import { waitAsync } from '@/ducks/utils';
 import { schemaVersionSelector } from '@/ducks/versionV2/selectors/active';
 import { getActiveAssistantContext, getActiveDomainContext } from '@/ducks/versionV2/utils';
 import type { Thunk } from '@/store/types';
 import { convertSelectionToComponent, CreateDiagramWithDataOptions } from '@/utils/diagram.utils';
 import { AsyncActionError } from '@/utils/logux';
 
+import { waitAsync } from '../../utils';
 import { all as getAllFlows, oneByID } from './selectors';
 
 export const createOne =
@@ -30,26 +29,16 @@ export const createOne =
   };
 
 export const duplicateOne =
-  (
-    sourceVersionID: string,
-    flowID: string,
-    { openDiagram = false, notification = false }: { openDiagram?: boolean; notification?: boolean } = {}
-  ): Thunk<Actions.Flow.DuplicateOne.Response['data']> =>
+  (sourceVersionID: string, flowID: string): Thunk<Actions.Flow.DuplicateOne.Response['data']> =>
   async (dispatch, getState) => {
     const state = getState();
 
     const context = getActiveAssistantContext(state);
     const duplicated = await dispatch(waitAsync(Actions.Flow.DuplicateOne, { context, data: { flowID, sourceVersionID } }));
 
-    if (openDiagram) {
-      await dispatch(Router.goToDiagram(duplicated.data.diagramID));
-    }
-
     dispatch(setLastCreatedID({ id: duplicated.data.diagramID }));
 
-    if (notification) {
-      notify.short.success('Duplicated');
-    }
+    notify.short.success('Duplicated');
 
     return duplicated.data;
   };
@@ -74,26 +63,10 @@ export const patchMany =
     await dispatch.sync(Actions.Flow.PatchMany({ context, ids, patch }));
   };
 
-const goToRootDiagramIfActive =
-  (diagramID: string): Thunk =>
-  async (dispatch, getState) => {
-    // if the user is on the deleted diagram, redirect to root
-    const activeDiagramID = activeDiagramIDSelector(getState());
-
-    if (diagramID === activeDiagramID) {
-      await dispatch(Router.goToDomainRootDiagram());
-    }
-  };
-
 export const deleteOne =
-  (id: string, goToRootDiagram = false): Thunk =>
+  (id: string): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
-    const flow = oneByID(state, { id })!;
-
-    if (goToRootDiagram) {
-      await dispatch(goToRootDiagramIfActive(flow.diagramID));
-    }
 
     const context = getActiveAssistantContext(state);
 
@@ -166,13 +139,8 @@ export const convertOneToTopic =
 
     const state = getState();
     const flow = oneByID(state, { id })!;
-    const activeDiagramID = activeDiagramIDSelector(state);
     const domainContext = getActiveDomainContext(state);
     const context = getActiveAssistantContext(state);
-
-    if (flow.diagramID === activeDiagramID) {
-      await dispatch(Router.goToDomainRootDiagram());
-    }
 
     try {
       await dispatch(

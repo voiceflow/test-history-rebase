@@ -1,5 +1,5 @@
 import type { Function as FunctionType } from '@voiceflow/dtos';
-import { useLocalStorageState } from '@voiceflow/ui';
+import { useSessionStorageState } from '@voiceflow/ui';
 import { Box, Text, Theme } from '@voiceflow/ui-next';
 import React, { useState } from 'react';
 
@@ -15,6 +15,9 @@ import { FunctionTestResult } from './FunctionTestResult/FunctionTestResult.comp
 import { InputVariableEditor } from './InputVariableEditor/InputVariableEditor.component';
 
 const TEST_FUNCTION_MODAL_STORAGE_KEY = 'TEST_FUNCTION_MODAL_STORAGE_KEY';
+
+const functionStorageKey = (functionID: string) => `${TEST_FUNCTION_MODAL_STORAGE_KEY}_${functionID}`;
+
 type Map = Record<string, string>;
 
 const FUNCTION_TEST_MODAL_ID = 'FunctionTestModal';
@@ -32,9 +35,8 @@ export const FunctionTestModal = modalsManager.create<IFunctionTestModal, Functi
       const trackTestExecuted = useDispatch(Designer.Function.tracking.testExecuted);
 
       const [isUploading, setIsUploading] = useState<boolean>(false);
-      const [hasBeenExecuted, setHasBeenExecuted] = useState<boolean>(false);
 
-      const [storedVariables, setStoredVariables] = useLocalStorageState<Map>(TEST_FUNCTION_MODAL_STORAGE_KEY, initialValues);
+      const [storedVariables, setStoredVariables] = useSessionStorageState<Map>(functionStorageKey(functionID), initialValues);
       const [localVariables, setLocalVariables] = useState<Map>(initialValues);
 
       const [testResponse, setTestResponse] = useState<FunctionTestResponse | null>(null);
@@ -78,7 +80,6 @@ export const FunctionTestModal = modalsManager.create<IFunctionTestModal, Functi
         } finally {
           setStoredVariables(localVariables);
           setLocalVariables(initialValues);
-          setHasBeenExecuted(true);
           setIsUploading(false);
         }
       };
@@ -131,7 +132,7 @@ export const FunctionTestModal = modalsManager.create<IFunctionTestModal, Functi
             </Box>
 
             <Modal.Footer>
-              {hasBeenExecuted && hasInputVariables && hasStoredValues ? (
+              {hasInputVariables && hasStoredValues ? (
                 <Modal.Footer.Button label="Re-use last value(s)" onClick={handleRestoreVariables} variant="secondary" disabled={isUploading} />
               ) : (
                 <Modal.Footer.Button label="Cancel" onClick={() => api.close()} variant="secondary" disabled={isUploading} />

@@ -35,7 +35,7 @@
         "summarization": {
           "prompt": "",
           "mode": "prompt",
-          "model": "claude-instant-v1",
+          "model": "gpt-3.5-turbo",
           "temperature": 0.1,
           "system": "You are an FAQ AI chat assistant. Information will be provided to help answer the user's questions. Always summarize your response to be as brief as possible and be extremely concise. Your responses should be fewer than a couple of sentences."
         }
@@ -611,7 +611,7 @@
               },
               "dynamic": []
             },
-            "model": "claude-instant-v1"
+            "model": "gpt-3.5-turbo"
           },
           "nodeID": "642c305c0660144e5e8e3adc"
         },
@@ -1606,7 +1606,7 @@
             "prompt": "Plan a travel itinerary for up to 5 days with one item each day that is based on the users travel description and goals here {{[travel_goals].travel_goals}}\n\nRepond with the itinerary directly to the user in a polite, professional way. Do not ask any follow up questions.",
             "system": "You are a travel assistant making itineraries for our users.",
             "maxTokens": 702,
-            "model": "claude-instant-v1",
+            "model": "gpt-3.5-turbo",
             "temperature": 0.7,
             "portsV2": {
               "byKey": {},
@@ -3415,7 +3415,7 @@
             "prompt": "You have just given the user the following travel itinerary based on their travel description.\n\nThe initial travel description provided when the user was asked where they are travelling to and what they like to do: \"{{[travel_description].travel_description}}\"\n\nThe initial itinerary provided was: \"{{[travel_itinerary].travel_itinerary}}\". \n\nModify that itinerary based on these modifications: {{[last_utterance].last_utterance}}.\n\nProvide the new itinerary to the user in a list format where each day has one item.",
             "system": "You are a travel assistant.",
             "maxTokens": 355,
-            "model": "claude-instant-v1",
+            "model": "gpt-3.5-turbo",
             "temperature": 0.7,
             "portsV2": {
               "byKey": {},

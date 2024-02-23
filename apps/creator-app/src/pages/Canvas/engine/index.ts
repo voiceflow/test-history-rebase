@@ -287,7 +287,7 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
 
     if (canvas) {
       const viewport = this.select(Viewport.activeDiagramViewportSelector);
-      const nodeCoords = Object.values(this.select(CreatorV2.nodeCoordsByIDSelectorV2));
+      const nodeCoords = Object.values(this.select(CreatorV2.nodeCoordsMapSelector));
 
       const XPositions: number[] = [];
       const YPositions: number[] = [];

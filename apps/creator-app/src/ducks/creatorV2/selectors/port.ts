@@ -18,8 +18,10 @@ export const allPortsByIDsSelector = createSelector([creatorStateSelector, idsPa
 
 export const allPortsSelector = createSelector([creatorStateSelector], (state) => state.ports);
 
+const EMPTY_PORTS = Realtime.Utils.port.createEmptyNodePorts();
+
 export const portsByNodeIDSelector = createSelector([creatorStateSelector, idParamSelector], ({ portsByNodeID }, nodeID) =>
-  nodeID ? portsByNodeID[nodeID] ?? Realtime.Utils.port.createEmptyNodePorts() : Realtime.Utils.port.createEmptyNodePorts()
+  nodeID ? portsByNodeID[nodeID] ?? EMPTY_PORTS : EMPTY_PORTS
 );
 
 export const nodeIDByPortIDSelector = createSelector([creatorStateSelector, idParamSelector], ({ nodeIDByPortID }, portID) =>

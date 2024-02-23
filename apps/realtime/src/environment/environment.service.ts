@@ -181,13 +181,13 @@ export class EnvironmentService {
 
   /* Prototype */
   async preparePrototype(environmentID: string) {
-    const projectID = await this.version.findOneProjectID(environmentID);
+    let version = await this.version.findOneOrFail(environmentID);
 
     const [project, diagrams, cmsData] = await Promise.all([
-      this.projectORM.findOneOrFail(projectID),
+      this.projectORM.findOneOrFail(version.projectID),
       this.diagram.findManyByVersionID(environmentID),
       // using transaction to optimize connections
-      this.postgresEM.transactional(() => this.findOneCMSData(projectID.toHexString(), environmentID)),
+      this.postgresEM.transactional(() => this.findOneCMSData(version.projectID.toHexString(), environmentID)),
     ]);
 
     const { legacySlots, legacyIntents, legacyVariables } = this.convertCMSResourcesToLegacyResources({
@@ -198,11 +198,11 @@ export class EnvironmentService {
 
     await Promise.all([
       this.version.patchOnePlatformData(environmentID, { intents: legacyIntents, slots: legacySlots }),
-      this.version.patchOne(environmentID, { variables: legacyVariables }),
+      this.version.patchOne(environmentID, { variables: Utils.array.unique([...version.variables, ...legacyVariables]) }),
     ]);
 
     // fetching version to get updated platformData
-    const version = await this.version.findOneOrFail(environmentID);
+    version = await this.version.findOneOrFail(environmentID);
 
     return {
       ...cmsData,

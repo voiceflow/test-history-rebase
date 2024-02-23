@@ -28,7 +28,7 @@ export class VariableEntity extends PostgresCMSTabularEntity {
   @Property()
   isArray: boolean;
 
-  @Property({ default: false })
+  @Property({ type: 'bool', default: false })
   isSystem = false;
 
   @Enum(() => VariableDatatype)

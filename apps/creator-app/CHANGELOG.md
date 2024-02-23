@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1399.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1399.2...@voiceflow/creator-app@1.1399.3) (2024-02-23)
+
+### Bug Fixes
+
+* realtime node step content updated (COR-1051) ([#7802](https://github.com/voiceflow/creator-app/issues/7802)) ([ed04ae3](https://github.com/voiceflow/creator-app/commit/ed04ae32901863a3e0589d5c17293190bc6ff64b))
+
 ## [1.1399.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1399.1...@voiceflow/creator-app@1.1399.2) (2024-02-23)
 
 ### Bug Fixes

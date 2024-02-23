@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1399.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1399.1...@voiceflow/creator-app@1.1399.2) (2024-02-23)
+
+### Bug Fixes
+
+* add data-testid to canvas header view only label (DX-1098) ([#7806](https://github.com/voiceflow/creator-app/issues/7806)) ([0cfc83e](https://github.com/voiceflow/creator-app/commit/0cfc83ec51322fcc4ed5fd0d2cffd6d18e3207e4))
+
 ## [1.1399.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1399.0...@voiceflow/creator-app@1.1399.1) (2024-02-22)
 
 **Note:** Version bump only for package @voiceflow/creator-app

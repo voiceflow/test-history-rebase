@@ -47,7 +47,6 @@ export const useComponents = (): ComponentsAPI => {
   const lastCreatedDiagramID = useSelector(DiagramV2.lastCreatedIDSelector);
   const cmsComponentsEnabled = useFeature(Realtime.FeatureFlag.CMS_COMPONENTS);
   const cmsComponents = useSelector(Designer.Flow.selectors.all);
-
   const reorderComponents = useDispatch(VersionV2.reorderComponents);
   const setLastCreatedDiagramID = useLocalDispatch(DiagramV2.setLastCreatedID);
 
@@ -101,7 +100,7 @@ export const useComponents = (): ComponentsAPI => {
     });
 
     return cmsComponentsEnabled.isEnabled ? cmsComponents.map(createComponentItemFromCMS) : components.map(createComponentItem);
-  }, [folders, components, getDiagramByID]);
+  }, [folders, components, cmsComponents, getDiagramByID]);
 
   const [searchComponentsItems, searchOpenedComponents] = React.useMemo(() => {
     const items: ComponentItem[] = [];

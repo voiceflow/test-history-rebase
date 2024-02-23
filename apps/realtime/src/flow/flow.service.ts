@@ -167,10 +167,10 @@ export class FlowService extends CMSTabularService<FlowORM> {
   ) {
     return this.postgresEM.transactional(async () => {
       const flowsToCreate = data.map(async (item) => {
-        const [{ id, ...rest }] = item.diagram
+        const [{ id }] = item.diagram
           ? await this.diagram.createOneComponentWithDiagram(item, meta)
           : await this.diagram.createOneEmptyComponent(item.flow.name, meta);
-        console.log('WOOT 1', id, rest);
+
         return this.createOneForUser(userID, {
           diagramID: id,
           name: item.flow.name,
@@ -180,8 +180,8 @@ export class FlowService extends CMSTabularService<FlowORM> {
           description: item.flow.description,
         });
       });
+
       const flows = await Promise.all(flowsToCreate);
-      console.log('WOOT 3', flows);
       await this.orm.em.flush();
 
       return {
@@ -219,11 +219,16 @@ export class FlowService extends CMSTabularService<FlowORM> {
 
   /* Delete */
 
-  async deleteManyAndSync(ids: Primary<FlowEntity>[]) {
+  async deleteManyAndSync(ids: Primary<FlowEntity>[], deleteDiagram = true) {
     return this.postgresEM.transactional(async () => {
       const flows = await this.findMany(ids);
 
       await this.deleteMany(flows, { flush: false });
+
+      if (deleteDiagram) {
+        const diagrams = await this.diagram.findMany(flows.map((flow) => ({ diagramID: flow.diagramID, versionID: flow.environmentID })));
+        await this.diagram.deleteMany(diagrams);
+      }
 
       await this.orm.em.flush();
 
@@ -274,17 +279,44 @@ export class FlowService extends CMSTabularService<FlowORM> {
 
   async duplicateOneAndBroadcast(
     authMeta: AuthMetaPayload,
-    { flowID, assistantID }: { flowID: Primary<FlowEntity>; assistantID: string; userID: number }
+    data: { sourceVersionID: string; flowID: string },
+    meta: { versionID: string; projectID: string }
   ) {
-    const duplicateFlowResource = await this.findOneOrFail(flowID);
+    const assistant = await this.assistantORM.findOneOrFail(meta.projectID);
+    const duplicateFlowResource = await this.findOneOrFail({ id: data.flowID, environmentID: meta.versionID });
+    const diagram = await this.diagram.findOneOrFail({ diagramID: duplicateFlowResource.diagramID, versionID: meta.versionID });
+
+    const [{ id: newDiagramID }] = await this.diagram.createOneComponentWithDiagram(
+      {
+        flow: this.entitySerializer.nullable(duplicateFlowResource),
+        diagram: {
+          type: diagram.type,
+          zoom: diagram.zoom,
+          name: diagram.name,
+          nodes: diagram.nodes,
+          offsetX: diagram.offsetX,
+          offsetY: diagram.offsetY,
+          modified: diagram.modified,
+          variables: diagram.variables,
+          menuItems: diagram.menuItems,
+        },
+      },
+      {
+        userID: authMeta.userID,
+        projectID: meta.projectID,
+        versionID: meta.versionID,
+        clientID: authMeta.clientID,
+        workspaceID: this.hashedID.encodeWorkspaceID(assistant.workspace.id),
+      }
+    );
 
     const flow = await this.createOneForUser(authMeta.userID, {
-      assistantID,
-      environmentID: duplicateFlowResource.environmentID,
-      name: `${duplicateFlowResource.name} (copy)`,
-      description: duplicateFlowResource.description,
-      diagramID: duplicateFlowResource.diagramID ?? null,
       folderID: duplicateFlowResource.folder?.id ?? null,
+      environmentID: duplicateFlowResource.environmentID,
+      description: duplicateFlowResource.description,
+      name: `${duplicateFlowResource.name} (copy)`,
+      assistantID: meta.projectID,
+      diagramID: newDiagramID,
     });
 
     await this.broadcastAddMany(authMeta, {

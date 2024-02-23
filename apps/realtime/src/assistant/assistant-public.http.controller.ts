@@ -2,8 +2,8 @@ import { Body, Controller, Get, Headers, HttpStatus, Inject, Param, Post, Query,
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiConsumes, ApiHeader, ApiParam, ApiTags } from '@nestjs/swagger';
 import { HashedWorkspaceID, ZodApiBody, ZodApiQuery, ZodApiResponse } from '@voiceflow/nestjs-common';
-import { Permission } from '@voiceflow/sdk-auth';
-import { Authorize, UserID } from '@voiceflow/sdk-auth/nestjs';
+import { Identity, Permission } from '@voiceflow/sdk-auth';
+import { Authorize, Principal, UserID } from '@voiceflow/sdk-auth/nestjs';
 import type { Request } from 'express';
 import { ZodValidationPipe } from 'nestjs-zod';
 
@@ -85,11 +85,12 @@ export class AssistantPublicHTTPController {
   @ZodApiQuery({ schema: AssistantExportJSONQuery })
   @ZodApiResponse({ status: HttpStatus.CREATED, schema: AssistantExportImportDataDTO })
   exportJSON(
-    @UserID() userID: number,
+    @Principal() principal: Identity & { userID?: number; createdBy?: number },
     @Param('environmentID') environmentID: string,
     @Headers('assistantID') assistantID: string | undefined,
     @Query(new ZodValidationPipe(AssistantExportJSONQuery)) query: AssistantExportJSONQuery
   ): Promise<AssistantExportImportDataDTO> {
+    const userID = principal.userID ?? principal.createdBy ?? principal.id;
     return this.service.exportJSON({ ...query, userID, assistantID, environmentID });
   }
 

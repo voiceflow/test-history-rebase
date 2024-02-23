@@ -196,7 +196,7 @@ export const useDiagramOptions = ({
 
         if (!isTopic) {
           if (isCMSComponentsEnabled && flow?.id) {
-            deleteCMSComponent(flow.id, { goToRootDiagram: true }).catch(onError);
+            deleteCMSComponent(flow.id, true).catch(onError);
           } else {
             deleteComponentDiagram(diagramID).catch(onError);
           }

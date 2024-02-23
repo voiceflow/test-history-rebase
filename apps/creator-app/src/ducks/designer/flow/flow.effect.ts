@@ -86,7 +86,7 @@ const goToRootDiagramIfActive =
   };
 
 export const deleteOne =
-  (id: string, { goToRootDiagram = false }): Thunk =>
+  (id: string, goToRootDiagram = false): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
     const flow = oneByID(state, { id })!;

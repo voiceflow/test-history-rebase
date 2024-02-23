@@ -15,10 +15,7 @@ import {
 
 const ProjectHeader: React.FC = () => (
   <Switch>
-    <Route
-      path={[Path.DOMAIN_CANVAS, Path.CANVAS_COMMENTING, Path.CANVAS_COMMENTING_THREAD, Path.CANVAS_MODEL, Path.CANVAS_MODEL_ENTITY]}
-      component={CanvasHeader}
-    />
+    <Route path={[Path.DOMAIN_CANVAS, Path.CANVAS_COMMENTING, Path.CANVAS_COMMENTING_THREAD]} component={CanvasHeader} />
 
     <Route path={Path.PROJECT_PROTOTYPE} component={PrototypeHeader} />
 

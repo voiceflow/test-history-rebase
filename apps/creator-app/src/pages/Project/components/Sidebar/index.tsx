@@ -5,14 +5,7 @@ import { Path } from '@/config/routes';
 
 import { CanvasIconMenu, IntegrationsSidebar, LogoOffsetSidebar, SettingsSidebar, TestVariablesSidebar } from './components';
 
-const ALL_PROJECT_SIDEBAR_PATHS = [
-  Path.DOMAIN_CANVAS,
-  Path.CANVAS_COMMENTING,
-  Path.CANVAS_COMMENTING_THREAD,
-  Path.CANVAS_MODEL,
-  Path.CANVAS_MODEL_ENTITY,
-  Path.PROJECT_ANALYTICS,
-];
+const ALL_PROJECT_SIDEBAR_PATHS = [Path.DOMAIN_CANVAS, Path.CANVAS_COMMENTING, Path.CANVAS_COMMENTING_THREAD, Path.PROJECT_ANALYTICS];
 
 const ProjectSidebar: React.FC = () => (
   <Switch>

@@ -8,14 +8,14 @@ import * as Session from '@/ducks/session';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useActiveProjectConfig, useSelector, useTrackingEvents } from '@/hooks';
 
-export enum TrackingArea {
-  CANVAS = 'canvas',
-  PROTOTYPE = 'prototype',
-  TRANSCRIPTS = 'transcripts',
-  PROJECT_CMS = 'project_cms',
-}
+const TrackingArea = {
+  CANVAS: 'canvas',
+  PROTOTYPE: 'prototype',
+  TRANSCRIPTS: 'transcripts',
+  PROJECT_CMS: 'project_cms',
+} as const;
 
-const trackingPaths = [
+const TRACKING_PATHS = [
   { area: TrackingArea.PROTOTYPE, path: Path.PROJECT_PROTOTYPE },
   { area: TrackingArea.TRANSCRIPTS, path: Path.CONVERSATIONS },
   { area: TrackingArea.CANVAS, path: Path.DOMAIN_CANVAS },
@@ -43,7 +43,7 @@ export const useProjectExitTracking = () => {
   const [trackingEvents] = useTrackingEvents();
 
   const track = (pathname: string) => {
-    const match = trackingPaths.find(({ path }) => matchPath(pathname, path));
+    const match = TRACKING_PATHS.find(({ path }) => matchPath(pathname, path));
 
     if (match) {
       durationsRef.current[match.area] += Date.now() - areaTimeRef.current;

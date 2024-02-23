@@ -33,8 +33,14 @@ export const AssistantNavigation: React.FC = () => {
           )}
         </PrimaryNavigation.Header>
 
-        {items.map(({ path, iconName, isActive, testID }) => (
-          <PrimaryNavigation.Item key={path} onClick={onLinkClick(path)} isActive={isActive} iconName={iconName} testID={tid(TEST_ID, testID)} />
+        {items.map(({ path, params, iconName, isActive, testID }) => (
+          <PrimaryNavigation.Item
+            key={path}
+            testID={tid(TEST_ID, testID)}
+            onClick={onLinkClick(path, { params })}
+            isActive={isActive}
+            iconName={iconName}
+          />
         ))}
       </PrimaryNavigation.Section>
 

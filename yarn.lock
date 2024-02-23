@@ -10337,24 +10337,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voiceflow/showcase@workspace:apps/showcase":
-  version: 0.0.0-use.local
-  resolution: "@voiceflow/showcase@workspace:apps/showcase"
-  dependencies:
-    "@voiceflow/ui": "workspace:*"
-    react: 18.2.0
-    react-dismissable-layers: 0.3.2
-    react-dom: 18.2.0
-    react-router: 5.3.4
-    react-router-dom: 5.3.4
-    react-toastify: 9.1.2
-    styled-components: 5.3.10
-  peerDependencies:
-    react-router: 5.3.4
-    react-router-dom: 5.3.4
-  languageName: unknown
-  linkType: soft
-
 "@voiceflow/slate-serializer@npm:1.5.5":
   version: 1.5.5
   resolution: "@voiceflow/slate-serializer@npm:1.5.5"

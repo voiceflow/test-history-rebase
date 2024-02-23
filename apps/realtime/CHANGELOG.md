@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.276.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.276.1...@voiceflow/realtime@1.276.2) (2024-02-23)
+
+### Bug Fixes
+
+* allow api-key export json (BUG-773) ([#7809](https://github.com/voiceflow/creator-app/issues/7809)) ([2ae3e7b](https://github.com/voiceflow/creator-app/commit/2ae3e7b1c976a03a79f2a5d6799db3fcc1d61e90)), closes [/github.com/voiceflow/platform/blob/708bc57f8bb71ba459f1bbb9ff4f1d106c9a3c1b/libs/sdk-auth/src/platform/nestjs/decorators/user-id.decorator.ts#L9-L20](https://github.com//github.com/voiceflow/platform/blob/708bc57f8bb71ba459f1bbb9ff4f1d106c9a3c1b/libs/sdk-auth/src/platform/nestjs/decorators/user-id.decorator.ts/issues/L9-L20)
+
 ## [1.276.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.276.0...@voiceflow/realtime@1.276.1) (2024-02-23)
 
 **Note:** Version bump only for package @voiceflow/realtime

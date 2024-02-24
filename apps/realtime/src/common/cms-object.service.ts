@@ -25,7 +25,7 @@ export abstract class CMSObjectService<Orm extends CMSObjectORM<any, any>> exten
     options?: ORMMutateOptions
   ): Promise<void> {
     if ((data as any).folderID === null) {
-      await Promise.all(ids.map((id) => this.orm.em.qb(this.orm._Entity.name).update({ folder_id: null }).where(id).execute()));
+      await Promise.all(ids.map((id) => (this.orm as any).em?.qb?.(this.orm._Entity.name)?.update({ folder_id: null }).where(id).execute()));
     }
     return this.orm.patchManyForUser(userID, ids, data, options);
   }

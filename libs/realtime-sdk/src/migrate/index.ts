@@ -3,7 +3,7 @@ import * as Adapters from '@realtime-sdk/adapters';
 import { SchemaVersion } from '@realtime-sdk/schema-version/schema-version.enum';
 import { BaseModels, BaseVersion } from '@voiceflow/base-types';
 import { AnyRecord, Utils } from '@voiceflow/common';
-import { produce } from 'immer';
+import { produceWithPatches } from 'immer';
 
 import migrations from './migrations';
 import { DiagramUpdateData, Migration, MigrationContext, MigrationData, VersionUpdateData } from './migrations/types';
@@ -41,10 +41,7 @@ interface MigrateProjectPayload {
   creatorID: number;
 }
 
-export const migrateProject = (
-  { cms, version, project, diagrams, creatorID }: MigrateProjectPayload,
-  targetSchemaVersion: SchemaVersion
-): MigrationData => {
+export const migrateProject = ({ cms, version, project, diagrams, creatorID }: MigrateProjectPayload, targetSchemaVersion: SchemaVersion) => {
   const currentSchemaVersion = version._version ?? SchemaVersion.V1;
   const pendingMigrations = getPendingMigrations(currentSchemaVersion, targetSchemaVersion);
 
@@ -53,7 +50,7 @@ export const migrateProject = (
     creatorID,
   };
 
-  return produce<MigrationData>(
+  return produceWithPatches<MigrationData>(
     {
       cms,
       version: getVersionPatch(version),

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1403.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1402.0...@voiceflow/creator-app@1.1403.0) (2024-02-26)
+
+### Features
+
+* remove project api in frontend (COR-1079) ([#7811](https://github.com/voiceflow/creator-app/issues/7811)) ([4a53da7](https://github.com/voiceflow/creator-app/commit/4a53da7f75dce7b65b50fde9d705e1e49a7cee9e))
+
 # [1.1402.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1401.4...@voiceflow/creator-app@1.1402.0) (2024-02-26)
 
 ### Features

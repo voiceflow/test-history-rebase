@@ -66,7 +66,7 @@ export const CMSVariableEditor: React.FC = () => {
         <CMSEditorDescription
           value={variable.description ?? ''}
           testID={tid('variable', 'description')}
-          placeholder="Enter variable description"
+          placeholder="Enter description"
           onValueChange={(description) => patchVariable({ description })}
         />
       </Scroll>

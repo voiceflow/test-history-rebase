@@ -66,7 +66,7 @@ export const CMSFunctionEditor: React.FC = () => {
 
         <CMSEditorDescription
           value={functionResource?.description ?? ''}
-          placeholder="Enter a description"
+          placeholder="Enter description"
           onValueChange={(value) => patchFunction({ description: value })}
           testID={tid('function', 'description')}
         />

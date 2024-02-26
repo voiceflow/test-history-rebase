@@ -86,7 +86,7 @@ export const FunctionCreateModal = modalsManager.create<IFunctionCreateModal, Fu
               onValueChange={setDescription}
               disabled={closePrevented}
               className={textareaStyles}
-              placeholder="Enter a description (optional)"
+              placeholder="Enter description (optional)"
               testID={tid('function', 'description')}
             />
           </Modal.Body>

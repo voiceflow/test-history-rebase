@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1401.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1401.3...@voiceflow/creator-app@1.1401.4) (2024-02-26)
+
+### Bug Fixes
+
+* unsupported kb model handling (COR-1050) ([#7805](https://github.com/voiceflow/creator-app/issues/7805)) ([8327414](https://github.com/voiceflow/creator-app/commit/83274145e1fc3f82a08818315c4dc85b3a1d4ba8))
+
 ## [1.1401.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1401.2...@voiceflow/creator-app@1.1401.3) (2024-02-26)
 
 **Note:** Version bump only for package @voiceflow/creator-app

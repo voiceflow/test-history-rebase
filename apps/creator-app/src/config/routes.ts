@@ -241,7 +241,6 @@ export const Path = {
   PUBLISH_EXPORT: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.EXPORT),
   PUBLISH_WEBCHAT: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.WEBCHAT),
   PUBLISH_API: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.API),
-  PUBLISH_PROJECT_API: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.PROJECT_API),
   PUBLISH_KNOWLEDGE_BASE_API: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.KNOWLEDGE_BASE_API),
 
   PUBLISH_SMS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.SMS),

@@ -169,7 +169,6 @@ export enum EventName {
   AI_KNOWLEDGE_BASE_INTEGRATION_FILTERS_USED = 'AI - KB Integration Filters Used',
 
   // Project API
-  API_PAGE_OPEN = 'API - Page Open',
   API_KEY_COPIED = 'API - Key Copied',
 
   // Reverse trials

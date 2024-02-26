@@ -3,14 +3,13 @@ import React from 'react';
 
 import client from '@/client';
 import JobInterface from '@/components/JobInterface';
-import { PROJECT_API_LINK } from '@/constants/link.constant';
+import { DIALOG_MANAGER_API } from '@/config/documentation';
 import { PublishContext } from '@/contexts/PublishContext';
 import * as Project from '@/ducks/projectV2';
 import { activeProjectIDSelector } from '@/ducks/session';
 import { useDispatch, useSelector, useTrackingEvents } from '@/hooks';
 import { useSimulatedProgress } from '@/hooks/job';
 import * as ModalsV2 from '@/ModalsV2';
-import { openURLInANewTab } from '@/utils/window';
 
 import GeneralUploadButton from './components/GeneralUploadButton';
 import { useNLPTrainingStageContent } from './stages';
@@ -27,16 +26,13 @@ const General: React.FC = () => {
 
   const [trackingEvents] = useTrackingEvents();
 
-  const onLinkClick = () => {
-    openURLInANewTab(PROJECT_API_LINK);
-  };
-
   const onPublish = usePersistFunction(async () => {
     try {
       const { versionName } = await publishNewVersionModal.open({
         message: (
           <>
-            Publish this version to production and use it with our <System.Link.Button onClick={onLinkClick}>Project API</System.Link.Button>.
+            Publish this version to production and use it with our{' '}
+            <System.Link.Anchor href={DIALOG_MANAGER_API}>Dialog Manager API</System.Link.Anchor>.
           </>
         ),
       });

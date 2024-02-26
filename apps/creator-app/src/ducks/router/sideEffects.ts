@@ -10,7 +10,6 @@ import * as Designer from '@/ducks/designer';
 import * as DomainSelectors from '@/ducks/domain/selectors';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
-import * as Tracking from '@/ducks/tracking';
 import { SyncThunk, Thunk } from '@/store/types';
 
 import {
@@ -20,10 +19,10 @@ import {
   goToCanvasCommentingThread,
   goToCanvasTextMarkup,
   goToConversations,
+  goToDialogManagerAPI,
   goToPlatformPrototype,
   goToPrototype,
   goToPublish,
-  goToPublishProjectAPI,
   goToSettings,
   goToTranscript,
   goToWorkspace,
@@ -315,15 +314,13 @@ export const goToActivePlatformPublish = (): Thunk => async (dispatch, getState)
   dispatch(goToPublish(versionID, platform));
 };
 
-export const goToActiveProjectAPIPublish = (): Thunk => async (dispatch, getState) => {
+export const goToActiveDialogManagerAPI = (): Thunk => async (dispatch, getState) => {
   const state = getState();
   const versionID = Session.activeVersionIDSelector(state);
 
   Errors.assertVersionID(versionID);
 
-  dispatch(goToPublishProjectAPI(versionID));
-
-  dispatch(Tracking.trackProjectAPIPageOpen());
+  dispatch(goToDialogManagerAPI(versionID));
 };
 
 export const goToActivePlatformPrototype = (): Thunk => async (dispatch, getState) => {

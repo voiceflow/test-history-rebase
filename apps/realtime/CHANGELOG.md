@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.278.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.277.0...@voiceflow/realtime@1.278.0) (2024-02-26)
+
+### Features
+
+* improve migration perf [bugfix] (CT-000) ([#7793](https://github.com/voiceflow/creator-app/issues/7793)) ([89f0674](https://github.com/voiceflow/creator-app/commit/89f0674a9031d28b8126ac584d86cc2b41752e98))
+
 # [1.277.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.276.4...@voiceflow/realtime@1.277.0) (2024-02-26)
 
 ### Bug Fixes

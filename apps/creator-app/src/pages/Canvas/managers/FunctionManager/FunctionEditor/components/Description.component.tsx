@@ -17,7 +17,7 @@ export const Description: React.FC<DescriptionProps> = ({ description }) => {
         </CollapsibleHeader>
       }
     >
-      <TextArea minRows={4} maxRows={17} variant="chunk" readOnly value={description || ''} placeholder="Enter intent description" />
+      <TextArea minRows={4} maxRows={17} variant="chunk" readOnly value={description || ''} placeholder="Enter description" />
     </Collapsible>
   );
 };

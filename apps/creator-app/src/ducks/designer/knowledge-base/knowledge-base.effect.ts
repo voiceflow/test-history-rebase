@@ -4,9 +4,11 @@ import { notify } from '@voiceflow/ui-next';
 
 import api from '@/client/api';
 import { knowledgeBaseClient } from '@/client/knowledge-base';
+import { AI_MODEL_CONFIG_MAP } from '@/config/ai-model';
 import * as Errors from '@/config/errors';
 import * as Feature from '@/ducks/feature';
 import * as Session from '@/ducks/session';
+import { DEFAULT_SETTINGS } from '@/ModalsV2/modals/KnowledgeBase/KnowledgeBaseSettings/KnowledgeBaseSettings.constant';
 import type { Thunk } from '@/store/types';
 
 import * as Actions from './knowledge-base.action';
@@ -32,6 +34,11 @@ export const getSettings = (): Thunk => async (dispatch, getState) => {
     Errors.assertProjectID(projectID);
 
     settings = await knowledgeBaseClient.getSettings(projectID);
+  }
+
+  if (settings.summarization.model && !Object.keys(AI_MODEL_CONFIG_MAP).includes(settings.summarization.model)) {
+    settings = { ...settings, summarization: { ...settings.summarization, model: DEFAULT_SETTINGS.summarization.model } };
+    patchSettings(settings);
   }
 
   dispatch(Actions.SetSettings({ settings }));

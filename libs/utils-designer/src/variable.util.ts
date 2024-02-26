@@ -38,7 +38,7 @@ export interface VariableDeclaration {
   defaultValue: string | null;
 }
 
-export function parseCMSVariableDefaultValue(name: string, { datatype, isSystem, defaultValue }: VariableDeclaration) {
+export const parseVariableDefaultValue = (name: string, { datatype, isSystem, defaultValue }: VariableDeclaration) => {
   if (!defaultValue) return defaultValue;
 
   const type = isSystem && isSystemVariableName(name) ? SYSTEM_VARIABLE_TYPE_MAP[name] : datatype;
@@ -57,4 +57,9 @@ export function parseCMSVariableDefaultValue(name: string, { datatype, isSystem,
     default:
       throw new Error(`Received unexpected variable type '${type}'`);
   }
-}
+};
+
+/**
+ * @deprecated use parseVariableDefaultValue instead
+ */
+export const parseCMSVariableDefaultValue = parseVariableDefaultValue;

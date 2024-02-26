@@ -10,16 +10,16 @@ import { StageComponentProps } from '@/platforms/types';
 
 const SuccessStage: React.FC<StageComponentProps<NLPTrainJob.SuccessStage>> = () => {
   useSyncProjectLiveVersion();
-  const goToPublishProjectAPI = useDispatch(Router.goToActiveProjectAPIPublish);
+  const goToDialogManagerAPI = useDispatch(Router.goToActiveDialogManagerAPI);
 
   const onApiButtonClick = () => {
-    goToPublishProjectAPI();
+    goToDialogManagerAPI();
   };
 
   return (
     <UploadedStage description="A new version of your assistant has been successfully published">
       <Button squareRadius fullWidth variant={ButtonVariant.QUATERNARY} onClick={onApiButtonClick}>
-        Project API
+        Dialog Manager API
       </Button>
     </UploadedStage>
   );

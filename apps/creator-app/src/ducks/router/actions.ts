@@ -69,6 +69,10 @@ export const goToPublish = (versionID: string, platform: Platform.Constants.Plat
   return goTo(`${generatePath(Path.PROJECT_PUBLISH, { versionID })}${platform ? `/${platformPath}` : ''}`);
 };
 
+export const goToDialogManagerAPI = (versionID: string) => {
+  return goTo(generatePath(Path.PUBLISH_API, { versionID }));
+};
+
 export const goToCMSKnowledgeBase = (versionID: string) => goTo(`${generatePath(Path.CMS_KNOWLEDGE_BASE, { versionID })}`);
 
 export const goToPlatformPrototype = (versionID: string, platform: Platform.Constants.PlatformType) =>
@@ -76,8 +80,6 @@ export const goToPlatformPrototype = (versionID: string, platform: Platform.Cons
 
 export const goToConversations = (versionID: string, search = window.location.search) =>
   goTo(`${generatePath(Path.CONVERSATIONS, { versionID })}${search}`);
-
-export const goToPublishProjectAPI = (versionID: string) => goTo(generatePath(Path.PUBLISH_PROJECT_API, { versionID }));
 
 export const goToKnowledgeBaseAPI = (versionID: string) => goTo(generatePath(Path.PUBLISH_KNOWLEDGE_BASE_API, { versionID }));
 

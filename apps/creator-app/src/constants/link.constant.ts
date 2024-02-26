@@ -6,7 +6,6 @@ export const GET_HELP_LINK = 'mailto:support@voiceflow.com';
 export const TEMPLATES_LINK = 'https://www.voiceflow.com/templates';
 export const CHANGELOG_LINK = 'https://changelog.voiceflow.com/en';
 export const BOOK_DEMO_LINK = 'https://www.voiceflow.com/demo';
-export const PROJECT_API_LINK = 'https://developer.voiceflow.com/reference/fetchproject';
 export const DESKTOP_APP_LINK = 'https://www.voiceflow.com/desktop';
 export const YOUTUBE_CHANNEL_LINK = 'https://www.youtube.com/c/Voiceflow';
 export const DISCORD_COMMUNITY_LINK = 'https://discord.gg/jYCjyfXNrB';

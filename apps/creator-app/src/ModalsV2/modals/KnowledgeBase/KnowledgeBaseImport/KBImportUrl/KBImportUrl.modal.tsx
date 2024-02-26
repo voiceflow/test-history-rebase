@@ -1,14 +1,18 @@
 import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { tid } from '@voiceflow/style';
-import { Box, Scroll, TextArea } from '@voiceflow/ui-next';
+import { Box, notify, Scroll, TextArea } from '@voiceflow/ui-next';
+import { Tokens } from '@voiceflow/ui-next/styles';
 import pluralize from 'pluralize';
 import React, { useMemo } from 'react';
 
 import { Modal } from '@/components/Modal';
+import { LimitType } from '@/constants/limits';
 import { Designer } from '@/ducks';
 import { useFeature } from '@/hooks/feature';
 import { useInput, useInputState } from '@/hooks/input.hook';
+import { useUpgradeModal } from '@/hooks/modal.hook';
+import { usePlanLimitConfig } from '@/hooks/planLimitV2';
 import { useDispatch } from '@/hooks/store.hook';
 import { useValidators } from '@/hooks/validate.hook';
 import manager from '@/ModalsV2/manager';
@@ -22,6 +26,8 @@ export const KBImportUrl = manager.create('KBImportURL', () => ({ api, type, ope
   const TEST_ID = tid('knowledge-base', 'import-url-modal');
 
   const { isEnabled: isRefreshEnabled } = useFeature(Realtime.FeatureFlag.KB_REFRESH);
+  const planConfig = usePlanLimitConfig(LimitType.KB_DOCUMENTS, { limit: 5000 });
+  const upgradeModal = useUpgradeModal();
   const createManyFromData = useDispatch(Designer.KnowledgeBase.Document.effect.createManyFromData);
 
   const inputState = useInputState();
@@ -36,10 +42,29 @@ export const KBImportUrl = manager.create('KBImportURL', () => ({ api, type, ope
 
     await createManyFromData(
       sanitizeURLs(urls.split('\n')).map((url) => ({ url, name: url, type: BaseModels.Project.KnowledgeBaseDocumentType.URL, refreshRate }))
-    );
-
-    api.enableClose();
-    api.close();
+    )
+      .then(() => {
+        api.enableClose();
+        api.close();
+        return null;
+      })
+      .catch((error) => {
+        if (error.response.status === 406 && planConfig) {
+          const limit = error.response.data.kbDocsLimit;
+          notify.long.warning(`Document limit (${limit}) reached for your current subscription. Please upgrade to continue.`, {
+            actionButtonProps: { label: 'Upgrade', onClick: () => upgradeModal.openVoid(planConfig.upgradeModal({ limit })) },
+            bodyStyle: {
+              color: Tokens.colors.neutralDark.neutralsDark900,
+              fontSize: Tokens.typography.size[14],
+              lineHeight: Tokens.typography.lineHeight[20],
+              fontFamily: Tokens.typography.family.regular,
+            },
+          });
+        } else {
+          notify.short.error('Failed to import data sources');
+        }
+        api.enableClose();
+      });
   });
 
   const onSave = (value: string) => {

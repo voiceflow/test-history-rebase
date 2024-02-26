@@ -1,5 +1,5 @@
 import { tid } from '@voiceflow/style';
-import { BaseProps, Box, Dropdown, Menu, MenuItem, Tooltip, useTooltipModifiers } from '@voiceflow/ui-next';
+import { BaseProps, Box, CheckboxControl, Dropdown, Menu, MenuItem, Tooltip, useTooltipModifiers } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { useDeferredSearch } from '@/hooks/search.hook';
@@ -7,30 +7,32 @@ import { ZendeskFilterBase } from '@/models/KnowledgeBase.model';
 
 import { captionStyles } from './KBZendeskFilterSelect.css';
 
-export interface IKBZendeskFilterSelect<T extends ZendeskFilterBase> extends BaseProps {
+export interface IKBZendeskFilterMultiSelect<T extends ZendeskFilterBase> extends BaseProps {
   label: string;
   placeholder?: string;
-  value: T | null;
+  value: T[];
   options: T[];
-  errorMessage: string | null;
   disabled?: boolean;
-  onValueChange: (value: T) => void;
+  onValueChange: (value: T[]) => void;
   onDropdownClose?: () => void;
   hasTooltip?: boolean;
+  tooltipMessage?: string;
+  tooltipVariant?: 'alert' | 'basic' | 'success';
 }
 
-export const KBZendeskFilterSelect = <T extends ZendeskFilterBase>({
+export const KBZendeskFilterMultiSelect = <T extends ZendeskFilterBase>({
   label,
   placeholder,
   value,
   disabled,
   options,
-  errorMessage,
   onValueChange,
   onDropdownClose,
   hasTooltip,
+  tooltipMessage,
+  tooltipVariant = 'basic',
   testID,
-}: IKBZendeskFilterSelect<T>): React.ReactElement => {
+}: IKBZendeskFilterMultiSelect<T>): React.ReactElement => {
   const search = useDeferredSearch({
     items: options,
     searchBy: (item) => item.name,
@@ -38,13 +40,21 @@ export const KBZendeskFilterSelect = <T extends ZendeskFilterBase>({
 
   const modifiers = useTooltipModifiers([{ name: 'offset', options: { offset: [0, 28] } }]);
 
+  const onSelectAll = (onClose: VoidFunction) => () => {
+    onValueChange(options);
+    onDropdownClose?.();
+    onClose();
+  };
+
+  const onDeselectAll = () => {
+    onValueChange([]);
+  };
+
   const dropdown = (
     <Dropdown
-      value={value?.name || null}
+      value={value ? value.map((item) => item.name).join(', ') : null}
       label={label}
       disabled={disabled}
-      error={!!errorMessage}
-      errorMessage={errorMessage || undefined}
       onClose={onDropdownClose}
       placeholder={placeholder}
       testID={testID}
@@ -53,7 +63,7 @@ export const KBZendeskFilterSelect = <T extends ZendeskFilterBase>({
         return (
           <Menu
             searchSection={
-              options.length ? (
+              options && options.length ? (
                 <Menu.Search
                   onValueChange={search.setValue}
                   placeholder="Search"
@@ -65,20 +75,39 @@ export const KBZendeskFilterSelect = <T extends ZendeskFilterBase>({
                 <></>
               )
             }
+            actionButtons={
+              search.hasItems ? (
+                <Menu.ActionButtons
+                  firstButton={
+                    <Menu.ActionButtons.Button
+                      label={value.length > 0 ? 'Unselect all' : 'Select all'}
+                      onClick={value.length > 0 ? onDeselectAll : onSelectAll(onClose)}
+                      testID={tid(testID, ['menu', 'toggle-all-selected'])}
+                    />
+                  }
+                />
+              ) : (
+                <></>
+              )
+            }
           >
             {search.hasItems ? (
               search.items.map((option, index) => {
-                const onChange = () => {
-                  onValueChange(option);
-                  onClose();
-                };
                 return (
                   <MenuItem
                     key={index + 1}
-                    onClick={onChange}
+                    onClick={() => onValueChange(value.includes(option) ? value.filter((item) => item !== option) : [...value, option])}
+                    label={option.name}
                     searchValue={search.deferredValue}
                     testID={tid(testID, 'menu-item')}
-                    label={option.name}
+                    checkbox={
+                      <CheckboxControl
+                        id="checkbox"
+                        value={value.includes(option)}
+                        onChange={() => onValueChange(value.includes(option) ? value.filter((item) => item !== option) : [...value, option])}
+                        testID={tid(testID, ['menu-item', 'select'])}
+                      />
+                    }
                   />
                 );
               })
@@ -96,9 +125,10 @@ export const KBZendeskFilterSelect = <T extends ZendeskFilterBase>({
       <Box direction="column">
         {hasTooltip && disabled ? (
           <Tooltip
-            width={168}
+            width={175}
             modifiers={modifiers}
-            placement="left-start"
+            placement="left"
+            variant={tooltipVariant}
             referenceElement={({ onOpen, onClose, ref }) => (
               <Box ref={ref} onMouseEnter={onOpen} onMouseLeave={onClose} direction="column">
                 {dropdown}
@@ -107,7 +137,9 @@ export const KBZendeskFilterSelect = <T extends ZendeskFilterBase>({
           >
             {() => (
               <Box direction="column">
-                <Tooltip.Caption className={captionStyles}>This filter is disabled until the one above it has a selection present.</Tooltip.Caption>
+                <Tooltip.Caption className={captionStyles}>
+                  {tooltipMessage || 'Brand selection is required before applying additional filters to the selection.'}
+                </Tooltip.Caption>
               </Box>
             )}
           </Tooltip>

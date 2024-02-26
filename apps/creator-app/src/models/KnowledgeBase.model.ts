@@ -40,7 +40,9 @@ export interface ZendeskFilterBase {
 
 export interface ZendeskFilterLabel extends ZendeskFilterBase {}
 
-export interface ZendeskFilterBrand extends ZendeskFilterBase {}
+export interface ZendeskFilterBrand extends ZendeskFilterBase {
+  subdomain: string;
+}
 
 export interface ZendeskFilterLocale extends ZendeskFilterBase {
   locale: string;

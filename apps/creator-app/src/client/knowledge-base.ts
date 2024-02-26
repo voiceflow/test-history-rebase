@@ -119,19 +119,22 @@ export const knowledgeBaseClient = {
     return apiV3.fetch.get<{ data: { url: string } }>(url).then(({ data }) => data);
   },
 
-  getIntegrationFilters: (projectID: string, integrationType: string) =>
-    apiV3.fetch
-      .get<{ data: ZendeskFilters }>(`/projects/${projectID}/knowledge-base/integrations/${integrationType}/filters`)
-      .then(({ data }) => data),
+  getIntegrationFilters: ({ projectID, integrationType, subdomain }: { projectID: string; integrationType: string; subdomain?: string }) => {
+    // eslint-disable-next-line dot-notation
+    const url = apiV3.fetch['axios'].getUri({
+      url: `/projects/${projectID}/knowledge-base/integrations/${integrationType}/filters`,
+      params: { subdomain },
+    });
 
-  getUserSegmentFilters: (projectID: string, filters: ZendeskCountFilters) =>
-    apiV3.fetch
-      .post<{ data: ZendeskFilterUserSegment[] }>(`/projects/${projectID}/knowledge-base/integrations/zendesk/user-segments`, { data: { filters } })
-      .then(({ data }) => data),
+    return apiV3.fetch.get<{ data: ZendeskFilters }>(url).then(({ data }) => data);
+  },
 
   getIntegrationDocumentCount: (projectID: string, integrationType: string, filters: ZendeskCountFilters) =>
     apiV3.fetch
-      .post<{ data: { count: number } }>(`/projects/${projectID}/knowledge-base/integrations/${integrationType}/count`, { data: { filters } })
+      .post<{ data: { count: number; userSegments: ZendeskFilterUserSegment[] } }>(
+        `/projects/${projectID}/knowledge-base/integrations/${integrationType}/count`,
+        { data: { filters } }
+      )
       .then(({ data }) => data),
 
   createOneIntegration: (integrationType: string, data: { code: string; state: string; redirectUrl: string }) => {

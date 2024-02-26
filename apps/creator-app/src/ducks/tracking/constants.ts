@@ -239,6 +239,7 @@ export enum UpgradePrompt {
   LOCKED_STEPS = 'Locked Steps',
   KB_MODELS = 'KB Models',
   KB_REFRESH_RATE = 'KB Refresh Rate',
+  KB_DOCUMENTS = 'KB Documents',
 }
 
 export enum SourceType {

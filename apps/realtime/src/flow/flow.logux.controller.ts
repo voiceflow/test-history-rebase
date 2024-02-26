@@ -149,7 +149,7 @@ export class FlowLoguxController {
   @BroadcastOnly()
   @UseRequestContext()
   async deleteOne(@Payload() { id, keepDiagram, context }: Actions.Flow.DeleteOne, @AuthMeta() authMeta: AuthMetaPayload) {
-    const result = await this.service.deleteManyAndSync([{ id, environmentID: context.environmentID }], keepDiagram);
+    const result = await this.service.deleteManyAndSync([{ id, environmentID: context.environmentID }], { keepDiagram });
 
     // overriding entities cause it's broadcasted by decorator
     await this.service.broadcastDeleteMany(authMeta, { ...result, delete: { ...result.delete, flows: [] } });

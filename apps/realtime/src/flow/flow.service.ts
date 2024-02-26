@@ -284,7 +284,7 @@ export class FlowService extends CMSTabularService<FlowORM> {
   ) {
     const flows: FlowEntity[] = [];
     const diagrams: DiagramEntity[] = [];
-    const flowsByID = await this.orm.findManyBydiagramIDs(meta.environmentID, data.sourceDiagramIDs);
+    const flowsByID = await this.orm.findManyByDiagramIDs(meta.environmentID, data.sourceDiagramIDs);
     const assistant = await this.assistantORM.findOneOrFail(meta.assistantID);
     const completeMeta = {
       userID: authMeta.userID,

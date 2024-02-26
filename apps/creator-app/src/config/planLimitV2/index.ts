@@ -1,5 +1,6 @@
 import { DOMAINS_LIMITS } from './domains';
 import { EDITOR_SEATS_LIMITS } from './editorSeats';
+import { KB_DOCUMENTS_LIMITS } from './kbDocuments';
 import { MARKUP_IMAGE_LIMITS } from './markupImage';
 import { MARKUP_VIDEO_LIMITS } from './markupVideo';
 import { PROJECTS_LIMITS } from './projects';
@@ -17,6 +18,7 @@ export const PLAN_LIMITS = buildPlanLimitRecord([
   EDITOR_SEATS_LIMITS,
   VIEWER_SEATS_LIMITS,
   VARIABLE_STATES_LIMITS,
+  KB_DOCUMENTS_LIMITS,
 ]);
 
 export type PlanLimits = typeof PLAN_LIMITS;

@@ -209,6 +209,14 @@ const createManyFromFormData =
     dispatch.local(Actions.AddMany({ data: documents }));
 
     if (manyFormData.length !== documents.length) {
+      const error = result
+        .filter((res): res is PromiseRejectedResult => res.status === 'rejected')
+        .filter((res) => res.reason.response?.status === 406)
+        .map((res) => {
+          return res.reason;
+        })[0];
+      if (error) throw error;
+
       const erroredCount = manyFormData.length - documents.length;
 
       Tracking.trackAiKnowledgeBaseError({ ErrorType: 'Import' });
@@ -277,6 +285,14 @@ export const createManyFromData =
     dispatch.local(Actions.AddMany({ data: documents }));
 
     if (data.length !== documents.length) {
+      const error = result
+        .filter((res): res is PromiseRejectedResult => res.status === 'rejected')
+        .filter((res) => res.reason.response?.status === 406)
+        .map((res) => {
+          return res.reason;
+        })[0];
+      if (error) throw error;
+
       const erroredCount = data.length - documents.length;
 
       Tracking.trackAiKnowledgeBaseError({ ErrorType: 'Import' });

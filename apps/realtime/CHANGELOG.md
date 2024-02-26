@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.277.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.276.4...@voiceflow/realtime@1.277.0) (2024-02-26)
+
+### Bug Fixes
+
+* build folders back to root hotfix (BUG-1165) ([ac8b69e](https://github.com/voiceflow/creator-app/commit/ac8b69e571b96e72c24df13d2223d013b8b5fd2e))
+* folders back to root hotfix [bugfix] (BUG-1165) ([#7813](https://github.com/voiceflow/creator-app/issues/7813)) ([ec2972f](https://github.com/voiceflow/creator-app/commit/ec2972f5beecc6ddc394004b0bcd200dc94368f8))
+
+### Features
+
+* realtime split ([#7810](https://github.com/voiceflow/creator-app/issues/7810)) ([afa3010](https://github.com/voiceflow/creator-app/commit/afa30101bf41a6090909dc0fd7bda50556d7daaa))
+
 ## [1.276.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.276.3...@voiceflow/realtime@1.276.4) (2024-02-23)
 
 ### Bug Fixes

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1402.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1401.4...@voiceflow/creator-app@1.1402.0) (2024-02-26)
+
+### Features
+
+* zendesk ui/ux updates (COR-1026) [bugfix] ([#7789](https://github.com/voiceflow/creator-app/issues/7789)) ([72054e6](https://github.com/voiceflow/creator-app/commit/72054e6ac9190b84f180ef0392b81a216180f09e))
+
 ## [1.1401.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1401.3...@voiceflow/creator-app@1.1401.4) (2024-02-26)
 
 ### Bug Fixes

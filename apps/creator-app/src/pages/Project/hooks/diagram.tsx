@@ -168,8 +168,8 @@ export const useDiagramOptions = ({
     if (!isCMSComponentsEnabled) {
       convertComponentToTopic(diagramID);
     } else if (flow) {
-      convertCMSComponentToTopic(flow?.id);
       goToRootDiagramIfActive(flow.diagramID);
+      convertCMSComponentToTopic(flow.id);
     }
   }, [diagramID]);
 
@@ -206,8 +206,8 @@ export const useDiagramOptions = ({
           if (!isCMSComponentsEnabled) {
             deleteComponentDiagram(diagramID).catch(onError);
           } else if (flow) {
-            deleteFlow(flow.id).catch(onError);
             goToRootDiagramIfActive(flow.diagramID);
+            deleteFlow(flow.id).catch(onError);
           }
         } else if (isSubtopic) {
           if (rootTopicID) deleteSubtopicDiagram(diagramID, rootTopicID).catch(onError);

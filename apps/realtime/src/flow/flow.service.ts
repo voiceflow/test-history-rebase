@@ -165,25 +165,23 @@ export class FlowService extends CMSTabularService<FlowORM> {
     data: FlowCreateData[],
     meta: { environmentID: string; assistantID: string; workspaceID: string; clientID: string; userID: number }
   ) {
-    return this.postgresEM.transactional(async () => {
-      const diagrams = await this.diagram.createManyComponents(data, meta);
+    const diagrams = await this.diagram.createManyComponents(data, meta);
 
-      const flows = await this.createManyForUser(
-        userID,
-        data.map(({ flow }, index) => ({
-          name: flow.name,
-          folderID: flow.folderID,
-          diagramID: diagrams[index].id,
-          description: flow.description,
-          assistantID: meta.assistantID,
-          environmentID: meta.environmentID,
-        }))
-      );
+    const flows = await this.createManyForUser(
+      userID,
+      data.map(({ flow }, index) => ({
+        name: flow.name,
+        folderID: flow.folderID,
+        diagramID: diagrams[index].id,
+        description: flow.description,
+        assistantID: meta.assistantID,
+        environmentID: meta.environmentID,
+      }))
+    );
 
-      return {
-        add: { flows, diagrams },
-      };
-    });
+    return {
+      add: { flows, diagrams },
+    };
   }
 
   async broadcastAddMany(
@@ -221,7 +219,7 @@ export class FlowService extends CMSTabularService<FlowORM> {
 
   /* Delete */
 
-  async deleteManyAndSync(ids: Primary<FlowEntity>[], keepDiagram?: boolean) {
+  async deleteManyAndSync(ids: Primary<FlowEntity>[], { keepDiagram }: { keepDiagram?: boolean } = {}) {
     return this.postgresEM.transactional(async () => {
       const flows = await this.findMany(ids);
 
@@ -286,7 +284,7 @@ export class FlowService extends CMSTabularService<FlowORM> {
   ) {
     const flows: FlowEntity[] = [];
     const diagrams: DiagramEntity[] = [];
-    const flowsByID = await this.orm.findManyBydiagramIDs(data.sourceDiagramIDs);
+    const flowsByID = await this.orm.findManyBydiagramIDs(meta.environmentID, data.sourceDiagramIDs);
     const assistant = await this.assistantORM.findOneOrFail(meta.assistantID);
     const completeMeta = {
       userID: authMeta.userID,

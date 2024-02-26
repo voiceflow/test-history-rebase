@@ -1,4 +1,3 @@
-/* eslint-disable no-return-await */
 import { Inject, Injectable } from '@nestjs/common';
 import { BaseNode } from '@voiceflow/base-types';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
@@ -114,7 +113,7 @@ export class DiagramService extends MutableService<DiagramORM> {
     data: DiagramCreateData[],
     meta: { environmentID: string; assistantID: string; workspaceID: string; clientID: string; userID: number }
   ) {
-    return await this.orm.createMany(
+    return this.orm.createMany(
       data.map((item) => {
         const diagramID = new ObjectId().toHexString();
         return {

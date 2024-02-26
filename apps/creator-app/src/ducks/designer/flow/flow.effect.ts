@@ -34,24 +34,24 @@ export const duplicateOne =
     const state = getState();
 
     const context = getActiveAssistantContext(state);
-    const duplicated = await dispatch(waitAsync(Actions.Flow.DuplicateOne, { context, data: { flowID } }));
+    const { data } = await dispatch(waitAsync(Actions.Flow.DuplicateOne, { context, data: { flowID } }));
 
-    dispatch(setLastCreatedID({ id: duplicated.data.diagramID }));
+    dispatch(setLastCreatedID({ id: data.diagramID }));
 
     notify.short.success('Duplicated');
 
-    return duplicated.data;
+    return data;
   };
 
 export const copyPasteMany =
-  (data: Actions.Flow.CopyPasteMany.Request['data']): Thunk<Actions.Flow.CopyPasteMany.Response['data']> =>
+  (request: Actions.Flow.CopyPasteMany.Request['data']): Thunk<Actions.Flow.CopyPasteMany.Response['data']> =>
   async (dispatch, getState) => {
     const state = getState();
 
     const context = getActiveAssistantContext(state);
-    const duplicated = await dispatch(waitAsync(Actions.Flow.CopyPasteMany, { context, data }));
+    const { data } = await dispatch(waitAsync(Actions.Flow.CopyPasteMany, { context, data: request }));
 
-    return duplicated.data;
+    return data;
   };
 
 export const patchOne =

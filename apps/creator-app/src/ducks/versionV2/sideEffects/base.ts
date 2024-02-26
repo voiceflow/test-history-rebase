@@ -63,16 +63,14 @@ export const importProjectContext =
       newComponentIDs = await Promise.all(componentIDs.map((diagramID) => dispatch(DiagramV2.duplicateComponent(sourceVersionID, diagramID))));
     }
 
-    for (let i = 0; i < componentIDs.length; i++) {
-      const componentID = componentIDs[i];
-      const newComponentID = newComponentIDs[i];
-
+    componentIDs.forEach((componentID, index) => {
+      const newComponentID = newComponentIDs[index];
       mappedNodes = mappedNodes.map((node) =>
         Realtime.Utils.node.isDiagramNode(node.data) && node.data.diagramID === componentID
           ? { ...node, data: { ...node.data, diagramID: newComponentID } }
           : node
       );
-    }
+    });
 
     return mappedNodes;
   };

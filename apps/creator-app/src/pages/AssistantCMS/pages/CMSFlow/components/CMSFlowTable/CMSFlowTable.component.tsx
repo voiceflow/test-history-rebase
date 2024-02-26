@@ -20,7 +20,7 @@ export const CMSFlowTable: React.FC = () => {
   const duplicateOne = useDispatch(Designer.Flow.effect.duplicateOne);
   const rowContextMenu = useCMSRowItemContextMenu({
     nameColumnType: FlowTableColumn.NAME,
-    onDuplicate: (flowID) => duplicateOne(flowID),
+    onDuplicate: duplicateOne,
   });
 
   return (

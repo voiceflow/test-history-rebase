@@ -55,7 +55,7 @@ const ComponentsSection: React.FC<ComponentsSectionProps> = ({ collapsed, setSec
 
   const itemSize = React.useCallback((index: number) => ITEM_HEIGHT + (components.length - 1 === index ? BOTTOM_PADDING : 0), [components.length]);
   const getDNDItemKey = useConst((item: ComponentItem) => item.id);
-  const getVirtualItemKey = useConst((index: number, data: ComponentItem[]) => data[index].diagramID || data[index].id);
+  const getVirtualItemKey = useConst((index: number, data: ComponentItem[]) => data[index].id);
 
   useDidUpdateEffect(() => {
     listRef.current?.resetAfterIndex(Math.max(components.length - 2, 0));

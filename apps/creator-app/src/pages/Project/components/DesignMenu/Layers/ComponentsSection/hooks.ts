@@ -18,10 +18,9 @@ import { useSelector } from '@/hooks/redux';
 
 export interface ComponentItem {
   id: string;
-  diagramID?: string;
   name: string;
-  children: ComponentItem[];
   isFolder: boolean;
+  children: ComponentItem[];
 }
 
 export interface ComponentsAPI {

@@ -1,15 +1,14 @@
+/* eslint-disable no-return-await */
 import { Inject, Injectable } from '@nestjs/common';
 import { BaseNode } from '@voiceflow/base-types';
-import { LoguxService } from '@voiceflow/nestjs-logux';
+import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
 import { DiagramEntity, DiagramNode, DiagramORM, ToJSON } from '@voiceflow/orm-designer';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { ObjectId } from 'bson';
-import { Optional } from 'utility-types';
 
-import { MutableService } from '@/common';
-import { FlowAndDiagram } from '@/flow/flow.interface';
+import { EntitySerializer, MutableService } from '@/common';
 
-type PrimitiveDiagram = Omit<Optional<ToJSON<DiagramEntity>, '_id' | 'diagramID'>, 'id'>;
+import { DiagramCreateData } from './flow.interface';
 
 @Injectable()
 export class DiagramService extends MutableService<DiagramORM> {
@@ -51,30 +50,29 @@ export class DiagramService extends MutableService<DiagramORM> {
     return sharedNodes;
   }
 
-  private insertNewDiagramToDB = (data: PrimitiveDiagram): Omit<ToJSON<DiagramEntity>, 'id'> => {
-    const _id = data._id ?? new ObjectId().toHexString();
-
-    return {
-      ...data,
-      _id,
-      diagramID: _id,
-    };
-  };
-
-  public async reloadSharedNodes(
+  private async reloadSharedNodes(
     diagrams: ToJSON<DiagramEntity>[],
-    meta: { versionID: string; projectID: string; workspaceID: string; clientID: string; userID: number }
+    meta: { environmentID: string; assistantID: string; workspaceID: string; clientID: string; userID: number }
   ): Promise<void> {
     const sharedNodes = DiagramService.getAllSharedNodes(diagrams);
+    const transformedMeta = {
+      versionID: meta.environmentID,
+      workspaceID: meta.workspaceID,
+      projectID: meta.assistantID,
+      clientID: meta.clientID,
+      userID: meta.userID,
+    };
 
-    await this.logux.processAs(Realtime.diagram.sharedNodes.reload({ ...meta, sharedNodes }), meta);
+    await this.logux.processAs(Realtime.diagram.sharedNodes.reload({ ...transformedMeta, sharedNodes }), transformedMeta);
   }
 
   constructor(
     @Inject(DiagramORM)
     protected readonly orm: DiagramORM,
     @Inject(LoguxService)
-    private readonly logux: LoguxService
+    private readonly logux: LoguxService,
+    @Inject(EntitySerializer)
+    protected readonly entitySerializer: EntitySerializer
   ) {
     super();
   }
@@ -87,44 +85,47 @@ export class DiagramService extends MutableService<DiagramORM> {
     return this.orm.deleteManyByVersionID(versionID);
   }
 
-  public async createOneComponentWithDiagram(
-    data: FlowAndDiagram,
-    meta: { versionID: string; projectID: string; workspaceID: string; clientID: string; userID: number }
+  async broadcastAddMany(
+    authMeta: AuthMetaPayload,
+    diagrams: DiagramEntity[],
+    meta: { environmentID: string; assistantID: string; workspaceID: string; clientID: string; userID: number }
   ) {
-    const diagram = this.insertNewDiagramToDB({
-      ...Realtime.Utils.diagram.componentDiagramFactory(data.flow.name),
-      ...data.diagram,
-      versionID: meta.versionID,
-      creatorID: meta.userID,
-    });
-
-    const result = await this.orm.createMany([diagram]);
-
-    this.reloadSharedNodes(
-      result.map((item) => item.toJSON()),
-      meta
-    );
-
-    return result;
+    await Promise.all([
+      ...diagrams.map((diagram) =>
+        this.logux.processAs(
+          Realtime.diagram.crud.add({
+            key: diagram.id,
+            value: this.entitySerializer.nullable(diagram) as Realtime.Diagram,
+            projectID: meta.assistantID,
+            versionID: meta.environmentID,
+            workspaceID: meta.workspaceID,
+          }),
+          authMeta
+        )
+      ),
+      this.reloadSharedNodes(
+        diagrams.map((item) => item.toJSON()),
+        meta
+      ),
+    ]);
   }
 
-  public async createOneEmptyComponent(
-    name: string,
-    meta: { versionID: string; projectID: string; workspaceID: string; clientID: string; userID: number }
+  public async createManyComponents(
+    data: DiagramCreateData[],
+    meta: { environmentID: string; assistantID: string; workspaceID: string; clientID: string; userID: number }
   ) {
-    const diagram = this.insertNewDiagramToDB({
-      ...Realtime.Utils.diagram.componentDiagramFactory(name),
-      versionID: meta.versionID,
-      creatorID: meta.userID,
-    });
-
-    const result = await this.orm.createMany([diagram]);
-
-    this.reloadSharedNodes(
-      result.map((item) => item.toJSON()),
-      meta
+    return await this.orm.createMany(
+      data.map((item) => {
+        const diagramID = new ObjectId().toHexString();
+        return {
+          ...Realtime.Utils.diagram.componentDiagramFactory(item.diagram?.name ?? ''),
+          ...item.diagram,
+          _id: diagramID,
+          versionID: meta.environmentID,
+          creatorID: meta.userID,
+          diagramID,
+        };
+      })
     );
-
-    return result;
   }
 }

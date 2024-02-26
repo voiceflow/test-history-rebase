@@ -12,7 +12,6 @@ import * as Session from '@/ducks/session';
 import { waitAsync } from '@/ducks/utils';
 import * as Workspace from '@/ducks/workspaceV2';
 import { SyncThunk, Thunk } from '@/store/types';
-import { isString } from '@/utils/string.util';
 
 import { active } from '../selectors';
 import { getActivePlatformVersionContext } from '../utils';
@@ -54,23 +53,26 @@ export const importProjectContext =
     const state = getState();
     const isCMSComponentsEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.CMS_COMPONENTS);
 
-    await Promise.all(
-      diagrams
-        // only components can be imported/duplicated
-        .filter(({ type }) => type === BaseModels.Diagram.DiagramType.COMPONENT)
-        .map(async (diagram) => {
-          const Action = isCMSComponentsEnabled ? Designer.Flow.effect.duplicateOne : DiagramV2.duplicateComponent;
-          const result = await dispatch(Action(sourceVersionID, diagram.id));
+    const componentIDs = diagrams.filter(({ type }) => type === BaseModels.Diagram.DiagramType.COMPONENT).map((diagram) => diagram.id);
+    let newComponentIDs: string[] = [];
 
-          const newDiagramID = isString(result) ? result : result.diagramID;
+    if (isCMSComponentsEnabled) {
+      const flows = await dispatch(Designer.Flow.effect.copyPasteMany({ sourceDiagramIDs: componentIDs, sourceEnvironmentID: sourceVersionID }));
+      newComponentIDs = flows.map((flow) => flow.diagramID);
+    } else {
+      newComponentIDs = await Promise.all(componentIDs.map((diagramID) => dispatch(DiagramV2.duplicateComponent(sourceVersionID, diagramID))));
+    }
 
-          mappedNodes = mappedNodes.map((node) =>
-            Realtime.Utils.node.isDiagramNode(node.data) && node.data.diagramID === diagram.id
-              ? { ...node, data: { ...node.data, diagramID: newDiagramID } }
-              : node
-          );
-        })
-    );
+    for (let i = 0; i < componentIDs.length; i++) {
+      const componentID = componentIDs[i];
+      const newComponentID = newComponentIDs[i];
+
+      mappedNodes = mappedNodes.map((node) =>
+        Realtime.Utils.node.isDiagramNode(node.data) && node.data.diagramID === componentID
+          ? { ...node, data: { ...node.data, diagramID: newComponentID } }
+          : node
+      );
+    }
 
     return mappedNodes;
   };

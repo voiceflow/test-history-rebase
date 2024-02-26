@@ -15,7 +15,7 @@ import { convertSelectionToComponent, CreateDiagramWithDataOptions } from '@/uti
 import { AsyncActionError } from '@/utils/logux';
 
 import { waitAsync } from '../../utils';
-import { all as getAllFlows, oneByID } from './selectors';
+import * as Selectors from './selectors';
 
 export const createOne =
   (data: Actions.Flow.CreateData): Thunk<Flow> =>
@@ -29,16 +29,27 @@ export const createOne =
   };
 
 export const duplicateOne =
-  (sourceVersionID: string, flowID: string): Thunk<Actions.Flow.DuplicateOne.Response['data']> =>
+  (flowID: string): Thunk<Actions.Flow.DuplicateOne.Response['data']> =>
   async (dispatch, getState) => {
     const state = getState();
 
     const context = getActiveAssistantContext(state);
-    const duplicated = await dispatch(waitAsync(Actions.Flow.DuplicateOne, { context, data: { flowID, sourceVersionID } }));
+    const duplicated = await dispatch(waitAsync(Actions.Flow.DuplicateOne, { context, data: { flowID } }));
 
     dispatch(setLastCreatedID({ id: duplicated.data.diagramID }));
 
     notify.short.success('Duplicated');
+
+    return duplicated.data;
+  };
+
+export const copyPasteMany =
+  (data: Actions.Flow.CopyPasteMany.Request['data']): Thunk<Actions.Flow.CopyPasteMany.Response['data']> =>
+  async (dispatch, getState) => {
+    const state = getState();
+
+    const context = getActiveAssistantContext(state);
+    const duplicated = await dispatch(waitAsync(Actions.Flow.CopyPasteMany, { context, data }));
 
     return duplicated.data;
   };
@@ -94,7 +105,7 @@ export const createOneFromSelection =
   (options: CreateDiagramWithDataOptions): Thunk<CreateOneFromSelectionResult> =>
   async (dispatch, getState) => {
     const state = getState();
-    const allFlows = getAllFlows(state);
+    const allFlows = Selectors.all(state);
     const context = getActiveAssistantContext(state);
     const platform = ProjectV2.active.platformSelector(state);
     const projectType = ProjectV2.active.projectTypeSelector(state);
@@ -138,9 +149,11 @@ export const convertOneToTopic =
     PageProgress.start(PageProgressBar.TOPIC_CREATING);
 
     const state = getState();
-    const flow = oneByID(state, { id })!;
+    const flow = Selectors.oneByID(state, { id });
     const domainContext = getActiveDomainContext(state);
     const context = getActiveAssistantContext(state);
+
+    if (!flow?.diagramID) return;
 
     try {
       await dispatch(
@@ -150,7 +163,7 @@ export const convertOneToTopic =
         })
       );
 
-      await dispatch.sync(Actions.Flow.DeleteOne({ context, id, deleteDiagram: false }));
+      await dispatch.sync(Actions.Flow.DeleteOne({ context, id, keepDiagram: true }));
     } catch (err) {
       if (err instanceof AsyncActionError && err.code === Realtime.ErrorCode.CANNOT_CONVERT_TO_TOPIC) {
         logger.warn(`unable to convert to topic: ${err.message}`);

@@ -75,7 +75,7 @@ export const PatchMany = flowAction.crud.patchMany<PatchMany>();
 /* DeleteOne */
 
 export interface DeleteOne extends DeleteOneRequest, DesignerAction {
-  deleteDiagram?: boolean;
+  keepDiagram?: boolean;
 }
 
 export const DeleteOne = flowAction.crud.deleteOne<DeleteOne>();
@@ -83,7 +83,7 @@ export const DeleteOne = flowAction.crud.deleteOne<DeleteOne>();
 /* DeleteMany */
 
 export interface DeleteMany extends DeleteManyRequest, DesignerAction {
-  deleteDiagram?: boolean;
+  keepDiagram?: boolean;
 }
 
 export const DeleteMany = flowAction.crud.deleteMany<DeleteMany>();
@@ -92,7 +92,7 @@ export const DeleteMany = flowAction.crud.deleteMany<DeleteMany>();
 
 export namespace DuplicateOne {
   export interface Request extends DesignerAction {
-    data: { flowID: string; sourceVersionID: string };
+    data: { flowID: string };
   }
 
   export interface Response extends DesignerAction {
@@ -102,6 +102,25 @@ export namespace DuplicateOne {
 
 export const DuplicateOne = Utils.protocol.createAsyncAction<DuplicateOne.Request, DuplicateOne.Response>(
   flowAction('DUPLICATE_ONE')
+);
+
+/* Copy Past */
+
+export namespace CopyPasteMany {
+  export interface Request extends DesignerAction {
+    data: {
+      sourceDiagramIDs: Array<string>;
+      sourceEnvironmentID: string;
+    };
+  }
+
+  export interface Response extends DesignerAction {
+    data: CreateOne.Response['data'][];
+  }
+}
+
+export const CopyPasteMany = Utils.protocol.createAsyncAction<CopyPasteMany.Request, CopyPasteMany.Response>(
+  flowAction('COPY_PASTE_MANY')
 );
 
 /**

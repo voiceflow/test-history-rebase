@@ -38,8 +38,8 @@ export class FlowLoguxController {
           },
         ],
         {
-          projectID: context.assistantID,
-          versionID: context.environmentID,
+          assistantID: context.assistantID,
+          environmentID: context.environmentID,
         }
       )
       .then(([result]) => ({ data: this.entitySerializer.nullable(result), context }));
@@ -63,8 +63,8 @@ export class FlowLoguxController {
           diagram,
         })),
         {
-          projectID: context.assistantID,
-          versionID: context.environmentID,
+          assistantID: context.assistantID,
+          environmentID: context.environmentID,
         }
       )
       .then((results) => ({ data: this.entitySerializer.iterable(results), context }));
@@ -82,11 +82,32 @@ export class FlowLoguxController {
   ): Promise<Actions.Flow.DuplicateOne.Response> {
     return this.service
       .duplicateOneAndBroadcast(authMeta, data, {
-        projectID: context.assistantID,
-        versionID: context.environmentID,
+        assistantID: context.assistantID,
+        environmentID: context.environmentID,
       })
       .then((result) => ({
         data: this.entitySerializer.nullable(result),
+        context,
+      }));
+  }
+
+  @Action.Async(Actions.Flow.CopyPasteMany)
+  @Authorize.Permissions<Actions.Flow.CopyPasteMany.Request>([Permission.PROJECT_UPDATE], ({ context }) => ({
+    id: context.environmentID,
+    kind: 'version',
+  }))
+  @UseRequestContext()
+  async copyPasteMany(
+    @Payload() { data, context }: Actions.Flow.CopyPasteMany.Request,
+    @AuthMeta() authMeta: AuthMetaPayload
+  ): Promise<Actions.Flow.CopyPasteMany.Response> {
+    return this.service
+      .copyPasteManyAndBroadcast(authMeta, data, {
+        assistantID: context.assistantID,
+        environmentID: context.environmentID,
+      })
+      .then((result) => ({
+        data: this.entitySerializer.iterable(result),
         context,
       }));
   }
@@ -127,8 +148,8 @@ export class FlowLoguxController {
   @Broadcast<Actions.Flow.DeleteOne>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async deleteOne(@Payload() { id, deleteDiagram, context }: Actions.Flow.DeleteOne, @AuthMeta() authMeta: AuthMetaPayload) {
-    const result = await this.service.deleteManyAndSync([{ id, environmentID: context.environmentID }], deleteDiagram);
+  async deleteOne(@Payload() { id, keepDiagram, context }: Actions.Flow.DeleteOne, @AuthMeta() authMeta: AuthMetaPayload) {
+    const result = await this.service.deleteManyAndSync([{ id, environmentID: context.environmentID }], keepDiagram);
 
     // overriding entities cause it's broadcasted by decorator
     await this.service.broadcastDeleteMany(authMeta, { ...result, delete: { ...result.delete, flows: [] } });
@@ -142,10 +163,10 @@ export class FlowLoguxController {
   @Broadcast<Actions.Flow.DeleteMany>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async deleteMany(@Payload() { ids, deleteDiagram, context }: Actions.Flow.DeleteMany, @AuthMeta() authMeta: AuthMetaPayload) {
+  async deleteMany(@Payload() { ids, keepDiagram, context }: Actions.Flow.DeleteMany, @AuthMeta() authMeta: AuthMetaPayload) {
     const result = await this.service.deleteManyAndSync(
       ids.map((id) => ({ id, environmentID: context.environmentID })),
-      deleteDiagram
+      keepDiagram
     );
 
     // overriding entities cause it's broadcasted by decorator

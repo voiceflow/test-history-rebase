@@ -12,12 +12,12 @@ const VirtualListItem: React.FC<ListChildComponentProps<ComponentItem[]>> = ({ i
   return (
     <div style={style}>
       {renderItem({
-        key: item.diagramID || item.id,
+        key: item.id,
         item,
         index,
         isLast: index === data.length - 1,
         isFirst: index === 0,
-        itemKey: item.diagramID || item.id,
+        itemKey: item.id,
       })}
     </div>
   );

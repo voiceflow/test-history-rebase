@@ -53,7 +53,7 @@ export const useComponents = (): ComponentsAPI => {
   const getEngine = useEventualEngine();
 
   const dndReorder = useDnDReorder({
-    getID: (item: ComponentItem) => item.diagramID || item.id,
+    getID: (item: ComponentItem) => item.id,
     onPersist: (fromID: string, toIndex: number) => reorderComponents({ fromID, toIndex }),
     onReorder: (fromID: string, toIndex: number) => reorderComponents({ fromID, toIndex, skipPersist: true }),
   });
@@ -69,7 +69,7 @@ export const useComponents = (): ComponentsAPI => {
 
     if (!engine || !item) return;
 
-    engine.merge.setVirtualSource(BlockType.COMPONENT, { name: item.name, diagramID: item.diagramID || item.id } as Realtime.NodeData<any>);
+    engine.merge.setVirtualSource(BlockType.COMPONENT, { name: item.name, diagramID: item.id } as Realtime.NodeData<any>);
   });
 
   const onDragEnd = usePersistFunction(() => {
@@ -92,9 +92,8 @@ export const useComponents = (): ComponentsAPI => {
     };
 
     const createComponentItemFromCMS = (component: Flow): ComponentItem => ({
-      diagramID: component.diagramID,
+      id: component.diagramID,
       name: component.name,
-      id: component.id,
       isFolder: false,
       children: [],
     });
@@ -119,7 +118,7 @@ export const useComponents = (): ComponentsAPI => {
         parentItems.push(component);
       } else if (matchedChildren.length) {
         parentItems.push({ ...component, children: matchedChildren });
-        openedComponents[component.diagramID || component.id] = true;
+        openedComponents[component.id] = true;
       }
     };
 

@@ -63,8 +63,7 @@ const ComponentsSection: React.FC<ComponentsSectionProps> = ({ collapsed, setSec
 
   useDidUpdateEffect(() => {
     if (!activeDiagramID || !listRef.current || !scrollBarsRef.current) return;
-    // TODO refactor (diagramID || id) to just diagramID a few weeks after this is merged
-    const index = components.findIndex(({ id, diagramID }) => (diagramID || id) === activeDiagramID);
+    const index = components.findIndex(({ id }) => id === activeDiagramID);
 
     if (index === -1) return;
 

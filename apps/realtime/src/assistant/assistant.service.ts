@@ -31,7 +31,6 @@ import * as Platform from '@voiceflow/platform-config/backend';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { IdentityClient } from '@voiceflow/sdk-identity';
 import { Actions } from '@voiceflow/sdk-logux-designer';
-import { Patch } from 'immer';
 import _ from 'lodash';
 
 import { EntitySerializer, MutableService } from '@/common';
@@ -765,7 +764,7 @@ export class AssistantService extends MutableService<AssistantORM> {
           }),
         };
 
-        await this.environment.upsertIntentsAndEntities(cmsData, { userID, assistantID: project.id, environmentID: version.id });
+        await this.environment.upsertCMSData(cmsData, { userID, assistantID: project.id, environmentID: version.id });
 
         await this.version.patchOnePlatformData(version.id, {
           slots: _.uniqBy([...version.platformData.slots, ...nlu.slots], (intent) => intent.key),
@@ -832,16 +831,5 @@ export class AssistantService extends MutableService<AssistantORM> {
     });
 
     return { project, assistant };
-  }
-
-  async migrateOne({ cms }: Realtime.Migrate.MigrationData, patches: Patch[]) {
-    const hasAssistantPatches = patches.some(({ path }) => path[0] === 'cms' && path[1] === 'assistant');
-
-    if (!cms.assistant || !hasAssistantPatches) return;
-
-    await this.upsertOne({
-      ...cms.assistant,
-      workspaceID: this.assistantSerializer.decodeWorkspaceID(cms.assistant.workspaceID),
-    });
   }
 }

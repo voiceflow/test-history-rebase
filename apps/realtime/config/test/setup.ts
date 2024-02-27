@@ -2,9 +2,6 @@
 
 /* eslint-disable max-classes-per-file */
 import dotenv from 'dotenv';
-import { enablePatches } from 'immer';
-
-enablePatches();
 
 dotenv.config({ path: './.env.test' });
 

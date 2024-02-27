@@ -38,6 +38,7 @@ import { EmailModule } from './email/email.module';
 import { EntityModule } from './entity/entity.module';
 import { EnvironmentModule } from './environment/environment.module';
 import { FileModule } from './file/file.module';
+import { FlowModule } from './flow/flow.module';
 import { FolderModule } from './folder/folder.module';
 import { FunctionModule } from './function/function.module';
 import { IntentModule } from './intent/intent.module';
@@ -252,6 +253,7 @@ import { VersionModule } from './version/version.module';
     OrganizationBillingModule,
     VariableModule,
     FolderModule,
+    FlowModule,
   ],
   providers: [
     {

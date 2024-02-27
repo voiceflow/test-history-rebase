@@ -28,6 +28,7 @@ import { Actions } from '@voiceflow/sdk-logux-designer';
 import { CMSObjectService, EntitySerializer } from '@/common';
 import { assistantBroadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
 import { EntityService } from '@/entity/entity.service';
+import { FlowService } from '@/flow/flow.service';
 import { FunctionService } from '@/function/function.service';
 import { IntentService } from '@/intent/intent.service';
 import { cloneManyEntities } from '@/utils/entity.util';
@@ -53,6 +54,8 @@ export class FolderService extends CMSObjectService<FolderORM> {
     private readonly variable: VariableService,
     @Inject(FunctionService)
     private readonly functionService: FunctionService,
+    @Inject(FlowService)
+    private readonly flow: FlowService,
     @Inject(EntitySerializer)
     protected readonly entitySerializer: EntitySerializer
   ) {
@@ -235,27 +238,31 @@ export class FolderService extends CMSObjectService<FolderORM> {
   /* Delete */
 
   async collectRelationsToDelete(folders: PKOrEntity<FolderEntity>[]) {
-    const [intents, entities, variables, functions] = await Promise.all([
+    const [intents, entities, variables, functions, flow] = await Promise.all([
       this.intent.findManyByFolders(folders),
       this.entity.findManyByFolders(folders),
       this.variable.findManyByFolders(folders),
       this.functionService.findManyByFolders(folders),
+      this.flow.findManyByFolders(folders),
     ]);
 
-    const [intentRelations, entityRelations, variableRelations] = await Promise.all([
+    const [intentRelations, entityRelations, variableRelations, flowRelations] = await Promise.all([
       this.intent.collectRelationsToDelete(intents),
       this.entity.collectRelationsToDelete(entities),
       this.functionService.collectRelationsToDelete(functions),
+      this.flow.collectRelationsToDelete(flow),
     ]);
 
     return {
       ...intentRelations,
       ...entityRelations,
       ...variableRelations,
+      ...flowRelations,
       intents,
       entities,
       variables,
       functions,
+      flow,
     };
   }
 

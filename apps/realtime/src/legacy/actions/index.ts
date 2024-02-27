@@ -8,7 +8,6 @@ import buildDomainActionControls from './domain';
 import buildFeatureActionControls from './feature';
 import buildLinkActionControls from './link';
 import buildNodeActionControls from './node';
-import buildOrganizationActionControls from './organization';
 import buildPortActionControls from './port';
 import buildProjectActionControls from './project';
 import buildTranscriptActionControls from './transcript';
@@ -27,7 +26,6 @@ const buildActions = (options: LoguxControlOptions) => ({
   ...buildProjectActionControls(options),
   ...buildVersionActionControls(options),
   ...buildWorkspaceActionControls(options),
-  ...buildOrganizationActionControls(options),
   ...buildVariableStateActionControls(options),
   ...buildTranscriptActionControls(options),
   ...buildDomainActionControls(options),

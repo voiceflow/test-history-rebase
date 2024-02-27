@@ -18,7 +18,7 @@ interface MemberListProps {
 
 const MemberList: React.FC<MemberListProps> = ({ inset, members, hideLastDivider = true }) => {
   const userID = useSelector(Account.userIDSelector)!;
-  const getOrganizationMemberByID = useSelector(Organization.active.getMemberByIDSelector);
+  const getOrganizationMemberByID = useSelector(Organization.getMemberByIDSelector);
   const editorRoleProjectsByUserID = useSelector(ProjectV2.editorRoleProjectsByUserIDSelector);
 
   const [canEditRole] = usePermission(Permission.ADD_COLLABORATORS);

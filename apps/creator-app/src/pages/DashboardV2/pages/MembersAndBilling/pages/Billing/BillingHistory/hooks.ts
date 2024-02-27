@@ -29,7 +29,7 @@ export interface BillingHistory {
 }
 
 export const useBillingHistory = (): BillingHistoryAPI => {
-  const organization = useSelector(Organization.active.organizationSelector);
+  const organization = useSelector(Organization.organizationSelector);
 
   const [status, setStatus] = React.useState(Status.IDLE);
   const [billingHistory, setBillingHistory] = React.useState<BillingHistory | null>(null);

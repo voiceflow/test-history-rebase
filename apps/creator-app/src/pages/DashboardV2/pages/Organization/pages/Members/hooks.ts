@@ -7,6 +7,7 @@ import * as Normal from 'normal-store';
 import React from 'react';
 
 import client from '@/client';
+import { designerClient } from '@/client/designer';
 import * as Organization from '@/ducks/organization';
 import * as Session from '@/ducks/session';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
@@ -17,7 +18,7 @@ import { isAdminUserRole, isEditorUserRole } from '@/utils/role';
 export const useWorkspacesAndMembers = () => {
   const organizationID = useSelector(WorkspaceV2.active.organizationIDSelector);
   const sessionActiveWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
-  const getOrganizationMemberByID = useSelector(Organization.active.getMemberByIDSelector);
+  const getOrganizationMemberByID = useSelector(Organization.getMemberByIDSelector);
 
   const deleteMember = useDispatch(WorkspaceV2.deleteMember);
   const updateMember = useDispatch(WorkspaceV2.updateMember);
@@ -85,8 +86,8 @@ export const useWorkspacesAndMembers = () => {
     setLoading(true);
 
     try {
-      const workspaces = await client.identity.organization.getWorkspaces(organizationID);
-
+      // TODO: [organization refactor] fix types
+      const workspaces = (await designerClient.organization.getOrganizationWorkspaces(organizationID)) as unknown as Realtime.Identity.Workspace[];
       const hasActiveWorkspace = workspaces.some(({ id }) => id === sessionActiveWorkspaceID);
 
       setWorkspaces(workspaces);

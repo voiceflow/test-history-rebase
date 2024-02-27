@@ -26,7 +26,7 @@ const ScheduleSeatChange = manager.create<ScheduleSeatChangeProps>(
     ({ api, type, opened, hidden, animated, nextBillingDate, pricePerEditor, scheduleOrCurrentEditorSeats, billingPeriod, closePrevented }) => {
       const [tracking] = useTrackingEvents();
 
-      const organization = useSelector(Organization.active.organizationSelector);
+      const organization = useSelector(Organization.organizationSelector);
       const editorPlanSeatLimits = useSelector(WorkspaceV2.active.editorPlanSeatLimitsSelector);
       const scheduleSeatsUpdate = useDispatch(Organization.scheduleSeatsUpdate);
 

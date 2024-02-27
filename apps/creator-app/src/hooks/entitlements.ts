@@ -36,7 +36,7 @@ export const useAIModelEntitlement = () => {
   const isTrial = useSelector(WorkspaceV2.active.isOnTrialSelector);
   const isEnterprise = useSelector(WorkspaceV2.active.isEnterpriseSelector);
   const advancedLLMModelsPermission = usePermission(Permission.ADVANCED_LLM_MODELS);
-  const subscription = useSelector(Organization.active.chargebeeSubscriptionSelector);
+  const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
 
   const isReverseTrial = isTrial && !isEnterprise;
 

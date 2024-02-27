@@ -1,7 +1,6 @@
 import { LoguxControlOptions } from '../control';
 import CreatorChannel from './creator';
 import DiagramChannel from './diagram';
-import OrganizationChannel from './organization';
 import ProjectChannel from './project';
 import SchemaChannel from './schema';
 import VersionChannel from './version';
@@ -12,7 +11,6 @@ const buildChannels = (options: LoguxControlOptions) => ({
   diagram: new DiagramChannel(options),
   project: new ProjectChannel(options),
   version: new VersionChannel(options),
-  organization: new OrganizationChannel(options),
   workspace: new WorkspaceChannel(options),
   schema: new SchemaChannel(options),
 });

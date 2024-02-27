@@ -20,9 +20,9 @@ export interface ScheduledSubscriptionAPI {
 }
 
 export const useScheduledSubscription = (): ScheduledSubscriptionAPI => {
-  const organization = useSelector(Organization.active.organizationSelector);
-  const scheduledSubscription = useSelector(Organization.active.chargebeeScheduledSubscriptionSelector);
-  const fetchScheduledSubscription = useDispatch(Organization.loadActiveOrganizationSchduledSubscription);
+  const organization = useSelector(Organization.organizationSelector);
+  const scheduledSubscription = useSelector(Organization.chargebeeScheduledSubscriptionSelector);
+  const fetchScheduledSubscription = useDispatch(Organization.loadActiveOrganizationScheduledSubscription);
 
   const [status, setStatus] = React.useState(Status.IDLE);
 

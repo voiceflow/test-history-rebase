@@ -8,7 +8,8 @@ import { createSelector, ParametricSelector, Selector } from 'reselect';
 import { ReducerBuilder } from 'typescript-fsa-reducers';
 import { PickByValue } from 'utility-types';
 
-import type { State } from '..';
+import type { State } from '@/ducks';
+
 import { CreateReducer, createRootReducer, ImmerHandler } from './reducer';
 import { createParameterSelector, createRootSelector } from './selector';
 

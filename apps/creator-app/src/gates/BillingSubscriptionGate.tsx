@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from '@/hooks';
 
 const BillingSubscriptionGate: React.FC<React.PropsWithChildren> = ({ children }) => {
   const organizationID = useSelector(WorkspaceV2.active.organizationIDSelector);
-  const chargebeeSubscriptionID = useSelector(Organization.active.chargebeeSubscriptionIDSelector);
+  const chargebeeSubscriptionID = useSelector(Organization.chargebeeSubscriptionIDSelector);
   const loadSubscription = useDispatch(Organization.loadActiveOrganizationSubscription);
 
   React.useEffect(() => {

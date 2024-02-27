@@ -27,12 +27,15 @@
     "lint:fix": "yarn g:run-p \"lint:eslint --fix\" \"lint:prettier --write\"",
     "lint:prettier": "yarn g:prettier . \"!**/*.{js,ts}\"",
     "lint:report": "yarn g:eslint-output \"./src/**/*.{js,ts}\"",
-    "test:dependencies": "depcheck",
+    "test:dependencies": "yarn g:depcheck",
     "test:types": "yarn g:tsd"
   },
   "prettier": "@voiceflow-meta/prettier-config",
   "eslintConfig": {
     "extends": "@voiceflow-meta/eslint-config"
+  },
+  "dependencies": {
+    "@voiceflow/internal": "3.2.3"
   },
   "devDependencies": {
     "@voiceflow-meta/eslint-config": "workspace:*",

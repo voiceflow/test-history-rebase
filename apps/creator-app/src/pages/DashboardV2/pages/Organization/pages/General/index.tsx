@@ -10,7 +10,7 @@ import { useDispatch, useLinkedState, useSelector } from '@/hooks';
 import * as S from './styles';
 
 const OrganizationGeneral: React.FC = () => {
-  const organization = useSelector(Organization.active.organizationSelector);
+  const organization = useSelector(Organization.organizationSelector);
 
   const [name, updateName] = useLinkedState(organization?.name ?? '');
   const updateActiveOrganizationName = useDispatch(Organization.updateActiveOrganizationName);

@@ -5,6 +5,7 @@ import { BaseServiceMap } from '@voiceflow/socket-utils';
 
 import { AssistantService } from '@/assistant/assistant.service';
 import { CreatorService } from '@/creator/creator.service';
+import { OrganizationService } from '@/organization/organization.service';
 import type { ProjectService as ProjectServiceV2 } from '@/project/project.service';
 import { ProjectListService } from '@/project-list/project-list.service';
 import { ThreadService } from '@/thread/thread.service';
@@ -21,7 +22,6 @@ import DomainService from './domain';
 import FeatureService from './feature';
 import LockService from './lock';
 import MigrateService from './migrate';
-import OrganizationService from './organization';
 import ProjectService from './project';
 import VariableService from './variable';
 import VariableStateService from './variableState';
@@ -75,6 +75,7 @@ interface Options {
     hashedID: HashedIDService;
     assistant: AssistantService;
     projectList: ProjectListService;
+    organization: OrganizationService;
     requestContext: {
       createAsync: <T>(callback: () => Promise<T>) => Promise<T>;
     };
@@ -107,7 +108,7 @@ const buildServices = ({ config, clients, models, log, injectedServices }: Optio
     workspace: new WorkspaceService(serviceOptions),
     customBlock: new CustomBlockService(serviceOptions),
     projectList: injectedServices.projectList,
-    organization: new OrganizationService(serviceOptions),
+    organization: injectedServices.organization,
     variableState: new VariableStateService(serviceOptions),
     requestContext: injectedServices.requestContext,
     canvasTemplate: new CanvasTemplateService(serviceOptions),

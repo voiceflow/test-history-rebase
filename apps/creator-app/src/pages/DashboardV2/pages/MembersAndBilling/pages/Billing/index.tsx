@@ -22,7 +22,7 @@ import { useScheduledSubscription } from './hooks/useScheduledSubscription';
 
 const DashboardV2Billing: React.FC = () => {
   const organizationID = useSelector(WorkspaceV2.active.organizationIDSelector);
-  const subscription = useSelector(Organization.active.chargebeeSubscriptionSelector)!;
+  const subscription = useSelector(Organization.chargebeeSubscriptionSelector)!;
 
   const [canManageSeats] = usePermission(Permission.BILLING_SEATS);
   const isProOrTeamPlan = useSelector(WorkspaceV2.active.isProOrTeamSelector);

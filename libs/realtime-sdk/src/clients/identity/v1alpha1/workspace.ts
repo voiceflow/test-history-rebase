@@ -1,6 +1,6 @@
-import * as Models from '@realtime-sdk/models';
 import * as Identity from '@realtime-sdk/models/Identity';
 import { DBWorkspaceProperties } from '@realtime-sdk/models/Workspace';
+import { Organization } from '@voiceflow/dtos';
 
 import { NestResource, NestResourceOptions } from '../../nest';
 
@@ -50,7 +50,7 @@ export class Workspace extends NestResource {
     return data;
   }
 
-  public async getOrganization(workspaceID: string): Promise<Models.Organization> {
+  public async getOrganization(workspaceID: string): Promise<Organization> {
     const { data } = await this.get(`/${workspaceID}/organization`);
 
     return data;

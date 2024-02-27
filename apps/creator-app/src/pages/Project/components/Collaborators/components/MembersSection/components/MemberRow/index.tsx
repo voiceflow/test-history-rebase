@@ -21,7 +21,7 @@ interface MemberRowProps {
 
 const MemberRow: React.FC<MemberRowProps> = ({ member, resendInvite, isLast }) => {
   const userID = useSelector(Account.userIDSelector);
-  const organizationMember = useSelector(Organization.active.memberByIDSelector, { creatorID: member.creator_id });
+  const organizationMember = useSelector(Organization.memberByIDSelector, { creatorID: member.creator_id });
 
   const deleteMember = useDispatch(Workspace.deleteMemberOfActiveWorkspace);
   const cancelInvite = useDispatch(Workspace.cancelInviteToActiveWorkspace);

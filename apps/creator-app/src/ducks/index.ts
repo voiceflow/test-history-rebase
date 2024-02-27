@@ -12,7 +12,7 @@ import domain, * as Domain from '@/ducks/domain';
 import feature, * as Feature from '@/ducks/feature';
 import history, * as History from '@/ducks/history';
 import notifications, * as Notifications from '@/ducks/notifications';
-import organizations, * as Organizations from '@/ducks/organization';
+import * as Organization from '@/ducks/organization';
 import projectListV2, * as ProjectListV2 from '@/ducks/projectListV2';
 import projectV2, * as ProjectV2 from '@/ducks/projectV2';
 import prototype, * as Prototype from '@/ducks/prototype';
@@ -78,7 +78,7 @@ const getCombinedReducer = (browserHistory: BrowserHistory) =>
     [Domain.STATE_KEY]: domain,
     [CanvasTemplate.STATE_KEY]: canvasTemplate,
     [CustomBlock.STATE_KEY]: customBlock,
-    [Organizations.STATE_KEY]: organizations,
+    [Organization.STATE_KEY]: Organization.reducer,
     [Designer.STATE_KEY]: Designer.reducer,
     [Assistant.STATE_KEY]: Assistant.reducer,
   });

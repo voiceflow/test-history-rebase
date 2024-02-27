@@ -9395,6 +9395,7 @@ __metadata:
     "@voiceflow-meta/eslint-config": "workspace:*"
     "@voiceflow-meta/prettier-config": "workspace:*"
     "@voiceflow-meta/typescript-config": "workspace:*"
+    "@voiceflow/internal": 3.2.3
     zod: 3.22.4
   peerDependencies:
     zod: ^3.20.0

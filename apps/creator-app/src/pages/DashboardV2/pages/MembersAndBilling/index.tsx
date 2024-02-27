@@ -14,7 +14,7 @@ import * as S from './styles';
 
 // FIXME: remove FF https://voiceflow.atlassian.net/browse/CV3-994
 const MembersAndBilling: React.FC = () => {
-  const organization = useSelector(Organization.active.organizationSelector);
+  const organization = useSelector(Organization.organizationSelector);
 
   return (
     <Page white renderHeader={() => <Header />} renderSidebar={() => <Sidebar />}>

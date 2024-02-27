@@ -29,7 +29,7 @@ const MembersList: React.FC<MembersListProps> = ({ members, onRemove, onChangeRo
   const workspace = useSelector(WorkspaceV2.active.workspaceSelector);
   const allMembersCount = useSelector(WorkspaceV2.active.allNormalizedMembersCountSelector);
   const getWorkspaceMemberByID = useSelector(WorkspaceV2.active.getMemberByIDSelector);
-  const getOrganizationMemberByID = useSelector(Organization.active.getMemberByIDSelector);
+  const getOrganizationMemberByID = useSelector(Organization.getMemberByIDSelector);
 
   const [canEditRole] = usePermission(Permission.ADD_COLLABORATORS);
 

@@ -6,6 +6,12 @@ export type CreatorParams = Utils.protocol.ChannelParams<typeof creator>;
 export const workspace = Utils.protocol.createChannel(['workspaceID'], ({ workspaceID }) => `workspace/${workspaceID}`);
 export type WorkspaceParams = Utils.protocol.ChannelParams<typeof workspace>;
 
+export const organization = Utils.protocol.createChannel(
+  ['organizationID', 'subscriptionID'],
+  ({ organizationID }) => `organization/${organizationID}`
+);
+export type OrganizationParams = Utils.protocol.ChannelParams<typeof organization>;
+
 export const assistant = Utils.protocol.createChannel(
   ['assistantID', 'environmentID'],
   ({ assistantID, environmentID }) => `assistant/${assistantID}/environment/${environmentID}`

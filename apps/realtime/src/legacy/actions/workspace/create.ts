@@ -1,4 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
+import { Actions } from '@voiceflow/sdk-logux-designer';
 import { BaseContextData, Context, terminateResend, unrestrictedAccess } from '@voiceflow/socket-utils';
 
 import { AbstractActionControl } from '@/legacy/actions/utils';
@@ -22,6 +23,7 @@ class CreateWorkspace extends AbstractActionControl<Realtime.workspace.CreateWor
 
     // only need to send this back to the initiating client
     await ctx.sendBack(Realtime.workspace.crud.add({ key: workspaceID, value: workspace }));
+    await ctx.sendBack(Actions.Organization.Replace({ data: await this.services.organization.getAll(creatorID) }));
 
     ctx.data.workspaceID = workspaceID;
 

@@ -11,7 +11,7 @@ import manager from '../../manager';
 
 const CancelSubscription = manager.create('BillingCancelSubscription', () => ({ api, type, opened, hidden, animated, closePrevented }) => {
   const cancelSubscription = useDispatch(Organization.cancelSubscription);
-  const organization = useSelector(Organization.active.organizationSelector);
+  const organization = useSelector(Organization.organizationSelector);
   const [tracking] = useTrackingEvents();
 
   const onCancel = async () => {

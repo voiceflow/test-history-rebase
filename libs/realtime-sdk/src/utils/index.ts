@@ -1,3 +1,4 @@
+export * as date from './date';
 export * as diagram from './diagram';
 export * as expression from './expression';
 export * as mathjs from './mathjs';

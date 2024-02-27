@@ -1,4 +1,5 @@
 export * from './entity.util';
+export * from './flow.util';
 export * from './intent.util';
 export * from './markup.util';
 export * from './request.util';

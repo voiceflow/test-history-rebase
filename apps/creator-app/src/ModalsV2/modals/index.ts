@@ -10,6 +10,7 @@ export { default as Disclaimer } from './Disclaimer';
 export * as Domain from './Domain';
 export * as Entity from './Entity';
 export { default as Error } from './Error';
+export * as Flow from './Flow';
 export * as Folder from './Folder';
 export * as Function from './Function';
 export { default as Inactivity } from './Inactivity';

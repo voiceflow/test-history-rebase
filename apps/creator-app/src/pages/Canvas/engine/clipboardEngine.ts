@@ -259,7 +259,6 @@ class ClipboardEngine extends EngineConsumer {
       : await this.internal.importClipboardContext(copyData);
 
     const { ports, links } = copyData;
-
     return this.engine.diagram.cloneEntities({ nodesWithData, ports, links }, coords);
   }
 
@@ -298,7 +297,6 @@ class ClipboardEngine extends EngineConsumer {
           toast.error(`Cannot paste from a ${clipboardData.type} project to a ${projectType} project.`);
           return;
         }
-
         const { nodesWithData } = await this.cloneClipboardContext(clipboardData, coords);
 
         this.log.info(this.log.success('pasted to canvas'), this.log.value(nodesWithData.length));

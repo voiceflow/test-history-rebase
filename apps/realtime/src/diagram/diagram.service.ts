@@ -1,9 +1,13 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { BaseNode } from '@voiceflow/base-types';
+import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
 import { DiagramEntity, DiagramNode, DiagramORM, ToJSON } from '@voiceflow/orm-designer';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
+import { ObjectId } from 'bson';
 
-import { MutableService } from '@/common';
+import { EntitySerializer, MutableService } from '@/common';
+
+import { DiagramCreateData } from './diagram.interface';
 
 @Injectable()
 export class DiagramService extends MutableService<DiagramORM> {
@@ -45,9 +49,29 @@ export class DiagramService extends MutableService<DiagramORM> {
     return sharedNodes;
   }
 
+  private async reloadSharedNodes(
+    diagrams: ToJSON<DiagramEntity>[],
+    meta: { environmentID: string; assistantID: string; workspaceID: string; clientID: string; userID: number }
+  ): Promise<void> {
+    const sharedNodes = DiagramService.getAllSharedNodes(diagrams);
+    const transformedMeta = {
+      versionID: meta.environmentID,
+      workspaceID: meta.workspaceID,
+      projectID: meta.assistantID,
+      clientID: meta.clientID,
+      userID: meta.userID,
+    };
+
+    await this.logux.processAs(Realtime.diagram.sharedNodes.reload({ ...transformedMeta, sharedNodes }), transformedMeta);
+  }
+
   constructor(
     @Inject(DiagramORM)
-    protected readonly orm: DiagramORM
+    protected readonly orm: DiagramORM,
+    @Inject(LoguxService)
+    private readonly logux: LoguxService,
+    @Inject(EntitySerializer)
+    protected readonly entitySerializer: EntitySerializer
   ) {
     super();
   }
@@ -58,5 +82,70 @@ export class DiagramService extends MutableService<DiagramORM> {
 
   public async deleteManyByVersionID(versionID: string) {
     return this.orm.deleteManyByVersionID(versionID);
+  }
+
+  async broadcastAddMany(
+    authMeta: AuthMetaPayload,
+    diagrams: DiagramEntity[],
+    meta: { environmentID: string; assistantID: string; workspaceID: string; clientID: string; userID: number }
+  ) {
+    await Promise.all([
+      ...diagrams.map((diagram) =>
+        this.logux.processAs(
+          Realtime.diagram.crud.add({
+            key: diagram.id,
+            value: this.entitySerializer.nullable(diagram) as Realtime.Diagram,
+            projectID: meta.assistantID,
+            versionID: meta.environmentID,
+            workspaceID: meta.workspaceID,
+          }),
+          authMeta
+        )
+      ),
+      this.reloadSharedNodes(
+        diagrams.map((item) => item.toJSON()),
+        meta
+      ),
+    ]);
+  }
+
+  async broadcastDeleteMany(
+    authMeta: AuthMetaPayload,
+    diagrams: DiagramEntity[],
+    meta: { environmentID: string; assistantID: string; workspaceID: string }
+  ) {
+    await Promise.all([
+      ...diagrams.map((diagram) =>
+        this.logux.processAs(
+          Realtime.diagram.crud.remove({
+            key: diagram.id,
+            projectID: meta.assistantID,
+            versionID: meta.environmentID,
+            workspaceID: meta.workspaceID,
+          }),
+          authMeta
+        )
+      ),
+    ]);
+  }
+
+  public async createManyComponents(
+    data: DiagramCreateData[],
+    meta: { environmentID: string; assistantID: string; workspaceID: string; clientID: string; userID: number }
+  ) {
+    return this.orm.createMany(
+      data.map((item) => {
+        const diagramID = new ObjectId().toHexString();
+
+        return {
+          ...Realtime.Utils.diagram.componentDiagramFactory(item.flow?.name ?? ''),
+          ...item.diagram,
+          _id: diagramID,
+          versionID: meta.environmentID,
+          creatorID: meta.userID,
+          diagramID,
+        };
+      })
+    );
   }
 }

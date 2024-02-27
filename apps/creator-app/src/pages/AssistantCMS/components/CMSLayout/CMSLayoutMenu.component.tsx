@@ -19,13 +19,14 @@ export const CMSLayoutMenu: React.FC = () => {
   const onLinkClick = useOnLinkClick();
   const { isEnabled: isKbEnabled } = useFeature(Realtime.FeatureFlag.KNOWLEDGE_BASE);
   const { isEnabled: isFunctionsCmsEnabled } = useFeature(Realtime.FeatureFlag.CMS_FUNCTIONS);
+  const { isEnabled: isCMSComponentsEnabled } = useFeature(Realtime.FeatureFlag.CMS_COMPONENTS);
 
   const { updateActiveCMSRoute } = useCMSRoute();
 
   const name = useSelector(ProjectV2.active.nameSelector);
-  // const flowsCount = useSelector(Designer.Flow.selectors.count);
   // const storiesCount = useSelector(Designer.Story.selectors.count);
   // const promptsCount = useSelector(Designer.Prompt.selectors.count);
+  const flowsCount = useSelector(Designer.Flow.selectors.count);
   const intentsCount = useSelector(Designer.Intent.selectors.countWithoutFallback);
   const entitiesCount = useSelector(Designer.Entity.selectors.count);
   const functionsCount = useSelector(Designer.Function.selectors.count);
@@ -97,6 +98,17 @@ export const CMSLayoutMenu: React.FC = () => {
       */}
 
       <SecondaryNavigation.Section title="Content">
+        {isCMSComponentsEnabled && (
+          <SecondaryNavigation.Item
+            icon="Component"
+            label="Components"
+            caption={String(flowsCount)}
+            onClick={onTabClick(Path.CMS_FLOW, CMSRoute.FLOW)}
+            isActive={isItemActive(Path.CMS_FLOW)}
+            testID={tid(TEST_ID, 'components')}
+          />
+        )}
+
         <SecondaryNavigation.Item
           icon="Variable"
           label="Variables"

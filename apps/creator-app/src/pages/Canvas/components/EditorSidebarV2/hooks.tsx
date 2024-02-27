@@ -8,6 +8,7 @@ import { generatePath, useLocation, useRouteMatch } from 'react-router-dom';
 import { Path } from '@/config/routes';
 import { BlockType } from '@/constants';
 import { NamespaceProvider } from '@/contexts/NamespaceContext';
+import { Feature } from '@/ducks';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Router from '@/ducks/router';
 import { useActiveProjectConfig, useDispatch, useRAF, useSelector, useTheme, useToggle } from '@/hooks';
@@ -53,11 +54,28 @@ export const useUseAutopanBlockIntoView = ({ engine, blockID, isOpened }: { engi
   }, [engine, isOpened, blockID]);
 };
 
+export const useGetEditorWithCorrectVersion = () => {
+  const getManager = React.useContext(ManagerContext)!;
+  const isEnabled = useSelector(Feature.isFeatureEnabledSelector);
+
+  return (nodeType: Realtime.BlockType) => {
+    const manager = getManager(nodeType);
+    const { editorV3, editorV2 } = manager;
+    const isV3 = manager.editorV3FeaturFlag ? isEnabled(manager.editorV3FeaturFlag) : !!editorV3;
+
+    return {
+      isV3,
+      Editor: isV3 ? editorV3 : editorV2,
+    };
+  };
+};
+
 export const useEditorSidebarV2 = () => {
   const theme = useTheme();
   const location = useLocation();
   const isEditingMode = useEditingMode();
   const canvasNodeRouteMatch = useRouteMatch(Path.CANVAS_NODE);
+  const getEditorWithCorrectVersion = useGetEditorWithCorrectVersion();
 
   const scrollbars = React.useRef<CustomScrollbarsTypes.Scrollbars>(null);
 
@@ -153,6 +171,7 @@ export const useEditorSidebarV2 = () => {
   useUseAutopanBlockIntoView({ engine, blockID, isOpened });
 
   const getEditor = (node: Realtime.Node, data: Realtime.NodeData<{}>) => {
+    const { Editor } = getEditorWithCorrectVersion(node.type);
     let manager = getManager(node.type);
 
     const isInvalidPlatform =
@@ -163,9 +182,9 @@ export const useEditorSidebarV2 = () => {
       manager = getManager(BlockType.INVALID_PLATFORM);
     }
 
-    const Editor = manager.editorV3 || manager.editorV2;
-
-    if (!Editor) return null;
+    if (!Editor) {
+      return null;
+    }
 
     const editorProps: NodeEditorV2Props<any, any> = {
       data: data as any,

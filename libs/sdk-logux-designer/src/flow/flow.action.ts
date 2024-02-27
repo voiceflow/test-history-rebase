@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import type { Flow } from '@voiceflow/dtos';
+import type { Diagram, Flow } from '@voiceflow/dtos';
 
 import { createCRUD } from '@/crud/crud.action';
 import type {
@@ -26,6 +26,10 @@ export interface CreateData {
   name: string;
   folderID: string | null;
   description: string | null;
+  diagram?: Omit<
+    Diagram,
+    '_id' | 'creatorID' | 'versionID' | 'intentStepIDs' | 'menuNodeIDs' | 'children' | 'diagramID'
+  >;
 }
 
 /**
@@ -44,6 +48,18 @@ export namespace CreateOne {
 
 export const CreateOne = flowAction.crud.createOne<CreateOne.Request, CreateOne.Response>();
 
+/* CreateMany */
+
+export namespace CreateMany {
+  export interface Request extends DesignerAction {
+    data: CreateData[];
+  }
+
+  export interface Response extends CreateResponse<Flow[]>, DesignerAction {}
+}
+
+export const CreateMany = flowAction.crud.createMany<CreateMany.Request, CreateMany.Response>();
+
 /* PatchOne */
 
 export interface PatchOne extends PatchOneRequest<PatchData>, DesignerAction {}
@@ -58,15 +74,54 @@ export const PatchMany = flowAction.crud.patchMany<PatchMany>();
 
 /* DeleteOne */
 
-export interface DeleteOne extends DeleteOneRequest, DesignerAction {}
+export interface DeleteOne extends DeleteOneRequest, DesignerAction {
+  keepDiagram?: boolean;
+}
 
 export const DeleteOne = flowAction.crud.deleteOne<DeleteOne>();
 
 /* DeleteMany */
 
-export interface DeleteMany extends DeleteManyRequest, DesignerAction {}
+export interface DeleteMany extends DeleteManyRequest, DesignerAction {
+  keepDiagram?: boolean;
+}
 
 export const DeleteMany = flowAction.crud.deleteMany<DeleteMany>();
+
+/* Duplicate */
+
+export namespace DuplicateOne {
+  export interface Request extends DesignerAction {
+    data: { flowID: string };
+  }
+
+  export interface Response extends DesignerAction {
+    data: CreateOne.Response['data'];
+  }
+}
+
+export const DuplicateOne = Utils.protocol.createAsyncAction<DuplicateOne.Request, DuplicateOne.Response>(
+  flowAction('DUPLICATE_ONE')
+);
+
+/* Copy Past */
+
+export namespace CopyPasteMany {
+  export interface Request extends DesignerAction {
+    data: {
+      sourceDiagramIDs: Array<string>;
+      sourceEnvironmentID: string;
+    };
+  }
+
+  export interface Response extends DesignerAction {
+    data: CreateOne.Response['data'][];
+  }
+}
+
+export const CopyPasteMany = Utils.protocol.createAsyncAction<CopyPasteMany.Request, CopyPasteMany.Response>(
+  flowAction('COPY_PASTE_MANY')
+);
 
 /**
  * system-sent events

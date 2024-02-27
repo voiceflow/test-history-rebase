@@ -13,7 +13,7 @@ const rootSelector = createRootSelector(STATE_KEY);
 export const viewportByDiagramIDSelector = createSelector(
   [rootSelector, activeVersionIDSelector, diagramIDParamSelector],
   (state, versionID, diagramID) => {
-    if (!versionID) return null;
+    if (!versionID || !diagramID) return null;
 
     return getOne(state, getViewportKey(diagramID, versionID));
   }

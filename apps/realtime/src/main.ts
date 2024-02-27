@@ -12,7 +12,7 @@ import { Environment } from '@voiceflow/common';
 import { configureApp, corsConfig, LoggerPlugin } from '@voiceflow/nestjs-common';
 import { ENVIRONMENT_VARIABLES } from '@voiceflow/nestjs-env';
 import { LoguxFactory } from '@voiceflow/nestjs-logux';
-import { enablePatches, setAutoFreeze } from 'immer';
+import { setAutoFreeze } from 'immer';
 
 import type { EnvironmentVariables } from './app.env';
 import { AppModule } from './app.module';
@@ -39,7 +39,6 @@ async function bootstrap() {
 
   LoguxFactory.connectMicroservice(app);
 
-  enablePatches();
   setAutoFreeze(false);
   configureApp(app, { plugins: [LoggerPlugin()] });
 

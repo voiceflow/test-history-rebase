@@ -33,7 +33,7 @@ export const usePartialImport = () => {
         return;
       }
 
-      const [{ diagrams, version }] = Realtime.Migrate.migrateProject(
+      const { diagrams, version } = Realtime.Migrate.migrateProject(
         {
           ...vf,
           diagrams: Object.values(vf.diagrams),

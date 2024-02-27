@@ -133,7 +133,7 @@ class MigrateService extends AbstractControl {
     try {
       const [project, diagrams] = await Promise.all([this.services.project.get(creatorID, projectID), this.services.diagram.getAll(versionID)]);
 
-      const [migrationResult] = Realtime.Migrate.migrateProject(
+      const migrationResult = Realtime.Migrate.migrateProject(
         {
           version,
           project,

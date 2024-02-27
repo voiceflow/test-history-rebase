@@ -71,7 +71,7 @@ describe('Migrate service unit tests', () => {
     });
 
     environmentService = createMock<EnvironmentService>({
-      findOneCMSDataToMigrate: vi.fn().mockResolvedValue({
+      findOneCMSData: vi.fn().mockResolvedValue({
         intents: [],
         entities: [],
         responses: [],
@@ -221,7 +221,12 @@ describe('Migrate service unit tests', () => {
 
       expect(legacyService.models.version.updateByID).toBeCalledWith(versionID, { a: '1', b: 'b' });
 
-      expect(legacyService.models.diagram.updateOne.mock.calls).toEqual([]);
+      expect(legacyService.models.diagram.updateOne.mock.calls).toEqual([
+        [
+          { diagramID: 'diagramID', versionID: 'versionID' },
+          { a: '1', b: 'b' },
+        ],
+      ]);
     });
   });
 });

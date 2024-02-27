@@ -3,7 +3,23 @@ import { EntityManager } from '@mikro-orm/core';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable, Optional } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
-import { AnyResponseVariant, Entity, EntityVariant, Intent, RequiredEntity, Response, ResponseDiscriminator, Utterance } from '@voiceflow/dtos';
+import {
+  AnyAttachment,
+  AnyResponseAttachment,
+  AnyResponseVariant,
+  CardButton,
+  Entity,
+  EntityVariant,
+  Function as FunctionType,
+  FunctionPath,
+  FunctionVariable,
+  Intent,
+  RequiredEntity,
+  Response,
+  ResponseDiscriminator,
+  Utterance,
+  Variable,
+} from '@voiceflow/dtos';
 import { UnleashFeatureFlagService } from '@voiceflow/nestjs-common';
 import {
   AnyResponseVariantEntity,
@@ -26,7 +42,6 @@ import {
 } from '@voiceflow/orm-designer';
 import * as Platform from '@voiceflow/platform-config/backend';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
-import { Patch } from 'immer';
 
 import { AttachmentService } from '@/attachment/attachment.service';
 import { EntitySerializer } from '@/common';
@@ -44,7 +59,6 @@ import { VersionService } from '@/version/version.service';
 import { EnvironmentCMSExportImportDataDTO } from './dtos/environment-cms-export-import-data.dto';
 import { EnvironmentExportImportDTO } from './dtos/environment-export-import-data.dto';
 import { EnvironmentCMSEntities } from './environment.interface';
-import { getUpdatedCMSData } from './environment.util';
 
 @Injectable()
 export class EnvironmentService {
@@ -562,33 +576,6 @@ export class EnvironmentService {
     };
   }
 
-  async findOneCMSDataToMigrate(assistantID: string, environmentID: string) {
-    const [
-      { entities, entityVariants },
-      { intents, utterances, requiredEntities },
-      { variables },
-      { responses, responseVariants, responseAttachments, responseDiscriminators },
-    ] = await Promise.all([
-      this.entity.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
-      this.intent.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
-      this.variable.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
-      this.response.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
-    ]);
-
-    return {
-      intents,
-      entities,
-      responses,
-      variables,
-      utterances,
-      entityVariants,
-      requiredEntities,
-      responseVariants,
-      responseAttachments,
-      responseDiscriminators,
-    };
-  }
-
   async findOneCMSDataJSON(assistantID: string, environmentID: string) {
     const [
       { entities, entityVariants },
@@ -631,53 +618,49 @@ export class EnvironmentService {
     };
   }
 
-  async upsertIntentsAndEntities(
+  async upsertCMSData(
     {
-      intents,
-      entities,
-      responses,
-      utterances,
-      entityVariants,
-      requiredEntities,
-      responseVariants,
-      responseDiscriminators,
+      intents = [],
+      entities = [],
+      variables = [],
+      responses = [],
+      functions = [],
+      utterances = [],
+      attachments = [],
+      cardButtons = [],
+      functionPaths = [],
+      entityVariants = [],
+      requiredEntities = [],
+      responseVariants = [],
+      functionVariables = [],
+      responseAttachments = [],
+      responseDiscriminators = [],
     }: {
-      intents: Intent[];
-      entities: Entity[];
-      responses: Response[];
-      utterances: Utterance[];
-      entityVariants: EntityVariant[];
-      requiredEntities: RequiredEntity[];
-      responseVariants: AnyResponseVariant[];
-      responseDiscriminators: ResponseDiscriminator[];
+      intents?: Intent[];
+      entities?: Entity[];
+      functions?: FunctionType[];
+      responses?: Response[];
+      variables?: Variable[];
+      utterances?: Utterance[];
+      attachments?: AnyAttachment[];
+      cardButtons?: CardButton[];
+      functionPaths?: FunctionPath[];
+      entityVariants?: EntityVariant[];
+      requiredEntities?: RequiredEntity[];
+      responseVariants?: AnyResponseVariant[];
+      functionVariables?: FunctionVariable[];
+      responseAttachments?: AnyResponseAttachment[];
+      responseDiscriminators?: ResponseDiscriminator[];
     },
     meta: { userID: number; assistantID: string; environmentID: string }
   ) {
     // ORDER MATTERS
-    await this.entity.upsertManyWithSubResources({ entities, entityVariants }, meta);
-    await this.response.upsertManyWithSubResources({ responses, responseVariants, responseAttachments: [], responseDiscriminators }, meta);
-    await this.intent.upsertManyWithSubResources({ intents, utterances, requiredEntities }, meta);
-  }
-
-  async migrateCMSData(data: Realtime.Migrate.MigrationData, patches: Patch[], meta: { userID: number; assistantID: string; environmentID: string }) {
-    const {
-      intents = [],
-      entities = [],
-      responses = [],
-      variables = [],
-      utterances = [],
-      entityVariants = [],
-      requiredEntities = [],
-      responseVariants = [],
-      responseDiscriminators = [],
-    } = getUpdatedCMSData(data, patches);
-
-    // ORDER MATTERS
-
     await this.variable.upsertManyWithSubResources({ variables }, meta);
+    await this.attachment.upsertManyWithSubResources({ attachments, cardButtons }, meta);
     await this.entity.upsertManyWithSubResources({ entities, entityVariants }, meta);
-    await this.response.upsertManyWithSubResources({ responses, responseVariants, responseAttachments: [], responseDiscriminators }, meta);
+    await this.response.upsertManyWithSubResources({ responses, responseVariants, responseAttachments, responseDiscriminators }, meta);
     await this.intent.upsertManyWithSubResources({ intents, utterances, requiredEntities }, meta);
+    await this.functionService.upsertManyWithSubResources({ functions, functionPaths, functionVariables }, meta);
   }
 
   async deleteOneCMSData(assistantID: string, environmentID: string) {

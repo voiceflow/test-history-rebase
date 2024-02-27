@@ -7,52 +7,27 @@ import RadioGroup from '@/components/RadioGroup';
 import * as Workspace from '@/components/Workspace';
 import * as currency from '@/utils/currency';
 
+import { usePaymentSteps, usePricing, useSeats } from '../Payment.hooks';
 import * as S from './BillingStep.styles';
 
 interface BillingStepProps {
-  price: number;
-  period: BillingPeriod;
-  prices: Record<BillingPeriod, number> | null;
-  onNext: VoidFunction;
-  onBack: VoidFunction;
-  onClose: VoidFunction;
-  hasCard: boolean;
   isLoading: boolean;
-  periodPrice: number;
-  editorSeats: number;
-  viewerSeats: number;
-  onChangePeriod: (period: BillingPeriod) => void;
-  usedEditorSeats: number;
-  editorPlanSeatLimits: number;
-  onChangeEditorSeats: (seats: number) => void;
 }
 
-export const BillingStep: React.FC<BillingStepProps> = ({
-  price,
-  period,
-  prices,
-  onNext,
-  onBack,
-  hasCard,
-  isLoading,
-  periodPrice,
-  editorSeats,
-  viewerSeats,
-  onChangePeriod,
-  usedEditorSeats,
-  onChangeEditorSeats,
-  editorPlanSeatLimits,
-}) => {
-  const downgradedSeats = usedEditorSeats - editorSeats;
+export const BillingStep: React.FC<BillingStepProps> = ({ isLoading }) => {
+  const { downgradedSeats, editorPlanSeatLimits, usedEditorSeats, viewerSeats, onChangeEditorSeats, selectedEditorSeats } = useSeats();
+  const { onBack, onNext } = usePaymentSteps();
+  const { price, periodPrice, prices, period, hasCard, onChangePeriod } = usePricing();
 
   return (
     <>
       <SectionV2.SimpleSection headerProps={{ topUnit: 0, bottomUnit: 2 }}>
         <Box.Flex gap={16} column fullWidth>
-          {editorSeats < usedEditorSeats && (
+          {selectedEditorSeats < usedEditorSeats && (
             <Alert title={<Alert.Title>Your workspace currently has {usedEditorSeats} Editors</Alert.Title>}>
-              You’re about to remove {downgradedSeats} Editor {pluralize('seat', editorSeats)}, but there are {usedEditorSeats} in use. On removal,
-              we’ll automatically downgrade {downgradedSeats} {pluralize('Editor', downgradedSeats)} to {pluralize('Viewer', downgradedSeats)}.
+              You&apos;re about to remove {downgradedSeats} Editor {pluralize('seat', selectedEditorSeats)}, but there are {usedEditorSeats} in use.
+              On removal, we&apos;ll automatically downgrade {downgradedSeats} {pluralize('Editor', downgradedSeats)} to{' '}
+              {pluralize('Viewer', downgradedSeats)}.
             </Alert>
           )}
 
@@ -98,7 +73,7 @@ export const BillingStep: React.FC<BillingStepProps> = ({
             <SectionV2.Title bold>Summary</SectionV2.Title>
 
             <div>
-              {editorSeats > editorPlanSeatLimits ? (
+              {selectedEditorSeats > editorPlanSeatLimits ? (
                 <Workspace.TakenSeatsMessage seats={editorPlanSeatLimits} error small />
               ) : (
                 <SectionV2.Description>
@@ -113,10 +88,10 @@ export const BillingStep: React.FC<BillingStepProps> = ({
 
           <S.StyledInput
             min={1}
-            value={editorSeats}
-            error={editorSeats > editorPlanSeatLimits}
-            onPlusClick={() => onChangeEditorSeats(editorSeats + 1)}
-            onMinusClick={() => onChangeEditorSeats(editorSeats - 1)}
+            value={selectedEditorSeats}
+            error={selectedEditorSeats > editorPlanSeatLimits}
+            onPlusClick={() => onChangeEditorSeats(selectedEditorSeats + 1)}
+            onMinusClick={() => onChangeEditorSeats(selectedEditorSeats - 1)}
           />
         </Box.FlexApart>
       </SectionV2.SimpleSection>
@@ -126,7 +101,7 @@ export const BillingStep: React.FC<BillingStepProps> = ({
       <SectionV2.SimpleSection minHeight={50} headerProps={{ topUnit: 2, bottomUnit: 2 }}>
         <Box.FlexApart fullWidth>
           <SectionV2.Description>
-            {editorSeats} Editor {pluralize('seats', editorSeats)}
+            {selectedEditorSeats} Editor {pluralize('seats', selectedEditorSeats)}
           </SectionV2.Description>
 
           <SectionV2.Description>{currency.formatUSD(price)}</SectionV2.Description>
@@ -166,7 +141,7 @@ export const BillingStep: React.FC<BillingStepProps> = ({
           width={hasCard ? 144 : 194}
           onClick={() => onNext()}
           variant={Button.Variant.PRIMARY}
-          disabled={isLoading || editorSeats > editorPlanSeatLimits}
+          disabled={isLoading || selectedEditorSeats > editorPlanSeatLimits}
           isLoading={isLoading}
           squareRadius
         >

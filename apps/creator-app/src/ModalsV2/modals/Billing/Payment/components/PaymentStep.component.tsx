@@ -5,18 +5,21 @@ import { useFormik } from 'formik';
 import pluralize from 'pluralize';
 import React from 'react';
 
+import { useCheckoutPayment, usePricing, useSeats } from '../Payment.hooks';
+import { PaymentModalAPIProps } from '../Payment.types';
 import * as CardForm from './CardForm';
 import { PlanCard } from './PlanCard.component';
 
 interface PaymentStepProps {
-  price: number;
-  period: BillingPeriod;
-  editorSeats: number;
+  modalProps: PaymentModalAPIProps;
   onClose: VoidFunction;
-  onSubmit: (values: CardForm.Values) => Promise<void>;
 }
 
-export const PaymentStep: React.FC<PaymentStepProps> = ({ price, onSubmit, period, onClose, editorSeats }) => {
+export const PaymentStep: React.FC<PaymentStepProps> = ({ onClose, modalProps }) => {
+  const { cardRef, onSubmit } = useCheckoutPayment({ modalProps });
+  const { editorSeats } = useSeats();
+  const { price, period } = usePricing();
+
   const form = useFormik({
     onSubmit,
     initialValues: CardForm.INITIAL_VALUES,
@@ -37,7 +40,7 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ price, onSubmit, perio
           </PlanCard>
         </Box>
 
-        <CardForm.Base form={form} />
+        <CardForm.Base form={form} ref={cardRef} />
       </Modal.Body>
 
       <Modal.Footer gap={12}>

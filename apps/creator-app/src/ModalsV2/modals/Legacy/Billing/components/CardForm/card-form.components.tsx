@@ -1,20 +1,17 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { CardComponent } from '@chargebee/chargebee-js-react-wrapper';
 import { CardElement } from '@stripe/react-stripe-js';
 import { Box, CountrySelect, Input, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
 import { useFormikTouchedErrors } from '@/hooks/formik';
 
-import { useChargebeeCard, useStripeCard } from './card-form.hooks';
+import { useStripeCard } from './card-form.hooks';
 import * as I from './card-form.interface';
 import * as S from './card-form.style';
 
-export const CardForm: React.FC<I.Props> = ({ form, disabled, paymentGateway }) => {
+export const CardForm: React.FC<I.Props> = ({ form, disabled }) => {
   const [cardError, setCardError] = React.useState('');
 
   const stripeCard = useStripeCard({ form, setCardError });
-  const chargebeeCard = useChargebeeCard({ form, setCardError });
 
   const onCountryChange = async (value: string | null) => {
     await form.setFieldValue('country', value ?? '');
@@ -22,41 +19,22 @@ export const CardForm: React.FC<I.Props> = ({ form, disabled, paymentGateway }) 
   };
 
   useDidUpdateEffect(() => {
-    if (form.values.cardCompleted || form.values.cardAuthorization) return;
+    if (form.values.cardCompleted) return;
     setCardError('Card is required');
   }, [form.submitCount]);
 
-  // TODO: fix me
-  const touchedErrors = useFormikTouchedErrors(form as any);
+  const touchedErrors = useFormikTouchedErrors(form);
 
   return (
     <Box.Flex column gap={16} fullWidth>
       <Box.FlexStart fullWidth column alignItems="flex-start">
         <S.CardElementContainer error={!!cardError || !!touchedErrors.cardCompleted} disabled={disabled}>
-          {paymentGateway === 'stripe' && (
-            <CardElement
-              onBlur={stripeCard.onCardBlur}
-              options={{ style: S.stripeInputStyle, disabled }}
-              onReady={(element) => element.focus()}
-              onChange={stripeCard.onCardChange}
-            />
-          )}
-
-          {paymentGateway === 'chargebee' && (
-            <CardComponent
-              ref={chargebeeCard.cardRef}
-              onChange={chargebeeCard.onChange}
-              onReady={chargebeeCard.onReady}
-              onBlur={chargebeeCard.onBlur}
-              styles={S.chargebeeInputStyle}
-              placeholder={{
-                number: 'Card number',
-                expiry: 'MM/YY',
-                cvv: 'CVV',
-              }}
-              fonts={['https://fonts.googleapis.com/css?family=Open+Sans']}
-            />
-          )}
+          <CardElement
+            onBlur={stripeCard.onCardBlur}
+            options={{ style: S.stripeInputStyle, disabled }}
+            onReady={(element) => element.focus()}
+            onChange={stripeCard.onCardChange}
+          />
         </S.CardElementContainer>
 
         {(cardError || touchedErrors.cardCompleted) && <S.ErrorMessage>{cardError || touchedErrors.cardCompleted}</S.ErrorMessage>}

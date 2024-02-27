@@ -23,6 +23,9 @@ const subscriptionAdapter = createMultiAdapter<Realtime.Identity.Subscription, S
     const isTrial = isChargebeeTrial(planItem, metaData);
     const seatLimits = getWorkspaceSeatsLimits(plan as PlanType);
 
+    // eslint-disable-next-line no-console
+    console.log({ plan, isTrial });
+
     const agents = findRangeEntitlement(subscriptionEntitlements, 'agents');
     const interactionsLimit = findRangeEntitlement(subscriptionEntitlements, 'interactions-limit');
     const tokensLimit = findRangeEntitlement(subscriptionEntitlements, 'tokens-limit');

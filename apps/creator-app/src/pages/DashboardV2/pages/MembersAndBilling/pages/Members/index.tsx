@@ -7,6 +7,7 @@ import { Permission } from '@/constants/permissions';
 import * as Organization from '@/ducks/organization';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { usePermission, useSelector } from '@/hooks';
+import { useCheckoutPaymentModal } from '@/hooks/payment';
 import * as ModalsV2 from '@/ModalsV2';
 
 import List from './List.component';
@@ -22,7 +23,7 @@ const DashboardV2MembersAndBillingMembers: React.FC = () => {
   const [canInviteMembers] = usePermission(Permission.INVITE);
 
   const inviteModal = ModalsV2.useModal(ModalsV2.Workspace.Invite);
-  const paymentModal = ModalsV2.useModal(ModalsV2.Payment);
+  const paymentModal = useCheckoutPaymentModal();
   const addSeatsModal = ModalsV2.useModal(ModalsV2.Billing.AddSeats);
 
   return (

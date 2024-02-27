@@ -50,19 +50,26 @@ export class BillingService {
     const token = await this.user.getTokenByID(userID);
 
     return this.billingClient.private.createCustomerCard(subscription.customerID, {
-      body: {
+      json: {
         first_name: data.firstName,
         last_name: data.lastLame,
+        number: data.number,
+        expiry_month: data.expiryMonth,
+        expiry_year: data.expiryYear,
+        cvv: data.cvv,
         billing_addr1: data.billingAddr1,
-        billing_addr2: data.billingAddr2,
         billing_city: data.billingCity,
-        billing_state_code: data.billingStateCode,
+        billing_state_code: data.billingState,
         billing_state: data.billingState,
-        billing_zip: data.billingZip,
         billing_country: data.billingCountry,
-        temp_token: data.tempToken,
       },
       headers: { Authorization: token },
     });
+  }
+
+  async createPaymentIntent(userID: number) {
+    const token = await this.user.getTokenByID(userID);
+
+    return this.billingClient.private.createPaymentIntent({ amount: 3005, currency_code: 'USD' }, { headers: { Authorization: token } });
   }
 }

@@ -68,6 +68,9 @@ export class BillingSubscriptionService {
   async findOne(subscriptionID: string) {
     const { subscription } = await this.billingClient.private.getSubscription(subscriptionID);
 
+    // eslint-disable-next-line no-console
+    console.log('ITEMS', subscription.subscription_items, subscription.status, subscription.trial_start, subscription.trial_end);
+
     return this.parseSubscription(subscription);
   }
 
@@ -99,5 +102,25 @@ export class BillingSubscriptionService {
       quantity: editorSeats,
       changeOption,
     });
+  }
+
+  async checkout(subscriptionID: string, itemPriceID: string, editorSeats: number) {
+    const subscription = await this.findOne(subscriptionID);
+    const plan = subscription.subscriptionItems?.find((item) => item.itemType === 'plan');
+
+    if (!subscription) {
+      throw new NotFoundException('Subscription not found');
+    }
+
+    if (!plan?.itemPriceID) {
+      throw new NotFoundException('Plan not found');
+    }
+
+    return this.billingClient.private.updateSubscriptionItem(subscriptionID, plan.itemPriceID, {
+      itemPriceID,
+      quantity: editorSeats,
+      changeOption: 'immediately',
+      trialEnd: 0,
+    } as any);
   }
 }

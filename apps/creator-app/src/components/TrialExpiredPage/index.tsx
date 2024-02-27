@@ -5,15 +5,15 @@ import React from 'react';
 import client from '@/client';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useActiveWorkspace, useDispatch, useSelector } from '@/hooks';
+import { useCheckoutPaymentModal } from '@/hooks/payment';
 import { useTrackingEvents } from '@/hooks/tracking';
-import * as ModalsV2 from '@/ModalsV2';
 
 import * as S from './styles';
 
 const TrialExpiredPage: React.FC = () => {
   const workspace = useActiveWorkspace();
   const userRole = useSelector(WorkspaceV2.active.userRoleSelector);
-  const paymentModal = ModalsV2.useModal(ModalsV2.Payment);
+  const paymentModal = useCheckoutPaymentModal();
   const [trackEvents] = useTrackingEvents();
 
   const [isDowngrading, setIsDowngrading] = React.useState(false);

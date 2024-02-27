@@ -2,7 +2,7 @@ import { PlanType } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { PLAN_INFO } from '@voiceflow/schema-types';
 
-export const isPlanType = (plan: any): plan is PlanType => plan in PlanType;
+export const isPlanType = (plan: string): plan is PlanType => Object.values(PlanType).find((type) => type === plan) !== undefined;
 
 export const getWorkspaceSeatsLimits = (plan: PlanType) => {
   const platInfo = PLAN_INFO[plan];
@@ -27,14 +27,14 @@ export const findPlanItem = (subscriptionItems?: Realtime.Identity.SubscriptionI
 };
 
 export const getPlanFromPriceID = (priceID: string | undefined) => {
-  const [plan] = priceID?.split('-') ?? [];
+  const [parsedPlan] = priceID?.split('-') ?? [];
 
-  if (isPlanType(plan)) return plan;
+  if (isPlanType(parsedPlan)) return parsedPlan as PlanType;
 
   // FIXME: temporary fix for the plan type, this value comes from chargebee, and it's not consistent with the plan type
   // eslint-disable-next-line no-secrets/no-secrets
   // https://voiceflowhq.slack.com/archives/C05H14G77D5/p1707166175310379
-  if (plan === 'teams') return PlanType.TEAM;
+  if (parsedPlan === 'teams') return PlanType.TEAM;
 
   return PlanType.STARTER;
 };

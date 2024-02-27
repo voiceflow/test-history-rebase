@@ -1,4 +1,3 @@
-import { CardComponent } from '@chargebee/chargebee-js-react-wrapper';
 import { Box, CountrySelect, Input, useDidUpdateEffect } from '@voiceflow/ui';
 import { useFormik } from 'formik';
 import React from 'react';
@@ -18,54 +17,61 @@ const CARD_REQUIRED_ERROR_MESSAGE = 'Card is required';
 export const CardForm: React.FC<CardFormProps> = ({ form, disabled }) => {
   const [cardError, setCardError] = React.useState('');
 
+  // eslint-disable-next-line no-console
+  console.log({ cardError });
+
   const onCountryChange = async (value: string | null) => {
     await form.setFieldValue('country', value ?? '');
     form.setFieldError('country', value ? undefined : 'Country is required');
   };
 
-  const onCardChange = (event: any) => {
-    if (event.error) {
-      setCardError(event.error.message);
-      form.setFieldValue('cardCompleted', false);
-    } else {
-      form.setFieldValue('cardCompleted', event.complete);
-      setCardError(event.empty ? CARD_REQUIRED_ERROR_MESSAGE : '');
-    }
-  };
-
-  const onCardBlur = () => {
-    form.setFieldTouched('cardCompleted', true);
-
-    if (form.values.cardCompleted || form.errors.cardCompleted) return;
-
-    setCardError(CARD_REQUIRED_ERROR_MESSAGE);
-  };
-
   useDidUpdateEffect(() => {
-    if (form.values.cardCompleted) return;
+    if (form.values.cardNumber) return;
     setCardError(CARD_REQUIRED_ERROR_MESSAGE);
   }, [form.submitCount]);
 
-  const touchedErrors = useFormikTouchedErrors(form);
+  const touchedErrors = useFormikTouchedErrors(form as any);
 
   return (
     <Box.Flex column gap={16} fullWidth>
-      <Box.FlexStart fullWidth column alignItems="flex-start">
-        <S.CardElementContainer error={!!cardError || !!touchedErrors.cardCompleted} disabled={disabled}>
-          <CardComponent
-            onChange={onCardChange}
-            onBlur={onCardBlur}
-            styles={S.chargebeeInputStyle}
-            placeholder={{
-              number: 'Card number',
-              expiry: 'MM/YY',
-              cvv: 'CVV',
-            }}
-            fonts={['https://fonts.googleapis.com/css?family=Open+Sans']}
+      <Box.FlexStart fullWidth alignItems="flex-start">
+        <Box.FlexStart fullWidth>
+          <Input
+            name="cardNumber"
+            error={!!touchedErrors?.card}
+            value={form.values.cardNumber}
+            onBlur={form.handleBlur}
+            onChange={form.handleChange}
+            disabled={disabled}
+            placeholder="4111 1111 1111 1111"
           />
-        </S.CardElementContainer>
+        </Box.FlexStart>
 
-        {(cardError || touchedErrors.cardCompleted) && <S.ErrorMessage>{cardError || touchedErrors.cardCompleted}</S.ErrorMessage>}
+        <Box.FlexStart ml={8}>
+          <Input
+            name="cardExpiry"
+            error={!!touchedErrors?.card}
+            value={form.values.cardExpiry}
+            onBlur={form.handleBlur}
+            onChange={form.handleChange}
+            disabled={disabled}
+            placeholder="12/2030"
+          />
+
+          <Box ml={4}>
+            <Input
+              name="cardCvv"
+              error={!!touchedErrors?.card}
+              value={form.values.cardCvv}
+              onBlur={form.handleBlur}
+              onChange={form.handleChange}
+              disabled={disabled}
+              placeholder="123"
+            />
+          </Box>
+        </Box.FlexStart>
+
+        {touchedErrors?.card && <S.ErrorMessage>{touchedErrors.card}</S.ErrorMessage>}
       </Box.FlexStart>
 
       <Box.FlexStart column alignItems="flex-start" fullWidth>

@@ -10,7 +10,10 @@ export const UpsertCreditCardRequest = z.object({
   billingState: z.string().optional(),
   billingZip: z.string().optional(),
   billingCountry: z.string().optional(),
-  tempToken: z.string().optional(),
+  number: z.string().optional(),
+  expiryMonth: z.number().optional(),
+  expiryYear: z.number().optional(),
+  cvv: z.string().optional(),
 });
 
 export type UpsertCreditCardRequest = z.infer<typeof UpsertCreditCardRequest>;

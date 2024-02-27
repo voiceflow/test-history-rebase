@@ -7,11 +7,6 @@ export const SCHEME = Yup.object({
   country: Yup.string().required('Country is required'),
   address: Yup.string().required('Address is required'),
   cardCompleted: Yup.boolean(),
-  cardAuthorization: Yup.object({
-    additionalInformation: Yup.mixed().optional(),
-    token: Yup.string(),
-    vaultToken: Yup.string(),
-  }).optional(),
 });
 
 export interface Values extends Yup.InferType<typeof SCHEME> {}
@@ -23,9 +18,4 @@ export const INITIAL_VALUES: Values = {
   country: '',
   address: '',
   cardCompleted: false,
-  cardAuthorization: {
-    additionalInformation: undefined,
-    token: '',
-    vaultToken: '',
-  },
 };

@@ -1,7 +1,10 @@
 import type { Entity, Folder, Intent, Variable } from '@voiceflow/dtos';
 
 import * as Organization from '@/ducks/organization';
+import { useSelector } from '@/hooks';
+// import * as Organization from '@/ducks/organization';
 import { useModal } from '@/ModalsV2/modal.hook';
+import * as Billing from '@/ModalsV2/modals/Billing';
 import type { PaymentModalProps } from '@/ModalsV2/modals/Billing/Payment/Payment.component';
 import type { Props as ConfirmProps } from '@/ModalsV2/modals/Confirm';
 import type { IConformV2Modal } from '@/ModalsV2/modals/ConfirmV2/ConfirmV2.interface';
@@ -17,8 +20,7 @@ import type { UpgradeModal } from '@/ModalsV2/modals/Upgrade';
 import type { IVariableCreateModal } from '@/ModalsV2/modals/Variable/VariableCreate.modal';
 import type { IVariableEditModal } from '@/ModalsV2/modals/Variable/VariableEdit.modal';
 import type { Props as VariablePromptProps, Result as VariablePromptResult } from '@/ModalsV2/modals/VariablePrompt';
-
-import { useSelector } from './redux';
+import { PropsPublicAPI } from '@/ModalsV2/types';
 
 export { useModal } from '@/ModalsV2/modal.hook';
 
@@ -27,11 +29,11 @@ export const useErrorModal = () => useModal<ErrorProps>('Error');
 export const useSuccessModal = () => useModal<SuccessProps>('Success');
 export const useUpgradeModal = () => useModal<UpgradeModal>('Upgrade');
 export const useAddSeatsModal = () => useModal('AddSeats');
-
-export const usePaymentModal = () => {
+export const usePaymentModal = (): PropsPublicAPI<PaymentModalProps> => {
+  const legacyPaymentModal = useModal<PaymentModalProps>('LegacyPayment');
+  const newPaymentModal = useModal<PaymentModalProps>(Billing.Payment);
   const chargebeeSubscriptionID = useSelector(Organization.chargebeeSubscriptionIDSelector);
-  // TODO: double check why we're getting circular dep for payment modal
-  return useModal<PaymentModalProps>(chargebeeSubscriptionID ? 'Payment' : 'LegacyPayment');
+  return chargebeeSubscriptionID ? newPaymentModal : legacyPaymentModal;
 };
 
 export const useVariablePromptModal = () => useModal<VariablePromptProps, VariablePromptResult>('VariablePrompt');

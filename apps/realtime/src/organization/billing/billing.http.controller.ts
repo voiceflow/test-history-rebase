@@ -38,7 +38,17 @@ export class BillingHTTPController {
     @UserID() userID: number,
     @Param('organizationID') organizationID: string,
     @Body(new ZodValidationPipe(UpsertCreditCardRequest)) data: UpsertCreditCardRequest
-  ): Promise<void> {
-    await this.service.upsertCard(userID, organizationID, data);
+  ): Promise<any> {
+    return this.service.upsertCard(userID, organizationID, data);
+  }
+
+  @Post('payment-intent')
+  @Authorize.Permissions([Permission.SELF_USER_READ])
+  @ApiOperation({
+    summary: 'Create payment intent',
+    description: 'Create payment intent',
+  })
+  async createPaymentIntent(@UserID() userID: number): Promise<any> {
+    return this.service.createPaymentIntent(userID);
   }
 }

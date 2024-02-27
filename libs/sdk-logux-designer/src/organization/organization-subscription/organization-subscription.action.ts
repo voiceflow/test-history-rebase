@@ -25,3 +25,11 @@ export interface ReplaceScheduled extends OrganizationAction {
 }
 
 export const ReplaceScheduled = Utils.protocol.createAction<ReplaceScheduled>(subscriptionAction('REPLACE_SCHEDULED'));
+
+export interface Checkout extends OrganizationAction {
+  subscriptionID: string;
+  itemPriceID: string;
+  editorSeats: number;
+}
+
+export const Checkout = Utils.protocol.createAction<Checkout>(subscriptionAction('CHECKOUT'));

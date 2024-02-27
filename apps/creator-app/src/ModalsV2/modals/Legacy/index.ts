@@ -1,2 +1,2 @@
 export * as Billing from './Billing';
-export * as Payment from './Payment';
+export { default as Payment } from './Payment';

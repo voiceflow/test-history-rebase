@@ -8,6 +8,7 @@ import { ZodValidationPipe } from 'nestjs-zod';
 
 import { invoiceAdapter } from './adapters/invoice.adapter';
 import subscriptionAdapter from './adapters/subscription.adapter';
+import { CheckoutRequest } from './dto/checkout-request.dto';
 import { GetInvoicesRequestQuery } from './dto/get-invoices-request.dto';
 import { GetInvoicesResponse } from './dto/get-invoices-response.dto';
 import { ScheduleSeatsUpdateRequest } from './dto/schedule-seats-update-request.dto';
@@ -114,5 +115,22 @@ export class BillingSubscriptionHTTPController {
     @Body(new ZodValidationPipe(UpdateSeatsRequest)) data: UpdateSeatsRequest
   ): Promise<void> {
     await this.service.updateSeats(subscriptionID, data.seats, 'immediately');
+  }
+
+  @Put(':subscriptionID/checkout')
+  @Authorize.Permissions([Permission.ORGANIZATION_UPDATE])
+  @ApiOperation({
+    summary: 'Checkout billing subscription',
+    description: 'Checkout billing subscription for the given subscriptionID',
+  })
+  @ApiParam({ name: 'organizationID', type: 'string' })
+  @ApiParam({ name: 'subscriptionID', type: 'string' })
+  @ZodApiBody({ schema: CheckoutRequest })
+  @ZodApiResponse({ status: HttpStatus.OK })
+  async checkout(
+    @Param('subscriptionID') subscriptionID: string,
+    @Body(new ZodValidationPipe(CheckoutRequest)) data: CheckoutRequest
+  ): Promise<void> {
+    await this.service.checkout(subscriptionID, data.itemPriceID, data.editorSeats);
   }
 }

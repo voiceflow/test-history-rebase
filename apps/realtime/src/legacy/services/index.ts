@@ -75,11 +75,7 @@ interface Options {
     hashedID: HashedIDService;
     assistant: AssistantService;
     projectList: ProjectListService;
-<<<<<<< HEAD
     organization: OrganizationIdentityService;
-=======
-    organization: OrganizationService;
->>>>>>> master
     requestContext: {
       createAsync: <T>(callback: () => Promise<T>) => Promise<T>;
     };

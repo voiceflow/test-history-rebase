@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.29.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.28.7...@voiceflow/sdk-logux-designer@2.29.0) (2024-02-27)
+
+### Features
+
+* new cms flow with diagrams (CV3-979) ([#7815](https://github.com/voiceflow/creator-app/issues/7815)) ([8bbf8fc](https://github.com/voiceflow/creator-app/commit/8bbf8fcff15224f6a60fb7bf1f1f116d33a396ca))
+
 ## [2.28.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.28.6...@voiceflow/sdk-logux-designer@2.28.7) (2024-02-26)
 
 **Note:** Version bump only for package @voiceflow/sdk-logux-designer

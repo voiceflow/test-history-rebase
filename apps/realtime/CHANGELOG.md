@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.279.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.278.0...@voiceflow/realtime@1.279.0) (2024-02-27)
+
+### Features
+
+* new cms flow with diagrams (CV3-979) ([#7815](https://github.com/voiceflow/creator-app/issues/7815)) ([8bbf8fc](https://github.com/voiceflow/creator-app/commit/8bbf8fcff15224f6a60fb7bf1f1f116d33a396ca))
+
 # [1.278.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.277.0...@voiceflow/realtime@1.278.0) (2024-02-26)
 
 ### Features

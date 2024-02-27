@@ -17,14 +17,12 @@ const subscriptionAdapter = createMultiAdapter<Realtime.Identity.Subscription, S
   ({ id, billingPeriodUnit, status, nextBillingAt, subscriptionItems, metaData, hasScheduledChanges, subscriptionEntitlements, ...rest }) => {
     const planItem = findPlanItem(subscriptionItems);
     const trialEnd = planItem?.trialEnd;
+    // TODO: customerID is not present in the Realtime.Identity.Subscription type
     const { customerID } = rest as any;
 
     const plan = getPlanFromPriceID(planItem?.itemPriceID);
     const isTrial = isChargebeeTrial(planItem, metaData);
     const seatLimits = getWorkspaceSeatsLimits(plan as PlanType);
-
-    // eslint-disable-next-line no-console
-    console.log({ plan, isTrial });
 
     const agents = findRangeEntitlement(subscriptionEntitlements, 'agents');
     const interactionsLimit = findRangeEntitlement(subscriptionEntitlements, 'interactions-limit');
@@ -45,28 +43,15 @@ const subscriptionAdapter = createMultiAdapter<Realtime.Identity.Subscription, S
 
     const result: Subscription & { customerID: string } = {
       id,
-
       customerID,
-
-      // status
-      status,
-      hasScheduledChanges,
-
-      // billing
       billingPeriodUnit: billingPeriodUnit ?? null,
-      nextBillingDate: nextBillingAt ? Realtime.Utils.date.to_DD_MMM_YYYY(new Date(nextBillingAt)) : null,
-
-      // seats
       editorSeats: planItem?.quantity ?? 1,
-      planSeatLimits: seatLimits,
-
-      // plan
       pricePerEditor: planItem?.unitPrice ? planItem.unitPrice / 100 : 0,
       plan: metaData?.downgradedFromTrial ? PlanType.PRO : plan,
-      planPrice: planItem?.amount ? planItem.amount / 100 : 0,
-
+      nextBillingDate: nextBillingAt ? Realtime.Utils.date.to_DD_MMM_YYYY(new Date(nextBillingAt)) : null,
+      status,
       trial: isTrial && trialEnd ? { daysLeft: getDaysLeftToTrialEnd(new Date(trialEnd)), endAt: new Date(trialEnd).toJSON() } : null,
-
+      planSeatLimits: seatLimits,
       entitlements: {
         agents,
         interactionsLimit,
@@ -84,6 +69,7 @@ const subscriptionAdapter = createMultiAdapter<Realtime.Identity.Subscription, S
         knowledgeBaseUpload,
         prototypeLinks,
       },
+      hasScheduledChanges,
     };
 
     return result;

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.362.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.361.0...@voiceflow/realtime-sdk@1.362.0) (2024-02-27)
+
+### Features
+
+* new cms flow with diagrams (CV3-979) ([#7815](https://github.com/voiceflow/creator-app/issues/7815)) ([8bbf8fc](https://github.com/voiceflow/creator-app/commit/8bbf8fcff15224f6a60fb7bf1f1f116d33a396ca))
+
+# [1.361.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.360.2...@voiceflow/realtime-sdk@1.361.0) (2024-02-26)
+
+### Features
+
+* improve migration perf [bugfix] (CT-000) ([#7793](https://github.com/voiceflow/creator-app/issues/7793)) ([89f0674](https://github.com/voiceflow/creator-app/commit/89f0674a9031d28b8126ac584d86cc2b41752e98))
+
+## [1.360.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.360.1...@voiceflow/realtime-sdk@1.360.2) (2024-02-23)
+
+**Note:** Version bump only for package @voiceflow/realtime-sdk
+
 ## [1.360.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.360.0...@voiceflow/realtime-sdk@1.360.1) (2024-02-23)
 
 ### Bug Fixes

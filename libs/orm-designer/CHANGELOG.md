@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.36.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.35.1...@voiceflow/orm-designer@2.36.0) (2024-02-27)
+
+### Features
+
+* new cms flow with diagrams (CV3-979) ([#7815](https://github.com/voiceflow/creator-app/issues/7815)) ([8bbf8fc](https://github.com/voiceflow/creator-app/commit/8bbf8fcff15224f6a60fb7bf1f1f116d33a396ca))
+
+## [2.35.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.35.0...@voiceflow/orm-designer@2.35.1) (2024-02-23)
+
+### Bug Fixes
+
+* upsert variables on prepare prototype [bugfix] (CT-000) ([#7812](https://github.com/voiceflow/creator-app/issues/7812)) ([094890e](https://github.com/voiceflow/creator-app/commit/094890efa1f55bd971dff98bbe4c2a7ae02b0f7d))
+
 # [2.35.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.34.0...@voiceflow/orm-designer@2.35.0) (2024-02-15)
 
 ### Features

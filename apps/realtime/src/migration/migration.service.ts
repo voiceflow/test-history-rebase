@@ -16,6 +16,7 @@ import { ProjectLegacyService } from '@/project/project-legacy/project-legacy.se
 
 import { MigrationCacheService } from './cache/cache.service';
 import { MigrationState } from './migration.enum';
+import { getUpdatedDiagrams } from './migration.util';
 
 export class MigrationService {
   private readonly logger: Logger = new Logger(MigrationService.name);
@@ -108,15 +109,15 @@ export class MigrationService {
     yield MigrationState.STARTED;
 
     try {
-      const migrationResult = await this.postgresEM.transactional(async () => {
+      const [result, patches] = await this.postgresEM.transactional(async () => {
         const [project, diagrams, assistant, cmsData] = await Promise.all([
           this.projectLegacy.get(creatorID, projectID),
           this.legacy.models.diagram.findManyByVersionID(versionID).then(this.legacy.models.diagram.adapter.mapFromDB),
           this.assistant.findOne(projectID),
-          this.environment.findOneCMSData(projectID, versionID),
+          this.environment.findOneCMSDataToMigrate(projectID, versionID),
         ]);
 
-        const migrationResult = Realtime.Migrate.migrateProject(
+        const [result, patches] = Realtime.Migrate.migrateProject(
           {
             version,
             project,
@@ -138,52 +139,33 @@ export class MigrationService {
           targetSchemaVersion
         );
 
-        // upsert CMS data first to don't create diagrams/version if CMS data is invalid
+        await this.assistant.migrateOne(result, patches);
+        await this.environment.migrateCMSData(result, patches, { userID: creatorID, assistantID: version.projectID, environmentID: version._id });
 
-        if (migrationResult.cms.assistant) {
-          await this.assistant.upsertOne({
-            ...migrationResult.cms.assistant,
-            workspaceID: this.assistantSerializer.decodeWorkspaceID(migrationResult.cms.assistant.workspaceID),
-          });
-        }
-
-        await this.environment.upsertCMSData(
-          {
-            intents: migrationResult.cms.intents,
-            entities: migrationResult.cms.entities,
-            variables: migrationResult.cms.variables,
-            functions: [],
-            responses: migrationResult.cms.responses,
-            utterances: migrationResult.cms.utterances,
-            cardButtons: [],
-            attachments: [],
-            functionPaths: [],
-            entityVariants: migrationResult.cms.entityVariants,
-            requiredEntities: migrationResult.cms.requiredEntities,
-            responseVariants: migrationResult.cms.responseVariants,
-            functionVariables: [],
-            responseAttachments: [],
-            responseDiscriminators: migrationResult.cms.responseDiscriminators,
-          },
-          { userID: creatorID, assistantID: version.projectID, environmentID: version._id }
-        );
-
-        return migrationResult;
+        return [result, patches];
       });
 
-      await Promise.all(
-        migrationResult.diagrams.map(({ diagramID, ...data }) =>
-          this.legacy.models.diagram.updateOne(
-            this.legacy.models.diagram.adapter.toDB({ versionID, diagramID }),
-            this.legacy.models.diagram.adapter.toDB(Utils.object.omit(data, ['_id']))
-          )
-        )
-      );
+      const updatedDiagrams = getUpdatedDiagrams(result, patches);
 
-      await this.legacy.models.version.updateByID(
-        versionID,
-        this.legacy.models.version.adapter.toDB({ ...migrationResult.version, _version: targetSchemaVersion })
-      );
+      // update only changed diagrams
+      if (updatedDiagrams.length) {
+        await Promise.all(
+          updatedDiagrams.map(({ diagramID, ...data }) =>
+            this.legacy.models.diagram.updateOne(
+              this.legacy.models.diagram.adapter.toDB({ versionID, diagramID }),
+              this.legacy.models.diagram.adapter.toDB(Utils.object.omit(data, ['_id']))
+            )
+          )
+        );
+      }
+
+      // update version if it was changed
+      if (patches.some(({ path }) => path[0] === 'version')) {
+        await this.legacy.models.version.updateByID(
+          versionID,
+          this.legacy.models.version.adapter.toDB({ ...result.version, _version: targetSchemaVersion })
+        );
+      }
 
       await this.migrationCache.setActiveSchemaVersion(versionID, targetSchemaVersion);
 

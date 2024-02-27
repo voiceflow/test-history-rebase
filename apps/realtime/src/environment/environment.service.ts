@@ -3,23 +3,7 @@ import { EntityManager } from '@mikro-orm/core';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable, Optional } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
-import {
-  AnyAttachment,
-  AnyResponseAttachment,
-  AnyResponseVariant,
-  CardButton,
-  Entity,
-  EntityVariant,
-  Function as FunctionType,
-  FunctionPath,
-  FunctionVariable,
-  Intent,
-  RequiredEntity,
-  Response,
-  ResponseDiscriminator,
-  Utterance,
-  Variable,
-} from '@voiceflow/dtos';
+import { AnyResponseVariant, Entity, EntityVariant, Intent, RequiredEntity, Response, ResponseDiscriminator, Utterance } from '@voiceflow/dtos';
 import { UnleashFeatureFlagService } from '@voiceflow/nestjs-common';
 import {
   AnyResponseVariantEntity,
@@ -27,6 +11,7 @@ import {
   DiagramEntity,
   EntityEntity,
   EntityVariantEntity,
+  FlowEntity,
   IntentEntity,
   ObjectId,
   ProjectORM,
@@ -41,12 +26,14 @@ import {
 } from '@voiceflow/orm-designer';
 import * as Platform from '@voiceflow/platform-config/backend';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
+import { Patch } from 'immer';
 
 import { AttachmentService } from '@/attachment/attachment.service';
 import { EntitySerializer } from '@/common';
 import { DiagramService } from '@/diagram/diagram.service';
 import { DiagramUtil } from '@/diagram/diagram.util';
 import { EntityService } from '@/entity/entity.service';
+import { FlowService } from '@/flow/flow.service';
 import { FolderService } from '@/folder/folder.service';
 import { FunctionService } from '@/function/function.service';
 import { IntentService } from '@/intent/intent.service';
@@ -57,6 +44,7 @@ import { VersionService } from '@/version/version.service';
 import { EnvironmentCMSExportImportDataDTO } from './dtos/environment-cms-export-import-data.dto';
 import { EnvironmentExportImportDTO } from './dtos/environment-export-import-data.dto';
 import { EnvironmentCMSEntities } from './environment.interface';
+import { getUpdatedCMSData } from './environment.util';
 
 @Injectable()
 export class EnvironmentService {
@@ -83,6 +71,8 @@ export class EnvironmentService {
     private readonly response: ResponseService,
     @Inject(VariableService)
     private readonly variable: VariableService,
+    @Inject(FlowService)
+    private readonly flow: FlowService,
     @Inject(AttachmentService)
     private readonly attachment: AttachmentService,
     @Inject(FunctionService)
@@ -111,6 +101,7 @@ export class EnvironmentService {
     entities: EntityEntity[];
     responses: ResponseEntity[];
     variables: VariableEntity[];
+    flows: FlowEntity[];
     utterances: UtteranceEntity[];
     entityVariants: EntityVariantEntity[];
     isVoiceAssistant: boolean;
@@ -181,13 +172,13 @@ export class EnvironmentService {
 
   /* Prototype */
   async preparePrototype(environmentID: string) {
-    const projectID = await this.version.findOneProjectID(environmentID);
+    let version = await this.version.findOneOrFail(environmentID);
 
     const [project, diagrams, cmsData] = await Promise.all([
-      this.projectORM.findOneOrFail(projectID),
+      this.projectORM.findOneOrFail(version.projectID),
       this.diagram.findManyByVersionID(environmentID),
       // using transaction to optimize connections
-      this.postgresEM.transactional(() => this.findOneCMSData(projectID.toHexString(), environmentID)),
+      this.postgresEM.transactional(() => this.findOneCMSData(version.projectID.toHexString(), environmentID)),
     ]);
 
     const { legacySlots, legacyIntents, legacyVariables } = this.convertCMSResourcesToLegacyResources({
@@ -198,11 +189,11 @@ export class EnvironmentService {
 
     await Promise.all([
       this.version.patchOnePlatformData(environmentID, { intents: legacyIntents, slots: legacySlots }),
-      this.version.patchOne(environmentID, { variables: legacyVariables }),
+      this.version.patchOne(environmentID, { variables: Utils.array.unique([...version.variables, ...legacyVariables]) }),
     ]);
 
     // fetching version to get updated platformData
-    const version = await this.version.findOneOrFail(environmentID);
+    version = await this.version.findOneOrFail(environmentID);
 
     return {
       ...cmsData,
@@ -285,6 +276,7 @@ export class EnvironmentService {
     { userID, backup, workspaceID }: { userID: number; backup?: boolean; workspaceID: number }
   ) {
     const cmsFunctionsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_FUNCTIONS, { userID, workspaceID });
+    const cmsComponentsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_COMPONENTS, { userID, workspaceID });
 
     return {
       ...this.entity.prepareExportData(data, { backup }),
@@ -294,6 +286,7 @@ export class EnvironmentService {
       ...this.variable.prepareExportData(data, { backup }),
       ...this.attachment.prepareExportData(data, { backup }),
 
+      ...(cmsComponentsEnabled && this.flow.prepareExportData(data, { backup })),
       ...(cmsFunctionsEnabled && this.functionService.prepareExportData(data, { backup })),
     };
   }
@@ -303,6 +296,7 @@ export class EnvironmentService {
     { userID, workspaceID }: { userID: number; workspaceID: number }
   ) {
     const cmsFunctionsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_FUNCTIONS, { userID, workspaceID });
+    const cmsComponentsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_COMPONENTS, { userID, workspaceID });
 
     return {
       ...this.entity.prepareExportJSONData(data),
@@ -312,6 +306,7 @@ export class EnvironmentService {
       ...this.variable.prepareExportJSONData(data),
       ...this.attachment.prepareExportJSONData(data),
 
+      ...(cmsComponentsEnabled && this.flow.prepareExportJSONData(data)),
       ...(cmsFunctionsEnabled && this.functionService.prepareExportJSONData(data)),
     };
   }
@@ -369,6 +364,7 @@ export class EnvironmentService {
     }: { userID: number; backup?: boolean; workspaceID: number; assistantID: string; environmentID: string }
   ) {
     const cmsFunctionsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_FUNCTIONS, { userID, workspaceID });
+    const cmsComponentsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_COMPONENTS, { userID, workspaceID });
 
     const prepareDataContext = { userID, backup, assistantID, environmentID };
 
@@ -415,6 +411,8 @@ export class EnvironmentService {
           { functions: cms.functions, functionPaths: cms.functionPaths, functionVariables: cms.functionVariables },
           prepareDataContext
         )),
+
+      ...(cmsComponentsEnabled && cms.flows && this.flow.prepareImportData({ flows: cms.flows }, prepareDataContext)),
     };
   }
 
@@ -496,6 +494,17 @@ export class EnvironmentService {
           ]
         : []),
 
+      ...(importData.flows?.length
+        ? [
+            this.flow.importManyWithSubResources(
+              {
+                flows: importData.flows,
+              },
+              { flush: false }
+            ),
+          ]
+        : []),
+
       ...(importData.folders?.length
         ? [
             this.folder.importManyWithSubResources(
@@ -517,6 +526,7 @@ export class EnvironmentService {
       { entities, entityVariants },
       { intents, utterances, requiredEntities },
       { variables },
+      { flows },
       { responses, responseVariants, responseAttachments, responseDiscriminators },
       { attachments, cardButtons },
       { functions, functionPaths, functionVariables },
@@ -525,12 +535,14 @@ export class EnvironmentService {
       this.entity.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
       this.intent.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
       this.variable.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
+      this.flow.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
       this.response.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
       this.attachment.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
       this.functionService.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
     ]);
 
     return {
+      flows,
       folders,
       intents,
       entities,
@@ -545,6 +557,33 @@ export class EnvironmentService {
       requiredEntities,
       responseVariants,
       functionVariables,
+      responseAttachments,
+      responseDiscriminators,
+    };
+  }
+
+  async findOneCMSDataToMigrate(assistantID: string, environmentID: string) {
+    const [
+      { entities, entityVariants },
+      { intents, utterances, requiredEntities },
+      { variables },
+      { responses, responseVariants, responseAttachments, responseDiscriminators },
+    ] = await Promise.all([
+      this.entity.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
+      this.intent.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
+      this.variable.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
+      this.response.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
+    ]);
+
+    return {
+      intents,
+      entities,
+      responses,
+      variables,
+      utterances,
+      entityVariants,
+      requiredEntities,
+      responseVariants,
       responseAttachments,
       responseDiscriminators,
     };
@@ -556,6 +595,7 @@ export class EnvironmentService {
       { intents, utterances, requiredEntities },
       { folders },
       { variables },
+      { flows },
       { responses, responseVariants, responseAttachments, responseDiscriminators },
       { attachments, cardButtons },
       { functions, functionPaths, functionVariables },
@@ -564,12 +604,14 @@ export class EnvironmentService {
       this.intent.findManyWithSubResourcesJSONByEnvironment(assistantID, environmentID),
       this.folder.findManyWithSubResourcesJSONByEnvironment(assistantID, environmentID),
       this.variable.findManyWithSubResourcesJSONByEnvironment(assistantID, environmentID),
+      this.flow.findManyWithSubResourcesJSONByEnvironment(assistantID, environmentID),
       this.response.findManyWithSubResourcesJSONByEnvironment(assistantID, environmentID),
       this.attachment.findManyWithSubResourcesJSONByEnvironment(assistantID, environmentID),
       this.functionService.findManyWithSubResourcesJSONByEnvironment(assistantID, environmentID),
     ]);
 
     return {
+      flows,
       folders,
       intents,
       entities,
@@ -589,49 +631,53 @@ export class EnvironmentService {
     };
   }
 
-  async upsertCMSData(
+  async upsertIntentsAndEntities(
     {
-      intents = [],
-      entities = [],
-      variables = [],
-      responses = [],
-      functions = [],
-      utterances = [],
-      attachments = [],
-      cardButtons = [],
-      functionPaths = [],
-      entityVariants = [],
-      requiredEntities = [],
-      responseVariants = [],
-      functionVariables = [],
-      responseAttachments = [],
-      responseDiscriminators = [],
+      intents,
+      entities,
+      responses,
+      utterances,
+      entityVariants,
+      requiredEntities,
+      responseVariants,
+      responseDiscriminators,
     }: {
-      intents?: Intent[];
-      entities?: Entity[];
-      functions?: FunctionType[];
-      responses?: Response[];
-      variables?: Variable[];
-      utterances?: Utterance[];
-      attachments?: AnyAttachment[];
-      cardButtons?: CardButton[];
-      functionPaths?: FunctionPath[];
-      entityVariants?: EntityVariant[];
-      requiredEntities?: RequiredEntity[];
-      responseVariants?: AnyResponseVariant[];
-      functionVariables?: FunctionVariable[];
-      responseAttachments?: AnyResponseAttachment[];
-      responseDiscriminators?: ResponseDiscriminator[];
+      intents: Intent[];
+      entities: Entity[];
+      responses: Response[];
+      utterances: Utterance[];
+      entityVariants: EntityVariant[];
+      requiredEntities: RequiredEntity[];
+      responseVariants: AnyResponseVariant[];
+      responseDiscriminators: ResponseDiscriminator[];
     },
     meta: { userID: number; assistantID: string; environmentID: string }
   ) {
     // ORDER MATTERS
-    await this.variable.upsertManyWithSubResources({ variables }, meta);
-    await this.attachment.upsertManyWithSubResources({ attachments, cardButtons }, meta);
     await this.entity.upsertManyWithSubResources({ entities, entityVariants }, meta);
-    await this.response.upsertManyWithSubResources({ responses, responseVariants, responseAttachments, responseDiscriminators }, meta);
+    await this.response.upsertManyWithSubResources({ responses, responseVariants, responseAttachments: [], responseDiscriminators }, meta);
     await this.intent.upsertManyWithSubResources({ intents, utterances, requiredEntities }, meta);
-    await this.functionService.upsertManyWithSubResources({ functions, functionPaths, functionVariables }, meta);
+  }
+
+  async migrateCMSData(data: Realtime.Migrate.MigrationData, patches: Patch[], meta: { userID: number; assistantID: string; environmentID: string }) {
+    const {
+      intents = [],
+      entities = [],
+      responses = [],
+      variables = [],
+      utterances = [],
+      entityVariants = [],
+      requiredEntities = [],
+      responseVariants = [],
+      responseDiscriminators = [],
+    } = getUpdatedCMSData(data, patches);
+
+    // ORDER MATTERS
+
+    await this.variable.upsertManyWithSubResources({ variables }, meta);
+    await this.entity.upsertManyWithSubResources({ entities, entityVariants }, meta);
+    await this.response.upsertManyWithSubResources({ responses, responseVariants, responseAttachments: [], responseDiscriminators }, meta);
+    await this.intent.upsertManyWithSubResources({ intents, utterances, requiredEntities }, meta);
   }
 
   async deleteOneCMSData(assistantID: string, environmentID: string) {
@@ -639,6 +685,7 @@ export class EnvironmentService {
     await Promise.all([
       this.intent.deleteManyByEnvironment(assistantID, environmentID),
       this.functionService.deleteManyByEnvironment(assistantID, environmentID),
+      this.flow.deleteManyByEnvironment(assistantID, environmentID),
     ]);
 
     await Promise.all([
@@ -704,6 +751,7 @@ export class EnvironmentService {
     const [
       { folders },
       { variables },
+      { flows },
       { attachments, cardButtons },
       { responses, responseVariants, responseAttachments, responseDiscriminators },
       { entities, entityVariants },
@@ -712,6 +760,7 @@ export class EnvironmentService {
     ] = await Promise.all([
       this.folder.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload, { flush: false }),
       this.variable.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload, { flush: false }),
+      this.flow.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload, { flush: false }),
       this.attachment.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload, { flush: false }),
       this.response.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload, { flush: false }),
       this.entity.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload, { flush: false }),
@@ -724,6 +773,7 @@ export class EnvironmentService {
     await this.postgresEM.flush();
 
     return {
+      flows,
       version: targetVersion,
       intents,
       folders,

@@ -18,7 +18,15 @@ export abstract class CMSObjectService<Orm extends CMSObjectORM<any, any>> exten
     return this.orm.patchOneForUser(userID, id, data, options);
   }
 
-  patchManyForUser(userID: number, ids: PKOrEntity<ORMEntity<Orm>>[], data: PatchManyForUserData<Orm>, options?: ORMMutateOptions): Promise<void> {
+  async patchManyForUser(
+    userID: number,
+    ids: PKOrEntity<ORMEntity<Orm>>[],
+    data: PatchManyForUserData<Orm>,
+    options?: ORMMutateOptions
+  ): Promise<void> {
+    if ((data as any).folderID === null) {
+      await Promise.all(ids.map((id) => (this.orm as any).em?.qb?.(this.orm._Entity.name)?.update({ folder_id: null }).where(id).execute()));
+    }
     return this.orm.patchManyForUser(userID, ids, data, options);
   }
 }

@@ -14,7 +14,7 @@ export const DEFAULT_SETTINGS = {
 
   summarization: {
     mode: BaseUtils.ai.PROMPT_MODE.PROMPT,
-    model: BaseUtils.ai.GPT_MODEL.CLAUDE_V1,
+    model: BaseUtils.ai.GPT_MODEL.GPT_3_5_turbo,
     prompt: '',
     maxTokens: 128,
     temperature: 0.1,

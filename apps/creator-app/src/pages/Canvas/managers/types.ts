@@ -245,6 +245,7 @@ export interface BaseNodeManagerConfig<Data extends object, BuiltInPorts extends
   chip?: ConnectedChip<Data, BuiltInPorts>;
 
   featureFlagOverrides?: Partial<NodeManagerConfig<Data, BuiltInPorts>> | Partial<NodeManagerConfigV2<Data, BuiltInPorts>>;
+  editorV3FeaturFlag?: Realtime.FeatureFlag;
 }
 
 export interface NodeManagerConfig<Data extends object, BuiltInPorts extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord>
@@ -282,6 +283,8 @@ export interface NodeManagerConfigV3<Data extends object, BuiltInPorts extends R
 
   step: ConnectedStep<Data, BuiltInPorts>;
   action?: ConnectedAction<Data, BuiltInPorts>;
+
+  editorV2?: NodeEditorV2<Data, BuiltInPorts>;
   editorV3: NodeEditorV2<Data, BuiltInPorts>;
 
   featureFlagOverrides?: Partial<NodeManagerConfigV2<Data, BuiltInPorts>>;

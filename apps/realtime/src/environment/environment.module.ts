@@ -5,6 +5,7 @@ import { AttachmentModule } from '@/attachment/attachment.module';
 import { DiagramModule } from '@/diagram/diagram.module';
 import { EntityModule } from '@/entity/entity.module';
 import { EntityVariantModule } from '@/entity/entity-variant/entity-variant.module';
+import { FlowModule } from '@/flow/flow.module';
 import { FolderModule } from '@/folder/folder.module';
 import { FunctionModule } from '@/function/function.module';
 import { IntentModule } from '@/intent/intent.module';
@@ -24,6 +25,7 @@ import { EnvironmentPrivateHTTPController } from './environment-private.http.con
   imports: [
     ProjectORM.register(),
     AssistantORM.register(),
+    FlowModule,
     FolderModule,
     EntityModule,
     IntentModule,

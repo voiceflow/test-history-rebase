@@ -3,6 +3,56 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1405.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1404.1...@voiceflow/creator-app@1.1405.0) (2024-02-27)
+
+### Features
+
+* new cms flow with diagrams (CV3-979) ([#7815](https://github.com/voiceflow/creator-app/issues/7815)) ([8bbf8fc](https://github.com/voiceflow/creator-app/commit/8bbf8fcff15224f6a60fb7bf1f1f116d33a396ca))
+
+## [1.1404.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1404.0...@voiceflow/creator-app@1.1404.1) (2024-02-26)
+
+### Bug Fixes
+
+* update description placeholders (COR-1098) ([#7817](https://github.com/voiceflow/creator-app/issues/7817)) ([217827b](https://github.com/voiceflow/creator-app/commit/217827b8d38e77117722012183f9cafcf053dc25))
+
+# [1.1404.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1403.0...@voiceflow/creator-app@1.1404.0) (2024-02-26)
+
+### Features
+
+* improve migration perf [bugfix] (CT-000) ([#7793](https://github.com/voiceflow/creator-app/issues/7793)) ([89f0674](https://github.com/voiceflow/creator-app/commit/89f0674a9031d28b8126ac584d86cc2b41752e98))
+
+# [1.1403.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1402.0...@voiceflow/creator-app@1.1403.0) (2024-02-26)
+
+### Features
+
+* remove project api in frontend (COR-1079) ([#7811](https://github.com/voiceflow/creator-app/issues/7811)) ([4a53da7](https://github.com/voiceflow/creator-app/commit/4a53da7f75dce7b65b50fde9d705e1e49a7cee9e))
+
+# [1.1402.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1401.4...@voiceflow/creator-app@1.1402.0) (2024-02-26)
+
+### Features
+
+* zendesk ui/ux updates (COR-1026) [bugfix] ([#7789](https://github.com/voiceflow/creator-app/issues/7789)) ([72054e6](https://github.com/voiceflow/creator-app/commit/72054e6ac9190b84f180ef0392b81a216180f09e))
+
+## [1.1401.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1401.3...@voiceflow/creator-app@1.1401.4) (2024-02-26)
+
+### Bug Fixes
+
+* unsupported kb model handling (COR-1050) ([#7805](https://github.com/voiceflow/creator-app/issues/7805)) ([8327414](https://github.com/voiceflow/creator-app/commit/83274145e1fc3f82a08818315c4dc85b3a1d4ba8))
+
+## [1.1401.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1401.2...@voiceflow/creator-app@1.1401.3) (2024-02-26)
+
+**Note:** Version bump only for package @voiceflow/creator-app
+
+## [1.1401.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1401.1...@voiceflow/creator-app@1.1401.2) (2024-02-23)
+
+**Note:** Version bump only for package @voiceflow/creator-app
+
+## [1.1401.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1401.0...@voiceflow/creator-app@1.1401.1) (2024-02-23)
+
+### Bug Fixes
+
+* update default model (COR-1048) ([#7795](https://github.com/voiceflow/creator-app/issues/7795)) ([bff6eba](https://github.com/voiceflow/creator-app/commit/bff6eba647574fc8c5487756ce1ba758ec7faa12))
+
 # [1.1401.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1400.2...@voiceflow/creator-app@1.1401.0) (2024-02-23)
 
 ### Features

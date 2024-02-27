@@ -1,5 +1,5 @@
 import { tid } from '@voiceflow/style';
-import { BaseProps, Box, CheckboxControl, Dropdown, Menu, MenuItem, Tooltip, useTooltipModifiers } from '@voiceflow/ui-next';
+import { BaseProps, Box, Dropdown, Menu, MenuItem, Tooltip, useTooltipModifiers } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { useDeferredSearch } from '@/hooks/search.hook';
@@ -10,10 +10,11 @@ import { captionStyles } from './KBZendeskFilterSelect.css';
 export interface IKBZendeskFilterSelect<T extends ZendeskFilterBase> extends BaseProps {
   label: string;
   placeholder?: string;
-  value: T[];
+  value: T | null;
   options: T[];
+  errorMessage: string | null;
   disabled?: boolean;
-  onValueChange: (value: T[]) => void;
+  onValueChange: (value: T) => void;
   onDropdownClose?: () => void;
   hasTooltip?: boolean;
 }
@@ -24,6 +25,7 @@ export const KBZendeskFilterSelect = <T extends ZendeskFilterBase>({
   value,
   disabled,
   options,
+  errorMessage,
   onValueChange,
   onDropdownClose,
   hasTooltip,
@@ -36,21 +38,13 @@ export const KBZendeskFilterSelect = <T extends ZendeskFilterBase>({
 
   const modifiers = useTooltipModifiers([{ name: 'offset', options: { offset: [0, 28] } }]);
 
-  const onSelectAll = (onClose: VoidFunction) => () => {
-    onValueChange(options);
-    onDropdownClose?.();
-    onClose();
-  };
-
-  const onDeselectAll = () => {
-    onValueChange([]);
-  };
-
   const dropdown = (
     <Dropdown
-      value={value.map((item) => item.name).join(', ')}
+      value={value?.name || null}
       label={label}
       disabled={disabled}
+      error={!!errorMessage}
+      errorMessage={errorMessage || undefined}
       onClose={onDropdownClose}
       placeholder={placeholder}
       testID={testID}
@@ -71,39 +65,20 @@ export const KBZendeskFilterSelect = <T extends ZendeskFilterBase>({
                 <></>
               )
             }
-            actionButtons={
-              search.hasItems ? (
-                <Menu.ActionButtons
-                  firstButton={
-                    <Menu.ActionButtons.Button
-                      label={value.length > 0 ? 'Unselect all' : 'Select all'}
-                      onClick={value.length > 0 ? onDeselectAll : onSelectAll(onClose)}
-                      testID={tid(testID, ['menu', 'toggle-all-selected'])}
-                    />
-                  }
-                />
-              ) : (
-                <></>
-              )
-            }
           >
             {search.hasItems ? (
               search.items.map((option, index) => {
+                const onChange = () => {
+                  onValueChange(option);
+                  onClose();
+                };
                 return (
                   <MenuItem
                     key={index + 1}
-                    onClick={() => onValueChange(value.includes(option) ? value.filter((item) => item !== option) : [...value, option])}
-                    label={option.name}
+                    onClick={onChange}
                     searchValue={search.deferredValue}
                     testID={tid(testID, 'menu-item')}
-                    checkbox={
-                      <CheckboxControl
-                        id="checkbox"
-                        value={value.includes(option)}
-                        onChange={() => onValueChange(value.includes(option) ? value.filter((item) => item !== option) : [...value, option])}
-                        testID={tid(testID, ['menu-item', 'select'])}
-                      />
-                    }
+                    label={option.name}
                   />
                 );
               })

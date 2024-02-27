@@ -16,7 +16,6 @@ import { isMicrosoftTeamsPlatform, isSMSPlatform, isWebChatPlatform, isWhatsAppP
 
 import API from './API';
 import KnowledgeBaseAPI from './KnowledgeBaseAPI';
-import ProjectAPI from './ProjectAPI';
 
 const PublishWebchat = lazy(() => import('./Webchat'));
 const PublishSMS = lazy(() => import('./SMS'));
@@ -51,7 +50,6 @@ const Publish: React.FC = () => {
 
           {!disableCodeExports.isEnabled && canCodeExport && <Route path={Path.PUBLISH_EXPORT} component={Export} />}
           {(canEditAPIKey || viewerAPIKeyAccess.isEnabled) && <Route path={Path.PUBLISH_API} component={API} />}
-          {canEditAPIKey && <Route path={Path.PUBLISH_PROJECT_API} component={ProjectAPI} />}
           {canEditAPIKey && knowledgeBase && <Route path={Path.PUBLISH_KNOWLEDGE_BASE_API} component={KnowledgeBaseAPI} />}
 
           <Redirect to={canEditAPIKey || viewerAPIKeyAccess.isEnabled ? Path.PUBLISH_API : Path.PROJECT_VERSION} />

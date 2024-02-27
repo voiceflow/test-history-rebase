@@ -3,6 +3,41 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.279.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.278.0...@voiceflow/realtime@1.279.0) (2024-02-27)
+
+### Features
+
+* new cms flow with diagrams (CV3-979) ([#7815](https://github.com/voiceflow/creator-app/issues/7815)) ([8bbf8fc](https://github.com/voiceflow/creator-app/commit/8bbf8fcff15224f6a60fb7bf1f1f116d33a396ca))
+
+# [1.278.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.277.0...@voiceflow/realtime@1.278.0) (2024-02-26)
+
+### Features
+
+* improve migration perf [bugfix] (CT-000) ([#7793](https://github.com/voiceflow/creator-app/issues/7793)) ([89f0674](https://github.com/voiceflow/creator-app/commit/89f0674a9031d28b8126ac584d86cc2b41752e98))
+
+# [1.277.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.276.4...@voiceflow/realtime@1.277.0) (2024-02-26)
+
+### Bug Fixes
+
+* build folders back to root hotfix (BUG-1165) ([ac8b69e](https://github.com/voiceflow/creator-app/commit/ac8b69e571b96e72c24df13d2223d013b8b5fd2e))
+* folders back to root hotfix [bugfix] (BUG-1165) ([#7813](https://github.com/voiceflow/creator-app/issues/7813)) ([ec2972f](https://github.com/voiceflow/creator-app/commit/ec2972f5beecc6ddc394004b0bcd200dc94368f8))
+
+### Features
+
+* realtime split ([#7810](https://github.com/voiceflow/creator-app/issues/7810)) ([afa3010](https://github.com/voiceflow/creator-app/commit/afa30101bf41a6090909dc0fd7bda50556d7daaa))
+
+## [1.276.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.276.3...@voiceflow/realtime@1.276.4) (2024-02-23)
+
+### Bug Fixes
+
+* upsert variables on prepare prototype [bugfix] (CT-000) ([#7812](https://github.com/voiceflow/creator-app/issues/7812)) ([094890e](https://github.com/voiceflow/creator-app/commit/094890efa1f55bd971dff98bbe4c2a7ae02b0f7d))
+
+## [1.276.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.276.2...@voiceflow/realtime@1.276.3) (2024-02-23)
+
+### Bug Fixes
+
+* update default model (COR-1048) ([#7795](https://github.com/voiceflow/creator-app/issues/7795)) ([bff6eba](https://github.com/voiceflow/creator-app/commit/bff6eba647574fc8c5487756ce1ba758ec7faa12))
+
 ## [1.276.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.276.1...@voiceflow/realtime@1.276.2) (2024-02-23)
 
 ### Bug Fixes

@@ -169,7 +169,6 @@ export enum EventName {
   AI_KNOWLEDGE_BASE_INTEGRATION_FILTERS_USED = 'AI - KB Integration Filters Used',
 
   // Project API
-  API_PAGE_OPEN = 'API - Page Open',
   API_KEY_COPIED = 'API - Key Copied',
 
   // Reverse trials
@@ -239,6 +238,7 @@ export enum UpgradePrompt {
   LOCKED_STEPS = 'Locked Steps',
   KB_MODELS = 'KB Models',
   KB_REFRESH_RATE = 'KB Refresh Rate',
+  KB_DOCUMENTS = 'KB Documents',
 }
 
 export enum SourceType {

@@ -85,6 +85,7 @@ export enum ProductRoute {
 export enum CMSRoute {
   INTENT = 'intent',
   ENTITY = 'entity',
+  FLOW = 'flow',
   FUNCTION = 'function',
   VARIABLE = 'variable',
   KNOWLEDGE_BASE = 'knowledge-base',
@@ -241,7 +242,6 @@ export const Path = {
   PUBLISH_EXPORT: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.EXPORT),
   PUBLISH_WEBCHAT: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.WEBCHAT),
   PUBLISH_API: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.API),
-  PUBLISH_PROJECT_API: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.PROJECT_API),
   PUBLISH_KNOWLEDGE_BASE_API: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.KNOWLEDGE_BASE_API),
 
   PUBLISH_SMS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.SMS),
@@ -254,6 +254,7 @@ export const Path = {
 
   CMS_INTENT: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CMS, CMSRoute.INTENT),
   CMS_ENTITY: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CMS, CMSRoute.ENTITY),
+  CMS_FLOW: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CMS, CMSRoute.FLOW),
   CMS_FUNCTION: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CMS, CMSRoute.FUNCTION),
   CMS_VARIABLE: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CMS, CMSRoute.VARIABLE),
   CMS_KNOWLEDGE_BASE: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CMS, CMSRoute.KNOWLEDGE_BASE),

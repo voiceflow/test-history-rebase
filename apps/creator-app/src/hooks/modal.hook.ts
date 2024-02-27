@@ -1,4 +1,4 @@
-import type { Entity, Folder, Intent, Variable } from '@voiceflow/dtos';
+import type { Entity, Flow, Folder, Intent, Variable } from '@voiceflow/dtos';
 
 import * as Organization from '@/ducks/organization';
 import { useSelector } from '@/hooks';
@@ -47,6 +47,8 @@ export const useVariableEditModal = () => useModal<IVariableEditModal>('Variable
 export const useVariableCreateModal = () => useModal<IVariableCreateModal, Variable>('VariableCreateModal');
 
 export const useFolderCreateModal = () => useModal<IFolderCreateModal, Folder>('FolderCreateModal');
+
+export const useFlowCreateModal = () => useModal<IVariableCreateModal, Flow>('FlowCreateModal');
 
 export const useIntentEditModal = () => useModal<IIntentEditModal>('IntentEditModal');
 export const useIntentCreateModal = () => useModal<IIntentCreateModal, Intent>('IntentCreateModal');

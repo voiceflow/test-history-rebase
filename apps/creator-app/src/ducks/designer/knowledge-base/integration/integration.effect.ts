@@ -36,11 +36,7 @@ export const importIntegration =
 
     Errors.assertProjectID(projectID);
 
-    const data = await knowledgeBaseClient.importIntegration(projectID, integrationType, { filters, refreshRate }).catch(() => {
-      return {
-        status: 500,
-      };
-    });
+    const data = await knowledgeBaseClient.importIntegration(projectID, integrationType, { filters, refreshRate });
     return data.status;
   };
 
@@ -96,7 +92,7 @@ export const getIntegrationAuthReconnectUrl =
   };
 
 export const getIntegrationFilters =
-  (integrationType: string): Thunk<ZendeskFilters> =>
+  (integrationType: string, subdomain?: string): Thunk<ZendeskFilters> =>
   async (_, getState) => {
     const state = getState();
 
@@ -104,27 +100,13 @@ export const getIntegrationFilters =
 
     Errors.assertProjectID(projectID);
 
-    const { data } = await knowledgeBaseClient.getIntegrationFilters(projectID, integrationType);
-
-    return data;
-  };
-
-export const getIntegrationUserSegments =
-  (filters: ZendeskCountFilters): Thunk<ZendeskFilterUserSegment[]> =>
-  async (_, getState) => {
-    const state = getState();
-
-    const projectID = Session.activeProjectIDSelector(state);
-
-    Errors.assertProjectID(projectID);
-
-    const { data } = await knowledgeBaseClient.getUserSegmentFilters(projectID, filters);
+    const { data } = await knowledgeBaseClient.getIntegrationFilters({ projectID, integrationType, subdomain });
 
     return data;
   };
 
 export const getIntegrationDocumentCount =
-  (integrationType: string, filters: ZendeskCountFilters): Thunk<number> =>
+  (integrationType: string, filters: ZendeskCountFilters): Thunk<{ count: number; userSegments: ZendeskFilterUserSegment[] }> =>
   async (_, getState) => {
     const state = getState();
 
@@ -134,7 +116,7 @@ export const getIntegrationDocumentCount =
 
     const { data } = await knowledgeBaseClient.getIntegrationDocumentCount(projectID, integrationType, filters);
 
-    return data.count;
+    return data;
   };
 
 export const createOne =

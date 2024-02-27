@@ -2,7 +2,11 @@ import { PlanType } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { PLAN_INFO } from '@voiceflow/schema-types';
 
+<<<<<<< HEAD
 export const isPlanType = (plan: string): plan is PlanType => Object.values(PlanType).find((type) => type === plan) !== undefined;
+=======
+export const isPlanType = (plan: any): plan is PlanType => plan in PlanType;
+>>>>>>> master
 
 export const getWorkspaceSeatsLimits = (plan: PlanType) => {
   const platInfo = PLAN_INFO[plan];

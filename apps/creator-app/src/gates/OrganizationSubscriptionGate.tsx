@@ -2,40 +2,15 @@ import React from 'react';
 
 import LoadingGate from '@/components/LoadingGate';
 import * as Organization from '@/ducks/organization';
-import { useDispatch, useOrganizationSubscription, useSelector } from '@/hooks';
+import { useOrganizationSubscription, useSelector } from '@/hooks';
 
 import WorkspaceOrProjectLoader from './WorkspaceOrProjectLoader';
-
-// 5 min
-export const SUBSCRIPTION_POLL_INTERVAL = 60 * 5000;
 
 const OrganizationSubscriptionGate: React.FC<React.PropsWithChildren> = ({ children }) => {
   const organization = useSelector(Organization.organizationSelector);
   const isSubscribed = useOrganizationSubscription({ organizationID: organization?.id, subscriptionID: organization?.chargebeeSubscriptionID }, [
     organization?.id,
   ]);
-  const chargebeeSubscriptionID = organization?.chargebeeSubscriptionID;
-  const organizationID = organization?.id;
-
-  const loadSubscription = useDispatch(Organization.loadActiveOrganizationSubscription);
-
-  React.useEffect(() => {
-    let counterID = 0;
-
-    if (chargebeeSubscriptionID && organizationID) {
-      const load = async () => {
-        await loadSubscription(organizationID, chargebeeSubscriptionID);
-
-        counterID = window.setTimeout(() => {
-          load();
-        }, SUBSCRIPTION_POLL_INTERVAL);
-      };
-
-      load();
-    }
-
-    return () => window.clearTimeout(counterID);
-  }, [chargebeeSubscriptionID, organizationID]);
 
   return (
     <LoadingGate

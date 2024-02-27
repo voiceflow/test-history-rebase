@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1405.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1405.3...@voiceflow/creator-app@1.1405.4) (2024-02-27)
+
+### Reverts
+
+* Revert " revert: migration service perf (CT-000) (#7823)" (#7825) ([12120bf](https://github.com/voiceflow/creator-app/commit/12120bf6135ecf16fccfc43727a8a392264e8478)), closes [#7823](https://github.com/voiceflow/creator-app/issues/7823) [#7825](https://github.com/voiceflow/creator-app/issues/7825)
+
 ## [1.1405.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1405.2...@voiceflow/creator-app@1.1405.3) (2024-02-27)
 
 **Note:** Version bump only for package @voiceflow/creator-app

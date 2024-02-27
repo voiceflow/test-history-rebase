@@ -9,6 +9,7 @@ export * from './attachment/attachment-type.enum';
 export * from './attachment/card-button/card-button.dto';
 export * from './attachment/media-datatype.enum';
 export * from './backup/backup.dto';
+export * from './billing/creditCard.dto';
 export * from './billing/invoice.dto';
 export * from './billing/plan.dto';
 export * from './billing/subscription.dto';

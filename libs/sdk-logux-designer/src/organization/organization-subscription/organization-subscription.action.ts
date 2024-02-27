@@ -1,5 +1,6 @@
 import { Utils } from '@voiceflow/common';
-import type { Organization } from '@voiceflow/dtos';
+import type { CreditCard, Organization, Subscription } from '@voiceflow/dtos';
+import type { BillingPeriod } from '@voiceflow/internal';
 
 import { createCRUD } from '@/crud/crud.action';
 
@@ -26,10 +27,13 @@ export interface ReplaceScheduled extends OrganizationAction {
 
 export const ReplaceScheduled = Utils.protocol.createAction<ReplaceScheduled>(subscriptionAction('REPLACE_SCHEDULED'));
 
-export interface Checkout extends OrganizationAction {
-  subscriptionID: string;
+export interface CheckoutRequest extends OrganizationAction {
   itemPriceID: string;
+  planPrice: number;
   editorSeats: number;
+  period: BillingPeriod;
+  card?: CreditCard;
+  cardToken?: string;
 }
 
-export const Checkout = Utils.protocol.createAction<Checkout>(subscriptionAction('CHECKOUT'));
+export const Checkout = Utils.protocol.createAsyncAction<CheckoutRequest, Subscription>(subscriptionAction('CHECKOUT'));

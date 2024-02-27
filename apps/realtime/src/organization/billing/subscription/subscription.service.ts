@@ -1,8 +1,16 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { BillingCheckoutPlan, CreditCard, Subscription } from '@voiceflow/dtos';
 import { NotFoundException } from '@voiceflow/exception';
+import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { BillingClient } from '@voiceflow/sdk-billing';
 import { SubscriptionsControllerGetSubscription200Subscription } from '@voiceflow/sdk-billing/generated';
+import { Actions } from '@voiceflow/sdk-logux-designer';
+
+import { UserService } from '@/user/user.service';
+
+import subscriptionAdapter from './adapters/subscription.adapter';
+import { findPlanItem, pollWithProgressiveTimeout } from './subscription.utils';
 
 const fromUnixTimestamp = (timestamp: number) => timestamp * 1000;
 
@@ -10,7 +18,11 @@ const fromUnixTimestamp = (timestamp: number) => timestamp * 1000;
 export class BillingSubscriptionService {
   constructor(
     @Inject(BillingClient)
-    private readonly billingClient: BillingClient
+    private readonly billingClient: BillingClient,
+    @Inject(UserService)
+    private readonly user: UserService,
+    @Inject(LoguxService)
+    private readonly logux: LoguxService
   ) {}
 
   private parseSubscription(subscription: SubscriptionsControllerGetSubscription200Subscription) {
@@ -68,9 +80,6 @@ export class BillingSubscriptionService {
   async findOne(subscriptionID: string) {
     const { subscription } = await this.billingClient.private.getSubscription(subscriptionID);
 
-    // eslint-disable-next-line no-console
-    console.log('ITEMS', subscription.subscription_items, subscription.status, subscription.trial_start, subscription.trial_end);
-
     return this.parseSubscription(subscription);
   }
 
@@ -104,23 +113,94 @@ export class BillingSubscriptionService {
     });
   }
 
-  async checkout(subscriptionID: string, itemPriceID: string, editorSeats: number) {
-    const subscription = await this.findOne(subscriptionID);
-    const plan = subscription.subscriptionItems?.find((item) => item.itemType === 'plan');
+  async waitForSubscriptionStatus(subscriptionID: string, status: Subscription['status'], timeout = 10000, interval = 1000) {
+    return pollWithProgressiveTimeout(
+      async () => {
+        const subscription = (await this.findOne(subscriptionID).then(subscriptionAdapter.fromDB)) as Subscription;
+        return subscription.status === status;
+      },
+      timeout,
+      interval,
+      0.2
+    );
+  }
+
+  async createCustomerCard(userID: number, subscription: Subscription, data: CreditCard) {
+    if (!subscription.customerID) {
+      throw new Error('Subscription customer not found');
+    }
+
+    const token = await this.user.getTokenByID(userID);
+
+    return this.billingClient.private.createCustomerCard(subscription.customerID, {
+      json: {
+        first_name: data.firstName,
+        last_name: data.lastName,
+        number: data.number,
+        expiry_month: data.expiryMonth,
+        expiry_year: data.expiryYear,
+        cvv: data.cvv,
+        billing_addr1: data.billingAddr1,
+        billing_city: data.billingCity,
+        billing_state_code: data.billingState,
+        billing_state: data.billingState,
+        billing_country: data.billingCountry,
+      },
+      headers: { Authorization: token },
+    });
+  }
+
+  // TODO: move checkout logic to billing service
+  async checkoutAndBroadcast(
+    authPayload: AuthMetaPayload,
+    organizationID: string,
+    subscriptionID: string,
+    plan: BillingCheckoutPlan,
+    card: CreditCard
+  ) {
+    const dbSubscription = await this.findOne(subscriptionID);
+    const subscription = subscriptionAdapter.fromDB(dbSubscription);
+    const planItem = findPlanItem(dbSubscription.subscriptionItems);
+
+    if (!planItem) {
+      throw new NotFoundException('Subscription plan not found');
+    }
 
     if (!subscription) {
       throw new NotFoundException('Subscription not found');
     }
 
-    if (!plan?.itemPriceID) {
-      throw new NotFoundException('Plan not found');
+    try {
+      await this.createCustomerCard(authPayload.userID, subscription, card);
+    } catch (e) {
+      throw new Error('Unable to create customer card');
     }
 
-    return this.billingClient.private.updateSubscriptionItem(subscriptionID, plan.itemPriceID, {
-      itemPriceID,
-      quantity: editorSeats,
-      changeOption: 'immediately',
-      trialEnd: 0,
-    } as any);
+    try {
+      await this.billingClient.private.updateSubscriptionItem(subscriptionID, planItem.itemPriceID, {
+        itemPriceID: plan.itemPriceID,
+        quantity: plan.editorSeats,
+        changeOption: 'immediately',
+        trialEnd: 0,
+      } as any);
+    } catch (e) {
+      throw new Error('Unable to update subscription');
+    }
+
+    // this not guarantee subscription payment success
+    await this.waitForSubscriptionStatus(subscriptionID, 'active');
+
+    const newSubscription = await this.findOne(subscriptionID).then(subscriptionAdapter.fromDB);
+
+    // TODO: fix broadcast not working
+    await this.logux.processAs(
+      Actions.OrganizationSubscription.Replace({
+        subscription: newSubscription,
+        context: { organizationID, subscriptionID },
+      }),
+      authPayload
+    );
+
+    return newSubscription;
   }
 }

@@ -58,3 +58,36 @@ export const findRangeEntitlement = (entitlements: Realtime.Identity.Subscriptio
 
   return entitlement?.value === 'Unlimited' ? Number.MAX_SAFE_INTEGER : Number(entitlement.value);
 };
+
+export const pollWithProgressiveTimeout = (
+  checkCondition: () => Promise<boolean>,
+  initialDelay: number,
+  maxDelay: number,
+  increaseFactor: number,
+  dampening = 0.95
+): Promise<void> =>
+  new Promise<void>((resolve, reject) => {
+    let currentDelay = initialDelay;
+
+    const poll = () => {
+      checkCondition()
+        .then((conditionMet) => {
+          // eslint-disable-next-line promise/always-return
+          if (conditionMet) {
+            resolve();
+          } else {
+            setTimeout(() => {
+              currentDelay = Math.min(currentDelay + currentDelay * increaseFactor * dampening, maxDelay);
+              // eslint-disable-next-line no-param-reassign
+              dampening *= dampening;
+              poll();
+            }, currentDelay);
+          }
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    };
+
+    poll();
+  });

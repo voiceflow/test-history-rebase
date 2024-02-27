@@ -1,3 +1,4 @@
+import { CONTRIES_MAPPER } from '@ui/components/CountrySelect/countries';
 import { BillingPlan } from '@voiceflow/dtos';
 import { BillingPeriod } from '@voiceflow/internal';
 import { toast } from '@voiceflow/ui';
@@ -9,7 +10,6 @@ import { ACTIVE_PAID_PLAN, UNLIMITED_EDITORS_CONST } from '@/constants';
 import * as Organization from '@/ducks/organization';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch, useSelector, useTrackingEvents } from '@/hooks';
-import { getErrorMessage } from '@/utils/error';
 import { getClient as getChargebeeClient, initialize as initializeChargebee } from '@/vendors/chargebee';
 
 import * as CardForm from './components/CardForm';
@@ -69,18 +69,34 @@ export const useCheckoutPayment = ({ modalProps }: { modalProps: PaymentModalAPI
   const [trackingEvents] = useTrackingEvents();
   const editorSeats = useAtomValue(editorSeatsAtom);
 
-  const onCheckout = async () => {
-    modalProps.api.preventClose();
-
+  const onCheckout = async (cardValues: CardForm.Values) => {
     if (!organization || !organization.chargebeeSubscriptionID || !selectedPlanPrice) return;
 
+    modalProps.api.preventClose();
+
     try {
-      await checkout(organization.id, organization.chargebeeSubscriptionID, {
-        editorSeats,
-        itemPriceID: selectedPlanPrice.id,
-        planPrice: selectedPlanPrice.value,
-        period,
-      });
+      await checkout(
+        organization.id,
+        organization.chargebeeSubscriptionID,
+        {
+          number: cardValues.cardNumber,
+          cvv: cardValues.cardCvv,
+          expiryMonth: Number(cardValues.cardExpiry.split('/')[0]),
+          expiryYear: Number(cardValues.cardExpiry.split('/')[1]),
+          firstName: cardValues.name.split(' ')[0],
+          lastName: cardValues.name.split(' ')[1],
+          billingAddr1: cardValues.address,
+          billingCity: cardValues.city,
+          billingState: cardValues.state,
+          billingCountry: CONTRIES_MAPPER[cardValues.country]?.countryCode,
+        },
+        {
+          editorSeats,
+          itemPriceID: selectedPlanPrice.id,
+          planPrice: selectedPlanPrice.value,
+          period,
+        }
+      );
 
       if (isTrialExpired) {
         trackingEvents.trackTrialExpiredUpgrade({ editorSeats });
@@ -96,37 +112,8 @@ export const useCheckoutPayment = ({ modalProps }: { modalProps: PaymentModalAPI
     }
   };
 
-  const onSubmit = async (cardValues: CardForm.Values) => {
-    if (!organization) return;
-
-    modalProps.api.preventClose();
-
-    try {
-      await designerClient.billing.billing.upsertCard(organization.id, {
-        json: {
-          firstName: cardValues.name.split(' ')[0],
-          lastName: cardValues.name.split(' ')[1],
-          addressLine1: cardValues.address,
-          billingCity: cardValues.city,
-          billingStateCode: cardValues.state,
-          billingState: cardValues.state,
-          billingCountry: 'US',
-          number: cardValues.cardNumber,
-          expiryMonth: Number(cardValues.cardExpiry.split('/')[0]),
-          expiryYear: Number(cardValues.cardExpiry.split('/')[1]),
-          cvv: cardValues.cardCvv,
-        },
-      });
-    } catch (err) {
-      toast.error(getErrorMessage(err));
-      return;
-    }
-
-    await onCheckout();
-  };
-
   return {
-    onSubmit,
+    onSubmit: onCheckout,
   };
 };
 

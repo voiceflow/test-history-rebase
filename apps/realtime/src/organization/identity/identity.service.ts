@@ -30,12 +30,6 @@ export class OrganizationIdentityService {
       }
     )) as Realtime.Identity.Organization[];
 
-    // eslint-disable-next-line no-console
-    console.log(
-      'SUBSCRIPTIONS',
-      allOrganizations.map((o) => o.subscription)
-    );
-
     return organizationAdapter.mapFromDB(allOrganizations);
   }
 

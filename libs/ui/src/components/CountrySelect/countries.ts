@@ -315,4 +315,19 @@ const COUNTRIES = [
   };
 });
 
+export const CONTRIES_MAPPER = COUNTRIES.reduce<Record<string, Country & { countryCode: string }>>((acc, country) => {
+  if ((country as Country).alternative) {
+    const countryData = country as Country;
+    const countryCode = countryData.alternative.split(' ')[0];
+
+    acc[countryData.value] = {
+      ...countryData,
+      value: countryData.value,
+      alternative: countryData.alternative,
+      countryCode,
+    };
+  }
+  return acc;
+}, {});
+
 export default COUNTRIES;

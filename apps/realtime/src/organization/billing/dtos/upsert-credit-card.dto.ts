@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 export const UpsertCreditCardRequest = z.object({
   firstName: z.string().optional(),
-  lastLame: z.string().optional(),
+  lastName: z.string().optional(),
   billingAddr1: z.string().optional(),
   billingAddr2: z.string().optional(),
   billingCity: z.string().optional(),

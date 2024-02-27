@@ -1,4 +1,4 @@
-import { Box, CountrySelect, Input, useDidUpdateEffect } from '@voiceflow/ui';
+import { Box, CountrySelect, Input } from '@voiceflow/ui';
 import { useFormik } from 'formik';
 import React from 'react';
 
@@ -12,23 +12,11 @@ export interface CardFormProps {
   disabled?: boolean;
 }
 
-const CARD_REQUIRED_ERROR_MESSAGE = 'Card is required';
-
 export const CardForm: React.FC<CardFormProps> = ({ form, disabled }) => {
-  const [cardError, setCardError] = React.useState('');
-
-  // eslint-disable-next-line no-console
-  console.log({ cardError });
-
   const onCountryChange = async (value: string | null) => {
     await form.setFieldValue('country', value ?? '');
     form.setFieldError('country', value ? undefined : 'Country is required');
   };
-
-  useDidUpdateEffect(() => {
-    if (form.values.cardNumber) return;
-    setCardError(CARD_REQUIRED_ERROR_MESSAGE);
-  }, [form.submitCount]);
 
   const touchedErrors = useFormikTouchedErrors(form as any);
 

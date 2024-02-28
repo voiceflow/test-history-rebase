@@ -33,7 +33,7 @@ export const useAssistantNavigationItems = () => {
       {
         path: domainID && diagramID ? Path.DOMAIN_CANVAS : Path.PROJECT_DOMAIN,
         testID: 'designer',
-        params: { domainID, diagramID },
+        params: domainID && diagramID ? { domainID, diagramID } : {},
         isActive: isItemActive(Path.PROJECT_DOMAIN),
         iconName: 'Designer',
       },

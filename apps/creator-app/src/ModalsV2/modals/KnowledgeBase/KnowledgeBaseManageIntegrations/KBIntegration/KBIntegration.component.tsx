@@ -67,7 +67,7 @@ export const KBIntegration: React.FC<IKBIntegration> = ({
           <Box align="center">
             <Icon name={icon} height={36} width={36} />
           </Box>
-          <Box direction="column" justify="center">
+          <Box direction="column" justify="center" pt={3}>
             <Text weight="semiBold" color={colors.neutralDark.neutralsDark900}>
               {platform}
             </Text>

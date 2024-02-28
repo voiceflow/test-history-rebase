@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1407.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1406.0...@voiceflow/creator-app@1.1407.0) (2024-02-28)
+
+### Features
+
+* implement permissions modal with entitlements (CV3-1016) ([#7816](https://github.com/voiceflow/creator-app/issues/7816)) ([6312e1e](https://github.com/voiceflow/creator-app/commit/6312e1e66976280297c9cc1aa2247e49c61be20d))
+
 # [1.1406.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1405.5...@voiceflow/creator-app@1.1406.0) (2024-02-28)
 
 ### Features

@@ -124,14 +124,22 @@ export class MigrationService {
             diagrams,
             creatorID,
             cms: {
-              intents: this.entitySerializer.iterable(cmsData.intents),
-              entities: this.entitySerializer.iterable(cmsData.entities),
+              // TODO: remove when mikro is properly optimized, client has 100k+ utterances (BUG-1166)
+              // intents: this.entitySerializer.iterable(cmsData.intents),
+              // entities: this.entitySerializer.iterable(cmsData.entities),
+              // utterances: this.entitySerializer.iterable(cmsData.utterances),
+              // entityVariants: this.entitySerializer.iterable(cmsData.entityVariants),
+              // requiredEntities: this.entitySerializer.iterable(cmsData.requiredEntities),
+              intents: [],
+              entities: [],
+              utterances: [],
+              entityVariants: [],
+              requiredEntities: [],
+
               assistant: this.assistantSerializer.nullable(assistant),
               responses: this.entitySerializer.iterable(cmsData.responses),
               variables: this.entitySerializer.iterable(cmsData.variables),
-              utterances: this.entitySerializer.iterable(cmsData.utterances),
-              entityVariants: this.entitySerializer.iterable(cmsData.entityVariants),
-              requiredEntities: this.entitySerializer.iterable(cmsData.requiredEntities),
+
               responseVariants: this.entitySerializer.iterable(cmsData.responseVariants),
               responseDiscriminators: this.entitySerializer.iterable(cmsData.responseDiscriminators),
             },

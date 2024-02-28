@@ -1,3 +1,4 @@
+/* eslint-disable no-secrets/no-secrets */
 /* eslint-disable max-params */
 import { EntityManager } from '@mikro-orm/core';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
@@ -564,25 +565,25 @@ export class EnvironmentService {
 
   async findOneCMSDataToMigrate(assistantID: string, environmentID: string) {
     const [
-      { entities, entityVariants },
-      { intents, utterances, requiredEntities },
+      // { entities, entityVariants },
+      // { intents, utterances, requiredEntities },
       { variables },
       { responses, responseVariants, responseAttachments, responseDiscriminators },
     ] = await Promise.all([
-      this.entity.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
-      this.intent.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
+      // this.entity.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
+      // this.intent.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
       this.variable.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
       this.response.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
     ]);
 
     return {
-      intents,
-      entities,
+      // intents,
+      // entities,
       responses,
       variables,
-      utterances,
-      entityVariants,
-      requiredEntities,
+      // utterances,
+      // entityVariants,
+      // requiredEntities,
       responseVariants,
       responseAttachments,
       responseDiscriminators,

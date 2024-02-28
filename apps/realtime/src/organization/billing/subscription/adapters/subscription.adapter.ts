@@ -4,40 +4,37 @@ import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter';
 
 import {
+  findBooleanEntitlement,
+  findNumberEntitlement,
   findPlanItem,
-  findRangeEntitlement,
-  findSwitchEntitlement,
   getDaysLeftToTrialEnd,
   getPlanFromPriceID,
-  getWorkspaceSeatsLimits,
   isChargebeeTrial,
 } from '../subscription.utils';
 
 const subscriptionAdapter = createMultiAdapter<Realtime.Identity.Subscription, Subscription>(
-  ({ id, billingPeriodUnit, status, nextBillingAt, subscriptionItems, metaData, hasScheduledChanges, subscriptionEntitlements }) => {
+  ({ id, billingPeriodUnit, status, nextBillingAt, subscriptionItems, metaData, subscriptionEntitlements }) => {
     const planItem = findPlanItem(subscriptionItems);
     const trialEnd = planItem?.trialEnd;
 
     const plan = getPlanFromPriceID(planItem?.itemPriceID);
     const isTrial = isChargebeeTrial(planItem, metaData);
-    const seatLimits = getWorkspaceSeatsLimits(plan as PlanType);
 
-    const agents = findRangeEntitlement(subscriptionEntitlements, 'agents');
-    const interactionsLimit = findRangeEntitlement(subscriptionEntitlements, 'interactions-limit');
-    const tokensLimit = findRangeEntitlement(subscriptionEntitlements, 'tokens-limit');
-    const transcriptHistory = findRangeEntitlement(subscriptionEntitlements, 'transcript-history');
-    const userPersonas = findRangeEntitlement(subscriptionEntitlements, 'user-personas');
-    const workspaces = findRangeEntitlement(subscriptionEntitlements, 'workspaces');
+    const samlSSO = findBooleanEntitlement(subscriptionEntitlements, 'feat-saml-sso');
+    const claude1 = findBooleanEntitlement(subscriptionEntitlements, 'feat-model-claude-1');
+    const claude2 = findBooleanEntitlement(subscriptionEntitlements, 'feat-model-claude-2');
+    const claudeInstant = findBooleanEntitlement(subscriptionEntitlements, 'feat-model-claude-instant');
+    const gpt = findBooleanEntitlement(subscriptionEntitlements, 'feat-model-gpt-3-5-turbo');
+    const gpt4 = findBooleanEntitlement(subscriptionEntitlements, 'feat-model-gpt-4');
+    const gpt4Turbo = findBooleanEntitlement(subscriptionEntitlements, 'feat-model-gpt-4-turbo');
 
-    const agentExports = findSwitchEntitlement(subscriptionEntitlements, 'agent-exports');
-    const claude1 = findSwitchEntitlement(subscriptionEntitlements, 'claude-1');
-    const claude2 = findSwitchEntitlement(subscriptionEntitlements, 'claude-2');
-    const claudeInstant = findSwitchEntitlement(subscriptionEntitlements, 'claude-instant');
-    const gpt = findSwitchEntitlement(subscriptionEntitlements, 'chatgpt');
-    const gpt4 = findSwitchEntitlement(subscriptionEntitlements, 'gpt-4-model');
-    const gpt4Turbo = findSwitchEntitlement(subscriptionEntitlements, 'gpt-4-turbo');
-    const knowledgeBaseUpload = findSwitchEntitlement(subscriptionEntitlements, 'knowledge-base-upload');
-    const prototypeLinks = findSwitchEntitlement(subscriptionEntitlements, 'prototype-links');
+    const agentsLimit = findNumberEntitlement(subscriptionEntitlements, 'limit-agent-count');
+    const transcriptHistoryLimit = findNumberEntitlement(subscriptionEntitlements, 'limit-transcript-history');
+    const editorSeatsLimit = findNumberEntitlement(subscriptionEntitlements, 'limit-editor-count');
+    const personasLimit = findNumberEntitlement(subscriptionEntitlements, 'limit-persona-count');
+    const versionHistoryLimit = findNumberEntitlement(subscriptionEntitlements, 'limit-version-history');
+    const knowledgeBaseSourcesLimit = findNumberEntitlement(subscriptionEntitlements, 'limit-knowledge-base-source-count');
+    const workspacesLimit = findNumberEntitlement(subscriptionEntitlements, 'limit-workspace-count');
 
     const result: Subscription = {
       id,
@@ -48,25 +45,22 @@ const subscriptionAdapter = createMultiAdapter<Realtime.Identity.Subscription, S
       nextBillingDate: nextBillingAt ? Realtime.Utils.date.to_DD_MMM_YYYY(new Date(nextBillingAt)) : null,
       status,
       trial: isTrial && trialEnd ? { daysLeft: getDaysLeftToTrialEnd(new Date(trialEnd)), endAt: new Date(trialEnd).toJSON() } : null,
-      planSeatLimits: seatLimits,
       entitlements: {
-        agents,
-        interactionsLimit,
-        tokensLimit,
-        transcriptHistory,
-        userPersonas,
-        workspaces,
-        agentExports,
+        samlSSO,
         claude1,
         claude2,
         claudeInstant,
         gpt,
         gpt4,
         gpt4Turbo,
-        knowledgeBaseUpload,
-        prototypeLinks,
+        agentsLimit,
+        versionHistoryLimit,
+        transcriptHistoryLimit,
+        personasLimit,
+        workspacesLimit,
+        knowledgeBaseSourcesLimit,
+        editorSeatsLimit,
       },
-      hasScheduledChanges,
     };
 
     return result;

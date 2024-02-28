@@ -1,8 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { NotFoundException } from '@voiceflow/exception';
-import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { BillingClient } from '@voiceflow/sdk-billing';
 import { SubscriptionsControllerGetSubscription200Subscription } from '@voiceflow/sdk-billing/generated';
+
+import { findPlanItem } from './subscription.utils';
 
 const fromUnixTimestamp = (timestamp: number) => timestamp * 1000;
 
@@ -86,7 +87,7 @@ export class BillingSubscriptionService {
   async updateSeats(subscriptionID: string, editorSeats: number, changeOption: 'immediately' | 'end_of_term') {
     const subscription = await this.findOne(subscriptionID);
 
-    const planItem = Realtime.Utils.subscription.findPlanItem(subscription.subscriptionItems);
+    const planItem = findPlanItem(subscription.subscriptionItems);
 
     if (!planItem) {
       throw new NotFoundException('Unable to update seats');
@@ -96,6 +97,17 @@ export class BillingSubscriptionService {
       itemPriceID: planItem.itemPriceID,
       quantity: editorSeats,
       changeOption,
+    });
+  }
+
+  async downgradeTrial(subscriptionID: string) {
+    const subscription = await this.findOne(subscriptionID);
+
+    return this.billingClient.private.patchSubscription(subscriptionID, {
+      metadata: {
+        ...subscription.metaData,
+        downgradedFromTrial: false,
+      },
     });
   }
 }

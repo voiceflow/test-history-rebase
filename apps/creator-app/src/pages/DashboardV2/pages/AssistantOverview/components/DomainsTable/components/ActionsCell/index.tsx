@@ -6,6 +6,7 @@ import Domain from '@/components/Domain';
 import { LimitType } from '@/constants/limits';
 import { Permission } from '@/constants/permissions';
 import * as DomainDuck from '@/ducks/domain';
+import * as Organization from '@/ducks/organization';
 import { useDispatch, usePermission, usePlanLimitedAction, useSelector } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 
@@ -18,26 +19,31 @@ const ActionsCell: React.FC<TableTypes.ItemProps<Realtime.Domain>> = ({ item }) 
   const deleteModal = ModalsV2.useModal(ModalsV2.Domain.Delete);
   const upgradeModal = ModalsV2.useModal(ModalsV2.Upgrade);
 
+  const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
+
   const patchDomain = useDispatch(DomainDuck.patch, item.id);
   const getDomainByID = useSelector(DomainDuck.getDomainByIDSelector);
   const duplicateDomain = useDispatch(DomainDuck.duplicate);
 
   const domainEditPermission = usePermission(Permission.DOMAIN_EDIT);
 
-  const onDuplicate = usePlanLimitedAction(LimitType.DOMAINS, {
+  const onDuplicateAction = async () => {
+    const domainToDuplicate = getDomainByID({ id: item.id });
+
+    await duplicateDomain(item.id, { navigateToDomain: true });
+
+    if (!domainToDuplicate) return;
+
+    toast.success(`Successfully duplicated "${domainToDuplicate.name}" domain.`);
+  };
+
+  const legacyOnDuplicate = usePlanLimitedAction(LimitType.DOMAINS, {
     value: table.items.length,
-
     onLimit: (config) => upgradeModal.openVoid(config.upgradeModal()),
-    onAction: async () => {
-      const domainToDuplicate = getDomainByID({ id: item.id });
-
-      await duplicateDomain(item.id, { navigateToDomain: true });
-
-      if (!domainToDuplicate) return;
-
-      toast.success(`Successfully duplicated "${domainToDuplicate.name}" domain.`);
-    },
+    onAction: onDuplicateAction,
   });
+
+  const onDuplicate = subscription ? onDuplicateAction : legacyOnDuplicate;
 
   return (
     <Dropdown

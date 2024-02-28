@@ -4,9 +4,11 @@ import { Box, toast, useSetup } from '@voiceflow/ui';
 import React from 'react';
 
 import { LimitType } from '@/constants/limits';
+import * as Organization from '@/ducks/organization';
 import * as Session from '@/ducks/session';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useGetPlanLimitedConfig } from '@/hooks/planLimitV2';
+import { useGetConditionalLimit } from '@/hooks/planLimitV3';
 import { useDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
 import { useTrackingEvents } from '@/hooks/tracking';
@@ -21,12 +23,14 @@ export const useInviteLink = ({ initialUserRole = UserRole.VIEWER }: { initialUs
   const projectID = useSelector(Session.activeProjectIDSelector);
   const numberOfSeats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);
   const usedEditorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);
+  const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
 
   const getWorkspaceInviteLink = useDispatch(WorkspaceV2.getWorkspaceInviteLink);
 
   const onAddSeats = useOnAddSeats();
   const [trackingEvents] = useTrackingEvents();
   const getEditorSeatLimit = useGetPlanLimitedConfig(LimitType.EDITOR_SEATS, { limit: numberOfSeats });
+  const getEditorConditionalLimit = useGetConditionalLimit(LimitType.EDITOR_SEATS);
 
   const onFetchLink = async (role: UserRole) => {
     try {
@@ -49,7 +53,8 @@ export const useInviteLink = ({ initialUserRole = UserRole.VIEWER }: { initialUs
 
     if (!isEditorUserRole(userRole)) return;
 
-    const editorSeatLimit = getEditorSeatLimit({ value: usedEditorSeats });
+    // FIXME: remove FF https://voiceflow.atlassian.net/browse/CV3-994
+    const editorSeatLimit = subscription ? getEditorConditionalLimit({ value: usedEditorSeats }) : getEditorSeatLimit({ value: usedEditorSeats });
 
     if (editorSeatLimit) {
       toast.warn(

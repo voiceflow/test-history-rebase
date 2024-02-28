@@ -8,11 +8,13 @@ import Page from '@/components/Page';
 import { LimitType } from '@/constants/limits';
 import { Permission } from '@/constants/permissions';
 import { ScrollContextProvider } from '@/contexts/ScrollContext';
+import * as Organization from '@/ducks/organization';
 import * as ProjectListV2 from '@/ducks/projectListV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { DragItem } from '@/hocs/withDraggable';
 import { useDispatch, useDropLagFix, usePermission, usePlanLimitedConfig, useScrollHelpers, useSelector } from '@/hooks';
+import { useConditionalLimit } from '@/hooks/planLimitV3';
 import * as ModalsV2 from '@/ModalsV2';
 import { DashboardClassName, Identifier } from '@/styles/constants';
 
@@ -28,6 +30,7 @@ export const ProjectListList: React.FC = () => {
   const projectLists = useSelector(ProjectListV2.allProjectListsSelector);
   const projectsLimit = useSelector(WorkspaceV2.active.projectsLimitSelector);
   const getProjectByID = useSelector(ProjectV2.getProjectByIDSelector);
+  const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
 
   const createList = useDispatch(ProjectListV2.createProjectList);
   const deleteList = useDispatch(ProjectListV2.deleteProjectList);
@@ -36,7 +39,12 @@ export const ProjectListList: React.FC = () => {
   const transplantProjectBetweenLists = useDispatch(ProjectListV2.transplantProjectBetweenLists);
 
   const [canManageLists] = usePermission(Permission.PROJECT_LIST_MANAGE);
-  const projectsLimitConfig = usePlanLimitedConfig(LimitType.PROJECTS, { value: projects.length, limit: projectsLimit });
+
+  // FIXME: remove FF https://voiceflow.atlassian.net/browse/CV3-994
+  const legacyProjectsLimitConfig = usePlanLimitedConfig(LimitType.PROJECTS, { value: projects.length, limit: projectsLimit });
+  const newProjectsLimitConfig = useConditionalLimit(LimitType.PROJECTS, { value: projects.length });
+
+  const projectsLimitConfig = subscription ? newProjectsLimitConfig : legacyProjectsLimitConfig;
 
   const errorModal = ModalsV2.useModal(ModalsV2.Error);
   const confirmModal = ModalsV2.useModal(ModalsV2.Confirm);

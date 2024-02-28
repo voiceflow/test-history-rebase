@@ -4,12 +4,14 @@ import { Actions } from '@voiceflow/sdk-logux-designer';
 import { toast } from '@voiceflow/ui';
 
 import * as Errors from '@/config/errors';
+import { LimitType } from '@/constants/limits';
 import { organizationByIDSelector } from '@/ducks/organization/organization.select';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import { waitAsync } from '@/ducks/utils';
 import { Thunk } from '@/store/types';
 import { getErrorMessage } from '@/utils/error';
+import { getLimitConfig } from '@/utils/planLimitV3.util';
 import { isAdminUserRole, isEditorUserRole } from '@/utils/role';
 
 import { active, workspaceByIDSelector } from '../selectors';
@@ -160,11 +162,12 @@ export const updateActiveWorkspaceMemberRole =
   async (dispatch, getState) => {
     const state = getState();
 
+    const activePlan = active.planSelector(state);
     const numberOfSeats = active.numberOfSeatsSelector(state);
     const projectEditorMemberIDs = ProjectV2.allEditorMemberIDs(state);
-    const viewerPlanSeatLimits = active.viewerPlanSeatLimitsSelector(state);
     const numberOfUsedViewerSeats = active.usedViewerSeatsSelector(state);
     const numberOfUsedEditorSeats = active.usedEditorSeatsSelector(state);
+    const viewerPlanSeatLimits = getLimitConfig(LimitType.VIEWER_SEATS, activePlan);
 
     if (
       !isEditorUserRole(member.role) &&
@@ -177,7 +180,7 @@ export const updateActiveWorkspaceMemberRole =
       return;
     }
 
-    if (role === UserRole.VIEWER && numberOfUsedViewerSeats >= viewerPlanSeatLimits) {
+    if (role === UserRole.VIEWER && viewerPlanSeatLimits && numberOfUsedViewerSeats >= viewerPlanSeatLimits.limit) {
       toast.error('You have reached your max viewer seats usage.');
       return;
     }

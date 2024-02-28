@@ -15,32 +15,25 @@ export const SubscriptionDTO = z.object({
     .optional()
     .nullable(),
 
-  plan: z.string(),
+  plan: z.enum(['starter', 'pro', 'team', 'enterprise']),
   editorSeats: z.number(),
   pricePerEditor: z.number(),
 
-  planSeatLimits: z.object({
-    editor: z.number(),
-    viewer: z.number(),
-  }),
-  hasScheduledChanges: z.boolean().optional(),
-
   entitlements: z.object({
-    agentExports: z.boolean().nullable(),
-    agents: z.number().nullable(),
+    samlSSO: z.boolean().nullable(),
     claude1: z.boolean().nullable(),
     claude2: z.boolean().nullable(),
     claudeInstant: z.boolean().nullable(),
     gpt: z.boolean().nullable(),
     gpt4: z.boolean().nullable(),
     gpt4Turbo: z.boolean().nullable(),
-    interactionsLimit: z.number().nullable(),
-    knowledgeBaseUpload: z.boolean().nullable(),
-    prototypeLinks: z.boolean().nullable(),
-    tokensLimit: z.number().nullable(),
-    transcriptHistory: z.number().nullable(),
-    userPersonas: z.number().nullable(),
-    workspaces: z.number().nullable(),
+    agentsLimit: z.number().nullable(),
+    versionHistoryLimit: z.number().nullable(),
+    transcriptHistoryLimit: z.number().nullable(),
+    personasLimit: z.number().nullable(),
+    workspacesLimit: z.number().nullable(),
+    knowledgeBaseSourcesLimit: z.number().nullable(),
+    editorSeatsLimit: z.number().nullable(),
   }),
 });
 

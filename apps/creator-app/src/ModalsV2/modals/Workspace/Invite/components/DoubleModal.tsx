@@ -5,8 +5,10 @@ import React from 'react';
 import SelectInputGroup from '@/components/SelectInputGroup';
 import * as WorkspaceUI from '@/components/Workspace';
 import { LimitType } from '@/constants/limits';
+import * as Organization from '@/ducks/organization';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch, useGetPlanLimitedConfig, useOnAddSeats, useSelector } from '@/hooks';
+import { useGetConditionalLimit } from '@/hooks/planLimitV3';
 import { VoidInternalProps } from '@/ModalsV2/types';
 import { isEditorUserRole } from '@/utils/role';
 
@@ -15,10 +17,12 @@ import { useDedupeInvites, useInviteLink } from '../hooks';
 const DoubleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, animated }) => {
   const numberOfSeats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);
   const usedEditorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);
+  const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
 
   const sendInvite = useDispatch(WorkspaceV2.sendInviteToActiveWorkspace);
 
   const getEditorSeatLimit = useGetPlanLimitedConfig(LimitType.EDITOR_SEATS, { limit: numberOfSeats });
+  const getEditorConditionalLimit = useGetConditionalLimit(LimitType.EDITOR_SEATS);
 
   const onAddSeats = useOnAddSeats();
   const inviteLink = useInviteLink({ initialUserRole: UserRole.EDITOR });
@@ -29,7 +33,10 @@ const DoubleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, a
 
     const isEditorRole = isEditorUserRole(role);
     const updatedEditorSeats = usedEditorSeats + (isEditorRole ? newEmails.length : 0);
-    const editorSeatLimit = getEditorSeatLimit({ value: updatedEditorSeats, greaterOnly: true });
+    // FIXME: remove FF https://voiceflow.atlassian.net/browse/CV3-994
+    const editorSeatLimit = subscription
+      ? getEditorConditionalLimit({ value: updatedEditorSeats, greaterOnly: true })
+      : getEditorSeatLimit({ value: updatedEditorSeats, greaterOnly: true });
 
     if (editorSeatLimit && isEditorRole) {
       onAddSeats(updatedEditorSeats);

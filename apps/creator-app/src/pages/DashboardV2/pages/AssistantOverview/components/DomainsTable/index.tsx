@@ -6,6 +6,7 @@ import SearchBar from '@/components/SearchBar';
 import { LimitType } from '@/constants/limits';
 import { Permission } from '@/constants/permissions';
 import * as Domain from '@/ducks/domain';
+import * as Organization from '@/ducks/organization';
 import { usePermission } from '@/hooks/permission';
 import { usePlanLimitedAction } from '@/hooks/planLimitV2';
 import { useSelector } from '@/hooks/redux';
@@ -21,6 +22,7 @@ const DomainsTable: React.FC = () => {
   const upgradeModal = ModalsV2.useModal(ModalsV2.Upgrade);
 
   const domains = useSelector(Domain.allDomainsSelector);
+  const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
 
   const [domainEditAllowed] = usePermission(Permission.DOMAIN_EDIT);
 
@@ -39,12 +41,16 @@ const DomainsTable: React.FC = () => {
     getItemFilterBy: ({ name, status = BaseModels.Version.DomainStatus.DESIGN }) => [name, status],
   });
 
-  const onCreate = usePlanLimitedAction(LimitType.DOMAINS, {
+  const onCreateAction = () => createModal.openVoid({ name: search });
+
+  const legacyOnCreate = usePlanLimitedAction(LimitType.DOMAINS, {
     value: domains.length,
 
     onLimit: (config) => upgradeModal.openVoid(config.upgradeModal()),
     onAction: () => createModal.openVoid({ name: search }),
   });
+
+  const onCreate = subscription ? onCreateAction : legacyOnCreate;
 
   const clearFilters = () => {
     setStatus('');

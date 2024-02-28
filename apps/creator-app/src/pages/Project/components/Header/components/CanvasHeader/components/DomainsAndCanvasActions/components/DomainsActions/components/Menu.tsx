@@ -6,6 +6,7 @@ import React from 'react';
 import { LimitType } from '@/constants/limits';
 import { Permission } from '@/constants/permissions';
 import * as Domain from '@/ducks/domain';
+import * as Organization from '@/ducks/organization';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import { usePermission } from '@/hooks/permission';
@@ -32,6 +33,7 @@ const Menu: React.FC<MenuProps> = ({ onClose }) => {
   const rootDomainID = useSelector(Domain.rootDomainIDSelector);
   const getDomainByID = useSelector(Domain.getDomainByIDSelector);
   const activeDiagramID = useSelector(Session.activeDiagramIDSelector);
+  const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
 
   const patchDomain = useDispatch(Domain.patch);
   const duplicateDomain = useDispatch(Domain.duplicate);
@@ -50,27 +52,34 @@ const Menu: React.FC<MenuProps> = ({ onClose }) => {
     );
   }, [search, domains]);
 
-  const onCreate = usePlanLimitedAction(LimitType.DOMAINS, {
+  const onCreateAction = () => createModal.openVoid({ name: search });
+  const onDuplicateAction = async (id: string) => {
+    const domainToDuplicate = getDomainByID({ id });
+
+    await duplicateDomain(id, { navigateToDomain: true });
+
+    if (!domainToDuplicate) return;
+
+    toast.success(`Successfully duplicated "${domainToDuplicate.name}" domain.`);
+  };
+
+  const legacyOnCreate = usePlanLimitedAction(LimitType.DOMAINS, {
     value: domains.length,
 
     onLimit: (config) => upgradeModal.openVoid(config.upgradeModal()),
-    onAction: () => createModal.openVoid({ name: search }),
+    onAction: onCreateAction,
   });
 
-  const onDuplicate = usePlanLimitedAction(LimitType.DOMAINS, {
+  const legacyOnDuplicate = usePlanLimitedAction(LimitType.DOMAINS, {
     value: domains.length,
 
     onLimit: (config) => upgradeModal.openVoid(config.upgradeModal()),
-    onAction: async (id: string) => {
-      const domainToDuplicate = getDomainByID({ id });
-
-      await duplicateDomain(id, { navigateToDomain: true });
-
-      if (!domainToDuplicate) return;
-
-      toast.success(`Successfully duplicated "${domainToDuplicate.name}" domain.`);
-    },
+    onAction: onDuplicateAction,
   });
+
+  // FIXME: remove FF https://voiceflow.atlassian.net/browse/CV3-994 we are not going to limit domains anymore
+  const onCreate = subscription ? legacyOnCreate : onCreateAction;
+  const onDuplicate = subscription ? legacyOnDuplicate : onDuplicateAction;
 
   return (
     <>

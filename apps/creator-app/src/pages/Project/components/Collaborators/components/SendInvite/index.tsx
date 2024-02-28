@@ -7,9 +7,11 @@ import InputError from '@/components/InputError';
 import SelectInputGroup from '@/components/SelectInputGroup';
 import { LimitType } from '@/constants/limits';
 import { Permission } from '@/constants/permissions';
+import * as Organization from '@/ducks/organization';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { usePermission } from '@/hooks/permission';
 import { useGetPlanLimitedConfig } from '@/hooks/planLimitV2';
+import { useGetConditionalLimit } from '@/hooks/planLimitV3';
 import { useSelector } from '@/hooks/redux';
 import { useOnAddSeats } from '@/hooks/workspace';
 import { ClassName, Identifier } from '@/styles/constants';
@@ -40,8 +42,12 @@ const SendInvite: React.FC<SendInviteProps> = ({ sendInvite }) => {
   const usedEditorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);
   const usedViewerSeats = useSelector(WorkspaceV2.active.usedViewerSeatsSelector);
   const viewerPlanSeatLimits = useSelector(WorkspaceV2.active.viewerPlanSeatLimitsSelector);
+  const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
 
-  const getEditorSeatLimit = useGetPlanLimitedConfig(LimitType.EDITOR_SEATS, { limit: numberOfSeats });
+  const legacyGetEditorSeatLimit = useGetPlanLimitedConfig(LimitType.EDITOR_SEATS, { limit: numberOfSeats });
+  const newGetEditorSeatLimit = useGetConditionalLimit(LimitType.EDITOR_SEATS);
+
+  const getEditorSeatLimit = subscription ? newGetEditorSeatLimit : legacyGetEditorSeatLimit;
 
   const onAddSeats = useOnAddSeats();
 
@@ -68,7 +74,7 @@ const SendInvite: React.FC<SendInviteProps> = ({ sendInvite }) => {
     const isEditorRole = isEditorUserRole(role);
     const updatedEditorSeats = usedEditorSeats + (isEditorRole ? 1 : 0);
     const updatedViewerSeats = usedViewerSeats + (isEditorRole ? 0 : 1);
-    const editorSeatLimit = getEditorSeatLimit({ value: usedEditorSeats });
+    const editorSeatLimit = getEditorSeatLimit({ value: updatedEditorSeats });
 
     if (editorSeatLimit && isEditorRole) {
       onAddSeats(updatedEditorSeats);

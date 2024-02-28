@@ -7,11 +7,13 @@ import { PageProgress } from '@/components/PageProgressBar';
 import * as Errors from '@/config/errors';
 import { PageProgressBar } from '@/constants';
 import { LimitType } from '@/constants/limits';
+import * as Organization from '@/ducks/organization';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch, usePlanLimitedAction, useSelector } from '@/hooks';
+import { useConditionalLimitAction } from '@/hooks/planLimitV3';
 import * as ModalsV2 from '@/ModalsV2';
 import { upload } from '@/utils/dom';
 
@@ -21,6 +23,7 @@ const ImportButton: React.FC = () => {
   const projects = useSelector(ProjectV2.allProjectsSelector);
   const workspaceID = useSelector(Session.activeWorkspaceIDSelector);
   const projectsLimit = useSelector(WorkspaceV2.active.projectsLimitSelector);
+  const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
 
   const goToDomain = useDispatch(Router.goToDomain);
   const importProject = useDispatch(ProjectV2.importProjectFromFile);
@@ -56,13 +59,22 @@ const ImportButton: React.FC = () => {
     }
   };
 
-  const onImport = usePlanLimitedAction(LimitType.PROJECTS, {
+  const legacyOnImport = usePlanLimitedAction(LimitType.PROJECTS, {
     value: projects.length,
     limit: projectsLimit,
 
     onLimit: (config) => upgradeModal.openVoid(config.upgradeModal(config.payload)),
     onAction: () => upload(onUpload, { accept: ACCEPTED_FILE_FORMATS }),
   });
+
+  const newOnImport = useConditionalLimitAction(LimitType.PROJECTS, {
+    value: projects.length,
+
+    onLimit: (config) => upgradeModal.openVoid(config.upgradeModal(config.payload)),
+    onAction: () => upload(onUpload, { accept: ACCEPTED_FILE_FORMATS }),
+  });
+
+  const onImport = subscription ? newOnImport : legacyOnImport;
 
   return (
     <Page.Header.IconButton

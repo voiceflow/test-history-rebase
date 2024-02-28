@@ -56,6 +56,4 @@ export interface Subscription {
   subscriptionEntitlements?: SubscriptionEntitlement[];
 
   metaData?: Record<string, unknown>;
-
-  hasScheduledChanges?: boolean;
 }

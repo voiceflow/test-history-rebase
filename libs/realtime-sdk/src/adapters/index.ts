@@ -1,4 +1,3 @@
-export * as Billing from './billing';
 export { default as canvasTemplateAdapter } from './canvasTemplate';
 export type { DBCreatorDiagram } from './creator';
 export { default as creatorAdapter, nodeDataAdapter, stepPortsAdapter } from './creator';

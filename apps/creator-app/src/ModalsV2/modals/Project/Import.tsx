@@ -8,11 +8,13 @@ import client from '@/client';
 import { LimitType } from '@/constants/limits';
 import { Permission } from '@/constants/permissions';
 import * as Account from '@/ducks/account';
+import * as Organization from '@/ducks/organization';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch, usePlanLimitConfig, useSelector } from '@/hooks';
 import { useModal } from '@/hooks/modal.hook';
+import { useLimitConfig } from '@/hooks/planLimitV3';
 import { hasRolePermission } from '@/utils/rolePermission';
 
 import manager from '../../manager';
@@ -48,6 +50,7 @@ const ImportModal = manager.create<Props>('ProjectImport', () => ({ api, type, o
   const importProject = useDispatch(ProjectV2.importProject);
   const goToWorkspace = useDispatch(Router.goToWorkspace);
   const allWorkspaces = useSelector(WorkspaceV2.allWorkspacesSelector);
+  const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
 
   const workspaces = useMemo(() => allWorkspaces.filter((workspace) => allowedToClone(workspace, creatorID)), [allWorkspaces, creatorID]);
 
@@ -63,7 +66,11 @@ const ImportModal = manager.create<Props>('ProjectImport', () => ({ api, type, o
 
   const chooseWorkspace = React.useCallback((workspaceID: string) => setTargetWorkspace(workspaceID ?? null), [workspaceOptions, setTargetWorkspace]);
 
-  const projectLimitConfig = usePlanLimitConfig(LimitType.PROJECTS, { limit: 2 });
+  const legacyProjectLimitConfig = usePlanLimitConfig(LimitType.PROJECTS, { limit: 2 });
+  const newProjectLimitConfig = useLimitConfig(LimitType.EDITOR_SEATS);
+
+  // FIXME: remove FF https://voiceflow.atlassian.net/browse/CV3-994
+  const projectLimitConfig = subscription ? newProjectLimitConfig : legacyProjectLimitConfig;
 
   const cloneProject = async (workspaceID?: string) => {
     if (!projectID || !workspaceID) return;

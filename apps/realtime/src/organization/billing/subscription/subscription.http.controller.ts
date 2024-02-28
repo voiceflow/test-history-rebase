@@ -115,4 +115,17 @@ export class BillingSubscriptionHTTPController {
   ): Promise<void> {
     await this.service.updateSeats(subscriptionID, data.seats, 'immediately');
   }
+
+  @Put(':subscriptionID/downgrade-trial')
+  @Authorize.Permissions([Permission.ORGANIZATION_UPDATE])
+  @ApiOperation({
+    summary: 'Downgrade trial subscription to starter plan',
+    description: 'Downgrade trial subscription to starter plan for the given subscriptionID',
+  })
+  @ApiParam({ name: 'organizationID', type: 'string' })
+  @ApiParam({ name: 'subscriptionID', type: 'string' })
+  @ZodApiResponse({ status: HttpStatus.OK })
+  async downgradeTrial(@Param('subscriptionID') subscriptionID: string): Promise<void> {
+    await this.service.downgradeTrial(subscriptionID);
+  }
 }

@@ -1,8 +1,10 @@
 import { LimitType } from '@/constants/limits';
+import * as Organization from '@/ducks/organization';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useAddSeatsModal, usePaymentModal, useUpgradeModal } from '@/hooks/modal.hook';
 
 import { useGetPlanLimitedConfig } from './planLimitV2';
+import { useGetConditionalLimit } from './planLimitV3';
 import { useSelector } from './redux';
 
 export const useActiveWorkspace = () => useSelector(WorkspaceV2.active.workspaceSelector);
@@ -12,20 +14,29 @@ export const useOnAddSeats = () => {
   const usedEditorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);
   const isPaid = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
   const isOnProTrial = useSelector(WorkspaceV2.active.isOnProTrialSelector);
+  const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
 
   const getLimitConfig = useGetPlanLimitedConfig(LimitType.EDITOR_SEATS, { limit: numberOfSeats });
+  const getConditionalLimit = useGetConditionalLimit(LimitType.EDITOR_SEATS);
 
   const paymentModal = usePaymentModal();
   const addSeatsModal = useAddSeatsModal();
   const upgradeModal = useUpgradeModal();
 
   return (newSeats?: number) => {
-    const limitConfig = getLimitConfig({
-      value: newSeats ?? usedEditorSeats,
-      greaterOnly: Number.isFinite(newSeats) && usedEditorSeats !== newSeats,
-    });
+    const seats = newSeats ?? usedEditorSeats;
+    // FIXME: remove FF https://voiceflow.atlassian.net/browse/CV3-994
+    const limitConfig = subscription
+      ? getConditionalLimit({
+          value: seats,
+          greaterOnly: Number.isFinite(newSeats) && usedEditorSeats !== newSeats,
+        })
+      : getLimitConfig({
+          value: seats,
+          greaterOnly: Number.isFinite(newSeats) && usedEditorSeats !== newSeats,
+        });
 
-    if (!limitConfig?.payload?.maxLimit || limitConfig.payload.maxLimit > (newSeats ?? usedEditorSeats)) {
+    if (!limitConfig?.payload?.maxLimit || limitConfig.payload.maxLimit > seats) {
       if (!isPaid || isOnProTrial) {
         addSeatsModal.open({});
         return;

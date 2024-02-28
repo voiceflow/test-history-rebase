@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1406.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1405.5...@voiceflow/creator-app@1.1406.0) (2024-02-28)
+
+### Features
+
+* clean up kb limit logic (COR-1088) ([#7814](https://github.com/voiceflow/creator-app/issues/7814)) ([c85a50e](https://github.com/voiceflow/creator-app/commit/c85a50e9945fafdeae02dcdd7e397624d5c775bb))
+
 ## [1.1405.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1405.4...@voiceflow/creator-app@1.1405.5) (2024-02-28)
 
 **Note:** Version bump only for package @voiceflow/creator-app

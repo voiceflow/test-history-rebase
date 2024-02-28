@@ -1,18 +1,15 @@
 import { tid } from '@voiceflow/style';
-import { Box, notify, Scroll, UploadArea } from '@voiceflow/ui-next';
-import { Tokens } from '@voiceflow/ui-next/styles';
+import { Box, Scroll, UploadArea } from '@voiceflow/ui-next';
 import React, { useState } from 'react';
 
 import { Modal } from '@/components/Modal';
-import { LimitType } from '@/constants/limits';
 import { MEDIA_FILE_TYPES, MediaMimeType } from '@/constants/media.constant';
 import { Designer } from '@/ducks';
-import { useUpgradeModal } from '@/hooks/modal.hook';
-import { usePlanLimitConfig } from '@/hooks/planLimitV2';
 import { useDispatch } from '@/hooks/store.hook';
 
 import modalsManager from '../../../../manager';
 import { KBFieldLabel } from '../components/KBFieldLabel/KBFieldLabel.component';
+import { useDocumentLimitError } from '../KnowledgeBaseImport.utils';
 import { uploadAreaStyles } from './KBImportFile.css';
 
 export const KBImportFile = modalsManager.create('KBImportFile', () => ({ api, type, opened, hidden, animated, closePrevented }) => {
@@ -20,8 +17,7 @@ export const KBImportFile = modalsManager.create('KBImportFile', () => ({ api, t
 
   const fileSizeLimitMB = 10;
 
-  const planConfig = usePlanLimitConfig(LimitType.KB_DOCUMENTS, { limit: 5000 });
-  const upgradeModal = useUpgradeModal();
+  const checkDocumentLimitError = useDocumentLimitError(api.enableClose);
 
   const createManyFromFile = useDispatch(Designer.KnowledgeBase.Document.effect.createManyFromFile);
 
@@ -72,21 +68,7 @@ export const KBImportFile = modalsManager.create('KBImportFile', () => ({ api, t
           return null;
         })
         .catch((error) => {
-          if (error.response.status === 406 && planConfig) {
-            const limit = error.response.data.kbDocsLimit;
-            notify.long.warning(`Document limit (${limit}) reached for your current subscription. Please upgrade to continue.`, {
-              actionButtonProps: { label: 'Upgrade', onClick: () => upgradeModal.openVoid(planConfig.upgradeModal({ limit })) },
-              bodyStyle: {
-                color: Tokens.colors.neutralDark.neutralsDark900,
-                fontSize: Tokens.typography.size[14],
-                lineHeight: Tokens.typography.lineHeight[20],
-                fontFamily: Tokens.typography.family.regular,
-              },
-            });
-          } else {
-            notify.short.error('Failed to import data sources');
-          }
-          api.enableClose();
+          checkDocumentLimitError(error);
         });
     } finally {
       api.enableClose();

@@ -1,6 +1,11 @@
 import { Utils } from '@voiceflow/common';
+import { notify } from '@voiceflow/ui-next';
+import { Tokens } from '@voiceflow/ui-next/styles';
 import { composeValidators, validatorFactory } from '@voiceflow/utils-designer';
 
+import { LimitType } from '@/constants/limits';
+import { useUpgradeModal } from '@/hooks/modal.hook';
+import { usePlanLimitConfig } from '@/hooks/planLimitV2';
 import { URL_ONLY_REGEX } from '@/utils/string.util';
 
 import { URLS_LIMIT } from './KnowledgeBaseImport.constant';
@@ -49,3 +54,26 @@ export const urlRegexValidator = validatorFactory(
 );
 
 export const urlsValidator = composeValidators(hasUrlValidator, urlMaxNumberValidator, urlRegexValidator);
+
+export const useDocumentLimitError = (enableClose: VoidFunction) => {
+  const planConfig = usePlanLimitConfig(LimitType.KB_DOCUMENTS, { limit: 5000 });
+  const upgradeModal = useUpgradeModal();
+
+  return (error: any) => {
+    if (error.response.status === 406 && planConfig) {
+      const limit = error.response.data.kbDocsLimit;
+      notify.long.warning(`Document limit (${limit}) reached for your current subscription. Please upgrade to continue.`, {
+        actionButtonProps: { label: 'Upgrade', onClick: () => upgradeModal.openVoid(planConfig.upgradeModal({ limit })) },
+        bodyStyle: {
+          color: Tokens.colors.neutralDark.neutralsDark900,
+          fontSize: Tokens.typography.size[14],
+          lineHeight: Tokens.typography.lineHeight[20],
+          fontFamily: Tokens.typography.family.regular,
+        },
+      });
+    } else {
+      notify.short.error('Failed to import data sources');
+    }
+    enableClose();
+  };
+};

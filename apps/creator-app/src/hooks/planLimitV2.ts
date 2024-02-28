@@ -10,7 +10,7 @@ import { useSelector } from './redux';
 
 type PlanLimitConfigOptions<Limit extends LimitType> = PlanLimitConfig<Limit> extends BaseStaticLimit ? [] : [{ limit: number }];
 
-type PlanLimitData<Limit extends LimitType> = PlanLimitConfig<Limit> & {
+export type PlanLimitData<Limit extends LimitType> = PlanLimitConfig<Limit> & {
   limit: number;
   payload: { limit: number; maxLimit?: number };
 };

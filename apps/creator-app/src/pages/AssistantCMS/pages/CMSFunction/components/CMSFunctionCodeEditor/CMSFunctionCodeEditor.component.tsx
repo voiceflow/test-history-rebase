@@ -45,7 +45,7 @@ export const CMSFunctionCodeEditor: React.FC<{ functionID: string }> = ({ functi
   useHotkey(Hotkey.ESC_CLOSE, () => navigate.push(getFolderURL()));
 
   return (
-    <Box width="calc(100% - 350px)" height="calc(100% - 110px)" px={12} py={12} onClick={handleClick}>
+    <Box width="calc(100% - 350px)" height="calc(100% - 112px)" px={12} py={12} onClick={handleClick}>
       <CodeEditorWrapper
         title="Function editor"
         showExpandButton={true}

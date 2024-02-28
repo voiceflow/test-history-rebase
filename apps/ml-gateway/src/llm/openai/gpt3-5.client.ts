@@ -11,7 +11,7 @@ import { GPT3_5_1106 } from './gpt3-5-1106.client';
 export class GPT3_5 extends GPTLLMModel {
   protected logger = new Logger(GPT3_5.name);
 
-  TOKEN_MULTIPLIER = 0.75;
+  TOKEN_MULTIPLIER = 0.6;
 
   public modelRef = AIModel.GPT_3_5_TURBO;
 

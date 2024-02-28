@@ -1,12 +1,10 @@
-import { Box, Button, Link, SectionV2, Text } from '@voiceflow/ui';
+import { Box, SectionV2, Text } from '@voiceflow/ui';
 import React from 'react';
 
 import Page from '@/components/Page';
 import * as Workspace from '@/components/Workspace';
-import { Permission } from '@/constants/permissions';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { usePermission, useSelector } from '@/hooks';
-import * as ModalsV2 from '@/ModalsV2';
+import { useSelector } from '@/hooks';
 import * as currency from '@/utils/currency';
 import * as date from '@/utils/date';
 
@@ -16,29 +14,15 @@ interface BillingEditorSeatsProps {
   nextBillingDate: string | null;
   pricePerEditor: number;
   billingPeriod: string | null;
-  scheduledEditorSeats?: number;
 }
 
-const BillingEditorSeats: React.FC<BillingEditorSeatsProps> = ({ nextBillingDate, pricePerEditor, billingPeriod, scheduledEditorSeats }) => {
-  const scheduleSeatModal = ModalsV2.useModal(ModalsV2.Billing.ScheduleSeatChange);
+const BillingEditorSeats: React.FC<BillingEditorSeatsProps> = ({ nextBillingDate, pricePerEditor, billingPeriod }) => {
   const seats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);
   const isTrial = useSelector(WorkspaceV2.active.isOnTrialSelector);
   const trialEndAt = useSelector(WorkspaceV2.active.organizationTrialEndAtSelector);
   const isPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
   const isEnterprise = useSelector(WorkspaceV2.active.isEnterpriseSelector);
   const usedViewerSeats = useSelector(WorkspaceV2.active.usedViewerSeatsSelector);
-  const [canScheduleSeats] = usePermission(Permission.BILLING_SEATS_SCHEDULE);
-
-  const hasScheduledSeats = scheduledEditorSeats && scheduledEditorSeats !== seats;
-
-  const openScheduleSeatModal = async () => {
-    await scheduleSeatModal.openVoid({
-      nextBillingDate,
-      pricePerEditor,
-      billingPeriod,
-      scheduleOrCurrentEditorSeats: hasScheduledSeats ? scheduledEditorSeats : seats,
-    });
-  };
 
   const unitPrice = isPaidPlan ? pricePerEditor ?? 0 : 0;
   const showProTrialDescription = !isEnterprise && isTrial;
@@ -70,17 +54,10 @@ const BillingEditorSeats: React.FC<BillingEditorSeatsProps> = ({ nextBillingDate
                 {showBillingDateDescription && (
                   <>
                     Your next billing date is <Text color="#132144">{nextBillingDate}.</Text>{' '}
-                    {hasScheduledSeats && <Link onClick={openScheduleSeatModal}>Seat changes are scheduled</Link>}
                   </>
                 )}
               </Page.Section.Description>
             </div>
-
-            {canScheduleSeats && !isTrial && (
-              <Button variant={Button.Variant.SECONDARY} onClick={openScheduleSeatModal}>
-                Schedule Seat Change
-              </Button>
-            )}
           </Box.FlexApart>
         </Page.Section.Header>
       }

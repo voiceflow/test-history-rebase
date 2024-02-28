@@ -87,9 +87,13 @@ export const isProOrTeamSelector = createSelector([planSelector], (plan) => plan
 export const isOnPaidPlanSelector = createSelector([planSelector], (plan) => plan && PAID_PLANS.includes(plan as any));
 
 // FIXME: remove FF https://voiceflow.atlassian.net/browse/CV3-994
-export const planSeatLimitsSelector = createSelector(
-  [workspaceSelector, localOrganizationSelector],
-  (workspace, organization) => organization?.subscription?.planSeatLimits ?? workspace?.planSeatLimits
+export const planSeatLimitsSelector = createSelector([workspaceSelector, localOrganizationSelector], (workspace, organization) =>
+  organization?.subscription
+    ? {
+        viewer: VIEWERS_DEFAULT_LIMIT,
+        editor: organization.subscription.entitlements.editorSeatsLimit,
+      }
+    : workspace?.planSeatLimits
 );
 
 export const nameSelector = createSelector([workspaceSelector], (workspace) => workspace?.name);
@@ -108,7 +112,7 @@ export const isLockedSelector = createSelector([stateSelector], (state) => state
 
 export const projectsLimitSelector = createSelector(
   [workspaceSelector, localOrganizationSelector],
-  (workspace, organization) => organization?.subscription?.entitlements.agents ?? workspace?.projects ?? PROJECTS_DEFAULT_LIMIT
+  (workspace, organization) => organization?.subscription?.entitlements.agentsLimit ?? workspace?.projects ?? PROJECTS_DEFAULT_LIMIT
 );
 
 export const quotasSelector = createSelector([workspaceSelector], (workspace) => workspace?.quotas);
@@ -123,7 +127,7 @@ export const editorPlanSeatLimitsSelector = createSelector([planSeatLimitsSelect
 // FIXME: remove FF https://voiceflow.atlassian.net/browse/CV3-994
 export const variableStatesLimitSelector = createSelector(
   [workspaceSelector, localOrganizationSelector],
-  (workspace, organization) => organization?.subscription?.entitlements.userPersonas ?? workspace?.variableStatesLimit
+  (workspace, organization) => organization?.subscription?.entitlements.personasLimit ?? workspace?.variableStatesLimit
 );
 
 export const organizationIDSelector = createSelector([workspaceSelector], (workspace) => workspace?.organizationID ?? null);

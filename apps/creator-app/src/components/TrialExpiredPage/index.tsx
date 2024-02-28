@@ -3,6 +3,7 @@ import { Box, Button, ButtonVariant, Spinner, SvgIcon, Text, toast } from '@voic
 import React from 'react';
 
 import client from '@/client';
+import * as Organization from '@/ducks/organization';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useActiveWorkspace, useDispatch, useSelector } from '@/hooks';
 import { useTrackingEvents } from '@/hooks/tracking';
@@ -10,24 +11,26 @@ import * as ModalsV2 from '@/ModalsV2';
 
 import * as S from './styles';
 
+const UPDATE_SUBSCRIPTION_ROLES = new Set([UserRole.ADMIN, UserRole.OWNER, UserRole.BILLING]);
+
 const TrialExpiredPage: React.FC = () => {
   const workspace = useActiveWorkspace();
   const userRole = useSelector(WorkspaceV2.active.userRoleSelector);
+  const organization = useSelector(Organization.organizationSelector);
   const paymentModal = ModalsV2.useModal(ModalsV2.Payment);
   const [trackEvents] = useTrackingEvents();
 
   const [isDowngrading, setIsDowngrading] = React.useState(false);
 
   const [notifyAdminButtonDisabled, setNotifyAdminButtonDisabled] = React.useState(false);
-  const downgradeTrial = useDispatch(WorkspaceV2.downgradeTrial);
+  const legacyDowngradeTrial = useDispatch(WorkspaceV2.downgradeTrial);
+  const newDowngradeTrial = useDispatch(Organization.downgradeTrial);
 
-  const canUpgradeWorkspace = React.useMemo(() => {
-    /**
-     * When trials expires, all users are downgraded to viewers in the permission system.
-     * So we need to check their member role to see if they can upgrade the workspace.
-     */
-    return userRole && [UserRole.ADMIN, UserRole.OWNER, UserRole.BILLING].includes(userRole);
-  }, [userRole]);
+  /**
+   * When trials expires, all users are downgraded to viewers in the permission system.
+   * So we need to check their member role to see if they can upgrade the workspace.
+   */
+  const canUpgradeWorkspace = userRole && UPDATE_SUBSCRIPTION_ROLES.has(userRole);
 
   const notifyAdmins = async () => {
     toast.success('Admins have been notified');
@@ -38,10 +41,14 @@ const TrialExpiredPage: React.FC = () => {
   };
 
   const onDowngrade = async () => {
-    if (!workspace) return;
+    if (!workspace || !organization) return;
     setIsDowngrading(true);
 
-    await downgradeTrial(workspace.id);
+    if (organization.subscription) {
+      await newDowngradeTrial(organization.id, organization.subscription.id);
+    } else {
+      await legacyDowngradeTrial(workspace.id);
+    }
 
     trackEvents.trackTrialExpiredDowngrade();
     toast.success('Successfully downgraded to Free Plan');

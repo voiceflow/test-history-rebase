@@ -1,17 +1,18 @@
 import { PlanType } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
-import { PLAN_INFO } from '@voiceflow/schema-types';
 
-export const isPlanType = (plan: any): plan is PlanType => plan in PlanType;
+export const ChargebeePlanType = {
+  STARTER: PlanType.STARTER,
+  PRO: PlanType.PRO,
+  TEAM: PlanType.TEAM,
+  ENTERPRISE: PlanType.ENTERPRISE,
+} as const;
 
-export const getWorkspaceSeatsLimits = (plan: PlanType) => {
-  const platInfo = PLAN_INFO[plan];
+export type ChargebeePlanType = (typeof ChargebeePlanType)[keyof typeof ChargebeePlanType];
 
-  return {
-    editor: platInfo.editorLimit,
-    viewer: platInfo.viewerLimit,
-  };
-};
+const chargebeePlanTypes = new Set(Object.values(ChargebeePlanType));
+
+export const isChargebeePlanType = (plan: any): plan is ChargebeePlanType => chargebeePlanTypes.has(plan);
 
 export function getDaysLeftToTrialEnd(trialEndDate: Date) {
   const trialEndDateWithoutTimezone = Realtime.Utils.date.removeTimezone(trialEndDate);
@@ -29,21 +30,16 @@ export const findPlanItem = (subscriptionItems?: Realtime.Identity.SubscriptionI
 export const getPlanFromPriceID = (priceID: string | undefined) => {
   const [plan] = priceID?.split('-') ?? [];
 
-  if (isPlanType(plan)) return plan;
+  if (isChargebeePlanType(plan)) return plan;
 
-  // FIXME: temporary fix for the plan type, this value comes from chargebee, and it's not consistent with the plan type
-  // eslint-disable-next-line no-secrets/no-secrets
-  // https://voiceflowhq.slack.com/archives/C05H14G77D5/p1707166175310379
-  if (plan === 'teams') return PlanType.TEAM;
-
-  return PlanType.STARTER;
+  return ChargebeePlanType.STARTER;
 };
 
 export const isChargebeeTrial = (planItem: Realtime.Identity.SubscriptionItem | undefined, metaData: Record<string, unknown> | undefined) => {
   return planItem?.itemPriceID.includes('trial') || metaData?.downgradedFromTrial;
 };
 
-export const findSwitchEntitlement = (entitlements: Realtime.Identity.SubscriptionEntitlement[] | undefined, itemID: string) => {
+export const findBooleanEntitlement = (entitlements: Realtime.Identity.SubscriptionEntitlement[] | undefined, itemID: string) => {
   const entitlement = entitlements?.find((entitlement) => entitlement.featureID === itemID);
 
   if (!entitlement?.value) return null;
@@ -51,7 +47,7 @@ export const findSwitchEntitlement = (entitlements: Realtime.Identity.Subscripti
   return entitlement?.value === 'true';
 };
 
-export const findRangeEntitlement = (entitlements: Realtime.Identity.SubscriptionEntitlement[] | undefined, itemID: string) => {
+export const findNumberEntitlement = (entitlements: Realtime.Identity.SubscriptionEntitlement[] | undefined, itemID: string) => {
   const entitlement = entitlements?.find((entitlement) => entitlement.featureID === itemID);
 
   if (!entitlement?.value) return null;

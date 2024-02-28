@@ -12,6 +12,7 @@ import { ALEXA_SUNSET_PROJECT_ID, ExportFormat as CanvasExportFormat, PageProgre
 import { LimitType } from '@/constants/limits';
 import { Permission } from '@/constants/permissions';
 import * as Export from '@/ducks/export';
+import * as Organization from '@/ducks/organization';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
@@ -26,6 +27,7 @@ import { SharePopperContext } from '@/pages/Project/components/Header/contexts';
 import { copy } from '@/utils/clipboard';
 
 import { usePlanLimitedAction } from './planLimitV2';
+import { useConditionalLimitAction } from './planLimitV3';
 import { useDispatch } from './realtime';
 import { useTrackingEvents } from './tracking';
 
@@ -83,6 +85,7 @@ export const useProjectOptions = ({
   const projectsCount = useSelector(ProjectV2.projectsCountSelector);
   const currentVersionID = useSelector(Session.activeVersionIDSelector);
   const project = useSelector(ProjectV2.projectByIDSelector, { id: projectID });
+  const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
 
   const platformConfig = Platform.Config.get(project?.platform);
   const isProjectLocked = isLockedProjectViewer || platformConfig.isDeprecated;
@@ -105,41 +108,51 @@ export const useProjectOptions = ({
 
   const [trackingEvents] = useTrackingEvents();
 
-  const onDuplicate = usePlanLimitedAction(LimitType.PROJECTS, {
+  const onDuplicateAction = async () => {
+    if (!workspaceID) {
+      datadogRum.addError(Errors.noActiveWorkspaceID());
+      toast.genericError();
+      return;
+    }
+
+    if (!projectID) {
+      datadogRum.addError(Errors.noActiveProjectID());
+      toast.genericError();
+      return;
+    }
+
+    try {
+      const toastID = toast.info('Duplicating Assistant...', { autoClose: 1000 });
+      PageProgress.start(PageProgressBar.ASSISTANT_DUPLICATING);
+
+      await duplicateProject(projectID, workspaceID, boardID);
+
+      onDuplicated?.();
+      toast.dismiss(toastID);
+      toast.success('Assistant cloned on the dashboard');
+    } catch {
+      toast.error('Cloning failed, please try again later or contact support');
+    } finally {
+      PageProgress.stop(PageProgressBar.ASSISTANT_DUPLICATING);
+    }
+  };
+
+  const legacyOnDuplicate = usePlanLimitedAction(LimitType.PROJECTS, {
     value: projectsCount,
     limit: projectsLimit,
 
     onLimit: (config) => upgradeModal.openVoid(config.upgradeModal(config.payload)),
 
-    onAction: async () => {
-      if (!workspaceID) {
-        datadogRum.addError(Errors.noActiveWorkspaceID());
-        toast.genericError();
-        return;
-      }
-
-      if (!projectID) {
-        datadogRum.addError(Errors.noActiveProjectID());
-        toast.genericError();
-        return;
-      }
-
-      try {
-        const toastID = toast.info('Duplicating Assistant...', { autoClose: 1000 });
-        PageProgress.start(PageProgressBar.ASSISTANT_DUPLICATING);
-
-        await duplicateProject(projectID, workspaceID, boardID);
-
-        onDuplicated?.();
-        toast.dismiss(toastID);
-        toast.success('Assistant cloned on the dashboard');
-      } catch {
-        toast.error('Cloning failed, please try again later or contact support');
-      } finally {
-        PageProgress.stop(PageProgressBar.ASSISTANT_DUPLICATING);
-      }
-    },
+    onAction: onDuplicateAction,
   });
+
+  const newOnDuplicate = useConditionalLimitAction(LimitType.PROJECTS, {
+    value: projectsCount,
+    onLimit: (config) => upgradeModal.openVoid(config.upgradeModal(config.payload)),
+    onAction: onDuplicateAction,
+  });
+
+  const onDuplicate = subscription ? newOnDuplicate : legacyOnDuplicate;
 
   const onClone = async () => {
     if (!projectID) {

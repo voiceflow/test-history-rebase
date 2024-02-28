@@ -1,4 +1,5 @@
 import { Subscription } from '@voiceflow/dtos';
+import { PlanType } from '@voiceflow/internal';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 import { toast } from '@voiceflow/ui';
 
@@ -9,7 +10,7 @@ import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { Thunk } from '@/store/types';
 import { getErrorMessage } from '@/utils/error';
 
-import { chargebeeScheduledSubscriptionSelector, chargebeeSubscriptionSelector } from './subscription/subscription.select';
+import { chargebeeSubscriptionSelector } from './subscription/subscription.select';
 
 export const updateActiveOrganizationName =
   (name: string): Thunk =>
@@ -76,76 +77,37 @@ export const loadActiveOrganizationSubscription =
     }
   };
 
-export const loadActiveOrganizationScheduledSubscription =
-  (organizationID: string, chargebeeSubscriptionID: string): Thunk<Subscription | null> =>
-  async (dispatch) => {
-    try {
-      const subscription = await designerClient.billing.subscription.getSubscriptionScheduledChanges(organizationID, chargebeeSubscriptionID);
-
-      dispatch(Actions.OrganizationSubscription.ReplaceScheduled({ scheduledSubscription: subscription, context: { organizationID } }));
-
-      return subscription;
-    } catch {
-      return null;
-    }
-  };
-
-export const updateSeats = (organizationID: string, chargebeeSubscriptionID: string, seats: number): Thunk<void> => {
-  return async (dispatch, getState) => {
-    try {
-      const subscription = chargebeeSubscriptionSelector(getState());
-      await designerClient.billing.subscription.updateSeats(organizationID, chargebeeSubscriptionID, { seats });
-
-      if (!subscription) return;
-
-      dispatch(
-        Actions.OrganizationSubscription.Replace({
-          subscription: {
-            ...subscription,
-            editorSeats: seats,
-          },
-          context: { organizationID },
-        })
-      );
-    } catch (err) {
-      toast.error(getErrorMessage(err, 'Failed to update seats'));
-    }
-  };
-};
-
-export const scheduleSeatsUpdate = (organizationID: string, chargebeeSubscriptionID: string, seats: number): Thunk<void> => {
-  return async (dispatch, getState) => {
-    try {
-      await designerClient.billing.subscription.scheduleSeatsUpdate(organizationID, chargebeeSubscriptionID, { seats });
-
-      const scheduledSubscription = chargebeeScheduledSubscriptionSelector(getState());
-      const subscription = chargebeeSubscriptionSelector(getState());
-
-      const sub = scheduledSubscription || subscription;
-
-      if (!sub) return;
-
-      dispatch(
-        Actions.OrganizationSubscription.ReplaceScheduled({
-          scheduledSubscription: {
-            ...sub,
-            editorSeats: seats,
-          },
-          context: { organizationID },
-        })
-      );
-    } catch (err) {
-      toast.error(getErrorMessage(err, 'Failed to schedule seats update'));
-    }
-  };
-};
-
 export const cancelSubscription = (organizationID: string, chargebeeSubscriptionID: string): Thunk<void> => {
   return async () => {
     try {
       await designerClient.billing.subscription.cancel(organizationID, chargebeeSubscriptionID);
     } catch (err) {
       toast.error(getErrorMessage(err, 'Failed to cancel subscription'));
+    }
+  };
+};
+
+export const downgradeTrial = (organizationID: string, chargebeeSubscriptionID: string): Thunk<void> => {
+  return async (dispatch, getState) => {
+    try {
+      const subscription = chargebeeSubscriptionSelector(getState());
+
+      if (!subscription) return;
+
+      await designerClient.billing.subscription.downgradeTrial(organizationID, chargebeeSubscriptionID);
+
+      await dispatch.local(
+        Actions.OrganizationSubscription.Replace({
+          subscription: {
+            ...subscription,
+            plan: PlanType.STARTER,
+            trial: null,
+          },
+          context: { organizationID },
+        })
+      );
+    } catch (err) {
+      toast.error(getErrorMessage(err, 'Failed to downgrade trial'));
     }
   };
 };

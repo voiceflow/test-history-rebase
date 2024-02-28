@@ -7,5 +7,4 @@ export * as platform from './platform';
 export * as port from './port';
 export * as role from './role';
 export * as slot from './slot';
-export * as subscription from './subscription';
 export * as typeGuards from './typeGuards';

@@ -4,10 +4,12 @@ import React from 'react';
 import Page from '@/components/Page';
 import { LimitType } from '@/constants/limits';
 import { Permission } from '@/constants/permissions';
+import * as Organization from '@/ducks/organization';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { usePermission } from '@/hooks/permission';
 import { usePlanLimitedConfig } from '@/hooks/planLimitV2';
+import { useConditionalLimit } from '@/hooks/planLimitV3';
 import { useSelector } from '@/hooks/redux';
 import * as ModalsV2 from '@/ModalsV2';
 
@@ -27,8 +29,13 @@ const Header: React.FC<HeaderProps> = ({ search, onSearch, isKanban }) => {
 
   const projectsCount = useSelector(ProjectV2.projectsCountSelector);
   const projectsLimit = useSelector(WorkspaceV2.active.projectsLimitSelector);
+  const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
 
-  const projectsLimitConfig = usePlanLimitedConfig(LimitType.PROJECTS, { value: projectsCount, limit: projectsLimit });
+  // FIXME: remove FF https://voiceflow.atlassian.net/browse/CV3-994
+  const legacyProjectsLimitConfig = usePlanLimitedConfig(LimitType.PROJECTS, { value: projectsCount, limit: projectsLimit });
+  const newProjectsLimitConfig = useConditionalLimit(LimitType.PROJECTS, { value: projectsCount });
+
+  const projectsLimitConfig = subscription ? newProjectsLimitConfig : legacyProjectsLimitConfig;
 
   const inviteModal = ModalsV2.useModal(ModalsV2.Workspace.Invite);
   const upgradeModal = ModalsV2.useModal(ModalsV2.Upgrade);

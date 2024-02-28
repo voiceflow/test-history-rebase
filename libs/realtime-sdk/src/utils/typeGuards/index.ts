@@ -1,7 +1,6 @@
 export * from './expressions';
 export * from './node';
 export * from './platform';
-export * from './subscription';
 export * from './workspace';
 
 type Truthy<T> = T extends false | '' | 0 | null | undefined ? never : T;

@@ -6,7 +6,9 @@ import React from 'react';
 import { LimitType } from '@/constants/limits';
 import { Permission } from '@/constants/permissions';
 import * as History from '@/ducks/history';
-import { useDispatch, useEventualEngine, usePermission, usePlanLimitConfig, useTrackingEvents } from '@/hooks';
+import * as Organization from '@/ducks/organization';
+import { useDispatch, useEventualEngine, usePermission, usePlanLimitConfig, useSelector, useTrackingEvents } from '@/hooks';
+import { useLimitConfig } from '@/hooks/planLimitV3';
 import { useAnyModeOpen, useTextMarkupMode } from '@/pages/Project/hooks/modes';
 import { upload, windowRefocused } from '@/utils/dom';
 import { imageSizeFromUrl, videoSizeFromUrl } from '@/utils/file';
@@ -39,9 +41,16 @@ export const MarkupProvider: React.FC<React.PropsWithChildren> = ({ children }) 
   const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
   const [uploadingMedia, setUploadingMedia] = React.useState(false);
   const [creatingType, localSetCreatingType] = React.useState<Nullable<MarkupBlockType>>(isTextMarkupMode ? BlockType.MARKUP_TEXT : null);
+  const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
 
-  const videoLimitConfig = usePlanLimitConfig(LimitType.MARKUP_VIDEO);
-  const imageLimitConfig = usePlanLimitConfig(LimitType.MARKUP_IMAGE);
+  const legacyVideoLimitConfig = usePlanLimitConfig(LimitType.MARKUP_VIDEO);
+  const legacyImageLimitConfig = usePlanLimitConfig(LimitType.MARKUP_IMAGE);
+
+  const newVideoLimitConfig = useLimitConfig(LimitType.MARKUP_VIDEO);
+  const newImageLimitConfig = useLimitConfig(LimitType.MARKUP_IMAGE);
+
+  const videoLimitConfig = subscription ? newVideoLimitConfig : legacyVideoLimitConfig;
+  const imageLimitConfig = subscription ? newImageLimitConfig : legacyImageLimitConfig;
 
   const imageUploader = Upload.useUpload({ fileType: 'image', endpoint: '/image' });
   const videoUploader = Upload.useUpload({ fileType: 'video', endpoint: '/video' });

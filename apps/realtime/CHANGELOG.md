@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.279.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.279.4...@voiceflow/realtime@1.279.5) (2024-02-28)
+
+### Bug Fixes
+
+* do not load nlu cms for migration [bugfix] (BUG-1166) ([#7826](https://github.com/voiceflow/creator-app/issues/7826)) ([337cd3b](https://github.com/voiceflow/creator-app/commit/337cd3bb08758b13a0381c11c5d25d6c563144b7))
+
 ## [1.279.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.279.3...@voiceflow/realtime@1.279.4) (2024-02-27)
 
 ### Reverts

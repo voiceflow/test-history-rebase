@@ -114,6 +114,7 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
     setCategories([]);
     setLabels([]);
     setUserSegments([]);
+    setNumDataSources(null);
   };
 
   React.useEffect(() => {

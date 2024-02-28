@@ -1,21 +1,17 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { tid } from '@voiceflow/style';
-import { Box, notify, TextArea } from '@voiceflow/ui-next';
-import { Tokens } from '@voiceflow/ui-next/styles';
+import { Box, TextArea } from '@voiceflow/ui-next';
 import pluralize from 'pluralize';
 import React, { useState } from 'react';
 
 import { Modal } from '@/components/Modal';
-import { LimitType } from '@/constants/limits';
 import { Designer } from '@/ducks';
 import { useInput } from '@/hooks/input.hook';
-import { useUpgradeModal } from '@/hooks/modal.hook';
-import { usePlanLimitConfig } from '@/hooks/planLimitV2';
 import { useDispatch } from '@/hooks/store.hook';
 import { useValidators } from '@/hooks/validate.hook';
 
 import { KBFieldLabel } from '../../components/KBFieldLabel/KBFieldLabel.component';
-import { filterWhitespace, sanitizeURLs, urlsValidator } from '../../KnowledgeBaseImport.utils';
+import { filterWhitespace, sanitizeURLs, urlsValidator, useDocumentLimitError } from '../../KnowledgeBaseImport.utils';
 import { errorTextStyles, submitButtonStyles, textareaBoxStyles, textareaStyles } from '../KBImportSitemap.css';
 import { IKBImportSitemapPreview } from './KBImportSitemapPreview.interface';
 
@@ -32,8 +28,7 @@ export const KBImportSitemapPreview: React.FC<IKBImportSitemapPreview> = ({
 }) => {
   const [error, setError] = useState<string | null>(null);
 
-  const planConfig = usePlanLimitConfig(LimitType.KB_DOCUMENTS, { limit: 5000 });
-  const upgradeModal = useUpgradeModal();
+  const checkDocumentLimitError = useDocumentLimitError(enableClose);
   const createManyFromData = useDispatch(Designer.KnowledgeBase.Document.effect.createManyFromData);
 
   const validator = useValidators({
@@ -52,21 +47,7 @@ export const KBImportSitemapPreview: React.FC<IKBImportSitemapPreview> = ({
         return null;
       })
       .catch((error) => {
-        if (error.response.status === 406 && planConfig) {
-          const limit = error.response.data.kbDocsLimit;
-          notify.long.warning(`Document limit (${limit}) reached for your current subscription. Please upgrade to continue.`, {
-            actionButtonProps: { label: 'Upgrade', onClick: () => upgradeModal.openVoid(planConfig.upgradeModal({ limit })) },
-            bodyStyle: {
-              color: Tokens.colors.neutralDark.neutralsDark900,
-              fontSize: Tokens.typography.size[14],
-              lineHeight: Tokens.typography.lineHeight[20],
-              fontFamily: Tokens.typography.family.regular,
-            },
-          });
-        } else {
-          notify.short.error('Failed to import data sources');
-        }
-        enableClose();
+        checkDocumentLimitError(error);
       });
   });
 

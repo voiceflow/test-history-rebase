@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.305.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.304.0...@voiceflow/ui@1.305.0) (2024-02-29)
+
+### Features
+
+* chargebee checkout (CV3-846) ([#7819](https://github.com/voiceflow/creator-app/issues/7819)) ([2c416a3](https://github.com/voiceflow/creator-app/commit/2c416a35ffa0306bc82f9dbd789054f6b17bdca7))
+
 # [1.304.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.303.1...@voiceflow/ui@1.304.0) (2024-02-19)
 
 ### Features

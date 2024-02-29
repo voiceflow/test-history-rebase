@@ -13,9 +13,11 @@ import {
 } from '../subscription.utils';
 
 const subscriptionAdapter = createMultiAdapter<Realtime.Identity.Subscription, Subscription>(
-  ({ id, billingPeriodUnit, status, nextBillingAt, subscriptionItems, metaData, subscriptionEntitlements }) => {
+  ({ id, billingPeriodUnit, status, nextBillingAt, subscriptionItems, metaData, subscriptionEntitlements, ...rest }) => {
     const planItem = findPlanItem(subscriptionItems);
     const trialEnd = planItem?.trialEnd;
+    // TODO: customerID is not present in the Realtime.Identity.Subscription type
+    const { customerID } = rest as any;
 
     const plan = getPlanFromPriceID(planItem?.itemPriceID);
     const isTrial = isChargebeeTrial(planItem, metaData);
@@ -36,8 +38,9 @@ const subscriptionAdapter = createMultiAdapter<Realtime.Identity.Subscription, S
     const knowledgeBaseSourcesLimit = findNumberEntitlement(subscriptionEntitlements, 'limit-knowledge-base-source-count');
     const workspacesLimit = findNumberEntitlement(subscriptionEntitlements, 'limit-workspace-count');
 
-    const result: Subscription = {
+    const result: Subscription & { customerID: string } = {
       id,
+      customerID,
       billingPeriodUnit: billingPeriodUnit ?? null,
       editorSeats: planItem?.quantity ?? 1,
       pricePerEditor: planItem?.unitPrice ? planItem.unitPrice / 100 : 0,

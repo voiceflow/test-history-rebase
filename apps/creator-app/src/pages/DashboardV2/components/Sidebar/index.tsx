@@ -11,10 +11,10 @@ import { Permission } from '@/constants/permissions';
 import * as Sessions from '@/ducks/session';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useOrganizationDefaultPagePath } from '@/hooks/organization';
+import { useCheckoutPaymentModal } from '@/hooks/payment';
 import { usePermission } from '@/hooks/permission';
 import { useSelector } from '@/hooks/redux';
 import { useTrackingEvents } from '@/hooks/tracking';
-import * as ModalsV2 from '@/ModalsV2';
 import { getPlanTypeLabel } from '@/utils/plans';
 
 import { Account as AccountComponent } from './components';
@@ -29,7 +29,7 @@ const DashboardNavigationSidebar: React.FC = () => {
   const isEnterpriseWorkspace = useSelector(WorkspaceV2.active.isEnterpriseSelector);
   const organizationTrialDaysLeft = useSelector(WorkspaceV2.active.organizationTrialDaysLeftSelector);
 
-  const paymentModal = ModalsV2.useModal(ModalsV2.Payment);
+  const paymentModal = useCheckoutPaymentModal();
   const [, trackEventFactory] = useTrackingEvents();
   const organizationDefaultPagePath = useOrganizationDefaultPagePath();
 

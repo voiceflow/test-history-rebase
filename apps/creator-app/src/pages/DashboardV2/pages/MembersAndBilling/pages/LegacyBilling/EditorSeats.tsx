@@ -15,8 +15,8 @@ import * as date from '@/utils/date';
 import CardDetails from './CardDetails';
 
 const LegacyBillingEditorSeats: React.FC = () => {
-  const { planSubscription, refetchPlanSubscription, paymentSource } = Payment.usePaymentAPI();
-  const scheduleSeatModal = ModalsV2.useModal(ModalsV2.LegacyBilling.ScheduleSeatChange);
+  const { planSubscription, refetchPlanSubscription, paymentSource } = Payment.legacy.usePaymentAPI();
+  const scheduleSeatModal = ModalsV2.useModal(ModalsV2.Legacy.Billing.ScheduleSeatChange);
   const seats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);
   const isTrial = useSelector(WorkspaceV2.active.isOnTrialSelector);
   const trialEndAt = useSelector(WorkspaceV2.active.organizationTrialEndAtSelector);

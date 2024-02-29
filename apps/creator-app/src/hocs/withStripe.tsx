@@ -7,9 +7,9 @@ export const withStripe = <P extends object, E = unknown>(Component: React.Compo
   setDisplayName(wrapDisplayName(Component, 'withStripe'))(
     React.forwardRef<E, P>((props, ref) => {
       return (
-        <Payment.PaymentProvider>
+        <Payment.legacy.PaymentProvider>
           <Component {...props} ref={ref} />
-        </Payment.PaymentProvider>
+        </Payment.legacy.PaymentProvider>
       );
     })
   );

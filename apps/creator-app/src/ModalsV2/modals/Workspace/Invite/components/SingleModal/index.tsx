@@ -30,7 +30,7 @@ const SingleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, a
 
   const inviteLink = useInviteLink();
   const dedupeInvites = useDedupeInvites();
-  const paymentAPI = Payment.usePaymentAPI();
+  const paymentAPI = Payment.legacy.usePaymentAPI();
   const subscriptionInfo = WorkspaceUI.useSubscriptionInfo();
 
   const invitesMap = React.useMemo(
@@ -199,4 +199,4 @@ const SingleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, a
   );
 };
 
-export default withProvider(Payment.PaymentProvider)(SingleModal);
+export default withProvider(Payment.legacy.PaymentProvider)(SingleModal);

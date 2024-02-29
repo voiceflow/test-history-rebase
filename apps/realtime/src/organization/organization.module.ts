@@ -2,15 +2,16 @@ import { Module } from '@nestjs/common';
 
 import { OrganizationBillingModule } from './billing/billing.module';
 import { BillingSubscriptionModule } from './billing/subscription/subscription.module';
+import { OrganizationIdentityModule } from './identity/identity.module';
+import { OrganizationIdentityService } from './identity/identity.service';
+import { OrganizationIdentityMemberService } from './identity/member.service';
 import { OrganizationHTTPController } from './organization.http.controller';
 import { OrganizationLoguxController } from './organization.logux.controller';
-import { OrganizationService } from './organization.service';
-import { OrganizationMemberService } from './organization-member.service';
 
 @Module({
-  imports: [OrganizationBillingModule, BillingSubscriptionModule],
-  providers: [OrganizationService, OrganizationMemberService],
+  imports: [OrganizationBillingModule, BillingSubscriptionModule, OrganizationIdentityModule],
+  providers: [OrganizationIdentityService, OrganizationIdentityMemberService],
   controllers: [OrganizationHTTPController, OrganizationLoguxController],
-  exports: [OrganizationService],
+  exports: [OrganizationIdentityService],
 })
 export class OrganizationModule {}

@@ -113,7 +113,7 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
   const account = useSelector(Account.userSelector);
   const firstLogin = useSelector(Account.isFirstLoginSelector);
   const currentWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
-  const paymentAPI = Payment.usePaymentAPI();
+  const paymentAPI = Payment.legacy.usePaymentAPI();
   const checkoutWorkspace = useDispatch(WorkspaceV2.checkout);
   const createWorkspace = useDispatch(WorkspaceV2.createWorkspace);
   const sendInvite = useDispatch(WorkspaceV2.sendInviteToActiveWorkspace);

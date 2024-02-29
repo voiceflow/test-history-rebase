@@ -5,12 +5,12 @@ import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { Permission } from '@voiceflow/sdk-auth';
 import { Authorize, UserID } from '@voiceflow/sdk-auth/nestjs';
 
-import { OrganizationService } from './organization.service';
+import { OrganizationIdentityService } from './identity/identity.service';
 
 @Controller('/organizations')
 @ApiTags('Organization')
 export class OrganizationHTTPController {
-  constructor(@Inject(OrganizationService) private readonly organizationService: OrganizationService) {}
+  constructor(@Inject(OrganizationIdentityService) private readonly organizationService: OrganizationIdentityService) {}
 
   @Get('/:organizationID/workspaces')
   @Authorize.Permissions([Permission.ORGANIZATION_READ])

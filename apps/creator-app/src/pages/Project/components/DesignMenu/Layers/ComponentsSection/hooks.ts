@@ -83,7 +83,7 @@ export const useComponents = (): ComponentsAPI => {
       children: [],
     });
 
-    return cmsComponents.map(createComponentItemFromCMS);
+    return cmsComponents.map(createComponentItemFromCMS).sort((a, b) => b.name.localeCompare(a.name));
   }, [folders, components, cmsComponents, getDiagramByID]);
 
   const [searchComponentsItems, searchOpenedComponents] = React.useMemo(() => {

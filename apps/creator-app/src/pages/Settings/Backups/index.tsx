@@ -8,6 +8,7 @@ import { realtimeClient } from '@/client/realtime';
 import * as Settings from '@/components/Settings';
 import { Path } from '@/config/routes';
 import { Permission } from '@/constants/permissions';
+import * as Designer from '@/ducks/designer';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import { useDispatch, useHotkey, usePermission, useSetup, useTrackingEvents } from '@/hooks';
@@ -26,6 +27,7 @@ const SettingsBackups: React.FC = () => {
   const projectID = useSelector(Session.activeProjectIDSelector)!;
   const versionID = useSelector(Session.activeVersionIDSelector)!;
   const goToCanvasWithVersionID = useDispatch(Router.goToCanvasWithVersionID);
+  const restoreCMS = useDispatch(Designer.effect.replaceAssistant);
 
   const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
   const [hasFullVersionPermissions] = usePermission(Permission.PROJECT_FULL_VERSIONS);
@@ -106,6 +108,9 @@ const SettingsBackups: React.FC = () => {
   const handleRestore = async (backup: BackupEntity) => {
     setLoading(true);
     await designerClient.backup.restoreOne(projectID, backup.id, { clientID: realtimeClient.clientId });
+
+    const cms = await designerClient.assistant.exportCMS(versionID);
+    restoreCMS(cms);
 
     goToCanvasWithVersionID(versionID);
   };

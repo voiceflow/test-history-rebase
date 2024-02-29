@@ -2,8 +2,9 @@ import { Box, Drawer, Table } from '@voiceflow/ui-next';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import React, { useContext, useEffect } from 'react';
 import { DismissableLayerContext } from 'react-dismissable-layers';
-import { Redirect, useRouteMatch } from 'react-router-dom';
+import { generatePath, Redirect, useRouteMatch } from 'react-router-dom';
 
+import * as Session from '@/ducks/session';
 import { useGetAtomValue } from '@/hooks/atom.hook';
 import { useOnLinkClick } from '@/hooks/navigation.hook';
 import { useSelector } from '@/hooks/store.hook';
@@ -15,6 +16,7 @@ import { container, content, drawer } from './CMSResourceEditor.css';
 import type { ICMSResourceEditor } from './CMSResourceEditor.interface';
 
 export const CMSResourceEditor: React.FC<ICMSResourceEditor> = ({ Editor, children, drawerNode }) => {
+  const versionID = useSelector(Session.activeVersionIDSelector)!;
   const pathMatch = useRouteMatch<{ resourceID: string; resourceType?: string }>();
   const cmsManager = useCMSManager();
   const tableState = Table.useStateMolecule();
@@ -24,6 +26,7 @@ export const CMSResourceEditor: React.FC<ICMSResourceEditor> = ({ Editor, childr
   const setDrawerNode = useSetAtom(drawerNode);
   const dismissableLayer = useContext(DismissableLayerContext);
   const resourceSelectors = useAtomValue(cmsManager.selectors);
+  const folderID = useAtomValue(cmsManager.folderID);
   const [activeID, setActiveID] = useAtom(tableState.activeID);
 
   const hasResourceItem = useSelector((state) => !!resourceSelectors.oneByID(state, { id: activeID }));
@@ -47,7 +50,9 @@ export const CMSResourceEditor: React.FC<ICMSResourceEditor> = ({ Editor, childr
     setActiveID(pathMatch?.params.resourceID ?? null);
   }, [pathMatch]);
 
-  if (pathMatch.params.resourceID && pathMatch.params.resourceID === activeID && !hasResourceItem) return <Redirect to={getFolderPath()} />;
+  if (pathMatch.params.resourceID && pathMatch.params.resourceID === activeID && !hasResourceItem && versionID) {
+    return <Redirect to={generatePath(getFolderPath(), { versionID, folderID: folderID ?? undefined })} />;
+  }
 
   return (
     <Box direction="column" className={container} onClick={onClick}>

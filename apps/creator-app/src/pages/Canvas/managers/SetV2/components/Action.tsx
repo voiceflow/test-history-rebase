@@ -35,7 +35,7 @@ const Action: ConnectedAction<Realtime.NodeData.SetV2, Realtime.NodeData.SetV2Bu
           { id: set.id, variable, expression: transformVariablesToReadable(String(set.expression) || "''", entitiesAndVariables.byKey) },
         ];
       }, []),
-    [(data.sets, entitiesAndVariables)]
+    [data.sets, entitiesAndVariables]
   );
 
   const isEmpty = !previews.length;

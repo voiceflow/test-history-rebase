@@ -1,4 +1,3 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { CustomScrollbarsTypes, Link, SvgIcon, useConst, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 import { XYCoord } from 'react-dnd';
@@ -9,7 +8,7 @@ import VirtualList from '@/components/VirtualList';
 import * as Documentation from '@/config/documentation';
 import { DragItem } from '@/constants';
 import { Permission } from '@/constants/permissions';
-import { useDidUpdateEffect, useFeature, usePermission } from '@/hooks';
+import { useDidUpdateEffect, usePermission } from '@/hooks';
 
 import Header from '../../Header';
 import { BOTTOM_PADDING, HEADER_MIN_HEIGHT, HORIZONTAL_DRAG_OFFSET, ITEM_HEIGHT, SEARCH_INPUT_HEIGHT } from '../constants';
@@ -25,12 +24,10 @@ interface ComponentsSectionProps {
 }
 
 const ComponentsSection: React.FC<ComponentsSectionProps> = ({ collapsed, setSectionHeight }) => {
-  const cmsComponent = useFeature(Realtime.FeatureFlag.CMS_COMPONENTS);
   const listRef = React.useRef<VariableSizeList<ComponentItem[]>>(null);
   const scrollBarsRef = React.useRef<CustomScrollbarsTypes.Scrollbars>(null);
 
   const [canReorder] = usePermission(Permission.REORDER_TOPICS_AND_COMPONENTS);
-  const shouldReorder = !cmsComponent.isEnabled;
 
   const {
     onDragEnd,
@@ -97,7 +94,7 @@ const ComponentsSection: React.FC<ComponentsSectionProps> = ({ collapsed, setSec
       onReorder={onReorderComponents}
       onEndDrag={onDragEnd}
       getItemKey={getDNDItemKey}
-      canReorder={() => !isSearch && canReorder && shouldReorder}
+      canReorder={() => !isSearch}
       onStartDrag={onDragStart}
       itemComponent={FolderItem}
       previewOptions={previewOptions}

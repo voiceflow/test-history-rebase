@@ -55,7 +55,5 @@ export enum FeatureFlag {
 
   AI_CAPTURE = 'ai_capture',
 
-  CMS_COMPONENTS = 'cms_components',
-
   HTTP_ASSISTANT_CMS = 'http_assistant_cms',
 }

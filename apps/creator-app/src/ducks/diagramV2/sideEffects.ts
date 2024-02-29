@@ -183,7 +183,7 @@ const getDiagramToCreate =
     };
   };
 
-interface ConvertToDiagramResult {
+export interface ConvertToDiagramResult {
   name: string;
   diagramID: string;
   outgoingLinkTarget: Nullable<{ nodeID: string; portID: string }>;

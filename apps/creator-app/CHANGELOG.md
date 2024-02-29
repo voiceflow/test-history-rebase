@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1412.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1411.0...@voiceflow/creator-app@1.1412.0) (2024-02-29)
+
+### Features
+
+* reset cms redux on restore version (COR-1078) ([#7818](https://github.com/voiceflow/creator-app/issues/7818)) ([5242dfe](https://github.com/voiceflow/creator-app/commit/5242dfe07dd4181ea8d585ee82e0de554b756b1f))
+
 # [1.1411.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1410.0...@voiceflow/creator-app@1.1411.0) (2024-02-29)
 
 ### Features

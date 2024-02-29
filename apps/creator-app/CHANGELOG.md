@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1408.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1407.1...@voiceflow/creator-app@1.1408.0) (2024-02-29)
+
+### Features
+
+* close editor before delete [bugfix] (CV3-1149) ([#7830](https://github.com/voiceflow/creator-app/issues/7830)) ([7aaabaf](https://github.com/voiceflow/creator-app/commit/7aaabaff535ace5d473ef7b0238642c726960b63))
+
 ## [1.1407.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1407.0...@voiceflow/creator-app@1.1407.1) (2024-02-28)
 
 ### Bug Fixes

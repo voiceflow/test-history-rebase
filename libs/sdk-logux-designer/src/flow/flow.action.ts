@@ -66,6 +66,14 @@ export interface PatchOne extends PatchOneRequest<PatchData>, DesignerAction {}
 
 export const PatchOne = flowAction.crud.patchOne<PatchOne>();
 
+/* PatchOneUpadtedBy */
+
+export interface PatchOneUpadtedBy extends DesignerAction {
+  diagramID: string;
+}
+
+export const PatchOneUpadtedBy = Utils.protocol.createAction<PatchOneUpadtedBy>(flowAction('PATCH_ONE_BY_DIAGRAM_ID'));
+
 /* PatchMany */
 
 export interface PatchMany extends PatchManyRequest<PatchData>, DesignerAction {}
@@ -104,7 +112,7 @@ export const DuplicateOne = Utils.protocol.createAsyncAction<DuplicateOne.Reques
   flowAction('DUPLICATE_ONE')
 );
 
-/* Copy Past */
+/* Copy Paste */
 
 export namespace CopyPasteMany {
   export interface Request extends DesignerAction {

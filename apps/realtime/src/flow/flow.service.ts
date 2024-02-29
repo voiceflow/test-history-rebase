@@ -158,6 +158,18 @@ export class FlowService extends CMSTabularService<FlowORM> {
     };
   }
 
+  /* Patch */
+
+  async patchOneUpdatedBy(userID: number, data: { diagramID: string; environmentID: string }) {
+    const [flow] = await this.orm.findManyByDiagramIDs(data.environmentID, [data.diagramID]);
+
+    console.log('UHUUU', flow);
+
+    if (!flow) return;
+
+    await this.patchOneForUser(userID, flow, { updatedByID: userID });
+  }
+
   /* Create */
 
   async createManyAndSync(

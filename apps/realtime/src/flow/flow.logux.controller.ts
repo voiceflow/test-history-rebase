@@ -112,6 +112,18 @@ export class FlowLoguxController {
       }));
   }
 
+  @Action(Actions.Flow.PatchOneUpadtedBy)
+  @Authorize.Permissions<Actions.Flow.PatchOneUpadtedBy>([Permission.PROJECT_UPDATE], ({ context }) => ({
+    id: context.environmentID,
+    kind: 'version',
+  }))
+  @Broadcast<Actions.Flow.PatchOneUpadtedBy>(({ context }) => ({ channel: Channels.assistant.build(context) }))
+  @BroadcastOnly()
+  @UseRequestContext()
+  async PatchOneUpadtedBy(@Payload() { diagramID, context }: Actions.Flow.PatchOneUpadtedBy, @AuthMeta() authMeta: AuthMetaPayload) {
+    await this.service.patchOneUpdatedBy(authMeta.userID, { diagramID, environmentID: context.environmentID });
+  }
+
   @Action(Actions.Flow.PatchOne)
   @Authorize.Permissions<Actions.Flow.PatchOne>([Permission.PROJECT_UPDATE], ({ context }) => ({
     id: context.environmentID,

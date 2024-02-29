@@ -1,4 +1,6 @@
+import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
+import { Actions } from '@voiceflow/sdk-logux-designer';
 import { Context } from '@voiceflow/socket-utils';
 import { Action } from 'typescript-fsa';
 
@@ -20,9 +22,24 @@ class PatchManyLinks extends AbstractDiagramActionControl<Realtime.link.PatchMan
   };
 
   protected finally = async (ctx: Context, { payload }: Action<Realtime.link.PatchManyPayload>): Promise<void> => {
+    const diagram = await this.services.diagram.get(payload.versionID, payload.diagramID);
+    const isComponent = diagram.type === BaseModels.Diagram.DiagramType.COMPONENT;
+
     await Promise.all([
       this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID),
       this.services.domain.setUpdatedBy(payload.versionID, payload.domainID, ctx.data.creatorID),
+
+      ...[
+        isComponent ??
+          this.server.processAs(
+            ctx.data.creatorID,
+            ctx.data.clientID,
+            Actions.Flow.PatchOneUpadtedBy({
+              diagramID: diagram._id,
+              context: { environmentID: payload.versionID, assistantID: payload.projectID },
+            })
+          ),
+      ],
     ]);
   };
 }

@@ -17,7 +17,7 @@ import { useCMSActiveResourceID } from '../../../../hooks/cms-table.hook';
 export const CMSFlowEditor: React.FC = () => {
   const editorRef = useRef<IEditorAPI>(null);
   const duplicateOne = useDispatch(Designer.Flow.effect.duplicateOne);
-  const goToDiagramHistoryPush = useDispatch(Router.goToDiagramHistoryPush);
+  const goToDiagram = useDispatch(Router.goToDiagram);
 
   const flowID = useCMSActiveResourceID();
   const getMoreMenu = useCMSResourceGetMoreMenu({
@@ -44,14 +44,14 @@ export const CMSFlowEditor: React.FC = () => {
     >
       <Scroll style={{ display: 'block' }}>
         <Box px={24} py={20} direction="column">
-          <Button onClick={() => flow.diagramID && goToDiagramHistoryPush(flow.diagramID)} label="Edit component" variant="primary" fullWidth />
+          <Button onClick={() => flow.diagramID && goToDiagram(flow.diagramID)} label="Edit component" variant="primary" fullWidth />
         </Box>
 
         <Divider noPadding />
 
         <CMSEditorDescription
           value={flow.description ?? ''}
-          placeholder="Enter component description"
+          placeholder="Enter description"
           onValueChange={(description) => patchFlow({ description })}
           testID={tid('flow', 'description')}
         />

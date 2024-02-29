@@ -30,6 +30,7 @@ const ComponentsSection: React.FC<ComponentsSectionProps> = ({ collapsed, setSec
   const scrollBarsRef = React.useRef<CustomScrollbarsTypes.Scrollbars>(null);
 
   const [canReorder] = usePermission(Permission.REORDER_TOPICS_AND_COMPONENTS);
+  const shouldReorder = !cmsComponent.isEnabled;
 
   const {
     onDragEnd,
@@ -85,7 +86,7 @@ const ComponentsSection: React.FC<ComponentsSectionProps> = ({ collapsed, setSec
   return (
     <DraggableList
       type={DragItem.COMPONENTS}
-      canDrag={!cmsComponent.isEnabled && canDrag}
+      canDrag={canDrag}
       itemProps={{
         isSearch,
         activeDiagramID,
@@ -96,7 +97,7 @@ const ComponentsSection: React.FC<ComponentsSectionProps> = ({ collapsed, setSec
       onReorder={onReorderComponents}
       onEndDrag={onDragEnd}
       getItemKey={getDNDItemKey}
-      canReorder={() => !isSearch && canReorder}
+      canReorder={() => !isSearch && canReorder && shouldReorder}
       onStartDrag={onDragStart}
       itemComponent={FolderItem}
       previewOptions={previewOptions}

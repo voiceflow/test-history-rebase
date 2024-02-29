@@ -8,6 +8,7 @@ import { Designer } from '@/ducks';
 import { useFolderCreateModal } from '@/hooks/modal.hook';
 import { useDeferredSearch } from '@/hooks/search.hook';
 import { useSelector } from '@/hooks/store.hook';
+import { getFolderScopeLabel } from '@/utils/cms.util';
 
 import { FolderMenuEmpty } from '../FolderMenuEmpty/FolderMenuEmpty.component';
 import type { IFolderMenu } from './FolderMenu.interface';
@@ -32,7 +33,7 @@ export const FolderMenu: React.FC<IFolderMenu> = ({ width, scope, parentID, onCl
       return orderedFolders;
     }
 
-    return [{ id: ROOT_FOLDER_ID, name: `All ${pluralize(scope, 2)}` } as const, ...orderedFolders];
+    return [{ id: ROOT_FOLDER_ID, name: `All ${pluralize(getFolderScopeLabel(scope), 2)}` } as const, ...orderedFolders];
   }, [scope, folders, parentID, excludeIDs]);
 
   const search = useDeferredSearch({

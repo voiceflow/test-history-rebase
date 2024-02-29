@@ -43,7 +43,7 @@ export const ComponentEditorBase: React.FC<ComponentEditorBaseProps> = ({ header
               <ComponentEditorDescription description={flow?.description} />
             </>
           ) : (
-            <ComponentEditorFlowsEmpty />
+            <ComponentEditorFlowsEmpty onCreate={(flow) => editor.onChange({ diagramID: flow.diagramID })} />
           )}
         </Box>
       </Scroll>

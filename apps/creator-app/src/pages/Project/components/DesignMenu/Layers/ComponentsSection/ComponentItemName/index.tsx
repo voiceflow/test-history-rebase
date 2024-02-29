@@ -89,7 +89,7 @@ const ComponentItemName: React.ForwardRefRenderFunction<HTMLDivElement, Componen
           onMouseDown={() => hasTCEditPermissions && enableClickedState()}
           disableHover={disableHover}
           viewerOnly={!hasTCEditPermissions}
-          onClick={() => goToDiagram(diagramID)}
+          onClick={() => !renameEnabled && goToDiagram(diagramID)}
           onContextMenu={Utils.functional.chain(onContextMenu, clearClickedState)}
           isDraggingPreview={isDraggingPreview}
           isContextMenuOpen={isOpen}

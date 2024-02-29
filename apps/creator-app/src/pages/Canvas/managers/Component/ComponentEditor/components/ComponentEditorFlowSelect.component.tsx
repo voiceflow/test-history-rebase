@@ -7,7 +7,6 @@ import { CMSRoute } from '@/config/routes';
 import { Designer } from '@/ducks';
 import * as Router from '@/ducks/router';
 import { useDispatch, useSelector } from '@/hooks';
-import { useGoToCMSResourceModal } from '@/hooks/cms-resource.hook';
 import { useDeferredSearch } from '@/hooks/search.hook';
 import * as ModalsV2 from '@/ModalsV2';
 import perf, { PerfAction } from '@/performance';
@@ -20,7 +19,7 @@ interface IComponentEditorFlowSelect {
 export const ComponentEditorFlowSelect: React.FC<IComponentEditorFlowSelect> = ({ diagramID, onSelect, activeNodeID }) => {
   const flows = useSelector(Designer.Flow.selectors.all);
   const flow = useSelector(Designer.Flow.selectors.byDiagramID, { diagramID: diagramID ?? null });
-
+  const createModal = ModalsV2.useModal(ModalsV2.Flow.Create);
   const goToCMSResource = useDispatch(Router.goToCMSResource);
 
   const goToDiagramHistoryPush = useDispatch(Router.goToDiagramHistoryPush);
@@ -36,9 +35,10 @@ export const ComponentEditorFlowSelect: React.FC<IComponentEditorFlowSelect> = (
     searchBy: (item) => item.name,
   });
 
-  const goToCMSFlowCreateModal = useGoToCMSResourceModal(CMSRoute.FLOW);
-  const onCreateFlow = () => {
-    goToCMSFlowCreateModal(ModalsV2.Flow.Create, { name: search.value, folderID: null });
+  const onCreateFlow = async () => {
+    const result = await createModal.openVoid({ name: search.value, folderID: null });
+
+    if (result) onSelect(result);
   };
 
   return (

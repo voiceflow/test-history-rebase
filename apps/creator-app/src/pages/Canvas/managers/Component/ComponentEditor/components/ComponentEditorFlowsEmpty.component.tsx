@@ -1,16 +1,21 @@
+import { Flow } from '@voiceflow/dtos';
 import { Box, Button, EmptyPage } from '@voiceflow/ui-next';
 import React from 'react';
 
-import { CMSRoute } from '@/config/routes';
 import { CMS_FLOW_LEARN_MORE } from '@/constants/link.constant';
-import { useGoToCMSResourceModal } from '@/hooks/cms-resource.hook';
 import * as ModalsV2 from '@/ModalsV2';
 
-export const ComponentEditorFlowsEmpty = () => {
-  const goToCMSComponentCreateModal = useGoToCMSResourceModal(CMSRoute.FLOW);
+interface IComponentEditorFlowsEmpty {
+  onCreate: (flow: Flow) => void;
+}
 
-  const onCreateComponent = () => {
-    goToCMSComponentCreateModal(ModalsV2.Flow.Create, { folderID: null });
+export const ComponentEditorFlowsEmpty = ({ onCreate }: IComponentEditorFlowsEmpty) => {
+  const createModal = ModalsV2.useModal(ModalsV2.Flow.Create);
+
+  const onCreateFlow = async () => {
+    const result = await createModal.openVoid({ folderID: null });
+
+    if (result) onCreate(result);
   };
 
   return (
@@ -22,7 +27,7 @@ export const ComponentEditorFlowsEmpty = () => {
         learnMoreLink={CMS_FLOW_LEARN_MORE}
       />
       <Box width="280px" px={24} py={16}>
-        <Button label="Create component" fullWidth onClick={onCreateComponent} />
+        <Button label="Create component" fullWidth onClick={onCreateFlow} />
       </Box>
     </Box>
   );

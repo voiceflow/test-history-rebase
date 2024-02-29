@@ -114,19 +114,15 @@ export class DiagramService extends MutableService<DiagramORM> {
     diagrams: DiagramEntity[],
     meta: { environmentID: string; assistantID: string; workspaceID: string }
   ) {
-    await Promise.all([
-      ...diagrams.map((diagram) =>
-        this.logux.processAs(
-          Realtime.diagram.crud.remove({
-            key: diagram.id,
-            projectID: meta.assistantID,
-            versionID: meta.environmentID,
-            workspaceID: meta.workspaceID,
-          }),
-          authMeta
-        )
-      ),
-    ]);
+    await this.logux.processAs(
+      Realtime.diagram.crud.removeMany({
+        keys: diagrams.map((diagram) => diagram.id),
+        projectID: meta.assistantID,
+        versionID: meta.environmentID,
+        workspaceID: meta.workspaceID,
+      }),
+      authMeta
+    );
   }
 
   public async createManyComponents(

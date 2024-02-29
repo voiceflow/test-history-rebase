@@ -92,7 +92,7 @@ export const deleteMany =
     await dispatch.sync(Actions.Flow.DeleteMany({ context, ids }));
   };
 
-interface CreateOneFromSelectionResult {
+export interface CreateOneFromSelectionResult {
   name: string;
   diagramID: string;
   outgoingLinkTarget: Nullable<{ nodeID: string; portID: string }>;
@@ -100,7 +100,7 @@ interface CreateOneFromSelectionResult {
 }
 
 export const createOneFromSelection =
-  (options: CreateDiagramWithDataOptions): Thunk<CreateOneFromSelectionResult> =>
+  ({ diagramOptions, data }: { diagramOptions: CreateDiagramWithDataOptions; data: Actions.Flow.CreateData }): Thunk<CreateOneFromSelectionResult> =>
   async (dispatch, getState) => {
     const state = getState();
     const allFlows = Selectors.all(state);
@@ -108,14 +108,14 @@ export const createOneFromSelection =
     const platform = ProjectV2.active.platformSelector(state);
     const projectType = ProjectV2.active.projectTypeSelector(state);
     const schemaVersion = schemaVersionSelector(state);
-    const allNodesLinks = options.nodes.flatMap((node) => linksByNodeIDSelector(state, { id: node.id }));
+    const allNodesLinks = diagramOptions.nodes.flatMap((node) => linksByNodeIDSelector(state, { id: node.id }));
 
-    const { name, incomingLinks, outgoingLinks, component } = convertSelectionToComponent(
+    const { incomingLinks, outgoingLinks, component } = convertSelectionToComponent(
       platform,
       projectType,
       schemaVersion,
       allNodesLinks,
-      options,
+      diagramOptions,
       allFlows.length
     );
 
@@ -123,10 +123,10 @@ export const createOneFromSelection =
       waitAsync(Actions.Flow.CreateOne, {
         context,
         data: {
-          name,
-          description: '',
-          folderID: null,
+          description: data.description,
           diagram: component,
+          name: data.name,
+          folderID: null,
         },
       })
     );
@@ -134,7 +134,7 @@ export const createOneFromSelection =
     dispatch(setLastCreatedID({ id: flow.diagramID }));
 
     return {
-      name,
+      name: data.name,
       diagramID: flow.diagramID,
       incomingLinkSource: incomingLinks.length === 1 ? incomingLinks[0].source : null,
       outgoingLinkTarget: outgoingLinks.length === 1 ? outgoingLinks[0].target : null,

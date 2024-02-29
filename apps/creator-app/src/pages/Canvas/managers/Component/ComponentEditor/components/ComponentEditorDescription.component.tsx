@@ -17,7 +17,7 @@ export const ComponentEditorDescription: React.FC<ComponentEditorDescriptionProp
         </CollapsibleHeader>
       }
     >
-      <TextArea minRows={4} maxRows={17} variant="chunk" readOnly value={description} placeholder="Enter component description" />
+      <TextArea minRows={4} maxRows={17} variant="chunk" readOnly value={description} placeholder="Enter description" />
     </Collapsible>
   );
 };

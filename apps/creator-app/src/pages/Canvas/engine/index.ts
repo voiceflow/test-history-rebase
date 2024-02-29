@@ -1,5 +1,5 @@
 import { BaseModels } from '@voiceflow/base-types';
-import { Nullish, Struct } from '@voiceflow/common';
+import { Nullish, Struct, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { logger } from '@voiceflow/ui';
 import EventEmitter from 'eventemitter3';
@@ -21,6 +21,7 @@ import * as Session from '@/ducks/session';
 import * as UI from '@/ducks/ui';
 import * as Version from '@/ducks/versionV2';
 import * as Viewport from '@/ducks/viewport';
+import * as ModalsV2 from '@/ModalsV2';
 import { CanvasAction } from '@/pages/Canvas/constants';
 import { CanvasContainerAPI } from '@/pages/Canvas/types';
 import { DiagramHeartbeatContextValue } from '@/pages/Project/contexts';
@@ -668,8 +669,7 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
   }
 
   async createComponent(): Promise<void> {
-    PageProgress.start(PageProgressBar.COMPONENT_CREATING);
-
+    if (!this.cmsComponentsEnabled) PageProgress.start(PageProgressBar.COMPONENT_CREATING);
     const { targets, clipboardData } = this.getCreateDiagramFromSelectionData();
 
     const { center } = getNodesGroupCenter(
@@ -681,8 +681,11 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
 
     await this.store.dispatch(
       History.transaction(async () => {
-        const action = this.cmsComponentsEnabled ? Designer.Flow.effect.createOneFromSelection : DiagramV2.convertToComponent;
-        const { name, diagramID, incomingLinkSource, outgoingLinkTarget } = await this.store.dispatch(action(clipboardData));
+        const { name, diagramID, incomingLinkSource, outgoingLinkTarget } = this.cmsComponentsEnabled
+          ? await ModalsV2.open(Utils.id.cuid.slug(), ModalsV2.Flow.CreateFromDiagram, {
+              props: { diagramOptions: clipboardData, folderID: null, name: '' },
+            })!
+          : await this.store.dispatch(DiagramV2.convertToComponent(clipboardData));
 
         // TODO: would be good if we could have the removal of these targets
         // and link creation as part of the component creation operation

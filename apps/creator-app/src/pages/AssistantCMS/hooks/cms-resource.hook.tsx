@@ -12,6 +12,7 @@ import { useGetAtomValue } from '@/hooks/atom.hook';
 import { useConfirmV2Modal } from '@/hooks/modal.hook';
 import { useDispatch, useGetValueSelector, useStore } from '@/hooks/store.hook';
 import { clipboardCopy } from '@/utils/clipboard.util';
+import { getFolderScopeLabel } from '@/utils/cms.util';
 
 import { CMS_TEST_ID } from '../AssistantCMS.constant';
 import { useCMSManager } from '../contexts/CMSManager/CMSManager.hook';
@@ -59,7 +60,6 @@ export const useGetAllNestedResources = () => {
 
   return (ids: string[]) => {
     const folderScope = getAtomValue(cmsManager.folderScope);
-
     const allByIDsSelector = Designer.utils.getCMSResourceAllByIDsSelector(folderScope);
     const allByFolderIDsSelector = Designer.utils.getCMSResourceAllByFolderIDsSelector(folderScope);
 
@@ -100,6 +100,7 @@ export const useCMSResourceOnDeleteMany = () => {
 
   return (ids: string[]) => {
     const { folderIDs, folderScope, resourceIDs, allFolderIDs, allResources } = getAllNestedResources(ids);
+    const name = getFolderScopeLabel(folderScope);
 
     let allResourcesSize = allResources.length;
 
@@ -107,7 +108,7 @@ export const useCMSResourceOnDeleteMany = () => {
     if (!allResourcesSize && !folderIDs.length) {
       setSelectedIDs(new Set());
 
-      notify.short.info(`No ${pluralize(folderScope, 0)} to delete`, { showIcon: false });
+      notify.short.info(`No ${pluralize(name, 0)} to delete`, { showIcon: false });
 
       return;
     }
@@ -118,7 +119,7 @@ export const useCMSResourceOnDeleteMany = () => {
       allResourcesSize = allFolderIDs.length;
       label = pluralize('folder', allFolderIDs.length);
     } else {
-      label = pluralize(folderScope, allResourcesSize);
+      label = pluralize(name, allResourcesSize);
     }
 
     confirmModal.openVoid({

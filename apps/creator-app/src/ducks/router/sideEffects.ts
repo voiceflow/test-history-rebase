@@ -229,7 +229,10 @@ export const goToDiagram =
   async (dispatch, getState) => {
     const state = getState();
 
-    const domainID = DomainSelectors.domainIDByTopicIDSelector(state, { topicID: diagramID }) ?? Session.activeDomainIDSelector(state);
+    const domainID =
+      DomainSelectors.domainIDByTopicIDSelector(state, { topicID: diagramID }) ??
+      Session.activeDomainIDSelector(state) ??
+      DomainSelectors.rootDomainIDSelector(state);
 
     Errors.assertDomainID(domainID);
 

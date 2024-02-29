@@ -334,7 +334,7 @@ export class FlowService extends CMSTabularService<FlowORM> {
       );
 
       const createdFlow = await this.createOneForUser(authMeta.userID, {
-        name: meta.sourceEnvironmentID ? name : `${name} (Copy)`,
+        name: meta.sourceEnvironmentID ? name : `${name} (copy)`,
         description,
         diagramID: createdDiagram.id,
         folderID: folder?.id ?? null,

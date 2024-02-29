@@ -38,7 +38,7 @@ export const FunctionSelect = ({ onChange, functionID }: FunctionSelectProps) =>
       <Box justify="center" align="center" pt={20} px={24} direction="column">
         <Dropdown
           value={functionData.name || null}
-          placeholder="Select a function"
+          placeholder="Select existing function"
           onPrefixIconClick={hasSelectedFunction ? () => goToCMSResource(CMSRoute.FUNCTION, functionID) : undefined}
           prefixIconName={hasSelectedFunction ? 'EditS' : undefined}
           prefixIcon={hasSelectedFunction}

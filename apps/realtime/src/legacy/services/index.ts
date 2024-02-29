@@ -5,6 +5,7 @@ import { BaseServiceMap } from '@voiceflow/socket-utils';
 
 import { AssistantService } from '@/assistant/assistant.service';
 import { CreatorService } from '@/creator/creator.service';
+import { FlowService } from '@/flow/flow.service';
 import { OrganizationService } from '@/organization/organization.service';
 import type { ProjectService as ProjectServiceV2 } from '@/project/project.service';
 import { ProjectListService } from '@/project-list/project-list.service';
@@ -33,6 +34,7 @@ import WorkspaceService, { WorkspaceSettingsService } from './workspace';
 export interface ServiceMap extends BaseServiceMap {
   lock: LockService;
   user: UserService;
+  flow: FlowService;
   thread: ThreadService;
   domain: DomainService;
   viewer: ViewerService;
@@ -68,6 +70,7 @@ interface Options {
   log: Logger;
   injectedServices: {
     user: UserService;
+    flow: FlowService;
     thread: ThreadService;
     creator: CreatorService;
     project: ProjectServiceV2;
@@ -90,6 +93,7 @@ const buildServices = ({ config, clients, models, log, injectedServices }: Optio
     sync: {} as any, // TODO: need to remove off service map
     lock: new LockService(serviceOptions),
     user: injectedServices.user,
+    flow: injectedServices.flow,
     thread: injectedServices.thread,
     viewer: new ViewerService(serviceOptions),
     domain: new DomainService(serviceOptions),

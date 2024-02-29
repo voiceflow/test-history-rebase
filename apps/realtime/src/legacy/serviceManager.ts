@@ -4,6 +4,7 @@ import { ServiceManagerOptions, SocketServer } from '@voiceflow/socket-utils';
 
 import type { AssistantService } from '@/assistant/assistant.service';
 import { CreatorService } from '@/creator/creator.service';
+import { FlowService } from '@/flow/flow.service';
 import { OrganizationService } from '@/organization/organization.service';
 import type { ProjectService } from '@/project/project.service';
 import type { ProjectListService } from '@/project-list/project-list.service';
@@ -22,6 +23,7 @@ interface Options extends ServiceManagerOptions<LoguxControlOptions['config']> {
   ioServer: IOControlOptions['ioServer'];
   injectedServices: {
     user: UserService;
+    flow: FlowService;
     thread: ThreadService;
     creator: CreatorService;
     project: ProjectService;

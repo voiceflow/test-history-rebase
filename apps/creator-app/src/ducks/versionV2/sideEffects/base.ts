@@ -5,8 +5,6 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 
 import * as Errors from '@/config/errors';
 import * as Designer from '@/ducks/designer';
-import * as DiagramV2 from '@/ducks/diagramV2';
-import * as Feature from '@/ducks/feature';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import { waitAsync } from '@/ducks/utils';
@@ -48,20 +46,14 @@ export const importProjectContext =
     diagrams: Realtime.Diagram[];
     sourceVersionID: string;
   }): Thunk<{ data: Realtime.NodeData<unknown>; node: Realtime.Node }[]> =>
-  async (dispatch, getState) => {
+  async (dispatch) => {
     let mappedNodes = nodes;
-    const state = getState();
-    const isCMSComponentsEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.CMS_COMPONENTS);
 
     const componentIDs = diagrams.filter(({ type }) => type === BaseModels.Diagram.DiagramType.COMPONENT).map((diagram) => diagram.id);
     let newComponentIDs: string[] = [];
 
-    if (isCMSComponentsEnabled) {
-      const flows = await dispatch(Designer.Flow.effect.copyPasteMany({ sourceDiagramIDs: componentIDs, sourceEnvironmentID: sourceVersionID }));
-      newComponentIDs = flows.map((flow) => flow.diagramID);
-    } else {
-      newComponentIDs = await Promise.all(componentIDs.map((diagramID) => dispatch(DiagramV2.duplicateComponent(sourceVersionID, diagramID))));
-    }
+    const flows = await dispatch(Designer.Flow.effect.copyPasteMany({ sourceDiagramIDs: componentIDs, sourceEnvironmentID: sourceVersionID }));
+    newComponentIDs = flows.map((flow) => flow.diagramID);
 
     componentIDs.forEach((componentID, index) => {
       const newComponentID = newComponentIDs[index];

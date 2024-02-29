@@ -19,7 +19,6 @@ export const CMSLayoutMenu: React.FC = () => {
   const onLinkClick = useOnLinkClick();
   const { isEnabled: isKbEnabled } = useFeature(Realtime.FeatureFlag.KNOWLEDGE_BASE);
   const { isEnabled: isFunctionsCmsEnabled } = useFeature(Realtime.FeatureFlag.CMS_FUNCTIONS);
-  const { isEnabled: isCMSComponentsEnabled } = useFeature(Realtime.FeatureFlag.CMS_COMPONENTS);
 
   const { updateActiveCMSRoute } = useCMSRoute();
 
@@ -98,16 +97,14 @@ export const CMSLayoutMenu: React.FC = () => {
       */}
 
       <SecondaryNavigation.Section title="Content">
-        {isCMSComponentsEnabled && (
-          <SecondaryNavigation.Item
-            icon="Component"
-            label="Components"
-            caption={String(flowsCount)}
-            onClick={onTabClick(Path.CMS_FLOW, CMSRoute.FLOW)}
-            isActive={isItemActive(Path.CMS_FLOW)}
-            testID={tid(TEST_ID, 'components')}
-          />
-        )}
+        <SecondaryNavigation.Item
+          icon="Component"
+          label="Components"
+          caption={String(flowsCount)}
+          onClick={onTabClick(Path.CMS_FLOW, CMSRoute.FLOW)}
+          isActive={isItemActive(Path.CMS_FLOW)}
+          testID={tid(TEST_ID, 'components')}
+        />
 
         <SecondaryNavigation.Item
           icon="Variable"

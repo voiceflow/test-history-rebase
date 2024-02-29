@@ -6,6 +6,7 @@ import {
   Assistant,
   Entity,
   EntityVariant,
+  Flow,
   Intent,
   RequiredEntity,
   Response,
@@ -42,6 +43,7 @@ export interface MigrationData {
   diagrams: DiagramUpdateData[];
 
   cms: {
+    flows: Flow[];
     intents: Intent[];
     entities: Entity[];
     variables: Variable[];

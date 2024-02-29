@@ -277,9 +277,9 @@ export class EnvironmentService {
     { userID, backup, workspaceID }: { userID: number; backup?: boolean; workspaceID: number }
   ) {
     const cmsFunctionsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_FUNCTIONS, { userID, workspaceID });
-    const cmsComponentsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_COMPONENTS, { userID, workspaceID });
 
     return {
+      ...this.flow.prepareExportData(data, { backup }),
       ...this.entity.prepareExportData(data, { backup }),
       ...this.intent.prepareExportData(data, { backup }),
       ...this.folder.prepareExportData(data, { backup }),
@@ -287,7 +287,6 @@ export class EnvironmentService {
       ...this.variable.prepareExportData(data, { backup }),
       ...this.attachment.prepareExportData(data, { backup }),
 
-      ...(cmsComponentsEnabled && this.flow.prepareExportData(data, { backup })),
       ...(cmsFunctionsEnabled && this.functionService.prepareExportData(data, { backup })),
     };
   }
@@ -297,9 +296,9 @@ export class EnvironmentService {
     { userID, workspaceID }: { userID: number; workspaceID: number }
   ) {
     const cmsFunctionsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_FUNCTIONS, { userID, workspaceID });
-    const cmsComponentsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_COMPONENTS, { userID, workspaceID });
 
     return {
+      ...this.flow.prepareExportJSONData(data),
       ...this.entity.prepareExportJSONData(data),
       ...this.folder.prepareExportJSONData(data),
       ...this.intent.prepareExportJSONData(data),
@@ -307,7 +306,6 @@ export class EnvironmentService {
       ...this.variable.prepareExportJSONData(data),
       ...this.attachment.prepareExportJSONData(data),
 
-      ...(cmsComponentsEnabled && this.flow.prepareExportJSONData(data)),
       ...(cmsFunctionsEnabled && this.functionService.prepareExportJSONData(data)),
     };
   }
@@ -365,11 +363,12 @@ export class EnvironmentService {
     }: { userID: number; backup?: boolean; workspaceID: number; assistantID: string; environmentID: string }
   ) {
     const cmsFunctionsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_FUNCTIONS, { userID, workspaceID });
-    const cmsComponentsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_COMPONENTS, { userID, workspaceID });
 
     const prepareDataContext = { userID, backup, assistantID, environmentID };
 
     return {
+      ...(cms.flows && this.flow.prepareImportData({ flows: cms.flows }, prepareDataContext)),
+
       ...(cms.folders && this.folder.prepareImportData({ folders: cms.folders }, prepareDataContext)),
 
       ...(cms.variables && this.variable.prepareImportData({ variables: cms.variables }, prepareDataContext)),
@@ -412,8 +411,6 @@ export class EnvironmentService {
           { functions: cms.functions, functionPaths: cms.functionPaths, functionVariables: cms.functionVariables },
           prepareDataContext
         )),
-
-      ...(cmsComponentsEnabled && cms.flows && this.flow.prepareImportData({ flows: cms.flows }, prepareDataContext)),
     };
   }
 
@@ -565,28 +562,30 @@ export class EnvironmentService {
 
   async findOneCMSDataToMigrate(assistantID: string, environmentID: string) {
     const [
+      // { flows },
       // { entities, entityVariants },
       // { intents, utterances, requiredEntities },
       { variables },
-      { responses, responseVariants, responseAttachments, responseDiscriminators },
+      // { responses, responseVariants, responseAttachments, responseDiscriminators },
     ] = await Promise.all([
+      // this.flow.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
       // this.entity.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
       // this.intent.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
       this.variable.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
-      this.response.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
+      // this.response.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
     ]);
 
     return {
       // intents,
       // entities,
-      responses,
+      // responses,
       variables,
       // utterances,
       // entityVariants,
       // requiredEntities,
-      responseVariants,
-      responseAttachments,
-      responseDiscriminators,
+      // responseVariants,
+      // responseAttachments,
+      // responseDiscriminators,
     };
   }
 
@@ -662,6 +661,7 @@ export class EnvironmentService {
 
   async migrateCMSData(data: Realtime.Migrate.MigrationData, patches: Patch[], meta: { userID: number; assistantID: string; environmentID: string }) {
     const {
+      flows = [],
       intents = [],
       entities = [],
       responses = [],
@@ -675,6 +675,7 @@ export class EnvironmentService {
 
     // ORDER MATTERS
 
+    await this.flow.upsertManyWithSubResources({ flows }, meta);
     await this.variable.upsertManyWithSubResources({ variables }, meta);
     await this.entity.upsertManyWithSubResources({ entities, entityVariants }, meta);
     await this.response.upsertManyWithSubResources({ responses, responseVariants, responseAttachments: [], responseDiscriminators }, meta);

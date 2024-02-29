@@ -130,18 +130,18 @@ export class MigrationService {
               // utterances: this.entitySerializer.iterable(cmsData.utterances),
               // entityVariants: this.entitySerializer.iterable(cmsData.entityVariants),
               // requiredEntities: this.entitySerializer.iterable(cmsData.requiredEntities),
+              flows: [],
               intents: [],
               entities: [],
+              responses: [],
               utterances: [],
               entityVariants: [],
               requiredEntities: [],
+              responseVariants: [],
+              responseDiscriminators: [],
 
               assistant: this.assistantSerializer.nullable(assistant),
-              responses: this.entitySerializer.iterable(cmsData.responses),
               variables: this.entitySerializer.iterable(cmsData.variables),
-
-              responseVariants: this.entitySerializer.iterable(cmsData.responseVariants),
-              responseDiscriminators: this.entitySerializer.iterable(cmsData.responseDiscriminators),
             },
           },
           targetSchemaVersion

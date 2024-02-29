@@ -40,6 +40,7 @@ export const usePartialImport = () => {
           creatorID: Account.userIDSelector(state)!,
 
           cms: {
+            flows: [],
             intents: [],
             entities: [],
             variables: [],

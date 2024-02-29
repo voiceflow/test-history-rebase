@@ -165,6 +165,11 @@ export const SchemaVersion = {
    * updates system variables description, adds VF_MEMORY system variable
    */
   V6_01: 6.01,
+
+  /**
+   * migrates legacy components to cms flows
+   */
+  V7_00: 7.0,
 } as const;
 
 export type SchemaVersion = (typeof SchemaVersion)[keyof typeof SchemaVersion];

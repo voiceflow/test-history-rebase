@@ -4,8 +4,8 @@ import { Canvas, Popper, swallowEvent, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Router from '@/ducks/router';
-import { useDispatch, useFeature } from '@/hooks';
-import { DiagramMapContext, FlowMapByDiagramIDContext } from '@/pages/Canvas/contexts';
+import { useDispatch } from '@/hooks';
+import { FlowMapByDiagramIDContext } from '@/pages/Canvas/contexts';
 
 import Step from '../../../../components/Step';
 import { ConnectedAction } from '../../../types';
@@ -21,13 +21,10 @@ const Action: ConnectedAction<Realtime.NodeData.Component, Realtime.NodeData.Com
   onOpenEditor,
   sourceNodeID,
 }) => {
-  const diagramMap = React.useContext(DiagramMapContext)!;
   const flowMapByDiagramID = React.useContext(FlowMapByDiagramIDContext)!;
   const goToDiagram = useDispatch(Router.goToDiagramHistoryPush);
-  const { isEnabled: isCMSComponentsEnabled } = useFeature(Realtime.FeatureFlag.CMS_COMPONENTS);
 
-  const map = isCMSComponentsEnabled ? flowMapByDiagramID : diagramMap;
-  const diagram = data.diagramID ? map[data.diagramID] : null;
+  const diagram = data.diagramID ? flowMapByDiagramID[data.diagramID] : null;
   const isEmpty = !diagram;
 
   return (

@@ -13,6 +13,7 @@ import { Action } from 'typescript-fsa';
 
 import { AssistantService } from '@/assistant/assistant.service';
 import { CreatorService } from '@/creator/creator.service';
+import { FlowService } from '@/flow/flow.service';
 import { createLogger } from '@/logger';
 import { OrganizationService } from '@/organization/organization.service';
 import { ProjectService } from '@/project/project.service';
@@ -53,6 +54,8 @@ export class LegacyService implements OnApplicationBootstrap, OnApplicationShutd
     private readonly creatorService: CreatorService,
     @Inject(ThreadService)
     private readonly threadService: ThreadService,
+    @Inject(FlowService)
+    private readonly flowService: FlowService,
     @Inject(HashedIDService)
     private readonly hashedID: HashedIDService,
     @Inject(OrganizationService)
@@ -73,6 +76,7 @@ export class LegacyService implements OnApplicationBootstrap, OnApplicationShutd
         projectList: this.projectList,
         creator: this.creatorService,
         thread: this.threadService,
+        flow: this.flowService,
         organization: this.organization,
         requestContext: {
           createAsync: <T>(callback: () => Promise<T>): Promise<T> => RequestContext.createAsync([this.mongoEM, this.postgresEM], callback),

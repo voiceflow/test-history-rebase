@@ -13,6 +13,7 @@ import { BlockType, PageProgressBar } from '@/constants';
 import { Designer } from '@/ducks';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as DiagramV2 from '@/ducks/diagramV2';
+import { ConvertToDiagramResult } from '@/ducks/diagramV2';
 import * as Feature from '@/ducks/feature';
 import * as History from '@/ducks/history';
 import * as ProjectV2 from '@/ducks/projectV2';
@@ -392,10 +393,6 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
     return this.linkCreation.isDrawing || this.groupSelection.isDrawing || this.drag.hasTarget || this.drag.hasGroup || this.isInteractionDisabled;
   }
 
-  get cmsComponentsEnabled() {
-    return this.isFeatureEnabled(Realtime.FeatureFlag.CMS_COMPONENTS);
-  }
-
   addClass(className: string): void {
     this.components.container?.addClass(className);
     this.log.debug(this.log.init('added class'), this.log.value(className));
@@ -669,7 +666,6 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
   }
 
   async createComponent(): Promise<void> {
-    if (!this.cmsComponentsEnabled) PageProgress.start(PageProgressBar.COMPONENT_CREATING);
     const { targets, clipboardData } = this.getCreateDiagramFromSelectionData();
 
     const { center } = getNodesGroupCenter(
@@ -681,11 +677,13 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
 
     await this.store.dispatch(
       History.transaction(async () => {
-        const { name, diagramID, incomingLinkSource, outgoingLinkTarget } = this.cmsComponentsEnabled
-          ? await ModalsV2.open(Utils.id.cuid.slug(), ModalsV2.Flow.CreateFromDiagram, {
-              props: { diagramOptions: clipboardData, folderID: null, name: '' },
-            })!
-          : await this.store.dispatch(DiagramV2.convertToComponent(clipboardData));
+        const { name, diagramID, incomingLinkSource, outgoingLinkTarget } = (await ModalsV2.open(
+          Utils.id.cuid.slug(),
+          ModalsV2.Flow.CreateFromDiagram,
+          {
+            props: { diagramOptions: clipboardData, folderID: null, name: '' },
+          }
+        )) as unknown as ConvertToDiagramResult;
 
         // TODO: would be good if we could have the removal of these targets
         // and link creation as part of the component creation operation

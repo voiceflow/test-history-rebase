@@ -40,6 +40,28 @@ export class FlowService extends CMSTabularService<FlowORM> {
     super();
   }
 
+  /* Update */
+
+  async updateOneByDiagramIDAndBroadcast(
+    diagramID: string,
+    patch: { updatedByID: number },
+    { auth, context }: { auth: AuthMetaPayload; context: { environmentID: string; assistantID: string } }
+  ) {
+    const flowID = await this.orm.updateOneByDiagramIDAndReturnID(context.environmentID, diagramID, patch);
+
+    // flow was not found
+    if (flowID === null) return;
+
+    await this.logux.processAs(
+      Actions.Flow.PatchOne({
+        id: flowID,
+        patch: {},
+        context: assistantBroadcastContext({ assistant: context.assistantID, environmentID: context.environmentID }),
+      }),
+      auth
+    );
+  }
+
   /* Find */
 
   async findManyWithSubResourcesByEnvironment(assistantID: string, environmentID: string) {
@@ -172,7 +194,7 @@ export class FlowService extends CMSTabularService<FlowORM> {
       data.map(({ flow }, index) => ({
         name: flow.name,
         folderID: flow.folderID,
-        diagramID: diagrams[index].id,
+        diagramID: diagrams[index].diagramID.toJSON(),
         description: flow.description,
         assistantID: meta.assistantID,
         environmentID: meta.environmentID,
@@ -336,8 +358,8 @@ export class FlowService extends CMSTabularService<FlowORM> {
       const createdFlow = await this.createOneForUser(authMeta.userID, {
         name: meta.sourceEnvironmentID ? name : `${name} (copy)`,
         description,
-        diagramID: createdDiagram.id,
         folderID: folder?.id ?? null,
+        diagramID: createdDiagram.diagramID.toJSON(),
         assistantID: meta.assistantID,
         environmentID: meta.environmentID,
       });

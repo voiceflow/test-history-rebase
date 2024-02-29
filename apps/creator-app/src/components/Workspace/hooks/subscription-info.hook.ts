@@ -12,7 +12,7 @@ const DEFAULT_INFO = {
 
 export const useSubscriptionInfo = () => {
   const planPrices = React.useContext(PlanPricesContext);
-  const { planSubscription, isReady } = Payment.usePaymentAPI();
+  const { planSubscription, isReady } = Payment.legacy.usePaymentAPI();
 
   return React.useMemo(() => {
     if (!isReady) return DEFAULT_INFO;

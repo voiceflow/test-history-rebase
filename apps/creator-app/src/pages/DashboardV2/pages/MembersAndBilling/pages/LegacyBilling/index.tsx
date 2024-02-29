@@ -23,7 +23,7 @@ const DashboardVLegacy2Billing: React.FC = () => {
   const isTrial = useSelector(WorkspaceV2.active.isOnTrialSelector);
   const stripeStatus = useSelector(WorkspaceV2.active.stripeStatusSelector);
 
-  const paymentAPI = Payment.usePaymentAPI();
+  const paymentAPI = Payment.legacy.usePaymentAPI();
   const billingHistory = useLegacyBillingHistory();
   const isReady = billingHistory.isReady && paymentAPI.isReady;
 
@@ -59,4 +59,4 @@ const DashboardVLegacy2Billing: React.FC = () => {
   );
 };
 
-export default withProvider(Payment.PaymentProvider)(DashboardVLegacy2Billing);
+export default withProvider(Payment.legacy.PaymentProvider)(DashboardVLegacy2Billing);

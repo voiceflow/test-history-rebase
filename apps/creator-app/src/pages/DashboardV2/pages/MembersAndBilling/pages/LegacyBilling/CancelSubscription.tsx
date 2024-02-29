@@ -10,7 +10,7 @@ interface CancelSubscriptionProps {
 }
 
 const CancelSubscription: React.FC<CancelSubscriptionProps> = ({ planSubscription }) => {
-  const cancelModal = ModalsV2.useModal(ModalsV2.LegacyBilling.CancelSubscription);
+  const cancelModal = ModalsV2.useModal(ModalsV2.Legacy.Billing.CancelSubscription);
   const isCancelable = !planSubscription?.cancelAtPeriodEnd;
 
   const handleClick = () => isCancelable && cancelModal.openVoid();

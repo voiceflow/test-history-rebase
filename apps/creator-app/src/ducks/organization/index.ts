@@ -2,6 +2,8 @@
 export * from './member/member.select';
 
 // subscription
+export * as subscription from './subscription';
+export * from './subscription/subscription.effect';
 export * from './subscription/subscription.select';
 
 // base

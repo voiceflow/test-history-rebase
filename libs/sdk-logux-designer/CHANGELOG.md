@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.31.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.30.0...@voiceflow/sdk-logux-designer@2.31.0) (2024-03-01)
+
+### Features
+
+* chargebee checkout 3DS integration (COR-1112) ([#7836](https://github.com/voiceflow/creator-app/issues/7836)) ([4ce00f9](https://github.com/voiceflow/creator-app/commit/4ce00f91ae80be25b08b5e417fb7910bc594d49e))
+
 # [2.30.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.29.6...@voiceflow/sdk-logux-designer@2.30.0) (2024-02-29)
 
 ### Features

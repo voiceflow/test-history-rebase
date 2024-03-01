@@ -39,6 +39,7 @@ export const useDiagramRename = ({ diagramID, autoSelect, diagramName, onNameCha
   const [renameEnabled, toggleRenameEnabled] = useToggle(false);
   const flow = useSelector(Designer.Flow.selectors.byDiagramID, { diagramID });
 
+  const renameDiagram = useDispatch(DiagramV2.renameDiagram);
   const patchFlow = useDispatch(Designer.Flow.effect.patchOne);
 
   const setLocalName = React.useCallback(
@@ -69,6 +70,8 @@ export const useDiagramRename = ({ diagramID, autoSelect, diagramName, onNameCha
 
     if (flow) {
       patchFlow(flow.id, { name: nextName });
+    } else {
+      renameDiagram(diagramID, nextName);
     }
 
     toggleRenameEnabled(false);

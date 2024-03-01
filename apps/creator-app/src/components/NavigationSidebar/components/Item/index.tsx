@@ -14,10 +14,18 @@ export interface ItemProps {
   style?: React.CSSProperties;
   clickable?: boolean;
   className?: string;
+  testID?: string;
 }
 
-const Item: React.FC<ItemProps> = ({ icon, className, title, isActive = false, disabled = false, clickable, onClick, children, style }) => (
-  <S.Container className={className} active={isActive} onClick={!disabled ? onClick : undefined} style={style} isDisabled={disabled}>
+const Item: React.FC<ItemProps> = ({ icon, className, title, isActive = false, disabled = false, clickable, onClick, children, style, testID }) => (
+  <S.Container
+    className={className}
+    active={isActive}
+    onClick={!disabled ? onClick : undefined}
+    style={style}
+    isDisabled={disabled}
+    data-testid={testID}
+  >
     <Box.Flex gap={12}>
       <S.Icon icon={icon} isActive={isActive} clickable={clickable} />
       <Box fontWeight={isActive ? 600 : undefined}>{title}</Box>

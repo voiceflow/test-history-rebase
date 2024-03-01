@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1413.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1412.0...@voiceflow/creator-app@1.1413.0) (2024-03-01)
+
+### Features
+
+* fix component menu order (CV3-000) ([#7834](https://github.com/voiceflow/creator-app/issues/7834)) ([0c797b5](https://github.com/voiceflow/creator-app/commit/0c797b566fcbdec2008fbfe87e6d9893872894c2))
+
 # [1.1412.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1411.0...@voiceflow/creator-app@1.1412.0) (2024-02-29)
 
 ### Features

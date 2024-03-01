@@ -15,6 +15,9 @@ export enum Version {
   V1_3_0 = '1.3.0',
 
   V1_4_0 = '1.4.0',
+
+  /** new components migration */
+  V1_5_0 = '1.5.0',
 }
 
-export const CURRENT_VERSION = Version.V1_4_0;
+export const CURRENT_VERSION = Version.V1_5_0;

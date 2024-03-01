@@ -75,11 +75,21 @@ const IntegrationsSidebar: React.FC = () => {
           <NavigationSidebar.NavItem to={generatePath(Path.PUBLISH_API, { versionID })} icon="channel" title="Dialog API" />
 
           {knowledgeBase && (
-            <NavigationSidebar.NavItem to={generatePath(Path.PUBLISH_KNOWLEDGE_BASE_API, { versionID })} icon="channel" title="Knowledge Base API" />
+            <NavigationSidebar.NavItem
+              to={generatePath(Path.PUBLISH_KNOWLEDGE_BASE_API, { versionID })}
+              icon="channel"
+              title="Knowledge Base API"
+              testID="integrations__tab--api-keys"
+            />
           )}
 
           {!disableCodeExports && canExportCode && (
-            <NavigationSidebar.NavItem to={generatePath(Path.PUBLISH_EXPORT, { versionID })} icon="systemCode" title="Code Export" />
+            <NavigationSidebar.NavItem
+              to={generatePath(Path.PUBLISH_EXPORT, { versionID })}
+              icon="systemCode"
+              title="Code Export"
+              testID="integrations__tab--code-export"
+            />
           )}
         </NavigationSidebar.ItemsContainer>
       </NavigationSidebar>

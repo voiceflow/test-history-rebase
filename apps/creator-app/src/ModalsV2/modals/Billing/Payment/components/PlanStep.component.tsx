@@ -5,7 +5,7 @@ import { UpgradePrompt } from '@/ducks/tracking';
 import { useTrackingEvents } from '@/hooks/tracking';
 import { onOpenBookDemoPage } from '@/utils/upgrade';
 
-import { usePaymentSteps, usePricing } from '../Payment.hooks';
+import { usePaymentSteps, usePricing } from '../hooks';
 import { PlanCard } from './PlanCard.component';
 
 interface PlanStepProps {

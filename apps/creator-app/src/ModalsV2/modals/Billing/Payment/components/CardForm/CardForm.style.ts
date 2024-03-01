@@ -52,6 +52,11 @@ export const CardElementContainer = styled.div<ContainerProps>`
       .CbHosted {
         border: 1px solid #bd425f !important;
       }
+
+      .CbHosted--focus,
+      .CbHosted {
+        border: 1px solid #bd425f !important;
+      }
     `}
 `;
 

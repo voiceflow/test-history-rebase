@@ -1,6 +1,5 @@
 import { Controller, Inject } from '@nestjs/common';
 import { Subscription } from '@voiceflow/dtos';
-import { BillingPeriod } from '@voiceflow/internal';
 import { Action, AuthMeta, AuthMetaPayload, Broadcast, Payload } from '@voiceflow/nestjs-logux';
 import { Permission } from '@voiceflow/sdk-auth';
 import { Authorize } from '@voiceflow/sdk-auth/nestjs';
@@ -27,30 +26,19 @@ export class BillingSubscriptionLoguxController {
   async checkout(@Payload() data: Actions.OrganizationSubscription.CheckoutRequest, @AuthMeta() authMeta: AuthMetaPayload): Promise<Subscription> {
     const { subscriptionID, organizationID } = data.context;
 
-    // TODO: make subscription required
     if (!subscriptionID) {
-      throw new Error('Subscription is required');
+      throw new Error('Subscription not found');
     }
 
-    const { itemPriceID, planPrice, editorSeats, period, card } = data;
+    const { itemPriceID, planPrice, editorSeats, period, paymentIntent } = data;
 
-    // TODO: just adding this here because we'll move logic to use temp token
-    if (!card) {
-      throw new Error('Card is required');
-    }
-
-    return this.service.checkoutAndBroadcast(
-      authMeta,
-      organizationID,
-      subscriptionID,
-      {
-        itemPriceID,
-        planPrice,
-        editorSeats,
-        period: period as BillingPeriod,
-      },
-      card
-    );
+    return this.service.checkoutAndBroadcast(authMeta, organizationID, subscriptionID, {
+      itemPriceID,
+      planPrice,
+      editorSeats,
+      period,
+      paymentIntent,
+    });
   }
 
   @Action(Actions.OrganizationSubscription.Replace)

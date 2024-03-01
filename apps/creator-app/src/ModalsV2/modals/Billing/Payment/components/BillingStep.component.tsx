@@ -7,7 +7,7 @@ import RadioGroup from '@/components/RadioGroup';
 import * as Workspace from '@/components/Workspace';
 import * as currency from '@/utils/currency';
 
-import { usePaymentSteps, usePricing, useSeats } from '../Payment.hooks';
+import { usePaymentSteps, usePricing, useSeats } from '../hooks';
 import * as S from './BillingStep.styles';
 
 interface BillingStepProps {

@@ -52,7 +52,7 @@
     "tdd:integration": "yarn g:vitest watch .it",
     "tdd:unit": "yarn g:vitest watch .unit",
     "test": "yarn g:vitest run --silent --coverage",
-    "test:dependencies": "yarn g:depcheck ",
+    "test:dependencies": "yarn g:depcheck",
     "test:integration": "exit 0",
     "test:unit": "REPORTS_DIRECTORY=coverage/unit yarn g:vitest run .unit --silent --coverage",
     "types": "yarn g:tsc --project tsconfig.build.json --noEmit --skipLibCheck"
@@ -61,6 +61,7 @@
     "immutable": "3.7.6"
   },
   "dependencies": {
+    "@chargebee/chargebee-js-react-wrapper": "^0.6.3",
     "@chargebee/chargebee-js-types": "^1.0.1",
     "@datadog/browser-logs": "5.9.0",
     "@datadog/browser-rum": "5.9.0",

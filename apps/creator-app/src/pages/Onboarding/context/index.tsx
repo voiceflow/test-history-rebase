@@ -4,7 +4,7 @@ import { Nullable, Utils } from '@voiceflow/common';
 import { BillingPeriod, PlanType } from '@voiceflow/internal';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { ButtonVariant, toast } from '@voiceflow/ui';
+import { ButtonVariant, toast, withProvider } from '@voiceflow/ui';
 import _constant from 'lodash/constant';
 import * as Normal from 'normal-store';
 import queryString from 'query-string';
@@ -21,7 +21,6 @@ import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { withStripe } from '@/hocs/withStripe';
 import { useDispatch, useFeature, useSelector, useSmartReducer, useStore, useSyncDispatch, useTrackingEvents } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 import { useGetAIAssistSettings } from '@/ModalsV2/modals/Disclaimer/hooks/aiPlayground';
@@ -512,4 +511,6 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
   return redirectToDashboard ? <Redirect to={Path.DASHBOARD} /> : <OnboardingContext.Provider value={api}>{children}</OnboardingContext.Provider>;
 };
 
-export const OnboardingProvider = withStripe(UnconnectedOnboardingProvider) as React.FC<React.PropsWithChildren<OnboardingProviderProps>>;
+export const OnboardingProvider = withProvider(Payment.legacy.PaymentProvider)(UnconnectedOnboardingProvider) as React.FC<
+  React.PropsWithChildren<OnboardingProviderProps>
+>;

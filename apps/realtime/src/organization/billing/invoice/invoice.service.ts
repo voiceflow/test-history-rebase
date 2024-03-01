@@ -9,6 +9,6 @@ export class BillingInvoiceService {
   ) {}
 
   async getInvoicePDF(invoiceID: string) {
-    return this.billingClient.private.getSubscriptionInvoicePDF(invoiceID);
+    return this.billingClient.invoicesPrivate.getSubscriptionInvoicePDF(invoiceID);
   }
 }

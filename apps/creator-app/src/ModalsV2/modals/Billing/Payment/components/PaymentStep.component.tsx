@@ -5,7 +5,7 @@ import { useFormik } from 'formik';
 import pluralize from 'pluralize';
 import React from 'react';
 
-import { useCheckoutPayment, usePricing, useSeats } from '../Payment.hooks';
+import { useCheckoutPayment, usePricing, useSeats } from '../hooks';
 import { PaymentModalPropsAPI } from '../Payment.types';
 import * as CardForm from './CardForm';
 import { PlanCard } from './PlanCard.component';
@@ -16,7 +16,7 @@ interface PaymentStepProps {
 }
 
 export const PaymentStep: React.FC<PaymentStepProps> = ({ onClose, modalProps }) => {
-  const { onSubmit } = useCheckoutPayment({ modalProps });
+  const { onSubmit, cardRef } = useCheckoutPayment({ modalProps });
   const { editorSeats } = useSeats();
   const { price, period } = usePricing();
 
@@ -40,7 +40,7 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onClose, modalProps })
           </PlanCard>
         </Box>
 
-        <CardForm.Base form={form} />
+        <CardForm.Base form={form} ref={cardRef} />
       </Modal.Body>
 
       <Modal.Footer gap={12}>

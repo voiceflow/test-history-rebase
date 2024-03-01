@@ -1,16 +1,23 @@
 import { Modal, Switch, System, useAsyncMountUnmount } from '@voiceflow/ui';
 import React from 'react';
 
+import { UpgradePrompt } from '@/ducks/tracking';
+import { getClient as getChargebeeClient, initialize as initializeChargebee } from '@/vendors/chargebee';
+
 import manager from '../../../manager';
 import { BillingStep, PaymentStep, PlanStep } from './components';
+import { usePaymentSteps, usePlans } from './hooks';
 import { Step } from './Payment.constants';
-import { usePaymentSteps, usePlans } from './Payment.hooks';
-import { PaymentModalProps } from './Payment.types';
+
+export interface PaymentModalProps {
+  promptType?: UpgradePrompt;
+  isTrialExpired?: boolean;
+}
 
 export const Payment = manager.create<PaymentModalProps>('Payment', () => (modalProps) => {
   const { type, opened, hidden, animated, api, closePrevented, promptType } = modalProps;
   const { activeStep, onBack, onReset } = usePaymentSteps();
-  const { fetchPlans, loadChargebee } = usePlans();
+  const { fetchPlans } = usePlans();
 
   const handleExited = () => {
     onReset();
@@ -18,7 +25,12 @@ export const Payment = manager.create<PaymentModalProps>('Payment', () => (modal
   };
 
   useAsyncMountUnmount(async () => {
-    loadChargebee();
+    try {
+      getChargebeeClient();
+    } catch (error) {
+      initializeChargebee();
+    }
+
     await fetchPlans();
   });
 

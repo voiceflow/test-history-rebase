@@ -1,5 +1,4 @@
 import { Utils } from '@voiceflow/common';
-import { BillingCheckoutPlan, CreditCard } from '@voiceflow/dtos';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 import { toast } from '@voiceflow/ui';
 
@@ -7,8 +6,12 @@ import { waitAsync } from '@/ducks/utils';
 import { Thunk } from '@/store/types';
 import { getErrorMessage } from '@/utils/error';
 
-export const checkout = (organizationID: string, subscriptionID: string, card: CreditCard, selectedPlan: BillingCheckoutPlan): Thunk<void> => {
-  const { itemPriceID, planPrice, editorSeats, period } = selectedPlan;
+export const checkout = (
+  organizationID: string,
+  subscriptionID: string,
+  data: Omit<Actions.OrganizationSubscription.CheckoutRequest, 'context'>
+): Thunk<void> => {
+  const { itemPriceID, planPrice, editorSeats, period, paymentIntent } = data;
 
   return async (dispatch) => {
     try {
@@ -18,7 +21,7 @@ export const checkout = (organizationID: string, subscriptionID: string, card: C
           itemPriceID,
           period,
           planPrice,
-          card,
+          paymentIntent,
           context: { organizationID, subscriptionID },
         })
       );

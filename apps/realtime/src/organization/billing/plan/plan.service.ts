@@ -10,7 +10,7 @@ export class BillingPlanService {
   constructor(@Inject(BillingClient) private readonly billingClient: BillingClient) {}
 
   async getAllPlans(): Promise<BillingPlan[]> {
-    const response = await this.billingClient.private.getItems({ type: 'plan' });
+    const response = await this.billingClient.itemsPrivate.getItems({ type: 'plan' });
     const items = response.items as ChargebeePlan[];
 
     return items.map((item) => ({

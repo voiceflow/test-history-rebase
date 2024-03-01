@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { BillingCheckoutPlan, CreditCard, Subscription } from '@voiceflow/dtos';
+import { Subscription } from '@voiceflow/dtos';
 import { NotFoundException } from '@voiceflow/exception';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
 import { BillingClient } from '@voiceflow/sdk-billing';
@@ -18,10 +18,10 @@ export class BillingSubscriptionService {
   constructor(
     @Inject(BillingClient)
     private readonly billingClient: BillingClient,
-    @Inject(UserService)
-    private readonly user: UserService,
     @Inject(LoguxService)
-    private readonly logux: LoguxService
+    private readonly logux: LoguxService,
+    @Inject(UserService)
+    private readonly user: UserService
   ) {}
 
   private parseSubscription(subscription: SubscriptionsControllerGetSubscription200Subscription) {
@@ -77,39 +77,23 @@ export class BillingSubscriptionService {
   }
 
   async findOne(subscriptionID: string) {
-    const { subscription } = await this.billingClient.private.getSubscription(subscriptionID);
+    const { subscription } = await this.billingClient.subscriptionsPrivate.getSubscription(subscriptionID);
 
     return this.parseSubscription(subscription);
   }
 
   async getSubscriptionWithScheduledChanges(subscriptionID: string) {
-    const { subscription } = await this.billingClient.private.getSubscriptionScheduledChanges(subscriptionID);
+    const { subscription } = await this.billingClient.subscriptionsPrivate.getSubscriptionScheduledChanges(subscriptionID);
 
     return this.parseSubscription(subscription);
   }
 
   getInvoices(subscriptionID: string, { cursor, limit }: { cursor?: string; limit?: number } = {}) {
-    return this.billingClient.private.getSubscriptionInvoices(subscriptionID, { ...(cursor && { cursor }), ...(limit && { limit }) });
+    return this.billingClient.subscriptionsPrivate.getSubscriptionInvoices(subscriptionID, { ...(cursor && { cursor }), ...(limit && { limit }) });
   }
 
   cancel(subscriptionID: string) {
-    return this.billingClient.private.cancelSubscription(subscriptionID);
-  }
-
-  async updateSeats(subscriptionID: string, editorSeats: number, changeOption: 'immediately' | 'end_of_term') {
-    const subscription = await this.findOne(subscriptionID);
-
-    const planItem = findPlanItem(subscription.subscriptionItems);
-
-    if (!planItem) {
-      throw new NotFoundException('Unable to update seats');
-    }
-
-    return this.billingClient.private.updateSubscriptionItem(subscriptionID, planItem.itemPriceID, {
-      itemPriceID: planItem.itemPriceID,
-      quantity: editorSeats,
-      changeOption,
-    });
+    return this.billingClient.subscriptionsPrivate.cancelSubscription(subscriptionID);
   }
 
   async waitForSubscriptionStatus(subscriptionID: string, status: Subscription['status'], timeout = 10000, interval = 1000) {
@@ -124,38 +108,16 @@ export class BillingSubscriptionService {
     );
   }
 
-  async createCustomerCard(userID: number, subscription: Subscription, data: CreditCard) {
-    if (!subscription.customerID) {
-      throw new Error('Subscription customer not found');
-    }
-
+  async createPaymentIntent(userID: number, amount: number) {
     const token = await this.user.getTokenByID(userID);
-
-    return this.billingClient.private.createCustomerCard(subscription.customerID, {
-      json: {
-        first_name: data.firstName,
-        last_name: data.lastName,
-        number: data.number,
-        expiry_month: data.expiryMonth,
-        expiry_year: data.expiryYear,
-        cvv: data.cvv,
-        billing_addr1: data.billingAddr1,
-        billing_city: data.billingCity,
-        billing_state_code: data.billingState,
-        billing_state: data.billingState,
-        billing_country: data.billingCountry,
-      },
-      headers: { Authorization: token },
-    });
+    return this.billingClient.paymentIntentsPrivate.createPaymentIntent({ amount, currency_code: 'USD' }, { headers: { Authorization: token } });
   }
 
-  // TODO: move checkout logic to billing service
   async checkoutAndBroadcast(
     authPayload: AuthMetaPayload,
     organizationID: string,
     subscriptionID: string,
-    plan: BillingCheckoutPlan,
-    card: CreditCard
+    data: Omit<Actions.OrganizationSubscription.CheckoutRequest, 'context'>
   ) {
     const dbSubscription = await this.findOne(subscriptionID);
     const subscription = subscriptionAdapter.fromDB(dbSubscription);
@@ -170,23 +132,16 @@ export class BillingSubscriptionService {
     }
 
     try {
-      await this.createCustomerCard(authPayload.userID, subscription, card);
-    } catch (e) {
-      throw new Error('Unable to create customer card');
-    }
-
-    try {
-      await this.billingClient.private.updateSubscriptionItem(subscriptionID, planItem.itemPriceID, {
-        itemPriceID: plan.itemPriceID,
-        quantity: plan.editorSeats,
-        changeOption: 'immediately',
-        trialEnd: 0,
-      } as any);
+      await this.billingClient.subscriptionsPrivate.checkout(subscriptionID, {
+        itemPriceID: data.itemPriceID,
+        quantity: data.editorSeats,
+        paymentIntentID: data.paymentIntent.id,
+      });
     } catch (e) {
       throw new Error('Unable to update subscription');
     }
 
-    // this not guarantee subscription payment success
+    // TODO: remove it once we implement event subscription
     await this.waitForSubscriptionStatus(subscriptionID, 'active');
 
     const newSubscription = await this.findOne(subscriptionID).then(subscriptionAdapter.fromDB);
@@ -206,7 +161,7 @@ export class BillingSubscriptionService {
   async downgradeTrial(subscriptionID: string) {
     const subscription = await this.findOne(subscriptionID);
 
-    return this.billingClient.private.patchSubscription(subscriptionID, {
+    return this.billingClient.subscriptionsPrivate.patchSubscription(subscriptionID, {
       metadata: {
         ...subscription.metaData,
         downgradedFromTrial: false,

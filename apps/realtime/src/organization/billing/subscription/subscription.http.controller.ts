@@ -1,17 +1,16 @@
-import { Body, Controller, Get, HttpStatus, Inject, Param, Put, Query } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Inject, Param, Post, Put, Query } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
-import { Subscription, SubscriptionDTO } from '@voiceflow/dtos';
-import { ZodApiBody, ZodApiQuery, ZodApiResponse } from '@voiceflow/nestjs-common';
+import { PaymentIntent, PaymentIntentDTO, Subscription, SubscriptionDTO } from '@voiceflow/dtos';
+import { ZodApiQuery, ZodApiResponse } from '@voiceflow/nestjs-common';
 import { Permission } from '@voiceflow/sdk-auth';
-import { Authorize } from '@voiceflow/sdk-auth/nestjs';
+import { Authorize, UserID } from '@voiceflow/sdk-auth/nestjs';
 import { ZodValidationPipe } from 'nestjs-zod';
 
 import { invoiceAdapter } from './adapters/invoice.adapter';
 import subscriptionAdapter from './adapters/subscription.adapter';
+import { CreatePaymentIntentRequest } from './dto/create-payment-intent-request.dto';
 import { GetInvoicesRequestQuery } from './dto/get-invoices-request.dto';
 import { GetInvoicesResponse } from './dto/get-invoices-response.dto';
-import { ScheduleSeatsUpdateRequest } from './dto/schedule-seats-update-request.dto';
-import { UpdateSeatsRequest } from './dto/update-seats-request.dto';
 import { BillingSubscriptionService } from './subscription.service';
 
 @Controller(':organizationID/billing/subscription')
@@ -82,40 +81,6 @@ export class BillingSubscriptionHTTPController {
     await this.service.cancel(subscriptionID);
   }
 
-  @Put(':subscriptionID/schedule-seats')
-  @Authorize.Permissions([Permission.ORGANIZATION_UPDATE])
-  @ApiOperation({
-    summary: 'Schedules billing subscription seats',
-    description: 'Schedules billing subscription seats for the given subscriptionID',
-  })
-  @ApiParam({ name: 'organizationID', type: 'string' })
-  @ApiParam({ name: 'subscriptionID', type: 'string' })
-  @ZodApiBody({ schema: ScheduleSeatsUpdateRequest })
-  @ZodApiResponse({ status: HttpStatus.OK })
-  async scheduleSeatsUpdate(
-    @Param('subscriptionID') subscriptionID: string,
-    @Body(new ZodValidationPipe(ScheduleSeatsUpdateRequest)) data: ScheduleSeatsUpdateRequest
-  ): Promise<void> {
-    await this.service.updateSeats(subscriptionID, data.seats, 'end_of_term');
-  }
-
-  @Put(':subscriptionID/seats')
-  @Authorize.Permissions([Permission.ORGANIZATION_UPDATE])
-  @ApiOperation({
-    summary: 'Schedules billing subscription seats',
-    description: 'Schedules billing subscription seats for the given subscriptionID',
-  })
-  @ApiParam({ name: 'organizationID', type: 'string' })
-  @ApiParam({ name: 'subscriptionID', type: 'string' })
-  @ZodApiBody({ schema: UpdateSeatsRequest })
-  @ZodApiResponse({ status: HttpStatus.OK })
-  async updateSeats(
-    @Param('subscriptionID') subscriptionID: string,
-    @Body(new ZodValidationPipe(UpdateSeatsRequest)) data: UpdateSeatsRequest
-  ): Promise<void> {
-    await this.service.updateSeats(subscriptionID, data.seats, 'immediately');
-  }
-
   @Put(':subscriptionID/downgrade-trial')
   @Authorize.Permissions([Permission.ORGANIZATION_UPDATE])
   @ApiOperation({
@@ -127,5 +92,36 @@ export class BillingSubscriptionHTTPController {
   @ZodApiResponse({ status: HttpStatus.OK })
   async downgradeTrial(@Param('subscriptionID') subscriptionID: string): Promise<void> {
     await this.service.downgradeTrial(subscriptionID);
+  }
+
+  @Post('payment-intent')
+  @Authorize.Permissions([Permission.ORGANIZATION_UPDATE])
+  @ApiOperation({
+    summary: 'Create payment intent',
+    description: 'Create payment intent',
+  })
+  @ApiParam({ name: 'organizationID', type: 'string' })
+  @ApiParam({ name: 'subscriptionID', type: 'string' })
+  @ZodApiResponse({ status: HttpStatus.OK, schema: PaymentIntentDTO })
+  async createPaymentIntent(
+    @UserID() userID: number,
+    @Body(new ZodValidationPipe(CreatePaymentIntentRequest))
+    paymentIntentRequest: CreatePaymentIntentRequest
+  ): Promise<PaymentIntent> {
+    const { payment_intent } = await this.service.createPaymentIntent(userID, paymentIntentRequest.amount);
+
+    return {
+      ...payment_intent,
+      amount: payment_intent.amount,
+      createdAt: payment_intent.created_at,
+      currencyCode: payment_intent.currency_code ?? 'USD',
+      expiresAt: payment_intent.expires_at,
+      gateway: payment_intent.gateway ?? 'chargebee',
+      gatewayAccountId: payment_intent.gateway_account_id,
+      id: payment_intent.id,
+      modifiedAt: payment_intent.modified_at,
+      paymentMethodType: payment_intent.payment_method_type ?? 'card',
+      status: payment_intent.status,
+    };
   }
 }

@@ -21,7 +21,7 @@ export class CompletionService {
 
   private checkQuota(workspaceID: string | number): Promise<boolean> {
     // Consume count of zero to check if quota has not been exceeded
-    return this.billing.private
+    return this.billing.authorizationPrivate
       .authorize({
         resourceType: 'workspace',
         resourceID: String(workspaceID),
@@ -34,7 +34,7 @@ export class CompletionService {
 
   private consumeQuota(workspaceID: string | number, count: number) {
     // do this async to not block the response
-    return this.billing.private
+    return this.billing.usagesPrivate
       .trackUsage({
         resourceType: 'workspace',
         resourceID: String(workspaceID),

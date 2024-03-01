@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.285.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.284.1...@voiceflow/realtime@1.285.0) (2024-03-01)
+
+### Features
+
+* bump subprotocol supports version (CV3-000) ([#7841](https://github.com/voiceflow/creator-app/issues/7841)) ([97cfb6f](https://github.com/voiceflow/creator-app/commit/97cfb6f858ea04ffe6b1d0870f3b297e4ef16526))
+
 ## [1.284.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.284.0...@voiceflow/realtime@1.284.1) (2024-03-01)
 
 **Note:** Version bump only for package @voiceflow/realtime

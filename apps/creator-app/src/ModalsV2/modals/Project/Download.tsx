@@ -2,12 +2,12 @@ import { Box, Button, Modal } from '@voiceflow/ui';
 import React from 'react';
 
 import { projectDownloadGraphic } from '@/assets';
+import { usePaymentModal } from '@/hooks/modal.hook';
 
-// import { usePaymentModal } from '@/hooks/modal.hook';
 import manager from '../../manager';
 
 const Download = manager.create('ProjectDownload', () => ({ api, type, opened, hidden, animated }) => {
-  // const paymentModal = usePaymentModal();
+  const paymentModal = usePaymentModal();
 
   const onToggle = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -15,7 +15,7 @@ const Download = manager.create('ProjectDownload', () => ({ api, type, opened, h
   };
 
   const onUnlock = (e: React.MouseEvent) => {
-    // paymentModal.open({});
+    paymentModal.open({});
     onToggle(e);
   };
 

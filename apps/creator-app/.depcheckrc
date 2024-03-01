@@ -35,6 +35,7 @@
     "nestjs-zod",
     "jotai",
     "jotai-molecules",
-    "@voiceflow/style"
+    "@voiceflow/style",
+    "@chargebee/chargebee-js-react-wrapper"
   ]
 }

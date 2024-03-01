@@ -1,3 +1,4 @@
+import { CardComponent } from '@chargebee/chargebee-js-react-wrapper';
 import { Box, CountrySelect, Input } from '@voiceflow/ui';
 import { useFormik } from 'formik';
 import React from 'react';
@@ -12,54 +13,44 @@ export interface CardFormProps {
   disabled?: boolean;
 }
 
-export const CardForm: React.FC<CardFormProps> = ({ form, disabled }) => {
+const CARD_REQUIRED_ERROR_MESSAGE = 'Card is required';
+
+export const CardForm = React.forwardRef(({ form, disabled }: CardFormProps, ref: any) => {
+  const [cardError, setCardError] = React.useState('');
+
   const onCountryChange = async (value: string | null) => {
     await form.setFieldValue('country', value ?? '');
     form.setFieldError('country', value ? undefined : 'Country is required');
   };
 
-  const touchedErrors = useFormikTouchedErrors(form as any);
+  const onCardChange = (event: any) => {
+    if (event.error) {
+      setCardError(event.error.message);
+      form.setFieldValue('cardCompleted', false);
+    } else {
+      form.setFieldValue('cardCompleted', event.complete);
+      setCardError(event.empty ? CARD_REQUIRED_ERROR_MESSAGE : '');
+    }
+  };
+
+  const onCardBlur = () => {
+    form.setFieldTouched('cardCompleted', true);
+
+    if (form.values.cardCompleted || form.errors.cardCompleted) return;
+
+    setCardError(CARD_REQUIRED_ERROR_MESSAGE);
+  };
+
+  const touchedErrors = useFormikTouchedErrors(form);
 
   return (
     <Box.Flex column gap={16} fullWidth>
       <Box.FlexStart fullWidth alignItems="flex-start">
-        <Box.FlexStart fullWidth>
-          <Input
-            name="cardNumber"
-            error={!!touchedErrors?.card}
-            value={form.values.cardNumber}
-            onBlur={form.handleBlur}
-            onChange={form.handleChange}
-            disabled={disabled}
-            placeholder="4111 1111 1111 1111"
-          />
-        </Box.FlexStart>
+        <S.CardElementContainer error={!!cardError || !!touchedErrors.cardCompleted} disabled={disabled}>
+          <CardComponent ref={ref} onBlur={onCardBlur} onChange={onCardChange} />
+        </S.CardElementContainer>
 
-        <Box.FlexStart ml={8}>
-          <Input
-            name="cardExpiry"
-            error={!!touchedErrors?.card}
-            value={form.values.cardExpiry}
-            onBlur={form.handleBlur}
-            onChange={form.handleChange}
-            disabled={disabled}
-            placeholder="12/2030"
-          />
-
-          <Box ml={4}>
-            <Input
-              name="cardCvv"
-              error={!!touchedErrors?.card}
-              value={form.values.cardCvv}
-              onBlur={form.handleBlur}
-              onChange={form.handleChange}
-              disabled={disabled}
-              placeholder="123"
-            />
-          </Box>
-        </Box.FlexStart>
-
-        {touchedErrors?.card && <S.ErrorMessage>{touchedErrors.card}</S.ErrorMessage>}
+        {touchedErrors?.cardCompleted && <S.ErrorMessage>{touchedErrors.cardCompleted}</S.ErrorMessage>}
       </Box.FlexStart>
 
       <Box.FlexStart column alignItems="flex-start" fullWidth>
@@ -132,4 +123,4 @@ export const CardForm: React.FC<CardFormProps> = ({ form, disabled }) => {
       </Box.FlexStart>
     </Box.Flex>
   );
-};
+});

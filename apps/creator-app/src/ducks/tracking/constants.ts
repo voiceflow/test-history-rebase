@@ -166,6 +166,7 @@ export enum EventName {
   AI_KNOWLEDGE_BASE_ERROR = 'AI - KB Error',
   AI_KNOWLEDGE_BASE_INTEGRATION_SELECTED = 'AI - KB Integration Selected',
   AI_KNOWLEDGE_BASE_INTEGRATION_CONNECTED = 'AI - KB Integration Connected',
+  AI_KNOWLEDGE_BASE_INTEGRATION_FAILED = 'AI - KB Integration Failed',
   AI_KNOWLEDGE_BASE_INTEGRATION_FILTERS_USED = 'AI - KB Integration Filters Used',
 
   // Project API

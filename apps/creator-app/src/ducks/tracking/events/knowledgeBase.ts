@@ -55,7 +55,7 @@ export const trackAiKnowledgeBaseIntegrationConnected = createProjectEventTracke
 );
 
 export const trackAiKnowledgeBaseIntegrationFailed = createProjectEventTracker<{ IntegrationType: string }>((eventInfo) =>
-  client.analytics.track(createProjectEvent(EventName.AI_KNOWLEDGE_BASE_INTEGRATION_CONNECTED, eventInfo))
+  client.analytics.track(createProjectEvent(EventName.AI_KNOWLEDGE_BASE_INTEGRATION_FAILED, eventInfo))
 );
 
 export const trackAiKnowledgeBaseIntegrationSelected = createProjectEventTracker<{ IntegrationType: string }>((eventInfo) =>

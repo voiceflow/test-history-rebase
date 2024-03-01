@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1413.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1413.0...@voiceflow/creator-app@1.1413.1) (2024-03-01)
+
+### Bug Fixes
+
+* unable to rename topics (CORE-1155) ([#7835](https://github.com/voiceflow/creator-app/issues/7835)) ([e14f43f](https://github.com/voiceflow/creator-app/commit/e14f43fc7f78fe0eaca2e72cf464acc79222ade7))
+
 # [1.1413.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1412.0...@voiceflow/creator-app@1.1413.0) (2024-03-01)
 
 ### Features

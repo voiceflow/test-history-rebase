@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1413.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1413.1...@voiceflow/creator-app@1.1413.2) (2024-03-01)
+
+### Bug Fixes
+
+* connection failed event name (COR-1157) ([#7837](https://github.com/voiceflow/creator-app/issues/7837)) ([3e089cc](https://github.com/voiceflow/creator-app/commit/3e089ccb41a92e9173f145929e9fc12ede5ac939))
+
 ## [1.1413.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1413.0...@voiceflow/creator-app@1.1413.1) (2024-03-01)
 
 ### Bug Fixes

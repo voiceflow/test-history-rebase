@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.39.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.38.0...@voiceflow/dtos@1.39.0) (2024-03-01)
+
+### Features
+
+* chargebee checkout 3DS integration (COR-1112) ([#7836](https://github.com/voiceflow/creator-app/issues/7836)) ([4ce00f9](https://github.com/voiceflow/creator-app/commit/4ce00f91ae80be25b08b5e417fb7910bc594d49e))
+
 # [1.38.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.37.0...@voiceflow/dtos@1.38.0) (2024-02-29)
 
 ### Features

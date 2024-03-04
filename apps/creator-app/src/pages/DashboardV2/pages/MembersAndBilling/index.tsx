@@ -14,13 +14,13 @@ import * as S from './styles';
 
 // FIXME: remove FF https://voiceflow.atlassian.net/browse/CV3-994
 const MembersAndBilling: React.FC = () => {
-  const organization = useSelector(Organization.organizationSelector);
+  const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
 
   return (
     <Page white renderHeader={() => <Header />} renderSidebar={() => <Sidebar />}>
       <S.StyledPageContent>
         <Switch>
-          {organization?.chargebeeSubscriptionID ? (
+          {subscription ? (
             <>
               <Route path={Path.WORKSPACE_MEMBERS} component={Members} />
               <Route path={Path.WORKSPACE_BILLING} component={Billing} />

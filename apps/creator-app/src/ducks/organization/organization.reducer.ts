@@ -32,16 +32,4 @@ export const organizationReducer = reducerWithInitialState<OrganizationState>(IN
     return state;
   })
 
-  // TODO: create subscription sub reducer
-  .case(Actions.OrganizationSubscription.ReplaceScheduled, (state, { context, scheduledSubscription }) => {
-    const { organizationID } = context;
-    const organization = getOne(state, organizationID);
-
-    if (organization && organization?.chargebeeSubscriptionID === scheduledSubscription?.id) {
-      return patchOne(state, organizationID, { scheduledSubscription });
-    }
-
-    return state;
-  })
-
   .build();

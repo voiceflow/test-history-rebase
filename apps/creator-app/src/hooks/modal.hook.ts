@@ -36,8 +36,8 @@ export interface PaymentModalAPIProps {
 export const usePaymentModal = (): PropsPublicAPI<PaymentModalAPIProps> => {
   const legacyPaymentModal = useModal<PaymentModalAPIProps>('LegacyPayment');
   const newPaymentModal = useModal<PaymentModalAPIProps>('Payment');
-  const chargebeeSubscriptionID = useSelector(Organization.chargebeeSubscriptionIDSelector);
-  return chargebeeSubscriptionID ? newPaymentModal : legacyPaymentModal;
+  const chargebeeSubscription = useSelector(Organization.chargebeeSubscriptionSelector);
+  return chargebeeSubscription ? newPaymentModal : legacyPaymentModal;
 };
 
 export const useVariablePromptModal = () => useModal<VariablePromptProps, VariablePromptResult>('VariablePrompt');

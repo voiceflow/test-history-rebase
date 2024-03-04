@@ -9606,7 +9606,7 @@ __metadata:
     "@voiceflow/nestjs-openapi-extractor": 1.7.9
     "@voiceflow/openai": ^3.2.1
     "@voiceflow/sdk-auth": ^2.7.14
-    "@voiceflow/sdk-billing": 1.18.2
+    "@voiceflow/sdk-billing": 1.18.3
     axios: 1.6.0
     chance: 1.1.11
     dd-trace: 4.17.0
@@ -10010,8 +10010,8 @@ __metadata:
     "@voiceflow/realtime-sdk": "workspace:*"
     "@voiceflow/schema-types": 1.64.0
     "@voiceflow/sdk-auth": ^2.7.14
-    "@voiceflow/sdk-billing": 1.18.2
-    "@voiceflow/sdk-identity": 1.18.29
+    "@voiceflow/sdk-billing": 1.18.3
+    "@voiceflow/sdk-identity": 1.18.36
     "@voiceflow/sdk-logux-designer": "workspace:*"
     "@voiceflow/socket-utils": "workspace:*"
     "@voiceflow/test-common": 1.8.1
@@ -10178,9 +10178,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voiceflow/sdk-billing@npm:1.18.2":
-  version: 1.18.2
-  resolution: "@voiceflow/sdk-billing@npm:1.18.2"
+"@voiceflow/sdk-billing@npm:1.18.3":
+  version: 1.18.3
+  resolution: "@voiceflow/sdk-billing@npm:1.18.3"
   dependencies:
     "@voiceflow/orval-fetch": 1.4.0
     "@voiceflow/sdk-common": 1.11.3
@@ -10200,7 +10200,7 @@ __metadata:
       optional: true
     undici:
       optional: true
-  checksum: 2a36fe8ec15a50673a8bafa238a3f0fbbd94a823abc91b57f7adf85b209793f169f521dd5d9d018fb272169b68e6494c3ca644348eedd6ff46afc8922a6b06e4
+  checksum: cbb1dd8f7e480efde1c73925dbbbfed48494b72784142956dce82acdfab22f7c4e2122890561191be70945e5a23a1523d259a18c416797516d759918a0adb994
   languageName: node
   linkType: hard
 
@@ -10285,11 +10285,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@voiceflow/sdk-identity@npm:1.18.29":
-  version: 1.18.29
-  resolution: "@voiceflow/sdk-identity@npm:1.18.29"
+"@voiceflow/sdk-identity@npm:1.18.36":
+  version: 1.18.36
+  resolution: "@voiceflow/sdk-identity@npm:1.18.36"
   dependencies:
-    "@voiceflow/orval-fetch": 1.3.0
+    "@voiceflow/orval-fetch": 1.4.0
     "@voiceflow/sdk-common": 1.11.3
   peerDependencies:
     "@nestjs/common": ^9
@@ -10302,7 +10302,7 @@ __metadata:
       optional: true
     undici:
       optional: true
-  checksum: cf53f396e6aa70d4254cab097499ab19c2074ff55f6650f423d6870232b1ce4e9cc51f5980dbd67e895717330dc0bcab9da69acc3aa2f1b2ef452f9a822f0733
+  checksum: 16f3070122682fc35cd39dc888492ef11d3ff3f44de0c308fb194c20a2b097baffbc989a7226f8d37518284766f7e16ab41e704841a21495b8347b52e9883f08
   languageName: node
   linkType: hard
 

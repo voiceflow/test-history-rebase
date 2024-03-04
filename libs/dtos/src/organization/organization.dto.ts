@@ -18,7 +18,6 @@ export const OrganizationDTO = z.object({
     .nullable(),
   chargebeeSubscriptionID: z.string().nullable(),
   subscription: SubscriptionDTO.optional().nullable(),
-  scheduledSubscription: SubscriptionDTO.optional().nullable(),
 });
 
 export interface Organization extends Omit<z.infer<typeof OrganizationDTO>, 'members'> {

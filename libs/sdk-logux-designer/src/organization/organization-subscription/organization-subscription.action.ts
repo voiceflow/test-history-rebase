@@ -20,12 +20,6 @@ export interface Replace extends OrganizationAction {
 
 export const Replace = subscriptionAction.crud.replace<Replace>();
 
-export interface ReplaceScheduled extends OrganizationAction {
-  scheduledSubscription: Organization['subscription'];
-}
-
-export const ReplaceScheduled = Utils.protocol.createAction<ReplaceScheduled>(subscriptionAction('REPLACE_SCHEDULED'));
-
 export interface CheckoutRequest extends OrganizationSubscriptionAction {
   itemPriceID: string;
   planPrice: number;

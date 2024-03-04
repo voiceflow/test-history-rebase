@@ -42,7 +42,7 @@ export const useComponents = (): ComponentsAPI => {
   const getDiagramByID = useSelector(DiagramV2.getDiagramByIDSelector);
   const activeDiagramID = useSelector(CreatorV2.activeDiagramIDSelector);
   const lastCreatedDiagramID = useSelector(DiagramV2.lastCreatedIDSelector);
-  const cmsComponents = useSelector(Designer.Flow.selectors.all);
+  const cmsComponents = useSelector(Designer.Flow.selectors.allOrderedByName);
   const reorderComponents = useDispatch(VersionV2.reorderComponents);
   const setLastCreatedDiagramID = useLocalDispatch(DiagramV2.setLastCreatedID);
 
@@ -83,7 +83,7 @@ export const useComponents = (): ComponentsAPI => {
       children: [],
     });
 
-    return cmsComponents.map(createComponentItemFromCMS).sort((a, b) => a.name.localeCompare(b.name));
+    return cmsComponents.map(createComponentItemFromCMS);
   }, [folders, components, cmsComponents, getDiagramByID]);
 
   const [searchComponentsItems, searchOpenedComponents] = React.useMemo(() => {

@@ -22,7 +22,7 @@ const Form: React.FC<FormProps> = ({ editor, header, footer, children }) => {
   return (
     <EditorV2 header={header ?? <EditorV2.DefaultHeader />} footer={footer ?? <Footer editor={editor} />}>
       <SectionV2.SimpleSection isAccent>
-        <ComponentSelect componentID={diagram?.id ?? null} onChange={(diagramID) => editor.onChange({ diagramID, inputs: [], outputs: [] })} />
+        <ComponentSelect diagramID={diagram?.id ?? null} onChange={(diagramID) => editor.onChange({ diagramID, inputs: [], outputs: [] })} />
       </SectionV2.SimpleSection>
 
       {children}

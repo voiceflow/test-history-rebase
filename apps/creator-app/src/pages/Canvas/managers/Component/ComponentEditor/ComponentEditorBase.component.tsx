@@ -18,7 +18,7 @@ interface ComponentEditorBaseProps {
 
 export const ComponentEditorBase: React.FC<ComponentEditorBaseProps> = ({ headerActions }) => {
   const editor = EditorV3.useEditor<Realtime.NodeData.Component>();
-  const flows = useSelector(Designer.Flow.selectors.all);
+  const flows = useSelector(Designer.Flow.selectors.allOrderedByName);
   const flow = useSelector(Designer.Flow.selectors.byDiagramID, {
     diagramID: editor.data.diagramID,
   });

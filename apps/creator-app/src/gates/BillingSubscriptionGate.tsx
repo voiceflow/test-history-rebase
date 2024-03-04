@@ -7,15 +7,15 @@ import { useDispatch, useSelector } from '@/hooks';
 
 const BillingSubscriptionGate: React.FC<React.PropsWithChildren> = ({ children }) => {
   const organizationID = useSelector(WorkspaceV2.active.organizationIDSelector);
-  const chargebeeSubscriptionID = useSelector(Organization.chargebeeSubscriptionIDSelector);
+  const chargebeeSubscription = useSelector(Organization.chargebeeSubscriptionSelector);
   const loadSubscription = useDispatch(Organization.loadActiveOrganizationSubscription);
 
   React.useEffect(() => {
     let counterID = 0;
 
-    if (chargebeeSubscriptionID && organizationID) {
+    if (chargebeeSubscription?.id && organizationID) {
       const load = async () => {
-        await loadSubscription(organizationID, chargebeeSubscriptionID);
+        await loadSubscription(organizationID, chargebeeSubscription.id);
 
         counterID = window.setTimeout(() => {
           load();
@@ -26,7 +26,7 @@ const BillingSubscriptionGate: React.FC<React.PropsWithChildren> = ({ children }
     }
 
     return () => window.clearTimeout(counterID);
-  }, [chargebeeSubscriptionID, organizationID]);
+  }, [chargebeeSubscription?.id, organizationID]);
 
   return (
     <LoadingGate label="Subscription" internalName={BillingSubscriptionGate.name} zIndex={50} isLoaded backgroundColor="#f9f9f9">

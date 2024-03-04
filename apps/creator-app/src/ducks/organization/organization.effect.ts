@@ -7,6 +7,7 @@ import client from '@/client';
 import { designerClient } from '@/client/designer';
 import * as Errors from '@/config/errors';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
+import { ChargebeeSubscriptionStatus } from '@/models';
 import { Thunk } from '@/store/types';
 import { getErrorMessage } from '@/utils/error';
 
@@ -78,9 +79,22 @@ export const loadActiveOrganizationSubscription =
   };
 
 export const cancelSubscription = (organizationID: string, chargebeeSubscriptionID: string): Thunk<void> => {
-  return async () => {
+  return async (dispatch, getState) => {
+    const subscription = chargebeeSubscriptionSelector(getState());
+
+    if (!subscription) return;
     try {
       await designerClient.billing.subscription.cancel(organizationID, chargebeeSubscriptionID);
+
+      await dispatch.local(
+        Actions.OrganizationSubscription.Replace({
+          subscription: {
+            ...subscription,
+            status: ChargebeeSubscriptionStatus.NON_RENEWING,
+          },
+          context: { organizationID },
+        })
+      );
     } catch (err) {
       toast.error(getErrorMessage(err, 'Failed to cancel subscription'));
     }

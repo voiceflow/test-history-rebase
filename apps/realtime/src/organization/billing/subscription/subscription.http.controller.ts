@@ -76,9 +76,9 @@ export class BillingSubscriptionHTTPController {
   })
   @ApiParam({ name: 'organizationID', type: 'string' })
   @ApiParam({ name: 'subscriptionID', type: 'string' })
-  @ZodApiResponse({ status: HttpStatus.OK })
-  async cancel(@Param('subscriptionID') subscriptionID: string): Promise<void> {
-    await this.service.cancel(subscriptionID);
+  @ZodApiResponse({ status: HttpStatus.OK, schema: SubscriptionDTO })
+  async cancel(@Param('subscriptionID') subscriptionID: string): Promise<Subscription> {
+    return this.service.cancel(subscriptionID).then(subscriptionAdapter.fromDB);
   }
 
   @Put(':subscriptionID/downgrade-trial')
@@ -89,9 +89,9 @@ export class BillingSubscriptionHTTPController {
   })
   @ApiParam({ name: 'organizationID', type: 'string' })
   @ApiParam({ name: 'subscriptionID', type: 'string' })
-  @ZodApiResponse({ status: HttpStatus.OK })
-  async downgradeTrial(@Param('subscriptionID') subscriptionID: string): Promise<void> {
-    await this.service.downgradeTrial(subscriptionID);
+  @ZodApiResponse({ status: HttpStatus.OK, schema: SubscriptionDTO })
+  async downgradeTrial(@Param('subscriptionID') subscriptionID: string): Promise<Subscription> {
+    return this.service.downgradeTrial(subscriptionID).then(subscriptionAdapter.fromDB);
   }
 
   @Post('payment-intent')

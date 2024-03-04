@@ -1,6 +1,4 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Subscription } from '@voiceflow/dtos';
-import { NotFoundException } from '@voiceflow/exception';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
 import { BillingClient } from '@voiceflow/sdk-billing';
 import { SubscriptionsControllerGetSubscription200Subscription } from '@voiceflow/sdk-billing/generated';
@@ -9,7 +7,7 @@ import { Actions } from '@voiceflow/sdk-logux-designer';
 import { UserService } from '@/user/user.service';
 
 import subscriptionAdapter from './adapters/subscription.adapter';
-import { findPlanItem, pollWithProgressiveTimeout } from './subscription.utils';
+import { pollWithProgressiveTimeout } from './subscription.utils';
 
 const fromUnixTimestamp = (timestamp: number) => timestamp * 1000;
 
@@ -37,6 +35,7 @@ export class BillingSubscriptionService {
       trialEnd: subscription.trial_end ? fromUnixTimestamp(subscription.trial_end) : undefined,
       cancelledAt: subscription.cancelled_at ? fromUnixTimestamp(subscription.cancelled_at) : undefined,
       cancelReason: subscription.cancel_reason,
+      resourceVersion: subscription.resource_version,
       subscriptionItems: subscription.subscription_items?.map((item) => ({
         itemPriceID: item.item_price_id,
         itemType: item.item_type,
@@ -92,15 +91,24 @@ export class BillingSubscriptionService {
     return this.billingClient.subscriptionsPrivate.getSubscriptionInvoices(subscriptionID, { ...(cursor && { cursor }), ...(limit && { limit }) });
   }
 
-  cancel(subscriptionID: string) {
-    return this.billingClient.subscriptionsPrivate.cancelSubscription(subscriptionID);
+  async cancel(subscriptionID: string) {
+    await this.billingClient.subscriptionsPrivate.cancelSubscription(subscriptionID, { end_of_term: true });
+
+    // TODO: remove it once we implement event subscription
+    await this.waitForSubscriptionUpdate(subscriptionID);
+
+    return this.findOne(subscriptionID);
   }
 
-  async waitForSubscriptionStatus(subscriptionID: string, status: Subscription['status'], timeout = 10000, interval = 1000) {
+  async waitForSubscriptionUpdate(subscriptionID: string, timeout = 10000, interval = 1000) {
+    const { resourceVersion } = await this.findOne(subscriptionID);
+
     return pollWithProgressiveTimeout(
       async () => {
-        const subscription = (await this.findOne(subscriptionID).then(subscriptionAdapter.fromDB)) as Subscription;
-        return subscription.status === status;
+        const subscription = await this.findOne(subscriptionID);
+        if (!resourceVersion || !subscription.resourceVersion) return true;
+
+        return subscription.resourceVersion > resourceVersion;
       },
       timeout,
       interval,
@@ -119,18 +127,6 @@ export class BillingSubscriptionService {
     subscriptionID: string,
     data: Omit<Actions.OrganizationSubscription.CheckoutRequest, 'context'>
   ) {
-    const dbSubscription = await this.findOne(subscriptionID);
-    const subscription = subscriptionAdapter.fromDB(dbSubscription);
-    const planItem = findPlanItem(dbSubscription.subscriptionItems);
-
-    if (!planItem) {
-      throw new NotFoundException('Subscription plan not found');
-    }
-
-    if (!subscription) {
-      throw new NotFoundException('Subscription not found');
-    }
-
     try {
       await this.billingClient.subscriptionsPrivate.checkout(subscriptionID, {
         itemPriceID: data.itemPriceID,
@@ -142,7 +138,7 @@ export class BillingSubscriptionService {
     }
 
     // TODO: remove it once we implement event subscription
-    await this.waitForSubscriptionStatus(subscriptionID, 'active');
+    await this.waitForSubscriptionUpdate(subscriptionID);
 
     const newSubscription = await this.findOne(subscriptionID).then(subscriptionAdapter.fromDB);
 
@@ -161,11 +157,16 @@ export class BillingSubscriptionService {
   async downgradeTrial(subscriptionID: string) {
     const subscription = await this.findOne(subscriptionID);
 
-    return this.billingClient.subscriptionsPrivate.patchSubscription(subscriptionID, {
+    await this.billingClient.subscriptionsPrivate.patchSubscription(subscriptionID, {
       metadata: {
         ...subscription.metaData,
         downgradedFromTrial: false,
       },
     });
+
+    // TODO: remove it once we implement event subscription
+    await this.waitForSubscriptionUpdate(subscriptionID);
+
+    return this.findOne(subscriptionID);
   }
 }

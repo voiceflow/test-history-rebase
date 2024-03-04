@@ -6,6 +6,6 @@ import { useSelector } from './redux';
 export const useCheckoutPaymentModal = () => {
   const legacyPaymentModal = ModalsV2.useModal(ModalsV2.Legacy.Payment);
   const newPaymentModal = ModalsV2.useModal(ModalsV2.Billing.Payment);
-  const chargebeeSubscriptionID = useSelector(Organization.chargebeeSubscriptionIDSelector);
-  return chargebeeSubscriptionID ? newPaymentModal : legacyPaymentModal;
+  const chargebeeSubscription = useSelector(Organization.chargebeeSubscriptionSelector);
+  return chargebeeSubscription ? newPaymentModal : legacyPaymentModal;
 };

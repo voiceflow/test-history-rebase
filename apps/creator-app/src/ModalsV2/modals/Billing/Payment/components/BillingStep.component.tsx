@@ -8,14 +8,13 @@ import * as Workspace from '@/components/Workspace';
 import * as currency from '@/utils/currency';
 
 import { usePaymentSteps, usePricing, useSeats } from '../hooks';
-import * as S from './BillingStep.styles';
 
 interface BillingStepProps {
   isLoading: boolean;
 }
 
 export const BillingStep: React.FC<BillingStepProps> = ({ isLoading }) => {
-  const { downgradedSeats, editorPlanSeatLimits, usedEditorSeats, viewerSeats, onChangeEditorSeats, selectedEditorSeats } = useSeats();
+  const { downgradedSeats, editorPlanSeatLimits, usedEditorSeats, viewerSeats, selectedEditorSeats } = useSeats();
   const { onBack, onNext } = usePaymentSteps();
   const { price, periodPrice, prices, period, hasCard, onChangePeriod } = usePricing();
 
@@ -85,14 +84,6 @@ export const BillingStep: React.FC<BillingStepProps> = ({ isLoading }) => {
               )}
             </div>
           </Box.FlexAlignStart>
-
-          <S.StyledInput
-            min={1}
-            value={selectedEditorSeats}
-            error={selectedEditorSeats > editorPlanSeatLimits}
-            onPlusClick={() => onChangeEditorSeats(selectedEditorSeats + 1)}
-            onMinusClick={() => onChangeEditorSeats(selectedEditorSeats - 1)}
-          />
         </Box.FlexApart>
       </SectionV2.SimpleSection>
 

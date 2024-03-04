@@ -35,10 +35,10 @@ export const useBillingHistory = (): BillingHistoryAPI => {
   const [billingHistory, setBillingHistory] = React.useState<BillingHistory | null>(null);
 
   const loadInvoiceData = async (cursor?: string) => {
-    if (!organization || !organization.chargebeeSubscriptionID) return;
+    if (!organization || !organization.subscription?.id) return;
 
     try {
-      const { invoices, nextCursor } = await designerClient.billing.subscription.getInvoices(organization.id, organization.chargebeeSubscriptionID, {
+      const { invoices, nextCursor } = await designerClient.billing.subscription.getInvoices(organization.id, organization.subscription.id, {
         ...(cursor && { cursor }),
         limit: 10,
       });
@@ -69,7 +69,7 @@ export const useBillingHistory = (): BillingHistoryAPI => {
     setStatus(Status.FETCHING);
 
     loadInvoiceData();
-  }, [organization?.chargebeeSubscriptionID, organization?.subscription?.plan, organization?.subscription?.editorSeats]);
+  }, [organization?.subscription?.id, organization?.subscription?.plan, organization?.subscription?.editorSeats]);
 
   return {
     data: billingHistory?.data ?? [],

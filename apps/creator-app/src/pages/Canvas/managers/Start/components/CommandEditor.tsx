@@ -58,7 +58,7 @@ const CommandEditor: React.FC = () => {
             icon="systemSymbolSmall"
             onChange={(diagramID) => onChange({ diagramID })}
             iconProps={{ color: '#6E849A' }}
-            componentID={commandNodeData?.diagramID ?? null}
+            diagramID={commandNodeData?.diagramID ?? null}
           />
         </Box.Flex>
       </SectionV2.SimpleSection>

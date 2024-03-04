@@ -2,39 +2,39 @@ import { Nullable, Utils } from '@voiceflow/common';
 import { BaseSelectProps, Menu, Select, System } from '@voiceflow/ui';
 import React from 'react';
 
-import * as DiagramV2 from '@/ducks/diagramV2';
-import { useDispatch, useSelector } from '@/hooks';
+import * as Designer from '@/ducks/designer';
+import { useSelector } from '@/hooks';
+import * as ModalsV2 from '@/ModalsV2';
 
 interface ComponentSelectProps extends Pick<BaseSelectProps, 'icon' | 'iconProps'> {
-  onChange: (componentID: string | null) => void;
-  componentID: Nullable<string>;
+  onChange: (diagramID: string | null) => void;
+  diagramID: Nullable<string>;
 }
 
-const ComponentSelect: React.FC<ComponentSelectProps> = ({ componentID, onChange, ...props }) => {
-  const componentDiagrams = useSelector(DiagramV2.active.componentDiagramsSelector);
-
-  const createEmptyComponent = useDispatch(DiagramV2.createEmptyComponent);
+const ComponentSelect: React.FC<ComponentSelectProps> = ({ diagramID, onChange, ...props }) => {
+  const flows = useSelector(Designer.Flow.selectors.allOrderedByName);
+  const createModal = ModalsV2.useModal(ModalsV2.Flow.Create);
 
   const onCreate = async (diagramName: string) => {
-    const newDiagramID = await createEmptyComponent(diagramName);
+    const result = await createModal.openVoid({ name: diagramName, folderID: null });
 
-    onChange(newDiagramID);
+    if (result) onChange(result.diagramID);
   };
 
-  const optionLookup = React.useMemo(() => Utils.array.createMap(componentDiagrams, Utils.object.selectID), [componentDiagrams]);
+  const optionLookup = React.useMemo(() => Utils.array.createMap(flows, Utils.object.selectField('diagramID')), [flows]);
 
   return (
     <Select
       {...props}
-      value={componentID}
-      options={componentDiagrams}
+      value={diagramID}
+      options={flows}
       onCreate={onCreate}
       onSelect={onChange}
       fullWidth
       clearable
       searchable
       placeholder="Select or create component"
-      getOptionValue={(option) => option?.id}
+      getOptionValue={(option) => option?.diagramID}
       getOptionLabel={(value) => (value ? optionLookup[value]?.name : undefined)}
       inDropdownSearch
       alwaysShowCreate

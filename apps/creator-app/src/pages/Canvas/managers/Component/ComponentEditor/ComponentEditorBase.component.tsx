@@ -31,9 +31,9 @@ export const ComponentEditorBase: React.FC<ComponentEditorBaseProps> = ({ header
           {hasFlows ? (
             <>
               <ComponentEditorFlowSelect
+                onSelect={(flow) => editor.onChange({ diagramID: flow.diagramID })}
                 diagramID={editor.data.diagramID}
                 activeNodeID={editor.data.nodeID}
-                onSelect={(flow) => editor.onChange({ diagramID: flow.diagramID })}
               />
 
               <Box pt={20}>

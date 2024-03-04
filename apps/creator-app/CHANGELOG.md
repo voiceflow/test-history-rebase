@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1418.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1417.0...@voiceflow/creator-app@1.1418.0) (2024-03-04)
+
+### Features
+
+* implement invite modal with chargebee (COR-1096) ([#7842](https://github.com/voiceflow/creator-app/issues/7842)) ([425c581](https://github.com/voiceflow/creator-app/commit/425c581e29871e933fad9be410f5a91f21e6ef10))
+
 # [1.1417.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1416.0...@voiceflow/creator-app@1.1417.0) (2024-03-04)
 
 ### Features

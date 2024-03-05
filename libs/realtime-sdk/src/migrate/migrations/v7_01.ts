@@ -12,8 +12,9 @@ const migrateToV7_01: Transform = ({ cms, diagrams }, { project, creatorID }) =>
     diagramVariables.push(...diagram.variables);
   });
 
-  const existingCMSVariableNames = new Set(cms.variables.map((variable) => variable.name));
-  const newVariables = diagramVariables.filter((variable) => !existingCMSVariableNames.has(variable));
+  const existingCMSVariableIdentifiers = new Set(cms.variables.flatMap(({ name, id }) => [name, id]));
+
+  const newVariables = diagramVariables.filter((variable) => !existingCMSVariableIdentifiers.has(variable));
 
   // this should only be an upsert, existing cms variables should not be affected
   cms.variables = variableToLegacyVariableAdapter.mapToDB(Utils.array.unique(newVariables), {

@@ -72,15 +72,15 @@ const IntegrationsSidebar: React.FC = () => {
             <NavigationSidebar.NavItem key={title} to={to} icon={icon} title={title} />
           ))}
 
-          <NavigationSidebar.NavItem to={generatePath(Path.PUBLISH_API, { versionID })} icon="channel" title="Dialog API" />
+          <NavigationSidebar.NavItem
+            to={generatePath(Path.PUBLISH_API, { versionID })}
+            icon="channel"
+            title="Dialog API"
+            testID="integrations__tab--api-keys"
+          />
 
           {knowledgeBase && (
-            <NavigationSidebar.NavItem
-              to={generatePath(Path.PUBLISH_KNOWLEDGE_BASE_API, { versionID })}
-              icon="channel"
-              title="Knowledge Base API"
-              testID="integrations__tab--api-keys"
-            />
+            <NavigationSidebar.NavItem to={generatePath(Path.PUBLISH_KNOWLEDGE_BASE_API, { versionID })} icon="channel" title="Knowledge Base API" />
           )}
 
           {!disableCodeExports && canExportCode && (

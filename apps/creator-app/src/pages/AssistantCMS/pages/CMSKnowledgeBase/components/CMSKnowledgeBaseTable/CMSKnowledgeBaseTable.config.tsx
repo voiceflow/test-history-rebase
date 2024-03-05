@@ -6,7 +6,7 @@ import type { CMSFolder, CMSKnowledgeBase } from '@/pages/AssistantCMS/contexts/
 
 import { CMSTableCellFromNowTooltip } from '../../../../components/CMSTableCellFromNowTooltip/CMSTableCellFromNowTooltip.component';
 import { updatedAtSort, withFolderSort } from '../../../../contexts/CMSManager/CMSManager.util';
-import { sortByName } from '../../CMSKnowledgeBase.util';
+import { sortByName, sortByStatus } from '../../CMSKnowledgeBase.util';
 import { KnowledgeBaseTableColumn } from './CMSKnowledgeBaseTable.constant';
 import { CMSKnowledgeBaseTableImportedByCell } from './CMSKnowledgeBaseTableImportedByCell/CMSKnowledgeBaseTableImportedByCell.component';
 import { CMSKnowledgeBaseTableNameCell } from './CMSKnowledgeBaseTableNameCell/CMSKnowledgeBaseTableNameCell.component';
@@ -64,6 +64,7 @@ export const CMS_KNOWLEDGE_BASE_TABLE_CONFIG: TableConfig<KnowledgeBaseTableColu
     [KnowledgeBaseTableColumn.STATUS]: {
       type: KnowledgeBaseTableColumn.STATUS,
       name: 'Status',
+      sorter: withFolderSort<CMSKnowledgeBase>(sortByStatus),
 
       cell: ({ item }) => <Table.Cell.GroupEmpty item={item} label={(item) => <Status item={item} />} />,
     },

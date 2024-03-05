@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1418.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1418.0...@voiceflow/creator-app@1.1418.1) (2024-03-05)
+
+### Bug Fixes
+
+* move api testID (COR-1113) ([#7848](https://github.com/voiceflow/creator-app/issues/7848)) ([d409c37](https://github.com/voiceflow/creator-app/commit/d409c372c90361b0be13e79e5bb8ecf0757204c8))
+
 # [1.1418.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1417.0...@voiceflow/creator-app@1.1418.0) (2024-03-04)
 
 ### Features

@@ -174,7 +174,7 @@ export const KnowledgeBasePreviewQuestion = manager.create(
                   placeholder="Enter question..."
                   onValueChange={setQuestion}
                   onKeyDown={onKeyDown}
-                  caption={questionError}
+                  errorMessage={questionError}
                   error={!!questionError}
                   onFocus={() => setQuestionError('')}
                   testID={tid(TEST_ID, 'question')}

@@ -16,7 +16,7 @@ import manager from '@/ModalsV2/manager';
 import { KBFieldLabel } from '../components/KBFieldLabel/KBFieldLabel.component';
 import { KBRefreshRateSelect } from '../components/KBRefreshRateSelect/KBRefreshRateSelect.component';
 import { filterWhitespace, sanitizeURLs, urlsValidator, useDocumentLimitError } from '../KnowledgeBaseImport.utils';
-import { errorTextStyles, textareaStyles } from './KBImportUrl.css';
+import { textareaStyles } from './KBImportUrl.css';
 
 export const KBImportUrl = manager.create('KBImportURL', () => ({ api, type, opened, hidden, animated, closePrevented }) => {
   const TEST_ID = tid('knowledge-base', 'import-url-modal');
@@ -65,15 +65,13 @@ export const KBImportUrl = manager.create('KBImportURL', () => ({ api, type, ope
     onSave,
   });
 
-  const URLInputCaption = useMemo(() => {
+  const caption = useMemo(() => {
     const inputVal = inputState.value;
-
-    if (input.errorMessage) return input.errorMessage;
 
     if (!inputVal.trim()) return 'One url per line.';
 
-    return input.errorMessage || `${pluralize('URL', filterWhitespace(inputVal).split('\n').length, true)} added.`;
-  }, [inputState.value, inputState.error, input.errorMessage]);
+    return `${pluralize('URL', filterWhitespace(inputVal).split('\n').length, true)} added.`;
+  }, [inputState.value, inputState.error]);
 
   return (
     <Modal.Container
@@ -95,12 +93,12 @@ export const KBImportUrl = manager.create('KBImportURL', () => ({ api, type, ope
               <KBFieldLabel>URL(s)</KBFieldLabel>
               <TextArea.AutoSize
                 {...input.attributes}
-                caption={URLInputCaption}
+                caption={input.errored ? undefined : caption}
+                errorMessage={input.errorMessage}
                 disabled={closePrevented}
                 autoFocus
                 className={textareaStyles}
                 placeholder="Enter URL(s)"
-                captionClassName={errorTextStyles}
                 horizontalScroll
                 testID={tid(TEST_ID, 'urls')}
               />

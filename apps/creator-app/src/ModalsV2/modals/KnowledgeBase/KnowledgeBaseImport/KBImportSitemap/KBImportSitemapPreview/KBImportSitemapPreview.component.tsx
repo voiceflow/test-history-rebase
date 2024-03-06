@@ -12,7 +12,7 @@ import { useValidators } from '@/hooks/validate.hook';
 
 import { KBFieldLabel } from '../../components/KBFieldLabel/KBFieldLabel.component';
 import { filterWhitespace, sanitizeURLs, urlsValidator, useDocumentLimitError } from '../../KnowledgeBaseImport.utils';
-import { errorTextStyles, submitButtonStyles, textareaBoxStyles, textareaStyles } from '../KBImportSitemap.css';
+import { submitButtonStyles, textareaBoxStyles, textareaStyles } from '../KBImportSitemap.css';
 import { IKBImportSitemapPreview } from './KBImportSitemapPreview.interface';
 
 export const KBImportSitemapPreview: React.FC<IKBImportSitemapPreview> = ({
@@ -91,11 +91,11 @@ export const KBImportSitemapPreview: React.FC<IKBImportSitemapPreview> = ({
           <Box pb={24} grow={1}>
             <TextArea.AutoSize
               {...input.attributes}
-              caption={input.errorMessage || `${pluralize('URL', count, true)} added.`}
+              caption={input.errored ? undefined : `${pluralize('URL', count, true)} added.`}
+              errorMessage={input.errorMessage}
               disabled={closePrevented}
               className={textareaStyles}
               placeholder="Enter URL(s)"
-              captionClassName={errorTextStyles}
               horizontalScroll
               onKeyDown={onKeyDown}
               testID={tid(testID, 'urls')}

@@ -73,7 +73,7 @@ export const KBImportPlainText = manager.create('KBImportPlainText', () => ({ ap
           <TextArea.AutoSize
             {...input.attributes}
             disabled={closePrevented}
-            caption={input.errorMessage ?? undefined}
+            errorMessage={input.errorMessage}
             className={textareaStyles}
             placeholder="Enter or paste text here..."
             testID={tid(TEST_ID, 'content')}

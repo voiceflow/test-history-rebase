@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1420.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1419.0...@voiceflow/creator-app@1.1420.0) (2024-03-06)
+
+### Features
+
+* increase inactivity timeout (COR-1173) ([#7853](https://github.com/voiceflow/creator-app/issues/7853)) ([b8bf5a4](https://github.com/voiceflow/creator-app/commit/b8bf5a4ce201248a556e5614d713ee40ce9e7d26))
+
 # [1.1419.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1418.1...@voiceflow/creator-app@1.1419.0) (2024-03-05)
 
 ### Features

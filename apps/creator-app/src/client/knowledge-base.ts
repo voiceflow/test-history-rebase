@@ -42,6 +42,9 @@ export const knowledgeBaseClient = {
   createOneDocument: (projectID: string, data: BaseModels.Project.KnowledgeBaseDocument['data']) =>
     apiV3.fetch.post<DBKnowledgeBaseDocument>(`/projects/${projectID}/knowledge-base/documents`, { data }).then(({ data }) => data),
 
+  createManyDocumentsFromURLs: (projectID: string, data: BaseModels.Project.KnowledgeBaseDocument['data'][]) =>
+    apiV3.fetch.post<DBKnowledgeBaseDocument[]>(`/projects/${projectID}/knowledge-base/documents/create-many`, { data }).then(({ data }) => data),
+
   deleteOneDocument: (projectID: string, documentID: string) => apiV3.fetch.delete(`/projects/${projectID}/knowledge-base/documents/${documentID}`),
 
   deleteManyDocuments: (projectID: string, documentIDs: string[]) =>

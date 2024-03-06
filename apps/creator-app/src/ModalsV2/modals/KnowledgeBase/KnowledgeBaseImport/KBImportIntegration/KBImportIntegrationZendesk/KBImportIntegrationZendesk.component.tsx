@@ -63,7 +63,7 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
   const getFilters = useDispatch(Designer.KnowledgeBase.Integration.effect.getIntegrationFilters);
   const importIntegration = useDispatch(Designer.KnowledgeBase.Integration.effect.importIntegration);
 
-  const planConfig = usePlanLimitConfig(LimitType.KB_DOCUMENTS, { limit: 5000 });
+  const planConfig = usePlanLimitConfig(LimitType.KB_DOCUMENTS);
 
   const validator = useValidators({
     brand: useCreateConst(() => [validatorFactory((brand: ZendeskFilterBrand | null) => !!brand, 'Brand is required.'), brand.setError]),
@@ -176,11 +176,10 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
       })
       .catch((error) => {
         if (error.response.status === 406 && planConfig) {
-          const limit = error.response.data.kbDocsLimit;
           notify.long.warning(
-            `Document limit (${limit}) reached for your current subscription. Please adjust import configuration or upgrade to continue.`,
+            `Document limit (${planConfig.limit}) reached for your current subscription. Please adjust import configuration or upgrade to continue.`,
             {
-              actionButtonProps: { label: 'Upgrade', onClick: () => upgradeModal.openVoid(planConfig.upgradeModal({ limit })) },
+              actionButtonProps: { label: 'Upgrade', onClick: () => upgradeModal.openVoid(planConfig.upgradeModal({ limit: planConfig.limit })) },
               bodyStyle: {
                 color: Tokens.colors.neutralDark.neutralsDark900,
                 fontSize: Tokens.typography.size[14],

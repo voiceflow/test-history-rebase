@@ -4,7 +4,7 @@ import { LimitType } from '@/constants/limits';
 import * as Tracking from '@/ducks/tracking';
 import { getUpgradeModalProps } from '@/utils/upgrade';
 
-import { PlanLimit, UpgradeModalDynamicLimit } from './types';
+import { PlanLimit, UpgradeModalStaticLimit } from './types';
 import { applyEnterpriseLimits, applyPersonalLimits, applyProLimits, applyStarterLimits, applyTeamLimits } from './utils';
 
 const DEFAULT_MODAL = {
@@ -13,28 +13,32 @@ const DEFAULT_MODAL = {
 };
 
 const STARTER_PERSONAL_LIMIT = {
+  limit: 50,
+
   upgradeModal: () => ({
     ...DEFAULT_MODAL,
     ...getUpgradeModalProps(PlanType.PRO, Tracking.UpgradePrompt.KB_DOCUMENTS),
     description: `Upgrade to the pro plan to unlock more documents.`,
   }),
-} satisfies UpgradeModalDynamicLimit;
+} satisfies UpgradeModalStaticLimit;
 
 const PRO_TEAM_LIMIT = {
+  limit: 200,
   upgradeModal: ({ limit }) => ({
     ...DEFAULT_MODAL,
     ...getUpgradeModalProps(PlanType.ENTERPRISE, Tracking.UpgradePrompt.KB_DOCUMENTS),
     description: `You've reached the ${limit} documents limit allowed in your workspace. Contact sales to unlock more.`,
   }),
-} satisfies UpgradeModalDynamicLimit;
+} satisfies UpgradeModalStaticLimit;
 
 const ENTERPRISE_LIMIT = {
+  limit: 5000,
   upgradeModal: ({ limit }) => ({
     ...DEFAULT_MODAL,
     ...getUpgradeModalProps(PlanType.ENTERPRISE, Tracking.UpgradePrompt.KB_DOCUMENTS),
     description: `You've reached the ${limit} documents limit allowed in your workspace. Contact sales to unlock more.`,
   }),
-} satisfies UpgradeModalDynamicLimit;
+} satisfies UpgradeModalStaticLimit;
 
 export const KB_DOCUMENTS_LIMITS = {
   limit: LimitType.KB_DOCUMENTS,

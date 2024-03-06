@@ -1,3 +1,4 @@
+import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import { notify } from '@voiceflow/ui-next';
 import { Tokens } from '@voiceflow/ui-next/styles';
@@ -8,7 +9,6 @@ import { useUpgradeModal } from '@/hooks/modal.hook';
 import { usePlanLimitConfig } from '@/hooks/planLimitV2';
 import { URL_ONLY_REGEX } from '@/utils/string.util';
 
-import { URLS_LIMIT } from './KnowledgeBaseImport.constant';
 // add https:// if not present
 export const sanitizeURL = (url: string): string => {
   const trimmedURL = url.trim();
@@ -19,6 +19,16 @@ export const sanitizeURL = (url: string): string => {
 };
 
 export const sanitizeURLs = (urls: string[]): string[] => Utils.array.unique(urls.map(sanitizeURL).filter(Boolean));
+
+export const sanitizeURLsWithDataFormatting = (
+  urls: string,
+  refreshRate: BaseModels.Project.KnowledgeBaseDocumentRefreshRate
+): {
+  url: string;
+  name: string;
+  type: BaseModels.Project.KnowledgeBaseDocumentType;
+  refreshRate: BaseModels.Project.KnowledgeBaseDocumentRefreshRate;
+}[] => sanitizeURLs(urls.split('\n')).map((url) => ({ url, name: url, type: BaseModels.Project.KnowledgeBaseDocumentType.URL, refreshRate }));
 
 export const filterWhitespace = (urls: string): string =>
   urls
@@ -32,8 +42,8 @@ export const hasUrlValidator = validatorFactory((urls: string) => {
 }, 'At least one URL is required.');
 
 export const urlMaxNumberValidator = validatorFactory(
-  (urls: string) => urls.split('\n').length <= URLS_LIMIT,
-  `URLs must be less than ${URLS_LIMIT}`
+  (urls: string, { limit }: { limit: number }) => urls.split('\n').length <= limit,
+  (_: string, { limit }: { limit: number }) => `URLs must be less than ${limit}`
 );
 
 export const urlRegexValidator = validatorFactory(
@@ -56,14 +66,13 @@ export const urlRegexValidator = validatorFactory(
 export const urlsValidator = composeValidators(hasUrlValidator, urlMaxNumberValidator, urlRegexValidator);
 
 export const useDocumentLimitError = (enableClose: VoidFunction) => {
-  const planConfig = usePlanLimitConfig(LimitType.KB_DOCUMENTS, { limit: 5000 });
+  const planConfig = usePlanLimitConfig(LimitType.KB_DOCUMENTS);
   const upgradeModal = useUpgradeModal();
 
   return (error: any) => {
     if (error.response.status === 406 && planConfig) {
-      const limit = error.response.data.kbDocsLimit;
-      notify.long.warning(`Document limit (${limit}) reached for your current subscription. Please upgrade to continue.`, {
-        actionButtonProps: { label: 'Upgrade', onClick: () => upgradeModal.openVoid(planConfig.upgradeModal({ limit })) },
+      notify.long.warning(`Document limit (${planConfig.limit}) reached for your current subscription. Please upgrade to continue.`, {
+        actionButtonProps: { label: 'Upgrade', onClick: () => upgradeModal.openVoid(planConfig.upgradeModal({ limit: planConfig.limit })) },
         bodyStyle: {
           color: Tokens.colors.neutralDark.neutralsDark900,
           fontSize: Tokens.typography.size[14],

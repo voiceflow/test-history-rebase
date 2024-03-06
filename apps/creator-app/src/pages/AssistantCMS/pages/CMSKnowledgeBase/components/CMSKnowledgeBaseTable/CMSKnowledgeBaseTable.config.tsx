@@ -42,6 +42,7 @@ export const CMS_KNOWLEDGE_BASE_TABLE_CONFIG: TableConfig<KnowledgeBaseTableColu
     [KnowledgeBaseTableColumn.DATE]: {
       type: KnowledgeBaseTableColumn.DATE,
       name: 'Date',
+      sorter: withFolderSort(updatedAtSort),
 
       cell: ({ item }) => {
         return (
@@ -57,8 +58,6 @@ export const CMS_KNOWLEDGE_BASE_TABLE_CONFIG: TableConfig<KnowledgeBaseTableColu
           />
         );
       },
-
-      sorter: withFolderSort(updatedAtSort),
     },
 
     [KnowledgeBaseTableColumn.STATUS]: {

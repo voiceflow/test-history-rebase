@@ -6,16 +6,19 @@ import pluralize from 'pluralize';
 import React, { useMemo } from 'react';
 
 import { Modal } from '@/components/Modal';
+import { LimitType } from '@/constants/limits';
 import { Designer } from '@/ducks';
 import { useFeature } from '@/hooks/feature';
 import { useInput, useInputState } from '@/hooks/input.hook';
+import { usePlanLimitConfig } from '@/hooks/planLimitV2';
 import { useDispatch } from '@/hooks/store.hook';
 import { useValidators } from '@/hooks/validate.hook';
 import manager from '@/ModalsV2/manager';
 
 import { KBFieldLabel } from '../components/KBFieldLabel/KBFieldLabel.component';
 import { KBRefreshRateSelect } from '../components/KBRefreshRateSelect/KBRefreshRateSelect.component';
-import { filterWhitespace, sanitizeURLs, urlsValidator, useDocumentLimitError } from '../KnowledgeBaseImport.utils';
+import { DEFAULT_DOCUMENT_LIMIT } from '../KnowledgeBaseImport.constant';
+import { filterWhitespace, sanitizeURLsWithDataFormatting, urlsValidator, useDocumentLimitError } from '../KnowledgeBaseImport.utils';
 import { textareaStyles } from './KBImportUrl.css';
 
 export const KBImportUrl = manager.create('KBImportURL', () => ({ api, type, opened, hidden, animated, closePrevented }) => {
@@ -24,6 +27,7 @@ export const KBImportUrl = manager.create('KBImportURL', () => ({ api, type, ope
   const { isEnabled: isRefreshEnabled } = useFeature(Realtime.FeatureFlag.KB_REFRESH);
   const checkDocumentLimitError = useDocumentLimitError(api.enableClose);
   const createManyFromData = useDispatch(Designer.KnowledgeBase.Document.effect.createManyFromData);
+  const planConfig = usePlanLimitConfig(LimitType.KB_DOCUMENTS);
 
   const inputState = useInputState();
   const [refreshRate, setRefreshRate] = React.useState(BaseModels.Project.KnowledgeBaseDocumentRefreshRate.NEVER);
@@ -32,26 +36,34 @@ export const KBImportUrl = manager.create('KBImportURL', () => ({ api, type, ope
     urls: [urlsValidator, inputState.setError],
   });
 
-  const onCreate = validator.container(async ({ urls }) => {
-    api.preventClose();
+  const onCreate = validator.container(
+    async ({ urls }) => {
+      api.preventClose();
 
-    await createManyFromData(
-      sanitizeURLs(urls.split('\n')).map((url) => ({ url, name: url, type: BaseModels.Project.KnowledgeBaseDocumentType.URL, refreshRate }))
-    )
-      .then(() => {
+      const data = sanitizeURLsWithDataFormatting(urls, refreshRate);
+
+      try {
+        await createManyFromData(data);
         api.enableClose();
-        api.close();
-        return null;
-      })
-      .catch((error) => {
+        api.onClose();
+      } catch (error) {
         checkDocumentLimitError(error);
-      });
-  });
+      }
+    },
+    () => ({
+      limit: planConfig?.limit || DEFAULT_DOCUMENT_LIMIT,
+    })
+  );
 
   const onSave = (value: string) => {
     inputState.setValue(value);
 
-    const validate = validator.container(() => {});
+    const validate = validator.container(
+      () => {},
+      () => ({
+        limit: planConfig?.limit || DEFAULT_DOCUMENT_LIMIT,
+      })
+    );
     validate({ urls: value });
   };
 

@@ -1,1 +1,1 @@
-export const URLS_LIMIT = 300;
+export const DEFAULT_DOCUMENT_LIMIT = 50;

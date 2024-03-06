@@ -1,17 +1,19 @@
-import { BaseModels } from '@voiceflow/base-types';
 import { tid } from '@voiceflow/style';
 import { Box, TextArea } from '@voiceflow/ui-next';
 import pluralize from 'pluralize';
 import React, { useState } from 'react';
 
 import { Modal } from '@/components/Modal';
+import { LimitType } from '@/constants/limits';
 import { Designer } from '@/ducks';
 import { useInput } from '@/hooks/input.hook';
+import { usePlanLimitConfig } from '@/hooks/planLimitV2';
 import { useDispatch } from '@/hooks/store.hook';
 import { useValidators } from '@/hooks/validate.hook';
 
 import { KBFieldLabel } from '../../components/KBFieldLabel/KBFieldLabel.component';
-import { filterWhitespace, sanitizeURLs, urlsValidator, useDocumentLimitError } from '../../KnowledgeBaseImport.utils';
+import { DEFAULT_DOCUMENT_LIMIT } from '../../KnowledgeBaseImport.constant';
+import { filterWhitespace, sanitizeURLsWithDataFormatting, urlsValidator, useDocumentLimitError } from '../../KnowledgeBaseImport.utils';
 import { submitButtonStyles, textareaBoxStyles, textareaStyles } from '../KBImportSitemap.css';
 import { IKBImportSitemapPreview } from './KBImportSitemapPreview.interface';
 
@@ -27,6 +29,7 @@ export const KBImportSitemapPreview: React.FC<IKBImportSitemapPreview> = ({
   testID,
 }) => {
   const [error, setError] = useState<string | null>(null);
+  const planConfig = usePlanLimitConfig(LimitType.KB_DOCUMENTS);
 
   const checkDocumentLimitError = useDocumentLimitError(enableClose);
   const createManyFromData = useDispatch(Designer.KnowledgeBase.Document.effect.createManyFromData);
@@ -35,21 +38,23 @@ export const KBImportSitemapPreview: React.FC<IKBImportSitemapPreview> = ({
     urls: [urlsValidator, setError],
   });
 
-  const onCreate = validator.container(async ({ urls }) => {
-    disableClose();
+  const onCreate = validator.container(
+    async ({ urls }) => {
+      disableClose();
 
-    await createManyFromData(
-      sanitizeURLs(urls.split('\n')).map((url) => ({ url, name: url, type: BaseModels.Project.KnowledgeBaseDocumentType.URL, refreshRate }))
-    )
-      .then(() => {
+      const data = sanitizeURLsWithDataFormatting(urls, refreshRate);
+      try {
+        await createManyFromData(data);
         enableClose();
         onClose();
-        return null;
-      })
-      .catch((error) => {
+      } catch (error) {
         checkDocumentLimitError(error);
-      });
-  });
+      }
+    },
+    () => ({
+      limit: planConfig?.limit || DEFAULT_DOCUMENT_LIMIT,
+    })
+  );
 
   const onSubmit = () => {
     onCreate({ urls: filterWhitespace(urls) });
@@ -57,7 +62,12 @@ export const KBImportSitemapPreview: React.FC<IKBImportSitemapPreview> = ({
 
   const onSave = (value: string) => {
     setURLs(value);
-    const validate = validator.container(() => {});
+    const validate = validator.container(
+      () => {},
+      () => ({
+        limit: planConfig?.limit || DEFAULT_DOCUMENT_LIMIT,
+      })
+    );
     validate({ urls: value });
   };
 

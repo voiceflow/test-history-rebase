@@ -11,7 +11,3 @@ export const textareaStyles = style({
     whiteSpace: 'pre',
   },
 });
-
-export const errorTextStyles = style({
-  overflowWrap: 'break-word',
-});

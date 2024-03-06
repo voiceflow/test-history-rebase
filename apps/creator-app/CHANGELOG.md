@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1422.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1421.0...@voiceflow/creator-app@1.1422.0) (2024-03-06)
+
+### Features
+
+* use plan limit for url limit upload (COR-1163) ([#7851](https://github.com/voiceflow/creator-app/issues/7851)) ([e8fcfae](https://github.com/voiceflow/creator-app/commit/e8fcfae279e2fd3105a30a7330a31aad668c8339))
+
 # [1.1421.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1420.0...@voiceflow/creator-app@1.1421.0) (2024-03-06)
 
 ### Features

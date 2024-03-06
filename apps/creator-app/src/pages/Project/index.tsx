@@ -29,6 +29,7 @@ const AssistantCMS = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/p
 const Conversations = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/Conversations')));
 const AssistantOverview = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/DashboardV2/pages/AssistantOverview')));
 const AnalyticsDashboard = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/AnalyticsDashboard')));
+
 const Project: React.FC = () => {
   const theme = useTheme();
   const getEngine = useEventualEngine();

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1424.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1424.1...@voiceflow/creator-app@1.1424.2) (2024-03-07)
+
+### Bug Fixes
+
+* falsy values being reported as undefined (COR-1415) ([#7858](https://github.com/voiceflow/creator-app/issues/7858)) ([6f15b54](https://github.com/voiceflow/creator-app/commit/6f15b5412a30254a0b1de1fa94f935bf85153172))
+
 ## [1.1424.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1424.0...@voiceflow/creator-app@1.1424.1) (2024-03-07)
 
 ### Bug Fixes

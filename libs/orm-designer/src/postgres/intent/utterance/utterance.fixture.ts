@@ -1,6 +1,5 @@
 import type { EntityDTO } from '@mikro-orm/core';
-
-import { Language } from '@/common';
+import { Language } from '@voiceflow/dtos';
 
 import type { UtteranceEntity } from './utterance.entity';
 

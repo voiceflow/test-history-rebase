@@ -1,3 +1,4 @@
+import { StoryTriggerTarget } from '@voiceflow/dtos';
 import { createSmartMultiAdapter } from 'bidirectional-adapter';
 
 import { AssistantEntity } from '@/postgres/assistant';
@@ -8,7 +9,6 @@ import { EventEntity } from '../../event/event.entity';
 import { IntentEntity } from '../../intent/intent.entity';
 import { StoryEntity } from '../story.entity';
 import type { BaseStoryTriggerEntity, EventStoryTriggerEntity, IntentStoryTriggerEntity } from './story-trigger.entity';
-import { StoryTriggerTarget } from './story-trigger-target.enum';
 
 export const BaseStoryTriggerEntityAdapter = createSmartMultiAdapter<
   EntityObject<BaseStoryTriggerEntity>,

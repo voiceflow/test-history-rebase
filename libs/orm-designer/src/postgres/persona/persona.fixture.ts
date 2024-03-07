@@ -1,14 +1,14 @@
 import type { EntityDTO } from '@mikro-orm/core';
+import { AIModel } from '@voiceflow/dtos';
 
 import type { PersonaEntity } from './persona.entity';
-import { PersonaModel } from './persona-model.enum';
 
 export const persona: EntityDTO<PersonaEntity> = {
   id: 'persona-1',
   createdAt: new Date(),
   updatedAt: new Date(),
   name: 'first persona',
-  model: PersonaModel.GPT_3_5,
+  model: AIModel.GPT_3_5_TURBO,
   temperature: 0.5,
   maxLength: 140,
   systemPrompt: 'You are a helpful assistant',

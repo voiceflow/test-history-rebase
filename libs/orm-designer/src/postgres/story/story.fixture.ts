@@ -1,7 +1,7 @@
 import type { EntityDTO } from '@mikro-orm/core';
+import { StoryStatus } from '@voiceflow/dtos';
 
 import type { StoryEntity } from './story.entity';
-import { StoryStatus } from './story-status.enum';
 import { storyTriggerList } from './story-trigger/story-trigger.fixture';
 
 export const story: EntityDTO<StoryEntity> = {

@@ -9772,6 +9772,7 @@ __metadata:
     "@voiceflow-meta/typescript-config": "workspace:*"
     "@voiceflow/base-types": 2.104.0
     "@voiceflow/common": 8.2.7
+    "@voiceflow/dtos": "workspace:*"
     "@voiceflow/exception": 1.5.3
     bidirectional-adapter: 1.2.1
     bson: ^6.2.0
@@ -9935,7 +9936,6 @@ __metadata:
     "@voiceflow/google-dfes-types": 2.16.53
     "@voiceflow/google-types": 2.20.53
     "@voiceflow/internal": 3.2.3
-    "@voiceflow/orm-designer": "workspace:*"
     "@voiceflow/platform-config": "workspace:*"
     "@voiceflow/schema-types": 1.64.0
     "@voiceflow/utils-designer": "workspace:*"

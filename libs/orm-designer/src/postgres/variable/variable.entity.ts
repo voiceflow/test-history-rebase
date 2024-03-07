@@ -1,9 +1,9 @@
 import { Entity, Enum, Index, PrimaryKey, Property, Unique, wrap } from '@mikro-orm/core';
+import { VariableDatatype } from '@voiceflow/dtos';
 
 import type { EntityCreateParams, ToJSONWithForeignKeys } from '@/types';
 
 import { Environment, PostgresCMSTabularEntity } from '../common';
-import { VariableDatatype } from './variable-datatype.enum';
 import { VariableEntityAdapter } from './variable-entity.adapter';
 
 @Entity({ tableName: 'designer.variable' })

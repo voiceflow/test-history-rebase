@@ -7,4 +7,3 @@ export * from './function-path/function-path-entity.adapter';
 export * from './function-variable/function-variable.entity';
 export * from './function-variable/function-variable.orm';
 export * from './function-variable/function-variable-entity.adapter';
-export * from './function-variable/function-variable-type.enum';

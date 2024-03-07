@@ -1,11 +1,11 @@
 import { Entity, Enum, Index, ManyToOne, PrimaryKeyType, Property, Unique, wrap } from '@mikro-orm/core';
+import { AIModel } from '@voiceflow/dtos';
 
 import type { AssistantEntity } from '@/postgres/assistant';
 import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
 import type { CMSCompositePK, EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
 
 import { PersonaEntity } from '../persona.entity';
-import { PersonaModel } from '../persona-model.enum';
 import { PersonaOverrideEntityAdapter } from './persona-override-entity.adapter';
 
 @Entity({ tableName: 'designer.persona_override' })
@@ -19,8 +19,8 @@ export class PersonaOverrideEntity extends PostgresCMSObjectEntity {
   @Property({ default: null, nullable: true })
   name: string | null;
 
-  @Enum({ items: () => PersonaModel, default: null, nullable: true })
-  model: PersonaModel | null;
+  @Enum({ items: () => AIModel, default: null, nullable: true })
+  model: AIModel | null;
 
   @ManyToOne(() => PersonaEntity, {
     name: 'persona_id',

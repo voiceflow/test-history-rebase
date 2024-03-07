@@ -10,8 +10,9 @@ import {
   Unique,
   wrap,
 } from '@mikro-orm/core';
+import type { Markup } from '@voiceflow/dtos';
+import { ConditionType } from '@voiceflow/dtos';
 
-import type { Markup } from '@/common';
 import { MarkupType } from '@/common';
 import type { CMSCompositePK, EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
 
@@ -26,7 +27,6 @@ import {
   ScriptConditionEntityAdapter,
 } from './condition-entity.adapter';
 import type { ConditionPredicateEntity } from './condition-predicate/condition-predicate.entity';
-import { ConditionType } from './condition-type.enum';
 
 @Entity({
   abstract: true,

@@ -1,7 +1,8 @@
 import { Entity, Enum, ManyToOne, PrimaryKeyType, Unique, wrap } from '@mikro-orm/core';
+import { AttachmentType } from '@voiceflow/dtos';
 
 import type { AssistantEntity } from '@/postgres/assistant';
-import { AttachmentType, CardAttachmentEntity, MediaAttachmentEntity } from '@/postgres/attachment';
+import { CardAttachmentEntity, MediaAttachmentEntity } from '@/postgres/attachment';
 import { Assistant, Environment, PostgresCMSCreatableEntity } from '@/postgres/common';
 import type { CMSCompositePK, EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
 

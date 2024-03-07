@@ -1,14 +1,13 @@
 import { Entity, Enum, PrimaryKeyType, Property, Unique, wrap } from '@mikro-orm/core';
+import type { Markup } from '@voiceflow/dtos';
+import { AttachmentType, MediaDatatype } from '@voiceflow/dtos';
 
-import type { Markup } from '@/common';
 import { MarkupType } from '@/common';
 import type { AssistantEntity } from '@/postgres/assistant';
 import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
 import type { CMSCompositePK, EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
 
-import { AttachmentType } from '../attachment-type.enum';
 import { MediaAttachmentEntityAdapter } from './media-attachment-entity.adapter';
-import { MediaDatatype } from './media-datatype.enum';
 
 @Entity({ tableName: 'designer.media_attachment' })
 @Unique({ properties: ['id', 'environmentID'] })

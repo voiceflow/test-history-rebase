@@ -1,6 +1,5 @@
 import type { EntityDTO } from '@mikro-orm/core';
-
-import { Channel, Language } from '@/common';
+import { Channel, Language } from '@voiceflow/dtos';
 
 import { responseVariantList } from '../response-variant/response-variant.fixture';
 import type { ResponseDiscriminatorEntity } from './response-discriminator.entity';

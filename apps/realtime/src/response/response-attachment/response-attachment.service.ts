@@ -3,6 +3,7 @@ import type { EntityManager } from '@mikro-orm/core';
 import { Primary } from '@mikro-orm/core';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
+import { AttachmentType } from '@voiceflow/dtos';
 import { NotFoundException } from '@voiceflow/exception';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
 import type {
@@ -14,7 +15,7 @@ import type {
   ORMMutateOptions,
   PKOrEntity,
 } from '@voiceflow/orm-designer';
-import { AttachmentType, DatabaseTarget, ResponseAttachmentORM, ResponseVariantORM } from '@voiceflow/orm-designer';
+import { DatabaseTarget, ResponseAttachmentORM, ResponseVariantORM } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 import { match } from 'ts-pattern';
 

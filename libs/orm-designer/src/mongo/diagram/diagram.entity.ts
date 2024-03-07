@@ -1,12 +1,11 @@
 import { Entity, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
 import type { ObjectId } from '@mikro-orm/mongodb';
+import type { DiagramMenuItem, DiagramNode } from '@voiceflow/dtos';
 
 import { cleanupUndefinedFields, MongoEntity } from '@/mongo/common';
 import type { EntityCreateParams, ToJSON, ToJSONWithForeignKeys } from '@/types';
 
 import { DiagramEntityAdapter } from './diagram-entity.adapter';
-import type { DiagramMenuItem } from './interfaces/diagram-menu-item.interface';
-import type { DiagramNode } from './interfaces/diagram-node.interface';
 
 @Entity({ collection: 'diagrams' })
 @Unique({ properties: ['diagramID', 'versionID'] })

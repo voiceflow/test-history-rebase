@@ -1,7 +1,7 @@
 import type { EntityDTO } from '@mikro-orm/core';
+import { MediaDatatype } from '@voiceflow/dtos';
 
 import type { MediaAttachmentEntity } from './media-attachment.entity';
-import { MediaDatatype } from './media-datatype.enum';
 
 const baseAttachment = {
   createdAt: new Date(),

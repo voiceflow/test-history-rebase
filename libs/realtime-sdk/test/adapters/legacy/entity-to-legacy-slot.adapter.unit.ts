@@ -2,7 +2,7 @@ import { entityToLegacySlot } from '@realtime-sdk/adapters/legacy/entity-to-lega
 import type { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import type { Entity, EntityVariant } from '@voiceflow/dtos';
-import { Language } from '@voiceflow/orm-designer';
+import { Language } from '@voiceflow/dtos';
 
 describe('Adapters | Legacy | entityToLegacySlot', () => {
   const creatorID = 1;

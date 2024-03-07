@@ -1,7 +1,8 @@
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
+import type { DiagramNode } from '@voiceflow/dtos';
 import { NodeType } from '@voiceflow/dtos';
-import { DiagramEntity, DiagramNode, ToJSON } from '@voiceflow/orm-designer';
+import { DiagramEntity, ToJSON } from '@voiceflow/orm-designer';
 
 export class DiagramUtil {
   getCenterPoint<T extends Pick<ToJSON<DiagramEntity>, 'nodes'>>(diagram: T): [number, number] {

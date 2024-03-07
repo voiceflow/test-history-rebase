@@ -1,11 +1,10 @@
 import { PrimaryKeyType, Property } from '@mikro-orm/core';
 import type { ObjectId } from '@mikro-orm/mongodb';
+import type { ProgramCommand, ProgramLine } from '@voiceflow/dtos';
 
 import { cleanupUndefinedFields, MongoObjectEntity } from '@/mongo/common';
 import type { EntityCreateParams } from '@/types';
 
-import type { ProgramCommand } from './interfaces/program-command.interface';
-import type { ProgramLine } from './interfaces/program-line.interface';
 import { ProgramEntityAdapter } from './program-entity.adapter';
 
 export abstract class AbstractProgramEntity extends MongoObjectEntity {

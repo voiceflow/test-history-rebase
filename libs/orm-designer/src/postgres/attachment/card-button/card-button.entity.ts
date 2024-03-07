@@ -1,6 +1,6 @@
 import { Entity, Index, ManyToOne, PrimaryKeyType, Property, Unique, wrap } from '@mikro-orm/core';
+import type { Markup } from '@voiceflow/dtos';
 
-import type { Markup } from '@/common';
 import { MarkupType } from '@/common';
 import type { AssistantEntity } from '@/postgres/assistant';
 import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';

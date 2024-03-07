@@ -4,7 +4,7 @@ import { Primary } from '@mikro-orm/core';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
-import { AnyAttachment, CardButton } from '@voiceflow/dtos';
+import { AnyAttachment, AttachmentType, CardButton } from '@voiceflow/dtos';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
 import type {
   AnyAttachmentEntity,
@@ -16,7 +16,7 @@ import type {
   PKOrEntity,
   ToJSONWithForeignKeys,
 } from '@voiceflow/orm-designer';
-import { AttachmentType, DatabaseTarget } from '@voiceflow/orm-designer';
+import { DatabaseTarget } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 import { match } from 'ts-pattern';
 

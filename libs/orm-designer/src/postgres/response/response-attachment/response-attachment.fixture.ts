@@ -1,6 +1,5 @@
 import type { EntityDTO } from '@mikro-orm/core';
-
-import { AttachmentType } from '@/postgres/attachment';
+import { AttachmentType } from '@voiceflow/dtos';
 
 import type { ResponseCardAttachmentEntity, ResponseMediaAttachmentEntity } from './response-attachment.entity';
 

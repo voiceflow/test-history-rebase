@@ -1,49 +1,18 @@
-import type { AnyRecord } from '@voiceflow/common';
+import type {
+  VersionKnowledgeBase as BaseVersionKnowledgeBase,
+  VersionKnowledgeBaseDocument as BaseVersionKnowledgeBaseDocument,
+  VersionKnowledgeBaseSetFaq as BaseVersionKnowledgeBaseSetFaq,
+} from '@voiceflow/dtos';
 
-import type { WithAdditionalProperties } from '@/types';
-
-export type VersionKnowledgeBaseDocumentData = WithAdditionalProperties<{
-  type?: string;
-  name?: string;
-}>;
-
-export type VersionKnowledgeBaseDocumentStatus = WithAdditionalProperties<{
-  type?: string;
-}>;
-
-export interface VersionKnowledgeBaseDocument {
-  tags?: string[];
-  data?: VersionKnowledgeBaseDocumentData;
-  status?: VersionKnowledgeBaseDocumentStatus;
-  version?: number;
+export interface VersionKnowledgeBaseDocument extends Omit<BaseVersionKnowledgeBaseDocument, 'updatedAt'> {
   updatedAt?: Date;
-  creatorID?: number;
-  documentID?: string;
-  s3ObjectRef?: string;
 }
 
-export type VersionKnowledgeBaseSetFaqStatus = WithAdditionalProperties<{
-  type?: string;
-}>;
-
-export interface VersionKnowledgeBaseSetFaq {
-  tags?: string[];
-  name?: string;
-  status?: VersionKnowledgeBaseSetFaqStatus;
-  version?: number;
-  faqSetID?: string;
+export interface VersionKnowledgeBaseSetFaq extends Omit<BaseVersionKnowledgeBaseSetFaq, 'updatedAt'> {
   updatedAt?: Date;
-  creatorID?: number;
 }
 
-export interface VersionKnowledgeBaseTag {
-  tagID: string;
-  label: string;
-}
-
-export interface VersionKnowledgeBase {
-  tags?: Record<string, VersionKnowledgeBaseTag>;
+export interface VersionKnowledgeBase extends Omit<BaseVersionKnowledgeBase, 'faqSets' | 'documents'> {
   faqSets?: Record<string, VersionKnowledgeBaseSetFaq>;
-  settings?: AnyRecord;
   documents?: Record<string, VersionKnowledgeBaseDocument>;
 }

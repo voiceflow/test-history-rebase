@@ -1,14 +1,15 @@
 import { z } from 'zod';
 
+import { VariableDatatype } from '@/variable/variable-datatype.enum';
+
 import type { InferCompiledNode } from '../base/compiled-node.dto';
 import { BaseCompiledNodeDTO } from '../base/compiled-node.dto';
 import { NodeType } from '../node-type.enum';
-import { FunctionVariableType } from './function-variable-type.enum';
 
 export const FunctionCompiledVariableDeclarationDTO = z.object({
   type: z
-    .nativeEnum(FunctionVariableType)
-    .refine((val) => val === FunctionVariableType.STRING, {
+    .nativeEnum(VariableDatatype)
+    .refine((val) => val === VariableDatatype.TEXT, {
       message: `Function variables currently only support the 'string' type`,
     })
     .describe('The type of the Function variable. Used to render suitable UI and perform data validation.'),

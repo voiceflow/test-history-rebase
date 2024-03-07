@@ -1,7 +1,7 @@
 import type { EntityDTO } from '@mikro-orm/core';
+import { FolderScope } from '@voiceflow/dtos';
 
 import type { FolderEntity } from './folder.entity';
-import { FolderScope } from './folder-scope.enum';
 
 export const folder: EntityDTO<FolderEntity> = {
   id: '1',

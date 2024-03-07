@@ -1,7 +1,7 @@
 import type { EntityDTO } from '@mikro-orm/core';
+import { FunctionVariableKind } from '@voiceflow/dtos';
 
 import type { FunctionVariableEntity } from './function-variable.entity';
-import { FunctionVariableType } from './function-variable-type.enum';
 
 export const functionVariable: EntityDTO<FunctionVariableEntity> = {
   id: 'function-variable-1',
@@ -10,7 +10,7 @@ export const functionVariable: EntityDTO<FunctionVariableEntity> = {
   updatedBy: { id: 1 } as any,
   name: 'first_function_variable',
   description: 'function variable description',
-  type: FunctionVariableType.INPUT,
+  type: FunctionVariableKind.INPUT,
   function: { id: 'function-1' } as any,
   assistant: { id: 'assistant-1' } as any,
   environmentID: 'environment-1',
@@ -23,6 +23,6 @@ export const functionVariableList: EntityDTO<FunctionVariableEntity>[] = [
     id: 'function-variable-2',
     name: 'second_function_variable',
     description: null,
-    type: FunctionVariableType.OUTPUT,
+    type: FunctionVariableKind.OUTPUT,
   },
 ];

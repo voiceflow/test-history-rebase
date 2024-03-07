@@ -6,6 +6,7 @@ import { VersionDomainDTO } from './version-domain.dto';
 import { VersionFolderDTO, VersionFolderItemDTO } from './version-folder.dto';
 import { VersionKnowledgeBaseDTO } from './version-knowledge-base.dto';
 import { VersionNoteDTO } from './version-note.dto';
+import { VersionSettingsDTO } from './version-settings.dto';
 
 export const VersionDTO = z
   .object({
@@ -27,6 +28,8 @@ export const VersionDTO = z
     legacyID: z.string().optional(),
 
     updatedAt: z.string().optional(),
+
+    settings: z.optional(VersionSettingsDTO),
 
     _version: z.number(),
 

@@ -405,15 +405,6 @@
           "nullable": false,
           "mappedType": "string"
         },
-        "s3_object_ref": {
-          "name": "s3_object_ref",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        },
         "created_by_id": {
           "name": "created_by_id",
           "type": "int",
@@ -422,6 +413,15 @@
           "primary": false,
           "nullable": false,
           "mappedType": "integer"
+        },
+        "s3_object_ref": {
+          "name": "s3_object_ref",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
         },
         "assistant_id": {
           "name": "assistant_id",
@@ -1643,7 +1643,17 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "enumItems": ["gpt_3", "gpt_3.5", "gpt_4"],
+          "enumItems": [
+            "text-davinci-003",
+            "gpt-3.5-turbo-1106",
+            "gpt-3.5-turbo",
+            "gpt-4",
+            "gpt-4-turbo",
+            "claude-v1",
+            "claude-v2",
+            "claude-instant-v1",
+            "gemini-pro"
+          ],
           "mappedType": "enum"
         },
         "max_length": {
@@ -1809,7 +1819,17 @@
           "primary": false,
           "nullable": true,
           "default": "null",
-          "enumItems": ["gpt_3", "gpt_3.5", "gpt_4"],
+          "enumItems": [
+            "text-davinci-003",
+            "gpt-3.5-turbo-1106",
+            "gpt-3.5-turbo",
+            "gpt-4",
+            "gpt-4-turbo",
+            "claude-v1",
+            "claude-v2",
+            "claude-instant-v1",
+            "gemini-pro"
+          ],
           "mappedType": "enum"
         },
         "persona_id": {
@@ -3200,7 +3220,7 @@
           "primary": false,
           "nullable": true,
           "default": "null",
-          "enumItems": ["to_do", "in_progress", "complete"],
+          "enumItems": ["to_do", "complete", "in_progress"],
           "mappedType": "enum"
         },
         "flow_id": {

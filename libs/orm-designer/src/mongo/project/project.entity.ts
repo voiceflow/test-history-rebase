@@ -1,17 +1,19 @@
 import { Entity, Property } from '@mikro-orm/core';
 import type { ObjectId } from '@mikro-orm/mongodb';
 import type { AnyRecord } from '@voiceflow/common';
+import type {
+  ProjectAIAssistSettings,
+  ProjectCustomTheme,
+  ProjectMember,
+  ProjectNLUSettings,
+  ProjectReportTag,
+  ProjectSticker,
+} from '@voiceflow/dtos';
 
 import { cleanupUndefinedFields, MongoEntity } from '@/mongo/common';
 import type { EntityCreateParams, ToJSON, ToJSONWithForeignKeys } from '@/types';
 
 import type { VersionKnowledgeBase } from '../version/interfaces/version-knowledge-base.interface';
-import type { ProjectAIAssistSettings } from './interfaces/project-ai-assist-settings.interface';
-import type { ProjectCustomTheme } from './interfaces/project-custom-theme.interface';
-import type { ProjectMember } from './interfaces/project-member.interface';
-import type { ProjectNLUSettings } from './interfaces/project-nlu-settings.interface';
-import type { ProjectReportTag } from './interfaces/project-report-tag.interface';
-import type { ProjectSticker } from './interfaces/project-sticker.interface';
 import { ProjectEntityAdapter } from './project-entity.adapter';
 
 @Entity({ collection: 'projects' })

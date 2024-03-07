@@ -5,7 +5,7 @@ export const VersionKnowledgeBaseDocumentDataDTO = z
     type: z.string().optional(),
     name: z.string().optional(),
   })
-  .nonstrict();
+  .passthrough();
 
 export type VersionKnowledgeBaseDocumentData = z.infer<typeof VersionKnowledgeBaseDocumentDataDTO>;
 
@@ -13,7 +13,7 @@ export const VersionKnowledgeBaseDocumentStatusDTO = z
   .object({
     type: z.string().optional(),
   })
-  .nonstrict();
+  .passthrough();
 
 export type VersionKnowledgeBaseDocumentStatus = z.infer<typeof VersionKnowledgeBaseDocumentStatusDTO>;
 
@@ -36,7 +36,7 @@ export const VersionKnowledgeBaseSetFaqStatusDTO = z
   .object({
     type: z.string().optional(),
   })
-  .nonstrict();
+  .passthrough();
 
 export type VersionKnowledgeBaseSetFaqStatus = z.infer<typeof VersionKnowledgeBaseSetFaqStatusDTO>;
 

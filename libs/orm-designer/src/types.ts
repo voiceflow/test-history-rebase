@@ -2,8 +2,9 @@ import type { Cast, Collection, IsUnknown, Primary, PrimaryKeyType, PrimaryPrope
 import type { ExcludeFunctions } from '@mikro-orm/core/typings';
 import type { ObjectId } from '@mikro-orm/mongodb';
 import type { AnyRecord, Struct } from '@voiceflow/common';
+import type { Markup } from '@voiceflow/dtos';
 
-import type { Markup, ORM } from './common';
+import type { ORM } from './common';
 import type { UtteranceText } from './postgres/intent/utterance/utterance-text.dto';
 
 export interface CMSCompositePK {

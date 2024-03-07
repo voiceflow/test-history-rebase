@@ -1,7 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { BaseNode } from '@voiceflow/base-types';
+import { DiagramNode } from '@voiceflow/dtos';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
-import { DiagramEntity, DiagramNode, DiagramORM, ToJSON } from '@voiceflow/orm-designer';
+import { DiagramEntity, DiagramORM, ToJSON } from '@voiceflow/orm-designer';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { ObjectId } from 'bson';
 

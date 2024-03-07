@@ -1,9 +1,9 @@
 import type { EntityDTO } from '@mikro-orm/core';
+import { ConditionType } from '@voiceflow/dtos';
 
 import type { ExpressionConditionEntity, PromptConditionEntity, ScriptConditionEntity } from './condition.entity';
 import { conditionAssertionList } from './condition-assertion/condition-assertion.fixture';
 import { conditionPredicateList } from './condition-predicate/condition-predicate.fixture';
-import { ConditionType } from './condition-type.enum';
 
 const baseCondition = {
   createdAt: new Date(),

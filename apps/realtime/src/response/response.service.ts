@@ -5,7 +5,7 @@ import { Primary } from '@mikro-orm/core';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
-import { AnyResponseAttachment, AnyResponseVariant, Response, ResponseDiscriminator } from '@voiceflow/dtos';
+import { AnyResponseAttachment, AnyResponseVariant, Channel, Language, Response, ResponseDiscriminator } from '@voiceflow/dtos';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
 import type {
   AnyResponseAttachmentEntity,
@@ -19,7 +19,7 @@ import type {
   ResponseEntity,
   ToJSONWithForeignKeys,
 } from '@voiceflow/orm-designer';
-import { Channel, DatabaseTarget, Language, RequiredEntityORM, ResponseORM } from '@voiceflow/orm-designer';
+import { DatabaseTarget, RequiredEntityORM, ResponseORM } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { CMSTabularService, EntitySerializer } from '@/common';

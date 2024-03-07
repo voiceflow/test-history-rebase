@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { AnyAttachmentEntity, AttachmentType, MediaDatatype } from '@voiceflow/orm-designer';
+import { AttachmentType, MediaDatatype } from '@voiceflow/dtos';
+import { AnyAttachmentEntity } from '@voiceflow/orm-designer';
 
 import { AssistantService } from '@/assistant/assistant.service';
 import { AttachmentCreateData } from '@/attachment/attachment.interface';

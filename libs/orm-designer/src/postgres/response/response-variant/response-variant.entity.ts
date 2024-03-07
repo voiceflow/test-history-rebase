@@ -11,8 +11,9 @@ import {
   Unique,
   wrap,
 } from '@mikro-orm/core';
+import type { Markup } from '@voiceflow/dtos';
+import { CardLayout, ResponseContext, ResponseVariantType } from '@voiceflow/dtos';
 
-import type { Markup } from '@/common';
 import { MarkupType } from '@/common';
 import type { AssistantEntity } from '@/postgres/assistant';
 import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
@@ -22,15 +23,12 @@ import type { CMSCompositePK, EntityCreateParams, Ref, ToJSONWithForeignKeys } f
 
 import type { BaseResponseAttachmentEntity } from '../response-attachment/response-attachment.entity';
 import { ResponseDiscriminatorEntity } from '../response-discriminator/response-discriminator.entity';
-import { CardLayout } from './card-layout.enum';
-import { ResponseContext } from './response-context.enum';
 import {
   BaseResponseVariantEntityAdapter,
   JSONResponseVariantEntityAdapter,
   PromptResponseVariantEntityAdapter,
   TextResponseVariantEntityAdapter,
 } from './response-variant-entity.adapter';
-import { ResponseVariantType } from './response-variant-type.enum';
 
 const TABLE_NAME = 'designer.response_variant';
 

@@ -1,6 +1,6 @@
 import type { EntityDTO } from '@mikro-orm/core';
+import { ConditionOperation } from '@voiceflow/dtos';
 
-import { ConditionOperation } from '../condition-operation.enum';
 import type { ConditionPredicateEntity } from './condition-predicate.entity';
 
 export const conditionPredicate: EntityDTO<ConditionPredicateEntity> = {

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.367.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.366.1...@voiceflow/realtime-sdk@1.367.0) (2024-03-07)
+
+### Features
+
+* intent classification types (COR-1171) ([#7854](https://github.com/voiceflow/creator-app/issues/7854)) ([247b65c](https://github.com/voiceflow/creator-app/commit/247b65c7881feec5502f32ee3a9bd79b97d46ce1))
+
 ## [1.366.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.366.0...@voiceflow/realtime-sdk@1.366.1) (2024-03-04)
 
 **Note:** Version bump only for package @voiceflow/realtime-sdk

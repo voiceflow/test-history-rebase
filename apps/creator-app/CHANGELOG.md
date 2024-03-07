@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1423.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1422.0...@voiceflow/creator-app@1.1423.0) (2024-03-07)
+
+### Features
+
+* intent classification types (COR-1171) ([#7854](https://github.com/voiceflow/creator-app/issues/7854)) ([247b65c](https://github.com/voiceflow/creator-app/commit/247b65c7881feec5502f32ee3a9bd79b97d46ce1))
+
 # [1.1422.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1421.0...@voiceflow/creator-app@1.1422.0) (2024-03-06)
 
 ### Features

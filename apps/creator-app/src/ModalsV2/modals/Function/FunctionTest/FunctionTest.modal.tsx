@@ -27,6 +27,7 @@ export const FunctionTestModal = modalsManager.create<IFunctionTestModal, Functi
   () =>
     ({ api, type: typeProp, functionID, opened, hidden, animated }) => {
       const inputVariables = useSelector(Designer.Function.FunctionVariable.selectors.inputByFunctionID, { functionID });
+      const outputVariableDeclarations = useSelector(Designer.Function.FunctionVariable.selectors.outputByFunctionID, { functionID });
 
       const { current: initialValues } = React.useRef(inputVariables.reduce<Map>((acc, variable) => ({ ...acc, [variable.id]: '' }), {} as Map));
 
@@ -148,7 +149,8 @@ export const FunctionTestModal = modalsManager.create<IFunctionTestModal, Functi
               isOutputVarsOpened={isOutputVarsOpened}
               functionsTestResponse={testResponse}
               disabled={isUploading}
-              inputVariables={inputVariables.length ?? 0}
+              numInputVariables={inputVariables.length ?? 0}
+              outputVariableDeclarations={outputVariableDeclarations}
               setIsTraceOpened={setIsTraceOpened}
               setIsResolvedPathOpened={setIsResolvedPathOpened}
               setIsOutputVarsOpened={setIsOutputVarsOpened}

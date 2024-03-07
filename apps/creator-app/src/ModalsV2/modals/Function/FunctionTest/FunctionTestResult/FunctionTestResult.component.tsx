@@ -1,3 +1,4 @@
+import { FunctionVariable } from '@voiceflow/dtos';
 import { clsx } from '@voiceflow/style';
 import { DataTypes, download } from '@voiceflow/ui';
 import {
@@ -38,11 +39,13 @@ export interface IFunctionTestResultExtra {
   hasResolvedPath?: boolean;
   hasOutputVars?: boolean;
   onDownloadLogs?: () => void;
+  outputVariableDeclarations: FunctionVariable[];
 }
 
 export const FunctionTestResult: React.FC<IFunctionTestResultExtra & IFunctionTestResult> = ({
   disabled = false,
-  inputVariables,
+  numInputVariables,
+  outputVariableDeclarations,
   functionsTestResponse,
   isTraceOpened: isTracesSectionOpened,
   setIsTraceOpened: setIsTracesSectionOpened,
@@ -54,7 +57,7 @@ export const FunctionTestResult: React.FC<IFunctionTestResultExtra & IFunctionTe
   const error = functionsTestResponse?.success === false;
   const latencyMS = Math.round(functionsTestResponse?.latencyMS);
   const path = Object.entries(functionsTestResponse?.runtimeCommands?.next || {});
-  const outputVars = Object.entries(functionsTestResponse?.runtimeCommands?.outputVars || {});
+  const outputVars = functionsTestResponse?.runtimeCommands?.outputVars ?? {};
   const traces = JSON.stringify(functionsTestResponse?.runtimeCommands.trace);
   const onDownloadLogsClick = () => {
     download(`logs.json`, JSON.stringify(functionsTestResponse), DataTypes.JSON);
@@ -63,12 +66,28 @@ export const FunctionTestResult: React.FC<IFunctionTestResultExtra & IFunctionTe
   useDynamicTracesCodeEditorHeight({
     isTracesSectionOpened,
     traces,
-    inputVariables,
-    outputVars,
+    numInputVariables,
+    outputVars: Object.entries(outputVars || {}),
     isOutputVarsSectionOpened,
     isResolvedPathSectionOpened,
     path,
   });
+
+  const formatFunctionValue = (value: unknown) => {
+    if (typeof value === 'string') {
+      return `"${value}"`;
+    }
+
+    if (typeof value === 'undefined') {
+      return `undefined`;
+    }
+
+    if (typeof value === 'object') {
+      return JSON.stringify(value, null, 2);
+    }
+
+    return value;
+  };
 
   return (
     <div className={testResults}>
@@ -110,7 +129,7 @@ export const FunctionTestResult: React.FC<IFunctionTestResultExtra & IFunctionTe
         </>
       )}
 
-      {!!outputVars.length && !error && (
+      {!!outputVariableDeclarations.length && !error && (
         <>
           <Collapsible
             isDisabled={disabled}
@@ -127,18 +146,18 @@ export const FunctionTestResult: React.FC<IFunctionTestResultExtra & IFunctionTe
             }
           >
             <Box direction="column" className={mapperStyles}>
-              {outputVars.map(([key, value]) => (
+              {outputVariableDeclarations.map(({ id, name }) => (
                 <Mapper
-                  key={key}
+                  key={id}
                   equalityIcon="equal"
-                  leftHandSide={<Variable label={key} key={key} size="large" />}
+                  leftHandSide={<Variable label={name} key={id} size="large" />}
                   rightHandSide={
                     <Text
                       variant="basic"
                       className={rhsMapperStyles}
-                      color={value ? Theme.vars.color.font.default : Tokens.colors.neutralDark.neutralsDark100}
+                      color={outputVars[name] ? Theme.vars.color.font.default : Tokens.colors.neutralDark.neutralsDark100}
                     >
-                      {value ? `"${value}"` : 'Undefined'}
+                      {`${formatFunctionValue(outputVars[name])}`}
                     </Text>
                   }
                 />

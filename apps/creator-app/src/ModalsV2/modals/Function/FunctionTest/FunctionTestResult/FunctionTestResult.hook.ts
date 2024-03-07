@@ -20,11 +20,11 @@ export interface CalculateHeightProps {
   isTracesSectionOpened: boolean;
   isOutputVarsSectionOpened: boolean;
   isResolvedPathSectionOpened: boolean;
-  inputVariables: number;
+  numInputVariables: number;
 }
 
 export const useTestResultModalHeight = ({
-  inputVariables,
+  numInputVariables,
   isOutputVarsSectionOpened,
   isResolvedPathSectionOpened,
   isTracesSectionOpened,
@@ -66,7 +66,7 @@ export const useTestResultModalHeight = ({
     if (isResolvedPathSectionOpened && pathCount) maxHeights = { ...maxHeights, resolvedPath: RESOLVED_PATH_CONTENT_HEIGHT };
 
     return maxHeights;
-  }, [isTracesSectionOpened, traces, outputVars, path, isOutputVarsSectionOpened, isResolvedPathSectionOpened, inputVariables]);
+  }, [isTracesSectionOpened, traces, outputVars, path, isOutputVarsSectionOpened, isResolvedPathSectionOpened, numInputVariables]);
 };
 
 // TODO: find a better solution for this
@@ -77,7 +77,7 @@ export const useDynamicTracesCodeEditorHeight = ({
   isTracesSectionOpened,
   isOutputVarsSectionOpened,
   isResolvedPathSectionOpened,
-  inputVariables,
+  numInputVariables,
 }: CalculateHeightProps) => {
   const testResultModalHeights = useTestResultModalHeight({
     traces,
@@ -86,13 +86,13 @@ export const useDynamicTracesCodeEditorHeight = ({
     isTracesSectionOpened,
     isOutputVarsSectionOpened,
     isResolvedPathSectionOpened,
-    inputVariables,
+    numInputVariables,
   });
 
   const calculateTestFunctionInputsModalHeight = () => {
-    if (inputVariables === 0) return 196;
-    if (inputVariables === 1) return 240;
-    if (inputVariables === 2) return 316;
+    if (numInputVariables === 0) return 196;
+    if (numInputVariables === 1) return 240;
+    if (numInputVariables === 2) return 316;
     return 392;
   };
 
@@ -139,5 +139,5 @@ export const useDynamicTracesCodeEditorHeight = ({
     } else {
       sectionElement?.setAttribute('style', 'max-height: 86px');
     }
-  }, [isTracesSectionOpened, traces, outputVars, path, isOutputVarsSectionOpened, isResolvedPathSectionOpened, inputVariables]);
+  }, [isTracesSectionOpened, traces, outputVars, path, isOutputVarsSectionOpened, isResolvedPathSectionOpened, numInputVariables]);
 };

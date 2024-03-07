@@ -2,7 +2,7 @@ import { FunctionTestResponse } from '@/client/generalRuntime/types';
 
 export interface IFunctionTestResult {
   functionsTestResponse: FunctionTestResponse;
-  inputVariables: number;
+  numInputVariables: number;
   isTraceOpened: boolean;
   isOutputVarsOpened: boolean;
   isResolvedPathOpened: boolean;

@@ -5,6 +5,6 @@ export const ProgramLineDTO = z
     id: z.string(),
     type: z.string(),
   })
-  .nonstrict();
+  .passthrough();
 
 export type ProgramLine = z.infer<typeof ProgramLineDTO>;

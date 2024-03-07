@@ -1,6 +1,6 @@
 import type { EntityDTO } from '@mikro-orm/core';
+import { ConditionOperation } from '@voiceflow/dtos';
 
-import { ConditionOperation } from '../condition-operation.enum';
 import type { ConditionAssertionEntity } from './condition-assertion.entity';
 
 export const conditionAssertion: EntityDTO<ConditionAssertionEntity> = {

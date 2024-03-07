@@ -1,7 +1,7 @@
 import type { EntityDTO } from '@mikro-orm/core';
+import { VariableDatatype } from '@voiceflow/dtos';
 
 import type { VariableEntity } from './variable.entity';
-import { VariableDatatype } from './variable-datatype.enum';
 
 export const variable: EntityDTO<VariableEntity> = {
   id: 'variable-1',

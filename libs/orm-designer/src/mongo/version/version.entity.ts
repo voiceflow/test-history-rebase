@@ -1,16 +1,20 @@
 import { Entity, Property } from '@mikro-orm/core';
 import type { ObjectId } from '@mikro-orm/mongodb';
 import type { AnyRecord } from '@voiceflow/common';
+import type {
+  VersionCanvasTemplate,
+  VersionCustomBlock,
+  VersionFolder,
+  VersionFolderItem,
+  VersionNote,
+  VersionSettings,
+} from '@voiceflow/dtos';
 
 import { cleanupUndefinedFields, MongoObjectEntity } from '@/mongo/common';
 import type { EntityCreateParams, ToJSON, ToJSONWithForeignKeys } from '@/types';
 
-import type { VersionCanvasTemplate } from './interfaces/version-canvas-template.interface';
-import type { VersionCustomBlock } from './interfaces/version-custom-block.interface';
 import type { VersionDomain } from './interfaces/version-domain.interface';
-import type { VersionFolder, VersionFolderItem } from './interfaces/version-folder.interface';
 import type { VersionKnowledgeBase } from './interfaces/version-knowledge-base.interface';
-import type { VersionNote } from './interfaces/version-note.interface';
 import { VersionEntityAdapter } from './version-entity.adapter';
 
 @Entity({ collection: 'versions' })
@@ -43,6 +47,9 @@ export class VersionEntity extends MongoObjectEntity {
 
   @Property()
   _version: number;
+
+  @Property({ nullable: true })
+  settings?: VersionSettings;
 
   @Property()
   creatorID: number;

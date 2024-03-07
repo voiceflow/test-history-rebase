@@ -3,7 +3,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { BaseModels } from '@voiceflow/base-types';
 import type { Nullish, Struct } from '@voiceflow/common';
 import { Utils } from '@voiceflow/common';
-import type { DiagramMenuItem, DiagramNode } from '@voiceflow/orm-designer';
+import type { DiagramMenuItem, DiagramNode } from '@voiceflow/dtos';
 import { Atomic, DiagramORM, ObjectId } from '@voiceflow/orm-designer';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 // eslint-disable-next-line you-dont-need-lodash-underscore/find

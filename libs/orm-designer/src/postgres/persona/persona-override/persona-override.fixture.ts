@@ -1,6 +1,6 @@
 import type { EntityDTO } from '@mikro-orm/core';
+import { AIModel } from '@voiceflow/dtos';
 
-import { PersonaModel } from '../persona-model.enum';
 import type { PersonaOverrideEntity } from './persona-override.entity';
 
 export const personaOverride: EntityDTO<PersonaOverrideEntity> = {
@@ -9,7 +9,7 @@ export const personaOverride: EntityDTO<PersonaOverrideEntity> = {
   updatedAt: new Date(),
   updatedBy: { id: 1 } as any,
   name: 'first persona override',
-  model: PersonaModel.GPT_3_5,
+  model: AIModel.GPT_3_5_TURBO,
   temperature: 0.5,
   maxLength: 140,
   systemPrompt: 'You are a helpful assistant',

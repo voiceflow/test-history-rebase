@@ -1,4 +1,5 @@
 import { Entity, Enum, Index, ManyToOne, PrimaryKeyType, Property, Unique, wrap } from '@mikro-orm/core';
+import { FunctionVariableKind } from '@voiceflow/dtos';
 
 import type { AssistantEntity } from '@/postgres/assistant';
 import { Assistant, CreatedAt, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
@@ -6,7 +7,6 @@ import type { CMSCompositePK, EntityCreateParams, Ref, ToJSONWithForeignKeys } f
 
 import { FunctionEntity } from '../function.entity';
 import { FunctionVariableEntityAdapter } from './function-variable-entity.adapter';
-import { FunctionVariableType } from './function-variable-type.enum';
 
 @Entity({ tableName: 'designer.function_variable' })
 @Unique({ properties: ['id', 'environmentID'] })
@@ -22,8 +22,8 @@ export class FunctionVariableEntity extends PostgresCMSObjectEntity {
   @Property()
   name: string;
 
-  @Enum(() => FunctionVariableType)
-  type: FunctionVariableType;
+  @Enum(() => FunctionVariableKind)
+  type: FunctionVariableKind;
 
   @ManyToOne(() => FunctionEntity, {
     name: 'function_id',

@@ -10,6 +10,7 @@ import {
   Unique,
   wrap,
 } from '@mikro-orm/core';
+import { StoryStatus } from '@voiceflow/dtos';
 
 import { UserStubEntity } from '@/postgres/stubs/user.stub';
 import type { EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
@@ -17,7 +18,6 @@ import type { EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
 import { PostgresCMSTabularEntity } from '../common';
 import { FlowEntity } from '../flow';
 import { StoryEntityAdapter } from './story-entity.adapter';
-import { StoryStatus } from './story-status.enum';
 import type { BaseStoryTriggerEntity } from './story-trigger/story-trigger.entity';
 
 @Entity({ tableName: 'designer.story' })

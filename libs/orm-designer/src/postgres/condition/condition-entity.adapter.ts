@@ -1,3 +1,4 @@
+import { ConditionType } from '@voiceflow/dtos';
 import { createSmartMultiAdapter } from 'bidirectional-adapter';
 
 import { AssistantEntity } from '@/postgres/assistant';
@@ -11,7 +12,6 @@ import type {
   PromptConditionEntity,
   ScriptConditionEntity,
 } from './condition.entity';
-import { ConditionType } from './condition-type.enum';
 
 export const BaseConditionEntityAdapter = createSmartMultiAdapter<
   EntityObject<BaseConditionEntity>,

@@ -4,6 +4,6 @@ export const ProgramCommandDTO = z
   .object({
     type: z.string(),
   })
-  .nonstrict();
+  .passthrough();
 
 export type ProgramCommand = z.infer<typeof ProgramCommandDTO>;

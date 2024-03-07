@@ -1,4 +1,5 @@
-import type { ResponseJSONVariantORM, ResponsePromptVariantORM, ResponseTextVariantORM, ResponseVariantType } from '@voiceflow/orm-designer';
+import type { ResponseVariantType } from '@voiceflow/dtos';
+import type { ResponseJSONVariantORM, ResponsePromptVariantORM, ResponseTextVariantORM } from '@voiceflow/orm-designer';
 
 import type { CreateOneForUserData, PatchOneData } from '@/common/types';
 

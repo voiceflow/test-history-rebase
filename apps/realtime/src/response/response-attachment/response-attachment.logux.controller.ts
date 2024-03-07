@@ -1,7 +1,7 @@
 import { Controller, Inject } from '@nestjs/common';
+import { AttachmentType } from '@voiceflow/dtos';
 import { Action, AuthMeta, AuthMetaPayload, Broadcast, Payload } from '@voiceflow/nestjs-logux';
 import type { ResponseCardAttachmentEntity, ResponseMediaAttachmentEntity } from '@voiceflow/orm-designer';
-import { AttachmentType } from '@voiceflow/orm-designer';
 import { Permission } from '@voiceflow/sdk-auth';
 import { Authorize } from '@voiceflow/sdk-auth/nestjs';
 import { Actions, Channels } from '@voiceflow/sdk-logux-designer';

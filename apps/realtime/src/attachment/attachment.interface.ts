@@ -1,4 +1,5 @@
-import type { AttachmentType, CardAttachmentEntity, MediaAttachmentEntity, ToJSONWithForeignKeys } from '@voiceflow/orm-designer';
+import type { AttachmentType } from '@voiceflow/dtos';
+import type { CardAttachmentEntity, MediaAttachmentEntity, ToJSONWithForeignKeys } from '@voiceflow/orm-designer';
 
 import type { CreateOneForUserData, PatchOneData } from '@/common/types';
 

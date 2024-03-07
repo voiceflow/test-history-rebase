@@ -1,4 +1,4 @@
-import { CardLayout, ResponseContext, ResponseVariantType } from '@voiceflow/orm-designer';
+import { CardLayout, ResponseContext, ResponseVariantType } from '@voiceflow/dtos';
 import { match } from 'ts-pattern';
 
 import { ResponseJSONVariantCreateData, ResponsePromptVariantCreateData, ResponseTextVariantCreateData } from './response-variant.interface';

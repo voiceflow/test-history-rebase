@@ -4,6 +4,7 @@ import { Primary, ref } from '@mikro-orm/core';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
+import { ResponseVariantType } from '@voiceflow/dtos';
 import { NotFoundException } from '@voiceflow/exception';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
 import type {
@@ -15,14 +16,7 @@ import type {
   PromptEntity,
   ResponseDiscriminatorEntity,
 } from '@voiceflow/orm-designer';
-import {
-  DatabaseTarget,
-  PromptORM,
-  ResponseDiscriminatorORM,
-  ResponseVariantORM,
-  ResponseVariantType,
-  UserStubEntity,
-} from '@voiceflow/orm-designer';
+import { DatabaseTarget, PromptORM, ResponseDiscriminatorORM, ResponseVariantORM, UserStubEntity } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 import { match } from 'ts-pattern';
 

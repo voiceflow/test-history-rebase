@@ -64,7 +64,6 @@
     "@voiceflow/google-dfes-types": "2.16.53",
     "@voiceflow/google-types": "2.20.53",
     "@voiceflow/internal": "3.2.3",
-    "@voiceflow/orm-designer": "workspace:*",
     "@voiceflow/platform-config": "workspace:*",
     "@voiceflow/schema-types": "1.64.0",
     "@voiceflow/utils-designer": "workspace:*",

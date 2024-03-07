@@ -1,4 +1,4 @@
-import type { IntentTrigger } from '@voiceflow/dtos';
+import type { IntentStoryTrigger } from '@voiceflow/dtos';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { waitAsync } from '@/ducks/utils';
@@ -6,7 +6,7 @@ import { getActiveAssistantContext } from '@/ducks/versionV2/utils';
 import type { Thunk } from '@/store/types';
 
 export const createOneIntent =
-  (data: Actions.Trigger.CreateIntentData): Thunk<IntentTrigger> =>
+  (data: Actions.Trigger.CreateIntentData): Thunk<IntentStoryTrigger> =>
   async (dispatch, getState) => {
     const state = getState();
 

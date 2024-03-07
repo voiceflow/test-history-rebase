@@ -1,3 +1,4 @@
+import { ResponseVariantType } from '@voiceflow/dtos';
 import { createSmartMultiAdapter } from 'bidirectional-adapter';
 
 import { AssistantEntity } from '@/postgres/assistant';
@@ -13,7 +14,6 @@ import type {
   PromptResponseVariantEntity,
   TextResponseVariantEntity,
 } from './response-variant.entity';
-import { ResponseVariantType } from './response-variant-type.enum';
 
 export const BaseResponseVariantEntityAdapter = createSmartMultiAdapter<
   EntityObject<BaseResponseVariantEntity>,

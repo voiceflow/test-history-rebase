@@ -1,11 +1,11 @@
 import { Entity, Property } from '@mikro-orm/core';
 import type { ObjectId } from '@mikro-orm/mongodb';
 import type { AnyRecord } from '@voiceflow/common';
+import type { VariableStateStartFrom } from '@voiceflow/dtos';
 
 import { cleanupUndefinedFields, MongoEntity } from '@/mongo/common';
 import type { EntityCreateParams, ToJSON, ToJSONWithForeignKeys } from '@/types';
 
-import type { VariableStateStartFrom } from './interfaces/variable-state-start-from.interface';
 import { VariableStateEntityAdapter } from './variable-state-entity.adapter';
 
 @Entity({ collection: 'variable-states' })

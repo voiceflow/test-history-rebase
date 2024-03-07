@@ -10,14 +10,14 @@ import {
   Unique,
   wrap,
 } from '@mikro-orm/core';
+import type { Markup } from '@voiceflow/dtos';
+import { AttachmentType } from '@voiceflow/dtos';
 
-import type { Markup } from '@/common';
 import { MarkupType } from '@/common';
 import type { AssistantEntity } from '@/postgres/assistant';
 import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
 import type { CMSCompositePK, EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
 
-import { AttachmentType } from '../attachment-type.enum';
 import type { CardButtonEntity } from '../card-button/card-button.entity';
 import { MediaAttachmentEntity } from '../media-attachment/media-attachment.entity';
 import { CardAttachmentEntityAdapter } from './card-attachment-entity.adapter';

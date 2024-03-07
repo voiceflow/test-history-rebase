@@ -1,15 +1,5 @@
-export interface VersionDomain {
-  id: string;
-  name: string;
-  live: boolean;
-  status?: string;
-  topicIDs: string[];
-  updatedBy?: number;
-  updatedAt?: Date;
-  rootDiagramID: string;
+import type { VersionDomain as BaseVersionDomain } from '@voiceflow/dtos';
 
-  /**
-   * @deprecated in favor of updatedBy
-   * */
-  updatedByCreatorID?: number;
+export interface VersionDomain extends Omit<BaseVersionDomain, 'updatedAt'> {
+  updatedAt?: Date;
 }

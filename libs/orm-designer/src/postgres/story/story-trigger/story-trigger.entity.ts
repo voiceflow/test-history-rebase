@@ -1,4 +1,5 @@
 import { Entity, Enum, Index, ManyToOne, PrimaryKeyType, Property, Unique, wrap } from '@mikro-orm/core';
+import { StoryTriggerTarget } from '@voiceflow/dtos';
 
 import type { AssistantEntity } from '@/postgres/assistant';
 import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
@@ -12,7 +13,6 @@ import {
   EventStoryTriggerEntityAdapter,
   IntentStoryTriggerEntityAdapter,
 } from './story-trigger-entity.adapter';
-import { StoryTriggerTarget } from './story-trigger-target.enum';
 
 const TABLE_NAME = 'designer.trigger';
 

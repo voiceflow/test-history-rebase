@@ -1,13 +1,13 @@
 import { Entity, Enum, Index, ManyToOne, PrimaryKeyType, Property, Unique, wrap } from '@mikro-orm/core';
+import type { Markup } from '@voiceflow/dtos';
+import { ConditionOperation } from '@voiceflow/dtos';
 
-import type { Markup } from '@/common';
 import { MarkupType } from '@/common';
 import type { AssistantEntity } from '@/postgres/assistant';
 import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
 import type { CMSCompositePK, EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
 
 import { PromptConditionEntity } from '../condition.entity';
-import { ConditionOperation } from '../condition-operation.enum';
 import { ConditionPredicateEntityAdapter } from './condition-predicate-entity.adapter';
 
 @Entity({ tableName: 'designer.condition_predicate' })

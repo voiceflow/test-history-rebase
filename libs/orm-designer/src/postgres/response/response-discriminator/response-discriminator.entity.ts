@@ -11,8 +11,8 @@ import {
   Unique,
   wrap,
 } from '@mikro-orm/core';
+import { Channel, Language } from '@voiceflow/dtos';
 
-import { Channel, Language } from '@/common';
 import type { AssistantEntity } from '@/postgres/assistant';
 import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
 import type { CMSCompositePK, EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';

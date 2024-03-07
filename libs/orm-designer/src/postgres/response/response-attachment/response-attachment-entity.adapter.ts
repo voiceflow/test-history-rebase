@@ -1,7 +1,8 @@
+import { AttachmentType } from '@voiceflow/dtos';
 import { createSmartMultiAdapter } from 'bidirectional-adapter';
 
 import { AssistantEntity } from '@/postgres/assistant';
-import { AttachmentType, CardAttachmentEntity, MediaAttachmentEntity } from '@/postgres/attachment';
+import { CardAttachmentEntity, MediaAttachmentEntity } from '@/postgres/attachment';
 import { PostgresCMSCreatableEntityAdapter, ref } from '@/postgres/common';
 import type { CMSKeyRemap, EntityObject, ToJSONWithForeignKeys } from '@/types';
 

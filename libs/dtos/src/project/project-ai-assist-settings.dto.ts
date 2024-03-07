@@ -7,6 +7,6 @@ export const ProjectAIAssistSettingsDTO = z
     generativeTasks: z.boolean().optional(),
     generateNoMatch: z.boolean().optional(),
   })
-  .nonstrict();
+  .passthrough();
 
 export type ProjectAIAssistSettings = z.infer<typeof ProjectAIAssistSettingsDTO>;

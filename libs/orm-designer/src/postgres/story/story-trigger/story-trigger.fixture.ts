@@ -1,7 +1,7 @@
 import type { EntityDTO } from '@mikro-orm/core';
+import { StoryTriggerTarget } from '@voiceflow/dtos';
 
 import type { EventStoryTriggerEntity, IntentStoryTriggerEntity } from './story-trigger.entity';
-import { StoryTriggerTarget } from './story-trigger-target.enum';
 
 const baseTrigger = {
   createdAt: new Date(),

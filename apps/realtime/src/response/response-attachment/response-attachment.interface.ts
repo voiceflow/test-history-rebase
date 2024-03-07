@@ -1,4 +1,4 @@
-import type { AttachmentType } from '@voiceflow/orm-designer';
+import type { AttachmentType } from '@voiceflow/dtos';
 
 import type { CreateOneData } from '@/common/types';
 

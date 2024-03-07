@@ -1,6 +1,6 @@
 import { Entity, ManyToOne, Property, Unique, wrap } from '@mikro-orm/core';
+import type { Markup } from '@voiceflow/dtos';
 
-import type { Markup } from '@/common';
 import { MarkupType } from '@/common';
 import type { EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
 

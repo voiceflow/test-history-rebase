@@ -1,4 +1,5 @@
 import { Entity, Enum, Index, ManyToOne, PrimaryKeyType, Property, Unique, wrap } from '@mikro-orm/core';
+import { FolderScope } from '@voiceflow/dtos';
 
 import type { CMSCompositePK, EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
 
@@ -7,7 +8,6 @@ import { Assistant } from '../common/decorators/assistant.decorator';
 import { Environment } from '../common/decorators/environment.decorator';
 import { PostgresCMSObjectEntity } from '../common/entities/postgres-cms-object.entity';
 import { FolderEntityAdapter } from './folder-entity.adapter';
-import { FolderScope } from './folder-scope.enum';
 
 @Entity({ tableName: 'designer.folder' })
 @Unique({ properties: ['id', 'environmentID'] })

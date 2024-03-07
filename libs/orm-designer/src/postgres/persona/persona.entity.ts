@@ -1,10 +1,10 @@
 import { Entity, Enum, Index, Property, Unique, wrap } from '@mikro-orm/core';
+import { AIModel } from '@voiceflow/dtos';
 
 import type { EntityCreateParams, ToJSONWithForeignKeys } from '@/types';
 
 import { PostgresCMSTabularEntity } from '../common/entities/postgres-cms-tabular.entity';
 import { PersonaEntityAdapter } from './persona-entity.adapter';
-import { PersonaModel } from './persona-model.enum';
 import type { PersonaOverrideEntity } from './persona-override/persona-override.entity';
 
 @Entity({ tableName: 'designer.persona' })
@@ -18,8 +18,8 @@ export class PersonaEntity
     return PersonaEntityAdapter.toDB<JSON>(data);
   }
 
-  @Enum(() => PersonaModel)
-  model: PersonaModel;
+  @Enum(() => AIModel)
+  model: AIModel;
 
   @Property()
   maxLength: number;

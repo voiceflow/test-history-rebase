@@ -1,5 +1,5 @@
-import type { AnyTrigger, EventTrigger, IntentTrigger } from '@voiceflow/dtos';
-import { TriggerTarget } from '@voiceflow/dtos';
+import type { AnyStoryTrigger, EventStoryTrigger, IntentStoryTrigger } from '@voiceflow/dtos';
+import { StoryTriggerTarget } from '@voiceflow/dtos';
 
 import { createCRUD } from '@/crud/crud.action';
 import type {
@@ -47,11 +47,11 @@ export namespace CreateOneEvent {
     data: CreateEventData;
   }
 
-  export interface Response extends CreateResponse<EventTrigger>, DesignerAction {}
+  export interface Response extends CreateResponse<EventStoryTrigger>, DesignerAction {}
 }
 
 export const CreateOneEvent = triggerAction.crud.createOne<CreateOneEvent.Request, CreateOneEvent.Response>(
-  TriggerTarget.EVENT
+  StoryTriggerTarget.EVENT
 );
 
 /* CreateOneIntent */
@@ -61,11 +61,11 @@ export namespace CreateOneIntent {
     data: CreateIntentData;
   }
 
-  export interface Response extends CreateResponse<IntentTrigger>, DesignerAction {}
+  export interface Response extends CreateResponse<IntentStoryTrigger>, DesignerAction {}
 }
 
 export const CreateOneIntent = triggerAction.crud.createOne<CreateOneIntent.Request, CreateOneIntent.Response>(
-  TriggerTarget.INTENT
+  StoryTriggerTarget.INTENT
 );
 
 /* PatchOne */
@@ -98,7 +98,7 @@ export const DeleteMany = triggerAction.crud.deleteMany<DeleteMany>();
 
 /* Replace */
 
-export interface Replace extends ReplaceRequest<AnyTrigger>, DesignerAction {}
+export interface Replace extends ReplaceRequest<AnyStoryTrigger>, DesignerAction {}
 
 export const Replace = triggerAction.crud.replace<Replace>();
 
@@ -108,12 +108,12 @@ export const Replace = triggerAction.crud.replace<Replace>();
 
 /* AddOne */
 
-export interface AddOne extends AddOneRequest<AnyTrigger>, DesignerAction {}
+export interface AddOne extends AddOneRequest<AnyStoryTrigger>, DesignerAction {}
 
 export const AddOne = triggerAction.crud.addOne<AddOne>();
 
 /* AddMany */
 
-export interface AddMany extends AddManyRequest<AnyTrigger>, DesignerAction {}
+export interface AddMany extends AddManyRequest<AnyStoryTrigger>, DesignerAction {}
 
 export const AddMany = triggerAction.crud.addMany<AddMany>();

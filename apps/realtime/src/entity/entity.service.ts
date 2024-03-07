@@ -5,7 +5,7 @@ import { Primary } from '@mikro-orm/core';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
-import { Entity, EntityVariant } from '@voiceflow/dtos';
+import { Entity, EntityVariant, Language } from '@voiceflow/dtos';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
 import type {
   AssistantEntity,
@@ -17,7 +17,7 @@ import type {
   RequiredEntityEntity,
   ToJSONWithForeignKeys,
 } from '@voiceflow/orm-designer';
-import { DatabaseTarget, EntityORM, Language } from '@voiceflow/orm-designer';
+import { DatabaseTarget, EntityORM } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { CMSTabularService, EntitySerializer } from '@/common';

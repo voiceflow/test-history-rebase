@@ -7,17 +7,17 @@ import {
   findBooleanEntitlement,
   findNumberEntitlement,
   findPlanItem,
+  getBillingPeriodUnit,
   getDaysLeftToTrialEnd,
   getPlanFromPriceID,
+  getStatus,
   isChargebeeTrial,
 } from '../subscription.utils';
 
 const subscriptionAdapter = createMultiAdapter<Realtime.Identity.Subscription, Subscription>(
-  ({ id, billingPeriodUnit, status, nextBillingAt, subscriptionItems, metaData, subscriptionEntitlements, ...rest }) => {
+  ({ id, billingPeriodUnit, status, nextBillingAt, currentTermEnd, subscriptionItems, metaData, subscriptionEntitlements, customerID }) => {
     const planItem = findPlanItem(subscriptionItems);
     const trialEnd = planItem?.trialEnd;
-    // TODO: customerID is not present in the Realtime.Identity.Subscription type
-    const { customerID } = rest as any;
 
     const plan = getPlanFromPriceID(planItem?.itemPriceID);
     const isTrial = isChargebeeTrial(planItem, metaData);
@@ -38,15 +38,17 @@ const subscriptionAdapter = createMultiAdapter<Realtime.Identity.Subscription, S
     const knowledgeBaseSourcesLimit = findNumberEntitlement(subscriptionEntitlements, 'limit-knowledge-base-source-count');
     const workspacesLimit = findNumberEntitlement(subscriptionEntitlements, 'limit-workspace-count');
 
-    const result: Subscription & { customerID: string } = {
+    const nextBillingTimestamp = nextBillingAt || currentTermEnd;
+
+    const result: Subscription = {
       id,
       customerID,
-      billingPeriodUnit: billingPeriodUnit ?? null,
+      billingPeriodUnit: getBillingPeriodUnit(billingPeriodUnit),
       editorSeats: planItem?.quantity ?? 1,
       pricePerEditor: planItem?.unitPrice ? planItem.unitPrice / 100 : 0,
       plan: metaData?.downgradedFromTrial ? PlanType.PRO : plan,
-      nextBillingDate: nextBillingAt ? Realtime.Utils.date.to_DD_MMM_YYYY(new Date(nextBillingAt)) : null,
-      status,
+      nextBillingDate: nextBillingTimestamp ? Realtime.Utils.date.to_DD_MMM_YYYY(new Date(nextBillingTimestamp)) : null,
+      status: getStatus(status),
       trial: isTrial && trialEnd ? { daysLeft: getDaysLeftToTrialEnd(new Date(trialEnd)), endAt: new Date(trialEnd).toJSON() } : null,
       entitlements: {
         samlSSO,

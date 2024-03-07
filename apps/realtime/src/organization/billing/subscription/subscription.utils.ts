@@ -8,11 +8,35 @@ export const ChargebeePlanType = {
   ENTERPRISE: PlanType.ENTERPRISE,
 } as const;
 
+export const ChargebeeStatus = {
+  FUTURE: 'future',
+  IN_TRIAL: 'in_trial',
+  ACTIVE: 'active',
+  NON_RENEWING: 'non_renewing',
+  PAUSED: 'paused',
+  CANCELLED: 'cancelled',
+  TRANSFERRED: 'transferred',
+} as const;
+
+export const ChargebeeBillingPeriodUnit = {
+  MONTH: 'month',
+  YEAR: 'year',
+} as const;
+
 export type ChargebeePlanType = (typeof ChargebeePlanType)[keyof typeof ChargebeePlanType];
+
+export type ChargebeeStatus = (typeof ChargebeeStatus)[keyof typeof ChargebeeStatus];
+
+export type ChargebeeBillingPeriodUnit = (typeof ChargebeeBillingPeriodUnit)[keyof typeof ChargebeeBillingPeriodUnit];
 
 const chargebeePlanTypes = new Set(Object.values(ChargebeePlanType));
 
 export const isChargebeePlanType = (plan: any): plan is ChargebeePlanType => chargebeePlanTypes.has(plan);
+
+export const isChargebeeStatus = (status: any): status is ChargebeeStatus => Object.values(ChargebeeStatus).includes(status);
+
+export const isChargebeeBillingPeriodUnit = (unit: any): unit is ChargebeeBillingPeriodUnit =>
+  Object.values(ChargebeeBillingPeriodUnit).includes(unit);
 
 export function getDaysLeftToTrialEnd(trialEndDate: Date) {
   const trialEndDateWithoutTimezone = Realtime.Utils.date.removeTimezone(trialEndDate);
@@ -33,6 +57,18 @@ export const getPlanFromPriceID = (priceID: string | undefined) => {
   if (isChargebeePlanType(plan)) return plan;
 
   return ChargebeePlanType.STARTER;
+};
+
+export const getStatus = (status: string | undefined) => {
+  if (isChargebeeStatus(status)) return status;
+
+  return ChargebeeStatus.CANCELLED;
+};
+
+export const getBillingPeriodUnit = (unit: string | undefined) => {
+  if (isChargebeeBillingPeriodUnit(unit)) return unit;
+
+  return ChargebeeBillingPeriodUnit.MONTH;
 };
 
 export const isChargebeeTrial = (planItem: Realtime.Identity.SubscriptionItem | undefined, metaData: Record<string, unknown> | undefined) => {

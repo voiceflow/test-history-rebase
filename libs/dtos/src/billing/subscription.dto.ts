@@ -5,16 +5,15 @@ import { SubscriptionEntitlementsDTO } from './subscription-entitlements.dto';
 export const SubscriptionDTO = z.object({
   id: z.string(),
 
-  status: z.string(),
-  nextBillingDate: z.string().optional().nullable(),
-  billingPeriodUnit: z.string().optional().nullable(),
+  status: z.enum(['future', 'in_trial', 'active', 'non_renewing', 'paused', 'cancelled', 'transferred']),
+  nextBillingDate: z.string().nullable(),
+  billingPeriodUnit: z.enum(['month', 'year']),
 
   trial: z
     .object({
       daysLeft: z.number(),
       endAt: z.string(),
     })
-    .optional()
     .nullable(),
 
   plan: z.enum(['starter', 'pro', 'team', 'enterprise']),

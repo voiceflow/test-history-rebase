@@ -1,6 +1,7 @@
 import { style } from '@voiceflow/style';
 
 export const textareaStyles = style({
+  whiteSpace: 'pre',
   minHeight: '60px',
   width: '100%',
   overflowY: 'auto',

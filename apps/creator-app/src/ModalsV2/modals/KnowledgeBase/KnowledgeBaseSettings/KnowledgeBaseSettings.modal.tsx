@@ -1,10 +1,10 @@
 import { BaseModels } from '@voiceflow/base-types';
-import { Utils } from '@voiceflow/common';
 import { tid } from '@voiceflow/style';
-import { Box, Button, notify, Popper, Scroll, Text } from '@voiceflow/ui-next';
+import { Box, notify, Scroll } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { Modal } from '@/components/Modal';
+import { PopperConfirm } from '@/components/Popper/PopperConfirm/PopperConfirm.component';
 import { SYSTEM_PROMPT_AI_MODELS } from '@/config/ai-model';
 import { Designer } from '@/ducks';
 import { useLinkedState } from '@/hooks/state.hook';
@@ -20,7 +20,7 @@ import { KBSettingsSystemPrompt } from './KBSettingsSystemPrompt.component';
 import { KBSettingsTemperature } from './KBSettingsTemperature.component';
 import { KBSettingsTokens } from './KBSettingsTokens.component';
 import { DEFAULT_SETTINGS } from './KnowledgeBaseSettings.constant';
-import { confirmBoxStyles, systemPromptStyles } from './KnowledgeBaseSettings.css';
+import { systemPromptStyles } from './KnowledgeBaseSettings.css';
 
 export const KnowledgeBaseSettings = manager.create('KnowledgeBaseSettingsV2', () => ({ api, type, opened, hidden, closePrevented, animated }) => {
   const storeSettings = useSelector(Designer.KnowledgeBase.selectors.settings);
@@ -169,50 +169,22 @@ export const KnowledgeBaseSettings = manager.create('KnowledgeBaseSettingsV2', (
       </Scroll>
 
       <Modal.Footer>
-        <Popper
-          placement="bottom-start"
-          testID={tid(SETTINGS_TEST_ID, ['reset', 'confirmation'])}
-          referenceElement={({ onToggle, isOpen, ref }) => (
+        <PopperConfirm
+          testID={tid(SETTINGS_TEST_ID, 'reset')}
+          onConfirm={onResetToDefault}
+          referenceElement={({ ref, isOpen, onToggle }) => (
             <div ref={ref}>
               <Modal.Footer.Button
+                label="Reset to default"
+                testID={tid(SETTINGS_TEST_ID, 'reset')}
                 variant="secondary"
                 onClick={onToggle}
                 isActive={isOpen}
                 disabled={closePrevented}
-                label="Reset to default"
-                testID={tid(SETTINGS_TEST_ID, 'reset')}
               />
             </div>
           )}
-        >
-          {({ onClose }) => (
-            <Box className={confirmBoxStyles} direction="column" gap={10}>
-              <Text variant="basic">This action can’t be undone, please confirm you’d like to continue.</Text>
-
-              <Box justify="space-between" gap={8}>
-                <Button
-                  label="No"
-                  size="medium"
-                  fullWidth
-                  variant="secondary"
-                  onClick={onClose}
-                  disabled={closePrevented}
-                  testID={tid(SETTINGS_TEST_ID, ['reset', 'confirmation', 'no'])}
-                />
-
-                <Button
-                  label="Yes"
-                  size="medium"
-                  fullWidth
-                  variant="primary"
-                  onClick={Utils.functional.chain(onClose, onResetToDefault)}
-                  disabled={closePrevented}
-                  testID={tid(SETTINGS_TEST_ID, ['reset', 'confirmation', 'yes'])}
-                />
-              </Box>
-            </Box>
-          )}
-        </Popper>
+        />
 
         <Modal.Footer.Button
           label="Save"

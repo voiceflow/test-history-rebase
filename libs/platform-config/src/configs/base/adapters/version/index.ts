@@ -1,5 +1,6 @@
 import { Config as ConfigUtils } from '@platform-config/configs/utils';
 import { BaseVersion } from '@voiceflow/base-types';
+import { VersionSettings } from '@voiceflow/dtos';
 import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter';
 
 import * as Models from '../../models';
@@ -10,7 +11,9 @@ import * as Settings from './settings';
 export { Publishing, Session, Settings };
 
 export type FromDBOptions = [{ defaultVoice: string; globalVariables: string[] }];
-export type DBVersion<V extends BaseVersion.Version<any>> = Pick<V, '_id' | 'platformData' | Models.Version.ModelDBSharedFields>;
+export type DBVersion<V extends BaseVersion.Version<any>> = Pick<V, '_id' | 'platformData' | Models.Version.ModelDBSharedFields> & {
+  settings?: VersionSettings;
+};
 
 /**
  * filters out default global variables
@@ -20,6 +23,7 @@ export const simple = createMultiAdapter<DBVersion<BaseVersion.Version>, Models.
     {
       _id,
       folders = {},
+      settings,
       _version,
       creatorID,
       projectID,
@@ -42,6 +46,7 @@ export const simple = createMultiAdapter<DBVersion<BaseVersion.Version>, Models.
     creatorID,
     projectID,
     components,
+    settingsV2: settings,
     publishing: Publishing.simple.fromDB(platformData.publishing, { defaultVoice: '' }),
     rootDiagramID,
     templateDiagramID,

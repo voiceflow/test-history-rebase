@@ -1,15 +1,13 @@
-import { Utils } from '@voiceflow/common';
 import { AIModel } from '@voiceflow/dtos';
 import { tid } from '@voiceflow/style';
-import { Box, Dropdown, Menu } from '@voiceflow/ui-next';
+import { Box } from '@voiceflow/ui-next';
 import React from 'react';
 
-import { AI_MODEL_CONFIG_MAP, ANTHROPIC_MODEL_CONFIGS, OPEN_AI_MODEL_CONFIGS } from '@/config/ai-model';
+import { AIModelSelect } from '@/components/AI/AIModelSelect/AIModelSelect.component';
 import { CMS_KNOWLEDGE_BASE_LEARN_MORE } from '@/constants/link.constant';
 
 import { SETTINGS_TEST_ID } from '../KnowledgeBase.constant';
 import { KBSettingLabel } from './KBSettingLabel.component';
-import { KBSettingsModelItem } from './KBSettingsModelItem.component';
 
 export interface IKBSettingsModelSelect {
   value: AIModel;
@@ -28,8 +26,6 @@ export const KBSettingsModelSelect: React.FC<IKBSettingsModelSelect> = ({
 }) => {
   const TEST_ID = tid(SETTINGS_TEST_ID, 'model');
 
-  const modelConfig = AI_MODEL_CONFIG_MAP[value];
-
   return (
     <Box width="100%" direction="column" pb={12}>
       <KBSettingLabel
@@ -41,31 +37,7 @@ export const KBSettingsModelSelect: React.FC<IKBSettingsModelSelect> = ({
       />
 
       <Box pl={24}>
-        <Dropdown value={modelConfig.name} disabled={disabled} prefixIconName={modelConfig.icon} testID={TEST_ID}>
-          {({ onClose }) => (
-            <Menu>
-              {OPEN_AI_MODEL_CONFIGS.map((model) => (
-                <KBSettingsModelItem
-                  key={model.type}
-                  model={model}
-                  onClick={Utils.functional.chainVoid(onClose, () => onValueChange(model.type))}
-                  testID={tid(TEST_ID, 'item', model.type)}
-                />
-              ))}
-
-              <Menu.Divider />
-
-              {ANTHROPIC_MODEL_CONFIGS.map((model) => (
-                <KBSettingsModelItem
-                  key={model.type}
-                  model={model}
-                  onClick={Utils.functional.chainVoid(onClose, () => onValueChange(model.type))}
-                  testID={tid(TEST_ID, 'item', model.type)}
-                />
-              ))}
-            </Menu>
-          )}
-        </Dropdown>
+        <AIModelSelect value={value} testID={TEST_ID} disabled={disabled} onValueChange={onValueChange} />
       </Box>
     </Box>
   );

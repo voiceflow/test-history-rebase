@@ -1,0 +1,8 @@
+import { IntentClassificationLLMSettings } from '@voiceflow/dtos';
+
+export interface IIntentClassificationLLMSettings {
+  settings: Omit<IntentClassificationLLMSettings, 'type'>;
+  disabled?: boolean;
+  onSettingsChange: (settings: Omit<IntentClassificationLLMSettings, 'type'>) => void;
+  initialPromptWrapper: IntentClassificationLLMSettings['promptWrapper'];
+}

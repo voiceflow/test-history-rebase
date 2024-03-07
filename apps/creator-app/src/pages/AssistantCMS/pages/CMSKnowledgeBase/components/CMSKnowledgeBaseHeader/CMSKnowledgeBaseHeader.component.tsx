@@ -15,7 +15,7 @@ export const CMSKnowledgeBaseHeader: React.FC = () => {
 
   return (
     <CMSHeader
-      hideShare
+      share={null}
       searchPlaceholder="Search data sources"
       rightActions={
         <>

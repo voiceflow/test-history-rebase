@@ -1,19 +1,15 @@
 import { tid } from '@voiceflow/style';
-import { BaseProps, Box, HotKeys, Menu, Tooltip } from '@voiceflow/ui-next';
+import { Box, HotKeys, Menu, Tooltip } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { MenuItemWithTooltip } from '@/components/Menu/MenuItemWithTooltip/MenuItemWithTooltip.component';
-import { AIModelConfig } from '@/config/ai-model';
 import { getAdvancedAiModelUpgradeModal } from '@/config/planPermission/advancedAIModels';
 import { useAIModelEntitlement } from '@/hooks';
 import { useUpgradeModal } from '@/hooks/modal.hook';
 
-export interface IKBSettingsModelItem extends BaseProps {
-  model: AIModelConfig;
-  onClick: VoidFunction;
-}
+import { IAIModelSelectItem } from './AIModelSelect.interface';
 
-export const KBSettingsModelItem: React.FC<IKBSettingsModelItem> = ({ model, onClick, testID }) => {
+export const AIModelSelectItem: React.FC<IAIModelSelectItem> = ({ model, onClick, testID }) => {
   const aiModelEntitlement = useAIModelEntitlement();
   const upgradeModal = useUpgradeModal();
 
@@ -25,11 +21,11 @@ export const KBSettingsModelItem: React.FC<IKBSettingsModelItem> = ({ model, onC
     return (
       <MenuItemWithTooltip
         label={model.name}
+        testID={testID}
         hotKeys={<HotKeys hotKeys={[{ label: model.info }]} />}
         tooltip={{ width: 160, placement: 'right', modifiers: [{ name: 'offset', options: { offset: [16, 5] } }] }}
         disabled
         prefixIconName={model.icon}
-        testID={testID}
       >
         {() => (
           <Box direction="column">
@@ -47,11 +43,11 @@ export const KBSettingsModelItem: React.FC<IKBSettingsModelItem> = ({ model, onC
   return (
     <Menu.Item
       label={model.name}
+      testID={testID}
       hotKeys={<HotKeys hotKeys={[{ label: model.info }]} />}
       onClick={onClick}
       disabled={model.disabled}
       prefixIconName={model.icon}
-      testID={testID}
     />
   );
 };

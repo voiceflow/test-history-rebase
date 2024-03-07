@@ -1,11 +1,21 @@
 import type { Primary } from '@mikro-orm/core';
 import type { AnyRecord } from '@voiceflow/common';
+import type { VersionSettings } from '@voiceflow/dtos';
 
 import { Atomic, MongoAtomicORM } from '../common';
 import { VersionEntity } from './version.entity';
 
 export class VersionORM extends MongoAtomicORM(VersionEntity) {
-  static PLATFORM_DATA_PATH = 'platformData' as const;
+  static SETTINGS_PATH = 'settings' as const satisfies keyof VersionEntity;
+
+  static PLATFORM_DATA_PATH = 'platformData' as const satisfies keyof VersionEntity;
+
+  async updateOneSettings(id: string, update: Partial<VersionSettings>) {
+    await this.atomicUpdateOne(
+      id,
+      Object.entries(update).map(([key, value]) => Atomic.Set([{ path: [VersionORM.SETTINGS_PATH, key], value }]))
+    );
+  }
 
   async patchOnePlatformData(id: Primary<VersionEntity>, data: AnyRecord) {
     await this.atomicUpdateOne(

@@ -1,5 +1,6 @@
 import { BaseVersion } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
+import { VersionSettings } from '@voiceflow/dtos';
 import { Required } from 'utility-types';
 
 import * as Publishing from './publishing';
@@ -33,5 +34,6 @@ export interface Model extends Required<Pick<BaseVersion.Version, ModelDBSharedF
   status: Nullable<unknown>;
   session: Session;
   settings: Settings.Model;
+  settingsV2?: VersionSettings;
   publishing: Publishing.Model;
 }

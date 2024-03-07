@@ -9,13 +9,15 @@ import { InjectRequestContext, UseRequestContext } from '@/common';
 import subscriptionAdapter from './billing/subscription/adapters/subscription.adapter';
 import { BillingSubscriptionService } from './billing/subscription/subscription.service';
 import { OrganizationIdentityService } from './identity/identity.service';
+import { OrganizationIdentityMemberService } from './identity/member.service';
 
 @Controller()
 @InjectRequestContext()
 export class OrganizationLoguxController {
   constructor(
     @Inject(OrganizationIdentityService) private readonly organizationService: OrganizationIdentityService,
-    @Inject(BillingSubscriptionService) private readonly billingSubscriptionService: BillingSubscriptionService
+    @Inject(BillingSubscriptionService) private readonly billingSubscriptionService: BillingSubscriptionService,
+    @Inject(OrganizationIdentityMemberService) private readonly organizationMemberService: OrganizationIdentityMemberService
   ) {}
 
   @Channel(Channels.organization)
@@ -50,5 +52,18 @@ export class OrganizationLoguxController {
   }))
   async patchOne(@Payload() { id, patch }: Actions.Organization.PatchOne, @AuthMeta() authMeta: AuthMetaPayload): Promise<void> {
     await this.organizationService.patchOne(authMeta.userID, id, patch);
+  }
+
+  @Action(Actions.OrganizationMember.DeleteOne)
+  @Authorize.Permissions<Actions.OrganizationMember.DeleteOne>([Permission.ORGANIZATION_UPDATE], ({ context }) => ({
+    id: context.organizationID,
+    kind: 'organization',
+  }))
+  @UseRequestContext()
+  @Broadcast<Actions.OrganizationMember.DeleteOne>(({ context }) => ({
+    channel: Channels.organization.build({ ...context, subscriptionID: context.subscriptionID ?? '' }),
+  }))
+  async deleteMember(@Payload() { id, context }: Actions.OrganizationMember.DeleteOne, @AuthMeta() authMeta: AuthMetaPayload): Promise<void> {
+    await this.organizationMemberService.remove(authMeta.userID, context.organizationID, id);
   }
 }

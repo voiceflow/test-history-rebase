@@ -105,7 +105,8 @@ export const updateMember =
     const state = getState();
 
     const workspace = workspaceByIDSelector(state, { id: workspaceID });
-    const organizationMember = organizationByIDSelector(state, { id: workspace?.organizationID })?.members.find((m) => m.creatorID) ?? null;
+    const organizationMember =
+      organizationByIDSelector(state, { id: workspace?.organizationID })?.members.find((m) => m.creatorID === creatorID) ?? null;
 
     try {
       if (workspace?.organizationID && isAdminUserRole(organizationMember?.role)) {

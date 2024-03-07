@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.288.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.287.1...@voiceflow/realtime@1.288.0) (2024-03-07)
+
+### Features
+
+* clean up code and improve subscription typing (COR-1084) ([#7856](https://github.com/voiceflow/creator-app/issues/7856)) ([271cc21](https://github.com/voiceflow/creator-app/commit/271cc216c452ae6ac6f75b39fca915372dd28814))
+
 ## [1.287.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.287.0...@voiceflow/realtime@1.287.1) (2024-03-07)
 
 ### Bug Fixes

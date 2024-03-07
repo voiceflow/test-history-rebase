@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.42.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.41.0...@voiceflow/dtos@1.42.0) (2024-03-07)
+
+### Features
+
+* clean up code and improve subscription typing (COR-1084) ([#7856](https://github.com/voiceflow/creator-app/issues/7856)) ([271cc21](https://github.com/voiceflow/creator-app/commit/271cc216c452ae6ac6f75b39fca915372dd28814))
+
 # [1.41.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.40.0...@voiceflow/dtos@1.41.0) (2024-03-07)
 
 ### Features

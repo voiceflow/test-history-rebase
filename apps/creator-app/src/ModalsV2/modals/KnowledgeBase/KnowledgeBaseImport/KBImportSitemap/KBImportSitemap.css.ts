@@ -7,6 +7,7 @@ export const submitButtonStyles = style({
 export const textareaStyles = style({
   minHeight: '60px',
   width: '100%',
+  whiteSpace: 'pre',
   overflowY: 'auto',
   overflowX: 'auto',
   // TODO: fix growing text area in modals DX-709

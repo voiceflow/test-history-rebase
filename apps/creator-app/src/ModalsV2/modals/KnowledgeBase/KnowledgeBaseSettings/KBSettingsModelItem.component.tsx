@@ -26,7 +26,7 @@ export const KBSettingsModelItem: React.FC<IKBSettingsModelItem> = ({ model, onC
       <MenuItemWithTooltip
         label={model.name}
         hotKeys={<HotKeys hotKeys={[{ label: model.info }]} />}
-        tooltip={{ width: 160, placement: 'left', modifiers: [{ name: 'offset', options: { offset: [16, 5] } }] }}
+        tooltip={{ width: 160, placement: 'right', modifiers: [{ name: 'offset', options: { offset: [16, 5] } }] }}
         disabled
         prefixIconName={model.icon}
         testID={testID}

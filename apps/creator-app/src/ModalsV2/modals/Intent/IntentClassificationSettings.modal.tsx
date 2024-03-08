@@ -6,7 +6,6 @@ import React from 'react';
 import { IntentClassificationLLMSettings } from '@/components/Intent/IntentClassificationLLMSettings/IntentClassificationLLMSettings.component';
 import { IntentClassificationNLUSettings } from '@/components/Intent/IntentClassificationNLUSettings/IntentClassificationNLUSettings.component';
 import { Modal } from '@/components/Modal';
-import { PopperConfirm } from '@/components/Popper/PopperConfirm/PopperConfirm.component';
 import { Version } from '@/ducks';
 import { useDefaultAIModel } from '@/hooks/ai.hook';
 import { useLinkedState } from '@/hooks/state.hook';
@@ -44,17 +43,9 @@ export const IntentClassificationSettingsModal = modalsManager.create(
       };
 
       const onResetToDefault = async () => {
-        api.preventClose();
+        setSettings(getDefaultSettings(settings.type));
 
-        try {
-          await updateSettings({ intentClassification: getDefaultSettings(settings.type) });
-
-          notify.short.success('Restored to default');
-        } catch {
-          notify.short.error('Unable to restore Intent classification settings');
-        } finally {
-          api.enableClose();
-        }
+        notify.short.success('Restored to default');
       };
 
       const onSubmit = async () => {
@@ -72,6 +63,8 @@ export const IntentClassificationSettingsModal = modalsManager.create(
           notify.short.error('Unable to save Intent classification settings');
         }
       };
+
+      api.useOnCloseRequest((source) => source !== 'backdrop');
 
       return (
         <Modal.Container
@@ -110,7 +103,6 @@ export const IntentClassificationSettingsModal = modalsManager.create(
                 settings={settings}
                 disabled={closePrevented}
                 onSettingsChange={(value) => setSettings({ ...settings, ...value })}
-                initialPromptWrapper={storeSetting.type === IntentClassificationType.LLM ? storeSetting.promptWrapper : null}
               />
             ) : (
               <IntentClassificationNLUSettings
@@ -122,22 +114,12 @@ export const IntentClassificationSettingsModal = modalsManager.create(
           </Scroll>
 
           <Modal.Footer>
-            <PopperConfirm
-              testID={tid(TEST_ID, 'reset')}
-              onConfirm={onResetToDefault}
-              referenceElement={({ ref, onToggle, isOpen }) => (
-                // TODO: remove div when Modal.Footer.Button supports ref
-                <div ref={ref}>
-                  <Modal.Footer.Button
-                    label="Reset to default"
-                    testID={tid(TEST_ID, 'reset-to-default')}
-                    variant="secondary"
-                    onClick={onToggle}
-                    isActive={isOpen}
-                    disabled={closePrevented}
-                  />
-                </div>
-              )}
+            <Modal.Footer.Button
+              label="Reset to default"
+              testID={tid(TEST_ID, 'reset-to-default')}
+              variant="secondary"
+              onClick={onResetToDefault}
+              disabled={closePrevented}
             />
 
             <Modal.Footer.Button

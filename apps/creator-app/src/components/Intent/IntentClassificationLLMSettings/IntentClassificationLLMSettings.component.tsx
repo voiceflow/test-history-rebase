@@ -15,12 +15,7 @@ import { onOpenURLInANewTabFactory } from '@/utils/window';
 
 import { IIntentClassificationLLMSettings } from './IntentClassificationLLMSettings.interface';
 
-export const IntentClassificationLLMSettings: React.FC<IIntentClassificationLLMSettings> = ({
-  settings,
-  disabled,
-  initialPromptWrapper,
-  onSettingsChange,
-}) => {
+export const IntentClassificationLLMSettings: React.FC<IIntentClassificationLLMSettings> = ({ settings, disabled, onSettingsChange }) => {
   const TEST_ID = 'intent-classification-llm-settings';
 
   const { params } = settings;
@@ -34,11 +29,9 @@ export const IntentClassificationLLMSettings: React.FC<IIntentClassificationLLMS
     onSettingsChange({ ...settings, promptWrapper: { ...promptWrapper, ...value } });
   };
 
-  const onResetPromptWrapper = () => {
-    onSettingsChange({ ...settings, promptWrapper: initialPromptWrapper });
+  const onPromptWrapperReset = () => {
+    onSettingsChange({ ...settings, promptWrapper: null });
   };
-
-  const defaultedInitialPromptWrapper = initialPromptWrapper ?? DEFAULT_INTENT_CLASSIFICATION_LLM_PROMPT_WRAPPER;
 
   return (
     <>
@@ -107,8 +100,8 @@ export const IntentClassificationLLMSettings: React.FC<IIntentClassificationLLMS
           </SectionHeaderTitleWithLearnTooltip>
         )}
       >
-        {promptWrapper.content !== defaultedInitialPromptWrapper.content && (
-          <Link size="small" label="Reset" disabled={disabled} testID={tid(TEST_ID, 'reset')} weight="semiBold" onClick={onResetPromptWrapper} />
+        {promptWrapper.content !== DEFAULT_INTENT_CLASSIFICATION_LLM_PROMPT_WRAPPER.content && (
+          <Link size="small" label="Reset" testID={tid(TEST_ID, 'reset')} weight="semiBold" onClick={onPromptWrapperReset} disabled={disabled} />
         )}
       </Section.Header.Container>
 

@@ -1,13 +1,11 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { tid } from '@voiceflow/style';
 import { Box, notify, Scroll } from '@voiceflow/ui-next';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Modal } from '@/components/Modal';
-import { PopperConfirm } from '@/components/Popper/PopperConfirm/PopperConfirm.component';
 import { SYSTEM_PROMPT_AI_MODELS } from '@/config/ai-model';
 import { Designer } from '@/ducks';
-import { useLinkedState } from '@/hooks/state.hook';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
 import { useTrackingEvents } from '@/hooks/tracking';
 
@@ -28,9 +26,8 @@ export const KnowledgeBaseSettings = manager.create('KnowledgeBaseSettingsV2', (
   const getSettings = useDispatch(Designer.KnowledgeBase.effect.getSettings);
   const patchSettings = useDispatch(Designer.KnowledgeBase.effect.patchSettings);
 
-  const [settings, setSettings] = useLinkedState(storeSettings);
-
-  const [activeTooltipLabel, setActiveTooltipLabel] = React.useState<string | null>(null);
+  const [settings, setSettings] = useState(storeSettings);
+  const [activeTooltipLabel, setActiveTooltipLabel] = useState<string | null>(null);
 
   const [trackingEvents] = useTrackingEvents();
 
@@ -80,16 +77,12 @@ export const KnowledgeBaseSettings = manager.create('KnowledgeBaseSettingsV2', (
   };
 
   const onResetToDefault = async () => {
-    try {
-      await patchSettings(DEFAULT_SETTINGS);
+    setSettings(DEFAULT_SETTINGS);
 
-      notify.short.success('Restored to default');
-    } catch {
-      notify.short.error('Unable to restore Knowledge Base settings');
-    }
+    notify.short.success('Restored to default');
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     (async () => {
       try {
         await getSettings();
@@ -98,6 +91,8 @@ export const KnowledgeBaseSettings = manager.create('KnowledgeBaseSettingsV2', (
       }
     })();
   }, []);
+
+  api.useOnCloseRequest((source) => source !== 'backdrop');
 
   const model = settings?.summarization.model ?? DEFAULT_SETTINGS.summarization.model;
 
@@ -169,21 +164,12 @@ export const KnowledgeBaseSettings = manager.create('KnowledgeBaseSettingsV2', (
       </Scroll>
 
       <Modal.Footer>
-        <PopperConfirm
+        <Modal.Footer.Button
+          label="Reset to default"
           testID={tid(SETTINGS_TEST_ID, 'reset')}
-          onConfirm={onResetToDefault}
-          referenceElement={({ ref, isOpen, onToggle }) => (
-            <div ref={ref}>
-              <Modal.Footer.Button
-                label="Reset to default"
-                testID={tid(SETTINGS_TEST_ID, 'reset')}
-                variant="secondary"
-                onClick={onToggle}
-                isActive={isOpen}
-                disabled={closePrevented}
-              />
-            </div>
-          )}
+          variant="secondary"
+          onClick={onResetToDefault}
+          disabled={closePrevented}
         />
 
         <Modal.Footer.Button

@@ -36,8 +36,6 @@ export const getRootTopicIDBySubtopicIDSelector = createSelector([allDiagramsSel
   return null;
 });
 
-export const localVariablesByDiagramIDSelector = createSelector([diagramByIDSelector], (diagram) => diagram?.variables || []);
-
 export const sharedNodesSelector = createSelector([rootDiagramSelector], ({ sharedNodes }) => sharedNodes);
 
 export const lastCreatedIDSelector = createSelector([rootDiagramSelector], ({ lastCreatedID }) => lastCreatedID);

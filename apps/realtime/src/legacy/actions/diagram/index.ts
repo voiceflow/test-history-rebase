@@ -2,7 +2,6 @@ import { LoguxControlOptions } from '@/legacy/control';
 
 import AddDiagramControl from './add';
 import AddManyDiagramControl from './addMany';
-import { ComponentCreateControl, ComponentDuplicateControl, ComponentRemoveControl } from './component';
 import HeartbeatDiagramControl from './heartbeat';
 import { LockEntitiesControl, UnlockEntitiesControl, UpdateLockedEntitiesControl } from './locks';
 import { AddMenuItemControl, RemoveMenuItemControl, ReorderMenuItemControl } from './menuItem';
@@ -22,11 +21,6 @@ const buildDiagramActionControls = (options: LoguxControlOptions) => ({
   removeDiagramControl: new RemoveDiagramControl(options),
   addManyDiagramControl: new AddManyDiagramControl(options),
   removeManyDiagramControl: new RemoveManyDiagramControl(options),
-
-  // components
-  componentCreateControl: new ComponentCreateControl(options),
-  componentRemoveControl: new ComponentRemoveControl(options),
-  componentDuplicateControl: new ComponentDuplicateControl(options),
 
   // subtopics
   subtopicCreateControl: new SubtopicCreateControl(options),

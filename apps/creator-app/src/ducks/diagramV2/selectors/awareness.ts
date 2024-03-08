@@ -8,7 +8,7 @@ import { createSelector } from 'reselect';
 import * as Account from '@/ducks/account';
 import { activeDiagramIDSelector } from '@/ducks/creatorV2/selectors';
 import { awarenessViewersSelector } from '@/ducks/projectV2/selectors/active';
-import { createCurriedSelector, createParameterSelector, creatorIDParamSelector } from '@/ducks/utils';
+import { createCurriedSelector, createParameterSelector } from '@/ducks/utils';
 import { idParamSelector, idsParamSelector } from '@/ducks/utils/crudV2';
 import { getDistinctMemberByCreatorIDSelector, hasWorkspaceSelector } from '@/ducks/workspaceV2/selectors/active';
 
@@ -49,11 +49,6 @@ export const diagramsViewersByIDsSelector = createSelector([awarenessViewersSele
 export const hasExternalDiagramViewersByIDSelector = createSelector(
   [diagramNormalizedViewersByIDSelector],
   (normalizedViewers) => normalizedViewers.allKeys.length > 1
-);
-
-export const diagramViewerByIDAndCreatorIDSelector = createSelector(
-  [diagramNormalizedViewersByIDSelector, creatorIDParamSelector],
-  (normalizedViewers, creatorID) => (creatorID !== null ? Normal.getOne(normalizedViewers, String(creatorID)) : null)
 );
 
 export const activeDiagramLocksSelector = createSelector([awarenessLocksSelector, activeDiagramIDSelector], (locks, diagramID) =>

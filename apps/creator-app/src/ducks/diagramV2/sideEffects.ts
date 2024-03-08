@@ -5,7 +5,7 @@ import { normalize } from 'normal-store';
 
 import { PageProgress } from '@/components/PageProgressBar/utils';
 import * as Errors from '@/config/errors';
-import { PageProgressBar, RESERVED_JS_WORDS } from '@/constants';
+import { PageProgressBar } from '@/constants';
 import { activeDiagramIDSelector, linksByNodeIDSelector } from '@/ducks/creatorV2/selectors';
 import { setLastCreatedID } from '@/ducks/diagramV2/actions';
 import { diagramByIDSelector } from '@/ducks/diagramV2/selectors';
@@ -13,15 +13,12 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
-import { CanvasCreationType, VariableType } from '@/ducks/tracking/constants';
 import { waitAsync } from '@/ducks/utils';
-import { componentsSelector, schemaVersionSelector } from '@/ducks/versionV2/selectors/active';
+import { schemaVersionSelector } from '@/ducks/versionV2/selectors/active';
 import { ActiveDomainContext, assertDomainContext, getActiveDomainContext, getActiveVersionContext } from '@/ducks/versionV2/utils';
 import { SyncThunk, Thunk } from '@/store/types';
 import { BLOCK_WIDTH } from '@/styles/theme';
 import { PathPoint, Point } from '@/types';
-import logger from '@/utils/logger';
-import { AsyncActionError } from '@/utils/logux';
 import { getNodesGroupCenter } from '@/utils/node';
 
 // side effects
@@ -91,28 +88,6 @@ export const createSubtopicDiagram =
     PageProgress.stop(PageProgressBar.TOPIC_CREATING);
 
     return diagram;
-  };
-
-export const createEmptyComponent =
-  (name: string): Thunk<string> =>
-  async (dispatch, getState) => {
-    const state = getState();
-
-    PageProgress.start(PageProgressBar.COMPONENT_CREATING);
-
-    const diagram = await dispatch(
-      waitAsync(Realtime.diagram.componentCreate, {
-        ...getActiveVersionContext(state),
-        component: { name: name || `Component ${componentsSelector(state).length + 1}` },
-      })
-    );
-
-    dispatch(Tracking.trackComponentCreated());
-    dispatch(setLastCreatedID({ id: diagram.id }));
-
-    PageProgress.stop(PageProgressBar.COMPONENT_CREATING);
-
-    return diagram.id;
   };
 
 interface CreateDiagramWithDataOptions {
@@ -190,51 +165,6 @@ export interface ConvertToDiagramResult {
   incomingLinkSource: Nullable<{ nodeID: string; portID: string }>;
 }
 
-export const convertToComponent =
-  ({ data, nodes, links, ports, startCoords = Realtime.START_NODE_POSITION }: CreateDiagramWithDataOptions): Thunk<ConvertToDiagramResult> =>
-  async (dispatch, getState) => {
-    const state = getState();
-    const activeComponents = componentsSelector(state);
-
-    // move below to utils convertSelectionToComponent
-    const name = `Component ${activeComponents.length + 1}`;
-    const component = Realtime.Utils.diagram.componentDiagramFactory(name, startCoords);
-
-    const { incomingLinks, outgoingLinks, dbCreatorDiagram } = dispatch(getDiagramToCreate({ data, nodes, links, ports, startCoords }));
-
-    component.nodes = { ...component.nodes, ...dbCreatorDiagram.nodes };
-
-    if (incomingLinks.length === 1) {
-      const incomingLink = incomingLinks[0];
-
-      const startNode = Object.values(component.nodes).find((node) => node.type === BaseNode.NodeType.START);
-      const connectedNode = Object.values(component.nodes).find((node) => node.nodeID === incomingLink.target.nodeID);
-      const startNodeNextPort = startNode?.data.portsV2?.builtIn[BaseModels.PortType.NEXT];
-
-      if (startNode && connectedNode && startNodeNextPort) {
-        startNodeNextPort.target = connectedNode.nodeID;
-      }
-    }
-    // up to here
-
-    const diagram = await dispatch(
-      waitAsync(Realtime.diagram.componentCreate, {
-        ...getActiveVersionContext(getState()),
-        component,
-      })
-    );
-
-    dispatch(Tracking.trackComponentCreated());
-    dispatch(setLastCreatedID({ id: diagram.id }));
-
-    return {
-      name,
-      diagramID: diagram.id,
-      incomingLinkSource: incomingLinks.length === 1 ? incomingLinks[0].source : null,
-      outgoingLinkTarget: outgoingLinks.length === 1 ? outgoingLinks[0].target : null,
-    };
-  };
-
 interface ConvertToSubtopicOptions extends CreateDiagramWithDataOptions {
   rootTopicID: string;
 }
@@ -309,27 +239,6 @@ export const createTemplateDiagram = (): Thunk<string> => async (dispatch, getSt
   return diagram.id;
 };
 
-export const duplicateComponent =
-  (sourceVersionID: string, sourceComponentID: string, { openDiagram = false }: { openDiagram?: boolean } = {}): Thunk<string> =>
-  async (dispatch, getState) => {
-    const diagram = await dispatch(
-      waitAsync(Realtime.diagram.componentDuplicate, {
-        ...getActiveDomainContext(getState()),
-        diagramID: sourceComponentID,
-        sourceVersionID,
-        sourceComponentID,
-      })
-    );
-
-    if (openDiagram) {
-      await dispatch(Router.goToDiagram(diagram.id));
-    }
-
-    dispatch(setLastCreatedID({ id: diagram.id }));
-
-    return diagram.id;
-  };
-
 const goToRootDiagramIfActive =
   (diagramID: string): Thunk =>
   async (dispatch, getState) => {
@@ -339,18 +248,6 @@ const goToRootDiagramIfActive =
     if (diagramID === activeDiagramID) {
       await dispatch(Router.goToDomainRootDiagram());
     }
-  };
-
-export const deleteComponentDiagram =
-  (diagramID: string): Thunk =>
-  async (dispatch, getState) => {
-    const state = getState();
-
-    await dispatch(goToRootDiagramIfActive(diagramID));
-
-    await dispatch.sync(Realtime.diagram.componentRemove({ ...getActiveDomainContext(state), diagramID }));
-
-    dispatch(Tracking.trackComponentDeleted());
   };
 
 export const deleteSubtopicDiagram =
@@ -399,38 +296,6 @@ export const renameDiagram =
     await dispatch.sync(Realtime.diagram.crud.patch({ ...getActiveVersionContext(getState()), key: diagramID, value: { name } }));
   };
 
-export const convertComponentToTopic =
-  (diagramID: string): Thunk =>
-  async (dispatch, getState) => {
-    PageProgress.start(PageProgressBar.TOPIC_CREATING);
-
-    const state = getState();
-    const activeDiagramID = activeDiagramIDSelector(state);
-
-    if (diagramID === activeDiagramID) {
-      await dispatch(Router.goToDomainRootDiagram());
-    }
-
-    try {
-      await dispatch(
-        waitAsync(Realtime.domain.topicConvertFromComponent, {
-          ...getActiveDomainContext(state),
-          componentID: diagramID,
-        })
-      );
-
-      dispatch(Tracking.trackTopicConversion({ diagramID }));
-    } catch (err) {
-      if (err instanceof AsyncActionError && err.code === Realtime.ErrorCode.CANNOT_CONVERT_TO_TOPIC) {
-        logger.warn(`unable to convert to topic: ${err.message}`);
-      } else {
-        throw err;
-      }
-    }
-
-    PageProgress.stop(PageProgressBar.TOPIC_CREATING);
-  };
-
 export const moveTopicDomain =
   (diagramID: string, newDomainID: string, rootTopicID?: string): Thunk =>
   async (dispatch, getState) => {
@@ -448,40 +313,6 @@ export const moveTopicDomain =
     dispatch(Tracking.trackTopicMovedDomain({ topicID: diagramID, originDomain: domainID, destinationDomain: newDomainID }));
 
     await dispatch(Router.goToDomainDiagram(newDomainID, diagramID));
-  };
-
-// active diagram
-
-export const addActiveDiagramVariable =
-  (variable: string, creationType: CanvasCreationType): Thunk =>
-  async (dispatch, getState) => {
-    if (RESERVED_JS_WORDS.includes(variable)) {
-      throw new Error("Reserved word. You can prefix with '_' to fix this issue");
-    }
-
-    const activeDiagramID = activeDiagramIDSelector(getState());
-
-    Errors.assertDiagramID(activeDiagramID);
-
-    await dispatch.sync(Realtime.diagram.addLocalVariable({ ...getActiveDomainContext(getState()), variable, diagramID: activeDiagramID }));
-
-    dispatch(Tracking.trackVariableCreated({ diagramID: activeDiagramID, variableType: VariableType.COMPONENT, creationType }));
-  };
-
-export const removeActiveDiagramVariable =
-  (variable: string): Thunk =>
-  async (dispatch, getState) => {
-    const activeDiagramID = activeDiagramIDSelector(getState());
-
-    Errors.assertDiagramID(activeDiagramID);
-
-    await dispatch.sync(
-      Realtime.diagram.removeLocalVariable({
-        ...getActiveDomainContext(getState()),
-        variable,
-        diagramID: activeDiagramID,
-      })
-    );
   };
 
 export const reorderMenuItem =

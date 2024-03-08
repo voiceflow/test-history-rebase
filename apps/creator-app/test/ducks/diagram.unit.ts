@@ -162,20 +162,6 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ describeReducerV2, describeEffe
       });
     });
 
-    describe('localVariablesByDiagramIDSelector()', () => {
-      it('select variables from known diagram', () => {
-        const result = Diagram.localVariablesByDiagramIDSelector(createState(MOCK_STATE), { id: DIAGRAM_ID });
-
-        expect(result).toBe(DIAGRAM.variables);
-      });
-
-      it('select variables from unknown diagram', () => {
-        const result = Diagram.localVariablesByDiagramIDSelector(createState(MOCK_STATE), { id: 'foo' });
-
-        expect(result).toEqual([]);
-      });
-    });
-
     describe('awarenessStateSelector()', () => {
       it('select diagram awarenes state', () => {
         expect(Diagram.awarenessStateSelector(createState(MOCK_STATE))).toBe(MOCK_STATE.awareness);
@@ -205,24 +191,6 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ describeReducerV2, describeEffe
 
       it('false if diagram unknown', () => {
         expect(Diagram.hasExternalDiagramViewersByIDSelector(createState(MOCK_STATE, ROOT_MOCK_STATE), { id: 'abc' })).toBeFalsy();
-      });
-    });
-
-    describe('diagramViewerByIDAndCreatorIDSelector()', () => {
-      it('select known viewer from diagram', () => {
-        expect(
-          Diagram.diagramViewerByIDAndCreatorIDSelector(createState(MOCK_STATE, ROOT_MOCK_STATE), { id: DIAGRAM_ID, creatorID: CREATOR_ID })
-        ).toBe(DIAGRAM_VIEWER);
-      });
-
-      it('select unknown viewer from diagram', () => {
-        expect(Diagram.diagramViewerByIDAndCreatorIDSelector(createState(MOCK_STATE, ROOT_MOCK_STATE), { id: DIAGRAM_ID, creatorID: -1 })).toBeNull();
-      });
-
-      it('select viewer from unknown diagram', () => {
-        expect(
-          Diagram.diagramViewerByIDAndCreatorIDSelector(createState(MOCK_STATE, ROOT_MOCK_STATE), { id: 'abc', creatorID: CREATOR_ID })
-        ).toBeNull();
       });
     });
   });

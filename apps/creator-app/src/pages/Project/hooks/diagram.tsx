@@ -120,7 +120,6 @@ export const useDiagramOptions = ({
   const duplicateFlow = useDispatch(Designer.Flow.effect.duplicateOne);
   const deleteTopicDiagram = useDispatch(DiagramV2.deleteTopicDiagram);
   const deleteSubtopicDiagram = useDispatch(DiagramV2.deleteSubtopicDiagram);
-  const deleteComponentDiagram = useDispatch(DiagramV2.deleteComponentDiagram);
   const deleteFlow = useDispatch(Designer.Flow.effect.deleteOne);
   const goToRootDiagramIfActive = useDispatch(Router.goToRootDiagramIfActive);
   const goToDiagram = useDispatch(Router.goToDiagram);
@@ -207,7 +206,7 @@ export const useDiagramOptions = ({
         }
       },
     });
-  }, [diagramID, diagram, isTopic, isSubtopic, rootTopicID, deleteComponentDiagram, deleteFlow, deleteSubtopicDiagram, deleteTopicDiagram, flow]);
+  }, [diagramID, diagram, isTopic, isSubtopic, rootTopicID, deleteFlow, deleteSubtopicDiagram, deleteTopicDiagram, flow]);
 
   return React.useMemo<MenuTypes.OptionWithoutValue[]>(() => {
     if (!canEditCanvas) {

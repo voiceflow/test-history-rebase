@@ -4,7 +4,6 @@ import { SvgIconTypes } from '@voiceflow/ui';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
 
-import { useKnowledgeBase } from '@/components/GPT/hooks/feature';
 import NavigationSidebar from '@/components/NavigationSidebar';
 import { Path } from '@/config/routes';
 import { Permission } from '@/constants/permissions';
@@ -31,7 +30,6 @@ const IntegrationsSidebar: React.FC = () => {
   const [canEditProject] = usePermission(Permission.PROJECT_EDIT);
 
   const disableCodeExports = useFeature(Realtime.FeatureFlag.DISABLE_CODE_EXPORTS).isEnabled;
-  const knowledgeBase = useKnowledgeBase();
 
   const { name: title } = Platform.Config.get(meta.platform);
 
@@ -75,13 +73,9 @@ const IntegrationsSidebar: React.FC = () => {
           <NavigationSidebar.NavItem
             to={generatePath(Path.PUBLISH_API, { versionID })}
             icon="channel"
-            title="Dialog API"
+            title="API Keys"
             testID="integrations__tab--api-keys"
           />
-
-          {knowledgeBase && (
-            <NavigationSidebar.NavItem to={generatePath(Path.PUBLISH_KNOWLEDGE_BASE_API, { versionID })} icon="channel" title="Knowledge Base API" />
-          )}
 
           {!disableCodeExports && canExportCode && (
             <NavigationSidebar.NavItem

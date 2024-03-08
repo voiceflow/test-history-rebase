@@ -81,8 +81,6 @@ export const goToPlatformPrototype = (versionID: string, platform: Platform.Cons
 export const goToConversations = (versionID: string, search = window.location.search) =>
   goTo(`${generatePath(Path.CONVERSATIONS, { versionID })}${search}`);
 
-export const goToKnowledgeBaseAPI = (versionID: string) => goTo(generatePath(Path.PUBLISH_KNOWLEDGE_BASE_API, { versionID }));
-
 export const goToTranscript = (versionID: string, transcriptID?: string, search = window.location.search) =>
   goTo(`${generatePath(Path.CONVERSATIONS, { versionID, transcriptID })}${search}`);
 

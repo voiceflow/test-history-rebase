@@ -28,8 +28,8 @@ export class AttachmentLoguxController {
 
   @Action.Async(Actions.Attachment.CreateCardOne)
   @Authorize.Permissions<Actions.Attachment.CreateCardOne.Request>([Permission.PROJECT_UPDATE], ({ context }) => ({
-    id: context.environmentID,
-    kind: 'version',
+    id: context.assistantID,
+    kind: 'project',
   }))
   @UseRequestContext()
   createCardOne(
@@ -45,8 +45,8 @@ export class AttachmentLoguxController {
 
   @Action.Async(Actions.Attachment.CreateMediaOne)
   @Authorize.Permissions<Actions.Attachment.CreateMediaOne.Request>([Permission.PROJECT_UPDATE], ({ context }) => ({
-    id: context.environmentID,
-    kind: 'version',
+    id: context.assistantID,
+    kind: 'project',
   }))
   @UseRequestContext()
   createMediaOne(
@@ -62,8 +62,8 @@ export class AttachmentLoguxController {
 
   @Action(Actions.Attachment.PatchOneCard)
   @Authorize.Permissions<Actions.Attachment.PatchOneCard>([Permission.PROJECT_UPDATE], ({ context }) => ({
-    id: context.environmentID,
-    kind: 'version',
+    id: context.assistantID,
+    kind: 'project',
   }))
   @Broadcast<Actions.Attachment.PatchOneCard>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
@@ -74,8 +74,8 @@ export class AttachmentLoguxController {
 
   @Action(Actions.Attachment.PatchOneMedia)
   @Authorize.Permissions<Actions.Attachment.PatchOneMedia>([Permission.PROJECT_UPDATE], ({ context }) => ({
-    id: context.environmentID,
-    kind: 'version',
+    id: context.assistantID,
+    kind: 'project',
   }))
   @Broadcast<Actions.Attachment.PatchOneMedia>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
@@ -86,8 +86,8 @@ export class AttachmentLoguxController {
 
   @Action(Actions.Attachment.PatchManyCard)
   @Authorize.Permissions<Actions.Attachment.PatchManyCard>([Permission.PROJECT_UPDATE], ({ context }) => ({
-    id: context.environmentID,
-    kind: 'version',
+    id: context.assistantID,
+    kind: 'project',
   }))
   @Broadcast<Actions.Attachment.PatchManyCard>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
@@ -102,8 +102,8 @@ export class AttachmentLoguxController {
 
   @Action(Actions.Attachment.PatchManyMedia)
   @Authorize.Permissions<Actions.Attachment.PatchManyMedia>([Permission.PROJECT_UPDATE], ({ context }) => ({
-    id: context.environmentID,
-    kind: 'version',
+    id: context.assistantID,
+    kind: 'project',
   }))
   @Broadcast<Actions.Attachment.PatchManyMedia>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
@@ -118,8 +118,8 @@ export class AttachmentLoguxController {
 
   @Action(Actions.Attachment.DeleteOne)
   @Authorize.Permissions<Actions.Attachment.DeleteOne>([Permission.PROJECT_UPDATE], ({ context }) => ({
-    id: context.environmentID,
-    kind: 'version',
+    id: context.assistantID,
+    kind: 'project',
   }))
   @Broadcast<Actions.Attachment.DeleteOne>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
@@ -133,8 +133,8 @@ export class AttachmentLoguxController {
 
   @Action(Actions.Attachment.DeleteMany)
   @Authorize.Permissions<Actions.Attachment.DeleteMany>([Permission.PROJECT_UPDATE], ({ context }) => ({
-    id: context.environmentID,
-    kind: 'version',
+    id: context.assistantID,
+    kind: 'project',
   }))
   @Broadcast<Actions.Attachment.DeleteMany>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
@@ -148,8 +148,8 @@ export class AttachmentLoguxController {
 
   @Action(Actions.Attachment.AddOne)
   @Authorize.Permissions<Actions.Attachment.AddOne>([Permission.PROJECT_UPDATE], ({ context }) => ({
-    id: context.environmentID,
-    kind: 'version',
+    id: context.assistantID,
+    kind: 'project',
   }))
   @Broadcast<Actions.Attachment.AddOne>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
@@ -159,8 +159,8 @@ export class AttachmentLoguxController {
 
   @Action(Actions.Attachment.AddMany)
   @Authorize.Permissions<Actions.Attachment.AddMany>([Permission.PROJECT_UPDATE], ({ context }) => ({
-    id: context.environmentID,
-    kind: 'version',
+    id: context.assistantID,
+    kind: 'project',
   }))
   @Broadcast<Actions.Attachment.AddMany>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()

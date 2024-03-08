@@ -158,7 +158,7 @@ export class VersionService extends MutableService<VersionORM> {
     return !!version;
   }
 
-  async updateOneSettings(versionID: string, settings: Partial<VersionSettings>) {
+  async updateOneSettings(versionID: Primary<VersionEntity>, settings: Partial<VersionSettings>) {
     await this.orm.updateOneSettings(versionID, settings);
   }
 }

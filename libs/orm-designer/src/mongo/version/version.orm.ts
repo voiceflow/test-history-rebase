@@ -10,7 +10,7 @@ export class VersionORM extends MongoAtomicORM(VersionEntity) {
 
   static PLATFORM_DATA_PATH = 'platformData' as const satisfies keyof VersionEntity;
 
-  async updateOneSettings(id: string, update: Partial<VersionSettings>) {
+  async updateOneSettings(id: Primary<VersionEntity>, update: Partial<VersionSettings>) {
     await this.atomicUpdateOne(
       id,
       Object.entries(update).map(([key, value]) => Atomic.Set([{ path: [VersionORM.SETTINGS_PATH, key], value }]))

@@ -7,6 +7,7 @@ import type {
   VersionFolder,
   VersionFolderItem,
   VersionNote,
+  VersionPrototype,
   VersionSettings,
 } from '@voiceflow/dtos';
 
@@ -58,7 +59,7 @@ export class VersionEntity extends MongoObjectEntity {
   projectID: ObjectId;
 
   @Property({ nullable: true })
-  prototype?: AnyRecord;
+  prototype?: VersionPrototype;
 
   @Property()
   variables: string[];

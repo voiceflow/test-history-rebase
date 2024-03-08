@@ -6,6 +6,7 @@ import type {
   ProjectCustomTheme,
   ProjectMember,
   ProjectNLUSettings,
+  ProjectPrototype,
   ProjectReportTag,
   ProjectSticker,
 } from '@voiceflow/dtos';
@@ -68,7 +69,7 @@ export class ProjectEntity extends MongoEntity {
   updatedAt?: Date = new Date();
 
   @Property({ nullable: true, lazy: true })
-  prototype?: AnyRecord;
+  prototype?: ProjectPrototype;
 
   @Property({ nullable: true })
   apiPrivacy?: 'public' | 'private';

@@ -1,20 +1,14 @@
 import { Banner } from '@voiceflow/ui';
 import React from 'react';
 
-import SampleEditor from '@/components/CodePreview/Samples';
 import * as Settings from '@/components/Settings';
-import { GENERAL_RUNTIME_ENDPOINT } from '@/config';
 import { DIALOG_MANAGER_API } from '@/config/documentation';
 import { useSetup, useTrackingEvents } from '@/hooks';
 import { openInternalURLInANewTab } from '@/utils/window';
 
-import KeySection, { KeyState } from './KeySection';
-import { getSamples } from './utils';
+import KeySection from './KeySection';
 
 const API: React.FC = () => {
-  const [keyState, setKeyState] = React.useState<KeyState | null>();
-  const samples = getSamples(GENERAL_RUNTIME_ENDPOINT, (keyState?.showPrimaryKey && keyState.primaryKey?.key) || '');
-
   const [trackingEvents] = useTrackingEvents();
 
   useSetup(() => {
@@ -26,18 +20,14 @@ const API: React.FC = () => {
       <Settings.Section>
         <Banner
           small
-          title="Run your assistant via API"
+          title="Expand your capabilities"
           onClick={() => openInternalURLInANewTab(DIALOG_MANAGER_API)}
-          subtitle="Make your assistant accessible on any channel or interface."
+          subtitle="Connect to all your agent data with our suite of APIs."
           buttonText="See Usecases"
         />
       </Settings.Section>
 
-      <KeySection page="Dialog Management API" syncKeyState={setKeyState} />
-
-      <Settings.Section title="API Call Examples">
-        <SampleEditor samples={samples} />
-      </Settings.Section>
+      <KeySection page="Dialog Management API" />
     </Settings.PageContent>
   );
 };

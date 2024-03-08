@@ -7,7 +7,6 @@ import { useDismissable } from 'react-dismissable-layers';
 import { useRouteMatch } from 'react-router-dom';
 
 import * as GPT from '@/components/GPT';
-import { useKnowledgeBase } from '@/components/GPT/hooks/feature';
 import { SidebarIconMenuItem } from '@/components/SidebarIconMenu';
 import { PRIVATE_LLM_MODELS } from '@/config';
 import { Path } from '@/config/routes';
@@ -66,7 +65,6 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
   const disableIntegration = useFeature(Realtime.FeatureFlag.DISABLE_INTEGRATION);
   const viewerAPIKeyAccess = useFeature(Realtime.FeatureFlag.ALLOW_VIEWER_APIKEY_ACCESS);
   const hideExports = useFeature(Realtime.FeatureFlag.HIDE_EXPORTS);
-  const knowledgeBase = useKnowledgeBase();
   const { goToActiveCMSRoute } = useCMSRoute();
 
   const match = useRouteMatch();
@@ -176,7 +174,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
       hotkeys,
       options,
     };
-  }, [canViewConversations, canEditProject, disableIntegration.isEnabled, knowledgeBase, hasUnreadTranscripts]);
+  }, [canViewConversations, canEditProject, disableIntegration.isEnabled, hasUnreadTranscripts]);
 
   const aiUsage = GPT.useAIUsage();
   const aiUsageTooltip = GPT.useAIUsageTooltip({ onOpenModal: () => tokenPurchaseModal.openVoid({ workspaceID }) });

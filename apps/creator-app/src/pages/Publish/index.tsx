@@ -2,7 +2,6 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
-import { useKnowledgeBase } from '@/components/GPT/hooks/feature';
 import Page from '@/components/Page';
 import { Path } from '@/config/routes';
 import { Permission } from '@/constants/permissions';
@@ -15,7 +14,6 @@ import ProjectPage from '@/pages/Project/components/ProjectPage';
 import { isMicrosoftTeamsPlatform, isSMSPlatform, isWebChatPlatform, isWhatsAppPlatform } from '@/utils/typeGuards';
 
 import API from './API';
-import KnowledgeBaseAPI from './KnowledgeBaseAPI';
 
 const PublishWebchat = lazy(() => import('./Webchat'));
 const PublishSMS = lazy(() => import('./SMS'));
@@ -35,8 +33,6 @@ const Publish: React.FC = () => {
   const disableCodeExports = useFeature(Realtime.FeatureFlag.DISABLE_CODE_EXPORTS);
   const viewerAPIKeyAccess = useFeature(Realtime.FeatureFlag.ALLOW_VIEWER_APIKEY_ACCESS);
 
-  const knowledgeBase = useKnowledgeBase();
-
   return (
     <ProjectPage>
       <Page.Content>
@@ -50,7 +46,6 @@ const Publish: React.FC = () => {
 
           {!disableCodeExports.isEnabled && canCodeExport && <Route path={Path.PUBLISH_EXPORT} component={Export} />}
           {(canEditAPIKey || viewerAPIKeyAccess.isEnabled) && <Route path={Path.PUBLISH_API} component={API} />}
-          {canEditAPIKey && knowledgeBase && <Route path={Path.PUBLISH_KNOWLEDGE_BASE_API} component={KnowledgeBaseAPI} />}
 
           <Redirect to={canEditAPIKey || viewerAPIKeyAccess.isEnabled ? Path.PUBLISH_API : Path.PROJECT_VERSION} />
         </Switch>

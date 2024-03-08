@@ -15,8 +15,6 @@ import { active } from '../selectors';
 import { getActivePlatformVersionContext } from '../utils';
 import { platformFactory } from './utils';
 
-export * from './components';
-
 /**
  * called after successfully subscribing to a realtime "version" channel
  * this is also called when re-connecting to an existing subscription

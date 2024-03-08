@@ -9,9 +9,8 @@ import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Designer from '@/ducks/designer';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as VersionV2 from '@/ducks/versionV2';
-import { useDnDReorder } from '@/hooks/dnd';
 import { useEventualEngine } from '@/hooks/engine';
-import { useDispatch, useLocalDispatch } from '@/hooks/realtime';
+import { useLocalDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
 
 export interface ComponentItem {
@@ -29,7 +28,6 @@ export interface ComponentsAPI {
   componentsItems: ComponentItem[];
   activeDiagramID: Nullable<string>;
   searchMatchValue: string;
-  onReorderComponents: (from: number, to: number) => void;
   lastCreatedDiagramID: Nullable<string>;
   searchComponentsItems: ComponentItem[];
   searchOpenedComponents: Record<string, true>;
@@ -43,16 +41,9 @@ export const useComponents = (): ComponentsAPI => {
   const activeDiagramID = useSelector(CreatorV2.activeDiagramIDSelector);
   const lastCreatedDiagramID = useSelector(DiagramV2.lastCreatedIDSelector);
   const cmsComponents = useSelector(Designer.Flow.selectors.allOrderedByName);
-  const reorderComponents = useDispatch(VersionV2.reorderComponents);
   const setLastCreatedDiagramID = useLocalDispatch(DiagramV2.setLastCreatedID);
 
   const getEngine = useEventualEngine();
-
-  const dndReorder = useDnDReorder({
-    getID: (item: ComponentItem) => item.id,
-    onPersist: (fromID: string, toIndex: number) => reorderComponents({ fromID, toIndex }),
-    onReorder: (fromID: string, toIndex: number) => reorderComponents({ fromID, toIndex, skipPersist: true }),
-  });
 
   const [searchValue, setSearchValue] = React.useState<string>('');
 
@@ -61,15 +52,12 @@ export const useComponents = (): ComponentsAPI => {
   const onDragStart = usePersistFunction((item: ComponentItem) => {
     const engine = getEngine();
 
-    dndReorder.onStart(item);
-
     if (!engine || !item) return;
 
     engine.merge.setVirtualSource(BlockType.COMPONENT, { name: item.name, diagramID: item.id } as Realtime.NodeData<any>);
   });
 
   const onDragEnd = usePersistFunction(() => {
-    dndReorder.onEnd();
     getEngine()?.merge.reset();
   });
 
@@ -120,7 +108,6 @@ export const useComponents = (): ComponentsAPI => {
     activeDiagramID,
     componentsItems,
     searchMatchValue: lowerCasedSearchValue,
-    onReorderComponents: dndReorder.onReorder,
     lastCreatedDiagramID,
     searchComponentsItems,
     searchOpenedComponents,

@@ -37,7 +37,6 @@ const ComponentsSection: React.FC<ComponentsSectionProps> = ({ collapsed, setSec
     componentsItems,
     activeDiagramID,
     searchMatchValue,
-    onReorderComponents,
     lastCreatedDiagramID,
     searchComponentsItems,
     onClearLastCreatedDiagramID,
@@ -91,7 +90,6 @@ const ComponentsSection: React.FC<ComponentsSectionProps> = ({ collapsed, setSec
         lastCreatedDiagramID,
         onClearLastCreatedDiagramID,
       }}
-      onReorder={onReorderComponents}
       onEndDrag={onDragEnd}
       getItemKey={getDNDItemKey}
       canReorder={() => !isSearch}

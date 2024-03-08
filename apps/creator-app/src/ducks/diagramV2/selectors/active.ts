@@ -8,16 +8,11 @@ import { activeDiagramIDSelector } from '@/ducks/creatorV2/selectors';
 import { all as allEntitiesSelector } from '@/ducks/designer/entity/selectors/crud.select';
 import { all as allCMSVariablesSelector } from '@/ducks/designer/variable/variable.select';
 import { topicIDsSelector } from '@/ducks/domain/selectors/active';
-import { componentsSelector, templateDiagramIDSelector } from '@/ducks/versionV2/selectors/active';
 
 import { getDiagramByIDSelector, getDiagramsByIDsSelector } from './base';
 
 export const diagramSelector = createSelector([getDiagramByIDSelector, activeDiagramIDSelector], (getDiagram, activeDiagramID) =>
   getDiagram({ id: activeDiagramID })
-);
-
-export const templateDiagramSelector = createSelector([getDiagramByIDSelector, templateDiagramIDSelector], (getDiagram, templateDiagramID) =>
-  getDiagram({ id: templateDiagramID })
 );
 
 export const typeSelector = createSelector([diagramSelector], (diagram) => diagram?.type ?? null);
@@ -26,10 +21,6 @@ export const isTopicSelector = createSelector([typeSelector], (type) => type ===
 
 export const topicDiagramsSelector = createSelector([topicIDsSelector, getDiagramsByIDsSelector], (topicIDs, getDiagramsByIDs) =>
   getDiagramsByIDs({ ids: topicIDs })
-);
-
-export const componentDiagramsSelector = createSelector([componentsSelector, getDiagramsByIDsSelector], (components, getDiagramsByIDs) =>
-  getDiagramsByIDs({ ids: components.map(({ sourceID }) => sourceID) })
 );
 
 export const localVariablesSelector = createSelector(

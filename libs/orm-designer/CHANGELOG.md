@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.39.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.38.1...@voiceflow/orm-designer@2.39.0) (2024-03-11)
+
+### Features
+
+* prototype dtos, split assistant export/import dtos (CT-000) ([#7863](https://github.com/voiceflow/creator-app/issues/7863)) ([cfc893c](https://github.com/voiceflow/creator-app/commit/cfc893c267d5a9562973fceb01b3f8821668c504))
+
 ## [2.38.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.38.0...@voiceflow/orm-designer@2.38.1) (2024-03-07)
 
 **Note:** Version bump only for package @voiceflow/orm-designer

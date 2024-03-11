@@ -84,7 +84,7 @@ const LinkStepMenu: React.FC = () => {
               )
             )}
 
-            {!!sourceNodeManager?.editorV2 && (
+            {!!(sourceNodeManager?.editorV3 ?? sourceNodeManager?.editorV2) && (
               <>
                 <Box my={7.5} height={1} backgroundColor="#EAEFF4" />
 

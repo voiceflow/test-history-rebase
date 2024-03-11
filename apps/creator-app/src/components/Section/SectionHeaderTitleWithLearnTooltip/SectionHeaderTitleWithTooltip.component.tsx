@@ -9,7 +9,7 @@ import { ISectionHeaderTitleWithLearnTooltip } from './SectionHeaderTitleWithLea
 
 export const SectionHeaderTitleWithLearnTooltip: React.FC<ISectionHeaderTitleWithLearnTooltip> = ({
   title,
-  width = 200,
+  width = 192,
   children,
   className,
   placement = 'left-start',

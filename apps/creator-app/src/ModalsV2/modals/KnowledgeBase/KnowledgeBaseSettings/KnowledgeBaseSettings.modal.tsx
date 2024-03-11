@@ -1,24 +1,24 @@
-import { BaseModels } from '@voiceflow/base-types';
+import { BaseModels, BaseUtils } from '@voiceflow/base-types';
 import { tid } from '@voiceflow/style';
 import { Box, notify, Scroll } from '@voiceflow/ui-next';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
+import { AIMaxTokensSliderSection } from '@/components/AI/AIMaxTokensSliderSection/AIMaxTokensSliderSection.component';
+import { AIModelSelectSection } from '@/components/AI/AIModelSelectSection/AIModelSelectSection.component';
+import { AITemperatureSliderSection } from '@/components/AI/AITemperatureSliderSection/AITemperatureSlider.component';
+import { KBChunkLimitSliderSection } from '@/components/KB/KBChunkLimitSliderSection/KBChunkLimitSliderSection.component';
+import { KBSystemInputSection } from '@/components/KB/KBSystemInputSection/KBSystemInputSection.component';
 import { Modal } from '@/components/Modal';
 import { SYSTEM_PROMPT_AI_MODELS } from '@/config/ai-model';
+import { CMS_KNOWLEDGE_BASE_LEARN_MORE } from '@/constants/link.constant';
 import { Designer } from '@/ducks';
+import { useAsyncEffect } from '@/hooks';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
 import { useTrackingEvents } from '@/hooks/tracking';
 
 import manager from '../../../manager';
 import { SETTINGS_TEST_ID } from '../KnowledgeBase.constant';
-import { KBSettingsChunkLimit } from './KBSettingsChunkLimit.component';
-// import { KBSettingsInstructions } from './KBSettingsInstructions.component';
-import { KBSettingsModelSelect } from './KBSettingsModelSelect.component';
-import { KBSettingsSystemPrompt } from './KBSettingsSystemPrompt.component';
-import { KBSettingsTemperature } from './KBSettingsTemperature.component';
-import { KBSettingsTokens } from './KBSettingsTokens.component';
 import { DEFAULT_SETTINGS } from './KnowledgeBaseSettings.constant';
-import { systemPromptStyles } from './KnowledgeBaseSettings.css';
 
 export const KnowledgeBaseSettings = manager.create('KnowledgeBaseSettingsV2', () => ({ api, type, opened, hidden, closePrevented, animated }) => {
   const storeSettings = useSelector(Designer.KnowledgeBase.selectors.settings);
@@ -27,7 +27,6 @@ export const KnowledgeBaseSettings = manager.create('KnowledgeBaseSettingsV2', (
   const patchSettings = useDispatch(Designer.KnowledgeBase.effect.patchSettings);
 
   const [settings, setSettings] = useState(storeSettings);
-  const [activeTooltipLabel, setActiveTooltipLabel] = useState<string | null>(null);
 
   const [trackingEvents] = useTrackingEvents();
 
@@ -35,7 +34,7 @@ export const KnowledgeBaseSettings = manager.create('KnowledgeBaseSettingsV2', (
     setSettings((prev) => prev && { ...prev, [key]: { ...prev[key], ...patch } });
   };
 
-  const save = async () => {
+  const onSubmit = async () => {
     if (!settings) return;
 
     try {
@@ -82,14 +81,12 @@ export const KnowledgeBaseSettings = manager.create('KnowledgeBaseSettingsV2', (
     notify.short.success('Restored to default');
   };
 
-  useEffect(() => {
-    (async () => {
-      try {
-        await getSettings();
-      } catch {
-        notify.short.error('Unable to fetch latest knowledge base settings');
-      }
-    })();
+  useAsyncEffect(async () => {
+    try {
+      await getSettings();
+    } catch {
+      notify.short.error('Unable to fetch latest knowledge base settings');
+    }
   }, []);
 
   api.useOnCloseRequest((source) => source !== 'backdrop');
@@ -99,65 +96,58 @@ export const KnowledgeBaseSettings = manager.create('KnowledgeBaseSettingsV2', (
   return (
     <Modal.Container
       type={type}
+      testID={SETTINGS_TEST_ID}
       opened={opened}
       hidden={hidden}
       animated={animated}
       onExited={api.remove}
       onEscClose={api.onEscClose}
-      onEnterSubmit={save}
-      testID={SETTINGS_TEST_ID}
+      onEnterSubmit={onSubmit}
     >
       <Modal.Header title="Knowledge base settings" onClose={api.onClose} testID={tid(SETTINGS_TEST_ID, 'header')} />
 
       <Scroll style={{ display: 'block' }}>
-        <Box pt={12} pr={24} pb={24} direction="column" overflow="auto">
-          <KBSettingsModelSelect
+        <Box pt={12} pb={24} gap={12} direction="column">
+          <AIModelSelectSection
             value={model}
+            testID={tid(SETTINGS_TEST_ID, 'model')}
             disabled={!settings}
-            onValueChange={(model) => onPatch('summarization', { model: model as any })}
-            activeTooltipLabel={activeTooltipLabel}
-            setTooltipActiveLabel={setActiveTooltipLabel}
+            learnMoreURL={CMS_KNOWLEDGE_BASE_LEARN_MORE}
+            onValueChange={(model) => onPatch('summarization', { model: model as BaseUtils.ai.GPT_MODEL })}
           />
 
-          <KBSettingsTemperature
+          <AITemperatureSliderSection
             value={settings?.summarization.temperature ?? DEFAULT_SETTINGS.summarization.temperature}
+            testID={tid(SETTINGS_TEST_ID, 'temperature')}
             disabled={!settings}
+            learnMoreURL={CMS_KNOWLEDGE_BASE_LEARN_MORE}
             onValueChange={(temperature) => onPatch('summarization', { temperature })}
-            activeTooltipLabel={activeTooltipLabel}
-            setTooltipActiveLabel={setActiveTooltipLabel}
           />
 
-          <KBSettingsTokens
+          <AIMaxTokensSliderSection
             model={model}
             value={settings?.summarization.maxTokens ?? DEFAULT_SETTINGS.summarization.maxTokens}
+            testID={tid(SETTINGS_TEST_ID, 'tokens')}
             disabled={!settings}
+            learnMoreURL={CMS_KNOWLEDGE_BASE_LEARN_MORE}
             onValueChange={(maxTokens) => onPatch('summarization', { maxTokens })}
-            activeTooltipLabel={activeTooltipLabel}
-            setTooltipActiveLabel={setActiveTooltipLabel}
           />
 
-          <KBSettingsChunkLimit
+          <KBChunkLimitSliderSection
             value={settings?.search.limit ?? DEFAULT_SETTINGS.search.limit}
+            testID={tid(SETTINGS_TEST_ID, 'chunk-limit')}
             disabled={!settings}
+            learnMoreURL={CMS_KNOWLEDGE_BASE_LEARN_MORE}
             onValueChange={(limit) => onPatch('search', { limit })}
-            activeTooltipLabel={activeTooltipLabel}
-            setTooltipActiveLabel={setActiveTooltipLabel}
           />
-
-          {/* TODO: removed for first release, but prob should be added back in */}
-          {/* <KBSettingsInstructions
-          value={settings?.summarization.instruction ?? DEFAULT_SETTINGS.summarization.instruction}
-          onValueChange={(instruction: string) => onPatch('summarization', { instruction })}
-        /> */}
 
           {SYSTEM_PROMPT_AI_MODELS.has(model) && (
-            <KBSettingsSystemPrompt
+            <KBSystemInputSection
               value={settings?.summarization.system ?? DEFAULT_SETTINGS.summarization.system}
+              testID={tid(SETTINGS_TEST_ID, 'system-prompt')}
               disabled={!settings}
-              className={systemPromptStyles}
+              learnMoreURL={CMS_KNOWLEDGE_BASE_LEARN_MORE}
               onValueChange={(system) => onPatch('summarization', { system })}
-              activeTooltipLabel={activeTooltipLabel}
-              setTooltipActiveLabel={setActiveTooltipLabel}
             />
           )}
         </Box>
@@ -174,11 +164,11 @@ export const KnowledgeBaseSettings = manager.create('KnowledgeBaseSettingsV2', (
 
         <Modal.Footer.Button
           label="Save"
+          testID={tid(SETTINGS_TEST_ID, 'save')}
           variant="primary"
-          onClick={save}
+          onClick={onSubmit}
           disabled={!settings || closePrevented}
           isLoading={closePrevented}
-          testID={tid(SETTINGS_TEST_ID, 'save')}
         />
       </Modal.Footer>
     </Modal.Container>

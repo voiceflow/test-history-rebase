@@ -1,17 +1,16 @@
 import { DEFAULT_INTENT_CLASSIFICATION_LLM_PROMPT_WRAPPER } from '@voiceflow/dtos';
 import { tid } from '@voiceflow/style';
-import { Box, Link, Section, Slider } from '@voiceflow/ui-next';
+import { Box } from '@voiceflow/ui-next';
 import React from 'react';
 
-import { AIModelSelect } from '@/components/AI/AIModelSelect/AIModelSelect.component';
-import { CodePreviewWithFullScreenEditor } from '@/components/Code/CodePreviewWithFullScreenEditor/CodePreviewWithFullScreenEditor.component';
-import { SectionHeaderTitleWithLearnTooltip } from '@/components/Section/SectionHeaderTitleWithLearnTooltip/SectionHeaderTitleWithTooltip.component';
+import { AIModelSelectSection } from '@/components/AI/AIModelSelectSection/AIModelSelectSection.component';
+import { AIPromptWrapperSection } from '@/components/AI/AIPromptWrapperSection/AIPromptWrapperSection.component';
+import { AITemperatureSliderSection } from '@/components/AI/AITemperatureSliderSection/AITemperatureSlider.component';
 import {
   LLM_INTENT_CLASSIFICATION_MODEL_LEARN_MORE,
   LLM_INTENT_CLASSIFICATION_PROMPT_LEARN_MORE,
   LLM_INTENT_CLASSIFICATION_TEMPERATURE_LEARN_MORE,
 } from '@/constants/link.constant';
-import { onOpenURLInANewTabFactory } from '@/utils/window';
 
 import { IIntentClassificationLLMSettings } from './IntentClassificationLLMSettings.interface';
 
@@ -34,88 +33,32 @@ export const IntentClassificationLLMSettings: React.FC<IIntentClassificationLLMS
   };
 
   return (
-    <>
-      <Section.Header.Container
-        variant="active"
-        title={(className) => (
-          <SectionHeaderTitleWithLearnTooltip
-            title="AI model"
-            className={className}
-            onLearnClick={onOpenURLInANewTabFactory(LLM_INTENT_CLASSIFICATION_MODEL_LEARN_MORE)}
-          >
-            The large language model (LLM) your agent will use to fetch and compile data.
-          </SectionHeaderTitleWithLearnTooltip>
-        )}
+    <Box gap={12} pb={24} direction="column">
+      <AIModelSelectSection
+        value={params.model}
+        testID={tid(TEST_ID, 'model-select')}
+        disabled={disabled}
+        learnMoreURL={LLM_INTENT_CLASSIFICATION_MODEL_LEARN_MORE}
+        onValueChange={(model) => onParamsChange({ model })}
       />
 
-      <Box px={24} pb={16} direction="column">
-        <AIModelSelect
-          value={params.model}
-          testID={tid(TEST_ID, 'model-select')}
-          disabled={disabled}
-          onValueChange={(model) => onParamsChange({ model })}
-        />
-      </Box>
+      <AITemperatureSliderSection
+        value={params.temperature}
+        testID={tid(TEST_ID, 'temperature-slider')}
+        disabled={disabled}
+        learnMoreURL={LLM_INTENT_CLASSIFICATION_TEMPERATURE_LEARN_MORE}
+        onValueChange={(temperature) => onParamsChange({ temperature })}
+      />
 
-      <Section.Header.Container
-        variant="active"
-        contentProps={{ pr: 24 }}
-        title={(className) => (
-          <SectionHeaderTitleWithLearnTooltip
-            title="Temperature"
-            className={className}
-            onLearnClick={onOpenURLInANewTabFactory(LLM_INTENT_CLASSIFICATION_TEMPERATURE_LEARN_MORE)}
-          >
-            Control the randomness of the answer the LLM provides.
-          </SectionHeaderTitleWithLearnTooltip>
-        )}
-      >
-        <Section.Header.Caption>{params.temperature.toFixed(2)}</Section.Header.Caption>
-      </Section.Header.Container>
-
-      <Box px={24} pt={4} pb={12} direction="column">
-        <Slider
-          min={0}
-          max={1}
-          marks={[0, 1]}
-          value={params.temperature}
-          testID={tid(TEST_ID, 'temperature-slider')}
-          endLabel="Random"
-          disabled={disabled}
-          startLabel="Deterministic"
-          onValueChange={(temperature) => onParamsChange({ temperature })}
-        />
-      </Box>
-
-      <Section.Header.Container
-        variant="active"
-        contentProps={{ pr: 24 }}
-        title={(className) => (
-          <SectionHeaderTitleWithLearnTooltip
-            title="Prompt"
-            className={className}
-            onLearnClick={onOpenURLInANewTabFactory(LLM_INTENT_CLASSIFICATION_PROMPT_LEARN_MORE)}
-          >
-            Modify the wrapper prompt to tailor the agent's context and instructions for your specific use case.
-          </SectionHeaderTitleWithLearnTooltip>
-        )}
-      >
-        {promptWrapper.content !== DEFAULT_INTENT_CLASSIFICATION_LLM_PROMPT_WRAPPER.content && (
-          <Link size="small" label="Reset" testID={tid(TEST_ID, 'reset')} weight="semiBold" onClick={onPromptWrapperReset} disabled={disabled} />
-        )}
-      </Section.Header.Container>
-
-      <Box px={24} pb={24} direction="column">
-        <CodePreviewWithFullScreenEditor
-          code={promptWrapper.content}
-          testID={tid(TEST_ID, 'prompt')}
-          disabled={disabled}
-          onCodeChange={(content) => onPromptWrapperChange({ content })}
-          isFunctionEditor
-          headerButtonProps={{ iconName: 'Question', onClick: onOpenURLInANewTabFactory(LLM_INTENT_CLASSIFICATION_PROMPT_LEARN_MORE) }}
-          autoFocusLineNumber={2}
-        />
-      </Box>
-    </>
+      <AIPromptWrapperSection
+        value={promptWrapper.content}
+        testID={tid(TEST_ID, 'prompt-wrapper')}
+        disabled={disabled}
+        learnMoreURL={LLM_INTENT_CLASSIFICATION_PROMPT_LEARN_MORE}
+        defaultValue={DEFAULT_INTENT_CLASSIFICATION_LLM_PROMPT_WRAPPER.content}
+        onValueChange={(content) => onPromptWrapperChange({ content })}
+        onResetToDefault={onPromptWrapperReset}
+      />
+    </Box>
   );
 };

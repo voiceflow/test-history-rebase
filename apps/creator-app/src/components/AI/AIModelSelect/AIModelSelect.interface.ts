@@ -8,7 +8,7 @@ export interface IAIModelSelect {
   value: AIModel;
   testID?: string;
   disabled?: boolean;
-  onValueChange: (model: AIModel) => void;
+  onValueChange: (value: AIModel) => void;
 }
 
 export interface IAIModelSelectItem extends BaseProps {

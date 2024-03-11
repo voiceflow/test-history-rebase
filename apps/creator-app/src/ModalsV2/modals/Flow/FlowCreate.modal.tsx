@@ -91,10 +91,10 @@ export const FlowCreateModal = modalsManager.create<IFlowCreateModal, FlowType>(
                 <CMSFormDescription
                   value={description}
                   testID={tid(TEST_ID, 'description')}
+                  maxRows={25}
                   disabled={closePrevented}
                   placeholder="Enter description (optional)"
                   onValueChange={setDescription}
-                  maxRows={25}
                 />
               </Box>
             </Modal.Body>

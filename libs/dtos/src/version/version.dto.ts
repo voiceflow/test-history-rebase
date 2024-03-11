@@ -6,6 +6,7 @@ import { VersionDomainDTO } from './version-domain.dto';
 import { VersionFolderDTO, VersionFolderItemDTO } from './version-folder.dto';
 import { VersionKnowledgeBaseDTO } from './version-knowledge-base.dto';
 import { VersionNoteDTO } from './version-note.dto';
+import { VersionPrototypeDTO } from './version-prototype/version-prototype.dto';
 import { VersionSettingsDTO } from './version-settings.dto';
 
 export const VersionDTO = z
@@ -37,7 +38,7 @@ export const VersionDTO = z
 
     projectID: z.string(),
 
-    prototype: z.record(z.unknown()).optional(),
+    prototype: z.optional(VersionPrototypeDTO),
 
     variables: z.array(z.string()),
 

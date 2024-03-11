@@ -5,6 +5,7 @@ import { ProjectAIAssistSettingsDTO } from './project-ai-assist-settings.dto';
 import { ProjectCustomThemeDTO } from './project-custom-theme.dto';
 import { ProjectMemberDTO } from './project-member.dto';
 import { ProjectPrivacy } from './project-privacy.enum';
+import { ProjectPrototypeDTO } from './project-prototype.dto';
 import { ProjectReportTagDTO } from './project-report-tag.dto';
 import { ProjectStickerDTO } from './project-sticker.dto';
 
@@ -42,7 +43,7 @@ export const ProjectDTO = z
 
     updatedAt: z.string().optional(),
 
-    prototype: z.record(z.unknown()).optional(),
+    prototype: z.optional(ProjectPrototypeDTO),
 
     apiPrivacy: z.nativeEnum(ProjectPrivacy).optional(),
 

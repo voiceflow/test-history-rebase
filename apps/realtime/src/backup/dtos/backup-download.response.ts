@@ -1,9 +1,9 @@
 import { z } from 'nestjs-zod/z';
 
-import { AssistantExportImportDataDTO } from '@/assistant/dtos/assistant-export-import-data.dto';
+import { AssistantImportDataDTO } from '@/assistant/dtos/assistant-import-data.dto';
 
 export const BackupDownloadResponse = z.object({
-  data: AssistantExportImportDataDTO,
+  data: AssistantImportDataDTO,
 });
 
 export type BackupDownloadResponse = z.infer<typeof BackupDownloadResponse>;

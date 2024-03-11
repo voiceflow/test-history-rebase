@@ -15,9 +15,10 @@ import { VersionIDAlias } from '@/version/version.constant';
 import { AssistantSerializer } from './assistant.serializer';
 import { AssistantService } from './assistant.service';
 import { AssistantExportCMSResponse } from './dtos/assistant-export-cms.response';
-import { AssistantExportImportDataDTO } from './dtos/assistant-export-import-data.dto';
+import { AssistantExportDataDTO } from './dtos/assistant-export-data.dto';
 import { AssistantExportJSONQuery } from './dtos/assistant-export-json.query';
 import { AssistantFindEnvironmentsResponse } from './dtos/assistant-find-environments.response';
+import { AssistantImportDataDTO } from './dtos/assistant-import-data.dto';
 import { AssistantImportJSONRequest } from './dtos/assistant-import-json.request';
 import { AssistantImportJSONResponse } from './dtos/assistant-import-json.response';
 
@@ -83,13 +84,13 @@ export class AssistantPublicHTTPController {
     schema: { type: 'string', description: 'Required if environment id alias is used' },
   })
   @ZodApiQuery({ schema: AssistantExportJSONQuery })
-  @ZodApiResponse({ status: HttpStatus.CREATED, schema: AssistantExportImportDataDTO })
+  @ZodApiResponse({ status: HttpStatus.CREATED, schema: AssistantExportDataDTO })
   exportJSON(
     @Principal() principal: Identity & { userID?: number; createdBy?: number },
     @Param('environmentID') environmentID: string,
     @Headers('assistantID') assistantID: string | undefined,
     @Query(new ZodValidationPipe(AssistantExportJSONQuery)) query: AssistantExportJSONQuery
-  ): Promise<AssistantExportImportDataDTO> {
+  ): Promise<AssistantExportDataDTO> {
     const userID = principal.userID ?? principal.createdBy ?? principal.id;
     return this.service.exportJSON({ ...query, userID, assistantID, environmentID });
   }
@@ -109,7 +110,7 @@ export class AssistantPublicHTTPController {
     @UploadedFile() file: Express.Multer.File,
     @Body() { clientID }: { clientID?: string }
   ): Promise<AssistantImportJSONResponse> {
-    const data = AssistantExportImportDataDTO.parse(JSON.parse(file.buffer.toString('utf8')));
+    const data = AssistantImportDataDTO.parse(JSON.parse(file.buffer.toString('utf8')));
 
     const { project, assistant } = await this.service.importJSONAndBroadcast({ data, userID, clientID, workspaceID });
 

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.291.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.290.0...@voiceflow/realtime@1.291.0) (2024-03-11)
+
+### Features
+
+* prototype dtos, split assistant export/import dtos (CT-000) ([#7863](https://github.com/voiceflow/creator-app/issues/7863)) ([cfc893c](https://github.com/voiceflow/creator-app/commit/cfc893c267d5a9562973fceb01b3f8821668c504))
+
 # [1.290.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.289.0...@voiceflow/realtime@1.290.0) (2024-03-08)
 
 ### Features

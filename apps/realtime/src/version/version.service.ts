@@ -4,7 +4,6 @@ import { BaseModels } from '@voiceflow/base-types';
 import type { AnyRecord } from '@voiceflow/common';
 import { Utils } from '@voiceflow/common';
 import { DiagramEntity, ORMMutateOptions, ToJSON, VersionEntity, VersionORM } from '@voiceflow/orm-designer';
-import { ObjectId } from 'mongodb';
 import { Merge } from 'type-fest';
 
 import { MutableService } from '@/common';
@@ -29,7 +28,7 @@ export class VersionService extends MutableService<VersionORM> {
 
   constructor(
     @Inject(VersionORM)
-    readonly orm: VersionORM,
+    protected readonly orm: VersionORM,
     @Inject(DiagramService)
     protected readonly diagram: DiagramService
   ) {
@@ -69,7 +68,7 @@ export class VersionService extends MutableService<VersionORM> {
     }: {
       sourceVersion: Merge<ToJSON<VersionEntity>, Partial<Pick<ToJSON<VersionEntity>, '_id' | 'id'>>>;
       sourceDiagrams: Merge<ToJSON<DiagramEntity>, Partial<Pick<ToJSON<DiagramEntity>, '_id' | 'id'>>>[];
-      sourceVersionOverride?: Partial<ToJSON<VersionEntity>>;
+      sourceVersionOverride?: Merge<Partial<ToJSON<VersionEntity>>, { prototype?: any }>;
     },
     { flush = true }: ORMMutateOptions = {}
   ) {
@@ -148,13 +147,13 @@ export class VersionService extends MutableService<VersionORM> {
     );
   }
 
-  async findOneProjectID(versionID: string): Promise<ObjectId> {
-    const { projectID } = await this.orm.findOneOrFail(versionID, { fields: ['projectID'] });
-
-    return projectID;
+  findOneOrFailWithFields<Key extends keyof VersionEntity>(versionID: Primary<VersionEntity>, fields: [Key, ...Key[]]) {
+    return this.orm.findOneOrFail(versionID, { fields });
   }
 
-  async exists(versionID: string): Promise<boolean> {
-    return !!(await this.orm.findOne(versionID, { fields: ['_id'] }));
+  async exists(versionID: Primary<VersionEntity>) {
+    const version = await this.orm.findOne(versionID, { fields: ['_id'] });
+
+    return !!version;
   }
 }

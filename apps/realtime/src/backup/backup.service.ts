@@ -11,7 +11,7 @@ import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import dayjs from 'dayjs';
 
 import { AssistantService } from '@/assistant/assistant.service';
-import { AssistantExportImportDataDTO } from '@/assistant/dtos/assistant-export-import-data.dto';
+import { AssistantImportDataDTO } from '@/assistant/dtos/assistant-import-data.dto';
 import { MutableService } from '@/common';
 import { EnvironmentService } from '@/environment/environment.service';
 import { FileService } from '@/file/file.service';
@@ -72,7 +72,7 @@ export class BackupService extends MutableService<BackupORM> {
     return this.orm.find({ assistantID }, { ...options, orderBy: { createdAt: 'DESC' } });
   }
 
-  async downloadBackup(backupID: number): Promise<AssistantExportImportDataDTO> {
+  async downloadBackup(backupID: number): Promise<AssistantImportDataDTO> {
     const backup = await this.findOneOrFail(backupID);
     const file = await this.file.downloadFile(UploadType.BACKUP, backup.s3ObjectRef);
 
@@ -132,7 +132,7 @@ export class BackupService extends MutableService<BackupORM> {
       throw new NotFoundException('File not found');
     }
 
-    return AssistantExportImportDataDTO.parse(JSON.parse(await file.transformToString()));
+    return AssistantImportDataDTO.parse(JSON.parse(await file.transformToString()));
   }
 
   private async restoreBackup(userID: number, backup: BackupEntity, versionID: string) {

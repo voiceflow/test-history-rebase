@@ -7,3 +7,4 @@ export * from './enums/entity-lock.enum';
 export * from './enums/language.enum';
 export * from './enums/user-role.enum';
 export * from './markup.dto';
+export * from './prototype.dto';

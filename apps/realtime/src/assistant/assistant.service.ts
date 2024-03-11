@@ -56,7 +56,8 @@ import {
   buildCMSTabularEntitiesUpdatedFieldsMap,
   updateCMSTabularResourcesWithUpdatedFields,
 } from './assistant.util';
-import { AssistantExportImportDataDTO } from './dtos/assistant-export-import-data.dto';
+import { AssistantExportDataDTO } from './dtos/assistant-export-data.dto';
+import { AssistantImportDataDTO } from './dtos/assistant-import-data.dto';
 
 @Injectable()
 export class AssistantService extends MutableService<AssistantORM> {
@@ -180,7 +181,7 @@ export class AssistantService extends MutableService<AssistantORM> {
   /* Import  */
 
   prepareImportData(
-    data: AssistantExportImportDataDTO,
+    data: AssistantImportDataDTO,
     {
       userID,
       backup,
@@ -248,7 +249,7 @@ export class AssistantService extends MutableService<AssistantORM> {
     centerDiagrams,
     projectOverride = {},
   }: {
-    data: AssistantExportImportDataDTO;
+    data: AssistantImportDataDTO;
     userID: number;
     workspaceID: number;
     projectListID?: string | null;
@@ -383,7 +384,7 @@ export class AssistantService extends MutableService<AssistantORM> {
     clientID,
     workspaceID,
   }: {
-    data: AssistantExportImportDataDTO;
+    data: AssistantImportDataDTO;
     userID: number;
     clientID?: string;
     workspaceID: number;
@@ -433,7 +434,7 @@ export class AssistantService extends MutableService<AssistantORM> {
       centerDiagrams?: boolean;
       withPrototypePrograms?: boolean;
     }
-  ): AssistantExportImportDataDTO {
+  ): AssistantExportDataDTO {
     const project = this.projectSerializer.serialize(data.project);
 
     // members and previewVersion are private data
@@ -475,7 +476,7 @@ export class AssistantService extends MutableService<AssistantORM> {
   }) {
     return this.postgresEM.transactional(async () => {
       const resolvedEnvironmentID = await this.resolveEnvironmentIDAlias(environmentID, assistantID);
-      const projectID = await this.version.findOneProjectID(resolvedEnvironmentID);
+      const { projectID } = await this.version.findOneOrFailWithFields(resolvedEnvironmentID, ['projectID']);
 
       const [project, variableStates] = await Promise.all([
         this.project.findOneOrFail(projectID.toJSON()),
@@ -516,8 +517,8 @@ export class AssistantService extends MutableService<AssistantORM> {
   public async exportCMS({ userID, assistantID, environmentID }: { userID: number; assistantID?: string; environmentID: string }) {
     return this.postgresEM.transactional(async () => {
       const resolvedEnvironmentID = await this.resolveEnvironmentIDAlias(environmentID, assistantID);
-      const projectID = await this.version.findOneProjectID(resolvedEnvironmentID);
-      const workspaceID = await this.project.findOneWorkspaceID(projectID.toJSON());
+      const { projectID } = await this.version.findOneOrFailWithFields(resolvedEnvironmentID, ['projectID']);
+      const { teamID: workspaceID } = await this.project.findOneOrFailWithFields(projectID, ['teamID']);
 
       const [assistant, cmsData] = await Promise.all([
         this.findOneOrFail(projectID.toJSON()),
@@ -682,7 +683,7 @@ export class AssistantService extends MutableService<AssistantORM> {
       // template name patter is `{platform}_{tag}.template.json`
       const vfFile = await fs.readFile(new URL(`templates/${templatePlatform}_${templateTag}.template.json`, import.meta.url), 'utf8');
 
-      return AssistantExportImportDataDTO.parse(JSON.parse(vfFile));
+      return AssistantImportDataDTO.parse(JSON.parse(vfFile));
     } catch {
       throw new BadRequestException(`Couldn't find a template with tag '${templateTag}' for platform '${templatePlatform}'.`);
     }

@@ -1,9 +1,11 @@
+import { Injectable } from '@nestjs/common';
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import type { DiagramNode } from '@voiceflow/dtos';
 import { NodeType } from '@voiceflow/dtos';
 import { DiagramEntity, ToJSON } from '@voiceflow/orm-designer';
 
+@Injectable()
 export class DiagramUtil {
   getCenterPoint<T extends Pick<ToJSON<DiagramEntity>, 'nodes'>>(diagram: T): [number, number] {
     const CENTER_X_OFFSET = 700;

@@ -314,7 +314,6 @@ export const moveTopicDomain =
 
     await dispatch(Router.goToDomainDiagram(newDomainID, diagramID));
   };
-
 export const reorderMenuItem =
   ({ toIndex, sourceID, diagramID, skipPersist }: { toIndex: number; sourceID: string; diagramID: string; skipPersist?: boolean }): Thunk =>
   async (dispatch, getState) => {

@@ -2,11 +2,9 @@ import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import * as Normal from 'normal-store';
 
-import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Diagram from '@/ducks/diagramV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
-import { CanvasCreationType } from '@/ducks/tracking/constants';
 import { State } from '@/store/types';
 
 import { MOCK_STATE as INITIAL_ROOT_MOCK_STATE } from './_fixtures';
@@ -191,44 +189,6 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ describeReducerV2, describeEffe
 
       it('false if diagram unknown', () => {
         expect(Diagram.hasExternalDiagramViewersByIDSelector(createState(MOCK_STATE, ROOT_MOCK_STATE), { id: 'abc' })).toBeFalsy();
-      });
-    });
-  });
-
-  describe('side effects', () => {
-    describeEffectV2(Diagram.removeActiveDiagramVariable, 'removeActiveDiagramVariable()', ({ applyEffect }) => {
-      it('remove variable from active diagram', async () => {
-        const rootState = {
-          [Session.STATE_KEY]: {
-            activeWorkspaceID: WORKSPACE_ID,
-            activeProjectID: PROJECT_ID,
-            activeVersionID: VERSION_ID,
-            activeDomainID: DOMAIN_ID,
-          },
-          [CreatorV2.STATE_KEY]: { activeDiagramID: DIAGRAM_ID },
-        };
-
-        const { dispatched } = await applyEffect(createState(MOCK_STATE, rootState), 'fizz');
-
-        expect(dispatched).toEqual([{ sync: Realtime.diagram.removeLocalVariable({ ...ACTION_CONTEXT, variable: 'fizz' }) }]);
-      });
-    });
-
-    describeEffectV2(Diagram.addActiveDiagramVariable, 'addActiveDiagramVariable()', ({ applyEffect }) => {
-      it('add variable to active diagram', async () => {
-        const rootState = {
-          [Session.STATE_KEY]: {
-            activeWorkspaceID: WORKSPACE_ID,
-            activeProjectID: PROJECT_ID,
-            activeVersionID: VERSION_ID,
-            activeDomainID: DOMAIN_ID,
-          },
-          [CreatorV2.STATE_KEY]: { activeDiagramID: DIAGRAM_ID },
-        };
-
-        const { dispatched } = await applyEffect(createState(MOCK_STATE, rootState), 'fizz', CanvasCreationType.IMM);
-
-        expect(dispatched).toEqual([{ sync: Realtime.diagram.addLocalVariable({ ...ACTION_CONTEXT, variable: 'fizz' }) }]);
       });
     });
   });

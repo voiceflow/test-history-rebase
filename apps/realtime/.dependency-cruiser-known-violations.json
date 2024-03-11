@@ -61,5 +61,32 @@
       "severity": "error",
       "name": "no-circular"
     }
+  },
+  {
+    "type": "module",
+    "from": "src/backup/backup.module.ts",
+    "to": "src/environment/environment.module.ts",
+    "rule": {
+      "severity": "error",
+      "name": "no-circular"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/assistant/assistant.module.ts",
+    "to": "src/environment/environment.module.ts",
+    "rule": {
+      "severity": "error",
+      "name": "no-circular"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/environment/environment.module.ts",
+    "to": "src/project/project.module.ts",
+    "rule": {
+      "severity": "error",
+      "name": "no-circular"
+    }
   }
 ]

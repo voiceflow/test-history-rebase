@@ -8,11 +8,11 @@ import type { Request } from 'express';
 import { ZodValidationPipe } from 'nestjs-zod';
 
 import { AssistantService } from '@/assistant/assistant.service';
+import { AssistantImportDataDTO } from '@/assistant/dtos/assistant-import-data.dto';
 import { HashedWorkspaceIDPayloadPipe, HashedWorkspaceIDPayloadType } from '@/common/pipes/hashed-workspace-id-payload.pipe';
 
 import { ProjectImportJSONRequest } from './dtos/project-import-json.request';
 import { ProjectImportJSONResponse } from './dtos/project-import-json.response';
-import { ProjectImportJSONData } from './dtos/project-import-json-data.dto';
 import { ProjectSerializer } from './project.serializer';
 
 @Controller('project')
@@ -44,7 +44,7 @@ export class ProjectPublicHTTPController {
     @UploadedFile() file: Express.Multer.File,
     @Body() { clientID }: { clientID?: string }
   ): Promise<ProjectImportJSONResponse> {
-    const data = ProjectImportJSONData.parse(JSON.parse(file.buffer.toString('utf8')));
+    const data = AssistantImportDataDTO.parse(JSON.parse(file.buffer.toString('utf8')));
 
     return this.assistantService
       .importJSONAndBroadcast({ data, clientID, userID, workspaceID })

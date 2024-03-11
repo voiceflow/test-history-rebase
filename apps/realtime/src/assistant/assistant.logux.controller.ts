@@ -263,8 +263,8 @@ export class AssistantLoguxController {
 
   @Action(Actions.AssistantAwareness.ReplaceViewers)
   @Authorize.Permissions<Actions.AssistantAwareness.ReplaceViewers>([Permission.PROJECT_READ], ({ context }) => ({
-    id: context.environmentID,
-    kind: 'version',
+    id: context.assistantID,
+    kind: 'project',
   }))
   @Broadcast<Actions.AssistantAwareness.ReplaceViewers>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()

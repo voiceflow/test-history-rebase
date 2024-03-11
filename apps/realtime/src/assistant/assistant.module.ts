@@ -2,8 +2,8 @@ import { forwardRef, Module } from '@nestjs/common';
 import { AssistantORM, ProgramORM, ProjectTemplateORM, PrototypeProgramORM } from '@voiceflow/orm-designer';
 
 import { CacheModule } from '@/cache/cache.module';
-import { EnvironmentModule } from '@/environment/environment.module';
 // eslint-disable-next-line import/no-cycle
+import { EnvironmentModule } from '@/environment/environment.module';
 import { ProjectModule } from '@/project/project.module';
 import { ProjectListModule } from '@/project-list/project-list.module';
 import { VariableStateModule } from '@/variable-state/variable-state.module';

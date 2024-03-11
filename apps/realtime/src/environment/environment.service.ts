@@ -2,9 +2,19 @@
 /* eslint-disable max-params */
 import { EntityManager } from '@mikro-orm/core';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
-import { Inject, Injectable, Optional } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
-import { AnyResponseVariant, Entity, EntityVariant, Intent, RequiredEntity, Response, ResponseDiscriminator, Utterance } from '@voiceflow/dtos';
+import {
+  AnyResponseVariant,
+  Entity,
+  EntityVariant,
+  Intent,
+  RequiredEntity,
+  Response,
+  ResponseDiscriminator,
+  Utterance,
+  VersionPrototype,
+} from '@voiceflow/dtos';
 import { UnleashFeatureFlagService } from '@voiceflow/nestjs-common';
 import {
   AnyResponseVariantEntity,
@@ -12,10 +22,8 @@ import {
   DiagramEntity,
   EntityEntity,
   EntityVariantEntity,
-  FlowEntity,
   IntentEntity,
   ObjectId,
-  ProjectORM,
   RequiredEntityEntity,
   ResponseDiscriminatorEntity,
   ResponseEntity,
@@ -28,6 +36,7 @@ import {
 import * as Platform from '@voiceflow/platform-config/backend';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { Patch } from 'immer';
+import { Merge } from 'type-fest';
 
 import { AttachmentService } from '@/attachment/attachment.service';
 import { EntitySerializer } from '@/common';
@@ -38,24 +47,26 @@ import { FlowService } from '@/flow/flow.service';
 import { FolderService } from '@/folder/folder.service';
 import { FunctionService } from '@/function/function.service';
 import { IntentService } from '@/intent/intent.service';
+import { ProjectService } from '@/project/project.service';
 import { ResponseService } from '@/response/response.service';
 import { VariableService } from '@/variable/variable.service';
 import { VersionService } from '@/version/version.service';
 
 import { EnvironmentCMSExportImportDataDTO } from './dtos/environment-cms-export-import-data.dto';
-import { EnvironmentExportImportDTO } from './dtos/environment-export-import-data.dto';
+import { EnvironmentExportDTO } from './dtos/environment-export-data.dto';
+import { EnvironmentImportDTO } from './dtos/environment-import-data.dto';
 import { EnvironmentCMSEntities } from './environment.interface';
-import { getUpdatedCMSData } from './environment.util';
+import { EnvironmentUtil } from './environment.util';
 
 @Injectable()
 export class EnvironmentService {
   constructor(
-    @Inject(ProjectORM)
-    private readonly projectORM: ProjectORM,
     @Inject(getEntityManagerToken(DatabaseTarget.MONGO))
     private readonly mongoEM: EntityManager,
     @Inject(getEntityManagerToken(DatabaseTarget.POSTGRES))
     private readonly postgresEM: EntityManager,
+    @Inject(FlowService)
+    private readonly flow: FlowService,
     @Inject(IntentService)
     private readonly intent: IntentService,
     @Inject(EntityService)
@@ -64,6 +75,8 @@ export class EnvironmentService {
     private readonly folder: FolderService,
     @Inject(DiagramService)
     private readonly diagram: DiagramService,
+    @Inject(ProjectService)
+    private readonly project: ProjectService,
     @Inject(UnleashFeatureFlagService)
     private readonly unleash: UnleashFeatureFlagService,
     @Inject(VersionService)
@@ -72,16 +85,16 @@ export class EnvironmentService {
     private readonly response: ResponseService,
     @Inject(VariableService)
     private readonly variable: VariableService,
-    @Inject(FlowService)
-    private readonly flow: FlowService,
     @Inject(AttachmentService)
     private readonly attachment: AttachmentService,
     @Inject(FunctionService)
     private readonly functionService: FunctionService,
     @Inject(EntitySerializer)
     private readonly entitySerializer: EntitySerializer,
-    @Optional()
-    private readonly diagramUtil: DiagramUtil = new DiagramUtil()
+    @Inject(EnvironmentUtil)
+    private readonly util: EnvironmentUtil,
+    @Inject(DiagramUtil)
+    private readonly diagramUtil: DiagramUtil
   ) {}
 
   /* Helpers */
@@ -102,7 +115,6 @@ export class EnvironmentService {
     entities: EntityEntity[];
     responses: ResponseEntity[];
     variables: VariableEntity[];
-    flows: FlowEntity[];
     utterances: UtteranceEntity[];
     entityVariants: EntityVariantEntity[];
     isVoiceAssistant: boolean;
@@ -141,7 +153,7 @@ export class EnvironmentService {
   /* Find */
 
   async findManyForAssistantID(assistantID: string) {
-    const project = await this.projectORM.findOneOrFail(assistantID, { fields: ['liveVersion', 'devVersion', 'previewVersion'] });
+    const project = await this.project.findOneOrFailWithFields(assistantID, ['liveVersion', 'devVersion', 'previewVersion']);
 
     const environmentTags: { tag: string; environmentID: ObjectId }[] = [];
 
@@ -151,12 +163,11 @@ export class EnvironmentService {
 
     const environmentRefs = await Promise.all(
       environmentTags.map(async ({ tag, environmentID }) => {
-        const environment = await this.version.orm.findOne(environmentID, { fields: ['id', 'name', 'creatorID', 'updatedAt'] });
+        const environment = await this.version.findOneOrFailWithFields(environmentID, ['id', 'name', 'creatorID', 'updatedAt']);
 
         if (tag === 'development' && environment) {
           // hard code development environment name
           environment.name = 'Development';
-          if (project.updatedAt) environment.updatedAt = project.updatedAt;
         }
 
         return {
@@ -168,7 +179,7 @@ export class EnvironmentService {
 
     return environmentRefs
       .filter(({ environment }) => !!environment)
-      .map(({ tag, environment }) => ({ tag, environment: this.entitySerializer.serialize(environment!) }));
+      .map(({ tag, environment }) => ({ tag, environment: this.entitySerializer.serialize(environment) }));
   }
 
   /* Prototype */
@@ -176,7 +187,7 @@ export class EnvironmentService {
     let version = await this.version.findOneOrFail(environmentID);
 
     const [project, diagrams, cmsData] = await Promise.all([
-      this.projectORM.findOneOrFail(version.projectID),
+      this.project.findOneOrFail(version.projectID),
       this.diagram.findManyByVersionID(environmentID),
       // using transaction to optimize connections
       this.postgresEM.transactional(() => this.findOneCMSData(version.projectID.toHexString(), environmentID)),
@@ -208,7 +219,7 @@ export class EnvironmentService {
   /* Import  */
 
   prepareImportData(
-    data: EnvironmentExportImportDTO,
+    data: EnvironmentImportDTO,
     {
       userID,
       backup,
@@ -223,9 +234,10 @@ export class EnvironmentService {
     const version = {
       ...data.version,
       updatedAt: backup ? data.version.updatedAt ?? new ObjectId(data.version._id).getTimestamp().toJSON() : createdAt,
+      prototype: data.version.prototype as VersionPrototype | undefined,
     };
 
-    if (version.prototype && Utils.object.isObject(version.prototype) && Utils.object.isObject(version.prototype.settings)) {
+    if (version.prototype?.settings) {
       delete version.prototype.settings.variableStateID;
     }
 
@@ -317,7 +329,7 @@ export class EnvironmentService {
       diagrams: DiagramEntity[];
     },
     { userID, backup, workspaceID, centerDiagrams = true }: { userID: number; backup?: boolean; workspaceID: number; centerDiagrams?: boolean }
-  ): EnvironmentExportImportDTO {
+  ): EnvironmentExportDTO {
     const version = this.entitySerializer.serialize(data.version);
     const diagrams = this.entitySerializer
       .iterable(data.diagrams)
@@ -671,7 +683,7 @@ export class EnvironmentService {
       requiredEntities = [],
       responseVariants = [],
       responseDiscriminators = [],
-    } = getUpdatedCMSData(data, patches);
+    } = this.util.getUpdatedCMSData(data, patches);
 
     // ORDER MATTERS
 
@@ -713,7 +725,7 @@ export class EnvironmentService {
     cloneDiagrams: boolean;
     sourceEnvironmentID: string;
     targetEnvironmentID?: string;
-    targetVersionOverride?: Partial<Omit<ToJSON<VersionEntity>, 'id' | '_id'>>;
+    targetVersionOverride?: Merge<Partial<Omit<ToJSON<VersionEntity>, 'id' | '_id' | 'prototype'>>, { prototype?: any }>;
   }) {
     const sourceVersion = await this.version.findOneOrFail(sourceEnvironmentID);
     let targetVersion: VersionEntity;
@@ -808,7 +820,7 @@ export class EnvironmentService {
     cloneDiagrams: boolean;
     sourceEnvironmentID: string;
     targetEnvironmentID?: string;
-    targetVersionOverride?: Partial<Omit<ToJSON<VersionEntity>, 'id' | '_id'>>;
+    targetVersionOverride?: Merge<Partial<Omit<ToJSON<VersionEntity>, 'id' | '_id' | 'prototype'>>, { prototype?: any }>;
     convertToLegacyFormat?: boolean;
   }) {
     return this.postgresEM.transactional(async () => {
@@ -816,7 +828,7 @@ export class EnvironmentService {
 
       let targetVersion = result.version;
 
-      const targetProject = await this.projectORM.findOneOrFail(targetVersion.projectID);
+      const targetProject = await this.project.findOneOrFail(targetVersion.projectID);
 
       if (convertToLegacyFormat) {
         const { legacySlots, legacyIntents, legacyVariables } = this.convertCMSResourcesToLegacyResources({

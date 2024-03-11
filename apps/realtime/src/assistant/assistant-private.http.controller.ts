@@ -14,7 +14,7 @@ import { AssistantSerializer } from './assistant.serializer';
 import { AssistantService } from './assistant.service';
 import { AssistantPublishService } from './assistant-publish.service';
 import { AssistantCreateFixtureRequest } from './dtos/assistant-create-fixture.request';
-import { AssistantExportImportDataDTO } from './dtos/assistant-export-import-data.dto';
+import { AssistantExportDataDTO } from './dtos/assistant-export-data.dto';
 import { AssistantExportJSONQuery } from './dtos/assistant-export-json.query';
 import { AssistantImportJSONResponse } from './dtos/assistant-import-json.response';
 import { AssistantPublishResponse } from './dtos/assistant-publish.response';
@@ -94,13 +94,13 @@ export class AssistantPrivateHTTPController {
     schema: { type: 'string', description: 'Required if environment id alias is used' },
   })
   @ZodApiQuery({ schema: AssistantExportJSONQuery })
-  @ZodApiResponse({ status: HttpStatus.CREATED, schema: AssistantExportImportDataDTO })
+  @ZodApiResponse({ status: HttpStatus.CREATED, schema: AssistantExportDataDTO })
   exportJSON(
     @Principal() principal: Identity & { createdBy: number },
     @Param('environmentID') environmentID: string,
     @Headers('assistantID') assistantID: string | undefined,
     @Query(AssistantExportJSONQuery) query: AssistantExportJSONQuery
-  ): Promise<AssistantExportImportDataDTO> {
+  ): Promise<AssistantExportDataDTO> {
     return this.service.exportJSON({ ...query, userID: principal.createdBy, assistantID, environmentID });
   }
 }

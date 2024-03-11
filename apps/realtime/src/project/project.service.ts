@@ -1,5 +1,6 @@
+import { Primary } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
-import { ProjectORM } from '@voiceflow/orm-designer';
+import { ProjectEntity, ProjectORM } from '@voiceflow/orm-designer';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { IdentityClient } from '@voiceflow/sdk-identity';
 
@@ -23,17 +24,15 @@ export class ProjectService extends MutableService<ProjectORM> {
     super();
   }
 
-  async findOneWorkspaceID(projectID: string) {
-    const { teamID } = await this.orm.findOneOrFail(projectID, { fields: ['teamID'] });
-
-    return teamID;
+  findOneOrFailWithFields<Key extends keyof ProjectEntity>(versionID: Primary<ProjectEntity>, fields: [Key, ...Key[]]) {
+    return this.orm.findOneOrFail(versionID, { fields });
   }
 
   findManyByWorkspaceID(workspaceID: number) {
     return this.orm.find({ teamID: workspaceID });
   }
 
-  public async findManyLegacyProjectsByWorkspaceID(workspaceID: number) {
+  async findManyLegacyProjectsByWorkspaceID(workspaceID: number) {
     const [projects, members] = await Promise.all([
       this.findManyByWorkspaceID(workspaceID),
       this.identityClient.private.findAllProjectMembersForForWorkspace(this.projectSerializer.encodeWorkspaceID(workspaceID)),

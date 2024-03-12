@@ -1,6 +1,6 @@
 {
   "name": "@voiceflow/sdk-http-ml-gateway",
-  "version": "2.13.16",
+  "version": "2.13.17",
   "exports": {
     ".": {
       "types": "./build/cjs/main.d.ts",

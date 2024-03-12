@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.368.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.367.2...@voiceflow/realtime-sdk@1.368.0) (2024-03-12)
+
+### Features
+
+* chargebee credit card update (COR-1059) ([#7850](https://github.com/voiceflow/creator-app/issues/7850)) ([b490d13](https://github.com/voiceflow/creator-app/commit/b490d13737dc55de36cbbe93b59873d99c9ed890))
+
 ## [1.367.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.367.1...@voiceflow/realtime-sdk@1.367.2) (2024-03-11)
 
 **Note:** Version bump only for package @voiceflow/realtime-sdk

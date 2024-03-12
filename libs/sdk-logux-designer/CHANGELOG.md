@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.35.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.34.0...@voiceflow/sdk-logux-designer@2.35.0) (2024-03-12)
+
+### Features
+
+* adding starter templates to functions (COR-1091) ([#7852](https://github.com/voiceflow/creator-app/issues/7852)) ([aa589d2](https://github.com/voiceflow/creator-app/commit/aa589d203162fbbc3567f0027f2f769cfa9457e1))
+
 # [2.34.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.33.2...@voiceflow/sdk-logux-designer@2.34.0) (2024-03-12)
 
 ### Features

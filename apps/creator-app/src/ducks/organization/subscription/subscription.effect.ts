@@ -6,11 +6,12 @@ import { toast } from '@voiceflow/ui';
 
 import { designerClient } from '@/client/designer';
 import { waitAsync } from '@/ducks/utils';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { ChargebeeSubscriptionStatus } from '@/models';
 import { Thunk } from '@/store/types';
 import { getErrorMessage } from '@/utils/error';
 
-import { chargebeeSubscriptionSelector } from './subscription.select';
+import { chargebeeSubscriptionIDSelector, chargebeeSubscriptionSelector, customerID as customerIDSelector } from './subscription.select';
 
 export const checkout = (
   organizationID: string,
@@ -102,3 +103,30 @@ export const downgradeTrial = (organizationID: string, chargebeeSubscriptionID: 
     }
   };
 };
+
+export const updateSubscriptionPaymentMethod =
+  (paymentIntentID: string): Thunk<void> =>
+  async (dispatch, getState) => {
+    const state = getState();
+    const organizationID = WorkspaceV2.active.organizationIDSelector(state);
+    const customerID = customerIDSelector(state);
+    const subscriptionID = chargebeeSubscriptionIDSelector(state);
+
+    if (!organizationID || !subscriptionID || !customerID) {
+      throw new Error('Organization subscription not found');
+    }
+
+    const { paymentMethod } = await designerClient.billing.subscription.upsertCustomerCard(organizationID, {
+      json: {
+        paymentIntentID,
+        customerID,
+      },
+    });
+
+    dispatch.local(
+      Actions.OrganizationSubscription.UpdatePaymentMethod({
+        paymentMethod,
+        context: { organizationID, subscriptionID },
+      })
+    );
+  };

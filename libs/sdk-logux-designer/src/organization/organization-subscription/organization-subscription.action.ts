@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import type { Organization, PaymentIntent, Subscription } from '@voiceflow/dtos';
+import type { Organization, PaymentIntent, Subscription, SubscriptionPaymentMethod } from '@voiceflow/dtos';
 
 import { createCRUD } from '@/crud/crud.action';
 
@@ -29,3 +29,11 @@ export interface CheckoutRequest extends OrganizationSubscriptionAction {
 }
 
 export const Checkout = Utils.protocol.createAsyncAction<CheckoutRequest, Subscription>(subscriptionAction('CHECKOUT'));
+
+export interface UpdatePaymentMethod extends OrganizationSubscriptionAction {
+  paymentMethod: SubscriptionPaymentMethod;
+}
+
+export const UpdatePaymentMethod = Utils.protocol.createAction<UpdatePaymentMethod>(
+  subscriptionAction('UPDATE_PAYMENT_METHOD')
+);

@@ -30,6 +30,37 @@ export interface SubscriptionEntitlement {
   };
 }
 
+export interface SubscriptionPaymentSource {
+  _id: string;
+  id: string;
+  card: {
+    iin: string;
+    last4: string;
+    funding_type: string;
+    expiry_month: number;
+    expiry_year: number;
+    billing_addr1: string;
+    billing_city: string;
+    billing_state_code: string;
+    billing_state: string;
+    billing_country: string;
+    masked_number: string;
+    object: string;
+    brand: string;
+  };
+  created_at: number;
+  customer_id: string;
+  deleted: boolean;
+  gateway: string;
+  gateway_account_id: string;
+  object: string;
+  reference_id: string;
+  resource_version: number;
+  status: string;
+  type: string;
+  updated_at: number;
+}
+
 export interface Subscription {
   id: string;
   status: string;
@@ -48,7 +79,7 @@ export interface Subscription {
   cancelReason?: string;
 
   subscriptionItems?: SubscriptionItem[];
-  paymentSource?: Record<string, unknown>;
+  paymentSource?: SubscriptionPaymentSource;
   customer: {
     cfOrganizationID?: string;
   };
@@ -56,6 +87,8 @@ export interface Subscription {
   customerID: string;
 
   subscriptionEntitlements?: SubscriptionEntitlement[];
+
+  resourceVersion?: number;
 
   metaData?: Record<string, unknown>;
 }

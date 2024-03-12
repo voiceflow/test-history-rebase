@@ -3,12 +3,13 @@ import React from 'react';
 
 import Page from '@/components/Page';
 import * as Workspace from '@/components/Workspace';
+import * as Organization from '@/ducks/organization';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector } from '@/hooks';
 import * as currency from '@/utils/currency';
 import * as date from '@/utils/date';
 
-// import CardDetails from './CardDetails';
+import CardDetails from './CardDetails';
 
 interface BillingEditorSeatsProps {
   nextBillingDate: string | null;
@@ -23,6 +24,7 @@ const BillingEditorSeats: React.FC<BillingEditorSeatsProps> = ({ nextBillingDate
   const isPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
   const isEnterprise = useSelector(WorkspaceV2.active.isEnterpriseSelector);
   const usedViewerSeats = useSelector(WorkspaceV2.active.usedViewerSeatsSelector);
+  const creditCard = useSelector(Organization.creditCardSelector);
 
   const unitPrice = isPaidPlan ? pricePerEditor ?? 0 : 0;
   const showProTrialDescription = !isEnterprise && isTrial;
@@ -77,9 +79,7 @@ const BillingEditorSeats: React.FC<BillingEditorSeatsProps> = ({ nextBillingDate
             )}
           </Box.FlexAlignStart>
 
-          {/*
-          FIXME: Add payment source
-          {paymentSource && <CardDetails last4={paymentSource.last4} brand={paymentSource.brand} />} */}
+          {creditCard && <CardDetails last4={creditCard.last4} brand={creditCard.brand} />}
         </Box.FlexApart>
       </SectionV2.SimpleSection>
 

@@ -32,4 +32,19 @@ export const organizationReducer = reducerWithInitialState<OrganizationState>(IN
     return state;
   })
 
+  // TODO: create subscription sub reducer
+  .case(Actions.OrganizationSubscription.UpdatePaymentMethod, (state, { context, paymentMethod }) => {
+    const { organizationID } = context;
+    const organization = getOne(state, organizationID);
+
+    if (!organization?.subscription) return state;
+
+    return patchOne(state, context.organizationID, {
+      subscription: {
+        ...organization.subscription,
+        paymentMethod,
+      },
+    });
+  })
+
   .build();

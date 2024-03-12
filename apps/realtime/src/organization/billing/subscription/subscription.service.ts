@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
+import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { BillingClient } from '@voiceflow/sdk-billing';
 import { SubscriptionsControllerGetSubscription200Subscription } from '@voiceflow/sdk-billing/generated';
 import { Actions } from '@voiceflow/sdk-logux-designer';
@@ -22,7 +23,7 @@ export class BillingSubscriptionService {
     private readonly user: UserService
   ) {}
 
-  private parseSubscription(subscription: SubscriptionsControllerGetSubscription200Subscription) {
+  private parseSubscription(subscription: SubscriptionsControllerGetSubscription200Subscription): Realtime.Identity.Subscription {
     return {
       id: subscription.id,
       status: subscription.status,
@@ -56,7 +57,7 @@ export class BillingSubscriptionService {
         chargeOnce: item.charge_once,
         chargeOnOption: item.charge_on_option,
       })),
-      paymentSource: subscription.payment_source,
+      paymentSource: subscription.payment_source as Realtime.Identity.SubscriptionPaymentSource,
       customer: subscription.customer && {
         cfOrganizationID: subscription.customer.cf_organization_id,
       },
@@ -71,7 +72,6 @@ export class BillingSubscriptionService {
         feature: item.feature,
       })),
       metaData: subscription.meta_data,
-      hasScheduledChanges: subscription.has_scheduled_changes,
     };
   }
 
@@ -100,7 +100,7 @@ export class BillingSubscriptionService {
     return this.findOne(subscriptionID);
   }
 
-  async waitForSubscriptionUpdate(subscriptionID: string, timeout = 10000, interval = 1000) {
+  private async waitForSubscriptionUpdate(subscriptionID: string, timeout = 10000, interval = 1000) {
     const { resourceVersion } = await this.findOne(subscriptionID);
 
     return pollWithProgressiveTimeout(
@@ -119,6 +119,14 @@ export class BillingSubscriptionService {
   async createPaymentIntent(userID: number, amount: number) {
     const token = await this.user.getTokenByID(userID);
     return this.billingClient.paymentIntentsPrivate.createPaymentIntent({ amount, currency_code: 'USD' }, { headers: { Authorization: token } });
+  }
+
+  async updateCustomerCard(customerID: string, paymentIntentID: string) {
+    return this.billingClient.customersPrivate.createCustomerCard(customerID, {
+      json: {
+        paymentIntentID,
+      },
+    });
   }
 
   async checkoutAndBroadcast(

@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { SubscriptionEntitlementsDTO } from './subscription-entitlements.dto';
+import { SubscriptionPaymentMethodDTO } from './subscription-payment-method.dto';
 
 export const SubscriptionDTO = z.object({
   id: z.string(),
@@ -23,6 +24,8 @@ export const SubscriptionDTO = z.object({
   customerID: z.string(),
 
   entitlements: SubscriptionEntitlementsDTO,
+
+  paymentMethod: SubscriptionPaymentMethodDTO.optional(),
 });
 
 export type Subscription = z.infer<typeof SubscriptionDTO>;

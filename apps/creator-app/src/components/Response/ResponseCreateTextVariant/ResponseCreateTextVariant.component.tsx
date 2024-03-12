@@ -8,7 +8,7 @@ import { ResponseTextVariantLayout } from '../ResponseTextVariantLayout/Response
 import { IResponseCreateTextVariant } from './ResponseCreateTextVariant.interface';
 
 export const ResponseCreateTextVariant: React.FC<IResponseCreateTextVariant> = ({
-  variant,
+  textResponseVariant,
   attachments,
   onVariantChange,
   onAttachmentSelect,
@@ -18,7 +18,7 @@ export const ResponseCreateTextVariant: React.FC<IResponseCreateTextVariant> = (
 }) => (
   <ResponseTextVariantLayout
     {...props}
-    value={variant.text}
+    value={textResponseVariant.text}
     onValueChange={(text) => onVariantChange({ text })}
     // TODO: add settings button when settings are supported by runtime
     // settingsButton={<ResponseTextVariantSettings variant={variant} attachments={attachments} onVariantChange={onVariantChange} />}

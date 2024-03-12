@@ -11,7 +11,7 @@ export const InputWithVariables = forwardRef<SlateEditorRef, IInputWithVariables
   (
     {
       error,
-      variant = 'primary',
+      inputVariant = 'primary',
       fullWidth = true,
       className,
       singleLine,
@@ -39,12 +39,12 @@ export const InputWithVariables = forwardRef<SlateEditorRef, IInputWithVariables
     );
 
     return (
-      <Box width={fullWidth ? '100%' : 'auto'} className={clsx(Input.css.inputContainer, Input.Theme[variant])}>
+      <Box width={fullWidth ? '100%' : 'auto'} className={clsx(Input.css.inputContainer, Input.Theme[inputVariant])}>
         <MarkupInputWithVariables
           {...props}
           ref={ref}
           plugins={singleLine ? [SlateEditor.PluginType.SINGLE_LINE] : undefined}
-          className={clsx(resetBaseStyles ? undefined : Input.css.inputStyleRecipe({ error, variant }), className)}
+          className={clsx(resetBaseStyles ? undefined : Input.css.inputStyleRecipe({ error, variant: inputVariant }), className)}
           placeholder={placeholder}
           pluginOptions={pluginsOptions}
         />

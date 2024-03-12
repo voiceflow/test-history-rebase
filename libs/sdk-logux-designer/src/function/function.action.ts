@@ -117,3 +117,24 @@ export const AddOne = functionAction.crud.addOne<AddOne>();
 export interface AddMany extends AddManyRequest<FunctionType>, DesignerAction {}
 
 export const AddMany = functionAction.crud.addMany<AddMany>();
+
+/* ImportMany */
+
+export namespace CreateOneFromTemplate {
+  export interface Request extends DesignerAction {
+    data: {
+      templateID: string;
+      name: string;
+      description: string;
+    };
+  }
+
+  export interface Response extends DesignerAction {
+    data: FunctionType;
+  }
+}
+
+export const CreateOneFromTemplate = Utils.protocol.createAsyncAction<
+  CreateOneFromTemplate.Request,
+  CreateOneFromTemplate.Response
+>(functionAction('CREATE_ONE_FROM_TEMPLATE'));

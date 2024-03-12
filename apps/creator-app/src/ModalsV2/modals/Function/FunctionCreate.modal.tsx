@@ -1,6 +1,8 @@
+import { Utils } from '@voiceflow/common';
 import type { Function as FunctionType } from '@voiceflow/dtos';
+import { IconName } from '@voiceflow/icons';
 import { tid } from '@voiceflow/style';
-import { notify, TextArea } from '@voiceflow/ui-next';
+import { Dropdown, Menu, notify, TextArea, Tooltip } from '@voiceflow/ui-next';
 import { validatorFactory } from '@voiceflow/utils-designer';
 import React, { useState } from 'react';
 
@@ -13,7 +15,8 @@ import { useDispatch } from '@/hooks/store.hook';
 import { useValidators } from '@/hooks/validate.hook';
 
 import { modalsManager } from '../../manager';
-import { textareaStyles } from './FunctionCreate.css';
+import { FunctionStarterTemplate, starterTemplates } from './FunctionCreate.constant';
+import { dropdownModifier, dropdownPrefixIconModifier, textareaStyles } from './FunctionCreate.css';
 
 export interface IFunctionCreateModal {
   name?: string;
@@ -27,7 +30,9 @@ export const FunctionCreateModal = modalsManager.create<IFunctionCreateModal, Fu
       const TEST_ID = 'create-function';
 
       const createOne = useDispatch(Designer.Function.effect.createOne);
+      const createOneFromTemplate = useDispatch(Designer.Function.effect.createOneFromTemplate);
 
+      const [selectedTemplate, setSelectedTemplate] = useState<FunctionStarterTemplate | null>(null);
       const [description, setDescription] = useState('');
       const nameState = useInputState({ value: nameProp ?? '' });
 
@@ -39,13 +44,16 @@ export const FunctionCreateModal = modalsManager.create<IFunctionCreateModal, Fu
         api.preventClose();
 
         try {
-          const createdFunction = await createOne({
-            ...fields,
-            code: CMS_FUNCTION_DEFAULT_CODE,
-            image: null,
-            folderID,
-            description,
-          });
+          const createdFunction =
+            selectedTemplate === null
+              ? await createOne({
+                  ...fields,
+                  code: CMS_FUNCTION_DEFAULT_CODE,
+                  image: null,
+                  folderID,
+                  description,
+                })
+              : await createOneFromTemplate(selectedTemplate.templateID, nameState.value, description);
 
           api.resolve(createdFunction);
           api.enableClose();
@@ -58,6 +66,29 @@ export const FunctionCreateModal = modalsManager.create<IFunctionCreateModal, Fu
       });
 
       const onSubmit = () => onCreate({ name: nameState.value });
+
+      const onTemplateChange = (template: FunctionStarterTemplate) => {
+        setSelectedTemplate(template);
+        nameState.setValue(template.name);
+        setDescription(template.description);
+      };
+
+      const onTemplateClear = () => {
+        setSelectedTemplate(null);
+        nameState.setValue('');
+        setDescription('');
+      };
+
+      const hasSelectedTemplate = selectedTemplate !== null;
+      const renderPrefixIconSettings = hasSelectedTemplate
+        ? {
+            prefixIconName: 'CloseS' as IconName,
+            prefixIconClassName: dropdownPrefixIconModifier,
+            className: dropdownModifier,
+          }
+        : {
+            prefixIconName: undefined,
+          };
 
       return (
         <Modal.Container
@@ -72,23 +103,63 @@ export const FunctionCreateModal = modalsManager.create<IFunctionCreateModal, Fu
         >
           <Modal.Header title="Create function" onClose={api.onClose} testID={tid(TEST_ID, 'header')} />
           <Modal.Body gap={16}>
+            <div>
+              <Dropdown
+                value={hasSelectedTemplate ? selectedTemplate.name : selectedTemplate}
+                label="Starter template"
+                placeholder="Select template (optional)"
+                {...renderPrefixIconSettings}
+                onPrefixIconClick={() => onTemplateClear()}
+                testID={tid(TEST_ID, 'starter-template-dropdown')}
+              >
+                {({ onClose }) => (
+                  <Menu>
+                    {starterTemplates.map((template, index) => (
+                      <Tooltip
+                        key={template.templateID}
+                        placement="right-start"
+                        width={200}
+                        referenceElement={({ popper, ref, onClose: onPopperClose, onOpen }) => (
+                          <Menu.Item
+                            ref={ref}
+                            key={template.name}
+                            label={template.name}
+                            onMouseEnter={onOpen}
+                            onMouseLeave={onPopperClose}
+                            onClick={Utils.functional.chainVoid(onClose, () => onTemplateChange(starterTemplates[index]))}
+                            testID={tid(TEST_ID, 'menu-item')}
+                          >
+                            {popper}
+                          </Menu.Item>
+                        )}
+                      >
+                        {() => <Tooltip.Caption mb={0}>{template.description}</Tooltip.Caption>}
+                      </Tooltip>
+                    ))}
+                  </Menu>
+                )}
+              </Dropdown>
+            </div>
+
             <CMSFormName
               value={nameState.value}
               error={nameState.error}
-              autoFocus
               placeholder="Enter function name"
               onValueChange={nameState.setValue}
               testID={tid('function', 'name')}
             />
 
-            <TextArea
-              value={description}
-              onValueChange={setDescription}
-              disabled={closePrevented}
-              className={textareaStyles}
-              placeholder="Enter description (optional)"
-              testID={tid('function', 'description')}
-            />
+            <div>
+              <TextArea
+                label="Description"
+                value={description}
+                onValueChange={setDescription}
+                disabled={closePrevented}
+                className={textareaStyles}
+                placeholder="Enter description (optional)"
+                testID={tid('function', 'description')}
+              />
+            </div>
           </Modal.Body>
           <Modal.Footer>
             <Modal.Footer.Button variant="secondary" onClick={api.onClose} disabled={closePrevented} label="Cancel" testID={tid(TEST_ID, 'cancel')} />

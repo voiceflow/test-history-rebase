@@ -5,7 +5,7 @@ import type { IMarkupInputWithVariables } from '@/components/MarkupInput/MarkupI
 export interface IInputWithVariables
   extends Omit<IMarkupInputWithVariables, 'placeholder' | 'header' | 'footer' | 'pluginOptions' | 'EditableContainer' | 'editor' | 'plugins'> {
   error?: boolean;
-  variant?: IInput['variant'];
+  inputVariant?: IInput['variant'];
   fullWidth?: boolean;
   singleLine?: boolean;
   placeholder?: string;

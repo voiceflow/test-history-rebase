@@ -29,7 +29,7 @@ export const cmsTrackingFactory = (scope: string) => {
     client.analytics.track(createVersionEvent(nameBuilder.ERROR, eventInfo))
   );
 
-  const created = createVersionEventTracker<{ id: string }>((eventInfo) =>
+  const created = createVersionEventTracker<{ id: string; templateID?: string }>((eventInfo) =>
     client.analytics.track(createVersionEvent(nameBuilder.CREATED, eventInfo))
   );
 

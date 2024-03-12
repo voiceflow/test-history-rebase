@@ -132,4 +132,27 @@ export class FunctionLoguxController {
   async addMany(@Payload() _: Actions.Function.AddMany) {
     // broadcast only
   }
+
+  @Action.Async(Actions.Function.CreateOneFromTemplate)
+  @Authorize.Permissions<Actions.Function.CreateOneFromTemplate.Request>([Permission.PROJECT_UPDATE], ({ context }) => ({
+    id: context.environmentID,
+    kind: 'version',
+  }))
+  @UseRequestContext()
+  async createOneFromTemplate(
+    @Payload() { data, context }: Actions.Function.CreateOneFromTemplate.Request,
+    @AuthMeta() authMeta: AuthMetaPayload
+  ): Promise<Actions.Function.CreateOneFromTemplate.Response> {
+    const createdFunction = await this.service.createOneFromTemplateAndBroadcast({
+      data,
+      userID: authMeta.userID,
+      clientID: authMeta.clientID,
+      environmentID: context.environmentID,
+    });
+
+    return {
+      data: this.entitySerializer.nullable(createdFunction),
+      context,
+    };
+  }
 }

@@ -25,7 +25,7 @@ export const VariableInput: React.FC<IVariableInput> = ({ value, onChange, maxVa
       className={mapperInputStyles}
       variablesMap={variablesMap}
       placeholder={placeholder}
-      variant="ghost"
+      inputVariant="ghost"
       value={value}
       resetBaseStyles
       singleLine

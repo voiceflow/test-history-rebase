@@ -174,3 +174,27 @@ export const testOne =
       },
     });
   };
+
+export const createOneFromTemplate =
+  (templateID: string, name: string, description: string): Thunk<FunctionType> =>
+  async (dispatch, getState) => {
+    const state = getState();
+
+    const context = getActiveAssistantContext(state);
+
+    try {
+      const response = await dispatch(
+        waitAsync(Actions.Function.CreateOneFromTemplate, {
+          context,
+          data: { templateID, name, description },
+        })
+      );
+
+      dispatch(FunctionTracking.created({ id: response.data.id, templateID }));
+
+      return response.data;
+    } catch (err) {
+      dispatch(FunctionTracking.error({ errorType: 'Create' }));
+      throw err;
+    }
+  };

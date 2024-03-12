@@ -10,5 +10,5 @@ export interface IResponseCreateVariant extends BaseProps {
   autoFocus?: boolean;
   removeButton?: React.ReactNode;
   autoFocusIfEmpty?: boolean;
-  textVariantProps: Omit<IResponseCreateTextVariant, 'value' | 'variant' | 'toolbar' | 'autoFocus' | 'onValueChange'>;
+  textVariantProps: Omit<IResponseCreateTextVariant, 'value' | 'textResponseVariant' | 'toolbar' | 'autoFocus' | 'onValueChange'>;
 }

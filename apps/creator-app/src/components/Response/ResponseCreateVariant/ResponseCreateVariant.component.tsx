@@ -18,7 +18,7 @@ export const ResponseCreateVariant: React.FC<IResponseCreateVariant> = ({
     .with({ type: ResponseVariantType.TEXT }, (data) => (
       <ResponseCreateTextVariant
         {...textVariantProps}
-        variant={data}
+        textResponseVariant={data}
         autoFocus={autoFocus}
         removeButton={removeButton}
         autoFocusIfEmpty={autoFocusIfEmpty}

@@ -1,0 +1,58 @@
+{
+  "functions": [
+    {
+      "id": "65e8c0d2c6d97c82ca1237e2",
+      "name": "Collect customer feedback",
+      "code": "export default async function main(args) {\n  // Extract input variables from args\n  const { feedbackText, userEmail } = args.inputVars;\n\n  // Validate the input variables\n  if (!feedbackText || !userEmail) {\n    return {\n      next: { path: 'error' },\n      trace: [{ type: \"debug\", payload: { message: \"Missing required input variables: feedbackText and/or userEmail\" } }]\n    };\n  }\n\n  // Prepare the request body with the feedback and user email\n  const requestBody = JSON.stringify({\n    feedback: feedbackText,\n    email: userEmail,\n  });\n\n  // Define the URL for the feedback submission endpoint\n  const feedbackSubmissionURL = 'https://exampleapi.com/api/feedback';\n\n  // Configure the fetch request for the feedback submission\n  const requestOptions = {\n    method: 'POST',\n    headers: {\n      'Content-Type': 'application/json',\n    },\n    body: requestBody,\n  };\n\n  try {\n    // Make the API call to submit the feedback\n    const response = await fetch(feedbackSubmissionURL, requestOptions);\n\n    // Check if the response status is OK\n    if (!response.ok) {\n      throw new Error(`HTTP error! Status: ${response.status}`);\n    }\n\n    // Extract the JSON body from the response (assuming it contains a confirmation or feedback ID)\n    const responseBody = response.json;\n\n    // Optional: Validate the responseBody for expected structure or data\n    // For simplicity, we'll assume it contains a feedbackId we want to return\n\n    // Create the success return object with the feedback ID\n    return {\n      outputVars: { feedbackId: responseBody.feedbackId },\n      next: { path: 'success' },\n      trace: [{ type: \"text\", payload: { message: `Feedback successfully submitted. Your feedback ID is ${responseBody.feedbackId}.` } }]\n    };\n  } catch (error) {\n    // Handle any errors that occurred during the API call\n    return {\n      next: { path: 'error' },\n      trace: [{ type: \"debug\", payload: { message: \"Error submitting feedback: \" + error.message } }]\n    };\n  }\n}\n",
+      "image": null,
+      "description": "Demonstrates how to capture feedback and send to feedback submission endpoint.",
+      "createdAt": "2024-03-06T19:15:30.000Z",
+      "updatedAt": "2024-03-06T19:15:30.000Z",
+      "folderID": null,
+      "updatedByID": 16,
+      "createdByID": 16
+    }
+  ],
+  "functionPaths": [
+    {
+      "id": "65e8c108c6d97c82ca1237e7",
+      "name": "success",
+      "label": "Success",
+      "createdAt": "2024-03-06T19:16:24.531Z",
+      "functionID": "65e8c0d2c6d97c82ca1237e2"
+    },
+    {
+      "id": "65e8c108c6d97c82ca1237e6",
+      "name": "error",
+      "label": "Error",
+      "createdAt": "2024-03-06T19:16:24.224Z",
+      "functionID": "65e8c0d2c6d97c82ca1237e2"
+    }
+  ],
+  "functionVariables": [
+    {
+      "id": "65e8c0eac6d97c82ca1237e4",
+      "name": "feedbackText",
+      "type": "input",
+      "description": "Text containing the user's feedback.",
+      "createdAt": "2024-03-06T19:15:54.716Z",
+      "functionID": "65e8c0d2c6d97c82ca1237e2"
+    },
+    {
+      "id": "65e8c0eac6d97c82ca1237e3",
+      "name": "userEmail",
+      "type": "input",
+      "description": "The email of the user submitting feedback.",
+      "createdAt": "2024-03-06T19:15:54.537Z",
+      "functionID": "65e8c0d2c6d97c82ca1237e2"
+    },
+    {
+      "id": "65e8c102c6d97c82ca1237e5",
+      "name": "feedbackId",
+      "type": "output",
+      "description": "ID of the feedback saved to the database.",
+      "createdAt": "2024-03-06T19:16:18.148Z",
+      "functionID": "65e8c0d2c6d97c82ca1237e2"
+    }
+  ]
+}

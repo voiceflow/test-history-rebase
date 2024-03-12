@@ -1,0 +1,26 @@
+{
+  "functions": [
+    {
+      "id": "65ef13bf111a4af296063c1b",
+      "name": "Dynamic carousel response",
+      "code": "export default async function main(args) {\n  // Sample product data - in a real scenario, this could be fetched from a database or API\n  const products = [\n    { id: 1, title: \"Product A\", description: \"Description of Product A\", imageUrl: \"https://example.com/product_a.jpg\", price: \"$20\" },\n    { id: 2, title: \"Product B\", description: \"Description of Product B\", imageUrl: \"https://example.com/product_b.jpg\", price: \"$30\" },\n    { id: 3, title: \"Product C\", description: \"Description of Product C\", imageUrl: \"https://example.com/product_c.jpg\", price: \"$25\" },\n  ];\n\n  // Generate carousel items from the products\n  const carouselItems = products.map(product => ({\n    title: product.title,\n    description: { text: `${product.description} - Price: ${product.price}` },\n    imageUrl: product.imageUrl,\n    buttons: [\n      {\n        name: \"View Product\",\n        payload: {\n          actions: [\n            { type: \"open_url\", url: `https://example.com/products/${product.id}` }\n          ]\n        }\n      }\n    ]\n  }));\n\n  // Returning the carousel trace with generated items\n  return {\n    next: { path: 'success' },\n    trace: [\n      {\n        type: \"carousel\",\n        payload: {\n          cards: carouselItems\n        }\n      }\n    ]\n  };\n}",
+      "image": null,
+      "description": "Demonstrates how to return a carousel response for product recommendations.",
+      "createdAt": "2024-03-11T14:22:56.000Z",
+      "updatedAt": "2024-03-11T14:25:10.000Z",
+      "folderID": null,
+      "updatedByID": 24,
+      "createdByID": 24
+    }
+  ],
+  "functionPaths": [
+    {
+      "id": "65ef1445703b788fe9396331",
+      "name": "success",
+      "label": "Success",
+      "createdAt": "2024-03-11T14:25:09.878Z",
+      "functionID": "65ef13bf111a4af296063c1b"
+    }
+  ],
+  "functionVariables": []
+}

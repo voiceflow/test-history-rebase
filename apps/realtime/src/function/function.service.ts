@@ -16,8 +16,9 @@ import type {
   PKOrEntity,
   ToJSONWithForeignKeys,
 } from '@voiceflow/orm-designer';
-import { DatabaseTarget, FunctionORM, VersionORM } from '@voiceflow/orm-designer';
+import { DatabaseTarget, FunctionORM, ObjectId, VersionORM } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
+import fs from 'fs/promises';
 
 import { CMSTabularService, EntitySerializer } from '@/common';
 import type { CreateOneForUserData } from '@/common/types';
@@ -356,6 +357,58 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
     });
 
     return { functionResource, functionPaths, functionVariables };
+  }
+
+  async createOneFromTemplateAndBroadcast({
+    data,
+    userID,
+    clientID,
+    environmentID,
+  }: {
+    data: { templateID: string; name: string; description: string };
+    userID: number;
+    clientID: string;
+    environmentID: string;
+  }): Promise<FunctionEntity> {
+    const { templateID, name, description } = data;
+    const rawTemplate = JSON.parse((await fs.readFile(`./src/function/templates/${templateID}.function-template.json`)).toString());
+
+    const { functions, functionVariables, functionPaths } = FunctionExportImportDataDTO.parse(rawTemplate);
+
+    const functionID = new ObjectId().toString();
+    const importData: FunctionExportImportDataDTO = {
+      functions: [
+        {
+          ...functions[0],
+          id: functionID,
+          name,
+          description,
+        },
+      ],
+      functionVariables: functionVariables.map((variable) => ({
+        ...variable,
+        id: new ObjectId().toString(),
+        functionID,
+      })),
+      functionPaths: functionPaths.map((path) => ({
+        ...path,
+        id: new ObjectId().toString(),
+        functionID,
+      })),
+    };
+
+    const { functions: createdFunctions } = await this.importJSONAndBroadcast({
+      data: importData,
+      userID,
+      clientID,
+      environmentID,
+    });
+
+    if (createdFunctions.length === 0) {
+      throw new Error('Realtime was unable to send back function created from template.');
+    }
+
+    return createdFunctions[0]!;
   }
 
   async importJSONAndBroadcast({

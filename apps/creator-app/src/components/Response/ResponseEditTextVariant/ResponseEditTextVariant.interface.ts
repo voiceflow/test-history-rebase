@@ -7,5 +7,5 @@ export interface IResponseEditTextVariant
     IResponseTextVariantLayout,
     'value' | 'children' | 'variantType' | 'onValueChange' | 'settingsButton' | 'attachmentsList' | 'attachmentButton' | 'onChangeVariantType'
   > {
-  variant: TextResponseVariant;
+  textResponseVariant: TextResponseVariant;
 }

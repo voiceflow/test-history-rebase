@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1429.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1428.0...@voiceflow/creator-app@1.1429.0) (2024-03-12)
+
+### Features
+
+* adding starter templates to functions (COR-1091) ([#7852](https://github.com/voiceflow/creator-app/issues/7852)) ([aa589d2](https://github.com/voiceflow/creator-app/commit/aa589d203162fbbc3567f0027f2f769cfa9457e1))
+
 # [1.1428.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1427.0...@voiceflow/creator-app@1.1428.0) (2024-03-12)
 
 ### Features

@@ -99,10 +99,7 @@ export const useCardPaymentMethod = () => {
     if (!cardRef.current) return null;
     let paymentIntentResult = paymentIntent;
 
-    // TODO: test this scenario
-    if (!paymentIntent || paymentIntent.status !== 'in_progress') {
-      paymentIntentResult = await createPaymentIntent(planPrice, cardValues);
-    }
+    paymentIntentResult = await createPaymentIntent(planPrice, cardValues);
 
     setPaymentIntent(paymentIntentResult);
 

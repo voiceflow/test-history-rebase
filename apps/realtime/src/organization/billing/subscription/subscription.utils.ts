@@ -1,3 +1,4 @@
+import { SubscriptionPaymentMethodStatus, SubscriptionPaymentMethodStatusType } from '@voiceflow/dtos';
 import { PlanType } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 
@@ -23,6 +24,12 @@ export const ChargebeeBillingPeriodUnit = {
   YEAR: 'year',
 } as const;
 
+const PAYMENT_METHOD_FAILED_STATUSES: Set<Partial<SubscriptionPaymentMethodStatusType>> = new Set([
+  SubscriptionPaymentMethodStatus.EXPIRED,
+  SubscriptionPaymentMethodStatus.INVALID,
+  SubscriptionPaymentMethodStatus.EXPIRING,
+]);
+
 export type ChargebeePlanType = (typeof ChargebeePlanType)[keyof typeof ChargebeePlanType];
 
 export type ChargebeeStatus = (typeof ChargebeeStatus)[keyof typeof ChargebeeStatus];
@@ -37,6 +44,7 @@ export const isChargebeeStatus = (status: any): status is ChargebeeStatus => Obj
 
 export const isChargebeeBillingPeriodUnit = (unit: any): unit is ChargebeeBillingPeriodUnit =>
   Object.values(ChargebeeBillingPeriodUnit).includes(unit);
+export const isPaymentMethodFailed = (status: SubscriptionPaymentMethodStatusType) => PAYMENT_METHOD_FAILED_STATUSES.has(status);
 
 export function getDaysLeftToTrialEnd(trialEndDate: Date) {
   const trialEndDateWithoutTimezone = Realtime.Utils.date.removeTimezone(trialEndDate);

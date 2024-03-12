@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { PlanType } from '@voiceflow/internal';
+import { BillingPeriod, PlanType } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { getAlternativeColor, isColorImage } from '@voiceflow/ui';
 import * as Normal from 'normal-store';
@@ -76,6 +76,10 @@ export const numberOfSeatsSelector = createSelector([workspaceSelector, localOrg
 export const planSelector = createSelector(
   [workspaceSelector, localOrganizationSelector],
   (workspace, organization) => (organization?.subscription?.plan as PlanType) ?? workspace?.plan ?? null
+);
+
+export const planPeriodSelector = createSelector([localOrganizationSelector], (organization) =>
+  organization?.subscription?.billingPeriodUnit === 'month' ? BillingPeriod.MONTHLY : BillingPeriod.ANNUALLY
 );
 
 export const isEnterpriseSelector = createSelector([planSelector], (plan) => plan && ENTERPRISE_PLANS.includes(plan as any));

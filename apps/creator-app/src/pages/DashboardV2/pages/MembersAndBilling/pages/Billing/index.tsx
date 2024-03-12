@@ -1,20 +1,19 @@
 // import { StripeStatuses } from '@voiceflow/realtime-sdk';
 import { Box, Spinner } from '@voiceflow/ui';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { Permission } from '@/constants/permissions';
 import * as Organization from '@/ducks/organization';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-// import PaymentDetails from './PaymentDetails';
-// import PaymentFailed from './PaymentFailed';
 import { usePermission, useSelector } from '@/hooks';
+import { getClient as getChargebeeClient, initialize as initializeChargebee } from '@/vendors/chargebee';
 
 import BillingHistory from './BillingHistory/BillingHistory.component';
 import { useBillingHistory } from './BillingHistory/hooks';
 import CancelSubscription from './CancelSubscription';
 import EditorSeats from './EditorSeats';
-
-// const PAYMENT_FAILED_STRIPE_STATUS = new Set([StripeStatuses.UNPAID, StripeStatuses.PAST_DUE]);
+import PaymentDetails from './PaymentDetails';
+import PaymentFailed from './PaymentFailed';
 
 const DashboardV2Billing: React.FC = () => {
   const organizationID = useSelector(WorkspaceV2.active.organizationIDSelector);
@@ -23,12 +22,19 @@ const DashboardV2Billing: React.FC = () => {
   const [canManageSeats] = usePermission(Permission.BILLING_SEATS);
   const isProOrTeamPlan = useSelector(WorkspaceV2.active.isProOrTeamSelector);
   const isTrial = useSelector(WorkspaceV2.active.isOnTrialSelector);
-  // const stripeStatus = useSelector(WorkspaceV2.active.stripeStatusSelector);
+  const paymentMethod = useSelector(Organization.paymentMethodSelector);
 
   const billingHistory = useBillingHistory();
   const isReady = billingHistory.isReady && organizationID && subscription;
+  const showPaymentFailed = isProOrTeamPlan && !isTrial && paymentMethod && paymentMethod?.failed;
 
-  // const showPaymentFailed = PAYMENT_FAILED_STRIPE_STATUS.has(stripeStatus as StripeStatuses) && isProOrTeamPlan && !isTrial;
+  useEffect(() => {
+    try {
+      getChargebeeClient();
+    } catch (error) {
+      initializeChargebee();
+    }
+  }, []);
 
   if (!isReady) {
     return (
@@ -40,7 +46,7 @@ const DashboardV2Billing: React.FC = () => {
 
   return (
     <Box>
-      {/* {showPaymentFailed && <PaymentFailed date={billingHistory?.data[0]?.date} />} */}
+      {showPaymentFailed && <PaymentFailed date={`${paymentMethod.card.expiryMonth}/${paymentMethod.card.expiryYear}`} />}
 
       <EditorSeats
         nextBillingDate={subscription.nextBillingDate ?? null}
@@ -48,7 +54,7 @@ const DashboardV2Billing: React.FC = () => {
         billingPeriod={subscription.billingPeriodUnit ?? null}
       />
 
-      {/* {paymentAPI.paymentSource && <PaymentDetails source={paymentAPI.paymentSource} refetch={paymentAPI.refetchPaymentSource} />} */}
+      {paymentMethod && <PaymentDetails paymentMethod={paymentMethod} />}
 
       {!!billingHistory?.data?.length && (
         <BillingHistory

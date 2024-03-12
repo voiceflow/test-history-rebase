@@ -14,6 +14,7 @@ export * from './billing/payment-intent.dto';
 export * from './billing/plan.dto';
 export * from './billing/subscription.dto';
 export * from './billing/subscription-entitlements.dto';
+export * from './billing/subscription-payment-method.dto';
 export * from './common';
 export * from './condition/condition.dto';
 export * from './condition/condition-assertion/condition-assertion.dto';

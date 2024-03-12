@@ -1,6 +1,6 @@
 import { Body, Controller, Get, HttpStatus, Inject, Param, Post, Put, Query } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
-import { PaymentIntent, PaymentIntentDTO, Subscription, SubscriptionDTO } from '@voiceflow/dtos';
+import { PaymentIntent, PaymentIntentDTO, Subscription, SubscriptionDTO, SubscriptionPaymentMethodStatusType } from '@voiceflow/dtos';
 import { ZodApiQuery, ZodApiResponse } from '@voiceflow/nestjs-common';
 import { Permission } from '@voiceflow/sdk-auth';
 import { Authorize, UserID } from '@voiceflow/sdk-auth/nestjs';
@@ -11,6 +11,8 @@ import subscriptionAdapter from './adapters/subscription.adapter';
 import { CreatePaymentIntentRequest } from './dto/create-payment-intent-request.dto';
 import { GetInvoicesRequestQuery } from './dto/get-invoices-request.dto';
 import { GetInvoicesResponse } from './dto/get-invoices-response.dto';
+import { UpsertCustomerCardRequest } from './dto/upsert-customer-card-request.dto';
+import { UpsertCustomerCardResponse } from './dto/upsert-customer-card-response.dto';
 import { BillingSubscriptionService } from './subscription.service';
 
 @Controller(':organizationID/billing/subscription')
@@ -109,6 +111,49 @@ export class BillingSubscriptionHTTPController {
       modifiedAt: payment_intent.modified_at,
       paymentMethodType: payment_intent.payment_method_type ?? 'card',
       status: payment_intent.status,
+    };
+  }
+
+  @Post('card')
+  @Authorize.Permissions([Permission.ORGANIZATION_UPDATE])
+  @ApiOperation({
+    summary: 'Create or update customer card',
+    description: 'Create or update customer card',
+  })
+  @ApiParam({ name: 'organizationID', type: 'string' })
+  @ZodApiResponse({ status: HttpStatus.OK, schema: UpsertCustomerCardResponse })
+  async upsertCustomerCard(
+    @Body(new ZodValidationPipe(UpsertCustomerCardRequest))
+    paymentIntentRequest: UpsertCustomerCardRequest
+  ): Promise<UpsertCustomerCardResponse> {
+    const data = await this.service.updateCustomerCard(paymentIntentRequest.customerID, paymentIntentRequest.paymentIntentID);
+    const { card } = data.payment_source;
+
+    if (!card) {
+      throw new Error('Card not created');
+    }
+
+    return {
+      paymentMethod: {
+        card: {
+          brand: card.brand,
+          last4: card.last4,
+          expiryMonth: card.expiry_month,
+          expiryYear: card.expiry_year,
+          iin: card.iin,
+          maskedNumber: card.masked_number ?? '',
+        },
+        billingAddress: {
+          billingAddr1: card.billing_addr1 ?? '',
+          billingCity: card.billing_city ?? '',
+          billingState: card.billing_state ?? '',
+          billingStateCode: card.billing_state_code ?? '',
+          billingCountry: card.billing_country ?? '',
+        },
+        failed: data.payment_source.status === 'failed',
+        id: data.payment_source.id,
+        status: data.payment_source.status as SubscriptionPaymentMethodStatusType,
+      },
     };
   }
 }

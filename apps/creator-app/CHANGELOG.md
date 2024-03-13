@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1430.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1429.0...@voiceflow/creator-app@1.1430.0) (2024-03-13)
+
+### Features
+
+* realtime nlu model diff system (CT-000) ([#7860](https://github.com/voiceflow/creator-app/issues/7860)) ([f06fc4e](https://github.com/voiceflow/creator-app/commit/f06fc4e870be6298a20bf18888205f95d17fa4e3))
+
 # [1.1429.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1428.0...@voiceflow/creator-app@1.1429.0) (2024-03-12)
 
 ### Features

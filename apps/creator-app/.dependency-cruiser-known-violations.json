@@ -10,8 +10,8 @@
   },
   {
     "type": "module",
-    "from": "src/models/KnowledgeBase.model.ts",
-    "to": "src/models/KnowledgeBase.model.ts",
+    "from": "src/components/Popper/PopperConfirm/PopperConfirm.component.tsx",
+    "to": "src/components/Popper/PopperConfirm/PopperConfirm.component.tsx",
     "rule": {
       "severity": "error",
       "name": "no-orphans"

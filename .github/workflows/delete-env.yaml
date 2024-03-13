@@ -141,6 +141,23 @@ jobs:
             echo "Track $TRACK does not exist"
           fi
 
+          # Realtime-http
+          TRACK="tracks/realtime-http/$BRANCH"
+          BUCKET="com.voiceflow.ci.assets"
+          echo $TRACK
+          set +e
+          aws s3 cp s3://$BUCKET/$TRACK /tmp/$TRACK
+          SEARCH_TRACK_RESULT=$?
+          set -e
+
+          # Store the result on a file in tmp folder to use in future steps
+          if [[ $SEARCH_TRACK_RESULT -eq 0 ]]; then
+            echo "Track $TRACK exists. Removing.."
+            aws s3 rm s3://$BUCKET/$TRACK
+          else
+            echo "Track $TRACK does not exist"
+          fi
+
           # ML Gateway
           TRACK="tracks/ml-gateway/$BRANCH"
           BUCKET="com.voiceflow.ci.assets"

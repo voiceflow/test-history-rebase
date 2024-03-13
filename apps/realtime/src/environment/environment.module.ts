@@ -20,9 +20,12 @@ import { ResponseVariantModule } from '@/response/response-variant/response-vari
 import { VariableModule } from '@/variable/variable.module';
 import { VersionModule } from '@/version/version.module';
 
+import { EnvironmentLoguxController } from './environment.logux.controller';
 import { EnvironmentService } from './environment.service';
 import { EnvironmentUtil } from './environment.util';
+import { EnvironmentNLUTrainingUtil } from './environment-nlu-training.util';
 import { EnvironmentPrivateHTTPController } from './environment-private.http.controller';
+import { EnvironmentPublicHTTPController } from './environment-public.http.controller';
 
 @Module({
   imports: [
@@ -46,7 +49,7 @@ import { EnvironmentPrivateHTTPController } from './environment-private.http.con
     forwardRef(() => ProjectModule),
   ],
   exports: [EnvironmentService],
-  providers: [EnvironmentService, ProjectSerializer, EnvironmentUtil],
-  controllers: [EnvironmentPrivateHTTPController],
+  providers: [EnvironmentService, ProjectSerializer, EnvironmentUtil, EnvironmentNLUTrainingUtil],
+  controllers: [EnvironmentLoguxController, EnvironmentPublicHTTPController, EnvironmentPrivateHTTPController],
 })
 export class EnvironmentModule {}

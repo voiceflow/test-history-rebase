@@ -12,7 +12,7 @@ import { VariableStateAppliedType } from '@/ducks/tracking';
 import { useAsyncEffect, useDispatch, usePermission, useSelector, useTrackingEvents } from '@/hooks';
 import { usePaymentModal } from '@/hooks/modal.hook';
 import { Container, DropdownContainer } from '@/pages/Project/components/Collaborators/components/InviteByLink/components';
-import { TrainingModelContext } from '@/pages/Project/contexts';
+import { NLUTrainingModelContext } from '@/pages/Project/contexts';
 import { Identifier } from '@/styles/constants';
 import { copy } from '@/utils/clipboard';
 
@@ -38,7 +38,7 @@ export const Footer: React.FC<FooterProps> = ({ isCanvas, testID }) => {
   const brandImage = useSelector(Prototype.prototypeBrandImageSelector);
   const avatar = useSelector(Prototype.prototypeAvatarSelector);
   const selectedPersonaID = useSelector(Prototype.prototypeSelectedPersonaID);
-  const trainingModelAPI = React.useContext(TrainingModelContext);
+  const nluTrainingModel = React.useContext(NLUTrainingModelContext);
   const { variableStateID } = useSelector(Prototype.prototypeSettingsSelector);
   const [isCompiled, setIsCompiled] = React.useState(false);
 
@@ -70,28 +70,28 @@ export const Footer: React.FC<FooterProps> = ({ isCanvas, testID }) => {
     trackingEvents.trackTestableLinkCopy({ layout: layoutType, brandColor, password, brandImage, avatar });
 
     toast.success('Link copied to clipboard');
-    if (!trainingModelAPI.isTrained) {
+
+    if (!nluTrainingModel.isTrained) {
       toast.warn(
         <>
           Assistant is not fully trained. This may cause unexpected behaviour when prototyping.
-          <ToastCallToAction onClick={() => trainingModelAPI.startTraining(Tracking.AssistantOriginType.TEST_TOOL)}>
-            Train Assistant
-          </ToastCallToAction>
+          <ToastCallToAction onClick={() => nluTrainingModel.start(Tracking.AssistantOriginType.TEST_TOOL)}>Train Assistant</ToastCallToAction>
         </>
       );
     }
   };
 
   useAsyncEffect(async () => {
-    if (isCanvas) {
-      if (canRenderPrototype) {
-        await compilePrototype();
-      }
+    if (!isCanvas) return;
 
-      await trainingModelAPI.getDiff();
-      setIsCompiled(true);
+    if (canRenderPrototype) {
+      await compilePrototype();
     }
-  }, []);
+
+    await nluTrainingModel.calculateDiff();
+
+    setIsCompiled(true);
+  }, [isCanvas]);
 
   return (
     <Container>

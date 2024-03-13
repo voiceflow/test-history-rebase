@@ -57,6 +57,7 @@ import { EnvironmentExportDTO } from './dtos/environment-export-data.dto';
 import { EnvironmentImportDTO } from './dtos/environment-import-data.dto';
 import { EnvironmentCMSEntities } from './environment.interface';
 import { EnvironmentUtil } from './environment.util';
+import { EnvironmentNLUTrainingUtil } from './environment-nlu-training.util';
 
 @Injectable()
 export class EnvironmentService {
@@ -94,7 +95,9 @@ export class EnvironmentService {
     @Inject(EnvironmentUtil)
     private readonly util: EnvironmentUtil,
     @Inject(DiagramUtil)
-    private readonly diagramUtil: DiagramUtil
+    private readonly diagramUtil: DiagramUtil,
+    @Inject(EnvironmentNLUTrainingUtil)
+    private readonly nluTrainingUtil: EnvironmentNLUTrainingUtil
   ) {}
 
   /* Helpers */
@@ -864,5 +867,45 @@ export class EnvironmentService {
       this.version.deleteOne(environmentID),
       this.diagram.deleteManyByVersionID(environmentID),
     ]);
+  }
+
+  async getNLUTrainingDiff(environmentID: string) {
+    const { prototype: versionPrototype, projectID } = await this.version.findOneOrFailWithFields(environmentID, ['prototype', 'projectID']);
+    const { prototype: projectPrototype } = await this.project.findOneOrFailWithFields(projectID, ['prototype']);
+
+    if (!projectPrototype?.trainedModel || !versionPrototype?.model) {
+      return {
+        data: null,
+        status: 'untrained',
+      } as const;
+    }
+
+    const modelDiff = this.nluTrainingUtil.getModelDiff(projectPrototype.trainedModel, versionPrototype.model);
+    const { slots, intents } = modelDiff;
+
+    const updatedDeletedSlotsCount = slots.deleted.length + slots.updated.length;
+    const updatedDeletedIntentsCount = intents.deleted.length + intents.updated.length;
+
+    const trainedSlotsCount = (projectPrototype?.trainedModel?.slots.length ?? 0) - updatedDeletedSlotsCount;
+    const trainedIntentsCount = (projectPrototype?.trainedModel?.intents.length ?? 0) - updatedDeletedIntentsCount;
+
+    const untrainedSlotsCount = slots.new.length + updatedDeletedSlotsCount;
+    const untrainedIntentsCount = intents.new.length + updatedDeletedIntentsCount;
+
+    const trainedCount = trainedSlotsCount + trainedIntentsCount;
+    const untrainedCount = untrainedSlotsCount + untrainedIntentsCount;
+
+    return {
+      status: this.nluTrainingUtil.isModelChanged(modelDiff) ? 'untrained' : 'trained',
+      data: {
+        trainedCount,
+        untrainedCount,
+        lastTrainedTime: projectPrototype.lastTrainedTime ?? null,
+        trainedSlotsCount,
+        trainedIntentsCount,
+        untrainedSlotsCount,
+        untrainedIntentsCount,
+      },
+    } as const;
   }
 }

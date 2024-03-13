@@ -6,6 +6,7 @@ import {
   Attachment,
   Condition,
   Entity,
+  Environment,
   Event,
   Flow,
   Folder,
@@ -37,5 +38,6 @@ export const designerReducer = compositeReducer(baseThreadReducer, {
   [Variable.STATE_KEY]: Variable.reducer,
   [Condition.STATE_KEY]: Condition.reducer,
   [Attachment.STATE_KEY]: Attachment.reducer,
+  [Environment.STATE_KEY]: Environment.reducer,
   [KnowledgeBase.STATE_KEY]: KnowledgeBase.reducer,
 });

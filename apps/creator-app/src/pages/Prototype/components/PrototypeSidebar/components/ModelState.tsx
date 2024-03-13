@@ -1,46 +1,46 @@
-import { BaseModels } from '@voiceflow/base-types';
 import { BlockText, Box, Flex } from '@voiceflow/ui';
 import React from 'react';
 
 import DonutChart from '@/components/DonutChart';
 import Duration from '@/components/Duration';
-import { ModelDiff } from '@/utils/prototypeModel';
 
 interface ModelStateProps {
-  diff: ModelDiff;
-  trainedModel: BaseModels.PrototypeModel;
-  lastTrainedTime: number;
+  nluTrainingDiffData: {
+    trainedCount: number;
+    untrainedCount: number;
+    lastTrainedTime: number | null;
+    trainedSlotsCount: number;
+    trainedIntentsCount: number;
+    untrainedSlotsCount: number;
+    untrainedIntentsCount: number;
+  };
 }
 
-enum DonutKey {
-  TRAINED = 'TRAINED',
-  UNTRAINED = 'UNTRAINED',
-}
+const DonutKey = {
+  TRAINED: 'TRAINED',
+  UNTRAINED: 'UNTRAINED',
+} as const;
 
-const ModelState: React.FC<ModelStateProps> = ({ diff, trainedModel, lastTrainedTime }) => {
-  const data = React.useMemo(() => {
-    const updatedDeletedSlotsCount = diff.slots.deleted.length + diff.slots.updated.length;
-    const updatedDeletedIntentsCount = diff.intents.deleted.length + diff.intents.updated.length;
-
-    const trainedSlotsCount = trainedModel.slots.length - updatedDeletedSlotsCount;
-    const trainedIntentsCount = trainedModel.intents.length - updatedDeletedIntentsCount;
-
-    const untrainedSlotsCount = diff.slots.new.length + updatedDeletedSlotsCount;
-    const untrainedIntentsCount = diff.intents.new.length + updatedDeletedIntentsCount;
-
-    const trained = trainedSlotsCount + trainedIntentsCount;
-    const untrained = untrainedSlotsCount + untrainedIntentsCount;
-
-    return [
-      { key: DonutKey.TRAINED, color: '#5d9df5', value: trained, slots: trainedSlotsCount, intents: trainedIntentsCount },
-      { key: DonutKey.UNTRAINED, color: '#f1467b', value: untrained, slots: untrainedSlotsCount, intents: untrainedIntentsCount },
-    ];
-  }, [diff, trainedModel]);
-
+const ModelState: React.FC<ModelStateProps> = ({ nluTrainingDiffData }) => {
   return (
     <DonutChart
       size={120}
-      data={data}
+      data={[
+        {
+          key: DonutKey.TRAINED,
+          color: '#5d9df5',
+          value: nluTrainingDiffData.trainedCount,
+          slots: nluTrainingDiffData.trainedSlotsCount,
+          intents: nluTrainingDiffData.trainedIntentsCount,
+        },
+        {
+          key: DonutKey.UNTRAINED,
+          color: '#f1467b',
+          value: nluTrainingDiffData.untrainedCount,
+          slots: nluTrainingDiffData.untrainedSlotsCount,
+          intents: nluTrainingDiffData.untrainedIntentsCount,
+        },
+      ]}
       legend={{
         [DonutKey.TRAINED]: {
           label: 'Trained',
@@ -53,9 +53,12 @@ const ModelState: React.FC<ModelStateProps> = ({ diff, trainedModel, lastTrained
       }}
       renderTooltip={({ key, value, slots, intents }) => (
         <Box minWidth="200px">
-          <BlockText fontSize={13} mb={12}>
-            {key === DonutKey.TRAINED ? 'Last Trained' : 'Since Last Trained'}: <Duration time={lastTrainedTime} color="#62778c" />
-          </BlockText>
+          {!!nluTrainingDiffData.lastTrainedTime && (
+            <BlockText fontSize={13} mb={12}>
+              {key === DonutKey.TRAINED ? 'Last Trained' : 'Since Last Trained'}:{' '}
+              <Duration time={nluTrainingDiffData.lastTrainedTime} color="#62778c" />
+            </BlockText>
+          )}
 
           <Flex>
             <Box flex={1} mb={12}>
@@ -83,4 +86,4 @@ const ModelState: React.FC<ModelStateProps> = ({ diff, trainedModel, lastTrained
   );
 };
 
-export default ModelState;
+export default React.memo(ModelState);

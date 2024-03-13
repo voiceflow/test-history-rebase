@@ -25,9 +25,9 @@ export abstract class LLMModel {
     return Math.ceil(tokens * this.TOKEN_MULTIPLIER);
   }
 
-  abstract generateCompletion(prompt: string, params: AIParams, options?: CompletionOptions): Promise<CompletionOutput>;
+  abstract generateCompletion(prompt: string, params: AIParams, options?: CompletionOptions): AsyncGenerator<CompletionOutput>;
 
-  abstract generateChatCompletion(messages: AIMessage[], params: AIParams, options?: CompletionOptions): Promise<CompletionOutput>;
+  abstract generateChatCompletion(messages: AIMessage[], params: AIParams, options?: CompletionOptions): AsyncGenerator<CompletionOutput>;
 
   public normalizeMaxTokens(maxTokens: number | undefined) {
     if (!maxTokens) return maxTokens;

@@ -1,6 +1,6 @@
 import Client, { AI_PROMPT, HUMAN_PROMPT } from '@anthropic-ai/sdk';
-import { Logger } from '@nestjs/common';
 import { AIMessage, AIMessageRole, AIParams } from '@voiceflow/dtos';
+import { AnthropicStream } from 'ai';
 
 import { LLMModel } from '../llm-model.abstract';
 import { CompletionOutput } from '../llm-model.dto';
@@ -10,8 +10,6 @@ import { AnthropicConfig } from './anthropic.interface';
  * @deprecated this is a legacy format, anthropic is transitioning to the messages API
  */
 export abstract class AnthropicTextCompletionAIModel extends LLMModel {
-  private logger = new Logger(AnthropicTextCompletionAIModel.name);
-
   protected abstract anthropicModel: string;
 
   protected readonly client: Client;
@@ -34,11 +32,11 @@ export abstract class AnthropicTextCompletionAIModel extends LLMModel {
     [AIMessageRole.ASSISTANT]: AI_PROMPT,
   };
 
-  generateCompletion(prompt: string, params: AIParams): Promise<CompletionOutput> {
+  async * generateCompletion(prompt: string, params: AIParams): AsyncGenerator<CompletionOutput> {
     const messages: AIMessage[] = [{ role: AIMessageRole.USER, content: prompt }];
     if (params.system) messages.unshift({ role: AIMessageRole.SYSTEM, content: params.system });
 
-    return this.generateChatCompletion(messages, params);
+    yield * this.generateChatCompletion(messages, params);
   }
 
   /**
@@ -49,7 +47,7 @@ export abstract class AnthropicTextCompletionAIModel extends LLMModel {
     return Math.floor((text.length / 4) * this.TOKEN_MULTIPLIER);
   }
 
-  async generateChatCompletion(messages: AIMessage[], params: AIParams): Promise<CompletionOutput> {
+  async * generateChatCompletion(messages: AIMessage[], params: AIParams): AsyncGenerator<CompletionOutput> {
     let topSystem = '';
     let prompt = '';
     for (let i = 0; i < messages.length; i++) {
@@ -67,7 +65,7 @@ export abstract class AnthropicTextCompletionAIModel extends LLMModel {
     // claude prompt must end with AI prompt
     prompt += AI_PROMPT;
 
-    const queryTokens = this.calculateTokenUsage(prompt);
+    // const queryTokens = this.calculateTokenUsage(prompt);
 
     const result = await this.client.completions
       .create({
@@ -76,23 +74,25 @@ export abstract class AnthropicTextCompletionAIModel extends LLMModel {
         temperature: params.temperature,
         max_tokens_to_sample: this.normalizeMaxTokens(params.maxTokens) || this.defaultMaxTokens,
         stop_sequences: [HUMAN_PROMPT, ...(params.stop || [])],
+        stream: true,
       })
-      .catch((error: unknown) => {
-        this.logger.warn({ error, messages, params }, `${this.modelRef} completion`);
-        return null;
-      });
 
-    const output = result?.completion?.trim() ?? null;
+    const stream = AnthropicStream(result);
 
-    const answerTokens = this.calculateTokenUsage(output ?? '');
+    for await (const chunk of stream) {
+      const output = chunk.completion?.trim() ?? null;
+      const queryTokens = this.calculateTokenUsage(prompt);
+      const answerTokens = this.calculateTokenUsage(output ?? '');
+      const tokens = queryTokens + answerTokens;
 
-    return {
-      output,
-      tokens: queryTokens + answerTokens,
-      queryTokens,
-      answerTokens,
-      multiplier: this.TOKEN_MULTIPLIER,
-      model: this.modelRef,
-    };
+      yield {
+        output,
+        tokens,
+        queryTokens,
+        answerTokens,
+        multiplier: this.TOKEN_MULTIPLIER,
+        model: this.modelRef,
+      }
+    }
   }
 }

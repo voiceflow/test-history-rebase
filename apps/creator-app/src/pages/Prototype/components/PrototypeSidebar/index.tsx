@@ -1,4 +1,3 @@
-import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Flex, SvgIcon, TippyTooltip, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
@@ -11,34 +10,25 @@ import { PrototypeStatus } from '@/constants/prototype';
 import * as PrototypeDuck from '@/ducks/prototype';
 import { useDispatch, useEventualEngine, usePermission, useTheme } from '@/hooks';
 import { useToggle } from '@/hooks/toggle';
-import { TrainingModelContext } from '@/pages/Project/contexts';
+import { NLUTrainingModelContext } from '@/pages/Project/contexts';
 import Prototype from '@/pages/Prototype';
 import { PrototypeContext } from '@/pages/Prototype/context';
 import { useDebug, useResetPrototype } from '@/pages/Prototype/hooks';
-import { ModelDiff } from '@/utils/prototypeModel';
+import { controlledPromiseFactory } from '@/utils/promise.util';
 
 import { Container, EmbedContainer, TrainingSection } from './components';
-
-export interface TrainingState {
-  diff: ModelDiff;
-  trainedModel: BaseModels.PrototypeModel | null;
-  fetching: boolean;
-  lastTrainedTime: number;
-}
 
 const PrototypeSidebar: React.FC = () => {
   const theme = useTheme();
   const debugEnabled = useDebug();
   const [canRenderPrototype] = usePermission(Permission.RENDER_PROTOTYPE);
   const prototypeAPI = React.useContext(PrototypeContext);
-  const trainingModelAPI = React.useContext(TrainingModelContext);
+  const nluTrainingModel = React.useContext(NLUTrainingModelContext);
   const compilePrototype = useDispatch(PrototypeDuck.compilePrototype);
   const { state, actions, config } = prototypeAPI;
   const { locales, projectType, isMuted } = config;
   const { status } = state;
   const { updatePrototype } = actions;
-
-  const { isTraining: isModelTraining, isTrained } = trainingModelAPI;
 
   const canSeeSoundToggle = Realtime.Utils.typeGuards.isVoiceProjectType(projectType);
   const [trainingOpen, toggleTrainingOpen] = useToggle(false);
@@ -48,11 +38,7 @@ const PrototypeSidebar: React.FC = () => {
   const [atTop, setAtTop] = React.useState(true);
   const notStarted = status === PrototypeStatus.IDLE;
 
-  const renderPromise = React.useMemo<Promise<void>>(async () => {
-    if (canRenderPrototype) {
-      await compilePrototype();
-    }
-  }, []);
+  const renderPromise = React.useMemo(() => controlledPromiseFactory<void>(), []);
 
   const closeTraining = () => {
     if (trainingOpen) {
@@ -80,24 +66,37 @@ const PrototypeSidebar: React.FC = () => {
   }, [status]);
 
   React.useEffect(() => {
-    // TODO: properly handle error case
-    renderPromise.then(() => trainingModelAPI.getDiff()).catch(() => resetPrototype());
-
     if (Realtime.Utils.typeGuards.isChatProjectType(projectType)) {
       updatePrototype({ muted: true });
     }
 
+    (async () => {
+      try {
+        if (canRenderPrototype) {
+          await compilePrototype();
+        }
+
+        await nluTrainingModel?.calculateDiff();
+
+        renderPromise.resolve();
+      } catch {
+        resetPrototype();
+      }
+    })();
+
     // resetting focus asynchronously to fix line desync issue which is caused due to shifting canvas position to the subheader height
-    requestAnimationFrame(() => {
-      getEngine()?.focus.reset();
-    });
-  }, []);
+    requestAnimationFrame(() => getEngine()?.focus.reset());
+
+    return () => {
+      renderPromise.reject();
+    };
+  }, [renderPromise]);
 
   React.useEffect(() => {
-    if (!isTrained) {
-      openTraining();
-    }
-  }, [isTrained]);
+    if (nluTrainingModel.isTrained) return;
+
+    openTraining();
+  }, [nluTrainingModel.isTrained]);
 
   return (
     <Drawer open width={theme.components.prototypeSidebar.width} direction={Drawer.Direction.LEFT}>
@@ -138,7 +137,7 @@ const PrototypeSidebar: React.FC = () => {
             debug={debugEnabled}
             atTop={atTop}
             setAtTop={setAtTop}
-            isModelTraining={isModelTraining}
+            isModelTraining={nluTrainingModel.isTraining}
             renderingPromise={renderPromise}
             locale={locales[0]}
           />

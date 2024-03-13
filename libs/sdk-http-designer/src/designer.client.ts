@@ -6,6 +6,7 @@ import {
   BillingInvoiceClient,
   BillingPlanClient,
   BillingSubscriptionClient,
+  EnvironmentClient,
   FunctionClient,
   OrganizationClient,
   PrivateAssistantClient,
@@ -18,20 +19,23 @@ import {
 
 export class DesignerClient extends BaseClient('https://realtime-api.voiceflow.com')({
   backup: BackupClient,
+  upload: UploadClient,
   project: ProjectClient,
   function: FunctionClient,
   assistant: AssistantClient,
+  environment: EnvironmentClient,
   organization: OrganizationClient,
+
   billing: NestedClient({
-    subscription: BillingSubscriptionClient,
-    invoice: BillingInvoiceClient,
     plan: BillingPlanClient,
+    invoice: BillingInvoiceClient,
+    subscription: BillingSubscriptionClient,
   }),
+
   private: NestedClient({
     project: PrivateProjectClient,
     assistant: PrivateAssistantClient,
     environment: PrivateEnvironmentClient,
     prototypeProgram: PrivatePrototypeProgramClient,
   }),
-  upload: UploadClient,
 }) {}

@@ -10,7 +10,7 @@ import { AnalyticsDashboardProvider } from '@/pages/AnalyticsDashboard/context';
 import { PrototypeProvider } from '@/pages/Prototype/context';
 
 import { SharePopperProvider } from './components/Header/contexts';
-import { ActiveProjectIdentityProvider, ProjectPreviewProvider, SelectionProvider, TrainingModelProvider } from './contexts';
+import { ActiveProjectIdentityProvider, NLUTrainingModelProvider, ProjectPreviewProvider, SelectionProvider } from './contexts';
 
 const Providers: React.FC<React.PropsWithChildren> = ({ children }) => (
   <ProjectPreviewProvider>
@@ -21,7 +21,7 @@ const Providers: React.FC<React.PropsWithChildren> = ({ children }) => (
             <ExportProvider>
               <TrainingProvider>
                 <Project.Export.Provider>
-                  <TrainingModelProvider>
+                  <NLUTrainingModelProvider>
                     <SelectionProvider>
                       <SearchProvider>
                         <AnalyticsDashboardProvider>
@@ -29,7 +29,7 @@ const Providers: React.FC<React.PropsWithChildren> = ({ children }) => (
                         </AnalyticsDashboardProvider>
                       </SearchProvider>
                     </SelectionProvider>
-                  </TrainingModelProvider>
+                  </NLUTrainingModelProvider>
                 </Project.Export.Provider>
               </TrainingProvider>
             </ExportProvider>

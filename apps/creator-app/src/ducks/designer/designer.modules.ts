@@ -2,6 +2,7 @@ export * as Attachment from './attachment';
 export * as Condition from './condition';
 export * from './designer.state';
 export * as Entity from './entity';
+export * as Environment from './environment';
 export * as Event from './event';
 export * as Flow from './flow';
 export * as Folder from './folder';

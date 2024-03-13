@@ -8,6 +8,7 @@ export * as ConditionPredicate from './condition/condition-predicate/condition-p
 export * as CRUD from './crud/crud.interface';
 export * as Entity from './entity/entity.action';
 export * as EntityVariant from './entity/entity-variant/entity-variant.action';
+export * as Environment from './environment/environment.action';
 export * as Event from './event/event.action';
 export * as EventMapping from './event/event-mapping/event-mapping.action';
 export * as Flow from './flow/flow.action';

@@ -10,6 +10,15 @@
   },
   {
     "type": "module",
+    "from": "src/models/KnowledgeBase.model.ts",
+    "to": "src/models/KnowledgeBase.model.ts",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
     "from": "src/components/Popper/PopperConfirm/PopperConfirm.component.tsx",
     "to": "src/components/Popper/PopperConfirm/PopperConfirm.component.tsx",
     "rule": {

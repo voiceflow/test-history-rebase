@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.294.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.294.2...@voiceflow/realtime@1.294.3) (2024-03-14)
+
+### Bug Fixes
+
+* fix meshing realtime and realtime-http with yarn and added yarn realtime:all to mesh both ([#7878](https://github.com/voiceflow/creator-app/issues/7878)) ([ae0403d](https://github.com/voiceflow/creator-app/commit/ae0403d07fb125c2fe3e651400cd6abea9ffd6c6))
+
 ## [1.294.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.294.1...@voiceflow/realtime@1.294.2) (2024-03-14)
 
 ### Bug Fixes

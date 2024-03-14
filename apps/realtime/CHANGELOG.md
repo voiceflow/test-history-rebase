@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.294.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.294.3...@voiceflow/realtime@1.294.4) (2024-03-14)
+
+### Bug Fixes
+
+* add project id to private export endpoint (COR-1666) ([#7880](https://github.com/voiceflow/creator-app/issues/7880)) ([9e8ae31](https://github.com/voiceflow/creator-app/commit/9e8ae31c71c88b164cf6090210f77b18c091caab))
+
 ## [1.294.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.294.2...@voiceflow/realtime@1.294.3) (2024-03-14)
 
 ### Bug Fixes

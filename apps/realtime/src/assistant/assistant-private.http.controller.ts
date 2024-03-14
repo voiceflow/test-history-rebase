@@ -93,14 +93,19 @@ export class AssistantPrivateHTTPController {
     name: 'assistantID',
     schema: { type: 'string', description: 'Required if environment id alias is used' },
   })
+  @ApiHeader({
+    name: 'projectid',
+    schema: { type: 'string', description: 'For backward compatibility with creator-api' },
+  })
   @ZodApiQuery({ schema: AssistantExportJSONQuery })
   @ZodApiResponse({ status: HttpStatus.CREATED, schema: AssistantExportDataDTO })
   exportJSON(
     @Principal() principal: Identity & { createdBy: number },
     @Param('environmentID') environmentID: string,
+    @Headers('projectid') projectid: string | undefined,
     @Headers('assistantID') assistantID: string | undefined,
     @Query(AssistantExportJSONQuery) query: AssistantExportJSONQuery
   ): Promise<AssistantExportDataDTO> {
-    return this.service.exportJSON({ ...query, userID: principal.createdBy, assistantID, environmentID });
+    return this.service.exportJSON({ ...query, userID: principal.createdBy, assistantID: assistantID ?? projectid, environmentID });
   }
 }

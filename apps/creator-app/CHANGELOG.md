@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1431.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1430.2...@voiceflow/creator-app@1.1431.0) (2024-03-14)
+
+### Features
+
+* add test id to logo button (COR-1180) ([#7877](https://github.com/voiceflow/creator-app/issues/7877)) ([69a7a87](https://github.com/voiceflow/creator-app/commit/69a7a871abd7b5d72b0029be3e3630093f4a1ff9))
+
 ## [1.1430.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1430.1...@voiceflow/creator-app@1.1430.2) (2024-03-14)
 
 ### Bug Fixes

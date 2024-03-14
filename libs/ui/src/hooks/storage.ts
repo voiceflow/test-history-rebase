@@ -58,7 +58,16 @@ const createUseStorageHook = <S extends Storage>(storage: S) => {
   };
 };
 
+/**
+ * @deprecated use useLocalStorage from '@/hooks/storage.hook' instead
+ */
 export const useLocalStorage = createUseStorageHook(globalThis.localStorage);
 
+/**
+ * @deprecated use useLocalStorageState from '@/hooks/storage.hook' instead
+ */
 export const useLocalStorageState = createUseStorageStateHook(globalThis.localStorage);
+/**
+ * @deprecated use useSessionStorageState from '@/hooks/storage.hook' instead
+ */
 export const useSessionStorageState = createUseStorageStateHook(globalThis.sessionStorage);

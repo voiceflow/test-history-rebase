@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.44.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.44.0...@voiceflow/dtos@1.44.1) (2024-03-14)
+
+### Bug Fixes
+
+* add claude 3 models to enums and entitlements (PL-868) ([#7872](https://github.com/voiceflow/creator-app/issues/7872)) ([9b6e210](https://github.com/voiceflow/creator-app/commit/9b6e210103d34cb98d9f06cff62c4858b72b2e27))
+
 # [1.44.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.43.0...@voiceflow/dtos@1.44.0) (2024-03-12)
 
 ### Features

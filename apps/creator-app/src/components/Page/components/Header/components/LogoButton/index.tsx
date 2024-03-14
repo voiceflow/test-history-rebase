@@ -24,6 +24,7 @@ const LogoButton: React.FC<LogoButtonProps> = ({ options, expandable = true, noM
           iconProps={{ color: '#000', size: 26 }}
           expandable={expandable}
           withBorder={withBorder}
+          data-testid="header-logo-button"
         />
       )}
     </Dropdown>

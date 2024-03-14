@@ -38,6 +38,9 @@ const subscriptionAdapter = createMultiAdapter<Realtime.Identity.Subscription, S
     const claude1 = findBooleanEntitlement(subscriptionEntitlements, 'feat-model-claude-1');
     const claude2 = findBooleanEntitlement(subscriptionEntitlements, 'feat-model-claude-2');
     const claudeInstant = findBooleanEntitlement(subscriptionEntitlements, 'feat-model-claude-instant');
+    const claude3Haiku = findBooleanEntitlement(subscriptionEntitlements, 'feat-model-claude-3-haiku');
+    const claude3Sonnet = findBooleanEntitlement(subscriptionEntitlements, 'feat-model-claude-3-sonnet');
+    const claude3Opus = findBooleanEntitlement(subscriptionEntitlements, 'feat-model-claude-3-opus');
     const gpt = findBooleanEntitlement(subscriptionEntitlements, 'feat-model-gpt-3-5-turbo');
     const gpt4 = findBooleanEntitlement(subscriptionEntitlements, 'feat-model-gpt-4');
     const gpt4Turbo = findBooleanEntitlement(subscriptionEntitlements, 'feat-model-gpt-4-turbo');
@@ -87,6 +90,9 @@ const subscriptionAdapter = createMultiAdapter<Realtime.Identity.Subscription, S
         claude1,
         claude2,
         claudeInstant,
+        claude3Haiku,
+        claude3Sonnet,
+        claude3Opus,
         gpt,
         gpt4,
         gpt4Turbo,

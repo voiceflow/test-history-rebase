@@ -7,6 +7,9 @@ export const AIModel = {
   GPT_4_TURBO: 'gpt-4-turbo',
   CLAUDE_V1: 'claude-v1',
   CLAUDE_V2: 'claude-v2',
+  CLAUDE_3_HAIKU: 'claude-3-haiku',
+  CLAUDE_3_SONNET: 'claude-3-sonnet',
+  CLAUDE_3_OPUS: 'claude-3-opus',
   CLAUDE_INSTANT_V1: 'claude-instant-v1',
   GEMINI_PRO: 'gemini-pro',
 } as const;

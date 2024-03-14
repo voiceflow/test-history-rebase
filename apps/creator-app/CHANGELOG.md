@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1430.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1430.0...@voiceflow/creator-app@1.1430.1) (2024-03-14)
+
+### Bug Fixes
+
+* cms share popper (COR-1412) ([#7874](https://github.com/voiceflow/creator-app/issues/7874)) ([3b09534](https://github.com/voiceflow/creator-app/commit/3b09534ff3d1d1aaeb524c9184fc8b8736bba679))
+
 # [1.1430.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1429.0...@voiceflow/creator-app@1.1430.0) (2024-03-13)
 
 ### Features

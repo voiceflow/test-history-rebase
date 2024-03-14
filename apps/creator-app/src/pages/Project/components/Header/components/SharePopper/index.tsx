@@ -1,5 +1,5 @@
 import { tid } from '@voiceflow/style';
-import { Popper, PopperTypes, useSessionStorageState } from '@voiceflow/ui';
+import { Popper, PopperTypes, stopPropagation, useSessionStorageState } from '@voiceflow/ui';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
@@ -75,6 +75,7 @@ const SharePopper: React.FC<SharePopperProps> = ({ children, placement, modifier
         modifiers={modifiers}
         initialTab={sharePopper?.data?.defaultTab ?? persistedTab}
         preventClose={() => isClosePrevented}
+        onContainerClick={stopPropagation()}
         preventOverflowPadding={preventOverflowPadding}
         testID={TEST_ID}
         renderNav={() => (

@@ -50,6 +50,7 @@ export interface Props {
   renderContent: Renderer;
   disableLayers?: boolean;
   initialOpened?: boolean;
+  onContainerClick?: (event: React.MouseEvent) => void;
   preventOverflowPadding?: number;
   testID?: string;
 }

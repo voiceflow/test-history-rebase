@@ -16,7 +16,7 @@ const onOpenPricingPage = onOpenInternalURLInANewTabFactory(PRICING_LINK);
 export const onOpenBookDemoPage = onOpenInternalURLInANewTabFactory(BOOK_DEMO_LINK);
 
 // not using modal import here to avoid circular dependency
-const onOpenPaymentModal = () => ModalsManager.open(Utils.id.cuid.slug(), 'Payment').catch(Utils.functional.noop);
+const onOpenPaymentModal = () => ModalsManager.open(Utils.id.cuid.slug(), 'LegacyPayment').catch(Utils.functional.noop);
 
 export const getUpgradeModalProps = (
   nextPlan: PlanType,

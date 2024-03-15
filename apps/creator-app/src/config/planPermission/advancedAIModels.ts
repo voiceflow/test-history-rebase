@@ -1,7 +1,7 @@
 import { AIModel } from '@voiceflow/dtos';
 import { PlanType } from '@voiceflow/internal';
 
-import { ADVANCED_AI_MODELS, AI_MODEL_CONFIG_MAP } from '@/config/ai-model';
+import { AI_MODEL_CONFIG_MAP } from '@/config/ai-model';
 import { Permission } from '@/constants/permissions';
 import { PRO_PLUS_PLANS } from '@/constants/plans';
 import * as Tracking from '@/ducks/tracking';
@@ -28,7 +28,7 @@ export const ADVANCED_AI_MODELS_PERMISSIONS = {
   plans: PRO_PLUS_PLANS,
   permission: Permission.ADVANCED_LLM_MODELS,
 
-  isAdvancedAIModel: (modelType: AIModel) => ADVANCED_AI_MODELS.has(modelType),
+  isAdvancedAIModel: (modelType: AIModel) => !!AI_MODEL_CONFIG_MAP[modelType].advanced,
 
   upgradeModal: ({ modelType }) => getAdvancedAiModelUpgradeModal(modelType),
 } satisfies CanvasPaidStepsPermission;

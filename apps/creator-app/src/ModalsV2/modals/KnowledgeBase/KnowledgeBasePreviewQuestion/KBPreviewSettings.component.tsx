@@ -4,7 +4,7 @@ import { tid } from '@voiceflow/style';
 import { BaseProps, Box, Divider, Popper, SquareButton } from '@voiceflow/ui-next';
 import React, { useEffect } from 'react';
 
-import { SYSTEM_PROMPT_AI_MODELS } from '@/config/ai-model';
+import { AI_MODEL_CONFIG_MAP } from '@/config/ai-model';
 import { stopPropagation } from '@/utils/handler.util';
 
 import { KBSettingsInstructions } from '../KnowledgeBaseSettings/KBSettingsInstructions.component';
@@ -188,7 +188,7 @@ export const KBPreviewSettings: React.FC<IPreviewSettings> = ({ initialSettings,
               onValueType={setInstructionText}
             />
 
-            {SYSTEM_PROMPT_AI_MODELS.has(model) && (
+            {AI_MODEL_CONFIG_MAP[model].hasSystemPrompt && (
               <KBSettingsSystemPrompt
                 value={settings?.summarization.system ?? DEFAULT_SETTINGS.summarization.system}
                 disabled={!settings}

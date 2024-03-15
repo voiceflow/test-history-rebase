@@ -1,7 +1,7 @@
 import { AIModel, Subscription } from '@voiceflow/dtos';
 import React from 'react';
 
-import { ADVANCED_AI_MODELS } from '@/config/ai-model';
+import { AI_MODEL_CONFIG_MAP } from '@/config/ai-model';
 import { Permission } from '@/constants/permissions';
 import * as Organization from '@/ducks/organization';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
@@ -53,7 +53,7 @@ export const useAIModelEntitlement = () => {
         return subscription.entitlements[ENTITLEMENTS_BY_MODELS[type]];
       }
 
-      if (!ADVANCED_AI_MODELS.has(type)) return true;
+      if (!AI_MODEL_CONFIG_MAP[type].advanced) return true;
 
       return advancedLLMModelsPermission.allowed && !isReverseTrial;
     },

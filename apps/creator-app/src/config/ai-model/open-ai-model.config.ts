@@ -7,6 +7,7 @@ export const GPT4_MODE_CONFIG = modelFactory({
   name: 'GPT-4',
   info: '25 x tokens',
   icon: 'OpenAi',
+  advanced: true,
 });
 
 export const GPT4_TURBO_MODE_CONFIG = modelFactory({
@@ -14,6 +15,7 @@ export const GPT4_TURBO_MODE_CONFIG = modelFactory({
   name: 'GPT-4 Turbo',
   info: '12 x tokens',
   icon: 'OpenAi',
+  advanced: true,
 });
 
 export const GPT3_5_TURBO_MODEL_CONFIG = modelFactory({

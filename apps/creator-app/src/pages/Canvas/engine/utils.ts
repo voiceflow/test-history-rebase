@@ -18,10 +18,17 @@ import type Engine from '.';
 
 export const DUPLICATE_OFFSET: Pair<number> = [40, 40];
 
-export interface NodeCandidate {
-  nodeID: string;
-  containsPoint: (point: [number, number]) => boolean;
+export interface Candidate {
   isWithin: (rect: DOMRect) => boolean;
+  containsPoint: (point: [number, number]) => boolean;
+}
+
+export interface NodeCandidate extends Candidate {
+  nodeID: string;
+}
+
+export interface ThreadCandidate extends Candidate {
+  threadID: string;
 }
 
 export interface CloneUtils {
@@ -257,38 +264,38 @@ export const createBoundaryTest =
   ([x, y]: Point) =>
     Utils.number.isInRange(x, left, right) && Utils.number.isInRange(y, top, bottom);
 
-export const getCandidates = (nodeIDs: string[], engine: Engine): NodeCandidate[] =>
-  nodeIDs
-    .reduce<{ nodeID: string; top: number; left: number; bottom: number; right: number }[]>((acc, nodeID) => {
-      const rect = engine.node.getRect(nodeID);
+const buildCandidate = <T>({ left, right, top, bottom }: DOMRect, data: T): Candidate & T => ({
+  ...data,
+  containsPoint: createBoundaryTest({ left, right, top, bottom }),
+  isWithin: (rect) =>
+    (Utils.number.isInRange(left, rect.left, rect.right) || Utils.number.isInRange(right, rect.left, rect.right)) &&
+    (Utils.number.isInRange(top, rect.top, rect.bottom) || Utils.number.isInRange(bottom, rect.top, rect.bottom)),
+});
 
-      if (!rect) return acc;
+export const getNodeCandidates = (nodeIDs: string[], engine: Engine): NodeCandidate[] =>
+  nodeIDs.reduce<NodeCandidate[]>((acc, nodeID) => {
+    const rect = engine.node.getRect(nodeID);
 
-      const { left, right, top, bottom } = rect;
+    if (!rect) return acc;
 
-      acc.push({
-        nodeID,
-        left,
-        right,
-        top,
-        bottom,
-      });
+    acc.push(buildCandidate(rect, { nodeID }));
 
-      return acc;
-    }, [])
-    .map(({ nodeID, left, right, top, bottom }) => ({
-      nodeID,
-      containsPoint: createBoundaryTest({ left, right, top, bottom }),
-      isWithin: (rect) =>
-        (Utils.number.isInRange(left, rect.left, rect.right) || Utils.number.isInRange(right, rect.left, rect.right)) &&
-        (Utils.number.isInRange(top, rect.top, rect.bottom) || Utils.number.isInRange(bottom, rect.top, rect.bottom)),
-    }));
+    return acc;
+  }, []);
+
+export const getThreadCandidates = (threadIDs: string[], engine: Engine): ThreadCandidate[] =>
+  threadIDs.reduce<ThreadCandidate[]>((acc, threadID) => {
+    const rect = engine.threads.get(threadID)?.api.instance?.getRect();
+
+    if (!rect) return acc;
+
+    acc.push(buildCandidate(rect, { threadID }));
+
+    return acc;
+  }, []);
 
 export const getNodesData = (nodeData: Record<string, Realtime.NodeData<unknown>>, selectedNodes: Realtime.Node[]) => {
-  const nodeIDs = selectedNodes
-    .map((node) => [node.id, ...node.combinedNodes] || [])
-    .flat()
-    .reduce<string[]>((acc, curr) => (acc.includes(curr) ? acc : [...acc, curr]), []);
+  const nodeIDs = Utils.array.unique(selectedNodes.flatMap((node) => [node.id, ...node.combinedNodes] || []));
 
   return nodeIDs.map((nodeID) => nodeData[nodeID]);
 };

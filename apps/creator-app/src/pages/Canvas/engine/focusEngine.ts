@@ -1,6 +1,6 @@
 import * as Creator from '@/ducks/creatorV2';
 
-import { ActivationMode } from './constants';
+import { ActivationMode, EntityType } from './constants';
 import { EngineConsumer } from './utils';
 
 class FocusEngine extends EngineConsumer {
@@ -10,18 +10,18 @@ class FocusEngine extends EngineConsumer {
    * should be mutually exclusive with hasSelection
    */
   get hasTarget() {
-    return this.engine.activation.mode === ActivationMode.FOCUS && this.engine.activation.hasTargets;
+    return this.engine.activation.mode === ActivationMode.FOCUS && this.engine.activation.hasTargets(EntityType.NODE);
   }
 
   getTarget() {
-    return this.hasTarget ? this.engine.activation.getTargets()[0] : null;
+    return this.hasTarget ? this.engine.activation.getTargets(EntityType.NODE)[0] : null;
   }
 
   /**
    * check to see if the node is focused
    */
   isTarget(nodeID: string) {
-    return this.hasTarget && this.engine.activation.isTarget(nodeID);
+    return this.hasTarget && this.engine.activation.isTarget(EntityType.NODE, nodeID);
   }
 
   /**
@@ -35,7 +35,7 @@ class FocusEngine extends EngineConsumer {
     this.engine.activation.reset();
     this.engine.transformation.reset();
 
-    this.engine.activation.activate(nodeID, ActivationMode.FOCUS);
+    this.engine.activation.activate(EntityType.NODE, nodeID, ActivationMode.FOCUS);
     this.dispatch(Creator.setFocus(nodeID));
     this.engine.node.redrawLinks(nodeID);
 

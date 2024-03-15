@@ -61,7 +61,7 @@ const CommentIndicator = styled(Flex)<{ isFocused?: boolean }>`
 
   .${CANVAS_DRAGGING_CLASSNAME} &,
   .${CANVAS_MERGING_CLASSNAME} & {
-    display: none;
+    visibility: hidden;
   }
 `;
 

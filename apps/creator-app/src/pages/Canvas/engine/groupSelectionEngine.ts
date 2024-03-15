@@ -5,14 +5,15 @@ import { Point } from '@/types';
 import { isRootOrMarkupBlockType } from '@/utils/typeGuards';
 
 import { CANVAS_SELECTING_GROUP_CLASSNAME } from '../constants';
-import { EngineConsumer, getCandidates, NodeCandidate } from './utils';
+import { EntityType } from './constants';
+import { EngineConsumer, getNodeCandidates, getThreadCandidates, NodeCandidate, ThreadCandidate } from './utils';
 
 class GroupSelectionEngine extends EngineConsumer<{ selectionMarquee: SelectionMarqueeAPI }> {
   log = this.engine.log.child('group-selection');
 
   rect: DOMRect | null = null;
 
-  candidates: NodeCandidate[] = [];
+  candidates: Array<ThreadCandidate | NodeCandidate> = [];
 
   mouseOrigin: [number, number] | null = null;
 
@@ -27,10 +28,14 @@ class GroupSelectionEngine extends EngineConsumer<{ selectionMarquee: SelectionM
     this.engine.addClass(CANVAS_SELECTING_GROUP_CLASSNAME);
     this.mouseOrigin = origin;
 
-    this.candidates = getCandidates(
+    this.candidates = getNodeCandidates(
       [...this.engine.nodes.keys()].filter((nodeID) => this.engine.isNodeOfType(nodeID, isRootOrMarkupBlockType)),
       this.engine
     );
+
+    if (this.engine.comment.isModeActive || this.engine.comment.isVisible) {
+      this.candidates = [...this.candidates, ...getThreadCandidates([...this.engine.threads.keys()], this.engine)];
+    }
 
     this.components.selectionMarquee?.show();
 
@@ -51,13 +56,23 @@ class GroupSelectionEngine extends EngineConsumer<{ selectionMarquee: SelectionM
 
     this.log.debug(this.log.pending('updating candidates'));
 
-    const targets = this.engine.selection.getTargets();
-    const nextTargets = this.candidates.filter(({ isWithin }) => isWithin(rect)).map(({ nodeID }) => nodeID);
-    const updateTargets = Utils.array.diff(targets, nextTargets);
+    const nextCandidates = this.candidates.filter(({ isWithin }) => isWithin(rect));
 
-    this.engine.selection.replace(nextTargets, true);
+    const nodeTargets = this.engine.selection.getTargets(EntityType.NODE);
+    const nextNodeTargets = nextCandidates.filter((target): target is NodeCandidate => 'nodeID' in target).map(({ nodeID }) => nodeID);
+    const updateNodeTargets = Utils.array.diff(nodeTargets, nextNodeTargets);
 
-    updateTargets.forEach((nodeID) => this.engine.node.redraw(nodeID));
+    this.engine.selection.replaceNode(nextNodeTargets, true);
+    updateNodeTargets.forEach((nodeID) => this.engine.node.redraw(nodeID));
+
+    if (this.engine.comment.isModeActive || this.engine.comment.isVisible) {
+      const threadTargets = this.engine.selection.getTargets(EntityType.THREAD);
+      const nextThreadTargets = nextCandidates.filter((target): target is ThreadCandidate => 'threadID' in target).map(({ threadID }) => threadID);
+      const updateThreadTargets = Utils.array.diff(threadTargets, nextThreadTargets);
+
+      this.engine.activation.replace(EntityType.THREAD, nextThreadTargets);
+      updateThreadTargets.forEach((threadID) => this.engine.comment.redrawThread(threadID));
+    }
   }
 
   complete() {

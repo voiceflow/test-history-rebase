@@ -16,7 +16,7 @@ import type { LegacyVersionAction } from '@/types';
 
 import type { CreateData as ThreadCommentCreateData } from './thread-comment/thread-comment.action';
 
-const threadAction = createCRUD('thread-v2');
+export const threadAction = createCRUD('thread-v2');
 
 export interface CreateData {
   nodeID: string | null;
@@ -107,6 +107,10 @@ export interface AddMany extends AddManyRequest<Thread>, LegacyVersionAction {}
 
 export const AddMany = threadAction.crud.addMany<AddMany>();
 
-/* UpdateUnreadComments */
+/* MoveMany */
 
-export const UpdateUnreadComment = Utils.protocol.createAction<boolean>(threadAction('UPDATE_UNREAD_COMMENTS'));
+export interface MoveMany extends LegacyVersionAction {
+  data: Record<string, [number, number]>;
+}
+
+export const MoveMany = Utils.protocol.createAction<MoveMany>(threadAction('MOVE_MANY'));

@@ -20,7 +20,7 @@ const CommentThread: React.FC<{ isHidden?: boolean }> = ({ isHidden }) => {
   const { isFocused } = threadEntity.useState((e) => ({ isFocused: e.isFocused }));
 
   const { onDoubleClick, ...handlers } = useThreadHandlers({
-    drag: (movement) => engine.comment.dragThread(threadEntity.threadID, engine.canvas!.toVector(movement)),
+    drag: (movement) => engine.comment.dragThread(threadEntity.threadID, movement),
     drop: () => engine.comment.dropThread(),
     mousedown: () => engine.comment.setTarget(threadEntity.threadID),
     mouseup: () => engine.comment.setTarget(null),

@@ -5,6 +5,7 @@ export enum Event {
   DIAGRAM_JOIN = 'diagram-join',
   DIAGRAM_LEAVE = 'diagram-leave',
   NODE_DRAG_MANY = 'node-drag-many',
+  THREAD_DRAG_MANY = 'thread-drag-many',
 }
 
 export enum ChannelName {
@@ -27,12 +28,20 @@ export interface CursorMoveUserData extends DiagramChannelData {
 export interface CursorMoveBroadcastData extends BaseBroadcastData, CursorMoveUserData {}
 
 export interface NodeDragManyUserData extends DiagramChannelData {
-  movement: Pair<number>;
   nodeIDs: string[];
   origins: Point[];
+  movement: Pair<number>;
+}
+
+export interface ThreadDragManyUserData extends DiagramChannelData {
+  origins: Point[];
+  movement: Pair<number>;
+  threadIDs: string[];
 }
 
 export interface NodeDragManyBroadcastData extends BaseBroadcastData, NodeDragManyUserData {}
+
+export interface ThreadDragManyBroadcastData extends BaseBroadcastData, ThreadDragManyUserData {}
 
 const createChannelCreator =
   (channelName: ChannelName) =>

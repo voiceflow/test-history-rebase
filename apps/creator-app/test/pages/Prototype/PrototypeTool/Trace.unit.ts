@@ -42,7 +42,7 @@ const suite = createSuite(() => ({
       node: { center: vi.fn(), ports: { out: ['1'] } },
       nodes: [{ 1: { type: BlockType.START } }],
       select: vi.fn().mockReturnValue(() => {}),
-      selection: { replace: vi.fn(), getTargets: vi.fn(), reset: vi.fn() },
+      selection: { replaceNode: vi.fn(), getTargets: vi.fn(), reset: vi.fn() },
       getActivePlatform: vi.fn().mockReturnValue(''),
       getNodeByID: vi.fn().mockReturnValue({ id: STEP_ID, parentNode: BLOCK_ID, combinedNodes: ['1'] }),
       getStepIDsByBlockID: vi.fn().mockReturnValue(['1']),

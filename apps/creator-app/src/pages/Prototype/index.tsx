@@ -117,7 +117,7 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({
     // force selection + centering without toggle
     const focusNode = engine.getNodeByID(nodeID)?.parentNode ?? nodeID;
     engine.centerNode(focusNode);
-    engine.selection.replace([focusNode]);
+    engine.selection.replaceNode([focusNode]);
   }, [nodeID, engine]);
 
   if (status === PrototypeStatus.IDLE && !autoplay) {

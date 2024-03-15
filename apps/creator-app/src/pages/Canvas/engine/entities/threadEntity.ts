@@ -16,6 +16,11 @@ import { EntityInstance, ResourceEntity } from './entity';
 
 export interface ThreadInstance extends EntityInstance, CommentAPI {
   /**
+   * get the outer DOMRect of the rendered thread
+   */
+  getRect: () => DOMRect | null;
+
+  /**
    * get the current coordinates of this thread on the canvas
    */
   getCoords: () => Coords;

@@ -43,6 +43,7 @@ export const useThreadInstance = <T extends HTMLElement>(): InternalThreadInstan
       ...elementInstance,
 
       ref,
+      getRect: () => ref.current?.getBoundingClientRect() ?? null,
       getCoords: () => coords.current!,
 
       translate,

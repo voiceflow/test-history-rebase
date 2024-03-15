@@ -6,7 +6,7 @@ import { BlockType } from '@/constants';
 import { CANVAS_MERGING_CLASSNAME } from '@/pages/Canvas/constants';
 import { MergeLayerAPI } from '@/pages/Canvas/types';
 
-import { createBoundaryTest, EngineConsumer, getCandidates, NodeCandidate } from './utils';
+import { createBoundaryTest, EngineConsumer, getNodeCandidates, NodeCandidate } from './utils';
 
 const UNMERGEABLE_NODES = new Set([BlockType.START]);
 
@@ -80,14 +80,14 @@ class MergeEngine extends EngineConsumer<{ mergeLayer: MergeLayerAPI }> {
 
     this.engine.addClass(CANVAS_MERGING_CLASSNAME);
     this.sourceNodeID = sourceNodeID;
-    this.candidates = getCandidates([...Utils.array.withoutValue(this.engine.getRootNodeIDs(), sourceNodeID)].reverse(), this.engine);
+    this.candidates = getNodeCandidates([...Utils.array.withoutValue(this.engine.getRootNodeIDs(), sourceNodeID)].reverse(), this.engine);
 
     this.log.debug('discovered merge candidates', this.log.value(this.candidates.length));
     this.log.debug(this.log.init('merge system initialized for node'), this.log.slug(sourceNodeID));
   }
 
   refreshCandidateDetection(sourceNodeID: string) {
-    this.candidates = getCandidates([...Utils.array.withoutValue(this.engine.getRootNodeIDs(), sourceNodeID)].reverse(), this.engine);
+    this.candidates = getNodeCandidates([...Utils.array.withoutValue(this.engine.getRootNodeIDs(), sourceNodeID)].reverse(), this.engine);
   }
 
   updateTargetDetection() {

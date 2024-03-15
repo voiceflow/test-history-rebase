@@ -26,6 +26,7 @@ import {
   CANVAS_PROTOTYPE_RUNNING_CLASSNAME,
   CANVAS_THREAD_OPEN_CLASSNAME,
 } from '../constants';
+import { EntityType } from '../engine/constants';
 
 const Wrapper = styled.div`
   width: ${IS_SAFARI ? '100vw' : '100%'};
@@ -112,7 +113,7 @@ const CanvasContainer: React.FC<React.PropsWithChildren> = ({ children }) => {
   };
 
   const onDuplicate = async () => {
-    const targets = engine.activation.getTargets();
+    const targets = engine.activation.getTargets(EntityType.NODE);
 
     if (!targets.length) return;
 
@@ -126,7 +127,7 @@ const CanvasContainer: React.FC<React.PropsWithChildren> = ({ children }) => {
   const onSelectAll = () => engine.selectAll();
 
   const onCreateComponent = async () => {
-    if (!engine.activation.getTargets().length) return;
+    if (!engine.activation.hasTargets(EntityType.NODE)) return;
 
     await engine.createComponent();
 
@@ -134,7 +135,7 @@ const CanvasContainer: React.FC<React.PropsWithChildren> = ({ children }) => {
   };
 
   const onCreateSubtopic = async () => {
-    if (!engine.activation.getTargets().length) return;
+    if (!engine.activation.hasTargets(EntityType.NODE)) return;
 
     await engine.createSubtopic();
 

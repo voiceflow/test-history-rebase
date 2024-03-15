@@ -15,6 +15,7 @@ import { Identifier } from '@/styles/constants';
 import * as Clipboard from '@/utils/clipboard';
 import { Coords } from '@/utils/geometry';
 
+import { EntityType } from '../../engine/constants';
 import { CanvasAction, TARGET_OPTIONS } from './constants';
 import { ContextMenuOption, OptionProps } from './types';
 
@@ -52,7 +53,7 @@ const OPTION_HANDLERS: Record<CanvasAction, OptionHandler> = {
   },
 
   [CanvasAction.DUPLICATE_BLOCK]: ({ target: nodeID }, { engine }) => {
-    const targets = nodeID ? [nodeID] : engine.activation.getTargets();
+    const targets = nodeID ? [nodeID] : engine.activation.getTargets(EntityType.NODE);
 
     engine.node.duplicateMany(targets);
   },

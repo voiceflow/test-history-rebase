@@ -460,7 +460,7 @@ class TraceController {
     }
 
     if (node?.id) {
-      engine?.selection.replace([node.id]);
+      engine?.selection.replaceNode([node.id]);
     }
 
     if (node && !this.isPublicPrototype) {

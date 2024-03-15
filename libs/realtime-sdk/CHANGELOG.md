@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.370.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.369.0...@voiceflow/realtime-sdk@1.370.0) (2024-03-15)
+
+### Features
+
+* update brand static images (COR-1180) ([#7865](https://github.com/voiceflow/creator-app/issues/7865)) ([5a3d83b](https://github.com/voiceflow/creator-app/commit/5a3d83bef74793d11d53695f3a15e5e6c90b29f7))
+
 # [1.369.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.368.2...@voiceflow/realtime-sdk@1.369.0) (2024-03-15)
 
 ### Features

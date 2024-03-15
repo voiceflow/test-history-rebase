@@ -7,6 +7,7 @@ export const CLAUDE_V1_MODEL_CONFIG = modelFactory({
   name: 'Claude 1',
   info: '10 x tokens',
   icon: 'Anthropic',
+  advanced: true,
 });
 
 export const CLAUDE_V2_MODEL_CONFIG = modelFactory({
@@ -14,6 +15,7 @@ export const CLAUDE_V2_MODEL_CONFIG = modelFactory({
   name: 'Claude 2',
   info: '10 x tokens',
   icon: 'Anthropic',
+  advanced: true,
 });
 
 export const CLAUDE_INSTANT_V1_MODEL_CONFIG = modelFactory({

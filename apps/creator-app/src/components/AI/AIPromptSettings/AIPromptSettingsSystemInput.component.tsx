@@ -3,7 +3,7 @@ import { Input, SectionV2, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import VariablesInput from '@/components/VariablesInput';
-import { SYSTEM_PROMPT_AI_MODELS } from '@/config/ai-model';
+import { AI_MODEL_CONFIG_MAP } from '@/config/ai-model';
 
 export interface IAIPromptSettingsSystemInput {
   model: AIModel;
@@ -14,7 +14,7 @@ export interface IAIPromptSettingsSystemInput {
 export const AIPromptSettingsSystemInput: React.FC<IAIPromptSettingsSystemInput> = ({ model, value, onValueChange }) => {
   const [hasSystemContent, setHasSystemContent] = React.useState(false);
 
-  if (!SYSTEM_PROMPT_AI_MODELS.has(model)) return null;
+  if (!AI_MODEL_CONFIG_MAP[model].hasSystemPrompt) return null;
 
   return (
     <SectionV2.Content pb={0}>

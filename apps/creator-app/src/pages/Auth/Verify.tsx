@@ -1,11 +1,12 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, ClickableText, toast } from '@voiceflow/ui';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { wordmark } from '@/assets';
+import { voiceflowWordmarkDark, wordmark } from '@/assets';
 import * as Account from '@/ducks/account';
 import * as Session from '@/ducks/session';
-import { useDispatch, useHideVoiceflowAssistant, useSelector } from '@/hooks';
+import { useDispatch, useFeature, useHideVoiceflowAssistant, useSelector } from '@/hooks';
 import { Identifier } from '@/styles/constants';
 import * as Query from '@/utils/query';
 
@@ -14,6 +15,8 @@ import Container from './components/Container';
 import Title from './components/Title';
 
 const Verify: React.FC = () => {
+  const useUpdatedBranding = useFeature(Realtime.FeatureFlag.BRANDING_UPDATE).isEnabled;
+
   useHideVoiceflowAssistant();
 
   const email = useSelector(Account.userEmailSelector);
@@ -34,7 +37,7 @@ const Verify: React.FC = () => {
 
   return (
     <Container>
-      <Box as="img" src={wordmark} height={35} />
+      <Box as="img" src={useUpdatedBranding ? voiceflowWordmarkDark : wordmark} height={35} />
 
       <Card>
         <Title id={Identifier.VERIFY_EMAIL_TITLE}>Verify your email</Title>

@@ -31,8 +31,9 @@ export const ImageContainer = styled(FlexCenter)<ImageContainerProps>`
   width: ${({ size }) => `${size}px`};
   height: ${({ size }) => `${size}px`};
   background-position: center center;
-  background-size: cover;
+  background-size: contain;
   background-image: ${({ image }) => image && `url(${image})`};
+  background-repeat: no-repeat;
 
   border: 1px solid rgb(225, 228, 231);
   background-color: #ffffff;

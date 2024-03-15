@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1431.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1431.3...@voiceflow/creator-app@1.1431.4) (2024-03-15)
+
+### Bug Fixes
+
+* uses chunk instead of textarea (COR-1663) ([#7875](https://github.com/voiceflow/creator-app/issues/7875)) ([a3cd577](https://github.com/voiceflow/creator-app/commit/a3cd57763ea2b0800796bd030aeb32941999b047))
+
 ## [1.1431.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1431.2...@voiceflow/creator-app@1.1431.3) (2024-03-15)
 
 ### Bug Fixes

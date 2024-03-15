@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1433.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1432.0...@voiceflow/creator-app@1.1433.0) (2024-03-15)
+
+### Features
+
+* update brand static images (COR-1180) ([#7865](https://github.com/voiceflow/creator-app/issues/7865)) ([5a3d83b](https://github.com/voiceflow/creator-app/commit/5a3d83bef74793d11d53695f3a15e5e6c90b29f7))
+
 # [1.1432.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1431.4...@voiceflow/creator-app@1.1432.0) (2024-03-15)
 
 ### Features

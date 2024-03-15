@@ -1,5 +1,5 @@
 import { tid } from '@voiceflow/style';
-import { Box, Collapsible, CollapsibleHeader, CollapsibleHeaderButton, TextArea } from '@voiceflow/ui-next';
+import { Box, Chunk, Collapsible, CollapsibleHeader, CollapsibleHeaderButton } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { chunkBoxStyles, contentStyles, dividerStyles, headerStyles, sectionBox } from './CMSKnowledgeBaseEditorChunks.css';
@@ -35,7 +35,7 @@ export const CMSKnowledgeBaseEditorChunks: React.FC<ICMSKnowledgeBaseEditorChunk
       >
         <Box gap={12} direction="column" pb={24}>
           {chunks.map(({ content, chunkID }) => (
-            <TextArea.AutoSize key={chunkID} variant="chunk" value={content} disabled testID={tid(TEST_ID, 'item')} />
+            <Chunk key={chunkID} content={content} disabled testID={tid(TEST_ID, 'item')} />
           ))}
         </Box>
       </Collapsible>

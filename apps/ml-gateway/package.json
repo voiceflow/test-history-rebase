@@ -80,7 +80,7 @@
     "@voiceflow/nestjs-openapi-extractor": "1.7.9",
     "axios": "1.6.0",
     "supertest": "6.3.3",
-    "tsx": "3.12.7"
+    "tsx": "4.7.1"
   },
   "engines": {
     "node": "16.20"

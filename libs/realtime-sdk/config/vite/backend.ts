@@ -7,8 +7,7 @@ const rootDir = process.cwd();
 export default defineConfig({
   resolve: {
     alias: [{ find: '@realtime-sdk', replacement: path.resolve(rootDir, 'src') }],
-    mainFields: ['module', 'jsnext:main', 'jsnext'],
-    browserField: false,
+    mainFields: ['module', 'jsnext:main', 'jsnext', 'browser'],
     preserveSymlinks: false,
   },
 
@@ -23,7 +22,7 @@ export default defineConfig({
     },
   },
 
-  plugins: [dts({ tsConfigFilePath: path.resolve(rootDir, 'tsconfig.build.json'), insertTypesEntry: true })],
+  plugins: [dts({ tsconfigPath: path.resolve(rootDir, 'tsconfig.build.json'), insertTypesEntry: true })],
 
   ssr: {
     external: ['@voiceflow/base-types'],

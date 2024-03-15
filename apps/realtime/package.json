@@ -134,7 +134,7 @@
     "@voiceflow/nestjs-openapi-extractor": "1.7.9",
     "@voiceflow/test-common": "1.8.1",
     "supertest": "6.3.3",
-    "tsx": "3.12.7"
+    "tsx": "4.7.1"
   },
   "engines": {
     "node": "16.20"

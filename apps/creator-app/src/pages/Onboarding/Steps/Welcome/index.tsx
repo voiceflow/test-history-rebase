@@ -1,6 +1,8 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Animations, Description, FlexCenter, SvgIcon, Title } from '@voiceflow/ui';
 import React from 'react';
 
+import { useFeature } from '@/hooks';
 import ContinueButton from '@/pages/Onboarding/components/ContinueButton';
 import { OnboardingContext } from '@/pages/Onboarding/context';
 
@@ -14,6 +16,8 @@ const fadeConfig = {
 };
 
 const Welcome: React.FC = () => {
+  const useUpdatedBranding = useFeature(Realtime.FeatureFlag.BRANDING_UPDATE).isEnabled;
+
   const { actions } = React.useContext(OnboardingContext);
 
   return (
@@ -22,7 +26,7 @@ const Welcome: React.FC = () => {
         <FlexCenter column>
           <Animations.FadeDown delay={0} {...fadeConfig}>
             <LogoContainer>
-              <SvgIcon icon="voiceflowV" size={24} color="#fff" />
+              <SvgIcon icon={useUpdatedBranding ? 'voiceflowLogomarkLight' : 'voiceflowV'} size={24} color="#fff" />
             </LogoContainer>
           </Animations.FadeDown>
 

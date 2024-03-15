@@ -1,17 +1,19 @@
 import { datadogRum } from '@datadog/browser-rum';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Input, SectionV2, Upload, UploadIconVariant } from '@voiceflow/ui';
 import React from 'react';
 
-import { vfLogo } from '@/assets';
+import { vfLogo, voiceflowLogomarkDark } from '@/assets';
 import Page from '@/components/Page';
 import { Permission } from '@/constants/permissions';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useActiveWorkspace, useDispatch, useLinkedState, usePermission } from '@/hooks';
+import { useActiveWorkspace, useDispatch, useFeature, useLinkedState, usePermission } from '@/hooks';
 
 import * as S from './styles';
 
 const GeneralSettingsPage: React.FC = () => {
   const workspace = useActiveWorkspace();
+  const useUpdatedBranding = useFeature(Realtime.FeatureFlag.BRANDING_UPDATE).isEnabled;
 
   const updateActiveWorkspaceName = useDispatch(WorkspaceV2.updateActiveWorkspaceName);
   const updateActiveWorkspaceImage = useDispatch(WorkspaceV2.updateActiveWorkspaceImage);
@@ -27,6 +29,8 @@ const GeneralSettingsPage: React.FC = () => {
     }
   }, [name, updateName, workspace?.name]);
 
+  const logo = useUpdatedBranding ? voiceflowLogomarkDark : vfLogo;
+
   return (
     <Page.Section
       header={
@@ -41,7 +45,7 @@ const GeneralSettingsPage: React.FC = () => {
             client={{ upload: (_endpoint, _fileType, formData) => updateActiveWorkspaceImage(formData) }}
             onError={datadogRum.addError}
           >
-            <S.UploadIcon size={UploadIconVariant.SMALLER} isSquare image={workspace?.image || vfLogo} />
+            <S.UploadIcon size={UploadIconVariant.SMALLER} isSquare image={workspace?.image || logo} />
           </Upload.Provider>
 
           <Box.FlexAlignStart column gap={11} fullWidth>

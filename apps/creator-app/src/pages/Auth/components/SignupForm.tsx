@@ -1,12 +1,13 @@
 import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Button, Input, preventDefault, System, ThemeColor, TippyTooltip, toast, useDebouncedCallback, useSmartReducerV2 } from '@voiceflow/ui';
 import React from 'react';
 
-import { wordmarkLight } from '@/assets';
+import { voiceflowWordmark, wordmarkLight } from '@/assets';
 import client from '@/client';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
-import { useDispatch, useTrackingEvents } from '@/hooks';
+import { useDispatch, useFeature, useTrackingEvents } from '@/hooks';
 import { Query } from '@/models';
 import { getErrorMessage } from '@/utils/error';
 import * as QueryUtil from '@/utils/query';
@@ -34,6 +35,8 @@ const verifyLastName = (lastName: string) => !!lastName;
 const verifyFirstName = (firstName: string) => !!firstName;
 
 export const SignupForm: React.FC<SignupFormProps> = ({ query }) => {
+  const useUpdatedBranding = useFeature(Realtime.FeatureFlag.BRANDING_UPDATE).isEnabled;
+
   const [trackingEvents] = useTrackingEvents();
 
   const signup = useDispatch(Session.signup);
@@ -168,7 +171,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({ query }) => {
     <AuthenticationContainer dark>
       <AuthBox>
         <form onSubmit={preventDefault(onSubmit)} noValidate>
-          <img className="auth-logo" src={wordmarkLight} alt="logo" />
+          <img className="auth-logo" src={useUpdatedBranding ? voiceflowWordmark : wordmarkLight} alt="logo" />
 
           <div className="auth-form-wrapper">
             <HeaderBox>

@@ -206,7 +206,7 @@
     "@types/gapi": "0.0.44",
     "@types/gapi.auth2": "0.0.57",
     "@types/jsonwebtoken": "8.5.9",
-    "@types/lodash": "4.17.0",
+    "@types/lodash": "4.14.194",
     "@types/login-with-amazon-sdk-browser": "1.0.3",
     "@types/loglevel": "1.6.3",
     "@types/markdown-to-jsx": "7.0.1",

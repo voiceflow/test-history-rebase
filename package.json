@@ -11,7 +11,7 @@
   },
   "scripts": {
     "analyze:dependencies": "turbo run analyze:dependencies --concurrency=4",
-    "build": "turbo run build --concurrency=4 --force",
+    "build": "turbo run build --concurrency=4",
     "build:all": "yarn build",
     "build:creator-app": "cd apps/creator-app; yarn build",
     "build:deps": "yarn build --filter @voiceflow/ui --filter @voiceflow/platform-config --filter @voiceflow/socket-utils --filter @voiceflow/realtime-sdk --filter @voiceflow/dtos",

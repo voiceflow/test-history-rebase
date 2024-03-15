@@ -1,4 +1,4 @@
-import { AI_MODEL_MAX_TOKENS_DEFAULT, AI_MODEL_MAX_TOKENS_HEAVY, AIMessage, AIModel, AIParams, HEAVY_AI_MODELS } from '@voiceflow/dtos';
+import { AI_MODEL_PARAMS, AIMessage, AIModel, AIParams, DEFAULT_AI_MODEL_PARAM } from '@voiceflow/dtos';
 
 import { CompletionOptions, CompletionOutput } from './llm-model.dto';
 
@@ -28,8 +28,6 @@ export abstract class LLMModel {
   public normalizeMaxTokens(maxTokens: number | undefined) {
     if (!maxTokens) return maxTokens;
 
-    const isHeavyModel = HEAVY_AI_MODELS.has(this.modelRef);
-
-    return isHeavyModel ? Math.min(maxTokens, AI_MODEL_MAX_TOKENS_HEAVY) : Math.min(maxTokens, AI_MODEL_MAX_TOKENS_DEFAULT);
+    return Math.min(maxTokens, AI_MODEL_PARAMS[this.modelRef].maxTokens ?? DEFAULT_AI_MODEL_PARAM.maxTokens);
   }
 }

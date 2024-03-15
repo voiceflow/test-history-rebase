@@ -5,7 +5,7 @@ import { Box, Button, notify, Popper, Scroll, Text } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { Modal } from '@/components/Modal';
-import { SYSTEM_PROMPT_AI_MODELS } from '@/config/ai-model';
+import { AI_MODEL_CONFIG_MAP } from '@/config/ai-model';
 import { Designer } from '@/ducks';
 import { useLinkedState } from '@/hooks/state.hook';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
@@ -155,7 +155,7 @@ export const KnowledgeBaseSettings = manager.create('KnowledgeBaseSettingsV2', (
           onValueChange={(instruction: string) => onPatch('summarization', { instruction })}
         /> */}
 
-          {SYSTEM_PROMPT_AI_MODELS.has(model) && (
+          {AI_MODEL_CONFIG_MAP[model].hasSystemPrompt && (
             <KBSettingsSystemPrompt
               value={settings?.summarization.system ?? DEFAULT_SETTINGS.summarization.system}
               disabled={!settings}

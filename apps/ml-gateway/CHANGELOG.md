@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.81.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.81.5...@voiceflow/ml-gateway@1.81.6) (2024-03-15)
+
+### Bug Fixes
+
+* declarative ai params full stack (PL-882) ([#7886](https://github.com/voiceflow/creator-app/issues/7886)) ([8080cee](https://github.com/voiceflow/creator-app/commit/8080cee1dcfc2b4dc1dd73b429e5241c68855952))
+
 ## [1.81.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.81.4...@voiceflow/ml-gateway@1.81.5) (2024-03-14)
 
 **Note:** Version bump only for package @voiceflow/ml-gateway

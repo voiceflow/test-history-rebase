@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.44.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.44.1...@voiceflow/dtos@1.44.2) (2024-03-15)
+
+### Bug Fixes
+
+* declarative ai params full stack (PL-882) ([#7886](https://github.com/voiceflow/creator-app/issues/7886)) ([8080cee](https://github.com/voiceflow/creator-app/commit/8080cee1dcfc2b4dc1dd73b429e5241c68855952))
+
 ## [1.44.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.44.0...@voiceflow/dtos@1.44.1) (2024-03-14)
 
 ### Bug Fixes

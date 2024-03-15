@@ -5,6 +5,7 @@ import { DismissableLayerContext } from 'react-dismissable-layers';
 
 import { ContextMenuTarget } from '@/pages/Canvas/constants';
 
+import { EntityType } from '../engine/constants';
 import { EngineContext } from './EngineContext';
 
 export interface MenuContext {
@@ -43,14 +44,14 @@ export const ContextMenuProvider: React.FC<React.PropsWithChildren> = ({ childre
 
       dismissOverlay.addHandler('click', onHide);
 
-      if (type === ContextMenuTarget.NODE && target && engine.selection.isOneOfManyTargets(target)) {
+      if (type === ContextMenuTarget.NODE && target && engine.selection.isOneOfManyTargets(EntityType.NODE, target)) {
         menuContextApi.set({ position: [event.clientX, event.clientY], type: ContextMenuTarget.SELECTION, target: null });
 
         return;
       }
 
       if (target) {
-        engine.selection.replace([target]);
+        engine.selection.replaceNode([target]);
       } else {
         engine.selection.reset();
       }

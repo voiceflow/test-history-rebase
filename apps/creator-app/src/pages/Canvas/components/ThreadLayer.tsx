@@ -7,7 +7,7 @@ import { useDispatch, useHotkey, useRAF, useSelector, useTrackingEvents } from '
 import { Hotkey } from '@/keymap';
 import CommentThread from '@/pages/Canvas/components/CommentThread';
 import { EngineContext, FocusThreadContext, ThreadEntityProvider } from '@/pages/Canvas/contexts';
-import { CanvasRenderGate } from '@/pages/Canvas/gates';
+import { useCanvasRendered } from '@/pages/Canvas/hooks';
 import { useCanvasIdle, useCanvasPan, useCanvasZoom } from '@/pages/Canvas/hooks/canvas';
 import { CommentDraftValue } from '@/pages/Canvas/types';
 import { useCommentingMode } from '@/pages/Project/hooks';
@@ -22,6 +22,7 @@ const ThreadLayer: React.FC = () => {
 
   const [scheduler, schedulerAPI] = useRAF();
   const [trackEvents] = useTrackingEvents();
+  const canvasRendered = useCanvasRendered();
   const isCommentingMode = useCommentingMode();
 
   const threadIDs = useSelector(Designer.Thread.selectors.allOpenedIDsForActiveDiagram);
@@ -112,6 +113,7 @@ const ThreadLayer: React.FC = () => {
     newCommentDraftValue.current = null;
   }, [focusThread.focusedID]);
 
+  if (!canvasRendered) return null;
   if (!commentsVisible && !isCommentingMode) return null;
 
   // incrementing the container key will cause the layer to re-render/re-position the bubbles
@@ -126,9 +128,7 @@ const ThreadLayer: React.FC = () => {
     <div key={containerKey.current} style={{ visibility: isHidden ? 'hidden' : 'visible' }}>
       {threadIDs.map((threadID) => (
         <ThreadEntityProvider id={threadID} key={threadID}>
-          <CanvasRenderGate>
-            <CommentThread isHidden={isHidden} />
-          </CanvasRenderGate>
+          <CommentThread isHidden={isHidden} />
         </ThreadEntityProvider>
       ))}
 

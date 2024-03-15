@@ -70,6 +70,18 @@ export class ThreadLoguxController {
     await this.service.patchMany(ids.map(this.serializer.decodeID), patch);
   }
 
+  @Action(Actions.Thread.MoveMany)
+  @Authorize.Permissions<Actions.Thread.MoveMany>([Permission.PROJECT_READ], ({ context }) => ({
+    id: context.projectID,
+    kind: 'project',
+  }))
+  @Broadcast<Actions.Thread.MoveMany>(({ context }) => ({ channel: Realtime.Channels.version.build(context) }))
+  @BroadcastOnly()
+  @UseRequestContext()
+  public async moveMany(@Payload() { data }: Actions.Thread.MoveMany) {
+    await this.service.moveMany(data);
+  }
+
   @Action(Actions.Thread.DeleteOne)
   @Authorize.Permissions<Actions.Thread.DeleteOne>([Permission.PROJECT_READ], ({ context }) => ({
     id: context.projectID,

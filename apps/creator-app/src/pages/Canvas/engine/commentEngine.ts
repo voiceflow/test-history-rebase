@@ -1,3 +1,4 @@
+import { Nullish } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 import { createMatchSelector } from 'connected-react-router';
@@ -11,10 +12,10 @@ import * as Session from '@/ducks/session';
 import * as UI from '@/ducks/ui';
 import { waitAsync } from '@/ducks/utils';
 import { CommentDraftValue, NewCommentAPI } from '@/pages/Canvas/types';
-import { Point } from '@/types';
-import { Coords, Vector } from '@/utils/geometry';
+import { Pair, Point } from '@/types';
+import { Coords } from '@/utils/geometry';
 
-import { EngineConsumer, getCandidates, NodeCandidate } from './utils';
+import { EngineConsumer, getNodeCandidates, NodeCandidate } from './utils';
 
 class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
   log = this.engine.log.child('comment');
@@ -32,6 +33,18 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
   targetNodeID: string | null = null;
 
   isCreating = false;
+
+  internal = {
+    translateThread: (threadID: string, movement: Pair<number>) => {
+      if (!this.engine.canvas) return null;
+
+      const thread = this.thread(threadID);
+
+      if (!thread?.instance) return null;
+
+      return thread.instance.translate(this.engine.canvas.toVector(movement));
+    },
+  };
 
   get isModeActive() {
     return !!this.select(createMatchSelector(Path.CANVAS_COMMENTING));
@@ -155,11 +168,11 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
   };
 
   resolveThread = (threadID: string) => {
-    this.dispatch.partialSync(Designer.Thread.action.PatchOne({ context: this.engine.context, id: threadID, patch: { resolved: true } }));
+    this.dispatch.partialSync(Actions.Thread.PatchOne({ context: this.engine.context, id: threadID, patch: { resolved: true } }));
   };
 
   unresolveThread = (threadID: string) => {
-    this.dispatch.partialSync(Designer.Thread.action.PatchOne({ context: this.engine.context, id: threadID, patch: { resolved: false } }));
+    this.dispatch.partialSync(Actions.Thread.PatchOne({ context: this.engine.context, id: threadID, patch: { resolved: false } }));
   };
 
   startThread() {
@@ -182,9 +195,9 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
   }
 
   generateCandidates() {
-    if (!this.isModeActive || !this.isVisible) return;
+    if (!this.isModeActive && !this.isVisible) return;
 
-    this.candidates = getCandidates([...this.engine.getRootNodeIDs(), ...this.select(CreatorV2.stepIDsSelector)].reverse(), this.engine);
+    this.candidates = getNodeCandidates([...this.engine.getRootNodeIDs(), ...this.select(CreatorV2.stepIDsSelector)].reverse(), this.engine);
     this.log.debug('discovered thread target candidates', this.log.value(this.candidates.length));
   }
 
@@ -257,25 +270,59 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
     this.resetCreating();
   }
 
-  translateThread(threadID: string, movement: Vector) {
-    const thread = this.thread(threadID);
-
-    if (!thread?.instance) return null;
-
-    return thread.instance.translate(movement);
+  translateThread(threadID: string, movement: Pair<number>) {
+    return this.internal.translateThread(threadID, movement);
   }
 
-  dragThread(threadID: string, movement: Vector) {
+  translateManyOnOrigins(threadIDs: string[], movement: Pair<number>, origins: Point[]) {
+    threadIDs.forEach((threadID, i) => {
+      if (!this.engine.canvas) return;
+
+      const coords = this.engine.threads.get(threadID)?.api.instance?.getCoords().onPlane(this.engine.canvas.getPlane());
+      const origin = origins[i];
+
+      if (coords) {
+        this.internal.translateThread(threadID, [movement[0] - (coords.point[0] - origin[0]), movement[1] - (coords.point[1] - origin[1])]);
+      }
+    });
+  }
+
+  translateDetachedThreads(threadIDs: string[], movement: Pair<number>) {
+    const detachedThreads = this.engine
+      .select(Designer.Thread.selectors.allByIDs, { ids: threadIDs })
+      .filter((thread) => !thread.nodeID && this.engine.threads.has(thread.id));
+
+    const activeThreadIDs = detachedThreads.map((thread) => thread.id);
+    const origins = activeThreadIDs.map<Point>((threadID) => {
+      const coords = this.engine.threads.get(threadID)!.api.instance!.getCoords().onPlane(this.engine.canvas!.getPlane())!;
+
+      return coords.point;
+    });
+
+    activeThreadIDs.forEach((threadID) => this.translateThread(threadID, movement));
+
+    this.engine.io.threadDragMany(activeThreadIDs, movement, origins);
+  }
+
+  dragThread(threadID: string, movement: Pair<number>) {
+    if (!this.engine.canvas) return;
+
     if (!this.dragTarget) {
       this.dragTarget = threadID;
       this.generateCandidates();
     }
+
+    const originalCoords = this.engine.threads.get(threadID)?.api.instance?.getCoords().onPlane(this.engine.canvas.getPlane());
 
     const coords = this.translateThread(threadID, movement);
 
     if (!coords) return;
 
     this.updateCandidates(coords);
+
+    if (!originalCoords) return;
+
+    this.engine.io.threadDragMany([threadID], movement, [originalCoords.point]);
   }
 
   async dropThread() {
@@ -294,6 +341,7 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
     const coords = thread.instance.getCoords().onPlane(this.engine.canvas!.getPlane());
 
     let position = coords.point;
+
     if (targetNodeID) {
       const offset = this.getCoordsRelativeToNode(coords, targetNodeID);
       if (!offset) return;
@@ -302,9 +350,27 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
 
     const nodeID = targetNodeID || null;
 
-    await this.dispatch.partialSync(Designer.Thread.action.PatchOne({ context: this.engine.context, id: threadID, patch: { nodeID, position } }));
+    await this.dispatch.partialSync(Actions.Thread.PatchOne({ context: this.engine.context, id: threadID, patch: { nodeID, position } }));
 
     this.log.debug('location saved', this.log.slug(threadID));
+  }
+
+  async saveDetachedThreadsLocations(threadIDs: Nullish<string>[]) {
+    const threads = threadIDs.reduce<Record<string, [number, number]>>((acc, threadID) => {
+      if (!threadID || this.engine.getThreadByID(threadID)?.nodeID) return acc;
+
+      const coords = this.engine.threads.get(threadID)?.api.instance?.getCoords().onPlane(this.engine.canvas!.getPlane());
+
+      if (!coords) return acc;
+
+      acc[threadID] = coords.point;
+
+      return acc;
+    }, {});
+
+    if (!Object.keys(threads).length) return;
+
+    await this.dispatch.partialSync(Actions.Thread.MoveMany({ context: this.engine.context, data: threads }));
   }
 
   async moveThreadToCanvas(threadID: string) {
@@ -320,7 +386,7 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
     const coords = anchorCoords.add(thread.position);
 
     await this.dispatch.partialSync(
-      Designer.Thread.action.PatchOne({ context: this.engine.context, id: threadID, patch: { nodeID: null, position: coords.point } })
+      Actions.Thread.PatchOne({ context: this.engine.context, id: threadID, patch: { nodeID: null, position: coords.point } })
     );
 
     this.log.debug('new thread location saved', this.log.slug(threadID));
@@ -337,21 +403,32 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
     if (!threadInstance) return;
 
     this.engine.center(this.engine.canvas!.fromCoords(threadInstance.getCoords()), false);
-    this.forceRedrawThreads();
+    this.forceRedrawAllThreads();
 
     this.log.info(this.log.success('centered canvas on thread'), this.log.slug(threadID));
   }
 
-  forceRedrawThreads() {
-    if (!this.isModeActive || !this.isVisible) return;
+  forceRedrawThreads(threadIDs: string[]) {
+    if (!threadIDs.length || !this.engine.canvas) return;
+    if (!this.isModeActive && !this.isVisible) return;
 
-    const plane = this.engine.canvas!.getOuterPlane();
-    const threads = this.select(Designer.Thread.selectors.allOpenedForActiveDiagram);
+    const plane = this.engine.canvas.getOuterPlane();
+    const threads = this.select(Designer.Thread.selectors.allByIDs, { ids: threadIDs });
 
     threads.forEach(({ id, position, nodeID }) => {
       const thread = this.thread(id);
-      return thread?.instance?.forceRedraw(thread.calculateCoordinates(position, nodeID).onPlane(plane));
+
+      this.engine.comment.redrawThread(id);
+      thread?.instance?.forceRedraw(thread.calculateCoordinates(position, nodeID).onPlane(plane));
     });
+  }
+
+  forceRedrawAllThreads() {
+    if (!this.isModeActive && !this.isVisible) return;
+
+    const threadIDs = this.select(Designer.Thread.selectors.allOpenedIDsForActiveDiagram);
+
+    this.forceRedrawThreads(threadIDs);
   }
 
   redrawThread(threadID: string) {

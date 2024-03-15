@@ -9,6 +9,7 @@ import { isChipNode } from '@/utils/node';
 import { isMarkupBlockType } from '@/utils/typeGuards';
 
 import type Engine from '../../engine';
+import { EntityType } from '../../engine/constants';
 import { ContextColorPicker } from './components/ContextColorPicker';
 import { ContextTemplateLibrary } from './components/ContextTemplateLibrary';
 import { ContextMenuOption } from './types';
@@ -217,14 +218,16 @@ export const SELECTION_OPTIONS: ContextMenuOption<CanvasAction>[] = [
     label: 'Create component',
     value: CanvasAction.CREATE_COMPONENT,
     hotkey: HOTKEY_LABEL_MAP[Hotkey.CREATE_COMPONENT],
-    shouldRender: (_, { engine }) => engine.selection.getTargets().some((nodeID) => engine.isNodeOfType(nodeID, BlockType.COMBINED)),
+    shouldRender: (_, { engine }) => engine.selection.getTargets(EntityType.NODE).some((nodeID) => engine.isNodeOfType(nodeID, BlockType.COMBINED)),
   },
   {
     label: 'Create sub topic',
     value: CanvasAction.CREATE_SUB_TOPIC,
     hotkey: HOTKEY_LABEL_MAP[Hotkey.CREATE_SUBTOPIC],
     shouldRender: (_, { engine }) =>
-      engine.selection.getTargets().some((nodeID) => engine.isNodeOfType(nodeID, BlockType.COMBINED)) && engine.isTopic() && !engine.isSubtopic(),
+      engine.selection.getTargets(EntityType.NODE).some((nodeID) => engine.isNodeOfType(nodeID, BlockType.COMBINED)) &&
+      engine.isTopic() &&
+      !engine.isSubtopic(),
   },
   {
     label: 'Divider 2',

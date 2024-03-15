@@ -97,7 +97,7 @@ class DragEngine extends EngineConsumer {
       this.engine.merge.reset();
 
       this.engine.node.redraw(target);
-      await this.engine.node.translate([target], [0, 0]);
+      this.engine.node.translate([target], [0, 0]);
 
       await this.engine.components.diagramHeartbeat?.unlockEntities(Realtime.diagram.awareness.LockEntityType.NODE_MOVEMENT, [target]);
 
@@ -112,7 +112,7 @@ class DragEngine extends EngineConsumer {
 
       this.log.debug(this.log.pending('resetting drag group'), group);
       group.forEach((nodeID) => this.engine.node.redraw(nodeID));
-      await this.engine.node.translate(group, [0, 0]);
+      this.engine.node.translate(group, [0, 0]);
 
       await this.engine.components.diagramHeartbeat?.unlockEntities(Realtime.diagram.awareness.LockEntityType.NODE_MOVEMENT, group);
 

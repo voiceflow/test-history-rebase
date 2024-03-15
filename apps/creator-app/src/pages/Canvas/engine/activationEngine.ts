@@ -1,34 +1,59 @@
 import { CANVAS_ACTIVATION_CLASSNAME } from '@/pages/Canvas/constants';
 
-import { ActivationMode } from './constants';
+import { ActivationMode, EntityType } from './constants';
 import { EngineConsumer } from './utils';
 
 class ActivationEngine extends EngineConsumer {
   log = this.engine.log.child('activation');
 
-  targets = new Set<string>();
-
   mode: ActivationMode | null = null;
+
+  nodeTargets = new Set<string>();
+
+  threadTargets = new Set<string>();
+
+  private getTargetsSet(type: EntityType) {
+    switch (type) {
+      case EntityType.NODE:
+        return this.nodeTargets;
+      case EntityType.THREAD:
+        return this.threadTargets;
+      default:
+        return new Set<string>();
+    }
+  }
 
   /**
    * should be mutually exclusive with hasFocus
    */
-  get hasTargets() {
-    return this.targets.size !== 0;
+  hasTargets(type: EntityType): boolean {
+    return this.getTargetsSet(type).size !== 0;
+  }
+
+  get hasAnyTargets(): boolean {
+    return this.hasTargets(EntityType.NODE) || this.hasTargets(EntityType.THREAD);
   }
 
   /**
    * check to see if the node is activated
    */
-  isTarget(nodeID: string) {
-    return this.targets.has(nodeID);
+  isTarget(type: EntityType, id: string) {
+    return this.getTargetsSet(type).has(id);
+  }
+
+  getTargetsSize(type: EntityType) {
+    return this.getTargetsSet(type).size;
   }
 
   /**
    * returns array of all activated targets
    */
-  getTargets() {
-    return Array.from(this.targets);
+  getTargets(type: EntityType) {
+    return Array.from(this.getTargetsSet(type));
+  }
+
+  getAllTargets() {
+    return [...this.getTargets(EntityType.NODE), ...this.getTargets(EntityType.THREAD)];
   }
 
   /**
@@ -51,16 +76,21 @@ class ActivationEngine extends EngineConsumer {
   }
 
   /**
-   * highlight the node with the given ID
+   * highlight the target with the given ID
    */
-  activate(nodeID: string, mode = this.mode) {
+  activate(type: EntityType, targetID: string, mode = this.mode) {
     this.setMode(mode);
-    this.targets.add(nodeID);
+    this.getTargetsSet(type).add(targetID);
 
-    this.log.debug('activated node', this.log.slug(nodeID));
-    this.engine.node.redraw(nodeID);
+    if (type === EntityType.NODE) {
+      this.log.debug('activated node', this.log.slug(targetID));
 
-    if (this.engine.isRootNode(nodeID)) {
+      this.engine.node.redraw(targetID);
+      this.addStyle();
+    } else if (type === EntityType.THREAD) {
+      this.log.debug('activated thread', this.log.slug(targetID));
+
+      this.engine.comment.forceRedrawThreads([targetID]);
       this.addStyle();
     }
   }
@@ -68,13 +98,20 @@ class ActivationEngine extends EngineConsumer {
   /**
    * remove highlight of the node with the given ID
    */
-  deactivate(nodeID: string) {
-    this.targets.delete(nodeID);
+  deactivate(type: EntityType, targetID: string) {
+    this.getTargetsSet(type).delete(targetID);
 
-    this.log.debug('deactivated node', this.log.slug(nodeID));
-    this.engine.node.redraw(nodeID);
+    if (type === EntityType.NODE) {
+      this.log.debug('deactivated node', this.log.slug(targetID));
 
-    if (!this.hasTargets) {
+      this.engine.node.redraw(targetID);
+    } else if (type === EntityType.THREAD) {
+      this.log.debug('deactivated thread', this.log.slug(targetID));
+
+      this.engine.comment.forceRedrawThreads([targetID]);
+    }
+
+    if (!this.hasAnyTargets) {
       this.mode = null;
       this.removeStyle();
     }
@@ -83,50 +120,56 @@ class ActivationEngine extends EngineConsumer {
   /**
    * toggle the activation of the node with the given ID
    */
-  toggle(nodeID: string, mode = this.mode) {
+  toggleNode(nodeID: string, mode = this.mode) {
     this.setMode(mode);
 
-    if (this.targets.has(nodeID)) {
-      this.deactivate(nodeID);
+    if (this.nodeTargets.has(nodeID)) {
+      this.deactivate(EntityType.NODE, nodeID);
     } else {
-      this.activate(nodeID);
+      this.activate(EntityType.NODE, nodeID);
     }
   }
 
   /**
    * replace the entire set of activated targets
    */
-  replace(targets: string[] = [], mode = this.mode) {
+  replace(type: EntityType, targetIDs: string[] = [], mode = this.mode) {
     this.setMode(mode);
 
-    const unused = new Set(this.targets);
+    const targets = this.getTargetsSet(type);
+    const unused = new Set(targets);
 
-    targets.forEach((nodeID) => {
-      if (!this.targets.has(nodeID)) {
-        this.activate(nodeID);
+    targetIDs.forEach((targetID) => {
+      if (!targets.has(targetID)) {
+        this.activate(type, targetID);
       }
-      unused.delete(nodeID);
+      unused.delete(targetID);
     });
 
-    unused.forEach((nodeID) => this.deactivate(nodeID));
+    unused.forEach((targetID) => this.deactivate(type, targetID));
 
-    if (targets.some((nodeID) => this.engine.isRootNode(nodeID))) {
+    if (this.hasAnyTargets) {
       this.addStyle();
     }
+  }
+
+  clear(type: EntityType) {
+    // if there are any concerns regarding removing from a Set while iterating over it:
+    // https://stackoverflow.com/questions/28306756/is-it-safe-to-delete-elements-in-a-set-while-iterating-with-for-of
+    this.getTargetsSet(type).forEach((nodeID) => this.deactivate(type, nodeID));
+    this.getTargetsSet(type).clear();
   }
 
   /**
    * clears all active nodes
    */
   reset() {
-    // if there are any concerns regarding removing from a Set while iterating over it:
-    // https://stackoverflow.com/questions/28306756/is-it-safe-to-delete-elements-in-a-set-while-iterating-with-for-of
-    if (this.hasTargets) {
-      this.targets.forEach((nodeID) => this.deactivate(nodeID));
-      this.targets.clear();
+    if (!this.hasAnyTargets) return;
 
-      this.log.debug('reset activation');
-    }
+    this.clear(EntityType.NODE);
+    this.clear(EntityType.THREAD);
+
+    this.log.debug('reset activation');
   }
 }
 

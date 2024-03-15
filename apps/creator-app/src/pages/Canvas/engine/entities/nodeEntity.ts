@@ -108,7 +108,7 @@ class NodeEntity extends ResourceEntity<NodeEntityResource<unknown>, NodeInstanc
   }
 
   get isActive() {
-    return this.engine.activation.isTarget(this.nodeID);
+    return this.engine.activation.isTarget(EntityType.NODE, this.nodeID);
   }
 
   get isFocused() {
@@ -116,7 +116,7 @@ class NodeEntity extends ResourceEntity<NodeEntityResource<unknown>, NodeInstanc
   }
 
   get isSelected() {
-    return this.engine.selection.isTarget(this.nodeID);
+    return this.engine.selection.isTarget(EntityType.NODE, this.nodeID);
   }
 
   get isDragging() {

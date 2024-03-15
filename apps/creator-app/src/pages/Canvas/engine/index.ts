@@ -35,6 +35,7 @@ import ActivationEngine from './activationEngine';
 import CanvasTemplateEngine from './canvasTemplateEngine';
 import ClipboardEngine from './clipboardEngine';
 import CommentEngine from './commentEngine';
+import { EntityType } from './constants';
 import DiagramEngine from './diagramEngine';
 import Dispatcher from './dispatcher';
 import DragEngine from './dragEngine';
@@ -217,6 +218,8 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
 
   getPortByID = (portID: string) => this.select(CreatorV2.portByIDSelector, { id: portID });
 
+  getThreadByID = (threadID: string) => this.select(Designer.Thread.selectors.getOneByID)({ id: threadID });
+
   hasLinksByPortID = (portID: string) => this.select(CreatorV2.hasLinksByPortIDSelector, { id: portID });
 
   hasLinksByNodeID = (nodeID: string) => this.select(CreatorV2.hasLinksByNodeIDSelector, { id: nodeID });
@@ -366,6 +369,12 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
   }
 
   registerThread(threadID: string, api: ThreadEntity): void {
+    const thread = this.getThreadByID(threadID);
+
+    if (!thread) {
+      return;
+    }
+
     this.threads.set(threadID, { api });
   }
 
@@ -439,14 +448,23 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
   }
 
   saveActiveLocations(): void {
-    const targets: Nullish<string>[] = [];
-    if (this.selection.hasTargets) {
-      targets.push(...this.selection.getTargets());
+    const nodeTargets: Nullish<string>[] = [];
+    const threadTargets: Nullish<string>[] = [];
+
+    if (this.selection.hasTargets(EntityType.NODE)) {
+      nodeTargets.push(...this.selection.getTargets(EntityType.NODE));
     }
+
     if (this.drag.hasTarget) {
-      targets.push(this.drag.target);
+      nodeTargets.push(this.drag.target);
     }
-    this.node.saveLocations(targets);
+
+    if (this.selection.hasTargets(EntityType.THREAD)) {
+      threadTargets.push(...this.selection.getTargets(EntityType.THREAD));
+    }
+
+    this.node.saveLocations(nodeTargets);
+    this.comment.saveDetachedThreadsLocations(threadTargets);
   }
 
   setActive(
@@ -463,7 +481,7 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
         this.focus.reset();
       }
 
-      this.selection.toggle(nodeID);
+      this.selection.toggleNode(nodeID);
     } else {
       this.focus.set(nodeID);
 
@@ -521,9 +539,9 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
       }
 
       await this.node.removeMany([actionRouteMatch.params.actionNodeID]);
-    } else if (this.activation.hasTargets) {
+    } else if (this.activation.hasTargets(EntityType.NODE)) {
       // keep reference to targets before clearing
-      const activeTargets = this.activation.getTargets();
+      const activeTargets = this.activation.getTargets(EntityType.NODE);
       const isSingleTarget = activeTargets.length === 1;
       const siblingID = isSingleTarget && focusNextChild ? this.getNextAvailableSibling(activeTargets[0]) : null;
 
@@ -545,8 +563,8 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
       const nodeIDs = [nodeID, ...this.node.getAllLinkedOutActionsNodeIDs([nodeID])];
 
       this.clipboard.copy(nodeIDs, options);
-    } else if (this.activation.hasTargets) {
-      const targets = this.activation.getTargets();
+    } else if (this.activation.hasTargets(EntityType.NODE)) {
+      const targets = this.activation.getTargets(EntityType.NODE);
       const nodeIDs = [...targets, ...this.node.getAllLinkedOutActionsNodeIDs(targets)];
 
       this.clipboard.copy(nodeIDs, options);
@@ -606,13 +624,13 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
       this.setActive(nodeID, { isSelection: !open, skipURLSync });
     }
 
-    this.comment.forceRedrawThreads();
+    this.comment.forceRedrawAllThreads();
     this.log.info(this.log.success(`focused on the ${nodeID} node`));
   }
 
   centerNode(nodeID: string, { animated = !this.comment.isModeActive }: { animated?: boolean } = {}): void {
     this.node.center(nodeID, animated);
-    this.comment.forceRedrawThreads();
+    this.comment.forceRedrawAllThreads();
     this.log.info(this.log.success(`centered on the ${nodeID} node`));
   }
 
@@ -637,7 +655,7 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
   selectAll() {
     const topNodeIDs = [...this.getRootNodeIDs(), ...this.getMarkupNodeIDs()];
 
-    this.selection.replace(topNodeIDs);
+    this.selection.replaceNode(topNodeIDs);
   }
 
   center([centerX, centerY]: Point, animate = true): void {
@@ -656,7 +674,7 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
   }
 
   private getCreateDiagramFromSelectionData() {
-    const targets = this.activation.getTargets();
+    const targets = this.activation.getTargets(EntityType.NODE);
     const nodeIDs = [...targets, ...this.node.getAllLinkedOutActionsNodeIDs(targets)];
 
     return {

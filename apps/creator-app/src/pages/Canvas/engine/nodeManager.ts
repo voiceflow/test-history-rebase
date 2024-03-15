@@ -22,6 +22,7 @@ import { Coords } from '@/utils/geometry';
 import { centerNodeGroup, getNodesGroupCenter } from '@/utils/node';
 import { isMarkupBlockType, isMarkupOrCombinedBlockType } from '@/utils/typeGuards';
 
+import { EntityType } from './constants';
 import NodeEntity from './entities/nodeEntity';
 import { createPortRemap, DUPLICATE_OFFSET, EngineConsumer, nodeDescriptorFactory } from './utils';
 
@@ -264,7 +265,9 @@ class NodeManager extends EngineConsumer {
       );
 
       this.redrawNestedLinks(targetParentNodeID);
+      this.redrawNestedLinks(sourceParentNodeID);
       this.redrawNestedThreads(targetParentNodeID);
+      this.redrawNestedThreads(sourceParentNodeID);
     },
 
     reorderSteps: async (parentNodeID: string, stepID: string, index: number): Promise<void> => {
@@ -325,7 +328,9 @@ class NodeManager extends EngineConsumer {
         );
       }
 
+      this.redrawNestedLinks(parentNode.id);
       this.redrawNestedLinks(node.parentNode!);
+      this.redrawNestedThreads(parentNode.id);
       this.redrawNestedThreads(node.parentNode!);
     },
 
@@ -351,7 +356,7 @@ class NodeManager extends EngineConsumer {
       const removedIDs = new Set<string>();
 
       nodes.forEach((node) => {
-        this.engine.activation.deactivate(node.id);
+        this.engine.activation.deactivate(EntityType.NODE, node.id);
         [...node.combinedNodes, node.id].forEach((childNodeID) => removedIDs.add(childNodeID));
       });
 
@@ -426,7 +431,7 @@ class NodeManager extends EngineConsumer {
    * check to see if a node is active
    */
   isActive(nodeID: string): boolean {
-    return this.engine.activation.hasTargets && this.engine.activation.isTarget(nodeID);
+    return this.engine.activation.hasTargets(EntityType.NODE) && this.engine.activation.isTarget(EntityType.NODE, nodeID);
   }
 
   /**
@@ -572,9 +577,11 @@ class NodeManager extends EngineConsumer {
    * imports a snapshot containing multiple nodes, ports and links to the canvas
    */
   async importSnapshot(entities: Realtime.EntityMap, coords: Coords, diagramID?: string): Promise<void> {
+    if (!this.engine.canvas) return;
+
     this.log.debug(this.log.pending('adding multiple entities from snapshot'), entities);
 
-    const point = this.engine.canvas!.fromCoords(coords);
+    const point = this.engine.canvas.fromCoords(coords);
     const centeredEntities = centerNodeGroup(entities, point);
 
     await this.dispatch(History.transaction(() => this.internal.importSnapshot(centeredEntities, diagramID)));
@@ -613,7 +620,7 @@ class NodeManager extends EngineConsumer {
     if (parentNodes.length === 1) {
       this.engine.setActive(parentNodes[0]);
     } else {
-      this.engine.selection.replace(parentNodes);
+      this.engine.selection.replaceNode(parentNodes);
     }
   }
 
@@ -844,7 +851,7 @@ class NodeManager extends EngineConsumer {
 
   // location / rendering methods
 
-  async translate(nodeIDs: string[], movement: Pair<number>): Promise<void> {
+  translate(nodeIDs: string[], movement: Pair<number>) {
     const activeNodeIDs = nodeIDs.filter((nodeID) => this.engine.nodes.has(nodeID));
     const origins = activeNodeIDs.map<Point>((nodeID) => {
       const node = this.engine.nodes.get(nodeID)!;
@@ -852,7 +859,7 @@ class NodeManager extends EngineConsumer {
       return [node.x, node.y];
     });
 
-    await this.internal.translateMany(activeNodeIDs, movement, origins);
+    this.internal.translateMany(activeNodeIDs, movement, origins);
   }
 
   async saveLocations(nodeIDs: Nullish<string>[]): Promise<void> {
@@ -945,27 +952,49 @@ class NodeManager extends EngineConsumer {
   }
 
   translateThreads(nodeID: string, movement: Pair<number>): void {
-    if (this.engine.comment.isModeActive || this.engine.comment.isVisible) {
-      const movementVector = this.engine.canvas!.toVector(movement);
-      this.engine.getThreadIDsByNodeID(nodeID).forEach((threadID) => this.engine.comment.translateThread(threadID, movementVector));
-    }
+    if (!this.engine.comment.isModeActive && !this.engine.comment.isVisible) return;
+
+    this.engine.getThreadIDsByNodeID(nodeID).forEach((threadID) => this.engine.comment.translateThread(threadID, movement));
+  }
+
+  translateDetachedThreads(threadIDs: string[], movement: Pair<number>): void {
+    if (!this.engine.comment.isModeActive && !this.engine.comment.isVisible) return;
+
+    this.engine.comment.translateDetachedThreads(threadIDs, movement);
   }
 
   async drag(nodeID: string, movement: Pair<number>, { translateFirst }: { translateFirst?: boolean } = {}): Promise<void> {
-    if (this.engine.selection.isOneOfManyTargets(nodeID)) {
-      const targets = this.engine.selection.getTargets();
+    if (this.engine.selection.isOneOfAnyTargets(nodeID)) {
+      const nodeTargets = this.engine.selection.getTargets(EntityType.NODE);
+      const threadTargets = this.engine.selection.getTargets(EntityType.THREAD);
 
-      await (translateFirst ? this.translate(targets, movement) : this.engine.drag.setGroup(targets));
-      await (translateFirst ? this.engine.drag.setGroup(targets) : this.translate(targets, movement));
+      if (translateFirst) {
+        this.translate(nodeTargets, movement);
+        this.translateDetachedThreads(threadTargets, movement);
+
+        await this.engine.drag.setGroup(nodeTargets);
+      } else {
+        await this.engine.drag.setGroup(nodeTargets);
+
+        this.translate(nodeTargets, movement);
+        this.translateDetachedThreads(threadTargets, movement);
+      }
     } else if (this.engine.transformation.isActive && !this.engine.focus.isTarget(nodeID)) {
       this.engine.focus.reset();
     } else {
-      if (!this.engine.selection.isTarget(nodeID)) {
+      if (!this.engine.selection.isTarget(EntityType.NODE, nodeID)) {
         this.engine.selection.reset();
       }
 
-      await (translateFirst ? this.translate([nodeID], movement) : this.engine.drag.setTarget(nodeID));
-      await (translateFirst ? this.engine.drag.setTarget(nodeID) : this.translate([nodeID], movement));
+      if (translateFirst) {
+        this.translate([nodeID], movement);
+
+        await this.engine.drag.setTarget(nodeID);
+      } else {
+        await this.engine.drag.setTarget(nodeID);
+
+        this.translate([nodeID], movement);
+      }
 
       this.engine.merge.updateCandidates();
     }
@@ -975,6 +1004,7 @@ class NodeManager extends EngineConsumer {
     this.engine.saveActiveLocations();
 
     await this.engine.drag.reset();
+
     this.engine.transformation.reinitialize();
   }
 
@@ -1015,7 +1045,9 @@ class NodeManager extends EngineConsumer {
   }
 
   redrawThreads(nodeID: string): void {
-    this.engine.getThreadIDsByNodeID(nodeID).forEach((threadID) => this.engine.comment.redrawThread(threadID));
+    const threadIDs = this.engine.getThreadIDsByNodeID(nodeID);
+
+    this.engine.comment.forceRedrawThreads(threadIDs);
   }
 
   redrawNestedThreads(parentNodeID: Nullish<string>): void {

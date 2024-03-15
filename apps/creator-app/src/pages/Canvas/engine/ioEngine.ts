@@ -32,6 +32,10 @@ class IOEngine extends EngineConsumer<{ [OverlayType.CURSOR_V2]: IORealtimeCurso
     this.engine.node.internal.translateManyOnOrigins(nodeIDs, movement, origins);
   };
 
+  private onThreadDragMany = ({ threadIDs, movement, origins }: IO.ThreadDragManyBroadcastData) => {
+    this.engine.comment.translateManyOnOrigins(threadIDs, movement, origins);
+  };
+
   join(io: IOClient, versionID: string, diagramID: string): void {
     this.io = io;
     this.versionID = versionID;
@@ -42,6 +46,7 @@ class IOEngine extends EngineConsumer<{ [OverlayType.CURSOR_V2]: IORealtimeCurso
 
     this.io.on(IO.Event.CURSOR_MOVE, this.onCursorMove);
     this.io.on(IO.Event.NODE_DRAG_MANY, this.onNodeDragMany);
+    this.io.on(IO.Event.THREAD_DRAG_MANY, this.onThreadDragMany);
 
     this.io.emit(IO.Event.DIAGRAM_JOIN, { versionID, diagramID });
   }
@@ -51,6 +56,7 @@ class IOEngine extends EngineConsumer<{ [OverlayType.CURSOR_V2]: IORealtimeCurso
 
     this.io.off(IO.Event.CURSOR_MOVE, this.onCursorMove);
     this.io.off(IO.Event.NODE_DRAG_MANY, this.onNodeDragMany);
+    this.io.off(IO.Event.THREAD_DRAG_MANY, this.onThreadDragMany);
 
     this.io.emit(IO.Event.DIAGRAM_LEAVE, { versionID: this.versionID, diagramID: this.diagramID });
     this.io.close();
@@ -84,6 +90,20 @@ class IOEngine extends EngineConsumer<{ [OverlayType.CURSOR_V2]: IORealtimeCurso
     };
 
     this.io.emit(IO.Event.NODE_DRAG_MANY, data);
+  }
+
+  threadDragMany(threadIDs: string[], movement: Pair<number>, origins: Point[]) {
+    if (!this.io || !this.diagramID || !this.versionID) return;
+
+    const data: IO.ThreadDragManyUserData = {
+      origins,
+      movement,
+      versionID: this.versionID,
+      diagramID: this.diagramID,
+      threadIDs,
+    };
+
+    this.io.emit(IO.Event.THREAD_DRAG_MANY, data);
   }
 
   panViewport(movement: Pair<number>): void {

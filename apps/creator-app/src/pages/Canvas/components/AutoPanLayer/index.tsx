@@ -11,6 +11,8 @@ import THEME from '@/styles/theme';
 import { HEADER_HEIGHT, SIDEBAR_WIDTH } from '@/styles/theme/page';
 import { applyMinMaxCap } from '@/utils/math';
 
+import { EntityType } from '../../engine/constants';
+
 const AUTO_PAN_PIXEL_HOP_SIZE = 15;
 const SPEED_MULTIPLIER_CAP = 1;
 
@@ -71,7 +73,7 @@ const AutoPanLayer: React.FC = () => {
 
     const syncBlocksAndCursor = () => {
       const isDrawingLink = engine.linkCreation.isDrawing;
-      const targets = engine.selection.getTargets();
+      const targets = engine.selection.getTargets(EntityType.NODE);
       const soloTarget = engine.drag.target;
       const draggingNodeIDs = soloTarget ? [soloTarget] : targets;
       const draggableNode = draggingNodeIDs[0];

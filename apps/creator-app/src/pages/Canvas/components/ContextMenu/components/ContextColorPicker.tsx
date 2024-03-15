@@ -5,6 +5,7 @@ import * as CreatorV2 from '@/ducks/creatorV2';
 import { useSelector } from '@/hooks';
 import { CanvasColorPicker } from '@/pages/Canvas/components/CanvasColorPicker';
 import { EngineContext } from '@/pages/Canvas/contexts';
+import { EntityType } from '@/pages/Canvas/engine/constants';
 
 interface ContextColorPickerProps {
   defaultColorScheme?: COLOR_PICKER_CONSTANTS.ColorScheme;
@@ -16,7 +17,7 @@ export const ContextColorPicker: React.FC<ContextColorPickerProps> = ({
   standardColor = COLOR_PICKER_CONSTANTS.BLOCK_STANDARD_COLOR,
 }) => {
   const engine = React.useContext(EngineContext)!;
-  const targets = engine.activation.getTargets();
+  const targets = engine.activation.getTargets(EntityType.NODE);
   const color = useSelector(CreatorV2.blockColorSelector, { id: targets[0] }) || standardColor;
 
   const onChange = React.useCallback(

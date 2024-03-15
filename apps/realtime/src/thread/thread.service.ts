@@ -3,12 +3,13 @@ import { Primary } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
-import type { ORMMutateOptions, PKOrEntity, ThreadCommentEntity, ThreadEntity } from '@voiceflow/orm-designer';
-import { ThreadORM } from '@voiceflow/orm-designer';
+import type { ORMMutateOptions, PKOrEntity, ThreadCommentEntity } from '@voiceflow/orm-designer';
+import { ThreadEntity, ThreadORM } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 import { LegacyVersionActionContext } from '@voiceflow/sdk-logux-designer/build/types';
 
 import { MutableService } from '@/common';
+import { PatchOneData } from '@/common/types';
 import { legacyVersionBroadcastContext, toEntityIDs } from '@/common/utils';
 
 import { ThreadCreateData } from './thread.interface';
@@ -106,6 +107,16 @@ export class ThreadService extends MutableService<ThreadORM> {
     return result.add.threads;
   }
 
+  /* Patch */
+
+  async patchOne(id: PKOrEntity<ThreadEntity>, patch: PatchOneData<ThreadORM>, options?: ORMMutateOptions) {
+    if (patch.nodeID === null) {
+      await this.orm.em.qb(ThreadEntity).update({ nodeID: null }).where({ id }).execute();
+    }
+
+    await super.patchOne(id, patch, options);
+  }
+
   /* Delete */
 
   async collectRelationsToDelete(threads: PKOrEntity<ThreadEntity>[]) {
@@ -190,5 +201,9 @@ export class ThreadService extends MutableService<ThreadORM> {
     const result = await this.deleteManyByDiagramsAndSync(diagramIDs);
 
     await this.broadcastDeleteMany(authMeta, context, result);
+  }
+
+  async moveMany(data: Record<string, [number, number]>) {
+    await Promise.all(Object.entries(data).map(([id, position]) => this.patchOne(this.threadSerializer.decodeID(id), { position })));
   }
 }

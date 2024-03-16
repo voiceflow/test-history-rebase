@@ -33,9 +33,18 @@ export const AI_MODEL_PARAMS: Record<AIModel, AIModelParam> = {
   },
 
   // Anthropic
-  [AIModel.CLAUDE_INSTANT_V1]: DEFAULT_AI_MODEL_PARAM,
-  [AIModel.CLAUDE_V1]: DEFAULT_AI_MODEL_PARAM,
-  [AIModel.CLAUDE_V2]: DEFAULT_AI_MODEL_PARAM,
+  [AIModel.CLAUDE_INSTANT_V1]: {
+    ...DEFAULT_AI_MODEL_PARAM,
+    hasSystemPrompt: false,
+  },
+  [AIModel.CLAUDE_V1]: {
+    ...DEFAULT_AI_MODEL_PARAM,
+    hasSystemPrompt: false,
+  },
+  [AIModel.CLAUDE_V2]: {
+    ...DEFAULT_AI_MODEL_PARAM,
+    hasSystemPrompt: false,
+  },
   [AIModel.CLAUDE_3_HAIKU]: DEFAULT_AI_MODEL_PARAM,
   [AIModel.CLAUDE_3_SONNET]: DEFAULT_AI_MODEL_PARAM,
   [AIModel.CLAUDE_3_OPUS]: {

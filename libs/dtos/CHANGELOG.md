@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.44.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.44.2...@voiceflow/dtos@1.44.3) (2024-03-16)
+
+### Bug Fixes
+
+* remove system prompt for anthropic models (COR-1679) ([#7887](https://github.com/voiceflow/creator-app/issues/7887)) ([29a7912](https://github.com/voiceflow/creator-app/commit/29a7912801a20de7ba1ce1e373be77c91b83f224))
+
 ## [1.44.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.44.1...@voiceflow/dtos@1.44.2) (2024-03-15)
 
 ### Bug Fixes

@@ -38,9 +38,9 @@ const subscriptionAdapter = createMultiAdapter<Realtime.Identity.Subscription, S
     const claude1 = findBooleanEntitlement(subscriptionEntitlements, 'feat-model-claude-1');
     const claude2 = findBooleanEntitlement(subscriptionEntitlements, 'feat-model-claude-2');
     const claudeInstant = findBooleanEntitlement(subscriptionEntitlements, 'feat-model-claude-instant');
-    const claude3Haiku = findBooleanEntitlement(subscriptionEntitlements, 'feat-model-claude-3-haiku');
-    const claude3Sonnet = findBooleanEntitlement(subscriptionEntitlements, 'feat-model-claude-3-sonnet');
-    const claude3Opus = findBooleanEntitlement(subscriptionEntitlements, 'feat-model-claude-3-opus');
+    const claude3Haiku = findBooleanEntitlement(subscriptionEntitlements, 'feat-model-claude-haiku');
+    const claude3Sonnet = findBooleanEntitlement(subscriptionEntitlements, 'feat-model-claude-sonnet');
+    const claude3Opus = findBooleanEntitlement(subscriptionEntitlements, 'feat-model-claude-opus');
     const gpt = findBooleanEntitlement(subscriptionEntitlements, 'feat-model-gpt-3-5-turbo');
     const gpt4 = findBooleanEntitlement(subscriptionEntitlements, 'feat-model-gpt-4');
     const gpt4Turbo = findBooleanEntitlement(subscriptionEntitlements, 'feat-model-gpt-4-turbo');
@@ -59,7 +59,7 @@ const subscriptionAdapter = createMultiAdapter<Realtime.Identity.Subscription, S
       id,
       customerID,
       billingPeriodUnit: getBillingPeriodUnit(billingPeriodUnit),
-      editorSeats: planItem?.quantity ?? 1,
+      editorSeats: editorSeatsLimit ?? 1,
       pricePerEditor: planItem?.unitPrice ? planItem.unitPrice / 100 : 0,
       plan: metaData?.downgradedFromTrial ? PlanType.PRO : plan,
       nextBillingDate: nextBillingTimestamp ? Realtime.Utils.date.to_DD_MMM_YYYY(new Date(nextBillingTimestamp)) : null,

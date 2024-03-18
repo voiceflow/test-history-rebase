@@ -1,8 +1,8 @@
 import { AIModel } from '@voiceflow/dtos';
 
-import { AnthropicAIModel } from './anthropic.abstract';
+import { AnthropicTextCompletionAIModel } from './anthropic-text-completion.abstract';
 
-export class ClaudeV2 extends AnthropicAIModel {
+export class ClaudeV2 extends AnthropicTextCompletionAIModel {
   TOKEN_MULTIPLIER = 10;
 
   modelRef = AIModel.CLAUDE_V2;

@@ -5,6 +5,9 @@ import { ENVIRONMENT_VARIABLES } from '@voiceflow/nestjs-env';
 
 import type { EnvironmentVariables } from '@/app.env';
 
+import { Claude3Haiku } from './anthropic/claude_3_haiku.client';
+import { Claude3Opus } from './anthropic/claude_3_opus.client';
+import { Claude3Sonnet } from './anthropic/claude_3_sonnet.client';
 import { ClaudeV1 } from './anthropic/claude_v1.client';
 import { ClaudeV1Instant } from './anthropic/claude_v1_instant.client';
 import { ClaudeV2 } from './anthropic/claude_v2.client';
@@ -35,6 +38,9 @@ export class LLMService {
       [AIModel.CLAUDE_V1]: ClaudeV1,
       [AIModel.CLAUDE_V2]: ClaudeV2,
       [AIModel.CLAUDE_INSTANT_V1]: ClaudeV1Instant,
+      [AIModel.CLAUDE_3_HAIKU]: Claude3Haiku,
+      [AIModel.CLAUDE_3_OPUS]: Claude3Opus,
+      [AIModel.CLAUDE_3_SONNET]: Claude3Sonnet,
     };
   }
 

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.81.8](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.81.7...@voiceflow/ml-gateway@1.81.8) (2024-03-18)
+
+### Bug Fixes
+
+* add claude 3 to ml-gateway (PL-870) ([#7873](https://github.com/voiceflow/creator-app/issues/7873)) ([83c10b8](https://github.com/voiceflow/creator-app/commit/83c10b8134a0a4c82181eb965fb24120f5b2a525))
+
 ## [1.81.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.81.6...@voiceflow/ml-gateway@1.81.7) (2024-03-16)
 
 **Note:** Version bump only for package @voiceflow/ml-gateway

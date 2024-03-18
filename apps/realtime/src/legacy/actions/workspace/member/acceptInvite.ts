@@ -1,4 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
+import { Actions } from '@voiceflow/sdk-logux-designer';
 import { terminateResend, unrestrictedAccess } from '@voiceflow/socket-utils';
 import { AxiosError } from 'axios';
 
@@ -16,7 +17,12 @@ class AcceptWorkspaceInvite extends AbstractActionControl<Realtime.workspace.mem
 
     try {
       const workspaceID = await this.services.workspace.member.acceptInvite(creatorID, payload.invite);
-      const dbWorkspace = await this.services.workspace.get(workspaceID);
+
+      const [dbWorkspace, organizations] = await Promise.all([
+        this.services.workspace.get(workspaceID),
+        this.services.organization.getAll(creatorID),
+      ]);
+
       const workspace = Realtime.Adapters.workspaceAdapter.fromDB(dbWorkspace);
 
       // broadcast new workspace and updated member list
@@ -24,7 +30,9 @@ class AcceptWorkspaceInvite extends AbstractActionControl<Realtime.workspace.mem
         this.server.process(Realtime.workspace.crud.add({ key: workspaceID, value: workspace }), {
           channel: Realtime.Channels.creator.build({ creatorID: ctx.userId }),
         }),
-
+        this.server.process(Actions.Organization.Replace({ data: organizations }), {
+          channel: Realtime.Channels.creator.build({ creatorID: ctx.userId }),
+        }),
         this.server.processAs(creatorID, clientID, Realtime.workspace.member.replace({ members: dbWorkspace.members, workspaceID })),
       ]);
 

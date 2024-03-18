@@ -1,8 +1,8 @@
 import { AIModel } from '@voiceflow/dtos';
 
-import { AnthropicAIModel } from './anthropic.abstract';
+import { AnthropicTextCompletionAIModel } from './anthropic-text-completion.abstract';
 
-export class ClaudeV1Instant extends AnthropicAIModel {
+export class ClaudeV1Instant extends AnthropicTextCompletionAIModel {
   modelRef = AIModel.CLAUDE_INSTANT_V1;
 
   anthropicModel = 'claude-instant-1.2';

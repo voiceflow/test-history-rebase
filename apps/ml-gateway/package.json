@@ -38,7 +38,7 @@
     "types": "yarn g:tsc --project tsconfig.build.json --noEmit --skipLibCheck"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.5.10",
+    "@anthropic-ai/sdk": "^0.18.0",
     "@google-cloud/firestore": "6.5.0",
     "@google-cloud/pubsub": "3.5.2",
     "@liaoliaots/nestjs-redis": "9.0.5",

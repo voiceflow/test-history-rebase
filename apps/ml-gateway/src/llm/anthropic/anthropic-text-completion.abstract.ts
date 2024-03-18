@@ -6,14 +6,17 @@ import { LLMModel } from '../llm-model.abstract';
 import { CompletionOutput } from '../llm-model.dto';
 import { AnthropicConfig } from './anthropic.interface';
 
-export abstract class AnthropicAIModel extends LLMModel {
-  private logger = new Logger(AnthropicAIModel.name);
+/**
+ * @deprecated this is a legacy format, anthropic is transitioning to the messages API
+ */
+export abstract class AnthropicTextCompletionAIModel extends LLMModel {
+  private logger = new Logger(AnthropicTextCompletionAIModel.name);
 
   protected abstract anthropicModel: string;
 
   protected readonly client: Client;
 
-  protected maxTokens = 128;
+  protected defaultMaxTokens = 128;
 
   constructor(config: Partial<AnthropicConfig>) {
     super(config);
@@ -56,9 +59,9 @@ export abstract class AnthropicAIModel extends LLMModel {
       }
       if (i === 1 && topSystem) {
         // add the system prompt to the first message
-        prompt += `${AnthropicAIModel.RoleMap[messages[i].role]} ${topSystem}\n${messages[i].content}`;
+        prompt += `${AnthropicTextCompletionAIModel.RoleMap[messages[i].role]} ${topSystem}\n${messages[i].content}`;
       } else {
-        prompt += `${AnthropicAIModel.RoleMap[messages[i].role]} ${messages[i].content}`;
+        prompt += `${AnthropicTextCompletionAIModel.RoleMap[messages[i].role]} ${messages[i].content}`;
       }
     }
     // claude prompt must end with AI prompt
@@ -71,7 +74,7 @@ export abstract class AnthropicAIModel extends LLMModel {
         prompt,
         model: this.anthropicModel,
         temperature: params.temperature,
-        max_tokens_to_sample: this.normalizeMaxTokens(params.maxTokens) || this.maxTokens,
+        max_tokens_to_sample: this.normalizeMaxTokens(params.maxTokens) || this.defaultMaxTokens,
         stop_sequences: [HUMAN_PROMPT, ...(params.stop || [])],
       })
       .catch((error: unknown) => {

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.296.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.295.3...@voiceflow/realtime@1.296.0) (2024-03-18)
+
+### Features
+
+* refresh organizations on accept invite (COR-1670) ([#7884](https://github.com/voiceflow/creator-app/issues/7884)) ([7e6eef8](https://github.com/voiceflow/creator-app/commit/7e6eef8e7ce926cfffd87e23166b3954f7594f3c))
+
 ## [1.295.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.295.2...@voiceflow/realtime@1.295.3) (2024-03-16)
 
 **Note:** Version bump only for package @voiceflow/realtime

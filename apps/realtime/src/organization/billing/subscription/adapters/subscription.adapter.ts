@@ -27,12 +27,14 @@ const subscriptionAdapter = createMultiAdapter<Realtime.Identity.Subscription, S
     subscriptionEntitlements,
     paymentSource,
     customerID,
+    trialEnd: trialEndAt,
+    cancelledAt,
   }) => {
     const planItem = findPlanItem(subscriptionItems);
     const trialEnd = planItem?.trialEnd;
 
     const plan = getPlanFromPriceID(planItem?.itemPriceID);
-    const isTrial = isChargebeeTrial(planItem, metaData);
+    const isTrial = isChargebeeTrial(status, metaData, trialEndAt, cancelledAt);
 
     const samlSSO = findBooleanEntitlement(subscriptionEntitlements, 'feat-saml-sso');
     const claude1 = findBooleanEntitlement(subscriptionEntitlements, 'feat-model-claude-1');

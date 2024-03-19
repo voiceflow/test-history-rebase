@@ -8,7 +8,7 @@ export const DocumentStatusLoading: React.FC<ICMSKnowledgeBaseTableStatusCell> =
     placement="top"
     width={165}
     referenceElement={({ onToggle, ref }) => (
-      <Box onMouseEnter={onToggle} onMouseLeave={onToggle} ref={ref}>
+      <Box onMouseEnter={onToggle} onMouseLeave={onToggle} ref={ref} pl={4}>
         <LoadingSpinner size="medium" variant="dark" />
       </Box>
     )}

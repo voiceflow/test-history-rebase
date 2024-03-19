@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.58.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.57.22...@voiceflow/platform-config@1.58.0) (2024-03-19)
+
+### Features
+
+* use new loading pages [bugfix] (COR-1181) ([#7871](https://github.com/voiceflow/creator-app/issues/7871)) ([473fb42](https://github.com/voiceflow/creator-app/commit/473fb425fe0511669af76c983c9964e89d08986b))
+
 ## [1.57.22](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.57.21...@voiceflow/platform-config@1.57.22) (2024-03-16)
 
 **Note:** Version bump only for package @voiceflow/platform-config

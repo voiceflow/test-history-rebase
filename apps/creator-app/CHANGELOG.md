@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1436.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1435.1...@voiceflow/creator-app@1.1436.0) (2024-03-19)
+
+### Features
+
+* update ui library (DX-1601) ([#7894](https://github.com/voiceflow/creator-app/issues/7894)) ([24e1274](https://github.com/voiceflow/creator-app/commit/24e1274d40da2115329048a168453b8973db26b9))
+
 ## [1.1435.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1435.0...@voiceflow/creator-app@1.1435.1) (2024-03-19)
 
 **Note:** Version bump only for package @voiceflow/creator-app

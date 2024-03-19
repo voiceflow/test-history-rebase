@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.299.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.298.0...@voiceflow/realtime@1.299.0) (2024-03-19)
+
+### Features
+
+* fix enterprise trial (COR-1710) ([#7892](https://github.com/voiceflow/creator-app/issues/7892)) ([bf6a55b](https://github.com/voiceflow/creator-app/commit/bf6a55b3072ce2a20adc5ad12792e265b16f09a4)), closes [/github.com/voiceflow/platform/blob/87fda76650b048108da2eaa4cf11069a2c602670/apps/billing/src/chargebee-webhook/events/subscription-events.service.ts#L78-L83](https://github.com//github.com/voiceflow/platform/blob/87fda76650b048108da2eaa4cf11069a2c602670/apps/billing/src/chargebee-webhook/events/subscription-events.service.ts/issues/L78-L83)
+
 # [1.298.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.297.0...@voiceflow/realtime@1.298.0) (2024-03-19)
 
 ### Features

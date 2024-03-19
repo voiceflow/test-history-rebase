@@ -98,7 +98,7 @@ export const KBImportSitemapPreview: React.FC<IKBImportSitemapPreview> = ({
         <Box mx={24} direction="column" gap={6} grow={1}>
           <KBFieldLabel>URL(s)</KBFieldLabel>
 
-          <Box pb={24} grow={1}>
+          <Box pb={24} direction="column" grow={1}>
             <TextArea.AutoSize
               {...input.attributes}
               caption={input.errored ? undefined : `${pluralize('URL', count, true)} added.`}

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.307.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.306.0...@voiceflow/ui@1.307.0) (2024-03-19)
+
+### Features
+
+* use new loading pages [bugfix] (COR-1181) ([#7871](https://github.com/voiceflow/creator-app/issues/7871)) ([473fb42](https://github.com/voiceflow/creator-app/commit/473fb425fe0511669af76c983c9964e89d08986b))
+
 # [1.306.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.305.1...@voiceflow/ui@1.306.0) (2024-03-15)
 
 ### Features

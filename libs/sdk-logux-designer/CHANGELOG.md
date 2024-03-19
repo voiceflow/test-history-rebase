@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.38.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.37.4...@voiceflow/sdk-logux-designer@2.38.0) (2024-03-19)
+
+### Features
+
+* intent classification settings and refactored training status system (COR-1413) ([#7859](https://github.com/voiceflow/creator-app/issues/7859)) ([f2b2c00](https://github.com/voiceflow/creator-app/commit/f2b2c0091ad0951a6224c87e16e8a2c92819fe7a))
+
 ## [2.37.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.37.3...@voiceflow/sdk-logux-designer@2.37.4) (2024-03-19)
 
 **Note:** Version bump only for package @voiceflow/sdk-logux-designer

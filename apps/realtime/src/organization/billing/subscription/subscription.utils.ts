@@ -79,8 +79,15 @@ export const getBillingPeriodUnit = (unit: string | undefined) => {
   return ChargebeeBillingPeriodUnit.MONTH;
 };
 
-export const isChargebeeTrial = (planItem: Realtime.Identity.SubscriptionItem | undefined, metaData: Record<string, unknown> | undefined) => {
-  return planItem?.itemPriceID.includes('trial') || metaData?.downgradedFromTrial;
+export const isChargebeeTrial = (
+  status: string,
+  metaData: Record<string, unknown> | undefined,
+  trialEndAt: number | undefined,
+  cancelledAt: number | undefined
+) => {
+  const cancelledByTrialExpiration = status === ChargebeeStatus.CANCELLED && cancelledAt && cancelledAt === trialEndAt;
+
+  return status === ChargebeeStatus.IN_TRIAL || metaData?.downgradedFromTrial || cancelledByTrialExpiration;
 };
 
 export const findBooleanEntitlement = (entitlements: Realtime.Identity.SubscriptionEntitlement[] | undefined, itemID: string) => {

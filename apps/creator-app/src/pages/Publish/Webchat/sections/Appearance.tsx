@@ -15,6 +15,7 @@ import * as S from './styles';
 
 export const AppearanceSection: React.FC = () => {
   const now = React.useMemo(() => Date.now(), []);
+
   const config = useSelector(VersionV2.active.voiceflow.chat.publishingSelector);
   const updateConfig = useDispatch(VersionV2.voiceflow.chat.patchActiveAndLivePublishing);
 

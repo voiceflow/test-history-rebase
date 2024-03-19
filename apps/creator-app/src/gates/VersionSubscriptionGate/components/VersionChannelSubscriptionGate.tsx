@@ -1,6 +1,6 @@
 import React from 'react';
 
-import LoadingGate from '@/components/LoadingGate';
+import { LoadingGate } from '@/components/LoadingGate';
 import * as Session from '@/ducks/session';
 import { useSelector, useVersionSubscription } from '@/hooks';
 
@@ -20,9 +20,8 @@ const VersionChannelSubscriptionGate: React.FC<VersionChannelSubscriptionGatePro
 
   return (
     <LoadingGate
-      label="Environment"
       isLoaded={isSubscribed && versionID === activeVersionID}
-      component={WorkspaceOrProjectLoader}
+      loader={<WorkspaceOrProjectLoader />}
       internalName={VersionChannelSubscriptionGate.name}
     >
       {children}

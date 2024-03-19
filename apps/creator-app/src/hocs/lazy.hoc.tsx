@@ -1,5 +1,5 @@
 import { Crypto } from '@voiceflow/common';
-import { FullSpinner } from '@voiceflow/ui';
+import { TabLoader } from '@voiceflow/ui-next';
 import React from 'react';
 
 const getForceRefreshKey = (hash: string) => `component-has-force-refreshed:${hash}`;
@@ -31,7 +31,7 @@ export const lazy = <T extends React.ComponentType<any>>({ name, factory }: ILaz
       sessionStorage.setItem(forceRefreshKey, '1');
       window.location.reload();
 
-      return { default: FullSpinner as React.ComponentType<any> };
+      return { default: TabLoader as React.ComponentType<any> };
     }
   });
 

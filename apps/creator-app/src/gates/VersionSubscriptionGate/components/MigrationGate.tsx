@@ -2,7 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
 import React from 'react';
 
-import LoadingGate from '@/components/LoadingGate';
+import { LoadingGate } from '@/components/LoadingGate';
 import * as Router from '@/ducks/router';
 import * as Version from '@/ducks/versionV2';
 import { useDispatch, useRealtimeClient } from '@/hooks';
@@ -118,7 +118,7 @@ const MigrationGate: React.FC<MigrationGateProps> = ({ versionID, context, setCo
   }
 
   return (
-    <LoadingGate label="Migration" load={loadContext} isLoaded={!!context} component={WorkspaceOrProjectLoader} internalName={MigrationGate.name}>
+    <LoadingGate load={loadContext} isLoaded={!!context} loader={<WorkspaceOrProjectLoader />} internalName={MigrationGate.name}>
       {children}
     </LoadingGate>
   );

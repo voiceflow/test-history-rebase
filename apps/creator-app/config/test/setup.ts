@@ -10,6 +10,6 @@ import { mockRequire } from './mock-require';
 
 vi.mock('murmurhash-wasm', () => ({}));
 
-mockRequire('react-lottie-player', () => ({ default: () => null }));
+mockRequire('lottie-web', () => ({ default: () => null }));
 
 createFetchMock(vi).enableMocks();

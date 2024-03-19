@@ -2,7 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Dropdown, Menu, OverflowTippyTooltip, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import { vfLogo, voiceflowLogomarkDark } from '@/assets';
+import { vfLogo, voiceflowLogomark } from '@/assets';
 import { Permission } from '@/constants/permissions';
 import * as Organization from '@/ducks/organization';
 import * as Router from '@/ducks/router';
@@ -37,7 +37,7 @@ const WorkspaceSelector: React.FC = () => {
     onPlanForbid: ({ planConfig }) => upgradeModal.openVoid(planConfig.upgradeModal()),
   });
 
-  const logo = useUpdatedBranding ? voiceflowLogomarkDark : vfLogo;
+  const logo = useUpdatedBranding ? voiceflowLogomark : vfLogo;
 
   return (
     <Dropdown

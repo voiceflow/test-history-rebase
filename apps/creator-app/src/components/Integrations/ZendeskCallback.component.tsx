@@ -1,5 +1,4 @@
-import { FullSpinner } from '@voiceflow/ui';
-import { notify } from '@voiceflow/ui-next';
+import { notify, TabLoader } from '@voiceflow/ui-next';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 
@@ -23,5 +22,5 @@ export const ZendeskCallback: React.FC = () => {
     }
   }, []);
 
-  return <FullSpinner message="Connecting..." />;
+  return <TabLoader variant="dark" />;
 };

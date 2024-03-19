@@ -96,7 +96,7 @@ const TemplateSection: React.FC = () => {
           icon="chatWidget"
           title="Support Chatbot (Webchat)"
           subtitle="By Voiceflow"
-          image={<AssistantCard.ProjectImage src="https://cm4-production-assets.s3.amazonaws.com/1680619509819-vf-2.png" />}
+          image={<AssistantCard.ProjectImage src="https://cdn.voiceflow.com/assets/logomark.png" />}
           action={
             <Button
               onClick={() =>

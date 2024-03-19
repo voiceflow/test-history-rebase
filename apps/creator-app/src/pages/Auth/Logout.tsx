@@ -1,4 +1,5 @@
-import { FullSpinner, useSetup } from '@voiceflow/ui';
+import { useSetup } from '@voiceflow/ui';
+import { TabLoader } from '@voiceflow/ui-next';
 import React from 'react';
 
 import * as Session from '@/ducks/session';
@@ -11,7 +12,7 @@ function Logout() {
     logout();
   });
 
-  return <FullSpinner message="Logging out" />;
+  return <TabLoader />;
 }
 
 export default Logout;

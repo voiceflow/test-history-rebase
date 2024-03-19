@@ -1,18 +1,16 @@
 import { Utils } from '@voiceflow/common';
 import { ResponseVariantType } from '@voiceflow/dtos';
-import { Box, Divider, Section, Tooltip } from '@voiceflow/ui-next';
+import { Box, Divider, Section } from '@voiceflow/ui-next';
 import React, { Fragment } from 'react';
 
 import { AIGenerateResponseVariantButton } from '@/components/AI/AIGenerateResponseVariantButton/AIGenerateResponseVariantButton.component';
 import { useAIGenerateTextResponseVariants } from '@/components/AI/hooks/ai-generate-text-response-variants.hook';
 import { CMSFormListButtonRemove } from '@/components/CMS/CMSForm/CMSFormListButtonRemove/CMSFormListButtonRemove.component';
-import { TooltipContentLearn } from '@/components/Tooltip/TooltipContentLearn/TooltipContentLearn.component';
+import { SectionHeaderTitleWithLearnTooltip } from '@/components/Section/SectionHeaderTitleWithLearnTooltip/SectionHeaderTitleWithTooltip.component';
 import { Designer } from '@/ducks';
 import { useInputAutoFocusKey } from '@/hooks/input.hook';
 import { useIsListEmpty } from '@/hooks/list.hook';
-import { usePopperModifiers } from '@/hooks/popper.hook';
 import { useDispatch } from '@/hooks/store.hook';
-import { popperPaddingModifierFactory } from '@/utils/popper.util';
 import { isTextResponseVariant, isTextResponseVariantEmpty } from '@/utils/response.util';
 
 import { ResponseEditVariant } from '../ResponseEditVariant/ResponseEditVariant.component';
@@ -41,8 +39,6 @@ export const ResponseEditForm: React.FC<IResponseEditForm> = ({ responseID }) =>
 
   const listEmpty = useIsListEmpty(variants, (variant) => (isTextResponseVariant(variant) ? isTextResponseVariantEmpty(variant) : true));
 
-  const titleModifiers = usePopperModifiers([{ name: 'offset', options: { offset: [-12, 0] } }, popperPaddingModifierFactory({ padding: 27 })]);
-
   if (!variants.length || discriminatorID === null) return null;
 
   const [rootVariant, ...otherVariants] = variants;
@@ -68,35 +64,16 @@ export const ResponseEditForm: React.FC<IResponseEditForm> = ({ responseID }) =>
         pb={hasVariants ? 0 : 11}
         variant="active"
         title={(className) => (
-          <Tooltip
-            width={200}
-            inline
-            placement="left-start"
-            modifiers={titleModifiers}
-            referenceElement={({ ref, onOpen, onClose, popper }) => (
-              <span ref={ref} className={className} onMouseEnter={onOpen} onMouseLeave={onClose}>
-                {popper}
-                Variants
-              </span>
-            )}
-          >
-            {() => (
-              <TooltipContentLearn
-                label={
-                  <Box gap={8} direction="column">
-                    <span>Variant responses will be selected randomly when you run your agent.</span>
-                    {/* TODO: uncomment when conditions are supported */}
-                    {/* <span>
+          <SectionHeaderTitleWithLearnTooltip title="Variants" className={className} onLearnClick={Utils.functional.noop}>
+            <Box gap={8} direction="column">
+              <span>Variant responses will be selected randomly when you run your agent.</span>
+              {/* TODO: uncomment when conditions are supported */}
+              {/* <span>
                           If you add a condition to a variant, it will become a ‘conditional response’. This means if
                           the attached condition is true, the agent will delivery that specific variant.
                         </span> */}
-                  </Box>
-                }
-                // TODO: add link to docs
-                onLearnClick={Utils.functional.noop}
-              />
-            )}
-          </Tooltip>
+            </Box>
+          </SectionHeaderTitleWithLearnTooltip>
         )}
       >
         {!hasVariants && (

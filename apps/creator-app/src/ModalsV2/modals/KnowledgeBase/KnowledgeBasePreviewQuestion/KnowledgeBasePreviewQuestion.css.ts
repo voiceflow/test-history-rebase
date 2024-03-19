@@ -9,6 +9,13 @@ export const buttonStyles = style({
   width: '74px',
 });
 
+export const stickyDividerContainer = style({
+  position: 'sticky',
+  top: '0',
+  background: '#fff',
+  zIndex: 10,
+});
+
 export const sourcesContentStyles = style({
   padding: '0 16px 0 24px',
   maxHeight: 'calc(100vh - 469.5px)',
@@ -25,15 +32,6 @@ export const sourcesContainerStyles = style({
 
 export const sourcesHeaderStyles = style({
   padding: '11px 16px 11px 24px',
-});
-
-export const sourcesTextAreaStyles = style({
-  overflowWrap: 'break-word',
-  selectors: {
-    '&:first-line': {
-      color: Tokens.colors.accent.accent500,
-    },
-  },
 });
 
 export const dividerStyles = style({

@@ -34,3 +34,4 @@ export * as Trigger from './story/trigger/trigger.action';
 export * as Thread from './thread/thread.action';
 export * as ThreadComment from './thread/thread-comment/thread-comment.action';
 export * as Variable from './variable/variable.action';
+export * as Version from './version/version.action';

@@ -1,207 +1,113 @@
 import composeRef from '@seznam/compose-react-refs';
 import { BaseModels, BaseUtils } from '@voiceflow/base-types';
 import { tid } from '@voiceflow/style';
-import { BaseProps, Box, Divider, Popper, SquareButton } from '@voiceflow/ui-next';
-import React, { useEffect } from 'react';
+import { BaseProps, Box, Divider, Popper, Scroll, SquareButton, Surface, usePopperModifiers } from '@voiceflow/ui-next';
+import React, { useMemo, useRef } from 'react';
 
+import { AIMaxTokensSliderSection } from '@/components/AI/AIMaxTokensSliderSection/AIMaxTokensSliderSection.component';
+import { AIModelSelectSection } from '@/components/AI/AIModelSelectSection/AIModelSelectSection.component';
+import { AITemperatureSliderSection } from '@/components/AI/AITemperatureSliderSection/AITemperatureSlider.component';
+import { KBInstructionInputSection } from '@/components/KB/KBInstructionInputSection/KBInstructionInputSection.component';
+import { KBSystemInputSection } from '@/components/KB/KBSystemInputSection/KBSystemInputSection.component';
 import { AI_MODEL_CONFIG_MAP } from '@/config/ai-model';
+import { CMS_KNOWLEDGE_BASE_LEARN_MORE } from '@/constants/link.constant';
 import { stopPropagation } from '@/utils/handler.util';
 
-import { KBSettingsInstructions } from '../KnowledgeBaseSettings/KBSettingsInstructions.component';
-import { KBSettingsModelSelect } from '../KnowledgeBaseSettings/KBSettingsModelSelect.component';
-import { KBSettingsSystemPrompt } from '../KnowledgeBaseSettings/KBSettingsSystemPrompt.component';
-import { KBSettingsTemperature } from '../KnowledgeBaseSettings/KBSettingsTemperature.component';
-import { KBSettingsTokens } from '../KnowledgeBaseSettings/KBSettingsTokens.component';
+import { SETTINGS_TEST_ID } from '../KnowledgeBase.constant';
 import { DEFAULT_SETTINGS } from '../KnowledgeBaseSettings/KnowledgeBaseSettings.constant';
-import { MODAL_DEFAULT_HEIGHT, MODAL_PADDING, NUMBER_OF_TEXT_AREAS, TEXT_AREA_NEW_LINE_HEIGHT } from './KBPreviewSettings.constants';
-import { popperStyles, textareaStyles } from './KBPreviewSettings.css';
+import { stickyDividerContainer } from './KnowledgeBasePreviewQuestion.css';
 
-interface AIModelParams extends BaseUtils.ai.AIModelParams {
-  [key: string]: any;
-}
-
-interface AIContextParams extends BaseUtils.ai.AIKnowledgeContextParams {
-  [key: string]: any;
-}
-
-type KnowledgeBaseSettings = BaseModels.Project.KnowledgeBaseSettings & {
-  [key: string]: any;
-  summarization: AIModelParams & AIContextParams;
-};
+type SummarizationSettings = BaseModels.Project.KnowledgeBaseSettings['summarization'];
 
 export interface IPreviewSettings extends BaseProps {
-  initialSettings: KnowledgeBaseSettings;
-  settings: BaseModels.Project.KnowledgeBaseSettings;
-  isOpen: boolean;
-  setSettings: React.Dispatch<React.SetStateAction<BaseModels.Project.KnowledgeBaseSettings>>;
-  onToggle: () => void;
+  settings: SummarizationSettings;
+  initialSettings: SummarizationSettings;
+  onChangeSettings: (value: SummarizationSettings) => void;
 }
 
-export const KBPreviewSettings: React.FC<IPreviewSettings> = ({ initialSettings, settings, isOpen, setSettings, onToggle: handleToggle, testID }) => {
-  const buttonRef = React.useRef<HTMLButtonElement>(null);
-  const [activeTooltipLabel, setTooltipActiveLabel] = React.useState<string | null>(null);
+export const KBPreviewSettings: React.FC<IPreviewSettings> = ({ testID, settings, initialSettings, onChangeSettings }) => {
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const modifiers = usePopperModifiers([
+    { name: 'preventOverflow', options: { boundary: globalThis.document?.body, padding: 32 } },
+    { name: 'offset', options: { offset: [-20, 57] } },
+  ]);
 
-  const [instructionsMaxRows, setInstructionsMaxRows] = React.useState<number>(12);
-  const [instructionText, setInstructionText] = React.useState<string>(initialSettings.summarization.instructions ?? '');
+  const differences = useMemo(
+    () => Object.entries(settings).filter(([k, v]) => initialSettings[k as keyof SummarizationSettings] !== v).length,
+    [settings, initialSettings]
+  );
 
-  const [systemMaxRows, setSystemMaxRows] = React.useState<number>(12);
-  const [systemText, setSystemText] = React.useState<string>(initialSettings.summarization.system ?? '');
+  const onPatch = (value: Partial<SummarizationSettings>) => onChangeSettings({ ...settings, ...value });
 
-  const onPatch = <K extends keyof BaseModels.Project.KnowledgeBaseSettings>(key: K, patch: Partial<BaseModels.Project.KnowledgeBaseSettings[K]>) => {
-    setSettings((prev) => prev && { ...prev, [key]: { ...prev[key], ...patch } });
-  };
-
-  const differences = React.useMemo(() => {
-    const summDiffs = Object.fromEntries(Object.entries(settings?.summarization).filter(([k, v]) => initialSettings?.summarization[k] !== v));
-    return Object.keys(summDiffs).length;
-  }, [settings]);
-
-  const resetSettings = () => {
-    onPatch('summarization', { model: initialSettings.summarization.model });
-    onPatch('summarization', { temperature: initialSettings.summarization.temperature });
-    onPatch('summarization', { maxTokens: initialSettings.summarization.maxTokens });
-    onPatch('summarization', { system: initialSettings.summarization.system });
-    onPatch('summarization', { instruction: initialSettings.summarization.instruction });
-  };
-
-  const model = settings?.summarization.model ?? DEFAULT_SETTINGS.summarization.model;
-
-  const getModal = () => {
-    const viewportHeight = window.innerHeight;
-    const modal = document.querySelector(`.${popperStyles}`);
-    return { viewportHeight, modal };
-  };
-
-  const calculateMaxRows = () => {
-    const { viewportHeight, modal } = getModal();
-
-    if (!modal) return null;
-
-    return Math.round((viewportHeight - MODAL_PADDING - MODAL_DEFAULT_HEIGHT) / TEXT_AREA_NEW_LINE_HEIGHT / NUMBER_OF_TEXT_AREAS);
-  };
-
-  const calculateInstructionsMaxRows = () => {
-    const maxRows = calculateMaxRows();
-    if (!maxRows) return;
-    setInstructionsMaxRows(maxRows);
-  };
-
-  const calculateSystemMaxRows = () => {
-    const { viewportHeight, modal } = getModal();
-    let maxRows = calculateMaxRows();
-    if (!maxRows || !modal) return;
-
-    const fromBottom = Math.abs(viewportHeight - modal.getBoundingClientRect().bottom);
-
-    if (fromBottom > MODAL_PADDING) {
-      maxRows += 1;
-    }
-
-    setSystemMaxRows(maxRows);
-  };
-
-  useEffect(() => {
-    calculateInstructionsMaxRows();
-    window.addEventListener('resize', calculateInstructionsMaxRows);
-    return () => {
-      window.removeEventListener('resize', calculateInstructionsMaxRows);
-    };
-  }, [instructionText]);
-
-  useEffect(() => {
-    calculateSystemMaxRows();
-    window.addEventListener('resize', calculateSystemMaxRows);
-    return () => {
-      window.removeEventListener('resize', calculateSystemMaxRows);
-    };
-  }, [systemText]);
-
-  useEffect(() => {
-    setInstructionText(initialSettings.summarization.instructions ?? '');
-    setSystemText(initialSettings.summarization.system ?? '');
-  }, [initialSettings.summarization.instructions, initialSettings.summarization.system]);
+  const model = settings.model ?? DEFAULT_SETTINGS.summarization.model;
 
   return (
     <Popper
+      testID={tid(testID, 'menu')}
+      modifiers={modifiers}
       placement="right"
-      referenceElement={({ ref, popper, onToggle }) => (
+      referenceElement={({ ref, popper, onToggle, isOpen }) => (
         <SquareButton ref={composeRef(ref, buttonRef)} onClick={onToggle} isActive={isOpen} iconName={isOpen ? 'Minus' : 'Settings'} testID={testID}>
           {popper}
         </SquareButton>
       )}
-      isOpen={isOpen}
       onPreventClose={(event) => {
-        if (!buttonRef.current) return true;
-        if (!event?.target) return true;
+        if (!event) return false;
+        if (!buttonRef.current || !event.target) return true;
         return !buttonRef.current.contains(event.target as Node);
       }}
-      onOpen={handleToggle}
-      onClose={handleToggle}
-      className={popperStyles}
-      testID={tid(testID, 'menu')}
-      modifiers={[
-        { name: 'preventOverflow', options: { boundary: globalThis.document?.body, padding: 32 } },
-        { name: 'offset', options: { offset: [-20, 57] } },
-      ]}
     >
       {() => (
-        <Box width="300px" direction="column">
-          <Box pt={16} pl={24}>
-            <Divider
-              label={differences > 0 ? `Reset ${differences} overrides` : 'Overrides'}
-              onLabelClick={differences > 0 ? stopPropagation(resetSettings) : undefined}
-            />
-          </Box>
-          <Box direction="column" pr={24} pb={24}>
-            <KBSettingsModelSelect
-              value={model}
-              disabled={!settings}
-              onValueChange={(model) => onPatch('summarization', { model: model as any })}
-              activeTooltipLabel={activeTooltipLabel}
-              setTooltipActiveLabel={setTooltipActiveLabel}
-            />
-
-            <KBSettingsTemperature
-              value={settings?.summarization.temperature ?? DEFAULT_SETTINGS.summarization.temperature}
-              disabled={!settings}
-              onValueChange={(temperature) => onPatch('summarization', { temperature })}
-              activeTooltipLabel={activeTooltipLabel}
-              setTooltipActiveLabel={setTooltipActiveLabel}
-            />
-
-            <KBSettingsTokens
-              model={model}
-              value={settings?.summarization.maxTokens ?? DEFAULT_SETTINGS.summarization.maxTokens}
-              disabled={!settings}
-              onValueChange={(maxTokens) => onPatch('summarization', { maxTokens })}
-              activeTooltipLabel={activeTooltipLabel}
-              setTooltipActiveLabel={setTooltipActiveLabel}
-            />
-
-            <KBSettingsInstructions
-              className={textareaStyles}
-              value={settings?.summarization.instruction ?? DEFAULT_SETTINGS.summarization.instruction}
-              onValueChange={(instruction: string) => onPatch('summarization', { instruction })}
-              activeTooltipLabel={activeTooltipLabel}
-              setTooltipActiveLabel={setTooltipActiveLabel}
-              maxRows={instructionsMaxRows}
-              onValueType={setInstructionText}
-            />
-
-            {AI_MODEL_CONFIG_MAP[model].hasSystemPrompt && (
-              <KBSettingsSystemPrompt
-                value={settings?.summarization.system ?? DEFAULT_SETTINGS.summarization.system}
-                disabled={!settings}
-                onValueChange={(system) => onPatch('summarization', { system })}
-                className={textareaStyles}
-                activeTooltipLabel={activeTooltipLabel}
-                setTooltipActiveLabel={setTooltipActiveLabel}
-                maxRows={systemMaxRows}
-                onValueType={setSystemText}
+        <Surface width="300px" direction="column" maxHeight="calc(100vh - 64px)" overflow="hidden">
+          <Scroll pb={24} style={{ display: 'block' }}>
+            <Box pt={16} pl={24} className={stickyDividerContainer}>
+              <Divider
+                label={differences > 0 ? `Reset ${differences} overrides` : 'Overrides'}
+                onLabelClick={differences > 0 ? stopPropagation(() => onChangeSettings(initialSettings)) : undefined}
               />
-            )}
-          </Box>
-        </Box>
+            </Box>
+
+            <Box direction="column" gap={12}>
+              <AIModelSelectSection
+                value={model}
+                testID={tid(SETTINGS_TEST_ID, 'model')}
+                learnMoreURL={CMS_KNOWLEDGE_BASE_LEARN_MORE}
+                onValueChange={(model) => onPatch({ model: model as BaseUtils.ai.GPT_MODEL })}
+              />
+
+              <AITemperatureSliderSection
+                value={settings.temperature ?? DEFAULT_SETTINGS.summarization.temperature}
+                testID={tid(SETTINGS_TEST_ID, 'temperature')}
+                learnMoreURL={CMS_KNOWLEDGE_BASE_LEARN_MORE}
+                onValueChange={(temperature) => onPatch({ temperature })}
+              />
+
+              <AIMaxTokensSliderSection
+                model={model}
+                value={settings.maxTokens ?? DEFAULT_SETTINGS.summarization.maxTokens}
+                testID={tid(SETTINGS_TEST_ID, 'tokens')}
+                learnMoreURL={CMS_KNOWLEDGE_BASE_LEARN_MORE}
+                onValueChange={(maxTokens) => onPatch({ maxTokens })}
+              />
+
+              <KBInstructionInputSection
+                value={settings.instruction ?? DEFAULT_SETTINGS.summarization.instruction}
+                testID={tid(SETTINGS_TEST_ID, 'instructions')}
+                learnMoreURL={CMS_KNOWLEDGE_BASE_LEARN_MORE}
+                onValueChange={(instruction) => onPatch({ instruction })}
+              />
+
+              {AI_MODEL_CONFIG_MAP[model].hasSystemPrompt && (
+                <KBSystemInputSection
+                  value={settings.system ?? DEFAULT_SETTINGS.summarization.system}
+                  testID={tid(SETTINGS_TEST_ID, 'system-prompt')}
+                  learnMoreURL={CMS_KNOWLEDGE_BASE_LEARN_MORE}
+                  onValueChange={(system) => onPatch({ system })}
+                />
+              )}
+            </Box>
+          </Scroll>
+        </Surface>
       )}
     </Popper>
   );

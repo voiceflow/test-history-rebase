@@ -1,26 +1,24 @@
-import { BaseModels } from '@voiceflow/base-types';
-import { Utils } from '@voiceflow/common';
+import { BaseModels, BaseUtils } from '@voiceflow/base-types';
 import { tid } from '@voiceflow/style';
-import { Box, Button, notify, Popper, Scroll, Text } from '@voiceflow/ui-next';
-import React from 'react';
+import { Box, notify, Scroll } from '@voiceflow/ui-next';
+import React, { useState } from 'react';
 
+import { AIMaxTokensSliderSection } from '@/components/AI/AIMaxTokensSliderSection/AIMaxTokensSliderSection.component';
+import { AIModelSelectSection } from '@/components/AI/AIModelSelectSection/AIModelSelectSection.component';
+import { AITemperatureSliderSection } from '@/components/AI/AITemperatureSliderSection/AITemperatureSlider.component';
+import { KBChunkLimitSliderSection } from '@/components/KB/KBChunkLimitSliderSection/KBChunkLimitSliderSection.component';
+import { KBSystemInputSection } from '@/components/KB/KBSystemInputSection/KBSystemInputSection.component';
 import { Modal } from '@/components/Modal';
 import { AI_MODEL_CONFIG_MAP } from '@/config/ai-model';
+import { CMS_KNOWLEDGE_BASE_LEARN_MORE } from '@/constants/link.constant';
 import { Designer } from '@/ducks';
-import { useLinkedState } from '@/hooks/state.hook';
+import { useAsyncEffect } from '@/hooks';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
 import { useTrackingEvents } from '@/hooks/tracking';
 
 import manager from '../../../manager';
 import { SETTINGS_TEST_ID } from '../KnowledgeBase.constant';
-import { KBSettingsChunkLimit } from './KBSettingsChunkLimit.component';
-// import { KBSettingsInstructions } from './KBSettingsInstructions.component';
-import { KBSettingsModelSelect } from './KBSettingsModelSelect.component';
-import { KBSettingsSystemPrompt } from './KBSettingsSystemPrompt.component';
-import { KBSettingsTemperature } from './KBSettingsTemperature.component';
-import { KBSettingsTokens } from './KBSettingsTokens.component';
 import { DEFAULT_SETTINGS } from './KnowledgeBaseSettings.constant';
-import { confirmBoxStyles, systemPromptStyles } from './KnowledgeBaseSettings.css';
 
 export const KnowledgeBaseSettings = manager.create('KnowledgeBaseSettingsV2', () => ({ api, type, opened, hidden, closePrevented, animated }) => {
   const storeSettings = useSelector(Designer.KnowledgeBase.selectors.settings);
@@ -28,9 +26,7 @@ export const KnowledgeBaseSettings = manager.create('KnowledgeBaseSettingsV2', (
   const getSettings = useDispatch(Designer.KnowledgeBase.effect.getSettings);
   const patchSettings = useDispatch(Designer.KnowledgeBase.effect.patchSettings);
 
-  const [settings, setSettings] = useLinkedState(storeSettings);
-
-  const [activeTooltipLabel, setActiveTooltipLabel] = React.useState<string | null>(null);
+  const [settings, setSettings] = useState(storeSettings);
 
   const [trackingEvents] = useTrackingEvents();
 
@@ -38,7 +34,7 @@ export const KnowledgeBaseSettings = manager.create('KnowledgeBaseSettingsV2', (
     setSettings((prev) => prev && { ...prev, [key]: { ...prev[key], ...patch } });
   };
 
-  const save = async () => {
+  const onSubmit = async () => {
     if (!settings) return;
 
     try {
@@ -80,147 +76,97 @@ export const KnowledgeBaseSettings = manager.create('KnowledgeBaseSettingsV2', (
   };
 
   const onResetToDefault = async () => {
-    try {
-      await patchSettings(DEFAULT_SETTINGS);
-
-      notify.short.success('Restored to default');
-    } catch {
-      notify.short.error('Unable to restore Knowledge Base settings');
-    }
+    setSettings(DEFAULT_SETTINGS);
   };
 
-  React.useEffect(() => {
-    (async () => {
-      try {
-        await getSettings();
-      } catch {
-        notify.short.error('Unable to fetch latest knowledge base settings');
-      }
-    })();
+  useAsyncEffect(async () => {
+    try {
+      await getSettings();
+    } catch {
+      notify.short.error('Unable to fetch latest knowledge base settings');
+    }
   }, []);
+
+  api.useOnCloseRequest((source) => source !== 'backdrop');
 
   const model = settings?.summarization.model ?? DEFAULT_SETTINGS.summarization.model;
 
   return (
     <Modal.Container
       type={type}
+      testID={SETTINGS_TEST_ID}
       opened={opened}
       hidden={hidden}
       animated={animated}
       onExited={api.remove}
       onEscClose={api.onEscClose}
-      onEnterSubmit={save}
-      testID={SETTINGS_TEST_ID}
+      onEnterSubmit={onSubmit}
     >
       <Modal.Header title="Knowledge base settings" onClose={api.onClose} testID={tid(SETTINGS_TEST_ID, 'header')} />
 
       <Scroll style={{ display: 'block' }}>
-        <Box pt={12} pr={24} pb={24} direction="column" overflow="auto">
-          <KBSettingsModelSelect
+        <Box pt={12} pb={24} gap={12} direction="column">
+          <AIModelSelectSection
             value={model}
+            testID={tid(SETTINGS_TEST_ID, 'model')}
             disabled={!settings}
-            onValueChange={(model) => onPatch('summarization', { model: model as any })}
-            activeTooltipLabel={activeTooltipLabel}
-            setTooltipActiveLabel={setActiveTooltipLabel}
+            learnMoreURL={CMS_KNOWLEDGE_BASE_LEARN_MORE}
+            onValueChange={(model) => onPatch('summarization', { model: model as BaseUtils.ai.GPT_MODEL })}
           />
 
-          <KBSettingsTemperature
+          <AITemperatureSliderSection
             value={settings?.summarization.temperature ?? DEFAULT_SETTINGS.summarization.temperature}
+            testID={tid(SETTINGS_TEST_ID, 'temperature')}
             disabled={!settings}
+            learnMoreURL={CMS_KNOWLEDGE_BASE_LEARN_MORE}
             onValueChange={(temperature) => onPatch('summarization', { temperature })}
-            activeTooltipLabel={activeTooltipLabel}
-            setTooltipActiveLabel={setActiveTooltipLabel}
           />
 
-          <KBSettingsTokens
+          <AIMaxTokensSliderSection
             model={model}
             value={settings?.summarization.maxTokens ?? DEFAULT_SETTINGS.summarization.maxTokens}
+            testID={tid(SETTINGS_TEST_ID, 'tokens')}
             disabled={!settings}
+            learnMoreURL={CMS_KNOWLEDGE_BASE_LEARN_MORE}
             onValueChange={(maxTokens) => onPatch('summarization', { maxTokens })}
-            activeTooltipLabel={activeTooltipLabel}
-            setTooltipActiveLabel={setActiveTooltipLabel}
           />
 
-          <KBSettingsChunkLimit
+          <KBChunkLimitSliderSection
             value={settings?.search.limit ?? DEFAULT_SETTINGS.search.limit}
+            testID={tid(SETTINGS_TEST_ID, 'chunk-limit')}
             disabled={!settings}
+            learnMoreURL={CMS_KNOWLEDGE_BASE_LEARN_MORE}
             onValueChange={(limit) => onPatch('search', { limit })}
-            activeTooltipLabel={activeTooltipLabel}
-            setTooltipActiveLabel={setActiveTooltipLabel}
           />
-
-          {/* TODO: removed for first release, but prob should be added back in */}
-          {/* <KBSettingsInstructions
-          value={settings?.summarization.instruction ?? DEFAULT_SETTINGS.summarization.instruction}
-          onValueChange={(instruction: string) => onPatch('summarization', { instruction })}
-        /> */}
 
           {AI_MODEL_CONFIG_MAP[model].hasSystemPrompt && (
-            <KBSettingsSystemPrompt
+            <KBSystemInputSection
               value={settings?.summarization.system ?? DEFAULT_SETTINGS.summarization.system}
+              testID={tid(SETTINGS_TEST_ID, 'system-prompt')}
               disabled={!settings}
-              className={systemPromptStyles}
+              learnMoreURL={CMS_KNOWLEDGE_BASE_LEARN_MORE}
               onValueChange={(system) => onPatch('summarization', { system })}
-              activeTooltipLabel={activeTooltipLabel}
-              setTooltipActiveLabel={setActiveTooltipLabel}
             />
           )}
         </Box>
       </Scroll>
 
       <Modal.Footer>
-        <Popper
-          placement="bottom-start"
-          testID={tid(SETTINGS_TEST_ID, ['reset', 'confirmation'])}
-          referenceElement={({ onToggle, isOpen, ref }) => (
-            <div ref={ref}>
-              <Modal.Footer.Button
-                variant="secondary"
-                onClick={onToggle}
-                isActive={isOpen}
-                disabled={closePrevented}
-                label="Reset to default"
-                testID={tid(SETTINGS_TEST_ID, 'reset')}
-              />
-            </div>
-          )}
-        >
-          {({ onClose }) => (
-            <Box className={confirmBoxStyles} direction="column" gap={10}>
-              <Text variant="basic">This action can’t be undone, please confirm you’d like to continue.</Text>
-
-              <Box justify="space-between" gap={8}>
-                <Button
-                  label="No"
-                  size="medium"
-                  fullWidth
-                  variant="secondary"
-                  onClick={onClose}
-                  disabled={closePrevented}
-                  testID={tid(SETTINGS_TEST_ID, ['reset', 'confirmation', 'no'])}
-                />
-
-                <Button
-                  label="Yes"
-                  size="medium"
-                  fullWidth
-                  variant="primary"
-                  onClick={Utils.functional.chain(onClose, onResetToDefault)}
-                  disabled={closePrevented}
-                  testID={tid(SETTINGS_TEST_ID, ['reset', 'confirmation', 'yes'])}
-                />
-              </Box>
-            </Box>
-          )}
-        </Popper>
+        <Modal.Footer.Button
+          label="Reset to default"
+          testID={tid(SETTINGS_TEST_ID, 'reset')}
+          variant="secondary"
+          onClick={onResetToDefault}
+          disabled={closePrevented}
+        />
 
         <Modal.Footer.Button
           label="Save"
+          testID={tid(SETTINGS_TEST_ID, 'save')}
           variant="primary"
-          onClick={save}
+          onClick={onSubmit}
           disabled={!settings || closePrevented}
           isLoading={closePrevented}
-          testID={tid(SETTINGS_TEST_ID, 'save')}
         />
       </Modal.Footer>
     </Modal.Container>

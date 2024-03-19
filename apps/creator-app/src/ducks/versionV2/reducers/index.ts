@@ -1,3 +1,7 @@
+import { VersionSettings } from '@voiceflow/dtos';
+import { Actions } from '@voiceflow/sdk-logux-designer';
+import * as Normal from 'normal-store';
+
 import { createRootCRUDReducer } from '@/ducks/utils/crudV2';
 
 import { INITIAL_STATE } from '../constants';
@@ -34,6 +38,11 @@ const versionReducer = createRootCRUDReducer(INITIAL_STATE, crudReducers)
   .immerCase(...reloadGlobalVariables)
   .immerCase(...reloadFolders)
   .immerCase(...addManyComponents)
+  .case(Actions.Version.UpdateSettings, (state, { context, settings }) =>
+    Normal.patchOne(state, context.environmentID, {
+      settingsV2: { ...Normal.getOne(state, context.environmentID)?.settingsV2, ...settings } as VersionSettings,
+    })
+  )
   .build();
 
 export default versionReducer;

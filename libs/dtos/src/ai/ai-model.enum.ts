@@ -1,3 +1,5 @@
+import type { Enum } from '@/utils/type/enum.util';
+
 export const AIModel = {
   /** @deprecated GPT 3 should be removed */
   DaVinci_003: 'text-davinci-003',
@@ -14,4 +16,4 @@ export const AIModel = {
   GEMINI_PRO: 'gemini-pro',
 } as const;
 
-export type AIModel = (typeof AIModel)[keyof typeof AIModel];
+export type AIModel = Enum<typeof AIModel>;

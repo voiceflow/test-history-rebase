@@ -169,4 +169,9 @@
   :where(textarea[class^='vfui_']) {
     white-space: pre-wrap;
   }
+
+  :where([class^='vfui_']):before,
+  :where([class^='vfui_']):after {
+    box-sizing: border-box;
+  }
 }

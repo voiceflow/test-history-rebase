@@ -1,8 +1,9 @@
 import { BaseUtils } from '@voiceflow/base-types';
 import { tid } from '@voiceflow/style';
-import { useDidUpdateEffect, useForceUpdate, useLocalStorageState, useSessionStorageState, useToggle } from '@voiceflow/ui';
+import { useForceUpdate, useLocalStorageState, useSessionStorageState } from '@voiceflow/ui';
 import { Box, Link, notify, Scroll, Text, TextArea, Tokens } from '@voiceflow/ui-next';
 import React from 'react';
+import { DismissableLayerContext } from 'react-dismissable-layers';
 import { generatePath, useHistory } from 'react-router';
 
 import client from '@/client';
@@ -23,34 +24,25 @@ export const KnowledgeBasePreviewQuestion = manager.create(
   () =>
     ({ api, type, opened, hidden, animated, closePrevented }) => {
       const TEST_ID = 'knowledge-base-preview-modal';
-      const KB_PREVIEW_QUESTION_INPUT_ELEMENT_ID = 'kb-preview-question-input-id';
 
+      const history = useHistory();
       const [trackingEvents] = useTrackingEvents();
-      const questionRef = React.useRef<HTMLTextAreaElement>(null);
+      const dismissableLayer = React.useContext(DismissableLayerContext);
+      const [triggerRefocus, refocusTriggerKey] = useForceUpdate();
 
+      const projectID = useSelector(Session.activeProjectIDSelector)!;
+      const versionID = useSelector(Session.activeVersionIDSelector)!;
+      const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
+      const getOneByName = useSelector(Designer.KnowledgeBase.Document.selectors.getOneByName);
       const storeSettings = useSelector(Designer.KnowledgeBase.selectors.settings);
 
       const [initialSettings] = React.useState(storeSettings ?? DEFAULT_SETTINGS);
       const [settings, setSettings] = useSessionStorageState('persist:kb-preview-settings', storeSettings ?? DEFAULT_SETTINGS);
       const [question, setQuestion] = React.useState<string>('');
-      const [questionError, setQuestionError] = React.useState<string>('');
       const [response, setResponse] = React.useState<{ output: string; chunks?: { source: { name: string }; content: string }[] } | null>(null);
       const [hasResponse, setHasResponse] = React.useState(false);
+      const [questionError, setQuestionError] = React.useState<string>('');
       const [previousQuestion, setPreviousQuestion] = useLocalStorageState('persist:kb-preview:last-question', '');
-      const history = useHistory();
-      const getOneByName = useSelector(Designer.KnowledgeBase.Document.selectors.getOneByName);
-      const [isPreviewSettingsOpen, togglePreviewSettings] = useToggle(false);
-      const [showSettings, setShowSettings] = React.useState(true);
-
-      const projectID = useSelector(Session.activeProjectIDSelector)!;
-      const versionID = useSelector(Session.activeVersionIDSelector)!;
-      const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
-      const [triggerRefocus, refocusTrigger] = useForceUpdate();
-
-      useDidUpdateEffect(() => {
-        const inputEl = document.getElementById(KB_PREVIEW_QUESTION_INPUT_ELEMENT_ID);
-        inputEl?.focus();
-      }, [refocusTrigger]);
 
       const displayableSources = React.useMemo(() => response?.chunks?.filter((chunk) => chunk.source), [response?.chunks]);
 
@@ -129,13 +121,13 @@ export const KnowledgeBasePreviewQuestion = manager.create(
           type={type}
           opened={opened}
           hidden={hidden}
+          testID={TEST_ID}
           stacked
           animated={animated}
           onExited={api.remove}
           onEscClose={api.onEscClose}
-          onExiting={() => setShowSettings(false)}
+          onExiting={() => dismissableLayer.dismissAllGlobally()}
           className={popperStyles}
-          testID={TEST_ID}
         >
           <>
             <Modal.Header
@@ -143,16 +135,12 @@ export const KnowledgeBasePreviewQuestion = manager.create(
               onClose={api.onClose}
               testID={tid(TEST_ID, 'header')}
               secondaryButton={
-                showSettings && (
-                  <KBPreviewSettings
-                    isOpen={isPreviewSettingsOpen}
-                    initialSettings={initialSettings}
-                    settings={settings}
-                    setSettings={setSettings}
-                    onToggle={togglePreviewSettings}
-                    testID={tid(TEST_ID, 'settings')}
-                  />
-                )
+                <KBPreviewSettings
+                  testID={tid(TEST_ID, 'settings')}
+                  settings={settings.summarization ?? DEFAULT_SETTINGS.summarization}
+                  initialSettings={initialSettings.summarization ?? DEFAULT_SETTINGS.summarization}
+                  onChangeSettings={(summarization) => setSettings({ ...settings, summarization })}
+                />
               }
             />
 
@@ -163,21 +151,20 @@ export const KnowledgeBasePreviewQuestion = manager.create(
                 </Text>
 
                 <TextArea
-                  id={KB_PREVIEW_QUESTION_INPUT_ELEMENT_ID}
-                  ref={questionRef}
+                  key={refocusTriggerKey}
                   value={question}
+                  error={!!questionError}
+                  testID={tid(TEST_ID, 'question')}
+                  onFocus={() => setQuestionError('')}
                   disabled={closePrevented}
                   autoFocus
+                  onKeyDown={onKeyDown}
                   minHeight={16}
                   maxHeight={136}
                   className={textareaStyles}
                   placeholder="Enter question..."
                   onValueChange={setQuestion}
-                  onKeyDown={onKeyDown}
                   errorMessage={questionError}
-                  error={!!questionError}
-                  onFocus={() => setQuestionError('')}
-                  testID={tid(TEST_ID, 'question')}
                 />
               </Box>
             </Scroll>

@@ -9,7 +9,7 @@ export class ThrottlerGuard extends BaseThrottlerGuard {
   private readonly logger: Logger = new Logger(ThrottlerGuard.name);
 
   protected async getTracker(req: Request): Promise<string> {
-    return req.ips.length ? req.ips[0] : req.ip;
+    return req.ips.length ? req.ips[0] : req.ip ?? 'unknown';
   }
 
   protected async shouldSkip(context: ExecutionContext): Promise<boolean> {

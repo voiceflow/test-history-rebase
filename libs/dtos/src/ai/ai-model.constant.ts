@@ -1,12 +1,16 @@
 import { AIModel } from './ai-model.enum';
 
+export const DEFAULT_AI_MODEL = AIModel.GPT_3_5_TURBO;
+
+export const DEFAULT_AI_MODEL_PAID_PLAN = AIModel.GPT_4_TURBO;
+
 // AIModelParams are meant to be shared by both creator-app and ml-gateway
 export interface AIModelParam {
   maxTokens: number;
   hasSystemPrompt: boolean;
 }
 
-export const DEFAULT_AI_MODEL_PARAM = {
+export const DEFAULT_AI_MODEL_PARAM: AIModelParam = {
   maxTokens: 2000,
   hasSystemPrompt: true,
 };

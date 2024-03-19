@@ -38,6 +38,7 @@ export * from './function/function-path/function-path.dto';
 export * from './function/function-variable/function-variable.dto';
 export * from './function/function-variable/function-variable-kind.enum';
 export * from './intent/intent.dto';
+export * from './intent/intent-classification-settings.constant';
 export * from './intent/intent-classification-settings.dto';
 export * from './intent/intent-classification-type.enum';
 export * from './intent/intent-with-data.dto';

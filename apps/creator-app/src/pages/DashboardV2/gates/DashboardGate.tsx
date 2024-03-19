@@ -1,7 +1,7 @@
 import React from 'react';
 import { generatePath } from 'react-router-dom';
 
-import LoadingGate from '@/components/LoadingGate';
+import { LoadingGate } from '@/components/LoadingGate';
 import { Path } from '@/config/routes';
 import * as Session from '@/ducks/session';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
@@ -31,7 +31,7 @@ const DashboardGate: React.FC<React.PropsWithChildren> = ({ children }) => {
   const isLoaded = routeWorkspaceID === activeWorkspaceID;
 
   return (
-    <LoadingGate label="Dashboard" internalName={DashboardGate.name} isLoaded={isLoaded} load={load} component={DashboardLoader}>
+    <LoadingGate internalName={DashboardGate.name} isLoaded={isLoaded} load={load} loader={<DashboardLoader />}>
       {children}
     </LoadingGate>
   );

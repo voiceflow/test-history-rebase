@@ -1,4 +1,5 @@
-import { Box, Button, FullSpinner, Page404 } from '@voiceflow/ui';
+import { Box, Button, Page404 } from '@voiceflow/ui';
+import { TabLoader } from '@voiceflow/ui-next';
 import React, { Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
@@ -37,7 +38,7 @@ const Routes: React.FC = () => {
   const goToDashboard = useDispatch(Router.goToDashboard);
 
   return (
-    <Suspense fallback={<FullSpinner name="Assets" />}>
+    <Suspense fallback={<TabLoader variant="dark" />}>
       <Switch>
         <Route exact path={Path.LOGOUT} component={Logout} />
 

@@ -1,6 +1,7 @@
+import { TabLoader } from '@voiceflow/ui-next';
 import React from 'react';
 
-import LoadingGate from '@/components/LoadingGate';
+import { LoadingGate } from '@/components/LoadingGate';
 import { CANVAS_COLOR } from '@/constants/canvas';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Session from '@/ducks/session';
@@ -25,11 +26,9 @@ const DiagramSubscriptionGate: React.FC<React.PropsWithChildren> = ({ children }
   return (
     <LoadingGate
       key={creatorDiagramID}
-      label="Diagram"
-      zIndex="unset"
       isLoaded={!!creatorDiagramID}
       internalName={DiagramSubscriptionGate.name}
-      backgroundColor={CANVAS_COLOR}
+      loader={<TabLoader color={CANVAS_COLOR} variant="dark" />}
     >
       <DiagramHeartbeatProvider isSubscribed={isSubscribed} diagramID={creatorDiagramID} context={diagramContext}>
         {children}

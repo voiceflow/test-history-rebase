@@ -1,22 +1,15 @@
-import { FullSpinner, FullSpinnerProps } from '@voiceflow/ui';
+import { ITabLoader, TabLoader } from '@voiceflow/ui-next';
 import React from 'react';
-import { matchPath, useLocation } from 'react-router-dom';
 
 import Page from '@/components/Page';
-import { CANVAS_COLOR } from '@/constants/canvas';
 
-import { DIAGRAM_ROUTES } from '../constants';
 import { LogoOnlyHeader } from './Header/components';
 import { LogoOffsetSidebar } from './Sidebar/components';
 
-const ProjectLoader: React.FC<FullSpinnerProps> = (props) => {
-  const location = useLocation();
-
-  const isDiagram = React.useMemo(() => matchPath(location.pathname, { path: DIAGRAM_ROUTES }), [location.pathname]);
-
+const ProjectLoader: React.FC<ITabLoader> = (props) => {
   return (
     <Page renderHeader={() => <LogoOnlyHeader />} renderSidebar={() => <LogoOffsetSidebar />}>
-      <FullSpinner isAbs {...props} backgroundColor={isDiagram ? CANVAS_COLOR : props.backgroundColor ?? '#f9f9f9'} />
+      <TabLoader variant="dark" {...props} />
     </Page>
   );
 };

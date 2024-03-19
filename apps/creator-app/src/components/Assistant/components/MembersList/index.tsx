@@ -4,7 +4,7 @@ import { Avatar, Members, TippyTooltip } from '@voiceflow/ui';
 import pluralize from 'pluralize';
 import React from 'react';
 
-import { vfLogo, voiceflowLogomarkDark } from '@/assets';
+import { vfLogo, voiceflowLogomark } from '@/assets';
 import { Permission } from '@/constants/permissions';
 import * as Account from '@/ducks/account';
 import * as Organization from '@/ducks/organization';
@@ -72,7 +72,7 @@ const MembersList: React.FC<MembersListProps> = ({ members, onRemove, onChangeRo
   return !workspace ? null : (
     <>
       <S.Header border={!!orderedMembers.length}>
-        <Avatar image={workspace.image ?? useUpdatedBranding ? voiceflowLogomarkDark : vfLogo} text={workspace.name} large squareRadius />
+        <Avatar image={workspace.image ?? useUpdatedBranding ? voiceflowLogomark : vfLogo} text={workspace.name} large squareRadius />
 
         <div>
           <S.Title>{workspace.name}</S.Title>

@@ -298,6 +298,7 @@ export { default as versions } from './versions.svg';
 export { default as video } from './video.svg';
 export { default as visualsPlaceholder } from './visuals-placeholder.svg';
 export { default as voiceflowLogomark } from './voiceflow-logomark.svg';
+export { default as voiceflowLogomarkFilled } from './voiceflow-logomark-filled.svg';
 export { default as voiceflowLogomarkLight } from './voiceflow-logomark-light.svg';
 export { default as voiceflowV } from './voiceflow-v.svg';
 

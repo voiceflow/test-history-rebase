@@ -10,6 +10,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { ThemeProvider } from 'styled-components';
 
 import client from '@/client';
+import { PageLoaderProvider } from '@/components/Loader/PageLoader/PageLoader.provider';
 import { Modal } from '@/components/Modal';
 import RealtimeStatus from '@/components/RealtimeStatus';
 import { AccountLoadingGate, AccountSubscriptionGate, CapabilitiesGate, FeatureLoadingGate, MaintenanceGate, RealtimeConnectionGate } from '@/gates';
@@ -38,67 +39,69 @@ export interface GlobalProvidersProps extends StoreProviderProps {
 }
 /* eslint-disable-next-line xss/no-mixed-html */
 const GlobalProviders: React.FC<GlobalProvidersProps> = ({ history, store, persistor, realtime, children }) => (
-  <StoreProvider store={store} persistor={persistor} realtime={realtime}>
-    <ConnectedRouter history={history}>
-      <DndProvider backend={HTML5Backend}>
-        <ThemeProvider theme={THEME}>
-          <CapabilitiesGate>
-            <MaintenanceGate>
-              <LifecycleProvider history={history}>
-                <SessionTracker />
-                <FeatureFlagsProvider>
-                  <FeatureLoadingGate>
-                    <IdentityProvider>
-                      <PlanPricesProvider>
-                        <EventualEngineProvider>
-                          <TextEditorVariablesPopoverProvider value={document.body}>
-                            <MousePositionProvider>
-                              <DismissableLayersGlobalProvider>
-                                <DragProvider>
-                                  <AutoPanningProvider>
-                                    <HotkeysContextProvider>
-                                      <ProjectConfigProvider>
-                                        <PlatformProvider>
-                                          <ModalsV2.Provider>
-                                            <Upload.Provider client={client.upload} onError={datadogRum.addError}>
-                                              <NotifyContainer />
-                                              <RealtimeStatus />
-                                              <Modal.Placeholder />
+  <PageLoaderProvider>
+    <StoreProvider store={store} persistor={persistor} realtime={realtime}>
+      <ConnectedRouter history={history}>
+        <DndProvider backend={HTML5Backend}>
+          <ThemeProvider theme={THEME}>
+            <CapabilitiesGate>
+              <MaintenanceGate>
+                <LifecycleProvider history={history}>
+                  <SessionTracker />
+                  <FeatureFlagsProvider>
+                    <FeatureLoadingGate>
+                      <IdentityProvider>
+                        <PlanPricesProvider>
+                          <EventualEngineProvider>
+                            <TextEditorVariablesPopoverProvider value={document.body}>
+                              <MousePositionProvider>
+                                <DismissableLayersGlobalProvider>
+                                  <DragProvider>
+                                    <AutoPanningProvider>
+                                      <HotkeysContextProvider>
+                                        <ProjectConfigProvider>
+                                          <PlatformProvider>
+                                            <ModalsV2.Provider>
+                                              <Upload.Provider client={client.upload} onError={datadogRum.addError}>
+                                                <NotifyContainer />
+                                                <RealtimeStatus />
+                                                <Modal.Placeholder />
 
-                                              <AccountLoadingGate>
-                                                <RealtimeConnectionGate>
-                                                  <AccountSubscriptionGate>
-                                                    <BillingSubscriptionGate>
-                                                      <VoiceflowAssistantVisibilityProvider>
-                                                        {/* to keep on a new line */}
-                                                        {children}
-                                                      </VoiceflowAssistantVisibilityProvider>
-                                                    </BillingSubscriptionGate>
-                                                  </AccountSubscriptionGate>
-                                                </RealtimeConnectionGate>
-                                              </AccountLoadingGate>
-                                            </Upload.Provider>
-                                          </ModalsV2.Provider>
-                                        </PlatformProvider>
-                                      </ProjectConfigProvider>
-                                    </HotkeysContextProvider>
-                                  </AutoPanningProvider>
-                                </DragProvider>
-                              </DismissableLayersGlobalProvider>
-                            </MousePositionProvider>
-                          </TextEditorVariablesPopoverProvider>
-                        </EventualEngineProvider>
-                      </PlanPricesProvider>
-                    </IdentityProvider>
-                  </FeatureLoadingGate>
-                </FeatureFlagsProvider>
-              </LifecycleProvider>
-            </MaintenanceGate>
-          </CapabilitiesGate>
-        </ThemeProvider>
-      </DndProvider>
-    </ConnectedRouter>
-  </StoreProvider>
+                                                <AccountLoadingGate>
+                                                  <RealtimeConnectionGate>
+                                                    <AccountSubscriptionGate>
+                                                      <BillingSubscriptionGate>
+                                                        <VoiceflowAssistantVisibilityProvider>
+                                                          {/* to keep on a new line */}
+                                                          {children}
+                                                        </VoiceflowAssistantVisibilityProvider>
+                                                      </BillingSubscriptionGate>
+                                                    </AccountSubscriptionGate>
+                                                  </RealtimeConnectionGate>
+                                                </AccountLoadingGate>
+                                              </Upload.Provider>
+                                            </ModalsV2.Provider>
+                                          </PlatformProvider>
+                                        </ProjectConfigProvider>
+                                      </HotkeysContextProvider>
+                                    </AutoPanningProvider>
+                                  </DragProvider>
+                                </DismissableLayersGlobalProvider>
+                              </MousePositionProvider>
+                            </TextEditorVariablesPopoverProvider>
+                          </EventualEngineProvider>
+                        </PlanPricesProvider>
+                      </IdentityProvider>
+                    </FeatureLoadingGate>
+                  </FeatureFlagsProvider>
+                </LifecycleProvider>
+              </MaintenanceGate>
+            </CapabilitiesGate>
+          </ThemeProvider>
+        </DndProvider>
+      </ConnectedRouter>
+    </StoreProvider>
+  </PageLoaderProvider>
 );
 
 export default GlobalProviders;

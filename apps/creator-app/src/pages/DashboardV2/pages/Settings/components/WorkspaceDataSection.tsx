@@ -3,7 +3,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Input, SectionV2, Upload, UploadIconVariant } from '@voiceflow/ui';
 import React from 'react';
 
-import { vfLogo, voiceflowLogomarkDark } from '@/assets';
+import { vfLogo, voiceflowLogomark } from '@/assets';
 import Page from '@/components/Page';
 import { Permission } from '@/constants/permissions';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
@@ -29,7 +29,7 @@ const GeneralSettingsPage: React.FC = () => {
     }
   }, [name, updateName, workspace?.name]);
 
-  const logo = useUpdatedBranding ? voiceflowLogomarkDark : vfLogo;
+  const logo = useUpdatedBranding ? voiceflowLogomark : vfLogo;
 
   return (
     <Page.Section

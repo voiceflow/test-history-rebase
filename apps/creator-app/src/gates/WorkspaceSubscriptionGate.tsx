@@ -1,6 +1,6 @@
 import React from 'react';
 
-import LoadingGate from '@/components/LoadingGate';
+import { LoadingGate } from '@/components/LoadingGate';
 import * as Session from '@/ducks/session';
 import { useSelector, useWorkspaceSubscription } from '@/hooks';
 
@@ -12,13 +12,7 @@ const WorkspaceSubscriptionGate: React.FC<React.PropsWithChildren> = ({ children
   const isSubscribed = useWorkspaceSubscription({ workspaceID }, [workspaceID]);
 
   return (
-    <LoadingGate
-      label="Assistants"
-      isLoaded={isSubscribed}
-      component={WorkspaceOrProjectLoader}
-      internalName={WorkspaceSubscriptionGate.name}
-      backgroundColor="#f9f9f9"
-    >
+    <LoadingGate isLoaded={isSubscribed} loader={<WorkspaceOrProjectLoader />} internalName={WorkspaceSubscriptionGate.name}>
       {children}
     </LoadingGate>
   );

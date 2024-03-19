@@ -10,7 +10,7 @@ export const CONFIG = Base.extend({
   name: 'Voiceflow CSV',
 
   icon: {
-    name: 'voiceflowV',
+    name: 'voiceflowLogomark',
     color: '#132144',
   },
 

@@ -1,12 +1,13 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { Utils } from '@voiceflow/common';
 import { Alert, toast } from '@voiceflow/ui';
+import { TabLoader } from '@voiceflow/ui-next';
 import axios, { AxiosError } from 'axios';
 import dayjs from 'dayjs';
 import React from 'react';
 
 import client from '@/client';
-import LoadingGate from '@/components/LoadingGate';
+import { LoadingGate } from '@/components/LoadingGate';
 import { MAINTENANCE_STATUS_SOURCE } from '@/config';
 import { useConfirmModal } from '@/hooks/modal.hook';
 import { getMaintenanceCookie } from '@/utils/cookies';
@@ -130,7 +131,7 @@ const MaintenanceGate: React.FC<React.PropsWithChildren> = ({ children }) => {
   }, []);
 
   return (
-    <LoadingGate internalName={MaintenanceGate.name} isLoaded={checked}>
+    <LoadingGate internalName={MaintenanceGate.name} isLoaded={checked} loader={<TabLoader variant="dark" />}>
       {children}
     </LoadingGate>
   );

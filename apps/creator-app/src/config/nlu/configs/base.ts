@@ -43,7 +43,7 @@ export const CONFIG = Platform.Utils.Types.satisfies<Config>()({
   name: 'Default',
 
   icon: {
-    name: 'voiceflowV',
+    name: 'voiceflowLogomark',
     color: '#132144',
   },
 

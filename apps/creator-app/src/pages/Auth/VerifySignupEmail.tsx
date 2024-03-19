@@ -1,4 +1,5 @@
-import { FullSpinner, toast } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui';
+import { TabLoader } from '@voiceflow/ui-next';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 
@@ -57,7 +58,7 @@ const VerifySignupEmail: React.FC = () => {
     goToOnboarding(search);
   });
 
-  return <FullSpinner message="Verifying Account" />;
+  return <TabLoader />;
 };
 
 export default VerifySignupEmail;

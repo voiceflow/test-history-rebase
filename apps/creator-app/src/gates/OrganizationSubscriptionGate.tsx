@@ -1,6 +1,6 @@
 import React from 'react';
 
-import LoadingGate from '@/components/LoadingGate';
+import { LoadingGate } from '@/components/LoadingGate';
 import * as Organization from '@/ducks/organization';
 import { useOrganizationSubscription, useSelector } from '@/hooks';
 
@@ -13,13 +13,7 @@ const OrganizationSubscriptionGate: React.FC<React.PropsWithChildren> = ({ child
   ]);
 
   return (
-    <LoadingGate
-      label="Organization"
-      isLoaded={isSubscribed}
-      component={WorkspaceOrProjectLoader}
-      internalName={OrganizationSubscriptionGate.name}
-      backgroundColor="#f9f9f9"
-    >
+    <LoadingGate isLoaded={isSubscribed} loader={<WorkspaceOrProjectLoader />} internalName={OrganizationSubscriptionGate.name}>
       {children}
     </LoadingGate>
   );

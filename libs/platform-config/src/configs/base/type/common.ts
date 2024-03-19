@@ -37,7 +37,7 @@ export const CONFIG = Types.satisfies<Config>()({
 
   name: 'Voiceflow Assistant',
 
-  icon: { name: 'voiceflowV', color: '#00a0ff' } as Icon,
+  icon: { name: 'voiceflowLogomark' } as Icon,
 
   logo: null,
 

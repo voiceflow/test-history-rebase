@@ -1,7 +1,8 @@
 import { Nullable } from '@voiceflow/common';
 import { UserRole } from '@voiceflow/internal';
 import * as Platform from '@voiceflow/platform-config';
-import { FullSpinner, Modal, Portal, Switch, System, useSmartReducerV2 } from '@voiceflow/ui';
+import { Modal, Portal, Switch, System, useSmartReducerV2 } from '@voiceflow/ui';
+import { TabLoader } from '@voiceflow/ui-next';
 import React from 'react';
 
 import * as Assistant from '@/components/Assistant';
@@ -143,7 +144,7 @@ const Create = manager.create<{ listID?: string }>('CreateProject', () => ({ api
 
       {state.creating && (
         <Portal portalNode={document.body}>
-          <FullSpinner message="Creating assistant" backgroundColor="#fff" zIndex={1100} />
+          <TabLoader />
         </Portal>
       )}
     </>

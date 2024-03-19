@@ -1,4 +1,4 @@
-import { FullSpinner, FullSpinnerProps } from '@voiceflow/ui';
+import { type ITabLoader, TabLoader } from '@voiceflow/ui-next';
 import React from 'react';
 import { matchPath, useLocation } from 'react-router-dom';
 
@@ -6,7 +6,7 @@ import { LegacyPath, Path } from '@/config/routes';
 import DashboardLoader from '@/pages/DashboardV2/components/DashboardLoader';
 import ProjectLoader from '@/pages/Project/components/ProjectLoader';
 
-const WorkspaceOrProjectLoader: React.FC<FullSpinnerProps> = (props) => {
+const WorkspaceOrProjectLoader: React.FC<ITabLoader> = (props) => {
   const location = useLocation();
 
   const isProject = React.useMemo(
@@ -28,7 +28,7 @@ const WorkspaceOrProjectLoader: React.FC<FullSpinnerProps> = (props) => {
 
   const isExport = React.useMemo(() => matchPath(location.pathname, { path: [Path.PROJECT_EXPORT] }), [location.pathname]);
 
-  if (isExport) return <FullSpinner {...props} />;
+  if (isExport) return <TabLoader variant="dark" {...props} />;
 
   return isProject ? <ProjectLoader {...props} /> : <DashboardLoader {...props} />;
 };

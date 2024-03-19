@@ -1,7 +1,8 @@
+import { TabLoader } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { ConnectionStatus } from '@/client/logux';
-import LoadingGate from '@/components/LoadingGate';
+import { LoadingGate } from '@/components/LoadingGate';
 import { withSessionGate } from '@/hocs/session';
 import { useLoguxSetup, useRealtimeClient } from '@/hooks';
 
@@ -36,7 +37,7 @@ const RealtimeConnectionGate: React.FC<React.PropsWithChildren> = ({ children })
   });
 
   return (
-    <LoadingGate label="Collaboration" internalName={RealtimeConnectionGate.name} isLoaded={isReady}>
+    <LoadingGate internalName={RealtimeConnectionGate.name} isLoaded={isReady} loader={<TabLoader variant="dark" />}>
       {children}
       {reconnecting && <RealtimeTimeoutControl />}
     </LoadingGate>

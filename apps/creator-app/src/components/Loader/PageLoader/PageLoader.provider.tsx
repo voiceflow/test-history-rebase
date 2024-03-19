@@ -7,8 +7,8 @@ import type { IPageLoaderProvider } from './PageLoader.interface';
 export const PageLoaderProvider: React.FC<IPageLoaderProvider> = memo(({ children }) => {
   const loaderID = useId();
   const parentLoaders = useContext(PageLoaderProgressContext);
-  const [loaded, setLoaded] = useState(false);
   const [loaders, setLoaders] = useState<Record<string, boolean>>({ [loaderID]: false });
+  const [loaderVisible, setLoaderVisible] = useState(true);
 
   const parentLoaded = useCreateConst(() => !parentLoaders || Object.values(parentLoaders).every((val) => val === true));
 
@@ -28,9 +28,14 @@ export const PageLoaderProvider: React.FC<IPageLoaderProvider> = memo(({ childre
     setLoaders((prevLoaders) => ({ ...prevLoaders, [loaderID]: true }));
   }, []);
 
+  const loading = progress < 100;
   useEffect(() => {
-    setLoaded((prevLoaded) => prevLoaded || progress === 100);
-  }, [progress]);
+    if (loading) return undefined;
+
+    const timeout = setTimeout(() => setLoaderVisible(false), 350);
+
+    return () => clearTimeout(timeout);
+  }, [loading]);
 
   const api = useCreateConst(() => ({
     loaded: (id: string) => setLoaders((prevLoaders) => ({ ...prevLoaders, [id]: true })),
@@ -46,7 +51,7 @@ export const PageLoaderProvider: React.FC<IPageLoaderProvider> = memo(({ childre
   return (
     <PageLoaderContext.Provider value={api}>
       <PageLoaderProgressContext.Provider value={combinedLoaders}>
-        {!loaded && (
+        {loaderVisible && (
           <Portal>
             <Box style={{ position: 'fixed', inset: 0, zIndex: 1000 }}>
               <PageLoader progress={progress} />

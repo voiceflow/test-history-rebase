@@ -6,8 +6,9 @@ export { default as facebookLogo } from '@/assets/svgs/facebook.svg?url';
 export { default as googleLogo } from '@/assets/svgs/google.svg?url';
 export { default as vfLogo } from '@/assets/images/vf-logo.png';
 export { default as bannerBg } from '@/assets/images/banner-bg.png';
-export { default as voiceflowLogomark } from '@/assets/svgs/Voiceflow-Logomark-White.svg?url';
+export { default as voiceflowLogomarkLight } from '@/assets/svgs/Voiceflow-Logomark-White.svg?url';
 export { default as voiceflowLogomarkDark } from '@/assets/svgs/Voiceflow-Logomark-Black.svg?url';
+export { default as voiceflowLogomark } from '@/assets/images/Voiceflow-Logomark.png';
 
 // wordmarks
 export { default as wordmark } from '@/assets/images/wordmark.png';

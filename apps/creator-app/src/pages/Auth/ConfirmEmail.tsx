@@ -1,5 +1,6 @@
 import { Utils } from '@voiceflow/common';
-import { FullSpinner, toast, useSetup } from '@voiceflow/ui';
+import { toast, useSetup } from '@voiceflow/ui';
+import { TabLoader } from '@voiceflow/ui-next';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 
@@ -56,7 +57,7 @@ const ConfirmEmail: React.FC = () => {
     }
   });
 
-  return <FullSpinner message="Verifying email change" />;
+  return <TabLoader />;
 };
 
 export default ConfirmEmail;

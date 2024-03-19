@@ -1,4 +1,5 @@
 import { Nullable, Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
@@ -6,6 +7,7 @@ import { AnyStyledComponent } from 'styled-components';
 
 import Avatar from '@/components/Avatar';
 import { CMS_KNOWLEDGE_BASE_LEARN_MORE, NO_MATCH_LEARN_MORE } from '@/constants/link.constant';
+import { useFeature } from '@/hooks/feature';
 import { KnowledgeBaseSources, PMStatus } from '@/pages/Prototype/types';
 import { ClassName } from '@/styles/constants';
 import { openURLInANewTab } from '@/utils/window';
@@ -63,18 +65,21 @@ const BaseMessage: React.FC<BaseMessageProps> = ({
   knowledgeBase,
   ...props
 }) => {
+  const useUpdatedBranding = useFeature(Realtime.FeatureFlag.BRANDING_UPDATE).isEnabled;
   const InnerContainer = React.useMemo(() => (withAnimation ? animationContainer : React.Fragment), []);
   const hideIcon = pmStatus === PMStatus.FAKE_LOADING && isLastBubble;
   const showIconLogo = forceIcon || (withLogo && isLastInSeries && !hideIcon);
   const uniqueKbSourceNames = Utils.array.unique(knowledgeBase?.filter((source) => source?.name).map((source) => source.name) || []);
 
+  const logoCircleUrl = avatarURL || (useUpdatedBranding && 'https://cdn.voiceflow.com/assets/logomark.png');
+
   return (
     <S.Container focused={focused} className={cn(ClassName.CHAT_DIALOG_MESSAGE, className)} rightAlign={rightAlign} {...props}>
       <InnerContainer>
         {showIconLogo && (
-          <S.LogoCircle shadow={false} size={32} forAvatar={!!avatarURL}>
-            {avatarURL ? (
-              <Avatar className={ClassName.PROTOTYPE_MESSAGE_ICON} noHover noShadow url={avatarURL} />
+          <S.LogoCircle shadow={false} size={32} forAvatar={!!logoCircleUrl}>
+            {logoCircleUrl ? (
+              <Avatar className={ClassName.PROTOTYPE_MESSAGE_ICON} noHover noShadow url={logoCircleUrl} />
             ) : (
               <SvgIcon icon="voiceflowV" size={16} color="#fff" />
             )}

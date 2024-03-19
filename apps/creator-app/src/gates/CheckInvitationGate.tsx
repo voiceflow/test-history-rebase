@@ -2,7 +2,7 @@ import { toast, useLinkedState } from '@voiceflow/ui';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 
-import LoadingGate from '@/components/LoadingGate';
+import { LoadingGate } from '@/components/LoadingGate';
 import * as Account from '@/ducks/account';
 import * as Router from '@/ducks/router';
 import * as Tracking from '@/ducks/tracking';
@@ -56,7 +56,7 @@ const CheckInvitationGate: React.FC<React.PropsWithChildren> = ({ children }) =>
   }, [checkForInvite]);
 
   return (
-    <LoadingGate load={load} isLoaded={inviteChecked} component={WorkspaceOrProjectLoader} internalName={CheckInvitationGate.name}>
+    <LoadingGate load={load} isLoaded={inviteChecked} loader={<WorkspaceOrProjectLoader />} internalName={CheckInvitationGate.name}>
       {children}
     </LoadingGate>
   );

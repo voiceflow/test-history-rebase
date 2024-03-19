@@ -25,7 +25,7 @@ const Welcome: React.FC = () => {
       <Container>
         <FlexCenter column>
           <Animations.FadeDown delay={0} {...fadeConfig}>
-            <LogoContainer>
+            <LogoContainer oldLogo={!useUpdatedBranding}>
               <SvgIcon icon={useUpdatedBranding ? 'voiceflowLogomarkLight' : 'voiceflowV'} size={24} color="#fff" />
             </LogoContainer>
           </Animations.FadeDown>
@@ -36,7 +36,7 @@ const Welcome: React.FC = () => {
 
           <Animations.FadeDown delay={0.24} {...fadeConfig}>
             <Description width={370} lineHeight={1.47} textAlign="center" mb={40}>
-              Collaboratively design, prototype, and launch AI agents on Webchat or our API.
+              Collaboratively design, develop, and launch impactful AI agents using any models and integrations.
             </Description>
           </Animations.FadeDown>
 

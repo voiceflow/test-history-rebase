@@ -1,7 +1,9 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { tid } from '@voiceflow/style';
 import { Menu, PrimaryNavigation } from '@voiceflow/ui-next';
 import React from 'react';
 
+import { useFeature } from '@/hooks/feature';
 import { useOnLinkClick } from '@/hooks/navigation.hook';
 import { useLogoButtonOptions } from '@/pages/Project/components/Header/hooks';
 
@@ -10,6 +12,8 @@ import { AssistantNavigationHelpItem } from './AssistantNavigationHelpItem.compo
 
 export const AssistantNavigation: React.FC = () => {
   const TEST_ID = 'assistant-navigation';
+
+  const useUpdatedBranding = useFeature(Realtime.FeatureFlag.BRANDING_UPDATE).isEnabled;
 
   const onLinkClick = useOnLinkClick();
 
@@ -21,7 +25,11 @@ export const AssistantNavigation: React.FC = () => {
   return (
     <PrimaryNavigation testID={TEST_ID}>
       <PrimaryNavigation.Section>
-        <PrimaryNavigation.Header menuProps={{ numberOfItemsToShow: logoOptions.length }} testID={tid(TEST_ID, 'home')}>
+        <PrimaryNavigation.Header
+          menuProps={{ numberOfItemsToShow: logoOptions.length }}
+          testID={tid(TEST_ID, 'home')}
+          useNewLogo={useUpdatedBranding}
+        >
           {logoOptions.map(
             (option) =>
               option &&

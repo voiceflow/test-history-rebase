@@ -13,7 +13,7 @@
     "apiPrivacy": "public",
     "members": [],
     "linkType": "STRAIGHT",
-    "image": "https://cm4-production-assets.s3.amazonaws.com/1680619509819-vf-2.png",
+    "image": "https://cdn.voiceflow.com/assets/logomark.png",
     "customThemes": [
       {
         "name": "Speak",
@@ -670,7 +670,7 @@
       },
       "publishing": {
         "color": "#1E6BD8",
-        "image": "https://cm4-production-assets.s3.amazonaws.com/1666102958779-vf.png",
+        "image": "https://cdn.voiceflow.com/assets/logomark.png",
         "description": "Our virtual assistant is here to help you.",
         "watermark": true,
         "position": "right",
@@ -681,7 +681,7 @@
         },
         "launcher": "https://cm4-production-assets.s3.amazonaws.com/1666970519081-vf_launcher_icon.png",
         "title": "Voiceflow HQ",
-        "avatar": "https://cm4-production-assets.s3.amazonaws.com/1666969248662-vf.png"
+        "avatar": "https://cdn.voiceflow.com/assets/logomark.png"
       },
       "platform": "general"
     },

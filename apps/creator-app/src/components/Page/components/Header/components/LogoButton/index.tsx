@@ -27,7 +27,7 @@ const LogoButton: React.FC<LogoButtonProps> = ({ options, expandable = true, noM
             icon={useUpdatedBranding ? 'voiceflowLogomark' : 'voiceflowV'}
             active={isOpen}
             onClick={onToggle}
-            iconProps={{ color: '#000', size: 26 }}
+            iconProps={{ color: '#000', size: 30 }}
             expandable={expandable}
             withBorder={withBorder}
             data-testid="header-logo-button"

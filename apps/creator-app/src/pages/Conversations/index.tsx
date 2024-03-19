@@ -1,12 +1,13 @@
 import { Utils } from '@voiceflow/common';
 import { Box, useSessionStorageState } from '@voiceflow/ui';
+import { TabLoader } from '@voiceflow/ui-next';
 import queryString from 'query-string';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Redirect, useHistory } from 'react-router-dom';
 
 import EmptyScreen from '@/components/EmptyScreen';
-import LoadingGate from '@/components/LoadingGate';
+import { LoadingGate } from '@/components/LoadingGate';
 import { PROTOTYPING } from '@/config/documentation';
 import { Path } from '@/config/routes';
 import { Permission } from '@/constants/permissions';
@@ -104,7 +105,7 @@ const Conversations: React.FC = () => {
   return (
     <ProjectPage>
       <ConversationsContainer id={Identifier.CONVERSATIONS_PAGE} isFilteredResultsEmpty={!filteredReportsExist}>
-        <LoadingGate fillContainer label="Conversations" internalName={Conversations.name} isLoaded={isLoaded} load={loadTranscripts}>
+        <LoadingGate internalName={Conversations.name} isLoaded={isLoaded} load={loadTranscripts} loader={<TabLoader variant="dark" />}>
           {!noTestRuns ? (
             <>
               <TranscriptManager tags={tags} range={range} endDate={endDate} startDate={startDate} personas={personas} />

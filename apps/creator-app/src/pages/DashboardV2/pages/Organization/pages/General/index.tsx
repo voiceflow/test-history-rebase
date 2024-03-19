@@ -1,15 +1,18 @@
 import { datadogRum } from '@datadog/browser-rum';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Input, SectionV2, Upload, UploadIconVariant } from '@voiceflow/ui';
 import React from 'react';
 
-import { vfLogo } from '@/assets';
+import { vfLogo, voiceflowLogomark } from '@/assets';
 import Page from '@/components/Page';
 import * as Organization from '@/ducks/organization';
-import { useDispatch, useLinkedState, useSelector } from '@/hooks';
+import { useDispatch, useFeature, useLinkedState, useSelector } from '@/hooks';
 
 import * as S from './styles';
 
 const OrganizationGeneral: React.FC = () => {
+  const useUpdatedBranding = useFeature(Realtime.FeatureFlag.BRANDING_UPDATE).isEnabled;
+
   const organization = useSelector(Organization.organizationSelector);
 
   const [name, updateName] = useLinkedState(organization?.name ?? '');
@@ -27,6 +30,8 @@ const OrganizationGeneral: React.FC = () => {
     updateName(organization.name);
   };
 
+  const logo = useUpdatedBranding ? voiceflowLogomark : vfLogo;
+
   return (
     <Page.Section
       header={
@@ -41,7 +46,7 @@ const OrganizationGeneral: React.FC = () => {
             client={{ upload: (_endpoint, _fileType, formData) => updateActiveOrganizationImage(formData) }}
             onError={datadogRum.addError}
           >
-            <S.UploadIcon size={UploadIconVariant.SMALLER} isSquare image={organization?.image || vfLogo} />
+            <S.UploadIcon size={UploadIconVariant.SMALLER} isSquare image={organization?.image || logo} />
           </Upload.Provider>
 
           <Box.FlexAlignStart column gap={11} fullWidth>

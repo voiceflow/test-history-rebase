@@ -1,6 +1,7 @@
+import { TabLoader } from '@voiceflow/ui-next';
 import React from 'react';
 
-import LoadingGate from '@/components/LoadingGate';
+import { LoadingGate } from '@/components/LoadingGate';
 import * as Domain from '@/ducks/domain';
 import * as Session from '@/ducks/session';
 import { useDispatch, useRouteDiagramID, useSelector } from '@/hooks';
@@ -33,7 +34,7 @@ const InitializeExportGate: React.FC<React.PropsWithChildren> = ({ children }) =
   }, [versionID, diagramID]);
 
   return (
-    <LoadingGate internalName={InitializeExportGate.name} isLoaded={loaded}>
+    <LoadingGate internalName={InitializeExportGate.name} isLoaded={loaded} loader={<TabLoader variant="dark" />}>
       {children}
     </LoadingGate>
   );

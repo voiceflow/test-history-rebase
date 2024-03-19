@@ -1,6 +1,6 @@
 import React from 'react';
 
-import LoadingGate from '@/components/LoadingGate';
+import { LoadingGate } from '@/components/LoadingGate';
 import { useSchemaSubscription } from '@/hooks';
 
 import WorkspaceOrProjectLoader from '../../WorkspaceOrProjectLoader';
@@ -14,7 +14,7 @@ const SchemaChannelSubscriptionGate: React.FC<SchemaChannelSubscriptionGateProps
   const isSubscribed = useSchemaSubscription({ versionID });
 
   return (
-    <LoadingGate label="Schema" isLoaded={isSubscribed} component={WorkspaceOrProjectLoader} internalName={SchemaChannelSubscriptionGate.name}>
+    <LoadingGate isLoaded={isSubscribed} loader={<WorkspaceOrProjectLoader />} internalName={SchemaChannelSubscriptionGate.name}>
       {children}
     </LoadingGate>
   );

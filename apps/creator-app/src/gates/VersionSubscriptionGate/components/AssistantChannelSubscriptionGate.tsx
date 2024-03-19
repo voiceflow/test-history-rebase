@@ -3,7 +3,7 @@ import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { designerClient } from '@/client/designer';
-import LoadingGate from '@/components/LoadingGate';
+import { LoadingGate } from '@/components/LoadingGate';
 import * as Designer from '@/ducks/designer';
 import * as Session from '@/ducks/session';
 import { useAssistantSubscription, useDispatch, useFeature, useRealtimeClient, useSelector } from '@/hooks';
@@ -80,12 +80,7 @@ const AssistantChannelSubscriptionGate: React.FC<AssistantChannelSubscriptionGat
   }, [isLoaded, httpAssistantCMS.isEnabled]);
 
   return (
-    <LoadingGate
-      label="Assistant"
-      isLoaded={isLoaded && cmsFetched}
-      component={WorkspaceOrProjectLoader}
-      internalName={AssistantChannelSubscriptionGate.name}
-    >
+    <LoadingGate isLoaded={isLoaded && cmsFetched} loader={<WorkspaceOrProjectLoader />} internalName={AssistantChannelSubscriptionGate.name}>
       {children}
     </LoadingGate>
   );

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.372.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.371.0...@voiceflow/realtime-sdk@1.372.0) (2024-03-20)
+
+### Features
+
+* remove kb_refresh ff (COR-1721) ([#7896](https://github.com/voiceflow/creator-app/issues/7896)) ([20baf9a](https://github.com/voiceflow/creator-app/commit/20baf9a0a0b4cd96afaf6243a2bb699325803106))
+
 # [1.371.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.370.3...@voiceflow/realtime-sdk@1.371.0) (2024-03-19)
 
 ### Features

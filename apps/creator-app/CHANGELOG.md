@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1438.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1437.0...@voiceflow/creator-app@1.1438.0) (2024-03-20)
+
+### Features
+
+* remove kb_refresh ff (COR-1721) ([#7896](https://github.com/voiceflow/creator-app/issues/7896)) ([20baf9a](https://github.com/voiceflow/creator-app/commit/20baf9a0a0b4cd96afaf6243a2bb699325803106))
+
 # [1.1437.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1436.1...@voiceflow/creator-app@1.1437.0) (2024-03-20)
 
 ### Features

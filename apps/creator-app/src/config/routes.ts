@@ -7,7 +7,6 @@ export enum RootRoute {
   LOGOUT = 'logout',
   SIGNUP = 'signup',
   ONBOARDING = 'onboarding',
-  CREATOR = 'creator',
   WORKSPACE = 'workspace',
   DASHBOARD = 'dashboard',
   ACCOUNT = 'account',
@@ -90,11 +89,6 @@ export enum CMSRoute {
   KNOWLEDGE_BASE = 'knowledge-base',
 }
 
-export enum CreatorRoute {
-  TERMS = 'terms',
-  PRIVACY_POLICY = 'privacy_policy',
-}
-
 export enum WorkspaceRoute {
   PROFILE = 'profile',
   MEMBERS = 'members',
@@ -146,8 +140,6 @@ export const Path = {
   SIGNUP: toPath(RootRoute.SIGNUP),
 
   ONBOARDING: toPath(RootRoute.ONBOARDING),
-
-  CREATOR_TERMS: [toPath(RootRoute.CREATOR, CreatorRoute.TERMS), toPath(RootRoute.CREATOR, CreatorRoute.PRIVACY_POLICY)],
 
   WORKSPACE: toPath(RootRoute.WORKSPACE),
   WORKSPACE_DASHBOARD: toPath(RootRoute.WORKSPACE, ':workspaceID'),

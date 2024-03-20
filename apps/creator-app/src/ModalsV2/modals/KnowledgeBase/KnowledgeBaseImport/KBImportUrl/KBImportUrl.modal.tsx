@@ -1,5 +1,4 @@
 import { BaseModels } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { tid } from '@voiceflow/style';
 import { Box, Scroll, TextArea } from '@voiceflow/ui-next';
 import pluralize from 'pluralize';
@@ -8,7 +7,6 @@ import React, { useMemo } from 'react';
 import { Modal } from '@/components/Modal';
 import { LimitType } from '@/constants/limits';
 import { Designer } from '@/ducks';
-import { useFeature } from '@/hooks/feature';
 import { useInput, useInputState } from '@/hooks/input.hook';
 import { usePlanLimitConfig } from '@/hooks/planLimitV2';
 import { useDispatch } from '@/hooks/store.hook';
@@ -24,7 +22,6 @@ import { textareaStyles } from './KBImportUrl.css';
 export const KBImportUrl = manager.create('KBImportURL', () => ({ api, type, opened, hidden, animated, closePrevented }) => {
   const TEST_ID = tid('knowledge-base', 'import-url-modal');
 
-  const { isEnabled: isRefreshEnabled } = useFeature(Realtime.FeatureFlag.KB_REFRESH);
   const checkDocumentLimitError = useDocumentLimitError(api.enableClose);
   const createManyFromData = useDispatch(Designer.KnowledgeBase.Document.effect.createManyFromData);
   const planConfig = usePlanLimitConfig(LimitType.KB_DOCUMENTS);
@@ -118,14 +115,7 @@ export const KBImportUrl = manager.create('KBImportURL', () => ({ api, type, ope
           </Box>
 
           <Box mx={24}>
-            {isRefreshEnabled && (
-              <KBRefreshRateSelect
-                value={refreshRate}
-                disabled={closePrevented}
-                onValueChange={setRefreshRate}
-                testID={tid(TEST_ID, 'refresh-rate')}
-              />
-            )}
+            <KBRefreshRateSelect value={refreshRate} disabled={closePrevented} onValueChange={setRefreshRate} testID={tid(TEST_ID, 'refresh-rate')} />
           </Box>
         </Box>
       </Scroll>

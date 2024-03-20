@@ -6,7 +6,7 @@ import { Descendant, Editor } from 'slate';
 import { Editable, Slate } from 'slate-react';
 import { EditableProps } from 'slate-react/dist/components/editable';
 
-import { getValidHref } from '@/utils/string';
+import { getURLWithProtocol } from '@/utils/string';
 
 import * as components from './components';
 import {
@@ -145,7 +145,7 @@ export default Object.assign(React.forwardRef<SlateEditableRef, SlateEditablePro
   EditorAPI,
   PluginType,
   serializeToJSX: (content: BaseText.SlateTextValue, options?: { variablesMap?: Partial<Record<string, { id: string; name: string }>> }) =>
-    serializeToJSX(content, { ...options, transformHref: getValidHref }),
+    serializeToJSX(content, { ...options, transformHref: getURLWithProtocol }),
   ControlledEditorProvider,
 
   useEditor: useSlateEditor,

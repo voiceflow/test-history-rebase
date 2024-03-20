@@ -18,7 +18,7 @@ import { useDispatch } from '@/hooks/realtime';
 import { PROJECT_COLORS } from '@/styles/colors';
 import { DashboardClassName } from '@/styles/constants';
 import { withEnterPress, withInputBlur } from '@/utils/dom';
-import { formatProjectName } from '@/utils/string';
+import { formatAssistantName } from '@/utils/string';
 import { openURLInANewTab } from '@/utils/window';
 
 import {
@@ -89,8 +89,8 @@ export const Item: React.FC<ItemProps> = ({
   const onBlur = () => {
     titleEditableRef.current?.stopEditing();
 
-    updateFormValue(formatProjectName(formValue));
-    saveProjectName(formatProjectName(formValue));
+    updateFormValue(formatAssistantName(formValue));
+    saveProjectName(formatAssistantName(formValue));
 
     setIsEditing(false);
   };

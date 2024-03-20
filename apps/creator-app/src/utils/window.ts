@@ -1,17 +1,17 @@
-import { getValidHref } from './string';
+import { getURLWithProtocol } from './string';
 
 export const getHostName = () => window.location.hostname;
 
 /**
  * opens url in  anew tab, noopener and noreferrer is set to true by default
  */
-export const openURLInTheSameTab = (url: string): void => window.location.replace(getValidHref(url));
+export const openURLInTheSameTab = (url: string): void => window.location.replace(getURLWithProtocol(url));
 
 /**
  * opens url in  anew tab, noopener and noreferrer is set to true by default
  */
 export const openURLInANewTab = (url: string, features = 'noopener=true,noreferrer=true'): void =>
-  window.open(getValidHref(url), '_blank', features)?.focus();
+  window.open(getURLWithProtocol(url), '_blank', features)?.focus();
 
 /**
  * opens internal url in a new tab, noopener and noreferrer is not set
@@ -34,5 +34,5 @@ export const openURLInANewPopupWindow = (url: string): Window | null => {
   const left = window.screenX + (window.outerWidth - width) / 2;
   const top = window.screenY + (window.outerHeight - height) / 2.5;
 
-  return window.open(getValidHref(url), 'popup', `width=${width},height=${height},left=${left},top=${top},popup=true,noopener=false`);
+  return window.open(getURLWithProtocol(url), 'popup', `width=${width},height=${height},left=${left},top=${top},popup=true,noopener=false`);
 };

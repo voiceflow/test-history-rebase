@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import { Modal } from '@/components/Modal';
 import { Designer } from '@/ducks';
 import { useDispatch, useFeature } from '@/hooks';
-import { HTTPS_URL_REGEX } from '@/utils/string.util';
+import { isHTTPsURL, isValidURL } from '@/utils/string.util';
 
 import { KBRefreshRateSelect } from '../../components/KBRefreshRateSelect/KBRefreshRateSelect.component';
 import { sanitizeURL } from '../../KnowledgeBaseImport.utils';
@@ -39,8 +39,13 @@ export const KBImportSitemapURL: React.FC<IKBImportSitemapURL> = ({
 
     const sanitizedSitemapURL = sanitizeURL(sitemapURL);
 
-    if (!sanitizedSitemapURL.match(HTTPS_URL_REGEX)) {
+    if (!isValidURL(sanitizedSitemapURL)) {
       setError('Invalid sitemap URL.');
+      return;
+    }
+
+    if (!isHTTPsURL(sanitizedSitemapURL)) {
+      setError("URL should start with 'https://' protocol.");
       return;
     }
 

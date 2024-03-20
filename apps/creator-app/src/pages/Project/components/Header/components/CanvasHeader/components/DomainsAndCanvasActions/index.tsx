@@ -13,7 +13,7 @@ import { SelectionSetTargetsContext, SelectionTargetsContext } from '@/pages/Pro
 import { usePrototypingMode } from '@/pages/Project/hooks';
 import { Identifier } from '@/styles/constants';
 import { withEnterPress, withInputBlur } from '@/utils/dom';
-import { formatProjectName } from '@/utils/string';
+import { formatAssistantName } from '@/utils/string';
 
 import { Container, DomainsActions, PlatformLogo, ProjectTitle, ViewOnly } from './components';
 
@@ -54,7 +54,7 @@ const DomainsAndCanvasActions: React.FC = () => {
       return;
     }
 
-    const formattedName = formatProjectName(formValue);
+    const formattedName = formatAssistantName(formValue);
 
     updateFormValue(formattedName);
     updateProjectName(formattedName);

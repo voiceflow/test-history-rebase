@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1437.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1436.1...@voiceflow/creator-app@1.1437.0) (2024-03-20)
+
+### Features
+
+* remove old legal page (COR-1705) ([#7893](https://github.com/voiceflow/creator-app/issues/7893)) ([827adb1](https://github.com/voiceflow/creator-app/commit/827adb159b14e1337c0a857bc7ce753b97472260))
+
 ## [1.1436.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1436.0...@voiceflow/creator-app@1.1436.1) (2024-03-20)
 
 ### Bug Fixes

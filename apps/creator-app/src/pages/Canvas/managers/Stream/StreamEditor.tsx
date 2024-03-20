@@ -1,5 +1,4 @@
 import { BaseModels } from '@voiceflow/base-types';
-import { SLOT_REGEXP } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Checkbox, ErrorMessageWithDivider } from '@voiceflow/ui';
@@ -12,11 +11,11 @@ import * as History from '@/ducks/history';
 import { useActiveProjectPlatform, useDispatch, useEnableDisable } from '@/hooks';
 import { Content, Controls, FormControl } from '@/pages/Canvas/components/Editor';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
-import { HTTPS_URL_REGEX } from '@/utils/string.util';
+import { containsVariable, isHTTPsURL } from '@/utils/string.util';
 
 import { HelpMessage, HelpTooltip, VisualsForm } from './components';
 
-const isValidURL = (url: string): boolean => !!(url.match(HTTPS_URL_REGEX) || url.match(SLOT_REGEXP));
+const isValidURL = (url: string): boolean => isHTTPsURL(url) || containsVariable(url);
 
 const StreamEditor: NodeEditor<Realtime.NodeData.Stream, Realtime.NodeData.StreamBuiltInPorts> = ({ data, node, engine, onChange }) => {
   const platform = useActiveProjectPlatform();

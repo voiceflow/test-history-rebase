@@ -7,7 +7,7 @@ import { composeValidators, validatorFactory } from '@voiceflow/utils-designer';
 import { LimitType } from '@/constants/limits';
 import { useUpgradeModal } from '@/hooks/modal.hook';
 import { usePlanLimitConfig } from '@/hooks/planLimitV2';
-import { URL_ONLY_REGEX } from '@/utils/string.util';
+import { isValidURL } from '@/utils/string.util';
 
 // add https:// if not present
 export const sanitizeURL = (url: string): string => {
@@ -47,11 +47,11 @@ export const urlMaxNumberValidator = validatorFactory(
 );
 
 export const urlRegexValidator = validatorFactory(
-  (urls: string) => urls.split('\n').every((url) => url.trim().match(URL_ONLY_REGEX)),
+  (urls: string) => urls.split('\n').every((url) => isValidURL(url.trim())),
   (urls) => {
     const filteredUrls = urls.split('\n').filter((url) => {
       if (!url.trim()) return false;
-      return !url.trim().match(URL_ONLY_REGEX);
+      return !isValidURL(url.trim());
     });
 
     return filteredUrls

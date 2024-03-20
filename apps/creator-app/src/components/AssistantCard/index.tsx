@@ -28,7 +28,7 @@ import { useProjectOptions } from '@/hooks/project';
 import { useDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
 import { withEnterPress, withInputBlur } from '@/utils/dom';
-import { formatProjectName } from '@/utils/string';
+import { formatAssistantName } from '@/utils/string';
 import { openURLInANewTab } from '@/utils/window';
 
 import * as S from './styles';
@@ -69,8 +69,8 @@ export const AssistantCard = ({ project, isHovered, onClickCard, onClickDesigner
   const onBlur = () => {
     titleRef.current?.stopEditing();
 
-    updateFormValue(formatProjectName(formValue || ''));
-    saveProjectName(formatProjectName(formValue || ''));
+    updateFormValue(formatAssistantName(formValue || ''));
+    saveProjectName(formatAssistantName(formValue || ''));
 
     setIsEditing(false);
   };

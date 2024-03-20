@@ -1,9 +1,9 @@
-import { Link, Text } from '@voiceflow/ui';
+import { System, Text } from '@voiceflow/ui';
 import React from 'react';
 
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector, useTheme } from '@/hooks';
-import { isAnyLink, matchAllAndProcess } from '@/utils/string';
+import { isValidURL, matchAllAndProcess } from '@/utils/string';
 import { ALL_URLS_REGEX } from '@/utils/string.util';
 
 import { Container } from './components';
@@ -39,11 +39,11 @@ const CommentPreview: React.FC<CommentPreviewProps> = ({ text = '' }) => {
         return;
       }
 
-      if (isAnyLink(result)) {
+      if (isValidURL(result)) {
         nodes.push(
-          <Link key={nodes.length} href={result}>
+          <System.Link.Anchor key={nodes.length} href={result}>
             {result}
-          </Link>
+          </System.Link.Anchor>
         );
 
         return;
@@ -52,9 +52,9 @@ const CommentPreview: React.FC<CommentPreviewProps> = ({ text = '' }) => {
       matchAllAndProcess(result, ALL_URLS_REGEX, (result) => {
         if (typeof result !== 'string') {
           nodes.push(
-            <Link key={nodes.length} href={result[0]}>
+            <System.Link.Anchor key={nodes.length} href={result[0]}>
               {result[0]}
-            </Link>
+            </System.Link.Anchor>
           );
         } else {
           nodes.push(<span key={nodes.length}>{result}</span>);

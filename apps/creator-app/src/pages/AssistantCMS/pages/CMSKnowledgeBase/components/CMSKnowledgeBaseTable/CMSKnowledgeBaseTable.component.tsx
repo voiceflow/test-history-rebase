@@ -1,15 +1,12 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { tid } from '@voiceflow/style';
 import { useSessionStorageState } from '@voiceflow/ui';
 import { Box, Link, Table, usePersistFunction } from '@voiceflow/ui-next';
-import { atom, useAtomValue } from 'jotai';
-import React, { useEffect, useMemo } from 'react';
+import { useAtomValue } from 'jotai';
+import React, { useEffect } from 'react';
 
 import { CMS_KNOWLEDGE_BASE_LEARN_MORE } from '@/constants/link.constant';
 import * as Tracking from '@/ducks/tracking';
 import { useDispatch } from '@/hooks';
-import { useGetAtomValue } from '@/hooks/atom.hook';
-import { useFeature } from '@/hooks/feature';
 import { useGetValueSelector } from '@/hooks/store.hook';
 import { EMPTY_TEST_ID, TABLE_TEST_ID } from '@/pages/AssistantCMS/AssistantCMS.constant';
 import { CMSEmpty } from '@/pages/AssistantCMS/components/CMSEmpty/CMSEmpty.component';
@@ -21,27 +18,15 @@ import { CMSKnowledgeBaseAddDataSourceButton } from '../CMSKnowledgeBaseAddDataS
 import { CMSKnowledgeBaseRowActions } from '../CMSKnowledgeBaseRowActions/CMSKnowledgeBaseRowActions.component';
 import { knowledgeBaseColumnsOrderAtom } from './CMSKnowledgeBaseTable.atom';
 import { CMS_KNOWLEDGE_BASE_TABLE_CONFIG } from './CMSKnowledgeBaseTable.config';
-import { KnowledgeBaseTableColumn } from './CMSKnowledgeBaseTable.constant';
 
 export const CMSKnowledgeBaseTable: React.FC = () => {
-  const { isEnabled: isRefreshEnabled } = useFeature(Realtime.FeatureFlag.KB_REFRESH);
-
   const onRowClick = useCMSRowItemClick();
-  const getAtomValue = useGetAtomValue();
   const onRowNavigate = useCMSRowItemNavigate();
   const knowledgeBaseManager = useKnowledgeBaseCMSManager();
   const selectors = useAtomValue(knowledgeBaseManager.selectors);
   const getOneByID = useGetValueSelector(selectors.oneByID);
   const trackAiKnowledgeBaseOpen = useDispatch(Tracking.trackAiKnowledgeBaseOpen);
   const [cmsKBPageOpen, setCMSKBPageOpen] = useSessionStorageState('CMS.KB.page-open', false);
-
-  const columnsOrderAtom = useMemo(
-    () =>
-      isRefreshEnabled
-        ? knowledgeBaseColumnsOrderAtom
-        : atom(getAtomValue(knowledgeBaseColumnsOrderAtom).filter((cfg) => cfg.type !== KnowledgeBaseTableColumn.REFRESH)),
-    [isRefreshEnabled]
-  );
 
   const onRowContextMenu = usePersistFunction(({ id, onClose }: { id: string; onClose: VoidFunction }) => {
     const document = getOneByID({ id });
@@ -86,7 +71,7 @@ export const CMSKnowledgeBaseTable: React.FC = () => {
         onRowClick={onRowClick}
         onRowNavigate={onRowNavigate}
         rowContextMenu={onRowContextMenu}
-        columnsOrderAtom={columnsOrderAtom}
+        columnsOrderAtom={knowledgeBaseColumnsOrderAtom}
         testID={TABLE_TEST_ID}
       />
     </CMSEmpty>

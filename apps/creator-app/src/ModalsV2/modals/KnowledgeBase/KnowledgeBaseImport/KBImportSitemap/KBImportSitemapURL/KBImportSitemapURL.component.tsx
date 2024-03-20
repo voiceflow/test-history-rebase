@@ -1,11 +1,10 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { tid } from '@voiceflow/style';
 import { Box, Scroll, TextField } from '@voiceflow/ui-next';
 import React, { useState } from 'react';
 
 import { Modal } from '@/components/Modal';
 import { Designer } from '@/ducks';
-import { useDispatch, useFeature } from '@/hooks';
+import { useDispatch } from '@/hooks';
 import { isHTTPsURL, isValidURL } from '@/utils/string.util';
 
 import { KBRefreshRateSelect } from '../../components/KBRefreshRateSelect/KBRefreshRateSelect.component';
@@ -27,7 +26,6 @@ export const KBImportSitemapURL: React.FC<IKBImportSitemapURL> = ({
   testID,
 }) => {
   const getURLsFromSitemap = useDispatch(Designer.KnowledgeBase.Document.effect.getURLsFromSitemap);
-  const { isEnabled: isRefreshEnabled } = useFeature(Realtime.FeatureFlag.KB_REFRESH);
 
   const [error, setError] = useState('');
 
@@ -101,9 +99,7 @@ export const KBImportSitemapURL: React.FC<IKBImportSitemapURL> = ({
             />
           </Box>
 
-          {isRefreshEnabled && (
-            <KBRefreshRateSelect value={refreshRate} disabled={closePrevented} onValueChange={setRefreshRate} testID={tid(testID, 'refresh-rate')} />
-          )}
+          <KBRefreshRateSelect value={refreshRate} disabled={closePrevented} onValueChange={setRefreshRate} testID={tid(testID, 'refresh-rate')} />
         </Box>
       </Scroll>
 

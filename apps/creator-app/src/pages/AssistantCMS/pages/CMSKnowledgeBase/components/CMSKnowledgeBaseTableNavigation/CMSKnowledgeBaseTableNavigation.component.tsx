@@ -22,7 +22,6 @@ import { useKBIntegrationSync, useKnowledgeBaseCMSManager } from '../../CMSKnowl
 import { CMSKnowledgeBaseTableNavigationRefreshRateButton } from './CMSKnowledgeBaseTableNavigationRefreshRateButton.component';
 
 export const CMSKnowledgeBaseTableNavigation: React.FC = () => {
-  const { isEnabled: isRefreshEnabled } = useFeature(Realtime.FeatureFlag.KB_REFRESH);
   const { isEnabled: isIntegrationsEnabled } = useFeature(Realtime.FeatureFlag.KNOWLEDGE_BASE_INTEGRATIONS);
   const refreshRatePermission = usePermission(Permission.KB_REFRESH_RATE);
 
@@ -80,13 +79,10 @@ export const CMSKnowledgeBaseTableNavigation: React.FC = () => {
       label="All data sources"
       actions={
         <>
-          {isRefreshEnabled && (
-            <>
-              <Button label="Re-sync" iconName="Sync" size="medium" variant="secondary" onClick={onResync} />
+          <Button label="Re-sync" iconName="Sync" size="medium" variant="secondary" onClick={onResync} />
 
-              <CMSKnowledgeBaseTableNavigationRefreshRateButton upgradeTooltip={upgradeTooltip} />
-            </>
-          )}
+          <CMSKnowledgeBaseTableNavigationRefreshRateButton upgradeTooltip={upgradeTooltip} />
+
           <CMSResourceActionsButton label="Delete" iconName="Trash" onClick={onDataSourcesDelete} />
         </>
       }

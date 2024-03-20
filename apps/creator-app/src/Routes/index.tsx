@@ -25,8 +25,6 @@ import PublicRoute from './PublicRoute';
 const Project = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/Project')));
 const Workspace = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/Workspace')));
 
-const Legal = lazy(() => import('@/components/Legal'));
-
 const Logout = lazy(() => import('@/pages/Auth/Logout'));
 const Runtime = lazy(() => import('@/pages/Runtime'));
 const ConfirmEmail = lazy(() => import('@/pages/Auth/ConfirmEmail'));
@@ -54,8 +52,6 @@ const Routes: React.FC = () => {
         <PrivateRoute exact path={Path.ONBOARDING} component={Onboarding} />
 
         <PrivateRoute exact path={Path.ZENDESK_CALLBACK} component={ZendeskCallback} screenSizeWarning={false} />
-
-        <Route exact path={Path.CREATOR_TERMS} component={Legal} />
 
         {/* workspace routes  */}
         <Route exact path={Path.WORKSPACE_ACCEPT_INVITE} component={WorkspaceAcceptInvite} />

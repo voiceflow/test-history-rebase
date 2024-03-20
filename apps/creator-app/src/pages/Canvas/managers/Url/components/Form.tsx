@@ -5,7 +5,7 @@ import React from 'react';
 import VariablesInput, { VariablesInputValue } from '@/components/VariablesInput';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
-import { containsSlotOtVariable, isAnyLink } from '@/utils/string';
+import { containsVariable, isValidURL } from '@/utils/string';
 
 interface FormProps {
   editor: NodeEditorV2Props<Realtime.NodeData.Url, Realtime.NodeData.UrlBuiltInPorts>;
@@ -15,7 +15,7 @@ interface FormProps {
 
 const Form: React.FC<FormProps> = ({ editor, header, footer }) => {
   const onChange = ({ text }: VariablesInputValue) => {
-    if (!text || containsSlotOtVariable(text) || isAnyLink(text)) {
+    if (!text || containsVariable(text) || isValidURL(text)) {
       editor.onChange({ url: text });
     } else {
       toast.error('URL is not valid, please enter valid link');

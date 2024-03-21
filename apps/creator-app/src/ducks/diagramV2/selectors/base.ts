@@ -3,6 +3,7 @@ import { BlockType } from '@voiceflow/realtime-sdk';
 import { createSelector } from 'reselect';
 
 import { createCRUDSelectors } from '@/ducks/utils/crudV2';
+import { isTopicDiagram } from '@/utils/diagram.utils';
 
 import { STATE_KEY } from '../constants';
 
@@ -18,13 +19,13 @@ export const {
   hasByIDs: hasDiagramsByIDsSelector,
 } = createCRUDSelectors(STATE_KEY);
 
-export const isTopicDiagramSelector = createSelector([diagramByIDSelector], (diagram) => diagram?.type === BaseModels.Diagram.DiagramType.TOPIC);
+export const isTopicDiagramSelector = createSelector([diagramByIDSelector], (diagram) => isTopicDiagram(diagram?.type));
 
 export const getRootTopicIDBySubtopicIDSelector = createSelector([allDiagramsSelector], (diagrams) => (diagramID: string | null) => {
   if (!diagramID) return null;
 
   for (const diagram of diagrams) {
-    if (diagram.type !== BaseModels.Diagram.DiagramType.TOPIC) continue;
+    if (!isTopicDiagram(diagram.type)) continue;
 
     for (const item of diagram.menuItems) {
       if (item.type !== BaseModels.Diagram.MenuItemType.DIAGRAM || item.sourceID !== diagramID) continue;

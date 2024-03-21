@@ -11,6 +11,7 @@ import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { getPlatformIntentNameFormatter } from '@/platforms/selectors';
 
+import { isComponentDiagram } from '../diagram.utils';
 import { formatBuiltInIntentName } from '../intent.util';
 
 export * from './platform';
@@ -179,9 +180,7 @@ export const getGoToIntentMeta = ({
   const topicGoToNodeID = goToIntent && goToDiagram ? globalIntentStepMap[goToDiagram.id]?.[goToIntent.id]?.[0] ?? null : null;
   const componentGoToNodeID = topicGoToNodeID || (goToIntent ? intentNodeDataLookup[goToIntent.id]?.nodeID ?? null : null);
 
-  const isComponentDiagram = activeDiagramType === BaseModels.Diagram.DiagramType.COMPONENT;
-
-  const goToNodeID = isComponentDiagram ? componentGoToNodeID : topicGoToNodeID;
+  const goToNodeID = isComponentDiagram(activeDiagramType) ? componentGoToNodeID : topicGoToNodeID;
 
   return {
     goToNodeID,

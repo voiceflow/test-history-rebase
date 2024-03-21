@@ -1,4 +1,3 @@
-import { BaseModels } from '@voiceflow/base-types';
 import { stopPropagation, System } from '@voiceflow/ui';
 import React from 'react';
 
@@ -6,6 +5,7 @@ import * as Creator from '@/ducks/creatorV2';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Router from '@/ducks/router';
 import { useDispatch, useSelector } from '@/hooks';
+import { isComponentDiagram } from '@/utils/diagram.utils';
 
 const ReturnToInstanceSnackbar: React.FC = () => {
   const activeDiagram = useSelector(DiagramV2.active.diagramSelector);
@@ -15,7 +15,7 @@ const ReturnToInstanceSnackbar: React.FC = () => {
   const snackbar = System.Snackbar.useAPI();
 
   React.useEffect(() => {
-    if (activeDiagram?.type === BaseModels.Diagram.DiagramType.COMPONENT && diagramID && nodeID) {
+    if (isComponentDiagram(activeDiagram?.type) && diagramID && nodeID) {
       snackbar.open();
     }
   }, [diagramID, nodeID, activeDiagram]);

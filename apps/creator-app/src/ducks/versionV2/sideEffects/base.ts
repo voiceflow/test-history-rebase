@@ -10,6 +10,7 @@ import * as Session from '@/ducks/session';
 import { waitAsync } from '@/ducks/utils';
 import * as Workspace from '@/ducks/workspaceV2';
 import { SyncThunk, Thunk } from '@/store/types';
+import { isComponentDiagram } from '@/utils/diagram.utils';
 
 import { active } from '../selectors';
 import { getActivePlatformVersionContext } from '../utils';
@@ -47,7 +48,7 @@ export const importProjectContext =
   async (dispatch) => {
     let mappedNodes = nodes;
 
-    const componentIDs = diagrams.filter(({ type }) => type === BaseModels.Diagram.DiagramType.COMPONENT).map((diagram) => diagram.id);
+    const componentIDs = diagrams.filter(({ type }) => isComponentDiagram(type)).map((diagram) => diagram.id);
     let newComponentIDs: string[] = [];
 
     const flows = await dispatch(Designer.Flow.effect.copyPasteMany({ sourceDiagramIDs: componentIDs, sourceEnvironmentID: sourceVersionID }));

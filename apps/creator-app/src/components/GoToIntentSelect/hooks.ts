@@ -1,6 +1,5 @@
 /* eslint-disable no-param-reassign */
 
-import { BaseModels } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
@@ -10,7 +9,7 @@ import * as Designer from '@/ducks/designer';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { createGroupedSelectID, useSelector } from '@/hooks';
-import { getDiagramName } from '@/utils/diagram';
+import { getDiagramName, isComponentDiagram, isTopicDiagram } from '@/utils/diagram.utils';
 
 import { Group, Multilevel, Option } from './types';
 
@@ -57,7 +56,7 @@ export const useDiagramsIntentsOptionsMap = () => {
   const globalIntentStepMap = useSelector(DiagramV2.globalIntentStepMapSelector);
   const intentNodeDataLookup = useSelector(CreatorV2.intentNodeDataLookupSelector);
 
-  const isComponentActive = !activeDiagram?.type || activeDiagram.type === BaseModels.Diagram.DiagramType.COMPONENT;
+  const isComponentActive = !activeDiagram?.type || isComponentDiagram(activeDiagram.type);
 
   return React.useMemo(() => {
     const optionsMap: Record<string, Option | Group> = {};
@@ -76,7 +75,7 @@ export const useDiagramsIntentsOptionsMap = () => {
       });
 
       if (activeComponentOptions.length) {
-        optionsMap[activeDiagram.id] = { id: activeDiagram.id, label: getDiagramName(activeDiagram.name), options: activeComponentOptions };
+        optionsMap[activeDiagram.id] = { id: activeDiagram.id, label: getDiagramName(activeDiagram?.name), options: activeComponentOptions };
       }
     }
 
@@ -84,7 +83,7 @@ export const useDiagramsIntentsOptionsMap = () => {
       const diagram = getDiagramByID({ id: diagramID });
 
       // creating options map only for topics or active component diagram
-      if (diagram?.type !== BaseModels.Diagram.DiagramType.TOPIC) return optionsMap;
+      if (!isTopicDiagram(diagram?.type)) return optionsMap;
 
       const diagramOptions = createTopicOptions({
         platform,
@@ -95,7 +94,7 @@ export const useDiagramsIntentsOptionsMap = () => {
         diagramGlobalStepMap: globalIntentStepMap[diagramID] ?? {},
       });
 
-      optionsMap[diagramID] = { id: diagramID, label: getDiagramName(diagram.name), options: diagramOptions };
+      optionsMap[diagramID] = { id: diagramID, label: getDiagramName(diagram?.name), options: diagramOptions };
 
       return optionsMap;
     }, optionsMap);

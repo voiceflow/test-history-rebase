@@ -5,7 +5,7 @@ import React from 'react';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Router from '@/ducks/router';
 import { useDispatch, useSelector } from '@/hooks';
-import { getDiagramName } from '@/utils/diagram';
+import { getDiagramName } from '@/utils/diagram.utils';
 
 const TopicCell: React.FC<TableTypes.ItemProps<Realtime.Domain>> = ({ item }) => {
   const diagramMap = useSelector(DiagramV2.diagramMapSelector);

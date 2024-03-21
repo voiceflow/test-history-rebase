@@ -36,7 +36,6 @@ export interface ComponentsAPI {
 
 export const useComponents = (): ComponentsAPI => {
   const folders = useSelector(VersionV2.active.foldersSelector);
-  const components = useSelector(VersionV2.active.componentsSelector);
   const getDiagramByID = useSelector(DiagramV2.getDiagramByIDSelector);
   const activeDiagramID = useSelector(CreatorV2.activeDiagramIDSelector);
   const lastCreatedDiagramID = useSelector(DiagramV2.lastCreatedIDSelector);
@@ -72,7 +71,7 @@ export const useComponents = (): ComponentsAPI => {
     });
 
     return cmsComponents.map(createComponentItemFromCMS);
-  }, [folders, components, cmsComponents, getDiagramByID]);
+  }, [folders, cmsComponents, getDiagramByID]);
 
   const [searchComponentsItems, searchOpenedComponents] = React.useMemo(() => {
     const items: ComponentItem[] = [];

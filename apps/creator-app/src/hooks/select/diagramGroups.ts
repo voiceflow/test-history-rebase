@@ -3,10 +3,11 @@ import { createUIOnlyMenuItemOption, UIOnlyMenuItemOption } from '@voiceflow/ui'
 import React from 'react';
 
 import * as CreatorV2 from '@/ducks/creatorV2';
+import * as Designer from '@/ducks/designer';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Domain from '@/ducks/domain';
 import * as Session from '@/ducks/session';
-import * as VersionV2 from '@/ducks/versionV2';
+import { isComponentDiagram } from '@/utils/diagram.utils';
 
 import { useSelector } from '../redux';
 import { BaseSelectGroup, BaseSelectMultilevel, BaseSelectOption } from './types';
@@ -26,13 +27,13 @@ export const useDomainAndDiagramMultilevelSelectOptions = <Option extends BaseDi
   { diagramGroupName }: { diagramGroupName: string }
 ) => {
   const allDomains = useSelector(Domain.allDomainsSelector);
-  const components = useSelector(VersionV2.active.componentsSelector);
+  const cmsComponents = useSelector(Designer.Flow.selectors.allOrderedByName);
   const getDiagramByID = useSelector(DiagramV2.getDiagramByIDSelector);
   const activeDomainID = useSelector(Session.activeDomainIDSelector);
   const activeDiagramID = useSelector(CreatorV2.activeDiagramIDSelector);
   const activeDiagramType = useSelector(DiagramV2.active.typeSelector);
 
-  const isComponentActive = !activeDiagramType || activeDiagramType === BaseModels.Diagram.DiagramType.COMPONENT;
+  const isComponentActive = !activeDiagramType || isComponentDiagram(activeDiagramType);
 
   return React.useMemo(() => {
     const topicsHeaderItem = createUIOnlyMenuItemOption('topicsHeader', { label: 'Topics', groupHeader: true });
@@ -117,10 +118,12 @@ export const useDomainAndDiagramMultilevelSelectOptions = <Option extends BaseDi
       return option;
     });
 
-    const sortedComponents = isComponentActive ? [...components].sort((component) => (component.sourceID === activeDiagramID ? -1 : 0)) : components;
+    const sortedComponents = isComponentActive
+      ? [...cmsComponents].sort((component) => (component.diagramID === activeDiagramID ? -1 : 0))
+      : cmsComponents;
 
     const componentOptions = sortedComponents
-      .map((component) => optionsMap[component.sourceID])
+      .map((component) => optionsMap[component.diagramID])
       .filter(isNonEmptyGroupedOption)
       .map((option) => ({ ...option, options: [diagramGroupHeaderItem, ...option.options] }));
 
@@ -150,5 +153,5 @@ export const useDomainAndDiagramMultilevelSelectOptions = <Option extends BaseDi
           : ((domainsOptions[0]?.options ?? []) as DomainDiagramSelectMultilevel<Option>[]),
       optionsMap,
     };
-  }, [allDomains, components, activeDomainID, activeDiagramID, isComponentActive, diagramsOptions]);
+  }, [allDomains, cmsComponents, activeDomainID, activeDiagramID, isComponentActive, diagramsOptions]);
 };

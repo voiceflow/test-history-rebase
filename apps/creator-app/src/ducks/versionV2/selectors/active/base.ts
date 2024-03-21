@@ -21,8 +21,6 @@ export const creatorIDSelector = createSelector([versionSelector], (version) => 
 
 export const defaultStepColors = createSelector([versionSelector], (version) => version?.defaultStepColors ?? {});
 
-export const componentsSelector = createSelector([versionSelector], (version) => version?.components ?? []);
-
 /**
  *  Should be used only in the domain duck to get root domain
  */

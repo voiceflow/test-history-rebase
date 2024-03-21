@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.40.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.39.1...@voiceflow/sdk-logux-designer@2.40.0) (2024-03-21)
+
+### Features
+
+* fix component convert to topic (COR-1724) ([#7900](https://github.com/voiceflow/creator-app/issues/7900)) ([075a9b8](https://github.com/voiceflow/creator-app/commit/075a9b8e3e37a9bd9a9831ec42813e9aa9a2fdda))
+
 ## [2.39.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.39.0...@voiceflow/sdk-logux-designer@2.39.1) (2024-03-21)
 
 **Note:** Version bump only for package @voiceflow/sdk-logux-designer

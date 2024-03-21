@@ -26,7 +26,7 @@ export const sanitizeURLsWithDataFormatting = (
 ): {
   url: string;
   name: string;
-  type: BaseModels.Project.KnowledgeBaseDocumentType;
+  type: BaseModels.Project.KnowledgeBaseDocumentType.URL;
   refreshRate: BaseModels.Project.KnowledgeBaseDocumentRefreshRate;
 }[] => sanitizeURLs(urls.split('\n')).map((url) => ({ url, name: url, type: BaseModels.Project.KnowledgeBaseDocumentType.URL, refreshRate }));
 

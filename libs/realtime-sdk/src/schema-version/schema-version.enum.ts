@@ -170,6 +170,11 @@ export const SchemaVersion = {
    * migrates legacy components to cms flows
    */
   V7_00: 7.0,
+
+  /**
+   * adds VF_CHUNKS system variable
+   */
+  V7_01: 7.01,
 } as const;
 
 export type SchemaVersion = (typeof SchemaVersion)[keyof typeof SchemaVersion];

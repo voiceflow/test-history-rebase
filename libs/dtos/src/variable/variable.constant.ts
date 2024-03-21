@@ -15,6 +15,7 @@ export const SYSTEM_VARIABLE_TYPE_MAP = {
   [SystemVariable.LAST_RESPONSE]: VariableDatatype.TEXT,
   [SystemVariable.LAST_UTTERANCE]: VariableDatatype.TEXT,
   [SystemVariable.INTENT_CONFIDENCE]: VariableDatatype.NUMBER,
+  [SystemVariable.VF_CHUNKS]: VariableDatatype.ANY,
 } satisfies Record<SystemVariable, VariableDatatype>;
 
 export const SYSTEM_VARIABLE_DESCRIPTION_MAP = {
@@ -31,4 +32,6 @@ export const SYSTEM_VARIABLE_DESCRIPTION_MAP = {
   [SystemVariable.LAST_UTTERANCE]: "The user's last utterance in a text string.",
   [SystemVariable.INTENT_CONFIDENCE]:
     'The confidence interval (measured as a value from 0 to 100) for the most recently matched intent.',
+  [SystemVariable.VF_CHUNKS]:
+    'Dynamically stores the last chunks retrieved from the Knowledge Base whenever calling the KB from the canvas.',
 } satisfies Record<SystemVariable, string | null>;

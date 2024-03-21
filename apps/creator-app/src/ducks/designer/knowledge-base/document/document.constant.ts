@@ -5,4 +5,5 @@ export const DOCUMENT_TYPE_MIME_FILE_TYPE_MAP: Record<BaseModels.Project.Knowled
   [BaseModels.Project.KnowledgeBaseDocumentType.PDF]: 'application/pdf',
   [BaseModels.Project.KnowledgeBaseDocumentType.DOCX]: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
   [BaseModels.Project.KnowledgeBaseDocumentType.TEXT]: 'text/plain',
+  [BaseModels.Project.KnowledgeBaseDocumentType.TABLE]: 'application/json',
 };

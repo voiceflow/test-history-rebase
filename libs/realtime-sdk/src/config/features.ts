@@ -59,4 +59,6 @@ export enum FeatureFlag {
   BRANDING_UPDATE = 'branding_update',
 
   INTENT_CLASSIFICATION = 'intent_classification',
+
+  VF_CHUNKS_VARIABLE = 'vf_chunks_variable',
 }

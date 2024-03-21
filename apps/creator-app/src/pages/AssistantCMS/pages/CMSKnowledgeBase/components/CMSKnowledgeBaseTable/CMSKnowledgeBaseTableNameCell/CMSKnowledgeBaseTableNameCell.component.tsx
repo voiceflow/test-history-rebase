@@ -6,6 +6,7 @@ import { useKnowledgeBaseCMSManager } from '../../../CMSKnowledgeBase.hook';
 import { ICMSKnowledgeBaseTableNameCell } from './CMSKnowledgeBaseTableNameCell.interface';
 import { DocumentNameDocx } from './DocumentNameDocx.component';
 import { DocumentNamePdf } from './DocumentNamePdf.component';
+import { DocumentNameTable } from './DocumentNameTable.component';
 import { DocumentNameText } from './DocumentNameText.component';
 import { DocumentNameURL } from './DocumentNameURL.component';
 
@@ -22,6 +23,8 @@ export const CMSKnowledgeBaseTableNameCell: React.FC<ICMSKnowledgeBaseTableNameC
       return <DocumentNameText id={item.id} data={item.data} search={search} />;
     case BaseModels.Project.KnowledgeBaseDocumentType.PDF:
       return <DocumentNamePdf id={item.id} data={item.data} search={search} />;
+    case BaseModels.Project.KnowledgeBaseDocumentType.TABLE:
+      return <DocumentNameTable id={item.id} data={item.data} search={search} />;
     default:
       return null;
   }

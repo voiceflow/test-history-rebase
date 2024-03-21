@@ -8,6 +8,7 @@ export const SystemVariable = {
   PLATFORM: 'platform',
   TIMESTAMP: 'timestamp',
   VF_MEMORY: 'vf_memory',
+  VF_CHUNKS: 'vf_chunks',
   LAST_EVENT: 'last_event',
   LAST_RESPONSE: 'last_response',
   LAST_UTTERANCE: 'last_utterance',

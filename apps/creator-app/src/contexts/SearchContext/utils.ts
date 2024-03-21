@@ -1,6 +1,5 @@
 /* eslint-disable max-depth */
 
-import { BaseModels } from '@voiceflow/base-types';
 import { Channel, EntityWithVariants, Language } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { SvgIconTypes } from '@voiceflow/ui';
@@ -8,6 +7,7 @@ import { SvgIconTypes } from '@voiceflow/ui';
 import { Designer } from '@/ducks';
 import { getManager } from '@/pages/Canvas/managers';
 import type { State } from '@/store/types';
+import { isTopicDiagram } from '@/utils/diagram.utils';
 import { utteranceTextToString } from '@/utils/utterance.util';
 
 import {
@@ -98,7 +98,7 @@ export const buildDiagramDatabases = (diagrams: Realtime.Diagram[]): Pick<Search
 
   diagrams.forEach((diagram) => {
     const entry: DiagramDatabaseEntry = { diagramID: diagram.id, diagramType: diagram.type, targets: [diagram.name] };
-    if (diagram.type === BaseModels.Diagram.DiagramType.TOPIC) {
+    if (isTopicDiagram(diagram.type)) {
       database[SearchCategory.TOPIC].push(entry);
     } else {
       database[SearchCategory.COMPONENT].push(entry);
@@ -174,7 +174,7 @@ export const getDatabaseEntryIcon = (entry: DatabaseEntry): SvgIconTypes.Icon =>
   }
 
   if (isDiagramDatabaseEntry(entry)) {
-    return entry.diagramType === BaseModels.Diagram.DiagramType.TOPIC ? 'systemLayers' : 'componentOutline';
+    return isTopicDiagram(entry.diagramType) ? 'systemLayers' : 'componentOutline';
   }
   return 'search';
 };

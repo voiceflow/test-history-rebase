@@ -3,6 +3,8 @@ import { id } from '@voiceflow/common';
 import ObjectID from 'bson-objectid';
 import hash from 'object-hash';
 
+import { isComponentDiagram, isTopicDiagram } from '@/utils/diagram.utils';
+
 export interface VF_FILE {
   project: BaseModels.Project.Model<any, any>;
   version: BaseModels.Version.Model<BaseModels.Version.PlatformData>;
@@ -87,8 +89,8 @@ export const getDiff = (next: VF_FILE, current: VF_FILE) => {
     diff: {
       intents,
       entities,
-      topics: diagrams.filter((diagram) => diagram.nextResource.type === BaseModels.Diagram.DiagramType.TOPIC),
-      components: diagrams.filter((diagram) => diagram.nextResource.type === BaseModels.Diagram.DiagramType.COMPONENT),
+      topics: diagrams.filter((diagram) => isTopicDiagram(diagram.nextResource.type)),
+      components: diagrams.filter((diagram) => isComponentDiagram(diagram.nextResource.type)),
       variables,
       customBlocks,
     },

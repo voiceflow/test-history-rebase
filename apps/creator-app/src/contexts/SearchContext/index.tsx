@@ -10,6 +10,7 @@ import * as Diagram from '@/ducks/diagramV2';
 import * as Project from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import { useSelector, useStore } from '@/hooks/redux';
+import { isTemplateDiagram } from '@/utils/diagram.utils';
 
 import { Filters, NodeDatabaseEntry } from './types';
 import { buildNodeDatabase } from './utils';
@@ -54,7 +55,7 @@ const SearchProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     const diagrams = await client.api.version.getDiagrams<BaseModels.Diagram.Model>(versionID);
     diagrams.forEach((diagram) => {
       if (diagram.diagramID in staticDiagramDatabases.current) return;
-      if (diagram.type === BaseModels.Diagram.DiagramType.TEMPLATE) return;
+      if (isTemplateDiagram(diagram.type)) return;
 
       const { nodes, data } = Realtime.Adapters.creatorAdapter.fromDB(diagram, { platform, projectType, context: {} });
       staticDiagramDatabases.current[diagram.diagramID] = buildNodeDatabase(

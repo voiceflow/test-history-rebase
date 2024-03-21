@@ -5,6 +5,7 @@ import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { normalize } from 'normal-store';
 
+import { ROOT_DIAGRAM_LABEL, ROOT_DIAGRAM_NAME } from '@/constants';
 import { BLOCK_WIDTH } from '@/styles/theme';
 import { Point } from '@/types';
 
@@ -103,3 +104,22 @@ export const convertSelectionToComponent = (
 
   return { component, incomingLinks, outgoingLinks, name };
 };
+
+export const getDiagramName = (diagramName: string | null | undefined): string => {
+  if (!diagramName) return 'Unknown';
+
+  if (diagramName === ROOT_DIAGRAM_NAME) return ROOT_DIAGRAM_LABEL;
+
+  return diagramName;
+};
+
+export const isComponentDiagram = (
+  diagramType: BaseModels.Diagram.DiagramType | null | undefined
+): diagramType is BaseModels.Diagram.DiagramType.COMPONENT => diagramType === BaseModels.Diagram.DiagramType.COMPONENT;
+
+export const isTemplateDiagram = (
+  diagramType: BaseModels.Diagram.DiagramType | null | undefined
+): diagramType is BaseModels.Diagram.DiagramType.TEMPLATE => diagramType === BaseModels.Diagram.DiagramType.TEMPLATE;
+
+export const isTopicDiagram = (diagramType: BaseModels.Diagram.DiagramType | null | undefined): diagramType is BaseModels.Diagram.DiagramType.TOPIC =>
+  diagramType === BaseModels.Diagram.DiagramType.TOPIC;

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.302.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.301.0...@voiceflow/realtime@1.302.0) (2024-03-21)
+
+### Features
+
+* fix component convert to topic (COR-1724) ([#7900](https://github.com/voiceflow/creator-app/issues/7900)) ([075a9b8](https://github.com/voiceflow/creator-app/commit/075a9b8e3e37a9bd9a9831ec42813e9aa9a2fdda))
+
 # [1.301.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.300.0...@voiceflow/realtime@1.301.0) (2024-03-21)
 
 ### Features

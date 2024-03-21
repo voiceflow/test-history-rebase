@@ -148,8 +148,8 @@ export class FlowLoguxController {
   @Broadcast<Actions.Flow.DeleteOne>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async deleteOne(@Payload() { id, keepDiagram, context }: Actions.Flow.DeleteOne, @AuthMeta() authMeta: AuthMetaPayload) {
-    const result = await this.service.deleteManyAndSync([{ id, environmentID: context.environmentID }], { keepDiagram });
+  async deleteOne(@Payload() { id, context }: Actions.Flow.DeleteOne, @AuthMeta() authMeta: AuthMetaPayload) {
+    const result = await this.service.deleteManyAndSync([{ id, environmentID: context.environmentID }]);
 
     // overriding entities cause it's broadcasted by decorator
     await this.service.broadcastDeleteMany(authMeta, { ...result, delete: { ...result.delete, flows: [] } }, context);
@@ -163,11 +163,8 @@ export class FlowLoguxController {
   @Broadcast<Actions.Flow.DeleteMany>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async deleteMany(@Payload() { ids, keepDiagram, context }: Actions.Flow.DeleteMany, @AuthMeta() authMeta: AuthMetaPayload) {
-    const result = await this.service.deleteManyAndSync(
-      ids.map((id) => ({ id, environmentID: context.environmentID })),
-      { keepDiagram }
-    );
+  async deleteMany(@Payload() { ids, context }: Actions.Flow.DeleteMany, @AuthMeta() authMeta: AuthMetaPayload) {
+    const result = await this.service.deleteManyAndSync(ids.map((id) => ({ id, environmentID: context.environmentID })));
 
     // overriding entities cause it's broadcasted by decorator
     await this.service.broadcastDeleteMany(authMeta, { ...result, delete: { ...result.delete, flows: [] } }, context);

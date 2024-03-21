@@ -27,6 +27,7 @@ export class BillingSubscriptionService {
     return {
       id: subscription.id,
       status: subscription.status,
+      onDunningPeriod: subscription.on_dunning_period,
       startDate: subscription.start_date ? fromUnixTimestamp(subscription.start_date) : undefined,
       currentTermStart: subscription.current_term_start ? fromUnixTimestamp(subscription.current_term_start) : undefined,
       currentTermEnd: subscription.current_term_end ? fromUnixTimestamp(subscription.current_term_end) : undefined,
@@ -77,12 +78,6 @@ export class BillingSubscriptionService {
 
   async findOne(subscriptionID: string) {
     const { subscription } = await this.billingClient.subscriptionsPrivate.getSubscription(subscriptionID);
-
-    return this.parseSubscription(subscription);
-  }
-
-  async getSubscriptionWithScheduledChanges(subscriptionID: string) {
-    const { subscription } = await this.billingClient.subscriptionsPrivate.getSubscriptionScheduledChanges(subscriptionID);
 
     return this.parseSubscription(subscription);
   }

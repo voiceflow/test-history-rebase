@@ -5,7 +5,7 @@ import React from 'react';
 import Page from '@/components/Page';
 
 interface PaymentFailedProps {
-  date: string;
+  date: string | null;
 }
 
 export const FORMAT = 'DD MMM YYYY';

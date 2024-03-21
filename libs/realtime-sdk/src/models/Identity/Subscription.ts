@@ -91,4 +91,6 @@ export interface Subscription {
   resourceVersion?: number;
 
   metaData?: Record<string, unknown>;
+
+  onDunningPeriod?: boolean;
 }

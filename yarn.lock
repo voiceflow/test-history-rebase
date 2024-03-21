@@ -9932,7 +9932,7 @@ __metadata:
     "@voiceflow/nestjs-openapi-extractor": 1.7.9
     "@voiceflow/openai": ^3.2.1
     "@voiceflow/sdk-auth": ^2.7.14
-    "@voiceflow/sdk-billing": 1.18.3
+    "@voiceflow/sdk-billing": 1.20.1
     axios: 1.6.0
     chance: 1.1.11
     dd-trace: 4.17.0
@@ -10337,7 +10337,7 @@ __metadata:
     "@voiceflow/realtime-sdk": "workspace:*"
     "@voiceflow/schema-types": 1.64.0
     "@voiceflow/sdk-auth": ^2.7.14
-    "@voiceflow/sdk-billing": 1.18.3
+    "@voiceflow/sdk-billing": 1.20.1
     "@voiceflow/sdk-identity": 1.18.36
     "@voiceflow/sdk-logux-designer": "workspace:*"
     "@voiceflow/socket-utils": "workspace:*"
@@ -10506,9 +10506,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voiceflow/sdk-billing@npm:1.18.3":
-  version: 1.18.3
-  resolution: "@voiceflow/sdk-billing@npm:1.18.3"
+"@voiceflow/sdk-billing@npm:1.20.1":
+  version: 1.20.1
+  resolution: "@voiceflow/sdk-billing@npm:1.20.1"
   dependencies:
     "@voiceflow/orval-fetch": 1.4.0
     "@voiceflow/sdk-common": 1.11.3
@@ -10528,7 +10528,7 @@ __metadata:
       optional: true
     undici:
       optional: true
-  checksum: cbb1dd8f7e480efde1c73925dbbbfed48494b72784142956dce82acdfab22f7c4e2122890561191be70945e5a23a1523d259a18c416797516d759918a0adb994
+  checksum: 3eb08cc2a35bd7bbfec79b9f640540dc1f14fef4a06b18d4d26a83b90deca3ac63726be2b409c0721fcf6c135f1d6e252465bdea54f5022276f68714b4805a92
   languageName: node
   linkType: hard
 

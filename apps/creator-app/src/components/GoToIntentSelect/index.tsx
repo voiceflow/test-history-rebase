@@ -1,4 +1,3 @@
-import { BaseModels } from '@voiceflow/base-types';
 import { BaseSelectProps, Link, Menu, Select } from '@voiceflow/ui';
 import React from 'react';
 
@@ -6,6 +5,7 @@ import * as Documentation from '@/config/documentation';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import { useDomainAndDiagramMultilevelSelectOptions, useSelector } from '@/hooks';
+import { isComponentDiagram } from '@/utils/diagram.utils';
 
 import { useDiagramsIntentsOptionsMap } from './hooks';
 import { Multilevel, Value } from './types';
@@ -34,7 +34,7 @@ const GoToIntentSelect: React.FC<GoToIntentSelectProps> = ({
   const globalIntentStepMap = useSelector(DiagramV2.globalIntentStepMapSelector);
   const intentNodeDataLookup = useSelector(CreatorV2.intentNodeDataLookupSelector);
 
-  const isComponentActive = !activeDiagram?.type || activeDiagram.type === BaseModels.Diagram.DiagramType.COMPONENT;
+  const isComponentActive = !activeDiagram?.type || isComponentDiagram(activeDiagram.type);
 
   const diagramsIntentsOptions = useDiagramsIntentsOptionsMap();
 

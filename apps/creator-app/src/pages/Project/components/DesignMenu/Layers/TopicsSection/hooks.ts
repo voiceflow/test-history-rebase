@@ -17,7 +17,7 @@ import { useDnDReorder } from '@/hooks/dnd';
 import { useEventualEngine } from '@/hooks/engine';
 import { useDispatch, useLocalDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
-import { getDiagramName } from '@/utils/diagram';
+import { getDiagramName } from '@/utils/diagram.utils';
 
 import { OpenedIDsToggleApi, useOpenedIDsToggle } from '../hooks';
 

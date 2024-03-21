@@ -28,6 +28,7 @@ import { CanvasContainerAPI } from '@/pages/Canvas/types';
 import { DiagramHeartbeatContextValue } from '@/pages/Project/contexts';
 import { State, Store } from '@/store/types';
 import { Pair, Point } from '@/types';
+import { isTopicDiagram } from '@/utils/diagram.utils';
 import { Coords } from '@/utils/geometry';
 import { getNodesGroupCenter } from '@/utils/node';
 
@@ -586,8 +587,8 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
     const nodeEntries = Array.from(this.nodes.entries());
 
     // topics do not have start node, get first intent step
-    if (!isRootDiagramActive && diagram?.type === BaseModels.Diagram.DiagramType.TOPIC) {
-      const nodeMenuItem = diagram.menuItems.find(({ type }) => type === BaseModels.Diagram.MenuItemType.NODE);
+    if (!isRootDiagramActive && isTopicDiagram(diagram?.type)) {
+      const nodeMenuItem = diagram?.menuItems.find(({ type }) => type === BaseModels.Diagram.MenuItemType.NODE);
 
       return nodeMenuItem?.sourceID ?? nodeEntries[0]?.[0] ?? null;
     }

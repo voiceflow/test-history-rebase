@@ -5,7 +5,7 @@ import React from 'react';
 import { Designer, Diagram } from '@/ducks';
 import * as Domain from '@/ducks/domain';
 import { useSelector } from '@/hooks/redux';
-import { getDiagramName } from '@/utils/diagram';
+import { getDiagramName } from '@/utils/diagram.utils';
 
 import { Topic } from './types';
 

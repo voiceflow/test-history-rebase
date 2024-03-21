@@ -1,5 +1,4 @@
 import { datadogRum } from '@datadog/browser-rum';
-import { BaseModels } from '@voiceflow/base-types';
 import { MenuTypes, toast, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
@@ -12,6 +11,7 @@ import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import { useDispatch, useLinkedState, usePermission, useSelector, useToggle } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
+import { isTopicDiagram } from '@/utils/diagram.utils';
 
 import TopicDomainPopper from '../components/DesignMenu/Layers/TopicsSection/TopicDomainPopper';
 
@@ -165,7 +165,7 @@ export const useDiagramOptions = ({
     }
   }, [diagramID, flow]);
 
-  const isTopic = diagram?.type === BaseModels.Diagram.DiagramType.TOPIC;
+  const isTopic = isTopicDiagram(diagram?.type);
   const domainsList = domains.filter((domain) => domain.id !== activeDomainID);
 
   const onDelete = React.useCallback(() => {

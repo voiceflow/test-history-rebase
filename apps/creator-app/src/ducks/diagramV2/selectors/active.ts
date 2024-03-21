@@ -1,4 +1,3 @@
-import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import _unionBy from 'lodash/unionBy';
 import { normalize } from 'normal-store';
@@ -8,6 +7,7 @@ import { activeDiagramIDSelector } from '@/ducks/creatorV2/selectors';
 import { all as allEntitiesSelector } from '@/ducks/designer/entity/selectors/crud.select';
 import { all as allCMSVariablesSelector } from '@/ducks/designer/variable/variable.select';
 import { topicIDsSelector } from '@/ducks/domain/selectors/active';
+import { isTopicDiagram } from '@/utils/diagram.utils';
 
 import { getDiagramByIDSelector, getDiagramsByIDsSelector } from './base';
 
@@ -17,7 +17,7 @@ export const diagramSelector = createSelector([getDiagramByIDSelector, activeDia
 
 export const typeSelector = createSelector([diagramSelector], (diagram) => diagram?.type ?? null);
 
-export const isTopicSelector = createSelector([typeSelector], (type) => type === BaseModels.Diagram.DiagramType.TOPIC);
+export const isTopicSelector = createSelector([typeSelector], (type) => isTopicDiagram(type));
 
 export const topicDiagramsSelector = createSelector([topicIDsSelector, getDiagramsByIDsSelector], (topicIDs, getDiagramsByIDs) =>
   getDiagramsByIDs({ ids: topicIDs })

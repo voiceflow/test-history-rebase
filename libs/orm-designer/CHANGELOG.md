@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.41.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.40.0...@voiceflow/orm-designer@2.41.0) (2024-03-21)
+
+### Features
+
+* add new build-in variable vf-chunks (COR-1185) (COR-1186) ([#7869](https://github.com/voiceflow/creator-app/issues/7869)) ([d26729e](https://github.com/voiceflow/creator-app/commit/d26729e6ce8e919f7b9b00ab88c928fdc801bb0c))
+
 # [2.40.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.39.4...@voiceflow/orm-designer@2.40.0) (2024-03-19)
 
 ### Features

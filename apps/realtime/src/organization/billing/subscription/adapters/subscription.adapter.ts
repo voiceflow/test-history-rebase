@@ -29,6 +29,7 @@ const subscriptionAdapter = createMultiAdapter<Realtime.Identity.Subscription, S
     customerID,
     trialEnd: trialEndAt,
     cancelledAt,
+    onDunningPeriod,
   }) => {
     const planItem = findPlanItem(subscriptionItems);
     const trialEnd = planItem?.trialEnd;
@@ -67,6 +68,7 @@ const subscriptionAdapter = createMultiAdapter<Realtime.Identity.Subscription, S
       nextBillingDate: nextBillingTimestamp ? Realtime.Utils.date.to_DD_MMM_YYYY(new Date(nextBillingTimestamp)) : null,
       status: getStatus(status),
       trial: isTrial && trialEnd ? { daysLeft: getDaysLeftToTrialEnd(new Date(trialEnd)), endAt: new Date(trialEnd).toJSON() } : null,
+      onDunningPeriod,
       paymentMethod: paymentSource && {
         id: paymentSource.id,
         status: paymentSource.status as SubscriptionPaymentMethodStatusType,

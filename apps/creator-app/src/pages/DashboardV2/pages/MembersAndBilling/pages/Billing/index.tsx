@@ -26,7 +26,7 @@ const DashboardV2Billing: React.FC = () => {
 
   const billingHistory = useBillingHistory();
   const isReady = billingHistory.isReady && organizationID && subscription;
-  const showPaymentFailed = isProOrTeamPlan && !isTrial && paymentMethod && paymentMethod?.failed;
+  const showPaymentFailed = !isTrial && (paymentMethod?.failed || subscription?.onDunningPeriod);
 
   useEffect(() => {
     try {
@@ -46,7 +46,7 @@ const DashboardV2Billing: React.FC = () => {
 
   return (
     <Box>
-      {showPaymentFailed && <PaymentFailed date={`${paymentMethod.card.expiryMonth}/${paymentMethod.card.expiryYear}`} />}
+      {showPaymentFailed && <PaymentFailed date={billingHistory?.data[0]?.date ?? null} />}
 
       <EditorSeats
         nextBillingDate={subscription.nextBillingDate ?? null}

@@ -249,15 +249,13 @@ export class FlowService extends CMSTabularService<FlowORM> {
     };
   }
 
-  async deleteManyAndSync(ids: Primary<FlowEntity>[], { keepDiagram }: { keepDiagram?: boolean } = {}) {
+  async deleteManyAndSync(ids: Primary<FlowEntity>[]) {
     return this.postgresEM.transactional(async () => {
       const flows = await this.findMany(ids);
-      let diagrams: DiagramEntity[] = [];
+      const diagrams = await this.diagram.findMany(flows.map((flow) => ({ diagramID: flow.diagramID, versionID: flow.environmentID })));
 
-      if (!keepDiagram) {
-        diagrams = await this.diagram.findMany(flows.map((flow) => ({ diagramID: flow.diagramID, versionID: flow.environmentID })));
-        await this.diagram.deleteMany(diagrams);
-      }
+      await this.diagram.deleteMany(diagrams);
+
       await this.deleteMany(flows);
       return {
         delete: { flows, diagrams },

@@ -161,7 +161,7 @@ export const convertOneToTopic =
         })
       );
 
-      await dispatch.sync(Actions.Flow.DeleteOne({ context, id, keepDiagram: true }));
+      await dispatch.sync(Actions.Flow.DeleteOne({ context, id }));
     } catch (err) {
       if (err instanceof AsyncActionError && err.code === Realtime.ErrorCode.CANNOT_CONVERT_TO_TOPIC) {
         logger.warn(`unable to convert to topic: ${err.message}`);

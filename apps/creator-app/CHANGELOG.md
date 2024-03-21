@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1441.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1440.0...@voiceflow/creator-app@1.1441.0) (2024-03-21)
+
+### Features
+
+* display warning message on payment due (COR-1714) ([#7899](https://github.com/voiceflow/creator-app/issues/7899)) ([3f6b46b](https://github.com/voiceflow/creator-app/commit/3f6b46b234514cbad249d3a80dc231bedebfdcaa))
+
 # [1.1440.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1439.0...@voiceflow/creator-app@1.1440.0) (2024-03-21)
 
 ### Features

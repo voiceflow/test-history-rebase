@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1439.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1438.0...@voiceflow/creator-app@1.1439.0) (2024-03-21)
+
+### Features
+
+* fix component list on gotToBlock [bugfix] (COR-1704) ([#7897](https://github.com/voiceflow/creator-app/issues/7897)) ([6c09a86](https://github.com/voiceflow/creator-app/commit/6c09a86107cd333a04bfc49b84164c8fd8fc7616))
+
 # [1.1438.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1437.0...@voiceflow/creator-app@1.1438.0) (2024-03-20)
 
 ### Features

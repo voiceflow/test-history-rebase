@@ -13,9 +13,6 @@ interface SetSectionProps {
   onUpdate: (path: Partial<BaseNode.AISet.Set>) => void;
   onRemove?: VoidFunction;
   removeDisabled: boolean;
-
-  // TODO: KB_STEP_DEPRECATION
-  isDeprecated: boolean;
 }
 
 export const MEMORY_SELECT_OPTIONS: AI.MemorySelectOption[] = [
@@ -31,7 +28,7 @@ export const MEMORY_SELECT_OPTIONS: AI.MemorySelectOption[] = [
   },
 ];
 
-const SetSection: React.FC<SetSectionProps> = ({ set, source, onUpdate, onRemove, removeDisabled, isDeprecated }) => {
+const SetSection: React.FC<SetSectionProps> = ({ set, source, onUpdate, onRemove, removeDisabled }) => {
   const variableCreateModal = useVariableCreateModal();
 
   const createVariable = async (name: string): Promise<string> => {
@@ -47,17 +44,15 @@ const SetSection: React.FC<SetSectionProps> = ({ set, source, onUpdate, onRemove
           <AI.MemorySelect value={set} onChange={onUpdate} options={MEMORY_SELECT_OPTIONS} />
         ) : (
           <>
-            <AI.PromptInput value={set} onChange={onUpdate} placeholder="Enter query question" disabled={isDeprecated} />
-            {!isDeprecated && (
-              <VariablesInput
-                placeholder="Enter instructions for response (optional)"
-                value={set.instruction}
-                onBlur={({ text: instruction }) => onUpdate({ instruction })}
-                multiline
-                autoFocus={false}
-                newLineOnEnter
-              />
-            )}
+            <AI.PromptInput value={set} onChange={onUpdate} placeholder="Enter query question" />
+            <VariablesInput
+              placeholder="Enter instructions for response (optional)"
+              value={set.instruction}
+              onBlur={({ text: instruction }) => onUpdate({ instruction })}
+              multiline
+              autoFocus={false}
+              newLineOnEnter
+            />
           </>
         )}
         <VariableSelectV2
@@ -65,7 +60,6 @@ const SetSection: React.FC<SetSectionProps> = ({ set, source, onUpdate, onRemove
           prefix="APPLY TO"
           onCreate={createVariable}
           onChange={(variable) => onUpdate({ variable })}
-          disabled={isDeprecated}
           placeholder="Select variable"
         />
       </Box.FlexColumn>

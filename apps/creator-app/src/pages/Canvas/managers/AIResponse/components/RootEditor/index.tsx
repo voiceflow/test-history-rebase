@@ -70,17 +70,6 @@ const Editor: React.FC = () => {
     }
   };
 
-  // TODO: KB_STEP_DEPRECATION
-  const isDeprecated = isKnowledgeBaseSource && editor.data.overrideParams === undefined;
-  const updateDeprecation = async () => {
-    editor.onChange({
-      prompt: '{{[last_utterance].last_utterance}}',
-      instruction: editor.data.prompt,
-      overrideParams: false,
-      notFoundPath: false,
-    });
-  };
-
   return (
     <EditorV2
       header={<EditorV2.DefaultHeader />}
@@ -89,7 +78,7 @@ const Editor: React.FC = () => {
           {!!actions.length && <EditorV2.FooterActionsButton actions={actions} />}
 
           {editor.data.mode !== BaseUtils.ai.PROMPT_MODE.MEMORY && (
-            <Button variant={Button.Variant.PRIMARY} disabled={isDeprecated || !hasContent || isLoading} onClick={onPreview} width={127}>
+            <Button variant={Button.Variant.PRIMARY} disabled={!hasContent || isLoading} onClick={onPreview} width={127}>
               {isLoading ? (
                 <SvgIcon icon="arrowSpin" spin />
               ) : (
@@ -103,7 +92,6 @@ const Editor: React.FC = () => {
         </EditorV2.DefaultFooter>
       }
     >
-      {isDeprecated && <AI.DeprecationWarning onUpdate={updateDeprecation} />}
       {knowledgeBase && (
         <>
           <SectionV2.SimpleContentSection
@@ -115,13 +103,7 @@ const Editor: React.FC = () => {
             headerProps={{ bottomUnit: 1.5 }}
             contentProps={{ bottomOffset: 2.5 }}
           >
-            <RadioGroup
-              disabled={isDeprecated}
-              isFlat
-              options={AI.SOURCE_OPTIONS}
-              checked={source}
-              onChange={(source) => editor.onChange({ source })}
-            />
+            <RadioGroup isFlat options={AI.SOURCE_OPTIONS} checked={source} onChange={(source) => editor.onChange({ source })} />
           </SectionV2.SimpleContentSection>
 
           <SectionV2.Divider inset />
@@ -131,64 +113,50 @@ const Editor: React.FC = () => {
       <SectionV2.Container>
         {isKnowledgeBaseSource ? (
           <>
-            {isDeprecated ? (
-              <SectionV2.Content topOffset={2.5} bottomOffset={3}>
-                <AI.PromptInput
-                  value={editor.data}
-                  onChange={editor.onChange}
-                  onContentChange={setHasContent}
-                  placeholder="Enter query to knowledge base"
-                  disabled
-                />
-              </SectionV2.Content>
-            ) : (
-              <>
-                <SectionV2.Content topOffset={2.5} bottomOffset={3}>
-                  <Box fontSize={13} fontWeight={600} color={ThemeColor.SECONDARY} mb={8} cursor="default">
-                    Question
-                  </Box>
-                  <AI.PromptInput
-                    value={editor.data}
-                    onChange={editor.onChange}
-                    onContentChange={setHasContent}
-                    placeholder="Enter query to knowledge base"
-                  />
-                  <Box fontSize={13} fontWeight={600} color={ThemeColor.SECONDARY} mt={16} mb={8}>
-                    Instructions
-                  </Box>
-                  <VariablesInput
-                    placeholder="Enter instructions for response (optional)"
-                    value={editor.data.instruction}
-                    onBlur={({ text: instruction }) => editor.onChange({ instruction })}
-                    multiline
-                    newLineOnEnter
-                  />
-                </SectionV2.Content>
-                <Preview preview={preview} />
-                <SectionV2.Divider />
-                <TippyTooltip
-                  width={208}
-                  content={
-                    <TippyTooltip.Multiline>
-                      <TippyTooltip.Title>{editor.data.notFoundPath ? 'Enabled' : 'Disabled'}</TippyTooltip.Title>
-                      {editor.data.notFoundPath
-                        ? 'When toggled on, creates a path and prevents AI from responding if answer is not found.'
-                        : 'When toggled off, AI will respond with "Unable to find relevant answer" if answer is not found'}
-                    </TippyTooltip.Multiline>
-                  }
-                  offset={[-16, -10]}
-                  display="block"
-                  placement="bottom-end"
-                >
-                  <SectionV2.SimpleSection onClick={toggleNoMatchPath}>
-                    <SectionV2.Title>Not found path</SectionV2.Title>
-                    <Toggle size={Toggle.Size.EXTRA_SMALL} checked={editor.data.notFoundPath} />
-                  </SectionV2.SimpleSection>
-                </TippyTooltip>
+            <SectionV2.Content topOffset={2.5} bottomOffset={3}>
+              <Box fontSize={13} fontWeight={600} color={ThemeColor.SECONDARY} mb={8} cursor="default">
+                Question
+              </Box>
+              <AI.PromptInput
+                value={editor.data}
+                onChange={editor.onChange}
+                onContentChange={setHasContent}
+                placeholder="Enter query to knowledge base"
+              />
+              <Box fontSize={13} fontWeight={600} color={ThemeColor.SECONDARY} mt={16} mb={8}>
+                Instructions
+              </Box>
+              <VariablesInput
+                placeholder="Enter instructions for response (optional)"
+                value={editor.data.instruction}
+                onBlur={({ text: instruction }) => editor.onChange({ instruction })}
+                multiline
+                newLineOnEnter
+              />
+            </SectionV2.Content>
+            <Preview preview={preview} />
+            <SectionV2.Divider />
+            <TippyTooltip
+              width={208}
+              content={
+                <TippyTooltip.Multiline>
+                  <TippyTooltip.Title>{editor.data.notFoundPath ? 'Enabled' : 'Disabled'}</TippyTooltip.Title>
+                  {editor.data.notFoundPath
+                    ? 'When toggled on, creates a path and prevents AI from responding if answer is not found.'
+                    : 'When toggled off, AI will respond with "Unable to find relevant answer" if answer is not found'}
+                </TippyTooltip.Multiline>
+              }
+              offset={[-16, -10]}
+              display="block"
+              placement="bottom-end"
+            >
+              <SectionV2.SimpleSection onClick={toggleNoMatchPath}>
+                <SectionV2.Title>Not found path</SectionV2.Title>
+                <Toggle size={Toggle.Size.EXTRA_SMALL} checked={editor.data.notFoundPath} />
+              </SectionV2.SimpleSection>
+            </TippyTooltip>
 
-                <AI.KnowledgeBasePromptSettingsEditor value={editor.data} onValueChange={editor.onChange} />
-              </>
-            )}
+            <AI.KnowledgeBasePromptSettingsEditor value={editor.data} onValueChange={editor.onChange} />
           </>
         ) : (
           <>

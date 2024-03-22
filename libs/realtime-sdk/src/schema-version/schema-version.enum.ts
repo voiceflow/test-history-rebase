@@ -175,6 +175,11 @@ export const SchemaVersion = {
    * adds VF_CHUNKS system variable
    */
   V7_01: 7.01,
+
+  /**
+   * migrates deprecated KB steps to new format
+   */
+  V7_02: 7.02,
 } as const;
 
 export type SchemaVersion = (typeof SchemaVersion)[keyof typeof SchemaVersion];

@@ -23,18 +23,15 @@ const AIResponseStep: ConnectedStep<Realtime.NodeData.AIResponse, Realtime.NodeD
   const label = data.mode === BaseUtils.ai.PROMPT_MODE.MEMORY ? 'Respond using memory' : prompt && `"${prompt}"`;
   const icon = isKnowledgeBaseSource ? 'brain' : 'aiResponse';
 
-  // TODO: KB_STEP_DEPRECATION
-  const isDeprecated = data.source === BaseUtils.ai.DATA_SOURCE.KNOWLEDGE_BASE && data.overrideParams === undefined;
-
   return (
     <Step nodeID={data.nodeID}>
       <Section v2 withIcon>
         <Item
           v2
-          icon={isDeprecated ? 'warning' : icon}
+          icon={icon}
           label={label}
           portID={nextPortID}
-          palette={isDeprecated ? ({ 600: '#BD425F' } as any) : palette}
+          palette={palette}
           placeholder={isKnowledgeBaseSource ? 'Enter query' : 'Enter generative prompt'}
           withNewLines
           multilineLabel

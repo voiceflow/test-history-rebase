@@ -14,6 +14,7 @@ import { Redirect, useLocation } from 'react-router-dom';
 import { receiptGraphic } from '@/assets';
 import { IS_PRIVATE_CLOUD } from '@/config';
 import { Path } from '@/config/routes';
+import { COUPON_QUERY_PARAM } from '@/constants/payment';
 import * as Payment from '@/contexts/PaymentContext';
 import * as Account from '@/ducks/account';
 import * as Project from '@/ducks/projectV2';
@@ -393,7 +394,12 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
           });
 
           // eslint-disable-next-line max-depth
-          if (isKnowledgeBaseEnabled) {
+          if (search[COUPON_QUERY_PARAM]) {
+            goToDashboardWithSearch(`/?${COUPON_QUERY_PARAM}=${search.coupon}`);
+          }
+
+          // eslint-disable-next-line max-depth
+          if (isKnowledgeBaseEnabled && !search.coupon) {
             goToCMSKnowledgeBase(versionID);
           }
         }

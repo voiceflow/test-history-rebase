@@ -4,6 +4,7 @@ import { BillingPeriod, PlanType } from '@voiceflow/internal';
 import { COLOR_PICKER_CONSTANTS } from '@voiceflow/ui';
 
 export * from './file';
+export * from './payment';
 export * from './plans';
 export * from './roles';
 export * from './subscription';

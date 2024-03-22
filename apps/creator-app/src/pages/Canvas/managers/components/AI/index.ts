@@ -1,4 +1,3 @@
-export { DeprecationWarning } from './components/DeprecationWarning';
 export { KBPromptSettingsEditor as KnowledgeBasePromptSettingsEditor } from './components/KBPromptSettingsEditor';
 export { default as MemorySelect } from './components/MemorySelect';
 export { default as PromptInput } from './components/PromptInput';

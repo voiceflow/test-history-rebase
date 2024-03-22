@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.303.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.302.0...@voiceflow/realtime@1.303.0) (2024-03-22)
+
+### Features
+
+* chargebee coupons (COR-1420) ([#7898](https://github.com/voiceflow/creator-app/issues/7898)) ([7fdee47](https://github.com/voiceflow/creator-app/commit/7fdee47d8951023cafa4778e31b905dae74805ce))
+
 # [1.302.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.301.0...@voiceflow/realtime@1.302.0) (2024-03-21)
 
 ### Features

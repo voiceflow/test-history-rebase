@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1444.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1443.0...@voiceflow/creator-app@1.1444.0) (2024-03-22)
+
+### Features
+
+* remove branding ff (COR-1708) ([#7891](https://github.com/voiceflow/creator-app/issues/7891)) ([5a42504](https://github.com/voiceflow/creator-app/commit/5a42504066efcac26aff98c73d5e11fbed7fa75a))
+
 # [1.1443.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1442.0...@voiceflow/creator-app@1.1443.0) (2024-03-22)
 
 ### Features

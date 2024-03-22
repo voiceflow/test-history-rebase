@@ -1,10 +1,8 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { ClickableText, Spinner } from '@voiceflow/ui';
 import React from 'react';
 
-import { voiceflowWordmarkDark, wordmark } from '@/assets';
+import { voiceflowWordmarkDark } from '@/assets';
 import * as Router from '@/ducks/router';
-import { useFeature } from '@/hooks/feature';
 import { useDispatch } from '@/hooks/realtime';
 
 import { AuthBox, AuthenticationContainer } from '../components';
@@ -12,8 +10,6 @@ import { ResetEmailForm } from './components';
 import { ResetEmailStage } from './constants';
 
 const ResetEmail: React.FC = () => {
-  const useUpdatedBranding = useFeature(Realtime.FeatureFlag.BRANDING_UPDATE).isEnabled;
-
   const goToLogin = useDispatch(Router.goToLogin);
 
   const [email, setEmail] = React.useState('');
@@ -40,7 +36,7 @@ const ResetEmail: React.FC = () => {
   return (
     <AuthenticationContainer>
       <AuthBox>
-        <img className="auth-logo" src={useUpdatedBranding ? voiceflowWordmarkDark : wordmark} alt="logo" />
+        <img className="auth-logo" src={voiceflowWordmarkDark} alt="logo" />
         <div className="auth-form-wrapper">{stages[stage] ?? null}</div>
       </AuthBox>
     </AuthenticationContainer>

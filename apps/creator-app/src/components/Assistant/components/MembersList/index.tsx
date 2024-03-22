@@ -4,12 +4,11 @@ import { Avatar, Members, TippyTooltip } from '@voiceflow/ui';
 import pluralize from 'pluralize';
 import React from 'react';
 
-import { vfLogo, voiceflowLogomark } from '@/assets';
+import { voiceflowLogomark } from '@/assets';
 import { Permission } from '@/constants/permissions';
 import * as Account from '@/ducks/account';
 import * as Organization from '@/ducks/organization';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useFeature } from '@/hooks';
 import { usePermission } from '@/hooks/permission';
 import { useSelector } from '@/hooks/redux';
 import { isAdminUserRole, isEditorUserRole } from '@/utils/role';
@@ -31,7 +30,6 @@ const MembersList: React.FC<MembersListProps> = ({ members, onRemove, onChangeRo
   const allMembersCount = useSelector(WorkspaceV2.active.allNormalizedMembersCountSelector);
   const getWorkspaceMemberByID = useSelector(WorkspaceV2.active.getMemberByIDSelector);
   const getOrganizationMemberByID = useSelector(Organization.getMemberByIDSelector);
-  const useUpdatedBranding = useFeature(Realtime.FeatureFlag.BRANDING_UPDATE).isEnabled;
 
   const [canEditRole] = usePermission(Permission.ADD_COLLABORATORS);
 
@@ -72,7 +70,7 @@ const MembersList: React.FC<MembersListProps> = ({ members, onRemove, onChangeRo
   return !workspace ? null : (
     <>
       <S.Header border={!!orderedMembers.length}>
-        <Avatar image={workspace.image ?? useUpdatedBranding ? voiceflowLogomark : vfLogo} text={workspace.name} large squareRadius />
+        <Avatar image={workspace.image ?? voiceflowLogomark} text={workspace.name} large squareRadius />
 
         <div>
           <S.Title>{workspace.name}</S.Title>

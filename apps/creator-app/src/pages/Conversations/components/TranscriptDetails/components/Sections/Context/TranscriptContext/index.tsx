@@ -1,18 +1,14 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, SvgIcon } from '@voiceflow/ui';
+import { Box } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
 import * as Prototype from '@/ducks/prototype';
 import { currentTranscriptSelector } from '@/ducks/transcript';
-import { useFeature } from '@/hooks';
 import { ClassName } from '@/styles/constants';
 
 import { AvatarContainer, ContextSubtext, ContextTitle, DefaultUserContainer, LetterContainer, StyledLogo, StyledUser } from './components';
 
 const TranscriptContext: React.FC = () => {
-  const useUpdatedBranding = useFeature(Realtime.FeatureFlag.BRANDING_UPDATE).isEnabled;
-
   const { device, os, browser, name, image } = useSelector(currentTranscriptSelector) ?? {};
 
   const avatar = useSelector(Prototype.prototypeAvatarSelector);
@@ -44,12 +40,12 @@ const TranscriptContext: React.FC = () => {
 
   const transcriptContextMeta = [device, os, browser].filter(Boolean).join('\u00A0 •\u00A0 ');
 
-  const avatarUrl = avatar || (useUpdatedBranding && 'https://cdn.voiceflow.com/assets/logomark.png');
+  const avatarUrl = avatar || 'https://cdn.voiceflow.com/assets/logomark.png';
   return (
     <>
       <Box.FlexApart>
-        <StyledLogo isCustom={!!avatarUrl}>
-          {avatarUrl ? <AvatarContainer src={avatarUrl} /> : <SvgIcon icon="voiceflowV" size={24} color="#fff" />}
+        <StyledLogo isCustom>
+          <AvatarContainer src={avatarUrl} />
         </StyledLogo>
 
         {image ? renderUserContainer() : <StyledUser icon="userConversation" size={48} color="#EDEDED" />}

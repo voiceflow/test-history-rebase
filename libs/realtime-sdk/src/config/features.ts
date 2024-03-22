@@ -56,8 +56,6 @@ export enum FeatureFlag {
 
   HTTP_ASSISTANT_CMS = 'http_assistant_cms',
 
-  BRANDING_UPDATE = 'branding_update',
-
   INTENT_CLASSIFICATION = 'intent_classification',
 
   VF_CHUNKS_VARIABLE = 'vf_chunks_variable',

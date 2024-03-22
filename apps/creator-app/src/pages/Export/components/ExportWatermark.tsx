@@ -3,7 +3,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { wordmarkDark } from '@/assets';
+import { voiceflowWordmarkDark } from '@/assets';
 import { createGlobalStyle, css } from '@/hocs/styled';
 
 import { EXPORT_WATERMARK_CLASS } from '../constants';
@@ -21,7 +21,7 @@ const WatermarkStyles = createGlobalStyle<{ isOnPaidPlan: boolean }>`
           : css`
               width: 215px;
               height: 65px;
-              background-image: url(${wordmarkDark});
+              background-image: url(${voiceflowWordmarkDark});
               background-position: 0 0;
               background-repeat: no-repeat;
             `}

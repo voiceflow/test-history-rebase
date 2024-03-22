@@ -1,5 +1,4 @@
 import { Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import {
   Box,
   Button,
@@ -18,12 +17,12 @@ import _get from 'lodash/get';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { voiceflowWordmarkDark, wordmark } from '@/assets';
+import { voiceflowWordmarkDark } from '@/assets';
 import client from '@/client';
 import { IS_PRIVATE_CLOUD } from '@/config';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
-import { useDispatch, useFeature } from '@/hooks';
+import { useDispatch } from '@/hooks';
 import { Query } from '@/models';
 import HeaderBox from '@/pages/Auth/components/HeaderBox';
 import perf, { PerfAction } from '@/performance';
@@ -44,8 +43,6 @@ const verifyEmail = (email: string) => Utils.emails.isValidEmail(email);
 const verifyPassword = (password: string) => !!password;
 
 export const LoginForm: React.FC<LoginFormProps> = ({ query, children }) => {
-  const useUpdatedBranding = useFeature(Realtime.FeatureFlag.BRANDING_UPDATE).isEnabled;
-
   const location = useLocation<{ redirectTo?: string } | null>();
 
   const signin = useDispatch(Session.signin);
@@ -148,7 +145,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ query, children }) => {
     <AuthenticationContainer>
       <AuthBox>
         <form onSubmit={preventDefault(onSubmit)} noValidate>
-          <img className="auth-logo" src={useUpdatedBranding ? voiceflowWordmarkDark : wordmark} alt="logo" />
+          <img className="auth-logo" src={voiceflowWordmarkDark} alt="logo" />
 
           <div className="auth-form-wrapper">
             <HeaderBox>

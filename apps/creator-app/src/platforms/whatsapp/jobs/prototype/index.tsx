@@ -1,11 +1,9 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Dropdown, Menu, SvgIcon } from '@voiceflow/ui';
 import { Icon } from '@voiceflow/ui-next';
 import React from 'react';
 
 import JobInterface from '@/components/JobInterface';
 import { PrototypeJobContext } from '@/contexts/PrototypeJobContext';
-import { useFeature } from '@/hooks';
 import { useSimulatedProgress } from '@/hooks/job';
 import RunButton from '@/pages/Project/components/Header/components/CanvasHeader/components/Run/button';
 import { useRunPrototype } from '@/pages/Project/components/Header/components/CanvasHeader/components/Run/hooks';
@@ -13,8 +11,6 @@ import { useRunPrototype } from '@/pages/Project/components/Header/components/Ca
 import { useTwilioPrototypeStageContent } from './stages';
 
 const TwilioPrototypeRun: React.FC<React.ComponentProps<typeof RunButton>> = ({ variant }) => {
-  const useUpdatedBranding = useFeature(Realtime.FeatureFlag.BRANDING_UPDATE).isEnabled;
-
   const runPrototype = useRunPrototype();
 
   const context = React.useContext(PrototypeJobContext)!;
@@ -36,7 +32,9 @@ const TwilioPrototypeRun: React.FC<React.ComponentProps<typeof RunButton>> = ({ 
         menu={() => (
           <Menu>
             <Menu.Item onClick={runPrototype}>
-              <Box mr={16}>{useUpdatedBranding ? <Icon name="VoiceflowLogomark" /> : <SvgIcon icon="voiceflowV" />}</Box>
+              <Box mr={16}>
+                <Icon name="VoiceflowLogomark" />
+              </Box>
               Test on Voiceflow
             </Menu.Item>
             <Menu.Item onClick={() => context.start()}>

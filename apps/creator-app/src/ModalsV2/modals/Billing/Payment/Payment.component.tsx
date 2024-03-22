@@ -12,12 +12,13 @@ import { Step } from './Payment.constants';
 export interface PaymentModalProps {
   promptType?: UpgradePrompt;
   isTrialExpired?: boolean;
+  coupon?: string;
 }
 
 export const Payment = manager.create<PaymentModalProps>('Payment', () => (modalProps) => {
   const { type, opened, hidden, animated, api, closePrevented, promptType } = modalProps;
   const { activeStep, onBack, onReset } = usePaymentSteps();
-  const { fetchPlans } = usePlans();
+  const { plans, fetchPlans } = usePlans(modalProps.coupon);
 
   const handleExited = () => {
     onReset();
@@ -33,6 +34,8 @@ export const Payment = manager.create<PaymentModalProps>('Payment', () => (modal
 
     await fetchPlans();
   });
+
+  if (!plans.length) return null;
 
   return (
     <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={handleExited} maxWidth={500}>

@@ -1,18 +1,21 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box } from '@voiceflow/ui';
 import * as Normal from 'normal-store';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 
 import { AssistantCard } from '@/components/AssistantCard';
 import Page from '@/components/Page';
 import SearchBar from '@/components/SearchBar';
 import TrialExpiredPage from '@/components/TrialExpiredPage';
+import { COUPON_QUERY_PARAM } from '@/constants/payment';
 import { Permission } from '@/constants/permissions';
 import * as Account from '@/ducks/account';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch, useFeature, usePermission, useSelector } from '@/hooks';
+import * as ModalsV2 from '@/ModalsV2';
 import { ProjectIdentityProvider } from '@/pages/Project/contexts/ProjectIdentityContext';
 
 import { Sidebar } from '../../components';
@@ -28,6 +31,11 @@ const ProjectList: React.FC = () => {
   const [canCreateAssistant] = usePermission(Permission.PROJECT_EDIT);
   const proReverseTrial = useFeature(Realtime.FeatureFlag.PRO_REVERSE_TRIAL);
   const isEnterprise = useSelector(WorkspaceV2.active.isEnterpriseSelector);
+  const location = useLocation();
+  const history = useHistory();
+  const { open: openPaymentModal } = ModalsV2.useModal(ModalsV2.Billing.Payment);
+  const queryParams = new URLSearchParams(location.search);
+  const coupon = queryParams.get(COUPON_QUERY_PARAM);
 
   const userID = useSelector(Account.userIDSelector)!;
   const projects = useSelector(ProjectV2.allProjectsSelector);
@@ -61,6 +69,18 @@ const ProjectList: React.FC = () => {
 
     return orderedProjects.filter((project) => project.name.toLowerCase().includes(transformedSearch));
   }, [orderedProjects, search]);
+
+  useEffect(() => {
+    if (queryParams.has(COUPON_QUERY_PARAM)) {
+      queryParams.delete(COUPON_QUERY_PARAM);
+
+      openPaymentModal({ isTrialExpired: false, coupon: coupon as string });
+
+      history.replace({
+        search: queryParams.toString(),
+      });
+    }
+  }, [coupon]);
 
   const hasProjects = !!projectToRender.length;
   const emptySearch = !!search && !hasProjects;

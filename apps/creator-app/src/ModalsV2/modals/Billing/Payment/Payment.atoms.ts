@@ -14,6 +14,7 @@ export const editorSeatsAtom = atom(1);
 export const periodAtom = atom(BillingPeriod.MONTHLY);
 
 export const plansAtom = atom<BillingPlan[]>([]);
+
 export const plansPriceAtom = atom<Record<string, PriceMap>>((get) => {
   return get(plansAtom).reduce((acc, plan) => {
     return {

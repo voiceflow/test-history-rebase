@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.305.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.304.0...@voiceflow/realtime@1.305.0) (2024-03-25)
+
+### Features
+
+* fix upgrading from trial expired flow (COR-1730) ([#7905](https://github.com/voiceflow/creator-app/issues/7905)) ([3adad31](https://github.com/voiceflow/creator-app/commit/3adad31f4dbdfb2825cb78b03706debcf66d31d2))
+
 # [1.304.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.303.2...@voiceflow/realtime@1.304.0) (2024-03-25)
 
 ### Features

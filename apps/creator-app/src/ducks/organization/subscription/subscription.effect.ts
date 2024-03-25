@@ -81,26 +81,22 @@ export const cancelSubscription = (organizationID: string, chargebeeSubscription
 
 export const downgradeTrial = (organizationID: string, chargebeeSubscriptionID: string): Thunk<void> => {
   return async (dispatch, getState) => {
-    try {
-      const subscription = chargebeeSubscriptionSelector(getState());
+    const subscription = chargebeeSubscriptionSelector(getState());
 
-      if (!subscription) return;
+    if (!subscription) return;
 
-      await designerClient.billing.subscription.downgradeTrial(organizationID, chargebeeSubscriptionID);
+    await designerClient.billing.subscription.downgradeTrial(organizationID, chargebeeSubscriptionID);
 
-      await dispatch.local(
-        Actions.OrganizationSubscription.Replace({
-          subscription: {
-            ...subscription,
-            plan: PlanType.STARTER,
-            trial: null,
-          },
-          context: { organizationID },
-        })
-      );
-    } catch (err) {
-      toast.error(getErrorMessage(err, 'Failed to downgrade trial'));
-    }
+    await dispatch.local(
+      Actions.OrganizationSubscription.Replace({
+        subscription: {
+          ...subscription,
+          plan: PlanType.STARTER,
+          trial: null,
+        },
+        context: { organizationID },
+      })
+    );
   };
 };
 

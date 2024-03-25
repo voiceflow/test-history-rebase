@@ -1,4 +1,3 @@
-/* eslint-disable no-secrets/no-secrets */
 /* eslint-disable max-params */
 import { EntityManager } from '@mikro-orm/core';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
@@ -17,21 +16,20 @@ import {
 } from '@voiceflow/dtos';
 import { UnleashFeatureFlagService } from '@voiceflow/nestjs-common';
 import {
-  AnyResponseVariantEntity,
+  AnyResponseVariantObject,
   DatabaseTarget,
-  DiagramEntity,
-  EntityEntity,
-  EntityVariantEntity,
-  IntentEntity,
+  DiagramObject,
+  EntityObject,
+  EntityVariantObject,
+  IntentObject,
   ObjectId,
-  RequiredEntityEntity,
-  ResponseDiscriminatorEntity,
-  ResponseEntity,
-  ToJSON,
-  ToJSONWithForeignKeys,
-  UtteranceEntity,
-  VariableEntity,
-  VersionEntity,
+  RequiredEntityObject,
+  ResponseDiscriminatorObject,
+  ResponseObject,
+  UtteranceObject,
+  VariableObject,
+  VersionJSON,
+  VersionObject,
 } from '@voiceflow/orm-designer';
 import * as Platform from '@voiceflow/platform-config/backend';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
@@ -39,7 +37,6 @@ import { Patch } from 'immer';
 import { Merge } from 'type-fest';
 
 import { AttachmentService } from '@/attachment/attachment.service';
-import { EntitySerializer } from '@/common';
 import { DiagramService } from '@/diagram/diagram.service';
 import { DiagramUtil } from '@/diagram/diagram.util';
 import { EntityService } from '@/entity/entity.service';
@@ -55,15 +52,13 @@ import { VersionService } from '@/version/version.service';
 import { EnvironmentCMSExportImportDataDTO } from './dtos/environment-cms-export-import-data.dto';
 import { EnvironmentExportDTO } from './dtos/environment-export-data.dto';
 import { EnvironmentImportDTO } from './dtos/environment-import-data.dto';
-import { EnvironmentCMSEntities } from './environment.interface';
+import { EnvironmentCMSData } from './environment.interface';
 import { EnvironmentUtil } from './environment.util';
 import { EnvironmentNLUTrainingUtil } from './environment-nlu-training.util';
 
 @Injectable()
 export class EnvironmentService {
   constructor(
-    @Inject(getEntityManagerToken(DatabaseTarget.MONGO))
-    private readonly mongoEM: EntityManager,
     @Inject(getEntityManagerToken(DatabaseTarget.POSTGRES))
     private readonly postgresEM: EntityManager,
     @Inject(FlowService)
@@ -90,8 +85,6 @@ export class EnvironmentService {
     private readonly attachment: AttachmentService,
     @Inject(FunctionService)
     private readonly functionService: FunctionService,
-    @Inject(EntitySerializer)
-    private readonly entitySerializer: EntitySerializer,
     @Inject(EnvironmentUtil)
     private readonly util: EnvironmentUtil,
     @Inject(DiagramUtil)
@@ -114,37 +107,37 @@ export class EnvironmentService {
     requiredEntities,
     responseDiscriminators,
   }: {
-    intents: IntentEntity[];
-    entities: EntityEntity[];
-    responses: ResponseEntity[];
-    variables: VariableEntity[];
-    utterances: UtteranceEntity[];
-    entityVariants: EntityVariantEntity[];
+    intents: IntentObject[];
+    entities: EntityObject[];
+    responses: ResponseObject[];
+    variables: VariableObject[];
+    utterances: UtteranceObject[];
+    entityVariants: EntityVariantObject[];
     isVoiceAssistant: boolean;
-    requiredEntities: RequiredEntityEntity[];
-    responseVariants: AnyResponseVariantEntity[];
-    responseDiscriminators: ResponseDiscriminatorEntity[];
+    requiredEntities: RequiredEntityObject[];
+    responseVariants: AnyResponseVariantObject[];
+    responseDiscriminators: ResponseDiscriminatorObject[];
   }) {
+    const { entities: entitiesJSON, entityVariants: entityVariantsJSON } = this.entity.toJSONWithSubResources({ entities, entityVariants });
+    const { variables: variablesJSON } = this.variable.toJSONWithSubResources({ variables });
+
     const legacySlots = Realtime.Adapters.entityToLegacySlot.mapFromDB({
-      entities: this.entitySerializer.iterable(entities),
-      entityVariants: this.entitySerializer.iterable(entityVariants),
+      entities: entitiesJSON,
+      entityVariants: entityVariantsJSON,
     });
+
     const { intents: legacyIntents } = Realtime.Adapters.intentToLegacyIntent.mapFromDB(
       {
-        intents: this.entitySerializer.iterable(intents),
-        responses: this.entitySerializer.iterable(responses),
-        utterances: this.entitySerializer.iterable(utterances),
-        requiredEntities: this.entitySerializer.iterable(requiredEntities),
-        responseVariants: this.entitySerializer.iterable(responseVariants),
-        responseDiscriminators: this.entitySerializer.iterable(responseDiscriminators),
+        ...this.intent.toJSONWithSubResources({ intents, utterances, requiredEntities }),
+        ...this.response.toJSONWithSubResources({ responses, responseVariants, responseAttachments: [], responseDiscriminators }),
       },
       {
-        entities: this.entitySerializer.iterable(entities),
-        variables: this.entitySerializer.iterable(variables),
+        entities: entitiesJSON,
+        variables: variablesJSON,
         isVoiceAssistant,
       }
     );
-    const legacyVariables = Realtime.Adapters.variableToLegacyVariableAdapter.mapFromDB(this.entitySerializer.iterable(variables));
+    const legacyVariables = Realtime.Adapters.variableToLegacyVariableAdapter.mapFromDB(variablesJSON);
 
     return {
       legacySlots,
@@ -153,36 +146,48 @@ export class EnvironmentService {
     };
   }
 
+  toJSONWithSubResources(data: EnvironmentCMSData & { version: VersionObject; diagrams: DiagramObject[] }) {
+    return {
+      ...this.toJSONCMSData(data),
+      version: this.version.toJSON(data.version),
+      diagrams: this.diagram.mapToJSON(data.diagrams),
+    };
+  }
+
+  toJSONCMSData(data: EnvironmentCMSData) {
+    return {
+      ...this.flow.toJSONWithSubResources(data),
+      ...this.entity.toJSONWithSubResources(data),
+      ...this.folder.toJSONWithSubResources(data),
+      ...this.intent.toJSONWithSubResources(data),
+      ...this.response.toJSONWithSubResources(data),
+      ...this.variable.toJSONWithSubResources(data),
+      ...this.attachment.toJSONWithSubResources(data),
+      ...this.functionService.toJSONWithSubResources(data),
+    };
+  }
+
   /* Find */
 
   async findManyForAssistantID(assistantID: string) {
     const project = await this.project.findOneOrFailWithFields(assistantID, ['liveVersion', 'devVersion', 'previewVersion']);
 
-    const environmentTags: { tag: string; environmentID: ObjectId }[] = [];
+    const tagsMap: Record<string, 'production' | 'development' | 'preview'> = {};
 
-    if (project.liveVersion) environmentTags.push({ tag: 'production', environmentID: project.liveVersion });
-    if (project.devVersion) environmentTags.push({ tag: 'development', environmentID: project.devVersion });
-    if (project.previewVersion) environmentTags.push({ tag: 'preview', environmentID: project.previewVersion });
+    if (project.devVersion) tagsMap[project.devVersion.toJSON()] = 'development';
+    if (project.liveVersion) tagsMap[project.liveVersion.toJSON()] = 'production';
+    if (project.previewVersion) tagsMap[project.previewVersion.toJSON()] = 'preview';
 
-    const environmentRefs = await Promise.all(
-      environmentTags.map(async ({ tag, environmentID }) => {
-        const environment = await this.version.findOneOrFailWithFields(environmentID, ['id', 'name', 'creatorID', 'updatedAt']);
+    const versions = await this.version.findManyWithFields(Object.keys(tagsMap), ['_id', 'name', 'creatorID', 'updatedAt']);
 
-        if (tag === 'development' && environment) {
-          // hard code development environment name
-          environment.name = 'Development';
-        }
+    return versions.map((version) => {
+      const tag = tagsMap[version._id.toJSON()];
 
-        return {
-          tag,
-          environment,
-        };
-      })
-    );
-
-    return environmentRefs
-      .filter(({ environment }) => !!environment)
-      .map(({ tag, environment }) => ({ tag, environment: this.entitySerializer.serialize(environment) }));
+      return {
+        tag,
+        environment: this.version.toJSON({ ...version, name: tag === 'development' ? 'Development' : version.name }),
+      };
+    });
   }
 
   /* Prototype */
@@ -193,7 +198,7 @@ export class EnvironmentService {
       this.project.findOneOrFail(version.projectID),
       this.diagram.findManyByVersionID(environmentID),
       // using transaction to optimize connections
-      this.postgresEM.transactional(() => this.findOneCMSData(version.projectID.toHexString(), environmentID)),
+      this.postgresEM.transactional(() => this.findOneCMSData(environmentID)),
     ]);
 
     const { legacySlots, legacyIntents, legacyVariables } = this.convertCMSResourcesToLegacyResources({
@@ -287,10 +292,7 @@ export class EnvironmentService {
 
   /* Export  */
 
-  public prepareExportCMSData(
-    data: EnvironmentCMSEntities,
-    { userID, backup, workspaceID }: { userID: number; backup?: boolean; workspaceID: number }
-  ) {
+  public prepareExportCMSData(data: EnvironmentCMSData, { userID, backup, workspaceID }: { userID: number; backup?: boolean; workspaceID: number }) {
     const cmsFunctionsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_FUNCTIONS, { userID, workspaceID });
 
     return {
@@ -306,36 +308,33 @@ export class EnvironmentService {
     };
   }
 
-  public prepareExportCMSJSONData(
-    data: { [Key in keyof EnvironmentCMSEntities]: ToJSONWithForeignKeys<EnvironmentCMSEntities[Key][number]>[] },
-    { userID, workspaceID }: { userID: number; workspaceID: number }
-  ) {
+  public prepareExportCMSJSONData(data: EnvironmentCMSData, { userID, workspaceID }: { userID: number; workspaceID: number }) {
     const cmsFunctionsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_FUNCTIONS, { userID, workspaceID });
 
     return {
-      ...this.flow.prepareExportJSONData(data),
-      ...this.entity.prepareExportJSONData(data),
-      ...this.folder.prepareExportJSONData(data),
-      ...this.intent.prepareExportJSONData(data),
-      ...this.response.prepareExportJSONData(data),
-      ...this.variable.prepareExportJSONData(data),
-      ...this.attachment.prepareExportJSONData(data),
+      ...this.flow.prepareExportData(data),
+      ...this.entity.prepareExportData(data),
+      ...this.folder.prepareExportData(data),
+      ...this.intent.prepareExportData(data),
+      ...this.response.prepareExportData(data),
+      ...this.variable.prepareExportData(data),
+      ...this.attachment.prepareExportData(data),
 
-      ...(cmsFunctionsEnabled && this.functionService.prepareExportJSONData(data)),
+      ...(cmsFunctionsEnabled && this.functionService.prepareExportData(data)),
     };
   }
 
   public prepareExportData(
     data: {
-      cms: EnvironmentCMSEntities | null;
-      version: VersionEntity;
-      diagrams: DiagramEntity[];
+      cms: EnvironmentCMSData | null;
+      version: VersionObject;
+      diagrams: DiagramObject[];
     },
     { userID, backup, workspaceID, centerDiagrams = true }: { userID: number; backup?: boolean; workspaceID: number; centerDiagrams?: boolean }
   ): EnvironmentExportDTO {
-    const version = this.entitySerializer.serialize(data.version);
-    const diagrams = this.entitySerializer
-      .iterable(data.diagrams)
+    const version = this.version.toJSON(data.version);
+    const diagrams = this.diagram
+      .mapToJSON(data.diagrams)
       .map((diagram) => this.diagramUtil.cleanupNodes(centerDiagrams ? this.diagramUtil.center(diagram) : diagram));
 
     // Remove stored `variableStateID` to avoid referencing the state from another user
@@ -356,12 +355,10 @@ export class EnvironmentService {
   }
 
   public async exportJSON({ environmentID }: { userID: number; workspaceID: number; environmentID: string }) {
-    const { version, diagrams } = await this.version.exportOne(environmentID);
-
-    const cmsData = await this.findOneCMSData(version.projectID.toJSON(), environmentID);
+    const [cms, { version, diagrams }] = await Promise.all([this.findOneCMSData(environmentID), this.version.exportOne(environmentID)]);
 
     return {
-      cms: cmsData,
+      cms,
       version,
       diagrams,
     };
@@ -431,127 +428,99 @@ export class EnvironmentService {
 
   // eslint-disable-next-line sonarjs/cognitive-complexity
   async importCMSData(importData: ReturnType<EnvironmentService['prepareImportCMSData']>) {
-    await Promise.all([
-      ...(importData.attachments?.length
-        ? [
-            this.attachment.importManyWithSubResources(
-              {
-                attachments: importData.attachments,
-                cardButtons: importData.cardButtons ?? [],
-              },
-              { flush: false }
-            ),
-          ]
-        : []),
+    if (importData.folders?.length) {
+      await this.folder.importManyWithSubResources(
+        this.folder.fromJSONWithSubResources({
+          folders: importData.folders,
+        })
+      );
+    }
 
-      ...(importData.responses?.length
-        ? [
-            this.response.importManyWithSubResources(
-              {
-                responses: importData.responses,
-                responseVariants: importData.responseVariants ?? [],
-                responseAttachments: importData.responseAttachments ?? [],
-                responseDiscriminators: importData.responseDiscriminators ?? [],
-              },
-              { flush: false }
-            ),
-          ]
-        : []),
+    if (importData.attachments?.length) {
+      await this.attachment.importManyWithSubResources(
+        this.attachment.fromJSONWithSubResources({
+          attachments: importData.attachments,
+          cardButtons: importData.cardButtons ?? [],
+        })
+      );
+    }
 
-      ...(importData.entities?.length
-        ? [
-            this.entity.importManyWithSubResources(
-              {
-                entities: importData.entities,
-                entityVariants: importData.entityVariants ?? [],
-              },
-              { flush: false }
-            ),
-          ]
-        : []),
+    if (importData.responses?.length) {
+      await this.response.importManyWithSubResources(
+        this.response.fromJSONWithSubResources({
+          responses: importData.responses,
+          responseVariants: importData.responseVariants ?? [],
+          responseAttachments: importData.responseAttachments ?? [],
+          responseDiscriminators: importData.responseDiscriminators ?? [],
+        })
+      );
+    }
 
-      ...(importData.intents?.length
-        ? [
-            this.intent.importManyWithSubResources(
-              {
-                intents: importData.intents,
-                utterances: importData.utterances ?? [],
-                requiredEntities: importData.requiredEntities ?? [],
-              },
-              { flush: false }
-            ),
-          ]
-        : []),
+    if (importData.entities?.length) {
+      await this.entity.importManyWithSubResources(
+        this.entity.fromJSONWithSubResources({
+          entities: importData.entities,
+          entityVariants: importData.entityVariants ?? [],
+        })
+      );
+    }
 
-      ...(importData.functions?.length
-        ? [
-            this.functionService.importManyWithSubResources(
-              {
-                functions: importData.functions,
-                functionPaths: importData.functionPaths ?? [],
-                functionVariables: importData.functionVariables ?? [],
-              },
-              { flush: false }
-            ),
-          ]
-        : []),
+    if (importData.intents?.length) {
+      await this.intent.importManyWithSubResources(
+        this.intent.fromJSONWithSubResources({
+          intents: importData.intents,
+          utterances: importData.utterances ?? [],
+          requiredEntities: importData.requiredEntities ?? [],
+        })
+      );
+    }
 
-      ...(importData.variables?.length
-        ? [
-            this.variable.importManyWithSubResources(
-              {
-                variables: importData.variables,
-              },
-              { flush: false }
-            ),
-          ]
-        : []),
+    if (importData.functions?.length) {
+      await this.functionService.importManyWithSubResources(
+        this.functionService.fromJSONWithSubResources({
+          functions: importData.functions,
+          functionPaths: importData.functionPaths ?? [],
+          functionVariables: importData.functionVariables ?? [],
+        })
+      );
+    }
 
-      ...(importData.flows?.length
-        ? [
-            this.flow.importManyWithSubResources(
-              {
-                flows: importData.flows,
-              },
-              { flush: false }
-            ),
-          ]
-        : []),
+    if (importData.variables?.length) {
+      await this.variable.importManyWithSubResources(
+        this.variable.fromJSONWithSubResources({
+          variables: importData.variables,
+        })
+      );
+    }
 
-      ...(importData.folders?.length
-        ? [
-            this.folder.importManyWithSubResources(
-              {
-                folders: importData.folders,
-              },
-              { flush: false }
-            ),
-          ]
-        : []),
-    ]);
-
-    await this.postgresEM.flush();
+    if (importData.flows?.length) {
+      await this.flow.importManyWithSubResources(
+        this.flow.fromJSONWithSubResources({
+          flows: importData.flows,
+        })
+      );
+    }
   }
 
-  async findOneCMSData(assistantID: string, environmentID: string) {
+  async findOneCMSData(environmentID: string) {
     const [
-      { folders },
+      { flows },
       { entities, entityVariants },
       { intents, utterances, requiredEntities },
+      { folders },
       { variables },
-      { flows },
       { responses, responseVariants, responseAttachments, responseDiscriminators },
       { attachments, cardButtons },
       { functions, functionPaths, functionVariables },
     ] = await Promise.all([
-      this.folder.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
-      this.entity.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
-      this.intent.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
-      this.variable.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
-      this.flow.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
-      this.response.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
-      this.attachment.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
-      this.functionService.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
+      this.flow.findManyWithSubResourcesByEnvironment(environmentID),
+      this.entity.findManyWithSubResourcesByEnvironment(environmentID),
+      this.intent.findManyWithSubResourcesByEnvironment(environmentID),
+      this.folder.findManyWithSubResourcesByEnvironment(environmentID),
+      this.variable.findManyWithSubResourcesByEnvironment(environmentID),
+      this.response.findManyWithSubResourcesByEnvironment(environmentID),
+      this.attachment.findManyWithSubResourcesByEnvironment(environmentID),
+      this.functionService.findManyWithSubResourcesByEnvironment(environmentID),
     ]);
 
     return {
@@ -575,74 +544,11 @@ export class EnvironmentService {
     };
   }
 
-  async findOneCMSDataToMigrate(assistantID: string, environmentID: string) {
-    const [
-      // { flows },
-      // { entities, entityVariants },
-      // { intents, utterances, requiredEntities },
-      { variables },
-      // { responses, responseVariants, responseAttachments, responseDiscriminators },
-    ] = await Promise.all([
-      // this.flow.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
-      // this.entity.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
-      // this.intent.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
-      this.variable.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
-      // this.response.findManyWithSubResourcesByEnvironment(assistantID, environmentID),
-    ]);
+  async findOneCMSDataToMigrate(environmentID: string) {
+    const [{ variables }] = await Promise.all([this.variable.findManyWithSubResourcesByEnvironment(environmentID)]);
 
     return {
-      // intents,
-      // entities,
-      // responses,
       variables,
-      // utterances,
-      // entityVariants,
-      // requiredEntities,
-      // responseVariants,
-      // responseAttachments,
-      // responseDiscriminators,
-    };
-  }
-
-  async findOneCMSDataJSON(assistantID: string, environmentID: string) {
-    const [
-      { entities, entityVariants },
-      { intents, utterances, requiredEntities },
-      { folders },
-      { variables },
-      { flows },
-      { responses, responseVariants, responseAttachments, responseDiscriminators },
-      { attachments, cardButtons },
-      { functions, functionPaths, functionVariables },
-    ] = await Promise.all([
-      this.entity.findManyWithSubResourcesJSONByEnvironment(assistantID, environmentID),
-      this.intent.findManyWithSubResourcesJSONByEnvironment(assistantID, environmentID),
-      this.folder.findManyWithSubResourcesJSONByEnvironment(assistantID, environmentID),
-      this.variable.findManyWithSubResourcesJSONByEnvironment(assistantID, environmentID),
-      this.flow.findManyWithSubResourcesJSONByEnvironment(assistantID, environmentID),
-      this.response.findManyWithSubResourcesJSONByEnvironment(assistantID, environmentID),
-      this.attachment.findManyWithSubResourcesJSONByEnvironment(assistantID, environmentID),
-      this.functionService.findManyWithSubResourcesJSONByEnvironment(assistantID, environmentID),
-    ]);
-
-    return {
-      flows,
-      folders,
-      intents,
-      entities,
-      functions,
-      responses,
-      variables,
-      utterances,
-      attachments,
-      cardButtons,
-      functionPaths,
-      entityVariants,
-      requiredEntities,
-      responseVariants,
-      functionVariables,
-      responseAttachments,
-      responseDiscriminators,
     };
   }
 
@@ -697,24 +603,21 @@ export class EnvironmentService {
     await this.intent.upsertManyWithSubResources({ intents, utterances, requiredEntities }, meta);
   }
 
-  async deleteOneCMSData(assistantID: string, environmentID: string) {
+  async deleteOneCMSData(environmentID: string) {
     // needs to be done in multiple operations to avoid locks in reference tables
     await Promise.all([
-      this.intent.deleteManyByEnvironment(assistantID, environmentID),
-      this.functionService.deleteManyByEnvironment(assistantID, environmentID),
-      this.flow.deleteManyByEnvironment(assistantID, environmentID),
+      this.flow.deleteManyByEnvironment(environmentID),
+      this.intent.deleteManyByEnvironment(environmentID),
+      this.functionService.deleteManyByEnvironment(environmentID),
     ]);
 
     await Promise.all([
-      this.entity.deleteManyByEnvironment(assistantID, environmentID),
-      this.response.deleteManyByEnvironment(assistantID, environmentID),
-      this.variable.deleteManyByEnvironment(assistantID, environmentID),
+      this.entity.deleteManyByEnvironment(environmentID),
+      this.response.deleteManyByEnvironment(environmentID),
+      this.variable.deleteManyByEnvironment(environmentID),
     ]);
 
-    await Promise.all([
-      this.folder.deleteManyByEnvironment(assistantID, environmentID),
-      this.attachment.deleteManyByEnvironment(assistantID, environmentID),
-    ]);
+    await Promise.all([this.folder.deleteManyByEnvironment(environmentID), this.attachment.deleteManyByEnvironment(environmentID)]);
   }
 
   /* Clone */
@@ -728,26 +631,23 @@ export class EnvironmentService {
     cloneDiagrams: boolean;
     sourceEnvironmentID: string;
     targetEnvironmentID?: string;
-    targetVersionOverride?: Merge<Partial<Omit<ToJSON<VersionEntity>, 'id' | '_id' | 'prototype'>>, { prototype?: any }>;
+    targetVersionOverride?: Merge<Partial<Omit<VersionJSON, '_id' | 'prototype'>>, { prototype?: any }>;
   }) {
     const sourceVersion = await this.version.findOneOrFail(sourceEnvironmentID);
-    let targetVersion: VersionEntity;
-    let targetDiagrams: DiagramEntity[];
+    let targetVersion: VersionObject;
+    let targetDiagrams: DiagramObject[];
 
     const targetEnvironmentExists = targetEnvironmentID && (await this.version.exists(targetEnvironmentID));
     if (!targetEnvironmentExists) {
       const sourceDiagrams = await (cloneDiagrams ? this.diagram.findManyByVersionID(sourceEnvironmentID) : Promise.resolve([]));
 
-      ({ version: targetVersion, diagrams: targetDiagrams } = await this.version.importOne(
-        {
-          sourceVersion: this.entitySerializer.serialize(sourceVersion),
-          sourceDiagrams: this.entitySerializer.iterable(sourceDiagrams),
-          sourceVersionOverride: { ...(targetEnvironmentID && { _id: targetEnvironmentID }), ...targetVersionOverride },
-        },
-        { flush: false }
-      ));
+      ({ version: targetVersion, diagrams: targetDiagrams } = await this.version.importOne({
+        sourceVersion: this.version.toJSON(sourceVersion),
+        sourceDiagrams: this.diagram.mapToJSON(sourceDiagrams),
+        sourceVersionOverride: { ...(targetEnvironmentID && { _id: targetEnvironmentID }), ...targetVersionOverride },
+      }));
     } else {
-      await this.version.patchOne(targetEnvironmentID, targetVersionOverride, { flush: false });
+      await this.version.patchOne(targetEnvironmentID, this.version.fromJSON(targetVersionOverride));
 
       [targetVersion, targetDiagrams] = await Promise.all([
         this.version.findOneOrFail(targetEnvironmentID),
@@ -758,58 +658,50 @@ export class EnvironmentService {
     const cmsCloneManyPayload = {
       sourceAssistantID: sourceVersion.projectID.toJSON(),
       targetAssistantID: targetVersion.projectID.toJSON(),
-      sourceEnvironmentID: sourceVersion.id,
-      targetEnvironmentID: targetVersion.id,
+      sourceEnvironmentID: sourceVersion._id.toJSON(),
+      targetEnvironmentID: targetVersion._id.toJSON(),
     };
 
-    // clear existing data before cloning
-    await this.deleteOneCMSData(cmsCloneManyPayload.targetAssistantID, cmsCloneManyPayload.targetEnvironmentID);
+    const cmsData = await this.postgresEM.transactional(async () => {
+      // clear existing data before cloning
+      await this.deleteOneCMSData(cmsCloneManyPayload.targetEnvironmentID);
 
-    const [
-      { folders },
-      { variables },
-      { flows },
-      { attachments, cardButtons },
-      { responses, responseVariants, responseAttachments, responseDiscriminators },
-      { entities, entityVariants },
-      { intents, utterances, requiredEntities },
-      { functions, functionPaths, functionVariables },
-    ] = await Promise.all([
-      this.folder.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload, { flush: false }),
-      this.variable.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload, { flush: false }),
-      this.flow.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload, { flush: false }),
-      this.attachment.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload, { flush: false }),
-      this.response.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload, { flush: false }),
-      this.entity.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload, { flush: false }),
-      this.intent.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload, { flush: false }),
-      this.functionService.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload, { flush: false }),
-    ]);
+      const { flows } = await this.flow.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload);
+      const { folders } = await this.folder.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload);
+      const { variables } = await this.variable.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload);
+      const { attachments, cardButtons } = await this.attachment.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload);
+      const { responses, responseVariants, responseAttachments, responseDiscriminators } =
+        await this.response.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload);
+      const { entities, entityVariants } = await this.entity.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload);
+      const { intents, utterances, requiredEntities } = await this.intent.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload);
+      const { functions, functionPaths, functionVariables } = await this.functionService.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload);
 
-    // flashing mongo first to be sure that all mongo entities are created before flushing postgres
-    await this.mongoEM.flush();
-    await this.postgresEM.flush();
+      return {
+        flows,
+        intents,
+        folders,
+        entities,
+        functions,
+        responses,
+        variables,
+        utterances,
+        attachments,
+        cardButtons,
+        functionPaths,
+        entityVariants,
+        requiredEntities,
+        responseVariants,
+        functionVariables,
+        responseAttachments,
+        responseDiscriminators,
+      };
+    });
 
     return {
-      flows,
+      ...cmsData,
       version: targetVersion,
-      intents,
-      folders,
-      entities,
       diagrams: targetDiagrams,
-      functions,
-      responses,
-      variables,
-      utterances,
-      attachments,
-      cardButtons,
-      functionPaths,
       liveDiagramIDs: VersionService.getLiveDiagramIDs(targetVersion, targetDiagrams),
-      entityVariants,
-      requiredEntities,
-      responseVariants,
-      functionVariables,
-      responseAttachments,
-      responseDiscriminators,
     };
   }
 
@@ -823,7 +715,7 @@ export class EnvironmentService {
     cloneDiagrams: boolean;
     sourceEnvironmentID: string;
     targetEnvironmentID?: string;
-    targetVersionOverride?: Merge<Partial<Omit<ToJSON<VersionEntity>, 'id' | '_id' | 'prototype'>>, { prototype?: any }>;
+    targetVersionOverride?: Merge<Partial<Omit<VersionJSON, '_id' | 'prototype'>>, { prototype?: any }>;
     convertToLegacyFormat?: boolean;
   }) {
     return this.postgresEM.transactional(async () => {
@@ -842,12 +734,12 @@ export class EnvironmentService {
         });
 
         await Promise.all([
-          this.version.patchOnePlatformData(targetVersion.id, { intents: legacyIntents, slots: legacySlots }),
-          this.version.patchOne(targetVersion.id, { variables: legacyVariables }),
+          this.version.patchOnePlatformData(targetVersion._id, { intents: legacyIntents, slots: legacySlots }),
+          this.version.patchOne(targetVersion._id, { variables: legacyVariables }),
         ]);
 
         // refetching version to get updated platformData
-        targetVersion = await this.version.findOneOrFail(targetVersion.id);
+        targetVersion = await this.version.findOneOrFail(targetVersion._id);
       }
 
       return {
@@ -861,9 +753,9 @@ export class EnvironmentService {
 
   /* Delete */
 
-  async deleteOne(assistantID: string, environmentID: string) {
+  async deleteOne(environmentID: string) {
     await Promise.all([
-      this.deleteOneCMSData(assistantID, environmentID),
+      this.deleteOneCMSData(environmentID),
       this.version.deleteOne(environmentID),
       this.diagram.deleteManyByVersionID(environmentID),
     ]);

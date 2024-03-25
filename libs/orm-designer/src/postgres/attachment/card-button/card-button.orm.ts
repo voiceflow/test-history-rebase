@@ -1,20 +1,30 @@
-import type { AssistantEntity } from '@/main';
 import { PostgresCMSObjectORM } from '@/postgres/common/orms/postgres-cms-object.orm';
-import type { PKOrEntity } from '@/types';
 
-import type { CardAttachmentEntity } from '../card-attachment/card-attachment.entity';
 import { CardButtonEntity } from './card-button.entity';
+import { CardButtonJSONAdapter } from './card-button-json.adapter';
 
-export class CardButtonORM extends PostgresCMSObjectORM(CardButtonEntity) {
-  findManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
-    return this.find({ assistant, environmentID });
+export class CardButtonORM extends PostgresCMSObjectORM<CardButtonEntity> {
+  Entity = CardButtonEntity;
+
+  jsonAdapter = CardButtonJSONAdapter;
+
+  findManyByEnvironment(environmentID: string) {
+    return this.find({ environmentID });
   }
 
-  deleteManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
-    return this.nativeDelete({ assistant, environmentID });
+  findManyByEnvironmentAndIDs(environmentID: string, ids: string[]) {
+    return this.find({ environmentID, id: ids });
   }
 
-  findManyByCardAttachments(cards: PKOrEntity<CardAttachmentEntity>[]) {
-    return this.find({ card: cards });
+  findManyByCardAttachments(environmentID: string, cardIDs: string[]) {
+    return this.find({ environmentID, cardID: cardIDs });
+  }
+
+  deleteManyByEnvironment(environmentID: string) {
+    return this.delete({ environmentID });
+  }
+
+  deleteManyByEnvironmentAndIDs(environmentID: string, ids: string[]) {
+    return this.delete({ environmentID, id: ids });
   }
 }

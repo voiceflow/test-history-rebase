@@ -7,9 +7,9 @@ import { RequiredEntityLoguxController } from './required-entity.logux.controlle
 import { RequiredEntityService } from './required-entity.service';
 
 @Module({
-  imports: [IntentORM.register(), EntityORM.register(), RequiredEntityORM.register(), ResponseModule],
+  imports: [ResponseModule],
   exports: [RequiredEntityService],
-  providers: [RequiredEntityService],
+  providers: [IntentORM, EntityORM, RequiredEntityORM, RequiredEntityService],
   controllers: [RequiredEntityLoguxController],
 })
 export class RequiredEntityModule {}

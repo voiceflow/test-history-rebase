@@ -8,11 +8,11 @@ import type { MongoAtomicORM } from './mongo-atomic.orm';
 import { MongoAtomicSubResourceORM } from './mongo-atomic-sub-resource.orm';
 
 export const MongoAtomicSubResourceArrayORM = <
-  Orm extends MongoAtomicORM<any, any>,
+  Orm extends MongoAtomicORM<any>,
   BaseResource,
   ID extends keyof BaseResource
 >(
-  ORM: Constructor<any[], Orm> & { register: () => DynamicModule },
+  ORM: Constructor<Orm> & { register: () => DynamicModule },
   { id, path }: { id: ID; path: string }
 ) => {
   class MongoAtomicSubResourceArrayORMClass extends MongoAtomicSubResourceORM(ORM) {
@@ -70,7 +70,7 @@ export const MongoAtomicSubResourceArrayORM = <
       const resource = await this.findOne<Resource>(entityID, resourceID);
 
       if (!resource) {
-        throw new Error(`couldn't find resource ${resourceID}`);
+        throw new Error(`Couldn't find resource ${resourceID}`);
       }
 
       return resource;

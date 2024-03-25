@@ -1,15 +1,14 @@
-import type { EntityCreateParams } from '@/types';
+import type { ToJSON, ToObject } from '@/types';
 
 import { CreatedAt } from '../decorators/created-at.decorator';
 import { PostgresCMSEntity } from './postgres-cms.entity';
 
-export abstract class PostgresCMSCreatableEntity extends PostgresCMSEntity {
+export abstract class PostgresCMSCreatableEntity<DefaultOrNullColumn extends string = never> extends PostgresCMSEntity<
+  DefaultOrNullColumn | 'createdAt'
+> {
   @CreatedAt()
-  createdAt: Date;
-
-  constructor({ createdAt = new Date().toJSON(), ...data }: EntityCreateParams<PostgresCMSCreatableEntity>) {
-    super(data);
-
-    this.createdAt = new Date(createdAt);
-  }
+  createdAt!: Date;
 }
+
+export type PostgresCMSCreatableObject = ToObject<PostgresCMSCreatableEntity>;
+export type PostgresCMSCreatableJSON = ToJSON<PostgresCMSCreatableObject>;

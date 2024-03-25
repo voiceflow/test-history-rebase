@@ -5,8 +5,8 @@ import type { Constructor } from '@/types';
 
 import type { MongoAtomicORM } from './mongo-atomic.orm';
 
-export const MongoAtomicSubResourceORM = <Orm extends MongoAtomicORM<any, any>>(
-  ORM: Constructor<any[], Orm> & { register: () => DynamicModule }
+export const MongoAtomicSubResourceORM = <Orm extends MongoAtomicORM<any>>(
+  ORM: Constructor<Orm> & { register: () => DynamicModule }
 ) => {
   @Injectable()
   @Module({})
@@ -14,7 +14,7 @@ export const MongoAtomicSubResourceORM = <Orm extends MongoAtomicORM<any, any>>(
     static register(): DynamicModule {
       return {
         module: this,
-        imports: [ORM.register()],
+        imports: [ORM],
         exports: [this],
       };
     }

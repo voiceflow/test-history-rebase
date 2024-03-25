@@ -5,9 +5,8 @@ import { EntityVariantLoguxController } from './entity-variant.logux.controller'
 import { EntityVariantService } from './entity-variant.service';
 
 @Module({
-  imports: [EntityVariantORM.register(), EntityORM.register(), AssistantORM.register()],
   exports: [EntityVariantService],
-  providers: [EntityVariantService],
+  providers: [EntityVariantORM, EntityORM, AssistantORM, EntityVariantService],
   controllers: [EntityVariantLoguxController],
 })
 export class EntityVariantModule {}

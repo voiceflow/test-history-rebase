@@ -1,45 +1,45 @@
 /* eslint-disable max-classes-per-file */
-import type { AssistantEntity } from '@/postgres/assistant';
 import { PostgresCMSObjectORM } from '@/postgres/common/orms/postgres-cms-object.orm';
-import { PostgresCMSObjectUnionORM } from '@/postgres/common/orms/postgres-union.orm';
-import type { PKOrEntity } from '@/types';
 
-import type { AnyStoryTriggerEntity } from './story-trigger.entity';
 import { BaseStoryTriggerEntity, EventStoryTriggerEntity, IntentStoryTriggerEntity } from './story-trigger.entity';
+import type { AnyStoryTriggerEntity } from './story-trigger.interface';
+import {
+  BaseStoryTriggerJSONAdapter,
+  EventStoryTriggerJSONAdapter,
+  IntentStoryTriggerJSONAdapter,
+} from './story-trigger-json.adapter';
 
-export class StoryTriggerORM extends PostgresCMSObjectUnionORM(
-  BaseStoryTriggerEntity,
-  EventStoryTriggerEntity,
-  IntentStoryTriggerEntity
-) {
-  findManyByEnvironment(
-    assistant: PKOrEntity<AssistantEntity>,
-    environmentID: string
-  ): Promise<AnyStoryTriggerEntity[]> {
-    return this.find({ assistant, environmentID }, { orderBy: { createdAt: 'DESC' } });
-  }
+export class EventStoryTriggerORM extends PostgresCMSObjectORM<EventStoryTriggerEntity> {
+  Entity = EventStoryTriggerEntity;
 
-  deleteManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
-    return this.nativeDelete({ assistant, environmentID });
-  }
-}
+  jsonAdapter = EventStoryTriggerJSONAdapter;
 
-export class EventStoryTriggerORM extends PostgresCMSObjectORM(EventStoryTriggerEntity) {
-  findManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
-    return this.find({ assistant, environmentID }, { orderBy: { createdAt: 'DESC' } });
-  }
-
-  deleteManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
-    return this.nativeDelete({ assistant, environmentID });
+  deleteManyByEnvironment(environmentID: string) {
+    return this.delete({ environmentID });
   }
 }
 
-export class IntentStoryTriggerORM extends PostgresCMSObjectORM(IntentStoryTriggerEntity) {
-  findManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
-    return this.find({ assistant, environmentID }, { orderBy: { createdAt: 'DESC' } });
-  }
+export class IntentStoryTriggerORM extends PostgresCMSObjectORM<IntentStoryTriggerEntity> {
+  Entity = IntentStoryTriggerEntity;
 
-  deleteManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
-    return this.nativeDelete({ assistant, environmentID });
+  jsonAdapter = IntentStoryTriggerJSONAdapter;
+
+  deleteManyByEnvironment(environmentID: string) {
+    return this.delete({ environmentID });
+  }
+}
+
+export class AnyStoryTriggerORM extends PostgresCMSObjectORM<BaseStoryTriggerEntity, AnyStoryTriggerEntity> {
+  Entity = BaseStoryTriggerEntity;
+
+  jsonAdapter = BaseStoryTriggerJSONAdapter;
+
+  protected discriminators = [
+    { Entity: EventStoryTriggerEntity, jsonAdapter: EventStoryTriggerJSONAdapter },
+    { Entity: IntentStoryTriggerEntity, jsonAdapter: IntentStoryTriggerJSONAdapter },
+  ];
+
+  deleteManyByEnvironment(environmentID: string) {
+    return this.delete({ environmentID });
   }
 }

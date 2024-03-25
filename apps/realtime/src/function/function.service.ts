@@ -1,37 +1,43 @@
 /* eslint-disable max-params */
-/* eslint-disable no-await-in-loop */
 
-import { EntityManager, Primary } from '@mikro-orm/core';
+import { EntityManager } from '@mikro-orm/core';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
 import { Function as FunctionType, FunctionPath, FunctionVariable } from '@voiceflow/dtos';
-import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
+import { LoguxService } from '@voiceflow/nestjs-logux';
 import type {
-  AssistantEntity,
-  FunctionEntity,
-  FunctionPathEntity,
-  FunctionVariableEntity,
-  ORMMutateOptions,
-  PKOrEntity,
-  ToJSONWithForeignKeys,
+  FunctionJSON,
+  FunctionObject,
+  FunctionPathJSON,
+  FunctionPathObject,
+  FunctionVariableJSON,
+  FunctionVariableObject,
 } from '@voiceflow/orm-designer';
 import { DatabaseTarget, FunctionORM, ObjectId, VersionORM } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 import fs from 'fs/promises';
+import _ from 'lodash';
 
-import { CMSTabularService, EntitySerializer } from '@/common';
-import type { CreateOneForUserData } from '@/common/types';
-import { assistantBroadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
-import { cloneManyEntities } from '@/utils/entity.util';
+import { CMSTabularService } from '@/common';
+import type { CMSCreateForUserData } from '@/common/types';
+import { cmsBroadcastContext, injectAssistantAndEnvironmentIDs, toPostgresEntityIDs } from '@/common/utils';
+import { CMSBroadcastMeta, CMSContext } from '@/types';
 
 import { FunctionExportImportDataDTO } from './dtos/function-export-import-data.dto';
-import { FunctionCreateData } from './function.interface';
 import { FunctionPathService } from './function-path/function-path.service';
 import { FunctionVariableService } from './function-variable/function-variable.service';
 
 @Injectable()
 export class FunctionService extends CMSTabularService<FunctionORM> {
+  toJSON = this.orm.jsonAdapter.fromDB;
+
+  fromJSON = this.orm.jsonAdapter.toDB;
+
+  mapToJSON = this.orm.jsonAdapter.mapFromDB;
+
+  mapFromJSON = this.orm.jsonAdapter.mapToDB;
+
   constructor(
     @Inject(FunctionORM)
     protected readonly orm: FunctionORM,
@@ -44,34 +50,18 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
     @Inject(FunctionPathService)
     private readonly functionPath: FunctionPathService,
     @Inject(FunctionVariableService)
-    private readonly functionVariable: FunctionVariableService,
-    @Inject(EntitySerializer)
-    private readonly entitySerializer: EntitySerializer
+    private readonly functionVariable: FunctionVariableService
   ) {
     super();
   }
 
   /* Find */
 
-  async findManyWithSubResourcesByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+  async findManyWithSubResourcesByEnvironment(environmentID: string) {
     const [functions, functionPaths, functionVariables] = await Promise.all([
-      this.findManyByEnvironment(assistant, environmentID),
-      this.functionPath.findManyByEnvironment(assistant, environmentID),
-      this.functionVariable.findManyByEnvironment(assistant, environmentID),
-    ]);
-
-    return {
-      functions,
-      functionPaths,
-      functionVariables,
-    };
-  }
-
-  async findManyWithSubResourcesJSONByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
-    const [functions, functionPaths, functionVariables] = await Promise.all([
-      this.orm.findAllJSON({ assistant, environmentID }),
-      this.functionPath.findManyJSONByEnvironment(assistant, environmentID),
-      this.functionVariable.findManyJSONByEnvironment(assistant, environmentID),
+      this.findManyByEnvironment(environmentID),
+      this.functionPath.findManyByEnvironment(environmentID),
+      this.functionVariable.findManyByEnvironment(environmentID),
     ]);
 
     return {
@@ -83,110 +73,91 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
 
   /* Export */
 
+  toJSONWithSubResources({
+    functions,
+    functionPaths,
+    functionVariables,
+  }: {
+    functions: FunctionObject[];
+    functionPaths: FunctionPathObject[];
+    functionVariables: FunctionVariableObject[];
+  }) {
+    return {
+      functions: this.mapToJSON(functions),
+      functionPaths: this.functionPath.mapToJSON(functionPaths),
+      functionVariables: this.functionVariable.mapToJSON(functionVariables),
+    };
+  }
+
+  fromJSONWithSubResources({ functions, functionPaths, functionVariables }: FunctionExportImportDataDTO) {
+    return {
+      functions: this.mapFromJSON(functions),
+      functionPaths: this.functionPath.mapFromJSON(functionPaths),
+      functionVariables: this.functionVariable.mapFromJSON(functionVariables),
+    };
+  }
+
   prepareExportData(
-    {
-      functions,
-      functionPaths,
-      functionVariables,
-    }: {
-      functions: FunctionEntity[];
-      functionPaths: FunctionPathEntity[];
-      functionVariables: FunctionVariableEntity[];
-    },
+    data: { functions: FunctionObject[]; functionPaths: FunctionPathObject[]; functionVariables: FunctionVariableObject[] },
     { backup }: { backup?: boolean } = {}
   ): FunctionExportImportDataDTO {
-    const json = {
-      functions: this.entitySerializer.iterable(functions),
-      functionPaths: this.entitySerializer.iterable(functionPaths),
-      functionVariables: this.entitySerializer.iterable(functionVariables),
-    };
+    const json = this.toJSONWithSubResources(data);
 
     if (backup) {
       return json;
     }
 
-    return this.prepareExportJSONData(json);
-  }
-
-  prepareExportJSONData({
-    functions,
-    functionPaths,
-    functionVariables,
-  }: {
-    functions: ToJSONWithForeignKeys<FunctionEntity>[];
-    functionPaths: ToJSONWithForeignKeys<FunctionPathEntity>[];
-    functionVariables: ToJSONWithForeignKeys<FunctionVariableEntity>[];
-  }): FunctionExportImportDataDTO {
     return {
-      functions: functions.map((item) => Utils.object.omit(item, ['assistantID', 'environmentID'])),
-      functionPaths: functionPaths.map((item) => Utils.object.omit(item, ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'])),
-      functionVariables: functionVariables.map((item) => Utils.object.omit(item, ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'])),
+      functions: json.functions.map((item) => Utils.object.omit(item, ['assistantID', 'environmentID'])),
+      functionPaths: json.functionPaths.map((item) => Utils.object.omit(item, ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'])),
+      functionVariables: json.functionVariables.map((item) => Utils.object.omit(item, ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'])),
     };
   }
 
   async exportJSON(environmentID: string, functionIDs?: string[]) {
-    let functions: FunctionEntity[];
-    let functionPaths: FunctionPathEntity[];
-    let functionVariables: FunctionVariableEntity[];
-
     if (!functionIDs?.length) {
-      const version = await this.versionORM.findOneOrFail(environmentID);
+      const result = await this.findManyWithSubResourcesByEnvironment(environmentID);
 
-      ({ functions, functionPaths, functionVariables } = await this.findManyWithSubResourcesByEnvironment(version.projectID.toJSON(), environmentID));
-    } else {
-      functions = await this.findMany(functionIDs.map((id) => ({ id, environmentID })));
-
-      [functionPaths, functionVariables] = await Promise.all([
-        this.functionPath.findManyByFunctions(functions),
-        this.functionVariable.findManyByFunctions(functions),
-      ]);
+      return this.prepareExportData(result);
     }
+
+    const [functions, functionPaths, functionVariables] = await Promise.all([
+      this.findManyByEnvironmentAndIDs(environmentID, functionIDs),
+      this.functionPath.findManyByFunctions(environmentID, functionIDs),
+      this.functionVariable.findManyByFunctions(environmentID, functionIDs),
+    ]);
 
     return this.prepareExportData({ functions, functionPaths, functionVariables });
   }
 
   /* Clone */
 
-  async cloneManyWithSubResourcesForEnvironment(
-    {
-      sourceAssistantID,
-      targetAssistantID,
-      sourceEnvironmentID,
-      targetEnvironmentID,
-    }: {
-      sourceAssistantID: string;
-      targetAssistantID: string;
-      sourceEnvironmentID: string;
-      targetEnvironmentID: string;
-    },
-    { flush = true }: ORMMutateOptions = {}
-  ) {
+  async cloneManyWithSubResourcesForEnvironment({
+    targetAssistantID,
+    sourceEnvironmentID,
+    targetEnvironmentID,
+  }: {
+    targetAssistantID: string;
+    sourceEnvironmentID: string;
+    targetEnvironmentID: string;
+  }) {
     const {
       functions: sourceFunctions,
       functionPaths: sourceFunctionPaths,
       functionVariables: sourceFunctionVariables,
-    } = await this.findManyWithSubResourcesByEnvironment(sourceAssistantID, sourceEnvironmentID);
+    } = await this.findManyWithSubResourcesByEnvironment(sourceEnvironmentID);
 
-    const result = this.importManyWithSubResources(
-      {
-        functions: cloneManyEntities(sourceFunctions, { assistantID: targetAssistantID, environmentID: targetEnvironmentID }),
-        functionPaths: cloneManyEntities(sourceFunctionPaths, { assistantID: targetAssistantID, environmentID: targetEnvironmentID }),
-        functionVariables: cloneManyEntities(sourceFunctionVariables, { assistantID: targetAssistantID, environmentID: targetEnvironmentID }),
-      },
-      { flush: false }
-    );
-
-    if (flush) {
-      await this.orm.em.flush();
-    }
-
-    return result;
+    return this.importManyWithSubResources({
+      functions: sourceFunctions.map((item) => ({ ...item, assistantID: targetAssistantID, environmentID: targetEnvironmentID })),
+      functionPaths: sourceFunctionPaths.map((item) => ({ ...item, assistantID: targetAssistantID, environmentID: targetEnvironmentID })),
+      functionVariables: sourceFunctionVariables.map((item) => ({ ...item, assistantID: targetAssistantID, environmentID: targetEnvironmentID })),
+    });
   }
 
   /* Import */
 
-  async filterImportData({ functions, functionPaths, functionVariables }: FunctionExportImportDataDTO, { environmentID }: { environmentID: string }) {
-    const currentFunctions = await this.findMany(functions.map(({ id }) => ({ id, environmentID })));
+  async filterImportData(environmentID: string, { functions, functionPaths, functionVariables }: FunctionExportImportDataDTO) {
+    const currentFunctions = await this.findManyByEnvironmentAndIDs(environmentID, toPostgresEntityIDs(functions));
     const existingFunctions = functions.filter((item) => item.id && currentFunctions.find(({ id }) => id === item.id));
 
     return {
@@ -201,9 +172,9 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
     { functions, functionPaths, functionVariables }: FunctionExportImportDataDTO,
     { userID, backup, assistantID, environmentID }: { userID: number; backup?: boolean; assistantID: string; environmentID: string }
   ): {
-    functions: ToJSONWithForeignKeys<FunctionEntity>[];
-    functionPaths: ToJSONWithForeignKeys<FunctionPathEntity>[];
-    functionVariables: ToJSONWithForeignKeys<FunctionVariableEntity>[];
+    functions: FunctionJSON[];
+    functionPaths: FunctionPathJSON[];
+    functionVariables: FunctionVariableJSON[];
   } {
     const createdAt = new Date().toJSON();
 
@@ -269,23 +240,17 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
     };
   }
 
-  async importManyWithSubResources(
-    data: {
-      functions: ToJSONWithForeignKeys<FunctionEntity>[];
-      functionPaths: ToJSONWithForeignKeys<FunctionPathEntity>[];
-      functionVariables: ToJSONWithForeignKeys<FunctionVariableEntity>[];
-    },
-    { flush = true }: ORMMutateOptions = {}
-  ) {
-    const [functions, functionPaths, functionVariables] = await Promise.all([
-      this.createMany(data.functions, { flush: false }),
-      this.functionPath.createMany(data.functionPaths, { flush: false }),
-      this.functionVariable.createMany(data.functionVariables, { flush: false }),
-    ]);
+  async importManyWithSubResources(data: {
+    functions: FunctionObject[];
+    functionPaths: FunctionPathObject[];
+    functionVariables: FunctionVariableObject[];
+  }) {
+    const functions = await this.createMany(data.functions);
 
-    if (flush) {
-      await this.orm.em.flush();
-    }
+    const [functionPaths, functionVariables] = await Promise.all([
+      this.functionPath.createMany(data.functionPaths),
+      this.functionVariable.createMany(data.functionVariables),
+    ]);
 
     return {
       functions,
@@ -294,69 +259,27 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
     };
   }
 
-  async duplicateOneAndBroadcast(
-    authMeta: AuthMetaPayload,
-    { functionID, assistantID, userID }: { functionID: Primary<FunctionEntity>; assistantID: string; userID: number }
-  ) {
-    const duplicateFunctionResource = await this.findOneOrFail(functionID);
-    const duplicateFunctionVariables = await this.functionVariable.findManyByFunctions([duplicateFunctionResource]);
-    const duplicateFunctionPaths = await this.functionPath.findManyByFunctions([duplicateFunctionResource]);
+  importJSONAndSync(data: FunctionExportImportDataDTO, { userID, context }: { userID: number; context: CMSContext }) {
+    return this.postgresEM.transactional(async () => {
+      const { duplicatedFunctions, ...dataToImport } = await this.filterImportData(context.environmentID, data);
 
-    const { functionResource, functionPaths, functionVariables } = await this.postgresEM.transactional(async (em) => {
-      const resource = await this.createOneForUser(authMeta.userID, {
-        assistantID,
-        environmentID: duplicateFunctionResource.environmentID,
-        name: `${duplicateFunctionResource.name} (copy)`,
-        code: duplicateFunctionResource.code,
-        image: duplicateFunctionResource.image,
-        folderID: duplicateFunctionResource.folder?.id ?? null,
-        description: duplicateFunctionResource.description,
+      const { functions, functionPaths, functionVariables } = this.prepareImportData(dataToImport, {
+        userID,
+        assistantID: context.assistantID,
+        environmentID: context.environmentID,
       });
 
-      const variables = await this.functionVariable.createManyForUser(
-        userID,
-        duplicateFunctionVariables.map((v) => ({
-          assistantID,
-          environmentID: v.environmentID,
-          functionID: resource.id,
-          name: v.name,
-          value: v.function,
-          description: v.description,
-          type: v.type,
-        })),
-        { flush: false }
-      );
-
-      const paths = await this.functionPath.createManyForUser(
-        userID,
-        duplicateFunctionPaths.map((p) => ({
-          assistantID,
-          environmentID: p.environmentID,
-          functionID: resource.id,
-          label: p.label,
-          name: p.name,
-        })),
-        { flush: false }
-      );
-
-      await em.flush();
+      const result = await this.importManyWithSubResources({
+        functions: this.mapFromJSON(functions),
+        functionPaths: this.functionPath.mapFromJSON(functionPaths),
+        functionVariables: this.functionVariable.mapFromJSON(functionVariables),
+      });
 
       return {
-        functionResource: resource,
-        functionVariables: variables,
-        functionPaths: paths,
+        add: result,
+        duplicate: { functions: duplicatedFunctions },
       };
     });
-
-    await this.broadcastAddMany(authMeta, {
-      add: {
-        functions: [functionResource],
-        functionVariables,
-        functionPaths,
-      },
-    });
-
-    return { functionResource, functionPaths, functionVariables };
   }
 
   async createOneFromTemplateAndBroadcast({
@@ -369,7 +292,7 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
     userID: number;
     clientID: string;
     environmentID: string;
-  }): Promise<FunctionEntity> {
+  }): Promise<FunctionObject> {
     const { templateID, name, description } = data;
     const rawTemplate = JSON.parse((await fs.readFile(`./src/function/templates/${templateID}.function-template.json`)).toString());
 
@@ -397,12 +320,7 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
       })),
     };
 
-    const { functions: createdFunctions } = await this.importJSONAndBroadcast({
-      data: importData,
-      userID,
-      clientID,
-      environmentID,
-    });
+    const { functions: createdFunctions } = await this.importJSONAndBroadcast(importData, { userID, clientID, environmentID });
 
     if (createdFunctions.length === 0) {
       throw new Error('Realtime was unable to send back function created from template.');
@@ -411,99 +329,141 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
     return createdFunctions[0]!;
   }
 
-  async importJSONAndBroadcast({
-    data,
-    userID,
-    clientID,
-    environmentID,
-  }: {
-    data: FunctionExportImportDataDTO;
-    userID: number;
-    clientID?: string;
-    environmentID: string;
-  }) {
-    const { duplicatedFunctions, ...result } = await this.postgresEM.transactional(async () => {
-      const version = await this.versionORM.findOneOrFail(environmentID);
-      const { duplicatedFunctions, ...functionsToImport } = await this.filterImportData(data, { environmentID });
+  async importJSONAndBroadcast(
+    data: FunctionExportImportDataDTO,
+    { userID, clientID, environmentID }: { userID: number; clientID?: string; environmentID: string }
+  ) {
+    const assistantID = await this.versionORM.findOneOrFailProjectID(environmentID);
 
-      const importData = this.prepareImportData(functionsToImport, { userID, assistantID: version.projectID.toJSON(), environmentID });
-
-      const result = await this.importManyWithSubResources(importData);
-
-      return { ...result, duplicatedFunctions };
+    const result = await this.importJSONAndSync(data, {
+      userID,
+      context: { assistantID: assistantID.toJSON(), environmentID },
     });
 
-    if (!clientID) {
-      return { duplicatedFunctions, functions: result.functions };
+    if (clientID) {
+      await this.broadcastAddMany(result, { auth: { userID, clientID }, context: { assistantID: assistantID.toJSON(), environmentID } });
     }
 
-    await this.broadcastAddMany({ userID, clientID }, { add: result });
+    return { functions: result.add.functions, duplicatedFunctions: result.duplicate.functions };
+  }
 
-    return { duplicatedFunctions, functions: result.functions };
+  /* Duplicate */
+
+  duplicateManyAndSync(functionIDs: string[], { userID, context }: { userID: number; context: CMSContext }) {
+    return this.postgresEM.transactional(async () => {
+      const [sourceFunctions, sourceFunctionPaths, sourceFunctionVariables] = await Promise.all([
+        this.findManyByEnvironmentAndIDs(context.environmentID, functionIDs),
+        this.functionPath.findManyByEnvironmentAndIDs(context.environmentID, functionIDs),
+        this.functionVariable.findManyByEnvironmentAndIDs(context.environmentID, functionIDs),
+      ]);
+
+      const sourceFunctionPathsByFunctionID = _.groupBy(sourceFunctionPaths, (item) => item.functionID);
+      const sourceFunctionVariablesByFunctionID = _.groupBy(sourceFunctionVariables, (item) => item.functionID);
+
+      const functions = await this.createManyForUser(
+        userID,
+        sourceFunctions.map((item) => ({
+          ...Utils.object.omit(item, ['id', 'createdAt', 'updatedAt', 'createdByID', 'updatedByID']),
+          name: `${item.name} (copy)`,
+          assistantID: context.assistantID,
+          environmentID: context.environmentID,
+        }))
+      );
+
+      const functionPathsData = functions.flatMap((item, index) =>
+        sourceFunctionPathsByFunctionID[sourceFunctions[index].id].map((path) => ({
+          ...Utils.object.omit(path, ['id', 'createdAt', 'updatedAt', 'updatedByID']),
+          functionID: item.id,
+          assistantID: context.assistantID,
+          environmentID: context.environmentID,
+        }))
+      );
+
+      const functionVariablesData = functions.flatMap((item, index) =>
+        sourceFunctionVariablesByFunctionID[sourceFunctions[index].id].map((path) => ({
+          ...Utils.object.omit(path, ['id', 'createdAt', 'updatedAt', 'updatedByID']),
+          functionID: item.id,
+          assistantID: context.assistantID,
+          environmentID: context.environmentID,
+        }))
+      );
+
+      const [functionPaths, functionVariables] = await Promise.all([
+        this.functionPath.createManyForUser(userID, functionPathsData),
+        this.functionVariable.createManyForUser(userID, functionVariablesData),
+      ]);
+
+      return {
+        add: {
+          functions,
+          functionPaths,
+          functionVariables,
+        },
+      };
+    });
+  }
+
+  async duplicateManyAndBroadcast(functionIDs: string[], meta: CMSBroadcastMeta) {
+    const result = await this.duplicateManyAndSync(functionIDs, { userID: meta.auth.userID, context: meta.context });
+
+    await this.broadcastAddMany(result, meta);
+
+    return result.add.functions;
   }
 
   /* Create */
 
-  async createManyAndSync(userID: number, data: CreateOneForUserData<FunctionORM>[]) {
-    return this.postgresEM.transactional(async () => {
-      const functions: FunctionEntity[] = [];
+  async createManyAndSync(data: CMSCreateForUserData<FunctionORM>[], { userID, context }: { userID: number; context: CMSContext }) {
+    const functions = await this.createManyForUser(userID, data.map(injectAssistantAndEnvironmentIDs(context)));
 
-      for (const { ...functionResourceData } of data) {
-        const functionResource = await this.createOneForUser(userID, functionResourceData, { flush: false });
-
-        functions.push(functionResource);
-      }
-
-      await this.orm.em.flush();
-
-      return {
-        add: { functions, functionPaths: [], functionVariables: [] },
-      };
-    });
+    return {
+      add: {
+        functions,
+        functionPaths: [],
+        functionVariables: [],
+      },
+    };
   }
 
   async broadcastAddMany(
-    authMeta: AuthMetaPayload,
     {
       add,
     }: {
       add: {
-        functions: FunctionEntity[];
-        functionPaths: FunctionPathEntity[];
-        functionVariables: FunctionVariableEntity[];
+        functions: FunctionObject[];
+        functionPaths: FunctionPathObject[];
+        functionVariables: FunctionVariableObject[];
       };
-    }
+    },
+    meta: CMSBroadcastMeta
   ) {
     await Promise.all([
-      this.functionPath.broadcastAddMany(authMeta, { add: Utils.object.pick(add, ['functionPaths']) }),
-      this.functionVariable.broadcastAddMany(authMeta, { add: Utils.object.pick(add, ['functionVariables']) }),
-
-      ...groupByAssistant(add.functions).map((functions) =>
-        this.logux.processAs(
-          Actions.Function.AddMany({
-            data: this.entitySerializer.iterable(functions),
-            context: assistantBroadcastContext(functions[0]),
-          }),
-          authMeta
-        )
+      this.functionPath.broadcastAddMany({ add: Utils.object.pick(add, ['functionPaths']) }, meta),
+      this.functionVariable.broadcastAddMany({ add: Utils.object.pick(add, ['functionVariables']) }, meta),
+      this.logux.processAs(
+        Actions.Function.AddMany({
+          data: this.mapToJSON(add.functions),
+          context: cmsBroadcastContext(meta.context),
+        }),
+        meta.auth
       ),
     ]);
   }
 
-  async createManyAndBroadcast(authMeta: AuthMetaPayload, data: FunctionCreateData[]) {
-    const result = await this.createManyAndSync(authMeta.userID, data);
+  async createManyAndBroadcast(data: CMSCreateForUserData<FunctionORM>[], meta: CMSBroadcastMeta) {
+    const result = await this.createManyAndSync(data, { userID: meta.auth.userID, context: meta.context });
 
-    await this.broadcastAddMany(authMeta, result);
+    await this.broadcastAddMany(result, meta);
 
     return result.add.functions;
   }
 
   /* Delete */
 
-  async collectRelationsToDelete(functions: PKOrEntity<FunctionEntity>[]) {
+  async collectRelationsToDelete(environmentID: string, functionIDs: string[]) {
     const [functionPaths, functionVariables] = await Promise.all([
-      this.functionPath.findManyByFunctions(functions),
-      this.functionVariable.findManyByFunctions(functions),
+      this.functionPath.findManyByFunctions(environmentID, functionIDs),
+      this.functionVariable.findManyByFunctions(environmentID, functionIDs),
     ]);
 
     return {
@@ -512,14 +472,14 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
     };
   }
 
-  async deleteManyAndSync(ids: Primary<FunctionEntity>[]) {
+  async deleteManyAndSync(ids: string[], context: CMSContext) {
     return this.postgresEM.transactional(async () => {
-      const functions = await this.findMany(ids);
-      const relations = await this.collectRelationsToDelete(functions);
+      const [functions, relations] = await Promise.all([
+        this.findManyByEnvironmentAndIDs(context.environmentID, ids),
+        this.collectRelationsToDelete(context.environmentID, ids),
+      ]);
 
-      await this.deleteMany(functions, { flush: false });
-
-      await this.orm.em.flush();
+      await this.deleteManyByEnvironmentAndIDs(context.environmentID, ids);
 
       return {
         delete: { ...relations, functions },
@@ -528,42 +488,35 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
   }
 
   async broadcastDeleteMany(
-    authMeta: AuthMetaPayload,
     {
       delete: del,
     }: {
       delete: {
-        functions: FunctionEntity[];
-        functionPaths: FunctionPathEntity[];
-        functionVariables: FunctionVariableEntity[];
+        functions: FunctionObject[];
+        functionPaths: FunctionPathObject[];
+        functionVariables: FunctionVariableObject[];
       };
-    }
+    },
+    meta: CMSBroadcastMeta
   ) {
     await Promise.all([
-      this.functionVariable.broadcastDeleteMany(authMeta, {
-        delete: Utils.object.pick(del, ['functionVariables']),
-      }),
+      this.functionVariable.broadcastDeleteMany({ delete: Utils.object.pick(del, ['functionVariables']) }, meta),
+      this.functionPath.broadcastDeleteMany({ delete: Utils.object.pick(del, ['functionPaths']) }, meta),
 
-      this.functionPath.broadcastDeleteMany(authMeta, {
-        delete: Utils.object.pick(del, ['functionPaths']),
-      }),
-
-      ...groupByAssistant(del.functions).map((functions) =>
-        this.logux.processAs(
-          Actions.Function.DeleteMany({
-            ids: toEntityIDs(functions),
-            context: assistantBroadcastContext(functions[0]),
-          }),
-          authMeta
-        )
+      this.logux.processAs(
+        Actions.Function.DeleteMany({
+          ids: toPostgresEntityIDs(del.functions),
+          context: cmsBroadcastContext(meta.context),
+        }),
+        meta.auth
       ),
     ]);
   }
 
-  async deleteManyAndBroadcast(authMeta: AuthMetaPayload, ids: Primary<FunctionEntity>[]): Promise<void> {
-    const result = await this.deleteManyAndSync(ids);
+  async deleteManyAndBroadcast(ids: string[], meta: CMSBroadcastMeta): Promise<void> {
+    const result = await this.deleteManyAndSync(ids, meta.context);
 
-    await this.broadcastDeleteMany(authMeta, result);
+    await this.broadcastDeleteMany(result, meta);
   }
 
   /* Upsert */
@@ -574,8 +527,8 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
   ) {
     const { functions, functionPaths, functionVariables } = this.prepareImportData(data, meta);
 
-    await this.upsertMany(functions);
-    await this.functionPath.upsertMany(functionPaths);
-    await this.functionVariable.upsertMany(functionVariables);
+    await this.upsertMany(this.mapFromJSON(functions));
+    await this.functionPath.upsertMany(this.functionPath.mapFromJSON(functionPaths));
+    await this.functionVariable.upsertMany(this.functionVariable.mapFromJSON(functionVariables));
   }
 }

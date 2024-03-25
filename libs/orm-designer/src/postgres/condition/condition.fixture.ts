@@ -2,8 +2,6 @@ import type { EntityDTO } from '@mikro-orm/core';
 import { ConditionType } from '@voiceflow/dtos';
 
 import type { ExpressionConditionEntity, PromptConditionEntity, ScriptConditionEntity } from './condition.entity';
-import { conditionAssertionList } from './condition-assertion/condition-assertion.fixture';
-import { conditionPredicateList } from './condition-predicate/condition-predicate.fixture';
 
 const baseCondition = {
   createdAt: new Date(),
@@ -17,7 +15,6 @@ export const expressionCondition: EntityDTO<ExpressionConditionEntity> = {
   id: 'condition-1',
   type: ConditionType.EXPRESSION,
   matchAll: true,
-  assertions: conditionAssertionList,
   environmentID: 'environment-1',
 };
 
@@ -27,7 +24,6 @@ export const promptCondition: EntityDTO<PromptConditionEntity> = {
   type: ConditionType.PROMPT,
   turns: 3,
   prompt: { id: 'prompt-1' } as any,
-  predicates: conditionPredicateList,
   environmentID: 'environment-1',
 };
 

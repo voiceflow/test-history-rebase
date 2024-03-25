@@ -4,7 +4,7 @@ import { Permission } from '@voiceflow/sdk-auth';
 import { Authorize } from '@voiceflow/sdk-auth/nestjs';
 import { Actions, Channels } from '@voiceflow/sdk-logux-designer';
 
-import { BroadcastOnly, EntitySerializer, InjectRequestContext, UseRequestContext } from '@/common';
+import { BroadcastOnly, InjectRequestContext, UseRequestContext } from '@/common';
 
 import { FunctionService } from './function.service';
 
@@ -13,9 +13,7 @@ import { FunctionService } from './function.service';
 export class FunctionLoguxController {
   constructor(
     @Inject(FunctionService)
-    private readonly service: FunctionService,
-    @Inject(EntitySerializer)
-    private readonly entitySerializer: EntitySerializer
+    private readonly service: FunctionService
   ) {}
 
   @Action.Async(Actions.Function.CreateOne)
@@ -26,11 +24,9 @@ export class FunctionLoguxController {
   @UseRequestContext()
   async createOne(
     @Payload() { data, context }: Actions.Function.CreateOne.Request,
-    @AuthMeta() authMeta: AuthMetaPayload
+    @AuthMeta() auth: AuthMetaPayload
   ): Promise<Actions.Function.CreateOne.Response> {
-    return this.service
-      .createManyAndBroadcast(authMeta, [{ ...data, assistantID: context.assistantID, environmentID: context.environmentID }])
-      .then(([result]) => ({ data: this.entitySerializer.nullable(result), context }));
+    return this.service.createManyAndBroadcast([data], { auth, context }).then(([result]) => ({ data: this.service.toJSON(result), context }));
   }
 
   @Action.Async(Actions.Function.DuplicateOne)
@@ -41,22 +37,11 @@ export class FunctionLoguxController {
   @UseRequestContext()
   async duplicateOne(
     @Payload() { data, context }: Actions.Function.DuplicateOne.Request,
-    @AuthMeta() authMeta: AuthMetaPayload
+    @AuthMeta() auth: AuthMetaPayload
   ): Promise<Actions.Function.DuplicateOne.Response> {
     return this.service
-      .duplicateOneAndBroadcast(authMeta, {
-        functionID: { id: data.functionID, environmentID: context.environmentID },
-        assistantID: context.assistantID,
-        userID: authMeta.userID,
-      })
-      .then((result) => ({
-        data: {
-          functionResource: this.entitySerializer.nullable(result.functionResource),
-          functionPaths: this.entitySerializer.iterable(result.functionPaths),
-          functionVariables: this.entitySerializer.iterable(result.functionVariables),
-        },
-        context,
-      }));
+      .duplicateManyAndBroadcast([data.functionID], { auth, context })
+      .then(([result]) => ({ data: { functionResource: this.service.toJSON(result) }, context }));
   }
 
   @Action(Actions.Function.PatchOne)
@@ -67,8 +52,8 @@ export class FunctionLoguxController {
   @Broadcast<Actions.Function.PatchOne>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async patchOne(@Payload() { id, patch, context }: Actions.Function.PatchOne, @AuthMeta() authMeta: AuthMetaPayload) {
-    await this.service.patchOneForUser(authMeta.userID, { id, environmentID: context.environmentID }, patch);
+  async patchOne(@Payload() { id, patch, context }: Actions.Function.PatchOne, @AuthMeta() auth: AuthMetaPayload) {
+    await this.service.patchOneForUser(auth.userID, { id, environmentID: context.environmentID }, patch);
   }
 
   @Action(Actions.Function.PatchMany)
@@ -79,9 +64,9 @@ export class FunctionLoguxController {
   @Broadcast<Actions.Function.PatchMany>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async patchMany(@Payload() { ids, patch, context }: Actions.Function.PatchMany, @AuthMeta() authMeta: AuthMetaPayload) {
+  async patchMany(@Payload() { ids, patch, context }: Actions.Function.PatchMany, @AuthMeta() auth: AuthMetaPayload) {
     await this.service.patchManyForUser(
-      authMeta.userID,
+      auth.userID,
       ids.map((id) => ({ id, environmentID: context.environmentID })),
       patch
     );
@@ -95,11 +80,11 @@ export class FunctionLoguxController {
   @Broadcast<Actions.Function.DeleteOne>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async deleteOne(@Payload() { id, context }: Actions.Function.DeleteOne, @AuthMeta() authMeta: AuthMetaPayload) {
-    const result = await this.service.deleteManyAndSync([{ id, environmentID: context.environmentID }]);
+  async deleteOne(@Payload() { id, context }: Actions.Function.DeleteOne, @AuthMeta() auth: AuthMetaPayload) {
+    const result = await this.service.deleteManyAndSync([id], context);
 
     // overriding functions cause it's broadcasted by decorator
-    await this.service.broadcastDeleteMany(authMeta, { ...result, delete: { ...result.delete, functions: [] } });
+    await this.service.broadcastDeleteMany({ ...result, delete: { ...result.delete, functions: [] } }, { auth, context });
   }
 
   @Action(Actions.Function.DeleteMany)
@@ -110,11 +95,11 @@ export class FunctionLoguxController {
   @Broadcast<Actions.Function.DeleteMany>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async deleteMany(@Payload() { ids, context }: Actions.Function.DeleteMany, @AuthMeta() authMeta: AuthMetaPayload) {
-    const result = await this.service.deleteManyAndSync(ids.map((id) => ({ id, environmentID: context.environmentID })));
+  async deleteMany(@Payload() { ids, context }: Actions.Function.DeleteMany, @AuthMeta() auth: AuthMetaPayload) {
+    const result = await this.service.deleteManyAndSync(ids, context);
 
     // overriding functions cause it's broadcasted by decorator
-    await this.service.broadcastDeleteMany(authMeta, { ...result, delete: { ...result.delete, functions: [] } });
+    await this.service.broadcastDeleteMany({ ...result, delete: { ...result.delete, functions: [] } }, { auth, context });
   }
 
   @Action(Actions.Function.AddOne)
@@ -151,7 +136,7 @@ export class FunctionLoguxController {
     });
 
     return {
-      data: this.entitySerializer.nullable(createdFunction),
+      data: this.service.toJSON(createdFunction),
       context,
     };
   }

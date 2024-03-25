@@ -7,9 +7,9 @@ import { FlowLoguxController } from './flow.logux.controller';
 import { FlowService } from './flow.service';
 
 @Module({
-  imports: [FlowORM.register(), AssistantORM.register(), DiagramModule],
+  imports: [DiagramModule],
   exports: [FlowService],
-  providers: [FlowService],
+  providers: [AssistantORM, FlowORM, FlowService],
   controllers: [FlowLoguxController],
 })
 export class FlowModule {}

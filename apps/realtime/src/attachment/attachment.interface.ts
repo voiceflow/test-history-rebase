@@ -1,31 +1,34 @@
 import type { AttachmentType } from '@voiceflow/dtos';
-import type { CardAttachmentEntity, MediaAttachmentEntity, ToJSONWithForeignKeys } from '@voiceflow/orm-designer';
+import type { CardAttachmentObject, CardAttachmentORM, MediaAttachmentObject, MediaAttachmentORM } from '@voiceflow/orm-designer';
 
-import type { CreateOneForUserData, PatchOneData } from '@/common/types';
+import type { CMSCreateForUserData, CMSPatchData } from '@/common/types';
 
-import type { CardAttachmentService } from './card-attachment.service';
-import type { MediaAttachmentService } from './media-attachment.service';
-
-export interface AttachmentCardCreateData extends CreateOneForUserData<CardAttachmentService> {
+export interface AttachmentCardCreateData extends CMSCreateForUserData<CardAttachmentORM> {
   type: typeof AttachmentType.CARD;
 }
 
-export interface AttachmentMediaCreateData extends CreateOneForUserData<MediaAttachmentService> {
+export interface AttachmentMediaCreateData extends CMSCreateForUserData<MediaAttachmentORM> {
   type: typeof AttachmentType.MEDIA;
 }
 
-export type AttachmentCreateData = AttachmentCardCreateData | AttachmentMediaCreateData;
+export type AnyAttachmentCreateData = AttachmentCardCreateData | AttachmentMediaCreateData;
 
-export interface AttachmentCardPatchData extends PatchOneData<CardAttachmentService> {
+export interface AttachmentCardPatchData extends CMSPatchData<CardAttachmentORM> {
   type: typeof AttachmentType.CARD;
 }
 
-export interface AttachmentMediaPatchData extends PatchOneData<MediaAttachmentService> {
+export interface AttachmentMediaPatchData extends CMSPatchData<MediaAttachmentORM> {
   type: typeof AttachmentType.MEDIA;
 }
 
 export type AttachmentPatchData = AttachmentCardPatchData | AttachmentMediaPatchData;
 
-export type AttachmentAnyImportData =
-  | (ToJSONWithForeignKeys<CardAttachmentEntity> & Pick<AttachmentCardCreateData, 'type'>)
-  | (ToJSONWithForeignKeys<MediaAttachmentEntity> & Pick<AttachmentMediaCreateData, 'type'>);
+export interface AttachmentCardObjectWithType extends CardAttachmentObject {
+  type: typeof AttachmentType.CARD;
+}
+
+export interface AttachmentMediaObjectWithType extends MediaAttachmentObject {
+  type: typeof AttachmentType.MEDIA;
+}
+
+export type AnyAttachmentObjectWithType = AttachmentCardObjectWithType | AttachmentMediaObjectWithType;

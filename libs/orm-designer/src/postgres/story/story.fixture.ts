@@ -2,7 +2,6 @@ import type { EntityDTO } from '@mikro-orm/core';
 import { StoryStatus } from '@voiceflow/dtos';
 
 import type { StoryEntity } from './story.entity';
-import { storyTriggerList } from './story-trigger/story-trigger.fixture';
 
 export const story: EntityDTO<StoryEntity> = {
   id: 'story-1',
@@ -15,7 +14,6 @@ export const story: EntityDTO<StoryEntity> = {
   isStart: true,
   assignee: { id: 1 } as any,
   triggerOrder: ['trigger-1', 'trigger-2'],
-  triggers: storyTriggerList,
   assistant: { id: 'assistant-1' } as any,
   flow: { id: 'flow-1' } as any,
   createdBy: { id: 1 } as any,

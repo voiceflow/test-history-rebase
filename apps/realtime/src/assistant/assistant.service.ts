@@ -3,29 +3,24 @@ import fs from 'node:fs/promises';
 
 import { EntityManager } from '@mikro-orm/core';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
 import { ProjectUserRole } from '@voiceflow/dtos';
 import { BadRequestException, InternalServerErrorException } from '@voiceflow/exception';
-import { UnleashFeatureFlagService } from '@voiceflow/nestjs-common';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
-import type { PKOrEntity, WorkspaceStubEntity } from '@voiceflow/orm-designer';
+import type { AssistantEntity, AssistantObject, CreateData } from '@voiceflow/orm-designer';
 import {
-  AssistantEntity,
   AssistantORM,
   DatabaseTarget,
-  DiagramEntity,
+  DiagramObject,
   ObjectId,
-  ProgramEntity,
-  ProgramORM,
-  ProjectEntity,
-  ProjectEntityAdapter,
-  ProjectTemplateORM,
-  PrototypeProgramEntity,
-  PrototypeProgramORM,
-  ToJSON,
-  VariableStateEntity,
-  VersionEntity,
+  ProgramObject,
+  ProjectJSON,
+  ProjectObject,
+  PrototypeProgramObject,
+  VariableStateObject,
+  VersionJSON,
+  VersionObject,
 } from '@voiceflow/orm-designer';
 import * as Platform from '@voiceflow/platform-config/backend';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
@@ -34,15 +29,16 @@ import { Actions } from '@voiceflow/sdk-logux-designer';
 import { Patch } from 'immer';
 import _ from 'lodash';
 
-import { EntitySerializer, MutableService } from '@/common';
-import { CreateOneData } from '@/common/types';
-import { EnvironmentCMSEntities } from '@/environment/environment.interface';
+import { MutableService } from '@/common';
+import { EnvironmentCMSData } from '@/environment/environment.interface';
 import { EnvironmentService } from '@/environment/environment.service';
+import { ProgramService } from '@/program/program.service';
 import { LATEST_PROJECT_VERSION } from '@/project/project.constant';
 import { ProjectSerializer } from '@/project/project.serializer';
 import { ProjectService } from '@/project/project.service';
 import { LegacyProjectSerializer } from '@/project/project-legacy/legacy-project.serializer';
 import { ProjectListService } from '@/project-list/project-list.service';
+import { PrototypeProgramService } from '@/prototype-program/prototype-program.service';
 import { deepSetCreatorID } from '@/utils/creator.util';
 import { deepSetNewDate } from '@/utils/date.util';
 import { VariableStateService } from '@/variable-state/variable-state.service';
@@ -61,18 +57,22 @@ import { AssistantImportDataDTO } from './dtos/assistant-import-data.dto';
 
 @Injectable()
 export class AssistantService extends MutableService<AssistantORM> {
+  private readonly logger = new Logger(AssistantService.name);
+
+  toJSON = this.orm.jsonAdapter.fromDB;
+
+  fromJSON = this.orm.jsonAdapter.toDB;
+
+  mapToJSON = this.orm.jsonAdapter.mapFromDB;
+
+  mapFromJSON = this.orm.jsonAdapter.mapToDB;
+
   constructor(
     @Inject(getEntityManagerToken(DatabaseTarget.POSTGRES))
     private readonly postgresEM: EntityManager,
 
     @Inject(AssistantORM)
     protected readonly orm: AssistantORM,
-    @Inject(ProgramORM)
-    private readonly programORM: ProgramORM,
-    @Inject(ProjectTemplateORM)
-    private readonly projectTemplateORM: ProjectTemplateORM,
-    @Inject(PrototypeProgramORM)
-    private readonly prototypeProgramORM: PrototypeProgramORM,
 
     @Inject(IdentityClient)
     private readonly identityClient: IdentityClient,
@@ -80,8 +80,8 @@ export class AssistantService extends MutableService<AssistantORM> {
     private readonly logux: LoguxService,
     @Inject(ProjectService)
     private readonly project: ProjectService,
-    @Inject(UnleashFeatureFlagService)
-    private readonly unleash: UnleashFeatureFlagService,
+    @Inject(ProgramService)
+    private readonly program: ProgramService,
     @Inject(VersionService)
     private readonly version: VersionService,
     @Inject(EnvironmentService)
@@ -90,8 +90,8 @@ export class AssistantService extends MutableService<AssistantORM> {
     private readonly projectList: ProjectListService,
     @Inject(VariableStateService)
     private readonly variableState: VariableStateService,
-    @Inject(EntitySerializer)
-    private readonly entitySerializer: EntitySerializer,
+    @Inject(PrototypeProgramService)
+    private readonly prototypeProgram: PrototypeProgramService,
     @Inject(ProjectSerializer)
     private readonly projectSerializer: ProjectSerializer,
     @Inject(AssistantSerializer)
@@ -143,39 +143,53 @@ export class AssistantService extends MutableService<AssistantORM> {
     projectListID?: string | null;
     workspaceProperties?: { settingsDashboardKanban: boolean };
   }) {
-    const workspaceProperties = workspacePropertiesProp ?? (await this.fetchWorkspacePropertiesWithDefaults(workspaceID));
+    try {
+      const workspaceProperties = workspacePropertiesProp ?? (await this.fetchWorkspacePropertiesWithDefaults(workspaceID));
 
-    let projectList: Realtime.DBProjectList | null = null;
-    let projectListCreated = false;
+      let projectList: Realtime.DBProjectList | null = null;
+      let projectListCreated = false;
 
-    if (workspaceProperties.settingsDashboardKanban) {
-      ({ projectList, projectListCreated } = await this.projectList.acquireList(workspaceID, projectListID));
+      if (workspaceProperties.settingsDashboardKanban) {
+        ({ projectList, projectListCreated } = await this.projectList.acquireList(workspaceID, projectListID));
 
-      projectList = await this.projectList.addProjectToList(workspaceID, projectList.board_id, assistantID);
+        projectList = await this.projectList.addProjectToList(workspaceID, projectList.board_id, assistantID);
+      }
+
+      return {
+        projectList,
+        projectListCreated,
+      };
+    } catch {
+      return {
+        projectList: null,
+        projectListCreated: false,
+      };
     }
-
-    return {
-      projectList,
-      projectListCreated,
-    };
   }
 
   /* Find  */
 
-  public async findManyByWorkspace(workspace: PKOrEntity<WorkspaceStubEntity>) {
-    return this.orm.findManyByWorkspace(workspace);
+  public async findManyByWorkspace(workspaceID: number) {
+    return this.orm.findManyByWorkspace(workspaceID);
   }
 
   public async findOneCMSData(assistantID: string, environmentID: string) {
     // using transaction to optimize connections
     return this.postgresEM.transactional(async () => {
-      const [assistant, cmsData] = await Promise.all([this.findOneOrFail(assistantID), this.environment.findOneCMSData(assistantID, environmentID)]);
+      const [assistant, cmsData] = await Promise.all([this.findOneOrFail(assistantID), this.environment.findOneCMSData(environmentID)]);
 
       return {
         ...cmsData,
         assistant,
       };
     });
+  }
+
+  toJSONCMSData(data: EnvironmentCMSData & { assistant: AssistantObject }) {
+    return {
+      ...this.environment.toJSONCMSData(data),
+      assistant: this.assistantSerializer.nullable(data.assistant),
+    };
   }
 
   /* Import  */
@@ -254,7 +268,7 @@ export class AssistantService extends MutableService<AssistantORM> {
     workspaceID: number;
     projectListID?: string | null;
     centerDiagrams?: boolean;
-    projectOverride?: Partial<Omit<ToJSON<ProjectEntity>, 'id' | '_id' | 'teamID'>>;
+    projectOverride?: Partial<Omit<ProjectJSON, '_id' | 'teamID'>>;
   }) {
     const workspaceProperties = await this.fetchWorkspacePropertiesWithDefaults(workspaceID);
 
@@ -270,36 +284,69 @@ export class AssistantService extends MutableService<AssistantORM> {
       settingsAiAssist: workspaceProperties.settingsAiAssist,
     });
 
-    const project = await this.project.createOne({ ...importData.project, ...projectOverride });
+    const project = await this.project.createOne(this.project.fromJSON({ ...importData.project, ...projectOverride }));
 
-    const [{ projectList, projectListCreated }, assistant] = await Promise.all([
-      this.addOneToProjectListIfRequired({
-        workspaceID,
-        assistantID,
-        projectListID,
-        workspaceProperties,
-      }),
-      this.createOne({
+    let assistant: AssistantObject;
+
+    try {
+      assistant = await this.createOne({
         id: assistantID,
         name: project.name,
         updatedByID: userID,
         workspaceID,
         activePersonaID: null,
         activeEnvironmentID: environmentID,
-      }),
-    ]);
+      });
+    } catch (err) {
+      this.logger.error(err);
 
-    const [variableStates, { version, diagrams }] = await Promise.all([
-      importData.variableStates?.length ? this.variableState.createMany(importData.variableStates, { flush: false }) : Promise.resolve([]),
+      await this.project.deleteOne(project._id.toJSON());
 
-      this.environment.importJSON({
+      throw new InternalServerErrorException(`Couldn't import the assistant.`);
+    }
+
+    let version: VersionObject;
+    let diagrams: DiagramObject[];
+
+    try {
+      ({ version, diagrams } = await this.environment.importJSON({
         data: importData,
         userID,
         workspaceID,
         assistantID,
         environmentID,
-      }),
-    ]);
+      }));
+    } catch (err) {
+      this.logger.error(err);
+
+      await this.deleteOne(assistant.id);
+      await this.project.deleteOne(project._id.toJSON());
+
+      throw new InternalServerErrorException(`Couldn't import the assistant.`);
+    }
+
+    let variableStates: VariableStateObject[];
+
+    try {
+      variableStates = await (importData.variableStates?.length
+        ? this.variableState.createMany(this.variableState.mapFromJSON(importData.variableStates))
+        : Promise.resolve([]));
+    } catch (err) {
+      this.logger.error(err);
+
+      await this.environment.deleteOne(version._id.toJSON());
+      await this.deleteOne(assistant.id);
+      await this.project.deleteOne(project._id.toJSON());
+
+      throw new InternalServerErrorException(`Couldn't import the assistant.`);
+    }
+
+    const { projectList, projectListCreated } = await this.addOneToProjectListIfRequired({
+      workspaceID,
+      assistantID,
+      projectListID,
+      workspaceProperties,
+    });
 
     return {
       project,
@@ -320,9 +367,9 @@ export class AssistantService extends MutableService<AssistantORM> {
     projectMembers = [],
     projectListCreated,
   }: {
-    project: ProjectEntity;
+    project: ProjectObject;
     authMeta: AuthMetaPayload;
-    assistant: AssistantEntity | null;
+    assistant: AssistantObject | null;
     projectList: Realtime.DBProjectList | null;
     projectMembers?: Array<{ role: ProjectUserRole; creatorID: number }>;
     projectListCreated: boolean;
@@ -389,9 +436,7 @@ export class AssistantService extends MutableService<AssistantORM> {
     clientID?: string;
     workspaceID: number;
   }) {
-    const { project, assistant, projectList, projectListCreated } = await this.postgresEM.transactional(() =>
-      this.importJSON({ data, userID, workspaceID })
-    );
+    const { project, assistant, projectList, projectListCreated } = await this.importJSON({ data, userID, workspaceID });
 
     if (!clientID) {
       return { project, assistant };
@@ -412,14 +457,14 @@ export class AssistantService extends MutableService<AssistantORM> {
 
   private prepareExportData(
     data: {
-      cms: EnvironmentCMSEntities;
-      project: ProjectEntity;
-      version: VersionEntity;
-      diagrams: DiagramEntity[];
-      programs: ProgramEntity[];
+      cms: EnvironmentCMSData;
+      project: ProjectObject;
+      version: VersionObject;
+      diagrams: DiagramObject[];
+      programs: ProgramObject[];
       _version: number;
-      variableStates: VariableStateEntity[];
-      prototypePrograms: PrototypeProgramEntity[];
+      variableStates: VariableStateObject[];
+      prototypePrograms: PrototypeProgramObject[];
     },
     {
       userID,
@@ -447,12 +492,12 @@ export class AssistantService extends MutableService<AssistantORM> {
       ...exportData,
       project,
       _version: String(data._version),
-      variableStates: this.entitySerializer.iterable(data.variableStates),
+      variableStates: this.variableState.mapToJSON(data.variableStates),
 
-      ...(withPrograms && { programs: Object.fromEntries(this.entitySerializer.iterable(data.programs).map((program) => [program.id, program])) }),
+      ...(withPrograms && { programs: Object.fromEntries(this.program.mapToJSON(data.programs).map((program) => [program._id, program])) }),
 
       ...(withPrototypePrograms && {
-        prototypePrograms: Object.fromEntries(this.entitySerializer.iterable(data.programs).map((program) => [program.id, program])),
+        prototypePrograms: Object.fromEntries(this.prototypeProgram.mapToJSON(data.prototypePrograms).map((program) => [program._id, program])),
       }),
     };
   }
@@ -489,11 +534,11 @@ export class AssistantService extends MutableService<AssistantORM> {
         environmentID: resolvedEnvironmentID,
       });
 
-      const programIDs = diagrams.map((diagram) => ({ diagramID: diagram.diagramID.toJSON(), versionID: version.id }));
+      const diagramIDs = diagrams.map((diagram) => diagram._id);
 
       const [programs, prototypePrograms] = await Promise.all([
-        withPrograms ? await this.programORM.findMany(programIDs) : Promise.resolve([]),
-        withPrototypePrograms ? await this.prototypeProgramORM.findMany(programIDs) : Promise.resolve([]),
+        withPrograms ? await this.program.findManyByVersionAndDiagramIDs(version._id, diagramIDs) : Promise.resolve([]),
+        withPrototypePrograms ? await this.prototypeProgram.findManyByVersionAndDiagramIDs(version._id, diagramIDs) : Promise.resolve([]),
       ]);
 
       const exportVersion = project._version ?? LATEST_PROJECT_VERSION;
@@ -514,16 +559,13 @@ export class AssistantService extends MutableService<AssistantORM> {
     });
   }
 
-  public async exportCMS({ userID, assistantID, environmentID }: { userID: number; assistantID?: string; environmentID: string }) {
+  public exportCMS({ userID, assistantID, environmentID }: { userID: number; assistantID?: string; environmentID: string }) {
     return this.postgresEM.transactional(async () => {
       const resolvedEnvironmentID = await this.resolveEnvironmentIDAlias(environmentID, assistantID);
       const { projectID } = await this.version.findOneOrFailWithFields(resolvedEnvironmentID, ['projectID']);
       const { teamID: workspaceID } = await this.project.findOneOrFailWithFields(projectID, ['teamID']);
 
-      const [assistant, cmsData] = await Promise.all([
-        this.findOneOrFail(projectID.toJSON()),
-        this.environment.findOneCMSDataJSON(projectID.toJSON(), environmentID),
-      ]);
+      const [assistant, cmsData] = await Promise.all([this.findOneOrFail(projectID.toJSON()), this.environment.findOneCMSData(environmentID)]);
 
       const intentsUpdatedFieldsMap = buildCMSTabularEntitiesUpdatedFieldsMap(cmsData.intents);
       adjustCMSTabularEntitiesUpdatedFieldsMap(intentsUpdatedFieldsMap, cmsData.utterances, (utterance) => utterance.intentID);
@@ -554,7 +596,7 @@ export class AssistantService extends MutableService<AssistantORM> {
 
   /* Create  */
 
-  public async createOneForLegacyProject(workspaceID: string, projectID: string, data: Omit<CreateOneData<AssistantORM>, 'workspaceID'>) {
+  public async createOneForLegacyProject(workspaceID: string, projectID: string, data: Omit<CreateData<AssistantEntity>, 'workspaceID'>) {
     const assistant = await this.orm.createOne({ ...data, id: projectID, workspaceID: this.assistantSerializer.decodeWorkspaceID(workspaceID) });
 
     return this.assistantSerializer.nullable(assistant);
@@ -576,8 +618,8 @@ export class AssistantService extends MutableService<AssistantORM> {
     targetWorkspaceID: number;
     targetAssistantID?: string;
     targetProjectListID?: string | null;
-    targetVersionOverride?: Partial<Omit<ToJSON<VersionEntity>, 'id'>>;
-    targetProjectOverride?: Partial<Omit<ToJSON<ProjectEntity>, 'id' | '_id' | 'teamID'>>;
+    targetVersionOverride?: Partial<Omit<VersionJSON, 'id'>>;
+    targetProjectOverride?: Partial<Omit<ProjectJSON, 'id' | '_id' | 'teamID'>>;
   }) {
     const sourceProject = await this.project.findOneOrFail(sourceAssistantID);
 
@@ -594,33 +636,45 @@ export class AssistantService extends MutableService<AssistantORM> {
     const assistantID = targetAssistantID ?? new ObjectId().toJSON();
     const environmentID = targetVersionOverride._id ?? new ObjectId().toJSON();
 
-    const sourceProjectJSON = ProjectEntityAdapter.fromDB(sourceProject);
+    const sourceProjectJSON = this.project.toJSON(sourceProject);
 
-    const project = await this.project.createOne({
-      ...Utils.object.omit(sourceProjectJSON, ['privacy', 'apiPrivacy', 'prototype', 'liveVersion', 'previewVersion']),
-      _version: LATEST_PROJECT_VERSION,
-      ...targetProjectOverride,
-      _id: assistantID,
-      teamID: targetWorkspaceID,
-      members: [],
-      updatedAt: new Date().toJSON(),
-      devVersion: environmentID,
-      ...((sourceProjectJSON.knowledgeBase || targetProjectOverride?.knowledgeBase) && {
-        knowledgeBase: { ...sourceProjectJSON.knowledgeBase, documents: {}, faqSets: {}, tags: {}, ...targetProjectOverride?.knowledgeBase },
-      }),
-    });
+    const project = await this.project.createOne(
+      this.project.fromJSON({
+        ...Utils.object.omit(sourceProjectJSON, ['privacy', 'apiPrivacy', 'prototype', 'liveVersion', 'previewVersion']),
+        _version: LATEST_PROJECT_VERSION,
+        ...targetProjectOverride,
+        _id: assistantID,
+        teamID: targetWorkspaceID,
+        members: [],
+        updatedAt: new Date().toJSON(),
+        devVersion: environmentID,
+        ...((sourceProjectJSON.knowledgeBase || targetProjectOverride?.knowledgeBase) && {
+          knowledgeBase: { ...sourceProjectJSON.knowledgeBase, documents: {}, faqSets: {}, tags: {}, ...targetProjectOverride?.knowledgeBase },
+        }),
+      })
+    );
 
-    const assistant = await this.createOne({
-      id: assistantID,
-      name: project.name,
-      updatedByID: userID,
-      workspaceID: targetWorkspaceID,
-      activePersonaID: null,
-      activeEnvironmentID: environmentID,
-    });
+    let assistant: AssistantObject;
 
-    const [{ version, diagrams, ...cmsData }, variableStates] = await Promise.all([
-      this.environment.cloneOne({
+    try {
+      assistant = await this.createOne({
+        id: assistantID,
+        name: project.name,
+        updatedByID: userID,
+        workspaceID: targetWorkspaceID,
+        activePersonaID: null,
+        activeEnvironmentID: environmentID,
+      });
+    } catch {
+      await this.project.deleteOne(project._id.toJSON());
+
+      throw new InternalServerErrorException(`Couldn't clone the assistant.`);
+    }
+
+    let version: VersionObject;
+
+    try {
+      ({ version } = await this.environment.cloneOne({
         cloneDiagrams: true,
         sourceEnvironmentID: sourceProject.devVersion.toJSON(),
         targetEnvironmentID: environmentID,
@@ -630,9 +684,21 @@ export class AssistantService extends MutableService<AssistantORM> {
           projectID: assistantID,
           creatorID: userID,
         },
-      }),
-      this.variableState.cloneManyByProject({ sourceProjectID: sourceAssistantID, targetProjectID: assistantID }),
-    ]);
+      }));
+    } catch {
+      await this.deleteOne(assistant.id);
+      await this.project.deleteOne(project._id.toJSON());
+
+      throw new InternalServerErrorException(`Couldn't clone the assistant.`);
+    }
+
+    try {
+      await this.variableState.cloneManyByProject({ sourceProjectID: sourceAssistantID, targetProjectID: assistantID });
+    } catch {
+      await this.environment.deleteOne(version._id.toJSON());
+      await this.deleteOne(assistant.id);
+      await this.project.deleteOne(project._id.toJSON());
+    }
 
     const { projectList, projectListCreated } = await this.addOneToProjectListIfRequired({
       workspaceID: targetWorkspaceID,
@@ -640,7 +706,7 @@ export class AssistantService extends MutableService<AssistantORM> {
       projectListID: targetProjectListID,
     });
 
-    return { ...cmsData, version, project, diagrams, assistant, projectList, variableStates, projectListCreated };
+    return { version, project, assistant, projectList, projectListCreated };
   }
 
   public async cloneOneAndBroadcast({
@@ -654,15 +720,15 @@ export class AssistantService extends MutableService<AssistantORM> {
     targetWorkspaceID: number;
     targetAssistantID?: string;
     targetProjectListID?: string;
-    targetVersionOverride?: Partial<Omit<ToJSON<VersionEntity>, 'id'>>;
-    targetProjectOverride?: Partial<Omit<ToJSON<ProjectEntity>, 'id' | '_id' | 'teamID'>>;
+    targetVersionOverride?: Partial<Omit<VersionJSON, 'id'>>;
+    targetProjectOverride?: Partial<Omit<ProjectJSON, '_id' | 'teamID'>>;
   }) {
-    const { project, assistant, projectList, projectListCreated, ...cmsData } = await this.postgresEM.transactional(async () =>
+    const { project, assistant, projectList, projectListCreated } = await this.postgresEM.transactional(async () =>
       this.cloneOne({ ...payload, userID })
     );
 
     if (!clientID) {
-      return { ...cmsData, project, assistant };
+      return { project, assistant };
     }
 
     await this.broadcastAddOne({
@@ -673,7 +739,7 @@ export class AssistantService extends MutableService<AssistantORM> {
       projectListCreated,
     });
 
-    return { ...cmsData, project, assistant };
+    return { project, assistant };
   }
 
   /* Create  */
@@ -689,7 +755,6 @@ export class AssistantService extends MutableService<AssistantORM> {
     }
   }
 
-  // eslint-disable-next-line sonarjs/cognitive-complexity
   public async createOneFromTemplate(
     userID: number,
     {
@@ -703,12 +768,6 @@ export class AssistantService extends MutableService<AssistantORM> {
       projectOverride,
     }: CreateFromTemplateData
   ) {
-    let project: ProjectEntity;
-    let version: VersionEntity;
-    let assistant: AssistantEntity | null;
-    let projectList: Realtime.DBProjectList | null;
-    let projectListCreated: boolean;
-
     const platformConfig = Platform.Config.get(modality.platform);
     const projectConfig = Platform.Config.getTypeConfig(modality);
     const defaultTemplateTag = Object.keys(platformConfig.types).length > 1 ? modality.type : 'default';
@@ -717,108 +776,83 @@ export class AssistantService extends MutableService<AssistantORM> {
 
     let templateTag = templateTagProp ?? defaultTemplateTag;
 
-    if (this.unleash.isEnabled(Realtime.FeatureFlag.VFFILE_ASSISTANT_TEMPLATE, { userID, workspaceID })) {
-      const nonEnglishLocale = projectLocales
-        .map(projectConfig.utils.locale.toVoiceflowLocale)
-        .includes(Platform.Voiceflow.Common.Project.Locale.CONFIG.enum.EN_US);
+    const nonEnglishLocale = projectLocales
+      .map(projectConfig.utils.locale.toVoiceflowLocale)
+      .includes(Platform.Voiceflow.Common.Project.Locale.CONFIG.enum.EN_US);
 
-      if (!nonEnglishLocale || nlu) {
-        templateTag = `${defaultTemplateTag}:empty`;
-      }
+    if (!nonEnglishLocale || nlu) {
+      templateTag = `${defaultTemplateTag}:empty`;
+    }
 
-      const templateVFFle = await this.findOneTemplateVFFile(modality.platform, templateTag);
+    const templateVFFle = await this.findOneTemplateVFFile(modality.platform, templateTag);
 
-      const platformData = templateVFFle.version.platformData as Record<string, any>;
+    const platformData = templateVFFle.version.platformData as Record<string, any>;
 
-      // update template to store locales and default voice
-      platformData.settings = {
-        ...platformData.settings,
-        ...(localeDefaultVoice && { defaultVoice: localeDefaultVoice }),
-        ...(!storeLocalesInPublishing && { locales: projectLocales }),
-      };
-      platformData.publishing = { ...platformData.publishing, ...(storeLocalesInPublishing && { locales: projectLocales }) };
+    // update template to store locales and default voice
+    platformData.settings = {
+      ...platformData.settings,
+      ...(localeDefaultVoice && { defaultVoice: localeDefaultVoice }),
+      ...(!storeLocalesInPublishing && { locales: projectLocales }),
+    };
+    platformData.publishing = { ...platformData.publishing, ...(storeLocalesInPublishing && { locales: projectLocales }) };
 
-      ({ project, version, assistant, projectList, projectListCreated } = await this.importJSON({
-        data: templateVFFle,
-        userID,
-        workspaceID,
-        projectListID,
-        centerDiagrams: true,
-        projectOverride,
-      }));
+    const { project, version, assistant, projectList, projectListCreated } = await this.importJSON({
+      data: templateVFFle,
+      userID,
+      workspaceID,
+      projectListID,
+      centerDiagrams: true,
+      projectOverride,
+    });
 
-      // importing nlu data
-      if (nlu) {
-        const cmsData = {
-          ...Realtime.Adapters.intentToLegacyIntent.mapToDB(
-            { intents: nlu.intents, notes: [] },
-            {
-              creatorID: userID,
-              legacySlots: nlu.slots,
-              assistantID: project.id,
-              environmentID: version.id,
-            }
-          ),
-          ...Realtime.Adapters.entityToLegacySlot.mapToDB(nlu.slots, {
+    // importing nlu data
+    if (nlu) {
+      const cmsData = {
+        ...Realtime.Adapters.intentToLegacyIntent.mapToDB(
+          { intents: nlu.intents, notes: [] },
+          {
             creatorID: userID,
-            assistantID: project.id,
-            environmentID: version.id,
-          }),
-        };
+            legacySlots: nlu.slots,
+            assistantID: project._id.toJSON(),
+            environmentID: version._id.toJSON(),
+          }
+        ),
+        ...Realtime.Adapters.entityToLegacySlot.mapToDB(nlu.slots, {
+          creatorID: userID,
+          assistantID: project._id.toJSON(),
+          environmentID: version._id.toJSON(),
+        }),
+      };
 
-        await this.environment.upsertIntentsAndEntities(cmsData, { userID, assistantID: project.id, environmentID: version.id });
+      try {
+        await this.environment.upsertIntentsAndEntities(cmsData, { userID, assistantID: project._id.toJSON(), environmentID: version._id.toJSON() });
 
-        await this.version.patchOnePlatformData(version.id, {
+        await this.version.patchOnePlatformData(version._id, {
           slots: _.uniqBy([...version.platformData.slots, ...nlu.slots], (intent) => intent.key),
           intents: _.uniqBy([...version.platformData.intents, ...nlu.intents], (slot) => slot.key),
         });
+      } catch {
+        await this.project.deleteOne(project._id.toJSON());
+        await this.deleteOne(project._id.toJSON());
+
+        throw new InternalServerErrorException(`Couldn't import nlu data.`);
       }
-    } else {
-      const templateProject = await this.projectTemplateORM.findOneByPlatformAndTag(modality.platform, templateTag);
-
-      if (!templateProject) {
-        throw new BadRequestException(`Couldn't find a template with tag '${templateTag}' for platform '${modality.platform}'.`);
-      }
-
-      ({ project, version, assistant, projectList, projectListCreated } = await this.cloneOne({
-        userID,
-        targetWorkspaceID: workspaceID,
-        sourceAssistantID: templateProject.projectID.toJSON(),
-        targetProjectListID: projectListID,
-        targetProjectOverride: projectOverride,
-      }));
-
-      await this.version.patchOnePlatformData(version.id, {
-        ...(nlu && {
-          slots: _.uniqBy([...version.platformData.slots, ...nlu.slots], (intent) => intent.key),
-          intents: _.uniqBy([...version.platformData.intents, ...nlu.intents], (slot) => slot.key),
-        }),
-        settings: {
-          ...version.platformData.settings,
-          ...(localeDefaultVoice && { defaultVoice: localeDefaultVoice }),
-          ...(!storeLocalesInPublishing && { locales: projectLocales }),
-        },
-        publishing: {
-          ...version.platformData.publishing,
-          ...(storeLocalesInPublishing && { locales: projectLocales }),
-        },
-      });
     }
 
     if (projectMembers?.length) {
-      await this.identityClient.private.addManyProjectMembersToProject(project.id, {
-        members: projectMembers.map(({ role, creatorID }) => ({ role, userID: creatorID })),
-        inviterUserID: userID,
-      });
+      await this.identityClient.private
+        .addManyProjectMembersToProject(project._id.toJSON(), {
+          members: projectMembers.map(({ role, creatorID }) => ({ role, userID: creatorID })),
+          inviterUserID: userID,
+        })
+        .catch(() => null);
     }
 
     return { project, assistant, projectList, projectListCreated };
   }
 
   public async createOneFromTemplateAndBroadcast({ userID, clientID }: AuthMetaPayload, data: CreateFromTemplateData) {
-    const { project, assistant, projectList, projectListCreated } = await this.postgresEM.transactional(() =>
-      this.createOneFromTemplate(userID, data)
-    );
+    const { project, assistant, projectList, projectListCreated } = await this.createOneFromTemplate(userID, data);
 
     if (!clientID) {
       return { project, assistant };
@@ -840,9 +874,11 @@ export class AssistantService extends MutableService<AssistantORM> {
 
     if (!cms.assistant || !hasAssistantPatches) return;
 
-    await this.upsertOne({
-      ...cms.assistant,
-      workspaceID: this.assistantSerializer.decodeWorkspaceID(cms.assistant.workspaceID),
-    });
+    await this.upsertOne(
+      this.fromJSON({
+        ...cms.assistant,
+        workspaceID: this.assistantSerializer.decodeWorkspaceID(cms.assistant.workspaceID),
+      })
+    );
   }
 }

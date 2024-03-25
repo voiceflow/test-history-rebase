@@ -7,7 +7,7 @@ import { Permission } from '@voiceflow/sdk-auth';
 import { Authorize } from '@voiceflow/sdk-auth/nestjs';
 import { Actions, Channels } from '@voiceflow/sdk-logux-designer';
 
-import { BroadcastOnly, EntitySerializer, InjectRequestContext, UseRequestContext } from '@/common';
+import { BroadcastOnly, InjectRequestContext, UseRequestContext } from '@/common';
 import { ProjectSerializer } from '@/project/project.serializer';
 
 import { AssistantSerializer } from './assistant.serializer';
@@ -21,8 +21,6 @@ export class AssistantLoguxController {
   constructor(
     @Inject(AssistantService)
     private readonly service: AssistantService,
-    @Inject(EntitySerializer)
-    private readonly entitySerializer: EntitySerializer,
     @Inject(ProjectSerializer)
     private readonly projectSerializer: ProjectSerializer,
     @Inject(AssistantSerializer)
@@ -44,9 +42,14 @@ export class AssistantLoguxController {
   async subscribe(@Context() ctx: Context.Channel<Channels.AssistantParams>, @AuthMeta() authMeta: AuthMetaPayload) {
     const { assistantID, environmentID } = ctx.params;
 
-    const { workspace } = await this.service.findOneOrFail(assistantID);
+    const { workspaceID } = await this.service.findOneOrFail(assistantID);
 
-    if (this.unleash.isEnabled(FeatureFlag.HTTP_ASSISTANT_CMS, { userID: authMeta.userID, workspaceID: workspace.id })) {
+    if (
+      this.unleash.isEnabled(FeatureFlag.HTTP_ASSISTANT_CMS, {
+        userID: authMeta.userID,
+        workspaceID,
+      })
+    ) {
       Object.assign(ctx.data, { subscribed: true });
 
       return [];
@@ -110,72 +113,69 @@ export class AssistantLoguxController {
       { id: ctx.server.log.generateId() },
     ] as const;
 
+    const cmsData = await this.service.findOneCMSData(assistantID, environmentID);
+
+    const context = { assistantID, environmentID };
+
     const {
       flows,
-      intents,
       folders,
+      intents,
       entities,
-      responses,
-      assistant,
-      functions,
       variables,
+      responses,
+      functions,
+      assistant,
       utterances,
       attachments,
       cardButtons,
       functionPaths,
       entityVariants,
-      requiredEntities,
       responseVariants,
+      requiredEntities,
       functionVariables,
       responseAttachments,
       responseDiscriminators,
-    } = await this.service.findOneCMSData(assistantID, environmentID);
-
-    const context = { assistantID, environmentID };
-
-    const serializedAssistant = this.assistantSerializer.nullable(assistant);
+    } = this.service.toJSONCMSData(cmsData);
 
     Object.assign(ctx.data, { subscribed: true });
 
     return [
       // attachments
-      Actions.Attachment.Replace({ data: this.entitySerializer.iterable(attachments), context }, attachmentReplaceMeta),
-      Actions.CardButton.Replace({ data: this.entitySerializer.iterable(cardButtons), context }, cardButtonReplaceMeta),
+      Actions.Attachment.Replace({ data: attachments, context }, attachmentReplaceMeta),
+      Actions.CardButton.Replace({ data: cardButtons, context }, cardButtonReplaceMeta),
 
       // folder
-      Actions.Folder.Replace({ data: this.entitySerializer.iterable(folders), context }, folderReplaceMeta),
+      Actions.Folder.Replace({ data: folders, context }, folderReplaceMeta),
 
       // entity
-      Actions.Entity.Replace({ data: this.entitySerializer.iterable(entities), context }, entityReplaceMeta),
-      Actions.EntityVariant.Replace({ data: this.entitySerializer.iterable(entityVariants), context }, entityVariantReplaceMeta),
+      Actions.Entity.Replace({ data: entities, context }, entityReplaceMeta),
+      Actions.EntityVariant.Replace({ data: entityVariants, context }, entityVariantReplaceMeta),
 
       // variable
-      Actions.Variable.Replace({ data: this.entitySerializer.iterable(variables), context }, variableReplaceMeta),
+      Actions.Variable.Replace({ data: variables, context }, variableReplaceMeta),
 
       // intent
-      Actions.Intent.Replace({ data: this.entitySerializer.iterable(intents), context }, intentReplaceMeta),
-      Actions.Utterance.Replace({ data: this.entitySerializer.iterable(utterances), context }, utteranceReplaceMeta),
-      Actions.RequiredEntity.Replace({ data: this.entitySerializer.iterable(requiredEntities), context }, requiredEntityReplaceMeta),
+      Actions.Intent.Replace({ data: intents, context }, intentReplaceMeta),
+      Actions.Utterance.Replace({ data: utterances, context }, utteranceReplaceMeta),
+      Actions.RequiredEntity.Replace({ data: requiredEntities, context }, requiredEntityReplaceMeta),
 
       // response
-      Actions.Response.Replace({ data: this.entitySerializer.iterable(responses), context }, responseReplaceMeta),
-      Actions.ResponseDiscriminator.Replace(
-        { data: this.entitySerializer.iterable(responseDiscriminators), context },
-        responseDiscriminatorReplaceMeta
-      ),
-      Actions.ResponseVariant.Replace({ data: this.entitySerializer.iterable(responseVariants), context }, responseVariantReplaceMeta),
-      Actions.ResponseAttachment.Replace({ data: this.entitySerializer.iterable(responseAttachments), context }, responseAttachmentReplaceMeta),
+      Actions.Response.Replace({ data: responses, context }, responseReplaceMeta),
+      Actions.ResponseDiscriminator.Replace({ data: responseDiscriminators, context }, responseDiscriminatorReplaceMeta),
+      Actions.ResponseVariant.Replace({ data: responseVariants, context }, responseVariantReplaceMeta),
+      Actions.ResponseAttachment.Replace({ data: responseAttachments, context }, responseAttachmentReplaceMeta),
 
       // function
-      Actions.Function.Replace({ data: this.entitySerializer.iterable(functions), context }, functionReplaceMeta),
-      Actions.FunctionPath.Replace({ data: this.entitySerializer.iterable(functionPaths), context }, functionPathReplaceMeta),
-      Actions.FunctionVariable.Replace({ data: this.entitySerializer.iterable(functionVariables), context }, functionVariableReplaceMeta),
+      Actions.Function.Replace({ data: functions, context }, functionReplaceMeta),
+      Actions.FunctionPath.Replace({ data: functionPaths, context }, functionPathReplaceMeta),
+      Actions.FunctionVariable.Replace({ data: functionVariables, context }, functionVariableReplaceMeta),
 
       // flows
-      Actions.Flow.Replace({ data: this.entitySerializer.iterable(flows), context }, flowReplaceMeta),
+      Actions.Flow.Replace({ data: flows, context }, flowReplaceMeta),
 
       // assistant - should be last
-      Actions.Assistant.AddOne({ data: serializedAssistant, context: { workspaceID: serializedAssistant.workspaceID } }, assistantAddMeta),
+      Actions.Assistant.AddOne({ data: assistant, context: { workspaceID: assistant.workspaceID } }, assistantAddMeta),
     ];
   }
 

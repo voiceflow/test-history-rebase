@@ -10,9 +10,9 @@ import { CardButtonModule } from './card-button/card-button.module';
 import { MediaAttachmentService } from './media-attachment.service';
 
 @Module({
-  imports: [AssistantORM.register(), CardAttachmentORM.register(), MediaAttachmentORM.register(), CardButtonModule, ResponseAttachmentModule],
+  imports: [CardButtonModule, ResponseAttachmentModule],
   exports: [AttachmentService],
-  providers: [AttachmentService, CardAttachmentService, MediaAttachmentService],
+  providers: [AssistantORM, CardAttachmentORM, MediaAttachmentORM, AttachmentService, CardAttachmentService, MediaAttachmentService],
   controllers: [AttachmentLoguxController],
 })
 export class AttachmentModule {}

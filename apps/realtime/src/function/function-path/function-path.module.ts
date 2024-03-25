@@ -5,9 +5,8 @@ import { FunctionPathLoguxController } from './function-path.logux.controller';
 import { FunctionPathService } from './function-path.service';
 
 @Module({
-  imports: [FunctionORM.register(), AssistantORM.register(), FunctionPathORM.register()],
-  controllers: [FunctionPathLoguxController],
-  providers: [FunctionPathService],
   exports: [FunctionPathService],
+  providers: [FunctionORM, AssistantORM, FunctionPathORM, FunctionPathService],
+  controllers: [FunctionPathLoguxController],
 })
 export class FunctionPathModule {}

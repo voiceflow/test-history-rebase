@@ -4,7 +4,7 @@ import { Permission } from '@voiceflow/sdk-auth';
 import { Authorize } from '@voiceflow/sdk-auth/nestjs';
 import { Actions, Channels } from '@voiceflow/sdk-logux-designer';
 
-import { BroadcastOnly, EntitySerializer, InjectRequestContext, UseRequestContext } from '@/common';
+import { BroadcastOnly, InjectRequestContext, UseRequestContext } from '@/common';
 
 import { EntityVariantService } from './entity-variant.service';
 
@@ -13,9 +13,7 @@ import { EntityVariantService } from './entity-variant.service';
 export class EntityVariantLoguxController {
   constructor(
     @Inject(EntityVariantService)
-    private readonly service: EntityVariantService,
-    @Inject(EntitySerializer)
-    private readonly entitySerializer: EntitySerializer
+    private readonly service: EntityVariantService
   ) {}
 
   @Action.Async(Actions.EntityVariant.CreateOne)
@@ -26,11 +24,9 @@ export class EntityVariantLoguxController {
   @UseRequestContext()
   createOne(
     @Payload() { data, context }: Actions.EntityVariant.CreateOne.Request,
-    @AuthMeta() authMeta: AuthMetaPayload
+    @AuthMeta() auth: AuthMetaPayload
   ): Promise<Actions.EntityVariant.CreateOne.Response> {
-    return this.service
-      .createManyAndBroadcast(authMeta, [{ ...data, assistantID: context.assistantID, environmentID: context.environmentID }])
-      .then(([result]) => ({ data: this.entitySerializer.nullable(result), context }));
+    return this.service.createManyAndBroadcast([data], { auth, context }).then(([result]) => ({ data: this.service.toJSON(result), context }));
   }
 
   @Action.Async(Actions.EntityVariant.CreateMany)
@@ -41,14 +37,9 @@ export class EntityVariantLoguxController {
   @UseRequestContext()
   createMany(
     @Payload() { data, context }: Actions.EntityVariant.CreateMany.Request,
-    @AuthMeta() authMeta: AuthMetaPayload
+    @AuthMeta() auth: AuthMetaPayload
   ): Promise<Actions.EntityVariant.CreateMany.Response> {
-    return this.service
-      .createManyAndBroadcast(
-        authMeta,
-        data.map((item) => ({ ...item, assistantID: context.assistantID, environmentID: context.environmentID }))
-      )
-      .then((result) => ({ data: this.entitySerializer.iterable(result), context }));
+    return this.service.createManyAndBroadcast(data, { auth, context }).then((result) => ({ data: this.service.mapToJSON(result), context }));
   }
 
   @Action(Actions.EntityVariant.PatchOne)
@@ -59,8 +50,8 @@ export class EntityVariantLoguxController {
   @Broadcast<Actions.EntityVariant.PatchOne>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async patchOne(@Payload() { id, patch, context }: Actions.EntityVariant.PatchOne, @AuthMeta() authMeta: AuthMetaPayload) {
-    await this.service.patchOneForUser(authMeta.userID, { id, environmentID: context.environmentID }, patch);
+  async patchOne(@Payload() { id, patch, context }: Actions.EntityVariant.PatchOne, @AuthMeta() auth: AuthMetaPayload) {
+    await this.service.patchOneForUser(auth.userID, { id, environmentID: context.environmentID }, patch);
   }
 
   @Action(Actions.EntityVariant.PatchMany)
@@ -71,9 +62,9 @@ export class EntityVariantLoguxController {
   @Broadcast<Actions.EntityVariant.PatchMany>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async patchMany(@Payload() { ids, patch, context }: Actions.EntityVariant.PatchMany, @AuthMeta() authMeta: AuthMetaPayload) {
+  async patchMany(@Payload() { ids, patch, context }: Actions.EntityVariant.PatchMany, @AuthMeta() auth: AuthMetaPayload) {
     await this.service.patchManyForUser(
-      authMeta.userID,
+      auth.userID,
       ids.map((id) => ({ id, environmentID: context.environmentID })),
       patch
     );
@@ -87,11 +78,11 @@ export class EntityVariantLoguxController {
   @Broadcast<Actions.EntityVariant.DeleteOne>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async deleteOne(@Payload() { id, context }: Actions.EntityVariant.DeleteOne, @AuthMeta() authMeta: AuthMetaPayload) {
-    const result = await this.service.deleteManyAndSync([{ id, environmentID: context.environmentID }]);
+  async deleteOne(@Payload() { id, context }: Actions.EntityVariant.DeleteOne, @AuthMeta() auth: AuthMetaPayload) {
+    const result = await this.service.deleteManyAndSync([id], context);
 
     // overriding entity variants cause it's broadcasted by decorator
-    await this.service.broadcastDeleteMany(authMeta, { ...result, delete: { ...result.delete, entityVariants: [] } });
+    await this.service.broadcastDeleteMany({ ...result, delete: { ...result.delete, entityVariants: [] } }, { auth, context });
   }
 
   @Action(Actions.EntityVariant.DeleteMany)
@@ -102,11 +93,11 @@ export class EntityVariantLoguxController {
   @Broadcast<Actions.EntityVariant.DeleteMany>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async deleteMany(@Payload() { ids, context }: Actions.EntityVariant.DeleteMany, @AuthMeta() authMeta: AuthMetaPayload) {
-    const result = await this.service.deleteManyAndSync(ids.map((id) => ({ id, environmentID: context.environmentID })));
+  async deleteMany(@Payload() { ids, context }: Actions.EntityVariant.DeleteMany, @AuthMeta() auth: AuthMetaPayload) {
+    const result = await this.service.deleteManyAndSync(ids, context);
 
     // overriding entity variants cause it's broadcasted by decorator
-    await this.service.broadcastDeleteMany(authMeta, { ...result, delete: { ...result.delete, entityVariants: [] } });
+    await this.service.broadcastDeleteMany({ ...result, delete: { ...result.delete, entityVariants: [] } }, { auth, context });
   }
 
   @Action(Actions.EntityVariant.AddOne)

@@ -1,7 +1,6 @@
 import type { EntityDTO } from '@mikro-orm/core';
 
 import type { ResponseEntity } from './response.entity';
-import { responseDiscriminatorList } from './response-discriminator/response-discriminator.fixture';
 
 export const response: EntityDTO<ResponseEntity> = {
   id: 'response-1',
@@ -9,7 +8,6 @@ export const response: EntityDTO<ResponseEntity> = {
   createdAt: new Date(),
   updatedAt: new Date(),
   name: 'first response',
-  responses: responseDiscriminatorList,
   assistant: { id: 'assistant-1' } as any,
   createdBy: { id: 1 } as any,
   updatedBy: { id: 2 } as any,

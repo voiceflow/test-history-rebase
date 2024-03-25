@@ -1,72 +1,45 @@
-import { Entity, Enum, Index, ManyToOne, PrimaryKeyType, Property, Unique, wrap } from '@mikro-orm/core';
+import { Entity, Enum, Index, ManyToOne, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
 import { AIModel } from '@voiceflow/dtos';
 
 import type { AssistantEntity } from '@/postgres/assistant';
 import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
-import type { CMSCompositePK, EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
+import type { CMSCompositePK, Ref } from '@/types';
 
 import { PersonaEntity } from '../persona.entity';
-import { PersonaOverrideEntityAdapter } from './persona-override-entity.adapter';
 
 @Entity({ tableName: 'designer.persona_override' })
 @Unique({ properties: ['id', 'environmentID'] })
 @Index({ properties: ['environmentID'] })
-export class PersonaOverrideEntity extends PostgresCMSObjectEntity {
-  static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<PersonaOverrideEntity>>>(data: JSON) {
-    return PersonaOverrideEntityAdapter.toDB<JSON>(data);
-  }
-
+export class PersonaOverrideEntity extends PostgresCMSObjectEntity<
+  'name' | 'model' | 'maxLength' | 'temperature' | 'systemPrompt'
+> {
   @Property({ default: null, nullable: true })
-  name: string | null;
+  name!: string | null;
 
   @Enum({ items: () => AIModel, default: null, nullable: true })
-  model: AIModel | null;
+  model!: AIModel | null;
 
   @ManyToOne(() => PersonaEntity, {
     name: 'persona_id',
     onDelete: 'cascade',
     fieldNames: ['persona_id', 'environment_id'],
   })
-  persona: Ref<PersonaEntity>;
+  persona!: Ref<PersonaEntity>;
 
   @Property({ default: null, nullable: true })
-  maxLength: number | null;
+  maxLength!: number | null;
 
   @Assistant()
-  assistant: Ref<AssistantEntity>;
+  assistant!: Ref<AssistantEntity>;
 
   @Property({ default: null, nullable: true })
-  temperature: number | null;
+  temperature!: number | null;
 
   @Property({ type: 'text', default: null, nullable: true })
-  systemPrompt: string | null;
+  systemPrompt!: string | null;
 
   @Environment()
-  environmentID: string;
+  environmentID!: string;
 
   [PrimaryKeyType]?: CMSCompositePK;
-
-  constructor(data: EntityCreateParams<PersonaOverrideEntity>) {
-    super(data);
-
-    ({
-      name: this.name,
-      model: this.model,
-      persona: this.persona,
-      maxLength: this.maxLength,
-      assistant: this.assistant,
-      temperature: this.temperature,
-      systemPrompt: this.systemPrompt,
-      environmentID: this.environmentID,
-    } = PersonaOverrideEntity.fromJSON(data));
-  }
-
-  toJSON(...args: any[]): ToJSONWithForeignKeys<PersonaOverrideEntity> {
-    return PersonaOverrideEntityAdapter.fromDB({
-      ...wrap<PersonaOverrideEntity>(this).toObject(...args),
-      persona: this.persona,
-      updatedBy: this.updatedBy,
-      assistant: this.assistant,
-    });
-  }
 }

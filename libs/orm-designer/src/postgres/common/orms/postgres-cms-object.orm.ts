@@ -1,52 +1,31 @@
+import type { Primary } from '@mikro-orm/core';
+
 import type { CMSObjectORM } from '@/common';
-import type { Constructor, EntityObject, MutableEntityData, ORMMutateOptions, PKOrEntity } from '@/types';
+import type { CreateData, DEFAULT_OR_NULL_COLUMN, PatchData } from '@/types';
 
 import type { PostgresCMSObjectEntity } from '../entities/postgres-cms-object.entity';
 import { PostgresCMSMutableORM } from './postgres-cms-mutable.orm';
 
-export const PostgresCMSObjectORM = <Entity extends PostgresCMSObjectEntity, ConstructorParam extends object>(
-  Entity: Constructor<[data: ConstructorParam], Entity> & {
-    fromJSON: (data: Partial<MutableEntityData<Entity>>) => Partial<EntityObject<Entity>>;
+export abstract class PostgresCMSObjectORM<
+    BaseEntity extends Omit<PostgresCMSObjectEntity, typeof DEFAULT_OR_NULL_COLUMN>,
+    DiscriminatorEntity extends Omit<BaseEntity, typeof DEFAULT_OR_NULL_COLUMN> = BaseEntity
+  >
+  extends PostgresCMSMutableORM<BaseEntity, DiscriminatorEntity>
+  implements CMSObjectORM<BaseEntity, DiscriminatorEntity>
+{
+  createOneForUser(userID: number, data: Omit<CreateData<DiscriminatorEntity>, 'createdByID' | 'updatedByID'>) {
+    return this.createOne({ ...data, updatedByID: userID } as CreateData<DiscriminatorEntity>);
   }
-) =>
-  class
-    extends PostgresCMSMutableORM<Entity, ConstructorParam>(Entity)
-    implements CMSObjectORM<Entity, ConstructorParam>
-  {
-    createOneForUser(
-      userID: number,
-      data: Omit<ConstructorParam, 'createdByID' | 'updatedByID'>,
-      options?: ORMMutateOptions
-    ): Promise<Entity> {
-      return this.createOne({ ...data, updatedByID: userID } as ConstructorParam, options);
-    }
 
-    createManyForUser(
-      userID: number,
-      data: Omit<ConstructorParam, 'createdByID' | 'updatedByID'>[],
-      options?: ORMMutateOptions
-    ): Promise<Entity[]> {
-      return this.createMany(
-        data.map((item) => ({ ...item, updatedByID: userID } as ConstructorParam)),
-        options
-      );
-    }
+  createManyForUser(userID: number, data: Omit<CreateData<DiscriminatorEntity>, 'createdByID' | 'updatedByID'>[]) {
+    return this.createMany(data.map((item) => ({ ...item, updatedByID: userID } as CreateData<DiscriminatorEntity>)));
+  }
 
-    patchOneForUser(
-      userID: number,
-      id: PKOrEntity<Entity>,
-      data: MutableEntityData<Entity>,
-      options?: ORMMutateOptions
-    ): Promise<void> {
-      return this.patchOne(id, { ...data, updatedByID: userID }, options);
-    }
+  patchOneForUser(userID: number, id: Primary<BaseEntity>, data: PatchData<BaseEntity>) {
+    return this.patchOne(id, { ...data, updatedByID: userID });
+  }
 
-    patchManyForUser(
-      userID: number,
-      ids: PKOrEntity<Entity>[],
-      data: MutableEntityData<Entity>,
-      options?: ORMMutateOptions
-    ): Promise<void> {
-      return this.patchMany(ids, { ...data, updatedByID: userID }, options);
-    }
-  };
+  patchManyForUser(userID: number, ids: Primary<BaseEntity>[], data: PatchData<BaseEntity>) {
+    return this.patchMany(ids, { ...data, updatedByID: userID });
+  }
+}

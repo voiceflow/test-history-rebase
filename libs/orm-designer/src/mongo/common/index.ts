@@ -1,5 +1,5 @@
-export * from './adapters/mongo-entity.adapter';
-export * from './adapters/mongo-object-entity.adapter';
+export * from './adapters/mongo-json.adapter';
+export * from './adapters/mongo-object-json.adapter';
 export * as Atomic from './atomic';
 export * from './entities/mongo.entity';
 export * from './entities/mongo-object.entity';

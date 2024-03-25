@@ -1,39 +1,45 @@
 /* eslint-disable max-params */
-/* eslint-disable no-await-in-loop */
+
 import type { EntityManager } from '@mikro-orm/core';
-import { Primary } from '@mikro-orm/core';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
 import { AnyResponseAttachment, AnyResponseVariant, Channel, Language, Response, ResponseDiscriminator } from '@voiceflow/dtos';
-import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
+import { LoguxService } from '@voiceflow/nestjs-logux';
 import type {
-  AnyResponseAttachmentEntity,
-  AnyResponseVariantEntity,
-  AssistantEntity,
-  ORMMutateOptions,
-  PKOrEntity,
-  PromptEntity,
-  RequiredEntityEntity,
-  ResponseDiscriminatorEntity,
-  ResponseEntity,
-  ToJSONWithForeignKeys,
+  AnyResponseAttachmentJSON,
+  AnyResponseAttachmentObject,
+  AnyResponseVariantJSON,
+  AnyResponseVariantObject,
+  RequiredEntityObject,
+  ResponseDiscriminatorJSON,
+  ResponseDiscriminatorObject,
+  ResponseJSON,
+  ResponseObject,
 } from '@voiceflow/orm-designer';
-import { DatabaseTarget, RequiredEntityORM, ResponseORM } from '@voiceflow/orm-designer';
+import { DatabaseTarget, ObjectId, RequiredEntityORM, ResponseORM } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
-import { CMSTabularService, EntitySerializer } from '@/common';
-import { assistantBroadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
-import { cloneManyEntities } from '@/utils/entity.util';
+import { CMSTabularService } from '@/common';
+import { cmsBroadcastContext, toPostgresEntityIDs } from '@/common/utils';
+import { CMSBroadcastMeta, CMSContext } from '@/types';
 
 import { ResponseExportImportDataDTO } from './dtos/response-export-import-data.dto';
-import { ResponseAnyAttachmentImportData, ResponseAnyVariantImportData, ResponseCreateWithSubResourcesData } from './response.interface';
+import { ResponseCreateWithSubResourcesData } from './response.interface';
 import { ResponseAttachmentService } from './response-attachment/response-attachment.service';
 import { ResponseDiscriminatorService } from './response-discriminator/response-discriminator.service';
 import { ResponseVariantService } from './response-variant/response-variant.service';
 
 @Injectable()
 export class ResponseService extends CMSTabularService<ResponseORM> {
+  toJSON = this.orm.jsonAdapter.fromDB;
+
+  fromJSON = this.orm.jsonAdapter.toDB;
+
+  mapToJSON = this.orm.jsonAdapter.mapFromDB;
+
+  mapFromJSON = this.orm.jsonAdapter.mapToDB;
+
   constructor(
     @Inject(getEntityManagerToken(DatabaseTarget.POSTGRES))
     private readonly postgresEM: EntityManager,
@@ -48,37 +54,19 @@ export class ResponseService extends CMSTabularService<ResponseORM> {
     @Inject(ResponseAttachmentService)
     private readonly responseAttachment: ResponseAttachmentService,
     @Inject(ResponseDiscriminatorService)
-    private readonly responseDiscriminator: ResponseDiscriminatorService,
-    @Inject(EntitySerializer)
-    private readonly entitySerializer: EntitySerializer
+    private readonly responseDiscriminator: ResponseDiscriminatorService
   ) {
     super();
   }
 
   /* Find */
 
-  async findManyWithSubResourcesByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+  async findManyWithSubResourcesByEnvironment(environmentID: string) {
     const [responses, responseVariants, responseAttachments, responseDiscriminators] = await Promise.all([
-      this.findManyByEnvironment(assistant, environmentID),
-      this.responseVariant.findManyByEnvironment(assistant, environmentID),
-      this.responseAttachment.findManyByEnvironment(assistant, environmentID),
-      this.responseDiscriminator.findManyByEnvironment(assistant, environmentID),
-    ]);
-
-    return {
-      responses,
-      responseVariants,
-      responseAttachments,
-      responseDiscriminators,
-    };
-  }
-
-  async findManyWithSubResourcesJSONByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
-    const [responses, responseVariants, responseAttachments, responseDiscriminators] = await Promise.all([
-      this.orm.findAllJSON({ assistant, environmentID }),
-      this.responseVariant.findManyJSONByEnvironment(assistant, environmentID),
-      this.responseAttachment.findManyJSONByEnvironment(assistant, environmentID),
-      this.responseDiscriminator.findManyJSONByEnvironment(assistant, environmentID),
+      this.orm.findManyByEnvironment(environmentID),
+      this.responseVariant.findManyByEnvironment(environmentID),
+      this.responseAttachment.findManyByEnvironment(environmentID),
+      this.responseDiscriminator.findManyByEnvironment(environmentID),
     ]);
 
     return {
@@ -91,54 +79,58 @@ export class ResponseService extends CMSTabularService<ResponseORM> {
 
   /* Export */
 
-  prepareExportData(
-    {
-      responses,
-      responseVariants,
-      responseAttachments,
-      responseDiscriminators,
-    }: {
-      responses: ResponseEntity[];
-      responseVariants: AnyResponseVariantEntity[];
-      responseAttachments: AnyResponseAttachmentEntity[];
-      responseDiscriminators: ResponseDiscriminatorEntity[];
-    },
-    { backup }: { backup?: boolean } = {}
-  ): ResponseExportImportDataDTO {
-    const json = {
-      responses: this.entitySerializer.iterable(responses),
-      responseVariants: this.entitySerializer.iterable(responseVariants),
-      responseAttachments: this.entitySerializer.iterable(responseAttachments),
-      responseDiscriminators: this.entitySerializer.iterable(responseDiscriminators),
-    };
-
-    if (backup) {
-      return json;
-    }
-
-    return this.prepareExportJSONData(json);
-  }
-
-  prepareExportJSONData({
+  toJSONWithSubResources({
     responses,
     responseVariants,
     responseAttachments,
     responseDiscriminators,
   }: {
-    responses: ToJSONWithForeignKeys<ResponseEntity>[];
-    responseVariants: ToJSONWithForeignKeys<AnyResponseVariantEntity>[];
-    responseAttachments: ToJSONWithForeignKeys<AnyResponseAttachmentEntity>[];
-    responseDiscriminators: ToJSONWithForeignKeys<ResponseDiscriminatorEntity>[];
-  }): ResponseExportImportDataDTO {
+    responses: ResponseObject[];
+    responseVariants: AnyResponseVariantObject[];
+    responseAttachments: AnyResponseAttachmentObject[];
+    responseDiscriminators: ResponseDiscriminatorObject[];
+  }) {
     return {
-      responses: responses.map((item) => Utils.object.omit(item, ['assistantID', 'environmentID'])),
-      responseVariants: responseVariants.map((item) =>
+      responses: this.mapToJSON(responses),
+      responseVariants: this.responseVariant.mapToJSON(responseVariants),
+      responseAttachments: this.responseAttachment.mapToJSON(responseAttachments),
+      responseDiscriminators: this.responseDiscriminator.mapToJSON(responseDiscriminators),
+    };
+  }
+
+  fromJSONWithSubResources({ responses, responseVariants, responseAttachments, responseDiscriminators }: ResponseExportImportDataDTO) {
+    return {
+      responses: this.mapFromJSON(responses),
+      responseVariants: this.responseVariant.mapFromJSON(responseVariants),
+      responseAttachments: this.responseAttachment.mapFromJSON(responseAttachments),
+      responseDiscriminators: this.responseDiscriminator.mapFromJSON(responseDiscriminators),
+    };
+  }
+
+  prepareExportData(
+    data: {
+      responses: ResponseObject[];
+      responseVariants: AnyResponseVariantObject[];
+      responseAttachments: AnyResponseAttachmentObject[];
+      responseDiscriminators: ResponseDiscriminatorObject[];
+    },
+    { backup }: { backup?: boolean } = {}
+  ): ResponseExportImportDataDTO {
+    const json = this.toJSONWithSubResources(data);
+
+    if (backup) {
+      return json;
+    }
+
+    return {
+      responses: json.responses.map((item) => Utils.object.omit(item, ['assistantID', 'environmentID'])),
+      responseVariants: json.responseVariants.map((item) =>
         Utils.object.omit(item, ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'])
       ) as ResponseExportImportDataDTO['responseVariants'],
-      responseAttachments: responseAttachments.map((item) =>
+      responseAttachments: json.responseAttachments.map((item) =>
         Utils.object.omit(item, ['assistantID', 'environmentID'])
       ) as ResponseExportImportDataDTO['responseAttachments'],
-      responseDiscriminators: responseDiscriminators.map((item) =>
+      responseDiscriminators: json.responseDiscriminators.map((item) =>
         Utils.object.omit(item, ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'])
       ),
     };
@@ -146,45 +138,36 @@ export class ResponseService extends CMSTabularService<ResponseORM> {
 
   /* Clone */
 
-  async cloneManyWithSubResourcesForEnvironment(
-    {
-      sourceAssistantID,
-      targetAssistantID,
-      sourceEnvironmentID,
-      targetEnvironmentID,
-    }: {
-      sourceAssistantID: string;
-      targetAssistantID: string;
-      sourceEnvironmentID: string;
-      targetEnvironmentID: string;
-    },
-    { flush = true }: ORMMutateOptions = {}
-  ) {
+  async cloneManyWithSubResourcesForEnvironment({
+    targetAssistantID,
+    sourceEnvironmentID,
+    targetEnvironmentID,
+  }: {
+    targetAssistantID: string;
+    sourceEnvironmentID: string;
+    targetEnvironmentID: string;
+  }) {
     const {
       responses: sourceResponses,
       responseVariants: sourceResponseVariants,
       responseAttachments: sourceResponseAttachments,
       responseDiscriminators: sourceResponseDiscriminators,
-    } = await this.findManyWithSubResourcesByEnvironment(sourceAssistantID, sourceEnvironmentID);
+    } = await this.findManyWithSubResourcesByEnvironment(sourceEnvironmentID);
 
-    const result = await this.importManyWithSubResources(
-      {
-        responses: cloneManyEntities(sourceResponses, { assistantID: targetAssistantID, environmentID: targetEnvironmentID }),
-        responseVariants: cloneManyEntities(sourceResponseVariants, { assistantID: targetAssistantID, environmentID: targetEnvironmentID }),
-        responseAttachments: cloneManyEntities(sourceResponseAttachments, { assistantID: targetAssistantID, environmentID: targetEnvironmentID }),
-        responseDiscriminators: cloneManyEntities(sourceResponseDiscriminators, {
-          assistantID: targetAssistantID,
-          environmentID: targetEnvironmentID,
-        }),
-      },
-      { flush: false }
-    );
-
-    if (flush) {
-      await this.orm.em.flush();
-    }
-
-    return result;
+    return this.importManyWithSubResources({
+      responses: sourceResponses.map((item) => ({ ...item, assistantID: targetAssistantID, environmentID: targetEnvironmentID })),
+      responseVariants: sourceResponseVariants.map((item) => ({ ...item, assistantID: targetAssistantID, environmentID: targetEnvironmentID })),
+      responseAttachments: sourceResponseAttachments.map((item) => ({
+        ...item,
+        assistantID: targetAssistantID,
+        environmentID: targetEnvironmentID,
+      })),
+      responseDiscriminators: sourceResponseDiscriminators.map((item) => ({
+        ...item,
+        assistantID: targetAssistantID,
+        environmentID: targetEnvironmentID,
+      })),
+    });
   }
 
   /* Import */
@@ -193,10 +176,10 @@ export class ResponseService extends CMSTabularService<ResponseORM> {
     { responses, responseVariants, responseAttachments, responseDiscriminators }: ResponseExportImportDataDTO,
     { userID, backup, assistantID, environmentID }: { userID: number; backup?: boolean; assistantID: string; environmentID: string }
   ): {
-    responses: ToJSONWithForeignKeys<ResponseEntity>[];
-    responseVariants: ResponseAnyVariantImportData[];
-    responseAttachments: ResponseAnyAttachmentImportData[];
-    responseDiscriminators: ToJSONWithForeignKeys<ResponseDiscriminatorEntity>[];
+    responses: ResponseJSON[];
+    responseVariants: AnyResponseVariantJSON[];
+    responseAttachments: AnyResponseAttachmentJSON[];
+    responseDiscriminators: ResponseDiscriminatorJSON[];
   } {
     const createdAt = new Date().toJSON();
 
@@ -270,25 +253,17 @@ export class ResponseService extends CMSTabularService<ResponseORM> {
     };
   }
 
-  async importManyWithSubResources(
-    data: {
-      responses: ToJSONWithForeignKeys<ResponseEntity>[];
-      responseVariants: ResponseAnyVariantImportData[];
-      responseAttachments: ResponseAnyAttachmentImportData[];
-      responseDiscriminators: ToJSONWithForeignKeys<ResponseDiscriminatorEntity>[];
-    },
-    { flush = true }: ORMMutateOptions = {}
-  ) {
-    const [responses, responseDiscriminators, responseVariants, responseAttachments] = await Promise.all([
-      this.createMany(data.responses, { flush: false }),
-      this.responseDiscriminator.createMany(data.responseDiscriminators, { flush: false }),
-      this.responseVariant.createMany(data.responseVariants, { flush: false }),
-      this.responseAttachment.createMany(data.responseAttachments, { flush: false }),
-    ]);
-
-    if (flush) {
-      await this.orm.em.flush();
-    }
+  async importManyWithSubResources(data: {
+    responses: ResponseObject[];
+    responseVariants: AnyResponseVariantObject[];
+    responseAttachments: AnyResponseAttachmentObject[];
+    responseDiscriminators: ResponseDiscriminatorObject[];
+  }) {
+    // ORDER MATTERS
+    const responses = await this.createMany(data.responses);
+    const responseDiscriminators = await this.responseDiscriminator.createMany(data.responseDiscriminators);
+    const responseVariants = await this.responseVariant.createMany(data.responseVariants);
+    const responseAttachments = await this.responseAttachment.createMany(data.responseAttachments);
 
     return {
       responses,
@@ -300,67 +275,62 @@ export class ResponseService extends CMSTabularService<ResponseORM> {
 
   /* Create */
 
-  async createManyWithSubResources(userID: number, data: ResponseCreateWithSubResourcesData[], { flush = true }: ORMMutateOptions = {}) {
-    const prompts: PromptEntity[] = [];
-    const responses: ResponseEntity[] = [];
-    const responseVariants: AnyResponseVariantEntity[] = [];
-    const responseAttachments: AnyResponseAttachmentEntity[] = [];
-    const responseDiscriminators: ResponseDiscriminatorEntity[] = [];
+  async createManyWithSubResources(data: ResponseCreateWithSubResourcesData[], { userID, context }: { userID: number; context: CMSContext }) {
+    const dataWithIDs = data.map(({ id, variants, ...data }) => {
+      const responseID = id ?? new ObjectId().toJSON();
+      const discriminatorID = new ObjectId().toJSON();
 
-    for (const { variants: variantsData, ...responseData } of data) {
-      const response = await this.createOne({ ...responseData, createdByID: userID, updatedByID: userID }, { flush: false });
+      const variantsWithIDs = variants.map((variant) => ({
+        ...variant,
+        id: variant.id ?? new ObjectId().toJSON(),
+        assistantID: context.assistantID,
+        environmentID: context.environmentID,
+        discriminatorID,
+      }));
 
-      const responseDiscriminator = await this.responseDiscriminator.createOneForUser(
-        userID,
-        {
+      return {
+        ...data,
+        id: responseID,
+        variants: variantsWithIDs,
+        assistantID: context.assistantID,
+        environmentID: context.environmentID,
+        discriminator: {
+          id: discriminatorID,
           channel: Channel.DEFAULT,
           language: Language.ENGLISH_US,
-          responseID: response.id,
-          assistantID: response.assistant.id,
-          variantOrder: [],
-          environmentID: response.environmentID,
+          responseID,
+          assistantID: context.assistantID,
+          variantOrder: toPostgresEntityIDs(variantsWithIDs),
+          environmentID: context.environmentID,
         },
-        { flush: false }
-      );
+      };
+    });
 
-      const result = await this.responseVariant.createManyWithSubResources(
-        userID,
-        variantsData.map((variantData) => ({
-          ...variantData,
-          assistantID: responseDiscriminator.assistant.id,
-          environmentID: responseDiscriminator.environmentID,
-          discriminatorID: responseDiscriminator.id,
-        })),
-        { flush: false }
-      );
+    const responses = await this.createManyForUser(
+      userID,
+      dataWithIDs.map((data) => Utils.object.omit(data, ['variants', 'discriminator']))
+    );
 
-      responseDiscriminator.variantOrder = result.responseVariants.map((v) => v.id);
+    const responseDiscriminators = await this.responseDiscriminator.createManyForUser(
+      userID,
+      dataWithIDs.map((data) => data.discriminator)
+    );
 
-      prompts.push(...result.prompts);
-      responses.push(response);
-      responseVariants.push(...result.responseVariants);
-      responseAttachments.push(...result.responseAttachments);
-      responseDiscriminators.push(responseDiscriminator);
-    }
-
-    if (flush) {
-      await this.orm.em.flush();
-    }
+    const responseVariantsWithSubResources = await this.responseVariant.createManyWithSubResources(
+      dataWithIDs.flatMap((data) => data.variants),
+      { userID, context }
+    );
 
     return {
-      prompts,
+      ...responseVariantsWithSubResources,
       responses,
-      responseVariants,
-      responseAttachments,
       responseDiscriminators,
     };
   }
 
-  async createManyAndSync(userID: number, data: ResponseCreateWithSubResourcesData[]) {
+  async createManyAndSync(data: ResponseCreateWithSubResourcesData[], { userID, context }: { userID: number; context: CMSContext }) {
     return this.postgresEM.transactional(async () => {
-      const result = await this.createManyWithSubResources(userID, data, { flush: false });
-
-      await this.orm.em.flush();
+      const result = await this.createManyWithSubResources(data, { userID, context });
 
       return {
         add: result,
@@ -369,49 +339,49 @@ export class ResponseService extends CMSTabularService<ResponseORM> {
   }
 
   async broadcastAddMany(
-    authMeta: AuthMetaPayload,
     {
       add,
     }: {
       add: {
-        prompts: PromptEntity[];
-        responses: ResponseEntity[];
-        responseVariants: AnyResponseVariantEntity[];
-        responseAttachments: AnyResponseAttachmentEntity[];
-        responseDiscriminators: ResponseDiscriminatorEntity[];
+        responses: ResponseObject[];
+        responseVariants: AnyResponseVariantObject[];
+        responseAttachments: AnyResponseAttachmentObject[];
+        responseDiscriminators: ResponseDiscriminatorObject[];
       };
-    }
+    },
+    meta: CMSBroadcastMeta
   ) {
     await Promise.all([
-      this.responseDiscriminator.broadcastAddMany(authMeta, {
-        add: Utils.object.pick(add, ['prompts', 'responseVariants', 'responseAttachments', 'responseDiscriminators']),
-      }),
+      this.responseDiscriminator.broadcastAddMany(
+        {
+          add: Utils.object.pick(add, ['responseVariants', 'responseAttachments', 'responseDiscriminators']),
+        },
+        meta
+      ),
 
-      ...groupByAssistant(add.responses).map((responses) =>
-        this.logux.processAs(
-          Actions.Response.AddMany({
-            data: this.entitySerializer.iterable(responses),
-            context: assistantBroadcastContext(responses[0]),
-          }),
-          authMeta
-        )
+      this.logux.processAs(
+        Actions.Response.AddMany({
+          data: this.mapToJSON(add.responses),
+          context: cmsBroadcastContext(meta.context),
+        }),
+        meta.auth
       ),
     ]);
   }
 
-  async createManyAndBroadcast(authMeta: AuthMetaPayload, data: ResponseCreateWithSubResourcesData[]) {
-    const result = await this.createManyAndSync(authMeta.userID, data);
+  async createManyAndBroadcast(data: ResponseCreateWithSubResourcesData[], meta: CMSBroadcastMeta) {
+    const result = await this.createManyAndSync(data, { userID: meta.auth.userID, context: meta.context });
 
-    await this.broadcastAddMany(authMeta, result);
+    await this.broadcastAddMany(result, meta);
 
     return result.add.responses;
   }
 
   /* Delete */
 
-  async collectRelationsToDelete(responses: PKOrEntity<ResponseEntity>[]) {
-    const responseDiscriminators = await this.responseDiscriminator.findManyByResponses(responses);
-    const relations = await this.responseDiscriminator.collectRelationsToDelete(responseDiscriminators);
+  async collectRelationsToDelete(environmentID: string, responseIDs: string[]) {
+    const responseDiscriminators = await this.responseDiscriminator.findManyByResponses(environmentID, responseIDs);
+    const relations = await this.responseDiscriminator.collectRelationsToDelete(environmentID, toPostgresEntityIDs(responseDiscriminators));
 
     return {
       ...relations,
@@ -419,33 +389,28 @@ export class ResponseService extends CMSTabularService<ResponseORM> {
     };
   }
 
-  async syncRequiredEntitiesOnDelete(responses: PKOrEntity<ResponseEntity>[], { flush = true }: ORMMutateOptions = {}) {
-    const requiredEntities = await this.requiredEntityORM.findManyByReprompts(responses);
+  async syncRequiredEntitiesOnDelete(ids: string[], { userID, context }: { userID: number; context: CMSContext }) {
+    const requiredEntities = await this.requiredEntityORM.findManyByReprompts(context.environmentID, ids);
 
-    requiredEntities.forEach((requiredEntity) => {
-      // eslint-disable-next-line no-param-reassign
-      requiredEntity.reprompt = null;
-    });
+    await this.requiredEntityORM.patchManyForUser(
+      userID,
+      requiredEntities.map(({ id, environmentID }) => ({ id, environmentID })),
+      { repromptID: null }
+    );
 
-    if (flush) {
-      await this.orm.em.flush();
-    }
-
-    return requiredEntities;
+    return requiredEntities.map((item) => ({ ...item, repromptID: null }));
   }
 
-  async deleteManyAndSync(ids: Primary<ResponseEntity>[]) {
+  async deleteManyAndSync(ids: string[], { userID, context }: { userID: number; context: CMSContext }) {
     return this.postgresEM.transactional(async () => {
-      const responses = await this.findMany(ids);
+      const responses = await this.findManyByEnvironmentAndIDs(context.environmentID, ids);
 
       const [relations, requiredEntities] = await Promise.all([
-        this.collectRelationsToDelete(responses),
-        this.syncRequiredEntitiesOnDelete(responses, { flush: false }),
+        this.collectRelationsToDelete(context.environmentID, ids),
+        this.syncRequiredEntitiesOnDelete(ids, { userID, context }),
       ]);
 
-      await this.deleteMany(responses, { flush: false });
-
-      await this.orm.em.flush();
+      await this.deleteManyByEnvironmentAndIDs(context.environmentID, ids);
 
       return {
         sync: { requiredEntities },
@@ -454,58 +419,54 @@ export class ResponseService extends CMSTabularService<ResponseORM> {
     });
   }
 
-  async broadcastSyncOnDelete(authMeta: AuthMetaPayload, { sync }: { sync: { requiredEntities: RequiredEntityEntity[] } }) {
-    await Promise.all(
-      groupByAssistant(sync.requiredEntities).map((requiredEntities) =>
-        this.logux.processAs(
-          Actions.RequiredEntity.PatchMany({
-            ids: toEntityIDs(requiredEntities),
-            patch: { repromptID: null },
-            context: assistantBroadcastContext(requiredEntities[0]),
-          }),
-          authMeta
-        )
-      )
+  async broadcastSyncOnDelete({ sync }: { sync: { requiredEntities: RequiredEntityObject[] } }, meta: CMSBroadcastMeta) {
+    await this.logux.processAs(
+      Actions.RequiredEntity.PatchMany({
+        ids: toPostgresEntityIDs(sync.requiredEntities),
+        patch: { repromptID: null },
+        context: cmsBroadcastContext(meta.context),
+      }),
+      meta.auth
     );
   }
 
   async broadcastDeleteMany(
-    authMeta: AuthMetaPayload,
     {
       sync,
       delete: del,
     }: {
-      sync: { requiredEntities: RequiredEntityEntity[] };
+      sync: { requiredEntities: RequiredEntityObject[] };
       delete: {
-        responses: ResponseEntity[];
-        responseVariants: AnyResponseVariantEntity[];
-        responseAttachments: AnyResponseAttachmentEntity[];
-        responseDiscriminators: ResponseDiscriminatorEntity[];
+        responses: ResponseObject[];
+        responseVariants: AnyResponseVariantObject[];
+        responseAttachments: AnyResponseAttachmentObject[];
+        responseDiscriminators: ResponseDiscriminatorObject[];
       };
-    }
+    },
+    meta: CMSBroadcastMeta
   ) {
     await Promise.all([
-      this.broadcastSyncOnDelete(authMeta, { sync }),
+      this.broadcastSyncOnDelete({ sync }, meta),
 
-      ...groupByAssistant(del.responses).map((responses) =>
-        this.logux.processAs(
-          Actions.Response.DeleteMany({
-            ids: toEntityIDs(responses),
-            context: assistantBroadcastContext(responses[0]),
-          }),
-          authMeta
-        )
+      this.logux.processAs(
+        Actions.Response.DeleteMany({
+          ids: toPostgresEntityIDs(del.responses),
+          context: cmsBroadcastContext(meta.context),
+        }),
+        meta.auth
       ),
-      this.responseDiscriminator.broadcastDeleteMany(authMeta, {
-        delete: Utils.object.pick(del, ['responseVariants', 'responseAttachments', 'responseDiscriminators']),
-      }),
+
+      this.responseDiscriminator.broadcastDeleteMany(
+        { delete: Utils.object.pick(del, ['responseVariants', 'responseAttachments', 'responseDiscriminators']) },
+        meta
+      ),
     ]);
   }
 
-  async deleteManyAndBroadcast(authMeta: AuthMetaPayload, ids: Primary<ResponseEntity>[]): Promise<void> {
-    const result = await this.deleteManyAndSync(ids);
+  async deleteManyAndBroadcast(ids: string[], meta: CMSBroadcastMeta): Promise<void> {
+    const result = await this.deleteManyAndSync(ids, { userID: meta.auth.userID, context: meta.context });
 
-    await this.broadcastDeleteMany(authMeta, result);
+    await this.broadcastDeleteMany(result, meta);
   }
 
   /* Upsert */
@@ -521,9 +482,9 @@ export class ResponseService extends CMSTabularService<ResponseORM> {
   ) {
     const { responses, responseVariants, responseAttachments, responseDiscriminators } = this.prepareImportData(data, meta);
 
-    await this.upsertMany(responses);
-    await this.responseDiscriminator.upsertMany(responseDiscriminators);
-    await this.responseVariant.upsertMany(responseVariants);
-    await this.responseAttachment.upsertMany(responseAttachments);
+    await this.upsertMany(this.mapFromJSON(responses));
+    await this.responseDiscriminator.upsertMany(this.responseDiscriminator.mapFromJSON(responseDiscriminators));
+    await this.responseVariant.upsertMany(this.responseVariant.mapFromJSON(responseVariants));
+    await this.responseAttachment.upsertMany(this.responseAttachment.mapFromJSON(responseAttachments));
   }
 }

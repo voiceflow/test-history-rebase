@@ -6,9 +6,9 @@ import { ResponseDiscriminatorLoguxController } from './response-discriminator.l
 import { ResponseDiscriminatorService } from './response-discriminator.service';
 
 @Module({
-  imports: [ResponseORM.register(), AssistantORM.register(), ResponseDiscriminatorORM.register(), ResponseVariantModule],
-  controllers: [ResponseDiscriminatorLoguxController],
-  providers: [ResponseDiscriminatorService],
+  imports: [ResponseVariantModule],
   exports: [ResponseDiscriminatorService],
+  providers: [ResponseORM, AssistantORM, ResponseDiscriminatorORM, ResponseDiscriminatorService],
+  controllers: [ResponseDiscriminatorLoguxController],
 })
 export class ResponseDiscriminatorModule {}

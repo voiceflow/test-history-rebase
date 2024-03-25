@@ -1,25 +1,22 @@
 import { Inject, Injectable } from '@nestjs/common';
-import type { AssistantEntity, PKOrEntity } from '@voiceflow/orm-designer';
-import { AssistantORM, ConditionORM, ResponseDiscriminatorORM, ResponseJSONVariantORM } from '@voiceflow/orm-designer';
+import { ResponseJSONVariantORM } from '@voiceflow/orm-designer';
 
 import { CMSObjectService } from '@/common';
 
 @Injectable()
 export class ResponseJSONVariantService extends CMSObjectService<ResponseJSONVariantORM> {
+  toJSON = this.orm.jsonAdapter.fromDB;
+
+  fromJSON = this.orm.jsonAdapter.toDB;
+
+  mapToJSON = this.orm.jsonAdapter.mapFromDB;
+
+  mapFromJSON = this.orm.jsonAdapter.mapToDB;
+
   constructor(
     @Inject(ResponseJSONVariantORM)
-    protected readonly orm: ResponseJSONVariantORM,
-    @Inject(AssistantORM)
-    protected readonly assistantORM: AssistantORM,
-    @Inject(ConditionORM)
-    protected readonly conditionORM: ConditionORM,
-    @Inject(ResponseDiscriminatorORM)
-    protected readonly responseDiscriminatorORM: ResponseDiscriminatorORM
+    protected readonly orm: ResponseJSONVariantORM
   ) {
     super();
-  }
-
-  findManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
-    return this.orm.findManyByEnvironment(assistant, environmentID);
   }
 }

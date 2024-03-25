@@ -1,32 +1,24 @@
-import type { CMSObjectORM, ORMEntity, ORMMutateOptions, ORMParam, PKOrEntity } from '@voiceflow/orm-designer';
+import type { Primary } from '@mikro-orm/core';
+import type { CMSObjectORM, CreateData, ORMDiscriminatorEntity, ORMEntity, PatchData } from '@voiceflow/orm-designer';
 
 import { MutableService } from './mutable.service';
-import type { CreateManyForUserData, CreateOneForUserData, PatchManyForUserData, PatchOneForUserData } from './types';
 
 export abstract class CMSObjectService<Orm extends CMSObjectORM<any, any>> extends MutableService<Orm> {
-  protected abstract readonly orm: CMSObjectORM<ORMEntity<Orm>, ORMParam<Orm>>;
+  protected abstract readonly orm: CMSObjectORM<ORMEntity<Orm>, ORMDiscriminatorEntity<Orm>>;
 
-  createOneForUser(userID: number, data: CreateOneForUserData<Orm>, options?: ORMMutateOptions): Promise<ORMEntity<Orm>> {
-    return this.orm.createOneForUser(userID, data, options);
+  createOneForUser(userID: number, data: Omit<CreateData<ORMDiscriminatorEntity<Orm>>, 'createdByID' | 'updatedByID'>) {
+    return this.orm.createOneForUser(userID, data);
   }
 
-  createManyForUser(userID: number, data: CreateManyForUserData<Orm>, options?: ORMMutateOptions): Promise<ORMEntity<Orm>[]> {
-    return this.orm.createManyForUser(userID, data, options);
+  createManyForUser(userID: number, data: Omit<CreateData<ORMDiscriminatorEntity<Orm>>, 'createdByID' | 'updatedByID'>[]) {
+    return this.orm.createManyForUser(userID, data);
   }
 
-  patchOneForUser(userID: number, id: PKOrEntity<ORMEntity<Orm>>, data: PatchOneForUserData<Orm>, options?: ORMMutateOptions): Promise<void> {
-    return this.orm.patchOneForUser(userID, id, data, options);
+  async patchOneForUser(userID: number, id: Primary<ORMEntity<Orm>>, data: PatchData<ORMEntity<Orm>>) {
+    await this.orm.patchOneForUser(userID, id, data);
   }
 
-  async patchManyForUser(
-    userID: number,
-    ids: PKOrEntity<ORMEntity<Orm>>[],
-    data: PatchManyForUserData<Orm>,
-    options?: ORMMutateOptions
-  ): Promise<void> {
-    if ((data as any).folderID === null) {
-      await Promise.all(ids.map((id) => (this.orm as any).em?.qb?.(this.orm._Entity.name)?.update({ folder_id: null }).where(id).execute()));
-    }
-    return this.orm.patchManyForUser(userID, ids, data, options);
+  async patchManyForUser(userID: number, ids: Primary<ORMEntity<Orm>>[], data: PatchData<ORMEntity<Orm>>) {
+    await this.orm.patchManyForUser(userID, ids, data);
   }
 }

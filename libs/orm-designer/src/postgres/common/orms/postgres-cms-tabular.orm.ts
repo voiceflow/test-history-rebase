@@ -1,54 +1,44 @@
-import type { FilterQuery, FindOptions } from '@mikro-orm/core';
-
 import type { CMSTabularORM } from '@/common';
-import type { Constructor, EntityObject, MutableEntityData, ORMMutateOptions, PKOrEntity } from '@/types';
+import type { CreateData, DEFAULT_OR_NULL_COLUMN } from '@/types';
 
-import type { AssistantEntity } from '../../assistant';
-import type { FolderEntity } from '../../folder/folder.entity';
 import type { PostgresCMSTabularEntity } from '../entities/postgres-cms-tabular.entity';
 import { PostgresCMSObjectORM } from './postgres-cms-object.orm';
 
-export const PostgresCMSTabularORM = <Entity extends PostgresCMSTabularEntity, ConstructorParam extends object>(
-  Entity: Constructor<[data: ConstructorParam], Entity> & {
-    fromJSON: (data: Partial<MutableEntityData<Entity>>) => Partial<EntityObject<Entity>>;
+export abstract class PostgresCMSTabularORM<
+    BaseEntity extends Omit<PostgresCMSTabularEntity, typeof DEFAULT_OR_NULL_COLUMN>,
+    DiscriminatorEntity extends Omit<BaseEntity, typeof DEFAULT_OR_NULL_COLUMN> = BaseEntity
+  >
+  extends PostgresCMSObjectORM<BaseEntity, DiscriminatorEntity>
+  implements CMSTabularORM<BaseEntity, DiscriminatorEntity>
+{
+  findManyByFolders(environmentID: string, folderIDs: string[]) {
+    return this.find({ environmentID, folderID: folderIDs } as any);
   }
-) =>
-  class
-    extends PostgresCMSObjectORM<Entity, ConstructorParam>(Entity)
-    implements CMSTabularORM<Entity, ConstructorParam>
-  {
-    findManyByFolders(folders: PKOrEntity<FolderEntity>[]): Promise<Entity[]> {
-      return this.find({ folder: folders } as FilterQuery<Entity>);
-    }
 
-    findManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string): Promise<Entity[]> {
-      return this.find(
-        { assistant, environmentID } as FilterQuery<Entity>,
-        { orderBy: { createdAt: 'DESC' } } as FindOptions<Entity>
-      );
-    }
+  findManyByEnvironment(environmentID: string) {
+    return this.find({ environmentID } as any);
+  }
 
-    createOneForUser(
-      userID: number,
-      data: Omit<ConstructorParam, 'createdByID' | 'updatedByID'>,
-      options?: ORMMutateOptions
-    ): Promise<Entity> {
-      return super.createOneForUser(userID, { ...data, createdByID: userID }, options);
-    }
+  findManyByEnvironmentAndIDs(environmentID: string, ids: string[]) {
+    return this.find({ environmentID, id: ids } as any);
+  }
 
-    createManyForUser(
-      userID: number,
-      data: Omit<ConstructorParam, 'createdByID' | 'updatedByID'>[],
-      options?: ORMMutateOptions
-    ): Promise<Entity[]> {
-      return super.createManyForUser(
-        userID,
-        data.map((item) => ({ ...item, createdByID: userID })),
-        options
-      );
-    }
+  createOneForUser(userID: number, data: Omit<CreateData<DiscriminatorEntity>, 'createdByID' | 'updatedByID'>) {
+    return super.createOneForUser(userID, { ...data, createdByID: userID });
+  }
 
-    async deleteManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string): Promise<void> {
-      await this.nativeDelete({ assistant, environmentID } as FilterQuery<Entity>);
-    }
-  };
+  createManyForUser(userID: number, data: Omit<CreateData<DiscriminatorEntity>, 'createdByID' | 'updatedByID'>[]) {
+    return super.createManyForUser(
+      userID,
+      data.map((item) => ({ ...item, createdByID: userID }))
+    );
+  }
+
+  deleteManyByEnvironment(environmentID: string) {
+    return this.delete({ environmentID } as any);
+  }
+
+  deleteManyByEnvironmentAndIDs(environmentID: string, ids: string[]) {
+    return this.delete({ environmentID, id: ids } as any);
+  }
+}

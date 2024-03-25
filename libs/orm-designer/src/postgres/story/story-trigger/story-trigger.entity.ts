@@ -1,18 +1,13 @@
-import { Entity, Enum, Index, ManyToOne, PrimaryKeyType, Property, Unique, wrap } from '@mikro-orm/core';
+import { Entity, Enum, Index, ManyToOne, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
 import { StoryTriggerTarget } from '@voiceflow/dtos';
 
 import type { AssistantEntity } from '@/postgres/assistant';
 import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
 import { EventEntity } from '@/postgres/event';
 import { IntentEntity } from '@/postgres/intent';
-import type { CMSCompositePK, EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
+import type { CMSCompositePK, Ref } from '@/types';
 
 import { StoryEntity } from '../story.entity';
-import {
-  BaseStoryTriggerEntityAdapter,
-  EventStoryTriggerEntityAdapter,
-  IntentStoryTriggerEntityAdapter,
-} from './story-trigger-entity.adapter';
 
 const TABLE_NAME = 'designer.trigger';
 
@@ -24,51 +19,26 @@ const TABLE_NAME = 'designer.trigger';
 @Unique({ properties: ['id', 'environmentID'] })
 @Index({ properties: ['environmentID'] })
 export class BaseStoryTriggerEntity extends PostgresCMSObjectEntity {
-  static fromJSON(data: Partial<ToJSONWithForeignKeys<BaseStoryTriggerEntity>>) {
-    return BaseStoryTriggerEntityAdapter.toDB(data);
-  }
-
   @Property()
-  name: string;
+  name!: string;
 
   @ManyToOne(() => StoryEntity, {
     name: 'story_id',
     onDelete: 'cascade',
     fieldNames: ['story_id', 'environment_id'],
   })
-  story: Ref<StoryEntity>;
+  story!: Ref<StoryEntity>;
 
   @Enum(() => StoryTriggerTarget)
-  target: StoryTriggerTarget;
+  target!: StoryTriggerTarget;
 
   @Assistant()
-  assistant: Ref<AssistantEntity>;
+  assistant!: Ref<AssistantEntity>;
 
   @Environment()
-  environmentID: string;
+  environmentID!: string;
 
   [PrimaryKeyType]?: CMSCompositePK;
-
-  constructor(data: EntityCreateParams<BaseStoryTriggerEntity>) {
-    super(data);
-
-    ({
-      name: this.name,
-      story: this.story,
-      target: this.target,
-      assistant: this.assistant,
-      environmentID: this.environmentID,
-    } = BaseStoryTriggerEntity.fromJSON(data));
-  }
-
-  toJSON(...args: any[]): ToJSONWithForeignKeys<BaseStoryTriggerEntity> {
-    return BaseStoryTriggerEntityAdapter.fromDB({
-      ...wrap<BaseStoryTriggerEntity>(this).toObject(...args),
-      story: this.story,
-      assistant: this.assistant,
-      updatedBy: this.updatedBy,
-    });
-  }
 }
 
 @Entity({
@@ -76,34 +46,14 @@ export class BaseStoryTriggerEntity extends PostgresCMSObjectEntity {
   discriminatorValue: StoryTriggerTarget.EVENT,
 })
 export class EventStoryTriggerEntity extends BaseStoryTriggerEntity {
-  static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<EventStoryTriggerEntity>>>(data: JSON) {
-    return EventStoryTriggerEntityAdapter.toDB<JSON>(data);
-  }
-
-  target: typeof StoryTriggerTarget.EVENT = StoryTriggerTarget.EVENT;
+  target!: typeof StoryTriggerTarget.EVENT;
 
   @ManyToOne(() => EventEntity, {
     name: 'event_id',
     onDelete: 'cascade',
     fieldNames: ['event_id', 'environment_id'],
   })
-  event: Ref<EventEntity>;
-
-  constructor({ eventID, ...data }: EntityCreateParams<EventStoryTriggerEntity, 'target'>) {
-    super({ ...data, target: StoryTriggerTarget.EVENT });
-
-    ({ event: this.event } = EventStoryTriggerEntity.fromJSON({ eventID }));
-  }
-
-  toJSON(...args: any[]): ToJSONWithForeignKeys<EventStoryTriggerEntity> {
-    return EventStoryTriggerEntityAdapter.fromDB({
-      ...wrap<EventStoryTriggerEntity>(this).toObject(...args),
-      story: this.story,
-      event: this.event,
-      assistant: this.assistant,
-      updatedBy: this.updatedBy,
-    });
-  }
+  event!: Ref<EventEntity>;
 }
 
 @Entity({
@@ -111,34 +61,12 @@ export class EventStoryTriggerEntity extends BaseStoryTriggerEntity {
   discriminatorValue: StoryTriggerTarget.INTENT,
 })
 export class IntentStoryTriggerEntity extends BaseStoryTriggerEntity {
-  static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<IntentStoryTriggerEntity>>>(data: JSON) {
-    return IntentStoryTriggerEntityAdapter.toDB<JSON>(data);
-  }
-
-  target: typeof StoryTriggerTarget.INTENT = StoryTriggerTarget.INTENT;
+  target!: typeof StoryTriggerTarget.INTENT;
 
   @ManyToOne(() => IntentEntity, {
     name: 'intent_id',
     onDelete: 'cascade',
     fieldNames: ['intent_id', 'environment_id'],
   })
-  intent: Ref<IntentEntity>;
-
-  constructor({ intentID, ...data }: EntityCreateParams<IntentStoryTriggerEntity, 'target'>) {
-    super({ ...data, target: StoryTriggerTarget.INTENT });
-
-    ({ intent: this.intent } = IntentStoryTriggerEntity.fromJSON({ intentID }));
-  }
-
-  toJSON(...args: any[]): ToJSONWithForeignKeys<IntentStoryTriggerEntity> {
-    return IntentStoryTriggerEntityAdapter.fromDB({
-      ...wrap<IntentStoryTriggerEntity>(this).toObject(...args),
-      story: this.story,
-      intent: this.intent,
-      assistant: this.assistant,
-      updatedBy: this.updatedBy,
-    });
-  }
+  intent!: Ref<IntentEntity>;
 }
-
-export type AnyStoryTriggerEntity = EventStoryTriggerEntity | IntentStoryTriggerEntity;

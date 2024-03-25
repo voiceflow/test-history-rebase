@@ -1,7 +1,6 @@
 import type { EntityDTO } from '@mikro-orm/core';
 
 import type { EntityEntity } from './entity.entity';
-import { entityVariantList } from './entity-variant/entity-variant.fixture';
 
 export const entity: EntityDTO<EntityEntity> = {
   id: 'entity-1',
@@ -11,7 +10,6 @@ export const entity: EntityDTO<EntityEntity> = {
   color: '#000000',
   classifier: 'arizona phone number',
   isArray: false,
-  variants: [],
   assistant: { id: 'assistant-1' } as any,
   folder: null,
   createdBy: { id: 1 } as any,
@@ -27,6 +25,5 @@ export const entityList: EntityDTO<EntityEntity>[] = [
     id: 'entity-2',
     name: 'second entity',
     classifier: null,
-    variants: entityVariantList,
   },
 ];

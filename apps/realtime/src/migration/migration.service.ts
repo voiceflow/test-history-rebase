@@ -9,7 +9,6 @@ import * as Realtime from '@voiceflow/realtime-sdk/backend';
 
 import { AssistantSerializer } from '@/assistant/assistant.serializer';
 import { AssistantService } from '@/assistant/assistant.service';
-import { EntitySerializer } from '@/common';
 import { EnvironmentService } from '@/environment/environment.service';
 import { LegacyService } from '@/legacy/legacy.service';
 import { ProjectLegacyService } from '@/project/project-legacy/project-legacy.service';
@@ -34,8 +33,6 @@ export class MigrationService {
     private readonly projectLegacy: ProjectLegacyService,
     @Inject(MigrationCacheService)
     private readonly migrationCache: MigrationCacheService,
-    @Inject(EntitySerializer)
-    private readonly entitySerializer: EntitySerializer,
     @Inject(AssistantSerializer)
     private readonly assistantSerializer: AssistantSerializer
   ) {}
@@ -114,7 +111,7 @@ export class MigrationService {
           this.projectLegacy.get(creatorID, projectID),
           this.legacy.models.diagram.findManyByVersionID(versionID).then(this.legacy.models.diagram.adapter.mapFromDB),
           this.assistant.findOne(projectID),
-          this.environment.findOneCMSDataToMigrate(projectID, versionID),
+          this.environment.findOneCMSDataToMigrate(versionID),
         ]);
 
         const [result, patches] = Realtime.Migrate.migrateProject(
@@ -124,24 +121,27 @@ export class MigrationService {
             diagrams,
             creatorID,
             cms: {
-              // TODO: remove when mikro is properly optimized, client has 100k+ utterances (BUG-1166)
-              // intents: this.entitySerializer.iterable(cmsData.intents),
-              // entities: this.entitySerializer.iterable(cmsData.entities),
-              // utterances: this.entitySerializer.iterable(cmsData.utterances),
-              // entityVariants: this.entitySerializer.iterable(cmsData.entityVariants),
-              // requiredEntities: this.entitySerializer.iterable(cmsData.requiredEntities),
-              flows: [],
-              intents: [],
-              entities: [],
-              responses: [],
-              utterances: [],
-              entityVariants: [],
-              requiredEntities: [],
-              responseVariants: [],
-              responseDiscriminators: [],
+              ...this.environment.toJSONCMSData({
+                ...cmsData,
+                flows: [],
+                folders: [],
+                intents: [],
+                entities: [],
+                functions: [],
+                responses: [],
+                utterances: [],
+                attachments: [],
+                cardButtons: [],
+                functionPaths: [],
+                entityVariants: [],
+                requiredEntities: [],
+                responseVariants: [],
+                functionVariables: [],
+                responseAttachments: [],
+                responseDiscriminators: [],
+              }),
 
               assistant: this.assistantSerializer.nullable(assistant),
-              variables: this.entitySerializer.iterable(cmsData.variables),
             },
           },
           targetSchemaVersion

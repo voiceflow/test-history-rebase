@@ -7,9 +7,9 @@ import { PrototypeProgramService } from './prototype-program.service';
 import { PrototypeProgramPrivateHTTPController } from './prototype-program-private.http.controller';
 
 @Module({
-  imports: [PrototypeProgramORM.register(), SerializerModule],
+  imports: [SerializerModule],
   exports: [PrototypeProgramService],
-  providers: [PrototypeProgramService],
+  providers: [PrototypeProgramORM, PrototypeProgramService],
   controllers: [PrototypeProgramPrivateHTTPController],
 })
 export class PrototypeProgramModule {}

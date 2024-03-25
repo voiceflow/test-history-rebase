@@ -10,9 +10,9 @@ import { ThreadCommentSerializer } from './thread-comment.serializer';
 import { ThreadCommentService } from './thread-comment.service';
 
 @Module({
-  imports: [ThreadORM.register(), ThreadCommentORM.register(), ProductUpdateModule, AssistantModule],
+  imports: [ProductUpdateModule, AssistantModule],
   exports: [ThreadCommentService, ThreadCommentSerializer],
-  providers: [ThreadCommentService, ThreadSerializer, ThreadCommentSerializer],
+  providers: [ThreadORM, ThreadCommentORM, ThreadCommentService, ThreadSerializer, ThreadCommentSerializer],
   controllers: [ThreadCommentLoguxController],
 })
 export class ThreadCommentModule {}

@@ -1,5 +1,5 @@
 import type { VariableORM } from '@voiceflow/orm-designer';
 
-import type { CreateOneForUserData } from '@/common/types';
+import type { CMSCreateForUserData } from '@/common/types';
 
-export interface VariableCreateData extends CreateOneForUserData<VariableORM> {}
+export interface VariableCreateData extends CMSCreateForUserData<VariableORM> {}

@@ -10,8 +10,6 @@ export const function_: EntityDTO<FunctionEntity> = {
   description: 'function description',
   code: 'var x = 123;',
   image: null,
-  paths: [],
-  variables: [],
   assistant: { id: 'assistant-1' } as any,
   createdBy: { id: 1 } as any,
   updatedBy: { id: 2 } as any,

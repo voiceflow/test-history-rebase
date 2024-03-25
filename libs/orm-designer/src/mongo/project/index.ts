@@ -1,3 +1,4 @@
 export * from './project.entity';
+export * from './project.interface';
 export * from './project.orm';
-export * from './project-entity.adapter';
+export * from './project-json.adapter';

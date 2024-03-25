@@ -1,37 +1,35 @@
 /* eslint-disable max-params */
 import type { EntityManager } from '@mikro-orm/core';
-import { Primary } from '@mikro-orm/core';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
 import { Folder } from '@voiceflow/dtos';
-import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
+import { LoguxService } from '@voiceflow/nestjs-logux';
 import type {
-  AssistantEntity,
-  EntityEntity,
-  EntityVariantEntity,
-  FolderEntity,
-  FunctionEntity,
-  FunctionPathEntity,
-  FunctionVariableEntity,
-  IntentEntity,
-  ORMMutateOptions,
-  PKOrEntity,
-  RequiredEntityEntity,
-  ToJSONWithForeignKeys,
-  UtteranceEntity,
-  VariableEntity,
+  DiagramObject,
+  EntityObject,
+  EntityVariantObject,
+  FlowObject,
+  FolderJSON,
+  FolderObject,
+  FunctionObject,
+  FunctionPathObject,
+  FunctionVariableObject,
+  IntentObject,
+  RequiredEntityObject,
+  UtteranceObject,
+  VariableObject,
 } from '@voiceflow/orm-designer';
 import { DatabaseTarget, FolderORM } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
-import { CMSObjectService, EntitySerializer } from '@/common';
-import { assistantBroadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
+import { CMSObjectService } from '@/common';
+import { cmsBroadcastContext, injectAssistantAndEnvironmentIDs, toPostgresEntityIDs } from '@/common/utils';
 import { EntityService } from '@/entity/entity.service';
 import { FlowService } from '@/flow/flow.service';
 import { FunctionService } from '@/function/function.service';
 import { IntentService } from '@/intent/intent.service';
-import { cloneManyEntities } from '@/utils/entity.util';
+import { CMSBroadcastMeta, CMSContext } from '@/types';
 import { VariableService } from '@/variable/variable.service';
 
 import type { FolderExportImportDataDTO } from './dtos/folder-export-import-data.dto';
@@ -39,11 +37,21 @@ import type { FolderCreateData } from './folder.interface';
 
 @Injectable()
 export class FolderService extends CMSObjectService<FolderORM> {
+  toJSON = this.orm.jsonAdapter.fromDB;
+
+  fromJSON = this.orm.jsonAdapter.toDB;
+
+  mapToJSON = this.orm.jsonAdapter.mapFromDB;
+
+  mapFromJSON = this.orm.jsonAdapter.mapToDB;
+
   constructor(
     @Inject(getEntityManagerToken(DatabaseTarget.POSTGRES))
     private readonly postgresEM: EntityManager,
     @Inject(FolderORM)
     protected readonly orm: FolderORM,
+    @Inject(FlowService)
+    private readonly flow: FlowService,
     @Inject(LoguxService)
     private readonly logux: LoguxService,
     @Inject(EntityService)
@@ -53,99 +61,86 @@ export class FolderService extends CMSObjectService<FolderORM> {
     @Inject(VariableService)
     private readonly variable: VariableService,
     @Inject(FunctionService)
-    private readonly functionService: FunctionService,
-    @Inject(FlowService)
-    private readonly flow: FlowService,
-    @Inject(EntitySerializer)
-    protected readonly entitySerializer: EntitySerializer
+    private readonly functionService: FunctionService
   ) {
     super();
   }
 
   /* Find */
 
-  async findManyWithSubResourcesByEnvironment(assistantID: string, environmentID: string) {
-    const folders = await this.orm.findManyByEnvironment(assistantID, environmentID);
+  findManyByEnvironmentAndIDs(environmentID: string, ids: string[]) {
+    return this.orm.findManyByEnvironmentAndIDs(environmentID, ids);
+  }
+
+  async findManyWithSubResourcesByEnvironment(environmentID: string) {
+    const folders = await this.orm.findManyByEnvironment(environmentID);
 
     return {
       folders,
     };
   }
 
-  async findManyWithSubResourcesJSONByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
-    const folders = await this.orm.findAllJSON({ assistant, environmentID });
-
-    return {
-      folders,
-    };
-  }
-
-  async findManyChildren(ids: Primary<FolderEntity>[]): Promise<FolderEntity[]> {
-    const children = await this.orm.findManyParents(ids);
+  async findManyByParents(environmentID: string, parentIDs: string[]): Promise<FolderObject[]> {
+    const children = await this.orm.findManyParents(environmentID, parentIDs);
 
     if (children.length) {
-      return [...children, ...(await this.findManyChildren(children))];
+      return [...children, ...(await this.findManyByParents(environmentID, toPostgresEntityIDs(children)))];
     }
 
     return children;
   }
 
-  async findManyWithChildren(ids: Primary<FolderEntity>[]): Promise<FolderEntity[]> {
-    const [folders, children] = await Promise.all([this.findMany(ids), this.findManyChildren(ids)]);
+  async findManyWithChildren(environmentID: string, folderIDs: string[]) {
+    const [folders, children] = await Promise.all([
+      this.findManyByEnvironmentAndIDs(environmentID, folderIDs),
+      this.findManyByParents(environmentID, folderIDs),
+    ]);
 
     return [...folders, ...children];
   }
 
   /* Export */
 
-  prepareExportData({ folders }: { folders: FolderEntity[] }, { backup }: { backup?: boolean } = {}): FolderExportImportDataDTO {
-    if (backup) {
-      return {
-        folders: this.entitySerializer.iterable(folders),
-      };
-    }
-
+  toJSONWithSubResources({ folders }: { folders: FolderObject[] }) {
     return {
-      folders: this.entitySerializer.iterable(folders, { omit: ['assistantID', 'environmentID', 'updatedAt', 'updatedByID'] }),
+      folders: this.mapToJSON(folders),
     };
   }
 
-  prepareExportJSONData({ folders }: { folders: ToJSONWithForeignKeys<FolderEntity>[] }): FolderExportImportDataDTO {
+  fromJSONWithSubResources({ folders }: FolderExportImportDataDTO) {
     return {
-      folders: folders.map((item) => Utils.object.omit(item, ['assistantID', 'environmentID', 'updatedAt', 'updatedByID'])),
+      folders: this.mapFromJSON(folders),
+    };
+  }
+
+  prepareExportData(data: { folders: FolderObject[] }, { backup }: { backup?: boolean } = {}): FolderExportImportDataDTO {
+    const json = this.toJSONWithSubResources(data);
+
+    if (backup) {
+      return json;
+    }
+
+    return {
+      folders: json.folders.map((item) => Utils.object.omit(item, ['assistantID', 'environmentID', 'updatedAt', 'updatedByID'])),
     };
   }
 
   /* Clone */
 
-  async cloneManyWithSubResourcesForEnvironment(
-    {
-      sourceAssistantID,
-      targetAssistantID,
-      sourceEnvironmentID,
-      targetEnvironmentID,
-    }: {
-      sourceAssistantID: string;
-      targetAssistantID: string;
-      sourceEnvironmentID: string;
-      targetEnvironmentID: string;
-    },
-    { flush = true }: ORMMutateOptions = {}
-  ) {
-    const { folders: sourceFolders } = await this.findManyWithSubResourcesByEnvironment(sourceAssistantID, sourceEnvironmentID);
+  async cloneManyWithSubResourcesForEnvironment({
+    targetAssistantID,
+    sourceEnvironmentID,
+    targetEnvironmentID,
+  }: {
+    targetAssistantID: string;
+    sourceEnvironmentID: string;
+    targetEnvironmentID: string;
+  }) {
+    const { folders: sourceFolders } = await this.findManyWithSubResourcesByEnvironment(sourceEnvironmentID);
 
-    const result = this.importManyWithSubResources(
-      {
-        folders: cloneManyEntities(sourceFolders, { assistantID: targetAssistantID, environmentID: targetEnvironmentID }),
-      },
-      { flush: false }
-    );
-
-    if (flush) {
-      await this.orm.em.flush();
-    }
-
-    return result;
+    return this.importManyWithSubResources({
+      folders: sourceFolders.map((item) => ({ ...item, assistantID: targetAssistantID, environmentID: targetEnvironmentID })),
+    });
   }
 
   /* Import */
@@ -153,7 +148,7 @@ export class FolderService extends CMSObjectService<FolderORM> {
   prepareImportData(
     { folders }: FolderExportImportDataDTO,
     { userID, backup, assistantID, environmentID }: { userID: number; backup?: boolean; assistantID: string; environmentID: string }
-  ): { folders: ToJSONWithForeignKeys<FolderEntity>[] } {
+  ): { folders: FolderJSON[] } {
     const createdAt = new Date().toJSON();
 
     if (backup) {
@@ -174,7 +169,6 @@ export class FolderService extends CMSObjectService<FolderORM> {
         ...item,
         createdAt,
         updatedAt: createdAt,
-        createdByID: userID,
         updatedByID: userID,
         assistantID,
         environmentID,
@@ -182,17 +176,8 @@ export class FolderService extends CMSObjectService<FolderORM> {
     };
   }
 
-  async importManyWithSubResources(
-    data: {
-      folders: ToJSONWithForeignKeys<FolderEntity>[];
-    },
-    { flush = true }: ORMMutateOptions = {}
-  ) {
-    const [folders] = await Promise.all([this.createMany(data.folders, { flush: false })]);
-
-    if (flush) {
-      await this.orm.em.flush();
-    }
+  async importManyWithSubResources(data: { folders: FolderObject[] }) {
+    const folders = await this.createMany(data.folders);
 
     return {
       folders,
@@ -201,87 +186,76 @@ export class FolderService extends CMSObjectService<FolderORM> {
 
   /* Create */
 
-  async createManyAndSync(userID: number, data: FolderCreateData[]) {
-    return this.postgresEM.transactional(async () => {
-      const folders = await this.createManyForUser(userID, data, { flush: false });
+  async createManyAndSync(data: FolderCreateData[], { userID, context }: { userID: number; context: CMSContext }) {
+    const folders = await this.createManyForUser(userID, data.map(injectAssistantAndEnvironmentIDs(context)));
 
-      await this.orm.em.flush();
-
-      return {
-        add: { folders },
-      };
-    });
+    return {
+      add: { folders },
+    };
   }
 
-  async broadcastAddMany(authMeta: AuthMetaPayload, { add }: { add: { folders: FolderEntity[] } }) {
-    await Promise.all([
-      ...groupByAssistant(add.folders).map((folders) =>
-        this.logux.processAs(
-          Actions.Folder.AddMany({
-            data: this.entitySerializer.iterable(folders),
-            context: assistantBroadcastContext(folders[0]),
-          }),
-          authMeta
-        )
-      ),
-    ]);
+  async broadcastAddMany({ add }: { add: { folders: FolderObject[] } }, meta: CMSBroadcastMeta) {
+    await this.logux.processAs(
+      Actions.Folder.AddMany({
+        data: this.mapToJSON(add.folders),
+        context: cmsBroadcastContext(meta.context),
+      }),
+      meta.auth
+    );
   }
 
-  async createManyAndBroadcast(authMeta: AuthMetaPayload, data: FolderCreateData[]) {
-    const result = await this.createManyAndSync(authMeta.userID, data);
+  async createManyAndBroadcast(data: FolderCreateData[], meta: CMSBroadcastMeta) {
+    const result = await this.createManyAndSync(data, { userID: meta.auth.userID, context: meta.context });
 
-    await this.broadcastAddMany(authMeta, result);
+    await this.broadcastAddMany(result, meta);
 
     return result.add.folders;
   }
 
   /* Delete */
 
-  async collectRelationsToDelete(folders: PKOrEntity<FolderEntity>[]) {
-    const [intents, entities, variables, functions, flow] = await Promise.all([
-      this.intent.findManyByFolders(folders),
-      this.entity.findManyByFolders(folders),
-      this.variable.findManyByFolders(folders),
-      this.functionService.findManyByFolders(folders),
-      this.flow.findManyByFolders(folders),
+  async collectRelationsToDelete(environmentID: string, folderIDs: string[]) {
+    const [flows, intents, entities, variables, functions] = await Promise.all([
+      this.flow.findManyByFolders(environmentID, folderIDs),
+      this.intent.findManyByFolders(environmentID, folderIDs),
+      this.entity.findManyByFolders(environmentID, folderIDs),
+      this.variable.findManyByFolders(environmentID, folderIDs),
+      this.functionService.findManyByFolders(environmentID, folderIDs),
     ]);
 
-    const [intentRelations, entityRelations, variableRelations, flowRelations] = await Promise.all([
-      this.intent.collectRelationsToDelete(intents),
-      this.entity.collectRelationsToDelete(entities),
-      this.functionService.collectRelationsToDelete(functions),
-      this.flow.collectRelationsToDelete(flow),
+    const [flowRelations, intentRelations, entityRelations, variableRelations] = await Promise.all([
+      this.flow.collectRelationsToDelete(flows),
+      this.intent.collectRelationsToDelete(environmentID, toPostgresEntityIDs(intents)),
+      this.entity.collectRelationsToDelete(environmentID, toPostgresEntityIDs(entities)),
+      this.functionService.collectRelationsToDelete(environmentID, toPostgresEntityIDs(functions)),
     ]);
 
     return {
+      ...flowRelations,
       ...intentRelations,
       ...entityRelations,
       ...variableRelations,
-      ...flowRelations,
+      flows,
       intents,
       entities,
       variables,
       functions,
-      flow,
     };
   }
 
-  deleteManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string): Promise<void> {
-    return this.orm.deleteManyByEnvironment(assistant, environmentID);
+  deleteManyByEnvironment(environmentID: string) {
+    return this.orm.deleteManyByEnvironment(environmentID);
   }
 
-  async deleteManyAndSync(ids: Primary<FolderEntity>[]) {
+  async deleteManyAndSync(ids: string[], { userID, context }: { userID: number; context: CMSContext }) {
     return this.postgresEM.transactional(async () => {
-      const folders = await this.findManyWithChildren(ids);
-      const relations = await this.collectRelationsToDelete(folders);
-
-      const entitySync = await this.entity.syncRelationsOnDelete(relations, { flush: false });
+      const folders = await this.findManyByParents(context.environmentID, ids);
+      const relations = await this.collectRelationsToDelete(context.environmentID, toPostgresEntityIDs(folders));
+      const entitySync = await this.entity.syncRelationsOnDelete(relations, { userID, context });
 
       const systemVariables = relations.variables.filter((variable) => variable.isSystem);
 
-      await this.variable.patchMany(systemVariables, { folderID: null }, { flush: false });
-
-      await this.orm.em.flush();
+      await this.variable.patchManyForUser(userID, systemVariables, { folderID: null });
 
       await this.deleteMany(folders);
 
@@ -297,77 +271,92 @@ export class FolderService extends CMSObjectService<FolderORM> {
   }
 
   async broadcastDeleteMany(
-    authMeta: AuthMetaPayload,
     {
       sync,
       delete: del,
     }: {
       sync: {
-        intents: IntentEntity[];
-        variables: VariableEntity[];
+        intents: IntentObject[];
+        variables: VariableObject[];
       };
       delete: {
-        folders: FolderEntity[];
-        intents: IntentEntity[];
-        entities: EntityEntity[];
-        variables: VariableEntity[];
-        functions: FunctionEntity[];
-        utterances: UtteranceEntity[];
-        functionPaths: FunctionPathEntity[];
-        entityVariants: EntityVariantEntity[];
-        requiredEntities: RequiredEntityEntity[];
-        functionVariables: FunctionVariableEntity[];
+        flows: FlowObject[];
+        folders: FolderObject[];
+        intents: IntentObject[];
+        entities: EntityObject[];
+        diagrams: DiagramObject[];
+        variables: VariableObject[];
+        functions: FunctionObject[];
+        utterances: UtteranceObject[];
+        functionPaths: FunctionPathObject[];
+        entityVariants: EntityVariantObject[];
+        requiredEntities: RequiredEntityObject[];
+        functionVariables: FunctionVariableObject[];
       };
-    }
+    },
+    meta: CMSBroadcastMeta
   ) {
     await Promise.all([
-      this.entity.broadcastDeleteMany(authMeta, {
-        sync: Utils.object.pick(sync, ['intents']),
-        delete: Utils.object.pick(del, ['entities', 'entityVariants', 'requiredEntities']),
-      }),
-
-      this.intent.broadcastDeleteMany(authMeta, {
-        delete: Utils.object.pick(del, ['intents', 'utterances', 'requiredEntities']),
-      }),
-
-      this.variable.broadcastDeleteMany(authMeta, {
-        delete: Utils.object.pick(del, ['variables']),
-      }),
-
-      this.functionService.broadcastDeleteMany(authMeta, {
-        delete: Utils.object.pick(del, ['functions', 'functionPaths', 'functionVariables']),
-      }),
-
-      // moving system variables to the top level
-      ...groupByAssistant(sync.variables).flatMap((variables) =>
-        variables.map((variable) =>
-          this.logux.processAs(
-            Actions.Variable.PatchOne({
-              id: variable.id,
-              patch: { folderID: null },
-              context: assistantBroadcastContext(variable),
-            }),
-            authMeta
-          )
-        )
+      this.flow.broadcastDeleteMany(
+        {
+          delete: Utils.object.pick(del, ['flows', 'diagrams']),
+        },
+        meta
       ),
 
-      ...groupByAssistant(del.folders).map((folders) =>
-        this.logux.processAs(
-          Actions.Folder.DeleteMany({
-            ids: toEntityIDs(folders),
-            context: assistantBroadcastContext(folders[0]),
-          }),
-          authMeta
-        )
+      this.entity.broadcastDeleteMany(
+        {
+          sync: Utils.object.pick(sync, ['intents']),
+          delete: Utils.object.pick(del, ['entities', 'entityVariants', 'requiredEntities']),
+        },
+        meta
+      ),
+
+      this.intent.broadcastDeleteMany(
+        {
+          delete: Utils.object.pick(del, ['intents', 'utterances', 'requiredEntities']),
+        },
+        meta
+      ),
+
+      this.variable.broadcastDeleteMany(
+        {
+          delete: Utils.object.pick(del, ['variables']),
+        },
+        meta
+      ),
+
+      this.functionService.broadcastDeleteMany(
+        {
+          delete: Utils.object.pick(del, ['functions', 'functionPaths', 'functionVariables']),
+        },
+        meta
+      ),
+
+      // moving system variables to the top level
+      this.logux.processAs(
+        Actions.Variable.PatchMany({
+          ids: toPostgresEntityIDs(sync.variables),
+          patch: { folderID: null },
+          context: cmsBroadcastContext(meta.context),
+        }),
+        meta.auth
+      ),
+
+      this.logux.processAs(
+        Actions.Folder.DeleteMany({
+          ids: toPostgresEntityIDs(del.folders),
+          context: cmsBroadcastContext(meta.context),
+        }),
+        meta.auth
       ),
     ]);
   }
 
-  async deleteManyAndBroadcast(authMeta: AuthMetaPayload, ids: Primary<FolderEntity>[]): Promise<void> {
-    const result = await this.deleteManyAndSync(ids);
+  async deleteManyAndBroadcast(ids: string[], meta: CMSBroadcastMeta): Promise<void> {
+    const result = await this.deleteManyAndSync(ids, { userID: meta.auth.userID, context: meta.context });
 
-    await this.broadcastDeleteMany(authMeta, result);
+    await this.broadcastDeleteMany(result, meta);
   }
 
   /* Upsert */
@@ -375,6 +364,6 @@ export class FolderService extends CMSObjectService<FolderORM> {
   async upsertManyWithSubResources(data: { folders: Folder[] }, meta: { userID: number; assistantID: string; environmentID: string }) {
     const { folders } = this.prepareImportData(data, meta);
 
-    await this.upsertMany(folders);
+    await this.upsertMany(this.mapFromJSON(folders));
   }
 }

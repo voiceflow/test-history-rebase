@@ -1,11 +1,14 @@
 import { PostgresCMSObjectORM } from '@/postgres/common/orms/postgres-cms-object.orm';
-import type { PKOrEntity } from '@/types';
 
-import type { WorkspaceStubEntity } from '../stubs/workspace.stub';
 import { AssistantEntity } from './assistant.entity';
+import { AssistantJSONAdapter } from './assistant-json.adapter';
 
-export class AssistantORM extends PostgresCMSObjectORM(AssistantEntity) {
-  findManyByWorkspace(workspace: PKOrEntity<WorkspaceStubEntity>) {
-    return this.find({ workspace });
+export class AssistantORM extends PostgresCMSObjectORM<AssistantEntity> {
+  Entity = AssistantEntity;
+
+  jsonAdapter = AssistantJSONAdapter;
+
+  findManyByWorkspace(workspaceID: number) {
+    return this.find({ workspaceID });
   }
 }

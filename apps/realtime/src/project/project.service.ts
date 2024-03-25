@@ -1,6 +1,6 @@
 import { Primary } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
-import { ProjectEntity, ProjectORM } from '@voiceflow/orm-designer';
+import { ProjectEntity, ProjectObject, ProjectORM } from '@voiceflow/orm-designer';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { IdentityClient } from '@voiceflow/sdk-identity';
 
@@ -11,6 +11,14 @@ import { ProjectSerializer } from './project.serializer';
 
 @Injectable()
 export class ProjectService extends MutableService<ProjectORM> {
+  toJSON = this.orm.jsonAdapter.fromDB;
+
+  fromJSON = this.orm.jsonAdapter.toDB;
+
+  mapToJSON = this.orm.jsonAdapter.mapFromDB;
+
+  mapFromJSON = this.orm.jsonAdapter.mapToDB;
+
   constructor(
     @Inject(ProjectORM)
     protected readonly orm: ProjectORM,
@@ -24,7 +32,7 @@ export class ProjectService extends MutableService<ProjectORM> {
     super();
   }
 
-  findOneOrFailWithFields<Key extends keyof ProjectEntity>(versionID: Primary<ProjectEntity>, fields: [Key, ...Key[]]) {
+  async findOneOrFailWithFields<Key extends keyof ProjectObject>(versionID: Primary<ProjectEntity>, fields: [Key, ...Key[]]) {
     return this.orm.findOneOrFail(versionID, { fields });
   }
 
@@ -44,6 +52,6 @@ export class ProjectService extends MutableService<ProjectORM> {
       return acc;
     }, {});
 
-    return projects.map((project) => this.legacyProjectSerializer.serialize(project, membersPerProject[project.id] ?? []));
+    return projects.map((project) => this.legacyProjectSerializer.serialize(project, membersPerProject[project._id.toJSON()] ?? []));
   }
 }

@@ -1,11 +1,13 @@
 import { forwardRef, Module } from '@nestjs/common';
-import { AssistantORM, ProgramORM, ProjectTemplateORM, PrototypeProgramORM } from '@voiceflow/orm-designer';
+import { AssistantORM, ProgramORM, PrototypeProgramORM } from '@voiceflow/orm-designer';
 
 import { CacheModule } from '@/cache/cache.module';
 // eslint-disable-next-line import/no-cycle
 import { EnvironmentModule } from '@/environment/environment.module';
+import { ProgramModule } from '@/program/program.module';
 import { ProjectModule } from '@/project/project.module';
 import { ProjectListModule } from '@/project-list/project-list.module';
+import { PrototypeProgramModule } from '@/prototype-program/prototype-program.module';
 import { VariableStateModule } from '@/variable-state/variable-state.module';
 import { VersionModule } from '@/version/version.module';
 
@@ -21,20 +23,18 @@ import { AssistantViewerService } from './assistant-viewer.service';
 
 @Module({
   imports: [
-    ProgramORM.register(),
-    AssistantORM.register(),
-    ProjectTemplateORM.register(),
-    PrototypeProgramORM.register(),
     forwardRef(() => BackupModule),
     forwardRef(() => ProjectModule),
     forwardRef(() => EnvironmentModule),
     CacheModule,
+    ProgramModule,
     VersionModule,
     ProjectListModule,
     VariableStateModule,
+    PrototypeProgramModule,
   ],
   exports: [AssistantService, AssistantSerializer],
-  providers: [AssistantService, AssistantPublishService, AssistantViewerService, AssistantSerializer],
+  providers: [ProgramORM, AssistantORM, PrototypeProgramORM, AssistantService, AssistantPublishService, AssistantViewerService, AssistantSerializer],
   controllers: [AssistantLoguxController, AssistantPublicHTTPController, AssistantPrivateHTTPController],
 })
 export class AssistantModule {}

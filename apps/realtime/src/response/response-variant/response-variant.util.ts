@@ -1,14 +1,9 @@
-import { CardLayout, ResponseContext, ResponseVariantType } from '@voiceflow/dtos';
+import { CardLayout, ResponseVariantType } from '@voiceflow/dtos';
 import { match } from 'ts-pattern';
 
-import { ResponseJSONVariantCreateData, ResponsePromptVariantCreateData, ResponseTextVariantCreateData } from './response-variant.interface';
+import { ResponseJSONVariantCreateData, ResponseTextVariantCreateData } from './response-variant.interface';
 
-export const emptyResponseVariantFactory = (data: {
-  type: ResponseVariantType;
-  assistantID: string;
-  environmentID: string;
-  discriminatorID: string;
-}) =>
+export const emptyResponseVariantFactory = (data: { type: ResponseVariantType; discriminatorID: string }) =>
   match(data)
     .with(
       { type: ResponseVariantType.TEXT },
@@ -30,15 +25,7 @@ export const emptyResponseVariantFactory = (data: {
         attachmentOrder: [],
       })
     )
-    .with(
-      { type: ResponseVariantType.PROMPT },
-      (payload): ResponsePromptVariantCreateData => ({
-        ...payload,
-        turns: 1,
-        context: ResponseContext.PROMPT,
-        promptID: null,
-        conditionID: null,
-        attachmentOrder: [],
-      })
-    )
+    .with({ type: ResponseVariantType.PROMPT }, () => {
+      throw new Error('Prompt variant not supported');
+    })
     .exhaustive();

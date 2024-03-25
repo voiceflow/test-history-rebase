@@ -8,9 +8,9 @@ import { EntityService } from './entity.service';
 import { EntityVariantModule } from './entity-variant/entity-variant.module';
 
 @Module({
-  imports: [EntityORM.register(), EntityVariantModule, RequiredEntityModule],
+  imports: [EntityVariantModule, RequiredEntityModule],
   exports: [EntityService],
-  providers: [EntityService],
+  providers: [EntityORM, EntityService],
   controllers: [EntityLoguxController],
 })
 export class EntityModule {}

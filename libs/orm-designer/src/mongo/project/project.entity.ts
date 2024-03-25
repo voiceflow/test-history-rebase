@@ -11,18 +11,12 @@ import type {
   ProjectSticker,
 } from '@voiceflow/dtos';
 
-import { cleanupUndefinedFields, MongoEntity } from '@/mongo/common';
-import type { EntityCreateParams, ToJSON, ToJSONWithForeignKeys } from '@/types';
+import { MongoEntity } from '@/mongo/common';
 
 import type { VersionKnowledgeBase } from '../version/interfaces/version-knowledge-base.interface';
-import { ProjectEntityAdapter } from './project-entity.adapter';
 
 @Entity({ collection: 'projects' })
 export class ProjectEntity extends MongoEntity {
-  static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<ProjectEntity>>>(data: JSON) {
-    return ProjectEntityAdapter.toDB<JSON>(data);
-  }
-
   @Property({ nullable: true })
   nlu?: string;
 
@@ -30,22 +24,22 @@ export class ProjectEntity extends MongoEntity {
   type?: string;
 
   @Property()
-  name: string;
+  name!: string;
 
   @Property({ nullable: true })
   image?: string;
 
   @Property()
-  teamID: number;
+  teamID!: number;
 
   @Property()
-  members: ProjectMember[];
+  members!: ProjectMember[];
 
   @Property({ nullable: true })
   privacy?: 'public' | 'private';
 
   @Property()
-  platform: string;
+  platform!: string;
 
   @Property({ nullable: true })
   _version?: number;
@@ -57,7 +51,7 @@ export class ProjectEntity extends MongoEntity {
   stickers?: ProjectSticker[];
 
   @Property()
-  creatorID: number;
+  creatorID!: number;
 
   @Property({ nullable: true })
   updatedBy?: number;
@@ -87,7 +81,7 @@ export class ProjectEntity extends MongoEntity {
   reportTags?: Record<string, ProjectReportTag>;
 
   @Property()
-  platformData: AnyRecord;
+  platformData!: AnyRecord;
 
   @Property({ nullable: true })
   customThemes?: ProjectCustomTheme[];
@@ -100,89 +94,4 @@ export class ProjectEntity extends MongoEntity {
 
   @Property({ nullable: true })
   nluSettings?: ProjectNLUSettings;
-
-  constructor({
-    nlu,
-    type,
-    name,
-    image,
-    teamID,
-    members,
-    privacy,
-    platform,
-    _version,
-    linkType,
-    stickers,
-    creatorID,
-    updatedBy,
-    prototype,
-    apiPrivacy,
-    devVersion,
-    liveVersion,
-    reportTags,
-    platformData,
-    customThemes,
-    knowledgeBase,
-    previewVersion,
-    aiAssistSettings,
-    ...data
-  }: EntityCreateParams<ProjectEntity>) {
-    super(data);
-
-    ({
-      nlu: this.nlu,
-      type: this.type,
-      name: this.name,
-      image: this.image,
-      teamID: this.teamID,
-      members: this.members,
-      privacy: this.privacy,
-      platform: this.platform,
-      _version: this._version,
-      linkType: this.linkType,
-      stickers: this.stickers,
-      creatorID: this.creatorID,
-      updatedBy: this.updatedBy,
-      prototype: this.prototype,
-      apiPrivacy: this.apiPrivacy,
-      devVersion: this.devVersion,
-      liveVersion: this.liveVersion,
-      reportTags: this.reportTags,
-      platformData: this.platformData,
-      customThemes: this.customThemes,
-      knowledgeBase: this.knowledgeBase,
-      previewVersion: this.previewVersion,
-      aiAssistSettings: this.aiAssistSettings,
-    } = ProjectEntity.fromJSON({
-      nlu,
-      type,
-      name,
-      image,
-      teamID,
-      members,
-      privacy,
-      platform,
-      _version,
-      linkType,
-      stickers,
-      creatorID,
-      updatedBy,
-      prototype,
-      apiPrivacy,
-      devVersion,
-      liveVersion,
-      reportTags,
-      platformData,
-      customThemes,
-      knowledgeBase,
-      previewVersion,
-      aiAssistSettings,
-    }));
-
-    cleanupUndefinedFields(this);
-  }
-
-  toJSON(): ToJSON<ProjectEntity> {
-    return ProjectEntityAdapter.fromDB(this);
-  }
 }

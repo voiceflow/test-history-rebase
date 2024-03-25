@@ -1,20 +1,30 @@
-import type { AssistantEntity } from '@/postgres/assistant';
 import { PostgresCMSObjectORM } from '@/postgres/common/orms/postgres-cms-object.orm';
-import type { PKOrEntity } from '@/types';
 
-import type { IntentEntity } from '../intent.entity';
 import { UtteranceEntity } from './utterance.entity';
+import { UtteranceJSONAdapter } from './utterance-json.adapter';
 
-export class UtteranceORM extends PostgresCMSObjectORM(UtteranceEntity) {
-  findManyByIntents(intents: PKOrEntity<IntentEntity>[]) {
-    return this.find({ intent: intents });
+export class UtteranceORM extends PostgresCMSObjectORM<UtteranceEntity> {
+  Entity = UtteranceEntity;
+
+  jsonAdapter = UtteranceJSONAdapter;
+
+  findManyByIntents(environmentID: string, intentIDs: string[]) {
+    return this.find({ environmentID, intentID: intentIDs });
   }
 
-  findManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
-    return this.find({ assistant, environmentID }, { orderBy: { createdAt: 'DESC' } });
+  findManyByEnvironment(environmentID: string) {
+    return this.find({ environmentID });
   }
 
-  deleteManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
-    return this.nativeDelete({ assistant, environmentID });
+  findManyByEnvironmentAndIDs(environmentID: string, ids: string[]) {
+    return this.find({ environmentID, id: ids });
+  }
+
+  deleteManyByEnvironment(environmentID: string) {
+    return this.delete({ environmentID });
+  }
+
+  deleteManyByEnvironmentAndIDs(environmentID: string, ids: string[]) {
+    return this.delete({ environmentID, id: ids });
   }
 }

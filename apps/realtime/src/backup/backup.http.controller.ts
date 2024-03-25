@@ -6,8 +6,6 @@ import { Permission } from '@voiceflow/sdk-auth';
 import { Authorize, UserID } from '@voiceflow/sdk-auth/nestjs';
 import { ZodValidationPipe } from 'nestjs-zod';
 
-import { EntitySerializer } from '@/common';
-
 import { BackupService } from './backup.service';
 import { BackupCreateRequest } from './dtos/backup-create.request';
 import { BackupDownloadResponse } from './dtos/backup-download.response';
@@ -19,9 +17,7 @@ import { BackupPreviewResponse } from './dtos/backup-preview.response';
 export class BackupHTTPController {
   constructor(
     @Inject(BackupService)
-    private readonly service: BackupService,
-    @Inject(EntitySerializer)
-    private readonly entitySerializer: EntitySerializer
+    private readonly service: BackupService
   ) {}
 
   @Get()
@@ -32,7 +28,7 @@ export class BackupHTTPController {
     @Query('limit', ParseIntPipe) limit: number,
     @Query('offset', ParseIntPipe) offset: number
   ): Promise<BackupFindManyResponse> {
-    return this.service.findManyForAssistantID(projectID, { limit, offset }).then((result) => ({ data: this.entitySerializer.iterable(result) }));
+    return this.service.findManyForAssistantID(projectID, { limit, offset }).then((backups) => ({ data: this.service.mapToJSON(backups) }));
   }
 
   @Post()
@@ -44,7 +40,7 @@ export class BackupHTTPController {
     @UserID() creatorID: number,
     @Body(new ZodValidationPipe(BackupCreateRequest)) { versionID, name }: BackupCreateRequest
   ): Promise<Backup> {
-    return this.service.createOneForUser(creatorID, versionID, name).then((backup) => this.entitySerializer.serialize(backup));
+    return this.service.createOneForUser(creatorID, versionID, name).then((backup) => this.service.toJSON(backup));
   }
 
   @Delete(':backupID')
@@ -72,7 +68,7 @@ export class BackupHTTPController {
   @Authorize.Permissions([Permission.PROJECT_UPDATE])
   @ZodApiResponse({ status: HttpStatus.CREATED, schema: BackupDTO })
   restoreOne(@Param('backupID') backupID: number, @Query('clientID') clientID: string, @UserID() userID: number): Promise<Backup> {
-    return this.service.restoreBackupAndEjectUsers({ clientID, userID }, backupID).then((backup) => this.entitySerializer.serialize(backup));
+    return this.service.restoreBackupAndEjectUsers({ clientID, userID }, backupID).then((backup) => this.service.toJSON(backup));
   }
 
   @Post(':backupID/preview')

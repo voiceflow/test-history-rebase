@@ -5,9 +5,8 @@ import { CardButtonLoguxController } from './card-button.logux.controller';
 import { CardButtonService } from './card-button.service';
 
 @Module({
-  imports: [CardButtonORM.register(), AssistantORM.register(), CardAttachmentORM.register()],
   exports: [CardButtonService],
-  providers: [CardButtonService],
+  providers: [CardButtonORM, AssistantORM, CardAttachmentORM, CardButtonService],
   controllers: [CardButtonLoguxController],
 })
 export class CardButtonModule {}

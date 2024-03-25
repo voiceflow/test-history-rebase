@@ -2,38 +2,31 @@ import { Entity, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
 import type { ObjectId } from '@mikro-orm/mongodb';
 import type { DiagramMenuItem, DiagramNode } from '@voiceflow/dtos';
 
-import { cleanupUndefinedFields, MongoEntity } from '@/mongo/common';
-import type { EntityCreateParams, ToJSON, ToJSONWithForeignKeys } from '@/types';
-
-import { DiagramEntityAdapter } from './diagram-entity.adapter';
+import { MongoEntity } from '@/mongo/common';
 
 @Entity({ collection: 'diagrams' })
 @Unique({ properties: ['diagramID', 'versionID'] })
 export class DiagramEntity extends MongoEntity {
-  static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<DiagramEntity>>>(data: JSON) {
-    return DiagramEntityAdapter.toDB<JSON>(data);
-  }
-
   @Property()
-  name: string;
+  name!: string;
 
   @Property({ nullable: true })
   type?: string;
 
   @Property()
-  zoom: number;
+  zoom!: number;
 
   @Property()
-  nodes: Record<string, DiagramNode>;
+  nodes!: Record<string, DiagramNode>;
 
   @Property()
-  offsetX: number;
+  offsetX!: number;
 
   @Property()
-  offsetY: number;
+  offsetY!: number;
 
   @Property()
-  modified: number;
+  modified!: number;
 
   /**
    * @deprecated probably some legacy stuff and never used
@@ -43,16 +36,16 @@ export class DiagramEntity extends MongoEntity {
   children?: string[];
 
   @Property()
-  diagramID: ObjectId;
+  diagramID!: ObjectId;
 
   @Property()
-  versionID: ObjectId;
+  versionID!: ObjectId;
 
   @Property()
-  creatorID: number;
+  creatorID!: number;
 
   @Property()
-  variables: string[];
+  variables!: string[];
 
   @Property({ nullable: true })
   menuItems?: DiagramMenuItem[];
@@ -72,65 +65,4 @@ export class DiagramEntity extends MongoEntity {
   intentStepIDs?: string[];
 
   [PrimaryKeyType]?: { diagramID: string; versionID: string };
-
-  constructor({
-    name,
-    type,
-    zoom,
-    nodes,
-    offsetX,
-    offsetY,
-    modified,
-    children,
-    diagramID,
-    versionID,
-    creatorID,
-    variables,
-    menuItems,
-    menuNodeIDs,
-    intentStepIDs,
-    ...data
-  }: EntityCreateParams<DiagramEntity>) {
-    super(data);
-
-    ({
-      name: this.name,
-      type: this.type,
-      zoom: this.zoom,
-      nodes: this.nodes,
-      offsetX: this.offsetX,
-      offsetY: this.offsetY,
-      modified: this.modified,
-      children: this.children,
-      diagramID: this.diagramID,
-      versionID: this.versionID,
-      creatorID: this.creatorID,
-      variables: this.variables,
-      menuItems: this.menuItems,
-      menuNodeIDs: this.menuNodeIDs,
-      intentStepIDs: this.intentStepIDs,
-    } = DiagramEntity.fromJSON({
-      name,
-      type,
-      zoom,
-      nodes,
-      offsetX,
-      offsetY,
-      modified,
-      children,
-      diagramID,
-      versionID,
-      creatorID,
-      variables,
-      menuItems,
-      menuNodeIDs,
-      intentStepIDs,
-    }));
-
-    cleanupUndefinedFields(this);
-  }
-
-  toJSON(): ToJSON<DiagramEntity> {
-    return DiagramEntityAdapter.fromDB(this);
-  }
 }

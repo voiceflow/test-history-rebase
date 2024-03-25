@@ -1,15 +1,26 @@
-import type { AssistantEntity } from '@/main';
 import { PostgresCMSObjectORM } from '@/postgres/common/orms/postgres-cms-object.orm';
-import type { PKOrEntity } from '@/types';
 
 import { CardAttachmentEntity } from './card-attachment.entity';
+import { CardAttachmentJSONAdapter } from './card-attachment-json.adapter';
 
-export class CardAttachmentORM extends PostgresCMSObjectORM(CardAttachmentEntity) {
-  findManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
-    return this.find({ assistant, environmentID });
+export class CardAttachmentORM extends PostgresCMSObjectORM<CardAttachmentEntity> {
+  Entity = CardAttachmentEntity;
+
+  jsonAdapter = CardAttachmentJSONAdapter;
+
+  findManyByEnvironment(environmentID: string) {
+    return this.find({ environmentID });
   }
 
-  deleteManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
-    return this.nativeDelete({ assistant, environmentID });
+  findManyByEnvironmentAndIDs(environmentID: string, ids: string[]) {
+    return this.find({ environmentID, id: ids });
+  }
+
+  deleteManyByEnvironment(environmentID: string) {
+    return this.delete({ environmentID });
+  }
+
+  deleteManyByEnvironmentAndIDs(environmentID: string, ids: string[]) {
+    return this.delete({ environmentID, id: ids });
   }
 }

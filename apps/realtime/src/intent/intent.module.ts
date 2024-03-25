@@ -9,9 +9,9 @@ import { RequiredEntityModule } from './required-entity/required-entity.module';
 import { UtteranceModule } from './utterance/utterance.module';
 
 @Module({
-  imports: [IntentORM.register(), EntityModule, UtteranceModule, RequiredEntityModule],
+  imports: [EntityModule, UtteranceModule, RequiredEntityModule],
   exports: [IntentService],
-  providers: [IntentService],
+  providers: [IntentORM, IntentService],
   controllers: [IntentLoguxController],
 })
 export class IntentModule {}

@@ -1,117 +1,73 @@
-import type { DeleteOptions, FilterQuery, UpdateOptions } from '@mikro-orm/core';
-import { Utils } from '@voiceflow/common';
+import type { Primary } from '@mikro-orm/core';
 
 import type { MutableORM } from '@/common';
-import type { BaseEntity } from '@/common/interfaces/base-entity.interface';
-import { isEntity } from '@/common/utils';
-import type {
-  Constructor,
-  EntityObject,
-  MutableEntityData,
-  ORMDeleteOptions,
-  ORMMutateOptions,
-  PKOrEntity,
-  PrimaryObject,
-} from '@/types';
+import type { CreateData, DEFAULT_OR_NULL_COLUMN, PatchData, PostgresPKEntity, ToObject, WhereData } from '@/types';
 
 import { PostgresORM } from './postgres.orm';
 
-export const PostgresMutableORM = <Entity extends BaseEntity, ConstructorParam extends object>(
-  Entity: Constructor<[data: ConstructorParam], Entity> & {
-    fromJSON: (data: MutableEntityData<Entity>) => Partial<EntityObject<Entity>>;
+export abstract class PostgresMutableORM<
+    BaseEntity extends PostgresPKEntity,
+    DiscriminatorEntity extends Omit<BaseEntity, typeof DEFAULT_OR_NULL_COLUMN> = BaseEntity
+  >
+  extends PostgresORM<BaseEntity, DiscriminatorEntity>
+  implements MutableORM<BaseEntity, DiscriminatorEntity>
+{
+  patch(where: WhereData<BaseEntity> | WhereData<BaseEntity>[], patch: PatchData<BaseEntity>) {
+    const qb = this.qb.update(this.toDB(this.onPatch(patch) as any));
+
+    const ignore = this.buildWhere(qb, where);
+
+    if (ignore) return Promise.resolve(0);
+
+    return this.executeQB(qb);
   }
-) =>
-  class extends PostgresORM<Entity, ConstructorParam>(Entity) implements MutableORM<Entity, ConstructorParam> {
-    async patchOne(
-      entity: PKOrEntity<Entity>,
-      patch: MutableEntityData<Entity>,
-      { flush = true }: ORMMutateOptions = {}
-    ): Promise<void> {
-      const entityRef = isEntity(entity) ? entity : this.getReference(entity);
-      const { primaryKeys } = this.em.getMetadata(Entity);
 
-      // to update composite references properly we need to add primary key into patch data adapter
-      const patchData = Entity.fromJSON({ ...Utils.object.pick(entity, primaryKeys as any[]), ...patch });
+  patchOne(id: Primary<BaseEntity>, patch: PatchData<BaseEntity>) {
+    return this.patch(this.idToWhere(id), patch);
+  }
 
-      Object.assign(
-        entityRef,
-        // remove primary keys from patch data if they are not changed
-        Utils.object.omit(patchData, primaryKeys.filter((pk) => !Utils.object.hasProperty(patch, pk)) as any[])
-      );
+  patchMany(ids: Primary<BaseEntity>[], patch: PatchData<BaseEntity>) {
+    return this.patch(this.idsToWhere(ids), patch);
+  }
 
-      if (flush) {
-        await this.em.flush();
-      }
+  async upsertOne(data: CreateData<DiscriminatorEntity>) {
+    const [result] = await this.upsertMany([data]);
+
+    return result;
+  }
+
+  async upsertMany(data: CreateData<DiscriminatorEntity>[]) {
+    return this._insertMany(data, { upsert: true });
+  }
+
+  async delete(where: WhereData<BaseEntity> | WhereData<BaseEntity>[], returning?: false): Promise<number>;
+  async delete(
+    where: WhereData<BaseEntity> | WhereData<BaseEntity>[],
+    returning: true
+  ): Promise<ToObject<DiscriminatorEntity>[]>;
+  async delete(where: WhereData<BaseEntity> | WhereData<BaseEntity>[], returning?: boolean) {
+    const qb = this.qb.delete();
+
+    const ignore = this.buildWhere(qb, where);
+
+    if (ignore) return Promise.resolve(returning ? [] : 0);
+
+    if (!returning) {
+      return qb;
     }
 
-    async patchMany(
-      entities: PKOrEntity<Entity>[],
-      patch: MutableEntityData<Entity>,
-      { flush = true }: ORMMutateOptions = {}
-    ): Promise<void> {
-      await Promise.all(entities.map((entity) => this.patchOne(entity, patch, { flush: false })));
+    this.buildReturning(qb);
 
-      if (flush) {
-        await this.em.flush();
-      }
-    }
+    const result = await this.executeQB(qb);
 
-    async upsertOne(
-      data: (MutableEntityData<Entity> & PrimaryObject<Entity>) | (ConstructorParam & PrimaryObject<Entity>),
-      { flush = true }: ORMMutateOptions = {}
-    ): Promise<Entity> {
-      const result = await this.em.upsert(Entity, Entity.fromJSON(data) as Entity);
+    return this.mapFromDB(result);
+  }
 
-      if (flush) {
-        await this.em.flush();
-      }
+  deleteOne(id: Primary<BaseEntity>) {
+    return this.delete(this.idToWhere(id));
+  }
 
-      return result;
-    }
-
-    async upsertMany(
-      data: Array<(MutableEntityData<Entity> & PrimaryObject<Entity>) | (ConstructorParam & PrimaryObject<Entity>)>,
-      { flush = true }: ORMMutateOptions = {}
-    ): Promise<Entity[]> {
-      const result = await this.em.upsertMany(
-        Entity,
-        data.map((item) => Entity.fromJSON(item) as Entity)
-      );
-
-      if (flush) {
-        await this.em.flush();
-      }
-
-      return result;
-    }
-
-    async deleteOne(entity: PKOrEntity<Entity>, { flush = true }: ORMDeleteOptions = {}): Promise<void> {
-      const entityRef = isEntity(entity) ? entity : this.getReference(entity);
-
-      this.em.remove(entityRef);
-
-      if (flush) {
-        await this.em.flush();
-      }
-    }
-
-    async deleteMany(entities: PKOrEntity<Entity>[], { flush = true }: ORMDeleteOptions = {}): Promise<void> {
-      await Promise.all(entities.map((entity) => this.deleteOne(entity, { flush: false })));
-
-      if (flush) {
-        await this.em.flush();
-      }
-    }
-
-    async nativeDelete(where: FilterQuery<Entity>, options?: DeleteOptions<Entity>): Promise<void> {
-      await this.em.nativeDelete(Entity, where, options);
-    }
-
-    async nativeUpdate(
-      where: FilterQuery<Entity>,
-      data: MutableEntityData<Entity>,
-      options?: UpdateOptions<Entity>
-    ): Promise<void> {
-      await this.em.nativeUpdate<Entity>(Entity, where, data as any, options);
-    }
-  };
+  deleteMany(ids: Primary<BaseEntity>[]) {
+    return this.delete(this.idsToWhere(ids));
+  }
+}

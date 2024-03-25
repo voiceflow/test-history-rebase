@@ -4,8 +4,13 @@ import type { VersionSettings } from '@voiceflow/dtos';
 
 import { Atomic, MongoAtomicORM } from '../common';
 import { VersionEntity } from './version.entity';
+import { VersionJSONAdapter } from './version-json.adapter';
 
-export class VersionORM extends MongoAtomicORM(VersionEntity) {
+export class VersionORM extends MongoAtomicORM<VersionEntity> {
+  Entity = VersionEntity;
+
+  jsonAdapter = VersionJSONAdapter;
+
   static SETTINGS_PATH = 'settings' as const satisfies keyof VersionEntity;
 
   static PLATFORM_DATA_PATH = 'platformData' as const satisfies keyof VersionEntity;
@@ -22,6 +27,12 @@ export class VersionORM extends MongoAtomicORM(VersionEntity) {
       id,
       Object.entries(data).map(([key, value]) => Atomic.Set([{ path: [VersionORM.PLATFORM_DATA_PATH, key], value }]))
     );
+  }
+
+  async findOneOrFailProjectID(versionID: string) {
+    const { projectID } = await this.findOneOrFail(versionID, { fields: ['projectID'] });
+
+    return projectID;
   }
 
   async findOneOrFailPlatformData<T extends AnyRecord>(id: Primary<VersionEntity>) {

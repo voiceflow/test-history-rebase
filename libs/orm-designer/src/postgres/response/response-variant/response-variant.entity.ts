@@ -1,16 +1,4 @@
-import {
-  ArrayType,
-  Collection,
-  Entity,
-  Enum,
-  Index,
-  ManyToOne,
-  OneToMany,
-  PrimaryKeyType,
-  Property,
-  Unique,
-  wrap,
-} from '@mikro-orm/core';
+import { ArrayType, Entity, Enum, Index, ManyToOne, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
 import type { Markup } from '@voiceflow/dtos';
 import { CardLayout, ResponseContext, ResponseVariantType } from '@voiceflow/dtos';
 
@@ -19,16 +7,9 @@ import type { AssistantEntity } from '@/postgres/assistant';
 import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
 import { BaseConditionEntity } from '@/postgres/condition';
 import { PromptEntity } from '@/postgres/prompt';
-import type { CMSCompositePK, EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
+import type { CMSCompositePK, Ref } from '@/types';
 
-import type { BaseResponseAttachmentEntity } from '../response-attachment/response-attachment.entity';
 import { ResponseDiscriminatorEntity } from '../response-discriminator/response-discriminator.entity';
-import {
-  BaseResponseVariantEntityAdapter,
-  JSONResponseVariantEntityAdapter,
-  PromptResponseVariantEntityAdapter,
-  TextResponseVariantEntityAdapter,
-} from './response-variant-entity.adapter';
 
 const TABLE_NAME = 'designer.response_variant';
 
@@ -39,13 +20,11 @@ const TABLE_NAME = 'designer.response_variant';
 })
 @Unique({ properties: ['id', 'environmentID'] })
 @Index({ properties: ['environmentID'] })
-export class BaseResponseVariantEntity extends PostgresCMSObjectEntity {
-  static fromJSON(data: Partial<ToJSONWithForeignKeys<BaseResponseVariantEntity>>) {
-    return BaseResponseVariantEntityAdapter.toDB(data);
-  }
-
+export class BaseResponseVariantEntity<DefaultOrNullColumn extends string = never> extends PostgresCMSObjectEntity<
+  DefaultOrNullColumn | 'condition'
+> {
   @Enum(() => ResponseVariantType)
-  type: ResponseVariantType;
+  type!: ResponseVariantType;
 
   @ManyToOne(() => BaseConditionEntity, {
     name: 'condition_id',
@@ -54,51 +33,25 @@ export class BaseResponseVariantEntity extends PostgresCMSObjectEntity {
     nullable: true,
     fieldNames: ['condition_id', 'environment_id'],
   })
-  condition: Ref<BaseConditionEntity> | null = null;
+  condition!: Ref<BaseConditionEntity> | null;
 
   @Assistant()
-  assistant: Ref<AssistantEntity>;
-
-  @OneToMany('BaseResponseAttachmentEntity', (value: BaseResponseAttachmentEntity) => value.variant)
-  attachments = new Collection<BaseResponseAttachmentEntity>(this);
+  assistant!: Ref<AssistantEntity>;
 
   @ManyToOne(() => ResponseDiscriminatorEntity, {
     name: 'discriminator_id',
     onDelete: 'cascade',
     fieldNames: ['discriminator_id', 'environment_id'],
   })
-  discriminator: Ref<ResponseDiscriminatorEntity>;
+  discriminator!: Ref<ResponseDiscriminatorEntity>;
 
   @Environment()
-  environmentID: string;
+  environmentID!: string;
 
   @Property({ type: ArrayType })
-  attachmentOrder: string[];
+  attachmentOrder!: string[];
 
   [PrimaryKeyType]?: CMSCompositePK;
-
-  constructor(data: EntityCreateParams<BaseResponseVariantEntity>) {
-    super(data);
-
-    ({
-      type: this.type,
-      condition: this.condition,
-      assistant: this.assistant,
-      discriminator: this.discriminator,
-      environmentID: this.environmentID,
-      attachmentOrder: this.attachmentOrder,
-    } = BaseResponseVariantEntity.fromJSON(data));
-  }
-
-  toJSON(...args: any[]): ToJSONWithForeignKeys<BaseResponseVariantEntity> {
-    return BaseResponseVariantEntityAdapter.fromDB({
-      ...wrap<BaseResponseVariantEntity>(this).toObject(...args),
-      assistant: this.assistant,
-      condition: this.condition ?? null,
-      updatedBy: this.updatedBy,
-      discriminator: this.discriminator,
-    });
-  }
 }
 
 @Entity({
@@ -106,45 +59,21 @@ export class BaseResponseVariantEntity extends PostgresCMSObjectEntity {
   discriminatorValue: ResponseVariantType.JSON,
 })
 export class JSONResponseVariantEntity extends BaseResponseVariantEntity {
-  static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<JSONResponseVariantEntity>>>(data: JSON) {
-    return JSONResponseVariantEntityAdapter.toDB<JSON>(data);
-  }
-
-  type: typeof ResponseVariantType.JSON = ResponseVariantType.JSON;
+  type!: typeof ResponseVariantType.JSON;
 
   @Property({ type: MarkupType })
-  json: Markup;
-
-  constructor({ json, ...data }: EntityCreateParams<JSONResponseVariantEntity, 'type'>) {
-    super({ ...data, type: ResponseVariantType.JSON });
-
-    ({ json: this.json } = JSONResponseVariantEntity.fromJSON({ json }));
-  }
-
-  toJSON(...args: any[]): ToJSONWithForeignKeys<JSONResponseVariantEntity> {
-    return JSONResponseVariantEntityAdapter.fromDB({
-      ...wrap<JSONResponseVariantEntity>(this).toObject(...args),
-      assistant: this.assistant,
-      condition: this.condition ?? null,
-      updatedBy: this.updatedBy,
-      discriminator: this.discriminator,
-    });
-  }
+  json!: Markup;
 }
 
 @Entity({
   tableName: TABLE_NAME,
   discriminatorValue: ResponseVariantType.PROMPT,
 })
-export class PromptResponseVariantEntity extends BaseResponseVariantEntity {
-  static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<PromptResponseVariantEntity>>>(data: JSON) {
-    return PromptResponseVariantEntityAdapter.toDB<JSON>(data);
-  }
-
-  type: typeof ResponseVariantType.PROMPT = ResponseVariantType.PROMPT;
+export class PromptResponseVariantEntity extends BaseResponseVariantEntity<'prompt'> {
+  type!: typeof ResponseVariantType.PROMPT;
 
   @Property()
-  turns: number;
+  turns!: number;
 
   @ManyToOne(() => PromptEntity, {
     name: 'prompt_id',
@@ -153,72 +82,25 @@ export class PromptResponseVariantEntity extends BaseResponseVariantEntity {
     nullable: true,
     fieldNames: ['prompt_id', 'environment_id'],
   })
-  prompt: Ref<PromptEntity> | null = null;
+  prompt!: Ref<PromptEntity> | null;
 
   @Enum(() => ResponseContext)
-  context: ResponseContext;
-
-  constructor({ turns, context, promptID, ...data }: EntityCreateParams<PromptResponseVariantEntity, 'type'>) {
-    super({ ...data, type: ResponseVariantType.PROMPT });
-
-    ({
-      turns: this.turns,
-      prompt: this.prompt,
-      context: this.context,
-    } = PromptResponseVariantEntity.fromJSON({ turns, context, promptID }));
-  }
-
-  toJSON(...args: any[]): ToJSONWithForeignKeys<PromptResponseVariantEntity> {
-    return PromptResponseVariantEntityAdapter.fromDB({
-      ...wrap<PromptResponseVariantEntity>(this).toObject(...args),
-      prompt: this.prompt ?? null,
-      assistant: this.assistant,
-      condition: this.condition ?? null,
-      updatedBy: this.updatedBy,
-      discriminator: this.discriminator,
-    });
-  }
+  context!: ResponseContext;
 }
 
 @Entity({
   tableName: TABLE_NAME,
   discriminatorValue: ResponseVariantType.TEXT,
 })
-export class TextResponseVariantEntity extends BaseResponseVariantEntity {
-  static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<TextResponseVariantEntity>>>(data: JSON) {
-    return TextResponseVariantEntityAdapter.toDB<JSON>(data);
-  }
-
-  type: typeof ResponseVariantType.TEXT = ResponseVariantType.TEXT;
+export class TextResponseVariantEntity extends BaseResponseVariantEntity<'speed'> {
+  type!: typeof ResponseVariantType.TEXT;
 
   @Property({ type: MarkupType })
-  text: Markup;
+  text!: Markup;
 
   @Property({ default: null, nullable: true })
-  speed: number | null;
+  speed!: number | null;
 
   @Enum(() => CardLayout)
-  cardLayout: CardLayout;
-
-  constructor({ text, speed, cardLayout, ...data }: EntityCreateParams<TextResponseVariantEntity, 'type'>) {
-    super({ ...data, type: ResponseVariantType.TEXT });
-
-    ({
-      text: this.text,
-      speed: this.speed,
-      cardLayout: this.cardLayout,
-    } = TextResponseVariantEntity.fromJSON({ text, speed, cardLayout }));
-  }
-
-  toJSON(...args: any[]): ToJSONWithForeignKeys<TextResponseVariantEntity> {
-    return TextResponseVariantEntityAdapter.fromDB({
-      ...wrap<TextResponseVariantEntity>(this).toObject(...args),
-      assistant: this.assistant,
-      condition: this.condition ?? null,
-      updatedBy: this.updatedBy,
-      discriminator: this.discriminator,
-    });
-  }
+  cardLayout!: CardLayout;
 }
-
-export type AnyResponseVariantEntity = TextResponseVariantEntity | JSONResponseVariantEntity;

@@ -1,11 +1,18 @@
 import { Inject, Injectable } from '@nestjs/common';
-import type { AssistantEntity, MediaAttachmentEntity, PKOrEntity } from '@voiceflow/orm-designer';
 import { ResponseMediaAttachmentORM } from '@voiceflow/orm-designer';
 
 import { MutableService } from '@/common';
 
 @Injectable()
 export class ResponseMediaAttachmentService extends MutableService<ResponseMediaAttachmentORM> {
+  toJSON = this.orm.jsonAdapter.fromDB;
+
+  fromJSON = this.orm.jsonAdapter.toDB;
+
+  mapToJSON = this.orm.jsonAdapter.mapFromDB;
+
+  mapFromJSON = this.orm.jsonAdapter.mapToDB;
+
   constructor(
     @Inject(ResponseMediaAttachmentORM)
     protected readonly orm: ResponseMediaAttachmentORM
@@ -13,11 +20,7 @@ export class ResponseMediaAttachmentService extends MutableService<ResponseMedia
     super();
   }
 
-  findManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
-    return this.orm.findManyByEnvironment(assistant, environmentID);
-  }
-
-  findManyByMediaAttachments(medias: PKOrEntity<MediaAttachmentEntity>[]) {
-    return this.orm.findManyByMediaAttachments(medias);
+  findManyByMediaAttachments(environmentID: string, mediaIDs: string[]) {
+    return this.orm.findManyByMediaAttachments(environmentID, mediaIDs);
   }
 }

@@ -46,6 +46,7 @@ export class ProjectListService {
   public async findManyByWorkspaceID(workspaceID: number): Promise<Realtime.DBProjectList[]> {
     try {
       const projectLists = await this.orm.findOneByWorkspace(workspaceID);
+
       if (!projectLists) return [];
 
       return JSON.parse(projectLists.projectLists);
@@ -90,7 +91,7 @@ export class ProjectListService {
 
   public async replaceMany(workspaceID: number, projectLists: Realtime.DBProjectList[]): Promise<void> {
     try {
-      await this.orm.updateOneByWorkspace(workspaceID, { projectLists: JSON.stringify(projectLists) });
+      await this.orm.upsertOneByWorkspace(workspaceID, { projectLists: JSON.stringify(projectLists) });
     } catch (err) {
       this.logger.error(err);
     }

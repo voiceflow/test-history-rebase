@@ -1,108 +1,91 @@
-import { ObjectId } from '@mikro-orm/mongodb';
+import type { Primary } from '@mikro-orm/core';
 import type { Filter, FindOneAndUpdateOptions, UpdateOptions } from 'mongodb-mikro';
 
-import type { MutableORM } from '@/common';
-import type { Constructor, EntityObject, MutableEntityData, PKOrEntity } from '@/types';
+import type { MutableORM } from '@/common/interfaces/mutable-orm.interface';
+import type { ToObject } from '@/types';
 
 import type * as Atomic from '../atomic';
 import type { MongoEntity } from '../entities/mongo.entity';
 import { MongoMutableORM } from './mongo-mutable.orm';
 
-export const MongoAtomicORM = <Entity extends MongoEntity, ConstructorParam extends object>(
-  Entity: Constructor<[data: ConstructorParam], Entity> & {
-    fromJSON: (data: MutableEntityData<Entity>) => Partial<EntityObject<Entity>>;
+export abstract class MongoAtomicORM<
+    BaseEntity extends MongoEntity,
+    DiscriminatorEntity extends BaseEntity = BaseEntity
+  >
+  extends MongoMutableORM<BaseEntity, DiscriminatorEntity>
+  implements MutableORM<BaseEntity, DiscriminatorEntity>
+{
+  getAtomicUpdatesFields<M>(updates: Atomic.UpdateOperation<any>[]) {
+    return updates.reduce(
+      (acc, update) => ({
+        query: {
+          ...acc.query,
+          [update.operation]: { ...acc.query[update.operation as keyof Filter<M>], ...update.query },
+        },
+        arrayFilters: [...acc.arrayFilters, ...update.arrayFilters],
+      }),
+      { query: {} as Filter<M>, arrayFilters: [] as object[] }
+    );
   }
-) =>
-  class extends MongoMutableORM<Entity, ConstructorParam>(Entity) implements MutableORM<Entity, ConstructorParam> {
-    getAtomicUpdatesFields<M>(updates: Atomic.UpdateOperation<any>[]) {
-      return updates.reduce(
-        (acc, update) => ({
-          query: {
-            ...acc.query,
-            [update.operation]: { ...acc.query[update.operation as keyof Filter<M>], ...update.query },
-          },
-          arrayFilters: [...acc.arrayFilters, ...update.arrayFilters],
-        }),
-        { query: {} as Filter<M>, arrayFilters: [] as object[] }
-      );
+
+  async atomicUpdate(
+    filter: Filter<BaseEntity>,
+    updates: Atomic.UpdateOperation<any>[],
+    options?: UpdateOptions
+  ): Promise<void> {
+    const { query, arrayFilters } = this.getAtomicUpdatesFields<BaseEntity>(updates);
+
+    const { matchedCount, acknowledged } = await this.collection.updateOne(filter, query, {
+      ...options,
+      arrayFilters: [...arrayFilters, ...(options?.arrayFilters ?? [])],
+    });
+
+    if (!acknowledged) {
+      throw new Error(`Count not atomically update "${this.entityName}" entity`);
     }
 
-    getOneFilter(id: PKOrEntity<Entity>): Filter<Entity> {
-      if (typeof id === 'object' && '_bsontype' in id) {
-        return { _id: id } as Filter<Entity>;
-      }
+    if (matchedCount !== 1 && !options?.upsert) {
+      throw new Error(`Couldn't find "${this.entityName}" entity or atomically update value is same`);
+    }
+  }
 
-      if (typeof id === 'object') {
-        return (id instanceof Entity ? id : Entity.fromJSON(id as MutableEntityData<Entity>)) as Filter<Entity>;
-      }
+  async atomicUpdateOne(
+    id: Primary<BaseEntity>,
+    updates: Atomic.UpdateOperation<any>[],
+    options?: UpdateOptions
+  ): Promise<void> {
+    await this.atomicUpdate(this.idToFilter(id), updates, options);
+  }
 
-      return { _id: new ObjectId(id) } as Filter<Entity>;
+  async findAndAtomicUpdate(
+    filter: Filter<BaseEntity>,
+    updates: Atomic.UpdateOperation<any>[],
+    options?: FindOneAndUpdateOptions
+  ): Promise<ToObject<BaseEntity>> {
+    const { query, arrayFilters } = this.getAtomicUpdatesFields<BaseEntity>(updates);
+
+    const { value, ok } = await this.collection.findOneAndUpdate(filter, query, {
+      ...options,
+      arrayFilters: [...arrayFilters, ...(options?.arrayFilters ?? [])],
+      includeResultMetadata: true,
+    });
+
+    if (!ok) {
+      throw new Error(`Count not atomically update "${this.entityName}" entity`);
     }
 
-    async atomicUpdate(
-      filter: Filter<Entity>,
-      updates: Atomic.UpdateOperation<any>[],
-      options?: UpdateOptions
-    ): Promise<void> {
-      const collection = this.em.getCollection<Entity>(Entity);
-      const { query, arrayFilters } = this.getAtomicUpdatesFields<Entity>(updates);
-
-      const { matchedCount, acknowledged } = await collection.updateOne(filter, query, {
-        ...options,
-        arrayFilters: [...arrayFilters, ...(options?.arrayFilters ?? [])],
-      });
-
-      if (!acknowledged) {
-        throw new Error(`Count not atomically update "${Entity.name}" entity`);
-      }
-
-      if (matchedCount !== 1 && !options?.upsert) {
-        throw new Error(`Couldn't find "${Entity.name}" entity or atomically update value is same`);
-      }
+    if (!value) {
+      throw new Error(`Couldn't find "${this.entityName}" entity`);
     }
 
-    async atomicUpdateOne(
-      id: PKOrEntity<Entity>,
-      updates: Atomic.UpdateOperation<any>[],
-      options?: UpdateOptions
-    ): Promise<void> {
-      return this.atomicUpdate(this.getOneFilter(id), updates, options);
-    }
+    return value as ToObject<BaseEntity>;
+  }
 
-    async findAndAtomicUpdate(
-      filter: Filter<Entity>,
-      updates: Atomic.UpdateOperation<any>[],
-      options?: FindOneAndUpdateOptions
-    ): Promise<Entity> {
-      const collection = this.em.getCollection<Entity>(Entity);
-      const { query, arrayFilters } = this.getAtomicUpdatesFields<Entity>(updates);
-
-      const { value, ok } = await collection.findOneAndUpdate(filter, query, {
-        ...options,
-        arrayFilters: [...arrayFilters, ...(options?.arrayFilters ?? [])],
-        includeResultMetadata: true,
-      });
-
-      if (!ok) {
-        throw new Error(`Count not atomically update "${Entity.name}" entity`);
-      }
-
-      if (!value) {
-        throw new Error(`Couldn't find "${Entity.name}" entity`);
-      }
-
-      return value as Entity;
-    }
-
-    async findOneAndAtomicUpdate(
-      id: PKOrEntity<Entity>,
-      updates: Atomic.UpdateOperation<any>[],
-      options?: FindOneAndUpdateOptions
-    ): Promise<Entity> {
-      return this.findAndAtomicUpdate(this.getOneFilter(id), updates, options);
-    }
-  };
-
-export type MongoAtomicORM<Entity extends MongoEntity, ConstructorParam extends object> = InstanceType<
-  ReturnType<typeof MongoAtomicORM<Entity, ConstructorParam>>
->;
+  async findOneAndAtomicUpdate(
+    id: Primary<BaseEntity>,
+    updates: Atomic.UpdateOperation<any>[],
+    options?: FindOneAndUpdateOptions
+  ): Promise<ToObject<BaseEntity>> {
+    return this.findAndAtomicUpdate(this.idToFilter(id), updates, options);
+  }
+}

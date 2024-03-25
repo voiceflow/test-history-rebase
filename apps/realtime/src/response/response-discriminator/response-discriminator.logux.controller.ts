@@ -4,7 +4,7 @@ import { Permission } from '@voiceflow/sdk-auth';
 import { Authorize } from '@voiceflow/sdk-auth/nestjs';
 import { Actions, Channels } from '@voiceflow/sdk-logux-designer';
 
-import { BroadcastOnly, EntitySerializer, InjectRequestContext, UseRequestContext } from '@/common';
+import { BroadcastOnly, InjectRequestContext, UseRequestContext } from '@/common';
 
 import { ResponseDiscriminatorService } from './response-discriminator.service';
 
@@ -13,9 +13,7 @@ import { ResponseDiscriminatorService } from './response-discriminator.service';
 export class ResponseDiscriminatorLoguxController {
   constructor(
     @Inject(ResponseDiscriminatorService)
-    private readonly service: ResponseDiscriminatorService,
-    @Inject(EntitySerializer)
-    private readonly entitySerializer: EntitySerializer
+    private readonly service: ResponseDiscriminatorService
   ) {}
 
   @Action.Async(Actions.ResponseDiscriminator.CreateOne)
@@ -26,11 +24,9 @@ export class ResponseDiscriminatorLoguxController {
   @UseRequestContext()
   async createOne(
     @Payload() { data, context }: Actions.ResponseDiscriminator.CreateOne.Request,
-    @AuthMeta() authMeta: AuthMetaPayload
+    @AuthMeta() auth: AuthMetaPayload
   ): Promise<Actions.ResponseDiscriminator.CreateOne.Response> {
-    return this.service
-      .createManyAndBroadcast(authMeta, [{ ...data, assistantID: context.assistantID, environmentID: context.environmentID }])
-      .then(([result]) => ({ data: this.entitySerializer.nullable(result), context }));
+    return this.service.createManyAndBroadcast([data], { auth, context }).then(([result]) => ({ data: this.service.toJSON(result), context }));
   }
 
   @Action(Actions.ResponseDiscriminator.PatchOne)
@@ -68,11 +64,11 @@ export class ResponseDiscriminatorLoguxController {
   @Broadcast<Actions.ResponseDiscriminator.DeleteOne>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async deleteOne(@Payload() { id, context }: Actions.ResponseDiscriminator.DeleteOne, @AuthMeta() authMeta: AuthMetaPayload) {
-    const result = await this.service.deleteManyAndSync([{ id, environmentID: context.environmentID }]);
+  async deleteOne(@Payload() { id, context }: Actions.ResponseDiscriminator.DeleteOne, @AuthMeta() auth: AuthMetaPayload) {
+    const result = await this.service.deleteManyAndSync([id], context);
 
     // overriding discriminators cause it's broadcasted by decorator
-    await this.service.broadcastDeleteMany(authMeta, { ...result, delete: { ...result.delete, responseDiscriminators: [] } });
+    await this.service.broadcastDeleteMany({ ...result, delete: { ...result.delete, responseDiscriminators: [] } }, { auth, context });
   }
 
   @Action(Actions.ResponseDiscriminator.DeleteMany)
@@ -85,11 +81,11 @@ export class ResponseDiscriminatorLoguxController {
   }))
   @BroadcastOnly()
   @UseRequestContext()
-  async deleteMany(@Payload() { ids, context }: Actions.ResponseDiscriminator.DeleteMany, @AuthMeta() authMeta: AuthMetaPayload) {
-    const result = await this.service.deleteManyAndSync(ids.map((id) => ({ id, environmentID: context.environmentID })));
+  async deleteMany(@Payload() { ids, context }: Actions.ResponseDiscriminator.DeleteMany, @AuthMeta() auth: AuthMetaPayload) {
+    const result = await this.service.deleteManyAndSync(ids, context);
 
     // overriding discriminators cause it's broadcasted by decorator
-    await this.service.broadcastDeleteMany(authMeta, { ...result, delete: { ...result.delete, responseDiscriminators: [] } });
+    await this.service.broadcastDeleteMany({ ...result, delete: { ...result.delete, responseDiscriminators: [] } }, { auth, context });
   }
 
   @Action(Actions.ResponseDiscriminator.AddOne)

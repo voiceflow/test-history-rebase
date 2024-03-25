@@ -1,63 +1,36 @@
 import type { Primary } from '@mikro-orm/core';
 import { NotFoundException } from '@voiceflow/exception';
-import type { ORM, ORMEntity, ORMMutateOptions, ORMParam, Ref } from '@voiceflow/orm-designer';
-
-import type { CreateManyData, CreateOneData } from './types';
+import type { CreateData, ORM, ORMDiscriminatorEntity, ORMEntity } from '@voiceflow/orm-designer';
 
 export abstract class BaseService<Orm extends ORM<any, any>> {
-  protected abstract readonly orm: ORM<ORMEntity<Orm>, ORMParam<Orm>>;
+  protected abstract readonly orm: ORM<ORMEntity<Orm>, ORMDiscriminatorEntity<Orm>>;
 
-  getReference(id: Primary<ORMEntity<Orm>>, options: { wrapped: true }): Ref<ORMEntity<Orm>>;
-
-  getReference(id: Primary<ORMEntity<Orm>>, options?: { wrapped?: false }): ORMEntity<Orm>;
-
-  getReference(id: Primary<ORMEntity<Orm>>, options?: { wrapped?: boolean }) {
-    if (options?.wrapped) {
-      return this.orm.getReference(id, { wrapped: true });
-    }
-
-    return this.orm.getReference(id);
+  createOne(data: CreateData<ORMDiscriminatorEntity<Orm>>) {
+    return this.orm.createOne(data);
   }
 
-  getReferences(ids: Primary<ORMEntity<Orm>>[], options: { wrapped: true }): Ref<ORMEntity<Orm>>[];
-
-  getReferences(ids: Primary<ORMEntity<Orm>>[], options?: { wrapped?: false }): ORMEntity<Orm>[];
-
-  getReferences(ids: Primary<ORMEntity<Orm>>[], options?: { wrapped?: boolean }) {
-    if (options?.wrapped) {
-      return this.orm.getReferences(ids, { wrapped: true });
-    }
-
-    return this.orm.getReferences(ids);
+  createMany(data: CreateData<ORMDiscriminatorEntity<Orm>>[]) {
+    return this.orm.createMany(data);
   }
 
-  createOne(data: CreateOneData<Orm>, options?: ORMMutateOptions): Promise<ORMEntity<Orm>> {
-    return this.orm.createOne(data, options);
+  findOne(id: Primary<ORMEntity<Orm>>) {
+    return this.orm.findOne(id);
   }
 
-  createMany(data: CreateManyData<Orm>, options?: ORMMutateOptions): Promise<ORMEntity<Orm>[]> {
-    return this.orm.createMany(data, options);
+  findMany(ids: Primary<ORMEntity<Orm>>[]) {
+    return this.orm.findMany(ids);
   }
 
-  findOne(entity: Primary<ORMEntity<Orm>>): Promise<ORMEntity<Orm> | null> {
-    return this.orm.findOne(entity);
-  }
-
-  findMany(entities: Primary<ORMEntity<Orm>>[]): Promise<ORMEntity<Orm>[]> {
-    return this.orm.findMany(entities);
-  }
-
-  async findOneOrFail(entity: Primary<ORMEntity<Orm>>): Promise<ORMEntity<Orm>> {
+  async findOneOrFail(id: Primary<ORMEntity<Orm>>) {
     try {
-      return await this.orm.findOneOrFail(entity);
+      return await this.orm.findOneOrFail(id);
     } catch (err) {
-      // eslint-disable-next-line no-proto
-      const entityName = ((this.orm as any)?.__proto__?.constructor?.name ?? 'resource').replace('ORM', '');
+      const entityName = this.orm.Entity.name.replace('Entity', '');
 
-      if (typeof entity === 'string') {
-        throw new NotFoundException(`Failed to find ${entityName} with ID ${entity}`);
+      if (typeof id === 'string') {
+        throw new NotFoundException(`Failed to find ${entityName} with ID ${id}`);
       } else {
-        throw new NotFoundException(`Failed to find ${entityName} with ${JSON.stringify(entity)}`);
+        throw new NotFoundException(`Failed to find ${entityName} with ${JSON.stringify(id)}`);
       }
     }
   }

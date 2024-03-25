@@ -1,40 +1,32 @@
-import type { ResponseVariantType } from '@voiceflow/dtos';
-import type { ResponseJSONVariantORM, ResponsePromptVariantORM, ResponseTextVariantORM } from '@voiceflow/orm-designer';
+import type { AnyResponseVariantCreate, ResponseVariantType } from '@voiceflow/dtos';
+import type { ResponseJSONVariantORM, ResponseTextVariantORM } from '@voiceflow/orm-designer';
 
-import type { CreateOneForUserData, PatchOneData } from '@/common/types';
+import type { CMSCreateForUserData, CMSPatchData } from '@/common/types';
 
 import type { ResponseCardAttachmentCreateOneData, ResponseMediaAttachmentCreateOneData } from '../response-attachment/response-attachment.interface';
 
-export interface ResponseTextVariantCreateData extends CreateOneForUserData<ResponseTextVariantORM> {
+export interface ResponseTextVariantCreateData extends CMSCreateForUserData<ResponseTextVariantORM> {
   type: typeof ResponseVariantType.TEXT;
 }
 
-export interface ResponseJSONVariantCreateData extends CreateOneForUserData<ResponseJSONVariantORM> {
+export interface ResponseJSONVariantCreateData extends CMSCreateForUserData<ResponseJSONVariantORM> {
   type: typeof ResponseVariantType.JSON;
 }
 
-export interface ResponsePromptVariantCreateData extends CreateOneForUserData<ResponsePromptVariantORM> {
-  type: typeof ResponseVariantType.PROMPT;
-}
+export type ResponseAnyVariantCreateData = ResponseTextVariantCreateData | ResponseJSONVariantCreateData;
 
-export type ResponseAnyVariantCreateData = ResponseTextVariantCreateData | ResponseJSONVariantCreateData | ResponsePromptVariantCreateData;
-
-export interface ResponseTextVariantPatchData extends PatchOneData<ResponseTextVariantORM> {
+export interface ResponseTextVariantPatchData extends CMSPatchData<ResponseTextVariantORM> {
   type: typeof ResponseVariantType.TEXT;
 }
 
-export interface ResponseJSONVariantPatchData extends PatchOneData<ResponseJSONVariantORM> {
+export interface ResponseJSONVariantPatchData extends CMSPatchData<ResponseJSONVariantORM> {
   type: typeof ResponseVariantType.JSON;
 }
 
-export interface ResponsePromptVariantPatchData extends PatchOneData<ResponsePromptVariantORM> {
-  type: typeof ResponseVariantType.PROMPT;
-}
+export type ResponseAnyVariantPatchData = ResponseTextVariantPatchData | ResponseJSONVariantPatchData;
 
-export type ResponseAnyVariantPatchData = ResponseTextVariantPatchData | ResponseJSONVariantPatchData | ResponsePromptVariantPatchData;
-
-// TODO: add condition support
 interface ResponseBaseVariantCreateWithSubResourcesData {
+  condition: AnyResponseVariantCreate['condition'];
   attachments: Array<
     | Omit<ResponseCardAttachmentCreateOneData, 'variantID' | 'assistantID' | 'environmentID'>
     | Omit<ResponseMediaAttachmentCreateOneData, 'variantID' | 'assistantID' | 'environmentID'>
@@ -50,7 +42,3 @@ export type ResponseJSONVariantCreateWithSubResourcesData<Exclude extends keyof 
 export type ResponseAnyVariantCreateWithSubResourcesData =
   | ResponseTextVariantCreateWithSubResourcesData
   | ResponseJSONVariantCreateWithSubResourcesData;
-
-export interface ResponseTextVariantCreateOptions {
-  discriminatorOrderInsertIndex?: number;
-}

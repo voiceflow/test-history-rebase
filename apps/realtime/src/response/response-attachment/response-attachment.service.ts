@@ -3,112 +3,114 @@ import type { EntityManager } from '@mikro-orm/core';
 import { Primary } from '@mikro-orm/core';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
-import { AttachmentType } from '@voiceflow/dtos';
+import { Utils } from '@voiceflow/common';
+import { AnyResponseAttachment, AttachmentType } from '@voiceflow/dtos';
 import { NotFoundException } from '@voiceflow/exception';
-import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
-import type {
-  AnyAttachmentEntity,
-  AnyResponseAttachmentEntity,
-  AnyResponseVariantEntity,
-  AssistantEntity,
-  BaseResponseVariantEntity,
-  ORMMutateOptions,
-  PKOrEntity,
-} from '@voiceflow/orm-designer';
-import { DatabaseTarget, ResponseAttachmentORM, ResponseVariantORM } from '@voiceflow/orm-designer';
+import { LoguxService } from '@voiceflow/nestjs-logux';
+import type { AnyResponseAttachmentEntity, AnyResponseAttachmentObject, AnyResponseVariantObject, CreateData } from '@voiceflow/orm-designer';
+import { AnyResponseAttachmentORM, AnyResponseVariantORM, DatabaseTarget } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 import { match } from 'ts-pattern';
 
-import { EntitySerializer, UpsertManyData } from '@/common';
-import { uniqCMSResourceIDs } from '@/utils/cms.util';
+import { CMSBroadcastMeta, CMSContext } from '@/types';
 
-import { assistantBroadcastContext, groupByAssistant, toEntityID, toEntityIDs } from '../../common/utils';
+import { cmsBroadcastContext, injectAssistantAndEnvironmentIDs, toPostgresEntityIDs } from '../../common/utils';
 import type { ResponseAnyAttachmentCreateData, ResponseAnyAttachmentReplaceData } from './response-attachment.interface';
 import { ResponseCardAttachmentService } from './response-card-attachment.service';
 import { ResponseMediaAttachmentService } from './response-media-attachment.service';
 
 @Injectable()
 export class ResponseAttachmentService {
+  toJSON = (data: AnyResponseAttachmentObject) =>
+    data.type === AttachmentType.CARD ? this.responseCardAttachment.toJSON(data) : this.responseMediaAttachment.toJSON(data);
+
+  fromJSON = (data: AnyResponseAttachment) =>
+    data.type === AttachmentType.CARD ? this.responseCardAttachment.fromJSON(data) : this.responseMediaAttachment.fromJSON(data);
+
+  mapToJSON = (data: AnyResponseAttachmentObject[]) => data.map(this.toJSON);
+
+  mapFromJSON = (data: AnyResponseAttachment[]) => data.map(this.fromJSON);
+
   constructor(
     @Inject(getEntityManagerToken(DatabaseTarget.POSTGRES))
     private readonly postgresEM: EntityManager,
-    @Inject(ResponseAttachmentORM)
-    protected readonly orm: ResponseAttachmentORM,
-    @Inject(ResponseVariantORM)
-    protected readonly responseVariantORM: ResponseVariantORM,
+    @Inject(AnyResponseAttachmentORM)
+    protected readonly orm: AnyResponseAttachmentORM,
+    @Inject(AnyResponseVariantORM)
+    protected readonly responseVariantORM: AnyResponseVariantORM,
     @Inject(LoguxService)
     protected readonly logux: LoguxService,
     @Inject(ResponseCardAttachmentService)
     protected readonly responseCardAttachment: ResponseCardAttachmentService,
     @Inject(ResponseMediaAttachmentService)
-    protected readonly responseMediaAttachment: ResponseMediaAttachmentService,
-    @Inject(EntitySerializer)
-    protected readonly entitySerializer: EntitySerializer
+    protected readonly responseMediaAttachment: ResponseMediaAttachmentService
   ) {}
 
   /* Helpers */
 
   protected async syncResponseVariants(
-    responseAttachments: AnyResponseAttachmentEntity[],
-    { flush = true, action }: { flush?: boolean; action: 'create' | 'delete' }
-  ): Promise<AnyResponseVariantEntity[]> {
-    const variantIDs = uniqCMSResourceIDs(responseAttachments.map(({ variant }) => ({ id: variant.id, environmentID: variant.environmentID })));
+    responseAttachments: AnyResponseAttachmentObject[],
+    { action, userID, context }: { action: 'create' | 'delete'; userID: number; context: CMSContext }
+  ): Promise<AnyResponseVariantObject[]> {
+    const variantIDs = Utils.array.unique(responseAttachments.map((responseAttachment) => responseAttachment.variantID));
 
-    const responseVariants = await this.responseVariantORM.findMany(variantIDs);
+    const responseVariants = await this.responseVariantORM.findManyByEnvironmentAndIDs(context.environmentID, variantIDs);
 
     if (variantIDs.length !== responseVariants.length) {
       throw new NotFoundException("couldn't find response variants to sync");
     }
 
-    const responseAttachmentsByVariantIDMap = responseAttachments.reduce<Record<string, typeof responseAttachments>>((acc, attachment) => {
-      acc[attachment.variant.id] ??= [];
-      acc[attachment.variant.id].push(attachment);
+    const responseAttachmentsByVariantIDMap = responseAttachments.reduce<Record<string, AnyResponseAttachmentObject[]>>((acc, attachment) => {
+      acc[attachment.variantID] ??= [];
+      acc[attachment.variantID].push(attachment);
 
       return acc;
     }, {});
 
-    responseVariants.forEach((responseVariant) => {
-      const attachmentIDs = responseAttachmentsByVariantIDMap[responseVariant.id]?.map(toEntityID);
+    await Promise.all(
+      responseVariants.map(async (responseVariant) => {
+        const attachmentIDs = toPostgresEntityIDs(responseAttachmentsByVariantIDMap[responseVariant.id] ?? []);
 
-      if (!attachmentIDs?.length) {
-        throw new NotFoundException("couldn't find response attachments for response variant to sync");
-      }
-
-      let attachmentOrder: string[];
-
-      if (action === 'create') {
-        if (responseVariant.attachmentOrder.length) {
-          attachmentOrder = [...responseVariant.attachmentOrder, ...attachmentIDs];
-        } else {
-          attachmentOrder = attachmentIDs;
+        if (!attachmentIDs.length) {
+          throw new NotFoundException("couldn't find response attachments for response variant to sync");
         }
-      } else {
-        attachmentOrder = responseVariant.attachmentOrder.filter((id) => !attachmentIDs.includes(id));
-      }
 
-      // eslint-disable-next-line no-param-reassign
-      responseVariant.attachmentOrder = attachmentOrder;
-    });
+        let attachmentOrder: string[];
 
-    if (flush) {
-      await this.orm.em.flush();
-    }
+        if (action === 'create') {
+          if (responseVariant.attachmentOrder.length) {
+            attachmentOrder = [...responseVariant.attachmentOrder, ...attachmentIDs];
+          } else {
+            attachmentOrder = attachmentIDs;
+          }
+        } else {
+          attachmentOrder = responseVariant.attachmentOrder.filter((id) => !attachmentIDs.includes(id));
+        }
+
+        // eslint-disable-next-line no-param-reassign
+        responseVariant.attachmentOrder = attachmentOrder;
+
+        await this.responseVariantORM.patchOneForUser(
+          userID,
+          { id: responseVariant.id, environmentID: responseVariant.environmentID },
+          { attachmentOrder }
+        );
+      })
+    );
 
     return responseVariants;
   }
 
-  async broadcastSync(authMeta: AuthMetaPayload, { sync }: { sync: { responseVariants: AnyResponseVariantEntity[] } }) {
+  async broadcastSync({ sync }: { sync: { responseVariants: AnyResponseVariantObject[] } }, meta: CMSBroadcastMeta) {
     await Promise.all(
-      groupByAssistant(sync.responseVariants).flatMap((variants) =>
-        variants.map((variant) =>
-          this.logux.processAs(
-            Actions.ResponseVariant.PatchOne({
-              id: variant.id,
-              patch: { attachmentOrder: variant.attachmentOrder },
-              context: assistantBroadcastContext(variant),
-            }),
-            authMeta
-          )
+      sync.responseVariants.map((variant) =>
+        this.logux.processAs(
+          Actions.ResponseVariant.PatchOne({
+            id: variant.id,
+            patch: { attachmentOrder: variant.attachmentOrder },
+            context: cmsBroadcastContext(meta.context),
+          }),
+          meta.auth
         )
       )
     );
@@ -116,63 +118,43 @@ export class ResponseAttachmentService {
 
   /* Find */
 
-  findMany(ids: Primary<AnyResponseAttachmentEntity>[]): Promise<AnyResponseAttachmentEntity[]> {
-    return this.orm.findMany(ids);
+  findManyByEnvironmentAndIDs(environmentID: string, ids: string[]) {
+    return this.orm.findManyByEnvironmentAndIDs(environmentID, ids);
   }
 
-  findOneOrFail(id: Primary<AnyResponseAttachmentEntity>, type?: AttachmentType): Promise<AnyResponseAttachmentEntity> {
+  findOneOrFail(id: Primary<AnyResponseAttachmentEntity>, type?: AttachmentType) {
     return match(type)
       .with(AttachmentType.CARD, () => this.responseCardAttachment.findOneOrFail(id))
       .with(AttachmentType.MEDIA, () => this.responseMediaAttachment.findOneOrFail(id))
       .otherwise(() => this.orm.findOneOrFail(id));
   }
 
-  findManyByVariants(variants: PKOrEntity<BaseResponseVariantEntity>[]): Promise<AnyResponseAttachmentEntity[]> {
-    return this.orm.findManyByVariants(variants);
+  findManyByVariants(environmentID: string, variantIDs: string[]) {
+    return this.orm.findManyByVariants(environmentID, variantIDs);
   }
 
-  findManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string): Promise<AnyResponseAttachmentEntity[]> {
-    return this.orm.findManyByEnvironment(assistant, environmentID);
+  findManyByEnvironment(environmentID: string) {
+    return this.orm.findManyByEnvironment(environmentID);
   }
 
-  findManyJSONByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
-    return this.orm.findAllJSON({ assistant, environmentID });
-  }
-
-  async findManyByAttachments(attachments: PKOrEntity<AnyAttachmentEntity>[]): Promise<AnyResponseAttachmentEntity[]> {
-    return (
-      await Promise.all([
-        this.responseCardAttachment.findManyByCardAttachments(attachments),
-        this.responseMediaAttachment.findManyByMediaAttachments(attachments),
-      ])
-    ).flat();
+  findManyByAttachments(environmentID: string, attachmentIDs: string[]) {
+    return this.orm.findManyByAttachments(environmentID, attachmentIDs);
   }
 
   /* Create */
 
-  createOne(data: ResponseAnyAttachmentCreateData, options?: ORMMutateOptions) {
-    return match(data)
-      .with({ type: AttachmentType.CARD }, (data) => this.responseCardAttachment.createOne(data, options))
-      .with({ type: AttachmentType.MEDIA }, (data) => this.responseMediaAttachment.createOne(data, options))
-      .exhaustive();
+  createOne(data: ResponseAnyAttachmentCreateData & { assistantID: string; environmentID: string }) {
+    return this.orm.createOne(data);
   }
 
-  async createMany(data: ResponseAnyAttachmentCreateData[], { flush = true }: ORMMutateOptions = {}) {
-    const result = await Promise.all(data.map((item) => this.createOne(item, { flush: false })));
-
-    if (flush) {
-      await this.orm.em.flush();
-    }
-
-    return result;
+  createMany(data: Array<ResponseAnyAttachmentCreateData & { assistantID: string; environmentID: string }>) {
+    return this.orm.createMany(data);
   }
 
-  async createManyAndSync(data: ResponseAnyAttachmentCreateData[]) {
+  async createManyAndSync(data: ResponseAnyAttachmentCreateData[], { userID, context }: { userID: number; context: CMSContext }) {
     return this.postgresEM.transactional(async () => {
-      const responseAttachments = await this.createMany(data, { flush: false });
-      const responseVariants = await this.syncResponseVariants(responseAttachments, { flush: false, action: 'create' });
-
-      await this.orm.em.flush();
+      const responseAttachments = await this.createMany(data.map(injectAssistantAndEnvironmentIDs(context)));
+      const responseVariants = await this.syncResponseVariants(responseAttachments, { action: 'create', userID, context });
 
       return {
         add: { responseAttachments },
@@ -182,129 +164,144 @@ export class ResponseAttachmentService {
   }
 
   async broadcastAddMany(
-    authMeta: AuthMetaPayload,
     {
       add,
       sync,
     }: {
-      add: { responseAttachments: AnyResponseAttachmentEntity[] };
-      sync: { responseVariants: AnyResponseVariantEntity[] };
-    }
+      add: { responseAttachments: AnyResponseAttachmentObject[] };
+      sync: { responseVariants: AnyResponseVariantObject[] };
+    },
+    meta: CMSBroadcastMeta
   ) {
     await Promise.all([
-      ...groupByAssistant(add.responseAttachments).map((attachments) =>
-        this.logux.processAs(
-          Actions.ResponseAttachment.AddMany({
-            data: this.entitySerializer.iterable(attachments),
-            context: assistantBroadcastContext(attachments[0]),
-          }),
-          authMeta
-        )
+      this.logux.processAs(
+        Actions.ResponseAttachment.AddMany({
+          data: this.mapToJSON(add.responseAttachments),
+          context: cmsBroadcastContext(meta.context),
+        }),
+        meta.auth
       ),
-      this.broadcastSync(authMeta, { sync }),
+      this.broadcastSync({ sync }, meta),
     ]);
   }
 
-  async createManyAndBroadcast(authMeta: AuthMetaPayload, data: ResponseAnyAttachmentCreateData[]) {
-    const result = await this.createManyAndSync(data);
+  async createManyAndBroadcast(data: ResponseAnyAttachmentCreateData[], meta: CMSBroadcastMeta) {
+    const result = await this.createManyAndSync(data, { userID: meta.auth.userID, context: meta.context });
 
-    await this.broadcastAddMany(authMeta, result);
+    await this.broadcastAddMany(result, meta);
 
     return result.add.responseAttachments;
   }
 
-  /* Upsert */
+  /* Replace */
 
-  upsertMany(data: UpsertManyData<ResponseAttachmentORM>, options?: ORMMutateOptions) {
-    return this.orm.upsertMany(data, options);
-  }
-
-  /* Update */
-
-  async replaceOneAndBroadcast(
-    authMeta: AuthMetaPayload,
-    { type, variantID, environmentID, newAttachmentID, oldResponseAttachmentID }: ResponseAnyAttachmentReplaceData
+  replaceOneAndSync(
+    { type, variantID, newAttachmentID, oldResponseAttachmentID }: ResponseAnyAttachmentReplaceData,
+    { userID, context }: { userID: number; context: CMSContext }
   ) {
-    const { variant, oldAttachment, newAttachment } = await this.postgresEM.transactional(async (em) => {
-      const [variant, oldAttachment] = await Promise.all([
-        this.responseVariantORM.findOneOrFail({ id: variantID, environmentID }),
-        this.findOneOrFail({ id: oldResponseAttachmentID, environmentID }, type),
+    return this.postgresEM.transactional(async () => {
+      const [responseVariant, oldResponseAttachment] = await Promise.all([
+        this.responseVariantORM.findOneOrFail({ id: variantID, environmentID: context.environmentID }),
+        this.findOneOrFail({ id: oldResponseAttachmentID, environmentID: context.environmentID }, type),
       ]);
 
-      if (!variant.attachmentOrder.includes(oldAttachment.id)) {
-        throw new NotFoundException('attachment not found in variant');
+      if (!responseVariant.attachmentOrder.includes(oldResponseAttachment.id)) {
+        throw new NotFoundException('attachment not found in response variant');
       }
 
-      const newAttachment = await this.createOne(
+      const newResponseAttachment = await this.createOne(
         type === AttachmentType.CARD
-          ? { type, cardID: newAttachmentID, variantID, assistantID: oldAttachment.assistant.id, environmentID: oldAttachment.environmentID }
-          : { type, mediaID: newAttachmentID, variantID, assistantID: oldAttachment.assistant.id, environmentID: oldAttachment.environmentID },
-        { flush: false }
+          ? { type, cardID: newAttachmentID, variantID, assistantID: context.assistantID, environmentID: oldResponseAttachment.environmentID }
+          : { type, mediaID: newAttachmentID, variantID, assistantID: context.assistantID, environmentID: oldResponseAttachment.environmentID }
       );
 
-      await this.deleteOne(oldAttachment, { flush: false });
+      await this.deleteOne({ id: oldResponseAttachment.id, environmentID: oldResponseAttachment.environmentID });
 
-      variant.attachmentOrder = variant.attachmentOrder.map((id) => (id === oldAttachment.id ? newAttachment.id : id));
+      responseVariant.attachmentOrder = responseVariant.attachmentOrder.map((id) =>
+        id === oldResponseAttachment.id ? newResponseAttachment.id : id
+      );
 
-      await em.flush();
+      await this.responseVariantORM.patchOne(
+        { id: responseVariant.id, environmentID: responseVariant.environmentID },
+        { updatedByID: userID, attachmentOrder: responseVariant.attachmentOrder }
+      );
 
       return {
-        variant,
-        oldAttachment,
-        newAttachment,
+        add: { responseAttachment: newResponseAttachment },
+        sync: { responseVariant },
+        delete: { responseAttachment: oldResponseAttachment },
       };
     });
+  }
 
+  async broadcastReplaceOne(
+    {
+      add,
+      sync,
+      delete: del,
+    }: {
+      add: { responseAttachment: AnyResponseAttachmentObject };
+      sync: { responseVariant: AnyResponseVariantObject };
+      delete: { responseAttachment: AnyResponseAttachmentObject };
+    },
+    meta: CMSBroadcastMeta
+  ) {
     await Promise.all([
       this.logux.processAs(
         Actions.ResponseAttachment.AddOne({
-          data: this.entitySerializer.nullable(newAttachment),
-          context: assistantBroadcastContext(variant),
+          data: this.toJSON(add.responseAttachment),
+          context: cmsBroadcastContext(meta.context),
         }),
-        authMeta
+        meta.auth
       ),
-      this.broadcastSync(authMeta, { sync: { responseVariants: [variant] } }),
+
+      this.broadcastSync({ sync: { responseVariants: [sync.responseVariant] } }, meta),
+
       this.logux.processAs(
         Actions.ResponseAttachment.DeleteOne({
-          id: oldAttachment.id,
-          context: assistantBroadcastContext(variant),
+          id: del.responseAttachment.id,
+          context: cmsBroadcastContext(meta.context),
         }),
-        authMeta
+        meta.auth
       ),
     ]);
   }
 
+  async replaceOneAndBroadcast(
+    { type, variantID, newAttachmentID, oldResponseAttachmentID }: ResponseAnyAttachmentReplaceData,
+    meta: CMSBroadcastMeta
+  ) {
+    const result = await this.replaceOneAndSync(
+      { type, variantID, newAttachmentID, oldResponseAttachmentID },
+      { userID: meta.auth.userID, context: meta.context }
+    );
+
+    await this.broadcastReplaceOne(result, meta);
+  }
+
   /* Delete */
 
-  deleteOne(entity: PKOrEntity<AnyResponseAttachmentEntity>, options?: ORMMutateOptions) {
-    return this.orm.deleteOne(entity, options);
+  deleteOne(id: Primary<AnyResponseAttachmentEntity>) {
+    return this.orm.deleteOne(id);
   }
 
-  deleteMany(entities: PKOrEntity<AnyResponseAttachmentEntity>[], options?: ORMMutateOptions) {
-    return this.orm.deleteMany(entities, options);
+  deleteManyByEnvironmentAndIDs(environmentID: string, ids: string[]) {
+    return this.orm.deleteManyByEnvironmentAndIDs(environmentID, ids);
   }
 
-  async syncOnDelete(
-    attachments: AnyResponseAttachmentEntity[],
-    options?: ORMMutateOptions
-  ): Promise<{ responseVariants: AnyResponseVariantEntity[] }> {
-    const responseVariants = await this.syncResponseVariants(attachments, { ...options, action: 'delete' });
+  async syncOnDelete(attachments: AnyResponseAttachmentObject[], { userID, context }: { userID: number; context: CMSContext }) {
+    const responseVariants = await this.syncResponseVariants(attachments, { action: 'delete', userID, context });
 
     return { responseVariants };
   }
 
-  async deleteManyAndSync(ids: Primary<AnyResponseAttachmentEntity>[]): Promise<{
-    sync: { responseVariants: AnyResponseVariantEntity[] };
-    delete: { responseAttachments: AnyResponseAttachmentEntity[] };
-  }> {
+  async deleteManyAndSync(ids: string[], { userID, context }: { userID: number; context: CMSContext }) {
     return this.postgresEM.transactional(async () => {
-      const responseAttachments = await this.findMany(ids);
+      const responseAttachments = await this.findManyByEnvironmentAndIDs(context.environmentID, ids);
 
-      const sync = await this.syncOnDelete(responseAttachments, { flush: false });
+      const sync = await this.syncOnDelete(responseAttachments, { userID, context });
 
-      await this.deleteMany(responseAttachments, { flush: false });
-
-      await this.orm.em.flush();
+      await this.deleteManyByEnvironmentAndIDs(context.environmentID, ids);
 
       return {
         sync,
@@ -314,32 +311,37 @@ export class ResponseAttachmentService {
   }
 
   async broadcastDeleteMany(
-    authMeta: AuthMetaPayload,
     {
       sync,
       delete: del,
     }: {
-      sync: { responseVariants: AnyResponseVariantEntity[] };
-      delete: { responseAttachments: AnyResponseAttachmentEntity[] };
-    }
+      sync: { responseVariants: AnyResponseVariantObject[] };
+      delete: { responseAttachments: AnyResponseAttachmentObject[] };
+    },
+    meta: CMSBroadcastMeta
   ) {
     await Promise.all([
-      this.broadcastSync(authMeta, { sync }),
-      ...groupByAssistant(del.responseAttachments).map((attachments) =>
-        this.logux.processAs(
-          Actions.ResponseAttachment.DeleteMany({
-            ids: toEntityIDs(attachments),
-            context: assistantBroadcastContext(attachments[0]),
-          }),
-          authMeta
-        )
+      this.broadcastSync({ sync }, meta),
+
+      this.logux.processAs(
+        Actions.ResponseAttachment.DeleteMany({
+          ids: toPostgresEntityIDs(del.responseAttachments),
+          context: cmsBroadcastContext(meta.context),
+        }),
+        meta.auth
       ),
     ]);
   }
 
-  async deleteManyAndBroadcast(authMeta: AuthMetaPayload, ids: Primary<AnyResponseAttachmentEntity>[]) {
-    const result = await this.deleteManyAndSync(ids);
+  async deleteManyAndBroadcast(ids: string[], meta: CMSBroadcastMeta) {
+    const result = await this.deleteManyAndSync(ids, { userID: meta.auth.userID, context: meta.context });
 
-    await this.broadcastDeleteMany(authMeta, result);
+    await this.broadcastDeleteMany(result, meta);
+  }
+
+  /* Upsert */
+
+  upsertMany(data: CreateData<AnyResponseAttachmentEntity>[]) {
+    return this.orm.upsertMany(data);
   }
 }

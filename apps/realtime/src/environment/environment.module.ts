@@ -1,5 +1,5 @@
 import { forwardRef, Module } from '@nestjs/common';
-import { AssistantORM, ProjectORM } from '@voiceflow/orm-designer';
+import { AssistantORM } from '@voiceflow/orm-designer';
 
 import { AttachmentModule } from '@/attachment/attachment.module';
 import { DiagramModule } from '@/diagram/diagram.module';
@@ -29,8 +29,6 @@ import { EnvironmentPublicHTTPController } from './environment-public.http.contr
 
 @Module({
   imports: [
-    ProjectORM.register(),
-    AssistantORM.register(),
     FlowModule,
     FolderModule,
     EntityModule,
@@ -49,7 +47,7 @@ import { EnvironmentPublicHTTPController } from './environment-public.http.contr
     forwardRef(() => ProjectModule),
   ],
   exports: [EnvironmentService],
-  providers: [EnvironmentService, ProjectSerializer, EnvironmentUtil, EnvironmentNLUTrainingUtil],
+  providers: [AssistantORM, EnvironmentService, ProjectSerializer, EnvironmentUtil, EnvironmentNLUTrainingUtil],
   controllers: [EnvironmentLoguxController, EnvironmentPublicHTTPController, EnvironmentPrivateHTTPController],
 })
 export class EnvironmentModule {}

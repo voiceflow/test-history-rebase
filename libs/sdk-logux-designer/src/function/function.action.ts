@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import type { Function as FunctionType, FunctionPath, FunctionVariable } from '@voiceflow/dtos';
+import type { Function as FunctionType } from '@voiceflow/dtos';
 
 import { createCRUD } from '@/crud/crud.action';
 import type {
@@ -80,11 +80,7 @@ export namespace DuplicateOne {
   }
 
   export interface Response extends DesignerAction {
-    data: {
-      functionResource: FunctionType;
-      functionPaths: FunctionPath[];
-      functionVariables: FunctionVariable[];
-    };
+    data: { functionResource: FunctionType };
   }
 }
 

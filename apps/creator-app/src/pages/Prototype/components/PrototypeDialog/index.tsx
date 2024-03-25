@@ -79,7 +79,7 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
           const isLastBubble = checkIfLastBubble(message, messages);
           const isCurrent = message === messages[messages.length - 1];
           const isLast = index === messages.length - 1;
-          const isIntentConfidence = message.type === MessageType.DEBUG && message.message.startsWith('matched intent');
+          const isIntentConfidence = message.type === MessageType.DEBUG && message.message?.startsWith('matched intent');
 
           return (
             <PrototypeDialogMessage

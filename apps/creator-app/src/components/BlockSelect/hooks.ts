@@ -3,10 +3,9 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import * as DiagramV2 from '@/ducks/diagramV2';
+import { Designer, Diagram } from '@/ducks';
 import { useSelector } from '@/hooks/redux';
 import { createGroupedSelectID } from '@/hooks/select';
-import { FlowMapByDiagramIDContext } from '@/pages/Canvas/contexts';
 import { getDiagramName, isComponentDiagram } from '@/utils/diagram.utils';
 
 import { Group, Multilevel, Option } from './types';
@@ -34,9 +33,9 @@ const createDiagramOptions = <OptionsMap extends Record<string, Option | Group> 
   }, []);
 
 export const useDiagramsBlocksOptionsMap = () => {
-  const sharedNodes = useSelector(DiagramV2.sharedNodesSelector);
-  const getDiagramByID = useSelector(DiagramV2.getDiagramByIDSelector);
-  const flowMapByDiagramID = React.useContext(FlowMapByDiagramIDContext)!;
+  const sharedNodes = useSelector(Diagram.sharedNodesSelector);
+  const getDiagramByID = useSelector(Diagram.getDiagramByIDSelector);
+  const flowMapByDiagramID = useSelector(Designer.Flow.selectors.mapByDiagramID);
 
   return React.useMemo(() => {
     return Object.entries(sharedNodes).reduce<Record<string, Option | Group>>((optionsMap, [diagramID, diagramSharedNodes]) => {

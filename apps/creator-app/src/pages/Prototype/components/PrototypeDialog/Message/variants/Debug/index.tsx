@@ -14,7 +14,7 @@ type DebugProps = Omit<BaseMessageProps, 'iconProps'> & {
 
 const HYPHEN_REGEXP = /-/g;
 
-export const Debug: React.FC<DebugProps> = ({ message, ...props }) => {
+export const Debug: React.FC<DebugProps> = ({ message = '', ...props }) => {
   const getDiagram = useSelector(DiagramV2.getDiagramByIDSelector);
 
   const debugMessage = React.useMemo(() => {

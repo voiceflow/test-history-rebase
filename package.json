@@ -5,7 +5,8 @@
     "packages": [
       "apps/*",
       "libs/*",
-      "meta/*"
+      "meta/*",
+      "test/*"
     ]
   },
   "scripts": {

@@ -1,0 +1,8 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "@voiceflow-meta/typescript-config/base.json",
+  "compilerOptions": {
+    "types": ["cypress", "node", "@4tw/cypress-drag-drop", "cypress-wait-until", "cypress-delete-downloads-folder"]
+  },
+  "exclude": ["node_modules"]
+}

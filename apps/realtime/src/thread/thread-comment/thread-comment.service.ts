@@ -1,10 +1,10 @@
 /* eslint-disable max-params */
 /* eslint-disable no-await-in-loop */
-import { Primary } from '@mikro-orm/core';
+
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
-import { PKOrEntity, ThreadCommentEntity, ThreadCommentORM, ThreadEntity, ThreadORM } from '@voiceflow/orm-designer';
+import { CreateData, PatchData, ThreadCommentEntity, ThreadCommentObject, ThreadCommentORM, ThreadObject, ThreadORM } from '@voiceflow/orm-designer';
 import { IdentityClient } from '@voiceflow/sdk-identity';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 import type { LegacyVersionActionContext } from '@voiceflow/sdk-logux-designer/build/types';
@@ -12,8 +12,7 @@ import dayjs from 'dayjs';
 
 import { AssistantService } from '@/assistant/assistant.service';
 import { MutableService } from '@/common';
-import type { CreateManyData, PatchManyData, PatchOneData } from '@/common/types';
-import { legacyVersionBroadcastContext, toEntityIDs } from '@/common/utils';
+import { legacyVersionBroadcastContext, toPostgresEntityIDs } from '@/common/utils';
 import { CreatorAppService } from '@/creator-app/creator-app.service';
 import { EmailService } from '@/email/email.service';
 import { EmailSubscriptionGroup } from '@/email/enum/email-subscription-group.enum';
@@ -55,13 +54,13 @@ export class ThreadCommentService extends MutableService<ThreadCommentORM> {
 
   /* Find */
 
-  async findManyByThreads(threads: PKOrEntity<ThreadEntity>[]) {
-    return this.orm.findManyByThreads(threads);
+  async findManyByThreads(threadIDs: number[]) {
+    return this.orm.findManyByThreads(threadIDs);
   }
 
   /* Patch */
 
-  async patchOneAndNotify(id: Primary<ThreadCommentEntity>, data: PatchOneData<ThreadCommentORM>) {
+  async patchOneAndNotify(id: number, data: PatchData<ThreadCommentEntity>) {
     if (!data.mentions) {
       await this.patchOne(id, data);
 
@@ -79,7 +78,7 @@ export class ThreadCommentService extends MutableService<ThreadCommentORM> {
     this.notifyMentions(updatedComment, { mentionIDs: newMentionIDs });
   }
 
-  async patchManyAndNotify(ids: Primary<ThreadCommentEntity>[], data: PatchManyData<ThreadCommentORM>) {
+  async patchManyAndNotify(ids: number[], data: PatchData<ThreadCommentEntity>) {
     if (!data.mentions) {
       await this.patchMany(ids, data);
 
@@ -115,7 +114,7 @@ export class ThreadCommentService extends MutableService<ThreadCommentORM> {
     projectName,
   }: {
     emails: string[];
-    comment: ThreadCommentEntity;
+    comment: ThreadCommentObject;
     commentURL: URL;
     authorName: string;
     projectName: string;
@@ -140,18 +139,18 @@ export class ThreadCommentService extends MutableService<ThreadCommentORM> {
   }
 
   async notifyMentions(
-    comment: ThreadCommentEntity,
-    { thread: threadProp, mentionIDs = comment.mentions }: { thread?: ThreadEntity; mentionIDs?: number[] } = {}
+    comment: ThreadCommentObject,
+    { thread: threadProp, mentionIDs = comment.mentions }: { thread?: ThreadObject; mentionIDs?: number[] } = {}
   ) {
     if (!mentionIDs.length) return;
 
     try {
-      const thread = threadProp ?? (await this.threadORM.findOneOrFail(comment.thread.id));
+      const thread = threadProp ?? (await this.threadORM.findOneOrFail(comment.threadID));
       const assistant = await this.assistant.findOneOrFail(thread.assistantID);
 
       const [author, mentions] = await Promise.all([
-        this.identity.private.findUserByID(comment.author.id),
-        this.identity.private.findAllUsers({ ids: mentionIDs.filter((id) => id !== comment.author.id) }),
+        this.identity.private.findUserByID(comment.authorID),
+        this.identity.private.findAllUsers({ ids: mentionIDs.filter((id) => id !== comment.authorID) }),
       ]);
 
       const commentURL = this.creatorApp.getCommentingURL({
@@ -183,8 +182,16 @@ export class ThreadCommentService extends MutableService<ThreadCommentORM> {
 
   /* Create */
 
-  async createManyAndSync(data: CreateManyData<ThreadCommentORM>) {
+  notifyMany(threadComments: ThreadCommentObject[], { threads }: { threads?: ThreadObject[] } = {}) {
+    const threadMap = Utils.array.createMap(threads ?? [], (thread) => thread.id);
+
+    threadComments.forEach((comment) => this.notifyMentions(comment, { thread: threadMap[comment.threadID] }));
+  }
+
+  async createManyAndSync(data: CreateData<ThreadCommentEntity>[]) {
     const threadComments = await this.createMany(data);
+
+    this.notifyMany(threadComments);
 
     return {
       add: { threadComments },
@@ -192,39 +199,36 @@ export class ThreadCommentService extends MutableService<ThreadCommentORM> {
   }
 
   async broadcastAddMany(
-    authMeta: AuthMetaPayload,
-    context: LegacyVersionActionContext,
-    { add }: { add: { threadComments: ThreadCommentEntity[] } }
+    { add }: { add: { threadComments: ThreadCommentObject[] } },
+    meta: { auth: AuthMetaPayload; context: LegacyVersionActionContext }
   ) {
     await this.logux.processAs(
       Actions.ThreadComment.AddMany({
         data: this.threadCommentSerializer.iterable(add.threadComments),
-        context: legacyVersionBroadcastContext(context),
+        context: legacyVersionBroadcastContext(meta.context),
       }),
-      authMeta
+      meta.auth
     );
   }
 
-  async createManyAndBroadcast(authMeta: AuthMetaPayload, context: LegacyVersionActionContext, data: CreateManyData<ThreadCommentORM>) {
+  async createManyAndBroadcast(data: CreateData<ThreadCommentEntity>[], meta: { auth: AuthMetaPayload; context: LegacyVersionActionContext }) {
     const result = await this.createManyAndSync(data);
 
-    await this.broadcastAddMany(authMeta, context, result);
-
-    result.add.threadComments.forEach((comment) => this.notifyMentions(comment));
+    await this.broadcastAddMany(result, meta);
 
     return result.add.threadComments;
   }
 
   /* Delete */
 
-  async deleteManyAndSync(ids: Primary<ThreadCommentEntity>[]) {
+  async deleteManyAndSync(ids: number[]) {
     const threadComments = await this.findMany(ids);
 
-    const threadIDs = Utils.array.unique(threadComments.map(({ thread }) => thread.id));
+    const threadIDs = Utils.array.unique(threadComments.map(({ threadID }) => threadID));
 
-    await this.deleteMany(threadComments);
+    await this.deleteMany(ids);
 
-    const threadIDsToRemove: Primary<ThreadEntity>[] = [];
+    const threadIDsToRemove: number[] = [];
 
     for (const threadID of threadIDs) {
       const remainingThreadComments = await this.findManyByThreads([threadID]);
@@ -236,7 +240,7 @@ export class ThreadCommentService extends MutableService<ThreadCommentORM> {
 
     const threads = await this.threadORM.findMany(threadIDsToRemove);
 
-    await this.threadORM.deleteMany(threads);
+    await this.threadORM.deleteMany(threadIDsToRemove);
 
     return {
       delete: { threads, threadComments },
@@ -244,32 +248,31 @@ export class ThreadCommentService extends MutableService<ThreadCommentORM> {
   }
 
   async broadcastDeleteMany(
-    authMeta: AuthMetaPayload,
-    context: LegacyVersionActionContext,
-    { delete: del }: { delete: { threads?: ThreadEntity[]; threadComments: ThreadCommentEntity[] } }
+    { delete: del }: { delete: { threads?: ThreadObject[]; threadComments: ThreadCommentObject[] } },
+    meta: { auth: AuthMetaPayload; context: LegacyVersionActionContext }
   ) {
     if (del.threads?.length) {
       await this.logux.processAs(
         Actions.Thread.DeleteMany({
-          ids: toEntityIDs(del.threads).map(this.threadSerializer.encodeID),
-          context: legacyVersionBroadcastContext(context),
+          ids: toPostgresEntityIDs(del.threads).map(this.threadSerializer.encodeID),
+          context: legacyVersionBroadcastContext(meta.context),
         }),
-        authMeta
+        meta.auth
       );
     }
 
     await this.logux.processAs(
       Actions.ThreadComment.DeleteMany({
-        ids: toEntityIDs(del.threadComments).map(this.threadCommentSerializer.encodeID),
-        context: legacyVersionBroadcastContext(context),
+        ids: toPostgresEntityIDs(del.threadComments).map(this.threadCommentSerializer.encodeID),
+        context: legacyVersionBroadcastContext(meta.context),
       }),
-      authMeta
+      meta.auth
     );
   }
 
-  async deleteManyAndBroadcast(authMeta: AuthMetaPayload, context: LegacyVersionActionContext, ids: Primary<ThreadCommentEntity>[]) {
+  async deleteManyAndBroadcast(ids: number[], meta: { auth: AuthMetaPayload; context: LegacyVersionActionContext }) {
     const result = await this.deleteManyAndSync(ids);
 
-    await this.broadcastDeleteMany(authMeta, context, result);
+    await this.broadcastDeleteMany(result, meta);
   }
 }

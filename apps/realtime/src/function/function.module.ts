@@ -8,9 +8,9 @@ import { FunctionPublicHTTPController } from './function-public.http.controller'
 import { FunctionVariableModule } from './function-variable/function-variable.module';
 
 @Module({
-  imports: [FunctionORM.register(), VersionORM.register(), FunctionPathModule, FunctionVariableModule],
-  controllers: [FunctionPublicHTTPController, FunctionLoguxController],
-  providers: [FunctionService],
+  imports: [FunctionPathModule, FunctionVariableModule],
   exports: [FunctionService],
+  providers: [FunctionORM, VersionORM, FunctionService],
+  controllers: [FunctionPublicHTTPController, FunctionLoguxController],
 })
 export class FunctionModule {}

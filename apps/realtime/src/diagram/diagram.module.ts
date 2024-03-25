@@ -6,8 +6,8 @@ import { DiagramUtil } from './diagram.util';
 import { DiagramNodeService } from './diagram-node.service';
 
 @Module({
-  imports: [DiagramORM.register()],
+  imports: [],
   exports: [DiagramService, DiagramNodeService, DiagramUtil],
-  providers: [DiagramService, DiagramNodeService, DiagramUtil],
+  providers: [DiagramORM, DiagramService, DiagramNodeService, DiagramUtil],
 })
 export class DiagramModule {}

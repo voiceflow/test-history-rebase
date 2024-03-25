@@ -1,15 +1,13 @@
 import { Controller, Inject } from '@nestjs/common';
-import { ResponseVariantType } from '@voiceflow/dtos';
+import { JSONResponseVariant, ResponseVariantType, TextResponseVariant } from '@voiceflow/dtos';
 import { Action, AuthMeta, AuthMetaPayload, Broadcast, Payload } from '@voiceflow/nestjs-logux';
-import type { JSONResponseVariantEntity, TextResponseVariantEntity } from '@voiceflow/orm-designer';
 import { Permission } from '@voiceflow/sdk-auth';
 import { Authorize } from '@voiceflow/sdk-auth/nestjs';
 import { Actions, Channels } from '@voiceflow/sdk-logux-designer';
 
-import { BroadcastOnly, EntitySerializer, InjectRequestContext, UseRequestContext } from '@/common';
+import { BroadcastOnly, InjectRequestContext, UseRequestContext } from '@/common';
 
 import { ResponseJSONVariantService } from './response-json-variant.service';
-import { ResponsePromptVariantService } from './response-prompt-variant.service';
 import { ResponseTextVariantService } from './response-text-variant.service';
 import { ResponseVariantService } from './response-variant.service';
 
@@ -22,11 +20,7 @@ export class ResponseVariantLoguxController {
     @Inject(ResponseJSONVariantService)
     private readonly responseJSONVariant: ResponseJSONVariantService,
     @Inject(ResponseTextVariantService)
-    private readonly responseTextVariant: ResponseTextVariantService,
-    @Inject(ResponsePromptVariantService)
-    private readonly responsePromptVariant: ResponsePromptVariantService,
-    @Inject(EntitySerializer)
-    private readonly entitySerializer: EntitySerializer
+    private readonly responseTextVariant: ResponseTextVariantService
   ) {}
 
   @Action.Async(Actions.ResponseVariant.CreateJSONOne)
@@ -37,15 +31,11 @@ export class ResponseVariantLoguxController {
   @UseRequestContext()
   createJSONOne(
     @Payload() { data, context, options }: Actions.ResponseVariant.CreateJSONOne.Request,
-    @AuthMeta() authMeta: AuthMetaPayload
+    @AuthMeta() auth: AuthMetaPayload
   ): Promise<Actions.ResponseVariant.CreateJSONOne.Response> {
     return this.service
-      .createManyAndBroadcast(
-        authMeta,
-        [{ ...data, type: ResponseVariantType.JSON, assistantID: context.assistantID, environmentID: context.environmentID }],
-        options
-      )
-      .then(([result]) => ({ data: this.entitySerializer.serialize(result as JSONResponseVariantEntity), context }));
+      .createManyAndBroadcast([{ ...data, type: ResponseVariantType.JSON }], { ...options, auth, context })
+      .then(([result]) => ({ data: this.service.toJSON(result) as JSONResponseVariant, context }));
   }
 
   @Action.Async(Actions.ResponseVariant.CreateTextOne)
@@ -56,15 +46,11 @@ export class ResponseVariantLoguxController {
   @UseRequestContext()
   createTextOne(
     @Payload() { data, context, options }: Actions.ResponseVariant.CreateTextOne.Request,
-    @AuthMeta() authMeta: AuthMetaPayload
+    @AuthMeta() auth: AuthMetaPayload
   ): Promise<Actions.ResponseVariant.CreateTextOne.Response> {
     return this.service
-      .createManyAndBroadcast(
-        authMeta,
-        [{ ...data, type: ResponseVariantType.TEXT, assistantID: context.assistantID, environmentID: context.environmentID }],
-        options
-      )
-      .then(([result]) => ({ data: this.entitySerializer.serialize(result as TextResponseVariantEntity), context }));
+      .createManyAndBroadcast([{ ...data, type: ResponseVariantType.TEXT }], { ...options, auth, context })
+      .then(([result]) => ({ data: this.service.toJSON(result) as TextResponseVariant, context }));
   }
 
   @Action.Async(Actions.ResponseVariant.CreateTextMany)
@@ -75,17 +61,14 @@ export class ResponseVariantLoguxController {
   @UseRequestContext()
   createTextMany(
     @Payload() { data, context, options }: Actions.ResponseVariant.CreateTextMany.Request,
-    @AuthMeta() authMeta: AuthMetaPayload
+    @AuthMeta() auth: AuthMetaPayload
   ): Promise<Actions.ResponseVariant.CreateTextMany.Response> {
     return this.service
       .createManyAndBroadcast(
-        authMeta,
-        data.map(
-          (item) => ({ ...item, type: ResponseVariantType.TEXT, assistantID: context.assistantID, environmentID: context.environmentID }),
-          options
-        )
+        data.map((item) => ({ ...item, type: ResponseVariantType.TEXT })),
+        { ...options, auth, context }
       )
-      .then((result) => ({ data: this.entitySerializer.iterable(result as TextResponseVariantEntity[]), context }));
+      .then((result) => ({ data: this.service.mapToJSON(result) as TextResponseVariant[], context }));
   }
 
   @Action(Actions.ResponseVariant.PatchOneJSON)
@@ -96,20 +79,8 @@ export class ResponseVariantLoguxController {
   @Broadcast<Actions.ResponseVariant.PatchOneJSON>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async patchOneJSON(@Payload() { id, patch, context }: Actions.ResponseVariant.PatchOneJSON, @AuthMeta() authMeta: AuthMetaPayload) {
-    await this.responseJSONVariant.patchOneForUser(authMeta.userID, { id, environmentID: context.environmentID }, patch);
-  }
-
-  @Action(Actions.ResponseVariant.PatchOnePrompt)
-  @Authorize.Permissions<Actions.ResponseVariant.PatchOnePrompt>([Permission.PROJECT_UPDATE], ({ context }) => ({
-    id: context.environmentID,
-    kind: 'version',
-  }))
-  @Broadcast<Actions.ResponseVariant.PatchOnePrompt>(({ context }) => ({ channel: Channels.assistant.build(context) }))
-  @BroadcastOnly()
-  @UseRequestContext()
-  async patchOnePrompt(@Payload() { id, patch, context }: Actions.ResponseVariant.PatchOnePrompt, @AuthMeta() authMeta: AuthMetaPayload) {
-    await this.responsePromptVariant.patchOneForUser(authMeta.userID, { id, environmentID: context.environmentID }, patch);
+  async patchOneJSON(@Payload() { id, patch, context }: Actions.ResponseVariant.PatchOneJSON, @AuthMeta() auth: AuthMetaPayload) {
+    await this.responseJSONVariant.patchOneForUser(auth.userID, { id, environmentID: context.environmentID }, patch);
   }
 
   @Action(Actions.ResponseVariant.PatchOneText)
@@ -120,8 +91,8 @@ export class ResponseVariantLoguxController {
   @Broadcast<Actions.ResponseVariant.PatchOneText>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async patchOneText(@Payload() { id, patch, context }: Actions.ResponseVariant.PatchOneText, @AuthMeta() authMeta: AuthMetaPayload) {
-    await this.responseTextVariant.patchOneForUser(authMeta.userID, { id, environmentID: context.environmentID }, patch);
+  async patchOneText(@Payload() { id, patch, context }: Actions.ResponseVariant.PatchOneText, @AuthMeta() auth: AuthMetaPayload) {
+    await this.responseTextVariant.patchOneForUser(auth.userID, { id, environmentID: context.environmentID }, patch);
   }
 
   @Action(Actions.ResponseVariant.PatchManyJSON)
@@ -132,25 +103,9 @@ export class ResponseVariantLoguxController {
   @Broadcast<Actions.ResponseVariant.PatchManyJSON>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async patchManyJSON(@Payload() { ids, patch, context }: Actions.ResponseVariant.PatchManyJSON, @AuthMeta() authMeta: AuthMetaPayload) {
+  async patchManyJSON(@Payload() { ids, patch, context }: Actions.ResponseVariant.PatchManyJSON, @AuthMeta() auth: AuthMetaPayload) {
     await this.responseJSONVariant.patchManyForUser(
-      authMeta.userID,
-      ids.map((id) => ({ id, environmentID: context.environmentID })),
-      patch
-    );
-  }
-
-  @Action(Actions.ResponseVariant.PatchManyPrompt)
-  @Authorize.Permissions<Actions.ResponseVariant.PatchManyPrompt>([Permission.PROJECT_UPDATE], ({ context }) => ({
-    id: context.environmentID,
-    kind: 'version',
-  }))
-  @Broadcast<Actions.ResponseVariant.PatchManyPrompt>(({ context }) => ({ channel: Channels.assistant.build(context) }))
-  @BroadcastOnly()
-  @UseRequestContext()
-  async patchManyPrompt(@Payload() { ids, patch, context }: Actions.ResponseVariant.PatchManyPrompt, @AuthMeta() authMeta: AuthMetaPayload) {
-    await this.responsePromptVariant.patchManyForUser(
-      authMeta.userID,
+      auth.userID,
       ids.map((id) => ({ id, environmentID: context.environmentID })),
       patch
     );
@@ -164,9 +119,9 @@ export class ResponseVariantLoguxController {
   @Broadcast<Actions.ResponseVariant.PatchManyText>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async patchManyText(@Payload() { ids, patch, context }: Actions.ResponseVariant.PatchManyText, @AuthMeta() authMeta: AuthMetaPayload) {
+  async patchManyText(@Payload() { ids, patch, context }: Actions.ResponseVariant.PatchManyText, @AuthMeta() auth: AuthMetaPayload) {
     await this.responseTextVariant.patchManyForUser(
-      authMeta.userID,
+      auth.userID,
       ids.map((id) => ({ id, environmentID: context.environmentID })),
       patch
     );
@@ -180,11 +135,11 @@ export class ResponseVariantLoguxController {
   @Broadcast<Actions.ResponseVariant.DeleteOne>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async deleteOne(@Payload() { id, context }: Actions.ResponseVariant.DeleteOne, @AuthMeta() authMeta: AuthMetaPayload) {
-    const result = await this.service.deleteManyAndSync(authMeta.userID, [{ id, environmentID: context.environmentID }]);
+  async deleteOne(@Payload() { id, context }: Actions.ResponseVariant.DeleteOne, @AuthMeta() auth: AuthMetaPayload) {
+    const result = await this.service.deleteManyAndSync([id], { userID: auth.userID, context });
 
     // overriding variants cause it's broadcasted by decorator
-    await this.service.broadcastDeleteMany(authMeta, { ...result, delete: { ...result.delete, responseVariants: [] } });
+    await this.service.broadcastDeleteMany({ ...result, delete: { ...result.delete, responseVariants: [] } }, { auth, context });
   }
 
   @Action(Actions.ResponseVariant.DeleteMany)
@@ -195,14 +150,11 @@ export class ResponseVariantLoguxController {
   @Broadcast<Actions.ResponseVariant.DeleteMany>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async deleteMany(@Payload() { ids, context }: Actions.ResponseVariant.DeleteMany, @AuthMeta() authMeta: AuthMetaPayload) {
-    const result = await this.service.deleteManyAndSync(
-      authMeta.userID,
-      ids.map((id) => ({ id, environmentID: context.environmentID }))
-    );
+  async deleteMany(@Payload() { ids, context }: Actions.ResponseVariant.DeleteMany, @AuthMeta() auth: AuthMetaPayload) {
+    const result = await this.service.deleteManyAndSync(ids, { userID: auth.userID, context });
 
     // overriding variants cause it's broadcasted by decorator
-    await this.service.broadcastDeleteMany(authMeta, { ...result, delete: { ...result.delete, responseVariants: [] } });
+    await this.service.broadcastDeleteMany({ ...result, delete: { ...result.delete, responseVariants: [] } }, { auth, context });
   }
 
   // no need to broadcast, cause it doesn't affect client state
@@ -212,8 +164,8 @@ export class ResponseVariantLoguxController {
     kind: 'version',
   }))
   @UseRequestContext()
-  async replaceWithType(@Payload() { id, type, context }: Actions.ResponseVariant.ReplaceWithType, @AuthMeta() authMeta: AuthMetaPayload) {
-    await this.service.replaceWithTypeAndBroadcast(authMeta, { id, environmentID: context.environmentID }, type);
+  async replaceWithType(@Payload() { id, type, context }: Actions.ResponseVariant.ReplaceWithType, @AuthMeta() auth: AuthMetaPayload) {
+    await this.service.replaceOneWithTypeAndBroadcast({ id, type }, { auth, context });
   }
 
   @Action(Actions.ResponseVariant.PatchOne)

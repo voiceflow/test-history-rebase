@@ -1,11 +1,10 @@
 import { Global, Module } from '@nestjs/common';
 
 import { DateSerializer } from './date.serializer';
-import { EntitySerializer } from './entity.serializer';
 
 @Global()
 @Module({
-  exports: [EntitySerializer, DateSerializer],
-  providers: [EntitySerializer, DateSerializer],
+  exports: [DateSerializer],
+  providers: [DateSerializer],
 })
 export class SerializerModule {}

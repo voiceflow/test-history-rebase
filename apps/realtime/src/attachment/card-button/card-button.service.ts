@@ -1,23 +1,31 @@
-/* eslint-disable max-params */
-import { EntityManager, Primary } from '@mikro-orm/core';
+import { EntityManager } from '@mikro-orm/core';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
+import { Utils } from '@voiceflow/common';
 import { NotFoundException } from '@voiceflow/exception';
-import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
-import type { AssistantEntity, CardAttachmentEntity, CardButtonEntity, ORMMutateOptions, PKOrEntity } from '@voiceflow/orm-designer';
+import { LoguxService } from '@voiceflow/nestjs-logux';
+import type { CardAttachmentObject, CardButtonObject } from '@voiceflow/orm-designer';
 import { AssistantORM, CardAttachmentORM, CardButtonORM, DatabaseTarget } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
-import { CMSObjectService, EntitySerializer } from '@/common';
-import type { CreateManyForUserData } from '@/common/types';
-import { assistantBroadcastContext, groupByAssistant, toEntityID, toEntityIDs } from '@/common/utils';
-import { uniqCMSResourceIDs } from '@/utils/cms.util';
+import type { CMSCreateForUserData } from '@/common';
+import { CMSObjectService } from '@/common';
+import { cmsBroadcastContext, injectAssistantAndEnvironmentIDs, toPostgresEntityIDs } from '@/common/utils';
+import { CMSBroadcastMeta, CMSContext } from '@/types';
 
 @Injectable()
 export class CardButtonService extends CMSObjectService<CardButtonORM> {
+  toJSON = this.orm.jsonAdapter.fromDB;
+
+  fromJSON = this.orm.jsonAdapter.toDB;
+
+  mapToJSON = this.orm.jsonAdapter.mapFromDB;
+
+  mapFromJSON = this.orm.jsonAdapter.mapToDB;
+
   constructor(
     @Inject(getEntityManagerToken(DatabaseTarget.POSTGRES))
-    private readonly postgresEM: EntityManager,
+    protected readonly postgresEM: EntityManager,
     @Inject(CardButtonORM)
     protected readonly orm: CardButtonORM,
     @Inject(AssistantORM)
@@ -25,69 +33,68 @@ export class CardButtonService extends CMSObjectService<CardButtonORM> {
     @Inject(CardAttachmentORM)
     protected readonly cardAttachmentORM: CardAttachmentORM,
     @Inject(LoguxService)
-    private readonly logux: LoguxService,
-    @Inject(EntitySerializer)
-    private readonly entitySerializer: EntitySerializer
+    protected readonly logux: LoguxService
   ) {
     super();
   }
 
   /* Helpers */
 
-  protected async syncCardAttachments(cardButtons: CardButtonEntity[], { flush = true, action }: { flush?: boolean; action: 'create' | 'delete' }) {
-    const cardIDs = uniqCMSResourceIDs(cardButtons.map(({ card }) => ({ id: card.id, environmentID: card.environmentID })));
+  protected async syncCardAttachments(
+    cardButtons: CardButtonObject[],
+    { userID, action, context }: { action: 'create' | 'delete'; userID: number; context: CMSContext }
+  ) {
+    const cardIDs = Utils.array.unique(cardButtons.map((cardButton) => cardButton.cardID));
 
-    const cards = await this.cardAttachmentORM.findMany(cardIDs);
+    const cards = await this.cardAttachmentORM.findManyByEnvironmentAndIDs(context.environmentID, cardIDs);
 
     if (cardIDs.length !== cards.length) {
       throw new NotFoundException("couldn't find card to sync");
     }
 
     const cardButtonsByCardID = cardButtons.reduce<Record<string, typeof cardButtons>>((acc, cardButton) => {
-      acc[cardButton.card.id] ??= [];
-      acc[cardButton.card.id].push(cardButton);
+      acc[cardButton.cardID] ??= [];
+      acc[cardButton.cardID].push(cardButton);
 
       return acc;
     }, {});
 
-    cards.forEach((card) => {
-      const cardButtonIDs = cardButtonsByCardID[card.id]?.map(toEntityID);
+    await Promise.all(
+      cards.map(async (card) => {
+        const cardButtonIDs = toPostgresEntityIDs(cardButtonsByCardID[card.id] ?? []);
 
-      if (!cardButtonIDs?.length) {
-        throw new NotFoundException("couldn't find card buttons for card to sync");
-      }
+        if (!cardButtonIDs.length) {
+          throw new NotFoundException("couldn't find card buttons for card to sync");
+        }
 
-      let buttonOrder: string[];
+        let buttonOrder: string[];
 
-      if (action === 'create') {
-        buttonOrder = [...card.buttonOrder, ...cardButtonIDs];
-      } else {
-        buttonOrder = card.buttonOrder.filter((id) => !cardButtonIDs.includes(id));
-      }
+        if (action === 'create') {
+          buttonOrder = [...card.buttonOrder, ...cardButtonIDs];
+        } else {
+          buttonOrder = card.buttonOrder.filter((id) => !cardButtonIDs.includes(id));
+        }
 
-      // eslint-disable-next-line no-param-reassign
-      card.buttonOrder = buttonOrder;
-    });
+        // eslint-disable-next-line no-param-reassign
+        card.buttonOrder = buttonOrder;
 
-    if (flush) {
-      await this.orm.em.flush();
-    }
+        await this.cardAttachmentORM.patchOneForUser(userID, { id: card.id, environmentID: card.environmentID }, { buttonOrder });
+      })
+    );
 
     return cards;
   }
 
-  async broadcastSync(authMeta: AuthMetaPayload, { sync }: { sync: { cardAttachments: CardAttachmentEntity[] } }) {
+  async broadcastSync({ sync }: { sync: { cardAttachments: CardAttachmentObject[] } }, meta: CMSBroadcastMeta) {
     await Promise.all(
-      groupByAssistant(sync.cardAttachments).flatMap((cardAttachments) =>
-        cardAttachments.map((cardAttachment) =>
-          this.logux.processAs(
-            Actions.Attachment.PatchOneCard({
-              id: cardAttachment.id,
-              patch: { buttonOrder: cardAttachment.buttonOrder },
-              context: assistantBroadcastContext(cardAttachment),
-            }),
-            authMeta
-          )
+      sync.cardAttachments.map((cardAttachment) =>
+        this.logux.processAs(
+          Actions.Attachment.PatchOneCard({
+            id: cardAttachment.id,
+            patch: { buttonOrder: cardAttachment.buttonOrder },
+            context: cmsBroadcastContext(meta.context),
+          }),
+          meta.auth
         )
       )
     );
@@ -95,23 +102,24 @@ export class CardButtonService extends CMSObjectService<CardButtonORM> {
 
   /* Find */
 
-  findManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
-    return this.orm.findManyByEnvironment(assistant, environmentID);
+  findManyByEnvironment(environmentID: string) {
+    return this.orm.findManyByEnvironment(environmentID);
   }
 
-  findManyByCardAttachments(cards: PKOrEntity<CardAttachmentEntity>[]) {
-    return this.orm.findManyByCardAttachments(cards);
+  findManyByEnvironmentAndIDs(environmentID: string, ids: string[]) {
+    return this.orm.findManyByEnvironmentAndIDs(environmentID, ids);
+  }
+
+  findManyByCardAttachments(environmentID: string, cardIDs: string[]) {
+    return this.orm.findManyByCardAttachments(environmentID, cardIDs);
   }
 
   /* Create */
 
-  async createManyAndSync(userID: number, data: CreateManyForUserData<CardButtonORM>) {
+  async createManyAndSync(data: CMSCreateForUserData<CardButtonORM>[], { userID, context }: { userID: number; context: CMSContext }) {
     return this.postgresEM.transactional(async () => {
-      const cardButtons = await this.createManyForUser(userID, data, { flush: false });
-
-      const cardAttachments = await this.syncCardAttachments(cardButtons, { flush: false, action: 'create' });
-
-      await this.orm.em.flush();
+      const cardButtons = await this.createManyForUser(userID, data.map(injectAssistantAndEnvironmentIDs(context)));
+      const cardAttachments = await this.syncCardAttachments(cardButtons, { action: 'create', context, userID });
 
       return {
         add: { cardButtons },
@@ -121,48 +129,48 @@ export class CardButtonService extends CMSObjectService<CardButtonORM> {
   }
 
   async broadcastAddMany(
-    authMeta: AuthMetaPayload,
-    { add, sync }: { add: { cardButtons: CardButtonEntity[] }; sync: { cardAttachments: CardAttachmentEntity[] } }
+    { add, sync }: { add: { cardButtons: CardButtonObject[] }; sync: { cardAttachments: CardAttachmentObject[] } },
+    meta: CMSBroadcastMeta
   ) {
     await Promise.all([
-      ...groupByAssistant(add.cardButtons).map((cardButtons) =>
-        this.logux.processAs(
-          Actions.CardButton.AddMany({
-            data: this.entitySerializer.iterable(cardButtons),
-            context: assistantBroadcastContext(cardButtons[0]),
-          }),
-          authMeta
-        )
+      this.logux.processAs(
+        Actions.CardButton.AddMany({
+          data: this.mapToJSON(add.cardButtons),
+          context: cmsBroadcastContext(meta.context),
+        }),
+        meta.auth
       ),
-      this.broadcastSync(authMeta, { sync }),
+      this.broadcastSync({ sync }, meta),
     ]);
   }
 
-  async createManyAndBroadcast(authMeta: AuthMetaPayload, data: CreateManyForUserData<CardButtonORM>) {
-    const result = await this.createManyAndSync(authMeta.userID, data);
+  async createManyAndBroadcast(data: CMSCreateForUserData<CardButtonORM>[], meta: CMSBroadcastMeta) {
+    const result = await this.createManyAndSync(data, { userID: meta.auth.userID, context: meta.context });
 
-    await this.broadcastAddMany(authMeta, result);
+    await this.broadcastAddMany(result, meta);
 
     return result.add.cardButtons;
   }
 
   /* Delete */
 
-  async syncOnDelete(cardButtons: CardButtonEntity[], options?: ORMMutateOptions) {
-    const cardAttachments = await this.syncCardAttachments(cardButtons, { ...options, action: 'delete' });
+  async syncOnDelete(cardButtons: CardButtonObject[], { userID, context }: { userID: number; context: CMSContext }) {
+    const cardAttachments = await this.syncCardAttachments(cardButtons, { action: 'delete', userID, context });
 
     return { cardAttachments };
   }
 
-  async deleteManyAndSync(ids: Primary<CardButtonEntity>[]) {
+  deleteManyByEnvironmentAndIDs(environmentID: string, ids: string[]) {
+    return this.orm.deleteManyByEnvironmentAndIDs(environmentID, ids);
+  }
+
+  async deleteManyAndSync(ids: string[], { userID, context }: { userID: number; context: CMSContext }) {
     return this.postgresEM.transactional(async () => {
-      const cardButtons = await this.findMany(ids);
+      const cardButtons = await this.findManyByEnvironmentAndIDs(context.environmentID, ids);
 
-      const sync = await this.syncOnDelete(cardButtons, { flush: false });
+      const sync = await this.syncOnDelete(cardButtons, { userID, context });
 
-      await this.deleteMany(cardButtons, { flush: false });
-
-      await this.orm.em.flush();
+      await this.deleteManyByEnvironmentAndIDs(context.environmentID, ids);
 
       return {
         sync,
@@ -172,32 +180,30 @@ export class CardButtonService extends CMSObjectService<CardButtonORM> {
   }
 
   async broadcastDeleteMany(
-    authMeta: AuthMetaPayload,
     {
       sync,
       delete: del,
     }: {
-      sync: { cardAttachments: CardAttachmentEntity[] };
-      delete: { cardButtons: CardButtonEntity[] };
-    }
+      sync: { cardAttachments: CardAttachmentObject[] };
+      delete: { cardButtons: CardButtonObject[] };
+    },
+    meta: CMSBroadcastMeta
   ) {
     await Promise.all([
-      this.broadcastSync(authMeta, { sync }),
-      ...groupByAssistant(del.cardButtons).map((cardButtons) =>
-        this.logux.processAs(
-          Actions.CardButton.DeleteMany({
-            ids: toEntityIDs(cardButtons),
-            context: assistantBroadcastContext(cardButtons[0]),
-          }),
-          authMeta
-        )
+      this.broadcastSync({ sync }, meta),
+      this.logux.processAs(
+        Actions.CardButton.DeleteMany({
+          ids: toPostgresEntityIDs(del.cardButtons),
+          context: cmsBroadcastContext(meta.context),
+        }),
+        meta.auth
       ),
     ]);
   }
 
-  async deleteManyAndBroadcast(authMeta: AuthMetaPayload, ids: Primary<CardButtonEntity>[]) {
-    const result = await this.deleteManyAndSync(ids);
+  async deleteManyAndBroadcast(ids: string[], meta: CMSBroadcastMeta) {
+    const result = await this.deleteManyAndSync(ids, { userID: meta.auth.userID, context: meta.context });
 
-    await this.broadcastDeleteMany(authMeta, result);
+    await this.broadcastDeleteMany(result, meta);
   }
 }

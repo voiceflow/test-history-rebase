@@ -5,9 +5,8 @@ import { FunctionVariableLoguxController } from './function-variable.logux.contr
 import { FunctionVariableService } from './function-variable.service';
 
 @Module({
-  imports: [FunctionORM.register(), AssistantORM.register(), FunctionVariableORM.register()],
-  controllers: [FunctionVariableLoguxController],
-  providers: [FunctionVariableService],
   exports: [FunctionVariableService],
+  providers: [FunctionORM, AssistantORM, FunctionVariableORM, FunctionVariableService],
+  controllers: [FunctionVariableLoguxController],
 })
 export class FunctionVariableModule {}

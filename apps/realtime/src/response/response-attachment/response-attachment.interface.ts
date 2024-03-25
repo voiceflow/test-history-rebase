@@ -1,15 +1,13 @@
 import type { AttachmentType } from '@voiceflow/dtos';
+import type { ResponseCardAttachmentORM, ResponseMediaAttachmentORM } from '@voiceflow/orm-designer';
 
-import type { CreateOneData } from '@/common/types';
+import type { CMSCreateData } from '@/common/types';
 
-import type { ResponseCardAttachmentService } from './response-card-attachment.service';
-import type { ResponseMediaAttachmentService } from './response-media-attachment.service';
-
-export interface ResponseCardAttachmentCreateOneData extends CreateOneData<ResponseCardAttachmentService> {
+export interface ResponseCardAttachmentCreateOneData extends CMSCreateData<ResponseCardAttachmentORM> {
   type: typeof AttachmentType.CARD;
 }
 
-export interface ResponseMediaAttachmentCreateOneData extends CreateOneData<ResponseMediaAttachmentService> {
+export interface ResponseMediaAttachmentCreateOneData extends CMSCreateData<ResponseMediaAttachmentORM> {
   type: typeof AttachmentType.MEDIA;
 }
 
@@ -17,7 +15,6 @@ export type ResponseAnyAttachmentCreateData = ResponseCardAttachmentCreateOneDat
 
 interface ResponseBaseAttachmentReplaceData {
   variantID: string;
-  environmentID: string;
   newAttachmentID: string;
   oldResponseAttachmentID: string;
 }

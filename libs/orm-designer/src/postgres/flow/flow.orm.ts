@@ -1,9 +1,15 @@
-import type { MutableEntityData } from '@/types';
+import type { PatchData } from '@/types';
 
 import { PostgresCMSTabularORM } from '../common';
 import { FlowEntity } from './flow.entity';
+import type { FlowObject } from './flow.interface';
+import { FlowJSONAdapter } from './flow-json.adapter';
 
-export class FlowORM extends PostgresCMSTabularORM(FlowEntity) {
+export class FlowORM extends PostgresCMSTabularORM<FlowEntity> {
+  Entity = FlowEntity;
+
+  jsonAdapter = FlowJSONAdapter;
+
   findManyByDiagramIDs(environmentID: string, diagramIDs: string[]) {
     return this.find({ environmentID, diagramID: diagramIDs });
   }
@@ -11,14 +17,14 @@ export class FlowORM extends PostgresCMSTabularORM(FlowEntity) {
   async updateOneByDiagramIDAndReturnID(
     environmentID: string,
     diagramID: string,
-    patch: MutableEntityData<FlowEntity>
+    patch: PatchData<FlowEntity>
   ): Promise<string | null> {
-    const result = await this.em
-      .qb(FlowEntity)
-      .update(FlowEntity.fromJSON(patch))
-      .where({ environmentID, diagramID })
-      .returning('id')
-      .execute();
+    const qb = this.qb.update<[Pick<FlowObject, 'id'>]>(this.toDB(patch));
+
+    this.buildWhere(qb, { environmentID, diagramID });
+    this.buildReturning(qb, ['id']);
+
+    const result = await qb;
 
     if (result.length === 0) {
       return null;

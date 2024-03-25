@@ -10096,12 +10096,10 @@ __metadata:
     "@voiceflow-meta/eslint-config": "workspace:*"
     "@voiceflow-meta/prettier-config": "workspace:*"
     "@voiceflow-meta/typescript-config": "workspace:*"
-    "@voiceflow/base-types": 2.106.0
     "@voiceflow/common": 8.2.8
     "@voiceflow/dtos": "workspace:*"
     "@voiceflow/exception": 1.5.3
     bidirectional-adapter: 1.2.1
-    bson: ^6.2.0
     mongodb-mikro: "npm:mongodb@5.8.1"
     zod: 3.22.4
   peerDependencies:

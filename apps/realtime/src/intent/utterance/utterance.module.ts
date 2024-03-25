@@ -5,9 +5,8 @@ import { UtteranceLoguxController } from './utterance.logux.controller';
 import { UtteranceService } from './utterance.service';
 
 @Module({
-  imports: [UtteranceORM.register()],
   exports: [UtteranceService],
-  providers: [UtteranceService],
+  providers: [UtteranceORM, UtteranceService],
   controllers: [UtteranceLoguxController],
 })
 export class UtteranceModule {}

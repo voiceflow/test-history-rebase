@@ -8,9 +8,9 @@ import { ResponseDiscriminatorModule } from './response-discriminator/response-d
 import { ResponseVariantModule } from './response-variant/response-variant.module';
 
 @Module({
-  imports: [ResponseORM.register(), RequiredEntityORM.register(), ResponseVariantModule, ResponseAttachmentModule, ResponseDiscriminatorModule],
+  imports: [ResponseVariantModule, ResponseAttachmentModule, ResponseDiscriminatorModule],
   exports: [ResponseService],
-  providers: [ResponseService],
+  providers: [ResponseORM, RequiredEntityORM, ResponseService],
   controllers: [ResponseLoguxController],
 })
 export class ResponseModule {}

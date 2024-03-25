@@ -1,32 +1,24 @@
-import type { MutableEntityData, ORMMutateOptions, PKEntity, PKOrEntity } from '@/types';
+import type { Primary } from '@mikro-orm/core';
+
+import type { CreateData, DEFAULT_OR_NULL_COLUMN, PatchData, PostgresPKEntity, ToObject } from '@/types';
 
 import type { MutableORM } from './mutable-orm.interface';
 
-export interface CMSObjectORM<Entity extends PKEntity, ConstructorParam extends object>
-  extends MutableORM<Entity, ConstructorParam> {
+export interface CMSObjectORM<
+  BaseEntity extends PostgresPKEntity,
+  DiscriminatorEntity extends Omit<BaseEntity, typeof DEFAULT_OR_NULL_COLUMN>
+> extends MutableORM<BaseEntity, DiscriminatorEntity> {
   createOneForUser(
     userID: number,
-    data: Omit<ConstructorParam, 'createdByID' | 'updatedByID'>,
-    options?: ORMMutateOptions
-  ): Promise<Entity>;
+    data: Omit<CreateData<DiscriminatorEntity>, 'createdByID' | 'updatedByID'>
+  ): Promise<ToObject<DiscriminatorEntity>>;
 
   createManyForUser(
     userID: number,
-    data: Omit<ConstructorParam, 'createdByID' | 'updatedByID'>[],
-    options?: ORMMutateOptions
-  ): Promise<Entity[]>;
+    data: Omit<CreateData<DiscriminatorEntity>, 'createdByID' | 'updatedByID'>[]
+  ): Promise<ToObject<DiscriminatorEntity>[]>;
 
-  patchOneForUser(
-    userID: number,
-    id: PKOrEntity<Entity>,
-    data: MutableEntityData<Entity>,
-    options?: ORMMutateOptions
-  ): Promise<void>;
+  patchOneForUser(userID: number, id: Primary<BaseEntity>, data: PatchData<BaseEntity>): Promise<number>;
 
-  patchManyForUser(
-    userID: number,
-    ids: PKOrEntity<Entity>[],
-    data: MutableEntityData<Entity>,
-    options?: ORMMutateOptions
-  ): Promise<void>;
+  patchManyForUser(userID: number, ids: Primary<BaseEntity>[], data: PatchData<BaseEntity>): Promise<number>;
 }

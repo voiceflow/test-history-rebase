@@ -1,20 +1,30 @@
-import type { AssistantEntity } from '@/postgres/assistant';
 import { PostgresCMSObjectORM } from '@/postgres/common/orms/postgres-cms-object.orm';
-import type { PKOrEntity } from '@/types';
 
-import type { ResponseEntity } from '../response.entity';
 import { ResponseDiscriminatorEntity } from './response-discriminator.entity';
+import { ResponseDiscriminatorJSONAdapter } from './response-discriminator-json.adapter';
 
-export class ResponseDiscriminatorORM extends PostgresCMSObjectORM(ResponseDiscriminatorEntity) {
-  findManyByResponses(responses: PKOrEntity<ResponseEntity>[]) {
-    return this.find({ response: responses });
+export class ResponseDiscriminatorORM extends PostgresCMSObjectORM<ResponseDiscriminatorEntity> {
+  Entity = ResponseDiscriminatorEntity;
+
+  jsonAdapter = ResponseDiscriminatorJSONAdapter;
+
+  findManyByResponses(environmentID: string, responseIDs: string[]) {
+    return this.find({ environmentID, responseID: responseIDs });
   }
 
-  findManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
-    return this.find({ assistant, environmentID }, { orderBy: { createdAt: 'DESC' } });
+  findManyByEnvironment(environmentID: string) {
+    return this.find({ environmentID });
   }
 
-  deleteManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
-    return this.nativeDelete({ assistant, environmentID });
+  findManyByEnvironmentAndIDs(environmentID: string, ids: string[]) {
+    return this.find({ environmentID, id: ids });
+  }
+
+  deleteManyByEnvironment(environmentID: string) {
+    return this.delete({ environmentID });
+  }
+
+  deleteManyByEnvironmentAndIDs(environmentID: string, ids: string[]) {
+    return this.delete({ environmentID, id: ids });
   }
 }

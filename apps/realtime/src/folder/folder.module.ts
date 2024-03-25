@@ -11,9 +11,9 @@ import { FolderLoguxController } from './folder.logux.controller';
 import { FolderService } from './folder.service';
 
 @Module({
-  imports: [FolderORM.register(), EntityModule, IntentModule, FunctionModule, VariableModule, FlowModule],
+  imports: [EntityModule, IntentModule, FunctionModule, VariableModule, FlowModule],
   exports: [FolderService],
-  providers: [FolderService],
+  providers: [FolderORM, FolderService],
   controllers: [FolderLoguxController],
 })
 export class FolderModule {}

@@ -1,9 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { AttachmentType, MediaDatatype } from '@voiceflow/dtos';
-import { AnyAttachmentEntity } from '@voiceflow/orm-designer';
 
 import { AssistantService } from '@/assistant/assistant.service';
-import { AttachmentCreateData } from '@/attachment/attachment.interface';
+import { AnyAttachmentCreateData } from '@/attachment/attachment.interface';
 import { AttachmentService } from '@/attachment/attachment.service';
 
 @Injectable()
@@ -30,27 +29,28 @@ export class UploadService {
   }) {
     const assistant = await this.assistant.findOneOrFail(assistantID);
 
-    let attachment: AnyAttachmentEntity;
-
-    const payload: AttachmentCreateData[] = [
+    const payload: AnyAttachmentCreateData[] = [
       {
         url: [url],
         type: AttachmentType.MEDIA,
         name,
         isAsset: true,
         datatype: MediaDatatype.IMAGE,
-        assistantID,
-        environmentID: assistant.activeEnvironmentID,
       },
     ];
 
-    if (!clientID) {
-      const result = await this.attachment.createManyAndSync(userID, payload);
+    const context = {
+      assistantID,
+      environmentID: assistant.activeEnvironmentID,
+    };
 
-      [attachment] = result.add.attachments;
-    } else {
-      [attachment] = await this.attachment.createManyAndBroadcast({ userID, clientID }, payload);
+    if (!clientID) {
+      const result = await this.attachment.createManyAndSync(payload, { userID, context });
+
+      return result.add.attachments[0];
     }
+
+    const [attachment] = await this.attachment.createManyAndBroadcast(payload, { auth: { userID, clientID }, context });
 
     return attachment;
   }

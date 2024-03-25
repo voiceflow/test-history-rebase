@@ -1,29 +1,17 @@
-/* eslint-disable max-params */
-/* eslint-disable no-await-in-loop */
 import type { EntityManager } from '@mikro-orm/core';
-import { Primary } from '@mikro-orm/core';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
 import { Entity, EntityVariant, Language } from '@voiceflow/dtos';
-import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
-import type {
-  AssistantEntity,
-  EntityEntity,
-  EntityVariantEntity,
-  IntentEntity,
-  ORMMutateOptions,
-  PKOrEntity,
-  RequiredEntityEntity,
-  ToJSONWithForeignKeys,
-} from '@voiceflow/orm-designer';
-import { DatabaseTarget, EntityORM } from '@voiceflow/orm-designer';
+import { LoguxService } from '@voiceflow/nestjs-logux';
+import type { EntityJSON, EntityObject, EntityVariantJSON, EntityVariantObject, IntentObject, RequiredEntityObject } from '@voiceflow/orm-designer';
+import { DatabaseTarget, EntityORM, ObjectId } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
-import { CMSTabularService, EntitySerializer } from '@/common';
-import { assistantBroadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
+import { CMSTabularService } from '@/common';
+import { cmsBroadcastContext, injectAssistantAndEnvironmentIDs, toPostgresEntityIDs } from '@/common/utils';
 import { RequiredEntityService } from '@/intent/required-entity/required-entity.service';
-import { cloneManyEntities } from '@/utils/entity.util';
+import { CMSBroadcastMeta, CMSContext } from '@/types';
 
 import type { EntityExportImportDataDTO } from './dtos/entity-export-import-data.dto';
 import type { EntityCreateData } from './entity.interface';
@@ -31,6 +19,14 @@ import { EntityVariantService } from './entity-variant/entity-variant.service';
 
 @Injectable()
 export class EntityService extends CMSTabularService<EntityORM> {
+  toJSON = this.orm.jsonAdapter.fromDB;
+
+  fromJSON = this.orm.jsonAdapter.toDB;
+
+  mapToJSON = this.orm.jsonAdapter.mapFromDB;
+
+  mapFromJSON = this.orm.jsonAdapter.mapToDB;
+
   constructor(
     @Inject(getEntityManagerToken(DatabaseTarget.POSTGRES))
     private readonly postgresEM: EntityManager,
@@ -41,31 +37,17 @@ export class EntityService extends CMSTabularService<EntityORM> {
     @Inject(EntityVariantService)
     private readonly entityVariant: EntityVariantService,
     @Inject(RequiredEntityService)
-    private readonly requiredEntity: RequiredEntityService,
-    @Inject(EntitySerializer)
-    protected readonly entitySerializer: EntitySerializer
+    private readonly requiredEntity: RequiredEntityService
   ) {
     super();
   }
 
   /* Find */
 
-  async findManyWithSubResourcesByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+  async findManyWithSubResourcesByEnvironment(environmentID: string) {
     const [entities, entityVariants] = await Promise.all([
-      this.findManyByEnvironment(assistant, environmentID),
-      this.entityVariant.findManyByEnvironment(assistant, environmentID),
-    ]);
-
-    return {
-      entities,
-      entityVariants,
-    };
-  }
-
-  async findManyWithSubResourcesJSONByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
-    const [entities, entityVariants] = await Promise.all([
-      this.orm.findAllJSON({ assistant, environmentID }),
-      this.entityVariant.findManyJSONByEnvironment(assistant, environmentID),
+      this.findManyByEnvironment(environmentID),
+      this.entityVariant.findManyByEnvironment(environmentID),
     ]);
 
     return {
@@ -76,69 +58,55 @@ export class EntityService extends CMSTabularService<EntityORM> {
 
   /* Export */
 
+  toJSONWithSubResources({ entities, entityVariants }: { entities: EntityObject[]; entityVariants: EntityVariantObject[] }) {
+    return {
+      entities: this.mapToJSON(entities),
+      entityVariants: this.entityVariant.mapToJSON(entityVariants),
+    };
+  }
+
+  fromJSONWithSubResources({ entities, entityVariants }: EntityExportImportDataDTO) {
+    return {
+      entities: this.mapFromJSON(entities),
+      entityVariants: this.entityVariant.mapFromJSON(entityVariants),
+    };
+  }
+
   prepareExportData(
-    { entities, entityVariants }: { entities: EntityEntity[]; entityVariants: EntityVariantEntity[] },
+    data: { entities: EntityObject[]; entityVariants: EntityVariantObject[] },
     { backup }: { backup?: boolean } = {}
   ): EntityExportImportDataDTO {
-    const json = {
-      entities: this.entitySerializer.iterable(entities),
-      entityVariants: this.entitySerializer.iterable(entityVariants),
-    };
+    const json = this.toJSONWithSubResources(data);
 
     if (backup) {
       return json;
     }
 
-    return this.prepareExportJSONData(json);
-  }
-
-  prepareExportJSONData({
-    entities,
-    entityVariants,
-  }: {
-    entities: ToJSONWithForeignKeys<EntityEntity>[];
-    entityVariants: ToJSONWithForeignKeys<EntityVariantEntity>[];
-  }): EntityExportImportDataDTO {
     return {
-      entities: entities.map((item) => Utils.object.omit(item, ['assistantID', 'environmentID'])),
-      entityVariants: entityVariants.map((item) => Utils.object.omit(item, ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'])),
+      entities: json.entities.map((item) => Utils.object.omit(item, ['assistantID', 'environmentID'])),
+      entityVariants: json.entityVariants.map((item) => Utils.object.omit(item, ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'])),
     };
   }
 
   /* Clone */
 
-  async cloneManyWithSubResourcesForEnvironment(
-    {
-      sourceAssistantID,
-      targetAssistantID,
-      sourceEnvironmentID,
-      targetEnvironmentID,
-    }: {
-      sourceAssistantID: string;
-      targetAssistantID: string;
-      sourceEnvironmentID: string;
-      targetEnvironmentID: string;
-    },
-    { flush = true }: ORMMutateOptions = {}
-  ) {
-    const { entities: sourceEntities, entityVariants: sourceEntityVariants } = await this.findManyWithSubResourcesByEnvironment(
-      sourceAssistantID,
-      sourceEnvironmentID
-    );
+  async cloneManyWithSubResourcesForEnvironment({
+    targetAssistantID,
+    sourceEnvironmentID,
+    targetEnvironmentID,
+  }: {
+    targetAssistantID: string;
+    sourceEnvironmentID: string;
+    targetEnvironmentID: string;
+  }) {
+    const { entities: sourceEntities, entityVariants: sourceEntityVariants } = await this.findManyWithSubResourcesByEnvironment(sourceEnvironmentID);
 
-    const result = this.importManyWithSubResources(
-      {
-        entities: cloneManyEntities(sourceEntities, { assistantID: targetAssistantID, environmentID: targetEnvironmentID }),
-        entityVariants: cloneManyEntities(sourceEntityVariants, { assistantID: targetAssistantID, environmentID: targetEnvironmentID }),
-      },
-      { flush: false }
-    );
+    const injectContext = { assistantID: targetAssistantID, environmentID: targetEnvironmentID };
 
-    if (flush) {
-      await this.orm.em.flush();
-    }
-
-    return result;
+    return this.importManyWithSubResources({
+      entities: sourceEntities.map(injectAssistantAndEnvironmentIDs(injectContext)),
+      entityVariants: sourceEntityVariants.map(injectAssistantAndEnvironmentIDs(injectContext)),
+    });
   }
 
   /* Import */
@@ -147,8 +115,8 @@ export class EntityService extends CMSTabularService<EntityORM> {
     { entities, entityVariants }: EntityExportImportDataDTO,
     { userID, backup, assistantID, environmentID }: { userID: number; backup?: boolean; assistantID: string; environmentID: string }
   ): {
-    entities: ToJSONWithForeignKeys<EntityEntity>[];
-    entityVariants: ToJSONWithForeignKeys<EntityVariantEntity>[];
+    entities: EntityJSON[];
+    entityVariants: EntityVariantJSON[];
   } {
     const createdAt = new Date().toJSON();
 
@@ -192,21 +160,9 @@ export class EntityService extends CMSTabularService<EntityORM> {
     };
   }
 
-  async importManyWithSubResources(
-    data: {
-      entities: ToJSONWithForeignKeys<EntityEntity>[];
-      entityVariants: ToJSONWithForeignKeys<EntityVariantEntity>[];
-    },
-    { flush = true }: ORMMutateOptions = {}
-  ) {
-    const [entities, entityVariants] = await Promise.all([
-      this.createMany(data.entities, { flush: false }),
-      this.entityVariant.createMany(data.entityVariants, { flush: false }),
-    ]);
-
-    if (flush) {
-      await this.orm.em.flush();
-    }
+  async importManyWithSubResources(data: { entities: EntityObject[]; entityVariants: EntityVariantObject[] }) {
+    const entities = await this.createMany(data.entities);
+    const entityVariants = await this.entityVariant.createMany(data.entityVariants);
 
     return {
       entities,
@@ -216,35 +172,36 @@ export class EntityService extends CMSTabularService<EntityORM> {
 
   /* Create */
 
-  async createManyAndSync(userID: number, data: EntityCreateData[]) {
+  async createManyAndSync(data: EntityCreateData[], { userID, context }: { userID: number; context: CMSContext }) {
     return this.postgresEM.transactional(async () => {
-      const entities: EntityEntity[] = [];
-      const entityVariants: EntityVariantEntity[] = [];
+      const dataWithIDs = data.map(({ id, variants, ...item }) => {
+        const entityID = id ?? new ObjectId().toJSON();
 
-      for (const { variants: variantsData = [], ...entityData } of data) {
-        const entity = await this.createOneForUser(userID, entityData, { flush: false });
+        const variantsWithIDs = variants?.map((variant) => ({
+          ...variant,
+          id: new ObjectId().toJSON(),
+          entityID,
+          language: Language.ENGLISH_US,
+          updatedByID: userID,
+          assistantID: context.assistantID,
+          environmentID: context.environmentID,
+        }));
 
-        entities.push(entity);
+        return {
+          ...item,
+          id: entityID,
+          variants: variantsWithIDs,
+          assistantID: context.assistantID,
+          environmentID: context.environmentID,
+        };
+      });
 
-        if (variantsData.length) {
-          const variants = await this.entityVariant.createMany(
-            variantsData.map(({ value, synonyms }) => ({
-              value,
-              synonyms,
-              language: Language.ENGLISH_US,
-              entityID: entity.id,
-              updatedByID: userID,
-              assistantID: entity.assistant.id,
-              environmentID: entity.environmentID,
-            })),
-            { flush: false }
-          );
+      const entities = await this.createManyForUser(
+        userID,
+        dataWithIDs.map((item) => Utils.object.omit(item, ['variants']))
+      );
 
-          entityVariants.push(...variants);
-        }
-      }
-
-      await this.orm.em.flush();
+      const entityVariants = await this.entityVariant.createMany(dataWithIDs.flatMap((item) => item.variants ?? []));
 
       return {
         add: { entities, entityVariants },
@@ -252,38 +209,34 @@ export class EntityService extends CMSTabularService<EntityORM> {
     });
   }
 
-  async broadcastAddMany(authMeta: AuthMetaPayload, { add }: { add: { entities: EntityEntity[]; entityVariants: EntityVariantEntity[] } }) {
+  async broadcastAddMany({ add }: { add: { entities: EntityObject[]; entityVariants: EntityVariantObject[] } }, meta: CMSBroadcastMeta) {
     await Promise.all([
-      this.entityVariant.broadcastAddMany(authMeta, {
-        add: Utils.object.pick(add, ['entityVariants']),
-      }),
+      this.entityVariant.broadcastAddMany({ add: Utils.object.pick(add, ['entityVariants']) }, meta),
 
-      ...groupByAssistant(add.entities).map((entities) =>
-        this.logux.processAs(
-          Actions.Entity.AddMany({
-            data: this.entitySerializer.iterable(entities),
-            context: assistantBroadcastContext(entities[0]),
-          }),
-          authMeta
-        )
+      this.logux.processAs(
+        Actions.Entity.AddMany({
+          data: this.mapToJSON(add.entities),
+          context: cmsBroadcastContext(meta.context),
+        }),
+        meta.auth
       ),
     ]);
   }
 
-  async createManyAndBroadcast(authMeta: AuthMetaPayload, data: EntityCreateData[]) {
-    const result = await this.createManyAndSync(authMeta.userID, data);
+  async createManyAndBroadcast(data: EntityCreateData[], meta: CMSBroadcastMeta) {
+    const result = await this.createManyAndSync(data, { userID: meta.auth.userID, context: meta.context });
 
-    await this.broadcastAddMany(authMeta, result);
+    await this.broadcastAddMany(result, meta);
 
     return result.add.entities;
   }
 
   /* Delete */
 
-  async collectRelationsToDelete(entities: PKOrEntity<EntityEntity>[]) {
+  async collectRelationsToDelete(environmentID: string, entityIDs: string[]) {
     const [entityVariants, requiredEntities] = await Promise.all([
-      this.entityVariant.findManyByEntities(entities),
-      this.requiredEntity.findManyByEntities(entities),
+      this.entityVariant.findManyByEntities(environmentID, entityIDs),
+      this.requiredEntity.findManyByEntities(environmentID, entityIDs),
     ]);
 
     return {
@@ -292,29 +245,22 @@ export class EntityService extends CMSTabularService<EntityORM> {
     };
   }
 
-  async syncRelationsOnDelete(
-    relations: { entityVariants: EntityVariantEntity[]; requiredEntities: RequiredEntityEntity[] },
-    { flush = true }: ORMMutateOptions = {}
+  syncRelationsOnDelete(
+    relations: { entityVariants: EntityVariantObject[]; requiredEntities: RequiredEntityObject[] },
+    { userID, context }: { userID: number; context: CMSContext }
   ) {
-    const sync = await this.requiredEntity.syncOnDelete(relations.requiredEntities, { flush: false });
-
-    if (flush) {
-      await this.orm.em.flush();
-    }
-
-    return sync;
+    return this.requiredEntity.syncOnDelete(relations.requiredEntities, { userID, context });
   }
 
-  async deleteManyAndSync(ids: Primary<EntityEntity>[]) {
+  async deleteManyAndSync(ids: string[], { userID, context }: { userID: number; context: CMSContext }) {
     return this.postgresEM.transactional(async () => {
-      const entities = await this.findMany(ids);
-      const relations = await this.collectRelationsToDelete(entities);
+      const [entities, relations] = await Promise.all([
+        this.findManyByEnvironmentAndIDs(context.environmentID, ids),
+        this.collectRelationsToDelete(context.environmentID, ids),
+      ]);
+      const sync = await this.syncRelationsOnDelete(relations, { userID, context });
 
-      const sync = await this.syncRelationsOnDelete(relations, { flush: false });
-
-      await this.deleteMany(entities, { flush: false });
-
-      await this.orm.em.flush();
+      await this.deleteManyByEnvironmentAndIDs(context.environmentID, ids);
 
       return {
         sync,
@@ -324,45 +270,37 @@ export class EntityService extends CMSTabularService<EntityORM> {
   }
 
   async broadcastDeleteMany(
-    authMeta: AuthMetaPayload,
     {
       sync,
       delete: del,
     }: {
-      sync: { intents: IntentEntity[] };
+      sync: { intents: IntentObject[] };
       delete: {
-        entities: EntityEntity[];
-        entityVariants: EntityVariantEntity[];
-        requiredEntities: RequiredEntityEntity[];
+        entities: EntityObject[];
+        entityVariants: EntityVariantObject[];
+        requiredEntities: RequiredEntityObject[];
       };
-    }
+    },
+    meta: CMSBroadcastMeta
   ) {
     await Promise.all([
-      this.requiredEntity.broadcastDeleteMany(authMeta, {
-        sync,
-        delete: Utils.object.pick(del, ['requiredEntities']),
-      }),
+      this.requiredEntity.broadcastDeleteMany({ sync, delete: Utils.object.pick(del, ['requiredEntities']) }, meta),
+      this.entityVariant.broadcastDeleteMany({ delete: Utils.object.pick(del, ['entityVariants']) }, meta),
 
-      this.entityVariant.broadcastDeleteMany(authMeta, {
-        delete: Utils.object.pick(del, ['entityVariants']),
-      }),
-
-      ...groupByAssistant(del.entities).map((entities) =>
-        this.logux.processAs(
-          Actions.Entity.DeleteMany({
-            ids: toEntityIDs(entities),
-            context: assistantBroadcastContext(entities[0]),
-          }),
-          authMeta
-        )
+      this.logux.processAs(
+        Actions.Entity.DeleteMany({
+          ids: toPostgresEntityIDs(del.entities),
+          context: cmsBroadcastContext(meta.context),
+        }),
+        meta.auth
       ),
     ]);
   }
 
-  async deleteManyAndBroadcast(authMeta: AuthMetaPayload, ids: Primary<EntityEntity>[]): Promise<void> {
-    const result = await this.deleteManyAndSync(ids);
+  async deleteManyAndBroadcast(ids: string[], meta: CMSBroadcastMeta): Promise<void> {
+    const result = await this.deleteManyAndSync(ids, { userID: meta.auth.userID, context: meta.context });
 
-    await this.broadcastDeleteMany(authMeta, result);
+    await this.broadcastDeleteMany(result, meta);
   }
 
   /* Upsert */
@@ -373,8 +311,7 @@ export class EntityService extends CMSTabularService<EntityORM> {
   ) {
     const { entities, entityVariants } = this.prepareImportData(data, meta);
 
-    await this.upsertMany(entities);
-
-    await this.entityVariant.upsertMany(entityVariants);
+    await this.upsertMany(this.mapFromJSON(entities));
+    await this.entityVariant.upsertMany(this.entityVariant.mapFromJSON(entityVariants));
   }
 }

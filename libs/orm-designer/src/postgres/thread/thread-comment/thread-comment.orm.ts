@@ -1,11 +1,14 @@
 import { PostgresMutableORM } from '@/postgres/common/orms/postgres-mutable.orm';
-import type { PKOrEntity } from '@/types';
 
-import type { ThreadEntity } from '../thread.entity';
 import { ThreadCommentEntity } from './thread-comment.entity';
+import { ThreadCommentJSONAdapter } from './thread-comment-json.adapter';
 
-export class ThreadCommentORM extends PostgresMutableORM(ThreadCommentEntity) {
-  findManyByThreads(threads: PKOrEntity<ThreadEntity>[]) {
-    return this.find({ thread: threads }, { orderBy: { createdAt: 'ASC' } });
+export class ThreadCommentORM extends PostgresMutableORM<ThreadCommentEntity> {
+  Entity = ThreadCommentEntity;
+
+  jsonAdapter = ThreadCommentJSONAdapter;
+
+  findManyByThreads(threadIDs: number[]) {
+    return this.find({ threadID: threadIDs }, { orderBy: { createdAt: 'asc' } });
   }
 }

@@ -1,16 +1,15 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { HashedIDService } from '@voiceflow/nestjs-common';
-import type { ProjectEntity, ToJSON } from '@voiceflow/orm-designer';
+import type { ProjectJSON, ProjectObject } from '@voiceflow/orm-designer';
+import { ProjectJSONAdapter } from '@voiceflow/orm-designer';
 
-import { BaseSerializer, EntitySerializer } from '@/common';
+import { BaseSerializer } from '@/common';
 
 @Injectable()
-export class ProjectSerializer extends BaseSerializer<ProjectEntity, Omit<ToJSON<ProjectEntity>, 'teamID'> & { teamID: string }> {
+export class ProjectSerializer extends BaseSerializer<ProjectObject, Omit<ProjectJSON, 'teamID'> & { teamID: string }> {
   constructor(
     @Inject(HashedIDService)
-    private readonly hashedID: HashedIDService,
-    @Inject(EntitySerializer)
-    private readonly entitySerializer: EntitySerializer
+    private readonly hashedID: HashedIDService
   ) {
     super();
   }
@@ -23,17 +22,10 @@ export class ProjectSerializer extends BaseSerializer<ProjectEntity, Omit<ToJSON
     return this.hashedID.decodeWorkspaceID(workspaceID);
   }
 
-  serialize(data: ProjectEntity): Omit<ToJSON<ProjectEntity>, 'teamID'> & { teamID: string } {
+  serialize(data: ProjectObject): Omit<ProjectJSON, 'teamID'> & { teamID: string } {
     return {
-      ...this.entitySerializer.serialize(data),
+      ...ProjectJSONAdapter.fromDB(data),
       teamID: this.encodeWorkspaceID(data.teamID),
-    };
-  }
-
-  deserialize(data: Omit<ToJSON<ProjectEntity>, 'teamID' | 'id'> & { teamID: string }): Omit<ToJSON<ProjectEntity>, 'id'> {
-    return {
-      ...data,
-      teamID: this.decodeWorkspaceID(data.teamID),
     };
   }
 }

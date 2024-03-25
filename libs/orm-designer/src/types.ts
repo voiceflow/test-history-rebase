@@ -4,61 +4,88 @@ import type { ObjectId } from '@mikro-orm/mongodb';
 import type { AnyRecord, Struct } from '@voiceflow/common';
 import type { Markup } from '@voiceflow/dtos';
 
-import type { ORM } from './common';
 import type { UtteranceText } from './postgres/intent/utterance/utterance-text.dto';
+
+export const DEFAULT_OR_NULL_COLUMN = Symbol('DEFAULT_OR_NULL_COLUMN');
+
+export type ExtendDefaultColumns<Entity, Key extends string> =
+  | (Entity extends { [DEFAULT_OR_NULL_COLUMN]?: infer C } ? C : never)
+  | Key;
 
 export interface CMSCompositePK {
   id: string;
   environmentID: string;
 }
 
-export type EntityPKValue = string | number;
+export type PostgresEntityPKValue = string | number;
 
-export interface PKEntity {
-  id: EntityPKValue;
+export interface BasePKEntity {
+  id?: PostgresEntityPKValue;
+
+  _id?: ObjectId;
+
+  [DEFAULT_OR_NULL_COLUMN]?: unknown;
+}
+
+export interface PostgresPKEntity extends Omit<BasePKEntity, '_id'> {
+  id: PostgresEntityPKValue;
+
   [PrimaryKeyType]?: unknown;
 }
 
-export interface Relation<ID extends EntityPKValue = string> {
-  id: ID;
-
-  toJSON(): any;
+export interface MongoPKEntity extends Omit<BasePKEntity, 'id'> {
+  _id: ObjectId;
 }
 
-export interface Constructor<Parameters extends any[], Instance> {
-  new (...args: Parameters): Instance;
+export interface Constructor<Instance, Args extends any[] = []> {
+  new (...args: Args): Instance;
 }
 
-export type PKOrEntity<Entity extends PKEntity> = Entity | Primary<Entity>;
+export type DefaultColumnsToJSON<Entity> = Entity extends { [DEFAULT_OR_NULL_COLUMN]?: infer D }
+  ? keyof {
+      [Key in D as Key extends string
+        ? NonNullable<Entity[Key & keyof Entity]> extends Ref<any>
+          ? `${Key}ID`
+          : Key
+        : never]: true;
+    }
+  : never;
 
-export interface ORMMutateOptions {
-  flush?: boolean;
-}
+export type PatchData<Entity extends BasePKEntity> = Partial<ToObject<Entity>>;
 
-export interface ORMDeleteOptions extends ORMMutateOptions {}
+export type CreateData<Entity extends BasePKEntity> = Omit<ToObject<Entity>, DefaultColumnsToJSON<Entity>> &
+  Partial<Pick<ToObject<Entity>, DefaultColumnsToJSON<Entity>>>;
 
-export type ORMParam<T> = T extends ORM<any, infer Param> ? Param : never;
+export type WhereData<Entity extends AnyRecord, EntityData = ToObject<Entity>> = {
+  [Key in keyof EntityData]?: EntityData[Key] | EntityData[Key][];
+};
 
-export type ORMEntity<T> = T extends { _Entity: Constructor<any, infer Entity> } ? Entity : never;
+export type OrderByData<Entity extends AnyRecord, EntityData = ToObject<Entity>> = {
+  [Key in keyof EntityData]?: 'asc' | 'desc';
+};
+
+export type ORMEntity<ORM> = ORM extends { Entity: Constructor<infer Entity> } ? Entity : never;
+
+export type ORMDiscriminatorEntity<ORM> = ORM extends { DiscriminatorEntity?: infer Entity } ? Entity : never;
 
 export type RelationKeys<T> = keyof {
-  [K in keyof T as Exclude<T[K], null | undefined> extends Relation<EntityPKValue> ? K : never]: true;
+  [K in keyof T as NonNullable<T[K]> extends Ref<any> ? K : never]: true;
 };
 
 export type CollectionKeys<T> = keyof {
-  [K in keyof T as Exclude<T[K], null | undefined> extends Collection<any, any> ? K : never]: true;
+  [K in keyof T as NonNullable<T[K]> extends Collection<any, any> ? K : never]: true;
 };
 
 export type VirtualKeys<T> = keyof {
-  [K in keyof T as Exclude<T[K], null | undefined> extends Collection<any, any> ? K : never]: true;
+  [K in keyof T as NonNullable<T[K]> extends Collection<any, any> ? K : never]: true;
 };
 
-export type ToForeignKeys<T extends AnyRecord> = Omit<T, RelationKeys<T>> & {
-  [K in RelationKeys<T> as `${K & string}ID`]: T[K] extends Relation<EntityPKValue>
+export type ToForeignKeys<T extends AnyRecord> = {
+  [K in keyof T as K extends RelationKeys<T> ? `${K & string}ID` : K]: T[K] extends Ref<any>
     ? T[K]['id']
-    : T[K] extends Relation<EntityPKValue> | null
+    : T[K] extends Ref<any> | null
     ? NonNullable<T[K]>['id'] | null
-    : T[K]['id'];
+    : T[K];
 };
 
 export type ResolvedForeignKeys<T extends AnyRecord, D extends AnyRecord> = {
@@ -71,12 +98,6 @@ export type ResolvedForeignKeys<T extends AnyRecord, D extends AnyRecord> = {
 
 export type OmitCollections<T> = Omit<T, CollectionKeys<T>>;
 
-export type ResolveForeignKeysParams<T> = Partial<
-  ToForeignKeys<Omit<OmitCollections<T>, 'id' | '_id' | 'createdAt' | 'toJSON' | typeof PrimaryKeyType>>
->;
-
-export type MutableEntityData<T extends AnyRecord> = Partial<ToJSONWithForeignKeys<T>>;
-
 export type ExcludeCreateKeys =
   | 'id'
   | '_id'
@@ -85,15 +106,6 @@ export type ExcludeCreateKeys =
   | 'deletedAt'
   | 'toJSON'
   | typeof PrimaryKeyType;
-
-export type EntityCreateParams<T, K extends keyof T = never> = ToJSON<
-  ToForeignKeys<Omit<OmitCollections<T>, ExcludeCreateKeys | K>> &
-    Partial<Pick<T, keyof T & ('id' | '_id' | 'createdAt' | 'updatedAt')>>
->;
-
-export type ValidKeys<T, PK> = {
-  [K in keyof PK]: K extends keyof T ? K : never;
-}[keyof PK];
 
 export type Ref<T, PK extends keyof T | unknown = PrimaryProperty<T>> = true extends IsUnknown<PK>
   ? Reference<T>
@@ -122,19 +134,15 @@ export type JSONTypeRemap<Type> = Type extends JSONStringRemapTypes
   ? ToJSON<Type>
   : Type;
 
-export type EntityObject<Type> = {
+export type ToObject<Type extends AnyRecord> = ToForeignKeys<{
   [Key in keyof Type as Exclude<ExcludeFunctions<Type, Key>, CollectionKeys<Type>>]: Type[Key];
-};
+}>;
 
 export type ToJSON<Type> = {
   [Key in keyof Type as Exclude<ExcludeFunctions<Type, Key>, CollectionKeys<Type>>]: JSONTypeRemap<Type[Key]>;
 };
 
-export type ToJSONWithForeignKeys<Type extends AnyRecord> = ToJSON<ToForeignKeys<OmitCollections<Type>>>;
-
-export type CMSKeyRemap<T extends [string, string][] = []> = [['assistant', 'assistantID'], ...T];
-
-export type PrimaryObject<Entity extends PKEntity> = Primary<Entity> extends string
+export type PrimaryObject<Entity extends BasePKEntity> = Primary<Entity> extends string
   ? Entity extends { _id: ObjectId }
     ? { _id: ObjectId }
     : { id: string }

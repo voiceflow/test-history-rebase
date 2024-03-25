@@ -3,7 +3,6 @@ import { ApiParam, ApiTags } from '@nestjs/swagger';
 import { ZodApiBody, ZodApiResponse } from '@voiceflow/nestjs-common';
 import { ZodValidationPipe } from 'nestjs-zod';
 
-import { EntitySerializer } from '@/common';
 import { ProjectSerializer } from '@/project/project.serializer';
 
 import { EnvironmentCloneRequest } from './dtos/environment-clone.request';
@@ -17,8 +16,6 @@ export class EnvironmentPrivateHTTPController {
   constructor(
     @Inject(EnvironmentService)
     private readonly service: EnvironmentService,
-    @Inject(EntitySerializer)
-    private readonly entitySerializer: EntitySerializer,
     @Inject(ProjectSerializer)
     private readonly projectSerializer: ProjectSerializer
   ) {}
@@ -34,23 +31,9 @@ export class EnvironmentPrivateHTTPController {
     return this.service
       .cloneOneAndTransform({ ...body, cloneDiagrams: body.cloneDiagrams ?? false, sourceEnvironmentID: environmentID })
       .then((result) => ({
-        version: this.entitySerializer.nullable(result.version),
+        ...this.service.toJSONWithSubResources(result),
         project: this.projectSerializer.nullable(result.project),
-        intents: this.entitySerializer.iterable(result.intents),
-        entities: this.entitySerializer.iterable(result.entities),
-        diagrams: this.entitySerializer.iterable(result.diagrams),
-        variables: this.entitySerializer.iterable(result.variables),
-        responses: this.entitySerializer.iterable(result.responses),
-        functions: this.entitySerializer.iterable(result.functions),
-        utterances: this.entitySerializer.iterable(result.utterances),
-        functionPaths: this.entitySerializer.iterable(result.functionPaths),
         liveDiagramIDs: result.liveDiagramIDs,
-        entityVariants: this.entitySerializer.iterable(result.entityVariants),
-        responseVariants: this.entitySerializer.iterable(result.responseVariants),
-        requiredEntities: this.entitySerializer.iterable(result.requiredEntities),
-        functionVariables: this.entitySerializer.iterable(result.functionVariables),
-        responseAttachments: this.entitySerializer.iterable(result.responseAttachments),
-        responseDiscriminators: this.entitySerializer.iterable(result.responseDiscriminators),
       }));
   }
 
@@ -59,23 +42,9 @@ export class EnvironmentPrivateHTTPController {
   @ZodApiResponse({ status: HttpStatus.OK, schema: EnvironmentPreparePrototypeResponse })
   preparePrototype(@Param('environmentID') environmentID: string): Promise<EnvironmentPreparePrototypeResponse> {
     return this.service.preparePrototype(environmentID).then((result) => ({
-      version: this.entitySerializer.nullable(result.version),
+      ...this.service.toJSONWithSubResources(result),
       project: this.projectSerializer.nullable(result.project),
-      intents: this.entitySerializer.iterable(result.intents),
-      entities: this.entitySerializer.iterable(result.entities),
-      diagrams: this.entitySerializer.iterable(result.diagrams),
-      variables: this.entitySerializer.iterable(result.variables),
-      responses: this.entitySerializer.iterable(result.responses),
-      functions: this.entitySerializer.iterable(result.functions),
-      utterances: this.entitySerializer.iterable(result.utterances),
-      functionPaths: this.entitySerializer.iterable(result.functionPaths),
       liveDiagramIDs: result.liveDiagramIDs,
-      entityVariants: this.entitySerializer.iterable(result.entityVariants),
-      responseVariants: this.entitySerializer.iterable(result.responseVariants),
-      requiredEntities: this.entitySerializer.iterable(result.requiredEntities),
-      functionVariables: this.entitySerializer.iterable(result.functionVariables),
-      responseAttachments: this.entitySerializer.iterable(result.responseAttachments),
-      responseDiscriminators: this.entitySerializer.iterable(result.responseDiscriminators),
     }));
   }
 }

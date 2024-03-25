@@ -1,11 +1,18 @@
 import { Inject, Injectable } from '@nestjs/common';
-import type { AssistantEntity, CardAttachmentEntity, PKOrEntity } from '@voiceflow/orm-designer';
 import { ResponseCardAttachmentORM } from '@voiceflow/orm-designer';
 
 import { MutableService } from '@/common';
 
 @Injectable()
 export class ResponseCardAttachmentService extends MutableService<ResponseCardAttachmentORM> {
+  toJSON = this.orm.jsonAdapter.fromDB;
+
+  fromJSON = this.orm.jsonAdapter.toDB;
+
+  mapToJSON = this.orm.jsonAdapter.mapFromDB;
+
+  mapFromJSON = this.orm.jsonAdapter.mapToDB;
+
   constructor(
     @Inject(ResponseCardAttachmentORM)
     protected readonly orm: ResponseCardAttachmentORM
@@ -13,11 +20,7 @@ export class ResponseCardAttachmentService extends MutableService<ResponseCardAt
     super();
   }
 
-  findManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
-    return this.orm.findManyByEnvironment(assistant, environmentID);
-  }
-
-  findManyByCardAttachments(cards: PKOrEntity<CardAttachmentEntity>[]) {
-    return this.orm.findManyByCardAttachments(cards);
+  findManyByCardAttachments(environmentID: string, cardIDs: string[]) {
+    return this.orm.findManyByCardAttachments(environmentID, cardIDs);
   }
 }

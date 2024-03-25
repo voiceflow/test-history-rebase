@@ -1,16 +1,22 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
-import { VariableStateORM } from '@voiceflow/orm-designer';
+import { ObjectId, VariableStateORM } from '@voiceflow/orm-designer';
 
-import { EntitySerializer, MutableService } from '@/common';
+import { MutableService } from '@/common';
 
 @Injectable()
 export class VariableStateService extends MutableService<VariableStateORM> {
+  toJSON = this.orm.jsonAdapter.fromDB;
+
+  fromJSON = this.orm.jsonAdapter.toDB;
+
+  mapToJSON = this.orm.jsonAdapter.mapFromDB;
+
+  mapFromJSON = this.orm.jsonAdapter.mapToDB;
+
   constructor(
     @Inject(VariableStateORM)
-    protected readonly orm: VariableStateORM,
-    @Inject(EntitySerializer)
-    protected readonly entitySerializer: EntitySerializer
+    protected readonly orm: VariableStateORM
   ) {
     super();
   }
@@ -26,8 +32,8 @@ export class VariableStateService extends MutableService<VariableStateORM> {
 
     return this.createMany(
       sourceVariableStates.map((variableState) => ({
-        ...Utils.object.omit(this.entitySerializer.serialize(variableState), ['_id', 'projectID']),
-        projectID: targetProjectID,
+        ...Utils.object.omit(variableState, ['_id', 'projectID']),
+        projectID: new ObjectId(targetProjectID),
       }))
     );
   }

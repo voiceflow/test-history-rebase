@@ -1,32 +1,32 @@
-import type { MutableORM, ORMEntity, ORMMutateOptions, ORMParam, PKOrEntity } from '@voiceflow/orm-designer';
+import type { Primary } from '@mikro-orm/core';
+import type { CreateData, MutableORM, ORMDiscriminatorEntity, ORMEntity, PatchData } from '@voiceflow/orm-designer';
 
 import { BaseService } from './base.service';
-import type { PatchManyData, PatchOneData, UpsertManyData, UpsertOneData } from './types';
 
 export abstract class MutableService<Orm extends MutableORM<any, any>> extends BaseService<Orm> {
-  protected abstract readonly orm: MutableORM<ORMEntity<Orm>, ORMParam<Orm>>;
+  protected abstract readonly orm: MutableORM<ORMEntity<Orm>, ORMDiscriminatorEntity<Orm>>;
 
-  patchOne(id: PKOrEntity<ORMEntity<Orm>>, patch: PatchOneData<Orm>, options?: ORMMutateOptions): Promise<void> {
-    return this.orm.patchOne(id, patch, options);
+  async patchOne(id: Primary<ORMEntity<Orm>>, patch: PatchData<ORMEntity<Orm>>) {
+    await this.orm.patchOne(id, patch);
   }
 
-  patchMany(ids: PKOrEntity<ORMEntity<Orm>>[], patch: PatchManyData<Orm>, options?: ORMMutateOptions): Promise<void> {
-    return this.orm.patchMany(ids, patch, options);
+  async patchMany(ids: Primary<ORMEntity<Orm>>[], patch: PatchData<ORMEntity<Orm>>) {
+    await this.orm.patchMany(ids, patch);
   }
 
-  upsertOne(data: UpsertOneData<Orm>, options?: ORMMutateOptions): Promise<ORMEntity<Orm>> {
-    return this.orm.upsertOne(data, options);
+  upsertOne(data: CreateData<ORMDiscriminatorEntity<Orm>>) {
+    return this.orm.upsertOne(data);
   }
 
-  upsertMany(data: UpsertManyData<Orm>, options?: ORMMutateOptions): Promise<ORMEntity<Orm>[]> {
-    return this.orm.upsertMany(data, options);
+  upsertMany(data: CreateData<ORMDiscriminatorEntity<Orm>>[]) {
+    return this.orm.upsertMany(data);
   }
 
-  deleteOne(id: PKOrEntity<ORMEntity<Orm>>, options?: { soft?: boolean; flush?: boolean }): Promise<void> {
-    return this.orm.deleteOne(id, options);
+  async deleteOne(id: Primary<ORMEntity<Orm>>) {
+    await this.orm.deleteOne(id);
   }
 
-  deleteMany(ids: PKOrEntity<ORMEntity<Orm>>[], options?: { soft?: boolean; flush?: boolean }): Promise<void> {
-    return this.orm.deleteMany(ids, options);
+  async deleteMany(ids: Primary<ORMEntity<Orm>>[]) {
+    await this.orm.deleteMany(ids);
   }
 }

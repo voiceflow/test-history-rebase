@@ -14,6 +14,5 @@ export * from './pipes/hashed-workspace-id-context.pipe';
 export * from './pipes/hashed-workspace-id-payload.pipe';
 export * from './serializers/base.serializer';
 export * from './serializers/date.serializer';
-export * from './serializers/entity.serializer';
 export * from './serializers/serializer.module';
 export * from './types';

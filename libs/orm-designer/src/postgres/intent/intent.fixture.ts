@@ -1,8 +1,6 @@
 import type { EntityDTO } from '@mikro-orm/core';
 
 import type { IntentEntity } from './intent.entity';
-import { requiredEntityList } from './required-entity/required-entity.fixture';
-import { utteranceList } from './utterance/utterance.fixture';
 
 export const intent: EntityDTO<IntentEntity> = {
   id: 'intent-1',
@@ -12,8 +10,6 @@ export const intent: EntityDTO<IntentEntity> = {
   description: 'intent description',
   automaticReprompt: true,
   entityOrder: ['entity-1', 'entity-2'],
-  utterances: utteranceList,
-  requiredEntities: requiredEntityList,
   assistant: { id: 'assistant-1' } as any,
   createdBy: { id: 1 } as any,
   updatedBy: { id: 2 } as any,
@@ -29,6 +25,5 @@ export const intentList: EntityDTO<IntentEntity>[] = [
     name: 'second intent',
     description: null,
     entityOrder: ['entity-1'],
-    requiredEntities: [],
   },
 ];

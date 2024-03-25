@@ -1,16 +1,15 @@
-/* eslint-disable no-await-in-loop */
-import { Primary } from '@mikro-orm/core';
+import { EntityManager } from '@mikro-orm/core';
+import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
-import type { ORMMutateOptions, PKOrEntity, ThreadCommentEntity } from '@voiceflow/orm-designer';
-import { ThreadEntity, ThreadORM } from '@voiceflow/orm-designer';
+import type { ThreadCommentObject, ThreadObject } from '@voiceflow/orm-designer';
+import { DatabaseTarget, ThreadORM } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 import { LegacyVersionActionContext } from '@voiceflow/sdk-logux-designer/build/types';
 
 import { MutableService } from '@/common';
-import { PatchOneData } from '@/common/types';
-import { legacyVersionBroadcastContext, toEntityIDs } from '@/common/utils';
+import { legacyVersionBroadcastContext, toPostgresEntityIDs } from '@/common/utils';
 
 import { ThreadCreateData } from './thread.interface';
 import { ThreadSerializer } from './thread.serializer';
@@ -19,7 +18,10 @@ import { ThreadCommentService } from './thread-comment/thread-comment.service';
 
 @Injectable()
 export class ThreadService extends MutableService<ThreadORM> {
+  // eslint-disable-next-line max-params
   constructor(
+    @Inject(getEntityManagerToken(DatabaseTarget.POSTGRES))
+    private readonly postgresEM: EntityManager,
     @Inject(ThreadORM)
     protected readonly orm: ThreadORM,
     @Inject(LoguxService)
@@ -42,7 +44,7 @@ export class ThreadService extends MutableService<ThreadORM> {
 
   async findAllWithCommentsByAssistant(assistantID: string) {
     const threads = await this.orm.findManyByAssistant(assistantID);
-    const threadComments = await this.threadComment.findManyByThreads(threads);
+    const threadComments = await this.threadComment.findManyByThreads(toPostgresEntityIDs(threads));
 
     return {
       threads: this.threadSerializer.iterable(threads),
@@ -53,100 +55,64 @@ export class ThreadService extends MutableService<ThreadORM> {
   /* Create */
 
   async createManyAndSync(data: ThreadCreateData[]) {
-    const threads: ThreadEntity[] = [];
-    const threadComments: ThreadCommentEntity[] = [];
+    const result = await this.postgresEM.transactional(async () => {
+      const threads = await this.createMany(data.map((thread) => Utils.object.omit(thread, ['comments'])));
+      const threadComments = await this.threadComment.createMany(
+        data.flatMap((thread, index) => thread.comments?.map((comment) => ({ ...comment, threadID: threads[index].id })) ?? [])
+      );
 
-    for (const { comments: commentsData, ...threadData } of data) {
-      const thread = await this.createOne(threadData);
+      return {
+        add: { threads, threadComments },
+      };
+    });
 
-      threads.push(thread);
+    this.threadComment.notifyMany(result.add.threadComments, { threads: result.add.threads });
 
-      if (commentsData?.length) {
-        const sync = await this.threadComment.createManyAndSync(
-          commentsData.map((comment) => ({
-            ...comment,
-            threadID: thread.id,
-            authorID: comment.authorID,
-          }))
-        );
-
-        threadComments.push(...sync.add.threadComments);
-
-        sync.add.threadComments.forEach((comment) => this.threadComment.notifyMentions(comment, { thread }));
-      }
-    }
-
-    return {
-      add: { threads, threadComments },
-    };
+    return result;
   }
 
   async broadcastAddMany(
-    authMeta: AuthMetaPayload,
-    context: LegacyVersionActionContext,
-    { add }: { add: { threads: ThreadEntity[]; threadComments: ThreadCommentEntity[] } }
+    { add }: { add: { threads: ThreadObject[]; threadComments: ThreadCommentObject[] } },
+    meta: { auth: AuthMetaPayload; context: LegacyVersionActionContext }
   ) {
     await Promise.all([
-      this.threadComment.broadcastAddMany(authMeta, context, { add: Utils.object.pick(add, ['threadComments']) }),
+      this.threadComment.broadcastAddMany({ add: Utils.object.pick(add, ['threadComments']) }, meta),
 
       this.logux.processAs(
         Actions.Thread.AddMany({
           data: add.threads.map((thread) => this.threadSerializer.nullable(thread)),
-          context: legacyVersionBroadcastContext(context),
+          context: legacyVersionBroadcastContext(meta.context),
         }),
-        authMeta
+        meta.auth
       ),
     ]);
   }
 
-  async createManyAndBroadcast(authMeta: AuthMetaPayload, context: LegacyVersionActionContext, data: ThreadCreateData[]) {
+  async createManyAndBroadcast(data: ThreadCreateData[], meta: { auth: AuthMetaPayload; context: LegacyVersionActionContext }) {
     const result = await this.createManyAndSync(data);
 
-    await this.broadcastAddMany(authMeta, context, result);
+    await this.broadcastAddMany(result, meta);
 
     return result.add.threads;
   }
 
-  /* Patch */
-
-  async patchOne(id: PKOrEntity<ThreadEntity>, patch: PatchOneData<ThreadORM>, options?: ORMMutateOptions) {
-    if (patch.nodeID === null) {
-      await this.orm.em.qb(ThreadEntity).update({ nodeID: null }).where({ id }).execute();
-    }
-
-    await super.patchOne(id, patch, options);
-  }
-
   /* Delete */
 
-  async collectRelationsToDelete(threads: PKOrEntity<ThreadEntity>[]) {
-    const threadComments = await this.threadComment.findManyByThreads(threads);
+  async collectRelationsToDelete(threadIDs: number[]) {
+    const threadComments = await this.threadComment.findManyByThreads(threadIDs);
 
     return {
       threadComments,
     };
   }
 
-  async deleteManyWithRelations(
-    {
-      threads,
-      threadComments,
-    }: {
-      threads: PKOrEntity<ThreadEntity>[];
-      threadComments: PKOrEntity<ThreadCommentEntity>[];
-    },
-    { flush = true }: ORMMutateOptions = {}
-  ) {
-    await Promise.all([this.threadComment.deleteMany(threadComments, { flush: false }), this.deleteMany(threads, { flush: false })]);
-
-    if (flush) {
-      await this.orm.em.flush();
-    }
+  async deleteManyWithRelations({ threads, threadComments }: { threads: ThreadObject[]; threadComments: ThreadCommentObject[] }) {
+    await this.threadComment.deleteMany(toPostgresEntityIDs(threadComments));
+    await this.deleteMany(toPostgresEntityIDs(threads));
   }
 
-  async deleteManyAndSync(threadIDs: Primary<ThreadEntity>[]) {
-    const threads = await this.findMany(threadIDs);
-    const relations = await this.collectRelationsToDelete(threads);
+  async deleteManyAndSync(threadIDs: number[]) {
+    const [threads, relations] = await Promise.all([this.findMany(threadIDs), this.collectRelationsToDelete(threadIDs)]);
 
     await this.deleteManyWithRelations({ ...relations, threads });
 
@@ -157,7 +123,7 @@ export class ThreadService extends MutableService<ThreadORM> {
 
   async deleteManyByDiagramsAndSync(diagramIDs: string[]) {
     const threads = await this.findManyByDiagrams(diagramIDs);
-    const relations = await this.collectRelationsToDelete(threads);
+    const relations = await this.collectRelationsToDelete(toPostgresEntityIDs(threads));
 
     await this.deleteManyWithRelations({ ...relations, threads });
 
@@ -167,40 +133,39 @@ export class ThreadService extends MutableService<ThreadORM> {
   }
 
   async broadcastDeleteMany(
-    authMeta: AuthMetaPayload,
-    context: LegacyVersionActionContext,
     {
       delete: del,
     }: {
       delete: {
-        threads: ThreadEntity[];
-        threadComments: ThreadCommentEntity[];
+        threads: ThreadObject[];
+        threadComments: ThreadCommentObject[];
       };
-    }
+    },
+    meta: { auth: AuthMetaPayload; context: LegacyVersionActionContext }
   ) {
     await Promise.all([
-      this.threadComment.broadcastDeleteMany(authMeta, context, { delete: Utils.object.pick(del, ['threadComments']) }),
+      this.threadComment.broadcastDeleteMany({ delete: Utils.object.pick(del, ['threadComments']) }, meta),
 
       this.logux.processAs(
         Actions.Thread.DeleteMany({
-          ids: toEntityIDs(del.threads).map(this.threadSerializer.encodeID),
-          context: legacyVersionBroadcastContext(context),
+          ids: toPostgresEntityIDs(del.threads).map(this.threadSerializer.encodeID),
+          context: legacyVersionBroadcastContext(meta.context),
         }),
-        authMeta
+        meta.auth
       ),
     ]);
   }
 
-  async deleteManyAndBroadcast(authMeta: AuthMetaPayload, context: LegacyVersionActionContext, ids: number[]): Promise<void> {
+  async deleteManyAndBroadcast(ids: number[], meta: { auth: AuthMetaPayload; context: LegacyVersionActionContext }): Promise<void> {
     const result = await this.deleteManyAndSync(ids);
 
-    await this.broadcastDeleteMany(authMeta, context, result);
+    await this.broadcastDeleteMany(result, meta);
   }
 
-  async deleteManyByDiagramsAndBroadcast(authMeta: AuthMetaPayload, context: LegacyVersionActionContext, diagramIDs: string[]): Promise<void> {
+  async deleteManyByDiagramsAndBroadcast(diagramIDs: string[], meta: { auth: AuthMetaPayload; context: LegacyVersionActionContext }): Promise<void> {
     const result = await this.deleteManyByDiagramsAndSync(diagramIDs);
 
-    await this.broadcastDeleteMany(authMeta, context, result);
+    await this.broadcastDeleteMany(result, meta);
   }
 
   async moveMany(data: Record<string, [number, number]>) {

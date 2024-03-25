@@ -21,9 +21,7 @@ const NotificationButton: React.FC = () => {
   const notifications = useSelector(notificationsSelector);
   const fetchNotifications = useDispatch(Notifications.fetchNotifications);
 
-  useSetup(() => {
-    fetchNotifications();
-  });
+  useSetup(() => fetchNotifications());
 
   const newNotifications = React.useMemo(() => notifications.filter(({ isNew }) => isNew), [notifications]);
 
@@ -31,6 +29,7 @@ const NotificationButton: React.FC = () => {
 
   return (
     <Popper
+      onOpen={fetchNotifications}
       maxHeight={500}
       placement="bottom-end"
       renderContent={() => <UpdatesPopover notifications={notifications.length ? notifications : DEFAULT_MESSAGE} />}

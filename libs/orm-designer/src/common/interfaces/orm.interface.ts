@@ -1,28 +1,24 @@
-import type { FilterQuery, FindOptions, Loaded, Primary } from '@mikro-orm/core';
+import type { Primary } from '@mikro-orm/core';
 
-import type { Constructor, ORMMutateOptions, PKEntity, Ref } from '@/types';
+import type { BasePKEntity, Constructor, CreateData, DEFAULT_OR_NULL_COLUMN, ToObject } from '@/types';
 
-export interface ORM<Entity extends PKEntity, ConstructorParam extends object> {
-  _Entity: Constructor<[data: ConstructorParam], Entity>;
+export interface ORM<
+  BaseEntity extends BasePKEntity,
+  DiscriminatorEntity extends Omit<BaseEntity, typeof DEFAULT_OR_NULL_COLUMN>
+> {
+  Entity: Constructor<BaseEntity>;
 
-  find<Hint extends string = never>(
-    where: FilterQuery<Entity>,
-    options?: FindOptions<Entity, Hint>
-  ): Promise<Loaded<Entity, Hint>[]>;
+  DiscriminatorEntity?: DiscriminatorEntity;
 
-  findOne(id: Primary<Entity>): Promise<Entity | null>;
+  find(where: Partial<ToObject<BaseEntity>>): Promise<ToObject<DiscriminatorEntity>[]>;
 
-  findMany(ids: Primary<Entity>[]): Promise<Entity[]>;
+  findOne(id: Primary<BaseEntity>): Promise<ToObject<DiscriminatorEntity> | null>;
 
-  findOneOrFail(id: Primary<Entity>): Promise<Entity>;
+  findMany(ids: Primary<BaseEntity>[]): Promise<ToObject<DiscriminatorEntity>[]>;
 
-  createOne(data: ConstructorParam, options?: ORMMutateOptions): Promise<Entity>;
+  findOneOrFail(id: Primary<BaseEntity>): Promise<ToObject<DiscriminatorEntity>>;
 
-  createMany(data: ConstructorParam[], options?: ORMMutateOptions): Promise<Entity[]>;
+  createOne(data: CreateData<DiscriminatorEntity>): Promise<ToObject<DiscriminatorEntity>>;
 
-  getReference(id: Primary<Entity>, options: { wrapped: true }): Ref<Entity>;
-  getReference(id: Primary<Entity>, options?: { wrapped?: false }): Entity;
-
-  getReferences(ids: Primary<Entity>[], options: { wrapped: true }): Ref<Entity>[];
-  getReferences(ids: Primary<Entity>[], options?: { wrapped?: false }): Entity[];
+  createMany(data: CreateData<DiscriminatorEntity>[]): Promise<ToObject<DiscriminatorEntity>[]>;
 }

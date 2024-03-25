@@ -6,7 +6,6 @@ import { Permission } from '@voiceflow/sdk-auth';
 import { Authorize, UserID } from '@voiceflow/sdk-auth/nestjs';
 import type { Request } from 'express';
 
-import { EntitySerializer } from '@/common';
 import { MulterFile } from '@/file/types';
 
 import { FunctionExportImportDataDTO } from './dtos/function-export-import-data.dto';
@@ -20,9 +19,7 @@ import { FunctionService } from './function.service';
 export class FunctionPublicHTTPController {
   constructor(
     @Inject(FunctionService)
-    private readonly service: FunctionService,
-    @Inject(EntitySerializer)
-    private readonly entitySerializer: EntitySerializer
+    private readonly service: FunctionService
   ) {}
 
   @Get('export-json/:environmentID')
@@ -60,10 +57,10 @@ export class FunctionPublicHTTPController {
   ): Promise<FunctionImportJSONResponse> {
     const data = FunctionExportImportDataDTO.parse(JSON.parse(file.buffer.toString('utf8')));
 
-    const { duplicatedFunctions, functions } = await this.service.importJSONAndBroadcast({ data, userID, clientID, environmentID });
+    const { duplicatedFunctions, functions } = await this.service.importJSONAndBroadcast(data, { userID, clientID, environmentID });
 
     return {
-      functions: this.entitySerializer.iterable(functions),
+      functions: this.service.mapToJSON(functions),
       duplicatedFunctions,
     };
   }

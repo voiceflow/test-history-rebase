@@ -1,32 +1,27 @@
-import { Entity, Index, ManyToOne, PrimaryKeyType, Property, Unique, wrap } from '@mikro-orm/core';
+import { Entity, Index, ManyToOne, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
 import type { Markup } from '@voiceflow/dtos';
 
 import { MarkupType } from '@/common';
 import type { AssistantEntity } from '@/postgres/assistant';
 import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
 import { VariableEntity } from '@/postgres/variable';
-import type { CMSCompositePK, EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
+import type { CMSCompositePK, Ref } from '@/types';
 
 import { EventEntity } from '../event.entity';
-import { EventMappingEntityAdapter } from './event-mapping-entity.adapter';
 
 @Entity({ tableName: 'designer.event_mapping' })
 @Unique({ properties: ['id', 'environmentID'] })
 @Index({ properties: ['environmentID'] })
-export class EventMappingEntity extends PostgresCMSObjectEntity {
-  static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<EventMappingEntity>>>(data: JSON) {
-    return EventMappingEntityAdapter.toDB<JSON>(data);
-  }
-
+export class EventMappingEntity extends PostgresCMSObjectEntity<'variable'> {
   @Property({ type: MarkupType })
-  path: Markup;
+  path!: Markup;
 
   @ManyToOne(() => EventEntity, {
     name: 'event_id',
     onDelete: 'cascade',
     fieldNames: ['event_id', 'environment_id'],
   })
-  event: Ref<EventEntity>;
+  event!: Ref<EventEntity>;
 
   @ManyToOne(() => VariableEntity, {
     name: 'variable_id',
@@ -35,35 +30,13 @@ export class EventMappingEntity extends PostgresCMSObjectEntity {
     nullable: true,
     fieldNames: ['variable_id', 'environment_id'],
   })
-  variable: Ref<VariableEntity> | null = null;
+  variable!: Ref<VariableEntity> | null;
 
   @Assistant()
-  assistant: Ref<AssistantEntity>;
+  assistant!: Ref<AssistantEntity>;
 
   @Environment()
-  environmentID: string;
+  environmentID!: string;
 
   [PrimaryKeyType]?: CMSCompositePK;
-
-  constructor(data: EntityCreateParams<EventMappingEntity>) {
-    super(data);
-
-    ({
-      path: this.path,
-      event: this.event,
-      variable: this.variable,
-      assistant: this.assistant,
-      environmentID: this.environmentID,
-    } = EventMappingEntity.fromJSON(data));
-  }
-
-  toJSON(...args: any[]): ToJSONWithForeignKeys<EventMappingEntity> {
-    return EventMappingEntityAdapter.fromDB({
-      ...wrap<EventMappingEntity>(this).toObject(...args),
-      event: this.event,
-      variable: this.variable ?? null,
-      updatedBy: this.updatedBy,
-      assistant: this.assistant,
-    });
-  }
 }

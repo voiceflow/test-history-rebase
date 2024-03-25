@@ -44,14 +44,19 @@ const TrialExpiredPage: React.FC = () => {
     if (!workspace || !organization) return;
     setIsDowngrading(true);
 
-    if (organization.subscription) {
-      await newDowngradeTrial(organization.id, organization.subscription.id);
-    } else {
-      await legacyDowngradeTrial(workspace.id);
-    }
+    try {
+      if (organization.subscription) {
+        await newDowngradeTrial(organization.id, organization.subscription.id);
+      } else {
+        await legacyDowngradeTrial(workspace.id);
+      }
 
-    trackEvents.trackTrialExpiredDowngrade();
-    toast.success('Successfully downgraded to Free Plan');
+      trackEvents.trackTrialExpiredDowngrade();
+      toast.success('Successfully downgraded to Free Plan');
+    } catch {
+      setIsDowngrading(false);
+      toast.error('Failed to downgrade, please try again later');
+    }
   };
 
   return (

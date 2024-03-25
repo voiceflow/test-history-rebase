@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.376.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.375.1...@voiceflow/realtime-sdk@1.376.0) (2024-03-25)
+
+### Features
+
+* remove mikro orm entities from realtime (CV3-987) ([#7779](https://github.com/voiceflow/creator-app/issues/7779)) ([ac4130e](https://github.com/voiceflow/creator-app/commit/ac4130e8f8241793ff66bbb4f815d4fb5981b0b8))
+
 ## [1.375.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.375.0...@voiceflow/realtime-sdk@1.375.1) (2024-03-22)
 
 ### Bug Fixes

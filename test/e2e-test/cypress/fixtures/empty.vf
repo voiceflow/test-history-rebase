@@ -1,0 +1,231 @@
+{
+  "_version": "1.2",
+  "project": {
+    "_id": "64023e7bff586f00071c829b",
+    "name": "webchat",
+    "teamID": "NyEPoVenxR",
+    "devVersion": "64023e7b8e1e5ffbaa179751",
+    "platform": "webchat",
+    "type": "chat",
+    "platformData": {
+      "invocationName": "template project general"
+    },
+    "members": [],
+    "linkType": "STRAIGHT",
+    "image": "",
+    "customThemes": [],
+    "_version": 1.2,
+    "updatedAt": "2023-03-03T18:37:47.670Z",
+    "creatorID": 10585,
+    "updatedBy": 10585,
+    "apiPrivacy": "private",
+    "aiAssistSettings": {
+      "generativeTasks": true,
+      "generateNoMatch": true,
+      "generateStep": true
+    },
+    "createdAt": "2023-03-03T18:37:47.000Z"
+  },
+  "version": {
+    "_id": "64023e7b8e1e5ffbaa179751",
+    "variables": [],
+    "platformData": {
+      "slots": [],
+      "intents": [],
+      "settings": {
+        "restart": true,
+        "repeat": 100,
+        "locales": [
+          "en-US"
+        ]
+      },
+      "publishing": {},
+      "platform": "webchat"
+    },
+    "_version": 4,
+    "name": "Initial Version",
+    "projectID": "64023e7bff586f00071c829b",
+    "manualSave": false,
+    "autoSaveFromRestore": false,
+    "topics": [
+      {
+        "sourceID": "64023e7b8e1e5ffbaa179752",
+        "type": "DIAGRAM"
+      }
+    ],
+    "components": [],
+    "rootDiagramID": "64023e7b8e1e5ffbaa179752",
+    "domains": [
+      {
+        "id": "cla06iyr900b206pkh8d4ap8n",
+        "name": "Home",
+        "live": true,
+        "topicIDs": [
+          "64023e7b8e1e5ffbaa179752"
+        ],
+        "rootDiagramID": "64023e7b8e1e5ffbaa179752",
+        "updatedAt": "2023-03-03T18:37:47.349Z"
+      }
+    ],
+    "creatorID": 10585,
+    "prototype": {
+      "type": "chat",
+      "data": {
+        "name": "webchat",
+        "locales": [
+          "en-US"
+        ]
+      },
+      "model": {
+        "intents": [],
+        "slots": []
+      },
+      "context": {
+        "stack": [
+          {
+            "programID": "64023e7b8e1e5ffbaa179752",
+            "storage": {},
+            "variables": {}
+          }
+        ],
+        "variables": {}
+      },
+      "surveyorContext": {
+        "slotsMap": {},
+        "extraSlots": [],
+        "extraIntents": [],
+        "usedIntentsSet": [],
+        "platform": "webchat",
+        "goToIntentsSet": [],
+        "products": {},
+        "interfaces": [],
+        "permissions": [],
+        "usedCustomBlocks": []
+      },
+      "settings": {},
+      "platform": "webchat"
+    }
+  },
+  "diagrams": {
+    "64023e7b8e1e5ffbaa179752": {
+      "_id": "64023e7b8e1e5ffbaa179752",
+      "offsetX": 303.2,
+      "offsetY": 137.6,
+      "zoom": 100,
+      "variables": [],
+      "name": "ROOT",
+      "versionID": "64023e7b8e1e5ffbaa179751",
+      "creatorID": 10585,
+      "modified": 1677868667,
+      "intentStepIDs": [],
+      "type": "TOPIC",
+      "menuNodeIDs": [],
+      "nodes": {
+        "start00000000000000000000": {
+          "nodeID": "start00000000000000000000",
+          "type": "start",
+          "coords": [
+            321,
+            78
+          ],
+          "data": {
+            "name": "Start",
+            "color": "#56b365",
+            "steps": [],
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "63068ee2b9d93f34f5d1f11c",
+                  "id": "6032afcf359e8c14c06c0319",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          385,
+                          100
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          499,
+                          100
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            },
+            "label": "Start"
+          }
+        },
+        "63068ee2b9d93f34f5d1f11a": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "73r23sar",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "This is the first message in your assistant."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "63068ee2b9d93f34f5d1f11b"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "63068ee2b9d93f34f5d1f11a"
+        },
+        "63068ee2b9d93f34f5d1f11c": {
+          "type": "block",
+          "data": {
+            "name": "Welcome",
+            "steps": [
+              "63068ee2b9d93f34f5d1f11a"
+            ],
+            "color": ""
+          },
+          "nodeID": "63068ee2b9d93f34f5d1f11c",
+          "coords": [
+            664,
+            73
+          ]
+        }
+      },
+      "menuItems": [
+        {
+          "type": "NODE",
+          "sourceID": "start00000000000000000000"
+        }
+      ]
+    }
+  },
+  "variableStates": []
+}

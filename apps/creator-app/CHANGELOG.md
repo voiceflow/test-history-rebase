@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1447.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1446.0...@voiceflow/creator-app@1.1447.0) (2024-03-25)
+
+### Features
+
+* fix error handling for downgrade trial (COR-1731) ([#7907](https://github.com/voiceflow/creator-app/issues/7907)) ([4de7b71](https://github.com/voiceflow/creator-app/commit/4de7b71a2624de5710f3f36309bb15b524cc17e8))
+
 # [1.1446.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1445.2...@voiceflow/creator-app@1.1446.0) (2024-03-25)
 
 ### Features

@@ -61,7 +61,7 @@ workflows:
                 value: 168387678261.dkr.ecr.us-east-1.amazonaws.com
             - vfcommon/set-json-string:
                 field: common_orb_version
-                value: dev:2e0333d18551af7a24a368eb535d14618940e676
+                value: dev:95b17d0460248f968fc8cad028b70204c7b49c95
             - run: cat values.json
           contexts: values.json
           filters:

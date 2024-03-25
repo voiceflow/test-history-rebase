@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1446.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1445.2...@voiceflow/creator-app@1.1446.0) (2024-03-25)
+
+### Features
+
+* enable html tags on markdown (COR-1722) ([#7903](https://github.com/voiceflow/creator-app/issues/7903)) ([97994cb](https://github.com/voiceflow/creator-app/commit/97994cb1c8d37a5b119516a15158cee26ca19f42))
+
 ## [1.1445.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1445.1...@voiceflow/creator-app@1.1445.2) (2024-03-25)
 
 **Note:** Version bump only for package @voiceflow/creator-app

@@ -183,9 +183,13 @@ workflows:
           requires:
             - vfcommon/prepare-env
           filters: *bors_branches_filters
-      - vfcommon/run-federated-e2e-tests:
+      - vfcommon/run-cypress-tests:
           context: dev-test
+          name: e2e-tests
           e2e-env-name: {{ .values.e2e_env_name }}
+          test-repository: creator-app
+          test-directory: test/e2e-test
+          test-command: test:e2e
           requires:
             - vfcommon/prepare-env
           filters: *bors_branches_filters

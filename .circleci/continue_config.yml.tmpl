@@ -177,30 +177,23 @@ workflows:
             {{- range $service := $modifiedServices }}
             - {{ tmpl.Exec "updateTrackJobName" $service }}
             {{- end }}
-      # - vfcommon/build-e2e-tests:
-      #     e2e_git_ref: {{ .values.branch }}
-      #     context: dev-test
-      #     filters: *bors_branches_filters
-
-      # - vfcommon/run-e2e-tests:
-      #     context: dev-test
-      #     env-name: {{ .values.e2e_env_name }}
-      #     requires:
-      #       # - vfcommon/build-e2e-tests
-      #       - vfcommon/prepare-env
-      #     filters: *bors_branches_filters
       - vfcommon/run-smoke-tests:
           context: dev-test
           e2e-env-name: {{ .values.e2e_env_name }}
           requires:
-            # - vfcommon/build-e2e-tests
+            - vfcommon/prepare-env
+          filters: *bors_branches_filters
+      - vfcommon/run-federated-e2e-tests:
+          context: dev-test
+          e2e-env-name: {{ .values.e2e_env_name }}
+          requires:
             - vfcommon/prepare-env
           filters: *bors_branches_filters
       - vfcommon/release-env:
           context: dev-test
           env-name: {{ .values.e2e_env_name }}
           requires:
-            # - vfcommon/run-e2e-tests
+            - vfcommon/run-federated-e2e-tests
             - vfcommon/run-smoke-tests
           filters: *bors_branches_filters
 

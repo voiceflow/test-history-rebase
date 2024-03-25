@@ -59,9 +59,9 @@ workflows:
             - vfcommon/set-json-string:
                 field: ecr_url
                 value: 168387678261.dkr.ecr.us-east-1.amazonaws.com
-            - vfcommon/set-json-string-from-env:
+            - vfcommon/set-json-string:
                 field: common_orb_version
-                value-env-var: COMMON_ORB_VERSION
+                value: dev:2e0333d18551af7a24a368eb535d14618940e676
             - run: cat values.json
           contexts: values.json
           filters:

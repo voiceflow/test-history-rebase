@@ -14,6 +14,7 @@ const DebugFilter = (): Filter => {
 
   return (message: Message) => {
     if (message.type !== MessageType.DEBUG) return true;
+    if (!message.message) return false;
 
     if (message.message.startsWith('matched intent')) {
       if (!settings.intent || isPublic) {
@@ -22,6 +23,7 @@ const DebugFilter = (): Filter => {
     } else if (!debugEnabled) {
       return false;
     }
+
     return true;
   };
 };

@@ -62,6 +62,7 @@ const TranscriptDialog: React.FC = () => {
     (messages: Message[]) => {
       return messages.filter((message: Message) => {
         if (showDebugs || message.type !== MessageType.DEBUG) return true;
+        if (!message.message) return false;
         if (message.message.startsWith('matched intent') && !showDebugs && showIntentConfidence) return true;
         return false;
       });

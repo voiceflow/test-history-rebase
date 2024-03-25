@@ -131,10 +131,20 @@ export class BillingSubscriptionService {
     data: Omit<Actions.OrganizationSubscription.CheckoutRequest, 'context'>
   ) {
     try {
+      const subscription = await this.findOne(subscriptionID);
+
       await this.billingClient.subscriptionsPrivate.checkout(subscriptionID, {
         itemPriceID: data.itemPriceID,
         quantity: data.editorSeats,
         paymentIntentID: data.paymentIntent.id,
+        ...(subscription.metaData?.downgradedFromTrial
+          ? {
+              metadata: {
+                ...subscription.metaData,
+                downgradedFromTrial: false,
+              },
+            }
+          : {}),
       });
     } catch (e) {
       throw new Error('Unable to update subscription');

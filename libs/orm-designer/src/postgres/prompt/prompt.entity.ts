@@ -1,22 +1,17 @@
-import { Entity, ManyToOne, Property, Unique, wrap } from '@mikro-orm/core';
+import { Entity, ManyToOne, Property, Unique } from '@mikro-orm/core';
 import type { Markup } from '@voiceflow/dtos';
 
 import { MarkupType } from '@/common';
-import type { EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
+import type { Ref } from '@/types';
 
 import { PostgresCMSTabularEntity } from '../common';
 import { PersonaOverrideEntity } from '../persona';
-import { PromptEntityAdapter } from './prompt-entity.adapter';
 
 @Entity({ tableName: 'designer.prompt' })
 @Unique({ properties: ['id', 'environmentID'] })
-export class PromptEntity extends PostgresCMSTabularEntity {
-  static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<PromptEntity>>>(data: JSON) {
-    return PromptEntityAdapter.toDB<JSON>(data);
-  }
-
+export class PromptEntity extends PostgresCMSTabularEntity<'persona'> {
   @Property({ type: MarkupType })
-  text: Markup;
+  text!: Markup;
 
   @ManyToOne(() => PersonaOverrideEntity, {
     name: 'persona_id',
@@ -25,22 +20,5 @@ export class PromptEntity extends PostgresCMSTabularEntity {
     nullable: true,
     fieldNames: ['persona_id', 'environment_id'],
   })
-  persona: Ref<PersonaOverrideEntity> | null = null;
-
-  constructor({ text, personaID, ...data }: EntityCreateParams<PromptEntity>) {
-    super(data);
-
-    ({ text: this.text, persona: this.persona } = PromptEntity.fromJSON({ text, personaID }));
-  }
-
-  toJSON(...args: any[]): ToJSONWithForeignKeys<PromptEntity> {
-    return PromptEntityAdapter.fromDB({
-      ...wrap<PromptEntity>(this).toObject(...args),
-      folder: this.folder ?? null,
-      persona: this.persona ?? null,
-      updatedBy: this.updatedBy,
-      createdBy: this.createdBy,
-      assistant: this.assistant,
-    });
-  }
+  persona!: Ref<PersonaOverrideEntity> | null;
 }

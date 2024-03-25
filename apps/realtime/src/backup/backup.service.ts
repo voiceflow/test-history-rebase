@@ -6,7 +6,7 @@ import { Inject, Injectable, Logger } from '@nestjs/common';
 import { NotFoundException } from '@voiceflow/exception';
 import { HashedIDService } from '@voiceflow/nestjs-common';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
-import { BackupEntity, BackupORM, DatabaseTarget } from '@voiceflow/orm-designer';
+import { BackupObject, BackupORM, DatabaseTarget } from '@voiceflow/orm-designer';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import dayjs from 'dayjs';
 
@@ -21,6 +21,14 @@ import { VersionService } from '@/version/version.service';
 
 @Injectable()
 export class BackupService extends MutableService<BackupORM> {
+  toJSON = this.orm.jsonAdapter.fromDB;
+
+  fromJSON = this.orm.jsonAdapter.toDB;
+
+  mapToJSON = this.orm.jsonAdapter.mapFromDB;
+
+  mapFromJSON = this.orm.jsonAdapter.mapToDB;
+
   private readonly logger = new Logger(BackupService.name);
 
   constructor(
@@ -69,7 +77,7 @@ export class BackupService extends MutableService<BackupORM> {
   }
 
   findManyForAssistantID(assistantID: string, options: { limit: number; offset: number }) {
-    return this.orm.find({ assistantID }, { ...options, orderBy: { createdAt: 'DESC' } });
+    return this.orm.find({ assistantID }, { ...options, orderBy: { createdAt: 'desc' } });
   }
 
   async downloadBackup(backupID: number): Promise<AssistantImportDataDTO> {
@@ -135,13 +143,16 @@ export class BackupService extends MutableService<BackupORM> {
     return AssistantImportDataDTO.parse(JSON.parse(await file.transformToString()));
   }
 
-  private async restoreBackup(userID: number, backup: BackupEntity, versionID: string) {
-    const [vfFile, project] = await Promise.all([this.getBackupFile(backup.s3ObjectRef), this.project.findOneOrFail(backup.assistantID)]);
+  private async restoreBackup(userID: number, backup: BackupObject, versionID: string) {
+    const [vfFile, project] = await Promise.all([
+      this.getBackupFile(backup.s3ObjectRef),
+      this.project.findOneOrFailWithFields(backup.assistantID, ['teamID']),
+    ]);
 
     // create backup before restoring
     await this.createOneForUser(userID, versionID, 'Automatic before restore');
 
-    await this.environment.deleteOne(backup.assistantID, versionID);
+    await this.environment.deleteOne(versionID);
 
     const importData = this.environment.prepareImportData(vfFile, {
       userID,
@@ -168,7 +179,7 @@ export class BackupService extends MutableService<BackupORM> {
       const previewVersionID = project.previewVersion?.toJSON() ?? new ObjectId().toString();
 
       if (project.previewVersion) {
-        await this.environment.deleteOne(project.id, project.previewVersion.toJSON());
+        await this.environment.deleteOne(project.previewVersion.toJSON());
       }
 
       const importData = this.environment.prepareImportData(vfFile, {
@@ -188,7 +199,7 @@ export class BackupService extends MutableService<BackupORM> {
       });
 
       if (!project.previewVersion) {
-        await this.project.patchOne(project.id, { previewVersion: previewVersionID });
+        await this.project.patchOne(project._id.toJSON(), { previewVersion: new ObjectId(previewVersionID) });
       }
 
       return previewVersionID;

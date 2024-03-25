@@ -24,7 +24,7 @@ class PatchProject extends AbstractWorkspaceChannelControl<PatchProjectPayload> 
         ...(nluSettings && { nluSettings: { ...nluSettings } }),
         ...(aiAssistSettings && { aiAssistSettings: { ...aiAssistSettings } }),
         updatedBy: ctx.data.creatorID,
-        updatedAt: new Date().toJSON(),
+        updatedAt: new Date(),
       })
     );
   };

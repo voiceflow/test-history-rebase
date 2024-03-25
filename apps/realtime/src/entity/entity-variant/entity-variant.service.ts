@@ -1,19 +1,26 @@
-/* eslint-disable max-params */
 import type { EntityManager } from '@mikro-orm/core';
-import { Primary } from '@mikro-orm/core';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
-import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
-import type { AssistantEntity, EntityEntity, EntityVariantEntity, PKOrEntity } from '@voiceflow/orm-designer';
+import { LoguxService } from '@voiceflow/nestjs-logux';
+import type { EntityVariantObject } from '@voiceflow/orm-designer';
 import { AssistantORM, DatabaseTarget, EntityORM, EntityVariantORM } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
-import { CMSObjectService, EntitySerializer } from '@/common';
-import type { CreateManyForUserData } from '@/common/types';
-import { assistantBroadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
+import { CMSObjectService } from '@/common';
+import type { CMSCreateForUserData } from '@/common/types';
+import { cmsBroadcastContext, injectAssistantAndEnvironmentIDs, toPostgresEntityIDs } from '@/common/utils';
+import { CMSBroadcastMeta, CMSContext } from '@/types';
 
 @Injectable()
 export class EntityVariantService extends CMSObjectService<EntityVariantORM> {
+  toJSON = this.orm.jsonAdapter.fromDB;
+
+  fromJSON = this.orm.jsonAdapter.toDB;
+
+  mapToJSON = this.orm.jsonAdapter.mapFromDB;
+
+  mapFromJSON = this.orm.jsonAdapter.mapToDB;
+
   constructor(
     @Inject(getEntityManagerToken(DatabaseTarget.POSTGRES))
     private readonly postgresEM: EntityManager,
@@ -24,82 +31,74 @@ export class EntityVariantService extends CMSObjectService<EntityVariantORM> {
     @Inject(AssistantORM)
     protected readonly assistantORM: AssistantORM,
     @Inject(LoguxService)
-    protected readonly logux: LoguxService,
-    @Inject(EntitySerializer)
-    protected readonly entitySerializer: EntitySerializer
+    protected readonly logux: LoguxService
   ) {
     super();
   }
 
   /* Find */
 
-  findManyByEntities(entities: PKOrEntity<EntityEntity>[]) {
-    return this.orm.findManyByEntities(entities);
+  findManyByEntities(environmentID: string, entityIDs: string[]) {
+    return this.orm.findManyByEntities(environmentID, entityIDs);
   }
 
-  findManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
-    return this.orm.findManyByEnvironment(assistant, environmentID);
+  findManyByEnvironment(environmentID: string) {
+    return this.orm.findManyByEnvironment(environmentID);
   }
 
-  findManyJSONByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
-    return this.orm.findAllJSON({ assistant, environmentID });
+  findManyByEnvironmentAndIDs(environmentID: string, ids: string[]) {
+    return this.orm.findManyByEnvironmentAndIDs(environmentID, ids);
   }
 
   /* Create */
 
-  async createManyAndSync(userID: number, data: CreateManyForUserData<EntityVariantORM>) {
-    return this.postgresEM.transactional(async () => {
-      const entityVariants = await this.createManyForUser(userID, data);
+  async createManyAndSync(data: CMSCreateForUserData<EntityVariantORM>[], { userID, context }: { userID: number; context: CMSContext }) {
+    const entityVariants = await this.createManyForUser(userID, data.map(injectAssistantAndEnvironmentIDs(context)));
 
-      return {
-        add: { entityVariants },
-      };
-    });
+    return {
+      add: { entityVariants },
+    };
   }
 
-  async broadcastAddMany(authMeta: AuthMetaPayload, { add }: { add: { entityVariants: EntityVariantEntity[] } }) {
-    await Promise.all(
-      groupByAssistant(add.entityVariants).map((entityVariants) =>
-        this.logux.processAs(
-          Actions.EntityVariant.AddMany({
-            data: this.entitySerializer.iterable(entityVariants),
-            context: assistantBroadcastContext(entityVariants[0]),
-          }),
-          authMeta
-        )
-      )
+  async broadcastAddMany({ add }: { add: { entityVariants: EntityVariantObject[] } }, meta: CMSBroadcastMeta) {
+    await this.logux.processAs(
+      Actions.EntityVariant.AddMany({
+        data: this.mapToJSON(add.entityVariants),
+        context: cmsBroadcastContext(meta.context),
+      }),
+      meta.auth
     );
   }
 
-  async createManyAndBroadcast(authMeta: AuthMetaPayload, data: CreateManyForUserData<EntityVariantORM>) {
-    const result = await this.createManyAndSync(authMeta.userID, data);
+  async createManyAndBroadcast(data: CMSCreateForUserData<EntityVariantORM>[], meta: CMSBroadcastMeta) {
+    const result = await this.createManyAndSync(data, { userID: meta.auth.userID, context: meta.context });
 
-    await this.broadcastAddMany(authMeta, result);
+    await this.broadcastAddMany(result, meta);
 
     return result.add.entityVariants;
   }
 
   /* Delete */
 
-  async broadcastDeleteMany(authMeta: AuthMetaPayload, { delete: del }: { delete: { entityVariants: EntityVariantEntity[] } }) {
-    await Promise.all(
-      groupByAssistant(del.entityVariants).map((entityVariants) =>
-        this.logux.processAs(
-          Actions.EntityVariant.DeleteMany({
-            ids: toEntityIDs(entityVariants),
-            context: assistantBroadcastContext(entityVariants[0]),
-          }),
-          authMeta
-        )
-      )
+  deleteManyByEnvironmentAndIDs(environmentID: string, ids: string[]) {
+    return this.orm.deleteManyByEnvironmentAndIDs(environmentID, ids);
+  }
+
+  async broadcastDeleteMany({ delete: del }: { delete: { entityVariants: EntityVariantObject[] } }, meta: CMSBroadcastMeta) {
+    await this.logux.processAs(
+      Actions.EntityVariant.DeleteMany({
+        ids: toPostgresEntityIDs(del.entityVariants),
+        context: cmsBroadcastContext(meta.context),
+      }),
+      meta.auth
     );
   }
 
-  async deleteManyAndSync(ids: Primary<EntityVariantEntity>[]) {
+  async deleteManyAndSync(ids: string[], context: CMSContext) {
     return this.postgresEM.transactional(async () => {
-      const entityVariants = await this.findMany(ids);
+      const entityVariants = await this.findManyByEnvironmentAndIDs(context.environmentID, ids);
 
-      await this.deleteMany(entityVariants);
+      await this.deleteManyByEnvironmentAndIDs(context.environmentID, ids);
 
       return {
         delete: { entityVariants },
@@ -107,9 +106,9 @@ export class EntityVariantService extends CMSObjectService<EntityVariantORM> {
     });
   }
 
-  async deleteManyAndBroadcast(authMeta: AuthMetaPayload, ids: Primary<EntityVariantEntity>[]) {
-    const result = await this.deleteManyAndSync(ids);
+  async deleteManyAndBroadcast(ids: string[], meta: CMSBroadcastMeta) {
+    const result = await this.deleteManyAndSync(ids, meta.context);
 
-    await this.broadcastDeleteMany(authMeta, result);
+    await this.broadcastDeleteMany(result, meta);
   }
 }

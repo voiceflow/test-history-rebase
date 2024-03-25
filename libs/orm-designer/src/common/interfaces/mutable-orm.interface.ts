@@ -1,41 +1,26 @@
-import type { DeleteOptions, FilterQuery, UpdateOptions } from '@mikro-orm/core';
+import type { Primary } from '@mikro-orm/core';
 
-import type {
-  MutableEntityData,
-  ORMDeleteOptions,
-  ORMMutateOptions,
-  PKEntity,
-  PKOrEntity,
-  PrimaryObject,
-} from '@/types';
+import type { BasePKEntity, CreateData, DEFAULT_OR_NULL_COLUMN, PatchData, ToObject } from '@/types';
 
 import type { ORM } from './orm.interface';
 
-export interface MutableORM<Entity extends PKEntity, ConstructorParam extends object>
-  extends ORM<Entity, ConstructorParam> {
-  patchOne(id: PKOrEntity<Entity>, patch: MutableEntityData<Entity>, options?: ORMMutateOptions): Promise<void>;
+export interface MutableORM<
+  BaseEntity extends BasePKEntity,
+  DiscriminatorEntity extends Omit<BaseEntity, typeof DEFAULT_OR_NULL_COLUMN>
+> extends ORM<BaseEntity, DiscriminatorEntity> {
+  patch(where: any, patch: PatchData<BaseEntity>): Promise<number>;
 
-  patchMany(ids: PKOrEntity<Entity>[], patch: MutableEntityData<Entity>, options?: ORMMutateOptions): Promise<void>;
+  patchOne(id: Primary<BaseEntity>, patch: PatchData<BaseEntity>): Promise<number>;
 
-  upsertOne(
-    data: (MutableEntityData<Entity> & PrimaryObject<Entity>) | (ConstructorParam & PrimaryObject<Entity>),
-    options?: ORMMutateOptions
-  ): Promise<Entity>;
+  patchMany(ids: Primary<BaseEntity>[], patch: PatchData<BaseEntity>): Promise<number>;
 
-  upsertMany(
-    data: Array<(MutableEntityData<Entity> & PrimaryObject<Entity>) | (ConstructorParam & PrimaryObject<Entity>)>,
-    options?: ORMMutateOptions
-  ): Promise<Entity[]>;
+  upsertOne(data: CreateData<DiscriminatorEntity>): Promise<ToObject<DiscriminatorEntity>>;
 
-  deleteOne(id: PKOrEntity<Entity>, options?: ORMDeleteOptions): Promise<void>;
+  upsertMany(data: CreateData<DiscriminatorEntity>[]): Promise<ToObject<DiscriminatorEntity>[]>;
 
-  deleteMany(ids: PKOrEntity<Entity>[], options?: ORMDeleteOptions): Promise<void>;
+  delete(where: any): Promise<number>;
 
-  nativeDelete(where: FilterQuery<Entity>, options?: DeleteOptions<Entity>): Promise<void>;
+  deleteOne(id: Primary<BaseEntity>): Promise<number>;
 
-  nativeUpdate(
-    where: FilterQuery<Entity>,
-    data: MutableEntityData<Entity>,
-    options?: UpdateOptions<Entity>
-  ): Promise<void>;
+  deleteMany(ids: Primary<BaseEntity>[]): Promise<number>;
 }

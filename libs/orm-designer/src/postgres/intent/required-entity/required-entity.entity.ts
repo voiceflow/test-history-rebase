@@ -1,34 +1,29 @@
-import { Entity as EntityDecorator, Index, ManyToOne, PrimaryKeyType, wrap } from '@mikro-orm/core';
+import { Entity as EntityDecorator, Index, ManyToOne, PrimaryKeyType } from '@mikro-orm/core';
 
 import type { AssistantEntity } from '@/postgres/assistant';
 import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
 import { EntityEntity } from '@/postgres/entity';
 import { ResponseEntity } from '@/postgres/response';
-import type { CMSCompositePK, EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
+import type { CMSCompositePK, Ref } from '@/types';
 
 import { IntentEntity } from '../intent.entity';
-import { RequiredEntityEntityAdapter } from './required-entity-entity.adapter';
 
 @EntityDecorator({ tableName: 'designer.required_entity' })
 @Index({ properties: ['environmentID'] })
-export class RequiredEntityEntity extends PostgresCMSObjectEntity {
-  static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<RequiredEntityEntity>>>(data: JSON) {
-    return RequiredEntityEntityAdapter.toDB<JSON>(data);
-  }
-
+export class RequiredEntityEntity extends PostgresCMSObjectEntity<'reprompt'> {
   @ManyToOne(() => EntityEntity, {
     name: 'entity_id',
     onDelete: 'cascade',
     fieldNames: ['entity_id', 'environment_id'],
   })
-  entity: Ref<EntityEntity>;
+  entity!: Ref<EntityEntity>;
 
   @ManyToOne(() => IntentEntity, {
     name: 'intent_id',
     onDelete: 'cascade',
     fieldNames: ['intent_id', 'environment_id'],
   })
-  intent: Ref<IntentEntity>;
+  intent!: Ref<IntentEntity>;
 
   @ManyToOne(() => ResponseEntity, {
     name: 'reprompt_id',
@@ -37,36 +32,13 @@ export class RequiredEntityEntity extends PostgresCMSObjectEntity {
     nullable: true,
     fieldNames: ['reprompt_id', 'environment_id'],
   })
-  reprompt: Ref<ResponseEntity> | null = null;
+  reprompt!: Ref<ResponseEntity> | null;
 
   @Assistant()
-  assistant: Ref<AssistantEntity>;
+  assistant!: Ref<AssistantEntity>;
 
   @Environment()
-  environmentID: string;
+  environmentID!: string;
 
   [PrimaryKeyType]?: CMSCompositePK;
-
-  constructor(data: EntityCreateParams<RequiredEntityEntity>) {
-    super(data);
-
-    ({
-      entity: this.entity,
-      intent: this.intent,
-      reprompt: this.reprompt,
-      assistant: this.assistant,
-      environmentID: this.environmentID,
-    } = RequiredEntityEntity.fromJSON(data));
-  }
-
-  toJSON(...args: any[]): ToJSONWithForeignKeys<RequiredEntityEntity> {
-    return RequiredEntityEntityAdapter.fromDB({
-      ...wrap<RequiredEntityEntity>(this).toObject(...args),
-      entity: this.entity,
-      intent: this.intent,
-      reprompt: this.reprompt ?? null,
-      updatedBy: this.updatedBy,
-      assistant: this.assistant,
-    });
-  }
 }

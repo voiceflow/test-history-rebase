@@ -1,31 +1,27 @@
-/* eslint-disable no-await-in-loop, max-params */
 import type { EntityManager } from '@mikro-orm/core';
-import { Primary } from '@mikro-orm/core';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
 import { Intent, Language, RequiredEntity, Utterance } from '@voiceflow/dtos';
-import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
+import { LoguxService } from '@voiceflow/nestjs-logux';
 import type {
-  AnyResponseAttachmentEntity,
-  AnyResponseVariantEntity,
-  AssistantEntity,
-  IntentEntity,
-  ORMMutateOptions,
-  PKOrEntity,
-  PromptEntity,
-  RequiredEntityEntity,
-  ResponseDiscriminatorEntity,
-  ResponseEntity,
-  ToJSONWithForeignKeys,
-  UtteranceEntity,
+  AnyResponseAttachmentObject,
+  AnyResponseVariantObject,
+  IntentJSON,
+  IntentObject,
+  RequiredEntityJSON,
+  RequiredEntityObject,
+  ResponseDiscriminatorObject,
+  ResponseObject,
+  UtteranceJSON,
+  UtteranceObject,
 } from '@voiceflow/orm-designer';
-import { DatabaseTarget, IntentORM } from '@voiceflow/orm-designer';
+import { DatabaseTarget, IntentORM, ObjectId } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
-import { CMSTabularService, EntitySerializer } from '@/common';
-import { assistantBroadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
-import { cloneManyEntities } from '@/utils/entity.util';
+import { CMSTabularService } from '@/common';
+import { cmsBroadcastContext, toPostgresEntityIDs } from '@/common/utils';
+import { CMSBroadcastMeta, CMSContext } from '@/types';
 
 import { IntentExportImportDataDTO } from './dtos/intent-export-import-data.dto';
 import type { IntentCreateData } from './intent.interface';
@@ -34,6 +30,14 @@ import { UtteranceService } from './utterance/utterance.service';
 
 @Injectable()
 export class IntentService extends CMSTabularService<IntentORM> {
+  toJSON = this.orm.jsonAdapter.fromDB;
+
+  fromJSON = this.orm.jsonAdapter.toDB;
+
+  mapToJSON = this.orm.jsonAdapter.mapFromDB;
+
+  mapFromJSON = this.orm.jsonAdapter.mapToDB;
+
   constructor(
     @Inject(getEntityManagerToken(DatabaseTarget.POSTGRES))
     private readonly postgresEM: EntityManager,
@@ -44,34 +48,18 @@ export class IntentService extends CMSTabularService<IntentORM> {
     @Inject(UtteranceService)
     private readonly utterance: UtteranceService,
     @Inject(RequiredEntityService)
-    private readonly requiredEntity: RequiredEntityService,
-    @Inject(EntitySerializer)
-    private readonly entitySerializer: EntitySerializer
+    private readonly requiredEntity: RequiredEntityService
   ) {
     super();
   }
 
   /* Find */
 
-  async findManyWithSubResourcesByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+  async findManyWithSubResourcesByEnvironment(environmentID: string) {
     const [intents, utterances, requiredEntities] = await Promise.all([
-      this.findManyByEnvironment(assistant, environmentID),
-      this.utterance.findManyByEnvironment(assistant, environmentID),
-      this.requiredEntity.findManyByEnvironment(assistant, environmentID),
-    ]);
-
-    return {
-      intents,
-      utterances,
-      requiredEntities,
-    };
-  }
-
-  async findManyWithSubResourcesJSONByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
-    const [intents, utterances, requiredEntities] = await Promise.all([
-      this.orm.findAllJSON({ assistant, environmentID }),
-      this.utterance.findManyJSONByEnvironment(assistant, environmentID),
-      this.requiredEntity.findManyJSONByEnvironment(assistant, environmentID),
+      this.findManyByEnvironment(environmentID),
+      this.utterance.findManyByEnvironment(environmentID),
+      this.requiredEntity.findManyByEnvironment(environmentID),
     ]);
 
     return {
@@ -83,83 +71,73 @@ export class IntentService extends CMSTabularService<IntentORM> {
 
   /* Export */
 
+  toJSONWithSubResources({
+    intents,
+    utterances,
+    requiredEntities,
+  }: {
+    intents: IntentObject[];
+    utterances: UtteranceObject[];
+    requiredEntities: RequiredEntityObject[];
+  }) {
+    return {
+      intents: this.mapToJSON(intents),
+      utterances: this.utterance.mapToJSON(utterances),
+      requiredEntities: this.requiredEntity.mapToJSON(requiredEntities),
+    };
+  }
+
+  fromJSONWithSubResources({ intents, utterances, requiredEntities }: IntentExportImportDataDTO) {
+    return {
+      intents: this.mapFromJSON(intents),
+      utterances: this.utterance.mapFromJSON(utterances),
+      requiredEntities: this.requiredEntity.mapFromJSON(requiredEntities),
+    };
+  }
+
   prepareExportData(
-    {
-      intents,
-      utterances,
-      requiredEntities,
-    }: {
-      intents: IntentEntity[];
-      utterances: UtteranceEntity[];
-      requiredEntities: RequiredEntityEntity[];
+    data: {
+      intents: IntentObject[];
+      utterances: UtteranceObject[];
+      requiredEntities: RequiredEntityObject[];
     },
     { backup }: { backup?: boolean } = {}
   ): IntentExportImportDataDTO {
-    const json = {
-      intents: this.entitySerializer.iterable(intents),
-      utterances: this.entitySerializer.iterable(utterances),
-      requiredEntities: this.entitySerializer.iterable(requiredEntities),
-    };
+    const json = this.toJSONWithSubResources(data);
 
     if (backup) {
       return json;
     }
 
-    return this.prepareExportJSONData(json);
-  }
-
-  prepareExportJSONData({
-    intents,
-    utterances,
-    requiredEntities,
-  }: {
-    intents: ToJSONWithForeignKeys<IntentEntity>[];
-    utterances: ToJSONWithForeignKeys<UtteranceEntity>[];
-    requiredEntities: ToJSONWithForeignKeys<RequiredEntityEntity>[];
-  }): IntentExportImportDataDTO {
     return {
-      intents: intents.map((item) => Utils.object.omit(item, ['assistantID', 'environmentID'])),
-      utterances: utterances.map((item) => Utils.object.omit(item, ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'])),
-      requiredEntities: requiredEntities.map((item) => Utils.object.omit(item, ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'])),
+      intents: json.intents.map((item) => Utils.object.omit(item, ['assistantID', 'environmentID'])),
+      utterances: json.utterances.map((item) => Utils.object.omit(item, ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'])),
+      requiredEntities: json.requiredEntities.map((item) => Utils.object.omit(item, ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'])),
     };
   }
 
   /* Clone */
 
-  async cloneManyWithSubResourcesForEnvironment(
-    {
-      sourceAssistantID,
-      targetAssistantID,
-      sourceEnvironmentID,
-      targetEnvironmentID,
-    }: {
-      sourceAssistantID: string;
-      targetAssistantID: string;
-      sourceEnvironmentID: string;
-      targetEnvironmentID: string;
-    },
-    { flush = true }: ORMMutateOptions = {}
-  ) {
+  async cloneManyWithSubResourcesForEnvironment({
+    targetAssistantID,
+    sourceEnvironmentID,
+    targetEnvironmentID,
+  }: {
+    targetAssistantID: string;
+    sourceEnvironmentID: string;
+    targetEnvironmentID: string;
+  }) {
     const {
       intents: sourceIntents,
       utterances: sourceUtterances,
       requiredEntities: sourceRequiredEntities,
-    } = await this.findManyWithSubResourcesByEnvironment(sourceAssistantID, sourceEnvironmentID);
+    } = await this.findManyWithSubResourcesByEnvironment(sourceEnvironmentID);
 
-    const result = await this.importManyWithSubResources(
-      {
-        intents: cloneManyEntities(sourceIntents, { assistantID: targetAssistantID, environmentID: targetEnvironmentID }),
-        utterances: cloneManyEntities(sourceUtterances, { assistantID: targetAssistantID, environmentID: targetEnvironmentID }),
-        requiredEntities: cloneManyEntities(sourceRequiredEntities, { assistantID: targetAssistantID, environmentID: targetEnvironmentID }),
-      },
-      { flush: false }
-    );
-
-    if (flush) {
-      await this.orm.em.flush();
-    }
-
-    return result;
+    return this.importManyWithSubResources({
+      intents: sourceIntents.map((item) => ({ ...item, assistantID: targetAssistantID, environmentID: targetEnvironmentID })),
+      utterances: sourceUtterances.map((item) => ({ ...item, assistantID: targetAssistantID, environmentID: targetEnvironmentID })),
+      requiredEntities: sourceRequiredEntities.map((item) => ({ ...item, assistantID: targetAssistantID, environmentID: targetEnvironmentID })),
+    });
   }
 
   /* Import */
@@ -168,9 +146,9 @@ export class IntentService extends CMSTabularService<IntentORM> {
     { intents, utterances, requiredEntities }: IntentExportImportDataDTO,
     { userID, backup, assistantID, environmentID }: { userID: number; backup?: boolean; assistantID: string; environmentID: string }
   ): {
-    intents: ToJSONWithForeignKeys<IntentEntity>[];
-    utterances: ToJSONWithForeignKeys<UtteranceEntity>[];
-    requiredEntities: ToJSONWithForeignKeys<RequiredEntityEntity>[];
+    intents: IntentJSON[];
+    utterances: UtteranceJSON[];
+    requiredEntities: RequiredEntityJSON[];
   } {
     const createdAt = new Date().toJSON();
 
@@ -231,23 +209,13 @@ export class IntentService extends CMSTabularService<IntentORM> {
     };
   }
 
-  async importManyWithSubResources(
-    data: {
-      intents: ToJSONWithForeignKeys<IntentEntity>[];
-      utterances: ToJSONWithForeignKeys<UtteranceEntity>[];
-      requiredEntities: ToJSONWithForeignKeys<RequiredEntityEntity>[];
-    },
-    { flush = true }: ORMMutateOptions = {}
-  ) {
-    const [intents, utterances, requiredEntities] = await Promise.all([
-      this.createMany(data.intents, { flush: false }),
-      this.utterance.createMany(data.utterances, { flush: false }),
-      this.requiredEntity.createMany(data.requiredEntities, { flush: false }),
-    ]);
+  async importManyWithSubResources(data: { intents: IntentObject[]; utterances: UtteranceObject[]; requiredEntities: RequiredEntityObject[] }) {
+    const intents = await this.createMany(data.intents);
 
-    if (flush) {
-      await this.orm.em.flush();
-    }
+    const [utterances, requiredEntities] = await Promise.all([
+      this.utterance.createMany(data.utterances),
+      this.requiredEntity.createMany(data.requiredEntities),
+    ]);
 
     return {
       intents,
@@ -258,138 +226,116 @@ export class IntentService extends CMSTabularService<IntentORM> {
 
   /* Create */
 
-  async createManyAndSync(userID: number, data: IntentCreateData[]) {
+  async createManyAndSync(data: IntentCreateData[], { userID, context }: { userID: number; context: CMSContext }) {
     return this.postgresEM.transactional(async () => {
-      const prompts: PromptEntity[] = [];
-      const intents: IntentEntity[] = [];
-      const responses: ResponseEntity[] = [];
-      const utterances: UtteranceEntity[] = [];
-      const requiredEntities: RequiredEntityEntity[] = [];
-      const responseVariants: AnyResponseVariantEntity[] = [];
-      const responseAttachments: AnyResponseAttachmentEntity[] = [];
-      const responseDiscriminators: ResponseDiscriminatorEntity[] = [];
+      const dataWithIDs = data.map(({ id, utterances, requiredEntities, ...item }) => {
+        const intentID = id ?? new ObjectId().toJSON();
 
-      for (const { utterances: utterancesData = [], requiredEntities: requiredEntitiesData = [], ...intentData } of data) {
-        const intent = await this.createOneForUser(userID, intentData, { flush: false });
-        intents.push(intent);
+        const utterancesWithIDs = utterances?.map((utterance) => ({
+          ...utterance,
+          id: new ObjectId().toJSON(),
+          language: Language.ENGLISH_US,
+          intentID,
+          assistantID: context.assistantID,
+          environmentID: context.environmentID,
+        }));
 
-        if (utterancesData.length) {
-          const intentUtterances = await this.utterance.createManyForUser(
-            userID,
-            utterancesData.map(({ text }) => ({
-              text,
-              intentID: intent.id,
-              language: Language.ENGLISH_US,
-              assistantID: intent.assistant.id,
-              environmentID: intent.environmentID,
-            })),
-            { flush: false }
-          );
+        const requiredEntitiesDataWithIDs = requiredEntities?.map((requiredEntity) => ({
+          ...requiredEntity,
+          id: new ObjectId().toJSON(),
+          intentID,
+          assistantID: context.assistantID,
+          environmentID: context.environmentID,
+        }));
 
-          utterances.push(...intentUtterances);
-        }
+        return {
+          ...item,
+          id: intentID,
+          utterances: utterancesWithIDs ?? [],
+          assistantID: context.assistantID,
+          entityOrder: toPostgresEntityIDs(requiredEntitiesDataWithIDs ?? []),
+          environmentID: context.environmentID,
+          requiredEntities: requiredEntitiesDataWithIDs ?? [],
+        };
+      });
 
-        if (requiredEntitiesData.length) {
-          const result = await this.requiredEntity.createManyWithSubResources(
-            userID,
-            requiredEntitiesData.map((data) => ({
-              ...data,
-              intentID: intent.id,
-              assistantID: intent.assistant.id,
-              environmentID: intent.environmentID,
-            })),
-            { flush: false }
-          );
+      const intents = await this.createManyForUser(
+        userID,
+        dataWithIDs.map((item) => Utils.object.omit(item, ['utterances', 'requiredEntities']))
+      );
 
-          prompts.push(...result.prompts);
-          responses.push(...result.responses);
-          responseVariants.push(...result.responseVariants);
-          requiredEntities.push(...result.requiredEntities);
-          responseAttachments.push(...result.responseAttachments);
-          responseDiscriminators.push(...result.responseDiscriminators);
+      const utterances = await this.utterance.createManyForUser(
+        userID,
+        dataWithIDs.flatMap((item) => item.utterances)
+      );
 
-          intent.entityOrder.push(...result.requiredEntities.map(({ id }) => id));
-        }
-      }
-
-      await this.orm.em.flush();
+      const requiredEntitiesWithSubResources = await this.requiredEntity.createManyWithSubResources(
+        dataWithIDs.flatMap((item) => item.requiredEntities),
+        { userID, context }
+      );
 
       return {
         add: {
-          prompts,
+          ...requiredEntitiesWithSubResources,
           intents,
-          responses,
           utterances,
-          requiredEntities,
-          responseVariants,
-          responseAttachments,
-          responseDiscriminators,
         },
       };
     });
   }
 
   async broadcastAddMany(
-    authMeta: AuthMetaPayload,
     {
       add,
     }: {
       add: {
-        prompts: PromptEntity[];
-        intents: IntentEntity[];
-        responses: ResponseEntity[];
-        utterances: UtteranceEntity[];
-        requiredEntities: RequiredEntityEntity[];
-        responseVariants: AnyResponseVariantEntity[];
-        responseAttachments: AnyResponseAttachmentEntity[];
-        responseDiscriminators: ResponseDiscriminatorEntity[];
+        intents: IntentObject[];
+        responses: ResponseObject[];
+        utterances: UtteranceObject[];
+        requiredEntities: RequiredEntityObject[];
+        responseVariants: AnyResponseVariantObject[];
+        responseAttachments: AnyResponseAttachmentObject[];
+        responseDiscriminators: ResponseDiscriminatorObject[];
       };
-    }
+    },
+    meta: CMSBroadcastMeta
   ) {
     await Promise.all([
-      this.utterance.broadcastAddMany(authMeta, {
-        add: Utils.object.pick(add, ['utterances']),
-      }),
+      this.utterance.broadcastAddMany({ add: Utils.object.pick(add, ['utterances']) }, meta),
 
-      this.requiredEntity.broadcastAddMany(authMeta, {
-        add: Utils.object.pick(add, [
-          'prompts',
-          'responses',
-          'responseVariants',
-          'requiredEntities',
-          'responseAttachments',
-          'responseDiscriminators',
-        ]),
-        // no need to sync intents, since they should be synced in the create method
-        sync: { intents: [] },
-      }),
+      this.requiredEntity.broadcastAddMany(
+        {
+          add: Utils.object.pick(add, ['responses', 'responseVariants', 'requiredEntities', 'responseAttachments', 'responseDiscriminators']),
+          // no need to sync intents, since they should be synced in the create method
+          sync: { intents: [] },
+        },
+        meta
+      ),
 
-      ...groupByAssistant(add.intents).map((intents) =>
-        this.logux.processAs(
-          Actions.Intent.AddMany({
-            data: this.entitySerializer.iterable(intents),
-            context: assistantBroadcastContext(intents[0]),
-          }),
-          authMeta
-        )
+      this.logux.processAs(
+        Actions.Intent.AddMany({
+          data: this.mapToJSON(add.intents),
+          context: cmsBroadcastContext(meta.context),
+        }),
+        meta.auth
       ),
     ]);
   }
 
-  async createManyAndBroadcast(authMeta: AuthMetaPayload, data: IntentCreateData[]) {
-    const result = await this.createManyAndSync(authMeta.userID, data);
+  async createManyAndBroadcast(data: IntentCreateData[], meta: CMSBroadcastMeta) {
+    const result = await this.createManyAndSync(data, { userID: meta.auth.userID, context: meta.context });
 
-    await this.broadcastAddMany(authMeta, result);
+    await this.broadcastAddMany(result, meta);
 
     return result.add.intents;
   }
 
   /* Delete */
 
-  async collectRelationsToDelete(intents: PKOrEntity<IntentEntity>[]) {
+  async collectRelationsToDelete(environmentID: string, intentIDs: string[]) {
     const [utterances, requiredEntities] = await Promise.all([
-      this.utterance.findManyByIntents(intents),
-      this.requiredEntity.findManyByIntents(intents),
+      this.utterance.findManyByIntents(environmentID, intentIDs),
+      this.requiredEntity.findManyByIntents(environmentID, intentIDs),
     ]);
 
     return {
@@ -398,15 +344,14 @@ export class IntentService extends CMSTabularService<IntentORM> {
     };
   }
 
-  async deleteManyAndSync(ids: Primary<IntentEntity>[]) {
+  async deleteManyAndSync(ids: string[], context: CMSContext) {
     return this.postgresEM.transactional(async () => {
-      const intents = await this.findMany(ids);
+      const [intents, relations] = await Promise.all([
+        this.findManyByEnvironmentAndIDs(context.environmentID, ids),
+        this.collectRelationsToDelete(context.environmentID, ids),
+      ]);
 
-      const relations = await this.collectRelationsToDelete(intents);
-
-      await this.deleteMany(intents, { flush: false });
-
-      await this.orm.em.flush();
+      await this.deleteManyByEnvironmentAndIDs(context.environmentID, ids);
 
       return {
         delete: { ...relations, intents },
@@ -415,50 +360,36 @@ export class IntentService extends CMSTabularService<IntentORM> {
   }
 
   async broadcastDeleteMany(
-    authMeta: AuthMetaPayload,
     {
       delete: del,
     }: {
       delete: {
-        intents: IntentEntity[];
-        // triggers: IntentTriggerEntity[];
-        utterances: UtteranceEntity[];
-        requiredEntities: RequiredEntityEntity[];
+        intents: IntentObject[];
+        utterances: UtteranceObject[];
+        requiredEntities: RequiredEntityObject[];
       };
-    }
+    },
+    meta: CMSBroadcastMeta
   ) {
     await Promise.all([
-      // this.trigger.broadcastDeleteMany(authMeta, {
-      //   sync: Utils.object.pick(sync, ['stories']),
-      //   delete: Utils.object.pick(del, ['triggers']),
-      // }),
+      this.utterance.broadcastDeleteMany({ delete: Utils.object.pick(del, ['utterances']) }, meta),
+      // no need to sync intents, because they are deleted
+      this.requiredEntity.broadcastDeleteMany({ sync: { intents: [] }, delete: Utils.object.pick(del, ['requiredEntities']) }, meta),
 
-      this.utterance.broadcastDeleteMany(authMeta, {
-        delete: Utils.object.pick(del, ['utterances']),
-      }),
-
-      this.requiredEntity.broadcastDeleteMany(authMeta, {
-        // no need to sync intents, because they are deleted
-        sync: { intents: [] },
-        delete: Utils.object.pick(del, ['requiredEntities']),
-      }),
-
-      ...groupByAssistant(del.intents).map((intents) =>
-        this.logux.processAs(
-          Actions.Intent.DeleteMany({
-            ids: toEntityIDs(intents),
-            context: assistantBroadcastContext(intents[0]),
-          }),
-          authMeta
-        )
+      this.logux.processAs(
+        Actions.Intent.DeleteMany({
+          ids: toPostgresEntityIDs(del.intents),
+          context: cmsBroadcastContext(meta.context),
+        }),
+        meta.auth
       ),
     ]);
   }
 
-  async deleteManyAndBroadcast(authMeta: AuthMetaPayload, ids: Primary<IntentEntity>[]): Promise<void> {
-    const result = await this.deleteManyAndSync(ids);
+  async deleteManyAndBroadcast(ids: string[], meta: CMSBroadcastMeta): Promise<void> {
+    const result = await this.deleteManyAndSync(ids, meta.context);
 
-    await this.broadcastDeleteMany(authMeta, result);
+    await this.broadcastDeleteMany(result, meta);
   }
 
   /* Upsert */
@@ -469,8 +400,8 @@ export class IntentService extends CMSTabularService<IntentORM> {
   ) {
     const { intents, utterances, requiredEntities } = this.prepareImportData(data, meta);
 
-    await this.upsertMany(intents);
-    await this.utterance.upsertMany(utterances);
-    await this.requiredEntity.upsertMany(requiredEntities);
+    await this.upsertMany(this.mapFromJSON(intents));
+    await this.utterance.upsertMany(this.utterance.mapFromJSON(utterances));
+    await this.requiredEntity.upsertMany(this.requiredEntity.mapFromJSON(requiredEntities));
   }
 }

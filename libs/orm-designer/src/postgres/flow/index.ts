@@ -1,3 +1,4 @@
 export * from './flow.entity';
+export * from './flow.interface';
 export * from './flow.orm';
-export * from './flow-entity.adapter';
+export * from './flow-json.adapter';

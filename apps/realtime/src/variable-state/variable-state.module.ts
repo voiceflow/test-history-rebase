@@ -4,8 +4,7 @@ import { VariableStateORM } from '@voiceflow/orm-designer';
 import { VariableStateService } from './variable-state.service';
 
 @Module({
-  imports: [VariableStateORM.register()],
   exports: [VariableStateService],
-  providers: [VariableStateService],
+  providers: [VariableStateORM, VariableStateService],
 })
 export class VariableStateModule {}

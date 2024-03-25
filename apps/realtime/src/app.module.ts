@@ -48,6 +48,7 @@ import { createMongoConfig } from './mikro-orm/mongo.config';
 import { createPostgresConfig } from './mikro-orm/postgres.config';
 import { OrganizationModule } from './organization/organization.module';
 import { ProductUpdateModule } from './product-update/product-update.module';
+import { ProgramModule } from './program/program.module';
 import { ProjectModule } from './project/project.module';
 import { ProjectPlatformModule } from './project/project-platform/project-platform.module';
 import { ProjectListModule } from './project-list/project-list.module';
@@ -254,6 +255,7 @@ import { VersionModule } from './version/version.module';
     VariableModule,
     FolderModule,
     FlowModule,
+    ProgramModule,
   ],
   providers: [
     {

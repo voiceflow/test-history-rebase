@@ -1,20 +1,30 @@
-import type { AssistantEntity } from '@/postgres/assistant';
 import { PostgresCMSObjectORM } from '@/postgres/common/orms/postgres-cms-object.orm';
-import type { PKOrEntity } from '@/types';
 
-import type { FunctionEntity } from '../function.entity';
 import { FunctionPathEntity } from './function-path.entity';
+import { FunctionPatchJSONAdapter } from './function-path-json.adapter';
 
-export class FunctionPathORM extends PostgresCMSObjectORM(FunctionPathEntity) {
-  findManyByFunctions(functions: PKOrEntity<FunctionEntity>[]) {
-    return this.find({ function: functions });
+export class FunctionPathORM extends PostgresCMSObjectORM<FunctionPathEntity> {
+  Entity = FunctionPathEntity;
+
+  jsonAdapter = FunctionPatchJSONAdapter;
+
+  findManyByFunctions(environmentID: string, functionIDs: string[]) {
+    return this.find({ environmentID, functionID: functionIDs });
   }
 
-  findManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
-    return this.find({ assistant, environmentID }, { orderBy: { createdAt: 'DESC' } });
+  findManyByEnvironment(environmentID: string) {
+    return this.find({ environmentID });
   }
 
-  deleteManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
-    return this.nativeDelete({ assistant, environmentID });
+  findManyByEnvironmentAndIDs(environmentID: string, ids: string[]) {
+    return this.find({ environmentID, id: ids });
+  }
+
+  deleteManyByEnvironment(environmentID: string) {
+    return this.delete({ environmentID });
+  }
+
+  deleteManyByEnvironmentAndIDs(environmentID: string, ids: string[]) {
+    return this.delete({ environmentID, id: ids });
   }
 }

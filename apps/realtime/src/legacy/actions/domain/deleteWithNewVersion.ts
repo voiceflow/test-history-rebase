@@ -48,7 +48,7 @@ class DeleteDomainWithNewVersion extends AbstractDomainResourceControl<Realtime.
       this.unlockAllTopics(versionID, [...topicIDs, ...subtopicIDs]),
       this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID),
       this.services.requestContext.createAsync(() =>
-        this.services.thread.deleteManyByDiagramsAndBroadcast({ userID: creatorID, clientID }, payload, topicIDs)
+        this.services.thread.deleteManyByDiagramsAndBroadcast(topicIDs, { auth: { userID: creatorID, clientID }, context: payload })
       ),
     ]);
   };

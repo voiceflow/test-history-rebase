@@ -5,9 +5,8 @@ import { ProjectListLoguxController } from './project-list.logux.controller';
 import { ProjectListService } from './project-list.service';
 
 @Module({
-  imports: [WorkspaceProjectListsORM.register()],
   exports: [ProjectListService],
-  providers: [ProjectListService],
+  providers: [WorkspaceProjectListsORM, ProjectListService],
   controllers: [ProjectListLoguxController],
 })
 export class ProjectListModule {}

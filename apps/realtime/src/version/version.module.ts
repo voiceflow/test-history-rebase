@@ -7,9 +7,9 @@ import { VersionLoguxController } from './version.logux.controller';
 import { VersionService } from './version.service';
 
 @Module({
-  imports: [VersionORM.register(), DiagramModule],
+  imports: [DiagramModule],
   exports: [VersionService],
-  providers: [VersionService],
+  providers: [VersionORM, VersionService],
   controllers: [VersionLoguxController],
 })
 export class VersionModule {}

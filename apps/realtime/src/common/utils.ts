@@ -1,11 +1,23 @@
-import type { Ref } from '@mikro-orm/core';
-import type { AssistantEntity, EntityPKValue, PKOrEntity } from '@voiceflow/orm-designer';
-import { isEntity } from '@voiceflow/orm-designer';
 import type { DesignerActionContext, LegacyVersionActionContext } from '@voiceflow/sdk-logux-designer/build/types';
 
-export const toEntityID = <Entity extends { id: EntityPKValue }>(entity: PKOrEntity<Entity>): Entity['id'] => (isEntity(entity) ? entity.id : entity);
+import { CMSContext } from '@/types';
 
-export const toEntityIDs = <Entity extends { id: EntityPKValue }>(entities: PKOrEntity<Entity>[]): Entity['id'][] => entities.map(toEntityID);
+export const toPostgresEntityID = <ID extends string | number>(entityOrID: ID | { id: ID }): ID =>
+  typeof entityOrID === 'object' ? entityOrID.id : entityOrID;
+
+export const toPostgresEntityIDs = <ID extends string | number>(entities: Array<ID | { id: ID }>): ID[] => entities.map(toPostgresEntityID);
+
+export const toCMSEntityCompositeID = <Entity extends { id: string; environmentID: string }>({ id, environmentID }: Entity) => ({
+  id,
+  environmentID,
+});
+
+export const toCMSEntityCompositeIDs = <Entity extends { id: string; environmentID: string }>(entities: Entity[]) =>
+  entities.map(toCMSEntityCompositeID);
+
+export const injectAssistantAndEnvironmentIDs =
+  ({ assistantID, environmentID }: Pick<CMSContext, 'assistantID' | 'environmentID'>) =>
+  <Entity>(entity: Entity) => ({ ...entity, assistantID, environmentID });
 
 export const legacyVersionBroadcastContext = <T extends { versionID: string; projectID: string; workspaceID: string }>({
   versionID,
@@ -18,33 +30,8 @@ export const legacyVersionBroadcastContext = <T extends { versionID: string; pro
   broadcastOnly: true,
 });
 
-export const assistantBroadcastContext = <T extends { assistant: PKOrEntity<AssistantEntity> | Ref<AssistantEntity>; environmentID: string }>({
-  assistant,
-  environmentID,
-}: T): DesignerActionContext => ({
-  assistantID: isEntity(assistant) ? assistant.id : assistant,
+export const cmsBroadcastContext = ({ assistantID, environmentID }: CMSContext): DesignerActionContext => ({
+  assistantID,
   broadcastOnly: true,
   environmentID,
 });
-
-export const groupByAssistant = <Entity extends { assistant: { id: string } }>(entities: Entity[]): Entity[][] => {
-  const assistants: Record<string, Entity[]> = {};
-
-  entities.forEach((entity) => {
-    assistants[entity.assistant.id] ??= [];
-    assistants[entity.assistant.id].push(entity);
-  });
-
-  return Object.values(assistants);
-};
-
-export const groupByAssistantID = <Entity extends { assistantID: string }>(entities: Entity[]): Entity[][] => {
-  const assistants: Record<string, Entity[]> = {};
-
-  entities.forEach((entity) => {
-    assistants[entity.assistantID] ??= [];
-    assistants[entity.assistantID].push(entity);
-  });
-
-  return Object.values(assistants);
-};

@@ -1,17 +1,16 @@
 import { Inject, Injectable } from '@nestjs/common';
 import type { ThreadComment } from '@voiceflow/dtos';
 import { HashedIDService } from '@voiceflow/nestjs-common';
-import type { ThreadCommentEntity } from '@voiceflow/orm-designer';
+import type { ThreadCommentObject } from '@voiceflow/orm-designer';
+import { ThreadCommentJSONAdapter } from '@voiceflow/orm-designer';
 
-import { BaseSerializer, EntitySerializer } from '@/common';
+import { BaseSerializer } from '@/common';
 
 @Injectable()
-export class ThreadCommentSerializer extends BaseSerializer<ThreadCommentEntity, ThreadComment> {
+export class ThreadCommentSerializer extends BaseSerializer<ThreadCommentObject, ThreadComment> {
   constructor(
     @Inject(HashedIDService)
-    private readonly hashedID: HashedIDService,
-    @Inject(EntitySerializer)
-    private readonly entitySerializer: EntitySerializer
+    private readonly hashedID: HashedIDService
   ) {
     super();
   }
@@ -24,12 +23,12 @@ export class ThreadCommentSerializer extends BaseSerializer<ThreadCommentEntity,
     return this.hashedID.encodeID(id);
   };
 
-  serialize(data: ThreadCommentEntity): ThreadComment {
+  serialize(data: ThreadCommentObject): ThreadComment {
     return {
-      ...this.entitySerializer.serialize(data),
+      ...ThreadCommentJSONAdapter.fromDB(data),
       id: this.encodeID(data.id),
       created: data.createdAt.toString(),
-      threadID: this.encodeID(data.thread.id),
+      threadID: this.encodeID(data.threadID),
     };
   }
 }

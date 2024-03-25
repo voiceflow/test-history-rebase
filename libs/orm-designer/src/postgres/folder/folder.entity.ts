@@ -1,27 +1,22 @@
-import { Entity, Enum, Index, ManyToOne, PrimaryKeyType, Property, Unique, wrap } from '@mikro-orm/core';
+import { Entity, Enum, Index, ManyToOne, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
 import { FolderScope } from '@voiceflow/dtos';
 
-import type { CMSCompositePK, EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
+import type { CMSCompositePK, Ref } from '@/types';
 
 import type { AssistantEntity } from '../assistant/assistant.entity';
 import { Assistant } from '../common/decorators/assistant.decorator';
 import { Environment } from '../common/decorators/environment.decorator';
 import { PostgresCMSObjectEntity } from '../common/entities/postgres-cms-object.entity';
-import { FolderEntityAdapter } from './folder-entity.adapter';
 
 @Entity({ tableName: 'designer.folder' })
 @Unique({ properties: ['id', 'environmentID'] })
 @Index({ properties: ['environmentID'] })
-export class FolderEntity extends PostgresCMSObjectEntity {
-  static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<FolderEntity>>>(data: JSON) {
-    return FolderEntityAdapter.toDB<JSON>(data);
-  }
-
+export class FolderEntity extends PostgresCMSObjectEntity<'parent'> {
   @Property()
-  name: string;
+  name!: string;
 
   @Enum(() => FolderScope)
-  scope: FolderScope;
+  scope!: FolderScope;
 
   @ManyToOne(() => FolderEntity, {
     name: 'parent_id',
@@ -30,34 +25,13 @@ export class FolderEntity extends PostgresCMSObjectEntity {
     nullable: true,
     fieldNames: ['parent_id', 'environment_id'],
   })
-  parent: Ref<FolderEntity> | null = null;
+  parent!: Ref<FolderEntity> | null;
 
   @Assistant()
-  assistant: Ref<AssistantEntity>;
+  assistant!: Ref<AssistantEntity>;
 
   @Environment()
-  environmentID: string;
+  environmentID!: string;
 
   [PrimaryKeyType]?: CMSCompositePK;
-
-  constructor(data: EntityCreateParams<FolderEntity>) {
-    super(data);
-
-    ({
-      name: this.name,
-      scope: this.scope,
-      parent: this.parent,
-      assistant: this.assistant,
-      environmentID: this.environmentID,
-    } = FolderEntity.fromJSON(data));
-  }
-
-  toJSON(...args: any[]): ToJSONWithForeignKeys<FolderEntity> {
-    return FolderEntityAdapter.fromDB({
-      ...wrap<FolderEntity>(this).toObject(...args),
-      parent: this.parent ?? null,
-      updatedBy: this.updatedBy,
-      assistant: this.assistant,
-    });
-  }
 }

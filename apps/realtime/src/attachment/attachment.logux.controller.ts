@@ -1,12 +1,11 @@
 import { Controller, Inject } from '@nestjs/common';
-import { AttachmentType } from '@voiceflow/dtos';
+import { AttachmentType, CardAttachment, MediaAttachment } from '@voiceflow/dtos';
 import { Action, AuthMeta, AuthMetaPayload, Broadcast, Payload } from '@voiceflow/nestjs-logux';
-import type { CardAttachmentEntity, MediaAttachmentEntity } from '@voiceflow/orm-designer';
 import { Permission } from '@voiceflow/sdk-auth';
 import { Authorize } from '@voiceflow/sdk-auth/nestjs';
 import { Actions, Channels } from '@voiceflow/sdk-logux-designer';
 
-import { BroadcastOnly, EntitySerializer, InjectRequestContext, UseRequestContext } from '@/common';
+import { BroadcastOnly, InjectRequestContext, UseRequestContext } from '@/common';
 
 import { AttachmentService } from './attachment.service';
 import { CardAttachmentService } from './card-attachment.service';
@@ -21,9 +20,7 @@ export class AttachmentLoguxController {
     @Inject(CardAttachmentService)
     private readonly cardAttachment: CardAttachmentService,
     @Inject(MediaAttachmentService)
-    private readonly mediaAttachment: MediaAttachmentService,
-    @Inject(EntitySerializer)
-    private readonly entitySerializer: EntitySerializer
+    private readonly mediaAttachment: MediaAttachmentService
   ) {}
 
   @Action.Async(Actions.Attachment.CreateCardOne)
@@ -34,13 +31,11 @@ export class AttachmentLoguxController {
   @UseRequestContext()
   createCardOne(
     @Payload() { data, context }: Actions.Attachment.CreateCardOne.Request,
-    @AuthMeta() authMeta: AuthMetaPayload
+    @AuthMeta() auth: AuthMetaPayload
   ): Promise<Actions.Attachment.CreateCardOne.Response> {
     return this.service
-      .createManyAndBroadcast(authMeta, [
-        { ...data, type: AttachmentType.CARD, assistantID: context.assistantID, environmentID: context.environmentID },
-      ])
-      .then(([result]) => ({ data: this.entitySerializer.serialize(result as CardAttachmentEntity), context }));
+      .createManyAndBroadcast([{ ...data, type: AttachmentType.CARD }], { auth, context })
+      .then(([result]) => ({ data: this.service.toJSON(result) as CardAttachment, context }));
   }
 
   @Action.Async(Actions.Attachment.CreateMediaOne)
@@ -51,13 +46,11 @@ export class AttachmentLoguxController {
   @UseRequestContext()
   createMediaOne(
     @Payload() { data, context }: Actions.Attachment.CreateMediaOne.Request,
-    @AuthMeta() authMeta: AuthMetaPayload
+    @AuthMeta() auth: AuthMetaPayload
   ): Promise<Actions.Attachment.CreateMediaOne.Response> {
     return this.service
-      .createManyAndBroadcast(authMeta, [
-        { ...data, type: AttachmentType.MEDIA, assistantID: context.assistantID, environmentID: context.environmentID },
-      ])
-      .then(([result]) => ({ data: this.entitySerializer.serialize(result as MediaAttachmentEntity), context }));
+      .createManyAndBroadcast([{ ...data, type: AttachmentType.MEDIA }], { auth, context })
+      .then(([result]) => ({ data: this.service.toJSON(result) as MediaAttachment, context }));
   }
 
   @Action(Actions.Attachment.PatchOneCard)
@@ -68,8 +61,8 @@ export class AttachmentLoguxController {
   @Broadcast<Actions.Attachment.PatchOneCard>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async patchOneCard(@Payload() { id, patch, context }: Actions.Attachment.PatchOneCard, @AuthMeta() authMeta: AuthMetaPayload) {
-    await this.cardAttachment.patchOneForUser(authMeta.userID, { id, environmentID: context.environmentID }, patch);
+  async patchOneCard(@Payload() { id, patch, context }: Actions.Attachment.PatchOneCard, @AuthMeta() auth: AuthMetaPayload) {
+    await this.cardAttachment.patchOneForUser(auth.userID, { id, environmentID: context.environmentID }, patch);
   }
 
   @Action(Actions.Attachment.PatchOneMedia)
@@ -80,8 +73,8 @@ export class AttachmentLoguxController {
   @Broadcast<Actions.Attachment.PatchOneMedia>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async patchOneMedia(@Payload() { id, patch, context }: Actions.Attachment.PatchOneMedia, @AuthMeta() authMeta: AuthMetaPayload) {
-    await this.mediaAttachment.patchOneForUser(authMeta.userID, { id, environmentID: context.environmentID }, patch);
+  async patchOneMedia(@Payload() { id, patch, context }: Actions.Attachment.PatchOneMedia, @AuthMeta() auth: AuthMetaPayload) {
+    await this.mediaAttachment.patchOneForUser(auth.userID, { id, environmentID: context.environmentID }, patch);
   }
 
   @Action(Actions.Attachment.PatchManyCard)
@@ -92,9 +85,9 @@ export class AttachmentLoguxController {
   @Broadcast<Actions.Attachment.PatchManyCard>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async patchManyCard(@Payload() { ids, patch, context }: Actions.Attachment.PatchManyCard, @AuthMeta() authMeta: AuthMetaPayload) {
+  async patchManyCard(@Payload() { ids, patch, context }: Actions.Attachment.PatchManyCard, @AuthMeta() auth: AuthMetaPayload) {
     await this.cardAttachment.patchManyForUser(
-      authMeta.userID,
+      auth.userID,
       ids.map((id) => ({ id, environmentID: context.environmentID })),
       patch
     );
@@ -108,9 +101,9 @@ export class AttachmentLoguxController {
   @Broadcast<Actions.Attachment.PatchManyMedia>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async patchManyMedia(@Payload() { ids, patch, context }: Actions.Attachment.PatchManyMedia, @AuthMeta() authMeta: AuthMetaPayload) {
+  async patchManyMedia(@Payload() { ids, patch, context }: Actions.Attachment.PatchManyMedia, @AuthMeta() auth: AuthMetaPayload) {
     await this.mediaAttachment.patchManyForUser(
-      authMeta.userID,
+      auth.userID,
       ids.map((id) => ({ id, environmentID: context.environmentID })),
       patch
     );
@@ -124,11 +117,11 @@ export class AttachmentLoguxController {
   @Broadcast<Actions.Attachment.DeleteOne>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async deleteOne(@Payload() { id, context }: Actions.Attachment.DeleteOne, @AuthMeta() authMeta: AuthMetaPayload) {
-    const result = await this.service.deleteManyAndSync([{ id, environmentID: context.environmentID }]);
+  async deleteOne(@Payload() { id, context }: Actions.Attachment.DeleteOne, @AuthMeta() auth: AuthMetaPayload) {
+    const result = await this.service.deleteManyAndSync([id], { userID: auth.userID, context });
 
     // overriding attachments cause it's broadcasted by decorator
-    await this.service.broadcastDeleteMany(authMeta, { ...result, delete: { ...result.delete, attachments: [] } });
+    await this.service.broadcastDeleteMany({ ...result, delete: { ...result.delete, attachments: [] } }, { auth, context });
   }
 
   @Action(Actions.Attachment.DeleteMany)
@@ -139,11 +132,11 @@ export class AttachmentLoguxController {
   @Broadcast<Actions.Attachment.DeleteMany>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async deleteMany(@Payload() { ids, context }: Actions.Attachment.DeleteMany, @AuthMeta() authMeta: AuthMetaPayload) {
-    const result = await this.service.deleteManyAndSync(ids.map((id) => ({ id, environmentID: context.environmentID })));
+  async deleteMany(@Payload() { ids, context }: Actions.Attachment.DeleteMany, @AuthMeta() auth: AuthMetaPayload) {
+    const result = await this.service.deleteManyAndSync(ids, { userID: auth.userID, context });
 
     // overriding attachments cause it's broadcasted by decorator
-    await this.service.broadcastDeleteMany(authMeta, { ...result, delete: { ...result.delete, attachments: [] } });
+    await this.service.broadcastDeleteMany({ ...result, delete: { ...result.delete, attachments: [] } }, { auth, context });
   }
 
   @Action(Actions.Attachment.AddOne)

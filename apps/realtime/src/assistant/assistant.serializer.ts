@@ -1,17 +1,16 @@
 import { Inject, Injectable } from '@nestjs/common';
 import type { Assistant } from '@voiceflow/dtos';
 import { HashedIDService } from '@voiceflow/nestjs-common';
-import type { AssistantEntity } from '@voiceflow/orm-designer';
+import type { AssistantObject } from '@voiceflow/orm-designer';
+import { AssistantJSONAdapter } from '@voiceflow/orm-designer';
 
-import { BaseSerializer, EntitySerializer } from '@/common';
+import { BaseSerializer } from '@/common';
 
 @Injectable()
-export class AssistantSerializer extends BaseSerializer<AssistantEntity, Assistant> {
+export class AssistantSerializer extends BaseSerializer<AssistantObject, Assistant> {
   constructor(
     @Inject(HashedIDService)
-    private readonly hashedID: HashedIDService,
-    @Inject(EntitySerializer)
-    private readonly entitySerializer: EntitySerializer
+    private readonly hashedID: HashedIDService
   ) {
     super();
   }
@@ -24,10 +23,10 @@ export class AssistantSerializer extends BaseSerializer<AssistantEntity, Assista
     return this.hashedID.decodeWorkspaceID(workspaceID);
   }
 
-  serialize(data: AssistantEntity): Assistant {
+  serialize(data: AssistantObject): Assistant {
     return {
-      ...this.entitySerializer.serialize(data),
-      workspaceID: this.encodeWorkspaceID(data.workspace.id),
+      ...AssistantJSONAdapter.fromDB(data),
+      workspaceID: this.encodeWorkspaceID(data.workspaceID),
     };
   }
 }

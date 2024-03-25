@@ -28,10 +28,10 @@ export class ThreadCommentLoguxController {
   @UseRequestContext()
   public async createOne(
     @Payload() { data, context }: Actions.ThreadComment.CreateOne.Request,
-    @AuthMeta() authMeta: AuthMetaPayload
+    @AuthMeta() auth: AuthMetaPayload
   ): Promise<Actions.ThreadComment.CreateOne.Response> {
     return this.service
-      .createManyAndBroadcast(authMeta, context, [{ ...data, threadID: this.serializer.decodeID(data.threadID) }])
+      .createManyAndBroadcast([{ ...data, threadID: this.serializer.decodeID(data.threadID) }], { auth, context })
       .then(([thread]) => ({ data: this.serializer.nullable(thread), context }));
   }
 
@@ -43,13 +43,12 @@ export class ThreadCommentLoguxController {
   @UseRequestContext()
   public async createMany(
     @Payload() { data, context }: Actions.ThreadComment.CreateMany.Request,
-    @AuthMeta() authMeta: AuthMetaPayload
+    @AuthMeta() auth: AuthMetaPayload
   ): Promise<Actions.ThreadComment.CreateMany.Response> {
     return this.service
       .createManyAndBroadcast(
-        authMeta,
-        context,
-        data.map((item) => ({ ...item, threadID: this.serializer.decodeID(item.threadID) }))
+        data.map((item) => ({ ...item, threadID: this.serializer.decodeID(item.threadID) })),
+        { auth, context }
       )
       .then((threads) => ({ data: this.serializer.iterable(threads), context }));
   }
@@ -86,11 +85,11 @@ export class ThreadCommentLoguxController {
   @Broadcast<Actions.ThreadComment.DeleteOne>(({ context }) => ({ channel: Realtime.Channels.version.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  public async deleteOne(@Payload() { id, context }: Actions.ThreadComment.DeleteOne, @AuthMeta() authMeta: AuthMetaPayload) {
+  public async deleteOne(@Payload() { id, context }: Actions.ThreadComment.DeleteOne, @AuthMeta() auth: AuthMetaPayload) {
     const result = await this.service.deleteManyAndSync([this.serializer.decodeID(id)]);
 
     // overriding threads cause it's broadcasted by decorator
-    await this.service.broadcastDeleteMany(authMeta, context, { ...result, delete: { ...result.delete, threadComments: [] } });
+    await this.service.broadcastDeleteMany({ ...result, delete: { ...result.delete, threadComments: [] } }, { auth, context });
   }
 
   @Action(Actions.ThreadComment.DeleteMany)
@@ -101,11 +100,11 @@ export class ThreadCommentLoguxController {
   @Broadcast<Actions.ThreadComment.DeleteMany>(({ context }) => ({ channel: Realtime.Channels.version.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  public async deleteMany(@Payload() { ids, context }: Actions.ThreadComment.DeleteMany, @AuthMeta() authMeta: AuthMetaPayload) {
+  public async deleteMany(@Payload() { ids, context }: Actions.ThreadComment.DeleteMany, @AuthMeta() auth: AuthMetaPayload) {
     const result = await this.service.deleteManyAndSync(ids.map(this.serializer.decodeID));
 
     // overriding threadComments cause it's broadcasted by decorator
-    await this.service.broadcastDeleteMany(authMeta, context, { ...result, delete: { ...result.delete, threadComments: [] } });
+    await this.service.broadcastDeleteMany({ ...result, delete: { ...result.delete, threadComments: [] } }, { auth, context });
   }
 
   @Action(Actions.ThreadComment.AddOne)

@@ -5,27 +5,17 @@ import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
 import { AnyAttachment, AttachmentType, CardButton } from '@voiceflow/dtos';
-import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
-import type {
-  AnyAttachmentEntity,
-  AnyResponseAttachmentEntity,
-  AnyResponseVariantEntity,
-  AssistantEntity,
-  CardButtonEntity,
-  ORMMutateOptions,
-  PKOrEntity,
-  ToJSONWithForeignKeys,
-} from '@voiceflow/orm-designer';
-import { DatabaseTarget } from '@voiceflow/orm-designer';
+import { LoguxService } from '@voiceflow/nestjs-logux';
+import type { AnyAttachmentEntity, AnyResponseVariantObject, CardButtonObject } from '@voiceflow/orm-designer';
+import { AnyResponseAttachmentObject, DatabaseTarget } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 import { match } from 'ts-pattern';
 
-import { EntitySerializer } from '@/common';
-import { assistantBroadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
+import { cmsBroadcastContext, injectAssistantAndEnvironmentIDs, toPostgresEntityIDs } from '@/common/utils';
 import { ResponseAttachmentService } from '@/response/response-attachment/response-attachment.service';
-import { cloneManyEntities } from '@/utils/entity.util';
+import { CMSBroadcastMeta, CMSContext } from '@/types';
 
-import type { AttachmentAnyImportData, AttachmentCreateData, AttachmentPatchData } from './attachment.interface';
+import type { AnyAttachmentCreateData, AnyAttachmentObjectWithType, AttachmentPatchData } from './attachment.interface';
 import { CardAttachmentService } from './card-attachment.service';
 import { CardButtonService } from './card-button/card-button.service';
 import { AttachmentExportImportDataDTO } from './dtos/attachment-export-import-data.dto';
@@ -33,11 +23,25 @@ import { MediaAttachmentService } from './media-attachment.service';
 
 @Injectable()
 export class AttachmentService {
+  toJSON = (data: AnyAttachmentObjectWithType) =>
+    data.type === AttachmentType.CARD
+      ? this.injectType(data.type)(this.cardAttachment.toJSON(data))
+      : this.injectType(data.type)(this.mediaAttachment.toJSON(data));
+
+  fromJSON = (data: AnyAttachment) =>
+    data.type === AttachmentType.CARD
+      ? this.injectType(data.type)(this.cardAttachment.fromJSON(data))
+      : this.injectType(data.type)(this.mediaAttachment.fromJSON(data));
+
+  mapToJSON = (data: AnyAttachmentObjectWithType[]) => data.map(this.toJSON);
+
+  mapFromJSON = (data: AnyAttachment[]) => data.map(this.fromJSON);
+
   constructor(
     @Inject(getEntityManagerToken(DatabaseTarget.POSTGRES))
-    private readonly postgresEM: EntityManager,
+    protected readonly postgresEM: EntityManager,
     @Inject(LoguxService)
-    private readonly logux: LoguxService,
+    protected readonly logux: LoguxService,
     @Inject(CardButtonService)
     protected readonly cardButton: CardButtonService,
     @Inject(CardAttachmentService)
@@ -45,37 +49,66 @@ export class AttachmentService {
     @Inject(MediaAttachmentService)
     protected readonly mediaAttachment: MediaAttachmentService,
     @Inject(ResponseAttachmentService)
-    protected readonly responseAttachment: ResponseAttachmentService,
-    @Inject(EntitySerializer)
-    private readonly entitySerializer: EntitySerializer
+    protected readonly responseAttachment: ResponseAttachmentService
   ) {}
+
+  /* Utils */
+
+  protected omitType = <Data extends { type: AttachmentType }>(data: Data) => Utils.object.omit(data, ['type']);
+
+  protected injectType = <Type extends AttachmentType>(type: Type) => {
+    return <Data extends object>(data: Data): Data & { type: Type } => ({ ...data, type });
+  };
+
+  protected groupByType<Data extends AnyAttachment[] | AnyAttachmentCreateData[]>(attachments: Data) {
+    const cardAttachmentsData: Array<Data[number] & { type: typeof AttachmentType.CARD }> = [];
+    const mediaAttachmentsData: Array<Data[number] & { type: typeof AttachmentType.MEDIA }> = [];
+
+    attachments.forEach((attachment) => {
+      if (attachment.type === AttachmentType.CARD) {
+        cardAttachmentsData.push(attachment);
+      } else {
+        mediaAttachmentsData.push(attachment);
+      }
+    });
+
+    return {
+      cardAttachmentsData,
+      mediaAttachmentsData,
+    };
+  }
 
   /* Find */
 
-  async findOne(id: Primary<AnyAttachmentEntity>, type: AttachmentType) {
+  async findOneByType(id: Primary<AnyAttachmentEntity>, type: AttachmentType): Promise<AnyAttachmentObjectWithType> {
     return match(type)
-      .with(AttachmentType.CARD, () => this.cardAttachment.findOneOrFail(id))
-      .with(AttachmentType.MEDIA, () => this.mediaAttachment.findOneOrFail(id))
+      .with(AttachmentType.CARD, (type) => this.cardAttachment.findOneOrFail(id).then(this.injectType(type)))
+      .with(AttachmentType.MEDIA, (type) => this.mediaAttachment.findOneOrFail(id).then(this.injectType(type)))
       .exhaustive();
   }
 
-  async findMany(ids: Primary<AnyAttachmentEntity>[]) {
-    return (await Promise.all([this.cardAttachment.findMany(ids), this.mediaAttachment.findMany(ids)])).flat();
+  async findManyByEnvironmentAndIDs(environmentID: string, ids: string[]): Promise<AnyAttachmentObjectWithType[]> {
+    const [cardAttachments, mediaAttachments] = await Promise.all([
+      this.cardAttachment.findManyByEnvironmentAndIDs(environmentID, ids),
+      this.mediaAttachment.findManyByEnvironmentAndIDs(environmentID, ids),
+    ]);
+
+    return [...cardAttachments.map(this.injectType(AttachmentType.CARD)), ...mediaAttachments.map(this.injectType(AttachmentType.MEDIA))];
   }
 
-  async findManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
-    return (
-      await Promise.all([
-        this.cardAttachment.findManyByEnvironment(assistant, environmentID),
-        this.mediaAttachment.findManyByEnvironment(assistant, environmentID),
-      ])
-    ).flat();
+  async findManyByEnvironment(environmentID: string): Promise<AnyAttachmentObjectWithType[]> {
+    const [cardAttachments, mediaAttachments] = await Promise.all([
+      this.cardAttachment.findManyByEnvironment(environmentID),
+      this.mediaAttachment.findManyByEnvironment(environmentID),
+    ]);
+
+    return [...cardAttachments.map(this.injectType(AttachmentType.CARD)), ...mediaAttachments.map(this.injectType(AttachmentType.MEDIA))];
   }
 
-  async findManyWithSubResourcesByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+  async findManyWithSubResourcesByEnvironment(environmentID: string) {
     const [attachments, cardButtons] = await Promise.all([
-      this.findManyByEnvironment(assistant, environmentID),
-      this.cardButton.findManyByEnvironment(assistant, environmentID),
+      this.findManyByEnvironment(environmentID),
+      this.cardButton.findManyByEnvironment(environmentID),
     ]);
 
     return {
@@ -84,39 +117,24 @@ export class AttachmentService {
     };
   }
 
-  async findManyWithSubResourcesJSONByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
-    // TODO: we can't use findAllJSON here cause attachments have virtual type field, so we need entity to proper initialize it
-    const { attachments, cardButtons } = await this.findManyWithSubResourcesByEnvironment(assistant, environmentID);
-
-    return {
-      attachments: this.entitySerializer.iterable(attachments),
-      cardButtons: this.entitySerializer.iterable(cardButtons),
-    };
-  }
-
   /* Upsert */
 
-  async upsertOne(data: AttachmentAnyImportData, options?: ORMMutateOptions) {
+  async upsertOne(data: AnyAttachmentObjectWithType): Promise<AnyAttachmentObjectWithType> {
     return match(data)
-      .with({ type: AttachmentType.CARD }, ({ type: _, ...data }) => this.cardAttachment.upsertOne(data, options))
-      .with({ type: AttachmentType.MEDIA }, ({ type: _, ...data }) => this.mediaAttachment.upsertOne(data, options))
+      .with({ type: AttachmentType.CARD }, ({ type, ...data }) => this.cardAttachment.upsertOne(data).then(this.injectType(type)))
+      .with({ type: AttachmentType.MEDIA }, ({ type, ...data }) => this.mediaAttachment.upsertOne(data).then(this.injectType(type)))
       .exhaustive();
   }
 
-  async upsertMany(data: AttachmentAnyImportData[], { flush = true }: ORMMutateOptions = {}) {
-    const cardAttachmentsData = data.filter((item) => item.type === AttachmentType.CARD).map(({ type: _, ...data }) => data);
-    const mediaAttachmentsData = data.filter((item) => item.type === AttachmentType.MEDIA).map(({ type: _, ...data }) => data);
+  async upsertMany(data: AnyAttachmentObjectWithType[]): Promise<AnyAttachmentObjectWithType[]> {
+    const { cardAttachmentsData, mediaAttachmentsData } = this.groupByType(data);
 
-    const [cardAttachment, mediaAttachments] = await Promise.all([
-      this.cardAttachment.upsertMany(cardAttachmentsData, { flush: false }),
-      this.mediaAttachment.upsertMany(mediaAttachmentsData, { flush: false }),
+    const [cardAttachments, mediaAttachments] = await Promise.all([
+      this.cardAttachment.upsertMany(cardAttachmentsData.map(this.omitType)),
+      this.mediaAttachment.upsertMany(mediaAttachmentsData.map(this.omitType)),
     ]);
 
-    if (flush) {
-      await this.postgresEM.flush();
-    }
-
-    return [...cardAttachment, ...mediaAttachments];
+    return [...cardAttachments.map(this.injectType(AttachmentType.CARD)), ...mediaAttachments.map(this.injectType(AttachmentType.MEDIA))];
   }
 
   async upsertManyWithSubResources(
@@ -125,99 +143,80 @@ export class AttachmentService {
   ) {
     const { attachments, cardButtons } = this.prepareImportData(data, meta);
 
-    await this.upsertMany(attachments);
-    await this.cardButton.upsertMany(cardButtons);
+    await this.upsertMany(this.mapFromJSON(attachments));
+    await this.cardButton.upsertMany(this.cardButton.mapFromJSON(cardButtons));
   }
 
   /* Update */
 
   async patchOneForUser(userID: number, id: Primary<AnyAttachmentEntity>, patch: AttachmentPatchData) {
     await match(patch)
-      .with({ type: AttachmentType.CARD }, ({ type: _, ...patch }) => this.cardAttachment.patchOneForUser(userID, id, patch))
-      .with({ type: AttachmentType.MEDIA }, ({ type: _, ...patch }) => this.mediaAttachment.patchOneForUser(userID, id, patch))
+      .with({ type: AttachmentType.CARD }, (patch) => this.cardAttachment.patchOneForUser(userID, id, this.omitType(patch)))
+      .with({ type: AttachmentType.MEDIA }, (patch) => this.mediaAttachment.patchOneForUser(userID, id, this.omitType(patch)))
       .exhaustive();
   }
 
   async patchManyForUser(userID: number, ids: Primary<AnyAttachmentEntity>[], patch: AttachmentPatchData) {
     await match(patch)
-      .with({ type: AttachmentType.CARD }, ({ type: _, ...patch }) => this.cardAttachment.patchManyForUser(userID, ids, patch))
-      .with({ type: AttachmentType.MEDIA }, ({ type: _, ...patch }) => this.mediaAttachment.patchManyForUser(userID, ids, patch))
+      .with({ type: AttachmentType.CARD }, (patch) => this.cardAttachment.patchManyForUser(userID, ids, this.omitType(patch)))
+      .with({ type: AttachmentType.MEDIA }, (patch) => this.mediaAttachment.patchManyForUser(userID, ids, this.omitType(patch)))
       .exhaustive();
   }
 
   /* Export */
 
+  toJSONWithSubResources({ attachments, cardButtons }: { attachments: AnyAttachmentObjectWithType[]; cardButtons: CardButtonObject[] }) {
+    return {
+      cardButtons: this.cardButton.mapToJSON(cardButtons),
+      attachments: this.mapToJSON(attachments),
+    };
+  }
+
+  fromJSONWithSubResources({ attachments, cardButtons }: AttachmentExportImportDataDTO) {
+    return {
+      cardButtons: this.cardButton.mapFromJSON(cardButtons),
+      attachments: this.mapFromJSON(attachments),
+    };
+  }
+
   prepareExportData(
-    {
-      attachments,
-      cardButtons,
-    }: {
-      attachments: AnyAttachmentEntity[];
-      cardButtons: CardButtonEntity[];
-    },
+    data: { attachments: AnyAttachmentObjectWithType[]; cardButtons: CardButtonObject[] },
     { backup }: { backup?: boolean } = {}
   ): AttachmentExportImportDataDTO {
-    const json = {
-      attachments: this.entitySerializer.iterable(attachments),
-      cardButtons: this.entitySerializer.iterable(cardButtons),
-    };
+    const json = this.toJSONWithSubResources(data);
 
     if (backup) {
       return json;
     }
 
-    return this.prepareExportJSONData(json);
-  }
-
-  prepareExportJSONData({
-    attachments,
-    cardButtons,
-  }: {
-    attachments: ToJSONWithForeignKeys<AnyAttachmentEntity>[];
-    cardButtons: ToJSONWithForeignKeys<CardButtonEntity>[];
-  }): AttachmentExportImportDataDTO {
     return {
-      attachments: attachments.map((item) =>
+      attachments: json.attachments.map((item) =>
         Utils.object.omit(item, ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'])
       ) as AttachmentExportImportDataDTO['attachments'],
-      cardButtons: cardButtons.map((item) => Utils.object.omit(item, ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'])),
+
+      cardButtons: json.cardButtons.map((item) => Utils.object.omit(item, ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'])),
     };
   }
 
   /* Clone */
 
-  async cloneManyWithSubResourcesForEnvironment(
-    {
-      sourceAssistantID,
-      targetAssistantID,
-      sourceEnvironmentID,
-      targetEnvironmentID,
-    }: {
-      sourceAssistantID: string;
-      targetAssistantID: string;
-      sourceEnvironmentID: string;
-      targetEnvironmentID: string;
-    },
-    { flush = true }: ORMMutateOptions = {}
-  ) {
-    const { attachments: sourceAttachments, cardButtons: sourceCardButtons } = await this.findManyWithSubResourcesByEnvironment(
-      sourceAssistantID,
-      sourceEnvironmentID
-    );
+  async cloneManyWithSubResourcesForEnvironment({
+    targetAssistantID,
+    sourceEnvironmentID,
+    targetEnvironmentID,
+  }: {
+    targetAssistantID: string;
+    sourceEnvironmentID: string;
+    targetEnvironmentID: string;
+  }) {
+    const { attachments: sourceAttachments, cardButtons: sourceCardButtons } = await this.findManyWithSubResourcesByEnvironment(sourceEnvironmentID);
 
-    const result = await this.importManyWithSubResources(
-      {
-        attachments: cloneManyEntities(sourceAttachments, { assistantID: targetAssistantID, environmentID: targetEnvironmentID }),
-        cardButtons: cloneManyEntities(sourceCardButtons, { assistantID: targetAssistantID, environmentID: targetEnvironmentID }),
-      },
-      { flush: false }
-    );
+    const injectContext = { assistantID: targetAssistantID, environmentID: targetEnvironmentID };
 
-    if (flush) {
-      await this.postgresEM.flush();
-    }
-
-    return result;
+    return this.importManyWithSubResources({
+      attachments: sourceAttachments.map(injectAssistantAndEnvironmentIDs(injectContext)),
+      cardButtons: sourceCardButtons.map(injectAssistantAndEnvironmentIDs(injectContext)),
+    });
   }
 
   /* Import */
@@ -225,7 +224,7 @@ export class AttachmentService {
   prepareImportData(
     { attachments, cardButtons }: AttachmentExportImportDataDTO,
     { userID, backup, assistantID, environmentID }: { userID: number; backup?: boolean; assistantID: string; environmentID: string }
-  ): { attachments: AttachmentAnyImportData[]; cardButtons: ToJSONWithForeignKeys<CardButtonEntity>[] } {
+  ): { attachments: AnyAttachment[]; cardButtons: CardButton[] } {
     const createdAt = new Date().toJSON();
 
     if (backup) {
@@ -268,21 +267,12 @@ export class AttachmentService {
     };
   }
 
-  async importManyWithSubResources(
-    data: {
-      attachments: Array<AttachmentCreateData & { updatedByID: number | null }>;
-      cardButtons: ToJSONWithForeignKeys<CardButtonEntity>[];
-    },
-    { flush = true }: ORMMutateOptions = {}
-  ) {
-    const [attachments, cardButtons] = await Promise.all([
-      this.createMany(data.attachments, { flush: false }),
-      this.cardButton.createMany(data.cardButtons, { flush: false }),
-    ]);
-
-    if (flush) {
-      await this.postgresEM.flush();
-    }
+  async importManyWithSubResources(data: {
+    attachments: Array<AnyAttachmentCreateData & { updatedByID: number | null; assistantID: string; environmentID: string }>;
+    cardButtons: CardButtonObject[];
+  }) {
+    const attachments = await this.createMany(data.attachments);
+    const cardButtons = await this.cardButton.createMany(data.cardButtons);
 
     return {
       attachments,
@@ -292,43 +282,31 @@ export class AttachmentService {
 
   /* Create */
 
-  async createOne(data: AttachmentCreateData & { updatedByID: number | null }, options?: ORMMutateOptions) {
-    return match(data)
-      .with({ type: AttachmentType.CARD }, ({ type: _, ...data }) => this.cardAttachment.createOne(data, options))
-      .with({ type: AttachmentType.MEDIA }, ({ type: _, ...data }) => this.mediaAttachment.createOne(data, options))
-      .exhaustive();
+  async createMany(data: Array<AnyAttachmentCreateData & { updatedByID: number | null; assistantID: string; environmentID: string }>) {
+    const { cardAttachmentsData, mediaAttachmentsData } = this.groupByType(data);
+
+    const [cardAttachments, mediaAttachments] = await Promise.all([
+      this.cardAttachment.createMany(cardAttachmentsData.map(this.omitType)),
+      this.mediaAttachment.createMany(mediaAttachmentsData.map(this.omitType)),
+    ]);
+
+    return [...cardAttachments.map(this.injectType(AttachmentType.CARD)), ...mediaAttachments.map(this.injectType(AttachmentType.MEDIA))];
   }
 
-  async createMany(data: Array<AttachmentCreateData & { updatedByID: number | null }>, { flush = true }: ORMMutateOptions = {}) {
-    const attachments = await Promise.all(data.map((item) => this.createOne(item, { flush: false })));
+  async createManyForUser(userID: number, data: Array<AnyAttachmentCreateData & { assistantID: string; environmentID: string }>) {
+    const { cardAttachmentsData, mediaAttachmentsData } = this.groupByType(data);
 
-    if (flush) {
-      await this.postgresEM.flush();
-    }
+    const [cardAttachments, mediaAttachments] = await Promise.all([
+      this.cardAttachment.createManyForUser(userID, cardAttachmentsData.map(this.omitType)),
+      this.mediaAttachment.createManyForUser(userID, mediaAttachmentsData.map(this.omitType)),
+    ]);
 
-    return attachments;
+    return [...cardAttachments.map(this.injectType(AttachmentType.CARD)), ...mediaAttachments.map(this.injectType(AttachmentType.MEDIA))];
   }
 
-  async createOneForUser(userID: number, data: AttachmentCreateData, options?: ORMMutateOptions) {
-    return match(data)
-      .with({ type: AttachmentType.CARD }, ({ type: _, ...data }) => this.cardAttachment.createOneForUser(userID, data, options))
-      .with({ type: AttachmentType.MEDIA }, ({ type: _, ...data }) => this.mediaAttachment.createOneForUser(userID, data, options))
-      .exhaustive();
-  }
-
-  async createManyForUser(userID: number, data: AttachmentCreateData[], { flush = true }: ORMMutateOptions = {}) {
-    const attachments = await Promise.all(data.map((item) => this.createOneForUser(userID, item, { flush: false })));
-
-    if (flush) {
-      await this.postgresEM.flush();
-    }
-
-    return attachments;
-  }
-
-  async createManyAndSync(userID: number, data: AttachmentCreateData[]) {
+  async createManyAndSync(data: AnyAttachmentCreateData[], { userID, context }: { userID: number; context: CMSContext }) {
     return this.postgresEM.transactional(async () => {
-      const attachments = await this.createManyForUser(userID, data);
+      const attachments = await this.createManyForUser(userID, data.map(injectAssistantAndEnvironmentIDs(context)));
 
       return {
         add: { attachments },
@@ -336,45 +314,41 @@ export class AttachmentService {
     });
   }
 
-  async broadcastAddMany(authMeta: AuthMetaPayload, { add }: { add: { attachments: AnyAttachmentEntity[] } }) {
-    await Promise.all(
-      groupByAssistant(add.attachments).map((attachments) =>
-        this.logux.processAs(
-          Actions.Attachment.AddMany({
-            data: this.entitySerializer.iterable(attachments),
-            context: assistantBroadcastContext(attachments[0]),
-          }),
-          authMeta
-        )
-      )
+  async broadcastAddMany({ add }: { add: { attachments: AnyAttachmentObjectWithType[] } }, meta: CMSBroadcastMeta) {
+    await this.logux.processAs(
+      Actions.Attachment.AddMany({
+        data: this.mapToJSON(add.attachments),
+        context: cmsBroadcastContext(meta.context),
+      }),
+      meta.auth
     );
   }
 
-  async createManyAndBroadcast(authMeta: AuthMetaPayload, data: AttachmentCreateData[]) {
-    const result = await this.createManyAndSync(authMeta.userID, data);
+  async createManyAndBroadcast(data: AnyAttachmentCreateData[], meta: CMSBroadcastMeta) {
+    const result = await this.createManyAndSync(data, { userID: meta.auth.userID, context: meta.context });
 
-    await this.broadcastAddMany(authMeta, result);
+    await this.broadcastAddMany(result, meta);
 
     return result.add.attachments;
   }
 
   /* Delete */
 
-  async deleteMany(ids: PKOrEntity<AnyAttachmentEntity>[], { flush = true }: ORMMutateOptions = {}) {
-    await Promise.all([this.cardAttachment.deleteMany(ids, { flush }), this.mediaAttachment.deleteMany(ids, { flush })]);
+  async deleteManyByEnvironment(environmentID: string) {
+    await Promise.all([this.cardAttachment.deleteManyByEnvironment(environmentID), this.mediaAttachment.deleteManyByEnvironment(environmentID)]);
   }
 
-  async deleteManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+  async deleteManyByEnvironmentAndIDs(environmentID: string, ids: string[]) {
     await Promise.all([
-      this.cardAttachment.deleteManyByEnvironment(assistant, environmentID),
-      this.mediaAttachment.deleteManyByEnvironment(assistant, environmentID),
+      this.cardAttachment.deleteManyByEnvironmentAndIDs(environmentID, ids),
+      this.mediaAttachment.deleteManyByEnvironmentAndIDs(environmentID, ids),
     ]);
   }
 
-  async collectRelationsToDelete(attachments: PKOrEntity<AnyAttachmentEntity>[]) {
+  async collectRelationsToDelete(environmentID: string, attachmentIDs: string[]) {
     const [cardButtons, responseAttachments] = await Promise.all([
-      this.cardButton.findManyByCardAttachments(attachments),
-      this.responseAttachment.findManyByAttachments(attachments),
+      this.cardButton.findManyByCardAttachments(environmentID, attachmentIDs),
+      this.responseAttachment.findManyByAttachments(environmentID, attachmentIDs),
     ]);
 
     return {
@@ -383,16 +357,16 @@ export class AttachmentService {
     };
   }
 
-  async deleteManyAndSync(ids: Primary<AnyAttachmentEntity>[]) {
+  async deleteManyAndSync(ids: string[], { userID, context }: { userID: number; context: CMSContext }) {
     return this.postgresEM.transactional(async () => {
-      const attachments = await this.findMany(ids);
-      const relations = await this.collectRelationsToDelete(attachments);
+      const [attachments, relations] = await Promise.all([
+        this.findManyByEnvironmentAndIDs(context.environmentID, ids),
+        this.collectRelationsToDelete(context.environmentID, ids),
+      ]);
 
-      const sync = await this.responseAttachment.syncOnDelete(relations.responseAttachments, { flush: false });
+      const sync = await this.responseAttachment.syncOnDelete(relations.responseAttachments, { userID, context });
 
-      await this.deleteMany(attachments, { flush: false });
-
-      await this.postgresEM.flush();
+      await this.deleteManyByEnvironmentAndIDs(context.environmentID, ids);
 
       return {
         sync,
@@ -402,46 +376,50 @@ export class AttachmentService {
   }
 
   async broadcastDeleteMany(
-    authMeta: AuthMetaPayload,
     {
       sync,
       delete: del,
     }: {
-      sync: { responseVariants: AnyResponseVariantEntity[] };
+      sync: { responseVariants: AnyResponseVariantObject[] };
       delete: {
-        attachments: AnyAttachmentEntity[];
-        cardButtons: CardButtonEntity[];
-        responseAttachments: AnyResponseAttachmentEntity[];
+        attachments: AnyAttachmentObjectWithType[];
+        cardButtons: CardButtonObject[];
+        responseAttachments: AnyResponseAttachmentObject[];
       };
-    }
+    },
+    meta: CMSBroadcastMeta
   ) {
     await Promise.all([
-      this.responseAttachment.broadcastDeleteMany(authMeta, {
-        sync: Utils.object.pick(sync, ['responseVariants']),
-        delete: Utils.object.pick(del, ['responseAttachments']),
-      }),
+      this.responseAttachment.broadcastDeleteMany(
+        {
+          sync: Utils.object.pick(sync, ['responseVariants']),
+          delete: Utils.object.pick(del, ['responseAttachments']),
+        },
+        meta
+      ),
 
-      this.cardButton.broadcastDeleteMany(authMeta, {
-        // no need tp sync cardAttachments, because they are deleted with attachments
-        sync: { cardAttachments: [] },
-        delete: Utils.object.pick(del, ['cardButtons']),
-      }),
+      this.cardButton.broadcastDeleteMany(
+        {
+          // no need tp sync cardAttachments, because they are deleted with attachments
+          sync: { cardAttachments: [] },
+          delete: Utils.object.pick(del, ['cardButtons']),
+        },
+        meta
+      ),
 
-      ...groupByAssistant(del.attachments).map((attachments) =>
-        this.logux.processAs(
-          Actions.Attachment.DeleteMany({
-            ids: toEntityIDs(attachments),
-            context: assistantBroadcastContext(attachments[0]),
-          }),
-          authMeta
-        )
+      this.logux.processAs(
+        Actions.Attachment.DeleteMany({
+          ids: toPostgresEntityIDs(del.attachments),
+          context: cmsBroadcastContext(meta.context),
+        }),
+        meta.auth
       ),
     ]);
   }
 
-  async deleteManyAndBroadcast(authMeta: AuthMetaPayload, ids: Primary<AnyAttachmentEntity>[]): Promise<void> {
-    const result = await this.deleteManyAndSync(ids);
+  async deleteManyAndBroadcast(ids: string[], meta: CMSBroadcastMeta): Promise<void> {
+    const result = await this.deleteManyAndSync(ids, { userID: meta.auth.userID, context: meta.context });
 
-    await this.broadcastDeleteMany(authMeta, result);
+    await this.broadcastDeleteMany(result, meta);
   }
 }

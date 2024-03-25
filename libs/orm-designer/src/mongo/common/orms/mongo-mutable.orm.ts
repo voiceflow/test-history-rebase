@@ -1,112 +1,100 @@
-import type { DeleteOptions, FilterQuery, UpdateOptions } from '@mikro-orm/core';
+import type { Primary } from '@mikro-orm/core';
+import { Utils } from '@voiceflow/common';
+import type { Filter } from 'mongodb-mikro';
 
 import type { MutableORM } from '@/common';
-import { isEntity } from '@/common/utils';
-import type {
-  Constructor,
-  EntityObject,
-  MutableEntityData,
-  ORMDeleteOptions,
-  ORMMutateOptions,
-  PKOrEntity,
-  PrimaryObject,
-} from '@/types';
+import type { CreateData, PatchData, ToObject } from '@/types';
 
 import type { MongoEntity } from '../entities/mongo.entity';
 import { MongoORM } from './mongo.orm';
 
-export const MongoMutableORM = <Entity extends MongoEntity, ConstructorParam extends object>(
-  Entity: Constructor<[data: ConstructorParam], Entity> & {
-    fromJSON: (data: MutableEntityData<Entity>) => Partial<EntityObject<Entity>>;
+export abstract class MongoMutableORM<
+    BaseEntity extends MongoEntity,
+    DiscriminatorEntity extends BaseEntity = BaseEntity
+  >
+  extends MongoORM<BaseEntity, DiscriminatorEntity>
+  implements MutableORM<BaseEntity, DiscriminatorEntity>
+{
+  async patch(where: Filter<BaseEntity>, patch: PatchData<BaseEntity>) {
+    const { modifiedCount } = await this.collection.updateMany(where, { $set: this.onPatch(patch) });
+
+    return modifiedCount;
   }
-) =>
-  class extends MongoORM<Entity, ConstructorParam>(Entity) implements MutableORM<Entity, ConstructorParam> {
-    async patchOne(
-      entity: PKOrEntity<Entity>,
-      patch: MutableEntityData<Entity>,
-      { flush = true }: ORMMutateOptions = {}
-    ) {
-      const entityRef = isEntity(entity) ? entity : this.getReference(entity);
 
-      Object.assign(entityRef, Entity.fromJSON(patch));
+  async patchOne(id: Primary<BaseEntity>, patch: PatchData<BaseEntity>) {
+    const { modifiedCount } = await this.collection.updateOne(this.idToFilter(id), { $set: this.onPatch(patch) });
 
-      if (flush) {
-        await this.em.flush();
-      }
-    }
+    return modifiedCount;
+  }
 
-    async patchMany(
-      entities: PKOrEntity<Entity>[],
-      patch: MutableEntityData<Entity>,
-      { flush = true }: ORMMutateOptions = {}
-    ) {
-      await Promise.all(entities.map((entity) => this.patchOne(entity, patch, { flush: false })));
+  patchMany(ids: Primary<BaseEntity>[], patch: PatchData<BaseEntity>) {
+    return this.patch(this.idsToFilter(ids), patch);
+  }
 
-      if (flush) {
-        await this.em.flush();
-      }
-    }
+  async upsertOne(data: CreateData<DiscriminatorEntity>) {
+    const [result] = await this.upsertMany([data]);
 
-    async upsertOne(
-      data: (MutableEntityData<Entity> & PrimaryObject<Entity>) | (ConstructorParam & PrimaryObject<Entity>),
-      { flush = true }: ORMMutateOptions = {}
-    ): Promise<Entity> {
-      const result = await this.em.upsert(Entity, Entity.fromJSON(data) as Entity);
+    return result;
+  }
 
-      if (flush) {
-        await this.em.flush();
+  async upsertMany(data: CreateData<DiscriminatorEntity>[]) {
+    if (!data.length) return [];
+
+    const batchSize = this.em.config.get('batchSize');
+
+    if (data.length > batchSize) {
+      const batchResult: ToObject<DiscriminatorEntity>[] = [];
+
+      for (let i = 0; i < data.length; i += batchSize) {
+        const chunk = data.slice(i, i + batchSize);
+
+        // eslint-disable-next-line no-await-in-loop
+        batchResult.push(...(await this.upsertMany(chunk)));
       }
 
-      return result;
+      return batchResult;
     }
 
-    async upsertMany(
-      data: Array<(MutableEntityData<Entity> & PrimaryObject<Entity>) | (ConstructorParam & PrimaryObject<Entity>)>,
-      { flush = true }: ORMMutateOptions = {}
-    ): Promise<Entity[]> {
-      const result = await this.em.upsertMany(
-        Entity,
-        data.map((item) => Entity.fromJSON(item) as Entity)
+    const { uniqueProperties } = this;
+
+    const itemFilter = (item: any) =>
+      uniqueProperties.length ? Utils.object.pick(item, uniqueProperties) : this.idToFilter(item._id);
+
+    const { upsertedCount, modifiedCount } = await this.collection.bulkWrite(
+      data.map((item) => ({
+        updateOne: {
+          filter: itemFilter(item),
+          update: { $set: item as any },
+          upsert: true,
+        },
+      }))
+    );
+
+    if (upsertedCount + modifiedCount !== data.length) {
+      throw new Error(
+        `Failed to upsert: ${this.entityName}#${data
+          .map((item) => (item as any)._id)
+          .filter(Boolean)
+          .join(', ')}`
       );
-
-      if (flush) {
-        await this.em.flush();
-      }
-
-      return result;
     }
 
-    async deleteOne(entity: PKOrEntity<Entity>, { flush = true }: ORMDeleteOptions = {}) {
-      const entityRef = isEntity(entity) ? entity : this.getReference(entity);
+    return this.collection.find({ $or: data.map(itemFilter) }).toArray() as any;
+  }
 
-      this.em.remove(entityRef);
+  async delete(where: Filter<BaseEntity>) {
+    const { deletedCount } = await this.collection.deleteMany(where as Filter<BaseEntity>);
 
-      if (flush) {
-        await this.em.flush();
-      }
-    }
+    return deletedCount;
+  }
 
-    async deleteMany(entities: PKOrEntity<Entity>[], { flush = true }: ORMDeleteOptions = {}) {
-      await Promise.all(entities.map((entity) => this.deleteOne(entity, { flush: false })));
+  async deleteOne(id: Primary<BaseEntity>) {
+    const { deletedCount } = await this.collection.deleteOne(this.idToFilter(id));
 
-      if (flush) {
-        await this.em.flush();
-      }
-    }
+    return deletedCount;
+  }
 
-    async nativeDelete(where: FilterQuery<Entity>, options?: DeleteOptions<Entity>): Promise<void> {
-      await this.em.nativeDelete(Entity, where, options);
-    }
-
-    async nativeUpdate(
-      where: FilterQuery<Entity>,
-      data: MutableEntityData<Entity>,
-      options?: UpdateOptions<Entity>
-    ): Promise<void> {
-      await this.em.nativeUpdate<Entity>(Entity, where, data as any, options);
-    }
-  };
-
-export type MongoMutableORM<Entity extends MongoEntity, ConstructorParam extends object> = InstanceType<
-  ReturnType<typeof MongoMutableORM<Entity, ConstructorParam>>
->;
+  deleteMany(ids: Primary<BaseEntity>[]) {
+    return this.delete(this.idsToFilter(ids));
+  }
+}

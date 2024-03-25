@@ -11,9 +11,9 @@ import { BackupHTTPController } from './backup.http.controller';
 import { BackupService } from './backup.service';
 
 @Module({
-  imports: [BackupORM.register(), forwardRef(() => AssistantModule), ProjectModule, VersionModule, EnvironmentModule],
+  imports: [forwardRef(() => AssistantModule), ProjectModule, VersionModule, EnvironmentModule],
   exports: [BackupService],
-  providers: [BackupService],
+  providers: [BackupORM, BackupService],
   controllers: [BackupHTTPController],
 })
 export class BackupModule {}

@@ -11,21 +11,15 @@ import type {
   VersionSettings,
 } from '@voiceflow/dtos';
 
-import { cleanupUndefinedFields, MongoObjectEntity } from '@/mongo/common';
-import type { EntityCreateParams, ToJSON, ToJSONWithForeignKeys } from '@/types';
+import { MongoObjectEntity } from '@/mongo/common';
 
 import type { VersionDomain } from './interfaces/version-domain.interface';
 import type { VersionKnowledgeBase } from './interfaces/version-knowledge-base.interface';
-import { VersionEntityAdapter } from './version-entity.adapter';
 
 @Entity({ collection: 'versions' })
 export class VersionEntity extends MongoObjectEntity {
-  static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<VersionEntity>>>(data: JSON) {
-    return VersionEntityAdapter.toDB<JSON>(data);
-  }
-
   @Property()
-  name: string;
+  name!: string;
 
   @Property({ nullable: true })
   notes?: Record<string, VersionNote>;
@@ -47,22 +41,22 @@ export class VersionEntity extends MongoObjectEntity {
   legacyID?: string;
 
   @Property()
-  _version: number;
+  _version!: number;
 
   @Property({ nullable: true })
   settings?: VersionSettings;
 
   @Property()
-  creatorID: number;
+  creatorID!: number;
 
   @Property()
-  projectID: ObjectId;
+  projectID!: ObjectId;
 
   @Property({ nullable: true })
   prototype?: VersionPrototype;
 
   @Property()
-  variables: string[];
+  variables!: string[];
 
   @Property({ nullable: true })
   components?: VersionFolderItem[];
@@ -71,13 +65,13 @@ export class VersionEntity extends MongoObjectEntity {
   manualSave?: boolean;
 
   @Property()
-  platformData: AnyRecord;
+  platformData!: AnyRecord;
 
   @Property({ nullable: true })
   customBlocks?: Record<string, VersionCustomBlock>;
 
   @Property()
-  rootDiagramID: ObjectId;
+  rootDiagramID!: ObjectId;
 
   @Property({ nullable: true })
   knowledgeBase?: VersionKnowledgeBase;
@@ -100,86 +94,4 @@ export class VersionEntity extends MongoObjectEntity {
 
   @Property({ nullable: true })
   autoSaveFromRestore?: boolean;
-
-  constructor({
-    name,
-    notes,
-    topics,
-    folders,
-    domains,
-    legacyID,
-    _version,
-    creatorID,
-    projectID,
-    prototype,
-    variables,
-    components,
-    manualSave,
-    platformData,
-    customBlocks,
-    rootDiagramID,
-    knowledgeBase,
-    canvasTemplates,
-    templateDiagramID,
-    defaultStepColors,
-    secondaryVersionID,
-    autoSaveFromRestore,
-    ...data
-  }: EntityCreateParams<VersionEntity>) {
-    super(data);
-
-    ({
-      name: this.name,
-      notes: this.notes,
-      topics: this.topics,
-      folders: this.folders,
-      domains: this.domains,
-      legacyID: this.legacyID,
-      _version: this._version,
-      creatorID: this.creatorID,
-      projectID: this.projectID,
-      prototype: this.prototype,
-      variables: this.variables,
-      components: this.components,
-      manualSave: this.manualSave,
-      platformData: this.platformData,
-      customBlocks: this.customBlocks,
-      rootDiagramID: this.rootDiagramID,
-      knowledgeBase: this.knowledgeBase,
-      canvasTemplates: this.canvasTemplates,
-      templateDiagramID: this.templateDiagramID,
-      defaultStepColors: this.defaultStepColors,
-      secondaryVersionID: this.secondaryVersionID,
-      autoSaveFromRestore: this.autoSaveFromRestore,
-    } = VersionEntity.fromJSON({
-      name,
-      notes,
-      topics,
-      folders,
-      domains,
-      legacyID,
-      _version,
-      creatorID,
-      projectID,
-      prototype,
-      variables,
-      components,
-      manualSave,
-      platformData,
-      customBlocks,
-      rootDiagramID,
-      knowledgeBase,
-      canvasTemplates,
-      templateDiagramID,
-      defaultStepColors,
-      secondaryVersionID,
-      autoSaveFromRestore,
-    }));
-
-    cleanupUndefinedFields(this);
-  }
-
-  toJSON(): ToJSON<VersionEntity> {
-    return VersionEntityAdapter.fromDB(this);
-  }
 }

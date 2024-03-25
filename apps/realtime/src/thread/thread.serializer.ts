@@ -1,24 +1,23 @@
 import { Inject, Injectable } from '@nestjs/common';
 import type { Thread } from '@voiceflow/dtos';
 import { HashedIDService } from '@voiceflow/nestjs-common';
-import type { ThreadEntity } from '@voiceflow/orm-designer';
+import type { ThreadObject } from '@voiceflow/orm-designer';
+import { ThreadJSONAdapter } from '@voiceflow/orm-designer';
 
-import { BaseSerializer, EntitySerializer } from '@/common';
+import { BaseSerializer } from '@/common';
 
 @Injectable()
-export class ThreadSerializer extends BaseSerializer<ThreadEntity, Thread> {
+export class ThreadSerializer extends BaseSerializer<ThreadObject, Thread> {
   constructor(
     @Inject(HashedIDService)
-    private readonly hashedID: HashedIDService,
-    @Inject(EntitySerializer)
-    private readonly entitySerializer: EntitySerializer
+    private readonly hashedID: HashedIDService
   ) {
     super();
   }
 
-  serialize(data: ThreadEntity): Thread {
+  serialize(data: ThreadObject): Thread {
     return {
-      ...this.entitySerializer.serialize(data),
+      ...ThreadJSONAdapter.fromDB(data),
       id: this.encodeID(data.id),
       projectID: data.assistantID,
     };

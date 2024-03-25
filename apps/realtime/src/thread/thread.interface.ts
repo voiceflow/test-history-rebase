@@ -1,11 +1,9 @@
-import { ThreadCommentEntity, ThreadORM } from '@voiceflow/orm-designer';
+import { CreateData, ThreadCommentJSON, ThreadEntity } from '@voiceflow/orm-designer';
 
-import { CreateOneData } from '@/common/types';
-
-interface Comment extends Pick<ThreadCommentEntity, 'text' | 'mentions'> {
+interface Comment extends Pick<ThreadCommentJSON, 'text' | 'mentions'> {
   authorID: number;
 }
 
-export interface ThreadCreateData extends CreateOneData<ThreadORM> {
+export interface ThreadCreateData extends CreateData<ThreadEntity> {
   comments?: Comment[];
 }

@@ -1,20 +1,11 @@
-import { ArrayType, Collection, Entity, Index, OneToMany, PrimaryKey, Property, Unique, wrap } from '@mikro-orm/core';
-
-import type { EntityCreateParams, ToJSONWithForeignKeys } from '@/types';
+import { ArrayType, Entity, Index, PrimaryKey, Property, Unique } from '@mikro-orm/core';
 
 import { Environment, PostgresCMSTabularEntity } from '../common';
-import { IntentEntityAdapter } from './intent-entity.adapter';
-import type { RequiredEntityEntity } from './required-entity/required-entity.entity';
-import type { UtteranceEntity } from './utterance/utterance.entity';
 
 @Entity({ tableName: 'designer.intent' })
 @Unique({ properties: ['id', 'environmentID'] })
 @Index({ properties: ['environmentID'] })
-export class IntentEntity extends PostgresCMSTabularEntity {
-  static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<IntentEntity>>>(data: JSON) {
-    return IntentEntityAdapter.toDB<JSON>(data);
-  }
-
+export class IntentEntity extends PostgresCMSTabularEntity<'description'> {
   // legacy built-in intents uses type as id, so increase length to 64
   @PrimaryKey({ type: 'varchar', nullable: false, length: 64 })
   id!: string;
@@ -24,37 +15,11 @@ export class IntentEntity extends PostgresCMSTabularEntity {
   environmentID!: string;
 
   @Property({ type: 'text', default: null, nullable: true })
-  description: string | null;
+  description!: string | null;
 
   @Property()
-  automaticReprompt: boolean;
+  automaticReprompt!: boolean;
 
   @Property({ type: ArrayType })
-  entityOrder: string[];
-
-  @OneToMany('UtteranceEntity', (value: UtteranceEntity) => value.intent)
-  utterances = new Collection<UtteranceEntity>(this);
-
-  @OneToMany('RequiredEntityEntity', (value: RequiredEntityEntity) => value.intent)
-  requiredEntities = new Collection<RequiredEntityEntity>(this);
-
-  constructor({ description, entityOrder, automaticReprompt, ...data }: EntityCreateParams<IntentEntity>) {
-    super(data);
-
-    ({
-      description: this.description,
-      entityOrder: this.entityOrder,
-      automaticReprompt: this.automaticReprompt,
-    } = IntentEntity.fromJSON({ description, entityOrder, automaticReprompt }));
-  }
-
-  toJSON(...args: any[]): ToJSONWithForeignKeys<IntentEntity> {
-    return IntentEntityAdapter.fromDB({
-      ...wrap<IntentEntity>(this).toObject(...args),
-      folder: this.folder ?? null,
-      updatedBy: this.updatedBy,
-      createdBy: this.createdBy,
-      assistant: this.assistant,
-    });
-  }
+  entityOrder!: string[];
 }

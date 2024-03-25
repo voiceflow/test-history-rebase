@@ -7,9 +7,9 @@ import { ThreadService } from './thread.service';
 import { ThreadCommentModule } from './thread-comment/thread-comment.module';
 
 @Module({
-  imports: [ThreadORM.register(), ThreadCommentORM.register(), ThreadCommentModule],
+  imports: [ThreadCommentModule],
   exports: [ThreadService, ThreadSerializer],
-  providers: [ThreadService, ThreadSerializer],
+  providers: [ThreadORM, ThreadCommentORM, ThreadService, ThreadSerializer],
   controllers: [ThreadLoguxController],
 })
 export class ThreadModule {}

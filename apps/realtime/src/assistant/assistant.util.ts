@@ -1,9 +1,9 @@
-export const buildCMSTabularEntitiesUpdatedFieldsMap = <Resource extends { id: string; updatedAt: string; updatedByID: number }>(
+export const buildCMSTabularEntitiesUpdatedFieldsMap = <Resource extends { id: string; updatedAt: Date; updatedByID: number }>(
   resources: Resource[]
 ) => Object.fromEntries(resources.map((resource) => [resource.id, { updatedAt: resource.updatedAt, updatedByID: resource.updatedByID }]));
 
-export const adjustCMSTabularEntitiesUpdatedFieldsMap = <Reference extends { updatedAt: string; updatedByID: number | null }>(
-  map: Partial<Record<string, { updatedAt: string; updatedByID: number }>>,
+export const adjustCMSTabularEntitiesUpdatedFieldsMap = <Reference extends { updatedAt: Date; updatedByID: number | null }>(
+  map: Partial<Record<string, { updatedAt: Date; updatedByID: number }>>,
   references: Reference[],
   getRootID: (reference: Reference) => string
 ) => {
@@ -13,7 +13,7 @@ export const adjustCMSTabularEntitiesUpdatedFieldsMap = <Reference extends { upd
     const rootID = getRootID(reference);
     const updatedFields = map[rootID];
 
-    if (!updatedFields || reference.updatedByID === null || new Date(reference.updatedAt) <= new Date(updatedFields.updatedAt)) continue;
+    if (!updatedFields || reference.updatedByID === null || reference.updatedAt <= updatedFields.updatedAt) continue;
 
     // eslint-disable-next-line no-param-reassign
     map[rootID] = {
@@ -24,6 +24,15 @@ export const adjustCMSTabularEntitiesUpdatedFieldsMap = <Reference extends { upd
 };
 
 export const updateCMSTabularResourcesWithUpdatedFields = <Resource extends { id: string; updatedAt: string; updatedByID: number }>(
-  map: Partial<Record<string, { updatedAt: string; updatedByID: number }>>,
+  map: Partial<Record<string, { updatedAt: Date; updatedByID: number }>>,
   resources: Resource[]
-) => resources.map((resource) => ({ ...resource, ...map[resource.id] }));
+) =>
+  resources.map((resource) => {
+    const updatedFields = map[resource.id];
+
+    return {
+      ...resource,
+      ...updatedFields,
+      updatedAt: updatedFields?.updatedAt.toJSON() ?? resource.updatedAt,
+    };
+  });

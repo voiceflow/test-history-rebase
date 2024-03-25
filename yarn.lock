@@ -9851,6 +9851,7 @@ __metadata:
     redux-form: 8.3.10
     redux-persist: 6.0.0
     regenerator-runtime: 0.13.11
+    rehype-raw: 7.0.0
     reselect: 4.1.8
     slate: 0.94.1
     slate-history: 0.93.0

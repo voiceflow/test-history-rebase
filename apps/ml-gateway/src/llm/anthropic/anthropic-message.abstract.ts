@@ -50,8 +50,8 @@ export abstract class AnthropicMessageAIModel extends LLMModel {
 
     const output = result?.content?.map((content) => content.text.trim()).join('\n') || null;
 
-    const queryTokens = result?.usage.input_tokens || 0;
-    const answerTokens = result?.usage.output_tokens || 0;
+    const queryTokens = this.calculateTokenMultiplier(result?.usage.input_tokens || 0);
+    const answerTokens = this.calculateTokenMultiplier(result?.usage.output_tokens || 0);
 
     return {
       output,

@@ -29,10 +29,6 @@ export abstract class GPTLLMModel extends LLMModel {
     this.client = new OpenAIClient(config, this.azureConfig?.deployment);
   }
 
-  private calculateTokenMultiplier(tokens: number): number {
-    return Math.ceil(tokens * this.TOKEN_MULTIPLIER);
-  }
-
   protected generateOutput(result?: CreateChatCompletionResponse | null): CompletionOutput {
     const output = result?.choices[0].message?.content ?? null;
     const tokens = result?.usage?.total_tokens ?? 0;

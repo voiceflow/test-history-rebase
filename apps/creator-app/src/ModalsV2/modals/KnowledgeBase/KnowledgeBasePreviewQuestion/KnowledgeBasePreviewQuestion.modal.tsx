@@ -90,7 +90,9 @@ export const KnowledgeBasePreviewQuestion = manager.create(
 
         if (!response?.output) {
           setHasResponse(false);
-          setResponse({ output: `${currentQuestion}\n---\n${BaseUtils.ai.KNOWLEDGE_BASE_NOT_FOUND} Unable to find relevant answer.` });
+          setResponse({
+            output: `${currentQuestion}\n---\n${BaseUtils.ai.KNOWLEDGE_BASE_NOT_FOUND} No answer found — context may be insufficient or data may not exist.`,
+          });
 
           trackingEvents.trackAiKnowledgeQuestionPreviewed({ Success: 'No' });
         } else {

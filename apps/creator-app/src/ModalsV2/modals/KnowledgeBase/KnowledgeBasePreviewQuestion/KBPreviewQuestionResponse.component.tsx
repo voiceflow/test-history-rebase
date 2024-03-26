@@ -40,7 +40,7 @@ export const KBPreviewQuestionResponse: React.FC<IKBPreviewQuestionResponse> = (
         <TextArea minRows={1} value={response} disabled={loading} testID={tid(testID, 'content')} />
       </Box>
 
-      {hasResponse && (
+      {(hasResponse || sources) && (
         <>
           <Divider className={dividerStyles} />
 

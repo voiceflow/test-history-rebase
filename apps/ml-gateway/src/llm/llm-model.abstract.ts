@@ -7,7 +7,7 @@ export abstract class LLMModel {
 
   public readonly TIMEOUT: number;
 
-  protected TOKEN_MULTIPLIER = 1;
+  protected abstract TOKEN_MULTIPLIER: number;
 
   constructor(config: Record<string, unknown>) {
     if (typeof config.AI_GENERATION_TIMEOUT === 'number') {
@@ -19,6 +19,10 @@ export abstract class LLMModel {
 
   get tokenMultiplier() {
     return this.TOKEN_MULTIPLIER;
+  }
+
+  protected calculateTokenMultiplier(tokens: number): number {
+    return Math.ceil(tokens * this.TOKEN_MULTIPLIER);
   }
 
   abstract generateCompletion(prompt: string, params: AIParams, options?: CompletionOptions): Promise<CompletionOutput>;

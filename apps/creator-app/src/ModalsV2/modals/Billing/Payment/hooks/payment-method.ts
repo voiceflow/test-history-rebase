@@ -35,6 +35,8 @@ export const useCardPaymentMethod = () => {
     let amount = planPrice * 1000;
 
     if (IS_DEVELOPMENT) {
+      console.log('Testing payment intent creation with amount:', amount, 'and card values:', cardValues); // eslint-disable-line no-console
+
       // for testing purpose we get the amount from the address
       const amountFromAddressInput = cardValues.address.split(' ')[cardValues.address.length - 1];
       if (amountFromAddressInput && Number(amountFromAddressInput) > 0) {

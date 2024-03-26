@@ -6,7 +6,7 @@ export const SCHEME = Yup.object({
   state: Yup.string().required('State is required'),
   country: Yup.string().required('Country is required'),
   address: Yup.string().required('Address is required'),
-  cardCompleted: Yup.boolean().optional(),
+  cardCompleted: Yup.boolean().required(),
 });
 
 export interface Values extends Yup.InferType<typeof SCHEME> {}

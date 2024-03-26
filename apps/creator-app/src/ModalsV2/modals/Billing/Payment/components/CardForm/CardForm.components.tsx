@@ -1,4 +1,5 @@
 import { CardComponent } from '@chargebee/chargebee-js-react-wrapper';
+import { Component } from '@chargebee/chargebee-js-types';
 import { Box, CountrySelect, Input } from '@voiceflow/ui';
 import { useFormik } from 'formik';
 import React from 'react';
@@ -9,14 +10,15 @@ import { Values } from './CardForm.scheme';
 import * as S from './CardForm.style';
 
 export interface CardFormProps {
+  cardError: string;
   form: ReturnType<typeof useFormik<Values>>;
   disabled?: boolean;
 }
 
 const CARD_REQUIRED_ERROR_MESSAGE = 'Card is required';
 
-export const CardForm = React.forwardRef(({ form, disabled }: CardFormProps, ref: any) => {
-  const [cardError, setCardError] = React.useState('');
+export const CardForm = React.forwardRef(({ form, cardError: cardErrorControlledState, disabled }: CardFormProps, ref: any) => {
+  const [cardError, setCardError] = React.useState(cardErrorControlledState);
 
   const onCountryChange = async (value: string | null) => {
     await form.setFieldValue('country', value ?? '');
@@ -41,16 +43,28 @@ export const CardForm = React.forwardRef(({ form, disabled }: CardFormProps, ref
     setCardError(CARD_REQUIRED_ERROR_MESSAGE);
   };
 
+  React.useEffect(() => {
+    setCardError(cardErrorControlledState);
+  }, [cardErrorControlledState]);
+
   const touchedErrors = useFormikTouchedErrors(form);
 
   return (
     <Box.Flex column gap={16} fullWidth>
-      <Box.FlexStart fullWidth alignItems="flex-start">
+      <Box.FlexStart column fullWidth alignItems="flex-start">
         <S.CardElementContainer error={!!cardError || !!touchedErrors.cardCompleted} disabled={disabled}>
-          <CardComponent ref={ref} onBlur={onCardBlur} onChange={onCardChange} />
+          <CardComponent
+            ref={ref}
+            onBlur={onCardBlur}
+            onChange={onCardChange}
+            onReady={() => (ref.current as Component)?.focus()}
+            styles={S.chargebeeInputStyle}
+            placeholder={{ number: 'Card number' }}
+            fonts={S.chargebeeInputFonts}
+          />
         </S.CardElementContainer>
 
-        {touchedErrors?.cardCompleted && <S.ErrorMessage>{touchedErrors.cardCompleted}</S.ErrorMessage>}
+        {(touchedErrors.cardCompleted || cardError) && <S.ErrorMessage>{cardError || touchedErrors.cardCompleted}</S.ErrorMessage>}
       </Box.FlexStart>
 
       <Box.FlexStart column alignItems="flex-start" fullWidth>

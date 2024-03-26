@@ -20,6 +20,7 @@ export const AddCard = manager.create<AddCardProps>('BillingAddCard', () => ({ i
   const activePlan = useSelector(WorkspaceV2.active.planSelector);
   const planPeriod = useSelector(WorkspaceV2.active.planPeriodSelector);
   const updateSubscriptionPaymentMethod = useDispatch(Organization.subscription.updateSubscriptionPaymentMethod);
+  const [cardError, setCardError] = React.useState('');
 
   const { cardRef, onAuthorize } = useCardPaymentMethod();
   const { plans, fetchPlans } = usePlans();
@@ -53,7 +54,16 @@ export const AddCard = manager.create<AddCardProps>('BillingAddCard', () => ({ i
   };
 
   const form = useFormik({
-    onSubmit: onSubmitForm,
+    onSubmit: async (values) => {
+      try {
+        await cardRef.current?.tokenize();
+
+        return onSubmitForm(values);
+      } catch (e: any) {
+        setCardError(e.message);
+        return null;
+      }
+    },
     initialValues: CardForm.INITIAL_VALUES,
     validationSchema: CardForm.SCHEME,
     enableReinitialize: true,
@@ -65,25 +75,23 @@ export const AddCard = manager.create<AddCardProps>('BillingAddCard', () => ({ i
 
   return (
     <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={500}>
-      <form onSubmit={form.handleSubmit}>
-        <Modal.Header actions={<Modal.Header.CloseButton onClick={api.onClose} />} border>
-          <Modal.Header.Title large>{isUpdate ? 'Update Card' : 'Add Card'}</Modal.Header.Title>
-        </Modal.Header>
+      <Modal.Header actions={<Modal.Header.CloseButton onClick={api.onClose} />} border>
+        <Modal.Header.Title large>{isUpdate ? 'Update Card' : 'Add Card'}</Modal.Header.Title>
+      </Modal.Header>
 
-        <SectionV2.SimpleSection headerProps={{ topUnit: 3 }}>
-          <CardForm.Base ref={cardRef} form={form} disabled={form.isSubmitting} />
-        </SectionV2.SimpleSection>
+      <SectionV2.SimpleSection headerProps={{ topUnit: 3 }}>
+        <CardForm.Base ref={cardRef} form={form} disabled={form.isSubmitting} cardError={cardError} />
+      </SectionV2.SimpleSection>
 
-        <Modal.Footer gap={8}>
-          <Button onClick={api.onClose} variant={Button.Variant.TERTIARY} squareRadius>
-            Cancel
-          </Button>
+      <Modal.Footer gap={8}>
+        <Button onClick={api.onClose} variant={Button.Variant.TERTIARY} squareRadius>
+          Cancel
+        </Button>
 
-          <Button type="submit" variant={Button.Variant.PRIMARY} disabled={form.isSubmitting} isLoading={form.isSubmitting}>
-            {isUpdate ? 'Update Card' : 'Add Card'}
-          </Button>
-        </Modal.Footer>
-      </form>
+        <Button type="submit" variant={Button.Variant.PRIMARY} disabled={form.isSubmitting} isLoading={form.isSubmitting} onClick={form.submitForm}>
+          {isUpdate ? 'Update Card' : 'Add Card'}
+        </Button>
+      </Modal.Footer>
     </Modal>
   );
 });

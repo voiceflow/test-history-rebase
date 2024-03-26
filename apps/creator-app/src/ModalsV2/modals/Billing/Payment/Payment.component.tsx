@@ -1,4 +1,6 @@
+import { BillingPeriod } from '@voiceflow/internal';
 import { Modal, Switch, System, useAsyncMountUnmount } from '@voiceflow/ui';
+import { useSetAtom } from 'jotai';
 import React from 'react';
 
 import { UpgradePrompt } from '@/ducks/tracking';
@@ -7,6 +9,7 @@ import { getClient as getChargebeeClient, initialize as initializeChargebee } fr
 import manager from '../../../manager';
 import { BillingStep, PaymentStep, PlanStep } from './components';
 import { usePaymentSteps, usePlans } from './hooks';
+import * as atoms from './Payment.atoms';
 import { Step } from './Payment.constants';
 
 export interface PaymentModalProps {
@@ -19,6 +22,7 @@ export const Payment = manager.create<PaymentModalProps>('Payment', () => (modal
   const { type, opened, hidden, animated, api, closePrevented, promptType } = modalProps;
   const { activeStep, onBack, onReset } = usePaymentSteps();
   const { plans, fetchPlans } = usePlans(modalProps.coupon);
+  const setPeriod = useSetAtom(atoms.periodAtom);
 
   const handleExited = () => {
     onReset();
@@ -26,6 +30,8 @@ export const Payment = manager.create<PaymentModalProps>('Payment', () => (modal
   };
 
   useAsyncMountUnmount(async () => {
+    setPeriod(BillingPeriod.MONTHLY);
+
     try {
       getChargebeeClient();
     } catch (error) {

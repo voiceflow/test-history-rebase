@@ -1,4 +1,3 @@
-import { StripeElementStyle } from '@stripe/stripe-js';
 import { Animations, colors, StyledInputProps, ThemeColor } from '@voiceflow/ui';
 
 import { css, styled } from '@/hocs/styled';
@@ -8,6 +7,8 @@ interface ContainerProps extends StyledInputProps {
   error?: boolean;
   disabled?: boolean;
 }
+
+export const chargebeeInputFonts = ['https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap'];
 
 export const CardElementContainer = styled.div<ContainerProps>`
   width: 100%;
@@ -60,35 +61,13 @@ export const CardElementContainer = styled.div<ContainerProps>`
     `}
 `;
 
-export const stripeInputStyle: StripeElementStyle = {
-  base: {
-    fontSize: '15px',
-    fontWeight: '400',
-    lineHeight: '16px',
-    fontFamily: "'Open Sans', sans-serif",
-    color: '#132144',
-    fontSmoothing: 'antialiased',
-
-    '::placeholder': {
-      color: '#8da2b5',
-      fontWeight: '400',
-    },
-  },
-  invalid: {
-    color: '#132144',
-    '::placeholder': {
-      color: '#8da2b5',
-    },
-  },
-};
-
 export const chargebeeInputStyle = {
   base: {
-    fontSize: '15px',
-    fontWeight: '400',
     lineHeight: '16px',
-    fontFamily: "'Open Sans', sans-serif",
-    color: '#132144',
+    fontFamily: 'Open Sans, Arial, sans-serif',
+    fontSize: '15px',
+    color: '#132042',
+    fontWeight: '400',
     fontSmoothing: 'antialiased',
 
     '::placeholder': {

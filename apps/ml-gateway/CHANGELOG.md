@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.85.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.85.0...@voiceflow/ml-gateway@1.85.1) (2024-03-26)
+
+### Bug Fixes
+
+* correct claude token multipliers (ML-700) ([#7911](https://github.com/voiceflow/creator-app/issues/7911)) ([a7dc924](https://github.com/voiceflow/creator-app/commit/a7dc9246c8356e94da8ee5c2bdf78ac80eb0d3e3))
+
 # [1.85.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.84.0...@voiceflow/ml-gateway@1.85.0) (2024-03-25)
 
 ### Features

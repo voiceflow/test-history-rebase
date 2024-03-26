@@ -3,6 +3,7 @@ import { ReferenceType } from '@mikro-orm/core';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import type { AbstractSqlPlatform, EntityManager, Knex } from '@mikro-orm/postgresql';
 import { Inject } from '@nestjs/common';
+import { Utils } from '@voiceflow/common';
 import type { SmartMultiAdapter } from 'bidirectional-adapter';
 
 import type { ORM } from '@/common';
@@ -53,6 +54,7 @@ export abstract class PostgresORM<
       string,
       {
         Entity: Constructor<any>;
+        jsKeys: string[];
         jsonAdapter: SmartMultiAdapter<any, any>;
         objectAdapter?: SmartMultiAdapter<any, any>;
       }
@@ -121,7 +123,7 @@ export abstract class PostgresORM<
       };
     }
 
-    const { props } = this.entityMetadata;
+    const { hydrateProps } = this.entityMetadata;
 
     const dbToJSKey: Record<string, string> = {};
     const jsToDBKey: Record<string, string> = {};
@@ -141,8 +143,8 @@ export abstract class PostgresORM<
       }
     };
 
-    props.forEach(builded);
-    this.discriminators?.forEach(({ Entity }) => this.em.getMetadata().get(Entity.name).props.forEach(builded));
+    hydrateProps.forEach(builded);
+    this.discriminators?.forEach(({ Entity }) => this.em.getMetadata().get(Entity.name).hydrateProps.forEach(builded));
 
     this.cache.dbToJSKeyMap = dbToJSKey;
     this.cache.jsToDBKeyMap = jsToDBKey;
@@ -188,7 +190,7 @@ export abstract class PostgresORM<
     const nextData = { ...data };
 
     if (!this.cache.onUpdateHandlers) {
-      this.cache.onUpdateHandlers = this.entityMetadata.props
+      this.cache.onUpdateHandlers = this.entityMetadata.hydrateProps
         .filter((prop) => prop.onUpdate)
         .map((prop) => ({ field: prop.name, handler: prop.onUpdate! }));
     }
@@ -212,6 +214,7 @@ export abstract class PostgresORM<
     if (!discriminatorColumn || !value) {
       return {
         Entity: this.Entity,
+        jsKeys: Object.keys(this.jsToDBKeyMap),
         jsonAdapter: this.jsonAdapter,
         objectAdapter: this.objectAdapter,
       };
@@ -224,7 +227,7 @@ export abstract class PostgresORM<
     if (!this.cache.discriminatorMap) {
       this.cache.discriminatorMap = Object.fromEntries(
         this.discriminators.map((discriminator) => {
-          const { discriminatorValue } = this.em.getMetadata().get(discriminator.Entity.name);
+          const { hydrateProps, discriminatorValue } = this.em.getMetadata().get(discriminator.Entity.name);
 
           if (!discriminatorValue) {
             throw new Error('discriminatorValue is required for polymorphic entities');
@@ -234,6 +237,7 @@ export abstract class PostgresORM<
             discriminatorValue,
             {
               Entity: discriminator.Entity,
+              jsKeys: hydrateProps.map((prop) => this.propertyToObjectKey(prop)),
               jsonAdapter: discriminator.jsonAdapter,
               objectAdapter: discriminator.objectAdapter,
             },
@@ -262,13 +266,14 @@ export abstract class PostgresORM<
   }
 
   protected fromDB(data: Record<string, unknown>) {
-    const { objectAdapter } = this.getDiscriminatorConfigFromDB(data);
+    const { jsKeys, objectAdapter } = this.getDiscriminatorConfigFromDB(data);
+    const adaptedData = objectAdapter ? objectAdapter.fromDB(data as any) : data;
 
-    return (objectAdapter ? objectAdapter.fromDB(data as any) : data) as ToObject<DiscriminatorEntity>;
+    return Utils.object.pick(adaptedData, jsKeys) as ToObject<DiscriminatorEntity>;
   }
 
   protected mapFromDB(result: Record<string, unknown>[]) {
-    return this.hasAnyObjectAdapter
+    return this.hasAnyObjectAdapter || this.discriminators?.length
       ? result.map((item) => this.fromDB(item))
       : (result as ToObject<DiscriminatorEntity>[]);
   }
@@ -285,6 +290,7 @@ export abstract class PostgresORM<
 
   protected toDB(data: Partial<DiscriminatorEntity>, { ignoreObjectAdapter, ignoreValueTransform }: ToDBOptions = {}) {
     const { objectAdapter } = this.getDiscriminatorConfigToDB(data);
+
     const adaptedData = objectAdapter && !ignoreObjectAdapter ? objectAdapter.toDB(data as any) : data;
 
     return Object.fromEntries(

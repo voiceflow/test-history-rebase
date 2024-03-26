@@ -21,8 +21,9 @@ export abstract class MongoORM<BaseEntity extends MongoPKEntity, DiscriminatorEn
   abstract jsonAdapter: SmartMultiAdapter<ToObject<BaseEntity>, ToJSON<BaseEntity>>;
 
   private cache: Partial<{
-    uniqueProperties: string[];
+    lazyProperties: string[];
     onUpdateHandlers: Array<{ field: string; handler: (data: Partial<BaseEntity>) => unknown }>;
+    uniqueProperties: string[];
   }> = {};
 
   constructor(
@@ -40,6 +41,28 @@ export abstract class MongoORM<BaseEntity extends MongoPKEntity, DiscriminatorEn
 
   protected get entityMetadata() {
     return this.em.getMetadata().get(this.entityName);
+  }
+
+  protected get uniqueProperties() {
+    if (!this.entityMetadata.hasUniqueProps) {
+      return [];
+    }
+
+    if (!this.cache.uniqueProperties) {
+      this.cache.uniqueProperties = this.entityMetadata.uniques.flatMap(({ properties }) => properties);
+    }
+
+    return this.cache.uniqueProperties;
+  }
+
+  protected get lazyProperties() {
+    if (this.cache.lazyProperties) {
+      return this.cache.lazyProperties;
+    }
+
+    this.cache.lazyProperties = this.entityMetadata.hydrateProps.filter((prop) => prop.lazy).map((prop) => prop.name);
+
+    return this.cache.lazyProperties;
   }
 
   protected idToFilter(id: Primary<BaseEntity>): Filter<BaseEntity> {
@@ -80,21 +103,12 @@ export abstract class MongoORM<BaseEntity extends MongoPKEntity, DiscriminatorEn
   }
 
   protected projection(fields?: string[]) {
-    if (!fields?.length) return undefined;
+    const lazyProps = this.lazyProperties;
 
-    return Object.fromEntries(fields.map((field) => [field, 1]));
-  }
+    if (fields?.length) return Object.fromEntries(fields.map((field) => [field, 1]));
+    if (lazyProps?.length) return Object.fromEntries(lazyProps.map((field) => [field, 0]));
 
-  protected get uniqueProperties() {
-    if (!this.entityMetadata.hasUniqueProps) {
-      return [];
-    }
-
-    if (!this.cache.uniqueProperties) {
-      this.cache.uniqueProperties = this.entityMetadata.uniques.flatMap(({ properties }) => properties);
-    }
-
-    return this.cache.uniqueProperties;
+    return undefined;
   }
 
   protected buildWhere(where: WhereData<BaseEntity>) {

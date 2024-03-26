@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1447.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1447.1...@voiceflow/creator-app@1.1447.2) (2024-03-26)
+
+### Bug Fixes
+
+* fixes payment and credit card update (COR-000) ([#7909](https://github.com/voiceflow/creator-app/issues/7909)) ([6e223ae](https://github.com/voiceflow/creator-app/commit/6e223aebbeda5c9d21aea7e1b4324d07ea18d945))
+
 ## [1.1447.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1447.0...@voiceflow/creator-app@1.1447.1) (2024-03-26)
 
 ### Bug Fixes

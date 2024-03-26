@@ -16,12 +16,22 @@ interface PaymentStepProps {
 }
 
 export const PaymentStep: React.FC<PaymentStepProps> = ({ onClose, modalProps }) => {
-  const { onSubmit, cardRef } = useCheckoutPayment({ modalProps });
+  const { onSubmit: onSubmitForm, cardRef } = useCheckoutPayment({ modalProps });
   const { editorSeats } = useSeats();
   const { price, period } = usePricing();
+  const [cardError, setCardError] = React.useState('');
 
   const form = useFormik({
-    onSubmit,
+    onSubmit: async (values) => {
+      try {
+        await cardRef.current?.tokenize();
+
+        return onSubmitForm(values);
+      } catch (e: any) {
+        setCardError(e.message);
+        return null;
+      }
+    },
     initialValues: CardForm.INITIAL_VALUES,
     validationSchema: CardForm.SCHEME,
     enableReinitialize: true,
@@ -40,7 +50,7 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onClose, modalProps })
           </PlanCard>
         </Box>
 
-        <CardForm.Base form={form} ref={cardRef} />
+        <CardForm.Base cardError={cardError} form={form} ref={cardRef} />
       </Modal.Body>
 
       <Modal.Footer gap={12}>

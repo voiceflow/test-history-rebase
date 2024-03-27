@@ -189,7 +189,7 @@ class Manager extends EventEmitter<Events> {
     id: string,
     modal: T.RegisteredModal<T.ResultInternalProps<Result, Props>, Props, Result>,
     options: { props: Props; options?: T.OpenOptions }
-  ): void;
+  ): Promise<Result>;
 
   open(id: string, type: string, options?: { options?: T.OpenOptions }): Promise<void>;
 

@@ -1,3 +1,5 @@
+import type { Diagram } from '@voiceflow/dtos';
+
 export interface DesignerActionContext {
   assistantID: string;
   environmentID: string;
@@ -28,3 +30,8 @@ export interface LegacyVersionAction {
 }
 
 export type WithoutMeta<T> = Omit<T, 'updatedAt' | 'updatedByID' | 'assistantID' | 'environmentID'>;
+
+export type DiagramCreateData = Omit<
+  Diagram,
+  '_id' | 'creatorID' | 'versionID' | 'intentStepIDs' | 'menuNodeIDs' | 'children' | 'diagramID'
+>;

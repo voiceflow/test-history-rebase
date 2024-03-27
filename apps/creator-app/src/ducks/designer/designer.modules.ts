@@ -12,6 +12,6 @@ export * as KnowledgeBase from './knowledge-base';
 export * as Persona from './persona';
 export * as Prompt from './prompt';
 export * as Response from './response';
-export * as Story from './story';
 export * as Thread from './thread';
 export * as Variable from './variable';
+export * as Workflow from './workflow';

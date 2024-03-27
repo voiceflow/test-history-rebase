@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.48.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.47.0...@voiceflow/dtos@1.48.0) (2024-03-27)
+
+### Features
+
+* workflow dtos/entities/actions/duck (CT-000) ([#7913](https://github.com/voiceflow/creator-app/issues/7913)) ([1df087e](https://github.com/voiceflow/creator-app/commit/1df087e4044ff247a4053d98c13543c46547c0e4))
+
 # [1.47.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.46.0...@voiceflow/dtos@1.47.0) (2024-03-21)
 
 ### Features

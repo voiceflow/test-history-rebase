@@ -65,12 +65,8 @@ export class BillingSubscriptionService {
       // TODO: remove this as any when platform fix types
       customerID: (subscription as any).customer_id,
       subscriptionEntitlements: subscription.subscription_entitlements?.map((item) => ({
-        itemID: item.item_id,
-        itemType: item.item_type,
         featureID: item.feature_id,
-        featureName: item.feature_name,
         value: item.value,
-        feature: item.feature,
       })),
       metaData: subscription.meta_data,
     };
@@ -134,9 +130,18 @@ export class BillingSubscriptionService {
       const subscription = await this.findOne(subscriptionID);
 
       await this.billingClient.subscriptionsPrivate.checkout(subscriptionID, {
-        itemPriceID: data.itemPriceID,
-        quantity: data.editorSeats,
+        subscriptionItems: [
+          {
+            itemPriceID: data.itemPriceID,
+            quantity: 1,
+          },
+        ],
+
         paymentIntentID: data.paymentIntent.id,
+
+        trialEnd: 0,
+        changeOption: 'immediately',
+
         ...(subscription.metaData?.downgradedFromTrial
           ? {
               metadata: {

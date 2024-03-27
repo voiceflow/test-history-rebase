@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.306.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.305.2...@voiceflow/realtime@1.306.0) (2024-03-27)
+
+### Features
+
+* update checkout to reset trial (COR-1761) ([#7908](https://github.com/voiceflow/creator-app/issues/7908)) ([ef64109](https://github.com/voiceflow/creator-app/commit/ef6410938b939dfbc5acea8315ccbe6175ba4eab))
+
 ## [1.305.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.305.1...@voiceflow/realtime@1.305.2) (2024-03-27)
 
 **Note:** Version bump only for package @voiceflow/realtime

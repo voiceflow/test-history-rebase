@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import type { Flow } from '@voiceflow/dtos';
+import type { Workflow, WorkflowStatus } from '@voiceflow/dtos';
 
 import { createCRUD } from '@/crud/crud.action';
 import type {
@@ -14,19 +14,23 @@ import type {
 } from '@/crud/crud.interface';
 import type { DesignerAction, DiagramCreateData } from '@/types';
 
-export const flowAction = createCRUD('flow');
-
-export interface PatchData {
-  name?: string;
-  folderID?: string | null;
-  description?: string | null;
-}
+const workflowAction = createCRUD('workflow');
 
 export interface CreateData {
   name: string;
+  status: WorkflowStatus | null;
   diagram?: DiagramCreateData;
   folderID: string | null;
+  assigneeID: number | null;
   description: string | null;
+}
+
+export interface PatchData {
+  name?: string;
+  status?: WorkflowStatus | null;
+  folderID?: string | null;
+  assigneeID?: number | null;
+  description?: string | null;
 }
 
 /**
@@ -40,10 +44,10 @@ export namespace CreateOne {
     data: CreateData;
   }
 
-  export interface Response extends CreateResponse<Flow>, DesignerAction {}
+  export interface Response extends CreateResponse<Workflow>, DesignerAction {}
 }
 
-export const CreateOne = flowAction.crud.createOne<CreateOne.Request, CreateOne.Response>();
+export const CreateOne = workflowAction.crud.createOne<CreateOne.Request, CreateOne.Response>();
 
 /* CreateMany */
 
@@ -52,34 +56,34 @@ export namespace CreateMany {
     data: CreateData[];
   }
 
-  export interface Response extends CreateResponse<Flow[]>, DesignerAction {}
+  export interface Response extends CreateResponse<Workflow[]>, DesignerAction {}
 }
 
-export const CreateMany = flowAction.crud.createMany<CreateMany.Request, CreateMany.Response>();
+export const CreateMany = workflowAction.crud.createMany<CreateMany.Request, CreateMany.Response>();
 
 /* PatchOne */
 
 export interface PatchOne extends PatchOneRequest<PatchData>, DesignerAction {}
 
-export const PatchOne = flowAction.crud.patchOne<PatchOne>();
+export const PatchOne = workflowAction.crud.patchOne<PatchOne>();
 
 /* PatchMany */
 
 export interface PatchMany extends PatchManyRequest<PatchData>, DesignerAction {}
 
-export const PatchMany = flowAction.crud.patchMany<PatchMany>();
+export const PatchMany = workflowAction.crud.patchMany<PatchMany>();
 
 /* DeleteOne */
 
 export interface DeleteOne extends DeleteOneRequest, DesignerAction {}
 
-export const DeleteOne = flowAction.crud.deleteOne<DeleteOne>();
+export const DeleteOne = workflowAction.crud.deleteOne<DeleteOne>();
 
 /* DeleteMany */
 
 export interface DeleteMany extends DeleteManyRequest, DesignerAction {}
 
-export const DeleteMany = flowAction.crud.deleteMany<DeleteMany>();
+export const DeleteMany = workflowAction.crud.deleteMany<DeleteMany>();
 
 /* Duplicate */
 
@@ -94,7 +98,7 @@ export namespace DuplicateOne {
 }
 
 export const DuplicateOne = Utils.protocol.createAsyncAction<DuplicateOne.Request, DuplicateOne.Response>(
-  flowAction('DUPLICATE_ONE')
+  workflowAction('DUPLICATE_ONE')
 );
 
 /* Copy Past */
@@ -113,7 +117,7 @@ export namespace CopyPasteMany {
 }
 
 export const CopyPasteMany = Utils.protocol.createAsyncAction<CopyPasteMany.Request, CopyPasteMany.Response>(
-  flowAction('COPY_PASTE_MANY')
+  workflowAction('COPY_PASTE_MANY')
 );
 
 /**
@@ -122,9 +126,9 @@ export const CopyPasteMany = Utils.protocol.createAsyncAction<CopyPasteMany.Requ
 
 /* Replace */
 
-export interface Replace extends ReplaceRequest<Flow>, DesignerAction {}
+export interface Replace extends ReplaceRequest<Workflow>, DesignerAction {}
 
-export const Replace = flowAction.crud.replace<Replace>();
+export const Replace = workflowAction.crud.replace<Replace>();
 
 /**
  * universal events
@@ -132,12 +136,12 @@ export const Replace = flowAction.crud.replace<Replace>();
 
 /* AddOne */
 
-export interface AddOne extends AddOneRequest<Flow>, DesignerAction {}
+export interface AddOne extends AddOneRequest<Workflow>, DesignerAction {}
 
-export const AddOne = flowAction.crud.addOne<AddOne>();
+export const AddOne = workflowAction.crud.addOne<AddOne>();
 
 /* AddMany */
 
-export interface AddMany extends AddManyRequest<Flow>, DesignerAction {}
+export interface AddMany extends AddManyRequest<Workflow>, DesignerAction {}
 
-export const AddMany = flowAction.crud.addMany<AddMany>();
+export const AddMany = workflowAction.crud.addMany<AddMany>();

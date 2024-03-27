@@ -2,9 +2,9 @@ import { createSmartMultiAdapter } from 'bidirectional-adapter';
 
 import { PostgresCMSTabularJSONAdapter } from '@/postgres/common';
 
-import type { StoryJSON, StoryObject } from './story.interface';
+import type { WorkflowJSON, WorkflowObject } from './workflow.interface';
 
-export const StoryJSONAdapter = createSmartMultiAdapter<StoryObject, StoryJSON>(
+export const WorkflowJSONAdapter = createSmartMultiAdapter<WorkflowObject, WorkflowJSON>(
   PostgresCMSTabularJSONAdapter.fromDB,
   PostgresCMSTabularJSONAdapter.toDB
 );

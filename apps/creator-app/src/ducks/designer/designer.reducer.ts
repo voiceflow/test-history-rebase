@@ -16,9 +16,9 @@ import {
   Persona,
   Prompt,
   Response,
-  Story,
   Thread,
   Variable,
+  Workflow,
 } from './designer.modules';
 
 const baseThreadReducer = reducerWithInitialState({}).case(Realtime.creator.reset, () => ({}));
@@ -26,13 +26,13 @@ const baseThreadReducer = reducerWithInitialState({}).case(Realtime.creator.rese
 export const designerReducer = compositeReducer(baseThreadReducer, {
   [Flow.STATE_KEY]: Flow.reducer,
   [Event.STATE_KEY]: Event.reducer,
-  [Story.STATE_KEY]: Story.reducer,
   [Entity.STATE_KEY]: Entity.reducer,
   [Folder.STATE_KEY]: Folder.reducer,
   [Intent.STATE_KEY]: Intent.reducer,
   [Prompt.STATE_KEY]: Prompt.reducer,
   [Thread.STATE_KEY]: Thread.reducer,
   [Persona.STATE_KEY]: Persona.reducer,
+  [Workflow.STATE_KEY]: Workflow.reducer,
   [Function.STATE_KEY]: Function.reducer,
   [Response.STATE_KEY]: Response.reducer,
   [Variable.STATE_KEY]: Variable.reducer,

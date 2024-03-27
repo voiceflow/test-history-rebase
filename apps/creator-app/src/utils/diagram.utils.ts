@@ -1,5 +1,3 @@
-/* eslint-disable max-params */
-
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
@@ -11,7 +9,7 @@ import { Point } from '@/types';
 
 import { getNodesGroupCenter } from './node';
 
-export interface CreateDiagramWithDataOptions {
+export interface DiagramSelectionPayload {
   data: Record<string, Realtime.NodeData<unknown>>;
   nodes: Realtime.Node[];
   links: Realtime.Link[];
@@ -19,14 +17,19 @@ export interface CreateDiagramWithDataOptions {
   startCoords?: Point;
 }
 
-export const getDiagramToCreate = (
-  platform: Platform.Constants.PlatformType,
-  projectType: Platform.Constants.ProjectType,
-  schemaVersion: Realtime.SchemaVersion,
-  allNodesLinks: Realtime.Link[],
-  options: CreateDiagramWithDataOptions
-) => {
-  const { data, nodes, links, ports, startCoords = [0, 0] } = options;
+const getDiagramToCreate = ({
+  platform,
+  selection: { data, nodes, links, ports, startCoords = [0, 0] },
+  projectType,
+  allNodesLinks,
+  schemaVersion,
+}: {
+  platform: Platform.Constants.PlatformType;
+  selection: DiagramSelectionPayload;
+  projectType: Platform.Constants.ProjectType;
+  schemaVersion: Realtime.SchemaVersion;
+  allNodesLinks: Realtime.Link[];
+}) => {
   const nodeIDMap = nodes.reduce<Record<string, boolean>>((acc, node) => Object.assign(acc, { [node.id]: true }), {});
   const incomingLinks = allNodesLinks.filter(({ source, target }) => nodeIDMap[target.nodeID] && !nodeIDMap[source.nodeID]);
   const outgoingLinks = allNodesLinks.filter(({ source, target }) => !nodeIDMap[target.nodeID] && nodeIDMap[source.nodeID]);
@@ -72,20 +75,30 @@ export const getDiagramToCreate = (
   };
 };
 
-export const convertSelectionToComponent = (
-  platform: Platform.Constants.PlatformType,
-  projectType: Platform.Constants.ProjectType,
-  schemaVersion: Realtime.SchemaVersion,
-  allNodesLinks: Realtime.Link[],
-  { startCoords = Realtime.START_NODE_POSITION, ...options }: CreateDiagramWithDataOptions,
-  totalNumberOfComponents: number
-) => {
-  const name = `Component ${totalNumberOfComponents + 1}`;
+export const convertSelectionToComponent = ({
+  platform,
+  flowsSize,
+  selection: { startCoords = Realtime.START_NODE_POSITION, ...options },
+  projectType,
+  schemaVersion,
+  allNodesLinks,
+}: {
+  platform: Platform.Constants.PlatformType;
+  flowsSize: number;
+  selection: DiagramSelectionPayload;
+  projectType: Platform.Constants.ProjectType;
+  schemaVersion: Realtime.SchemaVersion;
+  allNodesLinks: Realtime.Link[];
+}) => {
+  const name = `Component ${flowsSize + 1}`;
   const component = Realtime.Utils.diagram.componentDiagramFactory(name, startCoords);
 
-  const { incomingLinks, outgoingLinks, dbCreatorDiagram } = getDiagramToCreate(platform, projectType, schemaVersion, allNodesLinks, {
-    startCoords,
-    ...options,
+  const { incomingLinks, outgoingLinks, dbCreatorDiagram } = getDiagramToCreate({
+    platform,
+    selection: { startCoords, ...options },
+    projectType,
+    schemaVersion,
+    allNodesLinks,
   });
 
   component.nodes = { ...component.nodes, ...dbCreatorDiagram.nodes };

@@ -12,29 +12,31 @@ import { CreateOneFromSelectionResult } from '@/ducks/designer/flow/flow.effect'
 import { useInputState } from '@/hooks/input.hook';
 import { useDispatch, useGetValueSelector } from '@/hooks/store.hook';
 import { useValidators } from '@/hooks/validate.hook';
-import { CreateDiagramWithDataOptions } from '@/utils/diagram.utils';
+import { DiagramSelectionPayload } from '@/utils/diagram.utils';
 
 import { modalsManager } from '../../manager';
 
 export interface IFlowCreateFromDiagramModal {
-  diagramOptions: CreateDiagramWithDataOptions;
-  folderID: string | null;
   name?: string;
+  folderID: string | null;
+  selection: DiagramSelectionPayload;
 }
 
 export const FlowCreateFromDiagramModal = modalsManager.create<IFlowCreateFromDiagramModal, CreateOneFromSelectionResult>(
   'FlowCreateFromDiagramModal',
   () =>
-    ({ api, type: typeProp, name: nameProp, opened, hidden, animated, folderID, closePrevented, diagramOptions }) => {
+    ({ api, type: typeProp, name: nameProp, opened, hidden, animated, folderID, selection, closePrevented }) => {
       const TEST_ID = 'component-create-from-diagram';
-      const createOneFromSelection = useDispatch(Designer.Flow.effect.createOneFromSelection);
+
       const getFlows = useGetValueSelector(Designer.Flow.selectors.all);
+      const createOneFromSelection = useDispatch(Designer.Flow.effect.createOneFromSelection);
+
       const nameState = useInputState({ value: nameProp ?? '' });
+      const [description, setDescription] = useState('');
+
       const validator = useValidators({
         name: [flowNameValidator, nameState.setError],
       });
-
-      const [description, setDescription] = useState('');
 
       const onCreate = validator.container(
         async (data) => {
@@ -42,12 +44,8 @@ export const FlowCreateFromDiagramModal = modalsManager.create<IFlowCreateFromDi
 
           try {
             const response = await createOneFromSelection({
-              data: {
-                folderID,
-                name: data.name,
-                description: description.trim(),
-              },
-              diagramOptions,
+              data: { name: data.name, folderID, description: description.trim() || null },
+              selection,
             });
 
             api.resolve(response);

@@ -1,4 +1,16 @@
-import type { Entity, Event, Flow, Folder, FolderScope, Function as FunctionType, Intent, Prompt, Response, Story, Variable } from '@voiceflow/dtos';
+import type {
+  Entity,
+  Event,
+  Flow,
+  Folder,
+  FolderScope,
+  Function as FunctionType,
+  Intent,
+  Prompt,
+  Response,
+  Variable,
+  Workflow,
+} from '@voiceflow/dtos';
 import type { Atom, PrimitiveAtom } from 'jotai';
 
 import type { State as AppState } from '@/ducks';
@@ -17,8 +29,6 @@ export interface CMSFlow extends Flow, BaseCMSResource {}
 
 export interface CMSEvent extends Event, BaseCMSResource {}
 
-export interface CMSStory extends Story, BaseCMSResource {}
-
 export interface CMSIntent extends Intent, BaseCMSResource {}
 
 export interface CMSEntity extends Entity, BaseCMSResource {}
@@ -26,6 +36,8 @@ export interface CMSEntity extends Entity, BaseCMSResource {}
 export interface CMSPrompt extends Prompt, BaseCMSResource {}
 
 export interface CMSResponse extends Response, BaseCMSResource {}
+
+export interface CMSWorkflow extends Workflow, BaseCMSResource {}
 
 export interface CMSFunction extends FunctionType, BaseCMSResource {}
 
@@ -36,10 +48,10 @@ export interface CMSKnowledgeBase extends KnowledgeBaseDocument, BaseCMSResource
 export type CMSResource =
   | CMSFlow
   | CMSEvent
-  | CMSStory
   | CMSIntent
   | CMSEntity
   | CMSPrompt
+  | CMSWorkflow
   | CMSResponse
   | CMSFunction
   | CMSVariable

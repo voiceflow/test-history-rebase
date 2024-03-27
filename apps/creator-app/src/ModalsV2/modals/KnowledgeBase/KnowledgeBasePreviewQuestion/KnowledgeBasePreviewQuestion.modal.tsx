@@ -91,6 +91,7 @@ export const KnowledgeBasePreviewQuestion = manager.create(
         if (!response?.output) {
           setHasResponse(false);
           setResponse({
+            ...response,
             output: `${currentQuestion}\n---\n${BaseUtils.ai.KNOWLEDGE_BASE_NOT_FOUND} No answer found — context may be insufficient or data may not exist.`,
           });
 

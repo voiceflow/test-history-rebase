@@ -24,6 +24,5 @@ export * from './postgres/response/response.fixture';
 export * from './postgres/response/response-attachment/response-attachment.fixture';
 export * from './postgres/response/response-discriminator/response-discriminator.fixture';
 export * from './postgres/response/response-variant/response-variant.fixture';
-export * from './postgres/story/story.fixture';
-export * from './postgres/story/story-trigger/story-trigger.fixture';
 export * from './postgres/variable/variable.fixture';
+export * from './postgres/workflow/workflow.fixture';

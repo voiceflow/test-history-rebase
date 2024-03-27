@@ -11,7 +11,7 @@ import type { STATE_KEY as FUNCTION_STATE_KEY } from '@/ducks/designer/function/
 import type { STATE_KEY as INTENT_STATE_KEY } from '@/ducks/designer/intent/intent.state';
 import type { STATE_KEY as PERSONA_STATE_KEY } from '@/ducks/designer/persona/persona.state';
 import type { STATE_KEY as RESPONSE_STATE_KEY } from '@/ducks/designer/response/response.state';
-import type { STATE_KEY as STORY_STATE_KEY } from '@/ducks/designer/story/story.state';
+import type { STATE_KEY as WORKFLOW_STATE_KEY } from '@/ducks/designer/workflow/workflow.state';
 import { isFeatureEnabledSelector } from '@/ducks/feature';
 import { Transducer } from '@/ducks/transducers/types';
 import type { State } from '@/store/types';
@@ -21,7 +21,7 @@ import { extractUpdatedByIDFromMeta } from './action.util';
 
 type AnyRootResourceStateKey =
   | typeof EVENT_STATE_KEY
-  | typeof STORY_STATE_KEY
+  | typeof WORKFLOW_STATE_KEY
   | typeof ENTITY_STATE_KEY
   | typeof INTENT_STATE_KEY
   | typeof PERSONA_STATE_KEY

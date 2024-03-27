@@ -6,16 +6,15 @@ import { notify, Nullable } from '@voiceflow/ui-next';
 
 import PageProgressBar, { PageProgress } from '@/components/PageProgressBar';
 import { linksByNodeIDSelector } from '@/ducks/creatorV2';
-import { setLastCreatedID } from '@/ducks/diagramV2/actions';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { schemaVersionSelector } from '@/ducks/versionV2/selectors/active';
 import { getActiveAssistantContext, getActiveDomainContext } from '@/ducks/versionV2/utils';
 import type { Thunk } from '@/store/types';
-import { convertSelectionToComponent, CreateDiagramWithDataOptions } from '@/utils/diagram.utils';
+import { convertSelectionToComponent, DiagramSelectionPayload } from '@/utils/diagram.utils';
 import { AsyncActionError } from '@/utils/logux';
 
 import { waitAsync } from '../../utils';
-import * as Selectors from './selectors';
+import * as selectors from './selectors';
 
 export const createOne =
   (data: Actions.Flow.CreateData): Thunk<Flow> =>
@@ -100,38 +99,29 @@ export interface CreateOneFromSelectionResult {
 }
 
 export const createOneFromSelection =
-  ({ diagramOptions, data }: { diagramOptions: CreateDiagramWithDataOptions; data: Actions.Flow.CreateData }): Thunk<CreateOneFromSelectionResult> =>
+  ({ selection, data }: { selection: DiagramSelectionPayload; data: Actions.Flow.CreateData }): Thunk<CreateOneFromSelectionResult> =>
   async (dispatch, getState) => {
     const state = getState();
-    const allFlows = Selectors.all(state);
+
     const context = getActiveAssistantContext(state);
     const platform = ProjectV2.active.platformSelector(state);
+    const flowsSize = selectors.count(state);
     const projectType = ProjectV2.active.projectTypeSelector(state);
     const schemaVersion = schemaVersionSelector(state);
-    const allNodesLinks = diagramOptions.nodes.flatMap((node) => linksByNodeIDSelector(state, { id: node.id }));
+    const allNodesLinks = selection.nodes.flatMap((node) => linksByNodeIDSelector(state, { id: node.id }));
 
-    const { incomingLinks, outgoingLinks, component } = convertSelectionToComponent(
+    const { incomingLinks, outgoingLinks, component } = convertSelectionToComponent({
       platform,
+      flowsSize,
+      selection,
       projectType,
       schemaVersion,
       allNodesLinks,
-      diagramOptions,
-      allFlows.length
-    );
+    });
 
     const { data: flow } = await dispatch(
-      waitAsync(Actions.Flow.CreateOne, {
-        context,
-        data: {
-          description: data.description,
-          diagram: component,
-          name: data.name,
-          folderID: null,
-        },
-      })
+      waitAsync(Actions.Flow.CreateOne, { data: { name: data.name, diagram: component, folderID: null, description: data.description }, context })
     );
-
-    dispatch(setLastCreatedID({ id: flow.diagramID }));
 
     return {
       name: data.name,
@@ -147,9 +137,10 @@ export const convertOneToTopic =
     PageProgress.start(PageProgressBar.TOPIC_CREATING);
 
     const state = getState();
-    const flow = Selectors.oneByID(state, { id });
-    const domainContext = getActiveDomainContext(state);
+
+    const flow = selectors.oneByID(state, { id });
     const context = getActiveAssistantContext(state);
+    const domainContext = getActiveDomainContext(state);
 
     if (!flow?.diagramID) return;
 

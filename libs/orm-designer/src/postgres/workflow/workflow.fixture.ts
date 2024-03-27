@@ -1,28 +1,26 @@
 import type { EntityDTO } from '@mikro-orm/core';
-import { StoryStatus } from '@voiceflow/dtos';
+import { WorkflowStatus } from '@voiceflow/dtos';
 
-import type { StoryEntity } from './story.entity';
+import type { WorkflowEntity } from './workflow.entity';
 
-export const story: EntityDTO<StoryEntity> = {
+export const story: EntityDTO<WorkflowEntity> = {
   id: 'story-1',
   createdAt: new Date(),
   updatedAt: new Date(),
   name: 'first story',
   description: 'flow description',
-  status: StoryStatus.IN_PROGRESS,
-  isEnabled: true,
+  status: WorkflowStatus.IN_PROGRESS,
   isStart: true,
   assignee: { id: 1 } as any,
-  triggerOrder: ['trigger-1', 'trigger-2'],
   assistant: { id: 'assistant-1' } as any,
-  flow: { id: 'flow-1' } as any,
+  diagramID: 'diagram-1',
   createdBy: { id: 1 } as any,
   updatedBy: { id: 2 } as any,
   folder: null,
   environmentID: 'environment-1',
 };
 
-export const storyList: EntityDTO<StoryEntity>[] = [
+export const storyList: EntityDTO<WorkflowEntity>[] = [
   story,
   {
     ...story,
@@ -30,6 +28,6 @@ export const storyList: EntityDTO<StoryEntity>[] = [
     name: 'second story',
     description: null,
     isStart: false,
-    flow: { id: 'flow-2' } as any,
+    diagramID: 'diagram-2',
   },
 ];

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.15.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/utils-designer@1.14.2...@voiceflow/utils-designer@1.15.0) (2024-03-28)
+
+### Features
+
+* intent preview (COR-1414) ([#7895](https://github.com/voiceflow/creator-app/issues/7895)) ([84b7f15](https://github.com/voiceflow/creator-app/commit/84b7f1554794defe313f56cfb43e7eb11a88ab54))
+
 ## [1.14.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/utils-designer@1.14.1...@voiceflow/utils-designer@1.14.2) (2024-03-27)
 
 **Note:** Version bump only for package @voiceflow/utils-designer

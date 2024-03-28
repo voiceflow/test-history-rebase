@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.309.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.308.0...@voiceflow/ui@1.309.0) (2024-03-28)
+
+### Features
+
+* intent preview (COR-1414) ([#7895](https://github.com/voiceflow/creator-app/issues/7895)) ([84b7f15](https://github.com/voiceflow/creator-app/commit/84b7f1554794defe313f56cfb43e7eb11a88ab54))
+
 # [1.308.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.307.0...@voiceflow/ui@1.308.0) (2024-03-21)
 
 ### Features

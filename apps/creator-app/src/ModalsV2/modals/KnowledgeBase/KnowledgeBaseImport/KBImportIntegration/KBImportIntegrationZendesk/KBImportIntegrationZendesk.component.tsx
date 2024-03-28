@@ -1,7 +1,6 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { tid } from '@voiceflow/style';
 import { Box, Divider, notify, Scroll, Tooltip, useCreateConst } from '@voiceflow/ui-next';
-import { Tokens } from '@voiceflow/ui-next/styles';
 import { validatorFactory } from '@voiceflow/utils-designer';
 import React from 'react';
 
@@ -179,13 +178,9 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
           notify.long.warning(
             `Document limit (${planConfig.limit}) reached for your current subscription. Please adjust import configuration or upgrade to continue.`,
             {
+              pauseOnHover: true,
+              bodyClassName: 'vfui',
               actionButtonProps: { label: 'Upgrade', onClick: () => upgradeModal.openVoid(planConfig.upgradeModal({ limit: planConfig.limit })) },
-              bodyStyle: {
-                color: Tokens.colors.neutralDark.neutralsDark900,
-                fontSize: Tokens.typography.size[14],
-                lineHeight: Tokens.typography.lineHeight[20],
-                fontFamily: Tokens.typography.family.regular,
-              },
             }
           );
         } else {

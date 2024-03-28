@@ -65,8 +65,8 @@ interface BaseInputProps<Value, Element> {
 
 interface InputProps<Value, Element> extends BaseInputProps<Value, Element> {
   onSave: (value: Value) => void;
-  onChangeValue?: (value: Value) => void;
   isEmpty?: (value: Value) => boolean;
+  onChangeValue?: (value: Value) => void;
   flushSyncOnFocus?: boolean;
 }
 

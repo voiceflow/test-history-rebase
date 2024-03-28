@@ -1,9 +1,10 @@
-import { stopPropagation, System, useSessionStorageState } from '@voiceflow/ui';
+import { stopPropagation, System } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Documentation from '@/config/documentation';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import { useSelector } from '@/hooks/redux';
+import { useSessionStorageState } from '@/hooks/storage.hook';
 
 const WARNING_LIMIT = 100;
 

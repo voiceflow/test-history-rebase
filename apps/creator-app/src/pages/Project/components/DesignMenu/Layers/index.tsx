@@ -1,9 +1,9 @@
-import { useLocalStorageState } from '@voiceflow/ui';
 import React from 'react';
 
 import Resizable, { ResizablePanel } from '@/components/Resizable';
 import * as Session from '@/ducks/session';
 import { useSelector } from '@/hooks';
+import { useLocalStorageState } from '@/hooks/storage.hook';
 
 import ComponentsSection from './ComponentsSection';
 import * as S from './styles';

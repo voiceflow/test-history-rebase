@@ -1,12 +1,12 @@
 import type { Function as FunctionType } from '@voiceflow/dtos';
-import { useSessionStorageState } from '@voiceflow/ui';
-import { Box, Text, Theme } from '@voiceflow/ui-next';
+import { Box, Text, Theme, useCreateConst } from '@voiceflow/ui-next';
 import React, { useState } from 'react';
 
-import { FunctionTestResponse } from '@/client/generalRuntime/types';
+import { GeneralRuntimeFunctionTestResponse } from '@/client/general-runtime/general-runtime.interface';
 import { Modal } from '@/components/Modal';
 import { Designer } from '@/ducks';
-import { useDispatch, useSelector } from '@/hooks';
+import { useEnvironmentSessionStorageState } from '@/hooks/storage.hook';
+import { useDispatch, useSelector } from '@/hooks/store.hook';
 import { modalsManager } from '@/ModalsV2/manager';
 
 import { modalContainerRecipe } from './FunctionTest.css';
@@ -14,37 +14,30 @@ import { IFunctionTestModal } from './FunctionTest.interface';
 import { FunctionTestResult } from './FunctionTestResult/FunctionTestResult.component';
 import { InputVariableEditor } from './InputVariableEditor/InputVariableEditor.component';
 
-const TEST_FUNCTION_MODAL_STORAGE_KEY = 'TEST_FUNCTION_MODAL_STORAGE_KEY';
-
-const functionStorageKey = (functionID: string) => `${TEST_FUNCTION_MODAL_STORAGE_KEY}_${functionID}`;
-
 type Map = Record<string, string>;
 
-const FUNCTION_TEST_MODAL_ID = 'FunctionTestModal';
-
 export const FunctionTestModal = modalsManager.create<IFunctionTestModal, FunctionType>(
-  FUNCTION_TEST_MODAL_ID,
+  'FunctionTestModal',
   () =>
     ({ api, type: typeProp, functionID, opened, hidden, animated }) => {
+      const MODAL_ID = 'function-test-modal';
+
       const inputVariables = useSelector(Designer.Function.FunctionVariable.selectors.inputByFunctionID, { functionID });
       const outputVariableDeclarations = useSelector(Designer.Function.FunctionVariable.selectors.outputByFunctionID, { functionID });
-
-      const { current: initialValues } = React.useRef(inputVariables.reduce<Map>((acc, variable) => ({ ...acc, [variable.id]: '' }), {} as Map));
 
       const testOne = useDispatch(Designer.Function.effect.testOne);
       const trackError = useDispatch(Designer.Function.tracking.error);
       const trackTestExecuted = useDispatch(Designer.Function.tracking.testExecuted);
 
+      const initialValues = useCreateConst(() => Object.fromEntries(inputVariables.map((variable) => [variable.id, ''])));
+
       const [isUploading, setIsUploading] = useState<boolean>(false);
-
-      const [storedVariables, setStoredVariables] = useSessionStorageState<Map>(functionStorageKey(functionID), initialValues);
+      const [testResponse, setTestResponse] = useState<GeneralRuntimeFunctionTestResponse | null>(null);
+      const [isTraceOpened, setIsTraceOpened] = useState<boolean>(false);
       const [localVariables, setLocalVariables] = useState<Map>(initialValues);
-
-      const [testResponse, setTestResponse] = useState<FunctionTestResponse | null>(null);
-
-      const [isTraceOpened, setIsTraceOpened] = useState<boolean>(testResponse?.success === false);
-      const [isResolvedPathOpened, setIsResolvedPathOpened] = useState<boolean>(true);
+      const [storedVariables, setStoredVariables] = useEnvironmentSessionStorageState<Map>(`${MODAL_ID}-variables:${functionID}`, initialValues);
       const [isOutputVarsOpened, setIsOutputVarsOpened] = useState<boolean>(true);
+      const [isResolvedPathOpened, setIsResolvedPathOpened] = useState<boolean>(true);
 
       const hasInputVariables = !!inputVariables.length;
       const hasStoredValues = Object.values(storedVariables).some(Boolean);
@@ -87,15 +80,15 @@ export const FunctionTestModal = modalsManager.create<IFunctionTestModal, Functi
 
       return (
         <Modal.Container
-          stacked
+          width="400px"
+          type={typeProp}
           opened={opened}
           hidden={hidden}
-          type={typeProp}
+          stacked
           animated={animated}
           onExited={api.remove}
           onEscClose={api.onEscClose}
           onEnterSubmit={handleExecute}
-          width="400px"
           className={modalContainerRecipe({ isResponseModalOpen: !!testResponse })}
           containerClassName={modalContainerRecipe({ isResponseModalOpen: !!testResponse })}
         >

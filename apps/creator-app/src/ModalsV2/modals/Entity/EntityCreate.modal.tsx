@@ -113,8 +113,6 @@ export const EntityCreateModal = modalsManager.create<IEntityCreateModal, Entity
 
       const onSubmit = () => onCreate({ name: nameState.value, classifier: classifierState.value, variants: variantsState.value });
 
-      api.useOnCloseRequest((source) => source !== 'backdrop');
-
       return (
         <Modal.Container
           type={typeProp}
@@ -196,5 +194,6 @@ export const EntityCreateModal = modalsManager.create<IEntityCreateModal, Entity
           </Modal.Footer>
         </Modal.Container>
       );
-    }
+    },
+  { backdropDisabled: true }
 );

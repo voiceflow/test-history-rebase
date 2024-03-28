@@ -1,6 +1,7 @@
-import { Box, Portal, TippyTooltip, useLocalStorageState } from '@voiceflow/ui';
+import { Box, Portal, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
+import { useLocalStorageState } from '@/hooks/storage.hook';
 import { Hotkey, HOTKEY_LABEL_MAP } from '@/keymap';
 
 import * as S from './styles';

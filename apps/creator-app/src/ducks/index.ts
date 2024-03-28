@@ -40,6 +40,7 @@ export * as Designer from './designer';
 export * as Diagram from './diagramV2';
 export * as Feature from './feature';
 export * as Project from './projectV2';
+export * as Prototype from './prototype';
 export * as Router from './router';
 export * as Session from './session';
 export * as Tracking from './tracking';

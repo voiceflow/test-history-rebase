@@ -1,6 +1,6 @@
 import { BaseUtils } from '@voiceflow/base-types';
 import { tid } from '@voiceflow/style';
-import { useForceUpdate, useLocalStorageState, useSessionStorageState } from '@voiceflow/ui';
+import { useForceUpdate } from '@voiceflow/ui';
 import { Box, Link, notify, Scroll, Text, TextArea, Tokens } from '@voiceflow/ui-next';
 import React from 'react';
 import { DismissableLayerContext } from 'react-dismissable-layers';
@@ -11,7 +11,9 @@ import { Modal } from '@/components/Modal';
 import { Path } from '@/config/routes';
 import { REQUEST_MORE_TOKENS_LINK } from '@/constants/link.constant';
 import { Designer, Session } from '@/ducks';
-import { useSelector, useTrackingEvents } from '@/hooks';
+import { useEnvironmentSessionStorageState } from '@/hooks/storage.hook';
+import { useSelector } from '@/hooks/store.hook';
+import { useTrackingEvents } from '@/hooks/tracking';
 
 import manager from '../../../manager';
 import { DEFAULT_SETTINGS } from '../KnowledgeBaseSettings/KnowledgeBaseSettings.constant';
@@ -37,12 +39,12 @@ export const KnowledgeBasePreviewQuestion = manager.create(
       const storeSettings = useSelector(Designer.KnowledgeBase.selectors.settings);
 
       const [initialSettings] = React.useState(storeSettings ?? DEFAULT_SETTINGS);
-      const [settings, setSettings] = useSessionStorageState('persist:kb-preview-settings', storeSettings ?? DEFAULT_SETTINGS);
+      const [settings, setSettings] = useEnvironmentSessionStorageState('kb-preview-settings', storeSettings ?? DEFAULT_SETTINGS);
       const [question, setQuestion] = React.useState<string>('');
       const [response, setResponse] = React.useState<{ output: string; chunks?: { source: { name: string }; content: string }[] } | null>(null);
       const [hasResponse, setHasResponse] = React.useState(false);
       const [questionError, setQuestionError] = React.useState<string>('');
-      const [previousQuestion, setPreviousQuestion] = useLocalStorageState('persist:kb-preview:last-question', '');
+      const [previousQuestion, setPreviousQuestion] = useEnvironmentSessionStorageState('kb-preview-last-question', '');
 
       const displayableSources = React.useMemo(() => response?.chunks?.filter((chunk) => chunk.source), [response?.chunks]);
 
@@ -142,7 +144,7 @@ export const KnowledgeBasePreviewQuestion = manager.create(
                   testID={tid(TEST_ID, 'settings')}
                   settings={settings.summarization ?? DEFAULT_SETTINGS.summarization}
                   initialSettings={initialSettings.summarization ?? DEFAULT_SETTINGS.summarization}
-                  onChangeSettings={(summarization) => setSettings({ ...settings, summarization })}
+                  onSettingsChange={(summarization) => setSettings({ ...settings, summarization })}
                 />
               }
             />

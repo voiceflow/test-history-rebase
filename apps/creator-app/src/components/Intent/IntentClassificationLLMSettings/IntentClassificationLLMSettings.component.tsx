@@ -14,7 +14,12 @@ import {
 
 import { IIntentClassificationLLMSettings } from './IntentClassificationLLMSettings.interface';
 
-export const IntentClassificationLLMSettings: React.FC<IIntentClassificationLLMSettings> = ({ settings, disabled, onSettingsChange }) => {
+export const IntentClassificationLLMSettings: React.FC<IIntentClassificationLLMSettings> = ({
+  settings,
+  disabled,
+  onSettingsChange,
+  onCodeEditorToggle,
+}) => {
   const TEST_ID = 'intent-classification-llm-settings';
 
   const { params } = settings;
@@ -58,6 +63,7 @@ export const IntentClassificationLLMSettings: React.FC<IIntentClassificationLLMS
         defaultValue={DEFAULT_INTENT_CLASSIFICATION_LLM_PROMPT_WRAPPER.content}
         onValueChange={(content) => onPromptWrapperChange({ content })}
         onResetToDefault={onPromptWrapperReset}
+        onCodeEditorToggle={onCodeEditorToggle}
       />
     </Box>
   );

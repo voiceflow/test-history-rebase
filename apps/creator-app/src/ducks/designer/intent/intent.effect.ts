@@ -1,6 +1,10 @@
-import type { Intent } from '@voiceflow/dtos';
+import type { Intent, IntentClassificationSettings } from '@voiceflow/dtos';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
+import { generalRuntimeClient } from '@/client/general-runtime/general-runtime.client';
+import { GeneralRuntimeIntentPreviewUtteranceResponse } from '@/client/general-runtime/general-runtime.interface';
+import * as Errors from '@/config/errors';
+import * as Session from '@/ducks/session';
 import { waitAsync } from '@/ducks/utils';
 import { getActiveAssistantContext } from '@/ducks/versionV2/utils';
 import type { Thunk } from '@/store/types';
@@ -67,4 +71,22 @@ export const deleteMany =
     const context = getActiveAssistantContext(state);
 
     await dispatch.sync(Actions.Intent.DeleteMany({ context, ids }));
+  };
+
+export const previewUtterance =
+  (utterance: string, settings: IntentClassificationSettings): Thunk<GeneralRuntimeIntentPreviewUtteranceResponse> =>
+  async (_, getState) => {
+    const state = getState();
+
+    const context = getActiveAssistantContext(state);
+    const workspaceID = Session.activeWorkspaceIDSelector(state);
+
+    Errors.assertWorkspaceID(workspaceID);
+
+    return generalRuntimeClient.intent.previewUtterance(workspaceID, {
+      utterance,
+      projectID: context.assistantID,
+      versionID: context.environmentID,
+      intentClassificationSettings: settings,
+    });
   };

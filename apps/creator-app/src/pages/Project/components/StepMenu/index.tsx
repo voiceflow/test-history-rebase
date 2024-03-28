@@ -1,4 +1,4 @@
-import { SvgIcon, useLocalStorageState } from '@voiceflow/ui';
+import { SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import { useProjectAIPlayground } from '@/components/GPT/hooks';
@@ -7,6 +7,7 @@ import * as CanvasTemplates from '@/ducks/canvasTemplate';
 import * as CustomBlocks from '@/ducks/customBlock';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { usePermission, useSelector } from '@/hooks';
+import { useLocalStorageState } from '@/hooks/storage.hook';
 import { Identifier } from '@/styles/constants';
 
 import { AI_LABEL, EVENT_LABEL, getAllSections, LibraryStepType, TopLibraryItem, TopStepItem } from './constants';

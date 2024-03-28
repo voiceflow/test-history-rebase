@@ -4,9 +4,9 @@ import { useAtomValue } from 'jotai';
 import React, { useMemo, useRef } from 'react';
 
 import { CMSEditorDescription } from '@/components/CMS/CMSEditor/CMSEditorDescription/CMSEditorDescription.component';
-import { useIntentDescriptionPlaceholder } from '@/components/Intent/IntentDescription/IntentDescription.hook';
 import { IntentEditForm } from '@/components/Intent/IntentEditForm/IntentEditForm.component';
 import { Designer } from '@/ducks';
+import { useIntentDescriptionPlaceholder } from '@/hooks/intent.hook';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
 import { EDITOR_TEST_ID } from '@/pages/AssistantCMS/AssistantCMS.constant';
 import { transformCMSResourceName } from '@/utils/cms.util';

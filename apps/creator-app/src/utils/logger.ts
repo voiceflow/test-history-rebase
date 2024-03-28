@@ -284,6 +284,8 @@ export const clearPersistedLogs = () => {
   });
 };
 
-export default createLogger([BASE_LOGGER_NAME]);
+export const logger = createLogger([BASE_LOGGER_NAME]);
+
+export default logger;
 
 export type Logger = ReturnType<typeof createLogger>;

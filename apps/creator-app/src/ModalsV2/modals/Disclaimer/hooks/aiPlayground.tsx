@@ -1,11 +1,11 @@
 import type { ProjectAIAssistSettings } from '@voiceflow/dtos';
-import { useLocalStorageState } from '@voiceflow/ui';
 import React from 'react';
 
 import { Permission } from '@/constants/permissions';
 import { useActiveWorkspace } from '@/hooks';
 import { useModal } from '@/hooks/modal.hook';
 import { usePermission } from '@/hooks/permission';
+import { useLocalStorageState } from '@/hooks/storage.hook';
 import Disclaimer, { DisclaimerModalProps } from '@/ModalsV2/modals/Disclaimer';
 
 const AI_PLAYGROUND_DISCLAIMER_DISCLAIMER: DisclaimerModalProps = {

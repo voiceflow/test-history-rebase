@@ -46,8 +46,3 @@ export const rhsMapperStyles = style({
   WebkitLineClamp: 4,
   maxHeight: 80,
 });
-
-export const footerStyles = style({
-  zIndex: 0,
-  background: 'white',
-});

@@ -53,8 +53,6 @@ export const FolderCreateModal = modalsManager.create<IFolderCreateModal, Folder
 
       const onSubmit = () => onCreate({ name: nameState.value });
 
-      api.useOnCloseRequest((source) => source !== 'backdrop');
-
       return (
         <Modal.Container
           type={typeProp}
@@ -87,5 +85,6 @@ export const FolderCreateModal = modalsManager.create<IFolderCreateModal, Folder
           </Modal.Footer>
         </Modal.Container>
       );
-    }
+    },
+  { backdropDisabled: true }
 );

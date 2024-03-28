@@ -1,7 +1,8 @@
-import { Resizable, useLocalStorageState } from '@voiceflow/ui';
+import { Resizable } from '@voiceflow/ui';
 import React from 'react';
 
 import { useDidUpdateEffect, useEnableDisable, useIsLockedProjectViewer, useIsPreviewer, useTheme } from '@/hooks';
+import { useLocalStorageState } from '@/hooks/storage.hook';
 import StepMenu from '@/pages/Project/components/StepMenu';
 
 import Layers from './Layers';

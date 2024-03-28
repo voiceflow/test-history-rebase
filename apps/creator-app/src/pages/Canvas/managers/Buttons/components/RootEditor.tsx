@@ -1,11 +1,12 @@
 import { BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Button, createDividerMenuItemOption, useLocalStorageState } from '@voiceflow/ui';
+import { Button, createDividerMenuItemOption } from '@voiceflow/ui';
 import React from 'react';
 
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import * as Documentation from '@/config/documentation';
 import { useMapManager, useToggle } from '@/hooks';
+import { useLocalStorageState } from '@/hooks/storage.hook';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { useButtonLayoutOption, useIntentScope } from '@/pages/Canvas/managers/hooks';
 

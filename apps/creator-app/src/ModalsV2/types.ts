@@ -1,9 +1,24 @@
 import { EmptyObject } from '@voiceflow/common';
 
+import { ModalScope } from './modal-scope.enum';
+
+export interface CreateModalOptions {
+  /**
+   * specifies a placeholder's scope where the modal should be rendered
+   */
+  scope?: ModalScope;
+
+  /**
+   * disabled backdrop click
+   */
+  backdropDisabled?: boolean;
+}
+
 export interface RegisteredModal<Props, ModalProps = never, ModalResult = never> extends React.FC<Props> {
   __vfModalType: string;
   __vfModalProps: ModalProps;
   __vfModalResult: ModalResult;
+  __vfModalOptions?: CreateModalOptions;
 }
 
 export type CloseSource = 'esc' | 'api' | 'hook' | 'backdrop';

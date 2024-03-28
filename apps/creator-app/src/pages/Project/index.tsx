@@ -6,6 +6,7 @@ import { useIdleTimer } from 'react-idle-timer';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 import InactivitySnackbar from '@/components/InactivitySnackbar';
+import { Modal } from '@/components/Modal';
 import { Path } from '@/config/routes';
 import { Permission } from '@/constants/permissions';
 import * as DiagramV2 from '@/ducks/diagramV2';
@@ -16,6 +17,7 @@ import { lazy } from '@/hocs/lazy';
 import { withBatchLoadingGate } from '@/hocs/withBatchLoadingGate';
 import { withWorkspaceOrProjectAssetsSuspense } from '@/hocs/withWorkspaceOrProjectAssetsSuspense';
 import { useEventualEngine, useFeature, useLayoutDidUpdate, useLocalDispatch, usePermission, useSelector, useTeardown, useTheme } from '@/hooks';
+import { ModalScope } from '@/ModalsV2/modal-scope.enum';
 import Providers from '@/pages/Project/Providers';
 
 import ProjectExitTracker from './components/ProjectExitTracker';
@@ -123,6 +125,9 @@ const Project: React.FC = () => {
 
           <Redirect to={Path.PROJECT_DOMAIN} />
         </Switch>
+
+        {/* allows rendering cms related modals in the cms page tree, so we can easily use cms related context in the modals */}
+        <Modal.Placeholder scope={ModalScope.PROJECT} />
       </Providers>
     </MarkupProvider>
   );

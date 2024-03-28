@@ -11,7 +11,7 @@ export interface IModalContainer extends BaseProps {
   animated?: boolean;
   onExited?: ExitHandler<HTMLDivElement>;
   onExiting?: ExitHandler<HTMLDivElement>;
-  className?: string;
+  className?: string | string[];
   onEscClose?: VoidFunction;
   onEnterSubmit?: VoidFunction;
   containerClassName?: string;

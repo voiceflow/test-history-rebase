@@ -1,7 +1,7 @@
-import { FunctionTestResponse } from '@/client/generalRuntime/types';
+import { GeneralRuntimeFunctionTestResponse } from '@/client/general-runtime/general-runtime.interface';
 
 export interface IFunctionTestResult {
-  functionsTestResponse: FunctionTestResponse;
+  functionsTestResponse: GeneralRuntimeFunctionTestResponse;
   numInputVariables: number;
   isTraceOpened: boolean;
   isOutputVarsOpened: boolean;

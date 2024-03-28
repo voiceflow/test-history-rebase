@@ -1,7 +1,8 @@
 import { Utils } from '@voiceflow/common';
-import { stopPropagation, System, useSessionStorageState } from '@voiceflow/ui';
+import { stopPropagation, System } from '@voiceflow/ui';
 import React from 'react';
 
+import { useSessionStorageState } from '@/hooks/storage.hook';
 import { EngineContext } from '@/pages/Canvas/contexts';
 
 export interface EmptyViewportSnackbarRef {

@@ -1,10 +1,9 @@
 import { Utils } from '@voiceflow/common';
-import { Box, Button, Modal, useSessionStorageState } from '@voiceflow/ui';
+import { Box, Button, Modal } from '@voiceflow/ui';
 import React from 'react';
 
 import VariableInput from '@/components/VariableInput';
-import * as Session from '@/ducks/session';
-import { useSelector } from '@/hooks';
+import { useEnvironmentSessionStorageState } from '@/hooks/storage.hook';
 
 import manager from '../manager';
 
@@ -15,8 +14,7 @@ export interface Props {
 export type Result = Record<string, string>;
 
 const VariablePrompt = manager.create<Props, Result>('VariablePrompt', () => ({ api, type, opened, hidden, animated, variablesToFill }) => {
-  const projectID = useSelector(Session.activeProjectIDSelector);
-  const [storedVariables, setStoredVariables] = useSessionStorageState<Result>(`VariablePromptModal:${projectID}`, {});
+  const [storedVariables, setStoredVariables] = useEnvironmentSessionStorageState<Result>('VariablePromptModal', {});
 
   const [variables, setVariables] = React.useState(() =>
     Utils.array.unique(variablesToFill).map((name) => ({ name, value: storedVariables[name] ?? '' }))

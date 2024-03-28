@@ -1,15 +1,18 @@
 import { DEFAULT_INTENT_CLASSIFICATION_LLM_SETTINGS, DEFAULT_INTENT_CLASSIFICATION_NLU_SETTINGS, IntentClassificationType } from '@voiceflow/dtos';
 import { tid } from '@voiceflow/style';
 import { Box, Divider, notify, RadioGroup, Scroll } from '@voiceflow/ui-next';
-import React from 'react';
+import React, { useState } from 'react';
 
 import { IntentClassificationLLMSettings } from '@/components/Intent/IntentClassificationLLMSettings/IntentClassificationLLMSettings.component';
 import { IntentClassificationNLUSettings } from '@/components/Intent/IntentClassificationNLUSettings/IntentClassificationNLUSettings.component';
 import { Modal } from '@/components/Modal';
+import { RadioGroupLabelWithTooltip } from '@/components/RadioGroup/RadioGroupLabelWithTooltip/RadioGroupLabelWithTooltip.component';
+import { LLM_INTENT_CLASSIFICATION_LEARN_MORE, NLU_INTENT_CLASSIFICATION_LEARN_MORE } from '@/constants/link.constant';
 import { Version } from '@/ducks';
 import { useDefaultAIModel } from '@/hooks/ai.hook';
 import { useLinkedState } from '@/hooks/state.hook';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
+import { onOpenURLInANewTabFactory } from '@/utils/window';
 
 import { modalsManager } from '../../manager';
 
@@ -24,6 +27,7 @@ export const IntentClassificationSettingsModal = modalsManager.create(
       const storeSetting = useSelector(Version.selectors.active.intentClassificationSettings);
 
       const [settings, setSettings] = useLinkedState(storeSetting);
+      const [codeEditorOpened, setCodeEditorOpened] = useState(false);
 
       const updateSettings = useDispatch(Version.effect.updateSettings);
 
@@ -44,6 +48,8 @@ export const IntentClassificationSettingsModal = modalsManager.create(
 
       const onResetToDefault = () => {
         setSettings(getDefaultSettings(settings.type));
+
+        notify.short.success('Restored to default');
       };
 
       const onSubmit = async () => {
@@ -62,8 +68,6 @@ export const IntentClassificationSettingsModal = modalsManager.create(
         }
       };
 
-      api.useOnCloseRequest((source) => source !== 'backdrop');
-
       return (
         <Modal.Container
           type={type}
@@ -72,7 +76,7 @@ export const IntentClassificationSettingsModal = modalsManager.create(
           hidden={hidden}
           animated={animated}
           onExited={api.remove}
-          onEscClose={api.onEscClose}
+          onEscClose={codeEditorOpened ? undefined : api.onEscClose}
           onEnterSubmit={onSubmit}
         >
           <Modal.Header title="Intent classification settings" onClose={api.onClose} testID={tid(TEST_ID, 'header')} />
@@ -84,8 +88,32 @@ export const IntentClassificationSettingsModal = modalsManager.create(
                 value={settings.type}
                 layout="vertical"
                 options={[
-                  { id: IntentClassificationType.NLU, value: IntentClassificationType.NLU, label: 'Large language models (LLM)' },
-                  { id: IntentClassificationType.LLM, value: IntentClassificationType.LLM, label: 'Natural language understanding (NLU)' },
+                  {
+                    id: IntentClassificationType.LLM,
+                    value: IntentClassificationType.LLM,
+                    label: (
+                      <RadioGroupLabelWithTooltip
+                        width={200}
+                        label="Large language models (LLM)"
+                        onLearnClick={onOpenURLInANewTabFactory(LLM_INTENT_CLASSIFICATION_LEARN_MORE)}
+                      >
+                        Use large language models to classify users intentions and select which intent to trigger.
+                      </RadioGroupLabelWithTooltip>
+                    ) as any,
+                  },
+                  {
+                    id: IntentClassificationType.NLU,
+                    value: IntentClassificationType.NLU,
+                    label: (
+                      <RadioGroupLabelWithTooltip
+                        width={205}
+                        label="Natural language understanding (NLU)"
+                        onLearnClick={onOpenURLInANewTabFactory(NLU_INTENT_CLASSIFICATION_LEARN_MORE)}
+                      >
+                        Use Voiceflow’s natural language understanding model to classify users intentions and select which intent to trigger.
+                      </RadioGroupLabelWithTooltip>
+                    ) as any,
+                  },
                 ]}
                 disabled={closePrevented}
                 onValueChange={onClassificationTypeChange}
@@ -101,6 +129,7 @@ export const IntentClassificationSettingsModal = modalsManager.create(
                 settings={settings}
                 disabled={closePrevented}
                 onSettingsChange={(value) => setSettings({ ...settings, ...value })}
+                onCodeEditorToggle={setCodeEditorOpened}
               />
             ) : (
               <IntentClassificationNLUSettings
@@ -131,5 +160,6 @@ export const IntentClassificationSettingsModal = modalsManager.create(
           </Modal.Footer>
         </Modal.Container>
       );
-    }
+    },
+  { backdropDisabled: true }
 );

@@ -11,10 +11,10 @@ import { CMSFormListItem } from '@/components/CMS/CMSForm/CMSFormListItem/CMSFor
 import { CMSFormName } from '@/components/CMS/CMSForm/CMSFormName/CMSFormName.component';
 import { CMSFormSortableList } from '@/components/CMS/CMSForm/CMSFormSortableList/CMSFormSortableList.component';
 import { IntentCreateRequiredEntityItem } from '@/components/Intent/IntentCreateRequiredEntityItem/IntentCreateRequiredEntityItem.component';
-import { useIntentDescriptionPlaceholder } from '@/components/Intent/IntentDescription/IntentDescription.hook';
 import { IntentRequiredEntitiesSection } from '@/components/Intent/IntentRequiredEntitiesSection/IntentRequiredEntitiesSection.component';
 import { IntentUtterancesSection } from '@/components/Intent/IntentUtterancesSection/IntentUtterancesSection.component';
 import { Modal } from '@/components/Modal';
+import { useIntentDescriptionPlaceholder } from '@/hooks/intent.hook';
 import { useAutoScrollListItemIntoView } from '@/hooks/scroll.hook';
 
 import { modalsManager } from '../../../manager';
@@ -54,8 +54,6 @@ export const IntentCreateModal = modalsManager.create<IIntentCreateModal, Intent
 
         requiredEntityAutoScroll.setItemID(requiredEntity.id);
       };
-
-      api.useOnCloseRequest((source) => source !== 'backdrop');
 
       return (
         <Modal.Container
@@ -180,5 +178,6 @@ export const IntentCreateModal = modalsManager.create<IIntentCreateModal, Intent
           </Modal.Footer>
         </Modal.Container>
       );
-    }
+    },
+  { backdropDisabled: true }
 );

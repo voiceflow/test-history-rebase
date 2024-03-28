@@ -40,6 +40,9 @@ export const intentUtterancesValidator = validatorFactory(
 );
 
 export const intentDescriptionValidator = validatorFactory(
-  (description: string, { isBuiltInIntent }: { isBuiltInIntent?: boolean }) => isBuiltInIntent || !!description.trim(),
+  (
+    description: string,
+    { isBuiltInIntent, isLLMClassification }: { isBuiltInIntent?: boolean; isLLMClassification: boolean }
+  ) => !isLLMClassification || isBuiltInIntent || !!description.trim(),
   'Description is required for LLM classification.'
 );

@@ -253,10 +253,6 @@ export enum VariableStateAppliedType {
   SHAREABLE_LINK = 'Shareable Link',
 }
 
-export enum AssistantOriginType {
-  TEST_TOOL = 'Test Tool',
-}
-
 export enum ModelExportOriginType {
   SHARE_MENU = 'Share Menu',
 }

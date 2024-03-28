@@ -1,7 +1,8 @@
-import { Box, SectionV2, SvgIcon, SvgIconTypes, useLocalStorageState } from '@voiceflow/ui';
+import { Box, SectionV2, SvgIcon, SvgIconTypes } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Settings from '@/components/Settings';
+import { useLocalStorageState } from '@/hooks/storage.hook';
 
 import * as S from './styles';
 

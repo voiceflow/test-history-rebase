@@ -7,5 +7,6 @@ export interface ICodePreviewWithFullScreenEditor {
   onCodeChange: (code: string) => void;
   isFunctionEditor?: boolean;
   headerButtonProps?: ISquareButton;
+  onCodeEditorToggle?: (opened: boolean) => void;
   autoFocusLineNumber?: number;
 }

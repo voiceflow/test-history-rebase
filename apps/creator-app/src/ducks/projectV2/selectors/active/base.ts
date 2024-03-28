@@ -51,6 +51,9 @@ export const aiAssistSettings = createSelector([projectSelector], (project) => p
 
 export const nluSettings = createSelector([projectSelector], (project) => project?.nluSettings);
 
+/**
+ * @deprecated use version.settings instead when INTENT_CLASSIFICATION feature is released
+ */
 export const isLLMClassifier = createSelector(
   [nluSettings],
   (nluSettings) => nluSettings?.classifyStrategy === BaseModels.Project.ClassifyStrategy.VF_NLU_LLM_HYBRID

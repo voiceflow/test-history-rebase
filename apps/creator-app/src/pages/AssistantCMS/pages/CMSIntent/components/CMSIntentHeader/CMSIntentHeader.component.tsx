@@ -13,6 +13,7 @@ import { useOnIntentCreate } from '../../CMSIntent.hook';
 
 export const CMSIntentHeader: React.FC = () => {
   const onCreate = useOnIntentCreate();
+  const previewModal = useModal(Modals.Intent.Preview);
   const settingsModal = useModal(Modals.Intent.ClassificationSettings);
   const intentClassification = useFeature(FeatureFlag.INTENT_CLASSIFICATION);
 
@@ -26,7 +27,12 @@ export const CMSIntentHeader: React.FC = () => {
             <>
               <Header.Button.IconSecondary testID={tid(HEADER_TEST_ID, 'settings')} iconName="Settings" onClick={() => settingsModal.openVoid()} />
 
-              <Header.Button.Secondary label="Preview" testID={tid(HEADER_TEST_ID, 'preview')} iconName="PlayS" />
+              <Header.Button.Secondary
+                label="Preview"
+                testID={tid(HEADER_TEST_ID, 'preview')}
+                iconName="PlayS"
+                onClick={() => previewModal.openVoid()}
+              />
             </>
           )}
 

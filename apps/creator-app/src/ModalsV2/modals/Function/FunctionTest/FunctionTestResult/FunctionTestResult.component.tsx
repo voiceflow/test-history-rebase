@@ -8,7 +8,6 @@ import {
   CollapsibleHeader,
   CollapsibleHeaderButton,
   Divider,
-  DotSeparator,
   Link,
   Mapper,
   Text,
@@ -18,8 +17,9 @@ import {
 } from '@voiceflow/ui-next';
 import React from 'react';
 
+import { PreviewResultFooter } from '@/components/Preview/PreviewResultFooter/PreviewResultFooter.component';
+
 import {
-  footerStyles,
   fullWidthStyle,
   jsonCollapsibleStyles,
   jsonEditorStyles,
@@ -32,7 +32,6 @@ import {
 import { useDynamicTracesCodeEditorHeight } from './FunctionTestResult.hook';
 import { IFunctionTestResult } from './FunctionTestResult.interface';
 
-const { colors } = Tokens;
 export interface IFunctionTestResultExtra {
   error?: boolean;
   disabled?: boolean;
@@ -186,28 +185,9 @@ export const FunctionTestResult: React.FC<IFunctionTestResultExtra & IFunctionTe
         <CodeEditor className={jsonEditorStyles} disabled={disabled} readOnly theme="light" language="json" isFunctionEditor value={[traces]} />
       </Collapsible>
 
-      <Divider noPadding />
-
-      <Box px={24} py={12} justify="space-between" align="center" className={clsx(sectionRecipe({ disabled }), footerStyles)}>
-        <Box gap={11} align="center">
-          <Text variant="caption" weight="semiBold" color={error ? colors.alert.alert700 : colors.success.success600}>
-            {error ? 'Error' : 'Success'}
-          </Text>
-          <DotSeparator light />
-          <Text variant="caption" color={colors.neutralDark.neutralsDark50}>
-            {latencyMS}ms
-          </Text>
-        </Box>
-        <Link
-          disabled={disabled}
-          className={sectionRecipe({ disabled })}
-          label="Download logs"
-          variant="primary"
-          size="small"
-          weight="semiBold"
-          onClick={onDownloadLogsClick}
-        />
-      </Box>
+      <PreviewResultFooter status={error ? 'error' : 'success'} latency={latencyMS} disabled={disabled}>
+        <Link size="small" label="Download logs" weight="semiBold" variant="primary" onClick={onDownloadLogsClick} disabled={disabled} />
+      </PreviewResultFooter>
     </div>
   );
 };

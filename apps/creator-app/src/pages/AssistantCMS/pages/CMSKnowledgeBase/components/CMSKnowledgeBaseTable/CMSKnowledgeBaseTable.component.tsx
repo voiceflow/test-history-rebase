@@ -1,5 +1,4 @@
 import { tid } from '@voiceflow/style';
-import { useSessionStorageState } from '@voiceflow/ui';
 import { Box, Link, Table, usePersistFunction } from '@voiceflow/ui-next';
 import { useAtomValue } from 'jotai';
 import React, { useEffect } from 'react';
@@ -7,6 +6,7 @@ import React, { useEffect } from 'react';
 import { CMS_KNOWLEDGE_BASE_LEARN_MORE } from '@/constants/link.constant';
 import * as Tracking from '@/ducks/tracking';
 import { useDispatch } from '@/hooks';
+import { useSessionStorageState } from '@/hooks/storage.hook';
 import { useGetValueSelector } from '@/hooks/store.hook';
 import { EMPTY_TEST_ID, TABLE_TEST_ID } from '@/pages/AssistantCMS/AssistantCMS.constant';
 import { CMSEmpty } from '@/pages/AssistantCMS/components/CMSEmpty/CMSEmpty.component';

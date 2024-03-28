@@ -1,4 +1,4 @@
-import { Box, Button, ButtonVariant, toast, useLocalStorageState, usePersistFunction } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, toast, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
 import { linkGraphic } from '@/assets';
@@ -6,6 +6,7 @@ import { UploadedStage } from '@/components/PlatformUploadPopup/components';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import { useDispatch, useSelector, useTrackingEvents } from '@/hooks';
+import { useLocalStorageState } from '@/hooks/storage.hook';
 import * as ModalsV2 from '@/ModalsV2';
 import { NLPTrainJob } from '@/models';
 import { StageComponentProps } from '@/platforms/types';

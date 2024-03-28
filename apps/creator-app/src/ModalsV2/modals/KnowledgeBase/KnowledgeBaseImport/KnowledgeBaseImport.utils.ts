@@ -1,7 +1,6 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import { notify } from '@voiceflow/ui-next';
-import { Tokens } from '@voiceflow/ui-next/styles';
 import { composeValidators, validatorFactory } from '@voiceflow/utils-designer';
 
 import { LimitType } from '@/constants/limits';
@@ -71,14 +70,10 @@ export const useDocumentLimitError = (enableClose: VoidFunction) => {
 
   return (error: any) => {
     if (error.response.status === 406 && planConfig) {
-      notify.long.warning(`Document limit (${planConfig.limit}) reached for your current subscription. Please upgrade to continue.`, {
+      notify.long.warning(`Document limit ({planConfig.limit}) reached for your current subscription. Please upgrade to continue.`, {
+        pauseOnHover: true,
+        bodyClassName: 'vfui',
         actionButtonProps: { label: 'Upgrade', onClick: () => upgradeModal.openVoid(planConfig.upgradeModal({ limit: planConfig.limit })) },
-        bodyStyle: {
-          color: Tokens.colors.neutralDark.neutralsDark900,
-          fontSize: Tokens.typography.size[14],
-          lineHeight: Tokens.typography.lineHeight[20],
-          fontFamily: Tokens.typography.family.regular,
-        },
       });
     } else {
       notify.short.error('Failed to import data sources');

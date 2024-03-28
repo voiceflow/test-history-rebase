@@ -4,7 +4,7 @@ import React from 'react';
 import { SectionToggleVariant, SectionVariant, UncontrolledSection as Section } from '@/components/Section';
 import { NLUTrainingDiffStatus } from '@/constants/enums/nlu-training-diff-status.enum';
 import { PrototypeStatus } from '@/constants/prototype';
-import { Designer, Project, Tracking } from '@/ducks';
+import { Designer, Project } from '@/ducks';
 import * as PrototypeDuck from '@/ducks/prototype';
 import { useSelector } from '@/hooks';
 import { NLUTrainingModelContext } from '@/pages/Project/contexts';
@@ -74,7 +74,7 @@ const TrainingSection: React.FC<TrainingSectionProps> = ({ isOpen, onOpen, toggl
               <Trained
                 platform={platform}
                 isTrained={nluTrainingModel.isTrained}
-                onStartTraining={() => nluTrainingModel.start(Tracking.AssistantOriginType.TEST_TOOL)}
+                onStartTraining={() => nluTrainingModel.start({ origin: 'Test Tool' })}
                 nluTrainingDiffData={nluTrainingDiffData}
               />
             </TrainFadeDown>

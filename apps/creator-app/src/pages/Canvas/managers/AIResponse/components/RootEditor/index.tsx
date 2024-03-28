@@ -1,6 +1,6 @@
 import { BaseModels, BaseUtils } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Button, Input, SectionV2, SvgIcon, ThemeColor, TippyTooltip, toast, Toggle, useSessionStorageState } from '@voiceflow/ui';
+import { Box, Button, Input, SectionV2, SvgIcon, ThemeColor, TippyTooltip, toast, Toggle } from '@voiceflow/ui';
 import React from 'react';
 
 import { useKnowledgeBase } from '@/components/GPT/hooks/feature';
@@ -9,6 +9,7 @@ import VariablesInput from '@/components/VariablesInput';
 import * as Documentation from '@/config/documentation';
 import * as History from '@/ducks/history';
 import { useDispatch } from '@/hooks/realtime';
+import { useEnvironmentSessionStorageState } from '@/hooks/storage.hook';
 import { useFillVariables } from '@/hooks/variable';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { EngineContext } from '@/pages/Canvas/contexts';
@@ -28,7 +29,7 @@ const Editor: React.FC = () => {
   const getCompletion = AI.useSourceCompletion();
   const fillVariables = useFillVariables();
 
-  const [preview, setPreview] = useSessionStorageState<string | null>(`${editor.data.nodeID}_preview`, null);
+  const [preview, setPreview] = useEnvironmentSessionStorageState<string | null>(`${editor.data.nodeID}_preview`, null);
   const [isLoading, setIsLoading] = React.useState(false);
   const [hasContent, setHasContent] = React.useState(false);
 

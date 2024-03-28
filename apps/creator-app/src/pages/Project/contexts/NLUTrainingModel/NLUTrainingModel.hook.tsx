@@ -1,25 +1,12 @@
-import { logger, System, toast } from '@voiceflow/ui';
+import { Link, notify } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { CMSRoute } from '@/config/routes';
 import { NLPTrainStageType } from '@/constants/platforms';
 import { TrainingContext } from '@/contexts/TrainingContext';
-import { Designer, Router, Tracking } from '@/ducks';
+import { Designer, Router } from '@/ducks';
 import { useDispatch, useSelector } from '@/hooks';
-
-export interface NLUTrainingModelContextValue {
-  isTrained: boolean;
-  isTraining: boolean;
-  startTraining: (origin: Tracking.AssistantOriginType) => void;
-  cancelTraining: () => void | Promise<void>;
-}
-
-export const NLUTrainingModelContext = React.createContext<NLUTrainingModelContextValue>({
-  isTrained: false,
-  isTraining: false,
-  startTraining: () => {},
-  cancelTraining: () => {},
-});
+import { logger } from '@/utils/logger';
 
 export const useNLUTrainingModelNotifications = () => {
   const training = React.useContext(TrainingContext);
@@ -38,13 +25,13 @@ export const useNLUTrainingModelNotifications = () => {
           if (invalidSlotsIDs?.length) {
             const message = invalidSlotsIDs.map((key) => getEntity({ id: key })!.name).join(', ');
 
-            toast.warn(
+            notify.long.warning(
               <>
                 Your slots <b>{message}</b> require custom values in order to be properly recognized during testing. Update the{' '}
-                <System.Link.Button onClick={() => goToCMSResource(CMSRoute.ENTITY, invalidSlotsIDs[0])}>Interaction Model</System.Link.Button> and
-                train your assistant again.
+                <Link label="Interaction Model" onClick={() => goToCMSResource(CMSRoute.ENTITY, invalidSlotsIDs[0])} /> and train your assistant
+                again.
               </>,
-              { autoClose: false }
+              { pauseOnHover: true, bodyClassName: 'vfui' }
             );
           }
         }
@@ -62,7 +49,7 @@ export const useNLUTrainingModelNotifications = () => {
               'Your Assistant was unable to be trained because you have Entities set as required, but you have not provided any Response Utterances. Please fix this and try training again.';
           }
 
-          toast.error(message, { autoClose: false });
+          notify.long.warning(message, { pauseOnHover: true, bodyClassName: 'vfui' });
           logger.warn('Train error', stage.data);
         }
         break;

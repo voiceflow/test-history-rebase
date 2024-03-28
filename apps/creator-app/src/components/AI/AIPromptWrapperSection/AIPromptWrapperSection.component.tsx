@@ -16,6 +16,7 @@ export const AIPromptWrapperSection: React.FC<IAIPromptWrapperSection> = ({
   learnMoreURL,
   onValueChange,
   onResetToDefault,
+  onCodeEditorToggle,
 }) => {
   return (
     <Box direction="column">
@@ -41,6 +42,7 @@ export const AIPromptWrapperSection: React.FC<IAIPromptWrapperSection> = ({
           onCodeChange={onValueChange}
           isFunctionEditor
           headerButtonProps={{ iconName: 'Question', onClick: onOpenURLInANewTabFactory(learnMoreURL) }}
+          onCodeEditorToggle={onCodeEditorToggle}
           autoFocusLineNumber={2}
         />
       </Box>

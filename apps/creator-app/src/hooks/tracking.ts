@@ -1,5 +1,4 @@
 import * as Platform from '@voiceflow/platform-config';
-import { useSessionStorageState } from '@voiceflow/ui';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -10,6 +9,8 @@ import * as Tracking from '@/ducks/tracking';
 import * as TrackingEvents from '@/ducks/tracking/events';
 import { EventTracker } from '@/ducks/tracking/types';
 import { NLUImportModel } from '@/models';
+
+import { useSessionStorageState } from './storage.hook';
 
 const wrapDispatch = <T extends Record<string, (...args: any[]) => any>>(
   dispatch: Dispatch,

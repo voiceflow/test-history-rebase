@@ -9,13 +9,6 @@ export const buttonStyles = style({
   width: '74px',
 });
 
-export const stickyDividerContainer = style({
-  position: 'sticky',
-  top: '0',
-  background: '#fff',
-  zIndex: 10,
-});
-
 export const sourcesContentStyles = style({
   padding: '0 16px 0 24px',
   maxHeight: 'calc(100vh - 469.5px)',

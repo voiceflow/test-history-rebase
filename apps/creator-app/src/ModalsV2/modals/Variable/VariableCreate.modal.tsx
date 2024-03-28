@@ -79,8 +79,6 @@ export const VariableCreateModal = modalsManager.create<IVariableCreateModal, Va
 
       const onSubmit = () => onCreate({ name: nameState.value });
 
-      api.useOnCloseRequest((source) => source !== 'backdrop');
-
       return (
         <Modal.Container
           type={typeProp}
@@ -137,5 +135,6 @@ export const VariableCreateModal = modalsManager.create<IVariableCreateModal, Va
           </Modal.Footer>
         </Modal.Container>
       );
-    }
+    },
+  { backdropDisabled: true }
 );

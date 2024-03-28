@@ -27,9 +27,11 @@ export const CMS_FUNCTIONS_LEARN_MORE = 'https://learn.voiceflow.com/hc/en-us/ar
 export const CMS_KNOWLEDGE_BASE_LEARN_MORE = 'https://learn.voiceflow.com/hc/en-us/articles/22213924437517-Knowledge-Base';
 
 // TODO: add correct pages
+export const LLM_INTENT_CLASSIFICATION_LEARN_MORE = 'https://learn.voiceflow.com/hc/en-us/articles/22213856020237-Intents';
 export const LLM_INTENT_CLASSIFICATION_MODEL_LEARN_MORE = 'https://learn.voiceflow.com/hc/en-us/articles/22213856020237-Intents';
 export const LLM_INTENT_CLASSIFICATION_PROMPT_LEARN_MORE = 'https://learn.voiceflow.com/hc/en-us/articles/22213856020237-Intents';
 export const LLM_INTENT_CLASSIFICATION_TEMPERATURE_LEARN_MORE = 'https://learn.voiceflow.com/hc/en-us/articles/22213856020237-Intents';
 
 // TODO: add correct page
+export const NLU_INTENT_CLASSIFICATION_LEARN_MORE = 'https://learn.voiceflow.com/hc/en-us/articles/22213856020237-Intents';
 export const NLU_INTENT_CLASSIFICATION_CONFIDENCE_LEARN_MORE = 'https://learn.voiceflow.com/hc/en-us/articles/22213856020237-Intents';

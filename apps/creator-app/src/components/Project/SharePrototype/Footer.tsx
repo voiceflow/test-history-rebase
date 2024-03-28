@@ -7,7 +7,6 @@ import * as Documentation from '@/config/documentation';
 import { Permission } from '@/constants/permissions';
 import * as Prototype from '@/ducks/prototype';
 import * as Session from '@/ducks/session';
-import * as Tracking from '@/ducks/tracking';
 import { VariableStateAppliedType } from '@/ducks/tracking';
 import { useAsyncEffect, useDispatch, usePermission, useSelector, useTrackingEvents } from '@/hooks';
 import { usePaymentModal } from '@/hooks/modal.hook';
@@ -75,7 +74,7 @@ export const Footer: React.FC<FooterProps> = ({ isCanvas, testID }) => {
       toast.warn(
         <>
           Assistant is not fully trained. This may cause unexpected behaviour when prototyping.
-          <ToastCallToAction onClick={() => nluTrainingModel.start(Tracking.AssistantOriginType.TEST_TOOL)}>Train Assistant</ToastCallToAction>
+          <ToastCallToAction onClick={() => nluTrainingModel.start({ origin: 'Share Prototype' })}>Train Assistant</ToastCallToAction>
         </>
       );
     }

@@ -6,4 +6,5 @@ export interface IAIPromptWrapperSection {
   defaultValue: string;
   onValueChange: (value: string) => void;
   onResetToDefault: VoidFunction;
+  onCodeEditorToggle?: (opened: boolean) => void;
 }

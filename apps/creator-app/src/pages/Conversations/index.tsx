@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { Box, useSessionStorageState } from '@voiceflow/ui';
+import { Box } from '@voiceflow/ui';
 import { TabLoader } from '@voiceflow/ui-next';
 import queryString from 'query-string';
 import React from 'react';
@@ -13,18 +13,15 @@ import { Path } from '@/config/routes';
 import { Permission } from '@/constants/permissions';
 import * as ReportTag from '@/ducks/reportTag';
 import * as Router from '@/ducks/router';
-import * as Session from '@/ducks/session';
 import * as Transcripts from '@/ducks/transcript';
 import { useAsyncDidUpdate, useDispatch, usePermission, useTeardown, useTrackingEvents } from '@/hooks';
+import { useAssistantSessionStorageState } from '@/hooks/storage.hook';
 import { FilterTag } from '@/pages/Conversations/constants';
 import ProjectPage from '@/pages/Project/components/ProjectPage';
 import { Identifier } from '@/styles/constants';
 
 import { ConversationsContainer, TranscriptDetails, TranscriptDialog, TranscriptManager } from './components';
 import { useFilters } from './hooks';
-
-const PREVIOUS_TRANSCRIPT_ID_KEY = 'previous-transcript-id-key';
-const PREVIOUS_TRANSCRIPT_FILTER_KEY = 'previous-transcript-filter-key';
 
 const Conversations: React.FC = () => {
   const history = useHistory();
@@ -33,7 +30,6 @@ const Conversations: React.FC = () => {
   const [canViewConversations] = usePermission(Permission.VIEW_CONVERSATIONS);
 
   const allTranscripts = useSelector(Transcripts.allTranscriptsSelector);
-  const activeProjectID = useSelector(Session.activeProjectIDSelector);
   const currentTranscriptID = useSelector(Transcripts.currentTranscriptIDSelector);
 
   const goToPrototype = useDispatch(Router.goToCurrentPrototype);
@@ -43,8 +39,8 @@ const Conversations: React.FC = () => {
   const resetTranscripts = useDispatch(Transcripts.resetTranscripts);
 
   const [isLoaded, setIsLoaded] = React.useState(false);
-  const [lastFilter, setLastFilter] = useSessionStorageState(`${PREVIOUS_TRANSCRIPT_FILTER_KEY}-${activeProjectID}`, '');
-  const [lastTranscriptID, setLastTranscriptID] = useSessionStorageState(`${PREVIOUS_TRANSCRIPT_ID_KEY}-${activeProjectID}`, '');
+  const [lastFilter, setLastFilter] = useAssistantSessionStorageState('previous-transcript-filter-key', '');
+  const [lastTranscriptID, setLastTranscriptID] = useAssistantSessionStorageState('previous-transcript-id-key', '');
 
   const { tags, personas, range, query, endDate, startDate, queryParams } = useFilters();
 

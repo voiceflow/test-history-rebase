@@ -1,16 +1,30 @@
 import { Nullish, Utils } from '@voiceflow/common';
+import { IntentClassificationType } from '@voiceflow/dtos';
+import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { StrengthGauge, usePersistFunction } from '@voiceflow/ui';
-import _sortBy from 'lodash/sortBy';
 import React from 'react';
 
-import { Designer } from '@/ducks';
-import * as ProjectV2 from '@/ducks/projectV2';
+import { Designer, Project, Version } from '@/ducks';
+import { useFeature } from '@/hooks/feature';
 import { useIntentCreateModal, useIntentEditModal } from '@/hooks/modal.hook';
+import { useSelector } from '@/hooks/store.hook';
 import { getIntentStrengthLevel, validateIntentName } from '@/utils/intent';
 import { isIntentBuiltIn } from '@/utils/intent.util';
 
 import { useActiveProjectTypeConfig } from './platformConfig';
-import { useSelector } from './redux';
+
+export const useIsLLMIntentClassificationEnabled = () => {
+  const intentClassification = useFeature(FeatureFlag.INTENT_CLASSIFICATION);
+
+  const settings = useSelector(Version.selectors.active.intentClassificationSettings);
+  const legacyIsLLMClassifier = useSelector(Project.active.isLLMClassifier);
+
+  return intentClassification.isEnabled ? settings?.type === IntentClassificationType.LLM : legacyIsLLMClassifier;
+};
+
+export const useIntentDescriptionPlaceholder = () => {
+  return useIsLLMIntentClassificationEnabled() ? 'Trigger this intent when…' : 'Enter description (optional)';
+};
 
 export const useOnOpenIntentCreateModal = () => {
   const intentCreateModal = useIntentCreateModal();
@@ -26,19 +40,8 @@ export const useOnOpenIntentCreateModal = () => {
   };
 };
 
-export const useOnOpenIntentEditModal = () => {
-  const intentEditModal = useIntentEditModal();
-  return (data: { intentID: string }) => intentEditModal.openVoid(data);
-};
-
-export const useOrderedIntents = () => {
-  const allIntents = useSelector(Designer.Intent.selectors.allWithFormattedBuiltInNames);
-
-  return React.useMemo(() => _sortBy(Utils.array.inferUnion(allIntents), (intent) => intent.name.toLowerCase()), [allIntents]);
-};
-
 export const useIntent = (intentID: Nullish<string>) => {
-  const onOpenIntentEditModal = useOnOpenIntentEditModal();
+  const intentEditModal = useIntentEditModal();
 
   const intent = useSelector(Designer.Intent.selectors.oneWithUtterances, { id: intentID });
 
@@ -59,7 +62,7 @@ export const useIntent = (intentID: Nullish<string>) => {
     intent,
     strengthLevel,
     intentIsBuiltIn,
-    onOpenIntentEditModal,
+    onOpenIntentEditModal: (data: { intentID: string }) => intentEditModal.openVoid(data),
     intentHasRequiredEntity,
     shouldDisplayRequiredEntities,
   };
@@ -68,7 +71,7 @@ export const useIntent = (intentID: Nullish<string>) => {
 export const useIntentNameProcessor = () => {
   const intents = useSelector(Designer.Intent.selectors.allWithFormattedBuiltInNames);
   const entities = useSelector(Designer.Entity.selectors.all);
-  const platform = useSelector(ProjectV2.active.platformSelector);
+  const platform = useSelector(Project.active.platformSelector);
 
   return usePersistFunction((name: string, intentID?: string) => {
     const formattedName = Utils.string.removeTrailingUnderscores(name);

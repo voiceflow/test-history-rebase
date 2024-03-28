@@ -1,13 +1,13 @@
 import { tid } from '@voiceflow/style';
-import { Popper, PopperTypes, stopPropagation, useSessionStorageState } from '@voiceflow/ui';
+import { Popper, PopperTypes, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import * as Project from '@/components/Project';
 import { Permission } from '@/constants/permissions';
-import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
-import { usePermission, useSelector } from '@/hooks';
+import { usePermission } from '@/hooks';
+import { useAssistantSessionStorageState } from '@/hooks/storage.hook';
 import InviteContent from '@/pages/Project/components/Collaborators';
 import InviteFooter from '@/pages/Project/components/Collaborators/components/InviteByLink';
 
@@ -24,10 +24,8 @@ interface SharePopperProps {
 
 const SharePopper: React.FC<SharePopperProps> = ({ children, placement, modifiers, preventOverflowPadding = 24 }) => {
   const TEST_ID = 'share-menu';
-  const PERSISTED_SESSION_SHARE_TAB = 'persisted_session_share_tab';
 
   const sharePopper = React.useContext(SharePopperContext);
-  const activeProjectID = useSelector(Session.activeProjectIDSelector);
 
   const [canSharePrototype] = usePermission(Permission.SHARE_PROTOTYPE);
   const [canAddCollaborators] = usePermission(Permission.ADD_COLLABORATORS);
@@ -38,7 +36,7 @@ const SharePopper: React.FC<SharePopperProps> = ({ children, placement, modifier
   const enableClose = React.useCallback(() => setIsClosedPrevented(false), []);
 
   const initialTab = (canSharePrototype && ShareProjectTab.PROTOTYPE) || ShareProjectTab.EXPORT;
-  const [persistedTab, setPersistedTab] = useSessionStorageState(`${PERSISTED_SESSION_SHARE_TAB}-${activeProjectID}`, initialTab);
+  const [persistedTab, setPersistedTab] = useAssistantSessionStorageState('persisted_session_share_tab', initialTab);
 
   React.useEffect(() => {
     if (!sharePopper?.opened) {

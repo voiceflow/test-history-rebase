@@ -1,4 +1,4 @@
-import { CustomScrollbars, Flex, FlexCenter, LoadCircle, toast, useSessionStorageState } from '@voiceflow/ui';
+import { CustomScrollbars, Flex, FlexCenter, LoadCircle, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import Drawer from '@/components/Drawer';
@@ -7,6 +7,7 @@ import VariableList from '@/components/VariableList';
 import * as Session from '@/ducks/session';
 import * as VariableState from '@/ducks/variableState';
 import { useDispatch, useSelector, useTheme } from '@/hooks';
+import { useSessionStorageState } from '@/hooks/storage.hook';
 
 import { SelectContainer, VariableListContainer } from './components';
 import { usePrototypeContextVariables } from './hooks';
@@ -23,7 +24,7 @@ const TestVariablesSidebar: React.FC = () => {
   const updateIsTestVariablesSidebarOpen = useDispatch(Session.setPrototypeSidebarVisible);
   const updateSelectedVariableStateVariables = useDispatch(VariableState.updateSelectedVariableStateVariables);
 
-  const [isOpen, setIsOpen] = useSessionStorageState('sidebarOpen', false);
+  const [isOpen, setIsOpen] = useSessionStorageState('test-variables-sidebar-open', false);
   const [loading, setLoading] = React.useState(false);
 
   const onUpdateStateValues = async () => {

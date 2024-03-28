@@ -7,7 +7,7 @@ import * as Recent from '@/ducks/recent';
 import * as Session from '@/ducks/session';
 import { SyncThunk } from '@/store/types';
 
-import { AssistantOriginType, EventName } from '../constants';
+import { EventName } from '../constants';
 import { createVersionEvent, createVersionEventTracker } from '../utils';
 
 export const trackPrototypeManualNavForwardButton = createVersionEventTracker((eventInfo) =>
@@ -18,7 +18,7 @@ export const trackPrototypeManualNavBackwardButton = createVersionEventTracker((
   client.analytics.track(createVersionEvent(EventName.PROTOTYPE_MANUAL_NAVIGATION, { ...eventInfo, direction: 'backward' }))
 );
 
-export const trackProjectTrainAssistant = createVersionEventTracker<{ origin: AssistantOriginType }>((eventInfo) =>
+export const trackProjectTrainAssistant = createVersionEventTracker<{ origin?: string }>((eventInfo) =>
   client.analytics.track(createVersionEvent(EventName.PROJECT_TRAIN_ASSISTANT, eventInfo))
 );
 

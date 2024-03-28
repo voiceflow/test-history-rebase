@@ -62,8 +62,6 @@ export const FlowCreateModal = modalsManager.create<IFlowCreateModal, FlowType>(
 
       const onSubmit = () => onCreate({ name: nameState.value });
 
-      api.useOnCloseRequest((source) => source !== 'backdrop');
-
       return (
         <Modal.Container
           type={typeProp}
@@ -107,5 +105,6 @@ export const FlowCreateModal = modalsManager.create<IFlowCreateModal, FlowType>(
           </Modal.Footer>
         </Modal.Container>
       );
-    }
+    },
+  { backdropDisabled: true }
 );

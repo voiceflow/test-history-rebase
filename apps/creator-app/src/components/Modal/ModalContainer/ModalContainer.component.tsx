@@ -15,6 +15,7 @@ export const ModalContainer = React.forwardRef<HTMLDivElement, IModalContainer>(
   (
     {
       type,
+      width,
       hidden,
       opened,
       testID,
@@ -32,20 +33,20 @@ export const ModalContainer = React.forwardRef<HTMLDivElement, IModalContainer>(
   ) => {
     const [popperContainer, setPopperContainer] = React.useState<HTMLDivElement | null>(null);
 
-    const renderContainer = ({ status, children }: { status: TransitionStatus; children: React.ReactNode; stacked: boolean }) => {
-      return (
+    const renderContainer = ({ index, status, children }: { index: number; status: TransitionStatus; children: React.ReactNode; stacked: boolean }) =>
+      !!children && (
         <UIModal.Container
+          width={width}
+          testID={testID}
           className={clsx(
             containerStyles({ status: animated ? status : undefined, notVisible: !children }),
             `modal--${type ?? 'unknown'}`,
-            className
+            typeof className === 'string' ? className : className?.[index]
           )}
-          testID={testID}
         >
           {children}
         </UIModal.Container>
       );
-    };
 
     const onRef = usePersistFunction((node: HTMLDivElement | null) => {
       setPopperContainer(node);
@@ -65,14 +66,14 @@ export const ModalContainer = React.forwardRef<HTMLDivElement, IModalContainer>(
               in={opened}
               timeout={animated ? parseFloat(Tokens.animation.duration.default) * 2 * 1000 : 1}
               onExited={onExited}
+              onExiting={onExiting}
               mountOnEnter
               unmountOnExit
-              onExiting={onExiting}
             >
               {(status) =>
                 stacked
-                  ? React.Children.map(children, (child) => renderContainer({ status, children: child, stacked }))
-                  : renderContainer({ status, children, stacked })
+                  ? React.Children.map(children, (child, index) => renderContainer({ status, children: child, stacked, index }))
+                  : renderContainer({ status, children, stacked, index: 0 })
               }
             </Transition>
           </div>

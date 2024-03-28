@@ -39,26 +39,7 @@ const createUseStorageStateHook = <S extends Storage>(storage: S) => {
   };
 };
 
-const createUseStorageHook = <S extends Storage>(storage: S) => {
-  return <T>(name: string, defaultValue: T) => {
-    const getStorage = React.useCallback((): T => {
-      const item = storage.getItem(name);
-      return item === null ? defaultValue : JSON.parse(item);
-    }, []);
-
-    const setStorage = React.useCallback((value: T) => {
-      storage.setItem(name, JSON.stringify(value));
-    }, []);
-
-    const clearStorage = React.useCallback(() => {
-      storage.removeItem(name);
-    }, []);
-
-    return [getStorage, setStorage, clearStorage] as const;
-  };
-};
-
-export const useLocalStorage = createUseStorageHook(globalThis.localStorage);
-
+/**
+ * @deprecated use useLocalStorageState from '@/hooks/storage.hook' instead
+ */
 export const useLocalStorageState = createUseStorageStateHook(globalThis.localStorage);
-export const useSessionStorageState = createUseStorageStateHook(globalThis.sessionStorage);

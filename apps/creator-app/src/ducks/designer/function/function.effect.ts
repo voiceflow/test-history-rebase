@@ -4,8 +4,8 @@ import { DataTypes, download } from '@voiceflow/ui';
 import { notify } from '@voiceflow/ui-next';
 
 import { designerClient } from '@/client/designer';
-import { testFunction } from '@/client/generalRuntime';
-import type { FunctionTestResponse } from '@/client/generalRuntime/types';
+import { generalRuntimeClient } from '@/client/general-runtime/general-runtime.client';
+import type { GeneralRuntimeFunctionTestResponse } from '@/client/general-runtime/general-runtime.interface';
 import { realtimeClient } from '@/client/realtime';
 import { waitAsync } from '@/ducks/utils';
 import { getActiveAssistantContext } from '@/ducks/versionV2/utils';
@@ -153,7 +153,7 @@ export const importMany =
   };
 
 export const testOne =
-  (functionID: string, inputVars: Record<string, string>): Thunk<FunctionTestResponse> =>
+  (functionID: string, inputVars: Record<string, string>): Thunk<GeneralRuntimeFunctionTestResponse> =>
   async (_dispatch, getState) => {
     const state = getState();
 
@@ -162,7 +162,7 @@ export const testOne =
     const paths = FunctionPathSelect.allByFunctionID(state, { functionID });
     const functionData = FunctionSelect.oneByID(state, { id: functionID })!;
 
-    return testFunction({
+    return generalRuntimeClient.function.test({
       definition: {
         code: functionData.code,
         pathCodes: paths.map((path) => path.name),

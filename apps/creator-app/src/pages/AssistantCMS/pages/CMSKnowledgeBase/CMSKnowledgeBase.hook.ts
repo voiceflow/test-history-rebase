@@ -1,8 +1,10 @@
 import { BaseModels } from '@voiceflow/base-types';
+import { Utils } from '@voiceflow/common';
 import { notify, useCreateConst } from '@voiceflow/ui-next';
 import { useEffect, useMemo, useRef } from 'react';
 
 import { Designer } from '@/ducks';
+import { useNotificationDismiss } from '@/hooks/notify.hook';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
 
 import { useCMSManager } from '../../contexts/CMSManager';
@@ -12,7 +14,7 @@ export const useKnowledgeBaseCMSManager = useCMSManager<CMSKnowledgeBase>;
 
 export const useKBDocumentSync = () => {
   const showSyncedToast = useRef(false);
-  const syncingToastID = useRef<any | null>(null);
+  const syncNotification = useNotificationDismiss();
 
   const documents = useSelector(Designer.KnowledgeBase.Document.selectors.all);
   const getOneByID = useSelector(Designer.KnowledgeBase.Document.selectors.getOneByID);
@@ -38,14 +40,12 @@ export const useKBDocumentSync = () => {
 
   useEffect(() => {
     if (processing) {
-      const toastID = notify.short.info('Syncing', { isLoading: true, autoClose: false, toastId: 'KB_SYNCING_ID' });
-      syncingToastID.current = toastID;
-    }
+      const toastID = Utils.id.cuid.slug();
 
-    if (!processing) {
-      if (syncingToastID.current) {
-        notify.short.dismiss(syncingToastID.current);
-        syncingToastID.current = null;
+      notify.short.info('Syncing', { isLoading: true, autoClose: false, toastId: toastID });
+      syncNotification.set(toastID);
+    } else {
+      if (syncNotification.dismiss()) {
         showSyncedToast.current = false;
 
         const allDocumentsSucceed = getAllProcessingDocumentsSucceed();

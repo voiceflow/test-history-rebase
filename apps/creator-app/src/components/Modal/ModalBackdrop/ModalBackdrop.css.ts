@@ -42,6 +42,7 @@ export const backdrop = recipe({
       true: {
         cursor: 'default',
       },
+
       false: {
         cursor: 'pointer',
       },

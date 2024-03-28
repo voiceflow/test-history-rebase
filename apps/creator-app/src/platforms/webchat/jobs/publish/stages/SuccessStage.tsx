@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Button, ButtonVariant, useLocalStorageState } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant } from '@voiceflow/ui';
 import React from 'react';
 
 import { UploadedStage } from '@/components/PlatformUploadPopup/components';
@@ -8,6 +8,7 @@ import * as Session from '@/ducks/session';
 import { useFeature, useSelector } from '@/hooks';
 import { useSyncProjectLiveVersion } from '@/hooks/project';
 import { useDispatch } from '@/hooks/realtime';
+import { useLocalStorageState } from '@/hooks/storage.hook';
 import { NLPTrainJob } from '@/models';
 import { StageComponentProps } from '@/platforms/types';
 

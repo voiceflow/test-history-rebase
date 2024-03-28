@@ -1,6 +1,7 @@
-import { useContextApi, useLocalStorageState } from '@voiceflow/ui';
+import { useContextApi } from '@voiceflow/ui';
 import React from 'react';
 
+import { useLocalStorageState } from '@/hooks/storage.hook';
 import VoiceflowAssistant from '@/vendors/voiceflowAssistant';
 
 export interface VoiceflowAssistantVisibilityContextValue {

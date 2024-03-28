@@ -11,7 +11,7 @@ import { useSelector } from '@/hooks/store.hook';
 import { IntentMenuEmpty } from '../IntentMenuEmpty/IntentMenuEmpty.component';
 import type { IIntentMenu } from './IntentMenu.interface';
 
-export const IntentMenu: React.FC<IIntentMenu> = ({ width, onClose, onSelect: onSelectProp }) => {
+export const IntentMenu: React.FC<IIntentMenu> = ({ width, header, onClose, onSelect: onSelectProp, viewOnly }) => {
   const intents = useSelector(Designer.Intent.selectors.allWithoutFallback);
   const intentEditModal = useIntentEditModal();
   const intentCreateModal = useIntentCreateModal();
@@ -24,8 +24,10 @@ export const IntentMenu: React.FC<IIntentMenu> = ({ width, onClose, onSelect: on
     searchBy: (item) => item.name,
   });
 
+  const indexTerm = header ? 1 : 0;
+
   const virtualizer = useVirtualizer({
-    count: search.items.length,
+    count: search.items.length + indexTerm,
     estimateSize: () => MENU_ITEM_MIN_HEIGHT,
     getScrollElement: () => listNode,
   });
@@ -56,7 +58,14 @@ export const IntentMenu: React.FC<IIntentMenu> = ({ width, onClose, onSelect: on
     onClose();
   };
 
-  if (!intents.length) return <IntentMenuEmpty width={width} onCreated={onSelect} />;
+  if (!intents.length)
+    return viewOnly ? (
+      <Menu width={width}>
+        <Menu.NotFound label="intents" />
+      </Menu>
+    ) : (
+      <IntentMenuEmpty width={width} onCreated={onSelect} />
+    );
 
   return (
     <Menu
@@ -66,6 +75,7 @@ export const IntentMenu: React.FC<IIntentMenu> = ({ width, onClose, onSelect: on
       maxHeight={310}
       searchSection={<Search value={search.value} placeholder="Search" onValueChange={search.setValue} />}
       actionButtons={
+        !viewOnly &&
         search.hasItems && (
           <ActionButtons
             firstButton={
@@ -78,7 +88,15 @@ export const IntentMenu: React.FC<IIntentMenu> = ({ width, onClose, onSelect: on
       {search.hasItems ? (
         <VirtualizedContent start={virtualItems[0]?.start ?? 0} totalSize={virtualizer.getTotalSize()}>
           {virtualItems.map((virtualRow) => {
-            const intent = search.items[virtualRow.index];
+            if (header && virtualRow.index === 0) {
+              return (
+                <div key={virtualRow.key} ref={virtualizer.measureElement} data-index={virtualRow.index}>
+                  {header}
+                </div>
+              );
+            }
+
+            const intent = search.items[virtualRow.index - indexTerm];
 
             if (!intent) return null;
 
@@ -90,13 +108,13 @@ export const IntentMenu: React.FC<IIntentMenu> = ({ width, onClose, onSelect: on
                 onClick={() => onSelect(intent)}
                 data-index={virtualRow.index}
                 searchValue={search.deferredValue}
-                suffixButton={{ iconName: 'EditS', onClick: () => onEdit(intent) }}
+                suffixButton={viewOnly ? undefined : { iconName: 'EditS', onClick: () => onEdit(intent) }}
               />
             );
           })}
         </VirtualizedContent>
       ) : (
-        <Menu.CreateItem label={search.value} onClick={onCreate} disabled={isCreating} />
+        <>{!viewOnly ? <Menu.CreateItem label={search.value} onClick={onCreate} disabled={isCreating} /> : <Menu.NotFound label="intents" />}</>
       )}
     </Menu>
   );

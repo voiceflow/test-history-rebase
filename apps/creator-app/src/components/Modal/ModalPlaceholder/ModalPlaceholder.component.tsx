@@ -6,8 +6,9 @@ import { Context as ModalsContext } from '@/ModalsV2/context';
 import { modalsManager } from '@/ModalsV2/manager';
 
 import { ModalBackdrop } from '../ModalBackdrop/ModalBackdrop.component';
+import { IModalPlaceholder } from './ModalPlaceholder.interface';
 
-export const ModalPlaceholder = memo(() => {
+export const ModalPlaceholder = memo<IModalPlaceholder>(({ scope }) => {
   const { state, animated } = useContext(ModalsContext);
 
   const modalsToRender = useMemo(
@@ -22,27 +23,29 @@ export const ModalPlaceholder = memo(() => {
 
   return (
     <>
-      {!!visibleModal && (
+      {!scope && !!visibleModal && (
         <ModalBackdrop
           onClick={() => modalsManager.close(visibleModal.id, visibleModal.type, 'backdrop')}
           closing={modalsToRender.length === 1 && visibleModal.closing}
-          closePrevented={visibleModal?.closePrevented}
+          closePrevented={modalsToRender[0]?.Component.__vfModalOptions?.backdropDisabled ?? visibleModal?.closePrevented}
         />
       )}
 
-      {modalsToRender.map(({ modal, Component }, index) => (
-        <Component
-          {...modal.props}
-          id={modal.id}
-          key={modal.key}
-          api={modal.api as any}
-          type={modal.type}
-          opened={!modal.closing}
-          hidden={index !== 0}
-          animated={animated && (!modal.reopened || modal.closing)}
-          closePrevented={modal.closePrevented}
-        />
-      ))}
+      {modalsToRender.map(({ modal, Component }, index) =>
+        Component.__vfModalOptions?.scope === scope ? (
+          <Component
+            {...modal.props}
+            id={modal.id}
+            key={modal.key}
+            api={modal.api as any}
+            type={modal.type}
+            opened={!modal.closing}
+            hidden={index !== 0}
+            animated={animated && (!modal.reopened || modal.closing)}
+            closePrevented={modal.closePrevented}
+          />
+        ) : null
+      )}
     </>
   );
 });

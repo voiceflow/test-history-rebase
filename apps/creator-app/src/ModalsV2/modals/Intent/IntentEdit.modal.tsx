@@ -5,10 +5,10 @@ import React from 'react';
 
 import { CMSFormDescription } from '@/components/CMS/CMSForm/CMSFormDescription/CMSFormDescription.component';
 import { CMSFormName } from '@/components/CMS/CMSForm/CMSFormName/CMSFormName.component';
-import { useIntentDescriptionPlaceholder } from '@/components/Intent/IntentDescription/IntentDescription.hook';
 import { IntentEditForm } from '@/components/Intent/IntentEditForm/IntentEditForm.component';
 import { Modal } from '@/components/Modal';
 import { Designer } from '@/ducks';
+import { useIntentDescriptionPlaceholder } from '@/hooks/intent.hook';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
 import { isIntentBuiltIn } from '@/utils/intent.util';
 

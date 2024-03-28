@@ -1,7 +1,8 @@
-import { Box, Portal, TippyTooltip, useLocalStorage, usePersistFunction, usePopper } from '@voiceflow/ui';
+import { Box, Portal, TippyTooltip, usePersistFunction, usePopper } from '@voiceflow/ui';
 import React from 'react';
 
 import { addStepGuide } from '@/assets';
+import { useLocalStorage } from '@/hooks/storage.hook';
 
 import * as S from '../SubMenu/styles';
 
@@ -17,15 +18,15 @@ const StepMenuClickNoDragTooltip: React.FC<StepMenuClickNoDragTooltipProps> = ({
 
   // number of times the user has clicked on the step without dragging
   // initialize to 5 so the user is over the threshold on first click
-  const [getNoDragClicks, setNoDragClicks] = useLocalStorage(NO_DRAG_CLICKS_KEY, 5);
+  const noDragClicksStorage = useLocalStorage(NO_DRAG_CLICKS_KEY, 5);
   const [isOpen, setIsOpen] = React.useState(false);
 
   const onMouseUp: React.MouseEventHandler<HTMLDivElement> = usePersistFunction((event) => {
     // if the user clicked on the button without dragging, increment the number of clicks
     if (buttonRef.current?.contains(event.target as Node)) {
-      setNoDragClicks(getNoDragClicks() + 1);
+      noDragClicksStorage.set(noDragClicksStorage.get() + 1);
 
-      if (getNoDragClicks() > 4) {
+      if (noDragClicksStorage.get() > 4) {
         setIsOpen(true);
       }
     }
@@ -37,7 +38,7 @@ const StepMenuClickNoDragTooltip: React.FC<StepMenuClickNoDragTooltipProps> = ({
 
   const handleDontShowAgain: React.MouseEventHandler = usePersistFunction(() => {
     setIsOpen(false);
-    setNoDragClicks(0);
+    noDragClicksStorage.set(0);
   });
 
   return (

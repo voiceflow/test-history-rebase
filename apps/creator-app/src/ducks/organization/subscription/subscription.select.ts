@@ -8,4 +8,4 @@ export const creditCardSelector = createSelector([organizationSelector], (organi
 
 export const paymentMethodSelector = createSelector([organizationSelector], (organization) => organization?.subscription?.paymentMethod);
 
-export const customerID = createSelector([organizationSelector], (organization) => organization?.subscription?.customerID);
+export const customerIDSelector = createSelector([organizationSelector], (organization) => organization?.subscription?.customerID);

@@ -132,13 +132,16 @@ export class BillingSubscriptionService {
   async checkoutAndBroadcast(
     authPayload: AuthMetaPayload,
     organizationID: string,
-    subscriptionID: string,
     data: Omit<Actions.OrganizationSubscription.CheckoutRequest, 'context'>
   ) {
-    try {
-      const subscription = await this.findOne(subscriptionID);
+    const subscription = await this.findOneByOrganizationID(organizationID);
 
-      await this.billingClient.subscriptionsPrivate.checkout(subscriptionID, {
+    if (!subscription) {
+      throw new Error('Subscription not found');
+    }
+
+    try {
+      await this.billingClient.subscriptionsPrivate.checkout(subscription.id, {
         subscriptionItems: [
           {
             itemPriceID: data.itemPriceID,
@@ -165,9 +168,9 @@ export class BillingSubscriptionService {
     }
 
     // TODO: remove it once we implement event subscription
-    await this.waitForSubscriptionUpdate(subscriptionID);
+    await this.waitForSubscriptionUpdate(subscription.id);
 
-    const newSubscription = await this.findOne(subscriptionID).then(subscriptionAdapter.fromDB);
+    const newSubscription = await this.findOneByOrganizationID(organizationID).then(subscriptionAdapter.fromDB);
 
     // TODO: fix broadcast not working
     await this.logux.processAs(

@@ -10,12 +10,12 @@ import { OrganizationIdentityService } from './identity/identity.service';
 @Controller('/organizations')
 @ApiTags('Organization')
 export class OrganizationHTTPController {
-  constructor(@Inject(OrganizationIdentityService) private readonly organizationService: OrganizationIdentityService) {}
+  constructor(@Inject(OrganizationIdentityService) private readonly service: OrganizationIdentityService) {}
 
   @Get('/:organizationID/workspaces')
   @Authorize.Permissions([Permission.ORGANIZATION_READ])
   @ZodApiResponse({ status: HttpStatus.OK })
   async getOrganizationWorkspaces(@UserID() userID: number, @Param('organizationID') organizationID: string): Promise<Realtime.Identity.Workspace[]> {
-    return this.organizationService.getWorkspaces(userID, organizationID);
+    return this.service.getWorkspaces(userID, organizationID);
   }
 }

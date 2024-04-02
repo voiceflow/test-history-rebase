@@ -13,7 +13,6 @@ export const CSV_UNCLASSIFIED_IMPORT = 'https://voiceflow.zendesk.com/hc/en-us/a
 // settings
 export const CANVAS_CONTROLS = 'https://voiceflow.zendesk.com/hc/en-us/articles/6140797719565-The-Canvas';
 export const LINK_TYPE = 'https://voiceflow.zendesk.com/hc/en-us/articles/6140797719565-The-Canvas ';
-export const USE_A_TEMPLATE = 'https://www.voiceflow.com/templates ';
 
 // channels
 export const CHANNEL_DIFFERENCES = 'https://docs.voiceflow.com/#/platform/project-creation/project-creation?id=differences-between-channels';

@@ -82,7 +82,7 @@ export const IntentPreviewModal = modalsManager.create(
 
           setFeedbackKey((prev) => prev + 1);
           setClassifyStatus('success');
-          setClassifiedIntents({ nlu: result.nlu, llm: result.llm });
+          setClassifiedIntents({ nlu: result.nlu.intents, llm: result.llm.intents });
 
           // need to flush sync to ensure the input is not disabled before the focus
           flushSync(() => api.enableClose());

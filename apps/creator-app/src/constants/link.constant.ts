@@ -1,14 +1,12 @@
-export const DOCS_LINK = 'https://www.voiceflow.com/docs';
-export const LEARN_LINK = 'https://learn.voiceflow.com/hc/en-us';
-export const DISCORD_LINK = 'https://discord.gg/jYCjyfXNrB';
+export const LEARN_LINK = 'https://link.voiceflow.com/docs';
+export const DISCORD_LINK = 'https://link.voiceflow.com/community';
 export const PRICING_LINK = 'https://www.voiceflow.com/pricing';
 export const GET_HELP_LINK = 'mailto:support@voiceflow.com';
-export const TEMPLATES_LINK = 'https://www.voiceflow.com/templates';
+export const TEMPLATES_LINK = 'https://link.voiceflow.com/templates';
 export const CHANGELOG_LINK = 'https://changelog.voiceflow.com/en';
 export const BOOK_DEMO_LINK = 'https://www.voiceflow.com/demo';
 export const DESKTOP_APP_LINK = 'https://www.voiceflow.com/desktop';
-export const YOUTUBE_CHANNEL_LINK = 'https://www.youtube.com/c/Voiceflow';
-export const DISCORD_COMMUNITY_LINK = 'https://discord.gg/jYCjyfXNrB';
+export const YOUTUBE_CHANNEL_LINK = 'https://link.voiceflow.com/tutorials';
 export const REQUEST_MORE_TOKENS_LINK = 'https://voiceflow.zendesk.com/hc/en-us/articles/11696284619533-Request-more-Tokens';
 export const VARIABLE_DEFAULT_VALUE_LINK = 'https://www.voiceflow.com/docs';
 // LEARN

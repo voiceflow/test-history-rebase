@@ -2,7 +2,7 @@ import { tid } from '@voiceflow/style';
 import { BaseProps, Menu, Popper, PrimaryNavigation } from '@voiceflow/ui-next';
 import React from 'react';
 
-import { BOOK_DEMO_LINK, DISCORD_COMMUNITY_LINK, DOCS_LINK, YOUTUBE_CHANNEL_LINK } from '@/constants/link.constant';
+import { BOOK_DEMO_LINK, DISCORD_LINK, LEARN_LINK, YOUTUBE_CHANNEL_LINK } from '@/constants/link.constant';
 import { VoiceflowAssistantVisibilityContext } from '@/contexts/VoiceflowAssistantVisibility';
 import { useTrackingEvents } from '@/hooks/tracking';
 import { onOpenInternalURLInANewTabFactory } from '@/utils/window';
@@ -26,7 +26,7 @@ export const AssistantNavigationHelpItem: React.FC<BaseProps> = ({ testID }) => 
         <Menu>
           <Menu.Item
             label="Documentation"
-            onClick={trackingEventsWrapper(onOpenInternalURLInANewTabFactory(DOCS_LINK), 'trackCanvasControlHelpMenuResource', { resource: 'Docs' })}
+            onClick={trackingEventsWrapper(onOpenInternalURLInANewTabFactory(LEARN_LINK), 'trackCanvasControlHelpMenuResource', { resource: 'Docs' })}
             testID={tid(testID, 'menu-item', 'documentation')}
           />
 
@@ -40,7 +40,7 @@ export const AssistantNavigationHelpItem: React.FC<BaseProps> = ({ testID }) => 
 
           <Menu.Item
             label="Community"
-            onClick={trackingEventsWrapper(onOpenInternalURLInANewTabFactory(DISCORD_COMMUNITY_LINK), 'trackCanvasControlHelpMenuResource', {
+            onClick={trackingEventsWrapper(onOpenInternalURLInANewTabFactory(DISCORD_LINK), 'trackCanvasControlHelpMenuResource', {
               resource: 'Forum',
             })}
             testID={tid(testID, 'menu-item', 'community')}

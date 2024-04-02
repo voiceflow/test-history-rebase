@@ -10,7 +10,7 @@ import * as GPT from '@/components/GPT';
 import { SidebarIconMenuItem } from '@/components/SidebarIconMenu';
 import { PRIVATE_LLM_MODELS } from '@/config';
 import { Path } from '@/config/routes';
-import { BOOK_DEMO_LINK, DISCORD_COMMUNITY_LINK, DOCS_LINK, YOUTUBE_CHANNEL_LINK } from '@/constants/link.constant';
+import { BOOK_DEMO_LINK, DISCORD_LINK, LEARN_LINK, YOUTUBE_CHANNEL_LINK } from '@/constants/link.constant';
 import { Permission } from '@/constants/permissions';
 import { VoiceflowAssistantVisibilityContext } from '@/contexts/VoiceflowAssistantVisibility';
 import * as Router from '@/ducks/router';
@@ -227,7 +227,7 @@ export const useHelpOptions = (): MenuTypes.OptionWithoutValue[] => {
     {
       key: 'docs',
       label: 'Documentation',
-      onClick: trackingEventsWrapper(onOpenInternalURLInANewTabFactory(DOCS_LINK), 'trackCanvasControlHelpMenuResource', { resource: 'Docs' }),
+      onClick: trackingEventsWrapper(onOpenInternalURLInANewTabFactory(LEARN_LINK), 'trackCanvasControlHelpMenuResource', { resource: 'Docs' }),
     },
     {
       key: 'videos',
@@ -239,7 +239,7 @@ export const useHelpOptions = (): MenuTypes.OptionWithoutValue[] => {
     {
       key: 'forum',
       label: 'Community',
-      onClick: trackingEventsWrapper(onOpenInternalURLInANewTabFactory(DISCORD_COMMUNITY_LINK), 'trackCanvasControlHelpMenuResource', {
+      onClick: trackingEventsWrapper(onOpenInternalURLInANewTabFactory(DISCORD_LINK), 'trackCanvasControlHelpMenuResource', {
         resource: 'Forum',
       }),
     },

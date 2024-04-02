@@ -21,18 +21,20 @@ export class BillingSubscriptionLoguxController {
   }))
   @UseRequestContext()
   @Broadcast<Actions.OrganizationSubscription.CheckoutRequest>(({ context }) => ({
-    channel: Channels.organization.build({ ...context, subscriptionID: context.subscriptionID ?? '' }),
+    channel: Channels.organization.build(context),
   }))
   async checkout(@Payload() data: Actions.OrganizationSubscription.CheckoutRequest, @AuthMeta() authMeta: AuthMetaPayload): Promise<Subscription> {
-    const { subscriptionID, organizationID } = data.context;
+    const { organizationID } = data.context;
 
-    if (!subscriptionID) {
+    const subscription = await this.service.findOneByOrganizationID(organizationID);
+
+    if (!subscription) {
       throw new Error('Subscription not found');
     }
 
     const { itemPriceID, planPrice, editorSeats, period, paymentIntent } = data;
 
-    return this.service.checkoutAndBroadcast(authMeta, organizationID, subscriptionID, {
+    return this.service.checkoutAndBroadcast(authMeta, organizationID, subscription.id, {
       itemPriceID,
       planPrice,
       editorSeats,
@@ -47,7 +49,7 @@ export class BillingSubscriptionLoguxController {
     kind: 'organization',
   }))
   @Broadcast<Actions.OrganizationSubscription.Replace>(({ context }) => ({
-    channel: Channels.organization.build({ ...context, subscriptionID: context.subscriptionID ?? '' }),
+    channel: Channels.organization.build(context),
   }))
   @BroadcastOnly()
   async replaceSubscription(@Payload() _: any) {

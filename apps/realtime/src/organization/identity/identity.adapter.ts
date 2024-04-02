@@ -3,8 +3,6 @@ import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { createMultiAdapter, createSimpleAdapter, notImplementedAdapter } from 'bidirectional-adapter';
 import uniqBy from 'lodash/uniqBy';
 
-import subscriptionAdapter from '../billing/subscription/adapters/subscription.adapter';
-
 export const organizationMemberSimpleAdapter = createSimpleAdapter<Realtime.Identity.OrganizationMember, OrganizationMember>(
   ({ user, membership }) => ({
     name: user.name,
@@ -33,15 +31,13 @@ export const organizationMemberAdapter = {
 
 // TODO [organization refactor] refactor adapter
 export const organizationAdapter = createMultiAdapter<Realtime.Identity.Organization, Organization>(
-  ({ id, name, image, members = [], trial = null, createdAt, updatedAt, chargebeeSubscriptionID, subscription }) => {
+  ({ id, name, image, members = [], trial = null, createdAt, updatedAt }) => {
     return {
       id,
       name,
       image,
       trial: trial ? { daysLeft: trial.daysLeft, endAt: trial.endAt } : null,
       members: organizationMemberAdapter.mapFromDB(members),
-      subscription: subscription ? subscriptionAdapter.fromDB(subscription) : null,
-      chargebeeSubscriptionID,
       createdAt,
       updatedAt,
     };

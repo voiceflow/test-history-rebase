@@ -8,9 +8,7 @@ import WorkspaceOrProjectLoader from './WorkspaceOrProjectLoader';
 
 const OrganizationSubscriptionGate: React.FC<React.PropsWithChildren> = ({ children }) => {
   const organization = useSelector(Organization.organizationSelector);
-  const isSubscribed = useOrganizationSubscription({ organizationID: organization?.id, subscriptionID: organization?.chargebeeSubscriptionID }, [
-    organization?.id,
-  ]);
+  const isSubscribed = useOrganizationSubscription({ organizationID: organization?.id }, [organization?.id]);
 
   return (
     <LoadingGate isLoaded={isSubscribed} loader={<WorkspaceOrProjectLoader />} internalName={OrganizationSubscriptionGate.name}>

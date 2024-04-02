@@ -23,7 +23,6 @@ export class OrganizationIdentityService {
       {
         members: true,
         trial: true,
-        subscription: true,
       },
       {
         headers: { Authorization: token },

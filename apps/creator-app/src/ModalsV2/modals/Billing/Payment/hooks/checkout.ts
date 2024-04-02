@@ -24,7 +24,7 @@ export const useCheckoutPayment = ({ modalProps }: { modalProps: PaymentModalPro
   const { cardRef, onAuthorize } = useCardPaymentMethod();
 
   const onCheckout = async (cardValues: CardForm.Values) => {
-    if (!organization?.id || !organization.subscription?.id || !selectedPlanPrice) return;
+    if (!organization?.id || !organization.subscription || !selectedPlanPrice) return;
     if (!cardRef.current) return;
 
     modalProps.api.preventClose();
@@ -34,7 +34,7 @@ export const useCheckoutPayment = ({ modalProps }: { modalProps: PaymentModalPro
     if (!paymentIntent) return;
 
     try {
-      await checkout(organization.id, organization.subscription.id, {
+      await checkout(organization.id, {
         editorSeats,
         itemPriceID: selectedPlanPrice.id,
         planPrice: selectedPlanPrice.value,

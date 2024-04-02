@@ -5,6 +5,7 @@ import { Path } from '@/config/routes';
 import { Permission } from '@/constants/permissions';
 import * as Router from '@/ducks/router';
 import { WorkspaceSubscriptionGate } from '@/gates';
+import BillingSubscriptionGate from '@/gates/BillingSubscriptionGate';
 import { withBatchLoadingGate } from '@/hocs/withBatchLoadingGate';
 import { useDispatch, usePermission, useSetup } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
@@ -44,4 +45,4 @@ const Dashboard: React.FC = () => {
   );
 };
 
-export default withBatchLoadingGate(DashboardGate, WorkspaceSubscriptionGate)(Dashboard);
+export default withBatchLoadingGate(DashboardGate, WorkspaceSubscriptionGate, BillingSubscriptionGate)(Dashboard);

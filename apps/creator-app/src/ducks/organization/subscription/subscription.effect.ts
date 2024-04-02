@@ -11,7 +11,7 @@ import { ChargebeeSubscriptionStatus } from '@/models';
 import { Thunk } from '@/store/types';
 import { getErrorMessage } from '@/utils/error';
 
-import { chargebeeSubscriptionSelector, customerID as customerIDSelector } from './subscription.select';
+import { chargebeeSubscriptionSelector, customerIDSelector } from './subscription.select';
 
 export const checkout = (organizationID: string, data: Omit<Actions.OrganizationSubscription.CheckoutRequest, 'context'>): Thunk<void> => {
   const { itemPriceID, planPrice, editorSeats, period, paymentIntent } = data;
@@ -52,13 +52,13 @@ export const loadActiveOrganizationSubscription =
     }
   };
 
-export const cancelSubscription = (organizationID: string, chargebeeSubscriptionID: string): Thunk<void> => {
+export const cancelSubscription = (organizationID: string): Thunk<void> => {
   return async (dispatch, getState) => {
     const subscription = chargebeeSubscriptionSelector(getState());
 
     if (!subscription) return;
     try {
-      await designerClient.billing.subscription.cancel(organizationID, chargebeeSubscriptionID);
+      await designerClient.billing.subscription.cancel(organizationID, subscription.id);
 
       await dispatch.local(
         Actions.OrganizationSubscription.Replace({

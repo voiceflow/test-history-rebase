@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1450.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1450.0...@voiceflow/creator-app@1.1450.1) (2024-04-02)
+
+### Bug Fixes
+
+* intent preview api (COR-000) ([#7920](https://github.com/voiceflow/creator-app/issues/7920)) ([64d611a](https://github.com/voiceflow/creator-app/commit/64d611a2d5d22ac386cfcd2d1fa5c00ee91e1101))
+
 # [1.1450.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1449.0...@voiceflow/creator-app@1.1450.0) (2024-04-02)
 
 ### Features

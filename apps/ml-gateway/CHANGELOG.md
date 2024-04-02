@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.87.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.86.1...@voiceflow/ml-gateway@1.87.0) (2024-04-02)
+
+### Features
+
+* remove chargebee subscription id (COR-1741) ([#7924](https://github.com/voiceflow/creator-app/issues/7924)) ([468f6ee](https://github.com/voiceflow/creator-app/commit/468f6ee670d5612ed57cd95c955755149a983e23))
+
 ## [1.86.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.86.0...@voiceflow/ml-gateway@1.86.1) (2024-03-28)
 
 **Note:** Version bump only for package @voiceflow/ml-gateway

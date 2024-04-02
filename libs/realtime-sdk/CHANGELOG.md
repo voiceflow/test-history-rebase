@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.378.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.377.0...@voiceflow/realtime-sdk@1.378.0) (2024-04-02)
+
+### Features
+
+* remove chargebee subscription id (COR-1741) ([#7927](https://github.com/voiceflow/creator-app/issues/7927)) ([c46174f](https://github.com/voiceflow/creator-app/commit/c46174fc706b414c850c7c95bdc712f31af3a75c))
+
 # [1.377.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.376.2...@voiceflow/realtime-sdk@1.377.0) (2024-04-02)
 
 ### Features

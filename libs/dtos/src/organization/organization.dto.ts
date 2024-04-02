@@ -16,7 +16,6 @@ export const OrganizationDTO = z.object({
       endAt: z.string(),
     })
     .nullable(),
-  chargebeeSubscriptionID: z.string().nullable(),
   subscription: SubscriptionDTO.optional().nullable(),
 });
 

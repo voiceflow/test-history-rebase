@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { HashedIDService } from '@voiceflow/nestjs-common';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { BillingClient } from '@voiceflow/sdk-billing';
@@ -20,7 +21,9 @@ export class BillingSubscriptionService {
     @Inject(LoguxService)
     private readonly logux: LoguxService,
     @Inject(UserService)
-    private readonly user: UserService
+    private readonly user: UserService,
+    @Inject(HashedIDService)
+    private readonly hashedID: HashedIDService
   ) {}
 
   private parseSubscription(subscription: SubscriptionsControllerGetSubscription200Subscription): Realtime.Identity.Subscription {
@@ -75,6 +78,12 @@ export class BillingSubscriptionService {
   async findOne(subscriptionID: string) {
     const { subscription } = await this.billingClient.subscriptionsPrivate.getSubscription(subscriptionID);
 
+    return this.parseSubscription(subscription);
+  }
+
+  async findOneByOrganizationID(organizationID: string) {
+    const orgID = this.hashedID.decodeWorkspaceID(organizationID);
+    const { subscription } = await this.billingClient.organizationsPrivate.getOrganizationSubscription(orgID);
     return this.parseSubscription(subscription);
   }
 
@@ -164,7 +173,7 @@ export class BillingSubscriptionService {
     await this.logux.processAs(
       Actions.OrganizationSubscription.Replace({
         subscription: newSubscription,
-        context: { organizationID, subscriptionID },
+        context: { organizationID },
       }),
       authPayload
     );

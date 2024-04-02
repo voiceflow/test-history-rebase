@@ -26,19 +26,15 @@ export class OrganizationLoguxController {
     kind: 'organization',
   }))
   async subscribe(@Context() ctx: Context.Channel<Channels.OrganizationParams>) {
-    const { subscriptionID } = ctx.params;
+    const { organizationID } = ctx.params;
     const [subscriptionsMeta] = [{ id: ctx.server.log.generateId() }];
 
-    if (subscriptionID) {
-      const subscription = await this.billingSubscriptionService
-        .findOne(subscriptionID)
-        .then(subscriptionAdapter.fromDB)
-        .catch(() => null);
+    const subscription = await this.billingSubscriptionService
+      .findOneByOrganizationID(organizationID)
+      .then(subscriptionAdapter.fromDB)
+      .catch(() => null);
 
-      return [[Actions.OrganizationSubscription.Replace({ subscription, context: ctx.params }), subscriptionsMeta]];
-    }
-
-    return [];
+    return subscription ? [[Actions.OrganizationSubscription.Replace({ subscription, context: ctx.params }), subscriptionsMeta]] : [];
   }
 
   @Action(Actions.Organization.PatchOne)
@@ -47,9 +43,7 @@ export class OrganizationLoguxController {
     kind: 'organization',
   }))
   @UseRequestContext()
-  @Broadcast<Actions.Organization.PatchOne>(({ context }) => ({
-    channel: Channels.organization.build({ ...context, subscriptionID: context.subscriptionID ?? '' }),
-  }))
+  @Broadcast<Actions.Organization.PatchOne>(({ context }) => ({ channel: Channels.organization.build(context) }))
   async patchOne(@Payload() { id, patch }: Actions.Organization.PatchOne, @AuthMeta() authMeta: AuthMetaPayload): Promise<void> {
     await this.organizationService.patchOne(authMeta.userID, id, patch);
   }
@@ -60,9 +54,7 @@ export class OrganizationLoguxController {
     kind: 'organization',
   }))
   @UseRequestContext()
-  @Broadcast<Actions.OrganizationMember.DeleteOne>(({ context }) => ({
-    channel: Channels.organization.build({ ...context, subscriptionID: context.subscriptionID ?? '' }),
-  }))
+  @Broadcast<Actions.OrganizationMember.DeleteOne>(({ context }) => ({ channel: Channels.organization.build(context) }))
   async deleteMember(@Payload() { id, context }: Actions.OrganizationMember.DeleteOne, @AuthMeta() authMeta: AuthMetaPayload): Promise<void> {
     await this.organizationMemberService.remove(authMeta.userID, context.organizationID, id);
   }

@@ -11,13 +11,9 @@ import { ChargebeeSubscriptionStatus } from '@/models';
 import { Thunk } from '@/store/types';
 import { getErrorMessage } from '@/utils/error';
 
-import { chargebeeSubscriptionIDSelector, chargebeeSubscriptionSelector, customerID as customerIDSelector } from './subscription.select';
+import { chargebeeSubscriptionSelector, customerID as customerIDSelector } from './subscription.select';
 
-export const checkout = (
-  organizationID: string,
-  subscriptionID: string,
-  data: Omit<Actions.OrganizationSubscription.CheckoutRequest, 'context'>
-): Thunk<void> => {
+export const checkout = (organizationID: string, data: Omit<Actions.OrganizationSubscription.CheckoutRequest, 'context'>): Thunk<void> => {
   const { itemPriceID, planPrice, editorSeats, period, paymentIntent } = data;
 
   return async (dispatch) => {
@@ -29,11 +25,11 @@ export const checkout = (
           period,
           planPrice,
           paymentIntent,
-          context: { organizationID, subscriptionID },
+          context: { organizationID },
         })
       );
 
-      dispatch.local(Actions.OrganizationSubscription.Replace({ subscription: newSubscription, context: { organizationID, subscriptionID } }));
+      dispatch.local(Actions.OrganizationSubscription.Replace({ subscription: newSubscription, context: { organizationID } }));
 
       toast.success(`Upgraded to ${Utils.string.capitalizeFirstLetter(newSubscription.plan)}!`);
     } catch (err) {
@@ -106,9 +102,8 @@ export const updateSubscriptionPaymentMethod =
     const state = getState();
     const organizationID = WorkspaceV2.active.organizationIDSelector(state);
     const customerID = customerIDSelector(state);
-    const subscriptionID = chargebeeSubscriptionIDSelector(state);
 
-    if (!organizationID || !subscriptionID || !customerID) {
+    if (!organizationID || !customerID) {
       throw new Error('Organization subscription not found');
     }
 
@@ -122,7 +117,7 @@ export const updateSubscriptionPaymentMethod =
     dispatch.local(
       Actions.OrganizationSubscription.UpdatePaymentMethod({
         paymentMethod,
-        context: { organizationID, subscriptionID },
+        context: { organizationID },
       })
     );
   };

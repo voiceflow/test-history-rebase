@@ -92,5 +92,5 @@ export interface Subscription {
 
   metaData?: Record<string, unknown>;
 
-  onDunningPeriod?: boolean;
+  onDunningPeriod: boolean;
 }

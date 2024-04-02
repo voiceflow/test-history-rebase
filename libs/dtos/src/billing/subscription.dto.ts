@@ -26,7 +26,7 @@ export const SubscriptionDTO = z.object({
   entitlements: SubscriptionEntitlementsDTO,
 
   paymentMethod: SubscriptionPaymentMethodDTO.optional(),
-  onDunningPeriod: z.boolean().optional(),
+  onDunningPeriod: z.boolean(),
 });
 
 export type Subscription = z.infer<typeof SubscriptionDTO>;

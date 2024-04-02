@@ -20,7 +20,7 @@ const CancelSubscription = manager.create('BillingCancelSubscription', () => ({ 
     api.preventClose();
 
     try {
-      await cancelSubscription(organization.id, organization.subscription.id);
+      await cancelSubscription(organization.id);
 
       tracking.trackPlanChanged({ currentPlan: (organization.subscription.plan as PlanType) ?? PlanType.PRO, newPlan: PlanType.STARTER });
       toast.success(`Subscription cancelled. Pro features will be available until ${organization.subscription.nextBillingDate}`);

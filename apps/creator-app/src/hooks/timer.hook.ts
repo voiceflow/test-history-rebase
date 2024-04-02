@@ -1,4 +1,4 @@
-import { useCreateConst } from '@voiceflow/ui-next';
+import { useCreateConst, usePersistFunction } from '@voiceflow/ui-next';
 import { useEffect, useRef } from 'react';
 
 interface TimerAPI {
@@ -66,4 +66,26 @@ export const useTimer: UseTimer = (callback: (data: { state: Record<string, any>
       ref.current.state = newState;
     },
   }));
+};
+
+export const usePolling = <Deps extends any[]>(
+  options: { time: number; callback: VoidFunction; shouldLoad?: (deps: Deps) => boolean },
+  dependencies: Deps
+) => {
+  const persistedCallback = usePersistFunction(options.callback);
+
+  useEffect(() => {
+    if (options.shouldLoad && !options.shouldLoad(dependencies)) return undefined;
+    let counterID = 0;
+
+    const load = async () => {
+      counterID = window.setTimeout(async () => {
+        await persistedCallback();
+        load();
+      }, options.time);
+    };
+
+    load();
+    return () => window.clearTimeout(counterID);
+  }, dependencies);
 };

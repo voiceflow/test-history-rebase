@@ -26,15 +26,9 @@ export class BillingSubscriptionLoguxController {
   async checkout(@Payload() data: Actions.OrganizationSubscription.CheckoutRequest, @AuthMeta() authMeta: AuthMetaPayload): Promise<Subscription> {
     const { organizationID } = data.context;
 
-    const subscription = await this.service.findOneByOrganizationID(organizationID);
-
-    if (!subscription) {
-      throw new Error('Subscription not found');
-    }
-
     const { itemPriceID, planPrice, editorSeats, period, paymentIntent } = data;
 
-    return this.service.checkoutAndBroadcast(authMeta, organizationID, subscription.id, {
+    return this.service.checkoutAndBroadcast(authMeta, organizationID, {
       itemPriceID,
       planPrice,
       editorSeats,

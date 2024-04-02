@@ -10,7 +10,6 @@ import { useDispatch } from '@/hooks/store.hook';
 import { useValidators } from '@/hooks/validate.hook';
 import manager from '@/ModalsV2/manager';
 
-import { KBFieldLabel } from '../components/KBFieldLabel/KBFieldLabel.component';
 import { useDocumentLimitError } from '../KnowledgeBaseImport.utils';
 import { submitButtonStyles, textareaStyles } from './KBImportPlainText.css';
 
@@ -67,11 +66,10 @@ export const KBImportPlainText = manager.create('KBImportPlainText', () => ({ ap
       <Modal.Header title="Import text" onClose={api.onClose} testID={tid(TEST_ID, 'header')} />
 
       <Scroll style={{ display: 'block' }}>
-        <Box mt={20} mx={24} mb={24} direction="column" gap={6}>
-          <KBFieldLabel>Content</KBFieldLabel>
-
+        <Box mt={20} mx={24} mb={24} direction="column">
           <TextArea.AutoSize
             {...input.attributes}
+            label="Content"
             disabled={closePrevented}
             errorMessage={input.errorMessage}
             className={textareaStyles}

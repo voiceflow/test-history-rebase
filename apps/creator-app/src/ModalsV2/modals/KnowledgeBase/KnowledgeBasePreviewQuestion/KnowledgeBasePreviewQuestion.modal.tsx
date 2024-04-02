@@ -1,7 +1,7 @@
 import { BaseUtils } from '@voiceflow/base-types';
 import { tid } from '@voiceflow/style';
 import { useForceUpdate } from '@voiceflow/ui';
-import { Box, Link, notify, Scroll, Text, TextArea, Tokens } from '@voiceflow/ui-next';
+import { Box, Link, notify, Scroll, TextArea } from '@voiceflow/ui-next';
 import React from 'react';
 import { DismissableLayerContext } from 'react-dismissable-layers';
 import { generatePath, useHistory } from 'react-router';
@@ -150,12 +150,9 @@ export const KnowledgeBasePreviewQuestion = manager.create(
             />
 
             <Scroll style={{ display: 'block' }}>
-              <Box pt={20} px={24} pb={24} direction="column" gap={6}>
-                <Text variant="fieldLabel" color={Tokens.colors.neutralDark.neutralsDark100}>
-                  Question
-                </Text>
-
+              <Box pt={20} px={24} pb={24} direction="column">
                 <TextArea
+                  label="Question"
                   key={refocusTriggerKey}
                   value={question}
                   error={!!questionError}

@@ -13,7 +13,6 @@ import { useDispatch } from '@/hooks/store.hook';
 import { useValidators } from '@/hooks/validate.hook';
 import manager from '@/ModalsV2/manager';
 
-import { KBFieldLabel } from '../components/KBFieldLabel/KBFieldLabel.component';
 import { KBRefreshRateSelect } from '../components/KBRefreshRateSelect/KBRefreshRateSelect.component';
 import { DEFAULT_DOCUMENT_LIMIT } from '../KnowledgeBaseImport.constant';
 import { filterWhitespace, sanitizeURLsWithDataFormatting, urlsValidator, useDocumentLimitError } from '../KnowledgeBaseImport.utils';
@@ -98,10 +97,10 @@ export const KBImportUrl = manager.create('KBImportURL', () => ({ api, type, ope
       <Scroll style={{ display: 'block' }}>
         <Box mt={20} mb={24} direction="column" gap={16} width="100%">
           <Box direction="column">
-            <Box direction="column" mx={24} gap={6} grow={1}>
-              <KBFieldLabel>URL(s)</KBFieldLabel>
+            <Box direction="column" mx={24} grow={1}>
               <TextArea.AutoSize
                 {...input.attributes}
+                label="URL(s)"
                 caption={input.errored ? undefined : caption}
                 errorMessage={input.errorMessage}
                 disabled={closePrevented}

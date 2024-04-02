@@ -11,7 +11,6 @@ import { usePlanLimitConfig } from '@/hooks/planLimitV2';
 import { useDispatch } from '@/hooks/store.hook';
 import { useValidators } from '@/hooks/validate.hook';
 
-import { KBFieldLabel } from '../../components/KBFieldLabel/KBFieldLabel.component';
 import { DEFAULT_DOCUMENT_LIMIT } from '../../KnowledgeBaseImport.constant';
 import { filterWhitespace, sanitizeURLsWithDataFormatting, urlsValidator, useDocumentLimitError } from '../../KnowledgeBaseImport.utils';
 import { submitButtonStyles, textareaBoxStyles, textareaStyles } from '../KBImportSitemap.css';
@@ -96,11 +95,10 @@ export const KBImportSitemapPreview: React.FC<IKBImportSitemapPreview> = ({
 
       <Box mt={20} direction="column" className={textareaBoxStyles}>
         <Box mx={24} direction="column" gap={6} grow={1}>
-          <KBFieldLabel>URL(s)</KBFieldLabel>
-
           <Box pb={24} direction="column" grow={1}>
             <TextArea.AutoSize
               {...input.attributes}
+              label="URL(s)"
               caption={input.errored ? undefined : `${pluralize('URL', count, true)} added.`}
               errorMessage={input.errorMessage}
               disabled={closePrevented}

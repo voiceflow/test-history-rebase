@@ -25,7 +25,7 @@ export const organizationReducer = reducerWithInitialState<OrganizationState>(IN
     const { organizationID } = context;
     const organization = getOne(state, organizationID);
 
-    if (organization && organization?.chargebeeSubscriptionID === subscription?.id) {
+    if (organization) {
       return patchOne(state, organizationID, { subscription });
     }
 

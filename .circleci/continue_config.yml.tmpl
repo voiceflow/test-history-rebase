@@ -170,7 +170,7 @@ workflows:
           context: dev-test
           env-name: {{ .values.e2e_env_name }}
           branch: {{ .values.branch }}
-          tracked-components: {{ range $service := $modifiedServices }}{{ $service.component_name }} {{ end }}
+          tracked-components: {{ range $service := $modifiedServices }}{{ $service.component_name }}{{ if eq $service.component_name "realtime" }} realtime-http{{ end }} {{ end }}
           filters: *bors_branches_filters
           requires:
             - vfcommon/provision-env

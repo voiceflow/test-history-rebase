@@ -1,14 +1,14 @@
 export const FolderScope = {
-  ENTITY: 'entity',
-  EVENT: 'event',
   FLOW: 'flow',
-  FUNCTION: 'function',
+  EVENT: 'event',
+  ENTITY: 'entity',
   INTENT: 'intent',
   PROMPT: 'prompt',
   PERSONA: 'persona',
+  WORKFLOW: 'workflow',
   RESPONSE: 'response',
-  STORY: 'story',
   VARIABLE: 'variable',
+  FUNCTION: 'function',
   KNOWLEDGE_BASE: 'knowledge-base',
 } as const;
 

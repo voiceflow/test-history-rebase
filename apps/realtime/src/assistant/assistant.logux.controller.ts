@@ -90,9 +90,13 @@ export class AssistantLoguxController {
       // flow
       flowReplaceMeta,
 
+      // workflow
+      workflowReplaceMeta,
+
       // assistant
       assistantAddMeta,
     ] = [
+      { id: ctx.server.log.generateId() },
       { id: ctx.server.log.generateId() },
       { id: ctx.server.log.generateId() },
       { id: ctx.server.log.generateId() },
@@ -126,6 +130,7 @@ export class AssistantLoguxController {
       responses,
       functions,
       assistant,
+      workflows,
       utterances,
       attachments,
       cardButtons,
@@ -173,6 +178,9 @@ export class AssistantLoguxController {
 
       // flows
       Actions.Flow.Replace({ data: flows, context }, flowReplaceMeta),
+
+      // workflows
+      Actions.Workflow.Replace({ data: workflows, context }, workflowReplaceMeta),
 
       // assistant - should be last
       Actions.Assistant.AddOne({ data: assistant, context: { workspaceID: assistant.workspaceID } }, assistantAddMeta),

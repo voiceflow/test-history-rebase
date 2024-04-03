@@ -61,6 +61,7 @@ import { UserService } from './user/user.service';
 import { VariableModule } from './variable/variable.module';
 import { VariableStateModule } from './variable-state/variable-state.module';
 import { VersionModule } from './version/version.module';
+import { WorkflowModule } from './workflow/workflow.module';
 
 @Module({
   imports: [
@@ -256,6 +257,7 @@ import { VersionModule } from './version/version.module';
     FolderModule,
     FlowModule,
     ProgramModule,
+    WorkflowModule,
   ],
   providers: [
     {

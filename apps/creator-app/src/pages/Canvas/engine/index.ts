@@ -696,7 +696,7 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
     let result: Designer.Flow.effect.CreateOneFromSelectionResult;
 
     try {
-      result = await ModalsV2.open(Utils.id.cuid.slug(), ModalsV2.Flow.CreateFromDiagram, {
+      result = await ModalsV2.open(Utils.id.cuid.slug(), ModalsV2.Flow.CreateFromSelection, {
         props: { selection: clipboardData, folderID: null, name: '' },
       });
     } catch {

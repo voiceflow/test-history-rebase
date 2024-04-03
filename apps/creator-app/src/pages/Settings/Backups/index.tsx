@@ -27,7 +27,7 @@ const SettingsBackups: React.FC = () => {
   const projectID = useSelector(Session.activeProjectIDSelector)!;
   const versionID = useSelector(Session.activeVersionIDSelector)!;
   const goToCanvasWithVersionID = useDispatch(Router.goToCanvasWithVersionID);
-  const restoreCMS = useDispatch(Designer.effect.replaceAssistant);
+  const loadEnvironment = useDispatch(Designer.Environment.effect.load);
 
   const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
   const [hasFullVersionPermissions] = usePermission(Permission.PROJECT_FULL_VERSIONS);
@@ -107,10 +107,10 @@ const SettingsBackups: React.FC = () => {
 
   const handleRestore = async (backup: BackupEntity) => {
     setLoading(true);
+
     await designerClient.backup.restoreOne(projectID, backup.id, { clientID: realtimeClient.clientId });
 
-    const cms = await designerClient.assistant.exportCMS(versionID);
-    restoreCMS(cms);
+    await loadEnvironment(versionID);
 
     goToCanvasWithVersionID(versionID);
   };

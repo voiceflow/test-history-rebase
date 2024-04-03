@@ -128,6 +128,7 @@ export class MigrationService {
                 intents: [],
                 entities: [],
                 functions: [],
+                workflows: [],
                 responses: [],
                 utterances: [],
                 attachments: [],

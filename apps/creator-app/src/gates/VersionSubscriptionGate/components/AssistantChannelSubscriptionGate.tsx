@@ -2,7 +2,6 @@ import { status as loguxStatus } from '@logux/client';
 import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { designerClient } from '@/client/designer';
 import { LoadingGate } from '@/components/LoadingGate';
 import * as Designer from '@/ducks/designer';
 import * as Session from '@/ducks/session';
@@ -21,7 +20,7 @@ const AssistantChannelSubscriptionGate: React.FC<AssistantChannelSubscriptionGat
 
   const httpAssistantCMS = useFeature(FeatureFlag.HTTP_ASSISTANT_CMS);
   const activeVersionID = useSelector(Session.activeVersionIDSelector)!;
-  const restoreCMS = useDispatch(Designer.effect.replaceAssistant);
+  const loadEnvironment = useDispatch(Designer.Environment.effect.load);
 
   const isSubscribed = useAssistantSubscription({ versionID, projectID, workspaceID }, [versionID]);
 
@@ -42,22 +41,21 @@ const AssistantChannelSubscriptionGate: React.FC<AssistantChannelSubscriptionGat
       return undefined;
     }
 
-    let skip = false;
     let fetching = false;
     let shouldSync = false;
 
+    const abortController = new AbortController();
+
     const fetchCMS = async () => {
-      if (skip) return;
+      if (abortController.signal.aborted) return;
 
       fetching = true;
 
-      const cms = await designerClient.assistant.exportCMS(activeVersionID);
+      await loadEnvironment(activeVersionID);
 
       fetching = false;
 
-      if (skip) return;
-
-      restoreCMS(cms);
+      if (abortController.signal.aborted) return;
 
       setCMSFetched(true);
     };
@@ -74,7 +72,7 @@ const AssistantChannelSubscriptionGate: React.FC<AssistantChannelSubscriptionGat
     fetchCMS();
 
     return () => {
-      skip = true;
+      abortController.abort();
       unsubscribe();
     };
   }, [isLoaded, httpAssistantCMS.isEnabled]);

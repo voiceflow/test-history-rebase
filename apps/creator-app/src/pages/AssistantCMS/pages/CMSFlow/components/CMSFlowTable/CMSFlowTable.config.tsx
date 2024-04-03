@@ -9,7 +9,7 @@ import type { CMSFlow, CMSFolder } from '../../../../contexts/CMSManager/CMSMana
 import { updatedAtSort, withFieldLocaleCompareSort, withFolderSort } from '../../../../contexts/CMSManager/CMSManager.util';
 import { FlowTableColumn } from './CMSFlowTable.constant';
 
-export const CMS_COMPONENT_TABLE_CONFIG: TableConfig<FlowTableColumn, CMSFolder | CMSFlow> = {
+export const CMS_FLOW_TABLE_CONFIG: TableConfig<FlowTableColumn, CMSFolder | CMSFlow> = {
   columns: {
     [FlowTableColumn.SELECT]: {
       type: FlowTableColumn.SELECT,

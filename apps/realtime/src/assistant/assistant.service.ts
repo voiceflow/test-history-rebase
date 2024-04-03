@@ -582,7 +582,7 @@ export class AssistantService extends MutableService<AssistantORM> {
         (functionVariable) => functionVariable.functionID
       );
 
-      const exportData = this.environment.prepareExportCMSJSONData(cmsData, { userID, workspaceID });
+      const exportData = this.environment.prepareExportCMSData(cmsData, { userID, workspaceID });
 
       return {
         ...exportData,

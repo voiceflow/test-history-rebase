@@ -4,9 +4,7 @@ import React, { useRef } from 'react';
 
 import { CMSEditorDescription } from '@/components/CMS/CMSEditor/CMSEditorDescription/CMSEditorDescription.component';
 import { CMSRoute } from '@/config/routes';
-import { Designer } from '@/ducks';
-import { goToCMSResource } from '@/ducks/router';
-import * as Router from '@/ducks/router';
+import { Designer, Router } from '@/ducks';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
 import { EDITOR_TEST_ID } from '@/pages/AssistantCMS/AssistantCMS.constant';
 
@@ -15,11 +13,8 @@ import { useCMSResourceGetMoreMenu } from '../../../../hooks/cms-resource.hook';
 import { useCMSActiveResourceID } from '../../../../hooks/cms-table.hook';
 
 export const CMSFlowEditor: React.FC = () => {
-  const editorRef = useRef<IEditorAPI>(null);
-  const duplicateOne = useDispatch(Designer.Flow.effect.duplicateOne);
-  const goToDiagram = useDispatch(Router.goToDiagram);
-
   const flowID = useCMSActiveResourceID();
+  const editorRef = useRef<IEditorAPI>(null);
   const getMoreMenu = useCMSResourceGetMoreMenu({
     onRename: () => editorRef.current?.startTitleEditing(),
     onDuplicate: async (id) => {
@@ -30,7 +25,11 @@ export const CMSFlowEditor: React.FC = () => {
   });
 
   const flow = useSelector(Designer.Flow.selectors.oneByID, { id: flowID });
+
   const patchFlow = useDispatch(Designer.Flow.effect.patchOne, flowID);
+  const goToDiagram = useDispatch(Router.goToDiagram);
+  const duplicateOne = useDispatch(Designer.Flow.effect.duplicateOne);
+  const goToCMSResource = useDispatch(Router.goToCMSResource);
 
   if (!flow) return null;
 
@@ -44,16 +43,16 @@ export const CMSFlowEditor: React.FC = () => {
     >
       <Scroll style={{ display: 'block' }}>
         <Box px={24} py={20} direction="column">
-          <Button onClick={() => flow.diagramID && goToDiagram(flow.diagramID)} label="Edit component" variant="primary" fullWidth />
+          <Button onClick={() => goToDiagram(flow.diagramID)} label="Edit component" variant="primary" fullWidth />
         </Box>
 
         <Divider noPadding />
 
         <CMSEditorDescription
           value={flow.description ?? ''}
+          testID={tid('flow', 'description')}
           placeholder="Enter description"
           onValueChange={(description) => patchFlow({ description })}
-          testID={tid('flow', 'description')}
         />
       </Scroll>
     </Editor>

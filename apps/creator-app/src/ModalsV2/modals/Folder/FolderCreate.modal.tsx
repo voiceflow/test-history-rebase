@@ -1,7 +1,7 @@
 import type { Folder } from '@voiceflow/dtos';
 import { FolderScope } from '@voiceflow/dtos';
 import { notify, Scroll } from '@voiceflow/ui-next';
-import { validatorFactory } from '@voiceflow/utils-designer';
+import { folderNameValidator } from '@voiceflow/utils-designer';
 import React from 'react';
 
 import { CMSFormName } from '@/components/CMS/CMSForm/CMSFormName/CMSFormName.component';
@@ -28,7 +28,7 @@ export const FolderCreateModal = modalsManager.create<IFolderCreateModal, Folder
       const nameState = useInputState({ value: nameProp ?? '' });
 
       const validator = useValidators({
-        name: [validatorFactory((name: string) => !!name, 'Folder name is required.'), nameState.setError],
+        name: [folderNameValidator, nameState.setError],
       });
 
       const onCreate = validator.container(async ({ name }) => {

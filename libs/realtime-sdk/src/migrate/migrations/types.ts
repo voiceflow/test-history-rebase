@@ -13,6 +13,7 @@ import {
   ResponseDiscriminator,
   Utterance,
   Variable,
+  Workflow,
 } from '@voiceflow/dtos';
 import { Draft } from 'immer';
 
@@ -49,6 +50,7 @@ export interface MigrationData {
     variables: Variable[];
     assistant: Assistant | null;
     responses: Response[];
+    workflows: Workflow[];
     utterances: Utterance[];
     entityVariants: EntityVariant[];
     requiredEntities: RequiredEntity[];

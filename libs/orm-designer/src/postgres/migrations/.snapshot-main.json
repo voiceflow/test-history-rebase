@@ -919,16 +919,16 @@
           "primary": false,
           "nullable": false,
           "enumItems": [
-            "entity",
-            "event",
             "flow",
-            "function",
+            "event",
+            "entity",
             "intent",
             "prompt",
             "persona",
+            "workflow",
             "response",
-            "story",
             "variable",
+            "function",
             "knowledge-base"
           ],
           "mappedType": "enum"

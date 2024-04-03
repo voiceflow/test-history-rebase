@@ -160,17 +160,15 @@ export class FlowService extends CMSTabularService<FlowORM> {
 
   async createManyAndSync(data: FlowCreateData[], { userID, context }: { userID: number; context: CMSContext }) {
     const diagrams = await this.diagram.createManyComponents(
-      data.map(({ flow, diagram }) => ({ ...diagram, name: flow.name })),
+      data.map(({ name, diagram }) => ({ ...diagram, name })),
       { userID, context }
     );
 
     const flows = await this.createManyForUser(
       userID,
-      data.map(({ flow }, index) => ({
-        name: flow.name,
-        folderID: flow.folderID,
+      data.map((item, index) => ({
+        ...Utils.object.omit(item, ['diagram']),
         diagramID: diagrams[index].diagramID.toJSON(),
-        description: flow.description,
         assistantID: context.assistantID,
         environmentID: context.environmentID,
       }))
@@ -304,11 +302,13 @@ export class FlowService extends CMSTabularService<FlowORM> {
       { userID, context }
     );
 
+    const isNewEnvironment = sourceEnvironmentID && sourceEnvironmentID !== context.environmentID;
+
     const flows = await this.createManyForUser(
       userID,
       sourceFlows.map(({ name, folderID, description }, index) => ({
-        name: sourceEnvironmentID ? name : `${name} (copy)`,
-        folderID,
+        name: isNewEnvironment ? name : `${name} (copy)`,
+        folderID: isNewEnvironment ? null : folderID,
         diagramID: diagrams[index].diagramID.toJSON(),
         description,
         assistantID: context.assistantID,

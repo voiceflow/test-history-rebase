@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.44.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.43.3...@voiceflow/sdk-logux-designer@2.44.0) (2024-04-03)
+
+### Features
+
+* workflow module (COR-1744) ([#7916](https://github.com/voiceflow/creator-app/issues/7916)) ([f1a8e4e](https://github.com/voiceflow/creator-app/commit/f1a8e4e5c2ce9659437e558c9dc1bd5df90e45de))
+
 ## [2.43.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.43.2...@voiceflow/sdk-logux-designer@2.43.3) (2024-04-03)
 
 **Note:** Version bump only for package @voiceflow/sdk-logux-designer

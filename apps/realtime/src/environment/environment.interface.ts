@@ -15,6 +15,7 @@ import {
   ResponseObject,
   UtteranceObject,
   VariableObject,
+  WorkflowObject,
 } from '@voiceflow/orm-designer';
 
 import { AnyAttachmentObjectWithType } from '@/attachment/attachment.interface';
@@ -27,6 +28,7 @@ export interface EnvironmentCMSData {
   variables: VariableObject[];
   functions: FunctionObject[];
   responses: ResponseObject[];
+  workflows: WorkflowObject[];
   utterances: UtteranceObject[];
   attachments: AnyAttachmentObjectWithType[];
   cardButtons: CardButtonObject[];

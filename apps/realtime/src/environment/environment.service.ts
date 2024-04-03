@@ -48,6 +48,7 @@ import { ProjectService } from '@/project/project.service';
 import { ResponseService } from '@/response/response.service';
 import { VariableService } from '@/variable/variable.service';
 import { VersionService } from '@/version/version.service';
+import { WorkflowService } from '@/workflow/workflow.service';
 
 import { EnvironmentCMSExportImportDataDTO } from './dtos/environment-cms-export-import-data.dto';
 import { EnvironmentExportDTO } from './dtos/environment-export-data.dto';
@@ -81,6 +82,8 @@ export class EnvironmentService {
     private readonly response: ResponseService,
     @Inject(VariableService)
     private readonly variable: VariableService,
+    @Inject(WorkflowService)
+    private readonly workflow: WorkflowService,
     @Inject(AttachmentService)
     private readonly attachment: AttachmentService,
     @Inject(FunctionService)
@@ -160,6 +163,7 @@ export class EnvironmentService {
       ...this.entity.toJSONWithSubResources(data),
       ...this.folder.toJSONWithSubResources(data),
       ...this.intent.toJSONWithSubResources(data),
+      ...this.workflow.toJSONWithSubResources(data),
       ...this.response.toJSONWithSubResources(data),
       ...this.variable.toJSONWithSubResources(data),
       ...this.attachment.toJSONWithSubResources(data),
@@ -302,25 +306,10 @@ export class EnvironmentService {
       ...this.folder.prepareExportData(data, { backup }),
       ...this.response.prepareExportData(data, { backup }),
       ...this.variable.prepareExportData(data, { backup }),
+      ...this.workflow.prepareExportData(data, { backup }),
       ...this.attachment.prepareExportData(data, { backup }),
 
       ...(cmsFunctionsEnabled && this.functionService.prepareExportData(data, { backup })),
-    };
-  }
-
-  public prepareExportCMSJSONData(data: EnvironmentCMSData, { userID, workspaceID }: { userID: number; workspaceID: number }) {
-    const cmsFunctionsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_FUNCTIONS, { userID, workspaceID });
-
-    return {
-      ...this.flow.prepareExportData(data),
-      ...this.entity.prepareExportData(data),
-      ...this.folder.prepareExportData(data),
-      ...this.intent.prepareExportData(data),
-      ...this.response.prepareExportData(data),
-      ...this.variable.prepareExportData(data),
-      ...this.attachment.prepareExportData(data),
-
-      ...(cmsFunctionsEnabled && this.functionService.prepareExportData(data)),
     };
   }
 
@@ -375,6 +364,7 @@ export class EnvironmentService {
     }: { userID: number; backup?: boolean; workspaceID: number; assistantID: string; environmentID: string }
   ) {
     const cmsFunctionsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_FUNCTIONS, { userID, workspaceID });
+    const cmsWorkflowsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_WORKFLOWS, { userID, workspaceID });
 
     const prepareDataContext = { userID, backup, assistantID, environmentID };
 
@@ -423,6 +413,8 @@ export class EnvironmentService {
           { functions: cms.functions, functionPaths: cms.functionPaths, functionVariables: cms.functionVariables },
           prepareDataContext
         )),
+
+      ...(cmsWorkflowsEnabled && cms.workflows && this.workflow.prepareImportData({ workflows: cms.workflows }, prepareDataContext)),
     };
   }
 
@@ -500,6 +492,14 @@ export class EnvironmentService {
         })
       );
     }
+
+    if (importData.workflows?.length) {
+      await this.workflow.importManyWithSubResources(
+        this.workflow.fromJSONWithSubResources({
+          workflows: importData.workflows,
+        })
+      );
+    }
   }
 
   async findOneCMSData(environmentID: string) {
@@ -509,6 +509,7 @@ export class EnvironmentService {
       { intents, utterances, requiredEntities },
       { folders },
       { variables },
+      { workflows },
       { responses, responseVariants, responseAttachments, responseDiscriminators },
       { attachments, cardButtons },
       { functions, functionPaths, functionVariables },
@@ -518,6 +519,7 @@ export class EnvironmentService {
       this.intent.findManyWithSubResourcesByEnvironment(environmentID),
       this.folder.findManyWithSubResourcesByEnvironment(environmentID),
       this.variable.findManyWithSubResourcesByEnvironment(environmentID),
+      this.workflow.findManyWithSubResourcesByEnvironment(environmentID),
       this.response.findManyWithSubResourcesByEnvironment(environmentID),
       this.attachment.findManyWithSubResourcesByEnvironment(environmentID),
       this.functionService.findManyWithSubResourcesByEnvironment(environmentID),
@@ -531,6 +533,7 @@ export class EnvironmentService {
       functions,
       responses,
       variables,
+      workflows,
       utterances,
       attachments,
       cardButtons,
@@ -587,6 +590,7 @@ export class EnvironmentService {
       entities = [],
       responses = [],
       variables = [],
+      workflows = [],
       utterances = [],
       entityVariants = [],
       requiredEntities = [],
@@ -595,8 +599,8 @@ export class EnvironmentService {
     } = this.util.getUpdatedCMSData(data, patches);
 
     // ORDER MATTERS
-
     await this.flow.upsertManyWithSubResources({ flows }, meta);
+    await this.workflow.upsertManyWithSubResources({ workflows }, meta);
     await this.variable.upsertManyWithSubResources({ variables }, meta);
     await this.entity.upsertManyWithSubResources({ entities, entityVariants }, meta);
     await this.response.upsertManyWithSubResources({ responses, responseVariants, responseAttachments: [], responseDiscriminators }, meta);
@@ -608,6 +612,7 @@ export class EnvironmentService {
     await Promise.all([
       this.flow.deleteManyByEnvironment(environmentID),
       this.intent.deleteManyByEnvironment(environmentID),
+      this.workflow.deleteManyByEnvironment(environmentID),
       this.functionService.deleteManyByEnvironment(environmentID),
     ]);
 
@@ -669,6 +674,7 @@ export class EnvironmentService {
       const { flows } = await this.flow.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload);
       const { folders } = await this.folder.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload);
       const { variables } = await this.variable.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload);
+      const { workflows } = await this.workflow.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload);
       const { attachments, cardButtons } = await this.attachment.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload);
       const { responses, responseVariants, responseAttachments, responseDiscriminators } =
         await this.response.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload);
@@ -684,6 +690,7 @@ export class EnvironmentService {
         functions,
         responses,
         variables,
+        workflows,
         utterances,
         attachments,
         cardButtons,

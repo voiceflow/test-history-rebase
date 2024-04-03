@@ -6,7 +6,7 @@ import { notify, Nullable } from '@voiceflow/ui-next';
 
 import PageProgressBar, { PageProgress } from '@/components/PageProgressBar';
 import { linksByNodeIDSelector } from '@/ducks/creatorV2';
-import * as ProjectV2 from '@/ducks/projectV2';
+import * as Project from '@/ducks/projectV2';
 import { schemaVersionSelector } from '@/ducks/versionV2/selectors/active';
 import { getActiveAssistantContext, getActiveDomainContext } from '@/ducks/versionV2/utils';
 import type { Thunk } from '@/store/types';
@@ -104,9 +104,9 @@ export const createOneFromSelection =
     const state = getState();
 
     const context = getActiveAssistantContext(state);
-    const platform = ProjectV2.active.platformSelector(state);
+    const platform = Project.active.platformSelector(state);
     const flowsSize = selectors.count(state);
-    const projectType = ProjectV2.active.projectTypeSelector(state);
+    const projectType = Project.active.projectTypeSelector(state);
     const schemaVersion = schemaVersionSelector(state);
     const allNodesLinks = selection.nodes.flatMap((node) => linksByNodeIDSelector(state, { id: node.id }));
 

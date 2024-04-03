@@ -9,7 +9,7 @@ import { CMSEmpty } from '../../../../components/CMSEmpty/CMSEmpty.component';
 import { useCMSRowItemClick, useCMSRowItemContextMenu, useCMSRowItemNavigate } from '../../../../hooks/cms-row-item.hook';
 import { useFlowCMSManager, useOnFlowCreate } from '../../CMSFlow.hook';
 import { flowColumnsOrderAtom } from './CMSFlowTable.atom';
-import { CMS_COMPONENT_TABLE_CONFIG } from './CMSFlowTable.config';
+import { CMS_FLOW_TABLE_CONFIG } from './CMSFlowTable.config';
 import { FlowTableColumn } from './CMSFlowTable.constant';
 
 export const CMSFlowTable: React.FC = () => {
@@ -17,10 +17,12 @@ export const CMSFlowTable: React.FC = () => {
   const onRowClick = useCMSRowItemClick();
   const cmsManager = useFlowCMSManager();
   const onRowNavigate = useCMSRowItemNavigate();
+
   const duplicateOne = useDispatch(Designer.Flow.effect.duplicateOne);
+
   const rowContextMenu = useCMSRowItemContextMenu({
-    nameColumnType: FlowTableColumn.NAME,
     onDuplicate: duplicateOne,
+    nameColumnType: FlowTableColumn.NAME,
   });
 
   return (
@@ -33,7 +35,7 @@ export const CMSFlowTable: React.FC = () => {
       learnMoreLink={CMS_FLOW_LEARN_MORE}
     >
       <Table
-        config={CMS_COMPONENT_TABLE_CONFIG}
+        config={CMS_FLOW_TABLE_CONFIG}
         itemsAtom={cmsManager.dataToRender}
         onRowClick={onRowClick}
         onRowNavigate={onRowNavigate}

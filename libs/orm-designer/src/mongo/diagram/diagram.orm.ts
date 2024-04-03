@@ -26,6 +26,10 @@ export class DiagramORM extends MongoAtomicORM<DiagramEntity> {
   }
 
   deleteManyByVersionIDAndDiagramIDs(versionID: string, diagramIDs: string[]) {
+    if (!diagramIDs.length) {
+      return Promise.resolve(0);
+    }
+
     return this.delete({
       versionID: new ObjectId(versionID),
       diagramID: { $in: diagramIDs.map((id) => new ObjectId(id)) },

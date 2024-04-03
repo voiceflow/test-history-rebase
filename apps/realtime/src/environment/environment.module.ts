@@ -19,6 +19,7 @@ import { ResponseDiscriminatorModule } from '@/response/response-discriminator/r
 import { ResponseVariantModule } from '@/response/response-variant/response-variant.module';
 import { VariableModule } from '@/variable/variable.module';
 import { VersionModule } from '@/version/version.module';
+import { WorkflowModule } from '@/workflow/workflow.module';
 
 import { EnvironmentLoguxController } from './environment.logux.controller';
 import { EnvironmentService } from './environment.service';
@@ -38,6 +39,7 @@ import { EnvironmentPublicHTTPController } from './environment-public.http.contr
     ResponseModule,
     FunctionModule,
     VariableModule,
+    WorkflowModule,
     UtteranceModule,
     AttachmentModule,
     EntityVariantModule,

@@ -19,18 +19,21 @@ import type {
   RequiredEntityObject,
   UtteranceObject,
   VariableObject,
+  WorkflowObject,
 } from '@voiceflow/orm-designer';
 import { DatabaseTarget, FolderORM } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { CMSObjectService } from '@/common';
 import { cmsBroadcastContext, injectAssistantAndEnvironmentIDs, toPostgresEntityIDs } from '@/common/utils';
+import { DiagramService } from '@/diagram/diagram.service';
 import { EntityService } from '@/entity/entity.service';
 import { FlowService } from '@/flow/flow.service';
 import { FunctionService } from '@/function/function.service';
 import { IntentService } from '@/intent/intent.service';
 import { CMSBroadcastMeta, CMSContext } from '@/types';
 import { VariableService } from '@/variable/variable.service';
+import { WorkflowService } from '@/workflow/workflow.service';
 
 import type { FolderExportImportDataDTO } from './dtos/folder-export-import-data.dto';
 import type { FolderCreateData } from './folder.interface';
@@ -58,8 +61,12 @@ export class FolderService extends CMSObjectService<FolderORM> {
     private readonly entity: EntityService,
     @Inject(IntentService)
     private readonly intent: IntentService,
+    @Inject(DiagramService)
+    private readonly diagram: DiagramService,
     @Inject(VariableService)
     private readonly variable: VariableService,
+    @Inject(WorkflowService)
+    private readonly workflow: WorkflowService,
     @Inject(FunctionService)
     private readonly functionService: FunctionService
   ) {
@@ -215,31 +222,37 @@ export class FolderService extends CMSObjectService<FolderORM> {
   /* Delete */
 
   async collectRelationsToDelete(environmentID: string, folderIDs: string[]) {
-    const [flows, intents, entities, variables, functions] = await Promise.all([
+    const [flows, intents, entities, variables, workflows, functions] = await Promise.all([
       this.flow.findManyByFolders(environmentID, folderIDs),
       this.intent.findManyByFolders(environmentID, folderIDs),
       this.entity.findManyByFolders(environmentID, folderIDs),
       this.variable.findManyByFolders(environmentID, folderIDs),
+      this.workflow.findManyByFolders(environmentID, folderIDs),
       this.functionService.findManyByFolders(environmentID, folderIDs),
     ]);
 
-    const [flowRelations, intentRelations, entityRelations, variableRelations] = await Promise.all([
+    const [flowRelations, intentRelations, entityRelations, workflowsRelations, variableRelations] = await Promise.all([
       this.flow.collectRelationsToDelete(flows),
       this.intent.collectRelationsToDelete(environmentID, toPostgresEntityIDs(intents)),
       this.entity.collectRelationsToDelete(environmentID, toPostgresEntityIDs(entities)),
+      this.workflow.collectRelationsToDelete(workflows),
       this.functionService.collectRelationsToDelete(environmentID, toPostgresEntityIDs(functions)),
     ]);
 
     return {
-      ...flowRelations,
+      ...Utils.object.omit(flowRelations, ['diagrams']),
       ...intentRelations,
       ...entityRelations,
       ...variableRelations,
+      ...Utils.object.omit(workflowsRelations, ['diagrams']),
       flows,
       intents,
       entities,
       variables,
       functions,
+      workflows,
+      flowDiagrams: flowRelations.diagrams,
+      workflowDiagrams: workflowsRelations.diagrams,
     };
   }
 
@@ -248,7 +261,7 @@ export class FolderService extends CMSObjectService<FolderORM> {
   }
 
   async deleteManyAndSync(ids: string[], { userID, context }: { userID: number; context: CMSContext }) {
-    return this.postgresEM.transactional(async () => {
+    const result = await this.postgresEM.transactional(async () => {
       const folders = await this.findManyByParents(context.environmentID, ids);
       const relations = await this.collectRelationsToDelete(context.environmentID, toPostgresEntityIDs(folders));
       const entitySync = await this.entity.syncRelationsOnDelete(relations, { userID, context });
@@ -268,6 +281,13 @@ export class FolderService extends CMSObjectService<FolderORM> {
         },
       };
     });
+
+    await this.diagram.deleteManyByVersionIDAndDiagramIDs(
+      context.environmentID,
+      [...result.delete.flowDiagrams, ...result.delete.workflowDiagrams].map((item) => item.diagramID.toJSON())
+    );
+
+    return result;
   }
 
   async broadcastDeleteMany(
@@ -284,12 +304,14 @@ export class FolderService extends CMSObjectService<FolderORM> {
         folders: FolderObject[];
         intents: IntentObject[];
         entities: EntityObject[];
-        diagrams: DiagramObject[];
         variables: VariableObject[];
+        workflows: WorkflowObject[];
         functions: FunctionObject[];
         utterances: UtteranceObject[];
+        flowDiagrams: DiagramObject[];
         functionPaths: FunctionPathObject[];
         entityVariants: EntityVariantObject[];
+        workflowDiagrams: DiagramObject[];
         requiredEntities: RequiredEntityObject[];
         functionVariables: FunctionVariableObject[];
       };
@@ -299,7 +321,7 @@ export class FolderService extends CMSObjectService<FolderORM> {
     await Promise.all([
       this.flow.broadcastDeleteMany(
         {
-          delete: Utils.object.pick(del, ['flows', 'diagrams']),
+          delete: { flows: del.flows, diagrams: del.flowDiagrams },
         },
         meta
       ),
@@ -322,6 +344,13 @@ export class FolderService extends CMSObjectService<FolderORM> {
       this.variable.broadcastDeleteMany(
         {
           delete: Utils.object.pick(del, ['variables']),
+        },
+        meta
+      ),
+
+      this.workflow.broadcastDeleteMany(
+        {
+          delete: { workflows: del.workflows, diagrams: del.workflowDiagrams },
         },
         meta
       ),

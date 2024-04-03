@@ -24,6 +24,9 @@ const AssistantCMSVariable = withSuspense({ loader: <CMSPageLoader /> })(
 const AssistantCMSFlow = withSuspense({ loader: <CMSPageLoader /> })(
   lazy({ name: 'CMSFlow', factory: () => import('./pages/CMSFlow/CMSFlow.page') })
 );
+const AssistantCMSWorkflow = withSuspense({ loader: <CMSPageLoader /> })(
+  lazy({ name: 'CMSWorkflow', factory: () => import('./pages/CMSWorkflow/CMSWorkflow.page') })
+);
 const AssistantCMSFunction = withSuspense({ loader: <CMSPageLoader /> })(
   lazy({ name: 'CMSFunction', factory: () => import('./pages/CMSFunction/CMSFunction.page') })
 );
@@ -36,7 +39,8 @@ const AssistantCMS = () => {
   const loadKBDocuments = useDispatch(Designer.KnowledgeBase.Document.effect.loadAll);
 
   const { isEnabled: isKbEnabled } = useFeature(Realtime.FeatureFlag.KNOWLEDGE_BASE);
-  const { isEnabled: isFunctionsCmsEnabled } = useFeature(Realtime.FeatureFlag.CMS_FUNCTIONS);
+  const { isEnabled: isCMSWorkflowsEnabled } = useFeature(Realtime.FeatureFlag.CMS_WORKFLOWS);
+  const { isEnabled: isCMSFunctionsEnabled } = useFeature(Realtime.FeatureFlag.CMS_FUNCTIONS);
 
   React.useEffect(() => {
     if (isKbEnabled) {
@@ -58,7 +62,9 @@ const AssistantCMS = () => {
 
         {isKbEnabled && <Route path={Path.CMS_KNOWLEDGE_BASE} component={AssistantCMSKnowledgeBase} />}
 
-        {isFunctionsCmsEnabled && <Route path={Path.CMS_FUNCTION} component={AssistantCMSFunction} />}
+        {isCMSFunctionsEnabled && <Route path={Path.CMS_FUNCTION} component={AssistantCMSFunction} />}
+
+        {isCMSWorkflowsEnabled && <Route path={Path.CMS_WORKFLOW} component={AssistantCMSWorkflow} />}
 
         <Redirect to={Path.CMS_INTENT} />
       </Switch>

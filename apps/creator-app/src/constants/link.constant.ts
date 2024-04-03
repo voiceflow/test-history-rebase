@@ -16,13 +16,15 @@ export const PERSONAS_LEARN_MORE = 'https://learn.voiceflow.com/hc/en-us/article
 export const PARTIAL_IMPORT_LEARN_MORE = 'https://learn.voiceflow.com/hc/en-us/articles/16574928375949';
 
 // CMS
+export const CMS_FLOW_LEARN_MORE = 'https://learn.voiceflow.com/hc/en-us/articles/9178425818893-Component';
 export const CMS_ENTITY_LEARN_MORE = 'https://learn.voiceflow.com/hc/en-us/articles/22213888147213-Entities';
 export const CMS_INTENT_LEARN_MORE = 'https://learn.voiceflow.com/hc/en-us/articles/22213856020237-Intents';
 export const CMS_FOLDER_LEARN_MORE = 'https://learn.voiceflow.com/hc/en-us/articles';
 export const CMS_VARIABLE_LEARN_MORE = 'https://learn.voiceflow.com/hc/en-us/articles';
-export const CMS_FLOW_LEARN_MORE = 'https://learn.voiceflow.com/hc/en-us/articles/9178425818893-Component';
 export const CMS_FUNCTIONS_LEARN_MORE = 'https://learn.voiceflow.com/hc/en-us/articles/22213937640589-Function';
 export const CMS_KNOWLEDGE_BASE_LEARN_MORE = 'https://learn.voiceflow.com/hc/en-us/articles/22213924437517-Knowledge-Base';
+// TODO: add correct page
+export const CMS_WORKFLOW_LEARN_MORE = 'https://learn.voiceflow.com/hc/en-us/articles/9178425818893-Component';
 
 // TODO: add correct pages
 export const LLM_INTENT_CLASSIFICATION_LEARN_MORE = 'https://learn.voiceflow.com/hc/en-us/articles/22213856020237-Intents';

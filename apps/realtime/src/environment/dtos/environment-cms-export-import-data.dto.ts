@@ -8,6 +8,7 @@ import { FunctionExportImportDataDTO } from '@/function/dtos/function-export-imp
 import { IntentExportImportDataDTO } from '@/intent/dtos/intent-export-import-data.dto';
 import { ResponseExportImportDataDTO } from '@/response/dtos/response-export-import-data.dto';
 import { VariableExportImportDataDTO } from '@/variable/dtos/variable-export-import-data.dto';
+import { WorkflowExportImportDataDTO } from '@/workflow/dtos/workflow-export-import-data.dto';
 
 export const EnvironmentCMSExportImportDataDTO = z
   .object({})
@@ -18,6 +19,7 @@ export const EnvironmentCMSExportImportDataDTO = z
   .merge(ResponseExportImportDataDTO.partial())
   .merge(FunctionExportImportDataDTO.partial())
   .merge(VariableExportImportDataDTO.partial())
+  .merge(WorkflowExportImportDataDTO.partial())
   .merge(AttachmentExportImportDataDTO.partial());
 
 export type EnvironmentCMSExportImportDataDTO = z.infer<typeof EnvironmentCMSExportImportDataDTO>;

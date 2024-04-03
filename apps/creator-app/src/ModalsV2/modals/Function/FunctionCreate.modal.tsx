@@ -3,7 +3,7 @@ import type { Function as FunctionType } from '@voiceflow/dtos';
 import { IconName } from '@voiceflow/icons';
 import { tid } from '@voiceflow/style';
 import { Dropdown, Menu, notify, TextArea, Tooltip } from '@voiceflow/ui-next';
-import { validatorFactory } from '@voiceflow/utils-designer';
+import { functionNameValidator } from '@voiceflow/utils-designer';
 import React, { useState } from 'react';
 
 import { CMSFormName } from '@/components/CMS/CMSForm/CMSFormName/CMSFormName.component';
@@ -37,7 +37,7 @@ export const FunctionCreateModal = modalsManager.create<IFunctionCreateModal, Fu
       const nameState = useInputState({ value: nameProp ?? '' });
 
       const validator = useValidators({
-        name: [validatorFactory((name: string) => name.trim(), 'Name is required.'), nameState.setError],
+        name: [functionNameValidator, nameState.setError],
       });
 
       const onCreate = validator.container(async (fields) => {
@@ -175,5 +175,6 @@ export const FunctionCreateModal = modalsManager.create<IFunctionCreateModal, Fu
           </Modal.Footer>
         </Modal.Container>
       );
-    }
+    },
+  { backdropDisabled: true }
 );

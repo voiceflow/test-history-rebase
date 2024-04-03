@@ -46,6 +46,7 @@ export const usePartialImport = () => {
             variables: [],
             assistant: null,
             responses: [],
+            workflows: [],
             utterances: [],
             entityVariants: [],
             requiredEntities: [],

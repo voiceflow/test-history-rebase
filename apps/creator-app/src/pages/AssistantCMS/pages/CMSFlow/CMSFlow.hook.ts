@@ -13,8 +13,8 @@ export const useOnFlowCreate = () => {
   const history = useHistory();
   const cmsManager = useFlowCMSManager();
   const getAtomValue = useGetAtomValue();
-  const getCMSResourcePath = useCMSResourceGetPath();
   const flowCreateModal = useFlowCreateModal();
+  const getCMSResourcePath = useCMSResourceGetPath();
 
   return async ({ name }: { name?: string } = {}) => {
     try {

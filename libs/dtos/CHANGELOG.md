@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.53.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.52.1...@voiceflow/dtos@1.53.0) (2024-04-03)
+
+### Features
+
+* refactored function definition location (COR-1757) ([#7919](https://github.com/voiceflow/creator-app/issues/7919)) ([5a52229](https://github.com/voiceflow/creator-app/commit/5a5222961f1e450a79d7a85933137bbdb22a1b04))
+
 ## [1.52.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.52.0...@voiceflow/dtos@1.52.1) (2024-04-03)
 
 ### Bug Fixes

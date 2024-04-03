@@ -8,6 +8,9 @@ export enum SessionAction {
   SET_ACTIVE_PROJECT_ID = 'SESSION:ACTIVE_PROJECT_ID:SET',
   SET_ACTIVE_VERSION_ID = 'SESSION:ACTIVE_VERSION_ID:SET',
   SET_ACTIVE_DIAGRAM_ID = 'SESSION:ACTIVE_DIAGRAM_ID:SET',
+  /**
+   * @deprecated remove when FeatureFlag.CMS_WORKFLOWS are released
+   */
   SET_ACTIVE_DOMAIN_ID = 'SESSION:ACTIVE_DOMAIN_ID:SET',
   SET_ACTIVE_FLOW_ID = 'SESSION:ACTIVE_FLOW_ID:SET',
   SET_PROTOTYPE_SIDEBAR_VISIBLE = 'SESSION:PROTOTYPE_SIDEBAR_VISIBLE:SET',
@@ -17,8 +20,6 @@ export enum SessionAction {
 
 export type SetAuthToken = Action<SessionAction.SET_AUTH_TOKEN, string | null>;
 
-export type SetActiveFlowID = Action<SessionAction.SET_ACTIVE_FLOW_ID, string | null>;
-
 export type SetActiveWorkspaceID = Action<SessionAction.SET_ACTIVE_WORKSPACE_ID, string | null>;
 
 export type SetActiveProjectID = Action<SessionAction.SET_ACTIVE_PROJECT_ID, string | null>;
@@ -27,6 +28,9 @@ export type SetActiveVersionID = Action<SessionAction.SET_ACTIVE_VERSION_ID, str
 
 export type SetActiveDiagramID = Action<SessionAction.SET_ACTIVE_DIAGRAM_ID, string | null>;
 
+/**
+ * @deprecated remove when FeatureFlag.CMS_WORKFLOWS are released
+ */
 export type SetActiveDomainID = Action<SessionAction.SET_ACTIVE_DOMAIN_ID, string | null>;
 
 export type SetPrototypeSidebarVisible = Action<SessionAction.SET_PROTOTYPE_SIDEBAR_VISIBLE, boolean>;
@@ -38,14 +42,11 @@ export type AnySessionAction =
   | SetActiveVersionID
   | SetActiveDiagramID
   | SetActiveDomainID
-  | SetActiveFlowID
   | SetPrototypeSidebarVisible;
 
 // action creators
 
 export const setAuthToken = (token: string | null): SetAuthToken => createAction(SessionAction.SET_AUTH_TOKEN, token);
-
-export const setActiveFlowID = (flowID: string | null): SetActiveFlowID => createAction(SessionAction.SET_ACTIVE_FLOW_ID, flowID);
 
 export const setActiveWorkspaceID = (workspaceID: string | null): SetActiveWorkspaceID =>
   createAction(SessionAction.SET_ACTIVE_WORKSPACE_ID, workspaceID);
@@ -56,6 +57,9 @@ export const setActiveVersionID = (versionID: string | null): SetActiveVersionID
 
 export const setActiveDiagramID = (diagramID: string | null): SetActiveDiagramID => createAction(SessionAction.SET_ACTIVE_DIAGRAM_ID, diagramID);
 
+/**
+ * @deprecated remove when FeatureFlag.CMS_WORKFLOWS are released
+ */
 export const setActiveDomainID = (domainID: string | null): SetActiveDomainID => createAction(SessionAction.SET_ACTIVE_DOMAIN_ID, domainID);
 
 export const setPrototypeSidebarVisible = (isVisible: boolean): SetPrototypeSidebarVisible =>

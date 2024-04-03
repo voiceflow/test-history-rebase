@@ -69,6 +69,7 @@ export const baseBlockAdapter = {
   [BlockType.AI_RESPONSE]: aiResponseAdapter,
   [BlockType.INTEGRATION]: integrationAdapter,
   [BlockType.GO_TO_INTENT]: goToIntentAdapter,
+  // TODO: remove when FeatureFlag.CMS_WORKFLOWS is released
   [BlockType.GO_TO_DOMAIN]: goToDomainAdapter,
   [BlockType.CUSTOM_BLOCK_POINTER]: customBlockPointerAdapter,
   [BlockType.FUNCTION]: functionAdapter,
@@ -106,6 +107,7 @@ export const baseOutPortAdapter = {
   [BlockType.GO_TO_NODE]: goToNodeOutPortsAdapter,
   [BlockType.INTEGRATION]: integrationOutPortsAdapter,
   [BlockType.GO_TO_INTENT]: goToIntentOutPortsAdapter,
+  // TODO: remove when FeatureFlag.CMS_WORKFLOWS is released
   [BlockType.GO_TO_DOMAIN]: goToDomainOutPortsAdapter,
   [BlockType.CUSTOM_BLOCK_POINTER]: customBlockPointerOutPortsAdapter,
 
@@ -147,6 +149,7 @@ export const baseOutPortAdapterV2 = {
   [BlockType.GO_TO_NODE]: goToNodeOutPortsAdapterV2,
   [BlockType.INTEGRATION]: integrationOutPortsAdapterV2,
   [BlockType.GO_TO_INTENT]: goToIntentOutPortsAdapterV2,
+  // TODO: remove when FeatureFlag.CMS_WORKFLOWS is released
   [BlockType.GO_TO_DOMAIN]: goToDomainOutPortsAdapterV2,
   [BlockType.CUSTOM_BLOCK_POINTER]: customBlockPointerOutPortsAdapterV2,
   [BlockType.FUNCTION]: functionOutPortsAdapterV2,

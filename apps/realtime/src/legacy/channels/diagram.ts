@@ -17,7 +17,16 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
     return `${Realtime.DIAGRAM_KEY}:${versionID}:${diagramID}:${nodeID}`;
   }
 
+  // TODO: replace with `Realtime.Channels.diagramV2` when FeatureFlag.CMS_WORKFLOWS are released
   protected channel = Realtime.Channels.diagram;
+
+  // TODO: remove when FeatureFlag.CMS_WORKFLOWS are released
+  setup() {
+    super.setup();
+
+    // subscribes to a new diagram channel without the domainID
+    this.setupChannel(Realtime.Channels.diagramV2.buildMatcher());
+  }
 
   protected access = (ctx: DiagramChannelContext): Promise<boolean> => this.services.version.access.canRead(Number(ctx.userId), ctx.params.versionID);
 

@@ -1,9 +1,11 @@
+import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { Checkbox, Menu } from '@voiceflow/ui';
 import React from 'react';
 
 import { Designer } from '@/ducks';
 import * as UI from '@/ducks/ui';
 import { useDispatch, useSelector } from '@/hooks';
+import { useFeature } from '@/hooks/feature';
 import { FILTER_LABELS, FilterType } from '@/pages/Canvas/components/ThreadHistoryDrawer/constants';
 import MenuCheckboxOption from '@/pages/Canvas/managers/components/MenuCheckboxOption';
 
@@ -13,22 +15,24 @@ interface FilterMenuProps {
 }
 
 const FilterMenu: React.FC<FilterMenuProps> = ({ setFilter, filter }) => {
+  const cmsWorkflows = useFeature(FeatureFlag.CMS_WORKFLOWS);
+
   const commentsVisible = useSelector(UI.isCommentsVisible);
   const openThreadsCount = useSelector(Designer.Thread.selectors.allOpenedCount);
-  const isTopicThreadsOnly = useSelector(UI.isTopicThreadsOnly);
   const isDomainThreadsOnly = useSelector(UI.isDomainThreadsOnly);
   const resolvedThreadsCount = useSelector(Designer.Thread.selectors.allResolvedCount);
+  const isWorkflowThreadsOnly = useSelector(UI.isWorkflowThreadsOnly);
   const isMentionedThreadsOnly = useSelector(UI.isMentionedThreadsOnly);
 
-  const toggleTopicThreadsOnly = useDispatch(UI.toggleTopicThreadsOnly);
   const toggleDomainThreadsOnly = useDispatch(UI.toggleDomainThreadsOnly);
   const toggleCommentVisibility = useDispatch(UI.toggleCommentVisibility);
+  const toggleWorkflowThreadsOnly = useDispatch(UI.toggleWorkflowThreadsOnly);
   const toggleMentionedThreadsOnly = useDispatch(UI.toggleMentionedThreadsOnly);
 
   return (
     <Menu
-      noBottomPadding
       width={250}
+      noBottomPadding
       options={[
         {
           note: openThreadsCount ? `${openThreadsCount}` : undefined,
@@ -52,20 +56,22 @@ const FilterMenu: React.FC<FilterMenuProps> = ({ setFilter, filter }) => {
         },
         {
           label: (
-            <MenuCheckboxOption type={Checkbox.Type.CHECKBOX} checked={isTopicThreadsOnly}>
-              Only current topic
+            <MenuCheckboxOption type={Checkbox.Type.CHECKBOX} checked={isWorkflowThreadsOnly}>
+              Only current {cmsWorkflows.isEnabled ? 'workflow' : 'topic'}
             </MenuCheckboxOption>
           ),
-          onClick: toggleTopicThreadsOnly,
+          onClick: toggleWorkflowThreadsOnly,
         },
-        {
-          label: (
-            <MenuCheckboxOption type={Checkbox.Type.CHECKBOX} checked={isDomainThreadsOnly}>
-              Only current domain
-            </MenuCheckboxOption>
-          ),
-          onClick: toggleDomainThreadsOnly,
-        },
+        cmsWorkflows.isEnabled
+          ? null
+          : {
+              label: (
+                <MenuCheckboxOption type={Checkbox.Type.CHECKBOX} checked={isDomainThreadsOnly}>
+                  Only current domain
+                </MenuCheckboxOption>
+              ),
+              onClick: toggleDomainThreadsOnly,
+            },
         { style: { marginBottom: 0 }, label: '', divider: true },
         {
           label: (

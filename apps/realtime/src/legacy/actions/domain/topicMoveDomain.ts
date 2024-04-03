@@ -11,6 +11,10 @@ class TopicMoveDomain extends AbstractDomainResourceControl<Realtime.domain.Topi
     const { creatorID, clientID } = ctx.data;
     const { domainID, versionID, topicDiagramID, newDomainID, rootTopicID } = payload;
 
+    if (!domainID) {
+      throw new Error('domainID is required');
+    }
+
     await Promise.all([
       this.services.domain.topicRemove(versionID, domainID, topicDiagramID),
       this.services.domain.topicAdd(versionID, newDomainID, topicDiagramID),

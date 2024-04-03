@@ -93,6 +93,7 @@ export const MANAGERS_BY_TYPE = {
   [BlockType.URL]: UrlManager,
   [BlockType.GO_TO_INTENT]: GoToIntentManager,
   [BlockType.GO_TO_NODE]: GoToNodeManager,
+  // TODO: remove when FeatureFlag.CMS_WORKFLOWS is released
   [BlockType.GO_TO_DOMAIN]: GoToDomainManager,
   [BlockType.CUSTOM_BLOCK_POINTER]: CustomBlockPointerManager,
   [BlockType.FUNCTION]: FunctionManager,

@@ -119,6 +119,9 @@ export const {
   Consumer: SharedNodesConsumer,
 } = createSelectorContext(DiagramV2.sharedNodesSelector);
 
+/**
+ * @deprecated remove when FeatureFlag.CMS_WORKFLOWS are released
+ */
 export const {
   Context: DomainMapContext,
   Provider: DomainMapProvider,

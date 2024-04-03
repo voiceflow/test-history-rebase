@@ -2,7 +2,6 @@ export { default as AccountLoadingGate } from './AccountLoadingGate';
 export { default as AccountSubscriptionGate } from './AccountSubscriptionGate';
 export { default as CapabilitiesGate } from './CapabilitiesGate';
 export { default as CheckInvitationGate } from './CheckInvitationGate';
-export { default as DiagramSubscriptionGate } from './DiagramSubscriptionGate';
 export { default as FeatureLoadingGate } from './FeatureLoadingGate';
 export { default as MaintenanceGate } from './MaintenanceGate';
 export { default as OrganizationSubscriptionGate } from './OrganizationSubscriptionGate';

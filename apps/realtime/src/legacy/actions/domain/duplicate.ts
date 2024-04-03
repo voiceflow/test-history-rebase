@@ -13,6 +13,10 @@ class DuplicateDomain extends AbstractDomainResourceControl<Realtime.BaseDomainP
     const { creatorID, clientID } = ctx.data;
     const { domainID, versionID, projectID, workspaceID } = payload;
 
+    if (!domainID) {
+      throw new Error('domainID is required');
+    }
+
     const { domain: dbDomain, diagrams: dbDiagrams } = await this.services.domain.duplicate(creatorID, versionID, domainID);
 
     const domain = Realtime.Adapters.domainAdapter.fromDB(dbDomain);

@@ -17,13 +17,20 @@ export abstract class AbstractDiagramActionControl<
     this.services.version.access.canRead(ctx.data.creatorID, action.payload.versionID);
 
   protected resend = (_: Context<D>, action: Action<P>): Resend => ({
-    channel: Realtime.Channels.diagram.build({
-      domainID: action.payload.domainID,
-      diagramID: action.payload.diagramID,
-      projectID: action.payload.projectID,
-      versionID: action.payload.versionID,
-      workspaceID: action.payload.workspaceID,
-    }),
+    channel: action.payload.domainID
+      ? Realtime.Channels.diagram.build({
+          domainID: action.payload.domainID,
+          diagramID: action.payload.diagramID,
+          projectID: action.payload.projectID,
+          versionID: action.payload.versionID,
+          workspaceID: action.payload.workspaceID,
+        })
+      : Realtime.Channels.diagramV2.build({
+          diagramID: action.payload.diagramID,
+          projectID: action.payload.projectID,
+          versionID: action.payload.versionID,
+          workspaceID: action.payload.workspaceID,
+        }),
   });
 
   protected setFlowUpdatedBy = async (ctx: Context<BaseContextData>, payload: P): Promise<void> => {

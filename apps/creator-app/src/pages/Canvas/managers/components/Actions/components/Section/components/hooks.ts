@@ -53,6 +53,7 @@ export const useItemConfig = (getManager: ManagerGetter, data: Realtime.NodeData
             placeholder: 'Select go-to block',
           };
         })
+        // TODO: remove when FeatureFlag.CMS_WORKFLOWS is released
         .when(Realtime.Utils.typeGuards.isGoToDomainNodeData, ({ domainID }) => {
           const domain = domainID ? domainMap[domainID] ?? null : null;
 

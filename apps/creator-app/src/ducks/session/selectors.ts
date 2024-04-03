@@ -26,10 +26,13 @@ export const hasActiveVersionSelector = createSelector([activeVersionIDSelector]
 export const activeDiagramIDSelector = createSelector([rootSelector], ({ activeDiagramID }) => activeDiagramID);
 export const hasActiveDiagramSelector = createSelector([activeDiagramIDSelector], (id) => !!id);
 
+/**
+ * @deprecated remove when FeatureFlag.CMS_WORKFLOWS are released
+ */
 export const activeDomainIDSelector = createSelector([rootSelector], ({ activeDomainID }) => activeDomainID);
+/**
+ * @deprecated remove when FeatureFlag.CMS_WORKFLOWS are released
+ */
 export const hasActiveDomainSelector = createSelector([activeDomainIDSelector], (id) => !!id);
-
-export const activeFlowIDSelector = createSelector([rootSelector], ({ activeFlowID }) => activeFlowID);
-export const hasActiveFlowSelector = createSelector([activeFlowIDSelector], (id) => !!id);
 
 export const isPrototypeSidebarVisibleSelector = createSelector([rootSelector], ({ prototypeSidebarVisible }) => prototypeSidebarVisible);

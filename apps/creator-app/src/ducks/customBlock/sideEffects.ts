@@ -4,6 +4,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import * as Errors from '@/config/errors';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import { allCustomBlocksSelector } from '@/ducks/customBlock/selectors';
+import * as Feature from '@/ducks/feature';
 import * as Session from '@/ducks/session';
 import { getActiveVersionContext } from '@/ducks/versionV2/utils';
 import { Thunk } from '@/store/types';
@@ -69,7 +70,10 @@ export const syncCustomBlockPorts = (): Thunk<void> => async (dispatch, getState
   const activeDomainID = Session.activeDomainIDSelector(state);
   const activeDiagramID = CreatorV2.activeDiagramIDSelector(state);
 
-  Errors.assertDomainID(activeDomainID);
+  if (!Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.CMS_WORKFLOWS)) {
+    Errors.assertDomainID(activeDomainID);
+  }
+
   Errors.assertDiagramID(activeDiagramID);
 
   const allNodes = CreatorV2.allNodeDataSelector(state);

@@ -163,6 +163,9 @@ export const redirectToCurrentCanvasCommentingThread =
     dispatch(redirectToCanvasCommentingThread({ domainID, diagramID, versionID, threadID, commentID }));
   };
 
+/**
+ * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
+ */
 export const goToDomainRootDiagram = (): Thunk => async (dispatch, getState) => {
   const state = getState();
 

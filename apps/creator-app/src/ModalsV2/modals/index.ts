@@ -7,6 +7,9 @@ export { default as Confirm } from './Confirm';
 export * from './ConfirmV2/ConfirmV2.modal';
 export * as Conversation from './Conversation';
 export { default as Disclaimer } from './Disclaimer';
+/**
+ * @deprecated remove when FeatureFlag.CMS_WORKFLOWS are released
+ */
 export * as Domain from './Domain';
 export * as Entity from './Entity';
 export { default as Error } from './Error';

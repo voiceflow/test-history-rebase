@@ -6,6 +6,7 @@ import * as Errors from '@/config/errors';
 import * as Designer from '@/ducks/designer';
 import * as Diagram from '@/ducks/diagramV2';
 import * as Domain from '@/ducks/domain/selectors';
+import * as Feature from '@/ducks/feature';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Prototype from '@/ducks/prototype/sideEffects';
 import * as Session from '@/ducks/session';
@@ -134,8 +135,12 @@ export const defaultVariableState = (): SyncThunk => (dispatch, getState) => {
     return;
   }
 
-  const rootDiagramID = Domain.active.rootDiagramIDSelector(state);
+  const rootDiagramID = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.CMS_WORKFLOWS)
+    ? VersionV2.active.rootDiagramIDSelector(state)
+    : Domain.active.rootDiagramIDSelector(state);
+
   Errors.assertDiagramID(rootDiagramID);
+
   const rootDiagramStartNodeID = sharedNodesStartIDSelector(rootDiagramID) || Realtime.START_NODE_ID;
   dispatch(applyVariableState(rootDiagramStartNodeID, rootDiagramID));
 };

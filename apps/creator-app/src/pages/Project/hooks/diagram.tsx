@@ -110,6 +110,9 @@ interface DiagramOptionsOptions {
   rootTopicID?: string;
 }
 
+/**
+ * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
+ */
 export const useDiagramOptions = ({
   onEdit,
   onRename,

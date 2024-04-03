@@ -36,6 +36,9 @@ export interface ServiceMap extends BaseServiceMap {
   user: UserService;
   flow: FlowService;
   thread: ThreadService;
+  /**
+   * @deprecated remove when FeatureFlag.CMS_WORKFLOWS are released
+   */
   domain: DomainService;
   viewer: ViewerService;
   billing: BillingService;

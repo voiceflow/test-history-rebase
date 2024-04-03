@@ -4,7 +4,7 @@ import { useContextApi } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Diagram from '@/ducks/diagramV2';
-import { ActiveDomainContext } from '@/ducks/versionV2/utils';
+import { ActiveDomainContext, ActiveVersionContext } from '@/ducks/versionV2/utils';
 import { useDispatch } from '@/hooks';
 
 export interface DiagramHeartbeatContextValue {
@@ -22,9 +22,9 @@ export const { Consumer: DiagramHeartbeatConsumer } = DiagramHeartbeatContext;
 const HEARTBEAT_TIMEOUT = 7000; // 7 seconds
 
 interface DiagramHeartbeatProviderProps extends React.PropsWithChildren {
-  isSubscribed: boolean;
+  context: ActiveDomainContext | ActiveVersionContext;
   diagramID: string | null;
-  context: ActiveDomainContext;
+  isSubscribed: boolean;
 }
 
 export const DiagramHeartbeatProvider: React.FC<DiagramHeartbeatProviderProps> = ({ diagramID, context, children, isSubscribed }) => {

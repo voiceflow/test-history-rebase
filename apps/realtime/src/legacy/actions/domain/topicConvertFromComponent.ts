@@ -49,6 +49,10 @@ class TopicConvertFromComponent extends AbstractDomainResourceControl<Realtime.d
   protected process = this.reply(Realtime.domain.topicConvertFromComponent, async (ctx, { payload }) => {
     const { domainID, versionID, componentID } = payload;
 
+    if (!domainID) {
+      throw new Error('domainID is required');
+    }
+
     const dbDiagram = await this.services.diagram.get(versionID, componentID);
 
     if (dbDiagram.type === BaseModels.Diagram.DiagramType.TOPIC) {

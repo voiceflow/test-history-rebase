@@ -26,3 +26,7 @@ export const diagram = version.extend(
 );
 
 export type DiagramChannelParams = Utils.protocol.ChannelParams<typeof diagram>;
+
+export const diagramV2 = version.extend(['diagramID'], ({ diagramID }) => `${DIAGRAM_KEY}/${diagramID}`);
+
+export type DiagramChannelV2Params = Utils.protocol.ChannelParams<typeof diagramV2>;

@@ -4,7 +4,6 @@ import { matchPath, useHistory } from 'react-router-dom';
 
 import { Path } from '@/config/routes';
 import * as CreatorV2 from '@/ducks/creatorV2/utils/selector';
-import { DiagramSubscriptionGate } from '@/gates';
 import { withBatchLoadingGate } from '@/hocs/withBatchLoadingGate';
 import { useRegistration, useTeardown } from '@/hooks';
 import ReturnToInstanceSnackbar from '@/pages/Canvas/components/ReturnToInstanceSnackbar';
@@ -23,6 +22,7 @@ import ThreadHistoryDrawer from './components/ThreadHistoryDrawer';
 import ThreadLayer from './components/ThreadLayer';
 import ToManyBlocksSnackbar from './components/ToManyBlocksSnackbar';
 import { CanvasProviders } from './contexts';
+import { DiagramSubscriptionGate } from './gates/DiagramSubscription.gate';
 import { useEngine, useIO } from './hooks';
 import { useTokenToastNotification } from './hooks/notification';
 

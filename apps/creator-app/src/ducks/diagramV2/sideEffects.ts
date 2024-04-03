@@ -9,13 +9,21 @@ import { PageProgressBar } from '@/constants';
 import { activeDiagramIDSelector, linksByNodeIDSelector } from '@/ducks/creatorV2/selectors';
 import { setLastCreatedID } from '@/ducks/diagramV2/actions';
 import { diagramByIDSelector } from '@/ducks/diagramV2/selectors';
+import * as Feature from '@/ducks/feature';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
 import { waitAsync } from '@/ducks/utils';
 import { schemaVersionSelector } from '@/ducks/versionV2/selectors/active';
-import { ActiveDomainContext, assertDomainContext, getActiveDomainContext, getActiveVersionContext } from '@/ducks/versionV2/utils';
+import {
+  ActiveDomainContext,
+  ActiveVersionContext,
+  assertDomainContext,
+  assertVersionContext,
+  getActiveDomainContext,
+  getActiveVersionContext,
+} from '@/ducks/versionV2/utils';
 import { SyncThunk, Thunk } from '@/store/types';
 import { BLOCK_WIDTH } from '@/styles/theme';
 import { PathPoint, Point } from '@/types';
@@ -23,6 +31,9 @@ import { getNodesGroupCenter } from '@/utils/node';
 
 // side effects
 
+/**
+ * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
+ */
 export const createTopicDiagramForDomain =
   (domainID: string, { name }: { name: string }): Thunk<Realtime.Diagram> =>
   async (dispatch, getState) => {
@@ -43,6 +54,9 @@ export const createTopicDiagramForDomain =
     return diagram;
   };
 
+/**
+ * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
+ */
 export const deleteTopicDiagramForDomain =
   (domainID: string, diagramID: string): Thunk =>
   async (dispatch, getState) => {
@@ -55,6 +69,9 @@ export const deleteTopicDiagramForDomain =
     dispatch(Tracking.trackTopicDeleted());
   };
 
+/**
+ * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
+ */
 export const createTopicDiagram =
   (name: string): Thunk<Realtime.Diagram> =>
   async (dispatch, getState) => {
@@ -69,6 +86,9 @@ export const createTopicDiagram =
     return diagram;
   };
 
+/**
+ * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
+ */
 export const createSubtopicDiagram =
   (rootTopicID: string, name: string): Thunk<Realtime.Diagram> =>
   async (dispatch, getState) => {
@@ -169,6 +189,9 @@ interface ConvertToSubtopicOptions extends CreateDiagramWithDataOptions {
   rootTopicID: string;
 }
 
+/**
+ * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
+ */
 export const convertToSubtopic =
   ({ data, nodes, links, ports, rootTopicID, startCoords = Realtime.START_NODE_POSITION }: ConvertToSubtopicOptions): Thunk<ConvertToDiagramResult> =>
   async (dispatch, getState) => {
@@ -250,6 +273,9 @@ const goToRootDiagramIfActive =
     }
   };
 
+/**
+ * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
+ */
 export const deleteSubtopicDiagram =
   (diagramID: string, rootTopicID: string): Thunk =>
   async (dispatch, getState) => {
@@ -262,6 +288,9 @@ export const deleteSubtopicDiagram =
     dispatch(Tracking.trackTopicDeleted());
   };
 
+/**
+ * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
+ */
 export const moveSubtopicDiagram =
   (subtopicID: string, diagramID: string, newTopicID: string): Thunk =>
   async (dispatch, getState) => {
@@ -280,6 +309,9 @@ export const moveSubtopicDiagram =
     dispatch(Tracking.trackSubtopicMoved({ originTopicID: diagramID, destinationTopicID: newTopicID }));
   };
 
+/**
+ * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
+ */
 export const deleteTopicDiagram =
   (diagramID: string): Thunk =>
   async (dispatch, getState) => {
@@ -296,6 +328,9 @@ export const renameDiagram =
     await dispatch.sync(Realtime.diagram.crud.patch({ ...getActiveVersionContext(getState()), key: diagramID, value: { name } }));
   };
 
+/**
+ * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
+ */
 export const moveTopicDomain =
   (diagramID: string, newDomainID: string, rootTopicID?: string): Thunk =>
   async (dispatch, getState) => {
@@ -314,6 +349,10 @@ export const moveTopicDomain =
 
     await dispatch(Router.goToDomainDiagram(newDomainID, diagramID));
   };
+
+/**
+ * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
+ */
 export const reorderMenuItem =
   ({ toIndex, sourceID, diagramID, skipPersist }: { toIndex: number; sourceID: string; diagramID: string; skipPersist?: boolean }): Thunk =>
   async (dispatch, getState) => {
@@ -322,7 +361,7 @@ export const reorderMenuItem =
 
 export const diagramHeartbeat =
   (
-    { diagramID, ...context }: ActiveDomainContext & { diagramID: Nullable<string> },
+    { diagramID, ...context }: (ActiveDomainContext | ActiveVersionContext) & { diagramID: Nullable<string> },
     data: {
       lock: Nullable<{ type: Realtime.diagram.awareness.LockEntityType; entityIDs: string[] }>;
       unlock: Nullable<{ type: Realtime.diagram.awareness.LockEntityType; entityIDs: string[] }>;
@@ -330,15 +369,23 @@ export const diagramHeartbeat =
       forceSync: boolean;
     }
   ): Thunk =>
-  async (dispatch) => {
-    assertDomainContext(context);
+  async (dispatch, getState) => {
     Errors.assertDiagramID(diagramID);
 
-    await dispatch.sync(
-      Realtime.diagram.awareness.heartbeat({
-        diagramID,
-        ...context,
-        ...data,
-      })
-    );
+    const state = getState();
+    let ctx = context;
+    let domainID: string | null = null;
+
+    if (Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.CMS_WORKFLOWS)) {
+      ctx = { ...context, domainID };
+
+      assertVersionContext(ctx);
+    } else {
+      domainID = 'domainID' in context ? context.domainID : null;
+      ctx = { ...context, domainID };
+
+      assertDomainContext(ctx);
+    }
+
+    await dispatch.sync(Realtime.diagram.awareness.heartbeat({ diagramID, ...ctx, ...data, domainID }));
   };

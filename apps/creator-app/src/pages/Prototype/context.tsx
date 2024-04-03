@@ -1,5 +1,6 @@
 import { BaseButton } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
+import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { useContextApi } from '@voiceflow/ui';
 import React from 'react';
 
@@ -13,6 +14,7 @@ import * as Session from '@/ducks/session';
 import * as Transcripts from '@/ducks/transcript';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useSelector } from '@/hooks';
+import { useFeature } from '@/hooks/feature';
 import * as ModalsV2 from '@/ModalsV2';
 
 import { ProtoConfigType, PrototypeActions, PrototypeAllTypes, PrototypeRuntimeState } from './types';
@@ -92,13 +94,17 @@ export const PrototypeProvider: React.FC<React.PropsWithChildren> = ({ children 
 
   const errorModal = ModalsV2.useModal(ModalsV2.Error);
   const setError = React.useCallback((error: string) => errorModal.open({ error }), [errorModal.open]);
+  const cmsWorkflows = useFeature(FeatureFlag.CMS_WORKFLOWS);
 
   const setActiveDiagramAndDomainIDs = React.useCallback(
     (diagramID: string) => {
       setActiveDiagramID(diagramID);
-      setActiveDomainID(getDomainIDByTopicID({ topicID: diagramID }) ?? rootDomainID);
+
+      if (!cmsWorkflows.isEnabled) {
+        setActiveDomainID(getDomainIDByTopicID({ topicID: diagramID }) ?? rootDomainID);
+      }
     },
-    [rootDomainID, getDomainIDByTopicID]
+    [rootDomainID, getDomainIDByTopicID, cmsWorkflows.isEnabled]
   );
 
   const protoConfig = useContextApi<ProtoConfigType>({

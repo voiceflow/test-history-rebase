@@ -81,9 +81,10 @@ export enum ProductRoute {
 }
 
 export enum CMSRoute {
+  FLOW = 'flow',
   INTENT = 'intent',
   ENTITY = 'entity',
-  FLOW = 'flow',
+  WORKFLOW = 'workflow',
   FUNCTION = 'function',
   VARIABLE = 'variable',
   KNOWLEDGE_BASE = 'knowledge-base',
@@ -242,9 +243,10 @@ export const Path = {
 
   PUBLISH_TEAMS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.MICROSOFT_TEAMS),
 
+  CMS_FLOW: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CMS, CMSRoute.FLOW),
   CMS_INTENT: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CMS, CMSRoute.INTENT),
   CMS_ENTITY: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CMS, CMSRoute.ENTITY),
-  CMS_FLOW: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CMS, CMSRoute.FLOW),
+  CMS_WORKFLOW: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CMS, CMSRoute.WORKFLOW),
   CMS_FUNCTION: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CMS, CMSRoute.FUNCTION),
   CMS_VARIABLE: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CMS, CMSRoute.VARIABLE),
   CMS_KNOWLEDGE_BASE: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CMS, CMSRoute.KNOWLEDGE_BASE),

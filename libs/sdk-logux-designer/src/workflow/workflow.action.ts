@@ -89,7 +89,7 @@ export const DeleteMany = workflowAction.crud.deleteMany<DeleteMany>();
 
 export namespace DuplicateOne {
   export interface Request extends DesignerAction {
-    data: { flowID: string };
+    data: { workflowID: string };
   }
 
   export interface Response extends DesignerAction {

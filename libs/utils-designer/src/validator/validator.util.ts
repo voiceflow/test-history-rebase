@@ -1,10 +1,10 @@
 import type { z } from 'zod';
 
-import type { IComposeValidators, IValidatorFactory, IValidatorResult } from './validator.interface';
+import type { IComposeValidators, IValidator, IValidatorFactory, IValidatorResult } from './validator.interface';
 
 export const validatorZodFactory =
-  <T extends z.ZodTypeAny>(scheme: T) =>
-  (value: z.input<T>): IValidatorResult<z.output<T>> => {
+  <T extends z.ZodTypeAny>(scheme: T): IValidator<z.input<T>> =>
+  (value) => {
     const result = scheme.safeParse(value);
 
     if (result.success) return result;
@@ -28,6 +28,8 @@ export const validatorFactory: IValidatorFactory =
 export const composeValidators: IComposeValidators =
   (...validators: Array<(value: any, context?: unknown) => IValidatorResult<unknown>>) =>
   (value: unknown, context?: unknown): IValidatorResult<unknown> => {
+    if (validators.length === 1) return validators[0](value, context);
+
     let result: IValidatorResult<unknown> = { success: true, data: value };
 
     for (const validator of validators) {

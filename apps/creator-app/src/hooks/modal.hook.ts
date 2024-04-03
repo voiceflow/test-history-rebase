@@ -1,4 +1,4 @@
-import type { Entity, Flow, Folder, Intent, Variable } from '@voiceflow/dtos';
+import type { Entity, Flow, Folder, Intent, Variable, Workflow } from '@voiceflow/dtos';
 
 import * as Organization from '@/ducks/organization';
 import { UpgradePrompt } from '@/ducks/tracking/constants';
@@ -9,6 +9,7 @@ import type { IConformV2Modal } from '@/ModalsV2/modals/ConfirmV2/ConfirmV2.inte
 import type { IEntityCreateModal } from '@/ModalsV2/modals/Entity/EntityCreate.modal';
 import type { IEntityEditModal } from '@/ModalsV2/modals/Entity/EntityEdit.modal';
 import type { Props as ErrorProps } from '@/ModalsV2/modals/Error';
+import { IFlowCreateModal } from '@/ModalsV2/modals/Flow/FlowCreate/FlowCreate.modal';
 import type { IFolderCreateModal } from '@/ModalsV2/modals/Folder/FolderCreate.modal';
 import type { IntentBulkImportUtterancesModalProps } from '@/ModalsV2/modals/Intent/IntentBulkImportUtterances.modal';
 import type { IIntentCreateModal } from '@/ModalsV2/modals/Intent/IntentCreate/IntentCreate.interface';
@@ -18,6 +19,7 @@ import type { UpgradeModal } from '@/ModalsV2/modals/Upgrade';
 import type { IVariableCreateModal } from '@/ModalsV2/modals/Variable/VariableCreate.modal';
 import type { IVariableEditModal } from '@/ModalsV2/modals/Variable/VariableEdit.modal';
 import type { Props as VariablePromptProps, Result as VariablePromptResult } from '@/ModalsV2/modals/VariablePrompt';
+import { IWorkflowCreateModal } from '@/ModalsV2/modals/Workflow/WorkflowCreate/WorkflowCreate.modal';
 import { PropsPublicAPI } from '@/ModalsV2/types';
 
 export { useModal } from '@/ModalsV2/modal.hook';
@@ -52,7 +54,9 @@ export const useVariableCreateModal = () => useModal<IVariableCreateModal, Varia
 
 export const useFolderCreateModal = () => useModal<IFolderCreateModal, Folder>('FolderCreateModal');
 
-export const useFlowCreateModal = () => useModal<IVariableCreateModal, Flow>('FlowCreateModal');
+export const useFlowCreateModal = () => useModal<IFlowCreateModal, Flow>('FlowCreateModal');
+
+export const useWorkflowCreateModal = () => useModal<IWorkflowCreateModal, Workflow>('WorkflowCreateModal');
 
 export const useIntentEditModal = () => useModal<IIntentEditModal>('IntentEditModal');
 export const useIntentCreateModal = () => useModal<IIntentCreateModal, Intent>('IntentCreateModal');

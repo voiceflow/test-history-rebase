@@ -13,84 +13,89 @@ import manager from '@/ModalsV2/manager';
 import { useDocumentLimitError } from '../KnowledgeBaseImport.utils';
 import { submitButtonStyles, textareaStyles } from './KBImportPlainText.css';
 
-export const KBImportPlainText = manager.create('KBImportPlainText', () => ({ api, type, opened, hidden, animated, closePrevented }) => {
-  const TEST_ID = tid('knowledge-base', 'import-plain-text-modal');
+export const KBImportPlainText = manager.create(
+  'KBImportPlainText',
+  () =>
+    ({ api, type, opened, hidden, animated, closePrevented }) => {
+      const TEST_ID = tid('knowledge-base', 'import-plain-text-modal');
 
-  const textState = useInputState();
+      const textState = useInputState();
 
-  const checkDocumentLimitError = useDocumentLimitError(api.enableClose);
+      const checkDocumentLimitError = useDocumentLimitError(api.enableClose);
 
-  const createManyFromText = useDispatch(Designer.KnowledgeBase.Document.effect.createManyFromText);
+      const createManyFromText = useDispatch(Designer.KnowledgeBase.Document.effect.createManyFromText);
 
-  const validator = useValidators({
-    text: [validatorFactory((text: string) => text.trim(), 'Text is required.'), textState.setError],
-  });
-
-  const onCreate = validator.container(async ({ text }) => {
-    api.preventClose();
-
-    await createManyFromText([text])
-      .then(() => {
-        api.enableClose();
-        api.close();
-        return null;
-      })
-      .catch((error) => {
-        checkDocumentLimitError(error);
+      const validator = useValidators({
+        text: [validatorFactory((text: string) => text.trim(), 'Text is required.'), textState.setError],
       });
-  });
 
-  const input = useInput<string, HTMLTextAreaElement>({
-    error: textState.error,
-    value: textState.value,
-    onSave: textState.setValue,
-    onChangeValue: textState.setValue,
+      const onCreate = validator.container(async ({ text }) => {
+        api.preventClose();
 
-    autoFocus: true,
-    allowEmpty: false,
-  });
+        await createManyFromText([text])
+          .then(() => {
+            api.enableClose();
+            api.close();
+            return null;
+          })
+          .catch((error) => {
+            checkDocumentLimitError(error);
+          });
+      });
 
-  const onSubmit = () => onCreate({ text: textState.value });
+      const input = useInput<string, HTMLTextAreaElement>({
+        error: textState.error,
+        value: textState.value,
+        onSave: textState.setValue,
+        onChangeValue: textState.setValue,
 
-  return (
-    <Modal.Container
-      type={type}
-      opened={opened}
-      hidden={hidden}
-      animated={animated}
-      onExited={api.remove}
-      onEscClose={api.onEscClose}
-      onEnterSubmit={onSubmit}
-      testID={TEST_ID}
-    >
-      <Modal.Header title="Import text" onClose={api.onClose} testID={tid(TEST_ID, 'header')} />
+        autoFocus: true,
+        allowEmpty: false,
+      });
 
-      <Scroll style={{ display: 'block' }}>
-        <Box mt={20} mx={24} mb={24} direction="column">
-          <TextArea.AutoSize
-            {...input.attributes}
-            label="Content"
-            disabled={closePrevented}
-            errorMessage={input.errorMessage}
-            className={textareaStyles}
-            placeholder="Enter or paste text here..."
-            testID={tid(TEST_ID, 'content')}
-          />
-        </Box>
-      </Scroll>
+      const onSubmit = () => onCreate({ text: textState.value });
 
-      <Modal.Footer>
-        <Modal.Footer.Button label="Cancel" variant="secondary" onClick={api.onClose} disabled={closePrevented} testID={tid(TEST_ID, 'cancel')} />
+      return (
+        <Modal.Container
+          type={type}
+          opened={opened}
+          hidden={hidden}
+          animated={animated}
+          onExited={api.remove}
+          onEscClose={api.onEscClose}
+          onEnterSubmit={onSubmit}
+          testID={TEST_ID}
+        >
+          <Modal.Header title="Import text" onClose={api.onClose} testID={tid(TEST_ID, 'header')} />
 
-        <Modal.Footer.Button
-          className={submitButtonStyles}
-          label={closePrevented ? '' : 'Import'}
-          onClick={onSubmit}
-          disabled={closePrevented}
-          isLoading={closePrevented}
-          testID={tid(TEST_ID, 'import')}
-        />
-      </Modal.Footer>
-    </Modal.Container>
-  );
-});
+          <Scroll style={{ display: 'block' }}>
+            <Box mt={20} mx={24} mb={24} direction="column">
+              <TextArea.AutoSize
+                {...input.attributes}
+                label="Content"
+                disabled={closePrevented}
+                errorMessage={input.errorMessage}
+                className={textareaStyles}
+                placeholder="Enter or paste text here..."
+                testID={tid(TEST_ID, 'content')}
+              />
+            </Box>
+          </Scroll>
+
+          <Modal.Footer>
+            <Modal.Footer.Button label="Cancel" variant="secondary" onClick={api.onClose} disabled={closePrevented} testID={tid(TEST_ID, 'cancel')} />
+
+            <Modal.Footer.Button
+              className={submitButtonStyles}
+              label={closePrevented ? '' : 'Import'}
+              onClick={onSubmit}
+              disabled={closePrevented}
+              isLoading={closePrevented}
+              testID={tid(TEST_ID, 'import')}
+            />
+          </Modal.Footer>
+        </Modal.Container>
+      );
+    },
+  { backdropDisabled: true }
+);

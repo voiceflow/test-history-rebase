@@ -32,4 +32,5 @@ export { default as Upgrade } from './Upgrade';
 export * as Variable from './Variable';
 export { default as VariablePrompt } from './VariablePrompt';
 export * as VariableStates from './VariableStates';
+export * as Workflow from './Workflow';
 export * as Workspace from './Workspace';

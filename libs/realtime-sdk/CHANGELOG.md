@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.379.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.378.1...@voiceflow/realtime-sdk@1.379.0) (2024-04-03)
+
+### Features
+
+* nullable domainID in the diagram related actions (COR-1777) ([#7921](https://github.com/voiceflow/creator-app/issues/7921)) ([6d5cf10](https://github.com/voiceflow/creator-app/commit/6d5cf10d61ef556097a35dee998dc3824249a207))
+
 ## [1.378.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.378.0...@voiceflow/realtime-sdk@1.378.1) (2024-04-03)
 
 **Note:** Version bump only for package @voiceflow/realtime-sdk

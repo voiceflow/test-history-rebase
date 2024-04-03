@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1454.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1453.2...@voiceflow/creator-app@1.1454.0) (2024-04-03)
+
+### Features
+
+* nullable domainID in the diagram related actions (COR-1777) ([#7921](https://github.com/voiceflow/creator-app/issues/7921)) ([6d5cf10](https://github.com/voiceflow/creator-app/commit/6d5cf10d61ef556097a35dee998dc3824249a207))
+
 ## [1.1453.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1453.1...@voiceflow/creator-app@1.1453.2) (2024-04-03)
 
 **Note:** Version bump only for package @voiceflow/creator-app

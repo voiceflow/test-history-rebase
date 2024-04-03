@@ -10,7 +10,7 @@ export const FunctionCompiledVariableDeclarationDTO = z
   .object({
     type: z
       .nativeEnum(VariableDatatype)
-      .refine((val) => val === VariableDatatype.TEXT, {
+      .refine((val) => val === VariableDatatype.TEXT || val === VariableDatatype.STRING, {
         message: `Function variables currently only support the 'string' type`,
       })
       .describe('The type of the Function variable. Used to render suitable UI and perform data validation.'),

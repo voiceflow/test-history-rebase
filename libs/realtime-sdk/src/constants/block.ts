@@ -20,6 +20,7 @@ export enum BlockType {
   EXIT = 'exit',
   GO_TO_NODE = 'goToNode',
   GO_TO_INTENT = 'goTo',
+  // TODO: remove when FeatureFlag.CMS_WORKFLOWS is released
   GO_TO_DOMAIN = 'goToDomain',
 
   // logic

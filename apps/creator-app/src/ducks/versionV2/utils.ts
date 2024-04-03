@@ -13,6 +13,9 @@ export interface ActiveVersionContext {
   versionID: string | null;
 }
 
+/**
+ * @deprecated replace with ActiveVersionContext when FeatureFlag.CMS_WORKFLOWS is released
+ */
 export interface ActiveDomainContext extends ActiveVersionContext {
   domainID: string | null;
 }
@@ -51,6 +54,9 @@ export const assertVersionContext: (context: ActiveVersionContext) => asserts co
   Errors.assertVersionID(context.versionID);
 };
 
+/**
+ * @deprecated replace with assertVersionContext when FeatureFlag.CMS_WORKFLOWS is released
+ */
 export const assertDomainContext: (context: ActiveDomainContext) => asserts context is NonNullishRecord<ActiveDomainContext> = (context) => {
   assertVersionContext(context);
 

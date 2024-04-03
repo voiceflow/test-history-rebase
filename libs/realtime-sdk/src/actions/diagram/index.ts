@@ -49,10 +49,6 @@ export interface SubtopicCreatePayload extends BaseSubtopicPayload {
   subtopic: Required<Partial<PrimitiveDiagram>, 'name'>;
 }
 
-export interface SubtopicAddPayload extends BaseSubtopicPayload {
-  subtopicID: string;
-}
-
 export interface SubtopicRemovePayload extends BaseSubtopicPayload {
   subtopicID: string;
 }

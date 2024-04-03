@@ -8,7 +8,7 @@ import * as Session from '@/ducks/session';
 import { useDiagramSubscription, useSelector } from '@/hooks';
 import { DiagramHeartbeatProvider } from '@/pages/Project/contexts';
 
-const DiagramSubscriptionGate: React.FC<React.PropsWithChildren> = ({ children }) => {
+export const LegacyDiagramSubscriptionGate: React.FC<React.PropsWithChildren> = ({ children }) => {
   const domainID = useSelector(Session.activeDomainIDSelector);
   const diagramID = useSelector(Session.activeDiagramIDSelector);
   const projectID = useSelector(Session.activeProjectIDSelector);
@@ -27,7 +27,7 @@ const DiagramSubscriptionGate: React.FC<React.PropsWithChildren> = ({ children }
     <LoadingGate
       key={creatorDiagramID}
       isLoaded={!!creatorDiagramID}
-      internalName={DiagramSubscriptionGate.name}
+      internalName={LegacyDiagramSubscriptionGate.name}
       loader={<TabLoader color={CANVAS_COLOR} variant="dark" />}
     >
       <DiagramHeartbeatProvider isSubscribed={isSubscribed} diagramID={creatorDiagramID} context={diagramContext}>
@@ -36,5 +36,3 @@ const DiagramSubscriptionGate: React.FC<React.PropsWithChildren> = ({ children }
     </LoadingGate>
   );
 };
-
-export default DiagramSubscriptionGate;

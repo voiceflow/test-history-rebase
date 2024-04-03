@@ -7,6 +7,9 @@ import { AbstractControl } from '@/legacy/control';
 
 const CANVAS_UPDATE_THROTTLE_TIME = 30 * 1000; // 30 seconds
 
+/**
+ * @deprecated remove when FeatureFlag.CMS_WORKFLOWS are released
+ */
 class DomainService extends AbstractControl {
   private static getUpdatedDebounceKey({ versionID, domainID }: { versionID: string; domainID: string }): string {
     return `versions:${versionID}:domains:${domainID}:updated-throttle`;
@@ -98,7 +101,9 @@ class DomainService extends AbstractControl {
   }
 
   // eslint-disable-next-line you-dont-need-lodash-underscore/throttle
-  public setUpdatedBy = _.throttle(async (versionID: string, domainID: string, creatorID: number) => {
+  public setUpdatedBy = _.throttle(async (versionID: string, domainID: string | null, creatorID: number) => {
+    if (!domainID) return;
+
     try {
       // skipping if the canvas was updated in another instance
       if (await this.updatedThrottleCache.get({ versionID, domainID })) return;

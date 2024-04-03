@@ -1,3 +1,4 @@
+import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { TabLoader } from '@voiceflow/ui-next';
 import React from 'react';
 
@@ -5,12 +6,15 @@ import { LoadingGate } from '@/components/LoadingGate';
 import * as Domain from '@/ducks/domain';
 import * as Session from '@/ducks/session';
 import { useDispatch, useRouteDiagramID, useSelector } from '@/hooks';
+import { useFeature } from '@/hooks/feature';
 
 import * as Utils from '../utils';
 
 const InitializeExportGate: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [loaded, setLoaded] = React.useState(false);
   const routeDiagramID = useRouteDiagramID();
+  const cmsWorkflows = useFeature(FeatureFlag.CMS_WORKFLOWS);
+
   const diagramID = useSelector(Session.activeDiagramIDSelector);
   const versionID = useSelector(Session.activeVersionIDSelector);
   const domainID = useSelector(Domain.domainIDByTopicIDSelector, { topicID: diagramID });
@@ -22,9 +26,13 @@ const InitializeExportGate: React.FC<React.PropsWithChildren> = ({ children }) =
 
   React.useEffect(() => {
     // TODO: [replay issue] - remove dispatch from gate use effect
-    setActiveDomainID(domainID ?? rootDomainID);
+
+    if (!cmsWorkflows.isEnabled) {
+      setActiveDomainID(domainID ?? rootDomainID);
+    }
+
     setActiveDiagramID(routeDiagramID);
-  }, [routeDiagramID, domainID, rootDomainID]);
+  }, [routeDiagramID, domainID, rootDomainID, cmsWorkflows.isEnabled]);
 
   React.useEffect(() => {
     if (versionID && diagramID) {

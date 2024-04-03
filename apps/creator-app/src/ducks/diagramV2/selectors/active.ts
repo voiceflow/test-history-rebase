@@ -19,6 +19,9 @@ export const typeSelector = createSelector([diagramSelector], (diagram) => diagr
 
 export const isTopicSelector = createSelector([typeSelector], (type) => isTopicDiagram(type));
 
+/**
+ * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
+ */
 export const topicDiagramsSelector = createSelector([topicIDsSelector, getDiagramsByIDsSelector], (topicIDs, getDiagramsByIDs) =>
   getDiagramsByIDs({ ids: topicIDs })
 );

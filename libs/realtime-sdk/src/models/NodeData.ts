@@ -526,6 +526,7 @@ export interface NodeDataMap {
   [BlockType.EXIT]: NodeData.Exit;
   [BlockType.GO_TO_NODE]: NodeData.GoToNode;
   [BlockType.GO_TO_INTENT]: NodeData.GoToIntent;
+  // TODO: remove when FeatureFlag.CMS_WORKFLOWS is released
   [BlockType.GO_TO_DOMAIN]: NodeData.GoToDomain;
 
   [BlockType.SET]: unknown;

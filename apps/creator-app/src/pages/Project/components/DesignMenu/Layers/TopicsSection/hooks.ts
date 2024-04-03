@@ -119,6 +119,9 @@ export const useSubtopicDrop = (topicID: string, isSubtopic?: boolean) => {
   return { ref, isSubtopicHovering: dropPreview };
 };
 
+/**
+ * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
+ */
 export const useTopics = (): TopicsAPI & Omit<OpenedIDsToggleApi, 'onDragStart' | 'onDragEnd'> => {
   const getEngine = useEventualEngine();
 

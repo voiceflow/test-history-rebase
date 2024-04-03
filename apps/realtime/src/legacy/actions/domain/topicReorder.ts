@@ -10,6 +10,10 @@ class TopicReorder extends AbstractVersionResourceControl<Realtime.domain.TopicR
   protected process = async (_ctx: Context, { payload, meta }: Action<Realtime.domain.TopicReorderPayload>): Promise<void> => {
     if (meta?.skipPersist) return;
 
+    if (!payload.domainID) {
+      throw new Error('domainID is required');
+    }
+
     await this.services.domain.topicReorder(payload.versionID, payload.domainID, payload.topicID, payload.toIndex);
   };
 

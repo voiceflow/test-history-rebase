@@ -71,6 +71,7 @@ export const isRandomV1NodeData = createNodeDataTypeGuard<NodeData<NodeData.Rand
 export const isRandomV2NodeData = createNodeDataTypeGuard<NodeData<NodeData.RandomV2>>(BlockType.RANDOMV2);
 export const isComponentNodeData = createNodeDataTypeGuard<NodeData<NodeData.Component>>(BlockType.COMPONENT);
 export const isStartingNodesData = createNodeDataTypeGuard<NodeData<NodeData.Start | NodeData.Combined>>(STARTING_NODES);
+// TODO: remove when FeatureFlag.CMS_WORKFLOWS is released
 export const isGoToDomainNodeData = createNodeDataTypeGuard<NodeData<NodeData.GoToDomain>>(BlockType.GO_TO_DOMAIN);
 export const isGoToIntentNodeData = createNodeDataTypeGuard<NodeData<NodeData.GoToIntent>>(BlockType.GO_TO_INTENT);
 export const isMarkupTextNodeData = createNodeDataTypeGuard<NodeData<Markup.NodeData.Text>>(BlockType.MARKUP_TEXT);

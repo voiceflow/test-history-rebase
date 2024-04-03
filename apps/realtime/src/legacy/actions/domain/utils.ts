@@ -19,13 +19,17 @@ export abstract class AbstractDomainResourceControl<
   }: {
     ctx: Context;
     payload: P;
-    domainID: string;
+    domainID: string | null;
     primitiveDiagram: Required<Partial<Realtime.Utils.diagram.PrimitiveDiagram>, 'name'>;
     subtopicDiagrams?: Realtime.Diagram[];
     dbSubtopicDiagrams?: BaseModels.Diagram.Model[];
   }): Promise<Realtime.Diagram> => {
     const { creatorID, clientID } = ctx.data;
     const { versionID, projectID, workspaceID } = payload;
+
+    if (!domainID) {
+      throw new Error('domainID is required');
+    }
 
     const dbTopicDiagram = await this.services.diagram.createTopic({ creatorID, versionID, primitiveDiagram });
 

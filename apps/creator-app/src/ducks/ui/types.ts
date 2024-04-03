@@ -14,6 +14,7 @@ export interface UIState {
   zoomType: ZoomType;
   commentsVisible: boolean;
   topicThreadsOnly?: boolean;
+  workflowThreadsOnly?: boolean;
   domainThreadsOnly?: boolean;
   mentionedThreadsOnly?: boolean;
   canvasGrid: boolean;

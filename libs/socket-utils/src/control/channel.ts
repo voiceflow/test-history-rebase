@@ -79,12 +79,16 @@ export abstract class AbstractChannelControl<
     }
   };
 
-  setup(): void {
-    this.server.channel<P, D, ChannelSubscribeAction<E>>(this.channel.buildMatcher(), {
+  protected setupChannel(channel: string) {
+    this.server.channel<P, D, ChannelSubscribeAction<E>>(channel, {
       load: this.#load,
       access: this.#access,
       finally: this.#finally,
       unsubscribe: this.#unsubscribe,
     });
+  }
+
+  setup(): void {
+    this.setupChannel(this.channel.buildMatcher());
   }
 }

@@ -21,9 +21,11 @@ export class OrganizationLoguxController {
   ) {}
 
   @Channel(Channels.organization)
-  @Authorize.Permissions<Channels.OrganizationParams>([Permission.ORGANIZATION_READ], ({ organizationID }) => ({
-    id: organizationID,
-    kind: 'organization',
+  @Authorize.Permissions<Channels.OrganizationParams>([Permission.ORGANIZATION_READ], ({ workspaceID }) => ({
+    // permission system doesn't support workspace members reading org resources.
+    // Passing workspace resource will resolve into an organization resource lookup, which then works.
+    id: workspaceID,
+    kind: 'workspace',
   }))
   async subscribe(@Context() ctx: Context.Channel<Channels.OrganizationParams>) {
     const { organizationID } = ctx.params;
@@ -43,7 +45,7 @@ export class OrganizationLoguxController {
     kind: 'organization',
   }))
   @UseRequestContext()
-  @Broadcast<Actions.Organization.PatchOne>(({ context }) => ({ channel: Channels.organization.build(context) }))
+  @Broadcast<Actions.Organization.PatchOne>(({ context }) => ({ channel: Channels.organization.build({ ...context, workspaceID: '' }) }))
   async patchOne(@Payload() { id, patch }: Actions.Organization.PatchOne, @AuthMeta() authMeta: AuthMetaPayload): Promise<void> {
     await this.organizationService.patchOne(authMeta.userID, id, patch);
   }
@@ -54,7 +56,7 @@ export class OrganizationLoguxController {
     kind: 'organization',
   }))
   @UseRequestContext()
-  @Broadcast<Actions.OrganizationMember.DeleteOne>(({ context }) => ({ channel: Channels.organization.build(context) }))
+  @Broadcast<Actions.OrganizationMember.DeleteOne>(({ context }) => ({ channel: Channels.organization.build({ ...context, workspaceID: '' }) }))
   async deleteMember(@Payload() { id, context }: Actions.OrganizationMember.DeleteOne, @AuthMeta() authMeta: AuthMetaPayload): Promise<void> {
     await this.organizationMemberService.remove(authMeta.userID, context.organizationID, id);
   }

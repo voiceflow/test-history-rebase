@@ -4,6 +4,7 @@ export interface BaseOrganizationPayload {
 
 export interface OrganizationActionContext {
   organizationID: string;
+  workspaceID?: string;
 }
 
 export interface OrganizationAction {

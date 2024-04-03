@@ -39,10 +39,10 @@ export const checkout = (organizationID: string, data: Omit<Actions.Organization
 };
 
 export const loadActiveOrganizationSubscription =
-  (organizationID: string, chargebeeSubscriptionID: string): Thunk<Subscription | null> =>
+  (organizationID: string, chargebeeSubscriptionID: string, workspaceID: string): Thunk<Subscription | null> =>
   async (dispatch) => {
     try {
-      const subscription = (await designerClient.billing.subscription.findOne(organizationID, chargebeeSubscriptionID)) as Subscription;
+      const subscription = (await designerClient.billing.subscription.findOne(organizationID, chargebeeSubscriptionID, workspaceID)) as Subscription;
 
       await dispatch.local(Actions.OrganizationSubscription.Replace({ subscription, context: { organizationID } }));
 
@@ -57,21 +57,18 @@ export const cancelSubscription = (organizationID: string): Thunk<void> => {
     const subscription = chargebeeSubscriptionSelector(getState());
 
     if (!subscription) return;
-    try {
-      await designerClient.billing.subscription.cancel(organizationID, subscription.id);
 
-      await dispatch.local(
-        Actions.OrganizationSubscription.Replace({
-          subscription: {
-            ...subscription,
-            status: ChargebeeSubscriptionStatus.NON_RENEWING,
-          },
-          context: { organizationID },
-        })
-      );
-    } catch (err) {
-      toast.error(getErrorMessage(err, 'Failed to cancel subscription'));
-    }
+    await designerClient.billing.subscription.cancel(organizationID, subscription.id);
+
+    await dispatch.local(
+      Actions.OrganizationSubscription.Replace({
+        subscription: {
+          ...subscription,
+          status: ChargebeeSubscriptionStatus.NON_RENEWING,
+        },
+        context: { organizationID },
+      })
+    );
   };
 };
 

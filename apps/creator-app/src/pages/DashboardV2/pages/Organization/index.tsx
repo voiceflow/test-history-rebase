@@ -2,8 +2,6 @@ import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 import Page from '@/components/Page';
-import { OrganizationSubscriptionGate } from '@/gates';
-import { withBatchLoadingGate } from '@/hocs/withBatchLoadingGate';
 import {
   useOrganizationDefaultPagePath,
   useOrganizationMembersPagePath,
@@ -37,4 +35,4 @@ const Organization: React.FC = () => {
   );
 };
 
-export default withBatchLoadingGate(OrganizationSubscriptionGate)(Organization);
+export default Organization;

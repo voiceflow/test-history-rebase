@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from '@/hooks';
 import { usePolling } from '@/hooks/timer.hook';
 
 const BillingSubscriptionGate: React.FC<React.PropsWithChildren> = ({ children }) => {
+  const workspace = useSelector(WorkspaceV2.active.workspaceSelector);
   const organizationID = useSelector(WorkspaceV2.active.organizationIDSelector);
   const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
   const loadSubscription = useDispatch(Organization.loadActiveOrganizationSubscription);
@@ -15,10 +16,10 @@ const BillingSubscriptionGate: React.FC<React.PropsWithChildren> = ({ children }
   usePolling(
     {
       time: 60 * 5000,
-      shouldLoad: ([subID, orgID]) => !!subID && !!orgID,
-      callback: () => organizationID && subscription?.id && loadSubscription(organizationID, subscription.id),
+      shouldLoad: ([subID, orgID, workspaceID]) => !!subID && !!orgID && !!workspaceID,
+      callback: () => organizationID && subscription?.id && workspace?.id && loadSubscription(organizationID, subscription.id, workspace.id),
     },
-    [subscription?.id, organizationID]
+    [subscription?.id, organizationID, workspace?.id]
   );
 
   return (

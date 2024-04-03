@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.51.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.51.0...@voiceflow/dtos@1.51.1) (2024-04-03)
+
+### Bug Fixes
+
+* remove function variable type (PL-844) ([#7928](https://github.com/voiceflow/creator-app/issues/7928)) ([d22a4dc](https://github.com/voiceflow/creator-app/commit/d22a4dcafba7d00cdeab5a96725d9f5f91f6d583)), closes [/github.com/voiceflow/creator-app/blob/1df087e4044ff247a4053d98c13543c46547c0e4/libs/dtos/src/node/function/compiled-node.dto.ts#L9-L12](https://github.com//github.com/voiceflow/creator-app/blob/1df087e4044ff247a4053d98c13543c46547c0e4/libs/dtos/src/node/function/compiled-node.dto.ts/issues/L9-L12) [/github.com/voiceflow/creator-app/blob/84b7f1554794defe313f56cfb43e7eb11a88ab54/apps/creator-app/src/ducks/designer/function/function.effect.ts#L165-L170](https://github.com//github.com/voiceflow/creator-app/blob/84b7f1554794defe313f56cfb43e7eb11a88ab54/apps/creator-app/src/ducks/designer/function/function.effect.ts/issues/L165-L170)
+
 # [1.51.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.50.0...@voiceflow/dtos@1.51.0) (2024-04-02)
 
 ### Features

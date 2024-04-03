@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.52.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.52.0...@voiceflow/dtos@1.52.1) (2024-04-03)
+
+### Bug Fixes
+
+* functions dto accept string (CT-000) ([#7931](https://github.com/voiceflow/creator-app/issues/7931)) ([aa123ce](https://github.com/voiceflow/creator-app/commit/aa123cefb1dcaf352bcf754c2bd07186d241d6f6))
+
 # [1.52.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.51.1...@voiceflow/dtos@1.52.0) (2024-04-03)
 
 ### Features

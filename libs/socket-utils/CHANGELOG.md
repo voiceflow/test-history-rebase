@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.41.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/socket-utils@1.40.0...@voiceflow/socket-utils@1.41.0) (2024-04-03)
+
+### Features
+
+* nullable domainID in the diagram related actions (COR-1777) ([#7921](https://github.com/voiceflow/creator-app/issues/7921)) ([6d5cf10](https://github.com/voiceflow/creator-app/commit/6d5cf10d61ef556097a35dee998dc3824249a207))
+
 # [1.40.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/socket-utils@1.39.2...@voiceflow/socket-utils@1.40.0) (2024-03-21)
 
 ### Features

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.45.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.44.1...@voiceflow/sdk-logux-designer@2.45.0) (2024-04-03)
+
+### Features
+
+* remove chargebee subscription id from ui (COR-1741) ([#7915](https://github.com/voiceflow/creator-app/issues/7915)) ([d184088](https://github.com/voiceflow/creator-app/commit/d184088dbf9afd7e38544dd08ec9177887d0cd57))
+
 ## [2.44.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.44.0...@voiceflow/sdk-logux-designer@2.44.1) (2024-04-03)
 
 **Note:** Version bump only for package @voiceflow/sdk-logux-designer

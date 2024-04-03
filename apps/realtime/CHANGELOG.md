@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.313.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.312.2...@voiceflow/realtime@1.313.0) (2024-04-03)
+
+### Features
+
+* enable datadog profiling features (IN-913) ([#7918](https://github.com/voiceflow/creator-app/issues/7918)) ([6557226](https://github.com/voiceflow/creator-app/commit/6557226720a72b4b9d42b1c80e55307aa3ca3eaf))
+
 ## [1.312.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.312.1...@voiceflow/realtime@1.312.2) (2024-04-03)
 
 **Note:** Version bump only for package @voiceflow/realtime

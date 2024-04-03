@@ -55,7 +55,6 @@ export * from './node/base/base-port.dto';
 export * from './node/carousel/carousel-layout.enum';
 export * from './node/carousel/carousel-layout.enum';
 export * from './node/function/compiled-node.dto';
-export * from './node/function/function-variable-type.enum';
 export * from './node/function/node.dto';
 export * from './node/node.dto';
 export * from './node/node-type.enum';

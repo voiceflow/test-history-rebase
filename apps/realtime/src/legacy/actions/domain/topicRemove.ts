@@ -15,6 +15,10 @@ class TopicRemove extends AbstractDomainResourceControl<Realtime.domain.TopicRem
     const { creatorID, clientID } = ctx.data;
     const { topicID, domainID, versionID, projectID, workspaceID } = payload;
 
+    if (!domainID) {
+      throw new Error('domainID is required');
+    }
+
     const subtopicIDs = await this.services.diagram.getFlatSubtopicIDsByTopicIDs(versionID, [topicID]);
 
     ctx.data.subtopicIDs = subtopicIDs;

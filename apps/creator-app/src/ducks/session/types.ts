@@ -3,12 +3,12 @@ export interface SessionState {
   tabID: string;
   browserID: string;
   activeWorkspaceID: string | null;
+  /**
+   * @deprecated remove when FeatureFlag.CMS_WORKFLOWS are released
+   */
   activeDomainID: string | null;
   activeProjectID: string | null;
   activeVersionID: string | null;
   activeDiagramID: string | null;
   prototypeSidebarVisible: boolean;
-
-  // TODO: V3 specific, should replace activeDomainID
-  activeFlowID: string | null;
 }

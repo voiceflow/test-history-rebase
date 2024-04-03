@@ -5,6 +5,8 @@ import * as Normal from 'normal-store';
 import { createReducer } from './utils';
 
 const topicMoveDomainReducer = createReducer(Realtime.domain.topicMoveDomain, (state, { topicDiagramID, domainID, newDomainID }) => {
+  if (!domainID) return;
+
   const oldDomain = Normal.getOne(state, domainID);
   const newDomain = Normal.getOne(state, newDomainID);
 

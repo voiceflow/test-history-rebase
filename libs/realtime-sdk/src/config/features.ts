@@ -57,4 +57,6 @@ export enum FeatureFlag {
   INTENT_CLASSIFICATION = 'intent_classification',
 
   VF_CHUNKS_VARIABLE = 'vf_chunks_variable',
+
+  CMS_WORKFLOWS = 'cms_workflows',
 }

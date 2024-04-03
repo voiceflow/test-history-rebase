@@ -9,6 +9,9 @@ import { getDiagramName } from '@/utils/diagram.utils';
 
 import { Topic } from './types';
 
+/**
+ * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
+ */
 export const useTopics = () => {
   const rootDomain = useSelector(Domain.rootDomainSelector);
   const intentsMap = useSelector(Designer.Intent.selectors.mapWithFormattedBuiltInName);

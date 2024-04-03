@@ -69,6 +69,9 @@ export const assertDiagramID: (id: Nullish<string>) => asserts id is string = (i
   assert(id, noActiveDiagramID());
 };
 
+/**
+ * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
+ */
 export const assertDomainID: (id: Nullish<string>) => asserts id is string = (id) => {
   assert(id, noActiveDomainID());
 };

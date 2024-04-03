@@ -1,4 +1,5 @@
 import { Utils } from '@voiceflow/common';
+import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import React from 'react';
 import { flushSync } from 'react-dom';
 import { useDispatch } from 'react-redux';
@@ -11,10 +12,13 @@ import * as Session from '@/ducks/session';
 import * as Version from '@/ducks/versionV2';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useActiveProjectPlatformConfig, useSelector } from '@/hooks';
+import { useFeature } from '@/hooks/feature';
 import RedirectWithSearch from '@/Routes/RedirectWithSearch';
 
 const DiagramGate: React.FC<React.PropsWithChildren> = ({ children }) => {
   const dispatch = useDispatch();
+  const cmsWorkflows = useFeature(FeatureFlag.CMS_WORKFLOWS);
+
   const version = useSelector(Version.active.versionSelector);
   const rootDomainID = useSelector(Domain.rootDomainIDSelector);
   const hasActiveDomain = useSelector(Session.hasActiveDomainSelector);
@@ -53,7 +57,10 @@ const DiagramGate: React.FC<React.PropsWithChildren> = ({ children }) => {
         }
       });
 
-      dispatch(Session.setActiveDomainID(domainID));
+      if (!cmsWorkflows.isEnabled) {
+        dispatch(Session.setActiveDomainID(domainID));
+      }
+
       dispatch(Session.setActiveDiagramID(diagramID));
     });
 
@@ -62,9 +69,10 @@ const DiagramGate: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   const isProTrialExpired = organizationTrialExpired && !isEnterprise;
 
-  if (!version || !rootDomainID || platformConfig.isDeprecated || isProTrialExpired) return <RedirectWithSearch to={Path.DASHBOARD} />;
+  if (!version || (!rootDomainID && !cmsWorkflows.isEnabled) || platformConfig.isDeprecated || isProTrialExpired)
+    return <RedirectWithSearch to={Path.DASHBOARD} />;
 
-  if (!hasActiveDiagram || !hasActiveDomain) return null;
+  if (!hasActiveDiagram || (!hasActiveDomain && !cmsWorkflows.isEnabled)) return null;
 
   return <>{children}</>;
 };

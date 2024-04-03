@@ -11,6 +11,10 @@ class SubtopicRemove extends AbstractDiagramResourceControl<Realtime.diagram.Sub
     const { creatorID, clientID } = ctx.data;
     const { domainID, subtopicID, versionID, projectID, workspaceID, rootTopicID } = payload;
 
+    if (!domainID) {
+      throw new Error('domainID is required');
+    }
+
     await Promise.all([
       this.services.diagram.delete(versionID, subtopicID),
       this.services.diagram.removeMenuItem(versionID, rootTopicID, subtopicID),

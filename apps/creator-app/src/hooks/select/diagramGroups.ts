@@ -73,6 +73,7 @@ export const useDomainAndDiagramMultilevelSelectOptions = <Option extends BaseDi
       return subtopicsOptions;
     };
 
+    // TODO: use workflows
     const options = sortedDomains.map(({ id, name, topicIDs }) => {
       const isActive = id === activeDomainID;
       const sortedTopicIDs = isActive ? [...topicIDs].sort((topicID) => (topicID === activeDiagramID ? -1 : 0)) : topicIDs;

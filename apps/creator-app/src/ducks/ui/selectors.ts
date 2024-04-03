@@ -21,8 +21,14 @@ export const isFullScreenMode = createSelector(rootSelector, ({ fullScreenMode }
 
 export const isCommentsVisible = createSelector(rootSelector, ({ commentsVisible }) => commentsVisible);
 
-export const isTopicThreadsOnly = createSelector(rootSelector, ({ topicThreadsOnly }) => topicThreadsOnly);
+export const isWorkflowThreadsOnly = createSelector(
+  rootSelector,
+  ({ topicThreadsOnly, workflowThreadsOnly }) => workflowThreadsOnly ?? topicThreadsOnly
+);
 
+/**
+ * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
+ */
 export const isDomainThreadsOnly = createSelector(rootSelector, ({ domainThreadsOnly }) => domainThreadsOnly);
 
 export const isMentionedThreadsOnly = createSelector(rootSelector, ({ mentionedThreadsOnly }) => mentionedThreadsOnly);

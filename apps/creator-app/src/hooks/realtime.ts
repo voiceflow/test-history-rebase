@@ -112,3 +112,8 @@ export const useDiagramSubscription = createSubscriptionHook<NullishRecord<Realt
       ? [Realtime.Channels.diagram.build({ workspaceID, projectID, versionID, diagramID, domainID })]
       : []
 );
+
+export const useDiagramSubscriptionV2 = createSubscriptionHook<NullishRecord<Realtime.Channels.DiagramChannelV2Params>>(
+  ({ workspaceID, projectID, versionID, diagramID }) =>
+    workspaceID && projectID && versionID && diagramID ? [Realtime.Channels.diagramV2.build({ workspaceID, projectID, versionID, diagramID })] : []
+);

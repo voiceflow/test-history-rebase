@@ -1,11 +1,13 @@
 import { Utils } from '@voiceflow/common';
 import type { Thread } from '@voiceflow/dtos';
+import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { createSelector } from 'reselect';
 
 import * as Account from '@/ducks/account';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import { diagramMapSelector } from '@/ducks/diagramV2/selectors/base';
 import { domainSelector as activeDomainSelector } from '@/ducks/domain/selectors/active';
+import * as Feature from '@/ducks/feature';
 import * as UI from '@/ducks/ui';
 
 import { getAllByThreadID as getAllCommentsByThreadID } from '../thread-comment/selectors/other.select';
@@ -28,19 +30,21 @@ export const allAvailable = createSelector([all, diagramMapSelector], (threads, 
 
 const threadFilter = createSelector(
   [
-    UI.isTopicThreadsOnly,
+    UI.isWorkflowThreadsOnly,
     UI.isDomainThreadsOnly,
     UI.isMentionedThreadsOnly,
     Account.userIDSelector,
     activeDomainSelector,
     CreatorV2.activeDiagramIDSelector,
     getAllCommentsByThreadID,
+    Feature.isFeatureEnabledSelector,
   ],
   // eslint-disable-next-line max-params
-  (isTopicThreadsOnly, isDomainThreadsOnly, isMentionedThreadsOnly, creatorID, activeDomain, diagramID, getComments) => (thread: Thread) =>
-    (!isMentionedThreadsOnly || !creatorID || getComments({ threadID: thread.id }).some((comment) => comment.mentions.includes(creatorID))) &&
-    (!isTopicThreadsOnly || thread.diagramID === diagramID) &&
-    (!isDomainThreadsOnly || !activeDomain || activeDomain.topicIDs.includes(thread.diagramID))
+  (isWorkflowThreadsOnly, isDomainThreadsOnly, isMentionedThreadsOnly, creatorID, activeDomain, diagramID, getComments, isFeatureEnabled) =>
+    (thread: Thread) =>
+      (!isMentionedThreadsOnly || !creatorID || getComments({ threadID: thread.id }).some((comment) => comment.mentions.includes(creatorID))) &&
+      (!isWorkflowThreadsOnly || thread.diagramID === diagramID) &&
+      (isFeatureEnabled(FeatureFlag.CMS_WORKFLOWS) || !isDomainThreadsOnly || !activeDomain || activeDomain.topicIDs.includes(thread.diagramID))
 );
 
 export const allOpened = createSelector([allAvailable, threadFilter], (threads, filter) =>

@@ -1,8 +1,10 @@
+import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 
 import { Path } from '@/config/routes';
-import * as Session from '@/ducks/session';
+import { Session } from '@/ducks';
+import { useFeature } from '@/hooks/feature';
 import { useTeardown } from '@/hooks/lifecycle';
 import { useDispatch } from '@/hooks/realtime';
 import { useRouteVersionID } from '@/hooks/routes';
@@ -12,6 +14,7 @@ import { VersionSubscriptionContext } from './types';
 
 const VersionSubscriptionGate: React.FC<React.PropsWithChildren> = ({ children }) => {
   const versionID = useRouteVersionID();
+  const cmsWorkflows = useFeature(FeatureFlag.CMS_WORKFLOWS);
 
   const [context, setContext] = React.useState<VersionSubscriptionContext | null>(null);
 
@@ -21,7 +24,10 @@ const VersionSubscriptionGate: React.FC<React.PropsWithChildren> = ({ children }
   const setActiveDiagramID = useDispatch(Session.setActiveDiagramID);
 
   useTeardown(() => {
-    setActiveDomainID(null);
+    if (!cmsWorkflows.isEnabled) {
+      setActiveDomainID(null);
+    }
+
     setActiveProjectID(null);
     setActiveVersionID(null);
     setActiveDiagramID(null);

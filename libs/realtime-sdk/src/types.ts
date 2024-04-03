@@ -61,8 +61,14 @@ export interface BaseVersionPayload extends BaseProjectPayload {
   versionID: string;
 }
 
+/**
+ * @deprecated remove when cms workspace is released
+ */
 export interface BaseDomainPayload extends BaseVersionPayload {
-  domainID: string;
+  /**
+   * @deprecated remove when cms workspace is released
+   */
+  domainID: string | null;
 }
 
 export interface BaseDiagramPayload extends BaseDomainPayload {

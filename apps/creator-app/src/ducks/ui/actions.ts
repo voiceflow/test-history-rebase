@@ -15,9 +15,12 @@ export enum UIAction {
   TOGGLE_CANVAS_ONLY = 'UI:TOGGLE_CANVAS_ONLY',
   TOGGLE_COMMENT_VISIBILITY = 'UI:TOGGLE_COMMENT_VISIBILITY',
   TOGGLE_MENTIONED_THREADS_ONLY = 'UI:TOGGLE_MENTIONED_THREADS_ONLY',
-  TOGGLE_TOPIC_THREADS_ONLY = 'UI:TOGGLE_TOPIC_THREADS_ONLY',
-  TOGGLE_DOMAIN_THREADS_ONLY = 'UI:TOGGLE_DOMAIN_THREADS_ONLY',
+  TOGGLE_WORKFLOW_THREADS_ONLY = 'UI:TOGGLE_WORKFLOW_THREADS_ONLY',
   TOGGLE_FULL_SCREEN_MODE = 'UI:TOGGLE_FULL_SCREEN_MODE',
+  /**
+   * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
+   */
+  TOGGLE_DOMAIN_THREADS_ONLY = 'UI:TOGGLE_DOMAIN_THREADS_ONLY',
 }
 
 // action types
@@ -42,8 +45,11 @@ export type ToggleCommentVisibility = Action<UIAction.TOGGLE_COMMENT_VISIBILITY>
 
 export type ToggleMentionedThreadsOnly = Action<UIAction.TOGGLE_MENTIONED_THREADS_ONLY>;
 
-export type ToggleTopicThreadsOnly = Action<UIAction.TOGGLE_TOPIC_THREADS_ONLY>;
+export type ToggleWorkflowThreadsOnly = Action<UIAction.TOGGLE_WORKFLOW_THREADS_ONLY>;
 
+/**
+ * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
+ */
 export type ToggleDomainThreadsOnly = Action<UIAction.TOGGLE_DOMAIN_THREADS_ONLY>;
 
 export type ToggleFullScreenMode = Action<UIAction.TOGGLE_FULL_SCREEN_MODE>;
@@ -58,7 +64,7 @@ export type AnyUIAction =
   | SetZoomType
   | ToggleCommentVisibility
   | ToggleMentionedThreadsOnly
-  | ToggleTopicThreadsOnly
+  | ToggleWorkflowThreadsOnly
   | ToggleDomainThreadsOnly
   | ToggleCanvasGrid
   | ToggleFullScreenMode;
@@ -88,6 +94,9 @@ export const toggleCommentVisibility = (): ToggleCommentVisibility => createActi
 
 export const toggleMentionedThreadsOnly = (): ToggleMentionedThreadsOnly => createAction(UIAction.TOGGLE_MENTIONED_THREADS_ONLY);
 
-export const toggleTopicThreadsOnly = (): ToggleTopicThreadsOnly => createAction(UIAction.TOGGLE_TOPIC_THREADS_ONLY);
+export const toggleWorkflowThreadsOnly = (): ToggleWorkflowThreadsOnly => createAction(UIAction.TOGGLE_WORKFLOW_THREADS_ONLY);
 
+/**
+ * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
+ */
 export const toggleDomainThreadsOnly = (): ToggleDomainThreadsOnly => createAction(UIAction.TOGGLE_DOMAIN_THREADS_ONLY);

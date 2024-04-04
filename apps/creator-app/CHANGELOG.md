@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1460.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1459.1...@voiceflow/creator-app@1.1460.0) (2024-04-04)
+
+### Features
+
+* fix tabindex issue (COR-1776) ([#7943](https://github.com/voiceflow/creator-app/issues/7943)) ([56fd20e](https://github.com/voiceflow/creator-app/commit/56fd20e28681cb468e29f7a78c7434944f0a251f))
+
 ## [1.1459.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1459.0...@voiceflow/creator-app@1.1459.1) (2024-04-04)
 
 **Note:** Version bump only for package @voiceflow/creator-app

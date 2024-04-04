@@ -2,8 +2,7 @@ import { SidebarEditor } from '@voiceflow/ui';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { useDropLagFix, useSetup } from '@/hooks';
-import perf, { PerfAction } from '@/performance';
+import { useDropLagFix } from '@/hooks';
 import { Identifier } from '@/styles/constants';
 
 import { EditorAnimationEffect } from '../../constants';
@@ -22,8 +21,6 @@ const EditorV2: React.FC<T.Props> = ({ header, footer, children, fillHeight, dro
   const dropLagFixRef = useDropLagFix(dropLagAccept ?? []);
 
   const { state } = useLocation<{ animationEffect?: EditorAnimationEffect }>();
-
-  useSetup(() => perf.action(PerfAction.EDITOR_RENDERED));
 
   const isPopAnimation = state?.animationEffect === EditorAnimationEffect.POP;
 

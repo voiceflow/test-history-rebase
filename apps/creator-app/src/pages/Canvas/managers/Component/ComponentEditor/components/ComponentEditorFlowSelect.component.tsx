@@ -9,7 +9,6 @@ import * as Router from '@/ducks/router';
 import { useDispatch, useSelector } from '@/hooks';
 import { useDeferredSearch } from '@/hooks/search.hook';
 import * as ModalsV2 from '@/ModalsV2';
-import perf, { PerfAction } from '@/performance';
 
 interface IComponentEditorFlowSelect {
   diagramID?: string | null;
@@ -25,8 +24,6 @@ export const ComponentEditorFlowSelect: React.FC<IComponentEditorFlowSelect> = (
   const goToDiagramHistoryPush = useDispatch(Router.goToDiagramHistoryPush);
 
   const onClick = () => {
-    perf.action(PerfAction.COMPONENT_NODE__LINK_CLICK);
-
     if (diagramID) goToDiagramHistoryPush(diagramID, undefined, activeNodeID);
   };
 

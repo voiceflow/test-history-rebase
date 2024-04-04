@@ -104,7 +104,7 @@ export class AssistantPrivateHTTPController {
     @Param('environmentID') environmentID: string,
     @Headers('projectid') projectid: string | undefined,
     @Headers('assistantID') assistantID: string | undefined,
-    @Query(AssistantExportJSONQuery) query: AssistantExportJSONQuery
+    @Query(new ZodValidationPipe(AssistantExportJSONQuery)) query: AssistantExportJSONQuery
   ): Promise<AssistantExportDataDTO> {
     return this.service.exportJSON({
       ...query,

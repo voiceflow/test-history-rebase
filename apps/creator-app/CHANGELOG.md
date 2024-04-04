@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1457.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1456.4...@voiceflow/creator-app@1.1457.0) (2024-04-04)
+
+### Features
+
+* drop performance system (COR-000) ([#7929](https://github.com/voiceflow/creator-app/issues/7929)) ([70a770e](https://github.com/voiceflow/creator-app/commit/70a770ee63867ed962b415e951ac03d85fff6cba))
+
 ## [1.1456.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1456.3...@voiceflow/creator-app@1.1456.4) (2024-04-04)
 
 ### Bug Fixes

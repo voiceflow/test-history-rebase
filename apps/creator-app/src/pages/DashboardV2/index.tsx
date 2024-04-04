@@ -9,7 +9,6 @@ import BillingSubscriptionGate from '@/gates/BillingSubscriptionGate';
 import { withBatchLoadingGate } from '@/hocs/withBatchLoadingGate';
 import { useDispatch, usePermission, useSetup } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
-import perf, { PerfAction } from '@/performance';
 import * as Query from '@/utils/query';
 
 import { DashboardGate } from './gates';
@@ -26,8 +25,6 @@ const Dashboard: React.FC = () => {
   const importModal = ModalsV2.useModal(ModalsV2.Project.Import);
 
   useSetup(() => {
-    perf.action(PerfAction.DASHBOARD_RENDERED);
-
     if (query?.import) {
       clearSearch();
       importModal.openVoid({ projectID: query?.import });

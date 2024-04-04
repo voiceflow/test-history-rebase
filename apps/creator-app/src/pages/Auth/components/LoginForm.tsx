@@ -9,7 +9,6 @@ import {
   TippyTooltip,
   toast,
   useDebouncedCallback,
-  useSetup,
   useSmartReducerV2,
 } from '@voiceflow/ui';
 import { AxiosError } from 'axios';
@@ -25,7 +24,6 @@ import * as Session from '@/ducks/session';
 import { useDispatch } from '@/hooks';
 import { Query } from '@/models';
 import HeaderBox from '@/pages/Auth/components/HeaderBox';
-import perf, { PerfAction } from '@/performance';
 
 import { replaceSpaceWithPlus } from '../utils';
 import { AuthBox } from './AuthBoxes';
@@ -136,10 +134,6 @@ export const LoginForm: React.FC<LoginFormProps> = ({ query, children }) => {
       toast.error(errText);
     }
   };
-
-  useSetup(() => {
-    perf.action(PerfAction.LOGIN_RENDERED);
-  });
 
   return (
     <AuthenticationContainer>

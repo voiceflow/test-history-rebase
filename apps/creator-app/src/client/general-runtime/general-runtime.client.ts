@@ -12,7 +12,14 @@ import {
 
 const axiosInstance = axios.create({
   baseURL: GENERAL_RUNTIME_ENDPOINT,
-  headers: AUTH_HEADERS,
+});
+
+axiosInstance.interceptors.request.use((config) => {
+  if (!config.headers.Authorization) {
+    config.headers.Authorization = AUTH_HEADERS.Authorization;
+  }
+
+  return config;
 });
 
 export const generalRuntimeClient = {

@@ -8,7 +8,7 @@ import { Utils } from '@voiceflow/common';
 import { ProjectUserRole } from '@voiceflow/dtos';
 import { BadRequestException, InternalServerErrorException } from '@voiceflow/exception';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
-import type { AssistantEntity, AssistantObject, CreateData } from '@voiceflow/orm-designer';
+import type { AssistantEntity, AssistantObject, CreateData, ProgramJSON } from '@voiceflow/orm-designer';
 import {
   AssistantORM,
   DatabaseTarget,
@@ -488,27 +488,33 @@ export class AssistantService extends MutableService<AssistantORM> {
 
     const exportData = this.environment.prepareExportData(data, { backup, userID, workspaceID: data.project.teamID, centerDiagrams });
 
+    const buildProgramsRecord = (programs: ProgramJSON[]) =>
+      Object.fromEntries(programs.map((program) => [program.diagramID, { ...program, _id: program.diagramID }]));
+
+    let programs: Record<string, ProgramJSON> | undefined;
+
+    if (withPrograms) {
+      programs = buildProgramsRecord(this.program.mapToJSON(data.programs));
+    } else if (withPrototypePrograms) {
+      programs = buildProgramsRecord(this.prototypeProgram.mapToJSON(data.prototypePrograms));
+    }
+
     return {
       ...exportData,
       project,
+      programs,
       _version: String(data._version),
       variableStates: this.variableState.mapToJSON(data.variableStates),
-
-      ...(withPrograms && { programs: Object.fromEntries(this.program.mapToJSON(data.programs).map((program) => [program._id, program])) }),
-
-      ...(withPrototypePrograms && {
-        prototypePrograms: Object.fromEntries(this.prototypeProgram.mapToJSON(data.prototypePrograms).map((program) => [program._id, program])),
-      }),
     };
   }
 
   public async exportJSON({
     userID,
     backup,
+    programs: withPrograms,
     assistantID,
     environmentID,
     centerDiagrams,
-    programs: withPrograms,
     prototypePrograms: withPrototypePrograms,
   }: {
     userID: number;
@@ -554,7 +560,13 @@ export class AssistantService extends MutableService<AssistantORM> {
           variableStates,
           prototypePrograms,
         },
-        { backup, userID, centerDiagrams, withPrograms, withPrototypePrograms }
+        {
+          backup,
+          userID,
+          withPrograms,
+          centerDiagrams,
+          withPrototypePrograms,
+        }
       );
     });
   }

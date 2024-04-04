@@ -106,6 +106,12 @@ export class AssistantPrivateHTTPController {
     @Headers('assistantID') assistantID: string | undefined,
     @Query(AssistantExportJSONQuery) query: AssistantExportJSONQuery
   ): Promise<AssistantExportDataDTO> {
-    return this.service.exportJSON({ ...query, userID: principal.createdBy, assistantID: assistantID ?? projectid, environmentID });
+    return this.service.exportJSON({
+      ...query,
+      userID: principal.createdBy,
+      assistantID: assistantID ?? projectid,
+      environmentID,
+      prototypePrograms: query.prototypePrograms ?? query.prototype,
+    });
   }
 }

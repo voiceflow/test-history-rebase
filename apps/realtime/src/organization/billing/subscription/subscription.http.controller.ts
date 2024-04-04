@@ -23,20 +23,6 @@ export class BillingSubscriptionHTTPController {
     private readonly service: BillingSubscriptionService
   ) {}
 
-  @Get(':subscriptionID/:workspaceID')
-  @Authorize.Permissions<{ workspaceID: string }>([Permission.ORGANIZATION_READ], ({ workspaceID }) => ({ id: workspaceID, kind: 'workspace' }))
-  @ApiOperation({
-    summary: 'Returns billing subscription',
-    description: 'Returns billing subscription for the given subscriptionID',
-  })
-  @ApiParam({ name: 'organizationID', type: 'string' })
-  @ApiParam({ name: 'subscriptionID', type: 'string' })
-  @ApiParam({ name: 'workspaceID', type: 'string' })
-  @ZodApiResponse({ status: HttpStatus.OK, schema: SubscriptionDTO })
-  async findOne(@Param('subscriptionID') subscriptionID: string): Promise<Subscription> {
-    return this.service.findOne(subscriptionID).then(subscriptionAdapter.fromDB);
-  }
-
   @Get(':subscriptionID/invoices')
   @Authorize.Permissions([Permission.ORGANIZATION_READ])
   @ApiOperation({
@@ -156,5 +142,20 @@ export class BillingSubscriptionHTTPController {
         status: data.payment_source.status as SubscriptionPaymentMethodStatusType,
       },
     };
+  }
+
+  // keep as the last route to avoid collisions
+  @Get(':subscriptionID/:workspaceID')
+  @Authorize.Permissions<{ workspaceID: string }>([Permission.ORGANIZATION_READ], ({ workspaceID }) => ({ id: workspaceID, kind: 'workspace' }))
+  @ApiOperation({
+    summary: 'Returns billing subscription',
+    description: 'Returns billing subscription for the given subscriptionID',
+  })
+  @ApiParam({ name: 'organizationID', type: 'string' })
+  @ApiParam({ name: 'subscriptionID', type: 'string' })
+  @ApiParam({ name: 'workspaceID', type: 'string' })
+  @ZodApiResponse({ status: HttpStatus.OK, schema: SubscriptionDTO })
+  async findOne(@Param('subscriptionID') subscriptionID: string): Promise<Subscription> {
+    return this.service.findOne(subscriptionID).then(subscriptionAdapter.fromDB);
   }
 }

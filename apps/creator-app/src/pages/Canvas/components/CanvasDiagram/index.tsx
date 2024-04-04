@@ -28,7 +28,6 @@ import { ContextMenuContext, EngineContext, FocusThreadContext } from '@/pages/C
 import { LibraryStepType } from '@/pages/Project/components/StepMenu/constants';
 import { MarkupContext } from '@/pages/Project/contexts';
 import { useCommentingMode, useEditingMode } from '@/pages/Project/hooks';
-import perf, { PerfAction } from '@/performance';
 import { pointerNodeDataFactory } from '@/utils/customBlock';
 import { Coords } from '@/utils/geometry';
 
@@ -167,14 +166,11 @@ const CanvasDiagram: React.FC<React.PropsWithChildren> = ({ children }) => {
       // $TODO$ - Need to extract this specific knowledge out, e.g, using polymorphism to abstract these
       // specific calls. This list of calls is awkward to read.
       if ('blockType' in item) {
-        perf.action(PerfAction.STEP_DROP_CREATE);
         await engine.node.add({ type: item.blockType, coords, factoryData: item.factoryData });
       } else if (item.type === DragItem.COMPONENTS && 'searchMatchValue' in item) {
-        perf.action(PerfAction.STEP_DROP_CREATE);
         await engine.node.add({ type: BlockType.COMPONENT, coords, factoryData: { name: item.item.name, diagramID: item.item.id } });
       } else if (isLibraryDragItem(item)) {
         if (item.libraryType === LibraryStepType.CUSTOM_BLOCK) {
-          perf.action(PerfAction.STEP_DROP_CREATE);
           await engine.node.add({ type: BlockType.CUSTOM_BLOCK_POINTER, coords, factoryData: pointerNodeDataFactory(item.tabData) });
         } else if (item.libraryType === LibraryStepType.BLOCK_TEMPLATES) {
           await engine.canvasTemplate.dropTemplate(item.tabData.id, coords);
@@ -205,8 +201,6 @@ const CanvasDiagram: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   useSetup(() => {
     PageProgress.stop(PageProgressBar.CANVAS_LOADING);
-
-    perf.action(PerfAction.CANVAS_RENDERED);
   });
 
   React.useEffect(

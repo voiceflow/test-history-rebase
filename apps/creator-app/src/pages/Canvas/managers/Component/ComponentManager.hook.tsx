@@ -2,7 +2,6 @@ import React from 'react';
 
 import * as Router from '@/ducks/router';
 import { useDispatch } from '@/hooks';
-import perf, { PerfAction } from '@/performance';
 
 import { DiagramMapContext } from '../../contexts';
 
@@ -17,8 +16,6 @@ export const useGoToDiagram = ({ diagramID, activeNodeID }: UseGoToDiagramProps)
 
   return () => {
     if (diagramID && diagramMap[diagramID]) {
-      perf.action(PerfAction.COMPONENT_NODE__LINK_CLICK);
-
       goToDiagramHistoryPush(diagramID, undefined, activeNodeID);
     }
   };

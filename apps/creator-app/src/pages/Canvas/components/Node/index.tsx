@@ -7,7 +7,6 @@ import { ContextMenuTarget } from '@/pages/Canvas/constants';
 import { ContextMenuContext, EngineContext, NodeEntityContext, PresentationModeContext } from '@/pages/Canvas/contexts';
 import { useCanvasMode, useEditingMode, usePrototypingMode } from '@/pages/Project/hooks';
 import { READONLY_CLICK_EVENT_NAME } from '@/pages/Prototype/components/ReadOnlyBadge';
-import perf, { PerfAction } from '@/performance';
 import { ClassName } from '@/styles/constants';
 
 import { Container, Lifecycle, NodeChipStart, NodeCombined, Styles } from './components';
@@ -41,8 +40,6 @@ const Node: React.FC = () => {
   );
 
   const onClickHandler = (e: React.MouseEvent) => {
-    perf.action(PerfAction.NODE_CLICK);
-
     onClick(e);
 
     if (isPrototypingMode) {
@@ -60,8 +57,6 @@ const Node: React.FC = () => {
   nodeEntity.useInstance(instance);
 
   useSetup(() => {
-    perf.action(PerfAction.NODE_RENDERED);
-
     if (isFocused) {
       instance.ref.current?.focus();
     }

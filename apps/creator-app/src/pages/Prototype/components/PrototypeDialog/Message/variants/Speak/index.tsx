@@ -3,7 +3,6 @@ import cn from 'classnames';
 import Markdown, { MarkdownToJSX } from 'markdown-to-jsx';
 import React from 'react';
 
-import perf, { PerfAction } from '@/performance';
 import { ClassName } from '@/styles/constants';
 import { ALL_URLS_REGEX } from '@/utils/string.util';
 
@@ -36,12 +35,6 @@ const Speak: React.FC<SpeakProps> = ({ ai, src, audio, voice, message, className
         .replace(/\n/g, '  \n'), // double spaces is a "Line Return" in the markdown
     [message]
   );
-
-  React.useEffect(() => {
-    if (formattedMessage) {
-      perf.action(PerfAction.PROTOTYPE_SPEAK_RENDERED);
-    }
-  }, [!!formattedMessage]);
 
   React.useEffect(() => {
     if (audioPlayer.playing) {

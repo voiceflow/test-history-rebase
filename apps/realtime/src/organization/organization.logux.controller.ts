@@ -45,7 +45,7 @@ export class OrganizationLoguxController {
     kind: 'organization',
   }))
   @UseRequestContext()
-  @Broadcast<Actions.Organization.PatchOne>(({ context }) => ({ channel: Channels.organization.build({ ...context, workspaceID: '' }) }))
+  @Broadcast<Actions.Organization.PatchOne>(({ context }) => ({ channel: Channels.organization.build(context) }))
   async patchOne(@Payload() { id, patch }: Actions.Organization.PatchOne, @AuthMeta() authMeta: AuthMetaPayload): Promise<void> {
     await this.organizationService.patchOne(authMeta.userID, id, patch);
   }
@@ -56,7 +56,7 @@ export class OrganizationLoguxController {
     kind: 'organization',
   }))
   @UseRequestContext()
-  @Broadcast<Actions.OrganizationMember.DeleteOne>(({ context }) => ({ channel: Channels.organization.build({ ...context, workspaceID: '' }) }))
+  @Broadcast<Actions.OrganizationMember.DeleteOne>(({ context }) => ({ channel: Channels.organization.build(context) }))
   async deleteMember(@Payload() { id, context }: Actions.OrganizationMember.DeleteOne, @AuthMeta() authMeta: AuthMetaPayload): Promise<void> {
     await this.organizationMemberService.remove(authMeta.userID, context.organizationID, id);
   }

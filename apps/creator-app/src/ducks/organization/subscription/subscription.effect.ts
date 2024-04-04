@@ -13,7 +13,11 @@ import { getErrorMessage } from '@/utils/error';
 
 import { chargebeeSubscriptionSelector, customerIDSelector } from './subscription.select';
 
-export const checkout = (organizationID: string, data: Omit<Actions.OrganizationSubscription.CheckoutRequest, 'context'>): Thunk<void> => {
+export const checkout = (
+  organizationID: string,
+  workspaceID: string,
+  data: Omit<Actions.OrganizationSubscription.CheckoutRequest, 'context'>
+): Thunk<void> => {
   const { itemPriceID, planPrice, editorSeats, period, paymentIntent } = data;
 
   return async (dispatch) => {
@@ -25,11 +29,9 @@ export const checkout = (organizationID: string, data: Omit<Actions.Organization
           period,
           planPrice,
           paymentIntent,
-          context: { organizationID },
+          context: { organizationID, workspaceID },
         })
       );
-
-      dispatch.local(Actions.OrganizationSubscription.Replace({ subscription: newSubscription, context: { organizationID } }));
 
       toast.success(`Upgraded to ${Utils.string.capitalizeFirstLetter(newSubscription.plan)}!`);
     } catch (err) {
@@ -44,7 +46,7 @@ export const loadActiveOrganizationSubscription =
     try {
       const subscription = (await designerClient.billing.subscription.findOne(organizationID, chargebeeSubscriptionID, workspaceID)) as Subscription;
 
-      await dispatch.local(Actions.OrganizationSubscription.Replace({ subscription, context: { organizationID } }));
+      await dispatch.local(Actions.OrganizationSubscription.Replace({ subscription, context: { organizationID, workspaceID } }));
 
       return subscription;
     } catch {
@@ -55,8 +57,9 @@ export const loadActiveOrganizationSubscription =
 export const cancelSubscription = (organizationID: string): Thunk<void> => {
   return async (dispatch, getState) => {
     const subscription = chargebeeSubscriptionSelector(getState());
+    const workspaceID = WorkspaceV2.active.workspaceSelector(getState())?.id;
 
-    if (!subscription) return;
+    if (!subscription || !workspaceID) return;
 
     await designerClient.billing.subscription.cancel(organizationID, subscription.id);
 
@@ -66,7 +69,7 @@ export const cancelSubscription = (organizationID: string): Thunk<void> => {
           ...subscription,
           status: ChargebeeSubscriptionStatus.NON_RENEWING,
         },
-        context: { organizationID },
+        context: { organizationID, workspaceID },
       })
     );
   };
@@ -75,8 +78,9 @@ export const cancelSubscription = (organizationID: string): Thunk<void> => {
 export const downgradeTrial = (organizationID: string, chargebeeSubscriptionID: string): Thunk<void> => {
   return async (dispatch, getState) => {
     const subscription = chargebeeSubscriptionSelector(getState());
+    const workspaceID = WorkspaceV2.active.workspaceSelector(getState())?.id;
 
-    if (!subscription) return;
+    if (!subscription || !workspaceID) return;
 
     await designerClient.billing.subscription.downgradeTrial(organizationID, chargebeeSubscriptionID);
 
@@ -87,7 +91,7 @@ export const downgradeTrial = (organizationID: string, chargebeeSubscriptionID: 
           plan: PlanType.STARTER,
           trial: null,
         },
-        context: { organizationID },
+        context: { organizationID, workspaceID },
       })
     );
   };
@@ -98,9 +102,11 @@ export const updateSubscriptionPaymentMethod =
   async (dispatch, getState) => {
     const state = getState();
     const organizationID = WorkspaceV2.active.organizationIDSelector(state);
+    const workspaceID = WorkspaceV2.active.workspaceSelector(getState())?.id;
+
     const customerID = customerIDSelector(state);
 
-    if (!organizationID || !customerID) {
+    if (!organizationID || !customerID || !workspaceID) {
       throw new Error('Organization subscription not found');
     }
 
@@ -114,7 +120,7 @@ export const updateSubscriptionPaymentMethod =
     dispatch.local(
       Actions.OrganizationSubscription.UpdatePaymentMethod({
         paymentMethod,
-        context: { organizationID },
+        context: { organizationID, workspaceID },
       })
     );
   };

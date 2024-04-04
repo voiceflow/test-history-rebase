@@ -110,7 +110,9 @@ export const updateMember =
 
     try {
       if (workspace?.organizationID && isAdminUserRole(organizationMember?.role)) {
-        await dispatch.sync(Actions.OrganizationMember.DeleteOne({ id: creatorID, context: { organizationID: workspace.organizationID } }));
+        await dispatch.sync(
+          Actions.OrganizationMember.DeleteOne({ id: creatorID, context: { organizationID: workspace.organizationID, workspaceID } })
+        );
       }
 
       await dispatch.sync(Realtime.workspace.member.patch({ workspaceID, creatorID, member: { role } }));

@@ -21,14 +21,14 @@ export class BillingSubscriptionLoguxController {
   }))
   @UseRequestContext()
   @Broadcast<Actions.OrganizationSubscription.CheckoutRequest>(({ context }) => ({
-    channel: Channels.organization.build({ ...context, workspaceID: '' }),
+    channel: Channels.organization.build(context),
   }))
   async checkout(@Payload() data: Actions.OrganizationSubscription.CheckoutRequest, @AuthMeta() authMeta: AuthMetaPayload): Promise<Subscription> {
-    const { organizationID } = data.context;
+    const { organizationID, workspaceID } = data.context;
 
     const { itemPriceID, planPrice, editorSeats, period, paymentIntent } = data;
 
-    return this.service.checkoutAndBroadcast(authMeta, organizationID, {
+    return this.service.checkoutAndBroadcast(authMeta, organizationID, workspaceID, {
       itemPriceID,
       planPrice,
       editorSeats,
@@ -43,7 +43,7 @@ export class BillingSubscriptionLoguxController {
     kind: 'organization',
   }))
   @Broadcast<Actions.OrganizationSubscription.Replace>(({ context }) => ({
-    channel: Channels.organization.build({ ...context, workspaceID: '' }),
+    channel: Channels.organization.build(context),
   }))
   @BroadcastOnly()
   async replaceSubscription(@Payload() _: any) {

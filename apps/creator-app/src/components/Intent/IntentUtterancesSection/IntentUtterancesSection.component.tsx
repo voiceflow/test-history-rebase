@@ -67,6 +67,7 @@ export const IntentUtterancesSection: React.FC<IIntentUtterancesSection> = ({
               iconName="BulkUpload"
               onMouseEnter={onOpen}
               onMouseLeave={onClose}
+              tabIndex={-1}
             />
           )}
         >
@@ -77,7 +78,7 @@ export const IntentUtterancesSection: React.FC<IIntentUtterancesSection> = ({
           )}
         </Tooltip>
 
-        <Section.Header.Button iconName="Plus" onClick={stopPropagation(onUtteranceAdd)} testID={tid(TEST_ID, 'add')} />
+        <Section.Header.Button iconName="Plus" onClick={stopPropagation(onUtteranceAdd)} testID={tid(TEST_ID, 'add')} tabIndex={-1} />
       </Section.Header.Container>
 
       <Scroll style={{ display: 'block' }} maxHeight="394px">

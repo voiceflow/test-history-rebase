@@ -2,7 +2,7 @@ import { Nullable } from '@voiceflow/common';
 import { isLinkElement } from '@voiceflow/slate-serializer';
 import { Descendant, Editor, Element, Location, Node, Point, Range, Text, Transforms } from 'slate';
 
-import { isValidURL } from '@/utils/string';
+import { isValidURLMatch } from '@/utils/string';
 import { ALL_URLS_REGEX } from '@/utils/string.util';
 
 import { DEFAULT_COLOR, ElementType, TextProperty } from '../../constants';
@@ -54,7 +54,7 @@ export const withLinksPlugin: Plugin = (EditorAPI: EditorAPIType) => (editor: Ed
 
     const { selection } = editor;
 
-    if (pasted && selection && Range.isExpanded(selection) && isValidURL(originalText)) {
+    if (pasted && selection && Range.isExpanded(selection) && isValidURLMatch(originalText)) {
       const selectedText = EditorAPI.string(editor, selection);
 
       return [createLinkFromTextNode({ text: selectedText })];
@@ -65,7 +65,7 @@ export const withLinksPlugin: Plugin = (EditorAPI: EditorAPIType) => (editor: Ed
         return next([node]);
       }
 
-      if (node.text && isValidURL(node.text)) {
+      if (node.text && isValidURLMatch(node.text)) {
         return createLinkFromTextNode(node);
       }
 
@@ -275,7 +275,7 @@ export const withLinksEditorApi: APIPlugin = (EditorAPI: EditorAPIType): EditorA
       const lastWordRange = Editor.range(editor, end, startPointOfLastCharacter);
       const lastWord = Editor.string(editor, lastWordRange);
 
-      if (isValidURL(lastWord)) {
+      if (isValidURLMatch(lastWord)) {
         return [lastWord, lastWordRange];
       }
 

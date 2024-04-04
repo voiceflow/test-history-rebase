@@ -3,7 +3,7 @@ import { SLOT_REGEXP } from '@voiceflow/common';
 
 export const SPACE_REGEXP = / /g;
 
-const URL_REGEXP_STR = '(((https?:)?\\/\\/)?(www\\.)?[\\w#%+.:=@~-]{2,256}\\.[a-z]{2,10}\\b(([\\w#%&()+./:=?@~,!-]*[^!,. ])|([\\w#%&()+./:=?@~-]*)))';
+const URL_REGEXP_STR = '(((https?:)?\\/\\/)?(www\\.)?[\\w#%+.:=@~-]{2,256}\\.[a-z]{2,10}\\b(([\\w#%&()+./:=?@~,!-]*[^!,.])|([\\w#%&()+./:=?@~-]*)))';
 export const URL_ONLY_REGEXP = new RegExp(`^${URL_REGEXP_STR}$`);
 export const ALL_URLS_REGEX = new RegExp(URL_REGEXP_STR, 'g');
 
@@ -21,11 +21,13 @@ export const getURLWithProtocol = (str: string) => {
   return `https://${str}`;
 };
 
+export const isValidURLMatch = (str: string): boolean => getURLWithProtocol(str).match(URL_ONLY_REGEXP) !== null;
+
 export const isValidURL = (str: string): boolean => {
   try {
     return !!new URL(str);
   } catch {
-    return getURLWithProtocol(str).match(URL_ONLY_REGEXP) !== null;
+    return isValidURLMatch(str);
   }
 };
 

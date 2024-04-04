@@ -132,6 +132,7 @@ export class BillingSubscriptionService {
   async checkoutAndBroadcast(
     authPayload: AuthMetaPayload,
     organizationID: string,
+    workspaceID: string,
     data: Omit<Actions.OrganizationSubscription.CheckoutRequest, 'context'>
   ) {
     const subscription = await this.findOneByOrganizationID(organizationID);
@@ -167,16 +168,15 @@ export class BillingSubscriptionService {
       throw new Error('Unable to update subscription');
     }
 
-    // TODO: remove it once we implement event subscription
+    // TODO: remove it once we implement event subscriptiona
     await this.waitForSubscriptionUpdate(subscription.id);
 
     const newSubscription = await this.findOneByOrganizationID(organizationID).then(subscriptionAdapter.fromDB);
 
-    // TODO: fix broadcast not working
     await this.logux.processAs(
       Actions.OrganizationSubscription.Replace({
         subscription: newSubscription,
-        context: { organizationID },
+        context: { organizationID, workspaceID },
       }),
       authPayload
     );

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.315.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.315.1...@voiceflow/realtime@1.315.2) (2024-04-05)
+
+### Bug Fixes
+
+* add base program [bugfix] (COR-1846) ([#7947](https://github.com/voiceflow/creator-app/issues/7947)) ([dbdc81f](https://github.com/voiceflow/creator-app/commit/dbdc81f0a8629b12d92073dbf4f1076e4c5725f0))
+
 ## [1.315.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.315.0...@voiceflow/realtime@1.315.1) (2024-04-05)
 
 ### Bug Fixes

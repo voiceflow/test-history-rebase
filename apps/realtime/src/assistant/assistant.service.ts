@@ -541,6 +541,7 @@ export class AssistantService extends MutableService<AssistantORM> {
       });
 
       const diagramIDs = diagrams.map((diagram) => diagram.diagramID);
+      diagramIDs.push(version._id);
 
       const [programs, prototypePrograms] = await Promise.all([
         withPrograms ? await this.program.findManyByVersionAndDiagramIDs(version._id, diagramIDs) : Promise.resolve([]),

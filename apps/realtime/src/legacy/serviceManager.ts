@@ -3,13 +3,14 @@ import type { IdentityClient } from '@voiceflow/sdk-identity';
 import { ServiceManagerOptions, SocketServer } from '@voiceflow/socket-utils';
 
 import type { AssistantService } from '@/assistant/assistant.service';
-import { CreatorService } from '@/creator/creator.service';
-import { FlowService } from '@/flow/flow.service';
-import { OrganizationIdentityService } from '@/organization/identity/identity.service';
+import type { CreatorService } from '@/creator/creator.service';
+import type { FlowService } from '@/flow/flow.service';
+import type { OrganizationIdentityService } from '@/organization/identity/identity.service';
 import type { ProjectService } from '@/project/project.service';
 import type { ProjectListService } from '@/project-list/project-list.service';
 import type { ThreadService } from '@/thread/thread.service';
 import type { UserService } from '@/user/user.service';
+import type { WorkflowService } from '@/workflow/workflow.service';
 
 import buildActions from './actions';
 import buildChannels from './channels';
@@ -28,6 +29,7 @@ interface Options extends ServiceManagerOptions<LoguxControlOptions['config']> {
     creator: CreatorService;
     project: ProjectService;
     identity: IdentityClient;
+    workflow: WorkflowService;
     hashedID: HashedIDService;
     assistant: AssistantService;
     projectList: ProjectListService;

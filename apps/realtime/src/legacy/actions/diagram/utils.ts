@@ -33,17 +33,27 @@ export abstract class AbstractDiagramActionControl<
         }),
   });
 
-  protected setFlowUpdatedBy = async (ctx: Context<BaseContextData>, payload: P): Promise<void> => {
+  protected setCMSUpdatedBy = async (ctx: Context<BaseContextData>, payload: P): Promise<void> => {
     try {
       await this.services.requestContext.createAsync(() =>
-        this.services.flow.updateOneByDiagramIDAndBroadcast(
-          payload.diagramID,
-          { updatedByID: ctx.data.creatorID },
-          {
-            auth: { userID: ctx.data.creatorID, clientID: ctx.data.clientID },
-            context: { assistantID: payload.projectID, environmentID: payload.versionID },
-          }
-        )
+        Promise.all([
+          this.services.flow.updateOneByDiagramIDAndBroadcast(
+            payload.diagramID,
+            { updatedByID: ctx.data.creatorID },
+            {
+              auth: { userID: ctx.data.creatorID, clientID: ctx.data.clientID },
+              context: { assistantID: payload.projectID, environmentID: payload.versionID },
+            }
+          ),
+          this.services.workflow.updateOneByDiagramIDAndBroadcast(
+            payload.diagramID,
+            { updatedByID: ctx.data.creatorID },
+            {
+              auth: { userID: ctx.data.creatorID, clientID: ctx.data.clientID },
+              context: { assistantID: payload.projectID, environmentID: payload.versionID },
+            }
+          ),
+        ])
       );
     } catch {
       // do nothing

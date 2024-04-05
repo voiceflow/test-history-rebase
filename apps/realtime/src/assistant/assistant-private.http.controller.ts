@@ -111,7 +111,7 @@ export class AssistantPrivateHTTPController {
       userID: principal.createdBy,
       assistantID: assistantID ?? projectid,
       environmentID,
-      prototypePrograms: query.prototypePrograms ?? query.prototype,
+      prototypePrograms: query.prototypePrograms || query.prototype,
     });
   }
 }

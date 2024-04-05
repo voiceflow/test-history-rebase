@@ -92,7 +92,7 @@ export class AssistantPublicHTTPController {
     @Query(new ZodValidationPipe(AssistantExportJSONQuery)) query: AssistantExportJSONQuery
   ): Promise<AssistantExportDataDTO> {
     const userID = principal.userID ?? principal.createdBy ?? principal.id;
-    return this.service.exportJSON({ ...query, userID, assistantID, environmentID });
+    return this.service.exportJSON({ ...query, userID, assistantID, environmentID, prototypePrograms: query.prototypePrograms || query.prototype });
   }
 
   @Post('import-file/:workspaceID')

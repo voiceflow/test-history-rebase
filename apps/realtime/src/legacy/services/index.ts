@@ -12,6 +12,7 @@ import { ProjectListService } from '@/project-list/project-list.service';
 import { ThreadService } from '@/thread/thread.service';
 import type { Config } from '@/types';
 import type { UserService } from '@/user/user.service';
+import { WorkflowService } from '@/workflow/workflow.service';
 
 import type { ClientMap } from '../clients';
 import type { ModelMap } from '../models';
@@ -47,6 +48,7 @@ export interface ServiceMap extends BaseServiceMap {
   version: VersionService;
   migrate: MigrateService;
   feature: FeatureService;
+  workflow: WorkflowService;
   identity: IdentityClient;
   variable: VariableService;
   hashedID: HashedIDService;
@@ -78,6 +80,7 @@ interface Options {
     creator: CreatorService;
     project: ProjectServiceV2;
     identity: IdentityClient;
+    workflow: WorkflowService;
     hashedID: HashedIDService;
     assistant: AssistantService;
     projectList: ProjectListService;
@@ -109,6 +112,7 @@ const buildServices = ({ config, clients, models, log, injectedServices }: Optio
     identity: injectedServices.identity,
     variable: new VariableService(serviceOptions),
     hashedID: injectedServices.hashedID,
+    workflow: injectedServices.workflow,
     projectV2: injectedServices.project,
     assistant: injectedServices.assistant,
     voiceflow: new VoiceflowService(serviceOptions),

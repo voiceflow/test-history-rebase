@@ -18,7 +18,7 @@ class RemoveManyByKeyPorts extends AbstractDiagramActionControl<Realtime.port.Re
     await Promise.all([
       this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID),
       this.services.domain.setUpdatedBy(payload.versionID, payload.domainID, ctx.data.creatorID),
-      this.setFlowUpdatedBy(ctx, payload),
+      this.setCMSUpdatedBy(ctx, payload),
     ]);
   };
 }

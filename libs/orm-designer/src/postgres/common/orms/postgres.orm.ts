@@ -196,7 +196,7 @@ export abstract class PostgresORM<
     }
 
     this.cache.onUpdateHandlers.forEach(({ field, handler }) => {
-      if (data[field] !== undefined) {
+      if (data[field] === undefined) {
         nextData[field] = handler(data as any);
       }
     });

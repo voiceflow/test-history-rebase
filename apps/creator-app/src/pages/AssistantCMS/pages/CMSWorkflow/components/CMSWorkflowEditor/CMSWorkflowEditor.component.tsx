@@ -1,22 +1,27 @@
+import { WorkflowStatus } from '@voiceflow/dtos';
 import { tid } from '@voiceflow/style';
-import { Box, Button, Divider, Editor, IEditorAPI, Scroll } from '@voiceflow/ui-next';
-import React, { useRef } from 'react';
+import { Box, Button, Divider, Editor, IEditorAPI, IndicatorStatus, Scroll, WorkflowManager } from '@voiceflow/ui-next';
+import React, { useMemo, useRef } from 'react';
+import { match } from 'ts-pattern';
 
 import { CMSEditorDescription } from '@/components/CMS/CMSEditor/CMSEditorDescription/CMSEditorDescription.component';
 import { CMSRoute } from '@/config/routes';
-import { Designer } from '@/ducks';
-import * as Router from '@/ducks/router';
+import { Designer, Router, Workspace } from '@/ducks';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
 import { EDITOR_TEST_ID } from '@/pages/AssistantCMS/AssistantCMS.constant';
+import { getMemberColorByCreatorID, isMemberColorImage } from '@/utils/member.util';
 
 import { CMSEditorMoreButton } from '../../../../components/CMSEditorMoreButton/CMSEditorMoreButton.components';
 import { useCMSResourceGetMoreMenu } from '../../../../hooks/cms-resource.hook';
 import { useCMSActiveResourceID } from '../../../../hooks/cms-table.hook';
+import { workflowManagerContainer } from './CMSWorkflowEditor.css';
 
 export const CMSWorkflowEditor: React.FC = () => {
   const editorRef = useRef<IEditorAPI>(null);
 
+  const members = useSelector(Workspace.active.normalizedMembersSelector);
   const workflowID = useCMSActiveResourceID();
+
   const goToDiagram = useDispatch(Router.goToDiagram);
   const duplicateOne = useDispatch(Designer.Workflow.effect.duplicateOne);
   const goToCMSResource = useDispatch(Router.goToCMSResource);
@@ -32,6 +37,47 @@ export const CMSWorkflowEditor: React.FC = () => {
 
   const workflow = useSelector(Designer.Workflow.selectors.oneByID, { id: workflowID });
   const patchWorkflow = useDispatch(Designer.Workflow.effect.patchOne, workflowID);
+
+  const assignees = useMemo(
+    () =>
+      members.map((member) => ({
+        id: member.creator_id,
+        name: member.name,
+        avatar: isMemberColorImage(member.image) ? undefined : member.image,
+        variant: getMemberColorByCreatorID(member.creator_id, 'light'),
+      })),
+    [members]
+  );
+
+  const assignee = useMemo(() => {
+    if (!workflow?.assigneeID) return { id: -1, name: 'Unassigned', variant: 'base' };
+
+    const member = assignees.find(({ id }) => id === workflow.assigneeID);
+
+    return member ?? { id: -1, name: 'Unknown', variant: 'base' };
+  }, [workflow?.assigneeID, assignees]);
+
+  const status = useMemo(
+    () =>
+      match(workflow?.status ?? null)
+        .with(null, () => IndicatorStatus.NONE)
+        .with(WorkflowStatus.TO_DO, () => IndicatorStatus.TODO)
+        .with(WorkflowStatus.COMPLETE, () => IndicatorStatus.DONE)
+        .with(WorkflowStatus.IN_PROGRESS, () => IndicatorStatus.IN_PROGRESS)
+        .exhaustive(),
+    [workflow?.status]
+  );
+
+  const onStatusChange = (status: IndicatorStatus) => {
+    patchWorkflow({
+      status: match(status)
+        .with(IndicatorStatus.TODO, () => WorkflowStatus.TO_DO)
+        .with(IndicatorStatus.DONE, () => WorkflowStatus.COMPLETE)
+        .with(IndicatorStatus.NONE, () => null)
+        .with(IndicatorStatus.IN_PROGRESS, () => WorkflowStatus.IN_PROGRESS)
+        .exhaustive(),
+    });
+  };
 
   if (!workflow) return null;
 
@@ -57,6 +103,16 @@ export const CMSWorkflowEditor: React.FC = () => {
           onValueChange={(description) => patchWorkflow({ description })}
         />
       </Scroll>
+
+      <div className={workflowManagerContainer}>
+        <WorkflowManager
+          status={status}
+          assignee={assignee}
+          assignees={assignees}
+          onStatusChange={onStatusChange}
+          onAssigneeChange={(assignee) => patchWorkflow({ assigneeID: assignee.id })}
+        />
+      </div>
     </Editor>
   );
 };

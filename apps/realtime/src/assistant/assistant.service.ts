@@ -540,7 +540,7 @@ export class AssistantService extends MutableService<AssistantORM> {
         environmentID: resolvedEnvironmentID,
       });
 
-      const diagramIDs = diagrams.map((diagram) => diagram._id);
+      const diagramIDs = diagrams.map((diagram) => diagram.diagramID);
 
       const [programs, prototypePrograms] = await Promise.all([
         withPrograms ? await this.program.findManyByVersionAndDiagramIDs(version._id, diagramIDs) : Promise.resolve([]),

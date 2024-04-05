@@ -7,7 +7,7 @@ export const BillingPlanDTO = z.object({
   prices: z.array(
     z.object({
       id: z.string(),
-      price: z.number(),
+      amount: z.number(),
       period: z.nativeEnum(BillingPeriod),
     })
   ),

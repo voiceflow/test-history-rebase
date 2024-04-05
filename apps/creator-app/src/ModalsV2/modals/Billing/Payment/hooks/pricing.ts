@@ -8,7 +8,7 @@ export const usePricing = () => {
   const [period, setPeriod] = useAtom(atoms.periodAtom);
   const activePaidPlanPrices = useAtomValue(atoms.activePaidPlanPricesAtom);
 
-  const periodPrice = (activePaidPlanPrices?.[period].value ?? 0) * (period === BillingPeriod.ANNUALLY ? 12 : 1);
+  const periodPrice = (activePaidPlanPrices?.[period].amount ?? 0) * (period === BillingPeriod.ANNUALLY ? 12 : 1);
   const price = periodPrice * editorSeats;
 
   const onChangePeriod = (period: BillingPeriod) => setPeriod(period);
@@ -17,7 +17,7 @@ export const usePricing = () => {
     period,
     price,
     prices: Object.entries(activePaidPlanPrices || {})?.reduce<Record<BillingPeriod, number>>(
-      (acc, [period, price]) => ({ ...acc, [period]: price.value }),
+      (acc, [period, price]) => ({ ...acc, [period]: price.amount }),
       {
         [BillingPeriod.ANNUALLY]: 0,
         [BillingPeriod.MONTHLY]: 0,

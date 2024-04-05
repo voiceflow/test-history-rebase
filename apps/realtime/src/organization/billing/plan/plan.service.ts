@@ -41,11 +41,11 @@ export class BillingPlanService {
         .map(async (item) => {
           const prices = await Promise.all(
             item.item_prices.map(async (price) => {
-              const estimatedAmount = await this.getPlanEstimateAmount(price, coupon);
+              const amount = await this.getPlanEstimateAmount(price, coupon);
 
               return {
                 id: price.id,
-                price: estimatedAmount / 1000,
+                amount,
                 period: price.period_unit === 'month' ? BillingPeriod.MONTHLY : BillingPeriod.ANNUALLY,
               };
             })

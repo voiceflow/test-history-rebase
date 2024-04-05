@@ -6,7 +6,7 @@ import { ACTIVE_PAID_PLAN } from '@/constants';
 
 import { Step } from './Payment.constants';
 
-type PriceMap = Record<BillingPeriod, { value: number; id: string }>;
+type PriceMap = Record<BillingPeriod, { amount: number; id: string }>;
 
 export const stepAtom = atom(Step.PLAN);
 
@@ -22,7 +22,7 @@ export const plansPriceAtom = atom<Record<string, PriceMap>>((get) => {
       [plan.id]: plan.prices.reduce(
         (acc, price) => ({
           ...acc,
-          [price.period]: { value: price.period === BillingPeriod.ANNUALLY ? price.price / 12 : price.price, id: price.id },
+          [price.period]: { amount: price.period === BillingPeriod.ANNUALLY ? price.amount / 12 : price.amount, id: price.id },
         }),
         {}
       ),

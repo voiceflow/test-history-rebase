@@ -30,9 +30,9 @@ export const useCardPaymentMethod = () => {
     },
   });
 
-  const createPaymentIntent = async (planPrice: number, cardValues: CardForm.Values): Promise<PaymentIntent> => {
+  const createPaymentIntent = async (planAmount: number, cardValues: CardForm.Values): Promise<PaymentIntent> => {
     // we divide de price by 1000 to show on the UI, but backend expects the amount in cents
-    let amount = planPrice * 1000;
+    let amount = planAmount;
 
     if (IS_DEVELOPMENT) {
       console.log('Testing payment intent creation with amount:', amount, 'and card values:', cardValues); // eslint-disable-line no-console
@@ -99,9 +99,8 @@ export const useCardPaymentMethod = () => {
 
   const onAuthorize = async (planPrice: number, cardValues: CardForm.Values): Promise<PaymentIntent | null> => {
     if (!cardRef.current) return null;
-    let paymentIntentResult = paymentIntent;
 
-    paymentIntentResult = await createPaymentIntent(planPrice, cardValues);
+    let paymentIntentResult = await createPaymentIntent(planPrice, cardValues);
 
     setPaymentIntent(paymentIntentResult);
 

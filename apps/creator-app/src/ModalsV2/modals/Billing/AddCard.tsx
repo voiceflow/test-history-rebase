@@ -34,7 +34,7 @@ export const AddCard = manager.create<AddCardProps>('BillingAddCard', () => ({ i
 
     api.preventClose();
 
-    const paymentIntent = await onAuthorize(planPrice.price, values);
+    const paymentIntent = await onAuthorize(planPrice.amount, values);
 
     if (!paymentIntent) {
       toast.error('Card authorization failed. Please try again.');

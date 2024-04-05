@@ -18,7 +18,7 @@ export class WorkflowORM extends PostgresCMSTabularORM<WorkflowEntity> {
     diagramID: string,
     patch: PatchData<WorkflowEntity>
   ): Promise<string | null> {
-    const qb = this.qb.update<[Pick<WorkflowEntity, 'id'>]>(this.toDB(patch));
+    const qb = this.qb.update<[Pick<WorkflowEntity, 'id'>]>(this.toDB(this.onPatch(patch)));
 
     this.buildWhere(qb, { environmentID, diagramID });
     this.buildReturning(qb, ['id']);

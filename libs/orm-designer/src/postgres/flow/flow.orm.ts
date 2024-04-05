@@ -19,7 +19,7 @@ export class FlowORM extends PostgresCMSTabularORM<FlowEntity> {
     diagramID: string,
     patch: PatchData<FlowEntity>
   ): Promise<string | null> {
-    const qb = this.qb.update<[Pick<FlowObject, 'id'>]>(this.toDB(patch));
+    const qb = this.qb.update<[Pick<FlowObject, 'id'>]>(this.toDB(this.onPatch(patch)));
 
     this.buildWhere(qb, { environmentID, diagramID });
     this.buildReturning(qb, ['id']);

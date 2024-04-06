@@ -31,8 +31,8 @@ export const useCardPaymentMethod = () => {
   });
 
   const createPaymentIntent = async (planPrice: number, cardValues: CardForm.Values): Promise<PaymentIntent> => {
-    // we divide de price by 1000 to show on the UI, but backend expects the amount in cents
-    let amount = planPrice * 1000;
+    // we divide de price by 100 to show on the UI, but backend expects the amount in cents
+    let amount = planPrice * 100;
 
     if (IS_DEVELOPMENT) {
       console.log('Testing payment intent creation with amount:', amount, 'and card values:', cardValues); // eslint-disable-line no-console

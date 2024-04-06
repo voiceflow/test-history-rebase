@@ -26,15 +26,7 @@ export class BillingSubscriptionLoguxController {
   async checkout(@Payload() data: Actions.OrganizationSubscription.CheckoutRequest, @AuthMeta() authMeta: AuthMetaPayload): Promise<Subscription> {
     const { organizationID, workspaceID } = data.context;
 
-    const { itemPriceID, planPrice, editorSeats, period, paymentIntent } = data;
-
-    return this.service.checkoutAndBroadcast(authMeta, organizationID, workspaceID, {
-      itemPriceID,
-      planPrice,
-      editorSeats,
-      period,
-      paymentIntent,
-    });
+    return this.service.checkoutAndBroadcast(authMeta, organizationID, workspaceID, data);
   }
 
   @Action(Actions.OrganizationSubscription.Replace)

@@ -18,16 +18,13 @@ export const checkout = (
   workspaceID: string,
   data: Omit<Actions.OrganizationSubscription.CheckoutRequest, 'context'>
 ): Thunk<void> => {
-  const { itemPriceID, planPrice, editorSeats, period, paymentIntent } = data;
+  const { itemPriceID, paymentIntent } = data;
 
   return async (dispatch) => {
     try {
       const newSubscription = await dispatch(
         waitAsync(Actions.OrganizationSubscription.Checkout, {
-          editorSeats,
           itemPriceID,
-          period,
-          planPrice,
           paymentIntent,
           context: { organizationID, workspaceID },
         })

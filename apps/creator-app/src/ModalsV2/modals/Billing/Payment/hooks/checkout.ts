@@ -11,13 +11,14 @@ import * as CardForm from '../components/CardForm';
 import * as atoms from '../Payment.atoms';
 import { PaymentModalPropsAPI } from '../Payment.types';
 import { useCardPaymentMethod } from './payment-method';
+import { usePricing } from './pricing';
 
 export const useCheckoutPayment = ({ modalProps }: { modalProps: PaymentModalPropsAPI }) => {
   const organization = useSelector(Organization.organizationSelector)!;
   const workspace = useSelector(WorkspaceV2.active.workspaceSelector)!;
   const selectedPlanPrice = useAtomValue(atoms.selectedPlanPriceAtom);
-  const period = useAtomValue(atoms.periodAtom);
   const checkout = useDispatch(Organization.subscription.checkout);
+  const { periodPrice } = usePricing();
 
   const isTrialExpired = useSelector(WorkspaceV2.active.organizationTrialExpiredSelector);
   const [trackingEvents] = useTrackingEvents();
@@ -30,16 +31,13 @@ export const useCheckoutPayment = ({ modalProps }: { modalProps: PaymentModalPro
 
     modalProps.api.preventClose();
 
-    const paymentIntent = await onAuthorize(selectedPlanPrice.value, cardValues);
+    const paymentIntent = await onAuthorize(periodPrice, cardValues);
 
     if (!paymentIntent) return;
 
     try {
       await checkout(organization.id, workspace.id, {
-        editorSeats,
         itemPriceID: selectedPlanPrice.id,
-        planPrice: selectedPlanPrice.value,
-        period,
         paymentIntent,
       });
 

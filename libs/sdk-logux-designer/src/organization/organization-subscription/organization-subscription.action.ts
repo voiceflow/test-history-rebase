@@ -22,9 +22,6 @@ export const Replace = subscriptionAction.crud.replace<Replace>();
 
 export interface CheckoutRequest extends OrganizationSubscriptionAction {
   itemPriceID: string;
-  planPrice: number;
-  editorSeats: number;
-  period: string;
   paymentIntent: PaymentIntent;
 }
 

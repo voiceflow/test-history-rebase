@@ -45,7 +45,7 @@ export class BillingPlanService {
 
               return {
                 id: price.id,
-                price: estimatedAmount / 1000,
+                price: estimatedAmount / 100,
                 period: price.period_unit === 'month' ? BillingPeriod.MONTHLY : BillingPeriod.ANNUALLY,
               };
             })

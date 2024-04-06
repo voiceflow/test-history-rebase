@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.317.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.316.0...@voiceflow/realtime@1.317.0) (2024-04-06)
+
+### Features
+
+* fix annual plan and price display [bugfix] (COR-1858) ([#7950](https://github.com/voiceflow/creator-app/issues/7950)) ([c8b4fec](https://github.com/voiceflow/creator-app/commit/c8b4feca3e3a97a32517be436a0d341d6092eeca))
+
 # [1.316.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.315.2...@voiceflow/realtime@1.316.0) (2024-04-05)
 
 ### Features

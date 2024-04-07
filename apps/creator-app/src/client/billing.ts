@@ -10,11 +10,14 @@ interface Options {
 }
 
 export const createChargebeeTokenURLEndpoint =
-  (workspaceID: string) =>
+  (workspaceID: string, chargebeeCustomerID?: string) =>
   ({ redirectURL, quantity }: Options): Promise<string> =>
     axios
       .get<string>(
-        `${BILLING_API_CLOUD_ENDPOINT}/v1alpha1/portal/customer/ws-${workspaceID}/checkout/charge?item=llm-credit-v1-USD&quantity=${quantity}&redirect_url=${redirectURL}`,
+        // don't include ws- prefix if subscriptionID is provided. ws- prefix means it's a legacy customer
+        `${BILLING_API_CLOUD_ENDPOINT}/v1alpha1/portal/customer/${chargebeeCustomerID ? '' : 'ws-'}${
+          chargebeeCustomerID ?? workspaceID
+        }/checkout/charge?item=llm-credit-v1-USD&quantity=${quantity}&redirect_url=${redirectURL}`,
         { headers: AUTH_HEADERS }
       )
       .then((response) => response.data);

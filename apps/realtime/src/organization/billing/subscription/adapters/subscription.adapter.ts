@@ -58,16 +58,18 @@ const subscriptionAdapter = createMultiAdapter<Realtime.Identity.Subscription, S
 
     const nextBillingTimestamp = nextBillingAt || currentTermEnd;
 
+    const downgradedFromTrial = !!metaData?.downgradedFromTrial;
+
     const result: Subscription = {
       id,
       customerID,
       billingPeriodUnit: getBillingPeriodUnit(billingPeriodUnit),
       editorSeats: editorSeatsLimit ?? 1,
       pricePerEditor: planItem?.unitPrice ? planItem.unitPrice / 100 : 0,
-      plan: metaData?.downgradedFromTrial ? PlanType.PRO : plan,
+      plan: downgradedFromTrial ? PlanType.PRO : plan,
       nextBillingDate: nextBillingTimestamp ? Realtime.Utils.date.to_DD_MMM_YYYY(new Date(nextBillingTimestamp)) : null,
       status: getStatus(status),
-      trial: isTrial && trialEnd ? { daysLeft: getDaysLeftToTrialEnd(new Date(trialEnd)), endAt: new Date(trialEnd).toJSON() } : null,
+      trial: isTrial && trialEnd ? { daysLeft: getDaysLeftToTrialEnd(trialEnd, downgradedFromTrial), endAt: new Date(trialEnd).toJSON() } : null,
       onDunningPeriod,
       paymentMethod: paymentSource && {
         id: paymentSource.id,

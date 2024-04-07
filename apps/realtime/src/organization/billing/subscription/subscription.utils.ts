@@ -46,13 +46,17 @@ export const isChargebeeBillingPeriodUnit = (unit: any): unit is ChargebeeBillin
   Object.values(ChargebeeBillingPeriodUnit).includes(unit);
 export const isPaymentMethodFailed = (status: SubscriptionPaymentMethodStatusType) => PAYMENT_METHOD_FAILED_STATUSES.has(status);
 
-export function getDaysLeftToTrialEnd(trialEndDate: Date) {
-  const trialEndDateWithoutTimezone = Realtime.Utils.date.removeTimezone(trialEndDate);
-  const today = Realtime.Utils.date.removeTimezone(new Date());
+export function getDaysLeftToTrialEnd(trialEndDate: number, downgradedFromTrial?: boolean) {
+  if (downgradedFromTrial) return 0;
 
-  const daysLeft = Math.ceil((trialEndDateWithoutTimezone.getTime() - today.getTime()) / Realtime.Utils.date.ONE_DAY);
+  const today = new Date().getTime();
 
-  return Math.max(0, daysLeft);
+  const daysLeft = Math.ceil((trialEndDate - today) / Realtime.Utils.date.ONE_DAY);
+
+  // should never be expired, since downgradedFromTrial is false at this point.
+  const minDaysLeft = 1;
+
+  return Math.max(minDaysLeft, daysLeft);
 }
 
 export const findPlanItem = (subscriptionItems?: Realtime.Identity.SubscriptionItem[] | undefined) => {

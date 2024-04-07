@@ -4,6 +4,7 @@ import { PaymentIntent, PaymentIntentDTO, Subscription, SubscriptionDTO, Subscri
 import { ZodApiQuery, ZodApiResponse } from '@voiceflow/nestjs-common';
 import { Permission } from '@voiceflow/sdk-auth';
 import { Authorize, UserID } from '@voiceflow/sdk-auth/nestjs';
+import type { Request } from 'express';
 import { ZodValidationPipe } from 'nestjs-zod';
 
 import { invoiceAdapter } from './adapters/invoice.adapter';
@@ -146,7 +147,10 @@ export class BillingSubscriptionHTTPController {
 
   // keep as the last route to avoid collisions
   @Get(':subscriptionID/:workspaceID')
-  @Authorize.Permissions<{ workspaceID: string }>([Permission.ORGANIZATION_READ], ({ workspaceID }) => ({ id: workspaceID, kind: 'workspace' }))
+  @Authorize.Permissions<Request<{ workspaceID: string }>>([Permission.ORGANIZATION_READ], (request) => ({
+    id: request.params.workspaceID,
+    kind: 'workspace',
+  }))
   @ApiOperation({
     summary: 'Returns billing subscription',
     description: 'Returns billing subscription for the given subscriptionID',

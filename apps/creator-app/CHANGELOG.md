@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1463.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1462.0...@voiceflow/creator-app@1.1463.0) (2024-04-07)
+
+### Features
+
+* fix hydration logic and trial lockscreen [bugfix] (COR-1859) ([#7951](https://github.com/voiceflow/creator-app/issues/7951)) ([a77d0a7](https://github.com/voiceflow/creator-app/commit/a77d0a7215443956ebfa94b65a036983e3e23b15))
+
 # [1.1462.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1461.0...@voiceflow/creator-app@1.1462.0) (2024-04-06)
 
 ### Features

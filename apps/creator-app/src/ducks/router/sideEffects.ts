@@ -1,5 +1,6 @@
 import { Struct } from '@voiceflow/common';
-import { generatePath } from 'react-router-dom';
+import { FeatureFlag } from '@voiceflow/realtime-sdk';
+import { generatePath } from 'react-router';
 
 import { PageProgress } from '@/components/PageProgressBar/utils';
 import * as Errors from '@/config/errors';
@@ -8,9 +9,11 @@ import { PageProgressBar } from '@/constants';
 import * as Creator from '@/ducks/creatorV2';
 import * as Designer from '@/ducks/designer';
 import * as DomainSelectors from '@/ducks/domain/selectors';
+import * as Feature from '@/ducks/feature';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
-import { SyncThunk, Thunk } from '@/store/types';
+import * as Version from '@/ducks/versionV2';
+import { SyncThunk } from '@/store/types';
 
 import {
   goTo,
@@ -20,6 +23,10 @@ import {
   goToCanvasTextMarkup,
   goToConversations,
   goToDialogManagerAPI,
+  goToDomainCanvasCommenting,
+  goToDomainCanvasCommentingThread,
+  goToDomainCanvasTextMarkup,
+  goToPath,
   goToPlatformPrototype,
   goToPrototype,
   goToPublish,
@@ -30,87 +37,162 @@ import {
   goToWorkspaceSettings,
   redirectTo,
   redirectToCanvasCommentingThread,
+  redirectToDomainCanvasCommentingThread,
+  redirectToPath,
 } from './actions';
 
-export const goToVersions = (versionID: string) => goTo(`${generatePath(Path.PROJECT_VERSION_SETTINGS, { versionID })}`);
+export const goToVersions = (versionID: string) => goTo(`${generatePath(Path.PROJECT_SETTINGS_VERSION, { versionID })}`);
 
-export const goToBackups = (versionID: string) => goTo(`${generatePath(Path.PROJECT_BACKUP_SETTINGS, { versionID })}`);
+export const goToBackups = (versionID: string) => goTo(`${generatePath(Path.PROJECT_SETTINGS_BACKUP, { versionID })}`);
 
+interface GoToProjectCanvasOptions {
+  state?: Struct;
+  subpath?: string;
+  versionID: string;
+  diagramID?: string;
+}
+
+export const goToProjectCanvas = ({ state, subpath, diagramID, versionID }: GoToProjectCanvasOptions) =>
+  goToPath(Path.PROJECT_CANVAS, { state, params: { diagramID, versionID }, search: window.location.search, subpath });
+
+export const redirectToProjectCanvas = ({ state, subpath, diagramID, versionID }: GoToProjectCanvasOptions) =>
+  redirectToPath(Path.PROJECT_CANVAS, { state, params: { diagramID, versionID }, search: window.location.search, subpath });
+
+export const goToCanvasNode = ({ state, nodeID, subpath, diagramID, versionID }: GoToProjectCanvasOptions & { nodeID: string; diagramID: string }) =>
+  goToPath(Path.CANVAS_NODE, { state, params: { versionID, diagramID, nodeID }, search: window.location.search, subpath });
+
+export const goToCanvasDiagram = ({
+  state,
+  nodeID,
+  subpath,
+  diagramID,
+  versionID,
+}: GoToProjectCanvasOptions & { nodeID?: string; diagramID: string }) => {
+  PageProgress.start(PageProgressBar.CANVAS_LOADING);
+
+  if (nodeID) return goToCanvasNode({ state, nodeID, subpath, diagramID, versionID });
+
+  return goToProjectCanvas({ state, subpath, diagramID, versionID });
+};
+
+/**
+ * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
+ */
 interface GoToDomainOptions {
   domainID?: string;
   versionID: string;
 }
 
+/**
+ * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
+ */
 export const goToDomain = ({ domainID, versionID }: GoToDomainOptions) =>
   goTo(`${generatePath(Path.PROJECT_DOMAIN, { domainID, versionID })}${window.location.search}`);
 
+/**
+ * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
+ */
 export const redirectToDomain = ({ domainID, versionID }: GoToDomainOptions) =>
   redirectTo(`${generatePath(Path.PROJECT_DOMAIN, { versionID, domainID })}${window.location.search}`);
 
-interface GoToCanvasOptions extends GoToDomainOptions {
+/**
+ * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
+ */
+interface GoToDomainCanvasOptions extends GoToDomainOptions {
   domainID: string;
   diagramID?: string;
 }
 
-interface GoToCanvasDiagramOptions extends GoToCanvasOptions {
+/**
+ * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
+ */
+interface GoToDomainCanvasDiagramOptions extends GoToDomainCanvasOptions {
   diagramID: string;
 }
 
-export const goToCanvas = ({ domainID, diagramID, versionID }: GoToCanvasOptions) =>
+/**
+ * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
+ */
+export const goToDomainCanvas = ({ domainID, diagramID, versionID }: GoToDomainCanvasOptions) =>
   goTo(`${generatePath(Path.DOMAIN_CANVAS, { domainID, diagramID, versionID })}${window.location.search}`);
 
-export const redirectToCanvas = ({ domainID, diagramID, versionID, extraPath = '' }: GoToCanvasOptions & { extraPath?: string }) =>
+/**
+ * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
+ */
+export const redirectToDomainCanvas = ({ domainID, diagramID, versionID, extraPath = '' }: GoToDomainCanvasOptions & { extraPath?: string }) =>
   redirectTo(`${generatePath(Path.DOMAIN_CANVAS, { versionID, diagramID, domainID })}${extraPath}${window.location.search}`);
 
-interface GoToCanvasNodeOptions extends GoToCanvasDiagramOptions {
+/**
+ * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
+ */
+interface GoToDomainCanvasNodeOptions extends GoToDomainCanvasDiagramOptions {
   nodeID: string;
   routeState?: Struct;
   nodeSubPath?: string;
 }
 
-const STARTING_SLASH_REGEX = /^\//;
-
-export const goToCanvasNode = ({ nodeID, domainID, versionID, diagramID, routeState, nodeSubPath }: GoToCanvasNodeOptions) =>
+/**
+ * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
+ */
+export const goToDomainCanvasNode = ({ nodeID, domainID, versionID, diagramID, routeState, nodeSubPath }: GoToDomainCanvasNodeOptions) =>
   goTo(
-    `${generatePath(Path.CANVAS_NODE, { versionID, diagramID, domainID, nodeID })}${
-      nodeSubPath ? `/${nodeSubPath.replace(STARTING_SLASH_REGEX, '')}` : ''
-    }${window.location.search}`,
+    `${generatePath(Path.DOMAIN_CANVAS_NODE, { versionID, diagramID, domainID, nodeID })}${nodeSubPath ? `/${nodeSubPath.replace(/^\//, '')}` : ''}${
+      window.location.search
+    }`,
     routeState
   );
 
-interface GoToCanvasSwitchRealtimeOptions extends GoToCanvasDiagramOptions {
+/**
+ * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
+ */
+interface GoToCanvasSwitchRealtimeOptions extends GoToDomainCanvasDiagramOptions {
   nodeID?: string;
 }
 
+/**
+ * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
+ */
 export const goToCanvasSwitchRealtime =
   ({ nodeID, domainID, versionID, diagramID }: GoToCanvasSwitchRealtimeOptions): SyncThunk =>
   (dispatch) => {
     PageProgress.start(PageProgressBar.CANVAS_LOADING);
 
     if (nodeID) {
-      dispatch(goToCanvasNode({ nodeID, domainID, diagramID, versionID }));
+      dispatch(goToDomainCanvasNode({ nodeID, domainID, diagramID, versionID }));
     } else {
-      dispatch(goToCanvas({ domainID, diagramID, versionID }));
+      dispatch(goToDomainCanvas({ domainID, diagramID, versionID }));
     }
   };
 
 export const goToCurrentCanvas = (): SyncThunk => (dispatch, getState) => {
   const state = getState();
-  const domainID = Session.activeDomainIDSelector(state);
+
   const versionID = Session.activeVersionIDSelector(state);
   const diagramID = Session.activeDiagramIDSelector(state);
-  const rootDomain = DomainSelectors.rootDomainSelector(state);
 
   Errors.assertVersionID(versionID);
 
+  if (Feature.isFeatureEnabledSelector(state)(FeatureFlag.CMS_WORKFLOWS)) {
+    const rootDiagramID = Version.active.rootDiagramIDSelector(state);
+
+    Errors.assertDiagramID(diagramID ?? rootDiagramID);
+
+    dispatch(goToProjectCanvas({ versionID, diagramID: diagramID ?? rootDiagramID ?? undefined }));
+
+    return;
+  }
+
+  const domainID = Session.activeDomainIDSelector(state);
+  const rootDomain = DomainSelectors.rootDomainSelector(state);
+
   if (domainID && diagramID) {
-    dispatch(goToCanvas({ domainID, diagramID, versionID }));
+    dispatch(goToDomainCanvas({ domainID, diagramID, versionID }));
     return;
   }
 
   if (!rootDomain) throw Errors.noActiveDomainID();
 
-  dispatch(goToCanvas({ domainID: rootDomain.id, diagramID: rootDomain.rootDiagramID, versionID }));
+  dispatch(goToDomainCanvas({ domainID: rootDomain.id, diagramID: rootDomain.rootDiagramID, versionID }));
 };
 
 export const goToCurrentCanvasCommenting =
@@ -118,55 +200,95 @@ export const goToCurrentCanvasCommenting =
   (dispatch, getState) => {
     const state = getState();
 
-    const domainID = Session.activeDomainIDSelector(state);
     const versionID = Session.activeVersionIDSelector(state);
     const diagramID = Session.activeDiagramIDSelector(state);
 
-    Errors.assertDomainID(domainID);
     Errors.assertVersionID(versionID);
     Errors.assertDiagramID(diagramID);
 
+    if (Feature.isFeatureEnabledSelector(state)(FeatureFlag.CMS_WORKFLOWS)) {
+      if (threadID) {
+        dispatch(goToCanvasCommentingThread({ diagramID, versionID, threadID, commentID }));
+      } else {
+        dispatch(goToCanvasCommenting({ diagramID, versionID }));
+      }
+
+      return;
+    }
+
+    const domainID = Session.activeDomainIDSelector(state);
+
+    Errors.assertDomainID(domainID);
+
     if (threadID) {
-      dispatch(goToCanvasCommentingThread({ domainID, diagramID, versionID, threadID, commentID }));
+      dispatch(goToDomainCanvasCommentingThread({ domainID, diagramID, versionID, threadID, commentID }));
     } else {
-      dispatch(goToCanvasCommenting({ domainID, diagramID, versionID }));
+      dispatch(goToDomainCanvasCommenting({ domainID, diagramID, versionID }));
     }
   };
 
 export const goToCurrentCanvasTextMarkup = (): SyncThunk => (dispatch, getState) => {
   const state = getState();
 
-  const domainID = Session.activeDomainIDSelector(state);
   const versionID = Session.activeVersionIDSelector(state);
   const diagramID = Session.activeDiagramIDSelector(state);
 
-  Errors.assertDomainID(domainID);
   Errors.assertVersionID(versionID);
   Errors.assertDiagramID(diagramID);
 
-  dispatch(goToCanvasTextMarkup({ domainID, diagramID, versionID }));
+  if (Feature.isFeatureEnabledSelector(state)(FeatureFlag.CMS_WORKFLOWS)) {
+    dispatch(goToCanvasTextMarkup({ diagramID, versionID }));
+
+    return;
+  }
+
+  const domainID = Session.activeDomainIDSelector(state);
+
+  Errors.assertDomainID(domainID);
+
+  dispatch(goToDomainCanvasTextMarkup({ domainID, diagramID, versionID }));
 };
 
 export const redirectToCurrentCanvasCommentingThread =
-  (threadID: string, commentID?: string): Thunk =>
-  async (dispatch, getState) => {
+  (threadID: string, commentID?: string): SyncThunk =>
+  (dispatch, getState) => {
     const state = getState();
 
-    const domainID = Session.activeDomainIDSelector(state);
     const versionID = Session.activeVersionIDSelector(state);
     const diagramID = Session.activeDiagramIDSelector(state);
 
-    Errors.assertDomainID(domainID);
     Errors.assertVersionID(versionID);
     Errors.assertDiagramID(diagramID);
 
-    dispatch(redirectToCanvasCommentingThread({ domainID, diagramID, versionID, threadID, commentID }));
+    if (Feature.isFeatureEnabledSelector(state)(FeatureFlag.CMS_WORKFLOWS)) {
+      dispatch(redirectToCanvasCommentingThread({ diagramID, versionID, threadID, commentID }));
+
+      return;
+    }
+
+    const domainID = Session.activeDomainIDSelector(state);
+
+    Errors.assertDomainID(domainID);
+
+    dispatch(redirectToDomainCanvasCommentingThread({ domainID, diagramID, versionID, threadID, commentID }));
   };
+
+export const goToCanvasRootDiagram = (): SyncThunk => (dispatch, getState) => {
+  const state = getState();
+
+  const versionID = Session.activeVersionIDSelector(state);
+  const diagramID = Version.active.rootDiagramIDSelector(state);
+
+  Errors.assertVersionID(versionID);
+  Errors.assertDiagramID(diagramID);
+
+  dispatch(goToCanvasDiagram({ diagramID, versionID }));
+};
 
 /**
  * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
  */
-export const goToDomainRootDiagram = (): Thunk => async (dispatch, getState) => {
+export const goToDomainRootDiagram = (): SyncThunk => (dispatch, getState) => {
   const state = getState();
 
   const domainID = Session.activeDomainIDSelector(state);
@@ -178,21 +300,28 @@ export const goToDomainRootDiagram = (): Thunk => async (dispatch, getState) => 
 
   if (!rootDiagramID) throw new Error('no active root diagram ID');
 
-  await dispatch(goToCanvasSwitchRealtime({ diagramID: rootDiagramID, domainID, versionID }));
+  dispatch(goToCanvasSwitchRealtime({ diagramID: rootDiagramID, domainID, versionID }));
 };
 
 export const goToRootDiagramIfActive =
-  (diagramID: string): Thunk =>
-  async (dispatch, getState) => {
+  (diagramID: string): SyncThunk =>
+  (dispatch, getState) => {
     const state = getState();
     const activeDiagramID = Creator.activeDiagramIDSelector(state);
 
-    if (diagramID === activeDiagramID) {
-      await dispatch(goToDomainRootDiagram());
+    if (diagramID !== activeDiagramID) return;
+
+    if (Feature.isFeatureEnabledSelector(state)(FeatureFlag.CMS_WORKFLOWS)) {
+      dispatch(goToCanvasRootDiagram());
+    } else {
+      dispatch(goToDomainRootDiagram());
     }
   };
 
-export const goToRootDomain = (): Thunk => async (dispatch, getState) => {
+/**
+ * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
+ */
+export const goToRootDomain = (): SyncThunk => (dispatch, getState) => {
   const state = getState();
 
   const versionID = Session.activeVersionIDSelector(state);
@@ -201,36 +330,36 @@ export const goToRootDomain = (): Thunk => async (dispatch, getState) => {
   Errors.assertDomainID(rootDomain?.id);
   Errors.assertVersionID(versionID);
 
-  await dispatch(goToCanvasSwitchRealtime({ diagramID: rootDomain.rootDiagramID, domainID: rootDomain.id, versionID }));
+  dispatch(goToCanvasSwitchRealtime({ diagramID: rootDomain.rootDiagramID, domainID: rootDomain.id, versionID }));
 };
 
-export const redirectToDiagram =
-  (domainID: string, diagramID: string): SyncThunk =>
-  (dispatch, getState) => {
-    const state = getState();
-    const versionID = Session.activeVersionIDSelector(state);
-
-    Errors.assertVersionID(versionID);
-
-    PageProgress.start(PageProgressBar.CANVAS_LOADING);
-
-    dispatch(redirectToCanvas({ domainID, versionID, diagramID }));
-  };
-
+/**
+ * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
+ */
 export const goToDomainDiagram =
-  (domainID: string, diagramID: string, nodeID?: string): Thunk =>
-  async (dispatch, getState) => {
+  (domainID: string, diagramID: string, nodeID?: string): SyncThunk =>
+  (dispatch, getState) => {
     const versionID = Session.activeVersionIDSelector(getState());
 
     Errors.assertVersionID(versionID);
 
-    await dispatch(goToCanvasSwitchRealtime({ nodeID, domainID, diagramID, versionID }));
+    dispatch(goToCanvasSwitchRealtime({ nodeID, domainID, diagramID, versionID }));
   };
 
 export const goToDiagram =
-  (diagramID: string, nodeID?: string): Thunk =>
-  async (dispatch, getState) => {
+  (diagramID: string, nodeID?: string): SyncThunk =>
+  (dispatch, getState) => {
     const state = getState();
+
+    if (Feature.isFeatureEnabledSelector(state)(FeatureFlag.CMS_WORKFLOWS)) {
+      const versionID = Session.activeVersionIDSelector(getState());
+
+      Errors.assertVersionID(versionID);
+
+      dispatch(goToCanvasDiagram({ nodeID, diagramID, versionID }));
+
+      return;
+    }
 
     const domainID =
       DomainSelectors.domainIDByTopicIDSelector(state, { topicID: diagramID }) ??
@@ -239,62 +368,76 @@ export const goToDiagram =
 
     Errors.assertDomainID(domainID);
 
-    await dispatch(goToDomainDiagram(domainID, diagramID, nodeID));
+    dispatch(goToDomainDiagram(domainID, diagramID, nodeID));
   };
 
 export const goToDiagramHistoryPush =
-  (diagramID: string, nodeID?: string, activeNodeID?: string): Thunk =>
-  async (dispatch, getState) => {
+  (diagramID: string, nodeID?: string, activeNodeID?: string): SyncThunk =>
+  (dispatch, getState) => {
     const activeDiagramID = Session.activeDiagramIDSelector(getState());
 
     Errors.assertDiagramID(activeDiagramID);
 
-    await dispatch(goToDiagram(diagramID, nodeID));
+    dispatch(goToDiagram(diagramID, nodeID));
 
     dispatch(Creator.diagramsHistoryPush(activeDiagramID, activeNodeID));
   };
 
-export const goToDiagramHistoryPop = (): Thunk => async (dispatch, getState) => {
+export const goToDiagramHistoryPop = (): SyncThunk => (dispatch, getState) => {
   const { diagramID, nodeID } = Creator.previousDiagramHistoryStateSelector(getState()) || {};
 
   Errors.assertDiagramID(diagramID);
 
-  await dispatch(goToDiagram(diagramID, nodeID));
+  dispatch(goToDiagram(diagramID, nodeID));
 
   dispatch(Creator.diagramsHistoryPop());
 };
 
 export const goToDiagramHistoryClear =
-  (diagramID: string, nodeID?: string): Thunk =>
-  async (dispatch) => {
-    await dispatch(goToDiagram(diagramID, nodeID));
+  (diagramID: string, nodeID?: string): SyncThunk =>
+  (dispatch) => {
+    dispatch(goToDiagram(diagramID, nodeID));
 
     dispatch(Creator.diagramsHistoryClear());
   };
 
 export const goToDiagramCommenting =
-  (diagramID: string, threadID?: string, commentID?: string): Thunk =>
-  async (dispatch, getState) => {
+  (diagramID: string, threadID?: string, commentID?: string): SyncThunk =>
+  (dispatch, getState) => {
     const state = getState();
 
-    const domainID = DomainSelectors.domainIDByTopicIDSelector(state, { topicID: diagramID }) ?? DomainSelectors.rootDomainIDSelector(state);
     const versionID = Session.activeVersionIDSelector(state);
 
-    Errors.assertDomainID(domainID);
     Errors.assertVersionID(versionID);
+
+    if (Feature.isFeatureEnabledSelector(state)(FeatureFlag.CMS_WORKFLOWS)) {
+      PageProgress.start(PageProgressBar.CANVAS_LOADING);
+
+      if (threadID) {
+        dispatch(goToCanvasCommentingThread({ versionID, diagramID, threadID, commentID }));
+      } else {
+        dispatch(goToCanvasCommenting({ versionID, diagramID }));
+      }
+
+      return;
+    }
+
+    const domainID = DomainSelectors.domainIDByTopicIDSelector(state, { topicID: diagramID }) ?? DomainSelectors.rootDomainIDSelector(state);
+
+    Errors.assertDomainID(domainID);
 
     PageProgress.start(PageProgressBar.CANVAS_LOADING);
 
     if (threadID) {
-      dispatch(goToCanvasCommentingThread({ domainID, versionID, diagramID, threadID, commentID }));
+      dispatch(goToDomainCanvasCommentingThread({ domainID, versionID, diagramID, threadID, commentID }));
     } else {
-      dispatch(goToCanvasCommenting({ domainID, versionID, diagramID }));
+      dispatch(goToDomainCanvasCommenting({ domainID, versionID, diagramID }));
     }
   };
 
 export const goToCurrentPrototype =
-  (nodeID?: string): Thunk =>
-  async (dispatch, getState) => {
+  (nodeID?: string): SyncThunk =>
+  (dispatch, getState) => {
     const state = getState();
     const versionID = Session.activeVersionIDSelector(state);
 
@@ -321,7 +464,7 @@ export const goToCurrentAnalytics = (): SyncThunk => (dispatch, getState) => {
   dispatch(goToAnalytics(versionID));
 };
 
-export const goToActivePlatformPublish = (): Thunk => async (dispatch, getState) => {
+export const goToActivePlatformPublish = (): SyncThunk => (dispatch, getState) => {
   const state = getState();
   const versionID = Session.activeVersionIDSelector(state);
   const platform = ProjectV2.active.platformSelector(state);
@@ -331,7 +474,7 @@ export const goToActivePlatformPublish = (): Thunk => async (dispatch, getState)
   dispatch(goToPublish(versionID, platform));
 };
 
-export const goToActiveDialogManagerAPI = (): Thunk => async (dispatch, getState) => {
+export const goToActiveDialogManagerAPI = (): SyncThunk => (dispatch, getState) => {
   const state = getState();
   const versionID = Session.activeVersionIDSelector(state);
 
@@ -340,7 +483,7 @@ export const goToActiveDialogManagerAPI = (): Thunk => async (dispatch, getState
   dispatch(goToDialogManagerAPI(versionID));
 };
 
-export const goToActivePlatformPrototype = (): Thunk => async (dispatch, getState) => {
+export const goToActivePlatformPrototype = (): SyncThunk => (dispatch, getState) => {
   const state = getState();
   const versionID = Session.activeVersionIDSelector(state);
   const platform = ProjectV2.active.platformSelector(state);
@@ -350,7 +493,7 @@ export const goToActivePlatformPrototype = (): Thunk => async (dispatch, getStat
   dispatch(goToPlatformPrototype(versionID, platform));
 };
 
-export const goToConversationsPage = (): Thunk => async (dispatch, getState) => {
+export const goToConversationsPage = (): SyncThunk => (dispatch, getState) => {
   const state = getState();
   const versionID = Session.activeVersionIDSelector(state);
 
@@ -359,19 +502,27 @@ export const goToConversationsPage = (): Thunk => async (dispatch, getState) => 
 };
 
 export const goToCurrentCanvasNode =
-  (nodeID: string, nodeSubPath?: string, routeState?: Struct): SyncThunk =>
+  (nodeID: string, { state: routeState, subpath }: { state?: Struct; subpath?: string }): SyncThunk =>
   (dispatch, getState) => {
     const state = getState();
 
-    const domainID = Session.activeDomainIDSelector(state);
     const versionID = Session.activeVersionIDSelector(state);
     const diagramID = Session.activeDiagramIDSelector(state);
 
-    Errors.assertDomainID(domainID);
     Errors.assertVersionID(versionID);
     Errors.assertDiagramID(diagramID);
 
-    dispatch(goToCanvasNode({ domainID, versionID, diagramID, nodeID, nodeSubPath, routeState }));
+    if (Feature.isFeatureEnabledSelector(state)(FeatureFlag.CMS_WORKFLOWS)) {
+      dispatch(goToCanvasNode({ versionID, diagramID, nodeID, state: routeState, subpath }));
+
+      return;
+    }
+
+    const domainID = Session.activeDomainIDSelector(state);
+
+    Errors.assertDomainID(domainID);
+
+    dispatch(goToDomainCanvasNode({ domainID, versionID, diagramID, nodeID, nodeSubPath: subpath, routeState }));
   };
 
 export const goToCurrentWorkspace = (): SyncThunk => (dispatch, getState) => {

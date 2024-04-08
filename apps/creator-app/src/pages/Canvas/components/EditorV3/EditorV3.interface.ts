@@ -1,6 +1,6 @@
 import { IconName } from '@voiceflow/icons';
 
-export interface Props extends React.PropsWithChildren {
+export interface IEditorV3 extends React.PropsWithChildren {
   header?: React.ReactNode;
   footer?: React.ReactNode;
   fillHeight?: boolean;
@@ -10,7 +10,7 @@ export interface Props extends React.PropsWithChildren {
 }
 
 export interface EditorV3Action {
-  label: string;
   icon: IconName;
-  onClick: () => void;
+  label: string;
+  onClick: VoidFunction;
 }

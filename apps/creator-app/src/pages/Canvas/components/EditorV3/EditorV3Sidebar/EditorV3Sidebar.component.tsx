@@ -4,9 +4,9 @@ import React from 'react';
 import { useHideVoiceflowAssistant } from '@/hooks';
 
 import { useEditorSidebarV2 } from '../../EditorSidebarV2/hooks';
-import { drawerStyle } from './Sidebar.css';
+import { drawerStyle } from './EditorV3Sidebar.css';
 
-export const Sidebar = React.memo(() => {
+export const EditorV3Sidebar = React.memo(() => {
   const api = useEditorSidebarV2();
 
   useHideVoiceflowAssistant({ hide: api.isOpened });

@@ -7,7 +7,7 @@ import { generatePath } from 'react-router-dom';
 import Avatar from '@/components/Avatar';
 import { EditableTextAPI } from '@/components/EditableText';
 import * as NLU from '@/config/nlu';
-import { LegacyPath } from '@/config/routes';
+import { Path } from '@/config/routes';
 import { Permission } from '@/constants/permissions';
 import * as Project from '@/ducks/projectV2';
 import { InjectedDraggableProps, withDraggable } from '@/hocs/withDraggable';
@@ -118,11 +118,11 @@ export const Item: React.FC<ItemProps> = ({
   return (
     <div ref={canManageProjects && !isDraggingPreview ? connectedRootRef : undefined}>
       <ProjectListItem
-        to={generatePath(LegacyPath.PROJECT_CANVAS, { versionID })}
+        to={generatePath(Path.PROJECT_CANVAS, { versionID })}
+        locked={isLockedProject}
         hidden={isDragging}
         tabIndex={0}
         hasOptions={!!options.length}
-        locked={isLockedProject}
       >
         {isLockedProject ? (
           <TippyTooltip

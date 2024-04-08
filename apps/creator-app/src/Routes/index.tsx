@@ -4,7 +4,7 @@ import React, { Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 import { ZendeskCallback } from '@/components/Integrations/ZendeskCallback.component';
-import { LegacyPath, Path } from '@/config/routes';
+import { Path } from '@/config/routes';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import { lazy } from '@/hocs/lazy';
@@ -40,9 +40,8 @@ const Routes: React.FC = () => {
       <Switch>
         <Route exact path={Path.LOGOUT} component={Logout} />
 
-        <Route exact path={Path.VERIFY_SIGNUP_EMAIL} component={VerifySignupEmail} />
-
-        <Route exact path={Path.CONFIRM_EMAIL_UPDATE} component={ConfirmEmail} />
+        <Route exact path={Path.ACCOUNT_VERIFY_EMAIL} component={VerifySignupEmail} />
+        <Route exact path={Path.ACCOUNT_CONFIRM_EMAIL} component={ConfirmEmail} />
 
         <PublicRoute exact path={Path.RESET_PASSWORD} component={ResetPassword} />
         <PublicRoute exact path={Path.RESET} component={ResetEmail} />
@@ -51,21 +50,14 @@ const Routes: React.FC = () => {
         <PublicRoute exact path={Path.SIGNUP} component={Signup} />
         <PrivateRoute exact path={Path.ONBOARDING} component={Onboarding} />
 
-        <PrivateRoute exact path={Path.ZENDESK_CALLBACK} component={ZendeskCallback} screenSizeWarning={false} />
+        <PrivateRoute exact path={Path.INTEGRATION_ZENDESK_CALLBACK} component={ZendeskCallback} screenSizeWarning={false} />
 
         {/* workspace routes  */}
         <Route exact path={Path.WORKSPACE_ACCEPT_INVITE} component={WorkspaceAcceptInvite} />
         <Redirect exact from={Path.WORKSPACE} to={Path.DASHBOARD} />
         <PrivateRoute path={[Path.WORKSPACE, Path.DASHBOARD]} component={Workspace} />
 
-        <Redirect exact from={Path.PROJECT_DEMO} to={Path.PUBLIC_PROTOTYPE} />
         <Route path={Path.PUBLIC_PROTOTYPE} component={PublicPrototype} />
-
-        <Redirect from={LegacyPath.WORKSPACE_DASHBOARD} to={Path.WORKSPACE_DASHBOARD} />
-        <Redirect from={LegacyPath.CANVAS_DIAGRAM} to={LegacyPath.PROJECT_CANVAS} />
-        <Redirect from={LegacyPath.CANVAS_PREVIEW} to={LegacyPath.PROJECT_CANVAS} />
-        <Redirect from={LegacyPath.CANVAS_TEST} to={Path.PROJECT_PROTOTYPE} />
-        <Redirect from={LegacyPath.PROJECT_TEST} to={Path.PROJECT_PROTOTYPE} />
 
         <PrivateRoute path={Path.PROJECT_EXPORT} component={Export} />
 

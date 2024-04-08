@@ -24,17 +24,21 @@ export const useAssistantNavigationItems = () => {
   const domainID = useSelector(Session.activeDomainIDSelector) ?? '';
   const diagramID = useSelector(Session.activeDiagramIDSelector) ?? '';
 
+  const cmsWorkflows = useFeature(Realtime.FeatureFlag.CMS_WORKFLOWS);
   const viewerAPIKeyAccess = useFeature(Realtime.FeatureFlag.ALLOW_VIEWER_APIKEY_ACCESS);
 
   return useMemo<IAssistantNavigationItem[]>(() => {
     const isItemActive = (path: string) => !!matchPath(location.pathname, { path, exact: false });
 
+    // eslint-disable-next-line no-nested-ternary
+    const designerPath = cmsWorkflows.isEnabled ? Path.PROJECT_CANVAS : domainID && diagramID ? Path.DOMAIN_CANVAS : Path.PROJECT_DOMAIN;
+
     return [
       {
-        path: domainID && diagramID ? Path.DOMAIN_CANVAS : Path.PROJECT_DOMAIN,
+        path: designerPath,
         testID: 'designer',
         params: domainID && diagramID ? { domainID, diagramID } : {},
-        isActive: isItemActive(Path.PROJECT_DOMAIN),
+        isActive: isItemActive(designerPath),
         iconName: 'Designer',
       },
       ...conditionalArrayItems<IAssistantNavigationItem>(canEditProject, {
@@ -44,9 +48,9 @@ export const useAssistantNavigationItems = () => {
         iconName: 'Content',
       }),
       ...conditionalArrayItems<IAssistantNavigationItem>(canViewConversations, {
-        path: Path.CONVERSATIONS,
+        path: Path.PROJECT_CONVERSATIONS,
         testID: 'transcripts',
-        isActive: isItemActive(Path.CONVERSATIONS),
+        isActive: isItemActive(Path.PROJECT_CONVERSATIONS),
         iconName: 'Transcripts',
       }),
       {

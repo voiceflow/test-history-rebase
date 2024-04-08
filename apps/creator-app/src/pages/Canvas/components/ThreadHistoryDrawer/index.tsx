@@ -11,7 +11,7 @@ import {
   useToggle,
 } from '@voiceflow/ui';
 import React from 'react';
-import { matchPath, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import Drawer from '@/components/Drawer';
 import { Path } from '@/config/routes';
@@ -23,6 +23,7 @@ import { FocusThreadContext } from '@/pages/Canvas/contexts';
 import { useCanvasRendered } from '@/pages/Canvas/hooks/canvas';
 import { useCommentingMode } from '@/pages/Project/hooks';
 import { Identifier } from '@/styles/constants';
+import { matchPath } from '@/utils/route.util';
 
 import { Container as HeaderContainer, FilterMenu, NoThreads, ScrollbarsContainer, ThreadItem } from './components';
 import { FilterType } from './constants';
@@ -52,7 +53,7 @@ export const ThreadHistoryDrawer: React.FC<ThreadHistoryDrawerProps> = () => {
   const [isFirstThreadFocused, toggleFocusedThread] = useToggle(false);
 
   React.useEffect(() => {
-    const match = matchPath<{ threadID: string; commentID?: string }>(history.location.pathname, { path: Path.CANVAS_COMMENTING_THREAD });
+    const match = matchPath(history.location.pathname, [Path.CANVAS_COMMENTING_THREAD, Path.DOMAIN_CANVAS_COMMENTING_THREAD]);
 
     if (canvasRendered && match && match.params.threadID) {
       focusScheduler(() => {

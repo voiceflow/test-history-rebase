@@ -1,28 +1,26 @@
 import { Utils } from '@voiceflow/common';
-import { SidebarEditorTypes } from '@voiceflow/ui';
 import { Menu, Popper, SquareButton } from '@voiceflow/ui-next';
 import React from 'react';
 
-import { useEditorV3DefaultActions } from '../hooks';
+import { useEditorV3DefaultActions } from './EditorV3.hook';
+import { EditorV3Action } from './EditorV3.interface';
 
-interface HeaderActionsProps extends Partial<Omit<SidebarEditorTypes.HeaderProps, 'title'>> {
-  title?: string;
-  onBack?: VoidFunction;
-  actions?: SidebarEditorTypes.Action[];
+export interface IEditorV3HeaderActions {
+  actions?: EditorV3Action[];
 }
 
-export const HeaderActions: React.FC<HeaderActionsProps> = () => {
+export const EditorV3HeaderActions: React.FC<IEditorV3HeaderActions> = ({ actions }) => {
   const defaultActions = useEditorV3DefaultActions();
 
   return (
     <Popper
       placement="bottom"
-      referenceElement={({ onOpen, ref, isOpen }) => <SquareButton size="medium" iconName="More" onClick={onOpen} ref={ref} isActive={isOpen} />}
       disableLayers
+      referenceElement={({ onOpen, ref, isOpen }) => <SquareButton size="medium" iconName="More" onClick={onOpen} ref={ref} isActive={isOpen} />}
     >
       {({ onClose }) => (
         <Menu width="fit-content" minWidth={0}>
-          {defaultActions.map((action, index) =>
+          {(actions ?? defaultActions).map((action, index) =>
             action ? (
               <>
                 <Menu.Item prefixIconName={action.icon} key={index} label={action.label} onClick={Utils.functional.chain(action.onClick, onClose)} />

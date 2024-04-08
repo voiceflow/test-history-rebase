@@ -8,7 +8,7 @@ import { useDispatch } from '@/hooks';
 
 import EditorSidebarV2 from '../EditorSidebarV2';
 import { useGetEditorWithCorrectVersion } from '../EditorSidebarV2/hooks';
-import EditorV3 from '../EditorV3';
+import { EditorV3Sidebar } from '../EditorV3/EditorV3Sidebar/EditorV3Sidebar.component';
 import Sidebar from './sidebar';
 
 const EditSidebar: React.FC = () => {
@@ -20,7 +20,7 @@ const EditSidebar: React.FC = () => {
     if (!node) return <Sidebar />;
 
     const { isV3, Editor } = getEditorWithCorrectVersion(node.type);
-    if (Editor) return isV3 ? <EditorV3.Sidebar /> : <EditorSidebarV2 />;
+    if (Editor) return isV3 ? <EditorV3Sidebar /> : <EditorSidebarV2 />;
 
     return <Sidebar />;
   };

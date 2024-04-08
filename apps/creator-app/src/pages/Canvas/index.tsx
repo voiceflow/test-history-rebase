@@ -1,6 +1,6 @@
 import { compose } from '@voiceflow/ui';
 import React from 'react';
-import { matchPath, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import { Path } from '@/config/routes';
 import * as CreatorV2 from '@/ducks/creatorV2/utils/selector';
@@ -8,6 +8,7 @@ import { withBatchLoadingGate } from '@/hocs/withBatchLoadingGate';
 import { useRegistration, useTeardown } from '@/hooks';
 import ReturnToInstanceSnackbar from '@/pages/Canvas/components/ReturnToInstanceSnackbar';
 import { DiagramHeartbeatContext, SelectionSetTargetsContext } from '@/pages/Project/contexts';
+import { matchPath } from '@/utils/route.util';
 
 import Container from './components/CanvasContainer';
 import CanvasDiagram from './components/CanvasDiagram';
@@ -41,7 +42,7 @@ const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
   const selectionSetTargetsContext = React.useContext(SelectionSetTargetsContext);
 
   React.useEffect(() => {
-    const nodeMatch = matchPath<{ nodeID: string }>(history.location.pathname, { path: Path.CANVAS_NODE });
+    const nodeMatch = matchPath(history.location.pathname, [Path.CANVAS_NODE, Path.DOMAIN_CANVAS_NODE]);
 
     // This timeout is needed to prevent the focusNode from being called before the canvas is ready causing lines to not be drawn
     const focusTimeout = window.setTimeout(() => {

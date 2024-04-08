@@ -4,7 +4,8 @@ import { Box, Button, Divider, Editor, Scroll } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { Modals, useModal } from '@/ModalsV2';
-import EditorV3 from '@/pages/Canvas/components/EditorV3';
+import { useEditor } from '@/pages/Canvas/components/EditorV3/EditorV3.hook';
+import { EditorV3HeaderActions } from '@/pages/Canvas/components/EditorV3/EditorV3HeaderActions.component';
 import { FunctionMapContext } from '@/pages/Canvas/contexts';
 import { NodeEditorV2 } from '@/pages/Canvas/managers/types';
 import { getItemFromMap } from '@/pages/Canvas/utils';
@@ -18,7 +19,7 @@ import { FunctionSelect } from './components/FunctionSelect.component';
 import { editorStyles, stickyRunButtonWrapper } from './Function.css';
 
 export const FunctionEditorRoot: NodeEditorV2<Realtime.NodeData.Function> = () => {
-  const editor = EditorV3.useEditor<Realtime.NodeData.Function>();
+  const editor = useEditor<Realtime.NodeData.Function>();
   const functionMap = React.useContext(FunctionMapContext)!;
   const { id, description } = getItemFromMap(functionMap, editor.data.functionID);
   const hasFunctions = Object.values(functionMap).length > 0;
@@ -33,9 +34,9 @@ export const FunctionEditorRoot: NodeEditorV2<Realtime.NodeData.Function> = () =
   return (
     <Editor
       title="Function"
+      readOnly
       className={editorStyles}
-      readOnly={true}
-      headerActions={<EditorV3.HeaderActions />}
+      headerActions={<EditorV3HeaderActions />}
       footer={
         editor.data.functionID && (
           <Box className={stickyRunButtonWrapper}>

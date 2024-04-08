@@ -46,7 +46,7 @@ const RouteCanvasOptionMap: Record<CanvasOptionType, string[]> = {
   [CanvasOptionType.AI_SETTINGS]: [],
   [CanvasOptionType.INTEGRATION]: [Path.PROJECT_PUBLISH],
   [CanvasOptionType.PROJECT_CMS]: [Path.PROJECT_CMS],
-  [CanvasOptionType.CONVERSATION]: [Path.CONVERSATIONS],
+  [CanvasOptionType.CONVERSATION]: [Path.PROJECT_CONVERSATIONS],
   [CanvasOptionType.ANALYTICS_DASHBOARD]: [Path.PROJECT_ANALYTICS],
 };
 

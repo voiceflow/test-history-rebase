@@ -5,7 +5,7 @@ import React from 'react';
 
 import { Designer } from '@/ducks';
 import { useSelector } from '@/hooks';
-import EditorV3 from '@/pages/Canvas/components/EditorV3';
+import { useEditor } from '@/pages/Canvas/components/EditorV3/EditorV3.hook';
 
 import { editorStyles } from './Component.css';
 import { ComponentEditorDescription } from './components/ComponentEditorDescription.component';
@@ -17,11 +17,11 @@ interface ComponentEditorBaseProps {
 }
 
 export const ComponentEditorBase: React.FC<ComponentEditorBaseProps> = ({ headerActions }) => {
-  const editor = EditorV3.useEditor<Realtime.NodeData.Component>();
+  const editor = useEditor<Realtime.NodeData.Component>();
+
+  const flow = useSelector(Designer.Flow.selectors.byDiagramID, { diagramID: editor.data.diagramID });
   const flows = useSelector(Designer.Flow.selectors.allOrderedByName);
-  const flow = useSelector(Designer.Flow.selectors.byDiagramID, {
-    diagramID: editor.data.diagramID,
-  });
+
   const hasFlows = flows.length > 0;
 
   return (

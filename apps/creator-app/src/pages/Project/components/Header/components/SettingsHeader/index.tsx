@@ -15,10 +15,10 @@ const SettingsHeader: React.FC = () => {
 
       <Page.Header.Title leftOffset>
         <Switch>
-          <Route path={Path.PROJECT_GENERAL_SETTINGS}>General</Route>
-          <Route path={Path.PROJECT_VERSION_SETTINGS}>All Versions</Route>
-          <Route path={Path.PROJECT_ENVIRONMENT_SETTINGS}>All Environments</Route>
-          <Route path={Path.PROJECT_BACKUP_SETTINGS}>Backups</Route>
+          <Route path={Path.PROJECT_SETTINGS_GENERAL}>General</Route>
+          <Route path={Path.PROJECT_SETTINGS_VERSION}>All Versions</Route>
+          <Route path={Path.PROJECT_SETTINGS_ENVIRONMENT}>All Environments</Route>
+          <Route path={Path.PROJECT_SETTINGS_BACKUP}>Backups</Route>
         </Switch>
       </Page.Header.Title>
     </Page.Header>

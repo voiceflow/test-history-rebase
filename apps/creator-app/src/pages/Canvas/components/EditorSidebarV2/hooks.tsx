@@ -74,7 +74,7 @@ export const useEditorSidebarV2 = () => {
   const theme = useTheme();
   const location = useLocation();
   const isEditingMode = useEditingMode();
-  const canvasNodeRouteMatch = useRouteMatch(Path.CANVAS_NODE);
+  const canvasNodeRouteMatch = useRouteMatch([Path.DOMAIN_CANVAS_NODE, Path.CANVAS_NODE]);
   const getEditorWithCorrectVersion = useGetEditorWithCorrectVersion();
 
   const scrollbars = React.useRef<CustomScrollbarsTypes.Scrollbars>(null);
@@ -112,18 +112,18 @@ export const useEditorSidebarV2 = () => {
       const routeState = { animationEffect: EditorAnimationEffect.POP };
 
       if (typeof configOrPath === 'string') {
-        goToNode(node.id, configOrPath, routeState);
+        goToNode(node.id, { state: routeState, subpath: configOrPath });
       } else if (configOrPath) {
-        goToNode(node.id, generatePath(configOrPath.path, configOrPath.params), routeState);
+        goToNode(node.id, { state: routeState, subpath: generatePath(configOrPath.path, configOrPath.params) });
       } else {
-        goToNode(node.id, undefined, routeState);
+        goToNode(node.id, { state: routeState });
       }
     },
     [goToNode, node?.id]
   );
 
   const goToRoot = React.useCallback(
-    (animationEffect?: EditorAnimationEffect) => node?.id && goToNode(node.id, undefined, { animationEffect }),
+    (animationEffect?: EditorAnimationEffect) => node?.id && goToNode(node.id, { state: { animationEffect } }),
     [node?.id, goToNode]
   );
 
@@ -132,11 +132,11 @@ export const useEditorSidebarV2 = () => {
       if (!node?.id) return;
 
       if (typeof configOrPath === 'string') {
-        goToNode(node.id, configOrPath);
+        goToNode(node.id, { subpath: configOrPath });
       } else {
-        goToNode(node.id, generatePath(configOrPath.path, configOrPath.params), {
-          animationEffect: configOrPath.animationEffect,
-          ...configOrPath.state,
+        goToNode(node.id, {
+          state: { animationEffect: configOrPath.animationEffect, ...configOrPath.state },
+          subpath: generatePath(configOrPath.path, configOrPath.params),
         });
       }
     },
@@ -150,13 +150,13 @@ export const useEditorSidebarV2 = () => {
       const parentPath = location.pathname.replace(canvasNodeRouteMatch.url, '');
 
       if (typeof configOrPath === 'string') {
-        goToNode(node.id, parentPath ? `${parentPath}/${configOrPath}` : configOrPath);
+        goToNode(node.id, { subpath: parentPath ? `${parentPath}/${configOrPath}` : configOrPath });
       } else {
         const childPath = generatePath(configOrPath.path, configOrPath.params);
 
-        goToNode(node.id, parentPath ? `${parentPath}/${childPath}` : childPath, {
-          animationEffect: configOrPath.animationEffect,
-          ...configOrPath.state,
+        goToNode(node.id, {
+          state: { animationEffect: configOrPath.animationEffect, ...configOrPath.state },
+          subpath: parentPath ? `${parentPath}/${childPath}` : childPath,
         });
       }
     },
@@ -230,26 +230,25 @@ export const useEditorSidebarV2 = () => {
   }, [isOpened]);
 
   return {
-    editor,
-    isOpened,
-    width,
-    isFullscreen,
-    scrollbars,
-    hasData,
-    isMarkup,
     node,
     data,
-    blockID,
-    engine,
-    platform,
-    projectType,
-    canvasNodeRouteMatch,
+    width,
     focus,
-    goToNested,
-    goToSibling,
+    editor,
+    engine,
     goBack,
+    hasData,
+    blockID,
+    isMarkup,
+    isOpened,
+    platform,
     onChange,
-    onChangeParentBlock,
+    goToNested,
+    scrollbars,
+    goToSibling,
+    projectType,
+    isFullscreen,
     toggleFullscreen,
+    onChangeParentBlock,
   };
 };

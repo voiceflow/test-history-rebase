@@ -7,7 +7,7 @@ import * as Account from '@/ducks/account';
 import { useSelector } from '@/hooks';
 import * as Support from '@/vendors/support';
 
-const NO_RENDER_PAGES = [Path.PUBLIC_PROTOTYPE, Path.PROJECT_DEMO, Path.PROJECT_PROTOTYPE];
+const NO_RENDER_PAGES = [Path.PUBLIC_PROTOTYPE, Path.PROJECT_PROTOTYPE];
 
 const SupportChat: React.FC = () => {
   Support.useSupportChat();

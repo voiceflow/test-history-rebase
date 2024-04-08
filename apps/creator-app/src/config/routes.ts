@@ -1,275 +1,374 @@
-export const toPath = (...routes: string[]) => routes.map((route) => `/${route}`).join('');
+import { Enum } from '@voiceflow/dtos';
 
-export enum RootRoute {
-  PROJECT = 'project',
-  RESET = 'reset',
-  LOGIN = 'login',
-  LOGOUT = 'logout',
-  SIGNUP = 'signup',
-  ONBOARDING = 'onboarding',
-  WORKSPACE = 'workspace',
-  DASHBOARD = 'dashboard',
-  ACCOUNT = 'account',
-  DEMO = 'demo',
-  PROTOTYPE = 'prototype',
-  CANVAS = 'canvas',
-  INVITE = 'invite',
-  RUNTIME = 'runtime',
-  SSO = 'sso',
-  INTEGRATIONS = 'integrations',
-}
+type ToPatch<T extends unknown[]> = T extends [infer F, ...infer R] ? `/${F & string}${ToPatch<R>}` : '';
 
-export enum LoginRoute {
-  SSO = 'sso',
-}
+export const toPath = <T extends string[]>(...routes: T) => `/${routes.join('/')}` as ToPatch<T>;
+export const toParam = <T extends string, O extends boolean = false>(param: T, optional?: O) =>
+  `:${param}${optional ? '?' : ''}` as `:${T}${O extends true ? '?' : ''}`;
 
-export enum SSORoute {
-  CALLBACK = 'callback',
-}
+export const RouteParam = {
+  NODE_ID: 'nodeID',
+  THREAD_ID: 'threadID',
+  DOMAIN_ID: 'domainID',
+  DIAGRAM_ID: 'diagramID',
+  COMMENT_ID: 'commentID',
+  VERSION_ID: 'versionID',
+  RESOURCE_ID: 'resourceID',
+  WORKSPACE_ID: 'workspaceID',
+  RESOURCE_TYPE: 'resourceType',
+  TRANSCRIPT_ID: 'transcriptID',
+} as const;
 
-export enum IntegrationsRoute {
-  ZENDESK = 'zendesk',
-}
+export const RootRoute = {
+  SSO: 'sso',
+  DEMO: 'demo',
+  RESET: 'reset',
+  LOGIN: 'login',
+  LOGOUT: 'logout',
+  SIGNUP: 'signup',
+  CANVAS: 'canvas',
+  INVITE: 'invite',
+  RUNTIME: 'runtime',
+  PROJECT: 'project',
+  ACCOUNT: 'account',
+  WORKSPACE: 'workspace',
+  DASHBOARD: 'dashboard',
+  PROTOTYPE: 'prototype',
+  ONBOARDING: 'onboarding',
+  INTEGRATIONS: 'integrations',
+} as const;
 
-export enum ProjectRoute {
-  CMS = 'cms',
-  DOMAIN = 'domain',
-  PROTOTYPE = 'prototype',
-  MIGRATE = 'migrate',
-  PUBLISH = 'publish',
-  CONVERSATIONS = 'transcripts',
-  SETTINGS = 'settings',
-  ANALYTICS = 'analytics',
-  EXPORT = 'export',
-  ASSISTANT_OVERVIEW = 'assistant-overview',
-}
+export type RootRoute = Enum<typeof RootRoute>;
 
-export enum DomainRoute {
-  CANVAS = 'canvas',
-}
+export const LoginRoute = {
+  SSO: 'sso',
+} as const;
 
-export enum CanvasRoute {
-  NODE = 'node',
-  MODEL = 'model',
-  MARKUP = 'markup',
-  COMMENTING = 'commenting',
-}
+export const LoginSSORoute = {
+  CALLBACK: 'callback',
+} as const;
 
-export enum PublishRoute {
-  ALEXA = 'alexa',
-  GOOGLE = 'google',
-  DIALOGFLOW = 'dialogflow',
-  API = 'api',
-  PROJECT_API = 'project/api',
-  EXPORT = 'export',
-  GENERAL = 'general',
-  WEBCHAT = 'webchat',
-  SMS = 'sms',
-  PROTOTYPE_SMS = 'prototype/sms',
-  WHATSAPP = 'whatsapp',
-  PROTOTYPE_WHATSAPP = 'prototype/whatsapp',
-  MICROSOFT_TEAMS = 'microsoft_teams',
-}
+export const IntegrationsRoute = {
+  ZENDESK: 'zendesk',
+} as const;
 
-export enum NLURoute {
-  INTENTS = 'intents',
-  ENTITIES = 'entities',
-}
+export const ProjectRoute = {
+  CMS: 'cms',
+  CANVAS: 'canvas',
+  EXPORT: 'export',
+  MIGRATE: 'migrate',
+  PUBLISH: 'publish',
+  SETTINGS: 'settings',
+  ANALYTICS: 'analytics',
+  PROTOTYPE: 'prototype',
+  CONVERSATIONS: 'transcripts',
+  ASSISTANT_OVERVIEW: 'assistant-overview',
 
-export enum ProductRoute {
-  NEW = 'new',
-}
-
-export enum CMSRoute {
-  FLOW = 'flow',
-  INTENT = 'intent',
-  ENTITY = 'entity',
-  WORKFLOW = 'workflow',
-  FUNCTION = 'function',
-  VARIABLE = 'variable',
-  KNOWLEDGE_BASE = 'knowledge-base',
-}
-
-export enum WorkspaceRoute {
-  PROFILE = 'profile',
-  MEMBERS = 'members',
-  BILLING = 'billing',
-  SETTINGS = 'settings',
-  TEMPLATE = 'template',
-  INTEGRATIONS = 'integrations',
-  ORGANIZATION = 'organization',
-  ACCEPT_INVITE = 'accept-invite',
-}
-
-export enum WorkspaceOrganizationRoute {
-  SSO = 'sso',
-  MEMBERS = 'members',
-  SETTINGS = 'settings',
-}
+  /**
+   * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
+   */
+  DOMAIN: 'domain',
+} as const;
 
 /**
- * @deprecated should be removed after the dashboardV2 is released
+ * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
  */
-export enum WorkspaceSettingsRoute {
-  GENERAL = 'general',
-  BILLING = 'billing',
-  DEVELOPER = 'developer',
-  SSO = 'sso',
-}
+export const DomainRoute = {
+  CANVAS: 'canvas',
+} as const;
 
-export enum ProjectSettingsRoute {
-  GENERAL = 'general',
-  VERSION = 'version',
-  ENVIRONMENT = 'environment',
-  BACKUP = 'backup',
-}
+export const CanvasRoute = {
+  NODE: 'node',
+  MODEL: 'model',
+  MARKUP: 'markup',
+  COMMENTING: 'commenting',
+} as const;
 
-export enum AccountSettingsRoute {
-  PROFILE = 'profile',
-  INTEGRATIONS = 'integrations',
-}
+export const PublishRoute = {
+  SMS: 'sms',
+  API: 'api',
+  ALEXA: 'alexa',
+  GOOGLE: 'google',
+  EXPORT: 'export',
+  GENERAL: 'general',
+  WEBCHAT: 'webchat',
+  WHATSAPP: 'whatsapp',
+  DIALOGFLOW: 'dialogflow',
+  PROJECT_API: 'project/api',
+  PROTOTYPE_SMS: 'prototype/sms',
+  MICROSOFT_TEAMS: 'microsoft_teams',
+  PROTOTYPE_WHATSAPP: 'prototype/whatsapp',
+} as const;
+
+export const CMSRoute = {
+  FLOW: 'flow',
+  INTENT: 'intent',
+  ENTITY: 'entity',
+  FUNCTION: 'function',
+  VARIABLE: 'variable',
+  WORKFLOW: 'workflow',
+  KNOWLEDGE_BASE: 'knowledge-base',
+} as const;
+
+export type CMSRoute = Enum<typeof CMSRoute>;
+
+export const WorkspaceRoute = {
+  PROFILE: 'profile',
+  MEMBERS: 'members',
+  BILLING: 'billing',
+  SETTINGS: 'settings',
+  TEMPLATE: 'template',
+  INTEGRATIONS: 'integrations',
+  ORGANIZATION: 'organization',
+  ACCEPT_INVITE: 'accept-invite',
+} as const;
+
+export const WorkspaceOrganizationRoute = {
+  SSO: 'sso',
+  MEMBERS: 'members',
+  SETTINGS: 'settings',
+} as const;
+
+export const ProjectSettingsRoute = {
+  BACKUP: 'backup',
+  GENERAL: 'general',
+  VERSION: 'version',
+  ENVIRONMENT: 'environment',
+} as const;
+
+export const AccountRoute = {
+  PROFILE: 'profile',
+  VERIFY_EMAIL: 'verify-email',
+  INTEGRATIONS: 'integrations',
+  CONFIRM_EMAIL: 'confirm-email',
+} as const;
 
 export const Path = {
   HOME: '/',
 
-  RESET: toPath(RootRoute.RESET),
-  RESET_PASSWORD: toPath(RootRoute.RESET, ':id'),
+  // auth
 
   LOGIN: toPath(RootRoute.LOGIN),
-  LOGIN_SSO_CALLBACK: toPath(RootRoute.LOGIN, LoginRoute.SSO, SSORoute.CALLBACK),
-
-  SIGNUP: toPath(RootRoute.SIGNUP),
-
-  ONBOARDING: toPath(RootRoute.ONBOARDING),
-
-  WORKSPACE: toPath(RootRoute.WORKSPACE),
-  WORKSPACE_DASHBOARD: toPath(RootRoute.WORKSPACE, ':workspaceID'),
-
-  WORKSPACE_MEMBERS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.MEMBERS),
-  WORKSPACE_BILLING: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.BILLING),
-  WORKSPACE_PROFILE: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.PROFILE),
-  WORKSPACE_SETTINGS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.SETTINGS),
-  WORKSPACE_INTEGRATIONS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.INTEGRATIONS),
-
-  WORKSPACE_ORGANIZATION: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.ORGANIZATION),
-  WORKSPACE_ORGANIZATION_SSO: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.ORGANIZATION, WorkspaceOrganizationRoute.SSO),
-  WORKSPACE_ORGANIZATION_MEMBERS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.ORGANIZATION, WorkspaceOrganizationRoute.MEMBERS),
-  WORKSPACE_ORGANIZATION_SETTINGS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.ORGANIZATION, WorkspaceOrganizationRoute.SETTINGS),
-
-  WORKSPACE_GENERAL_SETTINGS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.SETTINGS, WorkspaceSettingsRoute.GENERAL),
-  WORKSPACE_BILLING_SETTINGS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.SETTINGS, WorkspaceSettingsRoute.BILLING),
-  WORKSPACE_DEVELOPER_SETTINGS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.SETTINGS, WorkspaceSettingsRoute.DEVELOPER),
-  WORKSPACE_SSO_SETTINGS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.SETTINGS, WorkspaceSettingsRoute.SSO),
-  WORKSPACE_ACCEPT_INVITE: toPath(RootRoute.WORKSPACE, WorkspaceRoute.ACCEPT_INVITE),
-  ZENDESK_CALLBACK: toPath(RootRoute.INTEGRATIONS, IntegrationsRoute.ZENDESK),
-
-  DASHBOARD: toPath(RootRoute.DASHBOARD),
-
-  ACCOUNT: toPath(RootRoute.ACCOUNT),
-  ACCOUNT_PROFILE: toPath(RootRoute.ACCOUNT, AccountSettingsRoute.PROFILE),
-  ACCOUNT_INTEGRATIONS: toPath(RootRoute.ACCOUNT, AccountSettingsRoute.INTEGRATIONS),
-
-  VERIFY_SIGNUP_EMAIL: toPath(RootRoute.ACCOUNT, 'verify-email'),
-  CONFIRM_EMAIL_UPDATE: toPath(RootRoute.ACCOUNT, 'confirm-email'),
-
+  RESET: toPath(RootRoute.RESET),
   LOGOUT: toPath(RootRoute.LOGOUT),
+  SIGNUP: toPath(RootRoute.SIGNUP),
+  RESET_PASSWORD: toPath(RootRoute.RESET, ':id'),
+  LOGIN_SSO_CALLBACK: toPath(RootRoute.LOGIN, LoginRoute.SSO, LoginSSORoute.CALLBACK),
+
+  // other
 
   RUNTIME: toPath(RootRoute.RUNTIME),
+  DASHBOARD: toPath(RootRoute.DASHBOARD),
+  ONBOARDING: toPath(RootRoute.ONBOARDING),
 
-  PUBLIC_PROTOTYPE: toPath(RootRoute.PROTOTYPE, ':versionID'),
-  PROJECT_DEMO: toPath(RootRoute.DEMO, ':versionID'),
-  PROJECT_VERSION: toPath(RootRoute.PROJECT, ':versionID'),
-  PROJECT_DOMAIN: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.DOMAIN, ':domainID?'),
+  // account
 
-  PROJECT_PROTOTYPE: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PROTOTYPE),
-  PROJECT_PUBLISH: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH),
-  PROJECT_SETTINGS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.SETTINGS),
-  PROJECT_ASSISTANT_OVERVIEW: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.ASSISTANT_OVERVIEW),
-  PROJECT_GENERAL_SETTINGS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.SETTINGS, ProjectSettingsRoute.GENERAL),
-  PROJECT_VERSION_SETTINGS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.SETTINGS, ProjectSettingsRoute.VERSION),
-  PROJECT_ENVIRONMENT_SETTINGS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.SETTINGS, ProjectSettingsRoute.ENVIRONMENT),
-  PROJECT_BACKUP_SETTINGS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.SETTINGS, ProjectSettingsRoute.BACKUP),
-  PROJECT_EXPORT: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.EXPORT, ':diagramID'),
-  PROJECT_ANALYTICS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.ANALYTICS),
-  PROJECT_CMS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CMS),
+  ACCOUNT: toPath(RootRoute.ACCOUNT),
+  ACCOUNT_PROFILE: toPath(RootRoute.ACCOUNT, AccountRoute.PROFILE),
+  ACCOUNT_VERIFY_EMAIL: toPath(RootRoute.ACCOUNT, AccountRoute.VERIFY_EMAIL),
+  ACCOUNT_INTEGRATIONS: toPath(RootRoute.ACCOUNT, AccountRoute.INTEGRATIONS),
+  ACCOUNT_CONFIRM_EMAIL: toPath(RootRoute.ACCOUNT, AccountRoute.CONFIRM_EMAIL),
 
-  CONVERSATIONS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CONVERSATIONS, ':transcriptID?'),
+  // workspace
 
-  DOMAIN_CANVAS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.DOMAIN, ':domainID', DomainRoute.CANVAS, ':diagramID?'),
+  WORKSPACE: toPath(RootRoute.WORKSPACE),
+  WORKSPACE_DASHBOARD: toPath(RootRoute.WORKSPACE, toParam(RouteParam.WORKSPACE_ID)),
+  WORKSPACE_ACCEPT_INVITE: toPath(RootRoute.WORKSPACE, WorkspaceRoute.ACCEPT_INVITE),
 
-  CANVAS_TEXT_MARKUP: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.DOMAIN, ':domainID', DomainRoute.CANVAS, ':diagramID', CanvasRoute.MARKUP),
+  WORKSPACE_MEMBERS: toPath(RootRoute.WORKSPACE, toParam(RouteParam.WORKSPACE_ID), WorkspaceRoute.MEMBERS),
+  WORKSPACE_BILLING: toPath(RootRoute.WORKSPACE, toParam(RouteParam.WORKSPACE_ID), WorkspaceRoute.BILLING),
+  WORKSPACE_PROFILE: toPath(RootRoute.WORKSPACE, toParam(RouteParam.WORKSPACE_ID), WorkspaceRoute.PROFILE),
+  WORKSPACE_SETTINGS: toPath(RootRoute.WORKSPACE, toParam(RouteParam.WORKSPACE_ID), WorkspaceRoute.SETTINGS),
+  WORKSPACE_INTEGRATIONS: toPath(RootRoute.WORKSPACE, toParam(RouteParam.WORKSPACE_ID), WorkspaceRoute.INTEGRATIONS),
+
+  WORKSPACE_ORGANIZATION: toPath(RootRoute.WORKSPACE, toParam(RouteParam.WORKSPACE_ID), WorkspaceRoute.ORGANIZATION),
+  WORKSPACE_ORGANIZATION_SSO: toPath(
+    RootRoute.WORKSPACE,
+    toParam(RouteParam.WORKSPACE_ID),
+    WorkspaceRoute.ORGANIZATION,
+    WorkspaceOrganizationRoute.SSO
+  ),
+  WORKSPACE_ORGANIZATION_MEMBERS: toPath(
+    RootRoute.WORKSPACE,
+    toParam(RouteParam.WORKSPACE_ID),
+    WorkspaceRoute.ORGANIZATION,
+    WorkspaceOrganizationRoute.MEMBERS
+  ),
+  WORKSPACE_ORGANIZATION_SETTINGS: toPath(
+    RootRoute.WORKSPACE,
+    toParam(RouteParam.WORKSPACE_ID),
+    WorkspaceRoute.ORGANIZATION,
+    WorkspaceOrganizationRoute.SETTINGS
+  ),
+
+  // integrations
+
+  INTEGRATION_ZENDESK_CALLBACK: toPath(RootRoute.INTEGRATIONS, IntegrationsRoute.ZENDESK),
+
+  // public prototype
+
+  PUBLIC_PROTOTYPE: toPath(RootRoute.PROTOTYPE, toParam(RouteParam.VERSION_ID)),
+
+  // project
+
+  PROJECT_VERSION: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID)),
+
+  PROJECT_CMS: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.CMS),
+  PROJECT_CANVAS: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.CANVAS, toParam(RouteParam.DIAGRAM_ID, true)),
+  PROJECT_EXPORT: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.EXPORT, toParam(RouteParam.DIAGRAM_ID)),
+  PROJECT_PUBLISH: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.PUBLISH),
+  PROJECT_SETTINGS: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.SETTINGS),
+  PROJECT_PROTOTYPE: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.PROTOTYPE),
+  PROJECT_ANALYTICS: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.ANALYTICS),
+  PROJECT_CONVERSATIONS: toPath(
+    RootRoute.PROJECT,
+    toParam(RouteParam.VERSION_ID),
+    ProjectRoute.CONVERSATIONS,
+    toParam(RouteParam.TRANSCRIPT_ID, true)
+  ),
+
+  PROJECT_SETTINGS_BACKUP: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.SETTINGS, ProjectSettingsRoute.BACKUP),
+  PROJECT_SETTINGS_GENERAL: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.SETTINGS, ProjectSettingsRoute.GENERAL),
+  PROJECT_SETTINGS_VERSION: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.SETTINGS, ProjectSettingsRoute.VERSION),
+  PROJECT_SETTINGS_ENVIRONMENT: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.SETTINGS, ProjectSettingsRoute.ENVIRONMENT),
+
+  /**
+   * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
+   */
+  PROJECT_DOMAIN: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.DOMAIN, toParam(RouteParam.DOMAIN_ID, true)),
+  /**
+   * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
+   */
+  PROJECT_ASSISTANT_OVERVIEW: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.ASSISTANT_OVERVIEW),
+
+  // domain
+  /**
+   * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
+   */
+  DOMAIN_CANVAS: toPath(
+    RootRoute.PROJECT,
+    toParam(RouteParam.VERSION_ID),
+    ProjectRoute.DOMAIN,
+    toParam(RouteParam.DOMAIN_ID),
+    DomainRoute.CANVAS,
+    toParam(RouteParam.DIAGRAM_ID, true)
+  ),
+  /**
+   * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
+   */
+  DOMAIN_CANVAS_TEXT_MARKUP: toPath(
+    RootRoute.PROJECT,
+    toParam(RouteParam.VERSION_ID),
+    ProjectRoute.DOMAIN,
+    toParam(RouteParam.DOMAIN_ID),
+    DomainRoute.CANVAS,
+    toParam(RouteParam.DIAGRAM_ID),
+    CanvasRoute.MARKUP
+  ),
+  /**
+   * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
+   */
+  DOMAIN_CANVAS_NODE: toPath(
+    RootRoute.PROJECT,
+    toParam(RouteParam.VERSION_ID),
+    ProjectRoute.DOMAIN,
+    toParam(RouteParam.DOMAIN_ID),
+    DomainRoute.CANVAS,
+    toParam(RouteParam.DIAGRAM_ID),
+    CanvasRoute.NODE,
+    toParam(RouteParam.NODE_ID)
+  ),
+  /**
+   * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
+   */
+  DOMAIN_CANVAS_COMMENTING: toPath(
+    RootRoute.PROJECT,
+    toParam(RouteParam.VERSION_ID),
+    ProjectRoute.DOMAIN,
+    toParam(RouteParam.DOMAIN_ID),
+    DomainRoute.CANVAS,
+    toParam(RouteParam.DIAGRAM_ID),
+    CanvasRoute.COMMENTING
+  ),
+  /**
+   * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
+   */
+  DOMAIN_CANVAS_COMMENTING_THREAD: toPath(
+    RootRoute.PROJECT,
+    toParam(RouteParam.VERSION_ID),
+    ProjectRoute.DOMAIN,
+    toParam(RouteParam.DOMAIN_ID),
+    DomainRoute.CANVAS,
+    toParam(RouteParam.DIAGRAM_ID),
+    CanvasRoute.COMMENTING,
+    toParam(RouteParam.THREAD_ID),
+    toParam(RouteParam.COMMENT_ID, true)
+  ),
+
+  // canvas
   CANVAS_NODE: toPath(
     RootRoute.PROJECT,
-    ':versionID',
-    ProjectRoute.DOMAIN,
-    ':domainID',
-    DomainRoute.CANVAS,
-    ':diagramID',
+    toParam(RouteParam.VERSION_ID),
+    ProjectRoute.CANVAS,
+    toParam(RouteParam.DIAGRAM_ID),
     CanvasRoute.NODE,
-    ':nodeID'
+    toParam(RouteParam.NODE_ID)
   ),
   CANVAS_COMMENTING: toPath(
     RootRoute.PROJECT,
-    ':versionID',
-    ProjectRoute.DOMAIN,
-    ':domainID',
-    DomainRoute.CANVAS,
-    ':diagramID',
+    toParam(RouteParam.VERSION_ID),
+    ProjectRoute.CANVAS,
+    toParam(RouteParam.DIAGRAM_ID),
     CanvasRoute.COMMENTING
+  ),
+  CANVAS_TEXT_MARKUP: toPath(
+    RootRoute.PROJECT,
+    toParam(RouteParam.VERSION_ID),
+    ProjectRoute.CANVAS,
+    toParam(RouteParam.DIAGRAM_ID),
+    CanvasRoute.MARKUP
   ),
   CANVAS_COMMENTING_THREAD: toPath(
     RootRoute.PROJECT,
-    ':versionID',
-    ProjectRoute.DOMAIN,
-    ':domainID',
-    DomainRoute.CANVAS,
-    ':diagramID',
+    toParam(RouteParam.VERSION_ID),
+    ProjectRoute.CANVAS,
+    toParam(RouteParam.DIAGRAM_ID),
     CanvasRoute.COMMENTING,
-    ':threadID',
-    ':commentID?'
+    toParam(RouteParam.THREAD_ID),
+    toParam(RouteParam.COMMENT_ID, true)
   ),
 
-  PUBLISH_DIALOGFLOW: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.DIALOGFLOW),
-  PUBLISH_GENERAL: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.GENERAL),
-  PUBLISH_EXPORT: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.EXPORT),
-  PUBLISH_WEBCHAT: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.WEBCHAT),
-  PUBLISH_API: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.API),
+  // publish
 
-  PUBLISH_SMS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.SMS),
-  PROTOTYPE_SMS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.PROTOTYPE_SMS),
+  PUBLISH_API: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.PUBLISH, PublishRoute.API),
+  PUBLISH_TEAMS: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.PUBLISH, PublishRoute.MICROSOFT_TEAMS),
+  PUBLISH_EXPORT: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.PUBLISH, PublishRoute.EXPORT),
+  PUBLISH_GENERAL: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.PUBLISH, PublishRoute.GENERAL),
+  PUBLISH_WEBCHAT: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.PUBLISH, PublishRoute.WEBCHAT),
+  PUBLISH_DIALOGFLOW: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.PUBLISH, PublishRoute.DIALOGFLOW),
 
-  PUBLISH_WHATSAPP: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.WHATSAPP),
-  PROTOTYPE_WHATSAPP: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.PROTOTYPE_WHATSAPP),
+  PUBLISH_SMS: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.PUBLISH, PublishRoute.SMS),
+  PROTOTYPE_SMS: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.PUBLISH, PublishRoute.PROTOTYPE_SMS),
 
-  PUBLISH_TEAMS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.MICROSOFT_TEAMS),
+  PUBLISH_WHATSAPP: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.PUBLISH, PublishRoute.WHATSAPP),
+  PROTOTYPE_WHATSAPP: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.PUBLISH, PublishRoute.PROTOTYPE_WHATSAPP),
 
-  CMS_FLOW: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CMS, CMSRoute.FLOW),
-  CMS_INTENT: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CMS, CMSRoute.INTENT),
-  CMS_ENTITY: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CMS, CMSRoute.ENTITY),
-  CMS_WORKFLOW: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CMS, CMSRoute.WORKFLOW),
-  CMS_FUNCTION: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CMS, CMSRoute.FUNCTION),
-  CMS_VARIABLE: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CMS, CMSRoute.VARIABLE),
-  CMS_KNOWLEDGE_BASE: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CMS, CMSRoute.KNOWLEDGE_BASE),
+  // cms
 
-  CMS_RESOURCE: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CMS, ':resourceType'),
-  CMS_RESOURCE_ACTIVE: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CMS, ':resourceType', ':resourceID'),
-};
+  CMS_RESOURCE: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.CMS, toParam(RouteParam.RESOURCE_TYPE)),
+  CMS_RESOURCE_ACTIVE: toPath(
+    RootRoute.PROJECT,
+    toParam(RouteParam.VERSION_ID),
+    ProjectRoute.CMS,
+    toParam(RouteParam.RESOURCE_TYPE),
+    toParam(RouteParam.RESOURCE_ID)
+  ),
 
-export const LegacyPath = {
-  WORKSPACE_DASHBOARD: toPath('team', ':team_id?'),
-  WORKSPACE_API_KEYS: toPath(RootRoute.WORKSPACE, ':workspaceID', 'api-keys'),
-
-  CANVAS_DIAGRAM: toPath('canvas', ':versionID', ':diagramID?'),
-  CANVAS_PREVIEW: toPath('preview', ':versionID', ':diagramID?'),
-  CANVAS_TEST: toPath('test', ':versionID', ':diagramID?'),
-
-  INVITE: toPath('invite'),
-
-  MIGRATE: toPath('migrate', ':versionID'),
-
-  PUBLISH: toPath('publish', ':versionID'),
-
-  PROJECT_PUBLISH: toPath(RootRoute.PROJECT, ':versionID', 'publish'),
-  PROJECT_TEST: toPath(RootRoute.PROJECT, ':versionID', 'test', ':diagramID?'),
-  PROJECT_CANVAS: toPath(RootRoute.PROJECT, ':versionID', DomainRoute.CANVAS, ':diagramID?'),
-};
+  CMS_FLOW: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.CMS, CMSRoute.FLOW),
+  CMS_INTENT: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.CMS, CMSRoute.INTENT),
+  CMS_ENTITY: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.CMS, CMSRoute.ENTITY),
+  CMS_FUNCTION: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.CMS, CMSRoute.FUNCTION),
+  CMS_VARIABLE: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.CMS, CMSRoute.VARIABLE),
+  CMS_WORKFLOW: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.CMS, CMSRoute.WORKFLOW),
+  CMS_KNOWLEDGE_BASE: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.CMS, CMSRoute.KNOWLEDGE_BASE),
+} as const;

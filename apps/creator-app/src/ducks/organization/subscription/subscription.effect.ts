@@ -26,6 +26,7 @@ export const checkout = (
         waitAsync(Actions.OrganizationSubscription.Checkout, {
           itemPriceID,
           paymentIntent,
+          couponIds: data.couponIds,
           context: { organizationID, workspaceID },
         })
       );

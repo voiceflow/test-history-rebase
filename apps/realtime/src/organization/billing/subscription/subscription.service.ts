@@ -163,6 +163,8 @@ export class BillingSubscriptionService {
               },
             }
           : {}),
+
+        ...(data.couponIds ? { couponIds: data.couponIds } : {}),
       });
     } catch (e) {
       throw new Error('Unable to update subscription');

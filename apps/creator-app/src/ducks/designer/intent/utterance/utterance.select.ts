@@ -3,6 +3,7 @@ import { getMarkupEntityIDs } from '@voiceflow/utils-designer';
 import { createSelector } from 'reselect';
 
 import { createCurriedSelector, createSubSelector } from '@/ducks/utils';
+import { sortCreatableCMSResources } from '@/utils/cms.util';
 
 import { createDesignerCRUDSelectors, intentIDParamSelector, intentIDsParamSelector } from '../../utils/selector.util';
 import { root as intentRoot } from '../selectors/root.select';
@@ -13,11 +14,7 @@ const root = createSubSelector(intentRoot, STATE_KEY);
 export const { hasOneByID, hasAllByIDs, oneByID, getOneByID, allByIDs, getAllByIDs, all, map, count, isEmpty } = createDesignerCRUDSelectors(root);
 
 export const allByIntentID = createSelector(all, intentIDParamSelector, (utterances, intentID) =>
-  !intentID
-    ? []
-    : utterances
-        .filter((utterance) => utterance.intentID === intentID)
-        .sort((l, r) => new Date(r.createdAt).getTime() - new Date(l.createdAt).getTime())
+  !intentID ? [] : sortCreatableCMSResources(utterances.filter((utterance) => utterance.intentID === intentID))
 );
 
 export const getAllByIntentID = createCurriedSelector(allByIntentID);

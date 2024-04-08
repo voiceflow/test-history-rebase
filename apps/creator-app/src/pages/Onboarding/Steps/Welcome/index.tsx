@@ -32,7 +32,7 @@ const Welcome: React.FC = () => {
 
           <Animations.FadeDown delay={0.24} {...fadeConfig}>
             <Description width={370} lineHeight={1.47} textAlign="center" mb={40}>
-              Collaboratively design, develop, and launch impactful AI agents using any models and integrations.
+              The collaborative platform to build, launch, and scale AI Agents with your team.
             </Description>
           </Animations.FadeDown>
 

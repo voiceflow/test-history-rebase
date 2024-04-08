@@ -1,16 +1,16 @@
-import { Body, Controller, HttpStatus, Inject, Post, Sse, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, HttpStatus, Inject, Post, Sse, UseGuards, UseInterceptors, MessageEvent } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ZodApiBody, ZodApiResponse } from '@voiceflow/nestjs-common';
 import { BillingAuthorizeGuard, Authorize, BillingTrackUsageInterceptor, BillingTrackUsageService } from '@voiceflow/sdk-billing/nestjs';
 import { ZodValidationPipe } from 'nestjs-zod';
-import { tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { tap, map } from 'rxjs/operators';
 
 import { CompletionService } from './completion.service';
 import { ChatCompletionRequest } from './dtos/chat-completion.request';
 import { CompletionRequest } from './dtos/completion.request';
 import { CompletionResponse } from './dtos/completion.response';
 import { createFrom } from './utils/async-iterator-to-observable';
-import { merge } from './utils/merge-completion';
 
 @Controller('private/completion')
 @ApiTags('Private/Completion')
@@ -44,7 +44,7 @@ export class CompletionPrivateHTTPController {
     @Body(new ZodValidationPipe(CompletionRequest))
     request: CompletionRequest
   ): Promise<CompletionResponse> {
-    const result = await merge(() => this.service.generateCompletion(request));
+    const result = await this.service.generateCompletion(request);
 
     this.trackUsage.track({
       resourceType: 'workspace',
@@ -71,7 +71,7 @@ export class CompletionPrivateHTTPController {
     @Body(new ZodValidationPipe(ChatCompletionRequest))
     request: ChatCompletionRequest
   ): Promise<CompletionResponse> {
-    const result = await merge(() => this.service.generateChatCompletion(request));
+    const result = await this.service.generateChatCompletion(request);
 
     this.trackUsage.track({
       resourceType: 'workspace',
@@ -83,7 +83,7 @@ export class CompletionPrivateHTTPController {
     return result;
   }
 
-  @Sse()
+  @Sse('stream')
   @ApiOperation({
     summary: 'Generate prompt completion',
     description: 'Generate prompt completion with a given model',
@@ -94,21 +94,34 @@ export class CompletionPrivateHTTPController {
     schema: CompletionResponse,
     description: 'AI response',
   })
-  async generateCompletionStream(
+  generateCompletionStream(
     @Body(new ZodValidationPipe(CompletionRequest))
     request: CompletionRequest
-  ) {
-    return createFrom(() => this.service.generateCompletion(request)).pipe(
+  ): Observable<MessageEvent> {
+    return createFrom(() => this.service.generateCompletionStream(request)).pipe(
       tap((chunk) => this.trackUsage.track({
         resourceType: 'workspace',
         resourceID: String(request.workspaceID),
         item: 'addon-tokens',
         value: chunk.tokens,
-      }))
+      })),
+      map((chunk) => {
+        if (chunk.error) {
+          return {
+            type: 'error',
+            data: { error: chunk.error },
+          }
+        }
+
+        return {
+          type: 'completion',
+          data: chunk,
+        }
+      })
     );
   }
 
-  @Sse('chat')
+  @Sse('chat/stream')
   @ApiOperation({
     summary: 'Generate chat completion',
     description: 'Generate chat completion with a given model',
@@ -119,17 +132,30 @@ export class CompletionPrivateHTTPController {
     schema: CompletionResponse,
     description: 'AI response',
   })
-  async generateChatCompletion(
+  generateChatCompletion(
     @Body(new ZodValidationPipe(ChatCompletionRequest))
     request: ChatCompletionRequest
-  ) {
-    return createFrom(() => this.service.generateChatCompletion(request)).pipe(
+  ): Observable<MessageEvent> {
+    return createFrom(() => this.service.generateChatCompletionStream(request)).pipe(
       tap((chunk) => this.trackUsage.track({
         resourceType: 'workspace',
         resourceID: String(request.workspaceID),
         item: 'addon-tokens',
         value: chunk.tokens,
-      }))
+      })),
+      map((chunk) => {
+        if (chunk.error) {
+          return {
+            type: 'error',
+            data: { error: chunk.error },
+          }
+        }
+
+        return {
+          type: 'completion',
+          data: chunk,
+        }
+      })
     );
   }
 }

@@ -1,6 +1,6 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ENVIRONMENT_VARIABLES } from '@voiceflow/nestjs-env';
-import { Configuration, OpenAIApi } from '@voiceflow/openai';
+import { OpenAI } from 'openai'
 
 import type { EnvironmentVariables } from '@/app.env';
 
@@ -10,7 +10,7 @@ import { ContentModerationError } from './moderation.error';
 export class ModerationService {
   private logger = new Logger(ModerationService.name);
 
-  protected openAIClient?: OpenAIApi;
+  protected openAIClient?: OpenAI;
 
   constructor(
     @Inject(ENVIRONMENT_VARIABLES)
@@ -21,7 +21,7 @@ export class ModerationService {
       return;
     }
 
-    this.openAIClient = new OpenAIApi(new Configuration({ apiKey: env.OPENAI_API_KEY, basePath: env.OPENAI_API_ENDPOINT || undefined }));
+    // this.openAIClient = new OpenAIApi(new Configuration({ apiKey: env.OPENAI_API_KEY, basePath: env.OPENAI_API_ENDPOINT || undefined }));
   }
 
   async checkModeration(input: string | string[], context: Partial<{ workspaceID: string | number; projectID: string }> = {}) {
@@ -29,9 +29,9 @@ export class ModerationService {
     if (!this.openAIClient) return;
 
     if (!input?.length) return;
-    const moderationResult = await this.openAIClient.createModeration({ input });
+    const moderationResult = await this.openAIClient.moderations.create({input});
 
-    const failedModeration = moderationResult.data.results.flatMap((result, idx) => {
+    const failedModeration = moderationResult.results.flatMap((result, idx) => {
       if (result.flagged) {
         return [
           {

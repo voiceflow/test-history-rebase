@@ -28,13 +28,13 @@ export class GPT3_5 extends GPTLLMModel {
     super(config, azureConfig);
   }
 
-  async generateChatCompletion(messages: AIMessage[], params: AIParams, options?: CompletionOptions) {
+  async * generateChatCompletion(messages: AIMessage[], params: AIParams, options?: CompletionOptions) {
     try {
-      return await this.routeChatCompletion(messages, params, options);
+      return yield * this.callChatCompletion(messages, params, options);
     } catch (error: any) {
       // intercept context_length_exceeded error and retry with gpt-3.5-turbo-1106
       if (isAxiosError(error) && error?.response?.data?.error?.code === 'context_length_exceeded') {
-        return new GPT3_5_1106(this.config).generateChatCompletion(messages, params, options);
+        return yield * new GPT3_5_1106(this.config).generateChatCompletion(messages, params, options);
       }
 
       this.logger.warn({ error, messages, params }, `${this.modelRef} completion`);

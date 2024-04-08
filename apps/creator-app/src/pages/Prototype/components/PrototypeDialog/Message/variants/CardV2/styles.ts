@@ -41,7 +41,7 @@ export const CardTitle = styled.div`
   color: #132144;
   font-weight: 600;
   font-size: 15px;
-  word-break: break-all;
+  word-break: break-word;
 `;
 
 export const CardDescription = styled.div`
@@ -57,10 +57,10 @@ export const CardDescription = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
 
-  word-break: break-all;
+  word-break: break-word;
 
   & a {
-    word-break: break-all;
+    word-break: break-word;
   }
 `;
 

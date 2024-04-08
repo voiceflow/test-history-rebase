@@ -47,7 +47,7 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
   };
 
   get isModeActive() {
-    return !!this.select(createMatchSelector(Path.CANVAS_COMMENTING));
+    return !!this.select(createMatchSelector(Path.DOMAIN_CANVAS_COMMENTING)) || !!this.select(createMatchSelector(Path.CANVAS_COMMENTING));
   }
 
   get isVisible() {

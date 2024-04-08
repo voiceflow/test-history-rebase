@@ -1,11 +1,12 @@
 import { ProjectAIAssistSettings } from '@voiceflow/dtos';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { FeatureFlag } from '@voiceflow/realtime-sdk';
 
 import * as NLU from '@/config/nlu';
 import * as Project from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
-import { useDispatch, useModelTracking } from '@/hooks';
+import { useDispatch, useFeature, useModelTracking } from '@/hooks';
 import { NLUImportModel } from '@/models';
 
 interface CreateProjectOptions {
@@ -19,10 +20,12 @@ interface CreateProjectOptions {
   importedModel: NLUImportModel | null;
   aiAssistSettings: ProjectAIAssistSettings | null;
 }
-
 export const useProjectCreate = () => {
+  const cmsWorkflows = useFeature(FeatureFlag.CMS_WORKFLOWS);
+
   const createProject = useDispatch(Project.createProject);
   const redirectToDomain = useDispatch(Router.redirectToDomain);
+  const redirectToProjectCanvas = useDispatch(Router.redirectToProjectCanvas);
 
   const modelImportTracking = useModelTracking();
 
@@ -50,6 +53,10 @@ export const useProjectCreate = () => {
       modelImportTracking({ nluType: NLU.Voiceflow.CONFIG.type, projectID: project.id, importedModel });
     }
 
-    redirectToDomain({ versionID: project.versionID });
+    if (cmsWorkflows.isEnabled) {
+      redirectToProjectCanvas({ versionID: project.versionID });
+    } else {
+      redirectToDomain({ versionID: project.versionID });
+    }
   };
 };

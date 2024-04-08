@@ -1,4 +1,5 @@
 import * as Platform from '@voiceflow/platform-config';
+import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { AssistantCard, Box, Button } from '@voiceflow/ui';
 import React from 'react';
 
@@ -7,7 +8,7 @@ import * as Organization from '@/ducks/organization';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useDispatch, usePlanLimitedConfig, useSelector } from '@/hooks';
+import { useDispatch, useFeature, usePlanLimitedConfig, useSelector } from '@/hooks';
 import { useConditionalLimit } from '@/hooks/planLimitV3';
 import * as ModalsV2 from '@/ModalsV2';
 import { useGetAIAssistSettings } from '@/ModalsV2/modals/Disclaimer/hooks/aiPlayground';
@@ -15,14 +16,18 @@ import { useGetAIAssistSettings } from '@/ModalsV2/modals/Disclaimer/hooks/aiPla
 import * as S from '../styles';
 
 const TemplateSection: React.FC = () => {
-  const getAIAssistSettings = useGetAIAssistSettings();
-  const goToDomain = useDispatch(Router.goToDomain);
-  const createProject = useDispatch(ProjectV2.createProject);
+  const cmsWorkflows = useFeature(FeatureFlag.CMS_WORKFLOWS);
+
   const upgradeModal = ModalsV2.useModal(ModalsV2.Upgrade);
+  const getAIAssistSettings = useGetAIAssistSettings();
 
   const projectsCount = useSelector(ProjectV2.projectsCountSelector);
   const projectsLimit = useSelector(WorkspaceV2.active.projectsLimitSelector);
   const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
+
+  const goToDomain = useDispatch(Router.goToDomain);
+  const createProject = useDispatch(ProjectV2.createProject);
+  const goToProjectCanvas = useDispatch(Router.goToProjectCanvas);
 
   // FIXME: remove FF https://voiceflow.atlassian.net/browse/CV3-994
   const legacyProjectsLimitConfig = usePlanLimitedConfig(LimitType.PROJECTS, { value: projectsCount, limit: projectsLimit });
@@ -63,7 +68,11 @@ const TemplateSection: React.FC = () => {
         templateTag,
       });
 
-      goToDomain({ versionID });
+      if (cmsWorkflows.isEnabled) {
+        goToProjectCanvas({ versionID });
+      } else {
+        goToDomain({ versionID });
+      }
     }
   };
 

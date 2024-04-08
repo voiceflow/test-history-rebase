@@ -302,6 +302,8 @@ class TraceController {
     if (!diagramID || diagramID === this.props.activeDiagramID) {
       this.props.getEngine()?.store.dispatch(Router.goToCurrentCanvas());
       this.props.getEngine()?.focusNode(blockID, { open: true });
+    } else if (this.props.getEngine()?.isFeatureEnabled(Realtime.FeatureFlag.CMS_WORKFLOWS)) {
+      this.props.getEngine()?.store.dispatch(Router.goToDiagram(diagramID, blockID));
     } else {
       const domainID =
         this.props.getEngine()?.select(Domain.domainIDByTopicIDSelector, { topicID: diagramID }) ??

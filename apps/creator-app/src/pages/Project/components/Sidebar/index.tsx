@@ -5,7 +5,15 @@ import { Path } from '@/config/routes';
 
 import { CanvasIconMenu, IntegrationsSidebar, LogoOffsetSidebar, SettingsSidebar, TestVariablesSidebar } from './components';
 
-const ALL_PROJECT_SIDEBAR_PATHS = [Path.DOMAIN_CANVAS, Path.CANVAS_COMMENTING, Path.CANVAS_COMMENTING_THREAD, Path.PROJECT_ANALYTICS];
+const ALL_PROJECT_SIDEBAR_PATHS = [
+  Path.DOMAIN_CANVAS,
+  Path.PROJECT_CANVAS,
+  Path.CANVAS_COMMENTING,
+  Path.PROJECT_ANALYTICS,
+  Path.DOMAIN_CANVAS_COMMENTING,
+  Path.CANVAS_COMMENTING_THREAD,
+  Path.DOMAIN_CANVAS_COMMENTING_THREAD,
+];
 
 const ProjectSidebar: React.FC = () => (
   <Switch>
@@ -17,7 +25,7 @@ const ProjectSidebar: React.FC = () => (
 
     <Route path={Path.PROJECT_SETTINGS} render={() => <SettingsSidebar />} />
 
-    <Route path={Path.CONVERSATIONS} render={() => <LogoOffsetSidebar />} />
+    <Route path={Path.PROJECT_CONVERSATIONS} render={() => <LogoOffsetSidebar />} />
   </Switch>
 );
 

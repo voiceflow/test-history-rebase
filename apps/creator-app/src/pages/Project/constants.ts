@@ -1,13 +1,16 @@
-import { LegacyPath, Path } from '@/config/routes';
+import { Path } from '@/config/routes';
 
 export const TIMEOUT_COUNT = 15 * 60 * 1000;
 
 export const DIAGRAM_ROUTES = [
-  Path.PROJECT_PROTOTYPE,
-  Path.DOMAIN_CANVAS,
-  Path.CANVAS_COMMENTING,
-  Path.CANVAS_COMMENTING_THREAD,
   Path.CANVAS_NODE,
-  LegacyPath.PROJECT_CANVAS,
+  Path.DOMAIN_CANVAS,
   Path.PROJECT_DOMAIN,
+  Path.PROJECT_CANVAS,
+  Path.PROJECT_PROTOTYPE,
+  Path.CANVAS_COMMENTING,
+  Path.DOMAIN_CANVAS_NODE,
+  Path.DOMAIN_CANVAS_COMMENTING,
+  Path.CANVAS_COMMENTING_THREAD,
+  Path.DOMAIN_CANVAS_COMMENTING_THREAD,
 ];

@@ -17,8 +17,9 @@ const TrackingArea = {
 
 const TRACKING_PATHS = [
   { area: TrackingArea.PROTOTYPE, path: Path.PROJECT_PROTOTYPE },
-  { area: TrackingArea.TRANSCRIPTS, path: Path.CONVERSATIONS },
+  { area: TrackingArea.TRANSCRIPTS, path: Path.PROJECT_CONVERSATIONS },
   { area: TrackingArea.CANVAS, path: Path.DOMAIN_CANVAS },
+  { area: TrackingArea.CANVAS, path: Path.PROJECT_CANVAS },
   { area: TrackingArea.PROJECT_CMS, path: Path.PROJECT_CMS },
 ];
 

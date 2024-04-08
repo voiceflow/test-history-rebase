@@ -22,7 +22,7 @@ export interface GeneralRuntimeFunctionTestResponse {
   };
 }
 
-interface GeneralRuntimeIntentResponse {
+export interface GeneralRuntimeIntentResponse {
   name: string;
 }
 

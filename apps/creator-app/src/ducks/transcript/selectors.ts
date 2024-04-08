@@ -15,7 +15,7 @@ export const {
 } = createCRUDSelectors(STATE_KEY);
 
 export const currentTranscriptIDSelector = createSelector([pathnameSelector], (pathname) => {
-  const match = matchPath<{ transcriptID?: string }>(pathname, { path: Path.CONVERSATIONS });
+  const match = matchPath<{ transcriptID?: string }>(pathname, { path: Path.PROJECT_CONVERSATIONS });
 
   return match?.params.transcriptID ?? null;
 });

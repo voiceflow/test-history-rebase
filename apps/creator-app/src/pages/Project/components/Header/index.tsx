@@ -15,7 +15,17 @@ import {
 
 const ProjectHeader: React.FC = () => (
   <Switch>
-    <Route path={[Path.DOMAIN_CANVAS, Path.CANVAS_COMMENTING, Path.CANVAS_COMMENTING_THREAD]} component={CanvasHeader} />
+    <Route
+      path={[
+        Path.DOMAIN_CANVAS,
+        Path.PROJECT_CANVAS,
+        Path.CANVAS_COMMENTING,
+        Path.DOMAIN_CANVAS_COMMENTING,
+        Path.CANVAS_COMMENTING_THREAD,
+        Path.DOMAIN_CANVAS_COMMENTING_THREAD,
+      ]}
+      component={CanvasHeader}
+    />
 
     <Route path={Path.PROJECT_PROTOTYPE} component={PrototypeHeader} />
 
@@ -23,7 +33,7 @@ const ProjectHeader: React.FC = () => (
 
     <Route path={Path.PROJECT_SETTINGS} component={SettingsHeader} />
 
-    <Route path={Path.CONVERSATIONS} component={LogoOnlyHeader} />
+    <Route path={Path.PROJECT_CONVERSATIONS} component={LogoOnlyHeader} />
 
     <Route path={Path.PROJECT_ANALYTICS} component={AnalyticsDashboardHeader} />
 

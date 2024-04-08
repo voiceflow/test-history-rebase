@@ -41,9 +41,11 @@ const Project: React.FC = () => {
   const resetCreator = useLocalDispatch(Realtime.creator.reset);
   const resetCanvasTemplateData = useLocalDispatch(Realtime.canvasTemplate.reset);
 
-  const hideExports = useFeature(Realtime.FeatureFlag.HIDE_EXPORTS);
   const [canEditProject] = usePermission(Permission.PROJECT_EDIT);
-  const disableIntegration = useFeature(Realtime.FeatureFlag.DISABLE_INTEGRATION)?.isEnabled;
+
+  const hideExports = useFeature(Realtime.FeatureFlag.HIDE_EXPORTS);
+  const cmsWorkflows = useFeature(Realtime.FeatureFlag.CMS_WORKFLOWS);
+  const disableIntegration = useFeature(Realtime.FeatureFlag.DISABLE_INTEGRATION);
 
   const inactivitySnackbar = System.Snackbar.useAPI();
 
@@ -111,19 +113,19 @@ const Project: React.FC = () => {
         <Switch>
           <Route path={DIAGRAM_ROUTES} component={Diagram} />
 
-          <Route path={Path.CONVERSATIONS} component={Conversations} />
+          <Route path={Path.PROJECT_CONVERSATIONS} component={Conversations} />
 
           <Route path={Path.PROJECT_ANALYTICS} component={AnalyticsDashboard} />
 
-          {!disableIntegration && !hideExports.isEnabled && <Route path={Path.PROJECT_PUBLISH} component={Publish} />}
+          {!disableIntegration.isEnabled && !hideExports.isEnabled && <Route path={Path.PROJECT_PUBLISH} component={Publish} />}
 
           <Route path={Path.PROJECT_SETTINGS} component={Settings} />
 
-          <Route path={Path.PROJECT_ASSISTANT_OVERVIEW} component={AssistantOverview} />
+          {!cmsWorkflows.isEnabled && <Route path={Path.PROJECT_ASSISTANT_OVERVIEW} component={AssistantOverview} />}
 
           {canEditProject && <Route path={Path.PROJECT_CMS} component={AssistantCMS} />}
 
-          <Redirect to={Path.PROJECT_DOMAIN} />
+          <Redirect to={cmsWorkflows.isEnabled ? Path.PROJECT_CANVAS : Path.PROJECT_DOMAIN} />
         </Switch>
 
         {/* allows rendering cms related modals in the cms page tree, so we can easily use cms related context in the modals */}

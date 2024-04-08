@@ -30,6 +30,7 @@ const ProjectList: React.FC = () => {
   const [sortBy, setSortBy] = React.useState<SortOptionType>(SortByOptions[0]);
   const [canCreateAssistant] = usePermission(Permission.PROJECT_EDIT);
   const proReverseTrial = useFeature(Realtime.FeatureFlag.PRO_REVERSE_TRIAL);
+  const cmsWorkflows = useFeature(Realtime.FeatureFlag.CMS_WORKFLOWS);
   const isEnterprise = useSelector(WorkspaceV2.active.isEnterpriseSelector);
   const location = useLocation();
   const history = useHistory();
@@ -121,7 +122,7 @@ const ProjectList: React.FC = () => {
                 <AssistantCard
                   {...getProjectStatusAndMembers({ project: item, activeViewers: activeViewersPerProject[item.id], getMemberByIDSelector })}
                   project={item}
-                  onClickCard={() => goToAssistantOverview(item.versionID)}
+                  onClickCard={() => (cmsWorkflows.isEnabled ? goToCanvasWithVersionID(item.versionID) : goToAssistantOverview(item.versionID))}
                   onClickDesigner={() => goToCanvasWithVersionID(item.versionID)}
                 />
               </ProjectIdentityProvider>

@@ -6,7 +6,7 @@ import { normalize } from 'normal-store';
 import { PageProgress } from '@/components/PageProgressBar/utils';
 import * as Errors from '@/config/errors';
 import { PageProgressBar } from '@/constants';
-import { activeDiagramIDSelector, linksByNodeIDSelector } from '@/ducks/creatorV2/selectors';
+import { linksByNodeIDSelector } from '@/ducks/creatorV2/selectors';
 import { setLastCreatedID } from '@/ducks/diagramV2/actions';
 import { diagramByIDSelector } from '@/ducks/diagramV2/selectors';
 import * as Feature from '@/ducks/feature';
@@ -62,7 +62,7 @@ export const deleteTopicDiagramForDomain =
   async (dispatch, getState) => {
     const state = getState();
 
-    await dispatch(goToRootDiagramIfActive(diagramID));
+    await dispatch(Router.goToRootDiagramIfActive(diagramID));
 
     await dispatch.sync(Realtime.domain.topicRemove({ ...getActiveVersionContext(state), domainID, topicID: diagramID }));
 
@@ -262,17 +262,6 @@ export const createTemplateDiagram = (): Thunk<string> => async (dispatch, getSt
   return diagram.id;
 };
 
-const goToRootDiagramIfActive =
-  (diagramID: string): Thunk =>
-  async (dispatch, getState) => {
-    // if the user is on the deleted diagram, redirect to root
-    const activeDiagramID = activeDiagramIDSelector(getState());
-
-    if (diagramID === activeDiagramID) {
-      await dispatch(Router.goToDomainRootDiagram());
-    }
-  };
-
 /**
  * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
  */
@@ -281,7 +270,7 @@ export const deleteSubtopicDiagram =
   async (dispatch, getState) => {
     const state = getState();
 
-    await dispatch(goToRootDiagramIfActive(diagramID));
+    await dispatch(Router.goToRootDiagramIfActive(diagramID));
 
     await dispatch.sync(Realtime.diagram.subtopicRemove({ ...getActiveDomainContext(state), subtopicID: diagramID, rootTopicID }));
 
@@ -300,7 +289,7 @@ export const moveSubtopicDiagram =
 
     if (subtopicAlreadyExists) return;
 
-    await dispatch(goToRootDiagramIfActive(subtopicID));
+    await dispatch(Router.goToRootDiagramIfActive(subtopicID));
 
     await dispatch.sync(
       Realtime.diagram.subtopicMove({ ...getActiveDomainContext(state), subtopicID, toTopicID: newTopicID, rootTopicID: diagramID })

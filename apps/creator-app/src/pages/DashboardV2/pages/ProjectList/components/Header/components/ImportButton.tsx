@@ -1,4 +1,5 @@
 import { datadogRum } from '@datadog/browser-rum';
+import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { toast, ToastCallToAction } from '@voiceflow/ui';
 import React from 'react';
 
@@ -12,7 +13,7 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useDispatch, usePlanLimitedAction, useSelector } from '@/hooks';
+import { useDispatch, useFeature, usePlanLimitedAction, useSelector } from '@/hooks';
 import { useConditionalLimitAction } from '@/hooks/planLimitV3';
 import * as ModalsV2 from '@/ModalsV2';
 import { upload } from '@/utils/dom';
@@ -20,13 +21,16 @@ import { upload } from '@/utils/dom';
 const ACCEPTED_FILE_FORMATS = '.vf,.vfr';
 
 const ImportButton: React.FC = () => {
+  const cmsWorkflows = useFeature(FeatureFlag.CMS_WORKFLOWS);
+
   const projects = useSelector(ProjectV2.allProjectsSelector);
   const workspaceID = useSelector(Session.activeWorkspaceIDSelector);
-  const projectsLimit = useSelector(WorkspaceV2.active.projectsLimitSelector);
   const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
+  const projectsLimit = useSelector(WorkspaceV2.active.projectsLimitSelector);
 
   const goToDomain = useDispatch(Router.goToDomain);
   const importProject = useDispatch(ProjectV2.importProjectFromFile);
+  const goToProjectCanvas = useDispatch(Router.goToProjectCanvas);
 
   const upgradeModal = ModalsV2.useModal(ModalsV2.Upgrade);
 
@@ -48,7 +52,13 @@ const ImportButton: React.FC = () => {
       toast.success(
         <>
           .VF file successfully imported for <strong>"{project.name}"</strong>
-          <ToastCallToAction onClick={() => goToDomain({ versionID: project.versionID })}>Open Assistant</ToastCallToAction>
+          <ToastCallToAction
+            onClick={() =>
+              cmsWorkflows.isEnabled ? goToProjectCanvas({ versionID: project.versionID }) : goToDomain({ versionID: project.versionID })
+            }
+          >
+            Open Assistant
+          </ToastCallToAction>
         </>
       );
     } catch (err) {

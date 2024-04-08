@@ -486,7 +486,7 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
       this.focus.set(nodeID);
 
       if (!options?.skipURLSync) {
-        this.store.dispatch(Router.goToCurrentCanvasNode(nodeID, options?.nodeSubPath, options?.routeState));
+        this.store.dispatch(Router.goToCurrentCanvasNode(nodeID, { state: options?.routeState, subpath: options?.nodeSubPath }));
       }
     }
   }

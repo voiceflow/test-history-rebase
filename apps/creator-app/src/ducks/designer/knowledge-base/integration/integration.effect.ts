@@ -66,7 +66,7 @@ export const getIntegrationAuthUrl =
     const { data } = await knowledgeBaseClient.getIntegrationAuthUrl({
       ...payload,
       projectID,
-      redirectUrl: `${CREATOR_APP_ENDPOINT}${Path.ZENDESK_CALLBACK}`,
+      redirectUrl: `${CREATOR_APP_ENDPOINT}${Path.INTEGRATION_ZENDESK_CALLBACK}`,
       integrationType,
     });
 
@@ -85,7 +85,7 @@ export const getIntegrationAuthReconnectUrl =
     const { data } = await knowledgeBaseClient.getIntegrationAuthReconnectUrl({
       projectID,
       integrationType,
-      redirectUrl: `${CREATOR_APP_ENDPOINT}${Path.ZENDESK_CALLBACK}`,
+      redirectUrl: `${CREATOR_APP_ENDPOINT}${Path.INTEGRATION_ZENDESK_CALLBACK}`,
     });
 
     return data.url;
@@ -122,7 +122,7 @@ export const getIntegrationDocumentCount =
 export const createOne =
   (integrationType: string, code: string, authState: string): Thunk<void> =>
   async (dispatch, _) => {
-    const redirectUrl = `${CREATOR_APP_ENDPOINT}${Path.ZENDESK_CALLBACK}`;
+    const redirectUrl = `${CREATOR_APP_ENDPOINT}${Path.INTEGRATION_ZENDESK_CALLBACK}`;
 
     await knowledgeBaseClient.createOneIntegration(integrationType, { code, state: authState, redirectUrl });
 

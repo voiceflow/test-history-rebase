@@ -21,11 +21,11 @@ const Settings: React.FC = () => {
     <ProjectPage>
       <Box id={Identifier.SETTINGS_PAGE} maxWidth={maxWidth} p={padding}>
         <Switch>
-          <Route path={Path.PROJECT_GENERAL_SETTINGS} component={GeneralSettings} />
-          <Route path={Path.PROJECT_BACKUP_SETTINGS} component={Backups} />
-          <Route path={Path.PROJECT_ENVIRONMENT_SETTINGS} component={ProjectEnvironments} />
+          <Route path={Path.PROJECT_SETTINGS_GENERAL} component={GeneralSettings} />
+          <Route path={Path.PROJECT_SETTINGS_BACKUP} component={Backups} />
+          <Route path={Path.PROJECT_SETTINGS_ENVIRONMENT} component={ProjectEnvironments} />
 
-          <Redirect to={{ state: location.state, pathname: Path.PROJECT_GENERAL_SETTINGS }} />
+          <Redirect to={{ state: location.state, pathname: Path.PROJECT_SETTINGS_GENERAL }} />
         </Switch>
       </Box>
     </ProjectPage>

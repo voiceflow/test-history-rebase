@@ -4,6 +4,7 @@ import React from 'react';
 import { generatePath } from 'react-router-dom';
 
 import { Path } from '@/config/routes';
+import { useFeature } from '@/hooks/feature';
 
 import { NodeEditorV2Props } from '../../managers/types';
 import { EditorSidebarContext } from '../EditorSidebarV2';
@@ -11,18 +12,19 @@ import { EditorParentMatchContext } from './context';
 
 export const useParentMatch = () => {
   const parentMatch = React.useContext(EditorParentMatchContext);
+  const cmsWorkflows = useFeature(Realtime.FeatureFlag.CMS_WORKFLOWS);
 
   return React.useMemo(() => {
     if (!parentMatch) return null;
 
-    const parentPath = parentMatch.path.replace(Path.CANVAS_NODE, '');
+    const parentPath = parentMatch.path.replace(cmsWorkflows.isEnabled ? Path.CANVAS_NODE : Path.DOMAIN_CANVAS_NODE, '');
 
     return {
       ...parentMatch,
       parentUrl: generatePath(parentPath, parentMatch.params),
       parentPath,
     };
-  }, [parentMatch?.url]);
+  }, [parentMatch?.url, cmsWorkflows.isEnabled]);
 };
 
 export const useEditor = <Data, BuiltInPorts extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord>(): NodeEditorV2Props<

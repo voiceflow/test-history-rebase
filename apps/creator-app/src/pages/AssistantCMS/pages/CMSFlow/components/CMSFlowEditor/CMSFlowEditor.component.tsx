@@ -13,8 +13,9 @@ import { useCMSResourceGetMoreMenu } from '../../../../hooks/cms-resource.hook';
 import { useCMSActiveResourceID } from '../../../../hooks/cms-table.hook';
 
 export const CMSFlowEditor: React.FC = () => {
-  const flowID = useCMSActiveResourceID();
   const editorRef = useRef<IEditorAPI>(null);
+
+  const flowID = useCMSActiveResourceID();
   const getMoreMenu = useCMSResourceGetMoreMenu({
     onRename: () => editorRef.current?.startTitleEditing(),
     onDuplicate: async (id) => {

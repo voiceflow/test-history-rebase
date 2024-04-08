@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1465.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1464.1...@voiceflow/creator-app@1.1465.0) (2024-04-08)
+
+### Features
+
+* remove domain from the routes (COR-1749) ([#7930](https://github.com/voiceflow/creator-app/issues/7930)) ([4278a74](https://github.com/voiceflow/creator-app/commit/4278a74723fc06901b92376a06765c50295e898a))
+
 ## [1.1464.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1464.0...@voiceflow/creator-app@1.1464.1) (2024-04-08)
 
 ### Bug Fixes

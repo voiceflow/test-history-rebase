@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1464.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1464.0...@voiceflow/creator-app@1.1464.1) (2024-04-08)
+
+### Bug Fixes
+
+* prototype card word wrap (COR-1861) ([#7953](https://github.com/voiceflow/creator-app/issues/7953)) ([326e1b2](https://github.com/voiceflow/creator-app/commit/326e1b2a5f0c1eeed9a3c0d86a4c936c66c0b578))
+
 # [1.1464.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1463.0...@voiceflow/creator-app@1.1464.0) (2024-04-07)
 
 ### Features

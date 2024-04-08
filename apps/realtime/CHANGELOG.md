@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.318.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.318.0...@voiceflow/realtime@1.318.1) (2024-04-08)
+
+### Bug Fixes
+
+* adds coupon ids to checkout request (COR-000) ([#7954](https://github.com/voiceflow/creator-app/issues/7954)) ([38a3bb7](https://github.com/voiceflow/creator-app/commit/38a3bb77bbea2e9a21e4445518938869928388b0))
+
 # [1.318.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.317.0...@voiceflow/realtime@1.318.0) (2024-04-07)
 
 ### Features

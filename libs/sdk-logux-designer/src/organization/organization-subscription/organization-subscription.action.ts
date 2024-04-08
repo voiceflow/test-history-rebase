@@ -23,6 +23,7 @@ export const Replace = subscriptionAction.crud.replace<Replace>();
 export interface CheckoutRequest extends OrganizationSubscriptionAction {
   itemPriceID: string;
   paymentIntent: PaymentIntent;
+  couponIds?: string[];
 }
 
 export const Checkout = Utils.protocol.createAsyncAction<CheckoutRequest, Subscription>(subscriptionAction('CHECKOUT'));

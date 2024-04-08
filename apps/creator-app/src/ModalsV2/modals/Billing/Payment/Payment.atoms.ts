@@ -33,3 +33,5 @@ export const activePaidPlanPricesAtom = atom<PriceMap | null>((get) => get(plans
 export const selectedPlanPriceAtom = atom((get) => get(activePaidPlanPricesAtom)?.[get(periodAtom)] ?? null);
 
 export const paymentIntentAtom = atom<any | null>(null);
+
+export const couponIdsAtom = atom<string[]>([]);

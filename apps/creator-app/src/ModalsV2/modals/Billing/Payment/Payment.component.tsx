@@ -23,6 +23,7 @@ export const Payment = manager.create<PaymentModalProps>('Payment', () => (modal
   const { activeStep, onBack, onReset } = usePaymentSteps();
   const { plans, fetchPlans } = usePlans(modalProps.coupon);
   const setPeriod = useSetAtom(atoms.periodAtom);
+  const updateCoupons = useSetAtom(atoms.couponIdsAtom);
 
   const handleExited = () => {
     onReset();
@@ -39,6 +40,12 @@ export const Payment = manager.create<PaymentModalProps>('Payment', () => (modal
     }
 
     await fetchPlans();
+
+    updateCoupons(modalProps.coupon ? [modalProps.coupon] : []);
+
+    return () => {
+      updateCoupons([]);
+    };
   });
 
   if (!plans.length) return null;

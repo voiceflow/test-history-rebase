@@ -53,6 +53,8 @@ export const updateAuthToken =
 
 export const resetSession = (): SyncThunk => (dispatch) => {
   localStorage.clear();
+  sessionStorage.clear();
+
   datadogRum.clearUser();
 
   dispatch(resetAccount());

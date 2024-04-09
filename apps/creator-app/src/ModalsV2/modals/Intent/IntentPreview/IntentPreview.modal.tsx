@@ -1,7 +1,7 @@
 import { Nullable, Utils } from '@voiceflow/common';
 import { IntentClassificationType } from '@voiceflow/dtos';
 import { clsx, tid } from '@voiceflow/style';
-import { Box, Divider, Notification, notify, Scroll, Section, SmallDataTable, Text, TextArea, Tokens, Tooltip } from '@voiceflow/ui-next';
+import { Box, Divider, Link, Notification, notify, Scroll, Section, SmallDataTable, Text, TextArea, Tip, Tokens, Tooltip } from '@voiceflow/ui-next';
 import { validatorFactory } from '@voiceflow/utils-designer';
 import React, { useRef, useState } from 'react';
 import { DismissableLayerContext } from 'react-dismissable-layers';
@@ -10,7 +10,9 @@ import { flushSync } from 'react-dom';
 import { Modal } from '@/components/Modal';
 import { PreviewResultFooter } from '@/components/Preview/PreviewResultFooter/PreviewResultFooter.component';
 import { DisabledBoxState } from '@/components/State/DisabledBoxState/DisabledBoxState.component';
+import { TipPortal } from '@/components/Tip/TipPortal/TipPortal.component';
 import { NLUTrainingDiffStatus } from '@/constants/enums/nlu-training-diff-status.enum';
+import { INTENT_PREVIEW_TIP_LEARN_LINK } from '@/constants/link.constant';
 import { Designer, Prototype, Version } from '@/ducks';
 import { useInput, useInputState } from '@/hooks/input.hook';
 import { useAsyncEffect, useDidUpdateEffect } from '@/hooks/lifecircle.hook';
@@ -157,145 +159,163 @@ export const IntentPreviewModal = modalsManager.create(
       }, []);
 
       return (
-        <Modal.Container
-          type={type}
-          width="400px"
-          testID={MODAL_ID}
-          opened={opened}
-          hidden={hidden}
-          stacked
-          animated={animated}
-          onExited={api.remove}
-          onExiting={() => dismissableLayer.dismissAllGlobally()}
-          className={[formContentStyle, resultContentStyle]}
-          onEscClose={api.onEscClose}
-          onEnterSubmit={onSubmit}
-          containerClassName={clsx('vfui', modalContainerStyle)}
-        >
-          <>
-            <Modal.Header
-              title="Intent preview"
-              onClose={api.onClose}
-              testID={tid(MODAL_ID, 'header')}
-              secondaryButton={
-                isLLMClassification &&
-                settings.type === IntentClassificationType.LLM && (
-                  <IntentPreviewSettings settings={settings} initialSettings={storeIntentClassificationSettings} onSettingsChange={setSettings} />
-                )
-              }
-            />
+        <>
+          <Modal.Container
+            type={type}
+            width="400px"
+            testID={MODAL_ID}
+            opened={opened}
+            hidden={hidden}
+            stacked
+            animated={animated}
+            onExited={api.remove}
+            onExiting={() => dismissableLayer.dismissAllGlobally()}
+            className={[formContentStyle, resultContentStyle]}
+            onEscClose={api.onEscClose}
+            onEnterSubmit={onSubmit}
+            containerClassName={clsx('vfui', modalContainerStyle)}
+          >
+            <>
+              <Modal.Header
+                title="Intent preview"
+                onClose={api.onClose}
+                testID={tid(MODAL_ID, 'header')}
+                secondaryButton={
+                  isLLMClassification &&
+                  settings.type === IntentClassificationType.LLM && (
+                    <IntentPreviewSettings settings={settings} initialSettings={storeIntentClassificationSettings} onSettingsChange={setSettings} />
+                  )
+                }
+              />
 
-            <Scroll style={{ display: 'block' }}>
-              <Modal.Body>
-                {prototypeCompiled &&
-                  trainingModel.diffStatus === NLUTrainingDiffStatus.UNTRAINED &&
-                  lastUntrainedDataCount !== (nluTrainingDiffData?.untrainedCount ?? -1) && (
-                    <Box pb={16}>
-                      <Notification
-                        type="alert"
-                        content={<Text>The agent has untrained data. Train the agent for an accurate preview experience.</Text>}
-                        actionButtonProps={{ label: 'Train', onClick: onTrain }}
-                        secondaryButtonProps={{ label: 'Dismiss', onClick: onDismissTraining }}
+              <Scroll style={{ display: 'block' }}>
+                <Modal.Body>
+                  {prototypeCompiled &&
+                    trainingModel.diffStatus === NLUTrainingDiffStatus.UNTRAINED &&
+                    lastUntrainedDataCount !== (nluTrainingDiffData?.untrainedCount ?? -1) && (
+                      <Box pb={16}>
+                        <Notification
+                          type="alert"
+                          content={<Text>The agent has untrained data. Train the agent for an accurate preview experience.</Text>}
+                          actionButtonProps={{ label: 'Train', onClick: onTrain }}
+                          secondaryButtonProps={{ label: 'Dismiss', onClick: onDismissTraining }}
+                        />
+                      </Box>
+                    )}
+
+                  <TextArea
+                    {...utteranceInput.attributes}
+                    label="Utterance"
+                    testID={tid(MODAL_ID, 'utterance-input')}
+                    minRows={1}
+                    onKeyDown={withEnterPress(withInputBlur(preventDefault(onSubmit)))}
+                    placeholder="Enter utterance"
+                    errorMessage={utteranceInput.errorMessage}
+                  />
+                </Modal.Body>
+              </Scroll>
+
+              <Modal.Footer>
+                {lastUsedUtterance ? (
+                  <Modal.Footer.Button
+                    label="Re-use last utterance"
+                    testID={tid(MODAL_ID, 'reuse-last-utterance')}
+                    variant="secondary"
+                    onClick={onReuseLastUtterance}
+                    disabled={closePrevented}
+                  />
+                ) : (
+                  <Modal.Footer.Button
+                    label="Cancel"
+                    variant="secondary"
+                    testID={tid(MODAL_ID, 'cancel')}
+                    onClick={api.onClose}
+                    disabled={closePrevented}
+                  />
+                )}
+
+                <Tooltip
+                  key={String(prototypeCompiled)}
+                  placement="bottom"
+                  referenceElement={({ ref, onOpen, onClose }) => (
+                    <div ref={ref}>
+                      <Modal.Footer.Button
+                        label="Send"
+                        testID={tid(MODAL_ID, 'send')}
+                        variant="primary"
+                        onClick={onSubmit}
+                        disabled={closePrevented || !prototypeCompiled}
+                        isLoading={closePrevented || !prototypeCompiled}
+                        onPointerEnter={prototypeCompiled ? undefined : onOpen}
+                        onPointerLeave={onClose}
                       />
-                    </Box>
+                    </div>
                   )}
+                >
+                  {() => <Tooltip.Caption mb={0}>Compiling prototype</Tooltip.Caption>}
+                </Tooltip>
+              </Modal.Footer>
+            </>
 
-                <TextArea
-                  {...utteranceInput.attributes}
-                  label="Utterance"
-                  testID={tid(MODAL_ID, 'utterance-input')}
-                  minRows={1}
-                  onKeyDown={withEnterPress(withInputBlur(preventDefault(onSubmit)))}
-                  placeholder="Enter utterance"
-                  errorMessage={utteranceInput.errorMessage}
-                />
-              </Modal.Body>
-            </Scroll>
+            {!!classifiedIntents && (
+              <DisabledBoxState disabled={closePrevented} direction="column">
+                {isLLMClassification && !!classifiedIntents.llm[0] && (
+                  <>
+                    <Section.Header.Container title="LLM classification" variant="active" pt={11} pb={7}>
+                      {intentPreviewFeedback}
+                    </Section.Header.Container>
 
-            <Modal.Footer>
-              {lastUsedUtterance ? (
-                <Modal.Footer.Button
-                  label="Re-use last utterance"
-                  testID={tid(MODAL_ID, 'reuse-last-utterance')}
-                  variant="secondary"
-                  onClick={onReuseLastUtterance}
-                  disabled={closePrevented}
-                />
-              ) : (
-                <Modal.Footer.Button
-                  label="Cancel"
-                  variant="secondary"
-                  testID={tid(MODAL_ID, 'cancel')}
-                  onClick={api.onClose}
-                  disabled={closePrevented}
-                />
-              )}
+                    <Box px={12} pb={20}>
+                      <SmallDataTable data={[{ label: classifiedIntents.llm[0].name, value: '' }]} />
+                    </Box>
 
-              <Tooltip
-                key={String(prototypeCompiled)}
-                placement="bottom"
-                referenceElement={({ ref, onOpen, onClose }) => (
-                  <div ref={ref}>
-                    <Modal.Footer.Button
-                      label="Send"
-                      testID={tid(MODAL_ID, 'send')}
-                      variant="primary"
-                      onClick={onSubmit}
-                      disabled={closePrevented || !prototypeCompiled}
-                      isLoading={closePrevented || !prototypeCompiled}
-                      onPointerEnter={prototypeCompiled ? undefined : onOpen}
-                      onPointerLeave={onClose}
-                    />
-                  </div>
+                    <Divider noPadding />
+                  </>
                 )}
-              >
-                {() => <Tooltip.Caption mb={0}>Compiling prototype</Tooltip.Caption>}
-              </Tooltip>
-            </Modal.Footer>
-          </>
 
-          {!!classifiedIntents && (
-            <DisabledBoxState disabled={closePrevented} direction="column">
-              {isLLMClassification && !!classifiedIntents.llm[0] && (
-                <>
-                  <Section.Header.Container title="LLM classification" variant="active" pt={11} pb={7}>
-                    {intentPreviewFeedback}
-                  </Section.Header.Container>
-
-                  <Box px={12} pb={20}>
-                    <SmallDataTable data={[{ label: classifiedIntents.llm[0].name, value: '' }]} />
-                  </Box>
-
-                  <Divider noPadding />
-                </>
-              )}
-
-              <Section.Header.Container
-                pt={11}
-                pb={7}
-                variant="active"
-                title={(className) => (
-                  <Text className={className}>
-                    NLU classification{' '}
-                    <Text as="span" color={Tokens.colors.neutralDark.neutralsDark100}>
-                      (%)
+                <Section.Header.Container
+                  pt={11}
+                  pb={7}
+                  variant="active"
+                  title={(className) => (
+                    <Text className={className}>
+                      NLU classification{' '}
+                      <Text as="span" color={Tokens.colors.neutralDark.neutralsDark100}>
+                        (%)
+                      </Text>
                     </Text>
-                  </Text>
-                )}
+                  )}
+                >
+                  {!isLLMClassification && intentPreviewFeedback}
+                </Section.Header.Container>
+
+                <Box px={12} pb={20}>
+                  <SmallDataTable
+                    data={classifiedIntents.nlu.map((item) => ({ label: item.name, value: String(Math.round(item.confidence * 100)) }))}
+                  />
+                </Box>
+
+                <PreviewResultFooter status={classifyStatus} latency={classifyLatency} />
+              </DisabledBoxState>
+            )}
+          </Modal.Container>
+
+          <TipPortal closing={!opened} scope="intent-preview">
+            {({ onClose }) => (
+              <Tip
+                title="Pro tip"
+                description={
+                  <>
+                    Only intents that are used in your agent will be seen in the results from intent previews.{' '}
+                    <Link style={{ display: 'inline-block' }} href={INTENT_PREVIEW_TIP_LEARN_LINK} label="Learn" target="_blank" />
+                  </>
+                }
               >
-                {!isLLMClassification && intentPreviewFeedback}
-              </Section.Header.Container>
-
-              <Box px={12} pb={20}>
-                <SmallDataTable
-                  data={classifiedIntents.nlu.map((item) => ({ label: item.name, value: String(Math.round(item.confidence * 100)) }))}
-                />
-              </Box>
-
-              <PreviewResultFooter status={classifyStatus} latency={classifyLatency} />
-            </DisabledBoxState>
-          )}
-        </Modal.Container>
+                <Tip.Button variant="secondary" label="Don’t show this again" onClick={onClose} />
+              </Tip>
+            )}
+          </TipPortal>
+        </>
       );
     },
   { scope: ModalScope.PROJECT }

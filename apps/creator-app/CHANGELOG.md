@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1469.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1468.1...@voiceflow/creator-app@1.1469.0) (2024-04-09)
+
+### Features
+
+* pro tip component (COR-000) ([#7964](https://github.com/voiceflow/creator-app/issues/7964)) ([2286e2f](https://github.com/voiceflow/creator-app/commit/2286e2feab9ea7bb1f644a6b5231b5ff1698a338))
+
 ## [1.1468.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1468.0...@voiceflow/creator-app@1.1468.1) (2024-04-09)
 
 ### Bug Fixes

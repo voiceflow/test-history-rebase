@@ -1,3 +1,5 @@
+import { Tokens } from '@voiceflow/ui-next';
+
 import { css, styled } from '@/hocs/styled';
 
 interface PageProgressBarProps {
@@ -13,7 +15,7 @@ const PageProgressBar = styled.div<PageProgressBarProps>`
   left: 0;
   right: 0;
   z-index: 2000;
-  background-color: ${({ theme }) => theme.colors.darkerBlue};
+  background-color: ${Tokens.colors.accent.accent500};
   transition: transform ${({ easing = 'ease-in-out', duration = 0.3 }) => `${duration}s ${easing}`};
   transform-origin: center left;
 

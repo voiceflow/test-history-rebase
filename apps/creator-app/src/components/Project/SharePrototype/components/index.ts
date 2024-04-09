@@ -1,5 +1,5 @@
 export { default as AppearanceAndBranding } from './AppearanceAndBranding';
-export { default as Container } from './Container';
+export * from './Container';
 export { default as Header } from './Header';
 export { default as LayoutSelect } from './LayoutSelect';
 export { default as PasswordInput } from './PasswordInput';

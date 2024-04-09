@@ -21,6 +21,7 @@ const Action: ConnectedAction<Realtime.NodeData.Code, Realtime.NodeData.CodeBuil
   return (
     <Popper
       placement="top-start"
+      modifiers={{ preventOverflow: { padding: { top: 72, bottom: 16, left: 16, right: 16 } } }}
       renderContent={({ onClose }) => <ActionPreview content={data.code} onClose={onClose} onRemove={onRemove} onOpenEditor={onOpenEditor} />}
     >
       {({ ref, onToggle, isOpened }) => (

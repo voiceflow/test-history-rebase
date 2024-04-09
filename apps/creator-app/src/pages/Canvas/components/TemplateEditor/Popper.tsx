@@ -10,7 +10,7 @@ export interface CanvasTemplateEditorPopperProps extends TemplateEditorProps {
   onOpen?: VoidFunction;
   modifiers?: PopperTypes.Modifiers;
   placement?: PopperTypes.Placement;
-  children: (props: { onToggle: VoidFunction }) => React.ReactNode;
+  children: (props: { onToggle: VoidFunction; isOpened: boolean }) => React.ReactNode;
   isSubmitting?: boolean;
   hasManager?: boolean;
 }
@@ -38,7 +38,7 @@ const CanvasTemplateEditorPopper: React.FC<CanvasTemplateEditorPopperProps> = ({
       renderContent={() => <TemplatePopperEditor {...props} nodeIDs={nodeIDs} isSubmitting={isSubmitting} />}
       disableLayers={isSubmitting}
     >
-      {({ ref, onToggle }) => <span ref={ref}>{children({ onToggle })}</span>}
+      {({ ref, onToggle, isOpened }) => <span ref={ref}>{children({ onToggle, isOpened })}</span>}
     </Popper>
   );
 };

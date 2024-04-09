@@ -1,6 +1,6 @@
 import { tid } from '@voiceflow/style';
 import { Header } from '@voiceflow/ui-next';
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { Permission } from '@/constants/permissions';
 import { Assistant, Session } from '@/ducks';
@@ -19,15 +19,21 @@ export const CMSHeaderMembers: React.FC = () => {
   const inviteModal = useModal(Modals.Workspace.Invite);
   const [canInviteMembers] = usePermission(Permission.INVITE);
 
-  return (
-    <Header.AvatarList
-      list={viewers.map((viewer) => ({
+  const list = useMemo(
+    () =>
+      viewers.map((viewer) => ({
         src: !isMemberColorImage(viewer.image) ? viewer.image : undefined,
         name: viewer.name ?? '',
         variant: getMemberColorByCreatorID(viewer.creatorID),
-      }))}
-      onButtonClick={canInviteMembers ? () => inviteModal.openVoid() : undefined}
+      })),
+    [viewers]
+  );
+
+  return (
+    <Header.AvatarList
+      list={list}
       testID={tid(HEADER_TEST_ID, 'members')}
+      onButtonClick={canInviteMembers ? () => inviteModal.openVoid() : undefined}
     />
   );
 };

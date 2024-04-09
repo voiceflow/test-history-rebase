@@ -1,4 +1,4 @@
-import { System, toast, usePersistFunction } from '@voiceflow/ui';
+import { System, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
@@ -26,7 +26,7 @@ const General: React.FC = () => {
 
   const [trackingEvents] = useTrackingEvents();
 
-  const onPublish = usePersistFunction(async () => {
+  const onPublish = async () => {
     try {
       const { versionName } = await publishNewVersionModal.open({
         message: (
@@ -51,7 +51,7 @@ const General: React.FC = () => {
     } catch {
       // canceled
     }
-  });
+  };
 
   const Content = useNLPTrainingStageContent(job?.stage.type);
 

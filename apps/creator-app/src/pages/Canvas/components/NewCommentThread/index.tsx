@@ -54,7 +54,10 @@ const NewCommentThread: React.FC<{ isHidden?: boolean }> = ({ isHidden }) => {
       width="350px"
       opened={!isHidden}
       zIndex={21}
-      modifiers={{ offset: { offset: `${-INDICATOR_DIAMETER / 2},${INDICATOR_DIAMETER / 2 + 14}` } }}
+      modifiers={{
+        offset: { offset: `${-INDICATOR_DIAMETER / 2},${INDICATOR_DIAMETER / 2 + 14}` },
+        preventOverflow: { padding: { top: 72, bottom: 16, left: 16, right: 16 } },
+      }}
       placement="right-start"
       renderContent={({ scheduleUpdate }) => <ThreadEditor replyRef={api.commentRef} isFocused schedulePopperUpdate={scheduleUpdate} />}
       disableLayers

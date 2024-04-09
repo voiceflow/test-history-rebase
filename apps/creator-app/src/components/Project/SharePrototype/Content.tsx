@@ -10,7 +10,16 @@ import { usePermission, useSelector } from '@/hooks';
 import { useScrollHelpers, useScrollStickySides } from '@/hooks/scroll';
 import { Identifier } from '@/styles/constants';
 
-import { AppearanceAndBranding, Container, Header, LayoutSelect, PasswordInput, PersonasSelect, Title } from './components';
+import {
+  AppearanceAndBranding,
+  Container,
+  ContainerWithoutAnimation,
+  Header,
+  LayoutSelect,
+  PasswordInput,
+  PersonasSelect,
+  Title,
+} from './components';
 
 enum ActiveModal {
   NONE = 'none',
@@ -20,11 +29,12 @@ enum ActiveModal {
 }
 
 interface ContentProps {
-  preventClose: VoidFunction;
   enableClose: VoidFunction;
+  preventClose: VoidFunction;
+  disableAnimation?: boolean;
 }
 
-export const Content: React.FC<ContentProps> = ({ preventClose, enableClose }) => {
+export const Content: React.FC<ContentProps> = ({ preventClose, enableClose, disableAnimation }) => {
   const [activeSection, setActiveSection] = React.useState(ActiveModal.NONE);
   const variableStates = useSelector(VariableState.allVariableStatesSelector);
 
@@ -35,9 +45,11 @@ export const Content: React.FC<ContentProps> = ({ preventClose, enableClose }) =
 
   const onToggleSection = (section: ActiveModal) => () => setActiveSection((prev) => (section !== prev ? section : ActiveModal.NONE));
 
+  const ContainerComp = disableAnimation ? ContainerWithoutAnimation : Container;
+
   return (
     <ScrollContextProvider value={scrollHelpers}>
-      <Container>
+      <ContainerComp>
         <Header isScrolling={!!isHeaderSticky}>
           <Title>Share prototype with testers</Title>
         </Header>
@@ -89,7 +101,7 @@ export const Content: React.FC<ContentProps> = ({ preventClose, enableClose }) =
             <Upgrade>Customize prototype style and branding.</Upgrade>
           </Box>
         )}
-      </Container>
+      </ContainerComp>
     </ScrollContextProvider>
   );
 };

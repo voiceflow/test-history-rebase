@@ -30,6 +30,7 @@ const Action: ConnectedAction<Realtime.NodeData.Component, Realtime.NodeData.Com
   return (
     <Popper
       placement="top-start"
+      modifiers={{ preventOverflow: { padding: { top: 72, bottom: 16, left: 16, right: 16 } } }}
       renderContent={({ onClose }) => (
         <ActionPreview
           content={isEmpty ? 'Select component' : `'${diagram.name}'`}

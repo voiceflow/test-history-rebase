@@ -34,13 +34,13 @@ export const useAssistantNavigationItems = () => {
     const designerPath = cmsWorkflows.isEnabled ? Path.PROJECT_CANVAS : domainID && diagramID ? Path.DOMAIN_CANVAS : Path.PROJECT_DOMAIN;
 
     return [
-      {
+      ...conditionalArrayItems<IAssistantNavigationItem>(!cmsWorkflows.isEnabled, {
         path: designerPath,
         testID: 'designer',
         params: domainID && diagramID ? { domainID, diagramID } : {},
         isActive: isItemActive(designerPath),
         iconName: 'Designer',
-      },
+      }),
       ...conditionalArrayItems<IAssistantNavigationItem>(canEditProject, {
         path: Path.PROJECT_CMS,
         testID: 'cms',

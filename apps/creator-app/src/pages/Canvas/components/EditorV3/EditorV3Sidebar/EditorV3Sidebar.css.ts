@@ -7,6 +7,12 @@ export const drawerStyle = recipe({
   },
 
   variants: {
+    newLayout: {
+      true: {
+        top: 56,
+        height: `calc(100% - 56px)`,
+      },
+    },
     isOpen: {
       true: {
         right: '0px',

@@ -65,6 +65,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
   const disableIntegration = useFeature(Realtime.FeatureFlag.DISABLE_INTEGRATION);
   const viewerAPIKeyAccess = useFeature(Realtime.FeatureFlag.ALLOW_VIEWER_APIKEY_ACCESS);
   const hideExports = useFeature(Realtime.FeatureFlag.HIDE_EXPORTS);
+  const cmsWorkspaces = useFeature(Realtime.FeatureFlag.CMS_WORKFLOWS);
   const { goToActiveCMSRoute } = useCMSRoute();
 
   const match = useRouteMatch();
@@ -97,13 +98,13 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
 
   const { hotkeys, options } = React.useMemo(() => {
     const items: (SidebarHotkeyMenuItem | SidebarIconMenuItem)[] = [
-      {
+      ...UIUtils.array.conditionalItem(!cmsWorkspaces.isEnabled, {
         id: Utils.id.cuid.slug(),
-        icon: 'systemLayers',
+        icon: 'systemLayers' as const,
         value: CanvasOptionType.DESIGNER,
         label: 'Designer',
         onAction: goToCurrentCanvas,
-      },
+      }),
       ...UIUtils.array.conditionalItem(canEditProject, {
         id: Utils.id.cuid.slug(),
         icon: 'systemModel' as const,

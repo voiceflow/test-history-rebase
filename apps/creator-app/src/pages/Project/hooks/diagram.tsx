@@ -37,7 +37,7 @@ export const useDiagramRename = ({ diagramID, autoSelect, diagramName, onNameCha
   const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
   const [localName, _setLocalName] = useLinkedState(diagramName ?? '');
   const [renameEnabled, toggleRenameEnabled] = useToggle(false);
-  const flow = useSelector(Designer.Flow.selectors.byDiagramID, { diagramID });
+  const flow = useSelector(Designer.Flow.selectors.oneByDiagramID, { diagramID });
 
   const renameDiagram = useDispatch(DiagramV2.renameDiagram);
   const patchFlow = useDispatch(Designer.Flow.effect.patchOne);
@@ -130,7 +130,7 @@ export const useDiagramOptions = ({
   const setLastCreatedID = useDispatch(DiagramV2.setLastCreatedID);
 
   const diagram = useSelector(DiagramV2.diagramByIDSelector, { id: diagramID });
-  const flow = useSelector(Designer.Flow.selectors.byDiagramID, { diagramID });
+  const flow = useSelector(Designer.Flow.selectors.oneByDiagramID, { diagramID });
   const domains = useSelector(Domain.allDomainsSelector);
   const rootDiagramID = useSelector(Domain.active.rootDiagramIDSelector);
   const activeDomainID = useSelector(Session.activeDomainIDSelector);

@@ -28,7 +28,7 @@ export const CMSFlowEditor: React.FC = () => {
   const flow = useSelector(Designer.Flow.selectors.oneByID, { id: flowID });
 
   const patchFlow = useDispatch(Designer.Flow.effect.patchOne, flowID);
-  const goToDiagram = useDispatch(Router.goToDiagram);
+  const goToDiagram = useDispatch(Router.goToDiagramClearActive);
   const duplicateOne = useDispatch(Designer.Flow.effect.duplicateOne);
   const goToCMSResource = useDispatch(Router.goToCMSResource);
 
@@ -44,7 +44,7 @@ export const CMSFlowEditor: React.FC = () => {
     >
       <Scroll style={{ display: 'block' }}>
         <Box px={24} py={20} direction="column">
-          <Button onClick={() => goToDiagram(flow.diagramID)} label="Edit component" variant="primary" fullWidth />
+          <Button label="Edit component" variant="primary" onClick={() => goToDiagram(flow.diagramID)} fullWidth />
         </Box>
 
         <Divider noPadding />

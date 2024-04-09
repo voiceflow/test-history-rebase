@@ -17,7 +17,7 @@ interface IComponentEditorFlowSelect {
 }
 export const ComponentEditorFlowSelect: React.FC<IComponentEditorFlowSelect> = ({ diagramID, onSelect, activeNodeID }) => {
   const flows = useSelector(Designer.Flow.selectors.allOrderedByName);
-  const flow = useSelector(Designer.Flow.selectors.byDiagramID, { diagramID: diagramID ?? null });
+  const flow = useSelector(Designer.Flow.selectors.oneByDiagramID, { diagramID: diagramID ?? null });
   const createModal = ModalsV2.useModal(ModalsV2.Flow.Create);
   const goToCMSResource = useDispatch(Router.goToCMSResource);
 

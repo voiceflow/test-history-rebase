@@ -25,6 +25,7 @@ const Action: ConnectedAction<Realtime.NodeData.CustomApi, Realtime.NodeData.Int
   return (
     <Popper
       placement="top-start"
+      modifiers={{ preventOverflow: { padding: { top: 72, bottom: 16, left: 16, right: 16 } } }}
       renderContent={({ onClose }) => (
         <ActionPreview
           title={`${getCustomAPIActionLabel(selectedAction)} request`}

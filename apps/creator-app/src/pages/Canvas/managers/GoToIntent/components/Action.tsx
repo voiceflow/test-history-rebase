@@ -16,6 +16,7 @@ const Action: ConnectedAction<Realtime.NodeData.GoToIntent> = ({ data, engine, r
   return (
     <Popper
       placement="top-start"
+      modifiers={{ preventOverflow: { padding: { top: 72, bottom: 16, left: 16, right: 16 } } }}
       renderContent={({ onClose }) => (
         <ActionPreview
           onClose={onClose}

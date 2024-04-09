@@ -44,6 +44,7 @@ const Action: ConnectedAction<Realtime.NodeData.SetV2, Realtime.NodeData.SetV2Bu
   return (
     <Popper
       placement="top-start"
+      modifiers={{ preventOverflow: { padding: { top: 72, bottom: 16, left: 16, right: 16 } } }}
       renderContent={({ onClose }) => <ActionPreview sets={previews} onClose={onClose} onRemove={onRemove} onOpenEditor={onOpenEditor} />}
     >
       {({ ref, onToggle, isOpened }) => (

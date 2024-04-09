@@ -59,6 +59,7 @@ const ReplySection: React.ForwardRefRenderFunction<EditableCommentRef, ReplySect
         onPost={onPost}
         onCancel={onCancel}
         isEditing
+        isReplying
         placeholder="Comment or @mention"
         initialValue={initialValue}
         initialMentions={initialMentions}

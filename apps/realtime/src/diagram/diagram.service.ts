@@ -165,6 +165,26 @@ export class DiagramService extends MutableService<DiagramORM> {
     );
   }
 
+  public async createManyTopics(
+    data: Partial<Omit<DiagramJSON, '_id' | 'creatorID' | 'versionID' | 'intentStepIDs' | 'menuNodeIDs' | 'children' | 'diagramID'>>[],
+    { userID, context }: { userID: number; context: CMSContext }
+  ) {
+    return this.orm.createMany(
+      data.map((item) => {
+        const diagramID = new ObjectId().toJSON();
+
+        return this.fromJSON({
+          ...Realtime.Utils.diagram.topicDiagramFactory(item.name ?? ''),
+          ...item,
+          _id: diagramID,
+          diagramID,
+          versionID: context.environmentID,
+          creatorID: userID,
+        });
+      })
+    );
+  }
+
   public async deleteManyByVersionIDAndDiagramIDs(versionID: string, diagramIDs: string[]) {
     return this.orm.deleteManyByVersionIDAndDiagramIDs(versionID, diagramIDs);
   }

@@ -1,5 +1,5 @@
 import { Struct } from '@voiceflow/common';
-import { FeatureFlag } from '@voiceflow/realtime-sdk';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { generatePath } from 'react-router';
 
 import { PageProgress } from '@/components/PageProgressBar/utils';
@@ -50,6 +50,7 @@ interface GoToProjectCanvasOptions {
   subpath?: string;
   versionID: string;
   diagramID?: string;
+  pageProgress?: boolean;
 }
 
 export const goToProjectCanvas = ({ state, subpath, diagramID, versionID }: GoToProjectCanvasOptions) =>
@@ -67,8 +68,11 @@ export const goToCanvasDiagram = ({
   subpath,
   diagramID,
   versionID,
+  pageProgress = true,
 }: GoToProjectCanvasOptions & { nodeID?: string; diagramID: string }) => {
-  PageProgress.start(PageProgressBar.CANVAS_LOADING);
+  if (pageProgress) {
+    PageProgress.start(PageProgressBar.CANVAS_LOADING);
+  }
 
   if (nodeID) return goToCanvasNode({ state, nodeID, subpath, diagramID, versionID });
 
@@ -172,7 +176,7 @@ export const goToCurrentCanvas = (): SyncThunk => (dispatch, getState) => {
 
   Errors.assertVersionID(versionID);
 
-  if (Feature.isFeatureEnabledSelector(state)(FeatureFlag.CMS_WORKFLOWS)) {
+  if (Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.CMS_WORKFLOWS)) {
     const rootDiagramID = Version.active.rootDiagramIDSelector(state);
 
     Errors.assertDiagramID(diagramID ?? rootDiagramID);
@@ -206,7 +210,7 @@ export const goToCurrentCanvasCommenting =
     Errors.assertVersionID(versionID);
     Errors.assertDiagramID(diagramID);
 
-    if (Feature.isFeatureEnabledSelector(state)(FeatureFlag.CMS_WORKFLOWS)) {
+    if (Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.CMS_WORKFLOWS)) {
       if (threadID) {
         dispatch(goToCanvasCommentingThread({ diagramID, versionID, threadID, commentID }));
       } else {
@@ -236,7 +240,7 @@ export const goToCurrentCanvasTextMarkup = (): SyncThunk => (dispatch, getState)
   Errors.assertVersionID(versionID);
   Errors.assertDiagramID(diagramID);
 
-  if (Feature.isFeatureEnabledSelector(state)(FeatureFlag.CMS_WORKFLOWS)) {
+  if (Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.CMS_WORKFLOWS)) {
     dispatch(goToCanvasTextMarkup({ diagramID, versionID }));
 
     return;
@@ -260,7 +264,7 @@ export const redirectToCurrentCanvasCommentingThread =
     Errors.assertVersionID(versionID);
     Errors.assertDiagramID(diagramID);
 
-    if (Feature.isFeatureEnabledSelector(state)(FeatureFlag.CMS_WORKFLOWS)) {
+    if (Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.CMS_WORKFLOWS)) {
       dispatch(redirectToCanvasCommentingThread({ diagramID, versionID, threadID, commentID }));
 
       return;
@@ -311,7 +315,7 @@ export const goToRootDiagramIfActive =
 
     if (diagramID !== activeDiagramID) return;
 
-    if (Feature.isFeatureEnabledSelector(state)(FeatureFlag.CMS_WORKFLOWS)) {
+    if (Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.CMS_WORKFLOWS)) {
       dispatch(goToCanvasRootDiagram());
     } else {
       dispatch(goToDomainRootDiagram());
@@ -347,16 +351,16 @@ export const goToDomainDiagram =
   };
 
 export const goToDiagram =
-  (diagramID: string, nodeID?: string): SyncThunk =>
+  (diagramID: string, nodeID?: string, options?: { pageProgress?: boolean }): SyncThunk =>
   (dispatch, getState) => {
     const state = getState();
 
-    if (Feature.isFeatureEnabledSelector(state)(FeatureFlag.CMS_WORKFLOWS)) {
+    if (Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.CMS_WORKFLOWS)) {
       const versionID = Session.activeVersionIDSelector(getState());
 
       Errors.assertVersionID(versionID);
 
-      dispatch(goToCanvasDiagram({ nodeID, diagramID, versionID }));
+      dispatch(goToCanvasDiagram({ ...options, nodeID, diagramID, versionID }));
 
       return;
     }
@@ -369,6 +373,21 @@ export const goToDiagram =
     Errors.assertDomainID(domainID);
 
     dispatch(goToDomainDiagram(domainID, diagramID, nodeID));
+  };
+
+export const goToDiagramClearActive =
+  (diagramID: string, nodeID?: string): SyncThunk =>
+  (dispatch, getState) => {
+    const state = getState();
+
+    const activeDiagramID = Creator.activeDiagramIDSelector(state);
+
+    if (diagramID !== activeDiagramID) {
+      dispatch(Session.setActiveDiagramID(null));
+      dispatch(Realtime.creator.resetActive());
+    }
+
+    dispatch(goToDiagram(diagramID, nodeID, { pageProgress: false }));
   };
 
 export const goToDiagramHistoryPush =
@@ -410,7 +429,7 @@ export const goToDiagramCommenting =
 
     Errors.assertVersionID(versionID);
 
-    if (Feature.isFeatureEnabledSelector(state)(FeatureFlag.CMS_WORKFLOWS)) {
+    if (Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.CMS_WORKFLOWS)) {
       PageProgress.start(PageProgressBar.CANVAS_LOADING);
 
       if (threadID) {
@@ -512,7 +531,7 @@ export const goToCurrentCanvasNode =
     Errors.assertVersionID(versionID);
     Errors.assertDiagramID(diagramID);
 
-    if (Feature.isFeatureEnabledSelector(state)(FeatureFlag.CMS_WORKFLOWS)) {
+    if (Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.CMS_WORKFLOWS)) {
       dispatch(goToCanvasNode({ versionID, diagramID, nodeID, state: routeState, subpath }));
 
       return;

@@ -159,7 +159,7 @@ export class WorkflowService extends CMSTabularService<WorkflowORM> {
   /* Create */
 
   async createManyAndSync(data: WorkflowCreateData[], { userID, context }: { userID: number; context: CMSContext }) {
-    const diagrams = await this.diagram.createManyComponents(
+    const diagrams = await this.diagram.createManyTopics(
       data.map(({ name, diagram }) => ({ ...diagram, name })),
       { userID, context }
     );
@@ -287,7 +287,7 @@ export class WorkflowService extends CMSTabularService<WorkflowORM> {
       sourceWorkflows.map((flow) => flow.diagramID)
     );
 
-    const diagrams = await this.diagram.createManyComponents(
+    const diagrams = await this.diagram.createManyTopics(
       sourceDiagrams.map((diagram, index) => ({
         type: diagram.type,
         zoom: diagram.zoom,

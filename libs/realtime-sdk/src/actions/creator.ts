@@ -14,3 +14,4 @@ export const initialize = Utils.protocol.createAction<SnapshotPayload>(creatorTy
 export const importSnapshot = Utils.protocol.createAction<ImportSnapshotPayload>(creatorType('IMPORT_SNAPSHOT'));
 
 export const reset = Utils.protocol.createAction(creatorType('RESET'));
+export const resetActive = Utils.protocol.createAction(creatorType('RESET_ACTIVE'));

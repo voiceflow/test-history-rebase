@@ -21,9 +21,9 @@ import {
   Workflow,
 } from './designer.modules';
 
-const baseThreadReducer = reducerWithInitialState({}).case(Realtime.creator.reset, () => ({}));
+const baseDesignerReducer = reducerWithInitialState({}).case(Realtime.creator.reset, () => ({}));
 
-export const designerReducer = compositeReducer(baseThreadReducer, {
+export const designerReducer = compositeReducer(baseDesignerReducer, {
   [Flow.STATE_KEY]: Flow.reducer,
   [Event.STATE_KEY]: Event.reducer,
   [Entity.STATE_KEY]: Entity.reducer,

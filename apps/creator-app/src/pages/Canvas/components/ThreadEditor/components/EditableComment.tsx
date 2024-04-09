@@ -1,11 +1,12 @@
 import { Nullable } from '@voiceflow/common';
 import { ThreadComment } from '@voiceflow/dtos';
+import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { Box, KeyName, useCache } from '@voiceflow/ui';
 import React from 'react';
 
 import CommentPreview from '@/components/CommentPreview';
 import MentionEditor from '@/components/MentionEditor';
-import { useLinkedState, useToggle } from '@/hooks';
+import { useFeature, useLinkedState, useTheme, useToggle } from '@/hooks';
 import { CommentDraftValue } from '@/pages/Canvas/types';
 
 import { COMMENT_CLASSNAME, COMMENT_EDITOR_CLASSNAME } from '../constants';
@@ -19,6 +20,7 @@ export interface EditableCommentProps {
   onDelete?: VoidFunction;
   isEditing?: boolean;
   onResolve?: VoidFunction;
+  isReplying?: boolean;
   placeholder: string;
   withResolve?: boolean;
   initialValue?: string;
@@ -42,6 +44,7 @@ const EditableComment: React.ForwardRefRenderFunction<EditableCommentRef, Editab
     onDelete,
     isEditing,
     onResolve,
+    isReplying,
     placeholder,
     initialValue = '',
     initialMentions = INITIAL_MENTIONS,
@@ -49,8 +52,11 @@ const EditableComment: React.ForwardRefRenderFunction<EditableCommentRef, Editab
   },
   ref
 ) => {
+  const cmsWorkflows = useFeature(FeatureFlag.CMS_WORKFLOWS);
+
   const inputRef = React.useRef<HTMLTextAreaElement>(null);
 
+  const theme = useTheme();
   const [value, setValue] = useLinkedState(comment?.text ?? initialValue);
   const [mentions, setMentions] = useLinkedState(comment?.mentions ?? initialMentions);
   const [posting, togglePosting] = useToggle();
@@ -115,7 +121,16 @@ const EditableComment: React.ForwardRefRenderFunction<EditableCommentRef, Editab
         isThreadEditing={isThreadEditing}
       />
 
-      <Box className={COMMENT_CLASSNAME} mt={12}>
+      <Box
+        mt={12}
+        className={COMMENT_CLASSNAME}
+        maxHeight={
+          isEditing && isReplying
+            ? `calc(100vh - ${cmsWorkflows.isEnabled ? theme.components.header.newHeight : theme.components.header.height} - 96px)`
+            : undefined
+        }
+        overflowY={isEditing && isReplying ? 'auto' : undefined}
+      >
         {isEditing ? (
           <MentionEditor value={value} onChange={onChange} placeholder={placeholder} inputProps={{ inputRef, onKeyDown }} />
         ) : (

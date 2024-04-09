@@ -58,6 +58,7 @@ const THEME = createTheme({
     },
     header: {
       height: 64,
+      newHeight: 56,
     },
     subHeader: {
       height: 50,

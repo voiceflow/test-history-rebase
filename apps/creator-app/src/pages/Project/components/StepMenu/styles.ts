@@ -48,6 +48,7 @@ export const TopLevelOuterContainer = styled.div`
   border-radius: 10px;
   background-color: rgba(231, 238, 239, 0.8);
   z-index: 10;
+  color: ${({ theme }) => theme.colors.primary};
 
   ${StepMenuExpandButton} {
     opacity: 0;

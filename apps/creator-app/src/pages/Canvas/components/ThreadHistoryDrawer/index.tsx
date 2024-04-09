@@ -1,4 +1,5 @@
 import { Utils } from '@voiceflow/common';
+import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import {
   CustomScrollbars,
   CustomScrollbarsTypes,
@@ -17,7 +18,7 @@ import Drawer from '@/components/Drawer';
 import { Path } from '@/config/routes';
 import { Designer } from '@/ducks';
 import * as CreatorV2 from '@/ducks/creatorV2';
-import { useRAF, useSelector, useTheme } from '@/hooks';
+import { useFeature, useRAF, useSelector, useTheme } from '@/hooks';
 import { EditorContentAnimation } from '@/pages/Canvas/components/Editor';
 import { FocusThreadContext } from '@/pages/Canvas/contexts';
 import { useCanvasRendered } from '@/pages/Canvas/hooks/canvas';
@@ -31,7 +32,6 @@ import { FilterType } from './constants';
 export interface ThreadHistoryDrawerProps {
   focusedTarget?: string | null;
 }
-
 export const ThreadHistoryDrawer: React.FC<ThreadHistoryDrawerProps> = () => {
   const theme = useTheme();
   const history = useHistory();
@@ -39,6 +39,7 @@ export const ThreadHistoryDrawer: React.FC<ThreadHistoryDrawerProps> = () => {
   const focusThreadApi = React.useContext(FocusThreadContext);
   const isCommentingMode = useCommentingMode();
   const [focusScheduler] = useRAF();
+  const cmsWorkflows = useFeature(FeatureFlag.CMS_WORKFLOWS);
 
   const scrollbarsRef = React.useRef<CustomScrollbarsTypes.Scrollbars>(null);
   const [filter, updateFilter] = React.useState<FilterType>(FilterType.OPEN);
@@ -79,7 +80,12 @@ export const ThreadHistoryDrawer: React.FC<ThreadHistoryDrawerProps> = () => {
       id={Identifier.THREAD_HISTORY_DRAWER}
       open={isCommentingMode}
       width={theme.components.historyDrawer.width}
-      style={{ display: 'flex', flexDirection: 'column' }}
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        top: cmsWorkflows.isEnabled ? theme.components.header.newHeight : undefined,
+        height: cmsWorkflows.isEnabled ? `calc(100% - ${theme.components.header.newHeight}px)` : undefined,
+      }}
       onPaste={stopImmediatePropagation()}
       direction={Drawer.Direction.LEFT}
     >

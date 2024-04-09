@@ -1,8 +1,12 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Button, ButtonVariant, PrimaryButtonProps, SecondaryButtonProps, SvgIcon, SvgIconTypes, TippyTooltip } from '@voiceflow/ui';
+import { Header, Tooltip } from '@voiceflow/ui-next';
 import React from 'react';
 
+import { TooltipContentHotKeys } from '@/components/Tooltip/TooltipContentHotKeys/TooltipContentHotKeys.component';
 import { styled } from '@/hocs/styled';
-import { Hotkey, HOTKEY_LABEL_MAP } from '@/keymap';
+import { useFeature } from '@/hooks/feature';
+import { getHotkeyLabel, Hotkey, HOTKEY_LABEL_MAP } from '@/keymap';
 import { Identifier } from '@/styles/constants';
 
 const StyledButton = styled(Button)<PrimaryButtonProps | SecondaryButtonProps>`
@@ -12,12 +16,41 @@ const StyledButton = styled(Button)<PrimaryButtonProps | SecondaryButtonProps>`
 `;
 
 interface RunButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
-  variant?: ButtonVariant;
-  loading?: boolean;
   active?: boolean;
+  loading?: boolean;
+
+  /**
+   * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is removed
+   */
+  variant?: ButtonVariant;
 }
 
 const RunButton: React.FC<RunButtonProps> = ({ variant = ButtonVariant.PRIMARY, loading = false, onClick, active = false }) => {
+  const cmsWorkflows = useFeature(Realtime.FeatureFlag.CMS_WORKFLOWS);
+
+  if (cmsWorkflows.isEnabled) {
+    return (
+      <Tooltip
+        placement="bottom"
+        referenceElement={({ ref, onOpen, onClose }) => (
+          <div ref={ref}>
+            <Header.Button.Primary
+              label="Run"
+              onClick={onClick}
+              iconName="PlayS"
+              isActive={active}
+              isLoading={loading}
+              onMouseEnter={onOpen}
+              onMouseLeave={onClose}
+            />
+          </div>
+        )}
+      >
+        {() => <TooltipContentHotKeys label="Run" hotkeys={[{ label: getHotkeyLabel(Hotkey.RUN_MODE) }]} />}
+      </Tooltip>
+    );
+  }
+
   const iconProps: SvgIconTypes.Props = { icon: 'play' };
 
   if (variant === ButtonVariant.SECONDARY) {

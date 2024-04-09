@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.381.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.380.3...@voiceflow/realtime-sdk@1.381.0) (2024-04-09)
+
+### Features
+
+* new canvas layout (COR-000) ([#7955](https://github.com/voiceflow/creator-app/issues/7955)) ([ce41e77](https://github.com/voiceflow/creator-app/commit/ce41e770c84063956d4bb955c9d53223ae10a26e))
+
 ## [1.380.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.380.2...@voiceflow/realtime-sdk@1.380.3) (2024-04-03)
 
 **Note:** Version bump only for package @voiceflow/realtime-sdk

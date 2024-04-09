@@ -26,8 +26,8 @@ const hideKeyframes = keyframes({
 export const containerStyle = recipe({
   base: {
     position: 'fixed',
-    right: 16,
-    bottom: 16,
+    right: 20,
+    bottom: 20,
     zIndex: 1100,
     animation: `${showKeyframes} ${Tokens.animation.duration.fast} ${Tokens.animation.timingFunction.easeIn}`,
     animationFillMode: 'both',

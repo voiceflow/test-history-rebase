@@ -1,6 +1,6 @@
 import { clsx } from '@voiceflow/style';
 import { Modal as UIModal, PopperProvider, Portal, RefUtil, Tokens, usePersistFunction } from '@voiceflow/ui-next';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import type { TransitionStatus } from 'react-transition-group';
 import { Transition } from 'react-transition-group';
 
@@ -31,22 +31,22 @@ export const ModalContainer = React.forwardRef<HTMLDivElement, IModalContainer>(
     },
     ref
   ) => {
-    const [popperContainer, setPopperContainer] = React.useState<HTMLDivElement | null>(null);
+    const [isOpened, setIsOpened] = useState(false);
+    const [popperContainer, setPopperContainer] = useState<HTMLDivElement | null>(null);
 
-    const renderContainer = ({ index, status, children }: { index: number; status: TransitionStatus; children: React.ReactNode; stacked: boolean }) =>
-      !!children && (
-        <UIModal.Container
-          width={width}
-          testID={testID}
-          className={clsx(
-            containerStyles({ status: animated ? status : undefined, notVisible: !children }),
-            `modal--${type ?? 'unknown'}`,
-            typeof className === 'string' ? className : className?.[index]
-          )}
-        >
-          {children}
-        </UIModal.Container>
-      );
+    const renderContainer = ({ index, status, children }: { index: number; status: TransitionStatus; children: React.ReactNode }) => (
+      <UIModal.Container
+        width={width}
+        testID={testID}
+        className={clsx(
+          containerStyles({ status: animated ? status : 'entered', empty: !children }),
+          `modal--${type ?? 'unknown'}`,
+          typeof className === 'string' ? className : className?.[index]
+        )}
+      >
+        {children}
+      </UIModal.Container>
+    );
 
     const onRef = usePersistFunction((node: HTMLDivElement | null) => {
       setPopperContainer(node);
@@ -58,22 +58,22 @@ export const ModalContainer = React.forwardRef<HTMLDivElement, IModalContainer>(
       { hotkey: Hotkey.MODAL_SUBMIT, callback: usePersistFunction(onEnterSubmit), disable: !onEnterSubmit, allowInputs: true, preventDefault: true },
     ]);
 
+    useEffect(() => setIsOpened(opened), [opened]);
+
     return (
       <PopperProvider portalNode={popperContainer ?? undefined} zIndex={Z_INDEX}>
         <Portal portalNode={document.body}>
-          <div ref={onRef} hidden={hidden} className={clsx(rootRecipe({ hidden }), containerClassName)}>
+          <div ref={onRef} hidden={hidden} className={clsx(rootRecipe({ hidden, stacked }), containerClassName)}>
             <Transition
-              in={opened}
+              in={isOpened}
               timeout={animated ? parseFloat(Tokens.animation.duration.default) * 2 * 1000 : 1}
               onExited={onExited}
               onExiting={onExiting}
-              mountOnEnter
-              unmountOnExit
             >
               {(status) =>
                 stacked
-                  ? React.Children.map(children, (child, index) => renderContainer({ status, children: child, stacked, index }))
-                  : renderContainer({ status, children, stacked, index: 0 })
+                  ? React.Children.map(children, (child, index) => renderContainer({ status, children: child, index }))
+                  : renderContainer({ status, children, index: 0 })
               }
             </Transition>
           </div>

@@ -94,7 +94,7 @@ export const IntentClassificationSettingsModal = modalsManager.create(
                     label: (
                       <RadioGroupLabelWithTooltip
                         width={200}
-                        label="Large language models (LLM)"
+                        label="Large language model (LLM)"
                         onLearnClick={onOpenURLInANewTabFactory(LLM_INTENT_CLASSIFICATION_LEARN_MORE)}
                       >
                         Use large language models to classify users intentions and select which intent to trigger.

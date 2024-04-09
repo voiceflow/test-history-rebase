@@ -6,11 +6,7 @@ import React from 'react';
 import { AIModelSelectSection } from '@/components/AI/AIModelSelectSection/AIModelSelectSection.component';
 import { AIPromptWrapperSection } from '@/components/AI/AIPromptWrapperSection/AIPromptWrapperSection.component';
 import { AITemperatureSliderSection } from '@/components/AI/AITemperatureSliderSection/AITemperatureSlider.component';
-import {
-  LLM_INTENT_CLASSIFICATION_MODEL_LEARN_MORE,
-  LLM_INTENT_CLASSIFICATION_PROMPT_LEARN_MORE,
-  LLM_INTENT_CLASSIFICATION_TEMPERATURE_LEARN_MORE,
-} from '@/constants/link.constant';
+import { LLM_INTENT_CLASSIFICATION_LEARN_MORE } from '@/constants/link.constant';
 
 import { IIntentClassificationLLMSettings } from './IntentClassificationLLMSettings.interface';
 
@@ -43,7 +39,7 @@ export const IntentClassificationLLMSettings: React.FC<IIntentClassificationLLMS
         value={params.model}
         testID={tid(TEST_ID, 'model-select')}
         disabled={disabled}
-        learnMoreURL={LLM_INTENT_CLASSIFICATION_MODEL_LEARN_MORE}
+        learnMoreURL={LLM_INTENT_CLASSIFICATION_LEARN_MORE}
         onValueChange={(model) => onParamsChange({ model })}
       />
 
@@ -51,7 +47,7 @@ export const IntentClassificationLLMSettings: React.FC<IIntentClassificationLLMS
         value={params.temperature}
         testID={tid(TEST_ID, 'temperature-slider')}
         disabled={disabled}
-        learnMoreURL={LLM_INTENT_CLASSIFICATION_TEMPERATURE_LEARN_MORE}
+        learnMoreURL={LLM_INTENT_CLASSIFICATION_LEARN_MORE}
         onValueChange={(temperature) => onParamsChange({ temperature })}
       />
 
@@ -59,7 +55,7 @@ export const IntentClassificationLLMSettings: React.FC<IIntentClassificationLLMS
         value={promptWrapper.content}
         testID={tid(TEST_ID, 'prompt-wrapper')}
         disabled={disabled}
-        learnMoreURL={LLM_INTENT_CLASSIFICATION_PROMPT_LEARN_MORE}
+        learnMoreURL={LLM_INTENT_CLASSIFICATION_LEARN_MORE}
         defaultValue={DEFAULT_INTENT_CLASSIFICATION_LLM_PROMPT_WRAPPER.content}
         onValueChange={(content) => onPromptWrapperChange({ content })}
         onResetToDefault={onPromptWrapperReset}

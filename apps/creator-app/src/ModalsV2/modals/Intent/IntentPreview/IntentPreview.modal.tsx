@@ -1,7 +1,7 @@
 import { Nullable, Utils } from '@voiceflow/common';
 import { IntentClassificationType } from '@voiceflow/dtos';
 import { clsx, tid } from '@voiceflow/style';
-import { Box, Divider, Notification, notify, Scroll, Section, SmallDataTable, Text, TextArea, Tokens } from '@voiceflow/ui-next';
+import { Box, Divider, Notification, notify, Scroll, Section, SmallDataTable, Text, TextArea, Tokens, Tooltip } from '@voiceflow/ui-next';
 import { validatorFactory } from '@voiceflow/utils-designer';
 import React, { useRef, useState } from 'react';
 import { DismissableLayerContext } from 'react-dismissable-layers';
@@ -49,6 +49,7 @@ export const IntentPreviewModal = modalsManager.create(
       const [feedbackKey, setFeedbackKey] = useState(0);
       const [classifyStatus, setClassifyStatus] = useState<'success' | 'error'>('success');
       const [classifyLatency, setClassifyLatency] = useState(0);
+      const [prototypeCompiled, setPrototypeCompiled] = useState(false);
       const [classifiedIntents, setClassifiedIntents] =
         useState<Nullable<{ nlu: Array<{ name: string; confidence: number }>; llm: Array<{ name: string }> }>>(null);
       const [lastUsedUtterance, setLastUsedUtterance] = useEnvironmentSessionStorageState(`${MODAL_ID}-last-used-utterance`, '');
@@ -150,6 +151,8 @@ export const IntentPreviewModal = modalsManager.create(
       useAsyncEffect(async () => {
         await compilePrototype();
 
+        setPrototypeCompiled(true);
+
         await trainingModel.calculateDiff();
       }, []);
 
@@ -184,7 +187,8 @@ export const IntentPreviewModal = modalsManager.create(
 
             <Scroll style={{ display: 'block' }}>
               <Modal.Body>
-                {trainingModel.diffStatus === NLUTrainingDiffStatus.UNTRAINED &&
+                {prototypeCompiled &&
+                  trainingModel.diffStatus === NLUTrainingDiffStatus.UNTRAINED &&
                   lastUntrainedDataCount !== (nluTrainingDiffData?.untrainedCount ?? -1) && (
                     <Box pb={16}>
                       <Notification
@@ -227,14 +231,26 @@ export const IntentPreviewModal = modalsManager.create(
                 />
               )}
 
-              <Modal.Footer.Button
-                label="Send"
-                testID={tid(MODAL_ID, 'send')}
-                variant="primary"
-                onClick={onSubmit}
-                disabled={closePrevented}
-                isLoading={closePrevented}
-              />
+              <Tooltip
+                key={String(prototypeCompiled)}
+                placement="bottom"
+                referenceElement={({ ref, onOpen, onClose }) => (
+                  <div ref={ref}>
+                    <Modal.Footer.Button
+                      label="Send"
+                      testID={tid(MODAL_ID, 'send')}
+                      variant="primary"
+                      onClick={onSubmit}
+                      disabled={closePrevented || !prototypeCompiled}
+                      isLoading={closePrevented || !prototypeCompiled}
+                      onPointerEnter={prototypeCompiled ? undefined : onOpen}
+                      onPointerLeave={onClose}
+                    />
+                  </div>
+                )}
+              >
+                {() => <Tooltip.Caption mb={0}>Compiling prototype</Tooltip.Caption>}
+              </Tooltip>
             </Modal.Footer>
           </>
 

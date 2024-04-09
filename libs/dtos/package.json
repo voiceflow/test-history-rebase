@@ -35,6 +35,7 @@
     "extends": "@voiceflow-meta/eslint-config"
   },
   "dependencies": {
+    "@voiceflow/default-prompt-wrappers": "workspace:*",
     "@voiceflow/internal": "3.2.3"
   },
   "devDependencies": {

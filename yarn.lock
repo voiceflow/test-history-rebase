@@ -9902,7 +9902,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voiceflow/default-prompt-wrappers@workspace:libs/default-prompt-wrappers":
+"@voiceflow/default-prompt-wrappers@workspace:*, @voiceflow/default-prompt-wrappers@workspace:libs/default-prompt-wrappers":
   version: 0.0.0-use.local
   resolution: "@voiceflow/default-prompt-wrappers@workspace:libs/default-prompt-wrappers"
   dependencies:
@@ -9953,6 +9953,7 @@ __metadata:
     "@voiceflow-meta/eslint-config": "workspace:*"
     "@voiceflow-meta/prettier-config": "workspace:*"
     "@voiceflow-meta/typescript-config": "workspace:*"
+    "@voiceflow/default-prompt-wrappers": "workspace:*"
     "@voiceflow/internal": 3.2.3
     zod: 3.22.4
   peerDependencies:

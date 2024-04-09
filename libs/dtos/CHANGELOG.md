@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.54.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.53.1...@voiceflow/dtos@1.54.0) (2024-04-09)
+
+### Features
+
+* intent settings and preview feedback (COR-1872) ([#7960](https://github.com/voiceflow/creator-app/issues/7960)) ([bb0c2e4](https://github.com/voiceflow/creator-app/commit/bb0c2e4b2bced1dfb3d474b8a04188fdbeb1a24f))
+
 ## [1.53.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.53.0...@voiceflow/dtos@1.53.1) (2024-04-03)
 
 **Note:** Version bump only for package @voiceflow/dtos

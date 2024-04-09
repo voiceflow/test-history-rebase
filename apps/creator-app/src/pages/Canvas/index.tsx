@@ -14,7 +14,7 @@ import Container from './components/CanvasContainer';
 import CanvasDiagram from './components/CanvasDiagram';
 import ContextMenu from './components/ContextMenu';
 import DisableOverscrollBehavior from './components/DisableOverscrollBehavior';
-import EditSidebar from './components/EditorSidebar';
+import EditorSidebar from './components/EditorSidebar';
 import EmptyViewportSnackbar from './components/EmptyViewportSnackbar';
 import RealtimeOverlay from './components/RealtimeOverlay';
 import Search from './components/Search';
@@ -94,7 +94,7 @@ const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
 
         {!isPrototypingMode && (
           <>
-            <EditSidebar />
+            <EditorSidebar />
             <Spotlight />
             <Search />
             <ThreadHistoryDrawer />

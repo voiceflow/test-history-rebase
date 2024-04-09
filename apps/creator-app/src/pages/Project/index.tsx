@@ -11,12 +11,11 @@ import { Path } from '@/config/routes';
 import { Permission } from '@/constants/permissions';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as ProjectV2 from '@/ducks/projectV2';
-import * as UI from '@/ducks/ui';
 import { OrganizationSubscriptionGate, VersionSubscriptionGate } from '@/gates';
 import { lazy } from '@/hocs/lazy';
 import { withBatchLoadingGate } from '@/hocs/withBatchLoadingGate';
 import { withWorkspaceOrProjectAssetsSuspense } from '@/hocs/withWorkspaceOrProjectAssetsSuspense';
-import { useEventualEngine, useFeature, useLayoutDidUpdate, useLocalDispatch, usePermission, useSelector, useTeardown, useTheme } from '@/hooks';
+import { useFeature, useLocalDispatch, usePermission, useSelector, useTeardown } from '@/hooks';
 import { ModalScope } from '@/ModalsV2/modal-scope.enum';
 import Providers from '@/pages/Project/Providers';
 
@@ -33,9 +32,6 @@ const AssistantOverview = withWorkspaceOrProjectAssetsSuspense(lazy(() => import
 const AnalyticsDashboard = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/AnalyticsDashboard')));
 
 const Project: React.FC = () => {
-  const theme = useTheme();
-  const getEngine = useEventualEngine();
-  const canvasOnly = useSelector(UI.isCanvasOnlyShowingSelector);
   const projectName = useSelector(ProjectV2.active.nameSelector);
   const isOnlyViewer = useSelector(DiagramV2.isOnlyViewerSelector);
   const resetCreator = useLocalDispatch(Realtime.creator.reset);
@@ -82,17 +78,6 @@ const Project: React.FC = () => {
 
     idleTimer.start();
   }, [isOnlyViewer]);
-
-  useLayoutDidUpdate(() => {
-    const engine = getEngine();
-
-    const position = engine?.canvas?.getPosition();
-    const { height } = theme.components.page.header;
-
-    if (position) {
-      engine?.canvas?.setPosition([position[0], position[1] + (canvasOnly ? height : -height)]);
-    }
-  }, [canvasOnly]);
 
   useTeardown(() => {
     resetCreator();

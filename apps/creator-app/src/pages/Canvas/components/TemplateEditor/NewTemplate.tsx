@@ -14,7 +14,7 @@ interface CanvasTemplateEditorNewTemplateProps
     CanvasTemplateEditorPopperProps,
     'color' | 'onColorChange' | 'name' | 'onNameChange' | 'onNameChange' | 'onSubmit' | 'children' | 'isOpen'
   > {
-  children?: (props: { onToggle: VoidFunction }) => React.ReactNode;
+  children?: (props: { onToggle: VoidFunction; isOpened: boolean }) => React.ReactNode;
   nodeIDs: string[];
   isOpen?: boolean;
   withoutPopper?: boolean;

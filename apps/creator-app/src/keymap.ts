@@ -1,4 +1,7 @@
+import { IconName } from '@voiceflow/icons';
 import { IS_MAC } from '@voiceflow/ui';
+import { IHotKey } from '@voiceflow/ui-next';
+import moize from 'moize';
 
 export enum Hotkey {
   CUT = 'CUT',
@@ -162,6 +165,11 @@ const SPECIAL_KEY_LABEL: Record<SpecialKey, string> = {
   [SpecialKey.BACKSPACE]: 'Del',
 };
 
+const SPECIAL_KEY_ICON_NAME: Partial<Record<SpecialKey, IconName>> = {
+  [SpecialKey.META]: 'Command',
+  [SpecialKey.SHIFT]: 'Shift',
+};
+
 export const PLATFORM_META_KEY = IS_MAC ? SpecialKey.META : SpecialKey.CTRL;
 export const PLATFORM_META_KEY_LABEL = SPECIAL_KEY_LABEL[PLATFORM_META_KEY];
 
@@ -187,6 +195,31 @@ export const getHotkeyLabel = (hotkey: Hotkey): string => {
 
   return replaceSpecials(formattedLabel.toUpperCase());
 };
+
+export const getHotkeys = moize(
+  (hotkey: Hotkey): IHotKey[] => {
+    let label = HOTKEY_MAPPING[hotkey];
+
+    if (Array.isArray(label)) {
+      const platformLabel = label.find((str) => str.includes(PLATFORM_META_KEY));
+
+      label = platformLabel ?? label[0];
+    }
+
+    return label.split('+').map((key) => {
+      if (SPECIAL_KEY_ICON_NAME[key as SpecialKey]) {
+        return { iconName: SPECIAL_KEY_ICON_NAME[key as SpecialKey] };
+      }
+
+      if (SPECIAL_KEY_LABEL[key as SpecialKey]) {
+        return { label: SPECIAL_KEY_LABEL[key as SpecialKey] };
+      }
+
+      return { label: key.toUpperCase() };
+    });
+  },
+  { maxSize: Object.values(Hotkey).length }
+);
 
 export const HOTKEY_LABEL_MAP = Object.values(Hotkey).reduce<Record<Hotkey, string>>(
   (acc, hotkey) => Object.assign(acc, { [hotkey]: getHotkeyLabel(hotkey) }),

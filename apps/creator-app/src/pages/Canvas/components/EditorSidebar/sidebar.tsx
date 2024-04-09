@@ -1,13 +1,12 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { stopImmediatePropagation } from '@voiceflow/ui';
 import React from 'react';
-import { useSelector } from 'react-redux';
 
 import Drawer from '@/components/Drawer';
 import { BlockType } from '@/constants';
 import { NamespaceProvider } from '@/contexts/NamespaceContext';
 import * as CreatorV2 from '@/ducks/creatorV2';
-import { useActiveProjectConfig, useHideVoiceflowAssistant, useRAF, useTheme } from '@/hooks';
+import { useActiveProjectConfig, useFeature, useHideVoiceflowAssistant, useRAF, useSelector, useTheme } from '@/hooks';
 import { LockedBlockOverlay } from '@/pages/Canvas/components/LockedEditorOverlay';
 import { EngineContext, ManagerContext } from '@/pages/Canvas/contexts';
 import BlockEditor from '@/pages/Canvas/editors/BlockEditor';
@@ -27,6 +26,8 @@ const FOCUSED_NODE_SIDEBAR_OFFSET = 20;
 
 const EditSidebar = () => {
   const theme = useTheme();
+
+  const cmsWorkflows = useFeature(Realtime.FeatureFlag.CMS_WORKFLOWS);
 
   const data = useSelector(CreatorV2.focusedNodeDataSelector);
   const focus = useSelector(CreatorV2.creatorFocusSelector);
@@ -160,6 +161,10 @@ const EditSidebar = () => {
         onPaste={stopImmediatePropagation()}
         direction={Drawer.Direction.LEFT}
         disableAnimation={!shouldRender}
+        style={{
+          top: cmsWorkflows.isEnabled ? theme.components.header.newHeight : undefined,
+          height: cmsWorkflows.isEnabled ? `calc(100% - ${theme.components.header.newHeight}px)` : undefined,
+        }}
       >
         {!fullScreen && !!path.length && editor}
       </Drawer>

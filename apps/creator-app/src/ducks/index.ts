@@ -36,6 +36,7 @@ import stateTransducer from './transducers';
 
 export * as Account from './account';
 export * as Assistant from './assistant';
+export * as Creator from './creatorV2';
 export * as Designer from './designer';
 export * as Diagram from './diagramV2';
 export * as Feature from './feature';

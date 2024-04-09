@@ -27,14 +27,16 @@ import removeManyNodes, { removeManyNodesReverter } from './removeManyNodes';
 import reorderDynamicPorts, { reorderDynamicPortsReverter } from './reorderDynamicPorts';
 import reorderSteps, { reorderStepsReverter } from './reorderSteps';
 import reset from './reset';
+import resetActive from './resetActive';
 import addCustomBlockPortReducer, { addCustomBlockPortReverter } from './syncCustomBlockPort';
 import transplantSteps, { transplantStepsReverter } from './transplantSteps';
 import updateManyNodeData, { updateManyNodeDataReverter } from './updateManyNodeData';
 
 const creatorReducer = createRootReducer<CreatorState>(INITIAL_STATE)
+  .immerCase(...reset)
   .immerCase(...initialize)
   .immerCase(...importSnapshot)
-  .immerCase(...reset)
+  .immerCase(...resetActive)
 
   .immerCase(...addBlock)
   .immerCase(...addMarkup)

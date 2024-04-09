@@ -8,7 +8,7 @@ import SoundToggle from '@/components/SoundToggle';
 import { Permission } from '@/constants/permissions';
 import { PrototypeStatus } from '@/constants/prototype';
 import * as PrototypeDuck from '@/ducks/prototype';
-import { useDispatch, useEventualEngine, usePermission, useTheme } from '@/hooks';
+import { useDispatch, useEventualEngine, useFeature, usePermission, useTheme } from '@/hooks';
 import { useToggle } from '@/hooks/toggle';
 import { NLUTrainingModelContext } from '@/pages/Project/contexts';
 import Prototype from '@/pages/Prototype';
@@ -30,6 +30,7 @@ const PrototypeSidebar: React.FC = () => {
   const { status } = state;
   const { updatePrototype } = actions;
 
+  const cmsWorkflows = useFeature(Realtime.FeatureFlag.CMS_WORKFLOWS);
   const canSeeSoundToggle = Realtime.Utils.typeGuards.isVoiceProjectType(projectType);
   const [trainingOpen, toggleTrainingOpen] = useToggle(false);
 
@@ -99,7 +100,15 @@ const PrototypeSidebar: React.FC = () => {
   }, [nluTrainingModel.isTrained]);
 
   return (
-    <Drawer open width={theme.components.prototypeSidebar.width} direction={Drawer.Direction.LEFT}>
+    <Drawer
+      open
+      width={theme.components.prototypeSidebar.width}
+      direction={Drawer.Direction.LEFT}
+      style={{
+        top: cmsWorkflows.isEnabled ? theme.components.header.newHeight : undefined,
+        height: cmsWorkflows.isEnabled ? `calc(100% - ${theme.components.header.newHeight}px)` : undefined,
+      }}
+    >
       <Container>
         {canRenderPrototype && <TrainingSection isOpen={trainingOpen} onOpen={openTraining} toggleOpen={toggleTrainingOpen} />}
 

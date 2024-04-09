@@ -11,7 +11,7 @@ import * as ModalsV2 from '@/ModalsV2';
 import { MarkupContext } from '@/pages/Project/contexts';
 import { useCommentingToggle, useDisableModes } from '@/pages/Project/hooks';
 
-const HotKeys: React.FC = () => {
+export const DiagramHotkeys = React.memo(() => {
   const markup = React.useContext(MarkupContext)!;
   const [hotkeysState] = React.useContext(HotkeysContext)!;
 
@@ -23,9 +23,8 @@ const HotKeys: React.FC = () => {
   const goToPrototype = useDispatch(Router.goToCurrentPrototype);
   const toggleCanvasOnly = useDispatch(UI.toggleCanvasOnly);
 
-  const manualSaveModal = ModalsV2.useModal(ModalsV2.Project.ManualSaveBackup);
-
   const activeModalID = ModalsV2.useActiveModalID();
+  const manualSaveModal = ModalsV2.useModal(ModalsV2.Project.ManualSaveBackup);
 
   const getEngine = useEventualEngine();
 
@@ -77,6 +76,4 @@ const HotKeys: React.FC = () => {
   );
 
   return null;
-};
-
-export default HotKeys;
+});

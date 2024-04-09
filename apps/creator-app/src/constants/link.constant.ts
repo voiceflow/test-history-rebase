@@ -28,3 +28,6 @@ export const CMS_WORKFLOW_LEARN_MORE = 'https://learn.voiceflow.com/hc/en-us/art
 
 export const LLM_INTENT_CLASSIFICATION_LEARN_MORE = 'https://developer.voiceflow.com/docs/intent-classification-using-llms';
 export const NLU_INTENT_CLASSIFICATION_LEARN_MORE = 'https://developer.voiceflow.com/docs/intent-classification-using-nlu';
+
+// eslint-disable-next-line no-secrets/no-secrets
+export const INTENT_PREVIEW_TIP_LEARN_LINK = 'https://learn.voiceflow.com/hc/en-us/articles/22213856020237-Intents#h_01HHXBCE0P3TD5A1B0RAX783FZ';

@@ -9,7 +9,6 @@ import { useEnvironmentSessionStorageState } from '@/hooks/storage.hook';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
 import { modalsManager } from '@/ModalsV2/manager';
 
-import { modalContainerRecipe } from './FunctionTest.css';
 import { IFunctionTestModal } from './FunctionTest.interface';
 import { FunctionTestResult } from './FunctionTestResult/FunctionTestResult.component';
 import { InputVariableEditor } from './InputVariableEditor/InputVariableEditor.component';
@@ -89,8 +88,6 @@ export const FunctionTestModal = modalsManager.create<IFunctionTestModal, Functi
           onExited={api.remove}
           onEscClose={api.onEscClose}
           onEnterSubmit={handleExecute}
-          className={modalContainerRecipe({ isResponseModalOpen: !!testResponse })}
-          containerClassName={modalContainerRecipe({ isResponseModalOpen: !!testResponse })}
         >
           <>
             <Modal.Header title="Test function" onClose={() => api.close()} />

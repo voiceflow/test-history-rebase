@@ -31,9 +31,9 @@ const NLUSettings: React.FC = () => {
   const classifyStrategy = nluSettings?.classifyStrategy || BaseModels.Project.ClassifyStrategy.VF_NLU;
   const isNLUStrategy = classifyStrategy === BaseModels.Project.ClassifyStrategy.VF_NLU;
 
-  return (
+  return intentClassificationEnabled ? null : (
     <>
-      {hybridClassifyEnabled && !intentClassificationEnabled && (
+      {hybridClassifyEnabled && (
         <>
           <Settings.SubSection header="Intent Classification" splitView>
             <Settings.SubSection.RadioGroupContainer>

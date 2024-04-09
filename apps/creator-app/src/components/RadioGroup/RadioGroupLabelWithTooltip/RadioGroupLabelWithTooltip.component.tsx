@@ -1,8 +1,7 @@
-import { FormControlLabel, Tooltip } from '@voiceflow/ui-next';
+import { FormControlLabel, Tooltip, useTooltipModifiers } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { TooltipContentLearn } from '@/components/Tooltip/TooltipContentLearn/TooltipContentLearn.component';
-import { usePopperModifiers } from '@/hooks/popper.hook';
 import { popperPaddingModifierFactory } from '@/utils/popper.util';
 
 import { IRadioGroupLabelWithTooltip } from './RadioGroupLabelWithTooltip.interface';
@@ -13,10 +12,10 @@ export const RadioGroupLabelWithTooltip: React.FC<IRadioGroupLabelWithTooltip> =
   children,
   placement = 'left-start',
   onLearnClick,
-  offsetModifier = [-28, 0],
+  offsetModifier = [-11, 0],
   paddingModifier = 43,
 }) => {
-  const titleModifiers = usePopperModifiers([
+  const titleModifiers = useTooltipModifiers([
     { name: 'offset', options: { offset: offsetModifier } },
     popperPaddingModifierFactory({ padding: paddingModifier }),
   ]);

@@ -21,8 +21,7 @@ export interface GeneralRuntimeFunctionTestResponse {
     outputVars?: Record<string, string>;
   };
 }
-
-interface GeneralRuntimeIntentResponse {
+export interface GeneralRuntimeIntentResponse {
   name: string;
 }
 

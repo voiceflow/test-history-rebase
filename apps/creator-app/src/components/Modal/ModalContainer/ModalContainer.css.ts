@@ -1,4 +1,4 @@
-import { globalStyle, keyframes, recipe, style } from '@voiceflow/style';
+import { globalStyle, recipe, style } from '@voiceflow/style';
 import { Tokens } from '@voiceflow/ui-next/styles';
 
 import { Z_INDEX } from './ModalContainer.constant';
@@ -17,6 +17,12 @@ const rootStyle = style({
 export const rootRecipe = recipe({
   base: rootStyle,
   variants: {
+    stacked: {
+      true: {
+        gap: 16,
+      },
+    },
+
     hidden: {
       true: {
         width: '0',
@@ -36,36 +42,23 @@ globalStyle(`${rootStyle} > *`, {
   pointerEvents: 'auto',
 });
 
-const showKeyframes = keyframes({
-  from: {
-    opacity: 0,
-    transform: 'translateY(15px)',
-  },
-  to: {
-    opacity: 1,
-    transform: 'translateY(0)',
-  },
-});
-
 export const containerStyles = recipe({
   base: {
     margin: '0 auto',
     maxHeight: '100%',
-
-    selectors: {
-      '& + &': {
-        marginTop: '16px',
-      },
-    },
   },
 
   variants: {
     status: {
-      entering: {},
+      entering: {
+        opacity: 1,
+        transform: 'translateY(0)',
+        transition: `opacity ${Tokens.animation.duration.fast} ${Tokens.animation.timingFunction.easeIn}, transform ${Tokens.animation.duration.fast} ${Tokens.animation.timingFunction.easeIn}`,
+      },
       unmounted: {},
       entered: {
-        animation: `${showKeyframes} ${Tokens.animation.duration.fast} ${Tokens.animation.timingFunction.easeIn}`,
-        animationFillMode: 'backwards',
+        opacity: 1,
+        transform: 'translateY(0)',
       },
       exiting: {
         opacity: 0,
@@ -74,12 +67,12 @@ export const containerStyles = recipe({
       },
       exited: {
         opacity: 0,
-        transform: 'translateY(-15px)',
+        transform: 'translateY(15px)',
       },
     },
-    notVisible: {
+    empty: {
       true: {
-        boxShadow: 'none',
+        display: 'none',
       },
     },
   },

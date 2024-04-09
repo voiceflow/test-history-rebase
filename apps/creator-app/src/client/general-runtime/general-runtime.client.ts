@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 import { GENERAL_RUNTIME_ENDPOINT } from '@/config';
+import { formatBuiltInIntentName } from '@/utils/intent.util';
 
 import { AUTH_HEADERS } from '../constant';
 import {
@@ -8,6 +9,7 @@ import {
   GeneralRuntimeFunctionTestResponse,
   GeneralRuntimeIntentPreviewUtteranceRequest,
   GeneralRuntimeIntentPreviewUtteranceResponse,
+  GeneralRuntimeIntentResponse,
 } from './general-runtime.interface';
 
 const axiosInstance = axios.create({
@@ -33,7 +35,18 @@ export const generalRuntimeClient = {
           `/test/${workspaceID}/classification`,
           data
         )
-        .then((response) => response.data),
+        .then((response) => {
+          const nameFormatter = formatBuiltInIntentName();
+
+          const formatIntents = <T extends GeneralRuntimeIntentResponse>(intents: T[]) =>
+            intents.map((intent) => ({ ...intent, name: nameFormatter(intent.name) }));
+
+          return {
+            ...response.data,
+            nlu: { ...response.data.nlu, intents: formatIntents(response.data.nlu.intents) },
+            llm: { ...response.data.llm, intents: formatIntents(response.data.llm.intents) },
+          };
+        }),
   },
 
   function: {

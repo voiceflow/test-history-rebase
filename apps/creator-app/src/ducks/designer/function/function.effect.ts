@@ -131,21 +131,30 @@ export const importMany =
     const context = getActiveAssistantContext(state);
 
     try {
-      const { functions } = await designerClient.function.importFile(context.environmentID, {
+      const { functions, duplicatedFunctions } = await designerClient.function.importFile(context.environmentID, {
         file,
         clientID: realtimeClient.clientId,
       });
 
       if (!functions.length) {
+        const warningMessage =
+          duplicatedFunctions.length > 1 ? `${duplicatedFunctions.length} functions already exist` : 'The function already exists';
+
         notify.short.error('Failed to import');
+        notify.long.warning(duplicatedFunctions.length ? warningMessage : 'Nothing to import');
+
         dispatch(FunctionTracking.error({ errorType: 'Import' }));
 
         return;
       }
 
+      dispatch(FunctionTracking.imported({ names: functions.map((func) => func.name) }));
+
       notify.short.success('Imported');
 
-      dispatch(FunctionTracking.imported({ names: functions.map((func) => func.name) }));
+      if (duplicatedFunctions.length) {
+        notify.long.info(duplicatedFunctions.length > 1 ? `${duplicatedFunctions.length} functions already exist` : '1 function already exists');
+      }
     } catch {
       notify.short.error('Failed to import');
       dispatch(FunctionTracking.error({ errorType: 'Import' }));

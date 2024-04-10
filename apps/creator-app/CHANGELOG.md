@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1472.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1471.0...@voiceflow/creator-app@1.1472.0) (2024-04-10)
+
+### Features
+
+* fix locked workspace selector (COR-000) ([#7958](https://github.com/voiceflow/creator-app/issues/7958)) ([3234759](https://github.com/voiceflow/creator-app/commit/323475985c47391d62e523a9d059301bccca8392))
+
 # [1.1471.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1470.0...@voiceflow/creator-app@1.1471.0) (2024-04-10)
 
 ### Features

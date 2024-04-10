@@ -94,7 +94,7 @@ export const exportCanvas =
   };
 
 export const exportModel =
-  ({ origin, nlpType, intents }: { origin: Tracking.ModelExportOriginType; nlpType: NLP.Constants.NLPType; intents?: string[] }): Thunk =>
+  ({ origin, nlpType, intents }: { origin: string; nlpType: NLP.Constants.NLPType; intents?: string[] }): Thunk =>
   async (dispatch, getState) => {
     const nlpConfig = NLP.Config.get(nlpType);
 

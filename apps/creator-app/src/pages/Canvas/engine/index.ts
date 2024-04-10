@@ -204,7 +204,7 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
 
   getStepIDsByParentNodeID = (nodeID: Nullish<string>) => this.select(CreatorV2.stepIDsByParentNodeIDSelector, { id: nodeID });
 
-  getZoomType = () => this.select(UI.zoomTypeSelector);
+  getZoomType = () => this.select(UI.selectors.zoomType);
 
   getDataByNodeID = <T>(nodeID: string) => this.select(CreatorV2.nodeDataByIDSelector, { id: nodeID }) as Realtime.NodeData<T> | null;
 

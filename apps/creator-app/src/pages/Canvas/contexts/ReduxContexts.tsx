@@ -12,22 +12,16 @@ import * as VersionV2 from '@/ducks/versionV2';
 import { createSelectorContext } from '@/utils/redux';
 
 export const {
-  Context: FullScreenModeContext,
-  Provider: FullScreenModeProvider,
-  Consumer: FullScreenModeConsumer,
-} = createSelectorContext(UI.isFullScreenMode);
-
-export const {
   Context: IsCanvasOnlyContext,
   Provider: IsCanvasOnlyProvider,
   Consumer: IsCanvasOnlyConsumer,
-} = createSelectorContext(UI.isCanvasOnlyShowingSelector);
+} = createSelectorContext(UI.selectors.isCanvasOnly);
 
 export const {
-  Context: IsCreatorMenuHiddenContext,
-  Provider: IsCreatorMenuHiddenProvider,
-  Consumer: IsCreatorMenuHiddenConsumer,
-} = createSelectorContext(UI.isCreatorMenuHiddenSelector);
+  Context: CanvasSidebarContext,
+  Provider: CanvasSidebarProvider,
+  Consumer: CanvasSidebarConsumer,
+} = createSelectorContext(UI.selectors.canvasSidebar);
 
 export const {
   Context: IsStraightLinksContext,
@@ -141,48 +135,46 @@ export const {
 } = createSelectorContext(Router.actionsMatchSelector);
 
 export const ReduxContextsProviders: React.FC<React.PropsWithChildren> = ({ children }) => (
-  <FullScreenModeProvider>
-    <IsCanvasOnlyProvider>
-      <IsCreatorMenuHiddenProvider>
-        <IsStraightLinksProvider>
-          <AccountLinkingProvider>
-            <IntentMapProvider>
-              <RequiredEntityMapProvider>
-                <EntityMapProvider>
-                  <DiagramMapProvider>
-                    <GlobalIntentStepMapProvider>
-                      <ActiveDiagramTypeProvider>
-                        <IntentNodeDataLookupProvider>
-                          <SharedNodesProvider>
-                            <ActionsRouteMatchProvider>
-                              <DomainMapProvider>
-                                <CustomBlockMapProvider>
-                                  <FlowMapByDiagramIDProvider>
-                                    <FunctionMapProvider>
-                                      <FunctionVariableMapProvider>
-                                        <FunctionPathMapProvider>
-                                          <ActiveDiagramNormalizedEntitiesAndVariablesProvider>
-                                            {/* comment to have a children on a new line */}
-                                            {children}
-                                          </ActiveDiagramNormalizedEntitiesAndVariablesProvider>
-                                        </FunctionPathMapProvider>
-                                      </FunctionVariableMapProvider>
-                                    </FunctionMapProvider>
-                                  </FlowMapByDiagramIDProvider>
-                                </CustomBlockMapProvider>
-                              </DomainMapProvider>
-                            </ActionsRouteMatchProvider>
-                          </SharedNodesProvider>
-                        </IntentNodeDataLookupProvider>
-                      </ActiveDiagramTypeProvider>
-                    </GlobalIntentStepMapProvider>
-                  </DiagramMapProvider>
-                </EntityMapProvider>
-              </RequiredEntityMapProvider>
-            </IntentMapProvider>
-          </AccountLinkingProvider>
-        </IsStraightLinksProvider>
-      </IsCreatorMenuHiddenProvider>
-    </IsCanvasOnlyProvider>
-  </FullScreenModeProvider>
+  <IsCanvasOnlyProvider>
+    <CanvasSidebarProvider>
+      <IsStraightLinksProvider>
+        <AccountLinkingProvider>
+          <IntentMapProvider>
+            <RequiredEntityMapProvider>
+              <EntityMapProvider>
+                <DiagramMapProvider>
+                  <GlobalIntentStepMapProvider>
+                    <ActiveDiagramTypeProvider>
+                      <IntentNodeDataLookupProvider>
+                        <SharedNodesProvider>
+                          <ActionsRouteMatchProvider>
+                            <DomainMapProvider>
+                              <CustomBlockMapProvider>
+                                <FlowMapByDiagramIDProvider>
+                                  <FunctionMapProvider>
+                                    <FunctionVariableMapProvider>
+                                      <FunctionPathMapProvider>
+                                        <ActiveDiagramNormalizedEntitiesAndVariablesProvider>
+                                          {/* comment to have a children on a new line */}
+                                          {children}
+                                        </ActiveDiagramNormalizedEntitiesAndVariablesProvider>
+                                      </FunctionPathMapProvider>
+                                    </FunctionVariableMapProvider>
+                                  </FunctionMapProvider>
+                                </FlowMapByDiagramIDProvider>
+                              </CustomBlockMapProvider>
+                            </DomainMapProvider>
+                          </ActionsRouteMatchProvider>
+                        </SharedNodesProvider>
+                      </IntentNodeDataLookupProvider>
+                    </ActiveDiagramTypeProvider>
+                  </GlobalIntentStepMapProvider>
+                </DiagramMapProvider>
+              </EntityMapProvider>
+            </RequiredEntityMapProvider>
+          </IntentMapProvider>
+        </AccountLinkingProvider>
+      </IsStraightLinksProvider>
+    </CanvasSidebarProvider>
+  </IsCanvasOnlyProvider>
 );

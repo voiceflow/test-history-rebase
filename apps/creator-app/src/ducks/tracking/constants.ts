@@ -253,10 +253,6 @@ export enum VariableStateAppliedType {
   SHAREABLE_LINK = 'Shareable Link',
 }
 
-export enum ModelExportOriginType {
-  SHARE_MENU = 'Share Menu',
-}
-
 export enum NoMatchCreationType {
   GLOBAL = 'global',
   STEP = 'step',

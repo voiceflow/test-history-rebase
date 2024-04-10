@@ -51,7 +51,7 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
   }
 
   get isVisible() {
-    return this.select(UI.isCommentsVisible);
+    return this.select(UI.selectors.isCommentsVisible);
   }
 
   get hasFocus() {

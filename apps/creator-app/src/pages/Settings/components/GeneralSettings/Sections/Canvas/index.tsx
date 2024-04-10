@@ -15,13 +15,13 @@ import { CanvasGrid } from './components';
 import { LINK_TYPE_OPTIONS, NAVIGATION_DESCRIPTIONS, NAVIGATION_OPTIONS, ZOOM_OPTIONS } from './constants';
 
 const Canvas: React.FC = () => {
-  const canvasNavigation = useSelector(UI.canvasNavigationSelector);
-  const zoomType = useSelector(UI.zoomTypeSelector);
+  const canvasNavigation = useSelector(UI.selectors.canvasNavigation);
+  const zoomType = useSelector(UI.selectors.zoomType);
   const activeProjectID = useSelector(Session.activeProjectIDSelector);
   const activeLinkType = useSelector(ProjectV2.active.linkTypeSelector);
-  const setCanvasNavigation = useDispatch(UI.setCanvasNavigation);
+  const setCanvasNavigation = useDispatch(UI.action.SetCanvasNavigation);
   const updateProjectLinkType = useDispatch(ProjectV2.updateProjectLinkType);
-  const setZoomType = useDispatch(UI.setZoomType);
+  const setZoomType = useDispatch(UI.action.SetZoomType);
 
   const setLinkType = React.useCallback(
     (linkType: BaseModels.Project.LinkType) => updateProjectLinkType(activeProjectID!, linkType),

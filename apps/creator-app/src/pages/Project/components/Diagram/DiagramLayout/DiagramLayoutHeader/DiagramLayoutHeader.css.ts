@@ -9,14 +9,13 @@ export const headerStyle = recipe({
     right: 0,
     zIndex: 20,
     transitionProperty: 'transform',
-    transitionDuration: Tokens.animation.duration.fast,
-    transitionTimingFunction: Tokens.animation.timingFunction.easeOut,
+    transitionDuration: Tokens.animation.duration.default,
+    transitionTimingFunction: Tokens.animation.timingFunction.default,
   },
 
   variants: {
     canvasOnly: {
       true: {
-        transitionTimingFunction: Tokens.animation.timingFunction.easeIn,
         transform: 'translateY(-100%)',
       },
     },

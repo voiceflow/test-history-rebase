@@ -4,7 +4,7 @@ import React from 'react';
 
 import { useHotkey } from '@/hooks';
 import { Hotkey } from '@/keymap';
-import { EngineContext, IsCanvasOnlyContext, IsCreatorMenuHiddenContext, LinkEntityContext } from '@/pages/Canvas/contexts';
+import { CanvasSidebarContext, EngineContext, IsCanvasOnlyContext, LinkEntityContext } from '@/pages/Canvas/contexts';
 import { useCanvasPan, useCanvasZoom } from '@/pages/Canvas/hooks/canvas';
 import { ClassName } from '@/styles/constants';
 
@@ -36,7 +36,7 @@ const Settings: React.FC<SettingsProps> = ({ instance, onRemove, isTextActive, o
   const engine = React.useContext(EngineContext)!;
   const linkEntity = React.useContext(LinkEntityContext)!;
   const isCanvasOnly = React.useContext(IsCanvasOnlyContext)!;
-  const isSidebarHidden = React.useContext(IsCreatorMenuHiddenContext)!;
+  const canvasSidebar = React.useContext(CanvasSidebarContext);
 
   const containerRef = React.useRef<HTMLDivElement>(null);
 
@@ -45,7 +45,7 @@ const Settings: React.FC<SettingsProps> = ({ instance, onRemove, isTextActive, o
 
   const { linkData } = linkEntity.useState((e) => ({ linkData: e.resolve().data }));
 
-  const cache = useCache({ isCanvasOnly, isSidebarHidden }, { isCanvasOnly, isSidebarHidden });
+  const cache = useCache({ isCanvasOnly, canvasSidebar }, { isCanvasOnly, canvasSidebar });
 
   const setPosition = React.useCallback(() => {
     if (!engine.canvas) return;
@@ -53,7 +53,7 @@ const Settings: React.FC<SettingsProps> = ({ instance, onRemove, isTextActive, o
     const pathRect = instance.hiddenPathRef.current?.getBoundingClientRect();
     const canvasRect = engine.canvas.getRect();
     const captionRect = instance.getCaptionRect();
-    const sidebarWidth = (cache.current.isCanvasOnly || cache.current.isSidebarHidden ? 0 : SIDEBAR_WIDTH) + NAV_WIDTH;
+    const sidebarWidth = (cache.current.isCanvasOnly || cache.current.canvasSidebar?.visible ? 0 : SIDEBAR_WIDTH) + NAV_WIDTH;
 
     const zoom = engine.canvas.getZoom() ?? 1;
     const zoomedOffset = OFFSET * zoom;
@@ -127,7 +127,7 @@ const Settings: React.FC<SettingsProps> = ({ instance, onRemove, isTextActive, o
 
   React.useImperativeHandle(instance.settingsRef, () => ({ setPosition }), [setPosition]);
 
-  React.useLayoutEffect(() => setPosition(), [linkData?.points, isCanvasOnly, isSidebarHidden]);
+  React.useLayoutEffect(() => setPosition(), [linkData?.points, isCanvasOnly, canvasSidebar]);
 
   const linkType = instance.getLinkType();
   const linkColor = instance.getLinkColor();

@@ -22,7 +22,7 @@ import * as Router from '@/ducks/router';
 import session, * as Session from '@/ducks/session';
 import tracking, * as Tracking from '@/ducks/tracking';
 import transcript, * as Transcript from '@/ducks/transcript';
-import ui, * as UI from '@/ducks/ui';
+import * as UI from '@/ducks/ui';
 import { ActionReverter } from '@/ducks/utils';
 import variableState, * as VariableState from '@/ducks/variableState';
 import versionV2, * as VersionV2 from '@/ducks/versionV2';
@@ -40,6 +40,7 @@ export * as Creator from './creatorV2';
 export * as Designer from './designer';
 export * as Diagram from './diagramV2';
 export * as Feature from './feature';
+export * as Organization from './organization';
 export * as Project from './projectV2';
 export * as Prototype from './prototype';
 export * as Router from './router';
@@ -69,7 +70,7 @@ const getCombinedReducer = (browserHistory: BrowserHistory) =>
     [DiagramV2.STATE_KEY]: diagramV2,
     [ProjectV2.STATE_KEY]: projectV2,
     [Recent.STATE_KEY]: recent,
-    [UI.STATE_KEY]: ui,
+    [UI.STATE_KEY]: UI.reducer,
     [Viewport.STATE_KEY]: viewport,
     [Notifications.STATE_KEY]: notifications,
     [Tracking.STATE_KEY]: tracking,

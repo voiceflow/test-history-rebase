@@ -44,7 +44,7 @@ export const CMSResourceEditor: React.FC<ICMSResourceEditor> = ({ Editor, childr
     Object.assign(event, { __editorClick: true });
   };
 
-  useHideVoiceflowAssistant({ hide: !!pathMatch });
+  useHideVoiceflowAssistant({ hide: !!pathMatch?.params.resourceID });
 
   useEffect(() => {
     setActiveID(pathMatch?.params.resourceID ?? null);

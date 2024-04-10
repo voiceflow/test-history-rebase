@@ -6,8 +6,8 @@ import * as UI from '@/ducks/ui';
 import { useDispatch, useSelector } from '@/hooks';
 
 const CanvasGrid: React.FC = () => {
-  const canvasGridEnabled = useSelector(UI.isCanvasGridEnabledSelector);
-  const toggleCanvasGrid = useDispatch(UI.toggleCanvasGrid);
+  const canvasGridEnabled = useSelector(UI.selectors.isCanvasGrid);
+  const toggleCanvasGrid = useDispatch(UI.action.ToggleCanvasGrid);
 
   return (
     <Settings.Section>
@@ -20,7 +20,7 @@ const CanvasGrid: React.FC = () => {
               <Settings.SubSection.Description>When on, the canvas will have a dotted background grid.</Settings.SubSection.Description>
             </div>
 
-            <Toggle checked={canvasGridEnabled} size={Toggle.Size.EXTRA_SMALL} onChange={toggleCanvasGrid} hasLabel />
+            <Toggle checked={canvasGridEnabled} size={Toggle.Size.EXTRA_SMALL} onChange={() => toggleCanvasGrid()} hasLabel />
           </Box.FlexApart>
         </Settings.SubSection>
       </Settings.Card>

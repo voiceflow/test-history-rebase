@@ -11,7 +11,6 @@ import Crosshair from '@/components/Crosshair';
 import { DragPreviewComponentProps, ItemComponentProps } from '@/components/DraggableList';
 import { PageProgress } from '@/components/PageProgressBar';
 import { BlockType, DragItem, HOVER_THROTTLE_TIMEOUT, PageProgressBar } from '@/constants';
-import { canvasNavigationSelector } from '@/ducks/ui';
 import * as UI from '@/ducks/ui';
 import * as Viewport from '@/ducks/viewport';
 import { useInitialValueSelector, useSelector, useSetup } from '@/hooks';
@@ -83,7 +82,7 @@ type DroppableItem = FilesDrop | StepMenuDrop | ComponentsDrop;
 const DROP_TYPES = [NativeTypes.FILE, DragItem.BLOCK_MENU, DragItem.COMPONENTS, DragItem.LIBRARY];
 
 const CanvasDiagram: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const canvasGridEnabled = useSelector(UI.isCanvasGridEnabledSelector);
+  const canvasGridEnabled = useSelector(UI.selectors.isCanvasGrid);
   const viewport = useInitialValueSelector(Viewport.activeDiagramViewportSelector);
 
   const engine = React.useContext(EngineContext)!;
@@ -197,7 +196,7 @@ const CanvasDiagram: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   const removeClass = React.useCallback((className: string) => engine.removeClass(className), []);
 
-  const navigation = useSelector(canvasNavigationSelector);
+  const navigation = useSelector(UI.selectors.canvasNavigation);
 
   useSetup(() => {
     PageProgress.stop(PageProgressBar.CANVAS_LOADING);

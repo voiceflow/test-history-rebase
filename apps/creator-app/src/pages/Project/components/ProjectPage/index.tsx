@@ -15,7 +15,7 @@ import * as S from './styles';
 const ProjectPage: React.FC<React.PropsWithChildren<{ sidebarPadding?: boolean }>> = ({ sidebarPadding, children }) => {
   const markup = React.useContext(MarkupContext);
 
-  const canvasOnly = useSelector(UI.isCanvasOnlyShowingSelector);
+  const canvasOnly = useSelector(UI.selectors.isCanvasOnly);
   const onDisableModes = useDisableModes();
   const isDiagramRoute = useRouteMatch(DIAGRAM_ROUTES);
 

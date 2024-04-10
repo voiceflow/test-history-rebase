@@ -5,7 +5,6 @@ import { Route, Switch } from 'react-router-dom';
 
 import * as Project from '@/components/Project';
 import { Permission } from '@/constants/permissions';
-import * as Tracking from '@/ducks/tracking';
 import { usePermission } from '@/hooks';
 import { useAssistantSessionStorageState } from '@/hooks/storage.hook';
 import InviteContent from '@/pages/Project/components/Collaborators';
@@ -120,10 +119,7 @@ const SharePopper: React.FC<SharePopperProps> = ({ children, placement, modifier
             <Switch>
               <Route path={ShareProjectTab.PROTOTYPE} render={() => <Project.SharePrototype.Footer isCanvas testID={tid(TEST_ID, 'prototype')} />} />
               <Route path={ShareProjectTab.INVITE} render={() => <InviteFooter />} />
-              <Route
-                path={ShareProjectTab.EXPORT}
-                render={() => <Project.Export.Footer origin={Tracking.ModelExportOriginType.SHARE_MENU} testID={tid(TEST_ID, 'export')} />}
-              />
+              <Route path={ShareProjectTab.EXPORT} render={() => <Project.Export.Footer testID={tid(TEST_ID, 'export')} />} />
             </Switch>
           </Footer>
         )}

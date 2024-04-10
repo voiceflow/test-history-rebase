@@ -1,5 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Dropdown, OverflowTippyTooltip, stopPropagation, SvgIcon, TippyTooltip, useLinkedState } from '@voiceflow/ui';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
@@ -11,6 +12,7 @@ import { Path } from '@/config/routes';
 import { Permission } from '@/constants/permissions';
 import * as Project from '@/ducks/projectV2';
 import { InjectedDraggableProps, withDraggable } from '@/hocs/withDraggable';
+import { useFeature } from '@/hooks/feature';
 import { usePaymentModal } from '@/hooks/modal.hook';
 import { useIsLockedProjectViewer, usePermission } from '@/hooks/permission';
 import { useProjectOptions } from '@/hooks/project';
@@ -79,6 +81,8 @@ export const Item: React.FC<ItemProps> = ({
   const [isEditing, setIsEditing] = React.useState(false);
   const [formValue, updateFormValue] = useLinkedState(name);
 
+  const cmsWorkflows = useFeature(Realtime.FeatureFlag.CMS_WORKFLOWS);
+
   const titleEditableRef = React.useRef<EditableTextAPI | null>(null);
 
   const onRename = () => {
@@ -118,7 +122,7 @@ export const Item: React.FC<ItemProps> = ({
   return (
     <div ref={canManageProjects && !isDraggingPreview ? connectedRootRef : undefined}>
       <ProjectListItem
-        to={generatePath(Path.PROJECT_CANVAS, { versionID })}
+        to={generatePath(cmsWorkflows.isEnabled ? Path.CMS_WORKFLOW : Path.PROJECT_CANVAS, { versionID })}
         locked={isLockedProject}
         hidden={isDragging}
         tabIndex={0}

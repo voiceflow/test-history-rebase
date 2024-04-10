@@ -7,11 +7,10 @@ import React from 'react';
 import * as NLP from '@/config/nlp';
 import { ExportFormat as CanvasExportFormat, ExportType } from '@/constants';
 import * as Export from '@/ducks/export';
-import * as Tracking from '@/ducks/tracking';
 import { useActiveProjectNLUConfig, useActiveProjectPlatformConfig, useDispatch, useTrackingEvents } from '@/hooks';
 
 interface ContextValue {
-  onExport: (origin: Tracking.ModelExportOriginType) => void;
+  onExport: (origin: string) => void;
   nlpTypes: NLP.Constants.NLPType[];
   exportType: ExportType;
   isExporting: boolean;
@@ -49,7 +48,7 @@ export const Provider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [checkedExportIntents, setCheckedExportIntents] = React.useState<string[]>([]);
 
   const onExport = React.useCallback(
-    async (origin: Tracking.ModelExportOriginType) => {
+    async (origin: string) => {
       trackingEvents.trackExportButtonClick({ format: canvasExportFormat });
       setExporting(true);
 

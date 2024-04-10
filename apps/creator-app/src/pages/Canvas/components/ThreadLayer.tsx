@@ -26,10 +26,10 @@ const ThreadLayer: React.FC = () => {
   const isCommentingMode = useCommentingMode();
 
   const threadIDs = useSelector(Designer.Thread.selectors.allOpenedIDsForActiveDiagram);
-  const commentsVisible = useSelector(UI.isCommentsVisible);
+  const commentsVisible = useSelector(UI.selectors.isCommentsVisible);
 
   const updateUnreadComment = useDispatch(Designer.Thread.action.UpdateUnreadComment);
-  const toggleCommentVisibility = useDispatch(UI.toggleCommentVisibility);
+  const toggleCommentVisibility = useDispatch(UI.action.ToggleCommentVisibility);
 
   const [isCanvasMoving, setIsCanvasMoving] = React.useState<boolean>(false);
 
@@ -41,7 +41,7 @@ const ThreadLayer: React.FC = () => {
   const newCommentDraftValue = React.useRef<CommentDraftValue | null>(null);
   const focusedCommentDraftValue = React.useRef<CommentDraftValue | null>(null);
 
-  useHotkey(Hotkey.HIDE_COMMENT_BUBBLES, toggleCommentVisibility);
+  useHotkey(Hotkey.HIDE_COMMENT_BUBBLES, () => toggleCommentVisibility());
 
   useCanvasPan((movement) => {
     newCommentOriginRef.current ??= engine.comment.getNewOrigin();

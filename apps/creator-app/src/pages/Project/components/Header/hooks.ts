@@ -22,7 +22,7 @@ export const useLogoButtonOptions = ({
   const projectID = useSelector(Session.activeProjectIDSelector)!;
 
   const goToDashboard = useDispatch(Router.goToDashboard);
-  const toggleCanvasOnly = useDispatch(UI.toggleCanvasOnly);
+  const toggleCanvasOnly = useDispatch(UI.action.ToggleCanvasOnly);
 
   const shortcutModal = ModalsV2.useModal(ModalsV2.Canvas.Shortcuts);
 
@@ -49,7 +49,9 @@ export const useLogoButtonOptions = ({
     ...options,
 
     uiToggle && options.length ? { key: 'logo-divider-3', label: 'logo-divider-3', divider: true } : null,
-    uiToggle ? { key: 'toggle-ui', label: 'Hide/Show UI', onClick: toggleCanvasOnly, note: HOTKEY_LABEL_MAP[Hotkey.SHOW_HIDE_UI] } : null,
+    uiToggle
+      ? { key: 'toggle-ui', label: 'Hide/Show UI', onClick: () => toggleCanvasOnly(), note: HOTKEY_LABEL_MAP[Hotkey.CANVAS_SHOW_HIDE_UI] }
+      : null,
 
     options.length || uiToggle ? { key: 'logo-divider-4', label: 'logo-divider-4', divider: true } : null,
 

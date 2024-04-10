@@ -1,4 +1,6 @@
-import { css, styled, transition } from '@/hocs/styled';
+import { Tokens } from '@voiceflow/ui-next/styles';
+
+import { css, styled } from '@/hocs/styled';
 import { SlideOut, SlideOutDirection } from '@/styles/transitions';
 
 import { DrawerProps } from '../types';
@@ -41,11 +43,12 @@ const Container = styled(SlideOut)<DrawerProps>`
       overflow-y: scroll;
     `}
 
-  ${({ animatedWidth, disableAnimation }) =>
-    animatedWidth &&
+  ${({ disableAnimation, animatedWidth }) =>
     !disableAnimation &&
     css`
-      ${transition('width', 'transform')}
+      transition-duration: ${Tokens.animation.duration.default};
+      transition-timing-function: ${Tokens.animation.timingFunction.default};
+      transition-property: top, height ${animatedWidth ? ', transform, width' : ''};
     `}
 `;
 

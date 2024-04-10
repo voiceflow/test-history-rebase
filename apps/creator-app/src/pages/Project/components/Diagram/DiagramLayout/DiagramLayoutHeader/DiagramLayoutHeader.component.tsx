@@ -24,7 +24,7 @@ export const DiagramLayoutHeader: React.FC = () => {
   const selectedTargets = React.useContext(SelectionTargetsContext);
 
   const isWorkflow = useSelector(Diagram.active.isTopicSelector);
-  const canvasOnly = useSelector(UI.isCanvasOnlyShowingSelector);
+  const canvasOnly = useSelector(UI.selectors.isCanvasOnly);
   const startNodeID = useSelector(Creator.startNodeIDSelector);
   const activeDiagramID = useSelector(Creator.activeDiagramIDSelector);
 

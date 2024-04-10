@@ -29,7 +29,7 @@ const calculateSpeedMultiplier = (formula: number, hotZoneSize: number) => {
 
 const AutoPanLayer: React.FC = () => {
   const getEngine = useEventualEngine();
-  const isCreatorMenuHidden = useSelector(UI.isCreatorMenuHiddenSelector);
+  const canvasSidebar = useSelector(UI.selectors.canvasSidebar);
   const isEditingMode = useEditingMode();
   const disableNewStepPanningRef = React.useRef(false);
   const isDraggingNewStepRef = React.useRef(false);
@@ -48,8 +48,8 @@ const AutoPanLayer: React.FC = () => {
   const [scheduler, schedulerAPI] = useRAF();
 
   React.useEffect(() => {
-    leftOffsetRef.current = !isCreatorMenuHidden ? SIDEBAR_WIDTH + THEME.components.leftSidebar.width : SIDEBAR_WIDTH;
-  }, [isCreatorMenuHidden]);
+    leftOffsetRef.current = !canvasSidebar?.visible ? SIDEBAR_WIDTH + THEME.components.leftSidebar.width : SIDEBAR_WIDTH;
+  }, [canvasSidebar]);
 
   React.useEffect(() => {
     rightOffsetRef.current = blockEditorOpened ? THEME.components.blockSidebar.width : 0;

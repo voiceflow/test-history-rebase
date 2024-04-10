@@ -1,4 +1,5 @@
 import { recipe, style } from '@voiceflow/style';
+import { Tokens } from '@voiceflow/ui-next/styles';
 
 export const containerStyle = recipe({
   base: {
@@ -6,6 +7,9 @@ export const containerStyle = recipe({
     zIndex: 20,
     left: 0,
     bottom: 0,
+    transitionProperty: 'top',
+    transitionDuration: Tokens.animation.duration.default,
+    transitionTimingFunction: Tokens.animation.timingFunction.default,
   },
   variants: {
     canvasOnly: {

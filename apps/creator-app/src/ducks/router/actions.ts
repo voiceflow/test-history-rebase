@@ -93,6 +93,7 @@ export const goToDialogManagerAPI = (versionID: string) => {
   return goTo(generatePath(Path.PUBLISH_API, { versionID }));
 };
 
+export const goToCMSWorkflow = (versionID: string) => goTo(`${generatePath(Path.CMS_WORKFLOW, { versionID })}`);
 export const goToCMSKnowledgeBase = (versionID: string) => goTo(`${generatePath(Path.CMS_KNOWLEDGE_BASE, { versionID })}`);
 
 export const goToPlatformPrototype = (versionID: string, platform: Platform.Constants.PlatformType) =>

@@ -17,17 +17,17 @@ interface FilterMenuProps {
 const FilterMenu: React.FC<FilterMenuProps> = ({ setFilter, filter }) => {
   const cmsWorkflows = useFeature(FeatureFlag.CMS_WORKFLOWS);
 
-  const commentsVisible = useSelector(UI.isCommentsVisible);
+  const commentsVisible = useSelector(UI.selectors.isCommentsVisible);
   const openThreadsCount = useSelector(Designer.Thread.selectors.allOpenedCount);
-  const isDomainThreadsOnly = useSelector(UI.isDomainThreadsOnly);
+  const isDomainThreadsOnly = useSelector(UI.selectors.isDomainThreadsOnly);
   const resolvedThreadsCount = useSelector(Designer.Thread.selectors.allResolvedCount);
-  const isWorkflowThreadsOnly = useSelector(UI.isWorkflowThreadsOnly);
-  const isMentionedThreadsOnly = useSelector(UI.isMentionedThreadsOnly);
+  const isWorkflowThreadsOnly = useSelector(UI.selectors.isWorkflowThreadsOnly);
+  const isMentionedThreadsOnly = useSelector(UI.selectors.isMentionedThreadsOnly);
 
-  const toggleDomainThreadsOnly = useDispatch(UI.toggleDomainThreadsOnly);
-  const toggleCommentVisibility = useDispatch(UI.toggleCommentVisibility);
-  const toggleWorkflowThreadsOnly = useDispatch(UI.toggleWorkflowThreadsOnly);
-  const toggleMentionedThreadsOnly = useDispatch(UI.toggleMentionedThreadsOnly);
+  const toggleDomainThreadsOnly = useDispatch(UI.action.ToggleDomainThreadsOnly);
+  const toggleCommentVisibility = useDispatch(UI.action.ToggleCommentVisibility);
+  const toggleWorkflowThreadsOnly = useDispatch(UI.action.ToggleWorkflowThreadsOnly);
+  const toggleMentionedThreadsOnly = useDispatch(UI.action.ToggleMentionedThreadsOnly);
 
   return (
     <Menu
@@ -52,7 +52,7 @@ const FilterMenu: React.FC<FilterMenuProps> = ({ setFilter, filter }) => {
               Only tagged threads
             </MenuCheckboxOption>
           ),
-          onClick: toggleMentionedThreadsOnly,
+          onClick: () => toggleMentionedThreadsOnly(),
         },
         {
           label: (
@@ -60,7 +60,7 @@ const FilterMenu: React.FC<FilterMenuProps> = ({ setFilter, filter }) => {
               Only current {cmsWorkflows.isEnabled ? 'workflow' : 'topic'}
             </MenuCheckboxOption>
           ),
-          onClick: toggleWorkflowThreadsOnly,
+          onClick: () => toggleWorkflowThreadsOnly(),
         },
         cmsWorkflows.isEnabled
           ? null
@@ -70,7 +70,7 @@ const FilterMenu: React.FC<FilterMenuProps> = ({ setFilter, filter }) => {
                   Only current domain
                 </MenuCheckboxOption>
               ),
-              onClick: toggleDomainThreadsOnly,
+              onClick: () => toggleDomainThreadsOnly(),
             },
         { style: { marginBottom: 0 }, label: '', divider: true },
         {
@@ -81,7 +81,7 @@ const FilterMenu: React.FC<FilterMenuProps> = ({ setFilter, filter }) => {
           ),
           note: '⇧C',
           ending: true,
-          onClick: toggleCommentVisibility,
+          onClick: () => toggleCommentVisibility(),
         },
       ]}
     />

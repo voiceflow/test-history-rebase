@@ -3,11 +3,13 @@ import { Tokens } from '@voiceflow/ui-next/styles';
 
 export const drawerStyle = recipe({
   base: {
-    transition: Tokens.transition(['right']),
+    top: 0,
+    height: '100%',
+    transition: Tokens.transition(['right', 'top', 'height']),
   },
 
   variants: {
-    newLayout: {
+    withHeader: {
       true: {
         top: 56,
         height: `calc(100% - 56px)`,

@@ -1,5 +1,5 @@
 import { SvgIcon } from '@voiceflow/ui';
-import React from 'react';
+import React, { useState } from 'react';
 
 import { useProjectAIPlayground } from '@/components/GPT/hooks';
 import { Permission } from '@/constants/permissions';
@@ -21,6 +21,7 @@ const StepMenu: React.FC = () => {
   const projectType = useSelector(ProjectV2.active.projectTypeSelector);
   const aiPlaygroundEnabled = useProjectAIPlayground();
   const [isExpanded, toggleIsExpanded] = useLocalStorageState(STEP_MENU_EXPANDED_LOCAL_STORAGE_KEY, true);
+  const [initialRender, setInitialRender] = useState(true);
   const templates = useSelector(CanvasTemplates.allCanvasTemplatesSelector);
   const customBlocks = useSelector(CustomBlocks.allCustomBlocksSelector);
 
@@ -52,24 +53,33 @@ const StepMenu: React.FC = () => {
     return [groupedSections.get(EVENT_LABEL)?.[0], groupedSections.get('other'), numCollapsedSteps];
   }, [platform, projectType, isExpanded, templates, customBlocks, aiPlaygroundEnabled]);
 
+  const onToggle = () => {
+    toggleIsExpanded(!isExpanded);
+    setInitialRender(false);
+  };
+
   return (
     <>
       {canEditCanvas && (
         <S.TopLevelOuterContainer id={Identifier.STEP_MENU}>
           {eventSection && (
             <S.TopLevelInnerContainer size={1}>
-              <TopLevelButton key={eventSection.label} section={eventSection} animationIndex={Math.max(0, 0 - numCollapsedSteps)} />
+              <TopLevelButton key={eventSection.label} section={eventSection} animationIndex={-1} />
             </S.TopLevelInnerContainer>
           )}
           {otherSections && (
             <S.TopLevelInnerContainer size={otherSections.length}>
               {otherSections.map((section, index) => (
-                <TopLevelButton key={section.label} section={section} animationIndex={Math.max(0, index - numCollapsedSteps)} />
+                <TopLevelButton
+                  key={section.label}
+                  section={section}
+                  animationIndex={initialRender ? -1 : Math.max(0, index - (numCollapsedSteps - (eventSection ? 1 : 0)))}
+                />
               ))}
             </S.TopLevelInnerContainer>
           )}
 
-          <S.StepMenuExpandButton onClick={() => toggleIsExpanded(!isExpanded)}>
+          <S.StepMenuExpandButton onClick={onToggle}>
             <SvgIcon icon="arrowToggleV2" size={20} color="#6e849a" inline rotation={isExpanded ? 270 : 90} />
           </S.StepMenuExpandButton>
         </S.TopLevelOuterContainer>

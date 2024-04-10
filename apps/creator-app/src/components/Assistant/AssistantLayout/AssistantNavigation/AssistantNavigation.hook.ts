@@ -1,18 +1,100 @@
+import { IconName } from '@voiceflow/icons';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { useMemo } from 'react';
 import { matchPath, useHistory, useLocation } from 'react-router-dom';
 
 import { Path } from '@/config/routes';
 import { Permission } from '@/constants/permissions';
-import { Session } from '@/ducks';
+import { Project, Router, Session } from '@/ducks';
+import { useOnAssistantCopyCloneLink, useOnAssistantDuplicate } from '@/hooks/assistant.hook';
 import { useFeature } from '@/hooks/feature';
 import { HotkeyItem, useHotkeyList } from '@/hooks/hotkeys';
+import { useModal } from '@/hooks/modal.hook';
 import { useGetResolvedPath } from '@/hooks/navigation.hook';
-import { usePermission } from '@/hooks/permission';
-import { useSelector } from '@/hooks/store.hook';
+import { useIsLockedProjectViewer, useIsPreviewer, usePermission } from '@/hooks/permission';
+import { useDispatch, useSelector } from '@/hooks/store.hook';
+import { Modals } from '@/ModalsV2';
 import { conditionalArrayItems } from '@/utils/array.util';
 
 import { IAssistantNavigationItem } from './AssistantNavigation.interface';
+
+type NavigationLogoItem =
+  | { key: string; divider: true }
+  | {
+      key: string;
+      label: React.ReactNode;
+      onClick: (options: { export: VoidFunction; sharePrototype: VoidFunction }) => void;
+      iconName: IconName;
+    };
+
+export const useAssistantNavigationLogoItems = (): NavigationLogoItem[] => {
+  const isPreviewer = useIsPreviewer();
+  const isLockedProjectViewer = useIsLockedProjectViewer();
+
+  const hideExports = useFeature(Realtime.FeatureFlag.HIDE_EXPORTS);
+  const [canExportModel] = usePermission(Permission.MODEL_EXPORT);
+  const [canSharePrototype] = usePermission(Permission.SHARE_PROTOTYPE);
+  const [canManageProjects] = usePermission(Permission.PROJECTS_MANAGE);
+  const [canExportPrototype] = usePermission(Permission.CANVAS_EXPORT);
+  const [canAddCollaborators] = usePermission(Permission.ADD_COLLABORATORS);
+
+  const platform = useSelector(Project.active.platformSelector);
+  const projectID = useSelector(Session.activeProjectIDSelector);
+
+  const goToDashboard = useDispatch(Router.goToDashboard);
+
+  const onDuplicate = useOnAssistantDuplicate(projectID);
+  const onCopyCloneLink = useOnAssistantCopyCloneLink(projectID);
+
+  const platformConfig = Platform.Config.get(platform);
+  const isProjectLocked = isLockedProjectViewer || platformConfig.isDeprecated;
+  const isPreviewerOrLockedViewer = isPreviewer || isProjectLocked;
+
+  const projectMembersModal = useModal(Modals.Project.Members);
+
+  const withExport = !isPreviewerOrLockedViewer && canExportModel && canExportPrototype && !hideExports.isEnabled;
+  const withSharePrototype = !isPreviewerOrLockedViewer && canSharePrototype;
+  const withDuplicateOption = !isPreviewerOrLockedViewer && canManageProjects;
+  const withInviteCollaborators = !isPreviewerOrLockedViewer && canAddCollaborators && !!projectID;
+  const withCopyCloneLinkOption = !isPreviewerOrLockedViewer && canManageProjects && !hideExports.isEnabled;
+
+  return [
+    { key: 'back', label: 'Back to dashboard', iconName: 'ArrowLeft', onClick: () => goToDashboard() },
+    ...conditionalArrayItems<NavigationLogoItem>(withSharePrototype || withInviteCollaborators || withExport, { key: 'divider-1', divider: true }),
+    ...conditionalArrayItems<NavigationLogoItem>(withSharePrototype, {
+      key: 'share',
+      label: 'Share prototype',
+      onClick: (props) => props.sharePrototype(),
+      iconName: 'SharePrototype',
+    }),
+    ...conditionalArrayItems<NavigationLogoItem>(withInviteCollaborators, {
+      key: 'invite',
+      label: 'Invite collaborators',
+      onClick: () => projectMembersModal.openVoid({ projectID: projectID! }),
+      iconName: 'Collaborators',
+    }),
+    ...conditionalArrayItems<NavigationLogoItem>(withExport, {
+      key: 'export',
+      label: 'Export as...',
+      onClick: (props) => props.export(),
+      iconName: 'Export',
+    }),
+    ...conditionalArrayItems<NavigationLogoItem>(withDuplicateOption || withCopyCloneLinkOption, { key: 'divider-2', divider: true }),
+    ...conditionalArrayItems<NavigationLogoItem>(withDuplicateOption, {
+      key: 'duplicate',
+      label: 'Duplicate agent',
+      onClick: onDuplicate,
+      iconName: 'Duplicate',
+    }),
+    ...conditionalArrayItems<NavigationLogoItem>(withCopyCloneLinkOption, {
+      key: 'copy-clone-link',
+      label: 'Copy clone link',
+      onClick: onCopyCloneLink,
+      iconName: 'Import',
+    }),
+  ];
+};
 
 export const useAssistantNavigationItems = () => {
   const location = useLocation();
@@ -38,42 +120,52 @@ export const useAssistantNavigationItems = () => {
         path: designerPath,
         testID: 'designer',
         params: domainID && diagramID ? { domainID, diagramID } : {},
+        hotkey: '',
         isActive: isItemActive(designerPath),
         iconName: 'Designer',
+        tooltipLabel: 'Designer',
       }),
       ...conditionalArrayItems<IAssistantNavigationItem>(canEditProject, {
         path: Path.PROJECT_CMS,
         testID: 'cms',
+        hotkey: '',
         isActive: isItemActive(Path.PROJECT_CMS),
         iconName: 'Content',
+        tooltipLabel: 'Content',
       }),
       ...conditionalArrayItems<IAssistantNavigationItem>(canViewConversations, {
         path: Path.PROJECT_CONVERSATIONS,
         testID: 'transcripts',
+        hotkey: '',
         isActive: isItemActive(Path.PROJECT_CONVERSATIONS),
         iconName: 'Transcripts',
+        tooltipLabel: 'Transcripts',
       }),
       {
         path: Path.PROJECT_ANALYTICS,
         testID: 'analytics',
         isActive: isItemActive(Path.PROJECT_ANALYTICS),
-        iconName: 'Measure',
+        iconName: 'Measure' as const,
+        tooltipLabel: 'Analytics',
       },
-
       ...conditionalArrayItems<IAssistantNavigationItem>(canEditAPIKey || viewerAPIKeyAccess.isEnabled, {
         path: Path.PUBLISH_API,
         testID: 'publishing',
+        hotkey: '',
         isActive: isItemActive(Path.PUBLISH_API),
         iconName: 'Api',
+        tooltipLabel: 'Integration',
       }),
 
       ...conditionalArrayItems<IAssistantNavigationItem>(canEditProject, {
         path: Path.PROJECT_SETTINGS,
         testID: 'settings',
+        hotkey: '',
         isActive: isItemActive(Path.PROJECT_SETTINGS),
         iconName: 'Settings',
+        tooltipLabel: 'Settings',
       }),
-    ];
+    ].map<IAssistantNavigationItem>((item, index) => ({ ...item, hotkey: String(index + 1) }));
   }, [location.pathname, canViewConversations, canEditAPIKey, viewerAPIKeyAccess.isEnabled, canEditProject, domainID, diagramID]);
 };
 
@@ -83,8 +175,8 @@ export const useAssistantNavigationHotkeys = (items: IAssistantNavigationItem[])
 
   const hotkeys = useMemo(
     () =>
-      items.map<HotkeyItem>((item, index) => ({
-        hotkey: String(index + 1),
+      items.map<HotkeyItem>((item) => ({
+        hotkey: item.hotkey,
         callback: () => history.push(getResolvedPath(item.path, item.params)),
         preventDefault: true,
       })),

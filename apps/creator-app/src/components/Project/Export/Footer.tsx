@@ -8,20 +8,19 @@ import * as Documentation from '@/config/documentation';
 import * as NLP from '@/config/nlp';
 import { ExportType } from '@/constants';
 import { Permission } from '@/constants/permissions';
-import * as Tracking from '@/ducks/tracking';
 import { useUpgradeModal } from '@/hooks/modal.hook';
 import { usePermissionAction } from '@/hooks/permission';
 
 import { Context } from './Context';
 
 interface FooterProps extends BaseProps {
-  origin: Tracking.ModelExportOriginType;
+  origin?: string;
   linkURL?: string;
   withoutLink?: boolean;
   selectedItems?: string[];
 }
 
-export const Footer: React.FC<FooterProps> = ({ origin, linkURL, selectedItems, testID }) => {
+export const Footer: React.FC<FooterProps> = ({ origin = 'Share Menu', linkURL, selectedItems, testID }) => {
   const { onExport, exportType, isExporting, canvasExportFormat, exportNLPType, exportIntents } = React.useContext(Context)!;
 
   const noModelData = exportType === ExportType.MODEL && exportIntents.length === 0 && !selectedItems?.length;

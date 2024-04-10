@@ -18,10 +18,11 @@ export const DiagramHotkeys = React.memo(() => {
   const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
   const [showHintFeatures] = usePermission(Permission.CANVAS_HINT_FEATURES);
 
-  const isCanvasOnly = useSelector(UI.isCanvasOnlyShowingSelector);
+  const isCanvasOnly = useSelector(UI.selectors.isCanvasOnly);
 
   const goToPrototype = useDispatch(Router.goToCurrentPrototype);
-  const toggleCanvasOnly = useDispatch(UI.toggleCanvasOnly);
+  const toggleCanvasOnly = useDispatch(UI.action.ToggleCanvasOnly);
+  const toggleCanvasSidebar = useDispatch(UI.action.ToggleCanvasSidebar);
 
   const activeModalID = ModalsV2.useActiveModalID();
   const manualSaveModal = ModalsV2.useModal(ModalsV2.Project.ManualSaveBackup);
@@ -64,13 +65,13 @@ export const DiagramHotkeys = React.memo(() => {
       { hotkey: Hotkey.RUN_MODE, callback: () => goToPrototype(), preventDefault: true, disable: disableCanvasHotkeys },
       { hotkey: Hotkey.ROOT_NODE, callback: onFocusHome, preventDefault: true, disable: disableCanvasHotkeys },
       { hotkey: Hotkey.MOVE_MODE, callback: onDisableModes, preventDefault: true },
-      { hotkey: Hotkey.SHOW_HIDE_UI, callback: toggleCanvasOnly, preventDefault: true },
       { hotkey: Hotkey.OPEN_COMMENTING, callback: onToggleCommenting, preventDefault: true, disable: disableHintHotkeys },
       { hotkey: Hotkey.ADD_MARKUP_NOTE, callback: markup.toggleTextCreating, preventDefault: true, disable: disableHintHotkeys },
       { hotkey: Hotkey.ADD_MARKUP_IMAGE, callback: markup.triggerMediaUpload, preventDefault: true, disable: disableHintHotkeys },
       { hotkey: Hotkey.CLOSE_CANVAS_MODE, callback: onDisableModes, preventDefault: true, disable: disableCanvasCloseMode },
+      { hotkey: Hotkey.CANVAS_SHOW_HIDE_UI, callback: () => toggleCanvasOnly(), preventDefault: true },
+      { hotkey: Hotkey.CANVAS_TOGGLE_SIDEBAR, callback: () => toggleCanvasSidebar(), preventDefault: true },
       { hotkey: Hotkey.OPEN_MANUAL_SAVE_MODAL, callback: () => manualSaveModal.openVoid({}), preventDefault: true, disable: disableEditHotkeys },
-      { hotkey: Hotkey.CLOSE_CANVAS_ONLY_MODE, callback: toggleCanvasOnly, preventDefault: true, disable: !isCanvasOnly },
     ],
     [disableEditHotkeys, disableCanvasHotkeys, disableHintHotkeys, disableCanvasCloseMode, isCanvasOnly]
   );

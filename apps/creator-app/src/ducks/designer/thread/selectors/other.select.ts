@@ -30,9 +30,9 @@ export const allAvailable = createSelector([all, diagramMapSelector], (threads, 
 
 const threadFilter = createSelector(
   [
-    UI.isWorkflowThreadsOnly,
-    UI.isDomainThreadsOnly,
-    UI.isMentionedThreadsOnly,
+    UI.selectors.isWorkflowThreadsOnly,
+    UI.selectors.isDomainThreadsOnly,
+    UI.selectors.isMentionedThreadsOnly,
     Account.userIDSelector,
     activeDomainSelector,
     CreatorV2.activeDiagramIDSelector,

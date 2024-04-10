@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { stopImmediatePropagation } from '@voiceflow/ui';
 import React from 'react';
@@ -5,8 +6,10 @@ import React from 'react';
 import Drawer from '@/components/Drawer';
 import { BlockType } from '@/constants';
 import { NamespaceProvider } from '@/contexts/NamespaceContext';
+import { UI } from '@/ducks';
 import * as CreatorV2 from '@/ducks/creatorV2';
-import { useActiveProjectConfig, useFeature, useHideVoiceflowAssistant, useRAF, useSelector, useTheme } from '@/hooks';
+import { useActiveProjectConfig, useFeature, useHideVoiceflowAssistant, useRAF, useTheme } from '@/hooks';
+import { useSelector } from '@/hooks/store.hook';
 import { LockedBlockOverlay } from '@/pages/Canvas/components/LockedEditorOverlay';
 import { EngineContext, ManagerContext } from '@/pages/Canvas/contexts';
 import BlockEditor from '@/pages/Canvas/editors/BlockEditor';
@@ -32,6 +35,7 @@ const EditSidebar = () => {
   const data = useSelector(CreatorV2.focusedNodeDataSelector);
   const focus = useSelector(CreatorV2.creatorFocusSelector);
   const getNodeByID = useSelector(CreatorV2.getNodeByIDSelector);
+  const isCanvasOnly = useSelector(UI.selectors.isCanvasOnly);
 
   const engine = React.useContext(EngineContext)!;
   const getManager = React.useContext(ManagerContext)!;
@@ -94,7 +98,6 @@ const EditSidebar = () => {
     }
 
     prevAnimationDistance.current =
-      // eslint-disable-next-line no-nested-ternary
       prevPathLength.current < path.length ? 40 : prevPathLength.current > path.length ? -40 : prevAnimationDistance.current;
 
     const managerEl = Manager && (
@@ -162,8 +165,8 @@ const EditSidebar = () => {
         direction={Drawer.Direction.LEFT}
         disableAnimation={!shouldRender}
         style={{
-          top: cmsWorkflows.isEnabled ? theme.components.header.newHeight : undefined,
-          height: cmsWorkflows.isEnabled ? `calc(100% - ${theme.components.header.newHeight}px)` : undefined,
+          top: cmsWorkflows.isEnabled ? (isCanvasOnly ? 0 : theme.components.header.newHeight) : undefined,
+          height: cmsWorkflows.isEnabled ? (isCanvasOnly ? '100%' : `calc(100% - ${theme.components.header.newHeight}px)`) : undefined,
         }}
       >
         {!fullScreen && !!path.length && editor}

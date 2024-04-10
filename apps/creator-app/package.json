@@ -85,7 +85,7 @@
     "@voiceflow/exception": "1.5.3",
     "@voiceflow/google-dfes-types": "2.16.57",
     "@voiceflow/google-types": "2.20.57",
-    "@voiceflow/icons": "1.17.1",
+    "@voiceflow/icons": "1.18.0",
     "@voiceflow/internal": "3.2.3",
     "@voiceflow/platform-config": "workspace:*",
     "@voiceflow/react-chat": "1.51.3",

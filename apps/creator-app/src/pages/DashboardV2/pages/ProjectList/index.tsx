@@ -44,6 +44,7 @@ const ProjectList: React.FC = () => {
   const getMemberByIDSelector = useSelector(WorkspaceV2.active.getMemberByIDSelector);
   const isTrialExpired = useSelector(WorkspaceV2.active.organizationTrialExpiredSelector);
 
+  const goToCMSWorkflow = useDispatch(Router.goToCMSWorkflow);
   const goToCanvasWithVersionID = useDispatch(Router.goToCanvasWithVersionID);
   const goToAssistantOverview = useDispatch(Router.goToAssistantOverview);
 
@@ -122,8 +123,8 @@ const ProjectList: React.FC = () => {
                 <AssistantCard
                   {...getProjectStatusAndMembers({ project: item, activeViewers: activeViewersPerProject[item.id], getMemberByIDSelector })}
                   project={item}
-                  onClickCard={() => (cmsWorkflows.isEnabled ? goToCanvasWithVersionID(item.versionID) : goToAssistantOverview(item.versionID))}
-                  onClickDesigner={() => goToCanvasWithVersionID(item.versionID)}
+                  onClickCard={() => (cmsWorkflows.isEnabled ? goToCMSWorkflow(item.versionID) : goToAssistantOverview(item.versionID))}
+                  onClickDesigner={() => (cmsWorkflows.isEnabled ? goToCMSWorkflow(item.versionID) : goToCanvasWithVersionID(item.versionID))}
                 />
               </ProjectIdentityProvider>
             ))}

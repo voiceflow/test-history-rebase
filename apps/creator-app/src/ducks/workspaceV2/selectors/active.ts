@@ -13,6 +13,7 @@ import { allEditorMemberIDs as allProjectsEditorMemberIDs } from '@/ducks/projec
 import * as Session from '@/ducks/session';
 import { createCurriedSelector, creatorIDParamSelector } from '@/ducks/utils';
 import { idsParamSelector } from '@/ducks/utils/crudV2';
+import { ChargebeeSubscriptionStatus } from '@/models';
 import { isAdminUserRole, isEditorUserRole } from '@/utils/role';
 
 import { getWorkspaceByIDSelector } from './base';
@@ -112,7 +113,11 @@ export const settingsSelector = createSelector([workspaceSelector], (workspace) 
 
 export const dashboardKanbanSettingsSelector = createSelector([settingsSelector], (settings) => settings?.dashboardKanban);
 
-export const isLockedSelector = createSelector([stateSelector], (state) => state === Realtime.WorkspaceActivationState.LOCKED);
+export const isLockedSelector = createSelector([stateSelector, localOrganizationSelector], (state, organization) =>
+  organization?.subscription
+    ? organization.subscription.status === ChargebeeSubscriptionStatus.CANCELLED
+    : state === Realtime.WorkspaceActivationState.LOCKED
+);
 
 export const projectsLimitSelector = createSelector(
   [workspaceSelector, localOrganizationSelector],

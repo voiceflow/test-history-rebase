@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Flex, SvgIcon, TippyTooltip, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
@@ -7,8 +8,10 @@ import { SectionVariant, UncontrolledSection as Section } from '@/components/Sec
 import SoundToggle from '@/components/SoundToggle';
 import { Permission } from '@/constants/permissions';
 import { PrototypeStatus } from '@/constants/prototype';
+import { UI } from '@/ducks';
 import * as PrototypeDuck from '@/ducks/prototype';
 import { useDispatch, useEventualEngine, useFeature, usePermission, useTheme } from '@/hooks';
+import { useSelector } from '@/hooks/store.hook';
 import { useToggle } from '@/hooks/toggle';
 import { NLUTrainingModelContext } from '@/pages/Project/contexts';
 import Prototype from '@/pages/Prototype';
@@ -25,6 +28,7 @@ const PrototypeSidebar: React.FC = () => {
   const prototypeAPI = React.useContext(PrototypeContext);
   const nluTrainingModel = React.useContext(NLUTrainingModelContext);
   const compilePrototype = useDispatch(PrototypeDuck.compilePrototype);
+  const isCanvasOnly = useSelector(UI.selectors.isCanvasOnly);
   const { state, actions, config } = prototypeAPI;
   const { locales, projectType, isMuted } = config;
   const { status } = state;
@@ -105,8 +109,8 @@ const PrototypeSidebar: React.FC = () => {
       width={theme.components.prototypeSidebar.width}
       direction={Drawer.Direction.LEFT}
       style={{
-        top: cmsWorkflows.isEnabled ? theme.components.header.newHeight : undefined,
-        height: cmsWorkflows.isEnabled ? `calc(100% - ${theme.components.header.newHeight}px)` : undefined,
+        top: cmsWorkflows.isEnabled ? (isCanvasOnly ? 0 : theme.components.header.newHeight) : undefined,
+        height: cmsWorkflows.isEnabled ? (isCanvasOnly ? '100%' : `calc(100% - ${theme.components.header.newHeight}px)`) : undefined,
       }}
     >
       <Container>

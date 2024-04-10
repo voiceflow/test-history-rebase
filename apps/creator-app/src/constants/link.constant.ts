@@ -1,8 +1,10 @@
 export const LEARN_LINK = 'https://link.voiceflow.com/docs';
+export const STATUS_LINK = 'https://status.voiceflow.com/';
 export const DISCORD_LINK = 'https://link.voiceflow.com/community';
 export const PRICING_LINK = 'https://www.voiceflow.com/pricing';
 export const GET_HELP_LINK = 'mailto:support@voiceflow.com';
 export const TEMPLATES_LINK = 'https://link.voiceflow.com/templates';
+export const API_LEARN_LINK = 'https://developer.voiceflow.com/docs/get-started';
 export const CHANGELOG_LINK = 'https://changelog.voiceflow.com/en';
 export const BOOK_DEMO_LINK = 'https://www.voiceflow.com/demo';
 export const DESKTOP_APP_LINK = 'https://www.voiceflow.com/desktop';

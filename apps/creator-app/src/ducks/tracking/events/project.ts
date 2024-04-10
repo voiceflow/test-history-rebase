@@ -6,7 +6,6 @@ import * as NLP from '@/config/nlp';
 import { ExportFormat as CanvasExportFormat, ExportType } from '@/constants';
 import { projectByIDSelector } from '@/ducks/projectV2/selectors';
 import { PrototypeSettings } from '@/ducks/prototype/types';
-import * as Tracking from '@/ducks/tracking';
 
 import { EventName } from '../constants';
 import { ProjectSessionEventInfo } from '../types';
@@ -143,7 +142,7 @@ export const trackActiveProjectPublishAttempt = createVersionEventTracker((event
 );
 
 export const trackActiveProjectExportInteractionModel = createVersionEventTracker<{
-  origin: Tracking.ModelExportOriginType;
+  origin: string;
   nlpType: NLP.Constants.NLPType;
 }>(({ nlpType, ...eventInfo }) =>
   client.analytics.track(createVersionEvent(EventName.INTERACTION_MODEL_EXPORTED, { ...eventInfo, nlp_provider: nlpType }))

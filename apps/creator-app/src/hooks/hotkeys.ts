@@ -17,7 +17,7 @@ type Callback = (event: KeyboardEvent) => void;
 const isHotkey = (key: Hotkey | string): key is Hotkey => key in HOTKEY_MAPPING;
 
 export interface HotkeyItem extends Options {
-  hotkey: Hotkey | string;
+  hotkey: Hotkey | (string & {});
   callback: Callback;
 }
 

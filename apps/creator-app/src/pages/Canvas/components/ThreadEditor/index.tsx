@@ -1,12 +1,13 @@
 import { Thread } from '@voiceflow/dtos';
 import { FeatureFlag } from '@voiceflow/realtime-sdk';
-import { stopPropagation, useOnClickOutside } from '@voiceflow/ui';
+import { stopPropagation, useDidUpdateEffect, useOnClickOutside } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 import { DismissableLayerContext } from 'react-dismissable-layers';
 
-import { Designer } from '@/ducks';
-import { useEnableDisable, useFeature, useResizeObserver, useSelector } from '@/hooks';
+import { Designer, UI } from '@/ducks';
+import { useEnableDisable, useFeature, useResizeObserver } from '@/hooks';
+import { useSelector } from '@/hooks/store.hook';
 import { EngineContext, FocusThreadContext } from '@/pages/Canvas/contexts';
 import { useCommentingMode } from '@/pages/Project/hooks';
 import { ClassName } from '@/styles/constants';
@@ -30,6 +31,7 @@ const ThreadEditor: React.FC<ThreadEditorProps> = ({ thread, replyRef, isFocused
   const { dismiss } = React.useContext(DismissableLayerContext);
   const focusThread = React.useContext(FocusThreadContext)!;
 
+  const isCanvasOnly = useSelector(UI.selectors.isCanvasOnly);
   const comments = useSelector(Designer.Thread.ThreadComment.selectors.getAllByThreadID)({ threadID: thread?.id ?? null });
 
   const isCommentingMode = useCommentingMode();
@@ -55,14 +57,20 @@ const ThreadEditor: React.FC<ThreadEditorProps> = ({ thread, replyRef, isFocused
     [isFocused, isCommentingMode]
   );
 
-  useResizeObserver(ref, scrollToBottom);
+  useResizeObserver(ref, () => {
+    scrollToBottom();
+    schedulePopperUpdate?.();
+  });
   React.useLayoutEffect(scrollToBottom, [isReplying]);
+
+  useDidUpdateEffect(() => schedulePopperUpdate?.(), [isCanvasOnly]);
 
   return (
     <Container
       ref={ref}
       onClick={stopPropagation(dismiss, true)}
       newLayout={cmsWorkflows.isEnabled}
+      canvasOnly={isCanvasOnly}
       className={cn(ClassName.THREAD_EDITOR, { [NEW_THREAD_EDITOR]: !thread })}
       onDragStart={stopPropagation(null, true)}
       onMouseDown={stopPropagation(null, true)}
@@ -70,7 +78,7 @@ const ThreadEditor: React.FC<ThreadEditorProps> = ({ thread, replyRef, isFocused
     >
       {thread ? (
         <>
-          <ThreadCommentContainer newLayout={cmsWorkflows.isEnabled}>
+          <ThreadCommentContainer>
             {comments.map((comment, index) => (
               <CommentEditor
                 key={comment.id}

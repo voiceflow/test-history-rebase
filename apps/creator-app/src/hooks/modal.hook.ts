@@ -67,3 +67,5 @@ export const useIntentBulkImportUtterancesModal = () => useModal<IntentBulkImpor
  */
 export const useConfirmModal = () => useModal<ConfirmProps>('Confirm');
 export const useConfirmV2Modal = () => useModal<IConformV2Modal>('ConfirmV2');
+
+export const useProjectDownloadModal = () => useModal('ProjectDownload');

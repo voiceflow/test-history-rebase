@@ -6,17 +6,13 @@ import { MenuTypes, toast, Utils } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
-import { PageProgress } from '@/components/PageProgressBar/utils';
 import * as Errors from '@/config/errors';
-import { ALEXA_SUNSET_PROJECT_ID, ExportFormat as CanvasExportFormat, PageProgressBar } from '@/constants';
-import { LimitType } from '@/constants/limits';
+import { ALEXA_SUNSET_PROJECT_ID, ExportFormat as CanvasExportFormat } from '@/constants';
 import { Permission } from '@/constants/permissions';
 import * as Export from '@/ducks/export';
-import * as Organization from '@/ducks/organization';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
-import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useFeature } from '@/hooks/feature';
 import { usePartialImport } from '@/hooks/partialImport';
 import { useHasPermissions, useIsLockedProjectViewer, useIsPreviewer, usePermission } from '@/hooks/permission';
@@ -26,8 +22,7 @@ import { ShareProjectTab } from '@/pages/Project/components/Header/constants';
 import { SharePopperContext } from '@/pages/Project/components/Header/contexts';
 import { copy } from '@/utils/clipboard';
 
-import { usePlanLimitedAction } from './planLimitV2';
-import { useConditionalLimitAction } from './planLimitV3';
+import { useOnAssistantDuplicate } from './assistant.hook';
 import { useDispatch } from './realtime';
 import { useTrackingEvents } from './tracking';
 
@@ -52,10 +47,9 @@ export const useProjectOptions = ({
   boardID,
   onRename,
   versionID,
-  projectID,
+  projectID = null,
   withDelete = true,
   withInvite = false,
-  onDuplicated,
 }: {
   canvas?: boolean;
   boardID?: string;
@@ -64,7 +58,6 @@ export const useProjectOptions = ({
   projectID?: string | null;
   withDelete?: boolean;
   withInvite?: boolean;
-  onDuplicated?: () => void;
   withConvertToDomain?: boolean;
   // eslint-disable-next-line sonarjs/cognitive-complexity
 }): ProjectOption[] => {
@@ -80,23 +73,18 @@ export const useProjectOptions = ({
   const [canAddCollaborators] = usePermission(Permission.ADD_COLLABORATORS);
   const isLockedProjectViewer = useIsLockedProjectViewer();
 
-  const workspaceID = useSelector(Session.activeWorkspaceIDSelector);
-  const projectsLimit = useSelector(WorkspaceV2.active.projectsLimitSelector);
-  const projectsCount = useSelector(ProjectV2.projectsCountSelector);
   const currentVersionID = useSelector(Session.activeVersionIDSelector);
   const project = useSelector(ProjectV2.projectByIDSelector, { id: projectID });
-  const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
 
   const platformConfig = Platform.Config.get(project?.platform);
   const isProjectLocked = isLockedProjectViewer || platformConfig.isDeprecated;
 
   const goToBackups = useDispatch(Router.goToBackups);
   const goToSettings = useDispatch(Router.goToSettings);
-  const duplicateProject = useDispatch(ProjectV2.duplicateProject);
+
   const updateProjectPrivacy = useDispatch(ProjectV2.updateProjectPrivacy);
   const exportCanvas = useDispatch(Export.exportCanvas);
 
-  const upgradeModal = ModalsV2.useModal(ModalsV2.Upgrade);
   const projectMembersModal = ModalsV2.useModal(ModalsV2.Project.Members);
   const projectDownloadModal = ModalsV2.useModal(ModalsV2.Project.Download);
 
@@ -108,51 +96,7 @@ export const useProjectOptions = ({
 
   const [trackingEvents] = useTrackingEvents();
 
-  const onDuplicateAction = async () => {
-    if (!workspaceID) {
-      datadogRum.addError(Errors.noActiveWorkspaceID());
-      toast.genericError();
-      return;
-    }
-
-    if (!projectID) {
-      datadogRum.addError(Errors.noActiveProjectID());
-      toast.genericError();
-      return;
-    }
-
-    try {
-      const toastID = toast.info('Duplicating Assistant...', { autoClose: 1000 });
-      PageProgress.start(PageProgressBar.ASSISTANT_DUPLICATING);
-
-      await duplicateProject(projectID, workspaceID, boardID);
-
-      onDuplicated?.();
-      toast.dismiss(toastID);
-      toast.success('Assistant cloned on the dashboard');
-    } catch {
-      toast.error('Cloning failed, please try again later or contact support');
-    } finally {
-      PageProgress.stop(PageProgressBar.ASSISTANT_DUPLICATING);
-    }
-  };
-
-  const legacyOnDuplicate = usePlanLimitedAction(LimitType.PROJECTS, {
-    value: projectsCount,
-    limit: projectsLimit,
-
-    onLimit: (config) => upgradeModal.openVoid(config.upgradeModal(config.payload)),
-
-    onAction: onDuplicateAction,
-  });
-
-  const newOnDuplicate = useConditionalLimitAction(LimitType.PROJECTS, {
-    value: projectsCount,
-    onLimit: (config) => upgradeModal.openVoid(config.upgradeModal(config.payload)),
-    onAction: onDuplicateAction,
-  });
-
-  const onDuplicate = subscription ? newOnDuplicate : legacyOnDuplicate;
+  const onDuplicate = useOnAssistantDuplicate(projectID, { boardID });
 
   const onClone = async () => {
     if (!projectID) {

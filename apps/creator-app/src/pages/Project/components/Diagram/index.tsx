@@ -28,9 +28,9 @@ const Diagram: React.FC = () => {
   const getEngine = useEventualEngine();
   const cmsWorkflows = useFeature(FeatureFlag.CMS_WORKFLOWS);
 
-  const canvasOnly = useSelector(UI.isCanvasOnlyShowingSelector);
+  const canvasOnly = useSelector(UI.selectors.isCanvasOnly);
 
-  const toggleCanvasOnly = useDispatch(UI.toggleCanvasOnly);
+  const toggleCanvasOnly = useDispatch(UI.action.ToggleCanvasOnly);
 
   const engine = useEventualEngine();
   const getManager = useManager();
@@ -86,12 +86,20 @@ const Diagram: React.FC = () => {
         {!isPrototypingMode && <DiagramHotkeys />}
 
         {/* design mode */}
-        {isDesignMode && (
-          <>
-            {cmsWorkflows.isEnabled ? <DiagramSidebar /> : <DesignMenu canvasOnly={canvasOnly} />}
-            <MarkupImageLoading />
-          </>
-        )}
+
+        {cmsWorkflows.isEnabled
+          ? !isPrototypingMode && (
+              <>
+                <DiagramSidebar />
+                <MarkupImageLoading />
+              </>
+            )
+          : isDesignMode && (
+              <>
+                <DesignMenu canvasOnly={canvasOnly} />
+                <MarkupImageLoading />
+              </>
+            )}
 
         <PrototypeOverlay />
       </ManagerProvider>

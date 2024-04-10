@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import { Utils } from '@voiceflow/common';
 import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import {
@@ -16,9 +17,10 @@ import { useHistory } from 'react-router-dom';
 
 import Drawer from '@/components/Drawer';
 import { Path } from '@/config/routes';
-import { Designer } from '@/ducks';
+import { Designer, UI } from '@/ducks';
 import * as CreatorV2 from '@/ducks/creatorV2';
-import { useFeature, useRAF, useSelector, useTheme } from '@/hooks';
+import { useFeature, useRAF, useTheme } from '@/hooks';
+import { useSelector } from '@/hooks/store.hook';
 import { EditorContentAnimation } from '@/pages/Canvas/components/Editor';
 import { FocusThreadContext } from '@/pages/Canvas/contexts';
 import { useCanvasRendered } from '@/pages/Canvas/hooks/canvas';
@@ -32,9 +34,11 @@ import { FilterType } from './constants';
 export interface ThreadHistoryDrawerProps {
   focusedTarget?: string | null;
 }
+
 export const ThreadHistoryDrawer: React.FC<ThreadHistoryDrawerProps> = () => {
   const theme = useTheme();
   const history = useHistory();
+  const isCanvasOnly = useSelector(UI.selectors.isCanvasOnly);
   const canvasRendered = useCanvasRendered();
   const focusThreadApi = React.useContext(FocusThreadContext);
   const isCommentingMode = useCommentingMode();
@@ -83,8 +87,8 @@ export const ThreadHistoryDrawer: React.FC<ThreadHistoryDrawerProps> = () => {
       style={{
         display: 'flex',
         flexDirection: 'column',
-        top: cmsWorkflows.isEnabled ? theme.components.header.newHeight : undefined,
-        height: cmsWorkflows.isEnabled ? `calc(100% - ${theme.components.header.newHeight}px)` : undefined,
+        top: cmsWorkflows.isEnabled ? (isCanvasOnly ? 0 : theme.components.header.newHeight) : undefined,
+        height: cmsWorkflows.isEnabled ? (isCanvasOnly ? '100%' : `calc(100% - ${theme.components.header.newHeight}px)`) : undefined,
       }}
       onPaste={stopImmediatePropagation()}
       direction={Drawer.Direction.LEFT}

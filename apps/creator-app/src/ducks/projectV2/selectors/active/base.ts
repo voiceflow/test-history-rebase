@@ -15,6 +15,7 @@ export const projectSelector = createSelector([Session.activeProjectIDSelector, 
   getProjectByID({ id: projectID })
 );
 
+export const hasSelector = createSelector([projectSelector], (project) => !!project);
 export const versionIDSelector = createSelector([projectSelector], (project) => project?.versionID);
 
 export const awarenessViewersSelector = createSelector(

@@ -10,13 +10,16 @@ import { Context } from './Context';
 import { Model } from './Model';
 
 export const Content: React.FC<{
-  withDataTypes?: boolean;
   checkedItems?: string[];
-}> = ({ checkedItems, withDataTypes = true }) => {
+  withDataTypes?: boolean;
+  disableAnimation?: boolean;
+}> = ({ checkedItems, withDataTypes = true, disableAnimation }) => {
   const { exportType, setExportType } = React.useContext(Context)!;
 
+  const Container = (disableAnimation ? Box : Animations.FadeLeft) as typeof Box;
+
   return (
-    <Animations.FadeLeft style={{ height: '100%' }} paddingTop={24} paddingX={32}>
+    <Container style={{ height: '100%' }} paddingTop={24} paddingX={32}>
       <Title fontSize={15} mb={16} textAlign="left">
         Export Type
       </Title>
@@ -36,6 +39,6 @@ export const Content: React.FC<{
           <Canvas />
         </Switch.Pane>
       </Switch>
-    </Animations.FadeLeft>
+    </Container>
   );
 };

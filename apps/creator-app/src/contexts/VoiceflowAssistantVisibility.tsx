@@ -1,7 +1,9 @@
 import { useContextApi } from '@voiceflow/ui';
 import React from 'react';
 
+import { useHotkey } from '@/hooks/hotkeys';
 import { useLocalStorageState } from '@/hooks/storage.hook';
+import { Hotkey } from '@/keymap';
 import VoiceflowAssistant from '@/vendors/voiceflowAssistant';
 
 export interface VoiceflowAssistantVisibilityContextValue {
@@ -25,7 +27,7 @@ export const VoiceflowAssistantVisibilityProvider: React.FC<React.PropsWithChild
 
   const [isEnabled, setIsEnabled] = useLocalStorageState(TOGGLE_CHATBOT_KEY, true);
 
-  const onToggleEnabled = React.useCallback(() => setIsEnabled(!isEnabled), [isEnabled]);
+  const onToggleEnabled = React.useCallback(() => setIsEnabled((prevEnabled) => !prevEnabled), []);
 
   const isShown = !ids.length && isEnabled;
   React.useEffect(() => {
@@ -37,6 +39,8 @@ export const VoiceflowAssistantVisibilityProvider: React.FC<React.PropsWithChild
   }, [isShown]);
 
   const api = useContextApi({ setIDs, onToggleEnabled, isEnabled, isShown });
+
+  useHotkey(Hotkey.TOGGLE_CHATBOT, onToggleEnabled);
 
   return <VoiceflowAssistantVisibilityContext.Provider value={api}>{children}</VoiceflowAssistantVisibilityContext.Provider>;
 };

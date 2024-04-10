@@ -23,8 +23,8 @@ interface MoveTypePopoverProps {
 }
 
 const MoveTypePopover: React.FC<MoveTypePopoverProps> = ({ closePopover }) => {
-  const canvasNavigation = useSelector(UI.canvasNavigationSelector);
-  const setCanvasNavigation = useDispatch(UI.setCanvasNavigation);
+  const canvasNavigation = useSelector(UI.selectors.canvasNavigation);
+  const setCanvasNavigation = useDispatch(UI.action.SetCanvasNavigation);
   const [trackEvents] = useTrackingEvents();
 
   const theme = useTheme();

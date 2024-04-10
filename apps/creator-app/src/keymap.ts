@@ -21,10 +21,6 @@ export enum Hotkey {
 
   USER_SPEECH = 'USER_SPEECH',
   OPEN_MANUAL_SAVE_MODAL = 'OPEN_MANUAL_SAVE_MODAL',
-  CLOSE_DESIGN_MENU = 'CLOSE_DESIGN_MENU',
-  TOGGLE_DESIGN_MENU_LOCK = 'TOGGLE_DESIGN_MENU_LOCK',
-  OPEN_DESIGN_MENU_STEPS_TAB = 'OPEN_DESIGN_MENU_STEPS_TAB',
-  OPEN_DESIGN_MENU_LAYERS_TAB = 'OPEN_DESIGN_MENU_LAYERS_TAB',
   HIDE_COMMENT_BUBBLES = 'HIDE_COMMENT_BUBBLES',
 
   FOCUS_DASHBOARD_SEARCH = 'FOCUS_DASHBOARD_SEARCH',
@@ -38,7 +34,6 @@ export enum Hotkey {
   CREATE_COMPONENT = 'CREATE_COMPONENT',
   CREATE_SUBTOPIC = 'CREATE_SUBTOPIC',
   ADD_TO_LIBRARY = 'ADD_TO_LIBRARY',
-  SHOW_HIDE_UI = 'SHOW_HIDE_UI',
   MOVE_FORWARD = 'MOVE_FORWARD',
   SAVE_BACKUP = 'SAVE_BACKUP',
   MOVE_BACKWARD = 'MOVE_BACKWARD',
@@ -46,7 +41,6 @@ export enum Hotkey {
   MOVE_MODE = 'MOVE_MODE',
   UPLOAD_PROJECT = 'UPLOAD_PROJECT',
   MULTISTEP_CONTINUE_NEXT_STEP = 'MULTISTEP_CONTINUE_NEXT_STEP',
-  CLOSE_CANVAS_ONLY_MODE = 'CLOSE_CANVAS_ONLY_MODE',
   PROTOTYPE_CLOSE_FULL_SCREEN = 'PROTOTYPE_CLOSE_FULL_SCREEN',
   PROTOTYPE_FULL_SCREEN_TOGGLE = 'PROTOTYPE_FULL_SCREEN_TOGGLE',
   SAVE = 'SAVE',
@@ -63,6 +57,11 @@ export enum Hotkey {
   GPT_GEN_REJECT_ALL = 'GPT_GEN_REJECT_ALL',
   GPT_GEN_ACCEPT_ITEM = 'GPT_GEN_ACCEPT_ITEM',
   GPT_GEN_REJECT_ITEM = 'GPT_GEN_REJECT_ITEM',
+
+  TOGGLE_CHATBOT = 'TOGGLE_CHATBOT',
+
+  CANVAS_SHOW_HIDE_UI = 'CANVAS_SHOW_HIDE_UI',
+  CANVAS_TOGGLE_SIDEBAR = 'CANVAS_TOGGLE_SIDEBAR',
 }
 
 enum SpecialKey {
@@ -111,7 +110,6 @@ const HOTKEY_MAPPING: Record<Hotkey, string | string[]> = {
   [Hotkey.ADD_TO_LIBRARY]: [`${SpecialKey.SHIFT}+${SpecialKey.CTRL}+l`, `${SpecialKey.SHIFT}+${SpecialKey.META}+l`],
   [Hotkey.USER_SPEECH]: SpecialKey.SPACE,
   [Hotkey.MOVE_FORWARD]: SpecialKey.RIGHT,
-  [Hotkey.SHOW_HIDE_UI]: [`${SpecialKey.CTRL}+\\`, `${SpecialKey.META}+\\`],
   [Hotkey.SAVE_BACKUP]: [`${SpecialKey.CTRL} + S`, `${SpecialKey.META} + S`],
   [Hotkey.MOVE_BACKWARD]: SpecialKey.LEFT,
   [Hotkey.UPLOAD_PROJECT]: [`${SpecialKey.CTRL}+u`, `${SpecialKey.META}+u`],
@@ -119,11 +117,8 @@ const HOTKEY_MAPPING: Record<Hotkey, string | string[]> = {
   [Hotkey.ADD_MARKUP_NOTE]: 'n',
   [Hotkey.ADD_MARKUP_IMAGE]: 'i',
   [Hotkey.CLOSE_CANVAS_MODE]: SpecialKey.ESC,
-  [Hotkey.CLOSE_DESIGN_MENU]: SpecialKey.ESC,
-  [Hotkey.CLOSE_CANVAS_ONLY_MODE]: SpecialKey.ESC,
-  [Hotkey.TOGGLE_DESIGN_MENU_LOCK]: ['/', '?'],
-  [Hotkey.OPEN_DESIGN_MENU_STEPS_TAB]: ['.', `${SpecialKey.SHIFT}+.`],
-  [Hotkey.OPEN_DESIGN_MENU_LAYERS_TAB]: [',', `${SpecialKey.SHIFT}+,`],
+  [Hotkey.CANVAS_SHOW_HIDE_UI]: [`${SpecialKey.CTRL}+.`, `${SpecialKey.META}+.`],
+  [Hotkey.CANVAS_TOGGLE_SIDEBAR]: [`${SpecialKey.CTRL}+\\`, `${SpecialKey.META}+\\`],
   [Hotkey.PROTOTYPE_CLOSE_FULL_SCREEN]: SpecialKey.ESC,
   [Hotkey.PROTOTYPE_FULL_SCREEN_TOGGLE]: 'f',
   [Hotkey.OPEN_MANUAL_SAVE_MODAL]: [`${SpecialKey.SHIFT}+${SpecialKey.CTRL}+s`, `${SpecialKey.SHIFT}+${SpecialKey.META}+s`],
@@ -145,6 +140,8 @@ const HOTKEY_MAPPING: Record<Hotkey, string | string[]> = {
   [Hotkey.GPT_GEN_REJECT_ALL]: SpecialKey.ESC,
   [Hotkey.GPT_GEN_ACCEPT_ITEM]: SpecialKey.ENTER,
   [Hotkey.GPT_GEN_REJECT_ITEM]: [SpecialKey.DELETE, SpecialKey.BACKSPACE],
+
+  [Hotkey.TOGGLE_CHATBOT]: [`${SpecialKey.CTRL}+/`, `${SpecialKey.META}+/`],
 };
 
 const SPECIAL_KEY_LABEL: Record<SpecialKey, string> = {

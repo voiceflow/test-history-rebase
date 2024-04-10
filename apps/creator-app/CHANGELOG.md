@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1469.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1469.2...@voiceflow/creator-app@1.1469.3) (2024-04-10)
+
+### Bug Fixes
+
+* also check assistant_ai flag (PL-923) ([#7967](https://github.com/voiceflow/creator-app/issues/7967)) ([6b95c7e](https://github.com/voiceflow/creator-app/commit/6b95c7e5cc370470fab0d60c66f03884940ad466))
+
 ## [1.1469.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1469.1...@voiceflow/creator-app@1.1469.2) (2024-04-09)
 
 **Note:** Version bump only for package @voiceflow/creator-app

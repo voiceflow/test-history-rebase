@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1471.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1470.0...@voiceflow/creator-app@1.1471.0) (2024-04-10)
+
+### Features
+
+* functions duplicate/import fix (COR-1856) ([#7970](https://github.com/voiceflow/creator-app/issues/7970)) ([1c7ece9](https://github.com/voiceflow/creator-app/commit/1c7ece96c3fa7c2f37e87535efd9cfab3099dacc))
+
 # [1.1470.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1469.3...@voiceflow/creator-app@1.1470.0) (2024-04-10)
 
 ### Features

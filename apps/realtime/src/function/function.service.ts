@@ -353,8 +353,8 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
     return this.postgresEM.transactional(async () => {
       const [sourceFunctions, sourceFunctionPaths, sourceFunctionVariables] = await Promise.all([
         this.findManyByEnvironmentAndIDs(context.environmentID, functionIDs),
-        this.functionPath.findManyByEnvironmentAndIDs(context.environmentID, functionIDs),
-        this.functionVariable.findManyByEnvironmentAndIDs(context.environmentID, functionIDs),
+        this.functionPath.findManyByFunctions(context.environmentID, functionIDs),
+        this.functionVariable.findManyByFunctions(context.environmentID, functionIDs),
       ]);
 
       const sourceFunctionPathsByFunctionID = _.groupBy(sourceFunctionPaths, (item) => item.functionID);
@@ -370,22 +370,24 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
         }))
       );
 
-      const functionPathsData = functions.flatMap((item, index) =>
-        sourceFunctionPathsByFunctionID[sourceFunctions[index].id].map((path) => ({
-          ...Utils.object.omit(path, ['id', 'createdAt', 'updatedAt', 'updatedByID']),
-          functionID: item.id,
-          assistantID: context.assistantID,
-          environmentID: context.environmentID,
-        }))
+      const functionPathsData = functions.flatMap(
+        (item, index) =>
+          sourceFunctionPathsByFunctionID[sourceFunctions[index].id]?.map((path) => ({
+            ...Utils.object.omit(path, ['id', 'createdAt', 'updatedAt', 'updatedByID']),
+            functionID: item.id,
+            assistantID: context.assistantID,
+            environmentID: context.environmentID,
+          })) ?? []
       );
 
-      const functionVariablesData = functions.flatMap((item, index) =>
-        sourceFunctionVariablesByFunctionID[sourceFunctions[index].id].map((path) => ({
-          ...Utils.object.omit(path, ['id', 'createdAt', 'updatedAt', 'updatedByID']),
-          functionID: item.id,
-          assistantID: context.assistantID,
-          environmentID: context.environmentID,
-        }))
+      const functionVariablesData = functions.flatMap(
+        (item, index) =>
+          sourceFunctionVariablesByFunctionID[sourceFunctions[index].id]?.map((path) => ({
+            ...Utils.object.omit(path, ['id', 'createdAt', 'updatedAt', 'updatedByID']),
+            functionID: item.id,
+            assistantID: context.assistantID,
+            environmentID: context.environmentID,
+          })) ?? []
       );
 
       const [functionPaths, functionVariables] = await Promise.all([

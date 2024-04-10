@@ -21,8 +21,8 @@ const CLASSIFY_OPTIONS = [
 ];
 
 const NLUSettings: React.FC = () => {
-  const hybridClassifyEnabled = useFeature(FeatureFlag.HYBRID_CLASSIFY)?.isEnabled;
-  const intentClassificationEnabled = useFeature(FeatureFlag.INTENT_CLASSIFICATION)?.isEnabled;
+  const hybridClassifyEnabled = useFeature(FeatureFlag.HYBRID_CLASSIFY).isEnabled;
+  const intentClassificationEnabled = useFeature(FeatureFlag.INTENT_CLASSIFICATION).isEnabled;
 
   const updateNLUSettings = useDispatch(ProjectV2.updateProjectNLUSettings);
   const nluSettings = useSelector(ProjectV2.active.nluSettings);

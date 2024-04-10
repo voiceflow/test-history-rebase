@@ -13,8 +13,9 @@ import { DisabledBoxState } from '@/components/State/DisabledBoxState/DisabledBo
 import { TipPortal } from '@/components/Tip/TipPortal/TipPortal.component';
 import { NLUTrainingDiffStatus } from '@/constants/enums/nlu-training-diff-status.enum';
 import { INTENT_PREVIEW_TIP_LEARN_LINK } from '@/constants/link.constant';
-import { Designer, Prototype, Version } from '@/ducks';
+import { Designer, Prototype } from '@/ducks';
 import { useInput, useInputState } from '@/hooks/input.hook';
+import { useIntentClassificationSettings } from '@/hooks/intent.hook';
 import { useAsyncEffect, useDidUpdateEffect } from '@/hooks/lifecircle.hook';
 import { useNotificationDismiss } from '@/hooks/notify.hook';
 import { useEnvironmentSessionStorageState } from '@/hooks/storage.hook';
@@ -38,8 +39,8 @@ export const IntentPreviewModal = modalsManager.create(
       const trainingModel = React.useContext(NLUTrainingModelContext);
       const dismissableLayer = React.useContext(DismissableLayerContext);
 
+      const storeSettings = useIntentClassificationSettings();
       const nluTrainingDiffData = useSelector(Designer.Environment.selectors.nluTrainingDiffData);
-      const storeIntentClassificationSettings = useSelector(Version.selectors.active.intentClassificationSettings);
 
       const compilePrototype = useDispatch(Prototype.compilePrototype);
       const previewUtterance = useDispatch(Designer.Intent.effect.previewUtterance);
@@ -47,7 +48,7 @@ export const IntentPreviewModal = modalsManager.create(
       const showTrainedRef = useRef(false);
       const utteranceState = useInputState();
       const trainingNotification = useNotificationDismiss();
-      const [settings, setSettings] = useState(storeIntentClassificationSettings);
+      const [settings, setSettings] = useState(storeSettings);
       const [feedbackKey, setFeedbackKey] = useState(0);
       const [classifyStatus, setClassifyStatus] = useState<'success' | 'error'>('success');
       const [classifyLatency, setClassifyLatency] = useState(0);
@@ -128,12 +129,6 @@ export const IntentPreviewModal = modalsManager.create(
 
       const onReuseLastUtterance = () => utteranceInput.setValue(lastUsedUtterance);
 
-      const isLLMClassification = storeIntentClassificationSettings.type === IntentClassificationType.LLM;
-
-      const intentPreviewFeedback = !!classifiedIntents && (
-        <IntentPreviewFeedback key={feedbackKey} settings={settings} utterance={lastUsedUtterance} classifiedIntents={classifiedIntents} />
-      );
-
       useDidUpdateEffect(() => {
         if (trainingModel.isTraining) return;
 
@@ -157,6 +152,11 @@ export const IntentPreviewModal = modalsManager.create(
 
         await trainingModel.calculateDiff();
       }, []);
+
+      const isLLMClassification = storeSettings.type === IntentClassificationType.LLM;
+      const intentPreviewFeedback = !!classifiedIntents && (
+        <IntentPreviewFeedback key={feedbackKey} settings={settings} utterance={lastUsedUtterance} classifiedIntents={classifiedIntents} />
+      );
 
       return (
         <>
@@ -183,7 +183,7 @@ export const IntentPreviewModal = modalsManager.create(
                 secondaryButton={
                   isLLMClassification &&
                   settings.type === IntentClassificationType.LLM && (
-                    <IntentPreviewSettings settings={settings} initialSettings={storeIntentClassificationSettings} onSettingsChange={setSettings} />
+                    <IntentPreviewSettings settings={settings} initialSettings={storeSettings} onSettingsChange={setSettings} />
                   )
                 }
               />

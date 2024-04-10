@@ -13,3 +13,5 @@ export const intentClassificationSettings = createSelector(
   [settings],
   (settings) => settings?.intentClassification ?? DEFAULT_INTENT_CLASSIFICATION_NLU_SETTINGS
 );
+
+export const intentClassificationSettingsType = createSelector([intentClassificationSettings], (settings) => settings.type);

@@ -1,29 +1,67 @@
 import { Nullish, Utils } from '@voiceflow/common';
-import { IntentClassificationType } from '@voiceflow/dtos';
+import { DEFAULT_INTENT_CLASSIFICATION_LLM_SETTINGS, DEFAULT_INTENT_CLASSIFICATION_NLU_SETTINGS, IntentClassificationType } from '@voiceflow/dtos';
 import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { StrengthGauge, usePersistFunction } from '@voiceflow/ui';
-import React from 'react';
+import { useCreateConst } from '@voiceflow/ui-next';
+import React, { useEffect } from 'react';
 
 import { Designer, Project, Version } from '@/ducks';
+import { useDefaultAIModel, useIsAIFeaturesEnabled } from '@/hooks/ai.hook';
 import { useFeature } from '@/hooks/feature';
 import { useIntentCreateModal, useIntentEditModal } from '@/hooks/modal.hook';
-import { useSelector } from '@/hooks/store.hook';
+import { useDispatch, useSelector } from '@/hooks/store.hook';
 import { getIntentStrengthLevel, validateIntentName } from '@/utils/intent';
 import { isIntentBuiltIn } from '@/utils/intent.util';
 
 import { useActiveProjectTypeConfig } from './platformConfig';
 
 export const useIsLLMIntentClassificationEnabled = () => {
+  const aiFeaturesEnabled = useIsAIFeaturesEnabled();
   const intentClassification = useFeature(FeatureFlag.INTENT_CLASSIFICATION);
 
   const settings = useSelector(Version.selectors.active.intentClassificationSettings);
   const legacyIsLLMClassifier = useSelector(Project.active.isLLMClassifier);
 
-  return intentClassification.isEnabled ? settings?.type === IntentClassificationType.LLM : legacyIsLLMClassifier;
+  return intentClassification.isEnabled ? aiFeaturesEnabled && settings?.type === IntentClassificationType.LLM : legacyIsLLMClassifier;
 };
 
 export const useIntentDescriptionPlaceholder = () => {
   return useIsLLMIntentClassificationEnabled() ? 'Trigger this intent when…' : 'Enter description (optional)';
+};
+
+export const useIntentGetDefaultClassificationSettings = () => {
+  const defaultAIModel = useDefaultAIModel();
+
+  return (type: IntentClassificationType) => {
+    if (type === IntentClassificationType.NLU) {
+      return DEFAULT_INTENT_CLASSIFICATION_NLU_SETTINGS;
+    }
+
+    return {
+      ...DEFAULT_INTENT_CLASSIFICATION_LLM_SETTINGS,
+      params: { ...DEFAULT_INTENT_CLASSIFICATION_LLM_SETTINGS.params, model: defaultAIModel },
+    };
+  };
+};
+
+export const useIntentClassificationSettings = () => {
+  const settings = useSelector(Version.selectors.active.intentClassificationSettings);
+  const aiFeaturesEnabled = useIsAIFeaturesEnabled();
+  const getDefaultSettings = useIntentGetDefaultClassificationSettings();
+  const defaultNLUSettings = useCreateConst(() => getDefaultSettings(IntentClassificationType.NLU));
+
+  const updateSettings = useDispatch(Version.effect.updateSettings);
+
+  // if AI features are disabled, reset the settings to NLU
+  const shouldResetToNLU = !aiFeaturesEnabled && settings.type === IntentClassificationType.LLM;
+
+  useEffect(() => {
+    if (shouldResetToNLU) {
+      updateSettings({ intentClassification: defaultNLUSettings });
+    }
+  }, [shouldResetToNLU]);
+
+  return shouldResetToNLU ? defaultNLUSettings : settings;
 };
 
 export const useOnOpenIntentCreateModal = () => {

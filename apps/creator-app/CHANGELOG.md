@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1470.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1469.3...@voiceflow/creator-app@1.1470.0) (2024-04-10)
+
+### Features
+
+* update assistant poppers (COR-1650) ([#7962](https://github.com/voiceflow/creator-app/issues/7962)) ([9925ff5](https://github.com/voiceflow/creator-app/commit/9925ff5ac429889a476835be494982ee3f8b408a))
+
 ## [1.1469.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1469.2...@voiceflow/creator-app@1.1469.3) (2024-04-10)
 
 ### Bug Fixes

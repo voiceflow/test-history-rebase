@@ -12,14 +12,13 @@ import * as S from './styles';
 interface InviteByEmailProps {
   buttonLabel?: string;
   onAddMembers: (emails: string[], role: UserRole) => void | Promise<void>;
-  isOneSeatPlan?: boolean;
 }
 
 const isEmailsValid = (emails: string[]) => emails.every(Utils.emails.isValidEmail);
 const parseEmails = (emailInputValue: string) => emailInputValue.split(',').map((email) => email.trim());
 
-const InviteByEmail: React.FC<InviteByEmailProps> = ({ buttonLabel = 'Add', onAddMembers, isOneSeatPlan }) => {
-  const [role, setRole] = React.useState<UserRole>(isOneSeatPlan ? UserRole.VIEWER : UserRole.EDITOR);
+const InviteByEmail: React.FC<InviteByEmailProps> = ({ buttonLabel = 'Add', onAddMembers }) => {
+  const [role, setRole] = React.useState<UserRole>(UserRole.EDITOR);
   const [error, setError] = React.useState('');
   const [emails, setEmails] = React.useState('');
 
@@ -61,7 +60,7 @@ const InviteByEmail: React.FC<InviteByEmailProps> = ({ buttonLabel = 'Add', onAd
         >
           {() => (
             <Box top={-1} position="relative">
-              <Members.RoleSelect value={role} onChange={setRole} disabled={isOneSeatPlan} />
+              <Members.RoleSelect value={role} onChange={setRole} />
             </Box>
           )}
         </SelectInputGroup>

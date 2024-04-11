@@ -1,4 +1,4 @@
-import { PlanType, UserRole } from '@voiceflow/internal';
+import { UserRole } from '@voiceflow/internal';
 import { Box, Button, Input, Members, Modal, OverflowText, System, toast } from '@voiceflow/ui';
 import React from 'react';
 
@@ -14,10 +14,7 @@ import { isEditorUserRole } from '@/utils/role';
 
 import { useDedupeInvites, useInviteLink } from '../hooks';
 
-const ONE_SEAT_PLANS = new Set([PlanType.STARTER, PlanType.PRO]);
-
 const DoubleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, animated }) => {
-  const plan = useSelector(WorkspaceV2.active.planSelector);
   const numberOfSeats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);
   const usedEditorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);
   const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
@@ -29,10 +26,7 @@ const DoubleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, a
 
   const onAddSeats = useOnAddSeats();
 
-  // FIXME: remove FF https://voiceflow.atlassian.net/browse/CV3-994
-  const isOneSeatPlan = !!subscription && ONE_SEAT_PLANS.has(plan);
-
-  const inviteLink = useInviteLink({ initialUserRole: isOneSeatPlan ? UserRole.VIEWER : UserRole.EDITOR });
+  const inviteLink = useInviteLink({ initialUserRole: UserRole.EDITOR });
   const dedupeInvites = useDedupeInvites();
 
   const onAddMembers = (emails: string[], role: UserRole) => {
@@ -64,7 +58,7 @@ const DoubleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, a
         <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />}>Invite Members</Modal.Header>
 
         <Modal.Body>
-          <WorkspaceUI.InviteByEmail buttonLabel="Invite" onAddMembers={onAddMembers} isOneSeatPlan={isOneSeatPlan} />
+          <WorkspaceUI.InviteByEmail buttonLabel="Invite" onAddMembers={onAddMembers} />
 
           <Box mt={12}>
             <WorkspaceUI.TakenSeatsMessage />
@@ -92,7 +86,7 @@ const DoubleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, a
                 </Input>
               )}
             >
-              {() => <Members.RoleSelect value={inviteLink.userRole} onChange={inviteLink.onChangeRole} disabled={isOneSeatPlan} />}
+              {() => <Members.RoleSelect value={inviteLink.userRole} onChange={inviteLink.onChangeRole} />}
             </SelectInputGroup>
 
             <Button onClick={inviteLink.onCopy} disabled={!inviteLink.link} variant={Button.Variant.PRIMARY}>

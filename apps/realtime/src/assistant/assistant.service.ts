@@ -26,6 +26,7 @@ import * as Platform from '@voiceflow/platform-config/backend';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { IdentityClient } from '@voiceflow/sdk-identity';
 import { Actions } from '@voiceflow/sdk-logux-designer';
+import type { Request } from 'express';
 import { Patch } from 'immer';
 import _ from 'lodash';
 
@@ -104,7 +105,10 @@ export class AssistantService extends MutableService<AssistantORM> {
 
   /* Helpers  */
 
-  private async resolveEnvironmentIDAlias(environmentID: string, assistantID?: string) {
+  public async resolveEnvironmentIDAlias(request: Request) {
+    const { environmentID } = request.params;
+    const assistantID = request.get('assistantID') ?? request.get('projectid');
+
     const VERSION_ID_ALIAS_SET = new Set<string>(Object.values(VersionIDAlias));
 
     if (!VERSION_ID_ALIAS_SET.has(environmentID)) {
@@ -512,7 +516,6 @@ export class AssistantService extends MutableService<AssistantORM> {
     userID,
     backup,
     programs: withPrograms,
-    assistantID,
     environmentID,
     centerDiagrams,
     prototypePrograms: withPrototypePrograms,
@@ -520,14 +523,12 @@ export class AssistantService extends MutableService<AssistantORM> {
     userID: number;
     backup?: boolean;
     programs?: boolean;
-    assistantID?: string;
     environmentID: string;
     centerDiagrams?: boolean;
     prototypePrograms?: boolean;
   }) {
     return this.postgresEM.transactional(async () => {
-      const resolvedEnvironmentID = await this.resolveEnvironmentIDAlias(environmentID, assistantID);
-      const { projectID } = await this.version.findOneOrFailWithFields(resolvedEnvironmentID, ['projectID']);
+      const { projectID } = await this.version.findOneOrFailWithFields(environmentID, ['projectID']);
 
       const [project, variableStates] = await Promise.all([
         this.project.findOneOrFail(projectID.toJSON()),
@@ -537,7 +538,7 @@ export class AssistantService extends MutableService<AssistantORM> {
       const { cms, version, diagrams } = await this.environment.exportJSON({
         userID,
         workspaceID: project.teamID,
-        environmentID: resolvedEnvironmentID,
+        environmentID,
       });
 
       const diagramIDs = diagrams.map((diagram) => diagram.diagramID);
@@ -572,10 +573,9 @@ export class AssistantService extends MutableService<AssistantORM> {
     });
   }
 
-  public exportCMS({ userID, assistantID, environmentID }: { userID: number; assistantID?: string; environmentID: string }) {
+  public exportCMS({ userID, environmentID }: { userID: number; environmentID: string }) {
     return this.postgresEM.transactional(async () => {
-      const resolvedEnvironmentID = await this.resolveEnvironmentIDAlias(environmentID, assistantID);
-      const { projectID } = await this.version.findOneOrFailWithFields(resolvedEnvironmentID, ['projectID']);
+      const { projectID } = await this.version.findOneOrFailWithFields(environmentID, ['projectID']);
       const { teamID: workspaceID } = await this.project.findOneOrFailWithFields(projectID, ['teamID']);
 
       const [assistant, cmsData] = await Promise.all([this.findOneOrFail(projectID.toJSON()), this.environment.findOneCMSData(environmentID)]);

@@ -37,7 +37,7 @@ const Action: ConnectedAction<Realtime.NodeData.Component, Realtime.NodeData.Com
           onClose={onClose}
           onRemove={onRemove}
           onOpenEditor={onOpenEditor}
-          onOpenTarget={isEmpty ? null : () => goToDiagram(diagram.id, undefined, sourceNodeID)}
+          onOpenTarget={isEmpty ? null : () => goToDiagram(diagram.diagramID, undefined, sourceNodeID)}
         />
       )}
     >

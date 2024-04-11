@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1476.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1475.2...@voiceflow/creator-app@1.1476.0) (2024-04-11)
+
+### Features
+
+* improve function test modal (COR-1890) ([#7975](https://github.com/voiceflow/creator-app/issues/7975)) ([47c0bed](https://github.com/voiceflow/creator-app/commit/47c0bed8f04d4ecadfcb6fa8312287e127d3c0d0))
+
 ## [1.1475.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1475.1...@voiceflow/creator-app@1.1475.2) (2024-04-11)
 
 **Note:** Version bump only for package @voiceflow/creator-app

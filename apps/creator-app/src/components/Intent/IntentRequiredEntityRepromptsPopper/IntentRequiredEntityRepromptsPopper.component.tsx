@@ -8,6 +8,7 @@ import { useAIGenerateRequiredEntityTextResponseVariants } from '@/components/AI
 import { EntitySelect } from '@/components/Entity/EntitySelect/EntitySelect.component';
 import { PopperDynamicSurface } from '@/components/Popper/PopperDynamicSurface/PopperDynamicSurface.component';
 import { Designer } from '@/ducks';
+import { useIsAIFeaturesEnabled } from '@/hooks/ai.hook';
 import { useSelector } from '@/hooks/store.hook';
 import { stopPropagation } from '@/utils/handler.util';
 import { isAnyResponseVariantWithDataEmpty } from '@/utils/response.util';
@@ -33,6 +34,7 @@ export const IntentRequiredEntityRepromptsPopper: React.FC<IIntentRequiredEntity
 
   const entity = useSelector(Designer.Entity.selectors.oneByID, { id: entityID });
   const popperContext = usePopperContext();
+  const aiFeaturesEnabled = useIsAIFeaturesEnabled();
 
   const textReprompts = useMemo(
     () =>
@@ -109,14 +111,16 @@ export const IntentRequiredEntityRepromptsPopper: React.FC<IIntentRequiredEntity
               {children}
             </Box>
 
-            <Box px={20} pt={16} pb={16}>
-              <AIGenerateResponseVariantButton
-                isLoading={aiGenerateTextVariant.fetching}
-                onGenerate={aiGenerateTextVariant.onGenerate}
-                hasExtraContext={!!entity?.name || !!entity?.classifier || !!intentName || !isUtterancesEmpty}
-                testID={tid(REPROMPT_SETTINGS_TEST_ID, ['reprompts', 'ai-generate'])}
-              />
-            </Box>
+            {aiFeaturesEnabled && (
+              <Box px={20} pt={16} pb={16}>
+                <AIGenerateResponseVariantButton
+                  isLoading={aiGenerateTextVariant.fetching}
+                  onGenerate={aiGenerateTextVariant.onGenerate}
+                  hasExtraContext={!!entity?.name || !!entity?.classifier || !!intentName || !isUtterancesEmpty}
+                  testID={tid(REPROMPT_SETTINGS_TEST_ID, ['reprompts', 'ai-generate'])}
+                />
+              </Box>
+            )}
           </Scroll>
         </PopperDynamicSurface>
       )}

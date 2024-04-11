@@ -8,6 +8,7 @@ import { useAIGenerateTextResponseVariants } from '@/components/AI/hooks/ai-gene
 import { CMSFormListButtonRemove } from '@/components/CMS/CMSForm/CMSFormListButtonRemove/CMSFormListButtonRemove.component';
 import { SectionHeaderTitleWithLearnTooltip } from '@/components/Section/SectionHeaderTitleWithLearnTooltip/SectionHeaderTitleWithTooltip.component';
 import { Designer } from '@/ducks';
+import { useIsAIFeaturesEnabled } from '@/hooks/ai.hook';
 import { useInputAutoFocusKey } from '@/hooks/input.hook';
 import { useIsListEmpty } from '@/hooks/list.hook';
 import { useDispatch } from '@/hooks/store.hook';
@@ -24,6 +25,7 @@ export const ResponseEditForm: React.FC<IResponseEditForm> = ({ responseID }) =>
   const createManyTextVariants = useDispatch(Designer.Response.ResponseVariant.effect.createManyText);
 
   const autofocus = useInputAutoFocusKey();
+  const aiFeaturesEnabled = useIsAIFeaturesEnabled();
   const { variants, discriminatorID } = useResponseVariants({ responseID });
 
   const aiGenerateTextVariant = useAIGenerateTextResponseVariants({
@@ -106,7 +108,7 @@ export const ResponseEditForm: React.FC<IResponseEditForm> = ({ responseID }) =>
             </Fragment>
           ))}
 
-          {rootVariant.type === ResponseVariantType.TEXT && (
+          {aiFeaturesEnabled && rootVariant.type === ResponseVariantType.TEXT && (
             <Box px={16} pb={16}>
               <AIGenerateResponseVariantButton
                 isLoading={aiGenerateTextVariant.fetching}

@@ -16,7 +16,13 @@ export interface GeneralRuntimeFunctionTestResponse {
   success: boolean;
   latencyMS: number;
   runtimeCommands: {
-    next?: Record<string, string>;
+    next?:
+      | { path: string }
+      | {
+          to: Array<{ on: Record<string, any>; dest: string | { path: string; type: string } }>;
+          listen: true;
+          defaultTo: { path: string; type: string };
+        };
     trace?: Array<{ type: string; payload: any }>;
     outputVars?: Record<string, string>;
   };

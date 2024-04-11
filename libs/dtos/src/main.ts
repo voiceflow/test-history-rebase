@@ -49,6 +49,7 @@ export * from './intent/required-entity/required-entity-create.dto';
 export * from './intent/utterance/utterance.dto';
 export * from './intent/utterance/utterance-create.dto';
 export * from './intent/utterance/utterance-text.dto';
+export * from './knowledge-base/knowledge-base-document-refresh-rate.enum';
 export * from './nlu/nlu-params.dto';
 export * from './node/base/base-compiled-node.dto';
 export * from './node/base/base-node.dto';

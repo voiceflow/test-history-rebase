@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1476.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1476.0...@voiceflow/creator-app@1.1476.1) (2024-04-11)
+
+### Bug Fixes
+
+* disbale create button on creation (COR-1863) ([#7961](https://github.com/voiceflow/creator-app/issues/7961)) ([bd48f11](https://github.com/voiceflow/creator-app/commit/bd48f117e1e83aa956f621c959666978413fe5cb))
+
 # [1.1476.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1475.2...@voiceflow/creator-app@1.1476.0) (2024-04-11)
 
 ### Features

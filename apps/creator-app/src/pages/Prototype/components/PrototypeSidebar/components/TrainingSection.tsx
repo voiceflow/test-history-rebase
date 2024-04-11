@@ -43,7 +43,7 @@ const TrainingSection: React.FC<TrainingSectionProps> = ({ isOpen, onOpen, toggl
             <TrainingSectionTitle
               variant={
                 // eslint-disable-next-line no-nested-ternary
-                nluTrainingDiffStatus === NLUTrainingDiffStatus.UNKNOWN
+                nluTrainingDiffStatus === NLUTrainingDiffStatus.IDLE
                   ? TrainingSectionTitleVariant.IDLE
                   : nluTrainingModel.isTrained
                   ? TrainingSectionTitleVariant.TRAINED

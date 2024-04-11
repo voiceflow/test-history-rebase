@@ -1,7 +1,7 @@
 import { Enum } from '@voiceflow/dtos';
 
 export const NLUTrainingDiffStatus = {
-  UNKNOWN: 'unknown',
+  IDLE: 'idle',
   TRAINED: 'trained',
   FETCHING: 'fetching',
   UNTRAINED: 'untrained',

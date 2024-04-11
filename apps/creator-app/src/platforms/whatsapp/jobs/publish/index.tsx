@@ -11,7 +11,7 @@ import PublishButton from '@/pages/Project/components/Header/components/CanvasHe
 import { useWhatsAppStageContent } from './stages';
 
 const WhatsApp: React.FC = () => {
-  const publishContext = React.useContext(PublishContext)!;
+  const publishContext = React.useContext(PublishContext);
   const { job, active } = publishContext;
 
   const onPublish = usePersistFunction(() =>

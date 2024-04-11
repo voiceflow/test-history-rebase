@@ -9,7 +9,7 @@ import { StageComponentProps } from '@/platforms/types';
 import { ConfigurationRequiredStage, PublishedStage } from './components';
 
 const SuccessStage: React.FC<StageComponentProps<NLPTrainJob.SuccessStage>> = (props) => {
-  const { job } = React.useContext(PublishContext)!;
+  const { job } = React.useContext(PublishContext);
 
   const goToCurrentPublish = useDispatch(Router.goToActivePlatformPublish);
   const onLinkClick = () => {

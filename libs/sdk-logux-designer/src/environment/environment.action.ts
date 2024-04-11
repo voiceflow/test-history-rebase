@@ -6,8 +6,9 @@ import type { DesignerAction } from '@/types';
 export const environmentAction = createCRUD('environment');
 
 export interface UpdateNLUTrainingDiff extends DesignerAction {
+  hash: string;
   status: 'untrained' | 'trained';
-  data: null | {
+  data: {
     trainedCount: number;
     untrainedCount: number;
     lastTrainedTime: number | null;

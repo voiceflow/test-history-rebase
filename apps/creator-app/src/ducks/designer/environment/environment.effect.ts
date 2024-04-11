@@ -72,10 +72,10 @@ export const calculateNLUTrainingDiff = (): Thunk => async (dispatch, getState) 
   try {
     dispatch(SetNLUTrainingDiffStatus({ status: NLUTrainingDiffStatus.FETCHING }));
 
-    const { data, status } = await designerClient.environment.getNluTrainingDiff(context.environmentID);
+    const { data, hash, status } = await designerClient.environment.getNluTrainingDiff(context.environmentID);
 
-    await dispatch.sync(Actions.Environment.UpdateNLUTrainingDiff({ data, status, context }));
+    await dispatch.sync(Actions.Environment.UpdateNLUTrainingDiff({ data, hash, status, context }));
   } catch {
-    dispatch(SetNLUTrainingDiffStatus({ status: NLUTrainingDiffStatus.UNKNOWN }));
+    dispatch(SetNLUTrainingDiffStatus({ status: NLUTrainingDiffStatus.IDLE }));
   }
 };

@@ -17,7 +17,7 @@ export const useAlexaPublishContext = ({ submit }: { submit?: boolean } = {}) =>
 
   useSetup(() => loadAccount());
 
-  const publishContext = React.useContext(PublishContext)! as PublishContextValue<AlexaPublishJob.AnyJob>;
+  const publishContext = React.useContext(PublishContext) as PublishContextValue<AlexaPublishJob.AnyJob>;
 
   const publishNewVersionModal = ModalsV2.useModal(ModalsV2.Publish.NewVersion);
 

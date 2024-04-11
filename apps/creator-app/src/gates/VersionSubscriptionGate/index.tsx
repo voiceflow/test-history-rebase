@@ -3,11 +3,11 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 
 import { Path } from '@/config/routes';
-import { Session } from '@/ducks';
+import { Designer, Session } from '@/ducks';
 import { useFeature } from '@/hooks/feature';
 import { useTeardown } from '@/hooks/lifecycle';
-import { useDispatch } from '@/hooks/realtime';
 import { useRouteVersionID } from '@/hooks/routes';
+import { useDispatch, useSelector } from '@/hooks/store.hook';
 
 import { AssistantChannelSubscriptionGate, MigrationGate, SchemaChannelSubscriptionGate } from './components';
 import { VersionSubscriptionContext } from './types';
@@ -17,6 +17,8 @@ const VersionSubscriptionGate: React.FC<React.PropsWithChildren> = ({ children }
   const cmsWorkflows = useFeature(FeatureFlag.CMS_WORKFLOWS);
 
   const [context, setContext] = React.useState<VersionSubscriptionContext | null>(null);
+
+  const subscriptionRevision = useSelector(Designer.Environment.selectors.gateSubscriptionRevision);
 
   const setActiveDomainID = useDispatch(Session.setActiveDomainID);
   const setActiveProjectID = useDispatch(Session.setActiveProjectID);
@@ -41,7 +43,12 @@ const VersionSubscriptionGate: React.FC<React.PropsWithChildren> = ({ children }
     <SchemaChannelSubscriptionGate versionID={versionID}>
       <MigrationGate versionID={versionID} context={context} setContext={setContext}>
         {context && (
-          <AssistantChannelSubscriptionGate workspaceID={context.workspaceID} projectID={context.projectID} versionID={versionID}>
+          <AssistantChannelSubscriptionGate
+            key={subscriptionRevision}
+            projectID={context.projectID}
+            versionID={versionID}
+            workspaceID={context.workspaceID}
+          >
             {children}
           </AssistantChannelSubscriptionGate>
         )}

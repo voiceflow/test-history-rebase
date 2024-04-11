@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import type { Backup as BackupEntity } from '@voiceflow/dtos';
 import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { Animations, Box, DataTypes, download, LoadCircle, SectionV2, System, toast } from '@voiceflow/ui';
@@ -9,9 +10,7 @@ import { realtimeClient } from '@/client/realtime';
 import * as Settings from '@/components/Settings';
 import { Path } from '@/config/routes';
 import { Permission } from '@/constants/permissions';
-import * as Designer from '@/ducks/designer';
-import * as Router from '@/ducks/router';
-import * as Session from '@/ducks/session';
+import { Designer, Router, Session } from '@/ducks';
 import { useDispatch, useHotkey, usePermission, useSetup, useTrackingEvents } from '@/hooks';
 import { useFeature } from '@/hooks/feature';
 import { usePaymentModal } from '@/hooks/modal.hook';
@@ -29,7 +28,7 @@ const SettingsBackups: React.FC = () => {
   const projectID = useSelector(Session.activeProjectIDSelector)!;
   const versionID = useSelector(Session.activeVersionIDSelector)!;
   const goToCanvasWithVersionID = useDispatch(Router.goToCanvasWithVersionID);
-  const loadEnvironment = useDispatch(Designer.Environment.effect.load);
+  const setGateSubscriptionRevision = useDispatch(Designer.Environment.action.SetGateSubscriptionRevision);
 
   const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
   const [hasFullVersionPermissions] = usePermission(Permission.PROJECT_FULL_VERSIONS);
@@ -113,9 +112,8 @@ const SettingsBackups: React.FC = () => {
 
     await designerClient.backup.restoreOne(projectID, backup.id, { clientID: realtimeClient.clientId });
 
-    await loadEnvironment(versionID);
-
     goToCanvasWithVersionID(versionID);
+    setGateSubscriptionRevision({ revision: Utils.id.cuid.slug() });
   };
 
   const handlePreview = async (backup: BackupEntity) => {

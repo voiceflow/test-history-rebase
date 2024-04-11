@@ -1,6 +1,5 @@
 import * as Platform from '@voiceflow/platform-config';
 import { Box, Button, ButtonVariant, System, Text } from '@voiceflow/ui';
-import { Nullable } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { lightbulbGraphic } from '@/assets';
@@ -22,7 +21,7 @@ interface TrainedProps {
   platform: Platform.Constants.PlatformType;
   isTrained?: boolean;
   onStartTraining: () => void;
-  nluTrainingDiffData: Nullable<{
+  nluTrainingDiffData: {
     trainedCount: number;
     untrainedCount: number;
     lastTrainedTime: number | null;
@@ -30,13 +29,13 @@ interface TrainedProps {
     trainedIntentsCount: number;
     untrainedSlotsCount: number;
     untrainedIntentsCount: number;
-  }>;
+  };
 }
 
 const Trained: React.FC<TrainedProps> = ({ platform, isTrained, nluTrainingDiffData, onStartTraining }) => {
   return (
     <NLUContainer fullWidth>
-      {nluTrainingDiffData === null ? (
+      {nluTrainingDiffData.trainedCount === 0 ? (
         <>
           <img src={lightbulbGraphic} alt="user" width="80" />
 

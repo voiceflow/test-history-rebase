@@ -5,6 +5,7 @@ export const NodeType = {
   BLOCK: 'block',
   START: 'start',
   ACTIONS: 'actions',
+  TRIGGER: 'trigger',
   FUNCTION: 'function',
 } as const;
 

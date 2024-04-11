@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.322.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.321.0...@voiceflow/realtime@1.322.0) (2024-04-11)
+
+### Features
+
+* intent classification feedback (COR-1896) ([#7976](https://github.com/voiceflow/creator-app/issues/7976)) ([81dc9c1](https://github.com/voiceflow/creator-app/commit/81dc9c1b3d4784b418c2e1035136d38e2d234f7c))
+
 # [1.321.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.320.1...@voiceflow/realtime@1.321.0) (2024-04-11)
 
 ### Features

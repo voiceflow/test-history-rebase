@@ -1,8 +1,16 @@
 import type { Struct } from '@voiceflow/common';
 import { Utils } from '@voiceflow/common';
-import type { ArrayOperator, PullOperator, PushOperator } from 'mongodb-mikro';
+import type { ArrayOperator, PullAllOperator, PullOperator, PushOperator, SetFields } from 'mongodb-mikro';
 
-import type { PullOperation, PushOperation, SetOperation, UnsetOperation, UpdateOperation } from './atomic.interface';
+import type {
+  AddToSetOperation,
+  PullAllOperation,
+  PullOperation,
+  PushOperation,
+  SetOperation,
+  UnsetOperation,
+  UpdateOperation,
+} from './atomic.interface';
 
 const combineAtomicPathAndFilters = ({
   path,
@@ -48,6 +56,14 @@ export const Pull = (pulls: PullOperation[]): UpdateOperation<'$pull'> => {
   return { query, operation: '$pull', arrayFilters: [] };
 };
 
+export const PullAll = (pulls: PullAllOperation[]): UpdateOperation<'$pullAll'> => {
+  const query: PullAllOperator<unknown> = Object.fromEntries(
+    pulls.map<[string, unknown[]]>(({ path, match }) => [path, match])
+  );
+
+  return { query, operation: '$pullAll', arrayFilters: [] };
+};
+
 export const Push = (pushes: PushOperation[]): UpdateOperation<'$push'> => {
   const query: PushOperator<unknown> = Object.fromEntries(
     pushes
@@ -90,4 +106,17 @@ export const Unset = (
   });
 
   return { query, operation: '$unset', arrayFilters };
+};
+
+export const AddToSet = (pushes: AddToSetOperation[]): UpdateOperation<'$addToSet'> => {
+  const query: SetFields<unknown> = Object.fromEntries(
+    pushes
+      .map<[string, ArrayOperator<unknown[]>]>(({ path, value }) => [
+        path,
+        { $each: Array.isArray(value) ? value : [value] },
+      ])
+      .filter(([, { $each }]) => $each && $each.length > 0)
+  );
+
+  return { query, operation: '$addToSet', arrayFilters: [] };
 };

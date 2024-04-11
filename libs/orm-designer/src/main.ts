@@ -1,6 +1,7 @@
 export * from './common';
 export * from './mongo/common';
 export * from './mongo/diagram';
+export * from './mongo/knowledge-base';
 export * from './mongo/program';
 export * from './mongo/project';
 export * from './mongo/prototype-program';

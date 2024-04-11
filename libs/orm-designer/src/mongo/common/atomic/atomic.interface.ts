@@ -11,6 +11,16 @@ export interface PullOperation {
   match: unknown;
 }
 
+export interface PullAllOperation {
+  path: string;
+  match: unknown[];
+}
+
+export interface AddToSetOperation {
+  path: string;
+  value: unknown | Array<unknown>;
+}
+
 export interface PushOperation {
   path: string;
   value: unknown | Array<unknown>;

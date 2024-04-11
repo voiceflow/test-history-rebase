@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.48.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.47.5...@voiceflow/sdk-logux-designer@2.48.0) (2024-04-11)
+
+### Features
+
+* intent classification feedback (COR-1896) ([#7976](https://github.com/voiceflow/creator-app/issues/7976)) ([81dc9c1](https://github.com/voiceflow/creator-app/commit/81dc9c1b3d4784b418c2e1035136d38e2d234f7c))
+
 ## [2.47.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.47.4...@voiceflow/sdk-logux-designer@2.47.5) (2024-04-11)
 
 **Note:** Version bump only for package @voiceflow/sdk-logux-designer

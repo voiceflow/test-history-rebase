@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1475.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1474.0...@voiceflow/creator-app@1.1475.0) (2024-04-11)
+
+### Bug Fixes
+
+* hide ai features when ai assist is disabled (COR-1895) ([#7979](https://github.com/voiceflow/creator-app/issues/7979)) ([94bac2f](https://github.com/voiceflow/creator-app/commit/94bac2f7008d8c275b858309c961a22e459e9e51))
+
+### Features
+
+* intent classification feedback (COR-1896) ([#7976](https://github.com/voiceflow/creator-app/issues/7976)) ([81dc9c1](https://github.com/voiceflow/creator-app/commit/81dc9c1b3d4784b418c2e1035136d38e2d234f7c))
+
 # [1.1474.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1473.2...@voiceflow/creator-app@1.1474.0) (2024-04-11)
 
 ### Features

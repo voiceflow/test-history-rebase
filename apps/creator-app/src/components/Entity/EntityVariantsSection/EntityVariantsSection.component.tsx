@@ -8,6 +8,7 @@ import { AIGenerateEntityVariant } from '@/components/AI/AIGenerateEntityVariant
 import { useAIGenerateEntityVariants } from '@/components/AI/hooks/ai-generate-entity-variants.hook';
 import { CMSFormCollapsibleList } from '@/components/CMS/CMSForm/CMSFormCollapsibleList/CMSFormCollapsibleList.component';
 import { CMSFormVirtualListItem } from '@/components/CMS/CMSForm/CMSFormVirtualListItem/CMSFormVirtualListItem.component';
+import { useIsAIFeaturesEnabled } from '@/hooks/ai.hook';
 import { useIsListEmpty } from '@/hooks/list.hook';
 import { stopPropagation } from '@/utils/handler.util';
 
@@ -27,6 +28,7 @@ export const EntityVariantsSection = <T extends EntityVariantsSectionItem>({
   const TEST_ID = tid('entity', 'variants');
 
   const listEmpty = useIsListEmpty(variants, isEntityVariantLikeEmpty);
+  const aiFeaturesEnabled = useIsAIFeaturesEnabled();
   const aiGenerate = useAIGenerateEntityVariants({
     examples: variants,
     entityName: name,
@@ -82,7 +84,7 @@ export const EntityVariantsSection = <T extends EntityVariantsSectionItem>({
         </Scroll>
       )}
 
-      {!!variantsSize && (
+      {aiFeaturesEnabled && !!variantsSize && (
         <Box px={16} pb={16} pt={8}>
           <AIGenerateEntityVariant
             testID={tid(TEST_ID, 'ai-generate')}

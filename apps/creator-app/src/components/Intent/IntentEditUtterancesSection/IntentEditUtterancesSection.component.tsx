@@ -7,6 +7,7 @@ import React, { useEffect } from 'react';
 import { AIGenerateUtteranceButton } from '@/components/AI/AIGenerateUtteranceButton/AIGenerateUtteranceButton.component';
 import { useAIGenerateUtterances } from '@/components/AI/hooks/ai-generate-utterances';
 import { Designer } from '@/ducks';
+import { useIsAIFeaturesEnabled } from '@/hooks/ai.hook';
 import { useInputAutoFocusKey } from '@/hooks/input.hook';
 import { useIsListEmpty } from '@/hooks/list.hook';
 import { useDispatch, useGetValueSelector, useSelector } from '@/hooks/store.hook';
@@ -23,7 +24,6 @@ export const IntentEditUtterancesSection: React.FC<IIntentEditUtterancesSection>
 }) => {
   const utterances = useSelector(Designer.Intent.Utterance.selectors.allByIntentID, { intentID: intent.id });
   const getRequiredEntitiesByIDs = useGetValueSelector(Designer.Intent.RequiredEntity.selectors.allByIDs);
-
   const patchOne = useDispatch(Designer.Intent.Utterance.effect.patchOne);
   const createOne = useDispatch(Designer.Intent.Utterance.effect.createOne, intent.id);
   const deleteOne = useDispatch(Designer.Intent.Utterance.effect.deleteOne);
@@ -39,6 +39,7 @@ export const IntentEditUtterancesSection: React.FC<IIntentEditUtterancesSection>
 
   const listEmpty = useIsListEmpty(utterances, isUtteranceLikeEmpty);
   const autofocus = useInputAutoFocusKey();
+  const aiFeaturesEnabled = useIsAIFeaturesEnabled();
 
   const onUtteranceAdd = async () => {
     const utterance = await createOne({ text: utteranceTextFactory() });
@@ -87,7 +88,7 @@ export const IntentEditUtterancesSection: React.FC<IIntentEditUtterancesSection>
         autoScrollToTopRevision={autofocus.key}
       />
 
-      {!!utterances.length && (
+      {aiFeaturesEnabled && !!utterances.length && (
         <Box pt={8} px={16} pb={16}>
           <AIGenerateUtteranceButton
             isLoading={aiGenerate.fetching}

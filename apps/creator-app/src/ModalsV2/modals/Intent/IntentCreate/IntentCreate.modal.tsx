@@ -14,6 +14,7 @@ import { IntentCreateRequiredEntityItem } from '@/components/Intent/IntentCreate
 import { IntentRequiredEntitiesSection } from '@/components/Intent/IntentRequiredEntitiesSection/IntentRequiredEntitiesSection.component';
 import { IntentUtterancesSection } from '@/components/Intent/IntentUtterancesSection/IntentUtterancesSection.component';
 import { Modal } from '@/components/Modal';
+import { useIsAIFeaturesEnabled } from '@/hooks/ai.hook';
 import { useIntentDescriptionPlaceholder } from '@/hooks/intent.hook';
 import { useAutoScrollListItemIntoView } from '@/hooks/scroll.hook';
 
@@ -38,8 +39,9 @@ export const IntentCreateModal = modalsManager.create<IIntentCreateModal, Intent
         successGeneratedMessage: 'Utterances generated',
       });
 
-      const requiredEntityAutoScroll = useAutoScrollListItemIntoView();
+      const aiFeaturesEnabled = useIsAIFeaturesEnabled();
       const descriptionPlaceholder = useIntentDescriptionPlaceholder();
+      const requiredEntityAutoScroll = useAutoScrollListItemIntoView();
 
       const onSubmit = () => {
         intentForm.onCreate({
@@ -104,7 +106,7 @@ export const IntentCreateModal = modalsManager.create<IIntentCreateModal, Intent
               autoScrollToTopRevision={intentForm.utteranceAutoFocusKey}
             />
 
-            {!!intentForm.utterances.length && (
+            {aiFeaturesEnabled && !!intentForm.utterances.length && (
               <Box pt={8} px={16} pb={16}>
                 <AIGenerateUtteranceButton
                   isLoading={aiGenerate.fetching}

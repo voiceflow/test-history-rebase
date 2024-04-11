@@ -170,5 +170,8 @@
   "volta": {
     "node": "16.20.0",
     "yarn": "3.2.1"
+  },
+  "dependencies": {
+    "@voiceflow/dtos": "workspace:^"
   }
 }

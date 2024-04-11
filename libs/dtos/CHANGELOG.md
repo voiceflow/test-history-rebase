@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.55.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.54.0...@voiceflow/dtos@1.55.0) (2024-04-11)
+
+### Features
+
+* trigger node dto (COR-000) ([#7971](https://github.com/voiceflow/creator-app/issues/7971)) ([77ec431](https://github.com/voiceflow/creator-app/commit/77ec4311f39a378a2ab6c329c752aa95ca6fd232))
+
 # [1.54.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.53.1...@voiceflow/dtos@1.54.0) (2024-04-09)
 
 ### Features

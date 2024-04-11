@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.321.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.320.1...@voiceflow/realtime@1.321.0) (2024-04-11)
+
+### Features
+
+* resolve version id aliases in the guards [bugfix] (COR-1894) ([#7974](https://github.com/voiceflow/creator-app/issues/7974)) ([6185d7b](https://github.com/voiceflow/creator-app/commit/6185d7b64fed99d9202e4719e9aaecd9a3736c0a))
+
 ## [1.320.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.320.0...@voiceflow/realtime@1.320.1) (2024-04-11)
 
 **Note:** Version bump only for package @voiceflow/realtime

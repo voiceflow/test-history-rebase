@@ -1,5 +1,5 @@
 import { AnyRecord } from '@voiceflow/common';
-import { useEffect, useMemo } from 'react';
+import { useLayoutEffect, useMemo } from 'react';
 
 import { jsonEditorStyles, outputVarsStyles } from './FunctionTestResult.css';
 
@@ -16,7 +16,7 @@ const MARGIN_BETWEEN_MODALS = 16;
 export interface CalculateHeightProps {
   traces: string;
   outputVars: AnyRecord;
-  path: AnyRecord;
+  paths: string[];
   isTracesSectionOpened: boolean;
   isOutputVarsSectionOpened: boolean;
   isResolvedPathSectionOpened: boolean;
@@ -29,51 +29,50 @@ export const useTestResultModalHeight = ({
   isResolvedPathSectionOpened,
   isTracesSectionOpened,
   outputVars,
-  path,
+  paths,
   traces,
 }: CalculateHeightProps) => {
   const outputVarsCount = Object.keys(outputVars).length;
-  const pathCount = Object.keys(path).length;
-
-  const getAvailableSections = () => {
-    const sections = [];
-    if (pathCount) sections.push(isResolvedPathSectionOpened);
-    if (outputVarsCount) sections.push(isOutputVarsSectionOpened);
-    if (traces) sections.push(isTracesSectionOpened);
-    return sections;
-  };
-
-  const calculateModalDefaultHeight = (): Record<string, number> => {
-    const modalSections = getAvailableSections();
-    const closedSections = modalSections.filter((s) => !s).length;
-
-    const dividers = modalSections.length * SECTION_DIVIDER_HEIGHT;
-    const sections = modalSections.length * SECTION_HEADER_HEIGHT;
-    const sectionTopPaddings = closedSections * SECTION_OPEN_PADDING;
-
-    return { sections, dividers, FOOTER_HEIGHT, sectionTopPaddings };
-  };
-
-  const calculateOutputVarsSectionHeight = () => {
-    if (outputVarsCount === 1) return MIN_OUTPUT_VARS_SECTION_HEIGHT;
-    return MAX_OUTPUT_VARS_SECTION_HEIGHT;
-  };
 
   return useMemo(() => {
+    const getAvailableSections = () => {
+      const sections = [];
+      if (paths.length) sections.push(isResolvedPathSectionOpened);
+      if (outputVarsCount) sections.push(isOutputVarsSectionOpened);
+      if (traces) sections.push(isTracesSectionOpened);
+      return sections;
+    };
+
+    const calculateModalDefaultHeight = (): Record<string, number> => {
+      const modalSections = getAvailableSections();
+      const closedSections = modalSections.filter((s) => !s).length;
+
+      const dividers = modalSections.length * SECTION_DIVIDER_HEIGHT;
+      const sections = modalSections.length * SECTION_HEADER_HEIGHT;
+      const sectionTopPaddings = closedSections * SECTION_OPEN_PADDING;
+
+      return { sections, dividers, FOOTER_HEIGHT, sectionTopPaddings };
+    };
+
+    const calculateOutputVarsSectionHeight = () => {
+      if (outputVarsCount === 1) return MIN_OUTPUT_VARS_SECTION_HEIGHT;
+      return MAX_OUTPUT_VARS_SECTION_HEIGHT;
+    };
+
     let maxHeights = calculateModalDefaultHeight();
 
     if (isOutputVarsSectionOpened && outputVarsCount) maxHeights = { ...maxHeights, outputContent: calculateOutputVarsSectionHeight() };
-    if (isResolvedPathSectionOpened && pathCount) maxHeights = { ...maxHeights, resolvedPath: RESOLVED_PATH_CONTENT_HEIGHT };
+    if (isResolvedPathSectionOpened && paths.length) maxHeights = { ...maxHeights, resolvedPath: RESOLVED_PATH_CONTENT_HEIGHT };
 
     return maxHeights;
-  }, [isTracesSectionOpened, traces, outputVars, path, isOutputVarsSectionOpened, isResolvedPathSectionOpened, numInputVariables]);
+  }, [isTracesSectionOpened, traces, outputVars, paths, isOutputVarsSectionOpened, isResolvedPathSectionOpened, numInputVariables]);
 };
 
 // TODO: find a better solution for this
 export const useDynamicTracesCodeEditorHeight = ({
   traces,
   outputVars,
-  path,
+  paths,
   isTracesSectionOpened,
   isOutputVarsSectionOpened,
   isResolvedPathSectionOpened,
@@ -82,7 +81,7 @@ export const useDynamicTracesCodeEditorHeight = ({
   const testResultModalHeights = useTestResultModalHeight({
     traces,
     outputVars,
-    path,
+    paths,
     isTracesSectionOpened,
     isOutputVarsSectionOpened,
     isResolvedPathSectionOpened,
@@ -123,7 +122,7 @@ export const useDynamicTracesCodeEditorHeight = ({
     return `calc(${calcCss})`;
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const maxHeight = calculateCodeEditorMaxHeight();
     const outputVarsMaxHeight = calculateOutputVarsMaxHeight();
     const sectionElement = document.querySelector(`.${outputVarsStyles}`);
@@ -139,5 +138,5 @@ export const useDynamicTracesCodeEditorHeight = ({
     } else {
       sectionElement?.setAttribute('style', 'max-height: 86px');
     }
-  }, [isTracesSectionOpened, traces, outputVars, path, isOutputVarsSectionOpened, isResolvedPathSectionOpened, numInputVariables]);
+  }, [isTracesSectionOpened, traces, outputVars, paths, isOutputVarsSectionOpened, isResolvedPathSectionOpened, numInputVariables]);
 };

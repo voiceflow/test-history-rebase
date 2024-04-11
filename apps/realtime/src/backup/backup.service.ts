@@ -17,7 +17,6 @@ import { EnvironmentService } from '@/environment/environment.service';
 import { FileService } from '@/file/file.service';
 import { UploadType } from '@/file/types';
 import { ProjectService } from '@/project/project.service';
-import { VersionService } from '@/version/version.service';
 
 @Injectable()
 export class BackupService extends MutableService<BackupORM> {
@@ -44,8 +43,6 @@ export class BackupService extends MutableService<BackupORM> {
     private readonly logux: LoguxService,
     @Inject(ProjectService)
     private readonly project: ProjectService,
-    @Inject(VersionService)
-    private readonly version: VersionService,
     @Inject(HashedIDService)
     private readonly hashedID: HashedIDService,
     @Inject(AssistantService)
@@ -60,11 +57,9 @@ export class BackupService extends MutableService<BackupORM> {
 
   async createOneForUser(userID: number, versionID: string, name: string) {
     return this.postgresEM.transactional(async () => {
-      const version = await this.version.findOneOrFail(versionID);
       const vfFile = await this.assistant.exportJSON({
         userID,
         backup: true,
-        assistantID: version.projectID.toHexString(),
         environmentID: versionID,
       });
 

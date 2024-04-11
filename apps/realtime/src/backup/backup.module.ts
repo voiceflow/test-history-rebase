@@ -5,13 +5,12 @@ import { BackupORM } from '@voiceflow/orm-designer';
 import { AssistantModule } from '@/assistant/assistant.module';
 import { EnvironmentModule } from '@/environment/environment.module';
 import { ProjectModule } from '@/project/project.module';
-import { VersionModule } from '@/version/version.module';
 
 import { BackupHTTPController } from './backup.http.controller';
 import { BackupService } from './backup.service';
 
 @Module({
-  imports: [forwardRef(() => AssistantModule), ProjectModule, VersionModule, EnvironmentModule],
+  imports: [forwardRef(() => AssistantModule), ProjectModule, EnvironmentModule],
   exports: [BackupService],
   providers: [BackupORM, BackupService],
   controllers: [BackupHTTPController],

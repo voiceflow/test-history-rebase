@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Headers, HttpStatus, Inject, Param, ParseIntPipe, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Inject, Param, ParseIntPipe, Post, Query, UseInterceptors } from '@nestjs/common';
 import { ApiHeader, ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { ZodApiBody, ZodApiQuery, ZodApiResponse } from '@voiceflow/nestjs-common';
 import { Identity, Permission } from '@voiceflow/sdk-auth';
@@ -6,6 +6,7 @@ import { Authorize, Principal } from '@voiceflow/sdk-auth/nestjs';
 import type { Request } from 'express';
 import { ZodValidationPipe } from 'nestjs-zod';
 
+import { appRef } from '@/app.ref';
 import { HashedWorkspaceIDPayloadPipe, HashedWorkspaceIDPayloadType } from '@/common';
 import { ProjectSerializer } from '@/project/project.serializer';
 import { VersionIDAlias } from '@/version/version.constant';
@@ -18,6 +19,7 @@ import { AssistantExportDataDTO } from './dtos/assistant-export-data.dto';
 import { AssistantExportJSONQuery } from './dtos/assistant-export-json.query';
 import { AssistantImportJSONResponse } from './dtos/assistant-import-json.response';
 import { AssistantPublishResponse } from './dtos/assistant-publish.response';
+import { ResolveEnvironmentIDAliasInterceptor } from './resolve-environment-id-alias.interceptor';
 
 @Controller('private/assistant')
 @ApiTags('Private/Assistant')
@@ -80,8 +82,8 @@ export class AssistantPrivateHTTPController {
   }
 
   @Get('export-json/:environmentID')
-  @Authorize.Permissions<Request<{ environmentID: string }>>([Permission.PROJECT_READ], (request) => ({
-    id: request.params.environmentID,
+  @Authorize.Permissions<Request<{ environmentID: string }>>([Permission.PROJECT_READ], async (request) => ({
+    id: await appRef.current.get(AssistantService).resolveEnvironmentIDAlias(request),
     kind: 'version',
   }))
   @ApiParam({
@@ -99,17 +101,15 @@ export class AssistantPrivateHTTPController {
   })
   @ZodApiQuery({ schema: AssistantExportJSONQuery })
   @ZodApiResponse({ status: HttpStatus.CREATED, schema: AssistantExportDataDTO })
+  @UseInterceptors(ResolveEnvironmentIDAliasInterceptor)
   exportJSON(
     @Principal() principal: Identity & { createdBy: number },
     @Param('environmentID') environmentID: string,
-    @Headers('projectid') projectid: string | undefined,
-    @Headers('assistantID') assistantID: string | undefined,
     @Query(new ZodValidationPipe(AssistantExportJSONQuery)) query: AssistantExportJSONQuery
   ): Promise<AssistantExportDataDTO> {
     return this.service.exportJSON({
       ...query,
       userID: principal.createdBy,
-      assistantID: assistantID ?? projectid,
       environmentID,
       prototypePrograms: query.prototypePrograms || query.prototype,
     });

@@ -16,6 +16,7 @@ import { enablePatches, setAutoFreeze } from 'immer';
 
 import type { EnvironmentVariables } from './app.env';
 import { AppModule } from './app.module';
+import { appRef } from './app.ref';
 
 async function bootstrap() {
   const startTime = performance.now();
@@ -45,6 +46,8 @@ async function bootstrap() {
 
   // trust proxy to access the real ip address
   app.set('trust proxy', true);
+
+  appRef.current = app;
 
   await app.init();
 

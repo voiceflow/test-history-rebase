@@ -10,9 +10,10 @@ interface MembersProps {
   members: Assistant.Member[];
   onRemove: (memberID: number) => void;
   onChangeRole: (memberID: number, role: Assistant.Member['role']) => void;
+  disabled?: boolean;
 }
 
-const Members: React.FC<MembersProps> = ({ onAdd, onNext, onClose, members, onRemove, onChangeRole }) => {
+const Members: React.FC<MembersProps> = ({ onAdd, onNext, onClose, members, onRemove, onChangeRole, disabled }) => {
   return (
     <>
       <SectionV2.SimpleContentSection
@@ -32,11 +33,13 @@ const Members: React.FC<MembersProps> = ({ onAdd, onNext, onClose, members, onRe
       <Assistant.MembersList members={members} onRemove={onRemove} onChangeRole={onChangeRole} />
 
       <Modal.Footer gap={12}>
-        <Button variant={Button.Variant.TERTIARY} onClick={() => onClose()} squareRadius>
+        <Button disabled={disabled} variant={Button.Variant.TERTIARY} onClick={() => onClose()} squareRadius>
           Cancel
         </Button>
 
-        <Button onClick={() => onNext()}>Create Assistant</Button>
+        <Button disabled={disabled} onClick={() => onNext()}>
+          Create Assistant
+        </Button>
       </Modal.Footer>
     </>
   );

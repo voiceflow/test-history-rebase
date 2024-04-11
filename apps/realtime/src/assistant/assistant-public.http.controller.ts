@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Headers, HttpStatus, Inject, Param, Post, Query, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Inject, Param, Post, Query, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiConsumes, ApiHeader, ApiParam, ApiTags } from '@nestjs/swagger';
 import { HashedWorkspaceID, ZodApiBody, ZodApiQuery, ZodApiResponse } from '@voiceflow/nestjs-common';
@@ -7,6 +7,7 @@ import { Authorize, Principal, UserID } from '@voiceflow/sdk-auth/nestjs';
 import type { Request } from 'express';
 import { ZodValidationPipe } from 'nestjs-zod';
 
+import { appRef } from '@/app.ref';
 import { HashedWorkspaceIDPayloadPipe, HashedWorkspaceIDPayloadType } from '@/common/pipes/hashed-workspace-id-payload.pipe';
 import { EnvironmentService } from '@/environment/environment.service';
 import { ProjectSerializer } from '@/project/project.serializer';
@@ -21,6 +22,7 @@ import { AssistantFindEnvironmentsResponse } from './dtos/assistant-find-environ
 import { AssistantImportDataDTO } from './dtos/assistant-import-data.dto';
 import { AssistantImportJSONRequest } from './dtos/assistant-import-json.request';
 import { AssistantImportJSONResponse } from './dtos/assistant-import-json.response';
+import { ResolveEnvironmentIDAliasInterceptor } from './resolve-environment-id-alias.interceptor';
 
 @Controller('assistant')
 @ApiTags('Assistant')
@@ -47,8 +49,8 @@ export class AssistantPublicHTTPController {
   }
 
   @Get('export-cms/:environmentID')
-  @Authorize.Permissions<Request<{ environmentID: string }>>([Permission.PROJECT_READ], (request) => ({
-    id: request.params.environmentID,
+  @Authorize.Permissions<Request<{ environmentID: string }>>([Permission.PROJECT_READ], async (request) => ({
+    id: await appRef.current.get(AssistantService).resolveEnvironmentIDAlias(request),
     kind: 'version',
   }))
   @ApiParam({
@@ -61,17 +63,14 @@ export class AssistantPublicHTTPController {
     schema: { type: 'string', description: 'Required if environment id alias is used' },
   })
   @ZodApiResponse({ status: HttpStatus.CREATED, schema: AssistantExportCMSResponse })
-  exportCMS(
-    @UserID() userID: number,
-    @Param('environmentID') environmentID: string,
-    @Headers('assistantID') assistantID: string | undefined
-  ): Promise<AssistantExportCMSResponse> {
-    return this.service.exportCMS({ userID, assistantID, environmentID });
+  @UseInterceptors(ResolveEnvironmentIDAliasInterceptor)
+  exportCMS(@UserID() userID: number, @Param('environmentID') environmentID: string): Promise<AssistantExportCMSResponse> {
+    return this.service.exportCMS({ userID, environmentID });
   }
 
   @Get('export-json/:environmentID')
-  @Authorize.Permissions<Request<{ environmentID: string }>>([Permission.PROJECT_READ], (request) => ({
-    id: request.params.environmentID,
+  @Authorize.Permissions<Request<{ environmentID: string }>>([Permission.PROJECT_READ], async (request) => ({
+    id: await appRef.current.get(AssistantService).resolveEnvironmentIDAlias(request),
     kind: 'version',
   }))
   @ApiParam({
@@ -85,14 +84,14 @@ export class AssistantPublicHTTPController {
   })
   @ZodApiQuery({ schema: AssistantExportJSONQuery })
   @ZodApiResponse({ status: HttpStatus.CREATED, schema: AssistantExportDataDTO })
+  @UseInterceptors(ResolveEnvironmentIDAliasInterceptor)
   exportJSON(
     @Principal() principal: Identity & { userID?: number; createdBy?: number },
     @Param('environmentID') environmentID: string,
-    @Headers('assistantID') assistantID: string | undefined,
     @Query(new ZodValidationPipe(AssistantExportJSONQuery)) query: AssistantExportJSONQuery
   ): Promise<AssistantExportDataDTO> {
     const userID = principal.userID ?? principal.createdBy ?? principal.id;
-    return this.service.exportJSON({ ...query, userID, assistantID, environmentID, prototypePrograms: query.prototypePrograms || query.prototype });
+    return this.service.exportJSON({ ...query, userID, environmentID, prototypePrograms: query.prototypePrograms || query.prototype });
   }
 
   @Post('import-file/:workspaceID')

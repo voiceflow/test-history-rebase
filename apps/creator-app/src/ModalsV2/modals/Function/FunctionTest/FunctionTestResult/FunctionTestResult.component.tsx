@@ -54,13 +54,23 @@ export const FunctionTestResult: React.FC<IFunctionTestResultExtra & IFunctionTe
   setIsOutputVarsOpened: setIsOutputVarsSectionOpened,
 }) => {
   const error = functionsTestResponse?.success === false;
+  const next = functionsTestResponse?.runtimeCommands?.next;
   const latencyMS = Math.round(functionsTestResponse?.latencyMS);
-  const path = Object.entries(functionsTestResponse?.runtimeCommands?.next || {});
   const outputVars = functionsTestResponse?.runtimeCommands?.outputVars ?? {};
-  const traces = JSON.stringify(functionsTestResponse?.runtimeCommands.trace);
+  const traces = React.useMemo(() => JSON.stringify(functionsTestResponse?.runtimeCommands.trace), [functionsTestResponse?.runtimeCommands.trace]);
   const onDownloadLogsClick = () => {
     download(`logs.json`, JSON.stringify(functionsTestResponse), DataTypes.JSON);
   };
+  const isListenPaths = !!next && 'listen' in next;
+
+  const paths = React.useMemo(() => {
+    if (!next) return [];
+
+    if ('listen' in next) return [next.defaultTo.path, ...next.to.map(({ dest }) => (typeof dest === 'string' ? dest : dest.path))];
+    if ('path' in next) return [next.path];
+
+    return [];
+  }, [next]);
 
   useDynamicTracesCodeEditorHeight({
     isTracesSectionOpened,
@@ -69,7 +79,7 @@ export const FunctionTestResult: React.FC<IFunctionTestResultExtra & IFunctionTe
     outputVars: Object.entries(outputVars || {}),
     isOutputVarsSectionOpened,
     isResolvedPathSectionOpened,
-    path,
+    paths,
   });
 
   const formatFunctionValue = (value: unknown) => {
@@ -90,36 +100,49 @@ export const FunctionTestResult: React.FC<IFunctionTestResultExtra & IFunctionTe
 
   return (
     <div className={testResults}>
-      {!!path.length && !error && (
+      {!!paths.length && !error && (
         <>
           <Collapsible
-            isDisabled={disabled}
             isOpen={isResolvedPathSectionOpened}
             isEmpty={false}
+            isDisabled={disabled}
             showDivider={false}
             contentClassName={sectionRecipe({ disabled })}
             header={
               <Box width="100%" onClick={() => setIsResolvedPathSectionOpened(!isResolvedPathSectionOpened)}>
-                <CollapsibleHeader isDisabled={disabled} label="Resolved path" className={fullWidthStyle} isOpen={isResolvedPathSectionOpened}>
+                <CollapsibleHeader
+                  label={isListenPaths ? 'Available paths' : 'Resolved path'}
+                  isOpen={isResolvedPathSectionOpened}
+                  className={fullWidthStyle}
+                  isDisabled={disabled}
+                >
                   {() => <CollapsibleHeaderButton disabled={disabled} isOpen={isResolvedPathSectionOpened} />}
                 </CollapsibleHeader>
               </Box>
             }
           >
-            {path.map(([pathName, pathValue]) => (
+            {paths.map((value, index) => (
               <Mapper
-                key={pathName}
+                key={index}
                 equalityIcon="arrow"
-                leftHandSide={[
-                  <Text variant="basic" color={Theme.vars.color.font.default} key={pathName}>
-                    Path
-                  </Text>,
-                ]}
-                rightHandSide={[
-                  <Text key={pathValue} variant="basic" className={clsx(rhsMapperStyles, mapperStyles)}>
-                    {pathValue}
-                  </Text>,
-                ]}
+                leftHandSide={
+                  <Box gap={4}>
+                    <Text variant="basic" color={Theme.vars.color.font.default}>
+                      Path {isListenPaths ? index + 1 : ''}
+                    </Text>
+
+                    {isListenPaths && index === 0 && (
+                      <Text variant="basic" color={Tokens.colors.neutralDark.neutralsDark100}>
+                        (default)
+                      </Text>
+                    )}
+                  </Box>
+                }
+                rightHandSide={
+                  <Text variant="basic" className={clsx(rhsMapperStyles, mapperStyles)}>
+                    {value}
+                  </Text>
+                }
               />
             ))}
           </Collapsible>

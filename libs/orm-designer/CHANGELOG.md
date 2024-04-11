@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.46.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.45.2...@voiceflow/orm-designer@2.46.0) (2024-04-11)
+
+### Features
+
+* add new methods to project orm and create new refresh-jobs (COR-1787) ([#7968](https://github.com/voiceflow/creator-app/issues/7968)) ([05fa031](https://github.com/voiceflow/creator-app/commit/05fa03177a5d58f3fe7bf8e2d65ab22d95956446))
+
 ## [2.45.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.45.1...@voiceflow/orm-designer@2.45.2) (2024-04-11)
 
 **Note:** Version bump only for package @voiceflow/orm-designer

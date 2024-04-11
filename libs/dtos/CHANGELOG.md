@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.56.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.55.0...@voiceflow/dtos@1.56.0) (2024-04-11)
+
+### Features
+
+* add new methods to project orm and create new refresh-jobs (COR-1787) ([#7968](https://github.com/voiceflow/creator-app/issues/7968)) ([05fa031](https://github.com/voiceflow/creator-app/commit/05fa03177a5d58f3fe7bf8e2d65ab22d95956446))
+
 # [1.55.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.54.0...@voiceflow/dtos@1.55.0) (2024-04-11)
 
 ### Features

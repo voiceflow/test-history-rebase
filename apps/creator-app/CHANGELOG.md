@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1474.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1473.2...@voiceflow/creator-app@1.1474.0) (2024-04-11)
+
+### Features
+
+* revert new billing changes for role select (COR-1864) ([#7977](https://github.com/voiceflow/creator-app/issues/7977)) ([9aaac4c](https://github.com/voiceflow/creator-app/commit/9aaac4cf7d4b2005da775b1c429deae8022c1343))
+
 ## [1.1473.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1473.1...@voiceflow/creator-app@1.1473.2) (2024-04-11)
 
 **Note:** Version bump only for package @voiceflow/creator-app

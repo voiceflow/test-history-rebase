@@ -17,7 +17,7 @@ import { Screen } from './constants';
 import { useProjectCreate } from './hooks';
 import { Members, Setup } from './screens';
 
-const Create = manager.create<{ listID?: string }>('CreateProject', () => ({ api, type, opened, listID, hidden, animated }) => {
+const Create = manager.create<{ listID?: string }>('CreateProject', () => ({ api, type, opened, listID, hidden, animated, closePrevented }) => {
   const userID = useSelector(Account.userIDSelector)!;
   const userMember = useSelector(WorkspaceV2.active.memberByIDSelector, { creatorID: userID });
 
@@ -59,6 +59,7 @@ const Create = manager.create<{ listID?: string }>('CreateProject', () => ({ api
     if (!state.type || !state.platform) return;
 
     try {
+      api.preventClose();
       stateAPI.update({ creating: true });
 
       await onCreateProject({
@@ -73,8 +74,10 @@ const Create = manager.create<{ listID?: string }>('CreateProject', () => ({ api
         aiAssistSettings: state.aiAssistSettings,
       });
 
+      api.enableClose();
       api.close();
     } catch {
+      api.enableClose();
       stateAPI.update({ creating: false });
     }
   };
@@ -137,6 +140,7 @@ const Create = manager.create<{ listID?: string }>('CreateProject', () => ({ api
               onClose={api.onClose}
               onRemove={onRemoveMember}
               onChangeRole={onChangeMemberRole}
+              disabled={closePrevented}
             />
           </Switch.Pane>
         </Switch>

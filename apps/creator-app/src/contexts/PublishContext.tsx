@@ -1,4 +1,3 @@
-import { Nullable } from '@voiceflow/common';
 import { withContext } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
@@ -13,7 +12,16 @@ export interface PublishContextValue<T extends Job<any>> extends JobContextValue
   active: boolean;
 }
 
-export const PublishContext = React.createContext<Nullable<PublishContextValue<Job<any>>>>(null);
+export const PublishContext = React.createContext<PublishContextValue<Job<any>>>({
+  job: null,
+  retry: () => Promise.resolve(),
+  start: () => Promise.resolve(),
+  active: false,
+  cancel: () => Promise.resolve(),
+  setJob: () => {},
+  restart: () => Promise.resolve(),
+  updateCurrentStage: () => Promise.resolve(),
+});
 export const { Consumer: PublishConsumer } = PublishContext;
 
 export const PublishProvider: React.FC<React.PropsWithChildren> = ({ children }) => {

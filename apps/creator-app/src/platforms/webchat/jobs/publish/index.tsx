@@ -19,7 +19,7 @@ const Webchat: React.FC = () => {
 
   const publishNewVersionModal = ModalsV2.useModal(ModalsV2.Publish.NewVersion);
 
-  const publishContext = React.useContext(PublishContext)!;
+  const publishContext = React.useContext(PublishContext);
   const { job, active } = publishContext;
 
   const [trackingEvents] = useTrackingEvents();

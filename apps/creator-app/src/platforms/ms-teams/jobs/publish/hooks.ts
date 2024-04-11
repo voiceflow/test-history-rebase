@@ -26,7 +26,7 @@ export const useTeamsPublish = () => {
   const activeProjectID = useSelector(activeProjectIDSelector)!;
   const updateProjectLiveVersion = useDispatch(Project.updateProjectLiveVersion);
 
-  const publishContext = React.useContext(PublishContext)!;
+  const publishContext = React.useContext(PublishContext);
   const publishNewVersionModal = ModalsV2.useModal(ModalsV2.Publish.NewVersion);
 
   const onPublish = usePersistFunction(async () => {

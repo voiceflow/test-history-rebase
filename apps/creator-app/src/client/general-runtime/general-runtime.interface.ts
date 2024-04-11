@@ -39,5 +39,6 @@ export interface GeneralRuntimeIntentPreviewUtteranceRequest {
 export interface GeneralRuntimeIntentPreviewUtteranceResponse {
   nlu: { intents: GeneralRuntimeNLUIntentResponse[] };
   llm: { intents: GeneralRuntimeIntentResponse[] };
+  errors?: { message: string }[];
   unusedIntents: [];
 }

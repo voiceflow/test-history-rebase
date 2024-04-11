@@ -55,6 +55,10 @@ export class EnvironmentNLUTrainingUtil {
     };
   }
 
+  getModelDiffHash(model: ModelDiff) {
+    return MD5(model);
+  }
+
   isModelChanged(diff: ModelDiff) {
     return !!(
       diff.slots.new.length +

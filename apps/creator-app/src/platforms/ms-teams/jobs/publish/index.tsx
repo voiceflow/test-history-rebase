@@ -9,7 +9,7 @@ import { useTeamsPublish } from './hooks';
 import { useNLPTrainingStageContent } from './stages';
 
 const MSTeamsPublishButton: React.FC = () => {
-  const publishContext = React.useContext(PublishContext)!;
+  const publishContext = React.useContext(PublishContext);
   const { job, active } = publishContext;
 
   const Content = useNLPTrainingStageContent(job?.stage.type);

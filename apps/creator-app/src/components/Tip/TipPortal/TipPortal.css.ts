@@ -28,7 +28,7 @@ export const containerStyle = recipe({
     position: 'fixed',
     right: 20,
     bottom: 20,
-    zIndex: 1100,
+    zIndex: 10001,
     animation: `${showKeyframes} ${Tokens.animation.duration.fast} ${Tokens.animation.timingFunction.easeIn}`,
     animationFillMode: 'both',
   },

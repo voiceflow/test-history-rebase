@@ -28,7 +28,7 @@ export const NLUTrainingModelContext = React.createContext<NLUTrainingModelConte
   isFailed: false,
   isTrained: false,
   isTraining: false,
-  diffStatus: NLUTrainingDiffStatus.UNKNOWN,
+  diffStatus: NLUTrainingDiffStatus.IDLE,
   calculateDiff: () => Promise.resolve(),
 });
 
@@ -45,7 +45,7 @@ export const NLUTrainingModelProvider: React.FC<React.PropsWithChildren> = ({ ch
     trackingEvents.trackProjectTrainAssistant({ origin });
 
     try {
-      setNLUTrainingDiffStatus({ status: NLUTrainingDiffStatus.UNKNOWN });
+      setNLUTrainingDiffStatus({ status: NLUTrainingDiffStatus.IDLE });
 
       await training.start();
 
@@ -62,9 +62,7 @@ export const NLUTrainingModelProvider: React.FC<React.PropsWithChildren> = ({ ch
   });
 
   const calculateDiff = usePersistFunction(async () => {
-    if (training.active) return;
-    // no need to recalculate if status is already known
-    if (nluTrainingDiffStatus !== NLUTrainingDiffStatus.UNKNOWN) return;
+    if (training.active || nluTrainingDiffStatus === NLUTrainingDiffStatus.FETCHING) return;
 
     await calculateNLUTrainingDiff();
   });

@@ -772,14 +772,7 @@ export class EnvironmentService {
     const { prototype: versionPrototype, projectID } = await this.version.findOneOrFailWithFields(environmentID, ['prototype', 'projectID']);
     const { prototype: projectPrototype } = await this.project.findOneOrFailWithFields(projectID, ['prototype']);
 
-    if (!projectPrototype?.trainedModel || !versionPrototype?.model) {
-      return {
-        data: null,
-        status: 'untrained',
-      } as const;
-    }
-
-    const modelDiff = this.nluTrainingUtil.getModelDiff(projectPrototype.trainedModel, versionPrototype.model);
+    const modelDiff = this.nluTrainingUtil.getModelDiff(projectPrototype?.trainedModel, versionPrototype?.model);
     const { slots, intents } = modelDiff;
 
     const updatedDeletedSlotsCount = slots.deleted.length + slots.updated.length;
@@ -795,11 +788,12 @@ export class EnvironmentService {
     const untrainedCount = untrainedSlotsCount + untrainedIntentsCount;
 
     return {
+      hash: this.nluTrainingUtil.getModelDiffHash(modelDiff),
       status: this.nluTrainingUtil.isModelChanged(modelDiff) ? 'untrained' : 'trained',
       data: {
         trainedCount,
         untrainedCount,
-        lastTrainedTime: projectPrototype.lastTrainedTime ?? null,
+        lastTrainedTime: projectPrototype?.lastTrainedTime ?? null,
         trainedSlotsCount,
         trainedIntentsCount,
         untrainedSlotsCount,

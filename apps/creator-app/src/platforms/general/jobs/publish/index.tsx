@@ -21,7 +21,7 @@ const General: React.FC = () => {
 
   const updateProjectLiveVersion = useDispatch(Project.updateProjectLiveVersion);
 
-  const publishContext = React.useContext(PublishContext)!;
+  const publishContext = React.useContext(PublishContext);
   const { job, active } = publishContext;
 
   const [trackingEvents] = useTrackingEvents();

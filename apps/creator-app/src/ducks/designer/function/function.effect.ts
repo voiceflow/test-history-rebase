@@ -141,7 +141,7 @@ export const importMany =
           duplicatedFunctions.length > 1 ? `${duplicatedFunctions.length} functions already exist` : 'The function already exists';
 
         notify.short.error('Failed to import');
-        notify.long.warning(duplicatedFunctions.length ? warningMessage : 'Nothing to import');
+        notify.long.warning(duplicatedFunctions.length ? warningMessage : 'Nothing to import', { bodyClassName: 'vfui' });
 
         dispatch(FunctionTracking.error({ errorType: 'Import' }));
 
@@ -153,7 +153,9 @@ export const importMany =
       notify.short.success('Imported');
 
       if (duplicatedFunctions.length) {
-        notify.long.info(duplicatedFunctions.length > 1 ? `${duplicatedFunctions.length} functions already exist` : '1 function already exists');
+        notify.long.info(duplicatedFunctions.length > 1 ? `${duplicatedFunctions.length} functions already exist` : '1 function already exists', {
+          bodyClassName: 'vfui',
+        });
       }
     } catch {
       notify.short.error('Failed to import');

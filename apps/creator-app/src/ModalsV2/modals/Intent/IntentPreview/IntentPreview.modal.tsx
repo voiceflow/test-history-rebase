@@ -40,7 +40,7 @@ export const IntentPreviewModal = modalsManager.create(
       const dismissableLayer = React.useContext(DismissableLayerContext);
 
       const storeSettings = useIntentClassificationSettings();
-      const nluTrainingDiffData = useSelector(Designer.Environment.selectors.nluTrainingDiffData);
+      const nluTrainingDiffHash = useSelector(Designer.Environment.selectors.nluTrainingDiffHash);
 
       const compilePrototype = useDispatch(Prototype.compilePrototype);
       const previewUtterance = useDispatch(Designer.Intent.effect.previewUtterance);
@@ -56,10 +56,7 @@ export const IntentPreviewModal = modalsManager.create(
       const [classifiedIntents, setClassifiedIntents] =
         useState<Nullable<{ nlu: Array<{ name: string; confidence: number }>; llm: Array<{ name: string }> }>>(null);
       const [lastUsedUtterance, setLastUsedUtterance] = useEnvironmentSessionStorageState(`${MODAL_ID}-last-used-utterance`, '');
-      const [lastUntrainedDataCount, setLastUntrainedDataCount] = useEnvironmentSessionStorageState<null | number>(
-        `${MODAL_ID}-last-untrained-data-count`,
-        null
-      );
+      const [lastTrainingDiffHash, setLastTrainingDiffHash] = useEnvironmentSessionStorageState(`${MODAL_ID}-training-diff-hash`, '');
 
       const utteranceInput = useInput<string, HTMLTextAreaElement>({
         value: utteranceState.value,
@@ -92,7 +89,14 @@ export const IntentPreviewModal = modalsManager.create(
           flushSync(() => api.enableClose());
 
           utteranceInput.ref.current?.focus();
-        } catch {
+
+          if (result.errors?.length) {
+            notify.long.warning(result.errors.map((error) => error.message).join('\n'), {
+              pauseOnHover: true,
+              bodyClassName: 'vfui',
+            });
+          }
+        } catch (error) {
           api.enableClose();
 
           setClassifyStatus('error');
@@ -122,7 +126,7 @@ export const IntentPreviewModal = modalsManager.create(
       };
 
       const onDismissTraining = () => {
-        setLastUntrainedDataCount(nluTrainingDiffData?.untrainedCount ?? -1);
+        setLastTrainingDiffHash(nluTrainingDiffHash);
       };
 
       const onSubmit = () => onSend({ utterance: utteranceInput.value });
@@ -192,7 +196,7 @@ export const IntentPreviewModal = modalsManager.create(
                 <Modal.Body>
                   {prototypeCompiled &&
                     trainingModel.diffStatus === NLUTrainingDiffStatus.UNTRAINED &&
-                    lastUntrainedDataCount !== (nluTrainingDiffData?.untrainedCount ?? -1) && (
+                    lastTrainingDiffHash !== nluTrainingDiffHash && (
                       <Box pb={16}>
                         <Notification
                           type="alert"

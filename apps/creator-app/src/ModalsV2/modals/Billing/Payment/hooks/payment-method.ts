@@ -8,9 +8,12 @@ import { useRef } from 'react';
 import { designerClient } from '@/client/designer';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector } from '@/hooks';
+import { isUUID4 } from '@/utils/crypto';
 
 import * as CardForm from '../components/CardForm';
 import * as atoms from '../Payment.atoms';
+
+const isMockedPaymentIntent = (paymentIntent: PaymentIntent) => isUUID4(paymentIntent.id) && !paymentIntent.gatewayAccountId;
 
 export const useCardPaymentMethod = () => {
   const cardRef = useRef<Component>();
@@ -30,7 +33,7 @@ export const useCardPaymentMethod = () => {
     },
   });
 
-  const createPaymentIntent = async (planPrice: number, cardValues: CardForm.Values): Promise<PaymentIntent> => {
+  const createPaymentIntent = async (planPrice: number, cardValues: CardForm.Values) => {
     // we divide de price by 100 to show on the UI, but backend expects the amount in cents
     let amount = planPrice * 100;
 
@@ -44,14 +47,11 @@ export const useCardPaymentMethod = () => {
       }
     }
 
-    const response = await designerClient.billing.subscription.createPaymentIntent(organizationID, {
+    return designerClient.billing.subscription.createPaymentIntent(organizationID, {
       json: {
         amount,
       },
     });
-
-    // FIXME: build types correctly
-    return response as unknown as PaymentIntent;
   };
 
   const authorize = async (paymentIntent: PaymentIntent, cardValues: CardForm.Values): Promise<PaymentIntent> => {
@@ -106,6 +106,10 @@ export const useCardPaymentMethod = () => {
     setPaymentIntent(paymentIntentResult);
 
     if (!paymentIntentResult) return null;
+
+    if (isMockedPaymentIntent(paymentIntentResult)) {
+      return paymentIntentResult;
+    }
 
     try {
       paymentIntentResult = await authorize(paymentIntentResult, cardValues);

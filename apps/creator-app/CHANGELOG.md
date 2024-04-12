@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1477.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1476.1...@voiceflow/creator-app@1.1477.0) (2024-04-12)
+
+### Features
+
+* fix checkout with mocked chargebee (COR-1864) ([#7972](https://github.com/voiceflow/creator-app/issues/7972)) ([b2ebd87](https://github.com/voiceflow/creator-app/commit/b2ebd87f745730c092af1128e4806f263e042c3d))
+
 ## [1.1476.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1476.0...@voiceflow/creator-app@1.1476.1) (2024-04-11)
 
 ### Bug Fixes

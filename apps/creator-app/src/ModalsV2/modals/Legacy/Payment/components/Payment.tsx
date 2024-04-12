@@ -5,6 +5,7 @@ import React from 'react';
 import { ACTIVE_PAID_PLAN, UNLIMITED_EDITORS_CONST } from '@/constants';
 import * as PaymentContext from '@/contexts/PaymentContext';
 import { PlanPricesContext } from '@/contexts/PlanPricesContext';
+import * as Organization from '@/ducks/organization';
 import * as Sessions from '@/ducks/session';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useTrackingEvents } from '@/hooks';
@@ -28,6 +29,7 @@ export const Payment = ({ id, api, type, opened, hidden, animated, closePrevente
   const numberOfSeats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);
   const editorPlanSeatLimits = useSelector(WorkspaceV2.active.editorPlanSeatLimitsSelector);
   const activeWorkspaceID = useSelector(Sessions.activeWorkspaceIDSelector);
+  const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
 
   const workspaceEditorSeats = numberOfSeats === UNLIMITED_EDITORS_CONST ? editorSeats : numberOfSeats;
 
@@ -122,6 +124,10 @@ export const Payment = ({ id, api, type, opened, hidden, animated, closePrevente
   const proPrices = planPrices.map[ACTIVE_PAID_PLAN] ?? null;
   const periodPrice = (proPrices?.[state.period] ?? 0) * (state.period === BillingPeriod.ANNUALLY ? 12 : 1);
   const price = periodPrice * state.editorSeats;
+
+  // if there's a bug and we trigger the legacy payment modal for new users, we should not show it.
+  // Otherwise, user could go through stripe and it would be more confusing.
+  if (subscription) return null;
 
   return (
     <PaymentModal

@@ -2,14 +2,14 @@ import { PlanType } from '@voiceflow/internal';
 
 import { LimitType } from '@/constants/limits';
 import * as Tracking from '@/ducks/tracking';
-import { getUpgradeModalProps } from '@/utils/upgrade';
+import { getLegacyUpgradeModalProps } from '@/utils/upgrade';
 
 import { PlanLimit, UpgradeModalDynamicLimit } from './types';
 import { applyAllLimits } from './utils';
 
 const ALL_PLANS_LIMIT = {
   upgradeModal: ({ limit }) => ({
-    ...getUpgradeModalProps(PlanType.ENTERPRISE, Tracking.UpgradePrompt.VIEWER_SEATS),
+    ...getLegacyUpgradeModalProps(PlanType.ENTERPRISE, Tracking.UpgradePrompt.VIEWER_SEATS),
     title: 'Need more Viewer seats?',
     header: 'Add Members',
     description: `You've reached ${limit} viewer seats limit allowed in your workspace. Contact sales to unlock more.`,

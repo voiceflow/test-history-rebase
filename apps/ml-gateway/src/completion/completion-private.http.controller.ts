@@ -1,7 +1,8 @@
-import { Body, Controller, HttpStatus, Inject, Post, Sse, UseGuards, UseInterceptors, MessageEvent } from '@nestjs/common';
+import { Body, Controller, HttpStatus, Inject, Post, Sse, UseGuards, MessageEvent } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ZodApiBody, ZodApiResponse } from '@voiceflow/nestjs-common';
-import { BillingAuthorizeGuard, Authorize, BillingTrackUsageInterceptor, BillingTrackUsageService } from '@voiceflow/sdk-billing/nestjs';
+import { BillingAuthorizeGuard, BillingAuthorize } from '@voiceflow/sdk-billing/nestjs';
+import { BillingClient, BillingResourceType, TrackUsageItemName } from '@voiceflow/sdk-billing';
 import { ZodValidationPipe } from 'nestjs-zod';
 import { Observable } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
@@ -15,8 +16,7 @@ import { createFrom } from './utils/async-iterator-to-observable';
 @Controller('private/completion')
 @ApiTags('Private/Completion')
 @UseGuards(BillingAuthorizeGuard)
-@UseInterceptors(BillingTrackUsageInterceptor)
-@Authorize({
+@BillingAuthorize({
   resourceType: 'workspace',
   resourceID: (context) => context.switchToHttp().getRequest().body.workspaceID,
   item: 'addon-tokens',
@@ -26,7 +26,7 @@ export class CompletionPrivateHTTPController {
   constructor(
     @Inject(CompletionService)
     private readonly service: CompletionService,
-    private readonly trackUsage: BillingTrackUsageService
+    private billing: BillingClient
   ) {}
 
   @Post()
@@ -46,10 +46,10 @@ export class CompletionPrivateHTTPController {
   ): Promise<CompletionResponse> {
     const result = await this.service.generateCompletion(request);
 
-    this.trackUsage.track({
-      resourceType: 'workspace',
+    await this.billing.usagesPrivate.trackUsage({
+      resourceType: BillingResourceType.WORKSPACE,
       resourceID: String(request.workspaceID),
-      item: 'addon-tokens',
+      item: TrackUsageItemName.Tokens,
       value: result.tokens,
     });
 
@@ -73,10 +73,10 @@ export class CompletionPrivateHTTPController {
   ): Promise<CompletionResponse> {
     const result = await this.service.generateChatCompletion(request);
 
-    this.trackUsage.track({
-      resourceType: 'workspace',
+    await this.billing.usagesPrivate.trackUsage({
+      resourceType: BillingResourceType.WORKSPACE,
       resourceID: String(request.workspaceID),
-      item: 'addon-tokens',
+      item: TrackUsageItemName.Tokens,
       value: result.tokens,
     });
 
@@ -99,10 +99,10 @@ export class CompletionPrivateHTTPController {
     request: CompletionRequest
   ): Observable<MessageEvent> {
     return createFrom(() => this.service.generateCompletionStream(request)).pipe(
-      tap((chunk) => this.trackUsage.track({
-        resourceType: 'workspace',
+      tap((chunk) => this.billing.usagesPrivate.trackUsage({
+        resourceType: BillingResourceType.WORKSPACE,
         resourceID: String(request.workspaceID),
-        item: 'addon-tokens',
+        item: TrackUsageItemName.Tokens,
         value: chunk.tokens,
       })),
       map((chunk) => {
@@ -137,10 +137,10 @@ export class CompletionPrivateHTTPController {
     request: ChatCompletionRequest
   ): Observable<MessageEvent> {
     return createFrom(() => this.service.generateChatCompletionStream(request)).pipe(
-      tap((chunk) => this.trackUsage.track({
-        resourceType: 'workspace',
+      tap((chunk) => this.billing.usagesPrivate.trackUsage({
+        resourceType: BillingResourceType.WORKSPACE,
         resourceID: String(request.workspaceID),
-        item: 'addon-tokens',
+        item: TrackUsageItemName.Tokens,
         value: chunk.tokens,
       })),
       map((chunk) => {

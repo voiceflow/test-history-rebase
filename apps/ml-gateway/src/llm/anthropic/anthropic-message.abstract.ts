@@ -1,6 +1,6 @@
 import Client from '@anthropic-ai/sdk';
-import { Logger } from '@nestjs/common';
 import { AIMessage, AIMessageRole, AIParams } from '@voiceflow/dtos';
+import { AnthropicStream } from 'ai';
 
 import { LLMModel } from '../llm-model.abstract';
 import { CompletionOutput } from '../llm-model.dto';
@@ -8,8 +8,6 @@ import { AnthropicConfig } from './anthropic.interface';
 import { formatMessages } from './anthropic-message.util';
 
 export abstract class AnthropicMessageAIModel extends LLMModel {
-  private logger = new Logger(AnthropicMessageAIModel.name);
-
   protected abstract anthropicModel: string;
 
   protected readonly client: Client;
@@ -26,14 +24,14 @@ export abstract class AnthropicMessageAIModel extends LLMModel {
     this.client = new Client({ apiKey: config.ANTHROPIC_API_KEY });
   }
 
-  generateCompletion(prompt: string, params: AIParams): Promise<CompletionOutput> {
+  async * generateCompletion(prompt: string, params: AIParams): AsyncGenerator<CompletionOutput> {
     const messages: AIMessage[] = [{ role: AIMessageRole.USER, content: prompt }];
     if (params.system) messages.unshift({ role: AIMessageRole.SYSTEM, content: params.system });
 
-    return this.generateChatCompletion(messages, params);
+    yield * this.generateChatCompletion(messages, params);
   }
 
-  async generateChatCompletion(messages: AIMessage[], params: AIParams): Promise<CompletionOutput> {
+  async * generateChatCompletion(messages: AIMessage[], params: AIParams): AsyncGenerator<CompletionOutput> {
     const result = await this.client.messages
       .create({
         system: params.system,
@@ -42,24 +40,25 @@ export abstract class AnthropicMessageAIModel extends LLMModel {
         temperature: params.temperature,
         max_tokens: this.normalizeMaxTokens(params.maxTokens) || this.defaultMaxTokens,
         stop_sequences: [...(params.stop || [])],
-      })
-      .catch((error: unknown) => {
-        this.logger.warn({ error, messages, params }, `${this.modelRef} completion`);
-        return null;
+        stream: true
       });
 
-    const output = result?.content?.map((content) => content.text.trim()).join('\n') || null;
+    const stream = AnthropicStream(result);
 
-    const queryTokens = this.calculateTokenMultiplier(result?.usage.input_tokens || 0);
-    const answerTokens = this.calculateTokenMultiplier(result?.usage.output_tokens || 0);
+    for await (const chunk of stream) {
+      const output = chunk?.content?.map((content: { text: string }) => content.text.trim()).join('\n') || null
+      const queryTokens = this.calculateTokenMultiplier(chunk.usage.input_tokens || 0);
+      const answerTokens = this.calculateTokenMultiplier(chunk.usage.output_tokens || 0);
+      const tokens = queryTokens + answerTokens;
 
-    return {
-      output,
-      tokens: queryTokens + answerTokens,
-      queryTokens,
-      answerTokens,
-      multiplier: this.TOKEN_MULTIPLIER,
-      model: this.modelRef,
-    };
+      yield {
+        output,
+        tokens,
+        queryTokens,
+        answerTokens,
+        multiplier: this.TOKEN_MULTIPLIER,
+        model: this.modelRef,
+      }
+    }
   }
 }

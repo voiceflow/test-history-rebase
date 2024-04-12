@@ -10210,6 +10210,7 @@ __metadata:
     nestjs-zod: 2.3.3
     openai: ^4.28.4
     reflect-metadata: 0.1.13
+    rxjs: ^7.8.1
     supertest: 6.3.3
     tsx: 3.12.7
     undici: 5.23.0
@@ -30341,7 +30342,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rxjs@npm:7.8.1, rxjs@npm:^7.5.1, rxjs@npm:^7.5.5, rxjs@npm:^7.8.0":
+"rxjs@npm:7.8.1, rxjs@npm:^7.5.1, rxjs@npm:^7.5.5, rxjs@npm:^7.8.0, rxjs@npm:^7.8.1":
   version: 7.8.1
   resolution: "rxjs@npm:7.8.1"
   dependencies:

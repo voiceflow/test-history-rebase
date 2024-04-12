@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 
-export function createFrom<T>(asyncCollection: () => AsyncIterableIterator<T>): Observable<T> {
-  return new Observable<T>(subscriber => {
+export const createFrom = <T>(asyncCollection: () => AsyncIterableIterator<T>): Observable<T> =>
+  new Observable<T>((subscriber) => {
     (async () => {
       try {
         for await (const value of asyncCollection()) {
@@ -13,4 +13,3 @@ export function createFrom<T>(asyncCollection: () => AsyncIterableIterator<T>): 
       }
     })();
   });
-}

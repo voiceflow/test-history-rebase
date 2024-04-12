@@ -1,7 +1,7 @@
 import { Logger } from '@nestjs/common';
 import { AIMessage, AIMessageRole, AIParams } from '@voiceflow/dtos';
-import { ChatCompletion, ChatCompletionRole } from 'openai/resources/chat';
 import { OpenAIStream } from 'ai';
+import { ChatCompletion, ChatCompletionRole } from 'openai/resources/chat';
 
 import { LLMModel } from '../llm-model.abstract';
 import { EmptyCompletionOutput } from '../llm-model.constant';
@@ -21,8 +21,8 @@ export abstract class GPTLLMModel extends LLMModel {
     [AIMessageRole.SYSTEM]: 'system',
     [AIMessageRole.USER]: 'user',
   } as const satisfies {
-    [K in AIMessageRole]: ChatCompletionRole
-  }
+    [K in AIMessageRole]: ChatCompletionRole;
+  };
 
   // try using azure openai first, if it fails, defer to openai api
   constructor(protected config: OpenAIConfig, protected azureConfig?: AzureConfig) {
@@ -51,7 +51,7 @@ export abstract class GPTLLMModel extends LLMModel {
     };
   }
 
-  protected async * callChatCompletion(
+  protected async *callChatCompletion(
     messages: AIMessage[],
     params: AIParams,
     options?: CompletionOptions,
@@ -84,14 +84,15 @@ export abstract class GPTLLMModel extends LLMModel {
     }
   }
 
-  async * generateChatCompletion(messages: AIMessage[], params: AIParams, options?: CompletionOptions) {
-    if (this.azureConfig && this.client.azureClient) yield* this.callChatCompletion(messages, params, options, this.client.azureClient, this.azureConfig.model);
-    else yield * this.callChatCompletion(messages, params, options);
+  async *generateChatCompletion(messages: AIMessage[], params: AIParams, options?: CompletionOptions) {
+    if (this.azureConfig && this.client.azureClient)
+      yield* this.callChatCompletion(messages, params, options, this.client.azureClient, this.azureConfig.model);
+    else yield* this.callChatCompletion(messages, params, options);
   }
 
-  async * generateCompletion(prompt: string, params: AIParams, options?: CompletionOptions) {
+  async *generateCompletion(prompt: string, params: AIParams, options?: CompletionOptions) {
     const messages: AIMessage[] = [{ role: AIMessageRole.USER, content: prompt }];
 
-    yield * this.callChatCompletion(messages, params, options);
+    yield* this.callChatCompletion(messages, params, options);
   }
 }

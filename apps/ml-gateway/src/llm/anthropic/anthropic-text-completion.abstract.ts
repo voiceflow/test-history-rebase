@@ -32,11 +32,11 @@ export abstract class AnthropicTextCompletionAIModel extends LLMModel {
     [AIMessageRole.ASSISTANT]: AI_PROMPT,
   };
 
-  async * generateCompletion(prompt: string, params: AIParams): AsyncGenerator<CompletionOutput> {
+  async *generateCompletion(prompt: string, params: AIParams): AsyncGenerator<CompletionOutput> {
     const messages: AIMessage[] = [{ role: AIMessageRole.USER, content: prompt }];
     if (params.system) messages.unshift({ role: AIMessageRole.SYSTEM, content: params.system });
 
-    yield * this.generateChatCompletion(messages, params);
+    yield* this.generateChatCompletion(messages, params);
   }
 
   /**
@@ -47,7 +47,7 @@ export abstract class AnthropicTextCompletionAIModel extends LLMModel {
     return Math.floor((text.length / 4) * this.TOKEN_MULTIPLIER);
   }
 
-  async * generateChatCompletion(messages: AIMessage[], params: AIParams): AsyncGenerator<CompletionOutput> {
+  async *generateChatCompletion(messages: AIMessage[], params: AIParams): AsyncGenerator<CompletionOutput> {
     let topSystem = '';
     let prompt = '';
     for (let i = 0; i < messages.length; i++) {
@@ -67,15 +67,14 @@ export abstract class AnthropicTextCompletionAIModel extends LLMModel {
 
     // const queryTokens = this.calculateTokenUsage(prompt);
 
-    const result = await this.client.completions
-      .create({
-        prompt,
-        model: this.anthropicModel,
-        temperature: params.temperature,
-        max_tokens_to_sample: this.normalizeMaxTokens(params.maxTokens) || this.defaultMaxTokens,
-        stop_sequences: [HUMAN_PROMPT, ...(params.stop || [])],
-        stream: true,
-      })
+    const result = await this.client.completions.create({
+      prompt,
+      model: this.anthropicModel,
+      temperature: params.temperature,
+      max_tokens_to_sample: this.normalizeMaxTokens(params.maxTokens) || this.defaultMaxTokens,
+      stop_sequences: [HUMAN_PROMPT, ...(params.stop || [])],
+      stream: true,
+    });
 
     const stream = AnthropicStream(result);
 
@@ -92,7 +91,7 @@ export abstract class AnthropicTextCompletionAIModel extends LLMModel {
         answerTokens,
         multiplier: this.TOKEN_MULTIPLIER,
         model: this.modelRef,
-      }
+      };
     }
   }
 }

@@ -1,6 +1,6 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ENVIRONMENT_VARIABLES } from '@voiceflow/nestjs-env';
-import { OpenAI } from 'openai'
+import { OpenAI } from 'openai';
 
 import type { EnvironmentVariables } from '@/app.env';
 
@@ -18,7 +18,6 @@ export class ModerationService {
   ) {
     if (!env.OPENAI_API_KEY) {
       this.logger.warn('OpenAI API key is not set, content moderation will be ignored');
-      return;
     }
 
     // this.openAIClient = new OpenAIApi(new Configuration({ apiKey: env.OPENAI_API_KEY, basePath: env.OPENAI_API_ENDPOINT || undefined }));
@@ -29,7 +28,7 @@ export class ModerationService {
     if (!this.openAIClient) return;
 
     if (!input?.length) return;
-    const moderationResult = await this.openAIClient.moderations.create({input});
+    const moderationResult = await this.openAIClient.moderations.create({ input });
 
     const failedModeration = moderationResult.results.flatMap((result, idx) => {
       if (result.flagged) {

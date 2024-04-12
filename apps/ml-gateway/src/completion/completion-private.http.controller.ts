@@ -1,11 +1,11 @@
-import { Body, Controller, HttpStatus, Inject, Post, Sse, UseGuards, MessageEvent } from '@nestjs/common';
+import { Body, Controller, HttpStatus, Inject, MessageEvent, Post, Sse, UseGuards } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ZodApiBody, ZodApiResponse } from '@voiceflow/nestjs-common';
-import { BillingAuthorizeGuard, BillingAuthorize } from '@voiceflow/sdk-billing/nestjs';
 import { BillingClient, BillingResourceType, TrackUsageItemName } from '@voiceflow/sdk-billing';
+import { BillingAuthorize, BillingAuthorizeGuard } from '@voiceflow/sdk-billing/nestjs';
 import { ZodValidationPipe } from 'nestjs-zod';
 import { Observable } from 'rxjs';
-import { tap, map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 import { CompletionService } from './completion.service';
 import { ChatCompletionRequest } from './dtos/chat-completion.request';
@@ -99,24 +99,26 @@ export class CompletionPrivateHTTPController {
     request: CompletionRequest
   ): Observable<MessageEvent> {
     return createFrom(() => this.service.generateCompletionStream(request)).pipe(
-      tap((chunk) => this.billing.usagesPrivate.trackUsage({
-        resourceType: BillingResourceType.WORKSPACE,
-        resourceID: String(request.workspaceID),
-        item: TrackUsageItemName.Tokens,
-        value: chunk.tokens,
-      })),
+      tap((chunk) =>
+        this.billing.usagesPrivate.trackUsage({
+          resourceType: BillingResourceType.WORKSPACE,
+          resourceID: String(request.workspaceID),
+          item: TrackUsageItemName.Tokens,
+          value: chunk.tokens,
+        })
+      ),
       map((chunk) => {
         if (chunk.error) {
           return {
             type: 'error',
             data: { error: chunk.error },
-          }
+          };
         }
 
         return {
           type: 'completion',
           data: chunk,
-        }
+        };
       })
     );
   }
@@ -137,24 +139,26 @@ export class CompletionPrivateHTTPController {
     request: ChatCompletionRequest
   ): Observable<MessageEvent> {
     return createFrom(() => this.service.generateChatCompletionStream(request)).pipe(
-      tap((chunk) => this.billing.usagesPrivate.trackUsage({
-        resourceType: BillingResourceType.WORKSPACE,
-        resourceID: String(request.workspaceID),
-        item: TrackUsageItemName.Tokens,
-        value: chunk.tokens,
-      })),
+      tap((chunk) =>
+        this.billing.usagesPrivate.trackUsage({
+          resourceType: BillingResourceType.WORKSPACE,
+          resourceID: String(request.workspaceID),
+          item: TrackUsageItemName.Tokens,
+          value: chunk.tokens,
+        })
+      ),
       map((chunk) => {
         if (chunk.error) {
           return {
             type: 'error',
             data: { error: chunk.error },
-          }
+          };
         }
 
         return {
           type: 'completion',
           data: chunk,
-        }
+        };
       })
     );
   }

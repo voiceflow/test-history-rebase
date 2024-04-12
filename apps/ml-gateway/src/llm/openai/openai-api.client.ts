@@ -1,4 +1,5 @@
 import { OpenAI } from 'openai';
+
 import { isAzureBasedGPTConfig, isOpenAIGPTConfig, OpenAIConfig } from './gpt.interface';
 
 export class OpenAIClient {
@@ -27,7 +28,6 @@ export class OpenAIClient {
       this.openAIClient = new OpenAI({
         apiKey: config.OPENAI_API_KEY,
         baseURL: config.OPENAI_API_ENDPOINT || undefined,
-
       });
     }
 

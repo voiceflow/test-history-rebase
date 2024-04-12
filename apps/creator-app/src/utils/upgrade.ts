@@ -16,11 +16,25 @@ const onOpenPricingPage = onOpenInternalURLInANewTabFactory(PRICING_LINK);
 export const onOpenBookDemoPage = onOpenInternalURLInANewTabFactory(BOOK_DEMO_LINK);
 
 // not using modal import here to avoid circular dependency
-const onOpenPaymentModal = () => ModalsManager.open(Utils.id.cuid.slug(), 'LegacyPayment').catch(Utils.functional.noop);
+const onOpenLegacyPaymentModal = () => {
+  ModalsManager.open(Utils.id.cuid.slug(), 'LegacyPayment').catch(Utils.functional.noop);
+};
+
+const onOpenPaymentModal = () => {
+  ModalsManager.open(Utils.id.cuid.slug(), 'Payment').catch(Utils.functional.noop);
+};
+
+export const getLegacyUpgradeModalProps = (
+  nextPlan: PlanType,
+  upgradePrompt: Tracking.UpgradePrompt
+): Pick<UpgradeModal, 'onUpgrade' | 'upgradePrompt' | 'upgradeButtonText'> => {
+  return getUpgradeModalProps(nextPlan, upgradePrompt, { isLegacyBilling: true });
+};
 
 export const getUpgradeModalProps = (
   nextPlan: PlanType,
-  upgradePrompt: Tracking.UpgradePrompt
+  upgradePrompt: Tracking.UpgradePrompt,
+  { isLegacyBilling = false }: { isLegacyBilling?: boolean } = {}
 ): Pick<UpgradeModal, 'onUpgrade' | 'upgradePrompt' | 'upgradeButtonText'> => {
   if (nextPlan === PlanType.TEAM) {
     return {
@@ -45,7 +59,7 @@ export const getUpgradeModalProps = (
   }
 
   return {
-    onUpgrade: onOpenPaymentModal,
+    onUpgrade: isLegacyBilling ? onOpenLegacyPaymentModal : onOpenPaymentModal,
     upgradePrompt,
     upgradeButtonText: `Upgrade to ${getPlanTypeLabel(nextPlan)}`,
   };

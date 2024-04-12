@@ -2,7 +2,7 @@ import { PlanType } from '@voiceflow/internal';
 
 import { LimitType } from '@/constants/limits';
 import * as Tracking from '@/ducks/tracking';
-import { getUpgradeModalProps } from '@/utils/upgrade';
+import { getLegacyUpgradeModalProps } from '@/utils/upgrade';
 
 import { PlanLimit, UpgradeModalStaticLimit } from './types';
 import { applyEnterpriseLimits, applyPersonalLimits, applyProLimits, applyStarterLimits, applyTeamLimits } from './utils';
@@ -17,7 +17,7 @@ const STARTER_PERSONAL_LIMIT = {
 
   upgradeModal: () => ({
     ...DEFAULT_MODAL,
-    ...getUpgradeModalProps(PlanType.PRO, Tracking.UpgradePrompt.KB_DOCUMENTS),
+    ...getLegacyUpgradeModalProps(PlanType.PRO, Tracking.UpgradePrompt.KB_DOCUMENTS),
     description: `Upgrade to the pro plan to unlock more documents.`,
   }),
 } satisfies UpgradeModalStaticLimit;
@@ -26,7 +26,7 @@ const PRO_TEAM_LIMIT = {
   limit: 200,
   upgradeModal: ({ limit }) => ({
     ...DEFAULT_MODAL,
-    ...getUpgradeModalProps(PlanType.ENTERPRISE, Tracking.UpgradePrompt.KB_DOCUMENTS),
+    ...getLegacyUpgradeModalProps(PlanType.ENTERPRISE, Tracking.UpgradePrompt.KB_DOCUMENTS),
     description: `You've reached the ${limit} documents limit allowed in your workspace. Contact sales to unlock more.`,
   }),
 } satisfies UpgradeModalStaticLimit;
@@ -35,7 +35,7 @@ const ENTERPRISE_LIMIT = {
   limit: 5000,
   upgradeModal: ({ limit }) => ({
     ...DEFAULT_MODAL,
-    ...getUpgradeModalProps(PlanType.ENTERPRISE, Tracking.UpgradePrompt.KB_DOCUMENTS),
+    ...getLegacyUpgradeModalProps(PlanType.ENTERPRISE, Tracking.UpgradePrompt.KB_DOCUMENTS),
     description: `You've reached the ${limit} documents limit allowed in your workspace. Contact sales to unlock more.`,
   }),
 } satisfies UpgradeModalStaticLimit;

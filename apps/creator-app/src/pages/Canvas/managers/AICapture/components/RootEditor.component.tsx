@@ -2,9 +2,10 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, SectionV2, Toggle } from '@voiceflow/ui';
 import React from 'react';
 
-import * as Tracking from '@/ducks/tracking';
-import { useAllEntitiesSelector, useOnOpenEntityCreateModal, useOnOpenEntityEditModal } from '@/hooks/entity.hook';
+import * as Designer from '@/ducks/designer';
+import { useSelector } from '@/hooks';
 import { useIndexedMapManager } from '@/hooks/mapManager';
+import { useEntityCreateModal, useEntityEditModal } from '@/hooks/modal.hook';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import EntitySelector from '@/pages/Canvas/managers/CaptureV2/components/EntitySelector';
 import { NoReplyV2 } from '@/pages/Canvas/managers/components';
@@ -32,12 +33,12 @@ const RootEditor: React.FC<{}> = () => {
     factory: () => '',
   });
 
-  const onOpenEntityEditModal = useOnOpenEntityEditModal();
-  const onOpenEntityCreateModal = useOnOpenEntityCreateModal();
+  const entityEditModal = useEntityEditModal();
+  const entityCreateModal = useEntityCreateModal();
 
   const usedEntities = React.useMemo(() => new Set(data.entities), [data.entities]);
 
-  const entities = useAllEntitiesSelector();
+  const entities = useSelector(Designer.Entity.selectors.all);
   const options = React.useMemo(
     () =>
       entities.map((entity) => ({
@@ -80,10 +81,9 @@ const RootEditor: React.FC<{}> = () => {
                 onSelect={(entityID) => onUpdate({ item: entityID || '' })}
                 onCreate={async (name = '') => {
                   try {
-                    const entity = await onOpenEntityCreateModal({
+                    const entity = await entityCreateModal.open({
                       name,
                       folderID: null,
-                      creationType: Tracking.CanvasCreationType.EDITOR,
                     });
 
                     onUpdate({ item: entity.id });
@@ -91,7 +91,7 @@ const RootEditor: React.FC<{}> = () => {
                     // model is closed
                   }
                 }}
-                onEdit={item ? () => onOpenEntityEditModal({ entityID: item }) : undefined}
+                onEdit={item ? () => entityEditModal.open({ entityID: item }) : undefined}
               />
             </SectionV2.ListItem>
           </Box>

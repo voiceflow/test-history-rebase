@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1478.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1477.0...@voiceflow/creator-app@1.1478.0) (2024-04-12)
+
+### Features
+
+* display proper payment modal for cb paywalls (COR-1866) ([#7981](https://github.com/voiceflow/creator-app/issues/7981)) ([0acddba](https://github.com/voiceflow/creator-app/commit/0acddbaec4a36f2d84f8a77403c6fc87eb8bac39))
+
 # [1.1477.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1476.1...@voiceflow/creator-app@1.1477.0) (2024-04-12)
 
 ### Features

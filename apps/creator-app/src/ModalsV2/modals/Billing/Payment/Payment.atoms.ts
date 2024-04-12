@@ -1,4 +1,4 @@
-import { BillingPlan } from '@voiceflow/dtos';
+import { BillingPlan, PaymentIntent } from '@voiceflow/dtos';
 import { BillingPeriod } from '@voiceflow/internal';
 import { atom } from 'jotai';
 
@@ -32,6 +32,6 @@ export const plansPriceAtom = atom<Record<string, PriceMap>>((get) => {
 export const activePaidPlanPricesAtom = atom<PriceMap | null>((get) => get(plansPriceAtom)[ACTIVE_PAID_PLAN] ?? null);
 export const selectedPlanPriceAtom = atom((get) => get(activePaidPlanPricesAtom)?.[get(periodAtom)] ?? null);
 
-export const paymentIntentAtom = atom<any | null>(null);
+export const paymentIntentAtom = atom<PaymentIntent | null>(null);
 
 export const couponIdsAtom = atom<string[]>([]);

@@ -17,15 +17,18 @@ class PatchProject extends AbstractWorkspaceChannelControl<PatchProjectPayload> 
     const { nluSettings, aiAssistSettings, image } = payload.value;
 
     await this.services.requestContext.createAsync(() =>
-      this.services.projectV2.patchOne(payload.key, {
-        ...fields,
-        ...(image && { image }),
-        // this spread pattern is somehow needed to satisfy the type checker
-        ...(nluSettings && { nluSettings: { ...nluSettings } }),
-        ...(aiAssistSettings && { aiAssistSettings: { ...aiAssistSettings } }),
-        updatedBy: ctx.data.creatorID,
-        updatedAt: new Date(),
-      })
+      Promise.all([
+        this.services.projectV2.patchOne(payload.key, {
+          ...fields,
+          ...(image && { image }),
+          // this spread pattern is somehow needed to satisfy the type checker
+          ...(nluSettings && { nluSettings: { ...nluSettings } }),
+          ...(aiAssistSettings && { aiAssistSettings: { ...aiAssistSettings } }),
+          updatedBy: ctx.data.creatorID,
+          updatedAt: new Date(),
+        }),
+        fields.name ? this.services.assistant.patchOne(payload.key, { name: fields.name }) : Promise.resolve(),
+      ])
     );
   };
 }

@@ -20,7 +20,10 @@ export class CreatorAppService {
     return new URL(path, this.baseURL);
   }
 
-  // link is same as used in Frontend goToCurrentCanvasCommenting()
+  getCanvasURL({ versionID, diagramID }: { versionID: string; diagramID: string }): URL {
+    return this.getURL(`/project/${versionID}/canvas/${diagramID}`);
+  }
+
   getCommentingURL({
     threadID,
     versionID,
@@ -32,6 +35,10 @@ export class CreatorAppService {
     diagramID: string;
     commentID: string;
   }): URL {
-    return this.getURL(`/project/${versionID}/canvas/${diagramID}/commenting/${threadID}/${commentID}`);
+    const canvasURL = this.getCanvasURL({ versionID, diagramID });
+
+    canvasURL.pathname = `${canvasURL.pathname}/commenting/${threadID}/${commentID}`;
+
+    return canvasURL;
   }
 }

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.323.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.322.1...@voiceflow/realtime@1.323.0) (2024-04-14)
+
+### Features
+
+* send workflow assignee email (COR-1769) ([#7980](https://github.com/voiceflow/creator-app/issues/7980)) ([c098cbd](https://github.com/voiceflow/creator-app/commit/c098cbdfe03e894f221be09dd25f34ba724fd1b7))
+
 ## [1.322.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.322.0...@voiceflow/realtime@1.322.1) (2024-04-11)
 
 **Note:** Version bump only for package @voiceflow/realtime

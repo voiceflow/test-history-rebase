@@ -90,7 +90,7 @@ export class WorkflowLoguxController {
   @BroadcastOnly()
   @UseRequestContext()
   async patchOne(@Payload() { id, patch, context }: Actions.Workflow.PatchOne, @AuthMeta() auth: AuthMetaPayload) {
-    await this.service.patchOneForUser(auth.userID, { id, environmentID: context.environmentID }, patch);
+    await this.service.patchOneForUserAndSendEmail(auth.userID, { id, environmentID: context.environmentID }, patch);
   }
 
   @Action(Actions.Workflow.PatchMany)
@@ -102,7 +102,7 @@ export class WorkflowLoguxController {
   @BroadcastOnly()
   @UseRequestContext()
   async patchMany(@Payload() { ids, patch, context }: Actions.Workflow.PatchMany, @AuthMeta() auth: AuthMetaPayload) {
-    await this.service.patchManyForUser(
+    await this.service.patchManyForUserAndSendEmail(
       auth.userID,
       ids.map((id) => ({ id, environmentID: context.environmentID })),
       patch

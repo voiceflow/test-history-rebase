@@ -1,18 +1,23 @@
 /* eslint-disable max-params */
-import type { EntityManager } from '@mikro-orm/core';
+import type { EntityManager, Primary } from '@mikro-orm/core';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
 import { Workflow } from '@voiceflow/dtos';
 import { HashedIDService } from '@voiceflow/nestjs-common';
 import { LoguxService } from '@voiceflow/nestjs-logux';
-import type { DiagramObject, WorkflowJSON, WorkflowObject } from '@voiceflow/orm-designer';
+import type { DiagramObject, ORMEntity, PatchData, WorkflowJSON, WorkflowObject } from '@voiceflow/orm-designer';
 import { AssistantORM, DatabaseTarget, WorkflowORM } from '@voiceflow/orm-designer';
+import { IdentityClient } from '@voiceflow/sdk-identity';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { CMSTabularService } from '@/common';
 import { cmsBroadcastContext, toPostgresEntityIDs } from '@/common/utils';
+import { CreatorAppService } from '@/creator-app/creator-app.service';
 import { DiagramService } from '@/diagram/diagram.service';
+import { EmailService } from '@/email/email.service';
+import { EmailSubscriptionGroup } from '@/email/enum/email-subscription-group.enum';
+import { EmailTemplate } from '@/email/enum/email-template.enum';
 import { CMSBroadcastMeta, CMSContext } from '@/types';
 
 import type { WorkflowExportImportDataDTO } from './dtos/workflow-export-import-data.dto';
@@ -20,6 +25,8 @@ import type { WorkflowCreateData } from './workflow.interface';
 
 @Injectable()
 export class WorkflowService extends CMSTabularService<WorkflowORM> {
+  private readonly logger: Logger = new Logger(WorkflowService.name);
+
   toJSON = this.orm.jsonAdapter.fromDB;
 
   fromJSON = this.orm.jsonAdapter.toDB;
@@ -35,17 +42,73 @@ export class WorkflowService extends CMSTabularService<WorkflowORM> {
     protected readonly orm: WorkflowORM,
     @Inject(AssistantORM)
     protected readonly assistantORM: AssistantORM,
+    @Inject(IdentityClient)
+    private readonly identity: IdentityClient,
+    @Inject(EmailService)
+    protected readonly email: EmailService,
     @Inject(LoguxService)
     protected readonly logux: LoguxService,
     @Inject(DiagramService)
     protected readonly diagram: DiagramService,
     @Inject(HashedIDService)
-    protected readonly hashedID: HashedIDService
+    protected readonly hashedID: HashedIDService,
+    @Inject(CreatorAppService)
+    protected readonly creatorApp: CreatorAppService
   ) {
     super();
   }
 
+  /* Send email */
+
+  async sendEmailToAssignee({ workflow, authorID, assigneeID }: { workflow: WorkflowObject; authorID: number; assigneeID?: number | null }) {
+    // if assignee is not changed or not set - do not send email
+    if (!assigneeID || assigneeID === workflow.assigneeID) return;
+
+    try {
+      const [author, assignee, assistant] = await Promise.all([
+        this.identity.private.findUserByID(authorID),
+        this.identity.private.findUserByID(assigneeID),
+        this.assistantORM.findOneOrFail(workflow.assistantID),
+      ]);
+
+      await this.email.sendNotifications(assignee.email, EmailTemplate.WORKFLOW_ASSIGNED, {
+        asm: {
+          groupId: EmailSubscriptionGroup.PROJECT_ACTIVITY,
+          groupsToDisplay: [EmailSubscriptionGroup.PROJECT_ACTIVITY],
+        },
+        dynamicTemplateData: {
+          inviter: author.name,
+          project_name: assistant.name,
+          project_link: this.creatorApp.getCanvasURL({ versionID: workflow.environmentID, diagramID: workflow.diagramID }),
+          workflow_name: workflow.name,
+        },
+      });
+    } catch (error) {
+      this.logger.error(error);
+    }
+  }
+
   /* Update */
+
+  async patchOneForUserAndSendEmail(userID: number, id: Primary<ORMEntity<WorkflowORM>>, data: PatchData<ORMEntity<WorkflowORM>>) {
+    const workflow = await (data.assigneeID ? this.findOneOrFail(id) : Promise.resolve(null));
+
+    await this.orm.patchOneForUser(userID, id, data);
+
+    if (workflow) {
+      this.sendEmailToAssignee({ workflow, authorID: userID, assigneeID: data.assigneeID });
+    }
+  }
+
+  async patchManyForUserAndSendEmail(userID: number, ids: Primary<ORMEntity<WorkflowORM>>[], data: PatchData<ORMEntity<WorkflowORM>>) {
+    const workflows = await (data.assigneeID ? this.findMany(ids) : Promise.resolve([]));
+
+    await this.orm.patchManyForUser(userID, ids, data);
+
+    if (workflows.length) {
+      workflows.map((workflow) => this.sendEmailToAssignee({ workflow, authorID: userID, assigneeID: data.assigneeID }));
+    }
+  }
 
   async updateOneByDiagramIDAndBroadcast(diagramID: string, patch: { updatedByID: number }, meta: CMSBroadcastMeta) {
     const workflowID = await this.orm.updateOneByDiagramIDAndReturnID(meta.context.environmentID, diagramID, patch);

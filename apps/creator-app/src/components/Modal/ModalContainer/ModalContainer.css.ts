@@ -20,6 +20,8 @@ export const rootRecipe = recipe({
     stacked: {
       true: {
         gap: 16,
+        display: 'flex',
+        flexDirection: 'column',
       },
     },
 

@@ -24,8 +24,8 @@ import {
   jsonCollapsibleStyles,
   jsonEditorStyles,
   mapperStyles,
+  mapperTextStyles,
   outputVarsStyles,
-  rhsMapperStyles,
   sectionRecipe,
   testResults,
 } from './FunctionTestResult.css';
@@ -121,30 +121,32 @@ export const FunctionTestResult: React.FC<IFunctionTestResultExtra & IFunctionTe
               </Box>
             }
           >
-            {paths.map((value, index) => (
-              <Mapper
-                key={index}
-                equalityIcon="arrow"
-                leftHandSide={
-                  <Box gap={4}>
-                    <Text variant="basic" color={Theme.vars.color.font.default}>
-                      Path {isListenPaths ? index + 1 : ''}
-                    </Text>
-
-                    {isListenPaths && index === 0 && (
-                      <Text variant="basic" color={Tokens.colors.neutralDark.neutralsDark100}>
-                        (default)
+            <Box direction="column" className={mapperStyles}>
+              {paths.map((value, index) => (
+                <Mapper
+                  key={index}
+                  equalityIcon="arrow"
+                  leftHandSide={
+                    <Box gap={4}>
+                      <Text variant="basic" color={Theme.vars.color.font.default}>
+                        Path {isListenPaths ? index + 1 : ''}
                       </Text>
-                    )}
-                  </Box>
-                }
-                rightHandSide={
-                  <Text variant="basic" className={clsx(rhsMapperStyles, mapperStyles)}>
-                    {value}
-                  </Text>
-                }
-              />
-            ))}
+
+                      {isListenPaths && index === 0 && (
+                        <Text variant="basic" color={Tokens.colors.neutralDark.neutralsDark100}>
+                          (default)
+                        </Text>
+                      )}
+                    </Box>
+                  }
+                  rightHandSide={
+                    <Text variant="basic" className={mapperTextStyles}>
+                      {value}
+                    </Text>
+                  }
+                />
+              ))}
+            </Box>
           </Collapsible>
 
           <Divider noPadding />
@@ -176,7 +178,7 @@ export const FunctionTestResult: React.FC<IFunctionTestResultExtra & IFunctionTe
                   rightHandSide={
                     <Text
                       variant="basic"
-                      className={rhsMapperStyles}
+                      className={mapperTextStyles}
                       color={outputVars[name] ? Theme.vars.color.font.default : Tokens.colors.neutralDark.neutralsDark100}
                     >
                       {`${formatFunctionValue(outputVars[name])}`}

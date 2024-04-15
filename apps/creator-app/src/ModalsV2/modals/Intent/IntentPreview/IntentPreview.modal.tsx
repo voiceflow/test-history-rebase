@@ -1,6 +1,6 @@
 import { Nullable, Utils } from '@voiceflow/common';
 import { IntentClassificationType } from '@voiceflow/dtos';
-import { clsx, tid } from '@voiceflow/style';
+import { tid } from '@voiceflow/style';
 import { Box, Divider, Link, Notification, notify, Scroll, Section, SmallDataTable, Text, TextArea, Tip, Tokens, Tooltip } from '@voiceflow/ui-next';
 import { validatorFactory } from '@voiceflow/utils-designer';
 import React, { useRef, useState } from 'react';
@@ -26,7 +26,7 @@ import { NLUTrainingModelContext } from '@/pages/Project/contexts';
 import { preventDefault, withEnterPress, withInputBlur } from '@/utils/handler.util';
 
 import { modalsManager } from '../../../manager';
-import { formContentStyle, modalContainerStyle, resultContentStyle } from './IntentPreview.css';
+import { formContentStyle, resultContentStyle } from './IntentPreview.css';
 import { IntentPreviewFeedback } from './IntentPreviewFeedback.component';
 import { IntentPreviewSettings } from './IntentPreviewSettings.component';
 
@@ -78,24 +78,26 @@ export const IntentPreviewModal = modalsManager.create(
         try {
           const result = await previewUtterance(utterance, settings);
 
-          utteranceState.setValue('');
-          setLastUsedUtterance(utterance);
-
-          setFeedbackKey((prev) => prev + 1);
-          setClassifyStatus('success');
-          setClassifiedIntents({ nlu: result.nlu.intents, llm: result.llm.intents });
-
-          // need to flush sync to ensure the input is not disabled before the focus
-          flushSync(() => api.enableClose());
-
-          utteranceInput.ref.current?.focus();
-
           if (result.errors?.length) {
             notify.long.warning(result.errors.map((error) => error.message).join('\n'), {
               pauseOnHover: true,
               bodyClassName: 'vfui',
             });
           }
+
+          // need to flush sync to ensure the input is not disabled before the focus
+          flushSync(() => {
+            utteranceState.setValue('');
+            setLastUsedUtterance(utterance);
+
+            setFeedbackKey((prev) => prev + 1);
+            setClassifyStatus('success');
+            setClassifiedIntents({ nlu: result.nlu.intents, llm: result.llm.intents });
+
+            api.enableClose();
+          });
+
+          utteranceInput.ref.current?.focus();
         } catch (error) {
           api.enableClose();
 
@@ -177,7 +179,7 @@ export const IntentPreviewModal = modalsManager.create(
             className={[formContentStyle, resultContentStyle]}
             onEscClose={api.onEscClose}
             onEnterSubmit={onSubmit}
-            containerClassName={clsx('vfui', modalContainerStyle)}
+            containerClassName="vfui"
           >
             <>
               <Modal.Header

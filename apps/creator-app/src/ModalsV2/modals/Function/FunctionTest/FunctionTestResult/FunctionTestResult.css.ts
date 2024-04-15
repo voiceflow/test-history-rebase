@@ -36,7 +36,7 @@ export const sectionRecipe = recipe({
   },
 });
 
-export const rhsMapperStyles = style({
+export const mapperTextStyles = style({
   paddingLeft: 5,
   display: '-webkit-box',
   WebkitBoxOrient: 'vertical',

@@ -1,8 +1,10 @@
 import { PlanType } from '@voiceflow/internal';
 import { Box, System } from '@voiceflow/ui';
+import { useAtomValue } from 'jotai/react';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
 
+import * as OrganizationAtoms from '@/atoms/organization.atom';
 import NavigationSidebar from '@/components/NavigationSidebar';
 import TrialCountdownCard from '@/components/TrialCountdownCard';
 import { Path } from '@/config/routes';
@@ -28,6 +30,7 @@ const DashboardNavigationSidebar: React.FC = () => {
   const isProWorkspace = useSelector(WorkspaceV2.active.isProSelector);
   const isEnterpriseWorkspace = useSelector(WorkspaceV2.active.isEnterpriseSelector);
   const organizationTrialDaysLeft = useSelector(WorkspaceV2.active.organizationTrialDaysLeftSelector);
+  const isSubscribedToOrganization = useAtomValue(OrganizationAtoms.isSubscribedAtom);
 
   const paymentModal = useCheckoutPaymentModal();
   const [, trackEventFactory] = useTrackingEvents();
@@ -133,21 +136,25 @@ const DashboardNavigationSidebar: React.FC = () => {
         <S.FillSpace />
 
         <S.Group>
-          {(isEnterpriseWorkspace || isProWorkspace) && organizationTrialDaysLeft !== null ? (
-            <Box mb={12} width="100%">
-              <TrialCountdownCard
-                isProTrial={!!isProTrial}
-                daysLeft={organizationTrialDaysLeft}
-                onClick={canUpgradeToPro ? () => paymentModal.open({}) : undefined}
-              />
-            </Box>
-          ) : (
-            <NavigationSidebar.Item
-              icon="paid"
-              title={canUpgradeToPro ? 'Upgrade to Pro' : `Plan: ${getPlanTypeLabel(plan)}`}
-              onClick={() => paymentModal.open({})}
-              disabled={!canUpgradeToPro}
-            />
+          {isSubscribedToOrganization && (
+            <>
+              {(isEnterpriseWorkspace || isProWorkspace) && organizationTrialDaysLeft !== null ? (
+                <Box mb={12} width="100%">
+                  <TrialCountdownCard
+                    isProTrial={!!isProTrial}
+                    daysLeft={organizationTrialDaysLeft}
+                    onClick={canUpgradeToPro ? () => paymentModal.open({}) : undefined}
+                  />
+                </Box>
+              ) : (
+                <NavigationSidebar.Item
+                  icon="paid"
+                  title={canUpgradeToPro ? 'Upgrade to Pro' : `Plan: ${getPlanTypeLabel(plan)}`}
+                  onClick={() => paymentModal.open({})}
+                  disabled={!canUpgradeToPro}
+                />
+              )}
+            </>
           )}
 
           <System.Link.Anchor

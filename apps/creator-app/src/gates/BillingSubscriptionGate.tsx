@@ -11,7 +11,7 @@ const BillingSubscriptionGate: React.FC<React.PropsWithChildren> = ({ children }
   const workspace = useSelector(WorkspaceV2.active.workspaceSelector);
   const organizationID = useSelector(WorkspaceV2.active.organizationIDSelector);
   const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
-  const loadSubscription = useDispatch(Organization.loadActiveOrganizationSubscription);
+  const loadSubscription = useDispatch(Organization.loadSubscription);
 
   usePolling(
     {

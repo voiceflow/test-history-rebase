@@ -38,7 +38,7 @@ export const checkout = (
   };
 };
 
-export const loadActiveOrganizationSubscription =
+export const loadSubscription =
   (organizationID: string, chargebeeSubscriptionID: string, workspaceID: string): Thunk<Subscription | null> =>
   async (dispatch) => {
     try {

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1479.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1478.2...@voiceflow/creator-app@1.1479.0) (2024-04-15)
+
+### Features
+
+* fix trial countdown glitch after login (COR-1869) ([#7985](https://github.com/voiceflow/creator-app/issues/7985)) ([721b19b](https://github.com/voiceflow/creator-app/commit/721b19bf6af2a0630f82b2102b3554d1a269d64b))
+
 ## [1.1478.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1478.1...@voiceflow/creator-app@1.1478.2) (2024-04-15)
 
 **Note:** Version bump only for package @voiceflow/creator-app

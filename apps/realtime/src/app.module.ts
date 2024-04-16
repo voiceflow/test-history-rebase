@@ -42,6 +42,7 @@ import { FlowModule } from './flow/flow.module';
 import { FolderModule } from './folder/folder.module';
 import { FunctionModule } from './function/function.module';
 import { IntentModule } from './intent/intent.module';
+import { KnowledgeBaseDocumentModule } from './knowledge-base/document/document.module';
 import { LegacyModule } from './legacy/legacy.module';
 import { MigrationModule } from './migration/migration.module';
 import { createMongoConfig } from './mikro-orm/mongo.config';
@@ -236,6 +237,7 @@ import { WorkflowModule } from './workflow/workflow.module';
     UserModule,
     EntityModule,
     IntentModule,
+    KnowledgeBaseDocumentModule,
     UploadModule,
     ResponseModule,
     AssistantModule,

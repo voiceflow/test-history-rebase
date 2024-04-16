@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1481.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1480.1...@voiceflow/creator-app@1.1481.0) (2024-04-16)
+
+### Features
+
+* make annual the default billing period (COR-1900) ([#7992](https://github.com/voiceflow/creator-app/issues/7992)) ([5569bba](https://github.com/voiceflow/creator-app/commit/5569bba8aa4d85df2f235e7c3cf89ca5851bada9))
+
 ## [1.1480.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1480.0...@voiceflow/creator-app@1.1480.1) (2024-04-16)
 
 ### Bug Fixes

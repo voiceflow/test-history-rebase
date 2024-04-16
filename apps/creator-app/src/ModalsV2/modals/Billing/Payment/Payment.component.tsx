@@ -31,7 +31,7 @@ export const Payment = manager.create<PaymentModalProps>('Payment', () => (modal
   };
 
   useAsyncMountUnmount(async () => {
-    setPeriod(BillingPeriod.MONTHLY);
+    setPeriod(BillingPeriod.ANNUALLY);
 
     try {
       getChargebeeClient();

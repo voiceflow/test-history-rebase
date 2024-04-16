@@ -11,7 +11,7 @@ type PriceMap = Record<BillingPeriod, { value: number; id: string }>;
 export const stepAtom = atom(Step.PLAN);
 
 export const editorSeatsAtom = atom(1);
-export const periodAtom = atom(BillingPeriod.MONTHLY);
+export const periodAtom = atom(BillingPeriod.ANNUALLY);
 
 export const plansAtom = atom<BillingPlan[]>([]);
 

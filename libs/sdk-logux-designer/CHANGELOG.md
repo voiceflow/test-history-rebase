@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.49.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.48.2...@voiceflow/sdk-logux-designer@2.49.0) (2024-04-16)
+
+### Features
+
+* setup realtime kb documents (COR-1793) ([#7982](https://github.com/voiceflow/creator-app/issues/7982)) ([831d608](https://github.com/voiceflow/creator-app/commit/831d608eaf399c4a214fe5a91bd19c2c96337f49))
+
 ## [2.48.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.48.1...@voiceflow/sdk-logux-designer@2.48.2) (2024-04-15)
 
 **Note:** Version bump only for package @voiceflow/sdk-logux-designer

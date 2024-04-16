@@ -54,10 +54,10 @@ export const nameByID = createSelector(oneWithFormattedBuiltNameByID, (intent) =
 
 export const automaticRepromptByID = createSelector(oneWithFormattedBuiltNameByID, (intent) => intent?.automaticReprompt ?? null);
 
-export const allWithoutNone = createSelector(allWithFormattedBuiltInNames, (intents) =>
+export const allWithoutFallback = createSelector(allWithFormattedBuiltInNames, (intents) =>
   intents.filter((intent) => intent.id !== VoiceflowConstants.IntentName.NONE)
 );
 
-export const countWithoutNone = createSelector(allWithoutNone, (intents) => intents.length);
+export const countWithoutFallback = createSelector(allWithoutFallback, (intents) => intents.length);
 
-export const { allByFolderID, allByFolderIDs, countByFolderID } = createByFolderIDSelectors(allWithoutNone);
+export const { allByFolderID, allByFolderIDs, countByFolderID } = createByFolderIDSelectors(allWithoutFallback);

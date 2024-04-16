@@ -26,7 +26,7 @@ export const getCMSResourceCountSelector = (scope: FolderScope) =>
   match(scope)
     .with(FolderScope.FLOW, () => Flow.selectors.count)
     .with(FolderScope.ENTITY, () => Entity.selectors.count)
-    .with(FolderScope.INTENT, () => Intent.selectors.countWithoutNone)
+    .with(FolderScope.INTENT, () => Intent.selectors.countWithoutFallback)
     .with(FolderScope.WORKFLOW, () => Workflow.selectors.count)
     .with(FolderScope.FUNCTION, () => Function.selectors.count)
     .with(FolderScope.VARIABLE, () => Variable.selectors.count)

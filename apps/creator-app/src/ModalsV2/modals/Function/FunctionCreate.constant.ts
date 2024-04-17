@@ -7,6 +7,7 @@ export const TemplateID = {
   FETCH_USER_INFORMATION: 'fetch-user-information',
   HELLO_WORLD: 'hello-world',
   VIDEO_RESPONSE: 'video-response',
+  LISTEN: 'listen',
 };
 
 export type TemplateID = Enum<typeof TemplateID>;
@@ -48,5 +49,10 @@ export const starterTemplates: Array<FunctionStarterTemplate> = [
     name: 'Video response',
     description:
       'Demonstrates how to use a function to show a video to a user. This needs to be paired with the video extension to work as intended.',
+  },
+  {
+    templateID: TemplateID.LISTEN,
+    name: 'Listen',
+    description: 'Demonstrates how to use listen functionality to leave from a certain path based on user input',
   },
 ];

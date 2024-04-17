@@ -1,16 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import {
-  Box,
-  Button,
-  preventDefault,
-  SvgIcon,
-  System,
-  ThemeColor,
-  TippyTooltip,
-  toast,
-  useDebouncedCallback,
-  useSmartReducerV2,
-} from '@voiceflow/ui';
+import { Box, Button, preventDefault, System, TippyTooltip, toast, useSmartReducerV2 } from '@voiceflow/ui';
 import { AxiosError } from 'axios';
 import _get from 'lodash/get';
 import React from 'react';
@@ -52,8 +41,8 @@ export const LoginForm: React.FC<LoginFormProps> = ({ query, children }) => {
 
   const [state, stateAPI] = useSmartReducerV2({
     email: query.email ? replaceSpaceWithPlus(query.email)! : '',
-    isSaml: false,
     password: '',
+    isPassword: false,
     submitting: false,
     showPassword: false,
     emailFocused: false,
@@ -62,21 +51,6 @@ export const LoginForm: React.FC<LoginFormProps> = ({ query, children }) => {
     showPasswordError: false,
   });
 
-  const debouncedCheckSSO = useDebouncedCallback(
-    100,
-    async (email: string) => {
-      const url = await getSamlLoginURL(email);
-
-      stateAPI.isSaml.set(!!url);
-    },
-    [getSamlLoginURL]
-  );
-
-  const onChangeEmail = (email: string) => {
-    stateAPI.update({ email, showEmailError: false });
-    debouncedCheckSSO(email);
-  };
-
   const verifyForm = () => {
     if (!verifyEmail(state.email)) {
       emailRef.current?.focus();
@@ -84,7 +58,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ query, children }) => {
       return false;
     }
 
-    if (!state.isSaml && !verifyPassword(state.password)) {
+    if (state.isPassword && !verifyPassword(state.password)) {
       passwordRef.current?.focus();
 
       return false;
@@ -96,12 +70,10 @@ export const LoginForm: React.FC<LoginFormProps> = ({ query, children }) => {
   const onSubmit = async () => {
     stateAPI.update({
       showEmailError: !verifyEmail(state.email),
-      showPasswordError: !verifyPassword(state.password),
+      showPasswordError: state.isPassword ? !verifyPassword(state.password) : false,
     });
 
     if (!verifyForm()) return;
-
-    debouncedCheckSSO.cancel();
 
     if (query.invite) {
       const inviteTokenValid = await client.identity.workspaceInvitation.checkInvite(query.invite).catch(() => false);
@@ -116,23 +88,27 @@ export const LoginForm: React.FC<LoginFormProps> = ({ query, children }) => {
     const samlLoginURL = await getSamlLoginURL(state.email);
 
     if (samlLoginURL) {
-      stateAPI.isSaml.set(true);
-
       window.location.assign(samlLoginURL);
       return;
     }
 
-    try {
-      await signin({ email: state.email, password: state.password }, { redirectTo: location.state?.redirectTo });
-    } catch (error) {
-      let errText = _get(error, ['body', 'data']) || 'Unable to login, try again later';
+    if (state.isPassword && state.password) {
+      try {
+        await signin({ email: state.email, password: state.password }, { redirectTo: location.state?.redirectTo });
+      } catch (error) {
+        let errText = _get(error, ['body', 'data']) || 'Unable to login, try again later';
 
-      if (error instanceof AxiosError && error.response?.status === 401) {
-        errText = 'Username or Password Incorrect';
+        if (error instanceof AxiosError && error.response?.status === 401) {
+          errText = 'Username or Password Incorrect';
+        }
+
+        toast.error(errText);
       }
-
-      toast.error(errText);
+      return;
     }
+
+    stateAPI.isPassword.set(true);
+    passwordRef.current?.focus();
   };
 
   return (
@@ -158,7 +134,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ query, children }) => {
                   value={state.email}
                   onBlur={() => stateAPI.emailFocused.set(false)}
                   onFocus={() => stateAPI.emailFocused.set(true)}
-                  onChange={onChangeEmail}
+                  onChange={(email) => stateAPI.update({ email, showEmailError: false })}
                   required={false}
                   minLength={0}
                   placeholder="Email address"
@@ -166,7 +142,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ query, children }) => {
               </TippyTooltip>
             </InputContainer>
 
-            {!state.isSaml && (
+            {state.isPassword && (
               <InputContainer className="passwordInput">
                 <TippyTooltip
                   offset={[0, 5]}
@@ -194,22 +170,15 @@ export const LoginForm: React.FC<LoginFormProps> = ({ query, children }) => {
             )}
 
             <Box.FlexApart pt={8}>
-              {state.isSaml ? (
-                <Box.FlexCenter color={ThemeColor.SECONDARY}>
-                  <SvgIcon icon="lockLocked" inline mr={14} />
-                  SAML SSO enabled
-                </Box.FlexCenter>
-              ) : (
-                <div className="auth__link">
-                  {IS_PRIVATE_CLOUD ? (
-                    <span />
-                  ) : (
-                    <System.Link.Button type="button" onClick={() => goToSignup()}>
-                      Don't have an account?
-                    </System.Link.Button>
-                  )}
-                </div>
-              )}
+              <div className="auth__link">
+                {IS_PRIVATE_CLOUD ? (
+                  <span />
+                ) : (
+                  <System.Link.Button type="button" onClick={() => goToSignup()}>
+                    Don't have an account?
+                  </System.Link.Button>
+                )}
+              </div>
 
               <Button variant={Button.Variant.PRIMARY} type="submit">
                 {query.invite ? 'Join Team' : 'Log In'}

@@ -5,7 +5,7 @@ import { EntityManager } from '@mikro-orm/core';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
-import { ProjectUserRole } from '@voiceflow/dtos';
+import { IntentClassificationSettingsDTO, ProjectUserRole } from '@voiceflow/dtos';
 import { BadRequestException, InternalServerErrorException } from '@voiceflow/exception';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
 import type { AssistantEntity, AssistantObject, CreateData, ProgramJSON } from '@voiceflow/orm-designer';
@@ -169,6 +169,19 @@ export class AssistantService extends MutableService<AssistantORM> {
         projectListCreated: false,
       };
     }
+  }
+
+  public parseImportData(raw: string): AssistantImportDataDTO {
+    const data = JSON.parse(raw);
+
+    // this is a temporary workaround for a problem database migration that resulted in corrupted VF files
+    // we need a full migration system, ideally unified with the realtime-sdk migration for VF files
+    const { version } = data;
+    if (!IntentClassificationSettingsDTO.safeParse(version?.settings?.intentClassification).success) {
+      delete version.settings;
+    }
+
+    return AssistantImportDataDTO.parse(data);
   }
 
   /* Find  */

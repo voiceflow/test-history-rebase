@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1483.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1483.0...@voiceflow/creator-app@1.1483.1) (2024-04-17)
+
+### Bug Fixes
+
+* test modal value regression (COR-000) [bugfix] ([#7996](https://github.com/voiceflow/creator-app/issues/7996)) ([2183978](https://github.com/voiceflow/creator-app/commit/21839781bd7f85e48973baec4f0a1df84234c85b))
+
 # [1.1483.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1482.0...@voiceflow/creator-app@1.1483.0) (2024-04-17)
 
 ### Features

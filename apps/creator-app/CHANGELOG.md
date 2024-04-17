@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1484.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1483.1...@voiceflow/creator-app@1.1484.0) (2024-04-17)
+
+### Features
+
+* fix function test modal size [bugfix] (CV3-1921) ([#7997](https://github.com/voiceflow/creator-app/issues/7997)) ([e295cfc](https://github.com/voiceflow/creator-app/commit/e295cfc1b9286f4c04f5e2604229e75d83a3377e))
+
 ## [1.1483.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1483.0...@voiceflow/creator-app@1.1483.1) (2024-04-17)
 
 ### Bug Fixes

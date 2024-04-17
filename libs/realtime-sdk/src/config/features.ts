@@ -61,4 +61,7 @@ export enum FeatureFlag {
   CMS_WORKFLOWS = 'cms_workflows',
 
   KB_BE_DOC_CRUD = 'kb_be_doc_crud',
+
+  // functions
+  FUNCTION_LISTEN = 'function_listen',
 }

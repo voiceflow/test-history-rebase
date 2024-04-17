@@ -1,6 +1,7 @@
 import { Utils } from '@voiceflow/common';
 import type { Function as FunctionType } from '@voiceflow/dtos';
 import { IconName } from '@voiceflow/icons';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { tid } from '@voiceflow/style';
 import { Dropdown, Menu, notify, TextArea, Tooltip } from '@voiceflow/ui-next';
 import { functionNameValidator } from '@voiceflow/utils-designer';
@@ -10,12 +11,13 @@ import { CMSFormName } from '@/components/CMS/CMSForm/CMSFormName/CMSFormName.co
 import { Modal } from '@/components/Modal';
 import { CMS_FUNCTION_DEFAULT_CODE } from '@/constants/cms/function.constant';
 import { Designer } from '@/ducks';
+import { useFeature } from '@/hooks';
 import { useInputState } from '@/hooks/input.hook';
 import { useDispatch } from '@/hooks/store.hook';
 import { useValidators } from '@/hooks/validate.hook';
 
 import { modalsManager } from '../../manager';
-import { FunctionStarterTemplate, starterTemplates } from './FunctionCreate.constant';
+import { FunctionStarterTemplate, starterTemplates, TemplateID } from './FunctionCreate.constant';
 import { dropdownModifier, dropdownPrefixIconModifier, textareaStyles } from './FunctionCreate.css';
 
 export interface IFunctionCreateModal {
@@ -28,6 +30,11 @@ export const FunctionCreateModal = modalsManager.create<IFunctionCreateModal, Fu
   () =>
     ({ api, type: typeProp, name: nameProp, opened, hidden, animated, folderID, closePrevented }) => {
       const TEST_ID = 'create-function';
+
+      const functionListen = useFeature(Realtime.FeatureFlag.FUNCTION_LISTEN);
+      const filteredTemplates = functionListen.isEnabled
+        ? starterTemplates
+        : starterTemplates.filter((template) => template.templateID !== TemplateID.LISTEN);
 
       const createOne = useDispatch(Designer.Function.effect.createOne);
       const createOneFromTemplate = useDispatch(Designer.Function.effect.createOneFromTemplate);
@@ -114,7 +121,7 @@ export const FunctionCreateModal = modalsManager.create<IFunctionCreateModal, Fu
               >
                 {({ onClose }) => (
                   <Menu>
-                    {starterTemplates.map((template, index) => (
+                    {filteredTemplates.map((template, index) => (
                       <Tooltip
                         key={template.templateID}
                         placement="right-start"
@@ -126,7 +133,7 @@ export const FunctionCreateModal = modalsManager.create<IFunctionCreateModal, Fu
                             label={template.name}
                             onMouseEnter={onOpen}
                             onMouseLeave={onPopperClose}
-                            onClick={Utils.functional.chainVoid(onClose, () => onTemplateChange(starterTemplates[index]))}
+                            onClick={Utils.functional.chainVoid(onClose, () => onTemplateChange(filteredTemplates[index]))}
                             testID={tid(TEST_ID, 'menu-item')}
                           >
                             {popper}

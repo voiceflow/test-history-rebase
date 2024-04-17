@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.383.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.383.0...@voiceflow/realtime-sdk@1.383.1) (2024-04-17)
+
+### Bug Fixes
+
+* corrupted vf files failing dtos [bugfix] (COR-1922) ([#7995](https://github.com/voiceflow/creator-app/issues/7995)) ([dc35833](https://github.com/voiceflow/creator-app/commit/dc35833ce1f200e51b9fac2fc782f14c23f7ed8a))
+
 # [1.383.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.382.4...@voiceflow/realtime-sdk@1.383.0) (2024-04-17)
 
 ### Features

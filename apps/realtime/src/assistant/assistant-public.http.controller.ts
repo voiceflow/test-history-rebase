@@ -19,7 +19,6 @@ import { AssistantExportCMSResponse } from './dtos/assistant-export-cms.response
 import { AssistantExportDataDTO } from './dtos/assistant-export-data.dto';
 import { AssistantExportJSONQuery } from './dtos/assistant-export-json.query';
 import { AssistantFindEnvironmentsResponse } from './dtos/assistant-find-environments.response';
-import { AssistantImportDataDTO } from './dtos/assistant-import-data.dto';
 import { AssistantImportJSONRequest } from './dtos/assistant-import-json.request';
 import { AssistantImportJSONResponse } from './dtos/assistant-import-json.response';
 import { ResolveEnvironmentIDAliasInterceptor } from './resolve-environment-id-alias.interceptor';
@@ -109,7 +108,7 @@ export class AssistantPublicHTTPController {
     @UploadedFile() file: Express.Multer.File,
     @Body() { clientID }: { clientID?: string }
   ): Promise<AssistantImportJSONResponse> {
-    const data = AssistantImportDataDTO.parse(JSON.parse(file.buffer.toString('utf8')));
+    const data = this.service.parseImportData(file.buffer.toString('utf8'));
 
     const { project, assistant } = await this.service.importJSONAndBroadcast({ data, userID, clientID, workspaceID });
 

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1483.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1482.0...@voiceflow/creator-app@1.1483.0) (2024-04-17)
+
+### Features
+
+* listen function template (COR-000) ([#7991](https://github.com/voiceflow/creator-app/issues/7991)) ([e6e2c2c](https://github.com/voiceflow/creator-app/commit/e6e2c2c8578f25adcf74e9892875b55c431a0312))
+
 # [1.1482.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1481.1...@voiceflow/creator-app@1.1482.0) (2024-04-17)
 
 ### Features

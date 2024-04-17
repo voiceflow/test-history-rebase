@@ -8,7 +8,7 @@ import { SectionVariant, UncontrolledSection as Section } from '@/components/Sec
 import SoundToggle from '@/components/SoundToggle';
 import { Permission } from '@/constants/permissions';
 import { PrototypeStatus } from '@/constants/prototype';
-import { UI } from '@/ducks';
+import { Designer, UI } from '@/ducks';
 import * as PrototypeDuck from '@/ducks/prototype';
 import { useDispatch, useEventualEngine, useFeature, usePermission, useTheme } from '@/hooks';
 import { useSelector } from '@/hooks/store.hook';
@@ -27,6 +27,7 @@ const PrototypeSidebar: React.FC = () => {
   const [canRenderPrototype] = usePermission(Permission.RENDER_PROTOTYPE);
   const prototypeAPI = React.useContext(PrototypeContext);
   const nluTrainingModel = React.useContext(NLUTrainingModelContext);
+  const nluTrainingDiffData = useSelector(Designer.Environment.selectors.nluTrainingDiffData);
   const compilePrototype = useDispatch(PrototypeDuck.compilePrototype);
   const isCanvasOnly = useSelector(UI.selectors.isCanvasOnly);
   const { state, actions, config } = prototypeAPI;
@@ -46,15 +47,11 @@ const PrototypeSidebar: React.FC = () => {
   const renderPromise = React.useMemo(() => controlledPromiseFactory<void>(), []);
 
   const closeTraining = () => {
-    if (trainingOpen) {
-      toggleTrainingOpen();
-    }
+    toggleTrainingOpen(false);
   };
 
   const openTraining = () => {
-    if (!trainingOpen) {
-      toggleTrainingOpen();
-    }
+    toggleTrainingOpen(true);
   };
 
   useDidUpdateEffect(() => {
@@ -98,10 +95,10 @@ const PrototypeSidebar: React.FC = () => {
   }, [renderPromise]);
 
   React.useEffect(() => {
-    if (nluTrainingModel.isTrained) return;
+    const isUntrained = !nluTrainingModel.isTrained && nluTrainingDiffData.untrainedCount > 0;
 
-    openTraining();
-  }, [nluTrainingModel.isTrained]);
+    if (nluTrainingModel.isFailed || isUntrained) openTraining();
+  }, [nluTrainingModel.isTrained, nluTrainingDiffData.untrainedCount]);
 
   return (
     <Drawer

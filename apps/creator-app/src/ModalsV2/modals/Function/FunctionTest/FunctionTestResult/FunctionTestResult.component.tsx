@@ -66,7 +66,10 @@ export const FunctionTestResult: React.FC<IFunctionTestResultExtra & IFunctionTe
   const paths = React.useMemo(() => {
     if (!next) return [];
 
-    if ('listen' in next) return [next.defaultTo.path, ...next.to.map(({ dest }) => (typeof dest === 'string' ? dest : dest.path))];
+    if ('listen' in next) {
+      const extractPath = (dest: string | { path: string }) => (typeof dest === 'string' ? dest : dest.path);
+      return [extractPath(next.defaultTo), ...next.to.map(({ dest }) => extractPath(dest))];
+    }
     if ('path' in next) return [next.path];
 
     return [];

@@ -1,3 +1,4 @@
+import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { IS_SAFARI, toast, ToastCallToAction } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
@@ -10,7 +11,7 @@ import { SearchContext } from '@/contexts/SearchContext';
 import * as History from '@/ducks/history';
 import * as Prototype from '@/ducks/prototype';
 import { styled } from '@/hocs/styled';
-import { useDispatch, useHotkeyList, useRegistration, useSelector } from '@/hooks';
+import { useDispatch, useFeature, useHotkeyList, useRegistration, useSelector } from '@/hooks';
 import { getHotkeyLabel, Hotkey } from '@/keymap';
 import * as ModalsV2 from '@/ModalsV2';
 import { ClipboardContext, EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';
@@ -66,6 +67,7 @@ const CanvasContainer: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [hotkeysState] = React.useContext(HotkeysContext)!;
   const manualSaveModal = ModalsV2.useModal(ModalsV2.Project.ManualSaveBackup);
   const setSelectedTargets = React.useContext(SelectionSetTargetsContext);
+  const cmsWorkflows = useFeature(FeatureFlag.CMS_WORKFLOWS);
 
   const isEditingMode = useEditingMode();
   const activeModalID = ModalsV2.useActiveModalID();
@@ -158,7 +160,7 @@ const CanvasContainer: React.FC<React.PropsWithChildren> = ({ children }) => {
       { hotkey: Hotkey.DUPLICATE, callback: onDuplicate, disable: disableCanvasHotkeys, preventDefault: true },
       { hotkey: Hotkey.SELECT_ALL, callback: onSelectAll, preventDefault: true },
       { hotkey: Hotkey.NATIVE_SEARCH, callback: onSearch, preventDefault: true },
-      { hotkey: Hotkey.CREATE_SUBTOPIC, callback: onCreateSubtopic, disable: disableCanvasHotkeys, preventDefault: true },
+      { hotkey: Hotkey.CREATE_SUBTOPIC, callback: onCreateSubtopic, disable: disableCanvasHotkeys || cmsWorkflows.isEnabled, preventDefault: true },
       { hotkey: Hotkey.CREATE_COMPONENT, callback: onCreateComponent, disable: disableCanvasHotkeys, preventDefault: true },
     ],
     [disableCanvasHotkeys, deleteDisabled]

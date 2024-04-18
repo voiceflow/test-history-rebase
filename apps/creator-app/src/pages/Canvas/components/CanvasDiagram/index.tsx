@@ -1,6 +1,7 @@
 import { Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { SvgIconTypes } from '@voiceflow/ui';
+import { ITreeData } from '@voiceflow/ui-next';
 import _throttle from 'lodash/throttle';
 import React from 'react';
 import { useDrop, XYCoord } from 'react-dnd';
@@ -77,9 +78,9 @@ interface FilesDrop extends BaseDrop {
 interface StepMenuDrop extends BaseDrop, Omit<StepDragItem, 'type'> {}
 
 interface ComponentsDrop extends BaseDrop, FolderItemProps {}
-type DroppableItem = FilesDrop | StepMenuDrop | ComponentsDrop;
+type DroppableItem = FilesDrop | StepMenuDrop | ComponentsDrop | (ITreeData<{ type: 'flow'; diagramID: string }> & { source: 'tree-view' });
 
-const DROP_TYPES = [NativeTypes.FILE, DragItem.BLOCK_MENU, DragItem.COMPONENTS, DragItem.LIBRARY];
+const DROP_TYPES = [NativeTypes.FILE, DragItem.BLOCK_MENU, DragItem.COMPONENTS, DragItem.LIBRARY, 'element'];
 
 const CanvasDiagram: React.FC<React.PropsWithChildren> = ({ children }) => {
   const canvasGridEnabled = useSelector(UI.selectors.isCanvasGrid);
@@ -159,7 +160,10 @@ const CanvasDiagram: React.FC<React.PropsWithChildren> = ({ children }) => {
 
       if (monitor.didDrop() && monitor.getDropResult<{ captured?: boolean }>()?.captured) return;
 
-      const { x: mouseX, y: mouseY } = monitor.getClientOffset() || item.clientOffset;
+      const offset = monitor.getClientOffset();
+      if (!offset) return;
+
+      const { x: mouseX, y: mouseY } = offset;
       const coords = new Coords([mouseX, mouseY]);
 
       // $TODO$ - Need to extract this specific knowledge out, e.g, using polymorphism to abstract these
@@ -174,6 +178,8 @@ const CanvasDiagram: React.FC<React.PropsWithChildren> = ({ children }) => {
         } else if (item.libraryType === LibraryStepType.BLOCK_TEMPLATES) {
           await engine.canvasTemplate.dropTemplate(item.tabData.id, coords);
         }
+      } else if ('source' in item && item.source === 'tree-view' && item.metaData.type === 'flow') {
+        await engine.node.add({ type: BlockType.COMPONENT, coords, factoryData: { name: item.label, diagramID: item.metaData.diagramID } });
       }
     },
 

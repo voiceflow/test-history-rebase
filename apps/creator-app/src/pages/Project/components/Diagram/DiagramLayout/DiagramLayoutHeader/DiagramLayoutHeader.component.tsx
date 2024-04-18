@@ -17,6 +17,7 @@ import { DiagramLayoutHeaderActions } from './DiagramLayoutHeaderActions.compone
 import { DiagramLayoutHeaderMembers } from './DiagramLayoutHeaderMembers.component';
 import { DiagramLayoutHeaderPrototypeClose } from './DiagramLayoutHeaderPrototypeClose.component';
 import { DiagramLayoutHeaderPrototypeSettings } from './DiagramLayoutHeaderPrototypeSettings.component copy';
+import { DiagramLayoutHeaderTitle } from './DiagramLayoutHeaderTitle.component';
 
 export const DiagramLayoutHeader: React.FC = () => {
   const isPrototype = !!useRouteMatch(Path.PROJECT_PROTOTYPE);
@@ -51,7 +52,7 @@ export const DiagramLayoutHeader: React.FC = () => {
         <Header.Button.IconSecondary onClick={onBackClick} iconName="ArrowLeft" />
       </Header.Section.Left>
 
-      <Header.Section.Center>{showActions && <DiagramLayoutHeaderActions />}</Header.Section.Center>
+      <Header.Section.Center>{showActions ? <DiagramLayoutHeaderActions /> : <DiagramLayoutHeaderTitle />}</Header.Section.Center>
 
       <Header.Section.Right>
         <DiagramLayoutHeaderMembers />

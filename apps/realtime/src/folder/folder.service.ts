@@ -266,18 +266,36 @@ export class FolderService extends CMSObjectService<FolderORM> {
       const relations = await this.collectRelationsToDelete(context.environmentID, toPostgresEntityIDs(folders));
       const entitySync = await this.entity.syncRelationsOnDelete(relations, { userID, context });
 
+      const startWorkflow = relations.workflows.find((workflow) => workflow.isStart);
       const systemVariables = relations.variables.filter((variable) => variable.isSystem);
 
-      await this.variable.patchManyForUser(userID, systemVariables, { folderID: null });
+      await Promise.all([
+        // moving system variables to the top level
+        systemVariables.length
+          ? this.variable.patchManyForUser(
+              userID,
+              systemVariables.map((variable) => ({ id: variable.id, environmentID: context.environmentID })),
+              { folderID: null }
+            )
+          : Promise.resolve(),
+
+        // moving start workflow to the top level
+        startWorkflow
+          ? this.workflow.patchOneForUser(userID, { id: startWorkflow.id, environmentID: context.environmentID }, { folderID: null })
+          : Promise.resolve(),
+      ]);
 
       await this.deleteMany(folders);
 
       return {
-        sync: { ...entitySync, variables: systemVariables },
+        sync: { ...entitySync, variables: systemVariables, workflows: startWorkflow ? [startWorkflow] : [] },
         delete: {
           ...relations,
           folders,
           variables: relations.variables.filter((variable) => !variable.isSystem),
+          workflowDiagrams: startWorkflow
+            ? relations.workflowDiagrams.filter((diagram) => startWorkflow.diagramID !== diagram.diagramID.toJSON())
+            : relations.workflowDiagrams,
         },
       };
     });
@@ -297,6 +315,7 @@ export class FolderService extends CMSObjectService<FolderORM> {
     }: {
       sync: {
         intents: IntentObject[];
+        workflows: WorkflowObject[];
         variables: VariableObject[];
       };
       delete: {
@@ -366,6 +385,16 @@ export class FolderService extends CMSObjectService<FolderORM> {
       this.logux.processAs(
         Actions.Variable.PatchMany({
           ids: toPostgresEntityIDs(sync.variables),
+          patch: { folderID: null },
+          context: cmsBroadcastContext(meta.context),
+        }),
+        meta.auth
+      ),
+
+      // moving start workflow to the top level
+      this.logux.processAs(
+        Actions.Workflow.PatchMany({
+          ids: toPostgresEntityIDs(sync.workflows),
           patch: { folderID: null },
           context: cmsBroadcastContext(meta.context),
         }),

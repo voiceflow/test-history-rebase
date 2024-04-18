@@ -2,8 +2,6 @@ import { Table } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { CMS_WORKFLOW_LEARN_MORE } from '@/constants/link.constant';
-import { Designer } from '@/ducks';
-import { useDispatch } from '@/hooks';
 
 import { CMSEmpty } from '../../../../components/CMSEmpty/CMSEmpty.component';
 import { useCMSRowItemClick, useCMSRowItemContextMenu, useCMSRowItemNavigate } from '../../../../hooks/cms-row-item.hook';
@@ -18,11 +16,8 @@ export const CMSWorkflowTable: React.FC = () => {
   const cmsManager = useWorkflowCMSManager();
   const onRowNavigate = useCMSRowItemNavigate();
 
-  const duplicateOne = useDispatch(Designer.Flow.effect.duplicateOne);
-
   const rowContextMenu = useCMSRowItemContextMenu({
     nameColumnType: WorkflowTableColumn.NAME,
-    onDuplicate: duplicateOne,
   });
 
   return (

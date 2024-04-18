@@ -1,4 +1,5 @@
 import { Nullish } from '@voiceflow/common';
+import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { COLOR_PICKER_CONSTANTS } from '@voiceflow/ui';
 import React from 'react';
 
@@ -227,7 +228,8 @@ export const SELECTION_OPTIONS: ContextMenuOption<CanvasAction>[] = [
     shouldRender: (_, { engine }) =>
       engine.selection.getTargets(EntityType.NODE).some((nodeID) => engine.isNodeOfType(nodeID, BlockType.COMBINED)) &&
       engine.isTopic() &&
-      !engine.isSubtopic(),
+      !engine.isSubtopic() &&
+      !engine.isFeatureEnabled(FeatureFlag.CMS_WORKFLOWS),
   },
   {
     label: 'Divider 2',

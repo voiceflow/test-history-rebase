@@ -9,7 +9,7 @@ import { MenuItemWithTooltip } from '@/components/Menu/MenuItemWithTooltip/MenuI
 import { IMenuItemWithTooltip } from '@/components/Menu/MenuItemWithTooltip/MenuItemWithTooltip.interface';
 import { Designer } from '@/ducks';
 import { useGetAtomValue } from '@/hooks/atom.hook';
-import { useConfirmV2Modal } from '@/hooks/modal.hook';
+import { useOpenCMSResourceDeleteConfirmModal } from '@/hooks/cms-resource.hook';
 import { useDispatch, useGetValueSelector, useStore } from '@/hooks/store.hook';
 import { clipboardCopy } from '@/utils/clipboard.util';
 import { getFolderScopeLabel } from '@/utils/cms.util';
@@ -89,8 +89,8 @@ export const useGetAllNestedResources = () => {
 export const useCMSResourceOnDeleteMany = () => {
   const tableState = Table.useStateMolecule();
   const cmsManager = useCMSManager();
-  const confirmModal = useConfirmV2Modal();
   const setSelectedIDs = useSetAtom(tableState.selectedIDs);
+  const openCMSResourceDeleteConfirmModal = useOpenCMSResourceDeleteConfirmModal();
 
   const effects = useAtomValue(cmsManager.effects);
 
@@ -122,10 +122,10 @@ export const useCMSResourceOnDeleteMany = () => {
       label = pluralize(name, allResourcesSize);
     }
 
-    confirmModal.openVoid({
-      body: `Deleted ${label} won’t be recoverable unless you restore a previous agent backup. Please confirm that you want to continue.`,
-      title: `Delete ${label} (${allResourcesSize})`,
-      confirm: async () => {
+    openCMSResourceDeleteConfirmModal({
+      size: allResourcesSize,
+      label,
+      onConfirm: async () => {
         if (folderIDs.length) {
           await folderDeleteMany(folderIDs);
         }
@@ -136,11 +136,7 @@ export const useCMSResourceOnDeleteMany = () => {
         }
 
         setSelectedIDs(new Set());
-
-        notify.short.info(`${allResourcesSize} ${label} deleted`, { showIcon: false });
       },
-      confirmButtonLabel: 'Delete forever',
-      confirmButtonVariant: 'alert',
     });
   };
 };

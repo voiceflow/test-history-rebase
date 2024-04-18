@@ -1,12 +1,10 @@
-import { Box } from '@voiceflow/ui-next';
+import { Box, Header } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { useEventualEngine } from '@/hooks/engine';
 import { getHotkeys, Hotkey } from '@/keymap';
 import CanvasTemplateEditorNewTemplate from '@/pages/Canvas/components/TemplateEditor/NewTemplate';
 import { SelectionSetTargetsContext, SelectionTargetsContext } from '@/pages/Project/contexts';
-
-import { DiagramLayoutHeaderAction } from './DiagramLayoutHeaderAction/DiagramLayoutHeaderAction.component';
 
 export const DiagramLayoutHeaderActions: React.FC = () => {
   const selectedTargets = React.useContext(SelectionTargetsContext);
@@ -42,26 +40,28 @@ export const DiagramLayoutHeaderActions: React.FC = () => {
 
   return (
     <Box gap={4}>
-      <DiagramLayoutHeaderAction
-        tooltip={{ label: 'Create component', hotkeys: getHotkeys(Hotkey.CREATE_COMPONENT) }}
+      <Header.Canvas.ActionButton
         onClick={onComponentCreate}
+        hotkeys={getHotkeys(Hotkey.CREATE_COMPONENT)}
         iconName="Component"
+        tooltipText="Create component"
       />
 
       <CanvasTemplateEditorNewTemplate nodeIDs={selectedTargets}>
         {({ onToggle, isOpened }) => (
-          <DiagramLayoutHeaderAction
-            tooltip={{ label: 'Add to library', hotkeys: getHotkeys(Hotkey.ADD_TO_LIBRARY) }}
+          <Header.Canvas.ActionButton
             onClick={onToggle}
+            hotkeys={getHotkeys(Hotkey.ADD_TO_LIBRARY)}
             iconName="LibraryS"
+            tooltipText="Add to library"
             isActive={isOpened}
           />
         )}
       </CanvasTemplateEditorNewTemplate>
 
-      <DiagramLayoutHeaderAction tooltip={{ label: 'Copy', hotkeys: getHotkeys(Hotkey.COPY) }} onClick={onCopy} iconName="Copy" />
+      <Header.Canvas.ActionButton onClick={onCopy} hotkeys={getHotkeys(Hotkey.COPY)} iconName="Copy" tooltipText="Copy" />
 
-      <DiagramLayoutHeaderAction tooltip={{ label: 'Delete', hotkeys: getHotkeys(Hotkey.DELETE) }} onClick={onDelete} iconName="Trash" />
+      <Header.Canvas.ActionButton onClick={onDelete} hotkeys={getHotkeys(Hotkey.DELETE)} iconName="Trash" tooltipText="Delete" />
     </Box>
   );
 };

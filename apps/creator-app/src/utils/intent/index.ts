@@ -75,15 +75,6 @@ const fmtIntentName = (intent: Platform.Base.Models.Intent.Model | Intent, platf
   return isCustomizableBuiltInIntent(intent) ? formatBuiltInIntentName(platform)(name) : name;
 };
 
-export const platformIntentFactory =
-  (platform: Platform.Constants.PlatformType) =>
-  (intent: { name: string; slots?: string[] }): Platform.Base.Models.Intent.Model => ({
-    id: intent.name,
-    name: formatBuiltInIntentName(platform)(intent.name) ?? getIntentNameLabel(intent.name),
-    slots: { byKey: {}, allKeys: [] },
-    inputs: [{ text: '', slots: intent.slots ?? [] }],
-  });
-
 export const validateIntentName = (
   intentName: string,
   intents: Array<Platform.Base.Models.Intent.Model | Intent>,
@@ -102,29 +93,6 @@ export const validateIntentName = (
 
   return null;
 };
-
-export const ALEXA_BUILT_INTENTS = AlexaConstants.BUILT_IN_INTENTS.map(platformIntentFactory(Platform.Constants.PlatformType.ALEXA));
-
-export const GOOGLE_BUILT_INTENTS = GoogleConstants.BUILT_IN_INTENTS.map(platformIntentFactory(Platform.Constants.PlatformType.GOOGLE));
-
-export const DIALOGFLOW_BUILT_INTENTS = DFESConstants.BUILT_IN_INTENTS.map(platformIntentFactory(Platform.Constants.PlatformType.DIALOGFLOW_ES));
-
-export const VOICEFLOW_BUILT_INS_MAP = Object.keys(VoiceflowConstants.DEFAULT_INTENTS_MAP).reduce<
-  Record<string, Platform.Base.Models.Intent.Model[]>
->(
-  (acc, key) =>
-    Object.assign(acc, { [key]: VoiceflowConstants.DEFAULT_INTENTS_MAP[key].map(platformIntentFactory(Platform.Constants.PlatformType.VOICEFLOW)) }),
-  {}
-);
-
-export const getBuiltInIntents = Realtime.Utils.platform.createPlatformSelector(
-  {
-    [Platform.Constants.PlatformType.ALEXA]: ALEXA_BUILT_INTENTS,
-    [Platform.Constants.PlatformType.GOOGLE]: GOOGLE_BUILT_INTENTS,
-    [Platform.Constants.PlatformType.DIALOGFLOW_ES]: DIALOGFLOW_BUILT_INTENTS,
-  },
-  VOICEFLOW_BUILT_INS_MAP[VoiceflowConstants.Language.EN]
-);
 
 export const applyPlatformIntentNameFormatting = (name: string, platform: Platform.Constants.PlatformType): string =>
   getPlatformIntentNameFormatter(platform)(name);

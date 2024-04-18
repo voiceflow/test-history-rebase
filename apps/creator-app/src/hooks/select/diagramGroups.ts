@@ -22,6 +22,9 @@ export type DomainDiagramSelectMultilevel<Option extends BaseDiagramSelectOption
 
 const isNonEmptyGroupedOption = isNonEmptyGroupedOptionFactory<BaseDiagramSelectOption>();
 
+/**
+ * @deprecated will be removed when CMS_WORKFLOWS is released
+ */
 export const useDomainAndDiagramMultilevelSelectOptions = <Option extends BaseDiagramSelectOption>(
   diagramsOptions: Record<string, Option | DomainDiagramSelectMultilevel<Option>>,
   { diagramGroupName }: { diagramGroupName: string }
@@ -73,7 +76,6 @@ export const useDomainAndDiagramMultilevelSelectOptions = <Option extends BaseDi
       return subtopicsOptions;
     };
 
-    // TODO: use workflows
     const options = sortedDomains.map(({ id, name, topicIDs }) => {
       const isActive = id === activeDomainID;
       const sortedTopicIDs = isActive ? [...topicIDs].sort((topicID) => (topicID === activeDiagramID ? -1 : 0)) : topicIDs;

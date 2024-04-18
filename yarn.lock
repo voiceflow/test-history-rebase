@@ -9763,7 +9763,7 @@ __metadata:
     "@voiceflow/slate-serializer": 1.6.0
     "@voiceflow/style": 1.7.0
     "@voiceflow/ui": "workspace:*"
-    "@voiceflow/ui-next": "npm:@voiceflow/ui@2.200.0"
+    "@voiceflow/ui-next": "npm:@voiceflow/ui@2.207.0"
     "@voiceflow/utils-designer": "workspace:*"
     "@voiceflow/voiceflow-types": 3.27.0
     apl-viewhost-web: 2023.1.0-1
@@ -11089,9 +11089,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voiceflow/ui-next@npm:@voiceflow/ui@2.200.0":
-  version: 2.200.0
-  resolution: "@voiceflow/ui@npm:2.200.0"
+"@voiceflow/ui-next@npm:@voiceflow/ui@2.207.0":
+  version: 2.207.0
+  resolution: "@voiceflow/ui@npm:2.207.0"
   dependencies:
     "@codemirror/autocomplete": 6.9.1
     "@codemirror/commands": 6.3.0
@@ -11114,11 +11114,14 @@ __metadata:
     lottie-web: 5.12.2
     polished: 4.2.2
     prismjs: 1.29.0
+    react-arborist: 3.4.0
     react-collapsed: 4.0.2
     react-dismissable-layers: 0.3.2
+    react-dnd: 16.0.1
+    react-dnd-html5-backend: 16.0.1
     react-dropzone: 14.2.3
     react-popper: 2.3.0
-    react-resizable-panels: ^2.0.16
+    react-resizable-panels: 2.0.16
     react-rnd: ^10.4.1
     react-slider: 2.0.4
     react-textarea-autosize: 8.5.0
@@ -11134,7 +11137,7 @@ __metadata:
     jotai-molecules: ^1
     react: ^18
     react-dom: ^18
-  checksum: 43dde58fc14d02c8d4ef5621677c78af7c2404f59380511eee90d74ae6b2a2cceefb300eaa468b450a82972c2b594e8bdb75f0299e6fa2ebe7891148144fa55d
+  checksum: c1844e9be0b360c9f9d5601c5e9a9f67b4fdd1a05dd030e4479c5a0bdaa77b4bd60b435becca58c88605f37f49187a330499c228e63b6b86a80c087da7796f94
   languageName: node
   linkType: hard
 
@@ -28508,6 +28511,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-arborist@npm:3.4.0":
+  version: 3.4.0
+  resolution: "react-arborist@npm:3.4.0"
+  dependencies:
+    react-dnd: ^14.0.3
+    react-dnd-html5-backend: ^14.0.3
+    react-window: ^1.8.10
+    redux: ^5.0.0
+    use-sync-external-store: ^1.2.0
+  peerDependencies:
+    react: ">= 16.14"
+    react-dom: ">= 16.14"
+  checksum: 1e83e996c2beef58c41ee6b5213767bd85f7cb452957aa2850562eaaf0455bbc408cc9e1b876b10a928c042d2b42b361d3ebd79392428f9b14b4a3a5170fecc0
+  languageName: node
+  linkType: hard
+
 "react-collapsed@npm:4.0.2":
   version: 4.0.2
   resolution: "react-collapsed@npm:4.0.2"
@@ -28865,7 +28884,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-resizable-panels@npm:^2.0.16":
+"react-resizable-panels@npm:2.0.16":
   version: 2.0.16
   resolution: "react-resizable-panels@npm:2.0.16"
   peerDependencies:
@@ -29141,6 +29160,19 @@ __metadata:
     react: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
     react-dom: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
   checksum: cefa232f4f37269d292529ef15780fb108123d6bb5beee19eeac657e75cf8d4664be66f2da04baf0cb1bc64c5ab3d83a88199c3358f023b78940acd37b0673b2
+  languageName: node
+  linkType: hard
+
+"react-window@npm:^1.8.10":
+  version: 1.8.10
+  resolution: "react-window@npm:1.8.10"
+  dependencies:
+    "@babel/runtime": ^7.0.0
+    memoize-one: ">=3.1.1 <6"
+  peerDependencies:
+    react: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
+  checksum: e8830f32e3ad4bf91af9cdc5cead84148c7694ce6abd9fdb447fb609da6cd4bbd0bbc75ff985f78828f4bbbd3ba4cbc98235cc9c056b5e5787578518f7fafbb9
   languageName: node
   linkType: hard
 
@@ -29516,6 +29548,13 @@ __metadata:
   dependencies:
     "@babel/runtime": ^7.9.2
   checksum: f63b9060c3a1d930ae775252bb6e579b42415aee7a23c4114e21a0b4ba7ec12f0ec76936c00f546893f06e139819f0e2855e0d55ebfce34ca9c026241a6950dd
+  languageName: node
+  linkType: hard
+
+"redux@npm:^5.0.0":
+  version: 5.0.1
+  resolution: "redux@npm:5.0.1"
+  checksum: e74affa9009dd5d994878b9a1ce30d6569d986117175056edb003de2651c05b10fe7819d6fa94aea1a94de9a82f252f986547f007a2fbeb35c317a2e5f5ecf2c
   languageName: node
   linkType: hard
 
@@ -33897,7 +33936,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"use-sync-external-store@npm:^1.0.0":
+"use-sync-external-store@npm:^1.0.0, use-sync-external-store@npm:^1.2.0":
   version: 1.2.0
   resolution: "use-sync-external-store@npm:1.2.0"
   peerDependencies:

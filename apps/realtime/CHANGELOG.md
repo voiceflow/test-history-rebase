@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.326.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.325.1...@voiceflow/realtime@1.326.0) (2024-04-18)
+
+### Features
+
+* canvas layout (COR-1747) ([#7994](https://github.com/voiceflow/creator-app/issues/7994)) ([d197051](https://github.com/voiceflow/creator-app/commit/d197051fbb39b39e6f7e21b817e8c66fd4c14b67))
+
 ## [1.325.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.325.0...@voiceflow/realtime@1.325.1) (2024-04-17)
 
 ### Bug Fixes

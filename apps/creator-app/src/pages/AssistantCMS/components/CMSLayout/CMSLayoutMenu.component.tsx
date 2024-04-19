@@ -26,7 +26,7 @@ export const CMSLayoutMenu: React.FC = () => {
   const name = useSelector(ProjectV2.active.nameSelector);
   const hasProject = useSelector(ProjectV2.active.hasSelector);
   const flowsCount = useSelector(Designer.Flow.selectors.count);
-  const intentsCount = useSelector(Designer.Intent.selectors.countWithoutFallback);
+  const intentsCount = useSelector(Designer.Intent.selectors.countWithoutNone);
   const entitiesCount = useSelector(Designer.Entity.selectors.count);
   const functionsCount = useSelector(Designer.Function.selectors.count);
   const variablesCount = useSelector(Designer.Variable.selectors.count);

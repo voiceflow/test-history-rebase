@@ -26,7 +26,7 @@ export const IntentEditModal = modalsManager.create<IIntentEditModal>(
       const TEST_ID = 'edit-intent-modal';
 
       const intent = useSelector(Designer.Intent.selectors.oneWithFormattedBuiltNameByID, { id: intentID });
-      const intents = useSelector(Designer.Intent.selectors.allWithoutFallback);
+      const intents = useSelector(Designer.Intent.selectors.allWithoutNone);
 
       const patchIntent = useDispatch(Designer.Intent.effect.patchOne, intentID);
       const deleteIntent = useDispatch(Designer.Intent.effect.deleteOne, intentID);

@@ -30,11 +30,11 @@ import { ModerationModule } from './moderation/moderation.module';
     }),
     AuthModule.registerAsync({
       inject: [ENVIRONMENT_VARIABLES],
-      useFactory: (env: EnvironmentVariables) => AuthModule.optionsFactory(env.AUTH_API_SERVICE_HOST, env.AUTH_API_SERVICE_PORT_APP),
+      useFactory: (env: EnvironmentVariables) => AuthModule.optionsFactory(env.AUTH_API_SERVICE_URI, env.AUTH_API_SERVICE_PORT_APP),
     }),
     BillingModule.registerAsync({
       inject: [ENVIRONMENT_VARIABLES],
-      useFactory: (env: EnvironmentVariables) => BillingModule.optionsFactory(env.BILLING_API_SERVICE_HOST, env.BILLING_API_SERVICE_PORT_APP),
+      useFactory: (env: EnvironmentVariables) => BillingModule.optionsFactory(env.BILLING_API_SERVICE_URI, env.BILLING_API_SERVICE_PORT_APP),
     }),
     RedisModule.forRootAsync({
       inject: [ENVIRONMENT_VARIABLES],

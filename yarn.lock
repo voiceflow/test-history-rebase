@@ -9759,7 +9759,7 @@ __metadata:
     "@voiceflow/sdk-http-designer": "workspace:*"
     "@voiceflow/sdk-http-ml-gateway": "workspace:*"
     "@voiceflow/sdk-logux-designer": "workspace:*"
-    "@voiceflow/sdk-usage-analytics": 1.12.5
+    "@voiceflow/sdk-usage-analytics": 1.12.6
     "@voiceflow/slate-serializer": 1.6.0
     "@voiceflow/style": 1.7.0
     "@voiceflow/ui": "workspace:*"
@@ -10189,8 +10189,8 @@ __metadata:
     "@voiceflow/nestjs-env": 1.6.2
     "@voiceflow/nestjs-openapi-extractor": 1.7.9
     "@voiceflow/openai": ^3.2.1
-    "@voiceflow/sdk-auth": ^2.7.14
-    "@voiceflow/sdk-billing": 1.21.2
+    "@voiceflow/sdk-auth": ^2.8.1
+    "@voiceflow/sdk-billing": 1.23.2
     axios: 1.6.0
     chance: 1.1.11
     dd-trace: 4.33.0
@@ -10604,9 +10604,9 @@ __metadata:
     "@voiceflow/platform-config": "workspace:*"
     "@voiceflow/realtime-sdk": "workspace:*"
     "@voiceflow/schema-types": 1.64.0
-    "@voiceflow/sdk-auth": ^2.7.14
-    "@voiceflow/sdk-billing": 1.21.2
-    "@voiceflow/sdk-identity": 1.18.36
+    "@voiceflow/sdk-auth": ^2.8.1
+    "@voiceflow/sdk-billing": 1.23.2
+    "@voiceflow/sdk-identity": 1.19.2
     "@voiceflow/sdk-logux-designer": "workspace:*"
     "@voiceflow/socket-utils": "workspace:*"
     "@voiceflow/test-common": 1.8.1
@@ -10733,12 +10733,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voiceflow/sdk-auth@npm:^2.7.14":
-  version: 2.7.14
-  resolution: "@voiceflow/sdk-auth@npm:2.7.14"
+"@voiceflow/sdk-auth@npm:^2.8.1":
+  version: 2.8.1
+  resolution: "@voiceflow/sdk-auth@npm:2.8.1"
   dependencies:
     "@voiceflow/common": 8.2.1
-    "@voiceflow/orval-fetch": 1.3.0
+    "@voiceflow/orval-fetch": 1.4.0
     "@voiceflow/sdk-common": 1.11.3
     ts-pattern: ^4.2.2
   peerDependencies:
@@ -10770,13 +10770,13 @@ __metadata:
       optional: false
     typescript-fsa:
       optional: true
-  checksum: 7787facefcae36853c9412a04078a4220a70e99b75ee73a581248255d61e98b933f4d55f0b9cff02c4325615905c94afdccd1f2ddd075026ecad6b794788fe18
+  checksum: a456c2eb5a034869a3a8e1cdcf22ca354c433894362cc6229231c555c439a225e8d76e4301353f507a14ae61d04cc682b2bc8462e567d70782961833a417967b
   languageName: node
   linkType: hard
 
-"@voiceflow/sdk-billing@npm:1.21.2":
-  version: 1.21.2
-  resolution: "@voiceflow/sdk-billing@npm:1.21.2"
+"@voiceflow/sdk-billing@npm:1.23.2":
+  version: 1.23.2
+  resolution: "@voiceflow/sdk-billing@npm:1.23.2"
   dependencies:
     "@voiceflow/orval-fetch": 1.4.0
     "@voiceflow/sdk-common": 1.11.3
@@ -10796,7 +10796,7 @@ __metadata:
       optional: true
     undici:
       optional: true
-  checksum: e556e763cb95e0108c60bcb64928b203c4e7704fcab34e1a3f07111c90f828a46b295c14093038f27ed14e8f97d93692ebafdc4b67080806a68b3f95f45db586
+  checksum: 60f328c8f9a71fd74cce1a11f57c1a4aebde72a092b76773e849b2296bb4bd13e3d61473ba7e2f17247c9d8cb3b2f024682edd26edbce91d957948f92457e28c
   languageName: node
   linkType: hard
 
@@ -10902,9 +10902,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@voiceflow/sdk-identity@npm:1.18.36":
-  version: 1.18.36
-  resolution: "@voiceflow/sdk-identity@npm:1.18.36"
+"@voiceflow/sdk-identity@npm:1.19.2":
+  version: 1.19.2
+  resolution: "@voiceflow/sdk-identity@npm:1.19.2"
   dependencies:
     "@voiceflow/orval-fetch": 1.4.0
     "@voiceflow/sdk-common": 1.11.3
@@ -10919,7 +10919,7 @@ __metadata:
       optional: true
     undici:
       optional: true
-  checksum: 16f3070122682fc35cd39dc888492ef11d3ff3f44de0c308fb194c20a2b097baffbc989a7226f8d37518284766f7e16ab41e704841a21495b8347b52e9883f08
+  checksum: 8168b8164d267ac51d619a304e47d108576c025397e6e9f5580fb14860fcf1054e942eae216bc8e513fb10b76d4e2ce6919bf9f2e099ff027036fa0c0083f34b
   languageName: node
   linkType: hard
 
@@ -10962,9 +10962,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voiceflow/sdk-usage-analytics@npm:1.12.5":
-  version: 1.12.5
-  resolution: "@voiceflow/sdk-usage-analytics@npm:1.12.5"
+"@voiceflow/sdk-usage-analytics@npm:1.12.6":
+  version: 1.12.6
+  resolution: "@voiceflow/sdk-usage-analytics@npm:1.12.6"
   peerDependencies:
     "@voiceflow/schema-dto": "*"
     "@voiceflow/schema-types": "*"
@@ -10976,7 +10976,7 @@ __metadata:
       optional: false
     nestjs-zod:
       optional: false
-  checksum: ae0c301fb7b3b7a0a45debdb73fc72c864d472da531e3dc821bd3be126c8d81519d2568feb5646dd3adb90b41c8dea41c002fc37571e04869e319ce903a787ea
+  checksum: c12bcf150e75ecfd23b59d0bbeb8356d794059c54d2308c6cbdd17ac15a467688bb08da7985b4eaf98a3f78388bce2ae82064aa9c4b831bc926a301f2cab8311
   languageName: node
   linkType: hard
 

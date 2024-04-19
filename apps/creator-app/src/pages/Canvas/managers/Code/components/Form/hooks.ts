@@ -1,4 +1,3 @@
-import { Utils } from '@voiceflow/common';
 import React from 'react';
 import type AceEditorType from 'react-ace';
 
@@ -25,28 +24,26 @@ export const useAceEditor = (isFullscreen: boolean) => {
           }))
         );
       },
+      // internal flag
+      _vf_ref: true,
     }),
     [wordList]
   );
 
+  const applyCompleter = () => {
+    if (editorRef.current) {
+      editorRef.current.editor.completers = [...editorRef.current.editor.completers.filter((c: any) => !c._vf_ref), completer];
+    }
+  };
+
   const getEditorRef = (instance: AceEditorType | null) => {
     editorRef.current = instance;
-    instance?.editor.completers.push(completer);
+    applyCompleter();
   };
 
   // add & remove completer from ace editor
   React.useEffect(() => {
-    if (editorRef.current) {
-      editorRef.current.editor.completers = Utils.array.append(editorRef.current.editor.completers, completer);
-
-      return () => {
-        if (editorRef.current) {
-          editorRef.current.editor.completers = Utils.array.withoutValue(editorRef.current.editor.completers, completer);
-        }
-      };
-    }
-
-    return undefined;
+    applyCompleter();
   }, [completer]);
 
   // dynamic resizing of container

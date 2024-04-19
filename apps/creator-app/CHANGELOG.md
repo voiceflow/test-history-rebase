@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1486.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1485.1...@voiceflow/creator-app@1.1486.0) (2024-04-19)
+
+### Features
+
+* use service uri env var (PL-900) ([#7944](https://github.com/voiceflow/creator-app/issues/7944)) ([dfac2bb](https://github.com/voiceflow/creator-app/commit/dfac2bb32151866109ada481ba565f009f4e4674))
+
 ## [1.1485.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1485.0...@voiceflow/creator-app@1.1485.1) (2024-04-19)
 
 ### Bug Fixes

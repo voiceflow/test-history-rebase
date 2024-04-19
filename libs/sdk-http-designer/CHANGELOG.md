@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.16.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-designer@2.15.60...@voiceflow/sdk-http-designer@2.16.0) (2024-04-19)
+
+### Features
+
+* use service uri env var (PL-900) ([#7944](https://github.com/voiceflow/creator-app/issues/7944)) ([dfac2bb](https://github.com/voiceflow/creator-app/commit/dfac2bb32151866109ada481ba565f009f4e4674))
+
 ## [2.15.60](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-designer@2.15.59...@voiceflow/sdk-http-designer@2.15.60) (2024-04-18)
 
 **Note:** Version bump only for package @voiceflow/sdk-http-designer

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1485.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1485.0...@voiceflow/creator-app@1.1485.1) (2024-04-19)
+
+### Bug Fixes
+
+* laggy javascript editor (COR-1927) ([#8001](https://github.com/voiceflow/creator-app/issues/8001)) ([f620bf6](https://github.com/voiceflow/creator-app/commit/f620bf6feb7a1a3e0442eb130db2826622538edc))
+
 # [1.1485.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1484.1...@voiceflow/creator-app@1.1485.0) (2024-04-18)
 
 ### Features

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.50.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.49.2...@voiceflow/sdk-logux-designer@2.50.0) (2024-04-22)
+
+### Features
+
+* http realtime kb delete (COR-1801) ([#8002](https://github.com/voiceflow/creator-app/issues/8002)) ([6b98a54](https://github.com/voiceflow/creator-app/commit/6b98a54c705082723a517f0a789a095c4c99fd3d))
+
 ## [2.49.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.49.1...@voiceflow/sdk-logux-designer@2.49.2) (2024-04-17)
 
 **Note:** Version bump only for package @voiceflow/sdk-logux-designer

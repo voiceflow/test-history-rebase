@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.328.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.327.0...@voiceflow/realtime@1.328.0) (2024-04-22)
+
+### Features
+
+* http realtime kb delete (COR-1801) ([#8002](https://github.com/voiceflow/creator-app/issues/8002)) ([6b98a54](https://github.com/voiceflow/creator-app/commit/6b98a54c705082723a517f0a789a095c4c99fd3d))
+
 # [1.327.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.326.0...@voiceflow/realtime@1.327.0) (2024-04-19)
 
 ### Features

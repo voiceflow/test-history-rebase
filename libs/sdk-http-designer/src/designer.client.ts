@@ -11,6 +11,7 @@ import {
   OrganizationClient,
   PrivateAssistantClient,
   PrivateEnvironmentClient,
+  PrivateKnowledgeBaseDocumentClient,
   PrivateProjectClient,
   PrivatePrototypeProgramClient,
   ProjectClient,
@@ -37,5 +38,8 @@ export class DesignerClient extends BaseClient('https://realtime-api.voiceflow.c
     assistant: PrivateAssistantClient,
     environment: PrivateEnvironmentClient,
     prototypeProgram: PrivatePrototypeProgramClient,
+    knowledgeBase: NestedClient({
+      document: PrivateKnowledgeBaseDocumentClient,
+    }),
   }),
 }) {}

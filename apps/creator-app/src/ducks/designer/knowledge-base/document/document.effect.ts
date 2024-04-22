@@ -1,8 +1,11 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 import { BaseModels } from '@voiceflow/base-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { notify } from '@voiceflow/ui-next';
 import pluralize from 'pluralize';
 
+import { designerClient } from '@/client/designer';
+import featureClient from '@/client/feature';
 import { knowledgeBaseClient } from '@/client/knowledge-base';
 import * as Errors from '@/config/errors';
 import * as Session from '@/ducks/session';
@@ -376,12 +379,18 @@ export const deleteOne =
   (documentID: string): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
+    const featureFlags = await featureClient.getStatuses();
+    const realtimeKBEnabled = featureFlags[Realtime.FeatureFlag.KB_BE_DOC_CRUD]?.isEnabled;
 
     const projectID = Session.activeProjectIDSelector(state);
 
     Errors.assertProjectID(projectID);
 
-    await knowledgeBaseClient.deleteOneDocument(projectID, documentID);
+    if (!realtimeKBEnabled) {
+      await designerClient.private.knowledgeBase.document.deleteOne(projectID, documentID);
+    } else {
+      await knowledgeBaseClient.deleteOneDocument(projectID, documentID);
+    }
 
     Tracking.trackAiKnowledgeBaseSourceDeleted({ documentIDs: [documentID] });
 
@@ -392,12 +401,21 @@ export const deleteMany =
   (documentIDs: string[]): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
+    const featureFlags = await featureClient.getStatuses();
+    const realtimeKBEnabled = featureFlags[Realtime.FeatureFlag.KB_BE_DOC_CRUD]?.isEnabled;
 
     const projectID = Session.activeProjectIDSelector(state);
 
     Errors.assertProjectID(projectID);
 
-    const { data } = await knowledgeBaseClient.deleteManyDocuments(projectID, documentIDs);
+    let data: { deletedDocumentIDs: string[] } = { deletedDocumentIDs: [] };
+
+    if (!realtimeKBEnabled) {
+      data = await designerClient.private.knowledgeBase.document.deleteMany(projectID, { documentIDs });
+    } else {
+      const response = await knowledgeBaseClient.deleteManyDocuments(projectID, documentIDs);
+      data = response.data;
+    }
 
     Tracking.trackAiKnowledgeBaseSourceDeleted({ documentIDs: data.deletedDocumentIDs });
 

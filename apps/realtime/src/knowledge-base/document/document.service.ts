@@ -19,4 +19,10 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
   ) {
     super();
   }
+
+  /* Delete */
+
+  async deleteManyDocuments(ids: string[], assistantID: string) {
+    await this.orm.deleteManyDocuments(assistantID, ids);
+  }
 }

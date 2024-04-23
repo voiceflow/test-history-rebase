@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1490.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1489.0...@voiceflow/creator-app@1.1490.0) (2024-04-23)
+
+### Features
+
+* add ability to edit links from slate (COR-1873) ([#8008](https://github.com/voiceflow/creator-app/issues/8008)) ([28aaab3](https://github.com/voiceflow/creator-app/commit/28aaab3bef45cc86b2bd19275b6a84c88b055ead))
+
 # [1.1489.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1488.1...@voiceflow/creator-app@1.1489.0) (2024-04-23)
 
 ### Features

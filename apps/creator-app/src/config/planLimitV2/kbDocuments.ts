@@ -32,7 +32,7 @@ const PRO_TEAM_LIMIT = {
 } satisfies UpgradeModalStaticLimit;
 
 const ENTERPRISE_LIMIT = {
-  limit: 5000,
+  limit: 300,
   upgradeModal: ({ limit }) => ({
     ...DEFAULT_MODAL,
     ...getLegacyUpgradeModalProps(PlanType.ENTERPRISE, Tracking.UpgradePrompt.KB_DOCUMENTS),

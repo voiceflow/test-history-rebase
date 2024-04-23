@@ -1,18 +1,18 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { RenderElementProps } from 'slate-react';
+import styled from 'styled-components';
 
-import { styled } from '@/hocs/styled';
 import { openURLInANewTab } from '@/utils/window';
 
 import { LinkElement as LinkElementType } from '../editor/types';
 
-const ClickableLink = styled.span`
+const ClickableLink = styled.span<{ isCmdOrCtrlPressed: boolean }>`
   display: inline;
-  cursor: pointer;
   pointer-events: all;
+  cursor: ${(props) => (props.isCmdOrCtrlPressed ? 'pointer' : 'text')};
 
   &:hover {
-    opacity: 0.8;
+    opacity: ${(props) => (props.isCmdOrCtrlPressed ? '0.8' : '1')};
   }
 `;
 
@@ -22,25 +22,43 @@ interface LinkElementProps extends Omit<RenderElementProps, 'element'> {
 
 const LinkElement: React.FC<LinkElementProps> = ({ attributes, children, element }) => {
   const href = element.url;
+  const [isCmdOrCtrlPressed, setIsCmdOrCtrlPressed] = useState(false);
 
-  const onClick = React.useCallback(
-    (event: React.MouseEvent) => {
-      const withoutExtraKeys = !(event.metaKey || event.ctrlKey || event.shiftKey);
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (event.metaKey || event.ctrlKey) {
+      setIsCmdOrCtrlPressed(true);
+    }
+  };
 
-      if (withoutExtraKeys) {
-        event.stopPropagation();
-        event.preventDefault();
-      }
+  const handleKeyUp = (event: KeyboardEvent) => {
+    if (event.metaKey || event.ctrlKey) {
+      setIsCmdOrCtrlPressed(false);
+    }
+  };
 
-      if (href && withoutExtraKeys) {
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
+    };
+  }, []);
+
+  const onClick = (event: React.MouseEvent) => {
+    if (event.metaKey || event.ctrlKey) {
+      if (href) {
         openURLInANewTab(href);
       }
-    },
-    [href]
-  );
+    } else {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+  };
 
   return (
-    <ClickableLink {...attributes} style={{ position: 'relative' }} onMouseDown={onClick}>
+    <ClickableLink {...attributes} isCmdOrCtrlPressed={isCmdOrCtrlPressed} style={{ position: 'relative' }} onClick={onClick}>
       {children}
     </ClickableLink>
   );

@@ -115,6 +115,7 @@ export class AssistantPublicHTTPController {
     return {
       project: this.projectSerializer.nullable(project),
       assistant: this.serializer.nullable(assistant),
+      sourceProjectID: data.project._id,
     };
   }
 
@@ -135,6 +136,7 @@ export class AssistantPublicHTTPController {
     return {
       project: this.projectSerializer.nullable(project),
       assistant: this.serializer.nullable(assistant),
+      sourceProjectID: data.project._id,
     };
   }
 }

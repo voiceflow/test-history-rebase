@@ -55,6 +55,7 @@ export class AssistantPrivateHTTPController {
     return {
       project: this.projectSerializer.nullable(project),
       assistant: this.serializer.nullable(assistant),
+      sourceProjectID: null,
     };
   }
 

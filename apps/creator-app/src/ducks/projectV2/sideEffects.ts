@@ -126,6 +126,7 @@ export const importProjectFromFile =
         projectID: project.id,
         onboarding: false,
         workspaceID,
+        source_project_id: result.sourceProjectID || undefined,
       })
     );
 
@@ -478,7 +479,7 @@ export const importProject =
         projectID: duplicatedProject.id,
         onboarding: false,
         workspaceID: targetWorkspaceID,
-        source_project_id: project?.id,
+        source_project_id: projectID,
       })
     );
 

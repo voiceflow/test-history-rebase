@@ -386,7 +386,7 @@ export const deleteOne =
 
     Errors.assertProjectID(projectID);
 
-    if (!realtimeKBEnabled) {
+    if (realtimeKBEnabled) {
       await designerClient.private.knowledgeBase.document.deleteOne(projectID, documentID);
     } else {
       await knowledgeBaseClient.deleteOneDocument(projectID, documentID);
@@ -410,7 +410,7 @@ export const deleteMany =
 
     let data: { deletedDocumentIDs: string[] } = { deletedDocumentIDs: [] };
 
-    if (!realtimeKBEnabled) {
+    if (realtimeKBEnabled) {
       data = await designerClient.private.knowledgeBase.document.deleteMany(projectID, { documentIDs });
     } else {
       const response = await knowledgeBaseClient.deleteManyDocuments(projectID, documentIDs);

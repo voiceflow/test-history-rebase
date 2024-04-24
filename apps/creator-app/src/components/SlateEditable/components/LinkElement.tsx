@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { RenderElementProps } from 'slate-react';
-import styled from 'styled-components';
 
+import { styled } from '@/hocs/styled';
 import { openURLInANewTab } from '@/utils/window';
 
 import { LinkElement as LinkElementType } from '../editor/types';
 
-const ClickableLink = styled.span<{ isCmdOrCtrlPressed: boolean }>`
+const ClickableLink = styled.span`
   display: inline;
+  cursor: pointer;
   pointer-events: all;
-  cursor: ${(props) => (props.isCmdOrCtrlPressed ? 'pointer' : 'text')};
 
   &:hover {
-    opacity: ${(props) => (props.isCmdOrCtrlPressed ? '0.8' : '1')};
+    opacity: 0.8;
   }
 `;
 
@@ -22,43 +22,25 @@ interface LinkElementProps extends Omit<RenderElementProps, 'element'> {
 
 const LinkElement: React.FC<LinkElementProps> = ({ attributes, children, element }) => {
   const href = element.url;
-  const [isCmdOrCtrlPressed, setIsCmdOrCtrlPressed] = useState(false);
 
-  const handleKeyDown = (event: KeyboardEvent) => {
-    if (event.metaKey || event.ctrlKey) {
-      setIsCmdOrCtrlPressed(true);
-    }
-  };
-
-  const handleKeyUp = (event: KeyboardEvent) => {
-    if (event.metaKey || event.ctrlKey) {
-      setIsCmdOrCtrlPressed(false);
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('keyup', handleKeyUp);
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('keyup', handleKeyUp);
-    };
-  }, []);
-
-  const onClick = (event: React.MouseEvent) => {
-    if (event.metaKey || event.ctrlKey) {
-      if (href) {
-        openURLInANewTab(href);
+  const onClick = React.useCallback(
+    (event: React.MouseEvent) => {
+      // Open the link only if the meta (Cmd on Mac) or Ctrl key is pressed
+      if (event.metaKey || event.ctrlKey) {
+        if (href) {
+          openURLInANewTab(href);
+        }
+      } else {
+        // Prevent the default link behavior when Cmd/Ctrl is not pressed
+        event.preventDefault();
+        event.stopPropagation();
       }
-    } else {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-  };
+    },
+    [href]
+  );
 
   return (
-    <ClickableLink {...attributes} isCmdOrCtrlPressed={isCmdOrCtrlPressed} style={{ position: 'relative' }} onClick={onClick}>
+    <ClickableLink {...attributes} style={{ position: 'relative' }} onClick={onClick}>
       {children}
     </ClickableLink>
   );

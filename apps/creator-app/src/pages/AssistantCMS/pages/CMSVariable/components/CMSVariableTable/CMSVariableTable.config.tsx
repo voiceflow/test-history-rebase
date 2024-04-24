@@ -6,7 +6,7 @@ import { transformVariableName } from '@/utils/variable.util';
 
 import { CMSTableCellFromNowTooltip } from '../../../../components/CMSTableCellFromNowTooltip/CMSTableCellFromNowTooltip.component';
 import { CMSTableCellTextTooltip } from '../../../../components/CMSTableCellTextTooltip/CMSTableCellTextTooltip.component';
-import { CMSTableLastEditedCell } from '../../../../components/CMSTableLastEditedCell/CMSTableLastEditedCell.component';
+import { CMSTableMemberCell } from '../../../../components/CMSTableMemberCell/CMSTableMemberCell.component';
 import { CMSTableNameCell } from '../../../../components/CMSTableNameCell/CMSTableNameCell.component';
 import type { CMSFolder, CMSVariable } from '../../../../contexts/CMSManager/CMSManager.interface';
 import { updatedAtSort, withFieldLocaleCompareSort, withFolderSort } from '../../../../contexts/CMSManager/CMSManager.util';
@@ -67,7 +67,7 @@ export const CMS_VARIABLE_TABLE_CONFIG: TableConfig<VariableTableColumn, CMSFold
       type: VariableTableColumn.LAST_EDITOR,
       name: 'Last editor',
 
-      cell: ({ item }) => <Table.Cell.GroupEmpty item={item} label={({ updatedByID }) => <CMSTableLastEditedCell creatorID={updatedByID} />} />,
+      cell: ({ item }) => <Table.Cell.GroupEmpty item={item} label={({ updatedByID }) => <CMSTableMemberCell creatorID={updatedByID} />} />,
     },
 
     [VariableTableColumn.UPDATED]: {

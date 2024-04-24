@@ -1,13 +1,14 @@
+import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { SvgIcon } from '@voiceflow/ui';
 import React, { useState } from 'react';
 
 import { useProjectAIPlayground } from '@/components/GPT/hooks';
 import { Permission } from '@/constants/permissions';
-import * as CanvasTemplates from '@/ducks/canvasTemplate';
-import * as CustomBlocks from '@/ducks/customBlock';
-import * as ProjectV2 from '@/ducks/projectV2';
-import { usePermission, useSelector } from '@/hooks';
+import { CanvasTemplate, CustomBlock, Diagram, Project } from '@/ducks';
+import { useFeature } from '@/hooks/feature';
+import { usePermission } from '@/hooks/permission';
 import { useLocalStorageState } from '@/hooks/storage.hook';
+import { useSelector } from '@/hooks/store.hook';
 import { Identifier } from '@/styles/constants';
 
 import { AI_LABEL, EVENT_LABEL, getAllSections, LibraryStepType, TopLibraryItem, TopStepItem } from './constants';
@@ -17,15 +18,18 @@ import TopLevelButton from './TopLevelButton';
 const STEP_MENU_EXPANDED_LOCAL_STORAGE_KEY = 'stepMenuExpanded';
 
 const StepMenu: React.FC = () => {
-  const platform = useSelector(ProjectV2.active.platformSelector);
-  const projectType = useSelector(ProjectV2.active.projectTypeSelector);
+  const cmsWorkflows = useFeature(FeatureFlag.CMS_WORKFLOWS);
+  const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
   const aiPlaygroundEnabled = useProjectAIPlayground();
+
+  const isTopic = useSelector(Diagram.active.isTopicSelector);
+  const platform = useSelector(Project.active.platformSelector);
+  const templates = useSelector(CanvasTemplate.allCanvasTemplatesSelector);
+  const projectType = useSelector(Project.active.projectTypeSelector);
+  const customBlocks = useSelector(CustomBlock.allCustomBlocksSelector);
+
   const [isExpanded, toggleIsExpanded] = useLocalStorageState(STEP_MENU_EXPANDED_LOCAL_STORAGE_KEY, true);
   const [initialRender, setInitialRender] = useState(true);
-  const templates = useSelector(CanvasTemplates.allCanvasTemplatesSelector);
-  const customBlocks = useSelector(CustomBlocks.allCustomBlocksSelector);
-
-  const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
 
   const [eventSection, otherSections, numCollapsedSteps] = React.useMemo(() => {
     let numCollapsedSteps = 5;
@@ -62,11 +66,12 @@ const StepMenu: React.FC = () => {
     <>
       {canEditCanvas && (
         <S.TopLevelOuterContainer id={Identifier.STEP_MENU}>
-          {eventSection && (
+          {eventSection && (!cmsWorkflows.isEnabled || isTopic) && (
             <S.TopLevelInnerContainer size={1}>
               <TopLevelButton key={eventSection.label} section={eventSection} animationIndex={-1} />
             </S.TopLevelInnerContainer>
           )}
+
           {otherSections && (
             <S.TopLevelInnerContainer size={otherSections.length}>
               {otherSections.map((section, index) => (

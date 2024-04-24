@@ -3,7 +3,7 @@ import React from 'react';
 
 import { CMSTableCellFromNowTooltip } from '../../../../components/CMSTableCellFromNowTooltip/CMSTableCellFromNowTooltip.component';
 import { CMSTableCellTextTooltip } from '../../../../components/CMSTableCellTextTooltip/CMSTableCellTextTooltip.component';
-import { CMSTableLastEditedCell } from '../../../../components/CMSTableLastEditedCell/CMSTableLastEditedCell.component';
+import { CMSTableMemberCell } from '../../../../components/CMSTableMemberCell/CMSTableMemberCell.component';
 import { CMSTableNameCell } from '../../../../components/CMSTableNameCell/CMSTableNameCell.component';
 import type { CMSFlow, CMSFolder } from '../../../../contexts/CMSManager/CMSManager.interface';
 import { updatedAtSort, withFieldLocaleCompareSort, withFolderSort } from '../../../../contexts/CMSManager/CMSManager.util';
@@ -23,7 +23,7 @@ export const CMS_FLOW_TABLE_CONFIG: TableConfig<FlowTableColumn, CMSFolder | CMS
       name: 'Name',
       sorter: withFolderSort<CMSFlow>(withFieldLocaleCompareSort('name')),
 
-      cell: ({ item, type }) => <CMSTableNameCell type={type} name={item.name} itemID={item.id} />,
+      cell: ({ item, type }) => <CMSTableNameCell type={type} name={item.name} itemID={item.id} isFolder={item.group} />,
     },
 
     [FlowTableColumn.DESCRIPTION]: {
@@ -43,7 +43,7 @@ export const CMS_FLOW_TABLE_CONFIG: TableConfig<FlowTableColumn, CMSFolder | CMS
       type: FlowTableColumn.LAST_EDITOR,
       name: 'Last editor',
 
-      cell: ({ item }) => <Table.Cell.GroupEmpty item={item} label={({ updatedByID }) => <CMSTableLastEditedCell creatorID={updatedByID} />} />,
+      cell: ({ item }) => <Table.Cell.GroupEmpty item={item} label={({ updatedByID }) => <CMSTableMemberCell creatorID={updatedByID} />} />,
     },
 
     [FlowTableColumn.UPDATED]: {

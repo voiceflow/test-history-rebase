@@ -28,7 +28,7 @@ export class WorkflowLoguxController {
   ): Promise<Actions.Workflow.CreateOne.Response> {
     return this.service
       .createManyAndBroadcast([{ ...data, isStart: false }], { auth, context })
-      .then(([result]) => ({ data: this.service.toJSON(result), context }));
+      .then(([result]) => ({ data: { ...this.service.toJSON(result), triggerNodeID: result.triggerNodeID }, context }));
   }
 
   @Action.Async(Actions.Workflow.CreateMany)
@@ -46,7 +46,7 @@ export class WorkflowLoguxController {
         data.map((item) => ({ ...item, isStart: false })),
         { auth, context }
       )
-      .then((results) => ({ data: this.service.mapToJSON(results), context }));
+      .then((results) => ({ data: results.map((result) => ({ ...this.service.toJSON(result), triggerNodeID: result.triggerNodeID })), context }));
   }
 
   @Action.Async(Actions.Workflow.DuplicateOne)

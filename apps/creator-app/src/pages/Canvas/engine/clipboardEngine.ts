@@ -1,4 +1,4 @@
-import { Crypto } from '@voiceflow/common';
+import { Crypto, Utils } from '@voiceflow/common';
 import type { Entity, IntentWithData } from '@voiceflow/dtos';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
@@ -41,12 +41,7 @@ interface EncodeData {
   version: string;
 }
 
-enum ClipboardVersion {
-  V3 = 'v3',
-  V4 = 'v4',
-}
-
-const CURRENT_VERSION = ClipboardVersion.V4;
+const CURRENT_VERSION = 'v4';
 
 class ClipboardEngine extends EngineConsumer {
   log = this.engine.log.child('clipboard');
@@ -218,7 +213,7 @@ class ClipboardEngine extends EngineConsumer {
     };
   }
 
-  getClipboardContext(nodeIDs: string[]): ClipboardContext {
+  private getClipboardContext(nodeIDs: string[]): ClipboardContext {
     const state = this.engine.store.getState();
 
     const versionID = Session.activeVersionIDSelector(state);
@@ -241,7 +236,61 @@ class ClipboardEngine extends EngineConsumer {
     };
   }
 
-  async cloneClipboardContext(
+  private cleanupCopyData(context: ClipboardContext): ClipboardContext {
+    const isTopic = this.engine.isTopic();
+
+    if (isTopic || !this.engine.isFeatureEnabled(Realtime.FeatureFlag.CMS_WORKFLOWS)) {
+      return context;
+    }
+
+    const nodeMap = Utils.array.createMap(context.nodes, (node) => node.id);
+    const linkSourcePortIDMap = Utils.array.createMap(context.links, (link) => link.source.portID);
+
+    const ignoredNodes = context.nodes.filter((node) => node.type === BlockType.INTENT);
+    const removedNodeIDs: string[] = ignoredNodes.map((node) => node.id);
+
+    ignoredNodes.forEach((node) => {
+      const allPortIDs = Realtime.Utils.port.flattenOutPorts(node.ports);
+
+      allPortIDs.forEach((portID) => {
+        const link = linkSourcePortIDMap[portID];
+
+        if (!link) return;
+
+        const targetNode = nodeMap[link.target.nodeID];
+
+        if (!targetNode || targetNode.type !== BlockType.ACTIONS) return;
+
+        removedNodeIDs.push(targetNode.id, ...targetNode.combinedNodes);
+      });
+    });
+
+    context.nodes.forEach((node) => {
+      if (node.type !== BlockType.ACTIONS && node.type !== BlockType.COMBINED) return;
+
+      const combinedNodesWithoutRemoved = node.combinedNodes.filter((nodeID) => !removedNodeIDs.includes(nodeID));
+
+      // remove empty blocks and actions
+      if (!combinedNodesWithoutRemoved.length) {
+        removedNodeIDs.push(node.id);
+      } else {
+        // eslint-disable-next-line no-param-reassign
+        node.combinedNodes = combinedNodesWithoutRemoved;
+      }
+    });
+
+    const removedNodeIDsSet = new Set(removedNodeIDs);
+
+    return {
+      ...context,
+      data: Utils.object.omit(context.data, removedNodeIDs),
+      links: context.links.filter((link) => !removedNodeIDsSet.has(link.source.nodeID) && !removedNodeIDsSet.has(link.target.nodeID)),
+      ports: context.ports.filter((port) => !removedNodeIDsSet.has(port.nodeID)),
+      nodes: context.nodes.filter((node) => !removedNodeIDsSet.has(node.id)),
+    };
+  }
+
+  private async cloneClipboardContext(
     copyData: ClipboardContext,
     coords: Coords
   ): Promise<{
@@ -253,12 +302,14 @@ class ClipboardEngine extends EngineConsumer {
     const versionID = Session.activeVersionIDSelector(state);
 
     const isSameVersion = copyData.versionID === versionID;
+    const cleanedData = this.cleanupCopyData(copyData);
 
     const nodesWithData = isSameVersion
-      ? copyData.nodes.map((node) => ({ data: copyData.data[node.id], node }))
-      : await this.internal.importClipboardContext(copyData);
+      ? cleanedData.nodes.map((node) => ({ data: cleanedData.data[node.id], node }))
+      : await this.internal.importClipboardContext(cleanedData);
 
-    const { ports, links } = copyData;
+    const { ports, links } = cleanedData;
+
     return this.engine.diagram.cloneEntities({ nodesWithData, ports, links }, coords);
   }
 

@@ -18,7 +18,6 @@ export const DocumentNameURL: React.FC<IDocumentNameURL> = ({ data, search }) =>
           label={data.name}
           target="_blank"
           overflow
-          isSelectable
           highlight={search}
           onMouseEnter={onOpen}
           onMouseLeave={onClose}

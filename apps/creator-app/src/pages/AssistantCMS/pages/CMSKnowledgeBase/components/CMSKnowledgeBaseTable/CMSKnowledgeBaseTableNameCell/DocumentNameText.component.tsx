@@ -39,26 +39,28 @@ export const DocumentNameText: React.FC<IDocumentNameText> = ({ id, data, search
   }, [data.name]);
 
   return (
-    <>
-      {data.canEdit ? (
-        <Table.Cell.Text.Highlighted label={nameWithoutNewLines} search={search} overflow={true} />
-      ) : (
-        <Tooltip.Overflow
-          referenceElement={({ ref, onOpen, onClose }) => (
-            <Table.Cell.Link
-              label={nameWithoutNewLines}
-              ref={ref}
-              onClick={stopPropagation(() => downloadOne(id))}
-              overflow
-              highlight={search}
-              onMouseEnter={onOpen}
-              onMouseLeave={onClose}
-            />
-          )}
-        >
-          {() => <Text breakWord>{nameWithoutNewLines}</Text>}
-        </Tooltip.Overflow>
+    <Tooltip.Overflow
+      referenceElement={({ ref, onOpen, onClose }) =>
+        data.canEdit ? (
+          <Table.Cell.Text.Highlighted ref={ref} label={nameWithoutNewLines} search={search} overflow onMouseEnter={onOpen} onMouseLeave={onClose} />
+        ) : (
+          <Table.Cell.Link
+            ref={ref}
+            label={nameWithoutNewLines}
+            onClick={stopPropagation(() => downloadOne(id))}
+            overflow
+            highlight={search}
+            onMouseEnter={onOpen}
+            onMouseLeave={onClose}
+          />
+        )
+      }
+    >
+      {() => (
+        <Text variant="caption" breakWord>
+          {nameWithoutNewLines}
+        </Text>
       )}
-    </>
+    </Tooltip.Overflow>
   );
 };

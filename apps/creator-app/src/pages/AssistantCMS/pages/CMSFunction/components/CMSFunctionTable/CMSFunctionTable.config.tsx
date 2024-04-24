@@ -5,7 +5,7 @@ import { CMSManagerConsumer } from '@/pages/AssistantCMS/contexts/CMSManager';
 
 import { CMSTableCellFromNowTooltip } from '../../../../components/CMSTableCellFromNowTooltip/CMSTableCellFromNowTooltip.component';
 import { CMSTableHighlightedTooltip } from '../../../../components/CMSTableHighlightedTooltip/CMSTableHighlightedTooltip.component';
-import { CMSTableLastEditedCell } from '../../../../components/CMSTableLastEditedCell/CMSTableLastEditedCell.component';
+import { CMSTableMemberCell } from '../../../../components/CMSTableMemberCell/CMSTableMemberCell.component';
 import { CMSTableNameCell } from '../../../../components/CMSTableNameCell/CMSTableNameCell.component';
 import type { CMSFolder, CMSFunction } from '../../../../contexts/CMSManager/CMSManager.interface';
 import { updatedAtSort, withFieldLocaleCompareSort, withFolderSort } from '../../../../contexts/CMSManager/CMSManager.util';
@@ -50,7 +50,7 @@ export const FUNCTION_TABLE_CONFIG: TableConfig<FunctionTableColumn, CMSFolder |
     [FunctionTableColumn.LAST_EDITOR]: {
       type: FunctionTableColumn.LAST_EDITOR,
       name: 'Last editor',
-      cell: ({ item }) => <Table.Cell.GroupEmpty item={item} label={({ updatedByID }) => <CMSTableLastEditedCell creatorID={updatedByID} />} />,
+      cell: ({ item }) => <Table.Cell.GroupEmpty item={item} label={({ updatedByID }) => <CMSTableMemberCell creatorID={updatedByID} />} />,
     },
 
     [FunctionTableColumn.UPDATED]: {

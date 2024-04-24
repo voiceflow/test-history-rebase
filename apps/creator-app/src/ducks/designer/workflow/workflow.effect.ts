@@ -15,7 +15,7 @@ import { waitAsync } from '../../utils';
 import * as selectors from './selectors';
 
 export const createOne =
-  (data: Actions.Workflow.CreateData): Thunk<Workflow> =>
+  (data: Actions.Workflow.CreateData): Thunk<Workflow & { triggerNodeID: string | null }> =>
   async (dispatch, getState) => {
     const state = getState();
     const context = getActiveAssistantContext(state);

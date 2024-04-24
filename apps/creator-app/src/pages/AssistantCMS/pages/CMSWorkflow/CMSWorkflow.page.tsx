@@ -11,6 +11,7 @@ import { withCMSRouteFolders } from '../../contexts/CMSRouteFolders';
 import { withCMSInitialTableState } from '../../hocs/CMSInitialTableState.hoc';
 import { withCMSResourceEditor } from '../../hocs/CMSResourceEditor.hoc';
 import { withCMSResourceModals } from '../../hocs/CMSResourceModals.hoc';
+import { cmsWorkflowSortContextAtom } from './CMSWorkflow.atom';
 import { workflowSearch } from './CMSWorkflow.util';
 import { CMSWorkflowEditor } from './components/CMSWorkflowEditor/CMSWorkflowEditor.component';
 import { CMSWorkflowHeader } from './components/CMSWorkflowHeader/CMSWorkflowHeader.component';
@@ -36,6 +37,7 @@ export default Utils.functional.compose(
 
   withCMSInitialTableState({
     orderBy: WorkflowTableColumn.NAME,
+    sortContext: cmsWorkflowSortContextAtom,
   }),
 
   withCMSManagerProvider({

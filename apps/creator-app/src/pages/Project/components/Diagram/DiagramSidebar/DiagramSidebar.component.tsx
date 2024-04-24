@@ -2,6 +2,7 @@ import { DraggablePanel, ResizableSection, Section, TreeView } from '@voiceflow/
 import { IResizableSectionAPI } from '@voiceflow/ui-next/build/cjs/components/Section/ResizableSection/types';
 import React, { useRef } from 'react';
 
+import { CMS_FLOW_LEARN_MORE, CMS_WORKFLOW_LEARN_MORE } from '@/constants/link.constant';
 import { Permission } from '@/constants/permissions';
 import { Creator, Designer, Router, UI } from '@/ducks';
 import { useEventualEngine } from '@/hooks/engine';
@@ -33,12 +34,16 @@ export const DiagramSidebar: React.FC = () => {
 
   const canvasOnly = useSelector(UI.selectors.isCanvasOnly);
   const creatorFocus = useSelector(Creator.creatorFocusSelector);
+  const sidebarWidth = useSelector(UI.selectors.canvasSidebarWidth);
+  const sidebarVisible = useSelector(UI.selectors.canvasSidebarVisible);
   const activeDiagramID = useSelector(Creator.activeDiagramIDSelector);
 
   const goToDiagram = useDispatch(Router.goToDiagram);
   const patchOneFlow = useDispatch(Designer.Flow.effect.patchOne);
   const patchOneFolder = useDispatch(Designer.Folder.effect.patchOne);
+  const setSidebarWidth = useDispatch(UI.action.SetCanvasSidebarWidth);
   const patchOneWorkflow = useDispatch(Designer.Workflow.effect.patchOne);
+  const toggleCanvasSidebar = useDispatch(UI.action.ToggleCanvasSidebar);
 
   const flowsTree = useFlowsTree();
   const workflowsTree = useWorkflowsTree();
@@ -98,7 +103,12 @@ export const DiagramSidebar: React.FC = () => {
 
   return (
     <div className={containerStyle({ canvasOnly })}>
-      <DraggablePanel>
+      <DraggablePanel
+        width={sidebarWidth ?? 256}
+        onResize={setSidebarWidth}
+        collapsed={!sidebarVisible}
+        onCollapse={(collapsed) => toggleCanvasSidebar(!collapsed)}
+      >
         <ResizableSection
           id="diagram-sidebar"
           ref={resizableSectionRef}
@@ -108,7 +118,9 @@ export const DiagramSidebar: React.FC = () => {
               data={workflowsTree}
               onItemClick={onWorkflowItemClick}
               onItemRename={onWorkflowItemRename}
+              learnMoreLink={CMS_WORKFLOW_LEARN_MORE}
               selectedItemID={selectedID}
+              emptyStateMessage="No workflows found."
               renderItemContextMenu={renderWorkflowItemContextMenu}
             />
           }
@@ -117,7 +129,9 @@ export const DiagramSidebar: React.FC = () => {
               data={flowsTree}
               onItemClick={onFlowItemClick}
               onItemRename={onFlowItemRename}
+              learnMoreLink={CMS_FLOW_LEARN_MORE}
               selectedItemID={selectedID}
+              emptyStateMessage="No components found."
               renderItemContextMenu={renderFlowItemContextMenu}
             />
           }

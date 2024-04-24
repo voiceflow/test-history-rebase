@@ -44,7 +44,7 @@ export namespace CreateOne {
     data: CreateData;
   }
 
-  export interface Response extends CreateResponse<Workflow>, DesignerAction {}
+  export interface Response extends CreateResponse<Workflow & { triggerNodeID: string | null }>, DesignerAction {}
 }
 
 export const CreateOne = workflowAction.crud.createOne<CreateOne.Request, CreateOne.Response>();
@@ -56,7 +56,9 @@ export namespace CreateMany {
     data: CreateData[];
   }
 
-  export interface Response extends CreateResponse<Workflow[]>, DesignerAction {}
+  export interface Response
+    extends CreateResponse<Array<Workflow & { triggerNodeID: string | null }>>,
+      DesignerAction {}
 }
 
 export const CreateMany = workflowAction.crud.createMany<CreateMany.Request, CreateMany.Response>();
@@ -92,9 +94,7 @@ export namespace DuplicateOne {
     data: { workflowID: string };
   }
 
-  export interface Response extends DesignerAction {
-    data: CreateOne.Response['data'];
-  }
+  export interface Response extends DesignerAction, CreateResponse<Workflow> {}
 }
 
 export const DuplicateOne = Utils.protocol.createAsyncAction<DuplicateOne.Request, DuplicateOne.Response>(
@@ -111,9 +111,7 @@ export namespace CopyPasteMany {
     };
   }
 
-  export interface Response extends DesignerAction {
-    data: CreateOne.Response['data'][];
-  }
+  export interface Response extends DesignerAction, CreateResponse<Workflow[]> {}
 }
 
 export const CopyPasteMany = Utils.protocol.createAsyncAction<CopyPasteMany.Request, CopyPasteMany.Response>(

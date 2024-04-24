@@ -5,6 +5,8 @@ export const WorkflowTableColumn = {
   SELECT: 'select',
   STATUS: 'status',
   UPDATED: 'updated',
+  ASSIGNEE: 'assignee',
+  TRIGGERS: 'triggers',
   DESCRIPTION: 'description',
   LAST_EDITOR: 'last-editor',
 } as const;

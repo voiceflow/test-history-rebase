@@ -5,9 +5,9 @@ import * as Account from '@/ducks/account';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector } from '@/hooks/store.hook';
 
-import type { ICMSTableLastEdited } from './CMSTableLastEditedCell.interface';
+import type { ICMSTableMemberCell } from './CMSTableMemberCell.interface';
 
-export const CMSTableLastEditedCell: React.FC<ICMSTableLastEdited> = ({ creatorID }) => {
+export const CMSTableMemberCell: React.FC<ICMSTableMemberCell> = ({ creatorID }) => {
   const member = useSelector(WorkspaceV2.active.memberByIDSelector, { creatorID });
   const userID = useSelector(Account.userIDSelector);
 

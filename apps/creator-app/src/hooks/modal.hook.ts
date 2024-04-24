@@ -56,7 +56,7 @@ export const useFolderCreateModal = () => useModal<IFolderCreateModal, Folder>('
 
 export const useFlowCreateModal = () => useModal<IFlowCreateModal, Flow>('FlowCreateModal');
 
-export const useWorkflowCreateModal = () => useModal<IWorkflowCreateModal, Workflow>('WorkflowCreateModal');
+export const useWorkflowCreateModal = () => useModal<IWorkflowCreateModal, Workflow & { triggerNodeID: string | null }>('WorkflowCreateModal');
 
 export const useIntentEditModal = () => useModal<IIntentEditModal>('IntentEditModal');
 export const useIntentCreateModal = () => useModal<IIntentCreateModal, Intent>('IntentCreateModal');

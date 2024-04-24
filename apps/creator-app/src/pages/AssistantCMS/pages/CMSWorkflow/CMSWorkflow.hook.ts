@@ -1,19 +1,17 @@
-import { useHistory } from 'react-router-dom';
-
+import { Router } from '@/ducks';
 import { useGetAtomValue } from '@/hooks/atom.hook';
 import { useWorkflowCreateModal } from '@/hooks/modal.hook';
+import { useDispatch } from '@/hooks/store.hook';
 
 import { useCMSManager } from '../../contexts/CMSManager';
 import type { CMSWorkflow } from '../../contexts/CMSManager/CMSManager.interface';
-import { useCMSResourceGetPath } from '../../hooks/cms-resource.hook';
 
 export const useWorkflowCMSManager = useCMSManager<CMSWorkflow>;
 
 export const useOnWorkflowCreate = () => {
-  const history = useHistory();
   const cmsManager = useWorkflowCMSManager();
+  const goToDiagram = useDispatch(Router.goToDiagram);
   const getAtomValue = useGetAtomValue();
-  const getCMSResourcePath = useCMSResourceGetPath();
   const workflowCreateModal = useWorkflowCreateModal();
 
   return async ({ name }: { name?: string } = {}) => {
@@ -23,7 +21,7 @@ export const useOnWorkflowCreate = () => {
         folderID: getAtomValue(cmsManager.folderID),
       });
 
-      history.push(getCMSResourcePath(entity.id).path);
+      goToDiagram(entity.diagramID, entity.triggerNodeID ?? undefined);
     } catch {
       // closed
     }

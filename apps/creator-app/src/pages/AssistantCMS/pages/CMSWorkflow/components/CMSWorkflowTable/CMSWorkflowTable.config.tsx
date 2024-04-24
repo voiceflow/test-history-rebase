@@ -5,13 +5,15 @@ import { match } from 'ts-pattern';
 
 import { CMSTableCellFromNowTooltip } from '../../../../components/CMSTableCellFromNowTooltip/CMSTableCellFromNowTooltip.component';
 import { CMSTableCellTextTooltip } from '../../../../components/CMSTableCellTextTooltip/CMSTableCellTextTooltip.component';
-import { CMSTableLastEditedCell } from '../../../../components/CMSTableLastEditedCell/CMSTableLastEditedCell.component';
+import { CMSTableMemberCell } from '../../../../components/CMSTableMemberCell/CMSTableMemberCell.component';
 import { CMSTableNameCell } from '../../../../components/CMSTableNameCell/CMSTableNameCell.component';
 import type { CMSFolder, CMSWorkflow } from '../../../../contexts/CMSManager/CMSManager.interface';
-import { updatedAtSort, withFieldLocaleCompareSort, withFolderSort } from '../../../../contexts/CMSManager/CMSManager.util';
+import { updatedAtSort, withFieldLocaleCompareSort, withFolderSort, withOptionalSort } from '../../../../contexts/CMSManager/CMSManager.util';
+import { CMSWorkflowSortContext } from '../../CMSWorkflow.interface';
 import { WorkflowTableColumn } from './CMSWorkflowTable.constant';
+import { CMSWorkflowTableTriggersCell } from './CMSWorkflowTableTriggersCell/CMSWorkflowTableTriggersCell.component';
 
-export const CMS_WORKFLOW_TABLE_CONFIG: TableConfig<WorkflowTableColumn, CMSFolder | CMSWorkflow> = {
+export const CMS_WORKFLOW_TABLE_CONFIG: TableConfig<WorkflowTableColumn, CMSFolder | CMSWorkflow, CMSWorkflowSortContext> = {
   columns: {
     [WorkflowTableColumn.SELECT]: {
       type: WorkflowTableColumn.SELECT,
@@ -25,7 +27,7 @@ export const CMS_WORKFLOW_TABLE_CONFIG: TableConfig<WorkflowTableColumn, CMSFold
       name: 'Name',
       sorter: withFolderSort<CMSWorkflow>(withFieldLocaleCompareSort('name')),
 
-      cell: ({ item, type }) => <CMSTableNameCell type={type} name={item.name} itemID={item.id} />,
+      cell: ({ item, type }) => <CMSTableNameCell type={type} name={item.name} itemID={item.id} isFolder={item.group} />,
     },
 
     [WorkflowTableColumn.DESCRIPTION]: {
@@ -39,6 +41,19 @@ export const CMS_WORKFLOW_TABLE_CONFIG: TableConfig<WorkflowTableColumn, CMSFold
           label={(item) => (item.description ? <CMSTableCellTextTooltip label={item.description} /> : <Table.Cell.Empty />)}
         />
       ),
+    },
+
+    [WorkflowTableColumn.TRIGGERS]: {
+      type: WorkflowTableColumn.TRIGGERS,
+      name: 'Triggers',
+      sorter: withFolderSort<CMSWorkflow, CMSWorkflowSortContext>((left, right, { context }) =>
+        withOptionalSort((left: number, right: number) => left - right)(
+          context.triggersMapByDiagramID[left.diagramID]?.length,
+          context.triggersMapByDiagramID[right.diagramID]?.length
+        )
+      ),
+
+      cell: ({ item }) => <Table.Cell.GroupEmpty item={item} label={(item) => <CMSWorkflowTableTriggersCell diagramID={item.diagramID} />} />,
     },
 
     [WorkflowTableColumn.STATUS]: {
@@ -63,11 +78,18 @@ export const CMS_WORKFLOW_TABLE_CONFIG: TableConfig<WorkflowTableColumn, CMSFold
       ),
     },
 
+    [WorkflowTableColumn.ASSIGNEE]: {
+      type: WorkflowTableColumn.ASSIGNEE,
+      name: 'Assignee',
+
+      cell: ({ item }) => <Table.Cell.GroupEmpty item={item} label={({ assigneeID }) => <CMSTableMemberCell creatorID={assigneeID} />} />,
+    },
+
     [WorkflowTableColumn.LAST_EDITOR]: {
       type: WorkflowTableColumn.LAST_EDITOR,
       name: 'Last editor',
 
-      cell: ({ item }) => <Table.Cell.GroupEmpty item={item} label={({ updatedByID }) => <CMSTableLastEditedCell creatorID={updatedByID} />} />,
+      cell: ({ item }) => <Table.Cell.GroupEmpty item={item} label={({ updatedByID }) => <CMSTableMemberCell creatorID={updatedByID} />} />,
     },
 
     [WorkflowTableColumn.UPDATED]: {

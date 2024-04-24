@@ -12,18 +12,14 @@ export const DocumentNameTable: React.FC<IDocumentNameTable> = ({ data, search }
   return (
     <Tooltip.Overflow
       referenceElement={({ ref, onOpen, onClose }) => (
-        <Table.Cell.Link
-          label={data.name}
-          ref={ref}
-          overflow
-          highlight={search}
-          onMouseEnter={onOpen}
-          onMouseLeave={onClose}
-          style={{ pointerEvents: 'none' }}
-        />
+        <Table.Cell.Link ref={ref} label={data.name} overflow highlight={search} isClickable={false} onMouseEnter={onOpen} onMouseLeave={onClose} />
       )}
     >
-      {() => <Text breakWord>{data.name}</Text>}
+      {() => (
+        <Text variant="caption" breakWord>
+          {data.name}
+        </Text>
+      )}
     </Tooltip.Overflow>
   );
 };

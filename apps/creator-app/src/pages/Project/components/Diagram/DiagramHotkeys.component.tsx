@@ -70,7 +70,7 @@ export const DiagramHotkeys = React.memo(() => {
       { hotkey: Hotkey.ADD_MARKUP_IMAGE, callback: markup.triggerMediaUpload, preventDefault: true, disable: disableHintHotkeys },
       { hotkey: Hotkey.CLOSE_CANVAS_MODE, callback: onDisableModes, preventDefault: true, disable: disableCanvasCloseMode },
       { hotkey: Hotkey.CANVAS_SHOW_HIDE_UI, callback: () => toggleCanvasOnly(), preventDefault: true },
-      { hotkey: Hotkey.CANVAS_TOGGLE_SIDEBAR, callback: () => toggleCanvasSidebar(), preventDefault: true },
+      { hotkey: Hotkey.CANVAS_TOGGLE_SIDEBAR, callback: () => toggleCanvasSidebar(undefined), preventDefault: true },
       { hotkey: Hotkey.OPEN_MANUAL_SAVE_MODAL, callback: () => manualSaveModal.openVoid({}), preventDefault: true, disable: disableEditHotkeys },
     ],
     [disableEditHotkeys, disableCanvasHotkeys, disableHintHotkeys, disableCanvasCloseMode, isCanvasOnly]

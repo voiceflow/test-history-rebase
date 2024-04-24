@@ -1,9 +1,10 @@
-import { Table } from '@voiceflow/ui-next';
+import { Table, usePersistFunction } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { CMS_FLOW_LEARN_MORE } from '@/constants/link.constant';
-import { Designer } from '@/ducks';
+import { Designer, Router } from '@/ducks';
 import { useDispatch } from '@/hooks';
+import { useGetValueSelector } from '@/hooks/store.hook';
 
 import { CMSEmpty } from '../../../../components/CMSEmpty/CMSEmpty.component';
 import { useCMSRowItemClick, useCMSRowItemContextMenu, useCMSRowItemNavigate } from '../../../../hooks/cms-row-item.hook';
@@ -18,11 +19,22 @@ export const CMSFlowTable: React.FC = () => {
   const cmsManager = useFlowCMSManager();
   const onRowNavigate = useCMSRowItemNavigate();
 
+  const goToDiagram = useDispatch(Router.goToDiagram);
   const duplicateOne = useDispatch(Designer.Flow.effect.duplicateOne);
+
+  const getOneByID = useGetValueSelector(Designer.Workflow.selectors.oneByID);
 
   const rowContextMenu = useCMSRowItemContextMenu({
     onDuplicate: duplicateOne,
     nameColumnType: FlowTableColumn.NAME,
+  });
+
+  const onRowDoubleClick = usePersistFunction((id: string) => {
+    const workflow = getOneByID({ id });
+
+    if (workflow) {
+      goToDiagram(workflow.id);
+    }
   });
 
   return (
@@ -40,6 +52,7 @@ export const CMSFlowTable: React.FC = () => {
         onRowClick={onRowClick}
         onRowNavigate={onRowNavigate}
         rowContextMenu={rowContextMenu}
+        onRowDoubleClick={onRowDoubleClick}
         columnsOrderAtom={flowColumnsOrderAtom}
       />
     </CMSEmpty>

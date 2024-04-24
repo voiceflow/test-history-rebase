@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import { notify } from '@voiceflow/ui-next';
 import { generatePath } from 'react-router';
 
@@ -46,7 +47,7 @@ export const useOpenCMSResourceDeleteConfirmModal = () => {
       confirm: async () => {
         await onConfirm();
 
-        notify.short.info(size > 1 ? `${size} ${label} deleted` : `${label} deleted`, { showIcon: false });
+        notify.short.info(size > 1 ? `${size} ${label} deleted` : `${Utils.string.capitalizeFirstLetter(label)} deleted`, { showIcon: false });
       },
       confirmButtonLabel: 'Delete forever',
       confirmButtonVariant: 'alert',

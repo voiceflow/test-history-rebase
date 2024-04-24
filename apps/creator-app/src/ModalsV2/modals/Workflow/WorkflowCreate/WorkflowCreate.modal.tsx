@@ -14,7 +14,7 @@ export interface IWorkflowCreateModal {
   folderID: string | null;
 }
 
-export const WorkflowCreateModal = modalsManager.create<IWorkflowCreateModal, Workflow>(
+export const WorkflowCreateModal = modalsManager.create<IWorkflowCreateModal, Workflow & { triggerNodeID: string | null }>(
   'WorkflowCreateModal',
   () =>
     ({ api, type: typeProp, name, opened, hidden, animated, folderID, closePrevented }) => {

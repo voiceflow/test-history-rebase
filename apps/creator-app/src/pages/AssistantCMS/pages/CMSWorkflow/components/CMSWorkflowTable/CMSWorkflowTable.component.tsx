@@ -1,7 +1,9 @@
-import { Table } from '@voiceflow/ui-next';
+import { Table, usePersistFunction } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { CMS_WORKFLOW_LEARN_MORE } from '@/constants/link.constant';
+import { Designer, Router } from '@/ducks';
+import { useDispatch, useGetValueSelector } from '@/hooks/store.hook';
 
 import { CMSEmpty } from '../../../../components/CMSEmpty/CMSEmpty.component';
 import { useCMSRowItemClick, useCMSRowItemContextMenu, useCMSRowItemNavigate } from '../../../../hooks/cms-row-item.hook';
@@ -16,8 +18,20 @@ export const CMSWorkflowTable: React.FC = () => {
   const cmsManager = useWorkflowCMSManager();
   const onRowNavigate = useCMSRowItemNavigate();
 
+  const goToDiagram = useDispatch(Router.goToDiagram);
+
+  const getOneByID = useGetValueSelector(Designer.Workflow.selectors.oneByID);
+
   const rowContextMenu = useCMSRowItemContextMenu({
     nameColumnType: WorkflowTableColumn.NAME,
+  });
+
+  const onRowDoubleClick = usePersistFunction((id: string) => {
+    const workflow = getOneByID({ id });
+
+    if (workflow) {
+      goToDiagram(workflow.id);
+    }
   });
 
   return (
@@ -35,6 +49,7 @@ export const CMSWorkflowTable: React.FC = () => {
         onRowClick={onRowClick}
         onRowNavigate={onRowNavigate}
         rowContextMenu={rowContextMenu}
+        onRowDoubleClick={onRowDoubleClick}
         columnsOrderAtom={workflowColumnsOrderAtom}
       />
     </CMSEmpty>

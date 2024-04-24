@@ -8,6 +8,7 @@ import { HashedIDService } from '@voiceflow/nestjs-common';
 import { LoguxService } from '@voiceflow/nestjs-logux';
 import type { DiagramObject, ORMEntity, PatchData, WorkflowJSON, WorkflowObject } from '@voiceflow/orm-designer';
 import { AssistantORM, DatabaseTarget, WorkflowORM } from '@voiceflow/orm-designer';
+import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { IdentityClient } from '@voiceflow/sdk-identity';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
@@ -265,7 +266,13 @@ export class WorkflowService extends CMSTabularService<WorkflowORM> {
 
     await this.broadcastAddMany(result, meta);
 
-    return result.add.workflows;
+    return result.add.workflows.map((workflow, index) => {
+      const diagram = result.add.diagrams[index];
+
+      const triggerNode = Object.values(diagram.nodes).find((node) => node.type === Realtime.BlockType.INTENT);
+
+      return { ...workflow, triggerNodeID: triggerNode?.nodeID ?? null };
+    });
   }
 
   /* Delete */

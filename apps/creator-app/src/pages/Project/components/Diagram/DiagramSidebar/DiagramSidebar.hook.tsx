@@ -3,9 +3,9 @@ import { Flow, FolderScope, Workflow } from '@voiceflow/dtos';
 import { BlockType } from '@voiceflow/realtime-sdk';
 import { IContextMenuChildren, Menu, notify, usePersistFunction } from '@voiceflow/ui-next';
 import pluralize from 'pluralize';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from 'react';
 
-import { Designer, Diagram, Router } from '@/ducks';
+import { Designer, Router } from '@/ducks';
 import { useGetCMSResourcePath, useOpenCMSResourceDeleteConfirmModal } from '@/hooks/cms-resource.hook';
 import { useFolderTree, useGetFolderPath } from '@/hooks/folder.hook';
 import { useDispatch, useSelector, useStore } from '@/hooks/store.hook';
@@ -44,34 +44,7 @@ export const useFlowsTree = () => {
 
 export const useWorkflowsTree = () => {
   const workflows = useSelector(Designer.Workflow.selectors.all);
-  const sharedNodes = useSelector(Diagram.sharedNodesSelector);
-  const getOneIntentByID = useSelector(Designer.Intent.selectors.getOneWithFormattedBuiltNameByID);
-
-  const nodesDiagramIDMap = useMemo(() => {
-    const map = new Map<string, { type: BlockType; label: string; nodeID: string }[]>();
-
-    Object.entries(sharedNodes).forEach(([diagramID, diagramSharedNodes]) => {
-      if (!map.has(diagramID)) {
-        map.set(diagramID, []);
-      }
-
-      Object.values(diagramSharedNodes).forEach((node) => {
-        if (!node) return;
-
-        if (node.type === BlockType.START) {
-          map.get(diagramID)?.push({ type: node.type, label: node.name || 'Start', nodeID: node.nodeID });
-        }
-
-        if (node.type === BlockType.INTENT) {
-          map
-            .get(diagramID)
-            ?.push({ type: node.type, label: getOneIntentByID({ id: node.intentID })?.name ?? 'Select intent...', nodeID: node.nodeID });
-        }
-      });
-    });
-
-    return map;
-  }, [sharedNodes, getOneIntentByID]);
+  const triggersMapByDiagramID = useSelector(Designer.Workflow.selectors.triggersMapByDiagramID);
 
   return useFolderTree<Workflow, DiagramSidebarWorkflowTreeData>({
     data: workflows,
@@ -92,7 +65,7 @@ export const useWorkflowsTree = () => {
         type: 'workflow',
         label: workflow.name,
         children:
-          nodesDiagramIDMap.get(workflow.diagramID)?.map(
+          triggersMapByDiagramID[workflow.diagramID]?.map(
             (node): DiagramSidebarWorkflowTreeData => ({
               id: `${workflow.diagramID}:${node.nodeID}`,
               type: node.type === BlockType.START ? 'root' : 'child',
@@ -102,7 +75,7 @@ export const useWorkflowsTree = () => {
           ) ?? [],
         metaData: { id: workflow.id, type: 'workflow', diagramID: workflow.diagramID },
       }),
-      [nodesDiagramIDMap]
+      [triggersMapByDiagramID]
     ),
   });
 };

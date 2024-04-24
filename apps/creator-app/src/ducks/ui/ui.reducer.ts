@@ -4,6 +4,7 @@ import { reducerWithInitialState } from 'typescript-fsa-reducers';
 
 import {
   SetCanvasNavigation,
+  SetCanvasSidebarWidth,
   SetZoomType,
   ToggleCanvasGrid,
   ToggleCanvasOnly,
@@ -19,9 +20,16 @@ import { INITIAL_STATE, STATE_KEY } from './ui.state';
 const baseUIReducer = reducerWithInitialState<UIState>(INITIAL_STATE)
   .case(SetZoomType, (state, zoomType) => ({ ...state, zoomType }))
   .case(SetCanvasNavigation, (state, canvasNavigation) => ({ ...state, canvasNavigation }))
+  .case(SetCanvasSidebarWidth, (state, width) => ({
+    ...state,
+    canvasSidebar: { ...state.canvasSidebar, width, visible: state.canvasSidebar?.visible ?? true },
+  }))
   .case(ToggleCanvasGrid, (state) => ({ ...state, canvasGrid: !state.canvasGrid }))
   .case(ToggleCanvasOnly, (state) => ({ ...state, canvasOnly: !state.canvasOnly }))
-  .case(ToggleCanvasSidebar, (state) => ({ ...state, canvasSidebar: { ...state.canvasSidebar, visible: !state.canvasSidebar?.visible } }))
+  .case(ToggleCanvasSidebar, (state, visible) => ({
+    ...state,
+    canvasSidebar: { ...state.canvasSidebar, visible: visible ?? !state.canvasSidebar?.visible },
+  }))
   .case(ToggleCommentVisibility, (state) => ({ ...state, commentsVisible: !state.commentsVisible }))
   .case(ToggleDomainThreadsOnly, (state) => ({ ...state, domainThreadsOnly: !state.domainThreadsOnly }))
   .case(ToggleMentionedThreadsOnly, (state) => ({ ...state, mentionedThreadsOnly: !state.mentionedThreadsOnly }))

@@ -29,7 +29,11 @@ export const DocumentNameDocx: React.FC<IDocumentNameDocx> = ({ id, data, search
         />
       )}
     >
-      {() => <Text breakWord>{data.name}</Text>}
+      {() => (
+        <Text variant="caption" breakWord>
+          {data.name}
+        </Text>
+      )}
     </Tooltip.Overflow>
   );
 };

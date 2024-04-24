@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1493.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1492.2...@voiceflow/creator-app@1.1493.0) (2024-04-24)
+
+### Features
+
+* added template for listen with carousel (COR-1928) ([#8020](https://github.com/voiceflow/creator-app/issues/8020)) ([34857d7](https://github.com/voiceflow/creator-app/commit/34857d75170151c1a194f7d62ce631e8f8713714))
+
 ## [1.1492.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1492.1...@voiceflow/creator-app@1.1492.2) (2024-04-24)
 
 **Note:** Version bump only for package @voiceflow/creator-app

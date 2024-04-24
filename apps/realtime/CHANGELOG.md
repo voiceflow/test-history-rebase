@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.333.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.332.0...@voiceflow/realtime@1.333.0) (2024-04-24)
+
+### Features
+
+* added template for listen with carousel (COR-1928) ([#8020](https://github.com/voiceflow/creator-app/issues/8020)) ([34857d7](https://github.com/voiceflow/creator-app/commit/34857d75170151c1a194f7d62ce631e8f8713714))
+
 # [1.332.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.331.0...@voiceflow/realtime@1.332.0) (2024-04-24)
 
 ### Features

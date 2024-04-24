@@ -92,23 +92,6 @@ export const withLinksPlugin: Plugin = (EditorAPI: EditorAPIType) => (editor: Ed
         rangeRef.unref();
       });
     }
-
-    const { selection } = editor;
-    if (selection && !Range.isExpanded(selection)) {
-      const [linkNodeEntry] = Editor.nodes(editor, {
-        at: selection,
-        match: EditorAPI.isLink,
-      });
-
-      if (linkNodeEntry) {
-        const [linkElement, path] = linkNodeEntry;
-        const textContent = Node.string(linkElement);
-
-        if (linkElement.url !== textContent) {
-          Transforms.setNodes(editor, { url: textContent }, { at: path });
-        }
-      }
-    }
   };
 
   editor.normalizeNode = (entry) => {

@@ -1,6 +1,6 @@
 # Creator App
 
-A frontend webapp for Voiceflow creator experience.
+A frontend webapp for Voiceflow agent creation experience.
 
 ## Usage
 

@@ -8,6 +8,7 @@ export const TemplateID = {
   HELLO_WORLD: 'hello-world',
   VIDEO_RESPONSE: 'video-response',
   LISTEN: 'listen',
+  LISTEN_WITH_CAROUSEL: 'listen-with-carousel',
 };
 
 export type TemplateID = Enum<typeof TemplateID>;
@@ -54,5 +55,10 @@ export const starterTemplates: Array<FunctionStarterTemplate> = [
     templateID: TemplateID.LISTEN,
     name: 'Listen',
     description: 'Demonstrates how to use listen functionality to leave from a certain path based on user input',
+  },
+  {
+    templateID: TemplateID.LISTEN_WITH_CAROUSEL,
+    name: 'Listen with carousel',
+    description: 'Demonstrates how to use listen functionality with a dynamic carousel',
   },
 ];

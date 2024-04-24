@@ -34,7 +34,7 @@ export const FunctionCreateModal = modalsManager.create<IFunctionCreateModal, Fu
       const functionListen = useFeature(Realtime.FeatureFlag.FUNCTION_LISTEN);
       const filteredTemplates = functionListen.isEnabled
         ? starterTemplates
-        : starterTemplates.filter((template) => template.templateID !== TemplateID.LISTEN);
+        : starterTemplates.filter((template) => ![TemplateID.LISTEN, TemplateID.LISTEN_WITH_CAROUSEL].includes(template.templateID));
 
       const createOne = useDispatch(Designer.Function.effect.createOne);
       const createOneFromTemplate = useDispatch(Designer.Function.effect.createOneFromTemplate);

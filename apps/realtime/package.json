@@ -132,7 +132,7 @@
     "@types/object-hash": "^3.0.6",
     "@types/supertest": "2.0.16",
     "@voiceflow/nestjs-openapi-extractor": "1.7.9",
-    "@voiceflow/test-common": "1.8.1",
+    "@voiceflow/test-common": "1.10.3",
     "supertest": "6.3.3",
     "tsx": "3.12.7"
   },

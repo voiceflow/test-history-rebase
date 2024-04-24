@@ -9871,33 +9871,33 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@voiceflow/cypress-common@npm:1.2.0":
-  version: 1.2.0
-  resolution: "@voiceflow/cypress-common@npm:1.2.0"
+"@voiceflow/cypress-common@npm:1.2.7":
+  version: 1.2.7
+  resolution: "@voiceflow/cypress-common@npm:1.2.7"
   dependencies:
     "@paralleldrive/cuid2": 2.2.2
     "@voiceflow/exception": 1.5.0
-    "@voiceflow/sdk-test": 1.6.1
-    "@voiceflow/test-common": 1.9.0
+    "@voiceflow/sdk-test": 1.6.7
+    "@voiceflow/test-common": 1.10.3
     micromatch: 4.0.5
     pino: 8.8.0
     pino-pretty: 9.1.1
-    undici: 5.19.1
+    undici: 5.22.0
   peerDependencies:
     cypress: ^13
-  checksum: e5923b82a167c851b518177644ee91cfb4de4a3b5c85b6241bac5332b128b7cf983aebe54501d899d5bd4a04aa0cc19fcd56a9d301b2f03fc046ff9258b87537
+  checksum: 65a1adc703a554ae22e808e827b6035ed0f7087c5c3cbce9659c24624edb74bcb0c4449398cd0cc5f2ac113a105cb25355c7324dc15d986b6ccb4d513093ffd0
   languageName: node
   linkType: hard
 
-"@voiceflow/cypress-page-objects@npm:1.1.0":
-  version: 1.1.0
-  resolution: "@voiceflow/cypress-page-objects@npm:1.1.0"
+"@voiceflow/cypress-page-objects@npm:1.4.1":
+  version: 1.4.1
+  resolution: "@voiceflow/cypress-page-objects@npm:1.4.1"
   dependencies:
-    "@voiceflow/test-common": 1.9.0
+    "@voiceflow/test-common": 1.10.3
   peerDependencies:
     "@voiceflow/cypress-common": "*"
     cypress: ^13
-  checksum: e9fd7a98bf4a3c461a1096398e50c589c6ce0efd33e4d4576841b53586801c055a5ef56ccb3e87c21053bd6a024d38b20db17114e860f5ad962428038420c5bd
+  checksum: a76ef763ae0d21175498f3947d3e5ab13d6ccfe3f37e46b2c2813c3c2145196c54eaae04db8fe03858fb07d5d636e0bc359e1e6950c5a03949693f6438da4610
   languageName: node
   linkType: hard
 
@@ -9968,9 +9968,9 @@ __metadata:
     "@voiceflow-meta/eslint-config": "workspace:*"
     "@voiceflow-meta/prettier-config": "workspace:*"
     "@voiceflow-meta/typescript-config": "workspace:*"
-    "@voiceflow/cypress-common": 1.2.0
-    "@voiceflow/cypress-page-objects": 1.1.0
-    "@voiceflow/test-common": 1.9.0
+    "@voiceflow/cypress-common": 1.2.7
+    "@voiceflow/cypress-page-objects": 1.4.1
+    "@voiceflow/test-common": 1.10.3
     cy-verify-downloads: ^0.2.2
     cypress: 13.4.0
     cypress-delete-downloads-folder: 0.0.4
@@ -10617,7 +10617,7 @@ __metadata:
     "@voiceflow/sdk-identity": 1.19.2
     "@voiceflow/sdk-logux-designer": "workspace:*"
     "@voiceflow/socket-utils": "workspace:*"
-    "@voiceflow/test-common": 1.8.1
+    "@voiceflow/test-common": 1.10.3
     axios: 1.6.0
     bidirectional-adapter: 1.2.1
     bson: ^6.2.0
@@ -10808,6 +10808,27 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@voiceflow/sdk-common@npm:1.10.0":
+  version: 1.10.0
+  resolution: "@voiceflow/sdk-common@npm:1.10.0"
+  dependencies:
+    "@voiceflow/exception": 1.4.0
+    "@voiceflow/fetch": 1.5.2
+  peerDependencies:
+    "@nestjs/common": ^9
+    "@nestjs/core": ^9
+    undici: ^5
+  peerDependenciesMeta:
+    "@nestjs/common":
+      optional: true
+    "@nestjs/core":
+      optional: true
+    undici:
+      optional: true
+  checksum: 36e933c7c177f4960de2d3680fec24b12d3b20d6446cc0040b6b5c1a6a0de09d606d7a253680c785df2e97d733d8cdb73822191a5ec86dbaa1c62b769792210d
+  languageName: node
+  linkType: hard
+
 "@voiceflow/sdk-common@npm:1.11.3":
   version: 1.11.3
   resolution: "@voiceflow/sdk-common@npm:1.11.3"
@@ -10826,27 +10847,6 @@ __metadata:
     undici:
       optional: true
   checksum: 4ec77419e82dc576796c21005c88953ffb97c037855054ccfea142dcd2468e6cd007c482feb851259fa9bd4fc12c9f71a580da405f21a15793410226fe62de73
-  languageName: node
-  linkType: hard
-
-"@voiceflow/sdk-common@npm:1.9.1":
-  version: 1.9.1
-  resolution: "@voiceflow/sdk-common@npm:1.9.1"
-  dependencies:
-    "@voiceflow/exception": 1.4.0
-    "@voiceflow/fetch": 1.5.2
-  peerDependencies:
-    "@nestjs/common": ^9
-    "@nestjs/core": ^9
-    undici: ^5
-  peerDependenciesMeta:
-    "@nestjs/common":
-      optional: true
-    "@nestjs/core":
-      optional: true
-    undici:
-      optional: true
-  checksum: 3d46e51904491b1033e4fbc9f39912a0e4d14121b7fc189454f6c8d7b9c21107910b3b6564551751ab6a9a74e761490d24595963942f53864b2f42c644b1f699
   languageName: node
   linkType: hard
 
@@ -10955,18 +10955,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voiceflow/sdk-test@npm:1.6.1":
-  version: 1.6.1
-  resolution: "@voiceflow/sdk-test@npm:1.6.1"
+"@voiceflow/sdk-test@npm:1.6.7":
+  version: 1.6.7
+  resolution: "@voiceflow/sdk-test@npm:1.6.7"
   dependencies:
     "@voiceflow/orval-fetch": 1.2.1
-    "@voiceflow/sdk-common": 1.9.1
+    "@voiceflow/sdk-common": 1.10.0
   peerDependencies:
     undici: ^5
   peerDependenciesMeta:
     undici:
       optional: true
-  checksum: 56a972ab996c1d3d2d5374f9416e6c4bd471a79c41487b98afd50bfc13b750ba9ed72d8199efc13eb81de718544a5d57d3928cd56512e61003be2f2c1952505e
+  checksum: 9ee47707dad1282347bf904cf18cb1a2caf1e5c47d7359fba871fa540bfe3f866bd05f336cd390fa603f53ead144b67f99221e37a310c66ebaa6026707a5c9f0
   languageName: node
   linkType: hard
 
@@ -11071,17 +11071,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voiceflow/test-common@npm:1.8.1":
-  version: 1.8.1
-  resolution: "@voiceflow/test-common@npm:1.8.1"
-  checksum: 08e020b26e84bb57a09fb72e5dd6547d83baec38cef2637ac4d720ae7fd3d197bc57623740fc18b9a225bd35fa348b1d8991c1bc24fc022f7a34afd749d01b1c
-  languageName: node
-  linkType: hard
-
-"@voiceflow/test-common@npm:1.9.0":
-  version: 1.9.0
-  resolution: "@voiceflow/test-common@npm:1.9.0"
-  checksum: 0301175b18e841d14a283929477f2403234b62a13ec69eca47fb70c35e567282a24f3206035a528e596997bb7e817adaba74ec079734898ed8957ffbf0ddf34f
+"@voiceflow/test-common@npm:1.10.3":
+  version: 1.10.3
+  resolution: "@voiceflow/test-common@npm:1.10.3"
+  checksum: 74b6485ab2adb33800f1fb72692a4a409ceed424871c0a1afe8fe5e99f1de37b269ac0d487794810b82ab6040a86275e795476722a6225ca552d168ead1084a7
   languageName: node
   linkType: hard
 
@@ -33530,15 +33523,6 @@ __metadata:
   version: 5.26.5
   resolution: "undici-types@npm:5.26.5"
   checksum: 3192ef6f3fd5df652f2dc1cd782b49d6ff14dc98e5dced492aa8a8c65425227da5da6aafe22523c67f035a272c599bb89cfe803c1db6311e44bed3042fc25487
-  languageName: node
-  linkType: hard
-
-"undici@npm:5.19.1":
-  version: 5.19.1
-  resolution: "undici@npm:5.19.1"
-  dependencies:
-    busboy: ^1.6.0
-  checksum: 57ee94ee74d944faa41dbcb2faf4e0c90069708d3aaae860185884e51376b5d457728352a8396d69a3c9cb752b62ff99a19a664c5aacb7ee61cc488af499a01c
   languageName: node
   linkType: hard
 

@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 
 import { AssistantModule } from '@/assistant/assistant.module';
+import { BackupModule } from '@/backup/backup.module';
 import { EnvironmentModule } from '@/environment/environment.module';
 import { LegacyModule } from '@/legacy/legacy.module';
 import { ProjectModule } from '@/project/project.module';
@@ -11,7 +12,7 @@ import { MigrationService } from './migration.service';
 import { SchemaService } from './schema/schema.service';
 
 @Module({
-  imports: [LegacyModule, ProjectModule, AssistantModule, EnvironmentModule],
+  imports: [LegacyModule, ProjectModule, AssistantModule, EnvironmentModule, BackupModule],
   providers: [MigrationService, SchemaService, MigrationCacheService],
   controllers: [MigrationLoguxController],
 })

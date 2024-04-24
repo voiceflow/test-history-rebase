@@ -75,6 +75,16 @@ export class BackupService extends MutableService<BackupORM> {
     return this.orm.find({ assistantID }, { ...options, orderBy: { createdAt: 'desc' } });
   }
 
+  async findOneByName(assistantID: string, name: string) {
+    const backups = await this.orm.find({ name, assistantID }, { limit: 1 });
+
+    if (!backups.length) {
+      return null;
+    }
+
+    return backups[0];
+  }
+
   async downloadBackup(backupID: number): Promise<AssistantImportDataDTO> {
     const backup = await this.findOneOrFail(backupID);
     const file = await this.file.downloadFile(UploadType.BACKUP, backup.s3ObjectRef);

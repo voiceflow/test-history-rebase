@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1494.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1493.1...@voiceflow/creator-app@1.1494.0) (2024-04-25)
+
+### Features
+
+* improve url regex (COR-1967) ([#8024](https://github.com/voiceflow/creator-app/issues/8024)) ([8a68014](https://github.com/voiceflow/creator-app/commit/8a680140104cfbe334e4dd411e23827cefcefd01))
+
 ## [1.1493.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1493.0...@voiceflow/creator-app@1.1493.1) (2024-04-24)
 
 ### Reverts

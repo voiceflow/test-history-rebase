@@ -1,9 +1,8 @@
 import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { Box, Button, SvgIcon, Text, TippyTooltip } from '@voiceflow/ui';
-import { Header, Tooltip } from '@voiceflow/ui-next';
+import { Header, TooltipWithKeys } from '@voiceflow/ui-next';
 import React from 'react';
 
-import { TooltipContentHotKeys } from '@/components/Tooltip/TooltipContentHotKeys/TooltipContentHotKeys.component';
 import { useFeature } from '@/hooks/feature';
 
 interface GeneralUploadButtonProps {
@@ -17,7 +16,9 @@ const PublishButton: React.FC<GeneralUploadButtonProps> = ({ loading, progress, 
 
   if (cmsWorkflows.isEnabled) {
     return (
-      <Tooltip
+      <TooltipWithKeys
+        text="Publishing"
+        hotkeys={[{ label: `${progress || 0}%` }]}
         placement="bottom"
         referenceElement={({ ref, onOpen, onClose }) => (
           <div ref={ref}>
@@ -31,9 +32,7 @@ const PublishButton: React.FC<GeneralUploadButtonProps> = ({ loading, progress, 
             />
           </div>
         )}
-      >
-        {() => <TooltipContentHotKeys label="Publishing" hotkeys={[{ label: `${progress || 0}%` }]} />}
-      </Tooltip>
+      />
     );
   }
 

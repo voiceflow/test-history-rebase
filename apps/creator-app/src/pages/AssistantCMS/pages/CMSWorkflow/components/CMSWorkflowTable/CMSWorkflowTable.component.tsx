@@ -1,4 +1,4 @@
-import { Table, usePersistFunction } from '@voiceflow/ui-next';
+import { Table, Text, usePersistFunction } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { CMS_WORKFLOW_LEARN_MORE } from '@/constants/link.constant';
@@ -19,11 +19,27 @@ export const CMSWorkflowTable: React.FC = () => {
   const onRowNavigate = useCMSRowItemNavigate();
 
   const goToDiagram = useDispatch(Router.goToDiagram);
+  const duplicateOne = useDispatch(Designer.Workflow.effect.duplicateOne);
 
   const getOneByID = useGetValueSelector(Designer.Workflow.selectors.oneByID);
 
   const rowContextMenu = useCMSRowItemContextMenu({
     nameColumnType: WorkflowTableColumn.NAME,
+    onDuplicate: duplicateOne,
+
+    canDelete: (resourceID) => {
+      const workflow = getOneByID({ id: resourceID });
+
+      if (!workflow?.isStart) return true;
+
+      return {
+        allowed: false,
+        tooltip: {
+          placement: 'left',
+          children: () => <Text variant="caption">Start workflow can’t be deleted</Text>,
+        },
+      };
+    },
   });
 
   const onRowDoubleClick = usePersistFunction((id: string) => {

@@ -92,7 +92,7 @@ function MenuOptions({
     if (isBaseMenuItem(option)) {
       const item = (
         <SelectItem key={key} {...sharedProps} {...option.menuItemProps} disabled={option.disabled} readOnly={option.readOnly}>
-          {!option.vfUIOnly && renderLabel(option, { isFocused, optionsPath: path })}
+          {(!option.vfUIOnly || option.isEmpty) && renderLabel(option, { isFocused, optionsPath: path })}
         </SelectItem>
       );
 

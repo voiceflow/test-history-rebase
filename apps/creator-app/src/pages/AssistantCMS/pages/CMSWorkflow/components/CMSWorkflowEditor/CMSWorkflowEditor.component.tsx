@@ -1,13 +1,13 @@
 import { WorkflowStatus } from '@voiceflow/dtos';
 import { tid } from '@voiceflow/style';
-import { Box, Button, Divider, Editor, IEditorAPI, IndicatorStatus, Scroll, WorkflowManager } from '@voiceflow/ui-next';
+import { Box, Button, Divider, Editor, IEditorAPI, IndicatorStatus, Scroll, Text, WorkflowManager } from '@voiceflow/ui-next';
 import React, { useMemo, useRef } from 'react';
 import { match } from 'ts-pattern';
 
 import { CMSEditorDescription } from '@/components/CMS/CMSEditor/CMSEditorDescription/CMSEditorDescription.component';
 import { CMSRoute } from '@/config/routes';
 import { Designer, Router, Workspace } from '@/ducks';
-import { useDispatch, useSelector } from '@/hooks/store.hook';
+import { useDispatch, useGetValueSelector, useSelector } from '@/hooks/store.hook';
 import { EDITOR_TEST_ID } from '@/pages/AssistantCMS/AssistantCMS.constant';
 import { getMemberColorByCreatorID, isMemberColorImage } from '@/utils/member.util';
 
@@ -20,6 +20,7 @@ export const CMSWorkflowEditor: React.FC = () => {
   const editorRef = useRef<IEditorAPI>(null);
 
   const members = useSelector(Workspace.active.normalizedMembersSelector);
+  const getOneByID = useGetValueSelector(Designer.Workflow.selectors.oneByID);
   const workflowID = useCMSActiveResourceID();
 
   const goToDiagram = useDispatch(Router.goToDiagramClearActive);
@@ -32,6 +33,20 @@ export const CMSWorkflowEditor: React.FC = () => {
       const data = await duplicateOne(id);
 
       goToCMSResource(CMSRoute.WORKFLOW, data.id);
+    },
+
+    canDelete: (resourceID) => {
+      const workflow = getOneByID({ id: resourceID });
+
+      if (!workflow?.isStart) return true;
+
+      return {
+        allowed: false,
+        tooltip: {
+          placement: 'left',
+          children: () => <Text variant="caption">Start workflow can’t be deleted</Text>,
+        },
+      };
     },
   });
 

@@ -16,6 +16,14 @@ export const CMSFlowEditor: React.FC = () => {
   const editorRef = useRef<IEditorAPI>(null);
 
   const flowID = useCMSActiveResourceID();
+
+  const flow = useSelector(Designer.Flow.selectors.oneByID, { id: flowID });
+
+  const patchFlow = useDispatch(Designer.Flow.effect.patchOne, flowID);
+  const goToDiagram = useDispatch(Router.goToDiagramClearActive);
+  const duplicateOne = useDispatch(Designer.Flow.effect.duplicateOne);
+  const goToCMSResource = useDispatch(Router.goToCMSResource);
+
   const getMoreMenu = useCMSResourceGetMoreMenu({
     onRename: () => editorRef.current?.startTitleEditing(),
     onDuplicate: async (id) => {
@@ -24,13 +32,6 @@ export const CMSFlowEditor: React.FC = () => {
       goToCMSResource(CMSRoute.FLOW, data.id);
     },
   });
-
-  const flow = useSelector(Designer.Flow.selectors.oneByID, { id: flowID });
-
-  const patchFlow = useDispatch(Designer.Flow.effect.patchOne, flowID);
-  const goToDiagram = useDispatch(Router.goToDiagramClearActive);
-  const duplicateOne = useDispatch(Designer.Flow.effect.duplicateOne);
-  const goToCMSResource = useDispatch(Router.goToCMSResource);
 
   if (!flow) return null;
 

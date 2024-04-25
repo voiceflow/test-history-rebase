@@ -3,11 +3,11 @@ import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import type { DiagramNode } from '@voiceflow/dtos';
 import { NodeType } from '@voiceflow/dtos';
-import { DiagramEntity, ToJSON } from '@voiceflow/orm-designer';
+import { DiagramJSON } from '@voiceflow/orm-designer';
 
 @Injectable()
 export class DiagramUtil {
-  getCenterPoint<T extends Pick<ToJSON<DiagramEntity>, 'nodes'>>(diagram: T): [number, number] {
+  getCenterPoint<T extends Pick<DiagramJSON, 'nodes'>>(diagram: T): [number, number] {
     const CENTER_X_OFFSET = 700;
     const CENTER_Y_OFFSET = 300;
     const CENTER_OFFSET_MULTIPLIER = 0.8;
@@ -19,7 +19,7 @@ export class DiagramUtil {
     return [(CENTER_X_OFFSET - startNode.coords![0]) * CENTER_OFFSET_MULTIPLIER, CENTER_Y_OFFSET - startNode.coords![1] * CENTER_OFFSET_MULTIPLIER];
   }
 
-  center<T extends Pick<ToJSON<DiagramEntity>, 'nodes' | 'offsetX' | 'offsetY'>>(diagram: T): T {
+  center<T extends Pick<DiagramJSON, 'nodes' | 'offsetX' | 'offsetY'>>(diagram: T): T {
     const centeredPosition = this.getCenterPoint(diagram);
 
     const [offsetX, offsetY] = centeredPosition;
@@ -50,7 +50,7 @@ export class DiagramUtil {
     return { ...node, data: { ...node.data, ports: node.data.ports.map(cleanPortTarget) } };
   }
 
-  cleanupNodes<T extends Pick<ToJSON<DiagramEntity>, 'nodes'>>(diagram: T): T {
+  cleanupNodes<T extends Pick<DiagramJSON, 'nodes'>>(diagram: T): T {
     const validNodesMap = new Map<string, boolean>();
 
     const cleanedNodes = Object.entries(diagram.nodes).reduce<[string, DiagramNode][]>((acc, [nodeID, node]) => {
@@ -83,5 +83,13 @@ export class DiagramUtil {
         ])
       ),
     };
+  }
+
+  removeStartNode(nodes: DiagramJSON['nodes']): DiagramJSON['nodes'] {
+    const startNode = Object.values(nodes).find((node) => node.type === NodeType.START);
+
+    if (!startNode) return nodes;
+
+    return Utils.object.omit(nodes, [startNode.nodeID]);
   }
 }

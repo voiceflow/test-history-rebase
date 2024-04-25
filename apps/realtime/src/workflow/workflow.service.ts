@@ -16,6 +16,7 @@ import { CMSTabularService } from '@/common';
 import { cmsBroadcastContext, toPostgresEntityIDs } from '@/common/utils';
 import { CreatorAppService } from '@/creator-app/creator-app.service';
 import { DiagramService } from '@/diagram/diagram.service';
+import { DiagramUtil } from '@/diagram/diagram.util';
 import { EmailService } from '@/email/email.service';
 import { EmailSubscriptionGroup } from '@/email/enum/email-subscription-group.enum';
 import { EmailTemplate } from '@/email/enum/email-template.enum';
@@ -54,7 +55,9 @@ export class WorkflowService extends CMSTabularService<WorkflowORM> {
     @Inject(HashedIDService)
     protected readonly hashedID: HashedIDService,
     @Inject(CreatorAppService)
-    protected readonly creatorApp: CreatorAppService
+    protected readonly creatorApp: CreatorAppService,
+    @Inject(DiagramUtil)
+    protected readonly diagramUtil: DiagramUtil
   ) {
     super();
   }
@@ -289,14 +292,16 @@ export class WorkflowService extends CMSTabularService<WorkflowORM> {
     return this.postgresEM.transactional(async () => {
       const workflows = await this.findManyByEnvironmentAndIDs(context.environmentID, ids);
 
-      const diagramIDs = workflows.map((flow) => flow.diagramID);
+      const workflowsWithoutStart = workflows.filter((workflow) => !workflow.isStart);
+      const diagramIDs = workflowsWithoutStart.map((flow) => flow.diagramID);
+
       const diagrams = await this.diagram.findManyByVersionIDAndDiagramIDs(context.environmentID, diagramIDs);
 
       await this.diagram.deleteManyByVersionIDAndDiagramIDs(context.environmentID, diagramIDs);
-      await this.deleteMany(workflows);
+      await this.deleteMany(workflowsWithoutStart);
 
       return {
-        delete: { workflows, diagrams },
+        delete: { workflows: workflowsWithoutStart, diagrams },
       };
     });
   }
@@ -362,7 +367,7 @@ export class WorkflowService extends CMSTabularService<WorkflowORM> {
         type: diagram.type,
         zoom: diagram.zoom,
         name: sourceWorkflows[index]?.name ?? diagram.name,
-        nodes: diagram.nodes,
+        nodes: this.diagramUtil.removeStartNode(diagram.nodes),
         offsetX: diagram.offsetX,
         offsetY: diagram.offsetY,
         modified: diagram.modified,

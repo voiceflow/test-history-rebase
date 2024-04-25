@@ -1,7 +1,6 @@
-import { Header, Tooltip } from '@voiceflow/ui-next';
+import { Header, TooltipWithKeys } from '@voiceflow/ui-next';
 import React, { useContext } from 'react';
 
-import { TooltipContentHotKeys } from '@/components/Tooltip/TooltipContentHotKeys/TooltipContentHotKeys.component';
 import { PrototypeStatus } from '@/constants/prototype';
 import { Router } from '@/ducks';
 import { useHotkey } from '@/hooks/hotkeys';
@@ -26,15 +25,15 @@ export const DiagramLayoutHeaderPrototypeClose: React.FC = () => {
   });
 
   return (
-    <Tooltip
+    <TooltipWithKeys
+      text="Close"
+      hotkeys={[{ label: getHotkeyLabel(Hotkey.CLOSE_CANVAS_MODE) }]}
       placement="bottom"
       referenceElement={({ ref, onOpen, onClose }) => (
         <div ref={ref}>
           <Header.Button.Primary label="Close" iconName="CloseM" onClick={() => goToCurrentCanvas()} onMouseEnter={onOpen} onMouseLeave={onClose} />
         </div>
       )}
-    >
-      {() => <TooltipContentHotKeys label="Close" hotkeys={[{ label: getHotkeyLabel(Hotkey.CLOSE_CANVAS_MODE) }]} />}
-    </Tooltip>
+    />
   );
 };

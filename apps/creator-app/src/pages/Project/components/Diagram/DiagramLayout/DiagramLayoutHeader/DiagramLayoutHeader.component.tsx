@@ -48,7 +48,7 @@ export const DiagramLayoutHeader: React.FC = () => {
 
   return (
     <Header className={headerStyle({ canvasOnly })}>
-      <Header.Section.Left>
+      <Header.Section.Left mr={214}>
         <Header.Button.IconSecondary onClick={onBackClick} iconName="ArrowLeft" />
       </Header.Section.Left>
 
@@ -57,17 +57,19 @@ export const DiagramLayoutHeader: React.FC = () => {
       <Header.Section.Right>
         <DiagramLayoutHeaderMembers />
 
-        {isPrototype ? (
-          <>
-            <DiagramLayoutHeaderPrototypeSettings />
+        <Header.Section.RightActions>
+          {isPrototype ? (
+            <>
+              <DiagramLayoutHeaderPrototypeSettings />
 
-            <SharePrototypeButton />
-          </>
-        ) : (
-          <PublishButton />
-        )}
+              <SharePrototypeButton />
+            </>
+          ) : (
+            <PublishButton />
+          )}
 
-        {isPrototype ? <DiagramLayoutHeaderPrototypeClose /> : <StartPrototypeButton />}
+          {isPrototype ? <DiagramLayoutHeaderPrototypeClose /> : <StartPrototypeButton />}
+        </Header.Section.RightActions>
       </Header.Section.Right>
     </Header>
   );

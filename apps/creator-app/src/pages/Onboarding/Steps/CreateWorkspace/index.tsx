@@ -2,7 +2,6 @@ import { ClickableText, FlexCenter, KeyName, toast, Upload, UploadIconVariant } 
 import React from 'react';
 
 import ContinueButton from '../../components/ContinueButton';
-import { StepID } from '../../constants';
 import { OnboardingContext } from '../../context';
 import { Container, LabelContainer, NameInput } from './components';
 
@@ -23,7 +22,7 @@ const CreateWorkspace: React.FC = () => {
 
   const onContinue = () => {
     setCreateWorkspaceMeta({ workspaceName, workspaceImage: workspaceImage ?? '' });
-    stepForward(StepID.ADD_COLLABORATORS);
+    stepForward(null);
   };
 
   const handleInputEnterPress = (e: React.KeyboardEvent<HTMLInputElement>) => {

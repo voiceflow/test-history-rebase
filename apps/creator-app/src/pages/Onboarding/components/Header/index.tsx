@@ -9,20 +9,13 @@ import * as StepStatusStyles from './components/StepStatus/styles';
 
 const OnboardingHeader: React.FC = () => {
   const { state, actions } = useContext(OnboardingContext);
-  const { numberOfSteps, currentStepID, stepStack, paymentMeta, createWorkspaceMeta, justCreatingWorkspace } = state;
+  const { numberOfSteps, currentStepID, stepStack, paymentMeta, justCreatingWorkspace } = state;
   const { stepBack, stepForward, onCancel } = actions;
 
   const currentStepMeta = STEP_META[currentStepID];
   const hasBackButton = currentStepMeta?.canBack && stepStack.length > 1;
   const hasSkipButton = currentStepMeta?.canSkip && !!currentStepMeta?.skipTo;
-
-  let titleMeta;
-
-  if (currentStepID === StepID.PAYMENT) {
-    titleMeta = paymentMeta.plan;
-  } else if (currentStepID === StepID.ADD_COLLABORATORS) {
-    titleMeta = createWorkspaceMeta.workspaceName;
-  }
+  const titleMeta = currentStepID === StepID.PAYMENT ? paymentMeta.plan : undefined;
 
   if (currentStepID === StepID.WELCOME) {
     return <StepStatusStyles.Container />;

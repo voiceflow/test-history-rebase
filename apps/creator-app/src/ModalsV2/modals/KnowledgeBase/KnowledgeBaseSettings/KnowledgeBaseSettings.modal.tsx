@@ -91,7 +91,12 @@ export const KnowledgeBaseSettings = manager.create(
         try {
           await getSettings();
         } catch {
-          notify.short.error('Unable to fetch latest knowledge base settings');
+          const systemMessageID = notify.long.warning('An error was encountered while fetching Knowledge Base settings', {
+            pauseOnHover: true,
+            autoClose: false,
+            actionButtonProps: { label: 'Reload', onClick: () => window.location.reload() },
+            secondaryButtonProps: { label: 'Dismiss', onClick: () => notify.long.dismiss(systemMessageID) },
+          });
         }
       }, []);
 

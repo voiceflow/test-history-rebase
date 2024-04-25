@@ -51,8 +51,11 @@ export const isMarkupTemplateBlockType = createBlockTypeGuard(CANVAS_TEMPLATE_NO
 export const isMarkupOrCombinedBlockType = createBlockTypeGuard(MARKUP_AND_COMBINED_NODES);
 
 export const isBlockDBNode = createDBNodeTypeGuard<BaseModels.BaseBlock>(BaseModels.BaseNodeType.BLOCK);
-export const isStartDBNode = createDBNodeTypeGuard<BaseNode.Start.Step>(BaseNode.NodeType.START);
+export const isStartDBNode = createDBNodeTypeGuard<BaseNode.Start.Step<BaseNode.Start.StepData & { steps?: string[] }>>(BaseNode.NodeType.START);
 export const isIntentDBNode = createDBNodeTypeGuard<BaseNode.Intent.Step>(BaseNode.NodeType.INTENT);
+export const isCommandDBNode = createDBNodeTypeGuard<BaseNode.Command.Step>(BaseNode.NodeType.COMMAND);
+export const isGoToNodeDBNode = createDBNodeTypeGuard<BaseNode.GoToNode.Step>(BaseNode.NodeType.GOTO_NODE);
+export const isGoToDomainDBNode = createDBNodeTypeGuard<BaseNode.GoToDomain.Step>(BaseNode.NodeType.GOTO_DOMAIN);
 export const isDiagramMenuDBNode = createDBNodeTypeGuard<BaseNode.Start.Step | BaseNode.Intent.Step>([
   BaseNode.NodeType.START,
   BaseNode.NodeType.INTENT,

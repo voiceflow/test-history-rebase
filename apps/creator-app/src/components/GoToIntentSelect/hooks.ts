@@ -47,6 +47,9 @@ const createTopicOptions = <OptionsMap extends Record<string, Option | Group> | 
     return acc;
   }, []);
 
+/**
+ * @deprecated will be removed when CMS_WORKFLOWS is released
+ */
 export const useDiagramsIntentsOptionsMap = () => {
   const platform = useSelector(ProjectV2.active.platformSelector);
   const sharedNodes = useSelector(DiagramV2.sharedNodesSelector);

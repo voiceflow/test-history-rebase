@@ -6,7 +6,7 @@ export interface Value {
 }
 
 export interface Option extends BaseDiagramSelectOption {
-  stepID: string;
+  nodeID: string;
 }
 
 export type Group = DiagramSelectGroup<Option>;

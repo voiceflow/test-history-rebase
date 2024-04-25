@@ -6,6 +6,7 @@ import React from 'react';
 
 export interface BaseMenuItem {
   tooltip?: TippyTooltipProps | null;
+  isEmpty?: boolean;
   vfUIOnly?: boolean;
   disabled?: boolean;
   readOnly?: boolean;

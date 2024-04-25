@@ -6,7 +6,7 @@ import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { createMock, DeepMocked } from '@/../test/utils/create-mock.util';
 import { AssistantSerializer } from '@/assistant/assistant.serializer';
 import { AssistantService } from '@/assistant/assistant.service';
-import { EntitySerializer } from '@/common';
+import { BackupService } from '@/backup/backup.service';
 import { EnvironmentService } from '@/environment/environment.service';
 import { LegacyService } from '@/legacy/legacy.service';
 import { MigrationState } from '@/legacy/services/migrate/constants';
@@ -17,9 +17,9 @@ import { ProjectLegacyService } from '@/project/project-legacy/project-legacy.se
 describe('Migrate service unit tests', () => {
   let legacyService: DeepMocked<LegacyService>;
   let entityManager: DeepMocked<EntityManager>;
+  let backupService: DeepMocked<BackupService>;
   let migrateService: MigrationService;
   let assistantService: DeepMocked<AssistantService>;
-  let entitySerializer: DeepMocked<EntitySerializer>;
   let environmentService: DeepMocked<EnvironmentService>;
   let assistantSerializer: DeepMocked<AssistantSerializer>;
   let projectLegacyService: DeepMocked<ProjectLegacyService>;
@@ -52,6 +52,10 @@ describe('Migrate service unit tests', () => {
       get: vi.fn().mockResolvedValue(undefined),
     });
 
+    backupService = createMock<BackupService>({
+      findOneByName: vi.fn().mockResolvedValue({}),
+    });
+
     migrationCacheService = createMock<MigrationCacheService>({
       isMigrationLocked: vi.fn().mockResolvedValue(false),
       resetMigrationLock: vi.fn().mockResolvedValue(undefined),
@@ -61,10 +65,6 @@ describe('Migrate service unit tests', () => {
     });
 
     entityManager = createMock<EntityManager>();
-
-    entitySerializer = createMock<EntitySerializer>({
-      iterable: vi.fn().mockReturnValue({} as any),
-    });
 
     assistantService = createMock<AssistantService>({
       findOne: vi.fn().mockResolvedValue(null),
@@ -90,11 +90,11 @@ describe('Migrate service unit tests', () => {
     migrateService = new MigrationService(
       entityManager,
       legacyService,
+      backupService,
       assistantService,
       environmentService,
       projectLegacyService,
       migrationCacheService,
-      entitySerializer,
       assistantSerializer
     );
   });

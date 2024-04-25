@@ -141,6 +141,7 @@ class MigrateService extends AbstractControl {
           creatorID,
           cms: {
             flows: [],
+            folders: [],
             intents: [],
             entities: [],
             assistant: null,

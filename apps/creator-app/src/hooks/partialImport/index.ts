@@ -42,6 +42,7 @@ export const usePartialImport = () => {
           cms: {
             flows: [],
             intents: [],
+            folders: [],
             entities: [],
             variables: [],
             assistant: null,

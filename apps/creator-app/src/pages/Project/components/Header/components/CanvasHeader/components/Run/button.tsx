@@ -1,9 +1,8 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Button, ButtonVariant, PrimaryButtonProps, SecondaryButtonProps, SvgIcon, SvgIconTypes, TippyTooltip } from '@voiceflow/ui';
-import { Header, Tooltip } from '@voiceflow/ui-next';
+import { Header, TooltipWithKeys } from '@voiceflow/ui-next';
 import React from 'react';
 
-import { TooltipContentHotKeys } from '@/components/Tooltip/TooltipContentHotKeys/TooltipContentHotKeys.component';
 import { styled } from '@/hocs/styled';
 import { useFeature } from '@/hooks/feature';
 import { getHotkeyLabel, Hotkey, HOTKEY_LABEL_MAP } from '@/keymap';
@@ -30,7 +29,9 @@ const RunButton: React.FC<RunButtonProps> = ({ variant = ButtonVariant.PRIMARY, 
 
   if (cmsWorkflows.isEnabled) {
     return (
-      <Tooltip
+      <TooltipWithKeys
+        text="Run"
+        hotkeys={[{ label: getHotkeyLabel(Hotkey.RUN_MODE) }]}
         placement="bottom"
         referenceElement={({ ref, onOpen, onClose }) => (
           <div ref={ref}>
@@ -45,9 +46,7 @@ const RunButton: React.FC<RunButtonProps> = ({ variant = ButtonVariant.PRIMARY, 
             />
           </div>
         )}
-      >
-        {() => <TooltipContentHotKeys label="Run" hotkeys={[{ label: getHotkeyLabel(Hotkey.RUN_MODE) }]} />}
-      </Tooltip>
+      />
     );
   }
 

@@ -1,6 +1,6 @@
 import type { Workflow } from '@voiceflow/dtos';
 import { toast } from '@voiceflow/ui';
-import { flowNameValidator } from '@voiceflow/utils-designer';
+import { workflowNameValidator } from '@voiceflow/utils-designer';
 import { useState } from 'react';
 
 import { Account } from '@/ducks';
@@ -23,7 +23,7 @@ export const useWorkflowCreateForm = ({
 
   const nameState = useInputState({ value: name ?? '' });
   const validator = useValidators({
-    name: [flowNameValidator, nameState.setError],
+    name: [workflowNameValidator, nameState.setError],
   });
 
   const [description, setDescription] = useState('');

@@ -7,6 +7,7 @@ import {
   Entity,
   EntityVariant,
   Flow,
+  Folder,
   Intent,
   RequiredEntity,
   Response,
@@ -45,6 +46,7 @@ export interface MigrationData {
 
   cms: {
     flows: Flow[];
+    folders: Folder[];
     intents: Intent[];
     entities: Entity[];
     variables: Variable[];

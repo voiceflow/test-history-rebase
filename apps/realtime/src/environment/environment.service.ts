@@ -586,6 +586,7 @@ export class EnvironmentService {
   async migrateCMSData(data: Realtime.Migrate.MigrationData, patches: Patch[], meta: { userID: number; assistantID: string; environmentID: string }) {
     const {
       flows = [],
+      folders = [],
       intents = [],
       entities = [],
       responses = [],
@@ -600,6 +601,7 @@ export class EnvironmentService {
 
     // ORDER MATTERS
     await this.flow.upsertManyWithSubResources({ flows }, meta);
+    await this.folder.upsertManyWithSubResources({ folders }, meta);
     await this.workflow.upsertManyWithSubResources({ workflows }, meta);
     await this.variable.upsertManyWithSubResources({ variables }, meta);
     await this.entity.upsertManyWithSubResources({ entities, entityVariants }, meta);

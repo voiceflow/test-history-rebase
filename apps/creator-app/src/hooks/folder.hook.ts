@@ -7,23 +7,40 @@ import { Path } from '@/config/routes';
 import { Designer, Session } from '@/ducks';
 import { useGetValueSelector, useSelector } from '@/hooks/store.hook';
 
-export const useFolderTree = <T extends { id: string; folderID: string | null }, FR, DR = FR>({
+export const useFolderTree = <
+  T extends { id: string; folderID: string | null },
+  FR extends { id: string },
+  DR extends { id: string } = FR,
+  SR extends { id: string } = FR
+>({
   data,
   folderScope,
   buildDataTree,
   buildFolderTree,
+  buildDataSeparator,
+  buildFolderSeparator,
 }: {
   data: T[];
   folderScope: FolderScope;
   /**
    * should be memoized function (useCallback)
    */
-  buildDataTree: (data: T, parentID: string | null) => DR;
+  buildDataTree: (data: T, parentID: string | null, cacheOption: (option: DR) => DR) => DR;
   /**
    * should be memoized function (useCallback)
    */
-  buildFolderTree: (folder: Folder, children: Array<FR | DR>, parentID: string | null) => FR;
-}): Array<FR | DR> => {
+  buildFolderTree: (folder: Folder, children: Array<FR | DR | SR>, parentID: string | null) => FR;
+
+  /**
+   * should be memoized function (useCallback)
+   */
+  buildDataSeparator?: (dataTree: DR[]) => SR;
+
+  /**
+   * should be memoized function (useCallback)
+   */
+  buildFolderSeparator?: (folderTree: FR[]) => SR;
+}): [options: Array<FR | DR | SR>, optionMap: Record<string, FR | DR | SR>] => {
   const folders = useSelector(Designer.Folder.selectors.allByScope, { folderScope });
 
   const foldersParentIDMap = useMemo(() => {
@@ -55,25 +72,72 @@ export const useFolderTree = <T extends { id: string; folderID: string | null },
   }, [data]);
 
   return useMemo(() => {
-    const buildData = (data: T[], parentID: string | null) => data.map((item) => buildDataTree(item, parentID));
+    const optionMap: Record<string, FR | DR | SR> = {};
+
+    const cacheOption = (option: DR) => {
+      optionMap[option.id] = option;
+
+      return option;
+    };
+    const buildData = (data: T[], parentID: string | null) =>
+      data.map((item) => {
+        const tree = buildDataTree(item, parentID, cacheOption);
+
+        optionMap[tree.id] = tree;
+
+        return tree;
+      });
+
+    const buildChildrenWithSeparators = (folderTrees: FR[], dataTrees: DR[]) => {
+      if (!buildDataSeparator && !buildFolderSeparator) return [...folderTrees, ...dataTrees];
+
+      const children: Array<FR | DR | SR> = [];
+
+      if (buildFolderSeparator && folderTrees.length) {
+        const separator = buildFolderSeparator(folderTrees);
+
+        children.push(separator);
+        optionMap[separator.id] = separator;
+      }
+
+      children.push(...folderTrees);
+
+      if (buildDataSeparator && dataTrees.length) {
+        const separator = buildDataSeparator(dataTrees);
+
+        children.push(separator);
+        optionMap[separator.id] = separator;
+      }
+
+      children.push(...dataTrees);
+
+      return children;
+    };
 
     const buildFolders = (folders: Folder[], parentID: string | null) =>
       folders.reduce<FR[]>((acc, folder) => {
-        const children = [
-          ...buildFolders(foldersParentIDMap.get(folder.id) ?? [], folder.id),
-          ...buildData(dataFolderIDMap.get(folder.id) ?? [], folder.id),
-        ];
+        const children = buildChildrenWithSeparators(
+          buildFolders(foldersParentIDMap.get(folder.id) ?? [], folder.id),
+          buildData(dataFolderIDMap.get(folder.id) ?? [], folder.id)
+        );
 
         if (children.length) {
           const tree = buildFolderTree(folder, children, parentID);
+
           acc.push(tree);
+          optionMap[tree.id] = tree;
         }
 
         return acc;
       }, []);
 
-    return [...buildFolders(foldersParentIDMap.get(null) ?? [], null), ...buildData(dataFolderIDMap.get(null) ?? [], null)];
-  }, [dataFolderIDMap, foldersParentIDMap, buildDataTree, buildFolderTree]);
+    const children = buildChildrenWithSeparators(
+      buildFolders(foldersParentIDMap.get(null) ?? [], null),
+      buildData(dataFolderIDMap.get(null) ?? [], null)
+    );
+
+    return [children, optionMap];
+  }, [dataFolderIDMap, foldersParentIDMap, buildDataTree, buildFolderTree, buildFolderSeparator, buildDataSeparator]);
 };
 
 export const useGetFolderPath = (folderScope: FolderScope) => {

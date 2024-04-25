@@ -21,8 +21,15 @@ export const oneByDiagramID = createSelector(mapByDiagramID, diagramIDParamSelec
 
 export const allOrderedByName = createSelector([all], (entities) => entities.sort((a, b) => a.name.localeCompare(b.name)));
 
+type TriggerNode<Type extends BlockType, ExtraData = unknown> = {
+  type: Type;
+  label: string;
+  nodeID: string;
+  isEmpty: boolean;
+} & ExtraData;
+
 export const triggersMapByDiagramID = createSelector([sharedNodesSelector, getOneIntentByID], (sharedNodes, getOneIntentByID) => {
-  const map: Partial<Record<string, { type: BlockType; label: string; nodeID: string; isEmpty?: boolean }[]>> = {};
+  const map: Partial<Record<string, Array<TriggerNode<BlockType.START> | TriggerNode<BlockType.INTENT, { intentID: string | null }>>>> = {};
 
   Object.entries(sharedNodes).forEach(([diagramID, diagramSharedNodes]) => {
     let diagramTriggers = map[diagramID];
@@ -36,13 +43,19 @@ export const triggersMapByDiagramID = createSelector([sharedNodesSelector, getOn
       if (!node) return;
 
       if (node.type === BlockType.START) {
-        diagramTriggers!.unshift({ type: node.type, label: node.name || 'Start', nodeID: node.nodeID });
+        diagramTriggers!.unshift({ type: node.type, label: node.name || 'Start', nodeID: node.nodeID, isEmpty: false });
       }
 
       if (node.type === BlockType.INTENT) {
         const intent = getOneIntentByID({ id: node.intentID });
 
-        diagramTriggers!.push({ type: node.type, label: intent?.name ?? 'Select intent...', nodeID: node.nodeID, isEmpty: !intent });
+        diagramTriggers!.push({
+          type: node.type,
+          label: intent?.name ?? 'Select intent...',
+          nodeID: node.nodeID,
+          isEmpty: !intent,
+          intentID: node.intentID,
+        });
       }
     });
   });

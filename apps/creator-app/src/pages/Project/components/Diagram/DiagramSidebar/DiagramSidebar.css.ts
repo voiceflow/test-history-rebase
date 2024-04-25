@@ -23,14 +23,6 @@ export const containerStyle = recipe({
   },
 });
 
-export const topHeaderSectionStyle = style({
-  borderTopRightRadius: '10px',
-});
-
-export const bottomHeaderSectionStyle = style({
-  borderBottomRightRadius: '10px',
-});
-
 export const toolbarStyle = style({
   position: 'absolute',
   left: 'calc(100% + 8px)',

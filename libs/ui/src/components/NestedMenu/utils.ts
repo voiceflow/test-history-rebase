@@ -27,6 +27,7 @@ export const createUIOnlyMenuItemOption = (
   {
     label = '',
     tooltip = null,
+    isEmpty = false,
     readOnly = true,
     disabled = false,
     groupHeader = false,
@@ -37,6 +38,7 @@ export const createUIOnlyMenuItemOption = (
   label,
   tooltip,
   vfUIOnly: true,
+  isEmpty,
   readOnly,
   disabled,
   groupHeader,

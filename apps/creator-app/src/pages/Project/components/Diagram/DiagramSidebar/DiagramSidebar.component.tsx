@@ -1,4 +1,4 @@
-import { DraggablePanel, ResizableSection, Section, TreeView } from '@voiceflow/ui-next';
+import { DraggablePanel, ResizableSection, ResizableSectionHeader, TreeView } from '@voiceflow/ui-next';
 import { IResizableSectionAPI } from '@voiceflow/ui-next/build/cjs/components/Section/ResizableSection/types';
 import React, { useRef } from 'react';
 
@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from '@/hooks/store.hook';
 import { useCommentingMode } from '@/pages/Project/hooks';
 
 import StepMenu from '../../StepMenu';
-import { bottomHeaderSectionStyle, containerStyle, topHeaderSectionStyle } from './DiagramSidebar.css';
+import { containerStyle } from './DiagramSidebar.css';
 import { useFlowsTree, useRenderFlowItemContextMenu, useRenderWorkflowItemContextMenu, useWorkflowsTree } from './DiagramSidebar.hook';
 import {
   DiagramSidebarAnyFlowMetadata,
@@ -45,8 +45,8 @@ export const DiagramSidebar: React.FC = () => {
   const patchOneWorkflow = useDispatch(Designer.Workflow.effect.patchOne);
   const toggleCanvasSidebar = useDispatch(UI.action.ToggleCanvasSidebar);
 
-  const flowsTree = useFlowsTree();
-  const workflowsTree = useWorkflowsTree();
+  const [flowsTree] = useFlowsTree();
+  const [workflowsTree] = useWorkflowsTree();
   const renderFlowItemContextMenu = useRenderFlowItemContextMenu({ canEditCanvas });
   const renderWorkflowItemContextMenu = useRenderWorkflowItemContextMenu({ canEditCanvas });
 
@@ -136,30 +136,14 @@ export const DiagramSidebar: React.FC = () => {
             />
           }
           topHeader={
-            <Section.Header.Container py={11} theme="dark" title="Workflows" className={topHeaderSectionStyle}>
-              <Section.Header.Button
-                variant="dark"
-                onClick={() => workflowCreateModal.openVoid({ folderID: null })}
-                disabled={!canEditCanvas}
-                iconName="Plus"
-              />
-            </Section.Header.Container>
+            <ResizableSectionHeader label="Workflows" onClick={() => workflowCreateModal.openVoid({ folderID: null })} tooltipText="New workflow" />
           }
           bottomHeader={
-            <Section.Header.Container
-              py={11}
-              theme="dark"
-              title="Components"
-              className={bottomHeaderSectionStyle}
-              onHeaderClick={footerCollapsed ? () => resizableSectionRef.current?.expand() : undefined}
-            >
-              <Section.Header.Button
-                variant="dark"
-                onClick={footerCollapsed ? undefined : () => flowCreateModal.openVoid({ folderID: null })}
-                iconName={footerCollapsed ? 'ArrowUpS' : 'Plus'}
-                disabled={!footerCollapsed && !canEditCanvas}
-              />
-            </Section.Header.Container>
+            <ResizableSectionHeader
+              label="Components"
+              onClick={() => (footerCollapsed ? resizableSectionRef.current?.expand() : flowCreateModal.openVoid({ folderID: null }))}
+              tooltipText="New component"
+            />
           }
         />
 

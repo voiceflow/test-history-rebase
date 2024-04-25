@@ -22,7 +22,7 @@ const createDiagramOptions = <OptionsMap extends Record<string, Option | Group> 
     const option = {
       id: createGroupedSelectID(diagramID, sharedNode.nodeID),
       label: sharedNode.type === Realtime.BlockType.START ? sharedNode.name || 'Start' : sharedNode.name,
-      stepID: sharedNode.nodeID,
+      nodeID: sharedNode.nodeID,
       diagramID,
     };
 

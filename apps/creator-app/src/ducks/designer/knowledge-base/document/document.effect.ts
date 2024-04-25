@@ -5,9 +5,9 @@ import { notify } from '@voiceflow/ui-next';
 import pluralize from 'pluralize';
 
 import { designerClient } from '@/client/designer';
-import featureClient from '@/client/feature';
 import { knowledgeBaseClient } from '@/client/knowledge-base';
 import * as Errors from '@/config/errors';
+import * as Feature from '@/ducks/feature';
 import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
 import type { DBKnowledgeBaseDocument, KnowledgeBaseDocument } from '@/models/KnowledgeBase.model';
@@ -16,7 +16,7 @@ import type { Thunk } from '@/store/types';
 import { downloadBlob } from '@/utils/download.util';
 
 import * as Actions from './document.action';
-import { documentAdapter } from './document.adapter';
+import { documentAdapter, documentAdapterRealtime } from './document.adapter';
 import { DOCUMENT_TYPE_MIME_FILE_TYPE_MAP } from './document.constant';
 import * as Selectors from './document.select';
 
@@ -89,12 +89,21 @@ export const patchManyRefreshRate =
 export const getAll = (): Thunk<KnowledgeBaseDocument[]> => async (dispatch, getState) => {
   const state = getState();
 
+  const realtimeKBEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.KB_BE_DOC_CRUD);
+
   const projectID = Session.activeProjectIDSelector(state);
 
   Errors.assertProjectID(projectID);
 
-  const dbDocuments = await knowledgeBaseClient.getAllDocuments(projectID);
-  const documents = documentAdapter.mapFromDB(dbDocuments);
+  let documents: KnowledgeBaseDocument[];
+
+  if (realtimeKBEnabled) {
+    const response = await designerClient.knowledgeBase.document.getMany(projectID, {});
+    documents = documentAdapterRealtime.mapFromDB(response.documents);
+  } else {
+    const dbDocuments = await knowledgeBaseClient.getAllDocuments(projectID);
+    documents = documentAdapter.mapFromDB(dbDocuments);
+  }
 
   dispatch.local(Actions.AddMany({ data: documents }));
 
@@ -103,6 +112,8 @@ export const getAll = (): Thunk<KnowledgeBaseDocument[]> => async (dispatch, get
 
 export const getAllPending = (): Thunk<KnowledgeBaseDocument[]> => async (dispatch, getState) => {
   const state = getState();
+
+  const realtimeKBEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.KB_BE_DOC_CRUD);
 
   const projectID = Session.activeProjectIDSelector(state);
 
@@ -114,8 +125,16 @@ export const getAllPending = (): Thunk<KnowledgeBaseDocument[]> => async (dispat
 
   if (documentIDs.length === 0) return [];
 
-  const dbDocuments = await knowledgeBaseClient.getManyDocuments(projectID, documentIDs);
-  const documents = documentAdapter.mapFromDB(dbDocuments);
+  let documents: KnowledgeBaseDocument[];
+
+  if (realtimeKBEnabled) {
+    const response = await designerClient.knowledgeBase.document.retrieveMany(projectID, { documentIDs });
+
+    documents = documentAdapterRealtime.mapFromDB(response.documents);
+  } else {
+    const dbDocuments = await knowledgeBaseClient.getManyDocuments(projectID, documentIDs);
+    documents = documentAdapter.mapFromDB(dbDocuments);
+  }
 
   dispatch.local(Actions.AddMany({ data: documents }));
 
@@ -321,8 +340,17 @@ export const getOne =
 
     Errors.assertProjectID(projectID);
 
-    const dbDocument = await knowledgeBaseClient.getOneDocument(projectID, documentID);
-    const document = documentAdapter.fromDB(dbDocument);
+    const realtimeKBEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.KB_BE_DOC_CRUD);
+
+    let document: KnowledgeBaseDocument;
+
+    if (realtimeKBEnabled) {
+      const dbDocument = await designerClient.knowledgeBase.document.getOne(projectID, documentID);
+      document = documentAdapterRealtime.fromDB(dbDocument);
+    } else {
+      const dbDocument = await knowledgeBaseClient.getOneDocument(projectID, documentID);
+      document = documentAdapter.fromDB(dbDocument);
+    }
 
     dispatch.local(Actions.AddOne({ data: document }));
 
@@ -384,15 +412,14 @@ export const deleteOne =
   (documentID: string): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
-    const featureFlags = await featureClient.getStatuses();
-    const realtimeKBEnabled = featureFlags[Realtime.FeatureFlag.KB_BE_DOC_CRUD]?.isEnabled;
+    const realtimeKBEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.KB_BE_DOC_CRUD);
 
     const projectID = Session.activeProjectIDSelector(state);
 
     Errors.assertProjectID(projectID);
 
     if (realtimeKBEnabled) {
-      await designerClient.private.knowledgeBase.document.deleteOne(projectID, documentID);
+      await designerClient.knowledgeBase.document.deleteOne(projectID, documentID);
     } else {
       await knowledgeBaseClient.deleteOneDocument(projectID, documentID);
     }
@@ -406,8 +433,7 @@ export const deleteMany =
   (documentIDs: string[]): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
-    const featureFlags = await featureClient.getStatuses();
-    const realtimeKBEnabled = featureFlags[Realtime.FeatureFlag.KB_BE_DOC_CRUD]?.isEnabled;
+    const realtimeKBEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.KB_BE_DOC_CRUD);
 
     const projectID = Session.activeProjectIDSelector(state);
 
@@ -416,7 +442,7 @@ export const deleteMany =
     let data: { deletedDocumentIDs: string[] } = { deletedDocumentIDs: [] };
 
     if (realtimeKBEnabled) {
-      data = await designerClient.private.knowledgeBase.document.deleteMany(projectID, { documentIDs });
+      data = await designerClient.knowledgeBase.document.deleteMany(projectID, { documentIDs });
     } else {
       const response = await knowledgeBaseClient.deleteManyDocuments(projectID, documentIDs);
       data = response.data;

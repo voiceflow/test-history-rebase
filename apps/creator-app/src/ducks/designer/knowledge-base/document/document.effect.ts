@@ -132,7 +132,12 @@ export const loadAll = (): Thunk => async (dispatch) => {
   } catch (error) {
     dispatch.local(Actions.SetFetchStatus({ status: 'error' }));
     Tracking.trackAiKnowledgeBaseError({ ErrorType: 'Load' });
-    notify.short.error('Unable to fetch knowledge base');
+    const systemMessageID = notify.long.warning('An error was encountered when fetching knowledge base data', {
+      pauseOnHover: true,
+      autoClose: false,
+      actionButtonProps: { label: 'Reload', onClick: () => window.location.reload() },
+      secondaryButtonProps: { label: 'Dismiss', onClick: () => notify.long.dismiss(systemMessageID) },
+    });
   }
 };
 

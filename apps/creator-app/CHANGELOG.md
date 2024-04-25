@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1495.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1494.0...@voiceflow/creator-app@1.1495.0) (2024-04-25)
+
+### Features
+
+* use warning toast for kb (COR-1760) ([#8026](https://github.com/voiceflow/creator-app/issues/8026)) ([5ec0e72](https://github.com/voiceflow/creator-app/commit/5ec0e722d9738d9b9796ac08421fde060d13e440))
+
 # [1.1494.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1493.1...@voiceflow/creator-app@1.1494.0) (2024-04-25)
 
 ### Features

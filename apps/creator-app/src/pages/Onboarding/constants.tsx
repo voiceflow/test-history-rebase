@@ -6,15 +6,16 @@ import { SyncThunk } from '@/store/types';
 
 import { TeamSizeType } from './types';
 
-export enum StepID {
-  WELCOME = 'welcome',
-  CREATE_WORKSPACE = 'create_workspace',
-  PERSONALIZE_WORKSPACE = 'personalize_workspace',
-  ADD_COLLABORATORS = 'add_collaborators',
-  PAYMENT = 'payment',
-  JOIN_WORKSPACE = 'join_workspace',
-  SELECT_CHANNEL = 'select_channel',
-}
+export const StepID = {
+  WELCOME: 'welcome',
+  CREATE_WORKSPACE: 'create_workspace',
+  PERSONALIZE_WORKSPACE: 'personalize_workspace',
+  PAYMENT: 'payment',
+  JOIN_WORKSPACE: 'join_workspace',
+  SELECT_CHANNEL: 'select_channel',
+} as const;
+
+export type StepID = (typeof StepID)[keyof typeof StepID];
 
 export const WORK_WITH_DEVELOPERS_OPTIONS = [
   { id: true, label: 'Yes' },
@@ -59,14 +60,6 @@ export const STEP_META: StepMetaProps = {
     canSkip: false,
     skipTo: () => null,
     trackStep: () => Tracking.trackOnboardingPersonalize(),
-  },
-  [StepID.ADD_COLLABORATORS]: {
-    title: (workspaceName) => (!workspaceName ? 'Invite teammates' : `Invite teammates to ${workspaceName}`),
-    canBack: true,
-    canSkip: true,
-    skipTo: () => StepID.PAYMENT,
-    trackStep: ({ addCollaboratorMeta }, { skip }) =>
-      Tracking.trackOnboardingCollaborators({ skip, bookDemo: false, collaboratorCount: addCollaboratorMeta.collaborators.length }),
   },
   [StepID.PAYMENT]: {
     title: (plan) => `Sign up for ${plan}`,

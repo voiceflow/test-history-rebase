@@ -1,4 +1,3 @@
-export { default as AddCollaborators } from './AddCollaborators';
 export { default as CreateWorkspace } from './CreateWorkspace';
 export { default as JoinWorkspace } from './JoinWorkspace';
 export { default as Payment } from './Payment';

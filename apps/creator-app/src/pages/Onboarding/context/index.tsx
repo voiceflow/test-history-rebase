@@ -1,6 +1,6 @@
 import { datadogRum } from '@datadog/browser-rum';
 import * as stripeJs from '@stripe/stripe-js';
-import { Nullable, Utils } from '@voiceflow/common';
+import { Nullable } from '@voiceflow/common';
 import { BillingPeriod, PlanType } from '@voiceflow/internal';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
@@ -22,14 +22,13 @@ import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useDispatch, useFeature, useSelector, useSmartReducer, useStore, useSyncDispatch, useTrackingEvents } from '@/hooks';
+import { useDispatch, useFeature, useSelector, useSmartReducer, useStore, useTrackingEvents } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 import { useGetAIAssistSettings } from '@/ModalsV2/modals/Disclaimer/hooks/aiPlayground';
 import { getErrorMessage } from '@/utils/error';
-import { isAdminUserRole, isEditorUserRole } from '@/utils/role';
+import { isAdminUserRole } from '@/utils/role';
 
 import { SELECTABLE_WORKSPACE_SPECIFIC_FLOW_TYPES, STEP_META, StepID } from '../constants';
-import { CollaboratorType } from '../types';
 import {
   OnboardingContextActions,
   OnboardingContextProps,
@@ -56,7 +55,6 @@ export const OnboardingContext = React.createContext<OnboardingContextProps>({
     setPaymentMeta: _constant(null),
     setJoinWorkspaceMeta: _constant(null),
     setSelectChannelMeta: _constant(null),
-    setAddCollaboratorMeta: _constant(null),
     finishCreateOnboarding: _constant(null),
     finishJoiningWorkspace: _constant(null),
     onCancel: _constant(null),
@@ -81,7 +79,6 @@ export const OnboardingContext = React.createContext<OnboardingContextProps>({
       period: BillingPeriod.MONTHLY,
       selectedWorkspaceId: '',
     },
-    addCollaboratorMeta: { collaborators: [] },
     joinWorkspaceMeta: {
       role: '',
     },
@@ -116,7 +113,6 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
   const paymentAPI = Payment.legacy.usePaymentAPI();
   const checkoutWorkspace = useDispatch(WorkspaceV2.checkout);
   const createWorkspace = useDispatch(WorkspaceV2.createWorkspace);
-  const sendInvite = useDispatch(WorkspaceV2.sendInviteToActiveWorkspace);
   const acceptInvite = useDispatch(WorkspaceV2.acceptInvite);
   const goToDashboard = useDispatch(Router.goToDashboard);
   const goToCMSKnowledgeBase = useDispatch(Router.goToCMSKnowledgeBase);
@@ -124,7 +120,6 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
   const setActiveWorkspace = useDispatch(WorkspaceV2.setActive);
   const goToWorkspace = useDispatch(Router.goToWorkspace);
   const trackInvitationAccepted = useDispatch(Tracking.trackInvitationAccepted);
-  const changeSeats = useSyncDispatch(Realtime.workspace.changeSeats);
   const createProject = useDispatch(Project.createProject);
   const { isEnabled: isKnowledgeBaseEnabled } = useFeature(Realtime.FeatureFlag.KNOWLEDGE_BASE);
 
@@ -190,7 +185,6 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
       period,
       seats,
     },
-    addCollaboratorMeta: { collaborators: [] },
     joinWorkspaceMeta: {
       role: '',
     },
@@ -206,7 +200,7 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
     upgradingAWorkspace,
   });
 
-  const { stepStack, createWorkspaceMeta, addCollaboratorMeta, paymentMeta, sendingRequests } = state;
+  const { stepStack, createWorkspaceMeta, paymentMeta, sendingRequests } = state;
   const { setStepStack, setSendingRequests } = actions;
 
   const cache = React.useRef({ stepStack, state, skipped: false });
@@ -222,11 +216,7 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
 
   const checkPayment = async () => paymentAPI.createSource();
 
-  const getNumberOfEditors = () => {
-    const numberOfEditors = OnboardingUtils.getNumberOfEditorSeats(addCollaboratorMeta.collaborators);
-
-    return Math.max(paymentMeta.seats, numberOfEditors);
-  };
+  const getNumberOfEditors = () => Math.max(paymentMeta.seats, 1);
 
   const handlePayment = async (workspaceID: string, source: stripeJs.Source) => {
     const { plan, period, seats } = paymentMeta;
@@ -321,32 +311,6 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
         return null;
       }
     }
-    const teamMembers: CollaboratorType[] = addCollaboratorMeta.collaborators.slice(1, addCollaboratorMeta.length);
-
-    const editors = addCollaboratorMeta.collaborators.filter(({ permission }: CollaboratorType) => isEditorUserRole(permission));
-
-    if (!hasPaymentStep && editors.length > 1) {
-      try {
-        await changeSeats({
-          seats: editors.length,
-          schedule: false,
-          workspaceID: workspace.id,
-        });
-      } catch (err) {
-        // if it fails to create a project for the user, go to dashboard
-        datadogRum.addError(err);
-      }
-    }
-
-    await Utils.array.asyncForEach(teamMembers, async (member: CollaboratorType) => {
-      const { email, permission } = member;
-
-      try {
-        await sendInvite({ email, role: permission, showToast: false });
-      } catch (e) {
-        toast.error(`Problem inviting ${email}, please try again later`);
-      }
-    });
 
     const { useCase, teamSize, workWithDevelopers, selfReportedAttribution } = state.personalizeWorkspaceMeta;
 
@@ -428,7 +392,7 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
   const handleLastStep = async (currentStepID: StepID) => {
     let workspaceId: string | null = null;
 
-    if (currentStepID === StepID.ADD_COLLABORATORS || currentStepID === StepID.PAYMENT || currentStepID === StepID.SELECT_CHANNEL) {
+    if (currentStepID === StepID.CREATE_WORKSPACE || currentStepID === StepID.PAYMENT || currentStepID === StepID.SELECT_CHANNEL) {
       const workspace = await finishCreateOnboarding();
       workspaceId = workspace?.id ?? null;
     } else if (currentStepID === StepID.JOIN_WORKSPACE) {
@@ -480,6 +444,7 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
         });
       }
     };
+
     if (isFinalizing && isLastStep) {
       lastStepHandler();
     }

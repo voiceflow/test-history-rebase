@@ -4,7 +4,6 @@ import * as Platform from '@voiceflow/platform-config';
 import { Query } from '@/models';
 
 import type { StepID } from '../constants';
-import { CollaboratorType } from '../types';
 
 export enum OnboardingType {
   create = 'create_workspace',
@@ -51,9 +50,6 @@ export interface OnboardingContextState {
     selectedWorkspaceId: string;
     seats?: number;
   };
-  addCollaboratorMeta: {
-    collaborators: CollaboratorType[];
-  };
   joinWorkspaceMeta: {
     role: string;
   };
@@ -78,7 +74,6 @@ export interface OnboardingContextActions {
   setPaymentMeta: (data: unknown) => void;
   setJoinWorkspaceMeta: (data: unknown) => void;
   setSelectChannelMeta: (data: OnboardingContextState['selectChannelMeta']) => void;
-  setAddCollaboratorMeta: (data: unknown) => void;
   finishCreateOnboarding: VoidFunction;
   finishJoiningWorkspace: VoidFunction;
   onCancel: VoidFunction;

@@ -1,20 +1,10 @@
-import { BillingPeriod, PlanType, UserRole } from '@voiceflow/internal';
+import { BillingPeriod, PlanType } from '@voiceflow/internal';
 
 import { IS_PRIVATE_CLOUD } from '@/config';
 import { Query } from '@/models';
 
 import { StepID } from '../constants';
-import { CollaboratorType } from '../types';
 import { OnboardingType, SpecificFlowType } from './types';
-
-export const getNumberOfEditorSeats = (collaborators: CollaboratorType[]) => {
-  const members = collaborators.filter((collaborator: CollaboratorType) => {
-    const { permission } = collaborator;
-    return permission === UserRole.EDITOR;
-  });
-  // + 1 for the owner
-  return members.length + 1;
-};
 
 export const getFirstStep = ({
   flow,
@@ -39,8 +29,7 @@ export const getFirstStep = ({
     case OnboardingType.creator:
     case OnboardingType.general_upgrade:
     case OnboardingType.student:
-      // eslint-disable-next-line no-nested-ternary
-      return isFirstSession ? StepID.WELCOME : hasPresetSeats ? StepID.PAYMENT : StepID.ADD_COLLABORATORS;
+      return isFirstSession || !hasPresetSeats ? StepID.WELCOME : StepID.PAYMENT;
     default:
       return StepID.WELCOME;
   }
@@ -94,11 +83,11 @@ export const getNumberOfSteps = ({
       return !hasWorkspaces || isAdminOfEnterprisePlan || IS_PRIVATE_CLOUD ? 2 : 3;
     case SpecificFlowType.login_creator_new:
     case SpecificFlowType.login_student_new:
-      return 5;
+      return 4;
     case SpecificFlowType.login_vanilla_new:
-      return 4;
+      return 3;
     default:
-      return 4;
+      return 3;
   }
 };
 

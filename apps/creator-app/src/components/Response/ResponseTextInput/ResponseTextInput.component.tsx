@@ -3,13 +3,17 @@ import type { SlateEditorRef } from '@voiceflow/ui-next/build/cjs/components/Inp
 import React, { useMemo } from 'react';
 
 import { MarkupInputWithVariables } from '@/components/MarkupInput/MarkupInputWithVariables/MarkupInputWithVariables';
+import { ALL_URLS_REGEX } from '@/utils/string.util';
 
 import type { IResponseTextInput } from './ResponseTextInput.interface';
 
 export const ResponseTextInput = forwardRef<SlateEditorRef, IResponseTextInput>('ResponseTextInput')(
   ({ toolbar, placeholder = { default: 'Enter agent response', focused: '‘{‘ to add variable' }, canCreateVariables = true, ...props }, ref) => {
     const pluginsOptions = useMemo<SlateEditor.ISlateEditor['pluginsOptions']>(
-      () => ({ [SlateEditor.PluginType.VARIABLE]: { canCreate: canCreateVariables } }),
+      () => ({
+        [SlateEditor.PluginType.LINK]: { regexp: ALL_URLS_REGEX, isURL: (str) => str.match(ALL_URLS_REGEX) !== null },
+        [SlateEditor.PluginType.VARIABLE]: { canCreate: canCreateVariables },
+      }),
       [canCreateVariables]
     );
 

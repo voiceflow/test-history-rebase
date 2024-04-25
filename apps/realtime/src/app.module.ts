@@ -203,6 +203,7 @@ import { WorkflowModule } from './workflow/workflow.module';
         buckets: {
           image: env.S3_IMAGE_BUCKET,
           backup: env.S3_PROJECT_BACKUPS_BUCKET,
+          kb_document: env.S3_KNOWLEDGE_BASE_BUCKET,
         },
         endpoint: env.S3_ENDPOINT,
         accessKeyID: env.S3_ACCESS_KEY_ID,

@@ -22,8 +22,17 @@ export class KnowledgeBaseORM extends ProjectORM {
 
   async findOneDocument(projectID: string, documentID: string): Promise<VersionKnowledgeBaseDocument | undefined> {
     const project = await this.findOneOrFail(projectID, { fields: [KnowledgeBaseORM.KNOWLEDGE_BASE_DATA_PATH] });
-
     return project?.knowledgeBase?.documents?.[documentID];
+  }
+
+  async findManyDocuments(projectID: string, documentIDs: string[]): Promise<VersionKnowledgeBaseDocument[]> {
+    const project = await this.findOneOrFail(projectID, { fields: [KnowledgeBaseORM.KNOWLEDGE_BASE_DATA_PATH] });
+
+    return project?.knowledgeBase?.documents
+      ? Object.values(project.knowledgeBase.documents).filter(
+          ({ documentID }) => !!documentID && documentIDs.includes(documentID)
+        )
+      : [];
   }
 
   async findAllDocuments(projectID: string): Promise<VersionKnowledgeBaseDocument[]> {

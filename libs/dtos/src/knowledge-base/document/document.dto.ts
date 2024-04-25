@@ -1,31 +1,23 @@
 import { z } from 'zod';
 
-import { CMSObjectResourceDTO } from '@/common';
-
+import { KBDocumentChunkDTO } from './document-chunk.dto';
 import { KBDocumentDataDTO } from './document-data.dto';
 import { KnowledgeBaseDocumentStatus } from './document-status.enum';
 
-export const KnowledgeBaseDocumentDTO = CMSObjectResourceDTO.partial({
-  updatedAt: true,
-  updatedByID: true,
-}).extend({
-  creatorID: z.string(),
+export const KnowledgeBaseDocumentDTO = z.object({
+  updatedAt: z.string().datetime().optional(),
+  creatorID: z.number(),
   documentID: z.string(),
   s3ObjectRef: z.string(),
   version: z.number().optional(),
   tags: z.array(z.string()).optional(),
-  status: z.nativeEnum(KnowledgeBaseDocumentStatus),
-  statusData: z.unknown(),
+  status: z.object({
+    type: z.nativeEnum(KnowledgeBaseDocumentStatus),
+    data: z.unknown(),
+  }),
   folderID: z.string().nullable(),
-  data: KBDocumentDataDTO,
-  chunks: z
-    .array(
-      z.object({
-        chunkID: z.string(),
-        content: z.string(),
-      })
-    )
-    .optional(),
+  data: KBDocumentDataDTO.nullable(),
+  chunks: z.array(KBDocumentChunkDTO).optional(),
 });
 
 export type KnowledgeBaseDocument = z.infer<typeof KnowledgeBaseDocumentDTO>;

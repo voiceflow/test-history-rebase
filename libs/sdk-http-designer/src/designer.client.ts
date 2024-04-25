@@ -8,10 +8,10 @@ import {
   BillingSubscriptionClient,
   EnvironmentClient,
   FunctionClient,
+  KnowledgeBaseDocumentClient,
   OrganizationClient,
   PrivateAssistantClient,
   PrivateEnvironmentClient,
-  PrivateKnowledgeBaseDocumentClient,
   PrivateProjectClient,
   PrivatePrototypeProgramClient,
   ProjectClient,
@@ -33,13 +33,14 @@ export class DesignerClient extends BaseClient('https://realtime-api.voiceflow.c
     subscription: BillingSubscriptionClient,
   }),
 
+  knowledgeBase: NestedClient({
+    document: KnowledgeBaseDocumentClient,
+  }),
+
   private: NestedClient({
     project: PrivateProjectClient,
     assistant: PrivateAssistantClient,
     environment: PrivateEnvironmentClient,
     prototypeProgram: PrivatePrototypeProgramClient,
-    knowledgeBase: NestedClient({
-      document: PrivateKnowledgeBaseDocumentClient,
-    }),
   }),
 }) {}

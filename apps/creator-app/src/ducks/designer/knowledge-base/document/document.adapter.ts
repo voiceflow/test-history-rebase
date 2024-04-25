@@ -1,3 +1,5 @@
+import { BaseModels } from '@voiceflow/base-types';
+import { KBDocumentData, KnowledgeBaseDocument as RealtimeKnowledgeBaseDocument } from '@voiceflow/dtos';
 import { createMultiAdapter } from 'bidirectional-adapter';
 
 import { DBKnowledgeBaseDocument, KnowledgeBaseDocument } from '@/models/KnowledgeBase.model';
@@ -14,6 +16,24 @@ export const documentAdapter = createMultiAdapter<DBKnowledgeBaseDocument, Knowl
   ({ id, data, status, statusData, ...rest }) => ({
     ...rest,
     data,
+    status: { type: status, data: statusData },
+    documentID: id,
+  })
+);
+
+export const documentAdapterRealtime = createMultiAdapter<RealtimeKnowledgeBaseDocument, KnowledgeBaseDocument>(
+  ({ data, status, updatedAt, ...rest }) => ({
+    ...rest,
+    updatedAt: updatedAt || new Date().toString(),
+    id: rest.documentID,
+    data: data as BaseModels.Project.KnowledgeBaseDocument['data'] | null,
+    status: status.type as BaseModels.Project.KnowledgeBaseDocumentStatus,
+    folderID: null,
+    statusData: status.data,
+  }),
+  ({ id, data, status, statusData, ...rest }) => ({
+    ...rest,
+    data: data as KBDocumentData,
     status: { type: status, data: statusData },
     documentID: id,
   })

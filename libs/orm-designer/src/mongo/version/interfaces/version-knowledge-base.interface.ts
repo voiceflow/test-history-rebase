@@ -1,10 +1,10 @@
 import type {
+  KnowledgeBaseDocument,
   VersionKnowledgeBase as BaseVersionKnowledgeBase,
-  VersionKnowledgeBaseDocument as BaseVersionKnowledgeBaseDocument,
   VersionKnowledgeBaseSetFaq as BaseVersionKnowledgeBaseSetFaq,
 } from '@voiceflow/dtos';
 
-export interface VersionKnowledgeBaseDocument extends Omit<BaseVersionKnowledgeBaseDocument, 'updatedAt'> {
+export interface VersionKnowledgeBaseDocument extends Omit<KnowledgeBaseDocument, 'updatedAt'> {
   updatedAt?: Date;
 }
 

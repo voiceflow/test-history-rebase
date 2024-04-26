@@ -1,15 +1,23 @@
-sonar
-coverage
-.idea
-.turbo
-build
-.nyc_output
-node_modules/
+*.log
 CHANGELOG.md
-yarn.lock
-*.properties
-.depcheckrc
-.eslintignore
-.prettierignore
-.eslintoutputrc
-.circleci
+
+# Node
+node_modules
+
+# TypeScript
+build
+
+# Yarn
+.pnp.*
+.yarn
+*.lock
+
+# Coverage
+sonar
+
+# Tests
+*.report.xml
+
+# OpenAPI
+openapi.*.json
+openapi.json

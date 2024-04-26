@@ -97,12 +97,5 @@
     "clean": {
       "cache": false
     }
-  },
-  "globalDependencies": [
-    "meta/eslint-config/*.js",
-    "meta/jest-config/*.js",
-    "meta/prettier-config/*.js",
-    "meta/swc-config/*.json",
-    "meta/typescript-config/*.json"
-  ]
+  }
 }

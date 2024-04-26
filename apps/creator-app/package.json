@@ -252,7 +252,7 @@
     "vitest-fetch-mock": "^0.2.2"
   },
   "engines": {
-    "node": "16.20"
+    "node": "20"
   },
   "volta": {
     "extends": "../../package.json"

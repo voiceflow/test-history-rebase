@@ -4,11 +4,10 @@
     "module": "commonjs",
     "declaration": true,
     "baseUrl": ".",
-    "rootDir": "src",
     "outDir": "build/common",
     "paths": {
       "@realtime-sdk/*": ["src/*"]
     }
   },
-  "include": ["src/**/*", "typings/**/*"]
+  "include": ["src", "typings"]
 }

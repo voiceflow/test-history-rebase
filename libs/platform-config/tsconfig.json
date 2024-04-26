@@ -1,11 +1,12 @@
 {
-  "extends": "@voiceflow/tsconfig/web.json",
+  "extends": "@voiceflow/tsconfig",
   "compilerOptions": {
     "target": "es2017",
     "checkJs": false,
     "skipLibCheck": true,
     "downlevelIteration": true,
     "allowJs": true,
+    "jsx": "react-jsx",
     "baseUrl": ".",
     "exactOptionalPropertyTypes": false,
     "paths": {
@@ -16,5 +17,5 @@
     },
     "types": ["login-with-amazon-sdk-browser"]
   },
-  "exclude": ["node_modules/jest", "node_modules/**/*", "build/**/*", "coverage/**/*", "svgr.config.js"]
+  "exclude": ["node_modules", "build"]
 }

@@ -10,6 +10,5 @@
       "@voiceflow/socket-utils": ["../../node_modules/@voiceflow/socket-utils"],
       "@/*": ["src/*"]
     }
-  },
-  "exclude": ["node_modules/**/*", "build/**/*"]
+  }
 }

@@ -1,5 +1,4 @@
 {
-  "name": "boot",
   "private": true,
   "workspaces": {
     "packages": [
@@ -98,10 +97,10 @@
     "test:unit": "turbo run test:unit --concurrency=2",
     "types": "turbo run types"
   },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
+  "commitlint": {
+    "extends": [
+      "@voiceflow/commitlint-config"
+    ]
   },
   "prettier": "@voiceflow/prettier-config",
   "resolutions": {
@@ -115,13 +114,8 @@
   },
   "devDependencies": {
     "@commitlint/cli": "17.6.3",
-    "@istanbuljs/nyc-config-typescript": "1.0.2",
-    "@types/chai": "4.3.11",
-    "@types/chai-as-promised": "7.1.8",
     "@types/deep-equal-in-any-order": "1.0.3",
     "@types/mock-require": "2.0.1",
-    "@types/sinon": "10.0.14",
-    "@types/sinon-chai": "3.2.9",
     "@vitest/coverage-c8": "0.31.0",
     "@voiceflow/babel-preset": "1.1.1",
     "@voiceflow/commitlint-config": "2.1.0",
@@ -132,20 +126,12 @@
     "@voiceflow/semantic-release-config": "1.2.0",
     "@voiceflow/tsconfig": "1.4.8",
     "@voiceflow/vite-config": "1.11.0",
-    "chai": "4.3.7",
-    "chai-as-promised": "7.1.1",
     "clean-package": "^2.2.0",
-    "commitizen": "4.3.0",
-    "cz-conventional-changelog": "3.3.0",
     "deep-equal-in-any-order": "2.0.6",
-    "depcheck": "1.4.3",
     "dependency-cruiser": "12.12.1",
     "eslint": "8.40.0",
-    "eslint-output": "^3.0.1",
     "husky": "8.0.3",
     "lint-staged": "13.1.2",
-    "mocha": "10.2.0",
-    "mocha-suite": "1.0.11",
     "mock-require": "3.0.3",
     "node-dev": "8.0.0",
     "nodemon": "2.0.22",
@@ -154,8 +140,6 @@
     "orval": "6.17.0",
     "prettier": "2.8.8",
     "rimraf": "3.0.2",
-    "sinon": "15.0.4",
-    "sinon-chai": "3.7.0",
     "ts-loader": "9.4.2",
     "ts-mocha": "10.0.0",
     "tsc-alias": "1.8.6",
@@ -167,10 +151,10 @@
   },
   "packageManager": "yarn@3.2.1",
   "engines": {
-    "node": "16.20"
+    "node": "20"
   },
   "volta": {
-    "node": "16.20.0",
+    "node": "20.12.1",
     "yarn": "3.2.1"
   }
 }

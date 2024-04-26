@@ -15,10 +15,6 @@
     "test:dependencies": "yarn g:depcheck",
     "test:e2e": "yarn cypress:run --env split=true"
   },
-  "prettier": "@voiceflow-meta/prettier-config",
-  "eslintConfig": {
-    "extends": "@voiceflow-meta/eslint-config"
-  },
   "dependencies": {
     "@4tw/cypress-drag-drop": "^2.2.5",
     "@voiceflow/cypress-common": "1.2.7",
@@ -33,13 +29,8 @@
     "cypress-split": "1.19.0",
     "cypress-wait-until": "2.0.1"
   },
-  "devDependencies": {
-    "@voiceflow-meta/eslint-config": "workspace:*",
-    "@voiceflow-meta/prettier-config": "workspace:*",
-    "@voiceflow-meta/typescript-config": "workspace:*"
-  },
   "engines": {
-    "node": "16.20"
+    "node": "20"
   },
   "volta": {
     "extends": "../../package.json"

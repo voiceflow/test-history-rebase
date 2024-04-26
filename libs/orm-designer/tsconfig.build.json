@@ -5,5 +5,5 @@
     "module": "commonjs",
     "outDir": "build"
   },
-  "include": ["src", "types"]
+  "include": ["src"]
 }

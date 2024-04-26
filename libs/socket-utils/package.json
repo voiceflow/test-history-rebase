@@ -54,7 +54,7 @@
     "axios": "0.24.0"
   },
   "engines": {
-    "node": "16.20"
+    "node": "20"
   },
   "volta": {
     "extends": "../../package.json"

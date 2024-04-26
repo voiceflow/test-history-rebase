@@ -47,8 +47,8 @@
     }
   },
   "files": [
-    ".mikro-orm/",
-    "build/"
+    ".mikro-orm",
+    "build"
   ],
   "scripts": {
     "prebuild": "yarn g:rimraf build",
@@ -76,10 +76,6 @@
     "test:dependencies": "yarn g:depcheck",
     "test:types": "yarn g:tsd"
   },
-  "prettier": "@voiceflow-meta/prettier-config",
-  "eslintConfig": {
-    "extends": "@voiceflow-meta/eslint-config"
-  },
   "dependencies": {
     "@mikro-orm/core": "5.9.4",
     "@mikro-orm/migrations": "5.9.4",
@@ -96,9 +92,6 @@
     "@mikro-orm/entity-generator": "5.9.4",
     "@mikro-orm/nestjs": "5.2.2",
     "@nestjs/common": "9.4.3",
-    "@voiceflow-meta/eslint-config": "workspace:*",
-    "@voiceflow-meta/prettier-config": "workspace:*",
-    "@voiceflow-meta/typescript-config": "workspace:*",
     "@voiceflow/exception": "1.5.3",
     "mongodb-mikro": "npm:mongodb@5.8.1"
   },
@@ -108,13 +101,10 @@
     "@voiceflow/exception": "^1"
   },
   "engines": {
-    "node": "16.20"
+    "node": "20"
   },
   "volta": {
     "extends": "../../package.json"
   },
-  "stableVersion": "1.34.2",
-  "tsd": {
-    "directory": "src"
-  }
+  "stableVersion": "1.34.2"
 }

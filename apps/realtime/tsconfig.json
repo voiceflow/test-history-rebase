@@ -5,7 +5,6 @@
     "skipLibCheck": true,
     "exactOptionalPropertyTypes": false,
     "baseUrl": ".",
-    "rootDir": ".",
     "outDir": "build",
     "noUnusedLocals": true,
     "paths": {
@@ -13,5 +12,5 @@
     },
     "noErrorTruncation": true
   },
-  "exclude": ["node_modules/**/*", "build/**/*", "test/**/*.d.ts"]
+  "exclude": ["node_modules", "build"]
 }

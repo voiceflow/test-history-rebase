@@ -4,6 +4,9 @@
   "type": "module",
   "main": "build/main.js",
   "types": "build/main.d.ts",
+  "files": [
+    "build"
+  ],
   "scripts": {
     "prebuild": "yarn g:rimraf build",
     "build": "yarn prebuild && yarn g:tsc -p tsconfig.build.json && yarn g:tsc-alias -p tsconfig.build.json && yarn postbuild",
@@ -16,29 +19,17 @@
     "test:dependencies": "yarn g:depcheck",
     "test:types": "yarn g:tsd"
   },
-  "prettier": "@voiceflow-meta/prettier-config",
-  "eslintConfig": {
-    "extends": "@voiceflow-meta/eslint-config"
-  },
   "dependencies": {
     "@voiceflow/base-types": "2.106.0",
     "@voiceflow/common": "8.2.8",
     "@voiceflow/dtos": "workspace:*",
     "@voiceflow/realtime-sdk": "workspace:*"
   },
-  "devDependencies": {
-    "@voiceflow-meta/eslint-config": "workspace:*",
-    "@voiceflow-meta/prettier-config": "workspace:*",
-    "@voiceflow-meta/typescript-config": "workspace:*"
-  },
   "engines": {
-    "node": "16.20"
+    "node": "20"
   },
   "volta": {
     "extends": "../../package.json"
   },
-  "stableVersion": "1.35.0",
-  "tsd": {
-    "directory": "src"
-  }
+  "stableVersion": "1.35.0"
 }

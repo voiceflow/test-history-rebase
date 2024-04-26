@@ -3,11 +3,10 @@
   "compilerOptions": {
     "module": "commonjs",
     "declaration": true,
-    "rootDir": "src",
     "outDir": "build/common",
     "paths": {
       "@platform-config/*": ["src/*"]
     }
   },
-  "include": ["src/**/*", "typings/**/*"]
+  "include": ["src"]
 }

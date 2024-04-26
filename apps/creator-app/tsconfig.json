@@ -1,5 +1,5 @@
 {
-  "extends": "@voiceflow/tsconfig/web.json",
+  "extends": "@voiceflow/tsconfig",
   "compilerOptions": {
     "allowJs": true,
     "checkJs": false,
@@ -7,6 +7,7 @@
     "lib": ["es2019", "dom", "es2020.string", "dom.iterable"],
     "baseUrl": "..",
     "outDir": "build",
+    "jsx": "react-jsx",
     "exactOptionalPropertyTypes": false,
     "noErrorTruncation": true,
     "paths": {
@@ -25,6 +26,5 @@
     },
     "types": ["gapi", "gapi.auth2", "resize-observer-browser", "dayjs/plugin/relativeTime", "dayjs/plugin/minMax", "login-with-amazon-sdk-browser"]
   },
-  "include": ["src/**/*", "typings/**/*"],
-  "exclude": ["node_modules/**/*", "build/**/*"]
+  "exclude": ["node_modules", "build"]
 }

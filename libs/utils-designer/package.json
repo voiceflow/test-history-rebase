@@ -30,10 +30,6 @@
     "test:dependencies": "depcheck",
     "test:types": "yarn g:tsd"
   },
-  "prettier": "@voiceflow-meta/prettier-config",
-  "eslintConfig": {
-    "extends": "@voiceflow-meta/eslint-config"
-  },
   "dependencies": {
     "@voiceflow/common": "8.2.8",
     "@voiceflow/dtos": "workspace:*",
@@ -41,18 +37,10 @@
     "ts-pattern": "^5.0.5",
     "zod": "3.22.4"
   },
-  "devDependencies": {
-    "@voiceflow-meta/eslint-config": "workspace:*",
-    "@voiceflow-meta/prettier-config": "workspace:*",
-    "@voiceflow-meta/typescript-config": "workspace:*"
-  },
   "engines": {
-    "node": "16.20"
+    "node": "20"
   },
   "volta": {
     "extends": "../../package.json"
-  },
-  "tsd": {
-    "directory": "src"
   }
 }

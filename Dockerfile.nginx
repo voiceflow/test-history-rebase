@@ -54,16 +54,11 @@ FROM nginx:stable AS runner
 
 ARG APP_NAME
 
-WORKDIR /usr/src/app
+WORKDIR /var/www
 
-COPY --from=installer /app .
-
-WORKDIR /usr/src/app/apps/${APP_NAME}
-
-RUN cp -R ./build /var/www
-RUN cp ./config/start.sh /var/www
-RUN cp ./config/locations.nginx.conf /etc/nginx/locations.nginx.conf
-RUN cp ./config/nginx.conf /etc/nginx/conf.d/default.template
+COPY --from=installer /app/apps/${APP_NAME}/build/ /var/www/
+COPY --from=installer /app/apps/${APP_NAME}/config/start.sh /var/www/
+COPY --from=installer /app/apps/${APP_NAME}/config/locations.nginx.conf /etc/nginx/locations.nginx.conf
+COPY --from=installer /app/apps/${APP_NAME}/config/nginx.conf /etc/nginx/conf.d/default.template
 
 ENTRYPOINT [ "/var/www/start.sh" ]
-

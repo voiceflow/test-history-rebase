@@ -66,7 +66,7 @@
     "@voiceflow-meta/prettier-config": "workspace:*",
     "@voiceflow-meta/typescript-config": "workspace:*",
     "nestjs-zod": "2.2.0",
-    "undici": "5.22.0"
+    "undici": "5.28.4"
   },
   "peerDependencies": {
     "@nestjs/common": "^9",

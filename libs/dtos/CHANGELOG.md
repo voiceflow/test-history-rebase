@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.60.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.60.0...@voiceflow/dtos@1.60.1) (2024-04-26)
+
+### Bug Fixes
+
+* make folderID optional (COR-1974) [bugfix] ([#8039](https://github.com/voiceflow/creator-app/issues/8039)) ([287217c](https://github.com/voiceflow/creator-app/commit/287217c9ccd1855c4c20a77d8805d5b2965ff826))
+
 # [1.60.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.59.0...@voiceflow/dtos@1.60.0) (2024-04-26)
 
 ### Features

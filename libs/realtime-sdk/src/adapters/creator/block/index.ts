@@ -13,7 +13,6 @@ import blockDataAdapter from './block';
 import { chatBlockAdapter } from './chat';
 import { dialogflowAdapter, dialogflowOutPortAdapter, dialogflowOutPortAdapterV2 } from './dialogflow';
 import { generalBlockAdapter } from './general';
-import { googleBlockAdapter, googleOutPortAdapter, googleOutPortAdapterV2 } from './google';
 import invalidPlatformAdapter from './invalidPlatform';
 import markupImageAdapter from './markupImage';
 import markupTextAdapter from './markupText';
@@ -49,7 +48,6 @@ export const DB_BLOCK_TYPE_FROM_APP: Partial<Record<BlockType, string | ((data: 
 const getPlatformAdapter = createPlatformAndProjectTypeSelector<Partial<Record<BlockType, unknown>>>(
   {
     [Platform.Constants.PlatformType.ALEXA]: alexaBlockAdapter,
-    [Platform.Constants.PlatformType.GOOGLE]: googleBlockAdapter,
     [`${Platform.Constants.PlatformType.DIALOGFLOW_ES}:${Platform.Constants.ProjectType.CHAT}`]: { ...chatBlockAdapter, ...dialogflowAdapter },
     [`${Platform.Constants.PlatformType.DIALOGFLOW_ES}:${Platform.Constants.ProjectType.VOICE}`]: dialogflowAdapter,
     [Platform.Constants.ProjectType.CHAT]: chatBlockAdapter,
@@ -73,23 +71,19 @@ const commonBlockAdapter = {
   [BlockType.MARKUP_VIDEO]: markupVideoAdapter,
 };
 
-const getPlatformOutPortsAdapter = createPlatformSelector<
-  typeof alexaOutPortAdapter | typeof googleOutPortAdapter | typeof baseOutPortAdapter | typeof dialogflowOutPortAdapter
->(
+const getPlatformOutPortsAdapter = createPlatformSelector<typeof alexaOutPortAdapter | typeof baseOutPortAdapter | typeof dialogflowOutPortAdapter>(
   {
     [Platform.Constants.PlatformType.ALEXA]: alexaOutPortAdapter,
-    [Platform.Constants.PlatformType.GOOGLE]: googleOutPortAdapter,
     [Platform.Constants.PlatformType.DIALOGFLOW_ES]: dialogflowOutPortAdapter,
   },
   baseOutPortAdapter
 );
 
 const getPlatformOutPortsAdapterV2 = createPlatformSelector<
-  typeof alexaOutPortAdapterV2 | typeof googleOutPortAdapterV2 | typeof baseOutPortAdapterV2 | typeof dialogflowOutPortAdapterV2
+  typeof alexaOutPortAdapterV2 | typeof baseOutPortAdapterV2 | typeof dialogflowOutPortAdapterV2
 >(
   {
     [Platform.Constants.PlatformType.ALEXA]: alexaOutPortAdapterV2,
-    [Platform.Constants.PlatformType.GOOGLE]: googleOutPortAdapterV2,
     [Platform.Constants.PlatformType.DIALOGFLOW_ES]: dialogflowOutPortAdapterV2,
   },
   baseOutPortAdapterV2

@@ -15,7 +15,7 @@ export const KnowledgeBaseDocumentDTO = z.object({
     type: z.nativeEnum(KnowledgeBaseDocumentStatus),
     data: z.unknown(),
   }),
-  folderID: z.string().nullable(),
+  folderID: z.string().nullable().optional(),
   data: KBDocumentDataDTO.nullable(),
   chunks: z.array(KBDocumentChunkDTO).optional(),
 });

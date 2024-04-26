@@ -17,9 +17,9 @@
   },
   "dependencies": {
     "@4tw/cypress-drag-drop": "2.2.5",
-    "@voiceflow/cypress-common": "1.2.7",
-    "@voiceflow/cypress-page-objects": "1.4.1",
-    "@voiceflow/test-common": "1.10.3",
+    "@voiceflow/cypress-common": "1.2.8",
+    "@voiceflow/cypress-page-objects": "1.4.2",
+    "@voiceflow/test-common": "1.11.0",
     "cy-verify-downloads": "0.2.3",
     "cypress": "13.4.0",
     "cypress-delete-downloads-folder": "0.0.4",

@@ -24,11 +24,7 @@
     }
   ],
   "build_all_services": false,
-  "packages_to_build": [
-    "realtime-sdk",
-    "creator-app",
-    "realtime"
-  ],
+  "packages_to_build": ["realtime-sdk", "creator-app", "realtime"],
   "branch": "trying",
   "pr_branch": "joshr/new-e2e-system/IN-707",
   "common_orb_version": "0.62.2",

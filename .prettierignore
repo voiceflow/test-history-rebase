@@ -21,3 +21,10 @@ sonar
 # OpenAPI
 openapi.*.json
 openapi.json
+
+# MikroORM
+.mikro-orm
+.snapshot-main.json
+
+# Templates
+**/templates/*.json

@@ -43,7 +43,14 @@
     },
     "schema:generate": {
       "outputs": ["openapi.next.json", ".env.local"],
-      "inputs": ["src/**", ":!src/**/*.test.ts", "package.json", "tsconfig.json", "tsconfig.build.json", "tsconfig.build.*.json"]
+      "inputs": [
+        "src/**",
+        ":!src/**/*.test.ts",
+        "package.json",
+        "tsconfig.json",
+        "tsconfig.build.json",
+        "tsconfig.build.*.json"
+      ]
     },
     "schema:validate": {
       "outputs": ["openapi.json"],

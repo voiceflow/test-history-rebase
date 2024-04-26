@@ -119,7 +119,7 @@
     "ts-pattern": "^5.0.5",
     "type-fest": "4.2.0",
     "typescript-fsa": "3.0.0",
-    "undici": "5.23.0",
+    "undici": "5.28.4",
     "unleash-client": "5.0.0",
     "utility-types": "3.10.0",
     "zod": "3.22.4"

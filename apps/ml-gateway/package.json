@@ -69,7 +69,7 @@
     "nestjs-throttler-storage-redis": "^0.4.1",
     "nestjs-zod": "2.3.3",
     "reflect-metadata": "0.1.13",
-    "undici": "5.23.0",
+    "undici": "5.28.4",
     "zod": "3.22.4"
   },
   "devDependencies": {

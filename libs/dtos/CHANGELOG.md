@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.60.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.59.0...@voiceflow/dtos@1.60.0) (2024-04-26)
+
+### Features
+
+* updating request types and dtos (PL-958) ([#8030](https://github.com/voiceflow/creator-app/issues/8030)) ([2caae2d](https://github.com/voiceflow/creator-app/commit/2caae2d97bd3c3973a2eddd3d434421ef9dbede5))
+
 # [1.59.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.58.0...@voiceflow/dtos@1.59.0) (2024-04-25)
 
 ### Features

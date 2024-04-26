@@ -4,22 +4,24 @@ import { AxiosError } from 'axios';
 import React from 'react';
 
 import { createChargebeeTokenURLEndpoint } from '@/client/billing';
-import * as Organization from '@/ducks/organization';
-import { useSelector } from '@/hooks';
+import { Organization, Session } from '@/ducks';
+import { useSelector } from '@/hooks/store.hook';
 import { openURLInTheSameTab } from '@/utils/window';
 
 import manager from '../../manager';
 import { PURCHASE_OPTIONS } from './constants';
 
-export interface Props {
-  workspaceID: string;
+export interface ITokenPurchase {
+  workspaceID?: string;
 }
 
-const Purchase = manager.create<Props>('TokensPurchase', () => ({ api, type, opened, hidden, animated, workspaceID }) => {
+const Purchase = manager.create<ITokenPurchase>('TokensPurchase', () => ({ api, type, opened, hidden, animated, workspaceID }) => {
   const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
+  const activeWorkspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
+
   const [option, setOption] = React.useState<Nullish<(typeof PURCHASE_OPTIONS)[number]>>(null);
   const [loading, setLoading] = React.useState(false);
-  const chargebeeTokenURLEndpoint = createChargebeeTokenURLEndpoint(workspaceID, subscription?.customerID);
+  const chargebeeTokenURLEndpoint = createChargebeeTokenURLEndpoint(workspaceID ?? activeWorkspaceID, subscription?.customerID);
 
   const getChargebeeRedirectURL = () => {
     const { href } = window.location;

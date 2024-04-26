@@ -6,18 +6,21 @@ import React from 'react';
 
 import { AssistantExportPopper } from '@/components/Assistant/AssistantExportPopper/AssistantExportPopper.component';
 import { AssistantSharePrototypePopper } from '@/components/Assistant/AssistantSharePrototypePopper/AssistantSharePrototypePopper.component';
+import { useIsAIFeaturesEnabled } from '@/hooks/ai.hook';
 import { useFeature } from '@/hooks/feature';
 import { useOnLinkClick } from '@/hooks/navigation.hook';
 import { useLogoButtonOptions } from '@/pages/Project/components/Header/hooks';
 
 import { useAssistantNavigationHotkeys, useAssistantNavigationItems, useAssistantNavigationLogoItems } from './AssistantNavigation.hook';
 import { AssistantNavigationHelpItem } from './AssistantNavigationHelpItem.component';
+import { AssistantNavigationTokenUsage } from './AssistantNavigationTokenUsage.component';
 
 export const AssistantNavigation: React.FC = () => {
   const TEST_ID = 'assistant-navigation';
 
   const onLinkClick = useOnLinkClick();
   const cmsWorkflows = useFeature(FeatureFlag.CMS_WORKFLOWS);
+  const isAIFeaturesEnabled = useIsAIFeaturesEnabled();
 
   const items = useAssistantNavigationItems();
   const logoItems = useAssistantNavigationLogoItems();
@@ -82,6 +85,8 @@ export const AssistantNavigation: React.FC = () => {
       </PrimaryNavigation.Section>
 
       <PrimaryNavigation.Section>
+        {isAIFeaturesEnabled && <AssistantNavigationTokenUsage testID={tid(TEST_ID, 'tokens-usage')} />}
+
         <AssistantNavigationHelpItem testID={tid(TEST_ID, 'help')} />
       </PrimaryNavigation.Section>
     </PrimaryNavigation>

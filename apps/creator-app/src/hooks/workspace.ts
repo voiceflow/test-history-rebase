@@ -1,3 +1,6 @@
+import { QuotaNames } from '@voiceflow/realtime-sdk';
+import { useMemo } from 'react';
+
 import { LimitType } from '@/constants/limits';
 import * as Organization from '@/ducks/organization';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
@@ -45,5 +48,16 @@ export const useOnAddSeats = () => {
     } else {
       upgradeModal.open(limitConfig.upgradeModal(limitConfig.payload));
     }
+  };
+};
+
+export const useActiveWorkspaceTokenUsage = () => {
+  const workspace = useActiveWorkspace();
+
+  const quotaData = useMemo(() => workspace?.quotas?.find((quota: any) => quota.quotaDetails.name === QuotaNames.TOKENS), [workspace?.quotas]);
+
+  return {
+    quota: quotaData?.quota ?? 0,
+    consumed: quotaData?.consumed ?? 0,
   };
 };

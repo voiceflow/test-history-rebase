@@ -10212,7 +10212,7 @@ __metadata:
     reflect-metadata: 0.1.13
     supertest: 6.3.3
     tsx: 3.12.7
-    undici: 5.23.0
+    undici: 5.28.4
     zod: 3.22.4
   languageName: unknown
   linkType: soft
@@ -10655,7 +10655,7 @@ __metadata:
     tsx: 3.12.7
     type-fest: 4.2.0
     typescript-fsa: 3.0.0
-    undici: 5.23.0
+    undici: 5.28.4
     unleash-client: 5.0.0
     utility-types: 3.10.0
     zod: 3.22.4
@@ -10862,7 +10862,7 @@ __metadata:
     "@voiceflow/realtime": "workspace:*"
     "@voiceflow/sdk-common": 1.11.3
     nestjs-zod: 2.2.0
-    undici: 5.22.0
+    undici: 5.28.4
   peerDependencies:
     "@nestjs/common": ^9
     nestjs-zod: ^2
@@ -10892,7 +10892,7 @@ __metadata:
     "@voiceflow/orval-fetch": 1.3.0
     "@voiceflow/sdk-common": 1.11.3
     nestjs-zod: 2.2.0
-    undici: 5.22.0
+    undici: 5.28.4
   peerDependencies:
     "@nestjs/common": ^9
     nestjs-zod: ^2
@@ -33535,12 +33535,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"undici@npm:5.23.0":
-  version: 5.23.0
-  resolution: "undici@npm:5.23.0"
+"undici@npm:5.28.4":
+  version: 5.28.4
+  resolution: "undici@npm:5.28.4"
   dependencies:
-    busboy: ^1.6.0
-  checksum: 906ca4fb1d47163d2cee2ecbbc664a1d92508a2cdf1558146621109f525c983a83597910b36e6ba468240e95259be5939cea6babc99fc0c36360b16630f66784
+    "@fastify/busboy": ^2.0.0
+  checksum: a8193132d84540e4dc1895ecc8dbaa176e8a49d26084d6fbe48a292e28397cd19ec5d13bc13e604484e76f94f6e334b2bdc740d5f06a6e50c44072818d0c19f9
   languageName: node
   linkType: hard
 

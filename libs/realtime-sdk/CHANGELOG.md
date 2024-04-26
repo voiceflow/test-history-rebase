@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.384.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.384.2...@voiceflow/realtime-sdk@1.384.3) (2024-04-26)
+
+### Bug Fixes
+
+* remove google adapters (COR-1966) ([#8019](https://github.com/voiceflow/creator-app/issues/8019)) ([808af57](https://github.com/voiceflow/creator-app/commit/808af57c0922354ff1e89d2f87810f1897e76498))
+
 ## [1.384.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.384.1...@voiceflow/realtime-sdk@1.384.2) (2024-04-26)
 
 **Note:** Version bump only for package @voiceflow/realtime-sdk

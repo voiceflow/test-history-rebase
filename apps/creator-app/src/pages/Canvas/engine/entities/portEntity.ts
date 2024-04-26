@@ -1,4 +1,4 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { BlockType } from '@/constants';
@@ -7,7 +7,8 @@ import { EngineContext } from '@/pages/Canvas/contexts/EngineContext';
 
 import type Engine from '..';
 import { EntityType } from '../constants';
-import { EntityInstance, isDirectlyEqual, ResourceEntity } from './entity';
+import type { EntityInstance } from './entity';
+import { isDirectlyEqual, ResourceEntity } from './entity';
 
 export type PortInstance = EntityInstance & {
   /**
@@ -64,13 +65,20 @@ class PortEntity extends ResourceEntity<Realtime.Port, PortInstance> {
     return this.resolveLink()?.target.nodeID ?? null;
   }
 
-  constructor(engine: Engine, public portID: string) {
+  constructor(
+    engine: Engine,
+    public portID: string
+  ) {
     super(EntityType.PORT, engine, engine.log.child('port', portID.slice(-6)));
 
     this.log.debug(this.log.init('constructed port'), this.log.slug(portID));
   }
 
-  useLinkSubscription<T>(id: string, selector: () => T, isEqual: (lhs: T | null, rhs: T | null) => boolean = isDirectlyEqual) {
+  useLinkSubscription<T>(
+    id: string,
+    selector: () => T,
+    isEqual: (lhs: T | null, rhs: T | null) => boolean = isDirectlyEqual
+  ) {
     let prevState: T | null = null;
 
     return this.engine.dispatcher.useSubscription(EntityType.LINK, id, (isForced) => {

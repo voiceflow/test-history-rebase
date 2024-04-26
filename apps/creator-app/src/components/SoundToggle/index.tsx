@@ -1,4 +1,4 @@
-import * as Platform from '@voiceflow/platform-config';
+import type * as Platform from '@voiceflow/platform-config';
 import { Utils } from '@voiceflow/realtime-sdk';
 import { ButtonVariant, preventDefault, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
@@ -14,7 +14,14 @@ interface SoundToggleProps {
   preventButtonDefault?: boolean;
 }
 
-const SoundToggle: React.FC<SoundToggleProps> = ({ projectType, isMuted, size = 16, onClick, preventButtonDefault = false, isMobile }) => {
+const SoundToggle: React.FC<SoundToggleProps> = ({
+  projectType,
+  isMuted,
+  size = 16,
+  onClick,
+  preventButtonDefault = false,
+  isMobile,
+}) => {
   const canSeeToggle = Utils.typeGuards.isVoiceProjectType(projectType);
 
   if (!canSeeToggle) return null;

@@ -1,7 +1,7 @@
 import { Badge, BlockText, Box, Button, Link, Modal } from '@voiceflow/ui';
 import React from 'react';
 
-import { UpgradePrompt } from '@/ducks/tracking';
+import type { UpgradePrompt } from '@/ducks/tracking';
 import { useTrackingEvents } from '@/hooks/tracking';
 import { onOpenBookDemoPage } from '@/utils/upgrade';
 

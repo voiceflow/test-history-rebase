@@ -119,7 +119,9 @@ const SettingsBackups: React.FC = () => {
   const handlePreview = async (backup: BackupEntity) => {
     const { versionID } = await designerClient.backup.previewOne(projectID, backup.id);
 
-    openURLInANewTab(`${window.location.origin}${generatePath(cmsWorkflows.isEnabled ? Path.PROJECT_CANVAS : Path.PROJECT_DOMAIN, { versionID })}`);
+    openURLInANewTab(
+      `${window.location.origin}${generatePath(cmsWorkflows.isEnabled ? Path.PROJECT_CANVAS : Path.PROJECT_DOMAIN, { versionID })}`
+    );
 
     trackingEvents.trackBackupPreview({ versionID, backupID: backup.id });
   };
@@ -134,7 +136,9 @@ const SettingsBackups: React.FC = () => {
             {!hasFullVersionPermissions && (
               <>
                 Free users can only view 30 days of an assistant's backup history.{' '}
-                <System.Link.Button onClick={() => paymentModal.openVoid({})}>Upgrade to unlock unlimited backup history</System.Link.Button>
+                <System.Link.Button onClick={() => paymentModal.openVoid({})}>
+                  Upgrade to unlock unlimited backup history
+                </System.Link.Button>
               </>
             )}
           </>

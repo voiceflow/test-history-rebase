@@ -1,5 +1,14 @@
-import { Nullable, Utils } from '@voiceflow/common';
-import { Box, ContextMenu, Dropdown, getNestedMenuFormattedLabel, stopPropagation, System, TippyTooltip } from '@voiceflow/ui';
+import type { Nullable } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
+import {
+  Box,
+  ContextMenu,
+  Dropdown,
+  getNestedMenuFormattedLabel,
+  stopPropagation,
+  System,
+  TippyTooltip,
+} from '@voiceflow/ui';
 import React from 'react';
 
 import { Permission } from '@/constants/permissions';
@@ -63,12 +72,13 @@ const TopicItemName = React.forwardRef<HTMLElement, TopicItemNameProps>(
 
     const goToDiagram = useDispatch(Router.goToDiagramHistoryPush);
 
-    const { inputRef, catEdit, localName, onSaveName, setLocalName, renameEnabled, toggleRenameEnabled } = useDiagramRename({
-      diagramID,
-      autoSelect: true,
-      diagramName: name,
-      onNameChanged: onClearLastCreatedDiagramID,
-    });
+    const { inputRef, catEdit, localName, onSaveName, setLocalName, renameEnabled, toggleRenameEnabled } =
+      useDiagramRename({
+        diagramID,
+        autoSelect: true,
+        diagramName: name,
+        onNameChanged: onClearLastCreatedDiagramID,
+      });
 
     const options = useDiagramOptions({ onRename: toggleRenameEnabled, diagramID, isSubtopic, rootTopicID });
 
@@ -122,7 +132,9 @@ const TopicItemName = React.forwardRef<HTMLElement, TopicItemNameProps>(
                     onKeyPress={withEnterPress((event) => event.currentTarget.blur())}
                   />
                 ) : (
-                  <S.NameWrapper>{isSearch ? <SearchLabel>{getNestedMenuFormattedLabel(name, searchMatchValue)}</SearchLabel> : name}</S.NameWrapper>
+                  <S.NameWrapper>
+                    {isSearch ? <SearchLabel>{getNestedMenuFormattedLabel(name, searchMatchValue)}</SearchLabel> : name}
+                  </S.NameWrapper>
                 )}
               </Box.Flex>
 

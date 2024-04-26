@@ -4,7 +4,7 @@ import { toast } from '@voiceflow/ui';
 import client from '@/client';
 import * as Errors from '@/config/errors';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { Thunk } from '@/store/types';
+import type { Thunk } from '@/store/types';
 import { getErrorMessage } from '@/utils/error';
 
 export const updateActiveOrganizationName =
@@ -18,7 +18,9 @@ export const updateActiveOrganizationName =
     Errors.assertWorkspaceID(workspaceID);
 
     try {
-      await dispatch.sync(Actions.Organization.PatchOne({ id: organizationID, patch: { name }, context: { organizationID, workspaceID } }));
+      await dispatch.sync(
+        Actions.Organization.PatchOne({ id: organizationID, patch: { name }, context: { organizationID, workspaceID } })
+      );
     } catch (err) {
       toast.error(getErrorMessage(err, 'Invalid organization name'));
     }
@@ -37,7 +39,13 @@ export const updateActiveOrganizationImage =
     try {
       // TODO: [organization refactor] move this to organization http endpoint
       const { image } = await client.identity.organization.updateImage(organizationID, formData);
-      await dispatch.sync(Actions.Organization.PatchOne({ id: organizationID, patch: { image }, context: { organizationID, workspaceID } }));
+      await dispatch.sync(
+        Actions.Organization.PatchOne({
+          id: organizationID,
+          patch: { image },
+          context: { organizationID, workspaceID },
+        })
+      );
 
       return image;
     } catch (err) {
@@ -58,7 +66,9 @@ export const removeActiveOrganizationAdmin =
     Errors.assertWorkspaceID(workspaceID);
 
     try {
-      await dispatch.sync(Actions.OrganizationMember.DeleteOne({ id: creatorID, context: { organizationID, workspaceID } }));
+      await dispatch.sync(
+        Actions.OrganizationMember.DeleteOne({ id: creatorID, context: { organizationID, workspaceID } })
+      );
     } catch (err) {
       toast.genericError();
     }

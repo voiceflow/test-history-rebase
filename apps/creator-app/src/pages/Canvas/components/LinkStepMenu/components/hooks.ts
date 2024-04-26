@@ -1,13 +1,16 @@
 import React from 'react';
 
 import { useTheme } from '@/hooks';
-import { EngineContext, LinkStepMenuContext, LinkStepMenuValue } from '@/pages/Canvas/contexts';
+import type { LinkStepMenuValue } from '@/pages/Canvas/contexts';
+import { EngineContext, LinkStepMenuContext } from '@/pages/Canvas/contexts';
 import type Engine from '@/pages/Canvas/engine';
-import { Coords } from '@/utils/geometry';
+import type { Coords } from '@/utils/geometry';
 
 const BLOCK_HEADER_HEIGHT = 50.5;
 
-export const useOnCreate = (create: (options: { engine: Engine; coords: Coords; stepMenu: LinkStepMenuValue }) => Promise<void>) => {
+export const useOnCreate = (
+  create: (options: { engine: Engine; coords: Coords; stepMenu: LinkStepMenuValue }) => Promise<void>
+) => {
   const engine = React.useContext(EngineContext)!;
   const stepMenu = React.useContext(LinkStepMenuContext)!;
 

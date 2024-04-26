@@ -45,7 +45,12 @@ const Create = manager.create<Props>(
           <Modal.Header
             actions={
               <Domain.LiveToggleTooltip live={live}>
-                <Toggle size={Toggle.Size.EXTRA_SMALL} checked={live} disabled={closePrevented} onChange={() => setLive(!live)} />
+                <Toggle
+                  size={Toggle.Size.EXTRA_SMALL}
+                  checked={live}
+                  disabled={closePrevented}
+                  onChange={() => setLive(!live)}
+                />
               </Domain.LiveToggleTooltip>
             }
           >
@@ -53,7 +58,14 @@ const Create = manager.create<Props>(
           </Modal.Header>
 
           <Modal.Body>
-            <Input value={name} readOnly={closePrevented} autoFocus placeholder="Enter domain name" onChangeText={setName} onEnterPress={onCreate} />
+            <Input
+              value={name}
+              readOnly={closePrevented}
+              autoFocus
+              placeholder="Enter domain name"
+              onChangeText={setName}
+              onEnterPress={onCreate}
+            />
           </Modal.Body>
 
           <Modal.Footer gap={12}>

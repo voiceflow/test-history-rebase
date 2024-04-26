@@ -1,6 +1,6 @@
 import { BaseUtils } from '@voiceflow/base-types';
 
-import * as AI from '@/pages/Canvas/managers/components/AI';
+import type * as AI from '@/pages/Canvas/managers/components/AI';
 
 export const PLACEHOLDERS = [
   'Greet {name} with a pun',

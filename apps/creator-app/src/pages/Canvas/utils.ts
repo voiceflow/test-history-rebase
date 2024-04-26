@@ -1,12 +1,15 @@
-import { Nullable } from '@voiceflow/common';
-import { Entity } from '@voiceflow/dtos';
+import type { Nullable } from '@voiceflow/common';
+import type { Entity } from '@voiceflow/dtos';
 import * as Platform from '@voiceflow/platform-config';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { serializeToText } from '@voiceflow/slate-serializer/text';
 
-import { EntityPrompt } from './types';
+import type { EntityPrompt } from './types';
 
-export const getIntentPromptContent = ([prompt]: unknown[], variablesMap: Record<string, { id: string; name: string }>) => {
+export const getIntentPromptContent = (
+  [prompt]: unknown[],
+  variablesMap: Record<string, { id: string; name: string }>
+) => {
   if (Platform.Common.Chat.CONFIG.utils.prompt.isPrompt(prompt)) {
     return serializeToText(prompt.content, { variablesMap, encodeVariables: true });
   }

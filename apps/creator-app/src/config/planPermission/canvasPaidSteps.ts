@@ -6,7 +6,7 @@ import { STUDENT_PLUS_PLANS } from '@/constants/plans';
 import * as Tracking from '@/ducks/tracking';
 import { getUpgradeModalProps } from '@/utils/upgrade';
 
-import { UpgradeTooltipPlanPermission } from './types';
+import type { UpgradeTooltipPlanPermission } from './types';
 
 export type PaidStepType = BlockType.CODE | BlockType.TRACE;
 export const PAID_STEPS = new Set<PaidStepType>([BlockType.CODE, BlockType.TRACE]);
@@ -28,7 +28,8 @@ export const CANVAS_PAID_STEPS = {
   plans: STUDENT_PLUS_PLANS,
   permission: Permission.CANVAS_PAID_STEPS,
 
-  isPaidStep: (blockType?: BlockType | null): blockType is PaidStepType => !!blockType && PAID_STEPS.has(blockType as PaidStepType),
+  isPaidStep: (blockType?: BlockType | null): blockType is PaidStepType =>
+    !!blockType && PAID_STEPS.has(blockType as PaidStepType),
 
   upgradeTooltip: ({ stepType }) => ({
     ...getUpgradeModalProps(PlanType.PRO, Tracking.UpgradePrompt.LOCKED_STEPS),

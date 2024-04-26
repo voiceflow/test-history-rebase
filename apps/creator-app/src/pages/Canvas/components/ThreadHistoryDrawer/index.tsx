@@ -1,9 +1,9 @@
 /* eslint-disable no-nested-ternary */
 import { Utils } from '@voiceflow/common';
 import { FeatureFlag } from '@voiceflow/realtime-sdk';
+import type { CustomScrollbarsTypes } from '@voiceflow/ui';
 import {
   CustomScrollbars,
-  CustomScrollbarsTypes,
   Dropdown,
   preventDefault,
   stopImmediatePropagation,
@@ -49,7 +49,9 @@ export const ThreadHistoryDrawer: React.FC<ThreadHistoryDrawerProps> = () => {
   const [filter, updateFilter] = React.useState<FilterType>(FilterType.OPEN);
 
   const threads = useSelector((state) =>
-    filter === FilterType.RESOLVED ? Designer.Thread.selectors.allResolved(state) : Designer.Thread.selectors.allOpened(state)
+    filter === FilterType.RESOLVED
+      ? Designer.Thread.selectors.allResolved(state)
+      : Designer.Thread.selectors.allOpened(state)
   );
   const activeDiagramID = useSelector(CreatorV2.activeDiagramIDSelector);
 
@@ -58,7 +60,10 @@ export const ThreadHistoryDrawer: React.FC<ThreadHistoryDrawerProps> = () => {
   const [isFirstThreadFocused, toggleFocusedThread] = useToggle(false);
 
   React.useEffect(() => {
-    const match = matchPath(history.location.pathname, [Path.CANVAS_COMMENTING_THREAD, Path.DOMAIN_CANVAS_COMMENTING_THREAD]);
+    const match = matchPath(history.location.pathname, [
+      Path.CANVAS_COMMENTING_THREAD,
+      Path.DOMAIN_CANVAS_COMMENTING_THREAD,
+    ]);
 
     if (canvasRendered && match && match.params.threadID) {
       focusScheduler(() => {
@@ -88,7 +93,11 @@ export const ThreadHistoryDrawer: React.FC<ThreadHistoryDrawerProps> = () => {
         display: 'flex',
         flexDirection: 'column',
         top: cmsWorkflows.isEnabled ? (isCanvasOnly ? 0 : theme.components.header.newHeight) : undefined,
-        height: cmsWorkflows.isEnabled ? (isCanvasOnly ? '100%' : `calc(100% - ${theme.components.header.newHeight}px)`) : undefined,
+        height: cmsWorkflows.isEnabled
+          ? isCanvasOnly
+            ? '100%'
+            : `calc(100% - ${theme.components.header.newHeight}px)`
+          : undefined,
       }}
       onPaste={stopImmediatePropagation()}
       direction={Drawer.Direction.LEFT}
@@ -99,7 +108,11 @@ export const ThreadHistoryDrawer: React.FC<ThreadHistoryDrawerProps> = () => {
         </Text>
 
         {isCommentingMode && (
-          <Dropdown menu={(onToggle) => <FilterMenu filter={filter} setFilter={Utils.functional.chain(updateFilter, onToggle)} />}>
+          <Dropdown
+            menu={(onToggle) => (
+              <FilterMenu filter={filter} setFilter={Utils.functional.chain(updateFilter, onToggle)} />
+            )}
+          >
             {({ ref, onToggle, isOpen }) => (
               <System.IconButtonsGroup.Base>
                 <System.IconButton.Base ref={ref} icon="filter" active={isOpen} onClick={preventDefault(onToggle)} />

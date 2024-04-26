@@ -83,7 +83,8 @@ export class LegacyService implements OnApplicationBootstrap, OnApplicationShutd
         workflow: this.workflow,
         organization: this.organization,
         requestContext: {
-          createAsync: <T>(callback: () => Promise<T>): Promise<T> => RequestContext.createAsync([this.mongoEM, this.postgresEM], callback),
+          createAsync: <T>(callback: () => Promise<T>): Promise<T> =>
+            RequestContext.createAsync([this.mongoEM, this.postgresEM], callback),
         },
       },
       config: this.config,

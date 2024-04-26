@@ -9,7 +9,7 @@ export const FunctionCompiledVariableDeclarationDTO = z
       .refine(
         (val) => val === VariableDatatype.STRING || val === VariableDatatype.ANY || val === VariableDatatype.TEXT,
         {
-          message: `Function variables currently only support the 'text' or 'any' type`,
+          message: "Function variables currently only support the 'text' or 'any' type",
         }
       )
       .describe('The type of the Function variable. Used to render suitable UI and perform data validation.'),

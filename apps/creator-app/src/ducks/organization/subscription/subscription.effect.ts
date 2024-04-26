@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { Subscription } from '@voiceflow/dtos';
+import type { Subscription } from '@voiceflow/dtos';
 import { PlanType } from '@voiceflow/internal';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 import { toast } from '@voiceflow/ui';
@@ -8,7 +8,7 @@ import { designerClient } from '@/client/designer';
 import { waitAsync } from '@/ducks/utils';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { ChargebeeSubscriptionStatus } from '@/models';
-import { Thunk } from '@/store/types';
+import type { Thunk } from '@/store/types';
 import { getErrorMessage } from '@/utils/error';
 
 import { chargebeeSubscriptionSelector, customerIDSelector } from './subscription.select';
@@ -42,9 +42,15 @@ export const loadSubscription =
   (organizationID: string, chargebeeSubscriptionID: string, workspaceID: string): Thunk<Subscription | null> =>
   async (dispatch) => {
     try {
-      const subscription = (await designerClient.billing.subscription.findOne(organizationID, chargebeeSubscriptionID, workspaceID)) as Subscription;
+      const subscription = (await designerClient.billing.subscription.findOne(
+        organizationID,
+        chargebeeSubscriptionID,
+        workspaceID
+      )) as Subscription;
 
-      await dispatch.local(Actions.OrganizationSubscription.Replace({ subscription, context: { organizationID, workspaceID } }));
+      await dispatch.local(
+        Actions.OrganizationSubscription.Replace({ subscription, context: { organizationID, workspaceID } })
+      );
 
       return subscription;
     } catch {

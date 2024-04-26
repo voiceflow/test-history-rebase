@@ -6,7 +6,11 @@ import { Designer, Router } from '@/ducks';
 import { useDispatch, useGetValueSelector } from '@/hooks/store.hook';
 
 import { CMSEmpty } from '../../../../components/CMSEmpty/CMSEmpty.component';
-import { useCMSRowItemClick, useCMSRowItemContextMenu, useCMSRowItemNavigate } from '../../../../hooks/cms-row-item.hook';
+import {
+  useCMSRowItemClick,
+  useCMSRowItemContextMenu,
+  useCMSRowItemNavigate,
+} from '../../../../hooks/cms-row-item.hook';
 import { useOnWorkflowCreate, useWorkflowCMSManager } from '../../CMSWorkflow.hook';
 import { workflowColumnsOrderAtom } from './CMSWorkflowTable.atom';
 import { CMS_WORKFLOW_TABLE_CONFIG } from './CMSWorkflowTable.config';

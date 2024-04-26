@@ -1,9 +1,10 @@
-import { ServerMeta } from '@logux/server';
+import type { ServerMeta } from '@logux/server';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
-import { Context } from '@voiceflow/socket-utils';
-import { Action } from 'typescript-fsa';
+import type { Context } from '@voiceflow/socket-utils';
+import type { Action } from 'typescript-fsa';
 
-import { AbstractWorkspaceChannelControl, accessWorkspaces, WorkspaceContextData } from './utils';
+import type { WorkspaceContextData } from './utils';
+import { AbstractWorkspaceChannelControl, accessWorkspaces } from './utils';
 
 class LeaveWorkspace extends AbstractWorkspaceChannelControl<Realtime.workspace.LeaveWorkspacePayload> {
   protected actionCreator = Realtime.workspace.leave;

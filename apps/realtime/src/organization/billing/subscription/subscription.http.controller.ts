@@ -1,6 +1,12 @@
 import { Body, Controller, Get, HttpStatus, Inject, Param, Post, Put, Query } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
-import { PaymentIntent, PaymentIntentDTO, Subscription, SubscriptionDTO, SubscriptionPaymentMethodStatusType } from '@voiceflow/dtos';
+import {
+  PaymentIntent,
+  PaymentIntentDTO,
+  Subscription,
+  SubscriptionDTO,
+  SubscriptionPaymentMethodStatusType,
+} from '@voiceflow/dtos';
 import { ZodApiQuery, ZodApiResponse } from '@voiceflow/nestjs-common';
 import { Permission } from '@voiceflow/sdk-auth';
 import { Authorize, UserID } from '@voiceflow/sdk-auth/nestjs';
@@ -34,8 +40,14 @@ export class BillingSubscriptionHTTPController {
   @ApiParam({ name: 'subscriptionID', type: 'string' })
   @ZodApiQuery({ schema: GetInvoicesRequestQuery })
   @ZodApiResponse({ status: HttpStatus.OK, schema: GetInvoicesResponse })
-  async getInvoices(@Param('subscriptionID') subscriptionID: string, @Query() query: GetInvoicesRequestQuery): Promise<GetInvoicesResponse> {
-    const { invoices, nextCursor } = await this.service.getInvoices(subscriptionID, { cursor: query.cursor, limit: query.limit });
+  async getInvoices(
+    @Param('subscriptionID') subscriptionID: string,
+    @Query() query: GetInvoicesRequestQuery
+  ): Promise<GetInvoicesResponse> {
+    const { invoices, nextCursor } = await this.service.getInvoices(subscriptionID, {
+      cursor: query.cursor,
+      limit: query.limit,
+    });
 
     const invoicesResponse = invoices.map(invoiceAdapter.fromDB);
 
@@ -114,7 +126,10 @@ export class BillingSubscriptionHTTPController {
     @Body(new ZodValidationPipe(UpsertCustomerCardRequest))
     paymentIntentRequest: UpsertCustomerCardRequest
   ): Promise<UpsertCustomerCardResponse> {
-    const data = await this.service.updateCustomerCard(paymentIntentRequest.customerID, paymentIntentRequest.paymentIntentID);
+    const data = await this.service.updateCustomerCard(
+      paymentIntentRequest.customerID,
+      paymentIntentRequest.paymentIntentID
+    );
     const { card } = data.payment_source;
 
     if (!card) {

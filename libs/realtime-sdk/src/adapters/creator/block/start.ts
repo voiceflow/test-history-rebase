@@ -1,6 +1,7 @@
-import { NodeData } from '@realtime-sdk/models';
+import type { NodeData } from '@realtime-sdk/models';
 
-import blockDataAdapter, { BlockData } from './block';
+import type { BlockData } from './block';
+import blockDataAdapter from './block';
 import { createBlockAdapter } from './utils';
 
 export interface StartData extends BlockData {

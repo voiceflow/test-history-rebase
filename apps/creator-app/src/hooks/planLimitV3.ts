@@ -1,9 +1,10 @@
 import { PlanType } from '@voiceflow/internal';
 import React from 'react';
 
-import { LimitType } from '@/constants/limits';
+import type { LimitType } from '@/constants/limits';
 import * as Organization from '@/ducks/organization';
-import { getLimitConfig, getLimitEntitlement, isStaticLimitConfig, PlanLimitConfig } from '@/utils/planLimitV3.util';
+import type { PlanLimitConfig } from '@/utils/planLimitV3.util';
+import { getLimitConfig, getLimitEntitlement, isStaticLimitConfig } from '@/utils/planLimitV3.util';
 
 import { useSelector } from './redux';
 
@@ -93,7 +94,8 @@ interface PlanLimitedActions<Limit extends LimitType, Args extends any[] = []> {
   onAction: (...args: Args) => void;
 }
 
-type PlanLimitedActionOptions<Limit extends LimitType, Args extends any[] = []> = PlanLimitedActions<Limit, Args> & ConditionalLimitOptions;
+type PlanLimitedActionOptions<Limit extends LimitType, Args extends any[] = []> = PlanLimitedActions<Limit, Args> &
+  ConditionalLimitOptions;
 
 export const useConditionalLimitAction = <Limit extends LimitType, Args extends any[] = void[]>(
   limitType: Limit,

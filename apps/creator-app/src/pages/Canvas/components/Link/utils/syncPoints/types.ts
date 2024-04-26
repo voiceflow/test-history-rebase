@@ -1,4 +1,4 @@
-import { GetPathPointsOptions } from '../pathPoints';
+import type { GetPathPointsOptions } from '../pathPoints';
 
 export interface SyncPointsOptions extends GetPathPointsOptions {
   isPathLocked: boolean;

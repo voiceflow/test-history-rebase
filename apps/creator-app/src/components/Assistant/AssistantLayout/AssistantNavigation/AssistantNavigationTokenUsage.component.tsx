@@ -1,6 +1,7 @@
 import { QuotaNames } from '@voiceflow/realtime-sdk';
 import { tid } from '@voiceflow/style';
-import { BaseProps, PrimaryNavigation, Tooltip } from '@voiceflow/ui-next';
+import type { BaseProps } from '@voiceflow/ui-next';
+import { PrimaryNavigation, Tooltip } from '@voiceflow/ui-next';
 import React from 'react';
 import { match } from 'ts-pattern';
 
@@ -73,7 +74,14 @@ export const AssistantNavigationTokenUsage: React.FC<BaseProps> = ({ testID }) =
         // show upgrade to pro button if user is on pro trial or is on starter plan
         .when(
           () => isOnProTrial || isStarterPlan(plan),
-          () => <Tooltip.Button size="small" label="Upgrade to pro" testID={tid(testID, 'upgrade')} onClick={() => paymentModal.openVoid({})} />
+          () => (
+            <Tooltip.Button
+              size="small"
+              label="Upgrade to pro"
+              testID={tid(testID, 'upgrade')}
+              onClick={() => paymentModal.openVoid({})}
+            />
+          )
         )
         // show add tokens button if user is on pro workspace
         .when(
@@ -93,13 +101,22 @@ export const AssistantNavigationTokenUsage: React.FC<BaseProps> = ({ testID }) =
                 />
               )}
             >
-              {() => <Tooltip.Caption mb={0}>Only workspace admins can add more tokens. Ask your admin to purchase a top-up.</Tooltip.Caption>}
+              {() => (
+                <Tooltip.Caption mb={0}>
+                  Only workspace admins can add more tokens. Ask your admin to purchase a top-up.
+                </Tooltip.Caption>
+              )}
             </Tooltip>
           )
         )
         // show contact sales button otherwise
         .otherwise(() => (
-          <Tooltip.Button size="small" label="Contact sales" testID={tid(testID, 'contact-sales')} onClick={onOpenBookDemoPage} />
+          <Tooltip.Button
+            size="small"
+            label="Contact sales"
+            testID={tid(testID, 'contact-sales')}
+            onClick={onOpenBookDemoPage}
+          />
         ))}
     />
   );

@@ -3,7 +3,8 @@ import type { TableSorterOptions } from '@voiceflow/ui-next';
 
 import type { CMSFolder, CMSResource, CMSResourceSearchContext } from './CMSManager.interface';
 
-export const localeCompareSort = (left: string, right: string): number => right.toLocaleLowerCase().localeCompare(left.toLocaleLowerCase());
+export const localeCompareSort = (left: string, right: string): number =>
+  right.toLocaleLowerCase().localeCompare(left.toLocaleLowerCase());
 
 export const updatedAtSort = <Item extends CMSResource>(left: Item, right: Item): number =>
   new Date(left.updatedAt).getTime() - new Date(right.updatedAt).getTime();
@@ -22,7 +23,9 @@ export const withFieldLocaleCompareSort =
     withOptionalSort<string>(localeCompareSort)(left[field], right[field]);
 
 export const withFolderSort =
-  <Item extends CMSResource, SortContext = unknown>(sort: (left: Item, right: Item, options: TableSorterOptions<SortContext>) => number) =>
+  <Item extends CMSResource, SortContext = unknown>(
+    sort: (left: Item, right: Item, options: TableSorterOptions<SortContext>) => number
+  ) =>
   (left: Item | CMSFolder, right: Item | CMSFolder, options: TableSorterOptions<SortContext>): number => {
     if (left.group && right.group) return withFieldLocaleCompareSort('name')(left, right);
     if (left.group || right.group) return (left.group ? 1 : -1) * (options.descending ? 1 : -1);

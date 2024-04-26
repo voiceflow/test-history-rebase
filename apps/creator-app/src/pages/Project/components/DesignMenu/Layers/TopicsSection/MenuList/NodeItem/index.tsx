@@ -1,15 +1,16 @@
-import { Nullable } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { getNestedMenuFormattedLabel, OverflowText, OverflowTippyTooltip, SvgIconTypes } from '@voiceflow/ui';
+import type { SvgIconTypes } from '@voiceflow/ui';
+import { getNestedMenuFormattedLabel, OverflowText, OverflowTippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import { DragPreviewComponentProps, ItemComponentProps } from '@/components/DraggableList';
+import type { DragPreviewComponentProps, ItemComponentProps } from '@/components/DraggableList';
 import * as Router from '@/ducks/router';
 import { useDispatch, useEventualEngine } from '@/hooks';
 
 import SearchLabel from '../../../../SearchLabel';
 import ItemNameIcon from '../../../ItemNameIcon';
-import { TopicMenuNodeItem } from '../../hooks';
+import type { TopicMenuNodeItem } from '../../hooks';
 import * as S from './styles';
 
 interface NodeItemProps extends ItemComponentProps<TopicMenuNodeItem>, DragPreviewComponentProps {
@@ -67,7 +68,6 @@ const NodeItem: React.ForwardRefRenderFunction<HTMLElement, NodeItemProps> = (
 
   const isStart = item.nodeType === Realtime.BlockType.START;
 
-  // eslint-disable-next-line xss/no-mixed-html
   return (
     <OverflowTippyTooltip<HTMLElement> content={item.name}>
       {(tooltipRef) => (

@@ -1,12 +1,12 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Draft } from 'immer';
+import type { Draft } from 'immer';
 import * as Normal from 'normal-store';
 
 import { nodeDataFactory } from '@/ducks/creatorV2/utils/node';
 import { createReverter } from '@/ducks/utils';
 
-import { CreatorState } from '../types';
+import type { CreatorState } from '../types';
 import { addNodeWithPorts, addStep } from '../utils';
 import { createActiveDiagramReducer, DIAGRAM_INVALIDATORS } from './utils';
 
@@ -19,7 +19,11 @@ export const addActions = (
   state.coordsByNodeID[actionsID] = coords;
   state.stepIDsByParentNodeID[actionsID] = [];
 
-  addNodeWithPorts(state, { nodeID: actionsID, data: nodeDataFactory(actionsID, { type: Realtime.BlockType.ACTIONS, name: 'Actions' }), ports });
+  addNodeWithPorts(state, {
+    nodeID: actionsID,
+    data: nodeDataFactory(actionsID, { type: Realtime.BlockType.ACTIONS, name: 'Actions' }),
+    ports,
+  });
 };
 
 const addActionsReducer = createActiveDiagramReducer(
@@ -29,7 +33,12 @@ const addActionsReducer = createActiveDiagramReducer(
     if (Normal.hasOne(state.nodes, stepID)) return;
 
     addActions(state, { actionsID, ports: actionsPorts, coords: actionsCoords });
-    addStep(state, (stepIDs) => Utils.array.append(stepIDs, stepID), { parentNodeID: actionsID, stepID, data: stepData, ports: stepPorts });
+    addStep(state, (stepIDs) => Utils.array.append(stepIDs, stepID), {
+      parentNodeID: actionsID,
+      stepID,
+      data: stepData,
+      ports: stepPorts,
+    });
   }
 );
 

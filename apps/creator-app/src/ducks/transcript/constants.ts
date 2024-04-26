@@ -1,6 +1,6 @@
 import { createCRUDState } from '@/ducks/utils/crudV2';
 
-import { TranscriptState } from './types';
+import type { TranscriptState } from './types';
 
 export const STATE_KEY = 'transcript';
 

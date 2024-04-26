@@ -65,13 +65,38 @@ export const DiagramHotkeys = React.memo(() => {
       { hotkey: Hotkey.RUN_MODE, callback: () => goToPrototype(), preventDefault: true, disable: disableCanvasHotkeys },
       { hotkey: Hotkey.ROOT_NODE, callback: onFocusHome, preventDefault: true, disable: disableCanvasHotkeys },
       { hotkey: Hotkey.MOVE_MODE, callback: onDisableModes, preventDefault: true },
-      { hotkey: Hotkey.OPEN_COMMENTING, callback: onToggleCommenting, preventDefault: true, disable: disableHintHotkeys },
-      { hotkey: Hotkey.ADD_MARKUP_NOTE, callback: markup.toggleTextCreating, preventDefault: true, disable: disableHintHotkeys },
-      { hotkey: Hotkey.ADD_MARKUP_IMAGE, callback: markup.triggerMediaUpload, preventDefault: true, disable: disableHintHotkeys },
-      { hotkey: Hotkey.CLOSE_CANVAS_MODE, callback: onDisableModes, preventDefault: true, disable: disableCanvasCloseMode },
+      {
+        hotkey: Hotkey.OPEN_COMMENTING,
+        callback: onToggleCommenting,
+        preventDefault: true,
+        disable: disableHintHotkeys,
+      },
+      {
+        hotkey: Hotkey.ADD_MARKUP_NOTE,
+        callback: markup.toggleTextCreating,
+        preventDefault: true,
+        disable: disableHintHotkeys,
+      },
+      {
+        hotkey: Hotkey.ADD_MARKUP_IMAGE,
+        callback: markup.triggerMediaUpload,
+        preventDefault: true,
+        disable: disableHintHotkeys,
+      },
+      {
+        hotkey: Hotkey.CLOSE_CANVAS_MODE,
+        callback: onDisableModes,
+        preventDefault: true,
+        disable: disableCanvasCloseMode,
+      },
       { hotkey: Hotkey.CANVAS_SHOW_HIDE_UI, callback: () => toggleCanvasOnly(), preventDefault: true },
       { hotkey: Hotkey.CANVAS_TOGGLE_SIDEBAR, callback: () => toggleCanvasSidebar(undefined), preventDefault: true },
-      { hotkey: Hotkey.OPEN_MANUAL_SAVE_MODAL, callback: () => manualSaveModal.openVoid({}), preventDefault: true, disable: disableEditHotkeys },
+      {
+        hotkey: Hotkey.OPEN_MANUAL_SAVE_MODAL,
+        callback: () => manualSaveModal.openVoid({}),
+        preventDefault: true,
+        disable: disableEditHotkeys,
+      },
     ],
     [disableEditHotkeys, disableCanvasHotkeys, disableHintHotkeys, disableCanvasCloseMode, isCanvasOnly]
   );

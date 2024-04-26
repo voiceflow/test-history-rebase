@@ -1,7 +1,7 @@
 import { SvgIcon, Text } from '@voiceflow/ui';
 import React from 'react';
 
-import { GraphResult } from '../../../types';
+import type { GraphResult } from '../../../types';
 import { getLabelForPreviousPeriod } from '../../../utils';
 import * as S from './styles';
 import { getDeltaLabelColor } from './utils';

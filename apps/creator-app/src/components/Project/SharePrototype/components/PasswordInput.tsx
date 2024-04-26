@@ -56,7 +56,9 @@ const PasswordInput: React.FC<PasswordInputProps> = ({ dividers = true, isCollap
           iconProps={{ color: COLOR_CODES.GREEN }}
           placeholder="Add password"
           onChangeText={setValue}
-          iconPosition={!isFocused && initialValue.length ? NestedInputIconPosition.RIGHT : NestedInputIconPosition.NONE}
+          iconPosition={
+            !isFocused && initialValue.length ? NestedInputIconPosition.RIGHT : NestedInputIconPosition.NONE
+          }
           wrapperProps={canAccessPassword ? {} : { pointerEvents: 'auto' }}
           onFocusOnClick={onFocus}
         />
@@ -70,7 +72,9 @@ const PasswordInput: React.FC<PasswordInputProps> = ({ dividers = true, isCollap
         )}
       </UncontrolledSection>
 
-      {isCollapsed && <Divider offset={0} style={{ width: 'calc(100% - 32px)', marginLeft: '32px' }} isSecondaryColor />}
+      {isCollapsed && (
+        <Divider offset={0} style={{ width: 'calc(100% - 32px)', marginLeft: '32px' }} isSecondaryColor />
+      )}
     </>
   );
 };

@@ -1,5 +1,5 @@
 import { CardElement } from '@stripe/react-stripe-js';
-import * as stripeJs from '@stripe/stripe-js';
+import type * as stripeJs from '@stripe/stripe-js';
 import { Box, preventDefault, SvgIcon, TippyTooltip, useEnableDisable, useToggle } from '@voiceflow/ui';
 import React from 'react';
 
@@ -11,7 +11,11 @@ interface StripeCardElementProps {
   onChangeComplete?: (complete: boolean) => void;
 }
 
-const StripeCardElement: React.FC<StripeCardElementProps> = ({ onChangeComplete, disabled = false, stripeOnChange }) => {
+const StripeCardElement: React.FC<StripeCardElementProps> = ({
+  onChangeComplete,
+  disabled = false,
+  stripeOnChange,
+}) => {
   const cardElementRef = React.useRef<stripeJs.StripeCardElement | null>(null);
   const boxRef = React.useRef<HTMLDivElement>(null);
   const errorMessageRef = React.useRef('message');
@@ -51,8 +55,17 @@ const StripeCardElement: React.FC<StripeCardElementProps> = ({ onChangeComplete,
   errorMessageRef.current = error || errorMessageRef.current;
 
   return (
-    <TippyTooltip visible={!!error && focused} content={error || errorMessageRef.current} placement="bottom-start" offset={[0, 5]}>
-      <S.Container disabled={disabled} onClick={preventDefault(onClick)} borderColor={S.getColor(error, complete, focused)}>
+    <TippyTooltip
+      visible={!!error && focused}
+      content={error || errorMessageRef.current}
+      placement="bottom-start"
+      offset={[0, 5]}
+    >
+      <S.Container
+        disabled={disabled}
+        onClick={preventDefault(onClick)}
+        borderColor={S.getColor(error, complete, focused)}
+      >
         <Box ref={boxRef} overflow="hidden" pl={2} pt={2} position="relative">
           <SvgIcon icon={S.getIcon(error, complete)} color={S.getColor(error, complete)} />
 

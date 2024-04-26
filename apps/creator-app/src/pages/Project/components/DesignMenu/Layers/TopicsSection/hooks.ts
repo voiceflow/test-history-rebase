@@ -1,11 +1,12 @@
 import { BaseModels } from '@voiceflow/base-types';
-import { Nullable, Utils } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 import { useDrop } from 'react-dnd';
 
-import { DragPreviewComponentProps, ItemComponentProps } from '@/components/DraggableList';
+import type { DragPreviewComponentProps, ItemComponentProps } from '@/components/DraggableList';
 import { DragItem, StepMenuType } from '@/constants';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Designer from '@/ducks/designer';
@@ -19,7 +20,8 @@ import { useDispatch, useLocalDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
 import { getDiagramName } from '@/utils/diagram.utils';
 
-import { OpenedIDsToggleApi, useOpenedIDsToggle } from '../hooks';
+import type { OpenedIDsToggleApi } from '../hooks';
+import { useOpenedIDsToggle } from '../hooks';
 
 export interface TopicMenuBaseItem {
   type: BaseModels.Diagram.MenuItemType;
@@ -90,7 +92,10 @@ export const useSubtopicDrop = (topicID: string, isSubtopic?: boolean) => {
   const moveSubtopic = useDispatch(DiagramV2.moveSubtopicDiagram);
   const [dropPreview, setDropPreview] = React.useState(false);
 
-  const dndAcceptedTypes = React.useMemo(() => diagramIDs.map((id) => `${DragItem.TOPIC_MENU_ITEMS}${id}`), [diagramIDs]);
+  const dndAcceptedTypes = React.useMemo(
+    () => diagramIDs.map((id) => `${DragItem.TOPIC_MENU_ITEMS}${id}`),
+    [diagramIDs]
+  );
 
   const [, ref] = useDrop<TopicItemProps & { diagramID: string }>({
     drop(item) {
@@ -213,7 +218,9 @@ export const useTopics = (): TopicsAPI & Omit<OpenedIDsToggleApi, 'onDragStart' 
 
     const topicDiagram = await createTopicDiagram(`Topic ${topicDiagrams.length + 1}`);
 
-    const firstNodeID = topicDiagram.menuItems.find((item) => item.type === BaseModels.Diagram.MenuItemType.NODE)?.sourceID;
+    const firstNodeID = topicDiagram.menuItems.find(
+      (item) => item.type === BaseModels.Diagram.MenuItemType.NODE
+    )?.sourceID;
 
     openedIDsToggle.onToggleOpenedID(topicDiagram.id, true);
 
@@ -226,13 +233,17 @@ export const useTopics = (): TopicsAPI & Omit<OpenedIDsToggleApi, 'onDragStart' 
 
       if (!rootTopicDiagram) return;
 
-      const subtopics = rootTopicDiagram.menuItems.filter(({ type }) => type === BaseModels.Diagram.MenuItemType.DIAGRAM);
+      const subtopics = rootTopicDiagram.menuItems.filter(
+        ({ type }) => type === BaseModels.Diagram.MenuItemType.DIAGRAM
+      );
 
       openedIDsToggle.onToggleOpenedID(rootTopicID, true);
 
       const subTopicDiagram = await createSubtopicDiagram(rootTopicID, `Sub Topic ${subtopics.length + 1}`);
 
-      const firstNodeID = subTopicDiagram.menuItems.find((item) => item.type === BaseModels.Diagram.MenuItemType.NODE)?.sourceID;
+      const firstNodeID = subTopicDiagram.menuItems.find(
+        (item) => item.type === BaseModels.Diagram.MenuItemType.NODE
+      )?.sourceID;
 
       openedIDsToggle.onToggleOpenedID(subTopicDiagram.id, true);
 

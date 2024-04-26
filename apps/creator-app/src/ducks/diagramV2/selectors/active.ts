@@ -11,8 +11,9 @@ import { isTopicDiagram } from '@/utils/diagram.utils';
 
 import { getDiagramByIDSelector, getDiagramsByIDsSelector } from './base';
 
-export const diagramSelector = createSelector([getDiagramByIDSelector, activeDiagramIDSelector], (getDiagram, activeDiagramID) =>
-  getDiagram({ id: activeDiagramID })
+export const diagramSelector = createSelector(
+  [getDiagramByIDSelector, activeDiagramIDSelector],
+  (getDiagram, activeDiagramID) => getDiagram({ id: activeDiagramID })
 );
 
 export const typeSelector = createSelector([diagramSelector], (diagram) => diagram?.type ?? null);
@@ -22,8 +23,9 @@ export const isTopicSelector = createSelector([typeSelector], (type) => isTopicD
 /**
  * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
  */
-export const topicDiagramsSelector = createSelector([topicIDsSelector, getDiagramsByIDsSelector], (topicIDs, getDiagramsByIDs) =>
-  getDiagramsByIDs({ ids: topicIDs })
+export const topicDiagramsSelector = createSelector(
+  [topicIDsSelector, getDiagramsByIDsSelector],
+  (topicIDs, getDiagramsByIDs) => getDiagramsByIDs({ ids: topicIDs })
 );
 
 export const localVariablesSelector = createSelector(
@@ -37,7 +39,12 @@ export const allEntitiesAndVariablesSelector = createSelector(
     _unionBy(
       [
         ...entities.map((entity) => ({ id: entity.id, name: entity.name, color: entity.color, isVariable: false })),
-        ...variables.map((variable) => ({ id: variable.id, name: variable.name, color: variable.color, isVariable: true })),
+        ...variables.map((variable) => ({
+          id: variable.id,
+          name: variable.name,
+          color: variable.color,
+          isVariable: true,
+        })),
         ...localVariables.map((variable) => ({ id: variable, name: variable, color: undefined, isVariable: true })),
       ],
       (item) => item.name

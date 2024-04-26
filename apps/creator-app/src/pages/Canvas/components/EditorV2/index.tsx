@@ -6,16 +6,33 @@ import { useDropLagFix } from '@/hooks';
 import { Identifier } from '@/styles/constants';
 
 import { EditorAnimationEffect } from '../../constants';
-import { AnimatedContent, ChipHeader, DefaultFooter, DefaultHeader, PersistCollapse, RedirectToRoot, Route, Tutorial } from './components';
+import {
+  AnimatedContent,
+  ChipHeader,
+  DefaultFooter,
+  DefaultHeader,
+  PersistCollapse,
+  RedirectToRoot,
+  Route,
+  Tutorial,
+} from './components';
 import { withGoBack, withRedirectToRoot } from './hocs';
 import { useEditor, useEditorDefaultActions, useParentMatch, useSyncDynamicPorts } from './hooks';
-import * as T from './types';
+import type * as T from './types';
 
 export * as EditorV2Types from './types';
 
 const ANIMATION_DISTANCE = 40;
 
-const EditorV2: React.FC<T.Props> = ({ header, footer, children, fillHeight, dropLagAccept, disableAnimation, withoutContentContainer }) => {
+const EditorV2: React.FC<T.Props> = ({
+  header,
+  footer,
+  children,
+  fillHeight,
+  dropLagAccept,
+  disableAnimation,
+  withoutContentContainer,
+}) => {
   const { scrollbars } = useEditor();
 
   const dropLagFixRef = useDropLagFix(dropLagAccept ?? []);
@@ -25,14 +42,23 @@ const EditorV2: React.FC<T.Props> = ({ header, footer, children, fillHeight, dro
   const isPopAnimation = state?.animationEffect === EditorAnimationEffect.POP;
 
   return (
-    <SidebarEditor.Container id={Identifier.BLOCK_EDITOR} ref={!dropLagAccept || !dropLagAccept?.length ? undefined : dropLagFixRef}>
+    <SidebarEditor.Container
+      id={Identifier.BLOCK_EDITOR}
+      ref={!dropLagAccept || !dropLagAccept?.length ? undefined : dropLagFixRef}
+    >
       {header}
 
       <AnimatedContent distance={disableAnimation ? 0 : ANIMATION_DISTANCE * (isPopAnimation ? 1 : -1)}>
         {withoutContentContainer ? (
           children
         ) : (
-          <SidebarEditor.Content ref={scrollbars} $fillHeight={fillHeight} autoHeight autoHeightMax="100%" hideTracksWhenNotNeeded>
+          <SidebarEditor.Content
+            ref={scrollbars}
+            $fillHeight={fillHeight}
+            autoHeight
+            autoHeightMax="100%"
+            hideTracksWhenNotNeeded
+          >
             {children}
           </SidebarEditor.Content>
         )}

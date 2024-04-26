@@ -3,7 +3,7 @@ import React from 'react';
 
 import { AI_MODEL_CONFIG_MAP } from '@/config/ai-model';
 
-import { IAIMaxTokensSlider } from './AIMaxTokensSlider.interface';
+import type { IAIMaxTokensSlider } from './AIMaxTokensSlider.interface';
 
 export const AIMaxTokensSlider: React.FC<IAIMaxTokensSlider> = ({
   model,

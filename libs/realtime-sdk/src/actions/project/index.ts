@@ -1,8 +1,8 @@
 import { createCRUDActions } from '@realtime-sdk/actions/utils';
-import { AnyProject, DBProject, ProjectMember } from '@realtime-sdk/models';
-import { BaseProjectPayload, BaseWorkspacePayload } from '@realtime-sdk/types';
+import type { AnyProject, DBProject, ProjectMember } from '@realtime-sdk/models';
+import type { BaseProjectPayload, BaseWorkspacePayload } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
-import { Optional } from 'utility-types';
+import type { Optional } from 'utility-types';
 
 import { projectType } from './utils';
 
@@ -58,14 +58,21 @@ export const merge = Utils.protocol.createAsyncAction<MergeProjectsPayload, void
 
 export const create = Utils.protocol.createAsyncAction<CreateProjectPayload, AnyProject>(projectType('CREATE'));
 
-export const duplicate = Utils.protocol.createAsyncAction<DuplicateProjectPayload, AnyProject>(projectType('DUPLICATE'));
+export const duplicate = Utils.protocol.createAsyncAction<DuplicateProjectPayload, AnyProject>(
+  projectType('DUPLICATE')
+);
 
 export const ejectUsers = Utils.protocol.createAction<EjectUsersPayload>(projectType('KICK_USERS'));
 
-export const patchPlatformData = Utils.protocol.createAction<PatchPlatformDataPayload>(projectType('PATCH_PLATFORM_DATA'));
-
-export const addManyCustomThemes = Utils.protocol.createAction<AddManyCustomThemesPayload>(projectType('ADD_MANY_CUSTOM_THEMES'));
-
-export const toggleWorkspaceProjectsAiAssistOff = Utils.protocol.createAction<ToggleWorkspaceProjectsAiAssistOffPayload>(
-  projectType('TOGGLE_WORKSPACE_PROJECTS_AI_ASSIST_OFF')
+export const patchPlatformData = Utils.protocol.createAction<PatchPlatformDataPayload>(
+  projectType('PATCH_PLATFORM_DATA')
 );
+
+export const addManyCustomThemes = Utils.protocol.createAction<AddManyCustomThemesPayload>(
+  projectType('ADD_MANY_CUSTOM_THEMES')
+);
+
+export const toggleWorkspaceProjectsAiAssistOff =
+  Utils.protocol.createAction<ToggleWorkspaceProjectsAiAssistOffPayload>(
+    projectType('TOGGLE_WORKSPACE_PROJECTS_AI_ASSIST_OFF')
+  );

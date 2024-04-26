@@ -1,5 +1,5 @@
 import { useVirtualizer } from '@tanstack/react-virtual';
-import { Workflow } from '@voiceflow/dtos';
+import type { Workflow } from '@voiceflow/dtos';
 import { tid } from '@voiceflow/style';
 import { ActionButtons, Menu, MENU_ITEM_MIN_HEIGHT, Search, VirtualizedContent } from '@voiceflow/ui-next';
 import React, { useMemo, useState } from 'react';
@@ -11,7 +11,12 @@ import { useSelector } from '@/hooks/store.hook';
 
 import type { IWorkflowMenu } from './WorkflowMenu.interface';
 
-export const WorkflowMenu: React.FC<IWorkflowMenu> = ({ width = 'fit-content', onClose, onSelect: onSelectProp, excludeIDs }) => {
+export const WorkflowMenu: React.FC<IWorkflowMenu> = ({
+  width = 'fit-content',
+  onClose,
+  onSelect: onSelectProp,
+  excludeIDs,
+}) => {
   const TEST_ID = 'workflow-menu';
 
   const storeWorkflows = useSelector(Designer.Workflow.selectors.all);
@@ -66,7 +71,14 @@ export const WorkflowMenu: React.FC<IWorkflowMenu> = ({ width = 'fit-content', o
       listRef={setListNode}
       minWidth={search.hasItems ? undefined : 0}
       maxHeight={310}
-      searchSection={<Search value={search.value} placeholder="Search" onValueChange={search.setValue} testID={tid(TEST_ID, 'search')} />}
+      searchSection={
+        <Search
+          value={search.value}
+          placeholder="Search"
+          onValueChange={search.setValue}
+          testID={tid(TEST_ID, 'search')}
+        />
+      }
       actionButtons={
         search.hasItems && (
           <ActionButtons
@@ -103,7 +115,12 @@ export const WorkflowMenu: React.FC<IWorkflowMenu> = ({ width = 'fit-content', o
           })}
         </VirtualizedContent>
       ) : (
-        <Menu.CreateItem label={search.value} onClick={onCreate} disabled={isCreating} testID={tid(TEST_ID, 'item', 'add')} />
+        <Menu.CreateItem
+          label={search.value}
+          onClick={onCreate}
+          disabled={isCreating}
+          testID={tid(TEST_ID, 'item', 'add')}
+        />
       )}
     </Menu>
   );

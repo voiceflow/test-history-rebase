@@ -7,7 +7,9 @@ import { ResponseTextVariantSettings } from '../ResponseTextVariantSettings/Resp
 import type { IResponseEditTextVariantSettings } from './ResponseEditTextVariantSettings.interface';
 
 export const ResponseEditTextVariantSettings: React.FC<IResponseEditTextVariantSettings> = ({ variant, ...props }) => {
-  const attachments = useSelector(Designer.Response.ResponseAttachment.selectors.allByIDs, { ids: variant.attachmentOrder });
+  const attachments = useSelector(Designer.Response.ResponseAttachment.selectors.allByIDs, {
+    ids: variant.attachmentOrder,
+  });
 
   return <ResponseTextVariantSettings {...props} variant={variant} attachments={attachments} />;
 };

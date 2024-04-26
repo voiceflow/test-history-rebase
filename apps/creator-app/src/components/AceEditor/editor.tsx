@@ -1,6 +1,7 @@
 /* eslint-disable simple-import-sort/imports */
 import React from 'react';
-import AceEditor, { IAceEditorProps as AceEditorBaseProps } from 'react-ace';
+import type { IAceEditorProps as AceEditorBaseProps } from 'react-ace';
+import AceEditor from 'react-ace';
 
 import 'brace/ext/language_tools';
 import 'brace/mode/javascript';
@@ -13,7 +14,8 @@ import './modes/utterance';
 /* eslint-enable simple-import-sort/imports */
 import { css, styled } from '@/hocs/styled';
 
-import { InputMode, AceEditorColors } from './constants';
+import type { AceEditorColors } from './constants';
+import { InputMode } from './constants';
 
 export type AceEditorProps = AceEditorBaseProps & {
   variant?: string;
@@ -98,7 +100,8 @@ const StyledEditor = styled(AceEditor).attrs({
 
   .ace_comment.ace_placeholder {
     font-size: 13px;
-    font-family: ${({ setOptions }) => (setOptions?.fontFamily ? `${setOptions.fontFamily}, monospace` : `'Monaco', monospace`)};
+    font-family: ${({ setOptions }) =>
+      setOptions?.fontFamily ? `${setOptions.fontFamily}, monospace` : "'Monaco', monospace"};
     padding-left: 2px !important;
   }
 

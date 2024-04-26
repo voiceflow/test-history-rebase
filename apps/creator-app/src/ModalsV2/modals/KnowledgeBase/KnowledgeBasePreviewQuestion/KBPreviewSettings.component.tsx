@@ -1,6 +1,7 @@
-import { BaseModels, BaseUtils } from '@voiceflow/base-types';
+import type { BaseModels, BaseUtils } from '@voiceflow/base-types';
 import { tid } from '@voiceflow/style';
-import { BaseProps, Box } from '@voiceflow/ui-next';
+import type { BaseProps } from '@voiceflow/ui-next';
+import { Box } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { AIMaxTokensSliderSection } from '@/components/AI/AIMaxTokensSliderSection/AIMaxTokensSliderSection.component';
@@ -24,14 +25,23 @@ export interface IPreviewSettings extends BaseProps {
   onSettingsChange: (value: SummarizationSettings) => void;
 }
 
-export const KBPreviewSettings: React.FC<IPreviewSettings> = ({ testID, settings, initialSettings, onSettingsChange }) => {
+export const KBPreviewSettings: React.FC<IPreviewSettings> = ({
+  testID,
+  settings,
+  initialSettings,
+  onSettingsChange,
+}) => {
   const onPatch = (value: Partial<SummarizationSettings>) => onSettingsChange({ ...settings, ...value });
 
   const model = settings.model ?? DEFAULT_SETTINGS.summarization.model;
 
   return (
     <PopperModalSettings testID={tid(testID, 'menu')}>
-      <PopperOverridesDivider value={settings} initialValues={initialSettings} onReset={() => onSettingsChange(initialSettings)} />
+      <PopperOverridesDivider
+        value={settings}
+        initialValues={initialSettings}
+        onReset={() => onSettingsChange(initialSettings)}
+      />
 
       <Box direction="column" gap={12} pb={24}>
         <AIModelSelectSection

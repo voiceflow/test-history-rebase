@@ -1,4 +1,5 @@
-import { SubscriptionPaymentMethodStatus, SubscriptionPaymentMethodStatusType } from '@voiceflow/dtos';
+import type { SubscriptionPaymentMethodStatusType } from '@voiceflow/dtos';
+import { SubscriptionPaymentMethodStatus } from '@voiceflow/dtos';
 import { PlanType } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 
@@ -40,11 +41,13 @@ const chargebeePlanTypes = new Set(Object.values(ChargebeePlanType));
 
 export const isChargebeePlanType = (plan: any): plan is ChargebeePlanType => chargebeePlanTypes.has(plan);
 
-export const isChargebeeStatus = (status: any): status is ChargebeeStatus => Object.values(ChargebeeStatus).includes(status);
+export const isChargebeeStatus = (status: any): status is ChargebeeStatus =>
+  Object.values(ChargebeeStatus).includes(status);
 
 export const isChargebeeBillingPeriodUnit = (unit: any): unit is ChargebeeBillingPeriodUnit =>
   Object.values(ChargebeeBillingPeriodUnit).includes(unit);
-export const isPaymentMethodFailed = (status: SubscriptionPaymentMethodStatusType) => PAYMENT_METHOD_FAILED_STATUSES.has(status);
+export const isPaymentMethodFailed = (status: SubscriptionPaymentMethodStatusType) =>
+  PAYMENT_METHOD_FAILED_STATUSES.has(status);
 
 export function getDaysLeftToTrialEnd(trialEndDate: number, downgradedFromTrial?: boolean) {
   if (downgradedFromTrial) return 0;
@@ -94,7 +97,10 @@ export const isChargebeeTrial = (
   return status === ChargebeeStatus.IN_TRIAL || metaData?.downgradedFromTrial || cancelledByTrialExpiration;
 };
 
-export const findBooleanEntitlement = (entitlements: Realtime.Identity.SubscriptionEntitlement[] | undefined, itemID: string) => {
+export const findBooleanEntitlement = (
+  entitlements: Realtime.Identity.SubscriptionEntitlement[] | undefined,
+  itemID: string
+) => {
   const entitlement = entitlements?.find((entitlement) => entitlement.featureID === itemID);
 
   if (!entitlement?.value) return null;
@@ -102,7 +108,10 @@ export const findBooleanEntitlement = (entitlements: Realtime.Identity.Subscript
   return entitlement?.value === 'true';
 };
 
-export const findNumberEntitlement = (entitlements: Realtime.Identity.SubscriptionEntitlement[] | undefined, itemID: string) => {
+export const findNumberEntitlement = (
+  entitlements: Realtime.Identity.SubscriptionEntitlement[] | undefined,
+  itemID: string
+) => {
   const entitlement = entitlements?.find((entitlement) => entitlement.featureID === itemID);
 
   if (!entitlement?.value) return null;

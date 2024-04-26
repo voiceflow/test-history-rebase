@@ -57,7 +57,9 @@ const WorkspaceSelector: React.FC = () => {
               <S.ItemContainer>
                 <S.Image src={workspace?.image || voiceflowLogomark} alt="logo" />
                 <OverflowTippyTooltip content={workspace.name} overflow placement="top-start">
-                  {(overflowRef) => <S.Name ref={overflowRef as React.RefObject<HTMLDivElement>}>{workspace.name}</S.Name>}
+                  {(overflowRef) => (
+                    <S.Name ref={overflowRef as React.RefObject<HTMLDivElement>}>{workspace.name}</S.Name>
+                  )}
                 </OverflowTippyTooltip>
               </S.ItemContainer>
             </Menu.Item>
@@ -67,11 +69,19 @@ const WorkspaceSelector: React.FC = () => {
       placement="bottom"
     >
       {({ ref, onToggle, isOpen }) => (
-        <S.Container id="workspaceDropdown" className={`${ClassName.DROPDOWN}--active-workspace`} onClick={onToggle} ref={ref} isOpen={isOpen}>
+        <S.Container
+          id="workspaceDropdown"
+          className={`${ClassName.DROPDOWN}--active-workspace`}
+          onClick={onToggle}
+          ref={ref}
+          isOpen={isOpen}
+        >
           <Box.Flex>
             <S.Image src={activeWorkspace?.image || voiceflowLogomark} alt="logo" active />
             <OverflowTippyTooltip content={activeWorkspace?.name} overflow placement="bottom-start">
-              {(overflowRef) => <S.Name ref={overflowRef as React.RefObject<HTMLDivElement>}>{activeWorkspace?.name}</S.Name>}
+              {(overflowRef) => (
+                <S.Name ref={overflowRef as React.RefObject<HTMLDivElement>}>{activeWorkspace?.name}</S.Name>
+              )}
             </OverflowTippyTooltip>
           </Box.Flex>
 

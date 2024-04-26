@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
-import { Nullable } from '@voiceflow/common';
-import { ThreadComment } from '@voiceflow/dtos';
+import type { Nullable } from '@voiceflow/common';
+import type { ThreadComment } from '@voiceflow/dtos';
 import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { Box, KeyName, useCache } from '@voiceflow/ui';
 import React from 'react';
@@ -10,7 +10,7 @@ import MentionEditor from '@/components/MentionEditor';
 import { UI } from '@/ducks';
 import { useFeature, useLinkedState, useTheme, useToggle } from '@/hooks';
 import { useSelector } from '@/hooks/store.hook';
-import { CommentDraftValue } from '@/pages/Canvas/types';
+import type { CommentDraftValue } from '@/pages/Canvas/types';
 
 import { COMMENT_CLASSNAME, COMMENT_EDITOR_CLASSNAME } from '../constants';
 import ThreadEditorHeader from './ThreadEditorHeader';
@@ -136,7 +136,12 @@ const EditableComment: React.ForwardRefRenderFunction<EditableCommentRef, Editab
         overflowY={isEditing && isReplying ? 'auto' : undefined}
       >
         {isEditing ? (
-          <MentionEditor value={value} onChange={onChange} placeholder={placeholder} inputProps={{ inputRef, onKeyDown }} />
+          <MentionEditor
+            value={value}
+            onChange={onChange}
+            placeholder={placeholder}
+            inputProps={{ inputRef, onKeyDown }}
+          />
         ) : (
           <CommentPreview text={comment?.text} />
         )}

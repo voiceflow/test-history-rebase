@@ -33,7 +33,11 @@ const EditorSidebarV2 = () => {
         style={{
           top: cmsWorkflows.isEnabled ? (isCanvasOnly ? 0 : theme.components.header.newHeight) : undefined,
           width: api.isOpened && api.isFullscreen ? 'calc(100% - 355px' : undefined,
-          height: cmsWorkflows.isEnabled ? (isCanvasOnly ? '100%' : `calc(100% - ${theme.components.header.newHeight}px)`) : undefined,
+          height: cmsWorkflows.isEnabled
+            ? isCanvasOnly
+              ? '100%'
+              : `calc(100% - ${theme.components.header.newHeight}px)`
+            : undefined,
         }}
       >
         {api.editor}

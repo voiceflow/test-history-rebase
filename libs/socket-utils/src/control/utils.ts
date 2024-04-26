@@ -1,7 +1,7 @@
 /* eslint-disable max-classes-per-file */
 import type { Context } from '@logux/server';
-import { Eventual } from '@voiceflow/common';
-import { AxiosError } from 'axios';
+import type { Eventual } from '@voiceflow/common';
+import type { AxiosError } from 'axios';
 
 import type { BaseClientMap } from '../client';
 import type { SocketServer } from '../server';
@@ -11,7 +11,10 @@ export const isAxiosError = (err: any): err is AxiosError => !!err.isAxiosError;
 export const isUnauthorizedError = (err: any) => isAxiosError(err) && err.response?.status === 401;
 
 export class AsyncRejectionError<C> extends Error {
-  constructor(message: string, public code?: C) {
+  constructor(
+    message: string,
+    public code?: C
+  ) {
     super(message);
   }
 }
@@ -57,7 +60,10 @@ export interface LoguxControlOptions extends ControlOptions {
   channels: LoguxControlMap;
 }
 
-export abstract class AbstractLoguxControl<T extends LoguxControlOptions> extends AbstractControl<T> implements LoguxControl {
+export abstract class AbstractLoguxControl<T extends LoguxControlOptions>
+  extends AbstractControl<T>
+  implements LoguxControl
+{
   protected server: T['server'];
 
   protected actions: T['actions'];
@@ -86,6 +92,5 @@ export abstract class AbstractLoguxControl<T extends LoguxControlOptions> extend
 
   abstract setup(): Eventual<void>;
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   destroy(): Eventual<void> {}
 }

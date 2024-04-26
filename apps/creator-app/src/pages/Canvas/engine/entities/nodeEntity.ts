@@ -8,13 +8,14 @@ import { createCachedSelector } from '@/ducks/creatorV2/utils/selector';
 import { idParamSelector } from '@/ducks/utils/crudV2';
 import { useTeardown } from '@/hooks';
 import { EngineContext } from '@/pages/Canvas/contexts/EngineContext';
-import { MarkupTransform } from '@/pages/Canvas/types';
-import { Pair, Point } from '@/types';
-import { Coords } from '@/utils/geometry';
+import type { MarkupTransform } from '@/pages/Canvas/types';
+import type { Pair, Point } from '@/types';
+import type { Coords } from '@/utils/geometry';
 
 import type Engine from '..';
 import { EntityType } from '../constants';
-import { EntityInstance, ResourceEntity } from './entity';
+import type { EntityInstance } from './entity';
+import { ResourceEntity } from './entity';
 
 export interface NodeInstance extends EntityInstance {
   ref: React.RefObject<HTMLElement>;
@@ -95,12 +96,16 @@ export interface NodeEntityResource<T> {
   data: Realtime.NodeData<T>;
 }
 
-export const isNodeEntityResource = (info: any): info is NodeEntityResource<any> => info?.data?.nodeID && info?.node?.type;
+export const isNodeEntityResource = (info: any): info is NodeEntityResource<any> =>
+  info?.data?.nodeID && info?.node?.type;
 
-const nodeEntitySelector = createCachedSelector([CreatorV2.nodeByIDSelector, CreatorV2.nodeDataByIDSelector, idParamSelector], (node, data) => ({
-  node: node!,
-  data: data!,
-}))((_, params) => idParamSelector(_, params) || '');
+const nodeEntitySelector = createCachedSelector(
+  [CreatorV2.nodeByIDSelector, CreatorV2.nodeDataByIDSelector, idParamSelector],
+  (node, data) => ({
+    node: node!,
+    data: data!,
+  })
+)((_, params) => idParamSelector(_, params) || '');
 
 class NodeEntity extends ResourceEntity<NodeEntityResource<unknown>, NodeInstance> {
   get isHighlighted() {
@@ -161,7 +166,10 @@ class NodeEntity extends ResourceEntity<NodeEntityResource<unknown>, NodeInstanc
 
   inPortID: string | null;
 
-  constructor(engine: Engine, public nodeID: string) {
+  constructor(
+    engine: Engine,
+    public nodeID: string
+  ) {
     super(EntityType.NODE, engine, engine.log.child('node', nodeID.slice(-6)));
 
     const { node } = this.resolve();
@@ -192,7 +200,9 @@ class NodeEntity extends ResourceEntity<NodeEntityResource<unknown>, NodeInstanc
 
   isEqual = <T>(lhs: NodeEntityResource<T> | null, rhs: NodeEntityResource<T> | null) => {
     return (
-      Object.is(lhs, rhs) || (Utils.object.shallowEquals(lhs?.node ?? null, rhs?.node ?? null) && Object.is(lhs?.data ?? null, rhs?.data ?? null))
+      Object.is(lhs, rhs) ||
+      (Utils.object.shallowEquals(lhs?.node ?? null, rhs?.node ?? null) &&
+        Object.is(lhs?.data ?? null, rhs?.data ?? null))
     );
   };
 

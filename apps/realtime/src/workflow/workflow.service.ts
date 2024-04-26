@@ -64,7 +64,15 @@ export class WorkflowService extends CMSTabularService<WorkflowORM> {
 
   /* Send email */
 
-  async sendEmailToAssignee({ workflow, authorID, assigneeID }: { workflow: WorkflowObject; authorID: number; assigneeID?: number | null }) {
+  async sendEmailToAssignee({
+    workflow,
+    authorID,
+    assigneeID,
+  }: {
+    workflow: WorkflowObject;
+    authorID: number;
+    assigneeID?: number | null;
+  }) {
     // if assignee is not changed or not set - do not send email
     if (!assigneeID || assigneeID === workflow.assigneeID) return;
 
@@ -83,7 +91,10 @@ export class WorkflowService extends CMSTabularService<WorkflowORM> {
         dynamicTemplateData: {
           inviter: author.name,
           project_name: assistant.name,
-          project_link: this.creatorApp.getCanvasURL({ versionID: workflow.environmentID, diagramID: workflow.diagramID }),
+          project_link: this.creatorApp.getCanvasURL({
+            versionID: workflow.environmentID,
+            diagramID: workflow.diagramID,
+          }),
           workflow_name: workflow.name,
         },
       });
@@ -94,7 +105,11 @@ export class WorkflowService extends CMSTabularService<WorkflowORM> {
 
   /* Update */
 
-  async patchOneForUserAndSendEmail(userID: number, id: Primary<ORMEntity<WorkflowORM>>, data: PatchData<ORMEntity<WorkflowORM>>) {
+  async patchOneForUserAndSendEmail(
+    userID: number,
+    id: Primary<ORMEntity<WorkflowORM>>,
+    data: PatchData<ORMEntity<WorkflowORM>>
+  ) {
     const workflow = await (data.assigneeID ? this.findOneOrFail(id) : Promise.resolve(null));
 
     await this.orm.patchOneForUser(userID, id, data);
@@ -104,13 +119,19 @@ export class WorkflowService extends CMSTabularService<WorkflowORM> {
     }
   }
 
-  async patchManyForUserAndSendEmail(userID: number, ids: Primary<ORMEntity<WorkflowORM>>[], data: PatchData<ORMEntity<WorkflowORM>>) {
+  async patchManyForUserAndSendEmail(
+    userID: number,
+    ids: Primary<ORMEntity<WorkflowORM>>[],
+    data: PatchData<ORMEntity<WorkflowORM>>
+  ) {
     const workflows = await (data.assigneeID ? this.findMany(ids) : Promise.resolve([]));
 
     await this.orm.patchManyForUser(userID, ids, data);
 
     if (workflows.length) {
-      workflows.map((workflow) => this.sendEmailToAssignee({ workflow, authorID: userID, assigneeID: data.assigneeID }));
+      workflows.map((workflow) =>
+        this.sendEmailToAssignee({ workflow, authorID: userID, assigneeID: data.assigneeID })
+      );
     }
   }
 
@@ -154,7 +175,10 @@ export class WorkflowService extends CMSTabularService<WorkflowORM> {
     };
   }
 
-  prepareExportData(data: { workflows: WorkflowObject[] }, { backup }: { backup?: boolean } = {}): WorkflowExportImportDataDTO {
+  prepareExportData(
+    data: { workflows: WorkflowObject[] },
+    { backup }: { backup?: boolean } = {}
+  ): WorkflowExportImportDataDTO {
     const json = this.toJSONWithSubResources(data);
 
     if (backup) {
@@ -180,7 +204,11 @@ export class WorkflowService extends CMSTabularService<WorkflowORM> {
     const { workflows: sourceWorkflows } = await this.findManyWithSubResourcesByEnvironment(sourceEnvironmentID);
 
     return this.importManyWithSubResources({
-      workflows: sourceWorkflows.map((flow) => ({ ...flow, assistantID: targetAssistantID, environmentID: targetEnvironmentID })),
+      workflows: sourceWorkflows.map((flow) => ({
+        ...flow,
+        assistantID: targetAssistantID,
+        environmentID: targetEnvironmentID,
+      })),
     });
   }
 
@@ -188,7 +216,12 @@ export class WorkflowService extends CMSTabularService<WorkflowORM> {
 
   prepareImportData(
     { workflows }: WorkflowExportImportDataDTO,
-    { userID, backup, assistantID, environmentID }: { userID: number; backup?: boolean; assistantID: string; environmentID: string }
+    {
+      userID,
+      backup,
+      assistantID,
+      environmentID,
+    }: { userID: number; backup?: boolean; assistantID: string; environmentID: string }
   ): { workflows: WorkflowJSON[] } {
     const createdAt = new Date().toJSON();
 
@@ -246,7 +279,10 @@ export class WorkflowService extends CMSTabularService<WorkflowORM> {
     };
   }
 
-  async broadcastAddMany({ add }: { add: { workflows: WorkflowObject[]; diagrams: DiagramObject[] } }, meta: CMSBroadcastMeta) {
+  async broadcastAddMany(
+    { add }: { add: { workflows: WorkflowObject[]; diagrams: DiagramObject[] } },
+    meta: CMSBroadcastMeta
+  ) {
     const assistant = await this.assistantORM.findOneOrFail(meta.context.assistantID);
 
     await Promise.all([
@@ -281,7 +317,9 @@ export class WorkflowService extends CMSTabularService<WorkflowORM> {
   /* Delete */
 
   async collectRelationsToDelete(workflows: WorkflowObject[]) {
-    const diagrams = await this.diagram.findMany(workflows.map((workflow) => ({ diagramID: workflow.diagramID, versionID: workflow.environmentID })));
+    const diagrams = await this.diagram.findMany(
+      workflows.map((workflow) => ({ diagramID: workflow.diagramID, versionID: workflow.environmentID }))
+    );
 
     return {
       diagrams,
@@ -428,7 +466,10 @@ export class WorkflowService extends CMSTabularService<WorkflowORM> {
 
   /* Upsert */
 
-  async upsertManyWithSubResources(data: { workflows: Workflow[] }, meta: { userID: number; assistantID: string; environmentID: string }) {
+  async upsertManyWithSubResources(
+    data: { workflows: Workflow[] },
+    meta: { userID: number; assistantID: string; environmentID: string }
+  ) {
     const { workflows } = this.prepareImportData(data, meta);
 
     await this.upsertMany(this.mapFromJSON(workflows));

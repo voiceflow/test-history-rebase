@@ -3,11 +3,12 @@ import React from 'react';
 import { BlockType } from '@/constants';
 import { useLinkedRef } from '@/hooks';
 import { EngineContext } from '@/pages/Canvas/contexts';
-import { Point } from '@/types';
+import type { Point } from '@/types';
 
-import { HandlePosition, TEXT_WIDTH_HANDLES } from '../../../../constants';
+import type { HandlePosition } from '../../../../constants';
+import { TEXT_WIDTH_HANDLES } from '../../../../constants';
 import { calculateRotatedBoundingRect, getScaleTransformations, getStretchTransformations } from '../../../../utils';
-import { OverlayState } from '../../types';
+import type { OverlayState } from '../../types';
 
 const useResize = (nodeType: BlockType | null, { overlayRect, snapshot, rotation }: OverlayState) => {
   const engine = React.useContext(EngineContext)!;
@@ -32,14 +33,23 @@ const useResize = (nodeType: BlockType | null, { overlayRect, snapshot, rotation
 
     const isTextNode = type.current === BlockType.MARKUP_TEXT;
 
-    const currentTransform = { rect: calculateRotatedBoundingRect(transform.rect, transform.rotate), rotate: rotation.current };
+    const currentTransform = {
+      rect: calculateRotatedBoundingRect(transform.rect, transform.rotate),
+      rotate: rotation.current,
+    };
     if (isTextNode && TEXT_WIDTH_HANDLES.includes(handle)) {
       const result = getStretchTransformations(handle, snapshot.current, currentTransform, mousePosition);
       if (result) {
         engine.transformation.scaleTextTarget(result.width, result.shift);
       }
     } else {
-      const { scale, shift } = getScaleTransformations(handle, snapshot.current, currentTransform, mouseStart, mousePosition);
+      const { scale, shift } = getScaleTransformations(
+        handle,
+        snapshot.current,
+        currentTransform,
+        mouseStart,
+        mousePosition
+      );
       engine.transformation.scaleTarget(scale, shift);
     }
   }, []);

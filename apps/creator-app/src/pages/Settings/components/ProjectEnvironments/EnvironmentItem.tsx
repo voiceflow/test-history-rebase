@@ -6,7 +6,7 @@ import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector } from '@/hooks';
 
 import * as S from './styles';
-import { EnvironmentRef } from './types';
+import type { EnvironmentRef } from './types';
 
 interface EnvironmentItemProps {
   environmentRef: EnvironmentRef;
@@ -25,7 +25,9 @@ const EnvironmentItem: React.FC<EnvironmentItemProps> = ({ environmentRef }) => 
   return (
     <S.RowItem>
       <S.ColumnItemContainer>
-        <TippyTooltip content={dayjs(updatedAt).format('MMM DD, YYYY, h:mm A')}>{dayjs(updatedAt).fromNow()}</TippyTooltip>
+        <TippyTooltip content={dayjs(updatedAt).format('MMM DD, YYYY, h:mm A')}>
+          {dayjs(updatedAt).fromNow()}
+        </TippyTooltip>
       </S.ColumnItemContainer>
 
       <S.ColumnItemContainer>{name}</S.ColumnItemContainer>

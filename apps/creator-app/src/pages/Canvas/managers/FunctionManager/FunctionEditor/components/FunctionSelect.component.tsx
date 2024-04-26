@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { ActionButtons, Box, Button, Divider, Dropdown, Menu, Search } from '@voiceflow/ui-next';
 import React from 'react';
 
@@ -46,7 +46,11 @@ export const FunctionSelect = ({ onChange, functionID }: FunctionSelectProps) =>
           {({ onClose, referenceRef }) => (
             <Menu
               actionButtons={
-                search.hasItems && <ActionButtons firstButton={<ActionButtons.Button label="Create function" onClick={onCreateFunction} />} />
+                search.hasItems && (
+                  <ActionButtons
+                    firstButton={<ActionButtons.Button label="Create function" onClick={onCreateFunction} />}
+                  />
+                )
               }
               searchSection={<Search placeholder="Search" value={search.value} onValueChange={search.setValue} />}
               width={referenceRef.current?.clientWidth}

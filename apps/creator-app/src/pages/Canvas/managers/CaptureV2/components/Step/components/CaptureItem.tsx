@@ -1,11 +1,11 @@
 import { Popper, stopPropagation, Text } from '@voiceflow/ui';
 import React from 'react';
 
-import { HSLShades } from '@/constants';
+import type { HSLShades } from '@/constants';
 import { Item, StepButton } from '@/pages/Canvas/components/Step';
 
 import { NODE_CONFIG } from '../../../constants';
-import { CaptureSlot } from '../types';
+import type { CaptureSlot } from '../types';
 import CapturePreview from './CapturePreview';
 
 export interface CaptureItemProps {
@@ -18,7 +18,15 @@ export interface CaptureItemProps {
   onOpenEditor: () => void;
 }
 
-export const CaptureItem: React.FC<CaptureItemProps> = ({ slot, label, isFirst, isLast, nextPortID = null, palette, onOpenEditor }) => {
+export const CaptureItem: React.FC<CaptureItemProps> = ({
+  slot,
+  label,
+  isFirst,
+  isLast,
+  nextPortID = null,
+  palette,
+  onOpenEditor,
+}) => {
   const icon = isFirst ? NODE_CONFIG.icon! : null;
   const portID = isLast ? nextPortID : null;
 
@@ -26,11 +34,26 @@ export const CaptureItem: React.FC<CaptureItemProps> = ({ slot, label, isFirst, 
   const slotPrompt = slot?.prompt;
 
   if (!slot?.id || !slot?.slot) {
-    return <Item icon={icon} portID={portID} palette={palette} wordBreak withNewLines placeholder="Select entity to capture" label={label} />;
+    return (
+      <Item
+        icon={icon}
+        portID={portID}
+        palette={palette}
+        wordBreak
+        withNewLines
+        placeholder="Select entity to capture"
+        label={label}
+      />
+    );
   }
 
   return (
-    <Popper placement="right" renderContent={({ onClose }) => <CapturePreview prompt={slotPrompt} onOpenEditor={onOpenEditor} onClose={onClose} />}>
+    <Popper
+      placement="right"
+      renderContent={({ onClose }) => (
+        <CapturePreview prompt={slotPrompt} onOpenEditor={onOpenEditor} onClose={onClose} />
+      )}
+    >
       {({ ref, onToggle, isOpened }) => (
         <Item
           icon={icon}
@@ -44,7 +67,11 @@ export const CaptureItem: React.FC<CaptureItemProps> = ({ slot, label, isFirst, 
           portID={portID}
           palette={palette}
           wordBreak
-          attachment={slotPrompt?.content && <StepButton ref={ref} icon="setV2" isActive={isOpened} onClick={stopPropagation(onToggle)} />}
+          attachment={
+            slotPrompt?.content && (
+              <StepButton ref={ref} icon="setV2" isActive={isOpened} onClick={stopPropagation(onToggle)} />
+            )
+          }
           withNewLines
         />
       )}

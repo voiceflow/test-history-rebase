@@ -51,16 +51,20 @@ export const setAuthToken = (token: string | null): SetAuthToken => createAction
 export const setActiveWorkspaceID = (workspaceID: string | null): SetActiveWorkspaceID =>
   createAction(SessionAction.SET_ACTIVE_WORKSPACE_ID, workspaceID);
 
-export const setActiveProjectID = (projectID: string | null): SetActiveProjectID => createAction(SessionAction.SET_ACTIVE_PROJECT_ID, projectID);
+export const setActiveProjectID = (projectID: string | null): SetActiveProjectID =>
+  createAction(SessionAction.SET_ACTIVE_PROJECT_ID, projectID);
 
-export const setActiveVersionID = (versionID: string | null): SetActiveVersionID => createAction(SessionAction.SET_ACTIVE_VERSION_ID, versionID);
+export const setActiveVersionID = (versionID: string | null): SetActiveVersionID =>
+  createAction(SessionAction.SET_ACTIVE_VERSION_ID, versionID);
 
-export const setActiveDiagramID = (diagramID: string | null): SetActiveDiagramID => createAction(SessionAction.SET_ACTIVE_DIAGRAM_ID, diagramID);
+export const setActiveDiagramID = (diagramID: string | null): SetActiveDiagramID =>
+  createAction(SessionAction.SET_ACTIVE_DIAGRAM_ID, diagramID);
 
 /**
  * @deprecated remove when FeatureFlag.CMS_WORKFLOWS are released
  */
-export const setActiveDomainID = (domainID: string | null): SetActiveDomainID => createAction(SessionAction.SET_ACTIVE_DOMAIN_ID, domainID);
+export const setActiveDomainID = (domainID: string | null): SetActiveDomainID =>
+  createAction(SessionAction.SET_ACTIVE_DOMAIN_ID, domainID);
 
 export const setPrototypeSidebarVisible = (isVisible: boolean): SetPrototypeSidebarVisible =>
   createAction(SessionAction.SET_PROTOTYPE_SIDEBAR_VISIBLE, isVisible);

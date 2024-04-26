@@ -1,9 +1,9 @@
-import { ProjectSecretTag } from '@voiceflow/schema-types';
+import type { ProjectSecretTag } from '@voiceflow/schema-types';
 import { SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
-import { SecretsStore } from '../../../hooks';
-import { SecretField } from '../types';
+import type { SecretsStore } from '../../../hooks';
+import type { SecretField } from '../types';
 import SecretsConfigItem from './SecretsConfigItem';
 
 export interface SecretsConfigProps {

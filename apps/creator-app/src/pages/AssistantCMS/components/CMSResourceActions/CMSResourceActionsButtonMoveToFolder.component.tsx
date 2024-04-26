@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { Folder } from '@voiceflow/dtos';
+import type { Folder } from '@voiceflow/dtos';
 import { notify, Popper, Table } from '@voiceflow/ui-next';
 import { useAtomValue, useSetAtom } from 'jotai';
 import React, { useMemo } from 'react';
@@ -31,7 +31,10 @@ export const CMSResourceActionsButtonMoveToFolder: React.FC = () => {
   const patchManyResources = useDispatch(effects.patchMany);
 
   const selectedIDs = useMemo(() => Array.from(selectedIDsSet), [selectedIDsSet]);
-  const folderIDs = useMemo(() => Array.from(selectedIDs).filter((id) => getOneByID({ id })), [getOneByID, selectedIDs]);
+  const folderIDs = useMemo(
+    () => Array.from(selectedIDs).filter((id) => getOneByID({ id })),
+    [getOneByID, selectedIDs]
+  );
   const menuExcludeFolderIDs = useMemo(() => (folderID ? [...folderIDs, folderID] : folderIDs), [folderID, folderIDs]);
 
   const onSelect = async (folder: Folder | null) => {
@@ -63,7 +66,13 @@ export const CMSResourceActionsButtonMoveToFolder: React.FC = () => {
       )}
     >
       {({ onClose }) => (
-        <FolderMenu scope={folderScope} parentID={folderID} onSelect={onSelect} onClose={onClose} excludeIDs={menuExcludeFolderIDs} />
+        <FolderMenu
+          scope={folderScope}
+          parentID={folderID}
+          onSelect={onSelect}
+          onClose={onClose}
+          excludeIDs={menuExcludeFolderIDs}
+        />
       )}
     </Popper>
   );

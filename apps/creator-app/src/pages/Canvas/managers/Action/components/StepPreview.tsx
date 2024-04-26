@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Preview, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
@@ -27,9 +27,13 @@ const CodePreview: React.FC<CodePreviewProps> = ({ data: { name, body }, onOpenE
       </Preview.Content>
 
       <Preview.Footer>
-        {canOpenEditor && <Preview.ButtonIcon icon="edit" onClick={Utils.functional.chainVoid(onClose, onOpenEditor)} />}
+        {canOpenEditor && (
+          <Preview.ButtonIcon icon="edit" onClick={Utils.functional.chainVoid(onClose, onOpenEditor)} />
+        )}
 
-        {!!body && <Preview.ButtonIcon icon="copy" ml={8} onClick={Utils.functional.chainVoid(onClose, copyWithToast(body))} />}
+        {!!body && (
+          <Preview.ButtonIcon icon="copy" ml={8} onClick={Utils.functional.chainVoid(onClose, copyWithToast(body))} />
+        )}
       </Preview.Footer>
     </Preview>
   );

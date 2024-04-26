@@ -1,7 +1,7 @@
-import { BaseModels } from '@voiceflow/base-types';
-import { Entity, Intent } from '@voiceflow/dtos';
-import * as Platform from '@voiceflow/platform-config';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type { BaseModels } from '@voiceflow/base-types';
+import type { Entity, Intent } from '@voiceflow/dtos';
+import type * as Platform from '@voiceflow/platform-config';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Flex, SvgIcon, System, Tag, Tooltip } from '@voiceflow/ui';
 import React from 'react';
 
@@ -87,7 +87,8 @@ const LegacyMappings: React.FC<LegacyMappingsProps> = ({ intent, onDelete, mappi
       tooltip={
         <>
           <Tooltip.Paragraph marginBottomUnits={2}>
-            Voiceflow now uses slots and variables interchangeably - anywhere that you can use a variable you can also use a slot.
+            Voiceflow now uses slots and variables interchangeably - anywhere that you can use a variable you can also
+            use a slot.
           </Tooltip.Paragraph>
 
           <Tooltip.Paragraph marginBottomUnits={2}>
@@ -95,12 +96,13 @@ const LegacyMappings: React.FC<LegacyMappingsProps> = ({ intent, onDelete, mappi
           </Tooltip.Paragraph>
 
           <Tooltip.Paragraph marginBottomUnits={2}>
-            It is recommended to replace all usages of mapped variables with the slot directly or create a follow up <b>Set</b> block that does the
-            mapping.
+            It is recommended to replace all usages of mapped variables with the slot directly or create a follow up{' '}
+            <b>Set</b> block that does the mapping.
           </Tooltip.Paragraph>
 
           <Tooltip.Paragraph marginBottomUnits={2}>
-            Mappings will eventually no longer be supported and this can cause issues with future versions of your assistant.
+            Mappings will eventually no longer be supported and this can cause issues with future versions of your
+            assistant.
           </Tooltip.Paragraph>
         </>
       }

@@ -1,4 +1,4 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { useColorPaletteWithDynamicSaturation } from '@voiceflow/ui';
 import _throttle from 'lodash/throttle';
 import moize from 'moize';
@@ -10,7 +10,7 @@ import * as Router from '@/ducks/router';
 import { useDispatch, useEnableDisable, useHover } from '@/hooks';
 import { NODE_DISABLED_CLASSNAME, NODE_HOVERED_CLASSNAME } from '@/pages/Canvas/constants';
 import { EngineContext, NodeEntityContext } from '@/pages/Canvas/contexts';
-import { CombinedAPI } from '@/pages/Canvas/types';
+import type { CombinedAPI } from '@/pages/Canvas/types';
 import { ClassName } from '@/styles/constants';
 
 /**
@@ -97,7 +97,10 @@ export const useCombined = ({ defaultBlockColor }: { defaultBlockColor: string }
     [hasNestedInPort, firstStepID]
   );
 
-  const onRename = React.useCallback((name: string) => engine.node.updateData(nodeEntity.nodeID, { name }), [engine, nodeEntity.nodeID]);
+  const onRename = React.useCallback(
+    (name: string) => engine.node.updateData(nodeEntity.nodeID, { name }),
+    [engine, nodeEntity.nodeID]
+  );
 
   const onInsert = React.useMemo(
     () =>
@@ -129,7 +132,10 @@ export const useCombined = ({ defaultBlockColor }: { defaultBlockColor: string }
     ),
   });
 
-  const onDropRef = React.useCallback((api: CombinedAPI | null) => api?.ref.current && connectBlockDrop(api.ref.current), [connectBlockDrop]);
+  const onDropRef = React.useCallback(
+    (api: CombinedAPI | null) => api?.ref.current && connectBlockDrop(api.ref.current),
+    [connectBlockDrop]
+  );
 
   const onClick = React.useCallback((event: React.MouseEvent) => {
     if (engine.prototype.isActive) {

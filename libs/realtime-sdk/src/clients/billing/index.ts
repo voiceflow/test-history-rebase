@@ -1,4 +1,5 @@
-import { NestVersion, NestVersionOptions } from '../nest';
+import type { NestVersionOptions } from '../nest';
+import { NestVersion } from '../nest';
 import { PrivateQuota } from './private-quota';
 import { PrivateWorkspace } from './private-workspace';
 import { Quota } from './quota';

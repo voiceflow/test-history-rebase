@@ -43,7 +43,8 @@ export const Content: React.FC<ContentProps> = ({ preventClose, enableClose, dis
   const { bodyRef, innerRef, scrollHelpers } = useScrollHelpers<HTMLDivElement, HTMLDivElement>();
   const [isHeaderSticky] = useScrollStickySides(bodyRef);
 
-  const onToggleSection = (section: ActiveModal) => () => setActiveSection((prev) => (section !== prev ? section : ActiveModal.NONE));
+  const onToggleSection = (section: ActiveModal) => () =>
+    setActiveSection((prev) => (section !== prev ? section : ActiveModal.NONE));
 
   const ContainerComp = disableAnimation ? ContainerWithoutAnimation : Container;
 

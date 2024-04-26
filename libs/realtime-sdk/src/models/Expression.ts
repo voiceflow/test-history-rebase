@@ -1,4 +1,4 @@
-import { BaseNode } from '@voiceflow/base-types';
+import type { BaseNode } from '@voiceflow/base-types';
 
 export interface GenericExpressionV2<T extends BaseNode.Utils.ExpressionTypeV2, V> {
   id: string;
@@ -24,8 +24,14 @@ export type EndsWithExpression = GenericExpressionV2<BaseNode.Utils.ExpressionTy
 export type HasValueExpression = GenericExpressionV2<BaseNode.Utils.ExpressionTypeV2.HAS_VALUE, ExpressionTupleV2>;
 export type NotContainExpression = GenericExpressionV2<BaseNode.Utils.ExpressionTypeV2.NOT_CONTAIN, ExpressionTupleV2>;
 export type StartsWithExpression = GenericExpressionV2<BaseNode.Utils.ExpressionTypeV2.STARTS_WITH, ExpressionTupleV2>;
-export type LessOrEqualExpression = GenericExpressionV2<BaseNode.Utils.ExpressionTypeV2.LESS_OR_EQUAL, ExpressionTupleV2>;
-export type GreaterOrEqualExpression = GenericExpressionV2<BaseNode.Utils.ExpressionTypeV2.GREATER_OR_EQUAL, ExpressionTupleV2>;
+export type LessOrEqualExpression = GenericExpressionV2<
+  BaseNode.Utils.ExpressionTypeV2.LESS_OR_EQUAL,
+  ExpressionTupleV2
+>;
+export type GreaterOrEqualExpression = GenericExpressionV2<
+  BaseNode.Utils.ExpressionTypeV2.GREATER_OR_EQUAL,
+  ExpressionTupleV2
+>;
 export type ExpressionV2 =
   | OrExpressionV2
   | AndExpressionV2
@@ -45,7 +51,10 @@ export type ExpressionV2 =
   | LessOrEqualExpression
   | GreaterOrEqualExpression;
 
-export type LogicGroupData = GenericExpressionV2<BaseNode.Utils.ExpressionTypeV2.AND | BaseNode.Utils.ExpressionTypeV2.OR, ExpressionV2[]>;
+export type LogicGroupData = GenericExpressionV2<
+  BaseNode.Utils.ExpressionTypeV2.AND | BaseNode.Utils.ExpressionTypeV2.OR,
+  ExpressionV2[]
+>;
 export type ExpressionData = GenericExpressionV2<
   BaseNode.Utils.ExpressionTypeV2.AND | BaseNode.Utils.ExpressionTypeV2.OR,
   (ExpressionV2 | LogicGroupData)[]

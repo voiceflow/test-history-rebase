@@ -8,7 +8,7 @@ import { useInputState } from '@/hooks/input.hook';
 import { useSelector } from '@/hooks/store.hook';
 import { useValidators } from '@/hooks/validate.hook';
 
-import { ResultInternalAPI } from '../../../types';
+import type { ResultInternalAPI } from '../../../types';
 
 export const useWorkflowCreateForm = ({
   api,

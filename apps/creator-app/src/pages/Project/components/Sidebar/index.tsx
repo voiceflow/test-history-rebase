@@ -3,7 +3,13 @@ import { Route, Switch } from 'react-router-dom';
 
 import { Path } from '@/config/routes';
 
-import { CanvasIconMenu, IntegrationsSidebar, LogoOffsetSidebar, SettingsSidebar, TestVariablesSidebar } from './components';
+import {
+  CanvasIconMenu,
+  IntegrationsSidebar,
+  LogoOffsetSidebar,
+  SettingsSidebar,
+  TestVariablesSidebar,
+} from './components';
 
 const ALL_PROJECT_SIDEBAR_PATHS = [
   Path.DOMAIN_CANVAS,

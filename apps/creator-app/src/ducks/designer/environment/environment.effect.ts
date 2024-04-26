@@ -1,4 +1,4 @@
-import { AnyAttachment, AnyResponseVariant, CardButton } from '@voiceflow/dtos';
+import type { AnyAttachment, AnyResponseVariant, CardButton } from '@voiceflow/dtos';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { designerClient } from '@/client/designer';

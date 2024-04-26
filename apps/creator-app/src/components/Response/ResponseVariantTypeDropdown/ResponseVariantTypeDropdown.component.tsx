@@ -11,7 +11,13 @@ import { dropdownStyles } from './ResponseVariantTypeDropdown.css';
 import type { IResponseVariantTypeDropdown } from './ResponseVariantTypeDropdown.interface';
 
 export const ResponseVariantTypeDropdown: React.FC<IResponseVariantTypeDropdown> = ({ value, onValueChange }) => (
-  <Dropdown value={RESPONSE_VARIANT_TYPE_LABEL_MAP[value]} isSmall bordered={false} placement="bottom-start" className={dropdownStyles}>
+  <Dropdown
+    value={RESPONSE_VARIANT_TYPE_LABEL_MAP[value]}
+    isSmall
+    bordered={false}
+    placement="bottom-start"
+    className={dropdownStyles}
+  >
     {({ onClose }) => (
       <Menu width="fit-content">
         <Menu.Item

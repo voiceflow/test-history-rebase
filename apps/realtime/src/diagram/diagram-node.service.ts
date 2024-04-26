@@ -19,9 +19,14 @@ interface ManyNodeDataUpdate extends Atomic.Update {
 export class DiagramNodeService {
   private static nodePath = (nodeID: string, path?: string): string => `nodes.${nodeID}${path ? `.${path}` : ''}`;
 
-  private static nodeDataPath = (nodeID: string, path?: string): string => DiagramNodeService.nodePath(nodeID, `data${path ? `.${path}` : ''}`);
+  private static nodeDataPath = (nodeID: string, path?: string): string =>
+    DiagramNodeService.nodePath(nodeID, `data${path ? `.${path}` : ''}`);
 
-  private static dynamicPortPath = (portID: string, path?: string) => ['portsV2.dynamic', { id: portID }, ...(path ? [path] : [])];
+  private static dynamicPortPath = (portID: string, path?: string) => [
+    'portsV2.dynamic',
+    { id: portID },
+    ...(path ? [path] : []),
+  ];
 
   private static byKeyPortPath = (key: string, path?: string) => `portsV2.byKey.${key}${path ? `.${path}` : ''}`;
 
@@ -50,7 +55,9 @@ export class DiagramNodeService {
     const patches = nodePortRemaps.map(({ nodeID, ports, targetNodeID }) => ({
       resourceID: nodeID,
       sets: [
-        ...ports.filter(({ type, key }) => type || key).map((port) => ({ path: DiagramNodeService.portPath(port, 'target'), value: targetNodeID })),
+        ...ports
+          .filter(({ type, key }) => type || key)
+          .map((port) => ({ path: DiagramNodeService.portPath(port, 'target'), value: targetNodeID })),
         { path: 'portsV2.dynamic.$[].target', value: targetNodeID },
       ],
     }));
@@ -80,7 +87,13 @@ export class DiagramNodeService {
     const isMenuNode = !isActions && Realtime.Utils.typeGuards.isDiagramMenuDBNode(step);
 
     await this.orm.atomicUpdateOne({ versionID, diagramID }, [
-      ...(isMenuNode ? [Atomic.Push([{ path: 'menuItems', value: [{ type: BaseModels.Diagram.MenuItemType.NODE, sourceID: step.nodeID }] }])] : []),
+      ...(isMenuNode
+        ? [
+            Atomic.Push([
+              { path: 'menuItems', value: [{ type: BaseModels.Diagram.MenuItemType.NODE, sourceID: step.nodeID }] },
+            ]),
+          ]
+        : []),
 
       this.atomicNode.set(step.nodeID, [{ path: '', value: step }]),
 
@@ -200,7 +213,9 @@ export class DiagramNodeService {
       ...this.atomicRemoveManyNodes(removeNodes),
     ]);
 
-    await this.orm.atomicUpdateOne({ versionID, diagramID }, [this.atomicNodeData.push(parentNodeID, [{ path: 'steps', value: stepID, index }])]);
+    await this.orm.atomicUpdateOne({ versionID, diagramID }, [
+      this.atomicNodeData.push(parentNodeID, [{ path: 'steps', value: stepID, index }]),
+    ]);
 
     return stepID;
   }
@@ -265,7 +280,9 @@ export class DiagramNodeService {
           ]
         : []),
 
-      this.atomicNode.unsetMany(nodes.map(({ stepID, parentNodeID }) => ({ resourceID: stepID ?? parentNodeID, unsets: [{ path: '' }] }))),
+      this.atomicNode.unsetMany(
+        nodes.map(({ stepID, parentNodeID }) => ({ resourceID: stepID ?? parentNodeID, unsets: [{ path: '' }] }))
+      ),
 
       ...(stepsToPullFromNodes.length
         ? [
@@ -328,7 +345,11 @@ export class DiagramNodeService {
     }
   }
 
-  async pullManyNodesData(versionID: string, diagramID: string, nodePulls: Array<{ nodeID: string; pulls: Atomic.PullOperation[] }>) {
+  async pullManyNodesData(
+    versionID: string,
+    diagramID: string,
+    nodePulls: Array<{ nodeID: string; pulls: Atomic.PullOperation[] }>
+  ) {
     await this.orm.atomicUpdateOne({ versionID, diagramID }, [
       this.atomicNodeData.pullMany(nodePulls.map(({ nodeID, pulls }) => ({ resourceID: nodeID, pulls }))),
     ]);
@@ -338,7 +359,11 @@ export class DiagramNodeService {
     await this.orm.atomicUpdateOne({ versionID, diagramID }, [this.atomicNodeData.pull(nodeID, pulls)]);
   }
 
-  async pushManyNodesData(versionID: string, diagramID: string, nodePushes: Array<{ nodeID: string; pushes: Atomic.PushOperation[] }>) {
+  async pushManyNodesData(
+    versionID: string,
+    diagramID: string,
+    nodePushes: Array<{ nodeID: string; pushes: Atomic.PushOperation[] }>
+  ) {
     await this.orm.atomicUpdateOne({ versionID, diagramID }, [
       this.atomicNodeData.pushMany(nodePushes.map(({ nodeID, pushes }) => ({ resourceID: nodeID, pushes }))),
     ]);
@@ -348,7 +373,11 @@ export class DiagramNodeService {
     await this.orm.atomicUpdateOne({ versionID, diagramID }, [this.atomicNodeData.push(nodeID, pushes)]);
   }
 
-  async unsetManyNodesData(versionID: string, diagramID: string, nodeUnsets: Array<{ nodeID: string; unsets: Atomic.UnsetOperation[] }>) {
+  async unsetManyNodesData(
+    versionID: string,
+    diagramID: string,
+    nodeUnsets: Array<{ nodeID: string; unsets: Atomic.UnsetOperation[] }>
+  ) {
     await this.orm.atomicUpdateOne({ versionID, diagramID }, [
       this.atomicNodeData.unsetMany(nodeUnsets.map(({ nodeID, unsets }) => ({ resourceID: nodeID, unsets }))),
     ]);
@@ -358,7 +387,11 @@ export class DiagramNodeService {
     await this.orm.atomicUpdateOne({ versionID, diagramID }, [this.atomicNodeData.unset(nodeID, unsets)]);
   }
 
-  async patchManyNodesData(versionID: string, diagramID: string, nodePatches: Array<{ nodeID: string; patches: Atomic.SetOperation[] }>) {
+  async patchManyNodesData(
+    versionID: string,
+    diagramID: string,
+    nodePatches: Array<{ nodeID: string; patches: Atomic.SetOperation[] }>
+  ) {
     await this.orm.atomicUpdateOne({ versionID, diagramID }, [
       this.atomicNodeData.setMany(nodePatches.map(({ nodeID, patches }) => ({ resourceID: nodeID, sets: patches }))),
     ]);
@@ -368,18 +401,32 @@ export class DiagramNodeService {
     await this.orm.atomicUpdateOne({ versionID, diagramID }, [this.atomicNodeData.set(nodeID, patches)]);
   }
 
-  private async reorderNodeData(versionID: string, diagramID: string, nodeID: string, { path, match, index }: Atomic.ReorderOperation) {
-    const { nodes } = await this.orm.findOneAndAtomicUpdate({ versionID, diagramID }, [this.atomicNodeData.pull(nodeID, [{ path, match }])]);
+  private async reorderNodeData(
+    versionID: string,
+    diagramID: string,
+    nodeID: string,
+    { path, match, index }: Atomic.ReorderOperation
+  ) {
+    const { nodes } = await this.orm.findOneAndAtomicUpdate({ versionID, diagramID }, [
+      this.atomicNodeData.pull(nodeID, [{ path, match }]),
+    ]);
 
     const array = _get(nodes[nodeID].data, path) as unknown[];
     const item = _find(array, match);
 
     if (!item) throw new Error('Could not find item to reorder');
 
-    await this.orm.atomicUpdateOne({ versionID, diagramID }, [this.atomicNodeData.push(nodeID, [{ path, value: item, index }])]);
+    await this.orm.atomicUpdateOne({ versionID, diagramID }, [
+      this.atomicNodeData.push(nodeID, [{ path, value: item, index }]),
+    ]);
   }
 
-  async addByKeyLink(versionID: string, diagramID: string, nodeID: string, link: { key: string; target: string; data?: BaseModels.LinkData }) {
+  async addByKeyLink(
+    versionID: string,
+    diagramID: string,
+    nodeID: string,
+    link: { key: string; target: string; data?: BaseModels.LinkData }
+  ) {
     await this.patchNodeData(versionID, diagramID, nodeID, [
       { path: DiagramNodeService.byKeyPortPath(link.key, 'target'), value: link.target },
       { path: DiagramNodeService.byKeyPortPath(link.key, 'data'), value: link.data ?? {} },
@@ -398,7 +445,12 @@ export class DiagramNodeService {
     ]);
   }
 
-  async addDynamicLink(versionID: string, diagramID: string, nodeID: string, link: { portID: string; target: string; data?: BaseModels.LinkData }) {
+  async addDynamicLink(
+    versionID: string,
+    diagramID: string,
+    nodeID: string,
+    link: { portID: string; target: string; data?: BaseModels.LinkData }
+  ) {
     await this.patchNodeData(versionID, diagramID, nodeID, [
       { path: DiagramNodeService.dynamicPortPath(link.portID, 'target'), value: link.target },
       { path: DiagramNodeService.dynamicPortPath(link.portID, 'data'), value: link.data ?? {} },
@@ -482,18 +534,34 @@ export class DiagramNodeService {
   }
 
   async addByKeyPort(versionID: string, diagramID: string, nodeID: string, key: string, port: BaseModels.BasePort) {
-    await this.patchNodeData(versionID, diagramID, nodeID, [{ path: DiagramNodeService.byKeyPortPath(key), value: port }]);
+    await this.patchNodeData(versionID, diagramID, nodeID, [
+      { path: DiagramNodeService.byKeyPortPath(key), value: port },
+    ]);
 
     return port;
   }
 
-  async addBuiltInPort(versionID: string, diagramID: string, nodeID: string, type: BaseModels.PortType, port: BaseModels.BasePort) {
-    await this.patchNodeData(versionID, diagramID, nodeID, [{ path: DiagramNodeService.builtInPortPath(type), value: port }]);
+  async addBuiltInPort(
+    versionID: string,
+    diagramID: string,
+    nodeID: string,
+    type: BaseModels.PortType,
+    port: BaseModels.BasePort
+  ) {
+    await this.patchNodeData(versionID, diagramID, nodeID, [
+      { path: DiagramNodeService.builtInPortPath(type), value: port },
+    ]);
 
     return port;
   }
 
-  async addDynamicPort(versionID: string, diagramID: string, nodeID: string, port: BaseModels.BasePort, index?: number) {
+  async addDynamicPort(
+    versionID: string,
+    diagramID: string,
+    nodeID: string,
+    port: BaseModels.BasePort,
+    index?: number
+  ) {
     await this.pushNodeData(versionID, diagramID, nodeID, [{ path: 'portsV2.dynamic', value: port, index }]);
 
     return port;
@@ -511,11 +579,19 @@ export class DiagramNodeService {
   }
 
   async removeMenuItem(versionID: string, diagramID: string, sourceID: string) {
-    await this.orm.atomicUpdateOne({ versionID, diagramID }, [Atomic.Pull([{ path: 'menuItems', match: { sourceID } }])]);
+    await this.orm.atomicUpdateOne({ versionID, diagramID }, [
+      Atomic.Pull([{ path: 'menuItems', match: { sourceID } }]),
+    ]);
   }
 
-  async reorderMenuItems(versionID: string, diagramID: string, { index, sourceID }: { index: number; sourceID: string }) {
-    const diagram = await this.orm.findOneAndAtomicUpdate({ versionID, diagramID }, [Atomic.Pull([{ path: 'menuItems', match: { sourceID } }])]);
+  async reorderMenuItems(
+    versionID: string,
+    diagramID: string,
+    { index, sourceID }: { index: number; sourceID: string }
+  ) {
+    const diagram = await this.orm.findOneAndAtomicUpdate({ versionID, diagramID }, [
+      Atomic.Pull([{ path: 'menuItems', match: { sourceID } }]),
+    ]);
 
     const item = diagram.menuItems?.find((folder) => folder.sourceID === sourceID);
 
@@ -524,7 +600,11 @@ export class DiagramNodeService {
     await this.addMenuItem(versionID, diagramID, item, index);
   }
 
-  async syncCustomBlockPorts(versionID: string, diagramID: string, updatePatch: Record<string, { label: string; portID: string }[]>) {
+  async syncCustomBlockPorts(
+    versionID: string,
+    diagramID: string,
+    updatePatch: Record<string, { label: string; portID: string }[]>
+  ) {
     await this.pushManyNodesData(
       versionID,
       diagramID,

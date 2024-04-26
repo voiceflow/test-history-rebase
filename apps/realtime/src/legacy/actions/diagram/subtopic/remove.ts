@@ -1,6 +1,6 @@
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
-import { Context } from '@voiceflow/socket-utils';
-import { Action } from 'typescript-fsa';
+import type { Context } from '@voiceflow/socket-utils';
+import type { Action } from 'typescript-fsa';
 
 import { AbstractDiagramResourceControl } from '../utils';
 
@@ -21,7 +21,11 @@ class SubtopicRemove extends AbstractDiagramResourceControl<Realtime.diagram.Sub
     ]);
 
     await Promise.all([
-      this.server.processAs(creatorID, clientID, Realtime.diagram.crud.remove({ versionID, projectID, workspaceID, key: subtopicID })),
+      this.server.processAs(
+        creatorID,
+        clientID,
+        Realtime.diagram.crud.remove({ versionID, projectID, workspaceID, key: subtopicID })
+      ),
       this.server.processAs(
         creatorID,
         clientID,
@@ -46,7 +50,10 @@ class SubtopicRemove extends AbstractDiagramResourceControl<Realtime.diagram.Sub
       this.services.domain.setUpdatedBy(versionID, domainID, creatorID),
       this.services.lock.unlockAllEntities(versionID, subtopicID),
       this.services.requestContext.createAsync(() =>
-        this.services.thread.deleteManyByDiagramsAndBroadcast([subtopicID], { auth: { userID: creatorID, clientID }, context: action.payload })
+        this.services.thread.deleteManyByDiagramsAndBroadcast([subtopicID], {
+          auth: { userID: creatorID, clientID },
+          context: action.payload,
+        })
       ),
     ]);
   };

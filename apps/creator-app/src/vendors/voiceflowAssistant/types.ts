@@ -1,4 +1,4 @@
-import { PlanType, UserRole } from '@voiceflow/internal';
+import type { PlanType, UserRole } from '@voiceflow/internal';
 
 interface ChatWidgetLoadOptions {
   verify: { projectID: string };

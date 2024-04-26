@@ -2,7 +2,8 @@
 /* eslint-disable no-restricted-properties */
 /*
   Adapted from this implementation of the HSLUV algorithm: https://github.com/StoneCypher/hsluv.ts
-  🚨 This file shouldn't require any adjustments, save for eventual bugfixing, since all our actual (HSL -> HEX) and color logic is abstracted in the utils/hsl.ts file.
+  🚨 This file shouldn't require any adjustments, save for eventual bugfixing,
+  since all our actual (HSL -> HEX) and color logic is abstracted in the utils/hsl.ts file.
 */
 
 interface line {
@@ -16,7 +17,8 @@ type luv = [number, number, number];
 type hsl = [number, number, number];
 type xyz = [number, number, number];
 
-const lengthOfArrayUntilIntersect = (utheta: angle, uline: line): number => uline.intercept / (Math.sin(utheta) - uline.slope * Math.cos(utheta));
+const lengthOfArrayUntilIntersect = (utheta: angle, uline: line): number =>
+  uline.intercept / (Math.sin(utheta) - uline.slope * Math.cos(utheta));
 const m = [
   [3.240969941904521, -1.537383177570093, -0.498610760293],
   [-0.96924363628087, 1.87596750150772, 0.041555057407175],
@@ -81,7 +83,11 @@ const maxChromaForLH = (L: number, H: number): number => {
 
 const dotProduct = (a: number[], b: number[]): number => a.reduce((acc, cur, i) => acc + cur * b[i], 0);
 const fromLinear = (c: number): number => (c <= 0.0031308 ? 12.92 * c : 1.055 * c ** (1 / 2.4) - 0.055);
-const hyxToRgb = (tuple: xyz): rgb => [fromLinear(dotProduct(m[0], tuple)), fromLinear(dotProduct(m[1], tuple)), fromLinear(dotProduct(m[2], tuple))];
+const hyxToRgb = (tuple: xyz): rgb => [
+  fromLinear(dotProduct(m[0], tuple)),
+  fromLinear(dotProduct(m[1], tuple)),
+  fromLinear(dotProduct(m[2], tuple)),
+];
 const lToY = (L: number): number => (L <= 8 ? (refY * L) / kappa : refY * ((L + 16) / 116) ** 3);
 const yToL = (Y: number): number => (Y <= epsilon ? (Y / refY) * kappa : 116 * Math.pow(Y / refY, 1.0 / 3.0) - 16);
 const toLinear = (c: number): number => (c > 0.04045 ? Math.pow((c + 0.055) / (1 + 0.055), 2.4) : c / 12.92);

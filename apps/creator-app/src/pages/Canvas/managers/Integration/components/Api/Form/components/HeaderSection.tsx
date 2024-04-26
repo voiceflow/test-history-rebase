@@ -5,7 +5,7 @@ import VariablesInput from '@/components/VariablesInput';
 import { useMapManager } from '@/hooks';
 
 import { expressionFactory } from '../constants';
-import { BaseFormProps } from '../types';
+import type { BaseFormProps } from '../types';
 import * as APIEditorSectionStyles from './styles';
 
 const HeaderSection: React.FC<BaseFormProps> = ({ editor }) => {
@@ -26,9 +26,19 @@ const HeaderSection: React.FC<BaseFormProps> = ({ editor }) => {
 
           <SectionV2.ListItem action={<SectionV2.RemoveButton onClick={onRemove} />}>
             <APIEditorSectionStyles.Item>
-              <VariablesInput placeholder="Enter parameter key" value={header.key} onBlur={({ text }) => onUpdate({ key: text })} multiline />
+              <VariablesInput
+                placeholder="Enter parameter key"
+                value={header.key}
+                onBlur={({ text }) => onUpdate({ key: text })}
+                multiline
+              />
 
-              <VariablesInput placeholder="Enter value or {variable}" value={header.val} onBlur={({ text }) => onUpdate({ val: text })} multiline />
+              <VariablesInput
+                placeholder="Enter value or {variable}"
+                value={header.val}
+                onBlur={({ text }) => onUpdate({ val: text })}
+                multiline
+              />
             </APIEditorSectionStyles.Item>
           </SectionV2.ListItem>
         </React.Fragment>

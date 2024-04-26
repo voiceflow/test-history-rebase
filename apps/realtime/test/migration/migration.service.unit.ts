@@ -1,18 +1,19 @@
-import { EntityManager } from '@mikro-orm/core';
-import { BaseVersion } from '@voiceflow/base-types';
+import type { EntityManager } from '@mikro-orm/core';
+import type { BaseVersion } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 
-import { createMock, DeepMocked } from '@/../test/utils/create-mock.util';
-import { AssistantSerializer } from '@/assistant/assistant.serializer';
-import { AssistantService } from '@/assistant/assistant.service';
-import { BackupService } from '@/backup/backup.service';
-import { EnvironmentService } from '@/environment/environment.service';
-import { LegacyService } from '@/legacy/legacy.service';
+import type { DeepMocked } from '@/../test/utils/create-mock.util';
+import { createMock } from '@/../test/utils/create-mock.util';
+import type { AssistantSerializer } from '@/assistant/assistant.serializer';
+import type { AssistantService } from '@/assistant/assistant.service';
+import type { BackupService } from '@/backup/backup.service';
+import type { EnvironmentService } from '@/environment/environment.service';
+import type { LegacyService } from '@/legacy/legacy.service';
 import { MigrationState } from '@/legacy/services/migrate/constants';
-import { MigrationCacheService } from '@/migration/cache/cache.service';
+import type { MigrationCacheService } from '@/migration/cache/cache.service';
 import { MigrationService } from '@/migration/migration.service';
-import { ProjectLegacyService } from '@/project/project-legacy/project-legacy.service';
+import type { ProjectLegacyService } from '@/project/project-legacy/project-legacy.service';
 
 describe('Migrate service unit tests', () => {
   let legacyService: DeepMocked<LegacyService>;
@@ -121,7 +122,12 @@ describe('Migrate service unit tests', () => {
     it('yield NOT_ALLOWED if migration in progress', async () => {
       migrationCacheService.isMigrationLocked.mockResolvedValueOnce(true);
 
-      const migrator = migrateService.migrateSchema({ creatorID, clientNodeID, targetSchemaVersion: schemaVersion, version });
+      const migrator = migrateService.migrateSchema({
+        creatorID,
+        clientNodeID,
+        targetSchemaVersion: schemaVersion,
+        version,
+      });
 
       await expectMigrationStates(migrator, [MigrationState.NOT_ALLOWED]);
 
@@ -129,7 +135,12 @@ describe('Migrate service unit tests', () => {
     });
 
     it('yield NOT_REQUIRED if active schema version already meets target version', async () => {
-      const migrator = migrateService.migrateSchema({ creatorID, version, clientNodeID, targetSchemaVersion: Realtime.SchemaVersion.V2 });
+      const migrator = migrateService.migrateSchema({
+        creatorID,
+        version,
+        clientNodeID,
+        targetSchemaVersion: Realtime.SchemaVersion.V2,
+      });
 
       await expectMigrationStates(migrator, [MigrationState.NOT_REQUIRED]);
       expect(migrationCacheService.getActiveSchemaVersion).toBeCalledWith(versionID);
@@ -138,7 +149,12 @@ describe('Migrate service unit tests', () => {
     it('yield NOT_SUPPORTED if active schema version is incompatible with target version', async () => {
       migrationCacheService.getActiveSchemaVersion.mockResolvedValueOnce(Realtime.SchemaVersion.V2);
 
-      const migrator = migrateService.migrateSchema({ creatorID, version, clientNodeID, targetSchemaVersion: Realtime.SchemaVersion.V1 });
+      const migrator = migrateService.migrateSchema({
+        creatorID,
+        version,
+        clientNodeID,
+        targetSchemaVersion: Realtime.SchemaVersion.V1,
+      });
 
       await expectMigrationStates(migrator, [MigrationState.NOT_SUPPORTED]);
     });
@@ -176,7 +192,12 @@ describe('Migrate service unit tests', () => {
 
       entityManager.transactional.mockImplementationOnce(async (cb) => cb());
 
-      const migrator = migrateService.migrateSchema({ creatorID, version, clientNodeID, targetSchemaVersion: Realtime.SchemaVersion.V2 });
+      const migrator = migrateService.migrateSchema({
+        creatorID,
+        version,
+        clientNodeID,
+        targetSchemaVersion: Realtime.SchemaVersion.V2,
+      });
       const generator = migrator[Symbol.asyncIterator]();
 
       await expect(generator.next()).resolves.toEqual({ done: false, value: MigrationState.STARTED });
@@ -200,7 +221,9 @@ describe('Migrate service unit tests', () => {
 
       migrationCacheService.getActiveSchemaVersion.mockResolvedValueOnce(null);
 
-      legacyService.models.diagram.findManyByVersionID.mockResolvedValueOnce([{ creatorID, versionID, _id: diagramID } as any]);
+      legacyService.models.diagram.findManyByVersionID.mockResolvedValueOnce([
+        { creatorID, versionID, _id: diagramID } as any,
+      ]);
       projectLegacyService.get.mockResolvedValueOnce({
         _id: '',
         creatorID: 1,
@@ -215,7 +238,12 @@ describe('Migrate service unit tests', () => {
 
       entityManager.transactional.mockImplementationOnce(async (cb) => cb());
 
-      const migrator = migrateService.migrateSchema({ creatorID, version: { ...version, ...versionData }, clientNodeID, targetSchemaVersion });
+      const migrator = migrateService.migrateSchema({
+        creatorID,
+        version: { ...version, ...versionData },
+        clientNodeID,
+        targetSchemaVersion,
+      });
 
       await expectMigrationStates(migrator, [MigrationState.STARTED, MigrationState.DONE]);
 

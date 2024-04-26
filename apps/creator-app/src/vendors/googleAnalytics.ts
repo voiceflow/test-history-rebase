@@ -1,4 +1,4 @@
-import { History } from 'history';
+import type { History } from 'history';
 import ReactGA from 'react-ga';
 
 import { GA_ENABLED, GOOGLE_ANALYTICS_ID } from '@/config';

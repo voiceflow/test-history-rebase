@@ -1,4 +1,5 @@
-import { ITabLoader, TabLoader } from '@voiceflow/ui-next';
+import type { ITabLoader } from '@voiceflow/ui-next';
+import { TabLoader } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { DiagramSidebar } from '@/pages/Project/components/Diagram/DiagramSidebar/DiagramSidebar.component';

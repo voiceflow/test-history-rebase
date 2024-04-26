@@ -1,4 +1,4 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Members } from '@voiceflow/ui';
 import React from 'react';
 
@@ -42,7 +42,9 @@ const MemberList: React.FC<MemberListProps> = ({ inset, members, hideLastDivider
       members.map((member) => ({
         ...member,
         projects: member.creator_id ? editorRoleProjectsByUserID[member.creator_id] : undefined,
-        isOrganizationAdmin: member.creator_id ? isAdminUserRole(getOrganizationMemberByID({ creatorID: member.creator_id })?.role) : false,
+        isOrganizationAdmin: member.creator_id
+          ? isAdminUserRole(getOrganizationMemberByID({ creatorID: member.creator_id })?.role)
+          : false,
       })),
     [members, getOrganizationMemberByID, editorRoleProjectsByUserID]
   );

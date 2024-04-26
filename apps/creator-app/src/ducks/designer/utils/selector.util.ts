@@ -87,4 +87,5 @@ export const createByFolderIDSelectors = <Type extends { folderID: string | null
   };
 };
 
-export const createDesignerSelector = <K extends keyof DesignerState>(key: K) => createSubSelector(designerRootSelector, key);
+export const createDesignerSelector = <K extends keyof DesignerState>(key: K) =>
+  createSubSelector(designerRootSelector, key);

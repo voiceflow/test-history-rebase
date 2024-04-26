@@ -13,7 +13,12 @@ export const DiagramLayoutHeaderShare: React.FC = () => {
     <SharePopper placement="bottom-start" modifiers={{ offset: { offset: '0,1' } }} preventOverflowPadding={16}>
       {({ ref, onToggle, isOpened }) => (
         <div ref={ref}>
-          <Header.Button.Secondary label="Share" isActive={isOpened} onClick={() => onToggle()} testID={tid('canvas-header', 'share')} />
+          <Header.Button.Secondary
+            label="Share"
+            isActive={isOpened}
+            onClick={() => onToggle()}
+            testID={tid('canvas-header', 'share')}
+          />
         </div>
       )}
     </SharePopper>

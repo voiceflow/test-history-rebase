@@ -58,7 +58,14 @@ class AudioController {
       offset = 0,
       onStop,
       onError,
-    }: { offset?: number; play?: boolean; muted?: boolean; loop?: boolean; onError?: () => void; onStop?: (audio: TAudio) => void } = {}
+    }: {
+      offset?: number;
+      play?: boolean;
+      muted?: boolean;
+      loop?: boolean;
+      onError?: () => void;
+      onStop?: (audio: TAudio) => void;
+    } = {}
   ): Promise<void> {
     this.stop();
 

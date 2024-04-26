@@ -3,7 +3,7 @@ import { Modal, Switch, System, useAsyncMountUnmount } from '@voiceflow/ui';
 import { useSetAtom } from 'jotai';
 import React from 'react';
 
-import { UpgradePrompt } from '@/ducks/tracking';
+import type { UpgradePrompt } from '@/ducks/tracking';
 import { getClient as getChargebeeClient, initialize as initializeChargebee } from '@/vendors/chargebee';
 
 import manager from '../../../manager';
@@ -52,7 +52,10 @@ export const Payment = manager.create<PaymentModalProps>('Payment', () => (modal
 
   return (
     <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={handleExited} maxWidth={500}>
-      <Modal.Header actions={<Modal.Header.CloseButtonAction disabled={closePrevented} onClick={api.onClose} />} capitalizeText={false}>
+      <Modal.Header
+        actions={<Modal.Header.CloseButtonAction disabled={closePrevented} onClick={api.onClose} />}
+        capitalizeText={false}
+      >
         {activeStep !== Step.PLAN && (
           <System.IconButtonsGroup.Base mr={12}>
             <System.IconButton.Base icon="largeArrowLeft" disabled={closePrevented} onClick={onBack} />

@@ -1,6 +1,8 @@
 import { setDisplayName, wrapDisplayName } from 'recompose';
 
-export type HOC<S extends object = {}> = <D extends object>(Component: React.ComponentType<S & D>) => React.ComponentType<S & D>;
+export type HOC<S extends object = {}> = <D extends object>(
+  Component: React.ComponentType<S & D>
+) => React.ComponentType<S & D>;
 
 export const createHOC =
   <S extends object = {}>(name: string) =>

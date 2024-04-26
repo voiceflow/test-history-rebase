@@ -1,11 +1,13 @@
 import { Logger } from '@nestjs/common';
-import { AIMessage, AIMessageRole, AIParams } from '@voiceflow/dtos';
-import { ChatCompletionRequestMessageRoleEnum, CreateChatCompletionResponse } from '@voiceflow/openai';
+import type { AIMessage, AIParams } from '@voiceflow/dtos';
+import { AIMessageRole } from '@voiceflow/dtos';
+import type { CreateChatCompletionResponse } from '@voiceflow/openai';
+import { ChatCompletionRequestMessageRoleEnum } from '@voiceflow/openai';
 
 import { LLMModel } from '../llm-model.abstract';
 import { EmptyCompletionOutput } from '../llm-model.constant';
 import type { CompletionOptions, CompletionOutput } from '../llm-model.dto';
-import { AzureConfig, OpenAIConfig } from './gpt.interface';
+import type { AzureConfig, OpenAIConfig } from './gpt.interface';
 import { delayedPromiseRace, getOpenAIResponseError, isAxiosError } from './gpt.util';
 import { OpenAIClient } from './openai-api.client';
 
@@ -23,7 +25,10 @@ export abstract class GPTLLMModel extends LLMModel {
   };
 
   // try using azure openai first, if it fails, defer to openai api
-  constructor(protected config: OpenAIConfig, protected azureConfig?: AzureConfig) {
+  constructor(
+    protected config: OpenAIConfig,
+    protected azureConfig?: AzureConfig
+  ) {
     super(config);
 
     this.client = new OpenAIClient(config, this.azureConfig?.deployment);
@@ -80,9 +85,14 @@ export abstract class GPTLLMModel extends LLMModel {
     return this.generateChatCompletion(messages, params, options);
   }
 
-  private async generateAzureChatCompletion(messages: AIMessage[], params: AIParams, options?: CompletionOptions): Promise<CompletionOutput> {
+  private async generateAzureChatCompletion(
+    messages: AIMessage[],
+    params: AIParams,
+    options?: CompletionOptions
+  ): Promise<CompletionOutput> {
     try {
-      const resolveCompletion = () => this.callChatCompletion(messages, params, options, this.client.azureClient, this.azureConfig!.model);
+      const resolveCompletion = () =>
+        this.callChatCompletion(messages, params, options, this.client.azureClient, this.azureConfig!.model);
 
       if (this.azureConfig?.race) {
         // with azure, sometimes it times out randomly, so we need to retry
@@ -101,21 +111,36 @@ export abstract class GPTLLMModel extends LLMModel {
     }
   }
 
-  private async generateOpenAIChatCompletion(messages: AIMessage[], params: AIParams, options?: CompletionOptions): Promise<CompletionOutput> {
+  private async generateOpenAIChatCompletion(
+    messages: AIMessage[],
+    params: AIParams,
+    options?: CompletionOptions
+  ): Promise<CompletionOutput> {
     return this.callChatCompletion(messages, params, options, this.client.openAIClient);
   }
 
-  protected routeChatCompletion(messages: AIMessage[], params: AIParams, options?: CompletionOptions): Promise<CompletionOutput> {
+  protected routeChatCompletion(
+    messages: AIMessage[],
+    params: AIParams,
+    options?: CompletionOptions
+  ): Promise<CompletionOutput> {
     if (this.azureConfig && this.client.azureClient) return this.generateAzureChatCompletion(messages, params, options);
 
     return this.generateOpenAIChatCompletion(messages, params, options);
   }
 
-  async generateChatCompletion(messages: AIMessage[], params: AIParams, options?: CompletionOptions): Promise<CompletionOutput> {
+  async generateChatCompletion(
+    messages: AIMessage[],
+    params: AIParams,
+    options?: CompletionOptions
+  ): Promise<CompletionOutput> {
     try {
       return await this.routeChatCompletion(messages, params, options);
     } catch (error: any) {
-      this.logger.warn({ error: getOpenAIResponseError(error) ?? error, messages, params }, `${this.modelRef} completion`);
+      this.logger.warn(
+        { error: getOpenAIResponseError(error) ?? error, messages, params },
+        `${this.modelRef} completion`
+      );
       return EmptyCompletionOutput({ error: getOpenAIResponseError(error), model: this.modelRef });
     }
   }

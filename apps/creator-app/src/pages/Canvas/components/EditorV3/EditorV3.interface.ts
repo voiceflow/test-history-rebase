@@ -1,4 +1,4 @@
-import { IconName } from '@voiceflow/icons';
+import type { IconName } from '@voiceflow/icons';
 
 export interface IEditorV3 extends React.PropsWithChildren {
   header?: React.ReactNode;

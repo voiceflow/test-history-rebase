@@ -12,13 +12,15 @@ export const ProjectNLUTypeContext = React.createContext<Platform.Constants.NLUT
 export const { Provider: ProjectNLUTypeProvider, Consumer: ProjectNLUTypeConsumer } = ProjectNLUTypeContext;
 
 export const ProjectNLUTypeConfigContext = React.createContext<NLU.Base.Config>(NLU.Base.CONFIG);
-export const { Provider: ProjectNLUTypeConfigProvider, Consumer: ProjectNLUTypeConfigConsumer } = ProjectNLUTypeConfigContext;
+export const { Provider: ProjectNLUTypeConfigProvider, Consumer: ProjectNLUTypeConfigConsumer } =
+  ProjectNLUTypeConfigContext;
 
 export const ProjectPlatformContext = React.createContext<Platform.Constants.PlatformType>(Platform.Base.CONFIG.type);
 export const { Provider: ProjectPlatformProvider, Consumer: ProjectPlatformConsumer } = ProjectPlatformContext;
 
 export const ProjectPlatformConfigContext = React.createContext<Platform.Base.Config>(Platform.Base.CONFIG);
-export const { Provider: ProjectPlatformConfigProvider, Consumer: ProjectPlatformConfigConsumer } = ProjectPlatformConfigContext;
+export const { Provider: ProjectPlatformConfigProvider, Consumer: ProjectPlatformConfigConsumer } =
+  ProjectPlatformConfigContext;
 
 export const ProjectTypeContext = React.createContext<Platform.Constants.ProjectType>(Platform.Base.Type.CONFIG.type);
 export const { Provider: ProjectTypeProvider, Consumer: ProjectTypeConsumer } = ProjectTypeContext;
@@ -34,7 +36,8 @@ export const ProjectConfigProvider: React.FC<React.PropsWithChildren> = ({ child
 
   const [nluConfig, platformConfig, platformTypeConfig] = React.useMemo(() => {
     const platformOverride = FEATURE_FLAGS_OVERRIDES.find(
-      (override) => override.featureFlag && enabledFeatures.includes(override.featureFlag) && override.platform === platform
+      (override) =>
+        override.featureFlag && enabledFeatures.includes(override.featureFlag) && override.platform === platform
     );
     let platformConfiguration = Platform.Config.get(platform);
 
@@ -42,7 +45,11 @@ export const ProjectConfigProvider: React.FC<React.PropsWithChildren> = ({ child
       platformConfiguration = { ...platformConfiguration, ...platformOverride.config };
     }
 
-    return [NLU.Config.get(nluType), platformConfiguration, Platform.Config.getTypeConfig({ type: projectType, platform })];
+    return [
+      NLU.Config.get(nluType),
+      platformConfiguration,
+      Platform.Config.getTypeConfig({ type: projectType, platform }),
+    ];
   }, [nluType, platform, projectType]);
 
   return (

@@ -43,7 +43,9 @@ const CanvasHeader: React.FC = () => {
               active={!isMarkupTextActive && !isMarkupMediaActive && !isCommentingMode}
               onClick={onDisableModes}
               tooltip={{
-                content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.MOVE_MODE]}>Move</TippyTooltip.WithHotkey>,
+                content: (
+                  <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.MOVE_MODE]}>Move</TippyTooltip.WithHotkey>
+                ),
                 offset: [0, -6],
               }}
               expandable
@@ -59,7 +61,11 @@ const CanvasHeader: React.FC = () => {
             icon="note"
             active={isMarkupTextActive}
             tooltip={{
-              content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.ADD_MARKUP_NOTE]}>Note</TippyTooltip.WithHotkey>,
+              content: (
+                <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.ADD_MARKUP_NOTE]}>
+                  Note
+                </TippyTooltip.WithHotkey>
+              ),
               offset: [0, -6],
             }}
             onClick={markup.toggleTextCreating}
@@ -73,7 +79,11 @@ const CanvasHeader: React.FC = () => {
             active={isMarkupMediaActive}
             onClick={markup.triggerMediaUpload}
             tooltip={{
-              content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.ADD_MARKUP_IMAGE]}>Image or Video</TippyTooltip.WithHotkey>,
+              content: (
+                <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.ADD_MARKUP_IMAGE]}>
+                  Image or Video
+                </TippyTooltip.WithHotkey>
+              ),
               offset: [0, -6],
             }}
             iconProps={{ size: 18 }}
@@ -86,7 +96,11 @@ const CanvasHeader: React.FC = () => {
             icon="commentV2"
             active={isCommentingMode}
             tooltip={{
-              content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.OPEN_COMMENTING]}>Comment</TippyTooltip.WithHotkey>,
+              content: (
+                <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.OPEN_COMMENTING]}>
+                  Comment
+                </TippyTooltip.WithHotkey>
+              ),
               offset: [0, -6],
             }}
             onClick={onToggleCommenting}
@@ -100,7 +114,11 @@ const CanvasHeader: React.FC = () => {
           active={search?.isVisible}
           onClick={() => search?.toggle()}
           tooltip={{
-            content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.SEARCH]}>Search Assistant</TippyTooltip.WithHotkey>,
+            content: (
+              <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.SEARCH]}>
+                Search Assistant
+              </TippyTooltip.WithHotkey>
+            ),
             offset: [0, -6],
           }}
         />

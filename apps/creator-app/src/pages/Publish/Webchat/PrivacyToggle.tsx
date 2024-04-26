@@ -25,7 +25,11 @@ const PrivacyToggle: React.FC = () => {
     <Portal portalNode={document.body}>
       <Box position="fixed" top={22} right={32}>
         <TippyTooltip
-          content={isPublic ? 'Widget enabled and visible to website visitors' : 'Widget disabled and hidden from website visitors'}
+          content={
+            isPublic
+              ? 'Widget enabled and visible to website visitors'
+              : 'Widget disabled and hidden from website visitors'
+          }
           placement="bottom"
           hideOnClick={false}
         >

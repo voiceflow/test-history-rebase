@@ -8,7 +8,7 @@ import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector } from '@/hooks/redux';
 import { Identifier } from '@/styles/constants';
 
-import { Member } from '../../types';
+import type { Member } from '../../types';
 
 interface InviteMemberProps {
   onAdd: (member: Member) => void;
@@ -35,7 +35,9 @@ const InviteMember: React.FC<InviteMemberProps> = ({ onAdd: onAddProp, members }
   const membersToAdd = React.useMemo(() => {
     const membersMap = Utils.array.createMap(members, (member) => member.creator_id);
 
-    return workspaceMembers.filter((workspaceMember) => !membersMap[workspaceMember.creator_id]).map((member) => ({ ...member, projects: [] }));
+    return workspaceMembers
+      .filter((workspaceMember) => !membersMap[workspaceMember.creator_id])
+      .map((member) => ({ ...member, projects: [] }));
   }, [members, workspaceMembers]);
 
   return (
@@ -46,10 +48,21 @@ const InviteMember: React.FC<InviteMemberProps> = ({ onAdd: onAddProp, members }
           <Members.Select {...props} value={memberID} members={membersToAdd} onChange={setMemberID} fullWidth />
         )}
       >
-        {() => (!memberID ? <></> : <Members.RoleSelect value={role} roles={[UserRole.EDITOR, UserRole.VIEWER]} onChange={setRole} />)}
+        {() =>
+          !memberID ? (
+            <></>
+          ) : (
+            <Members.RoleSelect value={role} roles={[UserRole.EDITOR, UserRole.VIEWER]} onChange={setRole} />
+          )
+        }
       </SelectInputGroup>
 
-      <Button id={Identifier.COLLAB_SEND_INVITE_BUTTON} onClick={onAdd} disabled={memberID === null} variant={Button.Variant.PRIMARY}>
+      <Button
+        id={Identifier.COLLAB_SEND_INVITE_BUTTON}
+        onClick={onAdd}
+        disabled={memberID === null}
+        variant={Button.Variant.PRIMARY}
+      >
         Add
       </Button>
     </Flex>

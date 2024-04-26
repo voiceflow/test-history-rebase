@@ -1,4 +1,4 @@
-import { BaseModels } from '@voiceflow/base-types';
+import type { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import _ from 'lodash';
@@ -33,7 +33,11 @@ class DomainService extends AbstractControl {
     return this.models.version.domain.create(versionID, domain);
   }
 
-  public async patch(versionID: string, domainID: string, domain: Partial<Omit<BaseModels.Version.Domain, 'id' | 'rootDiagramID'>>): Promise<void> {
+  public async patch(
+    versionID: string,
+    domainID: string,
+    domain: Partial<Omit<BaseModels.Version.Domain, 'id' | 'rootDiagramID'>>
+  ): Promise<void> {
     await this.models.version.domain.update(versionID, domainID, domain);
   }
 
@@ -109,7 +113,10 @@ class DomainService extends AbstractControl {
       if (await this.updatedThrottleCache.get({ versionID, domainID })) return;
 
       await Promise.all([
-        this.models.version.domain.update(versionID, domainID, { updatedAt: new Date().toJSON(), updatedBy: creatorID }),
+        this.models.version.domain.update(versionID, domainID, {
+          updatedAt: new Date().toJSON(),
+          updatedBy: creatorID,
+        }),
         this.updatedThrottleCache.set({ versionID, domainID }, `${creatorID}`),
       ]);
     } catch (error) {

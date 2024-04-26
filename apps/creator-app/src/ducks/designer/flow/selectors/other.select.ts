@@ -1,4 +1,4 @@
-import { Flow } from '@voiceflow/dtos';
+import type { Flow } from '@voiceflow/dtos';
 import { createSelector } from 'reselect';
 
 import { diagramIDParamSelector } from '@/ducks/utils';
@@ -14,6 +14,10 @@ export const mapByDiagramID = createSelector(
   all,
   (flows): Partial<Record<string, Flow>> => Object.fromEntries(flows.map((flow) => [flow.diagramID, flow]))
 );
-export const oneByDiagramID = createSelector(mapByDiagramID, diagramIDParamSelector, (map, diagramID) => (diagramID ? map[diagramID] : null));
+export const oneByDiagramID = createSelector(mapByDiagramID, diagramIDParamSelector, (map, diagramID) =>
+  diagramID ? map[diagramID] : null
+);
 
-export const allOrderedByName = createSelector([all], (entities) => entities.sort((a, b) => a.name.localeCompare(b.name)));
+export const allOrderedByName = createSelector([all], (entities) =>
+  entities.sort((a, b) => a.name.localeCompare(b.name))
+);

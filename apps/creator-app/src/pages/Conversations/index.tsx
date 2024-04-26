@@ -46,7 +46,10 @@ const Conversations: React.FC = () => {
 
   const loadTranscripts = async () => {
     // do not applying last filters if we opening the transcript by url
-    const [, transcripts] = await Promise.all([fetchReportTags(), fetchTranscripts(query ?? (!currentTranscriptID ? lastFilter : ''))]);
+    const [, transcripts] = await Promise.all([
+      fetchReportTags(),
+      fetchTranscripts(query ?? (!currentTranscriptID ? lastFilter : '')),
+    ]);
 
     const currentTranscript = transcripts.find(({ id }) => id === currentTranscriptID);
     const firstTranscriptID = transcripts[0]?.id;
@@ -101,10 +104,21 @@ const Conversations: React.FC = () => {
   return (
     <ProjectPage>
       <ConversationsContainer id={Identifier.CONVERSATIONS_PAGE} isFilteredResultsEmpty={!filteredReportsExist}>
-        <LoadingGate internalName={Conversations.name} isLoaded={isLoaded} load={loadTranscripts} loader={<TabLoader variant="dark" />}>
+        <LoadingGate
+          internalName={Conversations.name}
+          isLoaded={isLoaded}
+          load={loadTranscripts}
+          loader={<TabLoader variant="dark" />}
+        >
           {!noTestRuns ? (
             <>
-              <TranscriptManager tags={tags} range={range} endDate={endDate} startDate={startDate} personas={personas} />
+              <TranscriptManager
+                tags={tags}
+                range={range}
+                endDate={endDate}
+                startDate={startDate}
+                personas={personas}
+              />
 
               {allTranscripts.length ? (
                 <>

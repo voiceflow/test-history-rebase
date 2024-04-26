@@ -11,7 +11,6 @@ import { FunctionModule } from '@/function/function.module';
 import { IntentModule } from '@/intent/intent.module';
 import { RequiredEntityModule } from '@/intent/required-entity/required-entity.module';
 import { UtteranceModule } from '@/intent/utterance/utterance.module';
-// eslint-disable-next-line import/no-cycle
 import { ProjectModule } from '@/project/project.module';
 import { ProjectSerializer } from '@/project/project.serializer';
 import { ResponseModule } from '@/response/response.module';

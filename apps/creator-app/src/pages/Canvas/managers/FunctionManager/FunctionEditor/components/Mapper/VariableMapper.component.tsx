@@ -18,12 +18,18 @@ export const VariableMapper: React.FC<IVariableMapper> = ({ leftHandInput, right
         <Mapper
           equalityIcon="arrow"
           leftHandSide={
-            <ItemWithDescriptionTooltip description={description} modifiers={[{ name: 'offset', options: { offset: [-6, 28] } }]}>
+            <ItemWithDescriptionTooltip
+              description={description}
+              modifiers={[{ name: 'offset', options: { offset: [-6, 28] } }]}
+            >
               {leftHandInput}
             </ItemWithDescriptionTooltip>
           }
           rightHandSide={
-            <ItemWithDescriptionTooltip description={description} modifiers={[{ name: 'offset', options: { offset: [-6, 12] } }]}>
+            <ItemWithDescriptionTooltip
+              description={description}
+              modifiers={[{ name: 'offset', options: { offset: [-6, 12] } }]}
+            >
               {rightHandInput}
             </ItemWithDescriptionTooltip>
           }

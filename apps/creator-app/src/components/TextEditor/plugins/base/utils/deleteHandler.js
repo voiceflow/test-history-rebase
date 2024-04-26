@@ -45,15 +45,26 @@ export default (store) => (e) => {
     } else {
       const isDelete = e.code === 'Delete';
 
-      const startSelectionEntity = getEntityAtStartSelection(editorState, editorState.getSelection(), isDelete ? 0 : -1);
+      const startSelectionEntity = getEntityAtStartSelection(
+        editorState,
+        editorState.getSelection(),
+        isDelete ? 0 : -1
+      );
 
       if (startSelectionEntity && startSelectionEntity.getMutability() === Mutability.IMMUTABLE) {
         selection = getEntitySelection(editorState, startSelectionEntity) || selection;
       } else {
-        selection = selection.merge({ focusOffset: focusOffset + (isDelete ? 1 : 0), anchorOffset: anchorOffset + (isDelete ? 0 : -1) });
+        selection = selection.merge({
+          focusOffset: focusOffset + (isDelete ? 1 : 0),
+          anchorOffset: anchorOffset + (isDelete ? 0 : -1),
+        });
       }
 
-      const nextContent = Modifier.removeRange(editorState.getCurrentContent(), selection, isDelete ? 'backward' : 'forward');
+      const nextContent = Modifier.removeRange(
+        editorState.getCurrentContent(),
+        selection,
+        isDelete ? 'backward' : 'forward'
+      );
 
       editorState = EditorState.push(editorState, nextContent, PushAction.DELETE_CHARACTER);
     }

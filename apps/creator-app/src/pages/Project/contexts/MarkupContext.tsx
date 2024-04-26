@@ -1,5 +1,7 @@
-import { Nullable, Utils } from '@voiceflow/common';
-import { BlockType, MarkupBlockType } from '@voiceflow/realtime-sdk';
+import type { Nullable } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
+import type { MarkupBlockType } from '@voiceflow/realtime-sdk';
+import { BlockType } from '@voiceflow/realtime-sdk';
 import { toast, Upload, useCache, useContextApi, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
@@ -7,7 +9,14 @@ import { LimitType } from '@/constants/limits';
 import { Permission } from '@/constants/permissions';
 import * as History from '@/ducks/history';
 import * as Organization from '@/ducks/organization';
-import { useDispatch, useEventualEngine, usePermission, usePlanLimitConfig, useSelector, useTrackingEvents } from '@/hooks';
+import {
+  useDispatch,
+  useEventualEngine,
+  usePermission,
+  usePlanLimitConfig,
+  useSelector,
+  useTrackingEvents,
+} from '@/hooks';
 import { useLimitConfig } from '@/hooks/planLimitV3';
 import { useAnyModeOpen, useTextMarkupMode } from '@/pages/Project/hooks/modes';
 import { upload, windowRefocused } from '@/utils/dom';
@@ -40,7 +49,9 @@ export const MarkupProvider: React.FC<React.PropsWithChildren> = ({ children }) 
   const isTextMarkupMode = useTextMarkupMode();
   const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
   const [uploadingMedia, setUploadingMedia] = React.useState(false);
-  const [creatingType, localSetCreatingType] = React.useState<Nullable<MarkupBlockType>>(isTextMarkupMode ? BlockType.MARKUP_TEXT : null);
+  const [creatingType, localSetCreatingType] = React.useState<Nullable<MarkupBlockType>>(
+    isTextMarkupMode ? BlockType.MARKUP_TEXT : null
+  );
   const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
 
   const legacyVideoLimitConfig = usePlanLimitConfig(LimitType.MARKUP_VIDEO);
@@ -123,7 +134,9 @@ export const MarkupProvider: React.FC<React.PropsWithChildren> = ({ children }) 
       if (errors.length) {
         toast.error(errors[0]);
       } else {
-        toast.error(`Unsupported file type, please upload ${[...ALLOWED_IMAGE_TYPES, ...ALLOWED_VIDEOS_TYPES].join(', ')}`);
+        toast.error(
+          `Unsupported file type, please upload ${[...ALLOWED_IMAGE_TYPES, ...ALLOWED_VIDEOS_TYPES].join(', ')}`
+        );
       }
 
       return;

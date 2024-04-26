@@ -1,5 +1,5 @@
 import { createReducerFactory } from '@/ducks/utils';
 
-import { ProjectState } from '../types';
+import type { ProjectState } from '../types';
 
 export const createReducer = createReducerFactory<ProjectState>();

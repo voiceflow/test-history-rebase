@@ -1,6 +1,6 @@
 import { BlockType } from '@realtime-sdk/constants';
-import { NodeData } from '@realtime-sdk/models';
-import { AnyRecord, BaseNode } from '@voiceflow/base-types';
+import type { NodeData } from '@realtime-sdk/models';
+import type { AnyRecord, BaseNode } from '@voiceflow/base-types';
 
 import {
   createBlockAdapter,

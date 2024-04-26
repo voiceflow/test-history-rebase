@@ -60,7 +60,10 @@ export const DEFAULT_PROJECT_LIST_NAME = 'Default List';
 export const CUSTOM_SLOT_TYPE = 'Custom';
 export const LEGACY_CUSTOM_SLOT_TYPE = 'CUSTOM';
 
-export const PLATFORMS_WITH_EDITABLE_NO_REPLY_DELAY = [Platform.Constants.PlatformType.VOICEFLOW, Platform.Constants.PlatformType.WEBCHAT] as const;
+export const PLATFORMS_WITH_EDITABLE_NO_REPLY_DELAY = [
+  Platform.Constants.PlatformType.VOICEFLOW,
+  Platform.Constants.PlatformType.WEBCHAT,
+] as const;
 
 export enum DialogType {
   AUDIO = 'audio',

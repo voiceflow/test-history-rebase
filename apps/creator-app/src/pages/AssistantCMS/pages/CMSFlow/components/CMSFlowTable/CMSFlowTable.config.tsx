@@ -6,7 +6,11 @@ import { CMSTableCellTextTooltip } from '../../../../components/CMSTableCellText
 import { CMSTableMemberCell } from '../../../../components/CMSTableMemberCell/CMSTableMemberCell.component';
 import { CMSTableNameCell } from '../../../../components/CMSTableNameCell/CMSTableNameCell.component';
 import type { CMSFlow, CMSFolder } from '../../../../contexts/CMSManager/CMSManager.interface';
-import { updatedAtSort, withFieldLocaleCompareSort, withFolderSort } from '../../../../contexts/CMSManager/CMSManager.util';
+import {
+  updatedAtSort,
+  withFieldLocaleCompareSort,
+  withFolderSort,
+} from '../../../../contexts/CMSManager/CMSManager.util';
 import { FlowTableColumn } from './CMSFlowTable.constant';
 
 export const CMS_FLOW_TABLE_CONFIG: TableConfig<FlowTableColumn, CMSFolder | CMSFlow> = {
@@ -23,7 +27,9 @@ export const CMS_FLOW_TABLE_CONFIG: TableConfig<FlowTableColumn, CMSFolder | CMS
       name: 'Name',
       sorter: withFolderSort<CMSFlow>(withFieldLocaleCompareSort('name')),
 
-      cell: ({ item, type }) => <CMSTableNameCell type={type} name={item.name} itemID={item.id} isFolder={item.group} />,
+      cell: ({ item, type }) => (
+        <CMSTableNameCell type={type} name={item.name} itemID={item.id} isFolder={item.group} />
+      ),
     },
 
     [FlowTableColumn.DESCRIPTION]: {
@@ -34,7 +40,9 @@ export const CMS_FLOW_TABLE_CONFIG: TableConfig<FlowTableColumn, CMSFolder | CMS
       cell: ({ item }) => (
         <Table.Cell.GroupEmpty
           item={item}
-          label={(item) => (item.description ? <CMSTableCellTextTooltip label={item.description} /> : <Table.Cell.Empty />)}
+          label={(item) =>
+            item.description ? <CMSTableCellTextTooltip label={item.description} /> : <Table.Cell.Empty />
+          }
         />
       ),
     },
@@ -43,7 +51,12 @@ export const CMS_FLOW_TABLE_CONFIG: TableConfig<FlowTableColumn, CMSFolder | CMS
       type: FlowTableColumn.LAST_EDITOR,
       name: 'Last editor',
 
-      cell: ({ item }) => <Table.Cell.GroupEmpty item={item} label={({ updatedByID }) => <CMSTableMemberCell creatorID={updatedByID} />} />,
+      cell: ({ item }) => (
+        <Table.Cell.GroupEmpty
+          item={item}
+          label={({ updatedByID }) => <CMSTableMemberCell creatorID={updatedByID} />}
+        />
+      ),
     },
 
     [FlowTableColumn.UPDATED]: {
@@ -51,7 +64,12 @@ export const CMS_FLOW_TABLE_CONFIG: TableConfig<FlowTableColumn, CMSFolder | CMS
       name: 'Updated',
       sorter: withFolderSort(updatedAtSort),
 
-      cell: ({ item }) => <Table.Cell.GroupEmpty item={item} label={({ updatedAt }) => <CMSTableCellFromNowTooltip updatedAt={updatedAt} />} />,
+      cell: ({ item }) => (
+        <Table.Cell.GroupEmpty
+          item={item}
+          label={({ updatedAt }) => <CMSTableCellFromNowTooltip updatedAt={updatedAt} />}
+        />
+      ),
     },
   },
 };

@@ -56,7 +56,12 @@ const CheckInvitationGate: React.FC<React.PropsWithChildren> = ({ children }) =>
   }, [checkForInvite]);
 
   return (
-    <LoadingGate load={load} isLoaded={inviteChecked} loader={<WorkspaceOrProjectLoader />} internalName={CheckInvitationGate.name}>
+    <LoadingGate
+      load={load}
+      isLoaded={inviteChecked}
+      loader={<WorkspaceOrProjectLoader />}
+      internalName={CheckInvitationGate.name}
+    >
       {children}
     </LoadingGate>
   );

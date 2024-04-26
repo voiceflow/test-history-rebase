@@ -1,12 +1,15 @@
 import * as Platform from '@voiceflow/platform-config';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 
-import { NodeManagerConfig } from '../types';
+import type { NodeManagerConfig } from '../types';
 import AccountLinkingEditor from './AccountLinkingEditor';
 import AccountLinkingStep from './AccountLinkingStep';
 import { NODE_CONFIG } from './constants';
 
-const AccountLinkingManager: NodeManagerConfig<Realtime.NodeData.AccountLinking, Realtime.NodeData.AccountLinkingBuiltInPorts> = {
+const AccountLinkingManager: NodeManagerConfig<
+  Realtime.NodeData.AccountLinking,
+  Realtime.NodeData.AccountLinkingBuiltInPorts
+> = {
   ...NODE_CONFIG,
 
   label: 'Account Linking',

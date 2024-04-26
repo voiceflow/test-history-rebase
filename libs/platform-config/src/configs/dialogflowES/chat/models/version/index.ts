@@ -1,6 +1,6 @@
-import * as Common from '@platform-config/configs/common';
-import { Nullable } from '@voiceflow/common';
-import { DFESVersion } from '@voiceflow/google-dfes-types';
+import type * as Common from '@platform-config/configs/common';
+import type { Nullable } from '@voiceflow/common';
+import type { DFESVersion } from '@voiceflow/google-dfes-types';
 
 import * as Publishing from './publishing';
 import * as Settings from './settings';

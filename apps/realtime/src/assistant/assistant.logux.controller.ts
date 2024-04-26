@@ -1,7 +1,15 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Controller, Inject } from '@nestjs/common';
 import { UnleashFeatureFlagService } from '@voiceflow/nestjs-common';
-import { Action, AuthMeta, AuthMetaPayload, Broadcast, Channel, Context, LoguxService, Payload } from '@voiceflow/nestjs-logux';
+import {
+  Action,
+  AuthMeta,
+  AuthMetaPayload,
+  Broadcast,
+  Channel,
+  Context,
+  LoguxService,
+  Payload,
+} from '@voiceflow/nestjs-logux';
 import { FeatureFlag } from '@voiceflow/realtime-sdk/backend';
 import { Permission } from '@voiceflow/sdk-auth';
 import { Authorize } from '@voiceflow/sdk-auth/nestjs';
@@ -167,7 +175,10 @@ export class AssistantLoguxController {
 
       // response
       Actions.Response.Replace({ data: responses, context }, responseReplaceMeta),
-      Actions.ResponseDiscriminator.Replace({ data: responseDiscriminators, context }, responseDiscriminatorReplaceMeta),
+      Actions.ResponseDiscriminator.Replace(
+        { data: responseDiscriminators, context },
+        responseDiscriminatorReplaceMeta
+      ),
       Actions.ResponseVariant.Replace({ data: responseVariants, context }, responseVariantReplaceMeta),
       Actions.ResponseAttachment.Replace({ data: responseAttachments, context }, responseAttachmentReplaceMeta),
 
@@ -198,7 +209,10 @@ export class AssistantLoguxController {
     const viewers = await this.viewer.getAllViewers({ assistantID, environmentID });
 
     await this.logux.processAs(
-      Actions.AssistantAwareness.ReplaceViewers({ viewers, context: { assistantID, environmentID, broadcastOnly: true } }),
+      Actions.AssistantAwareness.ReplaceViewers({
+        viewers,
+        context: { assistantID, environmentID, broadcastOnly: true },
+      }),
       authMeta
     );
   }
@@ -212,7 +226,10 @@ export class AssistantLoguxController {
     const viewers = await this.viewer.getAllViewers({ assistantID, environmentID });
 
     await this.logux.processAs(
-      Actions.AssistantAwareness.ReplaceViewers({ viewers, context: { assistantID, environmentID, broadcastOnly: true } }),
+      Actions.AssistantAwareness.ReplaceViewers({
+        viewers,
+        context: { assistantID, environmentID, broadcastOnly: true },
+      }),
       authMeta
     );
   }
@@ -228,9 +245,15 @@ export class AssistantLoguxController {
     @AuthMeta() authMeta: AuthMetaPayload
   ): Promise<Actions.Assistant.CreateOne.Response> {
     return this.service
-      .createOneFromTemplateAndBroadcast(authMeta, { ...data, workspaceID: this.assistantSerializer.decodeWorkspaceID(context.workspaceID) })
+      .createOneFromTemplateAndBroadcast(authMeta, {
+        ...data,
+        workspaceID: this.assistantSerializer.decodeWorkspaceID(context.workspaceID),
+      })
       .then(({ project, assistant }) => ({
-        data: { project: this.projectSerializer.nullable(project), assistant: this.assistantSerializer.nullable(assistant) },
+        data: {
+          project: this.projectSerializer.nullable(project),
+          assistant: this.assistantSerializer.nullable(assistant),
+        },
         context: { workspaceID: context.workspaceID },
       }));
   }
@@ -253,7 +276,10 @@ export class AssistantLoguxController {
         targetProjectOverride: data.targetAssistantOverride,
       })
       .then(({ project, assistant }) => ({
-        data: { project: this.projectSerializer.nullable(project), assistant: this.assistantSerializer.nullable(assistant) },
+        data: {
+          project: this.projectSerializer.nullable(project),
+          assistant: this.assistantSerializer.nullable(assistant),
+        },
         context: { workspaceID: data.targetWorkspaceID },
       }));
   }
@@ -274,7 +300,9 @@ export class AssistantLoguxController {
     id: context.assistantID,
     kind: 'project',
   }))
-  @Broadcast<Actions.AssistantAwareness.ReplaceViewers>(({ context }) => ({ channel: Channels.assistant.build(context) }))
+  @Broadcast<Actions.AssistantAwareness.ReplaceViewers>(({ context }) => ({
+    channel: Channels.assistant.build(context),
+  }))
   @BroadcastOnly()
   async replaceAssistantViewers(@Payload() _: Actions.AssistantAwareness.ReplaceViewers) {
     // for broadcast only

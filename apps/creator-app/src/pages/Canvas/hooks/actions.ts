@@ -1,5 +1,6 @@
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
-import { EmptyObject, Utils } from '@voiceflow/common';
+import type { EmptyObject } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { createDividerMenuItemOption } from '@voiceflow/ui';
 import React from 'react';
@@ -102,7 +103,10 @@ const useOnAddAction = ({
     linkStepMenu.onHide();
   };
 
-  const onAdd = async <K extends BlockType>(type: K, factoryData?: Partial<Realtime.NodeData<Realtime.NodeDataMap[K]>>) => {
+  const onAdd = async <K extends BlockType>(
+    type: K,
+    factoryData?: Partial<Realtime.NodeData<Realtime.NodeDataMap[K]>>
+  ) => {
     if (!sourcePortID) return;
 
     const index = getNextActionIndex(type);
@@ -172,7 +176,9 @@ export const useActionsOptions = ({ goToActions, sourcePortID }: ActionsOptions)
     Realtime.Utils.typeGuards.isCarouselBlockType(sourceNode?.type) ||
     Realtime.Utils.typeGuards.isCardV2BlockType(sourceNode?.type);
 
-  const hasNavigationStep = Realtime.Utils.typeGuards.isNavigationBlockType(targetNodeSteps[targetNodeSteps.length - 1]?.type);
+  const hasNavigationStep = Realtime.Utils.typeGuards.isNavigationBlockType(
+    targetNodeSteps[targetNodeSteps.length - 1]?.type
+  );
 
   const targetNodeIsActions = targetNode?.type === BlockType.ACTIONS;
 
@@ -198,8 +204,12 @@ export const useActionsOptions = ({ goToActions, sourcePortID }: ActionsOptions)
     targetNodeIsActions,
 
     options: [
-      hasNavigationStep ? null : { icon: 'goToBlock' as const, label: 'Go to Block', onClick: () => onAdd(BlockType.GO_TO_NODE) },
-      hasNavigationStep ? null : { icon: 'intentSmall' as const, label: 'Go to Intent', onClick: () => onAdd(BlockType.GO_TO_INTENT) },
+      hasNavigationStep
+        ? null
+        : { icon: 'goToBlock' as const, label: 'Go to Block', onClick: () => onAdd(BlockType.GO_TO_NODE) },
+      hasNavigationStep
+        ? null
+        : { icon: 'intentSmall' as const, label: 'Go to Intent', onClick: () => onAdd(BlockType.GO_TO_INTENT) },
       // TODO: remove when FeatureFlag.CMS_WORKFLOWS is released
       cmsWorkflows.isEnabled || hasNavigationStep || domainsCount <= 1
         ? null

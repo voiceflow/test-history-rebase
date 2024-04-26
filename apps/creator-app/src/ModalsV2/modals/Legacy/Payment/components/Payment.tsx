@@ -14,12 +14,22 @@ import { useSelector } from '@/hooks/redux';
 import { getErrorMessage } from '@/utils/error';
 import { onOpenBookDemoPage } from '@/utils/upgrade';
 
-import * as CardForm from '../../Billing/components/CardForm';
+import type * as CardForm from '../../Billing/components/CardForm';
 import { Step } from '../constants';
-import { PaymentModalAPIProps } from '../types';
+import type { PaymentModalAPIProps } from '../types';
 import { PaymentModal } from './PaymentModal.component';
 
-export const Payment = ({ id, api, type, opened, hidden, animated, closePrevented, promptType, isTrialExpired }: PaymentModalAPIProps) => {
+export const Payment = ({
+  id,
+  api,
+  type,
+  opened,
+  hidden,
+  animated,
+  closePrevented,
+  promptType,
+  isTrialExpired,
+}: PaymentModalAPIProps) => {
   const paymentAPI = PaymentContext.legacy.usePaymentAPI();
   const planPrices = React.useContext(PlanPricesContext);
   const [trackingEvents] = useTrackingEvents();

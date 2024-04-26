@@ -5,11 +5,14 @@ import { createReverter } from '@/ducks/utils';
 import { addDynamicPort } from '../utils';
 import { createActiveDiagramReducer } from './utils';
 
-const addCustomBlockPortReducer = createActiveDiagramReducer(Realtime.port.syncCustomBlockPorts, (state, { patchData }) => {
-  Object.keys(patchData).forEach((nodeID) => {
-    patchData[nodeID].forEach(({ portID, label }) => addDynamicPort(state, { nodeID, portID, label }));
-  });
-});
+const addCustomBlockPortReducer = createActiveDiagramReducer(
+  Realtime.port.syncCustomBlockPorts,
+  (state, { patchData }) => {
+    Object.keys(patchData).forEach((nodeID) => {
+      patchData[nodeID].forEach(({ portID, label }) => addDynamicPort(state, { nodeID, portID, label }));
+    });
+  }
+);
 
 export default addCustomBlockPortReducer;
 

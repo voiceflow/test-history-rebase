@@ -1,12 +1,12 @@
 import { Box, DonutChart, SectionV2, Switch } from '@voiceflow/ui';
-import { BaseProps } from '@voiceflow/ui-next';
+import type { BaseProps } from '@voiceflow/ui-next';
 import React from 'react';
 
 import * as Router from '@/ducks/router';
 import { useDispatch } from '@/hooks';
 
 import { QueryState } from '../../../constants';
-import { DonutChartResult, QueryResult } from '../../../types';
+import type { DonutChartResult, QueryResult } from '../../../types';
 import AnalyticsDashboardChartEmpty from '../AnalyticsDashboardTileEmpty';
 import * as S from './styles';
 
@@ -31,7 +31,9 @@ const Chart = ({ query, testID }: AnalyticsDashboardChartDonutProps) => {
       <S.StatisticsContainer>
         <DonutChart.Statistics
           percentage={Math.round(query.data.mainPercentage * 100 * 100) / 100}
-          delta={query.data.changeSincePreviousPeriod ? Math.round(query.data.changeSincePreviousPeriod * 100) : undefined}
+          delta={
+            query.data.changeSincePreviousPeriod ? Math.round(query.data.changeSincePreviousPeriod * 100) : undefined
+          }
           testID={testID}
         />
       </S.StatisticsContainer>

@@ -1,13 +1,16 @@
 import { AlexaConstants } from '@voiceflow/alexa-types';
-import { BuiltinSlot, CustomSlot, READABLE_VARIABLE_REGEXP, SLOT_REGEXP, Utils } from '@voiceflow/common';
+import type { BuiltinSlot } from '@voiceflow/common';
+import { CustomSlot, READABLE_VARIABLE_REGEXP, SLOT_REGEXP, Utils } from '@voiceflow/common';
 import { DFESConstants } from '@voiceflow/google-dfes-types';
 import { GoogleConstants } from '@voiceflow/google-types';
 import * as Platform from '@voiceflow/platform-config/backend';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 export const generalSlotTypesByLanguage = (language: string = VoiceflowConstants.Language.EN) =>
-  VoiceflowConstants.SlotTypes[language]?.map<BuiltinSlot<VoiceflowConstants.SlotType, never>>((slot) => ({ type: slot.name, label: slot.label })) ||
-  [];
+  VoiceflowConstants.SlotTypes[language]?.map<BuiltinSlot<VoiceflowConstants.SlotType, never>>((slot) => ({
+    type: slot.name,
+    label: slot.label,
+  })) || [];
 
 const sortSlotsByType =
   (order: string[]) =>
@@ -59,10 +62,16 @@ export const getSlotTypes = <L extends string>({
   // Custom slot should always be the first option
   builtInSlots = [CustomSlot, ...builtInSlots];
 
-  return builtInSlots.map((slot) => ({ label: Utils.string.capitalizeFirstLetter(slot.label.toLocaleLowerCase()), value: slot.type }));
+  return builtInSlots.map((slot) => ({
+    label: Utils.string.capitalizeFirstLetter(slot.label.toLocaleLowerCase()),
+    value: slot.type,
+  }));
 };
 
-export const transformVariablesToReadable = (text?: string, variablesMap?: Partial<Record<string, { id: string; name: string }>>) => {
+export const transformVariablesToReadable = (
+  text?: string,
+  variablesMap?: Partial<Record<string, { id: string; name: string }>>
+) => {
   if (!text?.trim()) return '';
 
   if (!variablesMap) return text.replace(SLOT_REGEXP, '{$1}').trim();
@@ -70,7 +79,10 @@ export const transformVariablesToReadable = (text?: string, variablesMap?: Parti
   return text.replace(SLOT_REGEXP, (_, _name, id) => `{${variablesMap[id]?.name ?? id}}`).trim();
 };
 
-export const transformVariableToString = (text?: string, variablesMap?: Partial<Record<string, { id: string; name: string }>>) => {
+export const transformVariableToString = (
+  text?: string,
+  variablesMap?: Partial<Record<string, { id: string; name: string }>>
+) => {
   if (!text?.trim()) return '';
 
   if (!variablesMap) return text.replace(SLOT_REGEXP, '$1').trim();
@@ -78,8 +90,10 @@ export const transformVariableToString = (text?: string, variablesMap?: Partial<
   return text.replace(SLOT_REGEXP, (_, _name, id) => `${variablesMap[id]?.name ?? id}`).trim();
 };
 
-export const transformVariablesFromReadableWithoutTrim = (text = '') => text.replace(READABLE_VARIABLE_REGEXP, '{{[$1].$1}}');
+export const transformVariablesFromReadableWithoutTrim = (text = '') =>
+  text.replace(READABLE_VARIABLE_REGEXP, '{{[$1].$1}}');
 export const transformVariablesFromReadable = (text: string) => transformVariablesFromReadableWithoutTrim(text).trim();
 
 export const isVariable = (text?: string | null) => !!(text && text.match(READABLE_VARIABLE_REGEXP));
-export const slotToString = <T extends { id: string; name: string }>(slot: T): string => `{{[${slot.name}].${slot.id}}}`;
+export const slotToString = <T extends { id: string; name: string }>(slot: T): string =>
+  `{{[${slot.name}].${slot.id}}}`;

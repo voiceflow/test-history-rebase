@@ -1,9 +1,9 @@
-/* eslint-disable max-depth, no-restricted-syntax */
-import { Markup } from '@realtime-sdk/models';
+/* eslint-disable max-depth */
+import type { Markup } from '@realtime-sdk/models';
 import { BaseText } from '@voiceflow/base-types';
-import { RawDraftContentState, RawDraftEntityRange, RawDraftInlineStyleRange } from 'draft-js';
+import type { RawDraftContentState, RawDraftEntityRange, RawDraftInlineStyleRange } from 'draft-js';
 import { parseToRgb } from 'polished';
-import { Text } from 'slate';
+import type { Text } from 'slate';
 
 import { createBlockAdapter } from './utils';
 
@@ -25,7 +25,6 @@ type Node = BaseText.AnyElement | Text;
 
 const isDraftJSContent = (data: any): data is DraftTextData => 'blocks' in (data?.content ?? {});
 
-// eslint-disable-next-line sonarjs/cognitive-complexity
 const draftJSToSlateAdapter = (data: any): Markup.NodeData.Text => {
   if (isDraftJSContent(data)) {
     const {
@@ -84,7 +83,11 @@ const draftJSToSlateAdapter = (data: any): Markup.NodeData.Text => {
       // remove empty text nodes following each other
       children = children.filter(
         (node, index) =>
-          index === 0 || !('text' in node) || node.text !== '' || !('text' in children[index - 1]) || (children[index - 1] as Text).text !== ''
+          index === 0 ||
+          !('text' in node) ||
+          node.text !== '' ||
+          !('text' in children[index - 1]) ||
+          (children[index - 1] as Text).text !== ''
       );
 
       const getNodeChildrenOffset = (node: Node): number => {
@@ -111,7 +114,12 @@ const draftJSToSlateAdapter = (data: any): Markup.NodeData.Text => {
         return offset;
       };
 
-      const addLeafPropertyAtRange = (nodes: Node[], range: RawDraftInlineStyleRange, style: string, value: unknown): Node[] =>
+      const addLeafPropertyAtRange = (
+        nodes: Node[],
+        range: RawDraftInlineStyleRange,
+        style: string,
+        value: unknown
+      ): Node[] =>
         nodes.flatMap((node) => {
           if ('children' in node && Array.isArray(node.children)) {
             return {
@@ -137,7 +145,10 @@ const draftJSToSlateAdapter = (data: any): Markup.NodeData.Text => {
           }
 
           const offset = Math.max(range.offset - nodeOffset, 0);
-          const length = rangeEnd > nodeEnd ? nodeLength : range.length - (range.offset < nodeOffset ? nodeOffset - range.offset : 0);
+          const length =
+            rangeEnd > nodeEnd
+              ? nodeLength
+              : range.length - (range.offset < nodeOffset ? nodeOffset - range.offset : 0);
 
           const beforeStyledText = nodeText.substring(0, offset);
           const styledText = nodeText.substr(offset, length);

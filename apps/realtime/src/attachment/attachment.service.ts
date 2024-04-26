@@ -93,7 +93,10 @@ export class AttachmentService {
       this.mediaAttachment.findManyByEnvironmentAndIDs(environmentID, ids),
     ]);
 
-    return [...cardAttachments.map(this.injectType(AttachmentType.CARD)), ...mediaAttachments.map(this.injectType(AttachmentType.MEDIA))];
+    return [
+      ...cardAttachments.map(this.injectType(AttachmentType.CARD)),
+      ...mediaAttachments.map(this.injectType(AttachmentType.MEDIA)),
+    ];
   }
 
   async findManyByEnvironment(environmentID: string): Promise<AnyAttachmentObjectWithType[]> {
@@ -102,7 +105,10 @@ export class AttachmentService {
       this.mediaAttachment.findManyByEnvironment(environmentID),
     ]);
 
-    return [...cardAttachments.map(this.injectType(AttachmentType.CARD)), ...mediaAttachments.map(this.injectType(AttachmentType.MEDIA))];
+    return [
+      ...cardAttachments.map(this.injectType(AttachmentType.CARD)),
+      ...mediaAttachments.map(this.injectType(AttachmentType.MEDIA)),
+    ];
   }
 
   async findManyWithSubResourcesByEnvironment(environmentID: string) {
@@ -121,8 +127,12 @@ export class AttachmentService {
 
   async upsertOne(data: AnyAttachmentObjectWithType): Promise<AnyAttachmentObjectWithType> {
     return match(data)
-      .with({ type: AttachmentType.CARD }, ({ type, ...data }) => this.cardAttachment.upsertOne(data).then(this.injectType(type)))
-      .with({ type: AttachmentType.MEDIA }, ({ type, ...data }) => this.mediaAttachment.upsertOne(data).then(this.injectType(type)))
+      .with({ type: AttachmentType.CARD }, ({ type, ...data }) =>
+        this.cardAttachment.upsertOne(data).then(this.injectType(type))
+      )
+      .with({ type: AttachmentType.MEDIA }, ({ type, ...data }) =>
+        this.mediaAttachment.upsertOne(data).then(this.injectType(type))
+      )
       .exhaustive();
   }
 
@@ -134,7 +144,10 @@ export class AttachmentService {
       this.mediaAttachment.upsertMany(mediaAttachmentsData.map(this.omitType)),
     ]);
 
-    return [...cardAttachments.map(this.injectType(AttachmentType.CARD)), ...mediaAttachments.map(this.injectType(AttachmentType.MEDIA))];
+    return [
+      ...cardAttachments.map(this.injectType(AttachmentType.CARD)),
+      ...mediaAttachments.map(this.injectType(AttachmentType.MEDIA)),
+    ];
   }
 
   async upsertManyWithSubResources(
@@ -151,21 +164,35 @@ export class AttachmentService {
 
   async patchOneForUser(userID: number, id: Primary<AnyAttachmentEntity>, patch: AttachmentPatchData) {
     await match(patch)
-      .with({ type: AttachmentType.CARD }, (patch) => this.cardAttachment.patchOneForUser(userID, id, this.omitType(patch)))
-      .with({ type: AttachmentType.MEDIA }, (patch) => this.mediaAttachment.patchOneForUser(userID, id, this.omitType(patch)))
+      .with({ type: AttachmentType.CARD }, (patch) =>
+        this.cardAttachment.patchOneForUser(userID, id, this.omitType(patch))
+      )
+      .with({ type: AttachmentType.MEDIA }, (patch) =>
+        this.mediaAttachment.patchOneForUser(userID, id, this.omitType(patch))
+      )
       .exhaustive();
   }
 
   async patchManyForUser(userID: number, ids: Primary<AnyAttachmentEntity>[], patch: AttachmentPatchData) {
     await match(patch)
-      .with({ type: AttachmentType.CARD }, (patch) => this.cardAttachment.patchManyForUser(userID, ids, this.omitType(patch)))
-      .with({ type: AttachmentType.MEDIA }, (patch) => this.mediaAttachment.patchManyForUser(userID, ids, this.omitType(patch)))
+      .with({ type: AttachmentType.CARD }, (patch) =>
+        this.cardAttachment.patchManyForUser(userID, ids, this.omitType(patch))
+      )
+      .with({ type: AttachmentType.MEDIA }, (patch) =>
+        this.mediaAttachment.patchManyForUser(userID, ids, this.omitType(patch))
+      )
       .exhaustive();
   }
 
   /* Export */
 
-  toJSONWithSubResources({ attachments, cardButtons }: { attachments: AnyAttachmentObjectWithType[]; cardButtons: CardButtonObject[] }) {
+  toJSONWithSubResources({
+    attachments,
+    cardButtons,
+  }: {
+    attachments: AnyAttachmentObjectWithType[];
+    cardButtons: CardButtonObject[];
+  }) {
     return {
       cardButtons: this.cardButton.mapToJSON(cardButtons),
       attachments: this.mapToJSON(attachments),
@@ -194,7 +221,9 @@ export class AttachmentService {
         Utils.object.omit(item, ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'])
       ) as AttachmentExportImportDataDTO['attachments'],
 
-      cardButtons: json.cardButtons.map((item) => Utils.object.omit(item, ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'])),
+      cardButtons: json.cardButtons.map((item) =>
+        Utils.object.omit(item, ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'])
+      ),
     };
   }
 
@@ -209,7 +238,8 @@ export class AttachmentService {
     sourceEnvironmentID: string;
     targetEnvironmentID: string;
   }) {
-    const { attachments: sourceAttachments, cardButtons: sourceCardButtons } = await this.findManyWithSubResourcesByEnvironment(sourceEnvironmentID);
+    const { attachments: sourceAttachments, cardButtons: sourceCardButtons } =
+      await this.findManyWithSubResourcesByEnvironment(sourceEnvironmentID);
 
     const injectContext = { assistantID: targetAssistantID, environmentID: targetEnvironmentID };
 
@@ -223,7 +253,12 @@ export class AttachmentService {
 
   prepareImportData(
     { attachments, cardButtons }: AttachmentExportImportDataDTO,
-    { userID, backup, assistantID, environmentID }: { userID: number; backup?: boolean; assistantID: string; environmentID: string }
+    {
+      userID,
+      backup,
+      assistantID,
+      environmentID,
+    }: { userID: number; backup?: boolean; assistantID: string; environmentID: string }
   ): { attachments: AnyAttachment[]; cardButtons: CardButton[] } {
     const createdAt = new Date().toJSON();
 
@@ -268,7 +303,9 @@ export class AttachmentService {
   }
 
   async importManyWithSubResources(data: {
-    attachments: Array<AnyAttachmentCreateData & { updatedByID: number | null; assistantID: string; environmentID: string }>;
+    attachments: Array<
+      AnyAttachmentCreateData & { updatedByID: number | null; assistantID: string; environmentID: string }
+    >;
     cardButtons: CardButtonObject[];
   }) {
     const attachments = await this.createMany(data.attachments);
@@ -282,7 +319,9 @@ export class AttachmentService {
 
   /* Create */
 
-  async createMany(data: Array<AnyAttachmentCreateData & { updatedByID: number | null; assistantID: string; environmentID: string }>) {
+  async createMany(
+    data: Array<AnyAttachmentCreateData & { updatedByID: number | null; assistantID: string; environmentID: string }>
+  ) {
     const { cardAttachmentsData, mediaAttachmentsData } = this.groupByType(data);
 
     const [cardAttachments, mediaAttachments] = await Promise.all([
@@ -290,10 +329,16 @@ export class AttachmentService {
       this.mediaAttachment.createMany(mediaAttachmentsData.map(this.omitType)),
     ]);
 
-    return [...cardAttachments.map(this.injectType(AttachmentType.CARD)), ...mediaAttachments.map(this.injectType(AttachmentType.MEDIA))];
+    return [
+      ...cardAttachments.map(this.injectType(AttachmentType.CARD)),
+      ...mediaAttachments.map(this.injectType(AttachmentType.MEDIA)),
+    ];
   }
 
-  async createManyForUser(userID: number, data: Array<AnyAttachmentCreateData & { assistantID: string; environmentID: string }>) {
+  async createManyForUser(
+    userID: number,
+    data: Array<AnyAttachmentCreateData & { assistantID: string; environmentID: string }>
+  ) {
     const { cardAttachmentsData, mediaAttachmentsData } = this.groupByType(data);
 
     const [cardAttachments, mediaAttachments] = await Promise.all([
@@ -301,10 +346,16 @@ export class AttachmentService {
       this.mediaAttachment.createManyForUser(userID, mediaAttachmentsData.map(this.omitType)),
     ]);
 
-    return [...cardAttachments.map(this.injectType(AttachmentType.CARD)), ...mediaAttachments.map(this.injectType(AttachmentType.MEDIA))];
+    return [
+      ...cardAttachments.map(this.injectType(AttachmentType.CARD)),
+      ...mediaAttachments.map(this.injectType(AttachmentType.MEDIA)),
+    ];
   }
 
-  async createManyAndSync(data: AnyAttachmentCreateData[], { userID, context }: { userID: number; context: CMSContext }) {
+  async createManyAndSync(
+    data: AnyAttachmentCreateData[],
+    { userID, context }: { userID: number; context: CMSContext }
+  ) {
     return this.postgresEM.transactional(async () => {
       const attachments = await this.createManyForUser(userID, data.map(injectAssistantAndEnvironmentIDs(context)));
 
@@ -335,7 +386,10 @@ export class AttachmentService {
   /* Delete */
 
   async deleteManyByEnvironment(environmentID: string) {
-    await Promise.all([this.cardAttachment.deleteManyByEnvironment(environmentID), this.mediaAttachment.deleteManyByEnvironment(environmentID)]);
+    await Promise.all([
+      this.cardAttachment.deleteManyByEnvironment(environmentID),
+      this.mediaAttachment.deleteManyByEnvironment(environmentID),
+    ]);
   }
 
   async deleteManyByEnvironmentAndIDs(environmentID: string, ids: string[]) {

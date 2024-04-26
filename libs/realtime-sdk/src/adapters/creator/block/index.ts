@@ -1,10 +1,11 @@
-import { AdapterContext } from '@realtime-sdk/adapters/types';
+import type { AdapterContext } from '@realtime-sdk/adapters/types';
 import { BlockType } from '@realtime-sdk/constants';
-import { NodeData } from '@realtime-sdk/models';
+import type { NodeData } from '@realtime-sdk/models';
 import { createPlatformAndProjectTypeSelector, createPlatformSelector } from '@realtime-sdk/utils/platform';
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config/backend';
-import { identityAdapter, MultiAdapter } from 'bidirectional-adapter';
+import type { MultiAdapter } from 'bidirectional-adapter';
+import { identityAdapter } from 'bidirectional-adapter';
 import moize from 'moize';
 
 import { alexaBlockAdapter, alexaOutPortAdapter, alexaOutPortAdapterV2 } from './alexa';
@@ -19,7 +20,7 @@ import markupTextAdapter from './markupText';
 import markupVideoAdapter from './markupVideo';
 import { migrationBlockAdapter } from './migration';
 import startDataAdapter from './start';
-import { BlockAdapterOptions, FromDBBlockAdapterOptions, OutPortsAdapter, OutPortsAdapterV2 } from './utils';
+import type { BlockAdapterOptions, FromDBBlockAdapterOptions, OutPortsAdapter, OutPortsAdapterV2 } from './utils';
 
 export type { OutPortsAdapter, OutPortsAdapterV2 } from './utils';
 export { defaultOutPortsAdapter, defaultOutPortsAdapterV2, removePortDataFalsyValues } from './utils';
@@ -38,7 +39,9 @@ export const APP_BLOCK_TYPE_FROM_DB: Record<
   [BlockType.DEPRECATED_CUSTOM_PAYLOAD]: BlockType.PAYLOAD,
 };
 
-export const DB_BLOCK_TYPE_FROM_APP: Partial<Record<BlockType, string | ((data: NodeData<any>, options: { context: AdapterContext }) => string)>> = {
+export const DB_BLOCK_TYPE_FROM_APP: Partial<
+  Record<BlockType, string | ((data: NodeData<any>, options: { context: AdapterContext }) => string)>
+> = {
   ...BLOCK_TYPE_MAPPING.reduce((acc, [key, value]) => Object.assign(acc, { [value]: key }), {}),
   [BlockType.INTEGRATION]: BaseNode.NodeType.API,
   [BaseNode.NodeType.IF]: BlockType.IFV2,
@@ -48,7 +51,10 @@ export const DB_BLOCK_TYPE_FROM_APP: Partial<Record<BlockType, string | ((data: 
 const getPlatformAdapter = createPlatformAndProjectTypeSelector<Partial<Record<BlockType, unknown>>>(
   {
     [Platform.Constants.PlatformType.ALEXA]: alexaBlockAdapter,
-    [`${Platform.Constants.PlatformType.DIALOGFLOW_ES}:${Platform.Constants.ProjectType.CHAT}`]: { ...chatBlockAdapter, ...dialogflowAdapter },
+    [`${Platform.Constants.PlatformType.DIALOGFLOW_ES}:${Platform.Constants.ProjectType.CHAT}`]: {
+      ...chatBlockAdapter,
+      ...dialogflowAdapter,
+    },
     [`${Platform.Constants.PlatformType.DIALOGFLOW_ES}:${Platform.Constants.ProjectType.VOICE}`]: dialogflowAdapter,
     [Platform.Constants.ProjectType.CHAT]: chatBlockAdapter,
   },
@@ -71,7 +77,9 @@ const commonBlockAdapter = {
   [BlockType.MARKUP_VIDEO]: markupVideoAdapter,
 };
 
-const getPlatformOutPortsAdapter = createPlatformSelector<typeof alexaOutPortAdapter | typeof baseOutPortAdapter | typeof dialogflowOutPortAdapter>(
+const getPlatformOutPortsAdapter = createPlatformSelector<
+  typeof alexaOutPortAdapter | typeof baseOutPortAdapter | typeof dialogflowOutPortAdapter
+>(
   {
     [Platform.Constants.PlatformType.ALEXA]: alexaOutPortAdapter,
     [Platform.Constants.PlatformType.DIALOGFLOW_ES]: dialogflowOutPortAdapter,
@@ -91,10 +99,16 @@ const getPlatformOutPortsAdapterV2 = createPlatformSelector<
 
 export const noInPortTypes = new Set([BlockType.INTENT, BlockType.COMMAND, BlockType.EVENT, BlockType.START]);
 
-type PlatformBlockAdapters = Partial<Record<BlockType, MultiAdapter<unknown, NodeData<unknown>, [FromDBBlockAdapterOptions], [BlockAdapterOptions]>>>;
+type PlatformBlockAdapters = Partial<
+  Record<BlockType, MultiAdapter<unknown, NodeData<unknown>, [FromDBBlockAdapterOptions], [BlockAdapterOptions]>>
+>;
 
 export const getBlockAdapters = moize(
-  (platform: Platform.Constants.PlatformType, projectType: Platform.Constants.ProjectType, migrate?: boolean): PlatformBlockAdapters => {
+  (
+    platform: Platform.Constants.PlatformType,
+    projectType: Platform.Constants.ProjectType,
+    migrate?: boolean
+  ): PlatformBlockAdapters => {
     if (migrate) {
       return migrationBlockAdapter as unknown as PlatformBlockAdapters;
     }
@@ -116,7 +130,7 @@ export const getOutPortsAdapter = moize(
     ({
       ...baseOutPortAdapter,
       ...getPlatformOutPortsAdapter(platform),
-    } as PlatformOutPortAdapter)
+    }) as PlatformOutPortAdapter
 );
 
 export const getOutPortsAdapterV2 = moize(
@@ -124,5 +138,5 @@ export const getOutPortsAdapterV2 = moize(
     ({
       ...baseOutPortAdapterV2,
       ...getPlatformOutPortsAdapterV2(platform),
-    } as PlatformOutPortAdapterV2)
+    }) as PlatformOutPortAdapterV2
 );

@@ -4,14 +4,17 @@ import * as Normal from 'normal-store';
 
 import { createReducer } from './utils';
 
-const reorderComponentsReducer = createReducer(Realtime.version.reorderComponents, (state, { versionID, fromID, toIndex }) => {
-  const version = Normal.getOne(state, versionID);
+const reorderComponentsReducer = createReducer(
+  Realtime.version.reorderComponents,
+  (state, { versionID, fromID, toIndex }) => {
+    const version = Normal.getOne(state, versionID);
 
-  if (!version) return;
+    if (!version) return;
 
-  const fromIndex = version.components.findIndex((component) => component.sourceID === fromID);
+    const fromIndex = version.components.findIndex((component) => component.sourceID === fromID);
 
-  version.components = Utils.array.reorder(version.components, fromIndex, toIndex);
-});
+    version.components = Utils.array.reorder(version.components, fromIndex, toIndex);
+  }
+);
 
 export default reorderComponentsReducer;

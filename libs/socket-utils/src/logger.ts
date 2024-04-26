@@ -13,4 +13,5 @@ const serializeLoguxError = (error: LoguxError) => ({
   options: error.options,
 });
 
-export const serializeError = (error: Error) => (error instanceof LoguxError ? serializeLoguxError(error) : serializeStandardError(error));
+export const serializeError = (error: Error) =>
+  error instanceof LoguxError ? serializeLoguxError(error) : serializeStandardError(error);

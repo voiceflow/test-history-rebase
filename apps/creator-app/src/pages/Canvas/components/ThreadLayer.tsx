@@ -9,7 +9,7 @@ import CommentThread from '@/pages/Canvas/components/CommentThread';
 import { EngineContext, FocusThreadContext, ThreadEntityProvider } from '@/pages/Canvas/contexts';
 import { useCanvasRendered } from '@/pages/Canvas/hooks';
 import { useCanvasIdle, useCanvasPan, useCanvasZoom } from '@/pages/Canvas/hooks/canvas';
-import { CommentDraftValue } from '@/pages/Canvas/types';
+import type { CommentDraftValue } from '@/pages/Canvas/types';
 import { useCommentingMode } from '@/pages/Project/hooks';
 import { Coords } from '@/utils/geometry';
 

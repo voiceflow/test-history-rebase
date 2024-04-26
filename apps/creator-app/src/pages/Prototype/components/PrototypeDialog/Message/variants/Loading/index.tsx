@@ -1,8 +1,8 @@
-import { Nullable } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
 import React from 'react';
-import { AnyStyledComponent } from 'styled-components';
+import type { AnyStyledComponent } from 'styled-components';
 
-import { PMStatus } from '@/pages/Prototype/types';
+import type { PMStatus } from '@/pages/Prototype/types';
 import { ClassName } from '@/styles/constants';
 
 import * as S from './styles';

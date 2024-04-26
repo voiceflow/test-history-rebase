@@ -26,13 +26,17 @@ export class BillingSubscriptionService {
     private readonly hashedID: HashedIDService
   ) {}
 
-  private parseSubscription(subscription: SubscriptionsControllerGetSubscription200Subscription): Realtime.Identity.Subscription {
+  private parseSubscription(
+    subscription: SubscriptionsControllerGetSubscription200Subscription
+  ): Realtime.Identity.Subscription {
     return {
       id: subscription.id,
       status: subscription.status,
       onDunningPeriod: subscription.on_dunning_period,
       startDate: subscription.start_date ? fromUnixTimestamp(subscription.start_date) : undefined,
-      currentTermStart: subscription.current_term_start ? fromUnixTimestamp(subscription.current_term_start) : undefined,
+      currentTermStart: subscription.current_term_start
+        ? fromUnixTimestamp(subscription.current_term_start)
+        : undefined,
       currentTermEnd: subscription.current_term_end ? fromUnixTimestamp(subscription.current_term_end) : undefined,
       nextBillingAt: subscription.next_billing_at ? fromUnixTimestamp(subscription.next_billing_at) : undefined,
       billingPeriodUnit: subscription.billing_period_unit,
@@ -88,7 +92,10 @@ export class BillingSubscriptionService {
   }
 
   getInvoices(subscriptionID: string, { cursor, limit }: { cursor?: string; limit?: number } = {}) {
-    return this.billingClient.subscriptionsPrivate.getSubscriptionInvoices(subscriptionID, { ...(cursor && { cursor }), ...(limit && { limit }) });
+    return this.billingClient.subscriptionsPrivate.getSubscriptionInvoices(subscriptionID, {
+      ...(cursor && { cursor }),
+      ...(limit && { limit }),
+    });
   }
 
   async cancel(subscriptionID: string) {
@@ -118,7 +125,10 @@ export class BillingSubscriptionService {
 
   async createPaymentIntent(userID: number, amount: number) {
     const token = await this.user.getTokenByID(userID);
-    return this.billingClient.paymentIntentsPrivate.createPaymentIntent({ amount, currency_code: 'USD' }, { headers: { Authorization: token } });
+    return this.billingClient.paymentIntentsPrivate.createPaymentIntent(
+      { amount, currency_code: 'USD' },
+      { headers: { Authorization: token } }
+    );
   }
 
   async updateCustomerCard(customerID: string, paymentIntentID: string) {

@@ -1,4 +1,4 @@
-import { History } from 'history';
+import type { History } from 'history';
 import React from 'react';
 
 import * as Session from '@/ducks/session';

@@ -1,5 +1,5 @@
 import { css, styled } from '@/hocs/styled';
-import { Theme } from '@/styles/theme';
+import type { Theme } from '@/styles/theme';
 
 interface DividerProps {
   theme: Theme;

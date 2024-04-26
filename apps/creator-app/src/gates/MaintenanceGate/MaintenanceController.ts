@@ -10,7 +10,10 @@ class MaintenanceController {
 
   intervals: number[];
 
-  constructor(private action: (timeout: string | null) => void, intervals: number[]) {
+  constructor(
+    private action: (timeout: string | null) => void,
+    intervals: number[]
+  ) {
     this.intervals = intervals.map((interval) => interval * 60 * 1000);
   }
 

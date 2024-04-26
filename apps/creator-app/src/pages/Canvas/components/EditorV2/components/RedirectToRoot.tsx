@@ -1,5 +1,5 @@
 import { useSetup } from '@voiceflow/ui';
-import React from 'react';
+import type React from 'react';
 
 import { useEditor } from '../hooks';
 

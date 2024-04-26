@@ -1,16 +1,17 @@
-import { BlockType } from '@realtime-sdk/constants';
-import { AlexaNode } from '@voiceflow/alexa-types';
-import { BaseButton, BaseModels, BaseNode } from '@voiceflow/base-types';
-import { ChatNode } from '@voiceflow/chat-types';
-import { EmptyObject, Nullable } from '@voiceflow/common';
-import { FunctionNode } from '@voiceflow/dtos';
-import * as Platform from '@voiceflow/platform-config/backend';
-import { VoiceNode } from '@voiceflow/voice-types';
-import { VoiceflowNode } from '@voiceflow/voiceflow-types';
+/* eslint-disable @typescript-eslint/no-namespace */
+import type { BlockType } from '@realtime-sdk/constants';
+import type { AlexaNode } from '@voiceflow/alexa-types';
+import type { BaseButton, BaseModels, BaseNode } from '@voiceflow/base-types';
+import type { ChatNode } from '@voiceflow/chat-types';
+import type { EmptyObject, Nullable } from '@voiceflow/common';
+import type { FunctionNode } from '@voiceflow/dtos';
+import type * as Platform from '@voiceflow/platform-config/backend';
+import type { VoiceNode } from '@voiceflow/voice-types';
+import type { VoiceflowNode } from '@voiceflow/voiceflow-types';
 
-import { ExpressionData } from './Expression';
+import type { ExpressionData } from './Expression';
 import type { Markup } from './Markup';
-import { SpeakData } from './Speak';
+import type { SpeakData } from './Speak';
 
 export type NodeData<T> = T & {
   nodeID: string;
@@ -411,7 +412,8 @@ export namespace NodeData {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
   export interface Exit {}
 
-  export interface Buttons extends Omit<VoiceflowNode.Buttons.StepData, 'else' | 'noMatch' | 'reprompt' | 'noReply' | 'diagramID'> {
+  export interface Buttons
+    extends Omit<VoiceflowNode.Buttons.StepData, 'else' | 'noMatch' | 'reprompt' | 'noReply' | 'diagramID'> {
     noMatch: Nullable<NoMatch>;
     noReply: Nullable<NoReply>;
   }

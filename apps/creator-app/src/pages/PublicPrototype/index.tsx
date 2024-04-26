@@ -4,14 +4,22 @@ import * as Platform from '@voiceflow/platform-config';
 import { DEVICE_INFO, toast, withProvider } from '@voiceflow/ui';
 import { TabLoader } from '@voiceflow/ui-next';
 import React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+import type { RouteComponentProps } from 'react-router-dom';
 
 import SeoHelmet from '@/components/SeoHelmet';
 import { Permission } from '@/constants/permissions';
 import { PrototypeLayout } from '@/constants/prototype';
 import { SeoPage } from '@/constants/seo';
 import * as PrototypeDuck from '@/ducks/prototype';
-import { useDispatch, useGuestPermission, useHideVoiceflowAssistant, useSelector, useSetup, useToggle, useTrackingEvents } from '@/hooks';
+import {
+  useDispatch,
+  useGuestPermission,
+  useHideVoiceflowAssistant,
+  useSelector,
+  useSetup,
+  useToggle,
+  useTrackingEvents,
+} from '@/hooks';
 import { PrototypeContext, PrototypeProvider } from '@/pages/Prototype/context';
 
 import { Prototype } from './components';
@@ -25,7 +33,9 @@ const PublicPrototype: React.FC<RouteComponentProps<{ versionID: string }>> = ({
   const checkSharedProtoPassword = useDispatch(PrototypeDuck.checkSharedProtoPassword);
   const sessionID = useSelector(PrototypeDuck.prototypeSessionIDSelector);
   const [isLoaded, toggleLoaded] = useToggle(false);
-  const [settings, setSettings] = React.useState<PrototypeDuck.PrototypeSettings & { globalMessageDelayMilliseconds?: number }>({
+  const [settings, setSettings] = React.useState<
+    PrototypeDuck.PrototypeSettings & { globalMessageDelayMilliseconds?: number }
+  >({
     plan: PlanType.STARTER,
     layout: PrototypeLayout.TEXT_DIALOG,
     buttons: BaseButton.ButtonsLayout.STACKED,

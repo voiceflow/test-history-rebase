@@ -12,7 +12,14 @@ import { MediaAttachmentService } from './media-attachment.service';
 @Module({
   imports: [CardButtonModule, ResponseAttachmentModule],
   exports: [AttachmentService],
-  providers: [AssistantORM, CardAttachmentORM, MediaAttachmentORM, AttachmentService, CardAttachmentService, MediaAttachmentService],
+  providers: [
+    AssistantORM,
+    CardAttachmentORM,
+    MediaAttachmentORM,
+    AttachmentService,
+    CardAttachmentService,
+    MediaAttachmentService,
+  ],
   controllers: [AttachmentLoguxController],
 })
 export class AttachmentModule {}

@@ -1,10 +1,11 @@
-import { Box, Menu, Select, System, TableTypes } from '@voiceflow/ui';
+import type { TableTypes } from '@voiceflow/ui';
+import { Box, Menu, Select, System } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Router from '@/ducks/router';
 import { useDispatch } from '@/hooks';
 
-import { Topic } from '../types';
+import type { Topic } from '../types';
 
 const IntentsCell: React.FC<TableTypes.ItemProps<Topic>> = ({ item }) => {
   const goToDiagram = useDispatch(Router.goToDomainDiagram, item.domainID);
@@ -36,7 +37,9 @@ const IntentsCell: React.FC<TableTypes.ItemProps<Topic>> = ({ item }) => {
             {item.intents.length}
           </System.Link.Button>
         )}
-        renderEmpty={({ search }) => <Menu.NotFound>{!search ? 'No intents exist in your assistant. ' : 'No intents found. '}</Menu.NotFound>}
+        renderEmpty={({ search }) => (
+          <Menu.NotFound>{!search ? 'No intents exist in your assistant. ' : 'No intents found. '}</Menu.NotFound>
+        )}
       />
     </Box.FlexEnd>
   );

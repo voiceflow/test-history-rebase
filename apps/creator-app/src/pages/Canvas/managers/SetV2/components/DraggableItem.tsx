@@ -1,9 +1,13 @@
 import composeRef from '@seznam/compose-react-refs';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
-import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandlers } from '@/components/DraggableList';
+import type {
+  DragPreviewComponentProps,
+  ItemComponentProps,
+  MappedItemComponentHandlers,
+} from '@/components/DraggableList';
 import VariableSelectV2 from '@/components/VariableSelectV2';
 import VariablesInput from '@/components/VariablesInput';
 import { Diagram } from '@/ducks';
@@ -11,7 +15,7 @@ import { useAutoScrollNodeIntoView, useExpressionValidator } from '@/hooks';
 import { useVariableCreateModal } from '@/hooks/modal.hook';
 import { useSelector } from '@/hooks/store.hook';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
-import { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
+import type { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
 
 export interface DraggableItemProps
   extends DragPreviewComponentProps,
@@ -22,7 +26,19 @@ export interface DraggableItemProps
 }
 
 const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemProps> = (
-  { item, index, editor, itemKey, isDragging, onContextMenu, onUpdate, latestCreatedKey, connectedDragRef, isDraggingPreview, isContextMenuOpen },
+  {
+    item,
+    index,
+    editor,
+    itemKey,
+    isDragging,
+    onContextMenu,
+    onUpdate,
+    latestCreatedKey,
+    connectedDragRef,
+    isDraggingPreview,
+    isContextMenuOpen,
+  },
   ref
 ) => {
   const variablesMap = useSelector(Diagram.active.entitiesAndVariablesMapSelector);
@@ -45,7 +61,10 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
 
   const autofocus = latestCreatedKey === itemKey || editor.data.sets.length === 1;
 
-  const [sectionRef, scrollSectionIntoView] = useAutoScrollNodeIntoView<HTMLDivElement>({ condition: autofocus, options: { block: 'end' } });
+  const [sectionRef, scrollSectionIntoView] = useAutoScrollNodeIntoView<HTMLDivElement>({
+    condition: autofocus,
+    options: { block: 'end' },
+  });
 
   return (
     <EditorV2.PersistCollapse namespace={['setEditorListItem', item.id]} defaultCollapsed={!autofocus}>
@@ -58,9 +77,16 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
               <SectionV2.CollapseSection
                 ref={composeRef(ref, sectionRef) as React.Ref<HTMLDivElement>}
                 header={
-                  <SectionV2.Header ref={connectedDragRef} sticky sticked={sticked && !collapsed && !isDraggingPreview && !isDragging}>
+                  <SectionV2.Header
+                    ref={connectedDragRef}
+                    sticky
+                    sticked={sticked && !collapsed && !isDraggingPreview && !isDragging}
+                  >
                     <SectionV2.Title bold={!collapsed}>
-                      Set {item.variable ? `{${variablesMap[item.variable]?.name ?? item.variable}}` : `variable ${index + 1}`}{' '}
+                      Set{' '}
+                      {item.variable
+                        ? `{${variablesMap[item.variable]?.name ?? item.variable}}`
+                        : `variable ${index + 1}`}{' '}
                     </SectionV2.Title>
 
                     <SectionV2.CollapseArrowIcon collapsed={collapsed} />

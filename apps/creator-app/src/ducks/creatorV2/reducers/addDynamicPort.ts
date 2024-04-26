@@ -3,11 +3,19 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { createReverter } from '@/ducks/utils';
 
 import { addDynamicPort } from '../utils';
-import { createActiveDiagramReducer, createDiagramInvalidator, createNodeRemovalInvalidators, DIAGRAM_INVALIDATORS } from './utils';
+import {
+  createActiveDiagramReducer,
+  createDiagramInvalidator,
+  createNodeRemovalInvalidators,
+  DIAGRAM_INVALIDATORS,
+} from './utils';
 
-const addDynamicPortReducer = createActiveDiagramReducer(Realtime.port.addDynamic, (state, { nodeID, portID, label }) => {
-  addDynamicPort(state, { nodeID, portID, label });
-});
+const addDynamicPortReducer = createActiveDiagramReducer(
+  Realtime.port.addDynamic,
+  (state, { nodeID, portID, label }) => {
+    addDynamicPort(state, { nodeID, portID, label });
+  }
+);
 
 export default addDynamicPortReducer;
 
@@ -15,7 +23,16 @@ export const addDynamicPortReverter = createReverter(
   Realtime.port.addDynamic,
 
   ({ workspaceID, projectID, versionID, domainID, diagramID, nodeID, portID }) =>
-    Realtime.port.removeDynamic({ workspaceID, projectID, versionID, domainID, diagramID, nodeID, portID, removeNodes: [] }),
+    Realtime.port.removeDynamic({
+      workspaceID,
+      projectID,
+      versionID,
+      domainID,
+      diagramID,
+      nodeID,
+      portID,
+      removeNodes: [],
+    }),
 
   [
     ...DIAGRAM_INVALIDATORS,

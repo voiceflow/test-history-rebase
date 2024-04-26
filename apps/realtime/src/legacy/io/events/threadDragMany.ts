@@ -1,6 +1,7 @@
 import { IO } from '@voiceflow/realtime-sdk/backend';
 
-import { AbstractEvent, AuthorizedCtx, AuthorizedSocket } from '../types';
+import type { AuthorizedCtx, AuthorizedSocket } from '../types';
+import { AbstractEvent } from '../types';
 
 class ThreadDragManyEvent extends AbstractEvent<AuthorizedCtx, IO.ThreadDragManyUserData> {
   event = IO.Event.THREAD_DRAG_MANY;

@@ -1,12 +1,13 @@
 import { Utils } from '@voiceflow/common';
 import { tid } from '@voiceflow/style';
-import { Divider, IMenuItem, MenuItem, notify, Table, usePersistFunction } from '@voiceflow/ui-next';
+import type { IMenuItem } from '@voiceflow/ui-next';
+import { Divider, MenuItem, notify, Table, usePersistFunction } from '@voiceflow/ui-next';
 import { useAtomValue, useSetAtom } from 'jotai';
 import pluralize from 'pluralize';
 import React from 'react';
 
 import { MenuItemWithTooltip } from '@/components/Menu/MenuItemWithTooltip/MenuItemWithTooltip.component';
-import { IMenuItemWithTooltip } from '@/components/Menu/MenuItemWithTooltip/MenuItemWithTooltip.interface';
+import type { IMenuItemWithTooltip } from '@/components/Menu/MenuItemWithTooltip/MenuItemWithTooltip.interface';
 import { Designer } from '@/ducks';
 import { useGetAtomValue } from '@/hooks/atom.hook';
 import { useOpenCMSResourceDeleteConfirmModal } from '@/hooks/cms-resource.hook';
@@ -70,7 +71,10 @@ export const useGetAllNestedResources = () => {
 
     const allFolderIDs = folderIDs.flatMap((id) => [
       id,
-      ...Designer.Folder.selectors.allDeeplyNestedIDsByScopeAndParentID(store.getState(), { folderScope, parentID: id }),
+      ...Designer.Folder.selectors.allDeeplyNestedIDsByScopeAndParentID(store.getState(), {
+        folderScope,
+        parentID: id,
+      }),
     ]);
 
     return {
@@ -172,7 +176,7 @@ export const useCMSResourceGetMoreMenu = ({
     const onCopyLink = () => {
       clipboardCopy(`${window.location.origin}${path}`);
 
-      notify.short.success(`Copied`);
+      notify.short.success('Copied');
 
       onClose();
     };
@@ -183,7 +187,8 @@ export const useCMSResourceGetMoreMenu = ({
     };
 
     const renderActionConfig = (value: boolean | AllowingActionConfig | DisallowingActionConfig, action: IMenuItem) => {
-      const config: AllowingActionConfig | DisallowingActionConfig = typeof value === 'boolean' ? { allowed: value } : value;
+      const config: AllowingActionConfig | DisallowingActionConfig =
+        typeof value === 'boolean' ? { allowed: value } : value;
 
       return config.allowed ? (
         <MenuItem {...action} />

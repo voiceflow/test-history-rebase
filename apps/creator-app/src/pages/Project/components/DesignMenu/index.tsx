@@ -18,9 +18,9 @@ const DesignMenu: React.FC<DesignMenuProps> = ({ canvasOnly }) => {
   const isPreviewer = useIsPreviewer();
   const isLockedProjectViewer = useIsLockedProjectViewer();
 
-  const [menuWidth, setWidth] = useLocalStorageState<number>(`design-menu-sizes`, theme.components.designMenu.width);
+  const [menuWidth, setWidth] = useLocalStorageState<number>('design-menu-sizes', theme.components.designMenu.width);
   const [isOpen, openMenu, closeMenu] = useEnableDisable(true);
-  const [isCollapsed, setIsCollapsed] = useLocalStorageState<boolean>(`design-menu-is-collapsed`, false);
+  const [isCollapsed, setIsCollapsed] = useLocalStorageState<boolean>('design-menu-is-collapsed', false);
 
   useDidUpdateEffect(() => {
     if (canvasOnly) {
@@ -31,7 +31,11 @@ const DesignMenu: React.FC<DesignMenuProps> = ({ canvasOnly }) => {
   }, [canvasOnly]);
 
   return (
-    <S.FullHeightContainer menuWidth={menuWidth} isOpen={isOpen && !isCollapsed} canvasOnly={canvasOnly || isPreviewer || isLockedProjectViewer}>
+    <S.FullHeightContainer
+      menuWidth={menuWidth}
+      isOpen={isOpen && !isCollapsed}
+      canvasOnly={canvasOnly || isPreviewer || isLockedProjectViewer}
+    >
       <StepMenu />
       <Resizable
         disabled={isCollapsed}

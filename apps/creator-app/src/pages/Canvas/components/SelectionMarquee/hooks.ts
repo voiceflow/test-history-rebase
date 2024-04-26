@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { EngineContext } from '@/pages/Canvas/contexts';
-import { SelectionMarqueeAPI } from '@/pages/Canvas/types';
+import type { SelectionMarqueeAPI } from '@/pages/Canvas/types';
 
 import { styleSelectionElement } from './constants';
 

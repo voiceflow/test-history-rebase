@@ -1,5 +1,5 @@
-import { Nullish } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type { Nullish } from '@voiceflow/common';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 import { createMatchSelector } from 'connected-react-router';
 
@@ -11,11 +11,12 @@ import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as UI from '@/ducks/ui';
 import { waitAsync } from '@/ducks/utils';
-import { CommentDraftValue, NewCommentAPI } from '@/pages/Canvas/types';
-import { Pair, Point } from '@/types';
-import { Coords } from '@/utils/geometry';
+import type { CommentDraftValue, NewCommentAPI } from '@/pages/Canvas/types';
+import type { Pair, Point } from '@/types';
+import type { Coords } from '@/utils/geometry';
 
-import { EngineConsumer, getNodeCandidates, NodeCandidate } from './utils';
+import type { NodeCandidate } from './utils';
+import { EngineConsumer, getNodeCandidates } from './utils';
 
 class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
   log = this.engine.log.child('comment');
@@ -47,7 +48,10 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
   };
 
   get isModeActive() {
-    return !!this.select(createMatchSelector(Path.DOMAIN_CANVAS_COMMENTING)) || !!this.select(createMatchSelector(Path.CANVAS_COMMENTING));
+    return (
+      !!this.select(createMatchSelector(Path.DOMAIN_CANVAS_COMMENTING)) ||
+      !!this.select(createMatchSelector(Path.CANVAS_COMMENTING))
+    );
   }
 
   get isVisible() {
@@ -160,7 +164,9 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
   };
 
   updateComment = (commentID: string, comment: Realtime.NewComment) => {
-    this.dispatch.partialSync(Designer.Thread.ThreadComment.action.PatchOne({ id: commentID, context: this.engine.context, patch: comment }));
+    this.dispatch.partialSync(
+      Designer.Thread.ThreadComment.action.PatchOne({ id: commentID, context: this.engine.context, patch: comment })
+    );
   };
 
   deleteComment = (commentID: string) => {
@@ -168,11 +174,15 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
   };
 
   resolveThread = (threadID: string) => {
-    this.dispatch.partialSync(Actions.Thread.PatchOne({ context: this.engine.context, id: threadID, patch: { resolved: true } }));
+    this.dispatch.partialSync(
+      Actions.Thread.PatchOne({ context: this.engine.context, id: threadID, patch: { resolved: true } })
+    );
   };
 
   unresolveThread = (threadID: string) => {
-    this.dispatch.partialSync(Actions.Thread.PatchOne({ context: this.engine.context, id: threadID, patch: { resolved: false } }));
+    this.dispatch.partialSync(
+      Actions.Thread.PatchOne({ context: this.engine.context, id: threadID, patch: { resolved: false } })
+    );
   };
 
   startThread() {
@@ -197,7 +207,10 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
   generateCandidates() {
     if (!this.isModeActive && !this.isVisible) return;
 
-    this.candidates = getNodeCandidates([...this.engine.getRootNodeIDs(), ...this.select(CreatorV2.stepIDsSelector)].reverse(), this.engine);
+    this.candidates = getNodeCandidates(
+      [...this.engine.getRootNodeIDs(), ...this.select(CreatorV2.stepIDsSelector)].reverse(),
+      this.engine
+    );
     this.log.debug('discovered thread target candidates', this.log.value(this.candidates.length));
   }
 
@@ -263,7 +276,9 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
       assistantID: projectID,
     };
 
-    const { data: thread } = await this.dispatch(waitAsync(Actions.Thread.CreateOne, { data: threadData, context: this.engine.context }));
+    const { data: thread } = await this.dispatch(
+      waitAsync(Actions.Thread.CreateOne, { data: threadData, context: this.engine.context })
+    );
 
     this.setFocus(thread.id);
 
@@ -278,11 +293,17 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
     threadIDs.forEach((threadID, i) => {
       if (!this.engine.canvas) return;
 
-      const coords = this.engine.threads.get(threadID)?.api.instance?.getCoords().onPlane(this.engine.canvas.getPlane());
+      const coords = this.engine.threads
+        .get(threadID)
+        ?.api.instance?.getCoords()
+        .onPlane(this.engine.canvas.getPlane());
       const origin = origins[i];
 
       if (coords) {
-        this.internal.translateThread(threadID, [movement[0] - (coords.point[0] - origin[0]), movement[1] - (coords.point[1] - origin[1])]);
+        this.internal.translateThread(threadID, [
+          movement[0] - (coords.point[0] - origin[0]),
+          movement[1] - (coords.point[1] - origin[1]),
+        ]);
       }
     });
   }
@@ -294,7 +315,10 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
 
     const activeThreadIDs = detachedThreads.map((thread) => thread.id);
     const origins = activeThreadIDs.map<Point>((threadID) => {
-      const coords = this.engine.threads.get(threadID)!.api.instance!.getCoords().onPlane(this.engine.canvas!.getPlane())!;
+      const coords = this.engine.threads
+        .get(threadID)!
+        .api.instance!.getCoords()
+        .onPlane(this.engine.canvas!.getPlane())!;
 
       return coords.point;
     });
@@ -312,7 +336,10 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
       this.generateCandidates();
     }
 
-    const originalCoords = this.engine.threads.get(threadID)?.api.instance?.getCoords().onPlane(this.engine.canvas.getPlane());
+    const originalCoords = this.engine.threads
+      .get(threadID)
+      ?.api.instance?.getCoords()
+      .onPlane(this.engine.canvas.getPlane());
 
     const coords = this.translateThread(threadID, movement);
 
@@ -350,7 +377,9 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
 
     const nodeID = targetNodeID || null;
 
-    await this.dispatch.partialSync(Actions.Thread.PatchOne({ context: this.engine.context, id: threadID, patch: { nodeID, position } }));
+    await this.dispatch.partialSync(
+      Actions.Thread.PatchOne({ context: this.engine.context, id: threadID, patch: { nodeID, position } })
+    );
 
     this.log.debug('location saved', this.log.slug(threadID));
   }
@@ -359,7 +388,10 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
     const threads = threadIDs.reduce<Record<string, [number, number]>>((acc, threadID) => {
       if (!threadID || this.engine.getThreadByID(threadID)?.nodeID) return acc;
 
-      const coords = this.engine.threads.get(threadID)?.api.instance?.getCoords().onPlane(this.engine.canvas!.getPlane());
+      const coords = this.engine.threads
+        .get(threadID)
+        ?.api.instance?.getCoords()
+        .onPlane(this.engine.canvas!.getPlane());
 
       if (!coords) return acc;
 
@@ -386,7 +418,11 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
     const coords = anchorCoords.add(thread.position);
 
     await this.dispatch.partialSync(
-      Actions.Thread.PatchOne({ context: this.engine.context, id: threadID, patch: { nodeID: null, position: coords.point } })
+      Actions.Thread.PatchOne({
+        context: this.engine.context,
+        id: threadID,
+        patch: { nodeID: null, position: coords.point },
+      })
     );
 
     this.log.debug('new thread location saved', this.log.slug(threadID));

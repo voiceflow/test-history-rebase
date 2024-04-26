@@ -1,4 +1,4 @@
-import { EntityVariant } from '@voiceflow/dtos';
+import type { EntityVariant } from '@voiceflow/dtos';
 import React from 'react';
 
 import { Designer } from '@/ducks';
@@ -9,7 +9,11 @@ import { EntityVariantInput } from '../EntityVariantInput/EntityVariantInput.com
 import { EntityVariantsSection } from '../EntityVariantsSection/EntityVariantsSection.component';
 import type { IEntityEditVariantsSection } from './EntityEditVariantsSection.interface';
 
-export const EntityEditVariantsSection: React.FC<IEntityEditVariantsSection> = ({ entity, variantsError, resetVariantsError }) => {
+export const EntityEditVariantsSection: React.FC<IEntityEditVariantsSection> = ({
+  entity,
+  variantsError,
+  resetVariantsError,
+}) => {
   const variants = useSelector(Designer.Entity.EntityVariant.selectors.allByEntityID, { entityID: entity.id });
 
   const patchOne = useDispatch(Designer.Entity.EntityVariant.effect.patchOne);

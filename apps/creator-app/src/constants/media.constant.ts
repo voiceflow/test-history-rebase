@@ -42,7 +42,13 @@ export enum MediaFileExtension {
 }
 
 export const MEDIA_FILE_TYPES = {
-  IMAGE: [MediaFileExtension.JPG, MediaFileExtension.PNG, MediaFileExtension.GIF, MediaFileExtension.JPEG, MediaFileExtension.WEBP],
+  IMAGE: [
+    MediaFileExtension.JPG,
+    MediaFileExtension.PNG,
+    MediaFileExtension.GIF,
+    MediaFileExtension.JPEG,
+    MediaFileExtension.WEBP,
+  ],
 
   PNG: [MediaFileExtension.PNG],
 

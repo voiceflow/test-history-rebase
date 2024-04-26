@@ -65,7 +65,8 @@ const CreateAPIKey = manager.create<Props>(
             {state === CreateAPIKeyState.SHOW_KEY ? (
               <>
                 <Modal.Body>
-                  Please copy this key and store it somewhere secure. For security purposes, <b>we can't show this key to you again.</b>
+                  Please copy this key and store it somewhere secure. For security purposes,{' '}
+                  <b>we can't show this key to you again.</b>
                   <Box mt={16}>
                     <TextArea disabled readOnly value={apiKey} placeholder="Generating API Key..." minRows={2} />
                   </Box>

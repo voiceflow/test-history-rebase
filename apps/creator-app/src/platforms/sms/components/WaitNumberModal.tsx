@@ -1,4 +1,4 @@
-import { ProjectSecretTag } from '@voiceflow/schema-types';
+import type { ProjectSecretTag } from '@voiceflow/schema-types';
 import { Box, Button, ButtonVariant, Modal, Portal, ThemeColor, toast, useSmartReducerV2 } from '@voiceflow/ui';
 import React from 'react';
 
@@ -59,7 +59,12 @@ export const WaitNumberModal: React.FC<WaitNumberModalProps> = ({ tag, descripti
         </Modal.Header>
 
         <Modal.Body>
-          <PhoneInput defaultCountry="US" placeholder="Enter number" value={state.phoneNumber} onChange={updatePhoneNumber} />
+          <PhoneInput
+            defaultCountry="US"
+            placeholder="Enter number"
+            value={state.phoneNumber}
+            onChange={updatePhoneNumber}
+          />
           <Box fontSize={13} color={ThemeColor.SECONDARY} mt={12}>
             {description}
           </Box>

@@ -6,7 +6,15 @@ import Page from '@/components/Page';
 import { Permission } from '@/constants/permissions';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as ProjectV2 from '@/ducks/projectV2';
-import { useDispatch, useEventualEngine, useHotkey, useLinkedState, usePermission, useSelector, useToggle } from '@/hooks';
+import {
+  useDispatch,
+  useEventualEngine,
+  useHotkey,
+  useLinkedState,
+  usePermission,
+  useSelector,
+  useToggle,
+} from '@/hooks';
 import { Hotkey, HOTKEY_LABEL_MAP } from '@/keymap';
 import CanvasTemplateEditorNewTemplate from '@/pages/Canvas/components/TemplateEditor/NewTemplate';
 import { SelectionSetTargetsContext, SelectionTargetsContext } from '@/pages/Project/contexts';
@@ -39,7 +47,9 @@ const DomainsAndCanvasActions: React.FC = () => {
 
   const isReadOnly = isPrototypingMode || !canEditProject;
 
-  const showEditorIcons = canEditCanvas && (selectedTargets.length > 1 || (selectedTargets.length === 1 && selectedTargets[0] !== startNodeID));
+  const showEditorIcons =
+    canEditCanvas &&
+    (selectedTargets.length > 1 || (selectedTargets.length === 1 && selectedTargets[0] !== startNodeID));
 
   React.useEffect(() => {
     if (!showEditorIcons && templatePopperIsOpen) {
@@ -107,7 +117,11 @@ const DomainsAndCanvasActions: React.FC = () => {
           <Page.Header.IconButton
             icon="folderSmall"
             tooltip={{
-              content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.CREATE_SUBTOPIC]}>Create sub topic</TippyTooltip.WithHotkey>,
+              content: (
+                <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.CREATE_SUBTOPIC]}>
+                  Create sub topic
+                </TippyTooltip.WithHotkey>
+              ),
               offset: [0, -6],
             }}
             onClick={onCreateSubtopic}
@@ -116,7 +130,11 @@ const DomainsAndCanvasActions: React.FC = () => {
           <Page.Header.IconButton
             icon="componentOutline"
             tooltip={{
-              content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.CREATE_COMPONENT]}>Create component</TippyTooltip.WithHotkey>,
+              content: (
+                <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.CREATE_COMPONENT]}>
+                  Create component
+                </TippyTooltip.WithHotkey>
+              ),
               offset: [0, -6],
             }}
             onClick={onCreateComponent}
@@ -133,7 +151,11 @@ const DomainsAndCanvasActions: React.FC = () => {
                 icon="librarySmall"
                 active={templatePopperIsOpen}
                 tooltip={{
-                  content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.ADD_TO_LIBRARY]}>Add to library</TippyTooltip.WithHotkey>,
+                  content: (
+                    <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.ADD_TO_LIBRARY]}>
+                      Add to library
+                    </TippyTooltip.WithHotkey>
+                  ),
                   offset: [0, -6],
                 }}
                 onClick={onToggle}

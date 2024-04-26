@@ -1,4 +1,5 @@
-import { Dropdown, System, TableTypes } from '@voiceflow/ui';
+import type { TableTypes } from '@voiceflow/ui';
+import { Dropdown, System } from '@voiceflow/ui';
 import React from 'react';
 
 import { Permission } from '@/constants/permissions';
@@ -7,7 +8,7 @@ import { usePermission } from '@/hooks/permission';
 import { useSelector } from '@/hooks/redux';
 import * as ModalsV2 from '@/ModalsV2';
 
-import { Topic } from '../../types';
+import type { Topic } from '../../types';
 import * as S from './styles';
 
 const ActionsCell: React.FC<TableTypes.ItemProps<Topic>> = ({ item }) => {
@@ -25,7 +26,9 @@ const ActionsCell: React.FC<TableTypes.ItemProps<Topic>> = ({ item }) => {
       options={[
         { label: 'Rename', onClick: () => renameModal.openVoid({ topicID: item.id }) },
         isRootTopic ? null : { label: 'divider', divider: true },
-        isRootTopic ? null : { label: 'Delete', onClick: () => deleteModal.openVoid({ domainID: item.domainID, topicID: item.id }) },
+        isRootTopic
+          ? null
+          : { label: 'Delete', onClick: () => deleteModal.openVoid({ domainID: item.domainID, topicID: item.id }) },
       ]}
       placement="right-start"
       selfDismiss
@@ -33,7 +36,14 @@ const ActionsCell: React.FC<TableTypes.ItemProps<Topic>> = ({ item }) => {
       {({ ref, onToggle, isOpen }) => (
         <S.Container>
           <System.IconButtonsGroup.Base>
-            <System.IconButton.Base ref={ref} icon="ellipsis" active={isOpen} onClick={onToggle} disabled={!canEditCanvas} iconProps={{ size: 15 }} />
+            <System.IconButton.Base
+              ref={ref}
+              icon="ellipsis"
+              active={isOpen}
+              onClick={onToggle}
+              disabled={!canEditCanvas}
+              iconProps={{ size: 15 }}
+            />
           </System.IconButtonsGroup.Base>
         </S.Container>
       )}

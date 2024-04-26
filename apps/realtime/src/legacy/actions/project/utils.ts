@@ -2,11 +2,12 @@
 
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
-import { ActionAccessor, Context, Resender } from '@voiceflow/socket-utils';
+import type { ActionAccessor, Context, Resender } from '@voiceflow/socket-utils';
 import type { Action } from 'typescript-fsa';
 
 import { AbstractActionControl } from '@/legacy/actions/utils';
-import { accessWorkspaces, resendWorkspaceChannels, WorkspaceContextData } from '@/legacy/actions/workspace/utils';
+import type { WorkspaceContextData } from '@/legacy/actions/workspace/utils';
+import { accessWorkspaces, resendWorkspaceChannels } from '@/legacy/actions/workspace/utils';
 
 export const accessProject = <P extends Realtime.BaseProjectPayload, D extends WorkspaceContextData>(
   self: AbstractActionControl<P, D>
@@ -24,13 +25,16 @@ export const accessProject = <P extends Realtime.BaseProjectPayload, D extends W
     ).every(Boolean);
   }.bind(self);
 
-export const resendProjectChannel: Resender<Realtime.BaseProjectPayload, any> = (_, { payload: { projectID, workspaceID } }) => ({
+export const resendProjectChannel: Resender<Realtime.BaseProjectPayload, any> = (
+  _,
+  { payload: { projectID, workspaceID } }
+) => ({
   channel: Realtime.Channels.project.build({ projectID, workspaceID }),
 });
 
 export abstract class AbstractProjectChannelControl<
   P extends Realtime.BaseProjectPayload,
-  D extends WorkspaceContextData = WorkspaceContextData
+  D extends WorkspaceContextData = WorkspaceContextData,
 > extends AbstractActionControl<P, D> {
   protected access: ActionAccessor<P, D> = accessProject(this);
 
@@ -39,7 +43,7 @@ export abstract class AbstractProjectChannelControl<
 
 export abstract class AbstractProjectResourceControl<
   P extends Realtime.BaseWorkspacePayload,
-  D extends WorkspaceContextData = WorkspaceContextData
+  D extends WorkspaceContextData = WorkspaceContextData,
 > extends AbstractActionControl<P, D> {
   protected access: ActionAccessor<P, D> = accessWorkspaces(this);
 

@@ -1,4 +1,4 @@
-import { LoguxControlOptions } from '../../control';
+import type { LoguxControlOptions } from '../../control';
 import AddManyComponentsControl from './addManyComponents';
 import PatchVersionDefaultStepColors from './patchDefaultStepColors';
 import PatchVersionPublishingControl from './patchPublishing';

@@ -1,7 +1,7 @@
-import { BaseModels } from '@voiceflow/base-types';
+import type { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
-import { Context } from '@voiceflow/socket-utils';
-import { Action } from 'typescript-fsa';
+import type { Context } from '@voiceflow/socket-utils';
+import type { Action } from 'typescript-fsa';
 
 import { AbstractVersionDiagramAccessActionControl } from '@/legacy/actions/diagram/utils';
 
@@ -11,7 +11,16 @@ class IsolateSteps extends AbstractVersionDiagramAccessActionControl<Realtime.no
   actionCreator = Realtime.node.isolateSteps;
 
   protected process = async (_ctx: Context, { payload }: Action<Realtime.node.IsolateStepsPayload>): Promise<void> => {
-    const { stepIDs, diagramID, versionID, projectMeta, sourceParentNodeID, parentNodeID, schemaVersion, parentNodeData } = payload;
+    const {
+      stepIDs,
+      diagramID,
+      versionID,
+      projectMeta,
+      sourceParentNodeID,
+      parentNodeID,
+      schemaVersion,
+      parentNodeData,
+    } = payload;
     const { type, name, ports, coords } = parentNodeData;
 
     const [parentNode] = extractNodes(projectMeta, schemaVersion, {

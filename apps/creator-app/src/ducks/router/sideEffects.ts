@@ -1,10 +1,11 @@
-import { Struct } from '@voiceflow/common';
+import type { Struct } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { generatePath } from 'react-router';
 
 import { PageProgress } from '@/components/PageProgressBar/utils';
 import * as Errors from '@/config/errors';
-import { CMSRoute, Path } from '@/config/routes';
+import type { CMSRoute } from '@/config/routes';
+import { Path } from '@/config/routes';
 import { PageProgressBar } from '@/constants';
 import * as Creator from '@/ducks/creatorV2';
 import * as Designer from '@/ducks/designer';
@@ -13,7 +14,7 @@ import * as Feature from '@/ducks/feature';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import * as Version from '@/ducks/versionV2';
-import { SyncThunk } from '@/store/types';
+import type { SyncThunk } from '@/store/types';
 
 import {
   goTo,
@@ -41,7 +42,8 @@ import {
   redirectToPath,
 } from './actions';
 
-export const goToVersions = (versionID: string) => goTo(`${generatePath(Path.PROJECT_SETTINGS_VERSION, { versionID })}`);
+export const goToVersions = (versionID: string) =>
+  goTo(`${generatePath(Path.PROJECT_SETTINGS_VERSION, { versionID })}`);
 
 export const goToBackups = (versionID: string) => goTo(`${generatePath(Path.PROJECT_SETTINGS_BACKUP, { versionID })}`);
 
@@ -57,10 +59,26 @@ export const goToProjectCanvas = ({ state, subpath, diagramID, versionID }: GoTo
   goToPath(Path.PROJECT_CANVAS, { state, params: { diagramID, versionID }, search: window.location.search, subpath });
 
 export const redirectToProjectCanvas = ({ state, subpath, diagramID, versionID }: GoToProjectCanvasOptions) =>
-  redirectToPath(Path.PROJECT_CANVAS, { state, params: { diagramID, versionID }, search: window.location.search, subpath });
+  redirectToPath(Path.PROJECT_CANVAS, {
+    state,
+    params: { diagramID, versionID },
+    search: window.location.search,
+    subpath,
+  });
 
-export const goToCanvasNode = ({ state, nodeID, subpath, diagramID, versionID }: GoToProjectCanvasOptions & { nodeID: string; diagramID: string }) =>
-  goToPath(Path.CANVAS_NODE, { state, params: { versionID, diagramID, nodeID }, search: window.location.search, subpath });
+export const goToCanvasNode = ({
+  state,
+  nodeID,
+  subpath,
+  diagramID,
+  versionID,
+}: GoToProjectCanvasOptions & { nodeID: string; diagramID: string }) =>
+  goToPath(Path.CANVAS_NODE, {
+    state,
+    params: { versionID, diagramID, nodeID },
+    search: window.location.search,
+    subpath,
+  });
 
 export const goToCanvasDiagram = ({
   state,
@@ -123,8 +141,15 @@ export const goToDomainCanvas = ({ domainID, diagramID, versionID }: GoToDomainC
 /**
  * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
  */
-export const redirectToDomainCanvas = ({ domainID, diagramID, versionID, extraPath = '' }: GoToDomainCanvasOptions & { extraPath?: string }) =>
-  redirectTo(`${generatePath(Path.DOMAIN_CANVAS, { versionID, diagramID, domainID })}${extraPath}${window.location.search}`);
+export const redirectToDomainCanvas = ({
+  domainID,
+  diagramID,
+  versionID,
+  extraPath = '',
+}: GoToDomainCanvasOptions & { extraPath?: string }) =>
+  redirectTo(
+    `${generatePath(Path.DOMAIN_CANVAS, { versionID, diagramID, domainID })}${extraPath}${window.location.search}`
+  );
 
 /**
  * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
@@ -138,7 +163,14 @@ interface GoToDomainCanvasNodeOptions extends GoToDomainCanvasDiagramOptions {
 /**
  * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
  */
-export const goToDomainCanvasNode = ({ nodeID, domainID, versionID, diagramID, routeState, nodeSubPath }: GoToDomainCanvasNodeOptions) =>
+export const goToDomainCanvasNode = ({
+  nodeID,
+  domainID,
+  versionID,
+  diagramID,
+  routeState,
+  nodeSubPath,
+}: GoToDomainCanvasNodeOptions) =>
   goTo(
     `${generatePath(Path.DOMAIN_CANVAS_NODE, { versionID, diagramID, domainID, nodeID })}${nodeSubPath ? `/${nodeSubPath.replace(/^\//, '')}` : ''}${
       window.location.search
@@ -441,7 +473,9 @@ export const goToDiagramCommenting =
       return;
     }
 
-    const domainID = DomainSelectors.domainIDByTopicIDSelector(state, { topicID: diagramID }) ?? DomainSelectors.rootDomainIDSelector(state);
+    const domainID =
+      DomainSelectors.domainIDByTopicIDSelector(state, { topicID: diagramID }) ??
+      DomainSelectors.rootDomainIDSelector(state);
 
     Errors.assertDomainID(domainID);
 
@@ -611,7 +645,9 @@ export const goToCMSResource =
     const folderPaths = folderIDs.map((id) => `folder/${id}`).join('/');
 
     if (folderPaths) {
-      dispatch(goTo(generatePath(`${Path.CMS_RESOURCE}/${folderPaths}/${resourceID}`, { versionID, resourceType }), routeState));
+      dispatch(
+        goTo(generatePath(`${Path.CMS_RESOURCE}/${folderPaths}/${resourceID}`, { versionID, resourceType }), routeState)
+      );
     } else {
       dispatch(goTo(generatePath(Path.CMS_RESOURCE_ACTIVE, { versionID, resourceID, resourceType }), routeState));
     }

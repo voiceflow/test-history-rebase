@@ -1,4 +1,4 @@
-import * as Platform from '@voiceflow/platform-config';
+import type * as Platform from '@voiceflow/platform-config';
 import { serializeToText } from '@voiceflow/slate-serializer/text';
 import React from 'react';
 
@@ -20,7 +20,12 @@ const ChatList: React.FC<ChatListProps> = ({ prefix, onClick, reprompts }) => {
   return (
     <ListContainer>
       {reprompts.map((prompt, index) => (
-        <Item key={prompt.id} label={`${prefix} ${index + 1}`} onClick={onClick} isLast={index === reprompts.length - 1}>
+        <Item
+          key={prompt.id}
+          label={`${prefix} ${index + 1}`}
+          onClick={onClick}
+          isLast={index === reprompts.length - 1}
+        >
           {serializeToText(prompt.content, { variablesMap: entitiesAndVariables.byKey })}
         </Item>
       ))}

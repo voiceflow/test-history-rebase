@@ -2,7 +2,8 @@ import React from 'react';
 
 import { useDidUpdateEffect } from '@/hooks';
 
-import { TopicItemProps, useSubtopicDrop } from '../hooks';
+import type { TopicItemProps } from '../hooks';
+import { useSubtopicDrop } from '../hooks';
 import MenuList from '../MenuList';
 import TopicItemName from './Name';
 

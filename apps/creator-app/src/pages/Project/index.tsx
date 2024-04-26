@@ -28,7 +28,9 @@ const Publish = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/
 const Settings = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/Settings')));
 const AssistantCMS = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/AssistantCMS/AssistantCMS.page')));
 const Conversations = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/Conversations')));
-const AssistantOverview = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/DashboardV2/pages/AssistantOverview')));
+const AssistantOverview = withWorkspaceOrProjectAssetsSuspense(
+  lazy(() => import('@/pages/DashboardV2/pages/AssistantOverview'))
+);
 const AnalyticsDashboard = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/AnalyticsDashboard')));
 
 const Project: React.FC = () => {
@@ -102,7 +104,9 @@ const Project: React.FC = () => {
 
           <Route path={Path.PROJECT_ANALYTICS} component={AnalyticsDashboard} />
 
-          {!disableIntegration.isEnabled && !hideExports.isEnabled && <Route path={Path.PROJECT_PUBLISH} component={Publish} />}
+          {!disableIntegration.isEnabled && !hideExports.isEnabled && (
+            <Route path={Path.PROJECT_PUBLISH} component={Publish} />
+          )}
 
           <Route path={Path.PROJECT_SETTINGS} component={Settings} />
 

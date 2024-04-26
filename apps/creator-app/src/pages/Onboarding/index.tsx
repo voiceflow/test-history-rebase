@@ -1,6 +1,6 @@
 import { UserRole } from '@voiceflow/internal';
 import React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+import type { RouteComponentProps } from 'react-router-dom';
 
 import * as Account from '@/ducks/account';
 import { useHideVoiceflowAssistant, useSelector } from '@/hooks';

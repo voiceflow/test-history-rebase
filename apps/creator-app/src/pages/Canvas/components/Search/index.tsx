@@ -13,7 +13,7 @@ import { EngineContext } from '@/pages/Canvas/contexts';
 import { withKeyPress } from '@/utils/dom';
 
 import { Container, Control, Dropdown, Input, Menu, Option, Select } from './components';
-import { SearchOption } from './types';
+import type { SearchOption } from './types';
 
 const SearchBar: React.FC = () => {
   const [trackingEvents] = useTrackingEvents();
@@ -105,7 +105,9 @@ const SearchBar: React.FC = () => {
     const state = store.getState();
     const entities = Designer.Entity.selectors.allWithVariants(state);
     const nodeData = Creator.allNodeDataSelector(state);
-    const diagrams = Diagram.allDiagramsSelector(state).filter(({ type }) => type !== BaseModels.Diagram.DiagramType.TEMPLATE);
+    const diagrams = Diagram.allDiagramsSelector(state).filter(
+      ({ type }) => type !== BaseModels.Diagram.DiagramType.TEMPLATE
+    );
 
     database.current[SearchTypes.SearchCategory.NODE] = search.syncNodeDatabases({
       [diagramID]: SearchUtils.buildNodeDatabase(nodeData, diagramID, state),

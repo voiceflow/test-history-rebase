@@ -120,7 +120,10 @@ export class FolderService extends CMSObjectService<FolderORM> {
     };
   }
 
-  prepareExportData(data: { folders: FolderObject[] }, { backup }: { backup?: boolean } = {}): FolderExportImportDataDTO {
+  prepareExportData(
+    data: { folders: FolderObject[] },
+    { backup }: { backup?: boolean } = {}
+  ): FolderExportImportDataDTO {
     const json = this.toJSONWithSubResources(data);
 
     if (backup) {
@@ -128,7 +131,9 @@ export class FolderService extends CMSObjectService<FolderORM> {
     }
 
     return {
-      folders: json.folders.map((item) => Utils.object.omit(item, ['assistantID', 'environmentID', 'updatedAt', 'updatedByID'])),
+      folders: json.folders.map((item) =>
+        Utils.object.omit(item, ['assistantID', 'environmentID', 'updatedAt', 'updatedByID'])
+      ),
     };
   }
 
@@ -146,7 +151,11 @@ export class FolderService extends CMSObjectService<FolderORM> {
     const { folders: sourceFolders } = await this.findManyWithSubResourcesByEnvironment(sourceEnvironmentID);
 
     return this.importManyWithSubResources({
-      folders: sourceFolders.map((item) => ({ ...item, assistantID: targetAssistantID, environmentID: targetEnvironmentID })),
+      folders: sourceFolders.map((item) => ({
+        ...item,
+        assistantID: targetAssistantID,
+        environmentID: targetEnvironmentID,
+      })),
     });
   }
 
@@ -154,7 +163,12 @@ export class FolderService extends CMSObjectService<FolderORM> {
 
   prepareImportData(
     { folders }: FolderExportImportDataDTO,
-    { userID, backup, assistantID, environmentID }: { userID: number; backup?: boolean; assistantID: string; environmentID: string }
+    {
+      userID,
+      backup,
+      assistantID,
+      environmentID,
+    }: { userID: number; backup?: boolean; assistantID: string; environmentID: string }
   ): { folders: FolderJSON[] } {
     const createdAt = new Date().toJSON();
 
@@ -281,7 +295,11 @@ export class FolderService extends CMSObjectService<FolderORM> {
 
         // moving start workflow to the top level
         startWorkflow
-          ? this.workflow.patchOneForUser(userID, { id: startWorkflow.id, environmentID: context.environmentID }, { folderID: null })
+          ? this.workflow.patchOneForUser(
+              userID,
+              { id: startWorkflow.id, environmentID: context.environmentID },
+              { folderID: null }
+            )
           : Promise.resolve(),
       ]);
 
@@ -419,7 +437,10 @@ export class FolderService extends CMSObjectService<FolderORM> {
 
   /* Upsert */
 
-  async upsertManyWithSubResources(data: { folders: Folder[] }, meta: { userID: number; assistantID: string; environmentID: string }) {
+  async upsertManyWithSubResources(
+    data: { folders: Folder[] },
+    meta: { userID: number; assistantID: string; environmentID: string }
+  ) {
     const { folders } = this.prepareImportData(data, meta);
 
     await this.upsertMany(this.mapFromJSON(folders));

@@ -1,12 +1,12 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { OptionsMenuOption, UIOnlyMenuItemOption } from '@voiceflow/ui';
+import type { OptionsMenuOption, UIOnlyMenuItemOption } from '@voiceflow/ui';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
 
 import { Path } from '@/config/routes';
 import { useFeature } from '@/hooks/feature';
 
-import { NodeEditorV2Props } from '../../managers/types';
+import type { NodeEditorV2Props } from '../../managers/types';
 import { EditorSidebarContext } from '../EditorSidebarV2';
 import { EditorParentMatchContext } from './context';
 
@@ -17,7 +17,10 @@ export const useParentMatch = () => {
   return React.useMemo(() => {
     if (!parentMatch) return null;
 
-    const parentPath = parentMatch.path.replace(cmsWorkflows.isEnabled ? Path.CANVAS_NODE : Path.DOMAIN_CANVAS_NODE, '');
+    const parentPath = parentMatch.path.replace(
+      cmsWorkflows.isEnabled ? Path.CANVAS_NODE : Path.DOMAIN_CANVAS_NODE,
+      ''
+    );
 
     return {
       ...parentMatch,
@@ -27,10 +30,10 @@ export const useParentMatch = () => {
   }, [parentMatch?.url, cmsWorkflows.isEnabled]);
 };
 
-export const useEditor = <Data, BuiltInPorts extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord>(): NodeEditorV2Props<
+export const useEditor = <
   Data,
-  BuiltInPorts
-> => {
+  BuiltInPorts extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord,
+>(): NodeEditorV2Props<Data, BuiltInPorts> => {
   const editor = React.useContext(EditorSidebarContext)! as NodeEditorV2Props<Data, BuiltInPorts>;
   const parentMatch = useParentMatch();
 

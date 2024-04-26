@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { Organization } from '@voiceflow/dtos';
+import type { Organization } from '@voiceflow/dtos';
 import { Box, Button, Modal, Select, Text } from '@voiceflow/ui';
 import React from 'react';
 
@@ -11,7 +11,13 @@ interface WorkspaceOrganizationProps {
   organizations: Organization[];
 }
 
-const WorkspaceOrganization: React.FC<WorkspaceOrganizationProps> = ({ value, onClose, onNext, onSelect, organizations }) => {
+const WorkspaceOrganization: React.FC<WorkspaceOrganizationProps> = ({
+  value,
+  onClose,
+  onNext,
+  onSelect,
+  organizations,
+}) => {
   const organizationMap = React.useMemo(() => Utils.array.createMap(organizations, (org) => org.id), [organizations]);
 
   return (

@@ -1,7 +1,7 @@
-import { Nullish } from '@voiceflow/common';
+import type { Nullish } from '@voiceflow/common';
 
+import type { Permission } from '@/constants/permissions';
 import {
-  Permission,
   PLAN_PERMISSION_DEFAULT_WARN_MESSAGE,
   ROLE_PERMISSION_DEFAULT_WARN_MESSAGE,
   TRIAL_EXPIRED_PERMISSION_DEFAULT_WARN_MESSAGE,

@@ -6,7 +6,7 @@ import { Context as ModalsContext } from '@/ModalsV2/context';
 import { modalsManager } from '@/ModalsV2/manager';
 
 import { ModalBackdrop } from '../ModalBackdrop/ModalBackdrop.component';
-import { IModalPlaceholder } from './ModalPlaceholder.interface';
+import type { IModalPlaceholder } from './ModalPlaceholder.interface';
 
 export const ModalPlaceholder = memo<IModalPlaceholder>(({ scope }) => {
   const { state, animated } = useContext(ModalsContext);
@@ -27,7 +27,9 @@ export const ModalPlaceholder = memo<IModalPlaceholder>(({ scope }) => {
         <ModalBackdrop
           onClick={() => modalsManager.close(visibleModal.id, visibleModal.type, 'backdrop')}
           closing={modalsToRender.length === 1 && visibleModal.closing}
-          closePrevented={modalsToRender[0]?.Component.__vfModalOptions?.backdropDisabled ?? visibleModal?.closePrevented}
+          closePrevented={
+            modalsToRender[0]?.Component.__vfModalOptions?.backdropDisabled ?? visibleModal?.closePrevented
+          }
         />
       )}
 

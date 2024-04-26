@@ -1,10 +1,11 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
-import { MapManagedFactoryAPI, useMapManager, useToggle } from '@/hooks';
+import type { MapManagedFactoryAPI } from '@/hooks';
+import { useMapManager, useToggle } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
-import { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
+import type { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
 
 import { DRAG_TYPE, MAX_SETS, setFactory } from '../../constants';
 import DraggableItem from '../DraggableItem';
@@ -13,7 +14,9 @@ import { Footer } from './components';
 interface FormProps extends React.PropsWithChildren {
   editor: NodeEditorV2Props<Realtime.NodeData.SetV2, Realtime.NodeData.SetV2BuiltInPorts>;
   header?: React.ReactNode;
-  footer?: React.ReactNode | ((props: { mapManager: MapManagedFactoryAPI<Realtime.NodeData.SetExpressionV2> }) => React.ReactNode);
+  footer?:
+    | React.ReactNode
+    | ((props: { mapManager: MapManagedFactoryAPI<Realtime.NodeData.SetExpressionV2> }) => React.ReactNode);
   beforeList?: React.ReactNode;
 }
 
@@ -29,7 +32,10 @@ const Form: React.FC<FormProps> = ({ editor, header, footer, children, beforeLis
   return (
     <EditorV2
       header={header ?? <EditorV2.DefaultHeader />}
-      footer={!isDragging && (typeof footer === 'function' ? footer({ mapManager }) : footer ?? <Footer mapManager={mapManager} />)}
+      footer={
+        !isDragging &&
+        (typeof footer === 'function' ? footer({ mapManager }) : footer ?? <Footer mapManager={mapManager} />)
+      }
       dropLagAccept={DRAG_TYPE}
     >
       {beforeList}

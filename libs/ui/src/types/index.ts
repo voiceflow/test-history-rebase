@@ -1,9 +1,15 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import type { AnyRecord, Function } from '@voiceflow/common';
-import { RGBColor } from 'react-color';
-import { Overwrite } from 'utility-types';
+import type { RGBColor } from 'react-color';
+import type { Overwrite } from 'utility-types';
 
-import { ActionCreatorLookup, MappedDispatchProps, MappedStateProps, MergeArguments, SelectorLookup } from './store';
+import type {
+  ActionCreatorLookup,
+  MappedDispatchProps,
+  MappedStateProps,
+  MergeArguments,
+  SelectorLookup,
+} from './store';
 
 export * from './store';
 
@@ -18,8 +24,11 @@ export type Either<T extends object, R extends object> =
 export type ConnectedProps<
   S extends SelectorLookup<any> = {},
   D extends ActionCreatorLookup = {},
-  M extends Function<MergeArguments<S, D, any>, object> = () => {}
-> = Overwrite<Overwrite<MappedStateProps<S> & MappedDispatchProps<D>, MappedDispatchProps<D>> & ReturnType<M>, ReturnType<M>>;
+  M extends Function<MergeArguments<S, D, any>, object> = () => {},
+> = Overwrite<
+  Overwrite<MappedStateProps<S> & MappedDispatchProps<D>, MappedDispatchProps<D>> & ReturnType<M>,
+  ReturnType<M>
+>;
 
 export type Point = [x: number, y: number];
 export type Pair<T> = [T, T];

@@ -21,7 +21,8 @@ import { ProjectIdentityProvider } from '@/pages/Project/contexts/ProjectIdentit
 import { Sidebar } from '../../components';
 import { getProjectStatusAndMembers } from '../../utils';
 import { Banner, EmptySearch, EmptyWorkspace, Header, TemplateSection } from './components';
-import { SortByOptions, SortOptionType } from './constants';
+import type { SortOptionType } from './constants';
+import { SortByOptions } from './constants';
 import * as S from './styles';
 import { getProjectSortFunction } from './utils';
 
@@ -119,12 +120,24 @@ const ProjectList: React.FC = () => {
         {hasProjects && (
           <S.Grid>
             {projectToRender.map((item) => (
-              <ProjectIdentityProvider key={item.id} projectID={item.id} projectRole={Normal.getOne(item.members, String(userID))?.role ?? null}>
+              <ProjectIdentityProvider
+                key={item.id}
+                projectID={item.id}
+                projectRole={Normal.getOne(item.members, String(userID))?.role ?? null}
+              >
                 <AssistantCard
-                  {...getProjectStatusAndMembers({ project: item, activeViewers: activeViewersPerProject[item.id], getMemberByIDSelector })}
+                  {...getProjectStatusAndMembers({
+                    project: item,
+                    activeViewers: activeViewersPerProject[item.id],
+                    getMemberByIDSelector,
+                  })}
                   project={item}
-                  onClickCard={() => (cmsWorkflows.isEnabled ? goToCMSWorkflow(item.versionID) : goToAssistantOverview(item.versionID))}
-                  onClickDesigner={() => (cmsWorkflows.isEnabled ? goToCMSWorkflow(item.versionID) : goToCanvasWithVersionID(item.versionID))}
+                  onClickCard={() =>
+                    cmsWorkflows.isEnabled ? goToCMSWorkflow(item.versionID) : goToAssistantOverview(item.versionID)
+                  }
+                  onClickDesigner={() =>
+                    cmsWorkflows.isEnabled ? goToCMSWorkflow(item.versionID) : goToCanvasWithVersionID(item.versionID)
+                  }
                 />
               </ProjectIdentityProvider>
             ))}

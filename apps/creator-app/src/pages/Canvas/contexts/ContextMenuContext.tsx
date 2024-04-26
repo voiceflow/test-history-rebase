@@ -1,4 +1,4 @@
-import { Nullable } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
 import { useContextApi, useSmartReducerV2 } from '@voiceflow/ui';
 import React from 'react';
 import { DismissableLayerContext } from 'react-dismissable-layers';
@@ -27,7 +27,11 @@ export const ContextMenuProvider: React.FC<React.PropsWithChildren> = ({ childre
   const engine = React.useContext(EngineContext)!;
   const dismissOverlay = React.useContext(DismissableLayerContext)!;
 
-  const [menuContext, menuContextApi] = useSmartReducerV2<Partial<MenuContext>>({ type: undefined, target: undefined, position: undefined });
+  const [menuContext, menuContextApi] = useSmartReducerV2<Partial<MenuContext>>({
+    type: undefined,
+    target: undefined,
+    position: undefined,
+  });
 
   const onHide = React.useCallback(() => {
     dismissOverlay.removeHandler('click', onHide);
@@ -45,7 +49,11 @@ export const ContextMenuProvider: React.FC<React.PropsWithChildren> = ({ childre
       dismissOverlay.addHandler('click', onHide);
 
       if (type === ContextMenuTarget.NODE && target && engine.selection.isOneOfManyTargets(EntityType.NODE, target)) {
-        menuContextApi.set({ position: [event.clientX, event.clientY], type: ContextMenuTarget.SELECTION, target: null });
+        menuContextApi.set({
+          position: [event.clientX, event.clientY],
+          type: ContextMenuTarget.SELECTION,
+          target: null,
+        });
 
         return;
       }

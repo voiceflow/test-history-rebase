@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { PreviewOptions, useDragPreview } from '@/hooks/dragPreview';
+import type { PreviewOptions } from '@/hooks/dragPreview';
+import { useDragPreview } from '@/hooks/dragPreview';
 
-import { DnDHandlers } from '../types';
+import type { DnDHandlers } from '../types';
 import DragPreviewWrapper from './DragPreviewWrapper';
 
 export interface DragPreviewComponentProps {

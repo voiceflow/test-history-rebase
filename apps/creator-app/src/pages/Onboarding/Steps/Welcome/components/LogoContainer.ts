@@ -14,7 +14,9 @@ const LogoContainer = styled(FlexCenter)<{ size?: number; shadow?: boolean }>`
   ${({ shadow = true }) =>
     shadow &&
     css`
-      box-shadow: 0 8px 16px 0 rgba(17, 49, 96, 0.16), 0 0 0 1px rgba(17, 49, 96, 0.06);
+      box-shadow:
+        0 8px 16px 0 rgba(17, 49, 96, 0.16),
+        0 0 0 1px rgba(17, 49, 96, 0.06);
     `}
 
   background-color: ${Tokens.colors.black[100]};

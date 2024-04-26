@@ -21,10 +21,15 @@ export class ModerationService {
       return;
     }
 
-    this.openAIClient = new OpenAIApi(new Configuration({ apiKey: env.OPENAI_API_KEY, basePath: env.OPENAI_API_ENDPOINT || undefined }));
+    this.openAIClient = new OpenAIApi(
+      new Configuration({ apiKey: env.OPENAI_API_KEY, basePath: env.OPENAI_API_ENDPOINT || undefined })
+    );
   }
 
-  async checkModeration(input: string | string[], context: Partial<{ workspaceID: string | number; projectID: string }> = {}) {
+  async checkModeration(
+    input: string | string[],
+    context: Partial<{ workspaceID: string | number; projectID: string }> = {}
+  ) {
     // if the OPENAI_API_KEY is not set, the content moderation is just ignored
     if (!this.openAIClient) return;
 
@@ -46,10 +51,13 @@ export class ModerationService {
     });
 
     failedModeration.forEach((failedModeration) => {
-      const failedModerationCategories = Object.entries(failedModeration.error.categories).reduce<string[]>((acc, [key, value]) => {
-        if (value) acc.push(key);
-        return acc;
-      }, []);
+      const failedModerationCategories = Object.entries(failedModeration.error.categories).reduce<string[]>(
+        (acc, [key, value]) => {
+          if (value) acc.push(key);
+          return acc;
+        },
+        []
+      );
       this.logger.warn(
         `[moderation error]input=${failedModeration.input} | categories=${failedModerationCategories} | projectID=${context.projectID} | workspaceID=${context.workspaceID}`
       );

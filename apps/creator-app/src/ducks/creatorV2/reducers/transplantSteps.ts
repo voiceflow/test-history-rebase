@@ -78,10 +78,15 @@ export const transplantStepsReverter = createReverter(
     const ctx = { workspaceID, projectID, versionID, domainID, diagramID };
 
     // only re-add links that have been removed
-    const reAddLinks = nodePortRemaps.flatMap((portRemap) => (portRemap.targetNodeID ? [] : buildLinkRecreateActions(state, ctx, portRemap)));
+    const reAddLinks = nodePortRemaps.flatMap((portRemap) =>
+      portRemap.targetNodeID ? [] : buildLinkRecreateActions(state, ctx, portRemap)
+    );
 
     const removeActions =
-      removeManyNodesReverter.revert({ workspaceID, projectID, versionID, domainID, diagramID, nodes: removeNodes }, getState) ?? [];
+      removeManyNodesReverter.revert(
+        { workspaceID, projectID, versionID, domainID, diagramID, nodes: removeNodes },
+        getState
+      ) ?? [];
 
     if (removeSource) {
       // if source removed, restore the original block
@@ -162,10 +167,12 @@ export const transplantStepsReverter = createReverter(
       index,
       parentNodeID: targetParentNodeID,
     })),
-    ...createNodePortRemapsInvalidators<Realtime.node.TransplantStepsPayload>(({ targetParentNodeID, nodePortRemaps = [] }) => ({
-      nodePortRemaps,
-      parentNodeID: targetParentNodeID,
-    })),
+    ...createNodePortRemapsInvalidators<Realtime.node.TransplantStepsPayload>(
+      ({ targetParentNodeID, nodePortRemaps = [] }) => ({
+        nodePortRemaps,
+        parentNodeID: targetParentNodeID,
+      })
+    ),
     ...createManyNodesRemovalInvalidators<Realtime.node.TransplantStepsPayload>((origin) => origin.removeNodes),
   ]
 );

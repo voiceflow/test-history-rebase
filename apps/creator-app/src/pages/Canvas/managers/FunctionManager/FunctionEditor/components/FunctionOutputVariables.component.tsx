@@ -1,4 +1,4 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Collapsible, CollapsibleHeader, CollapsibleHeaderButton, Variable } from '@voiceflow/ui-next';
 import React from 'react';
 
@@ -35,7 +35,9 @@ export const FunctionOutputVariables = ({ onChange, outputMapping, functionID }:
       contentClassName={inputVariableContainerModifier}
       header={
         <CollapsibleHeader label="Output variable mapping">
-          {({ isOpen, headerChildrenStyles }) => <CollapsibleHeaderButton headerChildrenStyles={headerChildrenStyles} isOpen={isOpen} />}
+          {({ isOpen, headerChildrenStyles }) => (
+            <CollapsibleHeaderButton headerChildrenStyles={headerChildrenStyles} isOpen={isOpen} />
+          )}
         </CollapsibleHeader>
       }
     >

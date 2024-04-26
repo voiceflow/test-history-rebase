@@ -21,10 +21,14 @@ export const Container = styled(FlexCenter)<ContainerProps>`
   ${({ theme, isChip, reversed }) =>
     reversed
       ? css`
-          right: ${isChip ? `calc(100% + ${NODE_LINK_WIDTH}px)` : `${theme.components.block.width - NODE_LINK_WIDTH + 2}px`};
+          right: ${isChip
+            ? `calc(100% + ${NODE_LINK_WIDTH}px)`
+            : `${theme.components.block.width - NODE_LINK_WIDTH + 2}px`};
           flex-direction: row-reverse;
         `
       : css`
-          left: ${isChip ? `calc(100% + ${NODE_LINK_WIDTH}px)` : `${theme.components.block.width - NODE_LINK_WIDTH + 2}px`};
+          left: ${isChip
+            ? `calc(100% + ${NODE_LINK_WIDTH}px)`
+            : `${theme.components.block.width - NODE_LINK_WIDTH + 2}px`};
         `};
 `;

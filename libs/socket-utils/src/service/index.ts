@@ -1,4 +1,4 @@
-import { SyncService } from './sync';
+import type { SyncService } from './sync';
 
 export * from './manager';
 export * from './sync';

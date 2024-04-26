@@ -7,7 +7,7 @@ import alexaClient from './alexa/client';
 import dialogflowCXClient from './dialogflowCX/client';
 import generalClient from './general/client';
 import smsClient from './sms/client';
-import { PlatformClient } from './types';
+import type { PlatformClient } from './types';
 import whatsappClient from './whatsapp/client';
 
 export const platformClients = {

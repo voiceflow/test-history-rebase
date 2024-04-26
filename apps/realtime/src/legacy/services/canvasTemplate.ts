@@ -1,4 +1,4 @@
-import { BaseModels } from '@voiceflow/base-types';
+import type { BaseModels } from '@voiceflow/base-types';
 
 import { AbstractControl } from '@/legacy/control';
 
@@ -11,7 +11,10 @@ class CanvasTemplateService extends AbstractControl {
     return this.models.version.canvasTemplate.get(versionID, canvasTemplateID);
   }
 
-  public async create(versionID: string, canvasTemplate: BaseModels.Version.CanvasTemplate): Promise<BaseModels.Version.CanvasTemplate> {
+  public async create(
+    versionID: string,
+    canvasTemplate: BaseModels.Version.CanvasTemplate
+  ): Promise<BaseModels.Version.CanvasTemplate> {
     return this.models.version.canvasTemplate.create(versionID, canvasTemplate);
   }
 

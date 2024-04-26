@@ -4,7 +4,11 @@ import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
 import { LoguxService } from '@voiceflow/nestjs-logux';
-import type { AnyResponseAttachmentObject, AnyResponseVariantObject, ResponseDiscriminatorObject } from '@voiceflow/orm-designer';
+import type {
+  AnyResponseAttachmentObject,
+  AnyResponseVariantObject,
+  ResponseDiscriminatorObject,
+} from '@voiceflow/orm-designer';
 import { AssistantORM, DatabaseTarget, ResponseDiscriminatorORM, ResponseORM } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
@@ -58,9 +62,15 @@ export class ResponseDiscriminatorService extends CMSObjectService<ResponseDiscr
 
   /* Create */
 
-  async createManyAndSync(data: CMSCreateForUserData<ResponseDiscriminatorORM>[], { userID, context }: { userID: number; context: CMSContext }) {
+  async createManyAndSync(
+    data: CMSCreateForUserData<ResponseDiscriminatorORM>[],
+    { userID, context }: { userID: number; context: CMSContext }
+  ) {
     return this.postgresEM.transactional(async () => {
-      const responseDiscriminators = await this.createManyForUser(userID, data.map(injectAssistantAndEnvironmentIDs(context)));
+      const responseDiscriminators = await this.createManyForUser(
+        userID,
+        data.map(injectAssistantAndEnvironmentIDs(context))
+      );
 
       return {
         add: {
@@ -121,7 +131,10 @@ export class ResponseDiscriminatorService extends CMSObjectService<ResponseDiscr
 
   async collectRelationsToDelete(environmentID: string, ids: string[]) {
     const responseVariants = await this.responseVariant.findManyByDiscriminators(environmentID, ids);
-    const relations = await this.responseVariant.collectRelationsToDelete(environmentID, toPostgresEntityIDs(responseVariants));
+    const relations = await this.responseVariant.collectRelationsToDelete(
+      environmentID,
+      toPostgresEntityIDs(responseVariants)
+    );
 
     return {
       ...relations,

@@ -1,13 +1,14 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { useSetup, useTeardown } from '@/hooks';
 import { EngineContext } from '@/pages/Canvas/contexts/EngineContext';
-import { Pair, PathPoints } from '@/types';
+import type { Pair, PathPoints } from '@/types';
 
 import type Engine from '..';
 import { EntityType } from '../constants';
-import { EntityInstance, ResourceEntity } from './entity';
+import type { EntityInstance } from './entity';
+import { ResourceEntity } from './entity';
 
 export interface TranslatePointData {
   sync: boolean;
@@ -52,7 +53,10 @@ class LinkEntity extends ResourceEntity<Realtime.Link, LinkInstance> {
     return this.engine.portLinkInstances.get(this.linkID);
   }
 
-  constructor(engine: Engine, public linkID: string) {
+  constructor(
+    engine: Engine,
+    public linkID: string
+  ) {
     super(EntityType.LINK, engine, engine.log.child('link', linkID.slice(-6)));
 
     this.log.debug(this.log.init('constructed link'), this.log.slug(linkID));

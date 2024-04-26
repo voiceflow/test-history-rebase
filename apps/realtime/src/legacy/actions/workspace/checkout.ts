@@ -1,15 +1,19 @@
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { Actions } from '@voiceflow/sdk-logux-designer';
-import { Context } from '@voiceflow/socket-utils';
-import { Action } from 'typescript-fsa';
+import type { Context } from '@voiceflow/socket-utils';
+import type { Action } from 'typescript-fsa';
 
-import { AbstractWorkspaceChannelControl, WorkspaceContextData } from './utils';
+import type { WorkspaceContextData } from './utils';
+import { AbstractWorkspaceChannelControl } from './utils';
 
 export interface CheckoutContextData extends WorkspaceContextData {
   checkoutSuccedeed?: boolean;
 }
 
-class CheckoutWorkspace extends AbstractWorkspaceChannelControl<Realtime.workspace.CheckoutPayload, CheckoutContextData> {
+class CheckoutWorkspace extends AbstractWorkspaceChannelControl<
+  Realtime.workspace.CheckoutPayload,
+  CheckoutContextData
+> {
   protected actionCreator = Realtime.workspace.checkout.started;
 
   protected process = this.reply(Realtime.workspace.checkout, async (ctx, { payload }) => {
@@ -37,7 +41,10 @@ class CheckoutWorkspace extends AbstractWorkspaceChannelControl<Realtime.workspa
     }
   });
 
-  protected finally = async (ctx: Context<CheckoutContextData>, { payload }: Action<Realtime.workspace.CheckoutPayload>): Promise<void> => {
+  protected finally = async (
+    ctx: Context<CheckoutContextData>,
+    { payload }: Action<Realtime.workspace.CheckoutPayload>
+  ): Promise<void> => {
     if (!ctx.data.checkoutSuccedeed) return;
 
     const quotaName = Realtime.QuotaNames.TOKENS;

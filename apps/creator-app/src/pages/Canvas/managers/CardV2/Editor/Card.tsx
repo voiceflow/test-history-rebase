@@ -1,6 +1,6 @@
-import { BaseText } from '@voiceflow/base-types';
+import type { BaseText } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, SectionV2, UploadV2 } from '@voiceflow/ui';
 import React from 'react';
 
@@ -9,7 +9,7 @@ import { SlateTextInput } from '@/components/SlateInputs';
 import VariablesInput from '@/components/VariablesInput';
 import { useActiveProjectTypeConfig, useImageDimensions } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
-import { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
+import type { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
 
 import Buttons from './Buttons';
 
@@ -79,7 +79,9 @@ const CardV2: React.FC<CardV2Props> = ({ item, editor, onUpdate }) => {
           <Buttons.Section
             buttons={item.buttons}
             editor={editor}
-            onUpdate={({ buttons = [] }) => onUpdate({ buttons } as Partial<Realtime.NodeData<Realtime.NodeData.CardV2>>, true)}
+            onUpdate={({ buttons = [] }) =>
+              onUpdate({ buttons } as Partial<Realtime.NodeData<Realtime.NodeData.CardV2>>, true)
+            }
           />
         </>
       )}

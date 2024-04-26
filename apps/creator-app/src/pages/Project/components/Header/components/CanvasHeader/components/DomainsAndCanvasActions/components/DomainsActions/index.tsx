@@ -18,7 +18,12 @@ const DomainsActions: React.FC = () => {
       <Box.Flex ml={8} gap={8} overflow="hidden">
         <HistoryDivider />
 
-        <Dropdown menu={(onToggle) => <Menu onClose={onToggle} />} offset={{ offset: [0, 6] }} placement="bottom" selfDismiss>
+        <Dropdown
+          menu={(onToggle) => <Menu onClose={onToggle} />}
+          offset={{ offset: [0, 6] }}
+          placement="bottom"
+          selfDismiss
+        >
           {({ ref, onToggle, isOpen }) => (
             <S.Container ref={ref} onClick={onToggle} isActive={isOpen}>
               <S.Name>{domain.name}</S.Name>

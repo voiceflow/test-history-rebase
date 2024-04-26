@@ -1,5 +1,5 @@
 import baseConfig from '@voiceflow/eslint-config';
-import globals from 'globals';
+// import globals from 'globals';
 
 /** @type {import('eslint').Linter.FlatConfig[]} */
 export default [
@@ -10,13 +10,21 @@ export default [
   {
     languageOptions: {
       globals: {
-        ...globals.node,
+        // ...globals.node,
       },
     },
 
     rules: {
       'no-secrets/no-secrets': 'off',
-      'import/first': 'off',
+      'sonarjs/prefer-immediate-return': 'off',
+      'sonarjs/no-one-iteration-loop': 'off',
+    },
+  },
+  {
+    files: ['**/*.action.ts'],
+
+    rules: {
+      '@typescript-eslint/no-namespace': 'off',
     },
   },
 ];

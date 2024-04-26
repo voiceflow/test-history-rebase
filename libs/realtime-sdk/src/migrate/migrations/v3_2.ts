@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { Transform } from './types';
+import type { Transform } from './types';
 
 /**
  * some people used "converted to topic" on their root flow,
@@ -18,7 +18,7 @@ const migrateToV3_2: Transform = ({ version, diagrams }) => {
       version.rootDiagramID = String(candidate);
     } else {
       // we can't add new diagrams as part of a migration, need to throw error
-      throw new Error(`unable to find home topic`);
+      throw new Error('unable to find home topic');
     }
   }
 };

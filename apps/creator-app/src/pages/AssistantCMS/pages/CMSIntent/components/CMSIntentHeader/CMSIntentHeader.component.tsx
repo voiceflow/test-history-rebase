@@ -25,7 +25,11 @@ export const CMSIntentHeader: React.FC = () => {
         <>
           {intentClassification.isEnabled && (
             <>
-              <Header.Button.IconSecondary testID={tid(HEADER_TEST_ID, 'settings')} iconName="Settings" onClick={() => settingsModal.openVoid()} />
+              <Header.Button.IconSecondary
+                testID={tid(HEADER_TEST_ID, 'settings')}
+                iconName="Settings"
+                onClick={() => settingsModal.openVoid()}
+              />
 
               <Header.Button.Secondary
                 label="Preview"
@@ -36,7 +40,11 @@ export const CMSIntentHeader: React.FC = () => {
             </>
           )}
 
-          <Header.Button.Primary label="New intent" testID={tid(HEADER_TEST_ID, 'new-intent')} onClick={() => onCreate()} />
+          <Header.Button.Primary
+            label="New intent"
+            testID={tid(HEADER_TEST_ID, 'new-intent')}
+            onClick={() => onCreate()}
+          />
         </>
       }
     />

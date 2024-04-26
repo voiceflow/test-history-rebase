@@ -1,7 +1,7 @@
 import { FeatureFlag } from '@voiceflow/realtime-sdk';
-import { Actions } from '@voiceflow/sdk-logux-designer';
+import type { Actions } from '@voiceflow/sdk-logux-designer';
 import * as Normal from 'normal-store';
-import { ActionCreator } from 'typescript-fsa';
+import type { ActionCreator } from 'typescript-fsa';
 
 import type { STATE_KEY as ATTACHMENT_STATE_KEY } from '@/ducks/designer/attachment/attachment.state';
 import type { DesignerState } from '@/ducks/designer/designer.state';
@@ -13,7 +13,7 @@ import type { STATE_KEY as PERSONA_STATE_KEY } from '@/ducks/designer/persona/pe
 import type { STATE_KEY as RESPONSE_STATE_KEY } from '@/ducks/designer/response/response.state';
 import type { STATE_KEY as WORKFLOW_STATE_KEY } from '@/ducks/designer/workflow/workflow.state';
 import { isFeatureEnabledSelector } from '@/ducks/feature';
-import { Transducer } from '@/ducks/transducers/types';
+import type { Transducer } from '@/ducks/transducers/types';
 import type { State } from '@/store/types';
 
 import { STATE_KEY as DESIGNER_STATE_KEY } from '../designer.state';
@@ -35,7 +35,7 @@ type AnyReferenceResourceStateKey<T extends SupportedDesignerState[AnyRootResour
 
 type ReferenceResource<
   RootResourceStateKey extends AnyRootResourceStateKey,
-  ReferenceResourceStateKey extends AnyReferenceResourceStateKey<SupportedDesignerState[RootResourceStateKey]>
+  ReferenceResourceStateKey extends AnyReferenceResourceStateKey<SupportedDesignerState[RootResourceStateKey]>,
 > = Normal.NormalizedValue<SupportedDesignerState[RootResourceStateKey][ReferenceResourceStateKey]> & { id: string };
 
 interface ReferenceVirtualUpdateAtTransducerFactoryOptions<
@@ -47,9 +47,13 @@ interface ReferenceVirtualUpdateAtTransducerFactoryOptions<
   PatchOneAction extends Actions.CRUD.PatchOneRequest<any>,
   PatchManyAction extends Actions.CRUD.PatchManyRequest<any>,
   DeleteOneAction extends Actions.CRUD.DeleteOneRequest,
-  UpdateOneAction extends Actions.CRUD.UpdateOneRequest<ReferenceResource<RootResourceStateKey, ReferenceResourceStateKey>>,
+  UpdateOneAction extends Actions.CRUD.UpdateOneRequest<
+    ReferenceResource<RootResourceStateKey, ReferenceResourceStateKey>
+  >,
   DeleteManyAction extends Actions.CRUD.DeleteManyRequest,
-  UpdateManyAction extends Actions.CRUD.UpdateManyRequest<ReferenceResource<RootResourceStateKey, ReferenceResourceStateKey>>
+  UpdateManyAction extends Actions.CRUD.UpdateManyRequest<
+    ReferenceResource<RootResourceStateKey, ReferenceResourceStateKey>
+  >,
 > {
   actions: {
     AddOne: ActionCreator<AddOneAction>;
@@ -76,14 +80,22 @@ interface IReferenceVirtualUpdateAtTransducerFactory {
     RootResourceStateKey extends AnyRootResourceStateKey,
     ReferenceResourceStateKey extends AnyReferenceResourceStateKey<SupportedDesignerState[RootResourceStateKey]>,
     AddOneAction extends Actions.CRUD.AddOneRequest<ReferenceResource<RootResourceStateKey, ReferenceResourceStateKey>>,
-    AddManyAction extends Actions.CRUD.AddManyRequest<ReferenceResource<RootResourceStateKey, ReferenceResourceStateKey>>,
-    ReplaceAction extends Actions.CRUD.ReplaceRequest<ReferenceResource<RootResourceStateKey, ReferenceResourceStateKey>>,
+    AddManyAction extends Actions.CRUD.AddManyRequest<
+      ReferenceResource<RootResourceStateKey, ReferenceResourceStateKey>
+    >,
+    ReplaceAction extends Actions.CRUD.ReplaceRequest<
+      ReferenceResource<RootResourceStateKey, ReferenceResourceStateKey>
+    >,
     PatchOneAction extends Actions.CRUD.PatchOneRequest<any>,
     PatchManyAction extends Actions.CRUD.PatchManyRequest<any>,
     DeleteOneAction extends Actions.CRUD.DeleteOneRequest,
-    UpdateOneAction extends Actions.CRUD.UpdateOneRequest<ReferenceResource<RootResourceStateKey, ReferenceResourceStateKey>>,
+    UpdateOneAction extends Actions.CRUD.UpdateOneRequest<
+      ReferenceResource<RootResourceStateKey, ReferenceResourceStateKey>
+    >,
     DeleteManyAction extends Actions.CRUD.DeleteManyRequest,
-    UpdateManyAction extends Actions.CRUD.UpdateManyRequest<ReferenceResource<RootResourceStateKey, ReferenceResourceStateKey>>
+    UpdateManyAction extends Actions.CRUD.UpdateManyRequest<
+      ReferenceResource<RootResourceStateKey, ReferenceResourceStateKey>
+    >,
   >(
     options: ReferenceVirtualUpdateAtTransducerFactoryOptions<
       RootResourceStateKey,

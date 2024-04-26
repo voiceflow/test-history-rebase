@@ -1,5 +1,6 @@
 import { BaseModels } from '@voiceflow/base-types';
-import { createUIOnlyMenuItemOption, UIOnlyMenuItemOption } from '@voiceflow/ui';
+import type { UIOnlyMenuItemOption } from '@voiceflow/ui';
+import { createUIOnlyMenuItemOption } from '@voiceflow/ui';
 import React from 'react';
 
 import * as CreatorV2 from '@/ducks/creatorV2';
@@ -10,7 +11,7 @@ import * as Session from '@/ducks/session';
 import { isComponentDiagram } from '@/utils/diagram.utils';
 
 import { useSelector } from '../redux';
-import { BaseSelectGroup, BaseSelectMultilevel, BaseSelectOption } from './types';
+import type { BaseSelectGroup, BaseSelectMultilevel, BaseSelectOption } from './types';
 import { isNonEmptyGroupedOptionFactory } from './utils';
 
 export interface BaseDiagramSelectOption extends BaseSelectOption {
@@ -41,9 +42,18 @@ export const useDomainAndDiagramMultilevelSelectOptions = <Option extends BaseDi
   return React.useMemo(() => {
     const topicsHeaderItem = createUIOnlyMenuItemOption('topicsHeader', { label: 'Topics', groupHeader: true });
     const domainsHeaderItem = createUIOnlyMenuItemOption('domainsHeader', { label: 'Domains', groupHeader: true });
-    const componentsHeaderItem = createUIOnlyMenuItemOption('componentsHeader', { label: 'Components', groupHeader: true });
-    const diagramGroupHeaderItem = createUIOnlyMenuItemOption(`${diagramGroupName}Header`, { label: diagramGroupName, groupHeader: true });
-    const subtopicGroupHeaderItem = createUIOnlyMenuItemOption(`subtopicsHeader`, { label: 'Sub Topics', groupHeader: true });
+    const componentsHeaderItem = createUIOnlyMenuItemOption('componentsHeader', {
+      label: 'Components',
+      groupHeader: true,
+    });
+    const diagramGroupHeaderItem = createUIOnlyMenuItemOption(`${diagramGroupName}Header`, {
+      label: diagramGroupName,
+      groupHeader: true,
+    });
+    const subtopicGroupHeaderItem = createUIOnlyMenuItemOption('subtopicsHeader', {
+      label: 'Sub Topics',
+      groupHeader: true,
+    });
 
     const optionsMap: Record<string, DomainDiagramSelectMultilevel<Option> | Option | UIOnlyMenuItemOption> = {
       ...diagramsOptions,
@@ -54,7 +64,9 @@ export const useDomainAndDiagramMultilevelSelectOptions = <Option extends BaseDi
       [subtopicGroupHeaderItem.id]: subtopicGroupHeaderItem,
     };
 
-    const sortedDomains = !isComponentActive ? [...allDomains].sort((domain) => (domain.id === activeDomainID ? -1 : 0)) : allDomains;
+    const sortedDomains = !isComponentActive
+      ? [...allDomains].sort((domain) => (domain.id === activeDomainID ? -1 : 0))
+      : allDomains;
 
     const getSubtopicsOptions = (topicID: string) => {
       const diagram = getDiagramByID({ id: topicID });
@@ -78,7 +90,9 @@ export const useDomainAndDiagramMultilevelSelectOptions = <Option extends BaseDi
 
     const options = sortedDomains.map(({ id, name, topicIDs }) => {
       const isActive = id === activeDomainID;
-      const sortedTopicIDs = isActive ? [...topicIDs].sort((topicID) => (topicID === activeDiagramID ? -1 : 0)) : topicIDs;
+      const sortedTopicIDs = isActive
+        ? [...topicIDs].sort((topicID) => (topicID === activeDiagramID ? -1 : 0))
+        : topicIDs;
 
       const domainOptions: Array<Option | BaseSelectMultilevel<Option> | UIOnlyMenuItemOption> = [];
 

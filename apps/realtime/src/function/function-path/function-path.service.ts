@@ -48,7 +48,10 @@ export class FunctionPathService extends CMSObjectService<FunctionPathORM> {
 
   /* Create */
 
-  async createManyAndSync(data: CMSCreateForUserData<FunctionPathORM>[], { userID, context }: { userID: number; context: CMSContext }) {
+  async createManyAndSync(
+    data: CMSCreateForUserData<FunctionPathORM>[],
+    { userID, context }: { userID: number; context: CMSContext }
+  ) {
     const functionPaths = await this.createManyForUser(userID, data.map(injectAssistantAndEnvironmentIDs(context)));
 
     return {
@@ -80,7 +83,10 @@ export class FunctionPathService extends CMSObjectService<FunctionPathORM> {
     return this.orm.deleteManyByEnvironmentAndIDs(environmentID, ids);
   }
 
-  async broadcastDeleteMany({ delete: del }: { delete: { functionPaths: FunctionPathObject[] } }, meta: CMSBroadcastMeta) {
+  async broadcastDeleteMany(
+    { delete: del }: { delete: { functionPaths: FunctionPathObject[] } },
+    meta: CMSBroadcastMeta
+  ) {
     await this.logux.processAs(
       Actions.FunctionPath.DeleteMany({
         ids: toPostgresEntityIDs(del.functionPaths),

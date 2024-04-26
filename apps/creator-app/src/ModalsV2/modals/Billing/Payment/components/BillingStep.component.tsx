@@ -24,9 +24,9 @@ export const BillingStep: React.FC<BillingStepProps> = ({ isLoading }) => {
         <Box.Flex gap={16} column fullWidth>
           {selectedEditorSeats < usedEditorSeats && (
             <Alert title={<Alert.Title>Your workspace currently has {usedEditorSeats} Editors</Alert.Title>}>
-              You&apos;re about to remove {downgradedSeats} Editor {pluralize('seat', selectedEditorSeats)}, but there are {usedEditorSeats} in use.
-              On removal, we&apos;ll automatically downgrade {downgradedSeats} {pluralize('Editor', downgradedSeats)} to{' '}
-              {pluralize('Viewer', downgradedSeats)}.
+              You&apos;re about to remove {downgradedSeats} Editor {pluralize('seat', selectedEditorSeats)}, but there
+              are {usedEditorSeats} in use. On removal, we&apos;ll automatically downgrade {downgradedSeats}{' '}
+              {pluralize('Editor', downgradedSeats)} to {pluralize('Viewer', downgradedSeats)}.
             </Alert>
           )}
 
@@ -39,7 +39,8 @@ export const BillingStep: React.FC<BillingStepProps> = ({ isLoading }) => {
                   <>
                     Paid annually{' '}
                     <Text color="#62778C">
-                      - {currency.formatUSD(prices?.[BillingPeriod.ANNUALLY] ?? 0, { noDecimal: true })} per Editor/m, paid annually
+                      - {currency.formatUSD(prices?.[BillingPeriod.ANNUALLY] ?? 0, { noDecimal: true })} per Editor/m,
+                      paid annually
                     </Text>
                   </>
                 ),
@@ -50,7 +51,8 @@ export const BillingStep: React.FC<BillingStepProps> = ({ isLoading }) => {
                   <>
                     Paid monthly{' '}
                     <Text color="#62778C">
-                      - {currency.formatUSD(prices?.[BillingPeriod.MONTHLY] ?? 0, { noDecimal: true })} per Editor/m, paid monthly
+                      - {currency.formatUSD(prices?.[BillingPeriod.MONTHLY] ?? 0, { noDecimal: true })} per Editor/m,
+                      paid monthly
                     </Text>
                   </>
                 ),

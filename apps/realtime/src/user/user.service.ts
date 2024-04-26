@@ -54,7 +54,9 @@ export class UserService {
       return cachedCreator;
     }
 
-    const ownUser = await this.identityClient.user.findSelf({ headers: { Authorization: `Bearer ${token}` } }).catch(() => null);
+    const ownUser = await this.identityClient.user
+      .findSelf({ headers: { Authorization: `Bearer ${token}` } })
+      .catch(() => null);
 
     // add creator_id for legacy support
     const user: User | null = ownUser && { ...ownUser, creator_id: ownUser.id };

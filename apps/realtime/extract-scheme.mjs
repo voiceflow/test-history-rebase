@@ -1,7 +1,6 @@
 // should be your first require
 import { resolve } from 'node:path';
 
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { extractSchema } from '@voiceflow/nestjs-openapi-extractor/build/esm/main.js';
 // import log from 'why-is-node-running';
 

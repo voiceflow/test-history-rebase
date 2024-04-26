@@ -1,15 +1,8 @@
-import { FolderScope, Workflow } from '@voiceflow/dtos';
+import type { Workflow } from '@voiceflow/dtos';
+import { FolderScope } from '@voiceflow/dtos';
 import { BlockType, FeatureFlag } from '@voiceflow/realtime-sdk';
-import {
-  BaseSelectProps,
-  createUIOnlyMenuItemOption,
-  Link,
-  Menu,
-  MenuItemMultilevel,
-  MenuItemWithID,
-  Select,
-  UIOnlyMenuItemOption,
-} from '@voiceflow/ui';
+import type { BaseSelectProps, MenuItemMultilevel, MenuItemWithID, UIOnlyMenuItemOption } from '@voiceflow/ui';
+import { createUIOnlyMenuItemOption, Link, Menu, Select } from '@voiceflow/ui';
 import React, { useCallback } from 'react';
 
 import * as Documentation from '@/config/documentation';
@@ -21,7 +14,7 @@ import { useSelector } from '@/hooks/store.hook';
 import { isComponentDiagram } from '@/utils/diagram.utils';
 
 import { useDiagramsIntentsOptionsMap } from './hooks';
-import { Multilevel, Value } from './types';
+import type { Multilevel, Value } from './types';
 import { createCombinedID } from './utils';
 
 export interface GoToIntentSelectProps extends BaseSelectProps {
@@ -68,7 +61,9 @@ const GoToIntentSelect: React.FC<GoToIntentSelectProps> = ({
 
   const diagramsIntentsOptions = useDiagramsIntentsOptionsMap();
 
-  const { options, optionsMap } = useDomainAndDiagramMultilevelSelectOptions(diagramsIntentsOptions, { diagramGroupName: 'Intents' });
+  const { options, optionsMap } = useDomainAndDiagramMultilevelSelectOptions(diagramsIntentsOptions, {
+    diagramGroupName: 'Intents',
+  });
 
   const [workflowOptions, workflowOptionMap] = useFolderTree<
     Workflow,
@@ -78,44 +73,62 @@ const GoToIntentSelect: React.FC<GoToIntentSelectProps> = ({
   >({
     data: workflows,
     folderScope: FolderScope.WORKFLOW,
-    buildFolderTree: useCallback((folder, children): GroupOption => ({ id: folder.id, label: folder.name, options: children }), []),
+    buildFolderTree: useCallback(
+      (folder, children): GroupOption => ({ id: folder.id, label: folder.name, options: children }),
+      []
+    ),
     buildFolderSeparator: useCallback(
-      ([{ id }]: GroupOption[]): UIOnlyMenuItemOption => createUIOnlyMenuItemOption(`${id}-header`, { label: 'Folders', groupHeader: true }),
+      ([{ id }]: GroupOption[]): UIOnlyMenuItemOption =>
+        createUIOnlyMenuItemOption(`${id}-header`, { label: 'Folders', groupHeader: true }),
       []
     ),
     buildDataSeparator: useCallback(
-      ([{ id }]: GroupOption[]): UIOnlyMenuItemOption => createUIOnlyMenuItemOption(`${id}-header`, { label: 'Workflows', groupHeader: true }),
+      ([{ id }]: GroupOption[]): UIOnlyMenuItemOption =>
+        createUIOnlyMenuItemOption(`${id}-header`, { label: 'Workflows', groupHeader: true }),
       []
     ),
     buildDataTree: useCallback(
       (workflow, _, cacheOption): GroupOption => {
-        const options = (triggersMapByDiagramID[workflow.diagramID] ?? []).reduce<Array<IntentOption | GroupOption>>((acc, triggerNode) => {
-          if (triggerNode.type !== BlockType.INTENT) return acc;
+        const options = (triggersMapByDiagramID[workflow.diagramID] ?? []).reduce<Array<IntentOption | GroupOption>>(
+          (acc, triggerNode) => {
+            if (triggerNode.type !== BlockType.INTENT) return acc;
 
-          const intent = getIntentByID({ id: triggerNode.intentID });
-          const diagramGlobalStepMap = globalIntentStepMap[workflow.diagramID];
+            const intent = getIntentByID({ id: triggerNode.intentID });
+            const diagramGlobalStepMap = globalIntentStepMap[workflow.diagramID];
 
-          if (!intent || !diagramGlobalStepMap[intent.id]?.length) return acc;
+            if (!intent || !diagramGlobalStepMap[intent.id]?.length) return acc;
 
-          return [
-            ...acc,
-            cacheOption({
-              id: createCombinedID(workflow.diagramID, intent.id),
-              label: intent.name,
-              nodeID: triggerNode.nodeID,
-              intentID: intent.id,
-              diagramID: workflow.diagramID,
-            }),
-          ];
-        }, []);
+            return [
+              ...acc,
+              cacheOption({
+                id: createCombinedID(workflow.diagramID, intent.id),
+                label: intent.name,
+                nodeID: triggerNode.nodeID,
+                intentID: intent.id,
+                diagramID: workflow.diagramID,
+              }),
+            ];
+          },
+          []
+        );
 
         return {
           id: workflow.id,
           label: workflow.name,
           options: [
-            cacheOption(createUIOnlyMenuItemOption(`${workflow.id}-intents-header`, { label: 'Intents', groupHeader: true })),
+            cacheOption(
+              createUIOnlyMenuItemOption(`${workflow.id}-intents-header`, { label: 'Intents', groupHeader: true })
+            ),
             ...(!options.length
-              ? [cacheOption(createUIOnlyMenuItemOption(`${workflow.id}-no-intents`, { label: 'No intents', isEmpty: true, disabled: true }))]
+              ? [
+                  cacheOption(
+                    createUIOnlyMenuItemOption(`${workflow.id}-no-intents`, {
+                      label: 'No intents',
+                      isEmpty: true,
+                      disabled: true,
+                    })
+                  ),
+                ]
               : options),
           ],
         };
@@ -174,7 +187,8 @@ const GoToIntentSelect: React.FC<GoToIntentSelectProps> = ({
     );
   }
 
-  const componentValue = isComponentActive && value && !!intentNodeDataLookup[value.intentID] ? createCombinedID('', value.intentID) : null;
+  const componentValue =
+    isComponentActive && value && !!intentNodeDataLookup[value.intentID] ? createCombinedID('', value.intentID) : null;
 
   return (
     <Select<Multilevel, string>

@@ -1,7 +1,7 @@
 import { Utils } from '@voiceflow/common';
 import { Flex, KeyName, preventDefault, SvgIcon, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
-import { SelectInstance } from 'react-select';
+import type { SelectInstance } from 'react-select';
 
 import { Permission } from '@/constants/permissions';
 import { useCanvasNodeFilter } from '@/hooks/canvasNodes';
@@ -10,7 +10,8 @@ import { useActiveProjectConfig } from '@/hooks/platformConfig';
 import { useTrackingEvents } from '@/hooks/tracking';
 import { EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';
 import { useManager } from '@/pages/Canvas/managers/utils';
-import { getStepSections, StepItem } from '@/pages/Project/components/StepMenu/constants';
+import type { StepItem } from '@/pages/Project/components/StepMenu/constants';
+import { getStepSections } from '@/pages/Project/components/StepMenu/constants';
 import { Identifier } from '@/styles/constants';
 import { withKeyPress } from '@/utils/dom';
 
@@ -82,7 +83,8 @@ const Spotlight = () => {
       options
         .filter(({ value }) => value.toLowerCase().includes(trimmedValue))
         .sort(
-          (leftOption, rightOption) => leftOption.value.toLowerCase().indexOf(trimmedValue) - rightOption.value.toLowerCase().indexOf(trimmedValue)
+          (leftOption, rightOption) =>
+            leftOption.value.toLowerCase().indexOf(trimmedValue) - rightOption.value.toLowerCase().indexOf(trimmedValue)
         ),
     [options, trimmedValue]
   );

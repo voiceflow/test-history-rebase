@@ -1,7 +1,9 @@
 import { Utils } from '@voiceflow/common';
-import { Flow, FolderScope, Workflow } from '@voiceflow/dtos';
+import type { Flow, Workflow } from '@voiceflow/dtos';
+import { FolderScope } from '@voiceflow/dtos';
 import { BlockType } from '@voiceflow/realtime-sdk';
-import { IContextMenuChildren, Menu, notify, usePersistFunction } from '@voiceflow/ui-next';
+import type { IContextMenuChildren } from '@voiceflow/ui-next';
+import { Menu, notify, usePersistFunction } from '@voiceflow/ui-next';
 import pluralize from 'pluralize';
 import React, { useCallback } from 'react';
 
@@ -12,7 +14,7 @@ import { useDispatch, useSelector, useStore } from '@/hooks/store.hook';
 import { clipboardCopy } from '@/utils/clipboard.util';
 import { getFolderScopeLabel } from '@/utils/cms.util';
 
-import { DiagramSidebarFlowTreeData, DiagramSidebarWorkflowTreeData } from './DiagramSidebar.interface';
+import type { DiagramSidebarFlowTreeData, DiagramSidebarWorkflowTreeData } from './DiagramSidebar.interface';
 
 export const useFlowsTree = () => {
   const flows = useSelector(Designer.Flow.selectors.all);
@@ -80,23 +82,40 @@ export const useWorkflowsTree = () => {
   });
 };
 
-const useRenderFolderContextMenu = ({ folderScope, canEditCanvas }: { folderScope: FolderScope; canEditCanvas: boolean }) => {
+const useRenderFolderContextMenu = ({
+  folderScope,
+  canEditCanvas,
+}: {
+  folderScope: FolderScope;
+  canEditCanvas: boolean;
+}) => {
   const getFolderPath = useGetFolderPath(folderScope);
   const openCMSResourceDeleteConfirmModal = useOpenCMSResourceDeleteConfirmModal();
 
   const store = useStore();
   const deleteOne = useDispatch(Designer.Folder.effect.deleteOne);
 
-  return ({ folderID, onClose, onRename }: { folderID: string; onClose: VoidFunction; onRename: (event?: React.MouseEvent) => void }) => {
+  return ({
+    folderID,
+    onClose,
+    onRename,
+  }: {
+    folderID: string;
+    onClose: VoidFunction;
+    onRename: (event?: React.MouseEvent) => void;
+  }) => {
     const onCopyLink = () => {
       clipboardCopy(`${window.location.origin}${getFolderPath(folderID)}`);
 
-      notify.short.success(`Copied`);
+      notify.short.success('Copied');
     };
 
     const onDelete = () => {
       const state = store.getState();
-      const nestedFolderIDs = Designer.Folder.selectors.allDeeplyNestedIDsByScopeAndParentID(state, { parentID: folderID, folderScope });
+      const nestedFolderIDs = Designer.Folder.selectors.allDeeplyNestedIDsByScopeAndParentID(state, {
+        parentID: folderID,
+        folderScope,
+      });
       const allResources = Designer.utils.getCMSResourceAllByFolderIDsSelector(folderScope)(state, {
         folderIDs: [folderID, ...nestedFolderIDs],
       });
@@ -109,7 +128,9 @@ const useRenderFolderContextMenu = ({ folderScope, canEditCanvas }: { folderScop
 
     return (
       <>
-        {canEditCanvas && <Menu.Item label="Rename" onClick={Utils.functional.chain(onRename, onClose)} prefixIconName="Edit" />}
+        {canEditCanvas && (
+          <Menu.Item label="Rename" onClick={Utils.functional.chain(onRename, onClose)} prefixIconName="Edit" />
+        )}
 
         <Menu.Item label="Copy link" onClick={Utils.functional.chain(onCopyLink, onClose)} prefixIconName="Link" />
 
@@ -134,8 +155,13 @@ export const useRenderFlowItemContextMenu = ({ canEditCanvas }: { canEditCanvas:
   const duplicateOne = useDispatch(Designer.Flow.effect.duplicateOne);
 
   return usePersistFunction(
-    ({ item, onClose, onRename }: IContextMenuChildren & { item: DiagramSidebarFlowTreeData; onRename: (event?: React.MouseEvent) => void }) => {
-      if (item.metaData.type === 'folder') return renderFolderContextMenu({ folderID: item.metaData.id, onClose, onRename });
+    ({
+      item,
+      onClose,
+      onRename,
+    }: IContextMenuChildren & { item: DiagramSidebarFlowTreeData; onRename: (event?: React.MouseEvent) => void }) => {
+      if (item.metaData.type === 'folder')
+        return renderFolderContextMenu({ folderID: item.metaData.id, onClose, onRename });
       if (item.metaData.type !== 'flow' || !canEditCanvas) return null;
 
       const { id, diagramID } = item.metaData;
@@ -156,9 +182,17 @@ export const useRenderFlowItemContextMenu = ({ canEditCanvas }: { canEditCanvas:
         <>
           <Menu.Item label="Rename" onClick={Utils.functional.chain(onRename, onClose)} prefixIconName="Edit" />
 
-          <Menu.Item label="Edit" onClick={Utils.functional.chain(() => goToDiagram(diagramID), onClose)} prefixIconName="EditS" />
+          <Menu.Item
+            label="Edit"
+            onClick={Utils.functional.chain(() => goToDiagram(diagramID), onClose)}
+            prefixIconName="EditS"
+          />
 
-          <Menu.Item label="Duplicate" onClick={Utils.functional.chain(onDuplicate, onClose)} prefixIconName="Duplicate" />
+          <Menu.Item
+            label="Duplicate"
+            onClick={Utils.functional.chain(onDuplicate, onClose)}
+            prefixIconName="Duplicate"
+          />
 
           <Menu.Divider />
 
@@ -179,8 +213,16 @@ export const useRenderWorkflowItemContextMenu = ({ canEditCanvas }: { canEditCan
   const openCMSResourceDeleteConfirmModal = useOpenCMSResourceDeleteConfirmModal();
 
   return usePersistFunction(
-    ({ item, onClose, onRename }: IContextMenuChildren & { item: DiagramSidebarWorkflowTreeData; onRename: (event?: React.MouseEvent) => void }) => {
-      if (item.metaData.type === 'folder') return renderFolderContextMenu({ folderID: item.metaData.id, onClose, onRename });
+    ({
+      item,
+      onClose,
+      onRename,
+    }: IContextMenuChildren & {
+      item: DiagramSidebarWorkflowTreeData;
+      onRename: (event?: React.MouseEvent) => void;
+    }) => {
+      if (item.metaData.type === 'folder')
+        return renderFolderContextMenu({ folderID: item.metaData.id, onClose, onRename });
       if (item.metaData.type !== 'workflow') return null;
 
       const { id } = item.metaData;
@@ -188,7 +230,7 @@ export const useRenderWorkflowItemContextMenu = ({ canEditCanvas }: { canEditCan
       const onCopyLink = () => {
         clipboardCopy(`${window.location.origin}${getCMSResourcePath(id)}`);
 
-        notify.short.success(`Copied`);
+        notify.short.success('Copied');
       };
 
       const onDuplicate = async () => {
@@ -205,9 +247,17 @@ export const useRenderWorkflowItemContextMenu = ({ canEditCanvas }: { canEditCan
 
       return (
         <>
-          {canEditCanvas && <Menu.Item label="Rename" onClick={Utils.functional.chain(onRename, onClose)} prefixIconName="EditS" />}
+          {canEditCanvas && (
+            <Menu.Item label="Rename" onClick={Utils.functional.chain(onRename, onClose)} prefixIconName="EditS" />
+          )}
 
-          {canEditCanvas && <Menu.Item label="Duplicate" onClick={Utils.functional.chain(onDuplicate, onClose)} prefixIconName="Duplicate" />}
+          {canEditCanvas && (
+            <Menu.Item
+              label="Duplicate"
+              onClick={Utils.functional.chain(onDuplicate, onClose)}
+              prefixIconName="Duplicate"
+            />
+          )}
 
           <Menu.Item label="Copy link" onClick={Utils.functional.chain(onCopyLink, onClose)} prefixIconName="Link" />
 

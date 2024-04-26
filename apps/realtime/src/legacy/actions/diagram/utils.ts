@@ -1,17 +1,17 @@
 // eslint-disable-next-line max-classes-per-file
 import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
-import { BaseContextData, Context, Resend } from '@voiceflow/socket-utils';
+import type { BaseContextData, Context, Resend } from '@voiceflow/socket-utils';
 import type { Action } from 'typescript-fsa';
 import type { Required } from 'utility-types';
 
 import { AbstractActionControl } from '@/legacy/actions/utils';
 import { AbstractVersionResourceControl } from '@/legacy/actions/version/utils';
-import { WorkspaceContextData } from '@/legacy/actions/workspace/utils';
+import type { WorkspaceContextData } from '@/legacy/actions/workspace/utils';
 
 export abstract class AbstractDiagramActionControl<
   P extends Realtime.BaseDiagramPayload,
-  D extends BaseContextData = BaseContextData
+  D extends BaseContextData = BaseContextData,
 > extends AbstractActionControl<P, D> {
   protected access = (ctx: Context<D>, action: Action<P>): Promise<boolean> =>
     this.services.version.access.canRead(ctx.data.creatorID, action.payload.versionID);
@@ -63,7 +63,7 @@ export abstract class AbstractDiagramActionControl<
 
 export abstract class AbstractVersionDiagramAccessActionControl<
   P extends Realtime.BaseDiagramPayload,
-  D extends BaseContextData = BaseContextData
+  D extends BaseContextData = BaseContextData,
 > extends AbstractDiagramActionControl<P, D> {
   protected resend = (_: Context<D>, action: Action<P>): Resend => ({
     channel: Realtime.Channels.version.build({
@@ -76,15 +76,14 @@ export abstract class AbstractVersionDiagramAccessActionControl<
 
 export abstract class AbstractNoopDiagramActionControl<
   P extends Realtime.BaseDiagramPayload,
-  D extends BaseContextData = BaseContextData
+  D extends BaseContextData = BaseContextData,
 > extends AbstractDiagramActionControl<P, D> {
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   process = async (): Promise<void> => {};
 }
 
 export abstract class AbstractDiagramResourceControl<
   P extends Realtime.BaseVersionPayload,
-  D extends WorkspaceContextData = WorkspaceContextData
+  D extends WorkspaceContextData = WorkspaceContextData,
 > extends AbstractVersionResourceControl<P, D> {
   protected createComponent = async (
     ctx: Context<BaseContextData>,
@@ -103,7 +102,10 @@ export abstract class AbstractDiagramResourceControl<
 
     const newDiagram = Realtime.Adapters.diagramAdapter.fromDB(newDBDiagram);
 
-    await this.services.version.addComponent(versionID, { type: BaseModels.Version.FolderItemType.DIAGRAM, sourceID: newDBDiagram._id });
+    await this.services.version.addComponent(versionID, {
+      type: BaseModels.Version.FolderItemType.DIAGRAM,
+      sourceID: newDBDiagram._id,
+    });
 
     await Promise.all([
       this.reloadSharedNodes(ctx, payload, [newDBDiagram]),

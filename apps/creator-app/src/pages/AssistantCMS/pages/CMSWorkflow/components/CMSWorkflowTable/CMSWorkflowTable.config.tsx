@@ -8,12 +8,21 @@ import { CMSTableCellTextTooltip } from '../../../../components/CMSTableCellText
 import { CMSTableMemberCell } from '../../../../components/CMSTableMemberCell/CMSTableMemberCell.component';
 import { CMSTableNameCell } from '../../../../components/CMSTableNameCell/CMSTableNameCell.component';
 import type { CMSFolder, CMSWorkflow } from '../../../../contexts/CMSManager/CMSManager.interface';
-import { updatedAtSort, withFieldLocaleCompareSort, withFolderSort, withOptionalSort } from '../../../../contexts/CMSManager/CMSManager.util';
-import { CMSWorkflowSortContext } from '../../CMSWorkflow.interface';
+import {
+  updatedAtSort,
+  withFieldLocaleCompareSort,
+  withFolderSort,
+  withOptionalSort,
+} from '../../../../contexts/CMSManager/CMSManager.util';
+import type { CMSWorkflowSortContext } from '../../CMSWorkflow.interface';
 import { WorkflowTableColumn } from './CMSWorkflowTable.constant';
 import { CMSWorkflowTableTriggersCell } from './CMSWorkflowTableTriggersCell/CMSWorkflowTableTriggersCell.component';
 
-export const CMS_WORKFLOW_TABLE_CONFIG: TableConfig<WorkflowTableColumn, CMSFolder | CMSWorkflow, CMSWorkflowSortContext> = {
+export const CMS_WORKFLOW_TABLE_CONFIG: TableConfig<
+  WorkflowTableColumn,
+  CMSFolder | CMSWorkflow,
+  CMSWorkflowSortContext
+> = {
   columns: {
     [WorkflowTableColumn.SELECT]: {
       type: WorkflowTableColumn.SELECT,
@@ -27,7 +36,9 @@ export const CMS_WORKFLOW_TABLE_CONFIG: TableConfig<WorkflowTableColumn, CMSFold
       name: 'Name',
       sorter: withFolderSort<CMSWorkflow>(withFieldLocaleCompareSort('name')),
 
-      cell: ({ item, type }) => <CMSTableNameCell type={type} name={item.name} itemID={item.id} isFolder={item.group} />,
+      cell: ({ item, type }) => (
+        <CMSTableNameCell type={type} name={item.name} itemID={item.id} isFolder={item.group} />
+      ),
     },
 
     [WorkflowTableColumn.DESCRIPTION]: {
@@ -38,7 +49,9 @@ export const CMS_WORKFLOW_TABLE_CONFIG: TableConfig<WorkflowTableColumn, CMSFold
       cell: ({ item }) => (
         <Table.Cell.GroupEmpty
           item={item}
-          label={(item) => (item.description ? <CMSTableCellTextTooltip label={item.description} /> : <Table.Cell.Empty />)}
+          label={(item) =>
+            item.description ? <CMSTableCellTextTooltip label={item.description} /> : <Table.Cell.Empty />
+          }
         />
       ),
     },
@@ -53,7 +66,12 @@ export const CMS_WORKFLOW_TABLE_CONFIG: TableConfig<WorkflowTableColumn, CMSFold
         )
       ),
 
-      cell: ({ item }) => <Table.Cell.GroupEmpty item={item} label={(item) => <CMSWorkflowTableTriggersCell diagramID={item.diagramID} />} />,
+      cell: ({ item }) => (
+        <Table.Cell.GroupEmpty
+          item={item}
+          label={(item) => <CMSWorkflowTableTriggersCell diagramID={item.diagramID} />}
+        />
+      ),
     },
 
     [WorkflowTableColumn.STATUS]: {
@@ -82,14 +100,21 @@ export const CMS_WORKFLOW_TABLE_CONFIG: TableConfig<WorkflowTableColumn, CMSFold
       type: WorkflowTableColumn.ASSIGNEE,
       name: 'Assignee',
 
-      cell: ({ item }) => <Table.Cell.GroupEmpty item={item} label={({ assigneeID }) => <CMSTableMemberCell creatorID={assigneeID} />} />,
+      cell: ({ item }) => (
+        <Table.Cell.GroupEmpty item={item} label={({ assigneeID }) => <CMSTableMemberCell creatorID={assigneeID} />} />
+      ),
     },
 
     [WorkflowTableColumn.LAST_EDITOR]: {
       type: WorkflowTableColumn.LAST_EDITOR,
       name: 'Last editor',
 
-      cell: ({ item }) => <Table.Cell.GroupEmpty item={item} label={({ updatedByID }) => <CMSTableMemberCell creatorID={updatedByID} />} />,
+      cell: ({ item }) => (
+        <Table.Cell.GroupEmpty
+          item={item}
+          label={({ updatedByID }) => <CMSTableMemberCell creatorID={updatedByID} />}
+        />
+      ),
     },
 
     [WorkflowTableColumn.UPDATED]: {
@@ -97,7 +122,12 @@ export const CMS_WORKFLOW_TABLE_CONFIG: TableConfig<WorkflowTableColumn, CMSFold
       name: 'Updated',
       sorter: withFolderSort(updatedAtSort),
 
-      cell: ({ item }) => <Table.Cell.GroupEmpty item={item} label={({ updatedAt }) => <CMSTableCellFromNowTooltip updatedAt={updatedAt} />} />,
+      cell: ({ item }) => (
+        <Table.Cell.GroupEmpty
+          item={item}
+          label={({ updatedAt }) => <CMSTableCellFromNowTooltip updatedAt={updatedAt} />}
+        />
+      ),
     },
   },
 };

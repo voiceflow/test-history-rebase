@@ -1,15 +1,18 @@
-import { Eventual, Nullable, Utils } from '@voiceflow/common';
-import { Normalize, normalize, Normalized } from 'normal-store';
-import { Action, ActionCreator, AnyAction as AnyFSAction } from 'typescript-fsa';
-import { DeepPartial } from 'utility-types';
-import { SpyInstance } from 'vitest';
+import type { Eventual, Nullable } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
+import type { Normalize, Normalized } from 'normal-store';
+import { normalize } from 'normal-store';
+import type { Action, ActionCreator, AnyAction as AnyFSAction } from 'typescript-fsa';
+import type { DeepPartial } from 'utility-types';
+import type { SpyInstance } from 'vitest';
 
 import { createSuite } from '@/../test/_suite';
 import client from '@/client';
 import type { State } from '@/ducks';
-import { ActionReverter, createAction } from '@/ducks/utils';
+import type { ActionReverter } from '@/ducks/utils';
+import { createAction } from '@/ducks/utils';
 import { createCRUDState } from '@/ducks/utils/crudV2';
-import { AnyAction, AnyThunk, Dispatch, Dispatchable, RootReducer, Selector, SyncThunk } from '@/store/types';
+import type { AnyAction, AnyThunk, Dispatch, Dispatchable, RootReducer, Selector, SyncThunk } from '@/store/types';
 
 import { MOCK_STATE } from './_fixtures';
 
@@ -25,7 +28,11 @@ const NOOP_ACTION: any = createAction('@@NOOP');
 
 export default <S, A extends AnyAction>(Duck: ReduxDuck<S, A>, state: S) =>
   createSuite(() => {
-    const createState = (duckState: S, rootState?: any): State => ({ ...MOCK_STATE, [Duck.STATE_KEY]: duckState, ...rootState });
+    const createState = (duckState: S, rootState?: any): State => ({
+      ...MOCK_STATE,
+      [Duck.STATE_KEY]: duckState,
+      ...rootState,
+    });
 
     const createActionUtils = (rootState: DeepPartial<S>, action: A) => ({
       get rawResult() {
@@ -82,15 +89,21 @@ export default <S, A extends AnyAction>(Duck: ReduxDuck<S, A>, state: S) =>
     const selectorUtils = {
       createState,
 
-      select: <T extends Selector<any>>(selector: T, rootState?: any): ReturnType<T> => selector(createState(state, rootState)),
+      select: <T extends Selector<any>>(selector: T, rootState?: any): ReturnType<T> =>
+        selector(createState(state, rootState)),
     };
 
     const thunkUtils = {
       createState,
 
-      applyEffect: async (sideEffect: AnyThunk, rootState?: DeepPartial<State>, dispatch: Dispatch = createDispatch()) => {
+      applyEffect: async (
+        sideEffect: AnyThunk,
+        rootState?: DeepPartial<State>,
+        dispatch: Dispatch = createDispatch()
+      ) => {
         const getState: () => any = vi.fn(() => ({ [Duck.STATE_KEY]: state, ...rootState }));
-        const expectDispatch = (action: { type: string } | AnyAction | AnyThunk | SpyInstance) => expect(dispatch).toBeCalledWith(action);
+        const expectDispatch = (action: { type: string } | AnyAction | AnyThunk | SpyInstance) =>
+          expect(dispatch).toBeCalledWith(action);
         const expectStubCalled = ([stub, effect]: [SpyInstance, SpyInstance], ...args: any[]) => {
           expectDispatch(effect);
           expect(stub).toBeCalledWith(...args);
@@ -141,7 +154,8 @@ export default <S, A extends AnyAction>(Duck: ReduxDuck<S, A>, state: S) =>
       catchEffect: async (sideEffect: AnyThunk, rootState?: Partial<State>) => {
         const dispatch = createDispatch();
         const getState: () => any = vi.fn(() => ({ [Duck.STATE_KEY]: state, ...rootState }));
-        const expectDispatch = (action: { type: string } | AnyAction | AnyThunk) => expect(dispatch).toBeCalledWith(action);
+        const expectDispatch = (action: { type: string } | AnyAction | AnyThunk) =>
+          expect(dispatch).toBeCalledWith(action);
 
         try {
           await sideEffect(dispatch, getState, {} as any);
@@ -194,7 +208,9 @@ export default <S, A extends AnyAction>(Duck: ReduxDuck<S, A>, state: S) =>
       }>;
     }
 
-    const createEffectUtilsV2 = <A extends any[], R>(sideEffect: (...args: A) => SyncThunk<Eventual<R>>): EffectUtilsV2<A, R> => ({
+    const createEffectUtilsV2 = <A extends any[], R>(
+      sideEffect: (...args: A) => SyncThunk<Eventual<R>>
+    ): EffectUtilsV2<A, R> => ({
       applyEffect: async (state: State, ...args: A) => {
         const dispatched: (AnyAction | Partial<Record<keyof Dispatch, AnyFSAction>>)[] = [];
         const getState = () => state;
@@ -254,7 +270,9 @@ export default <S, A extends AnyAction>(Duck: ReduxDuck<S, A>, state: S) =>
         return {
           ...normal,
           byKey: expect.objectContaining(
-            Object.fromEntries(Object.entries(normal.byKey).map(([key, value]) => [key, expect.objectContaining(value)]))
+            Object.fromEntries(
+              Object.entries(normal.byKey).map(([key, value]) => [key, expect.objectContaining(value)])
+            )
           ),
           allKeys: expect.arrayContaining(normal.allKeys),
         };
@@ -343,9 +361,11 @@ export default <S, A extends AnyAction>(Duck: ReduxDuck<S, A>, state: S) =>
           tests?.(reducerUtils);
         }),
 
-      describeSelectors: (tests: (utils: typeof selectorUtils) => void) => describe('selectors', () => tests(selectorUtils)),
+      describeSelectors: (tests: (utils: typeof selectorUtils) => void) =>
+        describe('selectors', () => tests(selectorUtils)),
 
-      describeSideEffects: (tests: (utils: typeof thunkUtils) => void) => describe('side effects', () => tests(thunkUtils)),
+      describeSideEffects: (tests: (utils: typeof thunkUtils) => void) =>
+        describe('side effects', () => tests(thunkUtils)),
       describeEffectV2,
 
       describeReverter,

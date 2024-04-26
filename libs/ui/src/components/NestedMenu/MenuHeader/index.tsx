@@ -3,7 +3,7 @@ import Box from '@ui/components/Box';
 import SvgIcon from '@ui/components/SvgIcon';
 import { useSetup } from '@ui/hooks';
 import { setRef, stopImmediatePropagation } from '@ui/utils';
-import { Nullable } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
 import React from 'react';
 
 import { MenuHeaderWrapper, MenuHr, MenuInput, SearchContainer } from './components';

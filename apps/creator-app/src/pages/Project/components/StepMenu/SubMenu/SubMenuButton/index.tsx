@@ -1,18 +1,20 @@
 import composeRef from '@seznam/compose-react-refs';
-import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, ContextMenu, OptionsMenuOption, Portal, SvgIcon, SvgIconTypes, TippyTooltip, useEnableDisable, usePopper } from '@voiceflow/ui';
+import type * as Realtime from '@voiceflow/realtime-sdk';
+import type { OptionsMenuOption, SvgIconTypes } from '@voiceflow/ui';
+import { Box, ContextMenu, Portal, SvgIcon, TippyTooltip, useEnableDisable, usePopper } from '@voiceflow/ui';
 import React from 'react';
 import { useDrag } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 
-import { BlockType, DragItem } from '@/constants';
+import type { BlockType } from '@/constants';
+import { DragItem } from '@/constants';
 import { Permission } from '@/constants/permissions';
 import { AutoPanningCacheContext } from '@/contexts/AutoPanningContext';
 import { useEventualEngine } from '@/hooks/engine';
 import { useHover } from '@/hooks/hover';
 import { usePaymentModal } from '@/hooks/modal.hook';
 import { usePermission } from '@/hooks/permission';
-import { StepDragItem } from '@/pages/Canvas/components/CanvasDiagram';
+import type { StepDragItem } from '@/pages/Canvas/components/CanvasDiagram';
 import { ClassName } from '@/styles/constants';
 import { openInternalURLInANewTab } from '@/utils/window';
 
@@ -96,7 +98,9 @@ const SubMenuButton: React.FC<SubMenuButtonProps> = ({
     connectPreview(getEmptyImage(), { captureDraggingState: true });
   }, []);
 
-  const containerRef = isLocked ? popper.setReferenceElement : composeRef<HTMLDivElement>(connectDrag, popper.setReferenceElement);
+  const containerRef = isLocked
+    ? popper.setReferenceElement
+    : composeRef<HTMLDivElement>(connectDrag, popper.setReferenceElement);
   const upgradeTooltip = isLocked ? paidStepsPermission.planConfig?.upgradeTooltip({ stepType: type }) : null;
 
   const button = (isOpen?: boolean, onContextMenu?: React.MouseEventHandler) => (
@@ -123,11 +127,17 @@ const SubMenuButton: React.FC<SubMenuButtonProps> = ({
 
           {!isClickNoDragTooltipOpen && !isDragging && isHovered && tooltipText && (
             <Portal portalNode={document.body}>
-              <div ref={popper.setPopperElement} style={{ ...popper.styles.popper, paddingLeft: '6px' }} {...popper.attributes.popper}>
+              <div
+                ref={popper.setPopperElement}
+                style={{ ...popper.styles.popper, paddingLeft: '6px' }}
+                {...popper.attributes.popper}
+              >
                 <TooltipContainer width={tooltipLink || isLocked ? 232 : 200}>
                   {tooltipLink || isLocked ? (
                     <TippyTooltip.FooterButton
-                      onClick={() => (tooltipLink && !isLocked ? openInternalURLInANewTab(tooltipLink) : paymentModal.openVoid({}))}
+                      onClick={() =>
+                        tooltipLink && !isLocked ? openInternalURLInANewTab(tooltipLink) : paymentModal.openVoid({})
+                      }
                       buttonText={upgradeTooltip?.upgradeButtonText ?? 'Learn More'}
                     >
                       {upgradeTooltip?.description ?? tooltipText}
@@ -145,7 +155,9 @@ const SubMenuButton: React.FC<SubMenuButtonProps> = ({
   );
 
   if (isFocused) {
-    return <ContextMenu options={menuOptions}>{({ isOpen, onContextMenu }) => button(isOpen, onContextMenu)}</ContextMenu>;
+    return (
+      <ContextMenu options={menuOptions}>{({ isOpen, onContextMenu }) => button(isOpen, onContextMenu)}</ContextMenu>
+    );
   }
 
   return button();

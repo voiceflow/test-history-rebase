@@ -8,7 +8,8 @@ import { STATE_KEY } from './document.state';
 
 const root = createSubSelector(intentRoot, STATE_KEY);
 
-export const { hasOneByID, hasAllByIDs, oneByID, getOneByID, allByIDs, getAllByIDs, all, map, count, isEmpty } = createDesignerCRUDSelectors(root);
+export const { hasOneByID, hasAllByIDs, oneByID, getOneByID, allByIDs, getAllByIDs, all, map, count, isEmpty } =
+  createDesignerCRUDSelectors(root);
 
 export const { allByFolderID, allByFolderIDs, countByFolderID } = createByFolderIDSelectors(all);
 
@@ -18,4 +19,7 @@ export const isLoaded = createSelector(fetchStatus, (status) => status !== 'load
 
 export const processingIDs = createSelector(root, (state) => state.processingIDs);
 
-export const getOneByName = createSelector(all, (documents) => (name: string) => documents.find((d) => d.data?.name === name));
+export const getOneByName = createSelector(
+  all,
+  (documents) => (name: string) => documents.find((d) => d.data?.name === name)
+);

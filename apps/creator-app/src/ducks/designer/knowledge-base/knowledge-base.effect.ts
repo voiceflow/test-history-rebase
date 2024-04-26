@@ -1,4 +1,4 @@
-import { BaseModels } from '@voiceflow/base-types';
+import type { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { notify } from '@voiceflow/ui-next';
 
@@ -37,7 +37,10 @@ export const getSettings = (): Thunk => async (dispatch, getState) => {
   }
 
   if (settings.summarization.model && !Object.keys(AI_MODEL_CONFIG_MAP).includes(settings.summarization.model)) {
-    settings = { ...settings, summarization: { ...settings.summarization, model: DEFAULT_SETTINGS.summarization.model } };
+    settings = {
+      ...settings,
+      summarization: { ...settings.summarization, model: DEFAULT_SETTINGS.summarization.model },
+    };
     patchSettings(settings);
   }
 
@@ -58,9 +61,11 @@ export const patchSettings =
 
       Errors.assertProjectID(versionID);
 
-      await api.fetch.patch<BaseModels.Project.KnowledgeBaseSettings>(`/versions/${versionID}/knowledge-base/settings`, patch).catch(() => {
-        notify.short.error('Unable to save Knowledge Base settings');
-      });
+      await api.fetch
+        .patch<BaseModels.Project.KnowledgeBaseSettings>(`/versions/${versionID}/knowledge-base/settings`, patch)
+        .catch(() => {
+          notify.short.error('Unable to save Knowledge Base settings');
+        });
     } else {
       const projectID = Session.activeProjectIDSelector(state);
 

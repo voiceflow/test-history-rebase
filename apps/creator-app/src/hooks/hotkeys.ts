@@ -3,7 +3,8 @@ import Mousetrap from 'mousetrap';
 import React from 'react';
 import { flushSync } from 'react-dom';
 
-import HOTKEY_MAPPING, { Hotkey } from '@/keymap';
+import type { Hotkey } from '@/keymap';
+import HOTKEY_MAPPING from '@/keymap';
 
 interface Options {
   action?: 'keypress' | 'keydown' | 'keyup';
@@ -22,27 +23,27 @@ export interface HotkeyItem extends Options {
 }
 
 export const useHotkeyList = (hotkeys: HotkeyItem[], deps: unknown[] = []) => {
-  // eslint-disable-next-line sonarjs/cognitive-complexity
   React.useEffect(() => {
     if (!hotkeys.length) return undefined;
 
     let instance: Mousetrap.MousetrapInstance | null = null;
 
-    const callbackFactory = (callback: Callback, options?: Omit<Options, 'action' | 'disable'>) => (event: KeyboardEvent) => {
-      if (options?.preventDefault) {
-        event.preventDefault();
-      }
+    const callbackFactory =
+      (callback: Callback, options?: Omit<Options, 'action' | 'disable'>) => (event: KeyboardEvent) => {
+        if (options?.preventDefault) {
+          event.preventDefault();
+        }
 
-      if (options?.allowInputs) {
-        flushSync(() => {
-          if (document.activeElement instanceof HTMLInputElement) {
-            document.activeElement.blur();
-          }
-        });
-      }
+        if (options?.allowInputs) {
+          flushSync(() => {
+            if (document.activeElement instanceof HTMLInputElement) {
+              document.activeElement.blur();
+            }
+          });
+        }
 
-      return callback(event);
-    };
+        return callback(event);
+      };
     const hotkeyOptionMap: Record<string, Omit<Options, 'action' | 'disable'>> = {};
 
     for (const { action, hotkey, disable, callback, ...options } of hotkeys) {
@@ -53,7 +54,10 @@ export const useHotkeyList = (hotkeys: HotkeyItem[], deps: unknown[] = []) => {
       instance ??= new Mousetrap();
       instance.bind(keys, callbackFactory(callback, options), action || 'keydown');
 
-      Object.assign(hotkeyOptionMap, Object.fromEntries((Array.isArray(keys) ? keys : [keys]).map((key) => [key, options])));
+      Object.assign(
+        hotkeyOptionMap,
+        Object.fromEntries((Array.isArray(keys) ? keys : [keys]).map((key) => [key, options]))
+      );
     }
 
     if (instance) {

@@ -17,7 +17,7 @@ import { useDispatch, useSelector } from '@/hooks';
 import { useFeature } from '@/hooks/feature';
 import * as ModalsV2 from '@/ModalsV2';
 
-import { ProtoConfigType, PrototypeActions, PrototypeAllTypes, PrototypeRuntimeState } from './types';
+import type { ProtoConfigType, PrototypeActions, PrototypeAllTypes, PrototypeRuntimeState } from './types';
 
 const defaultPrototypeContext: PrototypeAllTypes = {
   config: {

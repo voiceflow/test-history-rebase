@@ -1,5 +1,5 @@
-import { BaseModels } from '@voiceflow/base-types';
-import { Normalized } from 'normal-store';
+import type { BaseModels } from '@voiceflow/base-types';
+import type { Normalized } from 'normal-store';
 
 export interface Input extends BaseModels.IntentInput {}
 

@@ -1,4 +1,4 @@
-import { UtteranceText } from '@voiceflow/dtos';
+import type { UtteranceText } from '@voiceflow/dtos';
 import { tid } from '@voiceflow/style';
 import { Divider, notify, Scroll } from '@voiceflow/ui-next';
 import React from 'react';
@@ -80,7 +80,9 @@ export const IntentEditModal = modalsManager.create<IIntentEditModal>(
                 notFoundLabel="intents"
               />
             }
-            secondaryButton={<Modal.HeaderMore options={[{ name: 'Delete', onClick: onIntentDelete }]} testID={tid(TEST_ID, 'more')} />}
+            secondaryButton={
+              <Modal.HeaderMore options={[{ name: 'Delete', onClick: onIntentDelete }]} testID={tid(TEST_ID, 'more')} />
+            }
           />
 
           {intent ? (
@@ -113,7 +115,13 @@ export const IntentEditModal = modalsManager.create<IIntentEditModal>(
           )}
 
           <Modal.Footer>
-            <Modal.Footer.Button label="Close" testID={tid(TEST_ID, 'close')} variant="secondary" onClick={api.onClose} disabled={closePrevented} />
+            <Modal.Footer.Button
+              label="Close"
+              testID={tid(TEST_ID, 'close')}
+              variant="secondary"
+              onClick={api.onClose}
+              disabled={closePrevented}
+            />
           </Modal.Footer>
         </Modal.Container>
       );

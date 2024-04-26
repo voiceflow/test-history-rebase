@@ -1,4 +1,4 @@
-import { Nullable } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import {
@@ -18,7 +18,7 @@ import React from 'react';
 
 import LocalesSelect from '@/components/LocalesSelect';
 import { useFeature } from '@/hooks';
-import { NLUImportModel } from '@/models';
+import type { NLUImportModel } from '@/models';
 import { Identifier } from '@/styles/constants';
 
 import { ModelImport } from './components';
@@ -75,7 +75,9 @@ const Setup: React.FC<SetupProps> = ({
     onChangeType((platform && Modality.OPTIONS_MAP[platform].type) || null, platform);
   };
 
-  const modalityOptions = Modality.OPTIONS.filter((option) => option.platform !== Platform.Alexa.CONFIG.type || canUseAlexa);
+  const modalityOptions = Modality.OPTIONS.filter(
+    (option) => option.platform !== Platform.Alexa.CONFIG.type || canUseAlexa
+  );
 
   return (
     <>
@@ -109,7 +111,15 @@ const Setup: React.FC<SetupProps> = ({
             id={Identifier.PROJECT_CREATE_SELECT_MODALITY}
             value={platform}
             error={!!modalityError}
-            prefix={platform && <SvgIcon size={16} icon={Modality.OPTIONS_MAP[platform].icon} color={Modality.OPTIONS_MAP[platform].iconColor} />}
+            prefix={
+              platform && (
+                <SvgIcon
+                  size={16}
+                  icon={Modality.OPTIONS_MAP[platform].icon}
+                  color={Modality.OPTIONS_MAP[platform].iconColor}
+                />
+              )
+            }
             options={modalityOptions}
             onSelect={handleSelectModality}
             useLayers
@@ -146,7 +156,13 @@ const Setup: React.FC<SetupProps> = ({
           headerProps={{ px: 0, bottomUnit: 1.5 }}
           contentProps={{ px: 0, bottomOffset: 0 }}
         >
-          <LocalesSelect type={type} platform={platform} locales={locales} onChange={onChangeLocales} disabled={!platform} />
+          <LocalesSelect
+            type={type}
+            platform={platform}
+            locales={locales}
+            onChange={onChangeLocales}
+            disabled={!platform}
+          />
         </SectionV2.SimpleContentSection>
       </Modal.Body>
 

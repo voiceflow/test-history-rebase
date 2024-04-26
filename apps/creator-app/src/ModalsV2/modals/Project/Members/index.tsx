@@ -44,10 +44,15 @@ const Members = manager.create<Props>('ProjectMembers', () => ({ api, type, open
 
   return (
     <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={500}>
-      <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />}>Manage Assistant Access</Modal.Header>
+      <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />}>
+        Manage Assistant Access
+      </Modal.Header>
 
       <Box mx={32}>
-        <Assistant.InviteMember onAdd={(member) => addMember({ role: member.role, creatorID: member.creator_id })} members={members} />
+        <Assistant.InviteMember
+          onAdd={(member) => addMember({ role: member.role, creatorID: member.creator_id })}
+          members={members}
+        />
       </Box>
 
       <SectionV2.Divider offset={[20, 0]} />

@@ -1,7 +1,7 @@
-import { TableTypes } from '@voiceflow/ui';
+import type { TableTypes } from '@voiceflow/ui';
 
 import { ActionsCell, DomainCell, TopicsCell } from './components';
-import { Topic } from './types';
+import type { Topic } from './types';
 
 export enum TableColumn {
   TOPIC = 'TOPIC',

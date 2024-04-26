@@ -1,5 +1,6 @@
-import { Nullable } from '@voiceflow/common';
-import { PlanType, UserRole } from '@voiceflow/internal';
+import type { Nullable } from '@voiceflow/common';
+import type { PlanType } from '@voiceflow/internal';
+import { UserRole } from '@voiceflow/internal';
 import { useContextApi } from '@voiceflow/ui';
 import React from 'react';
 
@@ -37,7 +38,10 @@ export const IdentityProvider: React.FC<React.PropsWithChildren> = ({ children }
   const activeRole = organizationTrialExpired ? UserRole.VIEWER : workspaceRole;
 
   const api = useContextApi({
-    activeRole: organizationRole === UserRole.ADMIN && activeRole === UserRole.ADMIN ? VirtualRole.ORGANIZATION_ADMIN : activeRole,
+    activeRole:
+      organizationRole === UserRole.ADMIN && activeRole === UserRole.ADMIN
+        ? VirtualRole.ORGANIZATION_ADMIN
+        : activeRole,
     workspacePlan,
     workspaceRole,
     organizationRole,

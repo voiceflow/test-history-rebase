@@ -2,7 +2,8 @@ import type { Flow } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 import { logger } from '@voiceflow/ui';
-import { notify, Nullable } from '@voiceflow/ui-next';
+import type { Nullable } from '@voiceflow/ui-next';
+import { notify } from '@voiceflow/ui-next';
 
 import PageProgressBar, { PageProgress } from '@/components/PageProgressBar';
 import { linksByNodeIDSelector } from '@/ducks/creatorV2';
@@ -10,7 +11,8 @@ import * as Project from '@/ducks/projectV2';
 import { schemaVersionSelector } from '@/ducks/versionV2/selectors/active';
 import { getActiveAssistantContext, getActiveDomainContext } from '@/ducks/versionV2/utils';
 import type { Thunk } from '@/store/types';
-import { convertSelectionToComponent, DiagramSelectionPayload } from '@/utils/diagram.utils';
+import type { DiagramSelectionPayload } from '@/utils/diagram.utils';
+import { convertSelectionToComponent } from '@/utils/diagram.utils';
 import { AsyncActionError } from '@/utils/logux';
 
 import { waitAsync } from '../../utils';
@@ -99,7 +101,13 @@ export interface CreateOneFromSelectionResult {
 }
 
 export const createOneFromSelection =
-  ({ selection, data }: { selection: DiagramSelectionPayload; data: Actions.Flow.CreateData }): Thunk<CreateOneFromSelectionResult> =>
+  ({
+    selection,
+    data,
+  }: {
+    selection: DiagramSelectionPayload;
+    data: Actions.Flow.CreateData;
+  }): Thunk<CreateOneFromSelectionResult> =>
   async (dispatch, getState) => {
     const state = getState();
 
@@ -120,7 +128,10 @@ export const createOneFromSelection =
     });
 
     const { data: flow } = await dispatch(
-      waitAsync(Actions.Flow.CreateOne, { data: { name: data.name, diagram: component, folderID: null, description: data.description }, context })
+      waitAsync(Actions.Flow.CreateOne, {
+        data: { name: data.name, diagram: component, folderID: null, description: data.description },
+        context,
+      })
     );
 
     return {

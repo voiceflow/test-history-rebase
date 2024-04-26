@@ -1,4 +1,4 @@
-import { Nullable } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
 import { toast } from '@voiceflow/ui';
 
 import { VERSION } from '@/config';

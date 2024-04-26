@@ -1,9 +1,9 @@
 import React from 'react';
-import { ListChildComponentProps } from 'react-window';
+import type { ListChildComponentProps } from 'react-window';
 
 import { useDraggableListChildrenContext } from '@/components/DraggableList';
 
-import { TopicItem } from './hooks';
+import type { TopicItem } from './hooks';
 
 const VirtualListItem: React.FC<ListChildComponentProps<TopicItem[]>> = ({ index, data, style }) => {
   const item = data[index];

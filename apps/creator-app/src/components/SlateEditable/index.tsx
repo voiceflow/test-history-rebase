@@ -1,10 +1,10 @@
-import { BaseText } from '@voiceflow/base-types';
+import type { BaseText } from '@voiceflow/base-types';
 import { serializeToJSX } from '@voiceflow/slate-serializer/jsx';
 import { useCache, useForceUpdate, useSetup } from '@voiceflow/ui';
 import React from 'react';
-import { Descendant, Editor } from 'slate';
+import type { Descendant, Editor } from 'slate';
 import { Editable, Slate } from 'slate-react';
-import { EditableProps } from 'slate-react/dist/components/editable';
+import type { EditableProps } from 'slate-react/dist/components/editable';
 
 import { getURLWithProtocol } from '@/utils/string';
 
@@ -18,7 +18,8 @@ import {
   useSlateEditorContext,
   useStaticSlateEditor,
 } from './contexts';
-import { DEFAULT_PLUGINS_OPTIONS, EditorAPI, PluginsOptions, PluginType } from './editor';
+import type { PluginsOptions } from './editor';
+import { DEFAULT_PLUGINS_OPTIONS, EditorAPI, PluginType } from './editor';
 import { useEditorDecorate, useEditorForceNormalize, useEditorHotkeys, useSetupEditor } from './hooks';
 import { defaultRenderElement, defaultRenderLeaf, defaultRenderPlaceholder } from './renderers';
 
@@ -38,7 +39,10 @@ export { EditorAPI as SlateEditorAPI, PluginType as SlatePluginType } from './ed
 /**
  * @deprecated use SlateEditable.useSetupEditor, SlateEditable.useEditorForceNormalize and etc instead
  */
-export { useSetupEditor as useSetupSlateEditor, useEditorForceNormalize as useSlateEditorForceNormalize } from './hooks';
+export {
+  useSetupEditor as useSetupSlateEditor,
+  useEditorForceNormalize as useSlateEditorForceNormalize,
+} from './hooks';
 
 export type SlateValue = Descendant[];
 
@@ -144,8 +148,10 @@ export default Object.assign(React.forwardRef<SlateEditableRef, SlateEditablePro
 
   EditorAPI,
   PluginType,
-  serializeToJSX: (content: BaseText.SlateTextValue, options?: { variablesMap?: Partial<Record<string, { id: string; name: string }>> }) =>
-    serializeToJSX(content, { ...options, transformHref: getURLWithProtocol }),
+  serializeToJSX: (
+    content: BaseText.SlateTextValue,
+    options?: { variablesMap?: Partial<Record<string, { id: string; name: string }>> }
+  ) => serializeToJSX(content, { ...options, transformHref: getURLWithProtocol }),
   ControlledEditorProvider,
 
   useEditor: useSlateEditor,

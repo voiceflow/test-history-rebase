@@ -2,7 +2,8 @@ import * as Fetch from '@ui/utils/fetch';
 import createRawFetch from '@ui/utils/fetch/raw';
 import { Utils } from '@voiceflow/common';
 
-import suite, { Mocks } from '../_suite';
+import type { Mocks } from '../_suite';
+import suite from '../_suite';
 
 const TEST_URL = 'test/12345';
 const TEST_API_ENDPOINT = 'https://undefined';
@@ -11,7 +12,11 @@ const FULL_TEST_URL = `${TEST_API_ENDPOINT}/${TEST_URL}`;
 const fetch = Fetch.createFetch(TEST_API_ENDPOINT);
 
 suite('fetch', ({ mocks }) => {
-  const mockRequestCache = ({ get = null, set = null, has = null }: Partial<Record<'get' | 'set' | 'has', number | null>> = {}) => {
+  const mockRequestCache = ({
+    get = null,
+    set = null,
+    has = null,
+  }: Partial<Record<'get' | 'set' | 'has', number | null>> = {}) => {
     const getSpy = vi.spyOn(Fetch.FETCH_REQUEST_CACHE, 'get');
     const setSpy = vi.spyOn(Fetch.FETCH_REQUEST_CACHE, 'set');
     const hasSpy = vi.spyOn(Fetch.FETCH_REQUEST_CACHE, 'has');
@@ -26,7 +31,10 @@ suite('fetch', ({ mocks }) => {
   };
 
   const generateResponses = (count = 3) =>
-    Utils.generate.array<Mocks.FetchTypes.Response>(count, () => ({ status: Utils.generate.number(), body: Utils.generate.string() }));
+    Utils.generate.array<Mocks.FetchTypes.Response>(count, () => ({
+      status: Utils.generate.number(),
+      body: Utils.generate.string(),
+    }));
 
   describe('creatRawFetch()', () => {
     const testAPIEndpoint = 'https://myEnpoint';
@@ -137,7 +145,14 @@ suite('fetch', ({ mocks }) => {
       const cache = mockRequestCache({ has: 0, get: 0, set: 0 });
       const [mockResponse1, mockResponse2, mockResponse3] = generateResponses();
 
-      const fetchCall = mocks.fetch(mockResponse1, mockResponse1, mockResponse1, mockResponse2, mockResponse2, mockResponse3);
+      const fetchCall = mocks.fetch(
+        mockResponse1,
+        mockResponse1,
+        mockResponse1,
+        mockResponse2,
+        mockResponse2,
+        mockResponse3
+      );
 
       const response1 = await rawFetch('a');
       const response2 = await rawFetch('a');

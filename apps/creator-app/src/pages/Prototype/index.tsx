@@ -9,7 +9,8 @@ import * as Query from '@/utils/query';
 
 import { ChatDisplay, Container, Input, Start, UserSaysContainer } from './components';
 import { usePrototype, useResetPrototype, useStartPrototype } from './hooks';
-import { BotMessageTypes, Message, MessageType, PMStatus, PrototypeAllTypes } from './types';
+import type { Message, PrototypeAllTypes } from './types';
+import { BotMessageTypes, MessageType, PMStatus } from './types';
 
 export interface PrototypeProps {
   debug: boolean;
@@ -66,7 +67,10 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({
     globalDelayInMilliseconds: durationMilliseconds,
   });
 
-  const checkPMStatus = React.useCallback((...args: PMStatus[]) => args.includes(prototypeMachineStatus as PMStatus), [prototypeMachineStatus]);
+  const checkPMStatus = React.useCallback(
+    (...args: PMStatus[]) => args.includes(prototypeMachineStatus as PMStatus),
+    [prototypeMachineStatus]
+  );
   const isLoading = checkPMStatus(PMStatus.FETCHING_CONTEXT, PMStatus.FAKE_LOADING);
 
   const isBubbleMessageShown = React.useMemo(
@@ -121,7 +125,9 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({
   }, [nodeID, engine]);
 
   if (status === PrototypeStatus.IDLE && !autoplay) {
-    return <Start config={config} debug={debug} isModelTraining={isModelTraining} isPublic={isPublic} onStart={start} />;
+    return (
+      <Start config={config} debug={debug} isModelTraining={isModelTraining} isPublic={isPublic} onStart={start} />
+    );
   }
 
   return (

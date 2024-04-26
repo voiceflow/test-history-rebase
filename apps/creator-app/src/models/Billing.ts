@@ -1,4 +1,4 @@
-import { BillingPeriod, PlanType } from '@voiceflow/internal';
+import type { BillingPeriod, PlanType } from '@voiceflow/internal';
 
 export interface Billing {
   invoices: Billing.PastInvoice[] | null;
@@ -107,7 +107,6 @@ export interface SubscriptionBillingPeriod {
   items: InvoiceLineItem[];
 }
 
-// eslint-disable-next-line no-restricted-syntax
 export enum ChargebeeSubscriptionStatus {
   FUTURE = 'future',
   INTRIAL = 'in_trial',
@@ -118,7 +117,6 @@ export enum ChargebeeSubscriptionStatus {
   TRANSFERRED = 'transferred',
 }
 
-// eslint-disable-next-line no-restricted-syntax
 export enum ChargebeeBillingPeriod {
   MONTH = 'month',
   YEAR = 'year',

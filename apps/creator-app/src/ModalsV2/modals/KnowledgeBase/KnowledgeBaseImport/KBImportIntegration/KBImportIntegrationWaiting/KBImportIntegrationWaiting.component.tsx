@@ -7,10 +7,10 @@ import { Modal } from '@/components/Modal';
 import { Designer } from '@/ducks';
 import { useDispatch } from '@/hooks/store.hook';
 import { useTrackingEvents } from '@/hooks/tracking';
-import { KnowledgeBaseIntegration } from '@/models/KnowledgeBase.model';
+import type { KnowledgeBaseIntegration } from '@/models/KnowledgeBase.model';
 import { openURLInANewPopupWindow } from '@/utils/window';
 
-import { IKBImportIntegrationWaiting } from './KBImportIntegrationWaiting.interface';
+import type { IKBImportIntegrationWaiting } from './KBImportIntegrationWaiting.interface';
 
 const { colors } = Tokens;
 
@@ -69,7 +69,9 @@ export const KBImportIntegrationWaiting: React.FC<IKBImportIntegrationWaiting> =
 
     const checkPopup = setInterval(async () => {
       const today = new Date();
-      const integrationCreatedAt = integrations.find((item) => item.type === BaseModels.Project.IntegrationTypes.ZENDESK)?.createdAt;
+      const integrationCreatedAt = integrations.find(
+        (item) => item.type === BaseModels.Project.IntegrationTypes.ZENDESK
+      )?.createdAt;
 
       const timeDiff = integrationCreatedAt ? today.getTime() - new Date(integrationCreatedAt).getTime() : null;
       const createdWithFiveMinutes = timeDiff && timeDiff < 5 * 60 * 1000;
@@ -114,7 +116,13 @@ export const KBImportIntegrationWaiting: React.FC<IKBImportIntegrationWaiting> =
       </Scroll>
 
       <Modal.Footer>
-        <Modal.Footer.Button label="Cancel" variant="secondary" onClick={onClose} disabled={disabled} testID={tid(testID, 'cancel')} />
+        <Modal.Footer.Button
+          label="Cancel"
+          variant="secondary"
+          onClick={onClose}
+          disabled={disabled}
+          testID={tid(testID, 'cancel')}
+        />
       </Modal.Footer>
     </>
   );

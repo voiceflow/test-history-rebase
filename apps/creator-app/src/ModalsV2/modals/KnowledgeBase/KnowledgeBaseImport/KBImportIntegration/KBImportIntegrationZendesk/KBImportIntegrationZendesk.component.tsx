@@ -15,7 +15,7 @@ import { useDispatch } from '@/hooks/store.hook';
 import { useTrackingEvents } from '@/hooks/tracking';
 import { useValidators } from '@/hooks/validate.hook';
 import { Hotkey } from '@/keymap';
-import {
+import type {
   ZendeskFilterBase,
   ZendeskFilterBrand,
   ZendeskFilterLabel,
@@ -26,7 +26,7 @@ import {
 import { stopPropagation } from '@/utils/handler.util';
 
 import { KBRefreshRateSelect } from '../../components/KBRefreshRateSelect/KBRefreshRateSelect.component';
-import { IKBImportIntegrationZendesk } from './KBImportIntegrationZendesk.interface';
+import type { IKBImportIntegrationZendesk } from './KBImportIntegrationZendesk.interface';
 import { KBZendeskFilterMultiSelect } from './KBZendeskFilterMultiSelect.component';
 import { KBZendeskFilterSelect } from './KBZendeskFilterSelect.component';
 import { captionStyles } from './KBZendeskFilterSelect.css';
@@ -65,7 +65,10 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
   const planConfig = usePlanLimitConfig(LimitType.KB_DOCUMENTS);
 
   const validator = useValidators({
-    brand: useCreateConst(() => [validatorFactory((brand: ZendeskFilterBrand | null) => !!brand, 'Brand is required.'), brand.setError]),
+    brand: useCreateConst(() => [
+      validatorFactory((brand: ZendeskFilterBrand | null) => !!brand, 'Brand is required.'),
+      brand.setError,
+    ]),
   });
 
   const areFilters = React.useMemo(
@@ -180,7 +183,10 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
             {
               pauseOnHover: true,
               bodyClassName: 'vfui',
-              actionButtonProps: { label: 'Upgrade', onClick: () => upgradeModal.openVoid(planConfig.upgradeModal({ limit: planConfig.limit })) },
+              actionButtonProps: {
+                label: 'Upgrade',
+                onClick: () => upgradeModal.openVoid(planConfig.upgradeModal({ limit: planConfig.limit })),
+              },
             }
           );
         } else {
@@ -210,7 +216,7 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
             <Divider
               noPadding
               isLabelDisabled={disabled}
-              label={areFilters ? `Reset filters` : 'Filters'}
+              label={areFilters ? 'Reset filters' : 'Filters'}
               onLabelClick={areFilters ? stopPropagation(resetFilters) : undefined}
             />
           </Box>
@@ -230,12 +236,18 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
               label="User segments"
               value={userSegments}
               options={userSegmentOptions}
-              disabled={disabled || !brand.value || isLoadingFilters || isLoadingDocumentCount || isDocumentLimitExceeded}
+              disabled={
+                disabled || !brand.value || isLoadingFilters || isLoadingDocumentCount || isDocumentLimitExceeded
+              }
               onValueChange={setUserSegments}
               onDropdownClose={updateDocumentCount}
               hasTooltip={isDocumentLimitExceeded || !brand.value}
               tooltipVariant={isDocumentLimitExceeded ? 'alert' : 'basic'}
-              tooltipMessage={brand.value ? 'Document limit (5000) reached for Zendesk API. Add additional filters to enable user segments. ' : ''}
+              tooltipMessage={
+                brand.value
+                  ? 'Document limit (5000) reached for Zendesk API. Add additional filters to enable user segments. '
+                  : ''
+              }
               placeholder="Select user segments (optional)"
               testID={tid(testID, 'user-segments')}
             />
@@ -259,7 +271,9 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
               onDropdownClose={updateDocumentCount}
               placeholder="Select categories (optional)"
               hasTooltip={!locales.length}
-              tooltipMessage={!locales.length ? "Categories can't be selected until one or more locales have been chosen." : ''}
+              tooltipMessage={
+                !locales.length ? "Categories can't be selected until one or more locales have been chosen." : ''
+              }
               testID={tid(testID, 'categories')}
             />
             <KBZendeskFilterMultiSelect
@@ -277,13 +291,24 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
           </Box>
           <Divider noPadding />
           <Box px={24} pb={24} pt={20}>
-            <KBRefreshRateSelect value={refreshRate} onValueChange={setRefreshRate} disabled={disabled} testID={tid(testID, 'refresh-rate')} />
+            <KBRefreshRateSelect
+              value={refreshRate}
+              onValueChange={setRefreshRate}
+              disabled={disabled}
+              testID={tid(testID, 'refresh-rate')}
+            />
           </Box>
         </Box>
       </Scroll>
 
       <Modal.Footer>
-        <Modal.Footer.Button label="Cancel" variant="secondary" onClick={onClose} disabled={disabled} testID={tid(testID, 'cancel')} />
+        <Modal.Footer.Button
+          label="Cancel"
+          variant="secondary"
+          onClick={onClose}
+          disabled={disabled}
+          testID={tid(testID, 'cancel')}
+        />
 
         {isDocumentLimitExceeded && (
           <Tooltip
@@ -306,7 +331,8 @@ export const KBImportIntegrationZendesk: React.FC<IKBImportIntegrationZendesk> =
             {() => (
               <Box direction="column">
                 <Tooltip.Caption className={captionStyles}>
-                  Document limit (5000) reached for Zendesk API. Add additional filters to reduce number of total documents being imported.
+                  Document limit (5000) reached for Zendesk API. Add additional filters to reduce number of total
+                  documents being imported.
                 </Tooltip.Caption>
               </Box>
             )}

@@ -13,8 +13,8 @@ import * as Session from '@/ducks/session';
 import { waitAsync } from '@/ducks/utils';
 import * as VersionV2 from '@/ducks/versionV2';
 import { getActiveVersionContext } from '@/ducks/versionV2/utils';
-import { Store, VariableValue } from '@/models';
-import { SyncThunk, Thunk } from '@/store/types';
+import type { Store, VariableValue } from '@/models';
+import type { SyncThunk, Thunk } from '@/store/types';
 
 import { updateSelectedVariableState, updateVariables } from './actions';
 import { ALL_PROJECT_VARIABLES_ID } from './constants';
@@ -103,7 +103,9 @@ export const deleteState =
 
     const selectedVariableStateID = selectedVariableStateSelector(state)?.id;
 
-    await dispatch.sync(Realtime.variableState.crud.remove({ ...getActiveVersionContext(state), key: variableStateID }));
+    await dispatch.sync(
+      Realtime.variableState.crud.remove({ ...getActiveVersionContext(state), key: variableStateID })
+    );
 
     if (selectedVariableStateID === variableStateID) {
       dispatch(updateSelectedVariableState(null));
@@ -178,7 +180,15 @@ export const applyVariableState =
     Errors.assertProjectID(projectID);
     Errors.assertDiagramID(diagramID);
 
-    dispatch(updateSelectedVariableState({ id: ALL_PROJECT_VARIABLES_ID, name: 'Default', projectID, startFrom: { stepID, diagramID }, variables }));
+    dispatch(
+      updateSelectedVariableState({
+        id: ALL_PROJECT_VARIABLES_ID,
+        name: 'Default',
+        projectID,
+        startFrom: { stepID, diagramID },
+        variables,
+      })
+    );
   };
 
 // if no variable state exists, apply new state

@@ -1,5 +1,5 @@
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
@@ -49,7 +49,10 @@ const NoMatchEditor: React.FC = () => {
   const collapsed = noMatch.type === BaseNode.IfV2.IfNoMatchType.NONE || !noMatchPortID;
 
   return (
-    <EditorV2 header={<EditorV2.DefaultHeader onBack={editor.goBack} />} footer={<EditorV2.DefaultFooter tutorial={{ content: <HelpTooltip /> }} />}>
+    <EditorV2
+      header={<EditorV2.DefaultHeader onBack={editor.goBack} />}
+      footer={<EditorV2.DefaultFooter tutorial={{ content: <HelpTooltip /> }} />}
+    >
       <PathSection
         onAdd={onAddPath}
         pathName={noMatch.pathName && noMatch.pathName !== DEFAULT_IF_NO_MATCH_LABEL ? noMatch.pathName : ''}

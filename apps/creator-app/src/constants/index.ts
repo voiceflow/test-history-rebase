@@ -1,7 +1,7 @@
 import { AlexaNode } from '@voiceflow/alexa-types';
 import { BaseNode } from '@voiceflow/base-types';
 import { BillingPeriod, PlanType } from '@voiceflow/internal';
-import { COLOR_PICKER_CONSTANTS } from '@voiceflow/ui';
+import type { COLOR_PICKER_CONSTANTS } from '@voiceflow/ui';
 
 export * from './file';
 export * from './payment';
@@ -102,7 +102,9 @@ export const PERMISSIONS = [
   },
 ];
 
-export const PERMISSIONS_WITH_VARIABLE_MAPS = PERMISSIONS.filter(({ variableMap }) => variableMap).map(({ value }) => value);
+export const PERMISSIONS_WITH_VARIABLE_MAPS = PERMISSIONS.filter(({ variableMap }) => variableMap).map(
+  ({ value }) => value
+);
 
 export const PERMISSION_LABELS: Record<AlexaNode.PermissionType, string> = PERMISSIONS.reduce<Record<string, string>>(
   (acc, permission) => Object.assign(acc, { [permission.value]: permission.name }),

@@ -1,7 +1,7 @@
-import * as Common from '@platform-config/configs/common';
+import type * as Common from '@platform-config/configs/common';
 import { Config } from '@platform-config/configs/utils';
 import { Types } from '@platform-config/utils';
-import { GoogleVersion } from '@voiceflow/google-types';
+import type { GoogleVersion } from '@voiceflow/google-types';
 import type { ArrayItem } from '@voiceflow/ui';
 import { createSmartSimpleAdapter } from 'bidirectional-adapter';
 

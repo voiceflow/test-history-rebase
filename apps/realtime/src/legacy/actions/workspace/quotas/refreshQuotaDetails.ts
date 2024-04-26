@@ -1,6 +1,6 @@
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
-import { Context } from '@voiceflow/socket-utils';
-import { Action } from 'typescript-fsa';
+import type { Context } from '@voiceflow/socket-utils';
+import type { Action } from 'typescript-fsa';
 
 import { AbstractWorkspaceChannelControl } from '../utils';
 
@@ -14,7 +14,11 @@ class RefreshQuotaDetails extends AbstractWorkspaceChannelControl<Realtime.works
 
     if (!quotaDetails) return;
 
-    await this.server.processAs(ctx.data.creatorID, ctx.data.clientID, Realtime.workspace.quotas.replaceQuota({ workspaceID, quotaDetails }));
+    await this.server.processAs(
+      ctx.data.creatorID,
+      ctx.data.clientID,
+      Realtime.workspace.quotas.replaceQuota({ workspaceID, quotaDetails })
+    );
   };
 }
 

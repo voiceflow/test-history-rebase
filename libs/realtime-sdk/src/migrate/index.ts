@@ -1,12 +1,19 @@
 /* eslint-disable no-param-reassign */
 import * as Adapters from '@realtime-sdk/adapters';
 import { SchemaVersion } from '@realtime-sdk/schema-version/schema-version.enum';
-import { BaseModels, BaseVersion } from '@voiceflow/base-types';
-import { AnyRecord, Utils } from '@voiceflow/common';
+import type { BaseModels, BaseVersion } from '@voiceflow/base-types';
+import type { AnyRecord } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
 import { produceWithPatches } from 'immer';
 
 import migrations from './migrations';
-import { DiagramUpdateData, Migration, MigrationContext, MigrationData, VersionUpdateData } from './migrations/types';
+import type {
+  DiagramUpdateData,
+  Migration,
+  MigrationContext,
+  MigrationData,
+  VersionUpdateData,
+} from './migrations/types';
 
 export * from './migrations/types';
 
@@ -41,7 +48,10 @@ interface MigrateProjectPayload {
   creatorID: number;
 }
 
-export const migrateProject = ({ cms, version, project, diagrams, creatorID }: MigrateProjectPayload, targetSchemaVersion: SchemaVersion) => {
+export const migrateProject = (
+  { cms, version, project, diagrams, creatorID }: MigrateProjectPayload,
+  targetSchemaVersion: SchemaVersion
+) => {
   const currentSchemaVersion = version._version ?? SchemaVersion.V1;
   const pendingMigrations = getPendingMigrations(currentSchemaVersion, targetSchemaVersion);
 

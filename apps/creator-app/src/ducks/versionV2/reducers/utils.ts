@@ -1,9 +1,9 @@
-import { Draft } from 'immer';
+import type { Draft } from 'immer';
 import * as Normal from 'normal-store';
 
 import { createReducerFactory } from '@/ducks/utils';
 
-import { VersionState } from '../types';
+import type { VersionState } from '../types';
 
 export const createReducer = createReducerFactory<VersionState>();
 

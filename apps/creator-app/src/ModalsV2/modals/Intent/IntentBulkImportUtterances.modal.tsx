@@ -1,4 +1,4 @@
-import { Utterance } from '@voiceflow/dtos';
+import type { Utterance } from '@voiceflow/dtos';
 import { tid } from '@voiceflow/style';
 import { InputFormControl, notify, Scroll, TextArea } from '@voiceflow/ui-next';
 import pluralize from 'pluralize';
@@ -97,7 +97,13 @@ export const IntentBulkImportUtterancesModal = modalsManager.create<IntentBulkIm
           </Scroll>
 
           <Modal.Footer>
-            <Modal.Footer.Button label="Close" variant="secondary" onClick={api.onClose} disabled={closePrevented} testID={tid(TEST_ID, 'close')} />
+            <Modal.Footer.Button
+              label="Close"
+              variant="secondary"
+              onClick={api.onClose}
+              disabled={closePrevented}
+              testID={tid(TEST_ID, 'close')}
+            />
 
             <Modal.Footer.Button
               label="Import"

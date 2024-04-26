@@ -1,4 +1,5 @@
-import { SYSTEM_VARIABLE_DESCRIPTION_MAP, SYSTEM_VARIABLE_TYPE_MAP, Variable, VariableDatatype } from '@voiceflow/dtos';
+import type { Variable } from '@voiceflow/dtos';
+import { SYSTEM_VARIABLE_DESCRIPTION_MAP, SYSTEM_VARIABLE_TYPE_MAP, VariableDatatype } from '@voiceflow/dtos';
 import { isSystemVariableName } from '@voiceflow/utils-designer';
 import { createSimpleAdapter } from 'bidirectional-adapter';
 
@@ -36,5 +37,6 @@ const adapter = createSimpleAdapter<Variable, string, [], [ToDBOptions]>(
 export const variableToLegacyVariableAdapter = Object.assign(adapter, {
   mapFromDB: (variables: Variable[]): string[] => variables.map(adapter.fromDB),
 
-  mapToDB: (variableNames: string[], options: ToDBOptions): Variable[] => variableNames.map((variableName) => adapter.toDB(variableName, options)),
+  mapToDB: (variableNames: string[], options: ToDBOptions): Variable[] =>
+    variableNames.map((variableName) => adapter.toDB(variableName, options)),
 });

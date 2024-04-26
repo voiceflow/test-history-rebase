@@ -15,7 +15,10 @@ export class OrganizationHTTPController {
   @Get('/:organizationID/workspaces')
   @Authorize.Permissions([Permission.ORGANIZATION_READ])
   @ZodApiResponse({ status: HttpStatus.OK })
-  async getOrganizationWorkspaces(@UserID() userID: number, @Param('organizationID') organizationID: string): Promise<Realtime.Identity.Workspace[]> {
+  async getOrganizationWorkspaces(
+    @UserID() userID: number,
+    @Param('organizationID') organizationID: string
+  ): Promise<Realtime.Identity.Workspace[]> {
     return this.service.getWorkspaces(userID, organizationID);
   }
 }

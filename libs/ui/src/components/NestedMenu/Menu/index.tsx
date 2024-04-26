@@ -4,19 +4,25 @@ import Portal from '@ui/components/Portal';
 import { useDidUpdateEffect, useNestedPopperTheme, usePersistFunction } from '@ui/hooks';
 import { ThemeProvider } from '@ui/styles';
 import { swallowEvent } from '@ui/utils';
-import { Nullable } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
 import { Popper } from '@voiceflow/legacy-react-popper';
 import React from 'react';
-import { Scrollbars } from 'react-custom-scrollbars-2';
+import type { Scrollbars } from 'react-custom-scrollbars-2';
 import { DismissableLayerProvider } from 'react-dismissable-layers';
 
 import MenuHeader from '../MenuHeader';
 // eslint-disable-next-line import/no-cycle
 import MenuOptions from '../MenuOptions';
-import { GetOptionKey, MenuItemGrouped, MenuItemMultilevel, MenuItemWithID } from '../types';
-import { isBaseMenuItem, isGroupedOptions, isMenuItemGrouped, isMenuItemMultilevel, isUIOnlyMenuItemOption } from '../utils';
-import { MenuPopoverContainer } from './components';
+import type { GetOptionKey, MenuItemGrouped, MenuItemMultilevel, MenuItemWithID } from '../types';
 import {
+  isBaseMenuItem,
+  isGroupedOptions,
+  isMenuItemGrouped,
+  isMenuItemMultilevel,
+  isUIOnlyMenuItemOption,
+} from '../utils';
+import { MenuPopoverContainer } from './components';
+import type {
   NestedMenuCreatableProps,
   NestedMenuCreatableWithIDProps,
   NestedMenuGroupedProps,
@@ -39,8 +45,12 @@ enum KeyCode {
 }
 export const DEFAULT_PATH = [];
 
-function BaseNestedMenu<Option extends MenuItemWithID, Value = Option>(props: NestedMenuCreatableWithIDProps<Option, Value>): React.ReactElement;
-function BaseNestedMenu<Option extends MenuItemWithID, Value = Option>(props: NestedMenuWithIDProps<Option, Value>): React.ReactElement;
+function BaseNestedMenu<Option extends MenuItemWithID, Value = Option>(
+  props: NestedMenuCreatableWithIDProps<Option, Value>
+): React.ReactElement;
+function BaseNestedMenu<Option extends MenuItemWithID, Value = Option>(
+  props: NestedMenuWithIDProps<Option, Value>
+): React.ReactElement;
 function BaseNestedMenu<Option, GroupedOption extends MenuItemGrouped<Option>, Value = Option>(
   props: NestedMenuGroupedProps<Option, GroupedOption, Value>
 ): React.ReactElement;
@@ -164,7 +174,11 @@ function BaseNestedMenu({
 
     const nextFocusedOption = options[Math.max(nextIndex - firstOptionIndex, 0)];
 
-    if (isBaseMenuItem(nextFocusedOption) && (nextFocusedOption.disabled || nextFocusedOption.readOnly || nextFocusedOption.vfUIOnly)) return;
+    if (
+      isBaseMenuItem(nextFocusedOption) &&
+      (nextFocusedOption.disabled || nextFocusedOption.readOnly || nextFocusedOption.vfUIOnly)
+    )
+      return;
 
     setChildFocusItemIndex(null);
     onFocusOption?.(nextIndex);
@@ -178,7 +192,6 @@ function BaseNestedMenu({
 
   // eslint-disable-next-line sonarjs/cognitive-complexity
   const onKeydown = usePersistFunction((event: KeyboardEvent) => {
-    // eslint-disable-next-line xss/no-mixed-html
     const isInput = (event.target as Nullable<HTMLElement>)?.tagName === 'INPUT';
     const isNotFocused = focusedOptionIndex === null;
     const isChildFocused = childFocusItemIndex !== null;
@@ -386,7 +399,9 @@ function BaseNestedMenu({
                           alwaysShowCreate={alwaysShowCreate}
                           focusedOptionRef={focusedOptionRef}
                           isButtonDisabled={isButtonDisabled}
-                          updateSearchLabel={(value) => updateSearchLabel(formatInputValue ? formatInputValue(value) : value)}
+                          updateSearchLabel={(value) =>
+                            updateSearchLabel(formatInputValue ? formatInputValue(value) : value)
+                          }
                           renderSearchSuffix={renderSearchSuffix}
                           focusedOptionIndex={focusedOptionIndex}
                           onChangeSearchLabel={onChangeSearchLabel}
@@ -400,7 +415,11 @@ function BaseNestedMenu({
                     disableAnimation={disableAnimation}
                     renderFooterAction={
                       renderFooterAction &&
-                      ((props) => renderFooterAction({ ...props, searchLabel: (searchable ? searchLabel : newOptionLabel) ?? '' }))
+                      ((props) =>
+                        renderFooterAction({
+                          ...props,
+                          searchLabel: (searchable ? searchLabel : newOptionLabel) ?? '',
+                        }))
                     }
                     {...menuProps}
                   >

@@ -9,14 +9,17 @@ import * as ConditionPredicate from './condition-predicate';
 
 const baseConditionReducer = reducerWithInitialState<ConditionState>(createEmpty())
   .case(Actions.Condition.Add, (state, { data }) => appendOne(state, data.id, data))
-  .cases([Actions.Condition.PatchOneExpression, Actions.Condition.PatchOnePrompt, Actions.Condition.PatchOneScript], (state, { id, patch }) =>
-    patchOne(state, id, patch)
+  .cases(
+    [Actions.Condition.PatchOneExpression, Actions.Condition.PatchOnePrompt, Actions.Condition.PatchOneScript],
+    (state, { id, patch }) => patchOne(state, id, patch)
   )
-  .cases([Actions.Condition.PatchManyExpression, Actions.Condition.PatchManyPrompt, Actions.Condition.PatchManyScript], (state, { ids, patch }) =>
-    patchMany(
-      state,
-      ids.map((id) => ({ key: id, value: patch }))
-    )
+  .cases(
+    [Actions.Condition.PatchManyExpression, Actions.Condition.PatchManyPrompt, Actions.Condition.PatchManyScript],
+    (state, { ids, patch }) =>
+      patchMany(
+        state,
+        ids.map((id) => ({ key: id, value: patch }))
+      )
   )
   .case(Actions.Condition.DeleteOne, (state, { id }) => removeOne(state, id))
   .case(Actions.Condition.DeleteMany, (state, { ids }) => removeMany(state, ids))

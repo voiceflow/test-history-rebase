@@ -18,35 +18,45 @@ export class ResponseAttachmentLoguxController {
   ) {}
 
   @Action.Async(Actions.ResponseAttachment.CreateCardOne)
-  @Authorize.Permissions<Actions.ResponseAttachment.CreateCardOne.Request>([Permission.PROJECT_UPDATE], ({ context }) => ({
-    id: context.environmentID,
-    kind: 'version',
-  }))
+  @Authorize.Permissions<Actions.ResponseAttachment.CreateCardOne.Request>(
+    [Permission.PROJECT_UPDATE],
+    ({ context }) => ({
+      id: context.environmentID,
+      kind: 'version',
+    })
+  )
   @UseRequestContext()
   async createCardOne(
     @Payload() { data, context }: Actions.ResponseAttachment.CreateCardOne.Request,
     @AuthMeta() auth: AuthMetaPayload
   ): Promise<Actions.ResponseAttachment.CreateCardOne.Response> {
-    return this.service.createManyAndBroadcast([{ ...data, type: AttachmentType.CARD }], { auth, context }).then(([result]) => ({
-      data: this.service.toJSON(result) as ResponseCardAttachment,
-      context,
-    }));
+    return this.service
+      .createManyAndBroadcast([{ ...data, type: AttachmentType.CARD }], { auth, context })
+      .then(([result]) => ({
+        data: this.service.toJSON(result) as ResponseCardAttachment,
+        context,
+      }));
   }
 
   @Action.Async(Actions.ResponseAttachment.CreateMediaOne)
-  @Authorize.Permissions<Actions.ResponseAttachment.CreateMediaOne.Request>([Permission.PROJECT_UPDATE], ({ context }) => ({
-    id: context.environmentID,
-    kind: 'version',
-  }))
+  @Authorize.Permissions<Actions.ResponseAttachment.CreateMediaOne.Request>(
+    [Permission.PROJECT_UPDATE],
+    ({ context }) => ({
+      id: context.environmentID,
+      kind: 'version',
+    })
+  )
   @UseRequestContext()
   async createMediaOne(
     @Payload() { data, context }: Actions.ResponseAttachment.CreateMediaOne.Request,
     @AuthMeta() auth: AuthMetaPayload
   ): Promise<Actions.ResponseAttachment.CreateMediaOne.Response> {
-    return this.service.createManyAndBroadcast([{ ...data, type: AttachmentType.MEDIA }], { auth, context }).then(([result]) => ({
-      data: this.service.toJSON(result) as ResponseMediaAttachment,
-      context,
-    }));
+    return this.service
+      .createManyAndBroadcast([{ ...data, type: AttachmentType.MEDIA }], { auth, context })
+      .then(([result]) => ({
+        data: this.service.toJSON(result) as ResponseMediaAttachment,
+        context,
+      }));
   }
 
   @Action(Actions.ResponseAttachment.ReplaceOneCard)
@@ -93,7 +103,10 @@ export class ResponseAttachmentLoguxController {
     const result = await this.service.deleteManyAndSync([id], { userID: auth.userID, context });
 
     // overriding variants cause it's broadcasted by decorator
-    await this.service.broadcastDeleteMany({ ...result, delete: { ...result.delete, responseAttachments: [] } }, { auth, context });
+    await this.service.broadcastDeleteMany(
+      { ...result, delete: { ...result.delete, responseAttachments: [] } },
+      { auth, context }
+    );
   }
 
   @Action(Actions.ResponseAttachment.DeleteMany)
@@ -104,11 +117,17 @@ export class ResponseAttachmentLoguxController {
   @Broadcast<Actions.ResponseAttachment.DeleteMany>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async deleteMany(@Payload() { ids, context }: Actions.ResponseAttachment.DeleteMany, @AuthMeta() auth: AuthMetaPayload) {
+  async deleteMany(
+    @Payload() { ids, context }: Actions.ResponseAttachment.DeleteMany,
+    @AuthMeta() auth: AuthMetaPayload
+  ) {
     const result = await this.service.deleteManyAndSync(ids, { userID: auth.userID, context });
 
     // overriding variants cause it's broadcasted by decorator
-    await this.service.broadcastDeleteMany({ ...result, delete: { ...result.delete, responseAttachments: [] } }, { auth, context });
+    await this.service.broadcastDeleteMany(
+      { ...result, delete: { ...result.delete, responseAttachments: [] } },
+      { auth, context }
+    );
   }
 
   @Action(Actions.ResponseAttachment.AddOne)

@@ -23,7 +23,8 @@ const RealtimeCursorOverlayV2: React.FC = () => {
       eventualEngine.get()?.io.register(OverlayType.CURSOR_V2, {
         panViewport: (movement) => cursorContext?.emit('panViewport', movement),
         zoomViewport: (calculateMovement) => cursorContext?.emit('zoomViewport', calculateMovement),
-        realtimeCursorMove: ({ diagramID, creatorID, coords }) => cursorContext?.emit(`realtimeCursorMove:${diagramID}:${creatorID}`, coords),
+        realtimeCursorMove: ({ diagramID, creatorID, coords }) =>
+          cursorContext?.emit(`realtimeCursorMove:${diagramID}:${creatorID}`, coords),
       }),
     []
   );
@@ -32,7 +33,15 @@ const RealtimeCursorOverlayV2: React.FC = () => {
     <>
       {viewers.map((viewer) => {
         if (userID === viewer.creatorID) return null;
-        return <RealtimeCursor key={viewer.creatorID} diagramID={diagramID} creatorID={viewer.creatorID} name={viewer.name} color={viewer.color} />;
+        return (
+          <RealtimeCursor
+            key={viewer.creatorID}
+            diagramID={diagramID}
+            creatorID={viewer.creatorID}
+            name={viewer.name}
+            color={viewer.color}
+          />
+        );
       })}
     </>
   );

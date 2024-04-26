@@ -21,9 +21,15 @@ const SMS: React.FC = () => {
 
   const projectID = useSelector(Session.activeProjectIDSelector)!;
 
-  const { loaded, secretsStore, updateSecret, submitSecrets } = useSecretsManager(projectID, { secrets }, Platform.Constants.PlatformType.SMS);
+  const { loaded, secretsStore, updateSecret, submitSecrets } = useSecretsManager(
+    projectID,
+    { secrets },
+    Platform.Constants.PlatformType.SMS
+  );
 
-  const [services, setServices] = React.useState<Record<string, MessagingServiceType & { disabled: boolean }> | null>(null);
+  const [services, setServices] = React.useState<Record<string, MessagingServiceType & { disabled: boolean }> | null>(
+    null
+  );
 
   const projectPlatformData = useSelector(ProjectV2.active.platformDataSelector);
   const patchProjectPlatformData = useDispatch(ProjectV2.patchActivePlatformData);
@@ -36,7 +42,9 @@ const SMS: React.FC = () => {
 
   const updateServices = async () => {
     const services = await client.platform.sms.getServices(projectID, { numbers: true });
-    setServices(Object.fromEntries(services.map((service) => [service.id, { ...service, disabled: !service.numbers?.length }])));
+    setServices(
+      Object.fromEntries(services.map((service) => [service.id, { ...service, disabled: !service.numbers?.length }]))
+    );
   };
 
   const checkPermissions = async () => {
@@ -71,7 +79,8 @@ const SMS: React.FC = () => {
         submitSecrets={submitSecrets}
         description={
           <>
-            Copy paste your Account SID, API Key and API Secret to connect your assistant to Twilio. <Link href={SMS_DOCUMENTATION}>Learn more</Link>
+            Copy paste your Account SID, API Key and API Secret to connect your assistant to Twilio.{' '}
+            <Link href={SMS_DOCUMENTATION}>Learn more</Link>
           </>
         }
         secrets={SECRETS_CONFIG}
@@ -80,7 +89,8 @@ const SMS: React.FC = () => {
         title="Messaging Service"
         description={
           <>
-            Select a Twilio messaging service to associate with this assistant. <Link href={SMS_DOCUMENTATION}>Learn more</Link>
+            Select a Twilio messaging service to associate with this assistant.{' '}
+            <Link href={SMS_DOCUMENTATION}>Learn more</Link>
           </>
         }
       >
@@ -109,7 +119,9 @@ const SMS: React.FC = () => {
                 placeholder="Select a service"
               />
             </TippyTooltip>
-            <Settings.SubSection.Description>The messaging service that will be integrated with this assistant.</Settings.SubSection.Description>
+            <Settings.SubSection.Description>
+              The messaging service that will be integrated with this assistant.
+            </Settings.SubSection.Description>
           </Settings.SubSection>
         </Settings.Card>
       </Settings.Section>

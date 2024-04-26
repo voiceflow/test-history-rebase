@@ -6,7 +6,7 @@ import { ENTERPRISE_PLANS } from '@/constants/plans';
 import * as Tracking from '@/ducks/tracking';
 import { getUpgradePopperProps, getUpgradeTooltipProps } from '@/utils/upgrade';
 
-import { UpgradeModalAndTooltipPlanPermission } from './types';
+import type { UpgradeModalAndTooltipPlanPermission } from './types';
 
 export interface Data {
   nlpType: NLP.Constants.NLPType;

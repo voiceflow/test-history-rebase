@@ -26,7 +26,9 @@ export class ResponseLoguxController {
     @Payload() { data, context }: Actions.Response.CreateOne.Request,
     @AuthMeta() auth: AuthMetaPayload
   ): Promise<Actions.Response.CreateOne.Response> {
-    return this.service.createManyAndBroadcast([data], { auth, context }).then(([result]) => ({ data: this.service.toJSON(result), context }));
+    return this.service
+      .createManyAndBroadcast([data], { auth, context })
+      .then(([result]) => ({ data: this.service.toJSON(result), context }));
   }
 
   @Action.Async(Actions.Response.CreateMany)
@@ -39,7 +41,9 @@ export class ResponseLoguxController {
     @Payload() { data, context }: Actions.Response.CreateMany.Request,
     @AuthMeta() auth: AuthMetaPayload
   ): Promise<Actions.Response.CreateMany.Response> {
-    return this.service.createManyAndBroadcast(data, { auth, context }).then((result) => ({ data: this.service.mapToJSON(result), context }));
+    return this.service
+      .createManyAndBroadcast(data, { auth, context })
+      .then((result) => ({ data: this.service.mapToJSON(result), context }));
   }
 
   @Action(Actions.Response.PatchOne)
@@ -82,7 +86,10 @@ export class ResponseLoguxController {
     const result = await this.service.deleteManyAndSync([id], { userID: auth.userID, context });
 
     // overriding responses cause it's broadcasted by decorator
-    await this.service.broadcastDeleteMany({ ...result, delete: { ...result.delete, responses: [] } }, { auth, context });
+    await this.service.broadcastDeleteMany(
+      { ...result, delete: { ...result.delete, responses: [] } },
+      { auth, context }
+    );
   }
 
   @Action(Actions.Response.DeleteMany)
@@ -97,7 +104,10 @@ export class ResponseLoguxController {
     const result = await this.service.deleteManyAndSync(ids, { userID: auth.userID, context });
 
     // overriding responses cause it's broadcasted by decorator
-    await this.service.broadcastDeleteMany({ ...result, delete: { ...result.delete, responses: [] } }, { auth, context });
+    await this.service.broadcastDeleteMany(
+      { ...result, delete: { ...result.delete, responses: [] } },
+      { auth, context }
+    );
   }
 
   @Action(Actions.Response.AddOne)

@@ -1,6 +1,6 @@
-import React from 'react';
+import type React from 'react';
 
-import { OnboardingStepProps } from '@/pages/Onboarding/types';
+import type { OnboardingStepProps } from '@/pages/Onboarding/types';
 
 import { StepID } from '../../constants';
 import { CreateWorkspace, JoinWorkspace, Payment, PersonalizeWorkspace, SelectChannel, Welcome } from '../../Steps';

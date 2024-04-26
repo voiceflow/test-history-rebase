@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Preview, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
@@ -27,7 +27,9 @@ const StepPreview: React.FC<StepPreviewProps> = ({ items, onClose, onOpenEditor 
       Utils.string.stripHTMLTags(transformVariablesToReadable(content || '', entitiesAndVariables.byKey));
 
     return items.map((item) =>
-      isVoiceItem(item) ? { ...item, content: formatItemContentOrURL(item.content) } : { ...item, url: formatItemContentOrURL(item.url) }
+      isVoiceItem(item)
+        ? { ...item, content: formatItemContentOrURL(item.content) }
+        : { ...item, url: formatItemContentOrURL(item.url) }
     );
   }, [items, entitiesAndVariables.byKey]);
 
@@ -53,7 +55,10 @@ const StepPreview: React.FC<StepPreviewProps> = ({ items, onClose, onOpenEditor 
             <Preview.ContentIcon>
               <Preview.ButtonIcon
                 icon="copy"
-                onClick={Utils.functional.chainVoid(copyWithToast(isVoiceItem(item) ? item.content : item.url), onClose)}
+                onClick={Utils.functional.chainVoid(
+                  copyWithToast(isVoiceItem(item) ? item.content : item.url),
+                  onClose
+                )}
               />
             </Preview.ContentIcon>
           </Preview.ContentItem>
@@ -61,7 +66,9 @@ const StepPreview: React.FC<StepPreviewProps> = ({ items, onClose, onOpenEditor 
       </Preview.Content>
 
       <Preview.Footer>
-        {canOpenEditor && <Preview.ButtonIcon icon="edit" onClick={Utils.functional.chainVoid(onOpenEditor, onClose)} />}
+        {canOpenEditor && (
+          <Preview.ButtonIcon icon="edit" onClick={Utils.functional.chainVoid(onOpenEditor, onClose)} />
+        )}
 
         <Preview.ButtonIcon ml={8} icon="copy" onClick={onCopyAll} />
       </Preview.Footer>

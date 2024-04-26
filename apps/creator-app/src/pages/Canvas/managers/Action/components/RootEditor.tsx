@@ -1,5 +1,6 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Input, OptionsMenuOption, SectionV2, TippyTooltip, Toggle, useLinkedState } from '@voiceflow/ui';
+import type { OptionsMenuOption } from '@voiceflow/ui';
+import { Box, Input, SectionV2, TippyTooltip, Toggle, useLinkedState } from '@voiceflow/ui';
 import React from 'react';
 
 import RadioGroup from '@/components/RadioGroup';
@@ -28,7 +29,10 @@ const ActionEditor: React.FC = () => {
   const [name, setName] = useLinkedState(data.name);
   const [value, setValue] = useLinkedState(data.body);
 
-  const toggleIsBlocking = React.useCallback(() => onChange({ isBlocking: !data.isBlocking }), [data.isBlocking, onChange]);
+  const toggleIsBlocking = React.useCallback(
+    () => onChange({ isBlocking: !data.isBlocking }),
+    [data.isBlocking, onChange]
+  );
 
   const mapManager = useMapManager(data.paths, (paths) => onChange({ paths }), {
     onAdd: () => engine.port.addDynamic(node.id),
@@ -89,7 +93,11 @@ const ActionEditor: React.FC = () => {
       >
         <SectionV2.Content bottomOffset={3}>
           <Box mb={11}>
-            <RadioGroup options={BODY_TYPE_OPTIONS} checked={data.bodyType} onChange={(bodyType) => onChange({ bodyType })} />
+            <RadioGroup
+              options={BODY_TYPE_OPTIONS}
+              checked={data.bodyType}
+              onChange={(bodyType) => onChange({ bodyType })}
+            />
           </Box>
           <TextArea
             value={value}
@@ -132,7 +140,9 @@ const ActionEditor: React.FC = () => {
       <TippyTooltip
         width={208}
         content={
-          <TippyTooltip.Multiline>If checked, we will stop the conversation on this block until an interact action is sent.</TippyTooltip.Multiline>
+          <TippyTooltip.Multiline>
+            If checked, we will stop the conversation on this block until an interact action is sent.
+          </TippyTooltip.Multiline>
         }
         display="block"
         offset={[0, -10]}

@@ -124,7 +124,10 @@ export const VariableEditModal = modalsManager.create<IVariableEditModal>(
 
                 <Divider noPadding />
 
-                <VariableDefaultValueSection value={variable.defaultValue} onValueChange={(defaultValue) => patchVariable({ defaultValue })} />
+                <VariableDefaultValueSection
+                  value={variable.defaultValue}
+                  onValueChange={(defaultValue) => patchVariable({ defaultValue })}
+                />
               </Scroll>
             ) : (
               <Modal.Body testID={tid(TEST_ID, 'not-found')}>Variable not found</Modal.Body>
@@ -132,7 +135,12 @@ export const VariableEditModal = modalsManager.create<IVariableEditModal>(
           </>
 
           <Modal.Footer>
-            <Modal.Footer.Button label="Close" variant="secondary" onClick={api.onClose} testID={tid(TEST_ID, 'close')} />
+            <Modal.Footer.Button
+              label="Close"
+              variant="secondary"
+              onClick={api.onClose}
+              testID={tid(TEST_ID, 'close')}
+            />
           </Modal.Footer>
         </Modal.Container>
       );

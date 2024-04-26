@@ -53,7 +53,13 @@ class CreateProject extends AbstractProjectResourceControl<Realtime.project.Crea
 
     await Promise.all([
       ...(assistant
-        ? [this.server.processAs(creatorID, clientID, Actions.Assistant.AddOne({ data: assistant, context: { workspaceID: dbProject.teamID } }))]
+        ? [
+            this.server.processAs(
+              creatorID,
+              clientID,
+              Actions.Assistant.AddOne({ data: assistant, context: { workspaceID: dbProject.teamID } })
+            ),
+          ]
         : []),
 
       this.server.processAs(

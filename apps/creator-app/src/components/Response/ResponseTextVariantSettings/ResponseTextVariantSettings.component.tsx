@@ -19,10 +19,17 @@ import { useLinkedState } from '@/hooks/state.hook';
 
 import type { IResponseTextVariantSettings } from './ResponseTextVariantSettings.interface';
 
-export const ResponseTextVariantSettings: React.FC<IResponseTextVariantSettings> = ({ variant, attachments, onVariantChange }) => {
+export const ResponseTextVariantSettings: React.FC<IResponseTextVariantSettings> = ({
+  variant,
+  attachments,
+  onVariantChange,
+}) => {
   const [speed, setSpeed] = useLinkedState(variant.speed ?? 0);
 
-  const hasCard = useMemo(() => attachments.some((attachment) => attachment.type === AttachmentType.CARD), [attachments]);
+  const hasCard = useMemo(
+    () => attachments.some((attachment) => attachment.type === AttachmentType.CARD),
+    [attachments]
+  );
 
   const modifiers = usePopperModifiers([{ name: 'offset', options: { offset: [0, 24] } }]);
 
@@ -55,7 +62,11 @@ export const ResponseTextVariantSettings: React.FC<IResponseTextVariantSettings>
               <Collapsible
                 isOpen
                 showDivider={false}
-                header={<CollapsibleHeader label="Card layout">{({ isOpen }) => <CollapsibleHeaderButton isOpen={isOpen} />}</CollapsibleHeader>}
+                header={
+                  <CollapsibleHeader label="Card layout">
+                    {({ isOpen }) => <CollapsibleHeaderButton isOpen={isOpen} />}
+                  </CollapsibleHeader>
+                }
               >
                 <Box pb={16}>
                   <RadioGroup

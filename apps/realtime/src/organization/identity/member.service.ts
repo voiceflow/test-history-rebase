@@ -21,7 +21,9 @@ export class OrganizationIdentityMemberService {
 
   public async remove(userID: number, organizationID: string, memberID: number): Promise<void> {
     const token = await this.user.getTokenByID(userID);
-    return this.identityClient.organizationMember.deleteMember(organizationID, memberID, { headers: { Authorization: token } });
+    return this.identityClient.organizationMember.deleteMember(organizationID, memberID, {
+      headers: { Authorization: token },
+    });
   }
 
   public async removeSelf(organizationID: string): Promise<void> {

@@ -1,4 +1,4 @@
-import { Nullish } from '@voiceflow/common';
+import type { Nullish } from '@voiceflow/common';
 import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { COLOR_PICKER_CONSTANTS } from '@voiceflow/ui';
 import React from 'react';
@@ -13,7 +13,7 @@ import type Engine from '../../engine';
 import { EntityType } from '../../engine/constants';
 import { ContextColorPicker } from './components/ContextColorPicker';
 import { ContextTemplateLibrary } from './components/ContextTemplateLibrary';
-import { ContextMenuOption } from './types';
+import type { ContextMenuOption } from './types';
 
 export enum CanvasAction {
   PASTE = 'paste',
@@ -124,12 +124,18 @@ export const BLOCK_OPTIONS: ContextMenuOption<CanvasAction>[] = [
     render: ({ target: nodeID }, { engine }) => {
       const node = engine.getNodeByID(nodeID);
       const isChip = isChipNode(engine.getNodeByID(node?.combinedNodes[0]), node);
-      const defaultColorScheme = isChip ? COLOR_PICKER_CONSTANTS.ColorScheme.DARK : COLOR_PICKER_CONSTANTS.ColorScheme.LIGHT;
-      const standardColor = isChip ? COLOR_PICKER_CONSTANTS.CHIP_STANDARD_COLOR : COLOR_PICKER_CONSTANTS.BLOCK_STANDARD_COLOR;
+      const defaultColorScheme = isChip
+        ? COLOR_PICKER_CONSTANTS.ColorScheme.DARK
+        : COLOR_PICKER_CONSTANTS.ColorScheme.LIGHT;
+      const standardColor = isChip
+        ? COLOR_PICKER_CONSTANTS.CHIP_STANDARD_COLOR
+        : COLOR_PICKER_CONSTANTS.BLOCK_STANDARD_COLOR;
 
       return (
         <ContextColorPicker
-          defaultColorScheme={node?.type === BlockType.START ? COLOR_PICKER_CONSTANTS.ColorScheme.BLACK : defaultColorScheme}
+          defaultColorScheme={
+            node?.type === BlockType.START ? COLOR_PICKER_CONSTANTS.ColorScheme.BLACK : defaultColorScheme
+          }
           standardColor={standardColor}
         />
       );
@@ -154,7 +160,9 @@ export const BLOCK_OPTIONS: ContextMenuOption<CanvasAction>[] = [
     value: CanvasAction.DIVIDER,
     menuItemProps: { divider: true },
     shouldRender: ({ target: nodeID }, { engine, showHintFeatures }) =>
-      (showHintFeatures && !isMarkup(nodeID, engine)) || isBlock(nodeID, engine) || engine.isNodeOfType(nodeID, BLOCKS_WITH_RENAME),
+      (showHintFeatures && !isMarkup(nodeID, engine)) ||
+      isBlock(nodeID, engine) ||
+      engine.isNodeOfType(nodeID, BLOCKS_WITH_RENAME),
   },
   {
     label: 'Rename',
@@ -219,7 +227,8 @@ export const SELECTION_OPTIONS: ContextMenuOption<CanvasAction>[] = [
     label: 'Create component',
     value: CanvasAction.CREATE_COMPONENT,
     hotkey: HOTKEY_LABEL_MAP[Hotkey.CREATE_COMPONENT],
-    shouldRender: (_, { engine }) => engine.selection.getTargets(EntityType.NODE).some((nodeID) => engine.isNodeOfType(nodeID, BlockType.COMBINED)),
+    shouldRender: (_, { engine }) =>
+      engine.selection.getTargets(EntityType.NODE).some((nodeID) => engine.isNodeOfType(nodeID, BlockType.COMBINED)),
   },
   {
     label: 'Create sub topic',

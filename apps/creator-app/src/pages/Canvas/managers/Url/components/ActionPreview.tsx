@@ -1,4 +1,5 @@
-import { Nullable, Utils } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
 import { Preview, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
@@ -31,8 +32,12 @@ const ActionPreview: React.FC<ActionPreviewProps> = ({ content, onClose, onRemov
       </Preview.Content>
 
       <Preview.Footer>
-        {canOpenEditor && <Preview.ButtonIcon icon="edit" onClick={Utils.functional.chainVoid(onClose, onOpenEditor)} />}
-        {!!onCopyContent && <Preview.ButtonIcon ml={8} icon="copy" onClick={Utils.functional.chainVoid(onClose, onCopyContent)} />}
+        {canOpenEditor && (
+          <Preview.ButtonIcon icon="edit" onClick={Utils.functional.chainVoid(onClose, onOpenEditor)} />
+        )}
+        {!!onCopyContent && (
+          <Preview.ButtonIcon ml={8} icon="copy" onClick={Utils.functional.chainVoid(onClose, onCopyContent)} />
+        )}
       </Preview.Footer>
     </Preview>
   );

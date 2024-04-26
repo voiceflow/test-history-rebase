@@ -41,8 +41,11 @@ export const ComponentItemNameContainer = styled(ItemNameContainer)<{
     isDraggingPreview &&
     isDraggingXEnabled &&
     css`
-      box-shadow: 0 8px 16px 0 rgba(17, 49, 96, 0.16), 0 0 0 1px rgba(17, 49, 96, 0.06);
-      background-image: linear-gradient(to bottom, rgba(238, 244, 246, 0.3), rgba(238, 244, 246, 0.6)), linear-gradient(to bottom, #ffffff, #ffffff);
+      box-shadow:
+        0 8px 16px 0 rgba(17, 49, 96, 0.16),
+        0 0 0 1px rgba(17, 49, 96, 0.06);
+      background-image: linear-gradient(to bottom, rgba(238, 244, 246, 0.3), rgba(238, 244, 246, 0.6)),
+        linear-gradient(to bottom, #ffffff, #ffffff);
       transform: rotate(-2deg);
       width: 100%;
     `}

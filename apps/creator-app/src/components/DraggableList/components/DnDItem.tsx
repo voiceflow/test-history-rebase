@@ -1,7 +1,8 @@
-import { ContextMenu, ContextMenuProps, MenuTypes } from '@voiceflow/ui';
+import type { ContextMenuProps, MenuTypes } from '@voiceflow/ui';
+import { ContextMenu } from '@voiceflow/ui';
 import React from 'react';
 
-import { DnDHandlers, InternalItem } from '../types';
+import type { DnDHandlers, InternalItem } from '../types';
 import useDragAndDrop from '../useDragAndDrop';
 
 type InternalWithoutType<I> = Omit<InternalItem<I>, 'type'>;
@@ -36,7 +37,8 @@ export type DnDItemProps<I> = InternalItem<I> & {
   getItemKey: (item: I) => string;
   partialDrag?: boolean;
   itemComponent: React.NamedExoticComponent<
-    React.PropsWithoutRef<ItemComponentProps<I> & (ItemComponentHandlers<I> | MappedItemComponentHandlers<I>)> & React.RefAttributes<HTMLElement>
+    React.PropsWithoutRef<ItemComponentProps<I> & (ItemComponentHandlers<I> | MappedItemComponentHandlers<I>)> &
+      React.RefAttributes<HTMLElement>
   >;
   contextMenuOptions?: ContextMenuOption<I>[];
   contextMenuProps?: Partial<ContextMenuProps<I>>;
@@ -64,18 +66,28 @@ const DnDItem = <P extends DnDItemProps<any>>({
   disableReorderingWhileDraggingX,
   ...props
 }: P) => {
-  const [{ isDragging, isDraggingXEnabled }, connectedRootRef, connectedDragRef] = useDragAndDrop(type, handlers, props, {
-    getItemKey,
-    partialDrag,
-    unmountableDuringDrag,
-    disableReorderingWhileDraggingX,
-  });
+  const [{ isDragging, isDraggingXEnabled }, connectedRootRef, connectedDragRef] = useDragAndDrop(
+    type,
+    handlers,
+    props,
+    {
+      getItemKey,
+      partialDrag,
+      unmountableDuringDrag,
+      disableReorderingWhileDraggingX,
+    }
+  );
 
   const menuOptions = React.useMemo(() => {
     const options = [];
 
     if (contextMenuOptions) {
-      options.push(...contextMenuOptions.map((option) => ({ ...option, onClick: option.onClick ? () => option.onClick?.(props) : undefined })));
+      options.push(
+        ...contextMenuOptions.map((option) => ({
+          ...option,
+          onClick: option.onClick ? () => option.onClick?.(props) : undefined,
+        }))
+      );
     }
 
     if (withContextMenuDuplicate) {
@@ -102,7 +114,9 @@ const DnDItem = <P extends DnDItemProps<any>>({
   if (menuOptions.length) {
     return (
       <ContextMenu selfDismiss={contextMenuSelfDismiss} {...contextMenuProps} options={menuOptions}>
-        {({ isOpen, onContextMenu }) => <Item {...itemProps} onContextMenu={onContextMenu} isContextMenuOpen={isOpen} />}
+        {({ isOpen, onContextMenu }) => (
+          <Item {...itemProps} onContextMenu={onContextMenu} isContextMenuOpen={isOpen} />
+        )}
       </ContextMenu>
     );
   }

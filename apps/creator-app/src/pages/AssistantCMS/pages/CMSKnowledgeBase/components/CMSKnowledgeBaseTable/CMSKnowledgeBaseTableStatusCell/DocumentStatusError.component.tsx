@@ -7,7 +7,7 @@ import { Designer } from '@/ducks';
 import { useDispatch } from '@/hooks/store.hook';
 import { stopPropagation } from '@/utils/handler.util';
 
-import { ICMSKnowledgeBaseTableStatusCell } from './CMSKnowledgeBaseTableStatusCell.interface';
+import type { ICMSKnowledgeBaseTableStatusCell } from './CMSKnowledgeBaseTableStatusCell.interface';
 
 export const DocumentStatusError: React.FC<ICMSKnowledgeBaseTableStatusCell> = ({ item }) => {
   const retryOne = useDispatch(Designer.KnowledgeBase.Document.effect.retryOne);
@@ -36,7 +36,10 @@ export const DocumentStatusError: React.FC<ICMSKnowledgeBaseTableStatusCell> = (
         <Box direction="column" gap={6}>
           <Text variant="caption">{content}</Text>
 
-          <Tooltip.Button label="Retry" onClick={stopPropagation(Utils.functional.chainVoid(onClose, () => retryOne(item.id)))} />
+          <Tooltip.Button
+            label="Retry"
+            onClick={stopPropagation(Utils.functional.chainVoid(onClose, () => retryOne(item.id)))}
+          />
         </Box>
       )}
     </Tooltip>

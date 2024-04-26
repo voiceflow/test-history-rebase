@@ -1,5 +1,6 @@
 import { Utils } from '@voiceflow/common';
-import { Members, usePersistFunction } from '@voiceflow/ui';
+import type { Members } from '@voiceflow/ui';
+import { usePersistFunction } from '@voiceflow/ui';
 
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector } from '@/hooks';
@@ -13,7 +14,9 @@ export const useDedupeInvites = () => {
     const newInvitees = emails.filter((email) => !inviteesMap[email] && !membersMap[email]);
 
     if (!newInvitees.length) {
-      throw new Error(emails.length > 1 ? 'Members are already in this workspace.' : `Member is already in this workspace.`);
+      throw new Error(
+        emails.length > 1 ? 'Members are already in this workspace.' : 'Member is already in this workspace.'
+      );
     }
 
     return newInvitees;

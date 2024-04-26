@@ -29,15 +29,21 @@ export class CacheService {
     this.redis = this.redisService.getClient();
   }
 
-  setStrategyFactory<K extends BaseKeyExtractor, A extends BaseAdapter | undefined = undefined>(options: Options<K, A>): SetStrategy<K, A> {
+  setStrategyFactory<K extends BaseKeyExtractor, A extends BaseAdapter | undefined = undefined>(
+    options: Options<K, A>
+  ): SetStrategy<K, A> {
     return new SetStrategy<K, A>({ redis: this.redis, ...options });
   }
 
-  hashStrategyFactory<K extends BaseKeyExtractor, A extends BaseHashAdapter | undefined = undefined>(options: Options<K, A>): HashStrategy<K, A> {
+  hashStrategyFactory<K extends BaseKeyExtractor, A extends BaseHashAdapter | undefined = undefined>(
+    options: Options<K, A>
+  ): HashStrategy<K, A> {
     return new HashStrategy<K, A>({ redis: this.redis, ...options });
   }
 
-  keyValueStrategyFactory<K extends BaseKeyExtractor, A extends BaseAdapter | undefined = undefined>(options: Options<K, A>): KeyValueStrategy<K, A> {
+  keyValueStrategyFactory<K extends BaseKeyExtractor, A extends BaseAdapter | undefined = undefined>(
+    options: Options<K, A>
+  ): KeyValueStrategy<K, A> {
     return new KeyValueStrategy<K, A>({ redis: this.redis, ...options });
   }
 }

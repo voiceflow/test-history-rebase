@@ -1,4 +1,4 @@
-import { UtteranceText } from '@voiceflow/dtos';
+import type { UtteranceText } from '@voiceflow/dtos';
 import { tid } from '@voiceflow/style';
 import { Box, Gauge, Scroll, Section, Text, Tooltip } from '@voiceflow/ui-next';
 import React, { useMemo } from 'react';
@@ -37,7 +37,10 @@ export const IntentUtterancesSection: React.FC<IIntentUtterancesSection> = ({
   };
 
   const utterancesSize = utterances.length;
-  const notEmptyUtterances = useMemo(() => utterances.filter((utterance) => !isUtteranceTextEmpty(utterance.text)), [utterances]);
+  const notEmptyUtterances = useMemo(
+    () => utterances.filter((utterance) => !isUtteranceTextEmpty(utterance.text)),
+    [utterances]
+  );
 
   return (
     <>
@@ -51,7 +54,10 @@ export const IntentUtterancesSection: React.FC<IIntentUtterancesSection> = ({
         primaryContent={
           utterancesSize ? (
             <Box width="42px">
-              <Gauge level={getIntentConfidenceLevel(notEmptyUtterances.length)} progress={getIntentConfidenceProgress(notEmptyUtterances.length)} />
+              <Gauge
+                level={getIntentConfidenceLevel(notEmptyUtterances.length)}
+                progress={getIntentConfidenceProgress(notEmptyUtterances.length)}
+              />
             </Box>
           ) : undefined
         }
@@ -78,7 +84,12 @@ export const IntentUtterancesSection: React.FC<IIntentUtterancesSection> = ({
           )}
         </Tooltip>
 
-        <Section.Header.Button iconName="Plus" onClick={stopPropagation(onUtteranceAdd)} testID={tid(TEST_ID, 'add')} tabIndex={-1} />
+        <Section.Header.Button
+          iconName="Plus"
+          onClick={stopPropagation(onUtteranceAdd)}
+          testID={tid(TEST_ID, 'add')}
+          tabIndex={-1}
+        />
       </Section.Header.Container>
 
       <Scroll style={{ display: 'block' }} maxHeight="394px">

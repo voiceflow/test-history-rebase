@@ -2,9 +2,10 @@ import React from 'react';
 
 import { useCanvasNodeFilter } from '@/hooks';
 import { getManager } from '@/pages/Canvas/managers/utils';
-import { StepItem } from '@/pages/Project/components/StepMenu/constants';
+import type { StepItem } from '@/pages/Project/components/StepMenu/constants';
 
-import StepSubMenuItem, { StepSubItem } from './StepSubMenuItem';
+import type { StepSubItem } from './StepSubMenuItem';
+import StepSubMenuItem from './StepSubMenuItem';
 import SubMenu from './SubMenu';
 
 interface StepSubMenuProps {

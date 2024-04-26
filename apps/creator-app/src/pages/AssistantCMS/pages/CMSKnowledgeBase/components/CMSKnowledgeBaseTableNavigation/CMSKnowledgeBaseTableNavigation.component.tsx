@@ -5,7 +5,7 @@ import { useAtomValue, useSetAtom } from 'jotai';
 import pluralize from 'pluralize';
 import React from 'react';
 
-import { UpgradeTooltipPlanPermission } from '@/config/planPermission';
+import type { UpgradeTooltipPlanPermission } from '@/config/planPermission';
 import { Permission } from '@/constants/permissions';
 import { Designer } from '@/ducks';
 import { useGetAtomValue } from '@/hooks/atom.hook';
@@ -61,7 +61,7 @@ export const CMSKnowledgeBaseTableNavigation: React.FC = () => {
     const { size } = getAtomValue(tableState.selectedIDs);
 
     confirmModal.openVoid({
-      body: `Deleted data sources won’t be recoverable. Please confirm that you want to continue.`,
+      body: 'Deleted data sources won’t be recoverable. Please confirm that you want to continue.',
       title: `Delete data sources (${size})`,
       confirm: onConfirmDelete,
       confirmButtonLabel: 'Delete forever',

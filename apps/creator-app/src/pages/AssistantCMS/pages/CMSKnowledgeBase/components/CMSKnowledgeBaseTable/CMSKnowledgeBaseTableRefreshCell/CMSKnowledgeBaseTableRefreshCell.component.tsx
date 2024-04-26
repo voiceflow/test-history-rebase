@@ -3,7 +3,7 @@ import { Utils } from '@voiceflow/common';
 import { Box, Link, Menu, MenuItem, notify, Popper, Text, Tokens, Tooltip } from '@voiceflow/ui-next';
 import React from 'react';
 
-import { UpgradeTooltipPlanPermission } from '@/config/planPermission';
+import type { UpgradeTooltipPlanPermission } from '@/config/planPermission';
 import { Permission } from '@/constants/permissions';
 import { Designer } from '@/ducks';
 import { useDispatch, useSelector } from '@/hooks';
@@ -13,7 +13,7 @@ import { stopPropagation } from '@/utils/handler.util';
 
 import { refreshRateOptions } from '../../../CMSKnowledgeBase.constants';
 import { captionStyles } from './CMSKnowledgeBaseTableRefreshCell.css';
-import { ICMSKnowledgeBaseTableRefreshCell } from './CMSKnowledgeBaseTableRefreshCell.interface';
+import type { ICMSKnowledgeBaseTableRefreshCell } from './CMSKnowledgeBaseTableRefreshCell.interface';
 
 export const CMSKnowledgeBaseTableRefreshCell: React.FC<ICMSKnowledgeBaseTableRefreshCell> = ({ item }) => {
   const refreshRatePermission = usePermission(Permission.KB_REFRESH_RATE);
@@ -25,7 +25,9 @@ export const CMSKnowledgeBaseTableRefreshCell: React.FC<ICMSKnowledgeBaseTableRe
   const hasNeededIntegrations = React.useMemo(
     () =>
       item?.data?.type === BaseModels.Project.KnowledgeBaseDocumentType.URL && item.data.source
-        ? integrations.find((integration) => integration.type === (item.data as BaseModels.Project.KnowledgeBaseURL)?.source)
+        ? integrations.find(
+            (integration) => integration.type === (item.data as BaseModels.Project.KnowledgeBaseURL)?.source
+          )
         : true,
     [integrations, item]
   );
@@ -44,7 +46,7 @@ export const CMSKnowledgeBaseTableRefreshCell: React.FC<ICMSKnowledgeBaseTableRe
 
   const onSetRefreshRate = async (refreshRate: BaseModels.Project.KnowledgeBaseDocumentRefreshRate) => {
     await patchManyRefreshRate([item.id], refreshRate);
-    notify.short.success(`Updated`, { delay: 2000, isClosable: false });
+    notify.short.success('Updated', { delay: 2000, isClosable: false });
   };
 
   const upgradeTooltip =
@@ -78,7 +80,9 @@ export const CMSKnowledgeBaseTableRefreshCell: React.FC<ICMSKnowledgeBaseTableRe
             <Box direction="column">
               <Tooltip.Caption>{upgradeTooltip.description}</Tooltip.Caption>
               {upgradeTooltip.upgradeButtonText && (
-                <Tooltip.Button onClick={() => upgradeTooltip.onUpgrade(store.dispatch)}>{upgradeTooltip.title}</Tooltip.Button>
+                <Tooltip.Button onClick={() => upgradeTooltip.onUpgrade(store.dispatch)}>
+                  {upgradeTooltip.title}
+                </Tooltip.Button>
               )}
             </Box>
           )}
@@ -140,7 +144,11 @@ export const CMSKnowledgeBaseTableRefreshCell: React.FC<ICMSKnowledgeBaseTableRe
       {({ onClose }) => (
         <Menu minWidth={0}>
           {refreshRateOptions.map(({ label, value }) => (
-            <MenuItem key={label} label={label} onClick={stopPropagation(Utils.functional.chainVoid(() => onSetRefreshRate(value), onClose))} />
+            <MenuItem
+              key={label}
+              label={label}
+              onClick={stopPropagation(Utils.functional.chainVoid(() => onSetRefreshRate(value), onClose))}
+            />
           ))}
         </Menu>
       )}

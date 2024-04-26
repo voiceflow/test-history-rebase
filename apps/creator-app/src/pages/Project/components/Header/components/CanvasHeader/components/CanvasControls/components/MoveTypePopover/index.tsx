@@ -14,8 +14,16 @@ interface Option {
 }
 
 const OPTIONS: Option[] = [
-  { id: ControlScheme.MOUSE, label: 'Mouse', description: 'Click and drag to pan the canvas. Zoom by scrolling the mouse wheel.' },
-  { id: ControlScheme.TRACKPAD, label: 'Trackpad', description: 'Pan the canvas by sliding two fingers on the trackpad. Zoom by pinching.' },
+  {
+    id: ControlScheme.MOUSE,
+    label: 'Mouse',
+    description: 'Click and drag to pan the canvas. Zoom by scrolling the mouse wheel.',
+  },
+  {
+    id: ControlScheme.TRACKPAD,
+    label: 'Trackpad',
+    description: 'Pan the canvas by sliding two fingers on the trackpad. Zoom by pinching.',
+  },
 ];
 
 interface MoveTypePopoverProps {

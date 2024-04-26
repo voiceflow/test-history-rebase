@@ -3,7 +3,7 @@ import React from 'react';
 import { StepLabelVariant } from '@/constants/canvas';
 import { ClassName } from '@/styles/constants';
 
-import { ItemProps } from '../types';
+import type { ItemProps } from '../types';
 import NewLineAttachmentContainer from './NewLineAttachmentContainer';
 import StepIcon from './StepIcon';
 import Container from './StepItemContainer';
@@ -48,7 +48,9 @@ const StepItem: React.FC<ItemProps> = ({
       <>
         {prefix}
 
-        {v2 && icon && <StepIcon palette={palette} iconColor={iconColor} icon={icon} iconSize={iconSize} style={iconStyle} />}
+        {v2 && icon && (
+          <StepIcon palette={palette} iconColor={iconColor} icon={icon} iconSize={iconSize} style={iconStyle} />
+        )}
 
         {!v2 && <StepIcon palette={palette} iconColor={iconColor} icon={icon} iconSize={iconSize} style={iconStyle} />}
 

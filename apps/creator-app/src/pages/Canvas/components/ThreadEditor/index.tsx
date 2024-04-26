@@ -1,4 +1,4 @@
-import { Thread } from '@voiceflow/dtos';
+import type { Thread } from '@voiceflow/dtos';
 import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { stopPropagation, useDidUpdateEffect, useOnClickOutside } from '@voiceflow/ui';
 import cn from 'classnames';
@@ -12,7 +12,8 @@ import { EngineContext, FocusThreadContext } from '@/pages/Canvas/contexts';
 import { useCommentingMode } from '@/pages/Project/hooks';
 import { ClassName } from '@/styles/constants';
 
-import { CommentEditor, Container, EditableCommentRef, NewComment, ReplySection, ThreadCommentContainer } from './components';
+import type { EditableCommentRef } from './components';
+import { CommentEditor, Container, NewComment, ReplySection, ThreadCommentContainer } from './components';
 import { NEW_THREAD_EDITOR } from './constants';
 
 export type { EditableCommentRef } from './components';
@@ -32,7 +33,9 @@ const ThreadEditor: React.FC<ThreadEditorProps> = ({ thread, replyRef, isFocused
   const focusThread = React.useContext(FocusThreadContext)!;
 
   const isCanvasOnly = useSelector(UI.selectors.isCanvasOnly);
-  const comments = useSelector(Designer.Thread.ThreadComment.selectors.getAllByThreadID)({ threadID: thread?.id ?? null });
+  const comments = useSelector(Designer.Thread.ThreadComment.selectors.getAllByThreadID)({
+    threadID: thread?.id ?? null,
+  });
 
   const isCommentingMode = useCommentingMode();
 

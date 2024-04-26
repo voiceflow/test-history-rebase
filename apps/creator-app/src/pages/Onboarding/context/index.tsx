@@ -1,6 +1,6 @@
 import { datadogRum } from '@datadog/browser-rum';
-import * as stripeJs from '@stripe/stripe-js';
-import { Nullable } from '@voiceflow/common';
+import type * as stripeJs from '@stripe/stripe-js';
+import type { Nullable } from '@voiceflow/common';
 import { BillingPeriod, PlanType } from '@voiceflow/internal';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
@@ -29,14 +29,13 @@ import { getErrorMessage } from '@/utils/error';
 import { isAdminUserRole } from '@/utils/role';
 
 import { SELECTABLE_WORKSPACE_SPECIFIC_FLOW_TYPES, STEP_META, StepID } from '../constants';
-import {
+import type {
   OnboardingContextActions,
   OnboardingContextProps,
   OnboardingContextState,
   OnboardingProviderProps,
-  OnboardingType,
-  SpecificFlowType,
 } from './types';
+import { OnboardingType, SpecificFlowType } from './types';
 import * as OnboardingUtils from './utils';
 
 const UPGRADING_WORKSPACE_SPECIFIC_FLOWS = new Set([
@@ -137,7 +136,9 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
     () =>
       workspaces.some(
         (workspace) =>
-          Normal.denormalize(workspace.members).some((member) => member.creator_id === account.creator_id && isAdminUserRole(member.role)) &&
+          Normal.denormalize(workspace.members).some(
+            (member) => member.creator_id === account.creator_id && isAdminUserRole(member.role)
+          ) &&
           // to fix the issue when the payment step is shown after coupon code was used
           // we are creating workspace (name = Personal) during the signup if the coupon code is used
           (!isLoginFlow || !(workspace.name === 'Personal' && workspace.plan !== PlanType.STARTER))
@@ -150,7 +151,9 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
       workspaces.some((workspace) => {
         if (workspace.plan !== PlanType.ENTERPRISE) return false;
 
-        return Normal.denormalize(workspace.members).some((member) => member.creator_id === account.creator_id && isAdminUserRole(member.role));
+        return Normal.denormalize(workspace.members).some(
+          (member) => member.creator_id === account.creator_id && isAdminUserRole(member.role)
+        );
       }),
     [workspaces, account.creator_id]
   );
@@ -170,7 +173,8 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
     isFirstSession,
     hasPresetSeats: !!seats,
   });
-  const selectableWorkspaceInPayment = !!query.choose_workspace || SELECTABLE_WORKSPACE_SPECIFIC_FLOW_TYPES.includes(specificFlowType);
+  const selectableWorkspaceInPayment =
+    !!query.choose_workspace || SELECTABLE_WORKSPACE_SPECIFIC_FLOW_TYPES.includes(specificFlowType);
 
   const [state, actions] = useSmartReducer({
     selectableWorkspace: selectableWorkspaceInPayment,
@@ -349,10 +353,14 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
               image: null,
               listID: null,
               members: [],
-              locales: Platform.Voiceflow.CONFIG.types[Platform.Constants.ProjectType.CHAT].project.locale.defaultLocales,
+              locales:
+                Platform.Voiceflow.CONFIG.types[Platform.Constants.ProjectType.CHAT].project.locale.defaultLocales,
               aiAssistSettings: await getAIAssistSettings({ disclaimer: false }),
             },
-            modality: { type: Platform.Constants.ProjectType.CHAT, platform: Platform.Constants.PlatformType.VOICEFLOW },
+            modality: {
+              type: Platform.Constants.ProjectType.CHAT,
+              platform: Platform.Constants.PlatformType.VOICEFLOW,
+            },
             tracking: { onboarding: true },
             templateTag: `onboarding:${Platform.Constants.ProjectType.CHAT}`,
           });
@@ -373,7 +381,12 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
         if (!IS_PRIVATE_CLOUD && hasWorkspaces && !isAdminOfEnterprisePlan) {
           const message = `Your Voiceflow ${state.paymentMeta.plan} subscription has been activated.`;
 
-          successModal.openVoid({ header: 'Payment Successful', message, icon: receiptGraphic, buttonVariant: ButtonVariant.TERTIARY });
+          successModal.openVoid({
+            header: 'Payment Successful',
+            message,
+            icon: receiptGraphic,
+            buttonVariant: ButtonVariant.TERTIARY,
+          });
         }
       }
       toast.success('Successfully created workspace');
@@ -392,7 +405,11 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
   const handleLastStep = async (currentStepID: StepID) => {
     let workspaceId: string | null = null;
 
-    if (currentStepID === StepID.CREATE_WORKSPACE || currentStepID === StepID.PAYMENT || currentStepID === StepID.SELECT_CHANNEL) {
+    if (
+      currentStepID === StepID.CREATE_WORKSPACE ||
+      currentStepID === StepID.PAYMENT ||
+      currentStepID === StepID.SELECT_CHANNEL
+    ) {
       const workspace = await finishCreateOnboarding();
       workspaceId = workspace?.id ?? null;
     } else if (currentStepID === StepID.JOIN_WORKSPACE) {
@@ -479,9 +496,13 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
   const alreadyHasFreeWorkspace = workspaces.length > 0;
 
   const redirectToDashboard = isLoginFlow && !sendingRequests && alreadyHasFreeWorkspace;
-  return redirectToDashboard ? <Redirect to={Path.DASHBOARD} /> : <OnboardingContext.Provider value={api}>{children}</OnboardingContext.Provider>;
+  return redirectToDashboard ? (
+    <Redirect to={Path.DASHBOARD} />
+  ) : (
+    <OnboardingContext.Provider value={api}>{children}</OnboardingContext.Provider>
+  );
 };
 
-export const OnboardingProvider = withProvider(Payment.legacy.PaymentProvider)(UnconnectedOnboardingProvider) as React.FC<
-  React.PropsWithChildren<OnboardingProviderProps>
->;
+export const OnboardingProvider = withProvider(Payment.legacy.PaymentProvider)(
+  UnconnectedOnboardingProvider
+) as React.FC<React.PropsWithChildren<OnboardingProviderProps>>;

@@ -1,13 +1,15 @@
-import { BaseModels, BaseProject, BaseVersion } from '@voiceflow/base-types';
-import { AnyRecord, Utils } from '@voiceflow/common';
-import * as Platform from '@voiceflow/platform-config/backend';
+import type { BaseModels, BaseProject, BaseVersion } from '@voiceflow/base-types';
+import type { AnyRecord } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
+import type * as Platform from '@voiceflow/platform-config/backend';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import _ from 'lodash';
-import { Optional } from 'utility-types';
+import type { Optional } from 'utility-types';
 
 import { HEARTBEAT_EXPIRE_TIMEOUT } from '@/constants';
 
-import { AbstractControl, ControlOptions } from '../../control';
+import type { ControlOptions } from '../../control';
+import { AbstractControl } from '../../control';
 import AccessCache from '../utils/accessCache';
 import ProjectMemberService from './member';
 
@@ -70,7 +72,10 @@ class ProjectService extends AbstractControl {
     return Object.fromEntries(idPairs.map(([, diagramID], index) => [diagramID, diagramsViewers[index]]));
   }
 
-  public async get<P extends AnyRecord, M extends AnyRecord>(creatorID: number, projectID: string): Promise<BaseModels.Project.Model<P, M>> {
+  public async get<P extends AnyRecord, M extends AnyRecord>(
+    creatorID: number,
+    projectID: string
+  ): Promise<BaseModels.Project.Model<P, M>> {
     const client = await this.services.voiceflow.client.getByUserID(creatorID);
 
     return client.project.get(projectID);
@@ -106,7 +111,9 @@ class ProjectService extends AbstractControl {
   public async create(creatorID: number, templateID: string, data: Realtime.NewProject): Promise<Realtime.DBProject> {
     const client = await this.services.voiceflow.client.getByUserID(creatorID);
 
-    return client.project.platform<Realtime.DBProject>(Realtime.legacyPlatformToProjectType(data.platform).platform).duplicate(templateID, data);
+    return client.project
+      .platform<Realtime.DBProject>(Realtime.legacyPlatformToProjectType(data.platform).platform)
+      .duplicate(templateID, data);
   }
 
   public async duplicate(
@@ -115,13 +122,21 @@ class ProjectService extends AbstractControl {
     data: Optional<Pick<Realtime.DBProject, 'teamID' | 'name' | '_version' | 'platform'>, 'name' | 'platform'>
   ): Promise<Realtime.AnyDBProject> {
     const client = await this.services.voiceflow.client.getByUserID(creatorID);
-    const platform = data.platform ? Realtime.legacyPlatformToProjectType(data.platform).platform : await this.getPlatform(projectID);
+    const platform = data.platform
+      ? Realtime.legacyPlatformToProjectType(data.platform).platform
+      : await this.getPlatform(projectID);
 
     // do not pass platform to duplicate to do not migrate projects from "chat" to "voice"
-    return client.project.platform<Realtime.AnyDBProject>(platform).duplicate(projectID, Utils.object.omit(data, ['platform']));
+    return client.project
+      .platform<Realtime.AnyDBProject>(platform)
+      .duplicate(projectID, Utils.object.omit(data, ['platform']));
   }
 
-  public async patch(creatorID: number, projectID: string, { _id, ...data }: Partial<Realtime.DBProject>): Promise<void> {
+  public async patch(
+    creatorID: number,
+    projectID: string,
+    { _id, ...data }: Partial<Realtime.DBProject>
+  ): Promise<void> {
     const client = await this.services.voiceflow.client.getByUserID(creatorID);
     await client.project.update(projectID, data);
   }

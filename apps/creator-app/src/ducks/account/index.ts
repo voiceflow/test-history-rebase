@@ -1,9 +1,10 @@
 import update from 'immutability-helper';
 
-import { RootReducer } from '@/store/types';
+import type { RootReducer } from '@/store/types';
 
-import { AccountAction, AnyAccountAction } from './actions';
-import { AccountState } from './types';
+import type { AnyAccountAction } from './actions';
+import { AccountAction } from './actions';
+import type { AccountState } from './types';
 
 export * from './actions';
 export { STATE_KEY } from './constants';

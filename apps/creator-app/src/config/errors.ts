@@ -1,14 +1,18 @@
-import { Nullish, Struct } from '@voiceflow/common';
-import * as Platform from '@voiceflow/platform-config';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type { Nullish, Struct } from '@voiceflow/common';
+import type * as Platform from '@voiceflow/platform-config';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 
 export class StateInvariantError<T extends Struct = {}> extends Error {
-  constructor(message: string, public data?: T) {
+  constructor(
+    message: string,
+    public data?: T
+  ) {
     super(message);
   }
 }
 
-export const error = <T extends Struct = {}>(message: string, data?: T): StateInvariantError<T> => new StateInvariantError<T>(message, data);
+export const error = <T extends Struct = {}>(message: string, data?: T): StateInvariantError<T> =>
+  new StateInvariantError<T>(message, data);
 
 export const noActiveCreatorID = (): StateInvariantError => error('no active creator ID');
 
@@ -76,23 +80,23 @@ export const assertDomainID: (id: Nullish<string>) => asserts id is string = (id
   assert(id, noActiveDomainID());
 };
 
-export const assertPlatform: (platform: Nullish<Platform.Constants.PlatformType>) => asserts platform is Platform.Constants.PlatformType = (
-  platform
-) => {
+export const assertPlatform: (
+  platform: Nullish<Platform.Constants.PlatformType>
+) => asserts platform is Platform.Constants.PlatformType = (platform) => {
   assert(platform, noActivePlatform());
 };
 
-export const assertProjectList: (projectListID: string, product: Nullish<Realtime.ProjectList>) => asserts product is Realtime.ProjectList = (
-  projectListID,
-  projectList
-) => {
+export const assertProjectList: (
+  projectListID: string,
+  product: Nullish<Realtime.ProjectList>
+) => asserts product is Realtime.ProjectList = (projectListID, projectList) => {
   assert(projectList, noProjectListByID(projectListID));
 };
 
-export const assertProject: (projectID: string, project: Nullish<Realtime.AnyProject>) => asserts project is Realtime.AnyProject = (
-  projectID,
-  project
-) => {
+export const assertProject: (
+  projectID: string,
+  project: Nullish<Realtime.AnyProject>
+) => asserts project is Realtime.AnyProject = (projectID, project) => {
   assert(project, noProjectByID(projectID));
 };
 

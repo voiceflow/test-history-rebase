@@ -8,7 +8,11 @@ interface FilterContextType {
 
 export const FilterContext = React.createContext<FilterContextType>({ search: '', status: '' });
 
-export const FilterContextProvider: React.FC<React.PropsWithChildren<FilterContextType>> = ({ search, status, children }) => {
+export const FilterContextProvider: React.FC<React.PropsWithChildren<FilterContextType>> = ({
+  search,
+  status,
+  children,
+}) => {
   const api = useContextApi({ search, status });
 
   return <FilterContext.Provider value={api}>{children}</FilterContext.Provider>;

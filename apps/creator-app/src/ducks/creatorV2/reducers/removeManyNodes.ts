@@ -110,7 +110,9 @@ export const removeManyNodesReverter = createReverter(
       ];
     }
 
-    const portsIDs = nodeIDs.flatMap((nodeID) => Realtime.Utils.port.flattenAllPorts(portsByNodeIDSelector(state, { id: nodeID })));
+    const portsIDs = nodeIDs.flatMap((nodeID) =>
+      Realtime.Utils.port.flattenAllPorts(portsByNodeIDSelector(state, { id: nodeID }))
+    );
     const ports = allPortsByIDsSelector(state, { ids: portsIDs });
     const links = uniqBy(
       nodeIDs.flatMap((nodeID) => linksByNodeIDSelector(state, { id: nodeID })),
@@ -127,5 +129,8 @@ export const removeManyNodesReverter = createReverter(
     });
   },
 
-  [...DIAGRAM_INVALIDATORS, ...createManyNodesRemovalInvalidators<Realtime.node.RemoveManyPayload>((origin) => origin.nodes)]
+  [
+    ...DIAGRAM_INVALIDATORS,
+    ...createManyNodesRemovalInvalidators<Realtime.node.RemoveManyPayload>((origin) => origin.nodes),
+  ]
 );

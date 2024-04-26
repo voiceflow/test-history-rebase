@@ -1,12 +1,16 @@
-import { SvgIcon, swallowEvent, TippyTooltip, TippyTooltipProps } from '@voiceflow/ui';
+import type { TippyTooltipProps } from '@voiceflow/ui';
+import { SvgIcon, swallowEvent, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import UpgradePopper, { UpgradePopperProps } from '@/components/UpgradePopper';
-import UpgradeTooltip, { UpgradeTooltipProps } from '@/components/UpgradeTooltip';
-import { PlanPermissionKey, PlanPermissions, UpgradeTooltipPlanPermission } from '@/config/planPermission';
+import type { UpgradePopperProps } from '@/components/UpgradePopper';
+import UpgradePopper from '@/components/UpgradePopper';
+import type { UpgradeTooltipProps } from '@/components/UpgradeTooltip';
+import UpgradeTooltip from '@/components/UpgradeTooltip';
+import type { PlanPermissionKey, PlanPermissions, UpgradeTooltipPlanPermission } from '@/config/planPermission';
 import type { UpgradePopperRolePermission, UpgradeTooltipRolePermission } from '@/config/rolePermission';
 import { usePermission } from '@/hooks/permission';
-import { getDefaultWarnMessage, PermissionConfig } from '@/utils/permission';
+import type { PermissionConfig } from '@/utils/permission';
+import { getDefaultWarnMessage } from '@/utils/permission';
 
 import * as S from './styles';
 
@@ -26,9 +30,8 @@ interface UnknownData {
   data?: unknown;
 }
 
-type PlanPermissionDataProps<P extends PlanPermissionKey> = PlanPermissions[P] extends UpgradeTooltipPlanPermission<infer Data>
-  ? { data: Data }
-  : UnknownData;
+type PlanPermissionDataProps<P extends PlanPermissionKey> =
+  PlanPermissions[P] extends UpgradeTooltipPlanPermission<infer Data> ? { data: Data } : UnknownData;
 
 const getUpgradePopper = <P extends PlanPermissionKey>(permissionConfig: PermissionConfig<P>, data: any) => {
   if (!permissionConfig.planAllowed && permissionConfig.planConfig && 'upgradePopper' in permissionConfig.planConfig) {

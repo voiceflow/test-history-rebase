@@ -1,10 +1,10 @@
-import { Nullable } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
 import React from 'react';
 
-import { DragPreviewComponentProps, ItemComponentProps } from '@/components/DraggableList';
+import type { DragPreviewComponentProps, ItemComponentProps } from '@/components/DraggableList';
 
 import ComponentItemName from '../ComponentItemName';
-import { ComponentItem } from '../hooks';
+import type { ComponentItem } from '../hooks';
 
 export interface FolderItemProps extends ItemComponentProps<ComponentItem>, DragPreviewComponentProps {
   isSearch: boolean;

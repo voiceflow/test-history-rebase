@@ -8,7 +8,12 @@ import { useSelector } from '@/hooks/store.hook';
 import { VariableMenu } from '../VariableMenu/VariableMenu.component';
 import type { IVariableSelect } from './VariableSelect.interface';
 
-export const VariableSelect: React.FC<IVariableSelect> = ({ onSelect, variableID, menuProps, excludeVariableIDs: excludeVariableIDsProp }) => {
+export const VariableSelect: React.FC<IVariableSelect> = ({
+  onSelect,
+  variableID,
+  menuProps,
+  excludeVariableIDs: excludeVariableIDsProp,
+}) => {
   const variable = useSelector(Designer.Variable.selectors.oneByID, { id: variableID });
 
   const variableEditModal = useVariableEditModal();

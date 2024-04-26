@@ -7,9 +7,9 @@ import { Path } from '@/config/routes';
 import { resetAccount, updateAccount } from '@/ducks/account/actions';
 import { goTo, goToDashboardWithSearch, goToLogin, goToOnboarding } from '@/ducks/router/actions';
 import { locationSelector } from '@/ducks/router/selectors';
-import * as Models from '@/models';
-import { Query } from '@/models';
-import { SyncThunk, Thunk } from '@/store/types';
+import type * as Models from '@/models';
+import type { Query } from '@/models';
+import type { SyncThunk, Thunk } from '@/store/types';
 import * as Cookies from '@/utils/cookies';
 import { generateID } from '@/utils/env';
 import * as QueryUtil from '@/utils/query';
@@ -214,7 +214,12 @@ export const ssoSignIn =
 
     const userAccount = await dispatch(getUserAccount());
 
-    const user: Models.Account = { ...userAccount, created: userAccount.createdAt, creator_id: userAccount.creatorID, first_login: isNewUser };
+    const user: Models.Account = {
+      ...userAccount,
+      created: userAccount.createdAt,
+      creator_id: userAccount.creatorID,
+      first_login: isNewUser,
+    };
 
     dispatch(setSession({ user, token, redirectTo: options?.redirectTo }));
   };
@@ -250,13 +255,17 @@ export const signup =
   };
 
 export const googleLogin = (): Thunk => async () => {
-  const url = await client.auth.v1.sso.getGoogleLoginURL(`${CREATOR_APP_ENDPOINT}${Path.LOGIN_SSO_CALLBACK}${window.location.search}`);
+  const url = await client.auth.v1.sso.getGoogleLoginURL(
+    `${CREATOR_APP_ENDPOINT}${Path.LOGIN_SSO_CALLBACK}${window.location.search}`
+  );
 
   window.location.assign(url);
 };
 
 export const facebookLogin = (): Thunk => async () => {
-  const url = await client.auth.v1.sso.getFacebookLoginURL(`${CREATOR_APP_ENDPOINT}${Path.LOGIN_SSO_CALLBACK}${window.location.search}`);
+  const url = await client.auth.v1.sso.getFacebookLoginURL(
+    `${CREATOR_APP_ENDPOINT}${Path.LOGIN_SSO_CALLBACK}${window.location.search}`
+  );
 
   window.location.assign(url);
 };
@@ -266,5 +275,7 @@ export const getSamlLoginURL =
   async () => {
     if (!Utils.emails.isValidEmail(email)) return null;
 
-    return client.auth.v1.sso.getSaml2LoginURL(email, `${CREATOR_APP_ENDPOINT}${Path.LOGIN_SSO_CALLBACK}${window.location.search}`).catch(() => null);
+    return client.auth.v1.sso
+      .getSaml2LoginURL(email, `${CREATOR_APP_ENDPOINT}${Path.LOGIN_SSO_CALLBACK}${window.location.search}`)
+      .catch(() => null);
   };

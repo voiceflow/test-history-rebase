@@ -3,7 +3,7 @@ import { Config as ConfigUtils } from '@platform-config/configs/utils';
 import { Utils } from '@voiceflow/common';
 import { serializeToText } from '@voiceflow/slate-serializer/text';
 
-import * as Models from '../models';
+import type * as Models from '../models';
 
 export const factory = ({ content = '' }: Base.Utils.Prompt.FactoryOptions = {}): Models.Prompt.Model => ({
   id: Utils.id.cuid(),

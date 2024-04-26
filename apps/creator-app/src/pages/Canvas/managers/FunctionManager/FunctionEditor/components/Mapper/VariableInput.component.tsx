@@ -1,4 +1,4 @@
-import { Markup } from '@voiceflow/dtos';
+import type { Markup } from '@voiceflow/dtos';
 import React from 'react';
 
 import { InputWithVariables } from '@/components/Input/InputWithVariables/InputWithVariables.component';
@@ -15,7 +15,12 @@ interface IVariableInput {
   value: Markup;
 }
 
-export const VariableInput: React.FC<IVariableInput> = ({ value, onChange, maxVariableWidth = '150px', placeholder = 'Value or {var}' }) => {
+export const VariableInput: React.FC<IVariableInput> = ({
+  value,
+  onChange,
+  maxVariableWidth = '150px',
+  placeholder = 'Value or {var}',
+}) => {
   const variablesMap = useSelector(Designer.selectors.slateVariablesMapByID);
 
   return (

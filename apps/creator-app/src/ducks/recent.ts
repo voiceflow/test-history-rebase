@@ -1,10 +1,10 @@
-import * as Platform from '@voiceflow/platform-config';
+import type * as Platform from '@voiceflow/platform-config';
 import update from 'immutability-helper';
 import { persistReducer } from 'redux-persist';
 import storageLocal from 'redux-persist/lib/storage';
 import { createSelector } from 'reselect';
 
-import { Action, Reducer, RootReducer } from '@/store/types';
+import type { Action, Reducer, RootReducer } from '@/store/types';
 
 import { createAction, createRootSelector } from './utils';
 
@@ -84,4 +84,5 @@ export const prototypeDebugSelector = createSelector([recentPrototypeSelector], 
 export const updateRecentPrototype = (payload: Partial<PrototypeConfig>): UpdateRecentPrototype =>
   createAction(RecentAction.UPDATE_RECENT_TESTING, payload);
 
-export const updateRecentRedirect = (payload: string | null): UpdateRecentRedirect => createAction(RecentAction.UPDATE_RECENT_REDIRECT, payload);
+export const updateRecentRedirect = (payload: string | null): UpdateRecentRedirect =>
+  createAction(RecentAction.UPDATE_RECENT_REDIRECT, payload);

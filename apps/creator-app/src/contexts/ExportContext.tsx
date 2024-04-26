@@ -1,4 +1,4 @@
-import { Nullable } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
 import { withContext } from '@voiceflow/ui';
 import React from 'react';
@@ -6,10 +6,22 @@ import { useSelector } from 'react-redux';
 
 import client from '@/client';
 import * as ProjectV2 from '@/ducks/projectV2';
-import useJob, { JobContextValue } from '@/hooks/job';
-import { AlexaPublishJob, DialogflowESPublishJob, GeneralExportJob, GooglePublishJob, Job, JobClient } from '@/models';
+import type { JobContextValue } from '@/hooks/job';
+import useJob from '@/hooks/job';
+import type {
+  AlexaPublishJob,
+  DialogflowESPublishJob,
+  GeneralExportJob,
+  GooglePublishJob,
+  Job,
+  JobClient,
+} from '@/models';
 
-type AnyExportJob = AlexaPublishJob.AnyJob | GooglePublishJob.AnyJob | DialogflowESPublishJob.AnyJob | GeneralExportJob.AnyJob;
+type AnyExportJob =
+  | AlexaPublishJob.AnyJob
+  | GooglePublishJob.AnyJob
+  | DialogflowESPublishJob.AnyJob
+  | GeneralExportJob.AnyJob;
 
 export const ExportContext = React.createContext<Nullable<JobContextValue<Job<any>>>>(null);
 export const { Consumer: ExportConsumer } = ExportContext;

@@ -27,7 +27,8 @@ const DashboardVLegacy2Billing: React.FC = () => {
   const billingHistory = useLegacyBillingHistory();
   const isReady = billingHistory.isReady && paymentAPI.isReady;
 
-  const showPaymentFailed = PAYMENT_FAILED_STRIPE_STATUS.has(stripeStatus as StripeStatuses) && isProOrTeamPlan && !isTrial;
+  const showPaymentFailed =
+    PAYMENT_FAILED_STRIPE_STATUS.has(stripeStatus as StripeStatuses) && isProOrTeamPlan && !isTrial;
 
   if (!isReady) {
     return (
@@ -43,7 +44,9 @@ const DashboardVLegacy2Billing: React.FC = () => {
 
       <EditorSeats />
 
-      {paymentAPI.paymentSource && <PaymentDetails source={paymentAPI.paymentSource} refetch={paymentAPI.refetchPaymentSource} />}
+      {paymentAPI.paymentSource && (
+        <PaymentDetails source={paymentAPI.paymentSource} refetch={paymentAPI.refetchPaymentSource} />
+      )}
 
       {!!billingHistory?.data?.length && (
         <BillingHistory
@@ -54,7 +57,9 @@ const DashboardVLegacy2Billing: React.FC = () => {
         />
       )}
 
-      {canManageSeats && isProOrTeamPlan && !isTrial && <CancelSubscription planSubscription={paymentAPI.planSubscription} />}
+      {canManageSeats && isProOrTeamPlan && !isTrial && (
+        <CancelSubscription planSubscription={paymentAPI.planSubscription} />
+      )}
     </Box>
   );
 };

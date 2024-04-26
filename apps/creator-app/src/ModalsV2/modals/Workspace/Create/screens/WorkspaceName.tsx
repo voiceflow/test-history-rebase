@@ -50,7 +50,12 @@ const WorkspaceName: React.FC<WorkspaceNameProps> = ({
             {nameError && <ErrorMessage mb={0}>{nameError}</ErrorMessage>}
           </Box>
 
-          <Upload.IconUpload image={workspaceImage} update={onChangeImage} size={UploadIconVariant.EXTRA_SMALL} isSquare />
+          <Upload.IconUpload
+            image={workspaceImage}
+            update={onChangeImage}
+            size={UploadIconVariant.EXTRA_SMALL}
+            isSquare
+          />
         </Box.FlexApart>
       </Modal.Body>
 

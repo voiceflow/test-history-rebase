@@ -1,4 +1,14 @@
-import { Box, Button, ButtonVariant, KeyName, preventDefault, SvgIcon, toast, ToastCallToAction, withTargetValue } from '@voiceflow/ui';
+import {
+  Box,
+  Button,
+  ButtonVariant,
+  KeyName,
+  preventDefault,
+  SvgIcon,
+  toast,
+  ToastCallToAction,
+  withTargetValue,
+} from '@voiceflow/ui';
 import React from 'react';
 
 import { PrototypeInputMode, PrototypeStatus } from '@/constants/prototype';
@@ -15,9 +25,13 @@ import { withEnterPress, withKeyPress } from '@/utils/dom';
 
 import SpeechBar from '../PrototypeSpeechBar';
 import { InputArea, InputContainer } from './components';
-import ControlCenter, { ControlCenterProps } from './components/ControlCenter';
+import type { ControlCenterProps } from './components/ControlCenter';
+import ControlCenter from './components/ControlCenter';
 
-export type PrototypeInputProps<L> = Pick<ControlCenterProps, 'showButtons' | 'setShowButtons' | 'stepBack' | 'stepForward'> & {
+export type PrototypeInputProps<L> = Pick<
+  ControlCenterProps,
+  'showButtons' | 'setShowButtons' | 'stepBack' | 'stepForward'
+> & {
   locale: L;
   disabled?: boolean;
   onUserInput: (input: string) => void;
@@ -62,7 +76,9 @@ const PrototypeInput = <L extends string>({
       toast.success(
         <>
           Test saved to Conversations <br />
-          <ToastCallToAction onClick={() => goToTargetTranscript(newTranscriptID)}>Go to conversation</ToastCallToAction>
+          <ToastCallToAction onClick={() => goToTargetTranscript(newTranscriptID)}>
+            Go to conversation
+          </ToastCallToAction>
         </>
       );
     } catch {

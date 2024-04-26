@@ -5,7 +5,7 @@ import { BaseVersion } from '@voiceflow/base-types';
 import { ChatVersion } from '@voiceflow/chat-types';
 import { createSimpleAdapter, createSmartSimpleAdapter } from 'bidirectional-adapter';
 
-import * as Models from '../../models';
+import type * as Models from '../../models';
 import * as Prompt from '../prompt';
 
 export type FromAndToDBOptions = Base.Adapters.Version.Settings.FromAndToDBOptions;
@@ -28,7 +28,10 @@ export const smart = createSmartSimpleAdapter<
             globalNoMatch: { type: BaseVersion.GlobalNoMatchType.GENERATIVE, prompt: globalNoMatch.prompt },
           }
         : {
-            globalNoMatch: { type: BaseVersion.GlobalNoMatchType.STATIC, prompt: globalNoMatch.prompt && Prompt.simple.fromDB(globalNoMatch.prompt) },
+            globalNoMatch: {
+              type: BaseVersion.GlobalNoMatchType.STATIC,
+              prompt: globalNoMatch.prompt && Prompt.simple.fromDB(globalNoMatch.prompt),
+            },
           })),
     ...(globalNoReply !== undefined && {
       globalNoReply: { ...globalNoReply, prompt: globalNoReply.prompt && Prompt.simple.fromDB(globalNoReply.prompt) },
@@ -39,7 +42,10 @@ export const smart = createSmartSimpleAdapter<
     ...ConfigUtils.pickNonEmptyFields(settings, PLATFORM_ONLY_FILES),
     ...(error !== undefined && { error: error && Prompt.simple.toDB(error) }),
     ...(globalNoMatch?.type === BaseVersion.GlobalNoMatchType.STATIC && {
-      globalNoMatch: { type: globalNoMatch.type, prompt: globalNoMatch.prompt && Prompt.simple.toDB(globalNoMatch.prompt) },
+      globalNoMatch: {
+        type: globalNoMatch.type,
+        prompt: globalNoMatch.prompt && Prompt.simple.toDB(globalNoMatch.prompt),
+      },
     }),
     ...(globalNoMatch?.type === BaseVersion.GlobalNoMatchType.GENERATIVE && {
       globalNoMatch,

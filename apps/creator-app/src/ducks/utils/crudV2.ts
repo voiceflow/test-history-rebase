@@ -1,16 +1,19 @@
 /* eslint-disable no-param-reassign */
 
-import { NormalizedValue, Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
-import { Draft } from 'immer';
+import type { NormalizedValue } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
+import type * as Realtime from '@voiceflow/realtime-sdk';
+import type { Draft } from 'immer';
 import * as Normal from 'normal-store';
-import { createSelector, ParametricSelector, Selector } from 'reselect';
-import { ReducerBuilder } from 'typescript-fsa-reducers';
-import { PickByValue } from 'utility-types';
+import type { ParametricSelector, Selector } from 'reselect';
+import { createSelector } from 'reselect';
+import type { ReducerBuilder } from 'typescript-fsa-reducers';
+import type { PickByValue } from 'utility-types';
 
 import type { State } from '@/ducks';
 
-import { CreateReducer, createRootReducer, ImmerHandler } from './reducer';
+import type { CreateReducer, ImmerHandler } from './reducer';
+import { createRootReducer } from './reducer';
 import { createParameterSelector, createRootSelector } from './selector';
 
 export type CRUDState<T> = Normal.Normalized<T>;
@@ -30,7 +33,7 @@ export interface IDsSelectorParam {
 type CRUDReducers<
   Model extends Normal.Identifiable,
   State extends CRUDState<Model>,
-  Actions extends Realtime.actionUtils.CRUDActionCreators<Model, any, any>
+  Actions extends Realtime.actionUtils.CRUDActionCreators<Model, any, any>,
 > = {
   [K in Exclude<keyof Actions, 'refresh'>]: [actionCreator: Actions[K], handler: ImmerHandler<State, any>];
 };
@@ -39,7 +42,7 @@ export const createCRUDReducers = <
   Model extends Normal.Identifiable,
   State extends CRUDState<Model>,
   Context extends object = {},
-  Patch extends Partial<Model> = Partial<Model>
+  Patch extends Partial<Model> = Partial<Model>,
 >(
   createReducer: CreateReducer<State>,
   actionCreators: Realtime.actionUtils.CRUDActionCreators<Model, Context, Patch>
@@ -171,11 +174,19 @@ export const createCRUDSelectors = <K extends keyof CRUDStateSubset, T extends N
   const isEmpty = createSelector([count], (size) => size === 0);
   const all = createSelector([pureNormalized], (xs) => Normal.denormalize(xs as CRUDState<T>));
 
-  const hasByID = createSelector([pureNormalized, idParamSelector], (normalized, id) => (id ? Normal.hasOne(normalized, id) : false));
-  const hasByIDs = createSelector([pureNormalized, idsParamSelector], (normalized, ids) => Normal.hasMany(normalized, ids));
+  const hasByID = createSelector([pureNormalized, idParamSelector], (normalized, id) =>
+    id ? Normal.hasOne(normalized, id) : false
+  );
+  const hasByIDs = createSelector([pureNormalized, idsParamSelector], (normalized, ids) =>
+    Normal.hasMany(normalized, ids)
+  );
 
-  const byID = createSelector([pureNormalized, idParamSelector], (normalized, id) => (id ? Normal.getOne(normalized, id) : null));
-  const byIDs = createSelector([pureNormalized, idsParamSelector], (normalized, ids) => Normal.getMany(normalized, ids));
+  const byID = createSelector([pureNormalized, idParamSelector], (normalized, id) =>
+    id ? Normal.getOne(normalized, id) : null
+  );
+  const byIDs = createSelector([pureNormalized, idsParamSelector], (normalized, ids) =>
+    Normal.getMany(normalized, ids)
+  );
   const getByID = createSelector(
     [pureNormalized],
     (normalized) =>

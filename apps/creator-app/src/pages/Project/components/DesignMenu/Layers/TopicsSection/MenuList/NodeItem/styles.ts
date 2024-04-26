@@ -69,7 +69,9 @@ export const Container = styled.div<ContainerProps>`
     isDraggingPreview &&
     css`
       cursor: grabbing;
-      box-shadow: 0 6px 12px 0 rgba(17, 49, 96, 0.16), 0 0 0 1px rgba(17, 49, 96, 0.06);
+      box-shadow:
+        0 6px 12px 0 rgba(17, 49, 96, 0.16),
+        0 0 0 1px rgba(17, 49, 96, 0.06);
       background: linear-gradient(to bottom, rgba(238, 244, 246, 0.3), rgba(238, 244, 246, 0.45)),
         linear-gradient(to bottom, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9));
     `}

@@ -1,4 +1,4 @@
-import { BaseModels } from '@voiceflow/base-types';
+import type { BaseModels } from '@voiceflow/base-types';
 import { Box, Divider, Menu as UIMenu, Toggle } from '@voiceflow/ui';
 import React from 'react';
 
@@ -17,7 +17,16 @@ export interface ActionsProps {
   onChangeStatus: (status: BaseModels.Version.DomainStatus) => void;
 }
 
-const Actions: React.FC<ActionsProps> = ({ live, isRoot, onEdit, status, onDelete, onDuplicate, onToggleLive, onChangeStatus }) => (
+const Actions: React.FC<ActionsProps> = ({
+  live,
+  isRoot,
+  onEdit,
+  status,
+  onDelete,
+  onDuplicate,
+  onToggleLive,
+  onChangeStatus,
+}) => (
   <UIMenu width={177} noBottomPadding>
     <UIMenu.Item onClick={() => onEdit()}>Rename</UIMenu.Item>
     <UIMenu.Item onClick={() => onDuplicate()}>Duplicate</UIMenu.Item>

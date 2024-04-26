@@ -7,9 +7,9 @@ import { useSelector } from '@/hooks/redux';
 import { useDispatch } from '@/hooks/store.hook';
 import { useTrackingEvents } from '@/hooks/tracking';
 
-import * as CardForm from '../components/CardForm';
+import type * as CardForm from '../components/CardForm';
 import * as atoms from '../Payment.atoms';
-import { PaymentModalPropsAPI } from '../Payment.types';
+import type { PaymentModalPropsAPI } from '../Payment.types';
 import { useCardPaymentMethod } from './payment-method';
 import { usePricing } from './pricing';
 

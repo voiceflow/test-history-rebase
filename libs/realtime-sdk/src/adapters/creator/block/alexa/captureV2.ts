@@ -1,5 +1,5 @@
-import { NodeData } from '@realtime-sdk/models';
-import { AlexaNode } from '@voiceflow/alexa-types';
+import type { NodeData } from '@realtime-sdk/models';
+import type { AlexaNode } from '@voiceflow/alexa-types';
 
 import { createBlockAdapter } from '../utils';
 import { voiceCaptureV2Adapter } from '../voice';

@@ -1,4 +1,4 @@
-import { Enum } from '@voiceflow/dtos';
+import type { Enum } from '@voiceflow/dtos';
 
 export const TemplateID = {
   COLLECT_CUSTOMER_FEEDBACK: 'collect-customer-feedback',

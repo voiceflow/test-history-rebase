@@ -1,12 +1,14 @@
 /* eslint-disable no-param-reassign */
 
-import { Nullable } from '@voiceflow/common';
-import { Descendant, Editor as SlateEditor, EditorInterface, Element, Location, Node, Path, Range, Text, Transforms } from 'slate';
+import type { Nullable } from '@voiceflow/common';
+import type { Descendant, EditorInterface, Location } from 'slate';
+import { Editor as SlateEditor, Element, Node, Path, Range, Text, Transforms } from 'slate';
 import { HistoryEditor } from 'slate-history';
 import { ReactEditor } from 'slate-react';
-import { PickByValue } from 'utility-types';
+import type { PickByValue } from 'utility-types';
 
-import { PluginsEditorAPI, withPluginsEditorAPI } from './plugins';
+import type { PluginsEditorAPI } from './plugins';
+import { withPluginsEditorAPI } from './plugins';
 import type { Editor } from './types';
 
 // not using TextProperty and ElementProperty enums since plugins can add extra props
@@ -24,7 +26,10 @@ interface BaseEditorAPI extends EditorInterface, ReactEditorType, HistoryEditorT
 
   isNewState(nodes: Descendant[]): boolean;
   getEmptyState(): Descendant[];
-  createTextState(text: string, options?: { textProperties?: Omit<Text, 'text'>; elementProperties?: Omit<Element, 'children'> }): Descendant[];
+  createTextState(
+    text: string,
+    options?: { textProperties?: Omit<Text, 'text'>; elementProperties?: Omit<Element, 'children'> }
+  ): Descendant[];
 
   // selection and range
 
@@ -36,7 +41,11 @@ interface BaseEditorAPI extends EditorInterface, ReactEditorType, HistoryEditorT
   element(editor: Editor): Nullable<Element>;
   firstElement(node: Node): Nullable<Element>;
   elementProperty<T extends ElementPropertyKey>(editor: Editor, property: T): Element[T] | undefined;
-  elementProperty<T extends ElementPropertyKey>(editor: Editor, property: T, defaultValue: NonNullable<Element[T]>): NonNullable<Element[T]>;
+  elementProperty<T extends ElementPropertyKey>(
+    editor: Editor,
+    property: T,
+    defaultValue: NonNullable<Element[T]>
+  ): NonNullable<Element[T]>;
   setElementProperty<T extends ElementPropertyKey>(editor: Editor, property: T, value: Element[T] | undefined): void;
   isElementPropertyActive<T extends ElementPropertyKey>(
     editor: Editor,
@@ -53,7 +62,11 @@ interface BaseEditorAPI extends EditorInterface, ReactEditorType, HistoryEditorT
   text(editor: Editor): Nullable<Text>;
   firstText(node: Node): Nullable<Text>;
   textProperty<T extends TextPropertyKey>(editor: Editor, property: T): Text[T] | undefined;
-  textProperty<T extends TextPropertyKey>(editor: Editor, property: T, defaultValue: NonNullable<Text[T]>): NonNullable<Text[T]>;
+  textProperty<T extends TextPropertyKey>(
+    editor: Editor,
+    property: T,
+    defaultValue: NonNullable<Text[T]>
+  ): NonNullable<Text[T]>;
   setTextProperty<T extends TextPropertyKey>(editor: Editor, property: T, value: Text[T] | undefined): void;
   toggleTextProperty<T extends BooleanTextPropertyKey>(editor: Editor, property: T): void;
   toggleTextProperty<T extends BooleanTextPropertyKey>(editor: Editor, property: T, value: boolean): void;
@@ -63,7 +76,12 @@ interface BaseEditorAPI extends EditorInterface, ReactEditorType, HistoryEditorT
     value: NonNullable<Text[T]>,
     options?: { nullable?: boolean }
   ): boolean;
-  setTextPropertyAtLocation<T extends TextPropertyKey>(editor: Editor, range: Location, property: T, value: Text[T] | undefined): void;
+  setTextPropertyAtLocation<T extends TextPropertyKey>(
+    editor: Editor,
+    range: Location,
+    property: T,
+    value: Text[T] | undefined
+  ): void;
 }
 
 const BaseEditorAPI: BaseEditorAPI = {
@@ -90,7 +108,10 @@ const BaseEditorAPI: BaseEditorAPI = {
 
   createTextState: (
     text: string,
-    { textProperties, elementProperties }: { textProperties?: Omit<Text, 'text'>; elementProperties?: Omit<Element, 'children'> } = {}
+    {
+      textProperties,
+      elementProperties,
+    }: { textProperties?: Omit<Text, 'text'>; elementProperties?: Omit<Element, 'children'> } = {}
   ): Descendant[] => [{ ...elementProperties, children: [{ ...textProperties, text }] }],
 
   // selection and range
@@ -131,10 +152,16 @@ const BaseEditorAPI: BaseEditorAPI = {
   },
 
   firstElement: (node: Node): Nullable<Element> => {
-    return (Element.isElement(node) || EditorAPI.isEditor(node)) && Element.isElement(node.children[0]) ? node.children[0] : null;
+    return (Element.isElement(node) || EditorAPI.isEditor(node)) && Element.isElement(node.children[0])
+      ? node.children[0]
+      : null;
   },
 
-  elementProperty: <T extends ElementPropertyKey>(editor: Editor, property: T, defaultValue?: NonNullable<Element[T]>): Element[T] | undefined => {
+  elementProperty: <T extends ElementPropertyKey>(
+    editor: Editor,
+    property: T,
+    defaultValue?: NonNullable<Element[T]>
+  ): Element[T] | undefined => {
     const element = EditorAPI.element(editor);
 
     return element?.[property] ?? defaultValue;
@@ -145,10 +172,20 @@ const BaseEditorAPI: BaseEditorAPI = {
     property: T,
     value: NonNullable<Element[T]>,
     { nullable }: { nullable?: boolean } = {}
-  ): boolean => (nullable ? EditorAPI.elementProperty(editor, property, value) : EditorAPI.elementProperty(editor, property)) === value,
+  ): boolean =>
+    (nullable ? EditorAPI.elementProperty(editor, property, value) : EditorAPI.elementProperty(editor, property)) ===
+    value,
 
-  setElementProperty: <T extends ElementPropertyKey>(editor: Editor, property: T, value: Element[T] | undefined): void => {
-    Transforms.setNodes(editor, { [property]: value }, { at: editor.selection ?? EditorAPI.fullRange(editor), mode: 'highest' });
+  setElementProperty: <T extends ElementPropertyKey>(
+    editor: Editor,
+    property: T,
+    value: Element[T] | undefined
+  ): void => {
+    Transforms.setNodes(
+      editor,
+      { [property]: value },
+      { at: editor.selection ?? EditorAPI.fullRange(editor), mode: 'highest' }
+    );
   },
 
   // text
@@ -213,7 +250,9 @@ const BaseEditorAPI: BaseEditorAPI = {
 
     if (anchor.offset === 0) {
       const prev = EditorAPI.previous(editor, { at: path, match: Text.isText });
-      const block = EditorAPI.above<Element>(editor, { match: (n) => Element.isElement(n) && EditorAPI.isBlock(editor, n) });
+      const block = EditorAPI.above<Element>(editor, {
+        match: (n) => Element.isElement(n) && EditorAPI.isBlock(editor, n),
+      });
 
       if (prev && block) {
         const [prevNode, prevPath] = prev;
@@ -269,9 +308,15 @@ const BaseEditorAPI: BaseEditorAPI = {
     property: T,
     value: NonNullable<Text[T]>,
     { nullable }: { nullable?: boolean } = {}
-  ): boolean => (nullable ? EditorAPI.textProperty(editor, property, value) : EditorAPI.textProperty(editor, property)) === value,
+  ): boolean =>
+    (nullable ? EditorAPI.textProperty(editor, property, value) : EditorAPI.textProperty(editor, property)) === value,
 
-  setTextPropertyAtLocation: <T extends TextPropertyKey>(editor: Editor, location: Location, property: T, value: Text[T] | undefined): void => {
+  setTextPropertyAtLocation: <T extends TextPropertyKey>(
+    editor: Editor,
+    location: Location,
+    property: T,
+    value: Text[T] | undefined
+  ): void => {
     Transforms.setNodes(editor, { [property]: value }, { match: Text.isText, split: true, at: location });
   },
 };

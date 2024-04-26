@@ -97,7 +97,9 @@ suite(Account, MOCK_STATE)('Ducks - Account', ({ describeReducer, describeSelect
 
     describe('isLoggedInSelector()', () => {
       it('should be logged in', () => {
-        expect(select(Account.isLoggedInSelector, { [Session.STATE_KEY]: { token: { value: Utils.generate.id() } } })).toBeTruthy();
+        expect(
+          select(Account.isLoggedInSelector, { [Session.STATE_KEY]: { token: { value: Utils.generate.id() } } })
+        ).toBeTruthy();
       });
 
       it('should not be logged in', () => {
@@ -188,7 +190,9 @@ suite(Account, MOCK_STATE)('Ducks - Account', ({ describeReducer, describeSelect
       describe('unlinkAccount()', () => {
         it('should clear amazon account on success', async () => {
           const amazonAccount: any = { token: 'xyz' };
-          const deleteAccount = vi.spyOn(client.platform.alexa.session, 'unlinkAccount').mockResolvedValue(amazonAccount);
+          const deleteAccount = vi
+            .spyOn(client.platform.alexa.session, 'unlinkAccount')
+            .mockResolvedValue(amazonAccount);
 
           const { expectDispatch } = await applyEffect(Account.amazon.unlinkAccount());
 
@@ -197,7 +201,9 @@ suite(Account, MOCK_STATE)('Ducks - Account', ({ describeReducer, describeSelect
         });
 
         it('should set an error on failure', async () => {
-          const deleteAccount = vi.spyOn(client.platform.alexa.session, 'unlinkAccount').mockRejectedValue(new Error('mock error'));
+          const deleteAccount = vi
+            .spyOn(client.platform.alexa.session, 'unlinkAccount')
+            .mockRejectedValue(new Error('mock error'));
 
           await applyEffect(Account.amazon.unlinkAccount());
 

@@ -10,6 +10,8 @@ export const EnvironmentOnlyExportDTO = z
   })
   .strict();
 
-export const EnvironmentExportDTO = EnvironmentOnlyExportDTO.merge(EnvironmentCMSExportImportDataDTO.partial()).strict();
+export const EnvironmentExportDTO = EnvironmentOnlyExportDTO.merge(
+  EnvironmentCMSExportImportDataDTO.partial()
+).strict();
 
 export type EnvironmentExportDTO = z.infer<typeof EnvironmentExportDTO>;

@@ -2,7 +2,8 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import Box from '@ui/components/Box';
 import Portal from '@ui/components/Portal';
-import SvgIcon, { SvgIconTypes } from '@ui/components/SvgIcon';
+import type { SvgIconTypes } from '@ui/components/SvgIcon';
+import SvgIcon from '@ui/components/SvgIcon';
 import { ClickableText } from '@ui/components/Text';
 import { createGlobalStyle } from '@ui/styles';
 import { COLOR_BLUE, COLOR_GREEN, COLOR_RED } from '@ui/styles/constants';
@@ -14,7 +15,10 @@ type ToastMethodName = 'info' | 'error' | 'success' | 'warn';
 
 type ToastMethod = <T = unknown>(content: Toastify.ToastContent<T>, options?: Toastify.ToastOptions) => Toastify.Id;
 
-export const ToastCallToAction: React.FC<React.PropsWithChildren<{ onClick: () => void }>> = ({ onClick, children }) => (
+export const ToastCallToAction: React.FC<React.PropsWithChildren<{ onClick: () => void }>> = ({
+  onClick,
+  children,
+}) => (
   <Box mt={8} textAlign="right">
     <ClickableText onClick={onClick}>{children}</ClickableText>
   </Box>
@@ -35,11 +39,16 @@ type CustomToastMethod = <T>(options: CustomOptions<T>) => void;
 const wrapWithMessage: ToastMethodFactory = (method, icon, color) => (message, options) =>
   method(message, {
     ...options,
-    ...(options?.closeButton === true && { closeButton: <SvgIcon icon="close" variant={SvgIcon.Variant.TERTIARY} clickable size={10} ml={24} /> }),
+    ...(options?.closeButton === true && {
+      closeButton: <SvgIcon icon="close" variant={SvgIcon.Variant.TERTIARY} clickable size={10} ml={24} />,
+    }),
     icon: options?.icon ?? (icon ? () => <SvgIcon icon={icon} color={color} size={16} /> : undefined),
   });
 
-const toast = wrapWithMessage(Toastify.toast) as typeof Toastify.toast & { genericError: VoidFunction; custom: CustomToastMethod };
+const toast = wrapWithMessage(Toastify.toast) as typeof Toastify.toast & {
+  genericError: VoidFunction;
+  custom: CustomToastMethod;
+};
 
 Utils.object.getKeys(Toastify.toast).forEach((method) => {
   toast[method] = Toastify.toast[method] as any;
@@ -49,7 +58,8 @@ Object.assign(toast, {
   warn: wrapWithMessage(Toastify.toast.warn, 'warning', '#D0C263'),
   info: wrapWithMessage(Toastify.toast.info, 'info', COLOR_BLUE),
   error: wrapWithMessage(Toastify.toast.error, 'warning', COLOR_RED),
-  custom: ({ icon, color, method, content, options }: CustomOptions<any>) => wrapWithMessage(Toastify.toast[method], icon, color)(content, options),
+  custom: ({ icon, color, method, content, options }: CustomOptions<any>) =>
+    wrapWithMessage(Toastify.toast[method], icon, color)(content, options),
   success: wrapWithMessage(Toastify.toast.success, 'checkmark', COLOR_GREEN),
   genericError: () => toast.error('Something went wrong. Please try again'),
 });
@@ -86,7 +96,14 @@ export const ToastContainer = () => (
   <>
     <ToastGlobalStyles />
     <Portal portalNode={globalThis.document.body}>
-      <Toastify.ToastContainer autoClose={5000} newestOnTop closeButton={false} hideProgressBar draggable={false} pauseOnFocusLoss={false} />
+      <Toastify.ToastContainer
+        autoClose={5000}
+        newestOnTop
+        closeButton={false}
+        hideProgressBar
+        draggable={false}
+        pauseOnFocusLoss={false}
+      />
     </Portal>
   </>
 );

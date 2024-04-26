@@ -1,9 +1,9 @@
 import * as Base from '@platform-config/configs/base';
 import { Config as ConfigUtils } from '@platform-config/configs/utils';
-import { ChatVersion } from '@voiceflow/chat-types';
+import type { ChatVersion } from '@voiceflow/chat-types';
 import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter';
 
-import * as Models from '../../models';
+import type * as Models from '../../models';
 import * as Publishing from './publishing';
 import * as Session from './session';
 import * as Settings from './settings';
@@ -12,7 +12,11 @@ export { Publishing, Session, Settings };
 
 export type FromDBOptions = Base.Adapters.Version.FromDBOptions;
 
-export const simple = createMultiAdapter<Base.Adapters.Version.DBVersion<ChatVersion.Version>, Models.Version.Model, FromDBOptions>(
+export const simple = createMultiAdapter<
+  Base.Adapters.Version.DBVersion<ChatVersion.Version>,
+  Models.Version.Model,
+  FromDBOptions
+>(
   (version, options) => ({
     ...Base.Adapters.Version.simple.fromDB(version, options),
     session: Session.simple.fromDB(version.platformData.settings.session, options),

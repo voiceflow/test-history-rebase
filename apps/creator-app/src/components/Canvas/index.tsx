@@ -1,5 +1,5 @@
 import composeRefs from '@seznam/compose-react-refs';
-import { WithRequired } from '@voiceflow/common';
+import type { WithRequired } from '@voiceflow/common';
 import { IS_SAFARI, withContext } from '@voiceflow/ui';
 import React from 'react';
 import { DismissableLayerContext } from 'react-dismissable-layers';
@@ -8,27 +8,35 @@ import { CANVAS_COLOR } from '@/constants/canvas';
 import { CANVAS_DRAGGING_CLASSNAME } from '@/pages/Canvas/constants';
 import { Identifier } from '@/styles/constants';
 import { ANIMATION_SPEED } from '@/styles/theme';
-import { Pair, Point, Viewport } from '@/types';
+import type { Pair, Point, Viewport } from '@/types';
 import { mouseEventOffset } from '@/utils/dom';
-import { CartesianPlane, Coords, Vector } from '@/utils/geometry';
+import type { CartesianPlane } from '@/utils/geometry';
+import { Coords, Vector } from '@/utils/geometry';
 
 import { Container, RenderLayer } from './components';
+import type { ControlScheme } from './constants';
 import {
   CANVAS_ANIMATING_CLASSNAME,
   CANVAS_BUSY_CLASSNAME,
   CANVAS_INTERACTING_CLASSNAME,
   CANVAS_SHIFT_PRESSED_CLASSNAME,
-  ControlScheme,
   ControlType,
   SCROLL_TIMEOUT,
   ZOOM_FACTOR,
   ZoomType,
 } from './constants';
 import { CanvasProvider } from './contexts';
-import generateControls, { ControlHandlers } from './controls';
-import { ControlAction, ZoomAction } from './controls/types';
-import { backgroundPositionStyle, backgroundSizeStyle, calculateScrollTranslation, normalizeZoom, transformStyle } from './controls/utils';
-import { MovementCalculator, StyleOptions, TransformOptions, TransitionOptions, ZoomOptions } from './types';
+import type { ControlHandlers } from './controls';
+import generateControls from './controls';
+import type { ControlAction, ZoomAction } from './controls/types';
+import {
+  backgroundPositionStyle,
+  backgroundSizeStyle,
+  calculateScrollTranslation,
+  normalizeZoom,
+  transformStyle,
+} from './controls/utils';
+import type { MovementCalculator, StyleOptions, TransformOptions, TransitionOptions, ZoomOptions } from './types';
 
 export const ORIGIN: Point = [0, 0];
 
@@ -70,7 +78,8 @@ export interface CanvasProps extends React.PropsWithChildren {
 }
 
 class Canvas extends React.PureComponent<
-  WithRequired<CanvasProps, 'controlScheme'> & React.PropsWithChildren<{ dismissableLayer: React.ContextType<typeof DismissableLayerContext> }>
+  WithRequired<CanvasProps, 'controlScheme'> &
+    React.PropsWithChildren<{ dismissableLayer: React.ContextType<typeof DismissableLayerContext> }>
 > {
   static defaultProps: CanvasProps = {
     scrollTimeout: SCROLL_TIMEOUT,
@@ -155,7 +164,9 @@ class Canvas extends React.PureComponent<
       return new Vector(point, this.getPlane());
     },
     getBoundingPosition: () => {
-      const { x, y } = this.offsetLayerRef.current?.getBoundingClientRect() ?? new DOMRect(0, 0, window.innerWidth, window.innerHeight);
+      const { x, y } =
+        this.offsetLayerRef.current?.getBoundingClientRect() ??
+        new DOMRect(0, 0, window.innerWidth, window.innerHeight);
       return [x, y];
     },
 
@@ -294,7 +305,15 @@ class Canvas extends React.PureComponent<
     renderLayerEl.style.transition = `transform ease-in-out ${duration}s ${delay}s, backgroundImage ease-in-out ${duration}s ${delay}s, backgroundPosition ease-in-out ${duration}s ${delay}s`;
   };
 
-  styleCanvasGrid({ clear = false, zoom = this.zoom, position = this.position }: { clear?: boolean; zoom?: number; position?: [number, number] }) {
+  styleCanvasGrid({
+    clear = false,
+    zoom = this.zoom,
+    position = this.position,
+  }: {
+    clear?: boolean;
+    zoom?: number;
+    position?: [number, number];
+  }) {
     const gridLayerEl = this.rootRef.current;
     if (!gridLayerEl) return;
 
@@ -303,7 +322,7 @@ class Canvas extends React.PureComponent<
       gridLayerEl.style.backgroundImage = `radial-gradient(${GRID_COLOR} ${zoom / 70}px, ${CANVAS_COLOR} ${zoom / 70}px)`;
       gridLayerEl.style.backgroundPosition = backgroundPositionStyle(position);
     } else {
-      gridLayerEl.style.backgroundImage = `none`;
+      gridLayerEl.style.backgroundImage = 'none';
     }
   }
 
@@ -352,7 +371,10 @@ class Canvas extends React.PureComponent<
     {
       raf,
       clearGrid,
-      origin = [(this.rootRef.current?.clientWidth ?? window.innerWidth) / 2, (this.rootRef.current?.clientHeight ?? window.innerHeight) / 2],
+      origin = [
+        (this.rootRef.current?.clientWidth ?? window.innerWidth) / 2,
+        (this.rootRef.current?.clientHeight ?? window.innerHeight) / 2,
+      ],
     }: ZoomOptions = {}
   ) => {
     const prevZoom = this.zoom / ZOOM_FACTOR;
@@ -378,7 +400,12 @@ class Canvas extends React.PureComponent<
         zoomDiffFactor
       );
 
-    this.styleRenderLayer({ raf, zoom: nextZoom, position: nextPosition, onApplied: () => this.props.onZoomApplied?.(calculateMovement) });
+    this.styleRenderLayer({
+      raf,
+      zoom: nextZoom,
+      position: nextPosition,
+      onApplied: () => this.props.onZoomApplied?.(calculateMovement),
+    });
 
     this.props.onZoom?.(calculateMovement);
 

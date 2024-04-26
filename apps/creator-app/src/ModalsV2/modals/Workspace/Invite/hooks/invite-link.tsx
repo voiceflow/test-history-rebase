@@ -54,13 +54,16 @@ export const useInviteLink = ({ initialUserRole = UserRole.VIEWER }: { initialUs
     if (!isEditorUserRole(userRole)) return;
 
     // FIXME: remove FF https://voiceflow.atlassian.net/browse/CV3-994
-    const editorSeatLimit = subscription ? getEditorConditionalLimit({ value: usedEditorSeats }) : getEditorSeatLimit({ value: usedEditorSeats });
+    const editorSeatLimit = subscription
+      ? getEditorConditionalLimit({ value: usedEditorSeats })
+      : getEditorSeatLimit({ value: usedEditorSeats });
 
     if (editorSeatLimit) {
       toast.warn(
         <Box.Flex gap={5} column>
           <span>
-            No available editor seats on this workspace. Collaborators will be added to this workspace as viewers if no editor seats are created.
+            No available editor seats on this workspace. Collaborators will be added to this workspace as viewers if no
+            editor seats are created.
           </span>
 
           <Box.Flex color="#5d9df5" alignSelf="flex-end">

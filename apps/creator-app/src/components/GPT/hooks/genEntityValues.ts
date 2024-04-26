@@ -5,7 +5,8 @@ import { useTeardown } from '@voiceflow/ui';
 import { mlGatewayClient } from '@/client/ml-gateway';
 import { isDefaultSlotName } from '@/utils/slot';
 
-import { GenApi, useGen } from './gen';
+import type { GenApi } from './gen';
+import { useGen } from './gen';
 
 export const useGenEntityValues = ({
   inputs,
@@ -26,7 +27,9 @@ export const useGenEntityValues = ({
     examples: inputs,
 
     examplesToDB: (items) =>
-      items.map((input) => [input.value.trim(), ...input.synonyms.split(',').map((s) => s.trim())].filter(Boolean)).filter((arr) => arr.length),
+      items
+        .map((input) => [input.value.trim(), ...input.synonyms.split(',').map((s) => s.trim())].filter(Boolean))
+        .filter((arr) => arr.length),
 
     dbExamplesToTrack: (items) => items.map((item) => item.join(',')),
 
@@ -39,7 +42,11 @@ export const useGenEntityValues = ({
         type: entityType || Realtime.CUSTOM_SLOT_TYPE,
       });
 
-      return results.map(([entityName, ...synonyms]) => ({ id: Utils.id.cuid.slug(), value: entityName, synonyms: synonyms.join(',') }));
+      return results.map(([entityName, ...synonyms]) => ({
+        id: Utils.id.cuid.slug(),
+        value: entityName,
+        synonyms: synonyms.join(','),
+      }));
     },
   });
 

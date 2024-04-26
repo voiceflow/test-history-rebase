@@ -2,7 +2,8 @@ export const ROLE_PERMISSION_DEFAULT_WARN_MESSAGE = 'You do not have permission 
 
 export const PLAN_PERMISSION_DEFAULT_WARN_MESSAGE = 'This feature is not available on your current plan';
 
-export const TRIAL_EXPIRED_PERMISSION_DEFAULT_WARN_MESSAGE = 'Your trial has expired. Please upgrade to continue using this feature.';
+export const TRIAL_EXPIRED_PERMISSION_DEFAULT_WARN_MESSAGE =
+  'Your trial has expired. Please upgrade to continue using this feature.';
 
 // TODO: refactor keys, should be prefixed with the domain name, FE WORKSPACE_, PROJECT_, etc
 export enum Permission {

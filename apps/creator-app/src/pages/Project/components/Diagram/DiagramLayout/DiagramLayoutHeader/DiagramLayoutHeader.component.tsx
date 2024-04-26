@@ -44,7 +44,9 @@ export const DiagramLayoutHeader: React.FC = () => {
     goToCMSResource(isWorkflow ? CMSRoute.WORKFLOW : CMSRoute.FLOW, resourceID);
   };
 
-  const showActions = canEditCanvas && (selectedTargets.length > 1 || (selectedTargets.length === 1 && selectedTargets[0] !== startNodeID));
+  const showActions =
+    canEditCanvas &&
+    (selectedTargets.length > 1 || (selectedTargets.length === 1 && selectedTargets[0] !== startNodeID));
 
   return (
     <Header className={headerStyle({ canvasOnly })}>
@@ -52,7 +54,9 @@ export const DiagramLayoutHeader: React.FC = () => {
         <Header.Button.IconSecondary onClick={onBackClick} iconName="ArrowLeft" />
       </Header.Section.Left>
 
-      <Header.Section.Center>{showActions ? <DiagramLayoutHeaderActions /> : <DiagramLayoutHeaderTitle />}</Header.Section.Center>
+      <Header.Section.Center>
+        {showActions ? <DiagramLayoutHeaderActions /> : <DiagramLayoutHeaderTitle />}
+      </Header.Section.Center>
 
       <Header.Section.Right>
         <DiagramLayoutHeaderMembers />

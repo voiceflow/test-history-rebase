@@ -1,4 +1,5 @@
-import { BaseSelectProps, Select } from '@voiceflow/ui';
+import type { BaseSelectProps } from '@voiceflow/ui';
+import { Select } from '@voiceflow/ui';
 import React from 'react';
 
 import * as DiagramV2 from '@/ducks/diagramV2';

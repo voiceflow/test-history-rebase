@@ -22,7 +22,14 @@ export const CMSVariableTableNavigationButtonDelete: React.FC = () => {
       <Tooltip
         placement="bottom"
         referenceElement={({ ref, onOpen, onClose }) => (
-          <CMSResourceActionsButton ref={ref} label="Delete" iconName="Trash" disabled onPointerEnter={onOpen} onPointerLeave={onClose} />
+          <CMSResourceActionsButton
+            ref={ref}
+            label="Delete"
+            iconName="Trash"
+            disabled
+            onPointerEnter={onOpen}
+            onPointerLeave={onClose}
+          />
         )}
       >
         {() => <Text variant="caption">Built-in variables can’t be deleted</Text>}

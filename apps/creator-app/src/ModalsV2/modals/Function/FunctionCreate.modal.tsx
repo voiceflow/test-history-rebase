@@ -1,6 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import type { Function as FunctionType } from '@voiceflow/dtos';
-import { IconName } from '@voiceflow/icons';
+import type { IconName } from '@voiceflow/icons';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { tid } from '@voiceflow/style';
 import { Dropdown, Menu, notify, TextArea, Tooltip } from '@voiceflow/ui-next';
@@ -17,7 +17,8 @@ import { useDispatch } from '@/hooks/store.hook';
 import { useValidators } from '@/hooks/validate.hook';
 
 import { modalsManager } from '../../manager';
-import { FunctionStarterTemplate, starterTemplates, TemplateID } from './FunctionCreate.constant';
+import type { FunctionStarterTemplate } from './FunctionCreate.constant';
+import { starterTemplates, TemplateID } from './FunctionCreate.constant';
 import { dropdownModifier, dropdownPrefixIconModifier, textareaStyles } from './FunctionCreate.css';
 
 export interface IFunctionCreateModal {
@@ -34,7 +35,9 @@ export const FunctionCreateModal = modalsManager.create<IFunctionCreateModal, Fu
       const functionListen = useFeature(Realtime.FeatureFlag.FUNCTION_LISTEN);
       const filteredTemplates = functionListen.isEnabled
         ? starterTemplates
-        : starterTemplates.filter((template) => ![TemplateID.LISTEN, TemplateID.LISTEN_WITH_CAROUSEL].includes(template.templateID));
+        : starterTemplates.filter(
+            (template) => ![TemplateID.LISTEN, TemplateID.LISTEN_WITH_CAROUSEL].includes(template.templateID)
+          );
 
       const createOne = useDispatch(Designer.Function.effect.createOne);
       const createOneFromTemplate = useDispatch(Designer.Function.effect.createOneFromTemplate);
@@ -133,7 +136,9 @@ export const FunctionCreateModal = modalsManager.create<IFunctionCreateModal, Fu
                             label={template.name}
                             onMouseEnter={onOpen}
                             onMouseLeave={onPopperClose}
-                            onClick={Utils.functional.chainVoid(onClose, () => onTemplateChange(filteredTemplates[index]))}
+                            onClick={Utils.functional.chainVoid(onClose, () =>
+                              onTemplateChange(filteredTemplates[index])
+                            )}
                             testID={tid(TEST_ID, 'menu-item')}
                           >
                             {popper}
@@ -169,7 +174,13 @@ export const FunctionCreateModal = modalsManager.create<IFunctionCreateModal, Fu
             </div>
           </Modal.Body>
           <Modal.Footer>
-            <Modal.Footer.Button variant="secondary" onClick={api.onClose} disabled={closePrevented} label="Cancel" testID={tid(TEST_ID, 'cancel')} />
+            <Modal.Footer.Button
+              variant="secondary"
+              onClick={api.onClose}
+              disabled={closePrevented}
+              label="Cancel"
+              testID={tid(TEST_ID, 'cancel')}
+            />
 
             <Modal.Footer.Button
               label="Create function"

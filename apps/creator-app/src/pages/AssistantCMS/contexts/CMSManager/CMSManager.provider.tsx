@@ -9,7 +9,10 @@ import { useCMSRouteFolders } from '../CMSRouteFolders';
 import { CMSResourceScope } from './CMSManager.atom';
 import type { CMSResource, CMSResourceSearchContext, ICMSManagerProvider } from './CMSManager.interface';
 
-export const CMSManagerProvider = <Item extends CMSResource, SearchContext extends CMSResourceSearchContext = CMSResourceSearchContext>({
+export const CMSManagerProvider = <
+  Item extends CMSResource,
+  SearchContext extends CMSResourceSearchContext = CMSResourceSearchContext,
+>({
   children,
   staticConfig,
 }: ICMSManagerProvider<Item, SearchContext>) => {

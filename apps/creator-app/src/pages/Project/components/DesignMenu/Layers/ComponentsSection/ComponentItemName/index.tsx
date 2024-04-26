@@ -1,5 +1,14 @@
-import { Nullable, Utils } from '@voiceflow/common';
-import { compose, ContextMenu, getNestedMenuFormattedLabel, OverflowText, SvgIconTypes, useEnableDisable, usePersistFunction } from '@voiceflow/ui';
+import type { Nullable } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
+import type { SvgIconTypes } from '@voiceflow/ui';
+import {
+  compose,
+  ContextMenu,
+  getNestedMenuFormattedLabel,
+  OverflowText,
+  useEnableDisable,
+  usePersistFunction,
+} from '@voiceflow/ui';
 import React from 'react';
 
 import { Permission } from '@/constants/permissions';
@@ -50,12 +59,13 @@ const ComponentItemName: React.ForwardRefRenderFunction<HTMLDivElement, Componen
   const [hasTCEditPermissions] = usePermission(Permission.REORDER_TOPICS_AND_COMPONENTS);
   const goToDiagram = useDispatch(Router.goToDiagramHistoryClear);
 
-  const { inputRef, catEdit, localName, onSaveName, setLocalName, renameEnabled, toggleRenameEnabled } = useDiagramRename({
-    diagramID,
-    autoSelect: true,
-    diagramName: name,
-    onNameChanged: onClearLastCreatedDiagramID,
-  });
+  const { inputRef, catEdit, localName, onSaveName, setLocalName, renameEnabled, toggleRenameEnabled } =
+    useDiagramRename({
+      diagramID,
+      autoSelect: true,
+      diagramName: name,
+      onNameChanged: onClearLastCreatedDiagramID,
+    });
 
   const onEdit = usePersistFunction(() => goToDiagram(diagramID));
 
@@ -113,7 +123,9 @@ const ComponentItemName: React.ForwardRefRenderFunction<HTMLDivElement, Componen
                 />
               ) : (
                 <>
-                  <OverflowText>{isSearch ? <SearchLabel>{getNestedMenuFormattedLabel(name, searchMatchValue)}</SearchLabel> : name}</OverflowText>
+                  <OverflowText>
+                    {isSearch ? <SearchLabel>{getNestedMenuFormattedLabel(name, searchMatchValue)}</SearchLabel> : name}
+                  </OverflowText>
                 </>
               )}
             </>
@@ -124,8 +136,11 @@ const ComponentItemName: React.ForwardRefRenderFunction<HTMLDivElement, Componen
   );
 };
 
-// eslint-disable-next-line xss/no-mixed-html
 export default compose(
   React.memo,
   React.forwardRef
-)(ComponentItemName as React.ForwardRefExoticComponent<React.PropsWithoutRef<ComponentItemNameNameProps> & React.RefAttributes<HTMLElement>>);
+)(
+  ComponentItemName as React.ForwardRefExoticComponent<
+    React.PropsWithoutRef<ComponentItemNameNameProps> & React.RefAttributes<HTMLElement>
+  >
+);

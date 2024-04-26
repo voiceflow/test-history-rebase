@@ -1,12 +1,12 @@
 import { TippyTooltip, useThrottledCallback } from '@voiceflow/ui';
 import React from 'react';
 
-import { MovementCalculator } from '@/components/Canvas/types';
+import type { MovementCalculator } from '@/components/Canvas/types';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Session from '@/ducks/session';
 import { useRAF, useSelector } from '@/hooks';
 import { EngineContext } from '@/pages/Canvas/contexts';
-import { Pair, Point, Viewport } from '@/types';
+import type { Pair, Point, Viewport } from '@/types';
 
 export const useCursorControls = () => {
   const engine = React.useContext(EngineContext)!;
@@ -60,7 +60,10 @@ export const useCursorControls = () => {
     engine.zoomViewport(calculateMovement);
   }, []);
 
-  const updateViewport = React.useCallback(({ x, y, zoom }: Viewport) => engine.updateViewport(diagramID, x, y, zoom), [diagramID]);
+  const updateViewport = React.useCallback(
+    ({ x, y, zoom }: Viewport) => engine.updateViewport(diagramID, x, y, zoom),
+    [diagramID]
+  );
 
   React.useEffect(() => {
     const onMouseMove = () => {

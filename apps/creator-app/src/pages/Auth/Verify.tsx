@@ -40,11 +40,13 @@ const Verify: React.FC = () => {
         <Title id={Identifier.VERIFY_EMAIL_TITLE}>Verify your email</Title>
 
         <p>
-          To use Voiceflow, click the verify button we sent in an email to <strong>{email}</strong>. This helps keep your account secure.
+          To use Voiceflow, click the verify button we sent in an email to <strong>{email}</strong>. This helps keep
+          your account secure.
         </p>
 
         <p>
-          No email in your inbox or spam folder? <ClickableText onClick={onResendEmail}>Resend verification email</ClickableText>.
+          No email in your inbox or spam folder?{' '}
+          <ClickableText onClick={onResendEmail}>Resend verification email</ClickableText>.
         </p>
 
         <span>

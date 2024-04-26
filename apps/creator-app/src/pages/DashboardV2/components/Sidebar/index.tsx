@@ -8,7 +8,14 @@ import * as OrganizationAtoms from '@/atoms/organization.atom';
 import NavigationSidebar from '@/components/NavigationSidebar';
 import TrialCountdownCard from '@/components/TrialCountdownCard';
 import { Path } from '@/config/routes';
-import { BOOK_DEMO_LINK, CHANGELOG_LINK, DISCORD_LINK, GET_HELP_LINK, LEARN_LINK, TEMPLATES_LINK } from '@/constants/link.constant';
+import {
+  BOOK_DEMO_LINK,
+  CHANGELOG_LINK,
+  DISCORD_LINK,
+  GET_HELP_LINK,
+  LEARN_LINK,
+  TEMPLATES_LINK,
+} from '@/constants/link.constant';
 import { Permission } from '@/constants/permissions';
 import * as Sessions from '@/ducks/session';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
@@ -45,13 +52,20 @@ const DashboardNavigationSidebar: React.FC = () => {
     <NavigationSidebar isMainMenu>
       <S.GroupsContainer>
         <S.Group>
-          <NavigationSidebar.NavItem to={generatePath(Path.WORKSPACE_DASHBOARD, { workspaceID })} icon="goToBlock" title="Assistants" exact />
+          <NavigationSidebar.NavItem
+            to={generatePath(Path.WORKSPACE_DASHBOARD, { workspaceID })}
+            icon="goToBlock"
+            title="Assistants"
+            exact
+          />
 
           <NavigationSidebar.NavItem
             to={generatePath(Path.WORKSPACE_MEMBERS, { workspaceID })}
             icon="team"
             title={canConfigureWorkspace ? 'Team & Billing' : 'Team'}
-            isActive={({ pathname, matchPath }) => !!matchPath(pathname, { path: [Path.WORKSPACE_MEMBERS, Path.WORKSPACE_BILLING] })}
+            isActive={({ pathname, matchPath }) =>
+              !!matchPath(pathname, { path: [Path.WORKSPACE_MEMBERS, Path.WORKSPACE_BILLING] })
+            }
           >
             <NavigationSidebar.Item.SubText>{membersCount}</NavigationSidebar.Item.SubText>
           </NavigationSidebar.NavItem>
@@ -126,7 +140,11 @@ const DashboardNavigationSidebar: React.FC = () => {
               title="Organization"
               isActive={({ pathname, matchPath }) =>
                 !!matchPath(pathname, {
-                  path: [Path.WORKSPACE_ORGANIZATION_SETTINGS, Path.WORKSPACE_ORGANIZATION_MEMBERS, Path.WORKSPACE_ORGANIZATION_SSO],
+                  path: [
+                    Path.WORKSPACE_ORGANIZATION_SETTINGS,
+                    Path.WORKSPACE_ORGANIZATION_MEMBERS,
+                    Path.WORKSPACE_ORGANIZATION_SSO,
+                  ],
                 })
               }
             />

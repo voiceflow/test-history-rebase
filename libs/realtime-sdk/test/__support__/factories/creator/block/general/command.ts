@@ -1,4 +1,4 @@
-import { NodeData } from '@realtime-sdk/models';
+import type { NodeData } from '@realtime-sdk/models';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { extend } from 'cooky-cutter';
 

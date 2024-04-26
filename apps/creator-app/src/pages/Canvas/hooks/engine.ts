@@ -8,7 +8,7 @@ import { MousePositionContext } from '@/contexts/MousePositionContext';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import { useForceUpdate } from '@/hooks';
 import { CanvasAction } from '@/pages/Canvas/constants';
-import { Store } from '@/store/types';
+import type { Store } from '@/store/types';
 import { Coords } from '@/utils/geometry';
 
 import Engine from '../engine';
@@ -42,7 +42,10 @@ export const useEngine = (options?: { isExport?: boolean }): [Engine, number] =>
 
   const [engine, engineKey] = useCreateEngine(options);
 
-  useMouseMove((event) => engine.emitter.emit(CanvasAction.MOVE_MOUSE, new Coords([event.clientX, event.clientY])), [engine]);
+  useMouseMove(
+    (event) => engine.emitter.emit(CanvasAction.MOVE_MOUSE, new Coords([event.clientX, event.clientY])),
+    [engine]
+  );
 
   React.useEffect(
     () => () => {

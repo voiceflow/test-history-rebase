@@ -14,8 +14,14 @@ export const DiagramLayoutHeaderTitle: React.FC = () => {
   const goToDiagram = useDispatch(Router.goToDiagram);
 
   return (
-    <Header.AgentNavigation.Title agentName={name ?? ''} onAgentNameChange={updateName} workflowName={activeWorkflow?.name ?? ''}>
-      {({ onClose }) => <WorkflowMenu width="fit-content" onClose={onClose} onSelect={(workflow) => goToDiagram(workflow.diagramID)} />}
+    <Header.AgentNavigation.Title
+      agentName={name ?? ''}
+      onAgentNameChange={updateName}
+      workflowName={activeWorkflow?.name ?? ''}
+    >
+      {({ onClose }) => (
+        <WorkflowMenu width="fit-content" onClose={onClose} onSelect={(workflow) => goToDiagram(workflow.diagramID)} />
+      )}
     </Header.AgentNavigation.Title>
   );
 };

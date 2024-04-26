@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { VariableSelectProps } from '@/components/VariableSelect';
+import type { VariableSelectProps } from '@/components/VariableSelect';
 
 import { Container, Prefix, Select } from './components';
 

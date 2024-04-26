@@ -14,7 +14,15 @@ export interface SpinnerProps {
   fillContainer?: boolean;
 }
 
-const Spinner: React.FC<SpinnerProps> = ({ message, name, isMd, color, className, borderLess, fillContainer = false }) => (
+const Spinner: React.FC<SpinnerProps> = ({
+  message,
+  name,
+  isMd,
+  color,
+  className,
+  borderLess,
+  fillContainer = false,
+}) => (
   <S.Container fillContainer={fillContainer} className={className}>
     <Loader isMd={isMd} color={color} borderLess={borderLess} />
     {!!(message || name) && <S.Text>{message || `Loading ${name}...`}</S.Text>}

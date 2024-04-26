@@ -44,11 +44,13 @@ const ModelState: React.FC<ModelStateProps> = ({ nluTrainingDiffData }) => {
       legend={{
         [DonutKey.TRAINED]: {
           label: 'Trained',
-          gradient: 'linear-gradient(to bottom, rgba(93, 157, 245, 0.12), rgba(93, 157, 245, 0.24) 98%), linear-gradient(to bottom, #fff, #fff)',
+          gradient:
+            'linear-gradient(to bottom, rgba(93, 157, 245, 0.12), rgba(93, 157, 245, 0.24) 98%), linear-gradient(to bottom, #fff, #fff)',
         },
         [DonutKey.UNTRAINED]: {
           label: 'Untrained',
-          gradient: 'linear-gradient(to bottom, rgba(241, 70, 123, 0.12), rgba(241, 70, 123, 0.24)), linear-gradient(to bottom, #fff, #fff)',
+          gradient:
+            'linear-gradient(to bottom, rgba(241, 70, 123, 0.12), rgba(241, 70, 123, 0.24)), linear-gradient(to bottom, #fff, #fff)',
         },
       }}
       renderTooltip={({ key, value, slots, intents }) => (

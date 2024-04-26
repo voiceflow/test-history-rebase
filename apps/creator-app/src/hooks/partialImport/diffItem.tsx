@@ -4,7 +4,7 @@ import ReactDiffViewer from 'react-diff-viewer';
 
 import { styled } from '@/hocs/styled';
 
-import { Diff } from './diff';
+import type { Diff } from './diff';
 
 const StyledViewerContainer = styled(Box)`
   pre {
@@ -14,16 +14,24 @@ const StyledViewerContainer = styled(Box)`
 
 const MAX_DIFF_LENGTH = 10000;
 
-const DiffItem: React.FC<{ diff: Diff<{ name: string }>; toggleDiff: VoidFunction; name?: string }> = ({ diff, toggleDiff, name }) => {
+const DiffItem: React.FC<{ diff: Diff<{ name: string }>; toggleDiff: VoidFunction; name?: string }> = ({
+  diff,
+  toggleDiff,
+  name,
+}) => {
   const [diffView, setDiffView] = React.useState<boolean>(false);
   const [overflow, setOverflow] = React.useState<boolean>(false);
-  const stringifiedDiff = React.useRef<{ currentResource?: string; nextResource?: string }>({ currentResource: undefined, nextResource: undefined });
+  const stringifiedDiff = React.useRef<{ currentResource?: string; nextResource?: string }>({
+    currentResource: undefined,
+    nextResource: undefined,
+  });
 
   const toggleDiffView = () => {
     if (!stringifiedDiff.current.nextResource) {
       stringifiedDiff.current.nextResource = JSON.stringify(diff.nextResource, null, 2);
       stringifiedDiff.current.currentResource = JSON.stringify(diff.currentResource || undefined, null, 2);
-      const totalLength = stringifiedDiff.current.nextResource.length + (stringifiedDiff.current.currentResource?.length ?? 0);
+      const totalLength =
+        stringifiedDiff.current.nextResource.length + (stringifiedDiff.current.currentResource?.length ?? 0);
 
       setOverflow(totalLength > MAX_DIFF_LENGTH);
     }
@@ -50,7 +58,11 @@ const DiffItem: React.FC<{ diff: Diff<{ name: string }>; toggleDiff: VoidFunctio
           </Box.FlexCenter>
         ) : (
           <StyledViewerContainer fontSize={13} mx={-32} mb={11}>
-            <ReactDiffViewer oldValue={stringifiedDiff.current.currentResource} newValue={stringifiedDiff.current.nextResource} splitView={true} />
+            <ReactDiffViewer
+              oldValue={stringifiedDiff.current.currentResource}
+              newValue={stringifiedDiff.current.nextResource}
+              splitView={true}
+            />
           </StyledViewerContainer>
         ))}
     </>

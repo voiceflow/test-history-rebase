@@ -14,7 +14,7 @@ import {
   Title,
 } from './components';
 import * as S from './styles';
-import * as T from './types';
+import type * as T from './types';
 
 export * as HeaderTypes from './types';
 

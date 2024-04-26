@@ -99,7 +99,9 @@ const Menu: React.FC<MenuProps> = ({ onClose }) => {
           domainEditPermission.allowed
             ? ({ close }) => (
                 <UIMenu.Footer>
-                  <UIMenu.Footer.Action onClick={Utils.functional.chain(close, onCreate)}>Create New Domain</UIMenu.Footer.Action>
+                  <UIMenu.Footer.Action onClick={Utils.functional.chain(close, onCreate)}>
+                    Create New Domain
+                  </UIMenu.Footer.Action>
                 </UIMenu.Footer>
               )
             : null
@@ -115,7 +117,10 @@ const Menu: React.FC<MenuProps> = ({ onClose }) => {
               search={search}
               status={status}
               onEdit={Utils.functional.chainVoid(onClose, () => editModal.openVoid({ domainID: id }))}
-              onClick={Utils.functional.chainVoid(onClose, () => rootDiagramID !== activeDiagramID && goToDomainDiagram(id, rootDiagramID))}
+              onClick={Utils.functional.chainVoid(
+                onClose,
+                () => rootDiagramID !== activeDiagramID && goToDomainDiagram(id, rootDiagramID)
+              )}
               onDelete={Utils.functional.chainVoid(onClose, () => deleteModal.openVoid({ domainID: id }))}
               onDuplicate={Utils.functional.chainVoid(onClose, () => onDuplicate(id))}
               withActions={domainEditPermission.allowed}

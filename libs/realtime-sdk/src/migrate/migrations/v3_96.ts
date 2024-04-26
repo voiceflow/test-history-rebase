@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 
-import { Transform } from './types';
+import type { Transform } from './types';
 
 /**
  * fix diagram.menuItems not defined

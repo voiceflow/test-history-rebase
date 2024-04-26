@@ -1,4 +1,9 @@
-import { AnyResponseVariantCreate, type AnyResponseVariantWithData, ResponseVariantType, TextResponseVariant } from '@voiceflow/dtos';
+import type {
+  AnyResponseVariantCreate,
+  type AnyResponseVariantWithData,
+  ResponseVariantType,
+  TextResponseVariant,
+} from '@voiceflow/dtos';
 import React, { useMemo } from 'react';
 
 import { CMSFormListButtonRemove } from '@/components/CMS/CMSForm/CMSFormListButtonRemove/CMSFormListButtonRemove.component';
@@ -12,7 +17,11 @@ import { IntentRequiredEntityAutomaticRepromptPopper } from '../IntentRequiredEn
 import { IntentRequiredEntityRepromptsPopper } from '../IntentRequiredEntityRepromptsPopper/IntentRequiredEntityRepromptsPopper.component';
 import type { IIntentEditRequiredEntityItem } from './IntentEditRequiredEntityItem.interface';
 
-export const IntentEditRequiredEntityItem: React.FC<IIntentEditRequiredEntityItem> = ({ intent, entityIDs, requiredEntity }) => {
+export const IntentEditRequiredEntityItem: React.FC<IIntentEditRequiredEntityItem> = ({
+  intent,
+  entityIDs,
+  requiredEntity,
+}) => {
   const promptsMap = useSelector(Designer.Prompt.selectors.map);
   const utterances = useSelector(Designer.Intent.Utterance.selectors.allByIntentID, { intentID: intent.id });
   const entitiesMap = useSelector(Designer.selectors.slateEntitiesMapByID);
@@ -62,7 +71,8 @@ export const IntentEditRequiredEntityItem: React.FC<IIntentEditRequiredEntityIte
     await deleteReprompt(repromptID);
   };
 
-  const onEntityReplace = async ({ entityID }: { oldEntityID: string; entityID: string }) => patchRequiredEntity(requiredEntity.id, { entityID });
+  const onEntityReplace = async ({ entityID }: { oldEntityID: string; entityID: string }) =>
+    patchRequiredEntity(requiredEntity.id, { entityID });
 
   const reprompts = useMemo(
     () => variants.map<AnyResponseVariantWithData>((variant) => getResponseVariantWithData({ variant, promptsMap })),
@@ -92,7 +102,12 @@ export const IntentEditRequiredEntityItem: React.FC<IIntentEditRequiredEntityIte
         <div key={reprompt.id}>
           <ResponseEditVariant
             variant={reprompt}
-            removeButton={<CMSFormListButtonRemove disabled={reprompts.length === 1} onClick={() => onRepromptDelete(reprompt.id)} />}
+            removeButton={
+              <CMSFormListButtonRemove
+                disabled={reprompts.length === 1}
+                onClick={() => onRepromptDelete(reprompt.id)}
+              />
+            }
             autoFocusIfEmpty
             textVariantProps={{ placeholder: `Enter reprompt ${index + 1}` }}
           />

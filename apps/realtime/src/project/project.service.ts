@@ -32,7 +32,10 @@ export class ProjectService extends MutableService<ProjectORM> {
     super();
   }
 
-  async findOneOrFailWithFields<Key extends keyof ProjectObject>(versionID: Primary<ProjectEntity>, fields: [Key, ...Key[]]) {
+  async findOneOrFailWithFields<Key extends keyof ProjectObject>(
+    versionID: Primary<ProjectEntity>,
+    fields: [Key, ...Key[]]
+  ) {
     return this.orm.findOneOrFail(versionID, { fields });
   }
 
@@ -43,15 +46,21 @@ export class ProjectService extends MutableService<ProjectORM> {
   async findManyLegacyProjectsByWorkspaceID(workspaceID: number) {
     const [projects, members] = await Promise.all([
       this.findManyByWorkspaceID(workspaceID),
-      this.identityClient.private.findAllProjectMembersForForWorkspace(this.projectSerializer.encodeWorkspaceID(workspaceID)),
+      this.identityClient.private.findAllProjectMembersForForWorkspace(
+        this.projectSerializer.encodeWorkspaceID(workspaceID)
+      ),
     ]);
 
     const membersPerProject = members.reduce<Record<string, Realtime.ProjectMember[]>>((acc, member) => {
       acc[member.membership.projectID] ??= [];
-      acc[member.membership.projectID]!.push(Realtime.Adapters.Identity.projectMember.fromDB(member as unknown as Realtime.Identity.ProjectMember));
+      acc[member.membership.projectID]!.push(
+        Realtime.Adapters.Identity.projectMember.fromDB(member as unknown as Realtime.Identity.ProjectMember)
+      );
       return acc;
     }, {});
 
-    return projects.map((project) => this.legacyProjectSerializer.serialize(project, membersPerProject[project._id.toJSON()] ?? []));
+    return projects.map((project) =>
+      this.legacyProjectSerializer.serialize(project, membersPerProject[project._id.toJSON()] ?? [])
+    );
   }
 }

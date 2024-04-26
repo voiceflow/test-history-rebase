@@ -1,6 +1,6 @@
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
-import { Context } from '@voiceflow/socket-utils';
-import { Action } from 'typescript-fsa';
+import type { Context } from '@voiceflow/socket-utils';
+import type { Action } from 'typescript-fsa';
 
 import { AbstractVersionResourceControl } from '../utils';
 
@@ -11,7 +11,10 @@ class AddGlobalVariable extends AbstractVersionResourceControl<Realtime.version.
     await this.services.variable.add(payload.versionID, payload.variable);
   };
 
-  protected finally = async (ctx: Context, { payload }: Action<Realtime.version.variable.GlobalVariablePayload>): Promise<void> => {
+  protected finally = async (
+    ctx: Context,
+    { payload }: Action<Realtime.version.variable.GlobalVariablePayload>
+  ): Promise<void> => {
     await this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID);
   };
 }

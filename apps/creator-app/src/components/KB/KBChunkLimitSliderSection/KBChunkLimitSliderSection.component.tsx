@@ -6,7 +6,7 @@ import { useLinkedState } from '@/hooks/state.hook';
 import { onOpenURLInANewTabFactory } from '@/utils/window';
 
 import { KBChunkLimitSlider } from '../KBChunkLimitSlider/KBChunkLimitSlider.component';
-import { IKBChunkLimitSliderSection } from './KBChunkLimitSliderSection.interface';
+import type { IKBChunkLimitSliderSection } from './KBChunkLimitSliderSection.interface';
 
 export const KBChunkLimitSliderSection: React.FC<IKBChunkLimitSliderSection> = ({
   value: propValue,
@@ -28,8 +28,8 @@ export const KBChunkLimitSliderSection: React.FC<IKBChunkLimitSliderSection> = (
             className={className}
             onLearnClick={onOpenURLInANewTabFactory(learnMoreURL)}
           >
-            Determines how many data source chunks will be passed to the LLM as context to generate a response. We recommend 2-3 to avoid LLM
-            confusion.
+            Determines how many data source chunks will be passed to the LLM as context to generate a response. We
+            recommend 2-3 to avoid LLM confusion.
           </SectionHeaderTitleWithLearnTooltip>
         )}
       >

@@ -74,7 +74,9 @@ export const EntityVariantsSection = <T extends EntityVariantsSectionItem>({
                 key={virtualItem.key}
                 index={virtualItem.index}
                 onRemove={() => onRemove(item.id)}
-                removeDisabled={(classifier === CUSTOM_SLOT_TYPE && variantsSize === 1) || disabled || aiGenerate.fetching}
+                removeDisabled={
+                  (classifier === CUSTOM_SLOT_TYPE && variantsSize === 1) || disabled || aiGenerate.fetching
+                }
                 testID={tid(TEST_ID, 'list-item')}
               >
                 {renderVariantInput({ item, disabled, onEmpty: listEmpty.container(virtualItem.index) })}

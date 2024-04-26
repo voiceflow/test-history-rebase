@@ -1,8 +1,9 @@
 /* eslint-disable max-depth */
 
-import { Channel, EntityWithVariants, Language } from '@voiceflow/dtos';
-import * as Realtime from '@voiceflow/realtime-sdk';
-import { SvgIconTypes } from '@voiceflow/ui';
+import type { EntityWithVariants } from '@voiceflow/dtos';
+import { Channel, Language } from '@voiceflow/dtos';
+import type * as Realtime from '@voiceflow/realtime-sdk';
+import type { SvgIconTypes } from '@voiceflow/ui';
 
 import { Designer } from '@/ducks';
 import { getManager } from '@/pages/Canvas/managers';
@@ -10,30 +11,32 @@ import type { State } from '@/store/types';
 import { isTopicDiagram } from '@/utils/diagram.utils';
 import { utteranceTextToString } from '@/utils/utterance.util';
 
-import {
+import type {
   DatabaseEntry,
   DiagramDatabaseEntry,
   EntityDatabaseEntry,
   Filters,
   IntentDatabaseEntry,
-  NODE_CATEGORY_ORDER,
   NodeCategory,
   NodeDatabaseEntry,
-  SEARCH_CATEGORY_ORDER,
-  SearchCategory,
   SearchDatabase,
 } from './types';
+import { NODE_CATEGORY_ORDER, SEARCH_CATEGORY_ORDER, SearchCategory } from './types';
 
 export const EmptySearchDatabase: SearchDatabase = SEARCH_CATEGORY_ORDER.reduce<SearchDatabase>((acc, category) => {
   acc[category] = [];
   return acc;
 }, {} as SearchDatabase);
 
-export const isNodeDatabaseEntry = (entry: DatabaseEntry & { nodeID?: string }): entry is NodeDatabaseEntry => !!entry.nodeID;
-export const isIntentDatabaseEntry = (entry: DatabaseEntry & { intentID?: string }): entry is IntentDatabaseEntry => !!entry.intentID;
-export const isEntityDatabaseEntry = (entry: DatabaseEntry & { entityID?: string }): entry is EntityDatabaseEntry => !!entry.entityID;
-export const isDiagramDatabaseEntry = (entry: DatabaseEntry & { diagramType?: string; diagramID?: string }): entry is DiagramDatabaseEntry =>
-  !!entry.diagramType && !!entry.diagramID;
+export const isNodeDatabaseEntry = (entry: DatabaseEntry & { nodeID?: string }): entry is NodeDatabaseEntry =>
+  !!entry.nodeID;
+export const isIntentDatabaseEntry = (entry: DatabaseEntry & { intentID?: string }): entry is IntentDatabaseEntry =>
+  !!entry.intentID;
+export const isEntityDatabaseEntry = (entry: DatabaseEntry & { entityID?: string }): entry is EntityDatabaseEntry =>
+  !!entry.entityID;
+export const isDiagramDatabaseEntry = (
+  entry: DatabaseEntry & { diagramType?: string; diagramID?: string }
+): entry is DiagramDatabaseEntry => !!entry.diagramType && !!entry.diagramID;
 
 export const buildNodeDatabase = (nodes: Realtime.NodeData<unknown>[], diagramID: string, state: State) => {
   const database: NodeDatabaseEntry[] = [];
@@ -90,7 +93,9 @@ export const buildEntityDatabase = (entities: EntityWithVariants[]): EntityDatab
     targets: [entity.name, ...entity.variants.flatMap((variant) => [variant.value, ...variant.synonyms])],
   }));
 
-export const buildDiagramDatabases = (diagrams: Realtime.Diagram[]): Pick<SearchDatabase, SearchCategory.COMPONENT | SearchCategory.TOPIC> => {
+export const buildDiagramDatabases = (
+  diagrams: Realtime.Diagram[]
+): Pick<SearchDatabase, SearchCategory.COMPONENT | SearchCategory.TOPIC> => {
   const database: Pick<SearchDatabase, SearchCategory.COMPONENT | SearchCategory.TOPIC> = {
     [SearchCategory.COMPONENT]: [],
     [SearchCategory.TOPIC]: [],
@@ -108,7 +113,11 @@ export const buildDiagramDatabases = (diagrams: Realtime.Diagram[]): Pick<Search
   return database;
 };
 
-export type CreateOption<T extends { index: number }> = (params: { target: string; index: number; entry: DatabaseEntry }) => T;
+export type CreateOption<T extends { index: number }> = (params: {
+  target: string;
+  index: number;
+  entry: DatabaseEntry;
+}) => T;
 
 export const find = <T extends { index: number }>(
   query: string,

@@ -7,7 +7,7 @@ import { PostgresMutableORM } from './postgres-mutable.orm';
 
 export abstract class PostgresCMSMutableORM<
   BaseEntity extends Omit<PostgresCMSCreatableEntity, typeof DEFAULT_OR_NULL_COLUMN>,
-  DiscriminatorEntity extends Omit<BaseEntity, typeof DEFAULT_OR_NULL_COLUMN> = BaseEntity
+  DiscriminatorEntity extends Omit<BaseEntity, typeof DEFAULT_OR_NULL_COLUMN> = BaseEntity,
 > extends PostgresMutableORM<BaseEntity, DiscriminatorEntity> {
   protected override async _insertMany(data: CreateData<DiscriminatorEntity>[], options?: { upsert?: boolean }) {
     return super._insertMany(

@@ -15,7 +15,7 @@ import { useDispatch, useFeature, useHotkeyList, useRegistration, useSelector } 
 import { getHotkeyLabel, Hotkey } from '@/keymap';
 import * as ModalsV2 from '@/ModalsV2';
 import { ClipboardContext, EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';
-import { CanvasContainerAPI } from '@/pages/Canvas/types';
+import type { CanvasContainerAPI } from '@/pages/Canvas/types';
 import { MarkupContext, SelectionSetTargetsContext } from '@/pages/Project/contexts';
 import { useCommentingMode, useEditingMode, usePrototypingMode } from '@/pages/Project/hooks';
 import { Identifier } from '@/styles/constants';
@@ -156,12 +156,28 @@ const CanvasContainer: React.FC<React.PropsWithChildren> = ({ children }) => {
       { hotkey: Hotkey.REDO, callback: onRedo, disable: disableCanvasHotkeys, preventDefault: true },
       { hotkey: Hotkey.DELETE, callback: onDelete, disable: deleteDisabled, preventDefault: true },
       { hotkey: Hotkey.SEARCH, callback: onSearch, preventDefault: true },
-      { hotkey: Hotkey.SPOTLIGHT, callback: onSpotlight, action: 'keyup', disable: disableCanvasHotkeys, preventDefault: true },
+      {
+        hotkey: Hotkey.SPOTLIGHT,
+        callback: onSpotlight,
+        action: 'keyup',
+        disable: disableCanvasHotkeys,
+        preventDefault: true,
+      },
       { hotkey: Hotkey.DUPLICATE, callback: onDuplicate, disable: disableCanvasHotkeys, preventDefault: true },
       { hotkey: Hotkey.SELECT_ALL, callback: onSelectAll, preventDefault: true },
       { hotkey: Hotkey.NATIVE_SEARCH, callback: onSearch, preventDefault: true },
-      { hotkey: Hotkey.CREATE_SUBTOPIC, callback: onCreateSubtopic, disable: disableCanvasHotkeys || cmsWorkflows.isEnabled, preventDefault: true },
-      { hotkey: Hotkey.CREATE_COMPONENT, callback: onCreateComponent, disable: disableCanvasHotkeys, preventDefault: true },
+      {
+        hotkey: Hotkey.CREATE_SUBTOPIC,
+        callback: onCreateSubtopic,
+        disable: disableCanvasHotkeys || cmsWorkflows.isEnabled,
+        preventDefault: true,
+      },
+      {
+        hotkey: Hotkey.CREATE_COMPONENT,
+        callback: onCreateComponent,
+        disable: disableCanvasHotkeys,
+        preventDefault: true,
+      },
     ],
     [disableCanvasHotkeys, deleteDisabled]
   );

@@ -17,7 +17,7 @@ export const intentNameUniqIntentsValidator = validatorFactory(
 export const intentNameUniqEntitiesValidator = validatorFactory(
   (name: string, { entities }: { entities: Entity[] }) =>
     entities.every((entity) => entity.name.toLocaleLowerCase() !== name.toLocaleLowerCase()),
-  () => `Intent name already exists.`
+  () => 'Intent name already exists.'
 );
 
 export const intentNameUniqVariablesValidator = validatorFactory(

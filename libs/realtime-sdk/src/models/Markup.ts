@@ -1,4 +1,5 @@
-import { BaseText } from '@voiceflow/base-types';
+/* eslint-disable @typescript-eslint/no-namespace */
+import type { BaseText } from '@voiceflow/base-types';
 
 export namespace Markup {
   export interface Color {

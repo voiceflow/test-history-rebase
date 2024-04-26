@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrototypeIntent, PrototypeModel, PrototypeSlot } from '@voiceflow/dtos';
+import type { PrototypeIntent, PrototypeModel, PrototypeSlot } from '@voiceflow/dtos';
 import orderBy from 'lodash/orderBy';
 import { MD5 } from 'object-hash';
 
@@ -20,7 +20,10 @@ export class EnvironmentNLUTrainingUtil {
     return Object.fromEntries(array.map((item) => [item.key, MD5(item)]));
   }
 
-  private getHashedModelDataDiff(baseRecord: Record<string, string>, newRecord: Record<string, string>): HashedRecordDiff {
+  private getHashedModelDataDiff(
+    baseRecord: Record<string, string>,
+    newRecord: Record<string, string>
+  ): HashedRecordDiff {
     const newRecordKeys = Object.keys(newRecord);
     const baseRecordKeys = Object.keys(baseRecord);
 
@@ -43,11 +46,19 @@ export class EnvironmentNLUTrainingUtil {
       inputs: orderBy(intent.inputs, (intent) => intent.text),
     });
 
-    const projectHashedSlots = this.hashModelData(orderBy(projectModel?.slots ?? [], (slot) => slot.key).map(prepareSlot));
-    const projectHashedIntents = this.hashModelData(orderBy(projectModel?.intents ?? [], (intent) => intent.key).map(prepareIntent));
+    const projectHashedSlots = this.hashModelData(
+      orderBy(projectModel?.slots ?? [], (slot) => slot.key).map(prepareSlot)
+    );
+    const projectHashedIntents = this.hashModelData(
+      orderBy(projectModel?.intents ?? [], (intent) => intent.key).map(prepareIntent)
+    );
 
-    const versionHashedSlots = this.hashModelData(orderBy(versionModel?.slots ?? [], (slot) => slot.key).map(prepareSlot));
-    const versionHashedIntents = this.hashModelData(orderBy(versionModel?.intents ?? [], (intent) => intent.key).map(prepareIntent));
+    const versionHashedSlots = this.hashModelData(
+      orderBy(versionModel?.slots ?? [], (slot) => slot.key).map(prepareSlot)
+    );
+    const versionHashedIntents = this.hashModelData(
+      orderBy(versionModel?.intents ?? [], (intent) => intent.key).map(prepareIntent)
+    );
 
     return {
       slots: this.getHashedModelDataDiff(projectHashedSlots, versionHashedSlots),

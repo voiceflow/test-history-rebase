@@ -1,6 +1,7 @@
 import { BlockType, START_NODE_COLOR, START_NODE_POSITION } from '@realtime-sdk/constants';
 import { BaseModels } from '@voiceflow/base-types';
-import { AnyRecord, Utils } from '@voiceflow/common';
+import type { AnyRecord } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
 
 export interface DiagramFactoryOptions {
   name: string;
@@ -8,7 +9,10 @@ export interface DiagramFactoryOptions {
 }
 
 export type PrimitiveDiagram<T extends BaseModels.BaseDiagramNode = BaseModels.BaseDiagramNode> = Required<
-  Omit<BaseModels.Diagram.Model<T>, '_id' | 'creatorID' | 'versionID' | 'intentStepIDs' | 'menuNodeIDs' | 'children' | 'diagramID'>
+  Omit<
+    BaseModels.Diagram.Model<T>,
+    '_id' | 'creatorID' | 'versionID' | 'intentStepIDs' | 'menuNodeIDs' | 'children' | 'diagramID'
+  >
 >;
 
 export const getUniqueCopyName = (originalName: string, existingNames: string[]) => {

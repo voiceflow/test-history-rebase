@@ -1,4 +1,11 @@
-import { DeleteObjectCommand, DeleteObjectOutput, GetObjectCommand, PutObjectCommand, PutObjectCommandInput, S3Client } from '@aws-sdk/client-s3';
+import {
+  DeleteObjectCommand,
+  DeleteObjectOutput,
+  GetObjectCommand,
+  PutObjectCommand,
+  PutObjectCommandInput,
+  S3Client,
+} from '@aws-sdk/client-s3';
 import { Inject, Injectable, Logger, Optional } from '@nestjs/common';
 import multerS3 from 'multer-s3';
 

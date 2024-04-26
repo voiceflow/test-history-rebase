@@ -27,9 +27,10 @@ export const useNLUTrainingModelNotifications = () => {
 
             notify.long.warning(
               <>
-                Your slots <b>{message}</b> require custom values in order to be properly recognized during testing. Update the{' '}
-                <Link label="Interaction Model" onClick={() => goToCMSResource(CMSRoute.ENTITY, invalidSlotsIDs[0])} /> and train your assistant
-                again.
+                Your slots <b>{message}</b> require custom values in order to be properly recognized during testing.
+                Update the{' '}
+                <Link label="Interaction Model" onClick={() => goToCMSResource(CMSRoute.ENTITY, invalidSlotsIDs[0])} />{' '}
+                and train your assistant again.
               </>,
               { pauseOnHover: true, bodyClassName: 'vfui' }
             );

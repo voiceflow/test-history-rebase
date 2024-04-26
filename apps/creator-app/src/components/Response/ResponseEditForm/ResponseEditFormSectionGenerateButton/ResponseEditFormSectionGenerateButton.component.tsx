@@ -5,7 +5,11 @@ import React from 'react';
 import { RESPONSE_VARIANT_TYPE_LABEL_MAP } from '../../Response.constant';
 import type { IResponseEditFormSectionGenerateButton } from './ResponseEditFormSectionGenerateButton.interface';
 
-export const ResponseEditFormSectionGenerateButton: React.FC<IResponseEditFormSectionGenerateButton> = ({ type, onClick, loading }) => {
+export const ResponseEditFormSectionGenerateButton: React.FC<IResponseEditFormSectionGenerateButton> = ({
+  type,
+  onClick,
+  loading,
+}) => {
   const isTextVariant = type === ResponseVariantType.TEXT;
 
   return (
@@ -24,7 +28,11 @@ export const ResponseEditFormSectionGenerateButton: React.FC<IResponseEditFormSe
         />
       )}
     >
-      {() => <Tooltip.Caption>Variant generation is not available for {RESPONSE_VARIANT_TYPE_LABEL_MAP[type]} responses.</Tooltip.Caption>}
+      {() => (
+        <Tooltip.Caption>
+          Variant generation is not available for {RESPONSE_VARIANT_TYPE_LABEL_MAP[type]} responses.
+        </Tooltip.Caption>
+      )}
     </Tooltip>
   );
 };

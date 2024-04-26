@@ -19,7 +19,14 @@ interface SettingsBackupsListItemProps {
   onPreview: (backup: Backup) => Promise<void>;
 }
 
-const SettingsBackupsListItem: React.FC<SettingsBackupsListItemProps> = ({ backup, creatorID, onRestore, onDownload, onDelete, onPreview }) => {
+const SettingsBackupsListItem: React.FC<SettingsBackupsListItemProps> = ({
+  backup,
+  creatorID,
+  onRestore,
+  onDownload,
+  onDelete,
+  onPreview,
+}) => {
   const member = useSelector(WorkspaceV2.active.memberByIDSelector, { creatorID });
   const hideExports = useFeature(Realtime.FeatureFlag.HIDE_EXPORTS);
 
@@ -38,7 +45,8 @@ const SettingsBackupsListItem: React.FC<SettingsBackupsListItemProps> = ({ backu
 
       body: (
         <>
-          When you restore a backup, we'll create a new automatic backup of the current designer state. Please confirm you want to continue.
+          When you restore a backup, we'll create a new automatic backup of the current designer state. Please confirm
+          you want to continue.
           <br />
         </>
       ),
@@ -77,7 +85,9 @@ const SettingsBackupsListItem: React.FC<SettingsBackupsListItemProps> = ({ backu
   return (
     <S.RowItem>
       <S.ColumnItemContainer>
-        <TippyTooltip content={dayjs(backup.createdAt).format('MMM DD, YYYY, h:mm A')}>{dayjs(backup.createdAt).fromNow()}</TippyTooltip>
+        <TippyTooltip content={dayjs(backup.createdAt).format('MMM DD, YYYY, h:mm A')}>
+          {dayjs(backup.createdAt).fromNow()}
+        </TippyTooltip>
       </S.ColumnItemContainer>
 
       <S.ColumnItemContainer>{backup.name ?? 'Untitled'}</S.ColumnItemContainer>

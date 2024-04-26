@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Menu, Portal, SvgIcon, toast, usePopper } from '@voiceflow/ui';
 import React from 'react';
 
@@ -15,7 +15,10 @@ interface TopicDomainPopperProps {
   rootTopicID?: string;
 }
 
-const TopicDomainPopper: React.ForwardRefRenderFunction<HTMLDivElement, TopicDomainPopperProps> = ({ topicID, domains, rootTopicID }, ref) => {
+const TopicDomainPopper: React.ForwardRefRenderFunction<HTMLDivElement, TopicDomainPopperProps> = (
+  { topicID, domains, rootTopicID },
+  ref
+) => {
   const moveTopicDomain = useDispatch(Diagram.moveTopicDomain);
 
   const domainID = useSelector(Session.activeDomainIDSelector);

@@ -6,8 +6,8 @@ import { UploadedStage } from '@/components/PlatformUploadPopup/components';
 import { WHATSAPP_DOCUMENTATION } from '@/constants/platforms';
 import { PrototypeJobContext } from '@/contexts/PrototypeJobContext';
 import { useSyncProjectLiveVersion } from '@/hooks/project';
-import { NLPTrainJob } from '@/models';
-import { StageComponentProps } from '@/platforms/types';
+import type { NLPTrainJob } from '@/models';
+import type { StageComponentProps } from '@/platforms/types';
 import { openInternalURLInANewTab } from '@/utils/window';
 
 const SuccessStage: React.FC<StageComponentProps<NLPTrainJob.SuccessStage>> = ({ cancel }) => {
@@ -21,7 +21,12 @@ const SuccessStage: React.FC<StageComponentProps<NLPTrainJob.SuccessStage>> = ({
         Test on WhatsApp
       </Button>
       <Box mt={8} />
-      <Button squareRadius fullWidth variant={ButtonVariant.QUATERNARY} onClick={() => openInternalURLInANewTab(WHATSAPP_DOCUMENTATION)}>
+      <Button
+        squareRadius
+        fullWidth
+        variant={ButtonVariant.QUATERNARY}
+        onClick={() => openInternalURLInANewTab(WHATSAPP_DOCUMENTATION)}
+      >
         See Documentation
       </Button>
     </UploadedStage>

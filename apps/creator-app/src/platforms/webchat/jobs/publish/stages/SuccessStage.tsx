@@ -9,8 +9,8 @@ import { useFeature, useSelector } from '@/hooks';
 import { useSyncProjectLiveVersion } from '@/hooks/project';
 import { useDispatch } from '@/hooks/realtime';
 import { useLocalStorageState } from '@/hooks/storage.hook';
-import { NLPTrainJob } from '@/models';
-import { StageComponentProps } from '@/platforms/types';
+import type { NLPTrainJob } from '@/models';
+import type { StageComponentProps } from '@/platforms/types';
 
 const getWidgetSessionKey = (projectID: string) => `widget_publish_${projectID}`;
 

@@ -9,8 +9,11 @@ const InfoTooltip = () => (
     width={232}
     content={
       <TippyTooltip.FooterButton title="Domains" onClick={onOpenInternalURLInANewTabFactory(DOMAINS)} buttonText="More">
-        <BlockText mb="8px">Domains allow your team to organize large assistants into smaller collections of topics.</BlockText>
-        All assistant content: NLU data, responses and components are automatically sharable across all domains in the assistant.
+        <BlockText mb="8px">
+          Domains allow your team to organize large assistants into smaller collections of topics.
+        </BlockText>
+        All assistant content: NLU data, responses and components are automatically sharable across all domains in the
+        assistant.
       </TippyTooltip.FooterButton>
     }
     interactive

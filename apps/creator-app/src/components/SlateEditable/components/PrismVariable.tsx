@@ -1,5 +1,5 @@
 import React from 'react';
-import { RenderLeafProps } from 'slate-react';
+import type { RenderLeafProps } from 'slate-react';
 
 import Text from './Text';
 import VariablesPopper from './VariablesPopper';
@@ -14,7 +14,10 @@ const PrismVariable: React.FC<RenderLeafProps> = (props) => {
       <Text
         ref={setTextNode}
         {...props}
-        leaf={{ ...props.leaf, text: props.leaf.text.endsWith('}') ? `${props.leaf.text}-${props.leaf.text}` : props.leaf.text }}
+        leaf={{
+          ...props.leaf,
+          text: props.leaf.text.endsWith('}') ? `${props.leaf.text}-${props.leaf.text}` : props.leaf.text,
+        }}
         styleOverrides={STYLE}
       />
 

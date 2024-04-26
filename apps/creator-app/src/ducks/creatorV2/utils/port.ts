@@ -1,10 +1,11 @@
-import { BaseModels } from '@voiceflow/base-types';
-import { Nullish, Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
-import { Draft } from 'immer';
+import type { BaseModels } from '@voiceflow/base-types';
+import type { Nullish } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
+import type * as Realtime from '@voiceflow/realtime-sdk';
+import type { Draft } from 'immer';
 import * as Normal from 'normal-store';
 
-import { CreatorState } from '../types';
+import type { CreatorState } from '../types';
 import { removeLink } from './link';
 
 export const portFactory = (nodeID: string, portID: string, port: Partial<Realtime.Port>): Realtime.Port => ({

@@ -1,5 +1,5 @@
-import { Nullable } from '@voiceflow/common';
-import { Action, ActionCreator } from 'typescript-fsa';
+import type { Nullable } from '@voiceflow/common';
+import type { Action, ActionCreator } from 'typescript-fsa';
 
 import type { GetState } from '@/store/types';
 import { extendMeta } from '@/store/utils';

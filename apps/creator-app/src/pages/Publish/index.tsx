@@ -39,10 +39,18 @@ const Publish: React.FC = () => {
         <Switch>
           {isSMSPlatform(platform) && canEditProject && <Route path={Path.PUBLISH_SMS} component={PublishSMS} />}
           {isSMSPlatform(platform) && canEditProject && <Route path={Path.PROTOTYPE_SMS} component={PrototypeSMS} />}
-          {isWebChatPlatform(platform) && canEditProject && <Route path={Path.PUBLISH_WEBCHAT} component={PublishWebchat} />}
-          {isWhatsAppPlatform(platform) && canEditProject && <Route path={Path.PUBLISH_WHATSAPP} component={PublishWhatsApp} />}
-          {isWhatsAppPlatform(platform) && canEditProject && <Route path={Path.PROTOTYPE_WHATSAPP} component={PrototypeWhatsApp} />}
-          {isMicrosoftTeamsPlatform(platform) && canEditProject && <Route path={Path.PUBLISH_TEAMS} component={PublishTeams} />}
+          {isWebChatPlatform(platform) && canEditProject && (
+            <Route path={Path.PUBLISH_WEBCHAT} component={PublishWebchat} />
+          )}
+          {isWhatsAppPlatform(platform) && canEditProject && (
+            <Route path={Path.PUBLISH_WHATSAPP} component={PublishWhatsApp} />
+          )}
+          {isWhatsAppPlatform(platform) && canEditProject && (
+            <Route path={Path.PROTOTYPE_WHATSAPP} component={PrototypeWhatsApp} />
+          )}
+          {isMicrosoftTeamsPlatform(platform) && canEditProject && (
+            <Route path={Path.PUBLISH_TEAMS} component={PublishTeams} />
+          )}
 
           {!disableCodeExports.isEnabled && canCodeExport && <Route path={Path.PUBLISH_EXPORT} component={Export} />}
           {(canEditAPIKey || viewerAPIKeyAccess.isEnabled) && <Route path={Path.PUBLISH_API} component={API} />}

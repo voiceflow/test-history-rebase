@@ -6,7 +6,7 @@ import * as Platform from '@voiceflow/platform-config/backend';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import uniqBy from 'lodash/uniqBy';
 
-import { Transform } from './types';
+import type { Transform } from './types';
 
 // migrates project to assistant, migrates platform data slots and intents to cms resources
 const migrateToV5_00: Transform = ({ cms, version }, { project, creatorID }) => {
@@ -35,8 +35,15 @@ const migrateToV5_00: Transform = ({ cms, version }, { project, creatorID }) => 
 
   const versionIntents = [...version.platformData.intents];
 
-  if (platformConfig.isVoiceflowBased && !versionIntents.some((intent) => intent.key === VoiceflowConstants.IntentName.NONE)) {
-    versionIntents.push({ key: VoiceflowConstants.IntentName.NONE, name: VoiceflowConstants.IntentName.NONE, inputs: [] });
+  if (
+    platformConfig.isVoiceflowBased &&
+    !versionIntents.some((intent) => intent.key === VoiceflowConstants.IntentName.NONE)
+  ) {
+    versionIntents.push({
+      key: VoiceflowConstants.IntentName.NONE,
+      name: VoiceflowConstants.IntentName.NONE,
+      inputs: [],
+    });
   }
 
   ({
@@ -48,7 +55,9 @@ const migrateToV5_00: Transform = ({ cms, version }, { project, creatorID }) => 
     responseDiscriminators: cms.responseDiscriminators,
   } = intentToLegacyIntent.mapToDB(
     {
-      notes: Object.values(version.notes ?? {}).filter((note): note is BaseModels.IntentNote => note.type === BaseModels.NoteType.INTENT),
+      notes: Object.values(version.notes ?? {}).filter(
+        (note): note is BaseModels.IntentNote => note.type === BaseModels.NoteType.INTENT
+      ),
       intents: uniqBy(versionIntents, (intent) => intent.key),
     },
     {

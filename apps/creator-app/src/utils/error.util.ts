@@ -29,7 +29,9 @@ export const normalizeError = (error: unknown, defaultMessage?: string): Error =
       return new Error(error.response.data.message);
     }
 
-    return new Error(error.response?.data ? JSON.stringify(error.response.data) : defaultMessage ?? 'Unknown network error');
+    return new Error(
+      error.response?.data ? JSON.stringify(error.response.data) : defaultMessage ?? 'Unknown network error'
+    );
   }
 
   if (error instanceof Error) {
@@ -53,4 +55,5 @@ export const normalizeError = (error: unknown, defaultMessage?: string): Error =
   return new Error(defaultMessage ?? 'Unknown error');
 };
 
-export const getErrorMessage = (error: unknown, defaultMessage?: string): string => normalizeError(error, defaultMessage).message;
+export const getErrorMessage = (error: unknown, defaultMessage?: string): string =>
+  normalizeError(error, defaultMessage).message;

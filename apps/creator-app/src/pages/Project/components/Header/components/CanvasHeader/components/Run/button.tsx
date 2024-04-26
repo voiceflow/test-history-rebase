@@ -1,5 +1,6 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Button, ButtonVariant, PrimaryButtonProps, SecondaryButtonProps, SvgIcon, SvgIconTypes, TippyTooltip } from '@voiceflow/ui';
+import type { PrimaryButtonProps, SecondaryButtonProps, SvgIconTypes } from '@voiceflow/ui';
+import { Button, ButtonVariant, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import { Header, TooltipWithKeys } from '@voiceflow/ui-next';
 import React from 'react';
 
@@ -24,7 +25,12 @@ interface RunButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
 }
 
-const RunButton: React.FC<RunButtonProps> = ({ variant = ButtonVariant.PRIMARY, loading = false, onClick, active = false }) => {
+const RunButton: React.FC<RunButtonProps> = ({
+  variant = ButtonVariant.PRIMARY,
+  loading = false,
+  onClick,
+  active = false,
+}) => {
   const cmsWorkflows = useFeature(Realtime.FeatureFlag.CMS_WORKFLOWS);
 
   if (cmsWorkflows.isEnabled) {
@@ -70,7 +76,9 @@ const RunButton: React.FC<RunButtonProps> = ({ variant = ButtonVariant.PRIMARY, 
   };
 
   return (
-    <TippyTooltip content={<TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.RUN_MODE]}>Run</TippyTooltip.WithHotkey>}>
+    <TippyTooltip
+      content={<TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.RUN_MODE]}>Run</TippyTooltip.WithHotkey>}
+    >
       {variant === ButtonVariant.SECONDARY ? (
         <StyledButton {...commonProps} icon={iconProps.icon} iconProps={iconProps} />
       ) : (

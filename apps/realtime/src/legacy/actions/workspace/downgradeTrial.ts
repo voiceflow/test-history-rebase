@@ -1,16 +1,20 @@
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { Actions } from '@voiceflow/sdk-logux-designer';
-import { Context } from '@voiceflow/socket-utils';
+import type { Context } from '@voiceflow/socket-utils';
 import { AxiosError } from 'axios';
-import { Action } from 'typescript-fsa';
+import type { Action } from 'typescript-fsa';
 
-import { AbstractWorkspaceChannelControl, WorkspaceContextData } from './utils';
+import type { WorkspaceContextData } from './utils';
+import { AbstractWorkspaceChannelControl } from './utils';
 
 export interface CheckoutContextData extends WorkspaceContextData {
   succedeed?: boolean;
 }
 
-class DowngradeWorkspaceTrial extends AbstractWorkspaceChannelControl<Realtime.workspace.DowngradeTrialPayload, CheckoutContextData> {
+class DowngradeWorkspaceTrial extends AbstractWorkspaceChannelControl<
+  Realtime.workspace.DowngradeTrialPayload,
+  CheckoutContextData
+> {
   protected actionCreator = Realtime.workspace.downgradeTrial.started;
 
   protected process = this.reply(Realtime.workspace.downgradeTrial, async (ctx, { payload }) => {
@@ -38,7 +42,10 @@ class DowngradeWorkspaceTrial extends AbstractWorkspaceChannelControl<Realtime.w
     }
   });
 
-  protected finally = async (ctx: Context<CheckoutContextData>, { payload }: Action<Realtime.workspace.DowngradeTrialPayload>): Promise<void> => {
+  protected finally = async (
+    ctx: Context<CheckoutContextData>,
+    { payload }: Action<Realtime.workspace.DowngradeTrialPayload>
+  ): Promise<void> => {
     if (!ctx.data.succedeed) return;
 
     const quotaName = Realtime.QuotaNames.TOKENS;

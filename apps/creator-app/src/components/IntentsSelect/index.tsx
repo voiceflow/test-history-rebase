@@ -25,7 +25,9 @@ const IntentsSelect: React.FC<IntentsSelectProps> = ({ value, onChange }) => {
       getOptionValue={(option) => option?.id ?? null}
       createInputPlaceholder="intents"
       selectAllLabel="Select All Intents"
-      renderEmpty={({ search }) => <Menu.NotFound>{!search ? 'No intents exist in this assistant.' : 'No intent found.'}</Menu.NotFound>}
+      renderEmpty={({ search }) => (
+        <Menu.NotFound>{!search ? 'No intents exist in this assistant.' : 'No intent found.'}</Menu.NotFound>
+      )}
     />
   );
 };

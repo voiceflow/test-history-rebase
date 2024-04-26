@@ -16,7 +16,12 @@ const Container = styled.div<ContainerProps>`
   width: 100%;
   display: flex;
   flex-direction: column;
-  transition: background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, max-height 0.12s linear;
+  transition:
+    background-color 0.12s linear,
+    color 0.12s linear,
+    border-color 0.12s linear,
+    box-shadow 0.12s linear,
+    max-height 0.12s linear;
 
   ${({ disabled }) =>
     disabled &&

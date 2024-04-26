@@ -54,7 +54,9 @@ const ImportButton: React.FC = () => {
           .VF file successfully imported for <strong>"{project.name}"</strong>
           <ToastCallToAction
             onClick={() =>
-              cmsWorkflows.isEnabled ? goToProjectCanvas({ versionID: project.versionID }) : goToDomain({ versionID: project.versionID })
+              cmsWorkflows.isEnabled
+                ? goToProjectCanvas({ versionID: project.versionID })
+                : goToDomain({ versionID: project.versionID })
             }
           >
             Open Assistant

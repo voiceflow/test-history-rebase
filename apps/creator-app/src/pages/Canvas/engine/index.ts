@@ -1,12 +1,14 @@
 import { BaseModels } from '@voiceflow/base-types';
-import { Nullish, Struct, Utils } from '@voiceflow/common';
+import type { Nullish, Struct } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { logger } from '@voiceflow/ui';
 import EventEmitter from 'eventemitter3';
-import React from 'react';
+import type React from 'react';
 
-import { BUFFER_REGION, CanvasAPI, MAX_CANVAS_SIZE, MIN_CANVAS_HEIGHT, MIN_CANVAS_WIDTH, ORIGIN } from '@/components/Canvas';
-import { MovementCalculator } from '@/components/Canvas/types';
+import type { CanvasAPI } from '@/components/Canvas';
+import { BUFFER_REGION, MAX_CANVAS_SIZE, MIN_CANVAS_HEIGHT, MIN_CANVAS_WIDTH, ORIGIN } from '@/components/Canvas';
+import type { MovementCalculator } from '@/components/Canvas/types';
 import { PageProgress } from '@/components/PageProgressBar';
 import { isDebug } from '@/config';
 import { BlockType, PageProgressBar } from '@/constants';
@@ -23,10 +25,10 @@ import * as Version from '@/ducks/versionV2';
 import * as Viewport from '@/ducks/viewport';
 import * as ModalsV2 from '@/ModalsV2';
 import { CanvasAction } from '@/pages/Canvas/constants';
-import { CanvasContainerAPI } from '@/pages/Canvas/types';
-import { DiagramHeartbeatContextValue } from '@/pages/Project/contexts';
-import { State, Store } from '@/store/types';
-import { Pair, Point } from '@/types';
+import type { CanvasContainerAPI } from '@/pages/Canvas/types';
+import type { DiagramHeartbeatContextValue } from '@/pages/Project/contexts';
+import type { State, Store } from '@/store/types';
+import type { Pair, Point } from '@/types';
 import { isTopicDiagram } from '@/utils/diagram.utils';
 import { Coords } from '@/utils/geometry';
 import { getNodesGroupCenter } from '@/utils/node';
@@ -39,10 +41,11 @@ import { EntityType } from './constants';
 import DiagramEngine from './diagramEngine';
 import Dispatcher from './dispatcher';
 import DragEngine from './dragEngine';
-import LinkEntity, { PortLinkInstance } from './entities/linkEntity';
-import NodeEntity from './entities/nodeEntity';
-import PortEntity from './entities/portEntity';
-import ThreadEntity from './entities/threadEntity';
+import type { PortLinkInstance } from './entities/linkEntity';
+import type LinkEntity from './entities/linkEntity';
+import type NodeEntity from './entities/nodeEntity';
+import type PortEntity from './entities/portEntity';
+import type ThreadEntity from './entities/threadEntity';
 import FocusEngine from './focusEngine';
 import GroupSelectionEngine from './groupSelectionEngine';
 import HighlightEngine from './highlightEngine';
@@ -59,7 +62,11 @@ import SelectionEngine from './selectionEngine';
 import TransformationEngine from './transformationEngine';
 import { ComponentManager } from './utils';
 
-const expireInstance = <T extends { api: { instanceID: string } }>(entities: Map<string, T>, entityID: string, instanceID: string) => {
+const expireInstance = <T extends { api: { instanceID: string } }>(
+  entities: Map<string, T>,
+  entityID: string,
+  instanceID: string
+) => {
   if (entities.has(entityID) && entities.get(entityID)!.api.instanceID === instanceID) {
     const entity = entities.get(entityID)!;
 
@@ -79,7 +86,10 @@ declare global {
   }
 }
 
-class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHeartbeat: DiagramHeartbeatContextValue }> {
+class Engine extends ComponentManager<{
+  container: CanvasContainerAPI;
+  diagramHeartbeat: DiagramHeartbeatContextValue;
+}> {
   log = logger.child('engine');
 
   emitter = new EventEmitter<string>();
@@ -180,7 +190,10 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
     };
   }
 
-  constructor(public store: Store, options: { isExport?: boolean; mousePosition: React.RefObject<Point> }) {
+  constructor(
+    public store: Store,
+    options: { isExport?: boolean; mousePosition: React.RefObject<Point> }
+  ) {
     super();
 
     this.isExport = options.isExport ?? false;
@@ -193,20 +206,26 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
     // do not change these to property declarations, they depend on this.store being set
     this.dispatcher = new Dispatcher(this);
 
-    this.log.info(this.log.init('initialized canvas engine'), this.log.value(this.select(Session.activeVersionIDSelector)));
+    this.log.info(
+      this.log.init('initialized canvas engine'),
+      this.log.value(this.select(Session.activeVersionIDSelector))
+    );
   }
 
   // store accessors
 
-  select = <T, A extends any[]>(selector: (state: State, ...args: A) => T, ...args: A): T => selector(this.store.getState(), ...args);
+  select = <T, A extends any[]>(selector: (state: State, ...args: A) => T, ...args: A): T =>
+    selector(this.store.getState(), ...args);
 
   getNodeByID = (nodeID: Nullish<string>) => this.select(CreatorV2.nodeByIDSelector, { id: nodeID });
 
-  getStepIDsByParentNodeID = (nodeID: Nullish<string>) => this.select(CreatorV2.stepIDsByParentNodeIDSelector, { id: nodeID });
+  getStepIDsByParentNodeID = (nodeID: Nullish<string>) =>
+    this.select(CreatorV2.stepIDsByParentNodeIDSelector, { id: nodeID });
 
   getZoomType = () => this.select(UI.selectors.zoomType);
 
-  getDataByNodeID = <T>(nodeID: string) => this.select(CreatorV2.nodeDataByIDSelector, { id: nodeID }) as Realtime.NodeData<T> | null;
+  getDataByNodeID = <T>(nodeID: string) =>
+    this.select(CreatorV2.nodeDataByIDSelector, { id: nodeID }) as Realtime.NodeData<T> | null;
 
   isNodeMovementLocked = (nodeID: string) => this.select(DiagramV2.isNodeMovementLockedSelector)(nodeID);
 
@@ -266,7 +285,10 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
 
   getSourceNodeByLinkID = (linkID: Nullish<string>) => this.getNodeByID(this.getLinkByID(linkID)?.source.nodeID);
 
-  isNodeOfType = (nodeID: Nullish<string>, types: BlockType | BlockType[] | ((type: BlockType) => boolean)): boolean => {
+  isNodeOfType = (
+    nodeID: Nullish<string>,
+    types: BlockType | BlockType[] | ((type: BlockType) => boolean)
+  ): boolean => {
     const nodeType = this.select(CreatorV2.nodeTypeByIDSelector, { id: nodeID });
 
     if (!nodeType) return false;
@@ -399,7 +421,13 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
   }
 
   get isCanvasBusy(): boolean {
-    return this.linkCreation.isDrawing || this.groupSelection.isDrawing || this.drag.hasTarget || this.drag.hasGroup || this.isInteractionDisabled;
+    return (
+      this.linkCreation.isDrawing ||
+      this.groupSelection.isDrawing ||
+      this.drag.hasTarget ||
+      this.drag.hasGroup ||
+      this.isInteractionDisabled
+    );
   }
 
   addClass(className: string): void {
@@ -419,7 +447,10 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
     const links = this.getLinkIDsByPortID(portID)
       .filter((linkID) => !this.supportedLinks.includes(linkID))
       .map(this.getLinkByID)
-      .filter((link): link is Realtime.Link => !!link && this.ports.has(link.source.portID) && this.ports.has(link.target.portID));
+      .filter(
+        (link): link is Realtime.Link =>
+          !!link && this.ports.has(link.source.portID) && this.ports.has(link.target.portID)
+      );
 
     if (links.length) {
       this.supportedLinks.push(...links.map((link) => link.id));
@@ -430,7 +461,10 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
    * update the store entry for the viewport
    */
   updateViewport(diagramID: string, x: number, y: number, zoom: number): void {
-    const action = Realtime.diagram.viewport.update({ key: diagramID, value: { id: diagramID, x, y, zoom, versionID: this.context.versionID } });
+    const action = Realtime.diagram.viewport.update({
+      key: diagramID,
+      value: { id: diagramID, x, y, zoom, versionID: this.context.versionID },
+    });
 
     this.emitter.emit(CanvasAction.IDLE);
     this.store.dispatch(action);
@@ -486,7 +520,9 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
       this.focus.set(nodeID);
 
       if (!options?.skipURLSync) {
-        this.store.dispatch(Router.goToCurrentCanvasNode(nodeID, { state: options?.routeState, subpath: options?.nodeSubPath }));
+        this.store.dispatch(
+          Router.goToCurrentCanvasNode(nodeID, { state: options?.routeState, subpath: options?.nodeSubPath })
+        );
       }
     }
   }
@@ -494,7 +530,10 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
   /**
    * clear activation state of all nodes
    */
-  clearActivation({ skipUrlSync, skipSaveLocations }: { skipUrlSync?: boolean; skipSaveLocations?: boolean } = {}): void {
+  clearActivation({
+    skipUrlSync,
+    skipSaveLocations,
+  }: { skipUrlSync?: boolean; skipSaveLocations?: boolean } = {}): void {
     if (!skipSaveLocations) {
       this.saveActiveLocations();
     }
@@ -712,14 +751,19 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
         // probably by creating its own explicit action on the realtime service
         await this.node.removeMany(targets);
 
-        const componentNodeID = await this.node.add({ type: BlockType.COMPONENT, coords, factoryData: { name, diagramID } });
+        const componentNodeID = await this.node.add({
+          type: BlockType.COMPONENT,
+          coords,
+          factoryData: { name, diagramID },
+        });
 
         const componentNode = this.getNodeByID(componentNodeID);
 
         if (componentNode) {
           await Promise.all([
             incomingLinkSource && this.link.add(incomingLinkSource.portID, componentNode.ports.in[0]),
-            outgoingLinkTarget && this.link.add(componentNode.ports.out.builtIn[BaseModels.PortType.NEXT]!, outgoingLinkTarget.portID),
+            outgoingLinkTarget &&
+              this.link.add(componentNode.ports.out.builtIn[BaseModels.PortType.NEXT]!, outgoingLinkTarget.portID),
           ]);
         }
       })

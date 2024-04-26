@@ -1,10 +1,10 @@
-import { BaseModels } from '@voiceflow/base-types';
+import type { BaseModels } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { SvgIconTypes } from '@voiceflow/ui';
+import type { SvgIconTypes } from '@voiceflow/ui';
 import _isFunction from 'lodash/isFunction';
 
-import { DragItem } from '@/constants';
+import type { DragItem } from '@/constants';
 import { getManager } from '@/pages/Canvas/managers/utils';
 
 export interface StepItem {
@@ -42,7 +42,10 @@ export interface LibraryDragItem<T = unknown> {
 
 export type TabData = BaseModels.Version.CanvasTemplate | Realtime.CustomBlock;
 
-export const isBlockTemplatesData = (_tabData: TabData, currentTab: LibraryStepType): _tabData is BaseModels.Version.CanvasTemplate => {
+export const isBlockTemplatesData = (
+  _tabData: TabData,
+  currentTab: LibraryStepType
+): _tabData is BaseModels.Version.CanvasTemplate => {
   return currentTab === LibraryStepType.BLOCK_TEMPLATES;
 };
 
@@ -85,10 +88,14 @@ const createMenuStep = (type: Realtime.StepBlockType, { publicOnly, factoryData 
     type,
     publicOnly,
     factoryData,
-    getIcon: (manager?: ReturnType<typeof getManager>) => getStepIcon({ factoryData, manager: manager || getManager(type) }),
-    getLabel: (manager?: ReturnType<typeof getManager>) => getStepLabel({ factoryData, manager: manager || getManager(type) }),
-    getStepTooltipText: (manager?: ReturnType<typeof getManager>) => getStepTooltipText({ factoryData, manager: manager || getManager(type) }),
-    getStepTooltipLink: (manager?: ReturnType<typeof getManager>) => getStepTooltipLink({ factoryData, manager: manager || getManager(type) }),
+    getIcon: (manager?: ReturnType<typeof getManager>) =>
+      getStepIcon({ factoryData, manager: manager || getManager(type) }),
+    getLabel: (manager?: ReturnType<typeof getManager>) =>
+      getStepLabel({ factoryData, manager: manager || getManager(type) }),
+    getStepTooltipText: (manager?: ReturnType<typeof getManager>) =>
+      getStepTooltipText({ factoryData, manager: manager || getManager(type) }),
+    getStepTooltipLink: (manager?: ReturnType<typeof getManager>) =>
+      getStepTooltipLink({ factoryData, manager: manager || getManager(type) }),
   };
 };
 
@@ -133,9 +140,13 @@ const AI_SET_STEP = createMenuStep(Realtime.BlockType.AI_SET);
 
 const SET_STEP_V2 = createMenuStep(Realtime.BlockType.SETV2);
 
-const SPEAK_STEP = createMenuStep(Realtime.BlockType.SPEAK, { factoryData: { dialogs: [{ type: Realtime.DialogType.VOICE }] } });
+const SPEAK_STEP = createMenuStep(Realtime.BlockType.SPEAK, {
+  factoryData: { dialogs: [{ type: Realtime.DialogType.VOICE }] },
+});
 
-const AUDIO_STEP = createMenuStep(Realtime.BlockType.SPEAK, { factoryData: { dialogs: [{ type: Realtime.DialogType.AUDIO }] } });
+const AUDIO_STEP = createMenuStep(Realtime.BlockType.SPEAK, {
+  factoryData: { dialogs: [{ type: Realtime.DialogType.AUDIO }] },
+});
 
 const TEXT_STEP = createMenuStep(Realtime.BlockType.TEXT);
 
@@ -181,7 +192,14 @@ interface CreateStepSectionsArguments {
   devSteps: StepItem[];
 }
 
-const createStepSections = ({ aiSteps, talkSteps, listenSteps, logicSteps, eventSteps, devSteps }: CreateStepSectionsArguments): TopStepItem[] => [
+const createStepSections = ({
+  aiSteps,
+  talkSteps,
+  listenSteps,
+  logicSteps,
+  eventSteps,
+  devSteps,
+}: CreateStepSectionsArguments): TopStepItem[] => [
   {
     icon: AI_ICON,
     smallIcon: AI_ICON_SMALL,
@@ -311,8 +329,10 @@ export const getStepSections = Realtime.Utils.platform.createPlatformAndProjectT
     [Platform.Constants.PlatformType.ALEXA]: ALEXA_STEP_SECTIONS,
     [Platform.Constants.PlatformType.GOOGLE]: GOOGLE_STEP_SECTIONS,
     [`${Platform.Constants.PlatformType.VOICEFLOW}:${Platform.Constants.ProjectType.CHAT}`]: CHATBOT_STEP_SECTIONS,
-    [`${Platform.Constants.PlatformType.DIALOGFLOW_ES}:${Platform.Constants.ProjectType.CHAT}`]: DIALOGFLOW_ES_CHAT_STEP_SECTIONS,
-    [`${Platform.Constants.PlatformType.DIALOGFLOW_ES}:${Platform.Constants.ProjectType.VOICE}`]: DIALOGFLOW_ES_VOICE_STEP_SECTIONS,
+    [`${Platform.Constants.PlatformType.DIALOGFLOW_ES}:${Platform.Constants.ProjectType.CHAT}`]:
+      DIALOGFLOW_ES_CHAT_STEP_SECTIONS,
+    [`${Platform.Constants.PlatformType.DIALOGFLOW_ES}:${Platform.Constants.ProjectType.VOICE}`]:
+      DIALOGFLOW_ES_VOICE_STEP_SECTIONS,
     [Platform.Constants.PlatformType.MICROSOFT_TEAMS]: MICROSOFT_TEAMS_STEP_SECTIONS,
     [Platform.Constants.PlatformType.WHATSAPP]: WHATSAPP_STEP_SECTIONS,
     [Platform.Constants.PlatformType.SMS]: SMS_STEP_SECTIONS,
@@ -346,7 +366,11 @@ export enum LibraryStepType {
   BLOCK_TEMPLATES = 'BLOCK_TEMPLATES',
 }
 
-export const getAllSections = (platform: Platform.Constants.PlatformType, project: Platform.Constants.ProjectType, library: LibrarySections) => {
+export const getAllSections = (
+  platform: Platform.Constants.PlatformType,
+  project: Platform.Constants.ProjectType,
+  library: LibrarySections
+) => {
   const steps = getStepSections(platform, project);
   const librarySection = getLibrarySection(library);
 

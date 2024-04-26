@@ -1,6 +1,7 @@
 import { Configuration, OpenAIApi } from '@voiceflow/openai';
 
-import { isAzureBasedGPTConfig, isOpenAIGPTConfig, OpenAIConfig } from './gpt.interface';
+import type { OpenAIConfig } from './gpt.interface';
+import { isAzureBasedGPTConfig, isOpenAIGPTConfig } from './gpt.interface';
 
 export class OpenAIClient {
   openAIClient?: OpenAIApi;
@@ -24,11 +25,13 @@ export class OpenAIClient {
     }
 
     if (isOpenAIGPTConfig(config)) {
-      this.openAIClient = new OpenAIApi(new Configuration({ apiKey: config.OPENAI_API_KEY, basePath: config.OPENAI_API_ENDPOINT || undefined }));
+      this.openAIClient = new OpenAIApi(
+        new Configuration({ apiKey: config.OPENAI_API_KEY, basePath: config.OPENAI_API_ENDPOINT || undefined })
+      );
     }
 
     if (!this.openAIClient && !this.azureClient) {
-      throw new Error(`OpenAI client not initialized`);
+      throw new Error('OpenAI client not initialized');
     }
   }
 

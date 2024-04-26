@@ -1,6 +1,7 @@
 import { Utils } from '@voiceflow/common';
 import React from 'react';
-import { Mention, MentionsInput, MentionsInputProps, OnChangeHandlerFunc, SuggestionDataItem } from 'react-mentions';
+import type { MentionsInputProps, OnChangeHandlerFunc, SuggestionDataItem } from 'react-mentions';
+import { Mention, MentionsInput } from 'react-mentions';
 import { createSelector } from 'reselect';
 
 import Commenter from '@/components/Commenter';
@@ -15,8 +16,9 @@ import { formatNameToMention } from './utils';
 
 export { MentionPreview };
 
-const activeWorkspaceCommentingMembersSelector = createSelector([WorkspaceV2.active.normalizedMembersSelector], (members) =>
-  members.filter((member) => hasRolePermission(Permission.COMMENTING, member.role))
+const activeWorkspaceCommentingMembersSelector = createSelector(
+  [WorkspaceV2.active.normalizedMembersSelector],
+  (members) => members.filter((member) => hasRolePermission(Permission.COMMENTING, member.role))
 );
 
 export interface MentionEditorProps {
@@ -29,7 +31,15 @@ export interface MentionEditorProps {
   placeholder: string;
 }
 
-export const MentionEditor: React.FC<MentionEditorProps> = ({ onChange, onBlur, value = '', placeholder, inputProps, height, inputRef }) => {
+export const MentionEditor: React.FC<MentionEditorProps> = ({
+  onChange,
+  onBlur,
+  value = '',
+  placeholder,
+  inputProps,
+  height,
+  inputRef,
+}) => {
   const theme = useTheme();
   const members = useSelector(activeWorkspaceCommentingMembersSelector);
 
@@ -62,7 +72,9 @@ export const MentionEditor: React.FC<MentionEditorProps> = ({ onChange, onBlur, 
           style={mentionStyle}
           markup="[__display__](user:__id__)"
           trigger="@"
-          renderSuggestion={(suggestion: SuggestionDataItem) => <Commenter bold={false} creatorID={Number(suggestion.id)} />}
+          renderSuggestion={(suggestion: SuggestionDataItem) => (
+            <Commenter bold={false} creatorID={Number(suggestion.id)} />
+          )}
           appendSpaceOnAdd
         />
       </MentionsInput>

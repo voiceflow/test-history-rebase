@@ -6,7 +6,7 @@ import { Permission } from '@/constants/permissions';
 import { usePermission } from '@/hooks/permission';
 import { copyWithToast } from '@/utils/clipboard';
 
-import { StepItem } from './types';
+import type { StepItem } from './types';
 
 interface StepPreviewProps {
   items: StepItem[];
@@ -44,7 +44,9 @@ const StepPreview: React.FC<StepPreviewProps> = ({ items, onClose, onOpenEditor 
       </Preview.Content>
 
       <Preview.Footer>
-        {canOpenEditor && <Preview.ButtonIcon icon="edit" onClick={Utils.functional.chainVoid(onOpenEditor, onClose)} />}
+        {canOpenEditor && (
+          <Preview.ButtonIcon icon="edit" onClick={Utils.functional.chainVoid(onOpenEditor, onClose)} />
+        )}
 
         <Preview.ButtonIcon ml={8} icon="copy" onClick={onCopyAll} />
       </Preview.Footer>

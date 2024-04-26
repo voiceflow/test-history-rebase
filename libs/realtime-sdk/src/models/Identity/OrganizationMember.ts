@@ -1,6 +1,6 @@
-import { UserRole } from '@voiceflow/internal';
+import type { UserRole } from '@voiceflow/internal';
 
-import { User } from './User';
+import type { User } from './User';
 
 export interface OrganizationMember {
   user: User;

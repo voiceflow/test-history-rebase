@@ -1,11 +1,11 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Menu, SectionV2, Select } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Domain from '@/ducks/domain';
 import { useSelector } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
-import { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
+import type { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
 
 interface FormProps {
   editor: NodeEditorV2Props<Realtime.NodeData.GoToDomain>;

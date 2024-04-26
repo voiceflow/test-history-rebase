@@ -79,7 +79,12 @@ const Link: React.FC = () => {
           />
         )}
 
-        <Path d={path} ref={instance.pathRef} markerEnd={buildHeadMarker(linkEntity.linkID)} strokeColor={instance.getLinkColor()} />
+        <Path
+          d={path}
+          ref={instance.pathRef}
+          markerEnd={buildHeadMarker(linkEntity.linkID)}
+          strokeColor={instance.getLinkColor()}
+        />
 
         {(isCaptionEditing || !!linkData?.caption) && (
           <Caption

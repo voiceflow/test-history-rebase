@@ -1,9 +1,12 @@
-import { Organization, OrganizationMember } from '@voiceflow/dtos';
+import type { Organization, OrganizationMember } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { createMultiAdapter, createSimpleAdapter, notImplementedAdapter } from 'bidirectional-adapter';
 import uniqBy from 'lodash/uniqBy';
 
-export const organizationMemberSimpleAdapter = createSimpleAdapter<Realtime.Identity.OrganizationMember, OrganizationMember>(
+export const organizationMemberSimpleAdapter = createSimpleAdapter<
+  Realtime.Identity.OrganizationMember,
+  OrganizationMember
+>(
   ({ user, membership }) => ({
     name: user.name,
     role: membership.role,

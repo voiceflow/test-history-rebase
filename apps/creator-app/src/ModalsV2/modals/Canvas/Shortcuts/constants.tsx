@@ -47,7 +47,8 @@ export const SHORTCUTS: ShortcutItem[] = [
     title: 'Redo',
     command: (
       <>
-        <ShortcutCommand>{PLATFORM_META_KEY_LABEL}</ShortcutCommand> + <ShortcutCommand>Shift</ShortcutCommand> + <ShortcutCommand>Z</ShortcutCommand>
+        <ShortcutCommand>{PLATFORM_META_KEY_LABEL}</ShortcutCommand> + <ShortcutCommand>Shift</ShortcutCommand> +{' '}
+        <ShortcutCommand>Z</ShortcutCommand>
       </>
     ),
   },

@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 
 import { StepID } from '@/pages/Onboarding/constants';
 import { OnboardingContext } from '@/pages/Onboarding/context';
-import { OnboardingStepProps } from '@/pages/Onboarding/types';
+import type { OnboardingStepProps } from '@/pages/Onboarding/types';
 
 import { STEP_COMPONENTS } from './constants';
 

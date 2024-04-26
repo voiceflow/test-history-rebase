@@ -4,7 +4,7 @@ import { GENERAL_RUNTIME_ENDPOINT } from '@/config';
 import { formatBuiltInIntentName } from '@/utils/intent.util';
 
 import { AUTH_HEADERS } from '../constant';
-import {
+import type {
   GeneralRuntimeFunctionTestRequest,
   GeneralRuntimeFunctionTestResponse,
   GeneralRuntimeIntentPreviewUtteranceRequest,
@@ -31,10 +31,10 @@ export const generalRuntimeClient = {
       data: GeneralRuntimeIntentPreviewUtteranceRequest
     ): Promise<GeneralRuntimeIntentPreviewUtteranceResponse> =>
       axiosInstance
-        .post<GeneralRuntimeIntentPreviewUtteranceRequest, { data: GeneralRuntimeIntentPreviewUtteranceResponse }>(
-          `/test/${workspaceID}/classification`,
-          data
-        )
+        .post<
+          GeneralRuntimeIntentPreviewUtteranceRequest,
+          { data: GeneralRuntimeIntentPreviewUtteranceResponse }
+        >(`/test/${workspaceID}/classification`, data)
         .then((response) => {
           const nameFormatter = formatBuiltInIntentName();
 
@@ -52,7 +52,7 @@ export const generalRuntimeClient = {
   function: {
     test: (data: GeneralRuntimeFunctionTestRequest): Promise<GeneralRuntimeFunctionTestResponse> =>
       axiosInstance
-        .post<GeneralRuntimeFunctionTestRequest, { data: GeneralRuntimeFunctionTestResponse }>(`/test/functions`, data)
+        .post<GeneralRuntimeFunctionTestRequest, { data: GeneralRuntimeFunctionTestResponse }>('/test/functions', data)
         .then((response) => response.data),
   },
 };

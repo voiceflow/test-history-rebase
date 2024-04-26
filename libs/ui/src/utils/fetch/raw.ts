@@ -11,7 +11,8 @@ import {
   NetworkError,
   StatusCode,
 } from './constants';
-import { FetchMessageFormat, FetchOptions, FetchResult } from './types';
+import type { FetchOptions, FetchResult } from './types';
+import { FetchMessageFormat } from './types';
 import { buildOptions, debugRequest, fetchLogger, parseResponse } from './utils';
 
 export const DEBUG_NETWORK = !IS_PRODUCTION && !!process.env.DEBUG_NETWORK;

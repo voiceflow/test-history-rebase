@@ -14,7 +14,10 @@ export interface IWorkflowCreateModal {
   folderID: string | null;
 }
 
-export const WorkflowCreateModal = modalsManager.create<IWorkflowCreateModal, Workflow & { triggerNodeID: string | null }>(
+export const WorkflowCreateModal = modalsManager.create<
+  IWorkflowCreateModal,
+  Workflow & { triggerNodeID: string | null }
+>(
   'WorkflowCreateModal',
   () =>
     ({ api, type: typeProp, name, opened, hidden, animated, folderID, closePrevented }) => {
@@ -57,7 +60,13 @@ export const WorkflowCreateModal = modalsManager.create<IWorkflowCreateModal, Wo
           <Modal.Footer>
             <Modal.Footer.Button variant="secondary" onClick={api.onClose} disabled={closePrevented} label="Cancel" />
 
-            <Modal.Footer.Button label="Create workflow" variant="primary" onClick={onSubmit} disabled={closePrevented} isLoading={closePrevented} />
+            <Modal.Footer.Button
+              label="Create workflow"
+              variant="primary"
+              onClick={onSubmit}
+              disabled={closePrevented}
+              isLoading={closePrevented}
+            />
           </Modal.Footer>
         </Modal.Container>
       );

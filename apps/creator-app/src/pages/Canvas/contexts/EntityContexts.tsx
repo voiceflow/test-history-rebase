@@ -1,7 +1,7 @@
 import React from 'react';
 
 import type Engine from '@/pages/Canvas/engine';
-import { ResourceEntity } from '@/pages/Canvas/engine/entities/entity';
+import type { ResourceEntity } from '@/pages/Canvas/engine/entities/entity';
 import LinkEntity from '@/pages/Canvas/engine/entities/linkEntity';
 import NodeEntity from '@/pages/Canvas/engine/entities/nodeEntity';
 import PortEntity from '@/pages/Canvas/engine/entities/portEntity';

@@ -1,8 +1,8 @@
-import { WorkspaceActivationState } from '@realtime-sdk/constants';
-import { PlanType, UserRole } from '@voiceflow/internal';
-import { Normalized } from 'normal-store';
+import type { WorkspaceActivationState } from '@realtime-sdk/constants';
+import type { PlanType, UserRole } from '@voiceflow/internal';
+import type { Normalized } from 'normal-store';
 
-import * as Billing from './Billing';
+import type * as Billing from './Billing';
 
 export interface BaseWorkspaceMember {
   role: UserRole;

@@ -6,12 +6,13 @@ import React from 'react';
 import { generatePath } from 'react-router-dom';
 
 import Avatar from '@/components/Avatar';
-import { EditableTextAPI } from '@/components/EditableText';
+import type { EditableTextAPI } from '@/components/EditableText';
 import * as NLU from '@/config/nlu';
 import { Path } from '@/config/routes';
 import { Permission } from '@/constants/permissions';
 import * as Project from '@/ducks/projectV2';
-import { InjectedDraggableProps, withDraggable } from '@/hocs/withDraggable';
+import type { InjectedDraggableProps } from '@/hocs/withDraggable';
+import { withDraggable } from '@/hocs/withDraggable';
 import { useFeature } from '@/hooks/feature';
 import { usePaymentModal } from '@/hooks/modal.hook';
 import { useIsLockedProjectViewer, usePermission } from '@/hooks/permission';
@@ -117,7 +118,9 @@ export const Item: React.FC<ItemProps> = ({
   const nluName = NLU.Config.isSupported(platform) ? NLU.Config.get(nlu).name : platformConfig.name;
 
   const platformNameLabel =
-    platformConfig.oneClickPublish || NLU.Voiceflow.CONFIG.is(nlu) ? projectConfig.project.name : `${projectConfig.project.name}, ${nluName}`;
+    platformConfig.oneClickPublish || NLU.Voiceflow.CONFIG.is(nlu)
+      ? projectConfig.project.name
+      : `${projectConfig.project.name}, ${nluName}`;
 
   return (
     <div ref={canManageProjects && !isDraggingPreview ? connectedRootRef : undefined}>
@@ -136,12 +139,17 @@ export const Item: React.FC<ItemProps> = ({
             interactive
             content={
               platformConfig.isDeprecated ? (
-                <TippyTooltip.FooterButton onClick={() => openURLInANewTab('https://insiders.voiceflow.com/google2voice')} buttonText="Convert File">
+                <TippyTooltip.FooterButton
+                  onClick={() => openURLInANewTab('https://insiders.voiceflow.com/google2voice')}
+                  buttonText="Convert File"
+                >
                   Google Conversation Actions are no longer supported. Convert your file to access designs.
                 </TippyTooltip.FooterButton>
               ) : (
                 <TippyTooltip.FooterButton
-                  onClick={stopPropagation(Utils.functional.chain(TippyTooltip.closeAll, () => paymentModal.openVoid({})))}
+                  onClick={stopPropagation(
+                    Utils.functional.chain(TippyTooltip.closeAll, () => paymentModal.openVoid({}))
+                  )}
                   buttonText="Upgrade to Pro"
                 >
                   Assistant limit reached. Upgrade to Pro to unlock all assistants.
@@ -159,7 +167,11 @@ export const Item: React.FC<ItemProps> = ({
           <Dropdown options={options} selfDismiss>
             {({ ref, onToggle, isOpen }) =>
               options.length ? (
-                <DropdownIconWrapper className={DashboardClassName.PROJECT_LIST_ITEM_ACTIONS} onClick={stopPropagation(() => onToggle())} ref={ref}>
+                <DropdownIconWrapper
+                  className={DashboardClassName.PROJECT_LIST_ITEM_ACTIONS}
+                  onClick={stopPropagation(() => onToggle())}
+                  ref={ref}
+                >
                   {!isOpen && <Avatar url={avatarUrl} name={name} color={color} />}
 
                   <ProjectListItemActions active={isOpen}>

@@ -58,7 +58,13 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({ resetCode, setSta
         </TippyTooltip>
       </Box>
       <Box mb={22}>
-        <PasswordInput value={confirm} onChange={setConfirm} name="confirm" placeholder="Confirm Password" isInvalid={password !== confirm} />
+        <PasswordInput
+          value={confirm}
+          onChange={setConfirm}
+          name="confirm"
+          placeholder="Confirm Password"
+          isInvalid={password !== confirm}
+        />
       </Box>
 
       <Box.FlexApart mt={32}>

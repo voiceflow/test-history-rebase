@@ -1,9 +1,17 @@
-import { COMPONENTS_KEY, DEFAULT_STEP_COLORS_KEY, PROTOTYPE_KEY, PUBLISHING_KEY, RPC_KEY, SESSION_KEY, SETTINGS_KEY } from '@realtime-sdk/constants';
-import { PrototypeSettings } from '@realtime-sdk/models';
-import { BaseProjectPayload, BaseVersionPayload } from '@realtime-sdk/types';
-import { BaseModels } from '@voiceflow/base-types';
+import {
+  COMPONENTS_KEY,
+  DEFAULT_STEP_COLORS_KEY,
+  PROTOTYPE_KEY,
+  PUBLISHING_KEY,
+  RPC_KEY,
+  SESSION_KEY,
+  SETTINGS_KEY,
+} from '@realtime-sdk/constants';
+import type { PrototypeSettings } from '@realtime-sdk/models';
+import type { BaseProjectPayload, BaseVersionPayload } from '@realtime-sdk/types';
+import type { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import * as Platform from '@voiceflow/platform-config/backend';
+import type * as Platform from '@voiceflow/platform-config/backend';
 
 import { createCRUDActions } from '../utils';
 import { versionType } from './utils';
@@ -98,8 +106,12 @@ export const addManyComponents = Utils.protocol.createAction<AddManyComponentsPa
 
 export const reorderComponents = Utils.protocol.createAction<ReorderComponentsPayload>(componentsType('REORDER'));
 
-export const patchDefaultStepColors = Utils.protocol.createAction<PatchDefaultStepColorsPayload>(versionDefaultStepColorsType('PATCH'));
+export const patchDefaultStepColors = Utils.protocol.createAction<PatchDefaultStepColorsPayload>(
+  versionDefaultStepColorsType('PATCH')
+);
 
-export const replacePrototypeSettings = Utils.protocol.createAction<ReplacePrototypeSettingsPayload>(versionPrototypeType('REPLACE_SETTINGS'));
+export const replacePrototypeSettings = Utils.protocol.createAction<ReplacePrototypeSettingsPayload>(
+  versionPrototypeType('REPLACE_SETTINGS')
+);
 
 export const createBackup = Utils.protocol.createAction<CreateBackupPayload>(versionType('CREATE_BACKUP'));

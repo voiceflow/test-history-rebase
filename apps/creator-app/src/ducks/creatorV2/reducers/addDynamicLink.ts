@@ -3,7 +3,12 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { createReverter } from '@/ducks/utils';
 
 import { addLink } from '../utils';
-import { createActiveDiagramReducer, createDiagramInvalidator, createNodeRemovalInvalidators, DIAGRAM_INVALIDATORS } from './utils';
+import {
+  createActiveDiagramReducer,
+  createDiagramInvalidator,
+  createNodeRemovalInvalidators,
+  DIAGRAM_INVALIDATORS,
+} from './utils';
 
 const addDynamicLinkReducer = createActiveDiagramReducer(Realtime.link.addDynamic, (state, payload) => {
   addLink(state, payload);

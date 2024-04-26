@@ -7,7 +7,11 @@ class Synchronous extends Crypto.Synchronous {
   /**
    * generate key to encrypt data and spilt it to 2 encrypted keys
    */
-  generateEncryptedKeys(): [firstPartOfEncryptedKey: string, secondPartOfEncryptedKey: string, keyToEncryptData: string] {
+  generateEncryptedKeys(): [
+    firstPartOfEncryptedKey: string,
+    secondPartOfEncryptedKey: string,
+    keyToEncryptData: string,
+  ] {
     const key1 = Utils.id.cuid();
     const key2 = Utils.id.cuid();
 

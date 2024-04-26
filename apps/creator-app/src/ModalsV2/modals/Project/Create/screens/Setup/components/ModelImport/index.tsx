@@ -8,7 +8,7 @@ import { Permission } from '@/constants/permissions';
 import { useUpgradeModal } from '@/hooks/modal.hook';
 import { useNLUImport } from '@/hooks/nlu';
 import { usePermissionAction } from '@/hooks/permission';
-import { NLUImportModel } from '@/models';
+import type { NLUImportModel } from '@/models';
 
 import * as S from './styles';
 
@@ -19,7 +19,12 @@ interface ModelImportProps {
   setIsImportLoading: (isLoadingImport: boolean) => void;
 }
 
-const ModelImport: React.FC<ModelImportProps> = ({ onImportModel, importModel, isImportLoading, setIsImportLoading }) => {
+const ModelImport: React.FC<ModelImportProps> = ({
+  onImportModel,
+  importModel,
+  isImportLoading,
+  setIsImportLoading,
+}) => {
   const nluImport = useNLUImport({
     nluType: NLU.Voiceflow.CONFIG.type,
     platform: Platform.Constants.PlatformType.VOICEFLOW,

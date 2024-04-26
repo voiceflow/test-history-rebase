@@ -2,12 +2,11 @@ import { Utils } from '@voiceflow/common';
 import compositeReducer from 'composite-reducer';
 
 import { localPersistor, persistReducer, rehydrateReducer, sessionPersistor } from '@/ducks/utils/persist';
-import { Reducer, RootReducer } from '@/store/types';
+import type { Reducer, RootReducer } from '@/store/types';
 import * as Cookies from '@/utils/cookies';
 
-import {
+import type {
   AnySessionAction,
-  SessionAction,
   SetActiveDiagramID,
   SetActiveDomainID,
   SetActiveProjectID,
@@ -16,8 +15,9 @@ import {
   SetAuthToken,
   SetPrototypeSidebarVisible,
 } from './actions';
+import { SessionAction } from './actions';
 import { INITIAL_STATE, STATE_KEY } from './constants';
-import { SessionState } from './types';
+import type { SessionState } from './types';
 
 export * from './actions';
 export * from './constants';
@@ -35,7 +35,10 @@ const createInitialAuthTokenState = () => ({
   value: Cookies.getAuthCookie() || null,
 });
 
-export const authTokenReducer: RootReducer<{ value: string | null }, SetAuthToken> = (state = createInitialAuthTokenState(), action) => {
+export const authTokenReducer: RootReducer<{ value: string | null }, SetAuthToken> = (
+  state = createInitialAuthTokenState(),
+  action
+) => {
   if (action.type === SessionAction.SET_AUTH_TOKEN) {
     return { ...state, value: action.payload };
   }
@@ -76,7 +79,10 @@ export const setActiveDomainIDReducer: Reducer<SessionState, SetActiveDomainID> 
   activeDomainID: payload,
 });
 
-export const setPrototypeSidebarVisibleReducer: Reducer<SessionState, SetPrototypeSidebarVisible> = (state, { payload }) => ({
+export const setPrototypeSidebarVisibleReducer: Reducer<SessionState, SetPrototypeSidebarVisible> = (
+  state,
+  { payload }
+) => ({
   ...state,
   prototypeSidebarVisible: payload,
 });

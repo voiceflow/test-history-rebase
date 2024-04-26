@@ -12,7 +12,7 @@ export const drawerStyle = recipe({
     withHeader: {
       true: {
         top: 56,
-        height: `calc(100% - 56px)`,
+        height: 'calc(100% - 56px)',
       },
     },
     isOpen: {

@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { MovementCalculator } from '@/components/Canvas/types';
+import type { MovementCalculator } from '@/components/Canvas/types';
 import { useTeardown } from '@/hooks';
 import { CanvasAction } from '@/pages/Canvas/constants';
 import { EngineContext } from '@/pages/Canvas/contexts';
-import { Pair } from '@/types';
-import { Coords } from '@/utils/geometry';
+import type { Pair } from '@/types';
+import type { Coords } from '@/utils/geometry';
 
 export const useCanvasRendered = () => {
   const engine = React.useContext(EngineContext)!;
@@ -46,9 +46,15 @@ export const useCanvasIdle = createUseCanvasAction(CanvasAction.IDLE);
 export const useCanvasZoom = createUseCanvasAction<[calulateMovement: MovementCalculator]>(CanvasAction.ZOOM);
 export const useCanvasMouse = createUseCanvasAction<[point: Coords]>(CanvasAction.MOVE_MOUSE);
 export const useCanvasPanApplied = createUseCanvasAction<[movement: Pair<number>]>(CanvasAction.PAN_APPLIED);
-export const useCanvasZoomApplied = createUseCanvasAction<[calulateMovement: MovementCalculator]>(CanvasAction.ZOOM_APPLIED);
+export const useCanvasZoomApplied = createUseCanvasAction<[calulateMovement: MovementCalculator]>(
+  CanvasAction.ZOOM_APPLIED
+);
 
-export const useCanvasZoomLifecycle = (onZoomStart: () => void, onZoom: (calculateMovement: MovementCalculator) => void, onZoomEnd: () => void) => {
+export const useCanvasZoomLifecycle = (
+  onZoomStart: () => void,
+  onZoom: (calculateMovement: MovementCalculator) => void,
+  onZoomEnd: () => void
+) => {
   const zoomingRef = React.useRef(false);
 
   useCanvasZoom(

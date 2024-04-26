@@ -14,7 +14,10 @@ import carouselAdapter, { carouselOutPortsAdapter, carouselOutPortsAdapterV2 } f
 import codeAdapter, { codeOutPortsAdapter, codeOutPortsAdapterV2 } from './code';
 import { commandOutPortsAdapter, commandOutPortsAdapterV2 } from './command';
 import componentAdapter, { componentOutPortsAdapter, componentOutPortsAdapterV2 } from './component';
-import customBlockPointerAdapter, { customBlockPointerOutPortsAdapter, customBlockPointerOutPortsAdapterV2 } from './customBlockPointer';
+import customBlockPointerAdapter, {
+  customBlockPointerOutPortsAdapter,
+  customBlockPointerOutPortsAdapterV2,
+} from './customBlockPointer';
 import directiveAdapter, { directiveOutPortsAdapter, directiveOutPortsAdapterV2 } from './directive';
 import exitAdapter, { exitOutPortsAdapter, exitOutPortsAdapterV2 } from './exit';
 import functionAdapter, { functionOutPortsAdapterV2 } from './function';

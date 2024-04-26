@@ -1,4 +1,4 @@
-import { Intent } from '@voiceflow/dtos';
+import type { Intent } from '@voiceflow/dtos';
 
 export interface IIntentMenuEmpty {
   width?: number;

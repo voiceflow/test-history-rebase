@@ -21,7 +21,7 @@ import * as VariableState from '@/ducks/variableState';
 import * as VersionV2 from '@/ducks/versionV2';
 import * as Viewport from '@/ducks/viewport';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { State } from '@/store/types';
+import type { State } from '@/store/types';
 
 export const MOCK_STATE: State = {
   form: {},
@@ -36,7 +36,10 @@ export const MOCK_STATE: State = {
   [Prototype.STATE_KEY]: Prototype.INITIAL_STATE as ReturnType<typeof Prototype.default>,
   [Recent.STATE_KEY]: Recent.INITIAL_STATE as ReturnType<typeof Recent.default>,
   [ReportTag.STATE_KEY]: createCRUDState(),
-  [Router.STATE_KEY]: { location: Object.assign(new URL('http://foo.bar'), { query: {}, state: {} }), action: 'REPLACE' },
+  [Router.STATE_KEY]: {
+    location: Object.assign(new URL('http://foo.bar'), { query: {}, state: {} }),
+    action: 'REPLACE',
+  },
   [Session.STATE_KEY]: {
     ...Session.INITIAL_STATE,
     token: { value: null },

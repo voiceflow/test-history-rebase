@@ -1,4 +1,5 @@
-import { NestResource, NestResourceOptions } from '../nest';
+import type { NestResourceOptions } from '../nest';
+import { NestResource } from '../nest';
 
 export class PrivateWorkspace extends NestResource {
   constructor(options: NestResourceOptions) {

@@ -1,7 +1,8 @@
-import * as Models from '@realtime-sdk/models';
+import type * as Models from '@realtime-sdk/models';
 import type { Provider } from '@voiceflow/schema-types';
 
-import { NestResource, NestResourceOptions } from '../../nest';
+import type { NestResourceOptions } from '../../nest';
+import { NestResource } from '../../nest';
 
 export class User extends NestResource {
   constructor(options: NestResourceOptions) {
@@ -37,8 +38,10 @@ export class User extends NestResource {
     await this.patch('/', payload);
   }
 
-  public async resendSignupVerificationEmail(payload: { metadata?: { inviteParams?: Record<string, unknown> } }): Promise<void> {
-    await this.post(`/verify`, payload);
+  public async resendSignupVerificationEmail(payload: {
+    metadata?: { inviteParams?: Record<string, unknown> };
+  }): Promise<void> {
+    await this.post('/verify', payload);
   }
 
   public async verifySignupEmailToken(token: string): Promise<void> {

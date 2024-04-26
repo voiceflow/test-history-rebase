@@ -36,11 +36,16 @@ const CMSRouteFoldersRoutes: React.FC<ICMSRouteFoldersProvider> = ({ Component, 
 
   return (
     <Switch>
-      <Route path={`${pathname}/folder/:folderID`} render={() => <CMSFoldersRoutesRoute {...props} Component={Component} />} />
+      <Route
+        path={`${pathname}/folder/:folderID`}
+        render={() => <CMSFoldersRoutesRoute {...props} Component={Component} />}
+      />
 
       <Route path={`${pathname}/:resourceID?`} component={Component} />
     </Switch>
   );
 };
 
-export const CMSRouteFoldersProvider: React.FC<ICMSRouteFoldersProvider> = (props) => <CMSFoldersRoutesRoute {...props} />;
+export const CMSRouteFoldersProvider: React.FC<ICMSRouteFoldersProvider> = (props) => (
+  <CMSFoldersRoutesRoute {...props} />
+);

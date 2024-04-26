@@ -1,8 +1,8 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import type { Form } from '../CustomBlocksForm';
-import { CustomBlocksForm, CustomBlocksFormProps } from '../CustomBlocksForm';
+import type { CustomBlocksFormProps, Form } from '../CustomBlocksForm';
+import { CustomBlocksForm } from '../CustomBlocksForm';
 import { inferVariableNames } from './utils';
 
 type EditorFormFields = 'name' | 'body' | 'stop' | 'paths' | 'defaultPath';
@@ -18,7 +18,15 @@ interface ModalContentProps {
   style?: CustomBlocksFormProps['style'];
 }
 
-const ModalContent: React.FC<ModalContentProps> = ({ currentFormVal, title, confirmText, onSubmit, onCancel, detectDuplicateNames, style = {} }) => {
+const ModalContent: React.FC<ModalContentProps> = ({
+  currentFormVal,
+  title,
+  confirmText,
+  onSubmit,
+  onCancel,
+  detectDuplicateNames,
+  style = {},
+}) => {
   const onReceiveFormData = async ({ name, stopOnBlock, body, paths }: Form) =>
     onSubmit({
       name,

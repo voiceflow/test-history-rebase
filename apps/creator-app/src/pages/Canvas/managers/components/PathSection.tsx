@@ -15,7 +15,15 @@ interface PathSectionProps {
   collapsed: boolean;
 }
 
-const PathSection: React.FC<PathSectionProps> = ({ title = 'Path', onAdd, pathName, onRemove, onRename, collapsed, placeholder }) => {
+const PathSection: React.FC<PathSectionProps> = ({
+  title = 'Path',
+  onAdd,
+  pathName,
+  onRemove,
+  onRename,
+  collapsed,
+  placeholder,
+}) => {
   const [name, setName] = useLinkedState(pathName);
   const [autofocus, enableAutofocus, disableAutofocus] = useEnableDisable(false);
 

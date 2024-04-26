@@ -39,9 +39,12 @@ const getDefaultColorScheme = (getEngine: () => Engine | null | undefined, nodeI
 
   if (!node) return COLOR_PICKER_CONSTANTS.ColorScheme.LIGHT;
   const [childNodeID] = node.combinedNodes;
-  const childNode = engine?.getNodeByID(childNodeID) || engine.select(CanvasTemplate.nodeByIDSelector, { id: childNodeID });
+  const childNode =
+    engine?.getNodeByID(childNodeID) || engine.select(CanvasTemplate.nodeByIDSelector, { id: childNodeID });
 
-  return isChipNode(childNode, node) ? COLOR_PICKER_CONSTANTS.ColorScheme.DARK : COLOR_PICKER_CONSTANTS.ColorScheme.LIGHT;
+  return isChipNode(childNode, node)
+    ? COLOR_PICKER_CONSTANTS.ColorScheme.DARK
+    : COLOR_PICKER_CONSTANTS.ColorScheme.LIGHT;
 };
 
 const CanvasTemplateEditor: React.FC<TemplateEditorProps> = ({
@@ -78,19 +81,41 @@ const CanvasTemplateEditor: React.FC<TemplateEditorProps> = ({
   }, [handleSubmit, editing]);
 
   const defaultColorScheme = getDefaultColorScheme(getEngine, nodeIDs);
-  const colors = [COLOR_PICKER_CONSTANTS.DEFAULT_SCHEME_COLORS[defaultColorScheme], ...COLOR_PICKER_CONSTANTS.DEFAULT_THEMES, ...customThemes];
+  const colors = [
+    COLOR_PICKER_CONSTANTS.DEFAULT_SCHEME_COLORS[defaultColorScheme],
+    ...COLOR_PICKER_CONSTANTS.DEFAULT_THEMES,
+    ...customThemes,
+  ];
 
   return (
     <S.OuterPopperContent onClick={stopPropagation(null, true)}>
       <S.InnerPopperContent editing={editing}>
-        <S.Input autoFocus autoSelectText value={name} placeholder="Template name" onChangeText={handleNameChange} onEnterPress={handleSubmit} />
+        <S.Input
+          autoFocus
+          autoSelectText
+          value={name}
+          placeholder="Template name"
+          onChangeText={handleNameChange}
+          onEnterPress={handleSubmit}
+        />
         <S.Label>Block Color</S.Label>
-        <ColorThemes colors={colors} selectedColor={normalizedColor} newColorIndex={undefined} onColorSelect={onColorChange} disableContextMenu />
+        <ColorThemes
+          colors={colors}
+          selectedColor={normalizedColor}
+          newColorIndex={undefined}
+          onColorSelect={onColorChange}
+          disableContextMenu
+        />
       </S.InnerPopperContent>
 
       {!editing && (
         <div style={{ padding: '6px', width: '100%' }}>
-          <S.Button variant={ButtonVariant.PRIMARY} onClick={handleSubmit} disabled={!isValid || isSubmitting} isLoading={isSubmitting}>
+          <S.Button
+            variant={ButtonVariant.PRIMARY}
+            onClick={handleSubmit}
+            disabled={!isValid || isSubmitting}
+            isLoading={isSubmitting}
+          >
             Create
           </S.Button>
         </div>

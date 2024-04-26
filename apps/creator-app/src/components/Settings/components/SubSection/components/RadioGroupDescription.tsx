@@ -1,11 +1,14 @@
 import React from 'react';
 
-import Description, { DescriptionProps } from './Description';
+import type { DescriptionProps } from './Description';
+import Description from './Description';
 
 interface RadioGroupDescriptionProps extends DescriptionProps {
   offset?: boolean;
 }
 
-const RadioGroupDescription: React.FC<RadioGroupDescriptionProps> = ({ offset, ...props }) => <Description pt={offset ? 42 : 0} {...props} />;
+const RadioGroupDescription: React.FC<RadioGroupDescriptionProps> = ({ offset, ...props }) => (
+  <Description pt={offset ? 42 : 0} {...props} />
+);
 
 export default RadioGroupDescription;

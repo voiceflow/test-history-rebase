@@ -2,9 +2,9 @@ import React from 'react';
 
 import { Modal } from '@/components/Modal';
 import { Designer } from '@/ducks';
-import { CreateOneFromSelectionResult } from '@/ducks/designer/flow/flow.effect';
+import type { CreateOneFromSelectionResult } from '@/ducks/designer/flow/flow.effect';
 import { useDispatch } from '@/hooks/store.hook';
-import { DiagramSelectionPayload } from '@/utils/diagram.utils';
+import type { DiagramSelectionPayload } from '@/utils/diagram.utils';
 
 import { modalsManager } from '../../../manager';
 import { useFlowCreateForm } from './FlowCreate.hook';
@@ -16,7 +16,10 @@ export interface IFlowCreateFromSelection {
   selection: DiagramSelectionPayload;
 }
 
-export const FlowCreateFromSelectionModal = modalsManager.create<IFlowCreateFromSelection, CreateOneFromSelectionResult>(
+export const FlowCreateFromSelectionModal = modalsManager.create<
+  IFlowCreateFromSelection,
+  CreateOneFromSelectionResult
+>(
   'FlowCreateFromSelectionModal',
   () =>
     ({ api, type: typeProp, name, opened, hidden, animated, folderID, selection, closePrevented }) => {
@@ -59,7 +62,13 @@ export const FlowCreateFromSelectionModal = modalsManager.create<IFlowCreateFrom
           <Modal.Footer>
             <Modal.Footer.Button variant="secondary" onClick={api.onClose} disabled={closePrevented} label="Cancel" />
 
-            <Modal.Footer.Button label="Create component" variant="primary" onClick={onSubmit} disabled={closePrevented} isLoading={closePrevented} />
+            <Modal.Footer.Button
+              label="Create component"
+              variant="primary"
+              onClick={onSubmit}
+              disabled={closePrevented}
+              isLoading={closePrevented}
+            />
           </Modal.Footer>
         </Modal.Container>
       );

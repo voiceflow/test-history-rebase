@@ -4,7 +4,7 @@ import { css, styled, transition } from '@ui/styles';
 import { fontResetStyle } from '@ui/styles/bootstrap';
 
 import { ICON_BOX_SIZE } from './icon-button.constant';
-import { Size } from './icon-button.enum';
+import type { Size } from './icon-button.enum';
 
 export interface ContainerProps {
   $size: Size;

@@ -67,7 +67,10 @@ const DashboardV2Billing: React.FC = () => {
       )}
 
       {canManageSeats && isProOrTeamPlan && !isTrial && (
-        <CancelSubscription nextBillingDate={subscription.nextBillingDate ?? null} subscriptionStatus={subscription.status} />
+        <CancelSubscription
+          nextBillingDate={subscription.nextBillingDate ?? null}
+          subscriptionStatus={subscription.status}
+        />
       )}
     </Box>
   );

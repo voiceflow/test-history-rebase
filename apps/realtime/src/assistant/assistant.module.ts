@@ -2,7 +2,6 @@ import { forwardRef, Module } from '@nestjs/common';
 import { AssistantORM, ProgramORM, PrototypeProgramORM } from '@voiceflow/orm-designer';
 
 import { CacheModule } from '@/cache/cache.module';
-// eslint-disable-next-line import/no-cycle
 import { EnvironmentModule } from '@/environment/environment.module';
 import { ProgramModule } from '@/program/program.module';
 import { ProjectModule } from '@/project/project.module';
@@ -11,7 +10,6 @@ import { PrototypeProgramModule } from '@/prototype-program/prototype-program.mo
 import { VariableStateModule } from '@/variable-state/variable-state.module';
 import { VersionModule } from '@/version/version.module';
 
-// eslint-disable-next-line import/no-cycle
 import { BackupModule } from '../backup/backup.module';
 import { AssistantLoguxController } from './assistant.logux.controller';
 import { AssistantSerializer } from './assistant.serializer';
@@ -34,7 +32,15 @@ import { AssistantViewerService } from './assistant-viewer.service';
     PrototypeProgramModule,
   ],
   exports: [AssistantService, AssistantSerializer],
-  providers: [ProgramORM, AssistantORM, PrototypeProgramORM, AssistantService, AssistantPublishService, AssistantViewerService, AssistantSerializer],
+  providers: [
+    ProgramORM,
+    AssistantORM,
+    PrototypeProgramORM,
+    AssistantService,
+    AssistantPublishService,
+    AssistantViewerService,
+    AssistantSerializer,
+  ],
   controllers: [AssistantLoguxController, AssistantPublicHTTPController, AssistantPrivateHTTPController],
 })
 export class AssistantModule {}

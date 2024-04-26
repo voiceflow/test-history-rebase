@@ -16,7 +16,9 @@ const PrototypeHeaderSettings: React.FC = () => (
       </Popper.Content>
     )}
   >
-    {({ ref, onToggle, isOpened }) => <SettingsButton ref={ref} onClick={onToggle} icon="systemSettings" isActive={isOpened} />}
+    {({ ref, onToggle, isOpened }) => (
+      <SettingsButton ref={ref} onClick={onToggle} icon="systemSettings" isActive={isOpened} />
+    )}
   </Popper>
 );
 

@@ -9,6 +9,10 @@ import type { IModalBackdrop } from './ModalBackdrop.interface';
 export const ModalBackdrop: React.FC<IModalBackdrop> = ({ closing, onClick, closePrevented }) => (
   <Portal portalNode={document.body}>
     {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
-    <div onClick={closePrevented ? undefined : onClick} onPaste={stopImmediatePropagation()} className={backdrop({ closing, closePrevented })} />
+    <div
+      onClick={closePrevented ? undefined : onClick}
+      onPaste={stopImmediatePropagation()}
+      className={backdrop({ closing, closePrevented })}
+    />
   </Portal>
 );

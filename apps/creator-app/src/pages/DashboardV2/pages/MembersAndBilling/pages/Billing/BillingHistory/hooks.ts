@@ -1,4 +1,4 @@
-import { Invoice } from '@voiceflow/dtos';
+import type { Invoice } from '@voiceflow/dtos';
 import { toast } from '@voiceflow/ui';
 import React from 'react';
 
@@ -6,7 +6,6 @@ import { designerClient } from '@/client/designer';
 import * as Organization from '@/ducks/organization';
 import { useSelector } from '@/hooks';
 
-// eslint-disable-next-line no-restricted-syntax
 export enum Status {
   IDLE = 'IDLE',
   ERROR = 'ERROR',
@@ -38,10 +37,14 @@ export const useBillingHistory = (): BillingHistoryAPI => {
     if (!organization || !organization.subscription?.id) return;
 
     try {
-      const { invoices, nextCursor } = await designerClient.billing.subscription.getInvoices(organization.id, organization.subscription.id, {
-        ...(cursor && { cursor }),
-        limit: 10,
-      });
+      const { invoices, nextCursor } = await designerClient.billing.subscription.getInvoices(
+        organization.id,
+        organization.subscription.id,
+        {
+          ...(cursor && { cursor }),
+          limit: 10,
+        }
+      );
 
       setBillingHistory((prevHistory) => ({
         data: cursor ? [...(prevHistory?.data ?? []), ...invoices] : invoices,

@@ -1,6 +1,6 @@
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
-import { BaseContextData, Context } from '@voiceflow/socket-utils';
-import { Action } from 'typescript-fsa';
+import type { BaseContextData, Context } from '@voiceflow/socket-utils';
+import type { Action } from 'typescript-fsa';
 
 import { AbstractDomainResourceControl } from './utils';
 
@@ -9,10 +9,16 @@ interface ContextData extends BaseContextData {
   subtopicIDs: string[];
 }
 
-class DeleteDomainWithNewVersion extends AbstractDomainResourceControl<Realtime.domain.DeleteWithNewVersionPayload, ContextData> {
+class DeleteDomainWithNewVersion extends AbstractDomainResourceControl<
+  Realtime.domain.DeleteWithNewVersionPayload,
+  ContextData
+> {
   protected actionCreator = Realtime.domain.deleteWithNewVersion;
 
-  protected process = async (ctx: Context<ContextData>, { payload }: Action<Realtime.domain.DeleteWithNewVersionPayload>) => {
+  protected process = async (
+    ctx: Context<ContextData>,
+    { payload }: Action<Realtime.domain.DeleteWithNewVersionPayload>
+  ) => {
     const { creatorID, clientID } = ctx.data;
     const { domainID, versionID, projectID, workspaceID } = payload;
 
@@ -22,7 +28,10 @@ class DeleteDomainWithNewVersion extends AbstractDomainResourceControl<Realtime.
 
     const dbDomain = await this.services.domain.get(versionID, domainID);
 
-    await this.services.version.snapshot(creatorID, versionID, { name: `delete domain [${dbDomain.name}] backup`, manualSave: true });
+    await this.services.version.snapshot(creatorID, versionID, {
+      name: `delete domain [${dbDomain.name}] backup`,
+      manualSave: true,
+    });
 
     const subtopicIDs = await this.services.diagram.getFlatSubtopicIDsByTopicIDs(versionID, dbDomain.topicIDs);
 
@@ -35,16 +44,28 @@ class DeleteDomainWithNewVersion extends AbstractDomainResourceControl<Realtime.
     ctx.data.subtopicIDs = subtopicIDs;
 
     await Promise.all([
-      this.server.processAs(creatorID, clientID, Realtime.domain.crud.remove({ versionID, projectID, workspaceID, key: domainID })),
       this.server.processAs(
         creatorID,
         clientID,
-        Realtime.diagram.crud.removeMany({ versionID, projectID, workspaceID, keys: [...dbDomain.topicIDs, ...subtopicIDs] })
+        Realtime.domain.crud.remove({ versionID, projectID, workspaceID, key: domainID })
+      ),
+      this.server.processAs(
+        creatorID,
+        clientID,
+        Realtime.diagram.crud.removeMany({
+          versionID,
+          projectID,
+          workspaceID,
+          keys: [...dbDomain.topicIDs, ...subtopicIDs],
+        })
       ),
     ]);
   };
 
-  protected finally = async (ctx: Context<ContextData>, { payload }: Action<Realtime.domain.DeleteWithNewVersionPayload>) => {
+  protected finally = async (
+    ctx: Context<ContextData>,
+    { payload }: Action<Realtime.domain.DeleteWithNewVersionPayload>
+  ) => {
     const { creatorID, clientID, topicIDs, subtopicIDs } = ctx.data;
     const { versionID } = payload;
 
@@ -52,7 +73,10 @@ class DeleteDomainWithNewVersion extends AbstractDomainResourceControl<Realtime.
       this.unlockAllTopics(versionID, [...topicIDs, ...subtopicIDs]),
       this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID),
       this.services.requestContext.createAsync(() =>
-        this.services.thread.deleteManyByDiagramsAndBroadcast(topicIDs, { auth: { userID: creatorID, clientID }, context: payload })
+        this.services.thread.deleteManyByDiagramsAndBroadcast(topicIDs, {
+          auth: { userID: creatorID, clientID },
+          context: payload,
+        })
       ),
     ]);
   };

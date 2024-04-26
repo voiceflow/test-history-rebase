@@ -13,7 +13,11 @@ interface CreateTextData extends Partial<Omit<Actions.ResponseVariant.CreateText
 interface CreateJSONData extends Partial<Omit<Actions.ResponseVariant.CreateJSONData, 'discriminatorID'>> {}
 
 export const createOneText =
-  (discriminatorID: string, data?: CreateTextData, options?: Actions.ResponseVariant.CreateOptions): Thunk<TextResponseVariant> =>
+  (
+    discriminatorID: string,
+    data?: CreateTextData,
+    options?: Actions.ResponseVariant.CreateOptions
+  ): Thunk<TextResponseVariant> =>
   async (dispatch, getState) => {
     const state = getState();
 
@@ -31,7 +35,11 @@ export const createOneText =
   };
 
 export const createManyText =
-  (discriminatorID: string, data: CreateTextData[], options?: Actions.ResponseVariant.CreateOptions): Thunk<TextResponseVariant[]> =>
+  (
+    discriminatorID: string,
+    data: CreateTextData[],
+    options?: Actions.ResponseVariant.CreateOptions
+  ): Thunk<TextResponseVariant[]> =>
   async (dispatch, getState) => {
     const state = getState();
 
@@ -49,7 +57,11 @@ export const createManyText =
   };
 
 export const createOneJSON =
-  (discriminatorID: string, data?: CreateJSONData, options?: Actions.ResponseVariant.CreateOptions): Thunk<JSONResponseVariant> =>
+  (
+    discriminatorID: string,
+    data?: CreateJSONData,
+    options?: Actions.ResponseVariant.CreateOptions
+  ): Thunk<JSONResponseVariant> =>
   async (dispatch, getState) => {
     const state = getState();
 
@@ -67,7 +79,11 @@ export const createOneJSON =
   };
 
 export const createOneEmpty =
-  (discriminatorID: string, variantType: ResponseVariantType, options?: Actions.ResponseVariant.CreateOptions): Thunk<AnyResponseVariant> =>
+  (
+    discriminatorID: string,
+    variantType: ResponseVariantType,
+    options?: Actions.ResponseVariant.CreateOptions
+  ): Thunk<AnyResponseVariant> =>
   (dispatch) =>
     match(variantType)
       .with(ResponseVariantType.TEXT, () => dispatch(createOneText(discriminatorID, undefined, options)))

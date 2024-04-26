@@ -1,7 +1,7 @@
-import { PlanType } from '@voiceflow/internal';
+import type { PlanType } from '@voiceflow/internal';
 
-import { PlanSeatLimits, StripeStatus } from '../Workspace';
-import { WorkspaceMember } from './WorkspaceMember';
+import type { PlanSeatLimits, StripeStatus } from '../Workspace';
+import type { WorkspaceMember } from './WorkspaceMember';
 
 export interface Workspace {
   id: string;

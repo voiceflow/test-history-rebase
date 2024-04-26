@@ -81,8 +81,13 @@ export const ROOT_NODES: ReadonlyArray<RootBlockType> = [BlockType.COMBINED, Blo
 export const isRootBlockType = (type: BlockType): type is RootBlockType => ROOT_NODES.includes(type as RootBlockType);
 
 export type InternalBlockType = BlockType.DEPRECATED | BlockType.COMMAND | RootBlockType;
-export const INTERNAL_NODES: ReadonlyArray<InternalBlockType> = [BlockType.DEPRECATED, BlockType.COMMAND, ...ROOT_NODES];
-export const isInternalBlockType = (type: BlockType): type is InternalBlockType => INTERNAL_NODES.includes(type as RootBlockType);
+export const INTERNAL_NODES: ReadonlyArray<InternalBlockType> = [
+  BlockType.DEPRECATED,
+  BlockType.COMMAND,
+  ...ROOT_NODES,
+];
+export const isInternalBlockType = (type: BlockType): type is InternalBlockType =>
+  INTERNAL_NODES.includes(type as RootBlockType);
 
 export type MarkupMediaBlockType = BlockType.MARKUP_IMAGE | BlockType.MARKUP_VIDEO;
 export const MARKUP_MEDIA_NODES: ReadonlyArray<MarkupMediaBlockType> = [BlockType.MARKUP_IMAGE, BlockType.MARKUP_VIDEO];
@@ -94,12 +99,23 @@ export type RootOrMarkupBlockType = RootBlockType | MarkupBlockType;
 export const ROOT_AND_MARKUP_NODES: ReadonlyArray<RootOrMarkupBlockType> = [...ROOT_NODES, ...MARKUP_NODES];
 
 export type MarkupOrCombinedBlockType = BlockType.COMBINED | MarkupBlockType;
-export const MARKUP_AND_COMBINED_NODES: ReadonlyArray<MarkupOrCombinedBlockType> = [BlockType.COMBINED, ...MARKUP_NODES];
+export const MARKUP_AND_COMBINED_NODES: ReadonlyArray<MarkupOrCombinedBlockType> = [
+  BlockType.COMBINED,
+  ...MARKUP_NODES,
+];
 
 export type CanvasTemplateType = BlockType.COMBINED | BlockType.ACTIONS | MarkupBlockType;
-export const CANVAS_TEMPLATE_NODES: ReadonlyArray<CanvasTemplateType> = [BlockType.COMBINED, BlockType.ACTIONS, ...MARKUP_NODES];
+export const CANVAS_TEMPLATE_NODES: ReadonlyArray<CanvasTemplateType> = [
+  BlockType.COMBINED,
+  BlockType.ACTIONS,
+  ...MARKUP_NODES,
+];
 
-export type NavigationBlockType = BlockType.EXIT | BlockType.GO_TO_NODE | BlockType.GO_TO_INTENT | BlockType.GO_TO_DOMAIN;
+export type NavigationBlockType =
+  | BlockType.EXIT
+  | BlockType.GO_TO_NODE
+  | BlockType.GO_TO_INTENT
+  | BlockType.GO_TO_DOMAIN;
 export const NAVIGATION_NODES: ReadonlyArray<NavigationBlockType> = [
   BlockType.EXIT,
   BlockType.GO_TO_NODE,
@@ -111,7 +127,11 @@ export type CanvasChipBlockType = BlockType.INTENT | BlockType.START;
 export const CANVAS_CHIPS_NODES: ReadonlyArray<CanvasChipBlockType> = [BlockType.INTENT, BlockType.START];
 
 export type DiagramMenuBlockType = BlockType.START | BlockType.INTENT | BlockType.COMPONENT;
-export const DIAGRAM_MENU_NODES: ReadonlyArray<DiagramMenuBlockType> = [BlockType.START, BlockType.INTENT, BlockType.COMPONENT];
+export const DIAGRAM_MENU_NODES: ReadonlyArray<DiagramMenuBlockType> = [
+  BlockType.START,
+  BlockType.INTENT,
+  BlockType.COMPONENT,
+];
 
 export type StaringBlockType = BlockType.START | BlockType.COMBINED;
 export const STARTING_NODES: ReadonlyArray<StaringBlockType> = [BlockType.START, BlockType.COMBINED];

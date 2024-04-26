@@ -2,9 +2,17 @@ import React from 'react';
 
 import { Header, Section } from './components';
 import * as S from './styles';
-import * as T from './types';
+import type * as T from './types';
 
-const Page: React.FC<T.Props> = ({ renderHeader, renderSidebar, sidebarPadding, children, scrollable = true, white, className }) => (
+const Page: React.FC<T.Props> = ({
+  renderHeader,
+  renderSidebar,
+  sidebarPadding,
+  children,
+  scrollable = true,
+  white,
+  className,
+}) => (
   <S.Container className={className}>
     {renderHeader?.()}
 

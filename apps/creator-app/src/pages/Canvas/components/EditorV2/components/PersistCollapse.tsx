@@ -5,7 +5,11 @@ import { withNamespace } from '@/hocs/withNamespace';
 import { useSectionState } from '@/pages/Canvas/hooks/section';
 
 interface PersistCollapseProps {
-  children: (props: { collapsed: boolean; onToggle: (collapsed?: boolean) => void; className?: string }) => React.ReactElement;
+  children: (props: {
+    collapsed: boolean;
+    onToggle: (collapsed?: boolean) => void;
+    className?: string;
+  }) => React.ReactElement;
   className?: string;
   defaultCollapsed?: boolean;
 }

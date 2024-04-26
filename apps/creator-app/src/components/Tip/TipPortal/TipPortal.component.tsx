@@ -6,7 +6,7 @@ import { Transition } from 'react-transition-group';
 import { useLocalStorageState } from '@/hooks/storage.hook';
 
 import { containerStyle } from './TipPortal.css';
-import { ITipPortal } from './TipPortal.interface';
+import type { ITipPortal } from './TipPortal.interface';
 
 export const TipPortal: React.FC<ITipPortal> = ({ scope, closing, children }) => {
   const [visible, setVisible] = useLocalStorageState(`vf_tip:${scope}`, true);

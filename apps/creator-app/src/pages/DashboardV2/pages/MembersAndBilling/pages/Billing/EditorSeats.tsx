@@ -51,7 +51,7 @@ const BillingEditorSeats: React.FC<BillingEditorSeatsProps> = ({ nextBillingDate
                   </div>
                 )}
 
-                {isEnterprise && `Want to make changes to your next billing cycle? Contact sales@voiceflow.com.`}
+                {isEnterprise && 'Want to make changes to your next billing cycle? Contact sales@voiceflow.com.'}
 
                 {showBillingDateDescription && (
                   <>

@@ -2,7 +2,13 @@ import React from 'react';
 
 import ProjectPage from '@/pages/Project/components/ProjectPage';
 
-import { AnalyticsDashboardContainer, AnalyticsDashboardFiltersHeader, AnalyticsDashboardGrid, AnalyticsDashboardTile, Tiles } from './components';
+import {
+  AnalyticsDashboardContainer,
+  AnalyticsDashboardFiltersHeader,
+  AnalyticsDashboardGrid,
+  AnalyticsDashboardTile,
+  Tiles,
+} from './components';
 import { DONUT_CHART_COLORS } from './constants';
 import { AnalyticsDashboardContext } from './context';
 
@@ -41,10 +47,22 @@ const AnalyticsDashboard: React.FC = () => {
           </AnalyticsDashboardTile>
 
           {/* Row 2 */}
-          <AnalyticsDashboardTile title="Users" description="Unique user sessions with your assistant." width={1} height={1} query={users}>
+          <AnalyticsDashboardTile
+            title="Users"
+            description="Unique user sessions with your assistant."
+            width={1}
+            height={1}
+            query={users}
+          >
             <Tiles.AnalyticsDashboardTileGraph query={users} size="small" testID="unique-users-chart" />
           </AnalyticsDashboardTile>
-          <AnalyticsDashboardTile title="Sessions" description="Unique user sessions with your assistant." width={1} height={1} query={sessions}>
+          <AnalyticsDashboardTile
+            title="Sessions"
+            description="Unique user sessions with your assistant."
+            width={1}
+            height={1}
+            query={sessions}
+          >
             <Tiles.AnalyticsDashboardTileGraph query={sessions} size="small" testID="unique-sessions-chart" />
           </AnalyticsDashboardTile>
           <AnalyticsDashboardTile

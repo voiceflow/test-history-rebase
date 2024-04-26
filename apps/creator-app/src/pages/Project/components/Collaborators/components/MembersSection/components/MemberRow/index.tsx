@@ -1,5 +1,5 @@
-import { UserRole } from '@voiceflow/internal';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type { UserRole } from '@voiceflow/internal';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Members, OverflowTippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
@@ -41,7 +41,6 @@ const MemberRow: React.FC<MemberRowProps> = ({ member, resendInvite, isLast }) =
     }
   };
 
-  // eslint-disable-next-line xss/no-mixed-html
   return (
     <S.Container className={ClassName.COLLABORATOR_LINE_ITEM} isLast={isLast} data-email={member.email}>
       <Box.Flex flex={1} paddingY={4} overflowX="hidden">

@@ -1,4 +1,4 @@
-import { DBDiagram, Diagram } from '@realtime-sdk/models';
+import type { DBDiagram, Diagram } from '@realtime-sdk/models';
 import { BaseModels } from '@voiceflow/base-types';
 import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter';
 

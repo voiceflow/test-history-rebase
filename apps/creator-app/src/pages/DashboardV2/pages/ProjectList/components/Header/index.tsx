@@ -32,7 +32,10 @@ const Header: React.FC<HeaderProps> = ({ search, onSearch, isKanban }) => {
   const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
 
   // FIXME: remove FF https://voiceflow.atlassian.net/browse/CV3-994
-  const legacyProjectsLimitConfig = usePlanLimitedConfig(LimitType.PROJECTS, { value: projectsCount, limit: projectsLimit });
+  const legacyProjectsLimitConfig = usePlanLimitedConfig(LimitType.PROJECTS, {
+    value: projectsCount,
+    limit: projectsLimit,
+  });
   const newProjectsLimitConfig = useConditionalLimit(LimitType.PROJECTS, { value: projectsCount });
 
   const projectsLimitConfig = subscription ? newProjectsLimitConfig : legacyProjectsLimitConfig;

@@ -11,7 +11,7 @@ import VariablesSelect from '@/components/VariablesSelect';
 
 import { SCHEME } from './constants';
 import * as S from './styles';
-import { FormValues, Value } from './types';
+import type { FormValues, Value } from './types';
 
 export * as FormTypes from './types';
 
@@ -30,14 +30,18 @@ const Form: React.FC<Props> = ({ value, onSubmit }) => {
       name: value.name,
       startFrom: value.startFrom || null,
       variables: Object.keys(value.variables || {}),
-      variablesValues: Object.fromEntries(Object.entries(value.variables || {}).map(([key, value]) => [key, String(value)])),
+      variablesValues: Object.fromEntries(
+        Object.entries(value.variables || {}).map(([key, value]) => [key, String(value)])
+      ),
     };
   }, [value]);
 
   const onSubmitForm = (values: FormValues) => {
     const startFrom = values.startFrom || null;
 
-    const variables = Object.fromEntries(values.variables.map((variable) => [variable, values.variablesValues[variable]]));
+    const variables = Object.fromEntries(
+      values.variables.map((variable) => [variable, values.variablesValues[variable]])
+    );
 
     onSubmit({ name: values.name, variables, startFrom });
   };

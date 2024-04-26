@@ -4,7 +4,7 @@ import { LimitType } from '@/constants/limits';
 import * as Tracking from '@/ducks/tracking';
 import { getUpgradeModalProps } from '@/utils/upgrade';
 
-import { LimitV3, UpgradeModalEntitlementLimit } from './types';
+import type { LimitV3, UpgradeModalEntitlementLimit } from './types';
 
 const DEFAULT_MODAL = {
   title: 'Need more Editor seats?',
@@ -15,7 +15,7 @@ const STARTER_PRO_LIMIT: UpgradeModalEntitlementLimit = {
   upgradeModal: () => ({
     ...DEFAULT_MODAL,
     ...getUpgradeModalProps(PlanType.TEAM, Tracking.UpgradePrompt.EDITOR_SEATS),
-    description: `Upgrade to the teams plan to unlock more editor seats.`,
+    description: 'Upgrade to the teams plan to unlock more editor seats.',
   }),
 };
 

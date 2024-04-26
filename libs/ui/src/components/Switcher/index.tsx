@@ -1,6 +1,7 @@
 import Loader from '@ui/components/Loader';
 import Popper from '@ui/components/Popper';
-import SvgIcon, { SvgIconTypes } from '@ui/components/SvgIcon';
+import type { SvgIconTypes } from '@ui/components/SvgIcon';
+import SvgIcon from '@ui/components/SvgIcon';
 import React from 'react';
 
 import * as S from './styles';

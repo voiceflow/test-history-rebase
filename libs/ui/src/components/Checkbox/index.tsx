@@ -1,4 +1,5 @@
-import SvgIcon, { SvgIconTypes } from '@ui/components/SvgIcon';
+import type { SvgIconTypes } from '@ui/components/SvgIcon';
+import SvgIcon from '@ui/components/SvgIcon';
 import { Utils } from '@voiceflow/common';
 import React from 'react';
 
@@ -37,7 +38,6 @@ const Checkbox: React.FC<T.Props> = ({
 
   const icon = getIcon(type, checked);
 
-  // eslint-disable-next-line xss/no-mixed-html
   const onLabelClick = (event: React.MouseEvent<HTMLLabelElement>) => {
     // onClick events are fired to times when clicked on the label
     // first time called for the label itself, and the second time for the checkbox, it's native browser behavior
@@ -50,9 +50,23 @@ const Checkbox: React.FC<T.Props> = ({
   const inputType = type === T.Type.DASH ? T.Type.CHECKBOX : type;
 
   return (
-    <Container isFlat={isFlat} disabled={disabled} className={className} onClick={onLabelClick} activeBar={activeBar} isChecked={checked}>
+    <Container
+      isFlat={isFlat}
+      disabled={disabled}
+      className={className}
+      onClick={onLabelClick}
+      activeBar={activeBar}
+      isChecked={checked}
+    >
       <ButtonContainer padding={padding}>
-        <Button type={inputType} checked={checked} disabled={disabled} color={checkBoxColor} onChange={onChange} {...props} />
+        <Button
+          type={inputType}
+          checked={checked}
+          disabled={disabled}
+          color={checkBoxColor}
+          onChange={onChange}
+          {...props}
+        />
 
         <IconContainer isCheckbox={inputType === 'checkbox'}>
           <SvgIcon color={checkBoxColor} size={16} icon={icon} ignoreEvents />

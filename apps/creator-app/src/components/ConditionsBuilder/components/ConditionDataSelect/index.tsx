@@ -1,10 +1,10 @@
 import { BaseNode } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Popper } from '@voiceflow/ui';
 import _isEmpty from 'lodash/isEmpty';
 import React from 'react';
 
-import { ExpressionDataLogicType, LogicUnitDataType } from '../../types';
+import type { ExpressionDataLogicType, LogicUnitDataType } from '../../types';
 import { isConditionInvalid } from '../../utils';
 import ConditionDisplay from '../ConditionDisplay';
 import ConditionValueSelect from '../ConditionValueSelect';
@@ -12,7 +12,9 @@ import ConditionVariableSelect from '../ConditionVariableSelect';
 import ConditionLogicSelect from './components/ConditionLogicSelect';
 import Container from './components/Container';
 
-export type ValueSelectExpressionType = BaseNode.Utils.ExpressionTypeV2.VARIABLE | BaseNode.Utils.ExpressionTypeV2.VALUE;
+export type ValueSelectExpressionType =
+  | BaseNode.Utils.ExpressionTypeV2.VARIABLE
+  | BaseNode.Utils.ExpressionTypeV2.VALUE;
 
 export interface ConditionDataSelectProps {
   isLogicGroup?: boolean;
@@ -27,7 +29,9 @@ const ConditionDataSelect: React.FC<ConditionDataSelectProps> = ({ expression, i
     (key: number) => (values: { value: string }) => {
       onChange({
         ...expression,
-        value: expression.value.map((data: any, index) => (index === key ? { ...data, ...values } : data)) as Realtime.ExpressionTupleV2,
+        value: expression.value.map((data: any, index) =>
+          index === key ? { ...data, ...values } : data
+        ) as Realtime.ExpressionTupleV2,
       });
     },
     [onChange]

@@ -8,5 +8,11 @@ declare module 'prettysize' {
 		@param {Number} [places=1] Number of decimal places to return
 		@param {Boolen} [numOnly] Return only the converted number and not size string
 	*/
-  export default function pretty(size: number, noSpace?: boolean, one?: boolean, places?: number, numOnly?: boolean): string;
+  export default function pretty(
+    size: number,
+    noSpace?: boolean,
+    one?: boolean,
+    places?: number,
+    numOnly?: boolean
+  ): string;
 }

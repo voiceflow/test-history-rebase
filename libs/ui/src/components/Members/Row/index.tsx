@@ -3,12 +3,13 @@ import Badge from '@ui/components/Badge';
 import Box from '@ui/components/Box';
 import { PROFILE_COLORS } from '@ui/styles/colors';
 import { getStringHashNumber } from '@ui/utils/string';
-import { Nullable, Utils } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
 import { UserRole } from '@voiceflow/internal';
 import React from 'react';
 
 import RoleSelect from '../RoleSelect';
-import { Member } from '../types';
+import type { Member } from '../types';
 import * as S from './styles';
 
 interface MemberRowProps<M extends Member> {

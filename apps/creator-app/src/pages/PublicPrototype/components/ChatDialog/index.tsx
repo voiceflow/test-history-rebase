@@ -1,13 +1,15 @@
-import { BaseButton } from '@voiceflow/base-types';
-import { Nullable } from '@voiceflow/common';
+import type { BaseButton } from '@voiceflow/base-types';
+import type { Nullable } from '@voiceflow/common';
 import { Box, Flex, Text } from '@voiceflow/ui';
 import React from 'react';
 
-import { PrototypeLayout, PrototypeStatus } from '@/constants/prototype';
+import type { PrototypeStatus } from '@/constants/prototype';
+import { PrototypeLayout } from '@/constants/prototype';
 import { useCanASR, useTheme } from '@/hooks';
 import { ChatDisplay } from '@/pages/Prototype/components';
 import { ASRSpeechBar, UncontrolledSpeechBar } from '@/pages/Prototype/components/PrototypeSpeechBar';
-import { Interaction, Message, OnInteraction, PMStatus } from '@/pages/Prototype/types';
+import type { Interaction, Message, OnInteraction } from '@/pages/Prototype/types';
+import { PMStatus } from '@/pages/Prototype/types';
 
 import {
   ActionButtons,
@@ -99,7 +101,8 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
   const canUseASR = useCanASR();
 
   const showInputContainer = !buttonsOnly || !isIdle || testEnded || layout !== PrototypeLayout.TEXT_DIALOG;
-  const showInput = !buttonsOnly || (buttonsOnly && pmStatus === PMStatus.WAITING_USER_INTERACTION && interactions.length === 0);
+  const showInput =
+    !buttonsOnly || (buttonsOnly && pmStatus === PMStatus.WAITING_USER_INTERACTION && interactions.length === 0);
 
   return (
     <Box height="100%" width="100%" position="relative">

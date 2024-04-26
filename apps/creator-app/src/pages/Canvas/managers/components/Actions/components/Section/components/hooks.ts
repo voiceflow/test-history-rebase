@@ -1,7 +1,7 @@
 import { BaseNode } from '@voiceflow/base-types';
-import { EmptyObject } from '@voiceflow/common';
+import type { EmptyObject } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { SvgIconTypes } from '@voiceflow/ui';
+import type { SvgIconTypes } from '@voiceflow/ui';
 import { useMemo } from 'react';
 import { match } from 'ts-pattern';
 
@@ -44,7 +44,8 @@ export const useItemConfig = (getManager: ManagerGetter, data: Realtime.NodeData
         .when(Realtime.Utils.typeGuards.isGoToNodeNodeData, ({ goToNodeID, diagramID }) => {
           const sharedNode = diagramID && goToNodeID ? sharedNodes[diagramID]?.[goToNodeID] ?? null : null;
           const name =
-            (sharedNode?.type === Realtime.BlockType.COMBINED && sharedNode.name) || (sharedNode?.type === Realtime.BlockType.START && 'Start');
+            (sharedNode?.type === Realtime.BlockType.COMBINED && sharedNode.name) ||
+            (sharedNode?.type === Realtime.BlockType.START && 'Start');
 
           return {
             icon: manager.icon,

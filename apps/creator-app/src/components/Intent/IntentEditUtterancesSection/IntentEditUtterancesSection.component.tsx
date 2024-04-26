@@ -48,7 +48,9 @@ export const IntentEditUtterancesSection: React.FC<IIntentEditUtterancesSection>
   };
 
   const onRequiredEntityAdd = async (entityID: string) => {
-    const existingEntityIDs = new Set(getRequiredEntitiesByIDs({ ids: intent.entityOrder }).map(({ entityID }) => entityID));
+    const existingEntityIDs = new Set(
+      getRequiredEntitiesByIDs({ ids: intent.entityOrder }).map(({ entityID }) => entityID)
+    );
 
     if (existingEntityIDs.has(entityID)) return;
 

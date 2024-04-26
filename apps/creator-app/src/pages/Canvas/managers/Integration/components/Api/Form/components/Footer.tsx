@@ -4,11 +4,12 @@ import React from 'react';
 import * as Documentation from '@/config/documentation';
 import { useFillVariables } from '@/hooks/variable';
 import * as ModalsV2 from '@/ModalsV2';
-import EditorV2, { EditorV2Types } from '@/pages/Canvas/components/EditorV2';
+import type { EditorV2Types } from '@/pages/Canvas/components/EditorV2';
+import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { encodeCustomAPIData } from '@/utils/integration';
 
 import TLSEditor from '../../TLSEditor';
-import { BaseFormProps } from '../types';
+import type { BaseFormProps } from '../types';
 
 interface FooterProps extends BaseFormProps {
   tutorial?: EditorV2Types.DefaultFooter.Props['tutorial'];
@@ -36,7 +37,9 @@ const Footer: React.FC<FooterProps> = ({ editor, tutorial = Documentation.API_ST
 
   return (
     <EditorV2.DefaultFooter tutorial={tutorial}>
-      <EditorV2.FooterActionsButton actions={[{ label: tls ? 'Remove certificates' : 'Add certificates', onClick: tls ? onRemoveTLS : onAddTLS }]} />
+      <EditorV2.FooterActionsButton
+        actions={[{ label: tls ? 'Remove certificates' : 'Add certificates', onClick: tls ? onRemoveTLS : onAddTLS }]}
+      />
 
       <Button variant={Button.Variant.PRIMARY} onClick={sendRequest} squareRadius>
         Send Request

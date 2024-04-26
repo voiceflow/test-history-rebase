@@ -1,8 +1,9 @@
 import { Utils } from '@voiceflow/common';
-import { defaultMenuLabelRenderer, isNotUIOnlyMenuItemOption, Menu, Select, System, UIOnlyMenuItemOption } from '@voiceflow/ui';
+import type { UIOnlyMenuItemOption } from '@voiceflow/ui';
+import { defaultMenuLabelRenderer, isNotUIOnlyMenuItemOption, Menu, Select, System } from '@voiceflow/ui';
 import React from 'react';
 
-import { EntityOption } from './hooks';
+import type { EntityOption } from './hooks';
 
 interface EntitySelectorProps {
   value?: string | null;
@@ -13,7 +14,10 @@ interface EntitySelectorProps {
 }
 
 const EntitySelector: React.FC<EntitySelectorProps> = ({ value, options, onEdit, onSelect, onCreate }) => {
-  const optionsMap = React.useMemo(() => Utils.array.createMap(options.filter(isNotUIOnlyMenuItemOption), Utils.object.selectID), [options]);
+  const optionsMap = React.useMemo(
+    () => Utils.array.createMap(options.filter(isNotUIOnlyMenuItemOption), Utils.object.selectID),
+    [options]
+  );
 
   return (
     <Select
@@ -31,18 +35,31 @@ const EntitySelector: React.FC<EntitySelectorProps> = ({ value, options, onEdit,
       inDropdownSearch
       alwaysShowCreate
       renderOptionLabel={(option, searchLabel, _, getOptionValue, config) =>
-        defaultMenuLabelRenderer<EntityOption, string>(option, searchLabel, (value) => value && optionsMap[value]?.name, getOptionValue, config)
+        defaultMenuLabelRenderer<EntityOption, string>(
+          option,
+          searchLabel,
+          (value) => value && optionsMap[value]?.name,
+          getOptionValue,
+          config
+        )
       }
-      renderEmpty={({ search }) => <Menu.NotFound>{!search ? 'No entities exist in your assistant. ' : 'No entities found. '}</Menu.NotFound>}
+      renderEmpty={({ search }) => (
+        <Menu.NotFound>{!search ? 'No entities exist in your assistant. ' : 'No entities found. '}</Menu.NotFound>
+      )}
       renderSearchSuffix={({ close, searchLabel }) => (
         <System.IconButtonsGroup.Base>
-          <System.IconButton.Base icon="plus" onClick={Utils.functional.chainVoid(close, () => onCreate(searchLabel))} />
+          <System.IconButton.Base
+            icon="plus"
+            onClick={Utils.functional.chainVoid(close, () => onCreate(searchLabel))}
+          />
         </System.IconButtonsGroup.Base>
       )}
       clearOnSelectActive
       renderFooterAction={({ close, searchLabel }) => (
         <Menu.Footer>
-          <Menu.Footer.Action onClick={Utils.functional.chainVoid(close, () => onCreate(searchLabel))}>Create New Entity</Menu.Footer.Action>
+          <Menu.Footer.Action onClick={Utils.functional.chainVoid(close, () => onCreate(searchLabel))}>
+            Create New Entity
+          </Menu.Footer.Action>
         </Menu.Footer>
       )}
       createInputPlaceholder="entities"

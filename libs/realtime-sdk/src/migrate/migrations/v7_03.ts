@@ -1,6 +1,6 @@
-import { Version } from '@voiceflow/dtos';
+import type { Version } from '@voiceflow/dtos';
 
-import { Transform } from './types';
+import type { Transform } from './types';
 
 // migrates deprecated KB steps to new format
 const migrateToV7_03: Transform = ({ version: _version }) => {

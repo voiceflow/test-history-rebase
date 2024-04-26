@@ -1,5 +1,6 @@
 import { tid } from '@voiceflow/style';
-import { Box, Editor, IEditorAPI, Scroll, SquareButton } from '@voiceflow/ui-next';
+import type { IEditorAPI } from '@voiceflow/ui-next';
+import { Box, Editor, Scroll, SquareButton } from '@voiceflow/ui-next';
 import React, { useRef } from 'react';
 import { useHistory } from 'react-router';
 
@@ -54,9 +55,16 @@ export const CMSFunctionEditor: React.FC = () => {
       testID={EDITOR_TEST_ID}
       headerActions={
         <Box align="center">
-          <CMSEditorMoreButton testID={tid(EDITOR_TEST_ID, 'more')}>{({ onClose }) => getMoreMenu({ id: functionID, onClose })}</CMSEditorMoreButton>
+          <CMSEditorMoreButton testID={tid(EDITOR_TEST_ID, 'more')}>
+            {({ onClose }) => getMoreMenu({ id: functionID, onClose })}
+          </CMSEditorMoreButton>
           <Box ml={8}>
-            <SquareButton size="medium" onClick={() => navigate.push(getFolderPath())} iconName="CloseM" testID={tid(EDITOR_TEST_ID, 'close')} />
+            <SquareButton
+              size="medium"
+              onClick={() => navigate.push(getFolderPath())}
+              iconName="CloseM"
+              testID={tid(EDITOR_TEST_ID, 'close')}
+            />
           </Box>
         </Box>
       }
@@ -71,7 +79,10 @@ export const CMSFunctionEditor: React.FC = () => {
           testID={tid('function', 'description')}
         />
 
-        <CMSFunctionImageUpload onValueChange={(value) => patchFunction({ image: value })} value={functionResource?.image} />
+        <CMSFunctionImageUpload
+          onValueChange={(value) => patchFunction({ image: value })}
+          value={functionResource?.image}
+        />
       </Scroll>
     </Editor>
   );

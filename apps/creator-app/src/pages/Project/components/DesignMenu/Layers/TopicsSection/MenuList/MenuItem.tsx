@@ -1,10 +1,10 @@
 import { BaseModels } from '@voiceflow/base-types';
-import { Nullable } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
 import React from 'react';
 
-import { DragPreviewComponentProps, ItemComponentProps } from '@/components/DraggableList';
+import type { DragPreviewComponentProps, ItemComponentProps } from '@/components/DraggableList';
 
-import { TopicMenuItem } from '../hooks';
+import type { TopicMenuItem } from '../hooks';
 import type TopicItem from '../TopicItem';
 import NodeItem from './NodeItem';
 

@@ -1,4 +1,5 @@
-import { AIModel, Subscription } from '@voiceflow/dtos';
+import type { Subscription } from '@voiceflow/dtos';
+import { AIModel } from '@voiceflow/dtos';
 import React from 'react';
 
 import { AI_MODEL_CONFIG_MAP } from '@/config/ai-model';
@@ -36,7 +37,8 @@ const ENTITLEMENTS_BY_MODELS: Record<EntitlementModels, keyof Subscription['enti
   [AIModel.GPT_4_TURBO]: 'gpt4Turbo',
 };
 
-const isEntitlementModel = (model: string): model is EntitlementModels => ENTITLEMENTS_MODELS.has(model as EntitlementModels);
+const isEntitlementModel = (model: string): model is EntitlementModels =>
+  ENTITLEMENTS_MODELS.has(model as EntitlementModels);
 
 export const useAIModelEntitlement = () => {
   const isTrial = useSelector(WorkspaceV2.active.isOnTrialSelector);

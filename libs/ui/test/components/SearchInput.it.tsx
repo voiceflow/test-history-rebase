@@ -1,5 +1,6 @@
 import { act, fireEvent, render } from '@testing-library/react';
-import SearchInput, { SearchInputProps } from '@ui/components/SearchInput';
+import type { SearchInputProps } from '@ui/components/SearchInput';
+import SearchInput from '@ui/components/SearchInput';
 import { Utils } from '@voiceflow/common';
 import React from 'react';
 

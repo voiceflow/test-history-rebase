@@ -1,12 +1,13 @@
 import { Utils } from '@voiceflow/common';
 
-import { SelectionMarqueeAPI } from '@/pages/Canvas/types';
-import { Point } from '@/types';
+import type { SelectionMarqueeAPI } from '@/pages/Canvas/types';
+import type { Point } from '@/types';
 import { isRootOrMarkupBlockType } from '@/utils/typeGuards';
 
 import { CANVAS_SELECTING_GROUP_CLASSNAME } from '../constants';
 import { EntityType } from './constants';
-import { EngineConsumer, getNodeCandidates, getThreadCandidates, NodeCandidate, ThreadCandidate } from './utils';
+import type { NodeCandidate, ThreadCandidate } from './utils';
+import { EngineConsumer, getNodeCandidates, getThreadCandidates } from './utils';
 
 class GroupSelectionEngine extends EngineConsumer<{ selectionMarquee: SelectionMarqueeAPI }> {
   log = this.engine.log.child('group-selection');
@@ -59,7 +60,9 @@ class GroupSelectionEngine extends EngineConsumer<{ selectionMarquee: SelectionM
     const nextCandidates = this.candidates.filter(({ isWithin }) => isWithin(rect));
 
     const nodeTargets = this.engine.selection.getTargets(EntityType.NODE);
-    const nextNodeTargets = nextCandidates.filter((target): target is NodeCandidate => 'nodeID' in target).map(({ nodeID }) => nodeID);
+    const nextNodeTargets = nextCandidates
+      .filter((target): target is NodeCandidate => 'nodeID' in target)
+      .map(({ nodeID }) => nodeID);
     const updateNodeTargets = Utils.array.diff(nodeTargets, nextNodeTargets);
 
     this.engine.selection.replaceNode(nextNodeTargets, true);
@@ -67,7 +70,9 @@ class GroupSelectionEngine extends EngineConsumer<{ selectionMarquee: SelectionM
 
     if (this.engine.comment.isModeActive || this.engine.comment.isVisible) {
       const threadTargets = this.engine.selection.getTargets(EntityType.THREAD);
-      const nextThreadTargets = nextCandidates.filter((target): target is ThreadCandidate => 'threadID' in target).map(({ threadID }) => threadID);
+      const nextThreadTargets = nextCandidates
+        .filter((target): target is ThreadCandidate => 'threadID' in target)
+        .map(({ threadID }) => threadID);
       const updateThreadTargets = Utils.array.diff(threadTargets, nextThreadTargets);
 
       this.engine.activation.replace(EntityType.THREAD, nextThreadTargets);

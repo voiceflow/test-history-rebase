@@ -1,5 +1,5 @@
-import { Markup, Utterance } from '@voiceflow/dtos';
-import * as Platform from '@voiceflow/platform-config';
+import type { Markup, Utterance } from '@voiceflow/dtos';
+import type * as Platform from '@voiceflow/platform-config';
 import { Flex, stopPropagation, System, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
@@ -24,13 +24,19 @@ const determineNewUtterances = (
   newInputArray: Array<Platform.Base.Models.Intent.Input | Utterance>
 ) => {
   const previousUtteranceArray = new Set(
-    previousInputArray.map(({ text }) => (typeof text === 'string' ? text : utteranceTextToString.fromDB(text, { entitiesMapByID: {} })))
+    previousInputArray.map(({ text }) =>
+      typeof text === 'string' ? text : utteranceTextToString.fromDB(text, { entitiesMapByID: {} })
+    )
   );
   const newUtteranceArray = newInputArray.map(({ text }) => text);
   const netNewUtterances: Array<string | Markup> = [];
 
   newUtteranceArray.forEach((utterance) => {
-    if (!previousUtteranceArray.has(typeof utterance === 'string' ? utterance : utteranceTextToString.fromDB(utterance, { entitiesMapByID: {} }))) {
+    if (
+      !previousUtteranceArray.has(
+        typeof utterance === 'string' ? utterance : utteranceTextToString.fromDB(utterance, { entitiesMapByID: {} })
+      )
+    ) {
       netNewUtterances.push(utterance);
     }
   });
@@ -42,7 +48,9 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, utterance, onToggl
   const [trackingEvents] = useTrackingEvents();
 
   const [targetIntentID, setTargetIntentID] = React.useState<string | null>(null);
-  const [initialUtterances, setInitialUtterances] = React.useState<Array<Platform.Base.Models.Intent.Input | Utterance> | null>(null);
+  const [initialUtterances, setInitialUtterances] = React.useState<Array<
+    Platform.Base.Models.Intent.Input | Utterance
+  > | null>(null);
 
   const transcript = useSelector(Transcript.currentTranscriptSelector);
   const getIntentByID = useSelector(Designer.Intent.selectors.getOneWithUtterances);
@@ -71,7 +79,10 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, utterance, onToggl
     editModal.openVoid({ intentID, newUtterances: [utteranceTextToString.toDB(utterance, { entitiesMapByName: {} })] });
   };
 
-  const handleAddedUtteranceModalClose = async (intentID: string, initialUtterancesArray: Array<Platform.Base.Models.Intent.Input | Utterance>) => {
+  const handleAddedUtteranceModalClose = async (
+    intentID: string,
+    initialUtterancesArray: Array<Platform.Base.Models.Intent.Input | Utterance>
+  ) => {
     if (!transcript) return;
 
     const targetIntent = getIntentByID({ id: intentID });
@@ -82,7 +93,13 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, utterance, onToggl
     const netNewUtterances = determineNewUtterances(initialUtterancesArray, updatedUtterances);
 
     if (netNewUtterances.length) {
-      await dispatchAddUtteranceToIntent(netNewUtterances.length, targetIntent.name, targetIntent.id, transcript.id, turnID);
+      await dispatchAddUtteranceToIntent(
+        netNewUtterances.length,
+        targetIntent.name,
+        targetIntent.id,
+        transcript.id,
+        turnID
+      );
 
       trackingEvents.trackConversationUtteranceSaved();
     }
@@ -90,7 +107,8 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, utterance, onToggl
     resetStates();
   };
 
-  // We have to put this in a useEffect because on intentSelect, if it is builtIn, the intentSelect needs to create the intent first, and there can be race conditions with the inner code
+  // We have to put this in a useEffect because on intentSelect,if it is builtIn,
+  // the intentSelect needs to create the intent first, and there can be race conditions with the inner code
   useDidUpdateEffect(() => {
     if (targetIntentID) {
       handleOpenIntentEditModal(targetIntentID);
@@ -129,7 +147,8 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, utterance, onToggl
       <Flex>
         <S.StatusIcon icon="check2" size={14} color="#449127" />
       </Flex>
-      {utteranceAddedCount === 1 ? '1 utterance' : `${utteranceAddedCount ?? ''} utterances`} added to&nbsp;<span>{addedIntent?.name}</span>
+      {utteranceAddedCount === 1 ? '1 utterance' : `${utteranceAddedCount ?? ''} utterances`} added to&nbsp;
+      <span>{addedIntent?.name}</span>
       &nbsp;intent
     </S.Container>
   );

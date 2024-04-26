@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
@@ -17,14 +17,20 @@ const CommandsSection: React.FC = () => {
   const editor = EditorV2.useEditor();
   const intentMap = React.useContext(IntentMapContext)!;
 
-  const commands = useSelector(CreatorV2.stepDataByParentNodeIDSelector, { id: editor.nodeID }) as Realtime.NodeData<Realtime.NodeData.Command>[];
+  const commands = useSelector(CreatorV2.stepDataByParentNodeIDSelector, {
+    id: editor.nodeID,
+  }) as Realtime.NodeData<Realtime.NodeData.Command>[];
 
-  const onGoToCommand = (commandNodeID: string) => editor.goToNested({ path: CommandEditor.PATH, params: { commandNodeID } });
+  const onGoToCommand = (commandNodeID: string) =>
+    editor.goToNested({ path: CommandEditor.PATH, params: { commandNodeID } });
 
   const onAddCommand = async () => {
     const commandNodeID = Utils.id.objectID();
 
-    await editor.engine.node.insertStep(editor.nodeID, BlockType.COMMAND, commands.length, { nodeID: commandNodeID, autoFocus: false });
+    await editor.engine.node.insertStep(editor.nodeID, BlockType.COMMAND, commands.length, {
+      nodeID: commandNodeID,
+      autoFocus: false,
+    });
 
     onGoToCommand(commandNodeID);
   };

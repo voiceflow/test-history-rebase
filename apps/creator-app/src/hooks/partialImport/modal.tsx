@@ -11,7 +11,8 @@ import { lazyComponent } from '@/hocs/lazy';
 import { useStore } from '@/hooks/redux';
 import manager from '@/ModalsV2/manager';
 
-import { Diff, getDiff, VF_FILE, VFDiff } from './diff';
+import type { Diff, VF_FILE, VFDiff } from './diff';
+import { getDiff } from './diff';
 
 interface PartialImportManagerProps {
   next: VF_FILE;
@@ -87,13 +88,19 @@ const PartialImportManager = manager.create<PartialImportManagerProps>(
                   <b>Last Updated:</b> {dayjs(next.project.updatedAt).format('h:mmA, MMM D, YYYY')}
                 </Box>
                 <Box color={ThemeColor.SECONDARY}>
-                  Select resources to import. <System.Link.Anchor href={PARTIAL_IMPORT_LEARN_MORE}>Learn More</System.Link.Anchor>
+                  Select resources to import.{' '}
+                  <System.Link.Anchor href={PARTIAL_IMPORT_LEARN_MORE}>Learn More</System.Link.Anchor>
                 </Box>
                 <hr />
                 <DiffManager diff={diff} setDiff={setDiff} />
               </Modal.Body>
               <Modal.Footer gap={12}>
-                <Button onClick={api.onClose} variant={Button.Variant.TERTIARY} disabled={closePrevented || saving} squareRadius>
+                <Button
+                  onClick={api.onClose}
+                  variant={Button.Variant.TERTIARY}
+                  disabled={closePrevented || saving}
+                  squareRadius
+                >
                   Cancel
                 </Button>
                 <Button disabled={closePrevented || saving} onClick={save} squareRadius>

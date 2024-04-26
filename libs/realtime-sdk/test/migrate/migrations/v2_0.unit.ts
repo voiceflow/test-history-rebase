@@ -1,4 +1,4 @@
-import { MigrationData } from '@realtime-sdk/migrate/migrations/types';
+import type { MigrationData } from '@realtime-sdk/migrate/migrations/types';
 import migrateToV2 from '@realtime-sdk/migrate/migrations/v2_0';
 import { BaseModels } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config/backend';

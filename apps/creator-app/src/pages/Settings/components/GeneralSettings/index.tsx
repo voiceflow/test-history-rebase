@@ -28,7 +28,15 @@ const SettingsContent: React.FC = () => {
 
         if (section === SettingSections.CHANNEL_SPECIFIC_FEATURES && !canUseAlexaSettings) return null;
 
-        return <SectionComponent platform={platform} projectType={projectType} title={section} key={index} platformMeta={platformMeta} />;
+        return (
+          <SectionComponent
+            platform={platform}
+            projectType={projectType}
+            title={section}
+            key={index}
+            platformMeta={platformMeta}
+          />
+        );
       })}
     </Box>
   );

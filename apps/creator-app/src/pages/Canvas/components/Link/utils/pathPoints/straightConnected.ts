@@ -1,6 +1,6 @@
-import { PathPoints } from '@/types';
+import type { PathPoints } from '@/types';
 
-import { LinkedRects } from '../types';
+import type { LinkedRects } from '../types';
 import {
   isSourceRectsReversed,
   isTargetEndLeftXToRightOfSourceNodeXCenter,
@@ -26,7 +26,7 @@ import {
   getTopRightSLikePoints,
   isStraightLine,
 } from './straightHelpers';
-import { GetPathPointsOptions } from './types';
+import type { GetPathPointsOptions } from './types';
 
 const getStraightConnectedPoints = (linkedRects: LinkedRects, options: GetPathPointsOptions): PathPoints => {
   if (isStraightLine(linkedRects, options)) {
@@ -37,7 +37,10 @@ const getStraightConnectedPoints = (linkedRects: LinkedRects, options: GetPathPo
 
   const isNotReversedActions = !options.sourceNodeIsAction || !isSourceRectsReversed(linkedRects);
 
-  if (isNotReversedActions && isTargetEndLeftXToRightOfSourceStartRightXWithDoubleStraightOffset(linkedRects, options)) {
+  if (
+    isNotReversedActions &&
+    isTargetEndLeftXToRightOfSourceStartRightXWithDoubleStraightOffset(linkedRects, options)
+  ) {
     return getRightZLikePoints(linkedRects, options);
   }
 

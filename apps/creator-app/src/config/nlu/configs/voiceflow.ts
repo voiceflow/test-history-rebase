@@ -17,7 +17,8 @@ export const CONFIG = Base.extend({
 
   tooltip: {
     title: 'Voiceflow NLU',
-    description: "If you don't already use one of these NLU providers, we recommend this option for the simplest experience.",
+    description:
+      "If you don't already use one of these NLU providers, we recommend this option for the simplest experience.",
   },
 
   permission: null,

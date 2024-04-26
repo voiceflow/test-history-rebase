@@ -1,11 +1,11 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Box } from '@voiceflow/ui';
 import React from 'react';
 
 import AceEditor, { ACE_EDITOR_OPTIONS } from '@/components/AceEditor';
 import OverflowMenu from '@/components/OverflowMenu';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
-import { NodeEditor } from '@/pages/Canvas/managers/types';
+import type { NodeEditor } from '@/pages/Canvas/managers/types';
 
 import { HelpTooltip } from './components';
 

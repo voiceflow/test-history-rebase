@@ -13,11 +13,20 @@ export const Description: React.FC<DescriptionProps> = ({ description }) => {
       showDivider
       header={
         <CollapsibleHeader label="Description">
-          {({ isOpen, headerChildrenStyles }) => <CollapsibleHeaderButton headerChildrenStyles={headerChildrenStyles} isOpen={isOpen} />}
+          {({ isOpen, headerChildrenStyles }) => (
+            <CollapsibleHeaderButton headerChildrenStyles={headerChildrenStyles} isOpen={isOpen} />
+          )}
         </CollapsibleHeader>
       }
     >
-      <TextArea minRows={4} maxRows={17} variant="chunk" readOnly value={description || ''} placeholder="Enter description" />
+      <TextArea
+        minRows={4}
+        maxRows={17}
+        variant="chunk"
+        readOnly
+        value={description || ''}
+        placeholder="Enter description"
+      />
     </Collapsible>
   );
 };

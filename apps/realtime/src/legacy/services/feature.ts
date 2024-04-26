@@ -20,7 +20,10 @@ class FeatureService extends AbstractControl {
   }
 
   public isEnabled(featureID: string, context?: Context): boolean {
-    if (this.config.NODE_ENV !== Environment.PRODUCTION && Utils.object.hasProperty(config.FEATURE_OVERRIDES, featureID)) {
+    if (
+      this.config.NODE_ENV !== Environment.PRODUCTION &&
+      Utils.object.hasProperty(config.FEATURE_OVERRIDES, featureID)
+    ) {
       return config.FEATURE_OVERRIDES[featureID];
     }
 

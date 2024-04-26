@@ -13,7 +13,10 @@ const createCanvasExportEndpoint =
   (endpoint: string) =>
   ({ token, ...data }: Options): Promise<Blob> =>
     axios
-      .post<Blob>(`${CANVAS_EXPORT_ENDPOINT}/export/${endpoint}`, data, { responseType: 'blob', headers: { authorization: token } })
+      .post<Blob>(`${CANVAS_EXPORT_ENDPOINT}/export/${endpoint}`, data, {
+        responseType: 'blob',
+        headers: { authorization: token },
+      })
       .then((response) => response.data);
 
 const canvasExportClient = {

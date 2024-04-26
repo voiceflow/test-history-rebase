@@ -18,7 +18,10 @@ export const EditorV3Sidebar = React.memo(() => {
 
   return (
     <React.Fragment key={api.focus.target ?? 'unknown'}>
-      <Drawer isOpen={api.isOpened} className={drawerStyle({ isOpen: api.isOpened, withHeader: cmsWorkflows.isEnabled && !isCanvasOnly })}>
+      <Drawer
+        isOpen={api.isOpened}
+        className={drawerStyle({ isOpen: api.isOpened, withHeader: cmsWorkflows.isEnabled && !isCanvasOnly })}
+      >
         {api.editor}
       </Drawer>
     </React.Fragment>

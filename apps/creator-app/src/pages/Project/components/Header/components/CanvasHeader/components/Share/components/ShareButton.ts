@@ -1,4 +1,5 @@
-import { Button, ButtonVariant, SecondaryButtonProps } from '@voiceflow/ui';
+import type { SecondaryButtonProps } from '@voiceflow/ui';
+import { Button, ButtonVariant } from '@voiceflow/ui';
 
 import { styled } from '@/hocs/styled';
 

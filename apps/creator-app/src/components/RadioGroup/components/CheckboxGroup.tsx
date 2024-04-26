@@ -2,7 +2,7 @@ import { Utils } from '@voiceflow/common';
 import { Checkbox } from '@voiceflow/ui';
 import React from 'react';
 
-import { RadioGroupProps, RadioOption } from './RadioGroup';
+import type { RadioGroupProps, RadioOption } from './RadioGroup';
 import Container from './RadioGroupContainer';
 import RadioItem from './RadioItem';
 
@@ -16,7 +16,14 @@ export interface CheckboxGroupProps<T> extends Omit<RadioGroupProps<T>, 'type' |
   onChange: (value: T[]) => void;
 }
 
-const CheckboxGroup = <T extends any>({ options, checked, onChange, className, column, ...props }: CheckboxGroupProps<T>): React.ReactElement => (
+const CheckboxGroup = <T extends any>({
+  options,
+  checked,
+  onChange,
+  className,
+  column,
+  ...props
+}: CheckboxGroupProps<T>): React.ReactElement => (
   <Container className={className} column={column}>
     {options.map((option) => {
       const { id, label, customCheckedCondition } = option;

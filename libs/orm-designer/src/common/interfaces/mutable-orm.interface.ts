@@ -6,7 +6,7 @@ import type { ORM } from './orm.interface';
 
 export interface MutableORM<
   BaseEntity extends BasePKEntity,
-  DiscriminatorEntity extends Omit<BaseEntity, typeof DEFAULT_OR_NULL_COLUMN>
+  DiscriminatorEntity extends Omit<BaseEntity, typeof DEFAULT_OR_NULL_COLUMN>,
 > extends ORM<BaseEntity, DiscriminatorEntity> {
   patch(where: any, patch: PatchData<BaseEntity>): Promise<number>;
 

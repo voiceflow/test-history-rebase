@@ -111,15 +111,18 @@ import { WorkflowModule } from './workflow/workflow.module';
     }),
     AuthModule.registerAsync({
       inject: [ENVIRONMENT_VARIABLES],
-      useFactory: (env: EnvironmentVariables) => AuthModule.optionsFactory(env.AUTH_API_SERVICE_URI, env.AUTH_API_SERVICE_PORT_APP),
+      useFactory: (env: EnvironmentVariables) =>
+        AuthModule.optionsFactory(env.AUTH_API_SERVICE_URI, env.AUTH_API_SERVICE_PORT_APP),
     }),
     IdentityModule.registerAsync({
       inject: [ENVIRONMENT_VARIABLES],
-      useFactory: (env: EnvironmentVariables) => IdentityModule.optionsFactory(env.IDENTITY_API_SERVICE_URI, env.IDENTITY_API_SERVICE_PORT_APP),
+      useFactory: (env: EnvironmentVariables) =>
+        IdentityModule.optionsFactory(env.IDENTITY_API_SERVICE_URI, env.IDENTITY_API_SERVICE_PORT_APP),
     }),
     BillingModule.registerAsync({
       inject: [ENVIRONMENT_VARIABLES],
-      useFactory: (env: EnvironmentVariables) => BillingModule.optionsFactory(env.BILLING_API_SERVICE_URI, env.BILLING_API_SERVICE_PORT_APP),
+      useFactory: (env: EnvironmentVariables) =>
+        BillingModule.optionsFactory(env.BILLING_API_SERVICE_URI, env.BILLING_API_SERVICE_PORT_APP),
     }),
     LoguxModule.registerAsync({
       inject: [ENVIRONMENT_VARIABLES, UserService],
@@ -147,7 +150,7 @@ import { WorkflowModule } from './workflow/workflow.module';
 
           if (user?.id !== creatorID) {
             // TODO: remove this temporary logging after BUG-696
-            logger.warn({ token, user, creatorID }, `[authenticator] invalid session`);
+            logger.warn({ token, user, creatorID }, '[authenticator] invalid session');
             return false;
           }
 

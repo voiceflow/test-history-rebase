@@ -1,5 +1,5 @@
 import { DraggablePanel, ResizableSection, ResizableSectionHeader, TreeView } from '@voiceflow/ui-next';
-import { IResizableSectionAPI } from '@voiceflow/ui-next/build/cjs/components/Section/ResizableSection/types';
+import type { IResizableSectionAPI } from '@voiceflow/ui-next/build/cjs/components/Section/ResizableSection/types';
 import React, { useRef } from 'react';
 
 import { CMS_FLOW_LEARN_MORE, CMS_WORKFLOW_LEARN_MORE } from '@/constants/link.constant';
@@ -14,8 +14,13 @@ import { useCommentingMode } from '@/pages/Project/hooks';
 
 import StepMenu from '../../StepMenu';
 import { containerStyle } from './DiagramSidebar.css';
-import { useFlowsTree, useRenderFlowItemContextMenu, useRenderWorkflowItemContextMenu, useWorkflowsTree } from './DiagramSidebar.hook';
 import {
+  useFlowsTree,
+  useRenderFlowItemContextMenu,
+  useRenderWorkflowItemContextMenu,
+  useWorkflowsTree,
+} from './DiagramSidebar.hook';
+import type {
   DiagramSidebarAnyFlowMetadata,
   DiagramSidebarAnyWorkflowMetadata,
   DiagramSidebarFlowTreeData,
@@ -136,12 +141,18 @@ export const DiagramSidebar: React.FC = () => {
             />
           }
           topHeader={
-            <ResizableSectionHeader label="Workflows" onClick={() => workflowCreateModal.openVoid({ folderID: null })} tooltipText="New workflow" />
+            <ResizableSectionHeader
+              label="Workflows"
+              onClick={() => workflowCreateModal.openVoid({ folderID: null })}
+              tooltipText="New workflow"
+            />
           }
           bottomHeader={
             <ResizableSectionHeader
               label="Components"
-              onClick={() => (footerCollapsed ? resizableSectionRef.current?.expand() : flowCreateModal.openVoid({ folderID: null }))}
+              onClick={() =>
+                footerCollapsed ? resizableSectionRef.current?.expand() : flowCreateModal.openVoid({ folderID: null })
+              }
               tooltipText="New component"
             />
           }

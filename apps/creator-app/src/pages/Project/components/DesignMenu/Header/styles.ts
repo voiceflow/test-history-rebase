@@ -1,5 +1,6 @@
 import { SvgIcon } from '@voiceflow/ui';
-import { space, SpaceProps } from 'styled-system';
+import type { SpaceProps } from 'styled-system';
+import { space } from 'styled-system';
 
 import { css, styled, transition } from '@/hocs/styled';
 

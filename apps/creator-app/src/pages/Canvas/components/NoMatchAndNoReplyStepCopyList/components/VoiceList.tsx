@@ -1,4 +1,4 @@
-import * as Platform from '@voiceflow/platform-config';
+import type * as Platform from '@voiceflow/platform-config';
 import React from 'react';
 
 import { prettifyBucketURL } from '@/utils/audio';
@@ -18,7 +18,12 @@ const VoiceList: React.FC<VoiceListProps> = ({ prefix, onClick, reprompts }) => 
       const content = prompt.audio ? prettifyBucketURL(prompt.audio) : prompt.content;
 
       return content ? (
-        <Item key={prompt.id} label={`${prefix} ${index + 1}`} onClick={onClick} isLast={index === reprompts.length - 1}>
+        <Item
+          key={prompt.id}
+          label={`${prefix} ${index + 1}`}
+          onClick={onClick}
+          isLast={index === reprompts.length - 1}
+        >
           {content}
         </Item>
       ) : null;

@@ -3,7 +3,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { createReverter } from '@/ducks/utils';
 
 import { builtInPortTypeSelector } from '../selectors';
-import { CreatorState } from '../types';
+import type { CreatorState } from '../types';
 import { createActiveDiagramReducer, DIAGRAM_INVALIDATORS } from './utils';
 
 const importNode =
@@ -77,9 +77,12 @@ export const importSnapshot = (state: CreatorState, { nodesWithData, ports, link
   links.forEach(importLink(state));
 };
 
-const importSnapshotReducer = createActiveDiagramReducer(Realtime.creator.importSnapshot, (state, { diagramID, ...entities }) => {
-  importSnapshot(state, entities);
-});
+const importSnapshotReducer = createActiveDiagramReducer(
+  Realtime.creator.importSnapshot,
+  (state, { diagramID, ...entities }) => {
+    importSnapshot(state, entities);
+  }
+);
 
 export default importSnapshotReducer;
 
@@ -116,7 +119,9 @@ export const importSnapshotReverter = createReverter(
       }),
       Realtime.node.removeMany({
         ...ctx,
-        nodes: nodesWithData.map(({ node }) => (node.parentNode ? { parentNodeID: node.parentNode, stepID: node.id } : { parentNodeID: node.id })),
+        nodes: nodesWithData.map(({ node }) =>
+          node.parentNode ? { parentNodeID: node.parentNode, stepID: node.id } : { parentNodeID: node.id }
+        ),
       }),
     ];
   },

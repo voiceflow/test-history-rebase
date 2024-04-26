@@ -1,6 +1,6 @@
-import { Nullable } from '@voiceflow/common';
-import { MenuTypes } from '@voiceflow/ui';
-import { BaseProps } from '@voiceflow/ui-next';
+import type { Nullable } from '@voiceflow/common';
+import type { MenuTypes } from '@voiceflow/ui';
+import type { BaseProps } from '@voiceflow/ui-next';
 
 import { DESKTOP_APP_LINK } from '@/constants/link.constant';
 import * as Router from '@/ducks/router';
@@ -18,7 +18,9 @@ export const useLogoButtonOptions = ({
   uiToggle,
   shortcuts,
   toggleSearch,
-}: { uiToggle?: boolean; shortcuts?: boolean; toggleSearch?: () => void } = {}): Nullable<MenuTypes.OptionWithoutValue & BaseProps>[] => {
+}: { uiToggle?: boolean; shortcuts?: boolean; toggleSearch?: () => void } = {}): Nullable<
+  MenuTypes.OptionWithoutValue & BaseProps
+>[] => {
   const projectID = useSelector(Session.activeProjectIDSelector)!;
 
   const goToDashboard = useDispatch(Router.goToDashboard);
@@ -41,7 +43,13 @@ export const useLogoButtonOptions = ({
     { key: 'logo-divider-1', label: 'logo-divider-1', divider: true },
 
     toggleSearch
-      ? { key: 'search', icon: 'search' as const, label: 'Search assistant', onClick: toggleSearch, note: HOTKEY_LABEL_MAP[Hotkey.SEARCH] }
+      ? {
+          key: 'search',
+          icon: 'search' as const,
+          label: 'Search assistant',
+          onClick: toggleSearch,
+          note: HOTKEY_LABEL_MAP[Hotkey.SEARCH],
+        }
       : null,
 
     toggleSearch && options.length ? { key: 'logo-divider-2', label: 'logo-divider-2', divider: true } : null,
@@ -50,13 +58,22 @@ export const useLogoButtonOptions = ({
 
     uiToggle && options.length ? { key: 'logo-divider-3', label: 'logo-divider-3', divider: true } : null,
     uiToggle
-      ? { key: 'toggle-ui', label: 'Hide/Show UI', onClick: () => toggleCanvasOnly(), note: HOTKEY_LABEL_MAP[Hotkey.CANVAS_SHOW_HIDE_UI] }
+      ? {
+          key: 'toggle-ui',
+          label: 'Hide/Show UI',
+          onClick: () => toggleCanvasOnly(),
+          note: HOTKEY_LABEL_MAP[Hotkey.CANVAS_SHOW_HIDE_UI],
+        }
       : null,
 
     options.length || uiToggle ? { key: 'logo-divider-4', label: 'logo-divider-4', divider: true } : null,
 
     shortcuts
-      ? { key: 'shortcuts', label: 'See shortcuts', onClick: wrapTrackingEvent(() => shortcutModal.openVoid(), 'trackCanvasSeeShortcutsModalOpened') }
+      ? {
+          key: 'shortcuts',
+          label: 'See shortcuts',
+          onClick: wrapTrackingEvent(() => shortcutModal.openVoid(), 'trackCanvasSeeShortcutsModalOpened'),
+        }
       : null,
 
     { key: 'desktop-app', label: 'Get desktop app', onClick: onOpenInternalURLInANewTabFactory(DESKTOP_APP_LINK) },

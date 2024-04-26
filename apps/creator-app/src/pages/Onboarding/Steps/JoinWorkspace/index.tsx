@@ -31,7 +31,10 @@ const JoinWorkspace: React.FC = () => {
         <Label>Full Name</Label>
         <FlexCenter>
           <NameInput placeholder="Your name" value={name} onChange={(event) => setName(event.target.value)} />
-          <Upload.Provider client={{ upload: (_endpoint, _fileType, formData) => updateUserProfileImage(formData) }} onError={datadogRum.addError}>
+          <Upload.Provider
+            client={{ upload: (_endpoint, _fileType, formData) => updateUserProfileImage(formData) }}
+            onError={datadogRum.addError}
+          >
             <ProfilePicUpload image={userImage} update={setUserImage} />
           </Upload.Provider>
         </FlexCenter>

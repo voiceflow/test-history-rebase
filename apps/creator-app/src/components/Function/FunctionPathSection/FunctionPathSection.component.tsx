@@ -30,13 +30,23 @@ export const FunctionPathSection: React.FC<IFunctionPathSection> = ({
         variant={hasPaths ? 'active' : 'basic'}
         onHeaderClick={hasPaths ? undefined : onFunctionPathAdd}
       >
-        <Section.Header.Button iconName="Plus" onClick={stopPropagation(onFunctionPathAdd)} testID={tid(TEST_ID, 'add')} />
+        <Section.Header.Button
+          iconName="Plus"
+          onClick={stopPropagation(onFunctionPathAdd)}
+          testID={tid(TEST_ID, 'add')}
+        />
       </Section.Header.Container>
 
       {hasPaths && (
         <Box pb={10} direction="column">
           {functionPaths.map((functionPath, index) => (
-            <CMSFormListItem pt={9} pb={7} key={index} onRemove={() => onDeleteFunctionPath(functionPath.id)} testID={tid(TEST_ID, 'list-item')}>
+            <CMSFormListItem
+              pt={9}
+              pb={7}
+              key={index}
+              onRemove={() => onDeleteFunctionPath(functionPath.id)}
+              testID={tid(TEST_ID, 'list-item')}
+            >
               <FunctionResourceInput
                 value={functionPath.name}
                 testID={tid('function', 'path')}

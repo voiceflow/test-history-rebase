@@ -14,7 +14,10 @@ export const CONFIG = ConfigUtils.partialSatisfies<Base.Project.Config>()({
   invocationName: InvocationName.CONFIG,
 
   globalVariables: [
-    ...Utils.array.withoutValues(Base.Project.CONFIG.globalVariables, [SystemVariable.LAST_RESPONSE, SystemVariable.LAST_UTTERANCE]),
+    ...Utils.array.withoutValues(Base.Project.CONFIG.globalVariables, [
+      SystemVariable.LAST_RESPONSE,
+      SystemVariable.LAST_UTTERANCE,
+    ]),
     SystemVariable.CHANNEL,
   ],
 });

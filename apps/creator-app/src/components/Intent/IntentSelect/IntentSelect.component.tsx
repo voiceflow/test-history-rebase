@@ -19,7 +19,9 @@ export const IntentSelect: React.FC<IIntentSelect> = ({ editable = true, intentI
       prefixIconName={editable && !!intentID ? 'EditS' : undefined}
       onPrefixIconClick={() => intentID && editModal.openVoid({ intentID })}
     >
-      {({ onClose, referenceRef }) => <IntentMenu width={referenceRef.current?.clientWidth ?? 252} onClose={onClose} onSelect={onSelect} />}
+      {({ onClose, referenceRef }) => (
+        <IntentMenu width={referenceRef.current?.clientWidth ?? 252} onClose={onClose} onSelect={onSelect} />
+      )}
     </Dropdown>
   );
 };

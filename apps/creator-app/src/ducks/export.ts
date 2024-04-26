@@ -12,7 +12,7 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import * as Prototype from '@/ducks/prototype';
 import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
-import { Thunk } from '@/store/types';
+import type { Thunk } from '@/store/types';
 import * as Cookies from '@/utils/cookies';
 import { jsonToCSV } from '@/utils/files';
 import { downloadVF } from '@/utils/vf';

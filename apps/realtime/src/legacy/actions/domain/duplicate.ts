@@ -1,6 +1,7 @@
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
-import { Context, terminateResend } from '@voiceflow/socket-utils';
-import { Action } from 'typescript-fsa';
+import type { Context } from '@voiceflow/socket-utils';
+import { terminateResend } from '@voiceflow/socket-utils';
+import type { Action } from 'typescript-fsa';
 
 import { AbstractDomainResourceControl } from './utils';
 
@@ -17,11 +18,17 @@ class DuplicateDomain extends AbstractDomainResourceControl<Realtime.BaseDomainP
       throw new Error('domainID is required');
     }
 
-    const { domain: dbDomain, diagrams: dbDiagrams } = await this.services.domain.duplicate(creatorID, versionID, domainID);
+    const { domain: dbDomain, diagrams: dbDiagrams } = await this.services.domain.duplicate(
+      creatorID,
+      versionID,
+      domainID
+    );
 
     const domain = Realtime.Adapters.domainAdapter.fromDB(dbDomain);
 
-    const clonedTopics = Realtime.Adapters.diagramAdapter.mapFromDB(dbDiagrams, { rootDiagramID: domain.rootDiagramID });
+    const clonedTopics = Realtime.Adapters.diagramAdapter.mapFromDB(dbDiagrams, {
+      rootDiagramID: domain.rootDiagramID,
+    });
 
     await Promise.all([
       this.reloadSharedNodes(ctx, payload, dbDiagrams),

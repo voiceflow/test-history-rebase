@@ -2,11 +2,11 @@ import { datadogRum } from '@datadog/browser-rum';
 
 import client from '@/client';
 import * as Errors from '@/config/errors';
-import { PrototypeRenderSyncOptions } from '@/constants/prototype';
+import type { PrototypeRenderSyncOptions } from '@/constants/prototype';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import { openError } from '@/ModalsV2/utils';
-import { Thunk } from '@/store/types';
+import type { Thunk } from '@/store/types';
 
 const compilePrototype =
   (compilerOptions?: PrototypeRenderSyncOptions): Thunk =>

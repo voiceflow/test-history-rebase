@@ -1,11 +1,15 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { useFeature } from '@/hooks/feature';
 
-import { createHOC, HOC } from './utils';
+import type { HOC } from './utils';
+import { createHOC } from './utils';
 
-export const withFeatureSwitcher = <T extends object>(feature: Realtime.FeatureFlag, FeatureComponent: React.ComponentType<T>): HOC<T> =>
+export const withFeatureSwitcher = <T extends object>(
+  feature: Realtime.FeatureFlag,
+  FeatureComponent: React.ComponentType<T>
+): HOC<T> =>
   createHOC('withFeatureSwitcher')((Component) => (props) => {
     const { isEnabled } = useFeature(feature);
 

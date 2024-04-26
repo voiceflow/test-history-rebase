@@ -1,6 +1,6 @@
-import * as Common from '@platform-config/configs/common';
-import { Nullable } from '@voiceflow/common';
-import { GoogleConstants, GoogleVersion } from '@voiceflow/google-types';
+import type * as Common from '@platform-config/configs/common';
+import type { Nullable } from '@voiceflow/common';
+import type { GoogleConstants, GoogleVersion } from '@voiceflow/google-types';
 
 import * as Publishing from './publishing';
 import * as Settings from './settings';

@@ -18,7 +18,12 @@ export interface TakenSeatsMessageProps {
   label?: React.ReactNode;
 }
 
-const TakenSeatsMessage: React.FC<TakenSeatsMessageProps> = ({ error = false, seats, small, label = 'seats taken.' }) => {
+const TakenSeatsMessage: React.FC<TakenSeatsMessageProps> = ({
+  error = false,
+  seats,
+  small,
+  label = 'seats taken.',
+}) => {
   const [canAddSeats] = usePermission(Permission.BILLING_SEATS_ADD);
 
   const usedEditorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);

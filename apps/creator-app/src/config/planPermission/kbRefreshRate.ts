@@ -5,7 +5,7 @@ import { PRO_PLUS_PLANS } from '@/constants/plans';
 import * as Tracking from '@/ducks/tracking';
 import { getUpgradeTooltipProps } from '@/utils/upgrade';
 
-import { UpgradeTooltipPlanPermission } from './types';
+import type { UpgradeTooltipPlanPermission } from './types';
 
 export const KB_REFRESH_RATE_PERMISSIONS = {
   plans: PRO_PLUS_PLANS,

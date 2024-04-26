@@ -1,5 +1,15 @@
 import { tid } from '@voiceflow/style';
-import { BaseProps, Box, Chunk, Collapsible, CollapsibleHeader, CollapsibleHeaderButton, Divider, Section, TextArea } from '@voiceflow/ui-next';
+import type { BaseProps } from '@voiceflow/ui-next';
+import {
+  Box,
+  Chunk,
+  Collapsible,
+  CollapsibleHeader,
+  CollapsibleHeaderButton,
+  Divider,
+  Section,
+  TextArea,
+} from '@voiceflow/ui-next';
 import React from 'react';
 
 import { clipboardCopyWithToast } from '@/utils/clipboard.util';
@@ -32,7 +42,12 @@ export const KBPreviewQuestionResponse: React.FC<IKBPreviewQuestionResponse> = (
     <Box direction="column" className={responseBoxStyles} testID={testID}>
       <Box direction="column" width="100%" pt={11} pb={7} height="100%">
         <Section.Header.Container title="Response" variant="active">
-          <Section.Header.Button iconName="Copy" disabled={loading} onClick={clipboardCopyWithToast(response)} testID={tid(testID, 'copy')} />
+          <Section.Header.Button
+            iconName="Copy"
+            disabled={loading}
+            onClick={clipboardCopyWithToast(response)}
+            testID={tid(testID, 'copy')}
+          />
         </Section.Header.Container>
       </Box>
 
@@ -54,7 +69,11 @@ export const KBPreviewQuestionResponse: React.FC<IKBPreviewQuestionResponse> = (
               header={
                 <CollapsibleHeader label="Sources" caption={sources?.length.toString()} className={sourcesHeaderStyles}>
                   {({ isOpen }) => (
-                    <CollapsibleHeaderButton isOpen={isOpen} disabled={loading} testID={tid(testID, ['sources', 'toggle-collapsed'])} />
+                    <CollapsibleHeaderButton
+                      isOpen={isOpen}
+                      disabled={loading}
+                      testID={tid(testID, ['sources', 'toggle-collapsed'])}
+                    />
                   )}
                 </CollapsibleHeader>
               }

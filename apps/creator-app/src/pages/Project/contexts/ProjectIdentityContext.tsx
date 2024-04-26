@@ -1,5 +1,5 @@
-import { Nullable } from '@voiceflow/common';
-import { UserRole } from '@voiceflow/internal';
+import type { Nullable } from '@voiceflow/common';
+import type { UserRole } from '@voiceflow/internal';
 import { useContextApi } from '@voiceflow/ui';
 import React from 'react';
 
@@ -23,12 +23,18 @@ export interface ProjectIdentityContextValue {
  */
 export const ProjectIdentityContext = React.createContext<ProjectIdentityContextValue | null>(null);
 
-export interface ProjectIdentityProviderProps extends React.PropsWithChildren, Omit<ProjectIdentityContextValue, 'activeRole'> {}
+export interface ProjectIdentityProviderProps
+  extends React.PropsWithChildren,
+    Omit<ProjectIdentityContextValue, 'activeRole'> {}
 
 /**
  * Can be use on the dashboard page to provide the project identity context for the project item
  */
-export const ProjectIdentityProvider: React.FC<ProjectIdentityProviderProps> = ({ children, projectID, projectRole }) => {
+export const ProjectIdentityProvider: React.FC<ProjectIdentityProviderProps> = ({
+  children,
+  projectID,
+  projectRole,
+}) => {
   const identity = React.useContext(IdentityContext);
   const isPreview = useProjectPreview();
 

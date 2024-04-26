@@ -21,7 +21,10 @@ export class BillingPlanHTTPController {
     description: 'Get all billing prices for given plan',
   })
   @ZodApiResponse({ status: HttpStatus.OK, schema: GetBillingPlansResponse })
-  async getAllPlans(@Param('planID') planID: PlanType, @Query('coupon') coupon?: string | undefined): Promise<BillingPlan[]> {
+  async getAllPlans(
+    @Param('planID') planID: PlanType,
+    @Query('coupon') coupon?: string | undefined
+  ): Promise<BillingPlan[]> {
     return this.service.getAllPlans(planID, coupon);
   }
 }

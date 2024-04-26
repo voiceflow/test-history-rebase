@@ -1,16 +1,20 @@
 import Menu from '@ui/components/Menu';
 import { defaultMenuLabelRenderer } from '@ui/components/NestedMenu';
-import Select, { BaseSelectProps } from '@ui/components/Select';
+import type { BaseSelectProps } from '@ui/components/Select';
+import Select from '@ui/components/Select';
 import SvgIcon from '@ui/components/SvgIcon';
 import { Utils } from '@voiceflow/common';
 import React from 'react';
-import { DeepNonNullable } from 'utility-types';
+import type { DeepNonNullable } from 'utility-types';
 
-import { Member } from '../types';
+import type { Member } from '../types';
 import Option from './Option';
 
 interface MemberSelectProps
-  extends Omit<BaseSelectProps, 'value' | 'className' | 'options' | 'searchable' | 'optionsFilter' | 'renderOptionLabel' | 'icon'> {
+  extends Omit<
+    BaseSelectProps,
+    'value' | 'className' | 'options' | 'searchable' | 'optionsFilter' | 'renderOptionLabel' | 'icon'
+  > {
   value: number | null;
   members: DeepNonNullable<Omit<Member, 'expiry' | 'isOrganizationAdmin'>>[];
   onChange: (memberID: number | null) => void;
@@ -19,7 +23,10 @@ interface MemberSelectProps
 const MemberSelect: React.FC<MemberSelectProps> = ({ value, members, onChange, ...props }) => {
   const [search, setSearch] = React.useState('');
   const membersMap = React.useMemo(() => Utils.array.createMap(members, (member) => member.creator_id), [members]);
-  const options = React.useMemo(() => members.map((member) => ({ ...member, menuItemProps: { height: 64 } })), [members]);
+  const options = React.useMemo(
+    () => members.map((member) => ({ ...member, menuItemProps: { height: 64 } })),
+    [members]
+  );
 
   return (
     <Select
@@ -34,7 +41,9 @@ const MemberSelect: React.FC<MemberSelectProps> = ({ value, members, onChange, .
       searchable
       iconProps={{ variant: SvgIcon.Variant.STANDARD, opacity: true }}
       placeholder="Add workspace members"
-      renderEmpty={({ search }) => <Menu.NotFound>{!search ? 'No members exist in your workspace.' : 'No members found. '}</Menu.NotFound>}
+      renderEmpty={({ search }) => (
+        <Menu.NotFound>{!search ? 'No members exist in your workspace.' : 'No members found. '}</Menu.NotFound>
+      )}
       getOptionKey={({ email }) => email}
       getOptionLabel={(value) => (value != null ? membersMap[value]?.name : undefined)}
       getOptionValue={(option) => option?.creator_id}

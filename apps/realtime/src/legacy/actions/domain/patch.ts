@@ -1,10 +1,12 @@
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
-import { Context } from '@voiceflow/socket-utils';
-import { Action } from 'typescript-fsa';
+import type { Context } from '@voiceflow/socket-utils';
+import type { Action } from 'typescript-fsa';
 
 import { AbstractDomainResourceControl } from './utils';
 
-interface Payload extends Realtime.BaseVersionPayload, Realtime.actionUtils.CRUDValuePayload<Realtime.domain.PatchPayload> {}
+interface Payload
+  extends Realtime.BaseVersionPayload,
+    Realtime.actionUtils.CRUDValuePayload<Realtime.domain.PatchPayload> {}
 
 class PatchDomain extends AbstractDomainResourceControl<Payload> {
   protected actionCreator = Realtime.domain.crud.patch;

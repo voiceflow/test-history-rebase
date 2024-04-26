@@ -1,7 +1,7 @@
-import { BillingPeriod, PlanType } from '@voiceflow/internal';
-import * as Platform from '@voiceflow/platform-config';
+import type { BillingPeriod, PlanType } from '@voiceflow/internal';
+import type * as Platform from '@voiceflow/platform-config';
 
-import { Query } from '@/models';
+import type { Query } from '@/models';
 
 import type { StepID } from '../constants';
 

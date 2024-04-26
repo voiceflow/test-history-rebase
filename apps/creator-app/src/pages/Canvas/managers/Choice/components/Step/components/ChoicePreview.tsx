@@ -5,7 +5,7 @@ import React from 'react';
 import { Permission } from '@/constants/permissions';
 import { useEntityEditModal } from '@/hooks/modal.hook';
 import { usePermission } from '@/hooks/permission';
-import { EntityPrompt } from '@/pages/Canvas/types';
+import type { EntityPrompt } from '@/pages/Canvas/types';
 import { copyWithToast } from '@/utils/clipboard';
 
 interface ButtonsPreviewProps {
@@ -39,7 +39,10 @@ const ChoicePreview: React.FC<ButtonsPreviewProps> = ({ prompts, onClose, onOpen
             </Box.Flex>
 
             <Preview.ContentIcon>
-              <Preview.ButtonIcon icon="copy" onClick={Utils.functional.chain(copyWithToast(prompt.content), onClose)} />
+              <Preview.ButtonIcon
+                icon="copy"
+                onClick={Utils.functional.chain(copyWithToast(prompt.content), onClose)}
+              />
             </Preview.ContentIcon>
           </Preview.ContentItem>
         ))}

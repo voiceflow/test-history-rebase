@@ -1,4 +1,4 @@
-import { z } from 'nestjs-zod/z';
+import type { z } from 'nestjs-zod/z';
 
 import { CompletionOutput } from '@/llm/llm-model.dto';
 

@@ -1,7 +1,7 @@
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
-import { Context } from '@voiceflow/socket-utils';
+import type { Context } from '@voiceflow/socket-utils';
 import { normalize } from 'normal-store';
-import { Action } from 'typescript-fsa';
+import type { Action } from 'typescript-fsa';
 
 import { AbstractDiagramResourceControl } from '@/legacy/actions/diagram/utils';
 
@@ -63,7 +63,10 @@ class ImportSnapshot extends AbstractDiagramResourceControl<Realtime.creator.Imp
     await this.services.diagram.addManyNodes(payload.versionID, payload.diagramID, { nodes: Object.values(dbNodes) });
   };
 
-  protected finally = async (ctx: Context, { payload }: Action<Realtime.creator.ImportSnapshotPayload>): Promise<void> => {
+  protected finally = async (
+    ctx: Context,
+    { payload }: Action<Realtime.creator.ImportSnapshotPayload>
+  ): Promise<void> => {
     await this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID);
   };
 }

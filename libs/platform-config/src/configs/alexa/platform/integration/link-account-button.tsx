@@ -3,14 +3,16 @@ import React from 'react';
 
 import { ConnectButton } from '../components';
 import { useContext } from '../context';
-import { Account } from '../types';
+import type { Account } from '../types';
 
 export interface Props extends Base.Integration.LinkAccountButton.Props {
   onSuccess: (account: Account) => void;
 }
 
 const AUTH_OPTIONS: CodeAuthorizeOptions = {
-  scope: ['alexa::ask:skills:readwrite', 'alexa::ask:models:readwrite', 'alexa::ask:skills:test', 'profile'].join(' ') as AuthorizeScope,
+  scope: ['alexa::ask:skills:readwrite', 'alexa::ask:models:readwrite', 'alexa::ask:skills:test', 'profile'].join(
+    ' '
+  ) as AuthorizeScope,
   response_type: 'code',
 };
 

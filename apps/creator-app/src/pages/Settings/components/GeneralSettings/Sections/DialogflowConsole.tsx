@@ -14,7 +14,8 @@ const DialogflowConsole: React.FC = () => {
 
   const patchPublishing = useDispatch(VersionV2.patchPublishing);
 
-  const saveSettings = async () => patchPublishing({ invocationNameSamples: [invocationNameSample, ...storedInvocationNameSamples.slice(1)] });
+  const saveSettings = async () =>
+    patchPublishing({ invocationNameSamples: [invocationNameSample, ...storedInvocationNameSamples.slice(1)] });
 
   if (!projectConfig.project.invocationName) return null;
 
@@ -29,7 +30,9 @@ const DialogflowConsole: React.FC = () => {
             onChangeText={setInvocationNameSample}
           />
 
-          <Settings.SubSection.Description>{projectConfig.project.invocationName.description}</Settings.SubSection.Description>
+          <Settings.SubSection.Description>
+            {projectConfig.project.invocationName.description}
+          </Settings.SubSection.Description>
         </Settings.SubSection>
       </Settings.Card>
     </Settings.Section>

@@ -29,11 +29,15 @@ const VoiceflowFields: React.FC<{ acsURL: string; entityID: string }> = ({ acsUR
             <S.VoiceflowInput
               readOnly
               value={entityID}
-              rightAction={<SvgIcon clickable color="rgba(110, 132, 154)" icon="copy" onClick={copyWithToast(entityID)} />}
+              rightAction={
+                <SvgIcon clickable color="rgba(110, 132, 154)" icon="copy" onClick={copyWithToast(entityID)} />
+              }
             />
           </Box.FlexAlignStart>
           <Box flex={1} ml={24} mt={25}>
-            <SectionV2.Description secondary>The name of the assistant as you will see it on your dashboard.</SectionV2.Description>
+            <SectionV2.Description secondary>
+              The name of the assistant as you will see it on your dashboard.
+            </SectionV2.Description>
           </Box>
         </Box.FlexAlignStart>
       </SectionV2.SimpleSection>
@@ -52,7 +56,9 @@ const VoiceflowFields: React.FC<{ acsURL: string; entityID: string }> = ({ acsUR
             <S.VoiceflowInput
               readOnly
               value={acsURL}
-              rightAction={<SvgIcon clickable color="rgba(110, 132, 154)" icon="copy" onClick={copyWithToast(acsURL)} />}
+              rightAction={
+                <SvgIcon clickable color="rgba(110, 132, 154)" icon="copy" onClick={copyWithToast(acsURL)} />
+              }
             />
           </Box.FlexAlignStart>
           <Box flex={1} ml={24} mt={25}>

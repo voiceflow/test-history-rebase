@@ -3,13 +3,13 @@ import { toast } from '@voiceflow/ui';
 import Bowser from 'bowser';
 
 import client from '@/client';
-import { TranscriptExportFormat } from '@/client/transcript';
+import type { TranscriptExportFormat } from '@/client/transcript';
 import * as Prototype from '@/ducks/prototype';
 import * as Session from '@/ducks/session';
 import { patchTranscript, replaceTranscripts } from '@/ducks/transcript/actions';
 import { transcriptByIDSelector } from '@/ducks/transcript/selectors';
-import { Sentiment, SystemTag, Transcript } from '@/models';
-import { SyncThunk, Thunk } from '@/store/types';
+import type { Sentiment, SystemTag, Transcript } from '@/models';
+import type { SyncThunk, Thunk } from '@/store/types';
 import { downloadBlob } from '@/utils/download.util';
 
 export const fetchTranscripts =
@@ -40,7 +40,13 @@ export const setUtteranceAddedTo =
     try {
       const activeProjectID = Session.activeProjectIDSelector(state);
 
-      await client.transcript.setTurnUtteranceAddedTo(transcriptID, activeProjectID!, turnID, intentID, newUtteranceCount);
+      await client.transcript.setTurnUtteranceAddedTo(
+        transcriptID,
+        activeProjectID!,
+        turnID,
+        intentID,
+        newUtteranceCount
+      );
 
       const transcript = transcriptByIDSelector(state, { id: transcriptID });
 

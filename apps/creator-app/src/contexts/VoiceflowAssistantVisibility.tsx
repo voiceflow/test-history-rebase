@@ -42,5 +42,7 @@ export const VoiceflowAssistantVisibilityProvider: React.FC<React.PropsWithChild
 
   useHotkey(Hotkey.TOGGLE_CHATBOT, onToggleEnabled);
 
-  return <VoiceflowAssistantVisibilityContext.Provider value={api}>{children}</VoiceflowAssistantVisibilityContext.Provider>;
+  return (
+    <VoiceflowAssistantVisibilityContext.Provider value={api}>{children}</VoiceflowAssistantVisibilityContext.Provider>
+  );
 };

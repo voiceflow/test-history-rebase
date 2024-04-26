@@ -7,7 +7,12 @@ import { stepIDsByParentNodeIDSelector } from '../selectors';
 import { addStepReferences, orphanSteps } from '../utils';
 import { addActions } from './addActions';
 import { addBlock } from './addBlock';
-import { createActiveDiagramReducer, createDiagramInvalidator, createNodeRemovalInvalidators, DIAGRAM_INVALIDATORS } from './utils';
+import {
+  createActiveDiagramReducer,
+  createDiagramInvalidator,
+  createNodeRemovalInvalidators,
+  DIAGRAM_INVALIDATORS,
+} from './utils';
 
 const isolateStepsReducer = createActiveDiagramReducer(
   Realtime.node.isolateSteps,
@@ -62,7 +67,9 @@ export const isolateStepsReverter = createReverter(
 
   [
     ...DIAGRAM_INVALIDATORS,
-    ...createNodeRemovalInvalidators<Realtime.node.IsolateStepsPayload>((origin, nodeID) => origin.stepIDs.includes(nodeID)),
+    ...createNodeRemovalInvalidators<Realtime.node.IsolateStepsPayload>((origin, nodeID) =>
+      origin.stepIDs.includes(nodeID)
+    ),
     createDiagramInvalidator(
       Realtime.node.transplantSteps,
       (origin, subject) =>

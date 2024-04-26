@@ -1,9 +1,9 @@
 import { Config as ConfigUtils } from '@platform-config/configs/utils';
-import { BaseModels } from '@voiceflow/base-types';
+import type { BaseModels } from '@voiceflow/base-types';
 import { createMultiAdapter, createSmartMultiAdapter } from 'bidirectional-adapter';
 import { denormalize, normalize } from 'normal-store';
 
-import * as Models from '../models';
+import type * as Models from '../models';
 import * as Utils from '../utils';
 
 export type KeyRemap = [['key', 'id']];

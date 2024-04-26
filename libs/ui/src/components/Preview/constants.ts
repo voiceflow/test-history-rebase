@@ -1,4 +1,4 @@
-import { JSColorStyle } from './types';
+import type { JSColorStyle } from './types';
 
 export enum PreviewColors {
   // background

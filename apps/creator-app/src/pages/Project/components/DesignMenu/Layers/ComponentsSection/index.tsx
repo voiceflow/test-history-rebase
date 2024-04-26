@@ -1,7 +1,8 @@
-import { CustomScrollbarsTypes, Link, SvgIcon, useConst, usePersistFunction } from '@voiceflow/ui';
+import type { CustomScrollbarsTypes } from '@voiceflow/ui';
+import { Link, SvgIcon, useConst, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
-import { XYCoord } from 'react-dnd';
-import { VariableSizeList } from 'react-window';
+import type { XYCoord } from 'react-dnd';
+import type { VariableSizeList } from 'react-window';
 
 import DraggableList from '@/components/DraggableList';
 import VirtualList from '@/components/VirtualList';
@@ -11,10 +12,17 @@ import { Permission } from '@/constants/permissions';
 import { useDidUpdateEffect, usePermission } from '@/hooks';
 
 import Header from '../../Header';
-import { BOTTOM_PADDING, HEADER_MIN_HEIGHT, HORIZONTAL_DRAG_OFFSET, ITEM_HEIGHT, SEARCH_INPUT_HEIGHT } from '../constants';
+import {
+  BOTTOM_PADDING,
+  HEADER_MIN_HEIGHT,
+  HORIZONTAL_DRAG_OFFSET,
+  ITEM_HEIGHT,
+  SEARCH_INPUT_HEIGHT,
+} from '../constants';
 import SearchInput from '../SearchInput';
 import FolderItem from './FolderItem';
-import { ComponentItem, useComponents } from './hooks';
+import type { ComponentItem } from './hooks';
+import { useComponents } from './hooks';
 import * as S from './styles';
 import VirtualListItem from './VirtualListItem';
 
@@ -47,10 +55,14 @@ const ComponentsSection: React.FC<ComponentsSectionProps> = ({ collapsed, setSec
 
   const canDrag = usePersistFunction(() => canReorder);
   const horizontalEnabled = usePersistFunction(
-    (_: ComponentItem, initialOffset: XYCoord, currentOffset: XYCoord) => currentOffset.x - initialOffset.x >= HORIZONTAL_DRAG_OFFSET
+    (_: ComponentItem, initialOffset: XYCoord, currentOffset: XYCoord) =>
+      currentOffset.x - initialOffset.x >= HORIZONTAL_DRAG_OFFSET
   );
 
-  const itemSize = React.useCallback((index: number) => ITEM_HEIGHT + (components.length - 1 === index ? BOTTOM_PADDING : 0), [components.length]);
+  const itemSize = React.useCallback(
+    (index: number) => ITEM_HEIGHT + (components.length - 1 === index ? BOTTOM_PADDING : 0),
+    [components.length]
+  );
   const getDNDItemKey = useConst((item: ComponentItem) => item.id);
   const getVirtualItemKey = useConst((index: number, data: ComponentItem[]) => data[index].id);
 
@@ -125,7 +137,12 @@ const ComponentsSection: React.FC<ComponentsSectionProps> = ({ collapsed, setSec
               }
             >
               {(isSearch || !!components.length) && (
-                <SearchInput value={searchValue} onChangeText={setSearchValue} placeholder="Search" $onIconClick={() => setSearchValue('')} />
+                <SearchInput
+                  value={searchValue}
+                  onChangeText={setSearchValue}
+                  placeholder="Search"
+                  $onIconClick={() => setSearchValue('')}
+                />
               )}
             </Header>
           }

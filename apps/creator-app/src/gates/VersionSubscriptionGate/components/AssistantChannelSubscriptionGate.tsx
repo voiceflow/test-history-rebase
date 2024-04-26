@@ -15,7 +15,12 @@ export interface AssistantChannelSubscriptionGateProps extends React.PropsWithCh
   workspaceID: string;
 }
 
-const AssistantChannelSubscriptionGate: React.FC<AssistantChannelSubscriptionGateProps> = ({ workspaceID, projectID, versionID, children }) => {
+const AssistantChannelSubscriptionGate: React.FC<AssistantChannelSubscriptionGateProps> = ({
+  workspaceID,
+  projectID,
+  versionID,
+  children,
+}) => {
   const client = useRealtimeClient();
 
   const httpAssistantCMS = useFeature(FeatureFlag.HTTP_ASSISTANT_CMS);
@@ -78,7 +83,11 @@ const AssistantChannelSubscriptionGate: React.FC<AssistantChannelSubscriptionGat
   }, [isLoaded, httpAssistantCMS.isEnabled]);
 
   return (
-    <LoadingGate isLoaded={isLoaded && cmsFetched} loader={<WorkspaceOrProjectLoader />} internalName={AssistantChannelSubscriptionGate.name}>
+    <LoadingGate
+      isLoaded={isLoaded && cmsFetched}
+      loader={<WorkspaceOrProjectLoader />}
+      internalName={AssistantChannelSubscriptionGate.name}
+    >
       {children}
     </LoadingGate>
   );

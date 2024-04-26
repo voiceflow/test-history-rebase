@@ -27,7 +27,13 @@ const TranscriptNotes: React.FC = () => {
 
   return (
     <Container onClick={() => inputRef.current?.focus()}>
-      <MentionEditor value={localNotes} onBlur={onBlur} onChange={setLocalNotes} inputProps={{ inputRef }} placeholder="Leave notes or @mention" />
+      <MentionEditor
+        value={localNotes}
+        onBlur={onBlur}
+        onChange={setLocalNotes}
+        inputProps={{ inputRef }}
+        placeholder="Leave notes or @mention"
+      />
     </Container>
   );
 };

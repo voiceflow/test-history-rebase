@@ -2,14 +2,14 @@ import React from 'react';
 
 import OverflowTippyTooltip from '../../OverflowTippyTooltip';
 import { RowProvider } from '../contexts';
-import * as T from '../types';
+import type * as T from '../types';
 import Column from './Column';
 import Ellipses from './Ellipses';
 import Header from './Header';
 import Row from './Row';
 import Table from './Table';
 
-const Configurable = <T extends string, I extends T.Item>({
+const Configurable = <V extends string, I extends T.Item>({
   items,
   empty,
   columns,
@@ -25,7 +25,7 @@ const Configurable = <T extends string, I extends T.Item>({
   stickyHeader = true,
   hideLastDivider = false,
   header,
-}: T.ConfigurableProps<T, I>) => (
+}: T.ConfigurableProps<V, I>) => (
   <Table
     items={items}
     empty={empty}

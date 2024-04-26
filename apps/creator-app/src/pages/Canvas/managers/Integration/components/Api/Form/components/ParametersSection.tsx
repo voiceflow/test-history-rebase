@@ -5,7 +5,7 @@ import VariablesInput from '@/components/VariablesInput';
 import { useMapManager } from '@/hooks';
 
 import { expressionFactory } from '../constants';
-import { BaseFormProps } from '../types';
+import type { BaseFormProps } from '../types';
 import * as S from './styles';
 
 const ParametersSection: React.FC<BaseFormProps> = ({ editor }) => {
@@ -26,7 +26,12 @@ const ParametersSection: React.FC<BaseFormProps> = ({ editor }) => {
 
           <SectionV2.ListItem action={<SectionV2.RemoveButton onClick={onRemove} />}>
             <S.Item>
-              <VariablesInput placeholder="Enter parameter key" value={parameter.key} onBlur={({ text }) => onUpdate({ key: text })} multiline />
+              <VariablesInput
+                placeholder="Enter parameter key"
+                value={parameter.key}
+                onBlur={({ text }) => onUpdate({ key: text })}
+                multiline
+              />
 
               <VariablesInput
                 value={parameter.val}

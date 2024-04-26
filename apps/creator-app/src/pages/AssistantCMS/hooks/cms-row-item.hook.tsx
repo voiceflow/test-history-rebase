@@ -1,11 +1,13 @@
 import { usePersistFunction } from '@voiceflow/ui-next';
-import React, { useContext } from 'react';
+import type React from 'react';
+import { useContext } from 'react';
 import { DismissableLayerContext } from 'react-dismissable-layers';
 import { useHistory } from 'react-router';
 
 import { useGetResolvedPath, useOnLinkClick } from '@/hooks/navigation.hook';
 
-import { ICMSResourceGetMoreMenu, useCMSResourceGetMoreMenu, useCMSResourceGetPath } from './cms-resource.hook';
+import type { ICMSResourceGetMoreMenu } from './cms-resource.hook';
+import { useCMSResourceGetMoreMenu, useCMSResourceGetPath } from './cms-resource.hook';
 import { useCMSRenameColumn } from './cms-table.hook';
 
 export const useCMSRowItemClick = (onClick?: (resourceID: string) => void) => {
@@ -44,11 +46,15 @@ export const useCMSRowItemNavigate = () => {
   });
 };
 
-export interface CMSRowItemContextMenuProps<ColumnType extends string> extends Omit<ICMSResourceGetMoreMenu, 'onRename'> {
+export interface CMSRowItemContextMenuProps<ColumnType extends string>
+  extends Omit<ICMSResourceGetMoreMenu, 'onRename'> {
   nameColumnType?: ColumnType;
 }
 
-export const useCMSRowItemContextMenu = <ColumnType extends string>({ nameColumnType, ...props }: CMSRowItemContextMenuProps<ColumnType> = {}) => {
+export const useCMSRowItemContextMenu = <ColumnType extends string>({
+  nameColumnType,
+  ...props
+}: CMSRowItemContextMenuProps<ColumnType> = {}) => {
   const onRename = useCMSRenameColumn(nameColumnType);
 
   return useCMSResourceGetMoreMenu({

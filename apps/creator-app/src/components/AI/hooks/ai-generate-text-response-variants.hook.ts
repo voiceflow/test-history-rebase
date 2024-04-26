@@ -42,7 +42,9 @@ export const useAIGenerateTextResponseVariants = ({
         ({ results } = await mlGatewayClient.generation.generatePrompt({
           ...options,
           format: 'text',
-          examples: options.examples.map(({ text }) => markupToString.fromDB(text, { entitiesMapByID, variablesMapByID })).filter(Boolean),
+          examples: options.examples
+            .map(({ text }) => markupToString.fromDB(text, { entitiesMapByID, variablesMapByID }))
+            .filter(Boolean),
         }));
       }
 

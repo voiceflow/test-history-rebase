@@ -8,7 +8,7 @@ import { useNotificationDismiss } from '@/hooks/notify.hook';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
 
 import { useCMSManager } from '../../contexts/CMSManager';
-import { CMSKnowledgeBase } from '../../contexts/CMSManager/CMSManager.interface';
+import type { CMSKnowledgeBase } from '../../contexts/CMSManager/CMSManager.interface';
 
 export const useKnowledgeBaseCMSManager = useCMSManager<CMSKnowledgeBase>;
 
@@ -23,14 +23,23 @@ export const useKBDocumentSync = () => {
   const getAll = useDispatch(Designer.KnowledgeBase.Document.effect.getAll);
   const getAllPending = useDispatch(Designer.KnowledgeBase.Document.effect.getAllPending);
 
-  const processingMap = useMemo(() => Object.fromEntries(processingIDs.map((id) => [id, getOneByID({ id })])), [processingIDs, getOneByID]);
+  const processingMap = useMemo(
+    () => Object.fromEntries(processingIDs.map((id) => [id, getOneByID({ id })])),
+    [processingIDs, getOneByID]
+  );
 
   const finishedStatusSet = useCreateConst(
-    () => new Set([BaseModels.Project.KnowledgeBaseDocumentStatus.SUCCESS, BaseModels.Project.KnowledgeBaseDocumentStatus.ERROR])
+    () =>
+      new Set([
+        BaseModels.Project.KnowledgeBaseDocumentStatus.SUCCESS,
+        BaseModels.Project.KnowledgeBaseDocumentStatus.ERROR,
+      ])
   );
 
   const getAllProcessingDocumentsSucceed = () =>
-    processingIDs.every((documentID) => processingMap[documentID]?.status === BaseModels.Project.KnowledgeBaseDocumentStatus.SUCCESS);
+    processingIDs.every(
+      (documentID) => processingMap[documentID]?.status === BaseModels.Project.KnowledgeBaseDocumentStatus.SUCCESS
+    );
 
   const processing = useMemo(() => documents.some((document) => !finishedStatusSet.has(document.status)), [documents]);
 

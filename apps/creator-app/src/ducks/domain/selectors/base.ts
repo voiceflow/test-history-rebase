@@ -19,12 +19,14 @@ export const {
 
 export const getDomainByIDSelector = createCurriedSelector(domainByIDSelector);
 
-export const rootDomainIDSelector = createSelector([allDomainsSelector, rootDiagramIDSelector], (domains, rootDiagramID) =>
-  rootDiagramID ? findRootDomainID(domains, rootDiagramID) : null
+export const rootDomainIDSelector = createSelector(
+  [allDomainsSelector, rootDiagramIDSelector],
+  (domains, rootDiagramID) => (rootDiagramID ? findRootDomainID(domains, rootDiagramID) : null)
 );
 
-export const rootDomainSelector = createSelector([getDomainByIDSelector, rootDomainIDSelector], (getDomainByID, rootDiagramID) =>
-  getDomainByID({ id: rootDiagramID })
+export const rootDomainSelector = createSelector(
+  [getDomainByIDSelector, rootDomainIDSelector],
+  (getDomainByID, rootDiagramID) => getDomainByID({ id: rootDiagramID })
 );
 
 export const domainIDByTopicIDSelector = createSelector([allDomainsSelector, topicIDSelector], (domains, topicID) =>

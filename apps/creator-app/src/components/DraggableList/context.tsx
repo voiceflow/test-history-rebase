@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { BaseItemData } from './types';
+import type { BaseItemData } from './types';
 
 interface ChildrenContextValue<Item> {
   renderItem: (data: BaseItemData<Item>) => React.ReactNode;

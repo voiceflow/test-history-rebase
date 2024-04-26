@@ -8,7 +8,8 @@ import { STATE_KEY } from './attachment.state';
 
 export const root = createDesignerSelector(STATE_KEY);
 
-export const { hasOneByID, hasAllByIDs, oneByID, getOneByID, allByIDs, getAllByIDs, all, map, count, isEmpty } = createDesignerCRUDSelectors(root);
+export const { hasOneByID, hasAllByIDs, oneByID, getOneByID, allByIDs, getAllByIDs, all, map, count, isEmpty } =
+  createDesignerCRUDSelectors(root);
 
 export const allCard = createSelector(all, (attachments) => attachments.filter(isCardAttachment));
 

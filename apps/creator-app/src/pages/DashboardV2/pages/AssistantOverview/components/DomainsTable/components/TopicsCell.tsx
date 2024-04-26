@@ -1,5 +1,6 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Menu, Select, System, TableTypes } from '@voiceflow/ui';
+import type * as Realtime from '@voiceflow/realtime-sdk';
+import type { TableTypes } from '@voiceflow/ui';
+import { Box, Menu, Select, System } from '@voiceflow/ui';
 import React from 'react';
 
 import * as DiagramV2 from '@/ducks/diagramV2';
@@ -37,7 +38,9 @@ const TopicCell: React.FC<TableTypes.ItemProps<Realtime.Domain>> = ({ item }) =>
             {item.topicIDs.length}
           </System.Link.Button>
         )}
-        renderEmpty={({ search }) => <Menu.NotFound>{!search ? 'No topics exist in your assistant. ' : 'No topics found. '}</Menu.NotFound>}
+        renderEmpty={({ search }) => (
+          <Menu.NotFound>{!search ? 'No topics exist in your assistant. ' : 'No topics found. '}</Menu.NotFound>
+        )}
       />
     </Box.FlexEnd>
   );

@@ -1,4 +1,4 @@
-import { BaseModels } from '@voiceflow/base-types';
+import type { BaseModels } from '@voiceflow/base-types';
 import { id } from '@voiceflow/common';
 import ObjectID from 'bson-objectid';
 import hash from 'object-hash';
@@ -37,17 +37,33 @@ const getResourceDiff = <R>(
   }, []);
 };
 
-const getDiagramNameToIDMap = (diagrams: Record<string, BaseModels.Diagram.Model<any>>, domains: BaseModels.Version.Domain[] = []) => {
-  const topicDomainMap = Object.fromEntries(domains.flatMap((domain) => domain.topicIDs.map((topicID) => [topicID, domain.id])) || []);
+const getDiagramNameToIDMap = (
+  diagrams: Record<string, BaseModels.Diagram.Model<any>>,
+  domains: BaseModels.Version.Domain[] = []
+) => {
+  const topicDomainMap = Object.fromEntries(
+    domains.flatMap((domain) => domain.topicIDs.map((topicID) => [topicID, domain.id])) || []
+  );
   return Object.fromEntries(
-    Object.values(diagrams).map((diagram) => [`${diagram.type}:${topicDomainMap[diagram._id] || ''}${diagram.name}`, diagram._id])
+    Object.values(diagrams).map((diagram) => [
+      `${diagram.type}:${topicDomainMap[diagram._id] || ''}${diagram.name}`,
+      diagram._id,
+    ])
   );
 };
 
 export const getDiff = (next: VF_FILE, current: VF_FILE) => {
   const variables = getResourceDiff((variable) => variable, next.version.variables, current.version.variables);
-  const intents = getResourceDiff((intent) => intent.key, next.version.platformData.intents, current.version.platformData.intents);
-  const entities = getResourceDiff((entity) => entity.key, next.version.platformData.slots, current.version.platformData.slots);
+  const intents = getResourceDiff(
+    (intent) => intent.key,
+    next.version.platformData.intents,
+    current.version.platformData.intents
+  );
+  const entities = getResourceDiff(
+    (entity) => entity.key,
+    next.version.platformData.slots,
+    current.version.platformData.slots
+  );
   const customBlocks = getResourceDiff(
     (customBlock) => customBlock.key,
     Object.values(next.version.customBlocks || {}),

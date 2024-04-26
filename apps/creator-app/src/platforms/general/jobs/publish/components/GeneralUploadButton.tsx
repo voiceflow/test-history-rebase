@@ -2,7 +2,9 @@ import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { useFeature } from '@/hooks/feature';
-import Button, { ButtonVariant } from '@/pages/Project/components/Header/components/CanvasHeader/components/Upload/components/Button';
+import Button, {
+  ButtonVariant,
+} from '@/pages/Project/components/Header/components/CanvasHeader/components/Upload/components/Button';
 import PublishButton from '@/pages/Project/components/Header/components/CanvasHeader/components/Upload/components/PublishButton';
 
 interface GeneralUploadButtonProps {

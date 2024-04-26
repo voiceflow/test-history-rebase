@@ -3,7 +3,11 @@ import { importScript } from '@voiceflow/ui';
 import { AMAZON_APP_ID } from '@/config';
 
 export const initialize = async () => {
-  await importScript({ id: 'amazon-sdk', uri: '//api-cdn.amazon.com/sdk/login1.js', callbackName: 'onAmazonLoginReady' });
+  await importScript({
+    id: 'amazon-sdk',
+    uri: '//api-cdn.amazon.com/sdk/login1.js',
+    callbackName: 'onAmazonLoginReady',
+  });
 
   window.amazon.Login.setClientId(AMAZON_APP_ID);
 };

@@ -1,13 +1,13 @@
-import { ProjectAIAssistSettings } from '@voiceflow/dtos';
+import type { ProjectAIAssistSettings } from '@voiceflow/dtos';
 import * as Platform from '@voiceflow/platform-config';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { FeatureFlag } from '@voiceflow/realtime-sdk';
 
 import * as NLU from '@/config/nlu';
 import * as Project from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import { useDispatch, useFeature, useModelTracking } from '@/hooks';
-import { NLUImportModel } from '@/models';
+import type { NLUImportModel } from '@/models';
 
 interface CreateProjectOptions {
   name: string;
@@ -29,11 +29,23 @@ export const useProjectCreate = () => {
 
   const modelImportTracking = useModelTracking();
 
-  return async ({ type, name, image, listID = null, members, locales, platform, importedModel, aiAssistSettings }: CreateProjectOptions) => {
+  return async ({
+    type,
+    name,
+    image,
+    listID = null,
+    members,
+    locales,
+    platform,
+    importedModel,
+    aiAssistSettings,
+  }: CreateProjectOptions) => {
     const projectConfig = Platform.Config.getTypeConfig({ type, platform });
 
     const defaultedLocales = locales.length ? locales : projectConfig.project.locale.defaultLocales;
-    const projectLocales = projectConfig.project.locale.isLanguage ? projectConfig.utils.locale.fromLanguage(defaultedLocales[0]) : defaultedLocales;
+    const projectLocales = projectConfig.project.locale.isLanguage
+      ? projectConfig.utils.locale.fromLanguage(defaultedLocales[0])
+      : defaultedLocales;
 
     const project = await createProject({
       nlu: importedModel,

@@ -1,5 +1,5 @@
-import { JobStatus } from '@/constants';
-import {
+import type { JobStatus } from '@/constants';
+import type {
   AlexaPublishJobErrorType,
   AlexaStageType,
   DialogflowCXPublishJobErrorType,
@@ -80,7 +80,9 @@ export namespace AlexaPublishJob {
 
   export type SelectVendorsStage = JobStage<AlexaStageType.SELECT_VENDORS>;
 
-  export type AnyJob = Job<IdleStage | ErrorStage | SuccessStage | ProgressStage | WaitAccountStage | WaitVendorsStage | SelectVendorsStage>;
+  export type AnyJob = Job<
+    IdleStage | ErrorStage | SuccessStage | ProgressStage | WaitAccountStage | WaitVendorsStage | SelectVendorsStage
+  >;
 }
 
 export namespace AlexaExportJob {
@@ -296,7 +298,10 @@ export namespace NLPTrainJob {
 
   export type ConfirmStage = JobStage<NLPTrainStageType.CONFIRM>;
 
-  export type SuccessStage = JobStage<NLPTrainStageType.SUCCESS, { validations?: { invalid: { intents: string[]; slots: string[] } } }>;
+  export type SuccessStage = JobStage<
+    NLPTrainStageType.SUCCESS,
+    { validations?: { invalid: { intents: string[]; slots: string[] } } }
+  >;
 
   export type ProgressStage = JobStage<NLPTrainStageType.PROGRESS, { message: string; progress: number }>;
 

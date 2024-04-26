@@ -4,8 +4,14 @@ import { LimitType } from '@/constants/limits';
 import * as Tracking from '@/ducks/tracking';
 import { getLegacyUpgradeModalProps } from '@/utils/upgrade';
 
-import { PlanLimit, UpgradeModalDynamicLimit } from './types';
-import { applyEnterpriseLimits, applyPersonalLimits, applyProLimits, applyStarterLimits, applyTeamLimits } from './utils';
+import type { PlanLimit, UpgradeModalDynamicLimit } from './types';
+import {
+  applyEnterpriseLimits,
+  applyPersonalLimits,
+  applyProLimits,
+  applyStarterLimits,
+  applyTeamLimits,
+} from './utils';
 
 const DEFAULT_MODAL = {
   title: 'Need more assistants?',

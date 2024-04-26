@@ -2,7 +2,7 @@ import { Box } from '@voiceflow/ui';
 import React from 'react';
 
 import { Permission } from '@/constants/permissions';
-import * as PrototypeDuck from '@/ducks/prototype';
+import type * as PrototypeDuck from '@/ducks/prototype';
 import { useGuestPermission } from '@/hooks';
 
 import FullPageTemplate from '../FullPageTemplate';

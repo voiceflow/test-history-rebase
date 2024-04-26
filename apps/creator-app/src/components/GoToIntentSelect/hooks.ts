@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 
-import * as Platform from '@voiceflow/platform-config';
+import type * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
@@ -11,7 +11,7 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import { createGroupedSelectID, useSelector } from '@/hooks';
 import { getDiagramName, isComponentDiagram, isTopicDiagram } from '@/utils/diagram.utils';
 
-import { Group, Multilevel, Option } from './types';
+import type { Group, Multilevel, Option } from './types';
 
 const createTopicOptions = <OptionsMap extends Record<string, Option | Group> | Record<string, Option | Multilevel>>({
   diagramID,
@@ -78,28 +78,35 @@ export const useDiagramsIntentsOptionsMap = () => {
       });
 
       if (activeComponentOptions.length) {
-        optionsMap[activeDiagram.id] = { id: activeDiagram.id, label: getDiagramName(activeDiagram?.name), options: activeComponentOptions };
+        optionsMap[activeDiagram.id] = {
+          id: activeDiagram.id,
+          label: getDiagramName(activeDiagram?.name),
+          options: activeComponentOptions,
+        };
       }
     }
 
-    return Object.entries(sharedNodes).reduce<Record<string, Option | Group>>((optionsMap, [diagramID, diagramSharedNodes]) => {
-      const diagram = getDiagramByID({ id: diagramID });
+    return Object.entries(sharedNodes).reduce<Record<string, Option | Group>>(
+      (optionsMap, [diagramID, diagramSharedNodes]) => {
+        const diagram = getDiagramByID({ id: diagramID });
 
-      // creating options map only for topics or active component diagram
-      if (!isTopicDiagram(diagram?.type)) return optionsMap;
+        // creating options map only for topics or active component diagram
+        if (!isTopicDiagram(diagram?.type)) return optionsMap;
 
-      const diagramOptions = createTopicOptions({
-        platform,
-        diagramID,
-        optionsMap,
-        getIntentByID,
-        diagramSharedNodes,
-        diagramGlobalStepMap: globalIntentStepMap[diagramID] ?? {},
-      });
+        const diagramOptions = createTopicOptions({
+          platform,
+          diagramID,
+          optionsMap,
+          getIntentByID,
+          diagramSharedNodes,
+          diagramGlobalStepMap: globalIntentStepMap[diagramID] ?? {},
+        });
 
-      optionsMap[diagramID] = { id: diagramID, label: getDiagramName(diagram?.name), options: diagramOptions };
+        optionsMap[diagramID] = { id: diagramID, label: getDiagramName(diagram?.name), options: diagramOptions };
 
-      return optionsMap;
-    }, optionsMap);
+        return optionsMap;
+      },
+      optionsMap
+    );
   }, [platform, sharedNodes, getIntentByID, activeDiagram, getDiagramByID, globalIntentStepMap]);
 };

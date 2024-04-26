@@ -1,29 +1,28 @@
 import compositeRef from '@seznam/compose-react-refs';
-import { Nullable, Utils } from '@voiceflow/common';
-import { ContextMenuProps, useCache, useContextApi, usePersistFunction } from '@voiceflow/ui';
+import type { Nullable } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
+import type { ContextMenuProps } from '@voiceflow/ui';
+import { useCache, useContextApi, usePersistFunction } from '@voiceflow/ui';
 // eslint-disable-next-line you-dont-need-lodash-underscore/throttle
 import _throttle from 'lodash/throttle';
 import React from 'react';
-import { DragSourceMonitor, useDrop } from 'react-dnd';
+import type { DragSourceMonitor } from 'react-dnd';
+import { useDrop } from 'react-dnd';
 
 import { HOVER_THROTTLE_TIMEOUT } from '@/constants';
-import { MapManagedFactoryAPI, MapManagedSimpleAPI, PreviewOptions } from '@/hooks';
+import type { MapManagedFactoryAPI, MapManagedSimpleAPI, PreviewOptions } from '@/hooks';
 
-import {
+import type {
   ContextMenuOption,
-  DeleteComponent,
   DeleteComponentProps,
-  DnDItem,
-  DragPreview,
   DragPreviewComponentProps,
-  DropDelete,
   ItemComponentHandlers,
   ItemComponentProps,
-  ListContainer,
   MappedItemComponentHandlers,
 } from './components';
+import { DeleteComponent, DnDItem, DragPreview, DropDelete, ListContainer } from './components';
 import { ChildrenContextProvider, useChildrenContext } from './context';
-import { BaseItemData, DnDHandlers, DnDItem as DnDInternalItem } from './types';
+import type { BaseItemData, DnDHandlers, DnDItem as DnDInternalItem } from './types';
 
 export { DeleteComponent, useChildrenContext as useDraggableListChildrenContext };
 export type {
@@ -70,31 +69,38 @@ interface DraggableListBaseProps<Item, DeleteProps, ExtraItemProps> extends Drag
   disableReorderingWhileDraggingX?: boolean;
 }
 
-export interface DraggableListIndexedProps<Item, DeleteProps, ExtraItemProps> extends DraggableListBaseProps<Item, DeleteProps, ExtraItemProps> {
+export interface DraggableListIndexedProps<Item, DeleteProps, ExtraItemProps>
+  extends DraggableListBaseProps<Item, DeleteProps, ExtraItemProps> {
   onDelete?: IndexableEditActionHandler<Item>;
   onReorder?: DnDHandlers<Item>['onReorder'];
   mapManager?: never;
   onDuplicate?: IndexableEditActionHandler<Item>;
   itemComponent: React.NamedExoticComponent<
-    React.PropsWithoutRef<ItemComponentProps<Item> & ItemComponentHandlers<Item> & ExtraItemProps> & React.RefAttributes<HTMLElement>
+    React.PropsWithoutRef<ItemComponentProps<Item> & ItemComponentHandlers<Item> & ExtraItemProps> &
+      React.RefAttributes<HTMLElement>
   >;
   previewComponent: React.NamedExoticComponent<
-    React.PropsWithoutRef<ItemComponentProps<Item> & ItemComponentHandlers<Item> & ExtraItemProps & DragPreviewComponentProps>
+    React.PropsWithoutRef<
+      ItemComponentProps<Item> & ItemComponentHandlers<Item> & ExtraItemProps & DragPreviewComponentProps
+    >
   >;
   mapManagerFactory?: never;
 }
 
-export interface DraggableListItemsProps<Item, DeleteProps, ExtraItemProps> extends DraggableListIndexedProps<Item, DeleteProps, ExtraItemProps> {
+export interface DraggableListItemsProps<Item, DeleteProps, ExtraItemProps>
+  extends DraggableListIndexedProps<Item, DeleteProps, ExtraItemProps> {
   items: Item[];
   children?: never;
 }
 
-export interface DraggableListChildrenProps<Item, DeleteProps, ExtraItemProps> extends DraggableListIndexedProps<Item, DeleteProps, ExtraItemProps> {
+export interface DraggableListChildrenProps<Item, DeleteProps, ExtraItemProps>
+  extends DraggableListIndexedProps<Item, DeleteProps, ExtraItemProps> {
   items?: never;
   children: (options: { renderItem: (data: BaseItemData<Item>) => React.ReactNode }) => React.ReactNode;
 }
 
-interface DraggableListBaseMapManagerProps<Item, DeleteProps, ExtraItemProps> extends DraggableListBaseProps<Item, DeleteProps, ExtraItemProps> {
+interface DraggableListBaseMapManagerProps<Item, DeleteProps, ExtraItemProps>
+  extends DraggableListBaseProps<Item, DeleteProps, ExtraItemProps> {
   items?: never;
   children?: never;
   onDelete?: never;
@@ -102,10 +108,13 @@ interface DraggableListBaseMapManagerProps<Item, DeleteProps, ExtraItemProps> ex
   mapManager: MapManagedSimpleAPI<Item>;
   onDuplicate?: never;
   itemComponent: React.NamedExoticComponent<
-    React.PropsWithoutRef<ItemComponentProps<Item> & MappedItemComponentHandlers<Item> & ExtraItemProps> & React.RefAttributes<HTMLElement>
+    React.PropsWithoutRef<ItemComponentProps<Item> & MappedItemComponentHandlers<Item> & ExtraItemProps> &
+      React.RefAttributes<HTMLElement>
   >;
   previewComponent: React.NamedExoticComponent<
-    React.PropsWithoutRef<ItemComponentProps<Item> & MappedItemComponentHandlers<Item> & ExtraItemProps & DragPreviewComponentProps>
+    React.PropsWithoutRef<
+      ItemComponentProps<Item> & MappedItemComponentHandlers<Item> & ExtraItemProps & DragPreviewComponentProps
+    >
   >;
 }
 
@@ -123,9 +132,15 @@ export interface DraggableListFactoryMapManagerProps<Item, DeleteProps, ExtraIte
 
 interface DraggableListComponent {
   <Item, DeleteProps, ExtraItemProps>(props: DraggableListItemsProps<Item, DeleteProps, ExtraItemProps>): JSX.Element;
-  <Item, DeleteProps, ExtraItemProps>(props: DraggableListChildrenProps<Item, DeleteProps, ExtraItemProps>): JSX.Element;
-  <Item, DeleteProps, ExtraItemProps>(props: DraggableListSimpleMapManagerProps<Item, DeleteProps, ExtraItemProps>): JSX.Element;
-  <Item, DeleteProps, ExtraItemProps>(props: DraggableListFactoryMapManagerProps<Item, DeleteProps, ExtraItemProps>): JSX.Element;
+  <Item, DeleteProps, ExtraItemProps>(
+    props: DraggableListChildrenProps<Item, DeleteProps, ExtraItemProps>
+  ): JSX.Element;
+  <Item, DeleteProps, ExtraItemProps>(
+    props: DraggableListSimpleMapManagerProps<Item, DeleteProps, ExtraItemProps>
+  ): JSX.Element;
+  <Item, DeleteProps, ExtraItemProps>(
+    props: DraggableListFactoryMapManagerProps<Item, DeleteProps, ExtraItemProps>
+  ): JSX.Element;
 }
 
 const DraggableList: DraggableListComponent = ({
@@ -194,7 +209,9 @@ const DraggableList: DraggableListComponent = ({
   );
 
   const persistedMapManagerFactory = usePersistFunction(mapManagerFactory);
-  const getItemKey = usePersistFunction(getItemKeyProp ?? ((item: Item) => (Utils.object.isObject(item) ? String(item?.id) : String(item))));
+  const getItemKey = usePersistFunction(
+    getItemKeyProp ?? ((item: Item) => (Utils.object.isObject(item) ? String(item?.id) : String(item)))
+  );
 
   const onItemDuplicate = React.useCallback(
     (item: BaseItemData<Item>) => {
@@ -317,7 +334,9 @@ const DraggableList: DraggableListComponent = ({
               return renderItem(itemData);
             }))}
 
-      {!!props.children && <ChildrenContextProvider value={childContext}>{props.children({ renderItem })}</ChildrenContextProvider>}
+      {!!props.children && (
+        <ChildrenContextProvider value={childContext}>{props.children({ renderItem })}</ChildrenContextProvider>
+      )}
 
       {footer}
 
@@ -328,7 +347,9 @@ const DraggableList: DraggableListComponent = ({
         component={previewComponent as React.NamedExoticComponent<React.ComponentProps<typeof previewComponent>>}
       />
 
-      {!!deleteComponent && dragging && <DropDelete type={type} handlers={handlers} deleteComponent={deleteComponent} deleteProps={deleteProps} />}
+      {!!deleteComponent && dragging && (
+        <DropDelete type={type} handlers={handlers} deleteComponent={deleteComponent} deleteProps={deleteProps} />
+      )}
     </ListContainer>
   );
 };

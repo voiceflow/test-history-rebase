@@ -26,7 +26,7 @@ interface ToDBOptions {
 
 export abstract class PostgresORM<
   BaseEntity extends PostgresPKEntity,
-  DiscriminatorEntity extends Omit<BaseEntity, typeof DEFAULT_OR_NULL_COLUMN> = BaseEntity
+  DiscriminatorEntity extends Omit<BaseEntity, typeof DEFAULT_OR_NULL_COLUMN> = BaseEntity,
 > implements ORM<BaseEntity, DiscriminatorEntity>
 {
   DiscriminatorEntity?: DiscriminatorEntity;
@@ -324,7 +324,6 @@ export abstract class PostgresORM<
     qb.returning(this.getSelect(fields));
   }
 
-  // eslint-disable-next-line sonarjs/cognitive-complexity
   protected buildWhere(qb: Knex.QueryBuilder, data: WhereData<BaseEntity> | WhereData<BaseEntity>[]) {
     const mappedData = this.mapToDB(Array.isArray(data) ? (data as any[]) : [data], {
       ignoreObjectAdapter: true,

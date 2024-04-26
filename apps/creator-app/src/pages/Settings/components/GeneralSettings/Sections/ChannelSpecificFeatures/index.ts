@@ -1,7 +1,7 @@
 import * as Platform from '@voiceflow/platform-config';
 
 import { platformAware } from '@/hocs/platformAware';
-import { PlatformSettingsMetaProps } from '@/pages/Settings/constants';
+import type { PlatformSettingsMetaProps } from '@/pages/Settings/constants';
 
 import { AlexaFeatures } from './components';
 

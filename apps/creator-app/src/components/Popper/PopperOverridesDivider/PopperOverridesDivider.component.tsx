@@ -5,7 +5,7 @@ import { useObjectsDiffsCount } from '@/hooks/object.hook';
 import { stopPropagation } from '@/utils/handler.util';
 
 import { containerStyle } from './PopperOverridesDivider.css';
-import { IPopperOverridesDivider } from './PopperOverridesDivider.interface';
+import type { IPopperOverridesDivider } from './PopperOverridesDivider.interface';
 
 export const PopperOverridesDivider: React.FC<IPopperOverridesDivider> = ({ value, onReset, initialValues }) => {
   const differences = useObjectsDiffsCount(value, initialValues);

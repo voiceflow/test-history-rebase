@@ -1,5 +1,5 @@
-import { UserRole } from '@voiceflow/internal';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type { UserRole } from '@voiceflow/internal';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 
 export const getRoleFacets = (members: Realtime.AnyWorkspaceMember[]) =>
   members.reduce<Partial<Record<UserRole | 'all', number>>>(

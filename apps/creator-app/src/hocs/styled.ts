@@ -1,13 +1,12 @@
-import _styled, {
-  css as _css,
+import type {
   ThemedCssFunction,
   ThemedStyledInterface,
   ThemedStyledProps,
-  withTheme as _withTheme,
   WithThemeFnInterface,
 } from 'styled-components';
+import _styled, { css as _css, withTheme as _withTheme } from 'styled-components';
 
-import { Theme } from '@/styles/theme';
+import type { Theme } from '@/styles/theme';
 
 export { createGlobalStyle, keyframes } from 'styled-components';
 

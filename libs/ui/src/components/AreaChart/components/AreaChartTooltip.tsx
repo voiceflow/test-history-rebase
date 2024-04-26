@@ -1,7 +1,7 @@
 import ChartTooltip from '@ui/components/ChartTooltip';
 import React from 'react';
 
-import { AreaChartDatum, DatumFormatter } from '../types';
+import type { AreaChartDatum, DatumFormatter } from '../types';
 
 export interface AreaChartTooltipProps {
   formatX: DatumFormatter;

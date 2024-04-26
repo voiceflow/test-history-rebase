@@ -1,10 +1,11 @@
-import { BaseModels } from '@voiceflow/base-types';
+import type { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import { createSmartMultiAdapter } from 'bidirectional-adapter';
 
 import { NestedMongoModel } from '../_mongo';
 import { Atomic, Bson } from '../utils';
-import { DBDomainModel, DOMAIN_DATE_KEYS } from './constants';
+import type { DBDomainModel } from './constants';
+import { DOMAIN_DATE_KEYS } from './constants';
 import type VersionModel from './index';
 
 class DomainModel extends NestedMongoModel<VersionModel> {
@@ -16,7 +17,9 @@ class DomainModel extends NestedMongoModel<VersionModel> {
   );
 
   async create(versionID: string, domain: BaseModels.Version.Domain): Promise<BaseModels.Version.Domain> {
-    await this.model.atomicUpdateByID(versionID, [Atomic.push([{ path: this.MODEL_PATH, value: this.adapter.toDB(domain) }])]);
+    await this.model.atomicUpdateByID(versionID, [
+      Atomic.push([{ path: this.MODEL_PATH, value: this.adapter.toDB(domain) }]),
+    ]);
 
     return domain;
   }
@@ -39,12 +42,18 @@ class DomainModel extends NestedMongoModel<VersionModel> {
     return domain;
   }
 
-  async update(versionID: string, domainID: string, data: Partial<Omit<BaseModels.Version.Domain, 'id' | 'rootDiagramID'>>): Promise<void> {
+  async update(
+    versionID: string,
+    domainID: string,
+    data: Partial<Omit<BaseModels.Version.Domain, 'id' | 'rootDiagramID'>>
+  ): Promise<void> {
     const dbData = this.adapter.toDB(data);
 
     return this.model.atomicUpdateByID(
       versionID,
-      Utils.object.getKeys(dbData).map((key) => Atomic.set([{ path: [this.MODEL_PATH, { id: domainID }, key], value: dbData[key] }]))
+      Utils.object
+        .getKeys(dbData)
+        .map((key) => Atomic.set([{ path: [this.MODEL_PATH, { id: domainID }, key], value: dbData[key] }]))
     );
   }
 

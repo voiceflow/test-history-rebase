@@ -225,7 +225,9 @@ const createManyFromFormData =
 
     Errors.assertProjectID(projectID);
 
-    const result = await Promise.allSettled(manyFormData.map((data) => knowledgeBaseClient.createOneDocumentFromFormFile(projectID, data)));
+    const result = await Promise.allSettled(
+      manyFormData.map((data) => knowledgeBaseClient.createOneDocumentFromFormFile(projectID, data))
+    );
 
     const documents = result
       .filter((res): res is PromiseFulfilledResult<DBKnowledgeBaseDocument> => res.status === 'fulfilled')
@@ -301,10 +303,12 @@ export const createManyFromData =
 
     Errors.assertProjectID(projectID);
 
-    const result = await Promise.resolve(knowledgeBaseClient.createManyDocumentsFromURLs(projectID, data)).catch((error) => {
-      const err = error.reason.response?.status === 406 ? error.reason : null;
-      if (err) throw err;
-    });
+    const result = await Promise.resolve(knowledgeBaseClient.createManyDocumentsFromURLs(projectID, data)).catch(
+      (error) => {
+        const err = error.reason.response?.status === 406 ? error.reason : null;
+        if (err) throw err;
+      }
+    );
 
     const documents = result?.map((res) => documentAdapter.fromDB(res)) || [];
 

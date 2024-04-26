@@ -1,5 +1,5 @@
-import { AdditionalData, Component, PaymentIntent as ChargebeePaymentIntent } from '@chargebee/chargebee-js-types';
-import { PaymentIntent } from '@voiceflow/dtos';
+import type { AdditionalData, Component, PaymentIntent as ChargebeePaymentIntent } from '@chargebee/chargebee-js-types';
+import type { PaymentIntent } from '@voiceflow/dtos';
 import { CONTRIES_MAPPER, IS_DEVELOPMENT, toast } from '@voiceflow/ui';
 import { useAtom } from 'jotai';
 import camelCase from 'lodash/camelCase';
@@ -10,10 +10,11 @@ import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector } from '@/hooks';
 import { isUUID4 } from '@/utils/crypto';
 
-import * as CardForm from '../components/CardForm';
+import type * as CardForm from '../components/CardForm';
 import * as atoms from '../Payment.atoms';
 
-const isMockedPaymentIntent = (paymentIntent: PaymentIntent) => isUUID4(paymentIntent.id) && !paymentIntent.gatewayAccountId;
+const isMockedPaymentIntent = (paymentIntent: PaymentIntent) =>
+  isUUID4(paymentIntent.id) && !paymentIntent.gatewayAccountId;
 
 export const useCardPaymentMethod = () => {
   const cardRef = useRef<Component>();

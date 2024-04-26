@@ -11,46 +11,52 @@ export interface Props {
   domainID: string;
 }
 
-const Delete = manager.create<Props>('TopicDelete', () => ({ api, type, opened, hidden, topicID, animated, domainID, closePrevented }) => {
-  const topic = useSelector(Diagram.diagramByIDSelector, { id: topicID });
+const Delete = manager.create<Props>(
+  'TopicDelete',
+  () =>
+    ({ api, type, opened, hidden, topicID, animated, domainID, closePrevented }) => {
+      const topic = useSelector(Diagram.diagramByIDSelector, { id: topicID });
 
-  const deleteTopic = useDispatch(Diagram.deleteTopicDiagramForDomain, domainID, topicID);
+      const deleteTopic = useDispatch(Diagram.deleteTopicDiagramForDomain, domainID, topicID);
 
-  const onDelete = async () => {
-    try {
-      api.preventClose();
+      const onDelete = async () => {
+        try {
+          api.preventClose();
 
-      await deleteTopic();
+          await deleteTopic();
 
-      toast.success(`Successfully deleted "${topic?.name ?? 'Unknown'}" topic.`);
+          toast.success(`Successfully deleted "${topic?.name ?? 'Unknown'}" topic.`);
 
-      api.enableClose();
-      api.close();
-    } catch {
-      toast.error('Something went wrong, please contact support if this issue persists.');
-      api.enableClose();
+          api.enableClose();
+          api.close();
+        } catch {
+          toast.error('Something went wrong, please contact support if this issue persists.');
+          api.enableClose();
+        }
+      };
+
+      return (
+        <Modal type={type} maxWidth={400} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
+          <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />}>Delete Topic</Modal.Header>
+
+          <Modal.Body>
+            <BlockText>
+              Warning, "{topic?.name ?? 'Unknown'}" and all its subtopics will be removed from the assistant.
+            </BlockText>
+          </Modal.Body>
+
+          <Modal.Footer gap={12}>
+            <Button variant={Button.Variant.TERTIARY} onClick={api.onClose} squareRadius disabled={closePrevented}>
+              Cancel
+            </Button>
+
+            <Button onClick={onDelete} squareRadius disabled={closePrevented}>
+              Confirm
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      );
     }
-  };
-
-  return (
-    <Modal type={type} maxWidth={400} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
-      <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />}>Delete Topic</Modal.Header>
-
-      <Modal.Body>
-        <BlockText>Warning, "{topic?.name ?? 'Unknown'}" and all its subtopics will be removed from the assistant.</BlockText>
-      </Modal.Body>
-
-      <Modal.Footer gap={12}>
-        <Button variant={Button.Variant.TERTIARY} onClick={api.onClose} squareRadius disabled={closePrevented}>
-          Cancel
-        </Button>
-
-        <Button onClick={onDelete} squareRadius disabled={closePrevented}>
-          Confirm
-        </Button>
-      </Modal.Footer>
-    </Modal>
-  );
-});
+);
 
 export default Delete;

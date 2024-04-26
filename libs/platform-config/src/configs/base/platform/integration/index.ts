@@ -1,6 +1,6 @@
 import { Config as ConfigUtils } from '@platform-config/configs/utils';
 import { Types } from '@platform-config/utils';
-import React from 'react';
+import type React from 'react';
 
 import * as LinkAccountButton from './link-account-button';
 
@@ -27,7 +27,8 @@ export const CONFIG = Types.satisfies<Config>()({
 
   connectDescription: 'Sign in with Voiceflow to upload your assistant.',
 
-  disconnectDescription: 'Resetting your Voiceflow Account is potentially dangerous. Do not disconnect unless you understand the risk.',
+  disconnectDescription:
+    'Resetting your Voiceflow Account is potentially dangerous. Do not disconnect unless you understand the risk.',
 });
 
 export const extend = ConfigUtils.extendFactory<Config>(CONFIG);

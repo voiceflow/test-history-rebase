@@ -13,7 +13,10 @@ export const CMSIntentTableConfidenceCell: React.FC<ICMSIntentTableConfidenceCel
   return (
     <Box gap={12} width="100%" align="center">
       <Box width="48px">
-        <Gauge level={getIntentConfidenceLevel(utterancesCount)} progress={getIntentConfidenceProgress(utterancesCount)} />
+        <Gauge
+          level={getIntentConfidenceLevel(utterancesCount)}
+          progress={getIntentConfidenceProgress(utterancesCount)}
+        />
       </Box>
 
       <Table.Cell.Text label={getIntentConfidenceLevel(utterancesCount)} overflow />

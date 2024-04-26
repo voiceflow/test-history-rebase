@@ -30,7 +30,10 @@ const TemplateSection: React.FC = () => {
   const goToProjectCanvas = useDispatch(Router.goToProjectCanvas);
 
   // FIXME: remove FF https://voiceflow.atlassian.net/browse/CV3-994
-  const legacyProjectsLimitConfig = usePlanLimitedConfig(LimitType.PROJECTS, { value: projectsCount, limit: projectsLimit });
+  const legacyProjectsLimitConfig = usePlanLimitedConfig(LimitType.PROJECTS, {
+    value: projectsCount,
+    limit: projectsLimit,
+  });
   const newProjectsLimitConfig = useConditionalLimit(LimitType.PROJECTS, { value: projectsCount });
 
   const projectsLimitConfig = subscription ? newProjectsLimitConfig : legacyProjectsLimitConfig;
@@ -85,7 +88,9 @@ const TemplateSection: React.FC = () => {
           icon="chatWidget"
           title="Retail Purchases (Webchat)"
           subtitle="By Voiceflow"
-          image={<AssistantCard.ProjectImage src="https://cm4-production-assets.s3.amazonaws.com/1677254079988-shopping-cart-gef00a8b31_1920.png" />}
+          image={
+            <AssistantCard.ProjectImage src="https://cm4-production-assets.s3.amazonaws.com/1677254079988-shopping-cart-gef00a8b31_1920.png" />
+          }
           action={
             <Button
               onClick={() =>

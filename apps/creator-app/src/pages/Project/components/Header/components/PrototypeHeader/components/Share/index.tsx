@@ -22,7 +22,12 @@ const Share: React.FC = () => {
       <AssistantSharePrototypePopper
         referenceElement={({ ref, isOpen, onToggle }) => (
           <div ref={ref}>
-            <Header.Button.Secondary label="Share prototype" onClick={onToggle} isActive={isOpen} disabled={!canSharePrototype} />
+            <Header.Button.Secondary
+              label="Share prototype"
+              onClick={onToggle}
+              isActive={isOpen}
+              disabled={!canSharePrototype}
+            />
           </div>
         )}
       />
@@ -37,7 +42,11 @@ const Share: React.FC = () => {
       modifiers={{ offset: { offset: '0,8' } }}
       renderContent={() => (
         <Popper.Content>
-          <Project.SharePrototype.Content preventClose={preventClose} enableClose={enableClose} disableAnimation={cmsWorkflows.isEnabled} />
+          <Project.SharePrototype.Content
+            preventClose={preventClose}
+            enableClose={enableClose}
+            disableAnimation={cmsWorkflows.isEnabled}
+          />
         </Popper.Content>
       )}
       renderFooter={() => (
@@ -47,7 +56,13 @@ const Share: React.FC = () => {
       )}
     >
       {({ ref, onToggle }) => (
-        <Button id={Identifier.SHARE_BUTTON} ref={ref} variant={ButtonVariant.PRIMARY} onClick={onToggle} disabled={!canSharePrototype}>
+        <Button
+          id={Identifier.SHARE_BUTTON}
+          ref={ref}
+          variant={ButtonVariant.PRIMARY}
+          onClick={onToggle}
+          disabled={!canSharePrototype}
+        >
           Share Prototype
         </Button>
       )}

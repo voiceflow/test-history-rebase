@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import { Entity, Enum, ManyToOne, PrimaryKeyType, Unique } from '@mikro-orm/core';
 import { AttachmentType } from '@voiceflow/dtos';
 

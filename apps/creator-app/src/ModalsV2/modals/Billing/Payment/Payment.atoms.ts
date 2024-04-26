@@ -1,4 +1,4 @@
-import { BillingPlan, PaymentIntent } from '@voiceflow/dtos';
+import type { BillingPlan, PaymentIntent } from '@voiceflow/dtos';
 import { BillingPeriod } from '@voiceflow/internal';
 import { atom } from 'jotai';
 
@@ -22,7 +22,10 @@ export const plansPriceAtom = atom<Record<string, PriceMap>>((get) => {
       [plan.id]: plan.prices.reduce(
         (acc, price) => ({
           ...acc,
-          [price.period]: { value: price.period === BillingPeriod.ANNUALLY ? price.price / 12 : price.price, id: price.id },
+          [price.period]: {
+            value: price.period === BillingPeriod.ANNUALLY ? price.price / 12 : price.price,
+            id: price.id,
+          },
         }),
         {}
       ),

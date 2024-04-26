@@ -1,4 +1,11 @@
-import { ANIMATION_SPEED, COLOR_BLUE, COLOR_GREEN, COLOR_OFF_WHITE, COLOR_RED, COLOR_WHITE } from '@ui/styles/constants';
+import {
+  ANIMATION_SPEED,
+  COLOR_BLUE,
+  COLOR_GREEN,
+  COLOR_OFF_WHITE,
+  COLOR_RED,
+  COLOR_WHITE,
+} from '@ui/styles/constants';
 
 import ICON_THEME from './icon';
 
@@ -128,7 +135,9 @@ export type Theme = typeof THEME;
 
 export default THEME;
 
-export const createTheme = <T extends { components?: Record<string, any>; [key: string]: any }>(overrides: Omit<Partial<Theme>, 'components'> & T) =>
+export const createTheme = <T extends { components?: Record<string, any>; [key: string]: any }>(
+  overrides: Omit<Partial<Theme>, 'components'> & T
+) =>
   ({
     ...THEME,
     ...overrides,
@@ -137,4 +146,4 @@ export const createTheme = <T extends { components?: Record<string, any>; [key: 
       ...THEME.components,
       ...overrides.components,
     },
-  } as Theme & T);
+  }) as Theme & T;

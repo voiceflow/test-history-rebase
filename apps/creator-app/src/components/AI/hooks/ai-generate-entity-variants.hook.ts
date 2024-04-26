@@ -32,7 +32,9 @@ export const useAIGenerateEntityVariants = ({
         ...options,
         name: isDefaultEntityName(entityName) ? '' : entityName ?? '',
         type: entityClassifier || CUSTOM_SLOT_TYPE,
-        examples: options.examples.map(({ value, synonyms }) => [value, ...synonyms]).filter((arr) => arr.every(Boolean)),
+        examples: options.examples
+          .map(({ value, synonyms }) => [value, ...synonyms])
+          .filter((arr) => arr.every(Boolean)),
       });
 
       if (results.some((values) => !values.every((v) => typeof v === 'string'))) {

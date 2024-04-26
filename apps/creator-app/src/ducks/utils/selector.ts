@@ -4,8 +4,10 @@ import { createSelector } from 'reselect';
 import type { State } from '@/ducks';
 import type { Selector } from '@/store/types';
 
-export const createSubSelector = <T extends Record<string, any>, K extends keyof T>(selector: (state: any) => T, key: K) =>
-  createSelector(selector, (state) => state[key] as T[K]);
+export const createSubSelector = <T extends Record<string, any>, K extends keyof T>(
+  selector: (state: any) => T,
+  key: K
+) => createSelector(selector, (state) => state[key] as T[K]);
 
 export const createRootSelectorFactory =
   <S extends Record<string, any>>() =>
@@ -20,15 +22,21 @@ export const createParameterSelector =
   (_: unknown, params: T): ReturnType<typeof selector> =>
     selector(params);
 
-export const creatorIDParamSelector = createParameterSelector((params: { creatorID: number | null }) => params.creatorID);
+export const creatorIDParamSelector = createParameterSelector(
+  (params: { creatorID: number | null }) => params.creatorID
+);
 
 export const projectIDParamSelector = createParameterSelector((params: { projectID: string }) => params.projectID);
 
-export const diagramIDParamSelector = createParameterSelector((params: { diagramID?: string | null }) => params.diagramID);
+export const diagramIDParamSelector = createParameterSelector(
+  (params: { diagramID?: string | null }) => params.diagramID
+);
 
 export const nodeIDParamSelector = createParameterSelector((params: { nodeID: string }) => params.nodeID);
 
-export const assistantIDParamSelector = createParameterSelector((params: { assistantID: string | null }) => params.assistantID);
+export const assistantIDParamSelector = createParameterSelector(
+  (params: { assistantID: string | null }) => params.assistantID
+);
 
 export const createCurriedSelector =
   <T, P>(selector: Selector<T, [P]>) =>
@@ -36,7 +44,10 @@ export const createCurriedSelector =
   (param: P): T =>
     selector(state, param);
 
-export const createCachedSelectorFactory = (): { clearAllCache: VoidFunction; createCachedSelector: typeof reReselectCreateCachedSelector } => {
+export const createCachedSelectorFactory = (): {
+  clearAllCache: VoidFunction;
+  createCachedSelector: typeof reReselectCreateCachedSelector;
+} => {
   const cacheObjects: FlatObjectCache[] = [];
 
   const createCachedSelector =

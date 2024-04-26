@@ -47,7 +47,11 @@ const StepMenuClickNoDragTooltip: React.FC<StepMenuClickNoDragTooltipProps> = ({
       <div ref={buttonRef}>{children({ isOpen })}</div>
       {isOpen && (
         <Portal portalNode={document.body}>
-          <div ref={popper.setPopperElement} style={{ ...popper.styles.popper, paddingLeft: '6px' }} {...popper.attributes.popper}>
+          <div
+            ref={popper.setPopperElement}
+            style={{ ...popper.styles.popper, paddingLeft: '6px' }}
+            {...popper.attributes.popper}
+          >
             <S.TooltipContainer width={232}>
               <TippyTooltip.FooterButton buttonText="Don't show again" onClick={handleDontShowAgain}>
                 Click + drag to add steps to the canvas.

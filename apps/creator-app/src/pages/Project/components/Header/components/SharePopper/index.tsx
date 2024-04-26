@@ -1,5 +1,6 @@
 import { tid } from '@voiceflow/style';
-import { Popper, PopperTypes, stopPropagation } from '@voiceflow/ui';
+import type { PopperTypes } from '@voiceflow/ui';
+import { Popper, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
@@ -97,7 +98,11 @@ const SharePopper: React.FC<SharePopperProps> = ({ children, placement, modifier
               </NavItem>
             )}
 
-            <NavItem onClick={() => setPersistedTab(ShareProjectTab.EXPORT)} to={ShareProjectTab.EXPORT} data-testid={tid(TEST_ID, 'tab', 'export')}>
+            <NavItem
+              onClick={() => setPersistedTab(ShareProjectTab.EXPORT)}
+              to={ShareProjectTab.EXPORT}
+              data-testid={tid(TEST_ID, 'tab', 'export')}
+            >
               Export as…
             </NavItem>
           </Nav>
@@ -117,9 +122,15 @@ const SharePopper: React.FC<SharePopperProps> = ({ children, placement, modifier
         renderFooter={() => (
           <Footer>
             <Switch>
-              <Route path={ShareProjectTab.PROTOTYPE} render={() => <Project.SharePrototype.Footer isCanvas testID={tid(TEST_ID, 'prototype')} />} />
+              <Route
+                path={ShareProjectTab.PROTOTYPE}
+                render={() => <Project.SharePrototype.Footer isCanvas testID={tid(TEST_ID, 'prototype')} />}
+              />
               <Route path={ShareProjectTab.INVITE} render={() => <InviteFooter />} />
-              <Route path={ShareProjectTab.EXPORT} render={() => <Project.Export.Footer testID={tid(TEST_ID, 'export')} />} />
+              <Route
+                path={ShareProjectTab.EXPORT}
+                render={() => <Project.Export.Footer testID={tid(TEST_ID, 'export')} />}
+              />
             </Switch>
           </Footer>
         )}

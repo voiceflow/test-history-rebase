@@ -1,4 +1,4 @@
-import { CustomScrollbarsTypes } from '@voiceflow/ui';
+import type { CustomScrollbarsTypes } from '@voiceflow/ui';
 import React from 'react';
 
 import { useScrollContext, useScrollStickySides } from '@/hooks';
@@ -13,7 +13,15 @@ interface HeaderProps extends S.ContainerProps, React.PropsWithChildren {
   rightAction?: React.ReactNode;
 }
 
-const Header: React.FC<HeaderProps> = ({ label, children, collapsed, forceSticky, rightAction, onClick, ...containerProps }) => {
+const Header: React.FC<HeaderProps> = ({
+  label,
+  children,
+  collapsed,
+  forceSticky,
+  rightAction,
+  onClick,
+  ...containerProps
+}) => {
   const { scrollRef } = useScrollContext<CustomScrollbarsTypes.Scrollbars>();
   const [isHeaderSticky] = useScrollStickySides(scrollRef);
 

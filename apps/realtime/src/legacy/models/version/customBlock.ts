@@ -1,4 +1,4 @@
-import { BaseModels } from '@voiceflow/base-types';
+import type { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 
 import { NestedMongoModel } from '../_mongo';
@@ -11,14 +11,23 @@ class CustomBlockModel extends NestedMongoModel<VersionModel> {
   async upsertMany(versionID: string, customBlocks: BaseModels.Version.CustomBlock[]): Promise<void> {
     await this.model.updateByID(
       versionID,
-      customBlocks.reduce((acc, customBlock) => ({ ...acc, [`${this.MODEL_PATH}.${customBlock.key}`]: customBlock }), {})
+      customBlocks.reduce(
+        (acc, customBlock) => ({ ...acc, [`${this.MODEL_PATH}.${customBlock.key}`]: customBlock }),
+        {}
+      )
     );
   }
 
-  async update(versionID: string, customBlockKey: string, data: Partial<BaseModels.Version.CustomBlock>): Promise<void> {
+  async update(
+    versionID: string,
+    customBlockKey: string,
+    data: Partial<BaseModels.Version.CustomBlock>
+  ): Promise<void> {
     return this.model.atomicUpdateByID(
       versionID,
-      Utils.object.getKeys(data).map((key) => Atomic.set([{ path: [this.MODEL_PATH, customBlockKey, key], value: data[key] }]))
+      Utils.object
+        .getKeys(data)
+        .map((key) => Atomic.set([{ path: [this.MODEL_PATH, customBlockKey, key], value: data[key] }]))
     );
   }
 

@@ -1,5 +1,6 @@
 import { styled } from '@/hocs/styled';
-import DragTarget, { DragTargetProps } from '@/pages/Canvas/components/DragTarget';
+import type { DragTargetProps } from '@/pages/Canvas/components/DragTarget';
+import DragTarget from '@/pages/Canvas/components/DragTarget';
 import { NODE_ACTIVE_CLASSNAME, NODE_DRAGGING_CLASSNAME } from '@/pages/Canvas/constants';
 
 const NodeDragTarget = styled(DragTarget)<DragTargetProps>`

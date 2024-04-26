@@ -1,11 +1,14 @@
-import { Nullable, READABLE_VARIABLE_REGEXP } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
+import { READABLE_VARIABLE_REGEXP } from '@voiceflow/common';
 import { slate } from '@voiceflow/internal';
 import * as Normal from 'normal-store';
-import { Descendant, Editor, Element, Range, Text, Transforms } from 'slate';
+import type { Descendant, Editor, Range } from 'slate';
+import { Element, Text, Transforms } from 'slate';
 
 import { ElementType } from '../../constants';
 import type { EditorAPIType } from '../editorAPI';
-import { PrismLanguage, PrismVariablesProperty } from '../prism';
+import type { PrismVariablesProperty } from '../prism';
+import { PrismLanguage } from '../prism';
 import type { VariableElement } from '../types';
 import { PluginType } from './constants';
 import type { APIPlugin, Plugin } from './types';
@@ -43,7 +46,10 @@ export const withVariablesPlugin: Plugin = (EditorAPI: EditorAPIType) => (editor
     const { variables } = editor.pluginsOptions[PluginType.VARIABLES] ?? {};
 
     const variablesNameMap = variables
-      ? Object.values(variables.byKey).reduce<Record<string, VariableItem>>((acc, variable) => Object.assign(acc, { [variable.name]: variable }), {})
+      ? Object.values(variables.byKey).reduce<Record<string, VariableItem>>(
+          (acc, variable) => Object.assign(acc, { [variable.name]: variable }),
+          {}
+        )
       : null;
 
     return nodes.flatMap((node) => {
@@ -51,16 +57,19 @@ export const withVariablesPlugin: Plugin = (EditorAPI: EditorAPIType) => (editor
         return next([node]);
       }
 
-      return matchAndProcessTextNodeToElement({ type: ElementType.VARIABLE, node, next, regexp: READABLE_VARIABLE_REGEXP }, (match, textNode) => {
-        const variable = variablesNameMap?.[match[1]] ?? null;
+      return matchAndProcessTextNodeToElement(
+        { type: ElementType.VARIABLE, node, next, regexp: READABLE_VARIABLE_REGEXP },
+        (match, textNode) => {
+          const variable = variablesNameMap?.[match[1]] ?? null;
 
-        // skip if not exists
-        if (!variable) {
-          return next([{ ...textNode, text: textNode.text + match[0] }]);
+          // skip if not exists
+          if (!variable) {
+            return next([{ ...textNode, text: textNode.text + match[0] }]);
+          }
+
+          return [...next([textNode]), { ...variable, type: ElementType.VARIABLE, children: [{ text: '' }] }];
         }
-
-        return [...next([textNode]), { ...variable, type: ElementType.VARIABLE, children: [{ text: '' }] }];
-      });
+      );
     });
   });
 

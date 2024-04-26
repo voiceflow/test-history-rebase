@@ -12,9 +12,14 @@ import { useDispatch } from '@/hooks/store.hook';
 import { useValidators } from '@/hooks/validate.hook';
 
 import { DEFAULT_DOCUMENT_LIMIT } from '../../KnowledgeBaseImport.constant';
-import { filterWhitespace, sanitizeURLsWithDataFormatting, urlsValidator, useDocumentLimitError } from '../../KnowledgeBaseImport.utils';
+import {
+  filterWhitespace,
+  sanitizeURLsWithDataFormatting,
+  urlsValidator,
+  useDocumentLimitError,
+} from '../../KnowledgeBaseImport.utils';
 import { submitButtonStyles, textareaBoxStyles, textareaStyles } from '../KBImportSitemap.css';
-import { IKBImportSitemapPreview } from './KBImportSitemapPreview.interface';
+import type { IKBImportSitemapPreview } from './KBImportSitemapPreview.interface';
 
 export const KBImportSitemapPreview: React.FC<IKBImportSitemapPreview> = ({
   urls,
@@ -113,7 +118,13 @@ export const KBImportSitemapPreview: React.FC<IKBImportSitemapPreview> = ({
       </Box>
 
       <Modal.Footer>
-        <Modal.Footer.Button label="Cancel" variant="secondary" onClick={onClose} disabled={closePrevented} testID={tid(testID, 'cancel')} />
+        <Modal.Footer.Button
+          label="Cancel"
+          variant="secondary"
+          onClick={onClose}
+          disabled={closePrevented}
+          testID={tid(testID, 'cancel')}
+        />
 
         <Modal.Footer.Button
           label={`Import ${count} URLs`}

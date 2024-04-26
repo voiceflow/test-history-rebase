@@ -1,6 +1,7 @@
 import { TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
-import { components, OptionProps } from 'react-select';
+import type { OptionProps } from 'react-select';
+import { components } from 'react-select';
 
 import * as DiagramV2 from '@/ducks/diagramV2';
 import { useSelector } from '@/hooks/redux';
@@ -15,7 +16,12 @@ const SearchOption: React.FC<OptionProps<SearchOption, false>> = ({ data, childr
 
   return (
     <components.Option data={data} isFocused={isFocused} {...props}>
-      <TippyTooltip content={diagram?.name ?? ''} visible={isFocused && isNodeEntry} disabled={!isNodeEntry || !diagram} placement="bottom">
+      <TippyTooltip
+        content={diagram?.name ?? ''}
+        visible={isFocused && isNodeEntry}
+        disabled={!isNodeEntry || !diagram}
+        placement="bottom"
+      >
         {children}
       </TippyTooltip>
     </components.Option>

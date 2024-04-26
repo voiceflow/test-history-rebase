@@ -8,7 +8,12 @@ import { useCMSManager } from '@/pages/AssistantCMS/contexts/CMSManager';
 import { CMSTableHighlightedTooltip } from '../CMSTableHighlightedTooltip/CMSTableHighlightedTooltip.component';
 import type { ICMSTableNameCell } from './CMSTableNameCell.interface';
 
-export const CMSTableNameCellResource = <ColumnType extends string>({ type, name, itemID, nameTransform }: ICMSTableNameCell<ColumnType>) => {
+export const CMSTableNameCellResource = <ColumnType extends string>({
+  type,
+  name,
+  itemID,
+  nameTransform,
+}: ICMSTableNameCell<ColumnType>) => {
   const cmsManager = useCMSManager();
 
   const search = useAtomValue(cmsManager.search);

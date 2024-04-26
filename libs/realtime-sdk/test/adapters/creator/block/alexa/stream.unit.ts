@@ -12,7 +12,12 @@ describe('Adapters | Creator | Block | Alexa | streamAdapter', () => {
     });
 
     it('sets default for falsy values', () => {
-      const data = Creator.Block.Alexa.StreamStepData({ title: undefined, iconImage: undefined, description: undefined, backgroundImage: undefined });
+      const data = Creator.Block.Alexa.StreamStepData({
+        title: undefined,
+        iconImage: undefined,
+        description: undefined,
+        backgroundImage: undefined,
+      });
 
       const result = streamAdapter.fromDB(data, { context: {} });
 
@@ -35,7 +40,12 @@ describe('Adapters | Creator | Block | Alexa | streamAdapter', () => {
     });
 
     it('sets default for falsy values', () => {
-      const data = Creator.Block.Alexa.StreamNodeData({ title: undefined, iconImage: undefined, description: undefined, backgroundImage: undefined });
+      const data = Creator.Block.Alexa.StreamNodeData({
+        title: undefined,
+        iconImage: undefined,
+        description: undefined,
+        backgroundImage: undefined,
+      });
 
       const result = streamAdapter.toDB(data, { context: {} });
 

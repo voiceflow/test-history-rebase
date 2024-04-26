@@ -2,7 +2,7 @@ import { Logger } from '@nestjs/common';
 import { AIModel } from '@voiceflow/dtos';
 
 import { GPTLLMModel } from './gpt.abstract';
-import { OpenAIConfig } from './gpt.interface';
+import type { OpenAIConfig } from './gpt.interface';
 
 export class GPT3_5_1106 extends GPTLLMModel {
   protected logger = new Logger(GPT3_5_1106.name);

@@ -1,10 +1,10 @@
-import { PathPoints } from '@/types';
+import type { PathPoints } from '@/types';
 
-import { LinkedRects } from '../types';
+import type { LinkedRects } from '../types';
 import getCurvePathPoints from './curve';
 import getStraightConnectedPoints from './straightConnected';
 import getStraightUnconnectedPoints from './straightUnconnected';
-import { GetPathPointsOptions } from './types';
+import type { GetPathPointsOptions } from './types';
 
 export * from './helpers';
 export type { GetPathPointsOptions } from './types';

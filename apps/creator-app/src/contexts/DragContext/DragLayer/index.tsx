@@ -1,7 +1,8 @@
 import React from 'react';
 import { useDragLayer } from 'react-dnd';
 
-import { Container, Preview, PreviewOptions } from './components';
+import type { PreviewOptions } from './components';
+import { Container, Preview } from './components';
 
 export type { PreviewOptions };
 

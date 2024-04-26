@@ -1,6 +1,6 @@
-import { HashedIDService } from '@voiceflow/nestjs-common';
+import type { HashedIDService } from '@voiceflow/nestjs-common';
 import type { IdentityClient } from '@voiceflow/sdk-identity';
-import { ServiceManagerOptions, SocketServer } from '@voiceflow/socket-utils';
+import type { ServiceManagerOptions, SocketServer } from '@voiceflow/socket-utils';
 
 import type { AssistantService } from '@/assistant/assistant.service';
 import type { CreatorService } from '@/creator/creator.service';
@@ -66,8 +66,14 @@ class ServiceManager {
     const actions = {} as LoguxControlOptions['actions'];
     const channels = {} as LoguxControlOptions['channels'];
 
-    Object.assign(actions, buildActions({ server, config, services, clients, actions, channels, log } as LoguxControlOptions));
-    Object.assign(channels, buildChannels({ server, config, services, clients, actions, channels, log } as LoguxControlOptions));
+    Object.assign(
+      actions,
+      buildActions({ server, config, services, clients, actions, channels, log } as LoguxControlOptions)
+    );
+    Object.assign(
+      channels,
+      buildChannels({ server, config, services, clients, actions, channels, log } as LoguxControlOptions)
+    );
 
     this.log = log;
     this.config = config;

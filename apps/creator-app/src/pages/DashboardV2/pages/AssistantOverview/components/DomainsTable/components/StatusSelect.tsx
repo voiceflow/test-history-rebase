@@ -1,6 +1,6 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Select, Text } from '@voiceflow/ui';
 import React from 'react';
 
@@ -20,7 +20,11 @@ const StatusSelect: React.FC<StatusSelectProps> = ({ value, items, onChange }) =
 
         return acc;
       },
-      { [BaseModels.Version.DomainStatus.DESIGN]: [], [BaseModels.Version.DomainStatus.REVIEW]: [], [BaseModels.Version.DomainStatus.COMPLETE]: [] }
+      {
+        [BaseModels.Version.DomainStatus.DESIGN]: [],
+        [BaseModels.Version.DomainStatus.REVIEW]: [],
+        [BaseModels.Version.DomainStatus.COMPLETE]: [],
+      }
     );
 
     const createStatusOption = (status: BaseModels.Version.DomainStatus, width: number) => ({

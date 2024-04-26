@@ -2,7 +2,7 @@ import { IS_CHROME, IS_CHROME_OS, IS_EDGE, IS_FIREFOX, IS_MAC, IS_WINDOWS, preve
 
 import { ANIMATION_TIMEOUT, ControlType } from '../../constants';
 import MouseControls from '../mouse/controls';
-import { ControlAction, GestureEvent } from '../types';
+import type { ControlAction, GestureEvent } from '../types';
 
 class TrackPadControls extends MouseControls {
   lastMultiplier = 0;
@@ -19,7 +19,10 @@ class TrackPadControls extends MouseControls {
 
   isPanning = false;
 
-  constructor(handle: (action: ControlAction) => void, private scrollTimeout: number) {
+  constructor(
+    handle: (action: ControlAction) => void,
+    private scrollTimeout: number
+  ) {
     super(handle);
   }
 
@@ -140,7 +143,11 @@ class TrackPadControls extends MouseControls {
         const directionY = Math.sign(deltaY);
         let multiplier = 8;
 
-        if (timestamp - this.lastTimestamp < 0.05 && directionX === this.lastDirectionX && directionY === this.lastDirectionY) {
+        if (
+          timestamp - this.lastTimestamp < 0.05 &&
+          directionX === this.lastDirectionX &&
+          directionY === this.lastDirectionY
+        ) {
           multiplier = this.lastMultiplier * 2.5;
         }
 

@@ -15,7 +15,12 @@ import manager from '@/ModalsV2/manager';
 
 import { KBRefreshRateSelect } from '../components/KBRefreshRateSelect/KBRefreshRateSelect.component';
 import { DEFAULT_DOCUMENT_LIMIT } from '../KnowledgeBaseImport.constant';
-import { filterWhitespace, sanitizeURLsWithDataFormatting, urlsValidator, useDocumentLimitError } from '../KnowledgeBaseImport.utils';
+import {
+  filterWhitespace,
+  sanitizeURLsWithDataFormatting,
+  urlsValidator,
+  useDocumentLimitError,
+} from '../KnowledgeBaseImport.utils';
 import { textareaStyles } from './KBImportUrl.css';
 
 export const KBImportUrl = manager.create(
@@ -128,7 +133,13 @@ export const KBImportUrl = manager.create(
           </Scroll>
 
           <Modal.Footer>
-            <Modal.Footer.Button label="Cancel" variant="secondary" onClick={api.onClose} disabled={closePrevented} testID={tid(TEST_ID, 'cancel')} />
+            <Modal.Footer.Button
+              label="Cancel"
+              variant="secondary"
+              onClick={api.onClose}
+              disabled={closePrevented}
+              testID={tid(TEST_ID, 'cancel')}
+            />
 
             <Modal.Footer.Button
               label="Import"

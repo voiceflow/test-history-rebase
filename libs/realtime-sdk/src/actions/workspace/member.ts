@@ -1,8 +1,8 @@
 import { INVITE_KEY, MEMBER_KEY } from '@realtime-sdk/constants';
-import { AnyWorkspaceMember, PendingWorkspaceMember } from '@realtime-sdk/models';
-import { BaseCreatorPayload, BaseWorkspacePayload } from '@realtime-sdk/types';
+import type { AnyWorkspaceMember, PendingWorkspaceMember } from '@realtime-sdk/models';
+import type { BaseCreatorPayload, BaseWorkspacePayload } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
-import { UserRole } from '@voiceflow/internal';
+import type { UserRole } from '@voiceflow/internal';
 
 import { workspaceType } from './utils';
 
@@ -62,7 +62,9 @@ export interface RenewInvitePayload extends BaseInvitePayload {
   role: UserRole;
 }
 
-export const sendInvite = Utils.protocol.createAsyncAction<SendInvitePayload, PendingWorkspaceMember | null>(inviteType('SEND'));
+export const sendInvite = Utils.protocol.createAsyncAction<SendInvitePayload, PendingWorkspaceMember | null>(
+  inviteType('SEND')
+);
 
 export const renewInvite = Utils.protocol.createAction<RenewInvitePayload>(inviteType('RENEW'));
 

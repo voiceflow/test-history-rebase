@@ -7,7 +7,7 @@ import { allCustomBlocksSelector } from '@/ducks/customBlock/selectors';
 import * as Feature from '@/ducks/feature';
 import * as Session from '@/ducks/session';
 import { getActiveVersionContext } from '@/ducks/versionV2/utils';
-import { Thunk } from '@/store/types';
+import type { Thunk } from '@/store/types';
 
 type CreatePayload = Omit<Realtime.CustomBlock, 'id'>;
 
@@ -84,21 +84,24 @@ export const syncCustomBlockPorts = (): Thunk<void> => async (dispatch, getState
 
   const patchData = allPointers
     .filter((pointer) => allCustomBlocksMap.has(pointer.sourceID))
-    .reduce((updatePatch, pointer) => {
-      const sourceBlock = allCustomBlocksMap.get(pointer.sourceID)!;
-      const existingPorts = CreatorV2.portsByNodeIDSelector(state, { id: pointer.nodeID }).out.dynamic;
+    .reduce(
+      (updatePatch, pointer) => {
+        const sourceBlock = allCustomBlocksMap.get(pointer.sourceID)!;
+        const existingPorts = CreatorV2.portsByNodeIDSelector(state, { id: pointer.nodeID }).out.dynamic;
 
-      const newPaths = sourceBlock.paths.filter((_, index) => index >= existingPorts.length);
+        const newPaths = sourceBlock.paths.filter((_, index) => index >= existingPorts.length);
 
-      if (newPaths.length > 0) {
-        updatePatch[pointer.nodeID] = newPaths.map((pathname) => ({
-          portID: Utils.id.cuid(),
-          label: pathname,
-        }));
-      }
+        if (newPaths.length > 0) {
+          updatePatch[pointer.nodeID] = newPaths.map((pathname) => ({
+            portID: Utils.id.cuid(),
+            label: pathname,
+          }));
+        }
 
-      return updatePatch;
-    }, {} as Record<string, { label: string; portID: string }[]>);
+        return updatePatch;
+      },
+      {} as Record<string, { label: string; portID: string }[]>
+    );
 
   if (Object.keys(patchData).length > 0) {
     await dispatch.sync(

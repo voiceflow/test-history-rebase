@@ -28,7 +28,13 @@ const OnboardingHeader: React.FC = () => {
 
   return (
     <Container>
-      <ActionButton className={ClassName.CREATE_PROJECT_LEFT_ACTION} shouldRender={hasBackButton} icon="back" onClick={stepBack} label="back" />
+      <ActionButton
+        className={ClassName.CREATE_PROJECT_LEFT_ACTION}
+        shouldRender={hasBackButton}
+        icon="back"
+        onClick={stepBack}
+        label="back"
+      />
       <StepStatus title={title} numberOfSteps={filteredNumberOfSteps} stepStack={filteredStepStack} />
 
       {!!STEP_META[currentStepID].docsLink && (
@@ -36,7 +42,13 @@ const OnboardingHeader: React.FC = () => {
       )}
 
       {justCreatingWorkspace ? (
-        <ActionButton className={ClassName.CREATE_PROJECT_RIGHT_ACTION} shouldRender icon="close" label="cancel" onClick={onCancel} />
+        <ActionButton
+          className={ClassName.CREATE_PROJECT_RIGHT_ACTION}
+          shouldRender
+          icon="close"
+          label="cancel"
+          onClick={onCancel}
+        />
       ) : (
         <ActionButton
           className={ClassName.CREATE_PROJECT_RIGHT_ACTION}

@@ -1,5 +1,6 @@
-import * as Platform from '@voiceflow/platform-config';
-import { createDividerMenuItemOption, TippyTooltip, TippyTooltipProps, UIOnlyMenuItemOption } from '@voiceflow/ui';
+import type * as Platform from '@voiceflow/platform-config';
+import type { TippyTooltipProps, UIOnlyMenuItemOption } from '@voiceflow/ui';
+import { createDividerMenuItemOption, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import * as NLU from '@/config/nlu';
@@ -17,7 +18,9 @@ const buildOption = (nluConfig: NLU.Base.Config): Option => ({
   permission: nluConfig.permission,
   labelTooltip: {
     width: 232,
-    content: <TippyTooltip.Complex title={nluConfig.tooltip.title}>{nluConfig.tooltip.description}</TippyTooltip.Complex>,
+    content: (
+      <TippyTooltip.Complex title={nluConfig.tooltip.title}>{nluConfig.tooltip.description}</TippyTooltip.Complex>
+    ),
     position: 'right',
   },
 });

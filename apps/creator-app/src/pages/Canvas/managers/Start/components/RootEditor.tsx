@@ -1,4 +1,4 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { COLOR_PICKER_CONSTANTS, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
@@ -37,7 +37,11 @@ const RootEditor: React.FC = () => {
       }
       footer={<EditorV2.DefaultFooter tutorial={Documentation.COMMAND_STEP} />}
     >
-      {isVersionRootDiagramActive && projectConfig.project.invocationName ? <InvocationNameSection /> : <StartLabelSection />}
+      {isVersionRootDiagramActive && projectConfig.project.invocationName ? (
+        <InvocationNameSection />
+      ) : (
+        <StartLabelSection />
+      )}
 
       <SectionV2.Divider />
 

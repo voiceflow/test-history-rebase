@@ -1,11 +1,11 @@
-import { NonNullishRecord } from '@voiceflow/common';
-import * as Platform from '@voiceflow/platform-config';
+import type { NonNullishRecord } from '@voiceflow/common';
+import type * as Platform from '@voiceflow/platform-config';
 import { createStructuredSelector } from 'reselect';
 
 import * as Errors from '@/config/errors';
 import { nluTypeSelector, platformSelector, projectTypeSelector } from '@/ducks/projectV2/selectors/active';
 import * as Session from '@/ducks/session';
-import { State } from '@/store/types';
+import type { State } from '@/store/types';
 
 export interface ActiveVersionContext {
   workspaceID: string | null;
@@ -48,7 +48,9 @@ export const activePlatformVersionContextSelector = createStructuredSelector<Sta
   workspaceID: Session.activeWorkspaceIDSelector,
 });
 
-export const assertVersionContext: (context: ActiveVersionContext) => asserts context is NonNullishRecord<ActiveVersionContext> = (context) => {
+export const assertVersionContext: (
+  context: ActiveVersionContext
+) => asserts context is NonNullishRecord<ActiveVersionContext> = (context) => {
   Errors.assertWorkspaceID(context.workspaceID);
   Errors.assertProjectID(context.projectID);
   Errors.assertVersionID(context.versionID);
@@ -57,7 +59,9 @@ export const assertVersionContext: (context: ActiveVersionContext) => asserts co
 /**
  * @deprecated replace with assertVersionContext when FeatureFlag.CMS_WORKFLOWS is released
  */
-export const assertDomainContext: (context: ActiveDomainContext) => asserts context is NonNullishRecord<ActiveDomainContext> = (context) => {
+export const assertDomainContext: (
+  context: ActiveDomainContext
+) => asserts context is NonNullishRecord<ActiveDomainContext> = (context) => {
   assertVersionContext(context);
 
   Errors.assertDomainID(context.domainID);

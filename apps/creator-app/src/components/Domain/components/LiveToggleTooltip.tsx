@@ -1,4 +1,5 @@
-import { TippyTooltip, TippyTooltipProps } from '@voiceflow/ui';
+import type { TippyTooltipProps } from '@voiceflow/ui';
+import { TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Documentation from '@/config/documentation';

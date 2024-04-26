@@ -7,7 +7,7 @@ import * as Domain from '@/ducks/domain';
 import { useSelector } from '@/hooks/redux';
 import { getDiagramName } from '@/utils/diagram.utils';
 
-import { Topic } from './types';
+import type { Topic } from './types';
 
 /**
  * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
@@ -28,7 +28,12 @@ export const useTopics = () => {
         if (type === BaseModels.Diagram.MenuItemType.NODE) {
           const sharedNode = sharedNodes[id]?.[sourceID];
 
-          if (sharedNode?.type !== Realtime.BlockType.INTENT || !sharedNode.intentID || !intentsMap[sharedNode.intentID]) continue;
+          if (
+            sharedNode?.type !== Realtime.BlockType.INTENT ||
+            !sharedNode.intentID ||
+            !intentsMap[sharedNode.intentID]
+          )
+            continue;
 
           intents.push({ name: intentsMap[sharedNode.intentID].name, nodeID: sourceID, diagramID: id });
         } else {

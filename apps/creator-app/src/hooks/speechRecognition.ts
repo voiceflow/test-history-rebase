@@ -2,7 +2,8 @@ import { toast, useCache, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 import SpeechRecognition, { useSpeechRecognition as useReactSpeechRecognition } from 'react-speech-recognition';
 import RecordRTC from 'recordrtc';
-import { io, Socket } from 'socket.io-client';
+import type { Socket } from 'socket.io-client';
+import { io } from 'socket.io-client';
 
 import { GENERAL_SERVICE_ENDPOINT } from '@/config';
 
@@ -58,7 +59,14 @@ export const useSpeechRecognition = ({
   onTranscript: (text: string) => void;
 }) => {
   const [microphonePermissionGranted, checkMicrophonePermission] = useMicrophonePermission({ askOnSetup });
-  const { listening, transcript, interimTranscript, finalTranscript, resetTranscript, browserSupportsSpeechRecognition } = useReactSpeechRecognition({
+  const {
+    listening,
+    transcript,
+    interimTranscript,
+    finalTranscript,
+    resetTranscript,
+    browserSupportsSpeechRecognition,
+  } = useReactSpeechRecognition({
     clearTranscriptOnListen: true,
   });
 
@@ -85,7 +93,10 @@ export const useSpeechRecognition = ({
       }
     }
 
-    await SpeechRecognition.startListening({ language: cache.current.locale?.length === 5 ? cache.current.locale : undefined, continuous: true });
+    await SpeechRecognition.startListening({
+      language: cache.current.locale?.length === 5 ? cache.current.locale : undefined,
+      continuous: true,
+    });
   }, []);
 
   const onStopListening = React.useCallback(() => {
@@ -123,7 +134,15 @@ export const useSpeechRecognition = ({
 
 const TRANSCRIPTION_TIMEOUT = 3000;
 
-export const useASR = ({ onTranscript, locale, enabled = true }: { onTranscript: (test: string) => void; locale: string; enabled?: boolean }) => {
+export const useASR = ({
+  onTranscript,
+  locale,
+  enabled = true,
+}: {
+  onTranscript: (test: string) => void;
+  locale: string;
+  enabled?: boolean;
+}) => {
   const [listeningASR, setListeningASR] = React.useState(false);
   const [processingTranscription, setProcessingTranscription] = React.useState(false);
 

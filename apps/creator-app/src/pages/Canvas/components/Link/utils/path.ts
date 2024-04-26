@@ -1,6 +1,6 @@
-import { Nullable } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
 
-import { PathPoints } from '@/types';
+import type { PathPoints } from '@/types';
 import { pathBuilder } from '@/utils/svg';
 
 import { MIN_Y_POINTS_OFFSET, PATH_INFLECTION_OFFSET, STRAIGHT_PATH_RADIUS } from '../constants';

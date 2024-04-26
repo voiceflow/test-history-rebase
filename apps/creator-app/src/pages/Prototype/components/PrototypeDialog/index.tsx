@@ -1,15 +1,17 @@
 import { BaseButton } from '@voiceflow/base-types';
-import { Nullable } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
 import React from 'react';
 
 import { PrototypeStatus } from '@/constants/prototype';
-import { Interaction, Message, MessageType, OnInteraction, PMStatus, UserMessage } from '@/pages/Prototype/types';
+import type { Interaction, Message, OnInteraction, PMStatus, UserMessage } from '@/pages/Prototype/types';
+import { MessageType } from '@/pages/Prototype/types';
 
 import Container from './Container';
 import Ended from './Ended';
 import useMessageFilters from './filters';
 import { InlineInteractions, StickyInteractions } from './Interactions';
-import PrototypeDialogMessage, { PrototypeDialogMessageProps } from './Message';
+import type { PrototypeDialogMessageProps } from './Message';
+import PrototypeDialogMessage from './Message';
 import BaseMessage from './Message/Base';
 import Loading from './Message/variants/Loading';
 import * as S from './styles';
@@ -79,7 +81,8 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
           const isLastBubble = checkIfLastBubble(message, messages);
           const isCurrent = message === messages[messages.length - 1];
           const isLast = index === messages.length - 1;
-          const isIntentConfidence = message.type === MessageType.DEBUG && message.message?.startsWith('matched intent');
+          const isIntentConfidence =
+            message.type === MessageType.DEBUG && message.message?.startsWith('matched intent');
 
           return (
             <PrototypeDialogMessage
@@ -106,7 +109,12 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
 
         {!isTranscript && status === PrototypeStatus.ENDED && !hideSessionMessages && <Ended stepBack={stepBack} />}
 
-        <Loading isLoading={isLoading} avatarURL={avatarURL} pmStatus={pmStatus} animationContainer={BaseMessage.DelayedFadeUp} />
+        <Loading
+          isLoading={isLoading}
+          avatarURL={avatarURL}
+          pmStatus={pmStatus}
+          animationContainer={BaseMessage.DelayedFadeUp}
+        />
 
         {buttons === BaseButton.ButtonsLayout.STACKED && <InlineInteractions {...interactionProps} />}
       </S.MessagesContainer>

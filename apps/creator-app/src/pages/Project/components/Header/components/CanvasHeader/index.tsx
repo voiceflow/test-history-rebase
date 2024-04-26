@@ -17,7 +17,8 @@ const CanvasHeader: React.FC = () => {
 
   const platformConfig = useActiveProjectPlatformConfig();
 
-  const showOneClickPublish = platformConfig.oneClickPublish && platformConfig.type !== Platform.Constants.PlatformType.DIALOGFLOW_ES;
+  const showOneClickPublish =
+    platformConfig.oneClickPublish && platformConfig.type !== Platform.Constants.PlatformType.DIALOGFLOW_ES;
 
   const showUpload = canvasPublish.allowed && platformConfig.type !== Platform.Constants.PlatformType.DIALOGFLOW_ES;
 

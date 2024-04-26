@@ -10,8 +10,11 @@ export const CONFIG = Base.Project.InvocationName.extend({
 
   description: (
     <>
-      The name users will say or type to interact with your Google Action. This does not need to be the same as your project name, but must comply
-      with these <System.Link.Anchor href="https://developers.google.com/assistant/conversational/df-asdk/discovery">guidelines.</System.Link.Anchor>
+      The name users will say or type to interact with your Google Action. This does not need to be the same as your
+      project name, but must comply with these{' '}
+      <System.Link.Anchor href="https://developers.google.com/assistant/conversational/df-asdk/discovery">
+        guidelines.
+      </System.Link.Anchor>
     </>
   ),
 

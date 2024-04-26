@@ -138,7 +138,9 @@ ace.define(
     // eslint-disable-next-line no-multi-assign
     const FoldMode = (exports.FoldMode = function (commentRegex) {
       if (commentRegex) {
-        this.foldingStartMarker = new RegExp(this.foldingStartMarker.source.replace(/\|[^|]*?$/, `|${commentRegex.start}`));
+        this.foldingStartMarker = new RegExp(
+          this.foldingStartMarker.source.replace(/\|[^|]*?$/, `|${commentRegex.start}`)
+        );
         this.foldingStopMarker = new RegExp(this.foldingStopMarker.source.replace(/\|[^|]*?$/, `|${commentRegex.end}`));
       }
     });
@@ -153,7 +155,11 @@ ace.define(
     FoldMode.prototype.getFoldWidget = function (session, foldStyle, row) {
       const line = session.getLine(row);
 
-      if (this.singleLineBlockCommentRe.test(line) && !this.startRegionRe.test(line) && !this.tripleStarBlockCommentRe.test(line)) {
+      if (
+        this.singleLineBlockCommentRe.test(line) &&
+        !this.startRegionRe.test(line) &&
+        !this.tripleStarBlockCommentRe.test(line)
+      ) {
         return '';
       }
 

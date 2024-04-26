@@ -1,8 +1,8 @@
-import * as Redux from 'redux';
+import type * as Redux from 'redux';
 
 import type { State } from '@/ducks';
 
-import { AnyAction, Dispatch, Middleware, MiddlewareAPI, Store } from '../types';
+import type { AnyAction, Dispatch, Middleware, MiddlewareAPI, Store } from '../types';
 import { wrapDispatch } from '../utils';
 
 export const createIgnoreMiddleware =

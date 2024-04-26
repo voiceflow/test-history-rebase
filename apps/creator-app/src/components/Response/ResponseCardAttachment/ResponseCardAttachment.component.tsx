@@ -29,7 +29,10 @@ export const ResponseCardAttachment: React.FC<IResponseCardAttachment> = ({
 
   const titleInput = useMarkupWithVariables({ value: attachment.title });
 
-  const url = useMemo(() => (media ? markupToString.fromDB(media?.url, entitiesVariablesMaps) : undefined), [media?.url, entitiesVariablesMaps]);
+  const url = useMemo(
+    () => (media ? markupToString.fromDB(media?.url, entitiesVariablesMaps) : undefined),
+    [media?.url, entitiesVariablesMaps]
+  );
   const description = useMemo(() => markupToSlate.fromDB(attachment.description), [attachment.description]);
 
   const attachmentModifiers = usePopperModifiers([{ name: 'offset', options: { offset: [0, 12] } }]);
@@ -47,7 +50,14 @@ export const ResponseCardAttachment: React.FC<IResponseCardAttachment> = ({
           onRemove={() => onRemove()}
           onDuplicate={() => onAttachmentDuplicate(attachment.id)}
           referenceElement={({ ref: contextMenuRef, isOpen: isContextMenuOpen, onContextMenu }) => (
-            <CMSFormListItem pr={0} ref={RefUtil.composeRefs(ref, contextMenuRef)} gap={4} align="center" onRemove={() => onRemove()} showOnHover>
+            <CMSFormListItem
+              pr={0}
+              ref={RefUtil.composeRefs(ref, contextMenuRef)}
+              gap={4}
+              align="center"
+              onRemove={() => onRemove()}
+              showOnHover
+            >
               <Attachment
                 onClick={onOpen}
                 isActive={isOpen || isContextMenuOpen}

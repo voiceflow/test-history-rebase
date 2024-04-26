@@ -1,4 +1,5 @@
-import { Popper, PopperTypes } from '@voiceflow/ui';
+import type { PopperTypes } from '@voiceflow/ui';
+import { Popper } from '@voiceflow/ui';
 import React from 'react';
 
 import { SelectMenuHeader } from './components';
@@ -12,7 +13,14 @@ interface SelectMenuProp extends Omit<PopperTypes.Props, 'renderContent'> {
   actionDisabled?: boolean;
 }
 
-const SelectMenu: React.FC<SelectMenuProp> = ({ onClose, children, sections, placement = 'bottom-start', actionDisabled, onClear }) => (
+const SelectMenu: React.FC<SelectMenuProp> = ({
+  onClose,
+  children,
+  sections,
+  placement = 'bottom-start',
+  actionDisabled,
+  onClear,
+}) => (
   <Popper
     width="300px"
     onClose={onClose}

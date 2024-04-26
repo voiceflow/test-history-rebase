@@ -2,7 +2,7 @@ import { Utils } from '@voiceflow/common';
 import { System } from '@voiceflow/ui';
 import React from 'react';
 
-import { Variable } from '@/models';
+import type { Variable } from '@/models';
 
 import { ControlledVariableInput } from '../VariableInput';
 import { Container } from './components';

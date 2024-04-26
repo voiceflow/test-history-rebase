@@ -1,4 +1,4 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Button, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
@@ -7,7 +7,7 @@ import * as Documentation from '@/config/documentation';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import { useMapManager, useSelector, useToggle } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
-import { NodeEditorV2 } from '@/pages/Canvas/managers/types';
+import type { NodeEditorV2 } from '@/pages/Canvas/managers/types';
 
 import { NoMatchV2, NoReplyV2 } from '../../components';
 import { cardFactory } from '../constants';
@@ -50,7 +50,9 @@ const CarouselEditorRoot: NodeEditorV2<Realtime.NodeData.Carousel, Realtime.Node
       footer={
         !isDragging && (
           <EditorV2.DefaultFooter tutorial={Documentation.CAROUSEL_STEP}>
-            <EditorV2.FooterActionsButton actions={[carouselLayoutOption, ...(isLast ? [noMatchConfig.option, noReplyConfig.option] : [])]} />
+            <EditorV2.FooterActionsButton
+              actions={[carouselLayoutOption, ...(isLast ? [noMatchConfig.option, noReplyConfig.option] : [])]}
+            />
             <Button variant={Button.Variant.PRIMARY} onClick={() => mapManager.onAdd()} squareRadius>
               Add Card
             </Button>

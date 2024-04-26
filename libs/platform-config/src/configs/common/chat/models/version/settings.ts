@@ -1,8 +1,8 @@
-import * as Base from '@platform-config/configs/base';
-import { ChatVersion } from '@voiceflow/chat-types';
-import { Nullable } from '@voiceflow/common';
+import type * as Base from '@platform-config/configs/base';
+import type { ChatVersion } from '@voiceflow/chat-types';
+import type { Nullable } from '@voiceflow/common';
 
-import * as Prompt from '../prompt';
+import type * as Prompt from '../prompt';
 
 export interface StaticGlobalNoMatch extends Base.Models.Version.Settings.StaticGlobalNoMatch {
   prompt?: Nullable<Prompt.Model>;

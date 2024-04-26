@@ -1,5 +1,5 @@
 import { PlanType } from '@voiceflow/internal';
-import * as Platform from '@voiceflow/platform-config';
+import type * as Platform from '@voiceflow/platform-config';
 
 import * as NLU from '@/config/nlu';
 import { Permission } from '@/constants/permissions';
@@ -7,7 +7,7 @@ import { ENTERPRISE_PLANS } from '@/constants/plans';
 import * as Tracking from '@/ducks/tracking';
 import { getUpgradePopperProps, getUpgradeTooltipProps } from '@/utils/upgrade';
 
-import { UpgradePopperAndTooltipPlanPermission } from './types';
+import type { UpgradePopperAndTooltipPlanPermission } from './types';
 
 export interface Data {
   nluType: Platform.Constants.NLUType;

@@ -8,7 +8,7 @@ import { useSelector } from '@/hooks/redux';
 import { createGroupedSelectID } from '@/hooks/select';
 import { getDiagramName, isComponentDiagram } from '@/utils/diagram.utils';
 
-import { Group, Multilevel, Option } from './types';
+import type { Group, Multilevel, Option } from './types';
 
 const createDiagramOptions = <OptionsMap extends Record<string, Option | Group> | Record<string, Option | Multilevel>>(
   diagramID: string,
@@ -38,18 +38,21 @@ export const useDiagramsBlocksOptionsMap = () => {
   const flowMapByDiagramID = useSelector(Designer.Flow.selectors.mapByDiagramID);
 
   return React.useMemo(() => {
-    return Object.entries(sharedNodes).reduce<Record<string, Option | Group>>((optionsMap, [diagramID, diagramSharedNodes]) => {
-      const diagram = getDiagramByID({ id: diagramID });
+    return Object.entries(sharedNodes).reduce<Record<string, Option | Group>>(
+      (optionsMap, [diagramID, diagramSharedNodes]) => {
+        const diagram = getDiagramByID({ id: diagramID });
 
-      if (!diagram) return optionsMap;
-      const flow = isComponentDiagram(diagram.type) ? flowMapByDiagramID[diagram.id] : null;
+        if (!diagram) return optionsMap;
+        const flow = isComponentDiagram(diagram.type) ? flowMapByDiagramID[diagram.id] : null;
 
-      const diagramOptions = createDiagramOptions(diagramID, optionsMap, diagramSharedNodes);
-      const diagramName = flow ? flow.name : getDiagramName(diagram.name);
+        const diagramOptions = createDiagramOptions(diagramID, optionsMap, diagramSharedNodes);
+        const diagramName = flow ? flow.name : getDiagramName(diagram.name);
 
-      optionsMap[diagramID] = { id: diagramID, label: diagramName, options: diagramOptions };
+        optionsMap[diagramID] = { id: diagramID, label: diagramName, options: diagramOptions };
 
-      return optionsMap;
-    }, {});
+        return optionsMap;
+      },
+      {}
+    );
   }, [sharedNodes, getDiagramByID]);
 };

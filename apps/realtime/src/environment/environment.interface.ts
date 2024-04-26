@@ -1,4 +1,4 @@
-import {
+import type {
   AnyResponseAttachmentObject,
   AnyResponseVariantObject,
   CardButtonObject,
@@ -18,7 +18,7 @@ import {
   WorkflowObject,
 } from '@voiceflow/orm-designer';
 
-import { AnyAttachmentObjectWithType } from '@/attachment/attachment.interface';
+import type { AnyAttachmentObjectWithType } from '@/attachment/attachment.interface';
 
 export interface EnvironmentCMSData {
   flows: FlowObject[];

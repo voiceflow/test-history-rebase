@@ -1,12 +1,12 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Draft } from 'immer';
+import type { Draft } from 'immer';
 import * as Normal from 'normal-store';
 
 import { blockNodeDataFactory } from '@/ducks/creatorV2/utils/node';
 import { createReverter } from '@/ducks/utils';
 
-import { CreatorState } from '../types';
+import type { CreatorState } from '../types';
 import { addNodeWithPorts, addStep } from '../utils';
 import { createActiveDiagramReducer, DIAGRAM_INVALIDATORS } from './utils';
 
@@ -35,7 +35,12 @@ const addBlockReducer = createActiveDiagramReducer(
     if (Normal.hasOne(state.nodes, stepID)) return;
 
     addBlock(state, { blockID, ports: blockPorts, coords: blockCoords, name: blockName, blockColor });
-    addStep(state, (stepIDs) => Utils.array.append(stepIDs, stepID), { parentNodeID: blockID, stepID, data: stepData, ports: stepPorts });
+    addStep(state, (stepIDs) => Utils.array.append(stepIDs, stepID), {
+      parentNodeID: blockID,
+      stepID,
+      data: stepData,
+      ports: stepPorts,
+    });
   }
 );
 

@@ -9,7 +9,8 @@ import { useASR, useCanASR, useGuestPermission, useSelector, useSpeechRecognitio
 import { UncontrolledSpeechBar } from '@/pages/Prototype/components/PrototypeSpeechBar';
 import ASRSpeechBar from '@/pages/Prototype/components/PrototypeSpeechBar/components/ASRSpeechBar';
 import { usePrototype, useResetPrototype, useStartPublicPrototype } from '@/pages/Prototype/hooks';
-import { OnInteraction, PMStatus, PrototypeAllTypes } from '@/pages/Prototype/types';
+import type { OnInteraction, PrototypeAllTypes } from '@/pages/Prototype/types';
+import { PMStatus } from '@/pages/Prototype/types';
 import ChatDialog from '@/pages/PublicPrototype/components/ChatDialog';
 
 import Footer from '../Footer';
@@ -24,7 +25,14 @@ interface PrototypeProps {
   globalDelayInMilliseconds: number;
 }
 
-const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state, actions, settings, onInteract, globalDelayInMilliseconds }) => {
+const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({
+  config,
+  state,
+  actions,
+  settings,
+  onInteract,
+  globalDelayInMilliseconds,
+}) => {
   const startPrototype = useStartPublicPrototype(settings);
   const resetPrototype = useResetPrototype();
   const [isCustomizedPrototypeAllowed] = useGuestPermission(settings.plan, Permission.CUSTOMIZE_PROTOTYPE);
@@ -100,7 +108,10 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state
   const canUseASR = useCanASR();
   const speechRecognition = useSpeechRecognition({ locale, onTranscript, askOnSetup: isVoicePrototype });
 
-  const checkPMStatus = React.useCallback((...args: PMStatus[]) => args.includes(prototypeMachineStatus as PMStatus), [prototypeMachineStatus]);
+  const checkPMStatus = React.useCallback(
+    (...args: PMStatus[]) => args.includes(prototypeMachineStatus as PMStatus),
+    [prototypeMachineStatus]
+  );
 
   const layout = settings.layout ?? Realtime.Utils.platform.getDefaultPrototypeLayout(settings.projectType);
 

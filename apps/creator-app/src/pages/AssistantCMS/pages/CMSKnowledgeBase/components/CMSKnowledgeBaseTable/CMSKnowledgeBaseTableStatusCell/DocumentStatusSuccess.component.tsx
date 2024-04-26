@@ -3,7 +3,7 @@ import React from 'react';
 
 import { usePopperModifiers } from '@/hooks/popper.hook';
 
-import { ICMSKnowledgeBaseTableStatusCell } from './CMSKnowledgeBaseTableStatusCell.interface';
+import type { ICMSKnowledgeBaseTableStatusCell } from './CMSKnowledgeBaseTableStatusCell.interface';
 
 export const DocumentStatusSuccess: React.FC<ICMSKnowledgeBaseTableStatusCell> = () => {
   const modifiers = usePopperModifiers([{ name: 'offset', options: { offset: [0, -2] } }]);

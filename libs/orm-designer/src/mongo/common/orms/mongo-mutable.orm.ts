@@ -10,7 +10,7 @@ import { MongoORM } from './mongo.orm';
 
 export abstract class MongoMutableORM<
     BaseEntity extends MongoEntity,
-    DiscriminatorEntity extends BaseEntity = BaseEntity
+    DiscriminatorEntity extends BaseEntity = BaseEntity,
   >
   extends MongoORM<BaseEntity, DiscriminatorEntity>
   implements MutableORM<BaseEntity, DiscriminatorEntity>

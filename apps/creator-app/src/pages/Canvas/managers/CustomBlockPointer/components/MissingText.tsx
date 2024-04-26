@@ -26,7 +26,9 @@ const MissingText: React.FC = () => (
   <Container>
     <Title>Custom block was deleted</Title>
     <br />
-    <StyledSpan>Custom blocks source was deleted from your library. Remove or replace this step from your assistant.</StyledSpan>
+    <StyledSpan>
+      Custom blocks source was deleted from your library. Remove or replace this step from your assistant.
+    </StyledSpan>
   </Container>
 );
 

@@ -1,4 +1,4 @@
-import { BaseModels } from '@voiceflow/base-types';
+import type { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { useAsyncEffect, useContextApi } from '@voiceflow/ui';
@@ -12,7 +12,7 @@ import * as Session from '@/ducks/session';
 import { useSelector, useStore } from '@/hooks/redux';
 import { isTemplateDiagram } from '@/utils/diagram.utils';
 
-import { Filters, NodeDatabaseEntry } from './types';
+import type { Filters, NodeDatabaseEntry } from './types';
 import { buildNodeDatabase } from './utils';
 
 export * as SearchTypes from './types';
@@ -41,7 +41,10 @@ const SearchProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const store = useStore();
   const diagramIDs = useSelector(Diagram.allDiagramIDsSelector);
   const [filters, setFilters] = React.useState<Filters>({});
-  const updateFilters = React.useCallback((filters: Filters) => setFilters((currentFilters) => ({ ...currentFilters, ...filters })), []);
+  const updateFilters = React.useCallback(
+    (filters: Filters) => setFilters((currentFilters) => ({ ...currentFilters, ...filters })),
+    []
+  );
 
   // initialize one time ever on load of project, all the diagrams
   useAsyncEffect(async () => {

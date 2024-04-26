@@ -4,7 +4,7 @@ import client from '@/client';
 import * as Session from '@/ducks/session';
 import { useSelector } from '@/hooks';
 
-import { Response } from './types';
+import type { Response } from './types';
 import { mapTestResponse, mapTestResponseError } from './utils';
 
 export const useRequest = (requestObj: Record<string, unknown>) => {

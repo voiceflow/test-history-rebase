@@ -6,7 +6,7 @@ import { PRO_PLUS_PLANS } from '@/constants/plans';
 import * as Tracking from '@/ducks/tracking';
 import { getUpgradePopperProps, getUpgradeTooltipProps } from '@/utils/upgrade';
 
-import { UpgradeModalAndTooltipPlanPermission } from './types';
+import type { UpgradeModalAndTooltipPlanPermission } from './types';
 
 export const NLU_EXPORT_CSV_PERMISSIONS = {
   plans: PRO_PLUS_PLANS,
@@ -14,7 +14,7 @@ export const NLU_EXPORT_CSV_PERMISSIONS = {
 
   upgradeModal: () => ({
     ...getUpgradePopperProps(PlanType.PRO, Tracking.UpgradePrompt.EXPORT_CSV_NLU),
-    title: `Need to export data as CSV?`,
+    title: 'Need to export data as CSV?',
     header: 'CSV Export',
     description: 'CSV export is a pro feature. Please upgrade to pro to continue.',
   }),

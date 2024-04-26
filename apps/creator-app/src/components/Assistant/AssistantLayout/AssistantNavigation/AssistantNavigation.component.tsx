@@ -11,7 +11,11 @@ import { useFeature } from '@/hooks/feature';
 import { useOnLinkClick } from '@/hooks/navigation.hook';
 import { useLogoButtonOptions } from '@/pages/Project/components/Header/hooks';
 
-import { useAssistantNavigationHotkeys, useAssistantNavigationItems, useAssistantNavigationLogoItems } from './AssistantNavigation.hook';
+import {
+  useAssistantNavigationHotkeys,
+  useAssistantNavigationItems,
+  useAssistantNavigationLogoItems,
+} from './AssistantNavigation.hook';
 import { AssistantNavigationHelpItem } from './AssistantNavigationHelpItem.component';
 import { AssistantNavigationTokenUsage } from './AssistantNavigationTokenUsage.component';
 
@@ -37,7 +41,11 @@ export const AssistantNavigation: React.FC = () => {
               <AssistantSharePrototypePopper
                 referenceElement={(sharePrototypeProps) => (
                   <div ref={composeRefs(exportProps.ref, sharePrototypeProps.ref)}>
-                    <PrimaryNavigation.Header menuProps={{ numberOfItemsToShow: logoItems.length }} testID={tid(TEST_ID, 'home')} useNewLogo>
+                    <PrimaryNavigation.Header
+                      menuProps={{ numberOfItemsToShow: logoItems.length }}
+                      testID={tid(TEST_ID, 'home')}
+                      useNewLogo
+                    >
                       {logoItems.map((item) =>
                         'divider' in item ? (
                           <Menu.Divider key={item.key} />
@@ -46,7 +54,9 @@ export const AssistantNavigation: React.FC = () => {
                             key={item.key}
                             label={item.label}
                             testID={tid(TEST_ID, ['home', 'menu-item'], item.key)}
-                            onClick={() => item.onClick({ export: exportProps.onOpen, sharePrototype: sharePrototypeProps.onOpen })}
+                            onClick={() =>
+                              item.onClick({ export: exportProps.onOpen, sharePrototype: sharePrototypeProps.onOpen })
+                            }
                             prefixIconName={item.iconName}
                           />
                         )
@@ -58,14 +68,22 @@ export const AssistantNavigation: React.FC = () => {
             )}
           />
         ) : (
-          <PrimaryNavigation.Header menuProps={{ numberOfItemsToShow: logoOptions.length }} testID={tid(TEST_ID, 'home')} useNewLogo>
+          <PrimaryNavigation.Header
+            menuProps={{ numberOfItemsToShow: logoOptions.length }}
+            testID={tid(TEST_ID, 'home')}
+            useNewLogo
+          >
             {logoOptions.map(
               (option) =>
                 option &&
                 (option.divider ? (
                   <Menu.Divider key={option.key} />
                 ) : (
-                  <Menu.Item key={option.key} {...option} testID={tid(TEST_ID, ['home', 'menu-item'], option.testID || option.key)} />
+                  <Menu.Item
+                    key={option.key}
+                    {...option}
+                    testID={tid(TEST_ID, ['home', 'menu-item'], option.testID || option.key)}
+                  />
                 ))
             )}
           </PrimaryNavigation.Header>

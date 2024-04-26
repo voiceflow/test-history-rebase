@@ -60,5 +60,6 @@ export const formatBuiltInIntentName = Realtime.Utils.platform.createPlatformSel
         ? Utils.string.capitalizeFirstLetter(name.replace('actions.intent.', '').replace(/_/g, ' ').toLowerCase())
         : Utils.string.capitalizeFirstLetter(removeBuiltInIntentNamePrefix(name).replace(/_/g, ' ').toLowerCase()),
   },
-  (name: string) => Utils.string.capitalizeFirstLetter(removeBuiltInIntentNamePrefix(name).replace(/_/g, ' ').toLowerCase())
+  (name: string) =>
+    Utils.string.capitalizeFirstLetter(removeBuiltInIntentNamePrefix(name).replace(/_/g, ' ').toLowerCase())
 );

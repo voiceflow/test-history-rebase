@@ -121,7 +121,10 @@ export class EnvironmentService {
     responseVariants: AnyResponseVariantObject[];
     responseDiscriminators: ResponseDiscriminatorObject[];
   }) {
-    const { entities: entitiesJSON, entityVariants: entityVariantsJSON } = this.entity.toJSONWithSubResources({ entities, entityVariants });
+    const { entities: entitiesJSON, entityVariants: entityVariantsJSON } = this.entity.toJSONWithSubResources({
+      entities,
+      entityVariants,
+    });
     const { variables: variablesJSON } = this.variable.toJSONWithSubResources({ variables });
 
     const legacySlots = Realtime.Adapters.entityToLegacySlot.mapFromDB({
@@ -132,7 +135,12 @@ export class EnvironmentService {
     const { intents: legacyIntents } = Realtime.Adapters.intentToLegacyIntent.mapFromDB(
       {
         ...this.intent.toJSONWithSubResources({ intents, utterances, requiredEntities }),
-        ...this.response.toJSONWithSubResources({ responses, responseVariants, responseAttachments: [], responseDiscriminators }),
+        ...this.response.toJSONWithSubResources({
+          responses,
+          responseVariants,
+          responseAttachments: [],
+          responseDiscriminators,
+        }),
       },
       {
         entities: entitiesJSON,
@@ -174,7 +182,11 @@ export class EnvironmentService {
   /* Find */
 
   async findManyForAssistantID(assistantID: string) {
-    const project = await this.project.findOneOrFailWithFields(assistantID, ['liveVersion', 'devVersion', 'previewVersion']);
+    const project = await this.project.findOneOrFailWithFields(assistantID, [
+      'liveVersion',
+      'devVersion',
+      'previewVersion',
+    ]);
 
     const tagsMap: Record<string, 'production' | 'development' | 'preview'> = {};
 
@@ -182,7 +194,12 @@ export class EnvironmentService {
     if (project.liveVersion) tagsMap[project.liveVersion.toJSON()] = 'production';
     if (project.previewVersion) tagsMap[project.previewVersion.toJSON()] = 'preview';
 
-    const versions = await this.version.findManyWithFields(Object.keys(tagsMap), ['_id', 'name', 'creatorID', 'updatedAt']);
+    const versions = await this.version.findManyWithFields(Object.keys(tagsMap), [
+      '_id',
+      'name',
+      'creatorID',
+      'updatedAt',
+    ]);
 
     return versions.map((version) => {
       const tag = tagsMap[version._id.toJSON()];
@@ -208,12 +225,15 @@ export class EnvironmentService {
     const { legacySlots, legacyIntents, legacyVariables } = this.convertCMSResourcesToLegacyResources({
       ...cmsData,
       isVoiceAssistant:
-        Realtime.legacyPlatformToProjectType(project.platform, project.type, project.nlu).type === Platform.Constants.ProjectType.VOICE,
+        Realtime.legacyPlatformToProjectType(project.platform, project.type, project.nlu).type ===
+        Platform.Constants.ProjectType.VOICE,
     });
 
     await Promise.all([
       this.version.patchOnePlatformData(environmentID, { intents: legacyIntents, slots: legacySlots }),
-      this.version.patchOne(environmentID, { variables: Utils.array.unique([...version.variables, ...legacyVariables]) }),
+      this.version.patchOne(environmentID, {
+        variables: Utils.array.unique([...version.variables, ...legacyVariables]),
+      }),
     ]);
 
     // fetching version to get updated platformData
@@ -239,7 +259,14 @@ export class EnvironmentService {
       workspaceID,
       environmentID,
       centerDiagrams,
-    }: { userID: number; backup?: boolean; workspaceID: number; assistantID: string; environmentID: string; centerDiagrams?: boolean }
+    }: {
+      userID: number;
+      backup?: boolean;
+      workspaceID: number;
+      assistantID: string;
+      environmentID: string;
+      centerDiagrams?: boolean;
+    }
   ) {
     const createdAt = new Date().toJSON();
 
@@ -296,7 +323,10 @@ export class EnvironmentService {
 
   /* Export  */
 
-  public prepareExportCMSData(data: EnvironmentCMSData, { userID, backup, workspaceID }: { userID: number; backup?: boolean; workspaceID: number }) {
+  public prepareExportCMSData(
+    data: EnvironmentCMSData,
+    { userID, backup, workspaceID }: { userID: number; backup?: boolean; workspaceID: number }
+  ) {
     const cmsFunctionsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_FUNCTIONS, { userID, workspaceID });
 
     return {
@@ -319,7 +349,12 @@ export class EnvironmentService {
       version: VersionObject;
       diagrams: DiagramObject[];
     },
-    { userID, backup, workspaceID, centerDiagrams = true }: { userID: number; backup?: boolean; workspaceID: number; centerDiagrams?: boolean }
+    {
+      userID,
+      backup,
+      workspaceID,
+      centerDiagrams = true,
+    }: { userID: number; backup?: boolean; workspaceID: number; centerDiagrams?: boolean }
   ): EnvironmentExportDTO {
     const version = this.version.toJSON(data.version);
     const diagrams = this.diagram
@@ -327,7 +362,11 @@ export class EnvironmentService {
       .map((diagram) => this.diagramUtil.cleanupNodes(centerDiagrams ? this.diagramUtil.center(diagram) : diagram));
 
     // Remove stored `variableStateID` to avoid referencing the state from another user
-    if (version.prototype && Utils.object.isObject(version.prototype) && Utils.object.isObject(version.prototype.settings)) {
+    if (
+      version.prototype &&
+      Utils.object.isObject(version.prototype) &&
+      Utils.object.isObject(version.prototype.settings)
+    ) {
       delete version.prototype.settings.variableStateID;
     }
 
@@ -344,7 +383,10 @@ export class EnvironmentService {
   }
 
   public async exportJSON({ environmentID }: { userID: number; workspaceID: number; environmentID: string }) {
-    const [cms, { version, diagrams }] = await Promise.all([this.findOneCMSData(environmentID), this.version.exportOne(environmentID)]);
+    const [cms, { version, diagrams }] = await Promise.all([
+      this.findOneCMSData(environmentID),
+      this.version.exportOne(environmentID),
+    ]);
 
     return {
       cms,
@@ -377,11 +419,17 @@ export class EnvironmentService {
 
       ...(cms.attachments &&
         cms.cardButtons &&
-        this.attachment.prepareImportData({ attachments: cms.attachments, cardButtons: cms.cardButtons }, prepareDataContext)),
+        this.attachment.prepareImportData(
+          { attachments: cms.attachments, cardButtons: cms.cardButtons },
+          prepareDataContext
+        )),
 
       ...(cms.entities &&
         cms.entityVariants &&
-        this.entity.prepareImportData({ entities: cms.entities, entityVariants: cms.entityVariants }, prepareDataContext)),
+        this.entity.prepareImportData(
+          { entities: cms.entities, entityVariants: cms.entityVariants },
+          prepareDataContext
+        )),
 
       ...(cms.intents &&
         cms.utterances &&
@@ -414,7 +462,9 @@ export class EnvironmentService {
           prepareDataContext
         )),
 
-      ...(cmsWorkflowsEnabled && cms.workflows && this.workflow.prepareImportData({ workflows: cms.workflows }, prepareDataContext)),
+      ...(cmsWorkflowsEnabled &&
+        cms.workflows &&
+        this.workflow.prepareImportData({ workflows: cms.workflows }, prepareDataContext)),
     };
   }
 
@@ -579,11 +629,18 @@ export class EnvironmentService {
   ) {
     // ORDER MATTERS
     await this.entity.upsertManyWithSubResources({ entities, entityVariants }, meta);
-    await this.response.upsertManyWithSubResources({ responses, responseVariants, responseAttachments: [], responseDiscriminators }, meta);
+    await this.response.upsertManyWithSubResources(
+      { responses, responseVariants, responseAttachments: [], responseDiscriminators },
+      meta
+    );
     await this.intent.upsertManyWithSubResources({ intents, utterances, requiredEntities }, meta);
   }
 
-  async migrateCMSData(data: Realtime.Migrate.MigrationData, patches: Patch[], meta: { userID: number; assistantID: string; environmentID: string }) {
+  async migrateCMSData(
+    data: Realtime.Migrate.MigrationData,
+    patches: Patch[],
+    meta: { userID: number; assistantID: string; environmentID: string }
+  ) {
     const {
       flows = [],
       folders = [],
@@ -605,7 +662,10 @@ export class EnvironmentService {
     await this.workflow.upsertManyWithSubResources({ workflows }, meta);
     await this.variable.upsertManyWithSubResources({ variables }, meta);
     await this.entity.upsertManyWithSubResources({ entities, entityVariants }, meta);
-    await this.response.upsertManyWithSubResources({ responses, responseVariants, responseAttachments: [], responseDiscriminators }, meta);
+    await this.response.upsertManyWithSubResources(
+      { responses, responseVariants, responseAttachments: [], responseDiscriminators },
+      meta
+    );
     await this.intent.upsertManyWithSubResources({ intents, utterances, requiredEntities }, meta);
   }
 
@@ -624,7 +684,10 @@ export class EnvironmentService {
       this.variable.deleteManyByEnvironment(environmentID),
     ]);
 
-    await Promise.all([this.folder.deleteManyByEnvironment(environmentID), this.attachment.deleteManyByEnvironment(environmentID)]);
+    await Promise.all([
+      this.folder.deleteManyByEnvironment(environmentID),
+      this.attachment.deleteManyByEnvironment(environmentID),
+    ]);
   }
 
   /* Clone */
@@ -646,7 +709,9 @@ export class EnvironmentService {
 
     const targetEnvironmentExists = targetEnvironmentID && (await this.version.exists(targetEnvironmentID));
     if (!targetEnvironmentExists) {
-      const sourceDiagrams = await (cloneDiagrams ? this.diagram.findManyByVersionID(sourceEnvironmentID) : Promise.resolve([]));
+      const sourceDiagrams = await (cloneDiagrams
+        ? this.diagram.findManyByVersionID(sourceEnvironmentID)
+        : Promise.resolve([]));
 
       ({ version: targetVersion, diagrams: targetDiagrams } = await this.version.importOne({
         sourceVersion: this.version.toJSON(sourceVersion),
@@ -677,12 +742,16 @@ export class EnvironmentService {
       const { folders } = await this.folder.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload);
       const { variables } = await this.variable.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload);
       const { workflows } = await this.workflow.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload);
-      const { attachments, cardButtons } = await this.attachment.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload);
+      const { attachments, cardButtons } =
+        await this.attachment.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload);
       const { responses, responseVariants, responseAttachments, responseDiscriminators } =
         await this.response.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload);
-      const { entities, entityVariants } = await this.entity.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload);
-      const { intents, utterances, requiredEntities } = await this.intent.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload);
-      const { functions, functionPaths, functionVariables } = await this.functionService.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload);
+      const { entities, entityVariants } =
+        await this.entity.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload);
+      const { intents, utterances, requiredEntities } =
+        await this.intent.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload);
+      const { functions, functionPaths, functionVariables } =
+        await this.functionService.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload);
 
       return {
         flows,
@@ -728,7 +797,12 @@ export class EnvironmentService {
     convertToLegacyFormat?: boolean;
   }) {
     return this.postgresEM.transactional(async () => {
-      const result = await this.cloneOne({ cloneDiagrams, sourceEnvironmentID, targetEnvironmentID, targetVersionOverride });
+      const result = await this.cloneOne({
+        cloneDiagrams,
+        sourceEnvironmentID,
+        targetEnvironmentID,
+        targetVersionOverride,
+      });
 
       let targetVersion = result.version;
 
@@ -771,7 +845,10 @@ export class EnvironmentService {
   }
 
   async getNLUTrainingDiff(environmentID: string) {
-    const { prototype: versionPrototype, projectID } = await this.version.findOneOrFailWithFields(environmentID, ['prototype', 'projectID']);
+    const { prototype: versionPrototype, projectID } = await this.version.findOneOrFailWithFields(environmentID, [
+      'prototype',
+      'projectID',
+    ]);
     const { prototype: projectPrototype } = await this.project.findOneOrFailWithFields(projectID, ['prototype']);
 
     const modelDiff = this.nluTrainingUtil.getModelDiff(projectPrototype?.trainedModel, versionPrototype?.model);

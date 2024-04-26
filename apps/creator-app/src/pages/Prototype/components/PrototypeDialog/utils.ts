@@ -1,6 +1,7 @@
 import { BaseRequest } from '@voiceflow/base-types';
 
-import { BotMessageTypes, Interaction, Message, MessageType } from '@/pages/Prototype/types';
+import type { Interaction, Message } from '@/pages/Prototype/types';
+import { BotMessageTypes, MessageType } from '@/pages/Prototype/types';
 import { openURLInANewTab } from '@/utils/window';
 
 export const checkIfFirstInGroup = (previousMessage: Message, currentMessage: Message) => {

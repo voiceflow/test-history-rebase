@@ -61,7 +61,15 @@ export type { DonutChartDatum } from './DonutChart';
 export { default as DonutChart } from './DonutChart';
 export type { DropdownPlacement, DropdownProps } from './Dropdown';
 export { default as Dropdown } from './Dropdown';
-export { ErrorBoundaryWrapper, ErrorDescription, ErrorMessage, ErrorMessageWithDivider, Page404, Page404Wrapper, PageError } from './Error';
+export {
+  ErrorBoundaryWrapper,
+  ErrorDescription,
+  ErrorMessage,
+  ErrorMessageWithDivider,
+  Page404,
+  Page404Wrapper,
+  PageError,
+} from './Error';
 export {
   default as Flex,
   FlexApart,
@@ -159,7 +167,17 @@ export { default as Table } from './Table';
 export { default as Tabs } from './Tabs';
 export { default as Tag } from './Tag';
 export type { TextProps } from './Text';
-export { BlockText, ClickableText, Description, Label, Link, OverflowText, overflowTextStyles, default as Text, Title } from './Text';
+export {
+  BlockText,
+  ClickableText,
+  Description,
+  Label,
+  Link,
+  OverflowText,
+  overflowTextStyles,
+  default as Text,
+  Title,
+} from './Text';
 export { default as Thumbnail } from './Thumbnail';
 export type { TippyTooltipProps } from './TippyTooltip';
 export { default as TippyTooltip, TooltipTheme } from './TippyTooltip';

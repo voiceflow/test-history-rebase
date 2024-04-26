@@ -1,6 +1,7 @@
 import { LoadCircle } from '@ui/components/Loader';
 import SvgIcon from '@ui/components/SvgIcon';
-import User, { UserData } from '@ui/components/User';
+import type { UserData } from '@ui/components/User';
+import User from '@ui/components/User';
 import { stopPropagation } from '@ui/utils';
 import { Utils } from '@voiceflow/common';
 import React from 'react';
@@ -8,8 +9,9 @@ import { useDropzone } from 'react-dropzone';
 
 import { IMAGE_FILE_TYPES } from '../../constants';
 import { useFileTypesToMimeType } from '../../hooks';
-import { ImageInjectedWithUploadProps } from '../../types';
-import { SingleUploadConfig, useUpload } from '../../useUpload';
+import type { ImageInjectedWithUploadProps } from '../../types';
+import type { SingleUploadConfig } from '../../useUpload';
+import { useUpload } from '../../useUpload';
 import { hasValidImages } from '../../utils';
 import { ErrorText, RemoveButton } from '../styles';
 import * as S from './styles';
@@ -99,7 +101,11 @@ export const BaseIconUpload = React.forwardRef<HTMLDivElement, BaseIconUploadPro
     } else {
       content = (
         <S.OverlayContainer isSquare={isSquare}>
-          <SvgIcon size={placeholderIconSize} color={image || user ? '#ffffff' : 'rgba(110, 132, 154, 0.85)'} icon="addImage" />
+          <SvgIcon
+            size={placeholderIconSize}
+            color={image || user ? '#ffffff' : 'rgba(110, 132, 154, 0.85)'}
+            icon="addImage"
+          />
         </S.OverlayContainer>
       );
     }
@@ -141,11 +147,16 @@ export const BaseIconUpload = React.forwardRef<HTMLDivElement, BaseIconUploadPro
   }
 );
 
-export interface IconUploadProps extends IconUploadOwnProps, Omit<SingleUploadConfig, 'fileType' | 'endpoint' | 'validate' | 'update'> {
+export interface IconUploadProps
+  extends IconUploadOwnProps,
+    Omit<SingleUploadConfig, 'fileType' | 'endpoint' | 'validate' | 'update'> {
   endpoint?: string;
 }
 
-const IconUpload: React.ForwardRefRenderFunction<HTMLDivElement, IconUploadProps> = ({ update, endpoint = '/image', ...props }, ref) => {
+const IconUpload: React.ForwardRefRenderFunction<HTMLDivElement, IconUploadProps> = (
+  { update, endpoint = '/image', ...props },
+  ref
+) => {
   const uploadApi = useUpload({
     fileType: 'image',
     endpoint,

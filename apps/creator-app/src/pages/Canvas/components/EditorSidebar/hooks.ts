@@ -4,9 +4,10 @@ import React from 'react';
 import { BlockType } from '@/constants';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import { useSelector } from '@/hooks';
-import { EngineContext, ManagerContext, ManagerGetter } from '@/pages/Canvas/contexts';
+import type { ManagerGetter } from '@/pages/Canvas/contexts';
+import { EngineContext, ManagerContext } from '@/pages/Canvas/contexts';
 import type Engine from '@/pages/Canvas/engine';
-import { NodeDataUpdater } from '@/pages/Canvas/types';
+import type { NodeDataUpdater } from '@/pages/Canvas/types';
 
 export interface PathEntry {
   id?: string;
@@ -48,7 +49,10 @@ const generatePath =
                   label: 'Commands',
                   focus: () => {
                     engine.setActive(parentNodeID);
-                    updatePath([{ label: getManager(BlockType.START)?.label || 'Block' }, { label: 'Commands', type: 'commands' }]);
+                    updatePath([
+                      { label: getManager(BlockType.START)?.label || 'Block' },
+                      { label: 'Commands', type: 'commands' },
+                    ]);
                   },
                 },
               ]
@@ -97,7 +101,10 @@ export const useEditorPath = () => {
       }),
     [updatePath]
   );
-  const pushToPath = React.useCallback((subPath: PathEntry) => updatePath((prevPath) => [...prevPath, subPath]), [updatePath]);
+  const pushToPath = React.useCallback(
+    (subPath: PathEntry) => updatePath((prevPath) => [...prevPath, subPath]),
+    [updatePath]
+  );
   const popFromPath = React.useCallback(() => updatePath((prevPath) => prevPath.slice(0, -1)), [updatePath]);
 
   updatePathRef.current = updatePath;

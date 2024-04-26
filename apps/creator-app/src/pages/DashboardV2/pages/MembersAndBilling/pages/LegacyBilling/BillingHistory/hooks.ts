@@ -4,7 +4,7 @@ import React from 'react';
 import workspaceClient from '@/client/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector } from '@/hooks';
-import { Billing } from '@/models';
+import type { Billing } from '@/models';
 
 export interface BillingHistoryAPI {
   data: Billing.PastInvoice[];

@@ -1,11 +1,11 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { SvgIconTypes } from '@voiceflow/ui';
+import type { SvgIconTypes } from '@voiceflow/ui';
 
 import * as Documentation from '@/config/documentation';
 
-import { NodeConfig } from '../types';
+import type { NodeConfig } from '../types';
 
 const NAME_MAP: Record<Realtime.DialogType, string> = {
   [Realtime.DialogType.AUDIO]: 'Audio',
@@ -17,8 +17,14 @@ const ICON_MAP: Record<Realtime.DialogType, SvgIconTypes.Icon> = {
   [Realtime.DialogType.VOICE]: 'systemMessage',
 };
 
-export const AUDIO_MOCK_DATA = { dialogs: [{ id: '', type: Realtime.DialogType.AUDIO as const, url: '' }], randomize: true };
-export const VOICE_MOCK_DATA = { dialogs: [{ id: '', type: Realtime.DialogType.VOICE as const, voice: '', content: '' }], randomize: true };
+export const AUDIO_MOCK_DATA = {
+  dialogs: [{ id: '', type: Realtime.DialogType.AUDIO as const, url: '' }],
+  randomize: true,
+};
+export const VOICE_MOCK_DATA = {
+  dialogs: [{ id: '', type: Realtime.DialogType.VOICE as const, voice: '', content: '' }],
+  randomize: true,
+};
 
 export const getLabelByType = (type?: Realtime.DialogType): string => NAME_MAP[type ?? Realtime.DialogType.VOICE];
 
@@ -32,7 +38,8 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Speak, Realtime.NodeData.
       ? 'Plays short audio files (less than 240s).'
       : 'Text-to-speech messages spoken by the Voice assistant.',
 
-  getTooptipLink: (data) => (data?.dialogs[0]?.type === Realtime.DialogType.AUDIO ? Documentation.AUDIO_STEP : Documentation.SPEAK_STEP),
+  getTooptipLink: (data) =>
+    data?.dialogs[0]?.type === Realtime.DialogType.AUDIO ? Documentation.AUDIO_STEP : Documentation.SPEAK_STEP,
 
   factory: ({ dialogs: [data] = [] } = {}, options) => ({
     node: {

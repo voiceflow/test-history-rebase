@@ -1,4 +1,4 @@
-import { LoguxControlOptions } from '../../control';
+import type { LoguxControlOptions } from '../../control';
 import AddWorkspaceControl from './add';
 import ChangeWorkspaceSeats from './changeSeats';
 import CheckoutWorkspaceControl from './checkout';
@@ -19,7 +19,11 @@ import {
 } from './member';
 import { LoadAllQuotasControl, RefreshQuotaDetails, ReplaceQuotaControl } from './quotas';
 import RemoveWorkspaceControl from './remove';
-import { PatchWorkspaceSettingsControl, ReplaceWorkspaceSettingsControl, ToggleDashboardKanbanControl } from './settings';
+import {
+  PatchWorkspaceSettingsControl,
+  ReplaceWorkspaceSettingsControl,
+  ToggleDashboardKanbanControl,
+} from './settings';
 import UpdateWorkspaceImageControl from './updateImage';
 import UpdateWorkspaceNameControl from './updateName';
 

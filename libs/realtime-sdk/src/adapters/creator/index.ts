@@ -1,12 +1,13 @@
-import { CreatorDiagram, DBNodeStart, Link, Node, NodeData, Port } from '@realtime-sdk/models';
+import type { CreatorDiagram, DBNodeStart, Link, Node, NodeData, Port } from '@realtime-sdk/models';
 import { isActions, isBlock, isMarkupBlockType, isStart } from '@realtime-sdk/utils/typeGuards';
-import { BaseModels } from '@voiceflow/base-types';
+import type { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import * as Platform from '@voiceflow/platform-config/backend';
+import type * as Platform from '@voiceflow/platform-config/backend';
 import { createSimpleAdapter } from 'bidirectional-adapter';
-import { denormalize, Normalized } from 'normal-store';
+import type { Normalized } from 'normal-store';
+import { denormalize } from 'normal-store';
 
-import { AdapterContext, VersionAdapterContext } from '../types';
+import type { AdapterContext, VersionAdapterContext } from '../types';
 import { cleanupDBNodes } from './cleanup';
 import nodeAdapter from './node';
 
@@ -15,7 +16,10 @@ export { default as nodeDataAdapter } from './nodeData';
 export { default as stepPortsAdapter } from './stepPorts';
 
 // we will be doing a patch request.
-export type DBCreatorDiagram = Omit<BaseModels.Diagram.Model, 'created' | 'creatorID' | 'variables' | 'versionID' | 'name' | '_id' | 'diagramID'>;
+export type DBCreatorDiagram = Omit<
+  BaseModels.Diagram.Model,
+  'created' | 'creatorID' | 'variables' | 'versionID' | 'name' | '_id' | 'diagramID'
+>;
 
 const creatorAdapter = createSimpleAdapter<
   DBCreatorDiagram,
@@ -25,7 +29,7 @@ const creatorAdapter = createSimpleAdapter<
       platform: Platform.Constants.PlatformType;
       projectType: Platform.Constants.ProjectType;
       context: AdapterContext;
-    }
+    },
   ],
   [
     {
@@ -35,7 +39,7 @@ const creatorAdapter = createSimpleAdapter<
       projectType: Platform.Constants.ProjectType;
       context: VersionAdapterContext;
       partial?: boolean;
-    }
+    },
   ]
 >(
   (diagram, { platform, projectType, context }) => {
@@ -53,15 +57,18 @@ const creatorAdapter = createSimpleAdapter<
 
     const nodeList = cleanupDBNodes(diagram.nodes);
 
-    const parentNodes = nodeList.reduce<Record<string, BaseModels.BaseBlock | BaseModels.BaseActions | DBNodeStart>>((acc, node) => {
-      if (isBlock(node) || isActions(node) || isStart(node)) {
-        node.data.steps.forEach((id: string) => {
-          acc[id] = node;
-        });
-      }
+    const parentNodes = nodeList.reduce<Record<string, BaseModels.BaseBlock | BaseModels.BaseActions | DBNodeStart>>(
+      (acc, node) => {
+        if (isBlock(node) || isActions(node) || isStart(node)) {
+          node.data.steps.forEach((id: string) => {
+            acc[id] = node;
+          });
+        }
 
-      return acc;
-    }, {});
+        return acc;
+      },
+      {}
+    );
 
     const registerNode = (dbNode: BaseModels.BaseDiagramNode) => {
       const {
@@ -97,7 +104,10 @@ const creatorAdapter = createSimpleAdapter<
     // extra safeguard against targeting non-existent nodes or ports
     const validLinks = links.filter(
       (link) =>
-        nodeIDs.has(link.source.nodeID) && nodeIDs.has(link.target.nodeID) && portIDs.has(link.source.portID) && portIDs.has(link.target.portID)
+        nodeIDs.has(link.source.nodeID) &&
+        nodeIDs.has(link.target.nodeID) &&
+        portIDs.has(link.source.portID) &&
+        portIDs.has(link.target.portID)
     );
 
     return {

@@ -1,6 +1,6 @@
-import { Nullable } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { CustomScrollbarsTypes } from '@voiceflow/ui';
+import type { CustomScrollbarsTypes } from '@voiceflow/ui';
 import React from 'react';
 import type { ExtractRouteParams } from 'react-router';
 import { generatePath, useLocation, useRouteMatch } from 'react-router-dom';
@@ -17,16 +17,24 @@ import type Engine from '@/pages/Canvas/engine';
 import { useEditingMode } from '@/pages/Project/hooks';
 
 import { EditorAnimationEffect } from '../../constants';
-import { NodeEditorV2Props } from '../../managers/types';
+import type { NodeEditorV2Props } from '../../managers/types';
 import { LockedBlockOverlay } from '../LockedEditorOverlay';
 import { EditorSidebarProvider } from './context';
-import { GoToTypes } from './types';
+import type { GoToTypes } from './types';
 
 export { EditorSidebarContext } from './context';
 
 const FOCUSED_NODE_SIDEBAR_OFFSET = 20;
 
-export const useUseAutopanBlockIntoView = ({ engine, blockID, isOpened }: { engine: Engine; blockID: Nullable<string>; isOpened: boolean }): void => {
+export const useUseAutopanBlockIntoView = ({
+  engine,
+  blockID,
+  isOpened,
+}: {
+  engine: Engine;
+  blockID: Nullable<string>;
+  isOpened: boolean;
+}): void => {
   const theme = useTheme();
   const [canvasPositionScheduler] = useRAF();
 

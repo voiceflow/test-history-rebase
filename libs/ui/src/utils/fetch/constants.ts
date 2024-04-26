@@ -32,9 +32,14 @@ export class NetworkError<R> extends Error {
 
   [NETWORK_ERROR] = true;
 
-  constructor(public statusCode: number, message: string, public body?: R) {
+  constructor(
+    public statusCode: number,
+    message: string,
+    public body?: R
+  ) {
     super(message);
   }
 }
 
-export const isNetworkError = <R = unknown>(err: any): err is NetworkError<R> => err instanceof NetworkError || !!err[NETWORK_ERROR];
+export const isNetworkError = <R = unknown>(err: any): err is NetworkError<R> =>
+  err instanceof NetworkError || !!err[NETWORK_ERROR];

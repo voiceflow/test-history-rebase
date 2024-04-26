@@ -7,8 +7,9 @@ import { getDomainByIDSelector } from './base';
 /**
  * @deprecated will be removed when FeatureFlag.CMS_WORKFLOWS is released
  */
-export const domainSelector = createSelector([getDomainByIDSelector, Session.activeDomainIDSelector], (getDomain, activeDomainID) =>
-  getDomain({ id: activeDomainID })
+export const domainSelector = createSelector(
+  [getDomainByIDSelector, Session.activeDomainIDSelector],
+  (getDomain, activeDomainID) => getDomain({ id: activeDomainID })
 );
 
 /**

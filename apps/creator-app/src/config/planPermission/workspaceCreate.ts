@@ -5,7 +5,7 @@ import { ENTERPRISE_PLANS } from '@/constants/plans';
 import * as Tracking from '@/ducks/tracking';
 import { getUpgradeModalProps } from '@/utils/upgrade';
 
-import { UpgradeModalPlanPermission } from './types';
+import type { UpgradeModalPlanPermission } from './types';
 
 export const WORKSPACE_CREATE_PERMISSIONS = {
   plans: ENTERPRISE_PLANS,

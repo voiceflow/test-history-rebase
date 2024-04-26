@@ -1,7 +1,8 @@
 import { BaseModels } from '@voiceflow/base-types';
-import { CustomScrollbarsTypes, System, TippyTooltip, useConst, usePersistFunction } from '@voiceflow/ui';
+import type { CustomScrollbarsTypes } from '@voiceflow/ui';
+import { System, TippyTooltip, useConst, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
-import { VariableSizeList } from 'react-window';
+import type { VariableSizeList } from 'react-window';
 
 import DraggableList from '@/components/DraggableList';
 import VirtualList from '@/components/VirtualList';
@@ -12,7 +13,8 @@ import { useDidUpdateEffect, usePermission } from '@/hooks';
 import Header from '../../Header';
 import { BOTTOM_PADDING, HEADER_MIN_HEIGHT, ITEM_HEIGHT, SEARCH_INPUT_HEIGHT } from '../constants';
 import SearchInput from '../SearchInput';
-import { TopicItem, TopicMenuItem, useTopics } from './hooks';
+import type { TopicItem, TopicMenuItem } from './hooks';
+import { useTopics } from './hooks';
 import TopicItemComponent from './TopicItem';
 import VirtualListItem from './VirtualListItem';
 
@@ -137,7 +139,10 @@ const TopicsSection: React.FC = () => {
     return { topicMap, nodeOffsetMap, topicOffsetMap };
   }, [topics, opened]);
 
-  const getItemSize = React.useCallback((index: number) => sizes.topicMap[topics[index]?.topicID] || ITEM_HEIGHT, [sizes.topicMap]);
+  const getItemSize = React.useCallback(
+    (index: number) => sizes.topicMap[topics[index]?.topicID] || ITEM_HEIGHT,
+    [sizes.topicMap]
+  );
 
   useDidUpdateEffect(() => {
     listRef.current?.resetAfterIndex(0);
@@ -222,7 +227,12 @@ const TopicsSection: React.FC = () => {
                 )
               }
             >
-              <SearchInput value={searchValue} onChangeText={setSearchValue} placeholder="Search" $onIconClick={() => setSearchValue('')} />
+              <SearchInput
+                value={searchValue}
+                onChangeText={setSearchValue}
+                placeholder="Search"
+                $onIconClick={() => setSearchValue('')}
+              />
             </Header>
           }
         />

@@ -1,11 +1,12 @@
 /* eslint-disable no-param-reassign */
-import { BaseModels } from '@voiceflow/base-types';
+import type { BaseModels } from '@voiceflow/base-types';
 
-import { Transform } from './types';
+import type { Transform } from './types';
 
 const builtInPrefixes = ['VF.', 'AMAZON.', 'actions.intent.'];
 
-const isBuiltInIntent = (intent: BaseModels.Intent): boolean => builtInPrefixes.some((prefix) => intent.key.startsWith(prefix));
+const isBuiltInIntent = (intent: BaseModels.Intent): boolean =>
+  builtInPrefixes.some((prefix) => intent.key.startsWith(prefix));
 /**
  * this migration converts the builtin intents that have a mismatch between the intent name and intent key
  * and updates them with the proper name (the same as the key)

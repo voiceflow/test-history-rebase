@@ -71,8 +71,14 @@ const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
 
   useIO(engine);
 
-  useRegistration(() => engine.register('diagramHeartbeat', diagramHeartbeatContext), [engine, diagramHeartbeatContext]);
-  useRegistration(() => engine.selection.register('selectionSetTargetsContext', selectionSetTargetsContext), [engine, selectionSetTargetsContext]);
+  useRegistration(
+    () => engine.register('diagramHeartbeat', diagramHeartbeatContext),
+    [engine, diagramHeartbeatContext]
+  );
+  useRegistration(
+    () => engine.selection.register('selectionSetTargetsContext', selectionSetTargetsContext),
+    [engine, selectionSetTargetsContext]
+  );
 
   useTeardown(() => CreatorV2.clearAllCache());
 

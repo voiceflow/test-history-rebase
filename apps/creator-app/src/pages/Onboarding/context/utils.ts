@@ -1,7 +1,7 @@
 import { BillingPeriod, PlanType } from '@voiceflow/internal';
 
 import { IS_PRIVATE_CLOUD } from '@/config';
-import { Query } from '@/models';
+import type { Query } from '@/models';
 
 import { StepID } from '../constants';
 import { OnboardingType, SpecificFlowType } from './types';

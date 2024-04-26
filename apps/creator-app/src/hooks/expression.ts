@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { ObjectValue } from '@voiceflow/realtime-sdk';
+import type { ObjectValue } from '@voiceflow/realtime-sdk';
 import { parseScript, Syntax } from 'esprima';
 import type * as estree from 'estree';
 import _isNumber from 'lodash/isNumber';
@@ -21,7 +21,8 @@ const checkIdentifierExpression = (value: string, type: SyntaxType, variables: s
 };
 
 const checkLiteralExpression = (expression: estree.Expression) => {
-  if (expression.type !== Syntax.Literal || _isNumber(expression.value) || expression.raw?.match(VALID_STRING_REGEX)) return;
+  if (expression.type !== Syntax.Literal || _isNumber(expression.value) || expression.raw?.match(VALID_STRING_REGEX))
+    return;
 
   throw new Error(`string ${expression.raw ?? expression.value} must be in quotes. Solution: '${expression.value}'`);
 };
@@ -65,7 +66,9 @@ export const useExpressionValidator = () => {
 
   const validate = (text: string) => {
     try {
-      const { body } = parseScript(`"use strict";\n${transformVariableToString(text, variablesMap)}`, { tolerant: true });
+      const { body } = parseScript(`"use strict";\n${transformVariableToString(text, variablesMap)}`, {
+        tolerant: true,
+      });
 
       body.forEach((node) => {
         if (!('expression' in node)) return;

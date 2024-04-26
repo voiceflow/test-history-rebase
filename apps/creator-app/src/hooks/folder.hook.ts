@@ -1,4 +1,4 @@
-import { Folder, FolderScope } from '@voiceflow/dtos';
+import type { Folder, FolderScope } from '@voiceflow/dtos';
 import { useMemo } from 'react';
 import { generatePath } from 'react-router';
 
@@ -11,7 +11,7 @@ export const useFolderTree = <
   T extends { id: string; folderID: string | null },
   FR extends { id: string },
   DR extends { id: string } = FR,
-  SR extends { id: string } = FR
+  SR extends { id: string } = FR,
 >({
   data,
   folderScope,

@@ -1,7 +1,10 @@
 import { BaseStrategy } from './base.strategy';
 import type { BaseAdapter, BaseKeyExtractor, KeyOptions, StringFromDB, StringToDB } from './strategy.interface';
 
-export class SetStrategy<K extends BaseKeyExtractor, A extends BaseAdapter | undefined = undefined> extends BaseStrategy<K, A> {
+export class SetStrategy<
+  K extends BaseKeyExtractor,
+  A extends BaseAdapter | undefined = undefined,
+> extends BaseStrategy<K, A> {
   public async add(keyOptions: KeyOptions<K>, value: StringToDB<A>): Promise<void> {
     const dbKey = this.keyCreator(keyOptions);
     const dbValue = this.adapter?.toDB(value) ?? value;

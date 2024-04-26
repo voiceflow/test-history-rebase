@@ -1,7 +1,7 @@
 import _isNumber from 'lodash/isNumber';
 import React from 'react';
 
-import { AreaChartDatum, AreaChartFormatter } from '../types';
+import type { AreaChartDatum, AreaChartFormatter } from '../types';
 
 export interface AreaChartTickProps {
   axisWidth?: number;

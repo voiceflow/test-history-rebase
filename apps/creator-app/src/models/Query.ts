@@ -1,4 +1,4 @@
-import { BillingPeriod } from '@voiceflow/internal';
+import type { BillingPeriod } from '@voiceflow/internal';
 
 export type Query = Query.Onboarding &
   Query.Dashboard &

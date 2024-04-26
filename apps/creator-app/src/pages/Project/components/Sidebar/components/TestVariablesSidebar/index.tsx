@@ -63,7 +63,10 @@ const TestVariablesSidebar: React.FC = () => {
     }
   }, [isTestVariablesSidebarOpen]);
 
-  const [variables, onChangeVariable] = usePrototypeContextVariables(selectedVariables, updateSelectedVariableStateVariables);
+  const [variables, onChangeVariable] = usePrototypeContextVariables(
+    selectedVariables,
+    updateSelectedVariableStateVariables
+  );
 
   return (
     <Drawer

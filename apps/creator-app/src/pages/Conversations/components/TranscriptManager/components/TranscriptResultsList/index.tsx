@@ -5,10 +5,10 @@ import { FixedSizeList } from 'react-window';
 
 import { currentTranscriptIDSelector } from '@/ducks/transcript';
 import { useSelector } from '@/hooks';
-import { Transcript } from '@/models';
+import type { Transcript } from '@/models';
 
 import { Container, TranscriptResultsItem } from './components';
-import { ListData } from './types';
+import type { ListData } from './types';
 
 interface TranscriptResultsListProps {
   transcriptList: Transcript[];
@@ -17,7 +17,10 @@ interface TranscriptResultsListProps {
 const TranscriptResultsList: React.FC<TranscriptResultsListProps> = ({ transcriptList }) => {
   const currentTranscriptID = useSelector(currentTranscriptIDSelector);
 
-  const currentTranscriptIndex = React.useMemo(() => transcriptList.findIndex(({ id }) => id === currentTranscriptID), [currentTranscriptID]);
+  const currentTranscriptIndex = React.useMemo(
+    () => transcriptList.findIndex(({ id }) => id === currentTranscriptID),
+    [currentTranscriptID]
+  );
 
   const getItemKey = React.useCallback((index: number, { transcripts }: ListData) => transcripts[index].id, []);
 

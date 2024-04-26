@@ -10,7 +10,7 @@ import { MongoMutableORM } from './mongo-mutable.orm';
 
 export abstract class MongoAtomicORM<
     BaseEntity extends MongoEntity,
-    DiscriminatorEntity extends BaseEntity = BaseEntity
+    DiscriminatorEntity extends BaseEntity = BaseEntity,
   >
   extends MongoMutableORM<BaseEntity, DiscriminatorEntity>
   implements MutableORM<BaseEntity, DiscriminatorEntity>

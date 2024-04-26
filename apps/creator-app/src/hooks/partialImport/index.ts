@@ -62,7 +62,10 @@ export const usePartialImport = () => {
         version: { ...vf.version, ...version },
         project: vf.project,
         diagrams: Object.fromEntries(
-          diagrams.map((diagram) => [diagram.diagramID ?? diagram._id, { ...vf.diagrams[diagram.diagramID ?? diagram._id], ...diagram }])
+          diagrams.map((diagram) => [
+            diagram.diagramID ?? diagram._id,
+            { ...vf.diagrams[diagram.diagramID ?? diagram._id], ...diagram },
+          ])
         ),
       } as VF_FILE;
 
@@ -73,5 +76,6 @@ export const usePartialImport = () => {
     }
   }, []);
 
-  return () => upload(async (files) => partialImport(await files[0].text(), files[0].name), { accept: '.vf', multiple: false });
+  return () =>
+    upload(async (files) => partialImport(await files[0].text(), files[0].name), { accept: '.vf', multiple: false });
 };

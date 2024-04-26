@@ -2,7 +2,7 @@
 import * as Utils from '@realtime-sdk/utils';
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
 
-import { Transform } from './types';
+import type { Transform } from './types';
 
 interface DBStartNode extends BaseNode.Start.Step<BaseNode.Start.Step & { color?: string }> {}
 
@@ -16,7 +16,8 @@ const migrateColor = (dbNode: BaseModels.BaseBlock | DBStartNode, newColor: stri
 };
 
 const isStart = (dbNode: BaseModels.BaseDiagramNode): dbNode is DBStartNode => dbNode.type === BaseNode.NodeType.START;
-const isBlock = (dbNode: BaseModels.BaseDiagramNode): dbNode is BaseModels.BaseBlock => dbNode.type === BaseModels.BaseNodeType.BLOCK;
+const isBlock = (dbNode: BaseModels.BaseDiagramNode): dbNode is BaseModels.BaseBlock =>
+  dbNode.type === BaseModels.BaseNodeType.BLOCK;
 
 /**
  * this migration updates name and color for the blocks with the only intent step
@@ -26,7 +27,11 @@ const migrateToV2_7: Transform = ({ diagrams }) => {
   diagrams.forEach(({ nodes: dbNodes }) => {
     Object.values(dbNodes).forEach((dbNode) => {
       // migrate block color and name for blocks with only intent step
-      if (isBlock(dbNode) && dbNode.data.steps.length === 1 && Utils.typeGuards.isCanvasChipBlockType(dbNodes[dbNode.data.steps[0]]?.type)) {
+      if (
+        isBlock(dbNode) &&
+        dbNode.data.steps.length === 1 &&
+        Utils.typeGuards.isCanvasChipBlockType(dbNodes[dbNode.data.steps[0]]?.type)
+      ) {
         // removing the name to fallback to the intent name
         dbNode.data.name = '';
 

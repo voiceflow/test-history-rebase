@@ -1,6 +1,6 @@
 import { createMultiAdapter } from 'bidirectional-adapter';
 
-import { DBKnowledgeBaseIntegration, KnowledgeBaseIntegration } from '@/models/KnowledgeBase.model';
+import type { DBKnowledgeBaseIntegration, KnowledgeBaseIntegration } from '@/models/KnowledgeBase.model';
 
 export const integrationAdapter = createMultiAdapter<DBKnowledgeBaseIntegration, KnowledgeBaseIntegration>(
   ({ ...rest }) => ({

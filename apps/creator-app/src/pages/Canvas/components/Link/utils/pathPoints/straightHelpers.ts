@@ -1,8 +1,8 @@
-import { PathPoints } from '@/types';
+import type { PathPoints } from '@/types';
 
 import { DOUBLE_STRAIGHT_PATH_OFFSET, MIN_Y_POINTS_OFFSET, STRAIGHT_PATH_OFFSET } from '../../constants';
 import { createPoint, getPointsOffset } from '../helpers';
-import { LinkedRects } from '../types';
+import type { LinkedRects } from '../types';
 import {
   getSourceStartLeftX,
   getSourceStartLeftY,
@@ -17,7 +17,7 @@ import {
   getTargetEndTopY,
   getTargetEndY,
 } from './helpers';
-import { GetPathPointsOptions } from './types';
+import type { GetPathPointsOptions } from './types';
 
 export const isStraightLine = (linkedRects: LinkedRects, options: GetPathPointsOptions): boolean =>
   Math.abs(getTargetEndY(linkedRects, options) - getSourceStartY(linkedRects)) <= MIN_Y_POINTS_OFFSET;
@@ -154,7 +154,11 @@ export const getTopRightLLikePoints = (linkedRects: LinkedRects, options: GetPat
   const endX = getTargetEndTopX(linkedRects);
   const endY = getTargetEndTopY(linkedRects);
 
-  return [createPoint(startX, startY), createPoint(endX, startY), createPoint(endX, endY, { toTop: true, allowedToTop: true })];
+  return [
+    createPoint(startX, startY),
+    createPoint(endX, startY),
+    createPoint(endX, endY, { toTop: true, allowedToTop: true }),
+  ];
 };
 
 /**
@@ -175,7 +179,11 @@ export const getTopLeftLLikePoints = (linkedRects: LinkedRects, options: GetPath
   const endX = getTargetEndTopX(linkedRects);
   const endY = getTargetEndTopY(linkedRects);
 
-  return [createPoint(startX, startY, { reversed: true }), createPoint(endX, startY), createPoint(endX, endY, { toTop: true, allowedToTop: true })];
+  return [
+    createPoint(startX, startY, { reversed: true }),
+    createPoint(endX, startY),
+    createPoint(endX, endY, { toTop: true, allowedToTop: true }),
+  ];
 };
 
 /**

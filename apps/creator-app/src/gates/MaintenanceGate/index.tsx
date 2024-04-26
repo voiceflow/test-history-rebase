@@ -106,7 +106,8 @@ const MaintenanceGate: React.FC<React.PropsWithChildren> = ({ children }) => {
               <>
                 Voiceflow Creator will go under planned maintenance from
                 <br />
-                <strong>{dayjs(start).format('h:mmA, MMM D')}</strong> to <strong>{dayjs(end).format('h:mmA, MMM D')}</strong>
+                <strong>{dayjs(start).format('h:mmA, MMM D')}</strong> to{' '}
+                <strong>{dayjs(end).format('h:mmA, MMM D')}</strong>
               </>,
               { autoClose: false }
             );

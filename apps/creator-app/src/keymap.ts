@@ -1,6 +1,6 @@
-import { IconName } from '@voiceflow/icons';
+import type { IconName } from '@voiceflow/icons';
 import { IS_MAC } from '@voiceflow/ui';
-import { IHotKey } from '@voiceflow/ui-next';
+import type { IHotKey } from '@voiceflow/ui-next';
 import moize from 'moize';
 
 export enum Hotkey {
@@ -121,7 +121,10 @@ const HOTKEY_MAPPING: Record<Hotkey, string | string[]> = {
   [Hotkey.CANVAS_TOGGLE_SIDEBAR]: [`${SpecialKey.CTRL}+\\`, `${SpecialKey.META}+\\`],
   [Hotkey.PROTOTYPE_CLOSE_FULL_SCREEN]: SpecialKey.ESC,
   [Hotkey.PROTOTYPE_FULL_SCREEN_TOGGLE]: 'f',
-  [Hotkey.OPEN_MANUAL_SAVE_MODAL]: [`${SpecialKey.SHIFT}+${SpecialKey.CTRL}+s`, `${SpecialKey.SHIFT}+${SpecialKey.META}+s`],
+  [Hotkey.OPEN_MANUAL_SAVE_MODAL]: [
+    `${SpecialKey.SHIFT}+${SpecialKey.CTRL}+s`,
+    `${SpecialKey.SHIFT}+${SpecialKey.META}+s`,
+  ],
   [Hotkey.SAVE]: [`${SpecialKey.META}+s`, `${SpecialKey.CTRL}+s`],
   [Hotkey.CLOSE_UPLOAD_MODAL]: SpecialKey.ESC,
   [Hotkey.HIDE_COMMENT_BUBBLES]: [`${SpecialKey.SHIFT}+c`],

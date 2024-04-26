@@ -31,7 +31,9 @@ const ActionPreview: React.FC<ActionPreviewProps> = ({ title, content, onClose, 
       </Preview.Content>
 
       <Preview.Footer>
-        {canOpenEditor && <Preview.ButtonIcon icon="edit" onClick={Utils.functional.chainVoid(onClose, onOpenEditor)} />}
+        {canOpenEditor && (
+          <Preview.ButtonIcon icon="edit" onClick={Utils.functional.chainVoid(onClose, onOpenEditor)} />
+        )}
       </Preview.Footer>
     </Preview>
   );

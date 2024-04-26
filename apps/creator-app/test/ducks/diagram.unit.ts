@@ -5,7 +5,7 @@ import * as Normal from 'normal-store';
 import * as Diagram from '@/ducks/diagramV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
-import { State } from '@/store/types';
+import type { State } from '@/store/types';
 
 import { MOCK_STATE as INITIAL_ROOT_MOCK_STATE } from './_fixtures';
 import suite from './_suite';
@@ -16,7 +16,13 @@ const VERSION_ID = 'versionID';
 const DIAGRAM_ID = 'diagramID';
 const DOMAIN_ID = 'domainId';
 const CREATOR_ID = 999;
-const ACTION_CONTEXT = { workspaceID: WORKSPACE_ID, projectID: PROJECT_ID, versionID: VERSION_ID, diagramID: DIAGRAM_ID, domainID: DOMAIN_ID };
+const ACTION_CONTEXT = {
+  workspaceID: WORKSPACE_ID,
+  projectID: PROJECT_ID,
+  versionID: VERSION_ID,
+  diagramID: DIAGRAM_ID,
+  domainID: DOMAIN_ID,
+};
 
 const DIAGRAM: Realtime.Diagram = {
   id: DIAGRAM_ID,
@@ -59,10 +65,13 @@ const ROOT_MOCK_STATE: State = {
     awareness: {
       viewers: {
         [PROJECT_ID]: {
-          [DIAGRAM_ID]: Normal.normalize([DIAGRAM_VIEWER, { creatorID: 10, creator_id: 10, name: 'gray', color: '#777' }], (viewer) =>
+          [DIAGRAM_ID]: Normal.normalize(
+            [DIAGRAM_VIEWER, { creatorID: 10, creator_id: 10, name: 'gray', color: '#777' }],
+            (viewer) => String(viewer.creatorID)
+          ),
+          abc: Normal.normalize([{ creatorID: 1000, creator_id: 1000, name: 'caleb', color: '#aaa' }], (viewer) =>
             String(viewer.creatorID)
           ),
-          abc: Normal.normalize([{ creatorID: 1000, creator_id: 1000, name: 'caleb', color: '#aaa' }], (viewer) => String(viewer.creatorID)),
         },
       },
     },
@@ -168,9 +177,9 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ describeReducerV2, describeEffe
 
     describe('diagramViewersByIDSelector()', () => {
       it('select diagram viewers', () => {
-        expect(Diagram.diagramViewersByIDSelector(createState(MOCK_STATE, ROOT_MOCK_STATE), { id: DIAGRAM_ID })).toEqual(
-          Normal.denormalize(ROOT_MOCK_STATE.projectV2.awareness.viewers[PROJECT_ID][DIAGRAM_ID])
-        );
+        expect(
+          Diagram.diagramViewersByIDSelector(createState(MOCK_STATE, ROOT_MOCK_STATE), { id: DIAGRAM_ID })
+        ).toEqual(Normal.denormalize(ROOT_MOCK_STATE.projectV2.awareness.viewers[PROJECT_ID][DIAGRAM_ID]));
       });
 
       it('select viewers of unknown diagram', () => {
@@ -180,15 +189,21 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ describeReducerV2, describeEffe
 
     describe('hasExternalDiagramViewersByIDSelector()', () => {
       it('true if more than 1 active viewer', () => {
-        expect(Diagram.hasExternalDiagramViewersByIDSelector(createState(MOCK_STATE, ROOT_MOCK_STATE), { id: DIAGRAM_ID })).toBeTruthy();
+        expect(
+          Diagram.hasExternalDiagramViewersByIDSelector(createState(MOCK_STATE, ROOT_MOCK_STATE), { id: DIAGRAM_ID })
+        ).toBeTruthy();
       });
 
       it('false if 1 or fewer active viewers', () => {
-        expect(Diagram.hasExternalDiagramViewersByIDSelector(createState(MOCK_STATE, ROOT_MOCK_STATE), { id: 'abc' })).toBeFalsy();
+        expect(
+          Diagram.hasExternalDiagramViewersByIDSelector(createState(MOCK_STATE, ROOT_MOCK_STATE), { id: 'abc' })
+        ).toBeFalsy();
       });
 
       it('false if diagram unknown', () => {
-        expect(Diagram.hasExternalDiagramViewersByIDSelector(createState(MOCK_STATE, ROOT_MOCK_STATE), { id: 'abc' })).toBeFalsy();
+        expect(
+          Diagram.hasExternalDiagramViewersByIDSelector(createState(MOCK_STATE, ROOT_MOCK_STATE), { id: 'abc' })
+        ).toBeFalsy();
       });
     });
   });

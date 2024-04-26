@@ -1,8 +1,8 @@
-import { FlattenInterpolation } from 'styled-components';
+import type { FlattenInterpolation } from 'styled-components';
 
 import { css } from '@/hocs/styled';
 
-import { Theme } from '../theme';
+import type { Theme } from '../theme';
 
 /**
  * The `breakpoints` (mobile-first) utility constructs a `css` snippet to quickly implement
@@ -28,31 +28,30 @@ export const breakpoints =
     lg?: FlattenInterpolation<any>;
     xl?: FlattenInterpolation<any>;
   } = {}) =>
-  ({ theme }: { theme: Theme }) =>
+  ({ theme }: { theme: Theme }) => css`
+    ${xs}
+    ${sm &&
     css`
-      ${xs}
-      ${sm &&
-      css`
-        @media (min-width: ${theme.breakpoints.sm}) {
-          ${sm}
-        }
-      `}
+      @media (min-width: ${theme.breakpoints.sm}) {
+        ${sm}
+      }
+    `}
   ${md &&
-      css`
-        @media (min-width: ${theme.breakpoints.md}) {
-          ${md}
-        }
-      `}
+    css`
+      @media (min-width: ${theme.breakpoints.md}) {
+        ${md}
+      }
+    `}
   ${lg &&
-      css`
-        @media (min-width: ${theme.breakpoints.lg}) {
-          ${lg}
-        }
-      `}
+    css`
+      @media (min-width: ${theme.breakpoints.lg}) {
+        ${lg}
+      }
+    `}
   ${xl &&
-      css`
-        @media (min-width: ${theme.breakpoints.xl}) {
-          ${xl}
-        }
-      `}
-    `;
+    css`
+      @media (min-width: ${theme.breakpoints.xl}) {
+        ${xl}
+      }
+    `}
+  `;

@@ -35,7 +35,7 @@ const SelectWrapper = styled.div<SelectWrapperProps>`
     minWidth &&
     !width &&
     css`
-      min-width: ${typeof minWidth === 'boolean' ? `200px` : minWidth};
+      min-width: ${typeof minWidth === 'boolean' ? '200px' : minWidth};
     `}
 
   ${({ fullWidth }) =>

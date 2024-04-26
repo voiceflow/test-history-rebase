@@ -68,7 +68,8 @@ export const getUpgradeModalProps = (
 export const getUpgradePopperProps = (
   nextPlan: PlanType,
   upgradePrompt: Tracking.UpgradePrompt
-): Pick<UpgradePopperData, 'onUpgrade' | 'upgradePrompt' | 'upgradeButtonText'> => getUpgradeModalProps(nextPlan, upgradePrompt);
+): Pick<UpgradePopperData, 'onUpgrade' | 'upgradePrompt' | 'upgradeButtonText'> =>
+  getUpgradeModalProps(nextPlan, upgradePrompt);
 
 export const getUpgradeTooltipProps = (
   nextPlan: PlanType,

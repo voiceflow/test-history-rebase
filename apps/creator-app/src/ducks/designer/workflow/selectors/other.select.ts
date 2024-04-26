@@ -1,4 +1,4 @@
-import { Flow } from '@voiceflow/dtos';
+import type { Flow } from '@voiceflow/dtos';
 import { BlockType } from '@voiceflow/realtime-sdk';
 import { createSelector } from 'reselect';
 
@@ -17,9 +17,13 @@ export const mapByDiagramID = createSelector(
   all,
   (flows): Partial<Record<string, Flow>> => Object.fromEntries(flows.map((flow) => [flow.diagramID, flow]))
 );
-export const oneByDiagramID = createSelector(mapByDiagramID, diagramIDParamSelector, (map, diagramID) => (diagramID ? map[diagramID] : null));
+export const oneByDiagramID = createSelector(mapByDiagramID, diagramIDParamSelector, (map, diagramID) =>
+  diagramID ? map[diagramID] : null
+);
 
-export const allOrderedByName = createSelector([all], (entities) => entities.sort((a, b) => a.name.localeCompare(b.name)));
+export const allOrderedByName = createSelector([all], (entities) =>
+  entities.sort((a, b) => a.name.localeCompare(b.name))
+);
 
 type TriggerNode<Type extends BlockType, ExtraData = unknown> = {
   type: Type;
@@ -28,41 +32,53 @@ type TriggerNode<Type extends BlockType, ExtraData = unknown> = {
   isEmpty: boolean;
 } & ExtraData;
 
-export const triggersMapByDiagramID = createSelector([sharedNodesSelector, getOneIntentByID], (sharedNodes, getOneIntentByID) => {
-  const map: Partial<Record<string, Array<TriggerNode<BlockType.START> | TriggerNode<BlockType.INTENT, { intentID: string | null }>>>> = {};
+export const triggersMapByDiagramID = createSelector(
+  [sharedNodesSelector, getOneIntentByID],
+  (sharedNodes, getOneIntentByID) => {
+    const map: Partial<
+      Record<string, Array<TriggerNode<BlockType.START> | TriggerNode<BlockType.INTENT, { intentID: string | null }>>>
+    > = {};
 
-  Object.entries(sharedNodes).forEach(([diagramID, diagramSharedNodes]) => {
-    let diagramTriggers = map[diagramID];
+    Object.entries(sharedNodes).forEach(([diagramID, diagramSharedNodes]) => {
+      let diagramTriggers = map[diagramID];
 
-    if (!diagramTriggers) {
-      diagramTriggers = [];
-      map[diagramID] = diagramTriggers;
-    }
-
-    Object.values(diagramSharedNodes).forEach((node) => {
-      if (!node) return;
-
-      if (node.type === BlockType.START) {
-        diagramTriggers!.unshift({ type: node.type, label: node.name || 'Start', nodeID: node.nodeID, isEmpty: false });
+      if (!diagramTriggers) {
+        diagramTriggers = [];
+        map[diagramID] = diagramTriggers;
       }
 
-      if (node.type === BlockType.INTENT) {
-        const intent = getOneIntentByID({ id: node.intentID });
+      Object.values(diagramSharedNodes).forEach((node) => {
+        if (!node) return;
 
-        diagramTriggers!.push({
-          type: node.type,
-          label: intent?.name ?? 'Select intent...',
-          nodeID: node.nodeID,
-          isEmpty: !intent,
-          intentID: node.intentID,
-        });
-      }
+        if (node.type === BlockType.START) {
+          diagramTriggers!.unshift({
+            type: node.type,
+            label: node.name || 'Start',
+            nodeID: node.nodeID,
+            isEmpty: false,
+          });
+        }
+
+        if (node.type === BlockType.INTENT) {
+          const intent = getOneIntentByID({ id: node.intentID });
+
+          diagramTriggers!.push({
+            type: node.type,
+            label: intent?.name ?? 'Select intent...',
+            nodeID: node.nodeID,
+            isEmpty: !intent,
+            intentID: node.intentID,
+          });
+        }
+      });
     });
-  });
 
-  return map;
-});
+    return map;
+  }
+);
 
 export const nonEmptyTriggersMapByDiagramID = createSelector([triggersMapByDiagramID], (map) =>
-  Object.fromEntries(Object.entries(map).map(([diagramID, triggers]) => [diagramID, triggers?.filter((trigger) => !trigger.isEmpty)]))
+  Object.fromEntries(
+    Object.entries(map).map(([diagramID, triggers]) => [diagramID, triggers?.filter((trigger) => !trigger.isEmpty)])
+  )
 );

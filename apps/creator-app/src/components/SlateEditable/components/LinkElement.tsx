@@ -1,10 +1,10 @@
 import React from 'react';
-import { RenderElementProps } from 'slate-react';
+import type { RenderElementProps } from 'slate-react';
 
 import { styled } from '@/hocs/styled';
 import { openURLInANewTab } from '@/utils/window';
 
-import { LinkElement as LinkElementType } from '../editor/types';
+import type { LinkElement as LinkElementType } from '../editor/types';
 
 const ClickableLink = styled.span`
   display: inline;

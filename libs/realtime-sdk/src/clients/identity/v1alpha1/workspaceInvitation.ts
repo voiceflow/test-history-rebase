@@ -1,7 +1,8 @@
-import * as Models from '@realtime-sdk/models';
-import { UserRole } from '@voiceflow/internal';
+import type * as Models from '@realtime-sdk/models';
+import type { UserRole } from '@voiceflow/internal';
 
-import { NestResource, NestResourceOptions } from '../../nest';
+import type { NestResourceOptions } from '../../nest';
+import { NestResource } from '../../nest';
 
 export class WorkspaceInvitation extends NestResource {
   constructor(options: NestResourceOptions) {
@@ -31,7 +32,11 @@ export class WorkspaceInvitation extends NestResource {
     return true;
   }
 
-  public async sendInvitation(workspaceID: string, email: string, role: UserRole): Promise<Models.Identity.WorkspaceInvite | null> {
+  public async sendInvitation(
+    workspaceID: string,
+    email: string,
+    role: UserRole
+  ): Promise<Models.Identity.WorkspaceInvite | null> {
     const { data } = await this.post<Models.Identity.WorkspaceInvite>(`/${workspaceID}`, { email, role });
     return data;
   }

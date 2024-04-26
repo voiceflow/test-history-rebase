@@ -53,7 +53,11 @@ export const prettifyVoice = (voiceID: string): string => {
   const lowerCasedVoiceID = voiceID.toLowerCase();
 
   // As we add more voices from different platforms, we can add to this util to prettify any voice ID
-  if (lowerCasedVoiceID.includes('standard') || lowerCasedVoiceID.includes('wavenet') || lowerCasedVoiceID.includes('neural2'))
+  if (
+    lowerCasedVoiceID.includes('standard') ||
+    lowerCasedVoiceID.includes('wavenet') ||
+    lowerCasedVoiceID.includes('neural2')
+  )
     return prettifyGoogleVoicesLong(voiceID);
   if (lowerCasedVoiceID.includes('neural')) return prettifyAzureVoiceID(voiceID);
 
@@ -66,11 +70,16 @@ export const getAlexaVoiceOptions = (): VoiceOptionGroup<AlexaConstants.Voice>[]
     options: options.map((voice) => ({ label: voice, value: voice })),
   }));
 
-export const getGoogleVoiceOptions = ({ locales, usePremiumVoice }: GetVoiceOptionsParams = {}): VoiceOptionGroup<string>[] => {
+export const getGoogleVoiceOptions = ({
+  locales,
+  usePremiumVoice,
+}: GetVoiceOptionsParams = {}): VoiceOptionGroup<string>[] => {
   const localeMeta =
     locales?.map((locale) => ({
       locale,
-      languageCode: GoogleConstants.LocaleToVoiceLanguageCode[locale as GoogleConstants.Locale] ?? GoogleConstants.VoiceLanguageCode.EN_US,
+      languageCode:
+        GoogleConstants.LocaleToVoiceLanguageCode[locale as GoogleConstants.Locale] ??
+        GoogleConstants.VoiceLanguageCode.EN_US,
     })) ?? [];
 
   const getLangOptions = (languageCode: GoogleConstants.VoiceLanguageCode) =>
@@ -88,11 +97,16 @@ export const getGoogleVoiceOptions = ({ locales, usePremiumVoice }: GetVoiceOpti
     }));
 };
 
-export const getGoogleDialogflowVoiceOptions = ({ locales, usePremiumVoice }: GetVoiceOptionsParams = {}): VoiceOptionGroup<string>[] => {
+export const getGoogleDialogflowVoiceOptions = ({
+  locales,
+  usePremiumVoice,
+}: GetVoiceOptionsParams = {}): VoiceOptionGroup<string>[] => {
   const localeMeta =
     locales?.map((locale) => ({
       locale,
-      languageCode: DFESConstants.LocaleToVoiceLanguageCode[locale as DFESConstants.Locale] ?? DFESConstants.VoiceLanguageCode.EN_US,
+      languageCode:
+        DFESConstants.LocaleToVoiceLanguageCode[locale as DFESConstants.Locale] ??
+        DFESConstants.VoiceLanguageCode.EN_US,
     })) ?? [];
 
   const getLangOptions = (languageCode: DFESConstants.VoiceLanguageCode) =>
@@ -118,8 +132,8 @@ const getAzureVoiceOptions = (): VoiceOptionGroup<string>[] =>
   }));
 
 export const isAzureVoiceOption = (voiceID: string): boolean => {
-  return Object.values(VoiceflowConstants.AZURE_LOCALE_VOICE_META).some(({ voices }: { voices: { gender: string; voiceID: string }[] }) =>
-    voices.some((voice) => voice.voiceID === voiceID)
+  return Object.values(VoiceflowConstants.AZURE_LOCALE_VOICE_META).some(
+    ({ voices }: { voices: { gender: string; voiceID: string }[] }) => voices.some((voice) => voice.voiceID === voiceID)
   );
 };
 
@@ -144,7 +158,10 @@ export const getGeneralVoiceOptions = ({ usePremiumVoice }: GetVoiceOptionsParam
   ];
 };
 
-export const getPlatformVoiceOptions = (platform: Platform.Constants.PlatformType, params: GetVoiceOptionsParams): VoiceOptionGroup<string>[] =>
+export const getPlatformVoiceOptions = (
+  platform: Platform.Constants.PlatformType,
+  params: GetVoiceOptionsParams
+): VoiceOptionGroup<string>[] =>
   getPlatformValue(
     platform,
     {
@@ -159,7 +176,10 @@ const isVoiceOptionsGroup = <V>(options: VoiceOptionGroup<V> | VoiceOption<V>): 
   return !!(options as VoiceOptionGroup<V>).options;
 };
 
-export const bindVoiceOptions = (voiceOptions: VoiceOptionGroup<string>[], fn: (option: VoiceOption<string>) => VoiceOption<string>) => {
+export const bindVoiceOptions = (
+  voiceOptions: VoiceOptionGroup<string>[],
+  fn: (option: VoiceOption<string>) => VoiceOption<string>
+) => {
   // apply onClick to all leaf option nodes
   const recurse = (options: VoiceOptionGroup<string>['options']) => {
     options.forEach((option, index) => {
@@ -179,14 +199,20 @@ export const bindVoiceOptions = (voiceOptions: VoiceOptionGroup<string>[], fn: (
 export const voiceOptionsFilter = (
   voiceOptions: VoiceOptionGroup<string>[],
   searchLabel?: string
-): { matchedOptions: VoiceOptionGroup<string>[]; filteredOptions: VoiceOptionGroup<string>[]; notMatchedOptions: VoiceOptionGroup<string>[] } => {
+): {
+  matchedOptions: VoiceOptionGroup<string>[];
+  filteredOptions: VoiceOptionGroup<string>[];
+  notMatchedOptions: VoiceOptionGroup<string>[];
+} => {
   if (!searchLabel?.trim()) {
     return { matchedOptions: voiceOptions, filteredOptions: voiceOptions, notMatchedOptions: [] };
   }
 
   const lowerCasedSearchLabel = searchLabel.toLowerCase();
 
-  const filterChildren = (options: Array<VoiceOptionGroup<string> | VoiceOption<string>>): Array<VoiceOptionGroup<string> | VoiceOption<string>> =>
+  const filterChildren = (
+    options: Array<VoiceOptionGroup<string> | VoiceOption<string>>
+  ): Array<VoiceOptionGroup<string> | VoiceOption<string>> =>
     options.reduce<Array<VoiceOptionGroup<string> | VoiceOption<string>>>((acc, option) => {
       if (option.label?.toLowerCase().includes(lowerCasedSearchLabel)) {
         return [...acc, option];

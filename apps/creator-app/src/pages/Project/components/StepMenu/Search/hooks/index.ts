@@ -48,7 +48,10 @@ interface useSearchOutput<SearchableItem> {
  *
  * See `useSearchProps` for more details.
  */
-const useSearch = <SearchableItem>({ searchItems, filterPredicate }: useSearchProps<SearchableItem>): useSearchOutput<SearchableItem> => {
+const useSearch = <SearchableItem>({
+  searchItems,
+  filterPredicate,
+}: useSearchProps<SearchableItem>): useSearchOutput<SearchableItem> => {
   const [searchText, setSearchText] = React.useState('');
 
   const filteredItems = React.useMemo(

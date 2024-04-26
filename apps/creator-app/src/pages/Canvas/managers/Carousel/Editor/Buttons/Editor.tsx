@@ -4,7 +4,8 @@ import { SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 
-import VariablesInput, { VariablesInputRef } from '@/components/VariablesInput';
+import type { VariablesInputRef } from '@/components/VariablesInput';
+import VariablesInput from '@/components/VariablesInput';
 import { useFeature, useSetup } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
@@ -96,7 +97,12 @@ const CarouselButtonsEditor: React.FC = () => {
           {chatCarouselIntent.isEnabled && (
             <>
               <SectionV2.Divider inset />
-              <IntentSection intentID={button?.intent} buttonID={params.buttonID} onChange={(intent) => onChangeButton({ intent })} editor={editor} />
+              <IntentSection
+                intentID={button?.intent}
+                buttonID={params.buttonID}
+                onChange={(intent) => onChangeButton({ intent })}
+                editor={editor}
+              />
             </>
           )}
 

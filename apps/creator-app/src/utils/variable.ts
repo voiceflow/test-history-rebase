@@ -32,7 +32,12 @@ export const deepVariableSearch = <T extends object>(object: T, regex = READABLE
   return [...variables];
 };
 
-const variableReplacer = (match: string, inner: string, variablesMap: Record<string, unknown>, uriEncode = false): string => {
+const variableReplacer = (
+  match: string,
+  inner: string,
+  variablesMap: Record<string, unknown>,
+  uriEncode = false
+): string => {
   if (inner in variablesMap) {
     const value = String(variablesMap[inner]);
 
@@ -42,7 +47,11 @@ const variableReplacer = (match: string, inner: string, variablesMap: Record<str
   return match;
 };
 
-export const deepVariableReplacement = <T extends object>(object: T, variableMap: Record<string, unknown>, regex = READABLE_VARIABLE_REGEXP): T => {
+export const deepVariableReplacement = <T extends object>(
+  object: T,
+  variableMap: Record<string, unknown>,
+  regex = READABLE_VARIABLE_REGEXP
+): T => {
   const recurse = (subCollection: unknown, uriEncode = false) => {
     if (Utils.object.isObject(subCollection)) {
       // eslint-disable-next-line guard-for-in
@@ -50,7 +59,9 @@ export const deepVariableReplacement = <T extends object>(object: T, variableMap
         subCollection[key] = key === 'url' ? recurse(subCollection[key], true) : recurse(subCollection[key]);
       }
     } else if (typeof subCollection === 'string') {
-      return subCollection.replace(regex, (match, inner: string) => variableReplacer(match, inner, variableMap, uriEncode));
+      return subCollection.replace(regex, (match, inner: string) =>
+        variableReplacer(match, inner, variableMap, uriEncode)
+      );
     }
     return subCollection;
   };

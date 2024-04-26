@@ -1,6 +1,6 @@
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
-import { BaseContextData, Context } from '@voiceflow/socket-utils';
-import { Action } from 'typescript-fsa';
+import type { BaseContextData, Context } from '@voiceflow/socket-utils';
+import type { Action } from 'typescript-fsa';
 
 import { AbstractDomainResourceControl } from './utils';
 
@@ -46,7 +46,10 @@ class TopicRemove extends AbstractDomainResourceControl<Realtime.domain.TopicRem
       this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID),
       this.services.domain.setUpdatedBy(payload.versionID, payload.domainID, ctx.data.creatorID),
       this.services.requestContext.createAsync(() =>
-        this.services.thread.deleteManyByDiagramsAndBroadcast(removedDiagramIDs, { auth: { userID: creatorID, clientID }, context: payload })
+        this.services.thread.deleteManyByDiagramsAndBroadcast(removedDiagramIDs, {
+          auth: { userID: creatorID, clientID },
+          context: payload,
+        })
       ),
     ]);
   };

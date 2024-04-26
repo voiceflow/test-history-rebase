@@ -1,9 +1,9 @@
-import { BaseModels } from '@voiceflow/base-types';
+import type { BaseModels } from '@voiceflow/base-types';
 import * as fetch from '@voiceflow/fetch';
-import * as Realtime from '@voiceflow/realtime-sdk/backend';
+import type * as Realtime from '@voiceflow/realtime-sdk/backend';
 import undici from 'undici';
 
-import { FetchClient } from '@/common/fetch';
+import type { FetchClient } from '@/common/fetch';
 
 export abstract class BaseProjectPlatformClient<P extends BaseModels.Project.Model<any, any>> {
   private readonly client: FetchClient;
@@ -17,6 +17,8 @@ export abstract class BaseProjectPlatformClient<P extends BaseModels.Project.Mod
     data: Partial<Omit<Realtime.DBProject, '_id' | 'creatorID'>>,
     params?: Record<string, string>
   ) {
-    return this.client.post(`/project/${projectID}/copy?${new URLSearchParams(params).toString()}`, { json: data }).json<D>();
+    return this.client
+      .post(`/project/${projectID}/copy?${new URLSearchParams(params).toString()}`, { json: data })
+      .json<D>();
   }
 }

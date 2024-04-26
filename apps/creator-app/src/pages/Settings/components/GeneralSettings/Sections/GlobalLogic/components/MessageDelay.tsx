@@ -45,7 +45,9 @@ const MessageDelay: React.FC = () => {
         hideDefaultNumberControls
       />
 
-      <Settings.SubSection.Description>The default time delay (MS) between your assistants responses.</Settings.SubSection.Description>
+      <Settings.SubSection.Description>
+        The default time delay (MS) between your assistants responses.
+      </Settings.SubSection.Description>
     </Settings.SubSection>
   );
 };

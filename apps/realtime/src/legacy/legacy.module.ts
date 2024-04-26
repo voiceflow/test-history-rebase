@@ -12,7 +12,15 @@ import { IOServer } from './ioServer';
 import { LegacyService } from './legacy.service';
 
 @Module({
-  imports: [ProjectListModule, AssistantModule, ThreadModule, ProjectModule, OrganizationModule, FlowModule, WorkflowModule],
+  imports: [
+    ProjectListModule,
+    AssistantModule,
+    ThreadModule,
+    ProjectModule,
+    OrganizationModule,
+    FlowModule,
+    WorkflowModule,
+  ],
   providers: [LegacyService, IOServer],
   exports: [LegacyService],
 })

@@ -1,6 +1,7 @@
-import { Adapters, Comment, DBComment, DBThread, NewComment, NewThread, Thread } from '@voiceflow/realtime-sdk/backend';
+import type { Comment, DBComment, DBThread, NewComment, NewThread, Thread } from '@voiceflow/realtime-sdk/backend';
+import { Adapters } from '@voiceflow/realtime-sdk/backend';
 
-import { ExtraOptions } from './types';
+import type { ExtraOptions } from './types';
 
 export interface ThreadClient {
   find: (projectID: string) => Promise<Thread[]>;
@@ -33,7 +34,8 @@ const Client = ({ api }: ExtraOptions): ThreadClient => ({
       .post<DBThread>(`${COMMENTING_PATH}/${projectID}/threads`, Adapters.threadAdapter.toDB(data as unknown as Thread))
       .then(({ data }) => Adapters.threadAdapter.fromDB(data)),
 
-  removeMany: (projectID: string, data: { diagramIDs: string[] }) => api.post(`${COMMENTING_PATH}/${projectID}/threads/remove-many`, data),
+  removeMany: (projectID: string, data: { diagramIDs: string[] }) =>
+    api.post(`${COMMENTING_PATH}/${projectID}/threads/remove-many`, data),
 
   update: (projectID: string, threadID: string, data: Partial<Thread>) => {
     const { nodeID, resolved, deleted, position } = data;
@@ -50,11 +52,15 @@ const Client = ({ api }: ExtraOptions): ThreadClient => ({
 
   comment: {
     create: (projectID: string, threadID: string, data: NewComment) =>
-      api.post<DBComment>(`${COMMENTING_PATH}/${projectID}/threads/${threadID}`, data).then(({ data }) => Adapters.commentAdapter.fromDB(data)),
+      api
+        .post<DBComment>(`${COMMENTING_PATH}/${projectID}/threads/${threadID}`, data)
+        .then(({ data }) => Adapters.commentAdapter.fromDB(data)),
 
-    update: (projectID: string, commentID: string, data: NewComment) => api.put(`${COMMENTING_PATH}/${projectID}/comment/${commentID}`, data),
+    update: (projectID: string, commentID: string, data: NewComment) =>
+      api.put(`${COMMENTING_PATH}/${projectID}/comment/${commentID}`, data),
 
-    delete: (projectID: string, commentID: string) => api.delete(`${COMMENTING_PATH}/${projectID}/comment/${commentID}`),
+    delete: (projectID: string, commentID: string) =>
+      api.delete(`${COMMENTING_PATH}/${projectID}/comment/${commentID}`),
   },
 });
 

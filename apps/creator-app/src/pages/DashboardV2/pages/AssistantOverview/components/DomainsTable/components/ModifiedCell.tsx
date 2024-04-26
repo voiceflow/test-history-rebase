@@ -1,5 +1,5 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
-import { TableTypes } from '@voiceflow/ui';
+import type * as Realtime from '@voiceflow/realtime-sdk';
+import type { TableTypes } from '@voiceflow/ui';
 import dayjs from 'dayjs';
 import React from 'react';
 

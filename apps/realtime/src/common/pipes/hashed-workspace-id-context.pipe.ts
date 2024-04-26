@@ -17,7 +17,10 @@ interface DecodedContext {
   hashedWorkspaceID: string;
 }
 
-export type HashedWorkspaceIDContextType<T extends EncodedPayload> = Merge<T, { context: Merge<T['context'], DecodedContext> }>;
+export type HashedWorkspaceIDContextType<T extends EncodedPayload> = Merge<
+  T,
+  { context: Merge<T['context'], DecodedContext> }
+>;
 
 @Injectable()
 export class HashedWorkspaceIDContextPipe implements PipeTransform<EncodedPayload> {

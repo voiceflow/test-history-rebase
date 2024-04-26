@@ -59,7 +59,7 @@ const Layout: React.FC<LayoutProps> = ({
     const onScrollIOS = () => {
       scrollScheduler(() => {
         if (root.getBoundingClientRect().top < 0) {
-          root.style.top = `initial`;
+          root.style.top = 'initial';
           root.style.height = `${window.innerHeight}px`;
         } else {
           root.style.top = '';
@@ -93,7 +93,12 @@ const Layout: React.FC<LayoutProps> = ({
   };
 
   return (
-    <Container isMobile={isMobile} isVisuals={isVisuals} isFullScreen={isFullScreen} splashScreenPassed={splashScreenPassed}>
+    <Container
+      isMobile={isMobile}
+      isVisuals={isVisuals}
+      isFullScreen={isFullScreen}
+      splashScreenPassed={splashScreenPassed}
+    >
       {layout !== PrototypeLayout.TEXT_DIALOG && isMobile ? (
         <Box.FlexCenter width="100%" height="100%" column p={32}>
           <SvgIcon icon="info" color="#e5b813" size={32} />
@@ -103,7 +108,12 @@ const Layout: React.FC<LayoutProps> = ({
         </Box.FlexCenter>
       ) : (
         <>
-          <ContentContainer isMobile={isMobile} isVisuals={isVisuals} isFullScreen={isFullScreen} splashScreenPassed={splashScreenPassed}>
+          <ContentContainer
+            isMobile={isMobile}
+            isVisuals={isVisuals}
+            isFullScreen={isFullScreen}
+            splashScreenPassed={splashScreenPassed}
+          >
             {isVisuals || isMobile ? (
               <Box width="100%" height="100%">
                 {!splashScreenPassed ? renderSplashScreen(rendererOptions) : children(rendererOptions)}

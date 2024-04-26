@@ -65,7 +65,9 @@ const CommentThread: React.FC<{ isHidden?: boolean }> = ({ isHidden }) => {
       }}
       placement="right-start"
       disableLayers
-      renderContent={({ scheduleUpdate }) => <ThreadEditor replyRef={instance.commentRef} schedulePopperUpdate={scheduleUpdate} />}
+      renderContent={({ scheduleUpdate }) => (
+        <ThreadEditor replyRef={instance.commentRef} schedulePopperUpdate={scheduleUpdate} />
+      )}
     >
       {({ ref }) => (
         <DragTarget
@@ -77,7 +79,13 @@ const CommentThread: React.FC<{ isHidden?: boolean }> = ({ isHidden }) => {
           onDoubleClick={onDoubleClick}
           data-thread-id={threadEntity.threadID}
         >
-          <CommentIndicator className={`${ClassName.CANVAS_THREAD}__indicator`} draggable tabIndex={-1} {...handlers} isFocused={isFocused}>
+          <CommentIndicator
+            className={`${ClassName.CANVAS_THREAD}__indicator`}
+            draggable
+            tabIndex={-1}
+            {...handlers}
+            isFocused={isFocused}
+          >
             {threadEntity.threadOrder}
           </CommentIndicator>
         </DragTarget>

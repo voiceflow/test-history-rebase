@@ -1,11 +1,11 @@
 import { createCRUDActions } from '@realtime-sdk/actions/utils';
 import { DOMAIN_KEY, TOPIC_KEY } from '@realtime-sdk/constants';
-import { Diagram } from '@realtime-sdk/models';
-import { BaseDomainPayload, BaseVersionPayload } from '@realtime-sdk/types';
-import { PrimitiveDiagram } from '@realtime-sdk/utils/diagram';
-import { BaseModels } from '@voiceflow/base-types';
+import type { Diagram } from '@realtime-sdk/models';
+import type { BaseDomainPayload, BaseVersionPayload } from '@realtime-sdk/types';
+import type { PrimitiveDiagram } from '@realtime-sdk/utils/diagram';
+import type { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import { Required } from 'utility-types';
+import type { Required } from 'utility-types';
 
 const domainType = Utils.protocol.typeFactory(DOMAIN_KEY);
 const domainTopicType = Utils.protocol.typeFactory(domainType(TOPIC_KEY));
@@ -48,8 +48,12 @@ export interface TopicMoveDomainPayload extends BaseDomainPayload {
 export const crud = createCRUDActions<BaseModels.Version.Domain, BaseVersionPayload, PatchPayload>(domainType);
 
 export const create = Utils.protocol.createAsyncAction<CreatePayload, BaseModels.Version.Domain>(domainType('CREATE'));
-export const duplicate = Utils.protocol.createAsyncAction<BaseDomainPayload, BaseModels.Version.Domain>(domainType('DUPLICATE'));
-export const deleteWithNewVersion = Utils.protocol.createAction<DeleteWithNewVersionPayload>(domainType('DELETE_WITH_NEW_VERSION'));
+export const duplicate = Utils.protocol.createAsyncAction<BaseDomainPayload, BaseModels.Version.Domain>(
+  domainType('DUPLICATE')
+);
+export const deleteWithNewVersion = Utils.protocol.createAction<DeleteWithNewVersionPayload>(
+  domainType('DELETE_WITH_NEW_VERSION')
+);
 
 export const topicAdd = Utils.protocol.createAction<TopicAddPayload>(domainTopicType('ADD'));
 export const topicCreate = Utils.protocol.createAsyncAction<TopicCreatePayload, Diagram>(domainTopicType('CREATE'));

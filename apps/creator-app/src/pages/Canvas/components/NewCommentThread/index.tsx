@@ -59,7 +59,9 @@ const NewCommentThread: React.FC<{ isHidden?: boolean }> = ({ isHidden }) => {
         preventOverflow: { padding: { top: 72, bottom: 16, left: 16, right: 16 } },
       }}
       placement="right-start"
-      renderContent={({ scheduleUpdate }) => <ThreadEditor replyRef={api.commentRef} isFocused schedulePopperUpdate={scheduleUpdate} />}
+      renderContent={({ scheduleUpdate }) => (
+        <ThreadEditor replyRef={api.commentRef} isFocused schedulePopperUpdate={scheduleUpdate} />
+      )}
       disableLayers
     >
       {({ ref }) => (

@@ -3,9 +3,14 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { createSelector } from 'reselect';
 
 import { createAction, createSubSelector } from '@/ducks/utils';
-import { Action, Reducer, RootReducer } from '@/store/types';
+import type { Action, Reducer, RootReducer } from '@/store/types';
 
-import { creatorStateSelector, getLinkIDsByPortIDSelector, getNodeByIDSelector, getNodeDataByIDSelector } from './selectors';
+import {
+  creatorStateSelector,
+  getLinkIDsByPortIDSelector,
+  getNodeByIDSelector,
+  getNodeDataByIDSelector,
+} from './selectors';
 
 export interface FocusState {
   target: string | null;
@@ -77,7 +82,9 @@ const rootSelector = createSubSelector(creatorStateSelector, FOCUS_STATE_KEY);
 
 export { rootSelector as creatorFocusSelector };
 
-export const focusedNodeSelector = createSelector([getNodeByIDSelector, rootSelector], (getNodeByID, focus) => getNodeByID({ id: focus.target }));
+export const focusedNodeSelector = createSelector([getNodeByIDSelector, rootSelector], (getNodeByID, focus) =>
+  getNodeByID({ id: focus.target })
+);
 
 export const hasFocusedNode = createSelector([rootSelector], (focus) => focus.isActive);
 
@@ -86,11 +93,14 @@ export const focusedNodeDataSelector = createSelector(
   (getDataByNodeID, focus): Realtime.NodeData<unknown> | null => getDataByNodeID({ id: focus.target })
 );
 
-export const focusedNoMatchLinkIDSelector = createSelector([focusedNodeSelector, getLinkIDsByPortIDSelector], (focusedNode, getLinkIDs) => {
-  const noMatchPortID = focusedNode?.ports.out.builtIn[BaseModels.PortType.NO_MATCH];
+export const focusedNoMatchLinkIDSelector = createSelector(
+  [focusedNodeSelector, getLinkIDsByPortIDSelector],
+  (focusedNode, getLinkIDs) => {
+    const noMatchPortID = focusedNode?.ports.out.builtIn[BaseModels.PortType.NO_MATCH];
 
-  return noMatchPortID ? getLinkIDs({ id: noMatchPortID })[0] ?? null : null;
-});
+    return noMatchPortID ? getLinkIDs({ id: noMatchPortID })[0] ?? null : null;
+  }
+);
 
 // action creators
 

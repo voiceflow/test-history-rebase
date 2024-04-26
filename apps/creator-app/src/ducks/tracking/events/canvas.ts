@@ -1,7 +1,8 @@
 import client from '@/client';
-import { BlockType, StepMenuType } from '@/constants';
+import type { BlockType, StepMenuType } from '@/constants';
 
-import { CanvasCreationType, EventName, NoMatchCreationType, VariableType } from '../constants';
+import type { CanvasCreationType, NoMatchCreationType, VariableType } from '../constants';
+import { EventName } from '../constants';
 import { createProjectEvent, createProjectEventTracker, createVersionEvent, createVersionEventTracker } from '../utils';
 
 export const trackCanvasSeeShortcutsModalOpened = createProjectEventTracker((eventInfo) =>
@@ -44,23 +45,28 @@ export const trackNewThreadReply = createVersionEventTracker((eventInfo) =>
   client.analytics.track(createVersionEvent(EventName.PROJECT_NEW_THREAD_REPLY, eventInfo))
 );
 
-export const trackVariableCreated = createProjectEventTracker<{ diagramID?: string; variableType: VariableType; creationType: CanvasCreationType }>(
-  ({ diagramID, variableType, creationType, ...eventInfo }) =>
-    client.analytics.track(
-      createProjectEvent(EventName.VARIABLE_CREATED, {
-        ...eventInfo,
-        diagram_id: diagramID,
-        variable_type: variableType,
-        creation_type: creationType,
-      })
-    )
+export const trackVariableCreated = createProjectEventTracker<{
+  diagramID?: string;
+  variableType: VariableType;
+  creationType: CanvasCreationType;
+}>(({ diagramID, variableType, creationType, ...eventInfo }) =>
+  client.analytics.track(
+    createProjectEvent(EventName.VARIABLE_CREATED, {
+      ...eventInfo,
+      diagram_id: diagramID,
+      variable_type: variableType,
+      creation_type: creationType,
+    })
+  )
 );
 
 export const trackNewStepCreated = createProjectEventTracker<{
   stepType: BlockType;
   menuType: StepMenuType;
 }>(({ stepType, menuType, ...eventInfo }) =>
-  client.analytics.track(createProjectEvent(EventName.PROJECT_NEW_STEP_CREATED, { ...eventInfo, step_type: stepType, menu_type: menuType }))
+  client.analytics.track(
+    createProjectEvent(EventName.PROJECT_NEW_STEP_CREATED, { ...eventInfo, step_type: stepType, menu_type: menuType })
+  )
 );
 
 export const trackSearchBarQuery = createProjectEventTracker<{ query: string }>(({ query, ...eventInfo }) =>
@@ -73,24 +79,40 @@ export const trackSearchBarResultSelected = createProjectEventTracker<{
   resultListSize: number;
 }>(({ query, selected, resultListSize, ...eventInfo }) =>
   client.analytics.track(
-    createProjectEvent(EventName.SEARCH_BAR_RESULT_SELECTED, { ...eventInfo, query, selected, result_list_size: resultListSize })
+    createProjectEvent(EventName.SEARCH_BAR_RESULT_SELECTED, {
+      ...eventInfo,
+      query,
+      selected,
+      result_list_size: resultListSize,
+    })
   )
 );
 
-export const trackActionAdded = createProjectEventTracker<{ nodeType: BlockType; actionType: BlockType }>(({ nodeType, actionType, ...eventInfo }) =>
-  client.analytics.track(createProjectEvent(EventName.ACTION_ADDED, { ...eventInfo, step_type: nodeType, action_type: actionType }))
+export const trackActionAdded = createProjectEventTracker<{ nodeType: BlockType; actionType: BlockType }>(
+  ({ nodeType, actionType, ...eventInfo }) =>
+    client.analytics.track(
+      createProjectEvent(EventName.ACTION_ADDED, { ...eventInfo, step_type: nodeType, action_type: actionType })
+    )
 );
 
 export const trackActionDeleted = createProjectEventTracker<{ nodeType: BlockType; actionType: BlockType }>(
   ({ nodeType, actionType, ...eventInfo }) =>
-    client.analytics.track(createProjectEvent(EventName.ACTION_DELETED, { ...eventInfo, step_type: nodeType, action_type: actionType }))
+    client.analytics.track(
+      createProjectEvent(EventName.ACTION_DELETED, { ...eventInfo, step_type: nodeType, action_type: actionType })
+    )
 );
 
 export const trackBlockTemplateCreated = createProjectEventTracker<{
   templateID: string;
   nestedSteps: BlockType[];
 }>(({ templateID, nestedSteps, ...eventInfo }) =>
-  client.analytics.track(createProjectEvent(EventName.BLOCK_TEMPLATE_CREATED, { ...eventInfo, template_id: templateID, nested_steps: nestedSteps }))
+  client.analytics.track(
+    createProjectEvent(EventName.BLOCK_TEMPLATE_CREATED, {
+      ...eventInfo,
+      template_id: templateID,
+      nested_steps: nestedSteps,
+    })
+  )
 );
 
 export const trackBlockTemplateUsed = createProjectEventTracker<{
@@ -99,7 +121,12 @@ export const trackBlockTemplateUsed = createProjectEventTracker<{
   droppedInto: 'canvas' | 'block';
 }>(({ templateID, nestedSteps, droppedInto, ...eventInfo }) =>
   client.analytics.track(
-    createProjectEvent(EventName.BLOCK_TEMPLATE_USED, { ...eventInfo, template_id: templateID, nested_steps: nestedSteps, dropped_into: droppedInto })
+    createProjectEvent(EventName.BLOCK_TEMPLATE_USED, {
+      ...eventInfo,
+      template_id: templateID,
+      nested_steps: nestedSteps,
+      dropped_into: droppedInto,
+    })
   )
 );
 

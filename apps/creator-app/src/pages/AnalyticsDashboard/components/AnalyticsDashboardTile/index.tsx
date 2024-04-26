@@ -1,7 +1,7 @@
 import { Box, Text } from '@voiceflow/ui';
 import React from 'react';
 
-import { QueryResult } from '../../types';
+import type { QueryResult } from '../../types';
 import { TILE_HEIGHT } from '../constants';
 import * as S from './styles';
 
@@ -19,7 +19,15 @@ interface AnalyticsDashboardTileProps extends React.PropsWithChildren {
   query: QueryResult<unknown>;
 }
 
-const AnalyticsDashboardTile: React.FC<AnalyticsDashboardTileProps> = ({ title, description, width, height, children, labels, query }) => {
+const AnalyticsDashboardTile: React.FC<AnalyticsDashboardTileProps> = ({
+  title,
+  description,
+  width,
+  height,
+  children,
+  labels,
+  query,
+}) => {
   const noData = query.data === null;
 
   return (

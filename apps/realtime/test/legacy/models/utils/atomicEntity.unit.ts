@@ -256,7 +256,11 @@ describe('Models | Utils | AtomicEntity', () => {
     });
 
     it('creates set operation for array path', () => {
-      vi.spyOn(Utils.id.cuid, 'slug').mockReturnValueOnce('id1').mockReturnValueOnce('id').mockReturnValueOnce('id2').mockReturnValueOnce('id');
+      vi.spyOn(Utils.id.cuid, 'slug')
+        .mockReturnValueOnce('id1')
+        .mockReturnValueOnce('id')
+        .mockReturnValueOnce('id2')
+        .mockReturnValueOnce('id');
 
       const entity = createEntity();
 
@@ -311,7 +315,12 @@ describe('Models | Utils | AtomicEntity', () => {
 
       const entity = createEntity();
 
-      expect(entity.unset(ENTITY_ID, [{ path: ['path', 'nested', 'value'] }, { path: ['path', { 'parent.child': { id: 20 } }, '3'] }])).to.eql({
+      expect(
+        entity.unset(ENTITY_ID, [
+          { path: ['path', 'nested', 'value'] },
+          { path: ['path', { 'parent.child': { id: 20 } }, '3'] },
+        ])
+      ).to.eql({
         query: {
           [pathGetter(ENTITY_ID, 'path.nested.value')]: 1,
           [pathGetter(ENTITY_ID, 'path.$[unsetid12id].3')]: 1,
@@ -346,7 +355,11 @@ describe('Models | Utils | AtomicEntity', () => {
     });
 
     it('creates unset operation for array path', () => {
-      vi.spyOn(Utils.id.cuid, 'slug').mockReturnValueOnce('id1').mockReturnValueOnce('id').mockReturnValueOnce('id2').mockReturnValueOnce('id');
+      vi.spyOn(Utils.id.cuid, 'slug')
+        .mockReturnValueOnce('id1')
+        .mockReturnValueOnce('id')
+        .mockReturnValueOnce('id2')
+        .mockReturnValueOnce('id');
 
       const entity = createEntity();
 

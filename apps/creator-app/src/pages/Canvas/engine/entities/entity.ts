@@ -1,12 +1,12 @@
 /* eslint-disable max-classes-per-file */
 import { Utils } from '@voiceflow/common';
-import { logger } from '@voiceflow/ui';
+import type { logger } from '@voiceflow/ui';
 import React from 'react';
 
 import { useTeardown } from '@/hooks';
 
 import type Engine from '..';
-import { EntityType } from '../constants';
+import type { EntityType } from '../constants';
 
 export interface EntityInstance {
   isReady: () => boolean;
@@ -26,7 +26,11 @@ export abstract class Entity<T extends EntityInstance = EntityInstance> {
 
   public instance: T | null = null;
 
-  constructor(protected type: EntityType, protected engine: Engine, protected log: typeof logger) {}
+  constructor(
+    protected type: EntityType,
+    protected engine: Engine,
+    protected log: typeof logger
+  ) {}
 
   #addClass = (className: string) => {
     this.classNames = Utils.array.append(this.classNames, className);

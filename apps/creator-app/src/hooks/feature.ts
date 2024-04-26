@@ -1,7 +1,7 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
-import { Tail } from 'reselect/es/types';
+import type { Tail } from 'reselect/es/types';
 
 import { FeatureFlagsContext } from '@/contexts/FeatureFlagsContext';
 
@@ -15,7 +15,10 @@ export const useFeatures = () => {
   const featureState = React.useContext(FeatureFlagsContext);
 
   const allFeatures = React.useMemo(() => {
-    Object.entries(featureState).reduce((acc, [featureKey, feature]) => ({ ...acc, [featureKey]: feature.isEnabled }), {});
+    Object.entries(featureState).reduce(
+      (acc, [featureKey, feature]) => ({ ...acc, [featureKey]: feature.isEnabled }),
+      {}
+    );
   }, [featureState]);
 
   const enabledFeatures = React.useMemo(() => {

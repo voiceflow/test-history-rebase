@@ -1,4 +1,4 @@
-import { BaseModels } from '@voiceflow/base-types';
+import type { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import { Box, Button, Menu, notify, Popper, Table, Tooltip } from '@voiceflow/ui-next';
 import { useSetAtom } from 'jotai';
@@ -26,7 +26,7 @@ export const CMSKnowledgeBaseTableNavigationRefreshRateButton: React.FC<{
     const selectedIDs = getAtomValue(tableState.selectedIDs);
     setSelectedIDs(new Set());
     await patchManyRefreshRate(Array.from(selectedIDs), refreshRate);
-    notify.short.success(`Updated`, { delay: 2000, isClosable: false });
+    notify.short.success('Updated', { delay: 2000, isClosable: false });
   };
 
   if (upgradeTooltip) {
@@ -46,7 +46,9 @@ export const CMSKnowledgeBaseTableNavigationRefreshRateButton: React.FC<{
             <Box direction="column">
               <Tooltip.Caption>{upgradeTooltip.description}</Tooltip.Caption>
               {upgradeTooltip.upgradeButtonText && (
-                <Tooltip.Button onClick={() => upgradeTooltip.onUpgrade(store.dispatch)}>{upgradeTooltip.title}</Tooltip.Button>
+                <Tooltip.Button onClick={() => upgradeTooltip.onUpgrade(store.dispatch)}>
+                  {upgradeTooltip.title}
+                </Tooltip.Button>
               )}
             </Box>
           )}
@@ -59,7 +61,15 @@ export const CMSKnowledgeBaseTableNavigationRefreshRateButton: React.FC<{
     <Popper
       placement="bottom-start"
       referenceElement={({ ref, popper, isOpen, onToggle }) => (
-        <Button ref={ref} size="medium" label="Refresh rate" onClick={onToggle} variant="secondary" iconName="Timer" isActive={isOpen}>
+        <Button
+          ref={ref}
+          size="medium"
+          label="Refresh rate"
+          onClick={onToggle}
+          variant="secondary"
+          iconName="Timer"
+          isActive={isOpen}
+        >
           {popper}
         </Button>
       )}
@@ -67,7 +77,11 @@ export const CMSKnowledgeBaseTableNavigationRefreshRateButton: React.FC<{
       {({ onClose, referenceRef }) => (
         <Menu minWidth={referenceRef.current?.clientWidth}>
           {refreshRateOptions.map(({ label, value }) => (
-            <Menu.Item label={label} key={label} onClick={Utils.functional.chainVoid(() => onSetRefreshRate(value), onClose)} />
+            <Menu.Item
+              label={label}
+              key={label}
+              onClick={Utils.functional.chainVoid(() => onSetRefreshRate(value), onClose)}
+            />
           ))}
         </Menu>
       )}

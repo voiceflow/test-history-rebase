@@ -4,7 +4,14 @@ import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
 import { Entity, EntityVariant, Language } from '@voiceflow/dtos';
 import { LoguxService } from '@voiceflow/nestjs-logux';
-import type { EntityJSON, EntityObject, EntityVariantJSON, EntityVariantObject, IntentObject, RequiredEntityObject } from '@voiceflow/orm-designer';
+import type {
+  EntityJSON,
+  EntityObject,
+  EntityVariantJSON,
+  EntityVariantObject,
+  IntentObject,
+  RequiredEntityObject,
+} from '@voiceflow/orm-designer';
 import { DatabaseTarget, EntityORM, ObjectId } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
@@ -58,7 +65,13 @@ export class EntityService extends CMSTabularService<EntityORM> {
 
   /* Export */
 
-  toJSONWithSubResources({ entities, entityVariants }: { entities: EntityObject[]; entityVariants: EntityVariantObject[] }) {
+  toJSONWithSubResources({
+    entities,
+    entityVariants,
+  }: {
+    entities: EntityObject[];
+    entityVariants: EntityVariantObject[];
+  }) {
     return {
       entities: this.mapToJSON(entities),
       entityVariants: this.entityVariant.mapToJSON(entityVariants),
@@ -84,7 +97,9 @@ export class EntityService extends CMSTabularService<EntityORM> {
 
     return {
       entities: json.entities.map((item) => Utils.object.omit(item, ['assistantID', 'environmentID'])),
-      entityVariants: json.entityVariants.map((item) => Utils.object.omit(item, ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'])),
+      entityVariants: json.entityVariants.map((item) =>
+        Utils.object.omit(item, ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'])
+      ),
     };
   }
 
@@ -99,7 +114,8 @@ export class EntityService extends CMSTabularService<EntityORM> {
     sourceEnvironmentID: string;
     targetEnvironmentID: string;
   }) {
-    const { entities: sourceEntities, entityVariants: sourceEntityVariants } = await this.findManyWithSubResourcesByEnvironment(sourceEnvironmentID);
+    const { entities: sourceEntities, entityVariants: sourceEntityVariants } =
+      await this.findManyWithSubResourcesByEnvironment(sourceEnvironmentID);
 
     const injectContext = { assistantID: targetAssistantID, environmentID: targetEnvironmentID };
 
@@ -113,7 +129,12 @@ export class EntityService extends CMSTabularService<EntityORM> {
 
   prepareImportData(
     { entities, entityVariants }: EntityExportImportDataDTO,
-    { userID, backup, assistantID, environmentID }: { userID: number; backup?: boolean; assistantID: string; environmentID: string }
+    {
+      userID,
+      backup,
+      assistantID,
+      environmentID,
+    }: { userID: number; backup?: boolean; assistantID: string; environmentID: string }
   ): {
     entities: EntityJSON[];
     entityVariants: EntityVariantJSON[];
@@ -209,7 +230,10 @@ export class EntityService extends CMSTabularService<EntityORM> {
     });
   }
 
-  async broadcastAddMany({ add }: { add: { entities: EntityObject[]; entityVariants: EntityVariantObject[] } }, meta: CMSBroadcastMeta) {
+  async broadcastAddMany(
+    { add }: { add: { entities: EntityObject[]; entityVariants: EntityVariantObject[] } },
+    meta: CMSBroadcastMeta
+  ) {
     await Promise.all([
       this.entityVariant.broadcastAddMany({ add: Utils.object.pick(add, ['entityVariants']) }, meta),
 

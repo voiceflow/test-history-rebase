@@ -1,4 +1,5 @@
-import Text, { TextProps } from '@ui/components/Text';
+import type { TextProps } from '@ui/components/Text';
+import Text from '@ui/components/Text';
 import { styled } from '@ui/styles';
 
 export interface DescriptionProps extends TextProps {

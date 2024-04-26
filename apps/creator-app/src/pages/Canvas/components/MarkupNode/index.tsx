@@ -5,7 +5,13 @@ import React from 'react';
 import NodeDragTarget from '@/pages/Canvas/components/Node/components/NodeDragTarget';
 import { useNodeDrag } from '@/pages/Canvas/components/Node/hooks';
 import { CANVAS_MARKUP_CREATING_CLASSNAME, ContextMenuTarget } from '@/pages/Canvas/constants';
-import { ContextMenuContext, EngineContext, ManagerContext, NodeEntityContext, PresentationModeContext } from '@/pages/Canvas/contexts';
+import {
+  ContextMenuContext,
+  EngineContext,
+  ManagerContext,
+  NodeEntityContext,
+  PresentationModeContext,
+} from '@/pages/Canvas/contexts';
 import { useEditingMode } from '@/pages/Project/hooks';
 import { ClassName } from '@/styles/constants';
 

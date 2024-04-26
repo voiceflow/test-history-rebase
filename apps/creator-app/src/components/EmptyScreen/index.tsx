@@ -3,7 +3,15 @@ import React from 'react';
 
 import { createGraphic } from '@/assets';
 
-import { BodyTextContainer, ButtonContainer, Container, ContentContainer, Logo, LogoContainer, TitleLabel } from './components';
+import {
+  BodyTextContainer,
+  ButtonContainer,
+  Container,
+  ContentContainer,
+  Logo,
+  LogoContainer,
+  TitleLabel,
+} from './components';
 
 interface EmptyScreenProps {
   id?: string;

@@ -1,5 +1,5 @@
-import * as Platform from '@voiceflow/platform-config';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Platform from '@voiceflow/platform-config';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 
 interface FeatureFlagOverrides {
   featureFlag?: Realtime.FeatureFlag;

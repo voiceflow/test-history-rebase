@@ -1,5 +1,5 @@
 import { createReducerFactory } from '@/ducks/utils';
 
-import { CustomBlockState } from '../types';
+import type { CustomBlockState } from '../types';
 
 export const createReducer = createReducerFactory<CustomBlockState>();

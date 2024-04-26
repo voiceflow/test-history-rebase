@@ -1,8 +1,8 @@
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
-import { Context } from '@voiceflow/socket-utils';
-import { Action } from 'typescript-fsa';
+import type { Context } from '@voiceflow/socket-utils';
+import type { Action } from 'typescript-fsa';
 
-import { WorkspaceContextData } from '@/legacy/actions/workspace/utils';
+import type { WorkspaceContextData } from '@/legacy/actions/workspace/utils';
 
 import { AbstractDiagramResourceControl } from '../utils';
 
@@ -12,7 +12,10 @@ class ReorderMenuItem extends AbstractDiagramResourceControl<Realtime.diagram.Re
   protected process = async (_ctx: Context, { payload, meta }: Action<Realtime.diagram.ReorderMenuItemPayload>) => {
     if (meta?.skipPersist) return;
 
-    await this.services.diagram.reorderMenuItems(payload.versionID, payload.diagramID, { index: payload.toIndex, sourceID: payload.sourceID });
+    await this.services.diagram.reorderMenuItems(payload.versionID, payload.diagramID, {
+      index: payload.toIndex,
+      sourceID: payload.sourceID,
+    });
   };
 
   protected finally = async (

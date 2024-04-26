@@ -6,7 +6,7 @@ import pluralize from 'pluralize';
 import React from 'react';
 
 import { useCheckoutPayment, usePricing, useSeats } from '../hooks';
-import { PaymentModalPropsAPI } from '../Payment.types';
+import type { PaymentModalPropsAPI } from '../Payment.types';
 import * as CardForm from './CardForm';
 import { PlanCard } from './PlanCard.component';
 
@@ -58,7 +58,14 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onClose, modalProps })
           Cancel
         </Button>
 
-        <Button width={144} type="submit" variant={Button.Variant.PRIMARY} disabled={form.isSubmitting} squareRadius isLoading={form.isSubmitting}>
+        <Button
+          width={144}
+          type="submit"
+          variant={Button.Variant.PRIMARY}
+          disabled={form.isSubmitting}
+          squareRadius
+          isLoading={form.isSubmitting}
+        >
           Confirm & Pay
         </Button>
       </Modal.Footer>

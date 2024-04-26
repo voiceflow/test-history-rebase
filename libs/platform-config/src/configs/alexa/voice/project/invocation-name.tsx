@@ -10,7 +10,8 @@ export const CONFIG = Base.Project.InvocationName.extend({
 
   description: (
     <>
-      The name users will say to interact with your Alexa Skill. This does not need to be the same as your project name, but must comply with the{' '}
+      The name users will say to interact with your Alexa Skill. This does not need to be the same as your project name,
+      but must comply with the{' '}
       <System.Link.Anchor href="https://developer.amazon.com/en-US/docs/alexa/custom-skills/choose-the-invocation-name-for-a-custom-skill.html">
         Invocation Name Guidelines.
       </System.Link.Anchor>

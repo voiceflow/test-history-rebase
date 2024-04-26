@@ -5,7 +5,7 @@ import { PRO_PLUS_PLANS } from '@/constants/plans';
 import * as Tracking from '@/ducks/tracking';
 import { getUpgradeModalProps } from '@/utils/upgrade';
 
-import { UpgradeModalPlanPermission } from './types';
+import type { UpgradeModalPlanPermission } from './types';
 
 export const BULK_UPLOAD_PERMISSIONS = {
   plans: [...PRO_PLUS_PLANS, PlanType.STUDENT],

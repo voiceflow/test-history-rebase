@@ -13,7 +13,12 @@ export const creatorStateSelector = createRootSelector(STATE_KEY);
 export const activeDiagramIDSelector = createSelector([creatorStateSelector], ({ activeDiagramID }) => activeDiagramID);
 
 export const isRootDiagramActiveSelector = createSelector(
-  [DomainSelectors.active.rootDiagramIDSelector, activeDiagramIDSelector, rootDiagramIDSelector, Feature.isFeatureEnabledSelector],
+  [
+    DomainSelectors.active.rootDiagramIDSelector,
+    activeDiagramIDSelector,
+    rootDiagramIDSelector,
+    Feature.isFeatureEnabledSelector,
+  ],
   (domainRootDiagramID, activeDiagramID, versionRootDiagramID, isFeatureEnabled) =>
     isFeatureEnabled(FeatureFlag.CMS_WORKFLOWS)
       ? !!versionRootDiagramID && !!activeDiagramID && versionRootDiagramID === activeDiagramID

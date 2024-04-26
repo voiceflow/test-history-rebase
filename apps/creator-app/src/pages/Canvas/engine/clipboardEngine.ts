@@ -1,6 +1,6 @@
 import { Crypto, Utils } from '@voiceflow/common';
 import type { Entity, IntentWithData } from '@voiceflow/dtos';
-import * as Platform from '@voiceflow/platform-config';
+import type * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
 import { get, set } from 'idb-keyval';
@@ -17,7 +17,7 @@ import * as Session from '@/ducks/session';
 import * as VersionV2 from '@/ducks/versionV2';
 import * as Clipboard from '@/utils/clipboard';
 import { synchronous as synchronousCrypto } from '@/utils/crypto';
-import { Coords } from '@/utils/geometry';
+import type { Coords } from '@/utils/geometry';
 
 import { EngineConsumer, getCopiedNodeDataIDs } from './utils';
 
@@ -160,7 +160,9 @@ class ClipboardEngine extends EngineConsumer {
       (node) => node.type !== BlockType.START && node.type !== BlockType.COMMAND
     );
     const soloNodes = allNodes.filter((node) => !node.parentNode);
-    const nestedNodes = soloNodes.flatMap(({ combinedNodes }) => CreatorV2.nodesByIDsSelector(state, { ids: combinedNodes }));
+    const nestedNodes = soloNodes.flatMap(({ combinedNodes }) =>
+      CreatorV2.nodesByIDsSelector(state, { ids: combinedNodes })
+    );
     const orphanedNodes: Realtime.Node[] = [];
 
     const extraLinks: Realtime.Link[] = [];
@@ -189,7 +191,10 @@ class ClipboardEngine extends EngineConsumer {
       });
 
     const copiedNodes = [...soloNodes, ...orphanedNodes, ...nestedNodes];
-    const copiedNodeIDMap = copiedNodes.reduce<Record<string, boolean>>((acc, node) => Object.assign(acc, { [node.id]: true }), {});
+    const copiedNodeIDMap = copiedNodes.reduce<Record<string, boolean>>(
+      (acc, node) => Object.assign(acc, { [node.id]: true }),
+      {}
+    );
 
     const ports = CreatorV2.allPortsByIDsSelector(state, {
       ids: copiedNodes.flatMap((node) => Realtime.Utils.port.flattenAllPorts(node.ports)),
@@ -284,7 +289,9 @@ class ClipboardEngine extends EngineConsumer {
     return {
       ...context,
       data: Utils.object.omit(context.data, removedNodeIDs),
-      links: context.links.filter((link) => !removedNodeIDsSet.has(link.source.nodeID) && !removedNodeIDsSet.has(link.target.nodeID)),
+      links: context.links.filter(
+        (link) => !removedNodeIDsSet.has(link.source.nodeID) && !removedNodeIDsSet.has(link.target.nodeID)
+      ),
       ports: context.ports.filter((port) => !removedNodeIDsSet.has(port.nodeID)),
       nodes: context.nodes.filter((node) => !removedNodeIDsSet.has(node.id)),
     };

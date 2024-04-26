@@ -1,10 +1,11 @@
 import Client from '@anthropic-ai/sdk';
 import { Logger } from '@nestjs/common';
-import { AIMessage, AIMessageRole, AIParams } from '@voiceflow/dtos';
+import type { AIMessage, AIParams } from '@voiceflow/dtos';
+import { AIMessageRole } from '@voiceflow/dtos';
 
 import { LLMModel } from '../llm-model.abstract';
-import { CompletionOutput } from '../llm-model.dto';
-import { AnthropicConfig } from './anthropic.interface';
+import type { CompletionOutput } from '../llm-model.dto';
+import type { AnthropicConfig } from './anthropic.interface';
 import { formatMessages } from './anthropic-message.util';
 
 export abstract class AnthropicMessageAIModel extends LLMModel {
@@ -20,7 +21,7 @@ export abstract class AnthropicMessageAIModel extends LLMModel {
     super(config);
 
     if (!config.ANTHROPIC_API_KEY) {
-      throw new Error(`Anthropic client not initialized`);
+      throw new Error('Anthropic client not initialized');
     }
 
     this.client = new Client({ apiKey: config.ANTHROPIC_API_KEY });

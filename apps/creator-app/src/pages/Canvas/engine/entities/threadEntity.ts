@@ -1,4 +1,4 @@
-import { Thread } from '@voiceflow/dtos';
+import type { Thread } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 import { createSelector } from 'reselect';
@@ -6,13 +6,15 @@ import { createSelector } from 'reselect';
 import { Designer } from '@/ducks';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import { EngineContext } from '@/pages/Canvas/contexts/EngineContext';
-import { Point } from '@/types';
-import { Coords, Vector } from '@/utils/geometry';
+import type { Point } from '@/types';
+import type { Vector } from '@/utils/geometry';
+import { Coords } from '@/utils/geometry';
 
-import { CommentAPI } from '../../types';
+import type { CommentAPI } from '../../types';
 import type Engine from '..';
 import { EntityType } from '../constants';
-import { EntityInstance, ResourceEntity } from './entity';
+import type { EntityInstance } from './entity';
+import { ResourceEntity } from './entity';
 
 export interface ThreadInstance extends EntityInstance, CommentAPI {
   /**
@@ -43,7 +45,9 @@ const threadEntitySelector = createSelector(
       parentNode,
       actionGrantParentNode:
         parentNode?.type === Realtime.BlockType.ACTIONS
-          ? getNode({ id: getNode({ id: getLinksByPortID({ id: parentNode.ports.in[0] })[0]?.source.nodeID })?.parentNode })
+          ? getNode({
+              id: getNode({ id: getLinksByPortID({ id: parentNode.ports.in[0] })[0]?.source.nodeID })?.parentNode,
+            })
           : null,
     };
   }
@@ -58,7 +62,10 @@ class ThreadEntity extends ResourceEntity<{ thread: Thread; node: Realtime.Node 
     return this.engine.comment.isFocused(this.threadID);
   }
 
-  constructor(engine: Engine, public threadID: string) {
+  constructor(
+    engine: Engine,
+    public threadID: string
+  ) {
     super(EntityType.THREAD, engine, engine.log.child('thread', threadID.slice(-6)));
 
     const { thread } = this.resolve();

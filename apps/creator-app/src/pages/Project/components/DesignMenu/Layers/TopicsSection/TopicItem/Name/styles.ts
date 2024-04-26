@@ -2,7 +2,8 @@ import { Animations, FlexCenter, OverflowText, System } from '@voiceflow/ui';
 
 import { css, styled, transition } from '@/hocs/styled';
 
-import ItemNameContainer, { ItemNameContainerProps } from '../../../ItemNameContainer';
+import type { ItemNameContainerProps } from '../../../ItemNameContainer';
+import ItemNameContainer from '../../../ItemNameContainer';
 import ItemNameIcon from '../../../ItemNameIcon';
 
 export const Icon = styled(ItemNameIcon).attrs({ size: 9, icon: 'arrowRightTopics' })<IconProps>`
@@ -15,7 +16,9 @@ export const Icon = styled(ItemNameIcon).attrs({ size: 9, icon: 'arrowRightTopic
     `}
 `;
 
-export const AddButton = styled(System.IconButton.Base).attrs({ size: System.IconButton.Size.XS })<System.IconButton.I.Props>`
+export const AddButton = styled(System.IconButton.Base).attrs({
+  size: System.IconButton.Size.XS,
+})<System.IconButton.I.Props>`
   ${({ active }) =>
     active &&
     css`

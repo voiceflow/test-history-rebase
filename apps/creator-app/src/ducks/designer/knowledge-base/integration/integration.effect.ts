@@ -1,11 +1,16 @@
-import { BaseModels } from '@voiceflow/base-types';
+import type { BaseModels } from '@voiceflow/base-types';
 
 import { knowledgeBaseClient } from '@/client/knowledge-base';
 import { CREATOR_APP_ENDPOINT } from '@/config';
 import * as Errors from '@/config/errors';
 import { Path } from '@/config/routes';
 import * as Session from '@/ducks/session';
-import type { KnowledgeBaseIntegration, ZendeskCountFilters, ZendeskFilters, ZendeskFilterUserSegment } from '@/models/KnowledgeBase.model';
+import type {
+  KnowledgeBaseIntegration,
+  ZendeskCountFilters,
+  ZendeskFilters,
+  ZendeskFilterUserSegment,
+} from '@/models/KnowledgeBase.model';
 import type { Thunk } from '@/store/types';
 
 import * as Actions from './integration.action';
@@ -28,7 +33,11 @@ export const getAll = (): Thunk<KnowledgeBaseIntegration[]> => async (dispatch, 
 };
 
 export const importIntegration =
-  (integrationType: BaseModels.Project.IntegrationTypes, refreshRate: string, filters: ZendeskCountFilters = {}): Thunk<number> =>
+  (
+    integrationType: BaseModels.Project.IntegrationTypes,
+    refreshRate: string,
+    filters: ZendeskCountFilters = {}
+  ): Thunk<number> =>
   async (_, getState) => {
     const state = getState();
 
@@ -106,7 +115,10 @@ export const getIntegrationFilters =
   };
 
 export const getIntegrationDocumentCount =
-  (integrationType: string, filters: ZendeskCountFilters): Thunk<{ count: number; userSegments: ZendeskFilterUserSegment[] }> =>
+  (
+    integrationType: string,
+    filters: ZendeskCountFilters
+  ): Thunk<{ count: number; userSegments: ZendeskFilterUserSegment[] }> =>
   async (_, getState) => {
     const state = getState();
 

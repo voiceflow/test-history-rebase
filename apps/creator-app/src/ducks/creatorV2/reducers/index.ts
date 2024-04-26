@@ -1,8 +1,7 @@
-/* eslint-disable import/no-named-as-default */
 import { createRootReducer } from '@/ducks/utils/reducer';
 
 import { INITIAL_STATE } from '../constants';
-import { CreatorState } from '../types';
+import type { CreatorState } from '../types';
 import addActions, { addActionsReverted } from './addActions';
 import addBlock, { addBlockReverter } from './addBlock';
 import addBuiltInLink, { addBuiltinLinkReverter } from './addBuiltinLink';

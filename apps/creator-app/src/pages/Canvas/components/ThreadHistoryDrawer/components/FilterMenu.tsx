@@ -36,12 +36,20 @@ const FilterMenu: React.FC<FilterMenuProps> = ({ setFilter, filter }) => {
       options={[
         {
           note: openThreadsCount ? `${openThreadsCount}` : undefined,
-          label: <MenuCheckboxOption checked={filter === FilterType.OPEN}>{FILTER_LABELS[FilterType.OPEN]}</MenuCheckboxOption>,
+          label: (
+            <MenuCheckboxOption checked={filter === FilterType.OPEN}>
+              {FILTER_LABELS[FilterType.OPEN]}
+            </MenuCheckboxOption>
+          ),
           onClick: () => setFilter(FilterType.OPEN),
         },
         {
           note: resolvedThreadsCount ? `${resolvedThreadsCount}` : undefined,
-          label: <MenuCheckboxOption checked={filter === FilterType.RESOLVED}>{FILTER_LABELS[FilterType.RESOLVED]}</MenuCheckboxOption>,
+          label: (
+            <MenuCheckboxOption checked={filter === FilterType.RESOLVED}>
+              {FILTER_LABELS[FilterType.RESOLVED]}
+            </MenuCheckboxOption>
+          ),
           onClick: () => setFilter(FilterType.RESOLVED),
         },
 

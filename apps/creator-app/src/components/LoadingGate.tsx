@@ -16,7 +16,14 @@ export interface LoadingGateProps extends React.PropsWithChildren {
   internalName: string;
 }
 
-export const LoadingGate: React.FC<LoadingGateProps> = ({ load, unload, children = null, isLoaded, loader = null, internalName }) => {
+export const LoadingGate: React.FC<LoadingGateProps> = ({
+  load,
+  unload,
+  children = null,
+  isLoaded,
+  loader = null,
+  internalName,
+}) => {
   const pageLoader = useContext(PageLoaderContext);
   const pageLoaderID = useId();
 

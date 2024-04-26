@@ -1,7 +1,7 @@
-/* eslint-disable sonarjs/cognitive-complexity */
 import { BaseModels } from '@voiceflow/base-types';
-import { ChatModels } from '@voiceflow/chat-types';
-import { Nullable, Utils } from '@voiceflow/common';
+import type { ChatModels } from '@voiceflow/chat-types';
+import type { Nullable } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
 import type {
   AnyResponseVariant,
   Entity,
@@ -15,7 +15,7 @@ import type {
   Variable,
 } from '@voiceflow/dtos';
 import { CardLayout, Channel, Language, ResponseVariantType } from '@voiceflow/dtos';
-import { VoiceModels } from '@voiceflow/voice-types';
+import type { VoiceModels } from '@voiceflow/voice-types';
 import { createSimpleAdapter } from 'bidirectional-adapter';
 import groupBy from 'lodash/groupBy';
 
@@ -110,7 +110,11 @@ const adapter = createSimpleAdapter<Input, Output, [FromDBOptions], [ToDBOptions
       if (!variants.length) return;
 
       intentSlot.dialog.prompt = isVoiceAssistant
-        ? variants.map((variant): VoiceModels.IntentPrompt<any> => ({ text: markupToString.fromDB(variant.text, { entitiesMapByID }) }))
+        ? variants.map(
+            (variant): VoiceModels.IntentPrompt<any> => ({
+              text: markupToString.fromDB(variant.text, { entitiesMapByID }),
+            })
+          )
         : variants.map(
             (variant): ChatModels.Prompt => ({
               id: variant.id,
@@ -221,7 +225,8 @@ const adapter = createSimpleAdapter<Input, Output, [FromDBOptions], [ToDBOptions
         const responseVariant: TextResponseVariant = {
           id: Utils.id.objectID(),
           type: ResponseVariantType.TEXT,
-          text: typeof prompt?.text === 'string' ? markupToString.toDB(prompt.text) : markupToSlate.toDB(prompt?.content),
+          text:
+            typeof prompt?.text === 'string' ? markupToString.toDB(prompt.text) : markupToSlate.toDB(prompt?.content),
           speed: null,
           createdAt,
           updatedAt: createdAt,
@@ -285,7 +290,10 @@ export const intentToLegacyIntent = Object.assign(adapter, {
     const responseVariantsMap = Utils.array.createMap(responseVariants, (responseVariant) => responseVariant.id);
     const requiredEntitiesMap = Utils.array.createMap(requiredEntities, (requiredEntity) => requiredEntity.id);
     const utterancesPerIntent = groupBy(utterances, (utterance) => utterance.intentID);
-    const responseDiscriminatorsPerResponse = groupBy(responseDiscriminators, (responseDiscriminator) => responseDiscriminator.responseID);
+    const responseDiscriminatorsPerResponse = groupBy(
+      responseDiscriminators,
+      (responseDiscriminator) => responseDiscriminator.responseID
+    );
 
     return intents.reduce<MapFromDBOutput>(
       (acc, intent) => {
@@ -319,14 +327,19 @@ export const intentToLegacyIntent = Object.assign(adapter, {
 
     return intents.reduce<MapFromDBInput>(
       (acc, intent) => {
-        const result = adapter.toDB({ note: intent.noteID ? notesMap[intent.noteID] ?? null : null, intent }, { ...options, legacySlotMap });
+        const result = adapter.toDB(
+          { note: intent.noteID ? notesMap[intent.noteID] ?? null : null, intent },
+          { ...options, legacySlotMap }
+        );
 
         acc.intents.push(result.intent);
         acc.responses.push(...Object.values(result.responsesMap).filter(Utils.array.isNotNullish));
         acc.utterances.push(...result.utterances);
         acc.responseVariants.push(...Object.values(result.responseVariantsMap).filter(Utils.array.isNotNullish));
         acc.requiredEntities.push(...Object.values(result.requiredEntitiesMap).filter(Utils.array.isNotNullish));
-        acc.responseDiscriminators.push(...Object.values(result.responseDiscriminatorsPerResponse).flat().filter(Utils.array.isNotNullish));
+        acc.responseDiscriminators.push(
+          ...Object.values(result.responseDiscriminatorsPerResponse).flat().filter(Utils.array.isNotNullish)
+        );
 
         return acc;
       },

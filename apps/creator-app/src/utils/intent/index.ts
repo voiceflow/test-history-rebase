@@ -1,11 +1,12 @@
 import { AlexaConstants } from '@voiceflow/alexa-types';
-import { BaseButton, BaseModels } from '@voiceflow/base-types';
-import { Nullable, Nullish } from '@voiceflow/common';
-import { Entity, Intent } from '@voiceflow/dtos';
+import type { BaseModels } from '@voiceflow/base-types';
+import { BaseButton } from '@voiceflow/base-types';
+import type { Nullable, Nullish } from '@voiceflow/common';
+import type { Entity, Intent } from '@voiceflow/dtos';
 import { DFESConstants } from '@voiceflow/google-dfes-types';
 import { GoogleConstants } from '@voiceflow/google-types';
 import * as Platform from '@voiceflow/platform-config';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { StrengthGauge } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
@@ -25,10 +26,12 @@ const googleBuiltInIntentsArray = (Object.values(GoogleConstants.GoogleIntent) a
 ) as string[];
 const dialogflowESBuiltInIntentsArray = Object.values(DFESConstants.DialogflowESIntent) as string[];
 const builtInIntentMap = new Map(
-  [...amazonBuiltInIntentsArray, ...generalBuiltInIntentsArray, ...googleBuiltInIntentsArray, ...dialogflowESBuiltInIntentsArray].map((id) => [
-    id,
-    true,
-  ])
+  [
+    ...amazonBuiltInIntentsArray,
+    ...generalBuiltInIntentsArray,
+    ...googleBuiltInIntentsArray,
+    ...dialogflowESBuiltInIntentsArray,
+  ].map((id) => [id, true])
 );
 
 const INTENT_LABELS: Partial<Record<string, string>> = {
@@ -67,7 +70,10 @@ export const intentFilter = (
   return true;
 };
 
-const fmtIntentName = (intent: Platform.Base.Models.Intent.Model | Intent, platform: Platform.Constants.PlatformType): string => {
+const fmtIntentName = (
+  intent: Platform.Base.Models.Intent.Model | Intent,
+  platform: Platform.Constants.PlatformType
+): string => {
   let { name } = intent ?? { name: '' };
 
   name = getIntentNameLabel(name);
@@ -88,7 +94,7 @@ export const validateIntentName = (
   }
 
   if (entities.some(({ name }) => name.toLowerCase() === lowerCasedIntentName)) {
-    return `Intent name already exists.`;
+    return 'Intent name already exists.';
   }
 
   return null;
@@ -120,7 +126,11 @@ export const getIntentConfidenceStrengthLevel = (count: number) => {
   return StrengthGauge.Level.NOT_SET;
 };
 
-export const intentButtonFactory = (): BaseButton.IntentButton => ({ name: '', type: BaseButton.ButtonType.INTENT, payload: { intentID: null } });
+export const intentButtonFactory = (): BaseButton.IntentButton => ({
+  name: '',
+  type: BaseButton.ButtonType.INTENT,
+  payload: { intentID: null },
+});
 
 export const getGoToIntentMeta = ({
   intentID,
@@ -145,8 +155,10 @@ export const getGoToIntentMeta = ({
   const goToIntent = intentID ? intentsMap[intentID] ?? null : null;
   const goToDiagram = diagramID ? diagramMap[diagramID] ?? null : null;
 
-  const topicGoToNodeID = goToIntent && goToDiagram ? globalIntentStepMap[goToDiagram.id]?.[goToIntent.id]?.[0] ?? null : null;
-  const componentGoToNodeID = topicGoToNodeID || (goToIntent ? intentNodeDataLookup[goToIntent.id]?.nodeID ?? null : null);
+  const topicGoToNodeID =
+    goToIntent && goToDiagram ? globalIntentStepMap[goToDiagram.id]?.[goToIntent.id]?.[0] ?? null : null;
+  const componentGoToNodeID =
+    topicGoToNodeID || (goToIntent ? intentNodeDataLookup[goToIntent.id]?.nodeID ?? null : null);
 
   const goToNodeID = isComponentDiagram(activeDiagramType) ? componentGoToNodeID : topicGoToNodeID;
 

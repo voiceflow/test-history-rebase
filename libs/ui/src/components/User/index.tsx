@@ -2,7 +2,7 @@ import SvgIcon from '@ui/components/SvgIcon';
 import React from 'react';
 
 import { MemberIcon } from './components';
-import { MemberIconProps } from './components/MemberIcon';
+import type { MemberIconProps } from './components/MemberIcon';
 
 export * from './components';
 
@@ -25,8 +25,10 @@ export interface UserProps extends MemberIconProps {
 export const isColorImage = (image?: string | null): image is string => image?.length === 13 && image.includes('|');
 
 const User: React.ForwardRefRenderFunction<HTMLDivElement, UserProps> = ({ user, className, ...props }, ref) => {
-  // eslint-disable-next-line no-nested-ternary
-  const letter = React.useMemo(() => (!user.image ? '?' : isColorImage(user.image) ? user.name?.[0] ?? '' : ''), [user]);
+  const letter = React.useMemo(
+    () => (!user.image ? '?' : isColorImage(user.image) ? user.name?.[0] ?? '' : ''),
+    [user]
+  );
 
   const styles = React.useMemo(() => {
     const style: React.CSSProperties = {};

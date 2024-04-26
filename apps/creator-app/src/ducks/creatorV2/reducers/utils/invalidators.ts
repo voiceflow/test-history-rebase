@@ -1,28 +1,43 @@
-import { BaseModels } from '@voiceflow/base-types';
+import type { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { ActionCreator } from 'typescript-fsa';
+import type { ActionCreator } from 'typescript-fsa';
 
 import type { State } from '@/ducks';
-import { ActionInvalidator, createInvalidator } from '@/ducks/utils';
+import type { ActionInvalidator } from '@/ducks/utils';
+import { createInvalidator } from '@/ducks/utils';
 
 import { linksByPortIDSelector, parentNodeIDByStepIDSelector } from '../../selectors';
 
-export const createDiagramInvalidator = <Origin extends Realtime.BaseDiagramPayload, Payload extends Realtime.BaseDiagramPayload>(
+export const createDiagramInvalidator = <
+  Origin extends Realtime.BaseDiagramPayload,
+  Payload extends Realtime.BaseDiagramPayload,
+>(
   actionCreator: ActionCreator<Payload>,
   invalidate: (origin: Origin, subject: Payload) => boolean
 ): ActionInvalidator<Origin, Payload> =>
-  createInvalidator(actionCreator, (origin, subject) => origin.diagramID === subject.diagramID && invalidate(origin, subject));
+  createInvalidator(
+    actionCreator,
+    (origin, subject) => origin.diagramID === subject.diagramID && invalidate(origin, subject)
+  );
 
 export const DIAGRAM_INVALIDATORS: ActionInvalidator<Realtime.BaseDiagramPayload, any>[] = [
   createInvalidator(Realtime.diagram.crud.remove, (origin, subject) => origin.diagramID === subject.key),
   createInvalidator(Realtime.diagram.crud.removeMany, (origin, subject) => subject.keys.includes(origin.diagramID)),
-  createInvalidator(Realtime.domain.topicConvertFromComponent.started, (origin, subject) => origin.diagramID === subject.componentID),
+  createInvalidator(
+    Realtime.domain.topicConvertFromComponent.started,
+    (origin, subject) => origin.diagramID === subject.componentID
+  ),
 ];
 
-export const remapsTargetSamePorts = (originPortRemaps?: Realtime.NodePortRemap[], subjectPortRemaps?: Realtime.NodePortRemap[]) =>
+export const remapsTargetSamePorts = (
+  originPortRemaps?: Realtime.NodePortRemap[],
+  subjectPortRemaps?: Realtime.NodePortRemap[]
+) =>
   !!originPortRemaps?.some((originPortRemap) =>
     subjectPortRemaps?.some((subjectPortRemap) =>
-      originPortRemap.ports.some((originPort) => subjectPortRemap.ports.some((subjectPort) => originPort.portID === subjectPort.portID))
+      originPortRemap.ports.some((originPort) =>
+        subjectPortRemap.ports.some((subjectPort) => originPort.portID === subjectPort.portID)
+      )
     )
   );
 
@@ -62,14 +77,18 @@ export const createNodeRemovalInvalidators = <Origin extends Realtime.BaseDiagra
 export const createManyNodesRemovalInvalidators = <Origin extends Realtime.BaseDiagramPayload>(
   getNodes: (origin: Origin) => Realtime.node.RemoveManyPayload['nodes']
 ) => [
-  ...createNodeRemovalInvalidators((origin: Origin, nodeID) => getNodes(origin).some((node) => (node.stepID ?? node.parentNodeID) === nodeID)),
+  ...createNodeRemovalInvalidators((origin: Origin, nodeID) =>
+    getNodes(origin).some((node) => (node.stepID ?? node.parentNodeID) === nodeID)
+  ),
   createDiagramInvalidator(Realtime.node.insertStep, (origin: Origin, subject) =>
     getNodes(origin).some((node) => node.parentNodeID === subject.parentNodeID)
   ),
   createDiagramInvalidator(Realtime.node.reorderSteps, (origin: Origin, subject) =>
     getNodes(origin).some((node) => node.parentNodeID === subject.parentNodeID)
   ),
-  createDiagramInvalidator(Realtime.node.moveMany, (origin: Origin, subject) => getNodes(origin).some((node) => !!subject.blocks[node.parentNodeID])),
+  createDiagramInvalidator(Realtime.node.moveMany, (origin: Origin, subject) =>
+    getNodes(origin).some((node) => !!subject.blocks[node.parentNodeID])
+  ),
   createDiagramInvalidator(Realtime.node.updateDataMany, (origin: Origin, subject) =>
     getNodes(origin).some((originNode) => subject.nodes.some((subjectNode) => originNode.stepID === subjectNode.nodeID))
   ),
@@ -86,13 +105,19 @@ export const createManyNodesRemovalInvalidators = <Origin extends Realtime.BaseD
     getNodes(origin).some((node) => (node.stepID ?? node.parentNodeID) === subject.nodeID)
   ),
   createDiagramInvalidator(Realtime.link.addBuiltin, (origin: Origin, subject) =>
-    getNodes(origin).some((node) => [subject.sourceNodeID, subject.targetNodeID].includes(node.stepID ?? node.parentNodeID))
+    getNodes(origin).some((node) =>
+      [subject.sourceNodeID, subject.targetNodeID].includes(node.stepID ?? node.parentNodeID)
+    )
   ),
   createDiagramInvalidator(Realtime.link.addByKey, (origin: Origin, subject) =>
-    getNodes(origin).some((node) => [subject.sourceNodeID, subject.targetNodeID].includes(node.stepID ?? node.parentNodeID))
+    getNodes(origin).some((node) =>
+      [subject.sourceNodeID, subject.targetNodeID].includes(node.stepID ?? node.parentNodeID)
+    )
   ),
   createDiagramInvalidator(Realtime.link.addDynamic, (origin: Origin, subject) =>
-    getNodes(origin).some((node) => [subject.sourceNodeID, subject.targetNodeID].includes(node.stepID ?? node.parentNodeID))
+    getNodes(origin).some((node) =>
+      [subject.sourceNodeID, subject.targetNodeID].includes(node.stepID ?? node.parentNodeID)
+    )
   ),
 ];
 
@@ -153,11 +178,17 @@ export const createNodePortRemapsInvalidators = <Origin extends Realtime.BaseDia
   }),
   createDiagramInvalidator(Realtime.link.patchMany, (origin: Origin, subject) => {
     const { nodePortRemaps } = getRemaps(origin);
-    return !!nodePortRemaps?.some((portRemap) => portRemap.ports.some((port) => subject.patches.some((patch) => patch.portID === port.portID)));
+    return !!nodePortRemaps?.some((portRemap) =>
+      portRemap.ports.some((port) => subject.patches.some((patch) => patch.portID === port.portID))
+    );
   }),
 ];
 
-export const buildLinkRecreateActions = (state: State, ctx: Realtime.BaseDiagramPayload, portRemap: Realtime.NodePortRemap) =>
+export const buildLinkRecreateActions = (
+  state: State,
+  ctx: Realtime.BaseDiagramPayload,
+  portRemap: Realtime.NodePortRemap
+) =>
   portRemap.ports.flatMap((port) => {
     const links = linksByPortIDSelector(state, { id: port.portID });
 

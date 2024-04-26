@@ -25,7 +25,10 @@ export const CONFIG = Base.Project.extend({
 
   invocationName: InvocationName.CONFIG,
 
-  globalVariables: Utils.array.withoutValues(Base.Project.CONFIG.globalVariables, [SystemVariable.LAST_RESPONSE, SystemVariable.LAST_UTTERANCE]),
+  globalVariables: Utils.array.withoutValues(Base.Project.CONFIG.globalVariables, [
+    SystemVariable.LAST_RESPONSE,
+    SystemVariable.LAST_UTTERANCE,
+  ]),
 })(Base.Project.validate);
 
 export type Config = typeof CONFIG;

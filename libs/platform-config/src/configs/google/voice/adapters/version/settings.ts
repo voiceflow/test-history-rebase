@@ -1,8 +1,9 @@
 import * as Common from '@platform-config/configs/common';
-import { GoogleConstants, GoogleVersion } from '@voiceflow/google-types';
+import type { GoogleConstants } from '@voiceflow/google-types';
+import { GoogleVersion } from '@voiceflow/google-types';
 import { createSimpleAdapter, createSmartSimpleAdapter } from 'bidirectional-adapter';
 
-import * as Models from '../../models';
+import type * as Models from '../../models';
 
 export const smart = createSmartSimpleAdapter<
   GoogleVersion.VoiceSettings,

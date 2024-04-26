@@ -1,5 +1,5 @@
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
-import { Nullable } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { normalize } from 'normal-store';
 
@@ -16,17 +16,16 @@ import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
 import { waitAsync } from '@/ducks/utils';
 import { schemaVersionSelector } from '@/ducks/versionV2/selectors/active';
+import type { ActiveDomainContext, ActiveVersionContext } from '@/ducks/versionV2/utils';
 import {
-  ActiveDomainContext,
-  ActiveVersionContext,
   assertDomainContext,
   assertVersionContext,
   getActiveDomainContext,
   getActiveVersionContext,
 } from '@/ducks/versionV2/utils';
-import { SyncThunk, Thunk } from '@/store/types';
+import type { SyncThunk, Thunk } from '@/store/types';
 import { BLOCK_WIDTH } from '@/styles/theme';
-import { PathPoint, Point } from '@/types';
+import type { PathPoint, Point } from '@/types';
 import { getNodesGroupCenter } from '@/utils/node';
 
 // side effects
@@ -64,7 +63,9 @@ export const deleteTopicDiagramForDomain =
 
     await dispatch(Router.goToRootDiagramIfActive(diagramID));
 
-    await dispatch.sync(Realtime.domain.topicRemove({ ...getActiveVersionContext(state), domainID, topicID: diagramID }));
+    await dispatch.sync(
+      Realtime.domain.topicRemove({ ...getActiveVersionContext(state), domainID, topicID: diagramID })
+    );
 
     dispatch(Tracking.trackTopicDeleted());
   };
@@ -125,7 +126,13 @@ interface CreateDiagramWithDataResult {
 }
 
 const getDiagramToCreate =
-  ({ data, nodes, links, ports, startCoords = Realtime.START_NODE_POSITION }: CreateDiagramWithDataOptions): SyncThunk<CreateDiagramWithDataResult> =>
+  ({
+    data,
+    nodes,
+    links,
+    ports,
+    startCoords = Realtime.START_NODE_POSITION,
+  }: CreateDiagramWithDataOptions): SyncThunk<CreateDiagramWithDataResult> =>
   (_, getState) => {
     const state = getState();
     const platform = ProjectV2.active.platformSelector(state);
@@ -134,8 +141,12 @@ const getDiagramToCreate =
     const allNodesLinks = nodes.flatMap((node) => linksByNodeIDSelector(state, { id: node.id }));
 
     const nodeIDMap = nodes.reduce<Record<string, boolean>>((acc, node) => Object.assign(acc, { [node.id]: true }), {});
-    const incomingLinks = allNodesLinks.filter(({ source, target }) => nodeIDMap[target.nodeID] && !nodeIDMap[source.nodeID]);
-    const outgoingLinks = allNodesLinks.filter(({ source, target }) => !nodeIDMap[target.nodeID] && nodeIDMap[source.nodeID]);
+    const incomingLinks = allNodesLinks.filter(
+      ({ source, target }) => nodeIDMap[target.nodeID] && !nodeIDMap[source.nodeID]
+    );
+    const outgoingLinks = allNodesLinks.filter(
+      ({ source, target }) => !nodeIDMap[target.nodeID] && nodeIDMap[source.nodeID]
+    );
 
     const { center, minX } = getNodesGroupCenter(
       nodes.map((node) => ({ data: data[node.id], node })),
@@ -152,7 +163,9 @@ const getDiagramToCreate =
 
     const adjustedNodes = nodes.map((node) => ({ ...node, x: node.x + adjustX, y: node.y + adjustY }));
     const adjustedPorts = ports.map((port) =>
-      port.linkData?.points ? { ...port, linkData: { ...port.linkData, points: port.linkData.points.map(adjustPathPoint) } } : port
+      port.linkData?.points
+        ? { ...port, linkData: { ...port.linkData, points: port.linkData.points.map(adjustPathPoint) } }
+        : port
     );
     const adjustedLinks = links.map((link) =>
       link.data?.points ? { ...link, data: { ...link.data, points: link.data.points.map(adjustPathPoint) } } : link
@@ -168,7 +181,13 @@ const getDiagramToCreate =
         rootNodeIDs: [],
         markupNodeIDs: [],
       },
-      { nodes: normalize(adjustedNodes), ports: normalize(adjustedPorts), platform, projectType, context: { schemaVersion } }
+      {
+        nodes: normalize(adjustedNodes),
+        ports: normalize(adjustedPorts),
+        platform,
+        projectType,
+        context: { schemaVersion },
+      }
     );
 
     return {
@@ -193,17 +212,27 @@ interface ConvertToSubtopicOptions extends CreateDiagramWithDataOptions {
  * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
  */
 export const convertToSubtopic =
-  ({ data, nodes, links, ports, rootTopicID, startCoords = Realtime.START_NODE_POSITION }: ConvertToSubtopicOptions): Thunk<ConvertToDiagramResult> =>
+  ({
+    data,
+    nodes,
+    links,
+    ports,
+    rootTopicID,
+    startCoords = Realtime.START_NODE_POSITION,
+  }: ConvertToSubtopicOptions): Thunk<ConvertToDiagramResult> =>
   async (dispatch, getState) => {
     const state = getState();
     const rootTopic = diagramByIDSelector(state, { id: rootTopicID });
 
-    const subtopics = rootTopic?.menuItems.filter((item) => item.type === BaseModels.Diagram.MenuItemType.DIAGRAM) ?? [];
+    const subtopics =
+      rootTopic?.menuItems.filter((item) => item.type === BaseModels.Diagram.MenuItemType.DIAGRAM) ?? [];
 
     const name = `Sub Topic ${subtopics.length + 1}`;
     const subtopic = Realtime.Utils.diagram.topicDiagramFactory(name, startCoords);
 
-    const { incomingLinks, outgoingLinks, dbCreatorDiagram } = dispatch(getDiagramToCreate({ data, nodes, links, ports }));
+    const { incomingLinks, outgoingLinks, dbCreatorDiagram } = dispatch(
+      getDiagramToCreate({ data, nodes, links, ports })
+    );
 
     const nodesArr = Object.values(dbCreatorDiagram.nodes);
     const hasIntent = nodesArr.some((node) => node.type === BaseNode.NodeType.INTENT);
@@ -212,7 +241,10 @@ export const convertToSubtopic =
       subtopic.nodes = dbCreatorDiagram.nodes;
       subtopic.menuItems = nodesArr
         .filter(Realtime.Utils.typeGuards.isDiagramMenuDBNode)
-        .map<BaseModels.Diagram.MenuItem>((node) => ({ type: BaseModels.Diagram.MenuItemType.NODE, sourceID: node.nodeID }));
+        .map<BaseModels.Diagram.MenuItem>((node) => ({
+          type: BaseModels.Diagram.MenuItemType.NODE,
+          sourceID: node.nodeID,
+        }));
     } else {
       subtopic.nodes = { ...subtopic.nodes, ...dbCreatorDiagram.nodes };
     }
@@ -272,7 +304,9 @@ export const deleteSubtopicDiagram =
 
     await dispatch(Router.goToRootDiagramIfActive(diagramID));
 
-    await dispatch.sync(Realtime.diagram.subtopicRemove({ ...getActiveDomainContext(state), subtopicID: diagramID, rootTopicID }));
+    await dispatch.sync(
+      Realtime.diagram.subtopicRemove({ ...getActiveDomainContext(state), subtopicID: diagramID, rootTopicID })
+    );
 
     dispatch(Tracking.trackTopicDeleted());
   };
@@ -292,7 +326,12 @@ export const moveSubtopicDiagram =
     await dispatch(Router.goToRootDiagramIfActive(subtopicID));
 
     await dispatch.sync(
-      Realtime.diagram.subtopicMove({ ...getActiveDomainContext(state), subtopicID, toTopicID: newTopicID, rootTopicID: diagramID })
+      Realtime.diagram.subtopicMove({
+        ...getActiveDomainContext(state),
+        subtopicID,
+        toTopicID: newTopicID,
+        rootTopicID: diagramID,
+      })
     );
 
     dispatch(Tracking.trackSubtopicMoved({ originTopicID: diagramID, destinationTopicID: newTopicID }));
@@ -314,7 +353,9 @@ export const deleteTopicDiagram =
 export const renameDiagram =
   (diagramID: string, name: string): Thunk =>
   async (dispatch, getState) => {
-    await dispatch.sync(Realtime.diagram.crud.patch({ ...getActiveVersionContext(getState()), key: diagramID, value: { name } }));
+    await dispatch.sync(
+      Realtime.diagram.crud.patch({ ...getActiveVersionContext(getState()), key: diagramID, value: { name } })
+    );
   };
 
 /**
@@ -331,10 +372,18 @@ export const moveTopicDomain =
     Errors.assertDiagramID(diagramID);
 
     await dispatch.sync(
-      Realtime.domain.topicMoveDomain({ ...getActiveVersionContext(state), domainID, topicDiagramID: diagramID, newDomainID, rootTopicID })
+      Realtime.domain.topicMoveDomain({
+        ...getActiveVersionContext(state),
+        domainID,
+        topicDiagramID: diagramID,
+        newDomainID,
+        rootTopicID,
+      })
     );
 
-    dispatch(Tracking.trackTopicMovedDomain({ topicID: diagramID, originDomain: domainID, destinationDomain: newDomainID }));
+    dispatch(
+      Tracking.trackTopicMovedDomain({ topicID: diagramID, originDomain: domainID, destinationDomain: newDomainID })
+    );
 
     await dispatch(Router.goToDomainDiagram(newDomainID, diagramID));
   };
@@ -343,9 +392,24 @@ export const moveTopicDomain =
  * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
  */
 export const reorderMenuItem =
-  ({ toIndex, sourceID, diagramID, skipPersist }: { toIndex: number; sourceID: string; diagramID: string; skipPersist?: boolean }): Thunk =>
+  ({
+    toIndex,
+    sourceID,
+    diagramID,
+    skipPersist,
+  }: {
+    toIndex: number;
+    sourceID: string;
+    diagramID: string;
+    skipPersist?: boolean;
+  }): Thunk =>
   async (dispatch, getState) => {
-    await dispatch.sync(Realtime.diagram.reorderMenuItem({ ...getActiveDomainContext(getState()), sourceID, toIndex, diagramID }, { skipPersist }));
+    await dispatch.sync(
+      Realtime.diagram.reorderMenuItem(
+        { ...getActiveDomainContext(getState()), sourceID, toIndex, diagramID },
+        { skipPersist }
+      )
+    );
   };
 
 export const diagramHeartbeat =

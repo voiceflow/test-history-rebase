@@ -1,10 +1,13 @@
-import { MigrationData } from '@realtime-sdk/migrate/migrations/types';
+import type { MigrationData } from '@realtime-sdk/migrate/migrations/types';
 import migrateToV4_04 from '@realtime-sdk/migrate/migrations/v4_04';
 import * as Platform from '@voiceflow/platform-config/backend';
 import { produce } from 'immer';
 
 describe('Migrate service - v4_04 migration unit tests', () => {
-  const migrationContext = { projectType: Platform.Constants.ProjectType.CHAT, platform: Platform.Constants.PlatformType.VOICEFLOW };
+  const migrationContext = {
+    projectType: Platform.Constants.ProjectType.CHAT,
+    platform: Platform.Constants.PlatformType.VOICEFLOW,
+  };
 
   it('removes duplicate menuItems and topicIDs', async () => {
     const domain1 = { topicIDs: ['topicID1', 'topicID2', 'topicID1'] };
@@ -52,7 +55,11 @@ describe('Migrate service - v4_04 migration unit tests', () => {
 
     expect(result.version).to.eql({
       ...data.version,
-      domains: [{ topicIDs: ['topicID1', 'topicID2'] }, { topicIDs: ['topicID3', 'topicID1', 'topicID2', 'topicID4'] }, domain3],
+      domains: [
+        { topicIDs: ['topicID1', 'topicID2'] },
+        { topicIDs: ['topicID3', 'topicID1', 'topicID2', 'topicID4'] },
+        domain3,
+      ],
     });
 
     expect(result.diagrams).to.eql([

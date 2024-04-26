@@ -1,7 +1,7 @@
-import { BaseVersion } from '@voiceflow/base-types';
-import { Nullable } from '@voiceflow/common';
-import { VersionSettings } from '@voiceflow/dtos';
-import { Required } from 'utility-types';
+import type { BaseVersion } from '@voiceflow/base-types';
+import type { Nullable } from '@voiceflow/common';
+import type { VersionSettings } from '@voiceflow/dtos';
+import type { Required } from 'utility-types';
 
 import * as Publishing from './publishing';
 import * as Settings from './settings';

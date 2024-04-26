@@ -2,12 +2,12 @@
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Draft } from 'immer';
+import type { Draft } from 'immer';
 import * as Normal from 'normal-store';
 
 import { createCombinedReducerFactory, createReducerFactory } from '@/ducks/utils';
 
-import { DiagramState } from '../types';
+import type { DiagramState } from '../types';
 
 export const createReducer = createReducerFactory<DiagramState>();
 export const createCombinedReducer = createCombinedReducerFactory<DiagramState>();
@@ -17,7 +17,11 @@ export const removeDiagramSharedNodes = (state: Draft<DiagramState>, diagramID: 
   delete state.globalIntentStepMap[diagramID];
 };
 
-export const addSharedNode = (state: Draft<DiagramState>, diagramID: string, sharedNode: Realtime.diagram.sharedNodes.SharedNode | null) => {
+export const addSharedNode = (
+  state: Draft<DiagramState>,
+  diagramID: string,
+  sharedNode: Realtime.diagram.sharedNodes.SharedNode | null
+) => {
   if (!sharedNode) return;
 
   state.sharedNodes[diagramID][sharedNode.nodeID] = sharedNode;
@@ -39,13 +43,19 @@ export const addSharedNodeAndMenuItem = (
   const diagram = Normal.getOne(state, diagramID);
 
   if (diagram && Realtime.Utils.typeGuards.isDiagramMenuBlockType(sharedNode.type)) {
-    diagram.menuItems = [...diagram.menuItems, { type: BaseModels.Diagram.MenuItemType.NODE, sourceID: sharedNode.nodeID }];
+    diagram.menuItems = [
+      ...diagram.menuItems,
+      { type: BaseModels.Diagram.MenuItemType.NODE, sourceID: sharedNode.nodeID },
+    ];
   }
 
   addSharedNode(state, diagramID, sharedNode);
 };
 
-export const addSharedNodes = (state: Draft<DiagramState>, sharedNodes: Realtime.diagram.sharedNodes.DiagramSharedNodeMap) => {
+export const addSharedNodes = (
+  state: Draft<DiagramState>,
+  sharedNodes: Realtime.diagram.sharedNodes.DiagramSharedNodeMap
+) => {
   Object.entries(sharedNodes).forEach(([diagramID, sharedNodeMap]) => {
     state.sharedNodes[diagramID] = {};
     state.globalIntentStepMap[diagramID] = {};
@@ -59,7 +69,9 @@ export const removeSharedNodes = (state: Draft<DiagramState>, diagramID: string,
   const diagram = Normal.getOne(state, diagramID);
 
   if (diagram) {
-    diagram.menuItems = diagram.menuItems.filter(({ type, sourceID }) => type !== BaseModels.Diagram.MenuItemType.NODE || !nodeIDMap[sourceID]);
+    diagram.menuItems = diagram.menuItems.filter(
+      ({ type, sourceID }) => type !== BaseModels.Diagram.MenuItemType.NODE || !nodeIDMap[sourceID]
+    );
   }
 
   const diagramSharedNodes = state.sharedNodes[diagramID];
@@ -72,8 +84,15 @@ export const removeSharedNodes = (state: Draft<DiagramState>, diagramID: string,
 
     delete diagramSharedNodes[nodeID];
 
-    if (sharedNode?.type === Realtime.BlockType.INTENT && sharedNode.intentID && diagramGlobalIntents?.[sharedNode.intentID]) {
-      diagramGlobalIntents[sharedNode.intentID] = Utils.array.withoutValue(diagramGlobalIntents[sharedNode.intentID], nodeID);
+    if (
+      sharedNode?.type === Realtime.BlockType.INTENT &&
+      sharedNode.intentID &&
+      diagramGlobalIntents?.[sharedNode.intentID]
+    ) {
+      diagramGlobalIntents[sharedNode.intentID] = Utils.array.withoutValue(
+        diagramGlobalIntents[sharedNode.intentID],
+        nodeID
+      );
     }
   });
 };

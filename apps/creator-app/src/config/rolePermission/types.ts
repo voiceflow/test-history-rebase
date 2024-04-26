@@ -1,5 +1,5 @@
 import type { UserRole } from '@voiceflow/internal';
-import React from 'react';
+import type React from 'react';
 
 import type { UpgradePopperData } from '@/components/UpgradePopper';
 import type { UpgradeTooltipData } from '@/components/UpgradeTooltip';

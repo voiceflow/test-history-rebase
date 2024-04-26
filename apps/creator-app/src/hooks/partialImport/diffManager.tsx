@@ -5,7 +5,7 @@ import React from 'react';
 import * as Domain from '@/ducks/domain';
 import { useSelector } from '@/hooks/redux';
 
-import { VFDiff } from './diff';
+import type { VFDiff } from './diff';
 import DiffItem from './diffItem';
 
 interface DiffManagerProps {
@@ -97,7 +97,11 @@ const DiffManager: React.FC<DiffManagerProps> = ({ diff, setDiff }) => {
             </Box>
           </Box.FlexApart>
           {diff.diff.customBlocks.map((component, index) => (
-            <DiffItem key={component.nextResource.key} diff={component} toggleDiff={toggleDiff('customBlocks', index)} />
+            <DiffItem
+              key={component.nextResource.key}
+              diff={component}
+              toggleDiff={toggleDiff('customBlocks', index)}
+            />
           ))}
         </Box>
       )}

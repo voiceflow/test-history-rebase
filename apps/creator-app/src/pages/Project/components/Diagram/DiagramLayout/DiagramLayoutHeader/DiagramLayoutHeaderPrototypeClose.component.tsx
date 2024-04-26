@@ -31,7 +31,13 @@ export const DiagramLayoutHeaderPrototypeClose: React.FC = () => {
       placement="bottom"
       referenceElement={({ ref, onOpen, onClose }) => (
         <div ref={ref}>
-          <Header.Button.Primary label="Close" iconName="CloseM" onClick={() => goToCurrentCanvas()} onMouseEnter={onOpen} onMouseLeave={onClose} />
+          <Header.Button.Primary
+            label="Close"
+            iconName="CloseM"
+            onClick={() => goToCurrentCanvas()}
+            onMouseEnter={onOpen}
+            onMouseLeave={onClose}
+          />
         </div>
       )}
     />

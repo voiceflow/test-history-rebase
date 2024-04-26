@@ -46,7 +46,10 @@ export class WorkflowLoguxController {
         data.map((item) => ({ ...item, isStart: false })),
         { auth, context }
       )
-      .then((results) => ({ data: results.map((result) => ({ ...this.service.toJSON(result), triggerNodeID: result.triggerNodeID })), context }));
+      .then((results) => ({
+        data: results.map((result) => ({ ...this.service.toJSON(result), triggerNodeID: result.triggerNodeID })),
+        context,
+      }));
   }
 
   @Action.Async(Actions.Workflow.DuplicateOne)
@@ -121,7 +124,10 @@ export class WorkflowLoguxController {
     const result = await this.service.deleteManyAndSync([id], { context });
 
     // overriding entities cause it's broadcasted by decorator
-    await this.service.broadcastDeleteMany({ ...result, delete: { ...result.delete, workflows: [] } }, { auth, context });
+    await this.service.broadcastDeleteMany(
+      { ...result, delete: { ...result.delete, workflows: [] } },
+      { auth, context }
+    );
   }
 
   @Action(Actions.Workflow.DeleteMany)
@@ -136,7 +142,10 @@ export class WorkflowLoguxController {
     const result = await this.service.deleteManyAndSync(ids, { context });
 
     // overriding entities cause it's broadcasted by decorator
-    await this.service.broadcastDeleteMany({ ...result, delete: { ...result.delete, workflows: [] } }, { auth, context });
+    await this.service.broadcastDeleteMany(
+      { ...result, delete: { ...result.delete, workflows: [] } },
+      { auth, context }
+    );
   }
 
   @Action(Actions.Workflow.AddOne)

@@ -1,4 +1,4 @@
-/* eslint-disable sonarjs/no-duplicate-string, mocha/no-identical-title */
+/* eslint-disable sonarjs/no-duplicate-string */
 import { PlanType, UserRole } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import * as Normal from 'normal-store';
@@ -101,7 +101,9 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ describeReducerV2, creat
       it('add a new workspace member', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, member });
 
-        expect(result.byKey[WORKSPACE_ID].members).toEqual(Normal.append(WORKSPACE.members, String(member.creator_id), member));
+        expect(result.byKey[WORKSPACE_ID].members).toEqual(
+          Normal.append(WORKSPACE.members, String(member.creator_id), member)
+        );
       });
 
       it('do nothing if workspace does not exist', () => {
@@ -115,7 +117,9 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ describeReducerV2, creat
       it('remove an existing workspace member', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, creatorID: 1000 });
 
-        expect(result.byKey[WORKSPACE_ID].members).toEqual(Normal.normalize([WORKSPACE_MEMBER], (member) => String(member.creator_id)));
+        expect(result.byKey[WORKSPACE_ID].members).toEqual(
+          Normal.normalize([WORKSPACE_MEMBER], (member) => String(member.creator_id))
+        );
       });
 
       it('do nothing if member does not exist', () => {
@@ -157,7 +161,10 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ describeReducerV2, creat
       it('patch an existing workspace member', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, creatorID: CREATOR_ID, member });
 
-        expect(result.byKey[WORKSPACE_ID].members.byKey[CREATOR_ID]).toEqual({ ...WORKSPACE_MEMBER, role: UserRole.BILLING });
+        expect(result.byKey[WORKSPACE_ID].members.byKey[CREATOR_ID]).toEqual({
+          ...WORKSPACE_MEMBER,
+          role: UserRole.BILLING,
+        });
       });
 
       it('do nothing if member does not exist', () => {
@@ -167,7 +174,12 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ describeReducerV2, creat
       });
 
       it('do nothing if workspace does not exist', () => {
-        const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, workspaceID: 'foo', creatorID: CREATOR_ID, member });
+        const result = applyAction(MOCK_STATE, {
+          ...ACTION_CONTEXT,
+          workspaceID: 'foo',
+          creatorID: CREATOR_ID,
+          member,
+        });
 
         expect(result).toBe(MOCK_STATE);
       });
@@ -175,9 +187,15 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ describeReducerV2, creat
 
     describeReducerV2(Realtime.workspace.member.updateInvite, ({ applyAction }) => {
       it('patch an existing workspace member', () => {
-        const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, email: 'pending@voiceflow.com', role: UserRole.BILLING });
+        const result = applyAction(MOCK_STATE, {
+          ...ACTION_CONTEXT,
+          email: 'pending@voiceflow.com',
+          role: UserRole.BILLING,
+        });
 
-        expect(result.byKey[WORKSPACE_ID].pendingMembers.byKey['pending@voiceflow.com']).toContain({ role: UserRole.BILLING });
+        expect(result.byKey[WORKSPACE_ID].pendingMembers.byKey['pending@voiceflow.com']).toContain({
+          role: UserRole.BILLING,
+        });
       });
 
       it('do nothing if member does not exist', () => {
@@ -187,7 +205,12 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ describeReducerV2, creat
       });
 
       it('do nothing if workspace does not exist', () => {
-        const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, workspaceID: 'foo', email: EMAIL, role: UserRole.BILLING });
+        const result = applyAction(MOCK_STATE, {
+          ...ACTION_CONTEXT,
+          workspaceID: 'foo',
+          email: EMAIL,
+          role: UserRole.BILLING,
+        });
 
         expect(result).toBe(MOCK_STATE);
       });
@@ -234,7 +257,10 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ describeReducerV2, creat
 
       describe('planSeatLimitsSelector()', () => {
         it('should select the seat limits of the active workspace', () => {
-          expect(Workspace.active.planSeatLimitsSelector(createState(MOCK_STATE, activeWorkspaceState))).toEqual({ viewer: 10, editor: 20 });
+          expect(Workspace.active.planSeatLimitsSelector(createState(MOCK_STATE, activeWorkspaceState))).toEqual({
+            viewer: 10,
+            editor: 20,
+          });
         });
       });
 
@@ -244,7 +270,11 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ describeReducerV2, creat
         });
 
         it('should always have at least 1 used seat', () => {
-          expect(Workspace.active.usedEditorSeatsSelector(createState(MOCK_STATE, { [Session.STATE_KEY]: { activeWorkspaceID: 'def' } }))).toEqual(1);
+          expect(
+            Workspace.active.usedEditorSeatsSelector(
+              createState(MOCK_STATE, { [Session.STATE_KEY]: { activeWorkspaceID: 'def' } })
+            )
+          ).toEqual(1);
         });
       });
 

@@ -22,7 +22,10 @@ export const { Consumer: ClipboardConsumer } = ClipboardContext;
 export const ClipboardProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const engine = React.useContext(EngineContext)!;
 
-  const copy = React.useCallback((nodeID?: string | null, options?: CopyOptions) => engine.copyActive(nodeID, options), []);
+  const copy = React.useCallback(
+    (nodeID?: string | null, options?: CopyOptions) => engine.copyActive(nodeID, options),
+    []
+  );
   const isEditingMode = useEditingMode();
 
   React.useEffect(() => {
@@ -33,7 +36,9 @@ export const ClipboardProvider: React.FC<React.PropsWithChildren> = ({ children 
       if (
         IGNORED_TAGS.has(target.nodeName) ||
         // can't use .closest here since target node can be removed from the DOM in the slate past handler
-        event.composedPath().some((node) => 'classList' in node && (node as HTMLElement).classList.contains(SLATE_EDITOR_CLASS_NAME))
+        event
+          .composedPath()
+          .some((node) => 'classList' in node && (node as HTMLElement).classList.contains(SLATE_EDITOR_CLASS_NAME))
       ) {
         return;
       }

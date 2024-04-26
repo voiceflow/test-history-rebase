@@ -5,30 +5,38 @@ import { toast } from '@ui/components/Toast';
 import { useDidUpdateEffect, usePersistFunction } from '@ui/hooks';
 import { ClassName } from '@ui/styles/constants';
 import * as System from '@ui/system';
-import { Primitive } from '@ui/types';
+import type { Primitive } from '@ui/types';
 import { setRef, stopPropagation } from '@ui/utils';
-import { Nullable, Utils } from '@voiceflow/common';
-import { Manager, PopperProps, Reference } from '@voiceflow/legacy-react-popper';
+import type { Nullable } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
+import type { PopperProps } from '@voiceflow/legacy-react-popper';
+import { Manager, Reference } from '@voiceflow/legacy-react-popper';
 import cn from 'classnames';
 import noop from 'lodash/noop';
 import React from 'react';
 import { useDismissable } from 'react-dismissable-layers';
 
 // for some reason absolute paths are not transformed for this import
-import {
-  defaultMenuLabelRenderer,
+import type {
   GetOptionLabel,
   GetOptionValue,
-  isGroupedOptions,
-  isUIOnlyMenuItemOption,
   MenuItemGrouped,
   MenuItemMultilevel,
   MenuItemWithID,
 } from '../NestedMenu';
+import { defaultMenuLabelRenderer, isGroupedOptions, isUIOnlyMenuItemOption } from '../NestedMenu';
 import NestedMenu from '../NestedMenu/Menu';
-import { InlineInputValue, InputBadge, LeftActionContainer, PrefixContainer, SelectWrapper, TagsContainer, TagsInput } from './components';
-import { defaultOptionsFilter, searchableOptionsFilter } from './optionsFilters';
 import {
+  InlineInputValue,
+  InputBadge,
+  LeftActionContainer,
+  PrefixContainer,
+  SelectWrapper,
+  TagsContainer,
+  TagsInput,
+} from './components';
+import { defaultOptionsFilter, searchableOptionsFilter } from './optionsFilters';
+import type {
   SelectClearableProps,
   SelectCreatableClearableProps,
   SelectCreatableProps,
@@ -40,7 +48,6 @@ import {
   SelectGroupedValueWithIDProps,
   SelectGroupedWithIDClearableProps,
   SelectGroupedWithIDProps,
-  SelectInputVariant,
   SelectInternalProps,
   SelectMultilevelClearableProps,
   SelectMultilevelProps,
@@ -68,6 +75,7 @@ import {
   SelectWithIDClearableProps,
   SelectWithIDProps,
 } from './types';
+import { SelectInputVariant } from './types';
 
 export type { BaseSelectProps, FilterResult, OptionsFilter } from './types';
 export { SelectInputVariant } from './types';
@@ -77,8 +85,12 @@ export * from './components';
 
 const defaultGetter = (option: unknown) => option;
 
-function Select<Option, GroupOption extends MenuItemGrouped<Option>>(props: SelectGroupedProps<Option, GroupOption>): React.ReactElement;
-function Select<Option, GroupOption extends MenuItemGrouped<Option>>(props: SelectGroupedClearableProps<Option, GroupOption>): React.ReactElement;
+function Select<Option, GroupOption extends MenuItemGrouped<Option>>(
+  props: SelectGroupedProps<Option, GroupOption>
+): React.ReactElement;
+function Select<Option, GroupOption extends MenuItemGrouped<Option>>(
+  props: SelectGroupedClearableProps<Option, GroupOption>
+): React.ReactElement;
 function Select<Option, GroupOption extends MenuItemGrouped<Option>, Value>(
   props: SelectValueGroupedProps<Option, GroupOption, Value>
 ): React.ReactElement;
@@ -106,15 +118,31 @@ function Select<Option extends MenuItemWithID>(props: SelectWithIDClearableProps
 function Select<Option extends MenuItemWithID>(props: SelectCreatableWithIDProps<Option>): React.ReactElement;
 function Select<Option extends MenuItemWithID>(props: SelectCreatableWithIDClearableProps<Option>): React.ReactElement;
 function Select<Option extends MenuItemWithID, Value>(props: SelectValueWithIDProps<Option, Value>): React.ReactElement;
-function Select<Option extends MenuItemWithID, Value>(props: SelectValueWithIDClearableProps<Option, Value>): React.ReactElement;
-function Select<Option extends MenuItemWithID, Value>(props: SelectValueCreatableWithIDProps<Option, Value>): React.ReactElement;
-function Select<Option extends MenuItemWithID, Value>(props: SelectValueCreatableWithIDClearableProps<Option, Value>): React.ReactElement;
+function Select<Option extends MenuItemWithID, Value>(
+  props: SelectValueWithIDClearableProps<Option, Value>
+): React.ReactElement;
+function Select<Option extends MenuItemWithID, Value>(
+  props: SelectValueCreatableWithIDProps<Option, Value>
+): React.ReactElement;
+function Select<Option extends MenuItemWithID, Value>(
+  props: SelectValueCreatableWithIDClearableProps<Option, Value>
+): React.ReactElement;
 function Select<Option extends MenuItemMultilevel<Option>>(props: SelectMultilevelProps<Option>): React.ReactElement;
-function Select<Option extends MenuItemMultilevel<Option>>(props: SelectMultilevelClearableProps<Option>): React.ReactElement;
-function Select<Option extends MenuItemMultilevel<Option>, Value>(props: SelectValueMultilevelProps<Option, Value>): React.ReactElement;
-function Select<Option extends MenuItemMultilevel<Option>, Value>(props: SelectValueMultilevelClearableProps<Option, Value>): React.ReactElement;
-function Select<Option extends MenuItemWithID & MenuItemMultilevel<Option>>(props: SelectMultilevelWithIDProps<Option>): React.ReactElement;
-function Select<Option extends MenuItemWithID & MenuItemMultilevel<Option>>(props: SelectMultilevelWithIDClearableProps<Option>): React.ReactElement;
+function Select<Option extends MenuItemMultilevel<Option>>(
+  props: SelectMultilevelClearableProps<Option>
+): React.ReactElement;
+function Select<Option extends MenuItemMultilevel<Option>, Value>(
+  props: SelectValueMultilevelProps<Option, Value>
+): React.ReactElement;
+function Select<Option extends MenuItemMultilevel<Option>, Value>(
+  props: SelectValueMultilevelClearableProps<Option, Value>
+): React.ReactElement;
+function Select<Option extends MenuItemWithID & MenuItemMultilevel<Option>>(
+  props: SelectMultilevelWithIDProps<Option>
+): React.ReactElement;
+function Select<Option extends MenuItemWithID & MenuItemMultilevel<Option>>(
+  props: SelectMultilevelWithIDClearableProps<Option>
+): React.ReactElement;
 function Select<Option extends MenuItemWithID & MenuItemMultilevel<Option>, Value>(
   props: SelectMultilevelValueWithIDProps<Option, Value>
 ): React.ReactElement;
@@ -214,7 +242,8 @@ function Select({
   width,
 }: SelectInternalProps): React.ReactElement {
   const withClearIcon = clearable && !clearOnSelectActive;
-  const optionLabel = isDropdown && searchable && inDropdownSearch ? '' : searchLabelProp || String(getOptionLabel(value) ?? '') || '';
+  const optionLabel =
+    isDropdown && searchable && inDropdownSearch ? '' : searchLabelProp || String(getOptionLabel(value) ?? '') || '';
 
   const inputRef = React.useRef<HTMLInputElement>(null);
   const inlineRef = React.useRef<HTMLInputElement>(null);
@@ -224,7 +253,9 @@ function Select({
   const [opened, toggleOpen, forceClose] = useDismissable(!!open, { disableLayers: !useLayers });
   const [directMatch, setDirectMatch] = React.useState(false);
   const [searchLabel, setSearchLabel] = React.useState(isDropdown && searchable && inDropdownSearch ? '' : optionLabel);
-  const [optionsToRender, setOptionsToRender] = React.useState(() => (renderOptionsFilter ? options.filter(renderOptionsFilter) : options));
+  const [optionsToRender, setOptionsToRender] = React.useState(() =>
+    renderOptionsFilter ? options.filter(renderOptionsFilter) : options
+  );
   const [inputWrapperNode, setInputWrapperNode] = React.useState<Nullable<HTMLDivElement>>(null);
   const [focusedOptionIndex, setFocusedOptionIndex] = React.useState<Nullable<number>>(null);
 
@@ -239,14 +270,21 @@ function Select({
   const renderDropdown = opened && (!!options.length || searchLabel || !searchable || !!renderEmpty);
   const isDropDownOpened = isDropdown && opened;
   const firstOptionIndex =
-    ((!directMatch && ((isDropdown && searchable) || creatable)) || inDropdownSearch) && (alwaysShowCreate || !searchable || !!searchLabel) ? 1 : 0;
+    ((!directMatch && ((isDropdown && searchable) || creatable)) || inDropdownSearch) &&
+    (alwaysShowCreate || !searchable || !!searchLabel)
+      ? 1
+      : 0;
 
   const menuPopoverModifiers: NonNullable<PopperProps['modifiers']> = {
     hide: { enabled: false },
     autoSizing: {
       enabled: true,
       fn: (data) => {
-        if (placement === 'bottom-start' && inputWrapperNode && (data.instance.options.modifiers?.isRoot?.value || nestedMenuAutoWidth)) {
+        if (
+          placement === 'bottom-start' &&
+          inputWrapperNode &&
+          (data.instance.options.modifiers?.isRoot?.value || nestedMenuAutoWidth)
+        ) {
           // eslint-disable-next-line no-param-reassign
           data.styles.width = `${inputWrapperNode.getBoundingClientRect().width}px`;
         }
@@ -499,7 +537,14 @@ function Select({
             withClearIcon={withClearIcon}
           >
             {renderTrigger ? (
-              renderTrigger({ ...inputProps, ref: inputRef, value: searchLabel, isOpen: opened, onOpenMenu, onHideMenu })
+              renderTrigger({
+                ...inputProps,
+                ref: inputRef,
+                value: searchLabel,
+                isOpen: opened,
+                onOpenMenu,
+                onHideMenu,
+              })
             ) : (
               <Flex>
                 <>
@@ -513,7 +558,10 @@ function Select({
 
                       <TagsInput
                         value={isDropdown ? label : searchLabel}
-                        onBlur={Utils.functional.chain<[React.FocusEvent<HTMLElement>]>(!renderDropdown ? forceClose : null, onBlur)}
+                        onBlur={Utils.functional.chain<[React.FocusEvent<HTMLElement>]>(
+                          !renderDropdown ? forceClose : null,
+                          onBlur
+                        )}
                         hastags={hasOptions}
                         onClick={searchable ? onOpenMenu : undefined}
                         onChange={onChangeSearchLabel}

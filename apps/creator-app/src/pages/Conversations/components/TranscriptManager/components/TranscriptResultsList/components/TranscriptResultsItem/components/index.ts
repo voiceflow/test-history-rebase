@@ -13,7 +13,8 @@ export const Container = styled(Flex)<{ active?: boolean; isLastItem: boolean; m
   ${transition()};
   padding: 20px 32px;
   border-left: 3px solid white;
-  border-bottom: 1px solid ${({ isLastItem }) => colors(isLastItem ? ThemeColor.SEPARATOR : ThemeColor.SEPARATOR_SECONDARY)};
+  border-bottom: 1px solid
+    ${({ isLastItem }) => colors(isLastItem ? ThemeColor.SEPARATOR : ThemeColor.SEPARATOR_SECONDARY)};
   border-top: 1px solid transparent;
   border-right: 0px;
   background: white;

@@ -47,7 +47,10 @@ export class MigrationService {
   /**
    * this is the best place to implement any feature-aware logic to allow or block a pending migration
    */
-  public async getTargetSchemaVersion(versionID: string, proposedVersion: Realtime.SchemaVersion): Promise<Realtime.SchemaVersion> {
+  public async getTargetSchemaVersion(
+    versionID: string,
+    proposedVersion: Realtime.SchemaVersion
+  ): Promise<Realtime.SchemaVersion> {
     const activeSchemaVersion = await this.migrationCache.getActiveSchemaVersion(versionID);
     if (activeSchemaVersion) return activeSchemaVersion;
 
@@ -166,7 +169,11 @@ export class MigrationService {
         );
 
         await this.assistant.migrateOne(result, patches);
-        await this.environment.migrateCMSData(result, patches, { userID: creatorID, assistantID: version.projectID, environmentID: version._id });
+        await this.environment.migrateCMSData(result, patches, {
+          userID: creatorID,
+          assistantID: version.projectID,
+          environmentID: version._id,
+        });
 
         return [result, patches];
       });

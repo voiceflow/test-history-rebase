@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { Intent, IntentClassificationSettings } from '@voiceflow/dtos';
+import type { Intent, IntentClassificationSettings } from '@voiceflow/dtos';
 import { Box, Divider } from '@voiceflow/ui-next';
 import React from 'react';
 

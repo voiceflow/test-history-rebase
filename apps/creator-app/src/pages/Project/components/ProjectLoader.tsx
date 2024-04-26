@@ -1,4 +1,5 @@
-import { ITabLoader, TabLoader } from '@voiceflow/ui-next';
+import type { ITabLoader } from '@voiceflow/ui-next';
+import { TabLoader } from '@voiceflow/ui-next';
 import React from 'react';
 
 import Page from '@/components/Page';

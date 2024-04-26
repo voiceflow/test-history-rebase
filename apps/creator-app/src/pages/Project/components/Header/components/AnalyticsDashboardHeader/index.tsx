@@ -14,7 +14,11 @@ const AnalyticsDashboardHeader: React.FC = () => {
       <Page.Header.Title leftOffset>Analytics</Page.Header.Title>
 
       <Page.Header.RightSection rightOffset={false} mr={16}>
-        <Page.Header.IconButton icon="refreshData" tooltip={{ content: 'Refresh', offset: [0, -6] }} onClick={() => analyticsDashboard.refresh()} />
+        <Page.Header.IconButton
+          icon="refreshData"
+          tooltip={{ content: 'Refresh', offset: [0, -6] }}
+          onClick={() => analyticsDashboard.refresh()}
+        />
       </Page.Header.RightSection>
     </Page.Header>
   );

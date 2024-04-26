@@ -10,7 +10,11 @@ export const getOpenAIResponseError = (error: any): string | undefined => {
   return undefined;
 };
 
-export const delayedPromiseRace = async <T extends () => Promise<any>>(func: T, delay: number, retries = 0): Promise<Awaited<ReturnType<T>>> => {
+export const delayedPromiseRace = async <T extends () => Promise<any>>(
+  func: T,
+  delay: number,
+  retries = 0
+): Promise<Awaited<ReturnType<T>>> => {
   /*
       Races retries calls to func with delay inbetween each call.
       e.g. OpenAI call 1 -> wait [delay] ms -> OpenAI Call 2 -> OpenAI call 2 resolves -> return result 2.

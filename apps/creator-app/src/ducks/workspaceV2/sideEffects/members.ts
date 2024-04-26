@@ -9,7 +9,7 @@ import { organizationByIDSelector } from '@/ducks/organization/organization.sele
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import { waitAsync } from '@/ducks/utils';
-import { Thunk } from '@/store/types';
+import type { Thunk } from '@/store/types';
 import { getErrorMessage } from '@/utils/error';
 import { getLimitConfig } from '@/utils/planLimitV3.util';
 import { isAdminUserRole, isEditorUserRole } from '@/utils/role';
@@ -27,7 +27,12 @@ export const acceptInvite =
 
       return workspaceID;
     } catch (err) {
-      if (err && typeof err === 'object' && 'code' in err && err.code === Realtime.ErrorCode.ALREADY_MEMBER_OF_WORKSPACE) {
+      if (
+        err &&
+        typeof err === 'object' &&
+        'code' in err &&
+        err.code === Realtime.ErrorCode.ALREADY_MEMBER_OF_WORKSPACE
+      ) {
         toast.success('You are already a member of this workspace.');
         redirect?.();
         return null;
@@ -106,12 +111,17 @@ export const updateMember =
 
     const workspace = workspaceByIDSelector(state, { id: workspaceID });
     const organizationMember =
-      organizationByIDSelector(state, { id: workspace?.organizationID })?.members.find((m) => m.creatorID === creatorID) ?? null;
+      organizationByIDSelector(state, { id: workspace?.organizationID })?.members.find(
+        (m) => m.creatorID === creatorID
+      ) ?? null;
 
     try {
       if (workspace?.organizationID && isAdminUserRole(organizationMember?.role)) {
         await dispatch.sync(
-          Actions.OrganizationMember.DeleteOne({ id: creatorID, context: { organizationID: workspace.organizationID, workspaceID } })
+          Actions.OrganizationMember.DeleteOne({
+            id: creatorID,
+            context: { organizationID: workspace.organizationID, workspaceID },
+          })
         );
       }
 

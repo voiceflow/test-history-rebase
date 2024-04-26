@@ -3,9 +3,8 @@ import { Box } from '@voiceflow/ui';
 import _isString from 'lodash/isString';
 import React from 'react';
 
+import type { AnyErrorStage, AnyErrorStageData } from '@/constants/platforms';
 import {
-  AnyErrorStage,
-  AnyErrorStageData,
   IsPublishJobRenderingError,
   isPublishJobSubmittingProjectError,
   isPublishJobSubmittingReviewError,

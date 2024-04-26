@@ -1,6 +1,6 @@
 import { BaseModels } from '@voiceflow/base-types';
 
-import { Transform } from './types';
+import type { Transform } from './types';
 
 /**
  * this migration fix an issue if there're multiple templates diagrams in the same version
@@ -12,7 +12,8 @@ const migrateToV3_91: Transform = ({ version, diagrams }) => {
 
   if (templateDiagrams.length <= 1) return;
 
-  const templateDiagram = templateDiagrams.find((diagram) => diagram._id === version.templateDiagramID) ?? templateDiagrams[0];
+  const templateDiagram =
+    templateDiagrams.find((diagram) => diagram._id === version.templateDiagramID) ?? templateDiagrams[0];
   const templateDiagramsToMerge = templateDiagrams.filter((diagram) => diagram._id !== templateDiagram._id);
 
   templateDiagramsToMerge.forEach((diagram) => {

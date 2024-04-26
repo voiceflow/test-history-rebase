@@ -1,5 +1,10 @@
-import { Nullish, Utils } from '@voiceflow/common';
-import { DEFAULT_INTENT_CLASSIFICATION_LLM_SETTINGS, DEFAULT_INTENT_CLASSIFICATION_NLU_SETTINGS, IntentClassificationType } from '@voiceflow/dtos';
+import type { Nullish } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
+import {
+  DEFAULT_INTENT_CLASSIFICATION_LLM_SETTINGS,
+  DEFAULT_INTENT_CLASSIFICATION_NLU_SETTINGS,
+  IntentClassificationType,
+} from '@voiceflow/dtos';
 import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { StrengthGauge, usePersistFunction } from '@voiceflow/ui';
 import { useCreateConst } from '@voiceflow/ui-next';
@@ -22,7 +27,9 @@ export const useIsLLMIntentClassificationEnabled = () => {
   const settings = useSelector(Version.selectors.active.intentClassificationSettings);
   const legacyIsLLMClassifier = useSelector(Project.active.isLLMClassifier);
 
-  return intentClassification.isEnabled ? aiFeaturesEnabled && settings?.type === IntentClassificationType.LLM : legacyIsLLMClassifier;
+  return intentClassification.isEnabled
+    ? aiFeaturesEnabled && settings?.type === IntentClassificationType.LLM
+    : legacyIsLLMClassifier;
 };
 
 export const useIntentDescriptionPlaceholder = () => {
@@ -89,7 +96,10 @@ export const useIntent = (intentID: Nullish<string>) => {
     if (!intent) return [false, StrengthGauge.Level.NOT_SET];
 
     if (intent.entityOrder)
-      return [!!intent.entityOrder.length, intentIsBuiltIn ? StrengthGauge.Level.VERY_STRONG : getIntentStrengthLevel(intent.utterances.length)];
+      return [
+        !!intent.entityOrder.length,
+        intentIsBuiltIn ? StrengthGauge.Level.VERY_STRONG : getIntentStrengthLevel(intent.utterances.length),
+      ];
 
     return [intentIsBuiltIn ? StrengthGauge.Level.VERY_STRONG : getIntentStrengthLevel(intent.utterances.length)];
   }, [intent]);
@@ -114,7 +124,9 @@ export const useIntentNameProcessor = () => {
   return usePersistFunction((name: string, intentID?: string) => {
     const formattedName = Utils.string.removeTrailingUnderscores(name);
 
-    const filteredIntents = intentID ? Utils.array.inferUnion(intents).filter((intent) => intent.id !== intentID) : intents;
+    const filteredIntents = intentID
+      ? Utils.array.inferUnion(intents).filter((intent) => intent.id !== intentID)
+      : intents;
 
     const error = validateIntentName(formattedName, filteredIntents, entities, platform);
 
@@ -127,7 +139,11 @@ export const useAreIntentPromptsEmpty = (prompts?: unknown[]): boolean => {
 
   return React.useMemo(
     () =>
-      !prompts || prompts.every((prompt) => !projectTypeConfig.utils.intent.isPrompt(prompt) || projectTypeConfig.utils.intent.isPromptEmpty(prompt)),
+      !prompts ||
+      prompts.every(
+        (prompt) =>
+          !projectTypeConfig.utils.intent.isPrompt(prompt) || projectTypeConfig.utils.intent.isPromptEmpty(prompt)
+      ),
     [prompts, projectTypeConfig]
   );
 };

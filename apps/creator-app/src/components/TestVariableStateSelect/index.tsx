@@ -1,6 +1,6 @@
 import { Utils } from '@voiceflow/common';
+import type { BaseSelectProps } from '@voiceflow/ui';
 import {
-  BaseSelectProps,
   isNotUIOnlyMenuItemOption,
   isUIOnlyMenuItemOption,
   Menu,
@@ -19,7 +19,7 @@ import * as ModalsV2 from '@/ModalsV2';
 
 import { SelectContainer } from './components';
 import { baseOptions, dividerOption } from './constants';
-import { VariableStateOption } from './types';
+import type { VariableStateOption } from './types';
 
 interface TestVariableStateSelectProps extends BaseSelectProps {
   value?: string | null;
@@ -28,7 +28,14 @@ interface TestVariableStateSelectProps extends BaseSelectProps {
   onUpdateStateValues: () => Promise<void>;
 }
 
-const TestVariableStateSelect: React.FC<TestVariableStateSelectProps> = ({ value, loading, onChange, onUpdateStateValues, className, ...props }) => {
+const TestVariableStateSelect: React.FC<TestVariableStateSelectProps> = ({
+  value,
+  loading,
+  onChange,
+  onUpdateStateValues,
+  className,
+  ...props
+}) => {
   const variableStates = useSelector(variableState.allVariableStatesSelector);
   const isSelectedStateUnsync = useSelector(variableState.IsVariableStateUnsyncSelector);
 
@@ -39,16 +46,25 @@ const TestVariableStateSelect: React.FC<TestVariableStateSelectProps> = ({ value
   const onCreateVariableState = useCreateVariableState();
 
   const options = React.useMemo(() => {
-    const statesOptions = variableStates.map((variableState) => ({ label: variableState.name, value: variableState.id }));
+    const statesOptions = variableStates.map((variableState) => ({
+      label: variableState.name,
+      value: variableState.id,
+    }));
 
     if (statesOptions.length === 0) return baseOptions;
 
     return [...baseOptions, dividerOption, ...statesOptions];
   }, [variableStates]);
 
-  const optionsMap = React.useMemo(() => Utils.array.createMap(options.filter(isNotUIOnlyMenuItemOption), Utils.object.selectValue), [options]);
+  const optionsMap = React.useMemo(
+    () => Utils.array.createMap(options.filter(isNotUIOnlyMenuItemOption), Utils.object.selectValue),
+    [options]
+  );
 
-  const selected = React.useMemo(() => options.find((option) => !isUIOnlyMenuItemOption(option) && option.value === value) || null, [options, value]);
+  const selected = React.useMemo(
+    () => options.find((option) => !isUIOnlyMenuItemOption(option) && option.value === value) || null,
+    [options, value]
+  );
 
   return (
     <SelectContainer
@@ -67,7 +83,10 @@ const TestVariableStateSelect: React.FC<TestVariableStateSelectProps> = ({ value
           </OverflowTippyTooltip>
 
           {option.label !== 'All assistant variables' && (
-            <Menu.ItemActionIcon icon="edit" onClick={() => variableStateManageModal.openVoid({ variableStateID: option.value })} />
+            <Menu.ItemActionIcon
+              icon="edit"
+              onClick={() => variableStateManageModal.openVoid({ variableStateID: option.value })}
+            />
           )}
         </>
       )}
@@ -86,7 +105,9 @@ const TestVariableStateSelect: React.FC<TestVariableStateSelectProps> = ({ value
       renderFooterAction={({ close }) =>
         canRenderPrototype && (
           <Menu.Footer>
-            <Menu.Footer.Action onClick={Utils.functional.chainVoid(close, onCreateVariableState)}>Create New Persona</Menu.Footer.Action>
+            <Menu.Footer.Action onClick={Utils.functional.chainVoid(close, onCreateVariableState)}>
+              Create New Persona
+            </Menu.Footer.Action>
           </Menu.Footer>
         )
       }

@@ -17,7 +17,9 @@ suite(Recent, MOCK_STATE)('Ducks - Recent', ({ describeReducer, describeSelector
       it('should update test configuration', () => {
         const testConfig = { debug: false };
 
-        expectAction(Recent.updateRecentPrototype(testConfig)).toModify({ prototype: { debug: false, logger: false } as any });
+        expectAction(Recent.updateRecentPrototype(testConfig)).toModify({
+          prototype: { debug: false, logger: false } as any,
+        });
       });
     });
   });

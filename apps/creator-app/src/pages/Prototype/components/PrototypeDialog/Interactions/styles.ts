@@ -1,7 +1,7 @@
 import { Box, toRGBAString } from '@voiceflow/ui';
 
 import { styled, transition } from '@/hocs/styled';
-import { Color } from '@/types';
+import type { Color } from '@/types';
 
 import Message from '../Message/Base';
 

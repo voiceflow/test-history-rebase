@@ -1,7 +1,7 @@
-import { NodeData } from '@realtime-sdk/models';
+import type { NodeData } from '@realtime-sdk/models';
 import { BaseNode } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config/backend';
-import { VoiceNode } from '@voiceflow/voice-types';
+import type { VoiceNode } from '@voiceflow/voice-types';
 
 import { baseCaptureV2Adapter } from '../base';
 import { createBlockAdapter, voiceNoMatchAdapter, voiceNoReplyAdapter } from '../utils';
@@ -30,7 +30,9 @@ const captureAdapter = createBlockAdapter<VoiceNode.CaptureV2.StepData<any>, Nod
             intent: {
               key: '',
               name: '',
-              slots: (intent?.slots as Platform.Common.Voice.Models.Intent.Slot[])?.map(Platform.Common.Voice.CONFIG.utils.intent.slotSanitizer),
+              slots: (intent?.slots as Platform.Common.Voice.Models.Intent.Slot[])?.map(
+                Platform.Common.Voice.CONFIG.utils.intent.slotSanitizer
+              ),
               inputs: [],
             },
           }

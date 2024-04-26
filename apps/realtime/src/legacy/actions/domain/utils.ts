@@ -1,13 +1,13 @@
-import { BaseModels } from '@voiceflow/base-types';
+import type { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
-import { BaseContextData, Context } from '@voiceflow/socket-utils';
+import type { BaseContextData, Context } from '@voiceflow/socket-utils';
 import type { Required } from 'utility-types';
 
 import { AbstractVersionResourceControl } from '@/legacy/actions/version/utils';
 
 export abstract class AbstractDomainResourceControl<
   P extends Realtime.BaseVersionPayload,
-  D extends BaseContextData = BaseContextData
+  D extends BaseContextData = BaseContextData,
 > extends AbstractVersionResourceControl<P, D> {
   protected createTopic = async ({
     ctx,
@@ -49,7 +49,11 @@ export abstract class AbstractDomainResourceControl<
           workspaceID,
         })
       ),
-      this.server.processAs(creatorID, clientID, Realtime.domain.topicAdd({ versionID, projectID, workspaceID, domainID, topicID: topicDiagram.id })),
+      this.server.processAs(
+        creatorID,
+        clientID,
+        Realtime.domain.topicAdd({ versionID, projectID, workspaceID, domainID, topicID: topicDiagram.id })
+      ),
     ]);
 
     return topicDiagram;

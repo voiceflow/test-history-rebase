@@ -1,14 +1,14 @@
 import React from 'react';
 
-import { BlockType } from '@/constants';
+import type { BlockType } from '@/constants';
 import { useRAF } from '@/hooks';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { useCanvasIdle } from '@/pages/Canvas/hooks/canvas';
-import { MarkupTransform, TransformOverlayAPI } from '@/pages/Canvas/types';
+import type { MarkupTransform, TransformOverlayAPI } from '@/pages/Canvas/types';
 
-import { HandlePosition } from '../../../constants';
+import type { HandlePosition } from '../../../constants';
 import { calculateRotatedBoundingRect } from '../../../utils';
-import { OverlayState } from '../types';
+import type { OverlayState } from '../types';
 import { useCanvasInteractions, useResize, useRotate } from './transforms';
 
 export interface InternalTransformOverlayAPI extends TransformOverlayAPI {

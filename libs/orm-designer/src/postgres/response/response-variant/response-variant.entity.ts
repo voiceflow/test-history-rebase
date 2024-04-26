@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import { ArrayType, Entity, Enum, Index, ManyToOne, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
 import type { Markup } from '@voiceflow/dtos';
 import { CardLayout, ResponseContext, ResponseVariantType } from '@voiceflow/dtos';

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { HSLShades } from '@/constants';
+import type { HSLShades } from '@/constants';
 import { PORT_HIGHLIGHTED_CLASSNAME, PORT_PROTOTYPE_END_UNLINKED_CLASSNAME } from '@/pages/Canvas/constants';
 import { PortEntityContext } from '@/pages/Canvas/contexts';
 import { ClassName } from '@/styles/constants';
@@ -20,13 +20,14 @@ interface PortProps {
 const Port: React.FC<PortProps> = ({ flat, isChip, palette, withoutLink, parentActionsPath, parentActionsParams }) => {
   const portEntity = React.useContext(PortEntityContext)!;
   const instance = usePortInstance<HTMLDivElement>();
-  const { isConnected, isHighlighted, isConnectedToActions, isLinkCreationHighlighted, isFinalPrototypeUnlinkedPort } = portEntity.useState((e) => ({
-    isConnected: e.isConnected,
-    isHighlighted: e.isHighlighted || e.isPrototypeHighlighted || e.isLinkCreationHighlighted,
-    isConnectedToActions: e.isConnectedToActions,
-    isFinalPrototypeUnlinkedPort: e.isFinalPrototypeUnlinkedPort,
-    isLinkCreationHighlighted: e.isLinkCreationHighlighted,
-  }));
+  const { isConnected, isHighlighted, isConnectedToActions, isLinkCreationHighlighted, isFinalPrototypeUnlinkedPort } =
+    portEntity.useState((e) => ({
+      isConnected: e.isConnected,
+      isHighlighted: e.isHighlighted || e.isPrototypeHighlighted || e.isLinkCreationHighlighted,
+      isConnectedToActions: e.isConnectedToActions,
+      isFinalPrototypeUnlinkedPort: e.isFinalPrototypeUnlinkedPort,
+      isLinkCreationHighlighted: e.isLinkCreationHighlighted,
+    }));
   const { onMouseDown, onMouseUp } = useHandlers({ parentActionsPath, parentActionsParams });
 
   portEntity.useInstance(instance);
@@ -54,7 +55,9 @@ const Port: React.FC<PortProps> = ({ flat, isChip, palette, withoutLink, parentA
         <Actions key={linkID} isChip={isChip} parentPath={parentActionsPath} parentParams={parentActionsParams} />
       ) : (
         !withoutLink &&
-        (isHighlighted || isConnected) && <Link key={linkID} linkID={linkID} isNew={isLinkCreationHighlighted} isHighlighted={isHighlighted} />
+        (isHighlighted || isConnected) && (
+          <Link key={linkID} linkID={linkID} isNew={isLinkCreationHighlighted} isHighlighted={isHighlighted} />
+        )
       )}
     </>
   );

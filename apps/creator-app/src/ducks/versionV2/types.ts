@@ -1,5 +1,5 @@
-import * as Platform from '@voiceflow/platform-config';
+import type * as Platform from '@voiceflow/platform-config';
 
-import { CRUDState } from '@/ducks/utils/crudV2';
+import type { CRUDState } from '@/ducks/utils/crudV2';
 
 export interface VersionState extends CRUDState<Platform.Base.Models.Version.Model> {}

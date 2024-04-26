@@ -2,7 +2,7 @@ import { datadogRum } from '@datadog/browser-rum';
 import { Upload } from '@voiceflow/ui';
 import { NotifyContainer } from '@voiceflow/ui-next';
 import { ConnectedRouter } from 'connected-react-router';
-import { History } from 'history';
+import type { History } from 'history';
 import React from 'react';
 import { DismissableLayersGlobalProvider } from 'react-dismissable-layers';
 import { DndProvider } from 'react-dnd';
@@ -13,7 +13,14 @@ import client from '@/client';
 import { PageLoaderProvider } from '@/components/Loader/PageLoader/PageLoader.provider';
 import { Modal } from '@/components/Modal';
 import RealtimeStatus from '@/components/RealtimeStatus';
-import { AccountLoadingGate, AccountSubscriptionGate, CapabilitiesGate, FeatureLoadingGate, MaintenanceGate, RealtimeConnectionGate } from '@/gates';
+import {
+  AccountLoadingGate,
+  AccountSubscriptionGate,
+  CapabilitiesGate,
+  FeatureLoadingGate,
+  MaintenanceGate,
+  RealtimeConnectionGate,
+} from '@/gates';
 import * as ModalsV2 from '@/ModalsV2';
 import THEME from '@/styles/theme';
 
@@ -27,7 +34,8 @@ import LifecycleProvider from '../LifecycleProvider';
 import { MousePositionProvider } from '../MousePositionContext';
 import { PlanPricesProvider } from '../PlanPricesContext';
 import { ProjectConfigProvider } from '../ProjectConfigProvider';
-import StoreProvider, { StoreProviderProps } from '../StoreProvider';
+import type { StoreProviderProps } from '../StoreProvider';
+import StoreProvider from '../StoreProvider';
 import { TextEditorVariablesPopoverProvider } from '../TextEditorVariablesPopoverContext';
 import { VoiceflowAssistantVisibilityProvider } from '../VoiceflowAssistantVisibility';
 import SessionTracker from './components/SessionTracker';
@@ -36,7 +44,6 @@ import { PlatformProvider } from './PlatformProvider';
 export interface GlobalProvidersProps extends StoreProviderProps {
   history: History;
 }
-/* eslint-disable-next-line xss/no-mixed-html */
 const GlobalProviders: React.FC<GlobalProvidersProps> = ({ history, store, persistor, realtime, children }) => (
   <PageLoaderProvider>
     <StoreProvider store={store} persistor={persistor} realtime={realtime}>
@@ -105,9 +112,8 @@ export default GlobalProviders;
 
 export const withGlobalProviders =
   <T extends object>(Component: React.FC<T>): React.FC<T & GlobalProvidersProps> =>
-  ({ history, store, persistor, realtime, ...props }) =>
-    (
-      <GlobalProviders history={history} store={store} persistor={persistor} realtime={realtime}>
-        <Component {...(props as T)} />
-      </GlobalProviders>
-    );
+  ({ history, store, persistor, realtime, ...props }) => (
+    <GlobalProviders history={history} store={store} persistor={persistor} realtime={realtime}>
+      <Component {...(props as T)} />
+    </GlobalProviders>
+  );

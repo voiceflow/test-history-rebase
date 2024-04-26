@@ -4,7 +4,7 @@ import { GoogleConstants, GoogleVersion } from '@voiceflow/google-types';
 import { createSimpleAdapter, createSmartSimpleAdapter } from 'bidirectional-adapter';
 
 import * as GoogleCommon from '../../../common';
-import * as Models from '../../models';
+import type * as Models from '../../models';
 
 type KeyRemap = [['pronunciation', 'invocationName'], ['sampleInvocations', 'invocationNameSamples']];
 
@@ -24,14 +24,18 @@ export const smart = createSmartSimpleAdapter<
     ...GoogleCommon.Adapters.Version.Publishing.smart.fromDB(dbPublishing),
     ...(Config.hasValue(dbPublishing, 'locales') && { locales: languageToLocales(dbPublishing.locales) }),
     ...(Config.hasValue(dbPublishing, 'pronunciation') && { invocationName: dbPublishing.pronunciation }),
-    ...(Config.hasValue(dbPublishing, 'sampleInvocations') && { invocationNameSamples: dbPublishing.sampleInvocations }),
+    ...(Config.hasValue(dbPublishing, 'sampleInvocations') && {
+      invocationNameSamples: dbPublishing.sampleInvocations,
+    }),
   }),
   (publishing, options) => ({
     ...Common.Voice.Adapters.Version.Publishing.smart.toDB(publishing, options),
     ...GoogleCommon.Adapters.Version.Publishing.smart.toDB(publishing),
     ...(Config.hasValue(publishing, 'locales') && { locales: publishing.locales }),
     ...(Config.hasValue(publishing, 'invocationName') && { pronunciation: publishing.invocationName }),
-    ...(Config.hasValue(publishing, 'invocationNameSamples') && { sampleInvocations: publishing.invocationNameSamples }),
+    ...(Config.hasValue(publishing, 'invocationNameSamples') && {
+      sampleInvocations: publishing.invocationNameSamples,
+    }),
   })
 );
 

@@ -1,15 +1,17 @@
 import { BaseModels } from '@voiceflow/base-types';
-import { Nullable, Utils } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { OverflowText, useConst, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
-import DraggableList, { BaseItemData } from '@/components/DraggableList';
+import type { BaseItemData } from '@/components/DraggableList';
+import DraggableList from '@/components/DraggableList';
 import { DragItem } from '@/constants';
 import * as Diagram from '@/ducks/diagramV2';
 import { useDispatch, useDnDReorder } from '@/hooks';
 
-import { TopicMenuItem } from '../hooks';
+import type { TopicMenuItem } from '../hooks';
 import type TopicItem from '../TopicItem';
 import MenuItem from './MenuItem';
 import { Container } from './NodeItem/styles';
@@ -45,19 +47,23 @@ const MenuList: React.FC<MenuListProps> = ({ isRoot, isSearch, diagramID, isSubt
   const dndReorder = useDnDReorder({
     getID: getItemKey,
     onPersist: (sourceID: string, toIndex: number) => removeMenuItem({ diagramID, sourceID, toIndex }),
-    onReorder: (sourceID: string, toIndex: number) => removeMenuItem({ diagramID, sourceID, toIndex, skipPersist: true }),
+    onReorder: (sourceID: string, toIndex: number) =>
+      removeMenuItem({ diagramID, sourceID, toIndex, skipPersist: true }),
   });
 
   const canDrag = usePersistFunction(
     (item: BaseItemData<TopicMenuItem>) =>
-      !isSearch && (item.item.type !== BaseModels.Diagram.MenuItemType.NODE || item.item.nodeType !== Realtime.BlockType.START)
+      !isSearch &&
+      (item.item.type !== BaseModels.Diagram.MenuItemType.NODE || item.item.nodeType !== Realtime.BlockType.START)
   );
 
   const onDragStart = usePersistFunction((item: TopicMenuItem) => {
     dndReorder.onStart(item);
 
     props.onSubtopicDragStart(
-      menuItems.map((item) => (item.type === BaseModels.Diagram.MenuItemType.DIAGRAM ? item.sourceID : null)).filter(Utils.array.isNotNullish)
+      menuItems
+        .map((item) => (item.type === BaseModels.Diagram.MenuItemType.DIAGRAM ? item.sourceID : null))
+        .filter(Utils.array.isNotNullish)
     );
   });
 

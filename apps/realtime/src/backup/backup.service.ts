@@ -179,7 +179,10 @@ export class BackupService extends MutableService<BackupORM> {
   async previewBackup(backupID: number, userID: number) {
     return this.postgresEM.transactional(async () => {
       const backup = await this.findOneOrFail(backupID);
-      const [vfFile, project] = await Promise.all([this.getBackupFile(backup.s3ObjectRef), this.project.findOneOrFail(backup.assistantID)]);
+      const [vfFile, project] = await Promise.all([
+        this.getBackupFile(backup.s3ObjectRef),
+        this.project.findOneOrFail(backup.assistantID),
+      ]);
 
       const previewVersionID = project.previewVersion?.toJSON() ?? new ObjectId().toString();
 

@@ -1,7 +1,7 @@
-import { SendBackActions } from '@logux/server';
+import type { SendBackActions } from '@logux/server';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
-import { ChannelContext } from '@voiceflow/socket-utils';
+import type { ChannelContext } from '@voiceflow/socket-utils';
 
 import { AbstractChannelControl } from './utils';
 
@@ -19,7 +19,9 @@ class WorkspaceChannel extends AbstractChannelControl<Realtime.Channels.Workspac
     const usedProjectsIDs = new Set<string>();
 
     const normalizedLists: Realtime.DBProjectList[] = dbProjectLists.map((list) => {
-      const projects = [...new Set(list.projects)].filter((projectID) => projectIDsSet.has(projectID) && !usedProjectsIDs.has(projectID));
+      const projects = [...new Set(list.projects)].filter(
+        (projectID) => projectIDsSet.has(projectID) && !usedProjectsIDs.has(projectID)
+      );
 
       projects.forEach((projectID) => usedProjectsIDs.add(projectID));
 
@@ -37,7 +39,11 @@ class WorkspaceChannel extends AbstractChannelControl<Realtime.Channels.Workspac
 
         normalizedLists.splice(normalizedLists.indexOf(defaultList), 1, { ...defaultList, projects });
       } else {
-        normalizedLists.push({ name: Realtime.DEFAULT_PROJECT_LIST_NAME, board_id: Utils.id.cuid(), projects: unusedProjectsIDs });
+        normalizedLists.push({
+          name: Realtime.DEFAULT_PROJECT_LIST_NAME,
+          board_id: Utils.id.cuid(),
+          projects: unusedProjectsIDs,
+        });
       }
 
       await this.services.requestContext.createAsync(() =>
@@ -64,7 +70,9 @@ class WorkspaceChannel extends AbstractChannelControl<Realtime.Channels.Workspac
     const [dbWorkspace, projects, dbProjectLists, viewersPerProject, workspaceQuotas] = await Promise.all([
       this.services.workspace.get(workspaceID),
       this.services.requestContext.createAsync(() =>
-        this.services.projectV2.findManyLegacyProjectsByWorkspaceID(this.services.hashedID.decodeWorkspaceID(workspaceID))
+        this.services.projectV2.findManyLegacyProjectsByWorkspaceID(
+          this.services.hashedID.decodeWorkspaceID(workspaceID)
+        )
       ),
       this.services.requestContext.createAsync(() =>
         this.services.projectList.findManyByWorkspaceID(this.services.hashedID.decodeWorkspaceID(workspaceID))

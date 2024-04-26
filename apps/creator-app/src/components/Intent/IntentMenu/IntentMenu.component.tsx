@@ -1,5 +1,5 @@
 import { useVirtualizer } from '@tanstack/react-virtual';
-import { Intent } from '@voiceflow/dtos';
+import type { Intent } from '@voiceflow/dtos';
 import { ActionButtons, Menu, MENU_ITEM_MIN_HEIGHT, MenuItem, Search, VirtualizedContent } from '@voiceflow/ui-next';
 import React, { useState } from 'react';
 
@@ -79,7 +79,11 @@ export const IntentMenu: React.FC<IIntentMenu> = ({ width, header, onClose, onSe
         search.hasItems && (
           <ActionButtons
             firstButton={
-              <ActionButtons.Button label={isCreating ? 'Creating intent...' : 'Create intent'} onClick={onCreate} disabled={isCreating} />
+              <ActionButtons.Button
+                label={isCreating ? 'Creating intent...' : 'Create intent'}
+                onClick={onCreate}
+                disabled={isCreating}
+              />
             }
           />
         )
@@ -114,7 +118,13 @@ export const IntentMenu: React.FC<IIntentMenu> = ({ width, header, onClose, onSe
           })}
         </VirtualizedContent>
       ) : (
-        <>{!viewOnly ? <Menu.CreateItem label={search.value} onClick={onCreate} disabled={isCreating} /> : <Menu.NotFound label="intents" />}</>
+        <>
+          {!viewOnly ? (
+            <Menu.CreateItem label={search.value} onClick={onCreate} disabled={isCreating} />
+          ) : (
+            <Menu.NotFound label="intents" />
+          )}
+        </>
       )}
     </Menu>
   );

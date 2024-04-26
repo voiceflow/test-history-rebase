@@ -1,8 +1,8 @@
-import { Subscription } from '@voiceflow/dtos';
-import { PlanType } from '@voiceflow/internal';
-import React from 'react';
+import type { Subscription } from '@voiceflow/dtos';
+import type { PlanType } from '@voiceflow/internal';
+import type React from 'react';
 
-import { LimitType } from '@/constants/limits';
+import type { LimitType } from '@/constants/limits';
 import type { UpgradeModal } from '@/ModalsV2/modals/Upgrade';
 
 interface RendererProps {

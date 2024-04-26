@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 
 import { PeriodFilterOption } from '../constants';
-import { DateRange, Filters } from '../types';
+import type { DateRange, Filters } from '../types';
 
 export const DEFAULT_FILTERS: Readonly<Filters> = {
   period: PeriodFilterOption.LAST_7_DAYS,

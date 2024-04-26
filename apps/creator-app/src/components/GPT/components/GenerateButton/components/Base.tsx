@@ -1,6 +1,8 @@
 import composeRef from '@seznam/compose-react-refs';
-import { Nullable, Utils } from '@voiceflow/common';
-import { Box, Button, ButtonVariant, Dropdown, MenuTypes, SvgIcon, useDebouncedCallback } from '@voiceflow/ui';
+import type { Nullable } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
+import type { MenuTypes } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, Dropdown, SvgIcon, useDebouncedCallback } from '@voiceflow/ui';
 import React from 'react';
 
 export interface BaseGenerateButtonProps extends React.PropsWithChildren {

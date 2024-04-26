@@ -1,4 +1,3 @@
-/* eslint-disable sonarjs/cognitive-complexity */
 import composeRef from '@seznam/compose-react-refs';
 import TippyTooltip from '@ui/components/TippyTooltip';
 import { ClassName } from '@ui/styles/constants';
@@ -8,10 +7,16 @@ import React from 'react';
 
 // eslint-disable-next-line import/no-cycle
 import Menu from '../Menu';
-import { GetOptionKey, MenuItemGrouped, MenuItemMultilevel, MenuItemWithID, RenderOptionLabelConfig } from '../types';
+import type {
+  GetOptionKey,
+  MenuItemGrouped,
+  MenuItemMultilevel,
+  MenuItemWithID,
+  RenderOptionLabelConfig,
+} from '../types';
 import { isBaseMenuItem, isGroupedOptions, isMenuItemMultilevel, isMenuItemWithID } from '../utils';
 import { GroupHeader, SelectItem, SubLevelIcon } from './components';
-import {
+import type {
   MenuOptionsGroupedProps,
   MenuOptionsInternalProps,
   MenuOptionsMultilevelProps,
@@ -21,11 +26,15 @@ import {
   MenuOptionsWithIDProps,
 } from './types';
 
-function MenuOptions<Option extends MenuItemWithID, Value = Option>(props: MenuOptionsWithIDProps<Option, Value>): React.ReactElement;
+function MenuOptions<Option extends MenuItemWithID, Value = Option>(
+  props: MenuOptionsWithIDProps<Option, Value>
+): React.ReactElement;
 function MenuOptions<Option, GroupedOption extends MenuItemGrouped<Option>, Value = Option>(
   props: MenuOptionsGroupedProps<Option, GroupedOption, Value>
 ): React.ReactElement;
-function MenuOptions<Option extends MenuItemMultilevel<Option>, Value = Option>(props: MenuOptionsMultilevelProps<Option, Value>): React.ReactElement;
+function MenuOptions<Option extends MenuItemMultilevel<Option>, Value = Option>(
+  props: MenuOptionsMultilevelProps<Option, Value>
+): React.ReactElement;
 function MenuOptions<Option extends MenuItemWithID, GroupedOption extends MenuItemGrouped<Option>, Value = Option>(
   props: MenuOptionsWithIDGroupedProps<Option, GroupedOption, Value>
 ): React.ReactElement;
@@ -70,7 +79,17 @@ function MenuOptions({
   const renderLabel = (option: unknown, config: RenderOptionLabelConfig): React.ReactNode =>
     renderOptionLabel(option, searchLabel, getOptionLabel, getOptionValue, { ...config, close: onHide });
 
-  const renderOption = ({ key, path, index, option }: { key: string; path: number[]; index: number; option: unknown }) => {
+  const renderOption = ({
+    key,
+    path,
+    index,
+    option,
+  }: {
+    key: string;
+    path: number[];
+    index: number;
+    option: unknown;
+  }) => {
     const isFocused = focusedOptionIndex === index;
     const isSelectable = !isBaseMenuItem(option) || (!option.disabled && !option.readOnly);
 
@@ -91,7 +110,13 @@ function MenuOptions({
 
     if (isBaseMenuItem(option)) {
       const item = (
-        <SelectItem key={key} {...sharedProps} {...option.menuItemProps} disabled={option.disabled} readOnly={option.readOnly}>
+        <SelectItem
+          key={key}
+          {...sharedProps}
+          {...option.menuItemProps}
+          disabled={option.disabled}
+          readOnly={option.readOnly}
+        >
           {(!option.vfUIOnly || option.isEmpty) && renderLabel(option, { isFocused, optionsPath: path })}
         </SelectItem>
       );

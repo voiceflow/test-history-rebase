@@ -58,7 +58,14 @@ const DiagramGate: React.FC<React.PropsWithChildren> = ({ children }) => {
         } else if (projectCanvasMatch) {
           const matchedPath = generatePath(Path.PROJECT_CANVAS, projectCanvasMatch.params);
 
-          dispatch(Router.redirectToDomainCanvas({ domainID, diagramID, versionID, extraPath: pathname.replace(matchedPath, '') }));
+          dispatch(
+            Router.redirectToDomainCanvas({
+              domainID,
+              diagramID,
+              versionID,
+              extraPath: pathname.replace(matchedPath, ''),
+            })
+          );
         }
       });
 

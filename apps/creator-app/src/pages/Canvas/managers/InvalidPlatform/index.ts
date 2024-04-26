@@ -1,6 +1,6 @@
 import { BlockType } from '@/constants';
 
-import { NodeManagerConfig } from '../types';
+import type { NodeManagerConfig } from '../types';
 import InvalidPlatformEditor from './InvalidPlatformEditor';
 import InvalidPlatformStep from './InvalidPlatformStep';
 

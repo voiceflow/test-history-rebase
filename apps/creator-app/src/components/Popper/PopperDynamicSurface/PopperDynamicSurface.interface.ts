@@ -1,4 +1,4 @@
-import { ISurface } from '@voiceflow/ui-next/build/esm/components/Utility/Surface/Surface.interface';
+import type { ISurface } from '@voiceflow/ui-next/build/esm/components/Utility/Surface/Surface.interface';
 
 export interface IPopperDynamicSurface extends ISurface {
   /**

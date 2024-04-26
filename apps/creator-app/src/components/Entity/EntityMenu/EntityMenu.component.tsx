@@ -1,5 +1,5 @@
 import { useVirtualizer } from '@tanstack/react-virtual';
-import { Entity } from '@voiceflow/dtos';
+import type { Entity } from '@voiceflow/dtos';
 import { tid } from '@voiceflow/style';
 import { ActionButtons, Menu, MENU_ITEM_MIN_HEIGHT, Search, VirtualizedContent } from '@voiceflow/ui-next';
 import React, { useMemo, useState } from 'react';
@@ -74,7 +74,14 @@ export const EntityMenu: React.FC<IEntityMenu> = ({ width, onClose, onSelect: on
       listRef={setListNode}
       minWidth={search.hasItems ? undefined : 0}
       maxHeight={310}
-      searchSection={<Search value={search.value} placeholder="Search" onValueChange={search.setValue} testID={tid(TEST_ID, 'search')} />}
+      searchSection={
+        <Search
+          value={search.value}
+          placeholder="Search"
+          onValueChange={search.setValue}
+          testID={tid(TEST_ID, 'search')}
+        />
+      }
       testID={TEST_ID}
       actionButtons={
         search.hasItems && (
@@ -113,7 +120,12 @@ export const EntityMenu: React.FC<IEntityMenu> = ({ width, onClose, onSelect: on
           })}
         </VirtualizedContent>
       ) : (
-        <Menu.CreateItem label={search.value} onClick={onCreate} disabled={isCreating} testID={tid(TEST_ID, 'item', 'add')} />
+        <Menu.CreateItem
+          label={search.value}
+          onClick={onCreate}
+          disabled={isCreating}
+          testID={tid(TEST_ID, 'item', 'add')}
+        />
       )}
     </Menu>
   );

@@ -1,7 +1,8 @@
 import { Utils } from '@voiceflow/common';
 import React, { useMemo, useRef, useState } from 'react';
 
-import { AtomContext, AtomContextValue } from '../contexts/AtomContext';
+import type { AtomContextValue } from '../contexts/AtomContext';
+import { AtomContext } from '../contexts/AtomContext';
 
 export interface Atom<T> {
   key: string;
@@ -23,7 +24,8 @@ export interface AtomFactory<T, P extends Serializable> {
   (param: P): AtomFamily<T>;
 }
 
-const useAtomContext = (atom: { context?: React.Context<AtomContextValue> }) => React.useContext(atom.context || AtomContext);
+const useAtomContext = (atom: { context?: React.Context<AtomContextValue> }) =>
+  React.useContext(atom.context || AtomContext);
 
 export const useAtomFactory = <T, P extends Serializable = never>(
   key: string,
@@ -40,7 +42,10 @@ export const useAtomFactory = <T, P extends Serializable = never>(
         key: atomKey,
         family: true,
         context: options.context,
-        default: typeof options.default === 'function' ? () => (options.default as (param: P) => T)(param as P) : options.default,
+        default:
+          typeof options.default === 'function'
+            ? () => (options.default as (param: P) => T)(param as P)
+            : options.default,
         update: (next) => {
           const atom = atomStore.atoms.get(atomKey);
 
@@ -69,7 +74,10 @@ export const useAtom = <T>(key: string, options: Pick<Atom<T>, 'default' | 'cont
 
 const isDirectlyEqual = <T>(lhs: T, rhs: T) => lhs === rhs;
 
-export const useAtomInitialValue = <T, S = T>(atom: Atom<T> | AtomFamily<T>, options: { selector?: (value: T) => S; initialValue?: S } = {}) => {
+export const useAtomInitialValue = <T, S = T>(
+  atom: Atom<T> | AtomFamily<T>,
+  options: { selector?: (value: T) => S; initialValue?: S } = {}
+) => {
   const atomStore = useAtomContext(atom);
 
   return useMemo<S>(() => {

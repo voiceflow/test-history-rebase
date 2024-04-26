@@ -1,5 +1,6 @@
 import { Utils } from '@voiceflow/common';
-import { BaseSelectProps, defaultMenuLabelRenderer, Menu, Select, System } from '@voiceflow/ui';
+import type { BaseSelectProps } from '@voiceflow/ui';
+import { defaultMenuLabelRenderer, Menu, Select, System } from '@voiceflow/ui';
 import React from 'react';
 
 import { Diagram } from '@/ducks';
@@ -34,18 +35,31 @@ const VariableSelectV2: React.FC<VariableSelectProps> = ({ value, onChange, onCr
       inDropdownSearch
       alwaysShowCreate
       renderOptionLabel={(option, searchLabel, _, getOptionValue, config) =>
-        defaultMenuLabelRenderer(option, searchLabel, (value) => value && variablesMap[value]?.name, getOptionValue, config)
+        defaultMenuLabelRenderer(
+          option,
+          searchLabel,
+          (value) => value && variablesMap[value]?.name,
+          getOptionValue,
+          config
+        )
       }
       clearOnSelectActive
-      renderEmpty={({ search }) => <Menu.NotFound>{!search ? 'No variables exist in your assistant. ' : 'No variables found. '}</Menu.NotFound>}
+      renderEmpty={({ search }) => (
+        <Menu.NotFound>{!search ? 'No variables exist in your assistant. ' : 'No variables found. '}</Menu.NotFound>
+      )}
       renderSearchSuffix={({ close, searchLabel }) => (
         <System.IconButtonsGroup.Base>
-          <System.IconButton.Base icon="plus" onClick={Utils.functional.chainVoid(close, () => onCreate(searchLabel))} />
+          <System.IconButton.Base
+            icon="plus"
+            onClick={Utils.functional.chainVoid(close, () => onCreate(searchLabel))}
+          />
         </System.IconButtonsGroup.Base>
       )}
       renderFooterAction={({ close, searchLabel }) => (
         <Menu.Footer>
-          <Menu.Footer.Action onClick={Utils.functional.chainVoid(close, () => onCreate(searchLabel))}>Create New Variable</Menu.Footer.Action>
+          <Menu.Footer.Action onClick={Utils.functional.chainVoid(close, () => onCreate(searchLabel))}>
+            Create New Variable
+          </Menu.Footer.Action>
         </Menu.Footer>
       )}
       createInputPlaceholder="variables"

@@ -12,10 +12,9 @@ const Container = styled(Animations.FadeLeft)<{ width?: number; textAlign?: stri
           width: 480px;
         `};
 
-  ${({ textAlign = 'center' }) =>
-    css`
-      text-align: ${textAlign};
-    `};
+  ${({ textAlign = 'center' }) => css`
+    text-align: ${textAlign};
+  `};
 
   padding-top: 65px;
 `;

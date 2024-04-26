@@ -1,5 +1,5 @@
 import { connectRouter } from 'connected-react-router';
-import { History as BrowserHistory } from 'history';
+import type { History as BrowserHistory } from 'history';
 import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
 
@@ -23,12 +23,12 @@ import session, * as Session from '@/ducks/session';
 import tracking, * as Tracking from '@/ducks/tracking';
 import transcript, * as Transcript from '@/ducks/transcript';
 import * as UI from '@/ducks/ui';
-import { ActionReverter } from '@/ducks/utils';
+import type { ActionReverter } from '@/ducks/utils';
 import variableState, * as VariableState from '@/ducks/variableState';
 import versionV2, * as VersionV2 from '@/ducks/versionV2';
 import viewport, * as Viewport from '@/ducks/viewport';
 import workspaceV2, * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { InvalidatorLookup, ReverterLookup } from '@/store/types';
+import type { InvalidatorLookup, ReverterLookup } from '@/store/types';
 
 import * as Assistant from './assistant';
 import * as Designer from './designer';

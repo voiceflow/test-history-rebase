@@ -1,8 +1,9 @@
 import { serializeToText } from '@voiceflow/slate-serializer/text';
-import { Descendant, Editor, Element, Node, Range, Transforms } from 'slate';
+import type { Descendant, Node } from 'slate';
+import { Editor, Element, Range, Transforms } from 'slate';
 
 import type { EditorAPIType } from '../editorAPI';
-import { PrismLanguage } from '../prism';
+import type { PrismLanguage } from '../prism';
 import type {
   DataProcessor,
   DataProcessorMiddleware,
@@ -32,14 +33,19 @@ export const withBasePlugin: Plugin = (EditorAPI: EditorAPIType) => (editor: Edi
 
   let prevContentEmpty: null | boolean = null;
 
-  const processor: { text: (options: TextProcessorOptions) => ProcessorNext; data: (options: DataProcessorOptions) => ProcessorNext } = {
+  const processor: {
+    text: (options: TextProcessorOptions) => ProcessorNext;
+    data: (options: DataProcessorOptions) => ProcessorNext;
+  } = {
     text: () => defaultProcessor,
     data: () => defaultProcessor,
   };
 
-  const rooTextProcessor: TextProcessor = (value: Descendant[], options: TextProcessorOptions) => processor.text(options)(value);
+  const rooTextProcessor: TextProcessor = (value: Descendant[], options: TextProcessorOptions) =>
+    processor.text(options)(value);
 
-  const rooDataProcessor: DataProcessor = (value: Descendant[], options: DataProcessorOptions) => processor.data(options)(value);
+  const rooDataProcessor: DataProcessor = (value: Descendant[], options: DataProcessorOptions) =>
+    processor.data(options)(value);
 
   const insertProcessedNodes = (nodes: Node | Node[]) => {
     if (!editor.selection) {
@@ -48,7 +54,10 @@ export const withBasePlugin: Plugin = (EditorAPI: EditorAPIType) => (editor: Edi
 
     // If the cursor is at the end of an inline, move it outside of the inline before inserting
     if (Range.isCollapsed(editor.selection)) {
-      const inline = EditorAPI.above<Element>(editor, { match: (n) => Element.isElement(n) && EditorAPI.isInline(editor, n), mode: 'highest' });
+      const inline = EditorAPI.above<Element>(editor, {
+        match: (n) => Element.isElement(n) && EditorAPI.isInline(editor, n),
+        mode: 'highest',
+      });
 
       if (inline) {
         const [, inlinePath] = inline;
@@ -151,14 +160,16 @@ export const withBasePlugin: Plugin = (EditorAPI: EditorAPIType) => (editor: Edi
       const next = middleware(rooTextProcessor);
       const originalProcessor = processor.text;
 
-      processor.text = (options: TextProcessorOptions) => (value: Descendant[]) => next(originalProcessor(options))(value, options);
+      processor.text = (options: TextProcessorOptions) => (value: Descendant[]) =>
+        next(originalProcessor(options))(value, options);
     },
 
     registerDataProcessingMiddleware: (middleware: DataProcessorMiddleware) => {
       const next = middleware(rooDataProcessor);
       const originalProcessor = processor.data;
 
-      processor.data = (options: DataProcessorOptions) => (value: Descendant[]) => next(originalProcessor(options))(value, options);
+      processor.data = (options: DataProcessorOptions) => (value: Descendant[]) =>
+        next(originalProcessor(options))(value, options);
     },
   };
 

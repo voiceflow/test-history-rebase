@@ -76,7 +76,9 @@ const Payment: React.FC = () => {
 
     if (!workspace?.members) return false;
 
-    return Normal.denormalize(workspace.members).some((member) => member.creator_id === creatorID && isAdminUserRole(member.role));
+    return Normal.denormalize(workspace.members).some(
+      (member) => member.creator_id === creatorID && isAdminUserRole(member.role)
+    );
   };
 
   const handleStripeOnChange = ({ error }: any) => {
@@ -112,7 +114,10 @@ const Payment: React.FC = () => {
       return;
     }
 
-    const numberOfEditors = Normal.denormalize(workspace.members).reduce((acc, member) => acc + (isEditorUserRole(member.role) ? 1 : 0), 0);
+    const numberOfEditors = Normal.denormalize(workspace.members).reduce(
+      (acc, member) => acc + (isEditorUserRole(member.role) ? 1 : 0),
+      0
+    );
 
     setSeatCount(Math.max(seatCount, numberOfEditors));
   }, [selectedWorkspaceId]);
@@ -127,7 +132,9 @@ const Payment: React.FC = () => {
         ),
       }
     : {
-        text: selectedWorkspaceId ? `Workspace: ${getWorkspaceByID({ id: selectedWorkspaceId })?.name}` : 'Select a Workspace',
+        text: selectedWorkspaceId
+          ? `Workspace: ${getWorkspaceByID({ id: selectedWorkspaceId })?.name}`
+          : 'Select a Workspace',
         menu: (
           <Menu>
             {workspaces.map((workspace) => (
@@ -176,7 +183,12 @@ const Payment: React.FC = () => {
                 placement="bottom-start"
               >
                 {({ ref, onToggle, isOpen }) => (
-                  <BillingDropdown ref={ref} isOpen={isOpen} onClick={() => !hasFixedPeriod && onToggle()} disabled={hasFixedPeriod}>
+                  <BillingDropdown
+                    ref={ref}
+                    isOpen={isOpen}
+                    onClick={() => !hasFixedPeriod && onToggle()}
+                    disabled={hasFixedPeriod}
+                  >
                     Billed {PERIOD_NAME[paymentPeriod]}
                     <SvgIcon icon="caretDown" color={isOpen ? '5D9DF5' : ''} size={7} />
                   </BillingDropdown>
@@ -205,7 +217,12 @@ const Payment: React.FC = () => {
             {sendingRequests ? (
               <SvgIcon icon="arrowSpin" size={24} spin />
             ) : (
-              <>Pay {creditCardComplete && <CostText> ${paymentPeriod === BillingPeriod.MONTHLY ? dollarPrice : 12 * dollarPrice} </CostText>}</>
+              <>
+                Pay{' '}
+                {creditCardComplete && (
+                  <CostText> ${paymentPeriod === BillingPeriod.MONTHLY ? dollarPrice : 12 * dollarPrice} </CostText>
+                )}
+              </>
             )}
           </Button>
         </Box.FlexCenter>

@@ -1,24 +1,24 @@
-import { BaseNode } from '@voiceflow/base-types';
-import { Nullable, Struct } from '@voiceflow/common';
-import * as Platform from '@voiceflow/platform-config';
-import * as Realtime from '@voiceflow/realtime-sdk';
-import { CustomScrollbarsTypes, OptionsMenuOption, SvgIconTypes } from '@voiceflow/ui';
-import React from 'react';
-import { ExtractRouteParams, match } from 'react-router';
-import { Optional, Overwrite } from 'utility-types';
+import type { BaseNode } from '@voiceflow/base-types';
+import type { Nullable, Struct } from '@voiceflow/common';
+import type * as Platform from '@voiceflow/platform-config';
+import type * as Realtime from '@voiceflow/realtime-sdk';
+import type { CustomScrollbarsTypes, OptionsMenuOption, SvgIconTypes } from '@voiceflow/ui';
+import type React from 'react';
+import type { ExtractRouteParams, match } from 'react-router';
+import type { Optional, Overwrite } from 'utility-types';
 
-import { BlockType, HSLShades } from '@/constants';
-import { NodeCategory } from '@/contexts/SearchContext/types';
-import * as CreatorV2 from '@/ducks/creatorV2';
-import { FeatureFlagMap } from '@/ducks/feature';
-import { PathEntry } from '@/pages/Canvas/components/EditorSidebar/hooks';
-import { ConnectedMarkupNodeProps } from '@/pages/Canvas/components/MarkupNode/types';
+import type { BlockType, HSLShades } from '@/constants';
+import type { NodeCategory } from '@/contexts/SearchContext/types';
+import type * as CreatorV2 from '@/ducks/creatorV2';
+import type { FeatureFlagMap } from '@/ducks/feature';
+import type { PathEntry } from '@/pages/Canvas/components/EditorSidebar/hooks';
+import type { ConnectedMarkupNodeProps } from '@/pages/Canvas/components/MarkupNode/types';
 import type Engine from '@/pages/Canvas/engine';
 import type { NodeEntityResource } from '@/pages/Canvas/engine/entities/nodeEntity';
 import type { State } from '@/store/types';
 
-import { EditorAnimationEffect } from '../constants';
-import { NodeDataUpdater } from '../types';
+import type { EditorAnimationEffect } from '../constants';
+import type { NodeDataUpdater } from '../types';
 
 export { NodeEntityResource };
 
@@ -37,12 +37,15 @@ interface BaseConnectedStepProps<T, O extends Realtime.BuiltInPortRecord> extend
   withPorts: boolean;
 }
 
-export interface ConnectedStepProps<T = {}, O extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> extends BaseConnectedStepProps<T, O> {
+export interface ConnectedStepProps<T = {}, O extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord>
+  extends BaseConnectedStepProps<T, O> {
   palette: HSLShades;
   isLast?: boolean;
 }
 
-export type ConnectedStep<T = {}, O extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> = React.FC<ConnectedStepProps<T, O>>;
+export type ConnectedStep<T = {}, O extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> = React.FC<
+  ConnectedStepProps<T, O>
+>;
 
 export interface ConnectedActionProps<T = {}, O extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord>
   extends BaseConnectedStepProps<T, O> {
@@ -54,11 +57,16 @@ export interface ConnectedActionProps<T = {}, O extends Realtime.BuiltInPortReco
   onOpenEditor: (routState?: Struct) => void;
 }
 
-export type ConnectedAction<T = {}, O extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> = React.FC<ConnectedActionProps<T, O>>;
+export type ConnectedAction<T = {}, O extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> = React.FC<
+  ConnectedActionProps<T, O>
+>;
 
-export interface ConnectedChipProps<T = {}, O extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> extends BaseConnectedProps<T, O> {}
+export interface ConnectedChipProps<T = {}, O extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord>
+  extends BaseConnectedProps<T, O> {}
 
-export type ConnectedChip<T = {}, O extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> = React.FC<ConnectedChipProps<T, O>>;
+export type ConnectedChip<T = {}, O extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> = React.FC<
+  ConnectedChipProps<T, O>
+>;
 
 interface NodeDescriptorPorts<T extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> {
   in: PortDescriptor[];
@@ -103,7 +111,9 @@ export interface NodeEditorPropsType<T, P extends Realtime.BuiltInPortRecord = R
   popFromPath: VoidFunction;
 }
 
-export type NodeEditor<T, P extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord, E = {}> = React.FC<NodeEditorPropsType<T, P> & E>;
+export type NodeEditor<T, P extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord, E = {}> = React.FC<
+  NodeEditorPropsType<T, P> & E
+>;
 
 interface GoBack {
   <S extends string>(path?: S): void;
@@ -168,7 +178,10 @@ interface NodeFactoryOptions {
   allCustomBlocks?: Realtime.CustomBlock[];
 }
 
-export type NodeManagerFactory<Data extends object, BuiltInPorts extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> = (
+export type NodeManagerFactory<
+  Data extends object,
+  BuiltInPorts extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord,
+> = (
   data?: Partial<Data & { name: string }>,
   options?: NodeFactoryOptions
 ) => { node: NodeDescriptorOptionalPorts<BuiltInPorts>; data: CreatorV2.DataDescriptor<Data> };
@@ -193,8 +206,12 @@ interface BaseNodeConfig<Data extends object> {
   isMergeTerminator?: (nodeEntity: NodeEntityResource<Data | unknown>) => boolean;
 }
 
-export interface NodeConfig<T extends object, P extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> extends BaseNodeConfig<T> {
-  factory: (data?: Partial<T & { name: string }>, options?: NodeFactoryOptions) => { node: NodeDescriptor<P>; data: CreatorV2.DataDescriptor<T> };
+export interface NodeConfig<T extends object, P extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord>
+  extends BaseNodeConfig<T> {
+  factory: (
+    data?: Partial<T & { name: string }>,
+    options?: NodeFactoryOptions
+  ) => { node: NodeDescriptor<P>; data: CreatorV2.DataDescriptor<T> };
 }
 
 export interface NodeConfigWithoutOutPorts<T extends object> extends BaseNodeConfig<T> {
@@ -204,8 +221,10 @@ export interface NodeConfigWithoutOutPorts<T extends object> extends BaseNodeCon
   ) => { node: NodeDescriptorOptionalOupPorts; data: CreatorV2.DataDescriptor<T> };
 }
 
-export interface NodeConfigWithoutInPorts<T extends object, P extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord>
-  extends BaseNodeConfig<T> {
+export interface NodeConfigWithoutInPorts<
+  T extends object,
+  P extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord,
+> extends BaseNodeConfig<T> {
   factory: (
     data?: Partial<T & { name: string }>,
     options?: NodeFactoryOptions
@@ -219,8 +238,10 @@ export interface NodeConfigWithoutPorts<T extends object> extends BaseNodeConfig
   ) => { node: NodeDescriptorOptionalPorts; data: CreatorV2.DataDescriptor<T> };
 }
 
-export interface BaseNodeManagerConfig<Data extends object, BuiltInPorts extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord>
-  extends BaseNodeConfig<Data> {
+export interface BaseNodeManagerConfig<
+  Data extends object,
+  BuiltInPorts extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord,
+> extends BaseNodeConfig<Data> {
   label?: string;
   getDataLabel?: (data: Data) => string;
 
@@ -244,12 +265,16 @@ export interface BaseNodeManagerConfig<Data extends object, BuiltInPorts extends
   step?: ConnectedStep<Data, BuiltInPorts>;
   chip?: ConnectedChip<Data, BuiltInPorts>;
 
-  featureFlagOverrides?: Partial<NodeManagerConfig<Data, BuiltInPorts>> | Partial<NodeManagerConfigV2<Data, BuiltInPorts>>;
+  featureFlagOverrides?:
+    | Partial<NodeManagerConfig<Data, BuiltInPorts>>
+    | Partial<NodeManagerConfigV2<Data, BuiltInPorts>>;
   editorV3FeaturFlag?: Realtime.FeatureFlag;
 }
 
-export interface NodeManagerConfig<Data extends object, BuiltInPorts extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord>
-  extends BaseNodeManagerConfig<Data, BuiltInPorts> {
+export interface NodeManagerConfig<
+  Data extends object,
+  BuiltInPorts extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord,
+> extends BaseNodeManagerConfig<Data, BuiltInPorts> {
   label: string;
   factory: NodeManagerFactory<Data, BuiltInPorts>;
 
@@ -261,11 +286,15 @@ export interface NodeManagerConfig<Data extends object, BuiltInPorts extends Rea
    */
   editor: NodeEditor<Data, BuiltInPorts>;
 
-  featureFlagOverrides?: Partial<NodeManagerConfig<Data, BuiltInPorts>> | Partial<NodeManagerConfigV2<Data, BuiltInPorts>>;
+  featureFlagOverrides?:
+    | Partial<NodeManagerConfig<Data, BuiltInPorts>>
+    | Partial<NodeManagerConfigV2<Data, BuiltInPorts>>;
 }
 
-export interface NodeManagerConfigV2<Data extends object, BuiltInPorts extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord>
-  extends BaseNodeManagerConfig<Data, BuiltInPorts> {
+export interface NodeManagerConfigV2<
+  Data extends object,
+  BuiltInPorts extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord,
+> extends BaseNodeManagerConfig<Data, BuiltInPorts> {
   label: string;
   factory: NodeManagerFactory<Data, BuiltInPorts>;
 
@@ -276,8 +305,10 @@ export interface NodeManagerConfigV2<Data extends object, BuiltInPorts extends R
   featureFlagOverrides?: Partial<NodeManagerConfigV2<Data, BuiltInPorts>>;
 }
 
-export interface NodeManagerConfigV3<Data extends object, BuiltInPorts extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord>
-  extends BaseNodeManagerConfig<Data, BuiltInPorts> {
+export interface NodeManagerConfigV3<
+  Data extends object,
+  BuiltInPorts extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord,
+> extends BaseNodeManagerConfig<Data, BuiltInPorts> {
   label: string;
   factory: NodeManagerFactory<Data, BuiltInPorts>;
 
@@ -290,8 +321,10 @@ export interface NodeManagerConfigV3<Data extends object, BuiltInPorts extends R
   featureFlagOverrides?: Partial<NodeManagerConfigV2<Data, BuiltInPorts>>;
 }
 
-export interface MarkupNodeManagerConfig<Data extends object, BuiltInPorts extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord>
-  extends BaseNodeManagerConfig<Data, BuiltInPorts> {
+export interface MarkupNodeManagerConfig<
+  Data extends object,
+  BuiltInPorts extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord,
+> extends BaseNodeManagerConfig<Data, BuiltInPorts> {
   factory: NodeManagerFactory<Data, BuiltInPorts>;
   markupNode: Data extends Realtime.Markup.AnyNodeData ? React.FC<ConnectedMarkupNodeProps<Data>> : never;
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import * as Realtime from '@voiceflow/realtime-sdk/backend';
-import { Patch } from 'immer';
+import type * as Realtime from '@voiceflow/realtime-sdk/backend';
+import type { Patch } from 'immer';
 
 type CMSOnlyMigrationData = Omit<Realtime.Migrate.MigrationData['cms'], 'assistant'>;
 type InternalMigrationData = {
@@ -32,6 +32,8 @@ export class EnvironmentUtil {
       }
     });
 
-    return Object.fromEntries(Object.entries(data).map(([key, value]) => [key, Object.values(value)])) as Partial<CMSOnlyMigrationData>;
+    return Object.fromEntries(
+      Object.entries(data).map(([key, value]) => [key, Object.values(value)])
+    ) as Partial<CMSOnlyMigrationData>;
   }
 }

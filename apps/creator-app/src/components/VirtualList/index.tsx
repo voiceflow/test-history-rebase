@@ -1,10 +1,13 @@
-import { Box, CustomScrollbarsTypes } from '@voiceflow/ui';
+import type { CustomScrollbarsTypes } from '@voiceflow/ui';
+import { Box } from '@voiceflow/ui';
 import React from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
-import { ListChildComponentProps, ListItemKeySelector, VariableSizeList } from 'react-window';
+import type { ListChildComponentProps, ListItemKeySelector } from 'react-window';
+import { VariableSizeList } from 'react-window';
 
 import { CustomScrollbars } from './components';
-import { PlaceholderRenderer, ScrollBarContextProvider } from './context';
+import type { PlaceholderRenderer } from './context';
+import { ScrollBarContextProvider } from './context';
 
 export interface VirtualListProps<T> {
   id?: string;

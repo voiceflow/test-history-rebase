@@ -1,4 +1,4 @@
-import { Organization, OrganizationMember } from '@voiceflow/dtos';
+import type { Organization, OrganizationMember } from '@voiceflow/dtos';
 import type { Normalized } from 'normal-store';
 import * as Normal from 'normal-store';
 import { createSelector } from 'reselect';
@@ -11,7 +11,12 @@ export interface OrganizationItem extends Organization {
   normalizedMembers: Normalized<OrganizationMember>;
 }
 
-export const { all, byID: organizationByIDSelector, allIDs: allOrganizationIDsSelector, getByID } = createCRUDSelectors(STATE_KEY);
+export const {
+  all,
+  byID: organizationByIDSelector,
+  allIDs: allOrganizationIDsSelector,
+  getByID,
+} = createCRUDSelectors(STATE_KEY);
 
 export const getOrganizationByIDSelector = createSelector([getByID], (getOrganizationByID) => {
   return (params: { id: string | null }): OrganizationItem | null => {

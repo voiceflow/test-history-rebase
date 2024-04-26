@@ -34,7 +34,12 @@ const Edit = manager.create<Props>('DomainEdit', () => ({ api, type, opened, hid
       <Modal.Header
         actions={
           <Domain.LiveToggleTooltip live={live}>
-            <Toggle disabled={rootDomainID === domainID} checked={live} size={Toggle.Size.EXTRA_SMALL} onChange={() => setLive(!live)} />
+            <Toggle
+              disabled={rootDomainID === domainID}
+              checked={live}
+              size={Toggle.Size.EXTRA_SMALL}
+              onChange={() => setLive(!live)}
+            />
           </Domain.LiveToggleTooltip>
         }
       >

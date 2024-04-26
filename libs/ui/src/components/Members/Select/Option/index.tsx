@@ -1,9 +1,9 @@
 import Avatar from '@ui/components/Avatar';
 import Box from '@ui/components/Box';
 import React from 'react';
-import { DeepNonNullable } from 'utility-types';
+import type { DeepNonNullable } from 'utility-types';
 
-import { Member } from '../../types';
+import type { Member } from '../../types';
 import * as S from './styles';
 
 interface WorkspaceMemberSelectOptionProps extends React.PropsWithChildren {

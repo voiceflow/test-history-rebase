@@ -7,11 +7,11 @@ import { useFeature, useLinkedRef, useRAF } from '@/hooks';
 import { ContextMenuContext, EngineContext, NodeEntityContext } from '@/pages/Canvas/contexts';
 import { useElementInstance } from '@/pages/Canvas/engine/entities/utils';
 import { useEntityDrag } from '@/pages/Canvas/hooks/drag';
-import { CombinedAPI } from '@/pages/Canvas/types';
+import type { CombinedAPI } from '@/pages/Canvas/types';
 import { useEditingMode } from '@/pages/Project/hooks';
-import { Pair, Point } from '@/types';
+import type { Pair, Point } from '@/types';
 
-import { InternalNodeInstance } from './types';
+import type { InternalNodeInstance } from './types';
 
 export const useNodePosition = () => {
   const engine = React.useContext(EngineContext)!;

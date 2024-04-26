@@ -1,6 +1,6 @@
 import { tid } from '@voiceflow/style';
 import { Button, ButtonVariant, System, toast, ToastCallToAction } from '@voiceflow/ui';
-import { BaseProps } from '@voiceflow/ui-next';
+import type { BaseProps } from '@voiceflow/ui-next';
 import React from 'react';
 
 import * as Documentation from '@/config/documentation';
@@ -10,7 +10,10 @@ import * as Session from '@/ducks/session';
 import { VariableStateAppliedType } from '@/ducks/tracking';
 import { useAsyncEffect, useDispatch, usePermission, useSelector, useTrackingEvents } from '@/hooks';
 import { usePaymentModal } from '@/hooks/modal.hook';
-import { Container, DropdownContainer } from '@/pages/Project/components/Collaborators/components/InviteByLink/components';
+import {
+  Container,
+  DropdownContainer,
+} from '@/pages/Project/components/Collaborators/components/InviteByLink/components';
 import { NLUTrainingModelContext } from '@/pages/Project/contexts';
 import { Identifier } from '@/styles/constants';
 import { copy } from '@/utils/clipboard';
@@ -74,7 +77,9 @@ export const Footer: React.FC<FooterProps> = ({ isCanvas, testID }) => {
       toast.warn(
         <>
           Assistant is not fully trained. This may cause unexpected behaviour when prototyping.
-          <ToastCallToAction onClick={() => nluTrainingModel.start({ origin: 'Share Prototype' })}>Train Assistant</ToastCallToAction>
+          <ToastCallToAction onClick={() => nluTrainingModel.start({ origin: 'Share Prototype' })}>
+            Train Assistant
+          </ToastCallToAction>
         </>
       );
     }

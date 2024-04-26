@@ -6,13 +6,20 @@ import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
 import { waitAsync } from '@/ducks/utils';
-import { getActiveDomainContext, getActivePlatformVersionContext, getActiveVersionContext } from '@/ducks/versionV2/utils';
-import { Thunk } from '@/store/types';
+import {
+  getActiveDomainContext,
+  getActivePlatformVersionContext,
+  getActiveVersionContext,
+} from '@/ducks/versionV2/utils';
+import type { Thunk } from '@/store/types';
 
 import { allDomainIDsSelector } from './selectors';
 
 export const create =
-  ({ name, live }: { name: string; live: boolean }, { navigateToDomain }: { navigateToDomain?: boolean } = {}): Thunk<Realtime.Domain> =>
+  (
+    { name, live }: { name: string; live: boolean },
+    { navigateToDomain }: { navigateToDomain?: boolean } = {}
+  ): Thunk<Realtime.Domain> =>
   async (dispatch, getState) => {
     const state = getState();
     const domainIDs = allDomainIDsSelector(state);
@@ -69,7 +76,9 @@ export const patch =
       dispatch(Tracking.trackDomainStatusChanged({ domainID, status: data.status }));
     }
 
-    await dispatch.sync(Realtime.domain.crud.patch({ ...getActiveVersionContext(getState()), key: domainID, value: data }));
+    await dispatch.sync(
+      Realtime.domain.crud.patch({ ...getActiveVersionContext(getState()), key: domainID, value: data })
+    );
   };
 
 export const deleteWithANewVersion =
@@ -97,5 +106,7 @@ export const deleteWithANewVersion =
 export const currentReorderTopic =
   ({ topicID, toIndex, skipPersist }: { topicID: string; toIndex: number; skipPersist?: boolean }): Thunk =>
   async (dispatch, getState) => {
-    await dispatch.sync(Realtime.domain.topicReorder({ ...getActiveDomainContext(getState()), topicID, toIndex }, { skipPersist }));
+    await dispatch.sync(
+      Realtime.domain.topicReorder({ ...getActiveDomainContext(getState()), topicID, toIndex }, { skipPersist })
+    );
   };

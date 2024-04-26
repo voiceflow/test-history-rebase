@@ -2,25 +2,24 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { persistReducer } from 'redux-persist';
 import storageLocal from 'redux-persist/lib/storage';
 
-import { Reducer, RootReducer } from '@/store/types';
+import type { Reducer, RootReducer } from '@/store/types';
 
-import {
+import type {
   AnyPrototypeAction,
-  PrototypeAction,
   PushContextHistory,
   PushPrototypeVisualDataHistory,
   UpdatePrototype,
   UpdatePrototypeContext,
   UpdatePrototypeContextStore,
   UpdatePrototypeSettings,
-  updatePrototypeSettings,
   UpdatePrototypeStatus,
   UpdatePrototypeVisualData,
   UpdatePrototypeVisualDataHistory,
   UpdatePrototypeVisualDevice,
 } from './actions';
+import { PrototypeAction, updatePrototypeSettings } from './actions';
 import { INITIAL_STATE, STATE_KEY } from './constants';
-import { PrototypeState } from './types';
+import type { PrototypeState } from './types';
 
 export * from './actions';
 export * from './constants';
@@ -51,7 +50,10 @@ const pushContextHistoryReducer: Reducer<PrototypeState, PushContextHistory> = (
   contextHistory: [...state.contextHistory, payload],
 });
 
-const updatePrototypeVisualDeviceReducer: Reducer<PrototypeState, UpdatePrototypeVisualDevice> = (state, { payload: device }) => ({
+const updatePrototypeVisualDeviceReducer: Reducer<PrototypeState, UpdatePrototypeVisualDevice> = (
+  state,
+  { payload: device }
+) => ({
   ...state,
   visual: {
     ...state.visual,
@@ -59,7 +61,10 @@ const updatePrototypeVisualDeviceReducer: Reducer<PrototypeState, UpdatePrototyp
   },
 });
 
-const updatePrototypeVisualDataReducer: Reducer<PrototypeState, UpdatePrototypeVisualData> = (state, { payload: data }) => ({
+const updatePrototypeVisualDataReducer: Reducer<PrototypeState, UpdatePrototypeVisualData> = (
+  state,
+  { payload: data }
+) => ({
   ...state,
   visual: {
     ...state.visual,
@@ -67,7 +72,10 @@ const updatePrototypeVisualDataReducer: Reducer<PrototypeState, UpdatePrototypeV
   },
 });
 
-const pushPrototypeVisualDataHistoryReducer: Reducer<PrototypeState, PushPrototypeVisualDataHistory> = (state, { payload: data }) => ({
+const pushPrototypeVisualDataHistoryReducer: Reducer<PrototypeState, PushPrototypeVisualDataHistory> = (
+  state,
+  { payload: data }
+) => ({
   ...state,
   visual: {
     ...state.visual,
@@ -75,7 +83,10 @@ const pushPrototypeVisualDataHistoryReducer: Reducer<PrototypeState, PushPrototy
   },
 });
 
-const updatePrototypeVisualDataHistoryReducer: Reducer<PrototypeState, UpdatePrototypeVisualDataHistory> = (state, { payload: data }) => ({
+const updatePrototypeVisualDataHistoryReducer: Reducer<PrototypeState, UpdatePrototypeVisualDataHistory> = (
+  state,
+  { payload: data }
+) => ({
   ...state,
   visual: {
     ...state.visual,
@@ -91,7 +102,10 @@ const updatePrototypeContextReducer: Reducer<PrototypeState, UpdatePrototypeCont
   },
 });
 
-const updatePrototypeContextStoreReducer: Reducer<PrototypeState, UpdatePrototypeContextStore> = (state, { payload: { store, payload } }) => ({
+const updatePrototypeContextStoreReducer: Reducer<PrototypeState, UpdatePrototypeContextStore> = (
+  state,
+  { payload: { store, payload } }
+) => ({
   ...state,
   context: {
     ...state.context,
@@ -102,7 +116,10 @@ const updatePrototypeContextStoreReducer: Reducer<PrototypeState, UpdatePrototyp
   },
 });
 
-const updatePrototypeSettingsReducer: Reducer<PrototypeState, UpdatePrototypeSettings> = (state, { payload: { settings, patch } }) => ({
+const updatePrototypeSettingsReducer: Reducer<PrototypeState, UpdatePrototypeSettings> = (
+  state,
+  { payload: { settings, patch } }
+) => ({
   ...state,
   settings: patch ? { ...state.settings, ...settings } : settings,
 });

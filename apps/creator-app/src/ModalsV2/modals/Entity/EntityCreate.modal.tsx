@@ -75,7 +75,10 @@ export const EntityCreateModal = modalsManager.create<IEntityCreateModal, Entity
       };
 
       const onGenerated = (items: Pick<EntityVariant, 'value' | 'synonyms'>[]) => {
-        variantsState.setValue((prev) => [...items.map(({ value, synonyms }) => ({ id: Utils.id.cuid.slug(), value, synonyms })), ...prev]);
+        variantsState.setValue((prev) => [
+          ...items.map(({ value, synonyms }) => ({ id: Utils.id.cuid.slug(), value, synonyms })),
+          ...prev,
+        ]);
       };
 
       const onCreate = validator.container(
@@ -111,7 +114,8 @@ export const EntityCreateModal = modalsManager.create<IEntityCreateModal, Entity
         })
       );
 
-      const onSubmit = () => onCreate({ name: nameState.value, classifier: classifierState.value, variants: variantsState.value });
+      const onSubmit = () =>
+        onCreate({ name: nameState.value, classifier: classifierState.value, variants: variantsState.value });
 
       return (
         <Modal.Container
@@ -181,7 +185,13 @@ export const EntityCreateModal = modalsManager.create<IEntityCreateModal, Entity
           </Scroll>
 
           <Modal.Footer>
-            <Modal.Footer.Button variant="secondary" onClick={api.onClose} disabled={closePrevented} label="Cancel" testID={tid(TEST_ID, 'cancel')} />
+            <Modal.Footer.Button
+              variant="secondary"
+              onClick={api.onClose}
+              disabled={closePrevented}
+              label="Cancel"
+              testID={tid(TEST_ID, 'cancel')}
+            />
 
             <Modal.Footer.Button
               label="Create entity"

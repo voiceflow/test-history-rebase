@@ -1,4 +1,4 @@
-import { BaseModels } from '@voiceflow/base-types';
+import type { BaseModels } from '@voiceflow/base-types';
 
 export const findRootDomainID = (domains: BaseModels.Version.Domain[], rootDiagramID: string): string | null =>
   domains.find((d) => d.rootDiagramID === rootDiagramID)?.id ?? null;

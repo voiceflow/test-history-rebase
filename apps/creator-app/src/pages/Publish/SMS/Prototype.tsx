@@ -3,7 +3,8 @@ import { Banner, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
-import PhoneInput, { isValidPhoneNumber, PhoneNumber } from '@/components/PhoneInput';
+import type { PhoneNumber } from '@/components/PhoneInput';
+import PhoneInput, { isValidPhoneNumber } from '@/components/PhoneInput';
 import * as Settings from '@/components/Settings';
 import { SMS_DOCUMENTATION } from '@/constants/platforms';
 import * as Session from '@/ducks/session';
@@ -19,7 +20,10 @@ const SMSTesting: React.FC = () => {
   const projectID = useSelector(Session.activeProjectIDSelector)!;
 
   useAsyncEffect(async () => {
-    const projectSecret = await client.apiV3.projectSecret.findByProjectID(projectID, ProjectSecretTag.SMS_PHONE_NUMBER);
+    const projectSecret = await client.apiV3.projectSecret.findByProjectID(
+      projectID,
+      ProjectSecretTag.SMS_PHONE_NUMBER
+    );
     setValue(projectSecret?.secret);
     setRemoteValue(projectSecret?.secret);
 
@@ -77,7 +81,9 @@ const SMSTesting: React.FC = () => {
               defaultCountry="US"
             />
 
-            <Settings.SubSection.Description>The phone number you'll use to test your assistant.</Settings.SubSection.Description>
+            <Settings.SubSection.Description>
+              The phone number you'll use to test your assistant.
+            </Settings.SubSection.Description>
           </Settings.SubSection>
         </Settings.Card>
       </Settings.Section>

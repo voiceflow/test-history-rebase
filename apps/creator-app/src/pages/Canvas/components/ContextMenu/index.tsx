@@ -1,4 +1,5 @@
-import { Eventual, Utils } from '@voiceflow/common';
+import type { Eventual } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { serializeToText } from '@voiceflow/slate-serializer/text';
 import { Box, buildVirtualElement, NestedMenu, Text, useCache, useVirtualElementPopper } from '@voiceflow/ui';
@@ -9,7 +10,8 @@ import { Permission } from '@/constants/permissions';
 import { Diagram, UI } from '@/ducks';
 import { useDispatch, usePermission } from '@/hooks';
 import { usePaymentModal } from '@/hooks/modal.hook';
-import { ClipboardContext, ContextMenuContext, ContextMenuValue, EngineContext } from '@/pages/Canvas/contexts';
+import type { ContextMenuValue } from '@/pages/Canvas/contexts';
+import { ClipboardContext, ContextMenuContext, EngineContext } from '@/pages/Canvas/contexts';
 import { MarkupContext } from '@/pages/Project/contexts';
 import { Identifier } from '@/styles/constants';
 import * as Clipboard from '@/utils/clipboard';
@@ -17,7 +19,7 @@ import { Coords } from '@/utils/geometry';
 
 import { EntityType } from '../../engine/constants';
 import { CanvasAction, TARGET_OPTIONS } from './constants';
-import { ContextMenuOption, OptionProps } from './types';
+import type { ContextMenuOption, OptionProps } from './types';
 
 type OptionHandler = (contextMenu: ContextMenuValue, props: OptionProps) => Eventual<void>;
 
@@ -39,7 +41,9 @@ const OPTION_HANDLERS: Record<CanvasAction, OptionHandler> = {
 
     let variants: string[] = [];
     if (node?.type === BlockType.TEXT) {
-      variants = (node as Realtime.NodeData.Text).texts?.map((text) => serializeToText(text.content, { variablesMap: variables.byKey }));
+      variants = (node as Realtime.NodeData.Text).texts?.map((text) =>
+        serializeToText(text.content, { variablesMap: variables.byKey })
+      );
     }
     if (node?.type === BlockType.SPEAK) {
       variants = (node as Realtime.NodeData.Speak).dialogs?.map((dialog) =>
@@ -48,7 +52,10 @@ const OPTION_HANDLERS: Record<CanvasAction, OptionHandler> = {
     }
 
     if (variants.length) {
-      Clipboard.copyWithToast(variants.join('\n\n'), variants.length > 1 ? 'All variants copied to clipboard' : 'Copied to clipboard')();
+      Clipboard.copyWithToast(
+        variants.join('\n\n'),
+        variants.length > 1 ? 'All variants copied to clipboard' : 'Copied to clipboard'
+      )();
     }
   },
 
@@ -110,7 +117,8 @@ const OPTION_HANDLERS: Record<CanvasAction, OptionHandler> = {
   },
 };
 
-const isCanvasActionValue = (value: string): value is CanvasAction => Object.values<string>(CanvasAction).includes(value);
+const isCanvasActionValue = (value: string): value is CanvasAction =>
+  Object.values<string>(CanvasAction).includes(value);
 
 const ContextMenu: React.FC = () => {
   const toggleCanvasOnly = useDispatch(UI.action.ToggleCanvasOnly);
@@ -146,7 +154,10 @@ const ContextMenu: React.FC = () => {
       .filter((option) => {
         return !option.shouldRender || option.shouldRender(contextMenu, cache.current);
       })
-      .map(({ render, ...option }) => ({ ...option, render: render ? () => render(cache.current.contextMenu, cache.current) : undefined }));
+      .map(({ render, ...option }) => ({
+        ...option,
+        render: render ? () => render(cache.current.contextMenu, cache.current) : undefined,
+      }));
 
     if (targetOptions[0]?.value === CanvasAction.DIVIDER) {
       targetOptions.shift();

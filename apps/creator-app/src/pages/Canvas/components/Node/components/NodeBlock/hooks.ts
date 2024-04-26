@@ -8,7 +8,7 @@ import { useDrop } from 'react-dnd';
 import { BlockType, DragItem, HOVER_THROTTLE_TIMEOUT } from '@/constants';
 import { EngineContext, ManagerContext, NodeEntityContext } from '@/pages/Canvas/contexts';
 import { isNodeEntityResource } from '@/pages/Canvas/engine/entities/nodeEntity';
-import { NodeEntityResource } from '@/pages/Canvas/managers/types';
+import type { NodeEntityResource } from '@/pages/Canvas/managers/types';
 import { isMarkupBlockType } from '@/utils/typeGuards';
 
 export const useMergeInfo = (index: number) => {
@@ -16,7 +16,10 @@ export const useMergeInfo = (index: number) => {
   const getManager = React.useContext(ManagerContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
 
-  const isMergeTerminator = (type: BlockType, nodeEntityResource?: Partial<NodeEntityResource<unknown>> | { data: null }) => {
+  const isMergeTerminator = (
+    type: BlockType,
+    nodeEntityResource?: Partial<NodeEntityResource<unknown>> | { data: null }
+  ) => {
     const manager = getManager(type);
     if (manager.mergeTerminator) return true;
 
@@ -69,7 +72,8 @@ export const useMergeInfo = (index: number) => {
 
   return {
     mustBeFirst: !!firstChildNode?.type && NO_IN_PORT_NODES.has(firstChildNode.type),
-    mustBeLast: !!lastChildNode?.type && isMergeTerminator(lastChildNode.type, { data: lastChildNodeData, node: lastChildNode }),
+    mustBeLast:
+      !!lastChildNode?.type && isMergeTerminator(lastChildNode.type, { data: lastChildNodeData, node: lastChildNode }),
   };
 };
 

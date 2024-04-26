@@ -1,6 +1,6 @@
-import { Nullable } from '@voiceflow/common';
-import { Flow } from '@voiceflow/dtos';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type { Nullable } from '@voiceflow/common';
+import type { Flow } from '@voiceflow/dtos';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
@@ -53,7 +53,10 @@ export const useComponents = (): ComponentsAPI => {
 
     if (!engine || !item) return;
 
-    engine.merge.setVirtualSource(BlockType.COMPONENT, { name: item.name, diagramID: item.id } as Realtime.NodeData<any>);
+    engine.merge.setVirtualSource(BlockType.COMPONENT, {
+      name: item.name,
+      diagramID: item.id,
+    } as Realtime.NodeData<any>);
   });
 
   const onDragEnd = usePersistFunction(() => {

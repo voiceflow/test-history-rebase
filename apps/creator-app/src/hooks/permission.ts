@@ -1,4 +1,4 @@
-import { PlanType } from '@voiceflow/internal';
+import type { PlanType } from '@voiceflow/internal';
 import { toast } from '@voiceflow/ui';
 import React from 'react';
 
@@ -9,9 +9,11 @@ import {
   TRIAL_EXPIRED_PERMISSION_DEFAULT_WARN_MESSAGE,
 } from '@/constants/permissions';
 import { VirtualRole } from '@/constants/roles';
-import { getPermission, PermissionConfig } from '@/utils/permission';
+import type { PermissionConfig } from '@/utils/permission';
+import { getPermission } from '@/utils/permission';
 
-import { Identity, useIdentity } from './identity';
+import type { Identity } from './identity';
+import { useIdentity } from './identity';
 
 export const getIdentityPermission = <P extends Permission>(identity: Identity, permission?: P | null) => ({
   ...identity,
@@ -43,13 +45,19 @@ export const useIsLockedProjectViewer = () => {
 export const useGetPermission = () => {
   const identity = useIdentity();
 
-  return React.useCallback(<P extends Permission>(permission?: P | null) => getIdentityPermission<P>(identity, permission), [identity]);
+  return React.useCallback(
+    <P extends Permission>(permission?: P | null) => getIdentityPermission<P>(identity, permission),
+    [identity]
+  );
 };
 
 export const useHasPermissions = (permissions: Permission[]): boolean => {
   const identity = useIdentity();
 
-  return React.useMemo(() => permissions.every((permission) => getIdentityPermission(identity, permission).allowed), [identity, ...permissions]);
+  return React.useMemo(
+    () => permissions.every((permission) => getIdentityPermission(identity, permission).allowed),
+    [identity, ...permissions]
+  );
 };
 
 export const useGuestPermission = <P extends Permission>(activePlan: PlanType, permission?: P | null) =>
@@ -94,12 +102,16 @@ interface PermissionActionOptions<P extends Permission, Args extends any[] = []>
   /**
    * the callback is called if workspace's plan doesn't have the permission
    */
-  onPlanForbid?: (options: PermissionConfig<P> & { args: Args; planConfig: NonNullable<PermissionConfig<P>['planConfig']> }) => void;
+  onPlanForbid?: (
+    options: PermissionConfig<P> & { args: Args; planConfig: NonNullable<PermissionConfig<P>['planConfig']> }
+  ) => void;
 
   /**
    * the callback is called if user's role doesn't have the permission
    */
-  onRoleForbid?: (options: PermissionConfig<P> & { args: Args; roleConfig: NonNullable<PermissionConfig<P>['roleConfig']> }) => void;
+  onRoleForbid?: (
+    options: PermissionConfig<P> & { args: Args; roleConfig: NonNullable<PermissionConfig<P>['roleConfig']> }
+  ) => void;
 
   /**
    * the callback is called if trial expired and workspace's plan doesn't have the permission

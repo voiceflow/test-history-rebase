@@ -1,8 +1,9 @@
-import { Client } from '@logux/client';
+import type { Client } from '@logux/client';
 import { composeWithDevTools } from '@redux-devtools/extension';
-import { History } from 'history';
+import type { History } from 'history';
 import * as Redux from 'redux';
-import { Persistor, persistStore } from 'redux-persist';
+import type { Persistor } from 'redux-persist';
+import { persistStore } from 'redux-persist';
 
 import { IS_DEVELOPMENT } from '@/config';
 import createReducer, { allRPCs } from '@/ducks';
@@ -11,7 +12,7 @@ import { ACTION_INVALIDATORS, ACTION_REVERTERS } from './constants';
 import { createStoreCreator } from './create-store-creator';
 import createMiddleware from './middleware';
 import { RPCController } from './rpc';
-import { Store } from './types';
+import type { Store } from './types';
 import { rewriteDispatch } from './utils';
 
 declare global {
@@ -38,7 +39,9 @@ const createStore = (realtime: Client, history: History): { store: Store; persis
   const store = createStore(
     rootReducer,
     undefined,
-    composeEnhancers(Redux.applyMiddleware(...createMiddleware(history, rpcController.createMiddleware(allRPCs), () => store)))
+    composeEnhancers(
+      Redux.applyMiddleware(...createMiddleware(history, rpcController.createMiddleware(allRPCs), () => store))
+    )
   ) as Store;
 
   store.dispatch = rewriteDispatch(store);

@@ -1,9 +1,10 @@
 import React from 'react';
 
-import { LibraryStepType, TabData } from '../constants';
+import type { TabData } from '../constants';
+import { LibraryStepType } from '../constants';
 import Searchbar from '../Search';
 import Tabs from '../Tabs';
-import { LibrarySections } from './types';
+import type { LibrarySections } from './types';
 import { sortByName } from './utils';
 
 export const useLibrarySubMenuTabs = ({ librarySections }: { librarySections: LibrarySections }) => {

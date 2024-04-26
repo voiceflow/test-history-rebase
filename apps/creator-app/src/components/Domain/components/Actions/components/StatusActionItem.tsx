@@ -19,7 +19,12 @@ const StatusActionItem: React.FC<StatusActionItemProps> = ({ status, onChange })
     portalNode={document.body}
     renderContent={() => (
       <Menu inline>
-        <CheckBoxItem status={BaseModels.Version.DomainStatus.DESIGN} onChange={onChange} activeStatus={status} nullishCheck>
+        <CheckBoxItem
+          status={BaseModels.Version.DomainStatus.DESIGN}
+          onChange={onChange}
+          activeStatus={status}
+          nullishCheck
+        >
           {STATUS_LABELS_MAP[BaseModels.Version.DomainStatus.DESIGN]}
         </CheckBoxItem>
 

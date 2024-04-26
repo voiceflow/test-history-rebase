@@ -7,7 +7,7 @@ import { useSelector } from '@/hooks/store.hook';
 import { transformVariableToString } from '@/utils/slot';
 
 import { ExpressionDisplayLabel } from '../../constants';
-import { LogicUnitDataType } from '../../types';
+import type { LogicUnitDataType } from '../../types';
 import { isVariable } from '../../utils';
 import ConditionDisplayContainer from './components/ConditionDisplayContainer';
 import LabelWrapper from './components/LabelWrapper';
@@ -34,17 +34,25 @@ const ConditionDisplay: React.FC<ConditionDisplayProps> = ({ expression, isActiv
     return typeof value === 'string' ? entitiesAndVariablesMap[value]?.name ?? value : value;
   };
 
-  const leftValue = React.useMemo(() => transformValue(firstValue, entitiesAndVariablesMap), [firstValue, entitiesAndVariablesMap]);
-  const rightValue = React.useMemo(() => transformValue(secondValue, entitiesAndVariablesMap), [firstValue, entitiesAndVariablesMap]);
+  const leftValue = React.useMemo(
+    () => transformValue(firstValue, entitiesAndVariablesMap),
+    [firstValue, entitiesAndVariablesMap]
+  );
+  const rightValue = React.useMemo(
+    () => transformValue(secondValue, entitiesAndVariablesMap),
+    [firstValue, entitiesAndVariablesMap]
+  );
 
-  const placeholder = !leftValue && expression.value[0]?.type === BaseNode.Utils.ExpressionTypeV2.VARIABLE ? 'Variable' : 'Value';
+  const placeholder =
+    !leftValue && expression.value[0]?.type === BaseNode.Utils.ExpressionTypeV2.VARIABLE ? 'Variable' : 'Value';
 
   return (
     <ConditionDisplayContainer isActive={isActive} isInvalid={error} isLogicGroup={isLogicGroup}>
       <LabelWrapper>
         {logicType && (
           <Text>
-            <b>{String(leftValue) || placeholder}</b> {ExpressionDisplayLabel[logicType]?.toLowerCase()} <b>{String(rightValue)}</b>
+            <b>{String(leftValue) || placeholder}</b> {ExpressionDisplayLabel[logicType]?.toLowerCase()}{' '}
+            <b>{String(rightValue)}</b>
           </Text>
         )}
       </LabelWrapper>

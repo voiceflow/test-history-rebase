@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { NodeData } from '@realtime-sdk/models';
+import type { NodeData } from '@realtime-sdk/models';
 import { getRandomEnumElement } from '@test/utils';
 import { BaseNode } from '@voiceflow/base-types';
 import { define } from 'cooky-cutter';

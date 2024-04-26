@@ -1,4 +1,3 @@
-/* eslint-disable xss/no-mixed-html */
 import { genKey } from 'draft-js';
 import _toLower from 'lodash/toLower';
 
@@ -18,8 +17,10 @@ const REGEX_CARRIAGE = /&#13;?/g;
 const REGEX_LEADING_LF = /^\n/g;
 const REGEX_SINGLE_TAG = /<([^ />]+)([^>]+?)\/>/g;
 
-const createSupportedOpenTagsRegex = (tags) => new RegExp(`(<)(?!\\b(${tags.map((tag) => `${tag}`).join('|')})\\b|/)`, 'g');
-const createSupportedCloseTagsRegex = (tags) => new RegExp(`(</)(?!\\b(${tags.map((tag) => `${tag}`).join('|')})\\b|/)`, 'g');
+const createSupportedOpenTagsRegex = (tags) =>
+  new RegExp(`(<)(?!\\b(${tags.map((tag) => `${tag}`).join('|')})\\b|/)`, 'g');
+const createSupportedCloseTagsRegex = (tags) =>
+  new RegExp(`(</)(?!\\b(${tags.map((tag) => `${tag}`).join('|')})\\b|/)`, 'g');
 
 const removeFunkyCharactersAndUnsupportedTags = (value, { tags, newLinesAllowed }) => {
   if (!value) return '';

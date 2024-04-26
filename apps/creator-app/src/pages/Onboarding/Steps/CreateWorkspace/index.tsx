@@ -45,7 +45,12 @@ const CreateWorkspace: React.FC = () => {
       </FlexCenter>
 
       <FlexCenter>
-        <Upload.IconUpload image={workspaceImage} update={setWorkspaceImage} size={UploadIconVariant.LARGE} ref={iconUploadRef} />
+        <Upload.IconUpload
+          image={workspaceImage}
+          update={setWorkspaceImage}
+          size={UploadIconVariant.LARGE}
+          ref={iconUploadRef}
+        />
       </FlexCenter>
 
       <LabelContainer>

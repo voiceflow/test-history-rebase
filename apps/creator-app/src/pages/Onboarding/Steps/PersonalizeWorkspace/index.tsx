@@ -7,15 +7,17 @@ import ContinueButton from '@/pages/Onboarding/components/ContinueButton';
 
 import { StepID, TEAM_SIZE_OPTIONS, WORK_WITH_DEVELOPERS_OPTIONS } from '../../constants';
 import { OnboardingContext } from '../../context';
-import { PersonalizeWorkspaceMeta } from '../../context/types';
-import { TeamSizeType } from '../../types';
+import type { PersonalizeWorkspaceMeta } from '../../context/types';
+import type { TeamSizeType } from '../../types';
 import { Label, UseCaseSelect } from '../components';
 import * as S from './styles';
 
 const PersonalizeWorkspace: React.FC = () => {
   const { state, actions } = useContext(OnboardingContext);
   const [useCase, setUseCase] = React.useState(state.personalizeWorkspaceMeta.useCase || '');
-  const [workWithDevelopers, setWorkWithDevelopers] = React.useState<boolean | null>(state.personalizeWorkspaceMeta.workWithDevelopers || null);
+  const [workWithDevelopers, setWorkWithDevelopers] = React.useState<boolean | null>(
+    state.personalizeWorkspaceMeta.workWithDevelopers || null
+  );
   const [selfReportedAttribution, setSelfReportedAttribution] = React.useState('');
   const [teamSize, setTeamSize] = React.useState<TeamSizeType>();
   const canContinue = !!useCase && !!teamSize && !!selfReportedAttribution && workWithDevelopers !== null;
@@ -32,7 +34,10 @@ const PersonalizeWorkspace: React.FC = () => {
     actions.stepForward(StepID.CREATE_WORKSPACE);
   };
 
-  const teamSizeOptionLookup = React.useMemo(() => Utils.array.createMap(TEAM_SIZE_OPTIONS, Utils.object.selectID), [TEAM_SIZE_OPTIONS]);
+  const teamSizeOptionLookup = React.useMemo(
+    () => Utils.array.createMap(TEAM_SIZE_OPTIONS, Utils.object.selectID),
+    [TEAM_SIZE_OPTIONS]
+  );
 
   return (
     <S.Container>
@@ -49,9 +54,18 @@ const PersonalizeWorkspace: React.FC = () => {
         placeholder="Select team size"
       />
       <Label>Are you working with developers?</Label>
-      <RadioGroup isFlat options={WORK_WITH_DEVELOPERS_OPTIONS} checked={workWithDevelopers} onChange={setWorkWithDevelopers} />
+      <RadioGroup
+        isFlat
+        options={WORK_WITH_DEVELOPERS_OPTIONS}
+        checked={workWithDevelopers}
+        onChange={setWorkWithDevelopers}
+      />
       <Label>How did you hear about us?</Label>
-      <Input placeholder="Linkedin, Discord, Conference" value={selfReportedAttribution} onChangeText={setSelfReportedAttribution} />
+      <Input
+        placeholder="Linkedin, Discord, Conference"
+        value={selfReportedAttribution}
+        onChangeText={setSelfReportedAttribution}
+      />
 
       <Box.FlexCenter paddingTop={32}>
         <ContinueButton disabled={!canContinue} onClick={onContinue}>

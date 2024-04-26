@@ -19,7 +19,10 @@ export const DiagramSubscriptionGateV2: React.FC<React.PropsWithChildren> = ({ c
   const workspaceID = useSelector(Session.activeWorkspaceIDSelector);
   const creatorDiagramID = useSelector(CreatorV2.activeDiagramIDSelector);
 
-  const diagramContext = React.useMemo(() => ({ projectID, versionID, diagramID, workspaceID }), [projectID, versionID, diagramID, workspaceID]);
+  const diagramContext = React.useMemo(
+    () => ({ projectID, versionID, diagramID, workspaceID }),
+    [projectID, versionID, diagramID, workspaceID]
+  );
 
   const isSubscribed = useDiagramSubscriptionV2(diagramContext, [diagramContext]);
 
@@ -37,4 +40,7 @@ export const DiagramSubscriptionGateV2: React.FC<React.PropsWithChildren> = ({ c
   );
 };
 
-export const DiagramSubscriptionGate = withFeatureSwitcher(FeatureFlag.CMS_WORKFLOWS, DiagramSubscriptionGateV2)(LegacyDiagramSubscriptionGate);
+export const DiagramSubscriptionGate = withFeatureSwitcher(
+  FeatureFlag.CMS_WORKFLOWS,
+  DiagramSubscriptionGateV2
+)(LegacyDiagramSubscriptionGate);

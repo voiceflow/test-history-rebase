@@ -1,10 +1,15 @@
-import { BaseModels } from '@voiceflow/base-types';
-import * as Platform from '@voiceflow/platform-config';
+import type { BaseModels } from '@voiceflow/base-types';
+import type * as Platform from '@voiceflow/platform-config';
 
 import client from '@/client';
 
 import { EventName } from '../constants';
-import { createVersionEvent, createVersionEventTracker, createWorkspaceEvent, createWorkspaceEventTracker } from '../utils';
+import {
+  createVersionEvent,
+  createVersionEventTracker,
+  createWorkspaceEvent,
+  createWorkspaceEventTracker,
+} from '../utils';
 
 export const trackDomainDeleted = createVersionEventTracker<{ domainID: string }>(({ domainID, ...eventInfo }) =>
   client.analytics.track(createVersionEvent(EventName.DOMAIN_DELETED, { ...eventInfo, domain_id: domainID }))
@@ -39,6 +44,9 @@ export const trackDomainConvert = createWorkspaceEventTracker<{
   )
 );
 
-export const trackDomainStatusChanged = createVersionEventTracker<{ domainID: string; status: BaseModels.Version.DomainStatus }>(
-  ({ domainID, ...eventInfo }) => client.analytics.track(createVersionEvent(EventName.DOMAIN_STATUS_CHANGED, { ...eventInfo, domain_id: domainID }))
+export const trackDomainStatusChanged = createVersionEventTracker<{
+  domainID: string;
+  status: BaseModels.Version.DomainStatus;
+}>(({ domainID, ...eventInfo }) =>
+  client.analytics.track(createVersionEvent(EventName.DOMAIN_STATUS_CHANGED, { ...eventInfo, domain_id: domainID }))
 );

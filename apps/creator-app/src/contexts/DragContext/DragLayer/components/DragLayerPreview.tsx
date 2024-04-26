@@ -1,6 +1,7 @@
 import { useCache, useForceUpdate, useRAF, useThrottledCallback } from '@voiceflow/ui';
 import React from 'react';
-import { useDragLayer, XYCoord } from 'react-dnd';
+import type { XYCoord } from 'react-dnd';
+import { useDragLayer } from 'react-dnd';
 
 import { HOVER_THROTTLE_TIMEOUT } from '@/constants';
 import { useTeardown } from '@/hooks/lifecycle';
@@ -49,7 +50,10 @@ const DragLayerPreview = <I extends any>({ getOptions, renderPreview }: DragLaye
     } else {
       const horizontalEnabled = cache.current.getOptions(type)?.horizontalEnabled ?? DEFAULT_OPTIONS.horizontalEnabled;
 
-      isDraggingXEnabled = typeof horizontalEnabled === 'function' ? horizontalEnabled(item, initialOffset, currentOffset) : horizontalEnabled;
+      isDraggingXEnabled =
+        typeof horizontalEnabled === 'function'
+          ? horizontalEnabled(item, initialOffset, currentOffset)
+          : horizontalEnabled;
     }
 
     item.isDraggingXEnabled = isDraggingXEnabled;
@@ -65,7 +69,7 @@ const DragLayerPreview = <I extends any>({ getOptions, renderPreview }: DragLaye
 
       node.style.display = 'block';
       node.style.transform = `translate(${isDraggingXEnabled ? currentOffset.x : initialOffset.x}px, ${currentOffset.y}px)`;
-      node.style.willChange = `translate`;
+      node.style.willChange = 'translate';
     });
 
     return collected;

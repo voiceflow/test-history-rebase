@@ -1,6 +1,6 @@
-import { UIOnlyMenuItemOption } from '@voiceflow/ui';
+import type { UIOnlyMenuItemOption } from '@voiceflow/ui';
 
-import { BaseSelectGroup, BaseSelectMultilevel, BaseSelectOption } from './types';
+import type { BaseSelectGroup, BaseSelectMultilevel, BaseSelectOption } from './types';
 
 export const createGroupedSelectID = (...ids: string[]) => ids.join('::');
 

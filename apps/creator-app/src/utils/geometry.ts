@@ -1,5 +1,5 @@
 /* eslint-disable max-classes-per-file */
-import { Pair, Point, Quad } from '@/types';
+import type { Pair, Point, Quad } from '@/types';
 
 export interface CartesianPlane {
   origin: Coords;
@@ -18,7 +18,10 @@ export class Vector {
     return vecOrPoint instanceof Vector ? vecOrPoint.map(plane) : vecOrPoint;
   }
 
-  constructor(public point: Point, public _plane?: CartesianPlane) {}
+  constructor(
+    public point: Point,
+    public _plane?: CartesianPlane
+  ) {}
 
   get plane() {
     return this._plane || Coords.WINDOW_PLANE;
@@ -172,7 +175,11 @@ export abstract class Shape<T extends Coords[] = Coords[]> {
 }
 
 export class Quadrilateral extends Shape<Quad<Coords>> {
-  constructor(public origin: Coords, public dimensions: Vector, public rotation: number) {
+  constructor(
+    public origin: Coords,
+    public dimensions: Vector,
+    public rotation: number
+  ) {
     super();
   }
 

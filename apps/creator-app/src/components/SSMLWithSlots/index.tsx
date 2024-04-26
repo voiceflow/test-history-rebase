@@ -1,6 +1,7 @@
-import { Entity } from '@voiceflow/dtos';
-import * as Realtime from '@voiceflow/realtime-sdk';
-import { SvgIconTypes, useSetup } from '@voiceflow/ui';
+import type { Entity } from '@voiceflow/dtos';
+import type * as Realtime from '@voiceflow/realtime-sdk';
+import type { SvgIconTypes } from '@voiceflow/ui';
+import { useSetup } from '@voiceflow/ui';
 import React from 'react';
 
 import SSML from '@/components/SSML';

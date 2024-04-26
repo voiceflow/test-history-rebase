@@ -1,4 +1,4 @@
-import { LoguxControlOptions } from '../../control';
+import type { LoguxControlOptions } from '../../control';
 import AddActionsControl from './addActions';
 import AddBlockControl from './addBlock';
 import AddMarkupControl from './addMarkup';

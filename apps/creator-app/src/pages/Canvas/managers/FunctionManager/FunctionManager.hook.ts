@@ -1,5 +1,5 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
-import { NodePortSchema } from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
+import type { NodePortSchema } from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import * as History from '@/ducks/history';
@@ -9,7 +9,7 @@ import { getItemFromMap } from '@/pages/Canvas/utils';
 
 import { DEFAULT_BY_KEY_PORT } from '../../constants';
 import { useMemoizedPropertyFilter } from '../hooks/memoized-property-filter.hook';
-import { NodeEditorV2Props } from '../types';
+import type { NodeEditorV2Props } from '../types';
 
 export const useNameNormalizer = (editor: NodeEditorV2Props<Realtime.NodeData.Function>) => {
   const functionMap = React.useContext(FunctionMapContext)!;
@@ -23,12 +23,19 @@ export const useNameNormalizer = (editor: NodeEditorV2Props<Realtime.NodeData.Fu
   }, [editor.data.functionID]);
 };
 
-export const useFunctionPathPortSync = (functionID: string | null, nodeID: string, ports: NodePortSchema<string, any>, paths: any[] = []) => {
+export const useFunctionPathPortSync = (
+  functionID: string | null,
+  nodeID: string,
+  ports: NodePortSchema<string, any>,
+  paths: any[] = []
+) => {
   const engine = React.useContext(EngineContext)!;
   const ignoreHistory = useDispatch(History.ignore);
   const functionPathMap = React.useContext(FunctionPathMapContext)!;
   const functionPathMapValues = Object.values(functionPathMap);
-  const functionPathValuesByFunctionID = useMemoizedPropertyFilter(functionPathMapValues, { functionID: functionID ?? '' });
+  const functionPathValuesByFunctionID = useMemoizedPropertyFilter(functionPathMapValues, {
+    functionID: functionID ?? '',
+  });
 
   React.useEffect(() => {
     if (!functionID) return;

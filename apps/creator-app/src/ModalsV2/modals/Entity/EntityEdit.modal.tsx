@@ -69,7 +69,10 @@ export const EntityEditModal = modalsManager.create<IEntityEditModal>(
               />
             }
             secondaryButton={
-              <Modal.HeaderMore options={[{ name: 'Delete', onClick: onEntityDelete, testID: 'delete' }]} testID={tid(TEST_ID, 'more')} />
+              <Modal.HeaderMore
+                options={[{ name: 'Delete', onClick: onEntityDelete, testID: 'delete' }]}
+                testID={tid(TEST_ID, 'more')}
+              />
             }
             testID={tid(TEST_ID, 'header')}
           />
@@ -107,7 +110,12 @@ export const EntityEditModal = modalsManager.create<IEntityEditModal>(
           </>
 
           <Modal.Footer>
-            <Modal.Footer.Button label="Close" variant="secondary" onClick={api.onClose} testID={tid(TEST_ID, 'close')} />
+            <Modal.Footer.Button
+              label="Close"
+              variant="secondary"
+              onClick={api.onClose}
+              testID={tid(TEST_ID, 'close')}
+            />
           </Modal.Footer>
         </Modal.Container>
       );

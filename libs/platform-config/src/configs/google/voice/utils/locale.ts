@@ -1,17 +1,20 @@
 import * as Base from '@platform-config/configs/base';
 import { Config as ConfigUtils } from '@platform-config/configs/utils';
 import { GoogleConstants } from '@voiceflow/google-types';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+import type { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import * as GoogleLocale from '../project/locale';
 
 export const CONFIG = Base.Utils.Locale.extend({
   toLanguage: ([locale]: GoogleConstants.Locale[]): GoogleConstants.Language =>
-    GoogleLocale.CONFIG.list.find((language) => GoogleConstants.LanguageToLocale[language]?.includes(locale)) ?? GoogleConstants.Language.EN,
+    GoogleLocale.CONFIG.list.find((language) => GoogleConstants.LanguageToLocale[language]?.includes(locale)) ??
+    GoogleConstants.Language.EN,
 
-  fromLanguage: (language: GoogleConstants.Language): GoogleConstants.Locale[] => GoogleConstants.LanguageToLocale[language],
+  fromLanguage: (language: GoogleConstants.Language): GoogleConstants.Locale[] =>
+    GoogleConstants.LanguageToLocale[language],
 
-  toVoiceflowLocale: (locale: GoogleConstants.Locale): VoiceflowConstants.Locale => GoogleConstants.GOOGLE_TO_VOICEFLOW_LOCALE_MAP[locale],
+  toVoiceflowLocale: (locale: GoogleConstants.Locale): VoiceflowConstants.Locale =>
+    GoogleConstants.GOOGLE_TO_VOICEFLOW_LOCALE_MAP[locale],
 })(Base.Utils.Locale.validate);
 
 export type Config = typeof CONFIG;

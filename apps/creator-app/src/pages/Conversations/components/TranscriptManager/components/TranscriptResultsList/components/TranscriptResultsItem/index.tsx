@@ -2,7 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Dropdown, IconButton, IconButtonVariant, stopPropagation } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
-import { ListChildComponentProps } from 'react-window';
+import type { ListChildComponentProps } from 'react-window';
 
 import { TranscriptExportFormat } from '@/client/transcript';
 import { Permission } from '@/constants/permissions';
@@ -14,7 +14,7 @@ import { SystemTag } from '@/models';
 import { ClassName } from '@/styles/constants';
 import { isSentimentTag } from '@/utils/reportTag';
 
-import { ListData } from '../../types';
+import type { ListData } from '../../types';
 import { Container, InfoSection, ReadStatusDot, StatusIcons } from './components';
 
 const TranscriptResultsItem: React.FC<ListChildComponentProps<ListData>> = ({ data, index, style }) => {
@@ -62,7 +62,12 @@ const TranscriptResultsItem: React.FC<ListChildComponentProps<ListData>> = ({ da
   };
 
   const [sentiment, isSaved, isReviewed] = React.useMemo(
-    () => [reportTags.find(isSentimentTag), reportTags.includes(SystemTag.SAVED), reportTags.includes(SystemTag.REVIEWED)] as const,
+    () =>
+      [
+        reportTags.find(isSentimentTag),
+        reportTags.includes(SystemTag.SAVED),
+        reportTags.includes(SystemTag.REVIEWED),
+      ] as const,
     [reportTags]
   );
 
@@ -94,7 +99,13 @@ const TranscriptResultsItem: React.FC<ListChildComponentProps<ListData>> = ({ da
             <InfoSection active={isActive} name={name} date={updatedAt} isRead={!unread} tags={reportTags} />
 
             <div className={ClassName.TRANSCRIPT_ITEM_DROPDOWN_BUTTON}>
-              <IconButton icon="ellipsis" variant={IconButtonVariant.SUBTLE} size={15} onClick={stopPropagation(onToggle)} ref={ref} />
+              <IconButton
+                icon="ellipsis"
+                variant={IconButtonVariant.SUBTLE}
+                size={15}
+                onClick={stopPropagation(onToggle)}
+                ref={ref}
+              />
             </div>
 
             {!isOpen && <StatusIcons id={id} reviewed={isReviewed} saved={isSaved} sentiment={sentiment} />}

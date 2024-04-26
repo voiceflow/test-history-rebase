@@ -1,10 +1,19 @@
 import { intentToLegacyIntent } from '@realtime-sdk/adapters/legacy/intent-to-legacy-intent/intent-to-legacy-intent.adapter';
 import { BaseModels } from '@voiceflow/base-types';
-import { ChatModels } from '@voiceflow/chat-types';
+import type { ChatModels } from '@voiceflow/chat-types';
 import { Utils } from '@voiceflow/common';
-import type { AnyResponseVariant, Entity, Intent, RequiredEntity, Response, ResponseDiscriminator, Variable } from '@voiceflow/dtos';
-import { CardLayout, Channel, Language, ResponseContext, ResponseVariantType, Utterance, VariableDatatype } from '@voiceflow/dtos';
-import { VoiceModels } from '@voiceflow/voice-types';
+import type {
+  AnyResponseVariant,
+  Entity,
+  Intent,
+  RequiredEntity,
+  Response,
+  ResponseDiscriminator,
+  Utterance,
+  Variable,
+} from '@voiceflow/dtos';
+import { CardLayout, Channel, Language, ResponseContext, ResponseVariantType, VariableDatatype } from '@voiceflow/dtos';
+import type { VoiceModels } from '@voiceflow/voice-types';
 
 describe('Adapters | Legacy | intentToLegacyIntent', () => {
   const creatorID = 1;
@@ -121,7 +130,13 @@ describe('Adapters | Legacy | intentToLegacyIntent', () => {
                 { color: '#f0f', text: 'response-variant-3-text-1 ' },
                 { id: 'entity-2', name: 'entity-2-name', type: 'variable', isSlot: true, children: [{ text: '' }] },
                 { children: [{ text: ' response-variant-3-text-2 ' }] },
-                { id: 'variable-1', name: 'variable-1-name', type: 'variable', isSlot: false, children: [{ text: '' }] },
+                {
+                  id: 'variable-1',
+                  name: 'variable-1-name',
+                  type: 'variable',
+                  isSlot: false,
+                  children: [{ text: '' }],
+                },
                 { url: 'example.com', type: 'link', children: [{ text: ' response-variant-3-text-3' }] },
               ] as any[],
             },
@@ -177,7 +192,9 @@ describe('Adapters | Legacy | intentToLegacyIntent', () => {
   const utterance2: Utterance = {
     ...utterance1,
     id: 'utterance-2',
-    text: [{ text: ['utterance-2-text-1 ', { entityID: 'entity-1' }, ' utterance-2-text-2 ', { entityID: 'entity-2' }] }],
+    text: [
+      { text: ['utterance-2-text-1 ', { entityID: 'entity-1' }, ' utterance-2-text-2 ', { entityID: 'entity-2' }] },
+    ],
     intentID: 'intent-3',
   };
 
@@ -559,7 +576,9 @@ describe('Adapters | Legacy | intentToLegacyIntent', () => {
         responsesMap: { [response2.id]: response2 },
         requiredEntitiesMap: { [requiredEntity3.id]: requiredEntity3 },
         responseVariantsMap: { [responseVariant3.id]: responseVariant3 },
-        responseDiscriminatorsPerResponse: { [response2.id]: [{ ...responseDiscriminator2, variantOrder: [responseVariant3.id] }] },
+        responseDiscriminatorsPerResponse: {
+          [response2.id]: [{ ...responseDiscriminator2, variantOrder: [responseVariant3.id] }],
+        },
       });
     });
   });

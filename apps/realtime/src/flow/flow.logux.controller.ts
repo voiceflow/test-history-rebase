@@ -26,7 +26,9 @@ export class FlowLoguxController {
     @Payload() { data, context }: Actions.Flow.CreateOne.Request,
     @AuthMeta() auth: AuthMetaPayload
   ): Promise<Actions.Flow.CreateOne.Response> {
-    return this.service.createManyAndBroadcast([data], { auth, context }).then(([result]) => ({ data: this.service.toJSON(result), context }));
+    return this.service
+      .createManyAndBroadcast([data], { auth, context })
+      .then(([result]) => ({ data: this.service.toJSON(result), context }));
   }
 
   @Action.Async(Actions.Flow.CreateMany)
@@ -39,7 +41,9 @@ export class FlowLoguxController {
     @Payload() { data, context }: Actions.Flow.CreateMany.Request,
     @AuthMeta() auth: AuthMetaPayload
   ): Promise<Actions.Flow.CreateMany.Response> {
-    return this.service.createManyAndBroadcast(data, { auth, context }).then((results) => ({ data: this.service.mapToJSON(results), context }));
+    return this.service
+      .createManyAndBroadcast(data, { auth, context })
+      .then((results) => ({ data: this.service.mapToJSON(results), context }));
   }
 
   @Action.Async(Actions.Flow.DuplicateOne)

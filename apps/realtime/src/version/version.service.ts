@@ -4,7 +4,14 @@ import { BaseModels } from '@voiceflow/base-types';
 import type { AnyRecord } from '@voiceflow/common';
 import { Utils } from '@voiceflow/common';
 import { VersionSettings } from '@voiceflow/dtos';
-import { DiagramEntity, DiagramJSON, VersionEntity, VersionJSON, VersionObject, VersionORM } from '@voiceflow/orm-designer';
+import {
+  DiagramEntity,
+  DiagramJSON,
+  VersionEntity,
+  VersionJSON,
+  VersionObject,
+  VersionORM,
+} from '@voiceflow/orm-designer';
 import { ObjectId } from 'mongodb';
 import { Merge } from 'type-fest';
 
@@ -32,7 +39,10 @@ export class VersionService extends MutableService<VersionORM> {
     const liveTopicIDs = new Set(version.domains.filter(({ live }) => live).flatMap(({ topicIDs }) => topicIDs));
 
     return diagrams
-      .filter(({ diagramID, type }) => !type || type === BaseModels.Diagram.DiagramType.COMPONENT || liveTopicIDs.has(diagramID.toJSON()))
+      .filter(
+        ({ diagramID, type }) =>
+          !type || type === BaseModels.Diagram.DiagramType.COMPONENT || liveTopicIDs.has(diagramID.toJSON())
+      )
       .map(({ diagramID }) => diagramID.toJSON());
   }
 
@@ -79,19 +89,27 @@ export class VersionService extends MutableService<VersionORM> {
     sourceDiagrams: Merge<DiagramJSON, Partial<Pick<DiagramJSON, '_id'>>>[];
     sourceVersionOverride?: Merge<Partial<VersionJSON>, { prototype?: any }>;
   }) {
-    const forNewProject = sourceVersionOverride.projectID && sourceVersionOverride.projectID !== sourceVersion.projectID;
+    const forNewProject =
+      sourceVersionOverride.projectID && sourceVersionOverride.projectID !== sourceVersion.projectID;
 
     const versionData =
       forNewProject && sourceVersionOverride.creatorID
         ? deepSetCreatorID(deepSetNewDate(sourceVersion), sourceVersionOverride.creatorID)
         : sourceVersion;
 
-    const newVersion = await this.createOne(this.fromJSON({ ...Utils.object.omit(versionData, ['_id']), ...sourceVersionOverride }));
+    const newVersion = await this.createOne(
+      this.fromJSON({ ...Utils.object.omit(versionData, ['_id']), ...sourceVersionOverride })
+    );
 
-    const diagramOverride = { ...Utils.object.pick(sourceVersionOverride, ['creatorID']), versionID: newVersion._id.toJSON() };
+    const diagramOverride = {
+      ...Utils.object.pick(sourceVersionOverride, ['creatorID']),
+      versionID: newVersion._id.toJSON(),
+    };
 
     const newDiagrams = await this.diagram.createMany(
-      this.diagram.mapFromJSON(sourceDiagrams.map((diagram) => ({ ...Utils.object.omit(diagram, ['_id']), ...diagramOverride })))
+      this.diagram.mapFromJSON(
+        sourceDiagrams.map((diagram) => ({ ...Utils.object.omit(diagram, ['_id']), ...diagramOverride }))
+      )
     );
 
     return {
@@ -121,7 +139,10 @@ export class VersionService extends MutableService<VersionORM> {
   }
 
   async exportOne(versionID: string) {
-    const [version, diagrams] = await Promise.all([this.findOneOrFail(versionID), this.diagram.findManyByVersionID(versionID)]);
+    const [version, diagrams] = await Promise.all([
+      this.findOneOrFail(versionID),
+      this.diagram.findManyByVersionID(versionID),
+    ]);
 
     return {
       version,
@@ -129,7 +150,13 @@ export class VersionService extends MutableService<VersionORM> {
     };
   }
 
-  async cloneOne({ sourceVersionID, sourceVersionOverride }: { sourceVersionID: string; sourceVersionOverride?: Partial<VersionJSON> }) {
+  async cloneOne({
+    sourceVersionID,
+    sourceVersionOverride,
+  }: {
+    sourceVersionID: string;
+    sourceVersionOverride?: Partial<VersionJSON>;
+  }) {
     const [sourceVersion, sourceDiagrams] = await Promise.all([
       this.findOneOrFail(sourceVersionID),
       this.diagram.findManyByVersionID(sourceVersionID),

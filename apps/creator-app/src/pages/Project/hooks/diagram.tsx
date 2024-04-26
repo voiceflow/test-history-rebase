@@ -1,5 +1,6 @@
 import { datadogRum } from '@datadog/browser-rum';
-import { MenuTypes, toast, usePersistFunction } from '@voiceflow/ui';
+import type { MenuTypes } from '@voiceflow/ui';
+import { toast, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Errors from '@/config/errors';
@@ -32,7 +33,12 @@ interface DiagramRenameOptions {
   onNameChanged?: (name: string) => void;
 }
 
-export const useDiagramRename = ({ diagramID, autoSelect, diagramName, onNameChanged }: DiagramRenameOptions): DiagramRenameApi => {
+export const useDiagramRename = ({
+  diagramID,
+  autoSelect,
+  diagramName,
+  onNameChanged,
+}: DiagramRenameOptions): DiagramRenameApi => {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
   const [localName, _setLocalName] = useLinkedState(diagramName ?? '');
@@ -195,7 +201,9 @@ export const useDiagramOptions = ({
 
       confirm: () => {
         const onError = () =>
-          errorModal.openVoid({ error: `Another user is currently using this ${label}. Please wait until they're done before deleting` });
+          errorModal.openVoid({
+            error: `Another user is currently using this ${label}. Please wait until they're done before deleting`,
+          });
 
         if (!isTopic) {
           if (flow) {
@@ -209,7 +217,17 @@ export const useDiagramOptions = ({
         }
       },
     });
-  }, [diagramID, diagram, isTopic, isSubtopic, rootTopicID, deleteFlow, deleteSubtopicDiagram, deleteTopicDiagram, flow]);
+  }, [
+    diagramID,
+    diagram,
+    isTopic,
+    isSubtopic,
+    rootTopicID,
+    deleteFlow,
+    deleteSubtopicDiagram,
+    deleteTopicDiagram,
+    flow,
+  ]);
 
   return React.useMemo<MenuTypes.OptionWithoutValue[]>(() => {
     if (!canEditCanvas) {

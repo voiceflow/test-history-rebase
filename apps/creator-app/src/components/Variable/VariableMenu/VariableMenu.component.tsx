@@ -1,5 +1,5 @@
 import { useVirtualizer } from '@tanstack/react-virtual';
-import { Variable } from '@voiceflow/dtos';
+import type { Variable } from '@voiceflow/dtos';
 import { ActionButtons, Menu, MENU_ITEM_MIN_HEIGHT, Search, VirtualizedContent } from '@voiceflow/ui-next';
 import React, { useMemo, useState } from 'react';
 
@@ -11,7 +11,12 @@ import { useSelector } from '@/hooks/store.hook';
 import { VariableMenuEmpty } from '../VariableMenuEmpty/VariableMenuEmpty.component';
 import type { IVariableMenu } from './VariableMenu.interface';
 
-export const VariableMenu: React.FC<IVariableMenu> = ({ width, onClose, onSelect: onSelectProp, excludeVariableIDs }) => {
+export const VariableMenu: React.FC<IVariableMenu> = ({
+  width,
+  onClose,
+  onSelect: onSelectProp,
+  excludeVariableIDs,
+}) => {
   const storeVariables = useSelector(Designer.Variable.selectors.all);
   const variableEditModal = useVariableEditModal();
   const variableCreateModal = useVariableCreateModal();
@@ -77,7 +82,11 @@ export const VariableMenu: React.FC<IVariableMenu> = ({ width, onClose, onSelect
         search.hasItems && (
           <ActionButtons
             firstButton={
-              <ActionButtons.Button label={isCreating ? 'Creating variable...' : 'Create variable'} onClick={onCreate} disabled={isCreating} />
+              <ActionButtons.Button
+                label={isCreating ? 'Creating variable...' : 'Create variable'}
+                onClick={onCreate}
+                disabled={isCreating}
+              />
             }
           />
         )

@@ -1,4 +1,4 @@
-import { Enum } from '@voiceflow/dtos';
+import type { Enum } from '@voiceflow/dtos';
 
 type ToPatch<T extends unknown[]> = T extends [infer F, ...infer R] ? `/${F & string}${ToPatch<R>}` : '';
 
@@ -214,8 +214,18 @@ export const Path = {
   PROJECT_VERSION: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID)),
 
   PROJECT_CMS: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.CMS),
-  PROJECT_CANVAS: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.CANVAS, toParam(RouteParam.DIAGRAM_ID, true)),
-  PROJECT_EXPORT: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.EXPORT, toParam(RouteParam.DIAGRAM_ID)),
+  PROJECT_CANVAS: toPath(
+    RootRoute.PROJECT,
+    toParam(RouteParam.VERSION_ID),
+    ProjectRoute.CANVAS,
+    toParam(RouteParam.DIAGRAM_ID, true)
+  ),
+  PROJECT_EXPORT: toPath(
+    RootRoute.PROJECT,
+    toParam(RouteParam.VERSION_ID),
+    ProjectRoute.EXPORT,
+    toParam(RouteParam.DIAGRAM_ID)
+  ),
   PROJECT_PUBLISH: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.PUBLISH),
   PROJECT_SETTINGS: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.SETTINGS),
   PROJECT_PROTOTYPE: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.PROTOTYPE),
@@ -227,19 +237,48 @@ export const Path = {
     toParam(RouteParam.TRANSCRIPT_ID, true)
   ),
 
-  PROJECT_SETTINGS_BACKUP: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.SETTINGS, ProjectSettingsRoute.BACKUP),
-  PROJECT_SETTINGS_GENERAL: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.SETTINGS, ProjectSettingsRoute.GENERAL),
-  PROJECT_SETTINGS_VERSION: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.SETTINGS, ProjectSettingsRoute.VERSION),
-  PROJECT_SETTINGS_ENVIRONMENT: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.SETTINGS, ProjectSettingsRoute.ENVIRONMENT),
+  PROJECT_SETTINGS_BACKUP: toPath(
+    RootRoute.PROJECT,
+    toParam(RouteParam.VERSION_ID),
+    ProjectRoute.SETTINGS,
+    ProjectSettingsRoute.BACKUP
+  ),
+  PROJECT_SETTINGS_GENERAL: toPath(
+    RootRoute.PROJECT,
+    toParam(RouteParam.VERSION_ID),
+    ProjectRoute.SETTINGS,
+    ProjectSettingsRoute.GENERAL
+  ),
+  PROJECT_SETTINGS_VERSION: toPath(
+    RootRoute.PROJECT,
+    toParam(RouteParam.VERSION_ID),
+    ProjectRoute.SETTINGS,
+    ProjectSettingsRoute.VERSION
+  ),
+  PROJECT_SETTINGS_ENVIRONMENT: toPath(
+    RootRoute.PROJECT,
+    toParam(RouteParam.VERSION_ID),
+    ProjectRoute.SETTINGS,
+    ProjectSettingsRoute.ENVIRONMENT
+  ),
 
   /**
    * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
    */
-  PROJECT_DOMAIN: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.DOMAIN, toParam(RouteParam.DOMAIN_ID, true)),
+  PROJECT_DOMAIN: toPath(
+    RootRoute.PROJECT,
+    toParam(RouteParam.VERSION_ID),
+    ProjectRoute.DOMAIN,
+    toParam(RouteParam.DOMAIN_ID, true)
+  ),
   /**
    * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
    */
-  PROJECT_ASSISTANT_OVERVIEW: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.ASSISTANT_OVERVIEW),
+  PROJECT_ASSISTANT_OVERVIEW: toPath(
+    RootRoute.PROJECT,
+    toParam(RouteParam.VERSION_ID),
+    ProjectRoute.ASSISTANT_OVERVIEW
+  ),
 
   // domain
   /**
@@ -341,21 +380,61 @@ export const Path = {
   // publish
 
   PUBLISH_API: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.PUBLISH, PublishRoute.API),
-  PUBLISH_TEAMS: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.PUBLISH, PublishRoute.MICROSOFT_TEAMS),
+  PUBLISH_TEAMS: toPath(
+    RootRoute.PROJECT,
+    toParam(RouteParam.VERSION_ID),
+    ProjectRoute.PUBLISH,
+    PublishRoute.MICROSOFT_TEAMS
+  ),
   PUBLISH_EXPORT: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.PUBLISH, PublishRoute.EXPORT),
-  PUBLISH_GENERAL: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.PUBLISH, PublishRoute.GENERAL),
-  PUBLISH_WEBCHAT: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.PUBLISH, PublishRoute.WEBCHAT),
-  PUBLISH_DIALOGFLOW: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.PUBLISH, PublishRoute.DIALOGFLOW),
+  PUBLISH_GENERAL: toPath(
+    RootRoute.PROJECT,
+    toParam(RouteParam.VERSION_ID),
+    ProjectRoute.PUBLISH,
+    PublishRoute.GENERAL
+  ),
+  PUBLISH_WEBCHAT: toPath(
+    RootRoute.PROJECT,
+    toParam(RouteParam.VERSION_ID),
+    ProjectRoute.PUBLISH,
+    PublishRoute.WEBCHAT
+  ),
+  PUBLISH_DIALOGFLOW: toPath(
+    RootRoute.PROJECT,
+    toParam(RouteParam.VERSION_ID),
+    ProjectRoute.PUBLISH,
+    PublishRoute.DIALOGFLOW
+  ),
 
   PUBLISH_SMS: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.PUBLISH, PublishRoute.SMS),
-  PROTOTYPE_SMS: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.PUBLISH, PublishRoute.PROTOTYPE_SMS),
+  PROTOTYPE_SMS: toPath(
+    RootRoute.PROJECT,
+    toParam(RouteParam.VERSION_ID),
+    ProjectRoute.PUBLISH,
+    PublishRoute.PROTOTYPE_SMS
+  ),
 
-  PUBLISH_WHATSAPP: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.PUBLISH, PublishRoute.WHATSAPP),
-  PROTOTYPE_WHATSAPP: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.PUBLISH, PublishRoute.PROTOTYPE_WHATSAPP),
+  PUBLISH_WHATSAPP: toPath(
+    RootRoute.PROJECT,
+    toParam(RouteParam.VERSION_ID),
+    ProjectRoute.PUBLISH,
+    PublishRoute.WHATSAPP
+  ),
+  PROTOTYPE_WHATSAPP: toPath(
+    RootRoute.PROJECT,
+    toParam(RouteParam.VERSION_ID),
+    ProjectRoute.PUBLISH,
+    PublishRoute.PROTOTYPE_WHATSAPP
+  ),
 
   // cms
 
-  CMS_RESOURCE: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.CMS, toParam(RouteParam.RESOURCE_TYPE)),
+  CMS_RESOURCE: toPath(
+    RootRoute.PROJECT,
+    toParam(RouteParam.VERSION_ID),
+    ProjectRoute.CMS,
+    toParam(RouteParam.RESOURCE_TYPE)
+  ),
   CMS_RESOURCE_ACTIVE: toPath(
     RootRoute.PROJECT,
     toParam(RouteParam.VERSION_ID),
@@ -370,5 +449,10 @@ export const Path = {
   CMS_FUNCTION: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.CMS, CMSRoute.FUNCTION),
   CMS_VARIABLE: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.CMS, CMSRoute.VARIABLE),
   CMS_WORKFLOW: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.CMS, CMSRoute.WORKFLOW),
-  CMS_KNOWLEDGE_BASE: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.CMS, CMSRoute.KNOWLEDGE_BASE),
+  CMS_KNOWLEDGE_BASE: toPath(
+    RootRoute.PROJECT,
+    toParam(RouteParam.VERSION_ID),
+    ProjectRoute.CMS,
+    CMSRoute.KNOWLEDGE_BASE
+  ),
 } as const;

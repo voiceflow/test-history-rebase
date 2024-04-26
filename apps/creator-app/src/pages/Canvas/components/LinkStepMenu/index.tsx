@@ -13,7 +13,8 @@ import { AI_LABEL, EVENT_LABEL, getAllSections, LibraryStepType } from '@/pages/
 
 import { ActionsMenuItem, StepMenuItem, TemplateMenuItem } from './components';
 
-const getPopperOffset = ({ placement }: { placement: string }): [number, number] => (placement === 'right-end' ? [0, 14] : [-5, 14]);
+const getPopperOffset = ({ placement }: { placement: string }): [number, number] =>
+  placement === 'right-end' ? [0, 14] : [-5, 14];
 
 const LinkStepMenu: React.FC = () => {
   const getManager = React.useContext(ManagerContext)!;
@@ -80,7 +81,12 @@ const LinkStepMenu: React.FC = () => {
               step.isLibrary ? (
                 <TemplateMenuItem key={step.label} item={step} popperContainerRef={subMenuContainerRef} />
               ) : (
-                <StepMenuItem key={step.label} item={step} upgradePopperRef={upgradePopperRef} popperContainerRef={subMenuContainerRef} />
+                <StepMenuItem
+                  key={step.label}
+                  item={step}
+                  upgradePopperRef={upgradePopperRef}
+                  popperContainerRef={subMenuContainerRef}
+                />
               )
             )}
 

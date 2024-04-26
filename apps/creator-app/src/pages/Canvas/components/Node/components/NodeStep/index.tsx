@@ -1,8 +1,9 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Portal } from '@voiceflow/ui';
 import React from 'react';
 
-import { BlockType, HSLShades } from '@/constants';
+import type { HSLShades } from '@/constants';
+import { BlockType } from '@/constants';
 import { useActiveProjectConfig } from '@/hooks';
 import * as Step from '@/pages/Canvas/components/Step';
 import { StepAPIProvider } from '@/pages/Canvas/components/Step/contexts';
@@ -57,7 +58,10 @@ const NodeStep: React.FC<NodeStepProps> = ({ isLast, palette, isDraggable }) => 
   const { platforms = [], projectTypes = [], ...manager } = getManager(nodeEntity.nodeType as Realtime.StepBlockType);
   let StepComponent = manager.step || getManager(BlockType.DEPRECATED).step;
 
-  if ((platforms.length && !platforms.includes(platform)) || (projectTypes.length && !projectTypes.includes(projectType))) {
+  if (
+    (platforms.length && !platforms.includes(platform)) ||
+    (projectTypes.length && !projectTypes.includes(projectType))
+  ) {
     StepComponent = getManager(BlockType.INVALID_PLATFORM).step;
   }
 

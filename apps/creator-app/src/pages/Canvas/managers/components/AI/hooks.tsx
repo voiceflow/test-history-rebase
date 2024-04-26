@@ -33,7 +33,10 @@ export const useSourceCompletion = () => {
   const workspaceID = useSelector(Session.activeWorkspaceIDSelector);
 
   return React.useCallback(
-    async (source: BaseUtils.ai.DATA_SOURCE, params: BaseUtils.ai.AIModelParams & BaseUtils.ai.AIKnowledgeContextParams): Promise<string | null> => {
+    async (
+      source: BaseUtils.ai.DATA_SOURCE,
+      params: BaseUtils.ai.AIModelParams & BaseUtils.ai.AIKnowledgeContextParams
+    ): Promise<string | null> => {
       try {
         Errors.assertProjectID(projectID);
         Errors.assertVersionID(versionID);

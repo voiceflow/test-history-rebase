@@ -1,6 +1,6 @@
 import { createCRUDState } from '@/ducks/utils/crudV2';
 
-import { DomainState } from './types';
+import type { DomainState } from './types';
 
 export const STATE_KEY = 'domain';
 

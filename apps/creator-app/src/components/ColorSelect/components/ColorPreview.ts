@@ -13,7 +13,9 @@ const ColorPreview = styled.div<ColorPreviewProps>`
   height: 24px;
   border-radius: 12px;
   position: relative;
-  box-shadow: 0 1px 2px 0 rgba(19, 33, 68, 0.2), 0 0 1px 0 rgba(19, 33, 68, 0.08);
+  box-shadow:
+    0 1px 2px 0 rgba(19, 33, 68, 0.2),
+    0 0 1px 0 rgba(19, 33, 68, 0.08);
   border: solid 2px #fff;
   z-index: 0;
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};

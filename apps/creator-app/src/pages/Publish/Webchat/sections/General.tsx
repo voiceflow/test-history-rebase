@@ -1,5 +1,6 @@
-import { Nullish, Utils } from '@voiceflow/common';
-import * as Platform from '@voiceflow/platform-config';
+import type { Nullish } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
+import type * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Input, SectionV2, Select, TippyTooltip, Toggle } from '@voiceflow/ui';
 import { VoiceflowVersion } from '@voiceflow/voiceflow-types';
@@ -50,7 +51,8 @@ export const GeneralSection: React.FC = () => {
 
   const chatUIFeedbackButtons = useFeature(Realtime.FeatureFlag.CHAT_UI_FEEDBAK_BUTTONS);
 
-  const updateSpacing = () => updateConfig({ spacing: { side: Number(sideSpacing), bottom: Number(bottomSpacing) } }, { track: true });
+  const updateSpacing = () =>
+    updateConfig({ spacing: { side: Number(sideSpacing), bottom: Number(bottomSpacing) } }, { track: true });
 
   const toggleWatermark = () => updateConfig({ watermark: !config.watermark }, { track: true });
   const toggleFeedback = () => updateConfig({ feedback: !config.feedback }, { track: false });
@@ -64,7 +66,11 @@ export const GeneralSection: React.FC = () => {
       </Settings.SubSection>
 
       <Settings.SubSection header="Description" headerProps={{ px: 0, pt: 0 }} contentProps={{ px: 0 }}>
-        <Input value={description} onChangeText={setDescription} onBlur={withTargetValue(updateProperty('description'))} />
+        <Input
+          value={description}
+          onChangeText={setDescription}
+          onBlur={withTargetValue(updateProperty('description'))}
+        />
       </Settings.SubSection>
 
       <Settings.SubSection header="Chat Persistence" headerProps={{ px: 0, pt: 0 }} contentProps={{ px: 0 }}>
@@ -89,11 +95,23 @@ export const GeneralSection: React.FC = () => {
         </Settings.SubSection>
 
         <Settings.SubSection header="Side Spacing" headerProps={{ px: 0, pt: 0 }} contentProps={{ px: 0 }}>
-          <Input type="number" value={sideSpacing} onChangeText={setSideSpacing} onBlur={updateSpacing} rightAction={pxLabel} />
+          <Input
+            type="number"
+            value={sideSpacing}
+            onChangeText={setSideSpacing}
+            onBlur={updateSpacing}
+            rightAction={pxLabel}
+          />
         </Settings.SubSection>
 
         <Settings.SubSection header="Bottom Spacing" headerProps={{ px: 0, pt: 0 }} contentProps={{ px: 0 }}>
-          <Input type="number" value={bottomSpacing} onChangeText={setBottomSpacing} onBlur={updateSpacing} rightAction={pxLabel} />
+          <Input
+            type="number"
+            value={bottomSpacing}
+            onChangeText={setBottomSpacing}
+            onBlur={updateSpacing}
+            rightAction={pxLabel}
+          />
         </Settings.SubSection>
       </Box.FlexApart>
 
@@ -101,7 +119,9 @@ export const GeneralSection: React.FC = () => {
         <Box.FlexApart gap={24}>
           <div>
             <Settings.SubSection.Title>Powered By</Settings.SubSection.Title>
-            <Settings.SubSection.Description>Display a Voiceflow link to help us spread the word.</Settings.SubSection.Description>
+            <Settings.SubSection.Description>
+              Display a Voiceflow link to help us spread the word.
+            </Settings.SubSection.Description>
           </div>
 
           <TippyTooltip
@@ -115,7 +135,13 @@ export const GeneralSection: React.FC = () => {
               </TippyTooltip.FooterButton>
             }
           >
-            <Toggle size={Toggle.Size.EXTRA_SMALL} checked={!!config.watermark} disabled={!isEntitled} onChange={toggleWatermark} hasLabel />
+            <Toggle
+              size={Toggle.Size.EXTRA_SMALL}
+              checked={!!config.watermark}
+              disabled={!isEntitled}
+              onChange={toggleWatermark}
+              hasLabel
+            />
           </TippyTooltip>
         </Box.FlexApart>
       </Settings.SubSection>
@@ -125,7 +151,9 @@ export const GeneralSection: React.FC = () => {
           <Box.FlexApart gap={24}>
             <div>
               <Settings.SubSection.Title>Ai Feedback</Settings.SubSection.Title>
-              <Settings.SubSection.Description>Enables collecting feedback from ai system messages.</Settings.SubSection.Description>
+              <Settings.SubSection.Description>
+                Enables collecting feedback from ai system messages.
+              </Settings.SubSection.Description>
             </div>
 
             <Toggle size={Toggle.Size.EXTRA_SMALL} checked={!!config.feedback} onChange={toggleFeedback} hasLabel />

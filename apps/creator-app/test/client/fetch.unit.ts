@@ -10,7 +10,11 @@ suite('fetch', ({ mocks }) => {
 
       await api('some/path');
 
-      expect(fetchCall).toBeCalledWith(`${TEST_API_ENDPOINT}/some/path`, { credentials: 'include', headers: {}, mode: 'cors' });
+      expect(fetchCall).toBeCalledWith(`${TEST_API_ENDPOINT}/some/path`, {
+        credentials: 'include',
+        headers: {},
+        mode: 'cors',
+      });
     });
   });
 
@@ -20,7 +24,11 @@ suite('fetch', ({ mocks }) => {
 
       await apiV2('some/path');
 
-      expect(fetchCall).toBeCalledWith(`${TEST_API_ENDPOINT}/v2/some/path`, { credentials: 'include', headers: {}, mode: 'cors' });
+      expect(fetchCall).toBeCalledWith(`${TEST_API_ENDPOINT}/v2/some/path`, {
+        credentials: 'include',
+        headers: {},
+        mode: 'cors',
+      });
     });
   });
 });

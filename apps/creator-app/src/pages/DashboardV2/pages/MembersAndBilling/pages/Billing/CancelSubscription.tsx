@@ -24,10 +24,16 @@ const CancelSubscription: React.FC<CancelSubscriptionProps> = ({ nextBillingDate
           <Box.FlexApart>
             <div>
               <Page.Section.Title>Cancel Subscription</Page.Section.Title>
-              <Page.Section.Description>Pro features will be available until the end of the current billing cycle.</Page.Section.Description>
+              <Page.Section.Description>
+                Pro features will be available until the end of the current billing cycle.
+              </Page.Section.Description>
             </div>
 
-            <TippyTooltip content={`Workspace scheduled to be downgraded on ${nextBillingDate}`} disabled={isCancelable} width={400}>
+            <TippyTooltip
+              content={`Workspace scheduled to be downgraded on ${nextBillingDate}`}
+              disabled={isCancelable}
+              width={400}
+            >
               <Button disabled={!isCancelable} variant={Button.Variant.SECONDARY} onClick={handleClick}>
                 Cancel Subscription
               </Button>

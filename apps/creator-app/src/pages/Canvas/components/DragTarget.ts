@@ -1,5 +1,5 @@
 import { css, styled } from '@/hocs/styled';
-import { Point } from '@/types';
+import type { Point } from '@/types';
 
 export interface DragTargetProps {
   position: Point;

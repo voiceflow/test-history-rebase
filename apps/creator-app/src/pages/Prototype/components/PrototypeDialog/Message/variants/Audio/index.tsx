@@ -1,7 +1,8 @@
 import { AudioPlayer, Box, Flex } from '@voiceflow/ui';
 import React from 'react';
 
-import BaseMessage, { BaseMessageProps } from '../../Base';
+import type { BaseMessageProps } from '../../Base';
+import BaseMessage from '../../Base';
 import { RECTANGLE_CLASS_ARRAY, WAVE_COLOR } from './constants';
 import * as S from './styles';
 
@@ -16,8 +17,22 @@ interface AudioProps extends Omit<BaseMessageProps, 'iconProps'> {
   onContinue?: VoidFunction;
 }
 
-const Audio: React.FC<AudioProps> = ({ audio, onPause, onContinue, audioSrc, name, isCurrent, trackOnly, allowPause, ...props }) => {
-  const audioPlayer = AudioPlayer.useAudioPlayer({ audio: trackOnly ? audio : undefined, audioURL: audioSrc, trackOnly });
+const Audio: React.FC<AudioProps> = ({
+  audio,
+  onPause,
+  onContinue,
+  audioSrc,
+  name,
+  isCurrent,
+  trackOnly,
+  allowPause,
+  ...props
+}) => {
+  const audioPlayer = AudioPlayer.useAudioPlayer({
+    audio: trackOnly ? audio : undefined,
+    audioURL: audioSrc,
+    trackOnly,
+  });
 
   const onTogglePlay = () => {
     if (trackOnly) return;
@@ -43,7 +58,10 @@ const Audio: React.FC<AudioProps> = ({ audio, onPause, onContinue, audioSrc, nam
 
   return (
     <BaseMessage {...props} onClick={onTogglePlay}>
-      <AudioPlayer.ProgressBar percent={audioPlayer.percent} style={{ backgroundColor: WAVE_COLOR, opacity: 0.12, top: 0 }} />
+      <AudioPlayer.ProgressBar
+        percent={audioPlayer.percent}
+        style={{ backgroundColor: WAVE_COLOR, opacity: 0.12, top: 0 }}
+      />
 
       <Flex style={{ position: 'relative' }}>
         <S.WaveContainer playing={audioPlayer.playing}>

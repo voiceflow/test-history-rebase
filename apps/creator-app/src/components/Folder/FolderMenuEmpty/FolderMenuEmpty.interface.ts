@@ -1,4 +1,4 @@
-import { Folder, FolderScope } from '@voiceflow/dtos';
+import type { Folder, FolderScope } from '@voiceflow/dtos';
 
 export interface IFolderMenuEmpty {
   width?: number;

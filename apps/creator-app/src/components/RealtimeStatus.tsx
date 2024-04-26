@@ -1,4 +1,5 @@
-import { ChannelDeniedError, status as loguxStatus } from '@logux/client';
+import type { ChannelDeniedError } from '@logux/client';
+import { status as loguxStatus } from '@logux/client';
 import { toast, useDebouncedCallback, useThrottledCallback } from '@voiceflow/ui';
 import React from 'react';
 
@@ -21,12 +22,12 @@ const RealtimeStatus: React.FC = () => {
   const debouncedWarnToast = useDebouncedCallback(300, toast.warn);
 
   const throttledProjectDenied = useThrottledCallback(1000, () => {
-    debouncedWarnToast(`You don't have access to that project.`);
+    debouncedWarnToast("You don't have access to that project.");
     goToDashboard();
   });
 
   const throttledWorkspaceDenied = useThrottledCallback(3000, () => {
-    debouncedWarnToast(`You don't have access to that workspace.`);
+    debouncedWarnToast("You don't have access to that workspace.");
     goToNextWorkspace();
   });
 
@@ -37,7 +38,10 @@ const RealtimeStatus: React.FC = () => {
           case 'denied':
             {
               const isWorkspace =
-                details && 'action' in details && isChannelDeniedAction(details.action) && details.action.action.channel.startsWith('workspace');
+                details &&
+                'action' in details &&
+                isChannelDeniedAction(details.action) &&
+                details.action.action.channel.startsWith('workspace');
 
               if (isWorkspace) {
                 throttledWorkspaceDenied();

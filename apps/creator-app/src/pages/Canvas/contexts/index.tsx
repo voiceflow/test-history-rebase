@@ -3,7 +3,7 @@ import React from 'react';
 import { RegisterEngine } from '@/contexts/EventualEngineContext';
 import type Engine from '@/pages/Canvas/engine';
 
-import { getManager } from '../managers';
+import type { getManager } from '../managers';
 import { ClipboardProvider } from './ClipboardContext';
 import { ContextMenuProvider } from './ContextMenuContext';
 import { EngineProvider } from './EngineContext';

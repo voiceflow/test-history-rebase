@@ -26,7 +26,9 @@ export class IntentLoguxController {
     @Payload() { context, data }: Actions.Intent.CreateOne.Request,
     @AuthMeta() auth: AuthMetaPayload
   ): Promise<Actions.Intent.CreateOne.Response> {
-    return this.service.createManyAndBroadcast([data], { auth, context }).then(([result]) => ({ data: this.service.toJSON(result), context }));
+    return this.service
+      .createManyAndBroadcast([data], { auth, context })
+      .then(([result]) => ({ data: this.service.toJSON(result), context }));
   }
 
   @Action.Async(Actions.Intent.CreateMany)
@@ -39,7 +41,9 @@ export class IntentLoguxController {
     @Payload() { data, context }: Actions.Intent.CreateMany.Request,
     @AuthMeta() auth: AuthMetaPayload
   ): Promise<Actions.Intent.CreateMany.Response> {
-    return this.service.createManyAndBroadcast(data, { auth, context }).then((results) => ({ data: this.service.mapToJSON(results), context }));
+    return this.service
+      .createManyAndBroadcast(data, { auth, context })
+      .then((results) => ({ data: this.service.mapToJSON(results), context }));
   }
 
   @Action(Actions.Intent.PatchOne)

@@ -1,6 +1,6 @@
 import { BaseModels } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
-import { TableTypes } from '@voiceflow/ui';
+import type * as Realtime from '@voiceflow/realtime-sdk';
+import type { TableTypes } from '@voiceflow/ui';
 import dayjs from 'dayjs';
 
 import { ActionsCell, DomainCell, ModifiedCell, StatusCell, TopicsCell } from './components';
@@ -30,7 +30,9 @@ export const COLUMNS: TableTypes.Column<TableColumn, Realtime.Domain>[] = [
     width: 102,
     label: 'Status',
     sorter: (domainL, domainR) =>
-      (domainL.status ?? BaseModels.Version.DomainStatus.DESIGN).localeCompare(domainR.status ?? BaseModels.Version.DomainStatus.DESIGN) ?? 0,
+      (domainL.status ?? BaseModels.Version.DomainStatus.DESIGN).localeCompare(
+        domainR.status ?? BaseModels.Version.DomainStatus.DESIGN
+      ) ?? 0,
     component: StatusCell,
   },
   {

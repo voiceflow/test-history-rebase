@@ -1,6 +1,14 @@
-import { BillingPeriod, PlanType } from '@voiceflow/internal';
+import type { BillingPeriod, PlanType } from '@voiceflow/internal';
 
-import { APIKey, DBBilling, DBPayment, DBPlan, DBPlanSubscription, Price, SubscriptionBillingPeriod } from '@/models';
+import type {
+  APIKey,
+  DBBilling,
+  DBPayment,
+  DBPlan,
+  DBPlanSubscription,
+  Price,
+  SubscriptionBillingPeriod,
+} from '@/models';
 
 import invoiceListAdapter from './adapters/invoicesList';
 import planSubscriptionAdapter from './adapters/planSubscription';
@@ -13,7 +21,8 @@ const workspaceClient = {
 
   getPlans: () => api.get<DBPlan[]>(`${WORKSPACES_PATH}/plans`),
 
-  updateSource: (workspaceID: string, sourceID: string) => api.patch(`${WORKSPACES_PATH}/${workspaceID}/source`, { source_id: sourceID }),
+  updateSource: (workspaceID: string, sourceID: string) =>
+    api.patch(`${WORKSPACES_PATH}/${workspaceID}/source`, { source_id: sourceID }),
 
   calculatePrice: (
     workspaceID: string | null,
@@ -27,12 +36,16 @@ const workspaceClient = {
 
   getInvoices: (workspaceID: string, cursor: string | null, limit: number) => {
     return apiV2
-      .get<DBBilling.InvoiceList>(`${WORKSPACES_PATH}/${workspaceID}/invoices?limit=${limit}${cursor ? `&cursor=${cursor}` : ''}`)
+      .get<DBBilling.InvoiceList>(
+        `${WORKSPACES_PATH}/${workspaceID}/invoices?limit=${limit}${cursor ? `&cursor=${cursor}` : ''}`
+      )
       .then(invoiceListAdapter.fromDB);
   },
 
   getPlanSubscription: (workspaceID: string) => {
-    return apiV2.get<DBPlanSubscription>(`${WORKSPACES_PATH}/${workspaceID}/plan-subscription`).then(planSubscriptionAdapter.fromDB);
+    return apiV2
+      .get<DBPlanSubscription>(`${WORKSPACES_PATH}/${workspaceID}/plan-subscription`)
+      .then(planSubscriptionAdapter.fromDB);
   },
 
   getUsageSubscription: (workspaceID: string) => {

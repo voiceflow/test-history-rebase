@@ -1,13 +1,15 @@
-import { Nullable, Utils } from '@voiceflow/common';
-import { Enum } from '@voiceflow/dtos';
+import type { Nullable } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
+import type { Enum } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, MenuTypes, TippyTooltip, Utils as UIUtils } from '@voiceflow/ui';
+import type { MenuTypes } from '@voiceflow/ui';
+import { Box, TippyTooltip, Utils as UIUtils } from '@voiceflow/ui';
 import React from 'react';
 import { useDismissable } from 'react-dismissable-layers';
 import { useRouteMatch } from 'react-router-dom';
 
 import * as GPT from '@/components/GPT';
-import { SidebarIconMenuItem } from '@/components/SidebarIconMenu';
+import type { SidebarIconMenuItem } from '@/components/SidebarIconMenu';
 import { PRIVATE_LLM_MODELS } from '@/config';
 import { Path } from '@/config/routes';
 import { BOOK_DEMO_LINK, DISCORD_LINK, LEARN_LINK, YOUTUBE_CHANNEL_LINK } from '@/constants/link.constant';
@@ -17,7 +19,8 @@ import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Transcript from '@/ducks/transcript';
 import { useFeature } from '@/hooks/feature';
-import { HotkeyItem, useHotkeyList } from '@/hooks/hotkeys';
+import type { HotkeyItem } from '@/hooks/hotkeys';
+import { useHotkeyList } from '@/hooks/hotkeys';
 import { usePermission } from '@/hooks/permission';
 import { useDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
@@ -56,7 +59,8 @@ interface SidebarHotkeyMenuItem extends SidebarIconMenuItem {
   onAction: VoidFunction;
 }
 
-const isSidebarHotkeyMenuItem = (item: SidebarHotkeyMenuItem | SidebarIconMenuItem): item is SidebarHotkeyMenuItem => !item.divider;
+const isSidebarHotkeyMenuItem = (item: SidebarHotkeyMenuItem | SidebarIconMenuItem): item is SidebarHotkeyMenuItem =>
+  !item.divider;
 
 export const useCanvasMenuOptionsAndHotkeys = () => {
   const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
@@ -131,13 +135,16 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
         value: Utils.id.cuid.slug(),
         divider: true,
       }),
-      ...UIUtils.array.conditionalItem((canEditProject || viewerAPIKeyAccess.isEnabled) && !disableIntegration.isEnabled && !hideExports.isEnabled, {
-        id: Utils.id.cuid.slug(),
-        icon: 'integrations' as const,
-        value: CanvasOptionType.INTEGRATION,
-        label: 'Integration',
-        onAction: goToCurrentPublish,
-      }),
+      ...UIUtils.array.conditionalItem(
+        (canEditProject || viewerAPIKeyAccess.isEnabled) && !disableIntegration.isEnabled && !hideExports.isEnabled,
+        {
+          id: Utils.id.cuid.slug(),
+          icon: 'integrations' as const,
+          value: CanvasOptionType.INTEGRATION,
+          label: 'Integration',
+          onAction: goToCurrentPublish,
+        }
+      ),
       ...UIUtils.array.conditionalItem(canEditProject, {
         id: Utils.id.cuid.slug(),
         icon: 'systemSettings' as const,
@@ -164,7 +171,9 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
       return {
         icon: item.icon,
         value: item.value,
-        tooltip: isHotkeyItem ? { content: <TippyTooltip.WithHotkey hotkey={String(hotkeyIndex)}>{item.label}</TippyTooltip.WithHotkey> } : undefined,
+        tooltip: isHotkeyItem
+          ? { content: <TippyTooltip.WithHotkey hotkey={String(hotkeyIndex)}>{item.label}</TippyTooltip.WithHotkey> }
+          : undefined,
         onClick: isHotkeyItem ? item.onAction : undefined,
         divider: item.divider,
         withBadge: item.withBadge,
@@ -228,21 +237,33 @@ export const useHelpOptions = (): MenuTypes.OptionWithoutValue[] => {
     {
       key: 'docs',
       label: 'Documentation',
-      onClick: trackingEventsWrapper(onOpenInternalURLInANewTabFactory(LEARN_LINK), 'trackCanvasControlHelpMenuResource', { resource: 'Docs' }),
+      onClick: trackingEventsWrapper(
+        onOpenInternalURLInANewTabFactory(LEARN_LINK),
+        'trackCanvasControlHelpMenuResource',
+        { resource: 'Docs' }
+      ),
     },
     {
       key: 'videos',
       label: 'Video tutorials',
-      onClick: trackingEventsWrapper(onOpenInternalURLInANewTabFactory(YOUTUBE_CHANNEL_LINK), 'trackCanvasControlHelpMenuResource', {
-        resource: 'Videos',
-      }),
+      onClick: trackingEventsWrapper(
+        onOpenInternalURLInANewTabFactory(YOUTUBE_CHANNEL_LINK),
+        'trackCanvasControlHelpMenuResource',
+        {
+          resource: 'Videos',
+        }
+      ),
     },
     {
       key: 'forum',
       label: 'Community',
-      onClick: trackingEventsWrapper(onOpenInternalURLInANewTabFactory(DISCORD_LINK), 'trackCanvasControlHelpMenuResource', {
-        resource: 'Forum',
-      }),
+      onClick: trackingEventsWrapper(
+        onOpenInternalURLInANewTabFactory(DISCORD_LINK),
+        'trackCanvasControlHelpMenuResource',
+        {
+          resource: 'Forum',
+        }
+      ),
     },
     {
       key: 'chatbot',
@@ -253,7 +274,11 @@ export const useHelpOptions = (): MenuTypes.OptionWithoutValue[] => {
     {
       key: 'demo',
       label: 'Book a demo',
-      onClick: trackingEventsWrapper(onOpenInternalURLInANewTabFactory(BOOK_DEMO_LINK), 'trackCanvasControlHelpMenuResource', { resource: 'Demo' }),
+      onClick: trackingEventsWrapper(
+        onOpenInternalURLInANewTabFactory(BOOK_DEMO_LINK),
+        'trackCanvasControlHelpMenuResource',
+        { resource: 'Demo' }
+      ),
     },
   ];
 };

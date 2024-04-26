@@ -42,7 +42,9 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
   }
 
   async findManyDocuments(assistantID: string, documentIDs?: string[]) {
-    const documents = documentIDs ? await this.orm.findManyDocuments(assistantID, documentIDs) : await this.orm.findAllDocuments(assistantID);
+    const documents = documentIDs
+      ? await this.orm.findManyDocuments(assistantID, documentIDs)
+      : await this.orm.findAllDocuments(assistantID);
     return documents.map((document) => knowledgeBaseDocumentAdapter.fromDB(document));
   }
 

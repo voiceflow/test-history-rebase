@@ -43,7 +43,15 @@ export interface BaseStepProps extends React.PropsWithChildren {
 
 export type StepProps = BaseStepProps;
 
-const Step: React.FC<StepProps> = ({ nodeID, image, disableHighlightStyle, children, imagePosition, imageAspectRatio, dividerOffset }) => {
+const Step: React.FC<StepProps> = ({
+  nodeID,
+  image,
+  disableHighlightStyle,
+  children,
+  imagePosition,
+  imageAspectRatio,
+  dividerOffset,
+}) => {
   const stepAPI = React.useContext(StepAPIContext);
   const isInteractiveMode = useInteractiveMode();
 

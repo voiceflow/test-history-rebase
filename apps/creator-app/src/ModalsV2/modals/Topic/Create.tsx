@@ -43,7 +43,14 @@ const Create = manager.create<Props>(
           <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />}>Create Topic</Modal.Header>
 
           <Modal.Body>
-            <Input value={name} readOnly={closePrevented} autoFocus placeholder="Enter topic name" onChangeText={setName} onEnterPress={onCreate} />
+            <Input
+              value={name}
+              readOnly={closePrevented}
+              autoFocus
+              placeholder="Enter topic name"
+              onChangeText={setName}
+              onEnterPress={onCreate}
+            />
           </Modal.Body>
 
           <Modal.Footer gap={12}>

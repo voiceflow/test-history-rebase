@@ -1,4 +1,9 @@
-import { AnyResponseAttachmentDTO, AnyResponseVariantDTO, ResponseDiscriminatorDTO, ResponseDTO } from '@voiceflow/dtos';
+import {
+  AnyResponseAttachmentDTO,
+  AnyResponseVariantDTO,
+  ResponseDiscriminatorDTO,
+  ResponseDTO,
+} from '@voiceflow/dtos';
 import { z } from 'zod';
 
 export const ResponseExportImportDataDTO = z

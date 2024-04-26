@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
-import { Context } from '@voiceflow/socket-utils';
+import type { Context } from '@voiceflow/socket-utils';
 import type { Action } from 'typescript-fsa';
 
 import { AbstractVersionDiagramAccessActionControl } from '@/legacy/actions/diagram/utils';
@@ -7,7 +7,10 @@ import { AbstractVersionDiagramAccessActionControl } from '@/legacy/actions/diag
 class UpdateManyNodeData extends AbstractVersionDiagramAccessActionControl<Realtime.node.UpdateManyDataPayload> {
   actionCreator = Realtime.node.updateDataMany;
 
-  protected process = async (_ctx: Context, { payload }: Action<Realtime.node.UpdateManyDataPayload>): Promise<void> => {
+  protected process = async (
+    _ctx: Context,
+    { payload }: Action<Realtime.node.UpdateManyDataPayload>
+  ): Promise<void> => {
     const nodes = payload.nodes.map((nodeData) => ({
       nodeID: nodeData.nodeID,
       ...Realtime.Adapters.nodeDataAdapter.toDB(nodeData, {

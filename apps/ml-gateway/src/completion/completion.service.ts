@@ -75,12 +75,15 @@ export class CompletionService {
   }
 
   async generateChatCompletion(request: ChatCompletionRequest) {
-    return this.checkQuotaWrapper(request, async ({ messages, params, options, moderation, workspaceID, projectID }) => {
-      if (moderation) {
-        await this.moderation.checkModeration(JSON.stringify(messages), { workspaceID, projectID });
-      }
+    return this.checkQuotaWrapper(
+      request,
+      async ({ messages, params, options, moderation, workspaceID, projectID }) => {
+        if (moderation) {
+          await this.moderation.checkModeration(JSON.stringify(messages), { workspaceID, projectID });
+        }
 
-      return this.llm.get(params?.model).generateChatCompletion(messages, params, options);
-    });
+        return this.llm.get(params?.model).generateChatCompletion(messages, params, options);
+      }
+    );
   }
 }

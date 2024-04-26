@@ -9,7 +9,7 @@ import { Permission } from '@/constants/permissions';
 import * as Session from '@/ducks/session';
 import { useAsyncEffect, useFeature, usePermission, useSetup, useTrackingEvents } from '@/hooks';
 import { useConfirmModal } from '@/hooks/modal.hook';
-import { ProjectAPIKey } from '@/models';
+import type { ProjectAPIKey } from '@/models';
 import { copy } from '@/utils/clipboard';
 
 import ProjectAPIKeySection from '../components/ProjectAPIKeySection';
@@ -69,7 +69,9 @@ const KeySection: React.FC<KeySectionProps> = ({ syncKeyState, page }) => {
 
     setLoading(true);
 
-    const apiKeys = identityAPIKey.isEnabled ? await client.identity.apiKey.listAPIKeys(projectID) : await client.project.listAPIKeys(projectID);
+    const apiKeys = identityAPIKey.isEnabled
+      ? await client.identity.apiKey.listAPIKeys(projectID)
+      : await client.project.listAPIKeys(projectID);
 
     // TODO maybe refactor, tiny bit ugly
     let fetchedApiKey: ProjectAPIKey | null = null;
@@ -88,7 +90,9 @@ const KeySection: React.FC<KeySectionProps> = ({ syncKeyState, page }) => {
     }
 
     // find secondary key
-    const fetchedSecondaryKey = apiKeys.filter((key) => key.secondaryKeyID !== null).find((key) => fetchedApiKey!.secondaryKeyID === key._id);
+    const fetchedSecondaryKey = apiKeys
+      .filter((key) => key.secondaryKeyID !== null)
+      .find((key) => fetchedApiKey!.secondaryKeyID === key._id);
 
     updateKeyState({ primaryKey: fetchedApiKey, secondaryKey: fetchedSecondaryKey || null });
 

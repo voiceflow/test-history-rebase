@@ -1,4 +1,4 @@
-import { LoguxControlOptions } from '@/legacy/control';
+import type { LoguxControlOptions } from '@/legacy/control';
 
 import AddDomainControl from './add';
 import AddManyDomainsControl from './addMany';

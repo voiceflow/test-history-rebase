@@ -1,7 +1,7 @@
 import { css, styled } from '@ui/styles';
-import RCSlider, { SliderProps as RCSliderProps } from 'rc-slider';
+import type { SliderProps as RCSliderProps } from 'rc-slider';
+import RCSlider from 'rc-slider';
 // can's just use import '...index.css' cause vite-node will crash
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import _globalRCStyles from 'rc-slider/assets/index.css';
 import React from 'react';
 
@@ -13,7 +13,8 @@ interface SliderProps extends RCSliderProps<number> {
 // @ts-ignore
 const RCSliderFixed: React.FC<SliderProps> = RCSlider.default ?? RCSlider;
 
-const DEFAULT_SLIDER_COLOR = 'linear-gradient(to bottom, rgba(93, 157, 245, 0.85), #2c85ff), linear-gradient(to bottom, #fff, #fff)';
+const DEFAULT_SLIDER_COLOR =
+  'linear-gradient(to bottom, rgba(93, 157, 245, 0.85), #2c85ff), linear-gradient(to bottom, #fff, #fff)';
 
 const getBackgroundColor = (color?: string) => {
   if (!color)
@@ -48,7 +49,9 @@ const SliderContainer = styled(RCSliderFixed)`
     width: 16px;
     height: 16px;
     margin-top: -6px;
-    box-shadow: 0 2px 3px 0 rgba(17, 49, 96, 0.16), 0 0 0 1px rgba(17, 49, 96, 0.08) !important;
+    box-shadow:
+      0 2px 3px 0 rgba(17, 49, 96, 0.16),
+      0 0 0 1px rgba(17, 49, 96, 0.08) !important;
     ${({ color }) => getBackgroundColor(color)};
     opacity: 1;
   }

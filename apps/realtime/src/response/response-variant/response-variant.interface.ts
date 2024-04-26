@@ -3,7 +3,10 @@ import type { ResponseJSONVariantORM, ResponseTextVariantORM } from '@voiceflow/
 
 import type { CMSCreateForUserData, CMSPatchData } from '@/common/types';
 
-import type { ResponseCardAttachmentCreateOneData, ResponseMediaAttachmentCreateOneData } from '../response-attachment/response-attachment.interface';
+import type {
+  ResponseCardAttachmentCreateOneData,
+  ResponseMediaAttachmentCreateOneData,
+} from '../response-attachment/response-attachment.interface';
 
 export interface ResponseTextVariantCreateData extends CMSCreateForUserData<ResponseTextVariantORM> {
   type: typeof ResponseVariantType.TEXT;
@@ -34,10 +37,12 @@ interface ResponseBaseVariantCreateWithSubResourcesData {
 }
 
 export type ResponseTextVariantCreateWithSubResourcesData<Exclude extends keyof ResponseTextVariantCreateData = never> =
-  ResponseBaseVariantCreateWithSubResourcesData & Omit<ResponseTextVariantCreateData, 'attachmentOrder' | 'conditionID' | Exclude>;
+  ResponseBaseVariantCreateWithSubResourcesData &
+    Omit<ResponseTextVariantCreateData, 'attachmentOrder' | 'conditionID' | Exclude>;
 
 export type ResponseJSONVariantCreateWithSubResourcesData<Exclude extends keyof ResponseJSONVariantCreateData = never> =
-  ResponseBaseVariantCreateWithSubResourcesData & Omit<ResponseJSONVariantCreateData, 'attachmentOrder' | 'conditionID' | Exclude>;
+  ResponseBaseVariantCreateWithSubResourcesData &
+    Omit<ResponseJSONVariantCreateData, 'attachmentOrder' | 'conditionID' | Exclude>;
 
 export type ResponseAnyVariantCreateWithSubResourcesData =
   | ResponseTextVariantCreateWithSubResourcesData

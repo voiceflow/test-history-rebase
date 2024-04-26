@@ -10,7 +10,7 @@ import { MongoAtomicSubResourceORM } from './mongo-atomic-sub-resource.orm';
 export const MongoAtomicSubResourceArrayORM = <
   Orm extends MongoAtomicORM<any>,
   BaseResource,
-  ID extends keyof BaseResource
+  ID extends keyof BaseResource,
 >(
   ORM: Constructor<Orm> & { register: () => DynamicModule },
   { id, path }: { id: ID; path: string }

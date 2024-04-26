@@ -19,7 +19,10 @@ export const Container = styled.div<ContainerProps>`
   ${({ noShadow }) =>
     !noShadow &&
     css`
-      box-shadow: inset 0 0 0 1px #fff, 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.16);
+      box-shadow:
+        inset 0 0 0 1px #fff,
+        0 0 0 1px #fff,
+        0 1px 2px 1px rgba(17, 49, 96, 0.16);
     `};
 
   ${({ rgbColor, avatarUrl, noShadow }) => css`
@@ -28,12 +31,17 @@ export const Container = styled.div<ContainerProps>`
       color: ${rgbColor.hex};
     `}
     background-color: #fff;
-    background-image: ${avatarUrl ? `url(${avatarUrl}) ` : rgbColor && `linear-gradient(-180deg, ${rgbColor.rgbaFrom} 0%, ${rgbColor.rgbaTo} 97%)`};
+    background-image: ${avatarUrl
+      ? `url(${avatarUrl}) `
+      : rgbColor && `linear-gradient(-180deg, ${rgbColor.rgbaFrom} 0%, ${rgbColor.rgbaTo} 97%)`};
 
     transition: box-shadow 0.15s linear;
     ${!noShadow &&
     css`
-      box-shadow: inset 0 0 0 1px #fff, 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.16);
+      box-shadow:
+        inset 0 0 0 1px #fff,
+        0 0 0 1px #fff,
+        0 1px 2px 1px rgba(17, 49, 96, 0.16);
     `};
   `}
 

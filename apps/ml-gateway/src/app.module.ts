@@ -3,7 +3,12 @@ import { Module } from '@nestjs/common';
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { Environment } from '@voiceflow/common';
-import { HealthModule, InternalExceptionFilter, LoggerOptions, ZodValidationExceptionFilter } from '@voiceflow/nestjs-common';
+import {
+  HealthModule,
+  InternalExceptionFilter,
+  LoggerOptions,
+  ZodValidationExceptionFilter,
+} from '@voiceflow/nestjs-common';
 import { ENVIRONMENT_VARIABLES, EnvModule } from '@voiceflow/nestjs-env';
 import { AuthGuard, AuthModule } from '@voiceflow/sdk-auth/nestjs';
 import { BillingModule } from '@voiceflow/sdk-billing/nestjs';
@@ -30,11 +35,13 @@ import { ModerationModule } from './moderation/moderation.module';
     }),
     AuthModule.registerAsync({
       inject: [ENVIRONMENT_VARIABLES],
-      useFactory: (env: EnvironmentVariables) => AuthModule.optionsFactory(env.AUTH_API_SERVICE_URI, env.AUTH_API_SERVICE_PORT_APP),
+      useFactory: (env: EnvironmentVariables) =>
+        AuthModule.optionsFactory(env.AUTH_API_SERVICE_URI, env.AUTH_API_SERVICE_PORT_APP),
     }),
     BillingModule.registerAsync({
       inject: [ENVIRONMENT_VARIABLES],
-      useFactory: (env: EnvironmentVariables) => BillingModule.optionsFactory(env.BILLING_API_SERVICE_URI, env.BILLING_API_SERVICE_PORT_APP),
+      useFactory: (env: EnvironmentVariables) =>
+        BillingModule.optionsFactory(env.BILLING_API_SERVICE_URI, env.BILLING_API_SERVICE_PORT_APP),
     }),
     RedisModule.forRootAsync({
       inject: [ENVIRONMENT_VARIABLES],

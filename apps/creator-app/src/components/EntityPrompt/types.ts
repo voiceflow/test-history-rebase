@@ -1,6 +1,6 @@
-import { Entity } from '@voiceflow/dtos';
-import * as Platform from '@voiceflow/platform-config';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type { Entity } from '@voiceflow/dtos';
+import type * as Platform from '@voiceflow/platform-config';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 
 interface BaseEntityPromptProps {
   slots: Array<Realtime.Slot | Entity>;

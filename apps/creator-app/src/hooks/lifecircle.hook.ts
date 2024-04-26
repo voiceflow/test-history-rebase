@@ -1,7 +1,10 @@
 import { usePersistFunction } from '@voiceflow/ui-next';
 import { useEffect, useRef } from 'react';
 
-export const useAsyncEffect = (effect: (ref: { unmounted: boolean }) => Promise<void>, dependencies: unknown[] = []): void =>
+export const useAsyncEffect = (
+  effect: (ref: { unmounted: boolean }) => Promise<void>,
+  dependencies: unknown[] = []
+): void =>
   useEffect(() => {
     const ref = { unmounted: false };
 

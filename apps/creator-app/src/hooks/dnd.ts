@@ -1,7 +1,8 @@
-import { Nullable } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
 import { useCache } from '@voiceflow/ui';
 import React from 'react';
-import { ConnectDropTarget, useDrop } from 'react-dnd';
+import type { ConnectDropTarget } from 'react-dnd';
+import { useDrop } from 'react-dnd';
 
 /* This hook doesn't do anything functional,
  * but it prevents the awful lag when dropping steps back onto the step menu
@@ -25,7 +26,11 @@ interface DnDReorderProps<Key, Item> {
   onReorder: (fromID: Key, toIndex: number) => void;
 }
 
-export const useDnDReorder = <Key, Item>({ getID, onPersist, onReorder: onReorderProp }: DnDReorderProps<Key, Item>) => {
+export const useDnDReorder = <Key, Item>({
+  getID,
+  onPersist,
+  onReorder: onReorderProp,
+}: DnDReorderProps<Key, Item>) => {
   const fromIDRef = React.useRef<Nullable<Key>>(null);
   const toIndexRef = React.useRef<Nullable<number>>(null);
 

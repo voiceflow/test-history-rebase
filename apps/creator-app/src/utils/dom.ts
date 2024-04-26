@@ -1,7 +1,7 @@
 import { getScrollbarWidth } from '@voiceflow/ui';
 
 import { IS_E2E_TEST } from '@/config';
-import { Point } from '@/types';
+import type { Point } from '@/types';
 
 export { withEnterPress, withInputBlur, withKeyPress, withTargetValue } from '@voiceflow/ui';
 
@@ -34,7 +34,6 @@ export const mouseEventOffset = (
   event: { clientX?: number; clientY?: number; currentTarget: EventTarget | null; srcElement?: EventTarget | null },
   overrideTarget?: HTMLElement
 ): Point => {
-  // eslint-disable-next-line xss/no-mixed-html
   const target = (overrideTarget || event.currentTarget || event.srcElement) as HTMLElement;
 
   const cx = event.clientX ?? 0;
@@ -60,7 +59,9 @@ export const setScrollbarOffset = (
     let offset = String(initialValue);
     const important = styleImportant ? 'important' : '';
 
-    const [offsetProp, scrollProp] = property.match(/(margin-right|margin-left)/) ? ['offsetHeight', 'scrollHeight'] : ['offsetWidth', 'scrollWidth'];
+    const [offsetProp, scrollProp] = property.match(/(margin-right|margin-left)/)
+      ? ['offsetHeight', 'scrollHeight']
+      : ['offsetWidth', 'scrollWidth'];
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -83,16 +84,17 @@ const _getOffsetToNode = (node: HTMLElement | null, body: HTMLElement | null, ke
 
   while (obj !== body) {
     offset += obj![key] as number;
-    // eslint-disable-next-line xss/no-mixed-html
     obj = obj!.offsetParent as HTMLElement;
   }
 
   return offset;
 };
 
-export const getOffsetToNode = (node: HTMLElement | null, body: HTMLElement | null) => _getOffsetToNode(node, body, 'offsetTop');
+export const getOffsetToNode = (node: HTMLElement | null, body: HTMLElement | null) =>
+  _getOffsetToNode(node, body, 'offsetTop');
 
-export const getOffsetLeftToNode = (node: HTMLElement | null, body: HTMLElement | null) => _getOffsetToNode(node, body, 'offsetLeft');
+export const getOffsetLeftToNode = (node: HTMLElement | null, body: HTMLElement | null) =>
+  _getOffsetToNode(node, body, 'offsetLeft');
 
 /**
  * Smart scroll to the node, uses scrollTo method or scrollTop|scrollLeft
@@ -160,7 +162,9 @@ export const loadImage = (src: string) =>
  */
 export const windowRefocused = (): Promise<void> =>
   new Promise<void>((resolve) => {
-    window.addEventListener('blur', () => window.addEventListener('focus', () => resolve(), { once: true }), { once: true });
+    window.addEventListener('blur', () => window.addEventListener('focus', () => resolve(), { once: true }), {
+      once: true,
+    });
   });
 
 export const getRectCenter = (rect: DOMRect): Point => {

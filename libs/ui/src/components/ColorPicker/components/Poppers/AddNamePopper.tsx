@@ -49,7 +49,11 @@ export const AddNamePopper: React.FC<PopperProps> = ({ isEditing, onRename, valu
     <div ref={rootPopper.setReferenceElement}>
       {isEditing && (
         <div ref={popperContainerRef}>
-          <div ref={rootPopper.setPopperElement} style={{ ...rootPopper.styles.popper, width: '260px' }} {...rootPopper.attributes.popper}>
+          <div
+            ref={rootPopper.setPopperElement}
+            style={{ ...rootPopper.styles.popper, width: '260px' }}
+            {...rootPopper.attributes.popper}
+          >
             <PopperContent onClick={stopPropagation(null, true)}>
               <Label>Color Label</Label>
               <StyledInput

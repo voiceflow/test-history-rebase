@@ -1,4 +1,5 @@
-import { BaseNode, BaseUtils } from '@voiceflow/base-types';
+import type { BaseNode } from '@voiceflow/base-types';
+import { BaseUtils } from '@voiceflow/base-types';
 import { Box, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 

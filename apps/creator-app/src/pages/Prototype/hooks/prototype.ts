@@ -1,14 +1,16 @@
 import { Utils } from '@voiceflow/common';
-import { BaseRequest } from '@voiceflow/dtos';
+import type { BaseRequest } from '@voiceflow/dtos';
 import _isString from 'lodash/isString';
 import React from 'react';
 
 import { PrototypeStatus } from '@/constants/prototype';
-import { IDSelectorParam } from '@/ducks/utils/crudV2';
+import type { IDSelectorParam } from '@/ducks/utils/crudV2';
 import { useEventualEngine, useTrackingEvents } from '@/hooks';
 
-import PrototypeTool, { PrototypeToolProps } from '../PrototypeTool';
-import { Interaction, Message, PMStatus, PrototypeAllTypes } from '../types';
+import type { PrototypeToolProps } from '../PrototypeTool';
+import PrototypeTool from '../PrototypeTool';
+import type { Interaction, Message, PrototypeAllTypes } from '../types';
+import { PMStatus } from '../types';
 
 interface Options extends PrototypeAllTypes {
   debug: boolean;
@@ -18,9 +20,25 @@ interface Options extends PrototypeAllTypes {
   globalDelayInMilliseconds?: number;
 }
 
-const usePrototype = ({ debug, config, state, actions, isPublic, waitVisuals = true, prototypeStatus, globalDelayInMilliseconds }: Options) => {
+const usePrototype = ({
+  debug,
+  config,
+  state,
+  actions,
+  isPublic,
+  waitVisuals = true,
+  prototypeStatus,
+  globalDelayInMilliseconds,
+}: Options) => {
   const { isMuted } = config;
-  const { activeDiagramID = null, flowIDHistory, activePaths, contextHistory = [], visualDataHistory = [], contextStep } = state;
+  const {
+    activeDiagramID = null,
+    flowIDHistory,
+    activePaths,
+    contextHistory = [],
+    visualDataHistory = [],
+    contextStep,
+  } = state;
   const {
     updatePrototypeStatus,
     updatePrototypeVisualsDataHistory = Utils.functional.noop,

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDrop } from 'react-dnd';
 
-import { DnDHandlers, DnDItem } from '../types';
+import type { DnDHandlers, DnDItem } from '../types';
 
 export interface DropDeleteProps<I, P> {
   type: string;

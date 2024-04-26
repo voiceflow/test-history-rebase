@@ -17,7 +17,10 @@ export interface OpenedIDsToggleApi {
 export const useOpenedIDsToggle = (name: string): OpenedIDsToggleApi => {
   const activeProjectID = useSelector(Session.activeProjectIDSelector);
 
-  const [openedIDs, setOpenedIDs] = useLocalStorageState<Record<string, boolean>>(`dm-opened-${name}.${activeProjectID}`, {});
+  const [openedIDs, setOpenedIDs] = useLocalStorageState<Record<string, boolean>>(
+    `dm-opened-${name}.${activeProjectID}`,
+    {}
+  );
 
   const [scheduler, schedulerApi] = useRAF();
   const openedIDsCache = React.useRef(openedIDs);
@@ -37,7 +40,9 @@ export const useOpenedIDsToggle = (name: string): OpenedIDsToggleApi => {
   const onNestedDragStart = usePersistFunction((idsToClose: string[]) => {
     openedIDsCache.current = { ...openedIDs };
 
-    scheduler(() => setOpenedIDs((prevState) => ({ ...prevState, ...Object.fromEntries(idsToClose.map((id) => [id, false])) })));
+    scheduler(() =>
+      setOpenedIDs((prevState) => ({ ...prevState, ...Object.fromEntries(idsToClose.map((id) => [id, false])) }))
+    );
   });
 
   const onToggleOpenedID = usePersistFunction((id: string, value = !openedIDs[id]) => {

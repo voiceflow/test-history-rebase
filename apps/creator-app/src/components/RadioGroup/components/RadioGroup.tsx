@@ -1,4 +1,4 @@
-import { CheckboxTypes } from '@voiceflow/ui';
+import type { CheckboxTypes } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 
@@ -13,7 +13,8 @@ export interface RadioOption<T extends any> {
   customCheckedCondition?: (checked?: T) => boolean;
 }
 
-export interface RadioGroupProps<T extends any> extends Omit<CheckboxTypes.Props, 'id' | 'value' | 'checked' | 'onChange'> {
+export interface RadioGroupProps<T extends any>
+  extends Omit<CheckboxTypes.Props, 'id' | 'value' | 'checked' | 'onChange'> {
   column?: boolean;
   options?: RadioOption<T>[];
   checked?: T;
@@ -37,14 +38,28 @@ const RadioGroup = <T extends any = boolean>({
   noPaddingLastItem,
   ...props
 }: RadioGroupProps<T>): React.ReactElement => (
-  <Container className={cn(className, ClassName.RADIO_GROUP)} column={column} noPaddingLastItem={noPaddingLastItem} fullWidth={activeBar}>
+  <Container
+    className={cn(className, ClassName.RADIO_GROUP)}
+    column={column}
+    noPaddingLastItem={noPaddingLastItem}
+    fullWidth={activeBar}
+  >
     {options.map((option, index) => {
       const { id, label, customCheckedCondition } = option;
 
       const isChecked = customCheckedCondition ? customCheckedCondition(checked) : checked === id;
 
       return (
-        <RadioItem<T> key={index} column={column} id={id} label={label} isChecked={isChecked} onChange={onChange} activeBar={activeBar} {...props} />
+        <RadioItem<T>
+          key={index}
+          column={column}
+          id={id}
+          label={label}
+          isChecked={isChecked}
+          onChange={onChange}
+          activeBar={activeBar}
+          {...props}
+        />
       );
     })}
   </Container>

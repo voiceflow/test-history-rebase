@@ -1,4 +1,16 @@
-import { Body, Controller, Get, HttpStatus, Inject, Param, ParseArrayPipe, Post, Query, UploadedFile, UseInterceptors } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpStatus,
+  Inject,
+  Param,
+  ParseArrayPipe,
+  Post,
+  Query,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiConsumes, ApiParam, ApiTags } from '@nestjs/swagger';
 import { ZodApiQuery, ZodApiResponse } from '@voiceflow/nestjs-common';
@@ -43,7 +55,11 @@ export class FunctionPublicHTTPController {
     kind: 'version',
   }))
   @ApiBody({
-    schema: { type: 'object', required: ['file'], properties: { file: { type: 'string', format: 'binary' }, clientID: { type: 'string' } } },
+    schema: {
+      type: 'object',
+      required: ['file'],
+      properties: { file: { type: 'string', format: 'binary' }, clientID: { type: 'string' } },
+    },
   })
   @ApiParam({ name: 'environmentID', type: 'string' })
   @ApiConsumes('multipart/form-data')
@@ -57,7 +73,11 @@ export class FunctionPublicHTTPController {
   ): Promise<FunctionImportJSONResponse> {
     const data = FunctionExportImportDataDTO.parse(JSON.parse(file.buffer.toString('utf8')));
 
-    const { duplicatedFunctions, functions } = await this.service.importJSONAndBroadcast(data, { userID, clientID, environmentID });
+    const { duplicatedFunctions, functions } = await this.service.importJSONAndBroadcast(data, {
+      userID,
+      clientID,
+      environmentID,
+    });
 
     return {
       functions: this.service.mapToJSON(functions),

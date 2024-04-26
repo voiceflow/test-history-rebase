@@ -55,7 +55,13 @@ export const getSettingsMetaProps = Utils.platform.createPlatformAndProjectTypeS
     },
     [Platform.Constants.PlatformType.GOOGLE]: {
       name: 'Google',
-      sections: [SettingSections.BASIC, SettingSections.GLOBAL_LOGIC, SettingSections.CANVAS, SettingSections.METADATA, SettingSections.DANGER_ZONE],
+      sections: [
+        SettingSections.BASIC,
+        SettingSections.GLOBAL_LOGIC,
+        SettingSections.CANVAS,
+        SettingSections.METADATA,
+        SettingSections.DANGER_ZONE,
+      ],
       descriptors: {
         allowRepeat: <ContentDescriptors.AllowRepeat />,
         repeatDialog: <ContentDescriptors.RepeatDialog />,
@@ -82,13 +88,25 @@ export const getSettingsMetaProps = Utils.platform.createPlatformAndProjectTypeS
     },
     [Platform.Constants.ProjectType.CHAT]: {
       name: 'Chatbot',
-      sections: [SettingSections.BASIC, SettingSections.GLOBAL_LOGIC, SettingSections.CANVAS, SettingSections.METADATA, SettingSections.DANGER_ZONE],
+      sections: [
+        SettingSections.BASIC,
+        SettingSections.GLOBAL_LOGIC,
+        SettingSections.CANVAS,
+        SettingSections.METADATA,
+        SettingSections.DANGER_ZONE,
+      ],
       descriptors: {},
     },
   },
   {
     name: 'ContentDescriptors',
-    sections: [SettingSections.BASIC, SettingSections.GLOBAL_LOGIC, SettingSections.CANVAS, SettingSections.METADATA, SettingSections.DANGER_ZONE],
+    sections: [
+      SettingSections.BASIC,
+      SettingSections.GLOBAL_LOGIC,
+      SettingSections.CANVAS,
+      SettingSections.METADATA,
+      SettingSections.DANGER_ZONE,
+    ],
     descriptors: {
       defaultVoice: <ContentDescriptors.DefaultVoice />,
     },

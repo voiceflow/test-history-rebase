@@ -1,11 +1,12 @@
-import { BaseNode, Nullable } from '@voiceflow/base-types';
-import { ChatNode } from '@voiceflow/chat-types';
-import { Nullish } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
+import type { ChatNode } from '@voiceflow/chat-types';
+import type { Nullish } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config/backend';
-import { VoiceNode } from '@voiceflow/voice-types';
+import type { VoiceNode } from '@voiceflow/voice-types';
 import { createMultiAdapter } from 'bidirectional-adapter';
 
-import { NodeData } from '../../../../models';
+import type { NodeData } from '../../../../models';
 
 export const baseNoMatchAdapter = createMultiAdapter<BaseNode.Utils.BaseStepNoMatch, NodeData.BaseNoMatch>(
   ({ type = BaseNode.Utils.NoMatchType.REPROMPT, types, pathName = 'No match', randomize }) => ({
@@ -27,7 +28,9 @@ export const chatNoMatchAdapter = createMultiAdapter<ChatNode.Utils.StepNoMatch,
   }),
   ({ reprompts, ...baseNoMatch }) => ({
     ...baseNoMatchAdapter.toDB(baseNoMatch),
-    reprompts: Platform.Common.Chat.CONFIG.adapters.prompt.simple.mapToDB(reprompts as Platform.Common.Chat.Models.Prompt.Model[]),
+    reprompts: Platform.Common.Chat.CONFIG.adapters.prompt.simple.mapToDB(
+      reprompts as Platform.Common.Chat.Models.Prompt.Model[]
+    ),
   })
 );
 
@@ -38,7 +41,9 @@ export const voiceNoMatchAdapter = createMultiAdapter<VoiceNode.Utils.StepNoMatc
   }),
   ({ reprompts, ...baseNoMatch }) => ({
     ...baseNoMatchAdapter.toDB(baseNoMatch),
-    reprompts: Platform.Common.Voice.CONFIG.adapters.prompt.simple.mapToDB(reprompts as Platform.Common.Voice.Models.Prompt.Model[]),
+    reprompts: Platform.Common.Voice.CONFIG.adapters.prompt.simple.mapToDB(
+      reprompts as Platform.Common.Voice.Models.Prompt.Model[]
+    ),
   })
 );
 

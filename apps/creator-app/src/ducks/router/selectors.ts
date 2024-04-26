@@ -1,4 +1,4 @@
-import { Location } from 'history';
+import type { Location } from 'history';
 import { matchPath } from 'react-router-dom';
 import { createSelector } from 'reselect';
 
@@ -25,5 +25,6 @@ export const actionsMatchSelector = createSelector(pathnameSelector, (pathname) 
 
 export const stateSelector = createSelector(
   locationSelector,
-  (location: Location): Record<string, any> => (location.state && typeof location.state === 'object' ? location.state : {})
+  (location: Location): Record<string, any> =>
+    location.state && typeof location.state === 'object' ? location.state : {}
 );

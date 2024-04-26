@@ -48,4 +48,6 @@ export const allStringResponseVariantsByLanguageChannelResponseID = createSelect
       .filter(Utils.array.isNotNullish) ?? []
 );
 
-export const getAllStringResponseVariantsByLanguageChannelResponseID = createCurriedSelector(allStringResponseVariantsByLanguageChannelResponseID);
+export const getAllStringResponseVariantsByLanguageChannelResponseID = createCurriedSelector(
+  allStringResponseVariantsByLanguageChannelResponseID
+);

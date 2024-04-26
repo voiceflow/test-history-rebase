@@ -1,7 +1,7 @@
 import { Utils } from '@voiceflow/common';
-import { AIModel } from '@voiceflow/dtos';
+import type { AIModel } from '@voiceflow/dtos';
 
-import { AIModelConfig } from './ai-model.interface';
+import type { AIModelConfig } from './ai-model.interface';
 import { ANTHROPIC_MODEL_CONFIGS } from './anthropic-model.config';
 import { GOOGLE_MODEL_CONFIGS } from './google-model.config';
 import { OPEN_AI_MODEL_CONFIGS } from './open-ai-model.config';

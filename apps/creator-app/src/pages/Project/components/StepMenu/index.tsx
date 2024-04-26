@@ -11,7 +11,8 @@ import { useLocalStorageState } from '@/hooks/storage.hook';
 import { useSelector } from '@/hooks/store.hook';
 import { Identifier } from '@/styles/constants';
 
-import { AI_LABEL, EVENT_LABEL, getAllSections, LibraryStepType, TopLibraryItem, TopStepItem } from './constants';
+import type { TopLibraryItem, TopStepItem } from './constants';
+import { AI_LABEL, EVENT_LABEL, getAllSections, LibraryStepType } from './constants';
 import * as S from './styles';
 import TopLevelButton from './TopLevelButton';
 
@@ -78,7 +79,9 @@ const StepMenu: React.FC = () => {
                 <TopLevelButton
                   key={section.label}
                   section={section}
-                  animationIndex={initialRender ? -1 : Math.max(0, index - (numCollapsedSteps - (eventSection ? 1 : 0)))}
+                  animationIndex={
+                    initialRender ? -1 : Math.max(0, index - (numCollapsedSteps - (eventSection ? 1 : 0)))
+                  }
                 />
               ))}
             </S.TopLevelInnerContainer>

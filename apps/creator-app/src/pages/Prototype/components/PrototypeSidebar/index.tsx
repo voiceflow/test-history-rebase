@@ -107,11 +107,17 @@ const PrototypeSidebar: React.FC = () => {
       direction={Drawer.Direction.LEFT}
       style={{
         top: cmsWorkflows.isEnabled ? (isCanvasOnly ? 0 : theme.components.header.newHeight) : undefined,
-        height: cmsWorkflows.isEnabled ? (isCanvasOnly ? '100%' : `calc(100% - ${theme.components.header.newHeight}px)`) : undefined,
+        height: cmsWorkflows.isEnabled
+          ? isCanvasOnly
+            ? '100%'
+            : `calc(100% - ${theme.components.header.newHeight}px)`
+          : undefined,
       }}
     >
       <Container>
-        {canRenderPrototype && <TrainingSection isOpen={trainingOpen} onOpen={openTraining} toggleOpen={toggleTrainingOpen} />}
+        {canRenderPrototype && (
+          <TrainingSection isOpen={trainingOpen} onOpen={openTraining} toggleOpen={toggleTrainingOpen} />
+        )}
 
         <Section
           header="DIALOG"
@@ -121,7 +127,11 @@ const PrototypeSidebar: React.FC = () => {
             <Flex>
               {canSeeSoundToggle && (
                 <Box display="inline-block" mr={4}>
-                  <SoundToggle projectType={projectType} isMuted={isMuted} onClick={() => updatePrototype({ muted: !isMuted })} />
+                  <SoundToggle
+                    projectType={projectType}
+                    isMuted={isMuted}
+                    onClick={() => updatePrototype({ muted: !isMuted })}
+                  />
                 </Box>
               )}
 

@@ -1,7 +1,8 @@
-import * as Models from '@realtime-sdk/models';
-import { UserRole } from '@voiceflow/internal';
+import type * as Models from '@realtime-sdk/models';
+import type { UserRole } from '@voiceflow/internal';
 
-import { NestResource, NestResourceOptions } from '../../nest';
+import type { NestResourceOptions } from '../../nest';
+import { NestResource } from '../../nest';
 
 export class ProjectMember extends NestResource {
   constructor(options: NestResourceOptions) {
@@ -20,15 +21,25 @@ export class ProjectMember extends NestResource {
     return data;
   }
 
-  public async create(projectID: string, payload: { role: UserRole.VIEWER | UserRole.EDITOR; userID: number }): Promise<void> {
+  public async create(
+    projectID: string,
+    payload: { role: UserRole.VIEWER | UserRole.EDITOR; userID: number }
+  ): Promise<void> {
     await this.post(`/${projectID}`, payload);
   }
 
-  public async createMany(projectID: string, payload: { role: UserRole.VIEWER | UserRole.EDITOR; userID: number }[]): Promise<void> {
+  public async createMany(
+    projectID: string,
+    payload: { role: UserRole.VIEWER | UserRole.EDITOR; userID: number }[]
+  ): Promise<void> {
     await this.post(`/${projectID}/batch`, payload);
   }
 
-  public async update(projectID: string, userID: number, payload: { role: UserRole.VIEWER | UserRole.EDITOR }): Promise<void> {
+  public async update(
+    projectID: string,
+    userID: number,
+    payload: { role: UserRole.VIEWER | UserRole.EDITOR }
+  ): Promise<void> {
     await this.patch(`/${projectID}/${userID}`, payload);
   }
 

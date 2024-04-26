@@ -12,7 +12,11 @@ export const matchVariables = (text = '', { withoutTrim } = {}) => {
   }
 
   // eslint-disable-next-line no-nested-ternary
-  const textWithFormattedVars = text ? (withoutTrim ? transformVariablesFromReadableWithoutTrim(text) : transformVariablesFromReadable(text)) : '';
+  const textWithFormattedVars = text
+    ? withoutTrim
+      ? transformVariablesFromReadableWithoutTrim(text)
+      : transformVariablesFromReadable(text)
+    : '';
 
   const matches = [...textWithFormattedVars.matchAll(SLOT_REGEXP)];
 

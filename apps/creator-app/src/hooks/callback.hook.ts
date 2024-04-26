@@ -5,7 +5,11 @@ import _debounce from 'lodash/debounce';
 import _throttle from 'lodash/throttle';
 import { useEffect } from 'react';
 
-export const useDebouncedCallback = <C extends (...args: any[]) => any>(delay: number, callback: C, options?: DebounceSettings) => {
+export const useDebouncedCallback = <C extends (...args: any[]) => any>(
+  delay: number,
+  callback: C,
+  options?: DebounceSettings
+) => {
   const persistedCallback = usePersistFunction(callback);
   const debounced = useCreateConst(() => _debounce(persistedCallback, delay, options));
 

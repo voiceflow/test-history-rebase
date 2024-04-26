@@ -6,7 +6,7 @@ import { CodePreviewWithFullScreenEditor } from '@/components/Code/CodePreviewWi
 import { SectionHeaderTitleWithLearnTooltip } from '@/components/Section/SectionHeaderTitleWithLearnTooltip/SectionHeaderTitleWithTooltip.component';
 import { onOpenURLInANewTabFactory } from '@/utils/window';
 
-import { IAIPromptWrapperSection } from './AIPromptWrapperSection.interface';
+import type { IAIPromptWrapperSection } from './AIPromptWrapperSection.interface';
 
 export const AIPromptWrapperSection: React.FC<IAIPromptWrapperSection> = ({
   value,
@@ -24,13 +24,24 @@ export const AIPromptWrapperSection: React.FC<IAIPromptWrapperSection> = ({
         variant="active"
         contentProps={{ pr: 24 }}
         title={(className) => (
-          <SectionHeaderTitleWithLearnTooltip title="Prompt" className={className} onLearnClick={onOpenURLInANewTabFactory(learnMoreURL)}>
+          <SectionHeaderTitleWithLearnTooltip
+            title="Prompt"
+            className={className}
+            onLearnClick={onOpenURLInANewTabFactory(learnMoreURL)}
+          >
             Modify the wrapper prompt to tailor the agent's context and instructions for your specific use case.
           </SectionHeaderTitleWithLearnTooltip>
         )}
       >
         {value !== defaultValue && (
-          <Link size="small" label="Reset" testID={tid(testID, 'reset')} weight="semiBold" onClick={onResetToDefault} disabled={disabled} />
+          <Link
+            size="small"
+            label="Reset"
+            testID={tid(testID, 'reset')}
+            weight="semiBold"
+            onClick={onResetToDefault}
+            disabled={disabled}
+          />
         )}
       </Section.Header.Container>
 

@@ -111,8 +111,12 @@ export class IntentService extends CMSTabularService<IntentORM> {
 
     return {
       intents: json.intents.map((item) => Utils.object.omit(item, ['assistantID', 'environmentID'])),
-      utterances: json.utterances.map((item) => Utils.object.omit(item, ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'])),
-      requiredEntities: json.requiredEntities.map((item) => Utils.object.omit(item, ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'])),
+      utterances: json.utterances.map((item) =>
+        Utils.object.omit(item, ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'])
+      ),
+      requiredEntities: json.requiredEntities.map((item) =>
+        Utils.object.omit(item, ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'])
+      ),
     };
   }
 
@@ -134,9 +138,21 @@ export class IntentService extends CMSTabularService<IntentORM> {
     } = await this.findManyWithSubResourcesByEnvironment(sourceEnvironmentID);
 
     return this.importManyWithSubResources({
-      intents: sourceIntents.map((item) => ({ ...item, assistantID: targetAssistantID, environmentID: targetEnvironmentID })),
-      utterances: sourceUtterances.map((item) => ({ ...item, assistantID: targetAssistantID, environmentID: targetEnvironmentID })),
-      requiredEntities: sourceRequiredEntities.map((item) => ({ ...item, assistantID: targetAssistantID, environmentID: targetEnvironmentID })),
+      intents: sourceIntents.map((item) => ({
+        ...item,
+        assistantID: targetAssistantID,
+        environmentID: targetEnvironmentID,
+      })),
+      utterances: sourceUtterances.map((item) => ({
+        ...item,
+        assistantID: targetAssistantID,
+        environmentID: targetEnvironmentID,
+      })),
+      requiredEntities: sourceRequiredEntities.map((item) => ({
+        ...item,
+        assistantID: targetAssistantID,
+        environmentID: targetEnvironmentID,
+      })),
     });
   }
 
@@ -144,7 +160,12 @@ export class IntentService extends CMSTabularService<IntentORM> {
 
   prepareImportData(
     { intents, utterances, requiredEntities }: IntentExportImportDataDTO,
-    { userID, backup, assistantID, environmentID }: { userID: number; backup?: boolean; assistantID: string; environmentID: string }
+    {
+      userID,
+      backup,
+      assistantID,
+      environmentID,
+    }: { userID: number; backup?: boolean; assistantID: string; environmentID: string }
   ): {
     intents: IntentJSON[];
     utterances: UtteranceJSON[];
@@ -209,7 +230,11 @@ export class IntentService extends CMSTabularService<IntentORM> {
     };
   }
 
-  async importManyWithSubResources(data: { intents: IntentObject[]; utterances: UtteranceObject[]; requiredEntities: RequiredEntityObject[] }) {
+  async importManyWithSubResources(data: {
+    intents: IntentObject[];
+    utterances: UtteranceObject[];
+    requiredEntities: RequiredEntityObject[];
+  }) {
     const intents = await this.createMany(data.intents);
 
     const [utterances, requiredEntities] = await Promise.all([
@@ -305,7 +330,13 @@ export class IntentService extends CMSTabularService<IntentORM> {
 
       this.requiredEntity.broadcastAddMany(
         {
-          add: Utils.object.pick(add, ['responses', 'responseVariants', 'requiredEntities', 'responseAttachments', 'responseDiscriminators']),
+          add: Utils.object.pick(add, [
+            'responses',
+            'responseVariants',
+            'requiredEntities',
+            'responseAttachments',
+            'responseDiscriminators',
+          ]),
           // no need to sync intents, since they should be synced in the create method
           sync: { intents: [] },
         },
@@ -374,7 +405,10 @@ export class IntentService extends CMSTabularService<IntentORM> {
     await Promise.all([
       this.utterance.broadcastDeleteMany({ delete: Utils.object.pick(del, ['utterances']) }, meta),
       // no need to sync intents, because they are deleted
-      this.requiredEntity.broadcastDeleteMany({ sync: { intents: [] }, delete: Utils.object.pick(del, ['requiredEntities']) }, meta),
+      this.requiredEntity.broadcastDeleteMany(
+        { sync: { intents: [] }, delete: Utils.object.pick(del, ['requiredEntities']) },
+        meta
+      ),
 
       this.logux.processAs(
         Actions.Intent.DeleteMany({

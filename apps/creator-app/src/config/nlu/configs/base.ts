@@ -1,7 +1,7 @@
 import * as Platform from '@voiceflow/platform-config';
 
 import * as NLP from '@/config/nlp';
-import { Permission } from '@/constants/permissions';
+import type { Permission } from '@/constants/permissions';
 
 interface Tooltip {
   title: string;

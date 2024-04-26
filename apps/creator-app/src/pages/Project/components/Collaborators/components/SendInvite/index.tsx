@@ -122,7 +122,11 @@ const SendInvite: React.FC<SendInviteProps> = ({ sendInvite }) => {
           )}
         </SelectInputGroup>
 
-        <SendInviteButton id={Identifier.COLLAB_SEND_INVITE_BUTTON} onClick={onSendInviteClick} disabled={isInvalid || !canAddCollaborators}>
+        <SendInviteButton
+          id={Identifier.COLLAB_SEND_INVITE_BUTTON}
+          onClick={onSendInviteClick}
+          disabled={isInvalid || !canAddCollaborators}
+        >
           Send
         </SendInviteButton>
       </Flex>

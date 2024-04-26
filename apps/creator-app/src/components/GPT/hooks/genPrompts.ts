@@ -11,7 +11,8 @@ import * as VersionV2 from '@/ducks/versionV2';
 import { useActiveProjectType, useSelector } from '@/hooks';
 import { slotToString, transformVariablesToReadable } from '@/utils/slot';
 
-import { GenApi, useGen } from './gen';
+import type { GenApi } from './gen';
+import { useGen } from './gen';
 
 export const useGenVoicePrompts = ({
   examples,
@@ -44,7 +45,9 @@ export const useGenVoicePrompts = ({
     dbExamplesToTrack: (items) => items,
 
     generate: async (options) => {
-      const exampleVoice = examples.find((item) => item.type === Platform.Common.Voice.Models.Prompt.PromptType.TEXT && item.voice)?.voice;
+      const exampleVoice = examples.find(
+        (item) => item.type === Platform.Common.Voice.Models.Prompt.PromptType.TEXT && item.voice
+      )?.voice;
 
       let results: string[] = [];
 
@@ -58,7 +61,9 @@ export const useGenVoicePrompts = ({
         id: Utils.id.cuid.slug(),
         type: Platform.Common.Voice.Models.Prompt.PromptType.TEXT,
         voice: exampleVoice ?? defaultVoice,
-        content: result.replace(READABLE_VARIABLE_REGEXP, (_, name) => slotToString(slotNameMap[name] ?? { id: name, name })),
+        content: result.replace(READABLE_VARIABLE_REGEXP, (_, name) =>
+          slotToString(slotNameMap[name] ?? { id: name, name })
+        ),
       }));
     },
   });
@@ -94,7 +99,8 @@ export const useGenChatPrompts = ({
     disabled,
     examples,
 
-    examplesToDB: (items) => items.map((item) => serializeToText(item.content, { variablesMap: variables.byKey })).filter(Boolean),
+    examplesToDB: (items) =>
+      items.map((item) => serializeToText(item.content, { variablesMap: variables.byKey })).filter(Boolean),
 
     dbExamplesToTrack: (items) => items,
 

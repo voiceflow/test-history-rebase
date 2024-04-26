@@ -29,7 +29,11 @@ export const FunctionVariableSection: React.FC<IFunctionVariableSection> = ({
         variant={hasVariables ? 'active' : 'basic'}
         onHeaderClick={hasVariables ? undefined : onFunctionVariableAdd}
       >
-        <Section.Header.Button iconName="Plus" onClick={stopPropagation(onFunctionVariableAdd)} testID={tid(testID, 'add')} />
+        <Section.Header.Button
+          iconName="Plus"
+          onClick={stopPropagation(onFunctionVariableAdd)}
+          testID={tid(testID, 'add')}
+        />
       </Section.Header.Container>
 
       {hasVariables && (

@@ -37,7 +37,7 @@ export const StyledBanner = styled(Banner)`
 export const Content = styled(Page.Content)<{ fullHeight?: boolean }>`
   padding-top: 14px;
 
-  ${({ fullHeight }) => fullHeight && `height: 100%;`}
+  ${({ fullHeight }) => fullHeight && 'height: 100%;'}
 `;
 
 export const StyledSelect = styled(Select)`

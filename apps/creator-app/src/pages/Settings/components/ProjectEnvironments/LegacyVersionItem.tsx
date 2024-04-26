@@ -9,7 +9,7 @@ import { useSelector } from '@/hooks';
 import { useConfirmModal } from '@/hooks/modal.hook';
 import THEME from '@/styles/theme';
 
-import { ProjectVersion } from './hooks';
+import type { ProjectVersion } from './hooks';
 import * as S from './styles';
 
 interface VersionItemProps {
@@ -52,7 +52,10 @@ const VersionItem: React.FC<VersionItemProps> = ({ version, creatorID, projectID
         confirm: async () => {
           // create a backup of the version before deleting it
           if (options.convert) {
-            await designerClient.backup.createOne(projectID, { versionID: version.versionID, name: version.name || 'Converted from Legacy Version' });
+            await designerClient.backup.createOne(projectID, {
+              versionID: version.versionID,
+              name: version.name || 'Converted from Legacy Version',
+            });
           }
           await deleteVersion();
         },
@@ -63,7 +66,9 @@ const VersionItem: React.FC<VersionItemProps> = ({ version, creatorID, projectID
   return (
     <S.RowItem>
       <S.ColumnItemContainer>
-        <TippyTooltip content={dayjs(version.created).format('MMM DD, YYYY, h:mm A')}>{dayjs(version.created).fromNow()}</TippyTooltip>
+        <TippyTooltip content={dayjs(version.created).format('MMM DD, YYYY, h:mm A')}>
+          {dayjs(version.created).fromNow()}
+        </TippyTooltip>
       </S.ColumnItemContainer>
 
       <S.ColumnItemContainer style={{ color: getColor() }}>

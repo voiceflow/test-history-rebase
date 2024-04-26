@@ -26,7 +26,9 @@ export class FunctionPathLoguxController {
     @Payload() { data, context }: Actions.FunctionPath.CreateOne.Request,
     @AuthMeta() auth: AuthMetaPayload
   ): Promise<Actions.FunctionPath.CreateOne.Response> {
-    return this.service.createManyAndBroadcast([data], { auth, context }).then(([result]) => ({ data: this.service.toJSON(result), context }));
+    return this.service
+      .createManyAndBroadcast([data], { auth, context })
+      .then(([result]) => ({ data: this.service.toJSON(result), context }));
   }
 
   @Action(Actions.FunctionPath.PatchOne)
@@ -49,7 +51,10 @@ export class FunctionPathLoguxController {
   @Broadcast<Actions.FunctionPath.PatchMany>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async patchMany(@Payload() { ids, patch, context }: Actions.FunctionPath.PatchMany, @AuthMeta() auth: AuthMetaPayload) {
+  async patchMany(
+    @Payload() { ids, patch, context }: Actions.FunctionPath.PatchMany,
+    @AuthMeta() auth: AuthMetaPayload
+  ) {
     await this.service.patchManyForUser(
       auth.userID,
       ids.map((id) => ({ id, environmentID: context.environmentID })),
@@ -69,7 +74,10 @@ export class FunctionPathLoguxController {
     const result = await this.service.deleteManyAndSync([id], context);
 
     // overriding functions cause it's broadcasted by decorator
-    await this.service.broadcastDeleteMany({ ...result, delete: { ...result.delete, functionPaths: [] } }, { auth, context });
+    await this.service.broadcastDeleteMany(
+      { ...result, delete: { ...result.delete, functionPaths: [] } },
+      { auth, context }
+    );
   }
 
   @Action(Actions.FunctionPath.DeleteMany)
@@ -84,13 +92,15 @@ export class FunctionPathLoguxController {
     const result = await this.service.deleteManyAndSync(ids, context);
 
     // overriding functions cause it's broadcasted by decorator
-    await this.service.broadcastDeleteMany({ ...result, delete: { ...result.delete, functionPaths: [] } }, { auth, context });
+    await this.service.broadcastDeleteMany(
+      { ...result, delete: { ...result.delete, functionPaths: [] } },
+      { auth, context }
+    );
   }
 
   @Action(Actions.FunctionPath.AddOne)
   @Broadcast<Actions.FunctionPath.AddOne>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async addOne(@Payload() _: Actions.FunctionPath.AddOne) {
     // broadcast only
   }
@@ -98,7 +108,6 @@ export class FunctionPathLoguxController {
   @Action(Actions.FunctionPath.AddMany)
   @Broadcast<Actions.FunctionPath.AddMany>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async addMany(@Payload() _: Actions.FunctionPath.AddMany) {
     // broadcast only
   }

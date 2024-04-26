@@ -6,7 +6,7 @@ import { useLinkedState } from '@/hooks/state.hook';
 import { onOpenURLInANewTabFactory } from '@/utils/window';
 
 import { AIMaxTokensSlider } from '../AIMaxTokensSlider/AIMaxTokensSlider.component';
-import { IAIMaxTokensSliderSection } from './AIMaxTokensSliderSection.interface';
+import type { IAIMaxTokensSliderSection } from './AIMaxTokensSliderSection.interface';
 
 export const AIMaxTokensSliderSection: React.FC<IAIMaxTokensSliderSection> = ({
   value: propValue,
@@ -22,7 +22,11 @@ export const AIMaxTokensSliderSection: React.FC<IAIMaxTokensSliderSection> = ({
         variant="active"
         contentProps={{ pr: 24 }}
         title={(className) => (
-          <SectionHeaderTitleWithLearnTooltip title="Max tokens" className={className} onLearnClick={onOpenURLInANewTabFactory(learnMoreURL)}>
+          <SectionHeaderTitleWithLearnTooltip
+            title="Max tokens"
+            className={className}
+            onLearnClick={onOpenURLInANewTabFactory(learnMoreURL)}
+          >
             The maximum number of tokens that can be used to generate a single response.
           </SectionHeaderTitleWithLearnTooltip>
         )}

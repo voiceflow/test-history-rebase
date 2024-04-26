@@ -23,7 +23,10 @@ export class BillingSubscriptionLoguxController {
   @Broadcast<Actions.OrganizationSubscription.CheckoutRequest>(({ context }) => ({
     channel: Channels.organization.build(context),
   }))
-  async checkout(@Payload() data: Actions.OrganizationSubscription.CheckoutRequest, @AuthMeta() authMeta: AuthMetaPayload): Promise<Subscription> {
+  async checkout(
+    @Payload() data: Actions.OrganizationSubscription.CheckoutRequest,
+    @AuthMeta() authMeta: AuthMetaPayload
+  ): Promise<Subscription> {
     const { organizationID, workspaceID } = data.context;
 
     return this.service.checkoutAndBroadcast(authMeta, organizationID, workspaceID, data);

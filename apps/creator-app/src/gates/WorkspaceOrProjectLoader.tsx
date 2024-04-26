@@ -32,7 +32,10 @@ const WorkspaceOrProjectLoader: React.FC<ITabLoader> = (props) => {
     [location.pathname]
   );
 
-  const isExport = React.useMemo(() => matchPath(location.pathname, { path: [Path.PROJECT_EXPORT] }), [location.pathname]);
+  const isExport = React.useMemo(
+    () => matchPath(location.pathname, { path: [Path.PROJECT_EXPORT] }),
+    [location.pathname]
+  );
 
   if (isExport) return <TabLoader variant="dark" {...props} />;
 

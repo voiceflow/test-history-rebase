@@ -4,14 +4,17 @@ import * as Normal from 'normal-store';
 
 import { createReducer } from '../utils';
 
-const reorderMenuItemReducer = createReducer(Realtime.diagram.reorderMenuItem, (state, { diagramID, sourceID, toIndex }) => {
-  const diagram = Normal.getOne(state, diagramID);
+const reorderMenuItemReducer = createReducer(
+  Realtime.diagram.reorderMenuItem,
+  (state, { diagramID, sourceID, toIndex }) => {
+    const diagram = Normal.getOne(state, diagramID);
 
-  if (!diagram) return;
+    if (!diagram) return;
 
-  const fromIndex = diagram.menuItems.findIndex((item) => item.sourceID === sourceID);
+    const fromIndex = diagram.menuItems.findIndex((item) => item.sourceID === sourceID);
 
-  diagram.menuItems = Utils.array.reorder(diagram.menuItems, fromIndex, toIndex);
-});
+    diagram.menuItems = Utils.array.reorder(diagram.menuItems, fromIndex, toIndex);
+  }
+);
 
 export default reorderMenuItemReducer;

@@ -1,6 +1,6 @@
-import { LoguxControlMap, LoguxControlOptions } from '@socket-utils/control';
+import type { LoguxControlMap, LoguxControlOptions } from '@socket-utils/control';
 import type { SocketServer } from '@socket-utils/server';
-import { Logger } from '@voiceflow/logger';
+import type { Logger } from '@voiceflow/logger';
 
 export interface ServiceManagerOptions<C> {
   config: C;
@@ -47,7 +47,12 @@ export abstract class AbstractServiceManager<T extends LoguxControlOptions, M ex
 
   protected abstract buildModels(context: { config: T['config']; clients: T['clients']; log: Logger }): T['models'];
 
-  protected abstract buildServices(context: { config: T['config']; clients: T['clients']; models: T['models']; log: Logger }): T['services'];
+  protected abstract buildServices(context: {
+    config: T['config'];
+    clients: T['clients'];
+    models: T['models'];
+    log: Logger;
+  }): T['services'];
 
   protected abstract buildMiddlewares(context: T): M;
 

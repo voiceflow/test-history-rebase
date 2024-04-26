@@ -54,7 +54,10 @@ export const useOnAddSeats = () => {
 export const useActiveWorkspaceTokenUsage = () => {
   const workspace = useActiveWorkspace();
 
-  const quotaData = useMemo(() => workspace?.quotas?.find((quota: any) => quota.quotaDetails.name === QuotaNames.TOKENS), [workspace?.quotas]);
+  const quotaData = useMemo(
+    () => workspace?.quotas?.find((quota: any) => quota.quotaDetails.name === QuotaNames.TOKENS),
+    [workspace?.quotas]
+  );
 
   return {
     quota: quotaData?.quota ?? 0,

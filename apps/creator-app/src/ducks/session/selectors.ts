@@ -35,4 +35,7 @@ export const activeDomainIDSelector = createSelector([rootSelector], ({ activeDo
  */
 export const hasActiveDomainSelector = createSelector([activeDomainIDSelector], (id) => !!id);
 
-export const isPrototypeSidebarVisibleSelector = createSelector([rootSelector], ({ prototypeSidebarVisible }) => prototypeSidebarVisible);
+export const isPrototypeSidebarVisibleSelector = createSelector(
+  [rootSelector],
+  ({ prototypeSidebarVisible }) => prototypeSidebarVisible
+);

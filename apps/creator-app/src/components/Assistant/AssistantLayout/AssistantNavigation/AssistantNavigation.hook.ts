@@ -1,4 +1,4 @@
-import { IconName } from '@voiceflow/icons';
+import type { IconName } from '@voiceflow/icons';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { useMemo } from 'react';
@@ -9,7 +9,8 @@ import { Permission } from '@/constants/permissions';
 import { Project, Router, Session } from '@/ducks';
 import { useOnAssistantCopyCloneLink, useOnAssistantDuplicate } from '@/hooks/assistant.hook';
 import { useFeature } from '@/hooks/feature';
-import { HotkeyItem, useHotkeyList } from '@/hooks/hotkeys';
+import type { HotkeyItem } from '@/hooks/hotkeys';
+import { useHotkeyList } from '@/hooks/hotkeys';
 import { useModal } from '@/hooks/modal.hook';
 import { useGetResolvedPath } from '@/hooks/navigation.hook';
 import { useIsLockedProjectViewer, useIsPreviewer, usePermission } from '@/hooks/permission';
@@ -17,7 +18,7 @@ import { useDispatch, useSelector } from '@/hooks/store.hook';
 import { Modals } from '@/ModalsV2';
 import { conditionalArrayItems } from '@/utils/array.util';
 
-import { IAssistantNavigationItem } from './AssistantNavigation.interface';
+import type { IAssistantNavigationItem } from './AssistantNavigation.interface';
 
 type NavigationLogoItem =
   | { key: string; divider: true }
@@ -61,7 +62,10 @@ export const useAssistantNavigationLogoItems = (): NavigationLogoItem[] => {
 
   return [
     { key: 'back', label: 'Back to dashboard', iconName: 'ArrowLeft', onClick: () => goToDashboard() },
-    ...conditionalArrayItems<NavigationLogoItem>(withSharePrototype || withInviteCollaborators || withExport, { key: 'divider-1', divider: true }),
+    ...conditionalArrayItems<NavigationLogoItem>(withSharePrototype || withInviteCollaborators || withExport, {
+      key: 'divider-1',
+      divider: true,
+    }),
     ...conditionalArrayItems<NavigationLogoItem>(withSharePrototype, {
       key: 'share',
       label: 'Share prototype',
@@ -80,7 +84,10 @@ export const useAssistantNavigationLogoItems = (): NavigationLogoItem[] => {
       onClick: (props) => props.export(),
       iconName: 'Export',
     }),
-    ...conditionalArrayItems<NavigationLogoItem>(withDuplicateOption || withCopyCloneLinkOption, { key: 'divider-2', divider: true }),
+    ...conditionalArrayItems<NavigationLogoItem>(withDuplicateOption || withCopyCloneLinkOption, {
+      key: 'divider-2',
+      divider: true,
+    }),
     ...conditionalArrayItems<NavigationLogoItem>(withDuplicateOption, {
       key: 'duplicate',
       label: 'Duplicate agent',
@@ -113,7 +120,11 @@ export const useAssistantNavigationItems = () => {
     const isItemActive = (path: string) => !!matchPath(location.pathname, { path, exact: false });
 
     // eslint-disable-next-line no-nested-ternary
-    const designerPath = cmsWorkflows.isEnabled ? Path.PROJECT_CANVAS : domainID && diagramID ? Path.DOMAIN_CANVAS : Path.PROJECT_DOMAIN;
+    const designerPath = cmsWorkflows.isEnabled
+      ? Path.PROJECT_CANVAS
+      : domainID && diagramID
+        ? Path.DOMAIN_CANVAS
+        : Path.PROJECT_DOMAIN;
 
     return [
       ...conditionalArrayItems<IAssistantNavigationItem>(!cmsWorkflows.isEnabled, {
@@ -166,7 +177,15 @@ export const useAssistantNavigationItems = () => {
         tooltipLabel: 'Settings',
       }),
     ].map<IAssistantNavigationItem>((item, index) => ({ ...item, hotkey: String(index + 1) }));
-  }, [location.pathname, canViewConversations, canEditAPIKey, viewerAPIKeyAccess.isEnabled, canEditProject, domainID, diagramID]);
+  }, [
+    location.pathname,
+    canViewConversations,
+    canEditAPIKey,
+    viewerAPIKeyAccess.isEnabled,
+    canEditProject,
+    domainID,
+    diagramID,
+  ]);
 };
 
 export const useAssistantNavigationHotkeys = (items: IAssistantNavigationItem[]) => {

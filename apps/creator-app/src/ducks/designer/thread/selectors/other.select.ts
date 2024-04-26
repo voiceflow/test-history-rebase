@@ -22,7 +22,10 @@ export const idsForActiveDiagram = createSelector(allForActiveDiagram, (threads)
 
 export const countForActiveDiagram = createSelector(allForActiveDiagram, (threads) => threads.length);
 
-export const getOrderForActiveDiagram = createSelector(idsForActiveDiagram, (threads) => (threadID: string) => threads.indexOf(threadID) + 1);
+export const getOrderForActiveDiagram = createSelector(
+  idsForActiveDiagram,
+  (threads) => (threadID: string) => threads.indexOf(threadID) + 1
+);
 
 export const allAvailable = createSelector([all, diagramMapSelector], (threads, diagramMap) =>
   threads.filter((thread) => !!diagramMap[thread.diagramID]).reverse()
@@ -39,12 +42,26 @@ const threadFilter = createSelector(
     getAllCommentsByThreadID,
     Feature.isFeatureEnabledSelector,
   ],
-  // eslint-disable-next-line max-params
-  (isWorkflowThreadsOnly, isDomainThreadsOnly, isMentionedThreadsOnly, creatorID, activeDomain, diagramID, getComments, isFeatureEnabled) =>
+
+  (
+    isWorkflowThreadsOnly,
+    isDomainThreadsOnly,
+    isMentionedThreadsOnly,
+    creatorID,
+    activeDomain,
+    diagramID,
+    getComments,
+    isFeatureEnabled
+  ) =>
     (thread: Thread) =>
-      (!isMentionedThreadsOnly || !creatorID || getComments({ threadID: thread.id }).some((comment) => comment.mentions.includes(creatorID))) &&
+      (!isMentionedThreadsOnly ||
+        !creatorID ||
+        getComments({ threadID: thread.id }).some((comment) => comment.mentions.includes(creatorID))) &&
       (!isWorkflowThreadsOnly || thread.diagramID === diagramID) &&
-      (isFeatureEnabled(FeatureFlag.CMS_WORKFLOWS) || !isDomainThreadsOnly || !activeDomain || activeDomain.topicIDs.includes(thread.diagramID))
+      (isFeatureEnabled(FeatureFlag.CMS_WORKFLOWS) ||
+        !isDomainThreadsOnly ||
+        !activeDomain ||
+        activeDomain.topicIDs.includes(thread.diagramID))
 );
 
 export const allOpened = createSelector([allAvailable, threadFilter], (threads, filter) =>
@@ -59,15 +76,22 @@ export const allResolved = createSelector([allAvailable, threadFilter], (threads
 
 export const allResolvedCount = createSelector(allResolved, (threads) => threads.length);
 
-export const allOpenedForActiveDiagram = createSelector([allForActiveDiagram, CreatorV2.allNodeIDsSelector], (threads, nodeIDs) =>
-  threads.filter((thread) => !thread.resolved && (!thread.nodeID || nodeIDs.includes(thread.nodeID)))
+export const allOpenedForActiveDiagram = createSelector(
+  [allForActiveDiagram, CreatorV2.allNodeIDsSelector],
+  (threads, nodeIDs) =>
+    threads.filter((thread) => !thread.resolved && (!thread.nodeID || nodeIDs.includes(thread.nodeID)))
 );
 
-export const allOpenedIDsForActiveDiagram = createSelector(allOpenedForActiveDiagram, (threads) => threads.map(({ id }) => id));
+export const allOpenedIDsForActiveDiagram = createSelector(allOpenedForActiveDiagram, (threads) =>
+  threads.map(({ id }) => id)
+);
 
 export const getIDsByNodeID = createSelector(
   all,
   (threads) => (nodeID: string) => threads.filter((thread) => thread.nodeID === nodeID).map(({ id }) => id)
 );
 
-export const hasUnreadComments = createSelector([root], ({ hasUnreadComments, allKeys }) => hasUnreadComments && !!allKeys.length);
+export const hasUnreadComments = createSelector(
+  [root],
+  ({ hasUnreadComments, allKeys }) => hasUnreadComments && !!allKeys.length
+);

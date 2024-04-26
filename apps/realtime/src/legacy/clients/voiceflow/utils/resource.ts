@@ -1,4 +1,4 @@
-import { AxiosInstance } from 'axios';
+import type { AxiosInstance } from 'axios';
 
 const createResourceClient = (api: AxiosInstance, resourcePath: string) => ({
   canRead: (creatorID: number, resourceID: string) =>

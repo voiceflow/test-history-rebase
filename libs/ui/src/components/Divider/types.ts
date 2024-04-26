@@ -1,4 +1,4 @@
-import { Theme } from '@ui/styles/theme';
+import type { Theme } from '@ui/styles/theme';
 
 export interface SimpleProps {
   theme: Theme;

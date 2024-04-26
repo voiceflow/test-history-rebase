@@ -1,4 +1,4 @@
-import { BaseModels } from '@voiceflow/base-types';
+import type { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
@@ -9,7 +9,7 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import { waitAsync } from '@/ducks/utils';
 import * as Workspace from '@/ducks/workspaceV2';
-import { SyncThunk, Thunk } from '@/store/types';
+import type { SyncThunk, Thunk } from '@/store/types';
 import { isComponentDiagram } from '@/utils/diagram.utils';
 
 import { active } from '../selectors';
@@ -51,7 +51,9 @@ export const importProjectContext =
     const componentIDs = diagrams.filter(({ type }) => isComponentDiagram(type)).map((diagram) => diagram.id);
     let newComponentIDs: string[] = [];
 
-    const flows = await dispatch(Designer.Flow.effect.copyPasteMany({ sourceDiagramIDs: componentIDs, sourceEnvironmentID: sourceVersionID }));
+    const flows = await dispatch(
+      Designer.Flow.effect.copyPasteMany({ sourceDiagramIDs: componentIDs, sourceEnvironmentID: sourceVersionID })
+    );
     newComponentIDs = flows.map((flow) => flow.diagramID);
 
     componentIDs.forEach((componentID, index) => {
@@ -69,7 +71,9 @@ export const importProjectContext =
 export const negotiateTargetVersion =
   (versionID: string): Thunk<Realtime.version.schema.NegotiateResultPayload> =>
   async (dispatch) =>
-    dispatch(waitAsync(Realtime.version.schema.negotiate, { versionID, proposedSchemaVersion: Realtime.LATEST_SCHEMA_VERSION }));
+    dispatch(
+      waitAsync(Realtime.version.schema.negotiate, { versionID, proposedSchemaVersion: Realtime.LATEST_SCHEMA_VERSION })
+    );
 
 // active version
 
@@ -87,7 +91,9 @@ export const patchDefaultStepColors =
 
     Errors.assertVersionID(versionID);
 
-    await dispatch.sync(Realtime.version.patchDefaultStepColors({ ...getActivePlatformVersionContext(getState()), defaultStepColors }));
+    await dispatch.sync(
+      Realtime.version.patchDefaultStepColors({ ...getActivePlatformVersionContext(getState()), defaultStepColors })
+    );
   };
 
 export const updateInvocationName =
@@ -106,7 +112,8 @@ export const updateInvocationName =
       patchPublishing({
         invocationName,
         invocationNameSamples:
-          invocationNameSamples ?? Utils.string.arrayStringReplace(activeInvocationName, invocationName, activeInvocationNameSamples),
+          invocationNameSamples ??
+          Utils.string.arrayStringReplace(activeInvocationName, invocationName, activeInvocationNameSamples),
       })
     );
   };

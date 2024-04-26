@@ -1,21 +1,29 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Thumbnail } from '@voiceflow/ui';
 import React from 'react';
 
 import Step from '@/pages/Canvas/components/Step';
 import { DEFAULT_BY_KEY_PORT } from '@/pages/Canvas/constants';
 import { FunctionMapContext, FunctionPathMapContext } from '@/pages/Canvas/contexts';
-import { ConnectedStep } from '@/pages/Canvas/managers/types';
+import type { ConnectedStep } from '@/pages/Canvas/managers/types';
 import { getItemFromMap } from '@/pages/Canvas/utils';
 import { toSorted } from '@/utils/sort.util';
 
 import { useMemoizedPropertyFilter } from '../../hooks/memoized-property-filter.hook';
 import { useFunctionPathPortSync } from '../FunctionManager.hook';
 
-export const FunctionStep: ConnectedStep<Realtime.NodeData.Function> = ({ data, withPorts, ports, palette, isLast }) => {
+export const FunctionStep: ConnectedStep<Realtime.NodeData.Function> = ({
+  data,
+  withPorts,
+  ports,
+  palette,
+  isLast,
+}) => {
   const functionMap = React.useContext(FunctionMapContext)!;
   const functionPathMap = React.useContext(FunctionPathMapContext)!;
-  const functionPathByFunctionID = useMemoizedPropertyFilter(Object.values(functionPathMap), { functionID: data.functionID! });
+  const functionPathByFunctionID = useMemoizedPropertyFilter(Object.values(functionPathMap), {
+    functionID: data.functionID!,
+  });
   const { functionID } = data;
   const { name, image, description } = getItemFromMap(functionMap, functionID);
 
@@ -56,7 +64,14 @@ export const FunctionStep: ConnectedStep<Realtime.NodeData.Function> = ({ data, 
       {withPorts && hasPaths && (
         <Step.Section v2>
           {paths.map((path) => (
-            <Step.Item v2 key={path.portID} label={path.label} placeholder="Enter path name" portID={path.portID} multilineLabel />
+            <Step.Item
+              v2
+              key={path.portID}
+              label={path.label}
+              placeholder="Enter path name"
+              portID={path.portID}
+              multilineLabel
+            />
           ))}
         </Step.Section>
       )}

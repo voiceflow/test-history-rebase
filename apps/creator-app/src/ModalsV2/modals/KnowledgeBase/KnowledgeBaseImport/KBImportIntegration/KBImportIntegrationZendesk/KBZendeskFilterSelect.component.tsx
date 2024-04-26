@@ -1,9 +1,10 @@
 import { tid } from '@voiceflow/style';
-import { BaseProps, Box, Dropdown, Menu, MenuItem, Tooltip, useTooltipModifiers } from '@voiceflow/ui-next';
+import type { BaseProps } from '@voiceflow/ui-next';
+import { Box, Dropdown, Menu, MenuItem, Tooltip, useTooltipModifiers } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { useDeferredSearch } from '@/hooks/search.hook';
-import { ZendeskFilterBase } from '@/models/KnowledgeBase.model';
+import type { ZendeskFilterBase } from '@/models/KnowledgeBase.model';
 
 import { captionStyles } from './KBZendeskFilterSelect.css';
 
@@ -107,7 +108,9 @@ export const KBZendeskFilterSelect = <T extends ZendeskFilterBase>({
           >
             {() => (
               <Box direction="column">
-                <Tooltip.Caption className={captionStyles}>This filter is disabled until the one above it has a selection present.</Tooltip.Caption>
+                <Tooltip.Caption className={captionStyles}>
+                  This filter is disabled until the one above it has a selection present.
+                </Tooltip.Caption>
               </Box>
             )}
           </Tooltip>

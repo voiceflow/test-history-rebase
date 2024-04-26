@@ -1,14 +1,15 @@
 import * as Platform from '@voiceflow/platform-config';
 
 import client from '@/client';
-import { ControlScheme } from '@/components/Canvas/constants';
-import * as NLP from '@/config/nlp';
-import { ExportFormat as CanvasExportFormat, ExportType } from '@/constants';
+import type { ControlScheme } from '@/components/Canvas/constants';
+import type * as NLP from '@/config/nlp';
+import type { ExportFormat as CanvasExportFormat } from '@/constants';
+import { ExportType } from '@/constants';
 import { projectByIDSelector } from '@/ducks/projectV2/selectors';
-import { PrototypeSettings } from '@/ducks/prototype/types';
+import type { PrototypeSettings } from '@/ducks/prototype/types';
 
 import { EventName } from '../constants';
-import { ProjectSessionEventInfo } from '../types';
+import type { ProjectSessionEventInfo } from '../types';
 import {
   createBaseEventTracker,
   createProjectEvent,
@@ -23,7 +24,8 @@ export const trackActiveProjectSessionBegin = createBaseEventTracker<ProjectSess
 );
 
 export const trackActiveProjectSessionDuration = createBaseEventTracker<ProjectSessionEventInfo & { duration: number }>(
-  ({ duration, ...eventInfo }) => client.analytics.track(createProjectEvent(EventName.PROJECT_SESSION_DURATION, eventInfo))
+  ({ duration, ...eventInfo }) =>
+    client.analytics.track(createProjectEvent(EventName.PROJECT_SESSION_DURATION, eventInfo))
 );
 
 export const trackProjectExit = createBaseEventTracker<
@@ -33,16 +35,23 @@ export const trackProjectExit = createBaseEventTracker<
     projectCMSSessionDuration: number;
     transcriptsSessionDuration: number;
   }
->(({ canvasSessionDuration, prototypeSessionDuration, projectCMSSessionDuration, transcriptsSessionDuration, ...eventInfo }) =>
-  client.analytics.track(
-    createProjectEvent(EventName.PROJECT_EXIT, {
-      ...eventInfo,
-      canvas_session_duration: canvasSessionDuration,
-      prototype_session_duration: prototypeSessionDuration,
-      project_cms_session_duration: projectCMSSessionDuration,
-      transcripts_session_duration: transcriptsSessionDuration,
-    })
-  )
+>(
+  ({
+    canvasSessionDuration,
+    prototypeSessionDuration,
+    projectCMSSessionDuration,
+    transcriptsSessionDuration,
+    ...eventInfo
+  }) =>
+    client.analytics.track(
+      createProjectEvent(EventName.PROJECT_EXIT, {
+        ...eventInfo,
+        canvas_session_duration: canvasSessionDuration,
+        prototype_session_duration: prototypeSessionDuration,
+        project_cms_session_duration: projectCMSSessionDuration,
+        transcripts_session_duration: transcriptsSessionDuration,
+      })
+    )
 );
 
 export const trackProjectDelete = createWorkspaceEventTracker<{ projectID: string }>((eventInfo, _, getState) => {
@@ -114,15 +123,17 @@ export const trackProjectCreated = createWorkspaceEventTracker<{
   );
 });
 
-export const trackProjectExported = createVersionEventTracker<{ exportType: ExportType; exportFormat: CanvasExportFormat }>(
-  ({ exportType, exportFormat, ...eventInfo }) =>
-    client.analytics.track(
-      createVersionEvent(EventName.PROJECT_EXPORTED, {
-        ...eventInfo,
-        export_type: exportType === ExportType.CANVAS ? 'Assistant Content' : 'Interaction Model',
-        export_format: exportFormat,
-      })
-    )
+export const trackProjectExported = createVersionEventTracker<{
+  exportType: ExportType;
+  exportFormat: CanvasExportFormat;
+}>(({ exportType, exportFormat, ...eventInfo }) =>
+  client.analytics.track(
+    createVersionEvent(EventName.PROJECT_EXPORTED, {
+      ...eventInfo,
+      export_type: exportType === ExportType.CANVAS ? 'Assistant Content' : 'Interaction Model',
+      export_format: exportFormat,
+    })
+  )
 );
 
 export const trackBackupPreview = createProjectEventTracker<{ versionID: string; backupID: number }>((eventInfo) =>
@@ -145,7 +156,9 @@ export const trackActiveProjectExportInteractionModel = createVersionEventTracke
   origin: string;
   nlpType: NLP.Constants.NLPType;
 }>(({ nlpType, ...eventInfo }) =>
-  client.analytics.track(createVersionEvent(EventName.INTERACTION_MODEL_EXPORTED, { ...eventInfo, nlp_provider: nlpType }))
+  client.analytics.track(
+    createVersionEvent(EventName.INTERACTION_MODEL_EXPORTED, { ...eventInfo, nlp_provider: nlpType })
+  )
 );
 
 export const trackActiveProjectApiPage = createVersionEventTracker((eventInfo) =>

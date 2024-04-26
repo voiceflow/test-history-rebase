@@ -146,7 +146,9 @@ export class DiagramService extends MutableService<DiagramORM> {
   }
 
   public async createManyComponents(
-    data: Partial<Omit<DiagramJSON, '_id' | 'creatorID' | 'versionID' | 'intentStepIDs' | 'menuNodeIDs' | 'children' | 'diagramID'>>[],
+    data: Partial<
+      Omit<DiagramJSON, '_id' | 'creatorID' | 'versionID' | 'intentStepIDs' | 'menuNodeIDs' | 'children' | 'diagramID'>
+    >[],
     { userID, context }: { userID: number; context: CMSContext }
   ) {
     return this.orm.createMany(
@@ -166,7 +168,9 @@ export class DiagramService extends MutableService<DiagramORM> {
   }
 
   public async createManyTopics(
-    data: Partial<Omit<DiagramJSON, '_id' | 'creatorID' | 'versionID' | 'intentStepIDs' | 'menuNodeIDs' | 'children' | 'diagramID'>>[],
+    data: Partial<
+      Omit<DiagramJSON, '_id' | 'creatorID' | 'versionID' | 'intentStepIDs' | 'menuNodeIDs' | 'children' | 'diagramID'>
+    >[],
     { userID, context }: { userID: number; context: CMSContext }
   ) {
     return this.orm.createMany(

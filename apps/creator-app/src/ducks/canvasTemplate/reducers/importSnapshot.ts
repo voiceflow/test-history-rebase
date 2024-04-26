@@ -47,7 +47,9 @@ export const importSnapshotReverter = createReverter(
       }),
       Realtime.node.removeMany({
         ...ctx,
-        nodes: nodesWithData.map(({ node }) => (node.parentNode ? { parentNodeID: node.parentNode, stepID: node.id } : { parentNodeID: node.id })),
+        nodes: nodesWithData.map(({ node }) =>
+          node.parentNode ? { parentNodeID: node.parentNode, stepID: node.id } : { parentNodeID: node.id }
+        ),
       }),
     ];
   },

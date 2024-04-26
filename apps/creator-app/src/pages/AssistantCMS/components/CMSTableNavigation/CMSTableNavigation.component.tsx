@@ -15,7 +15,14 @@ import { CMSResourceActions } from '../CMSResourceActions';
 import { container } from './CMSTableNavigation.css';
 import type { ICMSTableNavigation } from './CMSTableNavigation.interface';
 
-export const CMSTableNavigation: React.FC<ICMSTableNavigation> = ({ label, items = [], actions, onImportClick, onLabelClick, children }) => {
+export const CMSTableNavigation: React.FC<ICMSTableNavigation> = ({
+  label,
+  items = [],
+  actions,
+  onImportClick,
+  onLabelClick,
+  children,
+}) => {
   const tableState = Table.useStateMolecule();
   const cmsManager = useCMSManager();
   const onLinkClick = useOnLinkClick();
@@ -24,7 +31,9 @@ export const CMSTableNavigation: React.FC<ICMSTableNavigation> = ({ label, items
   const folders = useAtomValue(cmsRouteFolders.folders);
   const folderScope = useAtomValue(cmsManager.folderScope);
   const rootPathname = useAtomValue(cmsRouteFolders.rootPathname);
-  const hasSelectedItems = useAtomValue(useMemo(() => atom((get) => !!get(tableState.selectedIDs).size), [tableState.selectedIDs]));
+  const hasSelectedItems = useAtomValue(
+    useMemo(() => atom((get) => !!get(tableState.selectedIDs).size), [tableState.selectedIDs])
+  );
 
   const allResourcesCount = useSelector(Designer.utils.getCMSResourceCountSelector(folderScope));
 

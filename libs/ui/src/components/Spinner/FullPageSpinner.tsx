@@ -1,7 +1,8 @@
 import { styled } from '@ui/styles';
 import React from 'react';
 
-import Spinner, { SpinnerProps } from './Spinner';
+import type { SpinnerProps } from './Spinner';
+import Spinner from './Spinner';
 
 interface ContainerProps {
   isAbs?: boolean;

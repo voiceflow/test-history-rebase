@@ -7,7 +7,7 @@ import { isFeatureEnabledSelector } from '@/ducks/feature';
 import * as Router from '@/ducks/router/sideEffects';
 import * as Session from '@/ducks/session';
 import * as VariableState from '@/ducks/variableState/selectors';
-import { SyncThunk } from '@/store/types';
+import type { SyncThunk } from '@/store/types';
 import { findDomainIDByDiagramID } from '@/utils/domain';
 
 import { updatePrototype, updatePrototypeStatus } from '../actions';

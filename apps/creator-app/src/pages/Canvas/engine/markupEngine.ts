@@ -1,8 +1,9 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 
 import { BaseText } from '@voiceflow/base-types';
-import { Nullable } from '@voiceflow/common';
-import { BlockType, MarkupBlockType } from '@voiceflow/realtime-sdk';
+import type { Nullable } from '@voiceflow/common';
+import type { MarkupBlockType } from '@voiceflow/realtime-sdk';
+import { BlockType } from '@voiceflow/realtime-sdk';
 import React from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
 import type { Editor } from 'slate';
@@ -46,11 +47,17 @@ class MarkupEngine extends EngineConsumer {
   async addTextNode(): Promise<void> {
     await this.engine.node.add({
       type: BlockType.MARKUP_TEXT,
-      coords: this.engine.getMouseCoords().sub([12 * (this.engine.canvas?.getZoom() ?? 1), 26 * (this.engine.canvas?.getZoom() ?? 1)]),
+      coords: this.engine
+        .getMouseCoords()
+        .sub([12 * (this.engine.canvas?.getZoom() ?? 1), 26 * (this.engine.canvas?.getZoom() ?? 1)]),
       factoryData: {
         scale: 1,
         rotate: 0,
-        content: [...SlateEditorAPI.createTextState('', { elementProperties: { [BaseText.ElementProperty.TEXT_ALIGN]: 'center' } })],
+        content: [
+          ...SlateEditorAPI.createTextState('', {
+            elementProperties: { [BaseText.ElementProperty.TEXT_ALIGN]: 'center' },
+          }),
+        ],
         overrideWidth: 178,
         backgroundColor: DEFAULT_BACKGROUND_COLOR,
       },

@@ -1,7 +1,7 @@
 import { Utils } from '@voiceflow/common';
 
 import { STATE_KEY } from './constants';
-import { Transaction } from './types';
+import type { Transaction } from './types';
 
 export const historyType = Utils.protocol.typeFactory(STATE_KEY);
 
@@ -31,5 +31,9 @@ export const dropTransactions = Utils.protocol.createAction<DropTransactionsPayl
 export const undoTransaction = Utils.protocol.createAction<RevertTransactionPayload>(historyType('UNDO_TRANSACTION'));
 export const redoTransaction = Utils.protocol.createAction<RevertTransactionPayload>(historyType('REDO_TRANSACTION'));
 export const flushTransaction = Utils.protocol.createAction<TransactionPayload>(historyType('FLUSH_TRANSACTION'));
-export const startIgnoreTransactions = Utils.protocol.createAction<IgnoreTransactionsPayload>(historyType('START_IGNORE_TRANSACTIONS'));
-export const stopIgnoreTransactions = Utils.protocol.createAction<IgnoreTransactionsPayload>(historyType('STOP_IGNORE_TRANSACTIONS'));
+export const startIgnoreTransactions = Utils.protocol.createAction<IgnoreTransactionsPayload>(
+  historyType('START_IGNORE_TRANSACTIONS')
+);
+export const stopIgnoreTransactions = Utils.protocol.createAction<IgnoreTransactionsPayload>(
+  historyType('STOP_IGNORE_TRANSACTIONS')
+);

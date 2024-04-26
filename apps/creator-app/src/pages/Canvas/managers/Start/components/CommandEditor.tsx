@@ -1,4 +1,4 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Button, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 import { useParams } from 'react-router-dom';
@@ -20,7 +20,9 @@ const CommandEditor: React.FC = () => {
 
   const goToDiagramHistoryPush = useDispatch(Router.goToDiagramHistoryPush);
 
-  const commandNodeData = useSelector(CreatorV2.nodeDataByIDSelector, { id: commandNodeID }) as Realtime.NodeData.Command | null;
+  const commandNodeData = useSelector(CreatorV2.nodeDataByIDSelector, {
+    id: commandNodeID,
+  }) as Realtime.NodeData.Command | null;
   const intent = useSelector(Designer.Intent.selectors.oneWithFormattedBuiltNameByID, { id: commandNodeData?.intent });
 
   const onChange = (data: Partial<Realtime.NodeData.Command>) => editor.engine.node.updateData(commandNodeID, data);

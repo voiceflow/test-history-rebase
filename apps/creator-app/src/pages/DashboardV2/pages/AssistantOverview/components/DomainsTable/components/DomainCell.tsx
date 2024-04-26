@@ -1,5 +1,6 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
-import { getNestedMenuFormattedLabel, TableTypes } from '@voiceflow/ui';
+import type * as Realtime from '@voiceflow/realtime-sdk';
+import type { TableTypes } from '@voiceflow/ui';
+import { getNestedMenuFormattedLabel } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Router from '@/ducks/router';

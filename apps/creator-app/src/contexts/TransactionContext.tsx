@@ -1,4 +1,4 @@
-import { Eventual } from '@voiceflow/common';
+import type { Eventual } from '@voiceflow/common';
 import React from 'react';
 
 // needs this complex type to accept nested promise.alls

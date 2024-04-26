@@ -20,7 +20,7 @@ export default defineConfig({
   },
   e2e: {
     defaultCommandTimeout: process.env.CI ? Timeout.LONG : Timeout.DEFAULT,
-    specPattern: `**/*.spec.ts`,
+    specPattern: '**/*.spec.ts',
     setupNodeEvents(cypressOn, config) {
       const on = patchCypressOn(cypressOn);
 

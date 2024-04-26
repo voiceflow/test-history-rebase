@@ -1,11 +1,12 @@
-import { BaseModels } from '@voiceflow/base-types';
+import type { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
-import { Context } from '@voiceflow/socket-utils';
-import { Action } from 'typescript-fsa';
+import type { Context } from '@voiceflow/socket-utils';
+import type { Action } from 'typescript-fsa';
 
 import { AbstractVersionDiagramAccessActionControl } from '@/legacy/actions/diagram/utils';
 
-import { extractNodes, ExtractNodesOptions } from './utils';
+import type { ExtractNodesOptions } from './utils';
+import { extractNodes } from './utils';
 
 class InsertStep extends AbstractVersionDiagramAccessActionControl<Realtime.node.InsertStepPayload> {
   actionCreator = Realtime.node.insertStep;

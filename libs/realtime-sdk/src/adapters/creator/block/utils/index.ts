@@ -1,9 +1,11 @@
-import { AdapterContext } from '@realtime-sdk/adapters/types';
-import { BaseButton, BaseModels, BaseNode, Nullable } from '@voiceflow/base-types';
-import { AnyRecord, EmptyObject, Utils } from '@voiceflow/common';
+import type { AdapterContext } from '@realtime-sdk/adapters/types';
+import type { BaseModels, BaseNode, Nullable } from '@voiceflow/base-types';
+import { BaseButton } from '@voiceflow/base-types';
+import type { AnyRecord, EmptyObject } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
 import { createMultiAdapter, createSimpleAdapter } from 'bidirectional-adapter';
 
-import { NodeData } from '../../../../models';
+import type { NodeData } from '../../../../models';
 
 export * from './noMatch';
 export * from './noReply';
@@ -22,11 +24,17 @@ export const createBlockAdapter = <
   DBSchema extends AnyRecord,
   AppSchema extends AnyRecord,
   FromDBOptions extends object = EmptyObject,
-  ToDBOptions extends object = EmptyObject
+  ToDBOptions extends object = EmptyObject,
 >(
   fromDB: (dbData: DBSchema, options: FromDBBlockAdapterOptions & FromDBOptions) => AppSchema,
   toDB: (appData: AppSchema, options: BlockAdapterOptions & ToDBOptions) => DBSchema
-) => createSimpleAdapter<DBSchema, AppSchema, [FromDBBlockAdapterOptions & FromDBOptions], [BlockAdapterOptions & ToDBOptions]>(fromDB, toDB);
+) =>
+  createSimpleAdapter<
+    DBSchema,
+    AppSchema,
+    [FromDBBlockAdapterOptions & FromDBOptions],
+    [BlockAdapterOptions & ToDBOptions]
+  >(fromDB, toDB);
 
 export const chipsToIntentButtons = (chips?: Nullable<BaseButton.Chip[]>): Nullable<BaseButton.IntentButton[]> =>
   chips?.map(({ label: name }) => ({ name, type: BaseButton.ButtonType.INTENT, payload: { intentID: null } })) ?? null;

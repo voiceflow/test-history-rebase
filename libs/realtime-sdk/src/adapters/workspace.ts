@@ -1,5 +1,5 @@
 import { WorkspaceActivationState } from '@realtime-sdk/constants';
-import { DBWorkspace, Workspace } from '@realtime-sdk/models';
+import type { DBWorkspace, Workspace } from '@realtime-sdk/models';
 import { isWorkspaceMember, isWorkspacePendingMember } from '@realtime-sdk/utils/typeGuards';
 import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter';
 import * as Normal from 'normal-store';

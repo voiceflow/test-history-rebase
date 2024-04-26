@@ -37,7 +37,10 @@ export class KnowledgeBaseDocumentPublicHTTPController {
     description: 'Get document by id in the target project',
     schema: DocumentFindOneResponse,
   })
-  async getOne(@Param('assistantID') assistantID: string, @Param('documentID') documentID: string): Promise<DocumentFindOneResponse> {
+  async getOne(
+    @Param('assistantID') assistantID: string,
+    @Param('documentID') documentID: string
+  ): Promise<DocumentFindOneResponse> {
     return this.service.findOneDocument(assistantID, documentID);
   }
 

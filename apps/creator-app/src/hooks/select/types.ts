@@ -1,4 +1,4 @@
-import { UIOnlyMenuItemOption } from '@voiceflow/ui';
+import type { UIOnlyMenuItemOption } from '@voiceflow/ui';
 
 export interface BaseSelectOption {
   id: string;

@@ -1,4 +1,4 @@
-import { AlexaConstants, AlexaProject } from '@voiceflow/alexa-types';
+import type { AlexaConstants, AlexaProject } from '@voiceflow/alexa-types';
 
 export interface ProductMarketPlace {
   price: number;

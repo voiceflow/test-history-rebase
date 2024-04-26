@@ -1,6 +1,6 @@
 /* eslint-disable sonarjs/no-duplicate-string, mocha/no-identical-title */
 import { BaseNode, BaseVersion } from '@voiceflow/base-types';
-import * as Platform from '@voiceflow/platform-config';
+import type * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import * as Session from '@/ducks/session';
@@ -92,7 +92,11 @@ suite(Version, MOCK_STATE)('Ducks - Version V2', ({ describeReducerV2, describeE
       });
 
       it('do nothing if version does not exist', () => {
-        const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, versionID: 'foo', publishing: { abc: 'def' } as any });
+        const result = applyAction(MOCK_STATE, {
+          ...ACTION_CONTEXT,
+          versionID: 'foo',
+          publishing: { abc: 'def' } as any,
+        });
 
         expect(result).toBe(MOCK_STATE);
       });
@@ -106,7 +110,11 @@ suite(Version, MOCK_STATE)('Ducks - Version V2', ({ describeReducerV2, describeE
       });
 
       it('do nothing if version does not exist', () => {
-        const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, versionID: 'foo', settings: { defaultVoice: 'foo' as any } });
+        const result = applyAction(MOCK_STATE, {
+          ...ACTION_CONTEXT,
+          versionID: 'foo',
+          settings: { defaultVoice: 'foo' as any },
+        });
 
         expect(result).toBe(MOCK_STATE);
       });

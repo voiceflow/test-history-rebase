@@ -2,7 +2,8 @@ import { Input } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 
-export interface PasswordInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'value' | 'children'> {
+export interface PasswordInputProps
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'value' | 'children'> {
   value: string;
   onChange: (value: string) => void;
   isInvalid?: boolean;
@@ -10,7 +11,10 @@ export interface PasswordInputProps extends Omit<React.InputHTMLAttributes<HTMLI
 }
 
 const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(
-  ({ name = 'password', required = true, onChange, isInvalid, placeholder = 'Password', showPassword, ...props }, ref) => (
+  (
+    { name = 'password', required = true, onChange, isInvalid, placeholder = 'Password', showPassword, ...props },
+    ref
+  ) => (
     <Input
       {...props}
       ref={ref}

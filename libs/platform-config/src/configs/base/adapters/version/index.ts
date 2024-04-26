@@ -1,9 +1,9 @@
 import { Config as ConfigUtils } from '@platform-config/configs/utils';
-import { BaseVersion } from '@voiceflow/base-types';
-import { VersionSettings } from '@voiceflow/dtos';
+import type { BaseVersion } from '@voiceflow/base-types';
+import type { VersionSettings } from '@voiceflow/dtos';
 import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter';
 
-import * as Models from '../../models';
+import type * as Models from '../../models';
 import * as Publishing from './publishing';
 import * as Session from './session';
 import * as Settings from './settings';
@@ -11,7 +11,10 @@ import * as Settings from './settings';
 export { Publishing, Session, Settings };
 
 export type FromDBOptions = [{ defaultVoice: string; globalVariables: string[] }];
-export type DBVersion<V extends BaseVersion.Version<any>> = Pick<V, '_id' | 'platformData' | Models.Version.ModelDBSharedFields> & {
+export type DBVersion<V extends BaseVersion.Version<any>> = Pick<
+  V,
+  '_id' | 'platformData' | Models.Version.ModelDBSharedFields
+> & {
   settings?: VersionSettings;
 };
 

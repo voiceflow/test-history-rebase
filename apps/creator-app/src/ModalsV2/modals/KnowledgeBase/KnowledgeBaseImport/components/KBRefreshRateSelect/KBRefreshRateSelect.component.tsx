@@ -4,12 +4,12 @@ import { tid } from '@voiceflow/style';
 import { Box, Dropdown, Menu, Text, Tokens, Tooltip } from '@voiceflow/ui-next';
 import React from 'react';
 
-import { UpgradeTooltipPlanPermission } from '@/config/planPermission';
+import type { UpgradeTooltipPlanPermission } from '@/config/planPermission';
 import { Permission } from '@/constants/permissions';
 import { usePermission } from '@/hooks/permission';
 import { useStore } from '@/hooks/redux';
 
-import { IRefreshRateSelect } from './RefreshRateSelect.interface';
+import type { IRefreshRateSelect } from './RefreshRateSelect.interface';
 
 export const KBRefreshRateSelect: React.FC<IRefreshRateSelect> = ({
   value = BaseModels.Project.KnowledgeBaseDocumentRefreshRate.NEVER,
@@ -77,7 +77,9 @@ export const KBRefreshRateSelect: React.FC<IRefreshRateSelect> = ({
           <Box direction="column">
             <Tooltip.Caption>{upgradeTooltip.description}</Tooltip.Caption>
             {upgradeTooltip.upgradeButtonText && (
-              <Tooltip.Button onClick={() => upgradeTooltip.onUpgrade(store.dispatch)}>{upgradeTooltip.upgradeButtonText}</Tooltip.Button>
+              <Tooltip.Button onClick={() => upgradeTooltip.onUpgrade(store.dispatch)}>
+                {upgradeTooltip.upgradeButtonText}
+              </Tooltip.Button>
             )}
           </Box>
         )}

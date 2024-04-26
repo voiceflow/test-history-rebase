@@ -1,3 +1,5 @@
+export * from './action/action.dto';
+export * from './action/action-type.enum';
 export * from './ai/ai-message.dto';
 export * from './ai/ai-message-role.enum';
 export * from './ai/ai-model.constant';
@@ -92,6 +94,7 @@ export * from './prompt/prompt.dto';
 export * from './prompt/prompt-create.dto';
 export * from './prototype-program/prototype-program.dto';
 export * from './request/action-request.dto';
+export * from './request/general-request.dto';
 export * from './request/intent-request.dto';
 export * from './request/launch-request.dto';
 export * from './request/no-reply-request.dto';

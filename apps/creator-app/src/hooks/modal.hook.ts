@@ -15,6 +15,7 @@ import type { IntentBulkImportUtterancesModalProps } from '@/ModalsV2/modals/Int
 import type { IIntentCreateModal } from '@/ModalsV2/modals/Intent/IntentCreate/IntentCreate.interface';
 import type { IIntentEditModal } from '@/ModalsV2/modals/Intent/IntentEdit.modal';
 import type { Props as SuccessProps } from '@/ModalsV2/modals/Success';
+import type { ITokenPurchase } from '@/ModalsV2/modals/Tokens/Purchase';
 import type { UpgradeModal } from '@/ModalsV2/modals/Upgrade';
 import type { IVariableCreateModal } from '@/ModalsV2/modals/Variable/VariableCreate.modal';
 import type { IVariableEditModal } from '@/ModalsV2/modals/Variable/VariableEdit.modal';
@@ -41,6 +42,7 @@ export const usePaymentModal = (): PropsPublicAPI<PaymentModalAPIProps> => {
   const chargebeeSubscription = useSelector(Organization.chargebeeSubscriptionSelector);
   return chargebeeSubscription ? newPaymentModal : legacyPaymentModal;
 };
+export const useTokensPurchaseModal = () => useModal<ITokenPurchase>('TokensPurchase');
 
 export const useVariablePromptModal = () => useModal<VariablePromptProps, VariablePromptResult>('VariablePrompt');
 

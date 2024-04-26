@@ -16,11 +16,11 @@
     "test:e2e": "yarn cypress:run --env split=true"
   },
   "dependencies": {
-    "@4tw/cypress-drag-drop": "^2.2.5",
+    "@4tw/cypress-drag-drop": "2.2.5",
     "@voiceflow/cypress-common": "1.2.7",
     "@voiceflow/cypress-page-objects": "1.4.1",
     "@voiceflow/test-common": "1.10.3",
-    "cy-verify-downloads": "^0.2.2",
+    "cy-verify-downloads": "0.2.3",
     "cypress": "13.4.0",
     "cypress-delete-downloads-folder": "0.0.4",
     "cypress-on-fix": "1.0.2",

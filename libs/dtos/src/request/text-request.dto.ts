@@ -9,3 +9,5 @@ export const TextRequestDTO = BaseRequestDTO.extend({
 });
 
 export type TextRequest = z.infer<typeof TextRequestDTO>;
+
+export const isTextRequest = (value: unknown): value is TextRequest => TextRequestDTO.safeParse(value).success;

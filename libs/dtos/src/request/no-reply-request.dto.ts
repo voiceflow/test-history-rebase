@@ -8,3 +8,5 @@ export const NoReplyRequestDTO = BaseRequestDTO.extend({
 });
 
 export type NoReplyRequest = z.infer<typeof NoReplyRequestDTO>;
+
+export const isNoReplyRequest = (value: unknown): value is NoReplyRequest => NoReplyRequestDTO.safeParse(value).success;

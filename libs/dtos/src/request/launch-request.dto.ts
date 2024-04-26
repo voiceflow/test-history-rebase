@@ -13,3 +13,5 @@ export const LaunchRequestDTO = BaseRequestDTO.extend({
 });
 
 export type LaunchRequest = z.infer<typeof LaunchRequestDTO>;
+
+export const isLaunchRequest = (value: unknown): value is LaunchRequest => LaunchRequestDTO.safeParse(value).success;

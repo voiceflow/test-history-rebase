@@ -10,7 +10,7 @@ import { useSelector } from '@/hooks/redux';
 import { useDeviceDimension } from '@/pages/Prototype/hooks/deviceDimensions';
 import { ClassName } from '@/styles/constants';
 
-import { APL, Container, Image, ListenerContainer, PlaceholderContainer, ScaleContainer } from './components';
+import { Container, Image, ListenerContainer, PlaceholderContainer, ScaleContainer } from './components';
 import { getScale } from './utils';
 
 interface VisualsProps {
@@ -79,19 +79,6 @@ const Visuals: React.FC<VisualsProps> = ({ isMobile, isFullScreen, onStopListeni
                 isMobile={isMobile}
               >
                 <Image url={data.image} width={dimension.width} height={dimension.height} />
-              </ScaleContainer>
-            </Animations.Fade>
-          )}
-          {data?.visualType === BaseNode.Visual.VisualType.APL && (
-            <Animations.Fade className={cn(ClassName.VISUAL, ClassName.VISUAL_APL)} key={contentKey}>
-              <ScaleContainer
-                className={ClassName.SCALE_CONTAINER}
-                width={dimension.width}
-                height={dimension.height}
-                scale={scale}
-                isMobile={isMobile}
-              >
-                <APL data={data} device={device} dimension={dimension} />
               </ScaleContainer>
             </Animations.Fade>
           )}

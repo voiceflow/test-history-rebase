@@ -9765,7 +9765,6 @@ __metadata:
     "@voiceflow/ui-next": "npm:@voiceflow/ui@2.211.6"
     "@voiceflow/utils-designer": "workspace:*"
     "@voiceflow/voiceflow-types": 3.27.0
-    apl-viewhost-web: 2023.1.0-1
     axios: 1.6.0
     bidirectional-adapter: 1.2.1
     bowser: 2.11.0
@@ -11875,13 +11874,6 @@ __metadata:
     normalize-path: ^3.0.0
     picomatch: ^2.0.4
   checksum: 985163db2292fac9e5a1e072bf99f1b5baccf196e4de25a0b0b81865ebddeb3b3eb4480734ef0a2ac8c002845396b91aa89121f5b84f93981a4658164a9ec6e9
-  languageName: node
-  linkType: hard
-
-"apl-viewhost-web@npm:2023.1.0-1":
-  version: 2023.1.0-1
-  resolution: "apl-viewhost-web@npm:2023.1.0-1"
-  checksum: ef900559a25d7bed302ec41c9e12d20edf8bd3d968e7af9454174345bfb09d2b4d600654e67ef2b8e3cf912f6fde707e40f247aa36803d214afe2c845766645f
   languageName: node
   linkType: hard
 

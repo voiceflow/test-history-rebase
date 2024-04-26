@@ -8,16 +8,16 @@
     "build"
   ],
   "scripts": {
-    "prebuild": "yarn g:rimraf build",
-    "build": "yarn prebuild && yarn g:tsc -p tsconfig.build.json && yarn g:tsc-alias -p tsconfig.build.json && yarn postbuild",
-    "postbuild": "touch build/package.json && echo '{ \"type\": \"module\" }' > build/package.json",
-    "lint": "yarn g:run-p lint:eslint \"lint:prettier --check\"",
-    "lint:eslint": "yarn g:eslint \"src/**/*.{js,ts}\"",
-    "lint:fix": "yarn g:run-p \"lint:eslint --fix\" \"lint:prettier --write\"",
-    "lint:prettier": "yarn g:prettier . \"!**/*.{js,ts}\"",
-    "lint:report": "yarn g:eslint-output \"./src/**/*.{js,ts}\"",
-    "test:dependencies": "yarn g:depcheck",
-    "test:types": "yarn g:tsd"
+    "build": "yarn g:turbo run build:cmd --filter=@voiceflow/sdk-logux-designer...",
+    "build:cmd": "yarn g:build:pkg",
+    "clean": "yarn g:rimraf build",
+    "lint": "yarn g:run-p -c lint:eslint lint:prettier",
+    "lint:eslint": "yarn g:eslint",
+    "lint:fix": "yarn g:run-p -c \"lint:eslint --fix\" \"lint:prettier --write\"",
+    "lint:prettier": "yarn g:prettier --check",
+    "test": "yarn g:run-p -c test:dependencies test:types",
+    "test:dependencies": "yarn g:depcruise",
+    "test:types": "yarn g:tsc --noEmit"
   },
   "dependencies": {
     "@voiceflow/base-types": "2.106.0",

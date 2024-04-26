@@ -54,7 +54,7 @@ export const CMSKnowledgeBaseTable: React.FC = () => {
       description={
         <Box direction="column" align="center" justify="center">
           <div>
-            Add data sources to your assistant to build a knowledge base of material.{` `}
+            Add data sources to your agent to build a knowledge base of material.{` `}
             <Link inline label="Learn more" href={CMS_KNOWLEDGE_BASE_LEARN_MORE} target="_blank" testID={tid(EMPTY_TEST_ID, 'learn-more')} />
           </div>
 

@@ -22,7 +22,7 @@ export const documentAdapter = createMultiAdapter<DBKnowledgeBaseDocument, Knowl
 );
 
 export const documentAdapterRealtime = createMultiAdapter<RealtimeKnowledgeBaseDocument, KnowledgeBaseDocument>(
-  ({ data, status, updatedAt, ...rest }) => ({
+  ({ data, status, s3ObjectRef, updatedAt, ...rest }) => ({
     ...rest,
     updatedAt: updatedAt || new Date().toString(),
     id: rest.documentID,
@@ -30,6 +30,7 @@ export const documentAdapterRealtime = createMultiAdapter<RealtimeKnowledgeBaseD
     status: status.type as BaseModels.Project.KnowledgeBaseDocumentStatus,
     folderID: null,
     statusData: status.data,
+    s3ObjectRef: s3ObjectRef || '',
   }),
   ({ id, data, status, statusData, ...rest }) => ({
     ...rest,

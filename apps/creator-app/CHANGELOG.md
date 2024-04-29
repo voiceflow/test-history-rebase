@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1504.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1503.0...@voiceflow/creator-app@1.1504.0) (2024-04-29)
+
+### Features
+
+* fix checkout showing annual value instead of monthly value on plans [bugfix] (COR-1983) ([#8051](https://github.com/voiceflow/creator-app/issues/8051)) ([a90458d](https://github.com/voiceflow/creator-app/commit/a90458d44cb9c2e77d37071fc870e9d05ef82fa6))
+
 # [1.1503.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1502.0...@voiceflow/creator-app@1.1503.0) (2024-04-29)
 
 ### Features

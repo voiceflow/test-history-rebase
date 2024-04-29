@@ -63,6 +63,8 @@ export const patchManyRefreshRate =
   async (dispatch, getState) => {
     const state = getState();
 
+    const realtimeKBEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.KB_BE_DOC_CRUD);
+
     const projectID = Session.activeProjectIDSelector(state);
 
     Errors.assertProjectID(projectID);
@@ -72,10 +74,17 @@ export const patchManyRefreshRate =
       data: { ...document.data, refreshRate } as BaseModels.Project.KnowledgeBaseURL,
     }));
 
-    await knowledgeBaseClient.updateManyDocuments(
-      projectID,
-      documents.map((doc) => ({ data: doc.data, documentID: doc.id }))
-    );
+    if (realtimeKBEnabled) {
+      await designerClient.knowledgeBase.document.patchMany(projectID, {
+        documentIDs,
+        patch: { data: { refreshRate } },
+      });
+    } else {
+      await knowledgeBaseClient.updateManyDocuments(
+        projectID,
+        documents.map((doc) => ({ data: doc.data, documentID: doc.id }))
+      );
+    }
 
     Tracking.trackAiKnowledgeBaseSourceUpdated({ documentIDs, Update_Type: 'Refresh rate' });
 

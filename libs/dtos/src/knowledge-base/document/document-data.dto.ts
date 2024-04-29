@@ -11,12 +11,16 @@ export const KBDocumentPDFDataDTO = z
   })
   .strict();
 
+export type KBDocumentPDFData = z.infer<typeof KBDocumentPDFDataDTO>;
+
 export const KBDocumentDocxDataDTO = z
   .object({
     type: z.literal(KnowledgeBaseDocumentType.DOCX),
     name: z.string(),
   })
   .strict();
+
+export type KBDocumentDocxData = z.infer<typeof KBDocumentDocxDataDTO>;
 
 export const KBDocumentTextDataDTO = z
   .object({
@@ -25,6 +29,8 @@ export const KBDocumentTextDataDTO = z
     canEdit: z.boolean().optional(),
   })
   .strict();
+
+export type KBDocumentTextData = z.infer<typeof KBDocumentTextDataDTO>;
 
 export const KBDocumentUrlDataDTO = z
   .object({
@@ -39,6 +45,8 @@ export const KBDocumentUrlDataDTO = z
   })
   .strict();
 
+export type KBDocumentUrlData = z.infer<typeof KBDocumentUrlDataDTO>;
+
 export const KBDocumentTableDataDTO = z
   .object({
     type: z.literal(KnowledgeBaseDocumentType.TABLE),
@@ -46,6 +54,8 @@ export const KBDocumentTableDataDTO = z
     rowsCount: z.number(),
   })
   .strict();
+
+export type KBDocumentTableData = z.infer<typeof KBDocumentTableDataDTO>;
 
 export const KBDocumentDataDTO = z.discriminatedUnion('type', [
   KBDocumentPDFDataDTO,

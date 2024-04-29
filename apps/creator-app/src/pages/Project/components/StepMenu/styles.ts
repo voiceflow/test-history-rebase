@@ -1,3 +1,5 @@
+import { Tokens } from '@voiceflow/ui-next/styles';
+
 import { css, styled } from '@/hocs/styled';
 import { ClassName } from '@/styles/constants';
 
@@ -39,16 +41,27 @@ export const TopLevelInnerContainer = styled.div<{ size: number }>`
   `}
 `;
 
-export const TopLevelOuterContainer = styled.div`
+export const TopLevelOuterContainer = styled.div<{ sidebarVisible?: boolean }>`
   position: absolute;
   top: 12px;
-  left: 100%;
-  transform: translateX(12px);
+
   padding: 4px;
   border-radius: 10px;
   background-color: rgba(231, 238, 239, 0.8);
   z-index: 10;
   color: ${({ theme }) => theme.colors.primary};
+  transition-property: left;
+  transition-duration: ${Tokens.animation.duration.default};
+  transition-timing-function: ${Tokens.animation.timingFunction.default};
+
+  ${({ sidebarVisible }) =>
+    sidebarVisible
+      ? css`
+          left: calc(100% + 12px);
+        `
+      : css`
+          left: 12px;
+        `}
 
   ${StepMenuExpandButton} {
     opacity: 0;

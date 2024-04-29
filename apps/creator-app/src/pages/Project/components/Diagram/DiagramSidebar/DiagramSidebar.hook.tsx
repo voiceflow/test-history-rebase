@@ -138,7 +138,7 @@ export const useRenderFlowItemContextMenu = ({ canEditCanvas }: { canEditCanvas:
       if (item.metaData.type === 'folder') return renderFolderContextMenu({ folderID: item.metaData.id, onClose, onRename });
       if (item.metaData.type !== 'flow' || !canEditCanvas) return null;
 
-      const { id, diagramID } = item.metaData;
+      const { id } = item.metaData;
 
       const onDuplicate = async () => {
         const flow = await duplicateOne(id);
@@ -154,9 +154,7 @@ export const useRenderFlowItemContextMenu = ({ canEditCanvas }: { canEditCanvas:
 
       return (
         <>
-          <Menu.Item label="Rename" onClick={Utils.functional.chain(onRename, onClose)} prefixIconName="Edit" />
-
-          <Menu.Item label="Edit" onClick={Utils.functional.chain(() => goToDiagram(diagramID), onClose)} prefixIconName="EditS" />
+          <Menu.Item label="RenameS" onClick={Utils.functional.chain(onRename, onClose)} prefixIconName="Edit" />
 
           <Menu.Item label="Duplicate" onClick={Utils.functional.chain(onDuplicate, onClose)} prefixIconName="Duplicate" />
 
@@ -205,7 +203,7 @@ export const useRenderWorkflowItemContextMenu = ({ canEditCanvas }: { canEditCan
 
       return (
         <>
-          {canEditCanvas && <Menu.Item label="Rename" onClick={Utils.functional.chain(onRename, onClose)} prefixIconName="EditS" />}
+          {canEditCanvas && <Menu.Item label="RenameS" onClick={Utils.functional.chain(onRename, onClose)} prefixIconName="EditS" />}
 
           {canEditCanvas && <Menu.Item label="Duplicate" onClick={Utils.functional.chain(onDuplicate, onClose)} prefixIconName="Duplicate" />}
 

@@ -34,6 +34,7 @@ export const isFirstLine = (points: PathPoints, [start, end]: PathLine): boolean
 export const isLastLine = (points: PathPoints, [start, end]: PathLine): boolean =>
   isEqualPoints(points[points.length - 2], start) && isEqualPoints(points[points.length - 1], end);
 
+// eslint-disable-next-line sonarjs/cognitive-complexity
 export const getActiveLine = (points: PathPoints, [pointX, pointY]: Point): PathLine | null => {
   const lines: PathLine[] = [];
 

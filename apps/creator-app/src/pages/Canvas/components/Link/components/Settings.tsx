@@ -54,6 +54,7 @@ const Settings: React.FC<SettingsProps> = ({
 
   const cache = useCache({ isCanvasOnly, canvasSidebar }, { isCanvasOnly, canvasSidebar });
 
+  // eslint-disable-next-line sonarjs/cognitive-complexity
   const setPosition = React.useCallback(() => {
     if (!engine.canvas) return;
 

@@ -1,3 +1,5 @@
+import type { EmptyObject } from '@voiceflow/common';
+
 import type { Dispatchable, ThunkResult } from './dispatch';
 import type * as Generics from './generics';
 
@@ -19,7 +21,7 @@ export type MappedDispatchProps<T extends ActionCreatorLookup> = {
 };
 
 export type MergeArguments<
-  S extends SelectorLookup<any> = {},
-  D extends ActionCreatorLookup = {},
-  P extends object = {},
+  S extends SelectorLookup<any> = EmptyObject,
+  D extends ActionCreatorLookup = EmptyObject,
+  P extends object = EmptyObject,
 > = [MappedStateProps<S>, MappedDispatchProps<D>, P];

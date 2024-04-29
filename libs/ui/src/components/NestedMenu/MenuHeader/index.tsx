@@ -58,6 +58,7 @@ const MenuHeader: React.FC<MenuHeaderProps> = ({
   onChangeSearchLabel,
   createInputAutofocus = true,
   createInputPlaceholder,
+  // eslint-disable-next-line sonarjs/cognitive-complexity
 }) => {
   const inputRef = React.useRef<HTMLInputElement>(null);
 

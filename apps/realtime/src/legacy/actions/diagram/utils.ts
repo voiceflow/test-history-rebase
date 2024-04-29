@@ -78,7 +78,9 @@ export abstract class AbstractNoopDiagramActionControl<
   P extends Realtime.BaseDiagramPayload,
   D extends BaseContextData = BaseContextData,
 > extends AbstractDiagramActionControl<P, D> {
-  process = async (): Promise<void> => {};
+  process = async (): Promise<void> => {
+    // no-op
+  };
 }
 
 export abstract class AbstractDiagramResourceControl<

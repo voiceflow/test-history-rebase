@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-namespace */
 import type { BillingPeriod, PlanType } from '@voiceflow/internal';
 
 export interface Billing {

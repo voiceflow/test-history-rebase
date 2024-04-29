@@ -27,6 +27,7 @@ const buildCurvePath = (points: PathPoints): string => {
   return `M ${startX} ${startY} C ${startX + inflectionOffset} ${startY}, ${endX - inflectionOffset} ${endY}, ${endX} ${endY}`;
 };
 
+// eslint-disable-next-line sonarjs/cognitive-complexity
 const buildStraightPath = (points: PathPoints): string => {
   const [startX, startY] = getPoint(points[0]);
 

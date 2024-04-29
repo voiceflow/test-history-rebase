@@ -28,6 +28,7 @@ const EMPTY_HEADER_ACTIONS: SidebarHeaderAction[] = [];
 
 const FOCUSED_NODE_SIDEBAR_OFFSET = 20;
 
+// eslint-disable-next-line sonarjs/cognitive-complexity
 const EditSidebar = () => {
   const theme = useTheme();
 

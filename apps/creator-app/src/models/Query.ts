@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-namespace */
 import type { BillingPeriod } from '@voiceflow/internal';
 
 export type Query = Query.Onboarding &

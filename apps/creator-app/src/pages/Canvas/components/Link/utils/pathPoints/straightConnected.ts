@@ -28,6 +28,7 @@ import {
 } from './straightHelpers';
 import type { GetPathPointsOptions } from './types';
 
+// eslint-disable-next-line sonarjs/cognitive-complexity
 const getStraightConnectedPoints = (linkedRects: LinkedRects, options: GetPathPointsOptions): PathPoints => {
   if (isStraightLine(linkedRects, options)) {
     return isTargetEndLeftXToRightOfSourceNodeXCenter(linkedRects, options)

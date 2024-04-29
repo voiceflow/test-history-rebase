@@ -90,6 +90,7 @@ const draftJSToSlateAdapter = (data: any): Markup.NodeData.Text => {
           (children[index - 1] as Text).text !== ''
       );
 
+      // eslint-disable-next-line sonarjs/cognitive-complexity
       const getNodeChildrenOffset = (node: Node): number => {
         let offset = 0;
 

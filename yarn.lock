@@ -7585,13 +7585,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/json5@npm:^0.0.29":
-  version: 0.0.29
-  resolution: "@types/json5@npm:0.0.29"
-  checksum: e60b153664572116dfea673c5bda7778dbff150498f44f998e34b5886d8afc47f16799280e4b6e241c0472aef1bc36add771c569c68fc5125fc2ae519a3eb9ac
-  languageName: node
-  linkType: hard
-
 "@types/jsonwebtoken@npm:8.5.9":
   version: 8.5.9
   resolution: "@types/jsonwebtoken@npm:8.5.9"
@@ -22052,23 +22045,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"json5@npm:2.2.3, json5@npm:^2.1.2, json5@npm:^2.2.2, json5@npm:^2.2.3":
+"json5@npm:2.2.3, json5@npm:^2.1.2, json5@npm:^2.2.3":
   version: 2.2.3
   resolution: "json5@npm:2.2.3"
   bin:
     json5: lib/cli.js
   checksum: 2a7436a93393830bce797d4626275152e37e877b265e94ca69c99e3d20c2b9dab021279146a39cdb700e71b2dd32a4cebd1514cd57cee102b1af906ce5040349
-  languageName: node
-  linkType: hard
-
-"json5@npm:^1.0.2":
-  version: 1.0.2
-  resolution: "json5@npm:1.0.2"
-  dependencies:
-    minimist: ^1.2.0
-  bin:
-    json5: lib/cli.js
-  checksum: 866458a8c58a95a49bef3adba929c625e82532bcff1fe93f01d29cb02cac7c3fe1f4b79951b7792c2da9de0b32871a8401a6e3c5b36778ad852bf5b8a61165d7
   languageName: node
   linkType: hard
 
@@ -30208,6 +30190,7 @@ __metadata:
     deep-equal-in-any-order: 2.0.6
     dependency-cruiser: 16.3.1
     eslint: 9.1.1
+    globals: 15.0.0
     husky: 9.0.11
     lint-staged: 15.2.2
     mock-require: 3.0.3
@@ -33023,37 +33006,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tsconfig-paths@npm:4.1.2":
-  version: 4.1.2
-  resolution: "tsconfig-paths@npm:4.1.2"
+"tsconfig-paths@npm:@voiceflow/tsconfig-paths@1.1.3":
+  version: 1.1.3
+  resolution: "@voiceflow/tsconfig-paths@npm:1.1.3"
   dependencies:
-    json5: ^2.2.2
+    get-tsconfig: ^4.5.0
     minimist: ^1.2.6
-    strip-bom: ^3.0.0
-  checksum: 3d9151ecea139594e25618717de15769ab9f38f8e6d510ac16e592b23e7f7105ea13cec5694c3de7e132c98277b775e18edd1651964164ee6d75737c408494cc
-  languageName: node
-  linkType: hard
-
-"tsconfig-paths@npm:4.2.0, tsconfig-paths@npm:^4.1.2, tsconfig-paths@npm:^4.2.0":
-  version: 4.2.0
-  resolution: "tsconfig-paths@npm:4.2.0"
-  dependencies:
-    json5: ^2.2.2
-    minimist: ^1.2.6
-    strip-bom: ^3.0.0
-  checksum: 28c5f7bbbcabc9dabd4117e8fdc61483f6872a1c6b02a4b1c4d68c5b79d06896c3cc9547610c4c3ba64658531caa2de13ead1ea1bf321c7b53e969c4752b98c7
-  languageName: node
-  linkType: hard
-
-"tsconfig-paths@npm:^3.15.0":
-  version: 3.15.0
-  resolution: "tsconfig-paths@npm:3.15.0"
-  dependencies:
-    "@types/json5": ^0.0.29
-    json5: ^1.0.2
-    minimist: ^1.2.6
-    strip-bom: ^3.0.0
-  checksum: 59f35407a390d9482b320451f52a411a256a130ff0e7543d18c6f20afab29ac19fbe55c360a93d6476213cc335a4d76ce90f67df54c4e9037f7d240920832201
+  checksum: b4fbd84df4f82d2a6c3d71c321bfb8b213c14a07184c51777cf9c14e0a301dadbd50daff60f1473c60591540b11b9bf7106264df59e166828a05a1dddaffc0fd
   languageName: node
   linkType: hard
 

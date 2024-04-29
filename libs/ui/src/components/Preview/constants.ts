@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-duplicate-enum-values */
 import type { JSColorStyle } from './types';
 
 export enum PreviewColors {

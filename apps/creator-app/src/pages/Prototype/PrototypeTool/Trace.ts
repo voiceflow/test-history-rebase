@@ -347,6 +347,7 @@ class TraceController {
     this.props.updateStatus(PMStatus.NAVIGATING);
   }
 
+  // eslint-disable-next-line sonarjs/cognitive-complexity
   private async processTrace(trace: Trace[], { onlyMessage = false }: { onlyMessage?: boolean } = {}): Promise<void> {
     if (this.stopped) return;
 
@@ -671,6 +672,7 @@ class TraceController {
     });
   }
 
+  // eslint-disable-next-line sonarjs/cognitive-complexity
   private async highlightBlock(node: Realtime.Node, skipDelay = false) {
     const hasParent = !!node.parentNode;
     const nodeType = node?.type;

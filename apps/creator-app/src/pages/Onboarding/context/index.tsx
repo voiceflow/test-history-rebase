@@ -255,6 +255,7 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
     }
   };
 
+  // eslint-disable-next-line sonarjs/cognitive-complexity
   const finishCreateOnboarding = async () => {
     if (creatingRef.current) return;
     setSendingRequests(true);

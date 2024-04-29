@@ -88,7 +88,9 @@ abstract class MongoModel<DBModel extends Document, Model extends EmptyObject, R
     this._collection = this.clients.mongo.db.collection(this.collectionName);
   }
 
-  destroy(): void {}
+  destroy(): void {
+    // no-op
+  }
 
   // type assertion
   // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/39358

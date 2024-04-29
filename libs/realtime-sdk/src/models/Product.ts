@@ -37,6 +37,7 @@ export interface Product {
 
 export type DBProduct = AlexaProject.Product;
 
+// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace DBProduct {
   export interface PrivacyAndCompliance {
     locales: Partial<Record<AlexaConstants.Locale, LocalePrivacyAndCompliance>>;

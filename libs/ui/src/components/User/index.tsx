@@ -25,10 +25,11 @@ export interface UserProps extends MemberIconProps {
 export const isColorImage = (image?: string | null): image is string => image?.length === 13 && image.includes('|');
 
 const User: React.ForwardRefRenderFunction<HTMLDivElement, UserProps> = ({ user, className, ...props }, ref) => {
-  const letter = React.useMemo(
-    () => (!user.image ? '?' : isColorImage(user.image) ? user.name?.[0] ?? '' : ''),
-    [user]
-  );
+  const letter = React.useMemo(() => {
+    if (!user.image) return '?';
+
+    return (isColorImage(user.image) && user.name?.[0]) || '';
+  }, [user]);
 
   const styles = React.useMemo(() => {
     const style: React.CSSProperties = {};

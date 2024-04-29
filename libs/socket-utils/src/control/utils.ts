@@ -92,5 +92,7 @@ export abstract class AbstractLoguxControl<T extends LoguxControlOptions>
 
   abstract setup(): Eventual<void>;
 
-  destroy(): Eventual<void> {}
+  destroy(): Eventual<void> {
+    // no-op
+  }
 }

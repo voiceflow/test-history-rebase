@@ -33,6 +33,7 @@ const UncontrolledSpeechBar: React.FC<UncontrolledSpeechBarProps> = ({
   onCheckMicrophonePermission,
   isMicrophonePermissionGranted,
   colorScheme = '#5D9DF5',
+  // eslint-disable-next-line sonarjs/cognitive-complexity
 }) => {
   const containerRef = React.useRef<HTMLDivElement>(null);
   const cache = useCache({ onStopListening, onStartListening });

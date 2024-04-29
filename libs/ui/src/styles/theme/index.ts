@@ -127,7 +127,8 @@ const THEME = {
   },
   transition(...propertyWhitelist: string[]): string {
     const properties = propertyWhitelist.length ? propertyWhitelist : ['all'];
-    return `transition: ${properties.map((property) => `${property} ${ANIMATION_SPEED}s ease`).join(',')};`;
+    const transitions = properties.map((property) => `${property} ${ANIMATION_SPEED}s ease`).join(',');
+    return `transition: ${transitions};`;
   },
 };
 

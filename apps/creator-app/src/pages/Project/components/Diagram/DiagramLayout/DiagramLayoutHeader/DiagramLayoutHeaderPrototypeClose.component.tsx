@@ -1,4 +1,4 @@
-import { Header, TooltipWithKeys } from '@voiceflow/ui-next';
+import { Header, TooltipWithKeys, useTooltipModifiers } from '@voiceflow/ui-next';
 import React, { useContext } from 'react';
 
 import { PrototypeStatus } from '@/constants/prototype';
@@ -12,6 +12,7 @@ import { PrototypeContext } from '@/pages/Prototype/context';
 
 export const DiagramLayoutHeaderPrototypeClose: React.FC = () => {
   const prototype = useContext(PrototypeContext);
+  const modifiers = useTooltipModifiers([{ name: 'offset', options: { offset: [0, 11] } }]);
   const [trackingEvents] = useTrackingEvents();
 
   const goToCurrentCanvas = useDispatch(Router.goToCurrentCanvas);
@@ -26,13 +27,20 @@ export const DiagramLayoutHeaderPrototypeClose: React.FC = () => {
 
   return (
     <TooltipWithKeys
-      text="Close"
+      text="Exit"
       hotkeys={[{ label: getHotkeyLabel(Hotkey.CLOSE_CANVAS_MODE) }]}
+      variant="basic"
+      modifiers={modifiers}
       placement="bottom"
       referenceElement={({ ref, onOpen, onClose }) => (
-        <div ref={ref}>
-          <Header.Button.Primary label="Close" iconName="CloseM" onClick={() => goToCurrentCanvas()} onMouseEnter={onOpen} onMouseLeave={onClose} />
-        </div>
+        <Header.Button.Primary
+          ref={ref}
+          label="Close"
+          onClick={() => goToCurrentCanvas()}
+          iconName="CloseM"
+          onMouseEnter={onOpen}
+          onMouseLeave={onClose}
+        />
       )}
     />
   );

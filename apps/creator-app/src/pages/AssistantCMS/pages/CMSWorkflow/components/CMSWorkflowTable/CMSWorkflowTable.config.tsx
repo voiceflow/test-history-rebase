@@ -8,7 +8,13 @@ import { CMSTableCellTextTooltip } from '../../../../components/CMSTableCellText
 import { CMSTableMemberCell } from '../../../../components/CMSTableMemberCell/CMSTableMemberCell.component';
 import { CMSTableNameCell } from '../../../../components/CMSTableNameCell/CMSTableNameCell.component';
 import type { CMSFolder, CMSWorkflow } from '../../../../contexts/CMSManager/CMSManager.interface';
-import { updatedAtSort, withFieldLocaleCompareSort, withFolderSort, withOptionalSort } from '../../../../contexts/CMSManager/CMSManager.util';
+import {
+  localeCompareSort,
+  updatedAtSort,
+  withFieldLocaleCompareSort,
+  withFolderSort,
+  withOptionalSort,
+} from '../../../../contexts/CMSManager/CMSManager.util';
 import { CMSWorkflowSortContext } from '../../CMSWorkflow.interface';
 import { WorkflowTableColumn } from './CMSWorkflowTable.constant';
 import { CMSWorkflowTableTriggersCell } from './CMSWorkflowTableTriggersCell/CMSWorkflowTableTriggersCell.component';
@@ -85,6 +91,12 @@ export const CMS_WORKFLOW_TABLE_CONFIG: TableConfig<WorkflowTableColumn, CMSFold
     [WorkflowTableColumn.ASSIGNEE]: {
       type: WorkflowTableColumn.ASSIGNEE,
       name: 'Assignee',
+      sorter: withFolderSort<CMSWorkflow, CMSWorkflowSortContext>((left, right, { context }) =>
+        withOptionalSort(localeCompareSort)(
+          left.assistantID ? context.membersMap[left.assistantID]?.name : null,
+          right.assistantID ? context.membersMap[right.assistantID]?.name : null
+        )
+      ),
 
       cell: ({ item }) => <Table.Cell.GroupEmpty item={item} label={({ assigneeID }) => <CMSTableMemberCell creatorID={assigneeID} />} />,
     },

@@ -1,6 +1,6 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Button, ButtonVariant, PrimaryButtonProps, SecondaryButtonProps, SvgIcon, SvgIconTypes, TippyTooltip } from '@voiceflow/ui';
-import { Header, TooltipWithKeys } from '@voiceflow/ui-next';
+import { Header, TooltipWithKeys, useTooltipModifiers } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { styled } from '@/hocs/styled';
@@ -26,25 +26,27 @@ interface RunButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
 
 const RunButton: React.FC<RunButtonProps> = ({ variant = ButtonVariant.PRIMARY, loading = false, onClick, active = false }) => {
   const cmsWorkflows = useFeature(Realtime.FeatureFlag.CMS_WORKFLOWS);
+  const modifiers = useTooltipModifiers([{ name: 'offset', options: { offset: [0, 11] } }]);
 
   if (cmsWorkflows.isEnabled) {
     return (
       <TooltipWithKeys
         text="Run"
+        variant="basic"
         hotkeys={[{ label: getHotkeyLabel(Hotkey.RUN_MODE) }]}
+        modifiers={modifiers}
         placement="bottom"
         referenceElement={({ ref, onOpen, onClose }) => (
-          <div ref={ref}>
-            <Header.Button.Primary
-              label="Run"
-              onClick={onClick}
-              iconName="PlayS"
-              isActive={active}
-              isLoading={loading}
-              onMouseEnter={onOpen}
-              onMouseLeave={onClose}
-            />
-          </div>
+          <Header.Button.Primary
+            ref={ref}
+            label="Run"
+            onClick={onClick}
+            iconName="PlayS"
+            isActive={active}
+            isLoading={loading}
+            onMouseEnter={onOpen}
+            onMouseLeave={onClose}
+          />
         )}
       />
     );

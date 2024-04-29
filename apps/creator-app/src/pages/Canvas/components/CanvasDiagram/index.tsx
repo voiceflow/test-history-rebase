@@ -78,7 +78,7 @@ interface FilesDrop extends BaseDrop {
 interface StepMenuDrop extends BaseDrop, Omit<StepDragItem, 'type'> {}
 
 interface ComponentsDrop extends BaseDrop, FolderItemProps {}
-type DroppableItem = FilesDrop | StepMenuDrop | ComponentsDrop | (ITreeData<{ type: 'flow'; diagramID: string }> & { source: 'tree-view' });
+type DroppableItem = FilesDrop | StepMenuDrop | ComponentsDrop | ITreeData<{ type: 'flow'; diagramID: string }>;
 
 const DROP_TYPES = [NativeTypes.FILE, DragItem.BLOCK_MENU, DragItem.COMPONENTS, DragItem.LIBRARY, 'element'];
 
@@ -178,7 +178,7 @@ const CanvasDiagram: React.FC<React.PropsWithChildren> = ({ children }) => {
         } else if (item.libraryType === LibraryStepType.BLOCK_TEMPLATES) {
           await engine.canvasTemplate.dropTemplate(item.tabData.id, coords);
         }
-      } else if ('source' in item && item.source === 'tree-view' && item.metaData.type === 'flow') {
+      } else if (item.type === 'component' && 'metaData' in item) {
         await engine.node.add({ type: BlockType.COMPONENT, coords, factoryData: { name: item.label, diagramID: item.metaData.diagramID } });
       }
     },

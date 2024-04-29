@@ -11,7 +11,7 @@ export const DiagramLoader: React.FC<ITabLoader> = (props) => {
 
   return (
     <>
-      <DiagramLayout>
+      <DiagramLayout isLoader>
         <TabLoader {...props} />
       </DiagramLayout>
 

@@ -1,12 +1,14 @@
-import { Header } from '@voiceflow/ui-next';
+import { Header, TooltipWithKeys, useTooltipModifiers } from '@voiceflow/ui-next';
 import React from 'react';
 import { useRouteMatch } from 'react-router-dom';
 
 import { CMSRoute, Path } from '@/config/routes';
 import { Permission } from '@/constants/permissions';
 import { Creator, Designer, Diagram, Router, UI } from '@/ducks';
+import { useHotkey } from '@/hooks/hotkeys';
 import { usePermission } from '@/hooks/permission';
 import { useDispatch, useGetValueSelector, useSelector } from '@/hooks/store.hook';
+import { getHotkeyLabel, Hotkey } from '@/keymap';
 import StartPrototypeButton from '@/pages/Project/components/Header/components/CanvasHeader/components/Run';
 import PublishButton from '@/pages/Project/components/Header/components/CanvasHeader/components/Upload';
 import SharePrototypeButton from '@/pages/Project/components/Header/components/PrototypeHeader/components/Share';
@@ -19,8 +21,13 @@ import { DiagramLayoutHeaderPrototypeClose } from './DiagramLayoutHeaderPrototyp
 import { DiagramLayoutHeaderPrototypeSettings } from './DiagramLayoutHeaderPrototypeSettings.component copy';
 import { DiagramLayoutHeaderTitle } from './DiagramLayoutHeaderTitle.component';
 
-export const DiagramLayoutHeader: React.FC = () => {
+interface IDiagramLayoutHeader {
+  isLoader?: boolean;
+}
+
+export const DiagramLayoutHeader: React.FC<IDiagramLayoutHeader> = ({ isLoader }) => {
   const isPrototype = !!useRouteMatch(Path.PROJECT_PROTOTYPE);
+
   const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
   const selectedTargets = React.useContext(SelectionTargetsContext);
 
@@ -46,13 +53,26 @@ export const DiagramLayoutHeader: React.FC = () => {
 
   const showActions = canEditCanvas && (selectedTargets.length > 1 || (selectedTargets.length === 1 && selectedTargets[0] !== startNodeID));
 
+  const tooltipModifiers = useTooltipModifiers([{ name: 'offset', options: { offset: [0, 11] } }]);
+
+  useHotkey(Hotkey.BACK_TO_CMS, onBackClick, { preventDefault: true });
+
   return (
     <Header className={headerStyle({ canvasOnly })}>
       <Header.Section.Left mr={214}>
-        <Header.Button.IconSecondary onClick={onBackClick} iconName="ArrowLeft" />
+        <TooltipWithKeys
+          text="Exit"
+          hotkeys={[{ label: getHotkeyLabel(Hotkey.BACK_TO_CMS) }]}
+          variant="basic"
+          modifiers={tooltipModifiers}
+          placement="bottom"
+          referenceElement={({ ref, onOpen, onClose }) => (
+            <Header.Button.Navigation ref={ref} onClick={onBackClick} onMouseEnter={onOpen} onMouseLeave={onClose} />
+          )}
+        />
       </Header.Section.Left>
 
-      <Header.Section.Center>{showActions ? <DiagramLayoutHeaderActions /> : <DiagramLayoutHeaderTitle />}</Header.Section.Center>
+      <Header.Section.Center>{!isLoader && <>{showActions ? <DiagramLayoutHeaderActions /> : <DiagramLayoutHeaderTitle />}</>}</Header.Section.Center>
 
       <Header.Section.Right>
         <DiagramLayoutHeaderMembers />

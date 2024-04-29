@@ -4,10 +4,14 @@ import React from 'react';
 import { containerStyle } from './DiagramLayout.css';
 import { DiagramLayoutHeader } from './DiagramLayoutHeader/DiagramLayoutHeader.component';
 
-export const DiagramLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
+interface IDiagramLayout extends React.PropsWithChildren {
+  isLoader?: boolean;
+}
+
+export const DiagramLayout: React.FC<IDiagramLayout> = ({ children, isLoader }) => {
   return (
     <Box direction="column" className={containerStyle}>
-      <DiagramLayoutHeader />
+      <DiagramLayoutHeader isLoader={isLoader} />
 
       {children}
     </Box>

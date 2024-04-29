@@ -11,6 +11,8 @@ export const headerStyle = recipe({
     transitionProperty: 'transform',
     transitionDuration: Tokens.animation.duration.default,
     transitionTimingFunction: Tokens.animation.timingFunction.default,
+    paddingLeft: 8,
+    paddingRight: 8,
   },
 
   variants: {

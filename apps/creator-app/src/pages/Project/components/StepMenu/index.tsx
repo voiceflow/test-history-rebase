@@ -17,7 +17,7 @@ import TopLevelButton from './TopLevelButton';
 
 const STEP_MENU_EXPANDED_LOCAL_STORAGE_KEY = 'stepMenuExpanded';
 
-const StepMenu: React.FC = () => {
+const StepMenu: React.FC<{ sidebarVisible?: boolean }> = ({ sidebarVisible = true }) => {
   const cmsWorkflows = useFeature(FeatureFlag.CMS_WORKFLOWS);
   const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
   const aiPlaygroundEnabled = useProjectAIPlayground();
@@ -62,34 +62,32 @@ const StepMenu: React.FC = () => {
     setInitialRender(false);
   };
 
+  if (!canEditCanvas) return null;
+
   return (
-    <>
-      {canEditCanvas && (
-        <S.TopLevelOuterContainer id={Identifier.STEP_MENU}>
-          {eventSection && (!cmsWorkflows.isEnabled || isTopic) && (
-            <S.TopLevelInnerContainer size={1}>
-              <TopLevelButton key={eventSection.label} section={eventSection} animationIndex={-1} />
-            </S.TopLevelInnerContainer>
-          )}
-
-          {otherSections && (
-            <S.TopLevelInnerContainer size={otherSections.length}>
-              {otherSections.map((section, index) => (
-                <TopLevelButton
-                  key={section.label}
-                  section={section}
-                  animationIndex={initialRender ? -1 : Math.max(0, index - (numCollapsedSteps - (eventSection ? 1 : 0)))}
-                />
-              ))}
-            </S.TopLevelInnerContainer>
-          )}
-
-          <S.StepMenuExpandButton onClick={onToggle}>
-            <SvgIcon icon="arrowToggleV2" size={20} color="#6e849a" inline rotation={isExpanded ? 270 : 90} />
-          </S.StepMenuExpandButton>
-        </S.TopLevelOuterContainer>
+    <S.TopLevelOuterContainer id={Identifier.STEP_MENU} sidebarVisible={sidebarVisible}>
+      {eventSection && (!cmsWorkflows.isEnabled || isTopic) && (
+        <S.TopLevelInnerContainer size={1}>
+          <TopLevelButton key={eventSection.label} section={eventSection} animationIndex={-1} />
+        </S.TopLevelInnerContainer>
       )}
-    </>
+
+      {otherSections && (
+        <S.TopLevelInnerContainer size={otherSections.length}>
+          {otherSections.map((section, index) => (
+            <TopLevelButton
+              key={section.label}
+              section={section}
+              animationIndex={initialRender ? -1 : Math.max(0, index - (numCollapsedSteps - (eventSection ? 1 : 0)))}
+            />
+          ))}
+        </S.TopLevelInnerContainer>
+      )}
+
+      <S.StepMenuExpandButton onClick={onToggle}>
+        <SvgIcon icon="arrowToggleV2" size={20} color="#6e849a" inline rotation={isExpanded ? 270 : 90} />
+      </S.StepMenuExpandButton>
+    </S.TopLevelOuterContainer>
   );
 };
 

@@ -1,4 +1,5 @@
-import { DraggablePanel, ResizableSection, ResizableSectionHeader, TreeView } from '@voiceflow/ui-next';
+import { clsx } from '@voiceflow/style';
+import { DraggablePanel, ResizableSection, ResizableSectionHeader, TreeView, usePersistFunction } from '@voiceflow/ui-next';
 import { IResizableSectionAPI } from '@voiceflow/ui-next/build/cjs/components/Section/ResizableSection/types';
 import React, { useRef } from 'react';
 
@@ -52,7 +53,7 @@ export const DiagramSidebar: React.FC = () => {
 
   const [footerCollapsed, setFooterCollapsed] = useLocalStorageState('diagram-sidebar-footer-collapsed', false);
 
-  const onWorkflowItemClick = (item: DiagramSidebarWorkflowTreeData) => {
+  const onWorkflowItemClick = usePersistFunction((item: DiagramSidebarWorkflowTreeData) => {
     const engine = getEngine();
 
     if (item.metaData.type === 'workflow') {
@@ -68,9 +69,9 @@ export const DiagramSidebar: React.FC = () => {
         goToDiagram(item.metaData.diagramID, item.metaData.nodeID);
       }
     }
-  };
+  });
 
-  const onFlowItemClick = (item: DiagramSidebarFlowTreeData) => {
+  const onFlowItemClick = usePersistFunction((item: DiagramSidebarFlowTreeData) => {
     const engine = getEngine();
 
     if (item.metaData.type === 'flow') {
@@ -80,78 +81,84 @@ export const DiagramSidebar: React.FC = () => {
         goToDiagram(item.metaData.diagramID);
       }
     }
-  };
+  });
 
-  const onWorkflowItemRename = (item: DiagramSidebarWorkflowTreeData, newName: string) => {
+  const onWorkflowItemRename = usePersistFunction((item: DiagramSidebarWorkflowTreeData, newName: string) => {
     if (item.metaData.type === 'workflow') {
       patchOneWorkflow(item.metaData.id, { name: newName });
     } else if (item.metaData.type === 'folder') {
       patchOneFolder(item.metaData.id, { name: newName });
     }
-  };
+  });
 
-  const onFlowItemRename = (item: DiagramSidebarFlowTreeData, newName: string) => {
+  const onFlowItemRename = usePersistFunction((item: DiagramSidebarFlowTreeData, newName: string) => {
     if (item.metaData.type === 'flow') {
       patchOneFlow(item.metaData.id, { name: newName });
     } else if (item.metaData.type === 'folder') {
       patchOneFolder(item.metaData.id, { name: newName });
     }
-  };
+  });
 
   const focusedNodeID = creatorFocus.isActive ? creatorFocus.target : null;
   const selectedID = focusedNodeID ? `${activeDiagramID}:${focusedNodeID}` : activeDiagramID;
 
   return (
-    <div className={containerStyle({ canvasOnly })}>
-      <DraggablePanel
-        width={sidebarWidth ?? 256}
-        onResize={setSidebarWidth}
-        collapsed={!sidebarVisible}
-        onCollapse={(collapsed) => toggleCanvasSidebar(!collapsed)}
-      >
-        <ResizableSection
-          id="diagram-sidebar"
-          ref={resizableSectionRef}
-          onCollapseChange={setFooterCollapsed}
-          topContent={
-            <TreeView<DiagramSidebarAnyWorkflowMetadata>
-              data={workflowsTree}
-              onItemClick={onWorkflowItemClick}
-              onItemRename={onWorkflowItemRename}
-              learnMoreLink={CMS_WORKFLOW_LEARN_MORE}
-              selectedItemID={selectedID}
-              emptyStateMessage="No workflows found."
-              renderItemContextMenu={renderWorkflowItemContextMenu}
-            />
-          }
-          bottomContent={
-            <TreeView<DiagramSidebarAnyFlowMetadata>
-              data={flowsTree}
-              onItemClick={onFlowItemClick}
-              onItemRename={onFlowItemRename}
-              learnMoreLink={CMS_FLOW_LEARN_MORE}
-              selectedItemID={selectedID}
-              emptyStateMessage="No components found."
-              renderItemContextMenu={renderFlowItemContextMenu}
-            />
-          }
-          topHeader={
-            <ResizableSectionHeader label="Workflows" onClick={() => workflowCreateModal.openVoid({ folderID: null })} tooltipText="New workflow" />
-          }
-          bottomHeader={
-            <ResizableSectionHeader
-              label="Components"
-              onClick={() => (footerCollapsed ? resizableSectionRef.current?.expand() : flowCreateModal.openVoid({ folderID: null }))}
-              tooltipText="New component"
-            />
-          }
-        />
+    <>
+      <div className={clsx('vfui', containerStyle({ canvasOnly }))}>
+        <DraggablePanel
+          width={sidebarWidth ?? 256}
+          onResize={setSidebarWidth}
+          collapsed={!sidebarVisible}
+          onCollapse={(collapsed) => toggleCanvasSidebar(!collapsed)}
+          toolbar={
+            <>
+              {!isCommenting && <StepMenu sidebarVisible={sidebarVisible} />}
 
-        {!isCommenting && <StepMenu />}
-        <DiagramSidebarToolbar />
-      </DraggablePanel>
-
+              <DiagramSidebarToolbar sidebarVisible={sidebarVisible} />
+            </>
+          }
+        >
+          <ResizableSection
+            id="diagram-sidebar"
+            ref={resizableSectionRef}
+            onCollapseChange={setFooterCollapsed}
+            topContent={
+              <TreeView<DiagramSidebarAnyWorkflowMetadata>
+                data={workflowsTree}
+                onItemClick={onWorkflowItemClick}
+                onItemRename={onWorkflowItemRename}
+                learnMoreLink={CMS_WORKFLOW_LEARN_MORE}
+                selectedItemID={selectedID}
+                emptyStateMessage="No workflows found."
+                renderItemContextMenu={renderWorkflowItemContextMenu}
+              />
+            }
+            bottomContent={
+              <TreeView<DiagramSidebarAnyFlowMetadata>
+                data={flowsTree}
+                onItemClick={onFlowItemClick}
+                onItemRename={onFlowItemRename}
+                learnMoreLink={CMS_FLOW_LEARN_MORE}
+                selectedItemID={selectedID}
+                emptyStateMessage="No components found."
+                renderItemContextMenu={renderFlowItemContextMenu}
+              />
+            }
+            topHeader={
+              <ResizableSectionHeader label="Workflows" onClick={() => workflowCreateModal.openVoid({ folderID: null })} tooltipText="New workflow" />
+            }
+            bottomHeader={
+              <ResizableSectionHeader
+                label="Components"
+                onClick={() => (footerCollapsed ? resizableSectionRef.current?.expand() : flowCreateModal.openVoid({ folderID: null }))}
+                tooltipText="New component"
+                isCollapsed={footerCollapsed}
+              />
+            }
+          />
+        </DraggablePanel>
+      </div>
       <TreeView.DragLayer />
-    </div>
+    </>
   );
 };

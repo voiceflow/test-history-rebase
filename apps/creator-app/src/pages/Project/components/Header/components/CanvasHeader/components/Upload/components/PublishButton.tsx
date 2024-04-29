@@ -1,6 +1,6 @@
 import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { Box, Button, SvgIcon, Text, TippyTooltip } from '@voiceflow/ui';
-import { Header, TooltipWithKeys } from '@voiceflow/ui-next';
+import { Header, TooltipWithKeys, useTooltipModifiers } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { useFeature } from '@/hooks/feature';
@@ -13,24 +13,26 @@ interface GeneralUploadButtonProps {
 
 const PublishButton: React.FC<GeneralUploadButtonProps> = ({ loading, progress, onClick }) => {
   const cmsWorkflows = useFeature(FeatureFlag.CMS_WORKFLOWS);
+  const modifiers = useTooltipModifiers([{ name: 'offset', options: { offset: [0, 11] } }]);
 
   if (cmsWorkflows.isEnabled) {
     return (
       <TooltipWithKeys
         text="Publishing"
+        variant="basic"
         hotkeys={[{ label: `${progress || 0}%` }]}
+        modifiers={modifiers}
         placement="bottom"
         referenceElement={({ ref, onOpen, onClose }) => (
-          <div ref={ref}>
-            <Header.Button.Secondary
-              label="Publish"
-              onClick={onClick}
-              disabled={loading}
-              isLoading={loading}
-              onPointerEnter={loading ? onOpen : undefined}
-              onPointerLeave={onClose}
-            />
-          </div>
+          <Header.Button.Secondary
+            ref={ref}
+            label="Publish"
+            onClick={onClick}
+            disabled={loading}
+            isLoading={loading}
+            onPointerEnter={loading ? onOpen : undefined}
+            onPointerLeave={onClose}
+          />
         )}
       />
     );

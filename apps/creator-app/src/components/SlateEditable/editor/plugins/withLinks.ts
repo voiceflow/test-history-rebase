@@ -79,6 +79,7 @@ export const withLinksPlugin: Plugin = (EditorAPI: EditorAPIType) => (editor: Ed
   editor.isInline = (element) => (EditorAPI.isLink(element) ? true : originalIsInline(element));
 
   editor.onChange = () => {
+    const { selection } = editor;
     const linkRange = EditorAPI.identifyLinksInTextIfAny(editor);
 
     originalOnChange();
@@ -91,6 +92,23 @@ export const withLinksPlugin: Plugin = (EditorAPI: EditorAPIType) => (editor: Ed
         EditorAPI.applyLinkStyles(editor, rangeRef.current!);
         rangeRef.unref();
       });
+    }
+
+    if (selection && !Range.isExpanded(selection)) {
+      const [linkNodeEntry] = Editor.nodes(editor, {
+        at: selection,
+        match: EditorAPI.isLink,
+      });
+
+      if (linkNodeEntry) {
+        const [linkElement, path] = linkNodeEntry;
+        const textContent = Node.string(linkElement);
+
+        // If the text of the link node is a valid URL, updating the text should also update the node's URL
+        if (linkElement.url !== textContent && isValidURLMatch(textContent)) {
+          Transforms.setNodes(editor, { url: textContent }, { at: path });
+        }
+      }
     }
   };
 
@@ -153,8 +171,8 @@ export const withLinksEditorApi: APIPlugin = (EditorAPI: EditorAPIType): EditorA
           at: selectionRef.current!,
           match: EditorAPI.isLink,
           mode: 'all',
-          split: true,
           voids: true,
+          split: true,
         });
 
         const nextFakeSelection = selectionRef.unref()!;
@@ -168,12 +186,11 @@ export const withLinksEditorApi: APIPlugin = (EditorAPI: EditorAPIType): EditorA
     wrapLink: (editor: Editor, url: string, { pasted }: { pasted?: boolean } = {}): void => {
       EditorAPI.withoutNormalizing(editor, () => {
         let selection = editor.selection || EditorAPI.fullRange(editor);
-
         const selectionRef = EditorAPI.rangeRef(editor, selection);
 
-        EditorAPI.unwrapLink(editor);
+        if (pasted && editor.selection) {
+          EditorAPI.unwrapLink(editor);
 
-        if (Range.isCollapsed(selection) || (pasted && editor.selection)) {
           Transforms.insertNodes(
             editor,
             {
@@ -186,7 +203,20 @@ export const withLinksEditorApi: APIPlugin = (EditorAPI: EditorAPIType): EditorA
 
           EditorAPI.removeMark(editor, TextProperty.COLOR);
           EditorAPI.removeMark(editor, TextProperty.UNDERLINE);
+        } else if (Range.isCollapsed(selection)) {
+          const [linkNodeEntry] = Editor.nodes(editor, {
+            at: selection,
+            match: EditorAPI.isLink,
+          });
+
+          if (linkNodeEntry) {
+            const [, path] = linkNodeEntry;
+
+            Transforms.setNodes(editor, { url }, { at: path });
+          }
         } else {
+          EditorAPI.unwrapLink(editor);
+
           Transforms.wrapNodes(
             editor,
             {

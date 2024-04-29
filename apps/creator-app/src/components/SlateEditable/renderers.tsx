@@ -11,6 +11,12 @@ export const defaultRenderElement = ({ element, ...props }: RenderElementProps):
   return <DefaultElement {...props} element={element} />;
 };
 
+export const markupRenderElement = ({ element, ...props }: RenderElementProps): JSX.Element => {
+  if (EditorAPI.isLink(element)) return <LinkElement {...props} element={element} isClickable />;
+
+  return <DefaultElement {...props} element={element} />;
+};
+
 export const defaultRenderPlaceholder = (props: RenderPlaceholderProps): JSX.Element => <Placeholder {...props} />;
 
 export const defaultRenderLeaf = (props: RenderLeafProps): JSX.Element => {

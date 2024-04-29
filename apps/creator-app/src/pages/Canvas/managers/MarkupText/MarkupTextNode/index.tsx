@@ -5,6 +5,7 @@ import React from 'react';
 import { Descendant, Node, Transforms } from 'slate';
 
 import SlateEditable, { SlateEditorAPI } from '@/components/SlateEditable';
+import { markupRenderElement } from '@/components/SlateEditable/renderers';
 import { useForceUpdate } from '@/hooks';
 import { useBlockAPI } from '@/pages/Canvas/components/Block/hooks';
 import { ConnectedMarkupNodeProps } from '@/pages/Canvas/components/MarkupNode/types';
@@ -217,6 +218,7 @@ const MarkupTextNode = React.forwardRef<CombinedAPI, MarkupTextNodeProps>(({ dat
         onChange={onChange}
         className={SLATE_EDITOR_CLASS_NAME}
         placeholder="Type something"
+        renderElement={markupRenderElement}
       />
     </Container>
   );

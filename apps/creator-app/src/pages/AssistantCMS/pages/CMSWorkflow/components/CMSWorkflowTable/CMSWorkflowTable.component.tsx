@@ -46,7 +46,7 @@ export const CMSWorkflowTable: React.FC = () => {
     const workflow = getOneByID({ id });
 
     if (workflow) {
-      goToDiagram(workflow.id);
+      goToDiagram(workflow.diagramID);
     }
   });
 

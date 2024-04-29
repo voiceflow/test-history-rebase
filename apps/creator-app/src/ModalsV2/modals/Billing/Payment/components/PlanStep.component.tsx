@@ -1,3 +1,4 @@
+import { BillingPeriod } from '@voiceflow/internal';
 import { Badge, BlockText, Box, Button, Link, Modal } from '@voiceflow/ui';
 import React from 'react';
 
@@ -15,7 +16,7 @@ interface PlanStepProps {
 
 export const PlanStep: React.FC<PlanStepProps> = ({ onClose, promptType }) => {
   const [trackingEvents] = useTrackingEvents();
-  const { price } = usePricing();
+  const { price, period } = usePricing();
   const { onNext } = usePaymentSteps();
 
   const onContactSales = () => {
@@ -37,7 +38,12 @@ export const PlanStep: React.FC<PlanStepProps> = ({ onClose, promptType }) => {
             </Link>
           </PlanCard>
 
-          <PlanCard title="Pro" badge={<Badge.Descriptive>Popular</Badge.Descriptive>} price={price} active>
+          <PlanCard
+            title="Pro"
+            badge={<Badge.Descriptive>Popular</Badge.Descriptive>}
+            price={period === BillingPeriod.ANNUALLY ? price / 12 : price}
+            active
+          >
             For individuals and small teams creating assistants.{' '}
             <Link href="https://www.voiceflow.com/pricing" $hidden>
               View details

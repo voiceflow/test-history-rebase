@@ -9,6 +9,7 @@ export * from './mongo/variable-state';
 export * from './mongo/version';
 export * from './postgres/assistant';
 export * from './postgres/attachment';
+export * from './postgres/auth';
 export * from './postgres/backup';
 export * from './postgres/common';
 export * from './postgres/condition';

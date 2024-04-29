@@ -1,5 +1,5 @@
 {
-  "namespaces": ["app_cxd", "identity", "public", "designer"],
+  "namespaces": ["app_cxd", "identity", "public", "auth", "designer"],
   "name": "public",
   "tables": [
     {
@@ -356,6 +356,147 @@
           "constraintName": "product_updates_creator_id_foreign",
           "columnNames": ["creator_id"],
           "localTableName": "public.product_updates",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "identity.user",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "type": {
+          "name": "type",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "scope": {
+          "name": "scope",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "enumItems": ["user", "workspace", "assistant"],
+          "mappedType": "enum"
+        },
+        "state": {
+          "name": "state",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "enumItems": ["active", "expired", "inactive"],
+          "mappedType": "enum"
+        },
+        "meta": {
+          "name": "meta",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "json"
+        },
+        "creator_id": {
+          "name": "creator_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "integer"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 0,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "subdomain": {
+          "name": "subdomain",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "text"
+        },
+        "resource_id": {
+          "name": "resource_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "access_token": {
+          "name": "access_token",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "refresh_token": {
+          "name": "refresh_token",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "text"
+        }
+      },
+      "name": "integration_oauth_tokens",
+      "schema": "auth",
+      "indexes": [
+        {
+          "columnNames": ["creator_id"],
+          "composite": false,
+          "keyName": "integration_oauth_tokens_creator_id_unique",
+          "primary": false,
+          "unique": true
+        },
+        {
+          "keyName": "integration_oauth_tokens_pkey",
+          "columnNames": ["id"],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "integration_oauth_tokens_creator_id_foreign": {
+          "constraintName": "integration_oauth_tokens_creator_id_foreign",
+          "columnNames": ["creator_id"],
+          "localTableName": "auth.integration_oauth_tokens",
           "referencedColumnNames": ["id"],
           "referencedTableName": "identity.user",
           "deleteRule": "set null",
@@ -1355,7 +1496,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "enumItems": ["any", "text", "date", "image", "number", "boolean"],
+          "enumItems": ["any", "text", "date", "image", "number", "boolean", "string"],
           "mappedType": "enum"
         },
         "description": {

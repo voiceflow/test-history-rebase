@@ -1,6 +1,15 @@
 import { Inject, Injectable } from '@nestjs/common';
-import type { KBDocumentChunk } from '@voiceflow/dtos';
-import { KnowledgeBaseORM } from '@voiceflow/orm-designer';
+import type {
+  KBDocumentChunk,
+  KBDocumentDocxData,
+  KBDocumentPDFData,
+  KBDocumentTableData,
+  KBDocumentTextData,
+  KBDocumentUrlData,
+  KnowledgeBaseDocument,
+} from '@voiceflow/dtos';
+import { KnowledgeBaseDocumentType } from '@voiceflow/dtos';
+import { KnowledgeBaseORM, VersionKnowledgeBaseDocument } from '@voiceflow/orm-designer';
 import { z } from 'zod';
 
 import { MutableService } from '@/common';
@@ -41,9 +50,9 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
     return document ? { ...knowledgeBaseDocumentAdapter.fromDB(document), chunks } : undefined;
   }
 
-  async findManyDocuments(assistantID: string, documentIDs?: string[]) {
+  async findManyDocuments(assistantID: string, documentIDs?: string[]): Promise<KnowledgeBaseDocument[]> {
     const documents = documentIDs ? await this.orm.findManyDocuments(assistantID, documentIDs) : await this.orm.findAllDocuments(assistantID);
-    return documents.map((document) => knowledgeBaseDocumentAdapter.fromDB(document));
+    return documents.map((document: VersionKnowledgeBaseDocument) => knowledgeBaseDocumentAdapter.fromDB(document));
   }
 
   async findDocumentChunks(assistantID: string, documentID: string): Promise<KBDocumentChunk[]> {
@@ -57,6 +66,57 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
           content: metadata.content,
         }))
       : [];
+  }
+
+  /* Patch */
+
+  async patchOneDocument(
+    assistantID: string,
+    documentID: string,
+    document: Omit<Partial<KnowledgeBaseDocument>, 'documentID' | 'status' | 'updatedAt'>
+  ) {
+    const doc = await this.findOneDocument(assistantID, documentID);
+    if (doc?.data?.type === KnowledgeBaseDocumentType.URL) {
+      const urlData = doc?.data as KBDocumentUrlData;
+
+      // check that integration doc type and integration did not remove
+      if (urlData?.source && !urlData?.accessTokenID) {
+        return;
+      }
+    }
+
+    await this.orm.patchOneDocument(assistantID, documentID, document);
+  }
+
+  async patchManyDocuments(
+    assistantID: string,
+    documentIDs: string[],
+    patch: Omit<Partial<KnowledgeBaseDocument>, 'documentID' | 'status' | 'updatedAt' | 'data'> & {
+      data:
+        | Partial<KBDocumentUrlData>
+        | Partial<KBDocumentDocxData>
+        | Partial<KBDocumentPDFData>
+        | Partial<KBDocumentTableData>
+        | Partial<KBDocumentTextData>;
+    }
+  ) {
+    const documents = await this.findManyDocuments(assistantID, documentIDs);
+    const validDocumentIDs = documentIDs.filter(async (documentID) => {
+      const document = documents.find((doc) => doc.documentID === documentID);
+
+      if (document?.data?.type === KnowledgeBaseDocumentType.URL) {
+        const urlData = document?.data as KBDocumentUrlData;
+
+        // check that integration doc type and integration did not remove
+        if (urlData?.source && !urlData?.accessTokenID) {
+          return null;
+        }
+      }
+
+      return documentID;
+    });
+
+    await this.orm.patchManyDocuments(assistantID, validDocumentIDs, patch);
   }
 
   /* Delete */

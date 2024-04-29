@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Inject, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Inject, Param, Patch, Post, Query } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { ZodApiBody, ZodApiQuery, ZodApiResponse } from '@voiceflow/nestjs-common';
 import { Permission } from '@voiceflow/sdk-auth';
@@ -9,6 +9,7 @@ import { ZodValidationPipe } from 'nestjs-zod';
 import { KnowledgeBaseDocumentService } from './document.service';
 import { DocumentDeleteRequest, DocumentDeleteResponse } from './dtos/document-delete.dto';
 import { DocumentFindManyRequest, DocumentFindManyResponse, DocumentFindOneResponse } from './dtos/document-find.dto';
+import { DocumentPatchManyRequest, DocumentPatchOneRequest } from './dtos/document-patch.dto';
 
 @Controller('knowledge-base/:assistantID/document')
 @ApiTags('KnowledgeBaseDocument')
@@ -89,6 +90,56 @@ export class KnowledgeBaseDocumentPublicHTTPController {
   ): Promise<DocumentFindManyResponse> {
     const documents = await this.service.findManyDocuments(assistantID, documentIDs);
     return { documents };
+  }
+
+  /* Patch */
+
+  @Post('update-many')
+  @Authorize.Permissions<Request<{ assistantID: string }>>([Permission.PROJECT_UPDATE], (request) => ({
+    id: request.params.assistantID,
+    kind: 'project',
+  }))
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary: 'Update many documents',
+    description: 'Update many documents by id',
+  })
+  @ApiParam({ name: 'assistantID', type: 'string' })
+  @ZodApiBody({ schema: DocumentPatchManyRequest })
+  @ZodApiResponse({
+    status: HttpStatus.OK,
+    description: 'Update documents by id in the target project',
+  })
+  async patchMany(
+    @Param('assistantID') assistantID: string,
+    @Body(new ZodValidationPipe(DocumentPatchManyRequest)) { documentIDs, patch }: DocumentPatchManyRequest
+  ): Promise<void> {
+    await this.service.patchManyDocuments(assistantID, documentIDs, patch);
+  }
+
+  @Patch()
+  @Authorize.Permissions<Request<{ assistantID: string }>>([Permission.PROJECT_UPDATE], (request) => ({
+    id: request.params.assistantID,
+    kind: 'project',
+  }))
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary: 'Update many documents',
+    description: 'Update many documents by id',
+  })
+  @ApiParam({ name: 'assistantID', type: 'string' })
+  @ApiParam({ name: 'documentID', type: 'string' })
+  @ZodApiBody({ schema: DocumentPatchOneRequest })
+  @ZodApiResponse({
+    status: HttpStatus.OK,
+    description: 'Update documents by id in the target project',
+  })
+  async patchOne(
+    @Param('assistantID') assistantID: string,
+    @Param('documentID') documentID: string,
+    @Body(new ZodValidationPipe(DocumentPatchOneRequest)) document: DocumentPatchOneRequest
+  ): Promise<void> {
+    await this.service.patchOneDocument(assistantID, documentID, document);
   }
 
   /* Delete */

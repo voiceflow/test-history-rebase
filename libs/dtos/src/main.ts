@@ -58,6 +58,7 @@ export * from './knowledge-base/document/document.dto';
 export * from './knowledge-base/document/document-chunk.dto';
 export * from './knowledge-base/document/document-data.dto';
 export * from './knowledge-base/document/document-status.enum';
+export * from './knowledge-base/document/document-type.enum';
 export * from './knowledge-base/document/knowledge-base-document-refresh-rate.enum';
 export * from './knowledge-base/knowledge-base.dto';
 export * from './nlu/nlu-params.dto';

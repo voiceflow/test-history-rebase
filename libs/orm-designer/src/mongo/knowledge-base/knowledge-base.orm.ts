@@ -1,4 +1,12 @@
-import type { VersionKnowledgeBaseTag } from '@voiceflow/dtos';
+import type {
+  KBDocumentDocxData,
+  KBDocumentPDFData,
+  KBDocumentTableData,
+  KBDocumentTextData,
+  KBDocumentUrlData,
+  KnowledgeBaseDocument,
+  VersionKnowledgeBaseTag,
+} from '@voiceflow/dtos';
 
 import type { PullOperation, SetOperation } from '@/mongo/common/atomic';
 import { ProjectORM } from '@/mongo/project';
@@ -56,6 +64,39 @@ export class KnowledgeBaseORM extends ProjectORM {
         Atomic.Set([{ path: [KnowledgeBaseORM.KNOWLEDGE_BASE_DATA_PATH, 'documents', documentID, key], value }])
       )
     );
+  }
+
+  async patchManyDocuments(
+    projectID: string,
+    documentIDs: string[],
+    data: Omit<Partial<KnowledgeBaseDocument>, 'documentID' | 'status' | 'updatedAt' | 'data'> & {
+      data:
+        | Partial<KBDocumentUrlData>
+        | Partial<KBDocumentDocxData>
+        | Partial<KBDocumentPDFData>
+        | Partial<KBDocumentTableData>
+        | Partial<KBDocumentTextData>;
+    }
+  ) {
+    const updateData: SetOperation[] = documentIDs.flatMap((documentID) =>
+      Object.entries(data).flatMap(([key, value]) => {
+        if (key === 'data') {
+          return Object.entries(data.data).map(
+            ([key, value]) =>
+              ({
+                path: [KnowledgeBaseORM.KNOWLEDGE_BASE_DATA_PATH, 'documents', documentID, 'data', key],
+                value,
+              } as SetOperation)
+          );
+        }
+        return {
+          path: [KnowledgeBaseORM.KNOWLEDGE_BASE_DATA_PATH, 'documents', documentID, key],
+          value,
+        } as SetOperation;
+      })
+    );
+
+    await this.atomicUpdateOne(projectID, [Atomic.Set(updateData)]);
   }
 
   async upsertOneDocument(

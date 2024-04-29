@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.61.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.60.2...@voiceflow/dtos@1.61.0) (2024-04-29)
+
+### Features
+
+* integration oath token orm and dtos (COR-000) ([#8018](https://github.com/voiceflow/creator-app/issues/8018)) ([3ef1aee](https://github.com/voiceflow/creator-app/commit/3ef1aee61f29959f6de3f3e9886889eeba278656))
+
 ## [1.60.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.60.1...@voiceflow/dtos@1.60.2) (2024-04-26)
 
 ### Bug Fixes

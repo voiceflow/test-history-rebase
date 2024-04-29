@@ -1,6 +1,6 @@
 {
   "name": "@voiceflow/utils-designer",
-  "version": "1.16.13",
+  "version": "1.16.14",
   "exports": {
     ".": {
       "types": "./build/cjs/main.d.ts",

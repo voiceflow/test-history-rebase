@@ -25,7 +25,11 @@ export const CMS_WORKFLOW_TABLE_CONFIG: TableConfig<WorkflowTableColumn, CMSFold
     [WorkflowTableColumn.NAME]: {
       type: WorkflowTableColumn.NAME,
       name: 'Name',
-      sorter: withFolderSort<CMSWorkflow>(withFieldLocaleCompareSort('name')),
+      sorter: withFolderSort<CMSWorkflow>((left, right, options) => {
+        if (left.isStart || right.isStart) return (left.isStart ? 1 : -1) * (options.descending ? 1 : -1);
+
+        return withFieldLocaleCompareSort('name')(left, right);
+      }),
 
       cell: ({ item, type }) => <CMSTableNameCell type={type} name={item.name} itemID={item.id} isFolder={item.group} />,
     },

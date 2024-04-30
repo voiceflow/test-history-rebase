@@ -37,7 +37,7 @@
   ],
   "scripts": {
     "build": "yarn g:turbo run build:cmd --filter=@voiceflow/platform-config...",
-    "build:backend": "yarn g:vite build --ssr ./src/index.ts",
+    "build:backend": "yarn g:vite build --ssr ./src/index.ts && yarn g:tsc-alias -p tsconfig.build.esm.json --outDir build/backend",
     "build:cjs": "yarn g:build:pkg cjs",
     "build:cmd": "yarn g:run-p build:cjs build:esm build:backend",
     "build:esm": "yarn g:build:pkg esm",

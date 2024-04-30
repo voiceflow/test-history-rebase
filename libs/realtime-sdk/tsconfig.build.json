@@ -1,13 +1,5 @@
 {
   "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "module": "commonjs",
-    "declaration": true,
-    "baseUrl": ".",
-    "outDir": "build/common",
-    "paths": {
-      "@realtime-sdk/*": ["src/*"]
-    }
-  },
-  "include": ["src", "typings"]
+  "include": ["src", "typings"],
+  "exclude": ["**/*.test.ts"]
 }

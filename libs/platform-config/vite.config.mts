@@ -12,7 +12,8 @@ export default defineConfig({
       formats: ['cjs', 'es'],
     },
   },
-  plugins: [tsconfigPaths(), dts({ insertTypesEntry: true })],
+
+  plugins: [tsconfigPaths(), dts({ tsconfigPath: 'tsconfig.build.json', insertTypesEntry: true })],
 
   ssr: {
     noExternal: [

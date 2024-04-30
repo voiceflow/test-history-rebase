@@ -1,15 +1,13 @@
-import * as Platform from '@voiceflow/platform-config/backend';
 import { produce } from 'immer';
 import { describe, expect, it } from 'vitest';
 
-import type { MigrationData } from '@/migrate/migrations/types';
+import type { MigrationContext, MigrationData } from '@/migrate/migrations/types';
 import migrateToV4_04 from '@/migrate/migrations/v4_04';
 
 describe('Migrate service - v4_04 migration unit tests', () => {
-  const migrationContext = {
-    projectType: Platform.Constants.ProjectType.CHAT,
-    platform: Platform.Constants.PlatformType.VOICEFLOW,
-  };
+  const migrationContext: MigrationContext = {
+    project: {},
+  } as MigrationContext;
 
   it('removes duplicate menuItems and topicIDs', async () => {
     const domain1 = { topicIDs: ['topicID1', 'topicID2', 'topicID1'] };

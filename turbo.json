@@ -14,7 +14,7 @@
         "tsconfig.json",
         "tsconfig.build.json",
         "tsconfig.build.*.json",
-        "vite.config.ts",
+        "vite.config.mts",
         "svgr.config.js"
       ],
       "dependsOn": ["^build:cmd", "codegen"]

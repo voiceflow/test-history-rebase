@@ -37,9 +37,11 @@
   ],
   "scripts": {
     "build": "yarn g:turbo run build:cmd --filter=@voiceflow/realtime-sdk...",
+    "build:backend": "yarn g:vite build --ssr ./src/index.ts && yarn g:tsc-alias -p tsconfig.build.esm.json --outDir build/backend",
     "build:cjs": "yarn g:build:pkg cjs",
-    "build:cmd": "yarn g:run-p build:cjs build:esm",
+    "build:cmd": "yarn g:run-p build:cjs build:esm build:backend",
     "build:esm": "yarn g:build:pkg esm",
+    "clean": "yarn g:rimraf build",
     "lint": "yarn g:run-p -c lint:eslint lint:prettier",
     "lint:eslint": "yarn g:eslint",
     "lint:fix": "yarn g:run-p -c \"lint:eslint --fix\" \"lint:prettier --write\"",

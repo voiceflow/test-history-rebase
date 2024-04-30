@@ -1,29 +1,25 @@
-import path from 'path';
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
-
-const rootDir = process.cwd();
+import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
   resolve: {
-    alias: [{ find: '@realtime-sdk', replacement: path.resolve(rootDir, 'src') }],
     mainFields: ['module', 'jsnext:main', 'jsnext'],
-    browserField: false,
     preserveSymlinks: false,
   },
 
   build: {
-    outDir: path.resolve(rootDir, 'build', 'backend'),
+    outDir: 'build/backend',
 
     lib: {
-      entry: path.resolve(rootDir, 'src', 'index.ts'),
+      entry: 'src/index.ts',
       name: 'realtime-sdk-backend',
       fileName: 'index',
       formats: ['cjs', 'es'],
     },
   },
 
-  plugins: [dts({ tsConfigFilePath: path.resolve(rootDir, 'tsconfig.build.json'), insertTypesEntry: true })],
+  plugins: [tsconfigPaths(), dts({ tsconfigPath: 'tsconfig.build.json', insertTypesEntry: true })],
 
   ssr: {
     external: ['@voiceflow/base-types'],

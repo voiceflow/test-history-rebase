@@ -5,7 +5,6 @@
     "allowJs": true,
     "jsx": "react-jsx",
     "baseUrl": ".",
-    "rootDir": "src",
     "exactOptionalPropertyTypes": false,
     "types": ["login-with-amazon-sdk-browser"]
   },

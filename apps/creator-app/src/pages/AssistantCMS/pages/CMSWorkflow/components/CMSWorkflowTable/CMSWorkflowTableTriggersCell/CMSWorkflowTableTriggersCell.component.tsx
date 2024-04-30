@@ -17,6 +17,7 @@ export const CMSWorkflowTableTriggersCell: React.FC<ICMSWorkflowTableTriggersCel
   const goToDiagram = useDispatch(Router.goToDiagram, diagramID);
 
   const firstTrigger = triggers[0];
+  const isOnlyOneTrigger = triggers.length === 1;
 
   return !triggers.length ? (
     <Table.Cell.Empty />
@@ -30,7 +31,7 @@ export const CMSWorkflowTableTriggersCell: React.FC<ICMSWorkflowTableTriggersCel
               ref={composeRef(tooltipProps.ref, popperProps.ref)}
               label={triggers[0].label}
               updates={triggers.length === 1 ? 0 : triggers.length}
-              onClick={Utils.functional.chain(popperProps.onToggle, tooltipProps.onClose)}
+              onClick={isOnlyOneTrigger ? () => goToDiagram(firstTrigger.nodeID) : Utils.functional.chain(popperProps.onToggle, tooltipProps.onClose)}
               iconName={firstTrigger.type === BlockType.START ? 'Start' : 'IntentS'}
               overflow
               onMouseEnter={tooltipProps.onOpen}

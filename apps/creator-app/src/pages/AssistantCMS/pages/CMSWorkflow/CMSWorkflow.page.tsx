@@ -18,6 +18,7 @@ import { CMSWorkflowHeader } from './components/CMSWorkflowHeader/CMSWorkflowHea
 import { CMSWorkflowTable } from './components/CMSWorkflowTable/CMSWorkflowTable.component';
 import { WorkflowTableColumn } from './components/CMSWorkflowTable/CMSWorkflowTable.constant';
 import { CMSWorkflowTableNavigation } from './components/CMSWorkflowTableNavigation/CMSWorkflowTableNavigation.component';
+import { CMSWorkflowTips } from './components/CMSWorkflowTips.component';
 
 const CMSWorkflow: React.FC = () => (
   <>
@@ -26,6 +27,8 @@ const CMSWorkflow: React.FC = () => (
     <CMSWorkflowTableNavigation />
 
     <CMSWorkflowTable />
+
+    <CMSWorkflowTips />
   </>
 );
 

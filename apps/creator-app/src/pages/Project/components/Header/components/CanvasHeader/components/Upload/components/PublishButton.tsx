@@ -19,7 +19,6 @@ const PublishButton: React.FC<GeneralUploadButtonProps> = ({ loading, progress, 
     return (
       <TooltipWithKeys
         text="Publishing"
-        variant="basic"
         hotkeys={[{ label: `${progress || 0}%` }]}
         modifiers={modifiers}
         placement="bottom"

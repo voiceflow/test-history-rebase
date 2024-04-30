@@ -1,4 +1,4 @@
-import { recipe } from '@voiceflow/style';
+import { recipe, style } from '@voiceflow/style';
 import { Tokens } from '@voiceflow/ui-next/styles';
 
 export const containerStyle = recipe({
@@ -23,23 +23,12 @@ export const containerStyle = recipe({
   },
 });
 
-export const toolbarStyle = recipe({
-  base: {
-    position: 'absolute',
-    bottom: 8,
-    transitionProperty: 'left',
-    transitionDuration: Tokens.animation.duration.default,
-    transitionTimingFunction: Tokens.animation.timingFunction.default,
-  },
-
-  variants: {
-    sidebarVisible: {
-      true: {
-        left: 'calc(100% + 8px)',
-      },
-      false: {
-        left: 8,
-      },
-    },
-  },
+export const toolbarStyle = style({
+  position: 'absolute',
+  bottom: 8,
+  pointerEvents: 'all',
+  left: 'calc(100% + 8px)',
+  transitionProperty: 'left',
+  transitionDuration: Tokens.animation.duration.default,
+  transitionTimingFunction: Tokens.animation.timingFunction.default,
 });

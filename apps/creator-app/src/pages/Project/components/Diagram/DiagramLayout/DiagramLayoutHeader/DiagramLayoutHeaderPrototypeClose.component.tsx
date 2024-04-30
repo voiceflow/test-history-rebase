@@ -29,13 +29,12 @@ export const DiagramLayoutHeaderPrototypeClose: React.FC = () => {
     <TooltipWithKeys
       text="Exit"
       hotkeys={[{ label: getHotkeyLabel(Hotkey.CLOSE_CANVAS_MODE) }]}
-      variant="basic"
       modifiers={modifiers}
       placement="bottom"
       referenceElement={({ ref, onOpen, onClose }) => (
         <Header.Button.Primary
           ref={ref}
-          label="Close"
+          label="Exit"
           onClick={() => goToCurrentCanvas()}
           iconName="CloseM"
           onMouseEnter={onOpen}

@@ -11,6 +11,7 @@ import { ManagerProvider } from '@/pages/Canvas/contexts';
 import { useManager } from '@/pages/Canvas/managers/utils';
 import DesignMenu from '@/pages/Project/components/DesignMenu';
 import ProjectPage from '@/pages/Project/components/ProjectPage';
+import TestVariablesSidebar from '@/pages/Project/components/Sidebar/components/TestVariablesSidebar';
 import { useAnyModeOpen, usePrototypingMode } from '@/pages/Project/hooks';
 import PrototypeOverlay from '@/pages/Prototype/components/PrototypeOverlay';
 import ReadOnlyBadge from '@/pages/Prototype/components/ReadOnlyBadge';
@@ -87,19 +88,25 @@ const Diagram: React.FC = () => {
 
         {/* design mode */}
 
-        {cmsWorkflows.isEnabled
-          ? !isPrototypingMode && (
+        {cmsWorkflows.isEnabled ? (
+          <>
+            {isPrototypingMode ? (
+              <TestVariablesSidebar />
+            ) : (
               <>
                 <DiagramSidebar />
                 <MarkupImageLoading />
               </>
-            )
-          : isDesignMode && (
-              <>
-                <DesignMenu canvasOnly={canvasOnly} />
-                <MarkupImageLoading />
-              </>
             )}
+          </>
+        ) : (
+          isDesignMode && (
+            <>
+              <DesignMenu canvasOnly={canvasOnly} />
+              <MarkupImageLoading />
+            </>
+          )
+        )}
 
         <PrototypeOverlay />
       </ManagerProvider>

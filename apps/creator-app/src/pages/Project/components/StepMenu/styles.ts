@@ -41,27 +41,19 @@ export const TopLevelInnerContainer = styled.div<{ size: number }>`
   `}
 `;
 
-export const TopLevelOuterContainer = styled.div<{ sidebarVisible?: boolean }>`
+export const TopLevelOuterContainer = styled.div`
   position: absolute;
   top: 12px;
+  left: calc(100% + 12px);
 
   padding: 4px;
   border-radius: 10px;
   background-color: rgba(231, 238, 239, 0.8);
-  z-index: 10;
   color: ${({ theme }) => theme.colors.primary};
   transition-property: left;
   transition-duration: ${Tokens.animation.duration.default};
   transition-timing-function: ${Tokens.animation.timingFunction.default};
-
-  ${({ sidebarVisible }) =>
-    sidebarVisible
-      ? css`
-          left: calc(100% + 12px);
-        `
-      : css`
-          left: 12px;
-        `}
+  pointer-events: all;
 
   ${StepMenuExpandButton} {
     opacity: 0;

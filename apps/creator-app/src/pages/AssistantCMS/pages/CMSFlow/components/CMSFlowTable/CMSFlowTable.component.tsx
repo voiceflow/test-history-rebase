@@ -22,7 +22,7 @@ export const CMSFlowTable: React.FC = () => {
   const goToDiagram = useDispatch(Router.goToDiagram);
   const duplicateOne = useDispatch(Designer.Flow.effect.duplicateOne);
 
-  const getOneByID = useGetValueSelector(Designer.Workflow.selectors.oneByID);
+  const getOneByID = useGetValueSelector(Designer.Flow.selectors.oneByID);
 
   const rowContextMenu = useCMSRowItemContextMenu({
     onDuplicate: duplicateOne,
@@ -30,10 +30,10 @@ export const CMSFlowTable: React.FC = () => {
   });
 
   const onRowDoubleClick = usePersistFunction((id: string) => {
-    const workflow = getOneByID({ id });
+    const flow = getOneByID({ id });
 
-    if (workflow) {
-      goToDiagram(workflow.id);
+    if (flow) {
+      goToDiagram(flow.diagramID);
     }
   });
 

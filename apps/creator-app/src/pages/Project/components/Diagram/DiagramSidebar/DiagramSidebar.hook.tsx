@@ -154,7 +154,7 @@ export const useRenderFlowItemContextMenu = ({ canEditCanvas }: { canEditCanvas:
 
       return (
         <>
-          <Menu.Item label="RenameS" onClick={Utils.functional.chain(onRename, onClose)} prefixIconName="Edit" />
+          <Menu.Item label="Rename" onClick={Utils.functional.chain(onRename, onClose)} prefixIconName="Edit" />
 
           <Menu.Item label="Duplicate" onClick={Utils.functional.chain(onDuplicate, onClose)} prefixIconName="Duplicate" />
 
@@ -203,7 +203,7 @@ export const useRenderWorkflowItemContextMenu = ({ canEditCanvas }: { canEditCan
 
       return (
         <>
-          {canEditCanvas && <Menu.Item label="RenameS" onClick={Utils.functional.chain(onRename, onClose)} prefixIconName="EditS" />}
+          {canEditCanvas && <Menu.Item label="Rename" onClick={Utils.functional.chain(onRename, onClose)} prefixIconName="Edit" />}
 
           {canEditCanvas && <Menu.Item label="Duplicate" onClick={Utils.functional.chain(onDuplicate, onClose)} prefixIconName="Duplicate" />}
 

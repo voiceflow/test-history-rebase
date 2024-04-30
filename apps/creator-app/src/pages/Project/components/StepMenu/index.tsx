@@ -17,7 +17,7 @@ import TopLevelButton from './TopLevelButton';
 
 const STEP_MENU_EXPANDED_LOCAL_STORAGE_KEY = 'stepMenuExpanded';
 
-const StepMenu: React.FC<{ sidebarVisible?: boolean }> = ({ sidebarVisible = true }) => {
+const StepMenu: React.FC = () => {
   const cmsWorkflows = useFeature(FeatureFlag.CMS_WORKFLOWS);
   const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
   const aiPlaygroundEnabled = useProjectAIPlayground();
@@ -65,7 +65,7 @@ const StepMenu: React.FC<{ sidebarVisible?: boolean }> = ({ sidebarVisible = tru
   if (!canEditCanvas) return null;
 
   return (
-    <S.TopLevelOuterContainer id={Identifier.STEP_MENU} sidebarVisible={sidebarVisible}>
+    <S.TopLevelOuterContainer id={Identifier.STEP_MENU}>
       {eventSection && (!cmsWorkflows.isEnabled || isTopic) && (
         <S.TopLevelInnerContainer size={1}>
           <TopLevelButton key={eventSection.label} section={eventSection} animationIndex={-1} />

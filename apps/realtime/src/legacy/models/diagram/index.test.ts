@@ -1,6 +1,7 @@
 import { ObjectId } from 'bson';
 import type { Db } from 'mongodb';
 import { MongoClient } from 'mongodb';
+import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest';
 
 import type { DBDiagramModel } from '@/legacy/models/diagram';
 import DiagramModel from '@/legacy/models/diagram';
@@ -50,7 +51,7 @@ describe('Diagram model integrations tests', () => {
   let model: DiagramModel;
 
   beforeAll(async () => {
-    client = await MongoClient.connect(config.MONGO_URI, { useUnifiedTopology: true });
+    client = await MongoClient.connect(config.MONGO_URI);
     db = client.db(config.MONGO_DB);
     model = new DiagramModel(null as any, { clients: { mongo: { db } } } as any);
 
@@ -76,7 +77,7 @@ describe('Diagram model integrations tests', () => {
     it('insert entry', async () => {
       const result = (await db.collection(model.collectionName).insertOne(mockDiagram)).ops[0];
 
-      expect(result.name).to.eql(mockDiagram.name);
+      expect(result.name).toEqual(mockDiagram.name);
     });
   });
 });

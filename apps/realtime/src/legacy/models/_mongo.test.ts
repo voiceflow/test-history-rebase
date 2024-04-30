@@ -1,6 +1,7 @@
 /* eslint-disable dot-notation */
 import { ObjectId } from 'bson';
 import _ from 'lodash';
+import { describe, expect, it, vi } from 'vitest';
 
 import AbstractModel from '@/legacy/models/_mongo';
 

@@ -5,9 +5,8 @@
   "license": "UNLICENSED",
   "type": "module",
   "scripts": {
-    "analyze:dependencies": "yarn g:depcruise --exclude src/models.ts --validate --ignore-known -- src",
-    "build": "yarn clean && yarn g:tsc --project tsconfig.build.json && yarn g:tsc-alias -p tsconfig.build.json && yarn postbuild",
-    "postbuild": "yarn schema:generate",
+    "build": "yarn g:turbo run build:cmd --filter=@voiceflow/ml-gateway...",
+    "build:cmd": "yarn g:build:pkg && yarn schema:generate",
     "clean": "yarn g:rimraf build",
     "dev": "tsx watch --inspect src/main.ts",
     "e2e": "yarn kill:e2e && NODE_ENV=e2e NODE_TLS_REJECT_UNAUTHORIZED=0 yarn start:base",
@@ -25,11 +24,11 @@
     "start": "PORT=8015 CREATOR_API_ENDPOINT=https:// NODE_ENV=production yarn start:base",
     "start:base": "node --experimental-specifier-resolution=node --max-old-space-size=8192 build/main.js",
     "start:meshed": "GOOGLE_APPLICATION_CREDENTIALS=/tmp/voiceflow/ml-gateway/secrets/credentials.json NODE_ENV=local IS_MESHED=true yarn dev",
-    "test": "yarn g:vitest run --coverage",
-    "test:dependencies": "yarn g:depcheck",
-    "test:integration": "exit 0",
-    "test:unit": "exit 0",
-    "types": "yarn g:tsc --project tsconfig.build.json --noEmit --skipLibCheck"
+    "tdd": "yarn g:vitest",
+    "test": "yarn g:run-p -c test:dependencies test:types test:unit",
+    "test:dependencies": "yarn g:depcruise --ignore-known",
+    "test:types": "yarn g:tsc --noEmit",
+    "test:unit": "yarn g:vitest run --coverage"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "0.18.0",

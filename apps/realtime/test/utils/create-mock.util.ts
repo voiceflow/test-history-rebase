@@ -1,4 +1,5 @@
 import type { Mock } from 'vitest';
+import { vi } from 'vitest';
 
 type DeepPartial<T> = {
   [P in keyof T]?: T[P] extends Array<infer U>

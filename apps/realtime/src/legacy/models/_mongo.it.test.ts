@@ -1,6 +1,7 @@
 import { ObjectId } from 'bson';
 import type { Db } from 'mongodb';
 import { MongoClient } from 'mongodb';
+import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest';
 
 import AbstractModel from '@/legacy/models/_mongo';
 import config from '@/old_config';
@@ -8,6 +9,8 @@ import config from '@/old_config';
 const collectionName = 'test-collection';
 
 class TestModel extends AbstractModel<any, any, string> {
+  READ_ONLY_KEYS = [];
+
   public collectionName = collectionName;
 }
 
@@ -17,7 +20,7 @@ describe('mongo model integrations tests', () => {
   let model: TestModel;
 
   beforeAll(async () => {
-    client = await MongoClient.connect(config.MONGO_URI, { useUnifiedTopology: true });
+    client = await MongoClient.connect(config.MONGO_URI);
     db = client.db(config.MONGO_DB);
     model = new TestModel(null as any, { clients: { mongo: { db } } } as any);
 

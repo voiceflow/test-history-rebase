@@ -1,5 +1,6 @@
 import * as Platform from '@voiceflow/platform-config/backend';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
+import { describe, expect, it, vi } from 'vitest';
 
 import MigrateService from '@/legacy/services/migrate';
 import { MigrationState } from '@/legacy/services/migrate/constants';

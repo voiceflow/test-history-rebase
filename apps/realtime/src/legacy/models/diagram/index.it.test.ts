@@ -2,6 +2,7 @@
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import { ObjectId } from 'bson';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import DiagramModel from '@/legacy/models/diagram/index';
 

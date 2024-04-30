@@ -1,3 +1,5 @@
+import { describe, expect, it, vi } from 'vitest';
+
 import AccessCache from '@/legacy/services/utils/accessCache';
 
 describe('Access cache unit tests', () => {

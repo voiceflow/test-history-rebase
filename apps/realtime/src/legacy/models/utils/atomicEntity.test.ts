@@ -1,6 +1,7 @@
 import { Utils } from '@voiceflow/common';
+import { describe, expect, it, vi } from 'vitest';
 
-import AtomicEntity from '@/legacy/models/utils/atomicEntity';
+import AtomicEntity from './atomicEntity';
 
 // eslint-disable-next-line sonarjs/no-nested-template-literals
 const pathGetter = (entityID: string, path?: string) => `entities.${entityID}${path ? `.${path}` : ''}`;

@@ -13,22 +13,22 @@
   "author": "Voiceflow",
   "exports": {
     ".": {
-      "types": "./build/common/index.d.ts",
-      "import": "./build/module/index.js",
-      "default": "./build/common/index.js"
+      "types": "./build/cjs/index.d.ts",
+      "import": "./build/esm/index.js",
+      "default": "./build/cjs/index.js"
     },
     "./backend": {
-      "types": "./build/backend/src/index.d.ts",
+      "types": "./build/backend/index.d.ts",
       "import": "./build/backend/index.mjs",
       "default": "./build/backend/index.js"
     }
   },
-  "main": "build/common/index.js",
-  "module": "build/module/index.js",
+  "main": "build/cjs/index.js",
+  "module": "build/esm/index.js",
   "typesVersions": {
     "*": {
       "backend": [
-        "./build/backend/src/index.d.ts"
+        "./build/backend/index.d.ts"
       ]
     }
   },

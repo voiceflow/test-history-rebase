@@ -164,7 +164,7 @@ import { WorkflowModule } from './workflow/workflow.module';
 
         subprotocol: Realtime.Subprotocol.CURRENT_VERSION,
 
-        supports: '>= 1.5',
+        supports: '>= 1.6',
 
         timeout: 90000,
       }),

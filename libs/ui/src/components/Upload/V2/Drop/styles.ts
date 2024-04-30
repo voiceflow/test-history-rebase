@@ -1,10 +1,11 @@
-import { PrimaryButton } from '@ui/components/Button';
-import { FlexCenter } from '@ui/components/Flex';
-import type { LoaderProps } from '@ui/components/Loader';
-import { LoadCircle } from '@ui/components/Loader';
-import SvgIcon from '@ui/components/SvgIcon';
-import { css, styled, transition } from '@ui/styles';
 import { space } from 'styled-system';
+
+import { PrimaryButton } from '@/components/Button';
+import { FlexCenter } from '@/components/Flex';
+import type { LoaderProps } from '@/components/Loader';
+import { LoadCircle } from '@/components/Loader';
+import SvgIcon from '@/components/SvgIcon';
+import { css, styled, transition } from '@/styles';
 
 import type { RootDropAreaProps } from '../../types';
 

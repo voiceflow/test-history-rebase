@@ -1,5 +1,6 @@
-import * as Common from '@platform-config/configs/common';
 import type { AlexaConstants } from '@voiceflow/alexa-types';
+
+import * as Common from '@/configs/common';
 
 export const smart = Common.Voice.Adapters.Intent.smartFactory<AlexaConstants.Voice>();
 

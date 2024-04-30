@@ -1,5 +1,6 @@
-import { styled } from '@ui/styles';
 import React from 'react';
+
+import { styled } from '@/styles';
 
 import type { SpinnerProps } from './Spinner';
 import Spinner from './Spinner';

@@ -1,6 +1,7 @@
-import type { NodeData } from '@realtime-sdk/models';
 import type { AlexaNode } from '@voiceflow/alexa-types';
 import { extend } from 'cooky-cutter';
+
+import type { NodeData } from '@/models';
 
 import * as Base from '../base';
 import * as Voice from '../voice';

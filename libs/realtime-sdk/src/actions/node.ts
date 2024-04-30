@@ -1,6 +1,9 @@
-import type { BlockType } from '@realtime-sdk/constants';
-import { ACTIONS_KEY, BLOCK_KEY, NODE_KEY, STEP_KEY } from '@realtime-sdk/constants';
-import type { Markup, NodeData, NodeDataDescriptor, PortsDescriptor } from '@realtime-sdk/models';
+import type { AnyRecord } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
+
+import type { BlockType } from '@/constants';
+import { ACTIONS_KEY, BLOCK_KEY, NODE_KEY, STEP_KEY } from '@/constants';
+import type { Markup, NodeData, NodeDataDescriptor, PortsDescriptor } from '@/models';
 import type {
   BaseActionsPayload,
   BaseBlockPayload,
@@ -12,9 +15,7 @@ import type {
   ProjectMetaPayload,
   RemoveNode,
   SchemaVersionPayload,
-} from '@realtime-sdk/types';
-import type { AnyRecord } from '@voiceflow/common';
-import { Utils } from '@voiceflow/common';
+} from '@/types';
 
 const nodeType = Utils.protocol.typeFactory(NODE_KEY);
 const nodeMarkupType = Utils.protocol.typeFactory(nodeType('markup'));

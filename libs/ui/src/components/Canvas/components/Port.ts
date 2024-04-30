@@ -1,5 +1,5 @@
-import type { HSLShades } from '@ui/components/ColorPicker/constants';
-import { css, styled } from '@ui/styles';
+import type { HSLShades } from '@/components/ColorPicker/constants';
+import { css, styled } from '@/styles';
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace PortTypes {

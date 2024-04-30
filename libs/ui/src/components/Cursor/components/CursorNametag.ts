@@ -1,4 +1,4 @@
-import { styled } from '@ui/styles';
+import { styled } from '@/styles';
 
 export interface CursorNametagProps {
   color: string;

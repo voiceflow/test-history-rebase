@@ -1,5 +1,5 @@
-import { flexApartStyles } from '@ui/components/Flex';
-import { styled, transition } from '@ui/styles';
+import { flexApartStyles } from '@/components/Flex';
+import { styled, transition } from '@/styles';
 
 const NavItemContainer = styled.div`
   ${flexApartStyles}

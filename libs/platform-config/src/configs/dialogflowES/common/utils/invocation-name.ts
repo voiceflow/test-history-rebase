@@ -1,5 +1,5 @@
-import * as Base from '@platform-config/configs/base';
-import { Config as ConfigUtils } from '@platform-config/configs/utils';
+import * as Base from '@/configs/base';
+import { Config as ConfigUtils } from '@/configs/utils';
 
 export const validateName = ({ value }: Base.Utils.InvocationName.ValidateOptions): string | null =>
   !value?.trim() ? 'Your agent requires a valid name to be uploaded' : null;

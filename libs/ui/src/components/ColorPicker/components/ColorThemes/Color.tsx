@@ -1,12 +1,13 @@
-import { isDefaultColor } from '@ui/components/ColorPicker/utils';
-import ContextMenu from '@ui/components/ContextMenu';
-import type { MenuTypes } from '@ui/components/Menu';
-import { toast } from '@ui/components/Toast';
-import { styled, transition } from '@ui/styles';
-import { stopPropagation } from '@ui/utils';
-import { isHexColor } from '@ui/utils/colors';
-import { STANDARD_GRADE } from '@ui/utils/colors/hsl';
 import React from 'react';
+
+import { isDefaultColor } from '@/components/ColorPicker/utils';
+import ContextMenu from '@/components/ContextMenu';
+import type { MenuTypes } from '@/components/Menu';
+import { toast } from '@/components/Toast';
+import { styled, transition } from '@/styles';
+import { stopPropagation } from '@/utils';
+import { isHexColor } from '@/utils/colors';
+import { STANDARD_GRADE } from '@/utils/colors/hsl';
 
 import TippyTooltip from '../../../TippyTooltip';
 import { AddNamePopper } from '../Poppers/AddNamePopper';

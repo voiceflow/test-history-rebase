@@ -1,8 +1,9 @@
 import { faker } from '@faker-js/faker';
-import type { NodeData } from '@realtime-sdk/models';
 import { getRandomEnumElement } from '@test/utils';
 import { BaseNode } from '@voiceflow/base-types';
 import { define } from 'cooky-cutter';
+
+import type { NodeData } from '@/models';
 
 export const Expression = define<BaseNode.Utils.Expression>({
   type: (): BaseNode.Utils.ExpressionType.VARIABLE => BaseNode.Utils.ExpressionType.VARIABLE,

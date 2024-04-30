@@ -1,5 +1,6 @@
-import type { BlockType } from '@realtime-sdk/constants';
 import type { BaseModels } from '@voiceflow/base-types';
+
+import type { BlockType } from '@/constants';
 
 import type { Port } from './Port';
 import type { PartialModel } from './Utility';

@@ -1,6 +1,7 @@
-import { css, styled, transition, units } from '@ui/styles';
 import type { ColorProps, LayoutProps } from 'styled-system';
 import { color, layout } from 'styled-system';
+
+import { css, styled, transition, units } from '@/styles';
 
 import Header from './Header';
 import LinkArrowIcon from './LinkArrowIcon';

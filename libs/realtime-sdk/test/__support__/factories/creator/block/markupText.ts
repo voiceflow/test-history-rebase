@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker';
-import type { Markup } from '@realtime-sdk/models';
 import { define } from 'cooky-cutter';
+
+import type { Markup } from '@/models';
 
 export const MarkupTextNodeData = define<Markup.NodeData.Text>({
   scale: () => faker.datatype.number(),

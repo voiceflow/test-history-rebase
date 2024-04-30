@@ -1,6 +1,7 @@
-import type { Domain } from '@realtime-sdk/models';
 import type { BaseModels } from '@voiceflow/base-types';
 import { createMultiAdapter } from 'bidirectional-adapter';
+
+import type { Domain } from '@/models';
 
 const domainAdapter = createMultiAdapter<BaseModels.Version.Domain, Domain>(
   ({ id, live, name, status, topicIDs, updatedAt, rootDiagramID, updatedBy }) => ({

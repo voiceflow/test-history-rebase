@@ -1,7 +1,8 @@
-import * as Common from '@platform-config/configs/common';
-import * as Google from '@platform-config/configs/google';
 import { DFESVersion } from '@voiceflow/google-dfes-types';
 import { createSimpleAdapter, createSmartSimpleAdapter } from 'bidirectional-adapter';
+
+import * as Common from '@/configs/common';
+import * as Google from '@/configs/google';
 
 import * as DialogflowESCommon from '../../../common';
 import type * as Models from '../../models';

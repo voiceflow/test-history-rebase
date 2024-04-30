@@ -1,4 +1,4 @@
-import { styled, units } from '@ui/styles';
+import { styled, units } from '@/styles';
 
 import { flexStyles } from '../../Flex';
 import { FOOTER_HEIGHT } from '../constants';

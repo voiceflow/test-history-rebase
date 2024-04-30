@@ -1,6 +1,7 @@
-import { IS_SAFARI } from '@ui/config';
-import { colors, css, ThemeColor } from '@ui/styles';
 import { system } from 'styled-system';
+
+import { IS_SAFARI } from '@/config';
+import { colors, css, ThemeColor } from '@/styles';
 
 export const hideNumberArrows = css`
   &::-webkit-outer-spin-button,

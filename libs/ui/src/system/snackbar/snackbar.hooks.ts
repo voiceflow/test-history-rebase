@@ -1,4 +1,4 @@
-import { useEnableDisable } from '@ui/hooks/toggle';
+import { useEnableDisable } from '@/hooks/toggle';
 
 import type * as I from './snackbar.interface';
 

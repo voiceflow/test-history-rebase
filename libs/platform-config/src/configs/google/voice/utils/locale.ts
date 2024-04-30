@@ -1,7 +1,8 @@
-import * as Base from '@platform-config/configs/base';
-import { Config as ConfigUtils } from '@platform-config/configs/utils';
 import { GoogleConstants } from '@voiceflow/google-types';
 import type { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+
+import * as Base from '@/configs/base';
+import { Config as ConfigUtils } from '@/configs/utils';
 
 import * as GoogleLocale from '../project/locale';
 

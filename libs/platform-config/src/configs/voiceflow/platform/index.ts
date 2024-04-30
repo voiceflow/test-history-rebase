@@ -1,6 +1,6 @@
-import * as Base from '@platform-config/configs/base';
-import { NLUType, PlatformType, ProjectType } from '@platform-config/constants';
-import { TypeGuards } from '@platform-config/utils';
+import * as Base from '@/configs/base';
+import { NLUType, PlatformType, ProjectType } from '@/constants';
+import { TypeGuards } from '@/utils';
 
 import * as Chat from '../chat';
 import * as Voice from '../voice';

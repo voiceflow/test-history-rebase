@@ -1,6 +1,7 @@
-import { IS_PRODUCTION } from '@ui/config';
-import { stringifyQuery } from '@ui/utils/query';
 import hash from 'object-hash';
+
+import { IS_PRODUCTION } from '@/config';
+import { stringifyQuery } from '@/utils/query';
 
 import {
   DEFAULT_FETCH_CACHE_TIMEOUT,

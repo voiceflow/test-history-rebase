@@ -1,4 +1,4 @@
-import { css, styled } from '@ui/styles';
+import { css, styled } from '@/styles';
 
 export const cardStyles = css`
   border-radius: 8px;

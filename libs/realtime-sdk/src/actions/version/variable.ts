@@ -1,6 +1,7 @@
-import { VARIABLES_KEY } from '@realtime-sdk/constants';
-import type { BaseVersionPayload } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
+
+import { VARIABLES_KEY } from '@/constants';
+import type { BaseVersionPayload } from '@/types';
 
 import { versionType } from './utils';
 

@@ -1,7 +1,8 @@
-import { flexApartStyles } from '@ui/components/Flex';
-import { css, styled, units } from '@ui/styles';
 import type { SpaceProps, TypographyProps } from 'styled-system';
 import { space, typography } from 'styled-system';
+
+import { flexApartStyles } from '@/components/Flex';
+import { css, styled, units } from '@/styles';
 
 import InfoIconTooltip from './InfoIconTooltip';
 

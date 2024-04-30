@@ -1,5 +1,6 @@
-import Divider from '@ui/components/Divider';
 import React from 'react';
+
+import Divider from '@/components/Divider';
 
 import { Provider } from '../../contexts';
 import type * as T from '../../types';

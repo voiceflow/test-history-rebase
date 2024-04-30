@@ -1,5 +1,6 @@
-import { usePersistFunction, useResizeObserver, useToggle } from '@ui/hooks';
 import React from 'react';
+
+import { usePersistFunction, useResizeObserver, useToggle } from '@/hooks';
 
 import TippyTooltip from '../TippyTooltip';
 import type * as T from './types';

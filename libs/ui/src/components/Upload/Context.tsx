@@ -1,5 +1,6 @@
-import { useContextApi } from '@ui/hooks';
 import React from 'react';
+
+import { useContextApi } from '@/hooks';
 
 export type UploadFileType = 'audio' | 'image' | 'video' | 'JSON' | 'TLS';
 

@@ -1,8 +1,9 @@
-import * as Base from '@platform-config/configs/base';
-import { Config as ConfigUtils } from '@platform-config/configs/utils';
 import type { ChatModels } from '@voiceflow/chat-types';
 import { createMultiAdapter, createSmartMultiAdapter } from 'bidirectional-adapter';
 import { denormalize, normalize } from 'normal-store';
+
+import * as Base from '@/configs/base';
+import { Config as ConfigUtils } from '@/configs/utils';
 
 import type * as Models from '../models';
 import * as Utils from '../utils';

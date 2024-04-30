@@ -1,4 +1,4 @@
-import { styled } from '@ui/styles';
+import { styled } from '@/styles';
 
 const NotFound = styled.div`
   flex: 1;

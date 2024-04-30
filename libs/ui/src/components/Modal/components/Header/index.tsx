@@ -1,8 +1,9 @@
-import Box from '@ui/components/Box';
-import TutorialInfoIcon from '@ui/components/TutorialInfoIcon';
-import { ClassName } from '@ui/styles/constants';
-import * as System from '@ui/system';
 import React from 'react';
+
+import Box from '@/components/Box';
+import TutorialInfoIcon from '@/components/TutorialInfoIcon';
+import { ClassName } from '@/styles/constants';
+import * as System from '@/system';
 
 import * as S from './styles';
 

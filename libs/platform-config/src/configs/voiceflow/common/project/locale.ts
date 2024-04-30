@@ -1,5 +1,6 @@
-import * as Base from '@platform-config/configs/base';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+
+import * as Base from '@/configs/base';
 
 const LABEL_MAP: Record<VoiceflowConstants.Locale, string> = {
   [VoiceflowConstants.Locale.EN_US]: 'English (en-US)',

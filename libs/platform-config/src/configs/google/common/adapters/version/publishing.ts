@@ -1,9 +1,10 @@
-import type * as Common from '@platform-config/configs/common';
-import { Config } from '@platform-config/configs/utils';
-import { Types } from '@platform-config/utils';
 import type { GoogleVersion } from '@voiceflow/google-types';
 import type { ArrayItem } from '@voiceflow/ui';
 import { createSmartSimpleAdapter } from 'bidirectional-adapter';
+
+import type * as Common from '@/configs/common';
+import { Config } from '@/configs/utils';
+import { Types } from '@/utils';
 
 const SHARED_FIELDS = Types.satisfies<keyof GoogleVersion.SharedVoicePublishing>()([
   'voice',

@@ -1,7 +1,8 @@
-import * as Base from '@platform-config/configs/base';
 import { Utils } from '@voiceflow/common';
 import { SystemVariable } from '@voiceflow/dtos';
 import React from 'react';
+
+import * as Base from '@/configs/base';
 
 import * as InvocationName from './invocation-name';
 import * as Locale from './locale';

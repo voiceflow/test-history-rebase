@@ -1,8 +1,9 @@
-import { CUSTOM_SLOT_TYPE, LEGACY_CUSTOM_SLOT_TYPE } from '@realtime-sdk/constants';
-import type { Slot, SlotInput } from '@realtime-sdk/models';
 import type { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import { createMultiAdapter, createSmartMultiAdapter } from 'bidirectional-adapter';
+
+import { CUSTOM_SLOT_TYPE, LEGACY_CUSTOM_SLOT_TYPE } from '@/constants';
+import type { Slot, SlotInput } from '@/models';
 
 import { hasValue } from './utils';
 

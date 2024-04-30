@@ -1,7 +1,8 @@
-import Box from '@ui/components/Box';
-import type { TextProps as BaseTextProps } from '@ui/components/Text/types';
-import { css, styled } from '@ui/styles';
 import { color, layout, space, typography } from 'styled-system';
+
+import Box from '@/components/Box';
+import type { TextProps as BaseTextProps } from '@/components/Text/types';
+import { css, styled } from '@/styles';
 
 export type TextProps = BaseTextProps & {
   trim?: boolean;

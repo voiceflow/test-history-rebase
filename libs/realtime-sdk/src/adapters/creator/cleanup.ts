@@ -1,6 +1,7 @@
-import { isActions, isBlock, isStart, isStep } from '@realtime-sdk/utils/typeGuards';
 import type { AnyRecord, BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
+
+import { isActions, isBlock, isStart, isStep } from '@/utils/typeGuards';
 
 type NodesMap = Record<string, BaseModels.BaseDiagramNode>;
 type ValidNodeIDsMap = Record<string, boolean>;

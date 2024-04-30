@@ -1,5 +1,5 @@
-import { css, styled, transition } from '@ui/styles';
-import { fontResetStyle } from '@ui/styles/bootstrap';
+import { css, styled, transition } from '@/styles';
+import { fontResetStyle } from '@/styles/bootstrap';
 
 export const Container = styled.div`
   width: 100%;

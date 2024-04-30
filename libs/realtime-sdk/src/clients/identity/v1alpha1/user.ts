@@ -1,5 +1,6 @@
-import type * as Models from '@realtime-sdk/models';
 import type { Provider } from '@voiceflow/schema-types';
+
+import type * as Models from '@/models';
 
 import type { NestResourceOptions } from '../../nest';
 import { NestResource } from '../../nest';

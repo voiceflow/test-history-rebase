@@ -1,7 +1,8 @@
-import type { SvgIconTypes } from '@ui/components/SvgIcon';
-import SvgIcon from '@ui/components/SvgIcon';
 import { Utils } from '@voiceflow/common';
 import React from 'react';
+
+import type { SvgIconTypes } from '@/components/SvgIcon';
+import SvgIcon from '@/components/SvgIcon';
 
 import { Button, ButtonContainer, Container, IconContainer } from './components';
 import * as T from './types';

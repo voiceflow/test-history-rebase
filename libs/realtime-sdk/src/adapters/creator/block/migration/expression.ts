@@ -1,13 +1,9 @@
-import type { ExpressionData as NodeDataExpressionData } from '@realtime-sdk/models';
-import {
-  ADVANCE_LOGIC_TYPES,
-  expressionfyV2,
-  getHighestDepth,
-  hasAdvanceChildExpression,
-} from '@realtime-sdk/utils/expression';
 import { BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter';
+
+import type { ExpressionData as NodeDataExpressionData } from '@/models';
+import { ADVANCE_LOGIC_TYPES, expressionfyV2, getHighestDepth, hasAdvanceChildExpression } from '@/utils/expression';
 
 const LogicGroupConditionType = new Set<string>([
   BaseNode.Utils.ExpressionTypeV2.AND,

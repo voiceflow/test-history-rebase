@@ -1,5 +1,5 @@
-import { IS_CHROME } from '@ui/config';
-import { css, styled } from '@ui/styles';
+import { IS_CHROME } from '@/config';
+import { css, styled } from '@/styles';
 
 import Text from './Text';
 

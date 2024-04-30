@@ -1,6 +1,7 @@
-import { css, styled } from '@ui/styles';
 import type { SpaceProps } from 'styled-system';
 import { space } from 'styled-system';
+
+import { css, styled } from '@/styles';
 
 enum Sizes {
   sm = '40px',

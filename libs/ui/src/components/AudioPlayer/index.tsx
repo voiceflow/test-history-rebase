@@ -1,7 +1,8 @@
-import Box from '@ui/components/Box';
-import TippyTooltip from '@ui/components/TippyTooltip';
-import { swallowEvent } from '@ui/utils';
 import React from 'react';
+
+import Box from '@/components/Box';
+import TippyTooltip from '@/components/TippyTooltip';
+import { swallowEvent } from '@/utils';
 
 import {
   CloseButton,

@@ -1,10 +1,10 @@
-import * as hsl from '@ui/utils/colors/hsl';
+import { describe, expect, it } from 'vitest';
 
-import suite from '../../../test/_suite';
+import * as hsl from './hsl';
 
 const { createShadesFromHue, HUE_MAX, HUE_MIN } = hsl;
 
-suite('hsl', () => {
+describe('hsl', () => {
   describe('createShadesFromHue', () => {
     it('should generate ten hsl color shades for a given hue value', () => {
       const assertions: [string, Record<string, string>][] = [

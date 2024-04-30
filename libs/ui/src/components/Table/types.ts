@@ -1,5 +1,6 @@
-import type { TippyTooltipProps } from '@ui/components/TippyTooltip';
 import type React from 'react';
+
+import type { TippyTooltipProps } from '@/components/TippyTooltip';
 
 export interface Item {
   id: string;

@@ -1,10 +1,11 @@
 /* eslint-disable no-param-reassign */
-import * as Adapters from '@realtime-sdk/adapters';
-import { SchemaVersion } from '@realtime-sdk/schema-version/schema-version.enum';
 import type { BaseModels, BaseVersion } from '@voiceflow/base-types';
 import type { AnyRecord } from '@voiceflow/common';
 import { Utils } from '@voiceflow/common';
 import { produceWithPatches } from 'immer';
+
+import * as Adapters from '@/adapters';
+import { SchemaVersion } from '@/schema-version/schema-version.enum';
 
 import migrations from './migrations';
 import type {

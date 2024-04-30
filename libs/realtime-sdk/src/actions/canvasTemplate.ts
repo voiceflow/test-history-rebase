@@ -1,9 +1,10 @@
-import { createCRUDActions } from '@realtime-sdk/actions/utils';
-import { CANVAS_TEMPLATE_KEY } from '@realtime-sdk/constants';
-import type { EntityMap } from '@realtime-sdk/models';
-import type { BaseDiagramPayload, BaseVersionPayload } from '@realtime-sdk/types';
 import type { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
+
+import { createCRUDActions } from '@/actions/utils';
+import { CANVAS_TEMPLATE_KEY } from '@/constants';
+import type { EntityMap } from '@/models';
+import type { BaseDiagramPayload, BaseVersionPayload } from '@/types';
 
 const canvasTemplateType = Utils.protocol.typeFactory(CANVAS_TEMPLATE_KEY);
 

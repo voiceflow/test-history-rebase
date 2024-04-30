@@ -1,6 +1,6 @@
-import type { IconButtonVariant } from '@ui/components/IconButton/types';
-import SvgIcon from '@ui/components/SvgIcon';
-import { colors, css, styled, ThemeColor, transition } from '@ui/styles';
+import type { IconButtonVariant } from '@/components/IconButton/types';
+import SvgIcon from '@/components/SvgIcon';
+import { colors, css, styled, ThemeColor, transition } from '@/styles';
 
 import type { IconButtonContainerSharedProps } from './IconButtonContainer';
 import IconButtonContainer from './IconButtonContainer';

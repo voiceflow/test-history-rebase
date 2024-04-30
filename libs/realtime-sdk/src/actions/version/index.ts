@@ -1,3 +1,7 @@
+import type { BaseModels } from '@voiceflow/base-types';
+import { Utils } from '@voiceflow/common';
+import type * as Platform from '@voiceflow/platform-config/backend';
+
 import {
   COMPONENTS_KEY,
   DEFAULT_STEP_COLORS_KEY,
@@ -6,12 +10,9 @@ import {
   RPC_KEY,
   SESSION_KEY,
   SETTINGS_KEY,
-} from '@realtime-sdk/constants';
-import type { PrototypeSettings } from '@realtime-sdk/models';
-import type { BaseProjectPayload, BaseVersionPayload } from '@realtime-sdk/types';
-import type { BaseModels } from '@voiceflow/base-types';
-import { Utils } from '@voiceflow/common';
-import type * as Platform from '@voiceflow/platform-config/backend';
+} from '@/constants';
+import type { PrototypeSettings } from '@/models';
+import type { BaseProjectPayload, BaseVersionPayload } from '@/types';
 
 import { createCRUDActions } from '../utils';
 import { versionType } from './utils';

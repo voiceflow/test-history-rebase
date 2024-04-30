@@ -1,8 +1,9 @@
-import type { SvgIconTypes } from '@ui/components/SvgIcon';
-import SvgIcon from '@ui/components/SvgIcon';
-import type { TippyTooltipProps } from '@ui/components/TippyTooltip';
-import TippyTooltip from '@ui/components/TippyTooltip';
 import React from 'react';
+
+import type { SvgIconTypes } from '@/components/SvgIcon';
+import SvgIcon from '@/components/SvgIcon';
+import type { TippyTooltipProps } from '@/components/TippyTooltip';
+import TippyTooltip from '@/components/TippyTooltip';
 
 import * as S from './styles';
 

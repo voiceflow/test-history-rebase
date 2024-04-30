@@ -1,8 +1,9 @@
-import { createCRUDActions } from '@realtime-sdk/actions/utils';
-import type { AnyProject, DBProject, ProjectMember } from '@realtime-sdk/models';
-import type { BaseProjectPayload, BaseWorkspacePayload } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
 import type { Optional } from 'utility-types';
+
+import { createCRUDActions } from '@/actions/utils';
+import type { AnyProject, DBProject, ProjectMember } from '@/models';
+import type { BaseProjectPayload, BaseWorkspacePayload } from '@/types';
 
 import { projectType } from './utils';
 

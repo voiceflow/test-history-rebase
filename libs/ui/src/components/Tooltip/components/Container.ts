@@ -1,4 +1,4 @@
-import { styled, units } from '@ui/styles';
+import { styled, units } from '@/styles';
 
 const TooltipContainer = styled.div`
   overflow-y: auto;

@@ -1,6 +1,8 @@
-import intentAdapter from '@realtime-sdk/adapters/creator/block/general/intent';
 import { Creator } from '@test/factories';
 import { BaseNode } from '@voiceflow/base-types';
+import { describe, expect, it } from 'vitest';
+
+import intentAdapter from './intent';
 
 describe('Adapters | Creator | Block | General | intentAdapter', () => {
   describe('when transforming from db', () => {

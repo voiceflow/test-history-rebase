@@ -1,42 +1,40 @@
-import { fireEvent, render, screen } from '@testing-library/react';
-import Badge from '@ui/components/Badge';
-import THEME from '@ui/styles/theme';
+import { fireEvent, screen } from '@testing-library/react';
 import { Utils } from '@voiceflow/common';
-import React from 'react';
+import { describe, expect, it } from 'vitest';
 
-import suite from '../../../test/_suite';
-import { ThemeProvider } from '../../../test/_utils';
+import THEME from '@/styles/theme';
+import { renderThemed } from '@/test/theme';
 
-suite('Badge', () => {
+import Badge from '.';
+
+describe('Badge', () => {
   it('does not appear clickable', () => {
     const text = Utils.generate.string();
-    render(<Badge>{text}</Badge>, { wrapper: ThemeProvider });
+    renderThemed(<Badge>{text}</Badge>);
 
     const badge = screen.getByText(text);
 
-    expect(badge).toHaveStyleRule('cursor', undefined);
-    expect(badge).toHaveStyleRule('color', THEME.colors.secondary);
+    expect(badge).toHaveStyle({ cursor: undefined, color: THEME.colors.secondary });
   });
 
   it('reacts to click', () => {
     const clickHandler = vi.fn();
-    render(<Badge onClick={clickHandler}>Click Me!</Badge>, { wrapper: ThemeProvider });
+    renderThemed(<Badge onClick={clickHandler}>Click Me!</Badge>);
 
     const badge = screen.getByRole('button');
     fireEvent.click(badge);
 
     expect(clickHandler).toHaveBeenCalledTimes(1);
-    expect(badge).toHaveStyleRule('cursor', 'pointer');
+    expect(badge).toHaveStyle({ cursor: 'pointer' });
   });
 
   it('changes color', () => {
     const color = '#ff69b4';
     const text = Utils.generate.string();
-    render(<Badge color={color}>{text}</Badge>, { wrapper: ThemeProvider });
+    renderThemed(<Badge color={color}>{text}</Badge>);
 
     const badge = screen.getByText(text);
 
-    expect(badge).toHaveStyleRule('background', color);
-    expect(badge).toHaveStyleRule('border', `1px solid ${color}`);
+    expect(badge).toHaveStyle({ background: color, border: `1px solid ${color}` });
   });
 });

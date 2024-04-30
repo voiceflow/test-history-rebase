@@ -1,5 +1,5 @@
-import Flex from '@ui/components/Flex';
-import { css, styled, units } from '@ui/styles';
+import Flex from '@/components/Flex';
+import { css, styled, units } from '@/styles';
 
 import ListItemActionsContainer from './ListItemActionsContainer';
 import ListItemContent from './ListItemContent';

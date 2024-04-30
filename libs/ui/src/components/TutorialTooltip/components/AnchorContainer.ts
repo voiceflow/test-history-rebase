@@ -1,5 +1,5 @@
-import { ClickableText } from '@ui/components/Text';
-import { styled } from '@ui/styles';
+import { ClickableText } from '@/components/Text';
+import { styled } from '@/styles';
 
 const AnchorContainer = styled(ClickableText)`
   font-size: 15px;

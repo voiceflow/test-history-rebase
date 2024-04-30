@@ -1,6 +1,8 @@
-import promptAdapter from '@realtime-sdk/adapters/creator/block/alexa/prompt';
-import { voiceNoMatchAdapter, voiceNoReplyAdapter } from '@realtime-sdk/adapters/creator/block/utils';
 import { Creator } from '@test/factories';
+import { afterAll, afterEach, describe, expect, it, vi } from 'vitest';
+
+import { voiceNoMatchAdapter, voiceNoReplyAdapter } from '../utils';
+import promptAdapter from './prompt';
 
 describe('Adapters | Creator | Block | Alexa | promptAdapter', () => {
   afterEach(() => {

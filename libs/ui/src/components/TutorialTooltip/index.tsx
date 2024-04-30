@@ -1,7 +1,8 @@
-import type { TooltipProps } from '@ui/components/Tooltip';
-import Tooltip from '@ui/components/Tooltip';
-import { stopPropagation } from '@ui/utils';
 import React from 'react';
+
+import type { TooltipProps } from '@/components/Tooltip';
+import Tooltip from '@/components/Tooltip';
+import { stopPropagation } from '@/utils';
 
 import { AnchorContainer } from './components';
 

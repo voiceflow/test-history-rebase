@@ -1,8 +1,9 @@
-import { css, styled, transition } from '@ui/styles';
-import { spinReverseStyle, spinStyle } from '@ui/styles/animations/Spin';
 import _isNumber from 'lodash/isNumber';
 import type { SpaceProps } from 'styled-system';
 import { space } from 'styled-system';
+
+import { css, styled, transition } from '@/styles';
+import { spinReverseStyle, spinStyle } from '@/styles/animations/Spin';
 
 import { Variant } from './constants';
 

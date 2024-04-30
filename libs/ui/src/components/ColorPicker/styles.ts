@@ -1,6 +1,6 @@
-import Popper from '@ui/components/Popper';
-import { styled } from '@ui/styles';
-import { fadeInDownStyle } from '@ui/styles/animations';
+import Popper from '@/components/Popper';
+import { styled } from '@/styles';
+import { fadeInDownStyle } from '@/styles/animations';
 
 import Box from '../Box';
 import { Text } from '../Text';

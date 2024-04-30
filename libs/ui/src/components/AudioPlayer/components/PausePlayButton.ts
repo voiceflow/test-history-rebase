@@ -1,6 +1,6 @@
-import type { WhiteButtonProps } from '@ui/components/Button';
-import Button from '@ui/components/Button';
-import { css, styled } from '@ui/styles';
+import type { WhiteButtonProps } from '@/components/Button';
+import Button from '@/components/Button';
+import { css, styled } from '@/styles';
 
 const PausePlayButton = styled(Button).attrs({ variant: Button.Variant.WHITE, rounded: true })<WhiteButtonProps>`
   z-index: 1;

@@ -1,5 +1,5 @@
-import Select from '@ui/components/Select';
-import { css, styled } from '@ui/styles';
+import Select from '@/components/Select';
+import { css, styled } from '@/styles';
 
 export const Container = styled.div<{ inset?: boolean; border?: boolean }>`
   flex-grow: 1;

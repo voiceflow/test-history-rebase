@@ -1,5 +1,6 @@
-import { css, styled } from '@ui/styles';
 import type React from 'react';
+
+import { css, styled } from '@/styles';
 
 import type { BaseButtonProps } from './BaseButton';
 import BaseButton from './BaseButton';

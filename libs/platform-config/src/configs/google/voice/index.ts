@@ -1,4 +1,4 @@
-import * as Common from '@platform-config/configs/common';
+import * as Common from '@/configs/common';
 
 import * as Adapters from './adapters';
 import * as Models from './models';

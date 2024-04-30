@@ -1,5 +1,6 @@
-import * as Base from '@platform-config/configs/base';
 import { GoogleConstants } from '@voiceflow/google-types';
+
+import * as Base from '@/configs/base';
 
 const LABEL_MAP: Record<GoogleConstants.Language, string> = {
   [GoogleConstants.Language.HK]: 'Chinese-Cantonese (zh-HK)',

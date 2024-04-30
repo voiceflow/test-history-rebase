@@ -1,4 +1,4 @@
-import { css, styled, units } from '@ui/styles';
+import { css, styled, units } from '@/styles';
 
 import ActionsContainer from './ActionsContainer';
 

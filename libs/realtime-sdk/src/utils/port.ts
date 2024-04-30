@@ -1,6 +1,7 @@
-import type { NodeOutPortSchema, NodePorts, NodePortSchema, PortsDescriptor } from '@realtime-sdk/models';
 import type { Nullish } from '@voiceflow/common';
 import { Utils } from '@voiceflow/common';
+
+import type { NodeOutPortSchema, NodePorts, NodePortSchema, PortsDescriptor } from '@/models';
 
 export const IN_PORT_KEY = '-in';
 

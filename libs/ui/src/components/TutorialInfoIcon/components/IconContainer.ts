@@ -1,4 +1,4 @@
-import { css, styled, transition } from '@ui/styles';
+import { css, styled, transition } from '@/styles';
 
 export interface IconContainerProps {
   isOpen: boolean;

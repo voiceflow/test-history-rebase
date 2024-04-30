@@ -1,11 +1,12 @@
 import composeRefs from '@seznam/compose-react-refs';
-import { FlexLabel } from '@ui/components/Flex';
-import { useCachedValue, useTheme } from '@ui/hooks';
-import { FadeDownDelayed } from '@ui/styles/animations';
-import { ClassName } from '@ui/styles/constants';
-import { getScrollbarWidth, stopImmediatePropagation, stopPropagation } from '@ui/utils';
 import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars-2';
+
+import { FlexLabel } from '@/components/Flex';
+import { useCachedValue, useTheme } from '@/hooks';
+import { FadeDownDelayed } from '@/styles/animations';
+import { ClassName } from '@/styles/constants';
+import { getScrollbarWidth, stopImmediatePropagation, stopPropagation } from '@/utils';
 
 import {
   ButtonContainer,

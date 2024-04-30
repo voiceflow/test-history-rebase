@@ -1,8 +1,10 @@
 import { faker } from '@faker-js/faker';
-import setAdapter from '@realtime-sdk/adapters/creator/block/migration/set';
 import { Creator } from '@test/factories';
 import { BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
+import { afterAll, afterEach, describe, expect, it, vi } from 'vitest';
+
+import setAdapter from './set';
 
 describe('Adapters | Creator | Block | Migration | setAdapter', () => {
   afterEach(() => {

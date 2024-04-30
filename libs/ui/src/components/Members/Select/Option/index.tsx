@@ -1,7 +1,8 @@
-import Avatar from '@ui/components/Avatar';
-import Box from '@ui/components/Box';
 import React from 'react';
 import type { DeepNonNullable } from 'utility-types';
+
+import Avatar from '@/components/Avatar';
+import Box from '@/components/Box';
 
 import type { Member } from '../../types';
 import * as S from './styles';

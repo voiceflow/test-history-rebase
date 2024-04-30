@@ -1,7 +1,9 @@
 import { faker } from '@faker-js/faker';
-import userInfoAdapter from '@realtime-sdk/adapters/creator/block/alexa/userInfo';
 import { Creator } from '@test/factories';
 import { Utils } from '@voiceflow/common';
+import { afterAll, afterEach, describe, expect, it, vi } from 'vitest';
+
+import userInfoAdapter from './userInfo';
 
 describe('Adapters | Creator | Block | Alexa | userInfoAdapter', () => {
   afterEach(() => {

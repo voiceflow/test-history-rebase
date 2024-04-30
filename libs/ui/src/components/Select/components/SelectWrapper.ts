@@ -1,6 +1,6 @@
-import { inputFocusStyle, InputWrapper } from '@ui/components/Input';
-import SearchInput, { SearchInputIcon } from '@ui/components/SearchInput';
-import { colors, css, styled, ThemeColor, transition } from '@ui/styles';
+import { inputFocusStyle, InputWrapper } from '@/components/Input';
+import SearchInput, { SearchInputIcon } from '@/components/SearchInput';
+import { colors, css, styled, ThemeColor, transition } from '@/styles';
 
 export interface SelectWrapperProps {
   width?: string;

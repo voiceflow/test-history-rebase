@@ -1,4 +1,4 @@
-import { Context as ContextUtils } from '@platform-config/utils';
+import { Context as ContextUtils } from '@/utils';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface Value {}

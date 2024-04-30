@@ -1,7 +1,8 @@
-import type { UIOnlyMenuItemOption } from '@ui/components/NestedMenu';
-import { createDividerMenuItemOption } from '@ui/components/NestedMenu';
 import { UserRole } from '@voiceflow/internal';
 import React from 'react';
+
+import type { UIOnlyMenuItemOption } from '@/components/NestedMenu';
+import { createDividerMenuItemOption } from '@/components/NestedMenu';
 
 import * as S from './styles';
 

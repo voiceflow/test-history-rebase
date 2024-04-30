@@ -1,8 +1,10 @@
-import type { MigrationData } from '@realtime-sdk/migrate/migrations/types';
-import migrateToV2 from '@realtime-sdk/migrate/migrations/v2_0';
 import { BaseModels } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config/backend';
 import { produce } from 'immer';
+import { describe, expect, it } from 'vitest';
+
+import type { MigrationData } from '@/migrate/migrations/types';
+import migrateToV2 from '@/migrate/migrations/v2_0';
 
 describe('Migrate service - v2 migration unit tests', () => {
   const migrationContext = {

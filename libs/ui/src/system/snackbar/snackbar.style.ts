@@ -1,9 +1,9 @@
-import Box from '@ui/components/Box';
-import UIButton from '@ui/components/Button';
-import SvgIcon from '@ui/components/SvgIcon';
-import Text from '@ui/components/Text';
-import { css, styled, transition } from '@ui/styles';
-import * as Animations from '@ui/styles/animations';
+import Box from '@/components/Box';
+import UIButton from '@/components/Button';
+import SvgIcon from '@/components/SvgIcon';
+import Text from '@/components/Text';
+import { css, styled, transition } from '@/styles';
+import * as Animations from '@/styles/animations';
 
 export const Overlay = styled.div`
   position: absolute;

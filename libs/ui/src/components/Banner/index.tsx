@@ -1,8 +1,9 @@
-import type { BoxProps } from '@ui/components/Box';
-import Box from '@ui/components/Box';
-import Button from '@ui/components/Button';
-import { useLocalStorageState } from '@ui/hooks/storage';
 import React from 'react';
+
+import type { BoxProps } from '@/components/Box';
+import Box from '@/components/Box';
+import Button from '@/components/Button';
+import { useLocalStorageState } from '@/hooks/storage';
 
 import * as S from './styles';
 

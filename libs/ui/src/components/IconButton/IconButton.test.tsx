@@ -1,14 +1,14 @@
-import { fireEvent, render, screen } from '@testing-library/react';
-import IconButton from '@ui/components/IconButton';
-import React from 'react';
+import { fireEvent, screen } from '@testing-library/react';
+import { describe, expect, it } from 'vitest';
 
-import suite from '../../../test/_suite';
-import { ThemeProvider } from '../../../test/_utils';
+import { renderThemed } from '@/test/theme';
 
-suite('IconButton', () => {
+import IconButton from '.';
+
+describe('IconButton', () => {
   it('reacts to click', () => {
     const clickHandler = vi.fn();
-    render(<IconButton onClick={clickHandler} icon="lock" size="small" />, { wrapper: ThemeProvider });
+    renderThemed(<IconButton onClick={clickHandler} icon={'lock' as any} size="small" />);
 
     fireEvent.click(screen.getByRole('button'));
 

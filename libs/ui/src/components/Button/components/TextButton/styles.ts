@@ -1,6 +1,6 @@
-import { styled } from '@ui/styles';
-import { fontResetStyle } from '@ui/styles/bootstrap';
-import { ANIMATION_SPEED } from '@ui/styles/constants';
+import { styled } from '@/styles';
+import { fontResetStyle } from '@/styles/bootstrap';
+import { ANIMATION_SPEED } from '@/styles/constants';
 
 export const TextButtonContainer = styled.button`
   ${fontResetStyle};

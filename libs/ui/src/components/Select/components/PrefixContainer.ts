@@ -1,4 +1,4 @@
-import { colors, styled, ThemeColor } from '@ui/styles';
+import { colors, styled, ThemeColor } from '@/styles';
 
 const PrefixContainer = styled.span`
   color: ${colors(ThemeColor.SECONDARY)};

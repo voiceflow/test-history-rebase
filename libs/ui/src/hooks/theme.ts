@@ -1,6 +1,7 @@
-import type { Theme } from '@ui/styles/theme';
 import React from 'react';
 import { useTheme as useStyledTheme } from 'styled-components';
+
+import type { Theme } from '@/styles/theme';
 
 export const useTheme = useStyledTheme as () => Theme;
 

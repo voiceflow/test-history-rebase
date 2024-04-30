@@ -1,5 +1,6 @@
-import * as Base from '@platform-config/configs/base';
 import { GoogleConstants } from '@voiceflow/google-types';
+
+import * as Base from '@/configs/base';
 
 export const CONFIG = Base.Project.Voice.extend({
   default: GoogleConstants.Voice.DEFAULT,

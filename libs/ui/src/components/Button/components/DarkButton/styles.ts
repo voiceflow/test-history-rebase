@@ -1,6 +1,6 @@
-import { FlexCenter } from '@ui/components/Flex';
-import { styled } from '@ui/styles';
-import { ANIMATION_SPEED } from '@ui/styles/constants';
+import { FlexCenter } from '@/components/Flex';
+import { styled } from '@/styles';
+import { ANIMATION_SPEED } from '@/styles/constants';
 
 export interface DarkButtonContainerProps {
   icon?: string;

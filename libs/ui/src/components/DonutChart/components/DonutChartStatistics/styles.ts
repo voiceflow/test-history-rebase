@@ -1,6 +1,6 @@
-import Box from '@ui/components/Box';
-import SvgIcon from '@ui/components/SvgIcon';
-import { css, styled } from '@ui/styles';
+import Box from '@/components/Box';
+import SvgIcon from '@/components/SvgIcon';
+import { css, styled } from '@/styles';
 
 export const Container = styled.div`
   height: 100%;

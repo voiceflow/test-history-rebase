@@ -1,8 +1,9 @@
-import type * as Base from '@platform-config/configs/base';
-import { Config } from '@platform-config/configs/utils';
-import { Types } from '@platform-config/utils';
 import type { DFESConstants, DFESVersion } from '@voiceflow/google-dfes-types';
 import { createSmartSimpleAdapter } from 'bidirectional-adapter';
+
+import type * as Base from '@/configs/base';
+import { Config } from '@/configs/utils';
+import { Types } from '@/utils';
 
 export type KeyRemap = [['agentName', 'invocationName'], ['triggerPhrase', 'invocationNameSamples']];
 

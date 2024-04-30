@@ -1,5 +1,5 @@
-import * as Base from '@platform-config/configs/base';
-import * as Voiceflow from '@platform-config/configs/voiceflow';
+import * as Base from '@/configs/base';
+import * as Voiceflow from '@/configs/voiceflow';
 
 import * as Chat from './chat';
 

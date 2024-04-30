@@ -1,5 +1,7 @@
-import customPayloadAdapter from '@realtime-sdk/adapters/creator/block/dialogflow/customPayload';
 import { Creator } from '@test/factories';
+import { describe, expect, it } from 'vitest';
+
+import customPayloadAdapter from './customPayload';
 
 describe('Adapters | Creator | Block | Dialogflow | customPayloadAdapter', () => {
   describe('when transforming from db', () => {

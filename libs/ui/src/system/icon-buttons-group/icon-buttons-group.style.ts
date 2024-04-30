@@ -1,8 +1,8 @@
-import type { BoxProps } from '@ui/components/Box';
-import { boxStyles } from '@ui/components/Box';
-import type { FlexProps } from '@ui/components/Flex';
-import { flexCenterStyles } from '@ui/components/Flex';
-import { styled } from '@ui/styles';
+import type { BoxProps } from '@/components/Box';
+import { boxStyles } from '@/components/Box';
+import type { FlexProps } from '@/components/Flex';
+import { flexCenterStyles } from '@/components/Flex';
+import { styled } from '@/styles';
 
 export interface ContainerProps extends Omit<BoxProps, 'alignItems'>, FlexProps {}
 

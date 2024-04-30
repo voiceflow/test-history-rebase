@@ -1,5 +1,6 @@
-import type { DBWorkspaceProperties, WorkspaceSettings } from '@realtime-sdk/models';
 import { createMultiAdapter } from 'bidirectional-adapter';
+
+import type { DBWorkspaceProperties, WorkspaceSettings } from '@/models';
 
 // TODO: use smart adapter to handle default values
 

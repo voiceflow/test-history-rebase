@@ -1,7 +1,8 @@
 import { faker } from '@faker-js/faker';
-import type { NodeData } from '@realtime-sdk/models';
 import type { BaseNode } from '@voiceflow/base-types';
 import { define } from 'cooky-cutter';
+
+import type { NodeData } from '@/models';
 
 export const CommandStepData = define<BaseNode.Command.StepData>({
   name: () => faker.lorem.word(),

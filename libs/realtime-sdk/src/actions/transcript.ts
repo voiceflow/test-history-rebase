@@ -1,7 +1,8 @@
-import { TRANSCRIPT_KEY } from '@realtime-sdk/constants';
-import type { BaseProjectPayload } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
 import type { Thread } from '@voiceflow/dtos';
+
+import { TRANSCRIPT_KEY } from '@/constants';
+import type { BaseProjectPayload } from '@/types';
 
 import { createCRUDActions } from './utils';
 

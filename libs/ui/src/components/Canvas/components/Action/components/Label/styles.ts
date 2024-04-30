@@ -1,5 +1,5 @@
-import Box from '@ui/components/Box';
-import { styled, transition } from '@ui/styles';
+import Box from '@/components/Box';
+import { styled, transition } from '@/styles';
 
 export const Container = styled(Box.Flex)<{ secondary?: boolean }>`
   ${transition('color')}

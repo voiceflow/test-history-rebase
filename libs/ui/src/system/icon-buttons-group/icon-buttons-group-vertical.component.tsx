@@ -1,4 +1,4 @@
-import { forwardRef } from '@ui/hocs/forwardRef';
+import { forwardRef } from '@/hocs/forwardRef';
 
 import { Base } from './icon-buttons-group.component';
 import type * as I from './icon-buttons-group.interface';

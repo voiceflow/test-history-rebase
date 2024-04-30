@@ -1,8 +1,9 @@
-import TippyTooltip from '@ui/components/TippyTooltip';
 import type { Nullable } from '@voiceflow/common';
 import type { UserRole } from '@voiceflow/internal';
 import dayjs from 'dayjs';
 import React from 'react';
+
+import TippyTooltip from '@/components/TippyTooltip';
 
 import Row from './Row';
 import RowProjectsTooltip from './RowProjectsTooltip';

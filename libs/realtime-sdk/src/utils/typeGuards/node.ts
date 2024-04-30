@@ -1,3 +1,7 @@
+import { BaseModels, BaseNode } from '@voiceflow/base-types';
+import type { AnyRecord } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
+
 import {
   BlockType,
   CANVAS_CHIPS_NODES,
@@ -12,11 +16,8 @@ import {
   ROOT_NODES,
   SHARED_NODES,
   STARTING_NODES,
-} from '@realtime-sdk/constants';
-import type { DBNodeStart, Markup, NodeData } from '@realtime-sdk/models';
-import { BaseModels, BaseNode } from '@voiceflow/base-types';
-import type { AnyRecord } from '@voiceflow/common';
-import { Utils } from '@voiceflow/common';
+} from '@/constants';
+import type { DBNodeStart, Markup, NodeData } from '@/models';
 
 import { createTypedTypeGuardCreator, createTypeGuardCreator } from './utils';
 

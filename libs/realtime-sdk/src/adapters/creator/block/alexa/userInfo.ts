@@ -1,7 +1,8 @@
-import type { NodeData } from '@realtime-sdk/models';
 import type { AlexaNode } from '@voiceflow/alexa-types';
 import { Utils } from '@voiceflow/common';
 import { createMultiAdapter } from 'bidirectional-adapter';
+
+import type { NodeData } from '@/models';
 
 import {
   createBlockAdapter,

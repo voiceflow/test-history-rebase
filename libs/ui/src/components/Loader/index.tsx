@@ -1,10 +1,11 @@
-import { loader2Icon, spinnerSmall } from '@ui/assets';
-import type { StyledProps } from '@ui/styles';
-import { colors, css, styled, ThemeColor } from '@ui/styles';
-import { spinKeyframes } from '@ui/styles/animations';
-import { ClassName } from '@ui/styles/constants';
 import cn from 'classnames';
 import React from 'react';
+
+import { loader2Icon, spinnerSmall } from '@/assets';
+import type { StyledProps } from '@/styles';
+import { colors, css, styled, ThemeColor } from '@/styles';
+import { spinKeyframes } from '@/styles/animations';
+import { ClassName } from '@/styles/constants';
 
 export interface LoaderProps {
   isMd?: boolean;

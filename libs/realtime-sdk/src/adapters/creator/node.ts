@@ -1,5 +1,11 @@
-import type { DBNodeStart, Link, Node, NodeData, Port } from '@realtime-sdk/models';
-import { getInPortID } from '@realtime-sdk/utils/port';
+import type { BaseModels } from '@voiceflow/base-types';
+import type { AnyRecord } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
+import type * as Platform from '@voiceflow/platform-config/backend';
+import { createMultiAdapter } from 'bidirectional-adapter';
+
+import type { DBNodeStart, Link, Node, NodeData, Port } from '@/models';
+import { getInPortID } from '@/utils/port';
 import {
   isActions,
   isActionsBlockType,
@@ -8,12 +14,7 @@ import {
   isRootBlockType,
   isStart,
   isStep,
-} from '@realtime-sdk/utils/typeGuards';
-import type { BaseModels } from '@voiceflow/base-types';
-import type { AnyRecord } from '@voiceflow/common';
-import { Utils } from '@voiceflow/common';
-import type * as Platform from '@voiceflow/platform-config/backend';
-import { createMultiAdapter } from 'bidirectional-adapter';
+} from '@/utils/typeGuards';
 
 import { BlockType } from '../../constants';
 import type { AdapterContext, VersionAdapterContext } from '../types';

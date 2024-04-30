@@ -1,7 +1,8 @@
-import SvgIcon from '@ui/components/SvgIcon';
-import type { TutorialTooltipProps } from '@ui/components/TutorialTooltip';
-import TutorialTooltip from '@ui/components/TutorialTooltip';
 import React from 'react';
+
+import SvgIcon from '@/components/SvgIcon';
+import type { TutorialTooltipProps } from '@/components/TutorialTooltip';
+import TutorialTooltip from '@/components/TutorialTooltip';
 
 import { IconContainer } from './components';
 

@@ -1,2 +1,13 @@
-// eslint-disable-next-line no-restricted-exports
-export { default } from '@voiceflow/vitest-config';
+import baseConfig from '@voiceflow/vitest-config';
+import type { UserConfig } from 'vitest/config';
+import { mergeConfig } from 'vitest/config';
+
+export default mergeConfig<UserConfig, UserConfig>(baseConfig, {
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: './config/test/setup.ts',
+    restoreMocks: true,
+    clearMocks: true,
+  },
+});

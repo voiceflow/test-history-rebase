@@ -1,5 +1,6 @@
-import type * as Base from '@platform-config/configs/base';
 import type { Normalized } from 'normal-store';
+
+import type * as Base from '@/configs/base';
 
 import type * as Prompt from './prompt';
 

@@ -1,6 +1,7 @@
-import * as Adapters from '@realtime-sdk/adapters';
-import { typeGuards } from '@realtime-sdk/utils';
 import { Utils } from '@voiceflow/common';
+
+import * as Adapters from '@/adapters';
+import { typeGuards } from '@/utils';
 
 import type { Transform } from './types';
 

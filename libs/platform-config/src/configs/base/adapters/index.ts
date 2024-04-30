@@ -1,4 +1,4 @@
-import { Config as ConfigUtils } from '@platform-config/configs/utils';
+import { Config as ConfigUtils } from '@/configs/utils';
 
 import * as Intent from './intent';
 import * as Prompt from './prompt';

@@ -1,6 +1,7 @@
-import type { ButtonVariant } from '@ui/components/Button/constants';
-import SvgIcon from '@ui/components/SvgIcon';
 import React from 'react';
+
+import type { ButtonVariant } from '@/components/Button/constants';
+import SvgIcon from '@/components/SvgIcon';
 
 import type { CommonButtonProps } from '../types';
 import * as S from './styles';

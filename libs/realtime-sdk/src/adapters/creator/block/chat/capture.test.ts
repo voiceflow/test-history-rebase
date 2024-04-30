@@ -1,7 +1,9 @@
-import captureAdapter from '@realtime-sdk/adapters/creator/block/chat/capture';
-import { chatNoReplyAdapter } from '@realtime-sdk/adapters/creator/block/utils';
 import { Creator } from '@test/factories';
 import { BaseButton } from '@voiceflow/base-types';
+import { afterAll, afterEach, describe, expect, it, vi } from 'vitest';
+
+import { chatNoReplyAdapter } from '../utils';
+import captureAdapter from './capture';
 
 describe('Adapters | Creator | Block | Chat | captureAdapter', () => {
   afterEach(() => {

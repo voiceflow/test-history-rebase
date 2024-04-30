@@ -1,9 +1,10 @@
-import type { SvgIconTypes } from '@ui/components/SvgIcon';
-import SvgIcon from '@ui/components/SvgIcon';
-import { OverflowText } from '@ui/components/Text';
-import type { TippyTooltipProps } from '@ui/components/TippyTooltip';
-import TippyTooltip from '@ui/components/TippyTooltip';
 import React from 'react';
+
+import type { SvgIconTypes } from '@/components/SvgIcon';
+import SvgIcon from '@/components/SvgIcon';
+import { OverflowText } from '@/components/Text';
+import type { TippyTooltipProps } from '@/components/TippyTooltip';
+import TippyTooltip from '@/components/TippyTooltip';
 
 import ListItemActionsContainer from './ListItemActionsContainer';
 import ListItemContainer from './ListItemContainer';

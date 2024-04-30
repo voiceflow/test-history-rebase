@@ -1,5 +1,6 @@
-import type { TippyTooltipProps } from '@ui/components/TippyTooltip';
 import type React from 'react';
+
+import type { TippyTooltipProps } from '@/components/TippyTooltip';
 
 export interface Props extends React.PropsWithChildren {
   flex: number;

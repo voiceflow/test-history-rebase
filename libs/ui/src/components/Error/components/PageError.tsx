@@ -1,6 +1,7 @@
-import { error500Graphic } from '@ui/assets';
-import { colors, styled, ThemeColor } from '@ui/styles';
 import React from 'react';
+
+import { error500Graphic } from '@/assets';
+import { colors, styled, ThemeColor } from '@/styles';
 
 import Page404Wrapper from './Page404Wrapper';
 

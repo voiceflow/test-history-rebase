@@ -1,7 +1,8 @@
-import * as RealtimeUtilsPort from '@realtime-sdk/utils/port';
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import type { VoiceflowNode } from '@voiceflow/voiceflow-types';
+
+import * as RealtimeUtilsPort from '@/utils/port';
 
 import type { NodeData } from '../../../../models';
 import {

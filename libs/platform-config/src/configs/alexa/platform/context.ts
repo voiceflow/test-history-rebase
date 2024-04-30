@@ -1,4 +1,4 @@
-import * as Base from '@platform-config/configs/base';
+import * as Base from '@/configs/base';
 
 import type { Account } from './types';
 

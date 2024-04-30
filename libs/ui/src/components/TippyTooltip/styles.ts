@@ -1,4 +1,4 @@
-import { createGlobalStyle } from '@ui/styles';
+import { createGlobalStyle } from '@/styles';
 
 export const GlobalStyle = createGlobalStyle`
   .tippy-box {

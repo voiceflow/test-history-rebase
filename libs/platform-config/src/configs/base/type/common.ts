@@ -1,6 +1,6 @@
-import type { Icon } from '@platform-config/configs/types';
-import { ProjectType } from '@platform-config/constants';
-import { TypeGuards, Types } from '@platform-config/utils';
+import type { Icon } from '@/configs/types';
+import { ProjectType } from '@/constants';
+import { TypeGuards, Types } from '@/utils';
 
 import * as Project from '../project';
 import * as Utils from '../utils';

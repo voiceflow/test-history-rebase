@@ -1,6 +1,7 @@
-import SvgIcon from '@ui/components/SvgIcon';
-import { preventDefault } from '@ui/utils/dom';
 import React from 'react';
+
+import SvgIcon from '@/components/SvgIcon';
+import { preventDefault } from '@/utils/dom';
 
 import { CursorContainer } from './components/CursorContainer';
 import { CursorNametag } from './components/CursorNametag';

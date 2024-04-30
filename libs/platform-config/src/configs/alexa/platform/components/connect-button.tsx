@@ -1,6 +1,7 @@
-import * as Base from '@platform-config/configs/base';
 import { Button, useAsyncMountUnmount } from '@voiceflow/ui';
 import React from 'react';
+
+import * as Base from '@/configs/base';
 
 import { useContext } from '../context';
 

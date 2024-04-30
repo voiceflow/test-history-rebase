@@ -1,5 +1,5 @@
-import SvgIcon from '@ui/components/SvgIcon';
-import { styled } from '@ui/styles';
+import SvgIcon from '@/components/SvgIcon';
+import { styled } from '@/styles';
 
 export const BubbleButton = styled.div`
   background: #2b2f32;

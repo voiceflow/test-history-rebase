@@ -1,5 +1,5 @@
-import Box from '@ui/components/Box';
-import { css, styled } from '@ui/styles';
+import Box from '@/components/Box';
+import { css, styled } from '@/styles';
 
 export const Container = styled(Box.Flex)<{ isSmall?: boolean }>`
   padding-top: 16px;

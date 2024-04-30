@@ -1,11 +1,4 @@
-import {
-  ANIMATION_SPEED,
-  COLOR_BLUE,
-  COLOR_GREEN,
-  COLOR_OFF_WHITE,
-  COLOR_RED,
-  COLOR_WHITE,
-} from '@ui/styles/constants';
+import { ANIMATION_SPEED, COLOR_BLUE, COLOR_GREEN, COLOR_OFF_WHITE, COLOR_RED, COLOR_WHITE } from '@/styles/constants';
 
 import ICON_THEME from './icon';
 

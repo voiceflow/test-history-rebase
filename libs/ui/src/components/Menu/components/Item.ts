@@ -1,7 +1,8 @@
-import { flexStyles } from '@ui/components/Flex';
-import { colors, css, styled, ThemeColor, transition } from '@ui/styles';
-import { ClassName } from '@ui/styles/constants';
 import cn from 'classnames';
+
+import { flexStyles } from '@/components/Flex';
+import { colors, css, styled, ThemeColor, transition } from '@/styles';
+import { ClassName } from '@/styles/constants';
 
 import ItemActionIcon from './ItemActionIcon';
 import ItemIcon from './ItemIcon';

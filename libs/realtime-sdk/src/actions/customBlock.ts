@@ -1,7 +1,8 @@
-import { CUSTOM_BLOCK_KEY } from '@realtime-sdk/constants';
-import type { CustomBlock } from '@realtime-sdk/models';
-import type { BaseVersionPayload } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
+
+import { CUSTOM_BLOCK_KEY } from '@/constants';
+import type { CustomBlock } from '@/models';
+import type { BaseVersionPayload } from '@/types';
 
 import { createCRUDActions } from './utils';
 

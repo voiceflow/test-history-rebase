@@ -1,5 +1,5 @@
-import { FlexCenter } from '@ui/components/Flex';
-import { styled } from '@ui/styles';
+import { FlexCenter } from '@/components/Flex';
+import { styled } from '@/styles';
 
 export const RemoveButton = styled(FlexCenter)<{ top?: number; right?: number }>`
   cursor: pointer;

@@ -1,5 +1,6 @@
-import { styled } from '@ui/styles';
 import React from 'react';
+
+import { styled } from '@/styles';
 
 const Pre = styled.pre`
   background-color: #142e55;

@@ -1,9 +1,10 @@
 import composeRefs from '@seznam/compose-react-refs';
-import { useSetup } from '@ui/hooks';
-import type { Either } from '@ui/types';
-import { withEnterPress, withTargetValue } from '@ui/utils/dom';
 import { Utils } from '@voiceflow/common';
 import React from 'react';
+
+import { useSetup } from '@/hooks';
+import type { Either } from '@/types';
+import { withEnterPress, withTargetValue } from '@/utils/dom';
 
 import type { DefaultInputProps, InlineInputProps } from './components';
 import {

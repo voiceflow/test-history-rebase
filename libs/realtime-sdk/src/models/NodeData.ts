@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-namespace */
-import type { BlockType } from '@realtime-sdk/constants';
 import type { AlexaNode } from '@voiceflow/alexa-types';
 import type { BaseButton, BaseModels, BaseNode } from '@voiceflow/base-types';
 import type { ChatNode } from '@voiceflow/chat-types';
@@ -8,6 +7,8 @@ import type { FunctionNode } from '@voiceflow/dtos';
 import type * as Platform from '@voiceflow/platform-config/backend';
 import type { VoiceNode } from '@voiceflow/voice-types';
 import type { VoiceflowNode } from '@voiceflow/voiceflow-types';
+
+import type { BlockType } from '@/constants';
 
 import type { ExpressionData } from './Expression';
 import type { Markup } from './Markup';

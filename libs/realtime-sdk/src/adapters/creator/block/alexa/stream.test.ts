@@ -1,5 +1,7 @@
-import streamAdapter from '@realtime-sdk/adapters/creator/block/alexa/stream';
 import { Creator } from '@test/factories';
+import { describe, expect, it } from 'vitest';
+
+import streamAdapter from './stream';
 
 describe('Adapters | Creator | Block | Alexa | streamAdapter', () => {
   describe('when transforming from db', () => {

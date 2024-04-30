@@ -1,8 +1,9 @@
 /* eslint-disable no-param-reassign */
-import * as Utils from '@realtime-sdk/utils';
 import { BaseModels, BaseNode, BaseUtils } from '@voiceflow/base-types';
 import type { AnyRecord } from '@voiceflow/common';
 import type { Draft } from 'immer';
+
+import * as Utils from '@/utils';
 
 import type { DiagramUpdateData, Transform, VersionUpdateData } from './types';
 

@@ -1,5 +1,5 @@
-import UIButton from '@ui/components/Button';
-import { css, styled } from '@ui/styles';
+import UIButton from '@/components/Button';
+import { css, styled } from '@/styles';
 
 export const Button = styled(UIButton.DarkButton)`
   padding: 10px 12px;

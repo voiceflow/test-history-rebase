@@ -1,4 +1,4 @@
-import { colors, css, styled, ThemeColor, transition } from '@ui/styles';
+import { colors, css, styled, ThemeColor, transition } from '@/styles';
 
 const fillContainerStyles = css`
   width: 100%;

@@ -1,5 +1,6 @@
-import type { NodeData } from '@realtime-sdk/models';
 import type { DFESNode } from '@voiceflow/google-dfes-types';
+
+import type { NodeData } from '@/models';
 
 import {
   createBlockAdapter,

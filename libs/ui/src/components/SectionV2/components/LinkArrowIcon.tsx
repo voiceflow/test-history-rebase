@@ -1,6 +1,7 @@
-import SvgIcon from '@ui/components/SvgIcon';
-import { styled } from '@ui/styles';
 import React from 'react';
+
+import SvgIcon from '@/components/SvgIcon';
+import { styled } from '@/styles';
 
 import Status from './Status';
 

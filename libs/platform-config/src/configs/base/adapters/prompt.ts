@@ -1,6 +1,7 @@
-import { Config as ConfigUtils } from '@platform-config/configs/utils';
 import { Utils } from '@voiceflow/common';
 import { createMultiAdapter } from 'bidirectional-adapter';
+
+import { Config as ConfigUtils } from '@/configs/utils';
 
 import type * as Models from '../models';
 

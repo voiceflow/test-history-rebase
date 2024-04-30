@@ -1,4 +1,4 @@
-import { backgrounds, colors, css, styled, ThemeColor } from '@ui/styles';
+import { backgrounds, colors, css, styled, ThemeColor } from '@/styles';
 
 interface MenuHeaderWrapperProps {
   isDisabled?: boolean;

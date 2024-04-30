@@ -1,5 +1,5 @@
-import SvgIcon from '@ui/components/SvgIcon';
-import { css, styled, transition } from '@ui/styles';
+import SvgIcon from '@/components/SvgIcon';
+import { css, styled, transition } from '@/styles';
 
 import { Label } from './components';
 

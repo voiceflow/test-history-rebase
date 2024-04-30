@@ -1,6 +1,7 @@
-import SvgIcon from '@ui/components/SvgIcon';
-import TippyTooltip from '@ui/components/TippyTooltip';
 import React from 'react';
+
+import SvgIcon from '@/components/SvgIcon';
+import TippyTooltip from '@/components/TippyTooltip';
 
 import * as S from './styles';
 import type * as T from './types';

@@ -1,4 +1,4 @@
-import * as Base from '@platform-config/configs/base';
+import * as Base from '@/configs/base';
 
 import * as DialogflowESCommon from '../../common';
 import * as Voice from './voice';

@@ -1,9 +1,10 @@
-import * as Base from '@platform-config/configs/base';
-import { Config as ConfigUtils } from '@platform-config/configs/utils';
-import { Types } from '@platform-config/utils';
 import { BaseVersion } from '@voiceflow/base-types';
 import { ChatVersion } from '@voiceflow/chat-types';
 import { createSimpleAdapter, createSmartSimpleAdapter } from 'bidirectional-adapter';
+
+import * as Base from '@/configs/base';
+import { Config as ConfigUtils } from '@/configs/utils';
+import { Types } from '@/utils';
 
 import type * as Models from '../../models';
 import * as Prompt from '../prompt';

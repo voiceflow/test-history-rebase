@@ -1,10 +1,11 @@
-import Flex from '@ui/components/Flex';
-import SvgIcon from '@ui/components/SvgIcon';
-import TippyTooltip from '@ui/components/TippyTooltip';
-import type { UserProps } from '@ui/components/User';
-import User from '@ui/components/User';
-import { Identifier } from '@ui/styles/constants';
 import React from 'react';
+
+import Flex from '@/components/Flex';
+import SvgIcon from '@/components/SvgIcon';
+import TippyTooltip from '@/components/TippyTooltip';
+import type { UserProps } from '@/components/User';
+import User from '@/components/User';
+import { Identifier } from '@/styles/constants';
 
 import * as S from './styles';
 

@@ -1,7 +1,8 @@
-import type { BlockType } from '@realtime-sdk/constants';
-import type { DBPortWithLinkData, Port } from '@realtime-sdk/models';
-import { getInPortID } from '@realtime-sdk/utils/port';
 import { Utils } from '@voiceflow/common';
+
+import type { BlockType } from '@/constants';
+import type { DBPortWithLinkData, Port } from '@/models';
+import { getInPortID } from '@/utils/port';
 
 import { MIGRATION_BLOCKS } from './constants';
 

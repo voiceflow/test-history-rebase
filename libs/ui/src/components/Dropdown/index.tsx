@@ -1,15 +1,16 @@
-import type { MenuTypes } from '@ui/components/Menu';
-import Menu from '@ui/components/Menu';
-import Portal from '@ui/components/Portal';
-import { useNestedPopperTheme } from '@ui/hooks';
-import { useCachedValue } from '@ui/hooks/cache';
-import type { PopperPlacement } from '@ui/hooks/popper';
-import { usePopper } from '@ui/hooks/popper';
-import { ThemeProvider } from '@ui/styles';
 import type { Nullable } from '@voiceflow/common';
 import React, { Fragment } from 'react';
 import { DismissableLayerProvider, useDismissable } from 'react-dismissable-layers';
 import type { StrictModifier } from 'react-popper';
+
+import type { MenuTypes } from '@/components/Menu';
+import Menu from '@/components/Menu';
+import Portal from '@/components/Portal';
+import { useNestedPopperTheme } from '@/hooks';
+import { useCachedValue } from '@/hooks/cache';
+import type { PopperPlacement } from '@/hooks/popper';
+import { usePopper } from '@/hooks/popper';
+import { ThemeProvider } from '@/styles';
 
 import { PopoverContainer } from './components';
 

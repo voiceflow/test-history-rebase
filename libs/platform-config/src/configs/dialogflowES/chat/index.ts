@@ -1,4 +1,4 @@
-import * as Common from '@platform-config/configs/common';
+import * as Common from '@/configs/common';
 
 import * as DialogflowESCommon from '../common';
 import * as Adapters from './adapters';

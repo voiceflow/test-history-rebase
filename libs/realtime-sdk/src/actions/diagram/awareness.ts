@@ -1,7 +1,8 @@
-import { AWARENESS_KEY } from '@realtime-sdk/constants';
-import type { BaseDiagramPayload } from '@realtime-sdk/types';
 import type { Nullable } from '@voiceflow/common';
 import { Utils } from '@voiceflow/common';
+
+import { AWARENESS_KEY } from '@/constants';
+import type { BaseDiagramPayload } from '@/types';
 
 import { diagramType } from './utils';
 

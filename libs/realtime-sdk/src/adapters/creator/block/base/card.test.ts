@@ -1,6 +1,8 @@
-import cardAdapter from '@realtime-sdk/adapters/creator/block/base/card';
 import { Creator } from '@test/factories';
 import { BaseNode } from '@voiceflow/base-types';
+import { describe, expect, it } from 'vitest';
+
+import cardAdapter from './card';
 
 describe('Adapters | Creator | Block | Base | cardAdapter', () => {
   describe('when transforming from db', () => {

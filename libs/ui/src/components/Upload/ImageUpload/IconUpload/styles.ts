@@ -1,9 +1,10 @@
-import { Box } from '@ui/components/Box';
-import { FlexCenter } from '@ui/components/Flex';
-import SvgIcon from '@ui/components/SvgIcon';
-import { css, styled, transition } from '@ui/styles';
-import { fontResetStyle } from '@ui/styles/bootstrap';
 import type { Nullable } from '@voiceflow/common';
+
+import { Box } from '@/components/Box';
+import { FlexCenter } from '@/components/Flex';
+import SvgIcon from '@/components/SvgIcon';
+import { css, styled, transition } from '@/styles';
+import { fontResetStyle } from '@/styles/bootstrap';
 
 import { RemoveButton } from '../styles';
 

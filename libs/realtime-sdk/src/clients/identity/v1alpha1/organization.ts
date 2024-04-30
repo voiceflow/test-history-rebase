@@ -1,4 +1,4 @@
-import type { Identity } from '@realtime-sdk/models';
+import type { Identity } from '@/models';
 
 import type { NestResourceOptions } from '../../nest';
 import { NestResource } from '../../nest';

@@ -1,6 +1,6 @@
-import type { TextProps } from '@ui/components/Text';
-import Text from '@ui/components/Text';
-import { styled } from '@ui/styles';
+import type { TextProps } from '@/components/Text';
+import Text from '@/components/Text';
+import { styled } from '@/styles';
 
 export interface DescriptionProps extends TextProps {
   block?: boolean;

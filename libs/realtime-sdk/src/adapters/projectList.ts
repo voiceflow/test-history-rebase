@@ -1,5 +1,6 @@
-import type { DBProjectList, ProjectList } from '@realtime-sdk/models';
 import { createMultiAdapter } from 'bidirectional-adapter';
+
+import type { DBProjectList, ProjectList } from '@/models';
 
 const projectListAdapter = createMultiAdapter<DBProjectList, ProjectList>(
   ({ board_id, name, projects = [] }) => ({

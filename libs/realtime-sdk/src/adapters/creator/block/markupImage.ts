@@ -1,4 +1,4 @@
-import type { Markup } from '@realtime-sdk/models';
+import type { Markup } from '@/models';
 
 import { createBlockAdapter } from './utils';
 

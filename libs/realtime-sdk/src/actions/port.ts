@@ -1,8 +1,9 @@
-import { PORT_KEY } from '@realtime-sdk/constants';
-import type { BaseDiagramPayload, BaseNodePayload, BasePortPayload, RemoveNode } from '@realtime-sdk/types';
 import type { BaseModels } from '@voiceflow/base-types';
 import type { Nullish } from '@voiceflow/common';
 import { Utils } from '@voiceflow/common';
+
+import { PORT_KEY } from '@/constants';
+import type { BaseDiagramPayload, BaseNodePayload, BasePortPayload, RemoveNode } from '@/types';
 
 const portType = Utils.protocol.typeFactory(PORT_KEY);
 

@@ -1,5 +1,5 @@
-import { FlexCenter } from '@ui/components/Flex';
-import { styled, transition } from '@ui/styles';
+import { FlexCenter } from '@/components/Flex';
+import { styled, transition } from '@/styles';
 
 import CloseButton from './CloseButton';
 

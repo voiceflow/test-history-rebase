@@ -1,7 +1,8 @@
-import { Config as ConfigUtils } from '@platform-config/configs/utils';
 import { BaseVersion } from '@voiceflow/base-types';
 import type { Nullable } from '@voiceflow/common';
 import { createSimpleAdapter } from 'bidirectional-adapter';
+
+import { Config as ConfigUtils } from '@/configs/utils';
 
 import type * as Models from '../../models';
 

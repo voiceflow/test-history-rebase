@@ -1,4 +1,4 @@
-import { styled } from '@ui/styles';
+import { styled } from '@/styles';
 
 const Title = styled.div`
   color: #c0c5c6;

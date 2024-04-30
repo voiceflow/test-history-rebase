@@ -1,6 +1,6 @@
-import SvgIcon from '@ui/components/SvgIcon';
-import { styled, transition } from '@ui/styles';
-import { fontResetStyle } from '@ui/styles/bootstrap';
+import SvgIcon from '@/components/SvgIcon';
+import { styled, transition } from '@/styles';
+import { fontResetStyle } from '@/styles/bootstrap';
 
 const Button = styled.input`
   ${fontResetStyle};

@@ -1,5 +1,6 @@
-import { useOnScreen } from '@ui/hooks';
 import React from 'react';
+
+import { useOnScreen } from '@/hooks';
 
 export interface StickyProps {
   top?: number;

@@ -1,5 +1,6 @@
-import * as Common from '@platform-config/configs/common';
 import type { GoogleConstants } from '@voiceflow/google-types';
+
+import * as Common from '@/configs/common';
 
 export const simple = Common.Voice.Adapters.Prompt.simpleFactory<GoogleConstants.Voice>();
 

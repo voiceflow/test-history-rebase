@@ -1,5 +1,6 @@
-import { FadeDown } from '@ui/styles/animations';
 import React from 'react';
+
+import { FadeDown } from '@/styles/animations';
 
 import * as S from './styles';
 

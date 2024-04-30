@@ -1,4 +1,4 @@
-import { styled } from '@ui/styles';
+import { styled } from '@/styles';
 
 import type { LinkProps } from './Link';
 import { linkStyles } from './Link';

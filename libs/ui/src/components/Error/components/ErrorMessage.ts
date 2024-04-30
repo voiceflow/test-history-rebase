@@ -1,6 +1,7 @@
-import { styled, units } from '@ui/styles';
 import type { SpaceProps } from 'styled-system';
 import { space } from 'styled-system';
+
+import { styled, units } from '@/styles';
 
 export interface ErrorMessageProps extends SpaceProps {}
 

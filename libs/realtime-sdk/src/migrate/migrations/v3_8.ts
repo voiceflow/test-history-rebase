@@ -1,6 +1,7 @@
-import * as Utils from '@realtime-sdk/utils';
 import { BaseNode, BaseUtils } from '@voiceflow/base-types';
 import type { VoiceflowNode } from '@voiceflow/voiceflow-types';
+
+import * as Utils from '@/utils';
 
 import type { Transform } from './types';
 

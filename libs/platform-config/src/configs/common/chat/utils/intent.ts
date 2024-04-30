@@ -1,6 +1,7 @@
-import * as Base from '@platform-config/configs/base';
-import { Config as ConfigUtils } from '@platform-config/configs/utils';
 import type { Optional, Required } from 'utility-types';
+
+import * as Base from '@/configs/base';
+import { Config as ConfigUtils } from '@/configs/utils';
 
 import * as PromptAdapter from '../adapters/prompt';
 import type * as Models from '../models';

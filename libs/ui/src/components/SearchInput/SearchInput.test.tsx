@@ -1,11 +1,12 @@
-import { act, fireEvent, render } from '@testing-library/react';
-import type { SearchInputProps } from '@ui/components/SearchInput';
-import SearchInput from '@ui/components/SearchInput';
+import { act, fireEvent } from '@testing-library/react';
 import { Utils } from '@voiceflow/common';
 import React from 'react';
+import { describe, expect, it } from 'vitest';
 
-import suite from '../../../test/_suite';
-import { ThemeProvider } from '../../../test/_utils';
+import { renderThemed } from '@/test/theme';
+
+import type { SearchInputProps } from '.';
+import SearchInput from '.';
 
 const SearchInputImpl = (props: SearchInputProps) => {
   const [value, setValue] = React.useState(Utils.generate.string());
@@ -13,10 +14,10 @@ const SearchInputImpl = (props: SearchInputProps) => {
   return <SearchInput onChange={({ target: { value } }) => setValue(value)} value={value} {...props} />;
 };
 
-suite('SearchInput', () => {
+describe('SearchInput', () => {
   it('accepts keyboard input', () => {
     const nextValue = Utils.generate.string();
-    render(<SearchInputImpl />, { wrapper: ThemeProvider });
+    renderThemed(<SearchInputImpl />);
 
     const input = document.querySelector('input')!;
 

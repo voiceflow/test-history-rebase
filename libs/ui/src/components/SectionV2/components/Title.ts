@@ -1,6 +1,7 @@
-import { css, styled } from '@ui/styles';
 import type { LayoutProps, SpaceProps } from 'styled-system';
 import { layout, space } from 'styled-system';
+
+import { css, styled } from '@/styles';
 
 export interface TitleProps extends SpaceProps, LayoutProps {
   fill?: boolean;

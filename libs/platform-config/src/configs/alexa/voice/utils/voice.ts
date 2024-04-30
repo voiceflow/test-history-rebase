@@ -1,6 +1,7 @@
-import * as Base from '@platform-config/configs/base';
-import { Config as ConfigUtils } from '@platform-config/configs/utils';
 import { AlexaConstants } from '@voiceflow/alexa-types';
+
+import * as Base from '@/configs/base';
+import { Config as ConfigUtils } from '@/configs/utils';
 
 export const CONFIG = Base.Utils.Voice.extend({
   getLocaleDefault: (locales: AlexaConstants.Locale[]): AlexaConstants.Voice =>

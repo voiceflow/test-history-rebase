@@ -1,7 +1,8 @@
-import { stopPropagation } from '@ui/utils/dom';
 import { Utils } from '@voiceflow/common';
 import React from 'react';
 import ReactToggle from 'react-toggle';
+
+import { stopPropagation } from '@/utils/dom';
 
 import { Size } from './constants';
 import * as S from './styles';

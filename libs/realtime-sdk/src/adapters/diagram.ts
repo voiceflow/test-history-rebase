@@ -1,6 +1,7 @@
-import type { DBDiagram, Diagram } from '@realtime-sdk/models';
 import { BaseModels } from '@voiceflow/base-types';
 import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter';
+
+import type { DBDiagram, Diagram } from '@/models';
 
 const diagramAdapter = createMultiAdapter<DBDiagram, Diagram, [{ rootDiagramID?: string }] | []>(
   ({ diagramID, name, type, zoom, offsetX, offsetY, variables, menuItems = [] }, { rootDiagramID } = {}) => ({

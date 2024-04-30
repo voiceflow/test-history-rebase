@@ -1,12 +1,13 @@
-import { LoadCircle } from '@ui/components/Loader';
-import SvgIcon from '@ui/components/SvgIcon';
-import TippyTooltip from '@ui/components/TippyTooltip';
-import { useEnableDisable } from '@ui/hooks';
-import { stopPropagation } from '@ui/utils';
 import type { Nullable } from '@voiceflow/common';
 import { READABLE_VARIABLE_REGEXP, Utils } from '@voiceflow/common';
 import React from 'react';
 import { useDropzone } from 'react-dropzone';
+
+import { LoadCircle } from '@/components/Loader';
+import SvgIcon from '@/components/SvgIcon';
+import TippyTooltip from '@/components/TippyTooltip';
+import { useEnableDisable } from '@/hooks';
+import { stopPropagation } from '@/utils';
 
 import { HTTPS_URL_REGEX, IMAGE_FILE_TYPES, UPLOAD_ERROR } from '../../constants';
 import { useFileTypesToMimeType } from '../../hooks';

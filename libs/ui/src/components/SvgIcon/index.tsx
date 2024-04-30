@@ -1,8 +1,9 @@
-import { IS_TEST } from '@ui/config';
-import { ClassName } from '@ui/styles/constants';
-import * as ICONS from '@ui/svgs';
 import cn from 'classnames';
 import React from 'react';
+
+import { IS_TEST } from '@/config';
+import { ClassName } from '@/styles/constants';
+import * as ICONS from '@/svgs';
 
 import { Variant } from './constants';
 import * as S from './styles';

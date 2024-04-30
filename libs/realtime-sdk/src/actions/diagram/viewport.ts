@@ -1,7 +1,8 @@
-import { createCRUDActions } from '@realtime-sdk/actions/utils';
-import { VIEWPORT_KEY } from '@realtime-sdk/constants';
-import type { ViewportModel } from '@realtime-sdk/models';
 import { Utils } from '@voiceflow/common';
+
+import { createCRUDActions } from '@/actions/utils';
+import { VIEWPORT_KEY } from '@/constants';
+import type { ViewportModel } from '@/models';
 
 import { diagramType } from './utils';
 

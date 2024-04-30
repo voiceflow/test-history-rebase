@@ -1,6 +1,7 @@
-import { css, styled } from '@ui/styles';
 import React from 'react';
 import { color, layout, space, typography } from 'styled-system';
+
+import { css, styled } from '@/styles';
 
 const Description = styled.div(
   layout,

@@ -1,8 +1,9 @@
-import { useCreateConst } from '@ui/hooks';
-import { abbreviateNumber } from '@ui/utils/format';
 import { Utils } from '@voiceflow/common';
 import React from 'react';
 import { Bar, BarChart as ReBarChart, Cell, LabelList, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+
+import { useCreateConst } from '@/hooks';
+import { abbreviateNumber } from '@/utils/format';
 
 import { BarChartBar, BarChartGradient, BarChartTooltip } from './components';
 import { COLORS } from './constants';

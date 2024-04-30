@@ -1,4 +1,4 @@
-import { css, styled } from '@ui/styles';
+import { css, styled } from '@/styles';
 
 export interface ColumnProps {
   flex: number;

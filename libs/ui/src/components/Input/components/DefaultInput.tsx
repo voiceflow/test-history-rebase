@@ -1,10 +1,11 @@
 import composeRef from '@seznam/compose-react-refs';
-import type { SvgIconTypes } from '@ui/components/SvgIcon';
-import SvgIcon from '@ui/components/SvgIcon';
-import { css, styled } from '@ui/styles';
-import { fontResetStyle } from '@ui/styles/bootstrap';
-import type { Either } from '@ui/types';
 import React from 'react';
+
+import type { SvgIconTypes } from '@/components/SvgIcon';
+import SvgIcon from '@/components/SvgIcon';
+import { css, styled } from '@/styles';
+import { fontResetStyle } from '@/styles/bootstrap';
+import type { Either } from '@/types';
 
 import type { StyledInputProps } from '../styles';
 import { hideNumberArrows, inputStyle } from '../styles';

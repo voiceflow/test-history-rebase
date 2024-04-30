@@ -1,5 +1,6 @@
-import * as Base from '@platform-config/configs/base';
 import React from 'react';
+
+import * as Base from '@/configs/base';
 
 import { ConnectButton } from '../components';
 import { useContext } from '../context';

@@ -1,5 +1,5 @@
-import Menu from '@ui/components/Menu';
-import { styled } from '@ui/styles';
+import Menu from '@/components/Menu';
+import { styled } from '@/styles';
 
 export { default as GroupHeader } from './GroupHeader';
 export { default as SelectItem } from './SelectItem';

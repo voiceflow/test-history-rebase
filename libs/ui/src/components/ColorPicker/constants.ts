@@ -1,6 +1,7 @@
-import type { HSLShades } from '@ui/utils/colors/hsl';
-import { COLOR_GRADES } from '@ui/utils/colors/hsl';
 import type { BaseModels } from '@voiceflow/base-types';
+
+import type { HSLShades } from '@/utils/colors/hsl';
+import { COLOR_GRADES } from '@/utils/colors/hsl';
 
 export type { HSLShades };
 export interface IColor extends BaseModels.Project.Theme {}

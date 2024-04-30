@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 import { SyncService } from './sync';
 
@@ -13,14 +13,14 @@ describe('Service | Sync', () => {
   describe('start()', () => {
     const mockClients = () => ({
       pubsub: {
-        subscribe: sinon.spy(),
-        publish: sinon.spy(),
+        subscribe: vi.fn(),
+        publish: vi.fn(),
       },
     });
     const mockServer = () => ({
       nodeId: 'node_id',
-      on: sinon.spy(),
-      sendAction: sinon.spy(),
+      on: vi.fn(),
+      sendAction: vi.fn(),
     });
 
     it('starts subscription to pubsub and event log', () => {
@@ -51,7 +51,7 @@ describe('Service | Sync', () => {
       sync.start(server as any);
 
       // invoke event log handler
-      server.on.args[0][1](MOCK_ACTION, meta);
+      server.on.mock.calls[0][1](MOCK_ACTION, meta);
 
       expect(clients.pubsub.publish).toBeCalledWith(MOCK_ACTION_CHANNEL, [MOCK_ACTION, meta]);
     });
@@ -68,7 +68,7 @@ describe('Service | Sync', () => {
       sync.start(server as any);
 
       // invoke event log handler
-      server.on.args[0][1](MOCK_ACTION, { server: 'other_node_id' });
+      server.on.mock.calls[0][1](MOCK_ACTION, { server: 'other_node_id' });
 
       expect(clients.pubsub.publish).not.toBeCalled();
     });
@@ -86,7 +86,7 @@ describe('Service | Sync', () => {
       sync.start(server as any);
 
       // invoke pubsub handler
-      clients.pubsub.subscribe.args[0][1]([MOCK_ACTION, meta]);
+      clients.pubsub.subscribe.mock.calls[0][1]([MOCK_ACTION, meta]);
 
       expect(server.sendAction).toBeCalledWith(MOCK_ACTION, meta);
     });
@@ -103,7 +103,7 @@ describe('Service | Sync', () => {
       sync.start(server as any);
 
       // invoke pubsub handler
-      clients.pubsub.subscribe.args[0][1]([MOCK_ACTION, { server: server.nodeId }]);
+      clients.pubsub.subscribe.mock.calls[0][1]([MOCK_ACTION, { server: server.nodeId }]);
 
       expect(server.sendAction).not.toBeCalled();
     });

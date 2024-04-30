@@ -1,6 +1,7 @@
-import { AWARENESS_KEY } from '@realtime-sdk/constants';
-import type { BaseProjectPayload, BaseWorkspacePayload, Viewer } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
+
+import { AWARENESS_KEY } from '@/constants';
+import type { BaseProjectPayload, BaseWorkspacePayload, Viewer } from '@/types';
 
 import { projectType } from './utils';
 

@@ -1,8 +1,9 @@
-import type { NodeData } from '@realtime-sdk/models';
 import { BaseNode } from '@voiceflow/base-types';
 import type { ChatNode } from '@voiceflow/chat-types';
 import type { Nullish } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config/backend';
+
+import type { NodeData } from '@/models';
 
 import { baseCaptureV2Adapter } from '../base';
 import { chatNoMatchAdapter, chatNoReplyAdapter, createBlockAdapter } from '../utils';

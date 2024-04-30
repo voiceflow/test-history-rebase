@@ -1,4 +1,4 @@
-import type { Action } from '@ui/types';
+import type { Action } from '@/types';
 
 export const createAction = <T extends string, P, M extends object | void>(type: T, payload?: P, meta?: M) =>
   ({

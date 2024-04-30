@@ -1,5 +1,5 @@
-import { LoadCircle, LoadContainer } from '@ui/components/Loader';
-import { css, styled } from '@ui/styles';
+import { LoadCircle, LoadContainer } from '@/components/Loader';
+import { css, styled } from '@/styles';
 
 export const SwitcherContainer = styled.div`
   background: #f2f4f5;

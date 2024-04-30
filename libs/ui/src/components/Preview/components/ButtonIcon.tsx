@@ -1,9 +1,10 @@
-import type { SvgIconTypes } from '@ui/components/SvgIcon';
-import SvgIcon from '@ui/components/SvgIcon';
-import { styled, transition } from '@ui/styles';
 import React from 'react';
 import type { SpaceProps } from 'styled-system';
 import { space } from 'styled-system';
+
+import type { SvgIconTypes } from '@/components/SvgIcon';
+import SvgIcon from '@/components/SvgIcon';
+import { styled, transition } from '@/styles';
 
 import { PreviewColors } from '../constants';
 

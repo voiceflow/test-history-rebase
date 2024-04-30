@@ -1,5 +1,5 @@
-import { css, styled } from '@ui/styles';
-import { ANIMATION_SPEED } from '@ui/styles/constants';
+import { css, styled } from '@/styles';
+import { ANIMATION_SPEED } from '@/styles/constants';
 
 import { fadeInKeyframes } from './Fade';
 import { moveInTopKeyframes } from './Move';

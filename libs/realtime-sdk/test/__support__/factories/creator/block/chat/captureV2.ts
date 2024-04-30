@@ -1,6 +1,7 @@
-import type { NodeData } from '@realtime-sdk/models';
 import type { ChatNode } from '@voiceflow/chat-types';
 import { define } from 'cooky-cutter';
+
+import type { NodeData } from '@/models';
 
 import { ChatNodeDataNoMatch, ChatNodeDataNoReply, ChatStepNoMatch, ChatStepNoReply } from '../shared';
 

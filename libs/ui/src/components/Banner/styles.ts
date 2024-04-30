@@ -1,6 +1,6 @@
-import Box from '@ui/components/Box';
-import Button from '@ui/components/Button';
-import { colors, css, styled, ThemeColor } from '@ui/styles';
+import Box from '@/components/Box';
+import Button from '@/components/Button';
+import { colors, css, styled, ThemeColor } from '@/styles';
 
 export const CloseButton = styled(Button).attrs({
   variant: Button.Variant.WHITE,

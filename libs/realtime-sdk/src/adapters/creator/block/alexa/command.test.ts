@@ -1,5 +1,7 @@
-import commandAdapter from '@realtime-sdk/adapters/creator/block/alexa/command';
 import { Creator } from '@test/factories';
+import { describe, expect, it } from 'vitest';
+
+import commandAdapter from './command';
 
 describe('Adapters | Creator | Block | Alexa | Command', () => {
   describe('when transforming from db', () => {

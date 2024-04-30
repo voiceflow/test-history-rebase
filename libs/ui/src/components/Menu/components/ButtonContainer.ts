@@ -1,4 +1,4 @@
-import { colors, styled, ThemeColor } from '@ui/styles';
+import { colors, styled, ThemeColor } from '@/styles';
 
 export interface ButtonContainerProps {
   disabled?: boolean;

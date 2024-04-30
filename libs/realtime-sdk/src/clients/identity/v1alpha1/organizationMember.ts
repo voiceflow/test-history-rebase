@@ -1,4 +1,4 @@
-import type * as Models from '@realtime-sdk/models';
+import type * as Models from '@/models';
 
 import type { NestResourceOptions } from '../../nest';
 import { NestResource } from '../../nest';

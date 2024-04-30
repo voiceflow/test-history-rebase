@@ -1,8 +1,9 @@
-import type { Product, ProductMarketPlace } from '@realtime-sdk/models';
 import type { AlexaConstants } from '@voiceflow/alexa-types';
 import { AlexaProject } from '@voiceflow/alexa-types';
 import { Utils } from '@voiceflow/common';
 import dayjs from 'dayjs';
+
+import type { Product, ProductMarketPlace } from '@/models';
 
 import { MARKET_PLACE_AVAILABILITY } from './constants';
 

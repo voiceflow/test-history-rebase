@@ -1,9 +1,9 @@
-import * as Fetch from '@ui/utils/fetch';
-import createRawFetch from '@ui/utils/fetch/raw';
 import { Utils } from '@voiceflow/common';
+import { describe, expect, it } from 'vitest';
 
-import type { Mocks } from '../../../test/_suite';
-import suite from '../../../test/_suite';
+import * as Fetch from '.';
+import * as mocks from './mocks';
+import createRawFetch from './raw';
 
 const TEST_URL = 'test/12345';
 const TEST_API_ENDPOINT = 'https://undefined';
@@ -11,7 +11,7 @@ const FULL_TEST_URL = `${TEST_API_ENDPOINT}/${TEST_URL}`;
 
 const fetch = Fetch.createFetch(TEST_API_ENDPOINT);
 
-suite('fetch', ({ mocks }) => {
+describe('fetch', () => {
   const mockRequestCache = ({
     get = null,
     set = null,
@@ -31,7 +31,7 @@ suite('fetch', ({ mocks }) => {
   };
 
   const generateResponses = (count = 3) =>
-    Utils.generate.array<Mocks.FetchTypes.Response>(count, () => ({
+    Utils.generate.array<mocks.FetchTypes.Response>(count, () => ({
       status: Utils.generate.number(),
       body: Utils.generate.string(),
     }));

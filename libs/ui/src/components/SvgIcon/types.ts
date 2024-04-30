@@ -1,5 +1,6 @@
-import type * as ICONS from '@ui/svgs';
 import type React from 'react';
+
+import type * as ICONS from '@/svgs';
 
 import type { Variant as VariantType } from './constants';
 import type { ContainerProps } from './styles';

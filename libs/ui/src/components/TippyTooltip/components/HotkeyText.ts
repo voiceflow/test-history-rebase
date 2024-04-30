@@ -1,4 +1,4 @@
-import { styled } from '@ui/styles';
+import { styled } from '@/styles';
 
 const HotkeyText = styled.span`
   color: rgba(255, 255, 255, 0.6);

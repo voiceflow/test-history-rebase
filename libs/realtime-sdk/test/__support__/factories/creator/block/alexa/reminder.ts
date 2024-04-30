@@ -1,8 +1,9 @@
 import { faker } from '@faker-js/faker';
-import type { NodeData } from '@realtime-sdk/models';
 import { getRandomEnumElement } from '@test/utils';
 import { AlexaNode } from '@voiceflow/alexa-types';
 import { define } from 'cooky-cutter';
+
+import type { NodeData } from '@/models';
 
 export const ReminderTime = define<NonNullable<AlexaNode.Reminder.Reminder['time']>>({
   h: faker.datatype.number().toString(),

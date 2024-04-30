@@ -1,6 +1,7 @@
-import expressionAdapter from '@realtime-sdk/adapters/expression';
-import type { NodeData } from '@realtime-sdk/models';
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
+
+import expressionAdapter from '@/adapters/expression';
+import type { NodeData } from '@/models';
 
 import {
   createBlockAdapter,

@@ -1,11 +1,12 @@
-import Portal, { portalRootNode } from '@ui/components/Portal';
-import { useDidUpdateEffect, useNestedPopperTheme, usePersistFunction, useTheme } from '@ui/hooks';
-import { ThemeProvider } from '@ui/styles';
-import { ClassName } from '@ui/styles/constants';
 import { Manager, Popper as ReactPopper, Reference } from '@voiceflow/legacy-react-popper';
 import React from 'react';
 import { DismissableLayerProvider, useDismissable } from 'react-dismissable-layers';
 import { MemoryRouter } from 'react-router-dom';
+
+import Portal, { portalRootNode } from '@/components/Portal';
+import { useDidUpdateEffect, useNestedPopperTheme, usePersistFunction, useTheme } from '@/hooks';
+import { ThemeProvider } from '@/styles';
+import { ClassName } from '@/styles/constants';
 
 import { baseStyles, Body, Container, Content, Footer, Nav, NavItem } from './components';
 import type * as T from './types';

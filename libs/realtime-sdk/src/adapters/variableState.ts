@@ -1,5 +1,6 @@
-import type { DBVariableState, VariableState } from '@realtime-sdk/models';
 import { createMultiAdapter } from 'bidirectional-adapter';
+
+import type { DBVariableState, VariableState } from '@/models';
 
 const variableStateAdapter = createMultiAdapter<DBVariableState, VariableState>(
   ({ _id, ...variableState }: DBVariableState) => ({

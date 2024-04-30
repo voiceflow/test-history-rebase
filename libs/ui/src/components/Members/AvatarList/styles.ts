@@ -1,5 +1,5 @@
-import { MemberIcon } from '@ui/components/User';
-import { styled } from '@ui/styles';
+import { MemberIcon } from '@/components/User';
+import { styled } from '@/styles';
 
 export const Container = styled.div`
   display: flex;

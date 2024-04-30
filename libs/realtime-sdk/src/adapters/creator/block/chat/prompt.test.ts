@@ -1,6 +1,8 @@
-import promptAdapter from '@realtime-sdk/adapters/creator/block/chat/prompt';
-import { chatNoMatchAdapter, chatNoReplyAdapter } from '@realtime-sdk/adapters/creator/block/utils';
 import { Creator } from '@test/factories';
+import { afterAll, afterEach, describe, expect, it, vi } from 'vitest';
+
+import { chatNoMatchAdapter, chatNoReplyAdapter } from '../utils';
+import promptAdapter from './prompt';
 
 describe('Adapters | Creator | Block | Chat | promptAdapter', () => {
   afterEach(() => {

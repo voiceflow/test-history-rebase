@@ -1,4 +1,3 @@
-import { css, styled } from '@ui/styles';
 import type * as CSS from 'csstype';
 import type {
   BordersProps,
@@ -23,6 +22,8 @@ import {
   textShadow,
   typography,
 } from 'styled-system';
+
+import { css, styled } from '@/styles';
 
 import {
   flexApartStyles,

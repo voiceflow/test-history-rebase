@@ -1,5 +1,3 @@
-import type { AnyProject } from '@realtime-sdk/models';
-import type { SchemaVersion } from '@realtime-sdk/schema-version/schema-version.enum';
 import type { BaseModels, BaseVersion } from '@voiceflow/base-types';
 import type {
   AnyResponseVariant,
@@ -17,6 +15,9 @@ import type {
   Workflow,
 } from '@voiceflow/dtos';
 import type { Draft } from 'immer';
+
+import type { AnyProject } from '@/models';
+import type { SchemaVersion } from '@/schema-version/schema-version.enum';
 
 export type VersionUpdateData = Pick<
   BaseVersion.Version<any>,

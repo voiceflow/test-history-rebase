@@ -1,7 +1,8 @@
-import { Config as ConfigUtils } from '@platform-config/configs/utils';
 import type { BaseVersion } from '@voiceflow/base-types';
 import type { VersionSettings } from '@voiceflow/dtos';
 import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter';
+
+import { Config as ConfigUtils } from '@/configs/utils';
 
 import type * as Models from '../../models';
 import * as Publishing from './publishing';

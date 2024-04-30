@@ -1,6 +1,7 @@
-import { styled, units } from '@ui/styles';
 import type { LayoutProps, SpaceProps } from 'styled-system';
 import { space } from 'styled-system';
+
+import { styled, units } from '@/styles';
 
 export interface ContentProps extends SpaceProps, LayoutProps {
   topOffset?: boolean | number;

@@ -6,7 +6,7 @@ import KeyValueCache from './keyValue';
 import SetCache from './set';
 import type { BaseAdapter, BaseHashAdapter, BaseKeyExtractor, Options } from './types';
 
-export { Hash } from './types';
+export type { Hash } from './types';
 export { HashCache, KeyValueCache, SetCache };
 
 export class Cache {

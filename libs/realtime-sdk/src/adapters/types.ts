@@ -1,4 +1,4 @@
-import type { SchemaVersion } from '@realtime-sdk/schema-version/schema-version.enum';
+import type { SchemaVersion } from '@/schema-version/schema-version.enum';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface AdapterContext {}

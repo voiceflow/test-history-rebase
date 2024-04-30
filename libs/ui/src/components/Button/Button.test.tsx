@@ -1,15 +1,15 @@
-import { fireEvent, render, screen } from '@testing-library/react';
-import Button from '@ui/components/Button';
+import { fireEvent, screen } from '@testing-library/react';
 import { Utils } from '@voiceflow/common';
-import React from 'react';
+import { describe, expect, it } from 'vitest';
 
-import suite from '../../../test/_suite';
-import { ThemeProvider } from '../../../test/_utils';
+import { renderThemed } from '@/test/theme';
 
-suite('Button', () => {
+import Button from '.';
+
+describe('Button', () => {
   it('reacts to click', () => {
     const clickHandler = vi.fn();
-    render(<Button onClick={clickHandler}>{Utils.generate.string()}</Button>, { wrapper: ThemeProvider });
+    renderThemed(<Button onClick={clickHandler}>{Utils.generate.string()}</Button>);
 
     fireEvent.click(screen.getByRole('button'));
 

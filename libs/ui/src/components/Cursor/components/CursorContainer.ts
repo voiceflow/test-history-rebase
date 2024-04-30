@@ -1,4 +1,4 @@
-import { css, styled } from '@ui/styles';
+import { css, styled } from '@/styles';
 
 import { CURSOR_EXPIRY_TIMEOUT } from '../constants';
 

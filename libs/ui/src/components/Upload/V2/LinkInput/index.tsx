@@ -1,8 +1,9 @@
-import { ErrorMessage } from '@ui/components/Error';
-import Input from '@ui/components/Input';
-import { useDidUpdateEffect } from '@ui/hooks';
 import type { Nullable } from '@voiceflow/common';
 import React from 'react';
+
+import { ErrorMessage } from '@/components/Error';
+import Input from '@/components/Input';
+import { useDidUpdateEffect } from '@/hooks';
 
 import type { InputRenderer } from '../../Primitive/LinkUpload';
 import { transformVariablesToReadable, validateURL } from '../../utils';

@@ -1,5 +1,5 @@
-import SvgIcon from '@ui/components/SvgIcon';
-import { css, styled, transition, units } from '@ui/styles';
+import SvgIcon from '@/components/SvgIcon';
+import { css, styled, transition, units } from '@/styles';
 
 export interface ListItemContentProps {
   isActive?: boolean;

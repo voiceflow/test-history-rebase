@@ -1,6 +1,7 @@
-import type * as Base from '@platform-config/configs/base';
 import type { ChatVersion } from '@voiceflow/chat-types';
 import type { Nullable } from '@voiceflow/common';
+
+import type * as Base from '@/configs/base';
 
 import type * as Prompt from '../prompt';
 

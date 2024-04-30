@@ -1,4 +1,4 @@
-import { css, styled } from '@ui/styles';
+import { css, styled } from '@/styles';
 
 import CustomScrollbars from '../../CustomScrollbars';
 import type * as T from '../types';

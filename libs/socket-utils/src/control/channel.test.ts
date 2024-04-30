@@ -1,5 +1,6 @@
 /* eslint-disable promise/valid-params, max-classes-per-file */
 import { Utils } from '@voiceflow/common';
+import { describe, expect, it, vi } from 'vitest';
 
 import { mockAxiosError } from './_fixtures';
 import { AbstractChannelControl } from './channel';
@@ -11,15 +12,15 @@ const MOCK_ACTION_CHANNEL = Utils.protocol.createChannel(['channelID'], ({ chann
 class MockChannelControl extends AbstractChannelControl<any, any> {
   channel = MOCK_ACTION_CHANNEL;
 
-  access = sinon.stub();
+  access = vi.fn();
 
-  handleExpiredAuth = sinon.spy();
+  handleExpiredAuth = vi.fn();
 }
 
 describe('Control | Channel', () => {
   const mockServer = () => ({
-    channel: sinon.spy(),
-    logger: { error: sinon.spy() },
+    channel: vi.fn(),
+    logger: { error: vi.fn() },
   });
 
   describe('access()', () => {
@@ -27,12 +28,12 @@ describe('Control | Channel', () => {
       const server = mockServer();
       const options = { server };
       const channel = new MockChannelControl(options as any);
-      channel.access.resolves(true);
+      channel.access.mockResolvedValue(true);
 
       channel.setup();
-      await expect(server.channel.args[0][1].access(MOCK_CONTEXT)).to.eventually.be.true;
+      await expect(server.channel.mock.calls[0][1].access(MOCK_CONTEXT)).resolves.toBe(true);
 
-      expect(channel.access).to.be.calledWithExactly(MOCK_CONTEXT);
+      expect(channel.access).toBeCalledWith(MOCK_CONTEXT);
     });
 
     it('forwards unexpected error', async () => {
@@ -40,29 +41,29 @@ describe('Control | Channel', () => {
       const server = mockServer();
       const options = { server };
       const channel = new MockChannelControl(options as any);
-      channel.access.rejects(error);
+      channel.access.mockRejectedValue(error);
 
       channel.setup();
-      await expect(server.channel.args[0][1].access()).to.be.rejectedWith(error);
+      await expect(server.channel.mock.calls[0][1].access()).rejects.toThrow(error);
     });
 
     it('silently handles unauthorized error', async () => {
       const server = mockServer();
       const options = { server };
       const channel = new MockChannelControl(options as any);
-      channel.access.rejects(mockAxiosError(401));
+      channel.access.mockRejectedValue(mockAxiosError(401));
 
       channel.setup();
-      await expect(server.channel.args[0][1].access(MOCK_CONTEXT)).to.eventually.be.false;
+      await expect(server.channel.mock.calls[0][1].access(MOCK_CONTEXT)).resolves.toBe(false);
 
-      expect(channel.access).to.be.calledWithExactly(MOCK_CONTEXT);
-      expect(channel.handleExpiredAuth).to.be.calledWithExactly(MOCK_CONTEXT);
+      expect(channel.access).toBeCalledWith(MOCK_CONTEXT);
+      expect(channel.handleExpiredAuth).toBeCalledWith(MOCK_CONTEXT);
     });
   });
 
   describe('load()', () => {
     class MockLoadChannel extends MockChannelControl {
-      load = sinon.stub();
+      load = vi.fn();
     }
 
     it('loads channel resources', async () => {
@@ -70,12 +71,12 @@ describe('Control | Channel', () => {
       const server = mockServer();
       const options = { server };
       const channel = new MockLoadChannel(options as any);
-      channel.load.resolves(resources);
+      channel.load.mockResolvedValue(resources);
 
       channel.setup();
-      await expect(server.channel.args[0][1].load(MOCK_CONTEXT, MOCK_ACTION)).to.eventually.eq(resources);
+      await expect(server.channel.mock.calls[0][1].load(MOCK_CONTEXT, MOCK_ACTION)).resolves.toBe(resources);
 
-      expect(channel.load).to.be.calledWithExactly(MOCK_CONTEXT, MOCK_ACTION);
+      expect(channel.load).toBeCalledWith(MOCK_CONTEXT, MOCK_ACTION);
     });
 
     it('forwards unexpected error', async () => {
@@ -83,10 +84,10 @@ describe('Control | Channel', () => {
       const server = mockServer();
       const options = { server };
       const channel = new MockLoadChannel(options as any);
-      channel.load.rejects(error);
+      channel.load.mockRejectedValue(error);
 
       channel.setup();
-      await expect(server.channel.args[0][1].load()).to.be.rejectedWith(error);
+      await expect(server.channel.mock.calls[0][1].load()).rejects.toThrowError(error);
     });
 
     it('forwards unauthorized error', async () => {
@@ -94,19 +95,19 @@ describe('Control | Channel', () => {
       const server = mockServer();
       const options = { server };
       const channel = new MockLoadChannel(options as any);
-      channel.load.rejects(error);
+      channel.load.mockRejectedValue(error);
 
       channel.setup();
-      await expect(server.channel.args[0][1].load(MOCK_CONTEXT, MOCK_ACTION)).to.be.rejectedWith(error);
+      await expect(server.channel.mock.calls[0][1].load(MOCK_CONTEXT, MOCK_ACTION)).rejects.toThrow(error);
 
-      expect(channel.load).to.be.calledWithExactly(MOCK_CONTEXT, MOCK_ACTION);
-      expect(channel.handleExpiredAuth).to.be.calledWithExactly(MOCK_CONTEXT);
+      expect(channel.load).toBeCalledWith(MOCK_CONTEXT, MOCK_ACTION);
+      expect(channel.handleExpiredAuth).toBeCalledWith(MOCK_CONTEXT);
     });
   });
 
   describe('finally()', () => {
     class MockFinallyChannel extends MockChannelControl {
-      finally = sinon.stub();
+      finally = vi.fn();
     }
 
     it('executes finalizing operations', async () => {
@@ -115,21 +116,21 @@ describe('Control | Channel', () => {
       const channel = new MockFinallyChannel(options as any);
 
       channel.setup();
-      await server.channel.args[0][1].finally(MOCK_CONTEXT, MOCK_ACTION);
+      await server.channel.mock.calls[0][1].finally(MOCK_CONTEXT, MOCK_ACTION);
 
-      expect(channel.finally).to.be.calledWithExactly(MOCK_CONTEXT, MOCK_ACTION);
+      expect(channel.finally).toBeCalledWith(MOCK_CONTEXT, MOCK_ACTION);
     });
 
     it('catches error', async () => {
       const server = mockServer();
       const options = { server };
       const channel = new MockFinallyChannel(options as any);
-      channel.finally.rejects(new Error());
+      channel.finally.mockRejectedValue(new Error());
 
       channel.setup();
-      await server.channel.args[0][1].finally();
+      await server.channel.mock.calls[0][1].finally();
 
-      expect(server.logger.error).to.be.calledWithExactly(
+      expect(server.logger.error).toBeCalledWith(
         "encountered error in 'finally' handler of channel 'channel/:channelID'"
       );
     });
@@ -138,19 +139,19 @@ describe('Control | Channel', () => {
       const server = mockServer();
       const options = { server };
       const channel = new MockFinallyChannel(options as any);
-      channel.finally.rejects(mockAxiosError(401));
+      channel.finally.mockRejectedValue(mockAxiosError(401));
 
       channel.setup();
-      await server.channel.args[0][1].finally(MOCK_CONTEXT, MOCK_ACTION);
+      await server.channel.mock.calls[0][1].finally(MOCK_CONTEXT, MOCK_ACTION);
 
-      expect(channel.finally).to.be.calledWithExactly(MOCK_CONTEXT, MOCK_ACTION);
-      expect(channel.handleExpiredAuth).to.be.calledWithExactly(MOCK_CONTEXT);
+      expect(channel.finally).toBeCalledWith(MOCK_CONTEXT, MOCK_ACTION);
+      expect(channel.handleExpiredAuth).toBeCalledWith(MOCK_CONTEXT);
     });
   });
 
   describe('unsubscribe()', () => {
     class MockUnsubscribeChannel extends MockChannelControl {
-      unsubscribe = sinon.stub();
+      unsubscribe = vi.fn();
     }
 
     it('executes unsubscribe operations', async () => {
@@ -159,21 +160,21 @@ describe('Control | Channel', () => {
       const channel = new MockUnsubscribeChannel(options as any);
 
       channel.setup();
-      await server.channel.args[0][1].unsubscribe(MOCK_CONTEXT, MOCK_ACTION);
+      await server.channel.mock.calls[0][1].unsubscribe(MOCK_CONTEXT, MOCK_ACTION);
 
-      expect(channel.unsubscribe).to.be.calledWithExactly(MOCK_CONTEXT, MOCK_ACTION);
+      expect(channel.unsubscribe).toBeCalledWith(MOCK_CONTEXT, MOCK_ACTION);
     });
 
     it('catches error', async () => {
       const server = mockServer();
       const options = { server };
       const channel = new MockUnsubscribeChannel(options as any);
-      channel.unsubscribe.rejects(new Error());
+      channel.unsubscribe.mockRejectedValue(new Error());
 
       channel.setup();
-      await server.channel.args[0][1].unsubscribe();
+      await server.channel.mock.calls[0][1].unsubscribe();
 
-      expect(server.logger.error).to.be.calledWithExactly(
+      expect(server.logger.error).toBeCalledWith(
         "encountered error in 'unsubscribe' handler of channel 'channel/:channelID'"
       );
     });
@@ -182,13 +183,13 @@ describe('Control | Channel', () => {
       const server = mockServer();
       const options = { server };
       const channel = new MockUnsubscribeChannel(options as any);
-      channel.unsubscribe.rejects(mockAxiosError(401));
+      channel.unsubscribe.mockRejectedValue(mockAxiosError(401));
 
       channel.setup();
-      await server.channel.args[0][1].unsubscribe(MOCK_CONTEXT, MOCK_ACTION);
+      await server.channel.mock.calls[0][1].unsubscribe(MOCK_CONTEXT, MOCK_ACTION);
 
-      expect(channel.unsubscribe).to.be.calledWithExactly(MOCK_CONTEXT, MOCK_ACTION);
-      expect(channel.handleExpiredAuth).to.be.calledWithExactly(MOCK_CONTEXT);
+      expect(channel.unsubscribe).toBeCalledWith(MOCK_CONTEXT, MOCK_ACTION);
+      expect(channel.handleExpiredAuth).toBeCalledWith(MOCK_CONTEXT);
     });
   });
 });

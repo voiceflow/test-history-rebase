@@ -1,4 +1,4 @@
-import { DialogType } from '@realtime-sdk/constants';
+import { DialogType } from '@/constants';
 
 export interface DBAudioData {
   audio: string;

@@ -10,17 +10,11 @@
     "cycle": [
       {
         "name": "src/components/NestedMenu/MenuOptions/index.tsx",
-        "dependencyTypes": [
-          "local",
-          "import"
-        ]
+        "dependencyTypes": ["local", "import"]
       },
       {
         "name": "src/components/NestedMenu/Menu/index.tsx",
-        "dependencyTypes": [
-          "local",
-          "import"
-        ]
+        "dependencyTypes": ["local", "import"]
       }
     ]
   }

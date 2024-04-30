@@ -1,5 +1,6 @@
-import * as Base from '@platform-config/configs/base';
 import { DFESConstants } from '@voiceflow/google-dfes-types';
+
+import * as Base from '@/configs/base';
 
 const LABEL_MAP: Record<DFESConstants.Language, string> = {
   [DFESConstants.Language.BN]: 'Bengali',

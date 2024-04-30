@@ -1,6 +1,7 @@
-import Text from '@ui/components/Text';
 import React from 'react';
 import type { SpaceProps } from 'styled-system';
+
+import Text from '@/components/Text';
 
 import { PreviewColors } from '../constants';
 

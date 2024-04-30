@@ -1,1 +1,1 @@
-import './dayjs';
+import './dayjs-setup';

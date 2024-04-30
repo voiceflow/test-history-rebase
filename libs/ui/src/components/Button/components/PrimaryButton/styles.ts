@@ -1,7 +1,7 @@
-import type { ButtonContainerProps } from '@ui/components/Button/components/ButtonContainer';
-import ButtonContainer from '@ui/components/Button/components/ButtonContainer';
-import { FlexCenter } from '@ui/components/Flex';
-import { colors, css, styled, ThemeColor, transition } from '@ui/styles';
+import type { ButtonContainerProps } from '@/components/Button/components/ButtonContainer';
+import ButtonContainer from '@/components/Button/components/ButtonContainer';
+import { FlexCenter } from '@/components/Flex';
+import { colors, css, styled, ThemeColor, transition } from '@/styles';
 
 export interface PrimaryButtonContainerProps extends ButtonContainerProps {
   isActive?: boolean;

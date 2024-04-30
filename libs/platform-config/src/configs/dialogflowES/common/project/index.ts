@@ -1,7 +1,8 @@
-import * as Base from '@platform-config/configs/base';
-import { Config as ConfigUtils } from '@platform-config/configs/utils';
 import { Utils } from '@voiceflow/common';
 import { SystemVariable } from '@voiceflow/dtos';
+
+import * as Base from '@/configs/base';
+import { Config as ConfigUtils } from '@/configs/utils';
 
 import * as InvocationName from './invocation-name';
 import * as Locale from './locale';

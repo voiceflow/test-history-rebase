@@ -1,6 +1,7 @@
-import { useLinkedState } from '@ui/hooks';
-import { withTargetValue } from '@ui/utils/dom';
 import React from 'react';
+
+import { useLinkedState } from '@/hooks';
+import { withTargetValue } from '@/utils/dom';
 
 import DefaultInput from './DefaultInput';
 

@@ -1,4 +1,4 @@
-import { styled, transition } from '@ui/styles';
+import { styled, transition } from '@/styles';
 
 export const ThumbVertical = styled.div`
   border-radius: 1.5px;

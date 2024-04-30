@@ -1,4 +1,4 @@
-import type * as Base from '@platform-config/configs/base';
+import type * as Base from '@/configs/base';
 
 export interface Model extends Base.Models.Version.Publishing.Model {}
 

@@ -1,9 +1,10 @@
-import type { AdapterContext } from '@realtime-sdk/adapters/types';
 import type { BaseModels, BaseNode, Nullable } from '@voiceflow/base-types';
 import { BaseButton } from '@voiceflow/base-types';
 import type { AnyRecord, EmptyObject } from '@voiceflow/common';
 import { Utils } from '@voiceflow/common';
 import { createMultiAdapter, createSimpleAdapter } from 'bidirectional-adapter';
+
+import type { AdapterContext } from '@/adapters/types';
 
 import type { NodeData } from '../../../../models';
 

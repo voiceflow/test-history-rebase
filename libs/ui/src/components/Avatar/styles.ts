@@ -1,6 +1,7 @@
-import { css, styled, transition } from '@ui/styles';
 import type { SpaceProps } from 'styled-system';
 import { space } from 'styled-system';
+
+import { css, styled, transition } from '@/styles';
 
 export interface ContainerProps extends SpaceProps {
   small?: boolean;

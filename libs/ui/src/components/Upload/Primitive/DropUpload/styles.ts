@@ -1,10 +1,11 @@
-import { FlexCenter } from '@ui/components/Flex';
-import type { LoaderProps } from '@ui/components/Loader';
-import { LoadCircle } from '@ui/components/Loader';
-import SvgIcon from '@ui/components/SvgIcon';
-import { css, styled, transition } from '@ui/styles';
-import { fontResetStyle } from '@ui/styles/bootstrap';
 import type { Nullable } from '@voiceflow/common';
+
+import { FlexCenter } from '@/components/Flex';
+import type { LoaderProps } from '@/components/Loader';
+import { LoadCircle } from '@/components/Loader';
+import SvgIcon from '@/components/SvgIcon';
+import { css, styled, transition } from '@/styles';
+import { fontResetStyle } from '@/styles/bootstrap';
 
 import { UploadMode } from './constants';
 

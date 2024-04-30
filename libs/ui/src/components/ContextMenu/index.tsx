@@ -1,15 +1,16 @@
-import type { MenuTypes } from '@ui/components/Menu';
-import Menu from '@ui/components/Menu';
-import Portal from '@ui/components/Portal';
-import type { PopperPlacement } from '@ui/hooks';
-import { useVirtualElementPopper } from '@ui/hooks';
-import { Identifier } from '@ui/styles/constants';
-import type { Point } from '@ui/types';
-import { buildVirtualElement } from '@ui/utils/dom';
 import type { Nullable } from '@voiceflow/common';
 import React from 'react';
 import type { DismissEventType } from 'react-dismissable-layers';
 import { useDismissable } from 'react-dismissable-layers';
+
+import type { MenuTypes } from '@/components/Menu';
+import Menu from '@/components/Menu';
+import Portal from '@/components/Portal';
+import type { PopperPlacement } from '@/hooks';
+import { useVirtualElementPopper } from '@/hooks';
+import { Identifier } from '@/styles/constants';
+import type { Point } from '@/types';
+import { buildVirtualElement } from '@/utils/dom';
 
 const EXCLUDED_TAG_NAME = new Set(['input', 'textarea']);
 

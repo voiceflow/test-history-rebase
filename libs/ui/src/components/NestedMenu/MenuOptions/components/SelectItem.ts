@@ -1,5 +1,5 @@
-import Menu from '@ui/components/Menu';
-import { css, styled } from '@ui/styles';
+import Menu from '@/components/Menu';
+import { css, styled } from '@/styles';
 
 interface SelectItemProps {
   isGroup?: boolean;

@@ -1,5 +1,6 @@
-import { useEnableDisable } from '@ui/hooks';
 import React from 'react';
+
+import { useEnableDisable } from '@/hooks';
 
 import { Label } from './components';
 import * as S from './styles';

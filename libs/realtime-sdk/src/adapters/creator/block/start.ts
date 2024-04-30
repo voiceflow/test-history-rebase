@@ -1,4 +1,4 @@
-import type { NodeData } from '@realtime-sdk/models';
+import type { NodeData } from '@/models';
 
 import type { BlockData } from './block';
 import blockDataAdapter from './block';

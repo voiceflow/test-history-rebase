@@ -1,6 +1,7 @@
-import * as Base from '@platform-config/configs/base';
 import { SvgIcon, Text } from '@voiceflow/ui';
 import React from 'react';
+
+import * as Base from '@/configs/base';
 
 import { useContext } from '../../context';
 import * as S from './style';

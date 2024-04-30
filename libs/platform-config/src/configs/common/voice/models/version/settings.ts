@@ -1,6 +1,7 @@
-import type * as Base from '@platform-config/configs/base';
 import type { Nullable } from '@voiceflow/common';
 import type { VoiceVersion } from '@voiceflow/voice-types';
+
+import type * as Base from '@/configs/base';
 
 import type * as Prompt from '../prompt';
 

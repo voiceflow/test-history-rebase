@@ -1,6 +1,7 @@
-import * as System from '@ui/system';
-import { stopPropagation } from '@ui/utils';
 import React from 'react';
+
+import * as System from '@/system';
+import { stopPropagation } from '@/utils';
 
 import type { DefaultInputProps } from './DefaultInput';
 import DefaultInput from './DefaultInput';

@@ -1,10 +1,11 @@
-import type { ClientCRUDPayload } from '@realtime-sdk/actions/utils';
-import { createCRUDActions, getCRUDActionTargets } from '@realtime-sdk/actions/utils';
-import type { Quota, Workspace, WorkspaceSettings } from '@realtime-sdk/models';
-import type { BaseCreatorPayload, BaseWorkspacePayload } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
 import type { BillingPeriod, PlanType } from '@voiceflow/internal';
 import type { Action, AnyAction } from 'typescript-fsa';
+
+import type { ClientCRUDPayload } from '@/actions/utils';
+import { createCRUDActions, getCRUDActionTargets } from '@/actions/utils';
+import type { Quota, Workspace, WorkspaceSettings } from '@/models';
+import type { BaseCreatorPayload, BaseWorkspacePayload } from '@/types';
 
 import { workspaceType } from './utils';
 

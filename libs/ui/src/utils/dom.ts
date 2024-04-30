@@ -1,5 +1,5 @@
-import { KeyName } from '@ui/constants';
-import type { Point } from '@ui/types';
+import { KeyName } from '@/constants';
+import type { Point } from '@/types';
 
 export enum DataTypes {
   TEXT = 'text/plain;charset=utf-8',

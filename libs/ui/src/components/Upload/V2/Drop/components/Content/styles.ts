@@ -1,5 +1,5 @@
-import SvgIcon from '@ui/components/SvgIcon';
-import { styled, transition } from '@ui/styles';
+import SvgIcon from '@/components/SvgIcon';
+import { styled, transition } from '@/styles';
 
 export const CornerActionButton = styled(SvgIcon)`
   ${transition('opacity')};

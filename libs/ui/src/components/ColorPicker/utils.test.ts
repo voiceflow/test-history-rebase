@@ -1,7 +1,8 @@
-import suite from '../../../test/_suite';
+import { describe, expect, it } from 'vitest';
+
 import { normalizeColor } from './utils';
 
-suite('color normanilzation', () => {
+describe('color normanilzation', () => {
   describe('normalizeColor', () => {
     it('should normalize any kind of color to hex', () => {
       const assertions: [string, string][] = [

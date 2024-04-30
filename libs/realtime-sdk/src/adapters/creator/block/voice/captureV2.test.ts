@@ -1,8 +1,10 @@
-import { voiceNoMatchAdapter, voiceNoReplyAdapter } from '@realtime-sdk/adapters/creator/block/utils';
-import captureV2Adapter from '@realtime-sdk/adapters/creator/block/voice/captureV2';
 import { Creator } from '@test/factories';
 import { BaseNode } from '@voiceflow/base-types';
 import type { VoiceNode } from '@voiceflow/voice-types';
+import { afterAll, afterEach, describe, expect, it, vi } from 'vitest';
+
+import { voiceNoMatchAdapter, voiceNoReplyAdapter } from '@/adapters/creator/block/utils';
+import captureV2Adapter from '@/adapters/creator/block/voice/captureV2';
 
 const DEFAULT_INTENT = {
   key: '',

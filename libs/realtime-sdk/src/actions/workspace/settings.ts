@@ -1,7 +1,8 @@
-import { WORKSPACE_SETTINGS_KEY } from '@realtime-sdk/constants';
-import type { WorkspaceSettings } from '@realtime-sdk/models';
-import type { BaseWorkspacePayload } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
+
+import { WORKSPACE_SETTINGS_KEY } from '@/constants';
+import type { WorkspaceSettings } from '@/models';
+import type { BaseWorkspacePayload } from '@/types';
 
 import { workspaceType } from './utils';
 

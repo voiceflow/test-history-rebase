@@ -1,5 +1,5 @@
-import Box from '@ui/components/Box';
-import { styled } from '@ui/styles';
+import Box from '@/components/Box';
+import { styled } from '@/styles';
 
 export const RangeContainer = styled(Box.Flex)`
   width: 204px;

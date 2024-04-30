@@ -1,6 +1,7 @@
-import { styled, units } from '@ui/styles';
 import type { BorderProps, SpaceProps } from 'styled-system';
 import { border, space } from 'styled-system';
+
+import { styled, units } from '@/styles';
 
 export const Button = styled.div<BorderProps>`
   background-color: #ffffff;

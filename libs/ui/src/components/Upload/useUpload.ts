@@ -1,5 +1,6 @@
-import { useEnableDisable } from '@ui/hooks';
 import React from 'react';
+
+import { useEnableDisable } from '@/hooks';
 
 import { UPLOAD_ERROR } from './constants';
 import type { UploadFileType } from './Context';

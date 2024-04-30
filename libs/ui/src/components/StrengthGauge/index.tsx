@@ -1,5 +1,6 @@
-import ProgressBar from '@ui/components/ProgressBar';
 import React from 'react';
+
+import ProgressBar from '@/components/ProgressBar';
 
 import { Level, StrengthColor, TOOLTIP_LABEL_MAP } from './constants';
 import * as S from './styles';

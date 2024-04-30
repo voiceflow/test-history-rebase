@@ -1,4 +1,4 @@
-import { changeColorShade } from '@ui/utils/colors';
+import { changeColorShade } from '@/utils/colors';
 
 import * as C from './link.constant';
 import * as E from './link.enum';

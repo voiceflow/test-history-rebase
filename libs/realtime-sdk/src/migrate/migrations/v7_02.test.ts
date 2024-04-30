@@ -1,6 +1,8 @@
-import type { MigrationData } from '@realtime-sdk/migrate/migrations/types';
-import migrateToV7_02, { LAST_UTTERANCE } from '@realtime-sdk/migrate/migrations/v7_02';
 import { produce } from 'immer';
+import { describe, expect, it } from 'vitest';
+
+import type { MigrationData } from '@/migrate/migrations/types';
+import migrateToV7_02, { LAST_UTTERANCE } from '@/migrate/migrations/v7_02';
 
 const aiSetDeprecated = {
   type: 'ai_set',

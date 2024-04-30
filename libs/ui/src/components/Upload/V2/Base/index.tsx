@@ -1,6 +1,7 @@
-import Tabs from '@ui/components/Tabs';
-import { toast } from '@ui/components/Toast';
 import React from 'react';
+
+import Tabs from '@/components/Tabs';
+import { toast } from '@/components/Toast';
 
 import { UPLOAD_ERROR } from '../../constants';
 import type { UploadFileType } from '../../Context';

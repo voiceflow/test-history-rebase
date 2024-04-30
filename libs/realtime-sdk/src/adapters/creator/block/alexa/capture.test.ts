@@ -1,6 +1,8 @@
-import captureAdapter from '@realtime-sdk/adapters/creator/block/alexa/capture';
-import { voiceNoReplyAdapter } from '@realtime-sdk/adapters/creator/block/utils';
 import { Creator } from '@test/factories';
+import { afterAll, afterEach, describe, expect, it, vi } from 'vitest';
+
+import { voiceNoReplyAdapter } from '../utils';
+import captureAdapter from './capture';
 
 describe('Adapters | Creator | Block | Alexa | captureAdapter', () => {
   afterEach(() => {

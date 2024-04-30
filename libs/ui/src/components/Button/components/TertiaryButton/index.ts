@@ -1,5 +1,5 @@
-import type { ButtonVariant } from '@ui/components/Button/constants';
-import { colors, css, styled, ThemeColor, transition } from '@ui/styles';
+import type { ButtonVariant } from '@/components/Button/constants';
+import { colors, css, styled, ThemeColor, transition } from '@/styles';
 
 import type { ButtonContainerProps } from '../ButtonContainer';
 import ButtonContainer from '../ButtonContainer';

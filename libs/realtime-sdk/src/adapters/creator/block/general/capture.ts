@@ -1,5 +1,6 @@
-import type { NodeData } from '@realtime-sdk/models';
 import type { VoiceflowNode } from '@voiceflow/voiceflow-types';
+
+import type { NodeData } from '@/models';
 
 import { chipsToIntentButtons, createBlockAdapter } from '../utils';
 import { voiceCaptureAdapter } from '../voice';

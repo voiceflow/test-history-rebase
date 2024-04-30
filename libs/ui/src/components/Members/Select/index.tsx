@@ -1,11 +1,12 @@
-import Menu from '@ui/components/Menu';
-import { defaultMenuLabelRenderer } from '@ui/components/NestedMenu';
-import type { BaseSelectProps } from '@ui/components/Select';
-import Select from '@ui/components/Select';
-import SvgIcon from '@ui/components/SvgIcon';
 import { Utils } from '@voiceflow/common';
 import React from 'react';
 import type { DeepNonNullable } from 'utility-types';
+
+import Menu from '@/components/Menu';
+import { defaultMenuLabelRenderer } from '@/components/NestedMenu';
+import type { BaseSelectProps } from '@/components/Select';
+import Select from '@/components/Select';
+import SvgIcon from '@/components/SvgIcon';
 
 import type { Member } from '../types';
 import Option from './Option';

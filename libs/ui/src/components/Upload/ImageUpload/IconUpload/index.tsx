@@ -1,11 +1,12 @@
-import { LoadCircle } from '@ui/components/Loader';
-import SvgIcon from '@ui/components/SvgIcon';
-import type { UserData } from '@ui/components/User';
-import User from '@ui/components/User';
-import { stopPropagation } from '@ui/utils';
 import { Utils } from '@voiceflow/common';
 import React from 'react';
 import { useDropzone } from 'react-dropzone';
+
+import { LoadCircle } from '@/components/Loader';
+import SvgIcon from '@/components/SvgIcon';
+import type { UserData } from '@/components/User';
+import User from '@/components/User';
+import { stopPropagation } from '@/utils';
 
 import { IMAGE_FILE_TYPES } from '../../constants';
 import { useFileTypesToMimeType } from '../../hooks';

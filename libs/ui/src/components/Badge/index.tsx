@@ -1,7 +1,8 @@
-import { backgrounds, colors, css, styled, ThemeColor, transition, units } from '@ui/styles';
-import { fadeInKeyframes, moveInLeftKeyframes } from '@ui/styles/animations';
 import type { SpaceProps } from 'styled-system';
 import { space } from 'styled-system';
+
+import { backgrounds, colors, css, styled, ThemeColor, transition, units } from '@/styles';
+import { fadeInKeyframes, moveInLeftKeyframes } from '@/styles/animations';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 type BadgeProps = {

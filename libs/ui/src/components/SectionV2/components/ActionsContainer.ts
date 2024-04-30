@@ -1,4 +1,4 @@
-import { styled, units } from '@ui/styles';
+import { styled, units } from '@/styles';
 
 import Box from '../../Box';
 

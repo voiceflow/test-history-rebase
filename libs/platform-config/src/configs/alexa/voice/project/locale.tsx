@@ -1,7 +1,8 @@
-import * as Base from '@platform-config/configs/base';
 import { AlexaConstants } from '@voiceflow/alexa-types';
 import { Link } from '@voiceflow/ui';
 import React from 'react';
+
+import * as Base from '@/configs/base';
 
 const LABEL_MAP: Record<AlexaConstants.Locale, string> = {
   [AlexaConstants.Locale.EN_US]: 'English (US)',

@@ -1,5 +1,5 @@
-import Flex from '@ui/components/Flex';
-import { css, styled, transition } from '@ui/styles';
+import Flex from '@/components/Flex';
+import { css, styled, transition } from '@/styles';
 
 const calculateRatio = (ratio?: number | null) =>
   ratio

@@ -1,7 +1,7 @@
-import { flexCenterStyles } from '@ui/components/Flex';
-import SvgIcon from '@ui/components/SvgIcon';
-import { css, styled, transition } from '@ui/styles';
-import { fontResetStyle } from '@ui/styles/bootstrap';
+import { flexCenterStyles } from '@/components/Flex';
+import SvgIcon from '@/components/SvgIcon';
+import { css, styled, transition } from '@/styles';
+import { fontResetStyle } from '@/styles/bootstrap';
 
 import { ICON_BOX_SIZE } from './icon-button.constant';
 import type { Size } from './icon-button.enum';

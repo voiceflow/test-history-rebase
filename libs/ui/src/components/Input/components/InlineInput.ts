@@ -1,5 +1,5 @@
-import { css, styled } from '@ui/styles';
-import { fontResetStyle } from '@ui/styles/bootstrap';
+import { css, styled } from '@/styles';
+import { fontResetStyle } from '@/styles/bootstrap';
 
 export interface InlineInputProps {
   inline?: boolean;

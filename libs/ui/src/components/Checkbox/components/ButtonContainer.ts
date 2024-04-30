@@ -1,4 +1,4 @@
-import { css, styled } from '@ui/styles';
+import { css, styled } from '@/styles';
 
 const ButtonContainer = styled.div<{ padding?: boolean }>`
   flex: 0 0 auto;

@@ -1,9 +1,10 @@
 import composeRef from '@seznam/compose-react-refs';
-import TippyTooltip from '@ui/components/TippyTooltip';
-import { ClassName } from '@ui/styles/constants';
-import { stopImmediatePropagation } from '@ui/utils';
 import { Manager, Reference } from '@voiceflow/legacy-react-popper';
 import React from 'react';
+
+import TippyTooltip from '@/components/TippyTooltip';
+import { ClassName } from '@/styles/constants';
+import { stopImmediatePropagation } from '@/utils';
 
 // eslint-disable-next-line import/no-cycle
 import Menu from '../Menu';

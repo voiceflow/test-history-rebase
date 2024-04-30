@@ -1,4 +1,4 @@
-import { BlockType } from '@realtime-sdk/constants';
+import { BlockType } from '@/constants';
 
 import accountLinkingAdapter, { accountLinkingOutPortAdapter, accountLinkingOutPortAdapterV2 } from './accountLinking';
 import captureAdapter from './capture';

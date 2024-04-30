@@ -1,8 +1,9 @@
-import type { Extendable as ExtendableValue, Merge } from '@platform-config/configs/types';
-import type { ProjectType } from '@platform-config/constants';
-import { NLUType, PlatformType } from '@platform-config/constants';
-import { TypeGuards, Types } from '@platform-config/utils';
 import type { EmptyObject } from '@voiceflow/common';
+
+import type { Extendable as ExtendableValue, Merge } from '@/configs/types';
+import type { ProjectType } from '@/constants';
+import { NLUType, PlatformType } from '@/constants';
+import { TypeGuards, Types } from '@/utils';
 
 import type * as Type from '../type';
 import * as Components from './components';

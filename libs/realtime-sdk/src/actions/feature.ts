@@ -1,7 +1,8 @@
-import type { FeatureFlag } from '@realtime-sdk/config/features';
-import { FEATURES_KEY } from '@realtime-sdk/constants';
-import type { BaseWorkspacePayload } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
+
+import type { FeatureFlag } from '@/config/features';
+import { FEATURES_KEY } from '@/constants';
+import type { BaseWorkspacePayload } from '@/types';
 
 const featureType = Utils.protocol.typeFactory(FEATURES_KEY);
 

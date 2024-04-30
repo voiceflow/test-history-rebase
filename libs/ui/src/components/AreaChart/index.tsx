@@ -1,8 +1,9 @@
-import { useCreateConst } from '@ui/hooks';
-import { abbreviateNumber } from '@ui/utils/format';
 import { Utils } from '@voiceflow/common';
 import React from 'react';
 import { Area, AreaChart as ReAreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+
+import { useCreateConst } from '@/hooks';
+import { abbreviateNumber } from '@/utils/format';
 
 import { AreaChartDot, AreaChartGradient, AreaChartTick, AreaChartTooltip } from './components';
 import { MonthlyDateFormatter, SimpleFormatter, WeeklyDateFormatter, YearlyDateFormatter } from './formatters';

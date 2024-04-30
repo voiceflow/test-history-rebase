@@ -1,6 +1,7 @@
-import type * as Identity from '@realtime-sdk/models/Identity';
-import type { DBWorkspaceProperties } from '@realtime-sdk/models/Workspace';
 import type { Organization } from '@voiceflow/dtos';
+
+import type * as Identity from '@/models/Identity';
+import type { DBWorkspaceProperties } from '@/models/Workspace';
 
 import type { NestResourceOptions } from '../../nest';
 import { NestResource } from '../../nest';

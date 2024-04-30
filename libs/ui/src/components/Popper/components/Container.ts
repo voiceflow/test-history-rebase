@@ -1,6 +1,6 @@
-import Box from '@ui/components/Box';
-import { css, styled } from '@ui/styles';
-import { fadeInDownStyle } from '@ui/styles/animations';
+import Box from '@/components/Box';
+import { css, styled } from '@/styles';
+import { fadeInDownStyle } from '@/styles/animations';
 
 export const baseStyles = css`
   border-radius: 8px;

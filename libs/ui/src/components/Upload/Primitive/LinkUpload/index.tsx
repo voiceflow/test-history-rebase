@@ -1,9 +1,10 @@
-import Badge from '@ui/components/Badge';
-import Input from '@ui/components/Input';
-import { stopPropagation } from '@ui/utils';
 import type { Nullable } from '@voiceflow/common';
 import React from 'react';
 import validUrl from 'valid-url';
+
+import Badge from '@/components/Badge';
+import Input from '@/components/Input';
+import { stopPropagation } from '@/utils';
 
 import { transformVariablesToReadable } from '../../utils';
 import * as S from './styles';

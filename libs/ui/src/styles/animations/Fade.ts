@@ -1,7 +1,8 @@
-import { css, keyframes, styled } from '@ui/styles';
-import { ANIMATION_SPEED } from '@ui/styles/constants';
 import type { SpaceProps } from 'styled-system';
 import { space } from 'styled-system';
+
+import { css, keyframes, styled } from '@/styles';
+import { ANIMATION_SPEED } from '@/styles/constants';
 
 import { moveInKeyframesFactory } from './Move';
 

@@ -1,4 +1,4 @@
-import { styled } from '@ui/styles';
+import { styled } from '@/styles';
 
 // min-width: 1% is required to ensure input has width
 const ChildInput = styled.div`

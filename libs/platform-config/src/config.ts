@@ -1,5 +1,6 @@
-import * as Configs from '@platform-config/configs';
 import { Utils } from '@voiceflow/common';
+
+import * as Configs from '@/configs';
 
 type TypeConfigMap<Config, Key extends string> = { [key in Key]: Config };
 

@@ -1,7 +1,7 @@
-import { PrimaryButton } from '@ui/components/Button';
-import Preview from '@ui/components/Preview';
-import { css, styled, transition } from '@ui/styles';
-import { fadeInDownDelayedStyle } from '@ui/styles/animations';
+import { PrimaryButton } from '@/components/Button';
+import Preview from '@/components/Preview';
+import { css, styled, transition } from '@/styles';
+import { fadeInDownDelayedStyle } from '@/styles/animations';
 
 export const TableNavbarContainer = styled.div<{ width: number; isOpen: boolean; bottom?: number }>`
   position: sticky;

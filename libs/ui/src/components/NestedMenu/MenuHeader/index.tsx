@@ -1,10 +1,11 @@
 import composeRef from '@seznam/compose-react-refs';
-import Box from '@ui/components/Box';
-import SvgIcon from '@ui/components/SvgIcon';
-import { useSetup } from '@ui/hooks';
-import { setRef, stopImmediatePropagation } from '@ui/utils';
 import type { Nullable } from '@voiceflow/common';
 import React from 'react';
+
+import Box from '@/components/Box';
+import SvgIcon from '@/components/SvgIcon';
+import { useSetup } from '@/hooks';
+import { setRef, stopImmediatePropagation } from '@/utils';
 
 import { MenuHeaderWrapper, MenuHr, MenuInput, SearchContainer } from './components';
 

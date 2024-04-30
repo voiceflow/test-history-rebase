@@ -1,5 +1,6 @@
-import type { NodeData } from '@realtime-sdk/models';
 import type { ChatNode } from '@voiceflow/chat-types';
+
+import type { NodeData } from '@/models';
 
 import { baseCarouselAdapter } from '../base';
 import { chatNoMatchAdapter, chatNoReplyAdapter, createBlockAdapter } from '../utils';

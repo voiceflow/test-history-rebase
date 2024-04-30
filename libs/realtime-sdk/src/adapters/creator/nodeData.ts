@@ -1,8 +1,9 @@
-import { BlockType } from '@realtime-sdk/constants';
-import type { NodeData } from '@realtime-sdk/models';
 import type { BaseModels } from '@voiceflow/base-types';
 import type * as Platform from '@voiceflow/platform-config/backend';
 import { createSimpleAdapter } from 'bidirectional-adapter';
+
+import { BlockType } from '@/constants';
+import type { NodeData } from '@/models';
 
 import type { AdapterContext } from '../types';
 import { APP_BLOCK_TYPE_FROM_DB, DB_BLOCK_TYPE_FROM_APP, getBlockAdapters } from './block';

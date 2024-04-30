@@ -1,4 +1,4 @@
-import { css, styled } from '@ui/styles';
+import { css, styled } from '@/styles';
 
 const IconContainer = styled.div<{ checked?: boolean }>`
   border-radius: 3px;

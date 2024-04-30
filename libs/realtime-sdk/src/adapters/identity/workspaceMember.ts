@@ -1,7 +1,8 @@
-import type { Identity, WorkspaceMember } from '@realtime-sdk/models';
-import { getRoleStrength } from '@realtime-sdk/utils/role';
 import { createSimpleAdapter, notImplementedAdapter } from 'bidirectional-adapter';
 import uniqBy from 'lodash/uniqBy';
+
+import type { Identity, WorkspaceMember } from '@/models';
+import { getRoleStrength } from '@/utils/role';
 
 const workspaceMemberSimpleAdapter = createSimpleAdapter<Identity.WorkspaceMember, WorkspaceMember>(
   ({ user, membership }) => ({

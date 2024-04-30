@@ -1,4 +1,4 @@
-import { styled, units } from '@ui/styles';
+import { styled, units } from '@/styles';
 
 export enum StatusColor {
   PRIMARY = '#8da2b5',

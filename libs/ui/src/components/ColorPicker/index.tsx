@@ -1,11 +1,12 @@
-import Box from '@ui/components/Box';
-import Tag from '@ui/components/Tag';
-import { useDebouncedCallback, useLinkedState } from '@ui/hooks';
-import { stopPropagation } from '@ui/utils';
-import { createShadesFromHue, createStandardShadeFromHue, STANDARD_GRADE } from '@ui/utils/colors/hsl';
 import type { BaseModels } from '@voiceflow/base-types';
 import React from 'react';
 import { DismissableLayerProvider } from 'react-dismissable-layers';
+
+import Box from '@/components/Box';
+import Tag from '@/components/Tag';
+import { useDebouncedCallback, useLinkedState } from '@/hooks';
+import { stopPropagation } from '@/utils';
+import { createShadesFromHue, createStandardShadeFromHue, STANDARD_GRADE } from '@/utils/colors/hsl';
 
 import { ColorRange } from './components/ColorRange';
 import { ColorThemes } from './components/ColorThemes';

@@ -1,7 +1,8 @@
-import type { PopperTypes } from '@ui/components/Popper';
-import Popper from '@ui/components/Popper';
-import type { PopperPlacement } from '@ui/hooks';
 import React from 'react';
+
+import type { PopperTypes } from '@/components/Popper';
+import Popper from '@/components/Popper';
+import type { PopperPlacement } from '@/hooks';
 
 import { Container, JSONCode, Paragraph, Section, Title } from './components';
 

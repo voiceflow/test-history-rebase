@@ -1,6 +1,6 @@
-import Flex, { FlexCenter } from '@ui/components/Flex';
-import { css, styled } from '@ui/styles';
-import { fontResetStyle } from '@ui/styles/bootstrap';
+import Flex, { FlexCenter } from '@/components/Flex';
+import { css, styled } from '@/styles';
+import { fontResetStyle } from '@/styles/bootstrap';
 
 const calculateRatio = (ratio?: number) =>
   ratio

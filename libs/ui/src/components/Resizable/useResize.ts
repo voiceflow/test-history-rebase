@@ -1,5 +1,6 @@
-import { useRAF } from '@ui/hooks';
 import React from 'react';
+
+import { useRAF } from '@/hooks';
 
 import type { ResizeManagerOptions } from './manager';
 import { useResizeManager } from './manager';

@@ -1,6 +1,7 @@
-import Flex from '@ui/components/Flex';
-import { css, styled } from '@ui/styles';
 import AutosizeInput from 'react-input-autosize';
+
+import Flex from '@/components/Flex';
+import { css, styled } from '@/styles';
 
 export { default as MenuHeaderWrapper } from './MenuHeaderWrapper';
 

@@ -1,9 +1,10 @@
-import { colors, styled, ThemeColor } from '@ui/styles';
-import { FadeLeft } from '@ui/styles/animations';
-import { COLOR_GREEN, COLOR_RED } from '@ui/styles/constants';
-import { withEnterPress, withTargetValue } from '@ui/utils/dom';
 import { Utils } from '@voiceflow/common';
 import React from 'react';
+
+import { colors, styled, ThemeColor } from '@/styles';
+import { FadeLeft } from '@/styles/animations';
+import { COLOR_GREEN, COLOR_RED } from '@/styles/constants';
+import { withEnterPress, withTargetValue } from '@/utils/dom';
 
 import type { NestedInputProps } from './DefaultInput';
 import { NestedInput } from './DefaultInput';

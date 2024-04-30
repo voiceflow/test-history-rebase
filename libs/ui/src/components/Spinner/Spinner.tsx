@@ -1,5 +1,6 @@
-import Loader from '@ui/components/Loader';
 import React from 'react';
+
+import Loader from '@/components/Loader';
 
 import * as S from './styles';
 

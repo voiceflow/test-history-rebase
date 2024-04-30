@@ -1,5 +1,5 @@
-import type { IconButtonVariant } from '@ui/components/IconButton/types';
-import { styled } from '@ui/styles';
+import type { IconButtonVariant } from '@/components/IconButton/types';
+import { styled } from '@/styles';
 
 import type { IconButtonContainerSharedProps } from './IconButtonContainer';
 import IconButtonContainer, { activeStyle } from './IconButtonContainer';

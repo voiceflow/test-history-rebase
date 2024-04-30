@@ -1,8 +1,9 @@
-import type { AnyProject, ProjectMember } from '@realtime-sdk/models';
 import { BaseModels } from '@voiceflow/base-types';
 import type { AnyRecord } from '@voiceflow/common';
 import { createSimpleAdapter, notImplementedAdapter } from 'bidirectional-adapter';
 import * as Normal from 'normal-store';
+
+import type { AnyProject, ProjectMember } from '@/models';
 
 import { legacyPlatformToProjectType } from '../constants/platform';
 

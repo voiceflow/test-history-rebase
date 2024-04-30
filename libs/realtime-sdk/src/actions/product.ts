@@ -1,9 +1,10 @@
-import { createCRUDActions } from '@realtime-sdk/actions/utils';
-import { PRODUCT_KEY } from '@realtime-sdk/constants';
-import type { Product } from '@realtime-sdk/models';
-import type { BaseVersionPayload } from '@realtime-sdk/types';
 import type { AlexaConstants } from '@voiceflow/alexa-types';
 import { Utils } from '@voiceflow/common';
+
+import { createCRUDActions } from '@/actions/utils';
+import { PRODUCT_KEY } from '@/constants';
+import type { Product } from '@/models';
+import type { BaseVersionPayload } from '@/types';
 
 const productType = Utils.protocol.typeFactory(PRODUCT_KEY);
 

@@ -1,4 +1,4 @@
-import { keyframes } from '@ui/styles';
+import { keyframes } from '@/styles';
 
 export const moveInKeyframesFactory = (x: number, y: number) => keyframes`
  from {

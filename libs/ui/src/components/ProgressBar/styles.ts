@@ -1,4 +1,4 @@
-import { css, keyframes, styled, transition } from '@ui/styles';
+import { css, keyframes, styled, transition } from '@/styles';
 
 export interface ContainerProps {
   width?: number | string;

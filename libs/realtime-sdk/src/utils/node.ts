@@ -1,5 +1,5 @@
-import { BlockType } from '@realtime-sdk/constants';
-import type { NodeData } from '@realtime-sdk/models';
+import { BlockType } from '@/constants';
+import type { NodeData } from '@/models';
 
 const checkNodeType =
   <T>(type: BlockType) =>

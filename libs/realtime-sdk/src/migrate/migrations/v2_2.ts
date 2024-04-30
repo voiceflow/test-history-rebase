@@ -1,6 +1,7 @@
-import { BlockType } from '@realtime-sdk/constants';
-import type { Markup } from '@realtime-sdk/models';
 import type { BaseModels } from '@voiceflow/base-types';
+
+import { BlockType } from '@/constants';
+import type { Markup } from '@/models';
 
 import type { Transform } from './types';
 

@@ -1,12 +1,13 @@
-import Portal from '@ui/components/Portal';
-import { useConst, useTheme } from '@ui/hooks';
-import { ThemeProvider } from '@ui/styles';
-import { ANIMATION_SPEED, ClassName } from '@ui/styles/constants';
 import cn from 'classnames';
 import React from 'react';
 import type { TransitionStatus } from 'react-transition-group';
 import { Transition } from 'react-transition-group';
 import type { ExitHandler } from 'react-transition-group/Transition';
+
+import Portal from '@/components/Portal';
+import { useConst, useTheme } from '@/hooks';
+import { ThemeProvider } from '@/styles';
+import { ANIMATION_SPEED, ClassName } from '@/styles/constants';
 
 import { Header } from './components';
 import * as S from './styles';

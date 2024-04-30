@@ -1,4 +1,3 @@
-import { intentToLegacyIntent } from '@realtime-sdk/adapters/legacy/intent-to-legacy-intent/intent-to-legacy-intent.adapter';
 import { BaseModels } from '@voiceflow/base-types';
 import type { ChatModels } from '@voiceflow/chat-types';
 import { Utils } from '@voiceflow/common';
@@ -12,8 +11,11 @@ import type {
   Utterance,
   Variable,
 } from '@voiceflow/dtos';
-import { CardLayout, Channel, Language, ResponseContext, ResponseVariantType, VariableDatatype } from '@voiceflow/dtos';
+import { CardLayout, Channel, Language, ResponseVariantType, VariableDatatype } from '@voiceflow/dtos';
 import type { VoiceModels } from '@voiceflow/voice-types';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+
+import { intentToLegacyIntent } from '@/adapters/legacy/intent-to-legacy-intent/intent-to-legacy-intent.adapter';
 
 describe('Adapters | Legacy | intentToLegacyIntent', () => {
   const creatorID = 1;
@@ -335,10 +337,10 @@ describe('Adapters | Legacy | intentToLegacyIntent', () => {
 
   const responseVariant4: AnyResponseVariant = {
     id: 'response-variant-4',
-    type: ResponseVariantType.PROMPT,
-    turns: 1,
-    context: ResponseContext.KNOWLEDGE_BASE,
-    promptID: null,
+    type: 'text',
+    text: [],
+    speed: 10,
+    cardLayout: 'list',
     createdAt,
     updatedAt: createdAt,
     updatedByID: creatorID,
@@ -353,7 +355,7 @@ describe('Adapters | Legacy | intentToLegacyIntent', () => {
     id: 'variable-1',
     name: 'variable-1-name',
     color: '#000',
-    system: null,
+    isSystem: true,
     isArray: false,
     datatype: VariableDatatype.TEXT,
     folderID: null,

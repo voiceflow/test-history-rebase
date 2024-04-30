@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
-import * as Utils from '@realtime-sdk/utils';
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
+
+import * as Utils from '@/utils';
 
 import type { Transform } from './types';
 

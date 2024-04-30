@@ -1,7 +1,7 @@
-import Badge from '@ui/components/Badge';
-import type { StyledInputProps } from '@ui/components/Input/styles';
-import { inputDisabledStyle, inputStyle } from '@ui/components/Input/styles';
-import { css, styled } from '@ui/styles';
+import Badge from '@/components/Badge';
+import type { StyledInputProps } from '@/components/Input/styles';
+import { inputDisabledStyle, inputStyle } from '@/components/Input/styles';
+import { css, styled } from '@/styles';
 
 export interface InputWrapperProps extends StyledInputProps {
   cursor?: string;

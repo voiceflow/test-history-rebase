@@ -1,6 +1,7 @@
-import { Config as ConfigUtils } from '@platform-config/configs/utils';
-import { Types } from '@platform-config/utils';
 import { Utils } from '@voiceflow/common';
+
+import { Config as ConfigUtils } from '@/configs/utils';
+import { Types } from '@/utils';
 
 import type * as Models from '../models';
 

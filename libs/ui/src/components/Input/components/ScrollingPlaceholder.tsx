@@ -1,6 +1,7 @@
-import { keyframes, styled } from '@ui/styles';
-import { listResetStyle } from '@ui/styles/bootstrap';
 import React from 'react';
+
+import { keyframes, styled } from '@/styles';
+import { listResetStyle } from '@/styles/bootstrap';
 
 const HEIGHT = 42;
 

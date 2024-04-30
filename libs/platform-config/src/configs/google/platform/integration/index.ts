@@ -1,4 +1,4 @@
-import * as Base from '@platform-config/configs/base';
+import * as Base from '@/configs/base';
 
 import * as LinkAccountButton from './link-account-button';
 

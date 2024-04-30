@@ -1,6 +1,6 @@
-import * as Common from '@platform-config/configs/common';
-import type { ExtendableRequired } from '@platform-config/configs/types';
-import { Config as ConfigUtils } from '@platform-config/configs/utils';
+import * as Common from '@/configs/common';
+import type { ExtendableRequired } from '@/configs/types';
+import { Config as ConfigUtils } from '@/configs/utils';
 
 import * as VoiceflowCommon from '../common';
 import * as Adapters from './adapters';

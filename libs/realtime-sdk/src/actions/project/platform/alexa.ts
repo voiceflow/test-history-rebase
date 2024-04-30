@@ -1,6 +1,7 @@
-import type { BaseProjectPayload } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config/backend';
+
+import type { BaseProjectPayload } from '@/types';
 
 import { projectType } from '../utils';
 

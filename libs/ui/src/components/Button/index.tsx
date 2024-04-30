@@ -1,7 +1,8 @@
-import SvgIcon from '@ui/components/SvgIcon';
-import { ClassName } from '@ui/styles/constants';
 import cn from 'classnames';
 import React from 'react';
+
+import SvgIcon from '@/components/SvgIcon';
+import { ClassName } from '@/styles/constants';
 
 import type {
   PrimaryButtonProps,

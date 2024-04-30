@@ -1,5 +1,6 @@
-import * as Base from '@platform-config/configs/base';
 import { AlexaConstants } from '@voiceflow/alexa-types';
+
+import * as Base from '@/configs/base';
 
 export const CONFIG = Base.Project.Voice.extend({
   default: AlexaConstants.Voice.ALEXA,

@@ -1,6 +1,7 @@
-import { useDidUpdateEffect } from '@ui/hooks';
 import { Utils } from '@voiceflow/common';
 import React from 'react';
+
+import { useDidUpdateEffect } from '@/hooks';
 
 import Collapse from './Collapse';
 import type { ContainerProps } from './Container';

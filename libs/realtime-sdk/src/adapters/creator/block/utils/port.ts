@@ -1,10 +1,11 @@
-import type { BuiltInPortRecord, DBPortWithLinkData, Link, Node, Port } from '@realtime-sdk/models';
-import type { PathPoint, PathPoints } from '@realtime-sdk/types';
-import * as RealtimeUtilsPort from '@realtime-sdk/utils/port';
 import type { Nullable } from '@voiceflow/base-types';
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import _range from 'lodash/range';
+
+import type { BuiltInPortRecord, DBPortWithLinkData, Link, Node, Port } from '@/models';
+import type { PathPoint, PathPoints } from '@/types';
+import * as RealtimeUtilsPort from '@/utils/port';
 
 import { generateOutPort } from '../../utils';
 

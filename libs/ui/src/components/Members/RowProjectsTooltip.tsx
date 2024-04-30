@@ -1,9 +1,10 @@
-import Box from '@ui/components/Box';
-import SvgIcon from '@ui/components/SvgIcon';
-import TippyTooltip from '@ui/components/TippyTooltip';
 import type { UserRole } from '@voiceflow/internal';
 import pluralize from 'pluralize';
 import React from 'react';
+
+import Box from '@/components/Box';
+import SvgIcon from '@/components/SvgIcon';
+import TippyTooltip from '@/components/TippyTooltip';
 
 import type { Member } from './types';
 

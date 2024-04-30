@@ -1,6 +1,7 @@
-import Box from '@ui/components/Box';
-import Text from '@ui/components/Text';
 import React from 'react';
+
+import Box from '@/components/Box';
+import Text from '@/components/Text';
 
 import * as S from './styles';
 

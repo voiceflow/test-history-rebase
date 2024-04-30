@@ -21,9 +21,7 @@
   ],
   "scripts": {
     "build": "yarn g:turbo run build:cmd --filter=@voiceflow/socket-utils...",
-    "build:cjs": "yarn g:build:pkg cjs",
-    "build:cmd": "yarn g:run-p build:cjs build:esm",
-    "build:esm": "yarn g:build:pkg esm",
+    "build:cmd": "yarn g:build:pkg",
     "lint": "yarn g:run-p -c lint:eslint lint:prettier",
     "lint:eslint": "yarn g:eslint",
     "lint:fix": "yarn g:run-p -c \"lint:eslint --fix\" \"lint:prettier --write\"",

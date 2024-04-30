@@ -1,8 +1,9 @@
-import { isHexColor, isRGBColor, RGBAToHex } from '@ui/utils/colors';
-import type { HSLShades } from '@ui/utils/colors/hsl';
-import { createShadesFromHue, createStandardShadeFromHue, STANDARD_GRADE } from '@ui/utils/colors/hsl';
-import { hexToHsluv } from '@ui/utils/colors/hsluv';
 import _sample from 'lodash/sample';
+
+import { isHexColor, isRGBColor, RGBAToHex } from '@/utils/colors';
+import type { HSLShades } from '@/utils/colors/hsl';
+import { createShadesFromHue, createStandardShadeFromHue, STANDARD_GRADE } from '@/utils/colors/hsl';
+import { hexToHsluv } from '@/utils/colors/hsluv';
 
 import type { Colors } from './constants';
 import { ALL_COLORS, BASE_COLORS, DEFAULT_SCHEME_COLORS, LegacyBlockVariant } from './constants';

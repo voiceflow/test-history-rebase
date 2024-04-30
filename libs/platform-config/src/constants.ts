@@ -1,6 +1,7 @@
-import * as Types from '@platform-config/utils/types';
 import type { ObjectValue } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+
+import * as Types from '@/utils/types';
 
 export { ProjectType } from '@voiceflow/voiceflow-types/build/cjs/constants';
 

@@ -1,4 +1,4 @@
-import { styled, transition } from '@ui/styles';
+import { styled, transition } from '@/styles';
 
 export const Content = styled.div`
   width: 100%;

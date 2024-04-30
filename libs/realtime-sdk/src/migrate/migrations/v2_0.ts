@@ -1,9 +1,10 @@
 /* eslint-disable no-param-reassign */
-import * as Adapters from '@realtime-sdk/adapters';
-import { SchemaVersion } from '@realtime-sdk/schema-version/schema-version.enum';
-import * as Utils from '@realtime-sdk/utils';
 import type { BaseModels } from '@voiceflow/base-types';
 import { normalize } from 'normal-store';
+
+import * as Adapters from '@/adapters';
+import { SchemaVersion } from '@/schema-version/schema-version.enum';
+import * as Utils from '@/utils';
 
 import type { Transform } from './types';
 

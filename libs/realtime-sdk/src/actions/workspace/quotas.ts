@@ -1,7 +1,8 @@
-import { QUOTAS_KEY } from '@realtime-sdk/constants';
-import type { Quota } from '@realtime-sdk/models';
-import type { BaseWorkspacePayload } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
+
+import { QUOTAS_KEY } from '@/constants';
+import type { Quota } from '@/models';
+import type { BaseWorkspacePayload } from '@/types';
 
 import { workspaceType } from './utils';
 

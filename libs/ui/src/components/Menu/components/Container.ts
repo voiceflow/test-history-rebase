@@ -1,8 +1,8 @@
-import Popper from '@ui/components/Popper';
-import { colors, css, styled, ThemeColor } from '@ui/styles';
-import { fadeInKeyframes, moveInTopKeyframes, scaleInYKeyframes } from '@ui/styles/animations';
-import { listResetStyle } from '@ui/styles/bootstrap';
-import { ANIMATION_SPEED } from '@ui/styles/constants';
+import Popper from '@/components/Popper';
+import { colors, css, styled, ThemeColor } from '@/styles';
+import { fadeInKeyframes, moveInTopKeyframes, scaleInYKeyframes } from '@/styles/animations';
+import { listResetStyle } from '@/styles/bootstrap';
+import { ANIMATION_SPEED } from '@/styles/constants';
 
 export const MAX_VISIBLE_ITEMS = 7.5;
 export const MAX_MENU_HEIGHT = '90vh';

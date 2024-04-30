@@ -1,4 +1,4 @@
-import { BlockType } from '@realtime-sdk/constants';
+import { BlockType } from '@/constants';
 
 import toIfV2Adapter from './if';
 import toSetV2Adapter from './set';

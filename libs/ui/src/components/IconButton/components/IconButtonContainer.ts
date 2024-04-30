@@ -1,6 +1,6 @@
-import { ButtonContainer } from '@ui/components/Button';
-import type { IconButtonVariant } from '@ui/components/IconButton/types';
-import { colors, css, styled, ThemeColor, transition } from '@ui/styles';
+import { ButtonContainer } from '@/components/Button';
+import type { IconButtonVariant } from '@/components/IconButton/types';
+import { colors, css, styled, ThemeColor, transition } from '@/styles';
 
 export interface BaseContainerProps
   extends Pick<

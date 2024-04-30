@@ -1,8 +1,9 @@
-import type { DBProduct, Product } from '@realtime-sdk/models';
 import type { AlexaProject } from '@voiceflow/alexa-types';
 import { AlexaConstants } from '@voiceflow/alexa-types';
 import { Utils } from '@voiceflow/common';
 import { createMultiAdapter } from 'bidirectional-adapter';
+
+import type { DBProduct, Product } from '@/models';
 
 import { formatMarketPlaces, getDistributionCountries, parseLocales, parseMarketPlaces } from './utils';
 

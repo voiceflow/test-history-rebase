@@ -1,5 +1,6 @@
-import Button, { ButtonVariant } from '@ui/components/Button';
 import React from 'react';
+
+import Button, { ButtonVariant } from '@/components/Button';
 
 import { IMAGE_FILE_TYPES } from '../../constants';
 import { validateFiles, validateImageUrl } from '../../utils';

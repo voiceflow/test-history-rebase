@@ -1,10 +1,11 @@
-import type { ExpressionData, ExpressionV2, LogicGroupData } from '@realtime-sdk/models';
-import { transformVariablesToReadable } from '@realtime-sdk/utils/slot';
 import { BaseNode } from '@voiceflow/base-types';
 import isVarName from 'is-var-name';
 import isNumber from 'lodash/isNumber';
 // eslint-disable-next-line you-dont-need-lodash-underscore/is-string
 import isString from 'lodash/isString';
+
+import type { ExpressionData, ExpressionV2, LogicGroupData } from '@/models';
+import { transformVariablesToReadable } from '@/utils/slot';
 
 import { parser as mathJStoJSParser } from './mathjs';
 

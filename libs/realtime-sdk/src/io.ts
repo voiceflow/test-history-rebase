@@ -1,4 +1,4 @@
-import type { Pair, Point } from '@realtime-sdk/types';
+import type { Pair, Point } from '@/types';
 
 export enum Event {
   CURSOR_MOVE = 'cursor-move',

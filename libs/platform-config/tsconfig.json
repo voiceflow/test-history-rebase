@@ -1,20 +1,12 @@
 {
   "extends": "@voiceflow/tsconfig",
   "compilerOptions": {
-    "target": "es2017",
-    "checkJs": false,
-    "skipLibCheck": true,
     "downlevelIteration": true,
     "allowJs": true,
     "jsx": "react-jsx",
     "baseUrl": ".",
+    "rootDir": "src",
     "exactOptionalPropertyTypes": false,
-    "paths": {
-      "@platform-config/*": ["src/*"],
-      "@voiceflow/ui": ["../ui/src"],
-      // only used to fix intra-monorepo resolution
-      "@ui/*": ["../ui/src/*"]
-    },
     "types": ["login-with-amazon-sdk-browser"]
   },
   "exclude": ["node_modules", "build"]

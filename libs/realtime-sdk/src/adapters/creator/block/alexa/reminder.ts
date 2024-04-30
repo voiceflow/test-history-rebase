@@ -1,6 +1,7 @@
-import type { NodeData } from '@realtime-sdk/models';
-import { transformVariablesFromReadable, transformVariablesToReadable } from '@realtime-sdk/utils/slot';
 import { AlexaNode } from '@voiceflow/alexa-types';
+
+import type { NodeData } from '@/models';
+import { transformVariablesFromReadable, transformVariablesToReadable } from '@/utils/slot';
 
 import {
   createBlockAdapter,

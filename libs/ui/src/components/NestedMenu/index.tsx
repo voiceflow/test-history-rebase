@@ -1,6 +1,7 @@
-import BaseMenu from '@ui/components/Menu';
 import type { PopperProps } from '@voiceflow/legacy-react-popper';
 import React from 'react';
+
+import BaseMenu from '@/components/Menu';
 
 import defaultMenuLabelRenderer from './defaultMenuLabelRenderer';
 import Menu, { DEFAULT_PATH } from './Menu';

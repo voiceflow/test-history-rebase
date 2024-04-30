@@ -1,4 +1,4 @@
-import * as Voiceflow from '@platform-config/configs/voiceflow';
+import * as Voiceflow from '@/configs/voiceflow';
 
 import * as Project from './project';
 

@@ -1,12 +1,3 @@
-import Flex from '@ui/components/Flex';
-import Portal from '@ui/components/Portal';
-import SearchInput, { SearchInputIcon } from '@ui/components/SearchInput';
-import { toast } from '@ui/components/Toast';
-import { useDidUpdateEffect, usePersistFunction } from '@ui/hooks';
-import { ClassName } from '@ui/styles/constants';
-import * as System from '@ui/system';
-import type { Primitive } from '@ui/types';
-import { setRef, stopPropagation } from '@ui/utils';
 import type { Nullable } from '@voiceflow/common';
 import { Utils } from '@voiceflow/common';
 import type { PopperProps } from '@voiceflow/legacy-react-popper';
@@ -15,6 +6,16 @@ import cn from 'classnames';
 import noop from 'lodash/noop';
 import React from 'react';
 import { useDismissable } from 'react-dismissable-layers';
+
+import Flex from '@/components/Flex';
+import Portal from '@/components/Portal';
+import SearchInput, { SearchInputIcon } from '@/components/SearchInput';
+import { toast } from '@/components/Toast';
+import { useDidUpdateEffect, usePersistFunction } from '@/hooks';
+import { ClassName } from '@/styles/constants';
+import * as System from '@/system';
+import type { Primitive } from '@/types';
+import { setRef, stopPropagation } from '@/utils';
 
 // for some reason absolute paths are not transformed for this import
 import type {

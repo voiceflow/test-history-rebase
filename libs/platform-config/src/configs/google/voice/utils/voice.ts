@@ -1,7 +1,8 @@
-import * as Base from '@platform-config/configs/base';
-import { Config as ConfigUtils } from '@platform-config/configs/utils';
 import { Utils } from '@voiceflow/common';
 import { GoogleConstants } from '@voiceflow/google-types';
+
+import * as Base from '@/configs/base';
+import { Config as ConfigUtils } from '@/configs/utils';
 
 export const CONFIG = Base.Utils.Voice.extend({
   getLocaleDefault: ([locale]: GoogleConstants.Locale[]): string | null => {

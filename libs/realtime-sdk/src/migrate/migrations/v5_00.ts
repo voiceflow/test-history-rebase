@@ -1,10 +1,11 @@
 /* eslint-disable no-param-reassign */
 
-import { entityToLegacySlot, intentToLegacyIntent } from '@realtime-sdk/adapters';
 import { BaseModels } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config/backend';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import uniqBy from 'lodash/uniqBy';
+
+import { entityToLegacySlot, intentToLegacyIntent } from '@/adapters';
 
 import type { Transform } from './types';
 

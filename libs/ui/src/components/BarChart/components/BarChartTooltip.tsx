@@ -1,5 +1,6 @@
-import ChartTooltip from '@ui/components/ChartTooltip';
 import React from 'react';
+
+import ChartTooltip from '@/components/ChartTooltip';
 
 import type { BarChartDatum } from '../types';
 

@@ -1,8 +1,10 @@
 import { faker } from '@faker-js/faker';
-import interactionAdapter from '@realtime-sdk/adapters/creator/block/alexa/interaction';
-import { voiceNoMatchAdapter, voiceNoReplyAdapter } from '@realtime-sdk/adapters/creator/block/utils';
 import { Creator } from '@test/factories';
 import { Utils } from '@voiceflow/common';
+import { afterAll, afterEach, describe, expect, it, vi } from 'vitest';
+
+import { voiceNoMatchAdapter, voiceNoReplyAdapter } from '../utils';
+import interactionAdapter from './interaction';
 
 describe('Adapters | Creator | Block | Alexa | interactionAdapter', () => {
   afterEach(() => {

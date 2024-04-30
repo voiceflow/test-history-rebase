@@ -1,7 +1,8 @@
-import * as System from '@ui/system';
-import { HUE_MAX, HUE_MIN } from '@ui/utils/colors/hsl';
-import { preventDefault, withTargetValue } from '@ui/utils/dom';
 import React from 'react';
+
+import * as System from '@/system';
+import { HUE_MAX, HUE_MIN } from '@/utils/colors/hsl';
+import { preventDefault, withTargetValue } from '@/utils/dom';
 
 import { Range } from './Range';
 import { RangeContainer } from './styles';

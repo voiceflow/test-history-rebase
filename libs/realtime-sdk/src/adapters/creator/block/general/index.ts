@@ -1,4 +1,4 @@
-import { BlockType } from '@realtime-sdk/constants';
+import { BlockType } from '@/constants';
 
 import buttonsAdapter from './buttons';
 import captureAdapter from './capture';

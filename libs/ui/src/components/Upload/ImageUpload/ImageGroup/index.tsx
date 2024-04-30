@@ -1,5 +1,6 @@
-import Flex from '@ui/components/Flex';
 import React from 'react';
+
+import Flex from '@/components/Flex';
 
 import { IMAGE_FILE_TYPES } from '../../constants';
 import DropUpload from '../../Primitive/DropUpload';

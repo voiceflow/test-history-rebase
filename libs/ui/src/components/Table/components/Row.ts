@@ -1,5 +1,5 @@
-import Divider from '@ui/components/Divider';
-import { css, styled, transition } from '@ui/styles';
+import Divider from '@/components/Divider';
+import { css, styled, transition } from '@/styles';
 
 const Row = styled.div<{ active?: boolean; hoverDisabled?: boolean; hovered?: boolean }>`
   ${transition('background-color')};

@@ -1,5 +1,6 @@
-import AudioPlayer from '@ui/components/AudioPlayer';
 import React from 'react';
+
+import AudioPlayer from '@/components/AudioPlayer';
 
 import type { InputRenderer } from '../Primitive/LinkUpload';
 import { prettifyBucketURL } from '../utils';

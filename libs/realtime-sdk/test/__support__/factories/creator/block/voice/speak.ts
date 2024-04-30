@@ -1,8 +1,9 @@
 import { faker } from '@faker-js/faker';
-import { DialogType } from '@realtime-sdk/constants';
-import type { AudioData, NodeData, SSMLData } from '@realtime-sdk/models';
 import type { VoiceNode } from '@voiceflow/voice-types';
 import { define, extend } from 'cooky-cutter';
+
+import { DialogType } from '@/constants';
+import type { AudioData, NodeData, SSMLData } from '@/models';
 
 import * as Base from '../base';
 import { VoicePrompt } from '../shared';

@@ -1,5 +1,6 @@
-import type { NodeData } from '@realtime-sdk/models';
 import { extend } from 'cooky-cutter';
+
+import type { NodeData } from '@/models';
 
 import * as Base from '../base';
 

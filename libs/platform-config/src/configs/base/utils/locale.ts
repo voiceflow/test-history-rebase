@@ -1,6 +1,7 @@
-import { Config as ConfigUtils } from '@platform-config/configs/utils';
-import { Types } from '@platform-config/utils';
 import type { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+
+import { Config as ConfigUtils } from '@/configs/utils';
+import { Types } from '@/utils';
 
 export interface Config {
   /**

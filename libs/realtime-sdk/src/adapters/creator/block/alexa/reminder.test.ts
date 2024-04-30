@@ -1,6 +1,8 @@
-import reminderAdapter from '@realtime-sdk/adapters/creator/block/alexa/reminder';
 import { Creator } from '@test/factories';
 import { AlexaNode } from '@voiceflow/alexa-types';
+import { describe, expect, it } from 'vitest';
+
+import reminderAdapter from './reminder';
 
 describe('Adapters | Creator | Block | Alexa | reminderAdapter', () => {
   describe('when transforming from db', () => {

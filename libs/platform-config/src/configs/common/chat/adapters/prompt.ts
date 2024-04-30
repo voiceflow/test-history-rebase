@@ -1,9 +1,10 @@
-import * as Base from '@platform-config/configs/base';
-import { Config as ConfigUtils } from '@platform-config/configs/utils';
 import type { ChatModels } from '@voiceflow/chat-types';
 import { Utils } from '@voiceflow/common';
 import type { VoiceModels } from '@voiceflow/voice-types';
 import { createMultiAdapter } from 'bidirectional-adapter';
+
+import * as Base from '@/configs/base';
+import { Config as ConfigUtils } from '@/configs/utils';
 
 import type { Prompt } from '../models';
 

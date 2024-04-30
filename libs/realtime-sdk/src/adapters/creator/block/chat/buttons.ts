@@ -1,5 +1,6 @@
-import type { NodeData } from '@realtime-sdk/models';
 import type { ChatNode } from '@voiceflow/chat-types';
+
+import type { NodeData } from '@/models';
 
 import { baseButtonsAdapter } from '../base';
 import {

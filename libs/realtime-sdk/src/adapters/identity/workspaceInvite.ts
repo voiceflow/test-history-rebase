@@ -1,5 +1,6 @@
-import type { Identity, PendingWorkspaceMember } from '@realtime-sdk/models';
 import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter';
+
+import type { Identity, PendingWorkspaceMember } from '@/models';
 
 const workspaceInviteAdapter = createMultiAdapter<Identity.WorkspaceInvite, PendingWorkspaceMember>(
   ({ role, email, expiry }) => ({

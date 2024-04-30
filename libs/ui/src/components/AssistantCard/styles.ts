@@ -1,5 +1,5 @@
-import { Text } from '@ui/components/Text';
-import { colors, css, styled, ThemeColor, transition } from '@ui/styles';
+import { Text } from '@/components/Text';
+import { colors, css, styled, ThemeColor, transition } from '@/styles';
 
 const RADIUS = 8;
 

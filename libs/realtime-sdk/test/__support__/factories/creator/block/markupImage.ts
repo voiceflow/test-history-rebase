@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker';
-import type { Markup } from '@realtime-sdk/models';
 import { define } from 'cooky-cutter';
+
+import type { Markup } from '@/models';
 
 export const MarkupImageNodeData = define<Markup.NodeData.Image>({
   url: () => faker.internet.url(),

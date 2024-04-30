@@ -1,5 +1,6 @@
-import { USER_ROLE_STRENGTH } from '@realtime-sdk/constants/user';
 import type { UserRole } from '@voiceflow/internal';
+
+import { USER_ROLE_STRENGTH } from '@/constants/user';
 
 export const getRoleStrength = (role: UserRole): number => USER_ROLE_STRENGTH[role];
 

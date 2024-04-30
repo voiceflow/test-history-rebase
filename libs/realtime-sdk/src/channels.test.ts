@@ -1,5 +1,6 @@
-import * as Channels from '@realtime-sdk/channels';
 import { describe, expect, it } from 'vitest';
+
+import * as Channels from '@/channels';
 
 describe('Channels', () => {
   describe('user', () => {

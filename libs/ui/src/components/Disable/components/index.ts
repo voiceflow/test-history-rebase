@@ -1,4 +1,4 @@
-import { css, styled, transition } from '@ui/styles';
+import { css, styled, transition } from '@/styles';
 
 export const DisableBox = styled.div<{ disabled: boolean }>`
   ${transition('opacity')};

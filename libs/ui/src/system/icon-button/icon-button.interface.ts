@@ -1,5 +1,6 @@
-import type { SvgIconTypes } from '@ui/components/SvgIcon';
 import type React from 'react';
+
+import type { SvgIconTypes } from '@/components/SvgIcon';
 
 import type { Size } from './icon-button.enum';
 

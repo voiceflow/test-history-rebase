@@ -1,5 +1,5 @@
-import SvgIcon from '@ui/components/SvgIcon';
-import { styled } from '@ui/styles';
+import SvgIcon from '@/components/SvgIcon';
+import { styled } from '@/styles';
 
 // needs this to apply custom styles
 const ItemActionIcon = styled(SvgIcon).attrs({ variant: SvgIcon.Variant.STANDARD, clickable: true })`

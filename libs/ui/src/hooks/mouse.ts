@@ -1,6 +1,7 @@
-import { preventDefault, stopPropagation } from '@ui/utils';
 import { Utils } from '@voiceflow/common';
 import React from 'react';
+
+import { preventDefault, stopPropagation } from '@/utils';
 
 import { usePersistFunction } from './cache';
 

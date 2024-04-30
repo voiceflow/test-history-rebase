@@ -1,5 +1,6 @@
-import * as System from '@ui/system';
 import React from 'react';
+
+import * as System from '@/system';
 
 export interface RemoveButtonProps {
   style?: React.CSSProperties;

@@ -1,4 +1,4 @@
-import { logger } from '@ui/utils/logger';
+import { logger } from '@/utils/logger';
 
 import { DEFAULT_FETCH_OPTIONS } from './constants';
 import type { FetchResult } from './types';

@@ -1,8 +1,9 @@
-import { css, styled, transition } from '@ui/styles';
-import { linkResetStyle } from '@ui/styles/bootstrap';
-import { changeColorShade } from '@ui/utils/colors';
 import type { LayoutProps, SpaceProps, TypographyProps } from 'styled-system';
 import { layout, space, typography } from 'styled-system';
+
+import { css, styled, transition } from '@/styles';
+import { linkResetStyle } from '@/styles/bootstrap';
+import { changeColorShade } from '@/utils/colors';
 
 export interface LinkProps extends LayoutProps, SpaceProps, TypographyProps {
   link?: string;

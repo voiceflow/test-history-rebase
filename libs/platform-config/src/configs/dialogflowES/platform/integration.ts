@@ -1,5 +1,5 @@
-import * as Base from '@platform-config/configs/base';
-import * as Google from '@platform-config/configs/google';
+import * as Base from '@/configs/base';
+import * as Google from '@/configs/google';
 
 export const CONFIG = Base.Integration.extend({
   connectTitle: 'Connect to Dialogflow',

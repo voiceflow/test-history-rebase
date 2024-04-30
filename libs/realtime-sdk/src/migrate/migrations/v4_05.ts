@@ -1,5 +1,6 @@
-import { BlockType } from '@realtime-sdk/constants';
 import { BaseModels } from '@voiceflow/base-types';
+
+import { BlockType } from '@/constants';
 
 import type { Transform } from './types';
 

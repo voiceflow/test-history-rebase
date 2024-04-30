@@ -1,8 +1,9 @@
-import type { BuiltInPortRecord, DBPortWithLinkData } from '@realtime-sdk/models';
-import * as RealtimeUtilsPort from '@realtime-sdk/utils/port';
 import type { Nullable } from '@voiceflow/base-types';
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
+
+import type { BuiltInPortRecord, DBPortWithLinkData } from '@/models';
+import * as RealtimeUtilsPort from '@/utils/port';
 
 import type { BuiltInPortData, OutPortsFromDBOptions, OutPortsToDBOptions, PortData, PortsInfo } from './port';
 import { dbBuiltInPortFactory, outPortDataFromDB, outPortDataToDB, outPortsDataFromDB, outPortsDataToDB } from './port';

@@ -1,5 +1,5 @@
-import { Variant as SvgIconVariant } from '@ui/components/SvgIcon/constants';
-import { COLOR_BLUE, COLOR_WHITE } from '@ui/styles/constants';
+import { Variant as SvgIconVariant } from '@/components/SvgIcon/constants';
+import { COLOR_BLUE, COLOR_WHITE } from '@/styles/constants';
 
 const PRIMARY_COLOR = '#6E849A';
 const SECONDARY_COLOR = '#787878';

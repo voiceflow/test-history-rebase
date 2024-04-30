@@ -1,7 +1,7 @@
-import * as Base from '@platform-config/configs/base';
-import { Config as ConfigUtils } from '@platform-config/configs/utils';
-import { ProjectType } from '@platform-config/constants';
-import { TypeGuards } from '@platform-config/utils';
+import * as Base from '@/configs/base';
+import { Config as ConfigUtils } from '@/configs/utils';
+import { ProjectType } from '@/constants';
+import { TypeGuards } from '@/utils';
 
 import * as Adapters from './adapters';
 import * as Models from './models';

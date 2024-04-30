@@ -1,7 +1,8 @@
-import type { HSLShades } from '@ui/utils/colors/hsl';
-import { createShadesFromHueWithDynamicSaturation } from '@ui/utils/colors/hsl';
-import { hexToHsluv } from '@ui/utils/colors/hsluv';
 import React from 'react';
+
+import type { HSLShades } from '@/utils/colors/hsl';
+import { createShadesFromHueWithDynamicSaturation } from '@/utils/colors/hsl';
+import { hexToHsluv } from '@/utils/colors/hsluv';
 
 import { ALL_COLORS, BLOCK_STANDARD_COLOR } from './constants';
 import { createShadesFromColor, normalizeColor } from './utils';

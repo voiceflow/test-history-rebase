@@ -1,7 +1,8 @@
 /* eslint-disable max-classes-per-file */
-import { IS_PRODUCTION } from '@ui/config';
 import loglevel from 'loglevel';
 import moize from 'moize';
+
+import { IS_PRODUCTION } from '@/config';
 
 import { getAllCookies, removeCookie } from './cookies';
 

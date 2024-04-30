@@ -1,5 +1,5 @@
-import * as Common from '@platform-config/configs/common';
-import { Config as ConfigUtils } from '@platform-config/configs/utils';
+import * as Common from '@/configs/common';
+import { Config as ConfigUtils } from '@/configs/utils';
 
 import * as VoiceflowCommon from '../../common';
 

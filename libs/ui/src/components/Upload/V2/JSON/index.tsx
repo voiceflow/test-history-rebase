@@ -1,6 +1,7 @@
-import { toast } from '@ui/components/Toast';
-import { readJSONFile } from '@ui/utils';
 import React from 'react';
+
+import { toast } from '@/components/Toast';
+import { readJSONFile } from '@/utils';
 
 import { UPLOAD_ERROR } from '../../constants';
 import type { UploadDropProps } from '../Drop';

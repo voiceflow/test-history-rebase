@@ -1,7 +1,8 @@
-import { Config as ConfigUtils } from '@platform-config/configs/utils';
 import type { BaseModels } from '@voiceflow/base-types';
 import { createMultiAdapter, createSmartMultiAdapter } from 'bidirectional-adapter';
 import { denormalize, normalize } from 'normal-store';
+
+import { Config as ConfigUtils } from '@/configs/utils';
 
 import type * as Models from '../models';
 import * as Utils from '../utils';

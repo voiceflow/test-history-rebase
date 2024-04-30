@@ -1,6 +1,7 @@
-import * as System from '@ui/system';
 import { Utils } from '@voiceflow/common';
 import React from 'react';
+
+import * as System from '@/system';
 
 import type { OptionsMenuOption } from '../../OptionsMenu';
 import Select from '../../Select';

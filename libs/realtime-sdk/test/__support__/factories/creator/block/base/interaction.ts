@@ -1,8 +1,9 @@
 import { faker } from '@faker-js/faker';
-import type { NodeData } from '@realtime-sdk/models';
 import { getRandomEnumElement } from '@test/utils';
 import { BaseNode } from '@voiceflow/base-types';
 import { define } from 'cooky-cutter';
+
+import type { NodeData } from '@/models';
 
 export const ChoiceGoTo = define<BaseNode.Interaction.ChoiceGoTo>({
   intentID: () => faker.lorem.word(),

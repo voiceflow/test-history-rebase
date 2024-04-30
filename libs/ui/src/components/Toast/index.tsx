@@ -1,15 +1,16 @@
 import 'react-toastify/dist/ReactToastify.css';
 
-import Box from '@ui/components/Box';
-import Portal from '@ui/components/Portal';
-import type { SvgIconTypes } from '@ui/components/SvgIcon';
-import SvgIcon from '@ui/components/SvgIcon';
-import { ClickableText } from '@ui/components/Text';
-import { createGlobalStyle } from '@ui/styles';
-import { COLOR_BLUE, COLOR_GREEN, COLOR_RED } from '@ui/styles/constants';
 import { Utils } from '@voiceflow/common';
 import React from 'react';
 import * as Toastify from 'react-toastify';
+
+import Box from '@/components/Box';
+import Portal from '@/components/Portal';
+import type { SvgIconTypes } from '@/components/SvgIcon';
+import SvgIcon from '@/components/SvgIcon';
+import { ClickableText } from '@/components/Text';
+import { createGlobalStyle } from '@/styles';
+import { COLOR_BLUE, COLOR_GREEN, COLOR_RED } from '@/styles/constants';
 
 type ToastMethodName = 'info' | 'error' | 'success' | 'warn';
 

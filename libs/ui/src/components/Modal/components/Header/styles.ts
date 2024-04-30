@@ -1,5 +1,5 @@
-import { flexApartStyles } from '@ui/components/Flex';
-import { css, styled, units } from '@ui/styles';
+import { flexApartStyles } from '@/components/Flex';
+import { css, styled, units } from '@/styles';
 
 interface ContainerProps {
   border?: boolean;

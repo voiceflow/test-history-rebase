@@ -1,8 +1,10 @@
-import captureV2Adapter from '@realtime-sdk/adapters/creator/block/chat/captureV2';
-import { chatNoMatchAdapter, chatNoReplyAdapter } from '@realtime-sdk/adapters/creator/block/utils';
 import { Creator } from '@test/factories';
 import { BaseNode } from '@voiceflow/base-types';
 import type { ChatNode } from '@voiceflow/chat-types';
+import { afterAll, afterEach, describe, expect, it, vi } from 'vitest';
+
+import { chatNoMatchAdapter, chatNoReplyAdapter } from '../utils';
+import captureV2Adapter from './captureV2';
 
 const DEFAULT_INTENT = {
   key: '',

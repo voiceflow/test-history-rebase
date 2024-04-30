@@ -1,8 +1,9 @@
-import { WorkspaceActivationState } from '@realtime-sdk/constants';
-import type { DBWorkspace, Workspace } from '@realtime-sdk/models';
-import { isWorkspaceMember, isWorkspacePendingMember } from '@realtime-sdk/utils/typeGuards';
 import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter';
 import * as Normal from 'normal-store';
+
+import { WorkspaceActivationState } from '@/constants';
+import type { DBWorkspace, Workspace } from '@/models';
+import { isWorkspaceMember, isWorkspacePendingMember } from '@/utils/typeGuards';
 
 export const INVALID_STATES = ['incomplete_expired', 'incomplete', 'unpaid', 'canceled'];
 export const WARNING_STATES = ['past_due'];

@@ -1,4 +1,4 @@
-import { css } from '@ui/styles';
+import { css } from '@/styles';
 
 export const centerContent = css`
   position: absolute;

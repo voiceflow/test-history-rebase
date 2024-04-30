@@ -1,6 +1,7 @@
-import Popper from '@ui/components/Popper';
-import { useHover } from '@ui/hooks';
 import React from 'react';
+
+import Popper from '@/components/Popper';
+import { useHover } from '@/hooks';
 
 import * as S from './styles';
 

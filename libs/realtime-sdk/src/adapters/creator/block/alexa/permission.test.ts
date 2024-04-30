@@ -1,6 +1,8 @@
-import permissionAdapter from '@realtime-sdk/adapters/creator/block/alexa/permission';
 import { Creator } from '@test/factories';
 import { AlexaNode } from '@voiceflow/alexa-types';
+import { describe, expect, it } from 'vitest';
+
+import permissionAdapter from './permission';
 
 describe('Adapters | Creator | Block | Alexa | permissionAdapter', () => {
   describe('when transforming from db', () => {

@@ -1,7 +1,7 @@
-import type { ButtonContainerProps } from '@ui/components/Button/components/ButtonContainer';
-import ButtonContainer from '@ui/components/Button/components/ButtonContainer';
-import SvgIcon from '@ui/components/SvgIcon';
-import { css, styled, transition } from '@ui/styles';
+import type { ButtonContainerProps } from '@/components/Button/components/ButtonContainer';
+import ButtonContainer from '@/components/Button/components/ButtonContainer';
+import SvgIcon from '@/components/SvgIcon';
+import { css, styled, transition } from '@/styles';
 
 export interface ContainerProps extends ButtonContainerProps {
   rounded?: boolean;

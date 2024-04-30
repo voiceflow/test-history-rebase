@@ -1,4 +1,4 @@
-import type * as Base from '@platform-config/configs/base';
+import type * as Base from '@/configs/base';
 
 import type * as Prompt from '../prompt';
 import * as Publishing from './publishing';

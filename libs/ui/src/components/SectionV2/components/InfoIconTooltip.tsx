@@ -1,8 +1,9 @@
-import SvgIcon from '@ui/components/SvgIcon';
-import type { TippyTooltipProps } from '@ui/components/TippyTooltip';
-import TippyTooltip from '@ui/components/TippyTooltip';
-import { css, styled } from '@ui/styles';
 import React from 'react';
+
+import SvgIcon from '@/components/SvgIcon';
+import type { TippyTooltipProps } from '@/components/TippyTooltip';
+import TippyTooltip from '@/components/TippyTooltip';
+import { css, styled } from '@/styles';
 
 const StyledIcon = styled(SvgIcon).attrs({ size: 16, icon: 'info' })<{ opened?: boolean }>`
   color: #becedc;

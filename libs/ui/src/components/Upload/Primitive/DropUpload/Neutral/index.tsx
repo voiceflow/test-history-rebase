@@ -1,6 +1,7 @@
-import type { SvgIconTypes } from '@ui/components/SvgIcon';
-import { swallowEvent } from '@ui/utils';
 import React from 'react';
+
+import type { SvgIconTypes } from '@/components/SvgIcon';
+import { swallowEvent } from '@/utils';
 
 import { CornerActionButton } from '../styles';
 import * as S from './styles';

@@ -1,5 +1,6 @@
-import type * as Base from '@platform-config/configs/base';
 import type { Nullable } from '@voiceflow/common';
+
+import type * as Base from '@/configs/base';
 
 export enum PromptType {
   TEXT = 'text',

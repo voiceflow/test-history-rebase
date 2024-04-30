@@ -1,4 +1,4 @@
-import { css, styled, transition } from '@ui/styles';
+import { css, styled, transition } from '@/styles';
 
 const ProgressBar = styled.div<{ percent: number }>`
   ${({ percent }) =>

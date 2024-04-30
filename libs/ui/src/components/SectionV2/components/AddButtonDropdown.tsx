@@ -1,12 +1,13 @@
-import type { UIOnlyMenuItemOption } from '@ui/components/NestedMenu';
-import { defaultMenuLabelRenderer } from '@ui/components/NestedMenu';
-import type { OptionsMenuOption } from '@ui/components/OptionsMenu';
-import type { BaseSelectProps } from '@ui/components/Select';
-import Select from '@ui/components/Select';
-import type { SvgIconTypes } from '@ui/components/SvgIcon';
-import SvgIcon from '@ui/components/SvgIcon';
 import { Utils } from '@voiceflow/common';
 import React from 'react';
+
+import type { UIOnlyMenuItemOption } from '@/components/NestedMenu';
+import { defaultMenuLabelRenderer } from '@/components/NestedMenu';
+import type { OptionsMenuOption } from '@/components/OptionsMenu';
+import type { BaseSelectProps } from '@/components/Select';
+import Select from '@/components/Select';
+import type { SvgIconTypes } from '@/components/SvgIcon';
+import SvgIcon from '@/components/SvgIcon';
 
 import AddButton from './AddButton';
 

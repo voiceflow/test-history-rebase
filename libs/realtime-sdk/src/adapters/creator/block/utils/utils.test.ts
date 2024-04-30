@@ -1,4 +1,6 @@
-import { syncDynamicPortsLength } from '@realtime-sdk/adapters/creator/block/utils';
+import { describe, expect, it } from 'vitest';
+
+import { syncDynamicPortsLength } from '.';
 
 describe('Adapters | Creator | Block | Utils', () => {
   describe('syncDynamicPortsLength', () => {

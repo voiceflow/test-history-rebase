@@ -1,4 +1,4 @@
-import { styled } from '@ui/styles';
+import { styled } from '@/styles';
 
 const ContentIcon = styled.div`
   margin-left: 12px;

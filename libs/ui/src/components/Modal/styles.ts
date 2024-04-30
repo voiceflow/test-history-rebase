@@ -1,7 +1,8 @@
-import Box from '@ui/components/Box';
-import { css, keyframes, styled, units } from '@ui/styles';
-import { ANIMATION_SPEED } from '@ui/styles/constants';
 import type { TransitionStatus } from 'react-transition-group';
+
+import Box from '@/components/Box';
+import { css, keyframes, styled, units } from '@/styles';
+import { ANIMATION_SPEED } from '@/styles/constants';
 
 export interface ContainerProps {
   status: TransitionStatus;

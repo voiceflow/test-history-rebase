@@ -1,8 +1,10 @@
-import { entityToLegacySlot } from '@realtime-sdk/adapters/legacy/entity-to-legacy-slot.adapter';
 import type { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import type { Entity, EntityVariant } from '@voiceflow/dtos';
 import { Language } from '@voiceflow/dtos';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+
+import { entityToLegacySlot } from '@/adapters/legacy/entity-to-legacy-slot.adapter';
 
 describe('Adapters | Legacy | entityToLegacySlot', () => {
   const creatorID = 1;

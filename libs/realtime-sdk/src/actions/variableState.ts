@@ -1,8 +1,9 @@
-import { createCRUDActions } from '@realtime-sdk/actions/utils';
-import { VARIABLE_STATE_KEY } from '@realtime-sdk/constants';
-import type { VariableState, VariableStateData } from '@realtime-sdk/models';
-import type { BaseVersionPayload } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
+
+import { createCRUDActions } from '@/actions/utils';
+import { VARIABLE_STATE_KEY } from '@/constants';
+import type { VariableState, VariableStateData } from '@/models';
+import type { BaseVersionPayload } from '@/types';
 
 export const variableStateType = Utils.protocol.typeFactory(VARIABLE_STATE_KEY);
 

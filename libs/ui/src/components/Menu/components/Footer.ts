@@ -1,5 +1,5 @@
-import Flex, { FlexCenter } from '@ui/components/Flex';
-import { css, styled, transition } from '@ui/styles';
+import Flex, { FlexCenter } from '@/components/Flex';
+import { css, styled, transition } from '@/styles';
 
 const Footer = styled(Flex)<{ noItems?: boolean }>`
   height: 68px;

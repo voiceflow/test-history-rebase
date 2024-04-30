@@ -1,4 +1,4 @@
-import type { AnyWorkspaceMember, PendingWorkspaceMember, WorkspaceMember } from '@realtime-sdk/models';
+import type { AnyWorkspaceMember, PendingWorkspaceMember, WorkspaceMember } from '@/models';
 
 export const isWorkspaceMember = (member: AnyWorkspaceMember | null): member is WorkspaceMember => !!member?.creator_id;
 

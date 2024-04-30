@@ -1,17 +1,12 @@
-import { createCRUDActions } from '@realtime-sdk/actions/utils';
-import {
-  COMPONENT_KEY,
-  MENU_ITEM_KEY,
-  SUBTOPIC_KEY,
-  TEMPLATE_DIAGRAM_KEY,
-  VARIABLES_KEY,
-} from '@realtime-sdk/constants';
-import type { Diagram } from '@realtime-sdk/models';
-import type { BaseDiagramPayload, BaseDomainPayload, BaseVersionPayload } from '@realtime-sdk/types';
-import type { PrimitiveDiagram } from '@realtime-sdk/utils/diagram';
 import type { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import type { Required } from 'utility-types';
+
+import { createCRUDActions } from '@/actions/utils';
+import { COMPONENT_KEY, MENU_ITEM_KEY, SUBTOPIC_KEY, TEMPLATE_DIAGRAM_KEY, VARIABLES_KEY } from '@/constants';
+import type { Diagram } from '@/models';
+import type { BaseDiagramPayload, BaseDomainPayload, BaseVersionPayload } from '@/types';
+import type { PrimitiveDiagram } from '@/utils/diagram';
 
 import { diagramType } from './utils';
 

@@ -1,5 +1,5 @@
-import { BlockText } from '@ui/components/Text';
-import { styled } from '@ui/styles';
+import { BlockText } from '@/components/Text';
+import { styled } from '@/styles';
 
 const InfoMessage = styled(BlockText)`
   text-align: left;

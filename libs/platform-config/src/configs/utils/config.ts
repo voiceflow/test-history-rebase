@@ -1,7 +1,8 @@
-import type { Extendable, ExtendableFunctions, Merge } from '@platform-config/configs/types';
 import type { AnyRecord } from '@voiceflow/common';
 import { Utils } from '@voiceflow/common';
 import type { Required } from 'utility-types';
+
+import type { Extendable, ExtendableFunctions, Merge } from '@/configs/types';
 
 export const extendFactory =
   <Config extends AnyRecord>(baseConfig: Config) =>

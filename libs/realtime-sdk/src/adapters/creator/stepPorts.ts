@@ -1,9 +1,10 @@
-import type { BlockType } from '@realtime-sdk/constants';
-import type { Node, NodeData } from '@realtime-sdk/models';
 import type { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import type * as Platform from '@voiceflow/platform-config/backend';
 import { createMultiAdapter } from 'bidirectional-adapter';
+
+import type { BlockType } from '@/constants';
+import type { Node, NodeData } from '@/models';
 
 import type { VersionAdapterContext } from '../types';
 import type { OutPortsAdapter, OutPortsAdapterV2 } from './block';

@@ -1,4 +1,4 @@
-import type { DBWorkspaceProperties } from '@realtime-sdk/models/Workspace';
+import type { DBWorkspaceProperties } from '@/models/Workspace';
 
 import type { NestResourceOptions } from '../../nest';
 import { NestResource } from '../../nest';

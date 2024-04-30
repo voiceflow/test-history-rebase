@@ -1,12 +1,13 @@
-import Avatar from '@ui/components/Avatar';
-import Badge from '@ui/components/Badge';
-import Box from '@ui/components/Box';
-import { PROFILE_COLORS } from '@ui/styles/colors';
-import { getStringHashNumber } from '@ui/utils/string';
 import type { Nullable } from '@voiceflow/common';
 import { Utils } from '@voiceflow/common';
 import { UserRole } from '@voiceflow/internal';
 import React from 'react';
+
+import Avatar from '@/components/Avatar';
+import Badge from '@/components/Badge';
+import Box from '@/components/Box';
+import { PROFILE_COLORS } from '@/styles/colors';
+import { getStringHashNumber } from '@/utils/string';
 
 import RoleSelect from '../RoleSelect';
 import type { Member } from '../types';

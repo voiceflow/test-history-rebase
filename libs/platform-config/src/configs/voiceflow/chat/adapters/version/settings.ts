@@ -1,6 +1,7 @@
-import * as Common from '@platform-config/configs/common';
 import { VoiceflowVersion } from '@voiceflow/voiceflow-types';
 import { createSimpleAdapter, createSmartSimpleAdapter } from 'bidirectional-adapter';
+
+import * as Common from '@/configs/common';
 
 import * as VoiceflowCommon from '../../../common';
 import type * as Models from '../../models';

@@ -1,8 +1,9 @@
 /* eslint-disable no-param-reassign */
 
-import { variableToLegacyVariableAdapter } from '@realtime-sdk/adapters';
 import { Utils } from '@voiceflow/common';
 import { SystemVariable } from '@voiceflow/dtos';
+
+import { variableToLegacyVariableAdapter } from '@/adapters';
 
 import type { Transform } from './types';
 

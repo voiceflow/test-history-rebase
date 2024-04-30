@@ -1,10 +1,11 @@
 import { faker } from '@faker-js/faker';
-import type { NodeData } from '@realtime-sdk/models';
 import { getRandomEnumElements } from '@test/utils';
 import { BaseNode } from '@voiceflow/base-types';
 import type { ChatNode } from '@voiceflow/chat-types';
 import type { VoiceNode } from '@voiceflow/voice-types';
 import { define, extend } from 'cooky-cutter';
+
+import type { NodeData } from '@/models';
 
 import { ChatPrompt, VoiceNodeDataPrompt, VoicePrompt } from './prompt';
 

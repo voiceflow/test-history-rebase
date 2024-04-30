@@ -1,5 +1,5 @@
-import { Config as ConfigUtils } from '@platform-config/configs/utils';
-import { Types } from '@platform-config/utils';
+import { Config as ConfigUtils } from '@/configs/utils';
+import { Types } from '@/utils';
 
 import * as Intent from './intent';
 import * as InvocationName from './invocation-name';

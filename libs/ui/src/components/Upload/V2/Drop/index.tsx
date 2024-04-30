@@ -1,8 +1,9 @@
-import { LoadCircle } from '@ui/components/Loader';
-import SvgIcon from '@ui/components/SvgIcon';
-import Text from '@ui/components/Text';
 import React from 'react';
 import { useDropzone } from 'react-dropzone';
+
+import { LoadCircle } from '@/components/Loader';
+import SvgIcon from '@/components/SvgIcon';
+import Text from '@/components/Text';
 
 import { UPLOAD_ERROR } from '../../constants';
 import { useFileTypesToMimeType } from '../../hooks';

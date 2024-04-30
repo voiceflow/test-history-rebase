@@ -1,9 +1,10 @@
-import { css, styled } from '@ui/styles';
 import type { SliderProps as RCSliderProps } from 'rc-slider';
 import RCSlider from 'rc-slider';
 // can's just use import '...index.css' cause vite-node will crash
 import _globalRCStyles from 'rc-slider/assets/index.css';
 import React from 'react';
+
+import { css, styled } from '@/styles';
 
 interface SliderProps extends RCSliderProps<number> {
   color?: string;

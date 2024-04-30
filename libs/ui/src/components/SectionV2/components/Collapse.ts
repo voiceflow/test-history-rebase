@@ -1,5 +1,5 @@
-import Collapse from '@ui/components/Collapse';
-import { styled } from '@ui/styles';
+import Collapse from '@/components/Collapse';
+import { styled } from '@/styles';
 
 const StyledCollapse = styled(Collapse)`
   cursor: default;

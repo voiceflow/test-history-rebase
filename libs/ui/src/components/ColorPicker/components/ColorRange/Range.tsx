@@ -1,6 +1,7 @@
-import { styled } from '@ui/styles';
-import { fontResetStyle } from '@ui/styles/bootstrap';
 import React from 'react';
+
+import { styled } from '@/styles';
+import { fontResetStyle } from '@/styles/bootstrap';
 
 const TRACK_HEIGHT = 12;
 

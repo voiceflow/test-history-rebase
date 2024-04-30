@@ -1,12 +1,13 @@
-import type { AdapterContext } from '@realtime-sdk/adapters/types';
-import { BlockType } from '@realtime-sdk/constants';
-import type { NodeData } from '@realtime-sdk/models';
-import { createPlatformAndProjectTypeSelector, createPlatformSelector } from '@realtime-sdk/utils/platform';
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config/backend';
 import type { MultiAdapter } from 'bidirectional-adapter';
 import { identityAdapter } from 'bidirectional-adapter';
 import moize from 'moize';
+
+import type { AdapterContext } from '@/adapters/types';
+import { BlockType } from '@/constants';
+import type { NodeData } from '@/models';
+import { createPlatformAndProjectTypeSelector, createPlatformSelector } from '@/utils/platform';
 
 import { alexaBlockAdapter, alexaOutPortAdapter, alexaOutPortAdapterV2 } from './alexa';
 import { baseBlockAdapter, baseOutPortAdapter, baseOutPortAdapterV2 } from './base';

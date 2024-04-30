@@ -1,5 +1,5 @@
-import { inputStyle } from '@ui/components/Input';
-import { css, styled } from '@ui/styles';
+import { inputStyle } from '@/components/Input';
+import { css, styled } from '@/styles';
 
 import PrefixContainer from './PrefixContainer';
 

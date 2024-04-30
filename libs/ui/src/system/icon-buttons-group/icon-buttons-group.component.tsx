@@ -1,7 +1,8 @@
-import Box from '@ui/components/Box';
-import { forwardRef } from '@ui/hocs/forwardRef';
-import * as IconButton from '@ui/system/icon-button';
 import React from 'react';
+
+import Box from '@/components/Box';
+import { forwardRef } from '@/hocs/forwardRef';
+import * as IconButton from '@/system/icon-button';
 
 import type * as I from './icon-buttons-group.interface';
 

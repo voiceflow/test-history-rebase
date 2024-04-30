@@ -4,15 +4,16 @@ import 'tippy.js/animations/shift-away.css';
 
 import type { TippyProps } from '@tippyjs/react';
 import Tippy from '@tippyjs/react';
-import { IS_TEST } from '@ui/config';
-import { useCreateConst, useTeardown } from '@ui/hooks';
-import { ClassName } from '@ui/styles/constants';
 import type { StringifyEnum } from '@voiceflow/common';
 import { Utils } from '@voiceflow/common';
 import cns from 'classnames';
 import React from 'react';
 import type { Instance } from 'tippy.js';
 import { animateFill as animateFillPlugin } from 'tippy.js';
+
+import { IS_TEST } from '@/config';
+import { useCreateConst, useTeardown } from '@/hooks';
+import { ClassName } from '@/styles/constants';
 
 import { Complex, FooterButton, HotkeyLabel, HotkeyText, Multiline, Title, WithHotkey } from './components';
 import * as S from './styles';

@@ -1,6 +1,6 @@
-import SearchInput from '@ui/components/SearchInput';
-import Select from '@ui/components/Select';
-import { styled } from '@ui/styles';
+import SearchInput from '@/components/SearchInput';
+import Select from '@/components/Select';
+import { styled } from '@/styles';
 
 export const StyledSelect = styled(Select)`
   ${SearchInput} {

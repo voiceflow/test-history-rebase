@@ -1,7 +1,8 @@
-import * as Common from '@platform-config/configs/common';
-import { Config } from '@platform-config/configs/utils';
 import { GoogleConstants, GoogleVersion } from '@voiceflow/google-types';
 import { createSimpleAdapter, createSmartSimpleAdapter } from 'bidirectional-adapter';
+
+import * as Common from '@/configs/common';
+import { Config } from '@/configs/utils';
 
 import * as GoogleCommon from '../../../common';
 import type * as Models from '../../models';

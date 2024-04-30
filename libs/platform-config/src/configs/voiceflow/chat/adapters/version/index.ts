@@ -1,6 +1,7 @@
-import * as Common from '@platform-config/configs/common';
 import type { VoiceflowVersion } from '@voiceflow/voiceflow-types';
 import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter';
+
+import * as Common from '@/configs/common';
 
 import type * as Models from '../../models';
 import * as Publishing from './publishing';

@@ -1,7 +1,8 @@
-import type { NodeData } from '@realtime-sdk/models';
 import { BaseNode } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config/backend';
 import type { VoiceNode } from '@voiceflow/voice-types';
+
+import type { NodeData } from '@/models';
 
 import { baseCaptureV2Adapter } from '../base';
 import { createBlockAdapter, voiceNoMatchAdapter, voiceNoReplyAdapter } from '../utils';

@@ -1,6 +1,7 @@
-import type { WorkspaceActivationState } from '@realtime-sdk/constants';
 import type { PlanType, UserRole } from '@voiceflow/internal';
 import type { Normalized } from 'normal-store';
+
+import type { WorkspaceActivationState } from '@/constants';
 
 import type * as Billing from './Billing';
 

@@ -1,5 +1,5 @@
-import Flex from '@ui/components/Flex';
-import { css, styled, transition, units } from '@ui/styles';
+import Flex from '@/components/Flex';
+import { css, styled, transition, units } from '@/styles';
 
 import type * as T from './types';
 

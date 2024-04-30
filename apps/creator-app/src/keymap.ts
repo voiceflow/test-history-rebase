@@ -61,6 +61,7 @@ export enum Hotkey {
   TOGGLE_CHATBOT = 'TOGGLE_CHATBOT',
 
   BACK_TO_CMS = 'BACK_TO_CMS',
+  BACK_TO_DESIGNER = 'BACK_TO_DESIGNER',
   CANVAS_SHOW_HIDE_UI = 'CANVAS_SHOW_HIDE_UI',
   CANVAS_TOGGLE_SIDEBAR = 'CANVAS_TOGGLE_SIDEBAR',
 }
@@ -144,6 +145,7 @@ const HOTKEY_MAPPING: Record<Hotkey, string | string[]> = {
 
   [Hotkey.TOGGLE_CHATBOT]: [`${SpecialKey.CTRL}+/`, `${SpecialKey.META}+/`],
   [Hotkey.BACK_TO_CMS]: [`${SpecialKey.CTRL}+[`, `${SpecialKey.META}+[`],
+  [Hotkey.BACK_TO_DESIGNER]: [`${SpecialKey.CTRL}+]`, `${SpecialKey.META}+]`],
 };
 
 const SPECIAL_KEY_LABEL: Record<SpecialKey, string> = {

@@ -55,7 +55,7 @@ export const CMSWorkflowTable: React.FC = () => {
       title="No workflows exist"
       button={{ label: 'Create workflow', onClick: (search) => onCreate({ name: search }) }}
       searchTitle="No workflows found"
-      description="Workflows are sequences that define agent interactions and decision paths."
+      description="Workflows are sequences that define agent interactions and decision paths. "
       illustration="NoContent"
       learnMoreLink={CMS_WORKFLOW_LEARN_MORE}
     >

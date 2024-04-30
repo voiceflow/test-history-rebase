@@ -23,13 +23,13 @@ const ReturnToInstanceSnackbar: React.FC = () => {
   if (!snackbar.isOpen) return null;
 
   return (
-    <System.Snackbar.WithOverlay onClick={goToComponentInstance}>
+    <System.Snackbar.Base onClick={goToComponentInstance}>
       <System.Snackbar.Icon icon="systemBack" />
 
       <System.Snackbar.Text>Return to Instance</System.Snackbar.Text>
 
       <System.Snackbar.CloseButton onClick={stopPropagation(snackbar.close)} />
-    </System.Snackbar.WithOverlay>
+    </System.Snackbar.Base>
   );
 };
 

@@ -12,11 +12,7 @@ import { useCommentingMode, useCommentingToggle, useDisableModes } from '@/pages
 
 import { toolbarStyle } from './DiagramSidebar.css';
 
-interface IDiagramSidebarToolbar {
-  sidebarVisible: boolean;
-}
-
-export const DiagramSidebarToolbar: React.FC<IDiagramSidebarToolbar> = ({ sidebarVisible }) => {
+export const DiagramSidebarToolbar: React.FC = () => {
   const TEST_ID = 'diagram-sidebar-toolbar';
 
   const markup = React.useContext(MarkupContext);
@@ -33,7 +29,7 @@ export const DiagramSidebarToolbar: React.FC<IDiagramSidebarToolbar> = ({ sideba
   const onToggleCommenting = useCommentingToggle();
 
   return (
-    <MarkupToolbar className={toolbarStyle({ sidebarVisible })}>
+    <MarkupToolbar className={toolbarStyle}>
       <MarkupToolbar.Button
         testID={tid(TEST_ID, 'note')}
         onClick={isMarkupTextActive ? onDisableModes : markup?.toggleTextCreating}

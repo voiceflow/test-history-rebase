@@ -106,7 +106,7 @@ export const CMSWorkflowEditor: React.FC = () => {
     >
       <Scroll style={{ display: 'block' }}>
         <Box px={24} py={20} direction="column">
-          <Button onClick={() => workflow.diagramID && goToDiagram(workflow.diagramID)} label="Edit workflow" variant="primary" fullWidth />
+          <Button onClick={() => goToDiagram(workflow.diagramID)} label="Edit workflow" variant="primary" fullWidth />
         </Box>
 
         <Divider noPadding />

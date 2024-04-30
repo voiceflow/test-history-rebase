@@ -32,7 +32,6 @@ const RunButton: React.FC<RunButtonProps> = ({ variant = ButtonVariant.PRIMARY, 
     return (
       <TooltipWithKeys
         text="Run"
-        variant="basic"
         hotkeys={[{ label: getHotkeyLabel(Hotkey.RUN_MODE) }]}
         modifiers={modifiers}
         placement="bottom"

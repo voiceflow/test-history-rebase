@@ -5,11 +5,12 @@ import React from 'react';
 import { matchPath, useLocation } from 'react-router-dom';
 
 import { CMSRoute, Path } from '@/config/routes';
-import { Designer } from '@/ducks';
-import * as ProjectV2 from '@/ducks/projectV2';
-import { useFeature } from '@/hooks';
+import { Creator, Designer, Project, Router } from '@/ducks';
+import { useFeature } from '@/hooks/feature';
+import { useHotkey } from '@/hooks/hotkeys';
 import { useOnLinkClick } from '@/hooks/navigation.hook';
-import { useSelector } from '@/hooks/store.hook';
+import { useDispatch, useSelector } from '@/hooks/store.hook';
+import { Hotkey } from '@/keymap';
 import { useCMSRoute } from '@/pages/AssistantCMS/hooks/cms-route.hook';
 
 export const CMSLayoutMenu: React.FC = () => {
@@ -23,15 +24,19 @@ export const CMSLayoutMenu: React.FC = () => {
 
   const { updateActiveCMSRoute } = useCMSRoute();
 
-  const name = useSelector(ProjectV2.active.nameSelector);
-  const hasProject = useSelector(ProjectV2.active.hasSelector);
+  const name = useSelector(Project.active.nameSelector);
+  const hasProject = useSelector(Project.active.hasSelector);
   const flowsCount = useSelector(Designer.Flow.selectors.count);
+
   const intentsCount = useSelector(Designer.Intent.selectors.countWithoutNone);
   const entitiesCount = useSelector(Designer.Entity.selectors.count);
   const functionsCount = useSelector(Designer.Function.selectors.count);
   const variablesCount = useSelector(Designer.Variable.selectors.count);
   const workflowsCount = useSelector(Designer.Workflow.selectors.count);
+  const activeDiagramID = useSelector(Creator.activeDiagramIDSelector);
   const knowledgeBaseCount = useSelector(Designer.KnowledgeBase.Document.selectors.count);
+
+  const goToDiagram = useDispatch(Router.goToDiagram);
 
   const isItemActive = (path: string) => !!matchPath(location.pathname, { path, exact: false });
 
@@ -40,8 +45,14 @@ export const CMSLayoutMenu: React.FC = () => {
     onLinkClick(tab)(event);
   };
 
+  useHotkey(Hotkey.BACK_TO_DESIGNER, () => activeDiagramID && goToDiagram(activeDiagramID), { disable: !activeDiagramID });
+
   return (
-    <SecondaryNavigation title={hasProject ? name ?? '' : 'Loading...'} testID={TEST_ID}>
+    <SecondaryNavigation
+      title={hasProject ? name ?? '' : 'Loading...'}
+      testID={TEST_ID}
+      onBackToDesignerClick={activeDiagramID ? () => goToDiagram(activeDiagramID) : undefined}
+    >
       {(isKbEnabled || isCMSWorkflowsEnabled) && (
         <SecondaryNavigation.Section title="Agent" isCollapsible={false}>
           {isCMSWorkflowsEnabled && (

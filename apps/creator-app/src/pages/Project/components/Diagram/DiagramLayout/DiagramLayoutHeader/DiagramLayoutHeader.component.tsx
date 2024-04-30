@@ -48,7 +48,7 @@ export const DiagramLayoutHeader: React.FC<IDiagramLayoutHeader> = ({ isLoader }
       ? getWorkflowByDiagramID({ diagramID: activeDiagramID })?.id
       : getFlowByDiagramID({ diagramID: activeDiagramID })?.id;
 
-    goToCMSResource(isWorkflow ? CMSRoute.WORKFLOW : CMSRoute.FLOW, resourceID);
+    goToCMSResource(isWorkflow ? CMSRoute.WORKFLOW : CMSRoute.FLOW, resourceID, { isBack: true });
   };
 
   const showActions = canEditCanvas && (selectedTargets.length > 1 || (selectedTargets.length === 1 && selectedTargets[0] !== startNodeID));
@@ -61,9 +61,8 @@ export const DiagramLayoutHeader: React.FC<IDiagramLayoutHeader> = ({ isLoader }
     <Header className={headerStyle({ canvasOnly })}>
       <Header.Section.Left mr={214}>
         <TooltipWithKeys
-          text="Exit"
+          text="Back"
           hotkeys={[{ label: getHotkeyLabel(Hotkey.BACK_TO_CMS) }]}
-          variant="basic"
           modifiers={tooltipModifiers}
           placement="bottom"
           referenceElement={({ ref, onOpen, onClose }) => (

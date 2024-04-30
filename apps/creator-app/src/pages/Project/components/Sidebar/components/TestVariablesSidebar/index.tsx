@@ -1,3 +1,4 @@
+import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { CustomScrollbars, Flex, FlexCenter, LoadCircle, toast } from '@voiceflow/ui';
 import React from 'react';
 
@@ -6,7 +7,7 @@ import TestVariableStateSelect from '@/components/TestVariableStateSelect';
 import VariableList from '@/components/VariableList';
 import * as Session from '@/ducks/session';
 import * as VariableState from '@/ducks/variableState';
-import { useDispatch, useSelector, useTheme } from '@/hooks';
+import { useDispatch, useFeature, useSelector, useTheme } from '@/hooks';
 import { useSessionStorageState } from '@/hooks/storage.hook';
 
 import { SelectContainer, VariableListContainer } from './components';
@@ -14,6 +15,8 @@ import { usePrototypeContextVariables } from './hooks';
 
 const TestVariablesSidebar: React.FC = () => {
   const theme = useTheme();
+  const cmsWorkflows = useFeature(FeatureFlag.CMS_WORKFLOWS);
+
   const selectedVariables = useSelector(VariableState.selectedVariablesStateVariablesSelector);
   const selectedSavedState = useSelector(VariableState.selectedVariableStateSavedStateSelector);
   const selectedVariableState = useSelector(VariableState.selectedVariableStateSelector);
@@ -73,6 +76,10 @@ const TestVariablesSidebar: React.FC = () => {
       closable
       onToggle={onToggle}
       direction={Drawer.Direction.RIGHT}
+      style={{
+        top: cmsWorkflows.isEnabled ? theme.components.header.newHeight : undefined,
+        height: cmsWorkflows.isEnabled ? `calc(100% - ${theme.components.header.newHeight}px)` : undefined,
+      }}
     >
       {variables?.length ? (
         <Flex column fullHeight>

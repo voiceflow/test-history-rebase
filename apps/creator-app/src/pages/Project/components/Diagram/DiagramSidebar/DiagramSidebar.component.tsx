@@ -1,3 +1,4 @@
+import { BlockType } from '@voiceflow/realtime-sdk';
 import { clsx } from '@voiceflow/style';
 import { DraggablePanel, ResizableSection, ResizableSectionHeader, TreeView, usePersistFunction } from '@voiceflow/ui-next';
 import { IResizableSectionAPI } from '@voiceflow/ui-next/build/cjs/components/Section/ResizableSection/types';
@@ -35,6 +36,7 @@ export const DiagramSidebar: React.FC = () => {
 
   const canvasOnly = useSelector(UI.selectors.isCanvasOnly);
   const creatorFocus = useSelector(Creator.creatorFocusSelector);
+  const focusedNode = useSelector(Creator.nodeByIDSelector, { id: creatorFocus.target });
   const sidebarWidth = useSelector(UI.selectors.canvasSidebarWidth);
   const sidebarVisible = useSelector(UI.selectors.canvasSidebarVisible);
   const activeDiagramID = useSelector(Creator.activeDiagramIDSelector);
@@ -99,7 +101,7 @@ export const DiagramSidebar: React.FC = () => {
     }
   });
 
-  const focusedNodeID = creatorFocus.isActive ? creatorFocus.target : null;
+  const focusedNodeID = creatorFocus.isActive && focusedNode?.type === BlockType.INTENT ? creatorFocus.target : null;
   const selectedID = focusedNodeID ? `${activeDiagramID}:${focusedNodeID}` : activeDiagramID;
 
   return (
@@ -110,13 +112,6 @@ export const DiagramSidebar: React.FC = () => {
           onResize={setSidebarWidth}
           collapsed={!sidebarVisible}
           onCollapse={(collapsed) => toggleCanvasSidebar(!collapsed)}
-          toolbar={
-            <>
-              {!isCommenting && <StepMenu sidebarVisible={sidebarVisible} />}
-
-              <DiagramSidebarToolbar sidebarVisible={sidebarVisible} />
-            </>
-          }
         >
           <ResizableSection
             id="diagram-sidebar"
@@ -156,8 +151,25 @@ export const DiagramSidebar: React.FC = () => {
               />
             }
           />
+
+          {sidebarVisible && (
+            <>
+              {!isCommenting && <StepMenu />}
+
+              <DiagramSidebarToolbar />
+            </>
+          )}
         </DraggablePanel>
+
+        {!sidebarVisible && (
+          <>
+            {!isCommenting && <StepMenu />}
+
+            <DiagramSidebarToolbar />
+          </>
+        )}
       </div>
+
       <TreeView.DragLayer />
     </>
   );

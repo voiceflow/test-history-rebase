@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.385.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.385.0...@voiceflow/realtime-sdk@1.385.1) (2024-05-01)
+
+### Bug Fixes
+
+* pre cms long intent names [bors] (COR-1910) ([#8056](https://github.com/voiceflow/creator-app/issues/8056)) ([d171eb2](https://github.com/voiceflow/creator-app/commit/d171eb2f4a1226c47a4ea497fff3a55b235f6821))
+
 # [1.385.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.384.7...@voiceflow/realtime-sdk@1.385.0) (2024-04-29)
 
 ### Features

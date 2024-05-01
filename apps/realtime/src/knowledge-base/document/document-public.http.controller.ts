@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Inject, Param, Patch, Post, Query } from '@nestjs/common';
-import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import { ApiConsumes, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { ZodApiBody, ZodApiQuery, ZodApiResponse } from '@voiceflow/nestjs-common';
 import { Permission } from '@voiceflow/sdk-auth';
 import { Authorize } from '@voiceflow/sdk-auth/nestjs';
@@ -8,7 +8,7 @@ import { ZodValidationPipe } from 'nestjs-zod';
 
 import { KnowledgeBaseDocumentService } from './document.service';
 import { DocumentDeleteRequest, DocumentDeleteResponse } from './dtos/document-delete.dto';
-import { DocumentFindManyRequest, DocumentFindManyResponse, DocumentFindOneResponse } from './dtos/document-find.dto';
+import { DocumentFindManyRequest, DocumentFindManyResponse, DocumentFindOnePublicResponse, DocumentFindOneResponse } from './dtos/document-find.dto';
 import { DocumentPatchManyRequest, DocumentPatchOneRequest } from './dtos/document-patch.dto';
 
 @Controller('knowledge-base/:assistantID/document')
@@ -40,6 +40,29 @@ export class KnowledgeBaseDocumentPublicHTTPController {
   })
   async getOne(@Param('assistantID') assistantID: string, @Param('documentID') documentID: string): Promise<DocumentFindOneResponse> {
     return this.service.findOneDocument(assistantID, documentID);
+  }
+
+  @Get('public/:documentID')
+  @ApiConsumes('knowledgeBase')
+  @Authorize.Permissions<Request<{ assistantID: string }>>([Permission.PROJECT_READ], (request) => ({
+    id: request.params.assistantID,
+    kind: 'project',
+  }))
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary: 'Get document',
+    description: 'Get one documents by id',
+  })
+  @ApiParam({ name: 'assistantID', type: 'string' })
+  @ApiParam({ name: 'documentID', type: 'string' })
+  @ZodApiResponse({
+    status: HttpStatus.OK,
+    description: 'Get document by id in the target project',
+    schema: DocumentFindOnePublicResponse,
+  })
+  async publicGetOne(@Param('assistantID') assistantID: string, @Param('documentID') documentID: string): Promise<DocumentFindOnePublicResponse> {
+    const document = await this.service.findOneDocument(assistantID, documentID);
+    return document ? { data: document.data, chunks: document.chunks } : { data: null, chunks: [] };
   }
 
   @Get()
@@ -161,6 +184,28 @@ export class KnowledgeBaseDocumentPublicHTTPController {
     description: 'Delete document by id in the target project',
   })
   async deleteOne(@Param('assistantID') assistantID: string, @Param('documentID') documentID: string): Promise<void> {
+    // TODO: remove from refresh queue
+    await this.service.deleteManyDocuments([documentID], assistantID);
+  }
+
+  @Delete('public/:documentID')
+  @ApiConsumes('knowledgeBase')
+  @Authorize.Permissions<Request<{ assistantID: string }>>([Permission.PROJECT_UPDATE], (request) => ({
+    id: request.params.assistantID,
+    kind: 'project',
+  }))
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary: 'Delete document',
+    description: 'Delete one documents by id',
+  })
+  @ApiParam({ name: 'assistantID', type: 'string' })
+  @ApiParam({ name: 'documentID', type: 'string' })
+  @ZodApiResponse({
+    status: HttpStatus.OK,
+    description: 'Delete document by id in the target project',
+  })
+  async publicDeleteOne(@Param('assistantID') assistantID: string, @Param('documentID') documentID: string): Promise<void> {
     // TODO: remove from refresh queue
     await this.service.deleteManyDocuments([documentID], assistantID);
   }

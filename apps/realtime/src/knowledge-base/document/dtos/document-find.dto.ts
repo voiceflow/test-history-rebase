@@ -16,3 +16,7 @@ export const DocumentFindManyResponse = z.object({
 });
 
 export type DocumentFindManyResponse = z.infer<typeof DocumentFindManyResponse>;
+
+export const DocumentFindOnePublicResponse = KnowledgeBaseDocumentDTO.pick({ data: true, chunks: true });
+
+export type DocumentFindOnePublicResponse = z.infer<typeof DocumentFindOnePublicResponse>;

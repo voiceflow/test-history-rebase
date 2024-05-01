@@ -4,18 +4,20 @@ import { ActionAndLabelRequestPayloadDTO } from '../payload.dto';
 import { RequestType } from '../request-type.enum';
 import { BaseRequestDTO } from '../utils.dto';
 
+export const VerboseValueDTO = z.object({
+  rawText: z.string(),
+  canonicalText: z.string(),
+  startIndex: z.number(),
+});
+
+export type VerboseValue = z.infer<typeof VerboseValueDTO>;
+
 export const IntentRequestEntityDTO = z
   .object({
     name: z.string(),
     value: z.string(),
     query: z.string().optional(),
-    verboseValue: z
-      .object({
-        rawText: z.string(),
-        canonicalText: z.string(),
-        startIndex: z.number(),
-      })
-      .optional(),
+    verboseValue: z.array(VerboseValueDTO).optional(),
   })
   .passthrough();
 

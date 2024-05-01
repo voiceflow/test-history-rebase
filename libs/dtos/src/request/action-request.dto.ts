@@ -6,8 +6,8 @@ import { BaseRequestDTO } from './utils.dto';
 
 export const ActionRequestDTO = BaseRequestDTO.extend({
   type: z.literal(RequestType.ACTION),
-  payload: ActionAndLabelRequestPayloadDTO.optional(),
-});
+  payload: ActionAndLabelRequestPayloadDTO.passthrough().optional(),
+}).passthrough();
 
 export type ActionRequest = z.infer<typeof ActionRequestDTO>;
 

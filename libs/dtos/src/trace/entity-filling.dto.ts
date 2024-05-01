@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { IntentRequestDTO } from '../request/intent-request.dto';
+import { IntentRequestDTO } from '../request/intent/intent-request.dto';
 import { TraceType } from './trace-type.enum';
 import { BaseTraceDTO } from './utils.dto';
 

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.337.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.336.2...@voiceflow/realtime@1.337.0) (2024-05-01)
+
+### Features
+
+* get and delete public kb endpoints (COR-1839) (COR-1840) ([#8052](https://github.com/voiceflow/creator-app/issues/8052)) ([97eb759](https://github.com/voiceflow/creator-app/commit/97eb7592449c26eb67376c1803cda9a3a501edb0))
+
 ## [1.336.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.336.1...@voiceflow/realtime@1.336.2) (2024-05-01)
 
 **Note:** Version bump only for package @voiceflow/realtime

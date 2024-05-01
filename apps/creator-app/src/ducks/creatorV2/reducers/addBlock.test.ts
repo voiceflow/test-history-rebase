@@ -1,13 +1,16 @@
 import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { describe, expect, it } from 'vitest';
 
+import { createDuckTools } from '@/ducks/_suite';
 import * as CreatorV2 from '@/ducks/creatorV2';
 
-import suite from '../../_suite';
-import { ACTION_CONTEXT, MOCK_STATE, NODE_ID, PROJECT_META, SCHEMA_VERSION } from '../_fixtures';
+import { ACTION_CONTEXT, MOCK_STATE, NODE_ID, PROJECT_META, SCHEMA_VERSION } from '../creator.fixture';
 
-suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBlock reducer', ({ describeReducerV2 }) => {
-  describeReducerV2(Realtime.node.addBlock, ({ applyAction, normalizeContaining }) => {
+const { describeReducer } = createDuckTools(CreatorV2, MOCK_STATE);
+
+describe('Ducks | Creator V2 - addBlock reducer', () => {
+  describeReducer(Realtime.node.addBlock, ({ applyAction, normalizeContaining }) => {
     const blockID = 'blockNode';
     const stepID = 'stepNode';
     const blockName = 'New Block';

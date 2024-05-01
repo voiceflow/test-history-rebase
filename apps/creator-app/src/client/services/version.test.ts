@@ -1,13 +1,13 @@
-import createClient from '@/client/services/version';
+import { describe, expect, it } from 'vitest';
 
-import suite from '../../_suite';
+import createClient from './version';
 
 const SERVICE_ENDPOINT = 'https://service';
 
 const client = createClient(SERVICE_ENDPOINT);
 
-suite('Platform Client - Utils - Version', ({ expectMembers }) => {
+describe('Platform Client - Utils - Version', () => {
   it('should have expected keys', () => {
-    expectMembers(Object.keys(client), ['updateSettings', 'updatePublishing']);
+    expect(Object.keys(client)).toEqual(expect.arrayContaining(['updateSettings', 'updatePublishing']));
   });
 });

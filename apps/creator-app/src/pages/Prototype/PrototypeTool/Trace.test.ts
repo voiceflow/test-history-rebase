@@ -3,22 +3,24 @@
 import './utils/mockAudio';
 
 import { BaseNode } from '@voiceflow/base-types';
+import type { AnyFunction } from '@voiceflow/common';
 import type { BaseRequest } from '@voiceflow/dtos';
 import { RequestType } from '@voiceflow/dtos';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
-import type { SpyInstance } from 'vitest';
+import { describe, expect, it, type MockInstance, vi } from 'vitest';
 
 import { createSuite } from '@/../test/_suite';
 import { BlockType } from '@/constants';
 import { SpeakTraceAudioType } from '@/constants/prototype';
 import type { Trace } from '@/models';
 import type Engine from '@/pages/Canvas/engine';
-import AudioController from '@/pages/Prototype/PrototypeTool/Audio';
-import MessageController from '@/pages/Prototype/PrototypeTool/Message';
-import TimeoutController from '@/pages/Prototype/PrototypeTool/Timeout';
-import TraceController from '@/pages/Prototype/PrototypeTool/Trace';
 import { PMStatus } from '@/pages/Prototype/types';
 import logger from '@/utils/logger';
+
+import AudioController from './Audio';
+import MessageController from './Message';
+import TimeoutController from './Timeout';
+import TraceController from './Trace';
 
 const ID = 'id';
 const SRC = 'src';
@@ -43,7 +45,7 @@ const suite = createSuite(() => ({
     const engine = {
       node: { center: vi.fn(), ports: { out: ['1'] } },
       nodes: [{ 1: { type: BlockType.START } }],
-      select: vi.fn().mockReturnValue(() => {}),
+      select: vi.fn().mockReturnValue(() => undefined),
       selection: { replaceNode: vi.fn(), getTargets: vi.fn(), reset: vi.fn() },
       getActivePlatform: vi.fn().mockReturnValue(''),
       getNodeByID: vi.fn().mockReturnValue({ id: STEP_ID, parentNode: BLOCK_ID, combinedNodes: ['1'] }),
@@ -58,12 +60,12 @@ const suite = createSuite(() => ({
     const timeout = new TimeoutController();
     const message = new MessageController({ props: { addToMessages: vi.fn() } });
 
-    vi.spyOn(audio, 'play').mockReturnValue(Promise.resolve());
+    vi.spyOn(audio, 'play').mockResolvedValue();
     vi.spyOn(audio, 'stop');
     vi.spyOn(audio, 'pause');
     vi.spyOn(audio, 'continue');
 
-    vi.spyOn(timeout, 'delay').mockReturnValue(Promise.resolve());
+    vi.spyOn(timeout, 'delay').mockResolvedValue();
     vi.spyOn(timeout, 'clearAll');
 
     vi.spyOn(message, 'session');
@@ -115,31 +117,31 @@ const suite = createSuite(() => ({
   },
 
   emulateAudioError: (controller: TraceController) =>
-    (controller['audio']['play'] as any as SpyInstance).mockImplementation(
-      async (_: any, { onError }: { onError: Function }) => onError()
+    (controller['audio']?.['play'] as any as MockInstance).mockImplementation(
+      async (_: any, { onError }: { onError: AnyFunction }) => onError()
     ),
 
   emulateAudioPause: (controller: TraceController, audio: any) =>
-    (controller['audio']['play'] as any as SpyInstance).mockImplementation(
-      async (_: any, { onStop }: { onStop: Function }) => onStop(audio)
+    (controller['audio']?.['play'] as any as MockInstance).mockImplementation(
+      async (_: any, { onStop }: { onStop: AnyFunction }) => onStop(audio)
     ),
 
   emulateAudioReject: (controller: TraceController) =>
-    (controller['audio']['play'] as any as SpyInstance).mockReturnValue(Promise.reject()),
+    (controller['audio']?.['play'] as any as MockInstance).mockRejectedValue(new Error()),
 
   emulateFetchContext(controller: TraceController, ...data: any[]) {
     let fetchContextDataCallCount = 0;
 
-    return (controller['props']['fetchContext'] as any as SpyInstance).mockImplementation(
+    return (controller['props']['fetchContext'] as any as MockInstance).mockImplementation(
       () => data[fetchContextDataCallCount++]
     );
   },
 
   expectSetTimeout: (controller: TraceController) => expect(controller['timeout']['delay']),
 
-  expectAudioPlay: (controller: TraceController) => expect(controller['audio']['play']),
+  expectAudioPlay: (controller: TraceController) => expect(controller['audio']?.['play']),
 
-  expectAudioStop: (controller: TraceController) => expect(controller['audio']['stop']),
+  expectAudioStop: (controller: TraceController) => expect(controller['audio']?.['stop']),
 
   expectMessage: <T extends Exclude<keyof MessageController, 'trackStartTime'>>(
     controller: TraceController,
@@ -177,7 +179,7 @@ const suite = createSuite(() => ({
 
     expect(controller['props']['updateStatus']).toBeCalledWith(PMStatus.NAVIGATING);
     expect(controller['props']['updateStatus']).toBeCalledWith(PMStatus.WAITING_USER_INTERACTION);
-    expect((controller['processTrace'] as any as SpyInstance).mock.calls[1]).toEqual([[], { onlyMessage }]);
+    expect((controller['processTrace'] as any as MockInstance).mock.calls[1]).toEqual([[], { onlyMessage }]);
 
     return expect(controller['processTrace']).toBeCalledTimes(2);
   },

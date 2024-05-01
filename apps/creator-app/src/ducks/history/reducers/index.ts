@@ -12,15 +12,15 @@ import stopIgnoreTransactions from './stopIgnoreTransactions';
 import undoTransaction from './undoTransaction';
 
 const projectHistoryReducer = createRootReducer(INITIAL_STATE)
-  .immerCase(...pushTransaction)
-  .immerCase(...dropTransactions)
-  .immerCase(...flushTransaction)
-  .immerCase(...redoTransaction)
+  .mimerCase(...pushTransaction)
+  .mimerCase(...dropTransactions)
+  .mimerCase(...flushTransaction)
+  .mimerCase(...redoTransaction)
   .immerCases(...reset)
-  .immerCase(...startTransaction)
-  .immerCase(...undoTransaction)
-  .immerCase(...startIgnoreTransactions)
-  .immerCase(...stopIgnoreTransactions)
+  .mimerCase(...startTransaction)
+  .mimerCase(...undoTransaction)
+  .mimerCase(...startIgnoreTransactions)
+  .mimerCase(...stopIgnoreTransactions)
   .build();
 
 export default projectHistoryReducer;

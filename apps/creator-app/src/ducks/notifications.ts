@@ -1,9 +1,10 @@
+import { Utils } from '@voiceflow/common';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { createSelector } from 'reselect';
 
-import { createAction, createRootSelector } from '@/ducks/utils';
-import type { Action, RootReducer, SyncThunk, Thunk } from '@/store/types';
+import { createRootReducer, createRootSelector } from '@/ducks/utils';
+import type { SyncThunk, Thunk } from '@/store/types';
 
 export enum NotificationType {
   FEATURE = 'FEATURE',
@@ -32,46 +33,6 @@ export const INITIAL_STATE: NotificationState = {
 
 export const FORCE_NOTIFICATION_KEY = 'FORCE_NOTIFICATION_STATE';
 
-export enum NotifcationAction {
-  SET_NOTIFICATIONS = 'SET_NOTIFICATIONS',
-  READ_NOTIFICATIONS = 'READ_NOTIFICATIONS',
-}
-
-// action types
-
-export type SetNotifications = Action<NotifcationAction.SET_NOTIFICATIONS, Notification[]>;
-
-export type ReadNotifications = Action<NotifcationAction.READ_NOTIFICATIONS>;
-
-export type AnyNotificationAction = SetNotifications | ReadNotifications;
-
-// reducers
-
-const notificationsReducer: RootReducer<NotificationState, AnyNotificationAction> = (state = INITIAL_STATE, action) => {
-  switch (action.type) {
-    case NotifcationAction.SET_NOTIFICATIONS:
-      return {
-        ...state,
-        notifications: action.payload,
-      };
-    case NotifcationAction.READ_NOTIFICATIONS:
-      return {
-        ...state,
-        notifications: state.notifications.map((notification) => ({ ...notification, isNew: false })),
-        forced: state.forced
-          ? {
-              ...state.forced,
-              isNew: false,
-            }
-          : null,
-      };
-    default:
-      return state;
-  }
-};
-
-export default notificationsReducer;
-
 // selectors
 
 export const notificationsStateSelector = createRootSelector(STATE_KEY);
@@ -82,10 +43,29 @@ export const notificationsSelector = createSelector([notificationsStateSelector]
 
 // action creators
 
-export const setNotifications = (notifications: Notification[]): SetNotifications =>
-  createAction(NotifcationAction.SET_NOTIFICATIONS, notifications);
+const notificationsType = Utils.protocol.typeFactory('notifications');
 
-export const markNotificationAsRead = (): ReadNotifications => createAction(NotifcationAction.READ_NOTIFICATIONS);
+export const setNotifications = Utils.protocol.createAction<{ notifications: Notification[] }>(
+  notificationsType('SET')
+);
+
+export const markNotificationAsRead = Utils.protocol.createAction(notificationsType('READ'));
+
+// reducers
+
+const notificationsReducer = createRootReducer(INITIAL_STATE)
+  .mimerCase(setNotifications, (state, { notifications }) => {
+    state.notifications = notifications;
+  })
+
+  .mimerCase(markNotificationAsRead, (state) => {
+    state.notifications = state.notifications.map((notification) => ({ ...notification, isNew: false }));
+    state.forced = state.forced ? { ...state.forced, isNew: false } : null;
+  })
+
+  .build();
+
+export default notificationsReducer;
 
 // side effects
 
@@ -101,7 +81,7 @@ export const fetchNotifications = (): Thunk => async (dispatch) => {
     isNew: Math.floor(new Date(notification.created).getTime() / 1000) > lastChecked,
   }));
 
-  dispatch(setNotifications(notifications));
+  dispatch(setNotifications({ notifications }));
 };
 
 export const readNotifications = (): SyncThunk => (dispatch) => {

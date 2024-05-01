@@ -1,6 +1,4 @@
-/* eslint-disable no-param-reassign */
-
-import type { NormalizedValue } from '@voiceflow/common';
+import type { EmptyObject, NormalizedValue } from '@voiceflow/common';
 import { Utils } from '@voiceflow/common';
 import type * as Realtime from '@voiceflow/realtime-sdk';
 import type { Draft } from 'immer';
@@ -41,7 +39,7 @@ type CRUDReducers<
 export const createCRUDReducers = <
   Model extends Normal.Identifiable,
   State extends CRUDState<Model>,
-  Context extends object = {},
+  Context extends object = EmptyObject,
   Patch extends Partial<Model> = Partial<Model>,
 >(
   createReducer: CreateReducer<State>,
@@ -132,7 +130,7 @@ export const createRootCRUDReducer = <Model extends Normal.Identifiable, State e
 ): ReducerBuilder<State> => {
   const rootReducer = createRootReducer(initialState);
 
-  Object.values(crudReducers).forEach((reducer) => rootReducer.immerCase(...reducer));
+  Object.values(crudReducers).forEach((reducer) => rootReducer.mimerCase(...reducer));
 
   return rootReducer;
 };

@@ -1,12 +1,11 @@
+import { Utils } from '@voiceflow/common';
 import type * as Platform from '@voiceflow/platform-config';
 import update from 'immutability-helper';
 import { persistReducer } from 'redux-persist';
 import storageLocal from 'redux-persist/lib/storage';
 import { createSelector } from 'reselect';
 
-import type { Action, Reducer, RootReducer } from '@/store/types';
-
-import { createAction, createRootSelector } from './utils';
+import { createRootReducer, createRootSelector } from './utils';
 
 export interface PrototypeConfig {
   debug: boolean;
@@ -39,36 +38,6 @@ export const INITIAL_STATE: RecentState = {
   redirect: null,
 };
 
-export enum RecentAction {
-  UPDATE_RECENT_TESTING = 'RECENT:TESTING:UPDATE',
-  UPDATE_RECENT_REDIRECT = 'RECENT:REDIRECT:UPDATE',
-}
-
-// action types
-
-export type UpdateRecentPrototype = Action<RecentAction.UPDATE_RECENT_TESTING, Partial<PrototypeConfig>>;
-export type UpdateRecentRedirect = Action<RecentAction.UPDATE_RECENT_REDIRECT, string | null>;
-
-export type AnyRecentAction = UpdateRecentPrototype | UpdateRecentRedirect;
-
-// reducers
-
-export const updateRecentPrototypeReducer: Reducer<RecentState, UpdateRecentPrototype> = (state, { payload }) =>
-  update(state, { prototype: { $merge: payload } });
-
-const recentReducer: RootReducer<RecentState, AnyRecentAction> = (state = INITIAL_STATE, action) => {
-  switch (action.type) {
-    case RecentAction.UPDATE_RECENT_TESTING:
-      return updateRecentPrototypeReducer(state, action);
-    case RecentAction.UPDATE_RECENT_REDIRECT:
-      return { ...state, redirect: action.payload };
-    default:
-      return state;
-  }
-};
-
-export default persistReducer(PERSIST_CONFIG, recentReducer);
-
 // selectors
 
 const rootSelector = createRootSelector(STATE_KEY);
@@ -81,8 +50,27 @@ export const prototypeDebugSelector = createSelector([recentPrototypeSelector], 
 
 //  action creators
 
-export const updateRecentPrototype = (payload: Partial<PrototypeConfig>): UpdateRecentPrototype =>
-  createAction(RecentAction.UPDATE_RECENT_TESTING, payload);
+const recentType = Utils.protocol.typeFactory('recent');
 
-export const updateRecentRedirect = (payload: string | null): UpdateRecentRedirect =>
-  createAction(RecentAction.UPDATE_RECENT_REDIRECT, payload);
+export const updateRecentPrototype = Utils.protocol.createAction<Partial<PrototypeConfig>>(
+  recentType('prototype.UPDATE')
+);
+
+export const updateRecentRedirect = Utils.protocol.createAction<{ redirect: string | null }>(
+  recentType('redirect.UPDATE')
+);
+
+// reducers
+
+const recentReducer = createRootReducer(INITIAL_STATE)
+  .mimerCase(updateRecentPrototype, (state, payload) => {
+    state.prototype = update(state.prototype, { $merge: payload });
+  })
+
+  .mimerCase(updateRecentRedirect, (state, { redirect }) => {
+    state.redirect = redirect;
+  })
+
+  .build();
+
+export default persistReducer(PERSIST_CONFIG, recentReducer);

@@ -1,10 +1,12 @@
 /* eslint-disable max-classes-per-file */
 
+import type { AnyFunction } from '@voiceflow/common';
+
 const SOUND_BANK_PREFIX = 'soundbank://soundlibrary/';
 const SOUND_BANK_MIRROR = 'https://d3qhmae9zx9eb.cloudfront.net/';
 
 export class TAudio extends Audio {
-  public VF_REJECT?: Function;
+  public VF_REJECT?: AnyFunction;
 
   public VF_ON_STOP?: (audio: TAudio) => void;
 

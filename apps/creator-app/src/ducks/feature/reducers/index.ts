@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { IS_PRODUCTION } from '@voiceflow/ui';
@@ -23,11 +22,11 @@ export const overrideFeatures = (features: Realtime.feature.FeatureFlagMap) => {
 };
 
 const realtimeDiagramReducer = createRootReducer(INITIAL_STATE)
-  .immerCase(Realtime.feature.loadAll, (state, { features }) => {
+  .mimerCase(Realtime.feature.loadAll, (state, { features }) => {
     state.features = overrideFeatures(features);
     state.isLoaded = true;
   })
-  .immerCase(Realtime.feature.loadWorkspaceFeatures, (state, { features }) => {
+  .mimerCase(Realtime.feature.loadWorkspaceFeatures, (state, { features }) => {
     state.features = overrideFeatures(features);
     state.isLoaded = true;
   })

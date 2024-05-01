@@ -1,13 +1,16 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { normalize } from 'normal-store';
+import { describe, expect, it } from 'vitest';
 
+import { createDuckTools } from '@/ducks/_suite';
 import * as CreatorV2 from '@/ducks/creatorV2';
 
-import suite from '../../_suite';
-import { ACTION_CONTEXT, LINK, LINK_ID, MOCK_STATE, NODE_ID, PORT_ID } from '../_fixtures';
+import { ACTION_CONTEXT, LINK, LINK_ID, MOCK_STATE, NODE_ID, PORT_ID } from '../creator.fixture';
 
-suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeManyLinks reducer', ({ describeReducerV2 }) => {
-  describeReducerV2(Realtime.link.removeMany, ({ applyAction }) => {
+const { describeReducer } = createDuckTools(CreatorV2, MOCK_STATE);
+
+describe('Ducks | Creator V2 - removeManyLinks reducer', () => {
+  describeReducer(Realtime.link.removeMany, ({ applyAction }) => {
     it('ignore removing link for a different diagram', () => {
       const result = applyAction(MOCK_STATE, {
         ...ACTION_CONTEXT,

@@ -1,9 +1,9 @@
+import { describe, expect, it } from 'vitest';
+
 import client from '@/platforms/alexa/client/handlers';
 
-import suite from '../../_suite';
-
-suite('Platform Client - Alexa - Handlers', ({ expectMembers }) => {
+describe('Platform Client - Alexa - Handlers', () => {
   it('should have expected keys', () => {
-    expectMembers(Object.keys(client), ['getDisplayWithDatasource']);
+    expect(Object.keys(client)).toEqual(expect.arrayContaining(['getDisplayWithDatasource']));
   });
 });

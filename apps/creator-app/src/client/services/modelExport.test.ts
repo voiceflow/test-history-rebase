@@ -1,13 +1,12 @@
-import createClient from '@/client/services/modelExport';
+import { describe, expect, it } from 'vitest';
 
-import suite from '../../_suite';
+import fetch from '../fetch';
+import createClient from './modelExport';
 
-const SERVICE_ENDPOINT = 'https://service';
+const client = createClient(fetch);
 
-const client = createClient(SERVICE_ENDPOINT);
-
-suite('Platform Client - Utils - ModelExport', ({ expectMembers }) => {
+describe('Platform Client - Utils - ModelExport', () => {
   it('should have expected keys', () => {
-    expectMembers(Object.keys(client), ['exportBlob']);
+    expect(Object.keys(client)).toEqual(expect.arrayContaining(['exportBlob']));
   });
 });

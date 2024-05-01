@@ -1,11 +1,14 @@
 import { normalize } from 'normal-store';
+import { describe, expect, it } from 'vitest';
 
-import * as CreatorV2 from '@/ducks/creatorV2';
+import { createDuckTools } from '@/ducks/_suite';
 
-import suite from '../../_suite';
-import { LINK, LINK_ID, MOCK_STATE, NODE_ID, PORT_ID } from '../_fixtures';
+import * as CreatorV2 from '..';
+import { LINK, LINK_ID, MOCK_STATE, NODE_ID, PORT_ID } from '../creator.fixture';
 
-suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - link selectors', ({ describeSelectors, createState }) => {
+const { createState, describeSelectors } = createDuckTools(CreatorV2, MOCK_STATE);
+
+describe('Ducks | Creator V2 - link selectors', () => {
   describeSelectors(({ select }) => {
     describe('allLinkIDsSelector()', () => {
       it('select all link IDs', () => {

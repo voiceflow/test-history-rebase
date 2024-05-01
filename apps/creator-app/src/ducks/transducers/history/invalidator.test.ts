@@ -1,13 +1,14 @@
 import { Utils } from '@voiceflow/common';
+import { describe, expect, it, vi } from 'vitest';
 
-import suite from '@/../test/_suite';
-import { MOCK_STATE } from '@/../test/ducks/_fixtures';
 import * as History from '@/ducks/history';
-import invalidatorTransducer from '@/ducks/transducers/history/invalidator';
+import { MOCK_STATE } from '@/ducks/state.fixture';
 import type { State } from '@/store/types';
 import { wrapOwnAction } from '@/store/utils';
 
-suite('Transducers - History - Invalidator', () => {
+import invalidatorTransducer from './invalidator';
+
+describe('Transducers - History - Invalidator', () => {
   describe('invalidatorTransducer()', () => {
     const clientNodeID = 'clientNodeID';
     const revertibleAction = Utils.protocol.createAction<{ value: string }>('revertible_action');

@@ -2,37 +2,35 @@
 
 import type { BaseTrace } from '@voiceflow/base-types';
 import { BaseNode } from '@voiceflow/base-types';
+import { describe, expect, it, vi } from 'vitest';
 
-import { createSuite } from '@/../test/_suite';
-import MessageController from '@/pages/Prototype/PrototypeTool/Message';
-import { MessageType } from '@/pages/Prototype/types';
+import { MessageType } from '../types';
+import MessageController from './Message';
 
-const suite = createSuite(() => ({
-  describeMessage(method: keyof MessageController, type: MessageType, args: any, dataToCheck?: any) {
-    describe(`${method}()`, () => {
-      it(`${method} - should call .add with correct message`, () => {
-        const controller = new MessageController({ props: { addToMessages: vi.fn() } });
+const describeMessage = (method: keyof MessageController, type: MessageType, args: any, dataToCheck?: any) => {
+  describe(`${method}()`, () => {
+    it(`${method} - should call .add with correct message`, () => {
+      const controller = new MessageController({ props: { addToMessages: vi.fn() } });
 
-        vi.setSystemTime(1000);
+      vi.setSystemTime(1000);
 
-        controller.trackStartTime();
-        vi.setSystemTime(11000);
+      controller.trackStartTime();
+      vi.setSystemTime(11000);
 
-        // @ts-ignore
-        const add = vi.spyOn(controller, 'add');
+      // @ts-ignore
+      const add = vi.spyOn(controller, 'add');
 
-        const id = `${Date.now()}`;
+      const id = `${Date.now()}`;
 
-        controller[method]({ id, ...args });
+      controller[method]({ id, ...args });
 
-        expect(add).toBeCalledTimes(1);
-        expect(add).toBeCalledWith({ id, type, ...dataToCheck, startTime: '00:10' });
-      });
+      expect(add).toBeCalledTimes(1);
+      expect(add).toBeCalledWith({ id, type, ...dataToCheck, startTime: '00:10' });
     });
-  },
-}));
+  });
+};
 
-suite('Prototype/PrototypeTool/Message', ({ describeMessage }) => {
+describe('Prototype/PrototypeTool/Message', () => {
   describe('add()', () => {
     it('add - should call .addToMessages with correct message', () => {
       const controller = new MessageController({ props: { addToMessages: vi.fn() } });
@@ -50,7 +48,12 @@ suite('Prototype/PrototypeTool/Message', ({ describeMessage }) => {
 
   const streamTrace: BaseTrace.StreamTrace = {
     type: BaseNode.Utils.TraceType.STREAM,
-    payload: { src: 'audio', token: 'asdf', action: BaseNode.Stream.TraceStreamAction.PLAY },
+    payload: {
+      src: 'audio',
+      token: 'asdf',
+      loop: false,
+      action: BaseNode.Stream.TraceStreamAction.PLAY,
+    },
   };
   describeMessage('stream', MessageType.STREAM, streamTrace, { audio: 'audio' });
 

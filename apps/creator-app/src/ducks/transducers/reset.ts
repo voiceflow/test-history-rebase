@@ -6,7 +6,7 @@ import type { Transducer } from './types';
 const resetTransducer: Transducer<State> = (rootReducer) => (state, action) => {
   let nextState: Partial<State | undefined> = state;
 
-  if (action.type === Account.AccountAction.RESET_ACCOUNT) {
+  if (Account.resetAccount.match(action.type)) {
     nextState = {
       viewport: nextState?.viewport,
       ui: nextState?.ui,

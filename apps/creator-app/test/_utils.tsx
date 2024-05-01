@@ -17,7 +17,7 @@ export const StoreProvider: React.FC<React.PropsWithChildren> = ({ children }) =
     replaceReducer: Utils.functional.noop,
   } as any;
 
-  return <ReactReduxContext.Provider value={{ store, storeState: {} }}>{children}</ReactReduxContext.Provider>;
+  return <ReactReduxContext.Provider value={{ store, subscription: {} as any }}>{children}</ReactReduxContext.Provider>;
 };
 
 export const composeWrappers =

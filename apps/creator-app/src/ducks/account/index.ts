@@ -1,9 +1,7 @@
 import update from 'immutability-helper';
 
-import type { RootReducer } from '@/store/types';
-
-import type { AnyAccountAction } from './actions';
-import { AccountAction } from './actions';
+import { createRootReducer } from '../utils';
+import { resetAccount, updateAccount, updateAmazonAccount, updateGoogleAccount } from './actions';
 import type { AccountState } from './types';
 
 export * from './actions';
@@ -28,21 +26,23 @@ export const INITIAL_STATE: AccountState = {
 
 // reducers
 
-const accountReducer: RootReducer<AccountState, AnyAccountAction> = (state = INITIAL_STATE, action) => {
-  switch (action.type) {
-    case AccountAction.UPDATE_GOOGLE_ACCOUNT:
-      if (!state.google) return state;
-      return update(state, { google: { $merge: action.payload } });
-    case AccountAction.UPDATE_AMAZON_ACCOUNT:
-      if (!state.amazon) return state;
-      return update(state, { amazon: { $merge: action.payload } });
-    case AccountAction.UPDATE_ACCOUNT:
-      return { ...state, ...action.payload };
-    case AccountAction.RESET_ACCOUNT:
-      return INITIAL_STATE;
-    default:
-      return state;
-  }
-};
+const accountReducer = createRootReducer(INITIAL_STATE)
+  .mimerCase(updateGoogleAccount, (state, payload) => {
+    if (!state.google) return;
+    state.google = update(state.google, { $merge: payload });
+  })
+
+  .mimerCase(updateAmazonAccount, (state, payload) => {
+    if (!state.amazon) return;
+    state.amazon = update(state.amazon, { $merge: payload });
+  })
+
+  .mimerCase(updateAccount, (state, payload) => {
+    Object.assign(state, payload);
+  })
+
+  .mimerCase(resetAccount, () => INITIAL_STATE)
+
+  .build();
 
 export default accountReducer;

@@ -8,10 +8,10 @@ import topicRemove from './topicRemove';
 import topicReorder from './topicReorder';
 
 const domainReducer = createRootCRUDReducer(INITIAL_STATE, crudReducers)
-  .immerCase(...topicAdd)
-  .immerCase(...topicRemove)
-  .immerCase(...topicReorder)
-  .immerCase(...topicMoveDomain)
+  .mimerCase(...topicAdd)
+  .mimerCase(...topicRemove)
+  .mimerCase(...topicReorder)
+  .mimerCase(...topicMoveDomain)
   .build();
 
 export default domainReducer;

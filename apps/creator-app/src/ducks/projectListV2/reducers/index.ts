@@ -8,10 +8,10 @@ import removeProjectFromListReducer from './removeProjectFromList';
 import transplantProjectBetweenListsReducer from './transplantProjectBetweenLists';
 
 const realtimeProjectListReducer = createRootCRUDReducer(INITIAL_STATE, crudReducers)
-  .immerCase(...transplantProjectBetweenListsReducer)
-  .immerCase(...addProjectToListReducer)
-  .immerCase(...removeProjectFromListReducer)
-  .immerCase(...removeProject)
+  .mimerCase(...transplantProjectBetweenListsReducer)
+  .mimerCase(...addProjectToListReducer)
+  .mimerCase(...removeProjectFromListReducer)
+  .mimerCase(...removeProject)
   .build();
 
 export default realtimeProjectListReducer;

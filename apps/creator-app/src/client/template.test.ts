@@ -1,18 +1,18 @@
 import { Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
+import { describe, expect, it, vi } from 'vitest';
 
+import * as Fetch from '@/client/fetch';
 import client from '@/client/template';
 
-import suite from './_suite';
-
-suite('Client - Template', ({ expectMembers, stubFetch }) => {
+describe('Client - Template', () => {
   it('should have expected keys', () => {
-    expectMembers(Object.keys(client), ['getPlatformTemplate']);
+    expect(Object.keys(client)).toEqual(expect.arrayContaining(['getPlatformTemplate']));
   });
 
   describe('getPlatformTemplate()', () => {
     it('get a platform template', async () => {
-      const fetch = stubFetch('apiV2', 'get');
+      const fetch = vi.spyOn(Fetch.apiV2, 'get');
 
       await client.getPlatformTemplate(Platform.Constants.PlatformType.GOOGLE);
 
@@ -23,7 +23,7 @@ suite('Client - Template', ({ expectMembers, stubFetch }) => {
 
     it('get a platform template with a specific tag', async () => {
       const tag = Utils.generate.string();
-      const fetch = stubFetch('apiV2', 'get');
+      const fetch = vi.spyOn(Fetch.apiV2, 'get');
 
       await client.getPlatformTemplate(Platform.Constants.PlatformType.ALEXA, tag);
 

@@ -1,9 +1,9 @@
 /* eslint-disable dot-notation */
+import { describe, expect, it, vi } from 'vitest';
 
-import suite from '@/../test/_suite';
-import TimeoutController from '@/pages/Prototype/PrototypeTool/Timeout';
+import TimeoutController from './Timeout';
 
-suite('Prototype/PrototypeTool/Timeout', () => {
+describe('Prototype/PrototypeTool/Timeout', () => {
   describe('delay()', () => {
     it('should delay timeouts', () => {
       const controller = new TimeoutController();

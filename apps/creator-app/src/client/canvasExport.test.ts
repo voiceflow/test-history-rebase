@@ -1,14 +1,14 @@
 import { Utils } from '@voiceflow/common';
 import axios from 'axios';
+import { describe, expect, it, vi } from 'vitest';
 
-import client from '@/client/canvasExport';
 import { CANVAS_EXPORT_ENDPOINT } from '@/config';
 
-import suite from './_suite';
+import client from './canvasExport';
 
-suite('Client - Canvas Export', ({ expectMembers }) => {
+describe('Client - Canvas Export', () => {
   it('should have expected keys', () => {
-    expectMembers(Object.keys(client), ['toPNG', 'toPDF']);
+    expect(Object.keys(client)).toEqual(expect.arrayContaining(['toPNG', 'toPDF']));
   });
 
   describe('toPNG()', () => {

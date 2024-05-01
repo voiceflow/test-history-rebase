@@ -1,11 +1,12 @@
 import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { normalize } from 'normal-store';
+import { describe, expect, it } from 'vitest';
 
 import * as CreatorV2 from '@/ducks/creatorV2';
 
-import suite from '../../_suite';
-import { MOCK_STATE, NODE_ID, PORT, PORT_ID } from '../_fixtures';
+import { createDuckTools } from '../../_suite';
+import { MOCK_STATE, NODE_ID, PORT, PORT_ID } from '../creator.fixture';
 
 const NODE_PORTS: Realtime.NodePorts = {
   in: ['inPort'],
@@ -23,7 +24,9 @@ const INITIAL_STATE: CreatorV2.CreatorState = {
   portsByNodeID: { [NODE_ID]: NODE_PORTS },
 };
 
-suite(CreatorV2, INITIAL_STATE)('Ducks | Creator V2 - port selectors', ({ describeSelectors, createState }) => {
+const { createState, describeSelectors } = createDuckTools(CreatorV2, INITIAL_STATE);
+
+describe('Ducks | Creator V2 - port selectors', () => {
   describeSelectors(({ select }) => {
     describe('portByIDSelector()', () => {
       it('select a port by its ID', () => {

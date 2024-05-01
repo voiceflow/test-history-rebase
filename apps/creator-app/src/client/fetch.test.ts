@@ -1,9 +1,10 @@
-import suite from '@/../test/_suite';
+import { describe, expect, it } from 'vitest';
+
 import { api, apiV2 } from '@/client/fetch';
 
 const TEST_API_ENDPOINT = 'https://localhost:8003';
 
-suite('fetch', ({ mocks }) => {
+describe('fetch', ({ mocks }) => {
   describe('api', () => {
     it('has endpoint prefix', async () => {
       const fetchCall = mocks.fetch();

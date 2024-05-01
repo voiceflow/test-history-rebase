@@ -1,12 +1,17 @@
 import { Utils } from '@voiceflow/common';
+import { describe, expect, it, vi } from 'vitest';
 
-import * as Fixtures from '@/../test/_fixtures';
 import client from '@/client';
 import * as Account from '@/ducks/account';
 import * as Session from '@/ducks/session';
 
-import suite from '../../../test/ducks/_suite';
+import { createDuckTools } from '../_suite';
 
+const USER = {
+  name: 'Anonymous User',
+  email: 'test@voiceflow.com',
+  creatorID: '123',
+};
 const CREATOR_ID = 123;
 const EMAIL = 'user@example.com';
 const VENDORS = Utils.generate.array(2, Utils.generate.id);
@@ -28,42 +33,50 @@ const MOCK_STATE = {
   first_login: true,
 } as Account.AccountState;
 
-suite(Account, MOCK_STATE)('Ducks - Account', ({ describeReducer, describeSelectors, describeSideEffects }) => {
-  describeReducer(({ expectAction }) => {
-    describe('updateAccount()', () => {
-      it('should replace the active account', () => {
-        expectAction(Account.updateAccount(Fixtures.USER)).toModify(Fixtures.USER);
-      });
+const { createState, describeSelectors, describeReducer, describeEffect } = createDuckTools(Account, MOCK_STATE);
+
+describe('Ducks - Account', () => {
+  describeReducer(Account.updateAccount, ({ applyAction }) => {
+    it('should replace the active account', () => {
+      const result = applyAction(MOCK_STATE, USER);
+
+      expect(result).toEqual(USER);
     });
+  });
 
-    describe('resetAccount()', () => {
-      it('should reset all account information', () => {
-        expectAction(Account.resetAccount()).result.toBe(Account.INITIAL_STATE);
-      });
+  describeReducer(Account.resetAccount, ({ applyAction }) => {
+    it('should reset all account information', () => {
+      const result = applyAction(MOCK_STATE);
+
+      expect(result).toEqual(Account.INITIAL_STATE);
     });
+  });
 
-    describe('updateAmazonAccount()', () => {
-      it('should update the existing amazon account', () => {
-        const amazonAccount: any = { token: 'xyz' };
+  describeReducer(Account.updateAmazonAccount, ({ applyAction }) => {
+    it('should update the existing amazon account', () => {
+      const amazonAccount: any = { token: 'xyz' };
 
-        expectAction(Account.updateAmazonAccount(amazonAccount)).toModify({
-          amazon: {
-            ...AMAZON_ACCOUNT,
-            ...amazonAccount,
-          },
-        });
-      });
+      const result = applyAction(MOCK_STATE, amazonAccount);
+
+      expect(result.amazon).toEqual({ ...AMAZON_ACCOUNT, ...amazonAccount });
+    });
+  });
+
+  describeReducer(Account.updateGoogleAccount, ({ applyAction }) => {
+    it('should update the existing amazon account', () => {
+      const amazonAccount: any = { token: 'xyz' };
+
+      const result = applyAction(MOCK_STATE, amazonAccount);
+
+      expect(result.amazon).toEqual({ ...AMAZON_ACCOUNT, ...amazonAccount });
     });
 
     it('should update the existing google account', () => {
       const googleAccount: any = { token: 'xyz' };
 
-      expectAction(Account.updateGoogleAccount(googleAccount)).toModify({
-        google: {
-          ...GOOGLE_ACCOUNT,
-          ...googleAccount,
-        },
-      });
+      const result = applyAction(MOCK_STATE, googleAccount);
+
+      expect(result.google).toEqual({ ...GOOGLE_ACCOUNT, ...googleAccount });
     });
   });
 
@@ -153,62 +166,58 @@ suite(Account, MOCK_STATE)('Ducks - Account', ({ describeReducer, describeSelect
   });
 
   describe('alexa', () => {
-    describeSideEffects(({ applyEffect }) => {
-      describe('linkAccount()', () => {
-        it('should link amazon account', async () => {
-          const code = '!@#';
-          const amazonAccount: any = { token: 'xyz' };
-          const linkAccount = vi.spyOn(client.platform.alexa.session, 'linkAccount').mockResolvedValue(amazonAccount);
+    describeEffect(Account.amazon.linkAccount, 'linkAccount()', ({ applyEffect }) => {
+      it('should link amazon account', async () => {
+        const code = '!@#';
+        const amazonAccount: any = { token: 'xyz' };
+        const linkAccount = vi.spyOn(client.platform.alexa.session, 'linkAccount').mockResolvedValue(amazonAccount);
 
-          const { expectDispatch } = await applyEffect(Account.amazon.linkAccount(code));
+        const { dispatched } = await applyEffect(createState(MOCK_STATE), code);
 
-          expect(linkAccount).toBeCalledWith({ code });
-          expectDispatch(Account.updateAccount({ amazon: amazonAccount }));
-        });
+        expect(linkAccount).toBeCalledWith({ code });
+        expect(dispatched).toEqual([Account.updateAccount({ amazon: amazonAccount })]);
+      });
+    });
+
+    describeEffect(Account.amazon.loadAccount, 'loadAccount()', ({ applyEffect }) => {
+      it('should update amazon account on success', async () => {
+        const amazonAccount: any = { token: 'xyz' };
+        const getAccount = vi.spyOn(client.platform.alexa.session, 'getAccount').mockResolvedValue(amazonAccount);
+
+        const { dispatched } = await applyEffect(createState(MOCK_STATE));
+
+        expect(getAccount).toBeCalledWith();
+        expect(dispatched).toEqual([Account.updateAccount({ amazon: amazonAccount })]);
       });
 
-      describe('loadAccount()', () => {
-        it('should update amazon account on success', async () => {
-          const amazonAccount: any = { token: 'xyz' };
-          const getAccount = vi.spyOn(client.platform.alexa.session, 'getAccount').mockResolvedValue(amazonAccount);
+      it('should clear amazon account on failure', async () => {
+        vi.spyOn(client.platform.alexa.session, 'getAccount').mockRejectedValue(new Error('mock error'));
 
-          const { expectDispatch } = await applyEffect(Account.amazon.loadAccount());
+        const { dispatched } = await applyEffect(createState(MOCK_STATE));
 
-          expect(getAccount).toBeCalledWith();
-          expectDispatch(Account.updateAccount({ amazon: amazonAccount }));
-        });
+        expect(dispatched).toEqual([Account.updateAccount({ amazon: null })]);
+      });
+    });
 
-        it('should clear amazon account on failure', async () => {
-          vi.spyOn(client.platform.alexa.session, 'getAccount').mockRejectedValue(new Error('mock error'));
+    describeEffect(Account.amazon.unlinkAccount, 'unlinkAccount()', ({ applyEffect }) => {
+      it('should clear amazon account on success', async () => {
+        const amazonAccount: any = { token: 'xyz' };
+        const deleteAccount = vi.spyOn(client.platform.alexa.session, 'unlinkAccount').mockResolvedValue(amazonAccount);
 
-          const { expectDispatch } = await applyEffect(Account.amazon.loadAccount());
+        const { dispatched } = await applyEffect(createState(MOCK_STATE));
 
-          expectDispatch(Account.updateAccount({ amazon: null }));
-        });
+        expect(deleteAccount).toBeCalledWith();
+        expect(dispatched).toEqual([Account.updateAccount({ amazon: null })]);
       });
 
-      describe('unlinkAccount()', () => {
-        it('should clear amazon account on success', async () => {
-          const amazonAccount: any = { token: 'xyz' };
-          const deleteAccount = vi
-            .spyOn(client.platform.alexa.session, 'unlinkAccount')
-            .mockResolvedValue(amazonAccount);
+      it('should set an error on failure', async () => {
+        const deleteAccount = vi
+          .spyOn(client.platform.alexa.session, 'unlinkAccount')
+          .mockRejectedValue(new Error('mock error'));
 
-          const { expectDispatch } = await applyEffect(Account.amazon.unlinkAccount());
+        await applyEffect(createState(MOCK_STATE));
 
-          expect(deleteAccount).toBeCalledWith();
-          expectDispatch(Account.updateAccount({ amazon: null }));
-        });
-
-        it('should set an error on failure', async () => {
-          const deleteAccount = vi
-            .spyOn(client.platform.alexa.session, 'unlinkAccount')
-            .mockRejectedValue(new Error('mock error'));
-
-          await applyEffect(Account.amazon.unlinkAccount());
-
-          expect(deleteAccount).toBeCalledWith();
-        });
+        expect(deleteAccount).toBeCalledWith();
       });
     });
   });

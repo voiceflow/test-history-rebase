@@ -16,7 +16,7 @@ export type ImmerHandler<State, Payload> = (
 
 declare module 'typescript-fsa-reducers' {
   interface ReducerBuilder<InS, OutS = InS, PassedS = InS | undefined> {
-    immerCase<P>(actionCreator: ActionCreator<P>, handler: ImmerHandler<InS, P>): ReducerBuilder<InS, OutS, PassedS>;
+    mimerCase<P>(actionCreator: ActionCreator<P>, handler: ImmerHandler<InS, P>): ReducerBuilder<InS, OutS, PassedS>;
     immerCases<P>(actionCreator: ActionCreator<P>[], handler: ImmerHandler<InS, P>): ReducerBuilder<InS, OutS, PassedS>;
   }
 }
@@ -52,7 +52,7 @@ export const createRootReducer = <State>(initialState: State): ReducerBuilder<St
     });
   };
 
-  reducer.immerCase = (actionCreator, handler) => {
+  reducer.mimerCase = (actionCreator, handler) => {
     registerActions([actionCreator]);
 
     return reducer.caseWithAction(actionCreator, (state, action) =>

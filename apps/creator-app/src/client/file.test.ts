@@ -1,15 +1,14 @@
 import { Utils } from '@voiceflow/common';
 import axios from 'axios';
+import { describe, expect, it, vi } from 'vitest';
 
 import client from '@/client/file';
 
-import suite from './_suite';
-
-suite('Client - File', ({ expectMembers }) => {
+describe('Client - File', () => {
   class FormData {}
 
   it('should have expected keys', () => {
-    expectMembers(Object.keys(client), ['uploadAudio', 'uploadImage']);
+    expect(Object.keys(client)).toEqual(expect.arrayContaining(['uploadAudio', 'uploadImage']));
   });
 
   describe('uploadAudio()', () => {

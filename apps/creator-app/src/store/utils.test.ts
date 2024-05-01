@@ -1,9 +1,9 @@
 import { Utils } from '@voiceflow/common';
+import { describe, expect, it, vi } from 'vitest';
 
-import suite from '@/../test/_suite';
 import { rewriteDispatch } from '@/store/utils';
 
-suite('Store | Utils', () => {
+describe('Store | Utils', () => {
   describe('rewriteDispatch()', () => {
     const clientNodeID = 'clientNodeID';
     const actionID = 'actionID';

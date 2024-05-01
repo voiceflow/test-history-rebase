@@ -5,6 +5,6 @@ import { rehydrateViewportReducer } from './rehydrate';
 import { updateViewportReducer } from './update';
 
 export const viewportReducer = createRootReducer(INITIAL_STATE)
-  .immerCase(...updateViewportReducer)
-  .immerCase(...rehydrateViewportReducer)
+  .mimerCase(...updateViewportReducer)
+  .mimerCase(...rehydrateViewportReducer)
   .build();

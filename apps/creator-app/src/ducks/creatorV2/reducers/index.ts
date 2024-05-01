@@ -32,39 +32,39 @@ import transplantSteps, { transplantStepsReverter } from './transplantSteps';
 import updateManyNodeData, { updateManyNodeDataReverter } from './updateManyNodeData';
 
 const creatorReducer = createRootReducer<CreatorState>(INITIAL_STATE)
-  .immerCase(...reset)
-  .immerCase(...initialize)
-  .immerCase(...importSnapshot)
-  .immerCase(...resetActive)
+  .mimerCase(...reset)
+  .mimerCase(...initialize)
+  .mimerCase(...importSnapshot)
+  .mimerCase(...resetActive)
 
-  .immerCase(...addBlock)
-  .immerCase(...addMarkup)
-  .immerCase(...addActions)
+  .mimerCase(...addBlock)
+  .mimerCase(...addMarkup)
+  .mimerCase(...addActions)
 
-  .immerCase(...insertStep)
-  .immerCase(...insertManySteps)
-  .immerCase(...isolateSteps)
-  .immerCase(...transplantSteps)
-  .immerCase(...reorderSteps)
-  .immerCase(...removeManyNodes)
-  .immerCase(...updateManyNodeData)
-  .immerCase(...moveManyNodes)
+  .mimerCase(...insertStep)
+  .mimerCase(...insertManySteps)
+  .mimerCase(...isolateSteps)
+  .mimerCase(...transplantSteps)
+  .mimerCase(...reorderSteps)
+  .mimerCase(...removeManyNodes)
+  .mimerCase(...updateManyNodeData)
+  .mimerCase(...moveManyNodes)
 
-  .immerCase(...addByKeyPort)
-  .immerCase(...addBuiltinPort)
-  .immerCase(...addDynamicPort)
-  .immerCase(...reorderDynamicPorts)
-  .immerCase(...removeManyByKeyPorts)
-  .immerCase(...removeBuiltinPort)
-  .immerCase(...removeDynamicPort)
+  .mimerCase(...addByKeyPort)
+  .mimerCase(...addBuiltinPort)
+  .mimerCase(...addDynamicPort)
+  .mimerCase(...reorderDynamicPorts)
+  .mimerCase(...removeManyByKeyPorts)
+  .mimerCase(...removeBuiltinPort)
+  .mimerCase(...removeDynamicPort)
 
-  .immerCase(...addByKeyLink)
-  .immerCase(...addBuiltInLink)
-  .immerCase(...addDynamicLink)
-  .immerCase(...removeManyLinks)
-  .immerCase(...patchManyLinks)
+  .mimerCase(...addByKeyLink)
+  .mimerCase(...addBuiltInLink)
+  .mimerCase(...addDynamicLink)
+  .mimerCase(...removeManyLinks)
+  .mimerCase(...patchManyLinks)
 
-  .immerCase(...addCustomBlockPortReducer);
+  .mimerCase(...addCustomBlockPortReducer);
 
 export default creatorReducer;
 

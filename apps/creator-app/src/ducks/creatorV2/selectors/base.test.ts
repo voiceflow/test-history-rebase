@@ -1,14 +1,17 @@
 import { normalize } from 'normal-store';
+import { describe, expect, it } from 'vitest';
 
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Domain from '@/ducks/domain';
 import * as Session from '@/ducks/session';
 import * as VersionV2 from '@/ducks/versionV2';
 
-import suite from '../../_suite';
-import { DIAGRAM_ID, DOMAIN_ID, MOCK_STATE, VERSION_ID } from '../_fixtures';
+import { createDuckTools } from '../../_suite';
+import { DIAGRAM_ID, DOMAIN_ID, MOCK_STATE, VERSION_ID } from '../creator.fixture';
 
-suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - base selectors', ({ describeSelectors }) => {
+const { describeSelectors } = createDuckTools(CreatorV2, MOCK_STATE);
+
+describe('Ducks | Creator V2 - base selectors', () => {
   describeSelectors(({ select }) => {
     describe('activeDiagramIDSelector()', () => {
       it('select the active diagram ID', () => {

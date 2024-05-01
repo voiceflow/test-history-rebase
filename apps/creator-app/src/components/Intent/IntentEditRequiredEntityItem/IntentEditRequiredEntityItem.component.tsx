@@ -1,8 +1,8 @@
-import type {
-  AnyResponseVariantCreate,
+import {
+  type AnyResponseVariantCreate,
   type AnyResponseVariantWithData,
   ResponseVariantType,
-  TextResponseVariant,
+  type TextResponseVariant,
 } from '@voiceflow/dtos';
 import React, { useMemo } from 'react';
 

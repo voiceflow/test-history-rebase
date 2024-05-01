@@ -1,13 +1,13 @@
-import createClient from '@/client/services/prototype';
+import { describe, expect, it } from 'vitest';
 
-import suite from '../../_suite';
+import createClient from './prototype';
 
 const SERVICE_ENDPOINT = 'https://service';
 
 const client = createClient(SERVICE_ENDPOINT);
 
-suite('Platform Client - Utils - Prototype', ({ expectMembers }) => {
+describe('Platform Client - Utils - Prototype', () => {
   it('should have expected keys', () => {
-    expectMembers(Object.keys(client), ['renderSync']);
+    expect(Object.keys(client)).toEqual(expect.arrayContaining(['renderSync']));
   });
 });

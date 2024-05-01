@@ -2,10 +2,11 @@
 
 import './utils/mockAudio';
 
-import suite from '@/../test/_suite';
-import AudioController, { TAudio } from '@/pages/Prototype/PrototypeTool/Audio';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-suite('Prototype/PrototypeTool/Audio - TAudio', () => {
+import AudioController, { TAudio } from './Audio';
+
+describe('Prototype/PrototypeTool/Audio - TAudio', () => {
   describe('TAudio', () => {
     it('should be able to set src', async () => {
       const audio = new TAudio();
@@ -43,7 +44,7 @@ suite('Prototype/PrototypeTool/Audio - TAudio', () => {
   });
 });
 
-suite('Prototype/PrototypeTool/Audio', () => {
+describe('Prototype/PrototypeTool/Audio', () => {
   beforeEach(() => {
     vi.spyOn(TAudio.prototype, 'play');
     vi.spyOn(TAudio.prototype, 'stop');
@@ -84,7 +85,7 @@ suite('Prototype/PrototypeTool/Audio', () => {
 
       const promise = controller.play('src');
 
-      setTimeout(controller['audio'].onended);
+      setTimeout(controller['audio'].onended!);
 
       await promise;
     });
@@ -94,7 +95,7 @@ suite('Prototype/PrototypeTool/Audio', () => {
 
       const promise = controller.play('src');
 
-      setTimeout(controller['audio'].onerror);
+      setTimeout(controller['audio'].onerror!);
 
       await promise;
     });
@@ -105,7 +106,7 @@ suite('Prototype/PrototypeTool/Audio', () => {
 
       const promise = controller.play('src', { onError });
 
-      setTimeout(controller['audio'].onerror);
+      setTimeout(controller['audio'].onerror!);
 
       await promise;
 
@@ -118,7 +119,7 @@ suite('Prototype/PrototypeTool/Audio', () => {
       try {
         const promise = controller.play('src');
 
-        setTimeout(controller['audio'].VF_REJECT);
+        setTimeout(controller['audio'].VF_REJECT!);
 
         await promise;
 

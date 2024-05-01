@@ -1,10 +1,11 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { normalize } from 'normal-store';
+import { describe, expect, it } from 'vitest';
 
-import * as CreatorV2 from '@/ducks/creatorV2';
+import { createDuckTools } from '@/ducks/_suite';
 
-import suite from '../../_suite';
-import { MOCK_STATE, NODE_DATA, PORT_ID } from '../_fixtures';
+import * as CreatorV2 from '..';
+import { MOCK_STATE, NODE_DATA, PORT_ID } from '../creator.fixture';
 
 const NODE_COORDS: Realtime.Point = [100, -100];
 const NODE_PORTS: Realtime.NodePorts = { in: [], out: { byKey: {}, dynamic: [PORT_ID], builtIn: {} } };
@@ -24,7 +25,9 @@ const INITIAL_STATE: CreatorV2.CreatorState = {
   blockIDs: [BLOCK_NODE.nodeID, START_NODE.nodeID],
 };
 
-suite(CreatorV2, INITIAL_STATE)('Ducks | Creator V2 - node selectors', ({ describeSelectors, createState }) => {
+const { createState, describeSelectors } = createDuckTools(CreatorV2, MOCK_STATE);
+
+describe('Ducks | Creator V2 - node selectors', () => {
   describeSelectors(({ select }) => {
     describe('allNodeIDsSelector()', () => {
       it('select all node IDs', () => {

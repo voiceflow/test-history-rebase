@@ -1,19 +1,21 @@
+import { describe, expect, it } from 'vitest';
+
 import client from '@/platforms/alexa/client';
 
-import suite from '../../_suite';
-
-suite('Platform Client - Alexa', ({ expectMembers }) => {
+describe('Platform Client - Alexa', () => {
   it('should have expected keys', () => {
-    expectMembers(Object.keys(client), [
-      'export',
-      'modelExport',
-      'modelImport',
-      'project',
-      'publish',
-      'session',
-      'version',
-      'prototype',
-      'handlers',
-    ]);
+    expect(Object.keys(client)).toEqual(
+      expect.arrayContaining([
+        'export',
+        'modelExport',
+        'modelImport',
+        'project',
+        'publish',
+        'session',
+        'version',
+        'prototype',
+        'handlers',
+      ])
+    );
   });
 });

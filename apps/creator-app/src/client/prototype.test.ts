@@ -1,16 +1,16 @@
 import { Utils } from '@voiceflow/common';
 import axios from 'axios';
+import { describe, expect, it, vi } from 'vitest';
 
-import client from '@/client/prototype';
 import { GENERAL_RUNTIME_ENDPOINT } from '@/config';
 
-import suite from './_suite';
+import client from './prototype';
 
 const VERSION_ID = Utils.generate.id();
 
-suite('Client - Prototype', ({ expectMembers }) => {
+describe('Client - Prototype', () => {
   it('have expected keys', () => {
-    expectMembers(Object.keys(client), ['interact']);
+    expect(Object.keys(client)).toEqual(expect.arrayContaining(['interact']));
   });
 
   describe('interact()', () => {

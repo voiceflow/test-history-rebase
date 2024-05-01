@@ -8,10 +8,10 @@ import initialize from './initialize';
 import reset from './reset';
 
 const canvasTemplateReducer = createRootCRUDReducer(INITIAL_STATE, crudReducers)
-  .immerCase(...initialize)
-  .immerCase(...importSnapshot)
-  .immerCase(...createTemplateDiagramDone)
-  .immerCase(...reset)
+  .mimerCase(...initialize)
+  .mimerCase(...importSnapshot)
+  .mimerCase(...createTemplateDiagramDone)
+  .mimerCase(...reset)
   .build();
 
 export default canvasTemplateReducer;

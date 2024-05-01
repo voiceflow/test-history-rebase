@@ -1,13 +1,26 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { normalize } from 'normal-store';
+import { describe, expect, it } from 'vitest';
 
-import * as CreatorV2 from '@/ducks/creatorV2';
+import { createDuckTools } from '@/ducks/_suite';
 
-import suite from '../../_suite';
-import { ACTION_CONTEXT, DIAGRAM_ID, LINK_ID, MOCK_STATE, NODE, NODE_DATA, NODE_ID, PORT, PORT_ID } from '../_fixtures';
+import * as CreatorV2 from '..';
+import {
+  ACTION_CONTEXT,
+  DIAGRAM_ID,
+  LINK_ID,
+  MOCK_STATE,
+  NODE,
+  NODE_DATA,
+  NODE_ID,
+  PORT,
+  PORT_ID,
+} from '../creator.fixture';
 
-suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - initialize reducer', ({ describeReducerV2 }) => {
-  describeReducerV2(Realtime.creator.initialize, ({ applyAction }) => {
+const { describeReducer } = createDuckTools(CreatorV2, MOCK_STATE);
+
+describe('Ducks | Creator V2 - initialize reducer', () => {
+  describeReducer(Realtime.creator.initialize, ({ applyAction }) => {
     interface NodeTupleOptions<T> {
       type: Realtime.BlockType;
       id?: string;

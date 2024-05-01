@@ -1,13 +1,14 @@
 import { Utils } from '@voiceflow/common';
+import { describe, expect, it, vi } from 'vitest';
 
-import suite from '@/../test/_suite';
-import { MOCK_STATE } from '@/../test/ducks/_fixtures';
 import * as History from '@/ducks/history';
-import reverterTransducer from '@/ducks/transducers/history/reverter';
+import { MOCK_STATE } from '@/ducks/state.fixture';
 import { wrapReplayAction } from '@/ducks/utils';
 import { extendMeta, wrapOwnAction } from '@/store/utils';
 
-suite('Transducers - History - Reverter', () => {
+import reverterTransducer from './reverter';
+
+describe('Transducers - History - Reverter', () => {
   describe('reverterTransducer()', () => {
     const clientNodeID = 'clientNodeID';
     const actionID = 'actionID';

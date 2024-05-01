@@ -1,14 +1,15 @@
 import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import * as Normal from 'normal-store';
+import { describe, expect, it } from 'vitest';
 
-import * as Diagram from '@/ducks/diagramV2';
+import { createDuckTools } from '@/ducks/_suite';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
+import { MOCK_STATE as INITIAL_ROOT_MOCK_STATE } from '@/ducks/state.fixture';
 import type { State } from '@/store/types';
 
-import { MOCK_STATE as INITIAL_ROOT_MOCK_STATE } from '../../../test/ducks/_fixtures';
-import suite from '../../../test/ducks/_suite';
+import * as Diagram from '.';
 
 const WORKSPACE_ID = 'workspaceID';
 const PROJECT_ID = 'projectID';
@@ -82,12 +83,14 @@ const ROOT_MOCK_STATE: State = {
   },
 };
 
-suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ describeReducerV2, describeEffectV2, createState, ...utils }) => {
+const { createState, describeReducer, ...utils } = createDuckTools(Diagram, MOCK_STATE);
+
+describe('Ducks - Diagram', () => {
   describe('reducer', () => {
     utils.assertIgnoresOtherActions();
     utils.assertInitialState(Diagram.INITIAL_STATE);
 
-    describeReducerV2(Realtime.diagram.addLocalVariable, ({ applyAction }) => {
+    describeReducer(Realtime.diagram.addLocalVariable, ({ applyAction }) => {
       it('append new variable', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, variable: 'foo' });
 
@@ -101,7 +104,7 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ describeReducerV2, describeEffe
       });
     });
 
-    describeReducerV2(Realtime.diagram.removeLocalVariable, ({ applyAction }) => {
+    describeReducer(Realtime.diagram.removeLocalVariable, ({ applyAction }) => {
       it('remove a known variable', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, variable: 'fizz' });
 

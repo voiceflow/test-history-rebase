@@ -1,9 +1,11 @@
+import { describe, expect, it } from 'vitest';
+
 import client from '@/platforms/alexa/client/project';
 
-import suite from '../../_suite';
-
-suite('Platform Client - Alexa - Project', ({ expectMembers }) => {
+describe('Platform Client - Alexa - Project', () => {
   it('should have expected keys', () => {
-    expectMembers(Object.keys(client), ['copy', 'updateSelectedVendor', 'updateVendorSkillID']);
+    expect(Object.keys(client)).toEqual(
+      expect.arrayContaining(['copy', 'updateSelectedVendor', 'updateVendorSkillID'])
+    );
   });
 });

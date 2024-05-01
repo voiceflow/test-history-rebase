@@ -29,27 +29,27 @@ const removeFromIDByResponseIDLanguageChannel = (
 };
 
 export const responseDiscriminatorReducer = createRootReducer<ResponseDiscriminatorState>(INITIAL_STATE)
-  .immerCase(Actions.ResponseDiscriminator.AddOne, (state, { data }) => {
+  .mimerCase(Actions.ResponseDiscriminator.AddOne, (state, { data }) => {
     addToIDByResponseIDLanguageChannel(state, data);
 
     Object.assign(state, appendOne(state, data.id, data));
   })
-  .immerCase(Actions.ResponseDiscriminator.AddMany, (state, { data }) => {
+  .mimerCase(Actions.ResponseDiscriminator.AddMany, (state, { data }) => {
     data.forEach((item) => addToIDByResponseIDLanguageChannel(state, item));
 
     Object.assign(state, appendMany(state, data));
   })
-  .immerCase(Actions.ResponseDiscriminator.DeleteOne, (state, { id }) => {
+  .mimerCase(Actions.ResponseDiscriminator.DeleteOne, (state, { id }) => {
     removeFromIDByResponseIDLanguageChannel(state, getOne(state, id));
 
     Object.assign(state, removeOne(state, id));
   })
-  .immerCase(Actions.ResponseDiscriminator.DeleteMany, (state, { ids }) => {
+  .mimerCase(Actions.ResponseDiscriminator.DeleteMany, (state, { ids }) => {
     ids.forEach((id) => removeFromIDByResponseIDLanguageChannel(state, getOne(state, id)));
 
     Object.assign(state, removeMany(state, ids));
   })
-  .immerCase(Actions.ResponseDiscriminator.Replace, (state, { data }) => {
+  .mimerCase(Actions.ResponseDiscriminator.Replace, (state, { data }) => {
     state.idByLanguageChannelResponseID = {};
 
     data.forEach((discriminator) => addToIDByResponseIDLanguageChannel(state, discriminator));

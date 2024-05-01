@@ -3,11 +3,12 @@ import { BaseModels } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import * as Normal from 'normal-store';
+import { describe, expect, it } from 'vitest';
 
+import { createDuckTools } from '@/ducks/_suite';
 import * as Feature from '@/ducks/feature';
-import * as Project from '@/ducks/projectV2';
 
-import suite from '../../../test/ducks/_suite';
+import * as Project from '.';
 
 const WORKSPACE_ID = 'workspaceID';
 const PROJECT_ID = 'projectID';
@@ -95,12 +96,14 @@ const MOCK_STATE: Project.ProjectState = {
   },
 };
 
-suite(Project, MOCK_STATE)('Ducks - Project V2', ({ describeReducerV2, createState, ...utils }) => {
+const { createState, describeReducer, ...utils } = createDuckTools(Project, MOCK_STATE);
+
+describe('Ducks - Project V2', () => {
   describe('reducer', () => {
     utils.assertIgnoresOtherActions();
     utils.assertInitialState(Project.INITIAL_STATE);
 
-    describeReducerV2(Realtime.project.alexa.updateVendor, ({ applyAction }) => {
+    describeReducer(Realtime.project.alexa.updateVendor, ({ applyAction }) => {
       const vendorID = 'foo vendor';
       const skillID = 'bar skill';
 
@@ -147,7 +150,7 @@ suite(Project, MOCK_STATE)('Ducks - Project V2', ({ describeReducerV2, createSta
       });
     });
 
-    describeReducerV2(Realtime.project.awareness.updateDiagramViewers, ({ applyAction }) => {
+    describeReducer(Realtime.project.awareness.updateDiagramViewers, ({ applyAction }) => {
       it('adds viewers to new diagram', () => {
         const diagramID = 'foo';
 
@@ -185,7 +188,7 @@ suite(Project, MOCK_STATE)('Ducks - Project V2', ({ describeReducerV2, createSta
       });
     });
 
-    describeReducerV2(Realtime.project.awareness.updateViewers, ({ applyAction }) => {
+    describeReducer(Realtime.project.awareness.updateViewers, ({ applyAction }) => {
       it('updates viewers of all diagrams', () => {
         const diagramID = 'foo';
 

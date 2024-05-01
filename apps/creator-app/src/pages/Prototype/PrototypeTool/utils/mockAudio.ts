@@ -2,9 +2,13 @@
 
 // @ts-ignore
 class Audio {
-  play() {}
+  play() {
+    // no-op
+  }
 
-  pause() {}
+  pause() {
+    // no-op
+  }
 }
 
 global.Audio = Audio;

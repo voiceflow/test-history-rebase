@@ -11,27 +11,27 @@ import updateImage from './updateImage';
 import updateName from './updateName';
 
 const realtimeWorkspaceReducer = createRootCRUDReducer(INITIAL_STATE, crudReducers)
-  .immerCase(...leave)
-  .immerCase(...updateName)
-  .immerCase(...updateImage)
-  .immerCase(...changeSeats)
+  .mimerCase(...leave)
+  .mimerCase(...updateName)
+  .mimerCase(...updateImage)
+  .mimerCase(...changeSeats)
 
   // settings
-  .immerCase(...patchSettings)
-  .immerCase(...toggleDashboardKanban)
-  .immerCase(...replaceSettings)
+  .mimerCase(...patchSettings)
+  .mimerCase(...toggleDashboardKanban)
+  .mimerCase(...replaceSettings)
 
   // quotas
-  .immerCase(...replaceQuota)
-  .immerCase(...loadAllQuotas)
+  .mimerCase(...replaceQuota)
+  .mimerCase(...loadAllQuotas)
 
   // members
   .immerCases(...updateInvite)
-  .immerCase(...addMember)
-  .immerCase(...patchMember)
-  .immerCase(...cancelInvite)
-  .immerCase(...removeMember)
-  .immerCase(...replaceMembers)
+  .mimerCase(...addMember)
+  .mimerCase(...patchMember)
+  .mimerCase(...cancelInvite)
+  .mimerCase(...removeMember)
+  .mimerCase(...replaceMembers)
   .build();
 
 export default realtimeWorkspaceReducer;

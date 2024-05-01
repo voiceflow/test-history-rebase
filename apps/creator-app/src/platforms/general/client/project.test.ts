@@ -1,9 +1,9 @@
+import { describe, expect, it } from 'vitest';
+
 import client from '@/platforms/general/client/project';
 
-import suite from '../../_suite';
-
-suite('Platform Client - General - Project', ({ expectMembers }) => {
+describe('Platform Client - General - Project', () => {
   it('should have expected keys', () => {
-    expectMembers(Object.keys(client), ['copy']);
+    expect(Object.keys(client)).toEqual(expect.arrayContaining(['copy']));
   });
 });

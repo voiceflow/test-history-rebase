@@ -10,22 +10,22 @@ import updatePlatformData from './updatePlatformData';
 import updateVendor from './updateVendor';
 
 const realtimeProjectReducer = createRootCRUDReducer(INITIAL_STATE, crudReducers)
-  .immerCase(...updatePlatformData)
-  .immerCase(...addManyCustomThemes)
-  .immerCase(...toggleWorkspaceProjectsAiAssistOff)
+  .mimerCase(...updatePlatformData)
+  .mimerCase(...addManyCustomThemes)
+  .mimerCase(...toggleWorkspaceProjectsAiAssistOff)
 
   // viewers
-  .immerCase(...loadViewers)
-  .immerCase(...updateVendor)
-  .immerCase(...updateViewers)
-  .immerCase(...updateDiagramViewers)
+  .mimerCase(...loadViewers)
+  .mimerCase(...updateVendor)
+  .mimerCase(...updateViewers)
+  .mimerCase(...updateDiagramViewers)
 
   // members
-  .immerCase(...addMember)
-  .immerCase(...patchMember)
-  .immerCase(...removeMember)
-  .immerCase(...patchWorkspaceMember)
-  .immerCase(...removeWorkspaceMember)
+  .mimerCase(...addMember)
+  .mimerCase(...patchMember)
+  .mimerCase(...removeMember)
+  .mimerCase(...patchWorkspaceMember)
+  .mimerCase(...removeWorkspaceMember)
 
   .build();
 

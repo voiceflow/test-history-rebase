@@ -1,13 +1,13 @@
-import createJobService from '@/client/services/job';
+import { describe, expect, it } from 'vitest';
 
-import suite from '../../_suite';
+import createJobService from './job';
 
 const SERVICE_ENDPOINT = 'https://service';
 
 const client = createJobService(SERVICE_ENDPOINT);
 
-suite('Platform Client - Utils - createJobService', ({ expectMembers }) => {
+describe('Platform Client - Utils - createJobService', () => {
   it('should have expected keys', () => {
-    expectMembers(Object.keys(client), ['run', 'cancel', 'getStatus', 'updateStage']);
+    expect(Object.keys(client)).toEqual(expect.arrayContaining(['run', 'cancel', 'getStatus', 'updateStage']));
   });
 });

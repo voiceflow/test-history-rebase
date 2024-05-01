@@ -1,9 +1,10 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { normalize } from 'normal-store';
+import { describe, expect, it } from 'vitest';
 
+import { createDuckTools } from '@/ducks/_suite';
 import * as CreatorV2 from '@/ducks/creatorV2';
 
-import suite from '../../_suite';
 import {
   ACTION_CONTEXT,
   LINK,
@@ -15,10 +16,12 @@ import {
   PORT_ID,
   PROJECT_META,
   SCHEMA_VERSION,
-} from '../_fixtures';
+} from '../creator.fixture';
 
-suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - importSnapshot reducer', ({ describeReducerV2 }) => {
-  describeReducerV2(Realtime.creator.importSnapshot, ({ applyAction }) => {
+const { describeReducer } = createDuckTools(CreatorV2, MOCK_STATE);
+
+describe('Ducks | Creator V2 - importSnapshot reducer', () => {
+  describeReducer(Realtime.creator.importSnapshot, ({ applyAction }) => {
     interface NodeTupleOptions<T> {
       type: Realtime.BlockType;
       id?: string;

@@ -1,10 +1,11 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 import * as Normal from 'normal-store';
+import { describe, expect, it } from 'vitest';
 
+import { createDuckTools } from '@/ducks/_suite';
 import * as Feature from '@/ducks/feature';
-import * as ProjectList from '@/ducks/projectListV2';
 
-import suite from '../../../test/ducks/_suite';
+import * as ProjectList from '.';
 
 const WORKSPACE_ID = 'workspaceID';
 const PROJECT_ID = 'projectID';
@@ -29,12 +30,14 @@ const MOCK_STATE: ProjectList.ProjectListState = {
   allKeys: [LIST_ID, 'abc'],
 };
 
-suite(ProjectList, MOCK_STATE)('Ducks - Project List V2', ({ describeReducerV2, createState, ...utils }) => {
+const { createState, describeReducer, ...utils } = createDuckTools(ProjectList, MOCK_STATE);
+
+describe('Ducks - Project List V2', () => {
   describe('reducer', () => {
     utils.assertIgnoresOtherActions();
     utils.assertInitialState(ProjectList.INITIAL_STATE);
 
-    describeReducerV2(Realtime.projectList.addProjectToList, ({ applyAction }) => {
+    describeReducer(Realtime.projectList.addProjectToList, ({ applyAction }) => {
       it('add project to list', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, projectID: 'foo' });
 
@@ -48,7 +51,7 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List V2', ({ describeReducerV2, 
       });
     });
 
-    describeReducerV2(Realtime.projectList.removeProjectFromList, ({ applyAction }) => {
+    describeReducer(Realtime.projectList.removeProjectFromList, ({ applyAction }) => {
       it('remove project from list', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, projectID: PROJECT_ID });
 
@@ -62,7 +65,7 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List V2', ({ describeReducerV2, 
       });
     });
 
-    describeReducerV2(Realtime.projectList.transplantProjectBetweenLists, ({ applyAction }) => {
+    describeReducer(Realtime.projectList.transplantProjectBetweenLists, ({ applyAction }) => {
       it('reorder projects within list', () => {
         const result = applyAction(MOCK_STATE, {
           ...ACTION_CONTEXT,

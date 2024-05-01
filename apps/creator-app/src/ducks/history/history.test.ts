@@ -1,11 +1,12 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { describe, expect, it, vi } from 'vitest';
 
-import * as History from '@/ducks/history';
+import { createDuckTools } from '@/ducks/_suite';
+import { ACTION_CONTEXT } from '@/ducks/creatorV2/creator.fixture';
 import { REPLAY_KEY } from '@/ducks/utils';
 
-import suite from '../../../test/ducks/_suite';
-import { ACTION_CONTEXT } from '../../../test/ducks/creatorV2/_fixtures';
+import * as History from '.';
 
 const MOCK_STATE: History.HistoryState = {
   buffer: null,
@@ -57,14 +58,17 @@ const MOCK_STATE: History.HistoryState = {
       ],
     },
   ],
+  ignore: [],
 };
 
-suite(History, MOCK_STATE)('Ducks - History', ({ describeReducerV2, describeEffectV2, createState, ...utils }) => {
+const { createState, describeReducer, describeEffect, ...utils } = createDuckTools(History, MOCK_STATE);
+
+describe('Ducks - History', () => {
   describe('reducer', () => {
     utils.assertIgnoresOtherActions();
     utils.assertInitialState(History.INITIAL_STATE);
 
-    describeReducerV2(History.startTransaction, ({ applyAction }) => {
+    describeReducer(History.startTransaction, ({ applyAction }) => {
       it('do not create buffer if one already exists', () => {
         const transactionID = 'transactionID';
         const state = { ...MOCK_STATE, buffer: { id: 'foo', apply: [], revert: [] } };
@@ -81,7 +85,7 @@ suite(History, MOCK_STATE)('Ducks - History', ({ describeReducerV2, describeEffe
       });
     });
 
-    describeReducerV2(History.pushTransaction, ({ applyAction }) => {
+    describeReducer(History.pushTransaction, ({ applyAction }) => {
       const apply = { type: 'apply', payload: null };
       const revert = { type: 'revert', payload: null };
       const transaction = { id: 'transactionID', apply: [apply], revert: [revert] };
@@ -117,7 +121,7 @@ suite(History, MOCK_STATE)('Ducks - History', ({ describeReducerV2, describeEffe
       });
     });
 
-    describeReducerV2(History.flushTransaction, ({ applyAction }) => {
+    describeReducer(History.flushTransaction, ({ applyAction }) => {
       const transactionID = 'transactionID';
 
       it('do nothing if no transaction buffer is active', () => {
@@ -158,7 +162,7 @@ suite(History, MOCK_STATE)('Ducks - History', ({ describeReducerV2, describeEffe
       });
     });
 
-    describeReducerV2(History.undoTransaction, ({ applyAction }) => {
+    describeReducer(History.undoTransaction, ({ applyAction }) => {
       it('do nothing if no matching undo transaction exists', () => {
         const result = applyAction(MOCK_STATE, { transactionID: '100', revertID: '101' });
 
@@ -186,7 +190,7 @@ suite(History, MOCK_STATE)('Ducks - History', ({ describeReducerV2, describeEffe
       });
     });
 
-    describeReducerV2(History.redoTransaction, ({ applyAction }) => {
+    describeReducer(History.redoTransaction, ({ applyAction }) => {
       it('do nothing if no matching redo transaction exists', () => {
         const result = applyAction(MOCK_STATE, { transactionID: '999', revertID: '100' });
 
@@ -214,7 +218,7 @@ suite(History, MOCK_STATE)('Ducks - History', ({ describeReducerV2, describeEffe
       });
     });
 
-    describeReducerV2(History.dropTransactions, ({ applyAction }) => {
+    describeReducer(History.dropTransactions, ({ applyAction }) => {
       it('remove all matching transactions', () => {
         const result = applyAction(MOCK_STATE, { transactionIDs: ['2', '4'] });
 
@@ -223,7 +227,7 @@ suite(History, MOCK_STATE)('Ducks - History', ({ describeReducerV2, describeEffe
       });
     });
 
-    describeReducerV2(Realtime.creator.reset, ({ applyAction }) => {
+    describeReducer(Realtime.creator.reset, ({ applyAction }) => {
       it('resets history state on creator reset', () => {
         const result = applyAction(MOCK_STATE);
 
@@ -231,7 +235,7 @@ suite(History, MOCK_STATE)('Ducks - History', ({ describeReducerV2, describeEffe
       });
     });
 
-    describeReducerV2(Realtime.creator.initialize, ({ applyAction }) => {
+    describeReducer(Realtime.creator.initialize, ({ applyAction }) => {
       it('resets history state on creator initialize', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, nodesWithData: [], ports: [], links: [] });
 
@@ -275,13 +279,13 @@ suite(History, MOCK_STATE)('Ducks - History', ({ describeReducerV2, describeEffe
   });
 
   describe('side effects', () => {
-    describeEffectV2(History.transaction, 'transaction()', ({ applyEffect }) => {
+    describeEffect(History.transaction, 'transaction()', ({ applyEffect }) => {
       it('bookend operation to establish transaction context', async () => {
         const transactionID = 'xyz';
         const rootState = createState(MOCK_STATE);
         vi.spyOn(Utils.id, 'cuid').mockReturnValue(transactionID);
 
-        const { dispatched } = await applyEffect(rootState, () => {});
+        const { dispatched } = await applyEffect(rootState, () => undefined);
 
         expect(dispatched).toEqual([
           History.startTransaction({ transactionID }),
@@ -290,7 +294,7 @@ suite(History, MOCK_STATE)('Ducks - History', ({ describeReducerV2, describeEffe
       });
     });
 
-    describeEffectV2(History.undo, 'undo()', ({ applyEffect }) => {
+    describeEffect(History.undo, 'undo()', ({ applyEffect }) => {
       it('do nothing if no undo transactions available', async () => {
         const rootState = createState({ ...MOCK_STATE, undo: [] });
 
@@ -314,7 +318,7 @@ suite(History, MOCK_STATE)('Ducks - History', ({ describeReducerV2, describeEffe
       });
     });
 
-    describeEffectV2(History.redo, 'redo()', ({ applyEffect }) => {
+    describeEffect(History.redo, 'redo()', ({ applyEffect }) => {
       it('do nothing if no redo transactions available', async () => {
         const rootState = createState({ ...MOCK_STATE, redo: [] });
 

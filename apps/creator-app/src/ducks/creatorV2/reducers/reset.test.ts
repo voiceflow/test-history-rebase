@@ -1,12 +1,15 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { describe, expect, it } from 'vitest';
 
-import * as CreatorV2 from '@/ducks/creatorV2';
+import { createDuckTools } from '@/ducks/_suite';
 
-import suite from '../../_suite';
-import { MOCK_STATE } from '../_fixtures';
+import * as CreatorV2 from '..';
+import { MOCK_STATE } from '../creator.fixture';
 
-suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - reset reducer', ({ describeReducerV2 }) => {
-  describeReducerV2(Realtime.creator.reset, ({ applyAction }) => {
+const { describeReducer } = createDuckTools(CreatorV2, MOCK_STATE);
+
+describe('Ducks | Creator V2 - reset reducer', () => {
+  describeReducer(Realtime.creator.reset, ({ applyAction }) => {
     it('reset state to initial values', () => {
       const result = applyAction(MOCK_STATE);
 

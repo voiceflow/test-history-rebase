@@ -1,18 +1,20 @@
+import { describe, expect, it } from 'vitest';
+
 import client from '@/platforms/general/client';
 
-import suite from '../../_suite';
-
-suite('Platform Client - General', ({ expectMembers }) => {
+describe('Platform Client - General', () => {
   it('should have expected keys', () => {
-    expectMembers(Object.keys(client), [
-      'export',
-      'modelExport',
-      'modelImport',
-      'project',
-      'publish',
-      'version',
-      'prototype',
-      'tts',
-    ]);
+    expect(Object.keys(client)).toEqual(
+      expect.arrayContaining([
+        'export',
+        'modelExport',
+        'modelImport',
+        'project',
+        'publish',
+        'version',
+        'prototype',
+        'tts',
+      ])
+    );
   });
 });

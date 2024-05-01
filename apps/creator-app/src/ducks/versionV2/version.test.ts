@@ -1,13 +1,11 @@
-/* eslint-disable mocha/no-identical-title */
 import { BaseNode, BaseVersion } from '@voiceflow/base-types';
 import type * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { describe, expect, it } from 'vitest';
 
-import * as Session from '@/ducks/session';
-import { CanvasCreationType } from '@/ducks/tracking/constants';
 import * as Version from '@/ducks/versionV2';
 
-import suite from '../../../test/ducks/_suite';
+import { createDuckTools } from '../_suite';
 
 const WORKSPACE_ID = 'workspaceID';
 const PROJECT_ID = 'projectID';
@@ -54,9 +52,11 @@ const MOCK_STATE: Version.VersionState = {
   allKeys: [VERSION_ID],
 };
 
-suite(Version, MOCK_STATE)('Ducks - Version V2', ({ describeReducerV2, describeEffectV2, createState }) => {
+const { createState, describeReducer } = createDuckTools(Version, MOCK_STATE);
+
+describe('Ducks - Version V2', () => {
   describe('reducer', () => {
-    describeReducerV2(Realtime.version.variable.addGlobal, ({ applyAction }) => {
+    describeReducer(Realtime.version.variable.addGlobal, ({ applyAction }) => {
       it('append new variable', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, variable: 'foo' });
 
@@ -70,7 +70,7 @@ suite(Version, MOCK_STATE)('Ducks - Version V2', ({ describeReducerV2, describeE
       });
     });
 
-    describeReducerV2(Realtime.version.variable.removeGlobal, ({ applyAction }) => {
+    describeReducer(Realtime.version.variable.removeGlobal, ({ applyAction }) => {
       it('remove a known variable', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, variable: 'fizz' });
 
@@ -84,7 +84,7 @@ suite(Version, MOCK_STATE)('Ducks - Version V2', ({ describeReducerV2, describeE
       });
     });
 
-    describeReducerV2(Realtime.version.patchPublishing, ({ applyAction }) => {
+    describeReducer(Realtime.version.patchPublishing, ({ applyAction }) => {
       it('partially update publishing data', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, publishing: { abc: 'def' } as any });
 
@@ -102,7 +102,7 @@ suite(Version, MOCK_STATE)('Ducks - Version V2', ({ describeReducerV2, describeE
       });
     });
 
-    describeReducerV2(Realtime.version.patchSettings, ({ applyAction }) => {
+    describeReducer(Realtime.version.patchSettings, ({ applyAction }) => {
       it('partially update settings data', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, settings: { defaultVoice: 'foo' as any } });
 
@@ -120,7 +120,7 @@ suite(Version, MOCK_STATE)('Ducks - Version V2', ({ describeReducerV2, describeE
       });
     });
 
-    describeReducerV2(Realtime.version.patchSession, ({ applyAction }) => {
+    describeReducer(Realtime.version.patchSession, ({ applyAction }) => {
       it('partially update session data', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, session: { restart: true } });
 

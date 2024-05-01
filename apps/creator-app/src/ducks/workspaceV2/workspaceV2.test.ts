@@ -1,12 +1,12 @@
-/* eslint-disable sonarjs/no-duplicate-string */
 import { PlanType, UserRole } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import * as Normal from 'normal-store';
+import { describe, expect, it } from 'vitest';
 
 import * as Session from '@/ducks/session';
-import * as Workspace from '@/ducks/workspaceV2';
 
-import suite from '../../test/ducks/_suite';
+import { createDuckTools } from '../_suite';
+import * as Workspace from '.';
 
 const WORKSPACE_ID = 'workspaceID';
 const CREATOR_ID = 999;
@@ -90,12 +90,14 @@ const MOCK_STATE: Workspace.WorkspaceState = {
   allKeys: [WORKSPACE_ID, 'abc'],
 };
 
-suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ describeReducerV2, createState, ...utils }) => {
+const { createState, describeReducer, ...utils } = createDuckTools(Workspace, MOCK_STATE);
+
+describe('Ducks - Workspace V2', () => {
   describe('reducer', () => {
     utils.assertIgnoresOtherActions();
     utils.assertInitialState(Workspace.INITIAL_STATE);
 
-    describeReducerV2(Realtime.workspace.member.add, ({ applyAction }) => {
+    describeReducer(Realtime.workspace.member.add, ({ applyAction }) => {
       const member = { ...WORKSPACE_MEMBER, name: 'new member', email: 'new.member@voiceflow.com', creator_id: 123 };
 
       it('add a new workspace member', () => {
@@ -113,7 +115,7 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ describeReducerV2, creat
       });
     });
 
-    describeReducerV2(Realtime.workspace.member.remove, ({ applyAction }) => {
+    describeReducer(Realtime.workspace.member.remove, ({ applyAction }) => {
       it('remove an existing workspace member', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, creatorID: 1000 });
 
@@ -135,7 +137,7 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ describeReducerV2, creat
       });
     });
 
-    describeReducerV2(Realtime.workspace.member.cancelInvite, ({ applyAction }) => {
+    describeReducer(Realtime.workspace.member.cancelInvite, ({ applyAction }) => {
       it('cancel the invite of an existing workspace member', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, email: 'pending@voiceflow.com' });
 
@@ -155,7 +157,7 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ describeReducerV2, creat
       });
     });
 
-    describeReducerV2(Realtime.workspace.member.patch, ({ applyAction }) => {
+    describeReducer(Realtime.workspace.member.patch, ({ applyAction }) => {
       const member = { role: UserRole.BILLING };
 
       it('patch an existing workspace member', () => {
@@ -185,7 +187,7 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ describeReducerV2, creat
       });
     });
 
-    describeReducerV2(Realtime.workspace.member.updateInvite, ({ applyAction }) => {
+    describeReducer(Realtime.workspace.member.updateInvite, ({ applyAction }) => {
       it('patch an existing workspace member', () => {
         const result = applyAction(MOCK_STATE, {
           ...ACTION_CONTEXT,

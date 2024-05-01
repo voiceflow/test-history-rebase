@@ -1,9 +1,10 @@
-import suite from '@/../test/_suite';
-import { prettifyBucketURL } from '@/utils/audio';
+import { describe, expect, it } from 'vitest';
+
+import { prettifyBucketURL } from './audio';
 
 const AUDIO_FILE_BUCKET_NAME = 'https://s3.amazonaws.com/dev-voiceflow-audio';
 
-suite('utils/audio', () => {
+describe('utils/audio', () => {
   describe('prettifyBucketURL', () => {
     it('should regex out default bucket', () => {
       const mp3 = 'test.mp3';

@@ -5,25 +5,11 @@
     "checkJs": false,
     "isolatedModules": false,
     "lib": ["es2019", "dom", "es2020.string", "dom.iterable"],
-    "baseUrl": "..",
+    "baseUrl": ".",
     "outDir": "build",
     "jsx": "react-jsx",
     "exactOptionalPropertyTypes": false,
     "noErrorTruncation": true,
-    "paths": {
-      // only used to fix intra-monorepo resolution
-      "@ui/*": ["../libs/ui/src/*"],
-      "@voiceflow/ui": ["../libs/ui/src"],
-      // only used to fix intra-monorepo resolution
-      "@realtime-sdk/*": ["../libs/realtime-sdk/src/*"],
-      "@voiceflow/realtime-sdk": ["../libs/realtime-sdk/src"],
-      // only used to fix intra-monorepo resolution
-      "@platform-config/*": ["../libs/platform-config/src/*"],
-      "@voiceflow/platform-config": ["../libs/platform-config/src"],
-      "@voiceflow/dtos": ["../libs/dtos/src"],
-      "@voiceflow/utils-designer": ["../libs/utils-designer/src"],
-      "@/*": ["creator-app/src/*"]
-    },
     "types": [
       "gapi",
       "gapi.auth2",

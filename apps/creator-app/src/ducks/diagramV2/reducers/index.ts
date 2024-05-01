@@ -35,36 +35,36 @@ const realtimeDiagramReducer = createRootCRUDReducer(INITIAL_STATE, {
   removeMany: createCombinedReducer(crudReducers.removeMany, removeManyDiagramsReducer, awarenessRemoveManyDiagrams),
 })
   // variables
-  .immerCase(...addLocalVariable)
-  .immerCase(...removeLocalVariable)
+  .mimerCase(...addLocalVariable)
+  .mimerCase(...removeLocalVariable)
 
   // menu item
-  .immerCase(...addMenuItemReducer)
-  .immerCase(...removeMenuItemReducer)
-  .immerCase(...reorderMenuItemReducer)
+  .mimerCase(...addMenuItemReducer)
+  .mimerCase(...removeMenuItemReducer)
+  .mimerCase(...reorderMenuItemReducer)
 
   // nodes
-  .immerCase(...addBlockReducer)
-  .immerCase(...insertStepReducer)
-  .immerCase(...isolateStepsReducer)
-  .immerCase(...importSnapshotReducer)
-  .immerCase(...insertManyStepsReducer)
-  .immerCase(...transplantStepsReducer)
-  .immerCase(...removeManyNodesReducer)
-  .immerCase(...loadSharedNodesReducer)
-  .immerCase(...reloadSharedNodesReducer)
-  .immerCase(...updateManyNodesDataReducer)
+  .mimerCase(...addBlockReducer)
+  .mimerCase(...insertStepReducer)
+  .mimerCase(...isolateStepsReducer)
+  .mimerCase(...importSnapshotReducer)
+  .mimerCase(...insertManyStepsReducer)
+  .mimerCase(...transplantStepsReducer)
+  .mimerCase(...removeManyNodesReducer)
+  .mimerCase(...loadSharedNodesReducer)
+  .mimerCase(...reloadSharedNodesReducer)
+  .mimerCase(...updateManyNodesDataReducer)
 
   // locks
-  .immerCase(...lockEntities)
-  .immerCase(...unlockEntities)
-  .immerCase(...updateLockedEntities)
+  .mimerCase(...lockEntities)
+  .mimerCase(...unlockEntities)
+  .mimerCase(...updateLockedEntities)
 
   // subtopics
-  .immerCase(...moveSubtopicReducer)
+  .mimerCase(...moveSubtopicReducer)
 
   // other
-  .immerCase(...setLastCreatedIDReducer)
+  .mimerCase(...setLastCreatedIDReducer)
 
   .build();
 

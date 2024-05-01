@@ -1,8 +1,8 @@
-/// <reference types="vitest/globals" />
-
+/* eslint-disable @typescript-eslint/consistent-type-imports */
 /* eslint-disable max-classes-per-file */
 import dotenv from 'dotenv';
 import { enablePatches } from 'immer';
+import { vi } from 'vitest';
 
 enablePatches();
 

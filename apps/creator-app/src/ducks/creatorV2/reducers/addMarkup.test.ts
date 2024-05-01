@@ -1,12 +1,15 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { describe, expect, it } from 'vitest';
 
-import * as CreatorV2 from '@/ducks/creatorV2';
+import { createDuckTools } from '@/ducks/_suite';
 
-import suite from '../../_suite';
-import { ACTION_CONTEXT, MOCK_STATE, NODE_ID, PROJECT_META, SCHEMA_VERSION } from '../_fixtures';
+import * as CreatorV2 from '..';
+import { ACTION_CONTEXT, MOCK_STATE, NODE_ID, PROJECT_META, SCHEMA_VERSION } from '../creator.fixture';
 
-suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addMarkup reducer', ({ describeReducerV2 }) => {
-  describeReducerV2(Realtime.node.addMarkup, ({ applyAction, normalizeContaining }) => {
+const { describeReducer } = createDuckTools(CreatorV2, MOCK_STATE);
+
+describe('Ducks | Creator V2 - addMarkup reducer', () => {
+  describeReducer(Realtime.node.addMarkup, ({ applyAction, normalizeContaining }) => {
     const markupID = 'markupNode';
     const coords: Realtime.Point = [100, 200];
     const data = {

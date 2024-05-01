@@ -6,7 +6,7 @@ import { BaseRequestDTO } from './utils.dto';
 export const TextRequestDTO = BaseRequestDTO.extend({
   type: z.literal(RequestType.TEXT),
   payload: z.string(),
-});
+}).passthrough();
 
 export type TextRequest = z.infer<typeof TextRequestDTO>;
 

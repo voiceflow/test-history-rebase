@@ -9,8 +9,9 @@ export const LaunchRequestDTO = BaseRequestDTO.extend({
     .object({
       persona: z.string().optional(),
     })
+    .passthrough()
     .optional(),
-});
+}).passthrough();
 
 export type LaunchRequest = z.infer<typeof LaunchRequestDTO>;
 

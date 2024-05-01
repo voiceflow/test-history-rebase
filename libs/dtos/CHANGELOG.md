@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.63.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.62.0...@voiceflow/dtos@1.63.0) (2024-05-01)
+
+### Features
+
+* revert entities and query to required and refactor request object expectations (PL-958) ([#8046](https://github.com/voiceflow/creator-app/issues/8046)) ([f543e89](https://github.com/voiceflow/creator-app/commit/f543e8919ec8b8552b82c8860cc77027e5283332))
+
 # [1.62.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.61.0...@voiceflow/dtos@1.62.0) (2024-04-29)
 
 ### Features

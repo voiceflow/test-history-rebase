@@ -137,7 +137,8 @@ const adapter = createSimpleAdapter<Input, Output, [FromDBOptions], [ToDBOptions
 
     const intent: Intent = {
       id: legacyIntent.key,
-      name: legacyIntent.name,
+      // 255 is the max char length allowed in our PG schema, just cut off anything extra
+      name: legacyIntent.name.slice(0, 255),
       folderID: null,
       createdAt,
       updatedAt: createdAt,

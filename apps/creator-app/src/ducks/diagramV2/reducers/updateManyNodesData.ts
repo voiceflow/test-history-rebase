@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 

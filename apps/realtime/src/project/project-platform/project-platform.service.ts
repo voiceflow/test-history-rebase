@@ -7,7 +7,7 @@ import { UserService } from '@/user/user.service';
 
 import { AlexaClient } from './client/alexa.client';
 import { GeneralClient } from './client/general.client';
-import { ProjectPlatformModuleOptions } from './project-platform.interface';
+import { type ProjectPlatformModuleOptions } from './project-platform.interface';
 import { PROJECT_PLATFORM_MODULE_OPTIONS_TOKEN } from './project-platform.module-definition';
 
 @Injectable()

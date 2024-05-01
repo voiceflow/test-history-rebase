@@ -21,7 +21,7 @@ import { ZodValidationPipe } from 'nestjs-zod';
 import { appRef } from '@/app.ref';
 import {
   HashedWorkspaceIDPayloadPipe,
-  HashedWorkspaceIDPayloadType,
+  type HashedWorkspaceIDPayloadType,
 } from '@/common/pipes/hashed-workspace-id-payload.pipe';
 import { EnvironmentService } from '@/environment/environment.service';
 import { ProjectSerializer } from '@/project/project.serializer';

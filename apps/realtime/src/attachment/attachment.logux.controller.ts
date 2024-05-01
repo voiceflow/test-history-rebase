@@ -1,6 +1,6 @@
 import { Controller, Inject } from '@nestjs/common';
 import { AttachmentType, CardAttachment, MediaAttachment } from '@voiceflow/dtos';
-import { Action, AuthMeta, AuthMetaPayload, Broadcast, Payload } from '@voiceflow/nestjs-logux';
+import { Action, AuthMeta, type AuthMetaPayload, Broadcast, Payload } from '@voiceflow/nestjs-logux';
 import { Permission } from '@voiceflow/sdk-auth';
 import { Authorize } from '@voiceflow/sdk-auth/nestjs';
 import { Actions, Channels } from '@voiceflow/sdk-logux-designer';

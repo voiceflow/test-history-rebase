@@ -11,7 +11,7 @@ import { AssistantService } from '@/assistant/assistant.service';
 import { AssistantImportDataDTO } from '@/assistant/dtos/assistant-import-data.dto';
 import {
   HashedWorkspaceIDPayloadPipe,
-  HashedWorkspaceIDPayloadType,
+  type HashedWorkspaceIDPayloadType,
 } from '@/common/pipes/hashed-workspace-id-payload.pipe';
 
 import { ProjectImportJSONRequest } from './dtos/project-import-json.request';

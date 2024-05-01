@@ -1,5 +1,3 @@
-/* eslint-disable no-param-reassign */
-
 import type { Draft } from 'immer';
 
 import type { DiagramState } from '../../types';

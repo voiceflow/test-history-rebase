@@ -18,7 +18,7 @@ import { Permission } from '@voiceflow/sdk-auth';
 import { Authorize, UserID } from '@voiceflow/sdk-auth/nestjs';
 import type { Request } from 'express';
 
-import { MulterFile } from '@/file/types';
+import { type MulterFile } from '@/file/types';
 
 import { FunctionExportImportDataDTO } from './dtos/function-export-import-data.dto';
 import { FunctionExportQuery } from './dtos/function-export-json.query';

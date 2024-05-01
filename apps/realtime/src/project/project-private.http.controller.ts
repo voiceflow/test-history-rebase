@@ -4,7 +4,7 @@ import { ZodApiBody, ZodApiResponse } from '@voiceflow/nestjs-common';
 import { ZodValidationPipe } from 'nestjs-zod';
 
 import { AssistantService } from '@/assistant/assistant.service';
-import { HashedWorkspaceIDPayloadPipe, HashedWorkspaceIDPayloadType } from '@/common';
+import { HashedWorkspaceIDPayloadPipe, type HashedWorkspaceIDPayloadType } from '@/common';
 
 import { ProjectCreateFixtureRequest } from './dtos/project-create-fixture.request';
 import { ProjectImportJSONResponse } from './dtos/project-import-json.response';

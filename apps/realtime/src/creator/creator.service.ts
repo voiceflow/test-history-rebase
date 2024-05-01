@@ -4,7 +4,7 @@ import { MemoizedClient } from '@/common';
 import { UserService } from '@/user/user.service';
 
 import { CreatorClient } from './client/creator.client';
-import { CreatorModuleOptions } from './creator.interface';
+import { type CreatorModuleOptions } from './creator.interface';
 import { CREATOR_MODULE_OPTIONS_TOKEN } from './creator.module-definition';
 
 @Injectable()

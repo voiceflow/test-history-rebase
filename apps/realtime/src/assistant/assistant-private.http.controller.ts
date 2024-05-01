@@ -18,7 +18,7 @@ import type { Request } from 'express';
 import { ZodValidationPipe } from 'nestjs-zod';
 
 import { appRef } from '@/app.ref';
-import { HashedWorkspaceIDPayloadPipe, HashedWorkspaceIDPayloadType } from '@/common';
+import { HashedWorkspaceIDPayloadPipe, type HashedWorkspaceIDPayloadType } from '@/common';
 import { ProjectSerializer } from '@/project/project.serializer';
 import { VersionIDAlias } from '@/version/version.constant';
 

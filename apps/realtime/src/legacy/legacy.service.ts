@@ -19,7 +19,7 @@ import { OrganizationIdentityService } from '@/organization/identity/identity.se
 import { ProjectService } from '@/project/project.service';
 import { ProjectListService } from '@/project-list/project-list.service';
 import { ThreadService } from '@/thread/thread.service';
-import { Config } from '@/types';
+import { type Config } from '@/types';
 import { UserService } from '@/user/user.service';
 import { WorkflowService } from '@/workflow/workflow.service';
 

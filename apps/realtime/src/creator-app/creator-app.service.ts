@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 
-import { CreatorAppModuleOptions } from './creator-app.interface';
+import { type CreatorAppModuleOptions } from './creator-app.interface';
 import { CREATOR_APP_MODULE_OPTIONS_TOKEN } from './creator-app.module-definition';
 /**
  * @description - This is the service that is used to generate links available in creator-app

@@ -4,6 +4,7 @@ import type { AuthService } from '@voiceflow/sdk-auth/nestjs';
 import { noAuth } from '@voiceflow/sdk-auth/testing';
 import type { DeepMocked } from '@voiceflow/test-common/jest';
 import type supertest from 'supertest';
+import { it } from 'vitest';
 
 export const itShouldBeProtected = (auth: DeepMocked<AuthService>, request: () => supertest.Test) => {
   it('should return a 401 response if not authenticated', () => {

@@ -3,7 +3,7 @@ import { UnleashFeatureFlagService } from '@voiceflow/nestjs-common';
 import {
   Action,
   AuthMeta,
-  AuthMetaPayload,
+  type AuthMetaPayload,
   Broadcast,
   Channel,
   Context,

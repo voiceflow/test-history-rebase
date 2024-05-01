@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import { setLastCreatedID } from '../actions';
 import { createReducer } from './utils';
 

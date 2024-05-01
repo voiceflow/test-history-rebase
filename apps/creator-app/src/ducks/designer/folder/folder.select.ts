@@ -29,7 +29,6 @@ export const allByScopeAndParentID = createSelector([allByScope, parentIDParamSe
 export const idsByParentIDMapByScope = createSelector([allByScope], (folders) =>
   folders.reduce<Partial<Record<string, string[]>>>((map, folder) => {
     if (folder.parentID) {
-      // eslint-disable-next-line no-param-reassign
       map[folder.parentID] ??= [];
       map[folder.parentID]!.push(folder.id);
     }

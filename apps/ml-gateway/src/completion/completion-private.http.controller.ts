@@ -1,19 +1,34 @@
-import { Body, Controller, HttpStatus, Inject, Post } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, HttpStatus, Inject, Logger, MessageEvent, Post, UseGuards } from '@nestjs/common';
+import { ApiOperation, ApiProduces, ApiTags } from '@nestjs/swagger';
 import { ZodApiBody, ZodApiResponse } from '@voiceflow/nestjs-common';
+import { BillingClient, BillingResourceType, TrackUsageItemName } from '@voiceflow/sdk-billing';
+import { BillingAuthorize, BillingAuthorizeGuard } from '@voiceflow/sdk-billing/nestjs';
 import { ZodValidationPipe } from 'nestjs-zod';
+import { from, map, mergeMap, Observable, tap } from 'rxjs';
 
 import { CompletionService } from './completion.service';
 import { ChatCompletionRequest } from './dtos/chat-completion.request';
 import { CompletionRequest } from './dtos/completion.request';
 import { CompletionResponse } from './dtos/completion.response';
+import { PostSSE } from './utils/sse.decorator';
 
 @Controller('private/completion')
 @ApiTags('Private/Completion')
+@UseGuards(BillingAuthorizeGuard)
+@BillingAuthorize({
+  resourceType: 'workspace',
+  resourceID: (context) => context.switchToHttp().getRequest().body.workspaceID,
+  item: 'addon-tokens',
+  value: 0,
+})
 export class CompletionPrivateHTTPController {
+  private logger = new Logger(CompletionPrivateHTTPController.name);
+
   constructor(
     @Inject(CompletionService)
-    private readonly service: CompletionService
+    private readonly service: CompletionService,
+    @Inject(BillingClient)
+    private readonly billing: BillingClient
   ) {}
 
   @Post()
@@ -31,7 +46,16 @@ export class CompletionPrivateHTTPController {
     @Body(new ZodValidationPipe(CompletionRequest))
     request: CompletionRequest
   ): Promise<CompletionResponse> {
-    return this.service.generateCompletion(request);
+    const result = await this.service.generateCompletion(request);
+
+    await this.billing.usagesPrivate.trackUsage({
+      resourceType: BillingResourceType.WORKSPACE,
+      resourceID: String(request.workspaceID),
+      item: TrackUsageItemName.Tokens,
+      value: result.tokens,
+    });
+
+    return result;
   }
 
   @Post('chat')
@@ -49,6 +73,93 @@ export class CompletionPrivateHTTPController {
     @Body(new ZodValidationPipe(ChatCompletionRequest))
     request: ChatCompletionRequest
   ): Promise<CompletionResponse> {
-    return this.service.generateChatCompletion(request);
+    const result = await this.service.generateChatCompletion(request);
+
+    await this.billing.usagesPrivate.trackUsage({
+      resourceType: BillingResourceType.WORKSPACE,
+      resourceID: String(request.workspaceID),
+      item: TrackUsageItemName.Tokens,
+      value: result.tokens,
+    });
+
+    return result;
+  }
+
+  @PostSSE('stream')
+  @ApiOperation({
+    summary: 'Generate prompt completion',
+    description: 'Generate prompt completion with a given model',
+  })
+  @ApiProduces('text/event-stream')
+  @ZodApiBody({ schema: CompletionRequest })
+  @ZodApiResponse({
+    status: HttpStatus.OK,
+    schema: CompletionResponse,
+    description: 'AI response',
+  })
+  generateCompletionStream(
+    @Body(new ZodValidationPipe(CompletionRequest))
+    request: CompletionRequest
+  ): Observable<MessageEvent> {
+    return from(this.service.generateCompletionStream(request)).pipe(
+      mergeMap((response) => response),
+      tap((chunk) =>
+        this.billing.usagesPrivate
+          .trackUsage({
+            resourceType: BillingResourceType.WORKSPACE,
+            resourceID: String(request.workspaceID),
+            item: TrackUsageItemName.Tokens,
+            value: chunk.completion.tokens,
+          })
+          .catch((err) => {
+            this.logger.error('Error tracking usage for workspace: %s (%o)', request.workspaceID, err);
+          })
+      ),
+      map((chunk) => {
+        return {
+          type: chunk.type,
+          data: chunk.completion,
+        };
+      })
+    );
+  }
+
+  @PostSSE('chat/stream')
+  @ApiOperation({
+    summary: 'Generate chat completion',
+    description: 'Generate chat completion with a given model',
+  })
+  @ApiProduces('text/event-stream')
+  @ZodApiBody({ schema: ChatCompletionRequest })
+  @ZodApiResponse({
+    status: HttpStatus.OK,
+    schema: CompletionResponse,
+    description: 'AI response',
+  })
+  generateChatCompletionStream(
+    @Body(new ZodValidationPipe(ChatCompletionRequest))
+    request: ChatCompletionRequest
+  ): Observable<MessageEvent> {
+    return from(this.service.generateChatCompletionStream(request)).pipe(
+      mergeMap((response) => response),
+      tap((chunk) =>
+        this.billing.usagesPrivate
+          .trackUsage({
+            resourceType: BillingResourceType.WORKSPACE,
+            resourceID: String(request.workspaceID),
+            item: TrackUsageItemName.Tokens,
+            value: chunk.completion.tokens,
+          })
+          .catch((err) => {
+            this.logger.error('Error tracking usage for workspace: %s (%o)', request.workspaceID, err);
+          })
+      ),
+      map((chunk) => {
+        return {
+          type: chunk.type,
+          data: chunk.completion,
+        };
+      })
+    );
   }
 }

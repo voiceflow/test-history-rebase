@@ -1,9 +1,10 @@
 import Client, { AI_PROMPT, HUMAN_PROMPT } from '@anthropic-ai/sdk';
 import { Logger } from '@nestjs/common';
 import { AIMessage, AIMessageRole, AIParams } from '@voiceflow/dtos';
+import { from, map, mergeMap, Observable } from 'rxjs';
 
 import { LLMModel } from '../llm-model.abstract';
-import { CompletionOutput } from '../llm-model.dto';
+import { CompletionOutput, CompletionStreamOutput } from '../llm-model.dto';
 import { AnthropicConfig } from './anthropic.interface';
 
 /**
@@ -94,5 +95,80 @@ export abstract class AnthropicTextCompletionAIModel extends LLMModel {
       multiplier: this.TOKEN_MULTIPLIER,
       model: this.modelRef,
     };
+  }
+
+  generateCompletionStream(prompt: string, params: AIParams): Observable<CompletionStreamOutput> {
+    const messages: AIMessage[] = [{ role: AIMessageRole.USER, content: prompt }];
+    if (params.system) messages.unshift({ role: AIMessageRole.SYSTEM, content: params.system });
+
+    return this.generateChatCompletionStream(messages, params);
+  }
+
+  generateChatCompletionStream(messages: AIMessage[], params: AIParams): Observable<CompletionStreamOutput> {
+    let topSystem = '';
+    let prompt = '';
+    for (let i = 0; i < messages.length; i++) {
+      if (i === 0 && messages[i].role === AIMessageRole.SYSTEM) {
+        topSystem = messages[i].content;
+        continue;
+      }
+      if (i === 1 && topSystem) {
+        // add the system prompt to the first message
+        prompt += `${AnthropicTextCompletionAIModel.RoleMap[messages[i].role]} ${topSystem}\n${messages[i].content}`;
+      } else {
+        prompt += `${AnthropicTextCompletionAIModel.RoleMap[messages[i].role]} ${messages[i].content}`;
+      }
+    }
+    // claude prompt must end with AI prompt
+    prompt += AI_PROMPT;
+
+    const queryTokens = this.calculateTokenUsage(prompt);
+
+    return from(
+      this.client.completions
+        .create({
+          prompt,
+          model: this.anthropicModel,
+          temperature: params.temperature,
+          max_tokens_to_sample: this.normalizeMaxTokens(params.maxTokens) || this.defaultMaxTokens,
+          stop_sequences: [HUMAN_PROMPT, ...(params.stop || [])],
+          stream: true,
+        })
+        .catch((error: unknown) => {
+          this.logger.warn({ error, messages, params }, `${this.modelRef} completion`);
+          return [];
+        })
+    ).pipe(
+      mergeMap((chunk) => chunk),
+      map((chunk, i) => {
+        const output = chunk.completion?.trim() ?? null;
+
+        const answerTokens = this.calculateTokenUsage(output ?? '');
+        if (i > 0) {
+          return {
+            type: chunk.type,
+            completion: {
+              output,
+              tokens: answerTokens,
+              queryTokens: 0,
+              answerTokens,
+              multiplier: this.TOKEN_MULTIPLIER,
+              model: this.modelRef,
+            },
+          };
+        }
+        return {
+          type: chunk.type,
+          completion: {
+            output,
+            tokens: queryTokens + answerTokens,
+            queryTokens,
+            answerTokens,
+            multiplier: this.TOKEN_MULTIPLIER,
+            model: this.modelRef,
+          },
+        };
+      })
+    );
   }
 }

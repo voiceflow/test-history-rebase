@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.15.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-ml-gateway@2.14.8...@voiceflow/sdk-http-ml-gateway@2.15.0) (2024-05-01)
+
+### Features
+
+* llm streaming support (PL-933) ([#7986](https://github.com/voiceflow/creator-app/issues/7986)) ([160d030](https://github.com/voiceflow/creator-app/commit/160d0300d6ceac9aea7e30087e36328c287f3c01))
+
 ## [2.14.8](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-ml-gateway@2.14.7...@voiceflow/sdk-http-ml-gateway@2.14.8) (2024-04-29)
 
 **Note:** Version bump only for package @voiceflow/sdk-http-ml-gateway

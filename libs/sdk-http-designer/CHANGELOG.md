@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.19.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-designer@2.18.10...@voiceflow/sdk-http-designer@2.19.0) (2024-05-01)
+
+### Features
+
+* llm streaming support (PL-933) ([#7986](https://github.com/voiceflow/creator-app/issues/7986)) ([160d030](https://github.com/voiceflow/creator-app/commit/160d0300d6ceac9aea7e30087e36328c287f3c01))
+
 ## [2.18.10](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-designer@2.18.9...@voiceflow/sdk-http-designer@2.18.10) (2024-05-01)
 
 **Note:** Version bump only for package @voiceflow/sdk-http-designer

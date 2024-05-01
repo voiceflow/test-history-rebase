@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.63.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.63.0...@voiceflow/dtos@1.63.1) (2024-05-01)
+
+### Bug Fixes
+
+* incorrect verbose value type (PL-958) ([#8060](https://github.com/voiceflow/creator-app/issues/8060)) ([0809cdc](https://github.com/voiceflow/creator-app/commit/0809cdcb2d2b986762010419bb17e12188337f71))
+
 # [1.63.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.62.0...@voiceflow/dtos@1.63.0) (2024-05-01)
 
 ### Features

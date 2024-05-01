@@ -1,9 +1,9 @@
 import { BadRequestException } from '@voiceflow/exception';
-import { CreateModerationResponseResultsInner } from '@voiceflow/openai';
+import { Moderation } from 'openai/resources/moderations';
 
 interface ContentModerationErrorDataItem {
   input: string;
-  error: CreateModerationResponseResultsInner;
+  error: Moderation;
 }
 export class ContentModerationError extends BadRequestException {
   constructor(public readonly data: ContentModerationErrorDataItem[]) {

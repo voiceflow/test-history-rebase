@@ -1,6 +1,7 @@
 import { AI_MODEL_PARAMS, AIMessage, AIModel, AIParams, DEFAULT_AI_MODEL_PARAM } from '@voiceflow/dtos';
+import type { Observable } from 'rxjs';
 
-import { CompletionOptions, CompletionOutput } from './llm-model.dto';
+import { CompletionOptions, CompletionOutput, CompletionStreamOutput } from './llm-model.dto';
 
 export abstract class LLMModel {
   public abstract modelRef: AIModel;
@@ -27,7 +28,11 @@ export abstract class LLMModel {
 
   abstract generateCompletion(prompt: string, params: AIParams, options?: CompletionOptions): Promise<CompletionOutput>;
 
+  abstract generateCompletionStream(prompt: string, params: AIParams, options?: CompletionOptions): Observable<CompletionStreamOutput>;
+
   abstract generateChatCompletion(messages: AIMessage[], params: AIParams, options?: CompletionOptions): Promise<CompletionOutput>;
+
+  abstract generateChatCompletionStream(messages: AIMessage[], params: AIParams, options?: CompletionOptions): Observable<CompletionStreamOutput>;
 
   public normalizeMaxTokens(maxTokens: number | undefined) {
     if (!maxTokens) return maxTokens;

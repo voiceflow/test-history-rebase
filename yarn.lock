@@ -10195,7 +10195,6 @@ __metadata:
     "@voiceflow/nestjs-common": 2.38.5
     "@voiceflow/nestjs-env": 1.6.2
     "@voiceflow/nestjs-openapi-extractor": 1.7.9
-    "@voiceflow/openai": ^3.2.1
     "@voiceflow/sdk-auth": ^2.8.1
     "@voiceflow/sdk-billing": 1.23.2
     axios: 1.6.0
@@ -10203,15 +10202,19 @@ __metadata:
     dd-trace: 4.33.0
     dedent: ^1.5.1
     dotenv: 16.0.3
+    gpt-tokens: ^1.3.3
     ioredis: 5.3.2
     nanoevents: 7.0.1
     nestjs-pino: 3.3.0
     nestjs-throttler-storage-redis: ^0.4.1
     nestjs-zod: 2.3.3
+    openai: ^4.33.0
     reflect-metadata: 0.1.13
+    rxjs: ^7.8.1
     supertest: 6.3.3
+    ts-pattern: ^5.1.1
     tsx: 3.12.7
-    undici: 5.28.4
+    undici: 5.23.0
     zod: 3.22.4
   languageName: unknown
   linkType: soft
@@ -10335,16 +10338,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voiceflow/openai@npm:^3.2.1":
-  version: 3.2.1
-  resolution: "@voiceflow/openai@npm:3.2.1"
-  dependencies:
-    axios: ^0.26.0
-    form-data: ^4.0.0
-  checksum: 216a18a3461ec195dc872f0697f4d8ef00eb79162bf8a7985db963a89f29f7de9ed714d416ecc5cca678f54cc1da6aef04fe1e19d008b28aff82020d4bec568f
-  languageName: node
-  linkType: hard
-
 "@voiceflow/orm-designer@workspace:*, @voiceflow/orm-designer@workspace:libs/orm-designer":
   version: 0.0.0-use.local
   resolution: "@voiceflow/orm-designer@workspace:libs/orm-designer"
@@ -10386,18 +10379,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voiceflow/orval-fetch@npm:1.3.0":
-  version: 1.3.0
-  resolution: "@voiceflow/orval-fetch@npm:1.3.0"
-  peerDependencies:
-    "@orval/core": ^6
-  peerDependenciesMeta:
-    "@orval/core":
-      optional: true
-  checksum: d33928c837290616d455afec9edf83ea9fafd702e25c5dc802d82ea9534e6544be3b53b12085b777030ec3c1b7cebe967043ab5d34a85e0e9ec405b864e3b076
-  languageName: node
-  linkType: hard
-
 "@voiceflow/orval-fetch@npm:1.4.0":
   version: 1.4.0
   resolution: "@voiceflow/orval-fetch@npm:1.4.0"
@@ -10407,6 +10388,18 @@ __metadata:
     "@orval/core":
       optional: true
   checksum: fd8e1294a92dbf6a0b13b7227825294354dd5600b2786dfd2390b4e2aa0f6b7338253d7be017404bf489171a32a66b175fea825eba8b7ce56f0dbf3b11d4a0ec
+  languageName: node
+  linkType: hard
+
+"@voiceflow/orval-fetch@npm:1.5.2":
+  version: 1.5.2
+  resolution: "@voiceflow/orval-fetch@npm:1.5.2"
+  peerDependencies:
+    "@orval/core": ^6
+  peerDependenciesMeta:
+    "@orval/core":
+      optional: true
+  checksum: d654d19f8e8f9bd4a012823449b8cb524bfa477b3309896998a3b35074993708b21d9d0a01015cd6012ec84911984c068a3a7f1d82a69050bf19074d88e028e7
   languageName: node
   linkType: hard
 
@@ -10857,7 +10850,7 @@ __metadata:
     "@voiceflow-meta/eslint-config": "workspace:*"
     "@voiceflow-meta/prettier-config": "workspace:*"
     "@voiceflow-meta/typescript-config": "workspace:*"
-    "@voiceflow/orval-fetch": 1.3.0
+    "@voiceflow/orval-fetch": 1.5.2
     "@voiceflow/realtime": "workspace:*"
     "@voiceflow/sdk-common": 1.11.3
     nestjs-zod: 2.2.0
@@ -10888,8 +10881,9 @@ __metadata:
     "@voiceflow-meta/prettier-config": "workspace:*"
     "@voiceflow-meta/typescript-config": "workspace:*"
     "@voiceflow/ml-gateway": "workspace:*"
-    "@voiceflow/orval-fetch": 1.3.0
+    "@voiceflow/orval-fetch": 1.5.2
     "@voiceflow/sdk-common": 1.11.3
+    eventsource-parser: ^1.1.2
     nestjs-zod: 2.2.0
     undici: 5.28.4
   peerDependencies:
@@ -12599,7 +12593,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"base64-js@npm:^1.0.2, base64-js@npm:^1.3.0, base64-js@npm:^1.3.1":
+"base64-js@npm:^1.0.2, base64-js@npm:^1.3.0, base64-js@npm:^1.3.1, base64-js@npm:^1.5.1":
   version: 1.5.1
   resolution: "base64-js@npm:1.5.1"
   checksum: 669632eb3745404c2f822a18fc3a0122d2f9a7a13f7fb8b5823ee19d1d2ff9ee5b52c53367176ea4ad093c332fd5ab4bd0ebae5a8e27917a4105a4cfc86b1005
@@ -17821,6 +17815,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"eventsource-parser@npm:^1.1.2":
+  version: 1.1.2
+  resolution: "eventsource-parser@npm:1.1.2"
+  checksum: 01896eea7203e097e50f7554da6ca3c6d33593ff11e8e3c970461932c3643bed2aea8402bf7fd16a1b25117de4e6fed15fef80672964a7dbd42b1e6781bf6e7a
+  languageName: node
+  linkType: hard
+
 "execa@npm:4.1.0":
   version: 4.1.0
   resolution: "execa@npm:4.1.0"
@@ -19684,6 +19685,17 @@ __metadata:
     unzip-response: ^2.0.1
     url-parse-lax: ^1.0.0
   checksum: e816306dbd968aa74c6bebcb611797fc08fe84af0f274b3af75d7d6a1f745bdf0dfe9279be0047646038b8b40ac94735d11187be1fb74069831520ae70fbd507
+  languageName: node
+  linkType: hard
+
+"gpt-tokens@npm:^1.3.3":
+  version: 1.3.4
+  resolution: "gpt-tokens@npm:1.3.4"
+  dependencies:
+    decimal.js: ^10.4.3
+    js-tiktoken: ^1.0.10
+    openai-chat-tokens: ^0.2.8
+  checksum: f297fed8c7738373b065c6ae45a576c1c8b1b85a8eff5b1d516e4c6839db47e9930aa5269b8f871aaf6d24faeaa072f1f29699f8658764fd450bf1398245287a
   languageName: node
   linkType: hard
 
@@ -21911,6 +21923,15 @@ __metadata:
   version: 1.0.1
   resolution: "js-string-escape@npm:1.0.1"
   checksum: f11e0991bf57e0c183b55c547acec85bd2445f043efc9ea5aa68b41bd2a3e7d3ce94636cb233ae0d84064ba4c1a505d32e969813c5b13f81e7d4be12c59256fe
+  languageName: node
+  linkType: hard
+
+"js-tiktoken@npm:^1.0.10, js-tiktoken@npm:^1.0.7":
+  version: 1.0.11
+  resolution: "js-tiktoken@npm:1.0.11"
+  dependencies:
+    base64-js: ^1.5.1
+  checksum: 0cb3e81f28bdf72b35994a864c1466639e2424943bc66377e85e2c7984aa914d53617a6787a6e97930365a0ca9ba503357a8266f83e32fc610ba1dbee105d134
   languageName: node
   linkType: hard
 
@@ -26479,6 +26500,33 @@ __metadata:
   languageName: node
   linkType: hard
 
+"openai-chat-tokens@npm:^0.2.8":
+  version: 0.2.8
+  resolution: "openai-chat-tokens@npm:0.2.8"
+  dependencies:
+    js-tiktoken: ^1.0.7
+  checksum: e859ac2bec0b64883a8ae6878bd8f65a178895c4146b7d1fcf8d2d3cd7b7d7839d066e9b92b1cd0d93e0b7c4ff5835a6b03d7a1ce2dd38f1fd85e669488fcc6a
+  languageName: node
+  linkType: hard
+
+"openai@npm:^4.33.0":
+  version: 4.33.0
+  resolution: "openai@npm:4.33.0"
+  dependencies:
+    "@types/node": ^18.11.18
+    "@types/node-fetch": ^2.6.4
+    abort-controller: ^3.0.0
+    agentkeepalive: ^4.2.1
+    form-data-encoder: 1.7.2
+    formdata-node: ^4.3.2
+    node-fetch: ^2.6.7
+    web-streams-polyfill: ^3.2.1
+  bin:
+    openai: bin/cli
+  checksum: c1cf271e1eaa44f07d248b5bbc01299f7474f7436e050ba1f7c287a819bb234d007bae687219245f6f89df46dfd5e02363936cba9ad32d1e7228718e996f559c
+  languageName: node
+  linkType: hard
+
 "openapi3-ts@npm:^3.0.0":
   version: 3.2.0
   resolution: "openapi3-ts@npm:3.2.0"
@@ -30295,7 +30343,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rxjs@npm:7.8.1, rxjs@npm:^7.5.1, rxjs@npm:^7.5.5, rxjs@npm:^7.8.0":
+"rxjs@npm:7.8.1, rxjs@npm:^7.5.1, rxjs@npm:^7.5.5, rxjs@npm:^7.8.0, rxjs@npm:^7.8.1":
   version: 7.8.1
   resolution: "rxjs@npm:7.8.1"
   dependencies:
@@ -32919,6 +32967,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ts-pattern@npm:^5.1.1":
+  version: 5.1.1
+  resolution: "ts-pattern@npm:5.1.1"
+  checksum: 569a26182a5e6d3f021e0ef97b3139ee8f43fb3d621c218c085b12836955a6a694c6e50d25be58a6b98eec2c11034a08dd5cb8c0a3b294563b0977c01b840527
+  languageName: node
+  linkType: hard
+
 "tsc-alias@npm:1.8.6":
   version: 1.8.6
   resolution: "tsc-alias@npm:1.8.6"
@@ -33524,6 +33579,15 @@ __metadata:
   dependencies:
     busboy: ^1.6.0
   checksum: 8dc55240a60ae7680798df344e8f46ad0f872ed0fa434fb94cc4fd2b5b2f8053bdf11994d15902999d3880f9bf7cd875a2e90883d2702bf0f366dacd9cbf3fc6
+  languageName: node
+  linkType: hard
+
+"undici@npm:5.23.0":
+  version: 5.23.0
+  resolution: "undici@npm:5.23.0"
+  dependencies:
+    busboy: ^1.6.0
+  checksum: 906ca4fb1d47163d2cee2ecbbc664a1d92508a2cdf1558146621109f525c983a83597910b36e6ba468240e95259be5939cea6babc99fc0c36360b16630f66784
   languageName: node
   linkType: hard
 

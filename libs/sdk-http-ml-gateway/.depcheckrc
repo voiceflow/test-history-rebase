@@ -8,6 +8,7 @@
   "ignores": [
     "@voiceflow-meta/typescript-config",
     "@voiceflow-meta/eslint-config",
-    "@voiceflow-meta/prettier-config"
+    "@voiceflow-meta/prettier-config",
+    "eventsource-parser"
   ]
 }

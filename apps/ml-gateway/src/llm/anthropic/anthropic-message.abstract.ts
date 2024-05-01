@@ -1,11 +1,12 @@
 import Client from '@anthropic-ai/sdk';
 import { Logger } from '@nestjs/common';
 import { AIMessage, AIMessageRole, AIParams } from '@voiceflow/dtos';
+import { filter, from, map, mergeMap, Observable } from 'rxjs';
 
 import { LLMModel } from '../llm-model.abstract';
-import { CompletionOutput } from '../llm-model.dto';
+import { CompletionOutput, CompletionStreamOutput } from '../llm-model.dto';
 import { AnthropicConfig } from './anthropic.interface';
-import { formatMessages } from './anthropic-message.util';
+import { formatMessages, messageEventToCompletion } from './anthropic-message.util';
 
 export abstract class AnthropicMessageAIModel extends LLMModel {
   private logger = new Logger(AnthropicMessageAIModel.name);
@@ -61,5 +62,51 @@ export abstract class AnthropicMessageAIModel extends LLMModel {
       multiplier: this.TOKEN_MULTIPLIER,
       model: this.modelRef,
     };
+  }
+
+  generateCompletionStream(prompt: string, params: AIParams): Observable<CompletionStreamOutput> {
+    const messages: AIMessage[] = [{ role: AIMessageRole.USER, content: prompt }];
+    if (params.system) messages.unshift({ role: AIMessageRole.SYSTEM, content: params.system });
+
+    return this.generateChatCompletionStream(messages, params);
+  }
+
+  generateChatCompletionStream(messages: AIMessage[], params: AIParams): Observable<CompletionStreamOutput> {
+    return from(
+      this.client.messages
+        .create({
+          system: params.system,
+          messages: formatMessages(messages),
+          model: this.anthropicModel,
+          temperature: params.temperature,
+          max_tokens: this.normalizeMaxTokens(params.maxTokens) || this.defaultMaxTokens,
+          stop_sequences: [...(params.stop || [])],
+          stream: true,
+        })
+        .catch((error: unknown) => {
+          this.logger.warn({ error, messages, params }, `${this.modelRef} completion`);
+          return [];
+        })
+    ).pipe(
+      mergeMap((event) => event),
+      map(
+        messageEventToCompletion({
+          model: this.modelRef,
+          multiplier: this.TOKEN_MULTIPLIER,
+        })
+      ),
+      filter((event): event is CompletionStreamOutput => event !== null),
+      map((event) => {
+        return {
+          ...event,
+          completion: {
+            ...event.completion,
+            answerTokens: this.calculateTokenMultiplier(event!.completion.answerTokens),
+            queryTokens: this.calculateTokenMultiplier(event!.completion.queryTokens),
+            tokens: event!.completion.queryTokens + event!.completion.answerTokens,
+          },
+        };
+      })
+    );
   }
 }

@@ -22,3 +22,12 @@ export const CompletionOptions = z
   .partial();
 
 export type CompletionOptions = z.infer<typeof CompletionOptions>;
+
+export const CompletionEvent = z.object({
+  type: z.literal('completion'),
+  completion: CompletionOutput,
+});
+
+export const CompletionStreamOutput = z.discriminatedUnion('type', [CompletionEvent]);
+
+export type CompletionStreamOutput = z.infer<typeof CompletionStreamOutput>;

@@ -1,6 +1,8 @@
 import { Utils } from '@voiceflow/common';
 import type { AxiosError } from 'axios';
 
+import { EmptyCompletionOutput } from '../llm-model.constant';
+
 export const isAxiosError = (error: any): error is AxiosError<any> => !!error?.isAxiosError;
 
 export const getOpenAIResponseError = (error: any): string | undefined => {
@@ -32,3 +34,8 @@ export const delayedPromiseRace = async <T extends () => Promise<any>>(func: T, 
   // if all retries are already invoked, wait for first one to finish
   return Promise.race([...promises]);
 };
+
+export const emptyCompletionOutput = (model: string, error: string) => ({
+  type: 'completion' as const,
+  completion: EmptyCompletionOutput({ error, model }),
+});

@@ -83,6 +83,7 @@
     "@voiceflow/sdk-billing": "1.23.2",
     "@voiceflow/sdk-identity": "1.19.2",
     "@voiceflow/sdk-logux-designer": "workspace:*",
+    "@voiceflow/sdk-message-queue": "1.7.0",
     "@voiceflow/socket-utils": "workspace:*",
     "axios": "1.6.0",
     "bidirectional-adapter": "1.2.1",

@@ -230,15 +230,39 @@ const createManyFromFormData =
   async (dispatch, getState) => {
     const state = getState();
 
+    const realtimeKBEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.KB_BE_DOC_CRUD);
+
     const projectID = Session.activeProjectIDSelector(state);
 
     Errors.assertProjectID(projectID);
 
-    const result = await Promise.allSettled(manyFormData.map((data) => knowledgeBaseClient.createOneDocumentFromFormFile(projectID, data)));
+    let documents: KnowledgeBaseDocument[];
+    let result: PromiseSettledResult<DBKnowledgeBaseDocument | any>[] = [];
 
-    const documents = result
-      .filter((res): res is PromiseFulfilledResult<DBKnowledgeBaseDocument> => res.status === 'fulfilled')
-      .map((res) => documentAdapter.fromDB(res.value));
+    if (realtimeKBEnabled) {
+      result = await Promise.allSettled(
+        manyFormData.map((data) => {
+          const file = data.get('file');
+          const canEdit = data.get('canEdit') === 'true';
+
+          if (file instanceof Blob) {
+            return designerClient.knowledgeBase.document.createOneFile(projectID, { file, canEdit });
+          }
+
+          throw new Error('Invalid file data');
+        })
+      );
+
+      documents = documentAdapterRealtime.mapFromDB(
+        result.filter((res): res is PromiseFulfilledResult<any> => res.status === 'fulfilled').map((res) => res.value)
+      );
+    } else {
+      const result = await Promise.allSettled(manyFormData.map((data) => knowledgeBaseClient.createOneDocumentFromFormFile(projectID, data)));
+
+      documents = result
+        .filter((res): res is PromiseFulfilledResult<DBKnowledgeBaseDocument> => res.status === 'fulfilled')
+        .map((res) => documentAdapter.fromDB(res.value));
+    }
 
     dispatch.local(Actions.SetProcessingIDs({ processingIDs: documents.map((d) => d.id) }));
 
@@ -306,16 +330,31 @@ export const createManyFromData =
   async (dispatch, getState) => {
     const state = getState();
 
+    const realtimeKBEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.KB_BE_DOC_CRUD);
+
     const projectID = Session.activeProjectIDSelector(state);
 
     Errors.assertProjectID(projectID);
 
-    const result = await Promise.resolve(knowledgeBaseClient.createManyDocumentsFromURLs(projectID, data)).catch((error) => {
-      const err = error.reason.response?.status === 406 ? error.reason : null;
-      if (err) throw err;
-    });
+    let documents: KnowledgeBaseDocument[];
 
-    const documents = result?.map((res) => documentAdapter.fromDB(res)) || [];
+    if (realtimeKBEnabled) {
+      const dataUrls = data as BaseModels.Project.KnowledgeBaseURL[];
+
+      const response = await Promise.resolve(designerClient.knowledgeBase.document.createManyURLs(projectID, { data: dataUrls })).catch((error) => {
+        const err = error.reason.response?.status === 406 ? error.reason : null;
+        if (err) throw err;
+      });
+
+      documents = documentAdapterRealtime.mapFromDB(response?.map((res: any) => res) || []);
+    } else {
+      const result = await Promise.resolve(knowledgeBaseClient.createManyDocumentsFromURLs(projectID, data)).catch((error) => {
+        const err = error.reason.response?.status === 406 ? error.reason : null;
+        if (err) throw err;
+      });
+
+      documents = result?.map((res) => documentAdapter.fromDB(res)) || [];
+    }
 
     if (!documents || data.length !== documents.length) {
       const erroredCount = data.length - documents.length;

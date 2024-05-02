@@ -2,6 +2,7 @@ import { BaseEnvironmentVariables } from '@voiceflow/nestjs-common';
 import { AuthEnvironmentVariables } from '@voiceflow/sdk-auth/nestjs';
 import { BillingEnvironmentVariables } from '@voiceflow/sdk-billing/nestjs';
 import { IdentityEnvironmentVariables } from '@voiceflow/sdk-identity/nestjs';
+import { RabbitMQConnectionEnvironmentVariables } from '@voiceflow/sdk-message-queue/nestjs';
 import { z } from 'nestjs-zod/z';
 
 export const EnvironmentVariables = BaseEnvironmentVariables.extend({
@@ -47,6 +48,9 @@ export const EnvironmentVariables = BaseEnvironmentVariables.extend({
   IDENTITY_API_ENDPOINT: z.string(),
   BILLING_API_ENDPOINT: z.string(),
 
+  KL_PARSER_SERVICE_HOST: z.string(),
+  KL_PARSER_SERVICE_PORT: z.string(),
+
   /* frontend endpoints */
   CREATOR_APP_PUBLIC_ENDPOINT: z.string(),
 
@@ -69,9 +73,13 @@ export const EnvironmentVariables = BaseEnvironmentVariables.extend({
   /* request throttler */
   REQUEST_THROTTLER_TTL: z.string().optional().default('60000').transform(Number),
   REQUEST_THROTTLER_LIMIT: z.string().optional().default('1000').transform(Number),
+
+  /* aes encryption secret key  */
+  AES_SECRET_KEY: z.string(),
 })
   .extend(AuthEnvironmentVariables.shape)
   .extend(BillingEnvironmentVariables.shape)
-  .extend(IdentityEnvironmentVariables.shape);
+  .extend(IdentityEnvironmentVariables.shape)
+  .extend(RabbitMQConnectionEnvironmentVariables.shape);
 
 export type EnvironmentVariables = z.infer<typeof EnvironmentVariables>;

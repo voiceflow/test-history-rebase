@@ -19,7 +19,7 @@ const NODE_PORTS: Realtime.NodePorts = {
   },
 };
 
-const INITIAL_STATE: CreatorV2.CreatorState = {
+const INITIAL_STATE: CreatorV2.FullCreatorState = {
   ...MOCK_STATE,
   portsByNodeID: { [NODE_ID]: NODE_PORTS },
 };

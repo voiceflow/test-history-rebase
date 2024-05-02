@@ -1,3 +1,5 @@
+import { vi } from 'vitest';
+
 import type { Storage } from './types';
 
 export * as StorageTypes from './types';

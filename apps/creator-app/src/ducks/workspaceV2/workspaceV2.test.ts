@@ -24,7 +24,7 @@ const WORKSPACE_MEMBER = {
   status: null,
 };
 
-const WORKSPACE: Realtime.Workspace = {
+const WORKSPACE = {
   id: WORKSPACE_ID,
   creatorID: CREATOR_ID,
   name: 'workspace',
@@ -37,7 +37,6 @@ const WORKSPACE: Realtime.Workspace = {
   organizationTrialDaysLeft: 3,
   state: null,
   planSeatLimits: { viewer: 10, editor: 20 },
-  boards: [],
   members: Normal.normalize(
     [
       WORKSPACE_MEMBER,
@@ -60,12 +59,13 @@ const WORKSPACE: Realtime.Workspace = {
         creator_id: null,
         role: UserRole.VIEWER,
         email: 'pending@voiceflow.com',
-        created: '',
+        created: null,
+        expiry: '100',
       },
     ],
     (member) => member.email
   ),
-};
+} as Realtime.Workspace;
 
 const MOCK_STATE: Workspace.WorkspaceState = {
   byKey: {
@@ -85,7 +85,7 @@ const MOCK_STATE: Workspace.WorkspaceState = {
       planSeatLimits: { viewer: 10, editor: 20 },
       members: Normal.createEmpty(),
       pendingMembers: Normal.createEmpty(),
-    },
+    } as Realtime.Workspace,
   },
   allKeys: [WORKSPACE_ID, 'abc'],
 };

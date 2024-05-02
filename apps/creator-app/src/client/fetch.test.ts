@@ -1,13 +1,14 @@
 import { describe, expect, it } from 'vitest';
 
+import * as Mocks from '@/../test/_suite/mocks';
 import { api, apiV2 } from '@/client/fetch';
 
 const TEST_API_ENDPOINT = 'https://localhost:8003';
 
-describe('fetch', ({ mocks }) => {
+describe('fetch', () => {
   describe('api', () => {
     it('has endpoint prefix', async () => {
-      const fetchCall = mocks.fetch();
+      const fetchCall = Mocks.fetch();
 
       await api('some/path');
 
@@ -21,7 +22,7 @@ describe('fetch', ({ mocks }) => {
 
   describe('apiV2', () => {
     it('has endpoint prefix', async () => {
-      const fetchCall = mocks.fetch();
+      const fetchCall = Mocks.fetch();
 
       await apiV2('some/path');
 

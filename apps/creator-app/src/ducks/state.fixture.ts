@@ -1,5 +1,13 @@
+import * as Normal from 'normal-store';
+
 import * as Account from '@/ducks/account';
+import * as Assistant from '@/ducks/assistant';
+import * as CanvasTemplate from '@/ducks/canvasTemplate';
 import * as CreatorV2 from '@/ducks/creatorV2';
+import * as CreatorDiagramsHistory from '@/ducks/creatorV2/diagramsHistory';
+import * as CreatorFocus from '@/ducks/creatorV2/focus';
+import * as CustomBlock from '@/ducks/customBlock';
+import * as Designer from '@/ducks/designer';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Domain from '@/ducks/domain';
 import * as Feature from '@/ducks/feature';
@@ -27,7 +35,11 @@ export const MOCK_STATE: State = {
   form: {},
 
   [Account.STATE_KEY]: Account.INITIAL_STATE,
-  [CreatorV2.STATE_KEY]: CreatorV2.INITIAL_STATE,
+  [CreatorV2.STATE_KEY]: {
+    ...CreatorV2.INITIAL_STATE,
+    [CreatorFocus.FOCUS_STATE_KEY]: CreatorFocus.INITIAL_FOCUS_STATE,
+    [CreatorDiagramsHistory.DIAGRAMS_HISTORY_STATE_KEY]: CreatorDiagramsHistory.INITIAL_DIAGRAMS_HISTORY_STATE,
+  },
   [DiagramV2.STATE_KEY]: DiagramV2.INITIAL_STATE,
   [Feature.STATE_KEY]: Feature.INITIAL_STATE,
   [Notifications.STATE_KEY]: Notifications.INITIAL_STATE,
@@ -53,7 +65,7 @@ export const MOCK_STATE: State = {
   },
   [Tracking.STATE_KEY]: {},
   [Transcript.STATE_KEY]: Transcript.INITIAL_STATE,
-  [UI.STATE_KEY]: UI.INITIAL_STATE as ReturnType<typeof UI.default>,
+  [UI.STATE_KEY]: UI.INITIAL_STATE as ReturnType<(typeof UI)['reducer']>,
   [VersionV2.STATE_KEY]: createCRUDState(),
   [Domain.STATE_KEY]: { ...createCRUDState(), activeDomainID: null },
   [Viewport.STATE_KEY]: Viewport.INITIAL_STATE as ReturnType<typeof Viewport.default>,
@@ -61,4 +73,8 @@ export const MOCK_STATE: State = {
   [VariableState.STATE_KEY]: { ...VariableState.INITIAL_STATE, selectedState: null },
   [History.STATE_KEY]: History.INITIAL_STATE,
   [Organization.STATE_KEY]: Organization.INITIAL_STATE,
+  [CanvasTemplate.STATE_KEY]: CanvasTemplate.INITIAL_STATE,
+  [CustomBlock.STATE_KEY]: CustomBlock.INITIAL_STATE,
+  [Assistant.STATE_KEY]: { ...Normal.createEmpty(), awareness: Assistant.Awareness.INITIAL_STATE },
+  [Designer.STATE_KEY]: {} as any,
 };

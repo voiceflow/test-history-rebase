@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import type { PrototypeIntent, PrototypeModel, PrototypeSlot } from '@voiceflow/dtos';
-import orderBy from 'lodash/orderBy';
+import _orderBy from 'lodash/orderBy.js';
 import { MD5 } from 'object-hash';
 
 interface HashedRecordDiff {
@@ -43,21 +43,21 @@ export class EnvironmentNLUTrainingUtil {
     const prepareIntent = (intent: PrototypeIntent): PrototypeIntent => ({
       ...intent,
       noteID: '',
-      inputs: orderBy(intent.inputs, (intent) => intent.text),
+      inputs: _orderBy(intent.inputs, (intent) => intent.text),
     });
 
     const projectHashedSlots = this.hashModelData(
-      orderBy(projectModel?.slots ?? [], (slot) => slot.key).map(prepareSlot)
+      _orderBy(projectModel?.slots ?? [], (slot) => slot.key).map(prepareSlot)
     );
     const projectHashedIntents = this.hashModelData(
-      orderBy(projectModel?.intents ?? [], (intent) => intent.key).map(prepareIntent)
+      _orderBy(projectModel?.intents ?? [], (intent) => intent.key).map(prepareIntent)
     );
 
     const versionHashedSlots = this.hashModelData(
-      orderBy(versionModel?.slots ?? [], (slot) => slot.key).map(prepareSlot)
+      _orderBy(versionModel?.slots ?? [], (slot) => slot.key).map(prepareSlot)
     );
     const versionHashedIntents = this.hashModelData(
-      orderBy(versionModel?.intents ?? [], (intent) => intent.key).map(prepareIntent)
+      _orderBy(versionModel?.intents ?? [], (intent) => intent.key).map(prepareIntent)
     );
 
     return {

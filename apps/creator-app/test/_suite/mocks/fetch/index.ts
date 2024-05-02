@@ -1,3 +1,5 @@
+import { vi } from 'vitest';
+
 import type { Fetch } from './types';
 
 export * as FetchTypes from './types';

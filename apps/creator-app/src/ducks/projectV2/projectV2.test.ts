@@ -56,6 +56,10 @@ const PROJECT: Realtime.AnyProject = {
   platformData: {},
   customThemes: [],
   platformMembers: Normal.normalize([PROJECT_PLATFORM_MEMBER], (member) => String(member.creatorID)),
+  members: Normal.createEmpty(),
+  nlu: Platform.Constants.NLUType.VOICEFLOW,
+  type: Platform.Constants.ProjectType.CHAT,
+  aiAssistSettings: {},
 };
 
 const MOCK_STATE: Project.ProjectState = {
@@ -73,11 +77,9 @@ const MOCK_STATE: Project.ProjectState = {
       isLive: false,
       platform: Platform.Constants.PlatformType.VOICEFLOW,
       linkType: BaseModels.Project.LinkType.CURVED,
-      locales: [],
-      customThemes: [],
       platformData: {},
       platformMembers: Normal.createEmpty(),
-    },
+    } as Realtime.AnyProject,
   },
   allKeys: [PROJECT_ID, 'abc'],
 

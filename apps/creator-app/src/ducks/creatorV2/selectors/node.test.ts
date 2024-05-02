@@ -14,7 +14,7 @@ const MARKUP_NODE = { ...NODE_DATA, nodeID: 'markupID' };
 const BLOCK_NODE = { ...NODE_DATA, nodeID: 'blockID', type: Realtime.BlockType.COMBINED, name: 'abc' };
 const STEP_NODE = { ...NODE_DATA, nodeID: 'stepID', type: Realtime.BlockType.CODE };
 
-const INITIAL_STATE: CreatorV2.CreatorState = {
+const INITIAL_STATE: CreatorV2.FullCreatorState = {
   ...MOCK_STATE,
   nodes: normalize([START_NODE, MARKUP_NODE, BLOCK_NODE, STEP_NODE], (node) => node.nodeID),
   coordsByNodeID: { [BLOCK_NODE.nodeID]: NODE_COORDS },

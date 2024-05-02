@@ -1,5 +1,5 @@
 import { BaseNode, BaseVersion } from '@voiceflow/base-types';
-import type * as Platform from '@voiceflow/platform-config';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { describe, expect, it } from 'vitest';
 
@@ -12,7 +12,14 @@ const PROJECT_ID = 'projectID';
 const VERSION_ID = 'versionID';
 const DIAGRAM_ID = 'diagramID';
 const CREATOR_ID = 999;
-const ACTION_CONTEXT = { workspaceID: WORKSPACE_ID, projectID: PROJECT_ID, versionID: VERSION_ID };
+const ACTION_CONTEXT = {
+  workspaceID: WORKSPACE_ID,
+  projectID: PROJECT_ID,
+  versionID: VERSION_ID,
+  platform: Platform.Constants.PlatformType.WEBCHAT,
+  type: Platform.Constants.ProjectType.CHAT,
+  defaultVoice: 'not-a-real-voice',
+};
 
 const VERSION: Platform.Base.Models.Version.Model = {
   id: VERSION_ID,
@@ -21,7 +28,6 @@ const VERSION: Platform.Base.Models.Version.Model = {
   rootDiagramID: DIAGRAM_ID,
   status: null,
   variables: ['fizz', 'buzz'],
-  topics: [],
   components: [],
   folders: {},
   session: {
@@ -34,7 +40,6 @@ const VERSION: Platform.Base.Models.Version.Model = {
     },
   },
   settings: {
-    defaultVoice: null,
     error: null,
     repeat: BaseVersion.RepeatType.DIALOG,
     defaultCanvasNodeVisibility: BaseNode.Utils.CanvasNodeVisibility.PREVIEW,
@@ -104,16 +109,16 @@ describe('Ducks - Version V2', () => {
 
     describeReducer(Realtime.version.patchSettings, ({ applyAction }) => {
       it('partially update settings data', () => {
-        const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, settings: { defaultVoice: 'foo' as any } });
+        const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, settings: { repeat: BaseVersion.RepeatType.OFF } });
 
-        expect(result.byKey[VERSION_ID].settings).toContain({ defaultVoice: 'foo' });
+        expect(result.byKey[VERSION_ID].settings).toContain({ repeat: BaseVersion.RepeatType.OFF });
       });
 
       it('do nothing if version does not exist', () => {
         const result = applyAction(MOCK_STATE, {
           ...ACTION_CONTEXT,
           versionID: 'foo',
-          settings: { defaultVoice: 'foo' as any },
+          settings: { repeat: BaseVersion.RepeatType.OFF },
         });
 
         expect(result).toBe(MOCK_STATE);

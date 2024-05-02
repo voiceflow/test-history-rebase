@@ -4,6 +4,9 @@ import type { Overwrite } from 'utility-types';
 
 import type { Point } from '@/types';
 
+import type * as DiagramsHistory from './diagramsHistory';
+import type * as Focus from './focus';
+
 export type NodeDescriptor = Overwrite<Realtime.Node, { ports: Realtime.PortsDescriptor }>;
 
 export type ParentNodeDescriptor = WithRequired<Partial<NodeDescriptor>, 'id' | 'ports'>;
@@ -44,4 +47,9 @@ export interface CreatorState {
 
   portIDsByLinkID: LinkLookup<string[]>;
   nodeIDsByLinkID: LinkLookup<string[]>;
+}
+
+export interface FullCreatorState extends CreatorState {
+  [Focus.FOCUS_STATE_KEY]: Focus.FocusState;
+  [DiagramsHistory.DIAGRAMS_HISTORY_STATE_KEY]: DiagramsHistory.DiagramsHistoryState;
 }

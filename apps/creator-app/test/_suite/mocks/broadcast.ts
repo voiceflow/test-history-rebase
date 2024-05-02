@@ -21,7 +21,9 @@ class MockBroadcastChannel<T = any> {
     }
   }
 
-  close(): void {}
+  close(): void {
+    // no-op
+  }
 
   addEventListener(event: 'message', listener: (event: MessageEvent<T>) => void): void {
     if (event === 'message') {

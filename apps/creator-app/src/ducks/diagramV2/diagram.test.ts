@@ -25,13 +25,12 @@ const ACTION_CONTEXT = {
   domainID: DOMAIN_ID,
 };
 
-const DIAGRAM: Realtime.Diagram = {
+const DIAGRAM = {
   id: DIAGRAM_ID,
   name: 'diagram',
   type: BaseModels.Diagram.DiagramType.COMPONENT,
   variables: ['fizz', 'buzz'],
-  menuItems: [],
-};
+} as Realtime.Diagram;
 
 const DIAGRAM_VIEWER: ProjectV2.DiagramViewer = {
   creatorID: CREATOR_ID,
@@ -48,8 +47,7 @@ const MOCK_STATE: Diagram.DiagramState = {
       name: 'alphabet diagram',
       type: BaseModels.Diagram.DiagramType.TOPIC,
       variables: ['xyz'],
-      menuItems: [],
-    },
+    } as Realtime.Diagram,
   },
   allKeys: [DIAGRAM_ID, 'abc'],
   awareness: {
@@ -57,6 +55,7 @@ const MOCK_STATE: Diagram.DiagramState = {
   },
   sharedNodes: {},
   globalIntentStepMap: {},
+  lastCreatedID: null,
 };
 
 const ROOT_MOCK_STATE: State = {

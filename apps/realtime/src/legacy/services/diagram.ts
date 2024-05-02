@@ -4,7 +4,7 @@ import type { AnyRecord, Nullish } from '@voiceflow/common';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { ObjectId } from 'bson';
-import _mapValues from 'lodash/mapValues';
+import _mapValues from 'lodash/mapValues.js';
 import type { Optional, Required } from 'utility-types';
 
 import { HEARTBEAT_EXPIRE_TIMEOUT } from '@/constants';

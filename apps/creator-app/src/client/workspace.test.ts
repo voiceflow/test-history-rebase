@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 import * as Fetch from './fetch';
 import client, { WORKSPACES_PATH } from './workspace';

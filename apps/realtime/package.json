@@ -25,7 +25,7 @@
     "mesh:post:realtime-http": "exit 0",
     "mesh:pre:realtime": "exit 0",
     "mesh:pre:realtime-http": "exit 0",
-    "schema:generate": "NODE_ENV=test node --experimental-specifier-resolution=node --unhandled-rejections=warn-with-error-code extract-scheme.mjs",
+    "schema:generate": "NODE_ENV=test vf-extract-schema-esm openapi.next.json",
     "schema:validate": "yarn g:openapi:validate realtime",
     "start": "PORT=8013 CREATOR_API_ENDPOINT=https:// NODE_ENV=production yarn start:base",
     "start:base": "node --experimental-specifier-resolution=node --max-old-space-size=8192 build/main.js",

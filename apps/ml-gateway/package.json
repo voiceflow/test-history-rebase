@@ -19,7 +19,7 @@
     "local:e2e": "yarn kill:e2e && NODE_ENV=e2e NODE_TLS_REJECT_UNAUTHORIZED=0 yarn dev",
     "mesh:post": "exit 0",
     "mesh:pre": "exit 0",
-    "schema:generate": "NODE_ENV=test node --experimental-specifier-resolution=node --unhandled-rejections=warn-with-error-code extract-scheme.mjs",
+    "schema:generate": "NODE_ENV=test vf-extract-schema-esm openapi.next.json",
     "schema:validate": "yarn g:openapi:validate ml-gateway",
     "start": "PORT=8015 CREATOR_API_ENDPOINT=https:// NODE_ENV=production yarn start:base",
     "start:base": "node --experimental-specifier-resolution=node --max-old-space-size=8192 build/main.js",

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.338.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.337.2...@voiceflow/realtime@1.338.0) (2024-05-02)
+
+### Features
+
+* add create-many kb documents endpoint [bugfix] (COR-1797) ([#8014](https://github.com/voiceflow/creator-app/issues/8014)) ([a2c8702](https://github.com/voiceflow/creator-app/commit/a2c87028d930c0077af572f3fbbf71a5a938b76b))
+
 ## [1.337.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.337.1...@voiceflow/realtime@1.337.2) (2024-05-01)
 
 **Note:** Version bump only for package @voiceflow/realtime

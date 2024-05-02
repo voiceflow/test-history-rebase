@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.64.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.63.1...@voiceflow/dtos@1.64.0) (2024-05-02)
+
+### Features
+
+* add create-many kb documents endpoint [bugfix] (COR-1797) ([#8014](https://github.com/voiceflow/creator-app/issues/8014)) ([a2c8702](https://github.com/voiceflow/creator-app/commit/a2c87028d930c0077af572f3fbbf71a5a938b76b))
+
 ## [1.63.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.63.0...@voiceflow/dtos@1.63.1) (2024-05-01)
 
 ### Bug Fixes

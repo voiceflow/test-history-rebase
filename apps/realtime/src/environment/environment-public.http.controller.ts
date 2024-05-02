@@ -1,4 +1,4 @@
-import { Controller, Get, Inject, Param } from '@nestjs/common';
+import { Controller, Get, HttpStatus, Inject, Param } from '@nestjs/common';
 import { ApiParam, ApiTags } from '@nestjs/swagger';
 import { ZodApiResponse } from '@voiceflow/nestjs-common';
 import { Permission } from '@voiceflow/sdk-auth';
@@ -22,7 +22,7 @@ export class EnvironmentPublicHTTPController {
     kind: 'version',
   }))
   @ApiParam({ name: 'environmentID', type: 'string' })
-  @ZodApiResponse({ schema: GetNLUTrainingDiffResponse })
+  @ZodApiResponse({ status: HttpStatus.OK, schema: GetNLUTrainingDiffResponse })
   getNluTrainingDiff(@Param('environmentID') environmentID: string): Promise<GetNLUTrainingDiffResponse> {
     return this.service.getNLUTrainingDiff(environmentID);
   }

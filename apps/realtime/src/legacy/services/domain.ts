@@ -104,7 +104,6 @@ class DomainService extends AbstractControl {
     };
   }
 
-  // eslint-disable-next-line you-dont-need-lodash-underscore/throttle
   public setUpdatedBy = _.throttle(async (versionID: string, domainID: string | null, creatorID: number) => {
     if (!domainID) return;
 

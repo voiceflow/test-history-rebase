@@ -161,7 +161,6 @@ class ProjectService extends AbstractControl {
     await this.models.project.updateManyByWorkspaceID(decodedWorkspaceID, { 'aiAssistSettings.aiPlayground': false });
   }
 
-  // eslint-disable-next-line you-dont-need-lodash-underscore/throttle
   public setUpdatedBy = _.throttle(async (projectID: string, creatorID: number) => {
     try {
       // skipping if the canvas was updated in another instance

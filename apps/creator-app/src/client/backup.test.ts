@@ -14,7 +14,7 @@ describe('Client - Backup', () => {
 
   describe('restore()', () => {
     it('restore project from backup', async () => {
-      const fetch = vi.spyOn(Fetch.apiV2, 'post');
+      const fetch = vi.spyOn(Fetch.apiV2, 'post').mockResolvedValue({});
 
       await client.restore(PROJECT_ID, VERSION_ID);
 

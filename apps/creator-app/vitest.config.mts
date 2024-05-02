@@ -4,6 +4,8 @@ import { mergeConfig } from 'vitest/config';
 
 export default mergeConfig<UserConfig, UserConfig>(baseConfig, {
   test: {
+    globals: true,
+    environment: 'jsdom',
     setupFiles: './config/test/setup.ts',
   },
 });

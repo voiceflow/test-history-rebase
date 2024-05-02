@@ -7,4 +7,4 @@ export {
    * @deprecated Use `normalizeError` from `@/utils/error.util` instead
    */
   normalizeError,
-} from './error.test';
+} from './error.util';

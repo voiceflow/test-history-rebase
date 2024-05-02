@@ -71,7 +71,6 @@
     "utility-types": "3.10.0"
   },
   "devDependencies": {
-    "@testing-library/react": "14.0.0",
     "@types/login-with-amazon-sdk-browser": "1.0.3",
     "vite-plugin-dts": "3.9.0"
   },

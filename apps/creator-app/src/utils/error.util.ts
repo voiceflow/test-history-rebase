@@ -1,5 +1,5 @@
 import { AxiosError } from 'axios';
-import _get from 'lodash/get';
+import _get from 'lodash/get.js';
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export const normalizeError = (error: unknown, defaultMessage?: string): Error => {

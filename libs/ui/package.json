@@ -94,7 +94,8 @@
     "@types/react-input-autosize": "2.2.2",
     "@types/react-syntax-highlighter": "15.5.7",
     "@types/react-toggle": "4.0.3",
-    "@types/valid-url": "1.0.4"
+    "@types/valid-url": "1.0.4",
+    "@voiceflow-meta/vite-config": "workspace:*"
   },
   "peerDependencies": {
     "react-router": "^5",

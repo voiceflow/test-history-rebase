@@ -48,7 +48,7 @@ describe('Client - Workspace', () => {
   describe('updateSource()', () => {
     it('should update the source of a workspace', async () => {
       const sourceID = Utils.generate.id();
-      const fetch = vi.spyOn(Fetch.api, 'patch');
+      const fetch = vi.spyOn(Fetch.api, 'patch').mockResolvedValue({});
 
       await client.updateSource(WORKSPACE_ID, sourceID);
 

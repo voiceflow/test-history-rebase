@@ -1,0 +1,49 @@
+{
+  "name": "@voiceflow-meta/vite-config",
+  "version": "1.0.0",
+  "private": true,
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "files": [
+    "build"
+  ],
+  "scripts": {
+    "build": "yarn g:turbo run build:cmd --filter=@voiceflow-meta/vite-config...",
+    "build:cmd": "yarn g:build:pkg",
+    "clean": "yarn g:rimraf build",
+    "lint": "yarn g:run-p -c lint:eslint lint:prettier",
+    "lint:eslint": "yarn g:eslint",
+    "lint:fix": "yarn g:run-p -c \"lint:eslint --fix\" \"lint:prettier --write\"",
+    "lint:prettier": "yarn g:prettier --check",
+    "test": "yarn test:dependencies",
+    "test:dependencies": "yarn g:depcruise"
+  },
+  "dependencies": {
+    "@rollup/plugin-replace": "^5.0.2",
+    "@svgr/babel-plugin-transform-svg-component": "7.0.0",
+    "@svgr/core": "7.0.0",
+    "@svgr/plugin-jsx": "7.0.0",
+    "@svgr/plugin-svgo": "7.0.0",
+    "@vitejs/plugin-react": "4.0.0",
+    "@vitejs/plugin-react-swc": "3.3.0",
+    "dotenv": "16.0.3",
+    "git-branch": "2.0.1",
+    "jsdom": "22.0.0",
+    "vite-plugin-banner": "0.7.0",
+    "vite-plugin-html": "3.2.0"
+  },
+  "devDependencies": {
+    "@types/git-branch": "2.0.2",
+    "vite": "5.2.10"
+  },
+  "peerDependencies": {
+    "jsdom": "^22.0.0",
+    "vite": "^5.0.0"
+  },
+  "engines": {
+    "node": "20"
+  },
+  "volta": {
+    "extends": "../../package.json"
+  }
+}

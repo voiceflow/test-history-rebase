@@ -12,7 +12,7 @@ describe('Client - Template', () => {
 
   describe('getPlatformTemplate()', () => {
     it('get a platform template', async () => {
-      const fetch = vi.spyOn(Fetch.apiV2, 'get');
+      const fetch = vi.spyOn(Fetch.apiV2, 'get').mockResolvedValue({});
 
       await client.getPlatformTemplate(Platform.Constants.PlatformType.GOOGLE);
 
@@ -23,7 +23,7 @@ describe('Client - Template', () => {
 
     it('get a platform template with a specific tag', async () => {
       const tag = Utils.generate.string();
-      const fetch = vi.spyOn(Fetch.apiV2, 'get');
+      const fetch = vi.spyOn(Fetch.apiV2, 'get').mockResolvedValue({});
 
       await client.getPlatformTemplate(Platform.Constants.PlatformType.ALEXA, tag);
 

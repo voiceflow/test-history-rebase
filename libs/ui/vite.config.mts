@@ -1,2 +1,6 @@
-// eslint-disable-next-line no-restricted-exports
-export { default } from './config/vite/config';
+import defineConfig from '@voiceflow-meta/vite-config';
+
+export default defineConfig({
+  name: 'UI',
+  rootAlias: 'ui',
+});

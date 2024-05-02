@@ -1,0 +1,4 @@
+export const APP_ENV_PREFIX = 'VF_APP_';
+export const OVERRIDE_ENV_PREFIX = 'VF_OVERRIDE_';
+export const ENV_PREFIXES = [APP_ENV_PREFIX, OVERRIDE_ENV_PREFIX];
+export const DEFAULT_PORT = 8080;

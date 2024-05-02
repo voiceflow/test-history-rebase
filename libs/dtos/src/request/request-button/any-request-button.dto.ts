@@ -13,6 +13,3 @@ export const AnyRequestButtonDTO = z.union([
 ]);
 
 export type AnyRequestButton = z.infer<typeof AnyRequestButtonDTO>;
-
-export const isAnyRequestButton = (value: unknown): value is AnyRequestButton =>
-  AnyRequestButtonDTO.safeParse(value).success;

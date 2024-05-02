@@ -7,6 +7,7 @@ import type { Permission } from '@/constants/permissions';
 import type { VirtualRole } from '@/constants/roles';
 import type { UpgradeModal } from '@/ModalsV2/modals/Upgrade';
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 export type ActionGetter<Data, Return> = Data extends {} ? (data: Data) => Return : () => Return;
 
 export interface BaseRolePermission {

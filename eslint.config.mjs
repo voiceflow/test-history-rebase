@@ -20,6 +20,7 @@ export default [
       'sonarjs/prefer-immediate-return': 'off',
       'sonarjs/no-one-iteration-loop': 'off',
       'you-dont-need-lodash-underscore/capitalize': 'off',
+      'you-dont-need-lodash-underscore/throttle': 'off',
     },
   },
   {
@@ -30,7 +31,7 @@ export default [
     },
   },
   {
-    files: ['**/ducks/**'],
+    files: ['**/ducks/**', '**/SlateEditable/**', '**/TextEditor/**', '**/AceEditor/**'],
 
     rules: {
       'no-param-reassign': 'off',

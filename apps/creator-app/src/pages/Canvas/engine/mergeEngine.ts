@@ -1,3 +1,4 @@
+import type { EmptyObject } from '@voiceflow/common';
 import { Utils } from '@voiceflow/common';
 import type * as Realtime from '@voiceflow/realtime-sdk';
 import _constant from 'lodash/constant';
@@ -143,7 +144,9 @@ class MergeEngine extends EngineConsumer<{ mergeLayer: MergeLayerAPI }> {
 
   setVirtualSource<K extends keyof Realtime.NodeDataMap>(
     type: K,
-    factoryData?: (Realtime.NodeDataMap[K] & Partial<Realtime.NodeData<{}>>) | Partial<Realtime.NodeData<unknown>>,
+    factoryData?:
+      | (Realtime.NodeDataMap[K] & Partial<Realtime.NodeData<EmptyObject>>)
+      | Partial<Realtime.NodeData<unknown>>,
     extra: VirtualSourceExtra = {}
   ) {
     this.virtualSource = { type, factoryData: factoryData ?? {}, extra };

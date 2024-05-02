@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 import base from './base';
 import { PluginType } from './constants';
 import Store from './store';

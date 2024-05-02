@@ -1,5 +1,3 @@
-/* eslint-disable no-param-reassign */
-
 import type { Nullable } from '@voiceflow/common';
 import type { Descendant, EditorInterface, Location } from 'slate';
 import { Editor as SlateEditor, Element, Node, Path, Range, Text, Transforms } from 'slate';

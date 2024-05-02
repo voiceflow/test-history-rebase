@@ -1,3 +1,4 @@
+import type { EmptyObject } from '@voiceflow/common';
 import type * as Realtime from '@voiceflow/realtime-sdk';
 import { useContextApi } from '@voiceflow/ui';
 import React from 'react';
@@ -22,7 +23,7 @@ const ActionsEditor: React.FC = () => {
   const data = useSelector(CreatorV2.nodeDataByIDSelector, { id: actionNodeID });
 
   const onChange = React.useCallback(
-    (value: Partial<Realtime.NodeData<{}>>) =>
+    (value: Partial<Realtime.NodeData<EmptyObject>>) =>
       node?.id ? editor.engine.node.updateData(node.id, value) : Promise.resolve(),
     [editor.engine.node, node?.id]
   );

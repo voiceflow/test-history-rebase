@@ -1,7 +1,7 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { AlexaConstants } from '@voiceflow/alexa-types';
 import { BaseNode } from '@voiceflow/base-types';
-import type { Nullish } from '@voiceflow/common';
+import type { EmptyObject, Nullish } from '@voiceflow/common';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import _partition from 'lodash/partition';
@@ -494,7 +494,7 @@ class NodeManager extends EngineConsumer {
     menuType?: StepMenuType;
     diagramID?: string;
     autoFocus?: boolean;
-    factoryData?: Realtime.NodeDataMap[K] & Partial<Realtime.NodeData<{}>>;
+    factoryData?: Realtime.NodeDataMap[K] & Partial<Realtime.NodeData<EmptyObject>>;
     fromCanvasCoords?: boolean;
   }): Promise<string> {
     const [x, y] = fromCanvasCoords ? this.engine.canvas!.fromCoords(coords) : coords.raw();
@@ -652,16 +652,14 @@ class NodeManager extends EngineConsumer {
   /**
    * patches a node's data by its ID
    */
-  async updateData<T extends unknown = unknown>(nodeID: string, patch: Partial<Realtime.NodeData<T>>): Promise<void> {
+  async updateData<T>(nodeID: string, patch: Partial<Realtime.NodeData<T>>): Promise<void> {
     await this.updateManyData([{ nodeID, patch }]);
   }
 
   /**
    * patches multiple nodes data by ID
    */
-  async updateManyData<T extends unknown = unknown>(
-    updates: { nodeID: string; patch: Partial<Realtime.NodeData<T>> }[]
-  ): Promise<void> {
+  async updateManyData<T>(updates: { nodeID: string; patch: Partial<Realtime.NodeData<T>> }[]): Promise<void> {
     this.log.debug(this.log.pending('updating many node data'), this.log.value(updates.length));
     await this.internal.updateManyData(updates);
 

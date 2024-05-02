@@ -186,6 +186,7 @@ export const bindVoiceOptions = (
       if (isVoiceOptionsGroup(option)) {
         recurse(option.options);
       } else {
+        // eslint-disable-next-line no-param-reassign
         options[index] = fn(option);
       }
     });

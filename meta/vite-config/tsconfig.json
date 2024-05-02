@@ -2,8 +2,8 @@
   "extends": "@voiceflow/tsconfig",
   "compilerOptions": {
     "baseUrl": ".",
-    "outDir": "build",
-    "module": "CommonJS"
+    "module": "esnext",
+    "outDir": "build"
   },
   "exclude": ["node_modules", "build"]
 }

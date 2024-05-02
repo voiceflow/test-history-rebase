@@ -6,7 +6,7 @@ declare module 'prettysize' {
 		@param {Boolean} [nospace=false] Don't print a space
 		@param {Boolean} [one=false] Only print one character
 		@param {Number} [places=1] Number of decimal places to return
-		@param {Boolen} [numOnly] Return only the converted number and not size string
+		@param {Boolean} [numOnly] Return only the converted number and not size string
 	*/
   export default function pretty(
     size: number,

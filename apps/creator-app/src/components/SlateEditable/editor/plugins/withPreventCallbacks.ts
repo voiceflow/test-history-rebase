@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import type { Editor } from 'slate';
 
 import type { Plugin } from './types';

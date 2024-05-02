@@ -1,4 +1,4 @@
-import type { Nullable } from '@voiceflow/common';
+import type { EmptyObject, Nullable } from '@voiceflow/common';
 import type * as Realtime from '@voiceflow/realtime-sdk';
 import type { SvgIconTypes } from '@voiceflow/ui';
 import type { ITreeData } from '@voiceflow/ui-next';
@@ -156,7 +156,7 @@ const CanvasDiagram: React.FC<React.PropsWithChildren> = ({ children }) => {
     [isEditingMode]
   );
 
-  const [, connectBlockDrop] = useDrop<DroppableItem, {}, {}>({
+  const [, connectBlockDrop] = useDrop<DroppableItem, EmptyObject, EmptyObject>({
     accept: DROP_TYPES,
     drop: async (item, monitor) => {
       if ('files' in item && item.files) {
@@ -203,6 +203,7 @@ const CanvasDiagram: React.FC<React.PropsWithChildren> = ({ children }) => {
 
     hover: _throttle(
       (item, monitor) => {
+        // eslint-disable-next-line no-param-reassign
         item.clientOffset = monitor.getClientOffset();
 
         if (!monitor.isOver({ shallow: true })) {

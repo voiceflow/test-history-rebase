@@ -1,3 +1,4 @@
+import type { EmptyObject } from '@voiceflow/common';
 import { Utils } from '@voiceflow/common';
 
 import client from '@/client';
@@ -26,7 +27,7 @@ export const cmsTrackingFactory = (scope: string) => {
   const nameBuilder = cmsTrackingNameBuilderFactory(scope);
 
   const error = createVersionEventTracker<{
-    errorType: 'Import' | 'Create' | 'Duplicate' | 'Export' | 'Delete' | (string & {});
+    errorType: 'Import' | 'Create' | 'Duplicate' | 'Export' | 'Delete' | (string & EmptyObject);
   }>((eventInfo) => client.analytics.track(createVersionEvent(nameBuilder.ERROR, eventInfo)));
 
   const created = createVersionEventTracker<{ id: string; templateID?: string }>((eventInfo) =>

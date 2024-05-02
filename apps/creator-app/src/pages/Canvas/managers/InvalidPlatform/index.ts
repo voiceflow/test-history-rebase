@@ -1,10 +1,12 @@
+import type { EmptyObject } from '@voiceflow/common';
+
 import { BlockType } from '@/constants';
 
 import type { NodeManagerConfig } from '../types';
 import InvalidPlatformEditor from './InvalidPlatformEditor';
 import InvalidPlatformStep from './InvalidPlatformStep';
 
-const InvalidPlatformManager: NodeManagerConfig<{}> = {
+const InvalidPlatformManager: NodeManagerConfig<EmptyObject> = {
   type: BlockType.INVALID_PLATFORM,
   mergeTerminator: true,
 

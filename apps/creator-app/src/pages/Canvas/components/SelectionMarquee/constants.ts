@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 export const styleSelectionElement = (
   selectionEl: HTMLElement,
   left: number,

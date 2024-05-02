@@ -1,4 +1,4 @@
-import type { Nullable } from '@voiceflow/common';
+import type { EmptyObject, Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import type { CustomScrollbarsTypes } from '@voiceflow/ui';
 import React from 'react';
@@ -103,7 +103,8 @@ export const useEditorSidebarV2 = () => {
   const goToNode = useDispatch(Router.goToCurrentCanvasNode);
 
   const onChange = React.useCallback(
-    (value: Partial<Realtime.NodeData<{}>>) => (node?.id ? engine.node.updateData(node.id, value) : Promise.resolve()),
+    (value: Partial<Realtime.NodeData<EmptyObject>>) =>
+      node?.id ? engine.node.updateData(node.id, value) : Promise.resolve(),
     [engine.node, node?.id]
   );
 
@@ -178,7 +179,7 @@ export const useEditorSidebarV2 = () => {
 
   useUseAutopanBlockIntoView({ engine, blockID, isOpened });
 
-  const getEditor = (node: Realtime.Node, data: Realtime.NodeData<{}>) => {
+  const getEditor = (node: Realtime.Node, data: Realtime.NodeData<EmptyObject>) => {
     const { Editor } = getEditorWithCorrectVersion(node.type);
     let manager = getManager(node.type);
 

@@ -1,5 +1,6 @@
 import { READABLE_VARIABLE_REGEXP, Utils } from '@voiceflow/common';
-import cloneDeep from 'lodash/cloneDeep';
+// eslint-disable-next-line you-dont-need-lodash-underscore/clone-deep
+import _cloneDeep from 'lodash/cloneDeep';
 
 /**
  * When passed in an object, find all instances of a variable being used
@@ -56,6 +57,7 @@ export const deepVariableReplacement = <T extends object>(
     if (Utils.object.isObject(subCollection)) {
       // eslint-disable-next-line guard-for-in
       for (const key in subCollection) {
+        // eslint-disable-next-line no-param-reassign
         subCollection[key] = key === 'url' ? recurse(subCollection[key], true) : recurse(subCollection[key]);
       }
     } else if (typeof subCollection === 'string') {
@@ -66,5 +68,5 @@ export const deepVariableReplacement = <T extends object>(
     return subCollection;
   };
 
-  return recurse(cloneDeep(object)) as T;
+  return recurse(_cloneDeep(object)) as T;
 };

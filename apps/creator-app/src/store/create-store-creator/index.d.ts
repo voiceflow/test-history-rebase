@@ -1,5 +1,6 @@
 import type { Client, ClientMeta } from '@logux/client';
 import type { Log } from '@logux/core';
+import type { EmptyObject } from '@voiceflow/common';
 import type { Unsubscribe } from 'nanoevents';
 import type { Action, AnyAction, Observable, PreloadedState, Reducer, Store as ReduxStore, StoreEnhancer } from 'redux';
 
@@ -81,7 +82,7 @@ export class LoguxReduxStore<
   S = any,
   A extends Action = AnyAction,
   L extends Log = Log<ClientMeta>,
-  C extends Client = Client<{}, L>,
+  C extends Client = Client<EmptyObject, L>,
 > implements ReduxStore<S, A>
 {
   /**
@@ -146,12 +147,12 @@ export class LoguxReduxStore<
   [Symbol.observable](): Observable<S>;
 }
 
-export interface LoguxStoreCreator<L extends Log = Log<ClientMeta>, C extends Client = Client<{}, L>> {
-  <S, A extends Action = Action, Ext = {}, StateExt = {}>(
+export interface LoguxStoreCreator<L extends Log = Log<ClientMeta>, C extends Client = Client<EmptyObject, L>> {
+  <S, A extends Action = Action, Ext = EmptyObject, StateExt = EmptyObject>(
     reducer: Reducer<S, A>,
     enhancer?: StoreEnhancer<Ext, StateExt>
   ): LoguxReduxStore<S & StateExt, A, L, C> & Ext;
-  <S, A extends Action = Action, Ext = {}, StateExt = {}>(
+  <S, A extends Action = Action, Ext = EmptyObject, StateExt = EmptyObject>(
     reducer: Reducer<S, A>,
     preloadedState?: PreloadedState<S>,
     enhancer?: StoreEnhancer<Ext>
@@ -207,7 +208,7 @@ export interface LoguxReduxOptions {
  * @param options Logux Redux options.
  * @returns Redux’s `createStore` compatible function.
  */
-export function createStoreCreator<L extends Log = Log<ClientMeta>, C extends Client = Client<{}, L>>(
+export function createStoreCreator<L extends Log = Log<ClientMeta>, C extends Client = Client<EmptyObject, L>>(
   client: C,
   options?: LoguxReduxOptions
 ): LoguxStoreCreator<L, C>;

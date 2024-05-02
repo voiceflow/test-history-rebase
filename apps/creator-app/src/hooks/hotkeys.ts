@@ -1,3 +1,4 @@
+import type { EmptyObject } from '@voiceflow/common';
 import { usePersistFunction } from '@voiceflow/ui';
 import Mousetrap from 'mousetrap';
 import React from 'react';
@@ -18,7 +19,7 @@ type Callback = (event: KeyboardEvent) => void;
 const isHotkey = (key: Hotkey | string): key is Hotkey => key in HOTKEY_MAPPING;
 
 export interface HotkeyItem extends Options {
-  hotkey: Hotkey | (string & {});
+  hotkey: Hotkey | (string & EmptyObject);
   callback: Callback;
 }
 

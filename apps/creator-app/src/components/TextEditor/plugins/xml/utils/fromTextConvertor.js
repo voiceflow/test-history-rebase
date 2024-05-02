@@ -1,3 +1,8 @@
+/* eslint-disable no-undef */
+
+/* eslint-disable no-use-before-define */
+/* eslint-disable sonarjs/no-nested-template-literals */
+/* eslint-disable you-dont-need-lodash-underscore/to-lower */
 import { genKey } from 'draft-js';
 import _toLower from 'lodash/toLower';
 

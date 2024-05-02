@@ -1,4 +1,4 @@
-import type { Nullable } from '@voiceflow/common';
+import type { EmptyObject, Nullable } from '@voiceflow/common';
 import { Utils } from '@voiceflow/common';
 import type * as Realtime from '@voiceflow/realtime-sdk';
 
@@ -120,7 +120,7 @@ class DiagramEngine extends EngineConsumer {
     menuType: StepMenuType;
     autoFocus?: boolean;
     diagramID: string;
-    factoryData?: Realtime.NodeDataMap[K] & Partial<Realtime.NodeData<{}>>;
+    factoryData?: Realtime.NodeDataMap[K] & Partial<Realtime.NodeData<EmptyObject>>;
   }) {
     const isActive = this.engine.getDiagramID() === diagramID;
 

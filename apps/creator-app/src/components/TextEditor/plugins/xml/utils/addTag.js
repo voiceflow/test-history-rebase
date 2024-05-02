@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 import { EditorState, Modifier, SelectionState } from 'draft-js';
 
 import { EntityType, Mutability, PushAction } from '../../constants';
@@ -85,7 +86,7 @@ const insertTagInCollapsedSelection = ({ tag, store, attributes }) => {
 
   let closeTagKey;
   let closeTagText;
-  // eslint-disable-next-line prefer-const
+
   ({ key: closeTagKey, text: closeTagText, content } = createCloseTag(content, { tag, openTagKey }));
 
   selection = editorState.getSelection();
@@ -203,7 +204,6 @@ const insertBetweenClosedAndOpenedTags = ({
 
   const { start } = openEntities[0] || { start: endOffset };
 
-  // eslint-disable-next-line prefer-const
   ({ key: openTagKey, text: openTagText, content } = createOpenTag(content, { tag, isSingle: false, attributes }));
 
   selection = selection.merge({ focusOffset: startOffset, anchorOffset: startOffset });
@@ -214,7 +214,6 @@ const insertBetweenClosedAndOpenedTags = ({
 
   selection = selection.merge({ focusOffset: start + adjust, anchorOffset: start + adjust });
 
-  // eslint-disable-next-line prefer-const
   ({ key: closeTagKey, text: closeTagText, content } = createCloseTag(content, { tag, openTagKey }));
 
   content = Modifier.insertText(content, selection, closeTagText, null, closeTagKey);

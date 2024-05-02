@@ -1,5 +1,5 @@
 import type { BaseNode } from '@voiceflow/base-types';
-import type { Nullable, Struct } from '@voiceflow/common';
+import type { EmptyObject, Nullable, Struct } from '@voiceflow/common';
 import type * as Platform from '@voiceflow/platform-config';
 import type * as Realtime from '@voiceflow/realtime-sdk';
 import type { CustomScrollbarsTypes, OptionsMenuOption, SvgIconTypes } from '@voiceflow/ui';
@@ -37,18 +37,21 @@ interface BaseConnectedStepProps<T, O extends Realtime.BuiltInPortRecord> extend
   withPorts: boolean;
 }
 
-export interface ConnectedStepProps<T = {}, O extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord>
+export interface ConnectedStepProps<T = EmptyObject, O extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord>
   extends BaseConnectedStepProps<T, O> {
   palette: HSLShades;
   isLast?: boolean;
 }
 
-export type ConnectedStep<T = {}, O extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> = React.FC<
-  ConnectedStepProps<T, O>
->;
+export type ConnectedStep<
+  T = EmptyObject,
+  O extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord,
+> = React.FC<ConnectedStepProps<T, O>>;
 
-export interface ConnectedActionProps<T = {}, O extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord>
-  extends BaseConnectedStepProps<T, O> {
+export interface ConnectedActionProps<
+  T = EmptyObject,
+  O extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord,
+> extends BaseConnectedStepProps<T, O> {
   reversed?: boolean;
   isActive?: boolean;
   onRemove: VoidFunction;
@@ -57,16 +60,18 @@ export interface ConnectedActionProps<T = {}, O extends Realtime.BuiltInPortReco
   onOpenEditor: (routState?: Struct) => void;
 }
 
-export type ConnectedAction<T = {}, O extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> = React.FC<
-  ConnectedActionProps<T, O>
->;
+export type ConnectedAction<
+  T = EmptyObject,
+  O extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord,
+> = React.FC<ConnectedActionProps<T, O>>;
 
-export interface ConnectedChipProps<T = {}, O extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord>
+export interface ConnectedChipProps<T = EmptyObject, O extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord>
   extends BaseConnectedProps<T, O> {}
 
-export type ConnectedChip<T = {}, O extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> = React.FC<
-  ConnectedChipProps<T, O>
->;
+export type ConnectedChip<
+  T = EmptyObject,
+  O extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord,
+> = React.FC<ConnectedChipProps<T, O>>;
 
 interface NodeDescriptorPorts<T extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> {
   in: PortDescriptor[];
@@ -111,9 +116,11 @@ export interface NodeEditorPropsType<T, P extends Realtime.BuiltInPortRecord = R
   popFromPath: VoidFunction;
 }
 
-export type NodeEditor<T, P extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord, E = {}> = React.FC<
-  NodeEditorPropsType<T, P> & E
->;
+export type NodeEditor<
+  T,
+  P extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord,
+  E = EmptyObject,
+> = React.FC<NodeEditorPropsType<T, P> & E>;
 
 interface GoBack {
   <S extends string>(path?: S): void;

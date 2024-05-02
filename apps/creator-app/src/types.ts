@@ -1,4 +1,4 @@
-import type { Function, Nullish } from '@voiceflow/common';
+import type { EmptyObject, Function, Nullish } from '@voiceflow/common';
 import type { MappedStateProps, SelectorLookup } from '@voiceflow/ui';
 import type React from 'react';
 import type { Overwrite } from 'utility-types';
@@ -17,15 +17,16 @@ export type MappedDispatchProps<T extends ActionCreatorLookup> = {
 };
 
 export type MergeArguments<
-  S extends SelectorLookup<any> = {},
-  D extends ActionCreatorLookup = {},
-  P extends object = {},
+  S extends SelectorLookup<any> = EmptyObject,
+  D extends ActionCreatorLookup = EmptyObject,
+  P extends object = EmptyObject,
 > = [MappedStateProps<S>, MappedDispatchProps<D>, P];
 
 export type ConnectedProps<
-  S extends SelectorLookup<any> = {},
-  D extends ActionCreatorLookup = {},
-  M extends Function<MergeArguments<S, D, any>, object> = () => {},
+  S extends SelectorLookup<any> = EmptyObject,
+  D extends ActionCreatorLookup = EmptyObject,
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  M extends Function<MergeArguments<S, D, any>, object> = () => EmptyObject,
 > = Overwrite<
   Overwrite<MappedStateProps<S> & MappedDispatchProps<D>, MappedDispatchProps<D>> & ReturnType<M>,
   ReturnType<M>

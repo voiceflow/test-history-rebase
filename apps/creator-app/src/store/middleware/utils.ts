@@ -1,3 +1,4 @@
+import type { EmptyObject } from '@voiceflow/common';
 import type * as Redux from 'redux';
 
 import type { State } from '@/ducks';
@@ -19,7 +20,7 @@ export const createIgnoreMiddleware =
 
 export const mapMiddleware = (middleware: Middleware[], getStore: () => Store) =>
   middleware.map(
-    (callback): Redux.Middleware<{}, State, Dispatch> =>
+    (callback): Redux.Middleware<EmptyObject, State, Dispatch> =>
       (api) =>
         callback({
           getState: api.getState,

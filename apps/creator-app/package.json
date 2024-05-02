@@ -230,6 +230,7 @@
     "@types/styled-system": "5.1.16",
     "@vanilla-extract/vite-plugin": "3.9.0",
     "@voiceflow/schema-dto": "1.11.5",
+    "@voiceflow/vite-config": "workspace:*",
     "identity-obj-proxy": "3.0.0",
     "ignore-styles": "5.0.1",
     "levenary": "1.1.1",

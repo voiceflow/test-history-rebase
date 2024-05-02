@@ -1,5 +1,5 @@
 import type { BaseButton, BaseModels, BaseNode } from '@voiceflow/base-types';
-import type { Nullable } from '@voiceflow/common';
+import type { EmptyObject, Nullable } from '@voiceflow/common';
 import type { BaseRequest } from '@voiceflow/dtos';
 import type * as Realtime from '@voiceflow/realtime-sdk';
 
@@ -54,7 +54,12 @@ export const BotMessageTypes = [
   MessageType.CAROUSEL,
 ];
 
-type GenericMessage<T extends MessageType, D = {}> = { id: string; type: T; startTime: string; turnID?: string } & D;
+type GenericMessage<T extends MessageType, D = EmptyObject> = {
+  id: string;
+  type: T;
+  startTime: string;
+  turnID?: string;
+} & D;
 
 export type UserMessage = GenericMessage<
   MessageType.USER,
@@ -86,7 +91,7 @@ export type VisualMessage = GenericMessage<
 
 export type PathMessage = GenericMessage<MessageType.PATH, { path: string }>;
 
-export type LaunchMessage = GenericMessage<MessageType.LAUNCH, {}>;
+export type LaunchMessage = GenericMessage<MessageType.LAUNCH, EmptyObject>;
 
 export type CarouselMessage = GenericMessage<
   MessageType.CAROUSEL,

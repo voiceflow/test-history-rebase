@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-nested-template-literals */
 export default (tagName, isSingle, attributes) => {
   const attributesStr = Object.keys(attributes || {})
     .map((attrName) => `${attrName}="${attributes[attrName]}"`)

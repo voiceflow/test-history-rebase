@@ -1,3 +1,4 @@
+import type { EmptyObject } from '@voiceflow/common';
 import { Modal, toast } from '@voiceflow/ui';
 import React from 'react';
 
@@ -8,7 +9,7 @@ import manager from '../../../../manager';
 import type { SubmittedCustomBlock } from '../CustomBlockEditorModalContent';
 import ModalContent from '../CustomBlockEditorModalContent';
 
-const CustomBlockCreationModal = manager.create<{}>(
+const CustomBlockCreationModal = manager.create<EmptyObject>(
   'CanvasCustomBlockCreationModal',
   () =>
     ({ api, type, opened, hidden, animated }) => {

@@ -108,10 +108,12 @@ export const scrollTo = (node: HTMLElement | null, { top = 0, left = 0, ...opts 
     node.scrollTo({ top, left, ...opts });
   } else {
     if (typeof top === 'number') {
+      // eslint-disable-next-line no-param-reassign
       node.scrollTop = top;
     }
 
     if (typeof left === 'number') {
+      // eslint-disable-next-line no-param-reassign
       node.scrollLeft = left;
     }
   }

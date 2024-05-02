@@ -1,4 +1,5 @@
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
+import type { EmptyObject } from '@voiceflow/common';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import type { Draft } from 'immer';
@@ -96,7 +97,9 @@ export const removeSharedNodes = (state: Draft<DiagramState>, diagramID: string,
   });
 };
 
-export const nodeDataToSharedNode = (data: Realtime.NodeData<{}>): Realtime.diagram.sharedNodes.SharedNode | null => {
+export const nodeDataToSharedNode = (
+  data: Realtime.NodeData<EmptyObject>
+): Realtime.diagram.sharedNodes.SharedNode | null => {
   if (!Realtime.Utils.typeGuards.isSharedBlockType(data.type)) return null;
 
   if (Realtime.Utils.typeGuards.isIntentNodeData(data)) {

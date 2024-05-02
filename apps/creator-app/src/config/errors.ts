@@ -1,8 +1,8 @@
-import type { Nullish, Struct } from '@voiceflow/common';
+import type { EmptyObject, Nullish, Struct } from '@voiceflow/common';
 import type * as Platform from '@voiceflow/platform-config';
 import type * as Realtime from '@voiceflow/realtime-sdk';
 
-export class StateInvariantError<T extends Struct = {}> extends Error {
+export class StateInvariantError<T extends Struct = EmptyObject> extends Error {
   constructor(
     message: string,
     public data?: T
@@ -11,7 +11,7 @@ export class StateInvariantError<T extends Struct = {}> extends Error {
   }
 }
 
-export const error = <T extends Struct = {}>(message: string, data?: T): StateInvariantError<T> =>
+export const error = <T extends Struct = EmptyObject>(message: string, data?: T): StateInvariantError<T> =>
   new StateInvariantError<T>(message, data);
 
 export const noActiveCreatorID = (): StateInvariantError => error('no active creator ID');

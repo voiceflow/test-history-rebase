@@ -62,6 +62,8 @@ export enum FeatureFlag {
 
   KB_BE_DOC_CRUD = 'kb_be_doc_crud',
 
+  UNLIMITED_KB_DOCS_FF = 'unlimited_kb_docs_ff',
+
   // functions
   FUNCTION_LISTEN = 'function_listen',
 }

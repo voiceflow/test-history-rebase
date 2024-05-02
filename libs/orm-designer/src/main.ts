@@ -5,6 +5,7 @@ export * from './mongo/knowledge-base';
 export * from './mongo/program';
 export * from './mongo/project';
 export * from './mongo/prototype-program';
+export * from './mongo/refresh-jobs';
 export * from './mongo/variable-state';
 export * from './mongo/version';
 export * from './postgres/assistant';

@@ -21,6 +21,8 @@ import { setAuthenticationTokenContext } from '@voiceflow/sdk-auth/logux';
 import { AuthGuard, AuthModule } from '@voiceflow/sdk-auth/nestjs';
 import { BillingModule } from '@voiceflow/sdk-billing/nestjs';
 import { IdentityModule } from '@voiceflow/sdk-identity/nestjs';
+import { RabbitMQConnection } from '@voiceflow/sdk-message-queue';
+import { MessageQueueModule } from '@voiceflow/sdk-message-queue/nestjs';
 import type { Request } from 'express';
 import { LoggerErrorInterceptor, LoggerModule } from 'nestjs-pino';
 import { ThrottlerStorageRedisService } from 'nestjs-throttler-storage-redis';
@@ -30,6 +32,7 @@ import { AssistantModule } from './assistant/assistant.module';
 import { AttachmentModule } from './attachment/attachment.module';
 import { BackupModule } from './backup/backup.module';
 import { SerializerModule, ThrottlerGuard } from './common';
+import { KlParserModule } from './common/clients/kl-parser/kl-parser.module';
 import { PUBLISHER_REDIS_NAMESPACE, SUBSCRIBER_REDIS_NAMESPACE, THROTTLER_REDIS_NAMESPACE } from './config';
 import { CreatorModule } from './creator/creator.module';
 import { CreatorAppModule } from './creator-app/creator-app.module';
@@ -43,6 +46,7 @@ import { FolderModule } from './folder/folder.module';
 import { FunctionModule } from './function/function.module';
 import { IntentModule } from './intent/intent.module';
 import { KnowledgeBaseDocumentModule } from './knowledge-base/document/document.module';
+import { IntegrationOauthTokenModule } from './knowledge-base/integration-oauth-token/integration-oauth-token.module';
 import { LegacyModule } from './legacy/legacy.module';
 import { MigrationModule } from './migration/migration.module';
 import { createMongoConfig } from './mikro-orm/mongo.config';
@@ -230,6 +234,31 @@ import { WorkflowModule } from './workflow/workflow.module';
       inject: [ENVIRONMENT_VARIABLES],
       useFactory: (env: EnvironmentVariables) => ({
         apiKey: env.SENDGRID_KEY,
+      }),
+    }),
+    IntegrationOauthTokenModule.registerAsync({
+      inject: [ENVIRONMENT_VARIABLES],
+      useFactory: (env: EnvironmentVariables) => ({
+        aesSecretKey: env.AES_SECRET_KEY,
+        encryptionMethod: 'aes-256-cbc',
+      }),
+    }),
+
+    MessageQueueModule.forRootAsync({
+      inject: [ENVIRONMENT_VARIABLES],
+      useFactory: (env: EnvironmentVariables) => ({
+        appName: 'parser-api',
+        connection: new RabbitMQConnection(env.AMQP_BROKER_URI, { logger: new Logger(RabbitMQConnection.name) }),
+      }),
+    }),
+
+    KlParserModule.registerAsync({
+      inject: [ENVIRONMENT_VARIABLES],
+      useFactory: (env: EnvironmentVariables) => ({
+        host: env.KL_PARSER_SERVICE_HOST,
+        port: env.KL_PARSER_SERVICE_PORT,
+        nodeEnv: env.NODE_ENV,
+        bucket: env.S3_KNOWLEDGE_BASE_BUCKET,
       }),
     }),
     EmailModule,

@@ -1,8 +1,9 @@
-import { z } from 'zod';
+import type { z } from 'zod';
 
 import { IntentRequestDTO } from '../intent/intent-request.dto';
+import { BaseRequestButtonDTO } from './base-request-button.dto';
 
-export const IntentRequestButtonDTO = z.object({
+export const IntentRequestButtonDTO = BaseRequestButtonDTO.extend({
   request: IntentRequestDTO,
 });
 

@@ -1,8 +1,9 @@
-import { z } from 'zod';
+import type { z } from 'zod';
 
 import { TextRequestDTO } from '../text-request.dto';
+import { BaseRequestButtonDTO } from './base-request-button.dto';
 
-export const TextRequestButtonDTO = z.object({
+export const TextRequestButtonDTO = BaseRequestButtonDTO.extend({
   request: TextRequestDTO,
 });
 

@@ -5,6 +5,7 @@ import type { SmartMultiAdapter } from 'bidirectional-adapter';
 import { ObjectId } from 'bson';
 import type {
   Collection,
+  Document,
   Filter,
   FindOneAndUpdateOptions,
   OptionalUnlessRequiredId,
@@ -212,8 +213,8 @@ abstract class MongoModel<DBModel extends Document, Model extends EmptyObject, R
 
   async findMany(filter: Filter<DBModel>, fields?: (keyof DBModel)[]): Promise<Partial<DBModel>[]>;
 
-  async findMany(filter: Filter<DBModel>, fields?: (keyof DBModel)[]): Promise<Partial<DBModel>[]> {
-    return this.collection.find(filter, MongoModel.projection(fields)).toArray();
+  async findMany(filter: Filter<DBModel>, fields?: (keyof DBModel)[]): Promise<DBModel[]> {
+    return this.collection.find(filter, MongoModel.projection(fields)).toArray() as Promise<DBModel[]>;
   }
 
   async findManyAndSort(filter: Filter<DBModel>, sortProperty: Sort): Promise<DBModel[]>;
@@ -230,12 +231,10 @@ abstract class MongoModel<DBModel extends Document, Model extends EmptyObject, R
     fields?: (keyof DBModel)[]
   ): Promise<Partial<DBModel>[]>;
 
-  async findManyAndSort(
-    filter: Filter<DBModel>,
-    sortProperty: Sort,
-    fields?: (keyof DBModel)[]
-  ): Promise<Partial<DBModel>[]> {
-    return this.collection.find(filter, MongoModel.projection(fields)).sort(sortProperty).toArray();
+  async findManyAndSort(filter: Filter<DBModel>, sortProperty: Sort, fields?: (keyof DBModel)[]): Promise<DBModel[]> {
+    return this.collection.find(filter, MongoModel.projection(fields)).sort(sortProperty).toArray() as Promise<
+      DBModel[]
+    >;
   }
 
   async findOne(filter: Filter<DBModel>): Promise<DBModel | null>;
@@ -244,7 +243,7 @@ abstract class MongoModel<DBModel extends Document, Model extends EmptyObject, R
 
   async findOne(filter: Filter<DBModel>, fields?: (keyof DBModel)[]): Promise<Partial<DBModel> | null>;
 
-  async findOne(filter: Filter<DBModel>, fields?: (keyof DBModel)[]): Promise<Partial<DBModel> | null> {
+  async findOne(filter: Filter<DBModel>, fields?: (keyof DBModel)[]): Promise<DBModel | null> {
     return this.collection.findOne(filter, MongoModel.projection(fields));
   }
 
@@ -266,12 +265,12 @@ abstract class MongoModel<DBModel extends Document, Model extends EmptyObject, R
 
   async findByID(id: string, fields?: (keyof DBModel)[]): Promise<Partial<DBModel>>;
 
-  async findByID(id: string, fields?: (keyof DBModel)[]): Promise<Partial<DBModel>> {
+  async findByID(id: string, fields?: (keyof DBModel)[]): Promise<DBModel> {
     const result = await this.findOne(this.idFilter(id), fields!);
 
     if (!result) throw new Error('not found');
 
-    return result;
+    return result as DBModel;
   }
 
   async findManyByIDs(ids: string[]): Promise<DBModel[]>;
@@ -280,8 +279,8 @@ abstract class MongoModel<DBModel extends Document, Model extends EmptyObject, R
 
   async findManyByIDs(ids: string[], fields?: (keyof DBModel)[]): Promise<Partial<DBModel>[]>;
 
-  async findManyByIDs(ids: string[], fields?: (keyof DBModel)[]): Promise<Partial<DBModel>[]> {
-    return this.collection.find(this.idsFilter(ids), MongoModel.projection(fields)).toArray();
+  async findManyByIDs(ids: string[], fields?: (keyof DBModel)[]): Promise<DBModel[]> {
+    return this.collection.find(this.idsFilter(ids), MongoModel.projection(fields)).toArray() as Promise<DBModel[]>;
   }
 
   async updateByID(

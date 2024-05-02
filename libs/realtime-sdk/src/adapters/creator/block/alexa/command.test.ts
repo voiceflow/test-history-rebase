@@ -10,7 +10,7 @@ describe('Adapters | Creator | Block | Alexa | Command', () => {
 
       const result = commandAdapter.fromDB({ ...stepData }, { context: {} });
 
-      expect(result).to.eql(
+      expect(result).toEqual(
         Creator.Block.Base.CommandNodeData({
           name: stepData.name,
           intent: stepData.intent,
@@ -25,7 +25,7 @@ describe('Adapters | Creator | Block | Alexa | Command', () => {
 
       const result = commandAdapter.fromDB({ ...stepData }, { context: {} });
 
-      expect(result).to.eql(
+      expect(result).toEqual(
         Creator.Block.Base.CommandNodeData({
           name: stepData.name,
           intent: stepData.intent,
@@ -46,7 +46,7 @@ describe('Adapters | Creator | Block | Alexa | Command', () => {
 
       const result = commandAdapter.toDB({ ...nodeData }, { context: {} });
 
-      expect(result).to.eql({
+      expect(result).toEqual({
         name: nodeData.name,
         next: null,
         intent: '',
@@ -60,7 +60,7 @@ describe('Adapters | Creator | Block | Alexa | Command', () => {
 
       const result = commandAdapter.toDB({ ...nodeData }, { context: {} });
 
-      expect(result).to.eql({
+      expect(result).toEqual({
         name: nodeData.name,
         next: null,
         intent: nodeData.intent,

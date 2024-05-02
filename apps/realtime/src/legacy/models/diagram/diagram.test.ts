@@ -22,9 +22,9 @@ describe('Diagram model unit tests', () => {
     model.findMany = stubFindMany;
 
     const versionID = '5f11ac822ab2ce1957cb0d24';
-    expect(await model.findManyByVersionID(versionID, ['name'])).to.eql(result);
+    expect(await model.findManyByVersionID(versionID, ['name'])).toEqual(result);
 
-    expect(stubFindMany.mock.calls).to.eql([[{ versionID: new ObjectId(versionID) }, ['name']]]);
+    expect(stubFindMany.mock.calls).toEqual([[{ versionID: new ObjectId(versionID) }, ['name']]]);
   });
 
   it('patchManyNodes', async () => {
@@ -44,9 +44,9 @@ describe('Diagram model unit tests', () => {
         { nodeID, patch: data },
         { nodeID: nodeID2, patch: data2 },
       ])
-    ).to.eql(data);
+    ).toEqual(data);
 
-    expect(atomicUpdateOne.mock.calls).to.eql([
+    expect(atomicUpdateOne.mock.calls).toEqual([
       [
         { versionID: new ObjectId(versionID), diagramID: new ObjectId(diagramID) },
         [

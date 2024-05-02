@@ -148,7 +148,7 @@ describe('Migrate service unit tests', () => {
       const generator = migrator[Symbol.asyncIterator]();
 
       await expect(generator.next()).resolves.toEqual({ done: false, value: MigrationState.STARTED });
-      await expect(generator.next()).to.rejects.toThrow();
+      await expect(generator.next()).rejects.toThrow();
       expect(resetMigrationLock).toBeCalledWith(versionID);
     });
 

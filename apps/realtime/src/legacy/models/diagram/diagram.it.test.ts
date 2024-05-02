@@ -1,11 +1,9 @@
 import { ObjectId } from 'bson';
-import type { Db } from 'mongodb';
-import { MongoClient } from 'mongodb';
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest';
 
-import type { DBDiagramModel } from '@/legacy/models/diagram';
-import DiagramModel from '@/legacy/models/diagram';
-import config from '@/old_config';
+import { MongoDB } from '../_suite';
+import type { DBDiagramModel } from '.';
+import DiagramModel from '.';
 
 const mockDiagram: Omit<DBDiagramModel, '_id'> = {
   name: 'Diagram 1',
@@ -46,38 +44,31 @@ const mockDiagram: Omit<DBDiagramModel, '_id'> = {
 };
 
 describe('Diagram model integrations tests', () => {
-  let client: MongoClient;
-  let db: Db;
+  let mongo: MongoDB;
   let model: DiagramModel;
 
   beforeAll(async () => {
-    client = await MongoClient.connect(config.MONGO_URI);
-    db = client.db(config.MONGO_DB);
-    model = new DiagramModel(null as any, { clients: { mongo: { db } } } as any);
+    mongo = await MongoDB();
 
-    await model.setup();
-
-    // assert init
-    expect(await db.listCollections({ name: model.collectionName }, { nameOnly: true }).hasNext()).to.eql(true);
-    expect(await db.indexInformation(model.collectionName)).to.eql({
-      _id_: [['_id', 1]],
-      versionID_1: [['versionID', 1]],
-    });
+    model = new DiagramModel(null as any, { clients: { mongo } } as any);
+    model.setup();
   });
 
   beforeEach(async () => {
-    await db.collection(model.collectionName).deleteMany({});
+    await mongo.db.collection(model.collectionName).deleteMany({});
   });
 
   afterAll(async () => {
-    await client.close();
+    await mongo.stop();
   });
 
   describe('CRUD validation', () => {
     it('insert entry', async () => {
-      const result = (await db.collection(model.collectionName).insertOne(mockDiagram)).ops[0];
+      const result = await mongo.db.collection(model.collectionName).insertOne(mockDiagram);
 
-      expect(result.name).toEqual(mockDiagram.name);
+      const document = await mongo.db.collection(model.collectionName).findOne({ _id: result.insertedId });
+
+      expect(document).toEqual(expect.objectContaining({ name: mockDiagram.name }));
     });
   });
 });

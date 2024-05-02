@@ -82,7 +82,7 @@ describe('Adapters | Creator | Block | Chat | captureAdapter', () => {
       const result = captureAdapter.toDB(data, { context: {} });
 
       expect(chatNoReplyAdapterSpy).not.toBeCalled();
-      expect(result.noReply).to.eql(null);
+      expect(result.noReply).toBe(null);
     });
   });
 });

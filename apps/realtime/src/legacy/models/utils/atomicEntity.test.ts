@@ -20,7 +20,7 @@ describe('Models | Utils | AtomicEntity', () => {
           { path: 'path-1', match: 'value' },
           { path: 'path.nested', match: { 'child.id': '10' } },
         ])
-      ).to.eql({
+      ).toEqual({
         query: {
           [pathGetter(ENTITY_ID, 'path-1')]: 'value',
           [pathGetter(ENTITY_ID, 'path.nested')]: { 'child.id': '10' },
@@ -52,7 +52,7 @@ describe('Models | Utils | AtomicEntity', () => {
             ],
           },
         ])
-      ).to.eql({
+      ).toEqual({
         query: {
           [pathGetter(ENTITY_ID, 'path-1')]: 'value',
           [pathGetter(ENTITY_ID, 'path.nested')]: { 'child.id': '10' },
@@ -75,7 +75,7 @@ describe('Models | Utils | AtomicEntity', () => {
           { path: 'path-3', value: 3, index: 0 },
           { path: 'path.nested', value: { 'child.id': '10' }, index: 10 },
         ])
-      ).to.eql({
+      ).toEqual({
         query: {
           [pathGetter(ENTITY_ID, 'path-1')]: { $each: ['value'] },
           [pathGetter(ENTITY_ID, 'path-3')]: { $each: [3], $position: 0 },
@@ -95,7 +95,7 @@ describe('Models | Utils | AtomicEntity', () => {
           { path: 'path-3', value: [3], index: 0 },
           { path: 'path.nested', value: [], index: 10 },
         ])
-      ).to.eql({
+      ).toEqual({
         query: {
           [pathGetter(ENTITY_ID, 'path-1')]: { $each: ['value-1', 'value-2'] },
           [pathGetter(ENTITY_ID, 'path-3')]: { $each: [3], $position: 0 },
@@ -129,7 +129,7 @@ describe('Models | Utils | AtomicEntity', () => {
             ],
           },
         ])
-      ).to.eql({
+      ).toEqual({
         query: {
           [pathGetter(ENTITY_ID, 'path-1')]: { $each: ['value'] },
           [pathGetter(ENTITY_ID, 'path-3')]: { $each: [3], $position: 0 },
@@ -165,7 +165,7 @@ describe('Models | Utils | AtomicEntity', () => {
             ],
           },
         ])
-      ).to.eql({
+      ).toEqual({
         query: {
           [pathGetter(ENTITY_ID, 'path-1')]: { $each: ['value-1', 'value-2'] },
           [pathGetter(ENTITY_ID, 'path-3')]: { $each: [3], $position: 0 },
@@ -189,7 +189,7 @@ describe('Models | Utils | AtomicEntity', () => {
           { path: 'path-1', value: 'value' },
           { path: 'path.nested', value: { 'child.id': '10' } },
         ])
-      ).to.eql({
+      ).toEqual({
         query: {
           [pathGetter(ENTITY_ID, 'path-1')]: 'value',
           [pathGetter(ENTITY_ID, 'path.nested')]: { 'child.id': '10' },
@@ -209,7 +209,7 @@ describe('Models | Utils | AtomicEntity', () => {
           { path: ['path', 'nested', 'value'], value: 'value' },
           { path: ['path', { 'parent.child': { id: 20 } }, '3'], value: 3 },
         ])
-      ).to.eql({
+      ).toEqual({
         query: {
           [pathGetter(ENTITY_ID, 'path.nested.value')]: 'value',
           [pathGetter(ENTITY_ID, 'path.$[setid12id].3')]: 3,
@@ -243,7 +243,7 @@ describe('Models | Utils | AtomicEntity', () => {
             ],
           },
         ])
-      ).to.eql({
+      ).toEqual({
         query: {
           [pathGetter(ENTITY_ID, 'path-1')]: 'value',
           [pathGetter(ENTITY_ID, 'path.nested')]: { 'child.id': '10' },
@@ -281,7 +281,7 @@ describe('Models | Utils | AtomicEntity', () => {
             ],
           },
         ])
-      ).to.eql({
+      ).toEqual({
         query: {
           [pathGetter(ENTITY_ID, 'path.nested.value')]: 'value',
           [pathGetter(ENTITY_ID, 'path.$[setid112id].3')]: 3,
@@ -300,7 +300,7 @@ describe('Models | Utils | AtomicEntity', () => {
 
       const entity = createEntity();
 
-      expect(entity.unset(ENTITY_ID, [{ path: 'path-1' }, { path: 'path-2' }])).to.eql({
+      expect(entity.unset(ENTITY_ID, [{ path: 'path-1' }, { path: 'path-2' }])).toEqual({
         query: {
           [pathGetter(ENTITY_ID, 'path-1')]: 1,
           [pathGetter(ENTITY_ID, 'path-2')]: 1,
@@ -320,7 +320,7 @@ describe('Models | Utils | AtomicEntity', () => {
           { path: ['path', 'nested', 'value'] },
           { path: ['path', { 'parent.child': { id: 20 } }, '3'] },
         ])
-      ).to.eql({
+      ).toEqual({
         query: {
           [pathGetter(ENTITY_ID, 'path.nested.value')]: 1,
           [pathGetter(ENTITY_ID, 'path.$[unsetid12id].3')]: 1,
@@ -342,7 +342,7 @@ describe('Models | Utils | AtomicEntity', () => {
           { entityID: ENTITY_ID, unsets: [{ path: 'path-1' }, { path: 'path-2' }] },
           { entityID: ENTITY_SECOND_ID, unsets: [{ path: 'path-1' }, { path: 'path-2' }] },
         ])
-      ).to.eql({
+      ).toEqual({
         query: {
           [pathGetter(ENTITY_ID, 'path-1')]: 1,
           [pathGetter(ENTITY_ID, 'path-2')]: 1,
@@ -374,7 +374,7 @@ describe('Models | Utils | AtomicEntity', () => {
             unsets: [{ path: ['path', 'nested', 'value'] }, { path: ['path', { 'parent.child': { id: 20 } }, '3'] }],
           },
         ])
-      ).to.eql({
+      ).toEqual({
         query: {
           [pathGetter(ENTITY_ID, 'path.nested.value')]: 1,
           [pathGetter(ENTITY_ID, 'path.$[unsetid112id].3')]: 1,

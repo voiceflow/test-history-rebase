@@ -53,7 +53,7 @@ describe('Migrate service - v4_04 migration unit tests', () => {
 
     const result = produce(data, (draft) => migrateToV4_04(draft, migrationContext));
 
-    expect(result.version).to.eql({
+    expect(result.version).toEqual({
       ...data.version,
       domains: [
         { topicIDs: ['topicID1', 'topicID2'] },
@@ -62,7 +62,7 @@ describe('Migrate service - v4_04 migration unit tests', () => {
       ],
     });
 
-    expect(result.diagrams).to.eql([
+    expect(result.diagrams).toEqual([
       {
         ...diagram1,
         menuItems: [

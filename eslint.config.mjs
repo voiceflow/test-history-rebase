@@ -15,6 +15,7 @@ export default [
     },
 
     rules: {
+      'import/no-cycle': 'off',
       'no-secrets/no-secrets': 'off',
       'sonarjs/prefer-immediate-return': 'off',
       'sonarjs/no-one-iteration-loop': 'off',

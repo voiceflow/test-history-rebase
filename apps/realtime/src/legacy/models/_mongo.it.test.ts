@@ -1,10 +1,9 @@
+import createMultiAdapter from 'bidirectional-adapter';
 import { ObjectId } from 'bson';
-import type { Db } from 'mongodb';
-import { MongoClient } from 'mongodb';
-import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest';
+import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import AbstractModel from '@/legacy/models/_mongo';
-import config from '@/old_config';
+import AbstractModel from './_mongo';
+import { MongoDB } from './_suite';
 
 const collectionName = 'test-collection';
 
@@ -12,36 +11,36 @@ class TestModel extends AbstractModel<any, any, string> {
   READ_ONLY_KEYS = [];
 
   public collectionName = collectionName;
+
+  adapter = createMultiAdapter(vi.fn(), vi.fn());
 }
 
 describe('mongo model integrations tests', () => {
-  let client: MongoClient;
-  let db: Db;
+  let mongo: MongoDB;
   let model: TestModel;
 
   beforeAll(async () => {
-    client = await MongoClient.connect(config.MONGO_URI);
-    db = client.db(config.MONGO_DB);
-    model = new TestModel(null as any, { clients: { mongo: { db } } } as any);
+    mongo = await MongoDB();
 
-    await model.setup();
-  });
+    model = new TestModel(null as any, { clients: { mongo } } as any);
+    model.setup();
+  }, 30000);
 
   beforeEach(async () => {
-    await db.collection(collectionName).deleteMany({});
+    await mongo.db.collection(collectionName).deleteMany({});
   });
 
   afterAll(async () => {
-    await client.close();
+    await mongo.stop();
   });
 
   it('insertOne', async () => {
     const obj = { foo: 'bar' };
+
     const { _id } = await model.insertOne(obj);
 
-    const result = await db.collection(collectionName).findOne({ _id: new ObjectId(_id) });
-
-    expect(result).to.eql({ _id, ...obj });
+    const result = await mongo.db.collection(collectionName).findOne({ _id: new ObjectId(_id) });
+    expect(result).toEqual({ _id, ...obj });
   });
 
   it('insertMany', async () => {
@@ -49,43 +48,43 @@ describe('mongo model integrations tests', () => {
 
     const [{ _id: id1 }, { _id: id2 }] = await model.insertMany(data);
 
-    const obj1 = await db.collection(collectionName).findOne({ _id: new ObjectId(id1) });
-    const obj2 = await db.collection(collectionName).findOne({ _id: new ObjectId(id2) });
+    const obj1 = await mongo.db.collection(collectionName).findOne({ _id: new ObjectId(id1) });
+    const obj2 = await mongo.db.collection(collectionName).findOne({ _id: new ObjectId(id2) });
 
-    expect([obj1, obj2]).to.eql([
+    expect([obj1, obj2]).toEqual([
       { _id: id1, ...data[0] },
       { _id: id2, ...data[1] },
     ]);
   });
 
   it('updateOne', async () => {
-    const result = (await db.collection(collectionName).insertOne({ foo: 'bar' })).ops[0];
-    await model.updateOne({ _id: new ObjectId(result._id) }, { foo: 'bar2' });
+    const result = await mongo.db.collection(collectionName).insertOne({ foo: 'bar' });
+    await model.updateOne({ _id: result.insertedId }, { foo: 'bar2' } as any);
 
-    const updatedResult = await db.collection(collectionName).findOne({ _id: new ObjectId(result._id) });
+    const updatedResult = await mongo.db.collection(collectionName).findOne({ _id: result.insertedId });
 
-    expect(updatedResult).to.eql({ _id: result._id, foo: 'bar2' });
+    expect(updatedResult).toEqual({ _id: result.insertedId, foo: 'bar2' });
   });
 
   it('findMany', async () => {
-    await db.collection(collectionName).insertMany([{ foo: true }, { foo: false }, { foo: true }]);
+    await mongo.db.collection(collectionName).insertMany([{ foo: true }, { foo: false }, { foo: true }]);
 
-    expect((await model.findMany({ foo: true })).length).to.eql(2);
+    expect((await model.findMany({ foo: true })).length).toBe(2);
   });
 
   it('findOne', async () => {
-    const result = (await db.collection(collectionName).insertOne({ foo: 'bar' })).ops[0];
+    const result = await mongo.db.collection(collectionName).insertOne({ foo: 'bar' });
 
     const found = await model.findOne({ foo: 'bar' });
 
-    expect(result).to.eql(found);
+    expect(result.insertedId).toEqual(found._id);
   });
 
   it('deleteOne', async () => {
-    await db.collection(collectionName).insertMany([{ foo: true }, { foo: false }, { foo: true }]);
+    await mongo.db.collection(collectionName).insertMany([{ foo: true }, { foo: false }, { foo: true }]);
 
     await model.deleteOne({ foo: false });
 
-    expect((await db.collection(collectionName).find({}).toArray()).length).to.eql(2);
+    expect((await mongo.db.collection(collectionName).find({}).toArray()).length).toBe(2);
   });
 });

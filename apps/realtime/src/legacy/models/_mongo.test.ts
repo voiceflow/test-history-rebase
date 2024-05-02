@@ -1,4 +1,5 @@
 /* eslint-disable dot-notation */
+import { createMultiAdapter } from 'bidirectional-adapter';
 import { ObjectId } from 'bson';
 import _ from 'lodash';
 import { describe, expect, it, vi } from 'vitest';
@@ -6,9 +7,13 @@ import { describe, expect, it, vi } from 'vitest';
 import AbstractModel from '@/legacy/models/_mongo';
 
 class TestModel extends AbstractModel<any, any, string> {
+  READ_ONLY_KEYS = [];
+
   public collectionName = 'test-collection';
 
   modifyCollection = vi.fn();
+
+  adapter = createMultiAdapter(vi.fn(), vi.fn());
 }
 
 describe('mongo model unit tests', () => {
@@ -24,13 +29,13 @@ describe('mongo model unit tests', () => {
       const collection = { foo: _.noop };
       _.set(model, '_collection', collection);
 
-      expect(model['collection']).to.eql(collection);
+      expect(model['collection']).toEqual(collection);
     });
 
     it('not set', () => {
       const model = new TestModel(null as any, {} as any);
 
-      expect(() => model['collection']).to.throws('Collection is undefined. init model first');
+      expect(() => model['collection']).toThrow('Collection is undefined. init model first');
     });
   });
 
@@ -46,7 +51,7 @@ describe('mongo model unit tests', () => {
 
       await model.setup();
 
-      expect(model['collection']).to.eql(collection);
+      expect(model['collection']).toEqual(collection);
     });
   });
 
@@ -58,7 +63,7 @@ describe('mongo model unit tests', () => {
 
       await expect(model.insertOne(data)).rejects.toThrow('insert one error');
 
-      expect(collection.insertOne.mock.calls).to.eql([[data]]);
+      expect(collection.insertOne.mock.calls).toEqual([[data]]);
     });
 
     it('passes', async () => {
@@ -68,7 +73,7 @@ describe('mongo model unit tests', () => {
 
       await model.insertOne(data);
 
-      expect(collection.insertOne.mock.calls).to.eql([[data]]);
+      expect(collection.insertOne.mock.calls).toEqual([[data]]);
     });
   });
 
@@ -80,7 +85,7 @@ describe('mongo model unit tests', () => {
 
       await expect(model.insertMany(data)).rejects.toThrow('insert many error');
 
-      expect(collection.insertMany.mock.calls).to.eql([[data]]);
+      expect(collection.insertMany.mock.calls).toEqual([[data]]);
     });
 
     it('passes', async () => {
@@ -90,7 +95,7 @@ describe('mongo model unit tests', () => {
 
       await model.insertMany(data);
 
-      expect(collection.insertMany.mock.calls).to.eql([[data]]);
+      expect(collection.insertMany.mock.calls).toEqual([[data]]);
     });
   });
 
@@ -103,7 +108,7 @@ describe('mongo model unit tests', () => {
 
       await expect(model.updateOne(filter, data)).rejects.toThrow('update error');
 
-      expect(collection.updateOne.mock.calls).to.eql([[filter, { $set: data }, { arrayFilters: [] }]]);
+      expect(collection.updateOne.mock.calls).toEqual([[filter, { $set: data }, { arrayFilters: [] }]]);
     });
 
     it('passes', async () => {
@@ -112,9 +117,9 @@ describe('mongo model unit tests', () => {
       const filter = { foo: 'bar' };
       const data = { foo2: 'bar2' };
 
-      expect(await model.updateOne(filter, data)).to.eql(data);
+      expect(await model.updateOne(filter, data)).toEqual(data);
 
-      expect(collection.updateOne.mock.calls).to.eql([[filter, { $set: data }, { arrayFilters: [] }]]);
+      expect(collection.updateOne.mock.calls).toEqual([[filter, { $set: data }, { arrayFilters: [] }]]);
     });
 
     it('passes upsert', async () => {
@@ -123,9 +128,9 @@ describe('mongo model unit tests', () => {
       const filter = { foo: 'bar' };
       const data = { foo2: 'bar2' };
 
-      expect(await model.updateOne(filter, data, '$set', { upsert: true })).to.eql(data);
+      expect(await model.updateOne(filter, data, '$set', { upsert: true })).toEqual(data);
 
-      expect(collection.updateOne.mock.calls).to.eql([[filter, { $set: data }, { upsert: true, arrayFilters: [] }]]);
+      expect(collection.updateOne.mock.calls).toEqual([[filter, { $set: data }, { upsert: true, arrayFilters: [] }]]);
     });
   });
 
@@ -136,9 +141,9 @@ describe('mongo model unit tests', () => {
     const model = generateModel(collection);
     const filter = { foo: 'bar' };
 
-    expect(await model.findMany(filter)).to.eql(resultData);
+    expect(await model.findMany(filter)).toEqual(resultData);
 
-    expect(collection.find.mock.calls).to.eql([[filter, undefined]]);
+    expect(collection.find.mock.calls).toEqual([[filter, undefined]]);
   });
 
   it('findOne', async () => {
@@ -147,9 +152,9 @@ describe('mongo model unit tests', () => {
     const model = generateModel(collection);
     const filter = { foo: 'bar' };
 
-    expect(await model.findOne(filter)).to.eql(resultData);
+    expect(await model.findOne(filter)).toEqual(resultData);
 
-    expect(collection.findOne.mock.calls).to.eql([[filter, undefined]]);
+    expect(collection.findOne.mock.calls).toEqual([[filter, undefined]]);
   });
 
   describe('deleteOne', () => {
@@ -160,7 +165,7 @@ describe('mongo model unit tests', () => {
 
       await expect(model.deleteOne(filter)).rejects.toThrow('delete error');
 
-      expect(collection.deleteOne.mock.calls).to.eql([[filter]]);
+      expect(collection.deleteOne.mock.calls).toEqual([[filter]]);
     });
 
     it('passes', async () => {
@@ -170,7 +175,7 @@ describe('mongo model unit tests', () => {
 
       await model.deleteOne(filter);
 
-      expect(collection.deleteOne.mock.calls).to.eql([[filter]]);
+      expect(collection.deleteOne.mock.calls).toEqual([[filter]]);
     });
 
     it('passes silent', async () => {
@@ -180,7 +185,7 @@ describe('mongo model unit tests', () => {
 
       await model.deleteOne(filter, { silent: true });
 
-      expect(collection.deleteOne.mock.calls).to.eql([[filter]]);
+      expect(collection.deleteOne.mock.calls).toEqual([[filter]]);
     });
   });
 
@@ -190,9 +195,9 @@ describe('mongo model unit tests', () => {
     const stubFindOne = vi.fn().mockResolvedValue(result);
     model.findOne = stubFindOne;
 
-    expect(await model.findByID(result._id)).to.eql(result);
+    expect(await model.findByID(result._id)).toEqual(result);
 
-    expect(stubFindOne.mock.calls).to.eql([[{ _id: new ObjectId(result._id) }, undefined]]);
+    expect(stubFindOne.mock.calls).toEqual([[{ _id: new ObjectId(result._id) }, undefined]]);
   });
 
   it('updateByID', async () => {
@@ -202,9 +207,9 @@ describe('mongo model unit tests', () => {
     const stubUpdateOne = vi.fn().mockReturnValue(data);
     model.updateOne = stubUpdateOne;
 
-    expect(await model.updateByID(id, data)).to.eql(data);
+    expect(await model.updateByID(id, data)).toEqual(data);
 
-    expect(stubUpdateOne.mock.calls).to.eql([[{ _id: new ObjectId(id) }, data, undefined]]);
+    expect(stubUpdateOne.mock.calls).toEqual([[{ _id: new ObjectId(id) }, data, undefined]]);
   });
 
   it('deleteByID', async () => {
@@ -213,18 +218,18 @@ describe('mongo model unit tests', () => {
     const stubDeleteOne = vi.fn();
     model.deleteOne = stubDeleteOne;
 
-    expect(await model.deleteByID(id)).to.eql(id);
+    expect(await model.deleteByID(id)).toEqual(id);
 
-    expect(stubDeleteOne.mock.calls).to.eql([[{ _id: new ObjectId(id) }]]);
+    expect(stubDeleteOne.mock.calls).toEqual([[{ _id: new ObjectId(id) }]]);
   });
 
   describe('_projection', () => {
     it('no fields', () => {
-      expect(AbstractModel['projection']()).to.eql(undefined);
+      expect(AbstractModel['projection']()).toEqual(undefined);
     });
 
     it('with fields', () => {
-      expect(AbstractModel['projection'](['field1', 'field2'])).to.eql({ projection: { field1: true, field2: true } });
+      expect(AbstractModel['projection'](['field1', 'field2'])).toEqual({ projection: { field1: true, field2: true } });
     });
   });
 });

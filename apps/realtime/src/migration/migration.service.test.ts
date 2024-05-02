@@ -4,17 +4,18 @@ import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import type { DeepMocked } from '@/../test/utils/create-mock.util';
-import { createMock } from '@/../test/utils/create-mock.util';
 import type { AssistantSerializer } from '@/assistant/assistant.serializer';
 import type { AssistantService } from '@/assistant/assistant.service';
 import type { BackupService } from '@/backup/backup.service';
 import type { EnvironmentService } from '@/environment/environment.service';
 import type { LegacyService } from '@/legacy/legacy.service';
 import { MigrationState } from '@/legacy/services/migrate/constants';
-import type { MigrationCacheService } from '@/migration/cache/cache.service';
-import { MigrationService } from '@/migration/migration.service';
 import type { ProjectLegacyService } from '@/project/project-legacy/project-legacy.service';
+
+import type { DeepMocked } from './_suite';
+import { createMock } from './_suite';
+import type { MigrationCacheService } from './cache/cache.service';
+import { MigrationService } from './migration.service';
 
 describe('Migrate service unit tests', () => {
   let legacyService: DeepMocked<LegacyService>;

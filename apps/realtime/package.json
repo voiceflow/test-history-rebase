@@ -118,6 +118,7 @@
     "zod": "3.22.4"
   },
   "devDependencies": {
+    "@testcontainers/mongodb": "10.9.0",
     "@types/multer": "1.4.8",
     "@types/multer-s3": "3.0.1",
     "@types/node": "16.18.71",
@@ -126,6 +127,7 @@
     "@voiceflow/nestjs-openapi-extractor": "1.7.13",
     "@voiceflow/test-common": "1.11.0",
     "supertest": "6.3.3",
+    "testcontainers": "10.9.0",
     "tsx": "4.7.3"
   },
   "engines": {

@@ -19,7 +19,7 @@ describe('Migrate service - v2 migration unit tests', () => {
 
     const result = produce(data, (draft) => migrateToV2(draft, migrationContext));
 
-    expect(result.version).to.eq(data.version);
+    expect(result.version).toBe(data.version);
   });
 
   it('do not transform block nodes', async () => {
@@ -40,7 +40,7 @@ describe('Migrate service - v2 migration unit tests', () => {
     } as MigrationData;
     const result = produce(data, (draft) => migrateToV2(draft, migrationContext));
 
-    expect(result.diagrams).to.eql(data.diagrams);
+    expect(result.diagrams).toEqual(data.diagrams);
   });
 
   it('do not transform step nodes with updated portsV2 structure', async () => {
@@ -79,7 +79,7 @@ describe('Migrate service - v2 migration unit tests', () => {
     } as MigrationData;
     const result = produce(data, (draft) => migrateToV2(draft, migrationContext));
 
-    expect(result.diagrams).to.eql(data.diagrams);
+    expect(result.diagrams).toEqual(data.diagrams);
   });
 
   it('transform step nodes ports to updated portsV2 structure', async () => {
@@ -116,7 +116,7 @@ describe('Migrate service - v2 migration unit tests', () => {
     } as MigrationData;
     const result = produce(data, (draft) => migrateToV2(draft, migrationContext));
 
-    expect(result.diagrams).to.eql([
+    expect(result.diagrams).toEqual([
       {
         _id: diagramID,
         nodes: {

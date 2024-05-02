@@ -37,7 +37,7 @@ describe('Models | Utils | Atomic', () => {
           { path: 'path-3', value: 3, index: 0 },
           { path: 'path.nested', value: { 'child.id': '10' }, index: 10 },
         ])
-      ).to.eql({
+      ).toEqual({
         query: {
           'path-1': { $each: ['value'] },
           'path-2': { $each: [{ id: 10 }] },
@@ -57,7 +57,7 @@ describe('Models | Utils | Atomic', () => {
           { path: 'path-3', value: [3], index: 0 },
           { path: 'path.nested', value: [], index: 10 },
         ])
-      ).to.eql({
+      ).toEqual({
         query: {
           'path-1': { $each: ['value-1', 'value-2'] },
           'path-2': { $each: [{ id: 10 }, { id: 0 }] },
@@ -78,7 +78,7 @@ describe('Models | Utils | Atomic', () => {
           { path: 'path-3', value: 3 },
           { path: 'path.nested', value: { 'child.id': '10' } },
         ])
-      ).to.eql({
+      ).toEqual({
         query: {
           'path-1': 'value',
           'path-2': { id: 10 },
@@ -98,7 +98,7 @@ describe('Models | Utils | Atomic', () => {
           { path: ['path', { value: 2 }, 'child'], value: { id: 10 } },
           { path: ['path', { 'parent.child': { id: 20 } }, '3'], value: 3 },
         ])
-      ).to.eql({
+      ).toEqual({
         query: {
           'path.nested.value': 'value',
           'path.$[setid11id]': 'value',
@@ -121,7 +121,7 @@ describe('Models | Utils | Atomic', () => {
           ],
           'operation-id'
         )
-      ).to.eql({
+      ).toEqual({
         query: {
           'path.nested.value': 'value',
           'path.$[setoperationid11id]': 'value',
@@ -142,7 +142,7 @@ describe('Models | Utils | Atomic', () => {
     it('creates unset operation for simple path', () => {
       expect(
         Atomic.unset([{ path: 'path-1' }, { path: 'path-2' }, { path: 'path-3' }, { path: 'path.nested' }])
-      ).to.eql({
+      ).toEqual({
         query: {
           'path-1': 1,
           'path-2': 1,
@@ -162,7 +162,7 @@ describe('Models | Utils | Atomic', () => {
           { path: ['path', { value: 2 }, 'child'] },
           { path: ['path', { 'parent.child': { id: 20 } }, '3'] },
         ])
-      ).to.eql({
+      ).toEqual({
         query: {
           'path.nested.value': 1,
           'path.$[unsetid11id]': 1,
@@ -185,7 +185,7 @@ describe('Models | Utils | Atomic', () => {
           ],
           'operation-id'
         )
-      ).to.eql({
+      ).toEqual({
         query: {
           'path.nested.value': 1,
           'path.$[unsetoperationid11id]': 1,

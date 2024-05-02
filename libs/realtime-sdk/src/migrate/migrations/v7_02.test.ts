@@ -65,7 +65,7 @@ describe('Migrate service - v7_02 migration unit tests', () => {
 
     const result = produce(data, (draft) => migrateToV7_02(draft, {} as any));
 
-    expect(result.diagrams).to.eql([
+    expect(result.diagrams).toEqual([
       {
         _id: 'diagramID1',
         nodes: {

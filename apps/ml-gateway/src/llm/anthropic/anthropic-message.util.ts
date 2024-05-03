@@ -89,7 +89,7 @@ export const messageEventToCompletion = (config: { model: string; multiplier: nu
     .when(
       (chunk): chunk is Client.Messages.MessageStartEvent => chunk.type === 'message_start',
       (chunk) => {
-        const output = chunk.message.content?.map((content) => content.text.trim()).join('\n') || null;
+        const output = chunk.message.content?.map((content) => content.text).join('\n') || null;
 
         const queryTokens = chunk.message.usage.input_tokens || 0;
         const answerTokens = chunk.message.usage.output_tokens || 0;

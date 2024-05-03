@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.339.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.338.0...@voiceflow/realtime@1.339.0) (2024-05-03)
+
+### Features
+
+* add refresh/retry kb endpoints [bugfix] (COR-1806) ([#8063](https://github.com/voiceflow/creator-app/issues/8063)) ([82458c8](https://github.com/voiceflow/creator-app/commit/82458c86a02e92785316d50d605e0939b765e61c))
+
 # [1.338.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.337.2...@voiceflow/realtime@1.338.0) (2024-05-02)
 
 ### Features

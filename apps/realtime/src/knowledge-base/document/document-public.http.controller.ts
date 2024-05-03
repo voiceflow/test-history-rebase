@@ -33,6 +33,7 @@ import {
 import { DocumentDeleteRequest, DocumentDeleteResponse } from './dtos/document-delete.dto';
 import { DocumentFindManyRequest, DocumentFindManyResponse, DocumentFindOnePublicResponse, DocumentFindOneResponse } from './dtos/document-find.dto';
 import { DocumentPatchManyRequest, DocumentPatchOneRequest } from './dtos/document-patch.dto';
+import { DocumentRefreshRequest, DocumentRetryResponse } from './dtos/document-refresh.dto';
 
 @Controller('knowledge-base/:assistantID/document')
 @ApiTags('KnowledgeBaseDocument')
@@ -345,5 +346,51 @@ export class KnowledgeBaseDocumentPublicHTTPController {
     await this.service.deleteManyDocuments(documentIDs, assistantID);
 
     return { deletedDocumentIDs: documentIDs };
+  }
+
+  /* Refresh & retry */
+  @Post('refresh')
+  @Authorize.Permissions<Request<{ assistantID: string }>>([Permission.PROJECT_UPDATE], (request) => ({
+    id: request.params.assistantID,
+    kind: 'project',
+  }))
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary: 'Refresh urls documents',
+    description: 'Refresh many urls documents by ids',
+  })
+  @ApiParam({ name: 'assistantID', type: 'string' })
+  @ZodApiBody({ schema: DocumentRefreshRequest })
+  @ZodApiResponse({
+    status: HttpStatus.OK,
+    description: 'Refresh many documents by ids in the target project',
+  })
+  async refreshManyURLs(
+    @Param('assistantID') assistantID: string,
+    @Body(new ZodValidationPipe(DocumentRefreshRequest)) { documentIDs }: DocumentRefreshRequest
+  ): Promise<void> {
+    await this.service.refreshManyDocuments(documentIDs, assistantID);
+  }
+
+  @Post(':documentID/retry')
+  @ApiConsumes('knowledgeBase')
+  @Authorize.Permissions<Request<{ assistantID: string }>>([Permission.PROJECT_UPDATE], (request) => ({
+    id: request.params.assistantID,
+    kind: 'project',
+  }))
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary: 'Retry document processing',
+    description: 'Retry process one documents by id',
+  })
+  @ApiParam({ name: 'assistantID', type: 'string' })
+  @ApiParam({ name: 'documentID', type: 'string' })
+  @ZodApiResponse({
+    status: HttpStatus.OK,
+    schema: DocumentRetryResponse,
+    description: 'Retry document processing by id in the target project',
+  })
+  async retryOne(@Param('assistantID') assistantID: string, @Param('documentID') documentID: string): Promise<DocumentRetryResponse> {
+    return this.service.retryOneDocument(assistantID, documentID);
   }
 }

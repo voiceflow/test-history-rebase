@@ -177,6 +177,9 @@ export const resyncMany =
     );
 
     if (!documents.length) return;
+    const state = getState();
+
+    const realtimeKBEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.KB_BE_DOC_REFRESH);
 
     dispatch.local(Actions.SetProcessingIDs({ processingIDs: documentIDs }));
 
@@ -185,7 +188,11 @@ export const resyncMany =
 
       Errors.assertProjectID(projectID);
 
-      await knowledgeBaseClient.refreshDocuments(projectID, documentIDs);
+      if (realtimeKBEnabled) {
+        await designerClient.knowledgeBase.document.refreshManyURLs(projectID, { documentIDs });
+      } else {
+        await knowledgeBaseClient.refreshDocuments(projectID, documentIDs);
+      }
 
       Tracking.trackAiKnowledgeBaseSourceResync({ documentIDs });
 
@@ -212,6 +219,10 @@ export const retryOne =
       })
     );
 
+    const state = getState();
+
+    const realtimeKBEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.KB_BE_DOC_REFRESH);
+
     Tracking.trackAiKnowledgeBaseSourceStatusUpdated({ documentID });
 
     try {
@@ -219,7 +230,11 @@ export const retryOne =
 
       Errors.assertProjectID(projectID);
 
-      await knowledgeBaseClient.retryDocument(projectID, documentID);
+      if (realtimeKBEnabled) {
+        await designerClient.knowledgeBase.document.retryOne(projectID, documentID);
+      } else {
+        await knowledgeBaseClient.retryDocument(projectID, documentID);
+      }
     } catch {
       notify.short.error('Failed to retry data source');
     }

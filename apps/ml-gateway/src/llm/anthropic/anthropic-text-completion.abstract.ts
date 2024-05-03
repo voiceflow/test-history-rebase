@@ -141,7 +141,7 @@ export abstract class AnthropicTextCompletionAIModel extends LLMModel {
     ).pipe(
       mergeMap((chunk) => chunk),
       map((chunk, i) => {
-        const output = chunk.completion?.trim() ?? null;
+        const output = chunk.completion ?? null;
 
         const answerTokens = this.calculateTokenUsage(output ?? '');
         if (i > 0) {

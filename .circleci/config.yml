@@ -10,7 +10,7 @@ parameters:
 setup: true
 
 orbs:
-  vfcommon: voiceflow/common@0.56.0
+  vfcommon: voiceflow/common@dev:d45a49b0322916e0a39ef6d8255aeb1bce263f2f
   gomplate: xavientois/gomplate@0.2.0
 
 workflows:
@@ -23,7 +23,7 @@ workflows:
           context: dev-test
           executor: vfcommon/node-executor
           pre-steps:
-            - checkout
+            - vfcommon/checkout_shallow_clone
             - vfcommon/set-env-name: # On bors branches, we will be running the e2e tests in a dev environment
                 target_env_var: &env_name ENV_NAME
             - vfcommon/set-json-string-from-env:

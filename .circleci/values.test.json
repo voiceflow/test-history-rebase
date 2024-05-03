@@ -31,6 +31,6 @@
   ],
   "branch": "trying",
   "pr_branch": "joshr/new-e2e-system/IN-707",
-  "common_orb_version": "0.62.2",
+  "common_orb_version": "0.66.0",
   "ecr_url": "168387678261.dkr.ecr.*********.amazonaws.com"
 }

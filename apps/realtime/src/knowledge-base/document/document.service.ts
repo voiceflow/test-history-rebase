@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { BaseModels } from '@voiceflow/base-types';
-import type {
+import {
+  AmqpQueueMessagePriority,
   KBDocumentChunk,
   KBDocumentDocxData,
   KBDocumentPDFData,
@@ -8,8 +9,10 @@ import type {
   KBDocumentTextData,
   KBDocumentUrlData,
   KnowledgeBaseDocument,
+  KnowledgeBaseDocumentRefreshRate,
+  KnowledgeBaseDocumentStatus,
+  KnowledgeBaseDocumentType,
 } from '@voiceflow/dtos';
-import { KnowledgeBaseDocumentType } from '@voiceflow/dtos';
 import { BadRequestException, ForbiddenException, NotAcceptableException } from '@voiceflow/exception';
 import { UnleashFeatureFlagService } from '@voiceflow/nestjs-common';
 import { KnowledgeBaseORM, ProjectORM, RefreshJobsOrm, VersionKnowledgeBaseDocument } from '@voiceflow/orm-designer';
@@ -38,6 +41,10 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
 
   mapFromJSON = this.orm.jsonAdapter.mapToDB;
 
+  readonly MAX_CONCURRENT_DOCUMENTS = 300;
+
+  readonly KB_DOC_FINISH_STATUSES = new Set([KnowledgeBaseDocumentStatus.SUCCESS.toString(), KnowledgeBaseDocumentStatus.ERROR.toString()]);
+
   // eslint-disable-next-line max-params
   constructor(
     @Inject(KnowledgeBaseORM)
@@ -64,9 +71,9 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
       documents.map((document) => {
         let key: string | undefined;
 
-        if (document.data?.type === BaseModels.Project.KnowledgeBaseDocumentType.URL) {
+        if (document.data?.type === KnowledgeBaseDocumentType.URL) {
           key = document.data.url;
-        } else if (document.data?.type === BaseModels.Project.KnowledgeBaseDocumentType.TABLE) {
+        } else if (document.data?.type === KnowledgeBaseDocumentType.TABLE) {
           key = document.data.name;
         } else {
           key = document.s3ObjectRef;
@@ -77,15 +84,15 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
     );
   }
 
-  getFileTypeByMimetype(mimetype: string, originalName: string): BaseModels.Project.KnowledgeBaseDocumentType {
+  getFileTypeByMimetype(mimetype: string, originalName: string): KnowledgeBaseDocumentType {
     if (mimetype === 'application/pdf') {
-      return BaseModels.Project.KnowledgeBaseDocumentType.PDF;
+      return KnowledgeBaseDocumentType.PDF;
     }
     if (mimetype === 'text/plain') {
-      return BaseModels.Project.KnowledgeBaseDocumentType.TEXT;
+      return KnowledgeBaseDocumentType.TEXT;
     }
     if (originalName.endsWith('.docx') || originalName.endsWith('.doc')) {
-      return BaseModels.Project.KnowledgeBaseDocumentType.DOCX;
+      return KnowledgeBaseDocumentType.DOCX;
     }
 
     throw new BadRequestException('invalid document type');
@@ -107,8 +114,8 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
         resourceID: projectID,
         resourceType: BillingResourceType.PROJECT,
         item: BillingAuthorizeItemName.KnowledgeBaseSources,
-        value: existingDocsCount,
-        currentValue: newDocsCount,
+        value: newDocsCount,
+        currentValue: existingDocsCount,
       });
 
       if (!response[BillingAuthorizeItemName.KnowledgeBaseSources]) {
@@ -128,7 +135,7 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
 
     // Update documents refresh jobs if refreshRate and they are not `never`
     const filteredDocs = documents.filter((doc) => {
-      if (doc.data?.type !== BaseModels.Project.KnowledgeBaseDocumentType.URL) {
+      if (doc.data?.type !== KnowledgeBaseDocumentType.URL) {
         return false;
       }
       const urlData = doc.data as KBDocumentUrlData;
@@ -139,7 +146,7 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
 
       const refreshRate = urlData?.refreshRate;
 
-      if (refreshRate === BaseModels.Project.KnowledgeBaseDocumentRefreshRate.NEVER) {
+      if (refreshRate === KnowledgeBaseDocumentRefreshRate.NEVER) {
         deleteDocumentIDs.push(doc.documentID);
         return false;
       }
@@ -188,7 +195,7 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
       }
 
       documentsToUpsert.push({
-        status: { type: BaseModels.Project.KnowledgeBaseDocumentStatus.PENDING },
+        status: { type: KnowledgeBaseDocumentStatus.PENDING },
         data: item,
         updatedAt: new Date(),
         creatorID: userID,
@@ -216,20 +223,20 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
       : [];
     const collisionMap = this.getDocumentCollisionMap(existingDocuments);
 
-    const type: BaseModels.Project.KnowledgeBaseDocumentType = this.getFileTypeByMimetype(file.mimetype, file.originalname);
+    const type: KnowledgeBaseDocumentType = this.getFileTypeByMimetype(file.mimetype, file.originalname);
     const s3ObjectRef: string = this.getKnowledgeBaseS3Key(projectID, file.originalname);
 
     const data = {
       type,
       name: s3ObjectRef.split('/').pop()?.toString(),
-    } as BaseModels.Project.KnowledgeBaseText;
+    } as KBDocumentTextData;
 
-    if (data.type === BaseModels.Project.KnowledgeBaseDocumentType.TEXT) {
+    if (data.type === KnowledgeBaseDocumentType.TEXT) {
       data.canEdit = canEdit ?? false;
     }
 
     const document: Omit<VersionKnowledgeBaseDocument, 'documentID' | 'updatedAt'> & { documentID: string; updatedAt: Date } = {
-      status: { type: BaseModels.Project.KnowledgeBaseDocumentStatus.PENDING },
+      status: { type: KnowledgeBaseDocumentStatus.PENDING },
       data,
       updatedAt: new Date(),
       creatorID: userID,
@@ -367,5 +374,86 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
     await this.refreshJobsOrm.deleteManyByDocumentIDs(assistantID, ids);
 
     await this.orm.deleteManyDocuments(assistantID, ids);
+  }
+
+  /* Refresh & retry */
+
+  async refreshManyDocuments(ids: string[], assistantID: string) {
+    // todo: remove after migration to postgres
+    if (ids.length > this.MAX_CONCURRENT_DOCUMENTS) {
+      throw new BadRequestException('too many documents');
+    }
+
+    const project = await this.projectOrm.findOneOrFail(assistantID);
+    const documents = project?.knowledgeBase?.documents ? Object.values(project.knowledgeBase.documents) : [];
+
+    const filteredDocs = documents.filter(({ documentID, data, status }) => {
+      if (
+        !documentID ||
+        !ids.includes(documentID) ||
+        data?.type !== KnowledgeBaseDocumentType.URL ||
+        // there is no point in updating an unfinished document in progress
+
+        !this.KB_DOC_FINISH_STATUSES.has(status.type.toString())
+      ) {
+        return false;
+      }
+      const urlData = data as KBDocumentUrlData;
+
+      // check that integration doc type and integration did not remove
+      return !(urlData?.source && !urlData?.accessTokenID);
+    });
+
+    const documentIDs = filteredDocs.map(({ documentID }) => documentID);
+
+    await this.orm.patchManyDocuments(assistantID, documentIDs, {
+      status: {
+        type: KnowledgeBaseDocumentStatus.PENDING,
+      },
+    });
+
+    // could be quite huge amount, medium priority, less then usual creation docs though ui, but higher than backgound refresh
+    await this.refreshJobService.sendRefreshJobs(assistantID, filteredDocs, project.teamID, AmqpQueueMessagePriority.MEDIUM);
+  }
+
+  async retryOneDocument(assistantID: string, documentID: string): Promise<KnowledgeBaseDocument> {
+    const workspaceID = await this.orm.getWorkspaceID(assistantID);
+    const document = await this.orm.findOneDocument(assistantID, documentID);
+
+    if (!document) {
+      throw new BadRequestException('document not found');
+    }
+
+    const { data } = document;
+
+    const dataForUpdate = {
+      status: {
+        type: KnowledgeBaseDocumentStatus.PENDING,
+      },
+      updatedAt: new Date(),
+    };
+
+    const updatedDocument = {
+      ...document,
+      ...dataForUpdate,
+    };
+
+    if (data?.type === KnowledgeBaseDocumentType.URL) {
+      const urlData = data as KBDocumentUrlData;
+
+      if ((urlData.source && !urlData.accessTokenID) || !data) {
+        return knowledgeBaseDocumentAdapter.fromDB(document);
+      }
+      await this.orm.patchManyDocuments(assistantID, [documentID], dataForUpdate);
+      await this.refreshJobService.sendRefreshJobs(assistantID, [document], workspaceID);
+    } else {
+      await this.orm.patchManyDocuments(assistantID, [documentID], dataForUpdate);
+
+      this.klParserClient.parse(assistantID, updatedDocument, workspaceID.toString(), {
+        chunkStrategy: { type: BaseModels.Project.ChunkStrategyType.RECURSIVE_TEXT_SPLITTER },
+      });
+    }
+
+    return knowledgeBaseDocumentAdapter.fromDB(updatedDocument);
   }
 }

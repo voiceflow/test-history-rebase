@@ -90,7 +90,7 @@ export class RefreshJobService extends MutableService<RefreshJobsOrm> {
 
   async sendRefreshJobs(
     projectID: string,
-    documents: (Omit<VersionKnowledgeBaseDocument, 'documentID' | 'updatedAt'> & { documentID: string; updatedAt: Date })[],
+    documents: Pick<VersionKnowledgeBaseDocument, 'documentID' | 'data' | 'tags'>[],
     workspaceID: number,
     messagePriority: AmqpQueueMessagePriority = AmqpQueueMessagePriority.HIGH
   ) {

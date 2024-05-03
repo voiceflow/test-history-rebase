@@ -69,8 +69,8 @@ export class KnowledgeBaseORM extends ProjectORM {
   async patchManyDocuments(
     projectID: string,
     documentIDs: string[],
-    data: Omit<Partial<KnowledgeBaseDocument>, 'documentID' | 'status' | 'updatedAt' | 'data'> & {
-      data:
+    data: Omit<Partial<KnowledgeBaseDocument>, 'documentID' | 'updatedAt' | 'data'> & {
+      data?:
         | Partial<KBDocumentUrlData>
         | Partial<KBDocumentDocxData>
         | Partial<KBDocumentPDFData>
@@ -81,7 +81,7 @@ export class KnowledgeBaseORM extends ProjectORM {
     const updateData: SetOperation[] = documentIDs.flatMap((documentID) =>
       Object.entries(data).flatMap(([key, value]) => {
         if (key === 'data') {
-          return Object.entries(data.data).map(
+          return Object.entries(data.data ?? {}).map(
             ([key, value]) =>
               ({
                 path: [KnowledgeBaseORM.KNOWLEDGE_BASE_DATA_PATH, 'documents', documentID, 'data', key],

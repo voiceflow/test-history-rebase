@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.90.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.90.3...@voiceflow/ml-gateway@1.90.4) (2024-05-03)
+
+### Bug Fixes
+
+* **ml-gateway:** do not trim token chunks (PL-995) [bug-fix] ([#8066](https://github.com/voiceflow/creator-app/issues/8066)) ([0e64738](https://github.com/voiceflow/creator-app/commit/0e64738b15f1190046e8dc8a38b0e94b59c04cdd))
+
 ## [1.90.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.90.2...@voiceflow/ml-gateway@1.90.3) (2024-05-02)
 
 **Note:** Version bump only for package @voiceflow/ml-gateway

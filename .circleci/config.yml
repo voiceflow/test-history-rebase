@@ -10,7 +10,7 @@ parameters:
 setup: true
 
 orbs:
-  vfcommon: voiceflow/common@dev:d45a49b0322916e0a39ef6d8255aeb1bce263f2f
+  vfcommon: voiceflow/common@dev:07d2cfd663ec477d8714d7336e2e50541dc33bcf
   gomplate: xavientois/gomplate@0.2.0
 
 workflows:

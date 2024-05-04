@@ -23,7 +23,7 @@ workflows:
           context: dev-test
           executor: vfcommon/node-executor
           pre-steps:
-            - checkout_shallow_clone
+            - vfcommon/checkout_shallow_clone
             - vfcommon/set-env-name: # On bors branches, we will be running the e2e tests in a dev environment
                 target_env_var: &env_name ENV_NAME
             - vfcommon/set-json-string-from-env:

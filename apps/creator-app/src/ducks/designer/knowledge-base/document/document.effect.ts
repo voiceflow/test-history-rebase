@@ -272,7 +272,7 @@ const createManyFromFormData =
         result.filter((res): res is PromiseFulfilledResult<any> => res.status === 'fulfilled').map((res) => res.value)
       );
     } else {
-      const result = await Promise.allSettled(manyFormData.map((data) => knowledgeBaseClient.createOneDocumentFromFormFile(projectID, data)));
+      result = await Promise.allSettled(manyFormData.map((data) => knowledgeBaseClient.createOneDocumentFromFormFile(projectID, data)));
 
       documents = result
         .filter((res): res is PromiseFulfilledResult<DBKnowledgeBaseDocument> => res.status === 'fulfilled')
@@ -357,14 +357,15 @@ export const createManyFromData =
       const dataUrls = data as BaseModels.Project.KnowledgeBaseURL[];
 
       const response = await Promise.resolve(designerClient.knowledgeBase.document.createManyURLs(projectID, { data: dataUrls })).catch((error) => {
-        const err = error.reason.response?.status === 406 ? error.reason : null;
+        const err = error.response?.status === 406 ? error : null;
+
         if (err) throw err;
       });
 
       documents = documentAdapterRealtime.mapFromDB(response?.map((res: any) => res) || []);
     } else {
       const result = await Promise.resolve(knowledgeBaseClient.createManyDocumentsFromURLs(projectID, data)).catch((error) => {
-        const err = error.reason.response?.status === 406 ? error.reason : null;
+        const err = error.response?.status === 406 ? error : null;
         if (err) throw err;
       });
 

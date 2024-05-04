@@ -158,7 +158,7 @@
     "sinon-chai": "3.7.0",
     "ts-loader": "9.4.2",
     "ts-mocha": "10.0.0",
-    "tsc-alias": "1.8.6",
+    "tsc-alias": "1.8.7",
     "turbo": "1.10.16",
     "typescript": "5.0.4",
     "vite": "4.3.9",

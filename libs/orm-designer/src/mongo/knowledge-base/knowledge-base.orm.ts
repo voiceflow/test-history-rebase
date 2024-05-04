@@ -76,6 +76,7 @@ export class KnowledgeBaseORM extends ProjectORM {
         | Partial<KBDocumentPDFData>
         | Partial<KBDocumentTableData>
         | Partial<KBDocumentTextData>;
+      updatedAt?: Date;
     }
   ) {
     const updateData: SetOperation[] = documentIDs.flatMap((documentID) =>

@@ -410,6 +410,7 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
       status: {
         type: KnowledgeBaseDocumentStatus.PENDING,
       },
+      updatedAt: new Date(),
     });
 
     // could be quite huge amount, medium priority, less then usual creation docs though ui, but higher than backgound refresh

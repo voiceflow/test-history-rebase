@@ -70,7 +70,7 @@ export const useDocumentLimitError = (enableClose: VoidFunction) => {
 
   return (error: any) => {
     if (error.response.status === 406 && planConfig) {
-      notify.long.warning(`Document limit ({planConfig.limit}) reached for your current subscription. Please upgrade to continue.`, {
+      notify.long.warning(`Document limit (${planConfig.limit}) reached for your current subscription. Please upgrade to continue.`, {
         pauseOnHover: true,
         bodyClassName: 'vfui',
         actionButtonProps: { label: 'Upgrade', onClick: () => upgradeModal.openVoid(planConfig.upgradeModal({ limit: planConfig.limit })) },

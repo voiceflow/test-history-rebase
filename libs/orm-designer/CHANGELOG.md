@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.52.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.51.0...@voiceflow/orm-designer@2.52.0) (2024-05-04)
+
+### Features
+
+* documents plan limit reached message [bugfix] (COR-000) ([#8068](https://github.com/voiceflow/creator-app/issues/8068)) ([463e232](https://github.com/voiceflow/creator-app/commit/463e232c44e0feb333397cdf940011c1aab22d96))
+
 # [2.51.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.50.0...@voiceflow/orm-designer@2.51.0) (2024-05-03)
 
 ### Features

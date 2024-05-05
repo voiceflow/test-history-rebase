@@ -160,7 +160,7 @@ export const loadAll = (): Thunk => async (dispatch) => {
   } catch (error) {
     dispatch.local(Actions.SetFetchStatus({ status: 'error' }));
     Tracking.trackAiKnowledgeBaseError({ ErrorType: 'Load' });
-    const systemMessageID = notify.long.warning('An error was encountered when fetching knowledge base data', {
+    const systemMessageID = notify.long.warning('An error was encountered when fetching knowledge base data.', {
       pauseOnHover: true,
       autoClose: false,
       actionButtonProps: { label: 'Reload', onClick: () => window.location.reload() },

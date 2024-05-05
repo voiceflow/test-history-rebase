@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1508.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1508.0...@voiceflow/creator-app@1.1508.1) (2024-05-05)
+
+### Bug Fixes
+
+* Add period at end of toast message (COR-1991) ([#8072](https://github.com/voiceflow/creator-app/issues/8072)) ([9328d80](https://github.com/voiceflow/creator-app/commit/9328d80387aa61df7d16dbf7047162c15b0e8600))
+
 # [1.1508.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1507.1...@voiceflow/creator-app@1.1508.0) (2024-05-04)
 
 ### Features

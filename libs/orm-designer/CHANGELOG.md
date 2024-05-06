@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.53.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.52.0...@voiceflow/orm-designer@2.53.0) (2024-05-06)
+
+### Features
+
+* kb tag endpoints (COR-1835) (COR-1836) (COR-1837) ([#8029](https://github.com/voiceflow/creator-app/issues/8029)) ([99885af](https://github.com/voiceflow/creator-app/commit/99885af0086afad45d88312f2a548a133f102483))
+
 # [2.52.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.51.0...@voiceflow/orm-designer@2.52.0) (2024-05-04)
 
 ### Features

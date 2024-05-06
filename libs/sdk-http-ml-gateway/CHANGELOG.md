@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.15.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-ml-gateway@2.15.4...@voiceflow/sdk-http-ml-gateway@2.15.5) (2024-05-06)
+
+**Note:** Version bump only for package @voiceflow/sdk-http-ml-gateway
+
 ## [2.15.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-ml-gateway@2.15.3...@voiceflow/sdk-http-ml-gateway@2.15.4) (2024-05-03)
 
 **Note:** Version bump only for package @voiceflow/sdk-http-ml-gateway

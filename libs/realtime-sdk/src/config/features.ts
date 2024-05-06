@@ -61,6 +61,7 @@ export enum FeatureFlag {
   CMS_WORKFLOWS = 'cms_workflows',
 
   KB_BE_DOC_CRUD = 'kb_be_doc_crud',
+  KB_BE_DOC_FILE = 'kb_be_doc_file',
 
   KB_BE_DOC_REFRESH = 'kb_be_doc_refresh',
 

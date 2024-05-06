@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 /* eslint-disable sonarjs/no-duplicate-string */
 import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
@@ -35,7 +36,11 @@ export const patchMany =
 export const replaceTextDocument =
   (documentID: string, fileContent: string): Thunk<void> =>
   async (dispatch, getState) => {
-    const projectID = Session.activeProjectIDSelector(getState());
+    const state = getState();
+
+    const realtimeKBEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.KB_BE_DOC_FILE);
+    const projectID = Session.activeProjectIDSelector(state);
+
     const file = new Blob([fileContent], { type: 'text/plain' });
 
     const formData = new FormData();
@@ -45,7 +50,22 @@ export const replaceTextDocument =
 
     Errors.assertProjectID(projectID);
 
-    const dbDocument = await knowledgeBaseClient.replaceDocument(projectID, documentID, formData);
+    let document: KnowledgeBaseDocument;
+
+    if (realtimeKBEnabled) {
+      const formFile = formData.get('file');
+      if (!(formFile instanceof Blob)) {
+        throw new Error('unsupported');
+      }
+      const dbDocument = await designerClient.knowledgeBase.document.replaceOneFile(projectID, documentID, {
+        file: formFile,
+        canEdit: true,
+      });
+      document = documentAdapterRealtime.fromDB(dbDocument);
+    } else {
+      const dbDocument = await knowledgeBaseClient.replaceDocument(projectID, documentID, formData);
+      document = documentAdapter.fromDB(dbDocument);
+    }
 
     dispatch.local(Actions.SetProcessingIDs({ processingIDs: [documentID] }));
 
@@ -53,7 +73,7 @@ export const replaceTextDocument =
 
     dispatch.local(
       Actions.UpdateMany({
-        update: [{ ...documentAdapter.fromDB(dbDocument), updatedAt: new Date().toJSON() }],
+        update: [{ ...document, updatedAt: new Date().toJSON() }],
       })
     );
   };
@@ -426,6 +446,8 @@ export const getOneBlobData =
   async (_dispatch, getState) => {
     const state = getState();
 
+    const realtimeKBEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.KB_BE_DOC_FILE);
+
     const projectID = Session.activeProjectIDSelector(state);
 
     Errors.assertProjectID(projectID);
@@ -436,9 +458,16 @@ export const getOneBlobData =
       throw new Error('unknown data source type');
     }
 
-    const data = await knowledgeBaseClient.getOneDocumentData(projectID, documentID);
+    let blob: Blob;
 
-    const blob = new Blob([new Uint8Array(data)], { type: DOCUMENT_TYPE_MIME_FILE_TYPE_MAP[document.data.type] });
+    if (realtimeKBEnabled) {
+      const data = await designerClient.knowledgeBase.document.download(projectID, documentID);
+      const mappedData = Object.values(data ?? {}) as number[];
+      blob = new Blob([new Uint8Array(mappedData)], { type: DOCUMENT_TYPE_MIME_FILE_TYPE_MAP[document.data.type] });
+    } else {
+      const data: Buffer = await knowledgeBaseClient.getOneDocumentData(projectID, documentID);
+      blob = new Blob([new Uint8Array(data)], { type: DOCUMENT_TYPE_MIME_FILE_TYPE_MAP[document.data.type] });
+    }
 
     return {
       blob,
@@ -528,6 +557,8 @@ export const getURLsFromSitemap =
   async (_dispatch, getState) => {
     const state = getState();
 
+    const realtimeKBEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.KB_BE_DOC_FILE);
+
     const projectID = Session.activeProjectIDSelector(state);
 
     Errors.assertProjectID(projectID);
@@ -544,10 +575,15 @@ export const getURLsFromSitemap =
     }
 
     for (const url of urlsToTry) {
-      // eslint-disable-next-line no-await-in-loop
-      const sites = await knowledgeBaseClient.getURLsFromSitemap(projectID, url).catch<string[]>(() => []);
+      if (realtimeKBEnabled) {
+        const sites = await designerClient.knowledgeBase.document.sitemap(projectID, { sitemapURL: url });
 
-      if (sites?.length) return sites;
+        if (sites?.length) return sites;
+      } else {
+        const sites = await knowledgeBaseClient.getURLsFromSitemap(projectID, url).catch<string[]>(() => []);
+
+        if (sites?.length) return sites;
+      }
     }
 
     return [];

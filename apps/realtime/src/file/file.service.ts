@@ -1,5 +1,6 @@
 import { DeleteObjectCommand, DeleteObjectOutput, GetObjectCommand, PutObjectCommand, PutObjectCommandInput, S3Client } from '@aws-sdk/client-s3';
 import { Inject, Injectable, Logger, Optional } from '@nestjs/common';
+import { StreamingBlobPayloadOutputTypes } from '@smithy/types';
 import multerS3 from 'multer-s3';
 
 import { MB } from './file.constants';
@@ -71,7 +72,7 @@ export class FileService {
     }
   }
 
-  public async downloadFile(fileType: UploadType, key: string) {
+  public async downloadFile(fileType: UploadType, key: string): Promise<StreamingBlobPayloadOutputTypes | undefined> {
     const bucket = this.options.buckets[fileType];
 
     const command = new GetObjectCommand({ Bucket: bucket, Key: key });

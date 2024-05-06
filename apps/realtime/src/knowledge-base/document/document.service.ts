@@ -43,7 +43,14 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
 
   readonly MAX_CONCURRENT_DOCUMENTS = 300;
 
+  readonly DOCUMENT_UPLOAD_TIMEOUT = 1000 * 60 * 5; // 5 minutes
+
   readonly KB_DOC_FINISH_STATUSES = new Set([KnowledgeBaseDocumentStatus.SUCCESS.toString(), KnowledgeBaseDocumentStatus.ERROR.toString()]);
+
+  readonly DOCUMENT_TIMEOUT_STATUS = {
+    type: KnowledgeBaseDocumentStatus.ERROR,
+    data: 'Document upload timed out',
+  };
 
   // eslint-disable-next-line max-params
   constructor(
@@ -124,6 +131,30 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
     } catch (ForbiddenException) {
       throw new NotAcceptableException(message);
     }
+  }
+
+  async syncDocuments(projectID: string, documents: VersionKnowledgeBaseDocument[]): Promise<VersionKnowledgeBaseDocument[]> {
+    const now = Date.now();
+    const documentIDs: string[] = [];
+
+    const updatedDocuments = documents.map((document) => {
+      const updatedAt = document.updatedAt?.getTime?.();
+
+      if (updatedAt && !this.KB_DOC_FINISH_STATUSES.has(document.status.type) && now - updatedAt > this.DOCUMENT_UPLOAD_TIMEOUT) {
+        documentIDs.push(document.documentID);
+
+        return { ...document, status: this.DOCUMENT_TIMEOUT_STATUS };
+      }
+
+      return document;
+    });
+
+    await this.orm.patchManyDocuments(projectID, documentIDs, {
+      status: this.DOCUMENT_TIMEOUT_STATUS,
+      updatedAt: new Date(),
+    });
+
+    return updatedDocuments;
   }
 
   async syncRefreshJobs(
@@ -273,6 +304,10 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
 
   async findManyDocuments(assistantID: string, documentIDs?: string[]): Promise<KnowledgeBaseDocument[]> {
     const documents = documentIDs ? await this.orm.findManyDocuments(assistantID, documentIDs) : await this.orm.findAllDocuments(assistantID);
+
+    // mark with an ERROR status documents that have not completed processing within 5 minutes
+    await this.syncDocuments(assistantID, documents);
+
     return documents.map((document: VersionKnowledgeBaseDocument) => knowledgeBaseDocumentAdapter.fromDB(document));
   }
 

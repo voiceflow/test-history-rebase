@@ -1,6 +1,6 @@
 {
   "name": "@voiceflow/realtime",
-  "version": "1.340.0",
+  "version": "1.343.0",
   "private": true,
   "license": "UNLICENSED",
   "type": "module",
@@ -61,6 +61,7 @@
     "@nestjs/swagger": "6.3.0",
     "@nestjs/terminus": "9.2.2",
     "@nestjs/throttler": "^5.0.1",
+    "@smithy/types": "2.12.0",
     "@voiceflow/api-sdk": "3.27.30",
     "@voiceflow/backend-utils": "4.8.5",
     "@voiceflow/base-types": "2.106.0",
@@ -113,6 +114,7 @@
     "react-router-dom": "5.3.4",
     "reflect-metadata": "0.1.13",
     "rxjs": "7.8.1",
+    "sitemapper": "^3.2.6",
     "slate": "0.94.1",
     "socket.io": "3.1.2",
     "socket.io-adapter": "2.1.0",

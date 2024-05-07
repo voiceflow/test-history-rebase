@@ -13,12 +13,13 @@ import {
   KnowledgeBaseDocumentStatus,
   KnowledgeBaseDocumentType,
 } from '@voiceflow/dtos';
-import { BadRequestException, ForbiddenException, NotAcceptableException } from '@voiceflow/exception';
+import { BadRequestException, ForbiddenException, NotAcceptableException, NotFoundException } from '@voiceflow/exception';
 import { UnleashFeatureFlagService } from '@voiceflow/nestjs-common';
 import { KnowledgeBaseORM, ProjectORM, RefreshJobsOrm, VersionKnowledgeBaseDocument } from '@voiceflow/orm-designer';
 import { FeatureFlag } from '@voiceflow/realtime-sdk/backend';
 import { BillingAuthorizeItemName, BillingClient, BillingResourceType } from '@voiceflow/sdk-billing';
 import { ObjectId } from 'bson';
+import Sitemapper from 'sitemapper';
 import { z } from 'zod';
 
 import { MutableService } from '@/common';
@@ -43,7 +44,14 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
 
   readonly MAX_CONCURRENT_DOCUMENTS = 300;
 
+  readonly DOCUMENT_UPLOAD_TIMEOUT = 1000 * 60 * 5; // 5 minutes
+
   readonly KB_DOC_FINISH_STATUSES = new Set([KnowledgeBaseDocumentStatus.SUCCESS.toString(), KnowledgeBaseDocumentStatus.ERROR.toString()]);
+
+  readonly DOCUMENT_TIMEOUT_STATUS = {
+    type: KnowledgeBaseDocumentStatus.ERROR,
+    data: 'Document upload timed out',
+  };
 
   // eslint-disable-next-line max-params
   constructor(
@@ -124,6 +132,30 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
     } catch (ForbiddenException) {
       throw new NotAcceptableException(message);
     }
+  }
+
+  async syncDocuments(projectID: string, documents: VersionKnowledgeBaseDocument[]): Promise<VersionKnowledgeBaseDocument[]> {
+    const now = Date.now();
+    const documentIDs: string[] = [];
+
+    const updatedDocuments = documents.map((document) => {
+      const updatedAt = document.updatedAt?.getTime?.();
+
+      if (updatedAt && !this.KB_DOC_FINISH_STATUSES.has(document.status.type) && now - updatedAt > this.DOCUMENT_UPLOAD_TIMEOUT) {
+        documentIDs.push(document.documentID);
+
+        return { ...document, status: this.DOCUMENT_TIMEOUT_STATUS };
+      }
+
+      return document;
+    });
+
+    await this.orm.patchManyDocuments(projectID, documentIDs, {
+      status: this.DOCUMENT_TIMEOUT_STATUS,
+      updatedAt: new Date(),
+    });
+
+    return updatedDocuments;
   }
 
   async syncRefreshJobs(
@@ -216,7 +248,18 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
     return documentsToUpsert.map((document: VersionKnowledgeBaseDocument) => knowledgeBaseDocumentAdapter.fromDB(document));
   }
 
-  async uploadFileDocument(projectID: string, userID: number, file: MulterFile, canEdit?: boolean): Promise<KnowledgeBaseDocument> {
+  async replaceFileDocument(projectID: string, userID: number, documentID: string, file: MulterFile, canEdit = true): Promise<KnowledgeBaseDocument> {
+    await this.deleteManyDocuments([documentID], projectID);
+    return this.uploadFileDocument(projectID, userID, file, canEdit, documentID);
+  }
+
+  async uploadFileDocument(
+    projectID: string,
+    userID: number,
+    file: MulterFile,
+    canEdit?: boolean,
+    existingDocumentID?: string
+  ): Promise<KnowledgeBaseDocument> {
     const project = await this.projectOrm.findOneOrFail(projectID);
     const existingDocuments: Omit<VersionKnowledgeBaseDocument, 'updatedAt'>[] = project?.knowledgeBase?.documents
       ? Object.values(project.knowledgeBase.documents)
@@ -240,12 +283,12 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
       data,
       updatedAt: new Date(),
       creatorID: userID,
-      documentID: collisionMap[s3ObjectRef] ?? new ObjectId().toHexString(),
+      documentID: collisionMap[s3ObjectRef] ?? existingDocumentID ?? new ObjectId().toHexString(),
       tags: [],
       s3ObjectRef,
     };
 
-    if (!collisionMap[s3ObjectRef]) {
+    if (!collisionMap[s3ObjectRef] && !existingDocumentID) {
       await this.checkDocsPlanLimit(project.teamID, projectID, existingDocuments.length, 1);
     }
 
@@ -273,6 +316,10 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
 
   async findManyDocuments(assistantID: string, documentIDs?: string[]): Promise<KnowledgeBaseDocument[]> {
     const documents = documentIDs ? await this.orm.findManyDocuments(assistantID, documentIDs) : await this.orm.findAllDocuments(assistantID);
+
+    // mark with an ERROR status documents that have not completed processing within 5 minutes
+    await this.syncDocuments(assistantID, documents);
+
     return documents.map((document: VersionKnowledgeBaseDocument) => knowledgeBaseDocumentAdapter.fromDB(document));
   }
 
@@ -456,5 +503,30 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
     }
 
     return knowledgeBaseDocumentAdapter.fromDB(updatedDocument);
+  }
+
+  /* Download */
+
+  async downloadDocument(assistantID: string, documentID: string) {
+    const document = await this.findOneDocument(assistantID, documentID);
+
+    if (!document || !document.s3ObjectRef) {
+      throw new NotFoundException('document not found');
+    }
+
+    const file = await this.file.downloadFile(UploadType.KB_DOCUMENT, document.s3ObjectRef);
+
+    if (!file) {
+      throw new NotFoundException('file not found');
+    }
+
+    return file.transformToByteArray();
+  }
+
+  /* Sitemap */
+
+  async sitemapUrlExraction(sitemapURL: string) {
+    const { sites } = await new Sitemapper({ url: sitemapURL, timeout: 10000 }).fetch();
+    return sites.map((site) => site.trim());
   }
 }

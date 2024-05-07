@@ -61,6 +61,7 @@ export * from './knowledge-base/document/document-status.enum';
 export * from './knowledge-base/document/document-type.enum';
 export * from './knowledge-base/document/knowledge-base-document-refresh-rate.enum';
 export * from './knowledge-base/knowledge-base.dto';
+export * from './knowledge-base/knowledge-base-tag.dto';
 export * from './nlu/nlu-params.dto';
 export * from './node/base/base-compiled-node.dto';
 export * from './node/base/base-node.dto';

@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1509.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1508.3...@voiceflow/creator-app@1.1509.0) (2024-05-06)
+
+### Features
+
+* sitemap and download kb endpoints (COR-1814) (COR-1811) ([#8065](https://github.com/voiceflow/creator-app/issues/8065)) ([85b5966](https://github.com/voiceflow/creator-app/commit/85b5966bb916db2987e27244da70e277fb4ac673))
+
+## [1.1508.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1508.2...@voiceflow/creator-app@1.1508.3) (2024-05-06)
+
+**Note:** Version bump only for package @voiceflow/creator-app
+
+## [1.1508.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1508.1...@voiceflow/creator-app@1.1508.2) (2024-05-06)
+
+**Note:** Version bump only for package @voiceflow/creator-app
+
 ## [1.1508.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1508.0...@voiceflow/creator-app@1.1508.1) (2024-05-05)
 
 ### Bug Fixes

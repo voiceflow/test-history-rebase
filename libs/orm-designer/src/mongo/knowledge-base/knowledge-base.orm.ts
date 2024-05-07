@@ -57,6 +57,12 @@ export class KnowledgeBaseORM extends ProjectORM {
     return project?.knowledgeBase?.tags ? Object.values(project.knowledgeBase.tags) : [];
   }
 
+  async findAllTagsRecords(projectID: string): Promise<Record<string, VersionKnowledgeBaseTag>> {
+    const project = await this.findOneOrFail(projectID, { fields: [KnowledgeBaseORM.KNOWLEDGE_BASE_DATA_PATH] });
+
+    return project?.knowledgeBase?.tags ?? {};
+  }
+
   async patchOneDocument(projectID: string, documentID: string, data: Partial<VersionKnowledgeBaseDocument>) {
     await this.atomicUpdateOne(
       projectID,

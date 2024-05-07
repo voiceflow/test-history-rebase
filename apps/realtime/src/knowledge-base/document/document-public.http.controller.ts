@@ -31,9 +31,11 @@ import {
   DocumentCreateResponse,
 } from './dtos/document-create.dto';
 import { DocumentDeleteRequest, DocumentDeleteResponse } from './dtos/document-delete.dto';
+import { DocumentDownloadResponse } from './dtos/document-download.dto';
 import { DocumentFindManyRequest, DocumentFindManyResponse, DocumentFindOnePublicResponse, DocumentFindOneResponse } from './dtos/document-find.dto';
 import { DocumentPatchManyRequest, DocumentPatchOneRequest } from './dtos/document-patch.dto';
 import { DocumentRefreshRequest, DocumentRetryResponse } from './dtos/document-refresh.dto';
+import { DocumentSitemapRequest, DocumentSitemapResponse } from './dtos/document-sitemap.dto';
 
 @Controller('knowledge-base/:assistantID/document')
 @ApiTags('KnowledgeBaseDocument')
@@ -105,6 +107,43 @@ export class KnowledgeBaseDocumentPublicHTTPController {
     @Body() { canEdit }: { canEdit?: boolean }
   ): Promise<DocumentCreateResponse> {
     return this.service.uploadFileDocument(assistantID, userID, file, canEdit);
+  }
+
+  @Post(':documentID/file')
+  @Authorize.Permissions<Request<{ assistantID: string }>>([Permission.PROJECT_UPDATE], (request) => ({
+    id: request.params.assistantID,
+    kind: 'project',
+  }))
+  @HttpCode(HttpStatus.CREATED)
+  @ApiOperation({
+    summary: 'Update plain text document',
+    description: 'Update one plain text document',
+  })
+  @ApiBody({
+    schema: { type: 'object', required: ['file'], properties: { file: { type: 'string', format: 'binary' }, canEdit: { type: 'boolean' } } },
+  })
+  @ApiParam({ name: 'assistantID', type: 'string' })
+  @ApiConsumes('multipart/form-data')
+  @ZodApiResponse({
+    status: HttpStatus.CREATED,
+    schema: DocumentCreateResponse,
+    description: 'Update one plain text document in the target project',
+  })
+  @UseInterceptors(
+    FileInterceptor('file', {
+      limits: {
+        fileSize: 1024 * 1024 * 10, // 10 MB limit
+      },
+    })
+  )
+  async replaceOneFile(
+    @UserID() userID: number,
+    @Param('assistantID') assistantID: string,
+    @Param('documentID') documentID: string,
+    @UploadedFile() file: MulterFile,
+    @Body() { canEdit }: { canEdit?: boolean }
+  ): Promise<DocumentCreateResponse> {
+    return this.service.replaceFileDocument(assistantID, userID, documentID, file, canEdit);
   }
 
   @Post('create-many')
@@ -349,6 +388,7 @@ export class KnowledgeBaseDocumentPublicHTTPController {
   }
 
   /* Refresh & retry */
+
   @Post('refresh')
   @Authorize.Permissions<Request<{ assistantID: string }>>([Permission.PROJECT_UPDATE], (request) => ({
     id: request.params.assistantID,
@@ -392,5 +432,52 @@ export class KnowledgeBaseDocumentPublicHTTPController {
   })
   async retryOne(@Param('assistantID') assistantID: string, @Param('documentID') documentID: string): Promise<DocumentRetryResponse> {
     return this.service.retryOneDocument(assistantID, documentID);
+  }
+
+  /* Download */
+
+  @Get(':documentID/download')
+  @Authorize.Permissions<Request<{ assistantID: string }>>([Permission.PROJECT_UPDATE], (request) => ({
+    id: request.params.assistantID,
+    kind: 'project',
+  }))
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary: 'Download documents',
+    description: 'Download one document by id',
+  })
+  @ApiParam({ name: 'assistantID', type: 'string' })
+  @ApiParam({ name: 'documentID', type: 'string' })
+  @ZodApiResponse({
+    status: HttpStatus.OK,
+    description: 'Download document by id in the target project',
+    schema: DocumentDownloadResponse,
+  })
+  async download(@Param('assistantID') assistantID: string, @Param('documentID') documentID: string): Promise<DocumentDownloadResponse> {
+    return this.service.downloadDocument(assistantID, documentID);
+  }
+
+  /* Sitemap */
+
+  @Post('sitemap')
+  @ApiConsumes('knowledgeBaseSitemap')
+  @Authorize.Permissions<Request<{ assistantID: string }>>([Permission.PROJECT_READ], (request) => ({
+    id: request.params.assistantID,
+    kind: 'project',
+  }))
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary: 'Get urls from sitemap',
+    description: 'Get many urls from one sitemap',
+  })
+  @ApiParam({ name: 'assistantID', type: 'string' })
+  @ZodApiBody({ schema: DocumentSitemapRequest })
+  @ZodApiResponse({
+    status: HttpStatus.OK,
+    description: 'Get many urls from one sitemap',
+    schema: DocumentSitemapResponse,
+  })
+  async sitemap(@Body(new ZodValidationPipe(DocumentSitemapRequest)) { sitemapURL }: DocumentSitemapRequest): Promise<DocumentSitemapResponse> {
+    return this.service.sitemapUrlExraction(sitemapURL);
   }
 }

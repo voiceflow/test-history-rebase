@@ -9,6 +9,7 @@ import {
   EnvironmentClient,
   FunctionClient,
   KnowledgeBaseDocumentClient,
+  KnowledgeBaseTagClient,
   OrganizationClient,
   PrivateAssistantClient,
   PrivateEnvironmentClient,
@@ -35,6 +36,7 @@ export class DesignerClient extends BaseClient('https://realtime-api.voiceflow.c
 
   knowledgeBase: NestedClient({
     document: KnowledgeBaseDocumentClient,
+    tag: KnowledgeBaseTagClient,
   }),
 
   private: NestedClient({

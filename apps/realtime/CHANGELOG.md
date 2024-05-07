@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.343.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.342.0...@voiceflow/realtime@1.343.0) (2024-05-06)
+
+### Features
+
+* sitemap and download kb endpoints (COR-1814) (COR-1811) ([#8065](https://github.com/voiceflow/creator-app/issues/8065)) ([85b5966](https://github.com/voiceflow/creator-app/commit/85b5966bb916db2987e27244da70e277fb4ac673))
+
+# [1.342.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.341.0...@voiceflow/realtime@1.342.0) (2024-05-06)
+
+### Features
+
+* kb tag endpoints (COR-1835) (COR-1836) (COR-1837) ([#8029](https://github.com/voiceflow/creator-app/issues/8029)) ([99885af](https://github.com/voiceflow/creator-app/commit/99885af0086afad45d88312f2a548a133f102483))
+
+# [1.341.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.340.0...@voiceflow/realtime@1.341.0) (2024-05-06)
+
+### Features
+
+* sync documents [bugfix] (COR-000) ([#8070](https://github.com/voiceflow/creator-app/issues/8070)) ([65744d2](https://github.com/voiceflow/creator-app/commit/65744d2b993a095f73c16724b112e04e75514012))
+
 # [1.340.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.339.0...@voiceflow/realtime@1.340.0) (2024-05-04)
 
 ### Features

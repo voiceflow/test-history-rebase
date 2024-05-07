@@ -86,9 +86,9 @@ const SearchProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     return diagramIDs.map((diagramID) => staticDiagramDatabases.current[diagramID]).flat();
   }, []);
 
-  const api = useContextApi({ isVisible, toggle, hide, syncNodeDatabases, updateFilters, searchBarRef });
+  const api = useContextApi({ filters, isVisible, toggle, hide, syncNodeDatabases, updateFilters, searchBarRef });
 
-  return <SearchContext.Provider value={{ ...api, filters }}>{children}</SearchContext.Provider>;
+  return <SearchContext.Provider value={api}>{children}</SearchContext.Provider>;
 };
 
 export { SearchProvider };

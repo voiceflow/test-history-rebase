@@ -1,7 +1,7 @@
 import composeRef from '@seznam/compose-react-refs';
 import { Utils } from '@voiceflow/common';
 import { BlockType } from '@voiceflow/realtime-sdk';
-import { Menu, Popper, Surface, Table, Text, Tooltip } from '@voiceflow/ui-next';
+import { Menu, Popper, Table, Text, Tooltip } from '@voiceflow/ui-next';
 import { useAtomValue } from 'jotai';
 import React from 'react';
 
@@ -34,6 +34,7 @@ export const CMSWorkflowTableTriggersCell: React.FC<ICMSWorkflowTableTriggersCel
               onClick={isOnlyOneTrigger ? () => goToDiagram(firstTrigger.nodeID) : Utils.functional.chain(popperProps.onToggle, tooltipProps.onClose)}
               iconName={firstTrigger.type === BlockType.START ? 'Start' : 'IntentS'}
               overflow
+              isActive={popperProps.isOpen}
               onMouseEnter={tooltipProps.onOpen}
               onMouseLeave={tooltipProps.onClose}
             />
@@ -48,13 +49,11 @@ export const CMSWorkflowTableTriggersCell: React.FC<ICMSWorkflowTableTriggersCel
       )}
     >
       {() => (
-        <Surface>
-          <Menu onClick={(event) => event.stopPropagation()}>
-            {triggers.map(({ label, nodeID }, index) => (
-              <Menu.Item key={index} label={label} onClick={() => goToDiagram(nodeID)} />
-            ))}
-          </Menu>
-        </Surface>
+        <Menu onClick={(event) => event.stopPropagation()}>
+          {triggers.map(({ label, nodeID }, index) => (
+            <Menu.Item key={index} label={label} onClick={() => goToDiagram(nodeID)} />
+          ))}
+        </Menu>
       )}
     </Popper>
   );

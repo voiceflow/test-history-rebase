@@ -1,6 +1,7 @@
 import { WorkflowStatus } from '@voiceflow/dtos';
 import { tid } from '@voiceflow/style';
-import { Box, Button, Divider, Editor, IEditorAPI, IndicatorStatus, Scroll, Text, WorkflowManager } from '@voiceflow/ui-next';
+import { Box, Button, Divider, Editor, IEditorAPI, IndicatorStatus, notify, Scroll, Text, WorkflowManager } from '@voiceflow/ui-next';
+import { IAssignee } from '@voiceflow/ui-next/build/next/components/Other/WorkflowManager/types';
 import React, { useMemo, useRef } from 'react';
 import { match } from 'ts-pattern';
 
@@ -83,8 +84,8 @@ export const CMSWorkflowEditor: React.FC = () => {
     [workflow?.status]
   );
 
-  const onStatusChange = (status: IndicatorStatus) => {
-    patchWorkflow({
+  const onStatusChange = async (status: IndicatorStatus) => {
+    await patchWorkflow({
       status: match(status)
         .with(IndicatorStatus.TODO, () => WorkflowStatus.TO_DO)
         .with(IndicatorStatus.DONE, () => WorkflowStatus.COMPLETE)
@@ -92,6 +93,12 @@ export const CMSWorkflowEditor: React.FC = () => {
         .with(IndicatorStatus.IN_PROGRESS, () => WorkflowStatus.IN_PROGRESS)
         .exhaustive(),
     });
+    notify.short.success('Updated');
+  };
+
+  const onAssigneeChange = async (assignee: IAssignee | null) => {
+    await patchWorkflow({ assigneeID: assignee?.id || null });
+    notify.short.success('Updated');
   };
 
   if (!workflow) return null;
@@ -125,7 +132,8 @@ export const CMSWorkflowEditor: React.FC = () => {
           assignee={assignee}
           assignees={assignees}
           onStatusChange={onStatusChange}
-          onAssigneeChange={(assignee) => patchWorkflow({ assigneeID: assignee.id })}
+          onAssigneeChange={onAssigneeChange}
+          onAssigneeRemove={() => onAssigneeChange(null)}
         />
       </div>
     </Editor>

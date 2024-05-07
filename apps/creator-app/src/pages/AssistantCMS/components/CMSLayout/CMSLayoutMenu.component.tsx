@@ -52,6 +52,7 @@ export const CMSLayoutMenu: React.FC = () => {
       title={hasProject ? name ?? '' : 'Loading...'}
       testID={TEST_ID}
       onBackToDesignerClick={activeDiagramID ? () => goToDiagram(activeDiagramID) : undefined}
+      returnToDesignerTooltip={{ text: 'Return', hotkeys: [{ iconName: 'Command' }, { label: ']' }] }}
     >
       {(isKbEnabled || isCMSWorkflowsEnabled) && (
         <SecondaryNavigation.Section title="Agent" isCollapsible={false}>

@@ -25,7 +25,7 @@ export const useFolderTree = <
   /**
    * should be memoized function (useCallback)
    */
-  buildDataTree: (data: T, parentID: string | null, cacheOption: (option: DR) => DR) => DR;
+  buildDataTree: (data: T, parentID: string | null, cacheOption: (option: DR) => DR) => DR | null;
   /**
    * should be memoized function (useCallback)
    */
@@ -80,12 +80,14 @@ export const useFolderTree = <
       return option;
     };
     const buildData = (data: T[], parentID: string | null) =>
-      data.map((item) => {
+      data.flatMap((item) => {
         const tree = buildDataTree(item, parentID, cacheOption);
+
+        if (tree === null) return [];
 
         optionMap[tree.id] = tree;
 
-        return tree;
+        return [tree];
       });
 
     const buildChildrenWithSeparators = (folderTrees: FR[], dataTrees: DR[]) => {

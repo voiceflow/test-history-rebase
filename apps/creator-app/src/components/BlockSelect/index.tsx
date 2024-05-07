@@ -1,15 +1,14 @@
-import { FolderScope, Workflow } from '@voiceflow/dtos';
-import { BlockType, FeatureFlag } from '@voiceflow/realtime-sdk';
-import { BaseSelectProps, createUIOnlyMenuItemOption, Menu, MenuItemMultilevel, MenuItemWithID, Select, UIOnlyMenuItemOption } from '@voiceflow/ui';
-import React, { useCallback } from 'react';
+import { FolderScope } from '@voiceflow/dtos';
+import { FeatureFlag } from '@voiceflow/realtime-sdk';
+import { BaseSelectProps, Menu, MenuItemMultilevel, MenuItemWithID, Select, UIOnlyMenuItemOption } from '@voiceflow/ui';
+import React, { useMemo } from 'react';
 
-import { Creator, Designer, Diagram, Version } from '@/ducks';
+import { Creator, Designer, Version } from '@/ducks';
 import { useFeature } from '@/hooks/feature';
-import { useFolderTree } from '@/hooks/folder.hook';
 import { useSelector } from '@/hooks/redux';
 import { createGroupedSelectID, useDomainAndDiagramMultilevelSelectOptions } from '@/hooks/select';
 
-import { useDiagramsBlocksOptionsMap } from './hooks';
+import { useDiagramsBlocksOptionsMap, useOptionsTree } from './hooks';
 import { Multilevel, Value } from './types';
 
 export interface BlockSelectProps extends BaseSelectProps {
@@ -46,8 +45,8 @@ const BlockSelect: React.FC<BlockSelectProps> = ({
 }) => {
   const cmsWorkflows = useFeature(FeatureFlag.CMS_WORKFLOWS);
 
+  const flows = useSelector(Designer.Flow.selectors.all);
   const workflows = useSelector(Designer.Workflow.selectors.all);
-  const sharedNodes = useSelector(Diagram.sharedNodesSelector);
   const startNodeID = useSelector(Creator.startNodeIDSelector);
   const rootDiagramID = useSelector(Version.active.rootDiagramIDSelector);
 
@@ -55,57 +54,16 @@ const BlockSelect: React.FC<BlockSelectProps> = ({
 
   const { options, optionsMap } = useDomainAndDiagramMultilevelSelectOptions(diagramsBlocksOptions, { diagramGroupName: 'Blocks' });
 
-  const [workflowOptions, workflowOptionMap] = useFolderTree<
-    Workflow,
-    GroupOption | UIOnlyMenuItemOption,
-    GroupOption | BlockOption | UIOnlyMenuItemOption,
-    UIOnlyMenuItemOption
-  >({
-    data: workflows,
-    folderScope: FolderScope.WORKFLOW,
-    buildFolderTree: useCallback((folder, children): GroupOption => ({ id: folder.id, label: folder.name, options: children }), []),
-    buildFolderSeparator: useCallback(
-      ([{ id }]: GroupOption[]): UIOnlyMenuItemOption => createUIOnlyMenuItemOption(`${id}-header`, { label: 'Folders', groupHeader: true }),
-      []
-    ),
-    buildDataSeparator: useCallback(
-      ([{ id }]: GroupOption[]): UIOnlyMenuItemOption => createUIOnlyMenuItemOption(`${id}-header`, { label: 'Workflows', groupHeader: true }),
-      []
-    ),
-    buildDataTree: useCallback(
-      (workflow, _, cacheOption): GroupOption => {
-        const options = Object.values(sharedNodes?.[workflow.diagramID] ?? {}).reduce<Array<BlockOption | GroupOption>>((acc, sharedNode) => {
-          if (!sharedNode || (sharedNode.type !== BlockType.COMBINED && sharedNode.type !== BlockType.START)) return acc;
-          if (sharedNode.type !== BlockType.START && !sharedNode.name) return acc;
+  const [flowOptions, flowOptionMap] = useOptionsTree(flows, { label: 'Components', folderScope: FolderScope.FLOW });
+  const [workflowOptions, workflowOptionMap] = useOptionsTree(workflows, { label: 'Workflows', folderScope: FolderScope.WORKFLOW });
 
-          return [
-            ...acc,
-            cacheOption({
-              id: createGroupedSelectID(workflow.diagramID, sharedNode.nodeID),
-              label: sharedNode.type === BlockType.START ? sharedNode.name || 'Start' : sharedNode.name,
-              nodeID: sharedNode.nodeID,
-              diagramID: workflow.diagramID,
-            }),
-          ];
-        }, []);
-
-        return {
-          id: workflow.id,
-          label: workflow.name,
-          options: [
-            cacheOption(createUIOnlyMenuItemOption(`${workflow.id}-blocks-header`, { label: 'Blocks', groupHeader: true })),
-            ...(!options.length
-              ? [cacheOption(createUIOnlyMenuItemOption(`${workflow.id}-no-blocks`, { label: 'No blocks', isEmpty: true, disabled: true }))]
-              : options),
-          ],
-        };
-      },
-      [sharedNodes]
-    ),
-  });
+  const [optionsV2, optionsMapV2] = useMemo(
+    () => [[...workflowOptions, ...flowOptions], { ...flowOptionMap, ...workflowOptionMap }],
+    [workflowOptions, flowOptions, flowOptionMap, workflowOptionMap]
+  );
 
   const onSelect = (value: string | null) => {
-    const map = cmsWorkflows.isEnabled ? workflowOptionMap : optionsMap;
+    const map = cmsWorkflows.isEnabled ? optionsMapV2 : optionsMap;
     const option = value ? map[value] : null;
 
     if (!option || !('nodeID' in option)) {
@@ -124,7 +82,7 @@ const BlockSelect: React.FC<BlockSelectProps> = ({
       <Select<GroupOption | UIOnlyMenuItemOption, string>
         {...props}
         value={selectValue}
-        options={workflowOptions}
+        options={optionsV2}
         onSelect={onSelect}
         clearable={!!value}
         fullWidth={fullWidth}
@@ -133,7 +91,7 @@ const BlockSelect: React.FC<BlockSelectProps> = ({
         isMultiLevel
         getOptionKey={(option) => option.id}
         getOptionValue={(option) => option?.id}
-        getOptionLabel={(value) => value && workflowOptionMap[value]?.label}
+        getOptionLabel={(value) => value && optionsMapV2[value]?.label}
         inDropdownSearch={inDropdownSearch}
         alwaysShowCreate={alwaysShowCreate}
         clearOnSelectActive={clearOnSelectActive}

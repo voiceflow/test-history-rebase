@@ -15,7 +15,7 @@ export const DiagramLoader: React.FC<ITabLoader> = (props) => {
         <TabLoader {...props} />
       </DiagramLayout>
 
-      {isDesignMode && <DiagramSidebar />}
+      {!isDesignMode && <DiagramSidebar />}
     </>
   );
 };

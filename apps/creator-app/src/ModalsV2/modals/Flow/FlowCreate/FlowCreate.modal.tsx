@@ -2,7 +2,7 @@ import type { Flow } from '@voiceflow/dtos';
 import React from 'react';
 
 import { Modal } from '@/components/Modal';
-import { Designer } from '@/ducks';
+import { Designer, Router } from '@/ducks';
 import { useDispatch } from '@/hooks/store.hook';
 
 import { modalsManager } from '../../../manager';
@@ -12,14 +12,15 @@ import { FlowCreateForm } from './FlowCreateForm.component';
 export interface IFlowCreateModal {
   name?: string;
   folderID: string | null;
+  jumpTo?: boolean;
 }
 
 export const FlowCreateModal = modalsManager.create<IFlowCreateModal, Flow>(
   'FlowCreateModal',
   () =>
-    ({ api, type: typeProp, name, opened, hidden, animated, folderID, closePrevented }) => {
+    ({ api, type: typeProp, jumpTo, name, opened, hidden, animated, folderID, closePrevented }) => {
       const TEST_ID = 'component-create';
-
+      const goToDiagram = useDispatch(Router.goToDiagram);
       const createOne = useDispatch(Designer.Flow.effect.createOne);
 
       const { onSubmit, nameState, description, setDescription } = useFlowCreateForm({
@@ -27,6 +28,9 @@ export const FlowCreateModal = modalsManager.create<IFlowCreateModal, Flow>(
         data: { name, folderID },
         create: async (data) => {
           const flow = await createOne(data);
+          if (jumpTo) {
+            goToDiagram(flow.diagramID);
+          }
 
           api.resolve(flow);
         },

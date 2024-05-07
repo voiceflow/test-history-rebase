@@ -67,6 +67,7 @@ import { VariableModule } from './variable/variable.module';
 import { VariableStateModule } from './variable-state/variable-state.module';
 import { VersionModule } from './version/version.module';
 import { WorkflowModule } from './workflow/workflow.module';
+import { KnowledgeBaseSettingsModule } from './knowledge-base/settings/settings.module';
 
 @Module({
   imports: [
@@ -268,6 +269,7 @@ import { WorkflowModule } from './workflow/workflow.module';
     EntityModule,
     IntentModule,
     KnowledgeBaseDocumentModule,
+    KnowledgeBaseSettingsModule,
     UploadModule,
     ResponseModule,
     AssistantModule,

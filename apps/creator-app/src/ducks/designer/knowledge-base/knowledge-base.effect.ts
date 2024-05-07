@@ -18,11 +18,14 @@ export const getSettings = (): Thunk => async (dispatch, getState) => {
 
   let settings: BaseModels.Project.KnowledgeBaseSettings;
 
+  const realtimeKBEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.KB_BE_DOC_CRUD);
+
   if (Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.VERSIONED_KB_SETTINGS)) {
     const versionID = Session.activeVersionIDSelector(state);
 
     Errors.assertProjectID(versionID);
 
+    // TODO: Take care of this endpoint as well
     ({ data: settings } = await api.fetch
       .get<BaseModels.Project.KnowledgeBaseSettings>(`/versions/${versionID}/knowledge-base/settings`)
       .catch(() => {
@@ -33,6 +36,7 @@ export const getSettings = (): Thunk => async (dispatch, getState) => {
 
     Errors.assertProjectID(projectID);
 
+    // TODO: Check here
     settings = await knowledgeBaseClient.getSettings(projectID);
   }
 

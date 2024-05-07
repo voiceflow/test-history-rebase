@@ -3,7 +3,6 @@ import { BaseButton, BaseModels } from '@voiceflow/base-types';
 import { Nullable, Nullish } from '@voiceflow/common';
 import { Entity, Intent } from '@voiceflow/dtos';
 import { DFESConstants } from '@voiceflow/google-dfes-types';
-import { GoogleConstants } from '@voiceflow/google-types';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { StrengthGauge } from '@voiceflow/ui';
@@ -20,15 +19,9 @@ const AMAZON_INTENT_PREFIX = 'AMAZON.';
 
 const amazonBuiltInIntentsArray = Object.values(AlexaConstants.AmazonIntent) as string[];
 const generalBuiltInIntentsArray = Object.values(VoiceflowConstants.IntentName) as string[];
-const googleBuiltInIntentsArray = (Object.values(GoogleConstants.GoogleIntent) as string[]).concat(
-  Object.values(GoogleConstants.GoogleStatusIntent)
-) as string[];
 const dialogflowESBuiltInIntentsArray = Object.values(DFESConstants.DialogflowESIntent) as string[];
 const builtInIntentMap = new Map(
-  [...amazonBuiltInIntentsArray, ...generalBuiltInIntentsArray, ...googleBuiltInIntentsArray, ...dialogflowESBuiltInIntentsArray].map((id) => [
-    id,
-    true,
-  ])
+  [...amazonBuiltInIntentsArray, ...generalBuiltInIntentsArray, ...dialogflowESBuiltInIntentsArray].map((id) => [id, true])
 );
 
 const INTENT_LABELS: Partial<Record<string, string>> = {

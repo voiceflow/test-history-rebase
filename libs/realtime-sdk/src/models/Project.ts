@@ -1,7 +1,6 @@
 import { AlexaProject } from '@voiceflow/alexa-types';
 import { AnyRecord, BaseModels } from '@voiceflow/base-types';
 import { DFESProject } from '@voiceflow/google-dfes-types';
-import { GoogleProject } from '@voiceflow/google-types';
 import { UserRole } from '@voiceflow/internal';
 import * as Platform from '@voiceflow/platform-config/backend';
 import { VoiceflowProject } from '@voiceflow/voiceflow-types';
@@ -51,17 +50,10 @@ export interface Project<D extends AnyRecord, M extends BaseModels.Project.Membe
 export type AnyProject = Project<AnyRecord, BaseModels.Project.Member<any>>;
 
 export type AlexaProject = AlexaProject.Project;
-export type GoogleProject = GoogleProject.VoiceProject;
 export type VoiceflowProject = VoiceflowProject.Project;
 export type DialogflowProject = DFESProject.Project;
 
-export type AnyDBProject = AlexaProject | VoiceflowProject | GoogleProject | DialogflowProject;
-
-export type AlexaProjectData = AlexaProject.PlatformData;
-export type GoogleProjectData = GoogleProject.VoicePlatformData;
-export type DialogflowProjectData = DFESProject.PlatformData;
-
-export type AnyProjectData = AlexaProjectData | GoogleProjectData | DialogflowProjectData;
+export type AnyDBProject = AlexaProject | VoiceflowProject | DialogflowProject;
 
 export interface DBProject extends BaseModels.Project.Model<AnyRecord, AnyRecord> {}
 

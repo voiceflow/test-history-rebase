@@ -1,19 +1,15 @@
 import { AlexaConstants } from '@voiceflow/alexa-types';
 import { Utils } from '@voiceflow/common';
 import { DFESConstants } from '@voiceflow/google-dfes-types';
-import { GoogleConstants } from '@voiceflow/google-types';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import type { QualityLevel } from '@voiceflow/ui-next/build/cjs/utils/quality-level.util';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 const BUILTIN_INTENT_ID_SET = new Set(
-  [
-    ...AlexaConstants.BUILT_IN_INTENTS,
-    ...GoogleConstants.BUILT_IN_INTENTS,
-    ...DFESConstants.BUILT_IN_INTENTS,
-    ...Object.values(VoiceflowConstants.DEFAULT_INTENTS_MAP).flat(),
-  ].map((intent) => intent.name)
+  [...AlexaConstants.BUILT_IN_INTENTS, ...DFESConstants.BUILT_IN_INTENTS, ...Object.values(VoiceflowConstants.DEFAULT_INTENTS_MAP).flat()].map(
+    (intent) => intent.name
+  )
 );
 
 export const isIntentBuiltIn = (intentID: string): boolean => BUILTIN_INTENT_ID_SET.has(intentID);

@@ -62,7 +62,6 @@
     "@voiceflow/common": "8.2.8",
     "@voiceflow/dtos": "workspace:*",
     "@voiceflow/google-dfes-types": "2.16.57",
-    "@voiceflow/google-types": "2.20.57",
     "@voiceflow/internal": "3.2.3",
     "@voiceflow/platform-config": "workspace:*",
     "@voiceflow/schema-types": "1.64.0",

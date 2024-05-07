@@ -39,7 +39,7 @@ import { DocumentSitemapRequest, DocumentSitemapResponse } from './dtos/document
 
 @Controller('knowledge-base/:assistantID/document')
 @ApiTags('KnowledgeBaseDocument')
-export class KnowledgeBaseDocumentPublicHTTPController {
+export class KnowledgeBaseDocumentInternalPublicHTTPController {
   constructor(
     @Inject(KnowledgeBaseDocumentService)
     private readonly service: KnowledgeBaseDocumentService

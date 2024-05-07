@@ -18,7 +18,7 @@ export const getSettings = (): Thunk => async (dispatch, getState) => {
 
   let settings: BaseModels.Project.KnowledgeBaseSettings;
 
-  const realtimeKBEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.KB_BE_DOC_CRUD);
+  // const realtimeKBEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.KB_BE_DOC_CRUD);
 
   if (Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.VERSIONED_KB_SETTINGS)) {
     const versionID = Session.activeVersionIDSelector(state);

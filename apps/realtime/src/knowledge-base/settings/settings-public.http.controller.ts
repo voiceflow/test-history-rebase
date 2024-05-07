@@ -1,19 +1,17 @@
-import { Controller, Get, HttpCode, HttpStatus, Inject } from '@nestjs/common';
-import { ApiConsumes, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
-import { KnowledgeBaseSettingsService } from './settings.service';
+import { Controller, Get, HttpCode, HttpStatus } from '@nestjs/common';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ZodApiResponse } from '@voiceflow/nestjs-common';
 import { z } from 'zod';
-import type { Request } from 'express';
-import { Permission } from '@voiceflow/sdk-auth';
-import { Authorize } from '@voiceflow/sdk-auth/nestjs';
 
-@Controller('knowledge-base-settings')
+// import { KnowledgeBaseSettingsService } from './settings.service';
+
+@Controller('knowledge-base')
 @ApiTags('KnowledgeBaseSettings')
 export class KnowledgeBaseSettingsPublicHTTPController {
-  constructor(
+  /* constructor(
     @Inject(KnowledgeBaseSettingsService)
     private readonly service: KnowledgeBaseSettingsService
-  ) {}
+  ) {} */
 
   @Get('settings')
   @HttpCode(HttpStatus.OK)
@@ -30,27 +28,5 @@ export class KnowledgeBaseSettingsPublicHTTPController {
     return {};
     // const settings = await this.service.findOne();
     // TODO: implement..
-  }
-
-  @Get('public/:documentID')
-  @ApiConsumes('knowledgeBase')
-  @Authorize.Permissions<Request<{ assistantID: string }>>([Permission.PROJECT_READ], (request) => ({
-    id: request.params.assistantID,
-    kind: 'project',
-  }))
-  @HttpCode(HttpStatus.OK)
-  @ApiOperation({
-    summary: 'Get document',
-    description: 'Get one documents by id',
-  })
-  @ApiParam({ name: 'assistantID', type: 'string' })
-  @ApiParam({ name: 'documentID', type: 'string' })
-  @ZodApiResponse({
-    status: HttpStatus.OK,
-    description: 'Get document by id in the target project',
-    schema: z.object({ hello: z.string() }),
-  })
-  async publicGetOne(@Param('assistantID') assistantID: string, @Param('documentID') documentID: string): Promise<{ hello: string }> {
-    return { hello: 'world' };
   }
 }

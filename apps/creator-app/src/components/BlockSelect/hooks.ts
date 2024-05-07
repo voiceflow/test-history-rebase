@@ -1,14 +1,18 @@
 /* eslint-disable no-param-reassign */
 
+import { Flow, FolderScope, Workflow } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import React from 'react';
+import { BlockType } from '@voiceflow/realtime-sdk';
+import { createUIOnlyMenuItemOption, UIOnlyMenuItemOption } from '@voiceflow/ui';
+import React, { useCallback } from 'react';
 
 import { Designer, Diagram } from '@/ducks';
+import { useFolderTree } from '@/hooks/folder.hook';
 import { useSelector } from '@/hooks/redux';
 import { createGroupedSelectID } from '@/hooks/select';
 import { getDiagramName, isComponentDiagram } from '@/utils/diagram.utils';
 
-import { Group, Multilevel, Option } from './types';
+import { BlockOption, Group, GroupOption, Multilevel, Option } from './types';
 
 const createDiagramOptions = <OptionsMap extends Record<string, Option | Group> | Record<string, Option | Multilevel>>(
   diagramID: string,
@@ -52,4 +56,52 @@ export const useDiagramsBlocksOptionsMap = () => {
       return optionsMap;
     }, {});
   }, [sharedNodes, getDiagramByID]);
+};
+
+export const useOptionsTree = <Item extends Flow | Workflow>(items: Item[], { label, folderScope }: { label: string; folderScope: FolderScope }) => {
+  const sharedNodes = useSelector(Diagram.sharedNodesSelector);
+
+  return useFolderTree<Flow, GroupOption | UIOnlyMenuItemOption, GroupOption | BlockOption | UIOnlyMenuItemOption, UIOnlyMenuItemOption>({
+    data: items,
+    folderScope,
+    buildFolderTree: useCallback((folder, children): GroupOption => ({ id: folder.id, label: folder.name, options: children }), []),
+    buildFolderSeparator: useCallback(
+      ([{ id }]: GroupOption[]): UIOnlyMenuItemOption => createUIOnlyMenuItemOption(`${id}-header`, { label: 'Folders', groupHeader: true }),
+      []
+    ),
+    buildDataSeparator: useCallback(
+      ([{ id }]: GroupOption[]): UIOnlyMenuItemOption => createUIOnlyMenuItemOption(`${id}-header`, { label, groupHeader: true }),
+      []
+    ),
+    buildDataTree: useCallback(
+      (workflow, _, cacheOption): GroupOption => {
+        const options = Object.values(sharedNodes?.[workflow.diagramID] ?? {}).reduce<Array<BlockOption | GroupOption>>((acc, sharedNode) => {
+          if (!sharedNode || (sharedNode.type !== BlockType.COMBINED && sharedNode.type !== BlockType.START)) return acc;
+          if (sharedNode.type !== BlockType.START && !sharedNode.name) return acc;
+
+          return [
+            ...acc,
+            cacheOption({
+              id: createGroupedSelectID(workflow.diagramID, sharedNode.nodeID),
+              label: sharedNode.type === BlockType.START ? sharedNode.name || 'Start' : sharedNode.name,
+              nodeID: sharedNode.nodeID,
+              diagramID: workflow.diagramID,
+            }),
+          ];
+        }, []);
+
+        return {
+          id: workflow.id,
+          label: workflow.name,
+          options: [
+            cacheOption(createUIOnlyMenuItemOption(`${workflow.id}-blocks-header`, { label: 'Blocks', groupHeader: true })),
+            ...(!options.length
+              ? [cacheOption(createUIOnlyMenuItemOption(`${workflow.id}-no-blocks`, { label: 'No blocks', isEmpty: true, disabled: true }))]
+              : options),
+          ],
+        };
+      },
+      [sharedNodes]
+    ),
+  });
 };

@@ -62,22 +62,28 @@ export const redirectToProjectCanvas = ({ state, subpath, diagramID, versionID }
 export const goToCanvasNode = ({ state, nodeID, subpath, diagramID, versionID }: GoToProjectCanvasOptions & { nodeID: string; diagramID: string }) =>
   goToPath(Path.CANVAS_NODE, { state, params: { versionID, diagramID, nodeID }, search: window.location.search, subpath });
 
-export const goToCanvasDiagram = ({
-  state,
-  nodeID,
-  subpath,
-  diagramID,
-  versionID,
-  pageProgress = true,
-}: GoToProjectCanvasOptions & { nodeID?: string; diagramID: string }) => {
-  if (pageProgress) {
-    PageProgress.start(PageProgressBar.CANVAS_LOADING);
-  }
+export const goToCanvasDiagram =
+  ({
+    state,
+    nodeID,
+    subpath,
+    diagramID,
+    versionID,
+    pageProgress = true,
+  }: GoToProjectCanvasOptions & { nodeID?: string; diagramID: string }): SyncThunk =>
+  (dispatch, getState) => {
+    const activeDiagramID = Creator.activeDiagramIDSelector(getState());
 
-  if (nodeID) return goToCanvasNode({ state, nodeID, subpath, diagramID, versionID });
+    if (pageProgress && diagramID !== activeDiagramID) {
+      PageProgress.start(PageProgressBar.CANVAS_LOADING);
+    }
 
-  return goToProjectCanvas({ state, subpath, diagramID, versionID });
-};
+    if (nodeID) {
+      dispatch(goToCanvasNode({ state, nodeID, subpath, diagramID, versionID }));
+    } else {
+      dispatch(goToProjectCanvas({ state, subpath, diagramID, versionID }));
+    }
+  };
 
 /**
  * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released

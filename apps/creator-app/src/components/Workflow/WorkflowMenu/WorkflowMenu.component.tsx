@@ -11,7 +11,7 @@ import { useSelector } from '@/hooks/store.hook';
 
 import type { IWorkflowMenu } from './WorkflowMenu.interface';
 
-export const WorkflowMenu: React.FC<IWorkflowMenu> = ({ width = 'fit-content', onClose, onSelect: onSelectProp, excludeIDs }) => {
+export const WorkflowMenu: React.FC<IWorkflowMenu> = ({ width = 'fit-content', maxWidth, onClose, onSelect: onSelectProp, excludeIDs }) => {
   const TEST_ID = 'workflow-menu';
 
   const storeWorkflows = useSelector(Designer.Workflow.selectors.all);
@@ -64,7 +64,7 @@ export const WorkflowMenu: React.FC<IWorkflowMenu> = ({ width = 'fit-content', o
       width={width}
       testID={TEST_ID}
       listRef={setListNode}
-      minWidth={search.hasItems ? undefined : 0}
+      minWidth={search.hasItems ? maxWidth : 0}
       maxHeight={310}
       searchSection={<Search value={search.value} placeholder="Search" onValueChange={search.setValue} testID={tid(TEST_ID, 'search')} />}
       actionButtons={

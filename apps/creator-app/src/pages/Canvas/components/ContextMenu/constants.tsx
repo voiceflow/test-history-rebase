@@ -93,6 +93,7 @@ export const CANVAS_OPTIONS: ContextMenuOption<CanvasAction>[] = [
     label: 'Hide/Show UI',
     value: CanvasAction.TOGGLE_UI,
     hotkey: HOTKEY_LABEL_MAP[Hotkey.CANVAS_SHOW_HIDE_UI],
+    shouldRender: (_, { engine }) => !engine.isFeatureEnabled(FeatureFlag.CMS_WORKFLOWS),
   },
 ];
 

@@ -3,6 +3,7 @@ import { clsx } from '@voiceflow/style';
 import { DraggablePanel, ResizableSection, ResizableSectionHeader, TreeView, usePersistFunction } from '@voiceflow/ui-next';
 import { IResizableSectionAPI } from '@voiceflow/ui-next/build/cjs/components/Section/ResizableSection/types';
 import React, { useRef } from 'react';
+import { useParams } from 'react-router-dom';
 
 import { CMS_FLOW_LEARN_MORE, CMS_WORKFLOW_LEARN_MORE } from '@/constants/link.constant';
 import { Permission } from '@/constants/permissions';
@@ -26,6 +27,7 @@ import {
 import { DiagramSidebarToolbar } from './DiagramSidebarToolbar.component';
 
 export const DiagramSidebar: React.FC = () => {
+  const params = useParams<{ diagramID?: string }>();
   const getEngine = useEventualEngine();
   const isCommenting = useCommentingMode();
   const flowCreateModal = useFlowCreateModal();
@@ -101,8 +103,10 @@ export const DiagramSidebar: React.FC = () => {
     }
   });
 
-  const focusedNodeID = creatorFocus.isActive && focusedNode?.type === BlockType.INTENT ? creatorFocus.target : null;
-  const selectedID = focusedNodeID ? `${activeDiagramID}:${focusedNodeID}` : activeDiagramID;
+  const diagramID = params.diagramID ?? activeDiagramID;
+  const focusedNodeID =
+    creatorFocus.isActive && (focusedNode?.type === BlockType.INTENT || focusedNode?.type === BlockType.START) ? creatorFocus.target : null;
+  const selectedID = focusedNodeID ? `${diagramID}:${focusedNodeID}` : diagramID;
 
   return (
     <>
@@ -140,12 +144,16 @@ export const DiagramSidebar: React.FC = () => {
               />
             }
             topHeader={
-              <ResizableSectionHeader label="Workflows" onClick={() => workflowCreateModal.openVoid({ folderID: null })} tooltipText="New workflow" />
+              <ResizableSectionHeader
+                label="Workflows"
+                onClick={() => workflowCreateModal.openVoid({ folderID: null, jumpTo: true })}
+                tooltipText="New workflow"
+              />
             }
             bottomHeader={
               <ResizableSectionHeader
                 label="Components"
-                onClick={() => (footerCollapsed ? resizableSectionRef.current?.expand() : flowCreateModal.openVoid({ folderID: null }))}
+                onClick={() => (footerCollapsed ? resizableSectionRef.current?.expand() : flowCreateModal.openVoid({ folderID: null, jumpTo: true }))}
                 tooltipText="New component"
                 isCollapsed={footerCollapsed}
               />

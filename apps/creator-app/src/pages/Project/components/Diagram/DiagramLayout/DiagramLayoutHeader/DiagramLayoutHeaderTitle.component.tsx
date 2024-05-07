@@ -22,9 +22,9 @@ export const DiagramLayoutHeaderTitle: React.FC = () => {
     <Header.AgentNavigation.Title agentName={name ?? ''} onAgentNameChange={updateName} workflowName={activeResource?.name ?? ''}>
       {({ onClose }) =>
         isTopic ? (
-          <WorkflowMenu width="fit-content" onClose={onClose} onSelect={(workflow) => goToDiagram(workflow.diagramID)} />
+          <WorkflowMenu maxWidth={258} onClose={onClose} onSelect={(workflow) => goToDiagram(workflow.diagramID)} />
         ) : (
-          <FlowMenu width="fit-content" onClose={onClose} onSelect={(flow) => goToDiagram(flow.diagramID)} />
+          <FlowMenu maxWidth={258} onClose={onClose} onSelect={(flow) => goToDiagram(flow.diagramID)} />
         )
       }
     </Header.AgentNavigation.Title>

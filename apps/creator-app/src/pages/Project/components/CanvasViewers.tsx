@@ -10,7 +10,6 @@ const CanvasViewers: React.FC = () => {
 
   const diagramIDs = useSelector(DiagramV2.allDiagramIDsSelector);
   const viewers = useSelector(DiagramV2.diagramsViewersByIDsSelector, { ids: diagramIDs });
-
   if (!canViewCollaborators) return null;
 
   return (

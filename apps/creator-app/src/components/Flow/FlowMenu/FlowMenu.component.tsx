@@ -11,7 +11,7 @@ import { useSelector } from '@/hooks/store.hook';
 
 import type { IFlowMenu } from './FlowMenu.interface';
 
-export const FlowMenu: React.FC<IFlowMenu> = ({ width = 'fit-content', onClose, onSelect: onSelectProp, excludeIDs }) => {
+export const FlowMenu: React.FC<IFlowMenu> = ({ width = 'fit-content', maxWidth, onClose, onSelect: onSelectProp, excludeIDs }) => {
   const TEST_ID = 'flow-menu';
 
   const storeFlows = useSelector(Designer.Flow.selectors.all);
@@ -64,7 +64,7 @@ export const FlowMenu: React.FC<IFlowMenu> = ({ width = 'fit-content', onClose, 
       width={width}
       testID={TEST_ID}
       listRef={setListNode}
-      minWidth={search.hasItems ? undefined : 0}
+      minWidth={search.hasItems ? maxWidth : 0}
       maxHeight={310}
       searchSection={<Search value={search.value} placeholder="Search" onValueChange={search.setValue} testID={tid(TEST_ID, 'search')} />}
       actionButtons={

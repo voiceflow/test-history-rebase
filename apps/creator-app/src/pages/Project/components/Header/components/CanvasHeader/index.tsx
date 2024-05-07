@@ -32,7 +32,6 @@ const CanvasHeader: React.FC = () => {
       ) : (
         <>
           <CanvasViewers />
-
           <ActionRow gap={8}>
             {!hideExports.isEnabled && <Share />}
             {showOneClickPublish && <Run variant={ButtonVariant.SECONDARY} />}

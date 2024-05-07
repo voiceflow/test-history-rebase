@@ -3,9 +3,12 @@ import { tid } from '@voiceflow/style';
 import { MarkupToolbar } from '@voiceflow/ui-next';
 import React from 'react';
 
+import { ControlScheme } from '@/components/Canvas/constants';
 import { BlockType } from '@/constants';
 import { Permission } from '@/constants/permissions';
 import { SearchContext } from '@/contexts/SearchContext';
+import * as UI from '@/ducks/ui';
+import { useDispatch, useSelector } from '@/hooks';
 import { usePermission } from '@/hooks/permission';
 import { MarkupContext } from '@/pages/Project/contexts';
 import { useCommentingMode, useCommentingToggle, useDisableModes } from '@/pages/Project/hooks';
@@ -14,9 +17,13 @@ import { toolbarStyle } from './DiagramSidebar.css';
 
 export const DiagramSidebarToolbar: React.FC = () => {
   const TEST_ID = 'diagram-sidebar-toolbar';
+  const [movePopperOpened, setMovePopperOpened] = React.useState(false);
 
   const markup = React.useContext(MarkupContext);
   const search = React.useContext(SearchContext);
+
+  const setCanvasNavigation = useDispatch(UI.action.SetCanvasNavigation);
+  const canvasNavigation = useSelector(UI.selectors.canvasNavigation);
 
   const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
   const [canUseHintFeatures] = usePermission(Permission.CANVAS_HINT_FEATURES);
@@ -27,15 +34,29 @@ export const DiagramSidebarToolbar: React.FC = () => {
   const onDisableModes = useDisableModes();
   const isCommentingMode = useCommentingMode();
   const onToggleCommenting = useCommentingToggle();
+  const handleMoveTypeChange = (moveType: string) => {
+    setCanvasNavigation(moveType.toUpperCase() as ControlScheme);
+  };
 
   return (
     <MarkupToolbar className={toolbarStyle}>
+      <MarkupToolbar.MoveButton
+        isOpen={movePopperOpened}
+        onOpenChange={setMovePopperOpened}
+        setMoveOption={handleMoveTypeChange}
+        moveOption={canvasNavigation.toLowerCase() as any}
+      />
+
       <MarkupToolbar.Button
         testID={tid(TEST_ID, 'note')}
         onClick={isMarkupTextActive ? onDisableModes : markup?.toggleTextCreating}
         iconName="Note"
         isActive={isMarkupTextActive}
         disabled={!canEditCanvas || !canUseHintFeatures}
+        tooltipContent={{
+          text: 'Note',
+          hotkeys: [{ label: 'N' }],
+        }}
       />
 
       <MarkupToolbar.Button
@@ -44,6 +65,10 @@ export const DiagramSidebarToolbar: React.FC = () => {
         iconName="Comment"
         isActive={isCommentingMode}
         disabled={!canUseHintFeatures}
+        tooltipContent={{
+          text: 'Comment',
+          hotkeys: [{ label: 'C' }],
+        }}
       />
 
       <MarkupToolbar.Button
@@ -52,6 +77,10 @@ export const DiagramSidebarToolbar: React.FC = () => {
         iconName="Image"
         isActive={isMarkupMediaActive}
         disabled={!canEditCanvas || !canUseHintFeatures}
+        tooltipContent={{
+          text: 'Image, GIF or video',
+          hotkeys: [{ label: 'I' }],
+        }}
       />
 
       <MarkupToolbar.Button
@@ -59,6 +88,10 @@ export const DiagramSidebarToolbar: React.FC = () => {
         onClick={() => (search?.isVisible ? search.hide() : search?.toggle())}
         iconName="Search"
         isActive={search?.isVisible}
+        tooltipContent={{
+          text: 'Search',
+          hotkeys: [{ iconName: 'Command' }, { label: 'K' }],
+        }}
       />
     </MarkupToolbar>
   );

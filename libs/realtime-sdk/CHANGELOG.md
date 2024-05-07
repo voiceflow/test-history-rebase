@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.388.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.388.0...@voiceflow/realtime-sdk@1.388.1) (2024-05-07)
+
+### Bug Fixes
+
+* remove google types (COR-1965) ([#8071](https://github.com/voiceflow/creator-app/issues/8071)) ([aa6ce23](https://github.com/voiceflow/creator-app/commit/aa6ce2349e43d68666f59f89a08500857114608d))
+
 # [1.388.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.387.1...@voiceflow/realtime-sdk@1.388.0) (2024-05-06)
 
 ### Features

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.60.27](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.60.26...@voiceflow/platform-config@1.60.27) (2024-05-07)
+
+### Bug Fixes
+
+* remove google types (COR-1965) ([#8071](https://github.com/voiceflow/creator-app/issues/8071)) ([aa6ce23](https://github.com/voiceflow/creator-app/commit/aa6ce2349e43d68666f59f89a08500857114608d))
+
 ## [1.60.26](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.60.25...@voiceflow/platform-config@1.60.26) (2024-05-06)
 
 **Note:** Version bump only for package @voiceflow/platform-config

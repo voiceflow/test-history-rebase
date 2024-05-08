@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.60.28](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.60.27...@voiceflow/platform-config@1.60.28) (2024-05-08)
+
+**Note:** Version bump only for package @voiceflow/platform-config
+
 ## [1.60.27](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.60.26...@voiceflow/platform-config@1.60.27) (2024-05-07)
 
 ### Bug Fixes

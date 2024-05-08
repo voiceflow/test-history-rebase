@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.344.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.343.4...@voiceflow/realtime@1.344.0) (2024-05-08)
+
+### Features
+
+* document tag rt endpoints (COR-1838) ([#8074](https://github.com/voiceflow/creator-app/issues/8074)) ([350ce6c](https://github.com/voiceflow/creator-app/commit/350ce6cafd7331d9202ebc91bb529d057e409629))
+
 ## [1.343.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.343.3...@voiceflow/realtime@1.343.4) (2024-05-08)
 
 ### Bug Fixes

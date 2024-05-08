@@ -1,11 +1,10 @@
 import * as Platform from '@voiceflow/platform-config';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { ButtonVariant } from '@voiceflow/ui';
 import React from 'react';
 
 import Page from '@/components/Page';
 import { Permission } from '@/constants/permissions';
-import { useActiveProjectPlatformConfig, useFeature, usePermission } from '@/hooks';
+import { useActiveProjectPlatformConfig, usePermission } from '@/hooks';
 import CanvasViewers from '@/pages/Project/components/CanvasViewers';
 
 import { CanvasControls, DomainsAndCanvasActions, LogoButton, Run, Share, TrialExpired, Upload } from './components';
@@ -13,7 +12,6 @@ import { ActionRow } from './styled';
 
 const CanvasHeader: React.FC = () => {
   const canvasPublish = usePermission(Permission.CANVAS_PUBLISH);
-  const hideExports = useFeature(Realtime.FeatureFlag.HIDE_EXPORTS);
 
   const platformConfig = useActiveProjectPlatformConfig();
 
@@ -33,7 +31,7 @@ const CanvasHeader: React.FC = () => {
         <>
           <CanvasViewers />
           <ActionRow gap={8}>
-            {!hideExports.isEnabled && <Share />}
+            <Share />
             {showOneClickPublish && <Run variant={ButtonVariant.SECONDARY} />}
 
             {showUpload && <Upload />}

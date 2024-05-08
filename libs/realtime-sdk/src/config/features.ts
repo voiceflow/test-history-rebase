@@ -37,6 +37,9 @@ export enum FeatureFlag {
 
   PARTIAL_IMPORT = 'partial_import',
 
+  // This is a legacy FF specifically for JPMC, the logic evolved to something that the name doesn't represent anymore
+  // This FF essentially just hides the SHARE prototype feature, the intention here is to rip this FF out soon since it's
+  // not good practice to have 1 off FFs for specific customers
   HIDE_EXPORTS = 'hide_exports',
 
   ALEXA_DEPRECATED = 'alexa_deprecated',

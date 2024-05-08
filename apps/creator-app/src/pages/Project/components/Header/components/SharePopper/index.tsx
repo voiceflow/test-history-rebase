@@ -1,3 +1,4 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { tid } from '@voiceflow/style';
 import { Popper, PopperTypes, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
@@ -5,7 +6,7 @@ import { Route, Switch } from 'react-router-dom';
 
 import * as Project from '@/components/Project';
 import { Permission } from '@/constants/permissions';
-import { usePermission } from '@/hooks';
+import { useFeature, usePermission } from '@/hooks';
 import { useAssistantSessionStorageState } from '@/hooks/storage.hook';
 import InviteContent from '@/pages/Project/components/Collaborators';
 import InviteFooter from '@/pages/Project/components/Collaborators/components/InviteByLink';
@@ -23,10 +24,13 @@ interface SharePopperProps {
 
 const SharePopper: React.FC<SharePopperProps> = ({ children, placement, modifiers, preventOverflowPadding = 24 }) => {
   const TEST_ID = 'share-menu';
+  const hideExports = useFeature(Realtime.FeatureFlag.HIDE_EXPORTS);
 
   const sharePopper = React.useContext(SharePopperContext);
 
   const [canSharePrototype] = usePermission(Permission.SHARE_PROTOTYPE);
+  const allowedAndCanSharePrototype = canSharePrototype && !hideExports.isEnabled;
+
   const [canAddCollaborators] = usePermission(Permission.ADD_COLLABORATORS);
 
   const [isClosePrevented, setIsClosedPrevented] = React.useState(false);
@@ -34,7 +38,7 @@ const SharePopper: React.FC<SharePopperProps> = ({ children, placement, modifier
   const preventClose = React.useCallback(() => setIsClosedPrevented(true), []);
   const enableClose = React.useCallback(() => setIsClosedPrevented(false), []);
 
-  const initialTab = (canSharePrototype && ShareProjectTab.PROTOTYPE) || ShareProjectTab.EXPORT;
+  const initialTab = (allowedAndCanSharePrototype && ShareProjectTab.PROTOTYPE) || ShareProjectTab.EXPORT;
   const [persistedTab, setPersistedTab] = useAssistantSessionStorageState('persisted_session_share_tab', initialTab);
 
   React.useEffect(() => {
@@ -46,7 +50,7 @@ const SharePopper: React.FC<SharePopperProps> = ({ children, placement, modifier
     const hasAccessToPersistedTab = (tab: ShareProjectTab) => {
       switch (tab) {
         case ShareProjectTab.PROTOTYPE:
-          return canSharePrototype;
+          return allowedAndCanSharePrototype;
         case ShareProjectTab.INVITE:
           return canAddCollaborators;
         default:
@@ -77,7 +81,7 @@ const SharePopper: React.FC<SharePopperProps> = ({ children, placement, modifier
         testID={TEST_ID}
         renderNav={() => (
           <Nav data-testid={tid(TEST_ID, 'navigation')}>
-            {canSharePrototype && (
+            {allowedAndCanSharePrototype && (
               <NavItem
                 onClick={() => setPersistedTab(ShareProjectTab.PROTOTYPE)}
                 to={ShareProjectTab.PROTOTYPE}

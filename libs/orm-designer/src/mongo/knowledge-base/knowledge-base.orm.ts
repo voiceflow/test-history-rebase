@@ -194,4 +194,20 @@ export class KnowledgeBaseORM extends ProjectORM {
       ]),
     ]);
   }
+
+  async detachTagFromManyDocuments(projectID: string, tagID: string) {
+    const documents = await this.findAllDocuments(projectID);
+
+    const updateData: SetOperation[] = documents
+      .filter(({ tags }) => tags && tags.includes(tagID))
+      .map(
+        ({ documentID, tags }) =>
+          ({
+            path: [KnowledgeBaseORM.KNOWLEDGE_BASE_DATA_PATH, 'documents', documentID, tags],
+            value: tags ? tags.filter((tag) => tag !== tagID) : [],
+          } as SetOperation)
+      );
+
+    await this.atomicUpdateOne(projectID, [Atomic.Set(updateData)]);
+  }
 }

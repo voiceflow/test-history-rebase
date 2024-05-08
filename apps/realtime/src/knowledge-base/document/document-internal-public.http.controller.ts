@@ -32,14 +32,15 @@ import {
 } from './dtos/document-create.dto';
 import { DocumentDeleteRequest, DocumentDeleteResponse } from './dtos/document-delete.dto';
 import { DocumentDownloadResponse } from './dtos/document-download.dto';
-import { DocumentFindManyRequest, DocumentFindManyResponse, DocumentFindOnePublicResponse, DocumentFindOneResponse } from './dtos/document-find.dto';
+import { DocumentFindManyRequest, DocumentFindManyResponse, DocumentFindOneResponse } from './dtos/document-find.dto';
 import { DocumentPatchManyRequest, DocumentPatchOneRequest } from './dtos/document-patch.dto';
 import { DocumentRefreshRequest, DocumentRetryResponse } from './dtos/document-refresh.dto';
 import { DocumentSitemapRequest, DocumentSitemapResponse } from './dtos/document-sitemap.dto';
 
 @Controller('knowledge-base/:assistantID/document')
+@Authorize.Identity()
 @ApiTags('KnowledgeBaseDocument')
-export class KnowledgeBaseDocumentPublicHTTPController {
+export class KnowledgeBaseDocumentInternalPublicHTTPController {
   constructor(
     @Inject(KnowledgeBaseDocumentService)
     private readonly service: KnowledgeBaseDocumentService
@@ -84,7 +85,11 @@ export class KnowledgeBaseDocumentPublicHTTPController {
     description: 'Upload one url document',
   })
   @ApiBody({
-    schema: { type: 'object', required: ['file'], properties: { file: { type: 'string', format: 'binary' }, canEdit: { type: 'boolean' } } },
+    schema: {
+      type: 'object',
+      required: ['file'],
+      properties: { file: { type: 'string', format: 'binary' }, canEdit: { type: 'boolean' } },
+    },
   })
   @ApiParam({ name: 'assistantID', type: 'string' })
   @ApiConsumes('multipart/form-data')
@@ -104,9 +109,15 @@ export class KnowledgeBaseDocumentPublicHTTPController {
     @UserID() userID: number,
     @Param('assistantID') assistantID: string,
     @UploadedFile() file: MulterFile,
-    @Body() { canEdit }: { canEdit?: boolean }
+    @Body() { canEdit }: { canEdit?: string }
   ): Promise<DocumentCreateResponse> {
-    return this.service.uploadFileDocument(assistantID, userID, file, canEdit);
+    return this.service.uploadFileDocument({
+      projectID: assistantID,
+      userID,
+      file,
+      canEdit: canEdit === 'true',
+      query: { overwrite: true },
+    });
   }
 
   @Post(':documentID/file')
@@ -120,7 +131,11 @@ export class KnowledgeBaseDocumentPublicHTTPController {
     description: 'Update one plain text document',
   })
   @ApiBody({
-    schema: { type: 'object', required: ['file'], properties: { file: { type: 'string', format: 'binary' }, canEdit: { type: 'boolean' } } },
+    schema: {
+      type: 'object',
+      required: ['file'],
+      properties: { file: { type: 'string', format: 'binary' }, canEdit: { type: 'boolean' } },
+    },
   })
   @ApiParam({ name: 'assistantID', type: 'string' })
   @ApiConsumes('multipart/form-data')
@@ -141,9 +156,9 @@ export class KnowledgeBaseDocumentPublicHTTPController {
     @Param('assistantID') assistantID: string,
     @Param('documentID') documentID: string,
     @UploadedFile() file: MulterFile,
-    @Body() { canEdit }: { canEdit?: boolean }
+    @Body() { canEdit }: { canEdit?: string }
   ): Promise<DocumentCreateResponse> {
-    return this.service.replaceFileDocument(assistantID, userID, documentID, file, canEdit);
+    return this.service.replaceFileDocument(assistantID, userID, documentID, file, canEdit === 'true');
   }
 
   @Post('create-many')
@@ -192,29 +207,6 @@ export class KnowledgeBaseDocumentPublicHTTPController {
   })
   async getOne(@Param('assistantID') assistantID: string, @Param('documentID') documentID: string): Promise<DocumentFindOneResponse> {
     return this.service.findOneDocument(assistantID, documentID);
-  }
-
-  @Get('public/:documentID')
-  @ApiConsumes('knowledgeBase')
-  @Authorize.Permissions<Request<{ assistantID: string }>>([Permission.PROJECT_READ], (request) => ({
-    id: request.params.assistantID,
-    kind: 'project',
-  }))
-  @HttpCode(HttpStatus.OK)
-  @ApiOperation({
-    summary: 'Get document',
-    description: 'Get one documents by id',
-  })
-  @ApiParam({ name: 'assistantID', type: 'string' })
-  @ApiParam({ name: 'documentID', type: 'string' })
-  @ZodApiResponse({
-    status: HttpStatus.OK,
-    description: 'Get document by id in the target project',
-    schema: DocumentFindOnePublicResponse,
-  })
-  async publicGetOne(@Param('assistantID') assistantID: string, @Param('documentID') documentID: string): Promise<DocumentFindOnePublicResponse> {
-    const document = await this.service.findOneDocument(assistantID, documentID);
-    return document ? { data: document.data, chunks: document.chunks } : { data: null, chunks: [] };
   }
 
   @Get()
@@ -336,28 +328,6 @@ export class KnowledgeBaseDocumentPublicHTTPController {
     description: 'Delete document by id in the target project',
   })
   async deleteOne(@Param('assistantID') assistantID: string, @Param('documentID') documentID: string): Promise<void> {
-    await this.service.deleteManyDocuments([documentID], assistantID);
-  }
-
-  @Delete('public/:documentID')
-  @ApiConsumes('knowledgeBase')
-  @Authorize.Permissions<Request<{ assistantID: string }>>([Permission.PROJECT_UPDATE], (request) => ({
-    id: request.params.assistantID,
-    kind: 'project',
-  }))
-  @HttpCode(HttpStatus.OK)
-  @ApiOperation({
-    summary: 'Delete document',
-    description: 'Delete one documents by id',
-  })
-  @ApiParam({ name: 'assistantID', type: 'string' })
-  @ApiParam({ name: 'documentID', type: 'string' })
-  @ZodApiResponse({
-    status: HttpStatus.OK,
-    description: 'Delete document by id in the target project',
-  })
-  async publicDeleteOne(@Param('assistantID') assistantID: string, @Param('documentID') documentID: string): Promise<void> {
-    // TODO: remove from refresh queue
     await this.service.deleteManyDocuments([documentID], assistantID);
   }
 

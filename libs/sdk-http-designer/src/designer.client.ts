@@ -8,6 +8,7 @@ import {
   BillingSubscriptionClient,
   EnvironmentClient,
   FunctionClient,
+  KbpublicApiDocumentClient,
   KnowledgeBaseDocumentClient,
   KnowledgeBaseTagClient,
   OrganizationClient,
@@ -35,6 +36,7 @@ export class DesignerClient extends BaseClient('https://realtime-api.voiceflow.c
   }),
 
   knowledgeBase: NestedClient({
+    public: KbpublicApiDocumentClient,
     document: KnowledgeBaseDocumentClient,
     tag: KnowledgeBaseTagClient,
   }),

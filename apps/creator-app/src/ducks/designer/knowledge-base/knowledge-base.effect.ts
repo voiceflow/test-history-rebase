@@ -3,6 +3,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { notify } from '@voiceflow/ui-next';
 
 import api from '@/client/api';
+import { designerClient } from '@/client/designer';
 import { knowledgeBaseClient } from '@/client/knowledge-base';
 import { AI_MODEL_CONFIG_MAP } from '@/config/ai-model';
 import * as Errors from '@/config/errors';
@@ -18,7 +19,7 @@ export const getSettings = (): Thunk => async (dispatch, getState) => {
 
   let settings: BaseModels.Project.KnowledgeBaseSettings;
 
-  // const realtimeKBEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.KB_BE_DOC_CRUD);
+  const realtimeKBEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.KB_BE_DOC_CRUD);
 
   if (Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.VERSIONED_KB_SETTINGS)) {
     const versionID = Session.activeVersionIDSelector(state);
@@ -37,7 +38,11 @@ export const getSettings = (): Thunk => async (dispatch, getState) => {
     Errors.assertProjectID(projectID);
 
     // TODO: Check here
-    settings = await knowledgeBaseClient.getSettings(projectID);
+    if (realtimeKBEnabled) {
+      settings = await designerClient.knowledgeBase.settings.getSettings();
+    } else {
+      settings = await knowledgeBaseClient.getSettings(projectID);
+    }
   }
 
   if (settings.summarization.model && !Object.keys(AI_MODEL_CONFIG_MAP).includes(settings.summarization.model)) {

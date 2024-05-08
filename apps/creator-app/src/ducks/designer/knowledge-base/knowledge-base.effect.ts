@@ -41,11 +41,11 @@ export const getSettings = (): Thunk => async (dispatch, getState) => {
 
     Errors.assertProjectID(projectID);
 
-    // if (kbRealtimeSettingsEnabled) {
-    settings = (await designerClient.knowledgeBase.settings.getSettings(projectID)) as BaseModels.Project.KnowledgeBaseSettings;
-    // } else {
-    // settings = await knowledgeBaseClient.getSettings(projectID);
-    // }
+    if (kbRealtimeSettingsEnabled) {
+      settings = (await designerClient.knowledgeBase.settings.getSettings(projectID)) as BaseModels.Project.KnowledgeBaseSettings;
+    } else {
+      settings = await knowledgeBaseClient.getSettings(projectID);
+    }
   }
 
   if (settings.summarization.model && !Object.keys(AI_MODEL_CONFIG_MAP).includes(settings.summarization.model)) {

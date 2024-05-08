@@ -1,6 +1,5 @@
 import type {
   KnowledgeBaseDocument,
-  KnowledgeBaseSettings,
   VersionKnowledgeBase as BaseVersionKnowledgeBase,
   VersionKnowledgeBaseSetFaq as BaseVersionKnowledgeBaseSetFaq,
 } from '@voiceflow/dtos';
@@ -16,5 +15,4 @@ export interface VersionKnowledgeBaseSetFaq extends Omit<BaseVersionKnowledgeBas
 export interface VersionKnowledgeBase extends Omit<BaseVersionKnowledgeBase, 'faqSets' | 'documents' | 'settings'> {
   faqSets?: Record<string, VersionKnowledgeBaseSetFaq>;
   documents?: Record<string, VersionKnowledgeBaseDocument>;
-  settings?: KnowledgeBaseSettings;
 }

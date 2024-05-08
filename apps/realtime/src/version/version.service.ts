@@ -86,7 +86,16 @@ export class VersionService extends MutableService<VersionORM> {
         ? deepSetCreatorID(deepSetNewDate(sourceVersion), sourceVersionOverride.creatorID)
         : sourceVersion;
 
-    const newVersion = await this.createOne(this.fromJSON({ ...Utils.object.omit(versionData, ['_id']), ...sourceVersionOverride }));
+    const newVersion = await this.orm.upsertOne(
+      this.fromJSON({
+        ...versionData,
+        // upsert requires an explicit _id to return result, override versionData._id
+        _id: new ObjectId().toJSON(),
+
+        // sourceVersionOverride can override _id
+        ...sourceVersionOverride,
+      })
+    );
 
     const diagramOverride = { ...Utils.object.pick(sourceVersionOverride, ['creatorID']), versionID: newVersion._id.toJSON() };
 

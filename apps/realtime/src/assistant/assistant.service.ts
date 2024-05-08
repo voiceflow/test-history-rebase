@@ -701,7 +701,6 @@ export class AssistantService extends MutableService<AssistantORM> {
 
     try {
       ({ version } = await this.environment.cloneOne({
-        cloneDiagrams: true,
         sourceEnvironmentID: sourceProject.devVersion.toJSON(),
         targetEnvironmentID: environmentID,
         targetVersionOverride: {

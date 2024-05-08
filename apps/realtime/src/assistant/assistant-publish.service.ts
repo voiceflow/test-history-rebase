@@ -28,12 +28,7 @@ export class AssistantPublishService {
 
     const liveVersionID = project.liveVersion?.toString();
 
-    if (liveVersionID) {
-      await this.environment.deleteOne(liveVersionID);
-    }
-
     const { version } = await this.environment.cloneOne({
-      cloneDiagrams: true,
       sourceEnvironmentID: devVersionID,
       targetEnvironmentID: liveVersionID,
       targetVersionOverride: { name: name ?? 'Production', creatorID: userID },

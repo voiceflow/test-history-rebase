@@ -630,37 +630,27 @@ export class EnvironmentService {
   /* Clone */
 
   async cloneOne({
-    cloneDiagrams,
     sourceEnvironmentID,
     targetEnvironmentID,
     targetVersionOverride = {},
   }: {
-    cloneDiagrams: boolean;
     sourceEnvironmentID: string;
     targetEnvironmentID?: string;
     targetVersionOverride?: Merge<Partial<Omit<VersionJSON, '_id' | 'prototype'>>, { prototype?: any }>;
   }) {
-    const sourceVersion = await this.version.findOneOrFail(sourceEnvironmentID);
-    let targetVersion: VersionObject;
-    let targetDiagrams: DiagramObject[];
+    const [sourceVersion, sourceDiagrams] = await Promise.all([
+      this.version.findOneOrFail(sourceEnvironmentID),
+      this.diagram.findManyByVersionID(sourceEnvironmentID),
 
-    const targetEnvironmentExists = targetEnvironmentID && (await this.version.exists(targetEnvironmentID));
-    if (!targetEnvironmentExists) {
-      const sourceDiagrams = await (cloneDiagrams ? this.diagram.findManyByVersionID(sourceEnvironmentID) : Promise.resolve([]));
+      // clear existing data before cloning
+      targetEnvironmentID && this.diagram.deleteManyByVersionID(targetEnvironmentID),
+    ]);
 
-      ({ version: targetVersion, diagrams: targetDiagrams } = await this.version.importOne({
-        sourceVersion: this.version.toJSON(sourceVersion),
-        sourceDiagrams: this.diagram.mapToJSON(sourceDiagrams),
-        sourceVersionOverride: { ...(targetEnvironmentID && { _id: targetEnvironmentID }), ...targetVersionOverride },
-      }));
-    } else {
-      await this.version.patchOne(targetEnvironmentID, this.version.fromJSON(targetVersionOverride));
-
-      [targetVersion, targetDiagrams] = await Promise.all([
-        this.version.findOneOrFail(targetEnvironmentID),
-        this.diagram.findManyByVersionID(targetEnvironmentID),
-      ]);
-    }
+    const { version: targetVersion, diagrams: targetDiagrams } = await this.version.importOne({
+      sourceVersion: this.version.toJSON(sourceVersion),
+      sourceDiagrams: this.diagram.mapToJSON(sourceDiagrams),
+      sourceVersionOverride: { ...(targetEnvironmentID && { _id: targetEnvironmentID }), ...targetVersionOverride },
+    });
 
     const cmsCloneManyPayload = {
       sourceAssistantID: sourceVersion.projectID.toJSON(),
@@ -712,52 +702,6 @@ export class EnvironmentService {
       diagrams: targetDiagrams,
       liveDiagramIDs: VersionService.getLiveDiagramIDs(targetVersion, targetDiagrams),
     };
-  }
-
-  async cloneOneAndTransform({
-    cloneDiagrams,
-    sourceEnvironmentID,
-    targetEnvironmentID,
-    targetVersionOverride = {},
-    convertToLegacyFormat,
-  }: {
-    cloneDiagrams: boolean;
-    sourceEnvironmentID: string;
-    targetEnvironmentID?: string;
-    targetVersionOverride?: Merge<Partial<Omit<VersionJSON, '_id' | 'prototype'>>, { prototype?: any }>;
-    convertToLegacyFormat?: boolean;
-  }) {
-    return this.postgresEM.transactional(async () => {
-      const result = await this.cloneOne({ cloneDiagrams, sourceEnvironmentID, targetEnvironmentID, targetVersionOverride });
-
-      let targetVersion = result.version;
-
-      const targetProject = await this.project.findOneOrFail(targetVersion.projectID);
-
-      if (convertToLegacyFormat) {
-        const { legacySlots, legacyIntents, legacyVariables } = this.convertCMSResourcesToLegacyResources({
-          ...result,
-          isVoiceAssistant:
-            Realtime.legacyPlatformToProjectType(targetProject.platform, targetProject.type, targetProject.nlu).type ===
-            Platform.Constants.ProjectType.VOICE,
-        });
-
-        await Promise.all([
-          this.version.patchOnePlatformData(targetVersion._id, { intents: legacyIntents, slots: legacySlots }),
-          this.version.patchOne(targetVersion._id, { variables: legacyVariables }),
-        ]);
-
-        // refetching version to get updated platformData
-        targetVersion = await this.version.findOneOrFail(targetVersion._id);
-      }
-
-      return {
-        ...result,
-        project: targetProject,
-        version: targetVersion,
-        liveDiagramIDs: VersionService.getLiveDiagramIDs(targetVersion, result.diagrams),
-      };
-    });
   }
 
   /* Delete */

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.21.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-designer@2.20.5...@voiceflow/sdk-http-designer@2.21.0) (2024-05-08)
+
+### Features
+
+* document tag rt endpoints (COR-1838) ([#8074](https://github.com/voiceflow/creator-app/issues/8074)) ([350ce6c](https://github.com/voiceflow/creator-app/commit/350ce6cafd7331d9202ebc91bb529d057e409629))
+
 ## [2.20.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-designer@2.20.4...@voiceflow/sdk-http-designer@2.20.5) (2024-05-08)
 
 **Note:** Version bump only for package @voiceflow/sdk-http-designer

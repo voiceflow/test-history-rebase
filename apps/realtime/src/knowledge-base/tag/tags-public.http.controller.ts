@@ -1,18 +1,23 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Inject, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Inject, Logger, Param, Patch, Post } from '@nestjs/common';
 import { ApiConsumes, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { ZodApiBody, ZodApiResponse } from '@voiceflow/nestjs-common';
-import { Permission } from '@voiceflow/sdk-auth';
-import { Authorize } from '@voiceflow/sdk-auth/nestjs';
+import { Identity, Permission } from '@voiceflow/sdk-auth';
+import { Authorize, Principal } from '@voiceflow/sdk-auth/nestjs';
 import type { Request } from 'express';
 import { ZodValidationPipe } from 'nestjs-zod';
+
+import { appRef } from '@/app.ref';
 
 import { TagFindManyResponse, TagFindOneResponse } from './dtos/tag-find.dto';
 import { TagPatchOneRequest, TagPatchOneResponse } from './dtos/tag-patch.dto';
 import { KnowledgeBaseTagService } from './tag.service';
 
-@Controller('knowledge-base/:assistantID/tags')
+@Controller('knowledge-base/tags')
+@Authorize.Identity()
 @ApiTags('KnowledgeBaseTag')
 export class KnowledgeBaseTagPublicHTTPController {
+  logger = new Logger(KnowledgeBaseTagPublicHTTPController.name);
+
   constructor(
     @Inject(KnowledgeBaseTagService)
     private readonly service: KnowledgeBaseTagService
@@ -20,7 +25,10 @@ export class KnowledgeBaseTagPublicHTTPController {
 
   @Get('public')
   @ApiConsumes('knowledgeBase')
-  @Authorize.Permissions<Request<{ assistantID: string }>>([Permission.PROJECT_READ], (req) => ({ id: req.params.assistantID, kind: 'project' }))
+  @Authorize.Permissions<Request<{ assistantID: string }>>([Permission.PROJECT_READ], async (req) => ({
+    id: await appRef.current.get(KnowledgeBaseTagService).resolveAssistantID(req),
+    kind: 'project',
+  }))
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
     summary: 'Get tags',
@@ -32,15 +40,16 @@ export class KnowledgeBaseTagPublicHTTPController {
     description: 'Get all tags in the target project',
     schema: TagFindManyResponse,
   })
-  async findAll(@Param('assistantID') assistantID: string): Promise<TagFindManyResponse> {
+  async findAll(@Principal() principal: Identity & { legacy: { projectID: string } }): Promise<TagFindManyResponse> {
+    const assistantID = principal.legacy.projectID;
     const tags = await this.service.getTags(assistantID);
     return { total: tags.length, data: tags };
   }
 
   @Get('public/:tagID')
   @ApiConsumes('knowledgeBase')
-  @Authorize.Permissions<Request<{ assistantID: string }>>([Permission.PROJECT_READ], (request) => ({
-    id: request.params.assistantID,
+  @Authorize.Permissions<Request<{ assistantID: string }>>([Permission.PROJECT_READ], async (request) => ({
+    id: await appRef.current.get(KnowledgeBaseTagService).resolveAssistantID(request),
     kind: 'project',
   }))
   @HttpCode(HttpStatus.OK)
@@ -62,8 +71,8 @@ export class KnowledgeBaseTagPublicHTTPController {
 
   @Patch('public/:tagID')
   @ApiConsumes('knowledgeBase')
-  @Authorize.Permissions<Request<{ assistantID: string }>>([Permission.PROJECT_UPDATE], (request) => ({
-    id: request.params.assistantID,
+  @Authorize.Permissions<Request<{ assistantID: string }>>([Permission.PROJECT_UPDATE], async (request) => ({
+    id: await appRef.current.get(KnowledgeBaseTagService).resolveAssistantID(request),
     kind: 'project',
   }))
   @HttpCode(HttpStatus.OK)
@@ -90,8 +99,8 @@ export class KnowledgeBaseTagPublicHTTPController {
 
   @Post('public')
   @ApiConsumes('knowledgeBase')
-  @Authorize.Permissions<Request<{ assistantID: string }>>([Permission.PROJECT_UPDATE], (request) => ({
-    id: request.params.assistantID,
+  @Authorize.Permissions<Request<{ assistantID: string }>>([Permission.PROJECT_UPDATE], async (request) => ({
+    id: await appRef.current.get(KnowledgeBaseTagService).resolveAssistantID(request),
     kind: 'project',
   }))
   @HttpCode(HttpStatus.OK)
@@ -116,8 +125,8 @@ export class KnowledgeBaseTagPublicHTTPController {
 
   @Delete('public/:tagID')
   @ApiConsumes('knowledgeBase')
-  @Authorize.Permissions<Request<{ assistantID: string }>>([Permission.PROJECT_UPDATE], (request) => ({
-    id: request.params.assistantID,
+  @Authorize.Permissions<Request<{ assistantID: string }>>([Permission.PROJECT_UPDATE], async (request) => ({
+    id: await appRef.current.get(KnowledgeBaseTagService).resolveAssistantID(request),
     kind: 'project',
   }))
   @HttpCode(HttpStatus.OK)

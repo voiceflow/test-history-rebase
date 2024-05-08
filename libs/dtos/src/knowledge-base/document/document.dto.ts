@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 import { KBDocumentChunkDTO } from './document-chunk.dto';
 import { KBDocumentDataDTO } from './document-data.dto';
-import { KnowledgeBaseDocumentStatus } from './document-status.enum';
+import { KBDocumentStatus } from './document-status.dto';
 
 export const KnowledgeBaseDocumentDTO = z.object({
   updatedAt: z.string().datetime().optional(),
@@ -11,10 +11,7 @@ export const KnowledgeBaseDocumentDTO = z.object({
   s3ObjectRef: z.string().optional(),
   version: z.number().optional(),
   tags: z.array(z.string()).optional(),
-  status: z.object({
-    type: z.nativeEnum(KnowledgeBaseDocumentStatus),
-    data: z.unknown().optional(),
-  }),
+  status: KBDocumentStatus,
   folderID: z.string().nullable().optional(),
   data: KBDocumentDataDTO.nullable(),
   chunks: z.array(KBDocumentChunkDTO).optional(),

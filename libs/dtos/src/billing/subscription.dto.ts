@@ -1,18 +1,14 @@
 import { z } from 'zod';
 
-import { BillingPeriodUnitDTO } from './period-unit.dto';
-import { PlanNameDTO } from './plan-name.dto';
 import { SubscriptionEntitlementsDTO } from './subscription-entitlements.dto';
 import { SubscriptionPaymentMethodDTO } from './subscription-payment-method.dto';
-import { SubscriptionStatusDTO } from './subscription-status.dto';
 
 export const SubscriptionDTO = z.object({
   id: z.string(),
 
-  status: SubscriptionStatusDTO,
+  status: z.enum(['future', 'in_trial', 'active', 'non_renewing', 'paused', 'cancelled', 'transferred']),
   nextBillingDate: z.string().nullable(),
-  nextBillingAt: z.number().nullable(),
-  billingPeriodUnit: BillingPeriodUnitDTO,
+  billingPeriodUnit: z.enum(['month', 'year']),
 
   trial: z
     .object({
@@ -21,9 +17,9 @@ export const SubscriptionDTO = z.object({
     })
     .nullable(),
 
-  plan: PlanNameDTO,
+  plan: z.enum(['starter', 'pro', 'team', 'enterprise']),
   editorSeats: z.number(),
-  planAmount: z.number(),
+  pricePerEditor: z.number(),
 
   customerID: z.string(),
 

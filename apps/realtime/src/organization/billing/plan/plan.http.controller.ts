@@ -1,10 +1,10 @@
-import { Controller, Get, HttpStatus, Inject, Query } from '@nestjs/common';
-import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
-import { BillingPlan, PlanName, PlanNameDTO } from '@voiceflow/dtos';
-import { ZodApiQuery, ZodApiResponse } from '@voiceflow/nestjs-common';
-import { z } from 'nestjs-zod/z';
+import { Controller, Get, HttpStatus, Inject, Param, Query } from '@nestjs/common';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { BillingPlan } from '@voiceflow/dtos';
+import { PlanType } from '@voiceflow/internal';
+import { ZodApiResponse } from '@voiceflow/nestjs-common';
 
-import { GetBillingPlansResponse } from './dtos/get-billing-plans-response.dto';
+import { GetBillingPlansResponse } from './dtos/get-plans.dto';
 import { BillingPlanService } from './plan.service';
 
 @Controller('/billing/plans')
@@ -15,23 +15,13 @@ export class BillingPlanHTTPController {
     private readonly service: BillingPlanService
   ) {}
 
-  @Get()
+  @Get(':planID')
   @ApiOperation({
     summary: 'Get plan prices',
     description: 'Get all billing prices for given plan',
   })
-  @ApiQuery({
-    name: 'coupon',
-    required: false,
-    description: 'Coupon code',
-  })
-  @ZodApiQuery({
-    name: 'planIDs',
-    description: 'List of plan IDs',
-    schema: z.array(PlanNameDTO),
-  })
   @ZodApiResponse({ status: HttpStatus.OK, schema: GetBillingPlansResponse })
-  async getPlans(@Query('planIDs') planIDs: PlanName[], @Query('coupon') coupon?: string | undefined): Promise<BillingPlan[]> {
-    return this.service.getPlans(planIDs, coupon);
+  async getAllPlans(@Param('planID') planID: PlanType, @Query('coupon') coupon?: string | undefined): Promise<BillingPlan[]> {
+    return this.service.getAllPlans(planID, coupon);
   }
 }

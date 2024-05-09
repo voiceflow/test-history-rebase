@@ -6,11 +6,10 @@ import { Hotkey } from '@/keymap';
 
 interface ContinueButtonProps extends React.PropsWithChildren {
   disabled?: boolean;
-  isLoading?: boolean;
   onClick: VoidFunction;
 }
 
-const ContinueButton: React.FC<ContinueButtonProps> = ({ disabled, onClick, children, isLoading }) => {
+const ContinueButton: React.FC<ContinueButtonProps> = ({ disabled, onClick, children }) => {
   useHotkey(
     Hotkey.MULTISTEP_CONTINUE_NEXT_STEP,
     () => {
@@ -22,7 +21,7 @@ const ContinueButton: React.FC<ContinueButtonProps> = ({ disabled, onClick, chil
   );
 
   return (
-    <Button disabled={disabled} onClick={onClick} fullWidth isLoading={isLoading}>
+    <Button disabled={disabled} onClick={onClick} fullWidth>
       {children}
     </Button>
   );

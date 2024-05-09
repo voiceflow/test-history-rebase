@@ -1,23 +1,36 @@
-import { BillingPeriodUnit, BillingPlan, BillingPrice, PaymentIntent, PlanName } from '@voiceflow/dtos';
+import { BillingPlan, PaymentIntent } from '@voiceflow/dtos';
+import { BillingPeriod } from '@voiceflow/internal';
 import { atom } from 'jotai';
 
-import { DEFAULT_PAID_PLAN, DEFAULT_PERIOD } from '@/constants';
+import { ACTIVE_PAID_PLAN } from '@/constants';
 
 import { Step } from './Payment.constants';
+
+type PriceMap = Record<BillingPeriod, { value: number; id: string }>;
 
 export const stepAtom = atom(Step.PLAN);
 
 export const editorSeatsAtom = atom(1);
-export const selectedPeriodAtom = atom<BillingPeriodUnit>(DEFAULT_PERIOD);
-export const selectedPlanIDAtom = atom<PlanName>(DEFAULT_PAID_PLAN);
+export const periodAtom = atom(BillingPeriod.ANNUALLY);
 
 export const plansAtom = atom<BillingPlan[]>([]);
 
-export const plansByIDAtom = atom<Record<string, BillingPlan>>((get) => Object.fromEntries(get(plansAtom).map((plan) => [plan.id, plan])));
-export const selectedPlanAtom = atom<BillingPlan | null>((get) => get(plansByIDAtom)[get(selectedPlanIDAtom)] ?? null);
-export const selectedPlanPriceAtom = atom<BillingPrice | null>((get) => get(selectedPlanAtom)?.pricesByPeriodUnit?.[get(selectedPeriodAtom)] ?? null);
-
-export const selectedPeriodAmountAtom = atom((get) => get(selectedPlanPriceAtom)?.amount ?? 0);
+export const plansPriceAtom = atom<Record<string, PriceMap>>((get) => {
+  return get(plansAtom).reduce((acc, plan) => {
+    return {
+      ...acc,
+      [plan.id]: plan.prices.reduce(
+        (acc, price) => ({
+          ...acc,
+          [price.period]: { value: price.period === BillingPeriod.ANNUALLY ? price.price / 12 : price.price, id: price.id },
+        }),
+        {}
+      ),
+    };
+  }, {});
+});
+export const activePaidPlanPricesAtom = atom<PriceMap | null>((get) => get(plansPriceAtom)[ACTIVE_PAID_PLAN] ?? null);
+export const selectedPlanPriceAtom = atom((get) => get(activePaidPlanPricesAtom)?.[get(periodAtom)] ?? null);
 
 export const paymentIntentAtom = atom<PaymentIntent | null>(null);
 

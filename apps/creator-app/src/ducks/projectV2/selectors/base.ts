@@ -31,30 +31,13 @@ export const editorRoleProjectsByUserIDSelector = createSelector([allProjectsSel
   return editorRoleProjectsByUserID;
 });
 
-export const projectsIndexMapSortedByUpdatedAtSelector = createSelector(
-  [allProjectsSelector],
-  (projects) =>
-    new Map(
-      projects
-        .sort((a, b) => {
-          if (a.updatedAt && !b.updatedAt) return -1;
-          if (b.updatedAt && !a.updatedAt) return 1;
+export const projectsSortedByUpdatedAtSelector = createSelector([allProjectsSelector], (projects) =>
+  projects.sort((a, b) => {
+    if (a.updatedAt && !b.updatedAt) return -1;
+    if (b.updatedAt && !a.updatedAt) return 1;
 
-          return dayjs(a.updatedAt).isAfter(b.updatedAt) ? -1 : 1;
-        })
-        .map((project, index) => [project.id, index])
-    )
-);
-
-export const getIsLockedByBeyondLimitSelector = createSelector(
-  [projectsIndexMapSortedByUpdatedAtSelector, getProjectByIDSelector],
-  (sortedProjectsIndexMap) => {
-    return ({ projectID, projectsLimit }: { projectID: string; projectsLimit: number }) => {
-      const index = sortedProjectsIndexMap.get(projectID) ?? -1;
-
-      return index >= projectsLimit;
-    };
-  }
+    return dayjs(a.updatedAt).isAfter(b.updatedAt) ? -1 : 1;
+  })
 );
 
 export const allEditorMemberIDs = createSelector([allProjectsSelector], (projects) => {

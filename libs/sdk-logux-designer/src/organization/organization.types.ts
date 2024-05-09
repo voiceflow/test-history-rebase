@@ -11,6 +11,6 @@ export interface OrganizationAction {
   context: OrganizationActionContext;
 }
 
-export interface BaseOrganizationSubscriptionAction {
+export interface OrganizationSubscriptionAction {
   context: OrganizationActionContext;
 }

@@ -1,5 +1,3 @@
-import { BillingPeriodUnit } from '@voiceflow/dtos';
-
 export interface PlanItemPrice {
   _id: string;
   id: string;
@@ -12,7 +10,7 @@ export interface PlanItemPrice {
   price: number;
   period: number;
   currency_code: string;
-  period_unit: BillingPeriodUnit;
+  period_unit: string;
   free_quantity: number;
   channel: string;
   resource_version: number;

@@ -1,21 +1,49 @@
-import {
-  BillingPeriodUnit,
-  PlanName,
-  SubscriptionPaymentMethodStatus,
-  SubscriptionPaymentMethodStatusType,
-  SubscriptionStatus,
-} from '@voiceflow/dtos';
+import { SubscriptionPaymentMethodStatus, SubscriptionPaymentMethodStatusType } from '@voiceflow/dtos';
+import { PlanType } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 
-export const PAYMENT_METHOD_FAILED_STATUSES: Set<Partial<SubscriptionPaymentMethodStatusType>> = new Set([
+export const ChargebeePlanType = {
+  STARTER: PlanType.STARTER,
+  PRO: PlanType.PRO,
+  TEAM: PlanType.TEAM,
+  ENTERPRISE: PlanType.ENTERPRISE,
+} as const;
+
+export const ChargebeeStatus = {
+  FUTURE: 'future',
+  IN_TRIAL: 'in_trial',
+  ACTIVE: 'active',
+  NON_RENEWING: 'non_renewing',
+  PAUSED: 'paused',
+  CANCELLED: 'cancelled',
+  TRANSFERRED: 'transferred',
+} as const;
+
+export const ChargebeeBillingPeriodUnit = {
+  MONTH: 'month',
+  YEAR: 'year',
+} as const;
+
+const PAYMENT_METHOD_FAILED_STATUSES: Set<Partial<SubscriptionPaymentMethodStatusType>> = new Set([
   SubscriptionPaymentMethodStatus.EXPIRED,
   SubscriptionPaymentMethodStatus.INVALID,
   SubscriptionPaymentMethodStatus.EXPIRING,
 ]);
 
-export const isChargebeePlanName = (plan: any): plan is PlanName => Object.values(PlanName).includes(plan);
-export const isChargebeeStatus = (status: any): status is SubscriptionStatus => Object.values(SubscriptionStatus).includes(status);
-export const isChargebeeBillingPeriodUnit = (unit: any): unit is BillingPeriodUnit => Object.values(BillingPeriodUnit).includes(unit);
+export type ChargebeePlanType = (typeof ChargebeePlanType)[keyof typeof ChargebeePlanType];
+
+export type ChargebeeStatus = (typeof ChargebeeStatus)[keyof typeof ChargebeeStatus];
+
+export type ChargebeeBillingPeriodUnit = (typeof ChargebeeBillingPeriodUnit)[keyof typeof ChargebeeBillingPeriodUnit];
+
+const chargebeePlanTypes = new Set(Object.values(ChargebeePlanType));
+
+export const isChargebeePlanType = (plan: any): plan is ChargebeePlanType => chargebeePlanTypes.has(plan);
+
+export const isChargebeeStatus = (status: any): status is ChargebeeStatus => Object.values(ChargebeeStatus).includes(status);
+
+export const isChargebeeBillingPeriodUnit = (unit: any): unit is ChargebeeBillingPeriodUnit =>
+  Object.values(ChargebeeBillingPeriodUnit).includes(unit);
 export const isPaymentMethodFailed = (status: SubscriptionPaymentMethodStatusType) => PAYMENT_METHOD_FAILED_STATUSES.has(status);
 
 export function getDaysLeftToTrialEnd(trialEndDate: number, downgradedFromTrial?: boolean) {
@@ -38,21 +66,21 @@ export const findPlanItem = (subscriptionItems?: Realtime.Identity.SubscriptionI
 export const getPlanFromPriceID = (priceID: string | undefined) => {
   const [plan] = priceID?.split('-') ?? [];
 
-  if (isChargebeePlanName(plan)) return plan;
+  if (isChargebeePlanType(plan)) return plan;
 
-  return PlanName.STARTER;
+  return ChargebeePlanType.STARTER;
 };
 
 export const getStatus = (status: string | undefined) => {
   if (isChargebeeStatus(status)) return status;
 
-  return SubscriptionStatus.CANCELLED;
+  return ChargebeeStatus.CANCELLED;
 };
 
 export const getBillingPeriodUnit = (unit: string | undefined) => {
   if (isChargebeeBillingPeriodUnit(unit)) return unit;
 
-  return BillingPeriodUnit.MONTH;
+  return ChargebeeBillingPeriodUnit.MONTH;
 };
 
 export const isChargebeeTrial = (
@@ -61,9 +89,9 @@ export const isChargebeeTrial = (
   trialEndAt: number | undefined,
   cancelledAt: number | undefined
 ) => {
-  const cancelledByTrialExpiration = status === SubscriptionStatus.CANCELLED && cancelledAt && cancelledAt === trialEndAt;
+  const cancelledByTrialExpiration = status === ChargebeeStatus.CANCELLED && cancelledAt && cancelledAt === trialEndAt;
 
-  return status === SubscriptionStatus.IN_TRIAL || metaData?.downgradedFromTrial || cancelledByTrialExpiration;
+  return status === ChargebeeStatus.IN_TRIAL || metaData?.downgradedFromTrial || cancelledByTrialExpiration;
 };
 
 export const findBooleanEntitlement = (entitlements: Realtime.Identity.SubscriptionEntitlement[] | undefined, itemID: string) => {

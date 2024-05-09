@@ -13,11 +13,11 @@ import CardDetails from './CardDetails';
 
 interface BillingEditorSeatsProps {
   nextBillingDate: string | null;
-  planAmount: number;
+  pricePerEditor: number;
   billingPeriod: string | null;
 }
 
-const BillingEditorSeats: React.FC<BillingEditorSeatsProps> = ({ nextBillingDate, planAmount, billingPeriod }) => {
+const BillingEditorSeats: React.FC<BillingEditorSeatsProps> = ({ nextBillingDate, pricePerEditor, billingPeriod }) => {
   const seats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);
   const isTrial = useSelector(WorkspaceV2.active.isOnTrialSelector);
   const trialEndAt = useSelector(WorkspaceV2.active.organizationTrialEndAtSelector);
@@ -26,7 +26,7 @@ const BillingEditorSeats: React.FC<BillingEditorSeatsProps> = ({ nextBillingDate
   const usedViewerSeats = useSelector(WorkspaceV2.active.usedViewerSeatsSelector);
   const creditCard = useSelector(Organization.creditCardSelector);
 
-  const amount = isPaidPlan ? planAmount ?? 0 : 0;
+  const unitPrice = isPaidPlan ? pricePerEditor ?? 0 : 0;
   const showProTrialDescription = !isEnterprise && isTrial;
   const showBillingDateDescription = isPaidPlan && !isEnterprise && !isTrial;
 
@@ -47,7 +47,7 @@ const BillingEditorSeats: React.FC<BillingEditorSeatsProps> = ({ nextBillingDate
                 )}
                 {!isPaidPlan && !isTrial && (
                   <div>
-                    This organization has <Text color="#132144">{seats} Editor seats.</Text>
+                    This workspace has <Text color="#132144">{seats} Editor seats.</Text>
                   </div>
                 )}
 
@@ -71,7 +71,7 @@ const BillingEditorSeats: React.FC<BillingEditorSeatsProps> = ({ nextBillingDate
 
             {isPaidPlan && !isEnterprise ? (
               <div>
-                <SectionV2.Description>{currency.formatUSD(amount, { noDecimal: true, unit: 'cent' })} </SectionV2.Description>
+                <SectionV2.Description>{currency.formatUSD(unitPrice, { noDecimal: true })} </SectionV2.Description>
                 <SectionV2.Description secondary> per Editor, per {billingPeriod}</SectionV2.Description>
               </div>
             ) : (
@@ -87,27 +87,23 @@ const BillingEditorSeats: React.FC<BillingEditorSeatsProps> = ({ nextBillingDate
 
       <SectionV2.SimpleSection headerProps={{ topUnit: 2, bottomUnit: 2 }} minHeight={50}>
         <SectionV2.Description>{isEnterprise ? 100 : seats} Editor seats</SectionV2.Description>
-        <SectionV2.Description>{isEnterprise ? 'Custom' : currency.formatUSD(amount, { unit: 'cent' })}</SectionV2.Description>
+        <SectionV2.Description>{isEnterprise ? 'Custom' : currency.formatUSD(unitPrice * seats)}</SectionV2.Description>
       </SectionV2.SimpleSection>
 
       <SectionV2.Divider inset />
 
-      {usedViewerSeats > 0 && (
-        <>
-          <SectionV2.SimpleSection headerProps={{ topUnit: 2, bottomUnit: 2 }} minHeight={50}>
-            <SectionV2.Description>{usedViewerSeats} Viewer seats</SectionV2.Description>
-            <SectionV2.Description>Free</SectionV2.Description>
-          </SectionV2.SimpleSection>
+      <SectionV2.SimpleSection headerProps={{ topUnit: 2, bottomUnit: 2 }} minHeight={50}>
+        <SectionV2.Description>{usedViewerSeats} Viewer seats</SectionV2.Description>
+        <SectionV2.Description>Free</SectionV2.Description>
+      </SectionV2.SimpleSection>
 
-          <SectionV2.Divider inset />
-        </>
-      )}
+      <SectionV2.Divider inset />
 
       <SectionV2.SimpleSection headerProps={{ topUnit: 2, bottomUnit: 3.5 }}>
         <Box.FlexApart fullWidth>
           <SectionV2.Title bold>Total</SectionV2.Title>
           <SectionV2.Title bold fill={false}>
-            {isEnterprise ? 'Custom' : currency.formatUSD(amount, { unit: 'cent' })}
+            {isEnterprise ? 'Custom' : currency.formatUSD(unitPrice * seats)}
           </SectionV2.Title>
         </Box.FlexApart>
       </SectionV2.SimpleSection>

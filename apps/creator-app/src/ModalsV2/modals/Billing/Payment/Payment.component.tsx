@@ -1,38 +1,29 @@
-import { PlanName } from '@voiceflow/dtos';
-import { FeatureFlag } from '@voiceflow/realtime-sdk';
+import { BillingPeriod } from '@voiceflow/internal';
 import { Modal, Switch, System, useAsyncMountUnmount } from '@voiceflow/ui';
 import { useSetAtom } from 'jotai';
 import React from 'react';
 
-import { DEFAULT_PERIOD } from '@/constants';
-import * as Organization from '@/ducks/organization';
 import { UpgradePrompt } from '@/ducks/tracking';
-import { useFeature, useSelector } from '@/hooks';
+import { getClient as getChargebeeClient, initialize as initializeChargebee } from '@/vendors/chargebee';
 
 import manager from '../../../manager';
-import { BillingStep } from './BillingStep/BillingStep.component';
+import { BillingStep, PaymentStep, PlanStep } from './components';
 import { usePaymentSteps, usePlans } from './hooks';
 import * as atoms from './Payment.atoms';
 import { Step } from './Payment.constants';
-import { PaymentStep } from './PaymentStep/PaymentStep.component';
-import { PlanStep } from './PlanStep/PlanStep.component';
 
 export interface PaymentModalProps {
   promptType?: UpgradePrompt;
   isTrialExpired?: boolean;
   coupon?: string;
-  nextPlan?: PlanName;
 }
 
 export const Payment = manager.create<PaymentModalProps>('Payment', () => (modalProps) => {
-  const { type, opened, hidden, animated, api, closePrevented, promptType, nextPlan } = modalProps;
+  const { type, opened, hidden, animated, api, closePrevented, promptType } = modalProps;
   const { activeStep, onBack, onReset } = usePaymentSteps();
   const { plans, fetchPlans } = usePlans(modalProps.coupon);
-  const setPeriod = useSetAtom(atoms.selectedPeriodAtom);
-  const setPlan = useSetAtom(atoms.selectedPlanIDAtom);
+  const setPeriod = useSetAtom(atoms.periodAtom);
   const updateCoupons = useSetAtom(atoms.couponIdsAtom);
-  const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
-  const { isEnabled: teamsPlanSelfServeIsEnabled } = useFeature(FeatureFlag.TEAMS_PLAN_SELF_SERVE);
 
   const handleExited = () => {
     onReset();
@@ -40,12 +31,12 @@ export const Payment = manager.create<PaymentModalProps>('Payment', () => (modal
   };
 
   useAsyncMountUnmount(async () => {
-    setPeriod(DEFAULT_PERIOD);
+    setPeriod(BillingPeriod.ANNUALLY);
 
-    if (teamsPlanSelfServeIsEnabled) {
-      const defaultNextPlan = subscription?.plan === PlanName.STARTER || subscription?.trial ? PlanName.PRO : PlanName.TEAM;
-
-      setPlan(nextPlan ?? defaultNextPlan);
+    try {
+      getChargebeeClient();
+    } catch (error) {
+      initializeChargebee();
     }
 
     await fetchPlans();

@@ -1,7 +1,7 @@
 import { Body, Controller, Get, HttpStatus, Inject, Param, Post, Put, Query } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { PaymentIntent, PaymentIntentDTO, Subscription, SubscriptionDTO, SubscriptionPaymentMethodStatusType } from '@voiceflow/dtos';
-import { ZodApiBody, ZodApiQuery, ZodApiResponse } from '@voiceflow/nestjs-common';
+import { ZodApiQuery, ZodApiResponse } from '@voiceflow/nestjs-common';
 import { Permission } from '@voiceflow/sdk-auth';
 import { Authorize, UserID } from '@voiceflow/sdk-auth/nestjs';
 import type { Request } from 'express';
@@ -80,13 +80,12 @@ export class BillingSubscriptionHTTPController {
   @ApiParam({ name: 'organizationID', type: 'string' })
   @ApiParam({ name: 'subscriptionID', type: 'string' })
   @ZodApiResponse({ status: HttpStatus.OK, schema: PaymentIntentDTO })
-  @ZodApiBody({ schema: CreatePaymentIntentRequest })
   async createPaymentIntent(
     @UserID() userID: number,
     @Body(new ZodValidationPipe(CreatePaymentIntentRequest))
     paymentIntentRequest: CreatePaymentIntentRequest
   ): Promise<PaymentIntent> {
-    const { payment_intent } = await this.service.createPaymentIntent(userID, paymentIntentRequest);
+    const { payment_intent } = await this.service.createPaymentIntent(userID, paymentIntentRequest.amount);
 
     return {
       ...payment_intent,
@@ -100,7 +99,6 @@ export class BillingSubscriptionHTTPController {
       modifiedAt: payment_intent.modified_at,
       paymentMethodType: payment_intent.payment_method_type ?? 'card',
       status: payment_intent.status,
-      referenceID: payment_intent.reference_id ?? '',
     };
   }
 
@@ -111,14 +109,13 @@ export class BillingSubscriptionHTTPController {
     description: 'Create or update customer card',
   })
   @ApiParam({ name: 'organizationID', type: 'string' })
-  @ZodApiBody({ schema: UpsertCustomerCardRequest })
   @ZodApiResponse({ status: HttpStatus.OK, schema: UpsertCustomerCardResponse })
   async upsertCustomerCard(
     @Body(new ZodValidationPipe(UpsertCustomerCardRequest))
     paymentIntentRequest: UpsertCustomerCardRequest
   ): Promise<UpsertCustomerCardResponse> {
     const data = await this.service.updateCustomerCard(paymentIntentRequest.customerID, paymentIntentRequest.paymentIntentID);
-    const { card, reference_id } = data.payment_source;
+    const { card } = data.payment_source;
 
     if (!card) {
       throw new Error('Card not created');
@@ -126,7 +123,6 @@ export class BillingSubscriptionHTTPController {
 
     return {
       paymentMethod: {
-        referenceID: reference_id,
         card: {
           brand: card.brand,
           last4: card.last4,

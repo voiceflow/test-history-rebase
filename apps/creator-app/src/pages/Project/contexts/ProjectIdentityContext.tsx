@@ -1,7 +1,5 @@
 import { Nullable } from '@voiceflow/common';
-import { PlanName } from '@voiceflow/dtos';
 import { UserRole } from '@voiceflow/internal';
-import { PLAN_INFO } from '@voiceflow/schema-types';
 import { useContextApi } from '@voiceflow/ui';
 import React from 'react';
 
@@ -34,21 +32,18 @@ export const ProjectIdentityProvider: React.FC<ProjectIdentityProviderProps> = (
   const identity = React.useContext(IdentityContext);
   const isPreview = useProjectPreview();
 
-  const orderedProjectsMap = useSelector(ProjectV2.projectsIndexMapSortedByUpdatedAtSelector);
-  const getProjectIsLockedByBeyondLimit = useSelector(ProjectV2.getIsLockedByBeyondLimitSelector);
+  const orderedProjects = useSelector(ProjectV2.projectsSortedByUpdatedAtSelector);
   const projectsLimit = useSelector(WorkspaceV2.active.projectsLimitSelector);
   const workspaceLocked = useSelector(WorkspaceV2.active.isLockedSelector);
-  const workspaceLockedByBeyondLimit = useSelector(WorkspaceV2.active.isLockedByBeyondLimitSelector);
 
   const locked = React.useMemo(() => {
     if (identity.organizationTrialExpired) return true;
-    if (workspaceLockedByBeyondLimit) return true;
-    if (!projectID) return true;
+    if (!workspaceLocked) return false;
 
-    const { projectsLimit: starterProjectsLimit } = PLAN_INFO[PlanName.STARTER];
+    const index = orderedProjects.findIndex((project) => project.id === projectID);
 
-    return getProjectIsLockedByBeyondLimit({ projectID, projectsLimit: workspaceLocked ? starterProjectsLimit : projectsLimit });
-  }, [orderedProjectsMap, projectID, identity.organizationTrialExpired, projectsLimit, workspaceLocked]);
+    return index >= projectsLimit;
+  }, [orderedProjects, projectID, identity.organizationTrialExpired, projectsLimit, workspaceLocked]);
 
   const activeRole = locked ? VirtualRole.LOCKED_PROJECT_VIEWER : projectRole;
 

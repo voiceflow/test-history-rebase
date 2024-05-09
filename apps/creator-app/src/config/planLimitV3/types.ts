@@ -7,7 +7,6 @@ import type { UpgradeModal } from '@/ModalsV2/modals/Upgrade';
 
 interface RendererProps {
   limit: number;
-  teamsPlanSelfServeIsEnabled?: boolean;
 }
 
 export interface BaseStaticLimit {

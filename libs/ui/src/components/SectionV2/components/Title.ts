@@ -7,9 +7,7 @@ export interface TitleProps extends SpaceProps, LayoutProps {
   secondary?: boolean;
 }
 
-const Title = styled.h5.withConfig({
-  shouldForwardProp: (prop, defaultValidatorFn) => !['fill', 'bold', 'secondary'].includes(prop) && defaultValidatorFn(prop),
-})<TitleProps>`
+const Title = styled.h5<TitleProps>`
   margin: 0;
   display: flex;
   font-size: 15px;

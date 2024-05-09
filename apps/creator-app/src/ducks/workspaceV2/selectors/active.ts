@@ -2,7 +2,6 @@ import { Utils } from '@voiceflow/common';
 import { BillingPeriod, PlanType } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { getAlternativeColor, isColorImage } from '@voiceflow/ui';
-import dayjs from 'dayjs';
 import * as Normal from 'normal-store';
 import { createSelector } from 'reselect';
 
@@ -10,7 +9,6 @@ import { ENTERPRISE_PLANS, PAID_PLANS, PRO_AND_TEAM_PLANS, PROJECTS_DEFAULT_LIMI
 import { userIDSelector } from '@/ducks/account/selectors';
 import * as Feature from '@/ducks/feature';
 import { getOrganizationByIDSelector } from '@/ducks/organization/organization.select';
-import { getSubscriptionEntitlements } from '@/ducks/organization/subscription/subscription.utils';
 import { allEditorMemberIDs as allProjectsEditorMemberIDs } from '@/ducks/projectV2/selectors/base';
 import * as Session from '@/ducks/session';
 import { createCurriedSelector, creatorIDParamSelector } from '@/ducks/utils';
@@ -18,7 +16,7 @@ import { idsParamSelector } from '@/ducks/utils/crudV2';
 import { ChargebeeSubscriptionStatus } from '@/models';
 import { isAdminUserRole, isEditorUserRole } from '@/utils/role';
 
-import { allWorkspacesSelector, getWorkspaceByIDSelector } from './base';
+import { getWorkspaceByIDSelector } from './base';
 
 export const workspaceSelector = createSelector([getWorkspaceByIDSelector, Session.activeWorkspaceIDSelector], (getWorkspace, workspaceID) =>
   getWorkspace({ id: workspaceID })
@@ -66,17 +64,20 @@ export const organizationTrialExpiredSelector = createSelector([organizationTria
 
 export const isOnTrialSelector = createSelector([organizationTrialDaysLeftSelector], (daysLeft) => daysLeft !== null);
 
-export const planSelector = createSelector(
-  [workspaceSelector, localOrganizationSelector],
-  (workspace, organization) => (organization?.subscription?.plan as PlanType) ?? workspace?.plan ?? null
+export const isOnProTrialSelector = createSelector(
+  [workspaceSelector, isOnTrialSelector],
+  (workspace, isOnTrial) => isOnTrial && workspace?.plan === PlanType.PRO
 );
-
-export const isOnProTrialSelector = createSelector([planSelector, isOnTrialSelector], (plan, isOnTrial) => isOnTrial && plan === PlanType.PRO);
 
 // FIXME: remove FF https://voiceflow.atlassian.net/browse/CV3-994
 export const numberOfSeatsSelector = createSelector([workspaceSelector, localOrganizationSelector], (workspace, organization) => {
   return organization?.subscription ? organization.subscription.editorSeats : workspace?.seats ?? 1;
 });
+
+export const planSelector = createSelector(
+  [workspaceSelector, localOrganizationSelector],
+  (workspace, organization) => (organization?.subscription?.plan as PlanType) ?? workspace?.plan ?? null
+);
 
 export const planPeriodSelector = createSelector([localOrganizationSelector], (organization) =>
   organization?.subscription?.billingPeriodUnit === 'month' ? BillingPeriod.MONTHLY : BillingPeriod.ANNUALLY
@@ -112,34 +113,10 @@ export const settingsSelector = createSelector([workspaceSelector], (workspace) 
 
 export const dashboardKanbanSettingsSelector = createSelector([settingsSelector], (settings) => settings?.dashboardKanban);
 
-export const activeOrganizationWorkspacesSelector = createSelector([allWorkspacesSelector, workspaceSelector], (workspaces, activeWorkspace) => {
-  return workspaces.filter((workspace) => workspace.organizationID === activeWorkspace?.organizationID);
-});
-
-export const getActiveOrganizationWorkspacesSortedByCreatedAtSelector = createSelector([activeOrganizationWorkspacesSelector], (workspaces) => {
-  return () => workspaces.sort((a, b) => (dayjs(a.created).isAfter(b.created) ? 1 : -1));
-});
-
-export const isLockedSelector = createSelector([stateSelector, localOrganizationSelector], (state, organization) => {
-  return organization?.subscription
+export const isLockedSelector = createSelector([stateSelector, localOrganizationSelector], (state, organization) =>
+  organization?.subscription
     ? organization.subscription.status === ChargebeeSubscriptionStatus.CANCELLED
-    : state === Realtime.WorkspaceActivationState.LOCKED;
-});
-
-export const isLockedByBeyondLimitSelector = createSelector(
-  [localOrganizationSelector, workspaceSelector, getActiveOrganizationWorkspacesSortedByCreatedAtSelector],
-  (organization, activeWorkspace, getActiveOrganizationWorkspacesSortedByCreatedAt) => {
-    if (!organization?.subscription) return false;
-
-    const subscriptionEntitlements = getSubscriptionEntitlements(organization.subscription);
-
-    const workspaces = getActiveOrganizationWorkspacesSortedByCreatedAt();
-    const index = workspaces.findIndex((workspace) => workspace.id === activeWorkspace?.id);
-
-    const { workspacesLimit } = subscriptionEntitlements;
-
-    return workspacesLimit && index >= workspacesLimit;
-  }
+    : state === Realtime.WorkspaceActivationState.LOCKED
 );
 
 export const projectsLimitSelector = createSelector(
@@ -209,13 +186,13 @@ export const editorMemberIDsSelector = createSelector([allNormalizedMembersSelec
 );
 
 export const usedEditorSeatsSelector = createSelector(
-  [localOrganizationSelector, editorMemberIDsSelector, allProjectsEditorMemberIDs],
-  (organization, memberIDs, projectMemberIDs) =>
-    organization?.subscription ? organization.takenSeats?.editors ?? 0 : Utils.array.unique([...memberIDs, ...projectMemberIDs]).length || 1
+  [editorMemberIDsSelector, allProjectsEditorMemberIDs],
+  (memberIDs, projectMemberIDs) => Utils.array.unique([...memberIDs, ...projectMemberIDs]).length || 1
 );
 
-export const usedViewerSeatsSelector = createSelector([localOrganizationSelector, allNormalizedMembersSelector], (organization, members) =>
-  organization?.subscription ? organization.takenSeats?.editors ?? 0 : members.filter((member) => !isEditorUserRole(member.role)).length
+export const usedViewerSeatsSelector = createSelector(
+  [allNormalizedMembersSelector],
+  (members) => members.filter((member) => !isEditorUserRole(member.role)).length
 );
 
 export const userRoleSelector = createSelector([getMemberByIDSelector, userIDSelector], (getMember, creatorID) => {

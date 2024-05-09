@@ -4,7 +4,7 @@ import { Permission } from '@voiceflow/sdk-auth';
 import { Authorize } from '@voiceflow/sdk-auth/nestjs';
 import { Actions, Channels } from '@voiceflow/sdk-logux-designer';
 
-import { BroadcastOnly, InjectRequestContext, UseRequestContext } from '@/common';
+import { InjectRequestContext, UseRequestContext } from '@/common';
 
 import subscriptionAdapter from './billing/subscription/adapters/subscription.adapter';
 import { BillingSubscriptionService } from './billing/subscription/subscription.service';
@@ -29,22 +29,14 @@ export class OrganizationLoguxController {
   }))
   async subscribe(@Context() ctx: Context.Channel<Channels.OrganizationParams>) {
     const { organizationID } = ctx.params;
-    const [subscriptionMeta, takenSeatsMeta] = [{ id: ctx.server.log.generateId() }, { id: ctx.server.log.generateId() }];
+    const [subscriptionsMeta] = [{ id: ctx.server.log.generateId() }];
 
-    const [subscription, takenSeats] = await Promise.all([
-      this.billingSubscriptionService
-        .findOneByOrganizationID(organizationID)
-        .then(subscriptionAdapter.fromDB)
-        .catch(() => null),
-      this.organizationService.getTakenSeats(organizationID),
-    ]);
+    const subscription = await this.billingSubscriptionService
+      .findOneByOrganizationID(organizationID)
+      .then(subscriptionAdapter.fromDB)
+      .catch(() => null);
 
-    return subscription
-      ? [
-          [Actions.OrganizationSubscription.Replace({ subscription, context: ctx.params }), subscriptionMeta],
-          [Actions.OrganizationTakenSeats.Replace({ takenSeats, context: ctx.params }), takenSeatsMeta],
-        ]
-      : [];
+    return subscription ? [[Actions.OrganizationSubscription.Replace({ subscription, context: ctx.params }), subscriptionsMeta]] : [];
   }
 
   @Action(Actions.Organization.PatchOne)
@@ -67,20 +59,5 @@ export class OrganizationLoguxController {
   @Broadcast<Actions.OrganizationMember.DeleteOne>(({ context }) => ({ channel: Channels.organization.build(context) }))
   async deleteMember(@Payload() { id, context }: Actions.OrganizationMember.DeleteOne, @AuthMeta() authMeta: AuthMetaPayload): Promise<void> {
     await this.organizationMemberService.remove(authMeta.userID, context.organizationID, id);
-  }
-
-  @Action(Actions.OrganizationTakenSeats.Replace)
-  @Authorize.Permissions<Channels.OrganizationParams>([Permission.ORGANIZATION_READ], ({ workspaceID }) => ({
-    // permission system doesn't support workspace members reading org resources.
-    // Passing workspace resource will resolve into an organization resource lookup, which then works.
-    id: workspaceID,
-    kind: 'workspace',
-  }))
-  @Broadcast<Actions.OrganizationTakenSeats.Replace>(({ context }) => ({
-    channel: Channels.organization.build(context),
-  }))
-  @BroadcastOnly()
-  async replaceTakenSeats(@Payload() _: any) {
-    // for broadcast only
   }
 }

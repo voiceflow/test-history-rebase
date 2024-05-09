@@ -23,7 +23,7 @@ const TEAM_LIMIT = {
   upgradeModal: ({ limit }) => ({
     ...DEFAULT_MODAL,
     ...getUpgradeModalProps(PlanType.ENTERPRISE, Tracking.UpgradePrompt.EDITOR_SEATS),
-    description: `You've reached ${limit} editor seats limit allowed in your organization. Contact sales to unlock more.`,
+    description: `You've reached ${limit} editor seats limit allowed in your workspace. Contact sales to unlock more.`,
   }),
 } satisfies UpgradeModalEntitlementLimit;
 
@@ -32,7 +32,7 @@ const ENTERPRISE_LIMIT = {
     ...DEFAULT_MODAL,
     ...getUpgradeModalProps(PlanType.ENTERPRISE, Tracking.UpgradePrompt.EDITOR_SEATS),
     header: 'Add Members',
-    description: `You've reached ${limit} editor seats limit allowed in your organization. Contact sales to unlock more.`,
+    description: `You've reached ${limit} editor seats limit allowed in your workspace. Contact sales to unlock more.`,
   }),
 } satisfies UpgradeModalEntitlementLimit;
 

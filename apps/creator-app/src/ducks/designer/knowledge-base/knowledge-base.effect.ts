@@ -1,5 +1,5 @@
 import { BaseModels } from '@voiceflow/base-types';
-import { KnowledgeBaseSettings, KnowledgeBaseSettings } from '@voiceflow/dtos';
+import { KnowledgeBaseSettings } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { notify } from '@voiceflow/ui-next';
 
@@ -20,24 +20,24 @@ export const getSettings = (): Thunk => async (dispatch, getState) => {
 
   let settings: BaseModels.Project.KnowledgeBaseSettings;
 
-  // const kbRealtimeSettingsEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.KB_BE_REALTIME_SETTINGS);
+  const kbRealtimeSettingsEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.KB_BE_REALTIME_SETTINGS);
 
-  // if (Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.VERSIONED_KB_SETTINGS)) {
-  const versionID = Session.activeVersionIDSelector(state);
+  if (Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.VERSIONED_KB_SETTINGS)) {
+    const versionID = Session.activeVersionIDSelector(state);
 
-  Errors.assertProjectID(versionID);
+    Errors.assertProjectID(versionID);
 
-  if (kbRealtimeSettingsEnabled) {
-    settings = (await designerClient.knowledgeBase.version.getSettings(versionID)) as BaseModels.Project.KnowledgeBaseSettings;
+    if (kbRealtimeSettingsEnabled) {
+      settings = (await designerClient.knowledgeBase.version.getSettings(versionID)) as BaseModels.Project.KnowledgeBaseSettings;
+    } else {
+      ({ data: settings } = await api.fetch
+        .get<BaseModels.Project.KnowledgeBaseSettings>(`/versions/${versionID}/knowledge-base/settings`)
+        .catch(() => {
+          return { data: {} as BaseModels.Project.KnowledgeBaseSettings };
+        }));
+    }
   } else {
-    ({ data: settings } = await api.fetch
-      .get<BaseModels.Project.KnowledgeBaseSettings>(`/versions/${versionID}/knowledge-base/settings`)
-      .catch(() => {
-        return { data: {} as BaseModels.Project.KnowledgeBaseSettings };
-      }));
-  }
-
-  const projectID = Session.activeProjectIDSelector(state);
+    const projectID = Session.activeProjectIDSelector(state);
 
   Errors.assertProjectID(projectID);
 

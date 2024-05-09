@@ -52,4 +52,25 @@ export class KlParserClient {
       },
     });
   }
+
+  // eslint-disable-next-line max-params
+  public async uploadTable(
+    workspaceID: string,
+    projectID: string,
+    document: Omit<VersionKnowledgeBaseDocument, 's3ObjectRef'>,
+    searchableFields: string[],
+    items: object[],
+    metadataFields?: string[]
+  ) {
+    return this.client.post(`api/v1/projects/${projectID}/documents/table`, {
+      json: {
+        workspaceID,
+        document,
+        searchableFields,
+        items,
+        metadataFields,
+        bucket: this.options.bucket,
+      },
+    });
+  }
 }

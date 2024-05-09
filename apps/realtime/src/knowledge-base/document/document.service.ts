@@ -34,9 +34,19 @@ import { MulterFile, UploadType } from '@/file/types';
 import { KnowledgeBaseTagService } from '../tag/tag.service';
 import { knowledgeBaseDocumentAdapter } from './document.adapter';
 import { KBDocumentInsertChunkDTO } from './dtos/document-chunk.dto';
-import { DocumentCreateManyURLsRequest, DocumentCreateOnePublicRequestParams, DocumentCreateOneURLRequest } from './dtos/document-create.dto';
+import {
+  DocumentCreateManyURLsRequest,
+  DocumentCreateOnePublicRequestParams,
+  DocumentCreateOneURLRequest,
+  DocumentUploadTableRequestData,
+} from './dtos/document-create.dto';
 import { DocumentFindManyPublicQuery } from './dtos/document-find.dto';
 import { RefreshJobService } from './refresh-job.service';
+
+export interface RequestMeta {
+  baseUrl: string;
+  authorization: string;
+}
 
 @Injectable()
 export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseORM> {
@@ -419,6 +429,79 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
     return knowledgeBaseDocumentAdapter.fromDB(document);
   }
 
+  async uploadTableDocument(
+    projectID: string,
+    userID: number,
+    data: DocumentUploadTableRequestData,
+    overwrite = false
+  ): Promise<{ data: KnowledgeBaseDocument }> {
+    const project = await this.projectOrm.findOneOrFail(projectID);
+    const existingDocuments: Omit<VersionKnowledgeBaseDocument, 'updatedAt'>[] = project?.knowledgeBase?.documents
+      ? Object.values(project.knowledgeBase.documents)
+      : [];
+    const collisionMap = this.getDocumentCollisionMap(existingDocuments);
+    const { teamID } = project;
+
+    const documentID = collisionMap[data.name];
+
+    if (!overwrite && documentID) {
+      throw new ConflictException('file already exists');
+    }
+
+    // Convert tagIDs to an array if it's a string, or set it to null if not provided
+    const tagsArray = this.tagService.convertToArray(data.tags);
+
+    this.validateInputTableSchema(data);
+
+    await this.checkDocsPlanLimit(teamID, projectID, existingDocuments.length, 1);
+
+    let existingRowsCount = 0;
+
+    Object.values(project?.knowledgeBase?.documents ?? {}).forEach((document) => {
+      if (document.data?.type === KnowledgeBaseDocumentType.TABLE) {
+        const tableData = document.data as KBDocumentTableData;
+        existingRowsCount += tableData.rowsCount;
+      }
+    });
+
+    await this.checkKBTableRowsPlanLimit(projectID, existingRowsCount, data.items.length);
+
+    let tagObjectIDs = new Set<string>();
+
+    if (tagsArray) {
+      // with force creation to true
+      await this.tagService.checkKBTagLabelsExists({ assistantID: projectID, tagLabels: tagsArray, createIfMissingTags: true });
+      tagObjectIDs = await this.tagService.tagNamesToObjectIds(projectID, tagsArray);
+    }
+
+    // if tags don't provided and document exists, keep existing tags with doc
+    if (documentID && tagObjectIDs.size === 0) {
+      const attachedTags = project?.knowledgeBase?.documents?.[documentID].tags ?? [];
+      attachedTags.forEach((tagID) => tagObjectIDs.add(tagID));
+    }
+
+    const document = await this.createTable({
+      data: {
+        name: data.name,
+        type: KnowledgeBaseDocumentType.TABLE,
+        rowsCount: data.items.length,
+      },
+      projectID,
+      teamID,
+      creatorID: userID,
+      documentID,
+      tagObjectIDs: Array.from(tagObjectIDs),
+      inputTableJSON: data,
+    });
+
+    return {
+      data: {
+        ...knowledgeBaseDocumentAdapter.fromDB(document),
+        tags: Array.from(await this.tagService.tagObjectIdsToNames({ assistantID: projectID, tagIDs: document?.tags ?? [] })),
+      },
+    };
+  }
+
   /* Find */
 
   async findOneDocument(assistantID: string, documentID: string) {
@@ -523,9 +606,8 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
   }
 
   async validateDocumentExists(assistantID: string, documentID: string) {
-    const document = await this.orm.findOneDocument(assistantID, documentID);
-    if (!document) throw new NotFoundException("Document doesn't exist");
-
+    const document = await this.findOneDocument(assistantID, documentID);
+    if (!document) throw new NotFoundException("document doesn't exist");
     return document;
   }
 
@@ -824,5 +906,137 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
     const identity = response.identity as Identity & { legacy: { projectID: string } };
 
     return identity?.legacy?.projectID;
+  }
+
+  public async resolveWorkspaceID(assistantID: string) {
+    return this.orm.getWorkspaceID(assistantID);
+  }
+
+  private validateInputTableSchema(data: { name: string; searchableFields: string[]; items: object[]; metadataFields?: string[] }): void {
+    this.checkSearchableFields(data.searchableFields);
+    this.checkItems(data.items, data.searchableFields);
+  }
+
+  private checkSearchableFields(searchableFields: string[]): void {
+    if (!searchableFields || searchableFields.length === 0) {
+      throw new BadRequestException('searchableFields field cannot be empty');
+    }
+  }
+
+  private checkItems(items: object[], searchableFields: string[]): void {
+    if (!items || items.length === 0) {
+      throw new BadRequestException('items field cannot be empty');
+    }
+
+    items.forEach((item) => {
+      this.checkItemFields(item, searchableFields);
+    });
+  }
+
+  private checkItemFields(item: { [key: string]: any }, searchableFields: string[]): void {
+    let hasNonNullValue = false; // Flag to track if any non-null value is encountered
+
+    searchableFields.forEach((field) => {
+      if (!(field in item)) {
+        throw new BadRequestException(`field "${field}" is missing in one or more items`);
+      }
+
+      const value = item[field];
+      if (value !== null && value !== '') {
+        hasNonNullValue = true; // Set flag to true if non-null value is encountered
+        this.checkPrimitiveType(item[field], field);
+      }
+    });
+
+    // Check if all searchableFields are null
+    if (!hasNonNullValue) {
+      throw new BadRequestException(`At least one field in searchableFields must have a non-null value in each item`);
+    }
+  }
+
+  private checkPrimitiveType(value: any, field: string): void {
+    if (typeof value !== 'number' && typeof value !== 'string') {
+      throw new BadRequestException(`field "${field}" must be a primitive type (number, string) or null`);
+    }
+  }
+
+  async checkKBTableRowsPlanLimit(projectID: string, existingRows: number, newRows: number) {
+    const message = 'maximum number of table rows exceeded';
+
+    try {
+      const response = await this.billingClient.authorizationPrivate.authorize({
+        resourceID: projectID,
+        resourceType: BillingResourceType.PROJECT,
+        item: BillingAuthorizeItemName.KnowledgeBaseSourceRows,
+        value: newRows,
+        currentValue: existingRows,
+      });
+
+      if (!response[BillingAuthorizeItemName.KnowledgeBaseSources]) {
+        throw new ForbiddenException(message);
+      }
+    } catch (ForbiddenException) {
+      throw new NotAcceptableException(message);
+    }
+  }
+
+  async createTable({
+    data,
+    projectID,
+    teamID,
+    creatorID,
+    documentID,
+    tagObjectIDs,
+    inputTableJSON,
+  }: {
+    data: KBDocumentTableData;
+    projectID: string;
+    creatorID: number;
+    teamID: number;
+    documentID?: string;
+    tagObjectIDs: string[];
+    inputTableJSON: { name: string; searchableFields: string[]; items: object[]; metadataFields?: string[]; tags?: string[] };
+  }) {
+    const document: Omit<VersionKnowledgeBaseDocument, 's3ObjectRef'> = {
+      status: { type: KnowledgeBaseDocumentStatus.PENDING },
+      data,
+      updatedAt: new Date(),
+      creatorID,
+      documentID: documentID ?? new ObjectId().toHexString(),
+      tags: tagObjectIDs,
+    };
+
+    await this.tagService.limitKBTagsDocument(document);
+
+    this.orm.upsertOneDocument(projectID, document);
+
+    this.createKBTableDocument({
+      projectID,
+      workspaceID: teamID.toString(),
+      document,
+      searchableFields: inputTableJSON.searchableFields,
+      items: inputTableJSON.items,
+      metadataFields: inputTableJSON.metadataFields,
+    });
+
+    return document;
+  }
+
+  async createKBTableDocument({
+    projectID,
+    workspaceID,
+    document,
+    searchableFields,
+    items,
+    metadataFields,
+  }: {
+    projectID: string;
+    workspaceID: string;
+    document: Omit<VersionKnowledgeBaseDocument, 's3ObjectRef'>;
+    searchableFields: string[];
+    items: object[];
+    metadataFields?: string[];
+  }) {
+    await this.klParserClient.uploadTable(workspaceID, projectID, document, searchableFields, items, metadataFields);
   }
 }

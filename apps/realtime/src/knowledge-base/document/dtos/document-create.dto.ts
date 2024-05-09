@@ -44,3 +44,28 @@ export const DocumentCreateOnePublicResponse = z.object({
   }),
 });
 export type DocumentCreateOnePublicResponse = z.infer<typeof DocumentCreateOnePublicResponse>;
+
+export const DocumentUploadTableRequestData = z.object({
+  name: z.string(),
+  searchableFields: z.array(z.string()),
+  items: z.array(z.record(z.string(), z.any())),
+  metadataFields: z.array(z.string()).optional(),
+  tags: z.array(z.string()).optional(),
+});
+export type DocumentUploadTableRequestData = z.infer<typeof DocumentUploadTableRequestData>;
+
+export const DocumentUploadTableRequest = z.object({
+  data: DocumentUploadTableRequestData,
+});
+export type DocumentUploadTableRequest = z.infer<typeof DocumentUploadTableRequest>;
+
+export const DocumentUploadTableQuery = z.object({
+  overwrite: z.string().optional(),
+});
+export type DocumentUploadTableQuery = z.infer<typeof DocumentUploadTableQuery>;
+
+export const DocumentUploadTableResponse = z.object({
+  data: KnowledgeBaseDocumentDTO.omit({ s3ObjectRef: true, creatorID: true, version: true, folderID: true }),
+});
+
+export type DocumentUploadTableResponse = z.infer<typeof DocumentUploadTableResponse>;

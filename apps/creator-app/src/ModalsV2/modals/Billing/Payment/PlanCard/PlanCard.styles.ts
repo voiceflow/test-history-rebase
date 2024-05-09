@@ -1,7 +1,8 @@
-import { styled } from '@/hocs/styled';
+import { css, styled } from '@/hocs/styled';
 
 interface ContainerProps {
   $active: boolean;
+  onClick?: VoidFunction;
 }
 
 export const Container = styled.div<ContainerProps>`
@@ -9,6 +10,16 @@ export const Container = styled.div<ContainerProps>`
   padding: 16px 24px;
   border: 1px solid ${({ $active }) => ($active ? '#3D82E2' : '#e1e4e7')};
   border-radius: 8px;
+  cursor: ${({ onClick }) => (onClick ? 'pointer' : 'default')};
+  background-color: ${({ $active }) => ($active ? 'rgba(93, 157, 245, 0.1)' : 'transparent')};
+  transition: border-color 0.2s, background-color 0.2s;
+  ${({ onClick }) =>
+    onClick &&
+    css`
+      &:hover {
+        border-color: #3d82e2;
+      }
+    `}
 `;
 
 export const Title = styled.span`

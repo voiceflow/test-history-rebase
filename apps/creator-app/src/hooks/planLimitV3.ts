@@ -1,10 +1,12 @@
 import { PlanType } from '@voiceflow/internal';
+import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { LimitType } from '@/constants/limits';
 import * as Organization from '@/ducks/organization';
 import { getLimitConfig, getLimitEntitlement, isStaticLimitConfig, PlanLimitConfig } from '@/utils/planLimitV3.util';
 
+import { useFeature } from './feature';
 import { useSelector } from './redux';
 
 // @deprecated use useConditionalLimit instead
@@ -14,11 +16,13 @@ export const usePlanLimitedConfig = () => {};
 export const useGetPlanLimitedConfig = () => {};
 
 type PlanLimitData<Limit extends LimitType> = PlanLimitConfig<Limit> & {
+  teamsPlanSelfServeIsEnabled?: boolean;
   limit: number;
   payload: { limit: number; maxLimit: number };
 };
 
 export const useLimitConfig = <Limit extends LimitType>(limitType: Limit): PlanLimitData<Limit> | null => {
+  const { isEnabled: teamsPlanSelfServeIsEnabled } = useFeature(FeatureFlag.TEAMS_PLAN_SELF_SERVE);
   const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
   const activePlan = (subscription?.plan as PlanType) ?? PlanType.STARTER;
   const limitConfig = React.useMemo(() => getLimitConfig(limitType, activePlan), [limitType, activePlan]);
@@ -34,6 +38,7 @@ export const useLimitConfig = <Limit extends LimitType>(limitType: Limit): PlanL
 
     return {
       ...limitConfig,
+      teamsPlanSelfServeIsEnabled,
       ...(isStaticLimitConfig(limitConfig)
         ? {
             limit: limitConfig.limit,

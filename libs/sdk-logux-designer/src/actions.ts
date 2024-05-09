@@ -22,6 +22,7 @@ export * as Utterance from './intent/utterance/utterance.action';
 export * as Organization from './organization/organization.action';
 export * as OrganizationMember from './organization/organization-member/organization-member.action';
 export * as OrganizationSubscription from './organization/organization-subscription/organization-subscription.action';
+export * as OrganizationTakenSeats from './organization/taken-seats/taken-seats.action';
 export * as Persona from './persona/persona.action';
 export * as PersonaOverride from './persona/persona-override/persona-override.action';
 export * as Prompt from './prompt/prompt.action';

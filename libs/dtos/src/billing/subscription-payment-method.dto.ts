@@ -34,6 +34,7 @@ export const SubscriptionPaymentMethodDTO = z.object({
   failed: z.boolean(),
   card: SubscriptionPaymentMethodCardDTO,
   billingAddress: SubscriptionPaymentMethodAddressDTO,
+  referenceID: z.string(),
 });
 
 export type SubscriptionPaymentMethod = z.infer<typeof SubscriptionPaymentMethodDTO>;

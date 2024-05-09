@@ -1,16 +1,24 @@
-import { BillingPeriod } from '@voiceflow/internal';
 import { z } from 'zod';
 
-export const BillingPlanDTO = z.object({
+import { BillingPeriodUnitDTO } from './period-unit.dto';
+import { PlanNameDTO } from './plan-name.dto';
+
+export const BillingPriceDTO = z.object({
   id: z.string(),
+  amount: z.number(),
+  monthlyAmount: z.number(),
+  annualAmount: z.number(),
+  periodUnit: BillingPeriodUnitDTO,
+});
+
+export const BillingPlanDTO = z.object({
+  id: PlanNameDTO,
   name: z.string(),
-  prices: z.array(
-    z.object({
-      id: z.string(),
-      price: z.number(),
-      period: z.nativeEnum(BillingPeriod),
-    })
-  ),
+  description: z.string(),
+  pricesByPeriodUnit: z.record(BillingPeriodUnitDTO, BillingPriceDTO),
+  seats: z.number(),
 });
 
 export type BillingPlan = z.infer<typeof BillingPlanDTO>;
+
+export type BillingPrice = z.infer<typeof BillingPriceDTO>;

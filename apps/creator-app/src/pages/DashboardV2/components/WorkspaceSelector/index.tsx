@@ -2,11 +2,13 @@ import { Box, Dropdown, Menu, OverflowTippyTooltip, SvgIcon } from '@voiceflow/u
 import React from 'react';
 
 import { voiceflowLogomark } from '@/assets';
+import { LimitType } from '@/constants/limits';
 import { Permission } from '@/constants/permissions';
 import * as Organization from '@/ducks/organization';
 import * as Router from '@/ducks/router';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { usePermission, usePermissionAction } from '@/hooks/permission';
+import { useConditionalLimitAction } from '@/hooks/planLimitV3';
 import { useDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
 import * as ModalsV2 from '@/ModalsV2';
@@ -20,7 +22,9 @@ const WorkspaceSelector: React.FC = () => {
 
   const workspaces = useSelector(WorkspaceV2.allWorkspacesSelector);
   const activeWorkspace = useSelector(WorkspaceV2.active.workspaceSelector);
+  const activeOrganizationWorkspaces = useSelector(WorkspaceV2.active.activeOrganizationWorkspacesSelector);
   const isAdminOfAnyOrganization = useSelector(Organization.isAdminOfAnyOrganizationSelector);
+  const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
 
   const goToWorkspace = useDispatch(Router.goToWorkspace);
 
@@ -28,10 +32,18 @@ const WorkspaceSelector: React.FC = () => {
 
   const showCreateWorkspaceButton = isAdminOfAnyOrganization || canCreatePrivateCloudWorkspace;
 
-  const onCreateWorkspace = usePermissionAction(Permission.WORKSPACE_CREATE, {
+  const legacyOnCreateWorkspace = usePermissionAction(Permission.WORKSPACE_CREATE, {
     onAction: () => createWorkspaceModal.openVoid(),
     onPlanForbid: ({ planConfig }) => upgradeModal.openVoid(planConfig.upgradeModal()),
   });
+
+  const newOnCreateWorkspace = useConditionalLimitAction(LimitType.WORKSPACES, {
+    value: activeOrganizationWorkspaces.length,
+    onAction: () => createWorkspaceModal.openVoid(),
+    onLimit: (config) => upgradeModal.openVoid(config.upgradeModal(config.payload)),
+  });
+
+  const onCreateWorkspace = subscription ? newOnCreateWorkspace : legacyOnCreateWorkspace;
 
   return (
     <Dropdown

@@ -1,4 +1,5 @@
 import { PlanType } from '@voiceflow/internal';
+import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { Box, System } from '@voiceflow/ui';
 import { useAtomValue } from 'jotai/react';
 import React from 'react';
@@ -10,8 +11,10 @@ import TrialCountdownCard from '@/components/TrialCountdownCard';
 import { Path } from '@/config/routes';
 import { BOOK_DEMO_LINK, CHANGELOG_LINK, DISCORD_LINK, GET_HELP_LINK, LEARN_LINK, TEMPLATES_LINK } from '@/constants/link.constant';
 import { Permission } from '@/constants/permissions';
+import * as Organization from '@/ducks/organization';
 import * as Sessions from '@/ducks/session';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
+import { useFeature } from '@/hooks';
 import { useOrganizationDefaultPagePath } from '@/hooks/organization';
 import { useCheckoutPaymentModal } from '@/hooks/payment';
 import { usePermission } from '@/hooks/permission';
@@ -23,6 +26,7 @@ import { Account as AccountComponent } from './components';
 import * as S from './styles';
 
 const DashboardNavigationSidebar: React.FC = () => {
+  const { isEnabled: teamsPlanSelfServeIsEnabled } = useFeature(FeatureFlag.TEAMS_PLAN_SELF_SERVE);
   const plan = useSelector(WorkspaceV2.active.planSelector) ?? PlanType.STARTER;
   const isPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
   const workspaceID = useSelector(Sessions.activeWorkspaceIDSelector) ?? 'unknown';
@@ -30,6 +34,7 @@ const DashboardNavigationSidebar: React.FC = () => {
   const isProWorkspace = useSelector(WorkspaceV2.active.isProSelector);
   const isEnterpriseWorkspace = useSelector(WorkspaceV2.active.isEnterpriseSelector);
   const organizationTrialDaysLeft = useSelector(WorkspaceV2.active.organizationTrialDaysLeftSelector);
+  const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
   const isSubscribedToOrganization = useAtomValue(OrganizationAtoms.isSubscribedAtom);
 
   const paymentModal = useCheckoutPaymentModal();
@@ -38,8 +43,10 @@ const DashboardNavigationSidebar: React.FC = () => {
 
   const [canConfigureWorkspace] = usePermission(Permission.CONFIGURE_WORKSPACE);
 
+  const teamsIsEnabled = teamsPlanSelfServeIsEnabled && subscription;
+
   const isProTrial = isProWorkspace && organizationTrialDaysLeft !== null;
-  const canUpgradeToPro = (!isPaidPlan || isProTrial) && canConfigureWorkspace;
+  const canUpgrade = (!isPaidPlan || isProTrial || (teamsIsEnabled && isProWorkspace)) && canConfigureWorkspace;
 
   return (
     <NavigationSidebar isMainMenu>
@@ -143,15 +150,15 @@ const DashboardNavigationSidebar: React.FC = () => {
                   <TrialCountdownCard
                     isProTrial={!!isProTrial}
                     daysLeft={organizationTrialDaysLeft}
-                    onClick={canUpgradeToPro ? () => paymentModal.open({}) : undefined}
+                    onClick={canUpgrade ? () => paymentModal.open({}) : undefined}
                   />
                 </Box>
               ) : (
                 <NavigationSidebar.Item
                   icon="paid"
-                  title={canUpgradeToPro ? 'Upgrade to Pro' : `Plan: ${getPlanTypeLabel(plan)}`}
+                  title={canUpgrade ? `Upgrade to ${isProWorkspace ? 'Teams' : 'Pro'}` : `Plan: ${getPlanTypeLabel(plan)}`}
                   onClick={() => paymentModal.open({})}
-                  disabled={!canUpgradeToPro}
+                  disabled={!canUpgrade}
                 />
               )}
             </>

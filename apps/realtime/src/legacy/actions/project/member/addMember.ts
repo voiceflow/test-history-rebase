@@ -11,6 +11,10 @@ class AddProjectMember extends AbstractProjectResourceControl<Realtime.project.m
     const { creatorID } = ctx.data;
 
     await this.services.project.member.add(creatorID, payload.projectID, payload.member);
+    await this.services.organization.getTakenSeatsAndBroadcastFromWorkspaceID(payload.workspaceID, {
+      userID: creatorID,
+      clientID: ctx.clientId,
+    });
   };
 }
 

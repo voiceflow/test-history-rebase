@@ -1,10 +1,10 @@
-import { Utils } from '@voiceflow/common';
 import { Subscription } from '@voiceflow/dtos';
 import { PlanType } from '@voiceflow/internal';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 import { toast } from '@voiceflow/ui';
 
 import { designerClient } from '@/client/designer';
+import { PLAN_TYPE_META } from '@/constants';
 import { waitAsync } from '@/ducks/utils';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { ChargebeeSubscriptionStatus } from '@/models';
@@ -31,7 +31,7 @@ export const checkout = (
         })
       );
 
-      toast.success(`Upgraded to ${Utils.string.capitalizeFirstLetter(newSubscription.plan)}!`);
+      toast.success(`Upgraded to ${PLAN_TYPE_META[newSubscription.plan].label}!`);
     } catch (err) {
       toast.error(getErrorMessage(err, 'Failed to checkout'));
     }
@@ -108,17 +108,19 @@ export const updateSubscriptionPaymentMethod =
       throw new Error('Organization subscription not found');
     }
 
-    const { paymentMethod } = await designerClient.billing.subscription.upsertCustomerCard(organizationID, {
-      json: {
+    try {
+      const { paymentMethod } = await designerClient.billing.subscription.upsertCustomerCard(organizationID, {
         paymentIntentID,
         customerID,
-      },
-    });
+      });
 
-    dispatch.local(
-      Actions.OrganizationSubscription.UpdatePaymentMethod({
-        paymentMethod,
-        context: { organizationID, workspaceID },
-      })
-    );
+      dispatch.local(
+        Actions.OrganizationSubscription.UpdatePaymentMethod({
+          paymentMethod,
+          context: { organizationID, workspaceID },
+        })
+      );
+    } catch {
+      throw new Error('Card update failed. Please try again.');
+    }
   };

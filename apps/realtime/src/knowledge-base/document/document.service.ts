@@ -1006,7 +1006,7 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
         currentValue: existingRows,
       });
 
-      if (!response[BillingAuthorizeItemName.KnowledgeBaseSources]) {
+      if (!response[BillingAuthorizeItemName.KnowledgeBaseSourceRows]) {
         throw new ForbiddenException(message);
       }
     } catch (ForbiddenException) {

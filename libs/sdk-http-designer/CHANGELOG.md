@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.23.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-designer@2.22.0...@voiceflow/sdk-http-designer@2.23.0) (2024-05-09)
+
+### Features
+
+* update payment modal and plan list endpoint (COR-1930) ([#8097](https://github.com/voiceflow/creator-app/issues/8097)) ([a29e3a9](https://github.com/voiceflow/creator-app/commit/a29e3a97aa891245636dfbfcce3f7f726e595948)), closes [#8012](https://github.com/voiceflow/creator-app/issues/8012)
+
 # [2.22.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-designer@2.21.0...@voiceflow/sdk-http-designer@2.22.0) (2024-05-09)
 
 ### Features

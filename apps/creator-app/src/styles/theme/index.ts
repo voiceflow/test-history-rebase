@@ -74,6 +74,7 @@ const THEME = createTheme({
     },
     sidebarIconMenu: {
       width: 61,
+      newWidth: 56,
 
       itemHeight: 60,
       smallItemHeight: 48,

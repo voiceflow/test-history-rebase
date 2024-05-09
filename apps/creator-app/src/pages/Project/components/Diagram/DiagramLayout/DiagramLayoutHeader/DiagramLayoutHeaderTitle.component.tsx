@@ -1,18 +1,22 @@
+import { BaseModels } from '@voiceflow/base-types';
 import { Header } from '@voiceflow/ui-next';
 import React from 'react';
+import { useParams } from 'react-router-dom';
 
 import { FlowMenu } from '@/components/Flow/FlowMenu/FlowMenu.component';
 import { WorkflowMenu } from '@/components/Workflow/WorkflowMenu/WorkflowMenu.component';
-import { Creator, Designer, Diagram, Project, Router } from '@/ducks';
+import { Designer, Diagram, Project, Router } from '@/ducks';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
 
 export const DiagramLayoutHeaderTitle: React.FC = () => {
+  const params = useParams<{ diagramID?: string }>();
+
   const name = useSelector(Project.active.nameSelector);
-  const isTopic = useSelector(Diagram.active.isTopicSelector);
-  const activeDiagramID = useSelector(Creator.activeDiagramIDSelector);
+  const diagram = useSelector(Diagram.diagramByIDSelector, { id: params.diagramID });
+  const isTopic = diagram?.type === BaseModels.Diagram.DiagramType.TOPIC;
 
   const activeResource = useSelector(isTopic ? Designer.Workflow.selectors.oneByDiagramID : Designer.Flow.selectors.oneByDiagramID, {
-    diagramID: activeDiagramID,
+    diagramID: params.diagramID,
   });
 
   const updateName = useDispatch(Project.updateActiveProjectName);

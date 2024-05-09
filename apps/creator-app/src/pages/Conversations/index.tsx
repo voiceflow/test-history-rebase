@@ -1,4 +1,5 @@
 import { Utils } from '@voiceflow/common';
+import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { Box } from '@voiceflow/ui';
 import { TabLoader } from '@voiceflow/ui-next';
 import queryString from 'query-string';
@@ -6,6 +7,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Redirect, useHistory } from 'react-router-dom';
 
+import { AssistantLayout } from '@/components/Assistant/AssistantLayout/AssistantLayout.component';
 import EmptyScreen from '@/components/EmptyScreen';
 import { LoadingGate } from '@/components/LoadingGate';
 import { PROTOTYPING } from '@/config/documentation';
@@ -14,7 +16,7 @@ import { Permission } from '@/constants/permissions';
 import * as ReportTag from '@/ducks/reportTag';
 import * as Router from '@/ducks/router';
 import * as Transcripts from '@/ducks/transcript';
-import { useAsyncDidUpdate, useDispatch, usePermission, useTeardown, useTrackingEvents } from '@/hooks';
+import { useAsyncDidUpdate, useDispatch, useFeature, usePermission, useTeardown, useTrackingEvents } from '@/hooks';
 import { useAssistantSessionStorageState } from '@/hooks/storage.hook';
 import { FilterTag } from '@/pages/Conversations/constants';
 import ProjectPage from '@/pages/Project/components/ProjectPage';
@@ -26,6 +28,7 @@ import { useFilters } from './hooks';
 const Conversations: React.FC = () => {
   const history = useHistory();
 
+  const cmsWorkflows = useFeature(FeatureFlag.CMS_WORKFLOWS);
   const [trackingEvents] = useTrackingEvents();
   const [canViewConversations] = usePermission(Permission.VIEW_CONVERSATIONS);
 
@@ -98,8 +101,10 @@ const Conversations: React.FC = () => {
 
   if (!canViewConversations) return <Redirect to={Path.DASHBOARD} />;
 
+  const Container = cmsWorkflows.isEnabled ? AssistantLayout : ProjectPage;
+
   return (
-    <ProjectPage>
+    <Container>
       <ConversationsContainer id={Identifier.CONVERSATIONS_PAGE} isFilteredResultsEmpty={!filteredReportsExist}>
         <LoadingGate internalName={Conversations.name} isLoaded={isLoaded} load={loadTranscripts} loader={<TabLoader variant="dark" />}>
           {!noTestRuns ? (
@@ -135,7 +140,7 @@ const Conversations: React.FC = () => {
           )}
         </LoadingGate>
       </ConversationsContainer>
-    </ProjectPage>
+    </Container>
   );
 };
 

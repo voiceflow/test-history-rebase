@@ -9802,7 +9802,7 @@ __metadata:
     "@voiceflow/exception": 1.5.3
     "@voiceflow/google-dfes-types": 2.16.57
     "@voiceflow/google-types": 2.20.57
-    "@voiceflow/icons": 1.18.0
+    "@voiceflow/icons": 1.20.0
     "@voiceflow/internal": 3.2.3
     "@voiceflow/platform-config": "workspace:*"
     "@voiceflow/react-chat": 1.51.3
@@ -9817,7 +9817,7 @@ __metadata:
     "@voiceflow/slate-serializer": 1.6.0
     "@voiceflow/style": 1.7.0
     "@voiceflow/ui": "workspace:*"
-    "@voiceflow/ui-next": "npm:@voiceflow/ui@2.221.2"
+    "@voiceflow/ui-next": "npm:@voiceflow/ui@2.225.2"
     "@voiceflow/utils-designer": "workspace:*"
     "@voiceflow/voiceflow-types": 3.27.0
     axios: 1.6.0
@@ -10146,21 +10146,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voiceflow/icons@npm:1.18.0":
-  version: 1.18.0
-  resolution: "@voiceflow/icons@npm:1.18.0"
+"@voiceflow/icons@npm:1.20.0":
+  version: 1.20.0
+  resolution: "@voiceflow/icons@npm:1.20.0"
   peerDependencies:
     react: ^18
-  checksum: 8f1513aaee4c1d2f0933ecab884153646fe9735882d1b9fb94d65cc084e793f70202a7c9edb26b10964803d5a6a7b4eb99ddc3515c75d5cb8b0e52601934421b
-  languageName: node
-  linkType: hard
-
-"@voiceflow/icons@npm:1.19.2":
-  version: 1.19.2
-  resolution: "@voiceflow/icons@npm:1.19.2"
-  peerDependencies:
-    react: ^18
-  checksum: c880a3b61447da544690c3c352ef7d4d42636027a3f9ebf3206cafb4f11e6b8d226f0455fda6a5c93e109ae2e0244ac47cf5ec22a0ab4a13992d2c05fdd3f04b
+  checksum: 82e829ec62db83d41cffdc8c5e505e2e3cf9376ab4d9f62ed7cdc2842fd74c154fa6d3c621bf3cea287a790c254367a6d102e66c3cbb5320ff8654b56ff290a0
   languageName: node
   linkType: hard
 
@@ -11219,9 +11210,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voiceflow/ui-next@npm:@voiceflow/ui@2.221.2":
-  version: 2.221.2
-  resolution: "@voiceflow/ui@npm:2.221.2"
+"@voiceflow/ui-next@npm:@voiceflow/ui@2.225.2":
+  version: 2.225.2
+  resolution: "@voiceflow/ui@npm:2.225.2"
   dependencies:
     "@codemirror/autocomplete": 6.9.1
     "@codemirror/commands": 6.3.0
@@ -11236,7 +11227,7 @@ __metadata:
     "@tanstack/react-virtual": 3.0.0-beta.54
     "@uiw/codemirror-themes": 4.21.18
     "@uiw/react-codemirror": 4.21.18
-    "@voiceflow/icons": 1.19.2
+    "@voiceflow/icons": 1.20.0
     codemirror: 6.0.1
     codemirror-readonly-ranges: 0.1.0-alpha.2
     dayjs: 1.11.9
@@ -11267,7 +11258,7 @@ __metadata:
     jotai-molecules: ^1
     react: ^18
     react-dom: ^18
-  checksum: d44a80cf5f6ede9434dc10b4a68457a9f8883c515ba2b2affc11501470145f3f553cf0cb5d0b251419ffbc064d7b08272815ce87de253aaae0f2da9a6c1c400f
+  checksum: 4e16e294837831053bb49d6957b05240cf387f563549459ab83f89d62cc192618e98841983e53d1bee33a394ec1368e695eb2a4c88465d58b16eb93dff7ece4e
   languageName: node
   linkType: hard
 

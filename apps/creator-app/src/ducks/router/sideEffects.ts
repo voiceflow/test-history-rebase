@@ -292,7 +292,7 @@ export const goToCanvasRootDiagram = (): SyncThunk => (dispatch, getState) => {
   Errors.assertVersionID(versionID);
   Errors.assertDiagramID(diagramID);
 
-  dispatch(goToCanvasDiagram({ diagramID, versionID }));
+  dispatch(goToCanvasDiagram({ diagramID, versionID, pageProgress: !Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.CMS_WORKFLOWS) }));
 };
 
 /**
@@ -357,7 +357,7 @@ export const goToDomainDiagram =
   };
 
 export const goToDiagram =
-  (diagramID: string, nodeID?: string, options?: { pageProgress?: boolean }): SyncThunk =>
+  (diagramID: string, nodeID?: string): SyncThunk =>
   (dispatch, getState) => {
     const state = getState();
 
@@ -366,7 +366,7 @@ export const goToDiagram =
 
       Errors.assertVersionID(versionID);
 
-      dispatch(goToCanvasDiagram({ ...options, nodeID, diagramID, versionID }));
+      dispatch(goToCanvasDiagram({ nodeID, diagramID, versionID, pageProgress: false }));
 
       return;
     }
@@ -393,7 +393,7 @@ export const goToDiagramClearActive =
       dispatch(Realtime.creator.resetActive());
     }
 
-    dispatch(goToDiagram(diagramID, nodeID, { pageProgress: false }));
+    dispatch(goToDiagram(diagramID, nodeID));
   };
 
 export const goToDiagramHistoryPush =
@@ -436,8 +436,6 @@ export const goToDiagramCommenting =
     Errors.assertVersionID(versionID);
 
     if (Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.CMS_WORKFLOWS)) {
-      PageProgress.start(PageProgressBar.CANVAS_LOADING);
-
       if (threadID) {
         dispatch(goToCanvasCommentingThread({ versionID, diagramID, threadID, commentID }));
       } else {

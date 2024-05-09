@@ -11,11 +11,11 @@ export const DiagramLoader: React.FC<ITabLoader> = (props) => {
 
   return (
     <>
-      <DiagramLayout isLoader>
+      <DiagramLayout>
         <TabLoader {...props} />
       </DiagramLayout>
 
-      {!isDesignMode && <DiagramSidebar />}
+      {isDesignMode && <DiagramSidebar />}
     </>
   );
 };

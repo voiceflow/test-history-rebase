@@ -27,6 +27,7 @@ export const toolbarStyle = style({
   position: 'absolute',
   bottom: 8,
   pointerEvents: 'all',
+  zIndex: 10,
   left: 'calc(100% + 8px)',
   transitionProperty: 'left',
   transitionDuration: Tokens.animation.duration.default,

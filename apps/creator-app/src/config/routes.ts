@@ -340,6 +340,7 @@ export const Path = {
 
   // publish
 
+  PUBLISH: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.PUBLISH),
   PUBLISH_API: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.PUBLISH, PublishRoute.API),
   PUBLISH_TEAMS: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.PUBLISH, PublishRoute.MICROSOFT_TEAMS),
   PUBLISH_EXPORT: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.PUBLISH, PublishRoute.EXPORT),

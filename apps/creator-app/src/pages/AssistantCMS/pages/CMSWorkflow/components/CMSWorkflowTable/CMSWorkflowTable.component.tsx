@@ -36,7 +36,7 @@ export const CMSWorkflowTable: React.FC = () => {
         allowed: false,
         tooltip: {
           placement: 'left',
-          children: () => <Text variant="caption">Start workflow can’t be deleted</Text>,
+          children: () => <Text variant="caption">Default workflow can’t be deleted</Text>,
         },
       };
     },

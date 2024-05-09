@@ -262,7 +262,7 @@ export class FolderService extends CMSObjectService<FolderORM> {
 
   async deleteManyAndSync(ids: string[], { userID, context }: { userID: number; context: CMSContext }) {
     const result = await this.postgresEM.transactional(async () => {
-      const folders = await this.findManyByParents(context.environmentID, ids);
+      const folders = await this.findManyWithChildren(context.environmentID, ids);
       const relations = await this.collectRelationsToDelete(context.environmentID, toPostgresEntityIDs(folders));
       const entitySync = await this.entity.syncRelationsOnDelete(relations, { userID, context });
 
@@ -281,7 +281,7 @@ export class FolderService extends CMSObjectService<FolderORM> {
 
         // moving start workflow to the top level
         startWorkflow
-          ? this.workflow.patchOneForUser(userID, { id: startWorkflow.id, environmentID: context.environmentID }, { folderID: null })
+          ? this.workflow.patchOneForUser(userID, { id: startWorkflow.id, environmentID: startWorkflow.environmentID }, { folderID: null })
           : Promise.resolve(),
       ]);
 
@@ -293,6 +293,7 @@ export class FolderService extends CMSObjectService<FolderORM> {
           ...relations,
           folders,
           variables: relations.variables.filter((variable) => !variable.isSystem),
+          workflows: relations.workflows.filter((workflow) => !workflow.isStart),
           workflowDiagrams: startWorkflow
             ? relations.workflowDiagrams.filter((diagram) => startWorkflow.diagramID !== diagram.diagramID.toJSON())
             : relations.workflowDiagrams,

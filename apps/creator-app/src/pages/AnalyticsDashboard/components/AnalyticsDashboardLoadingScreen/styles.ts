@@ -1,23 +1,33 @@
 import { Box } from '@voiceflow/ui';
 
-import { styled } from '@/hocs/styled';
+import { css, styled, transition } from '@/hocs/styled';
 
 interface BlockingPageProps {
   visible: boolean;
+  isNewLayout?: boolean;
 }
 
-const TOP_BAR_HEIGHT = `${42 + 16 + 16}px`;
-
 export const BlockingPage = styled(Box.FlexCenter)<BlockingPageProps>`
-  visibility: ${({ visible }) => (visible ? 'visible' : 'hidden')};
-
-  height: calc(100% - ${TOP_BAR_HEIGHT});
-  width: 100%;
+  top: ${({ theme, isNewLayout }) => (isNewLayout ? theme.components.header.newHeight : 135)}px;
+  left: ${({ theme, isNewLayout }) => (isNewLayout ? theme.components.sidebarIconMenu.newWidth : theme.components.sidebarIconMenu.width)}px;
+  width: calc(
+    100% - ${({ theme, isNewLayout }) => (isNewLayout ? theme.components.sidebarIconMenu.newWidth : theme.components.sidebarIconMenu.width)}px
+  );
+  height: calc(100% - ${({ theme, isNewLayout }) => (isNewLayout ? theme.components.header.newHeight : 135)}px);
   position: absolute;
   z-index: 1005;
   background: rgba(255, 255, 255, 65%);
   backdrop-filter: blur(5px);
-  left: 0;
-  top: ${TOP_BAR_HEIGHT};
-  margin-left: ${({ theme }) => theme.components.sidebarIconMenu.width}px;
+  transition: ${transition('opacity')};
+
+  ${({ visible }) =>
+    visible
+      ? css`
+          opacity: 1;
+          pointer-events: all;
+        `
+      : css`
+          opacity: 0;
+          pointer-events: none;
+        `}
 `;

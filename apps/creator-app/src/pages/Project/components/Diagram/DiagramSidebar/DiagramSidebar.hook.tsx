@@ -1,6 +1,5 @@
 import { Utils } from '@voiceflow/common';
 import { Flow, FolderScope, Workflow } from '@voiceflow/dtos';
-import { BlockType } from '@voiceflow/realtime-sdk';
 import { IContextMenuChildren, Menu, notify, usePersistFunction } from '@voiceflow/ui-next';
 import pluralize from 'pluralize';
 import React, { useCallback, useMemo, useRef } from 'react';
@@ -45,9 +44,10 @@ export const useFlowsTree = () => {
 export const useWorkflowsTree = () => {
   const workflows = useSelector(Designer.Workflow.selectors.all);
   const rootDiagramID = useSelector(Version.active.rootDiagramIDSelector);
+  const rootWorkflow = useSelector(Designer.Workflow.selectors.oneByDiagramID, { diagramID: rootDiagramID });
   const triggersMapByDiagramID = useSelector(Designer.Workflow.selectors.triggersMapByDiagramID);
 
-  const startNodeRef = useRef({ id: '', label: 'Start', diagramID: rootDiagramID ?? '' });
+  const startNodeChildren = useRef<DiagramSidebarWorkflowTreeData[]>([]);
 
   const [foldersTree, foldersTreeMap] = useFolderTree<Workflow, DiagramSidebarWorkflowTreeData>({
     data: workflows,
@@ -67,12 +67,6 @@ export const useWorkflowsTree = () => {
         const children: DiagramSidebarWorkflowTreeData[] = [];
 
         triggersMapByDiagramID[workflow.diagramID]?.forEach((node) => {
-          if (node.type === BlockType.START) {
-            startNodeRef.current = { id: node.nodeID, label: node.label, diagramID: workflow.diagramID };
-
-            return;
-          }
-
           children.push({
             id: `${workflow.diagramID}:${node.nodeID}`,
             type: 'child',
@@ -81,7 +75,9 @@ export const useWorkflowsTree = () => {
           });
         });
 
-        if (workflow.diagramID === startNodeRef.current.diagramID && children.length === 0) {
+        if (workflow.diagramID === rootDiagramID) {
+          startNodeChildren.current = children;
+
           return null;
         }
 
@@ -99,14 +95,15 @@ export const useWorkflowsTree = () => {
 
   return useMemo((): [DiagramSidebarWorkflowTreeData[], Record<string, DiagramSidebarWorkflowTreeData>] => {
     const rootNode: DiagramSidebarWorkflowTreeData = {
-      id: `${startNodeRef.current.diagramID}:${startNodeRef.current.id}`,
+      id: rootDiagramID ?? '-',
       type: 'root',
-      label: startNodeRef.current.label,
-      metaData: { type: 'node', nodeType: BlockType.START, nodeID: startNodeRef.current.id, diagramID: startNodeRef.current.diagramID },
+      label: rootWorkflow?.name ?? 'Start',
+      children: startNodeChildren.current,
+      metaData: { id: rootWorkflow?.id ?? 'id', type: 'workflow', diagramID: rootDiagramID ?? '-' },
     };
 
     return [[rootNode, ...foldersTree], { ...foldersTreeMap, [rootNode.id]: rootNode }];
-  }, [foldersTree, foldersTreeMap, startNodeRef.current.id, startNodeRef.current.label, startNodeRef.current.diagramID]);
+  }, [foldersTree, rootWorkflow, foldersTreeMap, startNodeChildren.current]);
 };
 
 const useRenderFolderContextMenu = ({ folderScope, canEditCanvas }: { folderScope: FolderScope; canEditCanvas: boolean }) => {
@@ -280,7 +277,7 @@ export const useRenderWorkflowItemContextMenu = ({ canEditCanvas }: { canEditCan
 
           <Menu.Item label="Copy link" onClick={Utils.functional.chain(onCopyLink, onClose)} prefixIconName="Link" />
 
-          {canEditCanvas && (
+          {canEditCanvas && item.type !== 'root' && (
             <>
               <Menu.Divider />
 

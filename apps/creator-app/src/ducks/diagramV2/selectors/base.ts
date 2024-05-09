@@ -2,6 +2,7 @@ import { BaseModels } from '@voiceflow/base-types';
 import { BlockType } from '@voiceflow/realtime-sdk';
 import { createSelector } from 'reselect';
 
+import { diagramIDParamSelector, nodeIDParamSelector } from '@/ducks/utils';
 import { createCRUDSelectors } from '@/ducks/utils/crudV2';
 import { isTopicDiagram } from '@/utils/diagram.utils';
 
@@ -38,6 +39,11 @@ export const getRootTopicIDBySubtopicIDSelector = createSelector([allDiagramsSel
 });
 
 export const sharedNodesSelector = createSelector([rootDiagramSelector], ({ sharedNodes }) => sharedNodes);
+
+export const sharedNodeByDiagramIDAndNodeIDSelector = createSelector(
+  [sharedNodesSelector, diagramIDParamSelector, nodeIDParamSelector],
+  (sharedNodes, diagramID, nodeID) => (nodeID && diagramID && sharedNodes[diagramID]?.[nodeID]) || null
+);
 
 export const lastCreatedIDSelector = createSelector([rootDiagramSelector], ({ lastCreatedID }) => lastCreatedID);
 

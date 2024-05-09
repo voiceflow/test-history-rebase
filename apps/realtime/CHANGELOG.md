@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.347.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.346.0...@voiceflow/realtime@1.347.0) (2024-05-09)
+
+### Features
+
+* upload table endpoint (COR-2030) ([#8087](https://github.com/voiceflow/creator-app/issues/8087)) ([e35df5d](https://github.com/voiceflow/creator-app/commit/e35df5d10567a030c2bc623092dc5180be2762ba))
+
 # [1.346.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.345.0...@voiceflow/realtime@1.346.0) (2024-05-09)
 
 ### Features

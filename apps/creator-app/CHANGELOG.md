@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1510.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1510.2...@voiceflow/creator-app@1.1510.3) (2024-05-09)
+
+### Bug Fixes
+
+* Align 'Duplicating' message to be similar format (COR-1990) ([#8073](https://github.com/voiceflow/creator-app/issues/8073)) ([2869325](https://github.com/voiceflow/creator-app/commit/28693250f2a0fb46360d2478ae25dc2af76b2084))
+
 ## [1.1510.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1510.1...@voiceflow/creator-app@1.1510.2) (2024-05-08)
 
 **Note:** Version bump only for package @voiceflow/creator-app

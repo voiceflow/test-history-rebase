@@ -33,7 +33,6 @@ import _ from 'lodash';
 import { MutableService } from '@/common';
 import { EnvironmentCMSData } from '@/environment/environment.interface';
 import { EnvironmentService } from '@/environment/environment.service';
-import { OrganizationIdentityService } from '@/organization/identity/identity.service';
 import { ProgramService } from '@/program/program.service';
 import { LATEST_PROJECT_VERSION } from '@/project/project.constant';
 import { ProjectSerializer } from '@/project/project.serializer';
@@ -88,8 +87,6 @@ export class AssistantService extends MutableService<AssistantORM> {
     private readonly version: VersionService,
     @Inject(EnvironmentService)
     private readonly environment: EnvironmentService,
-    @Inject(OrganizationIdentityService)
-    private readonly organization: OrganizationIdentityService,
     @Inject(ProjectListService)
     private readonly projectList: ProjectListService,
     @Inject(VariableStateService)
@@ -884,10 +881,6 @@ export class AssistantService extends MutableService<AssistantORM> {
 
     if (!clientID) {
       return { project, assistant };
-    }
-
-    if (data.projectMembers?.length) {
-      this.organization.getTakenSeatsAndBroadcastFromWorkspaceID(data.workspaceID.toString(), { userID, clientID });
     }
 
     await this.broadcastAddOne({

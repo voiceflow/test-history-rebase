@@ -17,10 +17,6 @@ class RemoveWorkspaceMember extends AbstractWorkspaceChannelControl<Realtime.wor
         Realtime.workspace.member.eject({ workspaceID: payload.workspaceID, workspaceName: workspace.name, creatorID: payload.creatorID })
       ),
     ]);
-    await this.services.organization.getTakenSeatsAndBroadcastFromWorkspaceID(payload.workspaceID, {
-      userID: creatorID,
-      clientID: ctx.clientId,
-    });
   };
 }
 

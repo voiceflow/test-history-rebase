@@ -1,5 +1,4 @@
 import { datadogRum } from '@datadog/browser-rum';
-import { PlanName } from '@voiceflow/dtos';
 import { PlanType } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
@@ -77,9 +76,8 @@ export const trackDashboardLinkClicked = createWorkspaceEventTracker<{ linkType:
   client.analytics.track(createWorkspaceEvent(EventName.DASHBOARD_LINK_CLICKED, { ...eventInfo, link_type: linkType }))
 );
 
-export const trackPlanChanged = createWorkspaceEventTracker<{ newPlan: PlanType | PlanName; currentPlan: PlanType | PlanName }>(
-  ({ newPlan, currentPlan, ...eventInfo }) =>
-    client.analytics.track(createWorkspaceEvent(EventName.PLAN_CHANGED, { ...eventInfo, new_plan: newPlan, current_plan: currentPlan }))
+export const trackPlanChanged = createWorkspaceEventTracker<{ newPlan: PlanType; currentPlan: PlanType }>(({ newPlan, currentPlan, ...eventInfo }) =>
+  client.analytics.track(createWorkspaceEvent(EventName.PLAN_CHANGED, { ...eventInfo, new_plan: newPlan, current_plan: currentPlan }))
 );
 
 export const trackSeatChange = createWorkspaceEventTracker<{ reduced: boolean; scheduled: boolean }>(({ reduced, scheduled, ...eventInfo }) =>

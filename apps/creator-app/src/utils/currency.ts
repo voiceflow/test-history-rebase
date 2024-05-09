@@ -1,8 +1,7 @@
 const usdNumberFormat = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
 
-export const formatUSD = (value: number, options?: { noDecimal?: boolean; unit?: 'cent' | 'dollar' }) => {
-  const sourceValue = options?.unit === 'cent' ? value / 100 : value;
-  const formatted = usdNumberFormat.format(sourceValue);
+export const formatUSD = (value: number, options?: { noDecimal?: boolean }) => {
+  const formatted = usdNumberFormat.format(value);
 
   if (options?.noDecimal) return formatted.replace(/\.00$/, '');
 

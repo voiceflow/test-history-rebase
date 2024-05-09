@@ -7,15 +7,14 @@ import * as S from './PlanCard.styles';
 
 interface PlanCardProps extends React.PropsWithChildren {
   title: React.ReactNode;
-  amount: number | null;
+  price: number | null;
   badge?: React.ReactNode;
-  period?: 'm' | 'y';
+  period?: React.ReactNode;
   active?: boolean;
-  onClick?: VoidFunction;
 }
 
-export const PlanCard: React.FC<PlanCardProps> = ({ title, amount, badge, period = 'm', active = false, children, onClick }) => (
-  <S.Container $active={active} onClick={onClick}>
+export const PlanCard: React.FC<PlanCardProps> = ({ title, price, badge, period = 'm', active = false, children }) => (
+  <S.Container $active={active}>
     <Box.FlexApart mb={4}>
       <Box.Flex gap={8}>
         <S.Title>{title}</S.Title>
@@ -24,7 +23,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({ title, amount, badge, period
       </Box.Flex>
 
       <S.Period>
-        <S.Title>{amount !== null ? currency.formatUSD(amount, { noDecimal: true, unit: 'cent' }) : '-'}</S.Title>/{period}
+        <S.Title>{price !== null ? currency.formatUSD(price, { noDecimal: true }) : '-'}</S.Title>/{period}
       </S.Period>
     </Box.FlexApart>
 

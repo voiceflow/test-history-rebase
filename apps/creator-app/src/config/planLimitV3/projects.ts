@@ -20,19 +20,9 @@ const STARTER_LIMIT = {
 } satisfies UpgradeModalEntitlementLimit;
 
 const PRO_LIMIT = {
-  upgradeModal: ({ limit, teamsPlanSelfServeIsEnabled }) => ({
-    ...DEFAULT_MODAL,
-    ...getUpgradeModalProps(PlanType.TEAM, Tracking.UpgradePrompt.PROJECT_LIMIT),
-    description: `You've reached your ${limit} assistant limit. ${
-      teamsPlanSelfServeIsEnabled ? 'Upgrade to teams to increase assistant limits.' : 'Contact us to increase assistant limits.'
-    }`,
-  }),
-} satisfies UpgradeModalEntitlementLimit;
-
-const TEAMS_LIMIT = {
   upgradeModal: ({ limit }) => ({
     ...DEFAULT_MODAL,
-    ...getUpgradeModalProps(PlanType.ENTERPRISE, Tracking.UpgradePrompt.PROJECT_LIMIT),
+    ...getUpgradeModalProps(PlanType.TEAM, Tracking.UpgradePrompt.PROJECT_LIMIT),
     description: `You've reached your ${limit} assistant limit. Contact us to increase assistant limits.`,
   }),
 } satisfies UpgradeModalEntitlementLimit;
@@ -43,6 +33,5 @@ export const PROJECTS_LIMITS = {
   limits: {
     [PlanType.STARTER]: STARTER_LIMIT,
     [PlanType.PRO]: PRO_LIMIT,
-    [PlanType.TEAM]: TEAMS_LIMIT,
   },
 } satisfies LimitV3;

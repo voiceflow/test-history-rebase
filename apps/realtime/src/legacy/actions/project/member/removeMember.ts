@@ -11,10 +11,6 @@ class RemoveWorkspaceMember extends AbstractProjectResourceControl<Realtime.proj
     const { creatorID } = ctx.data;
 
     await this.services.project.member.remove(creatorID, payload.projectID, payload.creatorID);
-    await this.services.organization.getTakenSeatsAndBroadcastFromWorkspaceID(payload.workspaceID, {
-      userID: creatorID,
-      clientID: ctx.clientId,
-    });
   };
 }
 

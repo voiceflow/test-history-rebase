@@ -1,6 +1,5 @@
 import { AlexaNode } from '@voiceflow/alexa-types';
 import { BaseNode } from '@voiceflow/base-types';
-import { BillingPeriodUnit, PlanName } from '@voiceflow/dtos';
 import { BillingPeriod, PlanType } from '@voiceflow/internal';
 import { COLOR_PICKER_CONSTANTS } from '@voiceflow/ui';
 
@@ -12,8 +11,6 @@ export * from './subscription';
 export { BlockType } from '@voiceflow/realtime-sdk';
 
 export const ACTIVE_PAID_PLAN = PlanType.PRO;
-export const DEFAULT_PAID_PLAN = PlanName.PRO;
-export const DEFAULT_PERIOD = BillingPeriodUnit.YEAR;
 
 export const ROOT_DIAGRAM_NAME = 'ROOT';
 export const ROOT_DIAGRAM_LABEL = 'Home';

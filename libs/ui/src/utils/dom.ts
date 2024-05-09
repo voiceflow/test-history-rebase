@@ -128,7 +128,7 @@ export const download = (filename: string, text: string, data = DataTypes.TEXT) 
   downloadFromURL(filename, `data:${data},${encodeURIComponent(text)}`);
 };
 
-export const importScript = ({ id, uri, callbackName }: { id: string; uri: string; callbackName?: string }) =>
+export const importScript = ({ id, uri, callbackName }: { id: string; uri: string; callbackName: string }) =>
   new Promise<void>((resolve, reject) => {
     if (document.getElementById(id)) {
       resolve();
@@ -143,11 +143,7 @@ export const importScript = ({ id, uri, callbackName }: { id: string; uri: strin
     script.async = true;
     script.onerror = reject;
 
-    if (callbackName) {
-      Object.assign(window, { [callbackName]: () => resolve() });
-    } else {
-      script.onload = () => resolve();
-    }
+    Object.assign(window, { [callbackName]: () => resolve() });
 
     appendIn.appendChild(script);
   });

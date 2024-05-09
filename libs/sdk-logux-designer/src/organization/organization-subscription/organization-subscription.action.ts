@@ -4,9 +4,7 @@ import type { Organization, PaymentIntent, Subscription, SubscriptionPaymentMeth
 import { createCRUD } from '@/crud/crud.action';
 
 import { organizationType } from '../organization.constants';
-import type { BaseOrganizationSubscriptionAction } from '../organization.types';
-
-export type { BaseOrganizationSubscriptionAction };
+import type { OrganizationAction, OrganizationSubscriptionAction } from '../organization.types';
 
 export const subscriptionAction = createCRUD(organizationType('subscription'));
 
@@ -16,13 +14,13 @@ export const subscriptionAction = createCRUD(organizationType('subscription'));
 
 /* Replace */
 
-export interface Replace extends BaseOrganizationSubscriptionAction {
+export interface Replace extends OrganizationAction {
   subscription: Organization['subscription'];
 }
 
 export const Replace = subscriptionAction.crud.replace<Replace>();
 
-export interface CheckoutRequest extends BaseOrganizationSubscriptionAction {
+export interface CheckoutRequest extends OrganizationSubscriptionAction {
   itemPriceID: string;
   paymentIntent: PaymentIntent;
   couponIds?: string[];
@@ -30,7 +28,7 @@ export interface CheckoutRequest extends BaseOrganizationSubscriptionAction {
 
 export const Checkout = Utils.protocol.createAsyncAction<CheckoutRequest, Subscription>(subscriptionAction('CHECKOUT'));
 
-export interface UpdatePaymentMethod extends BaseOrganizationSubscriptionAction {
+export interface UpdatePaymentMethod extends OrganizationSubscriptionAction {
   paymentMethod: SubscriptionPaymentMethod;
 }
 

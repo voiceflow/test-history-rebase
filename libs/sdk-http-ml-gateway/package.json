@@ -58,7 +58,7 @@
   },
   "dependencies": {
     "@voiceflow/orval-fetch": "1.5.2",
-    "@voiceflow/sdk-common": "1.12.0",
+    "@voiceflow/sdk-common": "1.11.3",
     "eventsource-parser": "^1.1.2"
   },
   "devDependencies": {

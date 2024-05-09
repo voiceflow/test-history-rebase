@@ -15,6 +15,8 @@ import type { Thunk } from '@/store/types';
 
 import * as Actions from './knowledge-base.action';
 
+const ERROR_MESSAGE = 'Unable to save Knowledge Base settings';
+
 export const getSettings = (): Thunk => async (dispatch, getState) => {
   const state = getState();
 
@@ -73,10 +75,12 @@ export const patchSettings =
       Errors.assertProjectID(versionID);
 
       if (kbRealtimeSettingsEnabled) {
-        await designerClient.knowledgeBase.version.updateSettings(versionID, patch as KnowledgeBaseSettings);
+        await designerClient.knowledgeBase.version.updateSettings(versionID, patch as KnowledgeBaseSettings).catch(() => {
+          notify.short.error(ERROR_MESSAGE);
+        });
       } else {
         await api.fetch.patch<BaseModels.Project.KnowledgeBaseSettings>(`/versions/${versionID}/knowledge-base/settings`, patch).catch(() => {
-          notify.short.error('Unable to save Knowledge Base settings');
+          notify.short.error(ERROR_MESSAGE);
         });
       }
     } else {
@@ -85,9 +89,13 @@ export const patchSettings =
       Errors.assertProjectID(projectID);
 
       if (kbRealtimeSettingsEnabled) {
-        await designerClient.knowledgeBase.settings.updateSettings(projectID, patch as KnowledgeBaseSettings);
+        await designerClient.knowledgeBase.settings.updateSettings(projectID, patch as KnowledgeBaseSettings).catch(() => {
+          notify.short.error(ERROR_MESSAGE);
+        });
       } else {
-        await knowledgeBaseClient.patchSettings(projectID, patch);
+        await knowledgeBaseClient.patchSettings(projectID, patch).catch(() => {
+          notify.short.error(ERROR_MESSAGE);
+        });
       }
     }
 

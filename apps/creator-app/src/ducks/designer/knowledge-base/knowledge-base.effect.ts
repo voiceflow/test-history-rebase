@@ -14,6 +14,7 @@ import { DEFAULT_SETTINGS } from '@/ModalsV2/modals/KnowledgeBase/KnowledgeBaseS
 import type { Thunk } from '@/store/types';
 
 import * as Actions from './knowledge-base.action';
+import { KnowledgeBaseSettings } from '@voiceflow/dtos';
 
 export const getSettings = (): Thunk => async (dispatch, getState) => {
   const state = getState();

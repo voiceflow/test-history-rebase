@@ -176,7 +176,18 @@ export class KnowledgeBaseDocumentApiPublicHTTPController {
     @Param('documentID') documentID: string
   ): Promise<DocumentFindOnePublicResponse> {
     const document = await this.service.findOneDocument(principal.legacy.projectID, documentID);
-    return document ? { data: document.data, chunks: document.chunks } : { data: null, chunks: [] };
+    return document
+      ? {
+          data: {
+            tags: document.tags ?? [],
+            documentID: document.documentID,
+            data: document.data,
+            updatedAt: document.updatedAt ?? new Date().toString(),
+            status: document.status,
+          },
+          chunks: document.chunks,
+        }
+      : { data: null, chunks: [] };
   }
 
   @Get()
@@ -203,8 +214,8 @@ export class KnowledgeBaseDocumentApiPublicHTTPController {
       page: query.page ? Number(query.page) : 1,
       limit: query.limit ? Number(query.limit) : 10,
       documentType: query.documentType,
-      includeTags: typeof query.includeTags === 'string' ? [query.includeTags] : query.includeTags,
-      excludeTags: typeof query.excludeTags === 'string' ? [query.excludeTags] : query.excludeTags,
+      includeTags: query.includeTags,
+      excludeTags: query.excludeTags,
       includeAllTagged: query.includeAllTagged === 'true',
       includeAllNonTagged: query.includeAllNonTagged === 'true',
     };
@@ -311,6 +322,7 @@ export class KnowledgeBaseDocumentApiPublicHTTPController {
     description: 'Delete document by id in the target project',
   })
   async deleteOne(@Principal() principal: Identity & { legacy: { projectID: string } }, @Param('documentID') documentID: string): Promise<void> {
+    await this.service.validateDocumentExists(principal.legacy.projectID, documentID, true);
     await this.service.deleteManyDocuments([documentID], principal.legacy.projectID);
   }
 

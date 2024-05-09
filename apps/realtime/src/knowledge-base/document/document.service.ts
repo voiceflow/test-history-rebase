@@ -43,11 +43,6 @@ import {
 import { DocumentFindManyPublicQuery } from './dtos/document-find.dto';
 import { RefreshJobService } from './refresh-job.service';
 
-export interface RequestMeta {
-  baseUrl: string;
-  authorization: string;
-}
-
 @Injectable()
 export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseORM> {
   toJSON = this.orm.jsonAdapter.fromDB;
@@ -129,6 +124,16 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
 
   getKnowledgeBaseS3Key(projectID: string, originalName: string): string {
     return `${projectID}/${originalName}`;
+  }
+
+  checkExistingDocConflict(overwrite: boolean, requestedDocumentID?: string, existingDocumentID?: string) {
+    if (existingDocumentID && !overwrite) {
+      throw new ConflictException('file already exists');
+    }
+
+    if (requestedDocumentID && requestedDocumentID !== existingDocumentID) {
+      throw new ConflictException(`file already exists under documentID: ${existingDocumentID}`);
+    }
   }
 
   async checkDocsPlanLimit(workspaceID: number, projectID: string, existingDocsCount: number, newDocsCount: number) {
@@ -283,9 +288,13 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
     query?: Omit<DocumentCreateOnePublicRequestParams, 'overwrite'> & { overwrite?: boolean };
   }): Promise<KnowledgeBaseDocument> {
     const { overwrite = false, maxChunkSize = undefined, tags = undefined } = query;
-    const tagsArray = this.tagService.convertToArray(tags);
+    const tagsArray = Array.isArray(query.tags) ? query.tags : this.tagService.convertToArray(tags);
 
-    if (existingDocumentID) await this.validateDocumentExists(projectID, existingDocumentID);
+    let existingDocument: VersionKnowledgeBaseDocument | undefined;
+
+    if (existingDocumentID) {
+      existingDocument = await this.validateDocumentExists(projectID, existingDocumentID, true);
+    }
 
     const project = await this.projectOrm.findOneOrFail(projectID);
     const urlData = data.data as KBDocumentUrlData;
@@ -294,9 +303,7 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
       : [];
     const collisionMap = this.getDocumentCollisionMap(existingDocuments);
 
-    if (collisionMap[urlData.url] && !overwrite) {
-      throw new ConflictException('file already exists');
-    }
+    this.checkExistingDocConflict(overwrite, existingDocumentID, collisionMap[urlData.url]);
 
     let tagObjects = new Set<string>();
 
@@ -312,7 +319,7 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
 
     // if tags don't provided and document exists, keep existing tags with doc
     if (existingDocumentID && tagObjects.size === 0) {
-      const existingDocument = await this.orm.findOneDocument(projectID, existingDocumentID);
+      existingDocument = existingDocument ?? (await this.orm.findOneDocument(projectID, existingDocumentID));
       (existingDocument?.tags ?? []).forEach((tag) => tagObjects.add(tag));
     }
 
@@ -338,7 +345,15 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
       chunkStrategy: { type: BaseModels.Project.ChunkStrategyType.RECURSIVE_TEXT_SPLITTER, size: maxChunkSize },
     });
 
-    return knowledgeBaseDocumentAdapter.fromDB(document);
+    return knowledgeBaseDocumentAdapter.fromDB({
+      ...document,
+      tags: Array.from(
+        await this.tagService.tagObjectIdsToNames({
+          assistantID: projectID,
+          tagIDs: document?.tags ?? [],
+        })
+      ),
+    });
   }
 
   async replaceFileDocument(projectID: string, userID: number, documentID: string, file: MulterFile, canEdit = true): Promise<KnowledgeBaseDocument> {
@@ -361,9 +376,13 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
     query?: Omit<DocumentCreateOnePublicRequestParams, 'overwrite'> & { overwrite?: boolean };
   }): Promise<KnowledgeBaseDocument> {
     const { overwrite = false, maxChunkSize = undefined, tags = undefined } = query;
-    const tagsArray = this.tagService.convertToArray(tags);
+    const tagsArray = Array.isArray(query.tags) ? query.tags : this.tagService.convertToArray(tags);
 
-    if (existingDocumentID) await this.validateDocumentExists(projectID, existingDocumentID);
+    let existingDocument: VersionKnowledgeBaseDocument | undefined;
+
+    if (existingDocumentID) {
+      existingDocument = await this.validateDocumentExists(projectID, existingDocumentID, true);
+    }
 
     const project = await this.projectOrm.findOneOrFail(projectID);
     const existingDocuments: Omit<VersionKnowledgeBaseDocument, 'updatedAt'>[] = project?.knowledgeBase?.documents
@@ -373,9 +392,8 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
 
     const type: KnowledgeBaseDocumentType = this.getFileTypeByMimetype(file.mimetype, file.originalname);
     const s3ObjectRef: string = this.getKnowledgeBaseS3Key(projectID, file.originalname);
-    if (collisionMap[s3ObjectRef] && !overwrite) {
-      throw new ConflictException('file already exists');
-    }
+
+    this.checkExistingDocConflict(overwrite, existingDocumentID, collisionMap[s3ObjectRef]);
 
     let tagObjects = new Set<string>();
 
@@ -391,7 +409,7 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
 
     // if tags don't provided and document exists, keep existing tags with doc
     if (existingDocumentID && tagObjects.size === 0) {
-      const existingDocument = await this.orm.findOneDocument(projectID, existingDocumentID);
+      existingDocument = existingDocument ?? (await this.orm.findOneDocument(projectID, existingDocumentID));
       (existingDocument?.tags ?? []).forEach((tag) => tagObjects.add(tag));
     }
 
@@ -426,7 +444,15 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
       chunkStrategy: { type: BaseModels.Project.ChunkStrategyType.RECURSIVE_TEXT_SPLITTER, size: maxChunkSize },
     });
 
-    return knowledgeBaseDocumentAdapter.fromDB(document);
+    return knowledgeBaseDocumentAdapter.fromDB({
+      ...document,
+      tags: Array.from(
+        await this.tagService.tagObjectIdsToNames({
+          assistantID: projectID,
+          tagIDs: document?.tags ?? [],
+        })
+      ),
+    });
   }
 
   async uploadTableDocument(
@@ -552,8 +578,9 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
 
     const limit = Math.max(Math.min(l, 100), 1);
 
-    const includeTagsArray = this.tagService.convertToArray(includeTags);
-    const excludeTagsArray = this.tagService.convertToArray(excludeTags);
+    const includeTagsArray = Array.isArray(query.includeTags) ? query.includeTags : this.tagService.convertToArray(includeTags);
+    const excludeTagsArray = Array.isArray(query.excludeTags) ? query.excludeTags : this.tagService.convertToArray(excludeTags);
+
     const existingTags = await this.tagService.getTagsRecords(assistantID);
 
     if (includeTagsArray.length > 0 || excludeTagsArray.length > 0) {
@@ -605,9 +632,14 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
     };
   }
 
-  async validateDocumentExists(assistantID: string, documentID: string) {
-    const document = await this.findOneDocument(assistantID, documentID);
-    if (!document) throw new NotFoundException("document doesn't exist");
+  async validateDocumentExists(assistantID: string, documentID: string, checkFinishedStatus = false) {
+    const document = await this.orm.findOneDocument(assistantID, documentID);
+    if (!document) throw new NotFoundException("Document doesn't exist");
+
+    if (checkFinishedStatus && !this.KB_DOC_FINISH_STATUSES.has(document.status.type.toString())) {
+      throw new BadRequestException('document still in processing, please wait until processing finished');
+    }
+
     return document;
   }
 
@@ -853,7 +885,10 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
   /* Tags */
 
   async attachTagsOneDocument(assistantID: string, documentID: string, tagLabels: string[]) {
-    const document = await this.validateDocumentExists(assistantID, documentID);
+    const [document, workspaceID] = await Promise.all([
+      this.validateDocumentExists(assistantID, documentID, true),
+      this.orm.getWorkspaceID(assistantID),
+    ]);
 
     await this.tagService.checkKBTagLabelsExists({ assistantID, tagLabels });
     const tagsIds = Array.from(await this.tagService.tagNamesToObjectIds(assistantID, tagLabels));
@@ -862,30 +897,29 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
 
     await this.tagService.limitKBTagsDocument(document, tagsToAdd.length);
 
-    this.orm.attachManyTagsToDocument(assistantID, documentID, tagsToAdd);
+    await this.orm.attachManyTagsToDocument(assistantID, documentID, tagsToAdd);
 
-    // TODO: update tags for KB refresh job, if object exists
-    // await this.models.refreshJobs.attachTags({ projectID, documentID, tags: tagsToAdd });
+    await this.refreshJobsOrm.attachManyTags(assistantID, documentID, tagsToAdd);
 
-    // TODO: update tags list in vector DB metadata (parser service)
-    // this.updateKBParserTags(projectID, documentID, requestConfig);
+    this.updateKBParserTags(assistantID, workspaceID, { ...document, tags: Array.from(new Set(tagsToAdd.concat(document?.tags ?? []))) });
   }
 
   async detachTagsOneDocument(assistantID: string, documentID: string, tagLabels: string[]) {
-    const document = await this.validateDocumentExists(assistantID, documentID);
+    const [document, workspaceID] = await Promise.all([
+      this.validateDocumentExists(assistantID, documentID, true),
+      this.orm.getWorkspaceID(assistantID),
+    ]);
 
     await this.tagService.checkKBTagLabelsExists({ assistantID, tagLabels });
     const tagsIds = Array.from(await this.tagService.tagNamesToObjectIds(assistantID, tagLabels));
 
-    const tagsToRemove = tagsIds.filter((value) => !(document?.tags ?? []).includes(value));
+    const tagsToRemove = tagsIds.filter((value) => (document?.tags ?? []).includes(value));
 
-    this.orm.detachManyTagsFromDocument(assistantID, documentID, tagsToRemove);
+    await this.orm.detachManyTagsFromDocument(assistantID, documentID, tagsToRemove);
 
-    // TODO: delete tags for KB refresh job, if object exists
-    // await this.models.refreshJobs.dettachTags({ projectID, documentID, tags: tagsIds });
+    await this.refreshJobsOrm.detachManyTags(assistantID, documentID, tagsToRemove);
 
-    // TODO: update tags list in vector DB metadata (parser service)
-    // this.updateKBParserTags(projectID, documentID, requestConfig);
+    this.updateKBParserTags(assistantID, workspaceID, { ...document, tags: (document?.tags ?? []).filter((value) => !tagsToRemove.includes(value)) });
   }
 
   /* Utils */
@@ -1038,5 +1072,11 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
     metadataFields?: string[];
   }) {
     await this.klParserClient.uploadTable(workspaceID, projectID, document, searchableFields, items, metadataFields);
+  }
+
+  async updateKBParserTags(assistantID: string, workspaceID: number, document: VersionKnowledgeBaseDocument) {
+    await this.klParserClient.updateDocument(assistantID, { ...document, updatedAt: new Date() }, workspaceID.toString(), {
+      chunkStrategy: { type: BaseModels.Project.ChunkStrategyType.RECURSIVE_TEXT_SPLITTER },
+    });
   }
 }

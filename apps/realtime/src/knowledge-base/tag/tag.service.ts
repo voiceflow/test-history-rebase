@@ -1,13 +1,15 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { BaseModels } from '@voiceflow/base-types';
 import { KBTag, KBTagRecord, KBTagsFilter, KnowledgeBaseDocument } from '@voiceflow/dtos';
 import { BadRequestException, ForbiddenException, NotAcceptableException, NotFoundException } from '@voiceflow/exception';
-import { KnowledgeBaseORM, VersionKnowledgeBaseDocument } from '@voiceflow/orm-designer';
+import { KnowledgeBaseORM, RefreshJobsOrm, VersionKnowledgeBaseDocument } from '@voiceflow/orm-designer';
 import { Identity } from '@voiceflow/sdk-auth';
 import { AuthService } from '@voiceflow/sdk-auth/nestjs';
 import type { Request } from 'express';
 import { ObjectId } from 'mongodb';
 
 import { MutableService } from '@/common';
+import { KlParserClient } from '@/common/clients/kl-parser/kl-parser.client';
 
 @Injectable()
 export class KnowledgeBaseTagService extends MutableService<KnowledgeBaseORM> {
@@ -27,7 +29,11 @@ export class KnowledgeBaseTagService extends MutableService<KnowledgeBaseORM> {
     @Inject(KnowledgeBaseORM)
     protected readonly orm: KnowledgeBaseORM,
     @Inject(AuthService)
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    @Inject(RefreshJobsOrm)
+    protected readonly refreshJobsOrm: RefreshJobsOrm,
+    @Inject(KlParserClient)
+    private klParserClient: KlParserClient
   ) {
     super();
   }
@@ -77,26 +83,35 @@ export class KnowledgeBaseTagService extends MutableService<KnowledgeBaseORM> {
 
   /* Delete */
 
+  async removeRelatedTags(assistantID: string, workspaceID: number, document: VersionKnowledgeBaseDocument, tags: string[]) {
+    this.refreshJobsOrm.detachManyTags(assistantID, document.documentID, tags);
+
+    await this.klParserClient.updateDocument(
+      assistantID,
+      { ...document, tags: (document?.tags ?? []).filter((value) => !tags.includes(value)), updatedAt: new Date() },
+      workspaceID.toString(),
+      {
+        chunkStrategy: { type: BaseModels.Project.ChunkStrategyType.RECURSIVE_TEXT_SPLITTER },
+      }
+    );
+  }
+
   async deleteOneTag(assistantID: string, tagID: string) {
+    const [documents, workspaceID] = await Promise.all([this.orm.findAllDocuments(assistantID), this.orm.getWorkspaceID(assistantID)]);
     await this.validateKBTagExists(assistantID, tagID);
 
     await this.orm.deleteOneTag(assistantID, tagID);
 
-    await this.orm.detachTagFromManyDocuments(assistantID, tagID);
+    const removeTagJobs: { projectID: string; document: VersionKnowledgeBaseDocument; tags: string[] }[] = [];
 
-    // const removeTagRefreshJobs: Pick<BaseModels.RefreshJob.Model, 'projectID' | 'documentID' | 'tags'>[] = [];
+    documents.forEach((document) => {
+      if (document?.tags?.includes(tagID)) {
+        // delete tags for KB refresh job, if object exists
+        removeTagJobs.push({ projectID: assistantID, document, tags: [tagID] });
+      }
+    });
 
-    // Object.entries(project?.knowledgeBase?.documents ?? {}).forEach(([documentID, document]) => {
-    //   if (document?.tags?.includes(tagID)) {
-    //     // delete tags for KB refresh job, if object exists
-    //     removeTagRefreshJobs.push({ projectID, documentID, tags: [tagID] });
-    //   }
-    // });
-
-    // TODO: await this.models.refreshJobs.bulkDettachTags(removeTagRefreshJobs);
-
-    // TODO: update tags list in vector DB metadata (parser service)
-    // await Promise.allSettled(removeTagRefreshJobs.map(({ documentID }) => this.updateKBParserTags(projectID, documentID, requestConfig)));
+    await Promise.allSettled(removeTagJobs.map(({ projectID, document, tags }) => this.removeRelatedTags(projectID, workspaceID, document, tags)));
   }
 
   /* Validation */

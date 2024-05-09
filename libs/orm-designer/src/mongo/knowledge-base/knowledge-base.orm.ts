@@ -5,6 +5,7 @@ import type {
   KBDocumentTextData,
   KBDocumentUrlData,
   KnowledgeBaseDocument,
+  KnowledgeBaseSettings,
   VersionKnowledgeBaseTag,
 } from '@voiceflow/dtos';
 
@@ -17,9 +18,29 @@ import { Atomic } from '../common';
 export class KnowledgeBaseORM extends ProjectORM {
   static KNOWLEDGE_BASE_DATA_PATH = 'knowledgeBase' as const;
 
+  static KNOWLEDGE_BASE_SETTINGS_PATH = 'settings' as const;
+
   async getWorkspaceID(projectID: string) {
     const { teamID } = await this.findOneOrFail(projectID, { fields: ['teamID'] });
     return teamID;
+  }
+
+  async findSettings(projectID: string): Promise<KnowledgeBaseSettings | undefined> {
+    const document = await this.findOne(projectID, { fields: [KnowledgeBaseORM.KNOWLEDGE_BASE_DATA_PATH] });
+    return document?.knowledgeBase?.settings;
+  }
+
+  async updateSettings(projectID: string, newSettings: KnowledgeBaseSettings): Promise<void> {
+    await this.atomicUpdateOne(projectID, [
+      Atomic.Set(
+        Object.entries(newSettings)
+          .filter(([, value]) => !!value)
+          .map(([key, value]) => ({
+            path: [KnowledgeBaseORM.KNOWLEDGE_BASE_DATA_PATH, KnowledgeBaseORM.KNOWLEDGE_BASE_SETTINGS_PATH, key],
+            value,
+          }))
+      ),
+    ]);
   }
 
   async findOneTag(projectID: string, tagID: string): Promise<VersionKnowledgeBaseTag | undefined> {

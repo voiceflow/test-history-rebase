@@ -1,8 +1,10 @@
 import { BaseModels } from '@voiceflow/base-types';
+import { KnowledgeBaseSettings } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { notify } from '@voiceflow/ui-next';
 
 import api from '@/client/api';
+import { designerClient } from '@/client/designer';
 import { knowledgeBaseClient } from '@/client/knowledge-base';
 import { AI_MODEL_CONFIG_MAP } from '@/config/ai-model';
 import * as Errors from '@/config/errors';
@@ -18,22 +20,32 @@ export const getSettings = (): Thunk => async (dispatch, getState) => {
 
   let settings: BaseModels.Project.KnowledgeBaseSettings;
 
+  const kbRealtimeSettingsEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.KB_BE_REALTIME_SETTINGS);
+
   if (Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.VERSIONED_KB_SETTINGS)) {
     const versionID = Session.activeVersionIDSelector(state);
 
     Errors.assertProjectID(versionID);
 
-    ({ data: settings } = await api.fetch
-      .get<BaseModels.Project.KnowledgeBaseSettings>(`/versions/${versionID}/knowledge-base/settings`)
-      .catch(() => {
-        return { data: {} as BaseModels.Project.KnowledgeBaseSettings };
-      }));
+    if (kbRealtimeSettingsEnabled) {
+      settings = (await designerClient.knowledgeBase.version.getSettings(versionID)) as BaseModels.Project.KnowledgeBaseSettings;
+    } else {
+      ({ data: settings } = await api.fetch
+        .get<BaseModels.Project.KnowledgeBaseSettings>(`/versions/${versionID}/knowledge-base/settings`)
+        .catch(() => {
+          return { data: {} as BaseModels.Project.KnowledgeBaseSettings };
+        }));
+    }
   } else {
     const projectID = Session.activeProjectIDSelector(state);
 
     Errors.assertProjectID(projectID);
 
-    settings = await knowledgeBaseClient.getSettings(projectID);
+    if (kbRealtimeSettingsEnabled) {
+      settings = (await designerClient.knowledgeBase.settings.getSettings(projectID)) as BaseModels.Project.KnowledgeBaseSettings;
+    } else {
+      settings = await knowledgeBaseClient.getSettings(projectID);
+    }
   }
 
   if (settings.summarization.model && !Object.keys(AI_MODEL_CONFIG_MAP).includes(settings.summarization.model)) {
@@ -53,6 +65,8 @@ export const patchSettings =
   async (dispatch, getState) => {
     const state = getState();
 
+    const kbRealtimeSettingsEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.KB_BE_REALTIME_SETTINGS);
+
     if (Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.VERSIONED_KB_SETTINGS)) {
       const versionID = Session.activeVersionIDSelector(state);
 
@@ -66,7 +80,11 @@ export const patchSettings =
 
       Errors.assertProjectID(projectID);
 
-      await knowledgeBaseClient.patchSettings(projectID, patch);
+      if (kbRealtimeSettingsEnabled) {
+        await designerClient.knowledgeBase.settings.updateSettings(projectID, patch as KnowledgeBaseSettings);
+      } else {
+        await knowledgeBaseClient.patchSettings(projectID, patch);
+      }
     }
 
     dispatch(Actions.PatchSettings({ patch }));

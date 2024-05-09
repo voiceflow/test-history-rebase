@@ -3,7 +3,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { BaseModels } from '@voiceflow/base-types';
 import type { AnyRecord } from '@voiceflow/common';
 import { Utils } from '@voiceflow/common';
-import { VersionSettings } from '@voiceflow/dtos';
+import { KnowledgeBaseSettings, VersionSettings } from '@voiceflow/dtos';
 import { DiagramEntity, DiagramJSON, VersionEntity, VersionJSON, VersionObject, VersionORM } from '@voiceflow/orm-designer';
 import { ObjectId } from 'mongodb';
 import { Merge } from 'type-fest';
@@ -155,6 +155,10 @@ export class VersionService extends MutableService<VersionORM> {
     const version = await this.orm.findOne(versionID, { fields: ['_id'] });
 
     return !!version;
+  }
+
+  async updateKnowledgeBaseSettings(versionID: string, newSettings: KnowledgeBaseSettings) {
+    await this.orm.updateKnowledgeBaseSettings(versionID, newSettings);
   }
 
   async updateOneSettings(versionID: Primary<VersionEntity>, settings: Partial<VersionSettings>) {

@@ -23,9 +23,9 @@ export default universalDefineConfig({
           '@platform-config': path.resolve(rootDir, '../../libs/platform-config/src'),
         }
       : {
-          '@voiceflow/ui': path.resolve(rootDir, '../../libs/ui/build/module'),
-          '@voiceflow/realtime-sdk/backend': path.resolve(rootDir, '../../libs/realtime-sdk/build/module'),
-          '@voiceflow/platform-config/backend': path.resolve(rootDir, '../../libs/platform-config/build/module'),
+          '@voiceflow/ui': path.resolve(rootDir, '../../libs/ui/build/esm'),
+          '@voiceflow/realtime-sdk/backend': path.resolve(rootDir, '../../libs/realtime-sdk/build/esm'),
+          '@voiceflow/platform-config/backend': path.resolve(rootDir, '../../libs/platform-config/build/esm'),
         },
 })((config) => ({
   ...config,

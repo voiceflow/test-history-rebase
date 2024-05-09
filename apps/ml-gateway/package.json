@@ -5,15 +5,11 @@
   "license": "UNLICENSED",
   "type": "module",
   "scripts": {
-    "build": "yarn clean && yarn g:tsc --project tsconfig.build.json && yarn g:tsc-alias -p tsconfig.build.json && yarn postbuild",
-    "postbuild": "yarn schema:generate",
+    "build": "yarn g:turbo run build:cmd --filter=@voiceflow/ml-gateway...",
+    "build:cmd": "yarn g:build:pkg && yarn schema:generate",
     "clean": "yarn g:rimraf build",
     "dev": "tsx watch --inspect src/main.ts",
     "e2e": "yarn kill:e2e && NODE_ENV=e2e NODE_TLS_REJECT_UNAUTHORIZED=0 yarn start:base",
-    "e2e:check-deps": "npx wait-on https://localhost:8003/health ",
-    "e2e:check-deps-ci": "npx wait-on https://creator-api.test.e2e:8003/health",
-    "e2e:ci": "./scripts/run_e2e_ci.sh",
-    "gen-certs:e2e": "scripts/generate_e2e_certs.sh",
     "kill:e2e": "npx kill-port 8015 || true",
     "lint": "yarn g:run-p -c lint:eslint lint:prettier",
     "lint:eslint": "yarn g:eslint",
@@ -31,8 +27,8 @@
     "test": "yarn g:vitest run --coverage",
     "test:dependencies": "yarn g:depcruise --ignore-known",
     "test:integration": "exit 0",
-    "test:unit": "exit 0",
-    "types": "yarn g:tsc --project tsconfig.build.json --noEmit --skipLibCheck"
+    "test:types": "yarn g:tsc --noEmit",
+    "test:unit": "exit 0"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "0.18.0",
@@ -82,7 +78,7 @@
     "tsx": "4.7.3"
   },
   "engines": {
-    "node": "16.20"
+    "node": "20"
   },
   "volta": {
     "extends": "../../package.json"

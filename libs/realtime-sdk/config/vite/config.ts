@@ -11,7 +11,7 @@ export default defineConfig({
     '@test': path.resolve(rootDir, './test/__support__'),
 
     ...(!isServe && {
-      '@voiceflow/ui': path.resolve(rootDir, '../ui/build/module'),
+      '@voiceflow/ui': path.resolve(rootDir, '../ui/build/esm'),
       '@voiceflow/platform-config': path.resolve(rootDir, '../platform-config/build/backend'),
     }),
   }),

@@ -1,17 +1,14 @@
 {
-  "extends": "@voiceflow/tsconfig",
+  "extends": "@voiceflow/tsconfig/nest.json",
   "compilerOptions": {
     "module": "esnext",
     "skipLibCheck": true,
     "exactOptionalPropertyTypes": false,
     "baseUrl": ".",
-    "rootDir": ".",
     "outDir": "build",
     "noUnusedLocals": true,
-    "paths": {
-      "@/*": ["src/*"]
-    },
+    "types": [],
     "noErrorTruncation": true
   },
-  "exclude": ["node_modules/**/*", "build/**/*", "test/**/*.d.ts"]
+  "exclude": ["node_modules", "build"]
 }

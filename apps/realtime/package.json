@@ -5,17 +5,13 @@
   "license": "UNLICENSED",
   "type": "module",
   "scripts": {
-    "build": "yarn clean && yarn g:tsc --project tsconfig.build.json && yarn g:tsc-alias -p tsconfig.build.json && yarn postbuild",
-    "postbuild": "yarn copy:templates && yarn schema:generate",
+    "build": "yarn g:turbo run build:cmd --filter=@voiceflow/realtime...",
+    "build:cmd": "yarn g:build:pkg && yarn copy:templates && yarn schema:generate",
     "clean": "yarn g:rimraf build",
     "copy:templates": "cp -R ./src/assistant/templates ./build/assistant/templates",
     "dev:realtime": "tsx watch --inspect=9229 src/main.ts",
     "dev:realtime-http": "tsx watch --inspect=9230 src/main.ts",
     "e2e": "yarn kill:e2e && NODE_ENV=e2e NODE_TLS_REJECT_UNAUTHORIZED=0 yarn start:base",
-    "e2e:check-deps": "npx wait-on https://localhost:8003/health ",
-    "e2e:check-deps-ci": "npx wait-on https://creator-api.test.e2e:8003/health",
-    "e2e:ci": "./scripts/run_e2e_ci.sh ",
-    "gen-certs:e2e": "scripts/generate_e2e_certs.sh",
     "kill:e2e": "npx kill-port 8013 || true",
     "lint": "yarn g:run-p -c lint:eslint lint:prettier",
     "lint:eslint": "yarn g:eslint",
@@ -38,8 +34,8 @@
     "test": "yarn g:vitest run --coverage",
     "test:dependencies": "yarn g:depcruise --ignore-known",
     "test:integration": "exit 0",
-    "test:unit": "REPORTS_DIRECTORY=coverage/unit yarn g:vitest run .unit .test --silent --coverage",
-    "types": "yarn g:tsc --project tsconfig.build.json --noEmit --skipLibCheck"
+    "test:types": "yarn g:tsc --noEmit",
+    "test:unit": "REPORTS_DIRECTORY=coverage/unit yarn g:vitest run .unit .test --silent --coverage"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "3.425.0",
@@ -134,10 +130,11 @@
     "@voiceflow/nestjs-openapi-extractor": "1.7.13",
     "@voiceflow/test-common": "1.11.0",
     "supertest": "6.3.3",
-    "tsx": "3.12.7"
+    "testcontainers": "10.9.0",
+    "tsx": "4.7.3"
   },
   "engines": {
-    "node": "16.20"
+    "node": "20"
   },
   "volta": {
     "extends": "../../package.json"

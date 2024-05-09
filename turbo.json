@@ -1,61 +1,37 @@
 {
   "$schema": "https://turborepo.org/schema.json",
   "pipeline": {
-    "build": {
+    "build:cmd": {
       "outputs": ["build/**", "openapi.next.json"],
       "inputs": [
         "src/**",
+        ":!src/**/*.test.ts",
         "config/**",
         "public/**",
         "scripts/**",
         "typings/**",
         "package.json",
         "tsconfig.json",
-        "vite.config.ts",
-        "svgr.config.js",
-        "tsconfig.*.json",
-        "!src/**/*.test.ts"
-      ],
-      "dependsOn": ["^build", "codegen"]
-    },
-    "codegen": {
-      "outputs": ["build/**", "src/generated/**"],
-      "inputs": [
-        "src/**",
-        "!src/**/*.test.ts",
-        "package.json",
-        "tsconfig.json",
         "tsconfig.build.json",
         "tsconfig.build.*.json",
-        "scripts/**",
-        "config/**"
+        "vite.config.mts",
+        "svgr.config.js"
       ],
-      "dependsOn": ["^build"]
+      "dependsOn": ["^build:cmd", "codegen"]
+    },
+    "codegen": {
+      "outputs": ["src/generated/**"],
+      "inputs": ["package.json", "openapi.json", "orval.config.ts"],
+      "dependsOn": ["^build:cmd"]
     },
     "codegen:release": {
-      "cache": false
-    },
-    "gen-certs:e2e": {
       "cache": false
     },
     "rdme:publish": {
       "cache": false
     },
-    "schema:generate": {
-      "outputs": ["openapi.next.json", ".env.local"],
-      "inputs": [
-        "src/**",
-        ":!src/**/*.test.ts",
-        "package.json",
-        "tsconfig.json",
-        "tsconfig.build.json",
-        "tsconfig.build.*.json"
-      ]
-    },
     "schema:validate": {
-      "outputs": ["openapi.json"],
-      "inputs": ["src/**", ":!src/**/*.test.ts", "package.json", "openapi.json", "openapi.next.json"],
-      "dependsOn": ["^build"],
+      "dependsOn": ["^build:cmd"],
       "cache": false
     },
     "test:acceptance": {
@@ -74,23 +50,17 @@
       "outputs": []
     },
     "test:types": {
-      "outputs": [],
-      "inputs": ["src/**/*.test-d.ts", "package.json"]
-    },
-    "test:check": {
-      "inputs": ["src/**", "package.json"]
+      "inputs": ["src/**", "package.json", "tsconfig.json", "tsconfig.build.json", "tsconfig.build.*.json"],
+      "dependsOn": ["^build:cmd"]
     },
     "dev": {
-      "cache": false
+      "dependsOn": ["^build:cmd"],
+      "cache": false,
+      "persistent": true
     },
     "clean": {
       "cache": false
     }
   },
-  "globalDependencies": [
-    "meta/jest-config/*.js",
-    "meta/prettier-config/*.js",
-    "meta/swc-config/*.json",
-    "meta/typescript-config/*.json"
-  ]
+  "globalDependencies": ["meta/jest-config/*.js", "meta/swc-config/*.json"]
 }

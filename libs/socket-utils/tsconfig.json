@@ -1,13 +1,16 @@
 {
   "extends": "@voiceflow/tsconfig",
   "compilerOptions": {
+    "module": "esnext",
+    "outDir": "build",
     "skipLibCheck": true,
     "allowJs": true,
     "baseUrl": ".",
     "exactOptionalPropertyTypes": false,
     "paths": {
       "@socket-utils/*": ["src/*"]
-    }
+    },
+    "types": []
   },
-  "exclude": ["node_modules/**/*", "build/**/*"]
+  "exclude": ["node_modules", "build", "sonar"]
 }

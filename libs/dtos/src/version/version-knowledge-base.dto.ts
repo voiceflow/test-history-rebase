@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { KnowledgeBaseDocumentDTO } from '@/knowledge-base/document/document.dto';
+import { KnowledgeBaseSettingsDTO } from '@/knowledge-base/settings/settings.dto';
 
 export const VersionKnowledgeBaseDocumentDataDTO = z
   .object({
@@ -69,7 +70,7 @@ export const VersionKnowledgeBaseDTO = z
   .object({
     tags: z.record(VersionKnowledgeBaseTagDTO).optional(),
     faqSets: z.record(VersionKnowledgeBaseSetFaqDTO).optional(),
-    settings: z.record(z.any()).optional(),
+    settings: KnowledgeBaseSettingsDTO.optional(),
     documents: z.record(KnowledgeBaseDocumentDTO).optional(),
   })
   .strict();

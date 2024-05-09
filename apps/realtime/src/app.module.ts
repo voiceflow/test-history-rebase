@@ -47,6 +47,7 @@ import { FunctionModule } from './function/function.module';
 import { IntentModule } from './intent/intent.module';
 import { KnowledgeBaseDocumentModule } from './knowledge-base/document/document.module';
 import { IntegrationOauthTokenModule } from './knowledge-base/integration-oauth-token/integration-oauth-token.module';
+import { KnowledgeBaseSettingsModule } from './knowledge-base/settings/settings.module';
 import { KnowledgeBaseTagModule } from './knowledge-base/tag/tag.module';
 import { LegacyModule } from './legacy/legacy.module';
 import { MigrationModule } from './migration/migration.module';
@@ -269,6 +270,7 @@ import { WorkflowModule } from './workflow/workflow.module';
     EntityModule,
     IntentModule,
     KnowledgeBaseDocumentModule,
+    KnowledgeBaseSettingsModule,
     KnowledgeBaseTagModule,
     UploadModule,
     ResponseModule,

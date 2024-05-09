@@ -43,19 +43,6 @@ export class KnowledgeBaseORM extends ProjectORM {
     ]);
   }
 
-  async updateSettings(projectID: string, newSettings: KnowledgeBaseSettings): Promise<void> {
-    await this.atomicUpdateOne(projectID, [
-      Atomic.Set(
-        Object.entries(newSettings)
-          .filter(([, value]) => !!value)
-          .map(([key, value]) => ({
-            path: [KnowledgeBaseORM.KNOWLEDGE_BASE_DATA_PATH, KnowledgeBaseORM.KNOWLEDGE_BASE_SETTINGS_PATH, key],
-            value,
-          }))
-      ),
-    ]);
-  }
-
   async findOneTag(projectID: string, tagID: string): Promise<VersionKnowledgeBaseTag | undefined> {
     const project = await this.findOneOrFail(projectID, { fields: [KnowledgeBaseORM.KNOWLEDGE_BASE_DATA_PATH] });
 

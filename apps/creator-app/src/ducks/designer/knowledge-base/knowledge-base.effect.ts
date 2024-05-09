@@ -39,17 +39,18 @@ export const getSettings = (): Thunk => async (dispatch, getState) => {
   } else {
     const projectID = Session.activeProjectIDSelector(state);
 
-  Errors.assertProjectID(projectID);
+    Errors.assertProjectID(projectID);
 
-  if (kbRealtimeSettingsEnabled) {
-    settings = (await designerClient.knowledgeBase.settings.getSettings(projectID)) as BaseModels.Project.KnowledgeBaseSettings;
-  } else {
-    settings = await knowledgeBaseClient.getSettings(projectID);
-  }
+    if (kbRealtimeSettingsEnabled) {
+      settings = (await designerClient.knowledgeBase.settings.getSettings(projectID)) as BaseModels.Project.KnowledgeBaseSettings;
+    } else {
+      settings = await knowledgeBaseClient.getSettings(projectID);
+    }
 
-  if (settings.summarization.model && !Object.keys(AI_MODEL_CONFIG_MAP).includes(settings.summarization.model)) {
-    settings = { ...settings, summarization: { ...settings.summarization, model: DEFAULT_SETTINGS.summarization.model } };
-    patchSettings(settings);
+    if (settings.summarization.model && !Object.keys(AI_MODEL_CONFIG_MAP).includes(settings.summarization.model)) {
+      settings = { ...settings, summarization: { ...settings.summarization, model: DEFAULT_SETTINGS.summarization.model } };
+      patchSettings(settings);
+    }
   }
 
   dispatch(Actions.SetSettings({ settings }));

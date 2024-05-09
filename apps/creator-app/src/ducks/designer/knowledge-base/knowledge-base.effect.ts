@@ -71,9 +71,13 @@ export const patchSettings =
 
       Errors.assertProjectID(versionID);
 
-      await api.fetch.patch<BaseModels.Project.KnowledgeBaseSettings>(`/versions/${versionID}/knowledge-base/settings`, patch).catch(() => {
-        notify.short.error('Unable to save Knowledge Base settings');
-      });
+      if (kbRealtimeSettingsEnabled) {
+        await designerClient.knowledgeBase.version.updateSettings(versionID, patch as KnowledgeBaseSettings);
+      } else {
+        await api.fetch.patch<BaseModels.Project.KnowledgeBaseSettings>(`/versions/${versionID}/knowledge-base/settings`, patch).catch(() => {
+          notify.short.error('Unable to save Knowledge Base settings');
+        });
+      }
     } else {
       const projectID = Session.activeProjectIDSelector(state);
 

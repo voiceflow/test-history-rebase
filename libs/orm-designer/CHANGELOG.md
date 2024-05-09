@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.56.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.55.0...@voiceflow/orm-designer@2.56.0) (2024-05-09)
+
+### Features
+
+* Move KB getSettings endpoint to realtime app (COR-1817) ([#8086](https://github.com/voiceflow/creator-app/issues/8086)) ([937bb25](https://github.com/voiceflow/creator-app/commit/937bb25c46c123f37da7719bec0f9b743a6b7faf))
+
 # [2.55.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.54.3...@voiceflow/orm-designer@2.55.0) (2024-05-09)
 
 ### Features

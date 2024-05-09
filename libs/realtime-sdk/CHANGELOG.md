@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.392.0 (2024-05-09)
+
+### Features
+
+* Move KB getSettings endpoint to realtime app (COR-1817) ([#8086](https://github.com/voiceflow/creator-app/issues/8086)) ([937bb25](https://github.com/voiceflow/creator-app/commit/937bb25c46c123f37da7719bec0f9b743a6b7faf))
+
 ## 1.391.1 (2024-05-09)
 
 **Note:** Version bump only for package @voiceflow/realtime-sdk

@@ -73,21 +73,6 @@
     "test:check": {
       "inputs": ["src/**", "package.json"]
     },
-    "lint": {
-      "inputs": ["src/**", "config/**", ".eslint*", ".prettierignore"],
-      "outputs": []
-    },
-    "lint:hadolint": {
-      "inputs": ["Dockerfile", "Dockerfile.*"],
-      "outputs": []
-    },
-    "lint:fix": {
-      "inputs": ["src/**"],
-      "outputs": ["src/**"]
-    },
-    "lint:report": {
-      "outputs": ["sonar/report.json"]
-    },
     "dev": {
       "cache": false
     },
@@ -96,7 +81,6 @@
     }
   },
   "globalDependencies": [
-    "meta/eslint-config/*.js",
     "meta/jest-config/*.js",
     "meta/prettier-config/*.js",
     "meta/swc-config/*.json",

@@ -1,4 +1,4 @@
-/* eslint-disable no-process-env */
+
 import { AIModel } from '@voiceflow/dtos';
 import { IS_DEVELOPMENT, IS_PRODUCTION } from '@voiceflow/ui';
 import loglevel from 'loglevel';
@@ -80,6 +80,7 @@ function getHost() {
   return process.env.API_HOST!;
 }
 
+// eslint-disable-next-line sonarjs/no-nested-template-literals
 export const CREATOR_APP_ENDPOINT = `https://${window.location.hostname}${window.location.port ? `:${window.location.port}` : ''}`;
 
 export const API_HOST = window.VF_OVERRIDE_API_HOST || process.env.VF_OVERRIDE_API_HOST || getHost();

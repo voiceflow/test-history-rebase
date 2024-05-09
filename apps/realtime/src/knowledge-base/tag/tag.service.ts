@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { KBTag, KBTagRecord, KBTagsFilter } from '@voiceflow/dtos';
+import { KBTag, KBTagRecord, KBTagsFilter, KnowledgeBaseDocument } from '@voiceflow/dtos';
 import { BadRequestException, ForbiddenException, NotAcceptableException, NotFoundException } from '@voiceflow/exception';
 import { KnowledgeBaseORM, VersionKnowledgeBaseDocument } from '@voiceflow/orm-designer';
 import { Identity } from '@voiceflow/sdk-auth';
@@ -124,7 +124,7 @@ export class KnowledgeBaseTagService extends MutableService<KnowledgeBaseORM> {
 
   /* Utils */
 
-  async limitKBTagsDocument(document?: VersionKnowledgeBaseDocument, additionalAmount?: number) {
+  async limitKBTagsDocument(document?: KnowledgeBaseDocument | VersionKnowledgeBaseDocument, additionalAmount?: number) {
     // check amout of existing KB tags for specific KB Document
     let tagsAmount = 0;
 

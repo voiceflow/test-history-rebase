@@ -28,14 +28,19 @@ import { appRef } from '@/app.ref';
 import { MulterFile } from '@/file/types';
 
 import { KnowledgeBaseDocumentService } from './document.service';
+import { PayloadSizeLimitInterceptor } from './document-limit-payload-size.interceptor';
 import {
   DocumentCreateOnePublicRequestBody,
   DocumentCreateOnePublicRequestParams,
   DocumentCreateOnePublicResponse,
   DocumentReplaceOnePublicRequestParams,
+  DocumentUploadTableQuery,
+  DocumentUploadTableRequest,
+  DocumentUploadTableResponse,
 } from './dtos/document-create.dto';
 import { DocumentFindManyPublicRequest, DocumentFindManyPublicResponse, DocumentFindOnePublicResponse } from './dtos/document-find.dto';
 import { DocumentAttachTagsRequest } from './dtos/document-tag.dto';
+import { VfChunksVariableBetaAccessInterceptor } from './vf-chunks-beta.interceptor';
 
 @Controller('public/knowledge-base/document')
 @ApiTags('KBPublicApiDocument')
@@ -50,7 +55,7 @@ export class KnowledgeBaseDocumentApiPublicHTTPController {
 
   @Post()
   @ApiConsumes('multipart/form-data')
-  @Authorize.Permissions<Request<{ assistantID: string }>>([Permission.PROJECT_UPDATE], async (request) => ({
+  @Authorize.Permissions<Request>([Permission.PROJECT_UPDATE], async (request) => ({
     id: await appRef.current.get(KnowledgeBaseDocumentService).resolveAssistantID(request),
     kind: 'project',
   }))
@@ -123,9 +128,35 @@ export class KnowledgeBaseDocumentApiPublicHTTPController {
     throw new UnsupportedMediaTypeException('invalid content type');
   }
 
+  @Post('upload/table')
+  @Authorize.Permissions<Request>([Permission.PROJECT_UPDATE], async (request) => ({
+    id: await appRef.current.get(KnowledgeBaseDocumentService).resolveAssistantID(request),
+    kind: 'project',
+  }))
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary: 'Upload table document',
+    description: 'Upload one table document',
+  })
+  @ZodApiQuery({ schema: DocumentUploadTableQuery })
+  @ZodApiBody({ schema: DocumentUploadTableRequest })
+  @ZodApiResponse({
+    status: HttpStatus.OK,
+    description: 'Upload table document',
+    schema: DocumentFindOnePublicResponse,
+  })
+  @UseInterceptors(PayloadSizeLimitInterceptor, VfChunksVariableBetaAccessInterceptor)
+  async uploadTable(
+    @Principal() principal: Identity & { legacy: { projectID: string }; createdBy: number },
+    @Body(new ZodValidationPipe(DocumentUploadTableRequest)) { data }: DocumentUploadTableRequest,
+    @Query(new ZodValidationPipe(DocumentUploadTableQuery)) query: DocumentUploadTableQuery
+  ): Promise<DocumentUploadTableResponse> {
+    return this.service.uploadTableDocument(principal.legacy.projectID, principal.createdBy, data, query.overwrite === 'true');
+  }
+
+  /* Get */
   @Get(':documentID')
-  @ApiConsumes('multipart/form-data')
-  @Authorize.Permissions<Request<{ assistantID: string }>>([Permission.PROJECT_READ], async (request) => ({
+  @Authorize.Permissions<Request>([Permission.PROJECT_READ], async (request) => ({
     id: await appRef.current.get(KnowledgeBaseDocumentService).resolveAssistantID(request),
     kind: 'project',
   }))
@@ -140,7 +171,7 @@ export class KnowledgeBaseDocumentApiPublicHTTPController {
     description: 'Get document by id in the target project',
     schema: DocumentFindOnePublicResponse,
   })
-  async publicGetOne(
+  async getOne(
     @Principal() principal: Identity & { legacy: { projectID: string } },
     @Param('documentID') documentID: string
   ): Promise<DocumentFindOnePublicResponse> {
@@ -149,7 +180,7 @@ export class KnowledgeBaseDocumentApiPublicHTTPController {
   }
 
   @Get()
-  @Authorize.Permissions<Request<{ assistantID: string }>>([Permission.PROJECT_READ], async (request) => ({
+  @Authorize.Permissions<Request>([Permission.PROJECT_READ], async (request) => ({
     id: await appRef.current.get(KnowledgeBaseDocumentService).resolveAssistantID(request),
     kind: 'project',
   }))
@@ -164,7 +195,7 @@ export class KnowledgeBaseDocumentApiPublicHTTPController {
     description: 'Get all assistant documents or get many documents by filters',
     schema: DocumentFindManyPublicResponse,
   })
-  async publicGetMany(
+  async getMany(
     @Principal() principal: Identity & { legacy: { projectID: string } },
     @Query(new ZodValidationPipe(DocumentFindManyPublicRequest)) query: DocumentFindManyPublicRequest
   ): Promise<DocumentFindManyPublicResponse> {
@@ -184,7 +215,7 @@ export class KnowledgeBaseDocumentApiPublicHTTPController {
   // eslint-disable-next-line max-params
   @Put(':documentID')
   @ApiConsumes('knowledgeBase')
-  @Authorize.Permissions<Request<{ assistantID: string }>>([Permission.PROJECT_UPDATE], async (request) => ({
+  @Authorize.Permissions<Request>([Permission.PROJECT_UPDATE], async (request) => ({
     id: await appRef.current.get(KnowledgeBaseDocumentService).resolveAssistantID(request),
     kind: 'project',
   }))
@@ -262,9 +293,10 @@ export class KnowledgeBaseDocumentApiPublicHTTPController {
     throw new UnsupportedMediaTypeException('invalid content type');
   }
 
+  /* Delete */
+
   @Delete(':documentID')
-  @ApiConsumes('knowledgeBase')
-  @Authorize.Permissions<Request<{ assistantID: string }>>([Permission.PROJECT_UPDATE], async (request) => ({
+  @Authorize.Permissions<Request>([Permission.PROJECT_UPDATE], async (request) => ({
     id: await appRef.current.get(KnowledgeBaseDocumentService).resolveAssistantID(request),
     kind: 'project',
   }))
@@ -278,18 +310,14 @@ export class KnowledgeBaseDocumentApiPublicHTTPController {
     status: HttpStatus.OK,
     description: 'Delete document by id in the target project',
   })
-  async publicDeleteOne(
-    @Principal() principal: Identity & { legacy: { projectID: string } },
-    @Param('documentID') documentID: string
-  ): Promise<void> {
+  async deleteOne(@Principal() principal: Identity & { legacy: { projectID: string } }, @Param('documentID') documentID: string): Promise<void> {
     await this.service.deleteManyDocuments([documentID], principal.legacy.projectID);
   }
 
   /* Tags */
 
   @Post(':documentID/tags/attach')
-  @ApiConsumes('knowledgeBase')
-  @Authorize.Permissions<Request<{ assistantID: string }>>([Permission.PROJECT_UPDATE], async (request) => ({
+  @Authorize.Permissions<Request>([Permission.PROJECT_UPDATE], async (request) => ({
     id: await appRef.current.get(KnowledgeBaseDocumentService).resolveAssistantID(request),
     kind: 'project',
   }))
@@ -308,8 +336,7 @@ export class KnowledgeBaseDocumentApiPublicHTTPController {
   }
 
   @Post(':documentID/tags/detach')
-  @ApiConsumes('knowledgeBase')
-  @Authorize.Permissions<Request<{ assistantID: string }>>([Permission.PROJECT_READ], async (request) => ({
+  @Authorize.Permissions<Request>([Permission.PROJECT_UPDATE], async (request) => ({
     id: await appRef.current.get(KnowledgeBaseDocumentService).resolveAssistantID(request),
     kind: 'project',
   }))

@@ -25,7 +25,7 @@ export class KnowledgeBaseTagPublicHTTPController {
 
   @Get('public')
   @ApiConsumes('knowledgeBase')
-  @Authorize.Permissions<Request<{ assistantID: string }>>([Permission.PROJECT_READ], async (req) => ({
+  @Authorize.Permissions<Request>([Permission.PROJECT_READ], async (req) => ({
     id: await appRef.current.get(KnowledgeBaseTagService).resolveAssistantID(req),
     kind: 'project',
   }))
@@ -34,7 +34,6 @@ export class KnowledgeBaseTagPublicHTTPController {
     summary: 'Get tags',
     description: 'Get all tags in the target project',
   })
-  @ApiParam({ name: 'assistantID', type: 'string' })
   @ZodApiResponse({
     status: HttpStatus.OK,
     description: 'Get all tags in the target project',
@@ -48,7 +47,7 @@ export class KnowledgeBaseTagPublicHTTPController {
 
   @Get('public/:tagID')
   @ApiConsumes('knowledgeBase')
-  @Authorize.Permissions<Request<{ assistantID: string }>>([Permission.PROJECT_READ], async (request) => ({
+  @Authorize.Permissions<Request>([Permission.PROJECT_READ], async (request) => ({
     id: await appRef.current.get(KnowledgeBaseTagService).resolveAssistantID(request),
     kind: 'project',
   }))
@@ -57,21 +56,20 @@ export class KnowledgeBaseTagPublicHTTPController {
     summary: 'Get tag by id',
     description: 'Get tag by id in the target project',
   })
-  @ApiParam({ name: 'assistantID', type: 'string' })
   @ApiParam({ name: 'tagID', type: 'string' })
   @ZodApiResponse({
     status: HttpStatus.OK,
     description: 'Get tag by id in the target project',
     schema: TagFindOneResponse,
   })
-  async findOne(@Param('assistantID') assistantID: string, @Param('tagID') tagID: string): Promise<TagFindOneResponse> {
-    const tag = await this.service.getOneTag(assistantID, tagID);
+  async findOne(@Principal() principal: Identity & { legacy: { projectID: string } }, @Param('tagID') tagID: string): Promise<TagFindOneResponse> {
+    const tag = await this.service.getOneTag(principal.legacy.projectID, tagID);
     return { data: tag };
   }
 
   @Patch('public/:tagID')
   @ApiConsumes('knowledgeBase')
-  @Authorize.Permissions<Request<{ assistantID: string }>>([Permission.PROJECT_UPDATE], async (request) => ({
+  @Authorize.Permissions<Request>([Permission.PROJECT_UPDATE], async (request) => ({
     id: await appRef.current.get(KnowledgeBaseTagService).resolveAssistantID(request),
     kind: 'project',
   }))
@@ -80,7 +78,6 @@ export class KnowledgeBaseTagPublicHTTPController {
     summary: 'Patch tag by id',
     description: 'Patch tag by id in the target project',
   })
-  @ApiParam({ name: 'assistantID', type: 'string' })
   @ApiParam({ name: 'tagID', type: 'string' })
   @ZodApiBody({ schema: TagPatchOneRequest })
   @ZodApiResponse({
@@ -89,17 +86,17 @@ export class KnowledgeBaseTagPublicHTTPController {
     schema: TagPatchOneResponse,
   })
   async patchOne(
-    @Param('assistantID') assistantID: string,
+    @Principal() principal: Identity & { legacy: { projectID: string } },
     @Param('tagID') tagID: string,
     @Body(new ZodValidationPipe(TagPatchOneRequest)) { data }: TagPatchOneRequest
   ): Promise<TagPatchOneResponse> {
-    const tag = await this.service.patchOneTag(assistantID, tagID, data);
+    const tag = await this.service.patchOneTag(principal.legacy.projectID, tagID, data);
     return { data: tag };
   }
 
   @Post('public')
   @ApiConsumes('knowledgeBase')
-  @Authorize.Permissions<Request<{ assistantID: string }>>([Permission.PROJECT_UPDATE], async (request) => ({
+  @Authorize.Permissions<Request>([Permission.PROJECT_UPDATE], async (request) => ({
     id: await appRef.current.get(KnowledgeBaseTagService).resolveAssistantID(request),
     kind: 'project',
   }))
@@ -108,7 +105,6 @@ export class KnowledgeBaseTagPublicHTTPController {
     summary: 'Create tag',
     description: 'Create tag  in the target project',
   })
-  @ApiParam({ name: 'assistantID', type: 'string' })
   @ZodApiBody({ schema: TagPatchOneRequest })
   @ZodApiResponse({
     status: HttpStatus.OK,
@@ -116,16 +112,16 @@ export class KnowledgeBaseTagPublicHTTPController {
     schema: TagPatchOneResponse,
   })
   async createOne(
-    @Param('assistantID') assistantID: string,
+    @Principal() principal: Identity & { legacy: { projectID: string } },
     @Body(new ZodValidationPipe(TagPatchOneRequest)) { data }: TagPatchOneRequest
   ): Promise<TagPatchOneResponse> {
-    const tag = await this.service.createOneTag(assistantID, data);
+    const tag = await this.service.createOneTag(principal.legacy.projectID, data);
     return { data: tag };
   }
 
   @Delete('public/:tagID')
   @ApiConsumes('knowledgeBase')
-  @Authorize.Permissions<Request<{ assistantID: string }>>([Permission.PROJECT_UPDATE], async (request) => ({
+  @Authorize.Permissions<Request>([Permission.PROJECT_UPDATE], async (request) => ({
     id: await appRef.current.get(KnowledgeBaseTagService).resolveAssistantID(request),
     kind: 'project',
   }))
@@ -134,13 +130,12 @@ export class KnowledgeBaseTagPublicHTTPController {
     summary: 'Delete tag',
     description: 'Delete one tag by id',
   })
-  @ApiParam({ name: 'assistantID', type: 'string' })
   @ApiParam({ name: 'tagID', type: 'string' })
   @ZodApiResponse({
     status: HttpStatus.OK,
     description: 'Delete tag by id in the target project',
   })
-  async deleteOne(@Param('assistantID') assistantID: string, @Param('tagID') tagID: string): Promise<void> {
-    await this.service.deleteOneTag(assistantID, tagID);
+  async deleteOne(@Principal() principal: Identity & { legacy: { projectID: string } }, @Param('tagID') tagID: string): Promise<void> {
+    await this.service.deleteOneTag(principal.legacy.projectID, tagID);
   }
 }

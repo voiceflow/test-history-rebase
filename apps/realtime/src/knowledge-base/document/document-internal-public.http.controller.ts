@@ -383,7 +383,6 @@ export class KnowledgeBaseDocumentInternalPublicHTTPController {
   }
 
   @Post(':documentID/retry')
-  @ApiConsumes('knowledgeBase')
   @Authorize.Permissions<Request<{ assistantID: string }>>([Permission.PROJECT_UPDATE], (request) => ({
     id: request.params.assistantID,
     kind: 'project',

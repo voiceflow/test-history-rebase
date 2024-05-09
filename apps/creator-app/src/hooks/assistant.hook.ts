@@ -74,15 +74,15 @@ export const useOnAssistantDuplicate = (projectID: string | null, { boardID }: {
     try {
       const toastID = Utils.id.cuid();
 
-      notify.short.info('Duplicating Assistant...', { autoClose: 1000, toastId: toastID });
+      notify.short.info('Duplicating', { isLoading: true, autoClose: 1000, toastId: toastID });
       PageProgress.start(PageProgressBar.ASSISTANT_DUPLICATING);
 
       await duplicateProject(projectID, workspaceID, boardID);
 
       notify.short.dismiss(toastID);
-      notify.short.success('Assistant cloned on the dashboard');
+      notify.short.success('Duplicated');
     } catch {
-      notify.short.error('Cloning failed, please try again later or contact support');
+      notify.short.error('Duplicating failed, please try again later or contact support');
     } finally {
       PageProgress.stop(PageProgressBar.ASSISTANT_DUPLICATING);
     }

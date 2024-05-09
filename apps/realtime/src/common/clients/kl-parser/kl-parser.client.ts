@@ -36,6 +36,23 @@ export class KlParserClient {
     });
   }
 
+  public async updateDocument(
+    projectID: string,
+    document: Omit<VersionKnowledgeBaseDocument, 'documentID' | 'updatedAt'> & { documentID: string; updatedAt: Date },
+    workspaceID: string,
+    settings: Pick<BaseModels.Project.KnowledgeBaseSettings, 'chunkStrategy'>
+  ) {
+    return this.client.patch(`api/v1/projects/${projectID}/documents/${document.documentID}`, {
+      json: {
+        projectID,
+        workspaceID,
+        document,
+        settings,
+        bucket: this.options.bucket,
+      },
+    });
+  }
+
   public async parse(
     projectID: string,
     document: Omit<VersionKnowledgeBaseDocument, 'documentID' | 'updatedAt'> & { documentID: string; updatedAt: Date },

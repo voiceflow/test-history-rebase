@@ -12,7 +12,7 @@ import { TagFindManyResponse, TagFindOneResponse } from './dtos/tag-find.dto';
 import { TagPatchOneRequest, TagPatchOneResponse } from './dtos/tag-patch.dto';
 import { KnowledgeBaseTagService } from './tag.service';
 
-@Controller('knowledge-base/tags')
+@Controller('public/knowledge-base/tags')
 @Authorize.Identity()
 @ApiTags('KnowledgeBaseTag')
 export class KnowledgeBaseTagPublicHTTPController {
@@ -23,7 +23,7 @@ export class KnowledgeBaseTagPublicHTTPController {
     private readonly service: KnowledgeBaseTagService
   ) {}
 
-  @Get('public')
+  @Get()
   @ApiConsumes('knowledgeBase')
   @Authorize.Permissions<Request>([Permission.PROJECT_READ], async (req) => ({
     id: await appRef.current.get(KnowledgeBaseTagService).resolveAssistantID(req),
@@ -45,7 +45,7 @@ export class KnowledgeBaseTagPublicHTTPController {
     return { total: tags.length, data: tags };
   }
 
-  @Get('public/:tagID')
+  @Get(':tagID')
   @ApiConsumes('knowledgeBase')
   @Authorize.Permissions<Request>([Permission.PROJECT_READ], async (request) => ({
     id: await appRef.current.get(KnowledgeBaseTagService).resolveAssistantID(request),
@@ -67,7 +67,7 @@ export class KnowledgeBaseTagPublicHTTPController {
     return { data: tag };
   }
 
-  @Patch('public/:tagID')
+  @Patch(':tagID')
   @ApiConsumes('knowledgeBase')
   @Authorize.Permissions<Request>([Permission.PROJECT_UPDATE], async (request) => ({
     id: await appRef.current.get(KnowledgeBaseTagService).resolveAssistantID(request),
@@ -94,7 +94,7 @@ export class KnowledgeBaseTagPublicHTTPController {
     return { data: tag };
   }
 
-  @Post('public')
+  @Post()
   @ApiConsumes('knowledgeBase')
   @Authorize.Permissions<Request>([Permission.PROJECT_UPDATE], async (request) => ({
     id: await appRef.current.get(KnowledgeBaseTagService).resolveAssistantID(request),
@@ -119,7 +119,7 @@ export class KnowledgeBaseTagPublicHTTPController {
     return { data: tag };
   }
 
-  @Delete('public/:tagID')
+  @Delete(':tagID')
   @ApiConsumes('knowledgeBase')
   @Authorize.Permissions<Request>([Permission.PROJECT_UPDATE], async (request) => ({
     id: await appRef.current.get(KnowledgeBaseTagService).resolveAssistantID(request),
@@ -136,6 +136,6 @@ export class KnowledgeBaseTagPublicHTTPController {
     description: 'Delete tag by id in the target project',
   })
   async deleteOne(@Principal() principal: Identity & { legacy: { projectID: string } }, @Param('tagID') tagID: string): Promise<void> {
-    await this.service.deleteOneTag(principal.legacy.projectID, tagID);
+    this.service.deleteOneTag(principal.legacy.projectID, tagID);
   }
 }

@@ -51,8 +51,32 @@ export class RefreshJobsOrm extends MongoAtomicORM<RefreshJobsEntity> {
   }
 
   async updateChecksum(projectID: string, documentID: string, checksum: string) {
-    await this.atomicUpdate({ projectID: new ObjectId(projectID), documentID: new ObjectId(documentID) }, [
-      Atomic.Set([{ path: [checksum], value: checksum }]),
-    ]);
+    try {
+      await this.atomicUpdate({ projectID: new ObjectId(projectID), documentID: new ObjectId(documentID) }, [
+        Atomic.Set([{ path: [checksum], value: checksum }]),
+      ]);
+    } catch {
+      /* empty */
+    }
+  }
+
+  async attachManyTags(projectID: string, documentID: string, tagIDs: string[]) {
+    try {
+      await this.atomicUpdate({ projectID: new ObjectId(projectID), documentID: new ObjectId(documentID) }, [
+        Atomic.AddToSet([{ path: 'tags', value: tagIDs }]),
+      ]);
+    } catch {
+      /* empty */
+    }
+  }
+
+  async detachManyTags(projectID: string, documentID: string, tagIDs: string[]) {
+    try {
+      await this.atomicUpdate({ projectID: new ObjectId(projectID), documentID: new ObjectId(documentID) }, [
+        Atomic.PullAll([{ path: 'tags', match: tagIDs }]),
+      ]);
+    } catch {
+      /* empty */
+    }
   }
 }

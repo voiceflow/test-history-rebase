@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.390.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.389.1...@voiceflow/realtime-sdk@1.390.0) (2024-05-09)
+
+### Features
+
+* update payment modal and plan list endpoint [bugfix] (COR-1930) ([#8012](https://github.com/voiceflow/creator-app/issues/8012)) ([4142525](https://github.com/voiceflow/creator-app/commit/4142525ddeeb5567e8a86fe56d2cd68a835df6e5))
+
 ## [1.389.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.389.0...@voiceflow/realtime-sdk@1.389.1) (2024-05-08)
 
 **Note:** Version bump only for package @voiceflow/realtime-sdk

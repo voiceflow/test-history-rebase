@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.311.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.310.0...@voiceflow/ui@1.311.0) (2024-05-09)
+
+### Features
+
+* update payment modal and plan list endpoint [bugfix] (COR-1930) ([#8012](https://github.com/voiceflow/creator-app/issues/8012)) ([4142525](https://github.com/voiceflow/creator-app/commit/4142525ddeeb5567e8a86fe56d2cd68a835df6e5))
+
 # [1.310.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.309.0...@voiceflow/ui@1.310.0) (2024-04-25)
 
 ### Features

@@ -71,6 +71,7 @@ export * from './node/carousel/carousel-layout.enum';
 export * from './node/carousel/carousel-layout.enum';
 export * from './node/function/function-compiled-node.dto';
 export * from './node/function/function-node.dto';
+export * from './node/next/next-compiled-node.dto';
 export * from './node/node.dto';
 export * from './node/node-type.enum';
 export * from './node/start/start-compiled-node.dto';

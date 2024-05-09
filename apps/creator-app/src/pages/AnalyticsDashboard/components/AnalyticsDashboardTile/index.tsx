@@ -2,7 +2,6 @@ import { Box, Text } from '@voiceflow/ui';
 import React from 'react';
 
 import { QueryResult } from '../../types';
-import { TILE_HEIGHT } from '../constants';
 import * as S from './styles';
 
 interface AnalyticsDashboardTileLabel {
@@ -45,8 +44,7 @@ const AnalyticsDashboardTile: React.FC<AnalyticsDashboardTileProps> = ({ title, 
         ) : undefined}
       </S.Header>
 
-      {/* See https://github.com/recharts/recharts/issues/172#issuecomment-307858843 */}
-      <Box.FlexAlignStart column width="99%" height={TILE_HEIGHT} justifyContent="center">
+      <Box.FlexAlignStart column width="99%" height="100%" justifyContent="center">
         {children}
       </Box.FlexAlignStart>
     </S.Tile>

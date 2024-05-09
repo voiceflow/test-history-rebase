@@ -7,7 +7,7 @@ import { useParams } from 'react-router-dom';
 
 import { CMS_FLOW_LEARN_MORE, CMS_WORKFLOW_LEARN_MORE } from '@/constants/link.constant';
 import { Permission } from '@/constants/permissions';
-import { Creator, Designer, Router, UI } from '@/ducks';
+import { Creator, Designer, Diagram, Router, UI } from '@/ducks';
 import { useEventualEngine } from '@/hooks/engine';
 import { useFlowCreateModal, useWorkflowCreateModal } from '@/hooks/modal.hook';
 import { usePermission } from '@/hooks/permission';
@@ -27,7 +27,7 @@ import {
 import { DiagramSidebarToolbar } from './DiagramSidebarToolbar.component';
 
 export const DiagramSidebar: React.FC = () => {
-  const params = useParams<{ diagramID?: string }>();
+  const params = useParams<{ nodeID?: string; diagramID?: string }>();
   const getEngine = useEventualEngine();
   const isCommenting = useCommentingMode();
   const flowCreateModal = useFlowCreateModal();
@@ -37,11 +37,10 @@ export const DiagramSidebar: React.FC = () => {
   const resizableSectionRef = useRef<IResizableSectionAPI>(null);
 
   const canvasOnly = useSelector(UI.selectors.isCanvasOnly);
-  const creatorFocus = useSelector(Creator.creatorFocusSelector);
-  const focusedNode = useSelector(Creator.nodeByIDSelector, { id: creatorFocus.target });
   const sidebarWidth = useSelector(UI.selectors.canvasSidebarWidth);
   const sidebarVisible = useSelector(UI.selectors.canvasSidebarVisible);
   const activeDiagramID = useSelector(Creator.activeDiagramIDSelector);
+  const activeSharedNode = useSelector(Diagram.sharedNodeByDiagramIDAndNodeIDSelector, { nodeID: params.nodeID, diagramID: params.diagramID });
 
   const goToDiagram = useDispatch(Router.goToDiagram);
   const patchOneFlow = useDispatch(Designer.Flow.effect.patchOne);
@@ -104,8 +103,7 @@ export const DiagramSidebar: React.FC = () => {
   });
 
   const diagramID = params.diagramID ?? activeDiagramID;
-  const focusedNodeID =
-    creatorFocus.isActive && (focusedNode?.type === BlockType.INTENT || focusedNode?.type === BlockType.START) ? creatorFocus.target : null;
+  const focusedNodeID = activeSharedNode?.type === BlockType.INTENT || activeSharedNode?.type === BlockType.START ? activeSharedNode.nodeID : null;
   const selectedID = focusedNodeID ? `${diagramID}:${focusedNodeID}` : diagramID;
 
   return (

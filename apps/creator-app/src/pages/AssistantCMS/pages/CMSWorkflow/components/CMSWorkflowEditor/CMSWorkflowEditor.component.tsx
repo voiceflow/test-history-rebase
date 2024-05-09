@@ -45,7 +45,7 @@ export const CMSWorkflowEditor: React.FC = () => {
         allowed: false,
         tooltip: {
           placement: 'left',
-          children: () => <Text variant="caption">Start workflow can’t be deleted</Text>,
+          children: () => <Text variant="caption">Default workflow can’t be deleted</Text>,
         },
       };
     },
@@ -93,11 +93,13 @@ export const CMSWorkflowEditor: React.FC = () => {
         .with(IndicatorStatus.IN_PROGRESS, () => WorkflowStatus.IN_PROGRESS)
         .exhaustive(),
     });
+
     notify.short.success('Updated');
   };
 
   const onAssigneeChange = async (assignee: IAssignee | null) => {
     await patchWorkflow({ assigneeID: assignee?.id || null });
+
     notify.short.success('Updated');
   };
 

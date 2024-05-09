@@ -152,7 +152,7 @@ export const useAssistantNavigationItems = () => {
         path: Path.PUBLISH_API,
         testID: 'publishing',
         hotkey: '',
-        isActive: isItemActive(Path.PUBLISH_API),
+        isActive: isItemActive(Path.PUBLISH),
         iconName: 'Api',
         tooltipLabel: 'Integration',
       }),

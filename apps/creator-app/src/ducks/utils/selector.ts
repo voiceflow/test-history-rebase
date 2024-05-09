@@ -26,7 +26,7 @@ export const projectIDParamSelector = createParameterSelector((params: { project
 
 export const diagramIDParamSelector = createParameterSelector((params: { diagramID?: string | null }) => params.diagramID);
 
-export const nodeIDParamSelector = createParameterSelector((params: { nodeID: string }) => params.nodeID);
+export const nodeIDParamSelector = createParameterSelector((params: { nodeID?: string | null }) => params.nodeID);
 
 export const assistantIDParamSelector = createParameterSelector((params: { assistantID: string | null }) => params.assistantID);
 

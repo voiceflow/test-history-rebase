@@ -2,8 +2,6 @@ import { Box, Text } from '@voiceflow/ui';
 
 import { css, styled } from '@/hocs/styled';
 
-import { TILE_HEIGHT } from '../constants';
-
 interface TileProps {
   gridWidth: 1 | 2;
   gridHeight: 1;
@@ -13,7 +11,7 @@ interface TileProps {
 export const Tile = styled(Box.FlexAlignStart)<TileProps>`
   background-color: #ffffff;
 
-  height: ${TILE_HEIGHT}px;
+  height: 100%;
   width: 100%;
 
   grid-column: span ${(props) => props.gridWidth};

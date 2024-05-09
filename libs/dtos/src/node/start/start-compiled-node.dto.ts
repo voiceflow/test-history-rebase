@@ -10,4 +10,4 @@ export const StartCompiledNodeDTO = BaseCompiledNodeDTO.extend({
   nextId: z.string().optional(),
 }).strict();
 
-export type StartCompiledNodeNode = InferCompiledNode<typeof StartCompiledNodeDTO>;
+export type StartCompiledNode = InferCompiledNode<typeof StartCompiledNodeDTO>;

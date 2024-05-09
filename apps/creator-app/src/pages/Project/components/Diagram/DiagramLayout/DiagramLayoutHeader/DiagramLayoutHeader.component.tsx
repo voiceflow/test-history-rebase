@@ -21,11 +21,7 @@ import { DiagramLayoutHeaderPrototypeClose } from './DiagramLayoutHeaderPrototyp
 import { DiagramLayoutHeaderPrototypeSettings } from './DiagramLayoutHeaderPrototypeSettings.component copy';
 import { DiagramLayoutHeaderTitle } from './DiagramLayoutHeaderTitle.component';
 
-interface IDiagramLayoutHeader {
-  isLoader?: boolean;
-}
-
-export const DiagramLayoutHeader: React.FC<IDiagramLayoutHeader> = ({ isLoader }) => {
+export const DiagramLayoutHeader: React.FC = () => {
   const isPrototype = !!useRouteMatch(Path.PROJECT_PROTOTYPE);
 
   const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
@@ -71,7 +67,7 @@ export const DiagramLayoutHeader: React.FC<IDiagramLayoutHeader> = ({ isLoader }
         />
       </Header.Section.Left>
 
-      <Header.Section.Center>{!isLoader && <>{showActions ? <DiagramLayoutHeaderActions /> : <DiagramLayoutHeaderTitle />}</>}</Header.Section.Center>
+      <Header.Section.Center>{showActions ? <DiagramLayoutHeaderActions /> : <DiagramLayoutHeaderTitle />}</Header.Section.Center>
 
       <Header.Section.Right>
         <DiagramLayoutHeaderMembers />

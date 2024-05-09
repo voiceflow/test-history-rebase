@@ -423,7 +423,7 @@ export class WorkflowService extends CMSTabularService<WorkflowORM> {
 
     await this.broadcastAddMany({ add: { workflows, diagrams } }, meta);
 
-    return workflow;
+    return workflows[0];
   }
 
   /* Upsert */

@@ -346,7 +346,7 @@ export class FlowService extends CMSTabularService<FlowORM> {
 
     await this.broadcastAddMany({ add: { flows, diagrams } }, meta);
 
-    return flow;
+    return flows[0];
   }
 
   /* Upsert */

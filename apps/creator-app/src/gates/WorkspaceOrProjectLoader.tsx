@@ -14,11 +14,12 @@ const WorkspaceOrProjectLoader: React.FC<ITabLoader> = (props) => {
   const location = useLocation();
   const cmsWorkflows = useFeature(FeatureFlag.CMS_WORKFLOWS);
 
-  const [isAssistant, isCanvas, isProject] = React.useMemo(
+  const [isExport, isCMS, isCanvas, isProject] = React.useMemo(
     () => [
-      matchPath(location.pathname, [Path.PROJECT_CMS]),
-      matchPath(location.pathname, [Path.PROJECT_CANVAS, Path.PROJECT_PROTOTYPE]),
-      matchPath(location.pathname, [
+      !!matchPath(location.pathname, Path.PROJECT_EXPORT),
+      !!matchPath(location.pathname, [Path.PROJECT_CMS]),
+      !!matchPath(location.pathname, [Path.PROJECT_CANVAS, Path.PROJECT_PROTOTYPE]),
+      !!matchPath(location.pathname, [
         Path.PROJECT_CMS,
         Path.PROJECT_CANVAS,
         Path.PROJECT_DOMAIN,
@@ -32,15 +33,12 @@ const WorkspaceOrProjectLoader: React.FC<ITabLoader> = (props) => {
     [location.pathname]
   );
 
-  const isExport = React.useMemo(() => matchPath(location.pathname, { path: [Path.PROJECT_EXPORT] }), [location.pathname]);
-
   if (isExport) return <TabLoader variant="dark" {...props} />;
 
   if (cmsWorkflows.isEnabled) {
     if (isCanvas) return <DiagramLoader variant="dark" {...props} />;
-    if (isAssistant) return <AssistantLoader />;
 
-    return isProject ? <ProjectLoader /> : <DashboardLoader {...props} />;
+    return isProject ? <AssistantLoader isCMS={isCMS} /> : <DashboardLoader {...props} />;
   }
 
   return isProject ? <ProjectLoader {...props} /> : <DashboardLoader {...props} />;

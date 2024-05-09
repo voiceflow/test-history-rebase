@@ -12,7 +12,7 @@ const DEFAULT_MODAL = {
 };
 
 // FIXME: refactor - get plan limits from backend (VF-3328)
-const TEAM_LIMIT_VALUE = 3;
+const TEAM_LIMIT_VALUE = 6;
 
 const STARTER = {
   upgradeModal: () => ({
@@ -22,11 +22,11 @@ const STARTER = {
   }),
 } satisfies UpgradeModalEntitlementLimit;
 
-const PRO_TEAM = {
+const PRO = {
   upgradeModal: ({ limit }) => ({
     ...DEFAULT_MODAL,
     ...getUpgradeModalProps(PlanType.ENTERPRISE, Tracking.UpgradePrompt.VARIABLE_STATES_LIMIT),
-    description: `You’ve used ${limit}/${limit} personas. Contact sales to unlock unlimited personas.`,
+    description: `You’ve used ${limit}/${limit} personas. Upgrade to teams to unlock unlimited personas.`,
   }),
 } satisfies UpgradeModalEntitlementLimit;
 
@@ -35,7 +35,6 @@ export const VARIABLE_STATES_LIMITS = {
   entitlement: 'personasLimit',
   limits: {
     [PlanType.STARTER]: STARTER,
-    [PlanType.TEAM]: PRO_TEAM,
-    [PlanType.PRO]: PRO_TEAM,
+    [PlanType.PRO]: PRO,
   },
 } satisfies LimitV3;

@@ -1,12 +1,15 @@
 import { Utils } from '@voiceflow/common';
 import { PlanType } from '@voiceflow/internal';
+import { FeatureFlag } from '@voiceflow/realtime-sdk';
 
 import type { UpgradePopperData } from '@/components/UpgradePopper';
 import type { UpgradeTooltipData } from '@/components/UpgradeTooltip';
 import { BOOK_DEMO_LINK, PRICING_LINK } from '@/constants/link.constant';
+import * as Feature from '@/ducks/feature/selectors';
 import * as Tracking from '@/ducks/tracking';
 import type { useDispatch } from '@/hooks';
 import ModalsManager from '@/ModalsV2/manager';
+import { isPlanName } from '@/ModalsV2/modals/Billing/typeguards';
 import type { UpgradeModal } from '@/ModalsV2/modals/Upgrade';
 
 import { getPlanTypeLabel } from './plans';
@@ -20,8 +23,10 @@ const onOpenLegacyPaymentModal = () => {
   ModalsManager.open(Utils.id.cuid.slug(), 'LegacyPayment').catch(Utils.functional.noop);
 };
 
-const onOpenPaymentModal = () => {
-  ModalsManager.open(Utils.id.cuid.slug(), 'Payment').catch(Utils.functional.noop);
+const onOpenPaymentModal = (nextPlan: PlanType) => () => {
+  ModalsManager.open(Utils.id.cuid.slug(), 'Payment', {
+    props: isPlanName(nextPlan) ? { nextPlan } : {},
+  }).catch(Utils.functional.noop);
 };
 
 export const getLegacyUpgradeModalProps = (
@@ -36,7 +41,13 @@ export const getUpgradeModalProps = (
   upgradePrompt: Tracking.UpgradePrompt,
   { isLegacyBilling = false }: { isLegacyBilling?: boolean } = {}
 ): Pick<UpgradeModal, 'onUpgrade' | 'upgradePrompt' | 'upgradeButtonText'> => {
-  if (nextPlan === PlanType.TEAM) {
+  const { isEnabled: teamsPlanSelfServeIsEnabled } = Feature.featuresSelector(window.store.getState())[FeatureFlag.TEAMS_PLAN_SELF_SERVE] ?? {
+    isEnabled: false,
+  };
+
+  const teamsIsEnabled = !isLegacyBilling && teamsPlanSelfServeIsEnabled;
+
+  if (!teamsIsEnabled && nextPlan === PlanType.TEAM) {
     return {
       onUpgrade: (dispatch: ReturnType<typeof useDispatch>) => {
         dispatch(Tracking.trackContactSales({ promptType: upgradePrompt }));
@@ -59,7 +70,7 @@ export const getUpgradeModalProps = (
   }
 
   return {
-    onUpgrade: isLegacyBilling ? onOpenLegacyPaymentModal : onOpenPaymentModal,
+    onUpgrade: isLegacyBilling ? onOpenLegacyPaymentModal : onOpenPaymentModal(nextPlan),
     upgradePrompt,
     upgradeButtonText: `Upgrade to ${getPlanTypeLabel(nextPlan)}`,
   };

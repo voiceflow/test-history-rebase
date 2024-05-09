@@ -1,12 +1,11 @@
 // import { StripeStatuses } from '@voiceflow/realtime-sdk';
 import { Box, Spinner } from '@voiceflow/ui';
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { Permission } from '@/constants/permissions';
 import * as Organization from '@/ducks/organization';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { usePermission, useSelector } from '@/hooks';
-import { getClient as getChargebeeClient, initialize as initializeChargebee } from '@/vendors/chargebee';
 
 import BillingHistory from './BillingHistory/BillingHistory.component';
 import { useBillingHistory } from './BillingHistory/hooks';
@@ -28,14 +27,6 @@ const DashboardV2Billing: React.FC = () => {
   const isReady = billingHistory.isReady && organizationID && subscription;
   const showPaymentFailed = !isTrial && (paymentMethod?.failed || subscription?.onDunningPeriod);
 
-  useEffect(() => {
-    try {
-      getChargebeeClient();
-    } catch (error) {
-      initializeChargebee();
-    }
-  }, []);
-
   if (!isReady) {
     return (
       <Box.FlexCenter fullHeight fullWidth flexGrow={1}>
@@ -50,7 +41,7 @@ const DashboardV2Billing: React.FC = () => {
 
       <EditorSeats
         nextBillingDate={subscription.nextBillingDate ?? null}
-        pricePerEditor={subscription.pricePerEditor}
+        planAmount={subscription.planAmount}
         billingPeriod={subscription.billingPeriodUnit ?? null}
       />
 
@@ -67,7 +58,11 @@ const DashboardV2Billing: React.FC = () => {
       )}
 
       {canManageSeats && isProOrTeamPlan && !isTrial && (
-        <CancelSubscription nextBillingDate={subscription.nextBillingDate ?? null} subscriptionStatus={subscription.status} />
+        <CancelSubscription
+          nextBillingDate={subscription.nextBillingDate ?? null}
+          subscriptionStatus={subscription.status}
+          plan={subscription.plan}
+        />
       )}
     </Box>
   );

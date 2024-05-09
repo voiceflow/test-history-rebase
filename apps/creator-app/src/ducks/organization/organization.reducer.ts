@@ -12,24 +12,14 @@ export const organizationReducer = reducerWithInitialState<OrganizationState>(IN
 
   // TODO: create members sub reducer
   .case(Actions.OrganizationMember.DeleteOne, (state, { context, id }) => {
-    const { organizationID } = context;
-    const organization = getOne(state, organizationID);
-
-    if (!organization) return state;
-
-    return patchOne(state, organizationID, { members: organization.members.filter((m) => m.creatorID !== id) });
+    const organization = getOne(state, context.organizationID);
+    return !organization ? state : patchOne(state, context.organizationID, { members: organization.members.filter((m) => m.creatorID !== id) });
   })
 
   // TODO: create subscription sub reducer
   .case(Actions.OrganizationSubscription.Replace, (state, { context, subscription }) => {
-    const { organizationID } = context;
-    const organization = getOne(state, organizationID);
-
-    if (organization) {
-      return patchOne(state, organizationID, { subscription });
-    }
-
-    return state;
+    const organization = getOne(state, context.organizationID);
+    return organization ? patchOne(state, context.organizationID, { subscription }) : state;
   })
 
   // TODO: create subscription sub reducer
@@ -46,5 +36,8 @@ export const organizationReducer = reducerWithInitialState<OrganizationState>(IN
       },
     });
   })
-
+  .case(Actions.OrganizationTakenSeats.Replace, (state, { context, takenSeats }) => {
+    const organization = getOne(state, context.organizationID);
+    return organization ? patchOne(state, context.organizationID, { takenSeats }) : state;
+  })
   .build();

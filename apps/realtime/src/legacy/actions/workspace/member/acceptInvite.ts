@@ -34,6 +34,10 @@ class AcceptWorkspaceInvite extends AbstractActionControl<Realtime.workspace.mem
           channel: Realtime.Channels.creator.build({ creatorID: ctx.userId }),
         }),
         this.server.processAs(creatorID, clientID, Realtime.workspace.member.replace({ members: dbWorkspace.members, workspaceID })),
+        this.services.organization.getTakenSeatsAndBroadcastFromWorkspaceID(workspaceID, {
+          userID: creatorID,
+          clientID: ctx.clientId,
+        }),
       ]);
 
       return workspaceID;

@@ -1,3 +1,4 @@
+import { PlanName } from '@voiceflow/dtos';
 import { Box, Button, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
@@ -8,9 +9,10 @@ import { ChargebeeSubscriptionStatus } from '@/models';
 interface CancelSubscriptionProps {
   nextBillingDate: string | null;
   subscriptionStatus: string;
+  plan: PlanName;
 }
 
-const CancelSubscription: React.FC<CancelSubscriptionProps> = ({ nextBillingDate, subscriptionStatus }) => {
+const CancelSubscription: React.FC<CancelSubscriptionProps> = ({ nextBillingDate, subscriptionStatus, plan }) => {
   const cancelModal = ModalsV2.useModal(ModalsV2.Billing.CancelSubscription);
   const isCancelable = subscriptionStatus !== ChargebeeSubscriptionStatus.NON_RENEWING;
 
@@ -24,7 +26,9 @@ const CancelSubscription: React.FC<CancelSubscriptionProps> = ({ nextBillingDate
           <Box.FlexApart>
             <div>
               <Page.Section.Title>Cancel Subscription</Page.Section.Title>
-              <Page.Section.Description>Pro features will be available until the end of the current billing cycle.</Page.Section.Description>
+              <Page.Section.Description>
+                {plan === 'team' ? 'Teams' : 'Pro'} features will be available until the end of the current billing cycle.
+              </Page.Section.Description>
             </div>
 
             <TippyTooltip content={`Workspace scheduled to be downgraded on ${nextBillingDate}`} disabled={isCancelable} width={400}>

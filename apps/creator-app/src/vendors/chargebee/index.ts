@@ -3,20 +3,20 @@ import { importScript } from '@voiceflow/ui';
 import { CHARGEBEE_PUBLISHABLE_KEY, CHARGEBEE_SITE } from '@/config';
 
 export const initialize = async () => {
-  await importScript({ id: 'chargebee-js', uri: 'https://js.chargebee.com/v2/chargebee.js', callbackName: 'onChargebeeReady' });
+  if (window.Chargebee?.getInstance()) return;
+
+  await importScript({ id: 'chargebee-js', uri: 'https://js.chargebee.com/v2/chargebee.js' });
 
   window.Chargebee.init({
     site: CHARGEBEE_SITE,
     publishableKey: CHARGEBEE_PUBLISHABLE_KEY,
   });
 
-  return window.Chargebee.getInstance();
+  if (!window.Chargebee.getInstance()) {
+    throw new Error('chargebee client could not be initialized');
+  }
 };
 
 export const getClient = () => {
-  const instance = window.Chargebee.getInstance();
-
-  if (!instance) throw new Error('chargebee client not initialized');
-
-  return instance;
+  return window.Chargebee.getInstance();
 };

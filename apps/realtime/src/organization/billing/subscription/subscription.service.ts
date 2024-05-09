@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { PlanName } from '@voiceflow/dtos';
 import { HashedIDService } from '@voiceflow/nestjs-common';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
@@ -9,6 +10,7 @@ import { Actions } from '@voiceflow/sdk-logux-designer';
 import { UserService } from '@/user/user.service';
 
 import subscriptionAdapter from './adapters/subscription.adapter';
+import { CreatePaymentIntentRequest } from './dto/create-payment-intent-request.dto';
 import { pollWithProgressiveTimeout } from './subscription.utils';
 
 const fromUnixTimestamp = (timestamp: number) => timestamp * 1000;
@@ -116,9 +118,12 @@ export class BillingSubscriptionService {
     );
   }
 
-  async createPaymentIntent(userID: number, amount: number) {
+  async createPaymentIntent(userID: number, payload: CreatePaymentIntentRequest) {
     const token = await this.user.getTokenByID(userID);
-    return this.billingClient.paymentIntentsPrivate.createPaymentIntent({ amount, currency_code: 'USD' }, { headers: { Authorization: token } });
+    return this.billingClient.paymentIntentsPrivate.createPaymentIntent(
+      { currency_code: 'USD', amount: payload.amount, reference_id: payload.referenceID, customer_id: payload.customerID },
+      { headers: { Authorization: token } }
+    );
   }
 
   async updateCustomerCard(customerID: string, paymentIntentID: string) {
@@ -154,6 +159,11 @@ export class BillingSubscriptionService {
 
         trialEnd: 0,
         changeOption: 'immediately',
+        ...(data.itemPriceID.includes(PlanName.TEAM)
+          ? {
+              prorate: true,
+            }
+          : {}),
 
         ...(subscription.metaData?.downgradedFromTrial
           ? {

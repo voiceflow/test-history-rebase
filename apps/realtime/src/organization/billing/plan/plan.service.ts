@@ -1,9 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { BillingPlan } from '@voiceflow/dtos';
-import { BillingPeriod, PlanType } from '@voiceflow/internal';
+import { BillingPeriodUnit, BillingPlan, PlanName } from '@voiceflow/dtos';
 import { BillingClient } from '@voiceflow/sdk-billing';
 
 import { ChargebeePlan, PlanItemPrice } from './plan.types';
+
+const getMontlyAmount = (price: number, period: string) => (period === BillingPeriodUnit.YEAR ? price / 12 : price);
+const getAnnualAmount = (price: number, period: string) => (period === BillingPeriodUnit.MONTH ? price * 12 : price);
 
 @Injectable()
 export class BillingPlanService {
@@ -31,32 +33,42 @@ export class BillingPlanService {
     return originalAmount - discount;
   }
 
-  async getAllPlans(plan: PlanType, coupon?: string): Promise<BillingPlan[]> {
+  async getPlans(plans: PlanName[], coupon?: string): Promise<BillingPlan[]> {
     const response = await this.billingClient.itemsPrivate.getItems({ type: 'plan' });
     const items = response.items as ChargebeePlan[];
 
-    return Promise.all(
+    const result = await Promise.all(
       items
-        .filter((item) => item.id === plan)
+        .filter((item) => plans.includes(item.id as PlanName))
         .map(async (item) => {
           const prices = await Promise.all(
             item.item_prices.map(async (price) => {
-              const estimatedAmount = await this.getPlanEstimateAmount(price, coupon);
+              const amount = !coupon ? price.price : await this.getPlanEstimateAmount(price, coupon);
 
               return {
                 id: price.id,
-                price: estimatedAmount / 100,
-                period: price.period_unit === 'month' ? BillingPeriod.MONTHLY : BillingPeriod.ANNUALLY,
+                amount,
+                annualAmount: getAnnualAmount(amount, price.period_unit),
+                monthlyAmount: getMontlyAmount(amount, price.period_unit),
+                periodUnit: price.period_unit,
               };
             })
           );
 
+          const seatEntitlement = item.item_entitlements.find(({ feature_id }) => feature_id === 'limit-editor-count');
+          const seats = seatEntitlement?.value ? Number(seatEntitlement.value) : 1;
+
           return {
             id: item.id,
-            name: item.name,
-            prices,
-          };
+            name: item.name.replace('Voiceflow -', '').trim(),
+            description: item.description,
+            pricesByPeriodUnit: Object.fromEntries(prices.map((price) => [price.periodUnit, price])),
+            seats,
+          } as BillingPlan;
         })
     );
+
+    // sort based on plans filters
+    return result.sort((a, b) => plans.indexOf(a.id) - plans.indexOf(b.id));
   }
 }

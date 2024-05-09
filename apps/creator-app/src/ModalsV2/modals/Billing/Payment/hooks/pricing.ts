@@ -1,30 +1,22 @@
-import { BillingPeriod } from '@voiceflow/internal';
-import { useAtom, useAtomValue } from 'jotai';
+import { BillingPeriodUnit, PlanName } from '@voiceflow/dtos';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 
 import * as atoms from '../Payment.atoms';
 
 export const usePricing = () => {
-  const editorSeats = useAtomValue(atoms.editorSeatsAtom);
-  const [period, setPeriod] = useAtom(atoms.periodAtom);
-  const activePaidPlanPrices = useAtomValue(atoms.activePaidPlanPricesAtom);
-
-  const periodPrice = (activePaidPlanPrices?.[period].value ?? 0) * (period === BillingPeriod.ANNUALLY ? 12 : 1);
-  const price = periodPrice * editorSeats;
-
-  const onChangePeriod = (period: BillingPeriod) => setPeriod(period);
+  const [selectedPeriod, setSelectedPeriod] = useAtom(atoms.selectedPeriodAtom);
+  const setSelectedPlanID = useSetAtom(atoms.selectedPlanIDAtom);
+  const selectedPlan = useAtomValue(atoms.selectedPlanAtom);
+  const selectedPlanPrice = useAtomValue(atoms.selectedPlanPriceAtom);
+  const onChangePeriod = (period: BillingPeriodUnit) => setSelectedPeriod(period);
+  const onChangePlan = (planID: PlanName) => setSelectedPlanID(planID);
 
   return {
-    period,
-    price,
-    prices: Object.entries(activePaidPlanPrices || {})?.reduce<Record<BillingPeriod, number>>(
-      (acc, [period, price]) => ({ ...acc, [period]: price.value }),
-      {
-        [BillingPeriod.ANNUALLY]: 0,
-        [BillingPeriod.MONTHLY]: 0,
-      }
-    ),
-    periodPrice,
+    selectedPeriod,
+    selectedPlan,
+    selectedPlanPrice,
     hasCard: false,
     onChangePeriod,
+    onChangePlan,
   };
 };

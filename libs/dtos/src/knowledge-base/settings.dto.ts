@@ -28,5 +28,3 @@ export const KnowledgeBaseSettingsDTO = z.object({
 });
 
 export type KnowledgeBaseSettings = z.infer<typeof KnowledgeBaseSettingsDTO>;
-
-export type KnowledgeBaseSettingsResponse = z.infer<typeof KnowledgeBaseSettingsDTO>;

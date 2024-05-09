@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.69.0 (2024-05-09)
+
+### Features
+
+* workflow improvements 2 (COR-000) ([#8084](https://github.com/voiceflow/creator-app/issues/8084)) ([17444fa](https://github.com/voiceflow/creator-app/commit/17444fa577201755c0dec6f8c4753b6d57ee3b50))
+
 # [1.68.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.67.0...@voiceflow/dtos@1.68.0) (2024-05-09)
 
 ### Features

@@ -28,7 +28,7 @@ export class KnowledgeBaseSettingsPublicHTTPController {
   @ZodApiResponse({
     status: HttpStatus.OK,
     schema: KnowledgeBaseSettingsDTO,
-    description: 'Get the users knowledge base settings',
+    description: 'Get the users knowledge base settings for the assistant',
   })
   async getSettings(@Param('assistantID') assistantID: string): Promise<KnowledgeBaseSettings> {
     return this.service.getSettings(assistantID);
@@ -45,6 +45,7 @@ export class KnowledgeBaseSettingsPublicHTTPController {
   @ZodApiBody({ schema: KnowledgeBaseSettingsDTO })
   @ZodApiResponse({
     status: HttpStatus.OK,
+    description: 'Update the users knowledge base settings for the assistant',
   })
   async updateSettings(
     @Param('assistantID') assistantID: string,

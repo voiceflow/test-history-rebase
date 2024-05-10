@@ -29,14 +29,14 @@ export class OrganizationLoguxController {
   }))
   async subscribe(@Context() ctx: Context.Channel<Channels.OrganizationParams>) {
     const { organizationID } = ctx.params;
-    const [subscriptionsMeta] = [{ id: ctx.server.log.generateId() }];
+    const subscriptionMeta = { id: ctx.server.log.generateId() };
 
     const subscription = await this.billingSubscriptionService
       .findOneByOrganizationID(organizationID)
       .then(subscriptionAdapter.fromDB)
       .catch(() => null);
 
-    return subscription ? [[Actions.OrganizationSubscription.Replace({ subscription, context: ctx.params }), subscriptionsMeta]] : [];
+    return subscription ? [[Actions.OrganizationSubscription.Replace({ subscription, context: ctx.params }), subscriptionMeta]] : [];
   }
 
   @Action(Actions.Organization.PatchOne)

@@ -1,3 +1,4 @@
+import { Styles as ChargebeeStyles } from '@chargebee/chargebee-js-types';
 import { Animations, colors, StyledInputProps, ThemeColor } from '@voiceflow/ui';
 
 import { css, styled } from '@/hocs/styled';
@@ -7,8 +8,6 @@ interface ContainerProps extends StyledInputProps {
   error?: boolean;
   disabled?: boolean;
 }
-
-export const chargebeeInputFonts = ['https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap'];
 
 export const CardElementContainer = styled.div<ContainerProps>`
   width: 100%;
@@ -35,10 +34,6 @@ export const CardElementContainer = styled.div<ContainerProps>`
     box-shadow: 0 0 3px 0 rgba(17, 49, 96, 0.06);
   }
 
-  .CardIcon-fill {
-    fill: red;
-  }
-
   ${({ disabled }) =>
     disabled &&
     css`
@@ -61,8 +56,22 @@ export const CardElementContainer = styled.div<ContainerProps>`
     `}
 `;
 
-export const chargebeeInputStyle = {
+export const ErrorMessage = styled.span`
+  color: #8da2b5;
+  margin-top: 8px;
+  font-size: 13px;
+  height: 0%;
+  color: #bd425f;
+  line-height: normal;
+
+  animation: ${Animations.fadeInKeyframes} ${ANIMATION_SPEED}s ease, ${Animations.moveInTopKeyframes} ${ANIMATION_SPEED}s ease,
+    ${Animations.scaleInYKeyframes} 0.1s ease;
+  transform-origin: top;
+`;
+
+export const chargebeeInputStyle: ChargebeeStyles = {
   base: {
+    iconColor: 'rgb(81 94 128 / 30%)',
     lineHeight: '16px',
     fontFamily: 'Open Sans, Arial, sans-serif',
     fontSize: '15px',
@@ -84,15 +93,4 @@ export const chargebeeInputStyle = {
   empty: {},
 };
 
-export const ErrorMessage = styled.span`
-  color: #8da2b5;
-  margin-top: 8px;
-  font-size: 13px;
-  height: 0%;
-  color: #bd425f;
-  line-height: normal;
-
-  animation: ${Animations.fadeInKeyframes} ${ANIMATION_SPEED}s ease, ${Animations.moveInTopKeyframes} ${ANIMATION_SPEED}s ease,
-    ${Animations.scaleInYKeyframes} 0.1s ease;
-  transform-origin: top;
-`;
+export const chargebeeInputFonts = ['https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap'];

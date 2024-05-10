@@ -73,4 +73,6 @@ export enum FeatureFlag {
 
   // functions
   FUNCTION_LISTEN = 'function_listen',
+
+  TEAMS_PLAN_SELF_SERVE = 'teams_plan_self_serve',
 }

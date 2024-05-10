@@ -1,4 +1,4 @@
-import { PlanType } from '@voiceflow/internal';
+import { PlanName } from '@voiceflow/dtos';
 import { Box, Button, Modal, System, toast } from '@voiceflow/ui';
 import React from 'react';
 
@@ -22,8 +22,10 @@ const CancelSubscription = manager.create('BillingCancelSubscription', () => ({ 
     try {
       await cancelSubscription(organization.id);
 
-      tracking.trackPlanChanged({ currentPlan: (organization.subscription.plan as PlanType) ?? PlanType.PRO, newPlan: PlanType.STARTER });
-      toast.success(`Subscription cancelled. Pro features will be available until ${organization.subscription.nextBillingDate}`);
+      const { plan, nextBillingDate } = organization.subscription;
+      tracking.trackPlanChanged({ currentPlan: plan ?? PlanName.PRO, newPlan: PlanName.STARTER });
+
+      toast.success(`Subscription cancelled. ${plan === PlanName.TEAM ? 'Teams' : 'Pro'} features will be available until ${nextBillingDate}`);
       api.enableClose();
       api.close();
     } catch {

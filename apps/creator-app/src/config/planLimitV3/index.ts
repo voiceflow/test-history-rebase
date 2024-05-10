@@ -4,6 +4,7 @@ import { MARKUP_IMAGE_LIMITS } from './markupImage';
 import { PROJECTS_LIMITS } from './projects';
 import { VARIABLE_STATES_LIMITS } from './variableStates';
 import { VIEWER_SEATS_LIMITS } from './viewerSeats';
+import { WORKSPACES_LIMITS } from './workspaces';
 
 export * from './types';
 
@@ -14,6 +15,7 @@ export const LIMITS = {
   [PROJECTS_LIMITS.limit]: PROJECTS_LIMITS,
   [VARIABLE_STATES_LIMITS.limit]: VARIABLE_STATES_LIMITS,
   [VIEWER_SEATS_LIMITS.limit]: VIEWER_SEATS_LIMITS,
+  [WORKSPACES_LIMITS.limit]: WORKSPACES_LIMITS,
 } as const;
 
 export type Limits = typeof LIMITS;

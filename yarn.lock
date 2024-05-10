@@ -10241,8 +10241,8 @@ __metadata:
     "@voiceflow/nestjs-common": 2.38.5
     "@voiceflow/nestjs-env": 1.6.2
     "@voiceflow/nestjs-openapi-extractor": 1.7.9
-    "@voiceflow/sdk-auth": ^2.8.1
-    "@voiceflow/sdk-billing": 1.23.2
+    "@voiceflow/sdk-auth": ^2.10.0
+    "@voiceflow/sdk-billing": 1.26.2
     axios: 1.6.0
     chance: 1.1.11
     dd-trace: 4.33.0
@@ -10422,18 +10422,6 @@ __metadata:
     "@orval/core":
       optional: true
   checksum: b74a60fe054a74057b6712153e01411056564bf786318c9cf83020fa8837846c4bbcf4b920ef9c187297a0e7b331d00a8b6af88dd9c7d022c5cc5ec1defefad2
-  languageName: node
-  linkType: hard
-
-"@voiceflow/orval-fetch@npm:1.4.0":
-  version: 1.4.0
-  resolution: "@voiceflow/orval-fetch@npm:1.4.0"
-  peerDependencies:
-    "@orval/core": ^6
-  peerDependenciesMeta:
-    "@orval/core":
-      optional: true
-  checksum: fd8e1294a92dbf6a0b13b7227825294354dd5600b2786dfd2390b4e2aa0f6b7338253d7be017404bf489171a32a66b175fea825eba8b7ce56f0dbf3b11d4a0ec
   languageName: node
   linkType: hard
 
@@ -10662,9 +10650,9 @@ __metadata:
     "@voiceflow/platform-config": "workspace:*"
     "@voiceflow/realtime-sdk": "workspace:*"
     "@voiceflow/schema-types": 1.64.0
-    "@voiceflow/sdk-auth": ^2.8.1
+    "@voiceflow/sdk-auth": ^2.10.0
     "@voiceflow/sdk-billing": 1.26.3
-    "@voiceflow/sdk-identity": 1.19.2
+    "@voiceflow/sdk-identity": 1.20.3
     "@voiceflow/sdk-logux-designer": "workspace:*"
     "@voiceflow/sdk-message-queue": 1.7.0
     "@voiceflow/socket-utils": "workspace:*"
@@ -10793,14 +10781,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voiceflow/sdk-auth@npm:^2.8.1":
-  version: 2.8.1
-  resolution: "@voiceflow/sdk-auth@npm:2.8.1"
+"@voiceflow/sdk-auth@npm:^2.10.0":
+  version: 2.10.0
+  resolution: "@voiceflow/sdk-auth@npm:2.10.0"
   dependencies:
     "@voiceflow/common": 8.2.1
-    "@voiceflow/orval-fetch": 1.4.0
-    "@voiceflow/sdk-common": 1.11.3
-    ts-pattern: ^4.2.2
+    "@voiceflow/orval-fetch": 1.6.0
+    "@voiceflow/sdk-common": 1.12.0
+    ts-pattern: 4.2.2
   peerDependencies:
     "@logux/server": ^0.12
     "@nestjs/common": ^9
@@ -10808,7 +10796,7 @@ __metadata:
     "@voiceflow/exception": ^1
     "@voiceflow/schema-types": "*"
     "@voiceflow/verror": ^1
-    express: ^4.17
+    express: ^4
     nestjs-zod: ^2
     typescript-fsa: ^3
   peerDependenciesMeta:
@@ -10830,16 +10818,16 @@ __metadata:
       optional: false
     typescript-fsa:
       optional: true
-  checksum: a456c2eb5a034869a3a8e1cdcf22ca354c433894362cc6229231c555c439a225e8d76e4301353f507a14ae61d04cc682b2bc8462e567d70782961833a417967b
+  checksum: 7a3ea11135af14445cc7dd52dfdc156ac9a0982400e6f99e12b3b9b5fc7437ab0c881ad951e3d3ebbb722ec1a69fc73da824d201335b8a6d7c7a4f65f814c98c
   languageName: node
   linkType: hard
 
-"@voiceflow/sdk-billing@npm:1.23.2":
-  version: 1.23.2
-  resolution: "@voiceflow/sdk-billing@npm:1.23.2"
+"@voiceflow/sdk-billing@npm:1.26.2":
+  version: 1.26.2
+  resolution: "@voiceflow/sdk-billing@npm:1.26.2"
   dependencies:
-    "@voiceflow/orval-fetch": 1.4.0
-    "@voiceflow/sdk-common": 1.11.3
+    "@voiceflow/orval-fetch": 1.6.0
+    "@voiceflow/sdk-common": 1.12.0
     "@voiceflow/verror": 1.1.2
     rxjs: 7.5.7
   peerDependencies:
@@ -10856,7 +10844,7 @@ __metadata:
       optional: true
     undici:
       optional: true
-  checksum: 60f328c8f9a71fd74cce1a11f57c1a4aebde72a092b76773e849b2296bb4bd13e3d61473ba7e2f17247c9d8cb3b2f024682edd26edbce91d957948f92457e28c
+  checksum: 103094465379f9c1346dc434b4732b8a06e61bbad4df2f6baff0d447dfb259164f3b386be1e9e9f4db5be14b12d1bfcdf3b333e908a6f370e854e4feaac50ba9
   languageName: node
   linkType: hard
 
@@ -10907,27 +10895,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voiceflow/sdk-common@npm:1.11.3":
-  version: 1.11.3
-  resolution: "@voiceflow/sdk-common@npm:1.11.3"
-  dependencies:
-    "@voiceflow/exception": 1.5.1
-    "@voiceflow/fetch": 1.5.2
-  peerDependencies:
-    "@nestjs/common": ^9
-    "@nestjs/core": ^9
-    undici: ^5
-  peerDependenciesMeta:
-    "@nestjs/common":
-      optional: true
-    "@nestjs/core":
-      optional: true
-    undici:
-      optional: true
-  checksum: 4ec77419e82dc576796c21005c88953ffb97c037855054ccfea142dcd2468e6cd007c482feb851259fa9bd4fc12c9f71a580da405f21a15793410226fe62de73
-  languageName: node
-  linkType: hard
-
 "@voiceflow/sdk-common@npm:1.12.0":
   version: 1.12.0
   resolution: "@voiceflow/sdk-common@npm:1.12.0"
@@ -10959,7 +10926,7 @@ __metadata:
     "@voiceflow-meta/typescript-config": "workspace:*"
     "@voiceflow/orval-fetch": 1.5.2
     "@voiceflow/realtime": "workspace:*"
-    "@voiceflow/sdk-common": 1.11.3
+    "@voiceflow/sdk-common": 1.12.0
     nestjs-zod: 2.2.0
     undici: 5.28.4
   peerDependencies:
@@ -10989,7 +10956,7 @@ __metadata:
     "@voiceflow-meta/typescript-config": "workspace:*"
     "@voiceflow/ml-gateway": "workspace:*"
     "@voiceflow/orval-fetch": 1.5.2
-    "@voiceflow/sdk-common": 1.11.3
+    "@voiceflow/sdk-common": 1.12.0
     eventsource-parser: ^1.1.2
     nestjs-zod: 2.2.0
     undici: 5.28.4
@@ -11010,12 +10977,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@voiceflow/sdk-identity@npm:1.19.2":
-  version: 1.19.2
-  resolution: "@voiceflow/sdk-identity@npm:1.19.2"
+"@voiceflow/sdk-identity@npm:1.20.3":
+  version: 1.20.3
+  resolution: "@voiceflow/sdk-identity@npm:1.20.3"
   dependencies:
-    "@voiceflow/orval-fetch": 1.4.0
-    "@voiceflow/sdk-common": 1.11.3
+    "@voiceflow/orval-fetch": 1.6.0
+    "@voiceflow/sdk-common": 1.12.0
   peerDependencies:
     "@nestjs/common": ^9
     nestjs-zod: ^2
@@ -11027,7 +10994,7 @@ __metadata:
       optional: true
     undici:
       optional: true
-  checksum: 8168b8164d267ac51d619a304e47d108576c025397e6e9f5580fb14860fcf1054e942eae216bc8e513fb10b76d4e2ce6919bf9f2e099ff027036fa0c0083f34b
+  checksum: 94a9e8a145f6d2c9b29864c010a9a395cb472bd5001366ce2928064e6bb11e3ed43618950721bc8374f9cd0f328fc6f8ec9c3f72ec705a4fcd95ca7228db37a6
   languageName: node
   linkType: hard
 
@@ -33293,6 +33260,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ts-pattern@npm:4.2.2":
+  version: 4.2.2
+  resolution: "ts-pattern@npm:4.2.2"
+  checksum: e9e818f0d4a1706930f81bb3e6fce69db998a584999b113ef0d0c73db5a810f0ead3a295393603f2fed4e17ba2cc90e6bf38223bea4f615a9e42deb514e91cc2
+  languageName: node
+  linkType: hard
+
 "ts-pattern@npm:5.0.5, ts-pattern@npm:^5.0.5":
   version: 5.0.5
   resolution: "ts-pattern@npm:5.0.5"
@@ -33300,7 +33274,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-pattern@npm:^4.0.5, ts-pattern@npm:^4.2.2":
+"ts-pattern@npm:^4.0.5":
   version: 4.3.0
   resolution: "ts-pattern@npm:4.3.0"
   checksum: f5167f6f721212c1e22f8590bb1fc21e27fd591d6fc5af0e467778f8e5b2dc1ae490cf5c633c83a3021a61283a671a53faf250b081c17c0f025e73eb775e5fe3

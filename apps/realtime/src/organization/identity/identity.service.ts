@@ -45,22 +45,17 @@ export class OrganizationIdentityService {
     });
   }
 
-  public async getWorkspaces(creatorID: number, organizationID: string): Promise<Realtime.Identity.Workspace[]> {
-    const token = await this.user.getTokenByID(creatorID);
+  public async getWorkspacesByOrganizationID(organizationID: string): Promise<Realtime.Identity.Workspace[]> {
+    const workspaces = await this.identityClient.private.findAllWorkspacesByOrganizationID(organizationID);
 
-    // This method returns all workspaces for an organization
-    // TODO [organization refactor] create adapter for workspaces
-    return (await this.identityClient.organization.findAllByOrganizationID(organizationID)).map(
-      (w) => ({
-        id: w.id,
-        name: w.name,
-        image: w.image || '',
-        settings: w.settings,
-        organizationID: w.organizationID,
-        createdAt: w.createdAt,
-        updatedAt: w.updatedAt,
-      }),
-      { headers: { Authorization: token } }
-    );
+    return workspaces.map((w) => ({
+      id: w.id,
+      name: w.name,
+      image: w.image || '',
+      settings: w.settings,
+      organizationID: w.organizationID,
+      createdAt: w.createdAt,
+      updatedAt: w.updatedAt,
+    }));
   }
 }

@@ -56,7 +56,7 @@ export const PLAN_TYPE_META: Record<PlanType, { label: string; color: string }> 
     color: 'linear-gradient(to bottom, rgba(85, 137, 235, 0.85) -25%, #5589eb 75%)',
   },
   [PlanType.TEAM]: {
-    label: 'Team',
+    label: 'Teams',
     color: 'linear-gradient(to bottom, rgba(85, 137, 235, 0.85) -25%, #5589eb 75%)',
   },
   [PlanType.CREATOR]: {

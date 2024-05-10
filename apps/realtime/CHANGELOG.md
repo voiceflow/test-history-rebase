@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.354.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.353.0...@voiceflow/realtime@1.354.0) (2024-05-10)
+
+### Features
+
+* optional name during urls upload (COR-1841) ([#8113](https://github.com/voiceflow/creator-app/issues/8113)) ([18f2399](https://github.com/voiceflow/creator-app/commit/18f2399ca581a02cdbf6bf8803e1e13796013e23))
+
 # [1.353.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.352.0...@voiceflow/realtime@1.353.0) (2024-05-10)
 
 ### Features

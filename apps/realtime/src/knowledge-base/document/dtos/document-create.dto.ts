@@ -1,6 +1,10 @@
 import { KBDocumentDataDTO, KBDocumentStatus, KBDocumentUrlDataDTO, KnowledgeBaseDocumentDTO } from '@voiceflow/dtos';
 import { z } from 'zod';
 
+export const KBDocumentUrlDataOptionalNameDTO = KBDocumentUrlDataDTO.extend({
+  name: z.string().optional(),
+});
+
 export const DocumentCreateManyURLsRequest = z.object({
   data: z.array(KBDocumentUrlDataDTO),
 });
@@ -11,7 +15,7 @@ export const DocumentCreateOneURLRequest = z.object({
 export type DocumentCreateOneURLRequest = z.infer<typeof DocumentCreateOneURLRequest>;
 
 export const DocumentCreateOnePublicRequestBody = z.object({
-  data: KBDocumentUrlDataDTO,
+  data: KBDocumentUrlDataOptionalNameDTO,
 });
 
 export type DocumentCreateOnePublicRequestBody = z.infer<typeof DocumentCreateOnePublicRequestBody>;

@@ -108,7 +108,7 @@ export class KnowledgeBaseDocumentApiPublicHTTPController {
       document = await this.service.createOneUrlDocument({
         projectID: principal.legacy.projectID,
         userID: principal.createdBy,
-        data: { data: body.data },
+        data: { data: { ...body.data, name: body.data?.url } },
         query: formattedQuery,
       });
     }
@@ -283,7 +283,7 @@ export class KnowledgeBaseDocumentApiPublicHTTPController {
       document = await this.service.createOneUrlDocument({
         projectID: principal.legacy.projectID,
         userID: principal.createdBy,
-        data: { data: body.data },
+        data: { data: { ...body.data, name: body.data?.url } },
         query: formattedQuery,
         existingDocumentID: documentID,
       });

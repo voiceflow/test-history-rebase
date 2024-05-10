@@ -132,7 +132,7 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
       throw new ConflictException('file already exists');
     }
 
-    if (requestedDocumentID && requestedDocumentID !== existingDocumentID) {
+    if (requestedDocumentID && existingDocumentID && requestedDocumentID !== existingDocumentID) {
       throw new ConflictException(`file already exists under documentID: ${existingDocumentID}`);
     }
   }

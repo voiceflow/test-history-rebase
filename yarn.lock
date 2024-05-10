@@ -11709,12 +11709,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@voiceflow/prettier-config@npm:1.3.0":
-  version: 1.3.0
-  resolution: "@voiceflow/prettier-config@npm:1.3.0"
-  peerDependencies:
-    prettier: ^1.19.1 || ^2.0.0
-  checksum: 006806bb3da1109b76f2e63718a5c9ad51354833c118f0864f1a1e56b3309b35d5e7765a3e1f846bad36cd402d971dedc5f8ef69aadf7075bf5474f5b3796fde
+"@voiceflow/prettier-config@npm:1.5.1":
+  version: 1.5.1
+  resolution: "@voiceflow/prettier-config@npm:1.5.1"
+  dependencies:
+    prettier-plugin-packagejson: 2.4.14
+  checksum: 90c35c01fa525bfce6612f433d8f25e3982ce1b3d7bc7c8c1db36789d6fe4de75c29e6707a1913e3d12db7778b9d72e7fdb45d7be982ee59d666eeb113e45f6c
   languageName: node
   linkType: hard
 
@@ -17435,6 +17435,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"detect-indent@npm:^7.0.1":
+  version: 7.0.1
+  resolution: "detect-indent@npm:7.0.1"
+  checksum: cbf3f0b1c3c881934ca94428e1179b26ab2a587e0d719031d37a67fb506d49d067de54ff057cb1e772e75975fed5155c01cd4518306fee60988b1486e3fc7768
+  languageName: node
+  linkType: hard
+
 "detect-indent@npm:~5.0.0":
   version: 5.0.0
   resolution: "detect-indent@npm:5.0.0"
@@ -17460,6 +17467,13 @@ __metadata:
   version: 3.1.0
   resolution: "detect-newline@npm:3.1.0"
   checksum: ae6cd429c41ad01b164c59ea36f264a2c479598e61cba7c99da24175a7ab80ddf066420f2bec9a1c57a6bead411b4655ff15ad7d281c000a89791f48cbe939e7
+  languageName: node
+  linkType: hard
+
+"detect-newline@npm:^4.0.0":
+  version: 4.0.1
+  resolution: "detect-newline@npm:4.0.1"
+  checksum: 0409ecdfb93419591ccff24fccfe2ddddad29b66637d1ed898872125b25af05014fdeedc9306339577060f69f59fe6e9830cdd80948597f136dfbffefa60599c
   languageName: node
   linkType: hard
 
@@ -21461,6 +21475,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"get-stdin@npm:^9.0.0":
+  version: 9.0.0
+  resolution: "get-stdin@npm:9.0.0"
+  checksum: 5972bc34d05932b45512c8e2d67b040f1c1ca8afb95c56cbc480985f2d761b7e37fe90dc8abd22527f062cc5639a6930ff346e9952ae4c11a2d4275869459594
+  languageName: node
+  linkType: hard
+
 "get-stream@npm:^3.0.0":
   version: 3.0.0
   resolution: "get-stream@npm:3.0.0"
@@ -21586,6 +21607,13 @@ __metadata:
   dependencies:
     findup-sync: ^2.0.0
   checksum: 0d9de6f24756cbb50e2f33fdf02cd665e8d5be8f5889e382e07d55b2fce44ea775870daf3537952191d06858dbbfb63d837a13064ce817ac5eae11711374a7dc
+  languageName: node
+  linkType: hard
+
+"git-hooks-list@npm:^3.0.0":
+  version: 3.1.0
+  resolution: "git-hooks-list@npm:3.1.0"
+  checksum: 05cbdb29e1e14f3b6fde78c876a34383e4476b1be32e8486ad03293f01add884c1a8df8c2dce2ca5d99119c94951b2ff9fa9cbd51d834ae6477b6813cefb998f
   languageName: node
   linkType: hard
 
@@ -21855,7 +21883,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globby@npm:^13.1.3":
+"globby@npm:^13.1.2, globby@npm:^13.1.3":
   version: 13.2.2
   resolution: "globby@npm:13.2.2"
   dependencies:
@@ -23764,7 +23792,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is-plain-obj@npm:^4.0.0":
+"is-plain-obj@npm:^4.0.0, is-plain-obj@npm:^4.1.0":
   version: 4.1.0
   resolution: "is-plain-obj@npm:4.1.0"
   checksum: 6dc45da70d04a81f35c9310971e78a6a3c7a63547ef782e3a07ee3674695081b6ca4e977fbb8efc48dae3375e0b34558d2bcd722aec9bddfa2d7db5b041be8ce
@@ -30561,6 +30589,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"prettier-plugin-packagejson@npm:2.4.14":
+  version: 2.4.14
+  resolution: "prettier-plugin-packagejson@npm:2.4.14"
+  dependencies:
+    sort-package-json: 2.10.0
+    synckit: 0.9.0
+  peerDependencies:
+    prettier: ">= 1.16.0"
+  peerDependenciesMeta:
+    prettier:
+      optional: true
+  checksum: 9e53ca048577f524dd4bca7b65738cb7add3eb0c04ace761084b327ae21e7aae8877cf4d9e73c25e97bc0f8438368ba4690947f2ac5d48977f2ab9d5b3fe8e9a
+  languageName: node
+  linkType: hard
+
 "prettier@npm:3.2.5":
   version: 3.2.5
   resolution: "prettier@npm:3.2.5"
@@ -33185,7 +33228,7 @@ __metadata:
     "@voiceflow/eslint-config": 7.5.0
     "@voiceflow/git-branch-check": 1.4.1
     "@voiceflow/package-scripts": 1.3.2
-    "@voiceflow/prettier-config": 1.3.0
+    "@voiceflow/prettier-config": 1.5.1
     "@voiceflow/semantic-release-config": 1.2.0
     "@voiceflow/test-common": 1.11.0
     "@voiceflow/tsconfig": 1.4.8
@@ -34279,6 +34322,31 @@ __metadata:
   dependencies:
     lodash: ^4.17.21
   checksum: d2dc6cc4f56298ce50b13ce6aafd8bf16010a8f8d0ae75345e8424118ac2cc017a8ffea0eedd136dd67751c09e7b0edb09c959d052ed7ed02afcfbab63c68277
+  languageName: node
+  linkType: hard
+
+"sort-object-keys@npm:^1.1.3":
+  version: 1.1.3
+  resolution: "sort-object-keys@npm:1.1.3"
+  checksum: abea944d6722a1710a1aa6e4f9509da085d93d5fc0db23947cb411eedc7731f80022ce8fa68ed83a53dd2ac7441fcf72a3f38c09b3d9bbc4ff80546aa2e151ad
+  languageName: node
+  linkType: hard
+
+"sort-package-json@npm:2.10.0":
+  version: 2.10.0
+  resolution: "sort-package-json@npm:2.10.0"
+  dependencies:
+    detect-indent: ^7.0.1
+    detect-newline: ^4.0.0
+    get-stdin: ^9.0.0
+    git-hooks-list: ^3.0.0
+    globby: ^13.1.2
+    is-plain-obj: ^4.1.0
+    semver: ^7.6.0
+    sort-object-keys: ^1.1.3
+  bin:
+    sort-package-json: cli.js
+  checksum: 095e5c5075c9799d3d6174f82e963fa3be0a1d193af0be656b651d2e5b563dfc794f46c7aa74e3fc761de3fba76951ad2d3de716cf50b3aca4e938f63edbfcae
   languageName: node
   linkType: hard
 
@@ -35376,6 +35444,16 @@ __metadata:
   version: 3.2.4
   resolution: "symbol-tree@npm:3.2.4"
   checksum: 6e8fc7e1486b8b54bea91199d9535bb72f10842e40c79e882fc94fb7b14b89866adf2fd79efa5ebb5b658bc07fb459ccce5ac0e99ef3d72f474e74aaf284029d
+  languageName: node
+  linkType: hard
+
+"synckit@npm:0.9.0":
+  version: 0.9.0
+  resolution: "synckit@npm:0.9.0"
+  dependencies:
+    "@pkgr/core": ^0.1.0
+    tslib: ^2.6.2
+  checksum: c38bc3df0306c3242ddc5628d766ef0b4ca85a8a861b0a26b03483f09eca31a7fbdbcefb1b9fdee9e49db7739df25ce728cb2c6aef02ddc58bf46ee71924a36b
   languageName: node
   linkType: hard
 

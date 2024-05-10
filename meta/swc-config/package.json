@@ -8,9 +8,8 @@
   "scripts": {
     "lint": "yarn lint:prettier --check",
     "lint:fix": "yarn lint:prettier --write",
-    "lint:prettier": "yarn g:prettier . \"!**/*.{js,ts}\""
+    "lint:prettier": "yarn g:prettier --check"
   },
-  "prettier": "../prettier-config",
   "engines": {
     "node": "16.20"
   },

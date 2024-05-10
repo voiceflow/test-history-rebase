@@ -25,12 +25,11 @@
     "lint": "yarn g:run-p lint:eslint \"lint:prettier --check\"",
     "lint:eslint": "yarn g:eslint \"src/**/*.{js,ts}\"",
     "lint:fix": "yarn g:run-p \"lint:eslint --fix\" \"lint:prettier --write\"",
-    "lint:prettier": "yarn g:prettier . \"!**/*.{js,ts}\"",
+    "lint:prettier": "yarn g:prettier --check",
     "lint:report": "yarn g:eslint-output \"./src/**/*.{js,ts}\"",
     "test:dependencies": "depcheck",
     "test:types": "yarn g:tsd"
   },
-  "prettier": "@voiceflow-meta/prettier-config",
   "eslintConfig": {
     "extends": "@voiceflow-meta/eslint-config"
   },
@@ -38,21 +37,13 @@
     "@voiceflow/common": "8.2.8",
     "@voiceflow/dtos": "workspace:*",
     "bidirectional-adapter": "1.2.1",
-    "ts-pattern": "^5.0.5",
+    "ts-pattern": "5.0.5",
     "zod": "3.22.4"
-  },
-  "devDependencies": {
-    "@voiceflow-meta/eslint-config": "workspace:*",
-    "@voiceflow-meta/prettier-config": "workspace:*",
-    "@voiceflow-meta/typescript-config": "workspace:*"
   },
   "engines": {
     "node": "16.20"
   },
   "volta": {
     "extends": "../../package.json"
-  },
-  "tsd": {
-    "directory": "src"
   }
 }

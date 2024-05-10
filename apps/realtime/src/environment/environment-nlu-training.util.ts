@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrototypeIntent, PrototypeModel, PrototypeSlot } from '@voiceflow/dtos';
-import orderBy from 'lodash/orderBy';
+import orderBy from 'lodash/orderBy.js';
 import { MD5 } from 'object-hash';
 
 interface HashedRecordDiff {

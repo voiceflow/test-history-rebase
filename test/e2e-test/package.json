@@ -10,21 +10,20 @@
     "lint": "yarn g:run-p lint:eslint \"lint:prettier --check\"",
     "lint:eslint": "yarn g:eslint \"cypress/**/*.{js,ts}\"",
     "lint:fix": "yarn g:run-p \"lint:eslint --fix\" \"lint:prettier --write\"",
-    "lint:prettier": "yarn g:prettier . \"!**/*.{js,ts}\"",
+    "lint:prettier": "yarn g:prettier --check",
     "lint:report": "yarn g:eslint-output --quiet './cypress/**/*.{js,ts}'",
     "test:dependencies": "yarn g:depcheck",
     "test:e2e": "yarn cypress:run --env split=true"
   },
-  "prettier": "@voiceflow-meta/prettier-config",
   "eslintConfig": {
     "extends": "@voiceflow-meta/eslint-config"
   },
   "dependencies": {
-    "@4tw/cypress-drag-drop": "^2.2.5",
-    "@voiceflow/cypress-common": "1.2.7",
-    "@voiceflow/cypress-page-objects": "1.4.1",
-    "@voiceflow/test-common": "1.10.3",
-    "cy-verify-downloads": "^0.2.2",
+    "@4tw/cypress-drag-drop": "2.2.5",
+    "@voiceflow/cypress-common": "1.2.8",
+    "@voiceflow/cypress-page-objects": "1.4.2",
+    "@voiceflow/test-common": "1.11.0",
+    "cy-verify-downloads": "0.2.3",
     "cypress": "13.4.0",
     "cypress-delete-downloads-folder": "0.0.4",
     "cypress-on-fix": "1.0.2",
@@ -32,11 +31,6 @@
     "cypress-real-events": "1.11.0",
     "cypress-split": "1.19.0",
     "cypress-wait-until": "2.0.1"
-  },
-  "devDependencies": {
-    "@voiceflow-meta/eslint-config": "workspace:*",
-    "@voiceflow-meta/prettier-config": "workspace:*",
-    "@voiceflow-meta/typescript-config": "workspace:*"
   },
   "engines": {
     "node": "16.20"

@@ -6,10 +6,8 @@ import { Utils } from '@voiceflow/common';
 import type { DiagramMenuItem, DiagramNode } from '@voiceflow/dtos';
 import { Atomic, DiagramORM, ObjectId } from '@voiceflow/orm-designer';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
-// eslint-disable-next-line you-dont-need-lodash-underscore/find
-import _find from 'lodash/find';
-// eslint-disable-next-line you-dont-need-lodash-underscore/get
-import _get from 'lodash/get';
+import _find from 'lodash/find.js';
+import _get from 'lodash/get.js';
 
 interface ManyNodeDataUpdate extends Atomic.Update {
   nodeID: string;

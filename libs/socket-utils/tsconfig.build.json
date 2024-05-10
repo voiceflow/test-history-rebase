@@ -6,5 +6,8 @@
     "rootDir": "src",
     "outDir": "build"
   },
-  "include": ["src/**/*", "typings/**/*"]
+  "include": ["src/**/*", "typings/**/*"],
+  "tsc-alias": {
+    "resolveFullPaths": true
+  }
 }

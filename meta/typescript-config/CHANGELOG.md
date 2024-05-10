@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 2.3.0 (2024-05-10)
+
+### Features
+
+* **pkg:** pin all dependency versions and upgrade prettier [chunk 1] (DX-1758) ([#8064](https://github.com/voiceflow/creator-app/issues/8064)) ([26ff25a](https://github.com/voiceflow/creator-app/commit/26ff25ab31b0aef98476d090591ded08dcc513dd)), closes [#8054](https://github.com/voiceflow/creator-app/issues/8054)
+
 ## [2.2.1](https://github.com/voiceflow/creator-app/compare/@voiceflow-meta/typescript-config@2.2.0...@voiceflow-meta/typescript-config@2.2.1) (2024-02-12)
 
 **Note:** Version bump only for package @voiceflow-meta/typescript-config

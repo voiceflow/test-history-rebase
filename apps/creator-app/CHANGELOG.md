@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1515.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1514.1...@voiceflow/creator-app@1.1515.0) (2024-05-10)
+
+### Features
+
+* add hubspot script back to login and signup (COR-2000) ([#8083](https://github.com/voiceflow/creator-app/issues/8083)) ([08dc84d](https://github.com/voiceflow/creator-app/commit/08dc84db11c0e11a4178f72cd10a4a11da636fe1))
+
 ## [1.1514.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1514.0...@voiceflow/creator-app@1.1514.1) (2024-05-10)
 
 **Note:** Version bump only for package @voiceflow/creator-app

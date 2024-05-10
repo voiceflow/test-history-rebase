@@ -8,6 +8,7 @@ import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import { useDispatch, useTrackingEvents } from '@/hooks';
 import { Query } from '@/models';
+import { useHubspotInject } from '@/pages/Auth/components/useHubspotInject';
 import { getErrorMessage } from '@/utils/error';
 import * as QueryUtil from '@/utils/query';
 import * as GoogleAnalytics from '@/vendors/googleAnalytics';
@@ -35,6 +36,7 @@ const verifyFirstName = (firstName: string) => !!firstName;
 
 export const SignupForm: React.FC<SignupFormProps> = ({ query }) => {
   const [trackingEvents] = useTrackingEvents();
+  useHubspotInject();
 
   const signup = useDispatch(Session.signup);
   const goToLogin = useDispatch(Router.goToLogin);

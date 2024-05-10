@@ -10,9 +10,8 @@
     "lint": "yarn g:run-p lint:eslint \"lint:prettier --check\"",
     "lint:eslint": "yarn g:eslint \"**/*.{js,ts}\"",
     "lint:fix": "yarn g:run-p \"lint:eslint --fix\" \"lint:prettier --write\"",
-    "lint:prettier": "yarn g:prettier . \"!**/*.{js,ts}\""
+    "lint:prettier": "yarn g:prettier --check"
   },
-  "prettier": "../prettier-config",
   "eslintConfig": {
     "extends": "."
   },

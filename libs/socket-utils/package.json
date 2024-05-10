@@ -27,7 +27,7 @@
     "lint": "yarn g:run-p lint:eslint \"lint:prettier --check\"",
     "lint:eslint": "yarn g:eslint \"**/*.{js,ts}\"",
     "lint:fix": "yarn g:run-p \"lint:eslint --fix\" \"lint:prettier --write\"",
-    "lint:prettier": "yarn g:prettier . \"!**/*.{js,ts}\"",
+    "lint:prettier": "yarn g:prettier --check",
     "lint:report": "yarn g:eslint-output \"./src/**/*.{js,ts}\"",
     "test": "NODE_ENV=test yarn g:nyc yarn g:ts-mocha --project tsconfig.test.json --paths --config config/test/mocharc.yml",
     "test:dependencies": "yarn g:depcheck",
@@ -51,7 +51,7 @@
     "dotenv": "16.0.3"
   },
   "peerDependencies": {
-    "axios": "0.24.0"
+    "axios": "^0.24"
   },
   "engines": {
     "node": "16.20"

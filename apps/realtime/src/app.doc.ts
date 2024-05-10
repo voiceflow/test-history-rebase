@@ -3,7 +3,7 @@ import { REDIS_CLIENTS } from '@liaoliaots/nestjs-redis/dist/redis/redis.constan
 import { getMikroORMToken, getRepositoryToken } from '@mikro-orm/nestjs';
 import type { TestingModuleBuilder } from '@nestjs/testing';
 import { getStorageToken, ThrottlerStorageService } from '@nestjs/throttler';
-import { createDocumentation } from '@voiceflow/nestjs-common';
+import { createDocumentation, UnleashFeatureFlagService } from '@voiceflow/nestjs-common';
 import { DatabaseTarget } from '@voiceflow/orm-designer';
 import { Redis } from 'ioredis';
 
@@ -26,6 +26,7 @@ export const overrideProviders = (builder: TestingModuleBuilder) => {
   builder.overrideProvider(RedisManager).useValue({ getClient: () => Object.setPrototypeOf({}, Redis.prototype) });
   builder.overrideProvider(getStorageToken()).useValue(ThrottlerStorageService);
   builder.overrideProvider(REDIS_CLIENTS).useValue({});
+  builder.overrideProvider(UnleashFeatureFlagService).useValue({});
 
   Object.entries(ENTITIES).forEach(([target, entities]) => {
     builder.overrideProvider(getMikroORMToken(target)).useValue({});

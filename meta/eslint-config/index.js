@@ -29,10 +29,7 @@ module.exports = {
         'lines-between-class-members': 'off',
         // common pattern when writing styled components
         'sonarjs/no-nested-template-literals': 'off',
-        'no-restricted-syntax': [
-          'error',
-          { selector: 'TSEnumDeclaration', message: 'TS enums are not allowed, use enum-like objects instead.' },
-        ],
+        'no-restricted-syntax': ['error', { selector: 'TSEnumDeclaration', message: 'TS enums are not allowed, use enum-like objects instead.' }],
       },
     },
   ],
@@ -40,6 +37,7 @@ module.exports = {
     'no-restricted-syntax': 'off',
     'import/extensions': 'off',
     'import/no-extraneous-dependencies': 'off',
-    'prettier/prettier': ['error', {}, { usePrettierrc: true }],
+    // 'prettier/prettier': ['error', {}, { usePrettierrc: true }],
+    'prettier/prettier': 'off',
   },
 };

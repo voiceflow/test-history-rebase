@@ -72,5 +72,3 @@ jobs:
         with:
           message: 'Dev environment ${{ steps.renewEnv.outputs.envName}} renewed until ${{ steps.renewEnv.outputs.renewalDate}}!'
           GITHUB_TOKEN: ${{ secrets.GH_SA_TOKEN }}
-
-

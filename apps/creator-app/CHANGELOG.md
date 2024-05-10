@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1517.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1516.0...@voiceflow/creator-app@1.1517.0) (2024-05-10)
+
+### Features
+
+* patch version kb settings (COR-1819) [bugfix] ([#8109](https://github.com/voiceflow/creator-app/issues/8109)) ([2c4fe8c](https://github.com/voiceflow/creator-app/commit/2c4fe8caf08df12d097a36d9dccabd020adf8a51))
+
 # [1.1516.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1515.0...@voiceflow/creator-app@1.1516.0) (2024-05-10)
 
 ### Features

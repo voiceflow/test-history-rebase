@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.353.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.352.0...@voiceflow/realtime@1.353.0) (2024-05-10)
+
+### Features
+
+* limit response table upload fields (COR-1842) ([#8112](https://github.com/voiceflow/creator-app/issues/8112)) ([e7c9505](https://github.com/voiceflow/creator-app/commit/e7c95059e86519d729e694615d5411a76ee09a47))
+
 # [1.352.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.351.0...@voiceflow/realtime@1.352.0) (2024-05-10)
 
 ### Features

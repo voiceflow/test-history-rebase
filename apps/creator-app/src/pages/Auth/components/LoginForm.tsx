@@ -24,6 +24,7 @@ import * as Session from '@/ducks/session';
 import { useDispatch } from '@/hooks';
 import { Query } from '@/models';
 import HeaderBox from '@/pages/Auth/components/HeaderBox';
+import { useHubspotInject } from '@/pages/Auth/components/useHubspotInject';
 
 import { replaceSpaceWithPlus } from '../utils';
 import { AuthBox } from './AuthBoxes';
@@ -46,6 +47,8 @@ export const LoginForm: React.FC<LoginFormProps> = ({ query, children }) => {
   const signin = useDispatch(Session.signin);
   const goToSignup = useDispatch(Router.goToSignup, location.search);
   const getSamlLoginURL = useDispatch(Session.getSamlLoginURL);
+
+  useHubspotInject();
 
   const emailRef = React.useRef<HTMLInputElement>(null);
   const passwordRef = React.useRef<HTMLInputElement>(null);

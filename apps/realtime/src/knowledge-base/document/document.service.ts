@@ -53,7 +53,7 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
 
   mapFromJSON = this.orm.jsonAdapter.mapToDB;
 
-  readonly MAX_CONCURRENT_DOCUMENTS = 300;
+  readonly MAX_CONCURRENT_DOCUMENTS = 300; // max concurrent
 
   readonly DOCUMENT_UPLOAD_TIMEOUT = 1000 * 60 * 5; // 5 minutes
 

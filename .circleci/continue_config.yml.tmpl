@@ -9,7 +9,7 @@ parameters:
     default: 'SHA256:d0B/m0eMf25F90oxqza6iDID7hl57LAK5VhQ3j+SnOM'
 
 orbs:
-  vfcommon: voiceflow/common@{{ .values.common_orb_version }}
+  vfcommon: voiceflow/common@dev:d533960cc285e501246bcf80899664aca1a3ea84
   jira: circleci/jira@1.3.1
 
 {{- $borsBranches := coll.Slice "trying" "staging" }}

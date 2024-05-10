@@ -39,6 +39,7 @@ import {
   DocumentCreateOnePublicRequestParams,
   DocumentCreateOneURLRequest,
   DocumentUploadTableRequestData,
+  DocumentUploadTableResponse,
 } from './dtos/document-create.dto';
 import { DocumentFindManyPublicQuery } from './dtos/document-find.dto';
 import { RefreshJobService } from './refresh-job.service';
@@ -460,7 +461,7 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
     userID: number,
     data: DocumentUploadTableRequestData,
     overwrite = false
-  ): Promise<{ data: KnowledgeBaseDocument }> {
+  ): Promise<DocumentUploadTableResponse> {
     const project = await this.projectOrm.findOneOrFail(projectID);
     const existingDocuments: Omit<VersionKnowledgeBaseDocument, 'updatedAt'>[] = project?.knowledgeBase?.documents
       ? Object.values(project.knowledgeBase.documents)
@@ -522,7 +523,10 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
 
     return {
       data: {
-        ...knowledgeBaseDocumentAdapter.fromDB(document),
+        data: document.data,
+        documentID: document.documentID,
+        updatedAt: document.updatedAt?.toISOString() || '',
+        status: document.status,
         tags: Array.from(await this.tagService.tagObjectIdsToNames({ assistantID: projectID, tagIDs: document?.tags ?? [] })),
       },
     };
@@ -1006,7 +1010,7 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
         currentValue: existingRows,
       });
 
-      if (!response[BillingAuthorizeItemName.KnowledgeBaseSources]) {
+      if (!response[BillingAuthorizeItemName.KnowledgeBaseSourceRows]) {
         throw new ForbiddenException(message);
       }
     } catch (ForbiddenException) {

@@ -4,6 +4,7 @@ import React from 'react';
 import { TEAM_PLUS_PLANS } from '@/constants';
 import { PRICING_LINK } from '@/constants/link.constant';
 import { Permission } from '@/constants/permissions';
+import * as Organization from '@/ducks/organization';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { usePermission } from '@/hooks/permission';
 import { useSelector } from '@/hooks/redux';
@@ -24,6 +25,7 @@ const TakenSeatsMessage: React.FC<TakenSeatsMessageProps> = ({ error = false, se
   const usedEditorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);
   const numberOfSeats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);
   const activePlan = useSelector(WorkspaceV2.active.planSelector);
+  const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
 
   const onAddSeats = useOnAddSeats();
 
@@ -35,6 +37,8 @@ const TakenSeatsMessage: React.FC<TakenSeatsMessageProps> = ({ error = false, se
 
     onAddSeats(seats ?? usedEditorSeats);
   };
+
+  const seatsCountEntity = subscription ? 'organization' : 'workspace';
 
   return (
     <Text fontSize={small ? 13 : 15} color="#62778c" lineHeight={small ? '18px' : undefined}>
@@ -55,7 +59,7 @@ const TakenSeatsMessage: React.FC<TakenSeatsMessageProps> = ({ error = false, se
           <Text color="#132144">
             {seats ?? usedEditorSeats} {!label && 'Editor seats'}
           </Text>{' '}
-          {!label && 'being used in this workspace.'}
+          {!label && `being used in this ${seatsCountEntity}`}
           {label}
         </>
       )}

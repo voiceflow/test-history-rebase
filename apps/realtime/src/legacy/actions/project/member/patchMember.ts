@@ -5,7 +5,7 @@ import { Action } from 'typescript-fsa';
 
 import { AbstractProjectResourceControl } from '../utils';
 
-class PatchWorkspaceMember extends AbstractProjectResourceControl<Realtime.project.member.PatchMemberPayload> {
+class PatchProjectMember extends AbstractProjectResourceControl<Realtime.project.member.PatchMemberPayload> {
   protected actionCreator = Realtime.project.member.patch;
 
   protected process = async (ctx: Context, { payload }: Action<Realtime.project.member.PatchMemberPayload>) => {
@@ -15,4 +15,4 @@ class PatchWorkspaceMember extends AbstractProjectResourceControl<Realtime.proje
   };
 }
 
-export default PatchWorkspaceMember;
+export default PatchProjectMember;

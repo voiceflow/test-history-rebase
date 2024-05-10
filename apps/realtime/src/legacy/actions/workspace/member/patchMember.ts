@@ -1,4 +1,3 @@
-import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { Context } from '@voiceflow/socket-utils';
 import { Action } from 'typescript-fsa';
@@ -11,7 +10,7 @@ class PatchWorkspaceMember extends AbstractWorkspaceChannelControl<Realtime.work
   protected process = async (ctx: Context, { payload }: Action<Realtime.workspace.member.PatchMemberPayload>) => {
     const { creatorID } = ctx.data;
 
-    await this.services.workspace.member.patch(creatorID, payload.workspaceID, payload.creatorID, Utils.object.pick(payload.member, ['role']));
+    await this.services.workspace.member.patch(creatorID, payload.workspaceID, payload.creatorID, { role: payload.member.role });
   };
 }
 

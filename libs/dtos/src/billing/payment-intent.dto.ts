@@ -11,6 +11,7 @@ export const PaymentIntentDTO = z.object({
   modifiedAt: z.number(),
   paymentMethodType: z.string(),
   status: z.string(),
+  referenceID: z.string().optional(),
 });
 
 export type PaymentIntent = z.infer<typeof PaymentIntentDTO>;

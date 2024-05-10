@@ -54,7 +54,7 @@ const CreateWorkspace: React.FC = () => {
       </LabelContainer>
 
       <FlexCenter>
-        <ContinueButton disabled={!canContinue} onClick={onContinue}>
+        <ContinueButton disabled={!canContinue || state.sendingRequests} onClick={onContinue} isLoading={state.sendingRequests}>
           Continue
         </ContinueButton>
       </FlexCenter>

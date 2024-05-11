@@ -7,4 +7,12 @@ export class IntegrationOauthTokenORM extends PostgresMutableORM<IntegrationOaut
   Entity = IntegrationOauthTokenEntity;
 
   jsonAdapter = IntegrationOauthTokenJSONAdapter;
+
+  findManyByAssistant(assistantID: string) {
+    return this.find({ scope: 'assistant', resourceID: assistantID });
+  }
+
+  findOneByType(assistantID: string, type: string) {
+    return this.find({ scope: 'assistant', resourceID: assistantID, type });
+  }
 }

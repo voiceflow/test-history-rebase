@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1519.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1518.0...@voiceflow/creator-app@1.1519.0) (2024-05-11)
+
+### Features
+
+* only apply restrict project limits for chargebee subs [bugfix] (COR-2044) ([#8115](https://github.com/voiceflow/creator-app/issues/8115)) ([121d915](https://github.com/voiceflow/creator-app/commit/121d91523fa18551049232c164f735a006d32797))
+
 # [1.1518.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1517.2...@voiceflow/creator-app@1.1518.0) (2024-05-11)
 
 ### Features

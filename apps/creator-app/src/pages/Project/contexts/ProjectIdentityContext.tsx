@@ -7,6 +7,7 @@ import React from 'react';
 
 import { VirtualRole } from '@/constants/roles';
 import { IdentityContext } from '@/contexts/IdentityContext';
+import * as Organization from '@/ducks/organization';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
@@ -39,15 +40,17 @@ export const ProjectIdentityProvider: React.FC<ProjectIdentityProviderProps> = (
   const projectsLimit = useSelector(WorkspaceV2.active.projectsLimitSelector);
   const workspaceLocked = useSelector(WorkspaceV2.active.isLockedSelector);
   const workspaceLockedByBeyondLimit = useSelector(WorkspaceV2.active.isLockedByBeyondLimitSelector);
+  const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
 
   const locked = React.useMemo(() => {
     if (identity.organizationTrialExpired) return true;
-    if (workspaceLockedByBeyondLimit) return true;
+    if (!subscription && !workspaceLocked) return false;
+    if (subscription && workspaceLockedByBeyondLimit) return true;
     if (!projectID) return true;
 
     const { projectsLimit: starterProjectsLimit } = PLAN_INFO[PlanName.STARTER];
 
-    return getProjectIsLockedByBeyondLimit({ projectID, projectsLimit: workspaceLocked ? starterProjectsLimit : projectsLimit });
+    return getProjectIsLockedByBeyondLimit({ projectID, projectsLimit: workspaceLocked && subscription ? starterProjectsLimit : projectsLimit });
   }, [orderedProjectsMap, projectID, identity.organizationTrialExpired, projectsLimit, workspaceLocked]);
 
   const activeRole = locked ? VirtualRole.LOCKED_PROJECT_VIEWER : projectRole;

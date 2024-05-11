@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.26.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-designer@2.25.3...@voiceflow/sdk-http-designer@2.26.0) (2024-05-11)
+
+### Features
+
+* get integration realtime (COR-1824) ([#8108](https://github.com/voiceflow/creator-app/issues/8108)) ([f9e4792](https://github.com/voiceflow/creator-app/commit/f9e4792eecdb400ede7e6e4f7970ac9d0d3c0d0d))
+
 ## [2.25.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-designer@2.25.2...@voiceflow/sdk-http-designer@2.25.3) (2024-05-10)
 
 **Note:** Version bump only for package @voiceflow/sdk-http-designer

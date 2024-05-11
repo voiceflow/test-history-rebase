@@ -1,26 +1,36 @@
 import { BaseModels } from '@voiceflow/base-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
+import { designerClient } from '@/client/designer';
 import { knowledgeBaseClient } from '@/client/knowledge-base';
 import { CREATOR_APP_ENDPOINT } from '@/config';
 import * as Errors from '@/config/errors';
 import { Path } from '@/config/routes';
+import * as Feature from '@/ducks/feature';
 import * as Session from '@/ducks/session';
 import type { KnowledgeBaseIntegration, ZendeskCountFilters, ZendeskFilters, ZendeskFilterUserSegment } from '@/models/KnowledgeBase.model';
 import type { Thunk } from '@/store/types';
 
 import * as Actions from './integration.action';
-import { integrationAdapter } from './integration.adapter';
+import { integrationAdapter, realtimeIntegrationAdapter } from './integration.adapter';
 
 export const getAll = (): Thunk<KnowledgeBaseIntegration[]> => async (dispatch, getState) => {
   const state = getState();
+  const realtimeKBEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.KB_BE_INTEGRATIONS);
 
   const projectID = Session.activeProjectIDSelector(state);
 
   Errors.assertProjectID(projectID);
 
-  const dbIntegrations = await knowledgeBaseClient.getAllIntegrations(projectID);
+  let integrations: KnowledgeBaseIntegration[] = [];
+  if (realtimeKBEnabled) {
+    const response = await designerClient.knowledgeBase.integration.getIntegrations(projectID);
+    integrations = realtimeIntegrationAdapter.mapFromDB(response.data ?? []);
+  } else {
+    const dbIntegrations = await knowledgeBaseClient.getAllIntegrations(projectID);
 
-  const integrations = integrationAdapter.mapFromDB(dbIntegrations.data);
+    integrations = integrationAdapter.mapFromDB(dbIntegrations.data);
+  }
 
   dispatch.local(Actions.AddMany({ data: integrations }));
 

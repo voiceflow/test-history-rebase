@@ -175,7 +175,7 @@ export class KnowledgeBaseDocumentApiPublicHTTPController {
     @Principal() principal: Identity & { legacy: { projectID: string } },
     @Param('documentID') documentID: string
   ): Promise<DocumentFindOnePublicResponse> {
-    const document = await this.service.findOneDocument(principal.legacy.projectID, documentID);
+    const document = await this.service.findOneDocumentWithTags(principal.legacy.projectID, documentID);
     return document
       ? {
           data: {

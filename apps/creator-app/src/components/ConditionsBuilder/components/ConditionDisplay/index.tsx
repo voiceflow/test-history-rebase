@@ -35,7 +35,7 @@ const ConditionDisplay: React.FC<ConditionDisplayProps> = ({ expression, isActiv
   };
 
   const leftValue = React.useMemo(() => transformValue(firstValue, entitiesAndVariablesMap), [firstValue, entitiesAndVariablesMap]);
-  const rightValue = React.useMemo(() => transformValue(secondValue, entitiesAndVariablesMap), [firstValue, entitiesAndVariablesMap]);
+  const rightValue = React.useMemo(() => transformValue(secondValue, entitiesAndVariablesMap), [secondValue, entitiesAndVariablesMap]);
 
   const placeholder = !leftValue && expression.value[0]?.type === BaseNode.Utils.ExpressionTypeV2.VARIABLE ? 'Variable' : 'Value';
 

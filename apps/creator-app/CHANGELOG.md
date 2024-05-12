@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1519.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1519.0...@voiceflow/creator-app@1.1519.1) (2024-05-12)
+
+### Bug Fixes
+
+* Update condition block right value properly (COR-2041) ([#8116](https://github.com/voiceflow/creator-app/issues/8116)) ([387ad86](https://github.com/voiceflow/creator-app/commit/387ad86ca71318747ecc68fe22488b2e084eab11))
+
 # [1.1519.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1518.0...@voiceflow/creator-app@1.1519.0) (2024-05-11)
 
 ### Features

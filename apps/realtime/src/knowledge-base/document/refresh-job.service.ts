@@ -1,4 +1,4 @@
-import { Inject, Injectable, forwardRef } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { AmqpQueueMessagePriority, KBDocumentUrlData, KnowledgeBaseDocumentRefreshRate, RefreshJob } from '@voiceflow/dtos';
 import { RefreshJobsOrm, VersionKnowledgeBaseDocument } from '@voiceflow/orm-designer';
 import { Topic } from '@voiceflow/sdk-message-queue';
@@ -25,7 +25,7 @@ export class RefreshJobService extends MutableService<RefreshJobsOrm> {
 
     @Inject(MessageQueueService)
     private readonly messageQueueService: MessageQueueService,
-    @Inject(forwardRef(() => IntegrationOauthTokenService))
+    @Inject(IntegrationOauthTokenService)
     private readonly integrationOauthTokenService: IntegrationOauthTokenService
   ) {
     super();

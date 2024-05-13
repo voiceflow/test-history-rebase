@@ -1,14 +1,13 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { KnowledgeBaseDocumentIntegrationType, KnowledgeBaseDocumentRefreshRate, KnowledgeBaseDocumentType } from '@voiceflow/dtos';
 import { NotFoundException } from '@voiceflow/exception';
-import { IntegrationOauthTokenORM } from '@voiceflow/orm-designer';
+import { IntegrationOauthTokenORM, RefreshJobsOrm } from '@voiceflow/orm-designer';
 
 import { MutableService } from '@/common';
 import { TokenEncryptionService } from '@/knowledge-base/integration-oauth-token/token-encryption.service';
 import { ProjectService } from '@/project/project.service';
 
 import { IntegrationFindManyResponse } from './dtos/integration-find.dto';
-import { RefreshJobsOrm } from '@voiceflow/orm-designer';
 
 @Injectable()
 export class IntegrationOauthTokenService extends MutableService<IntegrationOauthTokenORM> {

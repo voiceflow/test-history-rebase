@@ -1,5 +1,6 @@
 import { Primary } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
+import { KnowledgeBaseDocumentRefreshRate } from '@voiceflow/dtos';
 import { Atomic, ProjectEntity, ProjectObject, ProjectORM } from '@voiceflow/orm-designer';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { IdentityClient } from '@voiceflow/sdk-identity';
@@ -8,7 +9,6 @@ import { MutableService } from '@/common';
 import { LegacyProjectSerializer } from '@/project/project-legacy/legacy-project.serializer';
 
 import { ProjectSerializer } from './project.serializer';
-import { KnowledgeBaseDocumentRefreshRate } from '@voiceflow/dtos';
 
 @Injectable()
 export class ProjectService extends MutableService<ProjectORM> {

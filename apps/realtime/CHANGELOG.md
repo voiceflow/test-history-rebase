@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.356.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.355.0...@voiceflow/realtime@1.356.0) (2024-05-13)
+
+### Features
+
+* hide checkout modal ff (COR-1984) ([#8114](https://github.com/voiceflow/creator-app/issues/8114)) ([67ab3d8](https://github.com/voiceflow/creator-app/commit/67ab3d8877dfcde33a987ed5d989262471c16745))
+
 # [1.355.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.354.0...@voiceflow/realtime@1.355.0) (2024-05-11)
 
 ### Features

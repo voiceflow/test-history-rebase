@@ -13,6 +13,8 @@ export const headerStyle = recipe({
     transitionTimingFunction: Tokens.animation.timingFunction.default,
     paddingLeft: 8,
     paddingRight: 8,
+    // this is a hack to fix the header blur when diagram blur loader is shown
+    opacity: 0.9999999,
   },
 
   variants: {

@@ -50,6 +50,7 @@ export * as Session from './session';
 export * as Tracking from './tracking';
 export * as UI from './ui';
 export * as Version from './versionV2';
+export * as Viewport from './viewport';
 export * as Workspace from './workspaceV2';
 
 export interface ReducerOptions {

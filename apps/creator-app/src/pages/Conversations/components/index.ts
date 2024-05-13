@@ -6,9 +6,9 @@ export { default as TranscriptDetails } from './TranscriptDetails';
 export { default as TranscriptDialog } from './TranscriptDialog';
 export { default as TranscriptManager } from './TranscriptManager';
 
-export const ConversationsContainer = styled(Flex)<{ isFilteredResultsEmpty: boolean }>`
+export const ConversationsContainer = styled(Flex)<{ isNewLayout?: boolean; isFilteredResultsEmpty: boolean }>`
   height: 100%;
-  padding-left: ${({ theme }) => theme.components.sidebarIconMenu.width}px;
+  padding-left: ${({ theme, isNewLayout }) => (isNewLayout ? 0 : theme.components.sidebarIconMenu.width)}px;
   flex-direction: row;
 
   ${({ isFilteredResultsEmpty }) =>

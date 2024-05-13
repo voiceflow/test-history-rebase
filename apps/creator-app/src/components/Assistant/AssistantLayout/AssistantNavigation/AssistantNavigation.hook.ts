@@ -130,7 +130,7 @@ export const useAssistantNavigationItems = () => {
         testID: 'cms',
         hotkey: '',
         isActive: isItemActive(Path.PROJECT_CMS),
-        iconName: 'Content',
+        iconName: cmsWorkflows.isEnabled ? 'Designer' : 'Content',
         tooltipLabel: 'Content',
       }),
       ...conditionalArrayItems<IAssistantNavigationItem>(canViewConversations, {

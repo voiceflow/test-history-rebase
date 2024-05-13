@@ -17,16 +17,16 @@ import { withBatchLoadingGate } from '@/hocs/withBatchLoadingGate';
 import { withWorkspaceOrProjectAssetsSuspense } from '@/hocs/withWorkspaceOrProjectAssetsSuspense';
 import { useFeature, useLocalDispatch, usePermission, useSelector, useTeardown } from '@/hooks';
 import { ModalScope } from '@/ModalsV2/modal-scope.enum';
+import AssistantCMS from '@/pages/AssistantCMS/AssistantCMS.page';
 import Providers from '@/pages/Project/Providers';
 
+import Diagram from './components/Diagram';
 import ProjectExitTracker from './components/ProjectExitTracker';
 import { DIAGRAM_ROUTES, TIMEOUT_COUNT } from './constants';
 import { MarkupProvider } from './contexts';
 
-const Diagram = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('./components/Diagram')));
 const Publish = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/Publish')));
 const Settings = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/Settings')));
-const AssistantCMS = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/AssistantCMS/AssistantCMS.page')));
 const Conversations = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/Conversations')));
 const AssistantOverview = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/DashboardV2/pages/AssistantOverview')));
 const AnalyticsDashboard = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/AnalyticsDashboard')));

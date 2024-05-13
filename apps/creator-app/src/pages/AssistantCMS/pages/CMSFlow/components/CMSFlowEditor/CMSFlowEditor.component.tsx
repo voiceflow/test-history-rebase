@@ -20,7 +20,7 @@ export const CMSFlowEditor: React.FC = () => {
   const flow = useSelector(Designer.Flow.selectors.oneByID, { id: flowID });
 
   const patchFlow = useDispatch(Designer.Flow.effect.patchOne, flowID);
-  const goToDiagram = useDispatch(Router.goToDiagramClearActive);
+  const goToDiagram = useDispatch(Router.goToDiagram);
   const duplicateOne = useDispatch(Designer.Flow.effect.duplicateOne);
   const goToCMSResource = useDispatch(Router.goToCMSResource);
 

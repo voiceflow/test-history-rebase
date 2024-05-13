@@ -228,3 +228,13 @@ export const isLastAdminSelector = createSelector(
   [allNormalizedMembersSelector],
   (members) => members.filter((member) => isAdminUserRole(member.role)).length <= 1
 );
+
+export const isCheckoutDisabledSelector = createSelector(
+  [localOrganizationSelector, workspaceSelector, Feature.isFeatureEnabledSelector],
+  (organization, workspace, isFeatureEnabled) => {
+    // if on chargebee, don't disable checkout
+    if (organization?.subscription) return false;
+
+    return isFeatureEnabled(Realtime.FeatureFlag.DISABLE_CHECKOUT) || workspace?.betaFlag === 1;
+  }
+);

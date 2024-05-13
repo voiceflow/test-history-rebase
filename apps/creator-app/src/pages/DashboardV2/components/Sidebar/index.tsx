@@ -34,6 +34,7 @@ const DashboardNavigationSidebar: React.FC = () => {
   const isProWorkspace = useSelector(WorkspaceV2.active.isProSelector);
   const isEnterpriseWorkspace = useSelector(WorkspaceV2.active.isEnterpriseSelector);
   const organizationTrialDaysLeft = useSelector(WorkspaceV2.active.organizationTrialDaysLeftSelector);
+  const isCheckoutDisabled = useSelector(WorkspaceV2.active.isCheckoutDisabledSelector);
   const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
   const isSubscribedToOrganization = useAtomValue(OrganizationAtoms.isSubscribedAtom);
 
@@ -46,7 +47,7 @@ const DashboardNavigationSidebar: React.FC = () => {
   const teamsIsEnabled = teamsPlanSelfServeIsEnabled && subscription;
 
   const isProTrial = isProWorkspace && organizationTrialDaysLeft !== null;
-  const canUpgrade = (!isPaidPlan || isProTrial || (teamsIsEnabled && isProWorkspace)) && canConfigureWorkspace;
+  const canUpgrade = !isCheckoutDisabled && (!isPaidPlan || isProTrial || (teamsIsEnabled && isProWorkspace)) && canConfigureWorkspace;
 
   return (
     <NavigationSidebar isMainMenu>

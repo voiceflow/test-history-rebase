@@ -56,6 +56,7 @@ export class OrganizationIdentityService {
       organizationID: w.organizationID,
       createdAt: w.createdAt,
       updatedAt: w.updatedAt,
+      betaFlag: w.betaFlag ?? null,
     }));
   }
 }

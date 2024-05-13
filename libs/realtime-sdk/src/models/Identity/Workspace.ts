@@ -11,6 +11,7 @@ export interface Workspace {
   name: string;
   image: string;
   members?: WorkspaceMember[];
+  betaFlag?: number | null;
 }
 
 export interface WorkspaceCombined extends Workspace {

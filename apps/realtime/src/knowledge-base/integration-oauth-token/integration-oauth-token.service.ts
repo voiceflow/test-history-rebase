@@ -8,7 +8,7 @@ import { TokenEncryptionService } from '@/knowledge-base/integration-oauth-token
 import { ProjectService } from '@/project/project.service';
 
 import { IntegrationFindManyResponse } from './dtos/integration-find.dto';
-import { KnowledgeBaseDocumentService } from '../document/document.service';
+import { RefreshJobsOrm } from '@voiceflow/orm-designer';
 
 @Injectable()
 export class IntegrationOauthTokenService extends MutableService<IntegrationOauthTokenORM> {
@@ -27,8 +27,8 @@ export class IntegrationOauthTokenService extends MutableService<IntegrationOaut
     protected readonly tokenEncryption: TokenEncryptionService,
     @Inject(ProjectService)
     protected readonly project: ProjectService,
-    @Inject(KnowledgeBaseDocumentService)
-    protected readonly kbDocuments: KnowledgeBaseDocumentService
+    @Inject(RefreshJobsOrm)
+    protected readonly refreshJobs: RefreshJobsOrm
   ) {
     super();
   }
@@ -81,7 +81,7 @@ export class IntegrationOauthTokenService extends MutableService<IntegrationOaut
 
     await this.project.unsetDocumentsAccessToken(assistantID, urlDocumentIds);
 
-    await this.kbDocuments.deleteRefreshJobsByDocumentIds(assistantID, urlDocumentIds);
+    await this.refreshJobs.deleteManyByDocumentIDs(assistantID, urlDocumentIds);
     await this.project.updateDocumentsRefreshRate(assistantID, urlDocumentIds, KnowledgeBaseDocumentRefreshRate.NEVER);
 
     await this.orm.delete({

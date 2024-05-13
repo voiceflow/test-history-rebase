@@ -1,4 +1,4 @@
-import { Controller, Get, HttpCode, HttpStatus, Inject, Param } from '@nestjs/common';
+import { Controller, Delete, Get, HttpCode, HttpStatus, Inject, Param } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { ZodApiResponse } from '@voiceflow/nestjs-common';
 import { Permission } from '@voiceflow/sdk-auth';
@@ -31,5 +31,22 @@ export class KnowledgeBaseIntegrationsPublicHTTPController {
   })
   async getIntegrations(@Param('assistantID') assistantID: string): Promise<IntegrationFindManyResponse> {
     return this.service.getManyIntegrationTokens(assistantID);
+  }
+
+  @Delete(':integrationType')
+  @Authorize.Permissions<Request<{ assistantID: string }>>([Permission.PROJECT_UPDATE], (request) => ({
+    id: request.params.assistantID,
+    kind: 'project',
+  }))
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Delete knowledge base integration' })
+  @ApiParam({ name: 'assistantID', type: 'string' })
+  @ApiParam({ name: 'integrationType', type: 'string' })
+  @ZodApiResponse({
+    status: HttpStatus.OK,
+    description: 'Delete a knowledge base integration',
+  })
+  async deleteIntegration(@Param('assistantID') assistantID: string, @Param('integrationType') integrationType: string): Promise<void> {
+    return this.service.deleteIntegration(assistantID, integrationType);
   }
 }

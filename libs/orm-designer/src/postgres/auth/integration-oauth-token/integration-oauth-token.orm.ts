@@ -15,4 +15,8 @@ export class IntegrationOauthTokenORM extends PostgresMutableORM<IntegrationOaut
   findOneByType(assistantID: string, type: string) {
     return this.find({ scope: 'assistant', resourceID: assistantID, type });
   }
+
+  deleteTypeByProject(assistantID: string, type: string) {
+    return this.delete({ scope: 'assistant', resourceID: assistantID, type });
+  }
 }

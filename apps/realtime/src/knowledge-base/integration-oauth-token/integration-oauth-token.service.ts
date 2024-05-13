@@ -1,9 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { KnowledgeBaseDocumentIntegrationType } from '@voiceflow/dtos';
+import { KnowledgeBaseDocumentIntegrationType, KnowledgeBaseDocumentRefreshRate, KnowledgeBaseDocumentType } from '@voiceflow/dtos';
+import { NotFoundException } from '@voiceflow/exception';
 import { IntegrationOauthTokenORM } from '@voiceflow/orm-designer';
 
 import { MutableService } from '@/common';
 import { TokenEncryptionService } from '@/knowledge-base/integration-oauth-token/token-encryption.service';
+import { ProjectService } from '@/project/project.service';
+import { RefreshJobService } from '@/knowledge-base/document/refresh-job.service';
 
 import { IntegrationFindManyResponse } from './dtos/integration-find.dto';
 
@@ -21,7 +24,11 @@ export class IntegrationOauthTokenService extends MutableService<IntegrationOaut
     @Inject(IntegrationOauthTokenORM)
     protected readonly orm: IntegrationOauthTokenORM,
     @Inject(TokenEncryptionService)
-    protected readonly tokenEncryption: TokenEncryptionService
+    protected readonly tokenEncryption: TokenEncryptionService,
+    @Inject(ProjectService)
+    protected readonly project: ProjectService,
+    @Inject(RefreshJobService)
+    protected readonly refreshJobs: RefreshJobService
   ) {
     super();
   }
@@ -46,5 +53,41 @@ export class IntegrationOauthTokenService extends MutableService<IntegrationOaut
         createdAt: createdAt?.toISOString(),
       })),
     };
+  }
+
+  async deleteIntegration(assistantID: string, integrationType: string): Promise<void> {
+    // TODO: Change this to get from 'resolver' according to integration type
+    const integrationName = 'zendesk';
+
+    let project;
+    try {
+      project = await this.project.findOneOrFailWithFields(assistantID, ['knowledgeBase']);
+    } catch {
+      throw new NotFoundException('Project not found');
+    }
+
+    // get oauth integration token
+    const integrationToken = await this.orm.findOneByType(assistantID, integrationName);
+    if (!integrationToken?.length) return;
+
+    const existingURLDocuments = project?.knowledgeBase?.documents
+      ? Object.values(project.knowledgeBase.documents).filter(
+          ({ documentID, data }) => !!documentID && data?.type === KnowledgeBaseDocumentType.URL && data?.accessTokenID === integrationToken[0].id
+        )
+      : [];
+    const urlDocumentIds = existingURLDocuments.map((d) => d.documentID);
+
+    await this.orm.deleteTypeByProject(assistantID, integrationName);
+
+    await this.project.unsetDocumentsAccessToken(assistantID, urlDocumentIds);
+
+    await this.refreshJobs.deleteManyByDocumentIDs(assistantID, urlDocumentIds);
+    await this.project.updateDocumentsRefreshRate(assistantID, urlDocumentIds, KnowledgeBaseDocumentRefreshRate.NEVER);
+
+    await this.orm.delete({
+      scope: 'assistant',
+      resourceID: assistantID,
+      type: integrationType,
+    });
   }
 }

@@ -1,6 +1,6 @@
 import { Primary } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
-import { ProjectEntity, ProjectObject, ProjectORM } from '@voiceflow/orm-designer';
+import { Atomic, ProjectEntity, ProjectObject, ProjectORM } from '@voiceflow/orm-designer';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { IdentityClient } from '@voiceflow/sdk-identity';
 
@@ -8,6 +8,7 @@ import { MutableService } from '@/common';
 import { LegacyProjectSerializer } from '@/project/project-legacy/legacy-project.serializer';
 
 import { ProjectSerializer } from './project.serializer';
+import { KnowledgeBaseDocumentRefreshRate } from '@voiceflow/dtos';
 
 @Injectable()
 export class ProjectService extends MutableService<ProjectORM> {
@@ -53,5 +54,26 @@ export class ProjectService extends MutableService<ProjectORM> {
     }, {});
 
     return projects.map((project) => this.legacyProjectSerializer.serialize(project, membersPerProject[project._id.toJSON()] ?? []));
+  }
+
+  async unsetDocumentsAccessToken(assistantID: string, documentIDs: string[]) {
+    return this.orm.atomicUpdateOne(assistantID, [
+      Atomic.Unset(
+        documentIDs.map((id) => ({
+          path: `knowledgeBase.documents.${id}.data.accessTokenID`,
+        }))
+      ),
+    ]);
+  }
+
+  async updateDocumentsRefreshRate(assistantID: string, documentIDs: string[], refreshRate: KnowledgeBaseDocumentRefreshRate) {
+    return this.orm.findOneAndAtomicUpdate(assistantID, [
+      Atomic.Set(
+        documentIDs.map((id) => ({
+          path: `knowledgeBase.documents.${id}.data.refreshRate`,
+          value: refreshRate,
+        }))
+      ),
+    ]);
   }
 }

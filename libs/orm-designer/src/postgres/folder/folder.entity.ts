@@ -1,4 +1,4 @@
-import { Entity, Enum, Index, ManyToOne, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
+import { Entity, Enum, ManyToOne, PrimaryKeyType, Property } from '@mikro-orm/core';
 import { FolderScope } from '@voiceflow/dtos';
 
 import type { CMSCompositePK, Ref } from '@/types';
@@ -6,12 +6,17 @@ import type { CMSCompositePK, Ref } from '@/types';
 import type { AssistantEntity } from '../assistant/assistant.entity';
 import { Assistant } from '../common/decorators/assistant.decorator';
 import { Environment } from '../common/decorators/environment.decorator';
+import { ObjectIDPrimaryKey } from '../common/decorators/object-id-primary-key.decorator';
 import { PostgresCMSObjectEntity } from '../common/entities/postgres-cms-object.entity';
 
 @Entity({ tableName: 'designer.folder' })
-@Unique({ properties: ['id', 'environmentID'] })
-@Index({ properties: ['environmentID'] })
 export class FolderEntity extends PostgresCMSObjectEntity<'parent'> {
+  @Environment()
+  environmentID!: string;
+
+  @ObjectIDPrimaryKey()
+  id!: string;
+
   @Property()
   name!: string;
 
@@ -23,15 +28,12 @@ export class FolderEntity extends PostgresCMSObjectEntity<'parent'> {
     default: null,
     onDelete: 'cascade',
     nullable: true,
-    fieldNames: ['parent_id', 'environment_id'],
+    fieldNames: ['environment_id', 'parent_id'],
   })
   parent!: Ref<FolderEntity> | null;
 
   @Assistant()
   assistant!: Ref<AssistantEntity>;
-
-  @Environment()
-  environmentID!: string;
 
   [PrimaryKeyType]?: CMSCompositePK;
 }

@@ -1,18 +1,15 @@
-import { ArrayType, Entity, Index, PrimaryKey, Property, Unique } from '@mikro-orm/core';
+import { ArrayType, Entity, PrimaryKey, Property } from '@mikro-orm/core';
 
 import { Environment, PostgresCMSTabularEntity } from '../common';
 
 @Entity({ tableName: 'designer.intent' })
-@Unique({ properties: ['id', 'environmentID'] })
-@Index({ properties: ['environmentID'] })
 export class IntentEntity extends PostgresCMSTabularEntity<'description'> {
+  @Environment()
+  environmentID!: string;
+
   // legacy built-in intents uses type as id, so increase length to 64
   @PrimaryKey({ type: 'varchar', nullable: false, length: 64 })
   id!: string;
-
-  // to keep composite key correct, environmentID must be defined after id
-  @Environment()
-  environmentID!: string;
 
   @Property({ type: 'text', default: null, nullable: true })
   description!: string | null;

@@ -1,25 +1,20 @@
-import {
-  ArrayType,
-  Entity as EntityDecorator,
-  Enum,
-  Index,
-  ManyToOne,
-  PrimaryKeyType,
-  Property,
-  Unique,
-} from '@mikro-orm/core';
+import { ArrayType, Entity as EntityDecorator, Enum, ManyToOne, PrimaryKeyType, Property } from '@mikro-orm/core';
 import { Language } from '@voiceflow/dtos';
 
 import type { AssistantEntity } from '@/postgres/assistant';
-import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
+import { Assistant, Environment, ObjectIDPrimaryKey, PostgresCMSObjectEntity } from '@/postgres/common';
 import type { CMSCompositePK, Ref } from '@/types';
 
 import { EntityEntity } from '../entity.entity';
 
 @EntityDecorator({ tableName: 'designer.entity_variant' })
-@Unique({ properties: ['id', 'environmentID'] })
-@Index({ properties: ['environmentID'] })
 export class EntityVariantEntity extends PostgresCMSObjectEntity {
+  @Environment()
+  environmentID!: string;
+
+  @ObjectIDPrimaryKey()
+  id!: string;
+
   @Enum(() => Language)
   language!: Language;
 
@@ -32,15 +27,12 @@ export class EntityVariantEntity extends PostgresCMSObjectEntity {
   @ManyToOne(() => EntityEntity, {
     name: 'entity_id',
     onDelete: 'cascade',
-    fieldNames: ['entity_id', 'environment_id'],
+    fieldNames: ['environment_id', 'entity_id'],
   })
   entity!: Ref<EntityEntity>;
 
   @Assistant()
   assistant!: Ref<AssistantEntity>;
-
-  @Environment()
-  environmentID!: string;
 
   [PrimaryKeyType]?: CMSCompositePK;
 }

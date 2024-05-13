@@ -1,4 +1,4 @@
-import { ArrayType, Entity, Index, ManyToOne, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
+import { ArrayType, Entity, ManyToOne, PrimaryKeyType, Property } from '@mikro-orm/core';
 import type { Markup } from '@voiceflow/dtos';
 
 import { MarkupType } from '@/common';
@@ -9,9 +9,10 @@ import type { CMSCompositePK, Ref } from '@/types';
 import { MediaAttachmentEntity } from '../media-attachment/media-attachment.entity';
 
 @Entity({ tableName: 'designer.card_attachment' })
-@Unique({ properties: ['id', 'environmentID'] })
-@Index({ properties: ['environmentID'] })
 export class CardAttachmentEntity extends PostgresCMSObjectEntity<'media'> {
+  @Environment()
+  environmentID!: string;
+
   @Property({ type: MarkupType })
   title!: Markup;
 
@@ -20,7 +21,7 @@ export class CardAttachmentEntity extends PostgresCMSObjectEntity<'media'> {
     default: null,
     onDelete: 'set default',
     nullable: true,
-    fieldNames: ['media_id', 'environment_id'],
+    fieldNames: ['environment_id', 'media_id'],
   })
   media!: Ref<MediaAttachmentEntity> | null;
 
@@ -32,9 +33,6 @@ export class CardAttachmentEntity extends PostgresCMSObjectEntity<'media'> {
 
   @Property({ type: ArrayType })
   buttonOrder!: string[];
-
-  @Environment()
-  environmentID!: string;
 
   [PrimaryKeyType]?: CMSCompositePK;
 }

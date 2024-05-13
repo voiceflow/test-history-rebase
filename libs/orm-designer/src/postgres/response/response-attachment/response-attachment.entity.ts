@@ -1,9 +1,9 @@
-import { Entity, Enum, Index, ManyToOne, PrimaryKeyType, Unique } from '@mikro-orm/core';
+import { Entity, Enum, ManyToOne, PrimaryKeyType } from '@mikro-orm/core';
 import { AttachmentType } from '@voiceflow/dtos';
 
 import type { AssistantEntity } from '@/postgres/assistant';
 import { CardAttachmentEntity, MediaAttachmentEntity } from '@/postgres/attachment';
-import { Assistant, Environment, PostgresCMSCreatableEntity } from '@/postgres/common';
+import { Assistant, Environment, ObjectIDPrimaryKey, PostgresCMSCreatableEntity } from '@/postgres/common';
 import type { CMSCompositePK, Ref } from '@/types';
 
 import { BaseResponseVariantEntity } from '../response-variant/response-variant.entity';
@@ -15,24 +15,25 @@ const TABLE_NAME = 'designer.response_attachment';
   tableName: TABLE_NAME,
   discriminatorColumn: 'type',
 })
-@Unique({ properties: ['id', 'environmentID'] })
-@Index({ properties: ['environmentID'] })
 export class BaseResponseAttachmentEntity extends PostgresCMSCreatableEntity {
+  @Environment()
+  environmentID!: string;
+
+  @ObjectIDPrimaryKey()
+  id!: string;
+
   @Enum(() => AttachmentType)
   type!: AttachmentType;
 
   @ManyToOne(() => BaseResponseVariantEntity, {
     name: 'variant_id',
     onDelete: 'cascade',
-    fieldNames: ['variant_id', 'environment_id'],
+    fieldNames: ['environment_id', 'variant_id'],
   })
   variant!: Ref<BaseResponseVariantEntity>;
 
   @Assistant()
   assistant!: Ref<AssistantEntity>;
-
-  @Environment()
-  environmentID!: string;
 
   [PrimaryKeyType]?: CMSCompositePK;
 }
@@ -47,7 +48,7 @@ export class ResponseCardAttachmentEntity extends BaseResponseAttachmentEntity {
   @ManyToOne(() => CardAttachmentEntity, {
     name: 'card_id',
     onDelete: 'cascade',
-    fieldNames: ['card_id', 'environment_id'],
+    fieldNames: ['environment_id', 'card_id'],
   })
   card!: Ref<CardAttachmentEntity>;
 }
@@ -62,7 +63,7 @@ export class ResponseMediaAttachmentEntity extends BaseResponseAttachmentEntity 
   @ManyToOne(() => MediaAttachmentEntity, {
     name: 'media_id',
     onDelete: 'cascade',
-    fieldNames: ['media_id', 'environment_id'],
+    fieldNames: ['environment_id', 'media_id'],
   })
   media!: Ref<MediaAttachmentEntity>;
 }

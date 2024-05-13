@@ -8,12 +8,19 @@ import type { CMSCompositePK, Ref, ToJSON, ToObject } from '@/types';
 import { Assistant } from '../decorators/assistant.decorator';
 import { CreatedByID } from '../decorators/created-by-id.decorator';
 import { Environment } from '../decorators/environment.decorator';
+import { ObjectIDPrimaryKey } from '../decorators/object-id-primary-key.decorator';
 import { UpdatedByID } from '../decorators/updated-by-id.decorator';
 import { PostgresCMSObjectEntity } from './postgres-cms-object.entity';
 
-export abstract class PostgresCMSTabularEntity<
-  DefaultOrNullColumn extends string = never
-> extends PostgresCMSObjectEntity<DefaultOrNullColumn | 'folder'> {
+export abstract class PostgresCMSTabularEntity<DefaultOrNullColumn extends string = never> extends PostgresCMSObjectEntity<
+  DefaultOrNullColumn | 'folder'
+> {
+  @Environment()
+  environmentID!: string;
+
+  @ObjectIDPrimaryKey()
+  id!: string;
+
   @Property()
   name!: string;
 
@@ -26,15 +33,12 @@ export abstract class PostgresCMSTabularEntity<
   @CreatedByID()
   createdBy!: Ref<UserStubEntity>;
 
-  @Environment()
-  environmentID!: string;
-
   @ManyToOne(() => FolderEntity, {
     name: 'folder_id',
     default: null,
     onDelete: 'cascade',
     nullable: true,
-    fieldNames: ['folder_id', 'environment_id'],
+    fieldNames: ['environment_id', 'folder_id'],
   })
   folder!: Ref<FolderEntity> | null;
 

@@ -1,15 +1,19 @@
-import { Entity, Index, ManyToOne, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
+import { Entity, ManyToOne, PrimaryKeyType, Property } from '@mikro-orm/core';
 
 import type { AssistantEntity } from '@/postgres/assistant';
-import { Assistant, CreatedAt, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
+import { Assistant, CreatedAt, Environment, ObjectIDPrimaryKey, PostgresCMSObjectEntity } from '@/postgres/common';
 import type { CMSCompositePK, Ref } from '@/types';
 
 import { FunctionEntity } from '../function.entity';
 
 @Entity({ tableName: 'designer.function_path' })
-@Unique({ properties: ['id', 'environmentID'] })
-@Index({ properties: ['environmentID'] })
 export class FunctionPathEntity extends PostgresCMSObjectEntity {
+  @Environment()
+  environmentID!: string;
+
+  @ObjectIDPrimaryKey()
+  id!: string;
+
   @CreatedAt({ columnType: 'timestamptz' })
   createdAt!: Date;
 
@@ -22,15 +26,12 @@ export class FunctionPathEntity extends PostgresCMSObjectEntity {
   @ManyToOne(() => FunctionEntity, {
     name: 'function_id',
     onDelete: 'cascade',
-    fieldNames: ['function_id', 'environment_id'],
+    fieldNames: ['environment_id', 'function_id'],
   })
   function!: Ref<FunctionEntity>;
 
   @Assistant()
   assistant!: Ref<AssistantEntity>;
-
-  @Environment()
-  environmentID!: string;
 
   [PrimaryKeyType]?: CMSCompositePK;
 }

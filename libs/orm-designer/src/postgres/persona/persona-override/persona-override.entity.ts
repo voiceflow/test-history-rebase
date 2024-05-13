@@ -1,18 +1,20 @@
-import { Entity, Enum, Index, ManyToOne, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
+import { Entity, Enum, ManyToOne, PrimaryKeyType, Property } from '@mikro-orm/core';
 import { AIModel } from '@voiceflow/dtos';
 
 import type { AssistantEntity } from '@/postgres/assistant';
-import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
+import { Assistant, Environment, ObjectIDPrimaryKey, PostgresCMSObjectEntity } from '@/postgres/common';
 import type { CMSCompositePK, Ref } from '@/types';
 
 import { PersonaEntity } from '../persona.entity';
 
 @Entity({ tableName: 'designer.persona_override' })
-@Unique({ properties: ['id', 'environmentID'] })
-@Index({ properties: ['environmentID'] })
-export class PersonaOverrideEntity extends PostgresCMSObjectEntity<
-  'name' | 'model' | 'maxLength' | 'temperature' | 'systemPrompt'
-> {
+export class PersonaOverrideEntity extends PostgresCMSObjectEntity<'name' | 'model' | 'maxLength' | 'temperature' | 'systemPrompt'> {
+  @Environment()
+  environmentID!: string;
+
+  @ObjectIDPrimaryKey()
+  id!: string;
+
   @Property({ default: null, nullable: true })
   name!: string | null;
 
@@ -22,7 +24,7 @@ export class PersonaOverrideEntity extends PostgresCMSObjectEntity<
   @ManyToOne(() => PersonaEntity, {
     name: 'persona_id',
     onDelete: 'cascade',
-    fieldNames: ['persona_id', 'environment_id'],
+    fieldNames: ['environment_id', 'persona_id'],
   })
   persona!: Ref<PersonaEntity>;
 
@@ -37,9 +39,6 @@ export class PersonaOverrideEntity extends PostgresCMSObjectEntity<
 
   @Property({ type: 'text', default: null, nullable: true })
   systemPrompt!: string | null;
-
-  @Environment()
-  environmentID!: string;
 
   [PrimaryKeyType]?: CMSCompositePK;
 }

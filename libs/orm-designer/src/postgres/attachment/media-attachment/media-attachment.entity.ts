@@ -1,16 +1,20 @@
-import { Entity, Enum, Index, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
+import { Entity, Enum, PrimaryKeyType, Property } from '@mikro-orm/core';
 import type { Markup } from '@voiceflow/dtos';
 import { MediaDatatype } from '@voiceflow/dtos';
 
 import { MarkupType } from '@/common';
 import type { AssistantEntity } from '@/postgres/assistant';
-import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
+import { Assistant, Environment, ObjectIDPrimaryKey, PostgresCMSObjectEntity } from '@/postgres/common';
 import type { CMSCompositePK, Ref } from '@/types';
 
 @Entity({ tableName: 'designer.media_attachment' })
-@Unique({ properties: ['id', 'environmentID'] })
-@Index({ properties: ['environmentID'] })
 export class MediaAttachmentEntity extends PostgresCMSObjectEntity {
+  @Environment()
+  environmentID!: string;
+
+  @ObjectIDPrimaryKey()
+  id!: string;
+
   @Property({ type: MarkupType })
   url!: Markup;
 
@@ -25,9 +29,6 @@ export class MediaAttachmentEntity extends PostgresCMSObjectEntity {
 
   @Assistant()
   assistant!: Ref<AssistantEntity>;
-
-  @Environment()
-  environmentID!: string;
 
   [PrimaryKeyType]?: CMSCompositePK;
 }

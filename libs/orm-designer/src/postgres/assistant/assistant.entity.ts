@@ -21,7 +21,7 @@ export class AssistantEntity extends PostgresCMSObjectEntity<'activePersona'> {
     default: null,
     nullable: true,
     onDelete: 'set default',
-    fieldNames: ['active_persona_id', 'active_environment_id'],
+    fieldNames: ['active_environment_id', 'active_persona_id'],
   })
   activePersona!: Ref<PersonaEntity> | null;
 

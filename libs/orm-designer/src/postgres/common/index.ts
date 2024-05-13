@@ -7,6 +7,7 @@ export * from './decorators/assistant.decorator';
 export * from './decorators/created-at.decorator';
 export * from './decorators/created-by-id.decorator';
 export * from './decorators/environment.decorator';
+export * from './decorators/object-id-primary-key.decorator';
 export * from './decorators/soft-delete.decorator';
 export * from './decorators/updated-by-id.decorator';
 export * from './entities/postgres.entity';

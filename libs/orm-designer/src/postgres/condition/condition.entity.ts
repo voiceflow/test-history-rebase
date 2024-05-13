@@ -1,4 +1,4 @@
-import { Entity, Enum, Index, ManyToOne, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
+import { Entity, Enum, ManyToOne, PrimaryKeyType, Property } from '@mikro-orm/core';
 import type { Markup } from '@voiceflow/dtos';
 import { ConditionType } from '@voiceflow/dtos';
 
@@ -6,7 +6,7 @@ import { MarkupType } from '@/common';
 import type { CMSCompositePK, Ref } from '@/types';
 
 import type { AssistantEntity } from '../assistant';
-import { Assistant, Environment, PostgresCMSObjectEntity } from '../common';
+import { Assistant, Environment, ObjectIDPrimaryKey, PostgresCMSObjectEntity } from '../common';
 import { PromptEntity } from '../prompt';
 
 @Entity({
@@ -14,19 +14,18 @@ import { PromptEntity } from '../prompt';
   tableName: 'designer.condition',
   discriminatorColumn: 'type',
 })
-@Unique({ properties: ['id', 'environmentID'] })
-@Index({ properties: ['environmentID'] })
-export class BaseConditionEntity<
-  DefaultOrNullColumn extends string = never
-> extends PostgresCMSObjectEntity<DefaultOrNullColumn> {
+export class BaseConditionEntity<DefaultOrNullColumn extends string = never> extends PostgresCMSObjectEntity<DefaultOrNullColumn> {
+  @Environment()
+  environmentID!: string;
+
+  @ObjectIDPrimaryKey()
+  id!: string;
+
   @Enum(() => ConditionType)
   type!: ConditionType;
 
   @Assistant()
   assistant!: Ref<AssistantEntity>;
-
-  @Environment()
-  environmentID!: string;
 
   [PrimaryKeyType]?: CMSCompositePK;
 }
@@ -51,7 +50,7 @@ export class PromptConditionEntity extends BaseConditionEntity<'prompt'> {
     default: null,
     onDelete: 'set default',
     nullable: true,
-    fieldNames: ['prompt_id', 'environment_id'],
+    fieldNames: ['environment_id', 'prompt_id'],
   })
   prompt!: Ref<PromptEntity> | null;
 }

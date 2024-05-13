@@ -1,4 +1,4 @@
-import { Entity, Enum, Index, ManyToOne, Property, Unique } from '@mikro-orm/core';
+import { Entity, Enum, ManyToOne, Property } from '@mikro-orm/core';
 import { WorkflowStatus } from '@voiceflow/dtos';
 
 import { UserStubEntity } from '@/postgres/stubs/user.stub';
@@ -7,8 +7,6 @@ import type { Ref } from '@/types';
 import { PostgresCMSTabularEntity } from '../common';
 
 @Entity({ tableName: 'designer.workflow' })
-@Unique({ properties: ['id', 'environmentID'] })
-@Index({ properties: ['environmentID'] })
 export class WorkflowEntity extends PostgresCMSTabularEntity<'status' | 'assignee' | 'description'> {
   @Enum({ items: () => WorkflowStatus, default: null, nullable: true })
   status!: WorkflowStatus | null;

@@ -1,16 +1,20 @@
-import { ArrayType, Entity, Enum, Index, ManyToOne, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
+import { ArrayType, Entity, Enum, ManyToOne, PrimaryKeyType, Property } from '@mikro-orm/core';
 import { Channel, Language } from '@voiceflow/dtos';
 
 import type { AssistantEntity } from '@/postgres/assistant';
-import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
+import { Assistant, Environment, ObjectIDPrimaryKey, PostgresCMSObjectEntity } from '@/postgres/common';
 import type { CMSCompositePK, Ref } from '@/types';
 
 import { ResponseEntity } from '../response.entity';
 
 @Entity({ tableName: 'designer.response_discriminator' })
-@Unique({ properties: ['id', 'environmentID'] })
-@Index({ properties: ['environmentID'] })
 export class ResponseDiscriminatorEntity extends PostgresCMSObjectEntity {
+  @Environment()
+  environmentID!: string;
+
+  @ObjectIDPrimaryKey()
+  id!: string;
+
   @Enum(() => Channel)
   channel!: Channel;
 
@@ -20,7 +24,7 @@ export class ResponseDiscriminatorEntity extends PostgresCMSObjectEntity {
   @ManyToOne(() => ResponseEntity, {
     name: 'response_id',
     onDelete: 'cascade',
-    fieldNames: ['response_id', 'environment_id'],
+    fieldNames: ['environment_id', 'response_id'],
   })
   response!: Ref<ResponseEntity>;
 
@@ -29,9 +33,6 @@ export class ResponseDiscriminatorEntity extends PostgresCMSObjectEntity {
 
   @Property({ type: ArrayType })
   variantOrder!: string[];
-
-  @Environment()
-  environmentID!: string;
 
   [PrimaryKeyType]?: CMSCompositePK;
 }

@@ -1,4 +1,4 @@
-import { Entity, Index, ManyToOne, Property, Unique } from '@mikro-orm/core';
+import { Entity, ManyToOne, Property } from '@mikro-orm/core';
 import type { Markup } from '@voiceflow/dtos';
 
 import { MarkupType } from '@/common';
@@ -8,8 +8,6 @@ import { PostgresCMSTabularEntity } from '../common';
 import { PersonaOverrideEntity } from '../persona';
 
 @Entity({ tableName: 'designer.prompt' })
-@Unique({ properties: ['id', 'environmentID'] })
-@Index({ properties: ['environmentID'] })
 export class PromptEntity extends PostgresCMSTabularEntity<'persona'> {
   @Property({ type: MarkupType })
   text!: Markup;
@@ -19,7 +17,7 @@ export class PromptEntity extends PostgresCMSTabularEntity<'persona'> {
     default: null,
     onDelete: 'set default',
     nullable: true,
-    fieldNames: ['persona_id', 'environment_id'],
+    fieldNames: ['environment_id', 'persona_id'],
   })
   persona!: Ref<PersonaOverrideEntity> | null;
 }

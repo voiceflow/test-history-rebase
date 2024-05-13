@@ -847,6 +847,16 @@
           "nullable": false,
           "mappedType": "integer"
         },
+        "active_environment_id": {
+          "name": "active_environment_id",
+          "type": "varchar(24)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 24,
+          "mappedType": "string"
+        },
         "active_persona_id": {
           "name": "active_persona_id",
           "type": "varchar(24)",
@@ -857,16 +867,6 @@
           "length": 24,
           "default": "null",
           "mappedType": "string"
-        },
-        "active_environment_id": {
-          "name": "active_environment_id",
-          "type": "varchar(24)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 24,
-          "mappedType": "string"
         }
       },
       "name": "assistant",
@@ -874,11 +874,11 @@
       "indexes": [
         {
           "columnNames": [
-            "active_persona_id",
-            "active_environment_id"
+            "active_environment_id",
+            "active_persona_id"
           ],
           "composite": true,
-          "keyName": "assistant_active_persona_id_active_environment_id_unique",
+          "keyName": "assistant_active_environment_id_active_persona_id_unique",
           "primary": false,
           "unique": true
         },
@@ -929,11 +929,11 @@
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
-        "assistant_active_persona_id_active_environment_id_foreign": {
-          "constraintName": "assistant_active_persona_id_active_environment_id_foreign",
+        "assistant_active_environment_id_active_persona_id_foreign": {
+          "constraintName": "assistant_active_environment_id_active_persona_id_foreign",
           "columnNames": [
-            "active_persona_id",
-            "active_environment_id"
+            "active_environment_id",
+            "active_persona_id"
           ],
           "localTableName": "designer.assistant",
           "referencedColumnNames": [
@@ -948,8 +948,8 @@
     },
     {
       "columns": {
-        "id": {
-          "name": "id",
+        "environment_id": {
+          "name": "environment_id",
           "type": "varchar(24)",
           "unsigned": false,
           "autoincrement": false,
@@ -958,8 +958,8 @@
           "length": 24,
           "mappedType": "string"
         },
-        "environment_id": {
-          "name": "environment_id",
+        "id": {
+          "name": "id",
           "type": "varchar(24)",
           "unsigned": false,
           "autoincrement": false,
@@ -1055,29 +1055,10 @@
       "schema": "designer",
       "indexes": [
         {
-          "keyName": "media_attachment_environment_id_index",
-          "columnNames": [
-            "environment_id"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false
-        },
-        {
-          "keyName": "media_attachment_id_environment_id_unique",
-          "columnNames": [
-            "id",
-            "environment_id"
-          ],
-          "composite": true,
-          "primary": false,
-          "unique": true
-        },
-        {
           "keyName": "media_attachment_pkey",
           "columnNames": [
-            "id",
-            "environment_id"
+            "environment_id",
+            "id"
           ],
           "composite": true,
           "primary": true,
@@ -1116,16 +1097,6 @@
     },
     {
       "columns": {
-        "id": {
-          "name": "id",
-          "type": "varchar(24)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 24,
-          "mappedType": "string"
-        },
         "environment_id": {
           "name": "environment_id",
           "type": "varchar(24)",
@@ -1135,6 +1106,16 @@
           "nullable": false,
           "length": 24,
           "default": "null",
+          "mappedType": "string"
+        },
+        "id": {
+          "name": "id",
+          "type": "varchar(24)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 24,
           "mappedType": "string"
         },
         "created_at": {
@@ -1226,29 +1207,10 @@
       "schema": "designer",
       "indexes": [
         {
-          "keyName": "folder_environment_id_index",
-          "columnNames": [
-            "environment_id"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false
-        },
-        {
-          "keyName": "folder_id_environment_id_unique",
-          "columnNames": [
-            "id",
-            "environment_id"
-          ],
-          "composite": true,
-          "primary": false,
-          "unique": true
-        },
-        {
           "keyName": "folder_pkey",
           "columnNames": [
-            "id",
-            "environment_id"
+            "environment_id",
+            "id"
           ],
           "composite": true,
           "primary": true,
@@ -1270,11 +1232,11 @@
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
-        "folder_parent_id_environment_id_foreign": {
-          "constraintName": "folder_parent_id_environment_id_foreign",
+        "folder_environment_id_parent_id_foreign": {
+          "constraintName": "folder_environment_id_parent_id_foreign",
           "columnNames": [
-            "parent_id",
-            "environment_id"
+            "environment_id",
+            "parent_id"
           ],
           "localTableName": "designer.folder",
           "referencedColumnNames": [
@@ -1452,25 +1414,6 @@
       "schema": "designer",
       "indexes": [
         {
-          "keyName": "workflow_environment_id_index",
-          "columnNames": [
-            "environment_id"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false
-        },
-        {
-          "keyName": "workflow_id_environment_id_unique",
-          "columnNames": [
-            "id",
-            "environment_id"
-          ],
-          "composite": true,
-          "primary": false,
-          "unique": true
-        },
-        {
           "keyName": "workflow_pkey",
           "columnNames": [
             "id",
@@ -1520,11 +1463,11 @@
           "referencedTableName": "identity.user",
           "updateRule": "cascade"
         },
-        "workflow_folder_id_environment_id_foreign": {
-          "constraintName": "workflow_folder_id_environment_id_foreign",
+        "workflow_environment_id_folder_id_foreign": {
+          "constraintName": "workflow_environment_id_folder_id_foreign",
           "columnNames": [
-            "folder_id",
-            "environment_id"
+            "environment_id",
+            "folder_id"
           ],
           "localTableName": "designer.workflow",
           "referencedColumnNames": [
@@ -1552,16 +1495,6 @@
     },
     {
       "columns": {
-        "id": {
-          "name": "id",
-          "type": "varchar(64)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 64,
-          "mappedType": "string"
-        },
         "environment_id": {
           "name": "environment_id",
           "type": "varchar(24)",
@@ -1571,6 +1504,16 @@
           "nullable": false,
           "length": 24,
           "default": "null",
+          "mappedType": "string"
+        },
+        "id": {
+          "name": "id",
+          "type": "varchar(64)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 64,
           "mappedType": "string"
         },
         "created_at": {
@@ -1714,29 +1657,10 @@
       "schema": "designer",
       "indexes": [
         {
-          "keyName": "variable_environment_id_index",
-          "columnNames": [
-            "environment_id"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false
-        },
-        {
-          "keyName": "variable_id_environment_id_unique",
-          "columnNames": [
-            "id",
-            "environment_id"
-          ],
-          "composite": true,
-          "primary": false,
-          "unique": true
-        },
-        {
           "keyName": "variable_pkey",
           "columnNames": [
-            "id",
-            "environment_id"
+            "environment_id",
+            "id"
           ],
           "composite": true,
           "primary": true,
@@ -1782,11 +1706,11 @@
           "referencedTableName": "identity.user",
           "updateRule": "cascade"
         },
-        "variable_folder_id_environment_id_foreign": {
-          "constraintName": "variable_folder_id_environment_id_foreign",
+        "variable_environment_id_folder_id_foreign": {
+          "constraintName": "variable_environment_id_folder_id_foreign",
           "columnNames": [
-            "folder_id",
-            "environment_id"
+            "environment_id",
+            "folder_id"
           ],
           "localTableName": "designer.variable",
           "referencedColumnNames": [
@@ -1897,25 +1821,6 @@
       "schema": "designer",
       "indexes": [
         {
-          "keyName": "response_environment_id_index",
-          "columnNames": [
-            "environment_id"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false
-        },
-        {
-          "keyName": "response_id_environment_id_unique",
-          "columnNames": [
-            "id",
-            "environment_id"
-          ],
-          "composite": true,
-          "primary": false,
-          "unique": true
-        },
-        {
           "keyName": "response_pkey",
           "columnNames": [
             "id",
@@ -1965,11 +1870,11 @@
           "referencedTableName": "identity.user",
           "updateRule": "cascade"
         },
-        "response_folder_id_environment_id_foreign": {
-          "constraintName": "response_folder_id_environment_id_foreign",
+        "response_environment_id_folder_id_foreign": {
+          "constraintName": "response_environment_id_folder_id_foreign",
           "columnNames": [
-            "folder_id",
-            "environment_id"
+            "environment_id",
+            "folder_id"
           ],
           "localTableName": "designer.response",
           "referencedColumnNames": [
@@ -1984,8 +1889,8 @@
     },
     {
       "columns": {
-        "id": {
-          "name": "id",
+        "environment_id": {
+          "name": "environment_id",
           "type": "varchar(24)",
           "unsigned": false,
           "autoincrement": false,
@@ -1994,8 +1899,8 @@
           "length": 24,
           "mappedType": "string"
         },
-        "environment_id": {
-          "name": "environment_id",
+        "id": {
+          "name": "id",
           "type": "varchar(24)",
           "unsigned": false,
           "autoincrement": false,
@@ -2094,29 +1999,10 @@
       "schema": "designer",
       "indexes": [
         {
-          "keyName": "response_discriminator_environment_id_index",
-          "columnNames": [
-            "environment_id"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false
-        },
-        {
-          "keyName": "response_discriminator_id_environment_id_unique",
-          "columnNames": [
-            "id",
-            "environment_id"
-          ],
-          "composite": true,
-          "primary": false,
-          "unique": true
-        },
-        {
           "keyName": "response_discriminator_pkey",
           "columnNames": [
-            "id",
-            "environment_id"
+            "environment_id",
+            "id"
           ],
           "composite": true,
           "primary": true,
@@ -2138,11 +2024,11 @@
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
-        "response_discriminator_response_id_environment_id_foreign": {
-          "constraintName": "response_discriminator_response_id_environment_id_foreign",
+        "response_discriminator_environment_id_response_id_foreign": {
+          "constraintName": "response_discriminator_environment_id_response_id_foreign",
           "columnNames": [
-            "response_id",
-            "environment_id"
+            "environment_id",
+            "response_id"
           ],
           "localTableName": "designer.response_discriminator",
           "referencedColumnNames": [
@@ -2316,25 +2202,6 @@
       "schema": "designer",
       "indexes": [
         {
-          "keyName": "persona_environment_id_index",
-          "columnNames": [
-            "environment_id"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false
-        },
-        {
-          "keyName": "persona_id_environment_id_unique",
-          "columnNames": [
-            "id",
-            "environment_id"
-          ],
-          "composite": true,
-          "primary": false,
-          "unique": true
-        },
-        {
           "keyName": "persona_pkey",
           "columnNames": [
             "id",
@@ -2384,11 +2251,11 @@
           "referencedTableName": "identity.user",
           "updateRule": "cascade"
         },
-        "persona_folder_id_environment_id_foreign": {
-          "constraintName": "persona_folder_id_environment_id_foreign",
+        "persona_environment_id_folder_id_foreign": {
+          "constraintName": "persona_environment_id_folder_id_foreign",
           "columnNames": [
-            "folder_id",
-            "environment_id"
+            "environment_id",
+            "folder_id"
           ],
           "localTableName": "designer.persona",
           "referencedColumnNames": [
@@ -2403,8 +2270,8 @@
     },
     {
       "columns": {
-        "id": {
-          "name": "id",
+        "environment_id": {
+          "name": "environment_id",
           "type": "varchar(24)",
           "unsigned": false,
           "autoincrement": false,
@@ -2413,8 +2280,8 @@
           "length": 24,
           "mappedType": "string"
         },
-        "environment_id": {
-          "name": "environment_id",
+        "id": {
+          "name": "id",
           "type": "varchar(24)",
           "unsigned": false,
           "autoincrement": false,
@@ -2544,29 +2411,10 @@
       "schema": "designer",
       "indexes": [
         {
-          "keyName": "persona_override_environment_id_index",
-          "columnNames": [
-            "environment_id"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false
-        },
-        {
-          "keyName": "persona_override_id_environment_id_unique",
-          "columnNames": [
-            "id",
-            "environment_id"
-          ],
-          "composite": true,
-          "primary": false,
-          "unique": true
-        },
-        {
           "keyName": "persona_override_pkey",
           "columnNames": [
-            "id",
-            "environment_id"
+            "environment_id",
+            "id"
           ],
           "composite": true,
           "primary": true,
@@ -2588,11 +2436,11 @@
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
-        "persona_override_persona_id_environment_id_foreign": {
-          "constraintName": "persona_override_persona_id_environment_id_foreign",
+        "persona_override_environment_id_persona_id_foreign": {
+          "constraintName": "persona_override_environment_id_persona_id_foreign",
           "columnNames": [
-            "persona_id",
-            "environment_id"
+            "environment_id",
+            "persona_id"
           ],
           "localTableName": "designer.persona_override",
           "referencedColumnNames": [
@@ -2736,25 +2584,6 @@
       "schema": "designer",
       "indexes": [
         {
-          "keyName": "prompt_environment_id_index",
-          "columnNames": [
-            "environment_id"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false
-        },
-        {
-          "keyName": "prompt_id_environment_id_unique",
-          "columnNames": [
-            "id",
-            "environment_id"
-          ],
-          "composite": true,
-          "primary": false,
-          "unique": true
-        },
-        {
           "keyName": "prompt_pkey",
           "columnNames": [
             "id",
@@ -2804,11 +2633,11 @@
           "referencedTableName": "identity.user",
           "updateRule": "cascade"
         },
-        "prompt_folder_id_environment_id_foreign": {
-          "constraintName": "prompt_folder_id_environment_id_foreign",
+        "prompt_environment_id_folder_id_foreign": {
+          "constraintName": "prompt_environment_id_folder_id_foreign",
           "columnNames": [
-            "folder_id",
-            "environment_id"
+            "environment_id",
+            "folder_id"
           ],
           "localTableName": "designer.prompt",
           "referencedColumnNames": [
@@ -2819,11 +2648,11 @@
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
-        "prompt_persona_id_environment_id_foreign": {
-          "constraintName": "prompt_persona_id_environment_id_foreign",
+        "prompt_environment_id_persona_id_foreign": {
+          "constraintName": "prompt_environment_id_persona_id_foreign",
           "columnNames": [
-            "persona_id",
-            "environment_id"
+            "environment_id",
+            "persona_id"
           ],
           "localTableName": "designer.prompt",
           "referencedColumnNames": [
@@ -2838,16 +2667,6 @@
     },
     {
       "columns": {
-        "id": {
-          "name": "id",
-          "type": "varchar(64)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 64,
-          "mappedType": "string"
-        },
         "environment_id": {
           "name": "environment_id",
           "type": "varchar(24)",
@@ -2857,6 +2676,16 @@
           "nullable": false,
           "length": 24,
           "default": "null",
+          "mappedType": "string"
+        },
+        "id": {
+          "name": "id",
+          "type": "varchar(64)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 64,
           "mappedType": "string"
         },
         "created_at": {
@@ -2962,29 +2791,10 @@
       "schema": "designer",
       "indexes": [
         {
-          "keyName": "intent_environment_id_index",
-          "columnNames": [
-            "environment_id"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false
-        },
-        {
-          "keyName": "intent_id_environment_id_unique",
-          "columnNames": [
-            "id",
-            "environment_id"
-          ],
-          "composite": true,
-          "primary": false,
-          "unique": true
-        },
-        {
           "keyName": "intent_pkey",
           "columnNames": [
-            "id",
-            "environment_id"
+            "environment_id",
+            "id"
           ],
           "composite": true,
           "primary": true,
@@ -3030,11 +2840,11 @@
           "referencedTableName": "identity.user",
           "updateRule": "cascade"
         },
-        "intent_folder_id_environment_id_foreign": {
-          "constraintName": "intent_folder_id_environment_id_foreign",
+        "intent_environment_id_folder_id_foreign": {
+          "constraintName": "intent_environment_id_folder_id_foreign",
           "columnNames": [
-            "folder_id",
-            "environment_id"
+            "environment_id",
+            "folder_id"
           ],
           "localTableName": "designer.intent",
           "referencedColumnNames": [
@@ -3049,6 +2859,16 @@
     },
     {
       "columns": {
+        "environment_id": {
+          "name": "environment_id",
+          "type": "varchar(64)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 64,
+          "mappedType": "string"
+        },
         "id": {
           "name": "id",
           "type": "varchar(24)",
@@ -3057,16 +2877,6 @@
           "primary": false,
           "nullable": false,
           "length": 24,
-          "mappedType": "string"
-        },
-        "environment_id": {
-          "name": "environment_id",
-          "type": "varchar(24)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 64,
           "mappedType": "string"
         },
         "created_at": {
@@ -3112,7 +2922,7 @@
         },
         "intent_id": {
           "name": "intent_id",
-          "type": "varchar(64)",
+          "type": "varchar(24)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
@@ -3147,29 +2957,10 @@
       "schema": "designer",
       "indexes": [
         {
-          "keyName": "utterance_environment_id_index",
-          "columnNames": [
-            "environment_id"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false
-        },
-        {
-          "keyName": "utterance_id_environment_id_unique",
-          "columnNames": [
-            "id",
-            "environment_id"
-          ],
-          "composite": true,
-          "primary": false,
-          "unique": true
-        },
-        {
           "keyName": "utterance_pkey",
           "columnNames": [
-            "id",
-            "environment_id"
+            "environment_id",
+            "id"
           ],
           "composite": true,
           "primary": true,
@@ -3191,11 +2982,11 @@
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
-        "utterance_intent_id_environment_id_foreign": {
-          "constraintName": "utterance_intent_id_environment_id_foreign",
+        "utterance_environment_id_intent_id_foreign": {
+          "constraintName": "utterance_environment_id_intent_id_foreign",
           "columnNames": [
-            "intent_id",
-            "environment_id"
+            "environment_id",
+            "intent_id"
           ],
           "localTableName": "designer.utterance",
           "referencedColumnNames": [
@@ -3348,25 +3139,6 @@
       "schema": "designer",
       "indexes": [
         {
-          "keyName": "function_environment_id_index",
-          "columnNames": [
-            "environment_id"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false
-        },
-        {
-          "keyName": "function_id_environment_id_unique",
-          "columnNames": [
-            "id",
-            "environment_id"
-          ],
-          "composite": true,
-          "primary": false,
-          "unique": true
-        },
-        {
           "keyName": "function_pkey",
           "columnNames": [
             "id",
@@ -3416,11 +3188,11 @@
           "referencedTableName": "identity.user",
           "updateRule": "cascade"
         },
-        "function_folder_id_environment_id_foreign": {
-          "constraintName": "function_folder_id_environment_id_foreign",
+        "function_environment_id_folder_id_foreign": {
+          "constraintName": "function_environment_id_folder_id_foreign",
           "columnNames": [
-            "folder_id",
-            "environment_id"
+            "environment_id",
+            "folder_id"
           ],
           "localTableName": "designer.function",
           "referencedColumnNames": [
@@ -3435,8 +3207,8 @@
     },
     {
       "columns": {
-        "id": {
-          "name": "id",
+        "environment_id": {
+          "name": "environment_id",
           "type": "varchar(24)",
           "unsigned": false,
           "autoincrement": false,
@@ -3445,8 +3217,8 @@
           "length": 24,
           "mappedType": "string"
         },
-        "environment_id": {
-          "name": "environment_id",
+        "id": {
+          "name": "id",
           "type": "varchar(24)",
           "unsigned": false,
           "autoincrement": false,
@@ -3544,29 +3316,10 @@
       "schema": "designer",
       "indexes": [
         {
-          "keyName": "function_variable_environment_id_index",
-          "columnNames": [
-            "environment_id"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false
-        },
-        {
-          "keyName": "function_variable_id_environment_id_unique",
-          "columnNames": [
-            "id",
-            "environment_id"
-          ],
-          "composite": true,
-          "primary": false,
-          "unique": true
-        },
-        {
           "keyName": "function_variable_pkey",
           "columnNames": [
-            "id",
-            "environment_id"
+            "environment_id",
+            "id"
           ],
           "composite": true,
           "primary": true,
@@ -3588,11 +3341,11 @@
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
-        "function_variable_function_id_environment_id_foreign": {
-          "constraintName": "function_variable_function_id_environment_id_foreign",
+        "function_variable_environment_id_function_id_foreign": {
+          "constraintName": "function_variable_environment_id_function_id_foreign",
           "columnNames": [
-            "function_id",
-            "environment_id"
+            "environment_id",
+            "function_id"
           ],
           "localTableName": "designer.function_variable",
           "referencedColumnNames": [
@@ -3620,8 +3373,8 @@
     },
     {
       "columns": {
-        "id": {
-          "name": "id",
+        "environment_id": {
+          "name": "environment_id",
           "type": "varchar(24)",
           "unsigned": false,
           "autoincrement": false,
@@ -3630,8 +3383,8 @@
           "length": 24,
           "mappedType": "string"
         },
-        "environment_id": {
-          "name": "environment_id",
+        "id": {
+          "name": "id",
           "type": "varchar(24)",
           "unsigned": false,
           "autoincrement": false,
@@ -3716,29 +3469,10 @@
       "schema": "designer",
       "indexes": [
         {
-          "keyName": "function_path_environment_id_index",
-          "columnNames": [
-            "environment_id"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false
-        },
-        {
-          "keyName": "function_path_id_environment_id_unique",
-          "columnNames": [
-            "id",
-            "environment_id"
-          ],
-          "composite": true,
-          "primary": false,
-          "unique": true
-        },
-        {
           "keyName": "function_path_pkey",
           "columnNames": [
-            "id",
-            "environment_id"
+            "environment_id",
+            "id"
           ],
           "composite": true,
           "primary": true,
@@ -3760,11 +3494,11 @@
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
-        "function_path_function_id_environment_id_foreign": {
-          "constraintName": "function_path_function_id_environment_id_foreign",
+        "function_path_environment_id_function_id_foreign": {
+          "constraintName": "function_path_environment_id_function_id_foreign",
           "columnNames": [
-            "function_id",
-            "environment_id"
+            "environment_id",
+            "function_id"
           ],
           "localTableName": "designer.function_path",
           "referencedColumnNames": [
@@ -3908,25 +3642,6 @@
       "schema": "designer",
       "indexes": [
         {
-          "keyName": "flow_environment_id_index",
-          "columnNames": [
-            "environment_id"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false
-        },
-        {
-          "keyName": "flow_id_environment_id_unique",
-          "columnNames": [
-            "id",
-            "environment_id"
-          ],
-          "composite": true,
-          "primary": false,
-          "unique": true
-        },
-        {
           "keyName": "flow_pkey",
           "columnNames": [
             "id",
@@ -3976,11 +3691,11 @@
           "referencedTableName": "identity.user",
           "updateRule": "cascade"
         },
-        "flow_folder_id_environment_id_foreign": {
-          "constraintName": "flow_folder_id_environment_id_foreign",
+        "flow_environment_id_folder_id_foreign": {
+          "constraintName": "flow_environment_id_folder_id_foreign",
           "columnNames": [
-            "folder_id",
-            "environment_id"
+            "environment_id",
+            "folder_id"
           ],
           "localTableName": "designer.flow",
           "referencedColumnNames": [
@@ -4110,25 +3825,6 @@
       "schema": "designer",
       "indexes": [
         {
-          "keyName": "event_environment_id_index",
-          "columnNames": [
-            "environment_id"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false
-        },
-        {
-          "keyName": "event_id_environment_id_unique",
-          "columnNames": [
-            "id",
-            "environment_id"
-          ],
-          "composite": true,
-          "primary": false,
-          "unique": true
-        },
-        {
           "keyName": "event_pkey",
           "columnNames": [
             "id",
@@ -4178,11 +3874,11 @@
           "referencedTableName": "identity.user",
           "updateRule": "cascade"
         },
-        "event_folder_id_environment_id_foreign": {
-          "constraintName": "event_folder_id_environment_id_foreign",
+        "event_environment_id_folder_id_foreign": {
+          "constraintName": "event_environment_id_folder_id_foreign",
           "columnNames": [
-            "folder_id",
-            "environment_id"
+            "environment_id",
+            "folder_id"
           ],
           "localTableName": "designer.event",
           "referencedColumnNames": [
@@ -4197,6 +3893,17 @@
     },
     {
       "columns": {
+        "environment_id": {
+          "name": "environment_id",
+          "type": "varchar(64)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 64,
+          "default": "null",
+          "mappedType": "string"
+        },
         "id": {
           "name": "id",
           "type": "varchar(24)",
@@ -4205,17 +3912,6 @@
           "primary": false,
           "nullable": false,
           "length": 24,
-          "mappedType": "string"
-        },
-        "environment_id": {
-          "name": "environment_id",
-          "type": "varchar(24)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 64,
-          "default": "null",
           "mappedType": "string"
         },
         "created_at": {
@@ -4271,7 +3967,7 @@
         },
         "variable_id": {
           "name": "variable_id",
-          "type": "varchar(64)",
+          "type": "varchar(24)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
@@ -4295,29 +3991,10 @@
       "schema": "designer",
       "indexes": [
         {
-          "keyName": "event_mapping_environment_id_index",
-          "columnNames": [
-            "environment_id"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false
-        },
-        {
-          "keyName": "event_mapping_id_environment_id_unique",
-          "columnNames": [
-            "id",
-            "environment_id"
-          ],
-          "composite": true,
-          "primary": false,
-          "unique": true
-        },
-        {
           "keyName": "event_mapping_pkey",
           "columnNames": [
-            "id",
-            "environment_id"
+            "environment_id",
+            "id"
           ],
           "composite": true,
           "primary": true,
@@ -4339,11 +4016,11 @@
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
-        "event_mapping_event_id_environment_id_foreign": {
-          "constraintName": "event_mapping_event_id_environment_id_foreign",
+        "event_mapping_environment_id_event_id_foreign": {
+          "constraintName": "event_mapping_environment_id_event_id_foreign",
           "columnNames": [
-            "event_id",
-            "environment_id"
+            "environment_id",
+            "event_id"
           ],
           "localTableName": "designer.event_mapping",
           "referencedColumnNames": [
@@ -4354,11 +4031,11 @@
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
-        "event_mapping_variable_id_environment_id_foreign": {
-          "constraintName": "event_mapping_variable_id_environment_id_foreign",
+        "event_mapping_environment_id_variable_id_foreign": {
+          "constraintName": "event_mapping_environment_id_variable_id_foreign",
           "columnNames": [
-            "variable_id",
-            "environment_id"
+            "environment_id",
+            "variable_id"
           ],
           "localTableName": "designer.event_mapping",
           "referencedColumnNames": [
@@ -4386,16 +4063,6 @@
     },
     {
       "columns": {
-        "id": {
-          "name": "id",
-          "type": "varchar(64)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 64,
-          "mappedType": "string"
-        },
         "environment_id": {
           "name": "environment_id",
           "type": "varchar(24)",
@@ -4405,6 +4072,16 @@
           "nullable": false,
           "length": 24,
           "default": "null",
+          "mappedType": "string"
+        },
+        "id": {
+          "name": "id",
+          "type": "varchar(64)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 64,
           "mappedType": "string"
         },
         "created_at": {
@@ -4520,29 +4197,10 @@
       "schema": "designer",
       "indexes": [
         {
-          "keyName": "entity_environment_id_index",
-          "columnNames": [
-            "environment_id"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false
-        },
-        {
-          "keyName": "entity_id_environment_id_unique",
-          "columnNames": [
-            "id",
-            "environment_id"
-          ],
-          "composite": true,
-          "primary": false,
-          "unique": true
-        },
-        {
           "keyName": "entity_pkey",
           "columnNames": [
-            "id",
-            "environment_id"
+            "environment_id",
+            "id"
           ],
           "composite": true,
           "primary": true,
@@ -4588,11 +4246,11 @@
           "referencedTableName": "identity.user",
           "updateRule": "cascade"
         },
-        "entity_folder_id_environment_id_foreign": {
-          "constraintName": "entity_folder_id_environment_id_foreign",
+        "entity_environment_id_folder_id_foreign": {
+          "constraintName": "entity_environment_id_folder_id_foreign",
           "columnNames": [
-            "folder_id",
-            "environment_id"
+            "environment_id",
+            "folder_id"
           ],
           "localTableName": "designer.entity",
           "referencedColumnNames": [
@@ -4607,16 +4265,6 @@
     },
     {
       "columns": {
-        "id": {
-          "name": "id",
-          "type": "varchar(24)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 24,
-          "mappedType": "string"
-        },
         "environment_id": {
           "name": "environment_id",
           "type": "varchar(24)",
@@ -4626,6 +4274,16 @@
           "nullable": false,
           "length": 24,
           "default": "null",
+          "mappedType": "string"
+        },
+        "id": {
+          "name": "id",
+          "type": "varchar(24)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 24,
           "mappedType": "string"
         },
         "created_at": {
@@ -4662,7 +4320,7 @@
         },
         "entity_id": {
           "name": "entity_id",
-          "type": "varchar(64)",
+          "type": "varchar(24)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
@@ -4672,7 +4330,7 @@
         },
         "intent_id": {
           "name": "intent_id",
-          "type": "varchar(64)",
+          "type": "varchar(24)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
@@ -4706,29 +4364,10 @@
       "schema": "designer",
       "indexes": [
         {
-          "keyName": "required_entity_environment_id_index",
-          "columnNames": [
-            "environment_id"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false
-        },
-        {
-          "keyName": "required_entity_id_environment_id_unique",
-          "columnNames": [
-            "id",
-            "environment_id"
-          ],
-          "composite": true,
-          "primary": false,
-          "unique": true
-        },
-        {
           "keyName": "required_entity_pkey",
           "columnNames": [
-            "id",
-            "environment_id"
+            "environment_id",
+            "id"
           ],
           "composite": true,
           "primary": true,
@@ -4750,11 +4389,11 @@
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
-        "required_entity_entity_id_environment_id_foreign": {
-          "constraintName": "required_entity_entity_id_environment_id_foreign",
+        "required_entity_environment_id_entity_id_foreign": {
+          "constraintName": "required_entity_environment_id_entity_id_foreign",
           "columnNames": [
-            "entity_id",
-            "environment_id"
+            "environment_id",
+            "entity_id"
           ],
           "localTableName": "designer.required_entity",
           "referencedColumnNames": [
@@ -4765,11 +4404,11 @@
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
-        "required_entity_intent_id_environment_id_foreign": {
-          "constraintName": "required_entity_intent_id_environment_id_foreign",
+        "required_entity_environment_id_intent_id_foreign": {
+          "constraintName": "required_entity_environment_id_intent_id_foreign",
           "columnNames": [
-            "intent_id",
-            "environment_id"
+            "environment_id",
+            "intent_id"
           ],
           "localTableName": "designer.required_entity",
           "referencedColumnNames": [
@@ -4780,11 +4419,11 @@
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
-        "required_entity_reprompt_id_environment_id_foreign": {
-          "constraintName": "required_entity_reprompt_id_environment_id_foreign",
+        "required_entity_environment_id_reprompt_id_foreign": {
+          "constraintName": "required_entity_environment_id_reprompt_id_foreign",
           "columnNames": [
-            "reprompt_id",
-            "environment_id"
+            "environment_id",
+            "reprompt_id"
           ],
           "localTableName": "designer.required_entity",
           "referencedColumnNames": [
@@ -4812,6 +4451,16 @@
     },
     {
       "columns": {
+        "environment_id": {
+          "name": "environment_id",
+          "type": "varchar(64)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 64,
+          "mappedType": "string"
+        },
         "id": {
           "name": "id",
           "type": "varchar(24)",
@@ -4820,16 +4469,6 @@
           "primary": false,
           "nullable": false,
           "length": 24,
-          "mappedType": "string"
-        },
-        "environment_id": {
-          "name": "environment_id",
-          "type": "varchar(24)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 64,
           "mappedType": "string"
         },
         "created_at": {
@@ -4896,7 +4535,7 @@
         },
         "entity_id": {
           "name": "entity_id",
-          "type": "varchar(64)",
+          "type": "varchar(24)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
@@ -4919,29 +4558,10 @@
       "schema": "designer",
       "indexes": [
         {
-          "keyName": "entity_variant_environment_id_index",
-          "columnNames": [
-            "environment_id"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false
-        },
-        {
-          "keyName": "entity_variant_id_environment_id_unique",
-          "columnNames": [
-            "id",
-            "environment_id"
-          ],
-          "composite": true,
-          "primary": false,
-          "unique": true
-        },
-        {
           "keyName": "entity_variant_pkey",
           "columnNames": [
-            "id",
-            "environment_id"
+            "environment_id",
+            "id"
           ],
           "composite": true,
           "primary": true,
@@ -4963,11 +4583,11 @@
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
-        "entity_variant_entity_id_environment_id_foreign": {
-          "constraintName": "entity_variant_entity_id_environment_id_foreign",
+        "entity_variant_environment_id_entity_id_foreign": {
+          "constraintName": "entity_variant_environment_id_entity_id_foreign",
           "columnNames": [
-            "entity_id",
-            "environment_id"
+            "environment_id",
+            "entity_id"
           ],
           "localTableName": "designer.entity_variant",
           "referencedColumnNames": [
@@ -5101,25 +4721,6 @@
       "schema": "designer",
       "indexes": [
         {
-          "keyName": "card_attachment_environment_id_index",
-          "columnNames": [
-            "environment_id"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false
-        },
-        {
-          "keyName": "card_attachment_id_environment_id_unique",
-          "columnNames": [
-            "id",
-            "environment_id"
-          ],
-          "composite": true,
-          "primary": false,
-          "unique": true
-        },
-        {
           "keyName": "card_attachment_pkey",
           "columnNames": [
             "id",
@@ -5145,11 +4746,11 @@
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
-        "card_attachment_media_id_environment_id_foreign": {
-          "constraintName": "card_attachment_media_id_environment_id_foreign",
+        "card_attachment_environment_id_media_id_foreign": {
+          "constraintName": "card_attachment_environment_id_media_id_foreign",
           "columnNames": [
-            "media_id",
-            "environment_id"
+            "environment_id",
+            "media_id"
           ],
           "localTableName": "designer.card_attachment",
           "referencedColumnNames": [
@@ -5177,8 +4778,8 @@
     },
     {
       "columns": {
-        "id": {
-          "name": "id",
+        "environment_id": {
+          "name": "environment_id",
           "type": "varchar(24)",
           "unsigned": false,
           "autoincrement": false,
@@ -5187,8 +4788,8 @@
           "length": 24,
           "mappedType": "string"
         },
-        "environment_id": {
-          "name": "environment_id",
+        "id": {
+          "name": "id",
           "type": "varchar(24)",
           "unsigned": false,
           "autoincrement": false,
@@ -5263,29 +4864,10 @@
       "schema": "designer",
       "indexes": [
         {
-          "keyName": "card_button_environment_id_index",
-          "columnNames": [
-            "environment_id"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false
-        },
-        {
-          "keyName": "card_button_id_environment_id_unique",
-          "columnNames": [
-            "id",
-            "environment_id"
-          ],
-          "composite": true,
-          "primary": false,
-          "unique": true
-        },
-        {
           "keyName": "card_button_pkey",
           "columnNames": [
-            "id",
-            "environment_id"
+            "environment_id",
+            "id"
           ],
           "composite": true,
           "primary": true,
@@ -5307,11 +4889,11 @@
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
-        "card_button_card_id_environment_id_foreign": {
-          "constraintName": "card_button_card_id_environment_id_foreign",
+        "card_button_environment_id_card_id_foreign": {
+          "constraintName": "card_button_environment_id_card_id_foreign",
           "columnNames": [
-            "card_id",
-            "environment_id"
+            "environment_id",
+            "card_id"
           ],
           "localTableName": "designer.card_button",
           "referencedColumnNames": [
@@ -5339,16 +4921,6 @@
     },
     {
       "columns": {
-        "id": {
-          "name": "id",
-          "type": "varchar(24)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 24,
-          "mappedType": "string"
-        },
         "environment_id": {
           "name": "environment_id",
           "type": "varchar(24)",
@@ -5358,6 +4930,16 @@
           "nullable": false,
           "length": 24,
           "default": "null",
+          "mappedType": "string"
+        },
+        "id": {
+          "name": "id",
+          "type": "varchar(24)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 24,
           "mappedType": "string"
         },
         "created_at": {
@@ -5468,29 +5050,10 @@
           "unique": false
         },
         {
-          "keyName": "condition_environment_id_index",
-          "columnNames": [
-            "environment_id"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false
-        },
-        {
-          "keyName": "condition_id_environment_id_unique",
-          "columnNames": [
-            "id",
-            "environment_id"
-          ],
-          "composite": true,
-          "primary": false,
-          "unique": true
-        },
-        {
           "keyName": "condition_pkey",
           "columnNames": [
-            "id",
-            "environment_id"
+            "environment_id",
+            "id"
           ],
           "composite": true,
           "primary": true,
@@ -5525,11 +5088,11 @@
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
-        "condition_prompt_id_environment_id_foreign": {
-          "constraintName": "condition_prompt_id_environment_id_foreign",
+        "condition_environment_id_prompt_id_foreign": {
+          "constraintName": "condition_environment_id_prompt_id_foreign",
           "columnNames": [
-            "prompt_id",
-            "environment_id"
+            "environment_id",
+            "prompt_id"
           ],
           "localTableName": "designer.condition",
           "referencedColumnNames": [
@@ -5544,8 +5107,8 @@
     },
     {
       "columns": {
-        "id": {
-          "name": "id",
+        "environment_id": {
+          "name": "environment_id",
           "type": "varchar(24)",
           "unsigned": false,
           "autoincrement": false,
@@ -5554,8 +5117,8 @@
           "length": 24,
           "mappedType": "string"
         },
-        "environment_id": {
-          "name": "environment_id",
+        "id": {
+          "name": "id",
           "type": "varchar(24)",
           "unsigned": false,
           "autoincrement": false,
@@ -5653,29 +5216,10 @@
       "schema": "designer",
       "indexes": [
         {
-          "keyName": "condition_predicate_environment_id_index",
-          "columnNames": [
-            "environment_id"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false
-        },
-        {
-          "keyName": "condition_predicate_id_environment_id_unique",
-          "columnNames": [
-            "id",
-            "environment_id"
-          ],
-          "composite": true,
-          "primary": false,
-          "unique": true
-        },
-        {
           "keyName": "condition_predicate_pkey",
           "columnNames": [
-            "id",
-            "environment_id"
+            "environment_id",
+            "id"
           ],
           "composite": true,
           "primary": true,
@@ -5697,11 +5241,11 @@
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
-        "condition_predicate_condition_id_environment_id_foreign": {
-          "constraintName": "condition_predicate_condition_id_environment_id_foreign",
+        "condition_predicate_environment_id_condition_id_foreign": {
+          "constraintName": "condition_predicate_environment_id_condition_id_foreign",
           "columnNames": [
-            "condition_id",
-            "environment_id"
+            "environment_id",
+            "condition_id"
           ],
           "localTableName": "designer.condition_predicate",
           "referencedColumnNames": [
@@ -5729,8 +5273,8 @@
     },
     {
       "columns": {
-        "id": {
-          "name": "id",
+        "environment_id": {
+          "name": "environment_id",
           "type": "varchar(24)",
           "unsigned": false,
           "autoincrement": false,
@@ -5739,8 +5283,8 @@
           "length": 24,
           "mappedType": "string"
         },
-        "environment_id": {
-          "name": "environment_id",
+        "id": {
+          "name": "id",
           "type": "varchar(24)",
           "unsigned": false,
           "autoincrement": false,
@@ -5847,29 +5391,10 @@
       "schema": "designer",
       "indexes": [
         {
-          "keyName": "condition_assertion_environment_id_index",
-          "columnNames": [
-            "environment_id"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false
-        },
-        {
-          "keyName": "condition_assertion_id_environment_id_unique",
-          "columnNames": [
-            "id",
-            "environment_id"
-          ],
-          "composite": true,
-          "primary": false,
-          "unique": true
-        },
-        {
           "keyName": "condition_assertion_pkey",
           "columnNames": [
-            "id",
-            "environment_id"
+            "environment_id",
+            "id"
           ],
           "composite": true,
           "primary": true,
@@ -5891,11 +5416,11 @@
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
-        "condition_assertion_condition_id_environment_id_foreign": {
-          "constraintName": "condition_assertion_condition_id_environment_id_foreign",
+        "condition_assertion_environment_id_condition_id_foreign": {
+          "constraintName": "condition_assertion_environment_id_condition_id_foreign",
           "columnNames": [
-            "condition_id",
-            "environment_id"
+            "environment_id",
+            "condition_id"
           ],
           "localTableName": "designer.condition_assertion",
           "referencedColumnNames": [
@@ -5923,16 +5448,6 @@
     },
     {
       "columns": {
-        "id": {
-          "name": "id",
-          "type": "varchar(24)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 24,
-          "mappedType": "string"
-        },
         "environment_id": {
           "name": "environment_id",
           "type": "varchar(24)",
@@ -5942,6 +5457,16 @@
           "nullable": false,
           "length": 24,
           "default": "null",
+          "mappedType": "string"
+        },
+        "id": {
+          "name": "id",
+          "type": "varchar(24)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 24,
           "mappedType": "string"
         },
         "created_at": {
@@ -6119,29 +5644,10 @@
           "unique": false
         },
         {
-          "keyName": "response_variant_environment_id_index",
-          "columnNames": [
-            "environment_id"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false
-        },
-        {
-          "keyName": "response_variant_id_environment_id_unique",
-          "columnNames": [
-            "id",
-            "environment_id"
-          ],
-          "composite": true,
-          "primary": false,
-          "unique": true
-        },
-        {
           "keyName": "response_variant_pkey",
           "columnNames": [
-            "id",
-            "environment_id"
+            "environment_id",
+            "id"
           ],
           "composite": true,
           "primary": true,
@@ -6163,11 +5669,11 @@
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
-        "response_variant_condition_id_environment_id_foreign": {
-          "constraintName": "response_variant_condition_id_environment_id_foreign",
+        "response_variant_environment_id_condition_id_foreign": {
+          "constraintName": "response_variant_environment_id_condition_id_foreign",
           "columnNames": [
-            "condition_id",
-            "environment_id"
+            "environment_id",
+            "condition_id"
           ],
           "localTableName": "designer.response_variant",
           "referencedColumnNames": [
@@ -6191,11 +5697,11 @@
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
-        "response_variant_discriminator_id_environment_id_foreign": {
-          "constraintName": "response_variant_discriminator_id_environment_id_foreign",
+        "response_variant_environment_id_discriminator_id_foreign": {
+          "constraintName": "response_variant_environment_id_discriminator_id_foreign",
           "columnNames": [
-            "discriminator_id",
-            "environment_id"
+            "environment_id",
+            "discriminator_id"
           ],
           "localTableName": "designer.response_variant",
           "referencedColumnNames": [
@@ -6206,11 +5712,11 @@
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
-        "response_variant_prompt_id_environment_id_foreign": {
-          "constraintName": "response_variant_prompt_id_environment_id_foreign",
+        "response_variant_environment_id_prompt_id_foreign": {
+          "constraintName": "response_variant_environment_id_prompt_id_foreign",
           "columnNames": [
-            "prompt_id",
-            "environment_id"
+            "environment_id",
+            "prompt_id"
           ],
           "localTableName": "designer.response_variant",
           "referencedColumnNames": [
@@ -6225,8 +5731,8 @@
     },
     {
       "columns": {
-        "id": {
-          "name": "id",
+        "environment_id": {
+          "name": "environment_id",
           "type": "varchar(24)",
           "unsigned": false,
           "autoincrement": false,
@@ -6235,8 +5741,8 @@
           "length": 24,
           "mappedType": "string"
         },
-        "environment_id": {
-          "name": "environment_id",
+        "id": {
+          "name": "id",
           "type": "varchar(24)",
           "unsigned": false,
           "autoincrement": false,
@@ -6323,29 +5829,10 @@
           "unique": false
         },
         {
-          "keyName": "response_attachment_environment_id_index",
-          "columnNames": [
-            "environment_id"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false
-        },
-        {
-          "keyName": "response_attachment_id_environment_id_unique",
-          "columnNames": [
-            "id",
-            "environment_id"
-          ],
-          "composite": true,
-          "primary": false,
-          "unique": true
-        },
-        {
           "keyName": "response_attachment_pkey",
           "columnNames": [
-            "id",
-            "environment_id"
+            "environment_id",
+            "id"
           ],
           "composite": true,
           "primary": true,
@@ -6354,11 +5841,11 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "response_attachment_variant_id_environment_id_foreign": {
-          "constraintName": "response_attachment_variant_id_environment_id_foreign",
+        "response_attachment_environment_id_variant_id_foreign": {
+          "constraintName": "response_attachment_environment_id_variant_id_foreign",
           "columnNames": [
-            "variant_id",
-            "environment_id"
+            "environment_id",
+            "variant_id"
           ],
           "localTableName": "designer.response_attachment",
           "referencedColumnNames": [
@@ -6382,11 +5869,11 @@
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
-        "response_attachment_card_id_environment_id_foreign": {
-          "constraintName": "response_attachment_card_id_environment_id_foreign",
+        "response_attachment_environment_id_card_id_foreign": {
+          "constraintName": "response_attachment_environment_id_card_id_foreign",
           "columnNames": [
-            "card_id",
-            "environment_id"
+            "environment_id",
+            "card_id"
           ],
           "localTableName": "designer.response_attachment",
           "referencedColumnNames": [
@@ -6397,11 +5884,11 @@
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
-        "response_attachment_media_id_environment_id_foreign": {
-          "constraintName": "response_attachment_media_id_environment_id_foreign",
+        "response_attachment_environment_id_media_id_foreign": {
+          "constraintName": "response_attachment_environment_id_media_id_foreign",
           "columnNames": [
-            "media_id",
-            "environment_id"
+            "environment_id",
+            "media_id"
           ],
           "localTableName": "designer.response_attachment",
           "referencedColumnNames": [

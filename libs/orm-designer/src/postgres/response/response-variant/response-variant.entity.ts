@@ -1,10 +1,10 @@
-import { ArrayType, Entity, Enum, Index, ManyToOne, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
+import { ArrayType, Entity, Enum, ManyToOne, PrimaryKeyType, Property } from '@mikro-orm/core';
 import type { Markup } from '@voiceflow/dtos';
 import { CardLayout, ResponseContext, ResponseVariantType } from '@voiceflow/dtos';
 
 import { MarkupType } from '@/common';
 import type { AssistantEntity } from '@/postgres/assistant';
-import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
+import { Assistant, Environment, ObjectIDPrimaryKey, PostgresCMSObjectEntity } from '@/postgres/common';
 import { BaseConditionEntity } from '@/postgres/condition';
 import { PromptEntity } from '@/postgres/prompt';
 import type { CMSCompositePK, Ref } from '@/types';
@@ -18,11 +18,15 @@ const TABLE_NAME = 'designer.response_variant';
   tableName: TABLE_NAME,
   discriminatorColumn: 'type',
 })
-@Unique({ properties: ['id', 'environmentID'] })
-@Index({ properties: ['environmentID'] })
 export class BaseResponseVariantEntity<DefaultOrNullColumn extends string = never> extends PostgresCMSObjectEntity<
   DefaultOrNullColumn | 'condition'
 > {
+  @Environment()
+  environmentID!: string;
+
+  @ObjectIDPrimaryKey()
+  id!: string;
+
   @Enum(() => ResponseVariantType)
   type!: ResponseVariantType;
 
@@ -31,7 +35,7 @@ export class BaseResponseVariantEntity<DefaultOrNullColumn extends string = neve
     default: null,
     onDelete: 'set default',
     nullable: true,
-    fieldNames: ['condition_id', 'environment_id'],
+    fieldNames: ['environment_id', 'condition_id'],
   })
   condition!: Ref<BaseConditionEntity> | null;
 
@@ -41,12 +45,9 @@ export class BaseResponseVariantEntity<DefaultOrNullColumn extends string = neve
   @ManyToOne(() => ResponseDiscriminatorEntity, {
     name: 'discriminator_id',
     onDelete: 'cascade',
-    fieldNames: ['discriminator_id', 'environment_id'],
+    fieldNames: ['environment_id', 'discriminator_id'],
   })
   discriminator!: Ref<ResponseDiscriminatorEntity>;
-
-  @Environment()
-  environmentID!: string;
 
   @Property({ type: ArrayType })
   attachmentOrder!: string[];
@@ -80,7 +81,7 @@ export class PromptResponseVariantEntity extends BaseResponseVariantEntity<'prom
     default: null,
     onDelete: 'set default',
     nullable: true,
-    fieldNames: ['prompt_id', 'environment_id'],
+    fieldNames: ['environment_id', 'prompt_id'],
   })
   prompt!: Ref<PromptEntity> | null;
 

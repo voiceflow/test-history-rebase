@@ -1,7 +1,7 @@
-import { Entity as EntityDecorator, Index, ManyToOne, PrimaryKeyType, Unique } from '@mikro-orm/core';
+import { Entity as EntityDecorator, ManyToOne, PrimaryKeyType } from '@mikro-orm/core';
 
 import type { AssistantEntity } from '@/postgres/assistant';
-import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
+import { Assistant, Environment, ObjectIDPrimaryKey, PostgresCMSObjectEntity } from '@/postgres/common';
 import { EntityEntity } from '@/postgres/entity';
 import { ResponseEntity } from '@/postgres/response';
 import type { CMSCompositePK, Ref } from '@/types';
@@ -9,20 +9,24 @@ import type { CMSCompositePK, Ref } from '@/types';
 import { IntentEntity } from '../intent.entity';
 
 @EntityDecorator({ tableName: 'designer.required_entity' })
-@Unique({ properties: ['id', 'environmentID'] })
-@Index({ properties: ['environmentID'] })
 export class RequiredEntityEntity extends PostgresCMSObjectEntity<'reprompt'> {
+  @Environment()
+  environmentID!: string;
+
+  @ObjectIDPrimaryKey()
+  id!: string;
+
   @ManyToOne(() => EntityEntity, {
     name: 'entity_id',
     onDelete: 'cascade',
-    fieldNames: ['entity_id', 'environment_id'],
+    fieldNames: ['environment_id', 'entity_id'],
   })
   entity!: Ref<EntityEntity>;
 
   @ManyToOne(() => IntentEntity, {
     name: 'intent_id',
     onDelete: 'cascade',
-    fieldNames: ['intent_id', 'environment_id'],
+    fieldNames: ['environment_id', 'intent_id'],
   })
   intent!: Ref<IntentEntity>;
 
@@ -31,15 +35,12 @@ export class RequiredEntityEntity extends PostgresCMSObjectEntity<'reprompt'> {
     default: null,
     onDelete: 'set default',
     nullable: true,
-    fieldNames: ['reprompt_id', 'environment_id'],
+    fieldNames: ['environment_id', 'reprompt_id'],
   })
   reprompt!: Ref<ResponseEntity> | null;
 
   @Assistant()
   assistant!: Ref<AssistantEntity>;
-
-  @Environment()
-  environmentID!: string;
 
   [PrimaryKeyType]?: CMSCompositePK;
 }

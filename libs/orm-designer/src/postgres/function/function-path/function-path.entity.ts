@@ -1,4 +1,4 @@
-import { Entity, ManyToOne, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
+import { Entity, Index, ManyToOne, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
 
 import type { AssistantEntity } from '@/postgres/assistant';
 import { Assistant, CreatedAt, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
@@ -8,6 +8,7 @@ import { FunctionEntity } from '../function.entity';
 
 @Entity({ tableName: 'designer.function_path' })
 @Unique({ properties: ['id', 'environmentID'] })
+@Index({ properties: ['environmentID'] })
 export class FunctionPathEntity extends PostgresCMSObjectEntity {
   @CreatedAt({ columnType: 'timestamptz' })
   createdAt!: Date;

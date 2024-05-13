@@ -1,4 +1,4 @@
-import { Entity, Property } from '@mikro-orm/core';
+import { Entity, Index, Property } from '@mikro-orm/core';
 
 import { CreatedByID, PostgresCreatableEntity } from '@/postgres/common';
 import type { Ref } from '@/types';
@@ -6,6 +6,7 @@ import type { Ref } from '@/types';
 import type { UserStubEntity } from '../stubs/user.stub';
 
 @Entity({ schema: 'app_cxd', tableName: 'backup' })
+@Index({ properties: ['assistantID'] })
 export class BackupEntity extends PostgresCreatableEntity {
   @Property()
   name!: string;

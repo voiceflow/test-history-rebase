@@ -1,4 +1,4 @@
-import { Entity as EntityDecorator, Index, ManyToOne, PrimaryKeyType } from '@mikro-orm/core';
+import { Entity as EntityDecorator, Index, ManyToOne, PrimaryKeyType, Unique } from '@mikro-orm/core';
 
 import type { AssistantEntity } from '@/postgres/assistant';
 import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
@@ -9,6 +9,7 @@ import type { CMSCompositePK, Ref } from '@/types';
 import { IntentEntity } from '../intent.entity';
 
 @EntityDecorator({ tableName: 'designer.required_entity' })
+@Unique({ properties: ['id', 'environmentID'] })
 @Index({ properties: ['environmentID'] })
 export class RequiredEntityEntity extends PostgresCMSObjectEntity<'reprompt'> {
   @ManyToOne(() => EntityEntity, {

@@ -1,4 +1,4 @@
-import { Entity, Enum, ManyToOne, PrimaryKeyType, Unique } from '@mikro-orm/core';
+import { Entity, Enum, Index, ManyToOne, PrimaryKeyType, Unique } from '@mikro-orm/core';
 import { AttachmentType } from '@voiceflow/dtos';
 
 import type { AssistantEntity } from '@/postgres/assistant';
@@ -16,6 +16,7 @@ const TABLE_NAME = 'designer.response_attachment';
   discriminatorColumn: 'type',
 })
 @Unique({ properties: ['id', 'environmentID'] })
+@Index({ properties: ['environmentID'] })
 export class BaseResponseAttachmentEntity extends PostgresCMSCreatableEntity {
   @Enum(() => AttachmentType)
   type!: AttachmentType;

@@ -6,6 +6,7 @@ import {
   ManyToOne,
   PrimaryKeyType,
   Property,
+  Unique,
 } from '@mikro-orm/core';
 import { Language } from '@voiceflow/dtos';
 
@@ -16,6 +17,7 @@ import type { CMSCompositePK, Ref } from '@/types';
 import { EntityEntity } from '../entity.entity';
 
 @EntityDecorator({ tableName: 'designer.entity_variant' })
+@Unique({ properties: ['id', 'environmentID'] })
 @Index({ properties: ['environmentID'] })
 export class EntityVariantEntity extends PostgresCMSObjectEntity {
   @Enum(() => Language)

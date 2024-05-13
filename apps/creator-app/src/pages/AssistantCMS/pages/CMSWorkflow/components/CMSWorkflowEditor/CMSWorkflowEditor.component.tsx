@@ -24,7 +24,7 @@ export const CMSWorkflowEditor: React.FC = () => {
   const getOneByID = useGetValueSelector(Designer.Workflow.selectors.oneByID);
   const workflowID = useCMSActiveResourceID();
 
-  const goToDiagram = useDispatch(Router.goToDiagramClearActive);
+  const goToDiagram = useDispatch(Router.goToDiagram);
   const duplicateOne = useDispatch(Designer.Workflow.effect.duplicateOne);
   const goToCMSResource = useDispatch(Router.goToCMSResource);
 

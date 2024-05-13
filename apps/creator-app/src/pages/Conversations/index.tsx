@@ -105,7 +105,7 @@ const Conversations: React.FC = () => {
 
   return (
     <Container>
-      <ConversationsContainer id={Identifier.CONVERSATIONS_PAGE} isFilteredResultsEmpty={!filteredReportsExist}>
+      <ConversationsContainer id={Identifier.CONVERSATIONS_PAGE} isFilteredResultsEmpty={!filteredReportsExist} isNewLayout={cmsWorkflows.isEnabled}>
         <LoadingGate internalName={Conversations.name} isLoaded={isLoaded} load={loadTranscripts} loader={<TabLoader variant="dark" />}>
           {!noTestRuns ? (
             <>

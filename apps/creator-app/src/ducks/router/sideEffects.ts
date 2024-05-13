@@ -366,6 +366,7 @@ export const goToDiagram =
 
       Errors.assertVersionID(versionID);
 
+      dispatch(Creator.clearFocus());
       dispatch(goToCanvasDiagram({ nodeID, diagramID, versionID, pageProgress: false }));
 
       return;
@@ -379,21 +380,6 @@ export const goToDiagram =
     Errors.assertDomainID(domainID);
 
     dispatch(goToDomainDiagram(domainID, diagramID, nodeID));
-  };
-
-export const goToDiagramClearActive =
-  (diagramID: string, nodeID?: string): SyncThunk =>
-  (dispatch, getState) => {
-    const state = getState();
-
-    const activeDiagramID = Creator.activeDiagramIDSelector(state);
-
-    if (diagramID !== activeDiagramID) {
-      dispatch(Session.setActiveDiagramID(null));
-      dispatch(Realtime.creator.resetActive());
-    }
-
-    dispatch(goToDiagram(diagramID, nodeID));
   };
 
 export const goToDiagramHistoryPush =

@@ -63,6 +63,7 @@ class WorkspaceService extends AbstractControl {
 
     return {
       ...workspace,
+      beta_flag: workspace.betaFlag,
       created: workspace.createdAt,
       stripe_status: workspace.stripeStatus,
       organization_id: workspace.organizationID,
@@ -87,6 +88,7 @@ class WorkspaceService extends AbstractControl {
         organization_id: workspace.organizationID,
         creator_id: workspace.createdBy,
         team_id: workspace.id,
+        beta_flag: workspace.betaFlag,
         organization_trial_days_left: workspace.organizationTrialDaysLeft,
         members: Realtime.Adapters.Identity.workspaceMember.mapFromDB(workspace.members ?? []),
         settings: {},

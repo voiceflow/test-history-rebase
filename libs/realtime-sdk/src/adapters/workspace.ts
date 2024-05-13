@@ -18,6 +18,7 @@ const workspaceAdapter = createMultiAdapter<DBWorkspace, Workspace>(
     created,
     projects,
     settings = { aiAssist: true, dashboardKanban: false },
+    beta_flag,
     seatLimits,
     creator_id,
     stripe_status,
@@ -51,9 +52,7 @@ const workspaceAdapter = createMultiAdapter<DBWorkspace, Workspace>(
       variableStatesLimit,
       organizationTrialDaysLeft: organization_trial_days_left,
       stripeStatus: stripe_status,
-
-      // TODO: remove this when all clients are updated to latest version, typically in a few weeks after fe release
-      seatLimits,
+      betaFlag: beta_flag,
     };
   },
   notImplementedAdapter.transformer

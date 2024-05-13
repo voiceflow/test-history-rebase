@@ -1,12 +1,14 @@
 import { Utils } from '@voiceflow/common';
 import { PlanType } from '@voiceflow/internal';
 import { FeatureFlag } from '@voiceflow/realtime-sdk';
+import { toast } from '@voiceflow/ui';
 
 import type { UpgradePopperData } from '@/components/UpgradePopper';
 import type { UpgradeTooltipData } from '@/components/UpgradeTooltip';
 import { BOOK_DEMO_LINK, PRICING_LINK } from '@/constants/link.constant';
 import * as Feature from '@/ducks/feature/selectors';
 import * as Tracking from '@/ducks/tracking';
+import * as Workspace from '@/ducks/workspaceV2/selectors/active';
 import type { useDispatch } from '@/hooks';
 import ModalsManager from '@/ModalsV2/manager';
 import { isPlanName } from '@/ModalsV2/modals/Billing/typeguards';
@@ -41,9 +43,9 @@ export const getUpgradeModalProps = (
   upgradePrompt: Tracking.UpgradePrompt,
   { isLegacyBilling = false }: { isLegacyBilling?: boolean } = {}
 ): Pick<UpgradeModal, 'onUpgrade' | 'upgradePrompt' | 'upgradeButtonText'> => {
-  const { isEnabled: teamsPlanSelfServeIsEnabled } = Feature.featuresSelector(window.store.getState())[FeatureFlag.TEAMS_PLAN_SELF_SERVE] ?? {
-    isEnabled: false,
-  };
+  const state = window.store.getState();
+  const teamsPlanSelfServeIsEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.TEAMS_PLAN_SELF_SERVE);
+  const isCheckoutDisabled = Workspace.isCheckoutDisabledSelector(state);
 
   const teamsIsEnabled = !isLegacyBilling && teamsPlanSelfServeIsEnabled;
 
@@ -66,6 +68,16 @@ export const getUpgradeModalProps = (
       },
       upgradePrompt,
       upgradeButtonText: 'Contact Sales',
+    };
+  }
+
+  if (isCheckoutDisabled) {
+    return {
+      onUpgrade: () => {
+        toast.warn('Upgrading is temporarily disabled. Please try again in an hour.');
+      },
+      upgradePrompt,
+      upgradeButtonText: `Upgrade to ${getPlanTypeLabel(nextPlan)}`,
     };
   }
 

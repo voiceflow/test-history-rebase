@@ -56,10 +56,15 @@ export const deleteOne =
     const state = getState();
 
     const projectID = Session.activeProjectIDSelector(state);
+    const kbIntegrationsEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.KB_BE_INTEGRATIONS);
 
     Errors.assertProjectID(projectID);
 
-    await knowledgeBaseClient.deleteOneIntegration(projectID, integrationType);
+    if (kbIntegrationsEnabled) {
+      await designerClient.knowledgeBase.integration.deleteIntegration(projectID, integrationType);
+    } else {
+      await knowledgeBaseClient.deleteOneIntegration(projectID, integrationType);
+    }
 
     dispatch.local(Actions.DeleteOne({ id: integrationType }));
   };

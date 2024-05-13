@@ -163,8 +163,4 @@ export class RefreshJobService extends MutableService<RefreshJobsOrm> {
 
     await this.orm.bulkUpsert(jobsWithExecuteAt);
   }
-
-  async deleteManyByDocumentIDs(projectID: string, documentIDs: string[]): Promise<void> {
-    return this.orm.deleteManyByDocumentIDs(projectID, documentIDs);
-  }
 }

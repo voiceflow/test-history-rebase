@@ -55,9 +55,9 @@ export class IntegrationOauthTokenService extends MutableService<IntegrationOaut
     };
   }
 
-  async deleteIntegration(assistantID: string, integrationType: string): Promise<void> {
+  async deleteIntegration(assistantID: string, integrationType = 'zendesk'): Promise<void> {
     // TODO: Change this to get from 'resolver' according to integration type
-    const integrationName = 'zendesk';
+    const integrationName = integrationType;
 
     let project;
     try {
@@ -82,12 +82,7 @@ export class IntegrationOauthTokenService extends MutableService<IntegrationOaut
     await this.project.unsetDocumentsAccessToken(assistantID, urlDocumentIds);
 
     await this.refreshJobs.deleteManyByDocumentIDs(assistantID, urlDocumentIds);
-    await this.project.updateDocumentsRefreshRate(assistantID, urlDocumentIds, KnowledgeBaseDocumentRefreshRate.NEVER);
 
-    await this.orm.delete({
-      scope: 'assistant',
-      resourceID: assistantID,
-      type: integrationType,
-    });
+    await this.project.updateDocumentsRefreshRate(assistantID, urlDocumentIds, KnowledgeBaseDocumentRefreshRate.NEVER);
   }
 }

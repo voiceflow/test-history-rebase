@@ -789,10 +789,6 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
 
   /* Delete */
 
-  /* async deleteRefreshJobsByDocumentIds(projectID: string, documentIDs: string[]): Promise<void> {
-    return this.refreshJobsOrm.deleteManyByDocumentIDs(projectID, documentIDs);
-  } */
-
   async deleteManyDocuments(ids: string[], assistantID: string) {
     const workspaceID = await this.orm.getWorkspaceID(assistantID);
     await this.klParserClient.deleteMany(assistantID, ids, workspaceID.toString());

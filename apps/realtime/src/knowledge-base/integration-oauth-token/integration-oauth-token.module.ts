@@ -1,4 +1,4 @@
-import { Global, Module } from '@nestjs/common';
+import { Global, Module, forwardRef } from '@nestjs/common';
 import { IntegrationOauthTokenORM } from '@voiceflow/orm-designer';
 
 import { TokenEncryptionService } from '@/knowledge-base/integration-oauth-token/token-encryption.service';
@@ -6,14 +6,14 @@ import { TokenEncryptionService } from '@/knowledge-base/integration-oauth-token
 import { KnowledgeBaseIntegrationsPublicHTTPController } from './integration-oauth-public.controller';
 import { ConfigurableModuleClass } from './integration-oauth-token.module-definition';
 import { IntegrationOauthTokenService } from './integration-oauth-token.service';
-import { RefreshJobService } from '../document/refresh-job.service';
+import { KnowledgeBaseDocumentService } from '../document/document.service';
 import { KnowledgeBaseDocumentModule } from '../document/document.module';
 
 @Global()
 @Module({
-  imports: [KnowledgeBaseDocumentModule],
+  imports: [forwardRef(() => KnowledgeBaseDocumentModule)],
   exports: [IntegrationOauthTokenService],
-  providers: [RefreshJobService, IntegrationOauthTokenService, IntegrationOauthTokenORM, TokenEncryptionService],
+  providers: [IntegrationOauthTokenService, IntegrationOauthTokenORM, TokenEncryptionService, KnowledgeBaseDocumentService],
   controllers: [KnowledgeBaseIntegrationsPublicHTTPController],
 })
 export class IntegrationOauthTokenModule extends ConfigurableModuleClass {}

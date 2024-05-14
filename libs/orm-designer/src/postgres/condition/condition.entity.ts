@@ -1,4 +1,4 @@
-import { Entity, Enum, Index, ManyToOne, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
+import { Entity, Enum, Index, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
 import type { Markup } from '@voiceflow/dtos';
 import { ConditionType } from '@voiceflow/dtos';
 
@@ -7,7 +7,7 @@ import type { CMSCompositePK, Ref } from '@/types';
 
 import type { AssistantEntity } from '../assistant';
 import { Assistant, Environment, PostgresCMSObjectEntity } from '../common';
-import { PromptEntity } from '../prompt';
+import type { PromptEntity } from '../prompt';
 
 @Entity({
   abstract: true,
@@ -46,14 +46,8 @@ export class PromptConditionEntity extends BaseConditionEntity<'prompt'> {
   @Property()
   turns!: number;
 
-  @ManyToOne(() => PromptEntity, {
-    name: 'prompt_id',
-    default: null,
-    onDelete: 'set default',
-    nullable: true,
-    fieldNames: ['prompt_id', 'environment_id'],
-  })
-  prompt!: Ref<PromptEntity> | null;
+  @Property({ type: 'jsonb', nullable: true, default: null })
+  prompt!: PromptEntity | null;
 }
 
 @Entity({ discriminatorValue: ConditionType.SCRIPT })

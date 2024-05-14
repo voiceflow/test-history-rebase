@@ -16,7 +16,7 @@ import type {
   CreateData,
   ResponseDiscriminatorObject,
 } from '@voiceflow/orm-designer';
-import { AnyResponseVariantORM, DatabaseTarget, ObjectId, PromptORM, ResponseDiscriminatorORM } from '@voiceflow/orm-designer';
+import { AnyResponseVariantORM, DatabaseTarget, ObjectId, ResponseDiscriminatorORM } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 import { match } from 'ts-pattern';
 
@@ -56,8 +56,6 @@ export class ResponseVariantService {
     private readonly postgresEM: EntityManager,
     @Inject(AnyResponseVariantORM)
     protected readonly orm: AnyResponseVariantORM,
-    @Inject(PromptORM)
-    protected readonly promptORM: PromptORM,
     @Inject(ResponseDiscriminatorORM)
     protected readonly responseDiscriminatorORM: ResponseDiscriminatorORM,
     @Inject(LoguxService)

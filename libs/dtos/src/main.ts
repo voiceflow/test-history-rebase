@@ -91,8 +91,6 @@ export * from './node/visual/canvas-visibility-enum';
 export * from './node/visual/visual-type.enum';
 export * from './organization/organization.dto';
 export * from './organization/organization-member.dto';
-export * from './persona/persona.dto';
-export * from './persona/persona-override/persona-override.dto';
 export * from './program/program.dto';
 export * from './program/program-command.dto';
 export * from './program/program-line.dto';

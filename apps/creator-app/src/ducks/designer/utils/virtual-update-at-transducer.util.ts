@@ -9,7 +9,6 @@ import type { STATE_KEY as ENTITY_STATE_KEY } from '@/ducks/designer/entity/enti
 import type { STATE_KEY as EVENT_STATE_KEY } from '@/ducks/designer/event/event.state';
 import type { STATE_KEY as FUNCTION_STATE_KEY } from '@/ducks/designer/function/function.state';
 import type { STATE_KEY as INTENT_STATE_KEY } from '@/ducks/designer/intent/intent.state';
-import type { STATE_KEY as PERSONA_STATE_KEY } from '@/ducks/designer/persona/persona.state';
 import type { STATE_KEY as RESPONSE_STATE_KEY } from '@/ducks/designer/response/response.state';
 import type { STATE_KEY as WORKFLOW_STATE_KEY } from '@/ducks/designer/workflow/workflow.state';
 import { isFeatureEnabledSelector } from '@/ducks/feature';
@@ -24,7 +23,6 @@ type AnyRootResourceStateKey =
   | typeof WORKFLOW_STATE_KEY
   | typeof ENTITY_STATE_KEY
   | typeof INTENT_STATE_KEY
-  | typeof PERSONA_STATE_KEY
   | typeof FUNCTION_STATE_KEY
   | typeof RESPONSE_STATE_KEY
   | typeof ATTACHMENT_STATE_KEY;

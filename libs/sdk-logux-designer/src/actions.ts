@@ -22,8 +22,6 @@ export * as Utterance from './intent/utterance/utterance.action';
 export * as Organization from './organization/organization.action';
 export * as OrganizationMember from './organization/organization-member/organization-member.action';
 export * as OrganizationSubscription from './organization/organization-subscription/organization-subscription.action';
-export * as Persona from './persona/persona.action';
-export * as PersonaOverride from './persona/persona-override/persona-override.action';
 export * as Prompt from './prompt/prompt.action';
 export * as Response from './response/response.action';
 export * as ResponseAttachment from './response/response-attachment/response-attachment.action';

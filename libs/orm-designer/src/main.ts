@@ -20,7 +20,6 @@ export * from './postgres/flow';
 export * from './postgres/folder';
 export * from './postgres/function';
 export * from './postgres/intent';
-export * from './postgres/persona';
 export * from './postgres/product-update';
 export * from './postgres/prompt';
 export * from './postgres/response';

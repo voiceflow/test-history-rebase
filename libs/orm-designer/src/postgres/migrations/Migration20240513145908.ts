@@ -664,5 +664,7 @@ export class Migration20240513145908 extends Migration {
     this.addSql('create index "condition_assertion_environment_id_index" on "designer"."condition_assertion" ("environment_id");');
 
     this.addSql('create index "response_variant_environment_id_index" on "designer"."response_variant" ("environment_id");');
+
+    this.addSql('alter table "designer"."assistant" drop constraint "assistant_active_environment_id_active_persona_id_unique";');
   }
 }

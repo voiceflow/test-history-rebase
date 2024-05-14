@@ -548,7 +548,6 @@ export class Migration20240513145908 extends Migration {
     this.addSql('alter table "designer"."entity_variant" add constraint "entity_variant_id_environment_id_unique" unique ("id", "environment_id");');
     this.addSql('alter table "designer"."entity_variant" add constraint "entity_variant_pkey" primary key ("id", "environment_id");');
 
-    this.addSql('alter table "designer"."card_attachment" drop constraint "card_attachment_environment_id_id_unique";');
     this.addSql(
       'alter table "designer"."card_attachment" add constraint "card_attachment_media_id_environment_id_foreign" foreign key ("media_id", "environment_id") references "designer"."media_attachment" ("id", "environment_id") on update cascade on delete set default;'
     );

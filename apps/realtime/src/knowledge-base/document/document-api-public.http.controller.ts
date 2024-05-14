@@ -17,7 +17,7 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiConsumes, ApiHeader, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { KnowledgeBaseDocument } from '@voiceflow/dtos';
-import { UnsupportedMediaTypeException } from '@voiceflow/exception';
+import { BadRequestException, UnsupportedMediaTypeException } from '@voiceflow/exception';
 import { ZodApiBody, ZodApiQuery, ZodApiResponse } from '@voiceflow/nestjs-common';
 import { Identity, Permission } from '@voiceflow/sdk-auth';
 import { Authorize, Principal } from '@voiceflow/sdk-auth/nestjs';
@@ -93,7 +93,12 @@ export class KnowledgeBaseDocumentApiPublicHTTPController {
     const formattedQuery = {
       ...query,
       overwrite: query.overwrite === 'true',
+      maxChunkSize: query.maxChunkSize !== undefined ? Number(query.maxChunkSize) : undefined,
     };
+
+    if (Number.isNaN(formattedQuery.maxChunkSize)) {
+      throw new BadRequestException('invalid maxChunkSize value, must be a valid number.');
+    }
 
     if (request.is('multipart/form-data') && file) {
       document = await this.service.uploadFileDocument({
@@ -264,10 +269,14 @@ export class KnowledgeBaseDocumentApiPublicHTTPController {
     let document: KnowledgeBaseDocument | null = null;
 
     const formattedQuery = {
-      ...query,
+      maxChunkSize: query.maxChunkSize !== undefined ? Number(query.maxChunkSize) : undefined,
       overwrite: true,
       tags: [],
     };
+
+    if (Number.isNaN(formattedQuery.maxChunkSize)) {
+      throw new BadRequestException('invalid `maxChunkSize` value, must be a valid number.');
+    }
 
     if (request.is('multipart/form-data') && file) {
       document = await this.service.uploadFileDocument({

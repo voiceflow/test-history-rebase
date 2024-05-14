@@ -1,5 +1,11 @@
 {
-  "namespaces": ["app_cxd", "identity", "public", "auth", "designer"],
+  "namespaces": [
+    "app_cxd",
+    "identity",
+    "public",
+    "auth",
+    "designer"
+  ],
   "name": "public",
   "tables": [
     {
@@ -97,14 +103,18 @@
       "schema": "app_cxd",
       "indexes": [
         {
-          "columnNames": ["diagram_id"],
+          "columnNames": [
+            "diagram_id"
+          ],
           "composite": false,
           "keyName": "thread_diagram_id_idx",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": ["assistant_id"],
+          "columnNames": [
+            "assistant_id"
+          ],
           "composite": false,
           "keyName": "thread_assistant_id_idx",
           "primary": false,
@@ -112,14 +122,18 @@
         },
         {
           "keyName": "thread_id_unique",
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "primary": false,
           "unique": true
         },
         {
           "keyName": "thread_pkey",
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "primary": true,
           "unique": true
@@ -145,7 +159,9 @@
       "indexes": [
         {
           "keyName": "user_pkey",
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "primary": true,
           "unique": true
@@ -240,7 +256,9 @@
       "schema": "app_cxd",
       "indexes": [
         {
-          "columnNames": ["author_id"],
+          "columnNames": [
+            "author_id"
+          ],
           "composite": false,
           "keyName": "thread_comment_author_id_unique",
           "primary": false,
@@ -248,7 +266,9 @@
         },
         {
           "keyName": "thread_comment_pkey",
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "primary": true,
           "unique": true
@@ -258,17 +278,25 @@
       "foreignKeys": {
         "thread_comment_author_id_foreign": {
           "constraintName": "thread_comment_author_id_foreign",
-          "columnNames": ["author_id"],
+          "columnNames": [
+            "author_id"
+          ],
           "localTableName": "app_cxd.thread_comment",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "identity.user",
           "updateRule": "cascade"
         },
         "thread_comment_thread_id_foreign": {
           "constraintName": "thread_comment_thread_id_foreign",
-          "columnNames": ["thread_id"],
+          "columnNames": [
+            "thread_id"
+          ],
           "localTableName": "app_cxd.thread_comment",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "app_cxd.thread",
           "updateRule": "cascade"
         }
@@ -329,7 +357,9 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": ["creator_id"],
+          "columnNames": [
+            "creator_id"
+          ],
           "composite": false,
           "keyName": "product_updates_creator_id_unique",
           "primary": false,
@@ -337,14 +367,18 @@
         },
         {
           "keyName": "product_updates_id_unique",
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "primary": false,
           "unique": true
         },
         {
           "keyName": "product_updates_pkey",
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "primary": true,
           "unique": true
@@ -354,9 +388,13 @@
       "foreignKeys": {
         "product_updates_creator_id_foreign": {
           "constraintName": "product_updates_creator_id_foreign",
-          "columnNames": ["creator_id"],
+          "columnNames": [
+            "creator_id"
+          ],
           "localTableName": "public.product_updates",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "identity.user",
           "deleteRule": "set null",
           "updateRule": "cascade"
@@ -390,7 +428,11 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "enumItems": ["user", "workspace", "assistant"],
+          "enumItems": [
+            "user",
+            "workspace",
+            "assistant"
+          ],
           "mappedType": "enum"
         },
         "state": {
@@ -400,7 +442,11 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "enumItems": ["active", "expired", "inactive"],
+          "enumItems": [
+            "active",
+            "expired",
+            "inactive"
+          ],
           "mappedType": "enum"
         },
         "meta": {
@@ -477,7 +523,9 @@
       "schema": "auth",
       "indexes": [
         {
-          "columnNames": ["creator_id"],
+          "columnNames": [
+            "creator_id"
+          ],
           "composite": false,
           "keyName": "integration_oauth_tokens_creator_id_unique",
           "primary": false,
@@ -485,7 +533,9 @@
         },
         {
           "keyName": "integration_oauth_tokens_pkey",
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "primary": true,
           "unique": true
@@ -495,9 +545,13 @@
       "foreignKeys": {
         "integration_oauth_tokens_creator_id_foreign": {
           "constraintName": "integration_oauth_tokens_creator_id_foreign",
-          "columnNames": ["creator_id"],
+          "columnNames": [
+            "creator_id"
+          ],
           "localTableName": "auth.integration_oauth_tokens",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "identity.user",
           "deleteRule": "set null",
           "updateRule": "cascade"
@@ -579,7 +633,9 @@
       "indexes": [
         {
           "keyName": "backup_pkey",
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "primary": true,
           "unique": true
@@ -589,9 +645,13 @@
       "foreignKeys": {
         "backup_created_by_id_foreign": {
           "constraintName": "backup_created_by_id_foreign",
-          "columnNames": ["created_by_id"],
+          "columnNames": [
+            "created_by_id"
+          ],
           "localTableName": "app_cxd.backup",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "identity.user",
           "updateRule": "cascade"
         }
@@ -614,7 +674,9 @@
       "indexes": [
         {
           "keyName": "workspace_pkey",
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "primary": true,
           "unique": true
@@ -680,7 +742,9 @@
       "schema": "app_cxd",
       "indexes": [
         {
-          "columnNames": ["workspace_id"],
+          "columnNames": [
+            "workspace_id"
+          ],
           "composite": false,
           "keyName": "workspace_project_lists_workspace_id_idx",
           "primary": false,
@@ -688,7 +752,9 @@
         },
         {
           "keyName": "workspace_project_lists_pkey",
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "primary": true,
           "unique": true
@@ -698,9 +764,13 @@
       "foreignKeys": {
         "workspace_project_lists_workspace_id_foreign": {
           "constraintName": "workspace_project_lists_workspace_id_foreign",
-          "columnNames": ["workspace_id"],
+          "columnNames": [
+            "workspace_id"
+          ],
           "localTableName": "app_cxd.workspace_project_lists",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "identity.workspace",
           "updateRule": "cascade"
         }
@@ -768,24 +838,13 @@
           "nullable": false,
           "mappedType": "integer"
         },
-        "active_persona_id": {
-          "name": "active_persona_id",
-          "type": "varchar(24)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 24,
-          "default": "null",
-          "mappedType": "string"
-        },
         "active_environment_id": {
           "name": "active_environment_id",
           "type": "varchar(24)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
+          "nullable": false,
           "length": 24,
           "mappedType": "string"
         }
@@ -794,22 +853,19 @@
       "schema": "designer",
       "indexes": [
         {
-          "columnNames": ["active_persona_id", "active_environment_id"],
-          "composite": true,
-          "keyName": "assistant_active_persona_id_active_environment_id_unique",
-          "primary": false,
-          "unique": true
-        },
-        {
           "keyName": "assistant_id_unique",
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "primary": false,
           "unique": true
         },
         {
           "keyName": "assistant_pkey",
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "primary": true,
           "unique": true
@@ -819,29 +875,28 @@
       "foreignKeys": {
         "assistant_updated_by_id_foreign": {
           "constraintName": "assistant_updated_by_id_foreign",
-          "columnNames": ["updated_by_id"],
+          "columnNames": [
+            "updated_by_id"
+          ],
           "localTableName": "designer.assistant",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "identity.user",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
         "assistant_workspace_id_foreign": {
           "constraintName": "assistant_workspace_id_foreign",
-          "columnNames": ["workspace_id"],
+          "columnNames": [
+            "workspace_id"
+          ],
           "localTableName": "designer.assistant",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "identity.workspace",
           "deleteRule": "cascade",
-          "updateRule": "cascade"
-        },
-        "assistant_active_persona_id_active_environment_id_foreign": {
-          "constraintName": "assistant_active_persona_id_active_environment_id_foreign",
-          "columnNames": ["active_persona_id", "active_environment_id"],
-          "localTableName": "designer.assistant",
-          "referencedColumnNames": ["id", "environment_id"],
-          "referencedTableName": "designer.persona",
-          "deleteRule": "set default",
           "updateRule": "cascade"
         }
       }
@@ -934,7 +989,10 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "enumItems": ["image", "video"],
+          "enumItems": [
+            "image",
+            "video"
+          ],
           "mappedType": "enum"
         },
         "assistant_id": {
@@ -953,14 +1011,20 @@
       "indexes": [
         {
           "keyName": "media_attachment_id_environment_id_unique",
-          "columnNames": ["id", "environment_id"],
+          "columnNames": [
+            "id",
+            "environment_id"
+          ],
           "composite": true,
           "primary": false,
           "unique": true
         },
         {
           "keyName": "media_attachment_pkey",
-          "columnNames": ["id", "environment_id"],
+          "columnNames": [
+            "id",
+            "environment_id"
+          ],
           "composite": true,
           "primary": true,
           "unique": true
@@ -970,18 +1034,26 @@
       "foreignKeys": {
         "media_attachment_updated_by_id_foreign": {
           "constraintName": "media_attachment_updated_by_id_foreign",
-          "columnNames": ["updated_by_id"],
+          "columnNames": [
+            "updated_by_id"
+          ],
           "localTableName": "designer.media_attachment",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "identity.user",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
         "media_attachment_assistant_id_foreign": {
           "constraintName": "media_attachment_assistant_id_foreign",
-          "columnNames": ["assistant_id"],
+          "columnNames": [
+            "assistant_id"
+          ],
           "localTableName": "designer.media_attachment",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "designer.assistant",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -1101,21 +1173,29 @@
       "indexes": [
         {
           "keyName": "folder_environment_id_index",
-          "columnNames": ["environment_id"],
+          "columnNames": [
+            "environment_id"
+          ],
           "composite": false,
           "primary": false,
           "unique": false
         },
         {
           "keyName": "folder_id_environment_id_unique",
-          "columnNames": ["id", "environment_id"],
+          "columnNames": [
+            "id",
+            "environment_id"
+          ],
           "composite": true,
           "primary": false,
           "unique": true
         },
         {
           "keyName": "folder_pkey",
-          "columnNames": ["id", "environment_id"],
+          "columnNames": [
+            "id",
+            "environment_id"
+          ],
           "composite": true,
           "primary": true,
           "unique": true
@@ -1125,27 +1205,41 @@
       "foreignKeys": {
         "folder_updated_by_id_foreign": {
           "constraintName": "folder_updated_by_id_foreign",
-          "columnNames": ["updated_by_id"],
+          "columnNames": [
+            "updated_by_id"
+          ],
           "localTableName": "designer.folder",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "identity.user",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
         "folder_parent_id_environment_id_foreign": {
           "constraintName": "folder_parent_id_environment_id_foreign",
-          "columnNames": ["parent_id", "environment_id"],
+          "columnNames": [
+            "parent_id",
+            "environment_id"
+          ],
           "localTableName": "designer.folder",
-          "referencedColumnNames": ["id", "environment_id"],
+          "referencedColumnNames": [
+            "id",
+            "environment_id"
+          ],
           "referencedTableName": "designer.folder",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "folder_assistant_id_foreign": {
           "constraintName": "folder_assistant_id_foreign",
-          "columnNames": ["assistant_id"],
+          "columnNames": [
+            "assistant_id"
+          ],
           "localTableName": "designer.folder",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "designer.assistant",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -1253,7 +1347,11 @@
           "primary": false,
           "nullable": true,
           "default": "null",
-          "enumItems": ["to_do", "complete", "in_progress"],
+          "enumItems": [
+            "to_do",
+            "complete",
+            "in_progress"
+          ],
           "mappedType": "enum"
         },
         "is_start": {
@@ -1301,21 +1399,29 @@
       "indexes": [
         {
           "keyName": "workflow_environment_id_index",
-          "columnNames": ["environment_id"],
+          "columnNames": [
+            "environment_id"
+          ],
           "composite": false,
           "primary": false,
           "unique": false
         },
         {
           "keyName": "workflow_id_environment_id_unique",
-          "columnNames": ["id", "environment_id"],
+          "columnNames": [
+            "id",
+            "environment_id"
+          ],
           "composite": true,
           "primary": false,
           "unique": true
         },
         {
           "keyName": "workflow_pkey",
-          "columnNames": ["id", "environment_id"],
+          "columnNames": [
+            "id",
+            "environment_id"
+          ],
           "composite": true,
           "primary": true,
           "unique": true
@@ -1325,43 +1431,65 @@
       "foreignKeys": {
         "workflow_updated_by_id_foreign": {
           "constraintName": "workflow_updated_by_id_foreign",
-          "columnNames": ["updated_by_id"],
+          "columnNames": [
+            "updated_by_id"
+          ],
           "localTableName": "designer.workflow",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "identity.user",
           "updateRule": "cascade"
         },
         "workflow_assistant_id_foreign": {
           "constraintName": "workflow_assistant_id_foreign",
-          "columnNames": ["assistant_id"],
+          "columnNames": [
+            "assistant_id"
+          ],
           "localTableName": "designer.workflow",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "designer.assistant",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "workflow_created_by_id_foreign": {
           "constraintName": "workflow_created_by_id_foreign",
-          "columnNames": ["created_by_id"],
+          "columnNames": [
+            "created_by_id"
+          ],
           "localTableName": "designer.workflow",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "identity.user",
           "updateRule": "cascade"
         },
         "workflow_folder_id_environment_id_foreign": {
           "constraintName": "workflow_folder_id_environment_id_foreign",
-          "columnNames": ["folder_id", "environment_id"],
+          "columnNames": [
+            "folder_id",
+            "environment_id"
+          ],
           "localTableName": "designer.workflow",
-          "referencedColumnNames": ["id", "environment_id"],
+          "referencedColumnNames": [
+            "id",
+            "environment_id"
+          ],
           "referencedTableName": "designer.folder",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "workflow_assignee_id_foreign": {
           "constraintName": "workflow_assignee_id_foreign",
-          "columnNames": ["assignee_id"],
+          "columnNames": [
+            "assignee_id"
+          ],
           "localTableName": "designer.workflow",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "identity.user",
           "deleteRule": "set default",
           "updateRule": "cascade"
@@ -1496,7 +1624,15 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "enumItems": ["any", "text", "date", "image", "number", "boolean", "string"],
+          "enumItems": [
+            "any",
+            "text",
+            "date",
+            "image",
+            "number",
+            "boolean",
+            "string"
+          ],
           "mappedType": "enum"
         },
         "description": {
@@ -1525,21 +1661,29 @@
       "indexes": [
         {
           "keyName": "variable_environment_id_index",
-          "columnNames": ["environment_id"],
+          "columnNames": [
+            "environment_id"
+          ],
           "composite": false,
           "primary": false,
           "unique": false
         },
         {
           "keyName": "variable_id_environment_id_unique",
-          "columnNames": ["id", "environment_id"],
+          "columnNames": [
+            "id",
+            "environment_id"
+          ],
           "composite": true,
           "primary": false,
           "unique": true
         },
         {
           "keyName": "variable_pkey",
-          "columnNames": ["id", "environment_id"],
+          "columnNames": [
+            "id",
+            "environment_id"
+          ],
           "composite": true,
           "primary": true,
           "unique": true
@@ -1549,34 +1693,52 @@
       "foreignKeys": {
         "variable_updated_by_id_foreign": {
           "constraintName": "variable_updated_by_id_foreign",
-          "columnNames": ["updated_by_id"],
+          "columnNames": [
+            "updated_by_id"
+          ],
           "localTableName": "designer.variable",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "identity.user",
           "updateRule": "cascade"
         },
         "variable_assistant_id_foreign": {
           "constraintName": "variable_assistant_id_foreign",
-          "columnNames": ["assistant_id"],
+          "columnNames": [
+            "assistant_id"
+          ],
           "localTableName": "designer.variable",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "designer.assistant",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "variable_created_by_id_foreign": {
           "constraintName": "variable_created_by_id_foreign",
-          "columnNames": ["created_by_id"],
+          "columnNames": [
+            "created_by_id"
+          ],
           "localTableName": "designer.variable",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "identity.user",
           "updateRule": "cascade"
         },
         "variable_folder_id_environment_id_foreign": {
           "constraintName": "variable_folder_id_environment_id_foreign",
-          "columnNames": ["folder_id", "environment_id"],
+          "columnNames": [
+            "folder_id",
+            "environment_id"
+          ],
           "localTableName": "designer.variable",
-          "referencedColumnNames": ["id", "environment_id"],
+          "referencedColumnNames": [
+            "id",
+            "environment_id"
+          ],
           "referencedTableName": "designer.folder",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -1682,21 +1844,29 @@
       "indexes": [
         {
           "keyName": "response_environment_id_index",
-          "columnNames": ["environment_id"],
+          "columnNames": [
+            "environment_id"
+          ],
           "composite": false,
           "primary": false,
           "unique": false
         },
         {
           "keyName": "response_id_environment_id_unique",
-          "columnNames": ["id", "environment_id"],
+          "columnNames": [
+            "id",
+            "environment_id"
+          ],
           "composite": true,
           "primary": false,
           "unique": true
         },
         {
           "keyName": "response_pkey",
-          "columnNames": ["id", "environment_id"],
+          "columnNames": [
+            "id",
+            "environment_id"
+          ],
           "composite": true,
           "primary": true,
           "unique": true
@@ -1706,34 +1876,52 @@
       "foreignKeys": {
         "response_updated_by_id_foreign": {
           "constraintName": "response_updated_by_id_foreign",
-          "columnNames": ["updated_by_id"],
+          "columnNames": [
+            "updated_by_id"
+          ],
           "localTableName": "designer.response",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "identity.user",
           "updateRule": "cascade"
         },
         "response_assistant_id_foreign": {
           "constraintName": "response_assistant_id_foreign",
-          "columnNames": ["assistant_id"],
+          "columnNames": [
+            "assistant_id"
+          ],
           "localTableName": "designer.response",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "designer.assistant",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "response_created_by_id_foreign": {
           "constraintName": "response_created_by_id_foreign",
-          "columnNames": ["created_by_id"],
+          "columnNames": [
+            "created_by_id"
+          ],
           "localTableName": "designer.response",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "identity.user",
           "updateRule": "cascade"
         },
         "response_folder_id_environment_id_foreign": {
           "constraintName": "response_folder_id_environment_id_foreign",
-          "columnNames": ["folder_id", "environment_id"],
+          "columnNames": [
+            "folder_id",
+            "environment_id"
+          ],
           "localTableName": "designer.response",
-          "referencedColumnNames": ["id", "environment_id"],
+          "referencedColumnNames": [
+            "id",
+            "environment_id"
+          ],
           "referencedTableName": "designer.folder",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -1801,7 +1989,9 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "enumItems": ["default"],
+          "enumItems": [
+            "default"
+          ],
           "mappedType": "enum"
         },
         "language": {
@@ -1811,7 +2001,9 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "enumItems": ["en-us"],
+          "enumItems": [
+            "en-us"
+          ],
           "mappedType": "enum"
         },
         "response_id": {
@@ -1849,21 +2041,29 @@
       "indexes": [
         {
           "keyName": "response_discriminator_environment_id_index",
-          "columnNames": ["environment_id"],
+          "columnNames": [
+            "environment_id"
+          ],
           "composite": false,
           "primary": false,
           "unique": false
         },
         {
           "keyName": "response_discriminator_id_environment_id_unique",
-          "columnNames": ["id", "environment_id"],
+          "columnNames": [
+            "id",
+            "environment_id"
+          ],
           "composite": true,
           "primary": false,
           "unique": true
         },
         {
           "keyName": "response_discriminator_pkey",
-          "columnNames": ["id", "environment_id"],
+          "columnNames": [
+            "id",
+            "environment_id"
+          ],
           "composite": true,
           "primary": true,
           "unique": true
@@ -1873,610 +2073,43 @@
       "foreignKeys": {
         "response_discriminator_updated_by_id_foreign": {
           "constraintName": "response_discriminator_updated_by_id_foreign",
-          "columnNames": ["updated_by_id"],
+          "columnNames": [
+            "updated_by_id"
+          ],
           "localTableName": "designer.response_discriminator",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "identity.user",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
         "response_discriminator_response_id_environment_id_foreign": {
           "constraintName": "response_discriminator_response_id_environment_id_foreign",
-          "columnNames": ["response_id", "environment_id"],
+          "columnNames": [
+            "response_id",
+            "environment_id"
+          ],
           "localTableName": "designer.response_discriminator",
-          "referencedColumnNames": ["id", "environment_id"],
+          "referencedColumnNames": [
+            "id",
+            "environment_id"
+          ],
           "referencedTableName": "designer.response",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "response_discriminator_assistant_id_foreign": {
           "constraintName": "response_discriminator_assistant_id_foreign",
-          "columnNames": ["assistant_id"],
+          "columnNames": [
+            "assistant_id"
+          ],
           "localTableName": "designer.response_discriminator",
-          "referencedColumnNames": ["id"],
-          "referencedTableName": "designer.assistant",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "varchar(24)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 24,
-          "mappedType": "string"
-        },
-        "environment_id": {
-          "name": "environment_id",
-          "type": "varchar(24)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 24,
-          "default": "null",
-          "mappedType": "string"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 0,
-          "default": "now()",
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 0,
-          "default": "now()",
-          "mappedType": "datetime"
-        },
-        "updated_by_id": {
-          "name": "updated_by_id",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "name": {
-          "name": "name",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        },
-        "assistant_id": {
-          "name": "assistant_id",
-          "type": "varchar(24)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 24,
-          "mappedType": "string"
-        },
-        "created_by_id": {
-          "name": "created_by_id",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "folder_id": {
-          "name": "folder_id",
-          "type": "varchar(24)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 24,
-          "default": "null",
-          "mappedType": "string"
-        },
-        "model": {
-          "name": "model",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "enumItems": [
-            "text-davinci-003",
-            "gpt-3.5-turbo-1106",
-            "gpt-3.5-turbo",
-            "gpt-4",
-            "gpt-4-turbo",
-            "claude-v1",
-            "claude-v2",
-            "claude-3-haiku",
-            "claude-3-sonnet",
-            "claude-3-opus",
-            "claude-instant-v1",
-            "gemini-pro"
+          "referencedColumnNames": [
+            "id"
           ],
-          "mappedType": "enum"
-        },
-        "max_length": {
-          "name": "max_length",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "temperature": {
-          "name": "temperature",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "system_prompt": {
-          "name": "system_prompt",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        }
-      },
-      "name": "persona",
-      "schema": "designer",
-      "indexes": [
-        {
-          "keyName": "persona_environment_id_index",
-          "columnNames": ["environment_id"],
-          "composite": false,
-          "primary": false,
-          "unique": false
-        },
-        {
-          "keyName": "persona_id_environment_id_unique",
-          "columnNames": ["id", "environment_id"],
-          "composite": true,
-          "primary": false,
-          "unique": true
-        },
-        {
-          "keyName": "persona_pkey",
-          "columnNames": ["id", "environment_id"],
-          "composite": true,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "persona_updated_by_id_foreign": {
-          "constraintName": "persona_updated_by_id_foreign",
-          "columnNames": ["updated_by_id"],
-          "localTableName": "designer.persona",
-          "referencedColumnNames": ["id"],
-          "referencedTableName": "identity.user",
-          "updateRule": "cascade"
-        },
-        "persona_assistant_id_foreign": {
-          "constraintName": "persona_assistant_id_foreign",
-          "columnNames": ["assistant_id"],
-          "localTableName": "designer.persona",
-          "referencedColumnNames": ["id"],
           "referencedTableName": "designer.assistant",
           "deleteRule": "cascade",
-          "updateRule": "cascade"
-        },
-        "persona_created_by_id_foreign": {
-          "constraintName": "persona_created_by_id_foreign",
-          "columnNames": ["created_by_id"],
-          "localTableName": "designer.persona",
-          "referencedColumnNames": ["id"],
-          "referencedTableName": "identity.user",
-          "updateRule": "cascade"
-        },
-        "persona_folder_id_environment_id_foreign": {
-          "constraintName": "persona_folder_id_environment_id_foreign",
-          "columnNames": ["folder_id", "environment_id"],
-          "localTableName": "designer.persona",
-          "referencedColumnNames": ["id", "environment_id"],
-          "referencedTableName": "designer.folder",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "varchar(24)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 24,
-          "mappedType": "string"
-        },
-        "environment_id": {
-          "name": "environment_id",
-          "type": "varchar(24)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 24,
-          "mappedType": "string"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 0,
-          "default": "now()",
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 0,
-          "default": "now()",
-          "mappedType": "datetime"
-        },
-        "updated_by_id": {
-          "name": "updated_by_id",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "integer"
-        },
-        "name": {
-          "name": "name",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "string"
-        },
-        "model": {
-          "name": "model",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "enumItems": [
-            "text-davinci-003",
-            "gpt-3.5-turbo-1106",
-            "gpt-3.5-turbo",
-            "gpt-4",
-            "gpt-4-turbo",
-            "claude-v1",
-            "claude-v2",
-            "claude-3-haiku",
-            "claude-3-sonnet",
-            "claude-3-opus",
-            "claude-instant-v1",
-            "gemini-pro"
-          ],
-          "mappedType": "enum"
-        },
-        "persona_id": {
-          "name": "persona_id",
-          "type": "varchar(24)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 24,
-          "mappedType": "string"
-        },
-        "max_length": {
-          "name": "max_length",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "integer"
-        },
-        "assistant_id": {
-          "name": "assistant_id",
-          "type": "varchar(24)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 24,
-          "mappedType": "string"
-        },
-        "temperature": {
-          "name": "temperature",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "integer"
-        },
-        "system_prompt": {
-          "name": "system_prompt",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "text"
-        }
-      },
-      "name": "persona_override",
-      "schema": "designer",
-      "indexes": [
-        {
-          "keyName": "persona_override_environment_id_index",
-          "columnNames": ["environment_id"],
-          "composite": false,
-          "primary": false,
-          "unique": false
-        },
-        {
-          "keyName": "persona_override_id_environment_id_unique",
-          "columnNames": ["id", "environment_id"],
-          "composite": true,
-          "primary": false,
-          "unique": true
-        },
-        {
-          "keyName": "persona_override_pkey",
-          "columnNames": ["id", "environment_id"],
-          "composite": true,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "persona_override_updated_by_id_foreign": {
-          "constraintName": "persona_override_updated_by_id_foreign",
-          "columnNames": ["updated_by_id"],
-          "localTableName": "designer.persona_override",
-          "referencedColumnNames": ["id"],
-          "referencedTableName": "identity.user",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        },
-        "persona_override_persona_id_environment_id_foreign": {
-          "constraintName": "persona_override_persona_id_environment_id_foreign",
-          "columnNames": ["persona_id", "environment_id"],
-          "localTableName": "designer.persona_override",
-          "referencedColumnNames": ["id", "environment_id"],
-          "referencedTableName": "designer.persona",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        },
-        "persona_override_assistant_id_foreign": {
-          "constraintName": "persona_override_assistant_id_foreign",
-          "columnNames": ["assistant_id"],
-          "localTableName": "designer.persona_override",
-          "referencedColumnNames": ["id"],
-          "referencedTableName": "designer.assistant",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "varchar(24)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 24,
-          "mappedType": "string"
-        },
-        "environment_id": {
-          "name": "environment_id",
-          "type": "varchar(24)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 24,
-          "default": "null",
-          "mappedType": "string"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 0,
-          "default": "now()",
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 0,
-          "default": "now()",
-          "mappedType": "datetime"
-        },
-        "updated_by_id": {
-          "name": "updated_by_id",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "name": {
-          "name": "name",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        },
-        "assistant_id": {
-          "name": "assistant_id",
-          "type": "varchar(24)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 24,
-          "mappedType": "string"
-        },
-        "created_by_id": {
-          "name": "created_by_id",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "folder_id": {
-          "name": "folder_id",
-          "type": "varchar(24)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 24,
-          "default": "null",
-          "mappedType": "string"
-        },
-        "text": {
-          "name": "text",
-          "type": "jsonb",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "json"
-        },
-        "persona_id": {
-          "name": "persona_id",
-          "type": "varchar(24)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 24,
-          "default": "null",
-          "mappedType": "string"
-        }
-      },
-      "name": "prompt",
-      "schema": "designer",
-      "indexes": [
-        {
-          "keyName": "prompt_id_environment_id_unique",
-          "columnNames": ["id", "environment_id"],
-          "composite": true,
-          "primary": false,
-          "unique": true
-        },
-        {
-          "keyName": "prompt_pkey",
-          "columnNames": ["id", "environment_id"],
-          "composite": true,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "prompt_updated_by_id_foreign": {
-          "constraintName": "prompt_updated_by_id_foreign",
-          "columnNames": ["updated_by_id"],
-          "localTableName": "designer.prompt",
-          "referencedColumnNames": ["id"],
-          "referencedTableName": "identity.user",
-          "updateRule": "cascade"
-        },
-        "prompt_assistant_id_foreign": {
-          "constraintName": "prompt_assistant_id_foreign",
-          "columnNames": ["assistant_id"],
-          "localTableName": "designer.prompt",
-          "referencedColumnNames": ["id"],
-          "referencedTableName": "designer.assistant",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        },
-        "prompt_created_by_id_foreign": {
-          "constraintName": "prompt_created_by_id_foreign",
-          "columnNames": ["created_by_id"],
-          "localTableName": "designer.prompt",
-          "referencedColumnNames": ["id"],
-          "referencedTableName": "identity.user",
-          "updateRule": "cascade"
-        },
-        "prompt_folder_id_environment_id_foreign": {
-          "constraintName": "prompt_folder_id_environment_id_foreign",
-          "columnNames": ["folder_id", "environment_id"],
-          "localTableName": "designer.prompt",
-          "referencedColumnNames": ["id", "environment_id"],
-          "referencedTableName": "designer.folder",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        },
-        "prompt_persona_id_environment_id_foreign": {
-          "constraintName": "prompt_persona_id_environment_id_foreign",
-          "columnNames": ["persona_id", "environment_id"],
-          "localTableName": "designer.prompt",
-          "referencedColumnNames": ["id", "environment_id"],
-          "referencedTableName": "designer.persona_override",
-          "deleteRule": "set default",
           "updateRule": "cascade"
         }
       }
@@ -2608,21 +2241,29 @@
       "indexes": [
         {
           "keyName": "intent_environment_id_index",
-          "columnNames": ["environment_id"],
+          "columnNames": [
+            "environment_id"
+          ],
           "composite": false,
           "primary": false,
           "unique": false
         },
         {
           "keyName": "intent_id_environment_id_unique",
-          "columnNames": ["id", "environment_id"],
+          "columnNames": [
+            "id",
+            "environment_id"
+          ],
           "composite": true,
           "primary": false,
           "unique": true
         },
         {
           "keyName": "intent_pkey",
-          "columnNames": ["id", "environment_id"],
+          "columnNames": [
+            "id",
+            "environment_id"
+          ],
           "composite": true,
           "primary": true,
           "unique": true
@@ -2632,34 +2273,52 @@
       "foreignKeys": {
         "intent_updated_by_id_foreign": {
           "constraintName": "intent_updated_by_id_foreign",
-          "columnNames": ["updated_by_id"],
+          "columnNames": [
+            "updated_by_id"
+          ],
           "localTableName": "designer.intent",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "identity.user",
           "updateRule": "cascade"
         },
         "intent_assistant_id_foreign": {
           "constraintName": "intent_assistant_id_foreign",
-          "columnNames": ["assistant_id"],
+          "columnNames": [
+            "assistant_id"
+          ],
           "localTableName": "designer.intent",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "designer.assistant",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "intent_created_by_id_foreign": {
           "constraintName": "intent_created_by_id_foreign",
-          "columnNames": ["created_by_id"],
+          "columnNames": [
+            "created_by_id"
+          ],
           "localTableName": "designer.intent",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "identity.user",
           "updateRule": "cascade"
         },
         "intent_folder_id_environment_id_foreign": {
           "constraintName": "intent_folder_id_environment_id_foreign",
-          "columnNames": ["folder_id", "environment_id"],
+          "columnNames": [
+            "folder_id",
+            "environment_id"
+          ],
           "localTableName": "designer.intent",
-          "referencedColumnNames": ["id", "environment_id"],
+          "referencedColumnNames": [
+            "id",
+            "environment_id"
+          ],
           "referencedTableName": "designer.folder",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -2746,7 +2405,9 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "enumItems": ["en-us"],
+          "enumItems": [
+            "en-us"
+          ],
           "mappedType": "enum"
         },
         "assistant_id": {
@@ -2765,21 +2426,29 @@
       "indexes": [
         {
           "keyName": "utterance_environment_id_index",
-          "columnNames": ["environment_id"],
+          "columnNames": [
+            "environment_id"
+          ],
           "composite": false,
           "primary": false,
           "unique": false
         },
         {
           "keyName": "utterance_id_environment_id_unique",
-          "columnNames": ["id", "environment_id"],
+          "columnNames": [
+            "id",
+            "environment_id"
+          ],
           "composite": true,
           "primary": false,
           "unique": true
         },
         {
           "keyName": "utterance_pkey",
-          "columnNames": ["id", "environment_id"],
+          "columnNames": [
+            "id",
+            "environment_id"
+          ],
           "composite": true,
           "primary": true,
           "unique": true
@@ -2789,27 +2458,41 @@
       "foreignKeys": {
         "utterance_updated_by_id_foreign": {
           "constraintName": "utterance_updated_by_id_foreign",
-          "columnNames": ["updated_by_id"],
+          "columnNames": [
+            "updated_by_id"
+          ],
           "localTableName": "designer.utterance",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "identity.user",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
         "utterance_intent_id_environment_id_foreign": {
           "constraintName": "utterance_intent_id_environment_id_foreign",
-          "columnNames": ["intent_id", "environment_id"],
+          "columnNames": [
+            "intent_id",
+            "environment_id"
+          ],
           "localTableName": "designer.utterance",
-          "referencedColumnNames": ["id", "environment_id"],
+          "referencedColumnNames": [
+            "id",
+            "environment_id"
+          ],
           "referencedTableName": "designer.intent",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "utterance_assistant_id_foreign": {
           "constraintName": "utterance_assistant_id_foreign",
-          "columnNames": ["assistant_id"],
+          "columnNames": [
+            "assistant_id"
+          ],
           "localTableName": "designer.utterance",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "designer.assistant",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -2944,21 +2627,29 @@
       "indexes": [
         {
           "keyName": "function_environment_id_index",
-          "columnNames": ["environment_id"],
+          "columnNames": [
+            "environment_id"
+          ],
           "composite": false,
           "primary": false,
           "unique": false
         },
         {
           "keyName": "function_id_environment_id_unique",
-          "columnNames": ["id", "environment_id"],
+          "columnNames": [
+            "id",
+            "environment_id"
+          ],
           "composite": true,
           "primary": false,
           "unique": true
         },
         {
           "keyName": "function_pkey",
-          "columnNames": ["id", "environment_id"],
+          "columnNames": [
+            "id",
+            "environment_id"
+          ],
           "composite": true,
           "primary": true,
           "unique": true
@@ -2968,34 +2659,52 @@
       "foreignKeys": {
         "function_updated_by_id_foreign": {
           "constraintName": "function_updated_by_id_foreign",
-          "columnNames": ["updated_by_id"],
+          "columnNames": [
+            "updated_by_id"
+          ],
           "localTableName": "designer.function",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "identity.user",
           "updateRule": "cascade"
         },
         "function_assistant_id_foreign": {
           "constraintName": "function_assistant_id_foreign",
-          "columnNames": ["assistant_id"],
+          "columnNames": [
+            "assistant_id"
+          ],
           "localTableName": "designer.function",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "designer.assistant",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "function_created_by_id_foreign": {
           "constraintName": "function_created_by_id_foreign",
-          "columnNames": ["created_by_id"],
+          "columnNames": [
+            "created_by_id"
+          ],
           "localTableName": "designer.function",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "identity.user",
           "updateRule": "cascade"
         },
         "function_folder_id_environment_id_foreign": {
           "constraintName": "function_folder_id_environment_id_foreign",
-          "columnNames": ["folder_id", "environment_id"],
+          "columnNames": [
+            "folder_id",
+            "environment_id"
+          ],
           "localTableName": "designer.function",
-          "referencedColumnNames": ["id", "environment_id"],
+          "referencedColumnNames": [
+            "id",
+            "environment_id"
+          ],
           "referencedTableName": "designer.folder",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -3072,7 +2781,10 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "enumItems": ["input", "output"],
+          "enumItems": [
+            "input",
+            "output"
+          ],
           "mappedType": "enum"
         },
         "function_id": {
@@ -3111,21 +2823,29 @@
       "indexes": [
         {
           "keyName": "function_variable_environment_id_index",
-          "columnNames": ["environment_id"],
+          "columnNames": [
+            "environment_id"
+          ],
           "composite": false,
           "primary": false,
           "unique": false
         },
         {
           "keyName": "function_variable_id_environment_id_unique",
-          "columnNames": ["id", "environment_id"],
+          "columnNames": [
+            "id",
+            "environment_id"
+          ],
           "composite": true,
           "primary": false,
           "unique": true
         },
         {
           "keyName": "function_variable_pkey",
-          "columnNames": ["id", "environment_id"],
+          "columnNames": [
+            "id",
+            "environment_id"
+          ],
           "composite": true,
           "primary": true,
           "unique": true
@@ -3135,27 +2855,41 @@
       "foreignKeys": {
         "function_variable_updated_by_id_foreign": {
           "constraintName": "function_variable_updated_by_id_foreign",
-          "columnNames": ["updated_by_id"],
+          "columnNames": [
+            "updated_by_id"
+          ],
           "localTableName": "designer.function_variable",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "identity.user",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
         "function_variable_function_id_environment_id_foreign": {
           "constraintName": "function_variable_function_id_environment_id_foreign",
-          "columnNames": ["function_id", "environment_id"],
+          "columnNames": [
+            "function_id",
+            "environment_id"
+          ],
           "localTableName": "designer.function_variable",
-          "referencedColumnNames": ["id", "environment_id"],
+          "referencedColumnNames": [
+            "id",
+            "environment_id"
+          ],
           "referencedTableName": "designer.function",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "function_variable_assistant_id_foreign": {
           "constraintName": "function_variable_assistant_id_foreign",
-          "columnNames": ["assistant_id"],
+          "columnNames": [
+            "assistant_id"
+          ],
           "localTableName": "designer.function_variable",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "designer.assistant",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -3261,14 +2995,20 @@
       "indexes": [
         {
           "keyName": "function_path_id_environment_id_unique",
-          "columnNames": ["id", "environment_id"],
+          "columnNames": [
+            "id",
+            "environment_id"
+          ],
           "composite": true,
           "primary": false,
           "unique": true
         },
         {
           "keyName": "function_path_pkey",
-          "columnNames": ["id", "environment_id"],
+          "columnNames": [
+            "id",
+            "environment_id"
+          ],
           "composite": true,
           "primary": true,
           "unique": true
@@ -3278,27 +3018,41 @@
       "foreignKeys": {
         "function_path_updated_by_id_foreign": {
           "constraintName": "function_path_updated_by_id_foreign",
-          "columnNames": ["updated_by_id"],
+          "columnNames": [
+            "updated_by_id"
+          ],
           "localTableName": "designer.function_path",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "identity.user",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
         "function_path_function_id_environment_id_foreign": {
           "constraintName": "function_path_function_id_environment_id_foreign",
-          "columnNames": ["function_id", "environment_id"],
+          "columnNames": [
+            "function_id",
+            "environment_id"
+          ],
           "localTableName": "designer.function_path",
-          "referencedColumnNames": ["id", "environment_id"],
+          "referencedColumnNames": [
+            "id",
+            "environment_id"
+          ],
           "referencedTableName": "designer.function",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "function_path_assistant_id_foreign": {
           "constraintName": "function_path_assistant_id_foreign",
-          "columnNames": ["assistant_id"],
+          "columnNames": [
+            "assistant_id"
+          ],
           "localTableName": "designer.function_path",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "designer.assistant",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -3424,21 +3178,29 @@
       "indexes": [
         {
           "keyName": "flow_environment_id_index",
-          "columnNames": ["environment_id"],
+          "columnNames": [
+            "environment_id"
+          ],
           "composite": false,
           "primary": false,
           "unique": false
         },
         {
           "keyName": "flow_id_environment_id_unique",
-          "columnNames": ["id", "environment_id"],
+          "columnNames": [
+            "id",
+            "environment_id"
+          ],
           "composite": true,
           "primary": false,
           "unique": true
         },
         {
           "keyName": "flow_pkey",
-          "columnNames": ["id", "environment_id"],
+          "columnNames": [
+            "id",
+            "environment_id"
+          ],
           "composite": true,
           "primary": true,
           "unique": true
@@ -3448,34 +3210,52 @@
       "foreignKeys": {
         "flow_updated_by_id_foreign": {
           "constraintName": "flow_updated_by_id_foreign",
-          "columnNames": ["updated_by_id"],
+          "columnNames": [
+            "updated_by_id"
+          ],
           "localTableName": "designer.flow",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "identity.user",
           "updateRule": "cascade"
         },
         "flow_assistant_id_foreign": {
           "constraintName": "flow_assistant_id_foreign",
-          "columnNames": ["assistant_id"],
+          "columnNames": [
+            "assistant_id"
+          ],
           "localTableName": "designer.flow",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "designer.assistant",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "flow_created_by_id_foreign": {
           "constraintName": "flow_created_by_id_foreign",
-          "columnNames": ["created_by_id"],
+          "columnNames": [
+            "created_by_id"
+          ],
           "localTableName": "designer.flow",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "identity.user",
           "updateRule": "cascade"
         },
         "flow_folder_id_environment_id_foreign": {
           "constraintName": "flow_folder_id_environment_id_foreign",
-          "columnNames": ["folder_id", "environment_id"],
+          "columnNames": [
+            "folder_id",
+            "environment_id"
+          ],
           "localTableName": "designer.flow",
-          "referencedColumnNames": ["id", "environment_id"],
+          "referencedColumnNames": [
+            "id",
+            "environment_id"
+          ],
           "referencedTableName": "designer.folder",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -3600,21 +3380,29 @@
       "indexes": [
         {
           "keyName": "event_environment_id_index",
-          "columnNames": ["environment_id"],
+          "columnNames": [
+            "environment_id"
+          ],
           "composite": false,
           "primary": false,
           "unique": false
         },
         {
           "keyName": "event_id_environment_id_unique",
-          "columnNames": ["id", "environment_id"],
+          "columnNames": [
+            "id",
+            "environment_id"
+          ],
           "composite": true,
           "primary": false,
           "unique": true
         },
         {
           "keyName": "event_pkey",
-          "columnNames": ["id", "environment_id"],
+          "columnNames": [
+            "id",
+            "environment_id"
+          ],
           "composite": true,
           "primary": true,
           "unique": true
@@ -3624,34 +3412,52 @@
       "foreignKeys": {
         "event_updated_by_id_foreign": {
           "constraintName": "event_updated_by_id_foreign",
-          "columnNames": ["updated_by_id"],
+          "columnNames": [
+            "updated_by_id"
+          ],
           "localTableName": "designer.event",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "identity.user",
           "updateRule": "cascade"
         },
         "event_assistant_id_foreign": {
           "constraintName": "event_assistant_id_foreign",
-          "columnNames": ["assistant_id"],
+          "columnNames": [
+            "assistant_id"
+          ],
           "localTableName": "designer.event",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "designer.assistant",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "event_created_by_id_foreign": {
           "constraintName": "event_created_by_id_foreign",
-          "columnNames": ["created_by_id"],
+          "columnNames": [
+            "created_by_id"
+          ],
           "localTableName": "designer.event",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "identity.user",
           "updateRule": "cascade"
         },
         "event_folder_id_environment_id_foreign": {
           "constraintName": "event_folder_id_environment_id_foreign",
-          "columnNames": ["folder_id", "environment_id"],
+          "columnNames": [
+            "folder_id",
+            "environment_id"
+          ],
           "localTableName": "designer.event",
-          "referencedColumnNames": ["id", "environment_id"],
+          "referencedColumnNames": [
+            "id",
+            "environment_id"
+          ],
           "referencedTableName": "designer.folder",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -3759,21 +3565,29 @@
       "indexes": [
         {
           "keyName": "event_mapping_environment_id_index",
-          "columnNames": ["environment_id"],
+          "columnNames": [
+            "environment_id"
+          ],
           "composite": false,
           "primary": false,
           "unique": false
         },
         {
           "keyName": "event_mapping_id_environment_id_unique",
-          "columnNames": ["id", "environment_id"],
+          "columnNames": [
+            "id",
+            "environment_id"
+          ],
           "composite": true,
           "primary": false,
           "unique": true
         },
         {
           "keyName": "event_mapping_pkey",
-          "columnNames": ["id", "environment_id"],
+          "columnNames": [
+            "id",
+            "environment_id"
+          ],
           "composite": true,
           "primary": true,
           "unique": true
@@ -3783,36 +3597,56 @@
       "foreignKeys": {
         "event_mapping_updated_by_id_foreign": {
           "constraintName": "event_mapping_updated_by_id_foreign",
-          "columnNames": ["updated_by_id"],
+          "columnNames": [
+            "updated_by_id"
+          ],
           "localTableName": "designer.event_mapping",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "identity.user",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
         "event_mapping_event_id_environment_id_foreign": {
           "constraintName": "event_mapping_event_id_environment_id_foreign",
-          "columnNames": ["event_id", "environment_id"],
+          "columnNames": [
+            "event_id",
+            "environment_id"
+          ],
           "localTableName": "designer.event_mapping",
-          "referencedColumnNames": ["id", "environment_id"],
+          "referencedColumnNames": [
+            "id",
+            "environment_id"
+          ],
           "referencedTableName": "designer.event",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "event_mapping_variable_id_environment_id_foreign": {
           "constraintName": "event_mapping_variable_id_environment_id_foreign",
-          "columnNames": ["variable_id", "environment_id"],
+          "columnNames": [
+            "variable_id",
+            "environment_id"
+          ],
           "localTableName": "designer.event_mapping",
-          "referencedColumnNames": ["id", "environment_id"],
+          "referencedColumnNames": [
+            "id",
+            "environment_id"
+          ],
           "referencedTableName": "designer.variable",
           "deleteRule": "set default",
           "updateRule": "cascade"
         },
         "event_mapping_assistant_id_foreign": {
           "constraintName": "event_mapping_assistant_id_foreign",
-          "columnNames": ["assistant_id"],
+          "columnNames": [
+            "assistant_id"
+          ],
           "localTableName": "designer.event_mapping",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "designer.assistant",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -3956,14 +3790,19 @@
       "indexes": [
         {
           "keyName": "entity_environment_id_index",
-          "columnNames": ["environment_id"],
+          "columnNames": [
+            "environment_id"
+          ],
           "composite": false,
           "primary": false,
           "unique": false
         },
         {
           "keyName": "entity_pkey",
-          "columnNames": ["id", "environment_id"],
+          "columnNames": [
+            "id",
+            "environment_id"
+          ],
           "composite": true,
           "primary": true,
           "unique": true
@@ -3973,34 +3812,52 @@
       "foreignKeys": {
         "entity_updated_by_id_foreign": {
           "constraintName": "entity_updated_by_id_foreign",
-          "columnNames": ["updated_by_id"],
+          "columnNames": [
+            "updated_by_id"
+          ],
           "localTableName": "designer.entity",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "identity.user",
           "updateRule": "cascade"
         },
         "entity_assistant_id_foreign": {
           "constraintName": "entity_assistant_id_foreign",
-          "columnNames": ["assistant_id"],
+          "columnNames": [
+            "assistant_id"
+          ],
           "localTableName": "designer.entity",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "designer.assistant",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "entity_created_by_id_foreign": {
           "constraintName": "entity_created_by_id_foreign",
-          "columnNames": ["created_by_id"],
+          "columnNames": [
+            "created_by_id"
+          ],
           "localTableName": "designer.entity",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "identity.user",
           "updateRule": "cascade"
         },
         "entity_folder_id_environment_id_foreign": {
           "constraintName": "entity_folder_id_environment_id_foreign",
-          "columnNames": ["folder_id", "environment_id"],
+          "columnNames": [
+            "folder_id",
+            "environment_id"
+          ],
           "localTableName": "designer.entity",
-          "referencedColumnNames": ["id", "environment_id"],
+          "referencedColumnNames": [
+            "id",
+            "environment_id"
+          ],
           "referencedTableName": "designer.folder",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -4109,14 +3966,19 @@
       "indexes": [
         {
           "keyName": "required_entity_environment_id_index",
-          "columnNames": ["environment_id"],
+          "columnNames": [
+            "environment_id"
+          ],
           "composite": false,
           "primary": false,
           "unique": false
         },
         {
           "keyName": "required_entity_pkey",
-          "columnNames": ["id", "environment_id"],
+          "columnNames": [
+            "id",
+            "environment_id"
+          ],
           "composite": true,
           "primary": true,
           "unique": true
@@ -4126,45 +3988,71 @@
       "foreignKeys": {
         "required_entity_updated_by_id_foreign": {
           "constraintName": "required_entity_updated_by_id_foreign",
-          "columnNames": ["updated_by_id"],
+          "columnNames": [
+            "updated_by_id"
+          ],
           "localTableName": "designer.required_entity",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "identity.user",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
         "required_entity_entity_id_environment_id_foreign": {
           "constraintName": "required_entity_entity_id_environment_id_foreign",
-          "columnNames": ["entity_id", "environment_id"],
+          "columnNames": [
+            "entity_id",
+            "environment_id"
+          ],
           "localTableName": "designer.required_entity",
-          "referencedColumnNames": ["id", "environment_id"],
+          "referencedColumnNames": [
+            "id",
+            "environment_id"
+          ],
           "referencedTableName": "designer.entity",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "required_entity_intent_id_environment_id_foreign": {
           "constraintName": "required_entity_intent_id_environment_id_foreign",
-          "columnNames": ["intent_id", "environment_id"],
+          "columnNames": [
+            "intent_id",
+            "environment_id"
+          ],
           "localTableName": "designer.required_entity",
-          "referencedColumnNames": ["id", "environment_id"],
+          "referencedColumnNames": [
+            "id",
+            "environment_id"
+          ],
           "referencedTableName": "designer.intent",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "required_entity_reprompt_id_environment_id_foreign": {
           "constraintName": "required_entity_reprompt_id_environment_id_foreign",
-          "columnNames": ["reprompt_id", "environment_id"],
+          "columnNames": [
+            "reprompt_id",
+            "environment_id"
+          ],
           "localTableName": "designer.required_entity",
-          "referencedColumnNames": ["id", "environment_id"],
+          "referencedColumnNames": [
+            "id",
+            "environment_id"
+          ],
           "referencedTableName": "designer.response",
           "deleteRule": "set default",
           "updateRule": "cascade"
         },
         "required_entity_assistant_id_foreign": {
           "constraintName": "required_entity_assistant_id_foreign",
-          "columnNames": ["assistant_id"],
+          "columnNames": [
+            "assistant_id"
+          ],
           "localTableName": "designer.required_entity",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "designer.assistant",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -4232,7 +4120,9 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "enumItems": ["en-us"],
+          "enumItems": [
+            "en-us"
+          ],
           "mappedType": "enum"
         },
         "value": {
@@ -4279,14 +4169,19 @@
       "indexes": [
         {
           "keyName": "entity_variant_environment_id_index",
-          "columnNames": ["environment_id"],
+          "columnNames": [
+            "environment_id"
+          ],
           "composite": false,
           "primary": false,
           "unique": false
         },
         {
           "keyName": "entity_variant_pkey",
-          "columnNames": ["id", "environment_id"],
+          "columnNames": [
+            "id",
+            "environment_id"
+          ],
           "composite": true,
           "primary": true,
           "unique": true
@@ -4296,27 +4191,41 @@
       "foreignKeys": {
         "entity_variant_updated_by_id_foreign": {
           "constraintName": "entity_variant_updated_by_id_foreign",
-          "columnNames": ["updated_by_id"],
+          "columnNames": [
+            "updated_by_id"
+          ],
           "localTableName": "designer.entity_variant",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "identity.user",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
         "entity_variant_entity_id_environment_id_foreign": {
           "constraintName": "entity_variant_entity_id_environment_id_foreign",
-          "columnNames": ["entity_id", "environment_id"],
+          "columnNames": [
+            "entity_id",
+            "environment_id"
+          ],
           "localTableName": "designer.entity_variant",
-          "referencedColumnNames": ["id", "environment_id"],
+          "referencedColumnNames": [
+            "id",
+            "environment_id"
+          ],
           "referencedTableName": "designer.entity",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "entity_variant_assistant_id_foreign": {
           "constraintName": "entity_variant_assistant_id_foreign",
-          "columnNames": ["assistant_id"],
+          "columnNames": [
+            "assistant_id"
+          ],
           "localTableName": "designer.entity_variant",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "designer.assistant",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -4432,21 +4341,29 @@
       "indexes": [
         {
           "keyName": "card_attachment_environment_id_index",
-          "columnNames": ["environment_id"],
+          "columnNames": [
+            "environment_id"
+          ],
           "composite": false,
           "primary": false,
           "unique": false
         },
         {
           "keyName": "card_attachment_id_environment_id_unique",
-          "columnNames": ["id", "environment_id"],
+          "columnNames": [
+            "id",
+            "environment_id"
+          ],
           "composite": true,
           "primary": false,
           "unique": true
         },
         {
           "keyName": "card_attachment_pkey",
-          "columnNames": ["id", "environment_id"],
+          "columnNames": [
+            "id",
+            "environment_id"
+          ],
           "composite": true,
           "primary": true,
           "unique": true
@@ -4456,27 +4373,41 @@
       "foreignKeys": {
         "card_attachment_updated_by_id_foreign": {
           "constraintName": "card_attachment_updated_by_id_foreign",
-          "columnNames": ["updated_by_id"],
+          "columnNames": [
+            "updated_by_id"
+          ],
           "localTableName": "designer.card_attachment",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "identity.user",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
         "card_attachment_media_id_environment_id_foreign": {
           "constraintName": "card_attachment_media_id_environment_id_foreign",
-          "columnNames": ["media_id", "environment_id"],
+          "columnNames": [
+            "media_id",
+            "environment_id"
+          ],
           "localTableName": "designer.card_attachment",
-          "referencedColumnNames": ["id", "environment_id"],
+          "referencedColumnNames": [
+            "id",
+            "environment_id"
+          ],
           "referencedTableName": "designer.media_attachment",
           "deleteRule": "set default",
           "updateRule": "cascade"
         },
         "card_attachment_assistant_id_foreign": {
           "constraintName": "card_attachment_assistant_id_foreign",
-          "columnNames": ["assistant_id"],
+          "columnNames": [
+            "assistant_id"
+          ],
           "localTableName": "designer.card_attachment",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "designer.assistant",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -4572,21 +4503,29 @@
       "indexes": [
         {
           "keyName": "card_button_environment_id_index",
-          "columnNames": ["environment_id"],
+          "columnNames": [
+            "environment_id"
+          ],
           "composite": false,
           "primary": false,
           "unique": false
         },
         {
           "keyName": "card_button_id_environment_id_unique",
-          "columnNames": ["id", "environment_id"],
+          "columnNames": [
+            "id",
+            "environment_id"
+          ],
           "composite": true,
           "primary": false,
           "unique": true
         },
         {
           "keyName": "card_button_pkey",
-          "columnNames": ["id", "environment_id"],
+          "columnNames": [
+            "id",
+            "environment_id"
+          ],
           "composite": true,
           "primary": true,
           "unique": true
@@ -4596,27 +4535,41 @@
       "foreignKeys": {
         "card_button_updated_by_id_foreign": {
           "constraintName": "card_button_updated_by_id_foreign",
-          "columnNames": ["updated_by_id"],
+          "columnNames": [
+            "updated_by_id"
+          ],
           "localTableName": "designer.card_button",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "identity.user",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
         "card_button_card_id_environment_id_foreign": {
           "constraintName": "card_button_card_id_environment_id_foreign",
-          "columnNames": ["card_id", "environment_id"],
+          "columnNames": [
+            "card_id",
+            "environment_id"
+          ],
           "localTableName": "designer.card_button",
-          "referencedColumnNames": ["id", "environment_id"],
+          "referencedColumnNames": [
+            "id",
+            "environment_id"
+          ],
           "referencedTableName": "designer.card_attachment",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "card_button_assistant_id_foreign": {
           "constraintName": "card_button_assistant_id_foreign",
-          "columnNames": ["assistant_id"],
+          "columnNames": [
+            "assistant_id"
+          ],
           "localTableName": "designer.card_button",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "designer.assistant",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -4643,7 +4596,6 @@
           "primary": false,
           "nullable": false,
           "length": 24,
-          "default": "null",
           "mappedType": "string"
         },
         "created_at": {
@@ -4685,7 +4637,11 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "enumItems": ["expression", "prompt", "script"],
+          "enumItems": [
+            "expression",
+            "prompt",
+            "script"
+          ],
           "mappedType": "enum"
         },
         "assistant_id": {
@@ -4716,16 +4672,15 @@
           "nullable": true,
           "mappedType": "integer"
         },
-        "prompt_id": {
-          "name": "prompt_id",
-          "type": "varchar(24)",
+        "prompt": {
+          "name": "prompt",
+          "type": "jsonb",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "length": 24,
           "default": "null",
-          "mappedType": "string"
+          "mappedType": "json"
         },
         "code": {
           "name": "code",
@@ -4741,7 +4696,9 @@
       "schema": "designer",
       "indexes": [
         {
-          "columnNames": ["type"],
+          "columnNames": [
+            "type"
+          ],
           "composite": false,
           "keyName": "condition_type_index",
           "primary": false,
@@ -4749,21 +4706,29 @@
         },
         {
           "keyName": "condition_environment_id_index",
-          "columnNames": ["environment_id"],
+          "columnNames": [
+            "environment_id"
+          ],
           "composite": false,
           "primary": false,
           "unique": false
         },
         {
           "keyName": "condition_id_environment_id_unique",
-          "columnNames": ["id", "environment_id"],
+          "columnNames": [
+            "id",
+            "environment_id"
+          ],
           "composite": true,
           "primary": false,
           "unique": true
         },
         {
           "keyName": "condition_pkey",
-          "columnNames": ["id", "environment_id"],
+          "columnNames": [
+            "id",
+            "environment_id"
+          ],
           "composite": true,
           "primary": true,
           "unique": true
@@ -4773,29 +4738,28 @@
       "foreignKeys": {
         "condition_updated_by_id_foreign": {
           "constraintName": "condition_updated_by_id_foreign",
-          "columnNames": ["updated_by_id"],
+          "columnNames": [
+            "updated_by_id"
+          ],
           "localTableName": "designer.condition",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "identity.user",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
         "condition_assistant_id_foreign": {
           "constraintName": "condition_assistant_id_foreign",
-          "columnNames": ["assistant_id"],
+          "columnNames": [
+            "assistant_id"
+          ],
           "localTableName": "designer.condition",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "designer.assistant",
           "deleteRule": "cascade",
-          "updateRule": "cascade"
-        },
-        "condition_prompt_id_environment_id_foreign": {
-          "constraintName": "condition_prompt_id_environment_id_foreign",
-          "columnNames": ["prompt_id", "environment_id"],
-          "localTableName": "designer.condition",
-          "referencedColumnNames": ["id", "environment_id"],
-          "referencedTableName": "designer.prompt",
-          "deleteRule": "set default",
           "updateRule": "cascade"
         }
       }
@@ -4912,21 +4876,29 @@
       "indexes": [
         {
           "keyName": "condition_predicate_environment_id_index",
-          "columnNames": ["environment_id"],
+          "columnNames": [
+            "environment_id"
+          ],
           "composite": false,
           "primary": false,
           "unique": false
         },
         {
           "keyName": "condition_predicate_id_environment_id_unique",
-          "columnNames": ["id", "environment_id"],
+          "columnNames": [
+            "id",
+            "environment_id"
+          ],
           "composite": true,
           "primary": false,
           "unique": true
         },
         {
           "keyName": "condition_predicate_pkey",
-          "columnNames": ["id", "environment_id"],
+          "columnNames": [
+            "id",
+            "environment_id"
+          ],
           "composite": true,
           "primary": true,
           "unique": true
@@ -4936,27 +4908,41 @@
       "foreignKeys": {
         "condition_predicate_updated_by_id_foreign": {
           "constraintName": "condition_predicate_updated_by_id_foreign",
-          "columnNames": ["updated_by_id"],
+          "columnNames": [
+            "updated_by_id"
+          ],
           "localTableName": "designer.condition_predicate",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "identity.user",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
         "condition_predicate_condition_id_environment_id_foreign": {
           "constraintName": "condition_predicate_condition_id_environment_id_foreign",
-          "columnNames": ["condition_id", "environment_id"],
+          "columnNames": [
+            "condition_id",
+            "environment_id"
+          ],
           "localTableName": "designer.condition_predicate",
-          "referencedColumnNames": ["id", "environment_id"],
+          "referencedColumnNames": [
+            "id",
+            "environment_id"
+          ],
           "referencedTableName": "designer.condition",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "condition_predicate_assistant_id_foreign": {
           "constraintName": "condition_predicate_assistant_id_foreign",
-          "columnNames": ["assistant_id"],
+          "columnNames": [
+            "assistant_id"
+          ],
           "localTableName": "designer.condition_predicate",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "designer.assistant",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -5084,21 +5070,29 @@
       "indexes": [
         {
           "keyName": "condition_assertion_environment_id_index",
-          "columnNames": ["environment_id"],
+          "columnNames": [
+            "environment_id"
+          ],
           "composite": false,
           "primary": false,
           "unique": false
         },
         {
           "keyName": "condition_assertion_id_environment_id_unique",
-          "columnNames": ["id", "environment_id"],
+          "columnNames": [
+            "id",
+            "environment_id"
+          ],
           "composite": true,
           "primary": false,
           "unique": true
         },
         {
           "keyName": "condition_assertion_pkey",
-          "columnNames": ["id", "environment_id"],
+          "columnNames": [
+            "id",
+            "environment_id"
+          ],
           "composite": true,
           "primary": true,
           "unique": true
@@ -5108,27 +5102,41 @@
       "foreignKeys": {
         "condition_assertion_updated_by_id_foreign": {
           "constraintName": "condition_assertion_updated_by_id_foreign",
-          "columnNames": ["updated_by_id"],
+          "columnNames": [
+            "updated_by_id"
+          ],
           "localTableName": "designer.condition_assertion",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "identity.user",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
         "condition_assertion_condition_id_environment_id_foreign": {
           "constraintName": "condition_assertion_condition_id_environment_id_foreign",
-          "columnNames": ["condition_id", "environment_id"],
+          "columnNames": [
+            "condition_id",
+            "environment_id"
+          ],
           "localTableName": "designer.condition_assertion",
-          "referencedColumnNames": ["id", "environment_id"],
+          "referencedColumnNames": [
+            "id",
+            "environment_id"
+          ],
           "referencedTableName": "designer.condition",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "condition_assertion_assistant_id_foreign": {
           "constraintName": "condition_assertion_assistant_id_foreign",
-          "columnNames": ["assistant_id"],
+          "columnNames": [
+            "assistant_id"
+          ],
           "localTableName": "designer.condition_assertion",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "designer.assistant",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -5155,7 +5163,6 @@
           "primary": false,
           "nullable": false,
           "length": 24,
-          "default": "null",
           "mappedType": "string"
         },
         "created_at": {
@@ -5197,7 +5204,11 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "enumItems": ["json", "prompt", "text"],
+          "enumItems": [
+            "json",
+            "prompt",
+            "text"
+          ],
           "mappedType": "enum"
         },
         "condition_id": {
@@ -5258,16 +5269,15 @@
           "nullable": true,
           "mappedType": "integer"
         },
-        "prompt_id": {
-          "name": "prompt_id",
-          "type": "varchar(24)",
+        "prompt": {
+          "name": "prompt",
+          "type": "jsonb",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "length": 24,
           "default": "null",
-          "mappedType": "string"
+          "mappedType": "json"
         },
         "context": {
           "name": "context",
@@ -5276,7 +5286,11 @@
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "enumItems": ["prompt", "memory", "knowledge_base"],
+          "enumItems": [
+            "prompt",
+            "memory",
+            "knowledge_base"
+          ],
           "mappedType": "enum"
         },
         "text": {
@@ -5305,7 +5319,10 @@
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "enumItems": ["carousel", "list"],
+          "enumItems": [
+            "carousel",
+            "list"
+          ],
           "mappedType": "enum"
         }
       },
@@ -5313,7 +5330,9 @@
       "schema": "designer",
       "indexes": [
         {
-          "columnNames": ["type"],
+          "columnNames": [
+            "type"
+          ],
           "composite": false,
           "keyName": "response_variant_type_index",
           "primary": false,
@@ -5321,21 +5340,29 @@
         },
         {
           "keyName": "response_variant_environment_id_index",
-          "columnNames": ["environment_id"],
+          "columnNames": [
+            "environment_id"
+          ],
           "composite": false,
           "primary": false,
           "unique": false
         },
         {
           "keyName": "response_variant_id_environment_id_unique",
-          "columnNames": ["id", "environment_id"],
+          "columnNames": [
+            "id",
+            "environment_id"
+          ],
           "composite": true,
           "primary": false,
           "unique": true
         },
         {
           "keyName": "response_variant_pkey",
-          "columnNames": ["id", "environment_id"],
+          "columnNames": [
+            "id",
+            "environment_id"
+          ],
           "composite": true,
           "primary": true,
           "unique": true
@@ -5345,47 +5372,58 @@
       "foreignKeys": {
         "response_variant_updated_by_id_foreign": {
           "constraintName": "response_variant_updated_by_id_foreign",
-          "columnNames": ["updated_by_id"],
+          "columnNames": [
+            "updated_by_id"
+          ],
           "localTableName": "designer.response_variant",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "identity.user",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
         "response_variant_condition_id_environment_id_foreign": {
           "constraintName": "response_variant_condition_id_environment_id_foreign",
-          "columnNames": ["condition_id", "environment_id"],
+          "columnNames": [
+            "condition_id",
+            "environment_id"
+          ],
           "localTableName": "designer.response_variant",
-          "referencedColumnNames": ["id", "environment_id"],
+          "referencedColumnNames": [
+            "id",
+            "environment_id"
+          ],
           "referencedTableName": "designer.condition",
           "deleteRule": "set default",
           "updateRule": "cascade"
         },
         "response_variant_assistant_id_foreign": {
           "constraintName": "response_variant_assistant_id_foreign",
-          "columnNames": ["assistant_id"],
+          "columnNames": [
+            "assistant_id"
+          ],
           "localTableName": "designer.response_variant",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "designer.assistant",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "response_variant_discriminator_id_environment_id_foreign": {
           "constraintName": "response_variant_discriminator_id_environment_id_foreign",
-          "columnNames": ["discriminator_id", "environment_id"],
+          "columnNames": [
+            "discriminator_id",
+            "environment_id"
+          ],
           "localTableName": "designer.response_variant",
-          "referencedColumnNames": ["id", "environment_id"],
+          "referencedColumnNames": [
+            "id",
+            "environment_id"
+          ],
           "referencedTableName": "designer.response_discriminator",
           "deleteRule": "cascade",
-          "updateRule": "cascade"
-        },
-        "response_variant_prompt_id_environment_id_foreign": {
-          "constraintName": "response_variant_prompt_id_environment_id_foreign",
-          "columnNames": ["prompt_id", "environment_id"],
-          "localTableName": "designer.response_variant",
-          "referencedColumnNames": ["id", "environment_id"],
-          "referencedTableName": "designer.prompt",
-          "deleteRule": "set default",
           "updateRule": "cascade"
         }
       }
@@ -5430,7 +5468,10 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "enumItems": ["card", "media"],
+          "enumItems": [
+            "card",
+            "media"
+          ],
           "mappedType": "enum"
         },
         "variant_id": {
@@ -5478,7 +5519,9 @@
       "schema": "designer",
       "indexes": [
         {
-          "columnNames": ["type"],
+          "columnNames": [
+            "type"
+          ],
           "composite": false,
           "keyName": "response_attachment_type_index",
           "primary": false,
@@ -5486,14 +5529,20 @@
         },
         {
           "keyName": "response_attachment_id_environment_id_unique",
-          "columnNames": ["id", "environment_id"],
+          "columnNames": [
+            "id",
+            "environment_id"
+          ],
           "composite": true,
           "primary": false,
           "unique": true
         },
         {
           "keyName": "response_attachment_pkey",
-          "columnNames": ["id", "environment_id"],
+          "columnNames": [
+            "id",
+            "environment_id"
+          ],
           "composite": true,
           "primary": true,
           "unique": true
@@ -5503,36 +5552,58 @@
       "foreignKeys": {
         "response_attachment_variant_id_environment_id_foreign": {
           "constraintName": "response_attachment_variant_id_environment_id_foreign",
-          "columnNames": ["variant_id", "environment_id"],
+          "columnNames": [
+            "variant_id",
+            "environment_id"
+          ],
           "localTableName": "designer.response_attachment",
-          "referencedColumnNames": ["id", "environment_id"],
+          "referencedColumnNames": [
+            "id",
+            "environment_id"
+          ],
           "referencedTableName": "designer.response_variant",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "response_attachment_assistant_id_foreign": {
           "constraintName": "response_attachment_assistant_id_foreign",
-          "columnNames": ["assistant_id"],
+          "columnNames": [
+            "assistant_id"
+          ],
           "localTableName": "designer.response_attachment",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "designer.assistant",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "response_attachment_card_id_environment_id_foreign": {
           "constraintName": "response_attachment_card_id_environment_id_foreign",
-          "columnNames": ["card_id", "environment_id"],
+          "columnNames": [
+            "card_id",
+            "environment_id"
+          ],
           "localTableName": "designer.response_attachment",
-          "referencedColumnNames": ["id", "environment_id"],
+          "referencedColumnNames": [
+            "id",
+            "environment_id"
+          ],
           "referencedTableName": "designer.card_attachment",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "response_attachment_media_id_environment_id_foreign": {
           "constraintName": "response_attachment_media_id_environment_id_foreign",
-          "columnNames": ["media_id", "environment_id"],
+          "columnNames": [
+            "media_id",
+            "environment_id"
+          ],
           "localTableName": "designer.response_attachment",
-          "referencedColumnNames": ["id", "environment_id"],
+          "referencedColumnNames": [
+            "id",
+            "environment_id"
+          ],
           "referencedTableName": "designer.media_attachment",
           "deleteRule": "cascade",
           "updateRule": "cascade"

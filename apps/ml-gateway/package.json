@@ -5,7 +5,6 @@
   "license": "UNLICENSED",
   "type": "module",
   "scripts": {
-    "analyze:dependencies": "yarn g:depcruise --exclude src/models.ts --validate --ignore-known -- src",
     "build": "yarn clean && yarn g:tsc --project tsconfig.build.json && yarn g:tsc-alias -p tsconfig.build.json && yarn postbuild",
     "postbuild": "yarn schema:generate",
     "clean": "yarn g:rimraf build",
@@ -32,7 +31,7 @@
     "start:base": "node --experimental-specifier-resolution=node --max-old-space-size=8192 build/main.js",
     "start:meshed": "GOOGLE_APPLICATION_CREDENTIALS=/tmp/voiceflow/ml-gateway/secrets/credentials.json NODE_ENV=local IS_MESHED=true yarn dev",
     "test": "yarn g:vitest run --coverage",
-    "test:dependencies": "yarn g:depcheck",
+    "test:dependencies": "yarn g:depcruise --ignore-known",
     "test:integration": "exit 0",
     "test:unit": "exit 0",
     "types": "yarn g:tsc --project tsconfig.build.json --noEmit --skipLibCheck"

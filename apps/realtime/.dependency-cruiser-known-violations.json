@@ -1,92 +1,57 @@
 [
   {
-    "type": "module",
-    "from": "src/test/index.ts",
-    "to": "src/test/index.ts",
-    "rule": {
-      "severity": "error",
-      "name": "no-orphans"
-    }
-  },
-  {
-    "type": "module",
-    "from": "src/test/controller.ts",
-    "to": "src/test/controller.ts",
-    "rule": {
-      "severity": "error",
-      "name": "no-orphans"
-    }
-  },
-  {
-    "type": "module",
-    "from": "src/project/project.module.ts",
-    "to": "src/assistant/assistant.module.ts",
-    "rule": {
-      "severity": "error",
-      "name": "no-circular"
-    }
-  },
-  {
-    "type": "module",
-    "from": "src/assistant/assistant.module.ts",
-    "to": "src/project/project.module.ts",
-    "rule": {
-      "severity": "error",
-      "name": "no-circular"
-    }
-  },
-  {
-    "type": "module",
+    "type": "cycle",
     "from": "src/assistant/assistant.module.ts",
     "to": "src/backup/backup.module.ts",
     "rule": {
       "severity": "error",
       "name": "no-circular"
-    }
+    },
+    "cycle": ["src/backup/backup.module.ts", "src/assistant/assistant.module.ts"]
   },
   {
-    "type": "module",
-    "from": "src/backup/backup.module.ts",
-    "to": "src/assistant/assistant.module.ts",
-    "rule": {
-      "severity": "error",
-      "name": "no-circular"
-    }
-  },
-  {
-    "type": "module",
-    "from": "src/backup/backup.module.ts",
-    "to": "src/project/project.module.ts",
-    "rule": {
-      "severity": "error",
-      "name": "no-circular"
-    }
-  },
-  {
-    "type": "module",
-    "from": "src/backup/backup.module.ts",
-    "to": "src/environment/environment.module.ts",
-    "rule": {
-      "severity": "error",
-      "name": "no-circular"
-    }
-  },
-  {
-    "type": "module",
+    "type": "cycle",
     "from": "src/assistant/assistant.module.ts",
     "to": "src/environment/environment.module.ts",
     "rule": {
       "severity": "error",
       "name": "no-circular"
-    }
+    },
+    "cycle": ["src/environment/environment.module.ts", "src/project/project.module.ts", "src/assistant/assistant.module.ts"]
   },
   {
-    "type": "module",
-    "from": "src/environment/environment.module.ts",
+    "type": "cycle",
+    "from": "src/assistant/assistant.module.ts",
     "to": "src/project/project.module.ts",
     "rule": {
       "severity": "error",
       "name": "no-circular"
-    }
+    },
+    "cycle": ["src/project/project.module.ts", "src/assistant/assistant.module.ts"]
+  },
+  {
+    "type": "cycle",
+    "from": "src/backup/backup.module.ts",
+    "to": "src/environment/environment.module.ts",
+    "rule": {
+      "severity": "error",
+      "name": "no-circular"
+    },
+    "cycle": [
+      "src/environment/environment.module.ts",
+      "src/project/project.module.ts",
+      "src/assistant/assistant.module.ts",
+      "src/backup/backup.module.ts"
+    ]
+  },
+  {
+    "type": "cycle",
+    "from": "src/backup/backup.module.ts",
+    "to": "src/project/project.module.ts",
+    "rule": {
+      "severity": "error",
+      "name": "no-circular"
+    },
+    "cycle": ["src/project/project.module.ts", "src/assistant/assistant.module.ts", "src/backup/backup.module.ts"]
   }
 ]

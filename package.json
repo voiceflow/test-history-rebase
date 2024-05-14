@@ -9,7 +9,6 @@
     ]
   },
   "scripts": {
-    "analyze:dependencies": "turbo run analyze:dependencies --concurrency=4",
     "build": "turbo run build --concurrency=4",
     "build:all": "yarn build",
     "build:creator-app": "cd apps/creator-app; yarn build",
@@ -50,9 +49,7 @@
     "g:tsx": "cd $INIT_CWD && tsx",
     "g:vite": "cd $INIT_CWD && vite",
     "g:vitest": "cd $INIT_CWD && vitest",
-    "g:depcheck": "cd $INIT_CWD && depcheck",
-    "g:depcruise": "cd $INIT_CWD && depcruise",
-    "g:depcruise-baseline": "cd $INIT_CWD && depcruise-baseline",
+    "g:depcruise": "cd $INIT_CWD && depcruise .",
     "g:clean-package": "cd $INIT_CWD && clean-package",
     "g:eslint-output": "cd $INIT_CWD && eslint-output",
     "gen-certs:e2e": "turbo run gen-certs:e2e",
@@ -146,8 +143,7 @@
     "chai-as-promised": "7.1.1",
     "clean-package": "2.2.0",
     "deep-equal-in-any-order": "2.0.6",
-    "depcheck": "1.4.3",
-    "dependency-cruiser": "12.12.1",
+    "dependency-cruiser": "13.1.5",
     "eslint": "8.40.0",
     "eslint-output": "^3.0.1",
     "husky": "9.0.11",

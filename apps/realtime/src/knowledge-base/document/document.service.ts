@@ -286,7 +286,7 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
     userID: number;
     data: DocumentCreateOneURLRequest;
     existingDocumentID?: string;
-    query?: Omit<DocumentCreateOnePublicRequestParams, 'overwrite'> & { overwrite?: boolean };
+    query?: Omit<DocumentCreateOnePublicRequestParams, 'overwrite' | 'maxChunkSize'> & { overwrite?: boolean; maxChunkSize?: number };
   }): Promise<KnowledgeBaseDocument> {
     const { overwrite = false, maxChunkSize = undefined, tags = undefined } = query;
     const tagsArray = Array.isArray(query.tags) ? query.tags : this.tagService.convertToArray(tags);
@@ -374,7 +374,7 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
     file: MulterFile;
     canEdit?: boolean;
     existingDocumentID?: string;
-    query?: Omit<DocumentCreateOnePublicRequestParams, 'overwrite'> & { overwrite?: boolean };
+    query?: Omit<DocumentCreateOnePublicRequestParams, 'overwrite' | 'maxChunkSize'> & { overwrite?: boolean; maxChunkSize?: number };
   }): Promise<KnowledgeBaseDocument> {
     const { overwrite = false, maxChunkSize = undefined, tags = undefined } = query;
     const tagsArray = Array.isArray(query.tags) ? query.tags : this.tagService.convertToArray(tags);

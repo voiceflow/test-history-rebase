@@ -22,14 +22,14 @@ export type DocumentCreateOnePublicRequestBody = z.infer<typeof DocumentCreateOn
 
 export const DocumentCreateOnePublicRequestParams = z.object({
   overwrite: z.string().optional(),
-  maxChunkSize: z.number().optional(),
+  maxChunkSize: z.string().optional(),
   tags: z.array(z.string()).or(z.string()).optional(),
 });
 
 export type DocumentCreateOnePublicRequestParams = z.infer<typeof DocumentCreateOnePublicRequestParams>;
 
 export const DocumentReplaceOnePublicRequestParams = z.object({
-  maxChunkSize: z.number().optional(),
+  maxChunkSize: z.string().optional(),
 });
 
 export type DocumentReplaceOnePublicRequestParams = z.infer<typeof DocumentCreateOnePublicRequestParams>;

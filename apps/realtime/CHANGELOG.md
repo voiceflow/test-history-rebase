@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.357.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.356.0...@voiceflow/realtime@1.357.0) (2024-05-14)
+
+### Features
+
+* convert maxChunkSize to number param [bugfix] (COR-000) ([#8120](https://github.com/voiceflow/creator-app/issues/8120)) ([d486efd](https://github.com/voiceflow/creator-app/commit/d486efdc073e940f271865e4c8be2098370ad34e))
+
 # [1.356.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.355.0...@voiceflow/realtime@1.356.0) (2024-05-13)
 
 ### Features

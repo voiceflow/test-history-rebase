@@ -36,7 +36,6 @@
     "build"
   ],
   "scripts": {
-    "analyze:dependencies": "depcruise --validate -- src",
     "build": "yarn clean && yarn g:run-p -c build:cjs build:esm build:backend",
     "build:backend": "yarn g:vite --config ./config/vite/backend.ts build --ssr ./src/index.ts",
     "build:cjs": "yarn g:tsc --project tsconfig.build.json && tsc-alias -p tsconfig.build.json",
@@ -50,7 +49,7 @@
     "lint:prettier": "yarn g:prettier --check",
     "lint:report": "yarn g:eslint-output \"./src/**/*.{js,ts}\"",
     "test": "yarn g:vitest run --coverage",
-    "test:dependencies": "yarn g:depcheck",
+    "test:dependencies": "yarn g:depcruise",
     "test:integration": "exit 0",
     "test:unit": "REPORTS_DIRECTORY=coverage/unit yarn g:vitest run .unit --silent --coverage",
     "types": "tsc --project tsconfig.build.json --noEmit --skipLibCheck"

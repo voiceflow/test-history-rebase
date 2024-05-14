@@ -1,4 +1,4 @@
-import type { Enum } from '@/main';
+import type { Enum } from '@/utils/type/enum.util';
 
 export const ActionType = {
   OPEN_URL: 'open_url',

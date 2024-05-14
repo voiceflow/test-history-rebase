@@ -20,7 +20,6 @@
     "build"
   ],
   "scripts": {
-    "analyze:dependencies": "depcruise --validate -- src",
     "build": "yarn clean && yarn g:tsc --project tsconfig.build.json && yarn g:tsc-alias -p tsconfig.build.json",
     "clean": "yarn g:rimraf build",
     "dev": "yarn clean && yarn:build --watch",
@@ -30,7 +29,7 @@
     "lint:prettier": "yarn g:prettier --check",
     "lint:report": "yarn g:eslint-output \"./src/**/*.{js,ts}\"",
     "test": "NODE_ENV=test yarn g:nyc yarn g:ts-mocha --project tsconfig.test.json --paths --config config/test/mocharc.yml",
-    "test:dependencies": "yarn g:depcheck",
+    "test:dependencies": "yarn g:depcruise",
     "test:integration": "NODE_ENV=test yarn g:nyc yarn g:ts-mocha --project tsconfig.test.json --paths --config config/test/mocharc.integration.yml",
     "test:unit": "NODE_ENV=test yarn g:nyc yarn g:ts-mocha --project tsconfig.test.json --paths --config config/test/mocharc.unit.yml",
     "types": "yarn g:tsc --project tsconfig.build.json --noEmit --skipLibCheck"

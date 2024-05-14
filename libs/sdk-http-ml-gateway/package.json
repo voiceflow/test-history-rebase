@@ -52,7 +52,7 @@
     "lint:report": "yarn g:eslint-output \"./src/**/*.{js,ts}\"",
     "prepublishOnly": "yarn g:clean-package",
     "postpublish": "yarn g:clean-package restore",
-    "test:dependencies": "yarn g:depcheck",
+    "test:dependencies": "yarn g:depcruise",
     "test:types": "yarn g:tsd"
   },
   "eslintConfig": {

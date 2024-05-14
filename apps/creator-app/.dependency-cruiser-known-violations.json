@@ -1,8 +1,26 @@
 [
   {
     "type": "module",
-    "from": "src/pages/AssistantCMS/pages/CMSKnowledgeBase/components/CMSKnowledgeBaseEditor/CMSKnowledgeBaseEditorTags/CMSKnowledgeBaseEditorTags.component.tsx",
-    "to": "src/pages/AssistantCMS/pages/CMSKnowledgeBase/components/CMSKnowledgeBaseEditor/CMSKnowledgeBaseEditorTags/CMSKnowledgeBaseEditorTags.component.tsx",
+    "from": "src/components/Popper/PopperConfirm/PopperConfirm.component.tsx",
+    "to": "src/components/Popper/PopperConfirm/PopperConfirm.component.tsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/ducks/_suite/effect.utils.ts",
+    "to": "src/ducks/_suite/effect.utils.ts",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/ducks/_suite/reverter.utils.ts",
+    "to": "src/ducks/_suite/reverter.utils.ts",
     "rule": {
       "severity": "error",
       "name": "no-orphans"
@@ -19,8 +37,17 @@
   },
   {
     "type": "module",
-    "from": "src/components/Popper/PopperConfirm/PopperConfirm.component.tsx",
-    "to": "src/components/Popper/PopperConfirm/PopperConfirm.component.tsx",
+    "from": "src/pages/AssistantCMS/pages/CMSKnowledgeBase/components/CMSKnowledgeBaseEditor/CMSKnowledgeBaseEditorTags/CMSKnowledgeBaseEditorTags.component.tsx",
+    "to": "src/pages/AssistantCMS/pages/CMSKnowledgeBase/components/CMSKnowledgeBaseEditor/CMSKnowledgeBaseEditorTags/CMSKnowledgeBaseEditorTags.component.tsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/setupVite.ts",
+    "to": "src/setupVite.ts",
     "rule": {
       "severity": "error",
       "name": "no-orphans"

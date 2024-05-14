@@ -55,11 +55,8 @@
       "inputs": ["src/**", "package.json", ".env.e2e"],
       "dependsOn": ["build"]
     },
-    "analyze:dependencies": {
-      "inputs": ["src/**/*.test.ts", "package.json", "jest.config.js"]
-    },
     "test:dependencies": {
-      "inputs": ["src/**/*.test.ts", "package.json", "jest.config.js"]
+      "inputs": ["src/**", "package.json", ".dependency-cruiser.mjs", ".dependency-cruiser-known-violations.json"]
     },
     "test:unit": {
       "outputs": ["sonar/coverage/**/*"],

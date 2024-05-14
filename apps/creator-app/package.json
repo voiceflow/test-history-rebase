@@ -19,7 +19,6 @@
   "author": "Voiceflow",
   "main": "src/index.tsx",
   "scripts": {
-    "analyze:dependencies": "yarn g:depcruise --exclude src/setupVite.ts --validate --ignore-known -- src",
     "build": "./scripts/build.sh",
     "build:copy-prototype": "cp build/index.html build/prototype.html",
     "build:dev": "SOURCE_MAPS=true yarn g:vite build && yarn build:copy-prototype",
@@ -52,7 +51,7 @@
     "tdd:integration": "yarn g:vitest watch .it",
     "tdd:unit": "yarn g:vitest watch .unit",
     "test": "yarn g:vitest run --silent --coverage",
-    "test:dependencies": "yarn g:depcheck",
+    "test:dependencies": "yarn g:depcruise --ignore-known",
     "test:integration": "exit 0",
     "test:unit": "REPORTS_DIRECTORY=coverage/unit yarn g:vitest run .unit --silent --coverage",
     "types": "yarn g:tsc --project tsconfig.build.json --noEmit --skipLibCheck"

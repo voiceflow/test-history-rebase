@@ -1,10 +1,7 @@
 import { Migration } from '@mikro-orm/migrations';
 
 export class Migration20240513113231 extends Migration {
-
   async up(): Promise<void> {
-    this.addSql('create index "backup_assistant_id_index" on "app_cxd"."backup" ("assistant_id");');
-
     this.addSql('create index "media_attachment_environment_id_index" on "designer"."media_attachment" ("environment_id");');
 
     this.addSql('create index "prompt_environment_id_index" on "designer"."prompt" ("environment_id");');
@@ -13,7 +10,9 @@ export class Migration20240513113231 extends Migration {
 
     this.addSql('alter table "designer"."entity" add constraint "entity_id_environment_id_unique" unique ("id", "environment_id");');
 
-    this.addSql('alter table "designer"."required_entity" add constraint "required_entity_id_environment_id_unique" unique ("id", "environment_id");');
+    this.addSql(
+      'alter table "designer"."required_entity" add constraint "required_entity_id_environment_id_unique" unique ("id", "environment_id");'
+    );
 
     this.addSql('alter table "designer"."entity_variant" add constraint "entity_variant_id_environment_id_unique" unique ("id", "environment_id");');
 
@@ -21,8 +20,6 @@ export class Migration20240513113231 extends Migration {
   }
 
   async down(): Promise<void> {
-    this.addSql('drop index "app_cxd"."backup_assistant_id_index";');
-
     this.addSql('drop index "designer"."media_attachment_environment_id_index";');
 
     this.addSql('drop index "designer"."prompt_environment_id_index";');
@@ -37,5 +34,4 @@ export class Migration20240513113231 extends Migration {
 
     this.addSql('drop index "designer"."response_attachment_environment_id_index";');
   }
-
 }

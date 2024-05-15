@@ -1,50 +1,39 @@
 {
-  "editor.formatOnPaste": true,
-  "editor.formatOnSave": true,
-  "editor.tabSize": 2,
-  "editor.detectIndentation": false,
-  "typescript.suggest.autoImports": false,
-  "javascript.suggest.autoImports": false,
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit"
+  "[javascript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
   },
-  "eslint.workingDirectories": [
-    {
-      "pattern": "./packages/*/"
-    }
-  ],
-  "eslint.rules.customizations": [
-    { "rule": "no-use-before-define", "severity": "off" },
-    { "rule": "prettier/prettier", "severity": "off" },
-    { "rule": "simple-import-sort/imports", "severity": "off" }
-  ],
-  "eslint.format.enable": true,
-  "eslint.lintTask.enable": true,
-  "eslint.packageManager": "yarn",
-  "css.validate": false,
-  "less.validate": false,
-  "scss.validate": false,
-  "javascript.updateImportsOnFileMove.enabled": "always",
   "[javascriptreact]": {
     "editor.defaultFormatter": "dbaeumer.vscode-eslint"
   },
-  "[javascript]": {
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
     "editor.defaultFormatter": "dbaeumer.vscode-eslint"
   },
   "[typescriptreact]": {
     "editor.defaultFormatter": "dbaeumer.vscode-eslint"
   },
-  "[typescript]": {
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  "[yaml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "files.exclude": {
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "eslint.format.enable": true,
+  "eslint.experimental.useFlatConfig": true,
+  "search.exclude": {
     "**/node_modules": true,
     "**/build": true,
     "**/sonar": true,
-    "**/.turbo": true,
-    "**/coverage": true,
-    "**/.mikro-orm": true
-  },
-  "typescript.tsdk": "node_modules/typescript/lib",
-  "svg.preview.background": "white"
+    "**/.husky": true,
+    "**/.yarn": true,
+    "**/.turbo": true
+  }
 }

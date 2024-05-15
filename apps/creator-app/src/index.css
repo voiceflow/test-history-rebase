@@ -4,19 +4,28 @@
 
 @font-face {
   font-family: 'UCityProWeb';
-  src: local('UCityProWeb'), url('/fonts/UCityProWeb-Regular.woff') format('woff'), url('/fonts/UCityProWeb-Regular.woff2') format('woff2');
+  src:
+    local('UCityProWeb'),
+    url('/fonts/UCityProWeb-Regular.woff') format('woff'),
+    url('/fonts/UCityProWeb-Regular.woff2') format('woff2');
   font-weight: 400;
 }
 
 @font-face {
   font-family: 'UCityProWeb';
-  src: local('UCityProWeb'), url('/fonts/UCityProWeb-Semibold.woff') format('woff'), url('/fonts/UCityProWeb-Semibold.woff2') format('woff2');
+  src:
+    local('UCityProWeb'),
+    url('/fonts/UCityProWeb-Semibold.woff') format('woff'),
+    url('/fonts/UCityProWeb-Semibold.woff2') format('woff2');
   font-weight: 600;
 }
 
 @font-face {
   font-family: 'UCityProWeb';
-  src: local('UCityProWeb'), url('/fonts/UCityProWeb-Bold.woff') format('woff'), url('/fonts/UCityProWeb-Bold.woff2') format('woff2');
+  src:
+    local('UCityProWeb'),
+    url('/fonts/UCityProWeb-Bold.woff') format('woff'),
+    url('/fonts/UCityProWeb-Bold.woff2') format('woff2');
   font-weight: 700;
 }
 

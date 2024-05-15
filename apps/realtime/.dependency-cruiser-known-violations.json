@@ -17,7 +17,11 @@
       "severity": "error",
       "name": "no-circular"
     },
-    "cycle": ["src/environment/environment.module.ts", "src/project/project.module.ts", "src/assistant/assistant.module.ts"]
+    "cycle": [
+      "src/environment/environment.module.ts",
+      "src/project/project.module.ts",
+      "src/assistant/assistant.module.ts"
+    ]
   },
   {
     "type": "cycle",

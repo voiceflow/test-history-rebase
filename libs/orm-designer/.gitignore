@@ -1,5 +1,2 @@
 /.mikro-orm
-
-schema.sql
-
-generate.mts
+/schema.sql

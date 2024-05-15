@@ -3,8 +3,11 @@
   font-weight: normal;
   font-style: normal;
   src: url('../../media/icons/support-board.eot?v=2');
-  src: url('../../media/icons/support-board.eot?#iefix') format('embedded-opentype'), url('../../media/icons/support-board.woff?v=2') format('woff'),
-    url('../../media/icons/support-board.ttf?v=2') format('truetype'), url('../../media/icons/support-board.svg#support-board?v=2') format('svg');
+  src:
+    url('../../media/icons/support-board.eot?#iefix') format('embedded-opentype'),
+    url('../../media/icons/support-board.woff?v=2') format('woff'),
+    url('../../media/icons/support-board.ttf?v=2') format('truetype'),
+    url('../../media/icons/support-board.svg#support-board?v=2') format('svg');
 }
 [class^='sb-icon-']::before,
 [class*=' sb-icon-']::before {

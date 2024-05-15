@@ -3,7 +3,6 @@ import {
   AnyConditionORM,
   AnyResponseVariantORM,
   AssistantORM,
-  PromptORM,
   ResponseDiscriminatorORM,
   ResponseJSONVariantORM,
   ResponseTextVariantORM,
@@ -19,7 +18,6 @@ import { ResponseVariantService } from './response-variant.service';
   imports: [ResponseAttachmentModule],
   exports: [ResponseVariantService, ResponseJSONVariantService, ResponseTextVariantService],
   providers: [
-    PromptORM,
     AssistantORM,
     AnyConditionORM,
     AnyResponseVariantORM,

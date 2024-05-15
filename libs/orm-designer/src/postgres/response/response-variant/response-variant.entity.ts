@@ -6,7 +6,7 @@ import { MarkupType } from '@/common';
 import type { AssistantEntity } from '@/postgres/assistant';
 import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
 import { BaseConditionEntity } from '@/postgres/condition';
-import { PromptEntity } from '@/postgres/prompt';
+import type { Prompt } from '@/postgres/prompt';
 import type { CMSCompositePK, Ref } from '@/types';
 
 import { ResponseDiscriminatorEntity } from '../response-discriminator/response-discriminator.entity';
@@ -75,14 +75,8 @@ export class PromptResponseVariantEntity extends BaseResponseVariantEntity<'prom
   @Property()
   turns!: number;
 
-  @ManyToOne(() => PromptEntity, {
-    name: 'prompt_id',
-    default: null,
-    onDelete: 'set default',
-    nullable: true,
-    fieldNames: ['prompt_id', 'environment_id'],
-  })
-  prompt!: Ref<PromptEntity> | null;
+  @Property({ type: 'jsonb', nullable: true, default: null })
+  prompt!: Prompt | null;
 
   @Enum(() => ResponseContext)
   context!: ResponseContext;

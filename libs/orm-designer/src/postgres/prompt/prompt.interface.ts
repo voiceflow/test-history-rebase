@@ -1,6 +1,12 @@
-import type { ToJSON, ToObject } from '@/types';
+import type { AIModel, Markup } from '@voiceflow/dtos';
 
-import type { PromptEntity } from './prompt.entity';
-
-export type PromptObject = ToObject<PromptEntity>;
-export type PromptJSON = ToJSON<PromptObject>;
+export interface PromptSettings {
+  model: AIModel | null;
+  maxLength: number | null;
+  temperature: number | null;
+  systemPrompt: string | null;
+}
+export interface Prompt {
+  text: Markup;
+  settings: PromptSettings | null;
+}

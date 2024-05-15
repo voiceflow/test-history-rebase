@@ -1,5 +1,5 @@
 import { RequestMethod } from '@nestjs/common';
-import { METHOD_METADATA, PATH_METADATA, SSE_METADATA } from '@nestjs/common/constants';
+import { METHOD_METADATA, PATH_METADATA, SSE_METADATA } from '@nestjs/common/constants.js';
 
 export const PostSSE = (path?: string): MethodDecorator => {
   return (_target, _key, descriptor: PropertyDescriptor) => {

@@ -68,16 +68,12 @@
     "db:postgres:cache:dump": "MIKRO_ORM_ENV=.env.local yarn db:postgres:run cache:generate",
     "db:postgres:run": "MIKRO_ORM_CLI=build/postgres/mikro-orm.config.js mikro-orm",
     "db:schema:dump": "MIKRO_ORM_ENV=.env.local yarn db:postgres:run schema:create --dump > schema.sql",
-    "lint": "yarn g:run-p lint:eslint \"lint:prettier --check\"",
-    "lint:eslint": "yarn g:eslint \"src/**/*.{js,ts}\"",
-    "lint:fix": "yarn g:run-p \"lint:eslint --fix\" \"lint:prettier --write\"",
+    "lint": "yarn g:run-p -c lint:eslint lint:prettier",
+    "lint:eslint": "yarn g:eslint",
+    "lint:fix": "yarn g:run-p -c \"lint:eslint --fix\" \"lint:prettier --write\"",
     "lint:prettier": "yarn g:prettier --check",
-    "lint:report": "yarn g:eslint-output \"./src/**/*.{js,ts}\"",
     "test:dependencies": "yarn g:depcruise",
     "test:types": "yarn g:tsd"
-  },
-  "eslintConfig": {
-    "extends": "@voiceflow-meta/eslint-config"
   },
   "dependencies": {
     "@mikro-orm/core": "5.9.4",

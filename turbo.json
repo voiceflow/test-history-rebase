@@ -43,7 +43,14 @@
     },
     "schema:generate": {
       "outputs": ["openapi.next.json", ".env.local"],
-      "inputs": ["src/**", ":!src/**/*.test.ts", "package.json", "tsconfig.json", "tsconfig.build.json", "tsconfig.build.*.json"]
+      "inputs": [
+        "src/**",
+        ":!src/**/*.test.ts",
+        "package.json",
+        "tsconfig.json",
+        "tsconfig.build.json",
+        "tsconfig.build.*.json"
+      ]
     },
     "schema:validate": {
       "outputs": ["openapi.json"],
@@ -73,21 +80,6 @@
     "test:check": {
       "inputs": ["src/**", "package.json"]
     },
-    "lint": {
-      "inputs": ["src/**", "config/**", ".eslint*", ".prettierignore"],
-      "outputs": []
-    },
-    "lint:hadolint": {
-      "inputs": ["Dockerfile", "Dockerfile.*"],
-      "outputs": []
-    },
-    "lint:fix": {
-      "inputs": ["src/**"],
-      "outputs": ["src/**"]
-    },
-    "lint:report": {
-      "outputs": ["sonar/report.json"]
-    },
     "dev": {
       "cache": false
     },
@@ -96,7 +88,6 @@
     }
   },
   "globalDependencies": [
-    "meta/eslint-config/*.js",
     "meta/jest-config/*.js",
     "meta/prettier-config/*.js",
     "meta/swc-config/*.json",

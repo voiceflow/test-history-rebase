@@ -8,8 +8,6 @@ import { CanvasBlurLoader } from '@/pages/Canvas/components/CanvasBlurLoader/Can
 import { DiagramSidebar } from '@/pages/Project/components/Diagram/DiagramSidebar/DiagramSidebar.component';
 import { useInteractiveMode } from '@/pages/Project/hooks';
 
-import { DiagramLayout } from './DiagramLayout/DiagramLayout.component';
-
 export const DiagramLoader: React.FC = () => {
   const params = useParams<{ diagramID?: string }>();
   const isDesignMode = !useInteractiveMode();
@@ -20,10 +18,8 @@ export const DiagramLoader: React.FC = () => {
 
   return (
     <>
-      <DiagramLayout>
-        <Canvas viewport={viewport ?? undefined} getZoomType={() => zoomType} canvasGridEnabled={canvasGridEnabled} />
-        <CanvasBlurLoader shown />
-      </DiagramLayout>
+      <Canvas viewport={viewport ?? undefined} getZoomType={() => zoomType} canvasGridEnabled={canvasGridEnabled} />
+      <CanvasBlurLoader shown />
 
       {isDesignMode && <DiagramSidebar />}
     </>

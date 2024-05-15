@@ -1,5 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import { Flow, FolderScope, Workflow } from '@voiceflow/dtos';
+import { BlockType } from '@voiceflow/realtime-sdk';
 import { IContextMenuChildren, Menu, notify, usePersistFunction } from '@voiceflow/ui-next';
 import pluralize from 'pluralize';
 import React, { useCallback, useMemo, useRef } from 'react';
@@ -69,7 +70,7 @@ export const useWorkflowsTree = () => {
         triggersMapByDiagramID[workflow.diagramID]?.forEach((node) => {
           children.push({
             id: `${workflow.diagramID}:${node.nodeID}`,
-            type: 'child',
+            type: node.type === BlockType.START ? 'start' : 'intent',
             label: node.label,
             metaData: { type: 'node', nodeType: node.type, nodeID: node.nodeID, diagramID: workflow.diagramID },
           });

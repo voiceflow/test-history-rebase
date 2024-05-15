@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1521.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1520.2...@voiceflow/creator-app@1.1521.0) (2024-05-15)
+
+### Features
+
+* response cms page (COR-1973) ([#8093](https://github.com/voiceflow/creator-app/issues/8093)) ([29ef18f](https://github.com/voiceflow/creator-app/commit/29ef18f1b8d4b09c0bbbf45f3c65694c32c00b6f))
+
 ## [1.1520.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1520.1...@voiceflow/creator-app@1.1520.2) (2024-05-14)
 
 **Note:** Version bump only for package @voiceflow/creator-app

@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import type { AnyResponseVariantCreate, Response as ResponseData } from '@voiceflow/dtos';
 
 import { createCRUD } from '@/crud/crud.action';
@@ -53,6 +54,22 @@ export namespace CreateMany {
 }
 
 export const CreateMany = responseAction.crud.createMany<CreateMany.Request, CreateMany.Response>();
+
+/* Duplicate */
+
+export namespace DuplicateOne {
+  export interface Request extends DesignerAction {
+    data: { responseID: string };
+  }
+
+  export interface Response extends DesignerAction {
+    data: { responseResource: ResponseData };
+  }
+}
+
+export const DuplicateOne = Utils.protocol.createAsyncAction<DuplicateOne.Request, DuplicateOne.Response>(
+  responseAction('DUPLICATE_ONE')
+);
 
 /* PatchOne */
 

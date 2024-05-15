@@ -106,6 +106,7 @@ export const CMSRoute = {
   ENTITY: 'entity',
   FUNCTION: 'function',
   VARIABLE: 'variable',
+  RESPONSE: 'response',
   WORKFLOW: 'workflow',
   KNOWLEDGE_BASE: 'knowledge-base',
 } as const;
@@ -369,6 +370,7 @@ export const Path = {
   CMS_INTENT: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.CMS, CMSRoute.INTENT),
   CMS_ENTITY: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.CMS, CMSRoute.ENTITY),
   CMS_FUNCTION: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.CMS, CMSRoute.FUNCTION),
+  CMS_RESPONSE: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.CMS, CMSRoute.RESPONSE),
   CMS_VARIABLE: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.CMS, CMSRoute.VARIABLE),
   CMS_WORKFLOW: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.CMS, CMSRoute.WORKFLOW),
   CMS_KNOWLEDGE_BASE: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.CMS, CMSRoute.KNOWLEDGE_BASE),

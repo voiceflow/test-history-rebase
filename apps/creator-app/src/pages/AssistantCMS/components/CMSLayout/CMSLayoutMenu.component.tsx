@@ -21,6 +21,7 @@ export const CMSLayoutMenu: React.FC = () => {
   const { isEnabled: isKbEnabled } = useFeature(Realtime.FeatureFlag.KNOWLEDGE_BASE);
   const { isEnabled: isCMSFunctionsEnabled } = useFeature(Realtime.FeatureFlag.CMS_FUNCTIONS);
   const { isEnabled: isCMSWorkflowsEnabled } = useFeature(Realtime.FeatureFlag.CMS_WORKFLOWS);
+  const { isEnabled: isResponsesEnabled } = useFeature(Realtime.FeatureFlag.CMS_RESPONSES);
 
   const { updateActiveCMSRoute } = useCMSRoute();
 
@@ -30,6 +31,7 @@ export const CMSLayoutMenu: React.FC = () => {
 
   const intentsCount = useSelector(Designer.Intent.selectors.countWithoutNone);
   const entitiesCount = useSelector(Designer.Entity.selectors.count);
+  const responsesCount = useSelector(Designer.Response.selectors.count);
   const functionsCount = useSelector(Designer.Function.selectors.count);
   const variablesCount = useSelector(Designer.Variable.selectors.count);
   const workflowsCount = useSelector(Designer.Workflow.selectors.count);
@@ -81,6 +83,17 @@ export const CMSLayoutMenu: React.FC = () => {
       )}
 
       <SecondaryNavigation.Section title="Content">
+        {isResponsesEnabled && (
+          <SecondaryNavigation.Item
+            icon="Message"
+            label="Responses"
+            testID={tid(TEST_ID, 'responses')}
+            caption={String(responsesCount)}
+            onClick={onTabClick(Path.CMS_RESPONSE, CMSRoute.RESPONSE)}
+            isActive={isItemActive(Path.CMS_RESPONSE)}
+          />
+        )}
+
         <SecondaryNavigation.Item
           icon="Component"
           label="Components"

@@ -33,12 +33,16 @@ const AssistantCMSFunction = withSuspense({ loader: <CMSPageLoader /> })(
 const AssistantCMSKnowledgeBase = withSuspense({ loader: <CMSPageLoader /> })(
   lazy({ name: 'CMSKnowledgeBase', factory: () => import('./pages/CMSKnowledgeBase/CMSKnowledgeBase.page') })
 );
+const AssistantCMSResponse = withSuspense({ loader: <CMSPageLoader /> })(
+  lazy({ name: 'CMSResponse', factory: () => import('./pages/CMSResponse/CMSResponse.page') })
+);
 
 const AssistantCMS = () => {
   const loadKBSettings = useDispatch(Designer.KnowledgeBase.effect.loadSettings);
   const loadKBDocuments = useDispatch(Designer.KnowledgeBase.Document.effect.loadAll);
 
   const { isEnabled: isKbEnabled } = useFeature(Realtime.FeatureFlag.KNOWLEDGE_BASE);
+  const { isEnabled: isCMSResponsesEnabled } = useFeature(Realtime.FeatureFlag.CMS_RESPONSES);
   const { isEnabled: isCMSWorkflowsEnabled } = useFeature(Realtime.FeatureFlag.CMS_WORKFLOWS);
   const { isEnabled: isCMSFunctionsEnabled } = useFeature(Realtime.FeatureFlag.CMS_FUNCTIONS);
 
@@ -61,6 +65,8 @@ const AssistantCMS = () => {
         <Route path={Path.CMS_FLOW} component={AssistantCMSFlow} />
 
         {isKbEnabled && <Route path={Path.CMS_KNOWLEDGE_BASE} component={AssistantCMSKnowledgeBase} />}
+
+        {isCMSResponsesEnabled && <Route path={Path.CMS_RESPONSE} component={AssistantCMSResponse} />}
 
         {isCMSFunctionsEnabled && <Route path={Path.CMS_FUNCTION} component={AssistantCMSFunction} />}
 

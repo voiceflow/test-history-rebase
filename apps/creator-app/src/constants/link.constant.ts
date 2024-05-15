@@ -25,8 +25,10 @@ export const CMS_FOLDER_LEARN_MORE = 'https://learn.voiceflow.com/hc/en-us/artic
 export const CMS_VARIABLE_LEARN_MORE = 'https://learn.voiceflow.com/hc/en-us/articles';
 export const CMS_FUNCTIONS_LEARN_MORE = 'https://learn.voiceflow.com/hc/en-us/articles/22213937640589-Function';
 export const CMS_KNOWLEDGE_BASE_LEARN_MORE = 'https://learn.voiceflow.com/hc/en-us/articles/22213924437517-Knowledge-Base';
+
 // TODO: add correct page
 export const CMS_WORKFLOW_LEARN_MORE = 'https://learn.voiceflow.com/hc/en-us/articles/26163424619405-Workflows';
+export const CMS_RESPONSE_LEARN_MORE = 'https://learn.voiceflow.com/hc/en-us/articles/22213924437517-Knowledge-Base';
 
 export const LLM_INTENT_CLASSIFICATION_LEARN_MORE = 'https://developer.voiceflow.com/docs/intent-classification-using-llms';
 export const NLU_INTENT_CLASSIFICATION_LEARN_MORE = 'https://developer.voiceflow.com/docs/intent-classification-using-nlu';

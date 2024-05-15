@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.73.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.72.1...@voiceflow/dtos@1.73.0) (2024-05-15)
+
+### Features
+
+* add types for compiled responses (PL-951) ([#8003](https://github.com/voiceflow/creator-app/issues/8003)) ([ed2ff47](https://github.com/voiceflow/creator-app/commit/ed2ff47bf8628f6bce80ebb7966e76f06263d60d)), closes [4#6a5037e12f204458b91188eeea200160](https://github.com/4/issues/6a5037e12f204458b91188eeea200160)
+
 ## [1.72.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.72.0...@voiceflow/dtos@1.72.1) (2024-05-14)
 
 **Note:** Version bump only for package @voiceflow/dtos

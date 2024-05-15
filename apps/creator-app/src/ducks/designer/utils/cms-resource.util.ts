@@ -6,6 +6,7 @@ import * as Flow from '../flow';
 import * as Function from '../function';
 import * as Intent from '../intent';
 import * as KnowledgeBase from '../knowledge-base';
+import * as Response from '../response';
 import * as Variable from '../variable';
 import * as Workflow from '../workflow';
 
@@ -17,6 +18,7 @@ export const getCMSResourceOneByIDSelector = (scope: FolderScope) =>
     .with(FolderScope.WORKFLOW, () => Workflow.selectors.oneByID)
     .with(FolderScope.FUNCTION, () => Function.selectors.oneByID)
     .with(FolderScope.VARIABLE, () => Variable.selectors.oneByID)
+    .with(FolderScope.RESPONSE, () => Response.selectors.oneByID)
     .with(FolderScope.KNOWLEDGE_BASE, () => KnowledgeBase.Document.selectors.oneByID)
     .otherwise(() => {
       throw new Error('Unsupported scope');
@@ -30,6 +32,7 @@ export const getCMSResourceCountSelector = (scope: FolderScope) =>
     .with(FolderScope.WORKFLOW, () => Workflow.selectors.count)
     .with(FolderScope.FUNCTION, () => Function.selectors.count)
     .with(FolderScope.VARIABLE, () => Variable.selectors.count)
+    .with(FolderScope.RESPONSE, () => Response.selectors.count)
     .with(FolderScope.KNOWLEDGE_BASE, () => KnowledgeBase.Document.selectors.count)
     .otherwise(() => {
       throw new Error('Unsupported scope');
@@ -43,6 +46,7 @@ export const getCMSResourceAllByIDsSelector = (scope: FolderScope) =>
     .with(FolderScope.FUNCTION, () => Function.selectors.allByIDs)
     .with(FolderScope.WORKFLOW, () => Workflow.selectors.allByIDs)
     .with(FolderScope.VARIABLE, () => Variable.selectors.allByIDs)
+    .with(FolderScope.RESPONSE, () => Response.selectors.allByIDs)
     .with(FolderScope.KNOWLEDGE_BASE, () => KnowledgeBase.Document.selectors.allByIDs)
     .otherwise(() => {
       throw new Error('Unsupported scope');
@@ -56,6 +60,7 @@ export const getCMSResourceAllByFolderIDsSelector = (scope: FolderScope) =>
     .with(FolderScope.WORKFLOW, () => Workflow.selectors.allByFolderIDs)
     .with(FolderScope.FUNCTION, () => Function.selectors.allByFolderIDs)
     .with(FolderScope.VARIABLE, () => Variable.selectors.allByFolderIDs)
+    .with(FolderScope.RESPONSE, () => Response.selectors.allByFolderIDs)
     .with(FolderScope.KNOWLEDGE_BASE, () => KnowledgeBase.Document.selectors.allByFolderIDs)
     .otherwise(() => {
       throw new Error('Unsupported scope');

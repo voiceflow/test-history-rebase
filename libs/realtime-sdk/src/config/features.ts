@@ -77,4 +77,7 @@ export enum FeatureFlag {
   TEAMS_PLAN_SELF_SERVE = 'teams_plan_self_serve',
 
   DISABLE_CHECKOUT = 'disable_checkout',
+
+  // CMS
+  CMS_RESPONSES = 'cms_response',
 }

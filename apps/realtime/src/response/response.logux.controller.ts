@@ -42,6 +42,21 @@ export class ResponseLoguxController {
     return this.service.createManyAndBroadcast(data, { auth, context }).then((result) => ({ data: this.service.mapToJSON(result), context }));
   }
 
+  @Action.Async(Actions.Response.DuplicateOne)
+  @Authorize.Permissions<Actions.Response.DuplicateOne.Request>([Permission.PROJECT_UPDATE], ({ context }) => ({
+    id: context.environmentID,
+    kind: 'version',
+  }))
+  @UseRequestContext()
+  async duplicateOne(
+    @Payload() { data, context }: Actions.Response.DuplicateOne.Request,
+    @AuthMeta() auth: AuthMetaPayload
+  ): Promise<Actions.Response.DuplicateOne.Response> {
+    return this.service
+      .duplicateManyAndBroadcast([data.responseID], { auth, context })
+      .then(([result]) => ({ data: { responseResource: this.service.toJSON(result) }, context }));
+  }
+
   @Action(Actions.Response.PatchOne)
   @Authorize.Permissions<Actions.Response.PatchOne>([Permission.PROJECT_UPDATE], ({ context }) => ({
     id: context.environmentID,

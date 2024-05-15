@@ -35,6 +35,9 @@ export const diagramIDParamSelector = (_: any, { diagramID }: { diagramID: strin
 
 export const responseIDParamSelector = (_: any, { responseID }: { responseID: Nullish<string> }) => responseID;
 
+export const responseDiscriminatorIDParamSelector = (_: any, { responseDiscriminatorID }: { responseDiscriminatorID: Nullish<string> }) =>
+  responseDiscriminatorID;
+
 export const folderScopeParamSelector = (_: any, { folderScope }: { folderScope: FolderScope }) => folderScope;
 
 export const createDesignerCRUDSelectors = <Type>(root: Selector<any, Normalized<Type>>) => ({

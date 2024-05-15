@@ -25,7 +25,6 @@ export const CMSTableNavigation: React.FC<ICMSTableNavigation> = ({ label, items
   const folderScope = useAtomValue(cmsManager.folderScope);
   const rootPathname = useAtomValue(cmsRouteFolders.rootPathname);
   const hasSelectedItems = useAtomValue(useMemo(() => atom((get) => !!get(tableState.selectedIDs).size), [tableState.selectedIDs]));
-
   const allResourcesCount = useSelector(Designer.utils.getCMSResourceCountSelector(folderScope));
 
   return hasSelectedItems && !!React.Children.count(actions) ? (

@@ -6,6 +6,7 @@ import { EntityModule } from '@/entity/entity.module';
 import { FlowModule } from '@/flow/flow.module';
 import { FunctionModule } from '@/function/function.module';
 import { IntentModule } from '@/intent/intent.module';
+import { ResponseModule } from '@/response/response.module';
 import { VariableModule } from '@/variable/variable.module';
 import { WorkflowModule } from '@/workflow/workflow.module';
 
@@ -13,7 +14,7 @@ import { FolderLoguxController } from './folder.logux.controller';
 import { FolderService } from './folder.service';
 
 @Module({
-  imports: [EntityModule, IntentModule, FunctionModule, VariableModule, FlowModule, WorkflowModule, DiagramModule],
+  imports: [EntityModule, IntentModule, FunctionModule, ResponseModule, VariableModule, FlowModule, WorkflowModule, DiagramModule],
   exports: [FolderService],
   providers: [FolderORM, FolderService],
   controllers: [FolderLoguxController],

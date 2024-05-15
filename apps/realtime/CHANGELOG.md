@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.359.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.358.1...@voiceflow/realtime@1.359.0) (2024-05-15)
+
+### Features
+
+* add zendesk endpoints [bugfix] (COR-1829) ([#8119](https://github.com/voiceflow/creator-app/issues/8119)) ([3c93306](https://github.com/voiceflow/creator-app/commit/3c93306cd1d4b35fdd37380cf2295d3110ad0bed))
+
 ## [1.358.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.358.0...@voiceflow/realtime@1.358.1) (2024-05-15)
 
 **Note:** Version bump only for package @voiceflow/realtime

@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.1](https://github.com/voiceflow/creator-app/compare/@voiceflow-meta/jest-config@2.2.0...@voiceflow-meta/jest-config@2.2.1) (2024-05-15)
+
+**Note:** Version bump only for package @voiceflow-meta/jest-config
+
 # 2.2.0 (2024-05-10)
 
 ### Features

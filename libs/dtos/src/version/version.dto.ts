@@ -6,6 +6,7 @@ import { VersionDomainDTO } from './version-domain.dto';
 import { VersionFolderDTO, VersionFolderItemDTO } from './version-folder.dto';
 import { VersionKnowledgeBaseDTO } from './version-knowledge-base.dto';
 import { VersionNoteDTO } from './version-note.dto';
+import { VersionProgramResourcesDTO } from './version-program-resources/version-program-resources.dto';
 import { VersionPrototypeDTO } from './version-prototype/version-prototype.dto';
 import { VersionSettingsDTO } from './version-settings.dto';
 
@@ -38,6 +39,9 @@ export const VersionDTO = z
 
     projectID: z.string(),
 
+    /**
+     * @deprecated prefer adding version-level compiled artifacts to `programResources`
+     */
     prototype: z.optional(VersionPrototypeDTO),
 
     variables: z.array(z.string()),
@@ -55,6 +59,8 @@ export const VersionDTO = z
     knowledgeBase: z.optional(VersionKnowledgeBaseDTO),
 
     canvasTemplates: z.array(VersionCanvasTemplateDTO).optional(),
+
+    programResources: z.optional(VersionProgramResourcesDTO),
 
     templateDiagramID: z.string().optional(),
 

@@ -1,11 +1,11 @@
 import { z } from 'zod';
 
-import { FunctionCompiledNodeDTO } from './function/function-compiled-node.dto';
+import { CompiledFunctionNodeDTO } from './function/compiled/function-node.compiled.dto';
 import { FunctionNodeDTO } from './function/function-node.dto';
-import { StartCompiledNodeDTO } from './start/start-compiled-node.dto';
+import { CompiledStartNodeDTO } from './start/start-node.compiled.dto';
 import { StartNodeDTO } from './start/start-node.dto';
 
-export const CompiledNodeDTO = z.discriminatedUnion('type', [StartCompiledNodeDTO, FunctionCompiledNodeDTO]);
+export const CompiledNodeDTO = z.discriminatedUnion('type', [CompiledStartNodeDTO, CompiledFunctionNodeDTO]);
 
 export type CompiledNode = z.infer<typeof CompiledNodeDTO>;
 

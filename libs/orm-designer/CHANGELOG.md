@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.59.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.58.2...@voiceflow/orm-designer@2.59.0) (2024-05-15)
+
+### Features
+
+* add zendesk endpoints [bugfix] (COR-1829) ([#8119](https://github.com/voiceflow/creator-app/issues/8119)) ([3c93306](https://github.com/voiceflow/creator-app/commit/3c93306cd1d4b35fdd37380cf2295d3110ad0bed))
+
 ## [2.58.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.58.1...@voiceflow/orm-designer@2.58.2) (2024-05-15)
 
 **Note:** Version bump only for package @voiceflow/orm-designer

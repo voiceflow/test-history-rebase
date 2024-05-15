@@ -32,6 +32,8 @@ import { AssistantModule } from './assistant/assistant.module';
 import { AttachmentModule } from './attachment/attachment.module';
 import { BackupModule } from './backup/backup.module';
 import { SerializerModule, ThrottlerGuard } from './common';
+import { AesEncryptionModule } from './common/clients/aes-encryption/aes-encryption.module';
+import { ZendeskOauthModule } from './common/clients/integrations/zendesk/zendesk-oauth.module';
 import { KlParserModule } from './common/clients/kl-parser/kl-parser.module';
 import { PUBLISHER_REDIS_NAMESPACE, SUBSCRIBER_REDIS_NAMESPACE, THROTTLER_REDIS_NAMESPACE } from './config';
 import { CreatorModule } from './creator/creator.module';
@@ -238,14 +240,13 @@ import { WorkflowModule } from './workflow/workflow.module';
         apiKey: env.SENDGRID_KEY,
       }),
     }),
-    IntegrationOauthTokenModule.registerAsync({
+    AesEncryptionModule.registerAsync({
       inject: [ENVIRONMENT_VARIABLES],
       useFactory: (env: EnvironmentVariables) => ({
         aesSecretKey: env.AES_SECRET_KEY,
         encryptionMethod: 'aes-256-cbc',
       }),
     }),
-
     MessageQueueModule.forRootAsync({
       inject: [ENVIRONMENT_VARIABLES],
       useFactory: (env: EnvironmentVariables) => ({
@@ -263,6 +264,13 @@ import { WorkflowModule } from './workflow/workflow.module';
         bucket: env.S3_KNOWLEDGE_BASE_BUCKET,
       }),
     }),
+    ZendeskOauthModule.registerAsync({
+      inject: [ENVIRONMENT_VARIABLES],
+      useFactory: (env: EnvironmentVariables) => ({
+        clientID: env.ZENDESK_OAUTH_CLIENT_ID,
+        clientSecret: env.ZENDESK_OAUTH_CLIENT_SECRET,
+      }),
+    }),
     EmailModule,
     SerializerModule,
     LegacyModule,
@@ -272,6 +280,7 @@ import { WorkflowModule } from './workflow/workflow.module';
     KnowledgeBaseDocumentModule,
     KnowledgeBaseSettingsModule,
     KnowledgeBaseTagModule,
+    IntegrationOauthTokenModule,
     UploadModule,
     ResponseModule,
     AssistantModule,

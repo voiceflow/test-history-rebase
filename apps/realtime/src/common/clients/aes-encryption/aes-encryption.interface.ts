@@ -1,4 +1,4 @@
-export interface IntegrationOauthTokenModuleOptions {
+export interface AesEncryptionModuleOptions {
   aesSecretKey: string;
   encryptionMethod: string;
 }

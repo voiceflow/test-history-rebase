@@ -49,7 +49,7 @@ export interface ZendeskFilterLocale extends ZendeskFilterBase {
 }
 
 export interface ZendeskFilterUserSegment extends ZendeskFilterBase {
-  userType: string;
+  filterID: number | null;
 }
 
 export interface ZendeskFilterCategory {

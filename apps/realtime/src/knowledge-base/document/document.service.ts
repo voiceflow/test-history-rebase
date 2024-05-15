@@ -91,6 +91,11 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
     super();
   }
 
+  strippedURL = (url: string) => {
+    const { host, pathname, search } = new URL(url);
+    return `${host.replace('www.', '')}${pathname}${search}`;
+  };
+
   getDocumentCollisionMap(documents: VersionKnowledgeBaseDocument[]) {
     return Object.fromEntries(
       documents.map((document) => {
@@ -255,7 +260,7 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
 
       documentsToUpsert.push({
         status: { type: KnowledgeBaseDocumentStatus.PENDING },
-        data: item,
+        data: { ...item, name: this.strippedURL(item.url) },
         updatedAt: new Date(),
         creatorID: userID,
         documentID: collisionMap[item.url] ?? new ObjectId().toHexString(),
@@ -299,6 +304,9 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
 
     const project = await this.projectOrm.findOneOrFail(projectID);
     const urlData = data.data as KBDocumentUrlData;
+
+    urlData.name = this.strippedURL(urlData.url);
+
     const existingDocuments: Omit<VersionKnowledgeBaseDocument, 'updatedAt'>[] = project?.knowledgeBase?.documents
       ? Object.values(project.knowledgeBase.documents)
       : [];

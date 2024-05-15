@@ -38,16 +38,25 @@ export const getAll = (): Thunk<KnowledgeBaseIntegration[]> => async (dispatch, 
 };
 
 export const importIntegration =
-  (integrationType: BaseModels.Project.IntegrationTypes, refreshRate: string, filters: ZendeskCountFilters = {}): Thunk<number> =>
+  (
+    integrationType: BaseModels.Project.IntegrationTypes,
+    refreshRate: BaseModels.Project.KnowledgeBaseDocumentRefreshRate,
+    filters: ZendeskCountFilters = {}
+  ): Thunk<void> =>
   async (_, getState) => {
     const state = getState();
 
     const projectID = Session.activeProjectIDSelector(state);
+    const kbIntegrationsEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.KB_BE_INTEGRATIONS);
 
     Errors.assertProjectID(projectID);
 
-    const data = await knowledgeBaseClient.importIntegration(projectID, integrationType, { filters, refreshRate });
-    return data.status;
+    if (kbIntegrationsEnabled) {
+      await designerClient.knowledgeBase.integration.uploadDocsByFiltersIntegration(projectID, integrationType, { data: { filters, refreshRate } });
+      return;
+    }
+
+    await knowledgeBaseClient.importIntegration(projectID, integrationType, { filters, refreshRate });
   };
 
 export const deleteOne =
@@ -56,10 +65,15 @@ export const deleteOne =
     const state = getState();
 
     const projectID = Session.activeProjectIDSelector(state);
+    const kbIntegrationsEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.KB_BE_INTEGRATIONS);
 
     Errors.assertProjectID(projectID);
 
-    await knowledgeBaseClient.deleteOneIntegration(projectID, integrationType);
+    if (kbIntegrationsEnabled) {
+      await designerClient.knowledgeBase.integration.deleteIntegration(projectID, integrationType);
+    } else {
+      await knowledgeBaseClient.deleteOneIntegration(projectID, integrationType);
+    }
 
     dispatch.local(Actions.DeleteOne({ id: integrationType }));
   };
@@ -70,15 +84,28 @@ export const getIntegrationAuthUrl =
     const state = getState();
 
     const projectID = Session.activeProjectIDSelector(state);
+    const kbIntegrationsEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.KB_BE_INTEGRATIONS);
 
     Errors.assertProjectID(projectID);
 
-    const { data } = await knowledgeBaseClient.getIntegrationAuthUrl({
-      ...payload,
-      projectID,
-      redirectUrl: `${CREATOR_APP_ENDPOINT}${Path.INTEGRATION_ZENDESK_CALLBACK}`,
-      integrationType,
-    });
+    let data: { url: string };
+    if (kbIntegrationsEnabled) {
+      const response = await designerClient.knowledgeBase.integration.authUrlIntegration(projectID, integrationType, {
+        query: {
+          ...payload,
+          redirectUrl: `${CREATOR_APP_ENDPOINT}${Path.INTEGRATION_ZENDESK_CALLBACK}`,
+        },
+      });
+      data = response.data;
+    } else {
+      const urlResponse = await knowledgeBaseClient.getIntegrationAuthUrl({
+        ...payload,
+        projectID,
+        redirectUrl: `${CREATOR_APP_ENDPOINT}${Path.INTEGRATION_ZENDESK_CALLBACK}`,
+        integrationType,
+      });
+      data = urlResponse.data;
+    }
 
     return data.url;
   };
@@ -89,14 +116,26 @@ export const getIntegrationAuthReconnectUrl =
     const state = getState();
 
     const projectID = Session.activeProjectIDSelector(state);
+    const kbIntegrationsEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.KB_BE_INTEGRATIONS);
 
     Errors.assertProjectID(projectID);
 
-    const { data } = await knowledgeBaseClient.getIntegrationAuthReconnectUrl({
-      projectID,
-      integrationType,
-      redirectUrl: `${CREATOR_APP_ENDPOINT}${Path.INTEGRATION_ZENDESK_CALLBACK}`,
-    });
+    let data: { url: string };
+    if (kbIntegrationsEnabled) {
+      const response = await designerClient.knowledgeBase.integration.authUrlReconnectIntegration(projectID, integrationType, {
+        query: {
+          redirectUrl: `${CREATOR_APP_ENDPOINT}${Path.INTEGRATION_ZENDESK_CALLBACK}`,
+        },
+      });
+      data = response.data;
+    } else {
+      const urlResponse = await knowledgeBaseClient.getIntegrationAuthReconnectUrl({
+        projectID,
+        integrationType,
+        redirectUrl: `${CREATOR_APP_ENDPOINT}${Path.INTEGRATION_ZENDESK_CALLBACK}`,
+      });
+      data = urlResponse.data;
+    }
 
     return data.url;
   };
@@ -107,11 +146,20 @@ export const getIntegrationFilters =
     const state = getState();
 
     const projectID = Session.activeProjectIDSelector(state);
+    const kbIntegrationsEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.KB_BE_INTEGRATIONS);
 
     Errors.assertProjectID(projectID);
 
-    const { data } = await knowledgeBaseClient.getIntegrationFilters({ projectID, integrationType, subdomain });
+    if (kbIntegrationsEnabled) {
+      const response = await designerClient.knowledgeBase.integration.fetchFiltersIntegration(projectID, integrationType, {
+        query: {
+          subdomain,
+        },
+      });
+      return response.data;
+    }
 
+    const { data } = await knowledgeBaseClient.getIntegrationFilters({ projectID, integrationType, subdomain });
     return data;
   };
 
@@ -121,8 +169,16 @@ export const getIntegrationDocumentCount =
     const state = getState();
 
     const projectID = Session.activeProjectIDSelector(state);
+    const kbIntegrationsEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.KB_BE_INTEGRATIONS);
 
     Errors.assertProjectID(projectID);
+
+    if (kbIntegrationsEnabled) {
+      const response = await designerClient.knowledgeBase.integration.fetchCountByFiltersIntegration(projectID, integrationType, {
+        data: { filters },
+      });
+      return response.data;
+    }
 
     const { data } = await knowledgeBaseClient.getIntegrationDocumentCount(projectID, integrationType, filters);
 
@@ -131,10 +187,17 @@ export const getIntegrationDocumentCount =
 
 export const createOne =
   (integrationType: string, code: string, authState: string): Thunk<void> =>
-  async (dispatch, _) => {
+  async (dispatch, getState) => {
+    const state = getState();
+    const kbIntegrationsEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.KB_BE_INTEGRATIONS);
+
     const redirectUrl = `${CREATOR_APP_ENDPOINT}${Path.INTEGRATION_ZENDESK_CALLBACK}`;
 
-    await knowledgeBaseClient.createOneIntegration(integrationType, { code, state: authState, redirectUrl });
+    if (kbIntegrationsEnabled) {
+      await designerClient.knowledgeBase.integration.callbackIntegration(integrationType, { query: { code, state: authState, redirectUrl } });
+    } else {
+      await knowledgeBaseClient.createOneIntegration(integrationType, { code, state: authState, redirectUrl });
+    }
 
     dispatch(getAll());
   };

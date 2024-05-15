@@ -76,6 +76,10 @@ export const EnvironmentVariables = BaseEnvironmentVariables.extend({
 
   /* aes encryption secret key  */
   AES_SECRET_KEY: z.string(),
+
+  /* integrations  */
+  ZENDESK_OAUTH_CLIENT_ID: z.string(),
+  ZENDESK_OAUTH_CLIENT_SECRET: z.string(),
 })
   .extend(AuthEnvironmentVariables.shape)
   .extend(BillingEnvironmentVariables.shape)

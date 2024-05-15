@@ -1,18 +1,18 @@
 import { Inject, Injectable } from '@nestjs/common';
 import crypto from 'crypto';
 
-import { IntegrationOauthTokenModuleOptions } from './integration-oauth-token.interface';
-import { INTEGRATION_OAUTH_TOKEN_MODULE_OPTIONS_TOKEN } from './integration-oauth-token.module-definition';
+import { AesEncryptionModuleOptions } from './aes-encryption.interface';
+import { AES_ENCRYPTION_TOKEN_MODULE_OPTIONS_TOKEN } from './aes-encryption.module-definition';
 
 @Injectable()
-export class TokenEncryptionService {
+export class AesEncryptionClient {
   private aesSecretKey = this.options.aesSecretKey;
 
   private encryptionMethod = this.options.encryptionMethod;
 
   constructor(
-    @Inject(INTEGRATION_OAUTH_TOKEN_MODULE_OPTIONS_TOKEN)
-    private options: IntegrationOauthTokenModuleOptions
+    @Inject(AES_ENCRYPTION_TOKEN_MODULE_OPTIONS_TOKEN)
+    private options: AesEncryptionModuleOptions
   ) {}
 
   encrypt(text: string, useIvString = true): string {

@@ -5,6 +5,7 @@ import type {
   KBDocumentTextData,
   KBDocumentUrlData,
   KnowledgeBaseDocument,
+  KnowledgeBaseDocumentRefreshRate,
   KnowledgeBaseSettings,
   VersionKnowledgeBaseTag,
 } from '@voiceflow/dtos';
@@ -58,18 +59,14 @@ export class KnowledgeBaseORM extends ProjectORM {
     const project = await this.findOneOrFail(projectID, { fields: [KnowledgeBaseORM.KNOWLEDGE_BASE_DATA_PATH] });
 
     return project?.knowledgeBase?.documents
-      ? Object.values(project.knowledgeBase.documents).filter(
-          ({ documentID }) => !!documentID && documentIDs.includes(documentID)
-        )
+      ? Object.values(project.knowledgeBase.documents).filter(({ documentID }) => !!documentID && documentIDs.includes(documentID))
       : [];
   }
 
   async findAllDocuments(projectID: string): Promise<VersionKnowledgeBaseDocument[]> {
     const project = await this.findOneOrFail(projectID, { fields: [KnowledgeBaseORM.KNOWLEDGE_BASE_DATA_PATH] });
 
-    return project?.knowledgeBase?.documents
-      ? Object.values(project.knowledgeBase.documents).filter(({ documentID }) => !!documentID)
-      : [];
+    return project?.knowledgeBase?.documents ? Object.values(project.knowledgeBase.documents).filter(({ documentID }) => !!documentID) : [];
   }
 
   async findAllTags(projectID: string): Promise<VersionKnowledgeBaseTag[]> {
@@ -127,27 +124,17 @@ export class KnowledgeBaseORM extends ProjectORM {
     await this.atomicUpdateOne(projectID, [Atomic.Set(updateData)]);
   }
 
-  async upsertOneDocument(
-    projectID: string,
-    document: Omit<VersionKnowledgeBaseDocument, 'documentID'> & { documentID: string }
-  ) {
+  async upsertOneDocument(projectID: string, document: Omit<VersionKnowledgeBaseDocument, 'documentID'> & { documentID: string }) {
     await this.atomicUpdateOne(projectID, [
-      Atomic.Set([
-        { path: [KnowledgeBaseORM.KNOWLEDGE_BASE_DATA_PATH, 'documents', document.documentID], value: document },
-      ]),
+      Atomic.Set([{ path: [KnowledgeBaseORM.KNOWLEDGE_BASE_DATA_PATH, 'documents', document.documentID], value: document }]),
     ]);
   }
 
   async upsertOneTag(projectID: string, tag: VersionKnowledgeBaseTag) {
-    await this.atomicUpdateOne(projectID, [
-      Atomic.Set([{ path: [KnowledgeBaseORM.KNOWLEDGE_BASE_DATA_PATH, 'tags', tag.tagID], value: tag }]),
-    ]);
+    await this.atomicUpdateOne(projectID, [Atomic.Set([{ path: [KnowledgeBaseORM.KNOWLEDGE_BASE_DATA_PATH, 'tags', tag.tagID], value: tag }])]);
   }
 
-  async upsertManyDocuments(
-    projectID: string,
-    documents: (Omit<VersionKnowledgeBaseDocument, 'documentID'> & { documentID: string })[]
-  ) {
+  async upsertManyDocuments(projectID: string, documents: (Omit<VersionKnowledgeBaseDocument, 'documentID'> & { documentID: string })[]) {
     const updateData: SetOperation[] = documents.map((document) => ({
       path: [KnowledgeBaseORM.KNOWLEDGE_BASE_DATA_PATH, 'documents', document.documentID],
       value: document,
@@ -166,9 +153,7 @@ export class KnowledgeBaseORM extends ProjectORM {
   }
 
   async deleteOneDocument(projectID: string, documentID: string) {
-    await this.atomicUpdateOne(projectID, [
-      Atomic.Unset([{ path: [KnowledgeBaseORM.KNOWLEDGE_BASE_DATA_PATH, 'documents', documentID] }]),
-    ]);
+    await this.atomicUpdateOne(projectID, [Atomic.Unset([{ path: [KnowledgeBaseORM.KNOWLEDGE_BASE_DATA_PATH, 'documents', documentID] }])]);
   }
 
   async deleteOneTag(projectID: string, tagID: string) {
@@ -194,25 +179,19 @@ export class KnowledgeBaseORM extends ProjectORM {
   async deleteManyDocuments(projectID: string, documentIDs: string[]) {
     await this.atomicUpdateOne(
       projectID,
-      documentIDs.map((documentID) =>
-        Atomic.Unset([{ path: [KnowledgeBaseORM.KNOWLEDGE_BASE_DATA_PATH, 'documents', documentID] }])
-      )
+      documentIDs.map((documentID) => Atomic.Unset([{ path: [KnowledgeBaseORM.KNOWLEDGE_BASE_DATA_PATH, 'documents', documentID] }]))
     );
   }
 
   async attachManyTagsToDocument(projectID: string, documentID: string, tagIDs: string[]) {
     await this.atomicUpdateOne(projectID, [
-      Atomic.AddToSet([
-        { path: `${KnowledgeBaseORM.KNOWLEDGE_BASE_DATA_PATH}.documents.${[documentID]}.tags`, value: tagIDs },
-      ]),
+      Atomic.AddToSet([{ path: `${KnowledgeBaseORM.KNOWLEDGE_BASE_DATA_PATH}.documents.${[documentID]}.tags`, value: tagIDs }]),
     ]);
   }
 
   async detachManyTagsFromDocument(projectID: string, documentID: string, tagIDs: string[]) {
     await this.atomicUpdateOne(projectID, [
-      Atomic.PullAll([
-        { path: `${KnowledgeBaseORM.KNOWLEDGE_BASE_DATA_PATH}.documents.${[documentID]}.tags`, match: tagIDs },
-      ]),
+      Atomic.PullAll([{ path: `${KnowledgeBaseORM.KNOWLEDGE_BASE_DATA_PATH}.documents.${[documentID]}.tags`, match: tagIDs }]),
     ]);
   }
 
@@ -230,5 +209,37 @@ export class KnowledgeBaseORM extends ProjectORM {
       );
 
     await this.atomicUpdateOne(projectID, [Atomic.Set(updateData)]);
+  }
+
+  async unsetDocumentsAccessToken(assistantID: string, documentIDs: string[]) {
+    return this.atomicUpdateOne(assistantID, [
+      Atomic.Unset(
+        documentIDs.map((documentID) => ({
+          path: `knowledgeBase.documents.${documentID}.data.accessTokenID`,
+        }))
+      ),
+    ]);
+  }
+
+  async updateDocumentsRefreshRate(assistantID: string, documentIDs: string[], refreshRate: KnowledgeBaseDocumentRefreshRate) {
+    return this.findOneAndAtomicUpdate(assistantID, [
+      Atomic.Set(
+        documentIDs.map((documentID) => ({
+          path: `knowledgeBase.documents.${documentID}.data.refreshRate`,
+          value: refreshRate,
+        }))
+      ),
+    ]);
+  }
+
+  async updateIntegrationDocuments(assistantID: string, documents: VersionKnowledgeBaseDocument[]) {
+    const atomicOperations = documents.map((document) => {
+      return {
+        path: ['knowledgeBase', 'documents', document.documentID],
+        value: document,
+      };
+    });
+
+    await this.atomicUpdateOne(assistantID, [Atomic.Set(atomicOperations)]);
   }
 }

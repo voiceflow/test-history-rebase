@@ -1,13 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { AmqpQueueMessagePriority, KBDocumentUrlData, KnowledgeBaseDocumentRefreshRate, RefreshJob } from '@voiceflow/dtos';
-import { RefreshJobsOrm, VersionKnowledgeBaseDocument } from '@voiceflow/orm-designer';
+import { IntegrationOauthTokenORM, RefreshJobsOrm, VersionKnowledgeBaseDocument } from '@voiceflow/orm-designer';
 import { Topic } from '@voiceflow/sdk-message-queue';
 import { MessageQueueService } from '@voiceflow/sdk-message-queue/nestjs';
 import dayjs from 'dayjs';
 
 import { MutableService } from '@/common';
-
-import { IntegrationOauthTokenService } from '../integration-oauth-token/integration-oauth-token.service';
+import { AesEncryptionClient } from '@/common/clients/aes-encryption/aes-encryption.client';
 
 @Injectable()
 export class RefreshJobService extends MutableService<RefreshJobsOrm> {
@@ -25,8 +24,10 @@ export class RefreshJobService extends MutableService<RefreshJobsOrm> {
 
     @Inject(MessageQueueService)
     private readonly messageQueueService: MessageQueueService,
-    @Inject(IntegrationOauthTokenService)
-    private readonly integrationOauthTokenService: IntegrationOauthTokenService
+    @Inject(IntegrationOauthTokenORM)
+    protected readonly integrationOauthTokenORM: IntegrationOauthTokenORM,
+    @Inject(AesEncryptionClient)
+    protected readonly aesEncryptionClient: AesEncryptionClient
   ) {
     super();
   }
@@ -42,6 +43,16 @@ export class RefreshJobService extends MutableService<RefreshJobsOrm> {
       default:
         throw new Error('Invalid refresh rate');
     }
+  }
+
+  async getIntegrationTokensMapping(integrationTokenIDSet: Set<number>): Promise<Record<number, string>> {
+    const integrationTokensArray = await this.integrationOauthTokenORM.find({ id: [...integrationTokenIDSet] });
+
+    return integrationTokensArray.reduce<Record<number, string>>((acc, obj) => {
+      const { id, accessToken } = obj;
+      acc[id] = this.aesEncryptionClient.decrypt(accessToken.toString());
+      return acc;
+    }, {});
   }
 
   async getExistingJobsMapping(
@@ -106,9 +117,7 @@ export class RefreshJobService extends MutableService<RefreshJobsOrm> {
       }
     });
 
-    const integrationTokensMapping: Record<number, string> = await this.integrationOauthTokenService.getIntegrationTokensMapping(
-      integrationTokenIDSet
-    );
+    const integrationTokensMapping: Record<number, string> = await this.getIntegrationTokensMapping(integrationTokenIDSet);
 
     const existingJobsMapping: Record<string, Pick<RefreshJob, 'checksum' | 'executeAt' | 'refreshRate'>> = await this.getExistingJobsMapping(
       projectID,

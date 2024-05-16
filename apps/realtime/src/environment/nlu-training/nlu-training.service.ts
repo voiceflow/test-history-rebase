@@ -1,21 +1,22 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { PrototypeIntent, PrototypeModel, PrototypeSlot } from '@voiceflow/dtos';
 import orderBy from 'lodash/orderBy.js';
 import { MD5 } from 'object-hash';
 
-interface HashedRecordDiff {
-  new: string[];
-  deleted: string[];
-  updated: string[];
-}
+import { ProjectService } from '@/project/project.service';
+import { VersionService } from '@/version/version.service';
 
-interface ModelDiff {
-  slots: HashedRecordDiff;
-  intents: HashedRecordDiff;
-}
+import { HashedRecordDiff, ModelDiff } from './nlu-training.interface';
 
 @Injectable()
-export class EnvironmentNLUTrainingUtil {
+export class EnvironmentNLUTrainingService {
+  constructor(
+    @Inject(VersionService)
+    private readonly version: VersionService,
+    @Inject(ProjectService)
+    private readonly project: ProjectService
+  ) {}
+
   private hashModelData<T extends { key: string }>(array: T[]) {
     return Object.fromEntries(array.map((item) => [item.key, MD5(item)]));
   }
@@ -69,5 +70,39 @@ export class EnvironmentNLUTrainingUtil {
       diff.intents.updated.length +
       diff.intents.deleted.length
     );
+  }
+
+  async getNLUTrainingDiff(environmentID: string) {
+    const { prototype: versionPrototype, projectID } = await this.version.findOneOrFailWithFields(environmentID, ['prototype', 'projectID']);
+    const { prototype: projectPrototype } = await this.project.findOneOrFailWithFields(projectID, ['prototype']);
+
+    const modelDiff = this.getModelDiff(projectPrototype?.trainedModel, versionPrototype?.model);
+    const { slots, intents } = modelDiff;
+
+    const updatedDeletedSlotsCount = slots.deleted.length + slots.updated.length;
+    const updatedDeletedIntentsCount = intents.deleted.length + intents.updated.length;
+
+    const trainedSlotsCount = (projectPrototype?.trainedModel?.slots.length ?? 0) - updatedDeletedSlotsCount;
+    const trainedIntentsCount = (projectPrototype?.trainedModel?.intents.length ?? 0) - updatedDeletedIntentsCount;
+
+    const untrainedSlotsCount = slots.new.length + updatedDeletedSlotsCount;
+    const untrainedIntentsCount = intents.new.length + updatedDeletedIntentsCount;
+
+    const trainedCount = trainedSlotsCount + trainedIntentsCount;
+    const untrainedCount = untrainedSlotsCount + untrainedIntentsCount;
+
+    return {
+      hash: this.getModelDiffHash(modelDiff),
+      status: this.isModelChanged(modelDiff) ? 'untrained' : 'trained',
+      data: {
+        trainedCount,
+        untrainedCount,
+        lastTrainedTime: projectPrototype?.lastTrainedTime ?? null,
+        trainedSlotsCount,
+        trainedIntentsCount,
+        untrainedSlotsCount,
+        untrainedIntentsCount,
+      },
+    } as const;
   }
 }

@@ -1,7 +1,7 @@
 import { ProjectDTO } from '@voiceflow/dtos';
 import { z } from 'zod';
 
-import { EnvironmentImportDTO } from '@/environment/dtos/environment-import-data.dto';
+import { EnvironmentImportDTO } from '@/environment/import/dtos/environment-import-data.dto';
 import { zodDeepStrip } from '@/utils/zod-deep-strip.util';
 
 import { AssistantOnlyExportDataDTO } from './assistant-export-data.dto';

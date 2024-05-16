@@ -3,8 +3,8 @@ import { z } from 'zod';
 
 import { zodDeepStrip } from '@/utils/zod-deep-strip.util';
 
-import { EnvironmentCMSExportImportDataDTO } from './environment-cms-export-import-data.dto';
-import { EnvironmentOnlyExportDTO } from './environment-export-data.dto';
+import { EnvironmentCMSExportImportDataDTO } from '../../export/dtos/environment-cms-export-import-data.dto';
+import { EnvironmentOnlyExportDTO } from '../../export/dtos/environment-export-data.dto';
 
 export const EnvironmentImportDTO = zodDeepStrip(
   EnvironmentOnlyExportDTO.extend({

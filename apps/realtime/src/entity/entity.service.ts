@@ -170,6 +170,15 @@ export class EntityService extends CMSTabularService<EntityORM> {
     };
   }
 
+  async importManyWithSubResourcesFromJSON({ entities, entityVariants }: EntityExportImportDataDTO) {
+    await this.importManyWithSubResources(
+      this.fromJSONWithSubResources({
+        entities,
+        entityVariants: entityVariants ?? [],
+      })
+    );
+  }
+
   /* Create */
 
   async createManyAndSync(data: EntityCreateData[], { userID, context }: { userID: number; context: CMSContext }) {

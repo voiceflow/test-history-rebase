@@ -207,6 +207,7 @@ export class WorkflowService extends CMSTabularService<WorkflowORM> {
         ...item,
         createdAt,
         updatedAt: createdAt,
+        assigneeID: null,
         createdByID: userID,
         updatedByID: userID,
         assistantID,

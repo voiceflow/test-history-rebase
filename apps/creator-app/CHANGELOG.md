@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1523.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1522.1...@voiceflow/creator-app@1.1523.0) (2024-05-16)
+
+### Features
+
+* workflow migration [bugfix] (COR-1750) ([#8000](https://github.com/voiceflow/creator-app/issues/8000)) ([3f0e868](https://github.com/voiceflow/creator-app/commit/3f0e868205ca350c03c88651c2857848c9ab637a))
+
 ## [1.1522.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1522.0...@voiceflow/creator-app@1.1522.1) (2024-05-15)
 
 **Note:** Version bump only for package @voiceflow/creator-app

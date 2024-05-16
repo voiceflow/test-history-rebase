@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.363.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.362.0...@voiceflow/realtime@1.363.0) (2024-05-16)
+
+### Features
+
+* add handle missing processed kb chunks error (COR-000) ([#8140](https://github.com/voiceflow/creator-app/issues/8140)) ([6f51d6d](https://github.com/voiceflow/creator-app/commit/6f51d6d8658704d00840cadd1614b51471b640d6))
+
 # [1.362.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.361.0...@voiceflow/realtime@1.362.0) (2024-05-16)
 
 ### Features

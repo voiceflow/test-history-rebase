@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.362.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.361.0...@voiceflow/realtime@1.362.0) (2024-05-16)
+
+### Features
+
+* Set server.keepAliveTimeout for creator-app monorepo (ENG-34) ([#8139](https://github.com/voiceflow/creator-app/issues/8139)) ([6a399a4](https://github.com/voiceflow/creator-app/commit/6a399a475bf5bdbe7c6f5def8d5f646a756b85d9))
+
 # [1.361.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.360.1...@voiceflow/realtime@1.361.0) (2024-05-16)
 
 ### Features

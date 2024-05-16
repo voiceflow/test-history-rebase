@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.94.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.93.4...@voiceflow/ml-gateway@1.94.0) (2024-05-16)
+
+### Features
+
+* Set server.keepAliveTimeout for creator-app monorepo (ENG-34) ([#8139](https://github.com/voiceflow/creator-app/issues/8139)) ([6a399a4](https://github.com/voiceflow/creator-app/commit/6a399a475bf5bdbe7c6f5def8d5f646a756b85d9))
+
 ## [1.93.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.93.3...@voiceflow/ml-gateway@1.93.4) (2024-05-15)
 
 **Note:** Version bump only for package @voiceflow/ml-gateway

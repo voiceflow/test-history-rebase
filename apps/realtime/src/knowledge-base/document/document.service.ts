@@ -584,16 +584,20 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
   }
 
   async findDocumentChunks(assistantID: string, documentID: string): Promise<KBDocumentChunk[]> {
-    const file = await this.file.downloadFile(UploadType.KB_DOCUMENT, `${assistantID}/embeddings/${documentID}.json`);
+    try {
+      const file = await this.file.downloadFile(UploadType.KB_DOCUMENT, `${assistantID}/embeddings/${documentID}.json`);
 
-    const rawChunks = file ? z.array(KBDocumentInsertChunkDTO).parse(JSON.parse(await file.transformToString())) : [];
+      const rawChunks = file ? z.array(KBDocumentInsertChunkDTO).parse(JSON.parse(await file.transformToString())) : [];
 
-    return rawChunks
-      ? rawChunks.map(({ id, metadata }) => ({
-          chunkID: id,
-          content: metadata.content,
-        }))
-      : [];
+      return rawChunks
+        ? rawChunks.map(({ id, metadata }) => ({
+            chunkID: id,
+            content: metadata.content,
+          }))
+        : [];
+    } catch {
+      return [];
+    }
   }
 
   async findManyDocumentsByFilters(assistantID: string, query: DocumentFindManyPublicQuery = {}) {

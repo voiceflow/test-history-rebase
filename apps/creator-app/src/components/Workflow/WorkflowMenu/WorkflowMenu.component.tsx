@@ -90,7 +90,7 @@ export const WorkflowMenu: React.FC<IWorkflowMenu> = ({ width = 'fit-content', m
             if (!workflow) return null;
 
             return (
-              <Menu.Item.WithButton
+              <Menu.Item
                 key={virtualRow.index}
                 ref={virtualizer.measureElement}
                 label={workflow.name}

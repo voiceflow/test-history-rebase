@@ -93,8 +93,8 @@ export const CMS_WORKFLOW_TABLE_CONFIG: TableConfig<WorkflowTableColumn, CMSFold
       name: 'Assignee',
       sorter: withFolderSort<CMSWorkflow, CMSWorkflowSortContext>((left, right, { context }) =>
         withOptionalSort(localeCompareSort)(
-          left.assistantID ? context.membersMap[left.assistantID]?.name : null,
-          right.assistantID ? context.membersMap[right.assistantID]?.name : null
+          left.assigneeID ? context.membersMap[left.assigneeID]?.name : null,
+          right.assigneeID ? context.membersMap[right.assigneeID]?.name : null
         )
       ),
 

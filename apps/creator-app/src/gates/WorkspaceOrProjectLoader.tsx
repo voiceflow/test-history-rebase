@@ -7,6 +7,7 @@ import { Path } from '@/config/routes';
 import { useFeature } from '@/hooks/feature';
 import { AssistantLoader } from '@/pages/AssistantCMS/components/AssistantLoader.component';
 import DashboardLoader from '@/pages/DashboardV2/components/DashboardLoader';
+import { DiagramLayout } from '@/pages/Project/components/Diagram/DiagramLayout/DiagramLayout.component';
 import { DiagramLoader } from '@/pages/Project/components/Diagram/DiagramLoader.component';
 import ProjectLoader from '@/pages/Project/components/ProjectLoader';
 
@@ -36,7 +37,12 @@ const WorkspaceOrProjectLoader: React.FC<ITabLoader> = (props) => {
   if (isExport) return <TabLoader variant="dark" {...props} />;
 
   if (cmsWorkflows.isEnabled) {
-    if (isCanvas) return <DiagramLoader variant="dark" {...props} />;
+    if (isCanvas)
+      return (
+        <DiagramLayout>
+          <DiagramLoader variant="dark" {...props} />
+        </DiagramLayout>
+      );
 
     return isProject ? <AssistantLoader isCMS={isCMS} /> : <DashboardLoader {...props} />;
   }

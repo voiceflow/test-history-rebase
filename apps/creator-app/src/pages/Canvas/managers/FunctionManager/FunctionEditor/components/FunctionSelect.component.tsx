@@ -63,10 +63,7 @@ export const FunctionSelect = ({ onChange, functionID }: FunctionSelectProps) =>
                     }}
                     onClick={Utils.functional.chain(
                       onClose,
-                      () =>
-                        onChange({
-                          functionID: functionItem.id,
-                        }),
+                      () => onChange({ functionID: functionItem.id }),
                       () => search.setValue('')
                     )}
                   />

@@ -115,7 +115,7 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
   const createWorkspace = useDispatch(WorkspaceV2.createWorkspace);
   const acceptInvite = useDispatch(WorkspaceV2.acceptInvite);
   const goToDashboard = useDispatch(Router.goToDashboard);
-  const goToCMSKnowledgeBase = useDispatch(Router.goToCMSKnowledgeBase);
+  const goToProjectCanvas = useDispatch(Router.goToProjectCanvas);
   const goToDashboardWithSearch = useDispatch(Router.goToDashboardWithSearch);
   const setActiveWorkspace = useDispatch(WorkspaceV2.setActive);
   const goToWorkspace = useDispatch(Router.goToWorkspace);
@@ -364,7 +364,7 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
 
           // eslint-disable-next-line max-depth
           if (isKnowledgeBaseEnabled && !search.coupon) {
-            goToCMSKnowledgeBase(versionID);
+            goToProjectCanvas({ versionID });
           }
         }
       } else {

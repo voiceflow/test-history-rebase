@@ -276,7 +276,6 @@ export class EnvironmentService {
   }: {
     data: ReturnType<EnvironmentService['prepareImportData']>;
     userID: number;
-    workspaceID: number;
     assistantID: string;
     environmentID: string;
   }) {

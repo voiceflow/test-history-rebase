@@ -77,6 +77,7 @@ export enum FeatureFlag {
   TEAMS_PLAN_SELF_SERVE = 'teams_plan_self_serve',
 
   DISABLE_CHECKOUT = 'disable_checkout',
+  RUN_MIGRATION_ON_IMPORT = 'run_migration_on_import',
 
   // CMS
   CMS_RESPONSES = 'cms_response',

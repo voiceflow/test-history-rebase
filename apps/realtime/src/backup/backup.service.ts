@@ -6,7 +6,7 @@ import { Inject, Injectable, Logger } from '@nestjs/common';
 import { NotFoundException } from '@voiceflow/exception';
 import { HashedIDService } from '@voiceflow/nestjs-common';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
-import { BackupObject, BackupORM, DatabaseTarget } from '@voiceflow/orm-designer';
+import { BackupObject, BackupORM, DatabaseTarget, ProjectObject } from '@voiceflow/orm-designer';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import dayjs from 'dayjs';
 
@@ -148,35 +148,51 @@ export class BackupService extends MutableService<BackupORM> {
     return AssistantImportDataDTO.parse(JSON.parse(await file.transformToString()));
   }
 
+  private async findOrCreateAssistantForProject(userID: number, project: ProjectObject) {
+    let assistant = await this.assistant.findOne(project._id.toJSON());
+
+    if (!assistant) {
+      assistant = await this.assistant.createOne({
+        id: project._id.toJSON(),
+        name: project.name,
+        updatedByID: userID,
+        workspaceID: project.teamID,
+        activePersonaID: null,
+        activeEnvironmentID: project.devVersion!.toJSON(),
+      });
+    }
+
+    return assistant;
+  }
+
   private async restoreBackup(userID: number, backup: BackupObject, versionID: string) {
-    const [vfFile, project] = await Promise.all([
-      this.getBackupFile(backup.s3ObjectRef),
-      this.project.findOneOrFailWithFields(backup.assistantID, ['teamID']),
-    ]);
+    const [vfFile, project] = await Promise.all([this.getBackupFile(backup.s3ObjectRef), this.project.findOneOrFail(backup.assistantID)]);
 
     // create backup before restoring
     await this.createOneForUser(userID, versionID, 'Automatic before restore');
 
     await this.environment.deleteOne(versionID);
 
-    const importData = this.environment.prepareImportData(vfFile, {
+    const assistant = await this.findOrCreateAssistantForProject(userID, project);
+
+    const importData = this.assistant.migrateAndPrepareEnvironmentImportJSON({
+      data: vfFile,
       userID,
       backup: true,
-      workspaceID: this.hashedID.decodeWorkspaceID(vfFile.project.teamID),
-      assistantID: backup.assistantID,
+      project,
+      assistant,
       environmentID: versionID,
     });
 
     await this.environment.importJSON({
       data: importData,
       userID,
-      workspaceID: project.teamID,
       assistantID: backup.assistantID,
       environmentID: versionID,
     });
   }
 
-  async previewBackup(backupID: number, userID: number) {
+  async previewBackup(userID: number, backupID: number) {
     return this.postgresEM.transactional(async () => {
       const backup = await this.findOneOrFail(backupID);
       const [vfFile, project] = await Promise.all([this.getBackupFile(backup.s3ObjectRef), this.project.findOneOrFail(backup.assistantID)]);
@@ -187,18 +203,20 @@ export class BackupService extends MutableService<BackupORM> {
         await this.environment.deleteOne(project.previewVersion.toJSON());
       }
 
-      const importData = this.environment.prepareImportData(vfFile, {
+      const assistant = await this.findOrCreateAssistantForProject(userID, project);
+
+      const importData = this.assistant.migrateAndPrepareEnvironmentImportJSON({
+        data: vfFile,
         userID,
         backup: true,
-        workspaceID: project.teamID,
-        assistantID: backup.assistantID,
+        project,
+        assistant,
         environmentID: previewVersionID,
       });
 
       await this.environment.importJSON({
         data: importData,
         userID,
-        workspaceID: project.teamID,
         assistantID: backup.assistantID,
         environmentID: previewVersionID,
       });

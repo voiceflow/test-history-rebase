@@ -4,9 +4,11 @@ import fs from 'node:fs/promises';
 import { EntityManager } from '@mikro-orm/core';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable, Logger } from '@nestjs/common';
+import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import { IntentClassificationSettingsDTO, ProjectUserRole } from '@voiceflow/dtos';
 import { BadRequestException, InternalServerErrorException } from '@voiceflow/exception';
+import { UnleashFeatureFlagService } from '@voiceflow/nestjs-common';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
 import type { AssistantEntity, AssistantObject, CreateData, ProgramJSON } from '@voiceflow/orm-designer';
 import {
@@ -79,6 +81,8 @@ export class AssistantService extends MutableService<AssistantORM> {
     private readonly identityClient: IdentityClient,
     @Inject(LoguxService)
     private readonly logux: LoguxService,
+    @Inject(UnleashFeatureFlagService)
+    private readonly unleash: UnleashFeatureFlagService,
     @Inject(ProjectService)
     private readonly project: ProjectService,
     @Inject(ProgramService)
@@ -211,28 +215,22 @@ export class AssistantService extends MutableService<AssistantORM> {
 
   /* Import  */
 
-  prepareImportData(
+  prepareProjectImportData(
     data: AssistantImportDataDTO,
     {
       userID,
-      backup,
       assistantID,
       workspaceID,
       environmentID,
-      centerDiagrams,
       settingsAiAssist,
     }: {
       userID: number;
-      backup?: boolean;
       workspaceID: number;
       assistantID: string;
       environmentID: string;
-      centerDiagrams?: boolean;
       settingsAiAssist: boolean;
     }
   ) {
-    const createdAt = new Date().toJSON();
-
     const project = {
       ...Utils.object.omit(deepSetCreatorID(deepSetNewDate(data.project), userID), ['prototype', 'createdAt', 'liveVersion', 'previewVersion']),
       _id: assistantID,
@@ -241,7 +239,7 @@ export class AssistantService extends MutableService<AssistantORM> {
       members: [],
       updatedBy: userID,
       creatorID: userID,
-      updatedAt: createdAt,
+      updatedAt: new Date().toJSON(),
       apiPrivacy: 'private' as const,
       devVersion: environmentID,
     };
@@ -262,14 +260,130 @@ export class AssistantService extends MutableService<AssistantORM> {
       project.aiAssistSettings = { ...project.aiAssistSettings, aiPlayground: false };
     }
 
-    const importData = this.environment.prepareImportData(data, { userID, backup, assistantID, workspaceID, environmentID, centerDiagrams });
-
     return {
-      ...importData,
       project,
       _version: data._version,
       variableStates: data.variableStates?.map((variableState) => ({ ...Utils.object.omit(variableState, ['_id']), projectID: assistantID })),
     };
+  }
+
+  public migrateEnvironmentJSON({
+    data,
+    userID,
+    project,
+    assistant,
+    environmentID,
+  }: {
+    data: AssistantImportDataDTO;
+    userID: number;
+    project: ProjectObject;
+    assistant: AssistantObject;
+    environmentID: string;
+  }) {
+    const diagrams = Object.values(data.diagrams);
+
+    const [migratedData] = Realtime.Migrate.migrateProject(
+      {
+        cms: {
+          flows: data.flows ?? [],
+          intents: data.intents ?? [],
+          folders: data.folders ?? [],
+          entities: data.entities ?? [],
+          variables: data.variables ?? [],
+          assistant: this.assistantSerializer.serialize(assistant),
+          responses: data.responses ?? [],
+          workflows: data.workflows ?? [],
+          utterances: data.utterances ?? [],
+          entityVariants: data.entityVariants ?? [],
+          requiredEntities: data.requiredEntities ?? [],
+          responseVariants: data.responseVariants ?? [],
+          responseDiscriminators: data.responseDiscriminators ?? [],
+        },
+        version: { ...data.version, _id: environmentID } as BaseModels.Version.Model<any>,
+        project: {
+          ...this.projectSerializer.serialize(project),
+          devVersion: environmentID,
+        } as BaseModels.Project.Model<any, any>,
+        diagrams: diagrams.map((diagram) => ({
+          ...diagram,
+          diagramID: diagram.diagramID ?? diagram._id,
+          versionID: environmentID,
+        })) as BaseModels.Diagram.Model<any>[],
+        creatorID: userID,
+      },
+      Realtime.LATEST_SCHEMA_VERSION
+    );
+
+    const diagramsMap = Utils.array.createMap(diagrams, (diagram) => diagram.diagramID ?? diagram._id);
+
+    const version = {
+      ...data.version,
+      ...migratedData.version,
+      platformData: (migratedData.version.platformData ?? data.version.platformData) as any,
+    };
+
+    return {
+      ...migratedData,
+      version,
+      diagrams: migratedData.diagrams.map((diagram) => ({ ...diagramsMap[diagram.diagramID], ...diagram })),
+    };
+  }
+
+  public migrateAndPrepareEnvironmentImportJSON({
+    data,
+    userID,
+    backup,
+    project,
+    assistant,
+    environmentID,
+    centerDiagrams,
+  }: {
+    data: AssistantImportDataDTO;
+    userID: number;
+    backup?: boolean;
+    project: ProjectObject;
+    assistant: AssistantObject;
+    environmentID: string;
+    centerDiagrams?: boolean;
+  }) {
+    if (!this.unleash.isEnabled(Realtime.FeatureFlag.RUN_MIGRATION_ON_IMPORT, { userID, workspaceID: project.teamID })) {
+      return this.environment.prepareImportData(data, {
+        userID,
+        backup,
+        assistantID: assistant.id,
+        workspaceID: assistant.workspaceID,
+        environmentID,
+        centerDiagrams,
+      });
+    }
+
+    let migrationResult: ReturnType<AssistantService['migrateEnvironmentJSON']>;
+
+    try {
+      migrationResult = this.migrateEnvironmentJSON({ data, userID, project, assistant, environmentID });
+    } catch {
+      throw new InternalServerErrorException(`Couldn't migrate assistant to latest scheme.`);
+    }
+
+    try {
+      return this.environment.prepareImportData(
+        {
+          ...migrationResult.cms,
+          version: migrationResult.version,
+          diagrams: Utils.array.createMap(migrationResult.diagrams, (diagram) => diagram.diagramID),
+        },
+        {
+          userID,
+          backup,
+          assistantID: assistant.id,
+          workspaceID: assistant.workspaceID,
+          environmentID,
+          centerDiagrams,
+        }
+      );
+    } catch {
+      throw new InternalServerErrorException(`Couldn't prepare environment import data.`);
+    }
   }
 
   public async importJSON({
@@ -292,16 +406,15 @@ export class AssistantService extends MutableService<AssistantORM> {
     const assistantID = new ObjectId().toJSON();
     const environmentID = new ObjectId().toJSON();
 
-    const importData = this.prepareImportData(data, {
+    const projectImportData = this.prepareProjectImportData(data, {
       userID,
       workspaceID,
       assistantID,
       environmentID,
-      centerDiagrams,
       settingsAiAssist: workspaceProperties.settingsAiAssist,
     });
 
-    const project = await this.project.createOne(this.project.fromJSON({ ...importData.project, ...projectOverride }));
+    const project = await this.project.createOne(this.project.fromJSON({ ...projectImportData.project, ...projectOverride }));
 
     let assistant: AssistantObject;
 
@@ -319,7 +432,26 @@ export class AssistantService extends MutableService<AssistantORM> {
 
       await this.project.deleteOne(project._id.toJSON());
 
-      throw new InternalServerErrorException(`Couldn't import the assistant.`);
+      throw new InternalServerErrorException(`Couldn't create the assistant.`);
+    }
+
+    // eslint-disable-next-line no-secrets/no-secrets
+    let environmentMigratedImportData: ReturnType<AssistantService['migrateAndPrepareEnvironmentImportJSON']>;
+
+    try {
+      environmentMigratedImportData = this.migrateAndPrepareEnvironmentImportJSON({
+        data,
+        userID,
+        project,
+        assistant,
+        environmentID,
+        centerDiagrams,
+      });
+    } catch (err) {
+      await this.deleteOne(assistant.id);
+      await this.project.deleteOne(project._id.toJSON());
+
+      throw err;
     }
 
     let version: VersionObject;
@@ -327,9 +459,8 @@ export class AssistantService extends MutableService<AssistantORM> {
 
     try {
       ({ version, diagrams } = await this.environment.importJSON({
-        data: importData,
+        data: environmentMigratedImportData,
         userID,
-        workspaceID,
         assistantID,
         environmentID,
       }));
@@ -339,14 +470,14 @@ export class AssistantService extends MutableService<AssistantORM> {
       await this.deleteOne(assistant.id);
       await this.project.deleteOne(project._id.toJSON());
 
-      throw new InternalServerErrorException(`Couldn't import the assistant.`);
+      throw new InternalServerErrorException(`Couldn't import the environment.`);
     }
 
     let variableStates: VariableStateObject[];
 
     try {
-      variableStates = await (importData.variableStates?.length
-        ? this.variableState.createMany(this.variableState.mapFromJSON(importData.variableStates))
+      variableStates = await (projectImportData.variableStates?.length
+        ? this.variableState.createMany(this.variableState.mapFromJSON(projectImportData.variableStates))
         : Promise.resolve([]));
     } catch (err) {
       this.logger.error(err);
@@ -355,7 +486,7 @@ export class AssistantService extends MutableService<AssistantORM> {
       await this.deleteOne(assistant.id);
       await this.project.deleteOne(project._id.toJSON());
 
-      throw new InternalServerErrorException(`Couldn't import the assistant.`);
+      throw new InternalServerErrorException(`Couldn't import variable states.`);
     }
 
     const { projectList, projectListCreated } = await this.addOneToProjectListIfRequired({

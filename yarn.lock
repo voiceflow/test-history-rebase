@@ -5018,7 +5018,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mapbox/node-pre-gyp@npm:^1.0.11":
+"@mapbox/node-pre-gyp@npm:^1.0.10, @mapbox/node-pre-gyp@npm:^1.0.11":
   version: 1.0.11
   resolution: "@mapbox/node-pre-gyp@npm:1.0.11"
   dependencies:
@@ -11398,7 +11398,7 @@ __metadata:
     "@voiceflow/exception": 1.5.3
     "@voiceflow/fetch": 1.5.2
     "@voiceflow/logger": 2.0.0
-    "@voiceflow/nestjs-common": 2.38.5
+    "@voiceflow/nestjs-common": 2.42.0
     "@voiceflow/nestjs-env": 1.6.2
     "@voiceflow/nestjs-openapi-extractor": 1.7.13
     "@voiceflow/sdk-auth": 2.10.0
@@ -11425,33 +11425,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@voiceflow/nestjs-common@npm:2.38.5":
-  version: 2.38.5
-  resolution: "@voiceflow/nestjs-common@npm:2.38.5"
-  dependencies:
-    "@golevelup/nestjs-discovery": ^4.0.0
-    bcrypt: ^5.0.1
-    date-fns: ^2.30.0
-    hashids: 2.2.10
-    lodash: ^4.17.21
-    type-fest: ^3.6.0
-    unleash-client: 5.0.0
-  peerDependencies:
-    "@nestjs/common": ^9
-    "@nestjs/config": ^2
-    "@nestjs/core": ^9
-    "@nestjs/swagger": ^6
-    "@nestjs/terminus": ^9
-    "@voiceflow/common": ^8
-    "@voiceflow/exception": ^1
-    "@voiceflow/logger": ^2
-    nestjs-pino: ^3
-    nestjs-zod: ^2
-    rxjs: ^7
-  checksum: 3b75742b48ec8e3bccfe7d2655fba6a8af1215d882cfee571dc9bf0623ed4de997f0fca57e477472ffb93d206bc5dd7aff7ebf8dcbb91a7db79ed1f846881769
-  languageName: node
-  linkType: hard
-
 "@voiceflow/nestjs-common@npm:2.40.0":
   version: 2.40.0
   resolution: "@voiceflow/nestjs-common@npm:2.40.0"
@@ -11476,6 +11449,33 @@ __metadata:
     nestjs-zod: ^2
     rxjs: ^7
   checksum: 1cb212c66edd6371d9acf8238b03b108464e32f22c154fb3a714656c7fde51f29a3821db34f569ad4240630ba27396b0e8b5a6b2732453f3ad0caa69b40d5be8
+  languageName: node
+  linkType: hard
+
+"@voiceflow/nestjs-common@npm:2.42.0":
+  version: 2.42.0
+  resolution: "@voiceflow/nestjs-common@npm:2.42.0"
+  dependencies:
+    "@golevelup/nestjs-discovery": 4.0.0
+    bcrypt: 5.1.0
+    date-fns: 2.30.0
+    hashids: 2.2.10
+    lodash: 4.17.21
+    type-fest: 3.6.0
+    unleash-client: 5.0.0
+  peerDependencies:
+    "@nestjs/common": ^9
+    "@nestjs/config": ^2
+    "@nestjs/core": ^9
+    "@nestjs/swagger": ^6
+    "@nestjs/terminus": ^9
+    "@voiceflow/common": ^8
+    "@voiceflow/exception": ^1
+    "@voiceflow/logger": ^2
+    nestjs-pino: ^3
+    nestjs-zod: ^2
+    rxjs: ^7
+  checksum: 29615e139d63762b48a22c1e7a8fd355640011356f6d6ccc2fc247a11e1cf0f3efb42618d58cd3ae6785dd6ad8469ba8bfaa6743e828d6639099ebb1ed639f09
   languageName: node
   linkType: hard
 
@@ -11831,7 +11831,7 @@ __metadata:
     "@voiceflow/fetch": 1.5.2
     "@voiceflow/internal": 3.2.3
     "@voiceflow/logger": 2.0.0
-    "@voiceflow/nestjs-common": 2.38.5
+    "@voiceflow/nestjs-common": 2.42.0
     "@voiceflow/nestjs-env": 1.6.2
     "@voiceflow/nestjs-logux": 1.5.3
     "@voiceflow/nestjs-metrics": 2.9.6
@@ -14162,6 +14162,16 @@ __metadata:
   dependencies:
     tweetnacl: ^0.14.3
   checksum: 4edfc9fe7d07019609ccf797a2af28351736e9d012c8402a07120c4453a3b789a15f2ee1530dc49eee8f7eb9379331a8dd4b3766042b9e502f74a68e7f662291
+  languageName: node
+  linkType: hard
+
+"bcrypt@npm:5.1.0":
+  version: 5.1.0
+  resolution: "bcrypt@npm:5.1.0"
+  dependencies:
+    "@mapbox/node-pre-gyp": ^1.0.10
+    node-addon-api: ^5.0.0
+  checksum: a590b65d276d75d861dc85acc3128508b8f78c87431719658ea3be7996368b34b397b6efefe6bca0a3d555bf41a9267307fd4ce04e956598fca3ba81199c6706
   languageName: node
   linkType: hard
 
@@ -16849,7 +16859,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"date-fns@npm:^2.30.0":
+"date-fns@npm:2.30.0, date-fns@npm:^2.30.0":
   version: 2.30.0
   resolution: "date-fns@npm:2.30.0"
   dependencies:
@@ -36522,6 +36532,13 @@ __metadata:
   version: 3.13.1
   resolution: "type-fest@npm:3.13.1"
   checksum: c06b0901d54391dc46de3802375f5579868949d71f93b425ce564e19a428a0d411ae8d8cb0e300d330071d86152c3ea86e744c3f2860a42a79585b6ec2fdae8e
+  languageName: node
+  linkType: hard
+
+"type-fest@npm:3.6.0":
+  version: 3.6.0
+  resolution: "type-fest@npm:3.6.0"
+  checksum: 3cb3b27fc1dc69e0a7524041d9d32cfd3786b16591952e0b2b87ca44b53acaed1bf86ee62a7cc3033a55154d44542e8b488d500d1b363d828f62a9fae9d2a043
   languageName: node
   linkType: hard
 

@@ -68,7 +68,7 @@
     "@voiceflow/fetch": "1.5.2",
     "@voiceflow/internal": "3.2.3",
     "@voiceflow/logger": "2.0.0",
-    "@voiceflow/nestjs-common": "2.38.5",
+    "@voiceflow/nestjs-common": "2.42.0",
     "@voiceflow/nestjs-env": "1.6.2",
     "@voiceflow/nestjs-logux": "1.5.3",
     "@voiceflow/nestjs-metrics": "2.9.6",

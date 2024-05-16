@@ -1,13 +1,12 @@
 import { FeatureFlag } from '@voiceflow/realtime-sdk';
-import { TabLoader } from '@voiceflow/ui-next';
 import React, { useEffect, useState } from 'react';
 
 import { LoadingGate } from '@/components/LoadingGate';
-import { CANVAS_COLOR } from '@/constants/canvas';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Session from '@/ducks/session';
 import { withFeatureSwitcher } from '@/hocs/feature.hoc';
 import { useDiagramSubscriptionV2, useSelector } from '@/hooks';
+import { DiagramLoader } from '@/pages/Project/components/Diagram/DiagramLoader.component';
 import { DiagramHeartbeatProvider } from '@/pages/Project/contexts';
 
 import { CanvasBlurLoader } from '../components/CanvasBlurLoader/CanvasBlurLoader.component';
@@ -33,12 +32,7 @@ export const DiagramSubscriptionGateV2: React.FC<React.PropsWithChildren> = ({ c
   }, [creatorDiagramID, diagramID]);
 
   return (
-    <LoadingGate
-      key={creatorDiagramID}
-      isLoaded={!!creatorDiagramID}
-      internalName={DiagramSubscriptionGateV2.name}
-      loader={<TabLoader color={CANVAS_COLOR} variant="dark" />}
-    >
+    <LoadingGate key={creatorDiagramID} isLoaded={!!creatorDiagramID} internalName={DiagramSubscriptionGateV2.name} loader={<DiagramLoader />}>
       <DiagramHeartbeatProvider isSubscribed={isSubscribed} diagramID={creatorDiagramID} context={diagramContext}>
         {children}
 

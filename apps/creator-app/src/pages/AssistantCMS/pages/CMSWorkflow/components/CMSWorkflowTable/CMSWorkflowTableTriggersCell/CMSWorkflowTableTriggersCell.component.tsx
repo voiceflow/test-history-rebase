@@ -16,6 +16,7 @@ export const CMSWorkflowTableTriggersCell: React.FC<ICMSWorkflowTableTriggersCel
 
   const goToDiagram = useDispatch(Router.goToDiagram, diagramID);
 
+  // Empty commit
   const firstTrigger = triggers[0];
   const isOnlyOneTrigger = triggers.length === 1;
 

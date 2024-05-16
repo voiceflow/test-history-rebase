@@ -90,7 +90,7 @@ export const FlowMenu: React.FC<IFlowMenu> = ({ width = 'fit-content', maxWidth,
             if (!flow) return null;
 
             return (
-              <Menu.Item.WithButton
+              <Menu.Item
                 key={virtualRow.index}
                 ref={virtualizer.measureElement}
                 label={flow.name}

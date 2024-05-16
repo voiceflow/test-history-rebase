@@ -180,6 +180,11 @@ export const SchemaVersion = {
    * migrates deprecated KB steps to new format
    */
   V7_02: 7.02,
+
+  /**
+   * migrates domains and topics to workflows
+   */
+  V8_00: 8.0,
 } as const;
 
 export type SchemaVersion = (typeof SchemaVersion)[keyof typeof SchemaVersion];

@@ -47,3 +47,7 @@ coverage
 # OpenAPI
 openapi.json
 openapi.*.json
+
+
+# Certificates
+certs

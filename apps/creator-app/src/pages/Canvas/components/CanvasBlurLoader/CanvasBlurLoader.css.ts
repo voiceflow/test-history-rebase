@@ -18,15 +18,24 @@ export const container = recipe({
   },
 
   variants: {
-    shown: {
-      true: {
+    status: {
+      entering: {
         opacity: 1,
         pointerEvents: 'all',
       },
-      false: {
+      entered: {
+        opacity: 1,
+        pointerEvents: 'all',
+      },
+      exited: {
         opacity: 0,
         pointerEvents: 'none',
       },
+      exiting: {
+        opacity: 0,
+        pointerEvents: 'none',
+      },
+      unmounted: {},
     },
   },
 });

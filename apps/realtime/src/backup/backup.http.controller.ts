@@ -76,7 +76,7 @@ export class BackupHTTPController {
   @Authorize.Permissions([Permission.PROJECT_UPDATE])
   @ZodApiResponse({ status: HttpStatus.OK, schema: BackupPreviewResponse })
   async previewOne(@Param('backupID') backupID: number, @UserID() userID: number): Promise<BackupPreviewResponse> {
-    const versionID = await this.service.previewBackup(backupID, userID);
+    const versionID = await this.service.previewBackup(userID, backupID);
 
     return {
       versionID,

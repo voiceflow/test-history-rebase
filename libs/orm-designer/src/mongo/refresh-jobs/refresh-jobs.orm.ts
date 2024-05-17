@@ -53,7 +53,7 @@ export class RefreshJobsOrm extends MongoAtomicORM<RefreshJobsEntity> {
   async updateChecksum(projectID: string, documentID: string, checksum: string) {
     try {
       await this.atomicUpdate({ projectID: new ObjectId(projectID), documentID: new ObjectId(documentID) }, [
-        Atomic.Set([{ path: [checksum], value: checksum }]),
+        Atomic.Set([{ path: ['checksum'], value: checksum }]),
       ]);
     } catch {
       /* empty */

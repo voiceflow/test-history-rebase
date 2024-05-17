@@ -8,6 +8,7 @@ import {
   BillingSubscriptionClient,
   EnvironmentClient,
   FunctionClient,
+  KbprivateDocumentClient,
   KbpublicApiDocumentClient,
   KnowledgeBaseDocumentClient,
   KnowledgeBaseIntegrationsClient,
@@ -52,5 +53,6 @@ export class DesignerClient extends BaseClient('https://realtime-api.voiceflow.c
     assistant: PrivateAssistantClient,
     environment: PrivateEnvironmentClient,
     prototypeProgram: PrivatePrototypeProgramClient,
+    knowledgeBase: KbprivateDocumentClient,
   }),
 }) {}

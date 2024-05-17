@@ -26,9 +26,20 @@ export const DocumentPatchManyRequest = z.object({
 
 export type DocumentPatchManyRequest = z.infer<typeof DocumentPatchManyRequest>;
 
-const DocumentPatchData = KnowledgeBaseDocumentDTO.partial()
-  .omit({ updatedAt: true, status: true })
-  .and(z.object({ checksum: z.string().optional() }));
+export const DocumentPatchData = KnowledgeBaseDocumentDTO.partial()
+  .omit({ updatedAt: true, data: true })
+  .and(
+    z.object({
+      checksum: z.string().optional(),
+      data: z.union([
+        KBDocumentPDFDataDTO.partial(),
+        KBDocumentDocxDataDTO.partial(),
+        KBDocumentTextDataDTO.partial(),
+        KBDocumentUrlDataDTO.partial(),
+        KBDocumentTableDataDTO.partial(),
+      ]),
+    })
+  );
 
 export const DocumentPatchOneRequest = DocumentPatchData;
 

@@ -6,6 +6,7 @@ import { KnowledgeBaseTagService } from '../tag/tag.service';
 import { KnowledgeBaseDocumentService } from './document.service';
 import { KnowledgeBaseDocumentApiPublicHTTPController } from './document-api-public.http.controller';
 import { KnowledgeBaseDocumentInternalPublicHTTPController } from './document-internal-public.http.controller';
+import { KnowledgeBaseDocumentPrivateHTTPController } from './document-private.http.contoller';
 import { RefreshJobService } from './refresh-job.service';
 
 @Module({
@@ -20,6 +21,10 @@ import { RefreshJobService } from './refresh-job.service';
     RefreshJobService,
     KnowledgeBaseTagService,
   ],
-  controllers: [KnowledgeBaseDocumentInternalPublicHTTPController, KnowledgeBaseDocumentApiPublicHTTPController],
+  controllers: [
+    KnowledgeBaseDocumentInternalPublicHTTPController,
+    KnowledgeBaseDocumentApiPublicHTTPController,
+    KnowledgeBaseDocumentPrivateHTTPController,
+  ],
 })
 export class KnowledgeBaseDocumentModule {}

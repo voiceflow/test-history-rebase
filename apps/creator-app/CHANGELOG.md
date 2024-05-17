@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1523.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1523.4...@voiceflow/creator-app@1.1523.5) (2024-05-17)
+
+### Bug Fixes
+
+* does not show loader when analytics dashboard loaded [bugfix] (CT-000) ([#8141](https://github.com/voiceflow/creator-app/issues/8141)) ([165ad99](https://github.com/voiceflow/creator-app/commit/165ad996b94ff792bc5f0c8a6f567bdda2fb9d99))
+
 ## [1.1523.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1523.3...@voiceflow/creator-app@1.1523.4) (2024-05-16)
 
 **Note:** Version bump only for package @voiceflow/creator-app

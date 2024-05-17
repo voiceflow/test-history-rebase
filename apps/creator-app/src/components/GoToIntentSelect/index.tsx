@@ -77,7 +77,9 @@ const GoToIntentSelect: React.FC<GoToIntentSelectProps> = ({
     UIOnlyMenuItemOption
   >({
     data: workflows,
+    dataSorter: (a, b) => a.label.localeCompare(b.label),
     folderScope: FolderScope.WORKFLOW,
+    folderSorter: (a, b) => a.label.localeCompare(b.label),
     buildFolderTree: useCallback((folder, children): GroupOption => ({ id: folder.id, label: folder.name, options: children }), []),
     buildFolderSeparator: useCallback(
       ([{ id }]: GroupOption[]): UIOnlyMenuItemOption => createUIOnlyMenuItemOption(`${id}-header`, { label: 'Folders', groupHeader: true }),

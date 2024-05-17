@@ -19,7 +19,9 @@ export const useFlowsTree = () => {
 
   return useFolderTree<Flow, DiagramSidebarFlowTreeData>({
     data: flows,
+    dataSorter: (a, b) => a.label.localeCompare(b.label),
     folderScope: FolderScope.FLOW,
+    folderSorter: (a, b) => a.label.localeCompare(b.label),
     buildFolderTree: useCallback(
       (folder, children): DiagramSidebarFlowTreeData => ({
         id: folder.id,
@@ -52,7 +54,9 @@ export const useWorkflowsTree = () => {
 
   const [foldersTree, foldersTreeMap] = useFolderTree<Workflow, DiagramSidebarWorkflowTreeData>({
     data: workflows,
+    dataSorter: (a, b) => a.label.localeCompare(b.label),
     folderScope: FolderScope.WORKFLOW,
+    folderSorter: (a, b) => a.label.localeCompare(b.label),
     buildFolderTree: useCallback(
       (folder, children): DiagramSidebarWorkflowTreeData => ({
         id: folder.id,
@@ -86,7 +90,7 @@ export const useWorkflowsTree = () => {
           id: workflow.diagramID,
           type: 'workflow',
           label: workflow.name,
-          children,
+          children: children.sort((a, b) => a.label.localeCompare(b.label)),
           metaData: { id: workflow.id, type: 'workflow', diagramID: workflow.diagramID },
         };
       },
@@ -119,7 +123,7 @@ const useRenderFolderContextMenu = ({ folderScope, canEditCanvas }: { folderScop
     const onCopyLink = () => {
       clipboardCopy(`${window.location.origin}${getFolderPath(folderID)}`);
 
-      notify.short.success(`Copied`);
+      notify.short.success('Copied');
     };
 
     const onDelete = () => {
@@ -245,7 +249,7 @@ export const useRenderWorkflowItemContextMenu = ({ canEditCanvas }: { canEditCan
       const onCopyLink = () => {
         clipboardCopy(`${window.location.origin}${getCMSResourcePath(id)}`);
 
-        notify.short.success(`Copied`);
+        notify.short.success('Copied');
       };
 
       const onDuplicate = async () => {

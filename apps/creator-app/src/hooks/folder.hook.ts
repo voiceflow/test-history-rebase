@@ -14,7 +14,9 @@ export const useFolderTree = <
   SR extends { id: string } = FR
 >({
   data,
+  dataSorter,
   folderScope,
+  folderSorter,
   buildDataTree,
   buildFolderTree,
   buildDataSeparator,
@@ -22,6 +24,12 @@ export const useFolderTree = <
 }: {
   data: T[];
   folderScope: FolderScope;
+
+  dataSorter?: (a: DR, b: DR) => number;
+
+  folderSorter?: (a: FR, b: FR) => number;
+
+
   /**
    * should be memoized function (useCallback)
    */
@@ -79,8 +87,9 @@ export const useFolderTree = <
 
       return option;
     };
-    const buildData = (data: T[], parentID: string | null) =>
-      data.flatMap((item) => {
+
+    const buildData = (data: T[], parentID: string | null) => {
+      const dataResult = data.flatMap((item) => {
         const tree = buildDataTree(item, parentID, cacheOption);
 
         if (tree === null) return [];
@@ -88,7 +97,10 @@ export const useFolderTree = <
         optionMap[tree.id] = tree;
 
         return [tree];
-      });
+      })
+
+      return dataSorter ? dataResult.sort(dataSorter) :dataResult;
+    };
 
     const buildChildrenWithSeparators = (folderTrees: FR[], dataTrees: DR[]) => {
       if (!buildDataSeparator && !buildFolderSeparator) return [...folderTrees, ...dataTrees];
@@ -116,8 +128,8 @@ export const useFolderTree = <
       return children;
     };
 
-    const buildFolders = (folders: Folder[], parentID: string | null) =>
-      folders.reduce<FR[]>((acc, folder) => {
+    const buildFolders = (folders: Folder[], parentID: string | null) => {
+      const folderResult =  folders.reduce<FR[]>((acc, folder) => {
         const children = buildChildrenWithSeparators(
           buildFolders(foldersParentIDMap.get(folder.id) ?? [], folder.id),
           buildData(dataFolderIDMap.get(folder.id) ?? [], folder.id)
@@ -132,6 +144,10 @@ export const useFolderTree = <
 
         return acc;
       }, []);
+
+
+      return folderSorter ? folderResult.sort(folderSorter) : folderResult;
+    }
 
     const children = buildChildrenWithSeparators(
       buildFolders(foldersParentIDMap.get(null) ?? [], null),

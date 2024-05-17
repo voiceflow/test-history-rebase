@@ -11,7 +11,12 @@ class RemoveManyLinks extends AbstractDiagramActionControl<Realtime.link.RemoveM
     await this.services.diagram.removeManyLinks(
       payload.versionID,
       payload.diagramID,
-      payload.links.map((link) => (link.type ? { nodeID: link.nodeID, type: link.type } : { nodeID: link.nodeID, portID: link.portID }))
+      payload.links.map((link) => {
+        if (link.type) return { nodeID: link.nodeID, type: link.type };
+        if (link.key) return { nodeID: link.nodeID, key: link.key };
+
+        return { nodeID: link.nodeID, portID: link.portID };
+      })
     );
   };
 

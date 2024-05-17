@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.27.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-designer@2.26.13...@voiceflow/sdk-http-designer@2.27.0) (2024-05-17)
+
+### Features
+
+* private patch endpoint (COR-2038) ([#8100](https://github.com/voiceflow/creator-app/issues/8100)) ([750617d](https://github.com/voiceflow/creator-app/commit/750617d839d309aa484bdebc057ac98a7f4e5e8e))
+
 ## [2.26.13](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-designer@2.26.12...@voiceflow/sdk-http-designer@2.26.13) (2024-05-17)
 
 **Note:** Version bump only for package @voiceflow/sdk-http-designer

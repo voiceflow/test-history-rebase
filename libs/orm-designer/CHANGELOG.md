@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.60.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.59.1...@voiceflow/orm-designer@2.60.0) (2024-05-17)
+
+### Features
+
+* private patch endpoint (COR-2038) ([#8100](https://github.com/voiceflow/creator-app/issues/8100)) ([750617d](https://github.com/voiceflow/creator-app/commit/750617d839d309aa484bdebc057ac98a7f4e5e8e))
+
 ## [2.59.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.59.0...@voiceflow/orm-designer@2.59.1) (2024-05-15)
 
 **Note:** Version bump only for package @voiceflow/orm-designer

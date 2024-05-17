@@ -14,7 +14,13 @@ import {
   KnowledgeBaseDocumentStatus,
   KnowledgeBaseDocumentType,
 } from '@voiceflow/dtos';
-import { BadRequestException, ConflictException, ForbiddenException, NotAcceptableException, NotFoundException } from '@voiceflow/exception';
+import {
+  BadRequestException,
+  ConflictException,
+  ForbiddenException,
+  NotAcceptableException,
+  NotFoundException,
+} from '@voiceflow/exception';
 import { UnleashFeatureFlagService } from '@voiceflow/nestjs-common';
 import { KnowledgeBaseORM, ProjectORM, RefreshJobsOrm, VersionKnowledgeBaseDocument } from '@voiceflow/orm-designer';
 import { FeatureFlag } from '@voiceflow/realtime-sdk/backend';
@@ -42,6 +48,7 @@ import {
   DocumentUploadTableResponse,
 } from './dtos/document-create.dto';
 import { DocumentFindManyPublicQuery } from './dtos/document-find.dto';
+import type { DocumentPatchOneRequest } from './dtos/document-patch.dto';
 import { RefreshJobService } from './refresh-job.service';
 
 @Injectable()
@@ -58,7 +65,10 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
 
   readonly DOCUMENT_UPLOAD_TIMEOUT = 1000 * 60 * 5; // 5 minutes
 
-  readonly KB_DOC_FINISH_STATUSES = new Set([KnowledgeBaseDocumentStatus.SUCCESS.toString(), KnowledgeBaseDocumentStatus.ERROR.toString()]);
+  readonly KB_DOC_FINISH_STATUSES = new Set([
+    KnowledgeBaseDocumentStatus.SUCCESS.toString(),
+    KnowledgeBaseDocumentStatus.ERROR.toString(),
+  ]);
 
   readonly DOCUMENT_TIMEOUT_STATUS = {
     type: KnowledgeBaseDocumentStatus.ERROR,
@@ -166,14 +176,21 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
     }
   }
 
-  async syncDocuments(projectID: string, documents: VersionKnowledgeBaseDocument[]): Promise<VersionKnowledgeBaseDocument[]> {
+  async syncDocuments(
+    projectID: string,
+    documents: VersionKnowledgeBaseDocument[]
+  ): Promise<VersionKnowledgeBaseDocument[]> {
     const now = Date.now();
     const documentIDs: string[] = [];
 
     const updatedDocuments = documents.map((document) => {
       const updatedAt = document.updatedAt?.getTime?.();
 
-      if (updatedAt && !this.KB_DOC_FINISH_STATUSES.has(document.status.type) && now - updatedAt > this.DOCUMENT_UPLOAD_TIMEOUT) {
+      if (
+        updatedAt &&
+        !this.KB_DOC_FINISH_STATUSES.has(document.status.type) &&
+        now - updatedAt > this.DOCUMENT_UPLOAD_TIMEOUT
+      ) {
         documentIDs.push(document.documentID);
 
         return { ...document, status: this.DOCUMENT_TIMEOUT_STATUS };
@@ -193,7 +210,10 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
   async syncRefreshJobs(
     projectID: string,
     teamID: number,
-    documents: (Omit<VersionKnowledgeBaseDocument, 'documentID' | 'updatedAt'> & { documentID: string; updatedAt: Date })[]
+    documents: (Omit<VersionKnowledgeBaseDocument, 'documentID' | 'updatedAt'> & {
+      documentID: string;
+      updatedAt: Date;
+    })[]
   ) {
     const deleteDocumentIDs: string[] = [];
 
@@ -243,14 +263,21 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
 
   /* Create */
 
-  async createManyDocuments(projectID: string, userID: number, data: DocumentCreateManyURLsRequest): Promise<KnowledgeBaseDocument[]> {
+  async createManyDocuments(
+    projectID: string,
+    userID: number,
+    data: DocumentCreateManyURLsRequest
+  ): Promise<KnowledgeBaseDocument[]> {
     const project = await this.projectOrm.findOneOrFail(projectID);
     const existingDocuments: Omit<VersionKnowledgeBaseDocument, 'updatedAt'>[] = project?.knowledgeBase?.documents
       ? Object.values(project.knowledgeBase.documents)
       : [];
     const collisionMap = this.getDocumentCollisionMap(existingDocuments);
 
-    const documentsToUpsert: (Omit<VersionKnowledgeBaseDocument, 'documentID' | 'updatedAt'> & { documentID: string; updatedAt: Date })[] = [];
+    const documentsToUpsert: (Omit<VersionKnowledgeBaseDocument, 'documentID' | 'updatedAt'> & {
+      documentID: string;
+      updatedAt: Date;
+    })[] = [];
     let newDocsCount = 0;
 
     data.data.forEach((item) => {
@@ -277,7 +304,9 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
     // could be in background, no need to wait on ui
     this.syncRefreshJobs(projectID, project.teamID, documentsToUpsert);
 
-    return documentsToUpsert.map((document: VersionKnowledgeBaseDocument) => knowledgeBaseDocumentAdapter.fromDB(document));
+    return documentsToUpsert.map((document: VersionKnowledgeBaseDocument) =>
+      knowledgeBaseDocumentAdapter.fromDB(document)
+    );
   }
 
   async createOneUrlDocument({
@@ -291,7 +320,10 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
     userID: number;
     data: DocumentCreateOneURLRequest;
     existingDocumentID?: string;
-    query?: Omit<DocumentCreateOnePublicRequestParams, 'overwrite' | 'maxChunkSize'> & { overwrite?: boolean; maxChunkSize?: number };
+    query?: Omit<DocumentCreateOnePublicRequestParams, 'overwrite' | 'maxChunkSize'> & {
+      overwrite?: boolean;
+      maxChunkSize?: number;
+    };
   }): Promise<KnowledgeBaseDocument> {
     const { overwrite = false, maxChunkSize = undefined, tags = undefined } = query;
     const tagsArray = Array.isArray(query.tags) ? query.tags : this.tagService.convertToArray(tags);
@@ -332,7 +364,10 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
       (existingDocument?.tags ?? []).forEach((tag) => tagObjects.add(tag));
     }
 
-    const document: Omit<VersionKnowledgeBaseDocument, 'documentID' | 'updatedAt'> & { documentID: string; updatedAt: Date } = {
+    const document: Omit<VersionKnowledgeBaseDocument, 'documentID' | 'updatedAt'> & {
+      documentID: string;
+      updatedAt: Date;
+    } = {
       status: { type: KnowledgeBaseDocumentStatus.PENDING },
       data: urlData,
       updatedAt: new Date(),
@@ -365,8 +400,21 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
     });
   }
 
-  async replaceFileDocument(projectID: string, userID: number, documentID: string, file: MulterFile, canEdit = true): Promise<KnowledgeBaseDocument> {
-    return this.uploadFileDocument({ projectID, userID, file, canEdit, existingDocumentID: documentID, query: { overwrite: true } });
+  async replaceFileDocument(
+    projectID: string,
+    userID: number,
+    documentID: string,
+    file: MulterFile,
+    canEdit = true
+  ): Promise<KnowledgeBaseDocument> {
+    return this.uploadFileDocument({
+      projectID,
+      userID,
+      file,
+      canEdit,
+      existingDocumentID: documentID,
+      query: { overwrite: true },
+    });
   }
 
   async uploadFileDocument({
@@ -382,7 +430,10 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
     file: MulterFile;
     canEdit?: boolean;
     existingDocumentID?: string;
-    query?: Omit<DocumentCreateOnePublicRequestParams, 'overwrite' | 'maxChunkSize'> & { overwrite?: boolean; maxChunkSize?: number };
+    query?: Omit<DocumentCreateOnePublicRequestParams, 'overwrite' | 'maxChunkSize'> & {
+      overwrite?: boolean;
+      maxChunkSize?: number;
+    };
   }): Promise<KnowledgeBaseDocument> {
     const { overwrite = false, maxChunkSize = undefined, tags = undefined } = query;
     const tagsArray = Array.isArray(query.tags) ? query.tags : this.tagService.convertToArray(tags);
@@ -431,7 +482,10 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
       data.canEdit = canEdit ?? false;
     }
 
-    const document: Omit<VersionKnowledgeBaseDocument, 'documentID' | 'updatedAt'> & { documentID: string; updatedAt: Date } = {
+    const document: Omit<VersionKnowledgeBaseDocument, 'documentID' | 'updatedAt'> & {
+      documentID: string;
+      updatedAt: Date;
+    } = {
       status: { type: KnowledgeBaseDocumentStatus.PENDING },
       data,
       updatedAt: new Date(),
@@ -505,7 +559,11 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
 
     if (tagsArray) {
       // with force creation to true
-      await this.tagService.checkKBTagLabelsExists({ assistantID: projectID, tagLabels: tagsArray, createIfMissingTags: true });
+      await this.tagService.checkKBTagLabelsExists({
+        assistantID: projectID,
+        tagLabels: tagsArray,
+        createIfMissingTags: true,
+      });
       tagObjectIDs = await this.tagService.tagNamesToObjectIds(projectID, tagsArray);
     }
 
@@ -535,7 +593,9 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
         documentID: document.documentID,
         updatedAt: document.updatedAt?.toISOString() || '',
         status: document.status,
-        tags: Array.from(await this.tagService.tagObjectIdsToNames({ assistantID: projectID, tagIDs: document?.tags ?? [] })),
+        tags: Array.from(
+          await this.tagService.tagObjectIdsToNames({ assistantID: projectID, tagIDs: document?.tags ?? [] })
+        ),
       },
     };
   }
@@ -575,7 +635,9 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
   }
 
   async findManyDocuments(assistantID: string, documentIDs?: string[]): Promise<KnowledgeBaseDocument[]> {
-    const documents = documentIDs ? await this.orm.findManyDocuments(assistantID, documentIDs) : await this.orm.findAllDocuments(assistantID);
+    const documents = documentIDs
+      ? await this.orm.findManyDocuments(assistantID, documentIDs)
+      : await this.orm.findAllDocuments(assistantID);
 
     // mark with an ERROR status documents that have not completed processing within 5 minutes
     await this.syncDocuments(assistantID, documents);
@@ -613,8 +675,12 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
 
     const limit = Math.max(Math.min(l, 100), 1);
 
-    const includeTagsArray = Array.isArray(query.includeTags) ? query.includeTags : this.tagService.convertToArray(includeTags);
-    const excludeTagsArray = Array.isArray(query.excludeTags) ? query.excludeTags : this.tagService.convertToArray(excludeTags);
+    const includeTagsArray = Array.isArray(query.includeTags)
+      ? query.includeTags
+      : this.tagService.convertToArray(includeTags);
+    const excludeTagsArray = Array.isArray(query.excludeTags)
+      ? query.excludeTags
+      : this.tagService.convertToArray(excludeTags);
 
     const existingTags = await this.tagService.getTagsRecords(assistantID);
 
@@ -725,14 +791,17 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
 
   /* Patch */
 
-  async patchOneDocument(
-    assistantID: string,
-    documentID: string,
-    document: Omit<Partial<KnowledgeBaseDocument>, 'documentID' | 'status' | 'updatedAt'>
-  ) {
+  async patchOneDocument(assistantID: string, documentID: string, document: DocumentPatchOneRequest) {
     const project = await this.projectOrm.findOneOrFail(assistantID);
 
     const doc = await this.findOneDocument(assistantID, documentID);
+
+    const { checksum, ...documentForUpdate } = document;
+
+    if (checksum) {
+      this.refreshJobService.updateChecksum(assistantID, documentID, checksum);
+    }
+
     if (doc?.data?.type === KnowledgeBaseDocumentType.URL) {
       const urlData = doc?.data as KBDocumentUrlData;
 
@@ -752,7 +821,7 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
       ]);
     }
 
-    await this.orm.patchOneDocument(assistantID, documentID, document);
+    await this.orm.patchOneDocument(assistantID, documentID, documentForUpdate);
   }
 
   async patchManyDocuments(
@@ -769,7 +838,10 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
   ) {
     const project = await this.projectOrm.findOneOrFail(assistantID);
     const documents = await this.findManyDocuments(assistantID, documentIDs);
-    const refreshRatesDocuments: (Omit<VersionKnowledgeBaseDocument, 'documentID' | 'updatedAt'> & { documentID: string; updatedAt: Date })[] = [];
+    const refreshRatesDocuments: (Omit<VersionKnowledgeBaseDocument, 'documentID' | 'updatedAt'> & {
+      documentID: string;
+      updatedAt: Date;
+    })[] = [];
 
     const validDocumentIDs = documentIDs.filter(async (documentID) => {
       const document = documents.find((doc) => doc.documentID === documentID);
@@ -848,7 +920,12 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
     });
 
     // could be quite huge amount, medium priority, less then usual creation docs though ui, but higher than backgound refresh
-    await this.refreshJobService.sendRefreshJobs(assistantID, filteredDocs, project.teamID, AmqpQueueMessagePriority.MEDIUM);
+    await this.refreshJobService.sendRefreshJobs(
+      assistantID,
+      filteredDocs,
+      project.teamID,
+      AmqpQueueMessagePriority.MEDIUM
+    );
   }
 
   async retryOneDocument(assistantID: string, documentID: string): Promise<KnowledgeBaseDocument> {
@@ -936,7 +1013,10 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
 
     await this.refreshJobsOrm.attachManyTags(assistantID, documentID, tagsToAdd);
 
-    this.updateKBParserTags(assistantID, workspaceID, { ...document, tags: Array.from(new Set(tagsToAdd.concat(document?.tags ?? []))) });
+    this.updateKBParserTags(assistantID, workspaceID, {
+      ...document,
+      tags: Array.from(new Set(tagsToAdd.concat(document?.tags ?? []))),
+    });
   }
 
   async detachTagsOneDocument(assistantID: string, documentID: string, tagLabels: string[]) {
@@ -954,7 +1034,10 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
 
     await this.refreshJobsOrm.detachManyTags(assistantID, documentID, tagsToRemove);
 
-    this.updateKBParserTags(assistantID, workspaceID, { ...document, tags: (document?.tags ?? []).filter((value) => !tagsToRemove.includes(value)) });
+    this.updateKBParserTags(assistantID, workspaceID, {
+      ...document,
+      tags: (document?.tags ?? []).filter((value) => !tagsToRemove.includes(value)),
+    });
   }
 
   /* Utils */
@@ -981,7 +1064,12 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
     return this.orm.getWorkspaceID(assistantID);
   }
 
-  private validateInputTableSchema(data: { name: string; searchableFields: string[]; items: object[]; metadataFields?: string[] }): void {
+  private validateInputTableSchema(data: {
+    name: string;
+    searchableFields: string[];
+    items: object[];
+    metadataFields?: string[];
+  }): void {
     this.checkSearchableFields(data.searchableFields);
     this.checkItems(data.items, data.searchableFields);
   }
@@ -1019,7 +1107,7 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
 
     // Check if all searchableFields are null
     if (!hasNonNullValue) {
-      throw new BadRequestException(`At least one field in searchableFields must have a non-null value in each item`);
+      throw new BadRequestException('At least one field in searchableFields must have a non-null value in each item');
     }
   }
 
@@ -1064,7 +1152,13 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
     teamID: number;
     documentID?: string;
     tagObjectIDs: string[];
-    inputTableJSON: { name: string; searchableFields: string[]; items: object[]; metadataFields?: string[]; tags?: string[] };
+    inputTableJSON: {
+      name: string;
+      searchableFields: string[];
+      items: object[];
+      metadataFields?: string[];
+      tags?: string[];
+    };
   }) {
     const document: Omit<VersionKnowledgeBaseDocument, 's3ObjectRef'> = {
       status: { type: KnowledgeBaseDocumentStatus.PENDING },
@@ -1110,8 +1204,13 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
   }
 
   async updateKBParserTags(assistantID: string, workspaceID: number, document: VersionKnowledgeBaseDocument) {
-    await this.klParserClient.updateDocument(assistantID, { ...document, updatedAt: new Date() }, workspaceID.toString(), {
-      chunkStrategy: { type: BaseModels.Project.ChunkStrategyType.RECURSIVE_TEXT_SPLITTER },
-    });
+    await this.klParserClient.updateDocument(
+      assistantID,
+      { ...document, updatedAt: new Date() },
+      workspaceID.toString(),
+      {
+        chunkStrategy: { type: BaseModels.Project.ChunkStrategyType.RECURSIVE_TEXT_SPLITTER },
+      }
+    );
   }
 }

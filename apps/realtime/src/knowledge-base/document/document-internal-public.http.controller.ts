@@ -284,7 +284,7 @@ export class KnowledgeBaseDocumentInternalPublicHTTPController {
     await this.service.patchManyDocuments(assistantID, documentIDs, patch);
   }
 
-  @Patch()
+  @Patch(':documentID')
   @Authorize.Permissions<Request<{ assistantID: string }>>([Permission.PROJECT_UPDATE], (request) => ({
     id: request.params.assistantID,
     kind: 'project',

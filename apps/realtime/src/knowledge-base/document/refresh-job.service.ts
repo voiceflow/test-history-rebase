@@ -172,4 +172,8 @@ export class RefreshJobService extends MutableService<RefreshJobsOrm> {
 
     await this.orm.bulkUpsert(jobsWithExecuteAt);
   }
+
+  async updateChecksum(projectID: string, documentID: string, checksum: string) {
+    await this.orm.updateChecksum(projectID, documentID, checksum);
+  }
 }

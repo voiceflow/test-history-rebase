@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.364.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.363.0...@voiceflow/realtime@1.364.0) (2024-05-17)
+
+### Features
+
+* fix bykey link deletion (COR-2098) ([#8138](https://github.com/voiceflow/creator-app/issues/8138)) ([5577944](https://github.com/voiceflow/creator-app/commit/5577944f446ebe5eb550defce551a641075a268d))
+
 # [1.363.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.362.0...@voiceflow/realtime@1.363.0) (2024-05-16)
 
 ### Features

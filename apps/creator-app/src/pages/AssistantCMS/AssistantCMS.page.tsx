@@ -11,6 +11,7 @@ import { useDispatch } from '@/hooks/store.hook';
 
 import { CMSLayout } from './components/CMSLayout/CMSLayout.component';
 import { CMSPageLoader } from './components/CMSPageLoader.component';
+import { useCMSRoute } from './hooks/cms-route.hook';
 
 const AssistantCMSIntent = withSuspense({ loader: <CMSPageLoader /> })(
   lazy({ name: 'CMSIntent', factory: () => import('./pages/CMSIntent/CMSIntent.page') })
@@ -38,6 +39,8 @@ const AssistantCMSResponse = withSuspense({ loader: <CMSPageLoader /> })(
 );
 
 const AssistantCMS = () => {
+  const { activeCMSRoute } = useCMSRoute();
+
   const loadKBSettings = useDispatch(Designer.KnowledgeBase.effect.loadSettings);
   const loadKBDocuments = useDispatch(Designer.KnowledgeBase.Document.effect.loadAll);
 
@@ -72,7 +75,7 @@ const AssistantCMS = () => {
 
         {isCMSWorkflowsEnabled && <Route path={Path.CMS_WORKFLOW} component={AssistantCMSWorkflow} />}
 
-        <Redirect to={Path.CMS_INTENT} />
+        <Redirect to={`${Path.PROJECT_CMS}/${activeCMSRoute}`} />
       </Switch>
     </CMSLayout>
   );

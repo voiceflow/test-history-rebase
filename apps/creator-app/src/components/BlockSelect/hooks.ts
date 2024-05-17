@@ -63,7 +63,9 @@ export const useOptionsTree = <Item extends Flow | Workflow>(items: Item[], { la
 
   return useFolderTree<Flow, GroupOption | UIOnlyMenuItemOption, GroupOption | BlockOption | UIOnlyMenuItemOption, UIOnlyMenuItemOption>({
     data: items,
+    dataSorter: (a, b) => a.label.localeCompare(b.label),
     folderScope,
+    folderSorter: (a, b) => a.label.localeCompare(b.label),
     buildFolderTree: useCallback((folder, children): GroupOption => ({ id: folder.id, label: folder.name, options: children }), []),
     buildFolderSeparator: useCallback(
       ([{ id }]: GroupOption[]): UIOnlyMenuItemOption => createUIOnlyMenuItemOption(`${id}-header`, { label: 'Folders', groupHeader: true }),

@@ -12,7 +12,7 @@ const AnalyticsDashboardLoadingScreen: React.FC<React.PropsWithChildren & { isNe
       {children}
 
       <S.BlockingPage visible={!analyticsDashboard.isLoaded} isNewLayout={isNewLayout}>
-        <Spinner borderLess message="Preparing data set..." fillContainer={false} />
+        {!analyticsDashboard.isLoaded && <Spinner borderLess message="Preparing data set..." fillContainer={false} />}
       </S.BlockingPage>
     </>
   );

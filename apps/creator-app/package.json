@@ -60,8 +60,8 @@
   "dependencies": {
     "@chargebee/chargebee-js-react-wrapper": "0.6.3",
     "@chargebee/chargebee-js-types": "1.0.1",
-    "@datadog/browser-logs": "5.9.0",
-    "@datadog/browser-rum": "5.9.0",
+    "@datadog/browser-logs": "5.18.0",
+    "@datadog/browser-rum": "5.18.0",
     "@logux/client": "0.20.1",
     "@logux/core": "0.8.5",
     "@logux/redux": "0.8.3",

@@ -42,11 +42,19 @@ export const initialize = () => {
     clientToken: DATADOG_CLIENT_TOKEN,
     sessionSampleRate: 100,
     telemetrySampleRate: 100,
-    forwardErrorsToLogs: true,
+    forwardConsoleLogs: ['warn', 'error'],
   });
 
   datadogRum.setGlobalContextProperty('realtime_subprotocol', Realtime.Subprotocol.CURRENT_VERSION);
   datadogLogs.setGlobalContextProperty('realtime_subprotocol', Realtime.Subprotocol.CURRENT_VERSION);
+
+  // override window error for uncaught exceptions
+  // use console.error to still surface the error in the console, use datadogRum.addError in future
+  window.onerror = (_1, _2, _3, _4, error) => {
+    // eslint-disable-next-line no-console
+    console.error(error);
+    return true;
+  };
 
   datadogRum.startSessionReplayRecording();
 };

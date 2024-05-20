@@ -16,6 +16,7 @@ import { CMSKnowledgeBaseHeader } from './components/CMSKnowledgeBaseHeader/CMSK
 import { CMSKnowledgeBaseTable } from './components/CMSKnowledgeBaseTable/CMSKnowledgeBaseTable.component';
 import { KnowledgeBaseTableColumn } from './components/CMSKnowledgeBaseTable/CMSKnowledgeBaseTable.constant';
 import { CMSKnowledgeBaseTableNavigation } from './components/CMSKnowledgeBaseTableNavigation/CMSKnowledgeBaseTableNavigation.component';
+import { CMSKnowledgeBaseTips } from './components/CMSKnowledgeBaseTips.component';
 
 const CMSKnowledgeBase: React.FC = () => {
   return (
@@ -25,6 +26,8 @@ const CMSKnowledgeBase: React.FC = () => {
       <CMSKnowledgeBaseTableNavigation />
 
       <CMSKnowledgeBaseTable />
+
+      <CMSKnowledgeBaseTips />
     </>
   );
 };

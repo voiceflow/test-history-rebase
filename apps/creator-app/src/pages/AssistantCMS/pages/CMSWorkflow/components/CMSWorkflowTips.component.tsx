@@ -6,8 +6,8 @@ import { TipPortal } from '@/components/Tip/TipPortal/TipPortal.component';
 import { stopPropagation } from '@/utils/handler.util';
 
 export const CMSWorkflowTips: React.FC = () => {
-  const location = useLocation<{ isBack?: boolean }>();
-  const showDoubleClickTip = useConst(location.state?.isBack);
+  const location = useLocation<{ isBackFromCanvas?: boolean }>();
+  const showDoubleClickTip = useConst(location.state?.isBackFromCanvas);
 
   return (
     <>

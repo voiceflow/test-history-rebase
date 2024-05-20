@@ -6,7 +6,6 @@ import { Path } from '@/config/routes';
 import * as CreatorV2 from '@/ducks/creatorV2/utils/selector';
 import { withBatchLoadingGate } from '@/hocs/withBatchLoadingGate';
 import { useRegistration, useTeardown } from '@/hooks';
-import ReturnToInstanceSnackbar from '@/pages/Canvas/components/ReturnToInstanceSnackbar';
 import { DiagramHeartbeatContext, SelectionSetTargetsContext } from '@/pages/Project/contexts';
 import { matchPath } from '@/utils/route.util';
 
@@ -103,8 +102,6 @@ const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
           </>
         )}
       </Container>
-
-      <ReturnToInstanceSnackbar />
     </CanvasProviders>
   );
 };

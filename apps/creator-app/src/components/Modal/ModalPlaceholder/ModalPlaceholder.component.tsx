@@ -6,6 +6,7 @@ import { Context as ModalsContext } from '@/ModalsV2/context';
 import { modalsManager } from '@/ModalsV2/manager';
 
 import { ModalBackdrop } from '../ModalBackdrop/ModalBackdrop.component';
+import { ModalHistoryPopState } from '../ModalHistoryPopState.component';
 import { IModalPlaceholder } from './ModalPlaceholder.interface';
 
 export const ModalPlaceholder = memo<IModalPlaceholder>(({ scope }) => {
@@ -21,14 +22,24 @@ export const ModalPlaceholder = memo<IModalPlaceholder>(({ scope }) => {
 
   const visibleModal = modalsToRender[0]?.modal;
 
+  const onPopStateClose = () => {
+    modalsToRender.forEach(({ modal }) => modalsManager.remove(modal.id, modal.type));
+  };
+
   return (
     <>
       {!scope && !!visibleModal && (
-        <ModalBackdrop
-          onClick={() => modalsManager.close(visibleModal.id, visibleModal.type, 'backdrop')}
-          closing={modalsToRender.length === 1 && visibleModal.closing}
-          closePrevented={modalsToRender[0]?.Component.__vfModalOptions?.backdropDisabled ?? visibleModal?.closePrevented}
-        />
+        <>
+          <ModalBackdrop
+            onClose={() => modalsManager.close(visibleModal.id, visibleModal.type, 'backdrop')}
+            closing={modalsToRender.length === 1 && visibleModal.closing}
+            closePrevented={
+              modalsToRender[0]?.Component.__vfModalOptions?.backdropDisabled ?? visibleModal?.closePrevented
+            }
+          />
+
+          <ModalHistoryPopState onClose={onPopStateClose} />
+        </>
       )}
 
       {modalsToRender.map(({ modal, Component }, index) =>

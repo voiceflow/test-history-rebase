@@ -16,7 +16,7 @@ import { useCMSRoute } from '@/pages/AssistantCMS/hooks/cms-route.hook';
 export const CMSLayoutMenu: React.FC = () => {
   const TEST_ID = 'cms-menu';
 
-  const location = useLocation();
+  const location = useLocation<{ isBackFromCanvas?: boolean }>();
   const onLinkClick = useOnLinkClick();
   const { isEnabled: isKbEnabled } = useFeature(Realtime.FeatureFlag.KNOWLEDGE_BASE);
   const { isEnabled: isCMSFunctionsEnabled } = useFeature(Realtime.FeatureFlag.CMS_FUNCTIONS);
@@ -44,10 +44,14 @@ export const CMSLayoutMenu: React.FC = () => {
 
   const onTabClick = (tab: string, route: CMSRoute) => (event: React.MouseEvent<HTMLDivElement>) => {
     updateActiveCMSRoute(route);
-    onLinkClick(tab)(event);
+    onLinkClick(tab, {
+      state: { showKnowledgeBaseHotkeyTip: route === CMSRoute.KNOWLEDGE_BASE && location.state?.isBackFromCanvas },
+    })(event);
   };
 
-  useHotkey(Hotkey.BACK_TO_DESIGNER, () => activeDiagramID && goToDiagram(activeDiagramID), { disable: !activeDiagramID });
+  useHotkey(Hotkey.BACK_TO_DESIGNER, () => activeDiagramID && goToDiagram(activeDiagramID), {
+    disable: !activeDiagramID,
+  });
 
   return (
     <SecondaryNavigation

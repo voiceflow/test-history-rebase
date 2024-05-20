@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.18.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/utils-designer@1.17.4...@voiceflow/utils-designer@1.18.0) (2024-05-20)
+
+### Features
+
+* trigger manager [bugfix] (COR-2019) ([#8077](https://github.com/voiceflow/creator-app/issues/8077)) ([8293b5e](https://github.com/voiceflow/creator-app/commit/8293b5e2a7941e03dbc3758616b534747ec4dc24))
+
 ## [1.17.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/utils-designer@1.17.3...@voiceflow/utils-designer@1.17.4) (2024-05-15)
 
 **Note:** Version bump only for package @voiceflow/utils-designer

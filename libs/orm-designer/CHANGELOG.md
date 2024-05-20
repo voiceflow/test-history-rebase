@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.61.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.60.0...@voiceflow/orm-designer@2.61.0) (2024-05-20)
+
+### Features
+
+* trigger manager [bugfix] (COR-2019) ([#8077](https://github.com/voiceflow/creator-app/issues/8077)) ([8293b5e](https://github.com/voiceflow/creator-app/commit/8293b5e2a7941e03dbc3758616b534747ec4dc24))
+
 # [2.60.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.59.1...@voiceflow/orm-designer@2.60.0) (2024-05-17)
 
 ### Features

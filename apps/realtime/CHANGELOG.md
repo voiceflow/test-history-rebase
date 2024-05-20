@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.367.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.366.0...@voiceflow/realtime@1.367.0) (2024-05-20)
+
+### Features
+
+* rename identity method (COR-2084) ([#8124](https://github.com/voiceflow/creator-app/issues/8124)) ([acab93f](https://github.com/voiceflow/creator-app/commit/acab93f0484485721832bf9d18c4a2bef402369b))
+
 # [1.366.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.365.0...@voiceflow/realtime@1.366.0) (2024-05-20)
 
 ### Features

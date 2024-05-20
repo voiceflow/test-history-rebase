@@ -13,6 +13,7 @@ export interface OptionProps {
   isTemplate?: boolean;
   paymentModal: ReturnType<typeof usePaymentModal>;
   toggleCanvasOnly: () => void;
+  canEditCanvas: boolean;
   showHintFeatures: boolean;
   canUseCommenting: boolean;
 }

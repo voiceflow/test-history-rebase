@@ -1,7 +1,8 @@
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { Intent } from '@voiceflow/dtos';
+import { tid } from '@voiceflow/style';
 import { ActionButtons, Menu, MENU_ITEM_MIN_HEIGHT, MenuItem, Search, VirtualizedContent } from '@voiceflow/ui-next';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import { Designer } from '@/ducks';
 import { useIntentCreateModal, useIntentEditModal } from '@/hooks/modal.hook';
@@ -11,13 +12,21 @@ import { useSelector } from '@/hooks/store.hook';
 import { IntentMenuEmpty } from '../IntentMenuEmpty/IntentMenuEmpty.component';
 import type { IIntentMenu } from './IntentMenu.interface';
 
-export const IntentMenu: React.FC<IIntentMenu> = ({ width, header, onClose, onSelect: onSelectProp, viewOnly }) => {
-  const intents = useSelector(Designer.Intent.selectors.allWithoutNone);
+export const IntentMenu: React.FC<IIntentMenu> = ({ width, header, onClose, onSelect: onSelectProp, viewOnly, excludeIDs }) => {
+  const TEST_ID = 'intent-menu';
+
+  const storeIntents = useSelector(Designer.Intent.selectors.allWithoutNone);
   const intentEditModal = useIntentEditModal();
   const intentCreateModal = useIntentCreateModal();
 
   const [listNode, setListNode] = useState<HTMLDivElement | null>(null);
   const [isCreating, setIsCreating] = useState(false);
+
+  const intents = useMemo(() => {
+    if (!excludeIDs?.length) return storeIntents;
+
+    return storeIntents.filter((intent) => !excludeIDs.includes(intent.id));
+  }, [storeIntents, excludeIDs]);
 
   const search = useDeferredSearch({
     items: intents,
@@ -70,16 +79,22 @@ export const IntentMenu: React.FC<IIntentMenu> = ({ width, header, onClose, onSe
   return (
     <Menu
       width={width}
+      testID={TEST_ID}
       listRef={setListNode}
       minWidth={search.hasItems ? undefined : 0}
       maxHeight={310}
-      searchSection={<Search value={search.value} placeholder="Search" onValueChange={search.setValue} />}
+      searchSection={<Search value={search.value} testID={tid(TEST_ID, 'search')} placeholder="Search" onValueChange={search.setValue} />}
       actionButtons={
         !viewOnly &&
         search.hasItems && (
           <ActionButtons
             firstButton={
-              <ActionButtons.Button label={isCreating ? 'Creating intent...' : 'Create intent'} onClick={onCreate} disabled={isCreating} />
+              <ActionButtons.Button
+                label={isCreating ? 'Creating intent...' : 'Create intent'}
+                testID={tid(TEST_ID, 'create')}
+                onClick={onCreate}
+                disabled={isCreating}
+              />
             }
           />
         )
@@ -105,6 +120,7 @@ export const IntentMenu: React.FC<IIntentMenu> = ({ width, header, onClose, onSe
                 key={virtualRow.key}
                 ref={virtualizer.measureElement}
                 label={intent.name}
+                testID={tid(TEST_ID, 'item')}
                 onClick={() => onSelect(intent)}
                 data-index={virtualRow.index}
                 searchValue={search.deferredValue}
@@ -114,7 +130,13 @@ export const IntentMenu: React.FC<IIntentMenu> = ({ width, header, onClose, onSe
           })}
         </VirtualizedContent>
       ) : (
-        <>{!viewOnly ? <Menu.CreateItem label={search.value} onClick={onCreate} disabled={isCreating} /> : <Menu.NotFound label="intents" />}</>
+        <>
+          {!viewOnly ? (
+            <Menu.CreateItem label={search.value} onClick={onCreate} disabled={isCreating} testID={tid(TEST_ID, 'create-item')} />
+          ) : (
+            <Menu.NotFound label="intents" testID={tid(TEST_ID, 'not-found')} />
+          )}
+        </>
       )}
     </Menu>
   );

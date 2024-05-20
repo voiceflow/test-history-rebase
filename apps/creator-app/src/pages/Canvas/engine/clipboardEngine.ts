@@ -173,7 +173,7 @@ class ClipboardEngine extends EngineConsumer {
 
         const nodeOverrides = { parentNode: null, x: parentNode.x, y: parentNode.y, combinedNodes: [id] };
 
-        const entities = this.engine.diagram.getParentEntities(parentNodeID!, type !== BlockType.INTENT, nodeOverrides);
+        const entities = this.engine.diagram.getParentEntities(parentNodeID!, type !== BlockType.INTENT && type !== BlockType.TRIGGER, nodeOverrides);
 
         entities.nodesWithData.forEach(({ data: nodeData }) => {
           data[nodeData.nodeID] = nodeData;
@@ -246,7 +246,7 @@ class ClipboardEngine extends EngineConsumer {
     const nodeMap = Utils.array.createMap(context.nodes, (node) => node.id);
     const linkSourcePortIDMap = Utils.array.createMap(context.links, (link) => link.source.portID);
 
-    const ignoredNodes = context.nodes.filter((node) => node.type === BlockType.INTENT);
+    const ignoredNodes = context.nodes.filter((node) => node.type === BlockType.INTENT || node.type === BlockType.TRIGGER);
     const removedNodeIDs: string[] = ignoredNodes.map((node) => node.id);
 
     ignoredNodes.forEach((node) => {

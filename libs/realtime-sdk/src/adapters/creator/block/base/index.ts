@@ -31,6 +31,7 @@ import setAdapter, { setOutPortsAdapter, setOutPortsAdapterV2 } from './set';
 import { speakOutPortsAdapter, speakOutPortsAdapterV2 } from './speak';
 import textAdapter, { textOutPortsAdapter, textOutPortsAdapterV2 } from './text';
 import traceAdapter, { traceOutPortsAdapter, traceOutPortsAdapterV2 } from './trace';
+import { triggerAdapter, triggerOutPortsAdapterV2 } from './trigger.adapter';
 import urlAdapter, { urlOutPortsAdapter, urlOutPortsAdapterV2 } from './url';
 import visualAdapter, { visualOutPortsAdapter, visualOutPortsAdapterV2 } from './visual';
 
@@ -73,6 +74,7 @@ export const baseBlockAdapter = {
   [BlockType.GO_TO_DOMAIN]: goToDomainAdapter,
   [BlockType.CUSTOM_BLOCK_POINTER]: customBlockPointerAdapter,
   [BlockType.FUNCTION]: functionAdapter,
+  [BlockType.TRIGGER]: triggerAdapter,
 };
 
 // adapters shared across all platforms
@@ -153,6 +155,7 @@ export const baseOutPortAdapterV2 = {
   [BlockType.GO_TO_DOMAIN]: goToDomainOutPortsAdapterV2,
   [BlockType.CUSTOM_BLOCK_POINTER]: customBlockPointerOutPortsAdapterV2,
   [BlockType.FUNCTION]: functionOutPortsAdapterV2,
+  [BlockType.TRIGGER]: triggerOutPortsAdapterV2,
 
   [BaseNode.NodeType.API]: integrationOutPortsAdapterV2,
 };

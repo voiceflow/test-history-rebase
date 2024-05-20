@@ -1,4 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { clsx } from '@voiceflow/style';
 import { Drawer } from '@voiceflow/ui-next';
 import React from 'react';
 
@@ -18,7 +19,7 @@ export const EditorV3Sidebar = React.memo(() => {
 
   return (
     <React.Fragment key={api.focus.target ?? 'unknown'}>
-      <Drawer isOpen={api.isOpened} className={drawerStyle({ isOpen: api.isOpened, withHeader: cmsWorkflows.isEnabled && !isCanvasOnly })}>
+      <Drawer width={351} isOpen={api.isOpened} className={clsx('vfui', drawerStyle({ withHeader: cmsWorkflows.isEnabled && !isCanvasOnly }))}>
         {api.editor}
       </Drawer>
     </React.Fragment>

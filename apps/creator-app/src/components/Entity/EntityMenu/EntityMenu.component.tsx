@@ -23,7 +23,7 @@ export const EntityMenu: React.FC<IEntityMenu> = ({ width, onClose, onSelect: on
   const [isCreating, setIsCreating] = useState(false);
 
   const entities = useMemo(() => {
-    if (!excludeIDs) return storeEntities;
+    if (!excludeIDs?.length) return storeEntities;
 
     return storeEntities.filter((entity) => !excludeIDs.includes(entity.id));
   }, [storeEntities, excludeIDs]);

@@ -1,6 +1,7 @@
 /* eslint-disable max-classes-per-file */
 import { BaseNode } from '@voiceflow/base-types';
 import { NullableRecord, Utils } from '@voiceflow/common';
+import { TriggerNodeItemType } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Logger } from '@voiceflow/ui';
 
@@ -310,6 +311,14 @@ export const getCopiedNodeDataIDs = (nodeData: Record<string, Realtime.NodeData<
   copiedNodesData.forEach((data) => {
     if (Realtime.Utils.node.isIntentNode(data) && data.intent) {
       intentIDs.add(data.intent);
+    }
+
+    if (Realtime.Utils.node.isTriggerNode(data)) {
+      data.items.forEach((item) => {
+        if (item.type === TriggerNodeItemType.INTENT && item.resourceID) {
+          intentIDs.add(item.resourceID);
+        }
+      });
     }
 
     if (Realtime.Utils.node.isGoToIntentNode(data) && data.intent) {

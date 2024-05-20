@@ -1,15 +1,15 @@
 import { UtteranceText } from '@voiceflow/dtos';
 import { tid } from '@voiceflow/style';
-import { Box, Gauge, Scroll, Section, Text, Tooltip } from '@voiceflow/ui-next';
+import { Scroll, Section, Text, Tooltip } from '@voiceflow/ui-next';
 import React, { useMemo } from 'react';
 
 import { CMSFormCollapsibleList } from '@/components/CMS/CMSForm/CMSFormCollapsibleList/CMSFormCollapsibleList.component';
 import { CMSFormVirtualListItem } from '@/components/CMS/CMSForm/CMSFormVirtualListItem/CMSFormVirtualListItem.component';
 import { useIntentBulkImportUtterancesModal } from '@/hooks/modal.hook';
 import { stopPropagation } from '@/utils/handler.util';
-import { getIntentConfidenceLevel, getIntentConfidenceProgress } from '@/utils/intent.util';
 import { isUtteranceTextEmpty } from '@/utils/utterance.util';
 
+import { IntentConfidenceGauge } from '../IntentConfidenceGauge/IntentConfidenceGauge.component';
 import { IntentUtteranceInput } from '../IntentUtteranceInput/IntentUtteranceInput.component';
 import type { IIntentUtterancesSection } from './IntentUtterancesSection.interface';
 
@@ -48,13 +48,7 @@ export const IntentUtterancesSection: React.FC<IIntentUtterancesSection> = ({
         testID={tid(TEST_ID, 'header')}
         variant={utterancesSize ? 'active' : 'basic'}
         onHeaderClick={utterancesSize ? undefined : onUtteranceAdd}
-        primaryContent={
-          utterancesSize ? (
-            <Box width="42px">
-              <Gauge level={getIntentConfidenceLevel(notEmptyUtterances.length)} progress={getIntentConfidenceProgress(notEmptyUtterances.length)} />
-            </Box>
-          ) : undefined
-        }
+        primaryContent={utterancesSize ? <IntentConfidenceGauge nonEmptyUtterancesCount={notEmptyUtterances.length} /> : undefined}
       >
         <Tooltip
           placement="top"

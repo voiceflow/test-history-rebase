@@ -3,7 +3,7 @@ import { AlexaNode } from '@voiceflow/alexa-types';
 import { BaseButton, BaseModels, BaseNode } from '@voiceflow/base-types';
 import { ChatNode } from '@voiceflow/chat-types';
 import { EmptyObject, Nullable } from '@voiceflow/common';
-import { FunctionNode } from '@voiceflow/dtos';
+import { FunctionNodeData, StartNodeData, TriggerNodeData } from '@voiceflow/dtos';
 import * as Platform from '@voiceflow/platform-config/backend';
 import { VoiceNode } from '@voiceflow/voice-types';
 import { VoiceflowNode } from '@voiceflow/voiceflow-types';
@@ -52,6 +52,7 @@ export namespace NodeData {
   export interface Start {
     name: string;
     label: string;
+    triggers: NonNullable<StartNodeData['triggers']>;
     blockColor: string;
   }
 
@@ -506,7 +507,11 @@ export namespace NodeData {
     pointerName: string;
   }
 
-  export type Function = Omit<FunctionNode['data'], 'portsV2'>;
+  type DTONodeData<T> = Omit<T, 'portsV2'>;
+
+  export type Function = DTONodeData<FunctionNodeData>;
+
+  export type Trigger = DTONodeData<TriggerNodeData>;
 }
 
 export interface NodeDataMap {
@@ -574,4 +579,5 @@ export interface NodeDataMap {
   [BlockType.MARKUP_IMAGE]: Markup.NodeData.Image;
   [BlockType.MARKUP_VIDEO]: Markup.NodeData.Video;
   [BlockType.FUNCTION]: NodeData.Function;
+  [BlockType.TRIGGER]: NodeData.Trigger;
 }

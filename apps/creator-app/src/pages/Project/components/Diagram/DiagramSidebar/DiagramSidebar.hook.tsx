@@ -70,14 +70,23 @@ export const useWorkflowsTree = () => {
     buildDataTree: useCallback(
       (workflow): DiagramSidebarWorkflowTreeData | null => {
         const children: DiagramSidebarWorkflowTreeData[] = [];
+        const nodeIDSet = new Set<string>();
 
         triggersMapByDiagramID[workflow.diagramID]?.forEach((node) => {
+          let id = `${workflow.diagramID}:${node.nodeID}`;
+
+          if (nodeIDSet.has(id)) {
+            id = `${workflow.diagramID}:${node.nodeID}:${node.id}`;
+          }
+
           children.push({
-            id: `${workflow.diagramID}:${node.nodeID}`,
+            id,
             type: node.type === BlockType.START ? 'start' : 'intent',
             label: node.label,
             metaData: { type: 'node', nodeType: node.type, nodeID: node.nodeID, diagramID: workflow.diagramID },
           });
+
+          nodeIDSet.add(id);
         });
 
         if (workflow.diagramID === rootDiagramID) {

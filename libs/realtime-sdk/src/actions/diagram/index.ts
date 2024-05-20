@@ -89,8 +89,17 @@ export interface MoveMenuItemPayload extends BaseMenuItemPayload {
   toDiagramID: string;
 }
 
+/**
+ * @deprecated will be removed when FeatureFlag.CMS_WORKFLOWS is released
+ */
 export const addMenuItem = Utils.protocol.createAction<AddMenuItemPayload>(diagramMenuItemType('ADD'));
+/**
+ * @deprecated will be removed when FeatureFlag.CMS_WORKFLOWS is released
+ */
 export const removeMenuItem = Utils.protocol.createAction<BaseMenuItemPayload>(diagramMenuItemType('REMOVE'));
+/**
+ * @deprecated will be removed when FeatureFlag.CMS_WORKFLOWS is released
+ */
 export const reorderMenuItem = Utils.protocol.createAction<ReorderMenuItemPayload>(diagramMenuItemType('REORDER'));
 
 // template diagram

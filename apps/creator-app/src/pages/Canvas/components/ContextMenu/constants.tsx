@@ -33,6 +33,7 @@ export enum CanvasAction {
   ADD_TEXT = 'add_text',
   ADD_IMAGE = 'add_image',
   ADD_COMMENT = 'add_comment',
+  ADD_TRIGGER = 'add_trigger',
   COPY_CONTENT = 'copy_content',
 }
 
@@ -66,6 +67,11 @@ export const CANVAS_OPTIONS: ContextMenuOption<CanvasAction>[] = [
     value: CanvasAction.ADD_COMMENT,
     hotkey: HOTKEY_LABEL_MAP[Hotkey.OPEN_COMMENTING],
     shouldRender: (_, { showHintFeatures }) => showHintFeatures,
+  },
+  {
+    label: 'Add Trigger',
+    value: CanvasAction.ADD_TRIGGER,
+    shouldRender: (_, { engine, canEditCanvas }) => canEditCanvas && engine.isTopic() && engine.isFeatureEnabled(FeatureFlag.TRIGGER_STEP),
   },
   {
     label: 'Divider 2',

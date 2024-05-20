@@ -7,6 +7,8 @@ import { TriggerNodeItemDTO } from '../trigger/trigger-node.dto';
 
 export const StartNodeDataDTO = BaseNodeDataDTO.extend({
   label: z.string().optional(),
+  color: z.string().optional(),
+  steps: z.array(z.string()).optional(),
   triggers: z.array(TriggerNodeItemDTO).optional(),
 }).strict();
 

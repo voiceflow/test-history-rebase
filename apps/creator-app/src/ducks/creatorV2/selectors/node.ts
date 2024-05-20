@@ -1,5 +1,4 @@
-import { Intent } from '@voiceflow/dtos';
-import * as Platform from '@voiceflow/platform-config';
+import { TriggerNodeItemType } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import * as Normal from 'normal-store';
 import { createSelector } from 'reselect';
@@ -115,26 +114,40 @@ export const nodesByIDsSelector = createSelector([getNodeByIDSelector, idsParamS
   }, [])
 );
 
-export const intentNodeDataLookupSelector = createSelector(
-  [allNodeDataSelector, DesignerIntentSelectors.getOneByID],
-  (nodesData, getCMSIntentByID) => {
-    const result: Record<
-      string,
-      { data: Realtime.NodeData.Intent.PlatformData; intent: Platform.Base.Models.Intent.Model | Intent; nodeID: string }
-    > = {};
+export const intentIDNodeIDMapSelector = createSelector([allNodeDataSelector, DesignerIntentSelectors.getOneByID], (nodesData, getCMSIntentByID) => {
+  const result: Record<string, string> = {};
 
-    for (const data of nodesData) {
-      if (!Realtime.Utils.typeGuards.isIntentNodeData(data)) continue;
-
+  for (const data of nodesData) {
+    if (Realtime.Utils.typeGuards.isIntentNodeData(data)) {
       if (!data.intent || !!result[data.intent]) continue;
 
       const intent = getCMSIntentByID({ id: data.intent });
 
       if (!intent) continue;
 
-      result[intent.id] = { data, intent, nodeID: data.nodeID };
-    }
+      result[intent.id] = data.nodeID;
+    } else if (Realtime.Utils.typeGuards.isTriggerNodeData(data)) {
+      data.items.forEach((item) => {
+        if (item.type !== TriggerNodeItemType.INTENT || !item.resourceID) return;
 
-    return result;
+        const intent = getCMSIntentByID({ id: item.resourceID });
+
+        if (!intent) return;
+
+        result[intent.id] = data.nodeID;
+      });
+    } else if (Realtime.Utils.typeGuards.isStartNodeData(data)) {
+      data.triggers.forEach((item) => {
+        if (item.type !== TriggerNodeItemType.INTENT || !item.resourceID) return;
+
+        const intent = getCMSIntentByID({ id: item.resourceID });
+
+        if (!intent) return;
+
+        result[intent.id] = data.nodeID;
+      });
+    }
   }
-);
+
+  return result;
+});

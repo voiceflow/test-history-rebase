@@ -6,4 +6,5 @@ export interface IIntentMenu {
   onClose: VoidFunction;
   onSelect: (intent: Intent) => void;
   viewOnly?: boolean;
+  excludeIDs?: string[];
 }

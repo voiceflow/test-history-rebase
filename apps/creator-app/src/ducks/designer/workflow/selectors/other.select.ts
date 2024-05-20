@@ -1,4 +1,5 @@
-import { Flow } from '@voiceflow/dtos';
+import { Utils } from '@voiceflow/common';
+import { Flow, TriggerNodeItemType } from '@voiceflow/dtos';
 import { BlockType } from '@voiceflow/realtime-sdk';
 import { createSelector } from 'reselect';
 
@@ -22,6 +23,7 @@ export const oneByDiagramID = createSelector(mapByDiagramID, diagramIDParamSelec
 export const allOrderedByName = createSelector([all], (entities) => entities.sort((a, b) => a.name.localeCompare(b.name)));
 
 type TriggerNode<Type extends BlockType, ExtraData = unknown> = {
+  id: string;
   type: Type;
   label: string;
   nodeID: string;
@@ -29,7 +31,16 @@ type TriggerNode<Type extends BlockType, ExtraData = unknown> = {
 } & ExtraData;
 
 export const triggersMapByDiagramID = createSelector([sharedNodesSelector, getOneIntentByID], (sharedNodes, getOneIntentByID) => {
-  const map: Partial<Record<string, Array<TriggerNode<BlockType.START> | TriggerNode<BlockType.INTENT, { intentID: string | null }>>>> = {};
+  const map: Partial<
+    Record<
+      string,
+      Array<
+        | TriggerNode<BlockType.START, { intentID: string | null }>
+        | TriggerNode<BlockType.INTENT, { intentID: string | null }>
+        | TriggerNode<BlockType.TRIGGER, { intentID: string | null }>
+      >
+    >
+  > = {};
 
   Object.entries(sharedNodes).forEach(([diagramID, diagramSharedNodes]) => {
     let diagramTriggers = map[diagramID];
@@ -43,18 +54,54 @@ export const triggersMapByDiagramID = createSelector([sharedNodesSelector, getOn
       if (!node) return;
 
       if (node.type === BlockType.START) {
-        diagramTriggers!.unshift({ type: node.type, label: node.name || 'Start', nodeID: node.nodeID, isEmpty: false });
-      }
+        diagramTriggers!.unshift({
+          id: Utils.id.cuid.slug(),
+          type: node.type,
+          label: node.name || 'Start',
+          nodeID: node.nodeID,
+          isEmpty: false,
+          intentID: null,
+        });
 
-      if (node.type === BlockType.INTENT) {
+        node.triggers.forEach((item) => {
+          if (item.type !== TriggerNodeItemType.INTENT) return;
+
+          const intent = getOneIntentByID({ id: item.resourceID });
+
+          diagramTriggers!.push({
+            id: Utils.id.cuid.slug(),
+            type: node.type,
+            label: intent?.name ?? 'Select intent...',
+            nodeID: node.nodeID,
+            isEmpty: !intent,
+            intentID: item.resourceID,
+          });
+        });
+      } else if (node.type === BlockType.INTENT) {
         const intent = getOneIntentByID({ id: node.intentID });
 
         diagramTriggers!.push({
+          id: Utils.id.cuid.slug(),
           type: node.type,
           label: intent?.name ?? 'Select intent...',
           nodeID: node.nodeID,
           isEmpty: !intent,
           intentID: node.intentID,
+        });
+      } else if (node.type === BlockType.TRIGGER) {
+        node.items.forEach((item) => {
+          if (item.type !== TriggerNodeItemType.INTENT) return;
+
+          const intent = getOneIntentByID({ id: item.resourceID });
+
+          diagramTriggers!.push({
+            id: Utils.id.cuid.slug(),
+            type: node.type,
+            label: intent?.name ?? 'Select intent...',
+            nodeID: node.nodeID,
+            isEmpty: !intent,
+            intentID: item.resourceID,
+          });
         });
       }
     });

@@ -1,13 +1,14 @@
 import { Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { CustomScrollbarsTypes } from '@voiceflow/ui';
-import React from 'react';
+import React, { useContext } from 'react';
 import type { ExtractRouteParams } from 'react-router';
 import { generatePath, useLocation, useRouteMatch } from 'react-router-dom';
 
 import { Path } from '@/config/routes';
 import { BlockType } from '@/constants';
 import { NamespaceProvider } from '@/contexts/NamespaceContext';
+import { TransactionContext } from '@/contexts/TransactionContext';
 import { Feature } from '@/ducks';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Router from '@/ducks/router';
@@ -73,6 +74,7 @@ export const useGetEditorWithCorrectVersion = () => {
 export const useEditorSidebarV2 = () => {
   const theme = useTheme();
   const location = useLocation();
+  const transaction = useContext(TransactionContext);
   const isEditingMode = useEditingMode();
   const canvasNodeRouteMatch = useRouteMatch([Path.DOMAIN_CANVAS_NODE, Path.CANVAS_NODE]);
   const getEditorWithCorrectVersion = useGetEditorWithCorrectVersion();
@@ -201,6 +203,7 @@ export const useEditorSidebarV2 = () => {
       goToNested,
       scrollbars,
       goToSibling,
+      transaction,
       projectType,
       isFullscreen,
       parentBlockData,

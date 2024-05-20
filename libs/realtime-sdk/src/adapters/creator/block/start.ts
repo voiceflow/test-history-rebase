@@ -1,15 +1,12 @@
 import { NodeData } from '@realtime-sdk/models';
+import { StartNodeData } from '@voiceflow/dtos';
 
-import blockDataAdapter, { BlockData } from './block';
+import blockDataAdapter from './block';
 import { createBlockAdapter } from './utils';
 
-export interface StartData extends BlockData {
-  label?: string;
-}
-
-const startDataAdapter = createBlockAdapter<StartData, NodeData.Start>(
-  ({ label = '', ...data }, options) => ({ ...blockDataAdapter.fromDB(data, options), label }),
-  ({ label, ...data }, options) => ({ ...blockDataAdapter.toDB(data, options), label: label || undefined })
+const startDataAdapter = createBlockAdapter<Omit<StartNodeData, 'portsV2'>, NodeData.Start>(
+  ({ label = '', triggers = [], ...data }, options) => ({ ...blockDataAdapter.fromDB(data, options), label, triggers }),
+  ({ label, triggers, ...data }, options) => ({ ...blockDataAdapter.toDB(data, options), label: label || undefined, triggers })
 );
 
 export default startDataAdapter;

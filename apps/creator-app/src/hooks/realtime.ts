@@ -79,17 +79,6 @@ export const useOrganizationSubscription = createSubscriptionHook<NullishRecord<
   organizationID && workspaceID ? [Channels.organization.build({ organizationID, workspaceID })] : []
 );
 
-export const useVersionSubscription = createSubscriptionHook<NullishRecord<Realtime.Channels.VersionChannelParams>>(
-  ({ workspaceID, projectID, versionID }) =>
-    workspaceID && projectID && versionID
-      ? [
-          Realtime.Channels.workspace.build({ workspaceID }),
-          Realtime.Channels.project.build({ workspaceID, projectID }),
-          Realtime.Channels.version.build({ workspaceID, projectID, versionID }),
-        ]
-      : []
-);
-
 export const useAssistantSubscription = createSubscriptionHook<NullishRecord<Realtime.Channels.VersionChannelParams>>(
   ({ workspaceID, projectID, versionID }) =>
     workspaceID && projectID && versionID

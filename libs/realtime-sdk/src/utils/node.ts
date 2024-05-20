@@ -14,6 +14,8 @@ export const isCommandNode = checkNodeType<NodeData.Command>(BlockType.COMMAND);
 
 export const isIntentNode = checkNodeType<NodeData.Intent>(BlockType.INTENT);
 
+export const isTriggerNode = checkNodeType<NodeData.Trigger>(BlockType.TRIGGER);
+
 export const isGoToIntentNode = checkNodeType<NodeData.GoToIntent>(BlockType.GO_TO_INTENT);
 
 export const isChoiceNode = checkNodeType<NodeData.Interaction>(BlockType.CHOICE);

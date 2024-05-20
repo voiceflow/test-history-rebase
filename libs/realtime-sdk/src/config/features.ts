@@ -81,4 +81,6 @@ export enum FeatureFlag {
 
   // CMS
   CMS_RESPONSES = 'cms_response',
+
+  TRIGGER_STEP = 'trigger_step',
 }

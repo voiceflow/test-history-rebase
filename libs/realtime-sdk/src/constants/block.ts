@@ -37,6 +37,7 @@ export enum BlockType {
   CAPTURE = 'capture',
   CAPTUREV2 = 'captureV2',
   INTENT = 'intent',
+  TRIGGER = 'trigger',
   STREAM = 'stream',
   INTEGRATION = 'integration',
   COMPONENT = 'component',
@@ -107,11 +108,11 @@ export const NAVIGATION_NODES: ReadonlyArray<NavigationBlockType> = [
   BlockType.GO_TO_DOMAIN,
 ];
 
-export type CanvasChipBlockType = BlockType.INTENT | BlockType.START;
-export const CANVAS_CHIPS_NODES: ReadonlyArray<CanvasChipBlockType> = [BlockType.INTENT, BlockType.START];
+export type CanvasChipBlockType = BlockType.INTENT | BlockType.START | BlockType.TRIGGER;
+export const CANVAS_CHIPS_NODES: ReadonlyArray<CanvasChipBlockType> = [BlockType.INTENT, BlockType.START, BlockType.TRIGGER];
 
-export type DiagramMenuBlockType = BlockType.START | BlockType.INTENT | BlockType.COMPONENT;
-export const DIAGRAM_MENU_NODES: ReadonlyArray<DiagramMenuBlockType> = [BlockType.START, BlockType.INTENT, BlockType.COMPONENT];
+export type DiagramMenuBlockType = BlockType.START | BlockType.INTENT | BlockType.COMPONENT | BlockType.TRIGGER;
+export const DIAGRAM_MENU_NODES: ReadonlyArray<DiagramMenuBlockType> = [BlockType.START, BlockType.INTENT, BlockType.COMPONENT, BlockType.TRIGGER];
 
 export type StaringBlockType = BlockType.START | BlockType.COMBINED;
 export const STARTING_NODES: ReadonlyArray<StaringBlockType> = [BlockType.START, BlockType.COMBINED];

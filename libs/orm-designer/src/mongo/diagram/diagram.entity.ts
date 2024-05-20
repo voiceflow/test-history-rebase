@@ -1,6 +1,6 @@
 import { Entity, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
 import type { ObjectId } from '@mikro-orm/mongodb';
-import type { DiagramMenuItem, DiagramNode } from '@voiceflow/dtos';
+import type { DiagramMenuItem, DiagramNode, DiagramType } from '@voiceflow/dtos';
 
 import { MongoEntity } from '@/mongo/common';
 
@@ -11,7 +11,7 @@ export class DiagramEntity extends MongoEntity {
   name!: string;
 
   @Property({ nullable: true })
-  type?: string;
+  type?: DiagramType;
 
   @Property()
   zoom!: number;

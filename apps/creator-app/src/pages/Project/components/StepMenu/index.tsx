@@ -18,6 +18,7 @@ import TopLevelButton from './TopLevelButton';
 const STEP_MENU_EXPANDED_LOCAL_STORAGE_KEY = 'stepMenuExpanded';
 
 const StepMenu: React.FC = () => {
+  const triggerStep = useFeature(FeatureFlag.TRIGGER_STEP);
   const cmsWorkflows = useFeature(FeatureFlag.CMS_WORKFLOWS);
   const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
   const aiPlaygroundEnabled = useProjectAIPlayground();
@@ -30,6 +31,8 @@ const StepMenu: React.FC = () => {
 
   const [isExpanded, toggleIsExpanded] = useLocalStorageState(STEP_MENU_EXPANDED_LOCAL_STORAGE_KEY, true);
   const [initialRender, setInitialRender] = useState(true);
+
+  const withEventSection = !triggerStep.isEnabled && (!cmsWorkflows.isEnabled || isTopic);
 
   const [eventSection, otherSections, numCollapsedSteps] = React.useMemo(() => {
     let numCollapsedSteps = 5;
@@ -54,8 +57,8 @@ const StepMenu: React.FC = () => {
       }
     });
 
-    return [groupedSections.get(EVENT_LABEL)?.[0], groupedSections.get('other'), numCollapsedSteps];
-  }, [platform, projectType, isExpanded, templates, customBlocks, aiPlaygroundEnabled]);
+    return [withEventSection ? groupedSections.get(EVENT_LABEL)?.[0] : null, groupedSections.get('other'), numCollapsedSteps];
+  }, [platform, projectType, isExpanded, templates, customBlocks, aiPlaygroundEnabled, withEventSection]);
 
   const onToggle = () => {
     toggleIsExpanded(!isExpanded);
@@ -66,7 +69,7 @@ const StepMenu: React.FC = () => {
 
   return (
     <S.TopLevelOuterContainer id={Identifier.STEP_MENU}>
-      {eventSection && (!cmsWorkflows.isEnabled || isTopic) && (
+      {eventSection && (
         <S.TopLevelInnerContainer size={1}>
           <TopLevelButton key={eventSection.label} section={eventSection} animationIndex={-1} />
         </S.TopLevelInnerContainer>

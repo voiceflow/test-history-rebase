@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
+import { TriggerNodeItemType } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Draft } from 'immer';
 import * as Normal from 'normal-store';
@@ -22,11 +23,23 @@ export const addSharedNode = (state: Draft<DiagramState>, diagramID: string, sha
 
   state.sharedNodes[diagramID][sharedNode.nodeID] = sharedNode;
 
-  if (sharedNode.type !== Realtime.BlockType.INTENT || !sharedNode.intentID || !sharedNode.global) return;
+  if (sharedNode.type === Realtime.BlockType.INTENT) {
+    if (!sharedNode.intentID || !sharedNode.global) return;
 
-  state.globalIntentStepMap[diagramID] ??= {};
-  state.globalIntentStepMap[diagramID][sharedNode.intentID] ??= [];
-  state.globalIntentStepMap[diagramID][sharedNode.intentID].push(sharedNode.nodeID);
+    state.globalIntentStepMap[diagramID] ??= {};
+    state.globalIntentStepMap[diagramID][sharedNode.intentID] ??= [];
+    state.globalIntentStepMap[diagramID][sharedNode.intentID].push(sharedNode.nodeID);
+  } else if (sharedNode.type === Realtime.BlockType.TRIGGER || sharedNode.type === Realtime.BlockType.START) {
+    const triggers = sharedNode.type === Realtime.BlockType.TRIGGER ? sharedNode.items : sharedNode.triggers;
+
+    triggers.forEach((item) => {
+      if (item.type !== TriggerNodeItemType.INTENT || !item.resourceID || item.settings.local) return;
+
+      state.globalIntentStepMap[diagramID] ??= {};
+      state.globalIntentStepMap[diagramID][item.resourceID] ??= [];
+      state.globalIntentStepMap[diagramID][item.resourceID].push(sharedNode.nodeID);
+    });
+  }
 };
 
 export const addSharedNodeAndMenuItem = (
@@ -65,15 +78,27 @@ export const removeSharedNodes = (state: Draft<DiagramState>, diagramID: string,
   const diagramSharedNodes = state.sharedNodes[diagramID];
   const diagramGlobalIntents = state.globalIntentStepMap[diagramID];
 
-  if (!diagramSharedNodes) return;
+  if (!diagramSharedNodes || !diagramGlobalIntents) return;
 
   nodeIDs.forEach((nodeID) => {
     const sharedNode = diagramSharedNodes[nodeID];
 
     delete diagramSharedNodes[nodeID];
 
-    if (sharedNode?.type === Realtime.BlockType.INTENT && sharedNode.intentID && diagramGlobalIntents?.[sharedNode.intentID]) {
+    if (!sharedNode) return;
+
+    if (sharedNode.type === Realtime.BlockType.INTENT) {
+      if (!sharedNode.intentID || !diagramGlobalIntents[sharedNode.intentID]) return;
+
       diagramGlobalIntents[sharedNode.intentID] = Utils.array.withoutValue(diagramGlobalIntents[sharedNode.intentID], nodeID);
+    } else if (sharedNode.type === Realtime.BlockType.TRIGGER || sharedNode.type === Realtime.BlockType.START) {
+      const triggers = sharedNode.type === Realtime.BlockType.TRIGGER ? sharedNode.items : sharedNode.triggers;
+
+      triggers.forEach((item) => {
+        if (item.type !== TriggerNodeItemType.INTENT || !item.resourceID || !diagramGlobalIntents[item.resourceID]) return;
+
+        diagramGlobalIntents[item.resourceID] = Utils.array.withoutValue(diagramGlobalIntents[item.resourceID], nodeID);
+      });
     }
   });
 };
@@ -87,8 +112,12 @@ export const nodeDataToSharedNode = (data: Realtime.NodeData<{}>): Realtime.diag
     return { type: Realtime.BlockType.INTENT, global, nodeID: data.nodeID, intentID: data.intent };
   }
 
+  if (Realtime.Utils.typeGuards.isTriggerNodeData(data)) {
+    return { type: Realtime.BlockType.TRIGGER, nodeID: data.nodeID, items: data.items };
+  }
+
   if (Realtime.Utils.typeGuards.isStartNodeData(data)) {
-    return { type: Realtime.BlockType.START, nodeID: data.nodeID, name: data.label || '' };
+    return { type: Realtime.BlockType.START, nodeID: data.nodeID, name: data.label || '', triggers: data.triggers };
   }
 
   if (Realtime.Utils.typeGuards.isCombinedBlockType(data.type)) {

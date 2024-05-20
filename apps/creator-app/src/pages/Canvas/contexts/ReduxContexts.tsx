@@ -96,10 +96,10 @@ export const {
 } = createSelectorContext(DiagramV2.active.allSlotsAndVariablesNormalizedSelector);
 
 export const {
-  Context: IntentNodeDataLookupContext,
-  Provider: IntentNodeDataLookupProvider,
-  Consumer: IntentNodeDataLookupConsumer,
-} = createSelectorContext(CreatorV2.intentNodeDataLookupSelector);
+  Context: IntentIDNodeIDMapContext,
+  Provider: IntentIDNodeIDMapProvider,
+  Consumer: IntentIDNodeIDMapConsumer,
+} = createSelectorContext(CreatorV2.intentIDNodeIDMapSelector);
 
 export const {
   Context: GlobalIntentStepMapContext,
@@ -145,7 +145,7 @@ export const ReduxContextsProviders: React.FC<React.PropsWithChildren> = ({ chil
                 <DiagramMapProvider>
                   <GlobalIntentStepMapProvider>
                     <ActiveDiagramTypeProvider>
-                      <IntentNodeDataLookupProvider>
+                      <IntentIDNodeIDMapProvider>
                         <SharedNodesProvider>
                           <ActionsRouteMatchProvider>
                             <DomainMapProvider>
@@ -166,7 +166,7 @@ export const ReduxContextsProviders: React.FC<React.PropsWithChildren> = ({ chil
                             </DomainMapProvider>
                           </ActionsRouteMatchProvider>
                         </SharedNodesProvider>
-                      </IntentNodeDataLookupProvider>
+                      </IntentIDNodeIDMapProvider>
                     </ActiveDiagramTypeProvider>
                   </GlobalIntentStepMapProvider>
                 </DiagramMapProvider>

@@ -8,18 +8,21 @@ import { useSelector } from '@/hooks/store.hook';
 import { IntentMenu } from '../IntentMenu/IntentMenu.component';
 import type { IIntentSelect } from './IntentSelect.interface';
 
-export const IntentSelect: React.FC<IIntentSelect> = ({ editable = true, intentID, onSelect }) => {
+export const IntentSelect: React.FC<IIntentSelect> = ({ editable = true, intentID, onSelect, excludeIDs }) => {
   const intentName = useSelector(Designer.Intent.selectors.nameByID, { id: intentID });
   const editModal = useIntentEditModal();
 
   return (
     <Dropdown
       value={intentName}
+      testID="intent-select"
       placeholder="Select intent"
       prefixIconName={editable && !!intentID ? 'EditS' : undefined}
       onPrefixIconClick={() => intentID && editModal.openVoid({ intentID })}
     >
-      {({ onClose, referenceRef }) => <IntentMenu width={referenceRef.current?.clientWidth ?? 252} onClose={onClose} onSelect={onSelect} />}
+      {({ onClose, referenceRef }) => (
+        <IntentMenu width={referenceRef.current?.clientWidth ?? 252} onClose={onClose} onSelect={onSelect} excludeIDs={excludeIDs} />
+      )}
     </Dropdown>
   );
 };

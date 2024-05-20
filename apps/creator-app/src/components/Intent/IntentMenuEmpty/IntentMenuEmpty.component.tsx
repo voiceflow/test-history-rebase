@@ -23,7 +23,7 @@ export const IntentMenuEmpty: React.FC<IIntentMenuEmpty> = ({ width, onCreated }
     <Surface px={24} pt={24} pb={8} width={width ? `${width}px` : undefined} justify="center" minWidth={0}>
       <EmptyPage
         title="No intents exist"
-        button={{ label: 'Create intent', onClick: () => onCreate }}
+        button={{ label: 'Create intent', onClick: onCreate }}
         description="Intents are reusable collections of user says that aim to capture a users intention. "
         illustration="NoContent"
         learnMoreLink={CMS_INTENT_LEARN_MORE}

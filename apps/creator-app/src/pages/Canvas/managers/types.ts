@@ -9,6 +9,7 @@ import { Optional, Overwrite } from 'utility-types';
 
 import { BlockType, HSLShades } from '@/constants';
 import { NodeCategory } from '@/contexts/SearchContext/types';
+import { TransactionContextValue } from '@/contexts/TransactionContext';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import { FeatureFlagMap } from '@/ducks/feature';
 import { PathEntry } from '@/pages/Canvas/components/EditorSidebar/hooks';
@@ -138,6 +139,7 @@ export interface NodeEditorV2Props<Data, BuiltInPorts extends Realtime.BuiltInPo
   goToRoot: (animationEffect?: EditorAnimationEffect) => void;
   scrollbars: React.RefObject<CustomScrollbarsTypes.Scrollbars>;
   goToNested: GoTo;
+  transaction: TransactionContextValue;
   goToSibling: GoTo;
   projectType: Platform.Constants.ProjectType;
   isFullscreen: boolean;

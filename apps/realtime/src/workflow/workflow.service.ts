@@ -273,7 +273,9 @@ export class WorkflowService extends CMSTabularService<WorkflowORM> {
     return result.add.workflows.map((workflow, index) => {
       const diagram = result.add.diagrams[index];
 
-      const triggerNode = Object.values(diagram.nodes).find((node) => node.type === Realtime.BlockType.INTENT);
+      const triggerNode =
+        Object.values(diagram.nodes).find((node) => node.type === Realtime.BlockType.TRIGGER) ??
+        Object.values(diagram.nodes).find((node) => node.type === Realtime.BlockType.INTENT);
 
       return { ...workflow, triggerNodeID: triggerNode?.nodeID ?? null };
     });

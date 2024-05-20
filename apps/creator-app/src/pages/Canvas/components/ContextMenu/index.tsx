@@ -108,6 +108,10 @@ const OPTION_HANDLERS: Record<CanvasAction, OptionHandler> = {
 
     engine.comment.activate();
   },
+
+  [CanvasAction.ADD_TRIGGER]: (_, { engine }) => {
+    engine.node.add({ type: BlockType.TRIGGER, coords: engine.getMouseCoords() });
+  },
 };
 
 const isCanvasActionValue = (value: string): value is CanvasAction => Object.values<string>(CanvasAction).includes(value);
@@ -132,6 +136,7 @@ const ContextMenu: React.FC = () => {
     clipboard,
     contextMenu,
     paymentModal,
+    canEditCanvas,
     canUseCommenting,
     toggleCanvasOnly,
     showHintFeatures,

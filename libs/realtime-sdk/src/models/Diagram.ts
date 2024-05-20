@@ -8,11 +8,14 @@ export interface Diagram {
   zoom: number;
   offsetX: number;
   offsetY: number;
+  /**
+   * @deprecated will be removed when FeatureFlag.CMS_WORKFLOWS is released
+   */
   menuItems: BaseModels.Diagram.MenuItem[];
   variables: string[];
 
   /**
-   * @deprecated use `menuItems` instead, remove when not used, check in the datadog realtime version
+   * @deprecated will be removed when FeatureFlag.CMS_WORKFLOWS is released
    */
   menuNodeIDs?: string[];
 }
@@ -21,5 +24,8 @@ export interface DBDiagram
   extends Pick<BaseModels.Diagram.Model, '_id' | 'name' | 'variables' | 'children' | 'zoom' | 'offsetX' | 'offsetY' | 'menuNodeIDs' | 'diagramID'> {
   type?: string;
 
+  /**
+   * @deprecated will be removed when FeatureFlag.CMS_WORKFLOWS is released
+   */
   menuItems?: { type: string; sourceID: string }[];
 }

@@ -1,6 +1,6 @@
 import type { Enum } from '@/utils/type/enum.util';
 
-export const SystemPortType = {
+export const NodeSystemPortType = {
   FAIL: 'fail',
   NEXT: 'next',
   PAUSE: 'pause',
@@ -9,4 +9,4 @@ export const SystemPortType = {
   PREVIOUS: 'previous',
 } as const;
 
-export type SystemPortType = Enum<typeof SystemPortType>;
+export type NodeSystemPortType = Enum<typeof NodeSystemPortType>;

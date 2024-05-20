@@ -21,8 +21,8 @@ const IntentManager: NodeManagerConfigV2<Realtime.NodeData.Intent, Realtime.Node
 
   searchIcon: 'goToBlock',
   getSearchParams: (data, state) => {
-    const intent = Designer.Intent.selectors.oneWithFormattedBuiltNameByID(state, { id: data.intent });
-    return intent?.name ? [intent.name] : [];
+    const name = Designer.Intent.selectors.nameByID(state, { id: data.intent });
+    return name ? [name] : [];
   },
 };
 

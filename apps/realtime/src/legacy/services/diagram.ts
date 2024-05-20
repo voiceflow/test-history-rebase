@@ -61,8 +61,12 @@ class DiagramService extends AbstractControl {
       return { type: Realtime.BlockType.INTENT, global, nodeID: node.nodeID, intentID: node.data.intent || null };
     }
 
+    if (Realtime.Utils.typeGuards.isTriggerDBNode(node)) {
+      return { type: Realtime.BlockType.TRIGGER, nodeID: node.nodeID, items: node.data.items };
+    }
+
     if (Realtime.Utils.typeGuards.isStartDBNode(node)) {
-      return { type: Realtime.BlockType.START, name: node.data.label || '', nodeID: node.nodeID };
+      return { type: Realtime.BlockType.START, name: node.data.label || '', nodeID: node.nodeID, triggers: node.data.triggers ?? [] };
     }
 
     if (Realtime.Utils.typeGuards.isBlockDBNode(node)) {

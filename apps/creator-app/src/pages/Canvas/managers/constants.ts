@@ -40,9 +40,10 @@ import RandomManagerV2 from './RandomV2';
 import ReminderManager from './Reminder';
 import SetManagerV2 from './SetV2';
 import SpeakManager from './Speak';
-import StartManager from './Start';
+import { StartManager } from './Start/Start.manager';
 import StreamManager from './Stream';
 import TextManager from './Text';
+import { TriggerManager } from './TriggerManager/Trigger.manager';
 import UrlManager from './Url';
 import UserInfoManager from './UserInfo';
 import VisualManager from './Visual';
@@ -97,6 +98,7 @@ export const MANAGERS_BY_TYPE = {
   [BlockType.GO_TO_DOMAIN]: GoToDomainManager,
   [BlockType.CUSTOM_BLOCK_POINTER]: CustomBlockPointerManager,
   [BlockType.FUNCTION]: FunctionManager,
+  [BlockType.TRIGGER]: TriggerManager,
 };
 
 export const MANAGERS_BY_FEATURE: Partial<Record<BlockType, Realtime.FeatureFlag>> = {};

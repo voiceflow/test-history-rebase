@@ -56,8 +56,8 @@ export const useDiagramsIntentsOptionsMap = () => {
   const activeDiagram = useSelector(DiagramV2.active.diagramSelector);
   const getIntentByID = useSelector(Designer.Intent.selectors.getOneWithFormattedBuiltNameByID);
   const getDiagramByID = useSelector(DiagramV2.getDiagramByIDSelector);
+  const intentIDNodeIDMap = useSelector(CreatorV2.intentIDNodeIDMapSelector);
   const globalIntentStepMap = useSelector(DiagramV2.globalIntentStepMapSelector);
-  const intentNodeDataLookup = useSelector(CreatorV2.intentNodeDataLookupSelector);
 
   const isComponentActive = !activeDiagram?.type || isComponentDiagram(activeDiagram.type);
 
@@ -65,7 +65,9 @@ export const useDiagramsIntentsOptionsMap = () => {
     const optionsMap: Record<string, Option | Group> = {};
 
     if (isComponentActive && activeDiagram) {
-      const activeComponentOptions = Object.values(intentNodeDataLookup).map<Option>(({ intent }) => {
+      const activeComponentOptions = Object.keys(intentIDNodeIDMap).map<Option>((intentID) => {
+        const intent = getIntentByID({ id: intentID })!;
+
         const option = {
           id: createGroupedSelectID(activeDiagram.id, intent.id),
           label: intent.name,

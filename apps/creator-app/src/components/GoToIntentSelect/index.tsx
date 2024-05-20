@@ -60,8 +60,8 @@ const GoToIntentSelect: React.FC<GoToIntentSelectProps> = ({
   const workflows = useSelector(Designer.Workflow.selectors.all);
   const activeDiagram = useSelector(Diagram.active.diagramSelector);
   const getIntentByID = useSelector(Designer.Intent.selectors.getOneWithFormattedBuiltNameByID);
+  const intentIDNodeIDMap = useSelector(Creator.intentIDNodeIDMapSelector);
   const globalIntentStepMap = useSelector(Diagram.globalIntentStepMapSelector);
-  const intentNodeDataLookup = useSelector(Creator.intentNodeDataLookupSelector);
   const triggersMapByDiagramID = useSelector(Designer.Workflow.selectors.triggersMapByDiagramID);
 
   const isComponentActive = !activeDiagram?.type || isComponentDiagram(activeDiagram.type);
@@ -92,7 +92,7 @@ const GoToIntentSelect: React.FC<GoToIntentSelectProps> = ({
     buildDataTree: useCallback(
       (workflow, _, cacheOption): GroupOption => {
         const options = (triggersMapByDiagramID[workflow.diagramID] ?? []).reduce<Array<IntentOption | GroupOption>>((acc, triggerNode) => {
-          if (triggerNode.type !== BlockType.INTENT) return acc;
+          if (triggerNode.type !== BlockType.INTENT && triggerNode.type !== BlockType.TRIGGER && triggerNode.type !== BlockType.START) return acc;
 
           const intent = getIntentByID({ id: triggerNode.intentID });
           const diagramGlobalStepMap = globalIntentStepMap[workflow.diagramID];
@@ -176,7 +176,7 @@ const GoToIntentSelect: React.FC<GoToIntentSelectProps> = ({
     );
   }
 
-  const componentValue = isComponentActive && value && !!intentNodeDataLookup[value.intentID] ? createCombinedID('', value.intentID) : null;
+  const componentValue = isComponentActive && value && !!intentIDNodeIDMap[value.intentID] ? createCombinedID('', value.intentID) : null;
 
   return (
     <Select<Multilevel, string>

@@ -110,6 +110,7 @@ const FOCUSABLE_NODES = new Set([
   BlockType.CAPTUREV2,
   BlockType.CHOICE,
   BlockType.INTENT,
+  BlockType.TRIGGER,
   BlockType.STREAM,
   BlockType.COMPONENT,
   BlockType.EXIT,

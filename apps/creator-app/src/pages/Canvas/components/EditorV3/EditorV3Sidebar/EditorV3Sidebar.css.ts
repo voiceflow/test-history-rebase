@@ -15,13 +15,5 @@ export const drawerStyle = recipe({
         height: `calc(100% - 56px)`,
       },
     },
-    isOpen: {
-      true: {
-        right: '0px',
-      },
-      false: {
-        right: '-350px !important',
-      },
-    },
   },
 });

@@ -11848,6 +11848,7 @@ __metadata:
     "@voiceflow/sdk-message-queue": 1.7.0
     "@voiceflow/socket-utils": "workspace:*"
     "@voiceflow/test-common": 1.11.0
+    "@voiceflow/utils-designer": "workspace:*"
     axios: 1.6.0
     bidirectional-adapter: 1.2.1
     bson: 6.2.0

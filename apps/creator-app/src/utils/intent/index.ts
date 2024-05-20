@@ -120,26 +120,23 @@ export const getGoToIntentMeta = ({
   diagramID,
   intentsMap,
   diagramMap,
+  intentIDNodeIDMap,
   activeDiagramType,
   globalIntentStepMap,
-  intentNodeDataLookup,
 }: {
   intentID?: Nullable<string>;
   diagramID?: Nullable<string>;
-  intentsMap: Record<string, Platform.Base.Models.Intent.Model | Intent>;
+  intentsMap: Record<string, Intent>;
   diagramMap: Record<string, Realtime.Diagram>;
+  intentIDNodeIDMap: Record<string, string>;
   activeDiagramType: BaseModels.Diagram.DiagramType;
   globalIntentStepMap: Record<string, Record<string, string[]>>;
-  intentNodeDataLookup: Record<
-    string,
-    { data: Realtime.NodeData.Intent.PlatformData; intent: Platform.Base.Models.Intent.Model | Intent; nodeID: string }
-  >;
 }) => {
   const goToIntent = intentID ? intentsMap[intentID] ?? null : null;
   const goToDiagram = diagramID ? diagramMap[diagramID] ?? null : null;
 
   const topicGoToNodeID = goToIntent && goToDiagram ? globalIntentStepMap[goToDiagram.id]?.[goToIntent.id]?.[0] ?? null : null;
-  const componentGoToNodeID = topicGoToNodeID || (goToIntent ? intentNodeDataLookup[goToIntent.id]?.nodeID ?? null : null);
+  const componentGoToNodeID = topicGoToNodeID || (goToIntent ? intentIDNodeIDMap[goToIntent.id] ?? null : null);
 
   const goToNodeID = isComponentDiagram(activeDiagramType) ? componentGoToNodeID : topicGoToNodeID;
 

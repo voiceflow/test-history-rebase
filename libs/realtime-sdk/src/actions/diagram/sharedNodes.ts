@@ -1,6 +1,7 @@
 import { BlockType } from '@realtime-sdk/constants';
 import { BaseVersionPayload } from '@realtime-sdk/types';
 import { Nullable, Utils } from '@voiceflow/common';
+import { TriggerNodeItem } from '@voiceflow/dtos';
 
 import { diagramType } from './utils';
 
@@ -14,6 +15,7 @@ export interface BaseSharedNode {
 export interface StartNode extends BaseSharedNode {
   type: BlockType.START;
   name: string;
+  triggers: TriggerNodeItem[];
 }
 
 export interface IntentNode extends BaseSharedNode {
@@ -27,12 +29,17 @@ export interface CombinedNode extends BaseSharedNode {
   name: string;
 }
 
+export interface TriggerNode extends BaseSharedNode {
+  type: BlockType.TRIGGER;
+  items: TriggerNodeItem[];
+}
+
 export interface ComponentNode extends BaseSharedNode {
   type: BlockType.COMPONENT;
   componentID: string | null;
 }
 
-export type SharedNode = StartNode | IntentNode | CombinedNode | ComponentNode;
+export type SharedNode = StartNode | IntentNode | CombinedNode | ComponentNode | TriggerNode;
 
 export interface SharedNodeMap {
   [nodeID: string]: Nullable<SharedNode>;

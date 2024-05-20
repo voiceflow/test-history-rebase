@@ -16,6 +16,7 @@ import {
 import { DBNodeStart, Markup, NodeData } from '@realtime-sdk/models';
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import { AnyRecord, Utils } from '@voiceflow/common';
+import { NodeType, StartNode, TriggerNode } from '@voiceflow/dtos';
 
 import { createTypedTypeGuardCreator, createTypeGuardCreator } from './utils';
 
@@ -32,7 +33,6 @@ const createNodeDataTypeGuard = createTypedTypeGuardCreator<NodeData<unknown>>()
 
 export const isURLBlockType = createBlockTypeGuard(BlockType.URL);
 export const isRootBlockType = createBlockTypeGuard(ROOT_NODES);
-export const isIntentBlockType = createBlockTypeGuard(BlockType.INTENT);
 export const isSharedBlockType = createBlockTypeGuard(SHARED_NODES);
 export const isMarkupBlockType = createBlockTypeGuard(MARKUP_NODES);
 export const isActionsBlockType = createBlockTypeGuard(BlockType.ACTIONS);
@@ -51,8 +51,9 @@ export const isMarkupTemplateBlockType = createBlockTypeGuard(CANVAS_TEMPLATE_NO
 export const isMarkupOrCombinedBlockType = createBlockTypeGuard(MARKUP_AND_COMBINED_NODES);
 
 export const isBlockDBNode = createDBNodeTypeGuard<BaseModels.BaseBlock>(BaseModels.BaseNodeType.BLOCK);
-export const isStartDBNode = createDBNodeTypeGuard<BaseNode.Start.Step<BaseNode.Start.StepData & { steps?: string[] }>>(BaseNode.NodeType.START);
+export const isStartDBNode = createDBNodeTypeGuard<StartNode>(BaseNode.NodeType.START);
 export const isIntentDBNode = createDBNodeTypeGuard<BaseNode.Intent.Step>(BaseNode.NodeType.INTENT);
+export const isTriggerDBNode = createDBNodeTypeGuard<TriggerNode>(NodeType.TRIGGER);
 export const isCommandDBNode = createDBNodeTypeGuard<BaseNode.Command.Step>(BaseNode.NodeType.COMMAND);
 export const isGoToNodeDBNode = createDBNodeTypeGuard<BaseNode.GoToNode.Step>(BaseNode.NodeType.GOTO_NODE);
 export const isGoToDomainDBNode = createDBNodeTypeGuard<BaseNode.GoToDomain.Step>(BaseNode.NodeType.GOTO_DOMAIN);
@@ -67,6 +68,7 @@ export const isCodeNodeData = createNodeDataTypeGuard<NodeData<NodeData.Code>>(B
 export const isSetV2NodeData = createNodeDataTypeGuard<NodeData<NodeData.SetV2>>(BlockType.SETV2);
 export const isStartNodeData = createNodeDataTypeGuard<NodeData<NodeData.Start>>(BlockType.START);
 export const isIntentNodeData = createNodeDataTypeGuard<NodeData<NodeData.Intent>>(BlockType.INTENT);
+export const isTriggerNodeData = createNodeDataTypeGuard<NodeData<NodeData.Trigger>>(BlockType.TRIGGER);
 export const isCardV2NodeData = createNodeDataTypeGuard<NodeData<NodeData.CardV2>>(BlockType.CARDV2);
 export const isCarouselNodeData = createNodeDataTypeGuard<NodeData<NodeData.Carousel>>(BlockType.CAROUSEL);
 export const isGoToNodeNodeData = createNodeDataTypeGuard<NodeData<NodeData.GoToNode>>(BlockType.GO_TO_NODE);

@@ -8,7 +8,7 @@ import Chip from '@/pages/Canvas/components/Chip';
 import { COMPONENT_CHIP_CLASSNAME, HOME_CHIP_CLASSNAME } from '@/pages/Canvas/constants';
 import { ConnectedChip } from '@/pages/Canvas/managers/types';
 
-const StartChip: ConnectedChip<Realtime.NodeData.Start> = ({ ports }) => {
+export const StartChip: ConnectedChip<Realtime.NodeData.Start> = ({ ports }) => {
   const isTopic = useSelector(DiagramV2.active.isTopicSelector);
 
   return (
@@ -20,5 +20,3 @@ const StartChip: ConnectedChip<Realtime.NodeData.Start> = ({ ports }) => {
     />
   );
 };
-
-export default StartChip;

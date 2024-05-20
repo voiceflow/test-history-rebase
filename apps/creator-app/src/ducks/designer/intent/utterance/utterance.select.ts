@@ -4,6 +4,7 @@ import { createSelector } from 'reselect';
 
 import { createCurriedSelector, createSubSelector } from '@/ducks/utils';
 import { sortCreatableCMSResources } from '@/utils/cms.util';
+import { isUtteranceTextEmpty } from '@/utils/utterance.util';
 
 import { createDesignerCRUDSelectors, intentIDParamSelector, intentIDsParamSelector } from '../../utils/selector.util';
 import { root as intentRoot } from '../selectors/root.select';
@@ -20,6 +21,11 @@ export const allByIntentID = createSelector(all, intentIDParamSelector, (utteran
 export const getAllByIntentID = createCurriedSelector(allByIntentID);
 
 export const countByIntentID = createSelector(allByIntentID, (utterances) => utterances.length);
+
+export const nonEmptyCountByIntentID = createSelector(
+  allByIntentID,
+  (utterances) => utterances.filter((utterance) => !isUtteranceTextEmpty(utterance.text)).length
+);
 
 export const entityIDsByIntentID = createSelector(allByIntentID, (utterances) =>
   Utils.array.unique(utterances.flatMap(({ text }) => getMarkupEntityIDs(text)))

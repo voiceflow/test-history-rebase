@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 import { DiagramMenuItemDTO } from './diagram-menu-item.dto';
 import { DiagramNodeDTO } from './diagram-node.dto';
+import { DiagramType } from './diagram-type.enum';
 
 export const DiagramDTO = z
   .object({
@@ -9,7 +10,7 @@ export const DiagramDTO = z
 
     name: z.string(),
 
-    type: z.string().optional(),
+    type: z.nativeEnum(DiagramType).optional(),
 
     zoom: z.number(),
 

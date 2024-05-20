@@ -15,9 +15,18 @@ export type TriggerNodeItemSettings = z.infer<typeof TriggerNodeItemSettingsDTO>
 
 export const TriggerNodeItemDTO = z
   .object({
+    id: z.string(),
     type: z.nativeEnum(TriggerNodeItemType),
     settings: TriggerNodeItemSettingsDTO,
     resourceID: z.string().nullable(),
+
+    /**
+     * @deprecated shouldn't be used anymore, need this to support legacy intent mappings
+     */
+    mappings: z
+      .any()
+      .optional()
+      .describe("@deprecated shouldn't be used anymore, need this to support legacy intent mappings"),
   })
   .strict();
 

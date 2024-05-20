@@ -103,7 +103,7 @@ export const DiagramSidebar: React.FC = () => {
   });
 
   const diagramID = params.diagramID ?? activeDiagramID;
-  const focusedNodeID = activeSharedNode?.type === BlockType.INTENT || activeSharedNode?.type === BlockType.START ? activeSharedNode.nodeID : null;
+  const focusedNodeID = activeSharedNode?.type === BlockType.INTENT || activeSharedNode?.type === BlockType.TRIGGER || activeSharedNode?.type === BlockType.START ? activeSharedNode.nodeID : null;
   const selectedID = focusedNodeID ? `${diagramID}:${focusedNodeID}` : diagramID;
 
   return (

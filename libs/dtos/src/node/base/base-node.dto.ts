@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { DiagramNodeDTO } from '@/diagram/diagram-node.dto';
 
 import { NodeType } from '../node-type.enum';
-import { BasePortsDTO } from './base-port.dto';
+import { BasePortsDTO } from './base-ports.dto';
 
 export const BaseNodeDataDTO = z
   .object({
@@ -16,7 +16,7 @@ export type BaseNodeData = z.infer<typeof DiagramNodeDTO>;
 
 export const BaseNodeDTO = DiagramNodeDTO.extend({
   type: z.nativeEnum(NodeType),
-  data: BaseNodeDataDTO.optional(),
+  data: BaseNodeDataDTO,
 }).strict();
 
 export type BaseNode = z.infer<typeof BaseNodeDTO>;

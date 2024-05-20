@@ -1,0 +1,29 @@
+import { NodeSystemPortType, TriggerNodeItem, TriggerNodeItemType } from '@voiceflow/dtos';
+import * as Realtime from '@voiceflow/realtime-sdk';
+import React, { useMemo } from 'react';
+
+import Chip from '@/pages/Canvas/components/Chip';
+import { IntentMapContext } from '@/pages/Canvas/contexts';
+import { ConnectedChip } from '@/pages/Canvas/managers/types';
+
+import { TRIGGER_NODE_CONFIG } from './TriggerManager.constants';
+
+export const TriggerChip: ConnectedChip<Realtime.NodeData.Trigger> = ({ data, ports }) => {
+  const intentMap = React.useContext(IntentMapContext)!;
+
+  const nonEmptyIntentItem = useMemo(
+    () => data.items.find((item): item is TriggerNodeItem & { resourceID: string } => item.type === TriggerNodeItemType.INTENT && !!item.resourceID),
+    [data.items]
+  );
+
+  const intent = nonEmptyIntentItem ? intentMap[nonEmptyIntentItem.resourceID] : null;
+
+  return (
+    <Chip
+      name={intent?.name ?? null}
+      icon={nonEmptyIntentItem?.settings.local ? 'intentLocal' : TRIGGER_NODE_CONFIG.icon!}
+      portID={ports.out.byKey[NodeSystemPortType.NEXT]}
+      placeholder="Select a trigger..."
+    />
+  );
+};

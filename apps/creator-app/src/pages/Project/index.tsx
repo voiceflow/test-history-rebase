@@ -24,11 +24,14 @@ import Diagram from './components/Diagram';
 import ProjectExitTracker from './components/ProjectExitTracker';
 import { DIAGRAM_ROUTES, TIMEOUT_COUNT } from './constants';
 import { MarkupProvider } from './contexts';
+import { useProjectHotkeys } from './Project.hook';
 
 const Publish = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/Publish')));
 const Settings = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/Settings')));
 const Conversations = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/Conversations')));
-const AssistantOverview = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/DashboardV2/pages/AssistantOverview')));
+const AssistantOverview = withWorkspaceOrProjectAssetsSuspense(
+  lazy(() => import('@/pages/DashboardV2/pages/AssistantOverview'))
+);
 const AnalyticsDashboard = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/AnalyticsDashboard')));
 
 const Project: React.FC = () => {
@@ -79,6 +82,8 @@ const Project: React.FC = () => {
     idleTimer.start();
   }, [isOnlyViewer]);
 
+  useProjectHotkeys();
+
   useTeardown(() => {
     resetCreator();
     resetCanvasTemplateData();
@@ -102,7 +107,9 @@ const Project: React.FC = () => {
 
           <Route path={Path.PROJECT_ANALYTICS} component={AnalyticsDashboard} />
 
-          {!disableIntegration.isEnabled && !hideExports.isEnabled && <Route path={Path.PROJECT_PUBLISH} component={Publish} />}
+          {!disableIntegration.isEnabled && !hideExports.isEnabled && (
+            <Route path={Path.PROJECT_PUBLISH} component={Publish} />
+          )}
 
           <Route path={Path.PROJECT_SETTINGS} component={Settings} />
 

@@ -29,7 +29,12 @@ interface ContextValue {
   state: Normal.Normalized<Modal>;
   animated: boolean;
 
-  open: (id: string, type: string, props: AnyRecord, api: T.VoidInternalAPI<any> | T.ResultInternalAPI<any, any>) => void;
+  open: (
+    id: string,
+    type: string,
+    props: AnyRecord,
+    api: T.VoidInternalAPI<any> | T.ResultInternalAPI<any, any>
+  ) => void;
   close: (id: string, type: string, source: T.CloseSource) => void;
   update: (id: string, type: string, props: UpdateData) => void;
   remove: (id: string, type: string) => void;
@@ -59,16 +64,22 @@ const actions = {
   close: Utils.protocol.createAction<{ id: string; type: string }>('vf-modals/close'),
   remove: Utils.protocol.createAction<{ id: string; type: string }>('vf-modals/remove'),
   update: Utils.protocol.createAction<{ id: string; type: string; update: UpdateData }>('vf-modals/update'),
-  addCloseRequestHandler: Utils.protocol.createAction<{ id: string; type: string; handler: (source: T.CloseSource) => boolean }>(
-    'vf-modals/add-close-request-handler'
-  ),
-  removeCloseRequestHandler: Utils.protocol.createAction<{ id: string; type: string; handler: (source: T.CloseSource) => boolean }>(
-    'vf-modals/remove-close-request-handler'
-  ),
+  addCloseRequestHandler: Utils.protocol.createAction<{
+    id: string;
+    type: string;
+    handler: (source: T.CloseSource) => boolean;
+  }>('vf-modals/add-close-request-handler'),
+  removeCloseRequestHandler: Utils.protocol.createAction<{
+    id: string;
+    type: string;
+    handler: (source: T.CloseSource) => boolean;
+  }>('vf-modals/remove-close-request-handler'),
 };
 
 reducer
-  .case(actions.open, (state, payload) => Normal.prependOne(state, manager.getCombinedID(payload.id, payload.type), payload))
+  .case(actions.open, (state, payload) =>
+    Normal.prependOne(state, manager.getCombinedID(payload.id, payload.type), payload)
+  )
   .case(actions.close, (state, payload) => {
     const modal = Normal.getOne(state, manager.getCombinedID(payload.id, payload.type));
 
@@ -86,14 +97,17 @@ reducer
   )
   .case(actions.addCloseRequestHandler, (state, payload) =>
     Normal.patchOne(state, manager.getCombinedID(payload.id, payload.type), {
-      closeRequestHandlers: [...(Normal.getOne(state, manager.getCombinedID(payload.id, payload.type))?.closeRequestHandlers ?? []), payload.handler],
+      closeRequestHandlers: [
+        ...(Normal.getOne(state, manager.getCombinedID(payload.id, payload.type))?.closeRequestHandlers ?? []),
+        payload.handler,
+      ],
     })
   )
   .case(actions.removeCloseRequestHandler, (state, payload) =>
     Normal.patchOne(state, manager.getCombinedID(payload.id, payload.type), {
-      closeRequestHandlers: (Normal.getOne(state, manager.getCombinedID(payload.id, payload.type))?.closeRequestHandlers ?? []).filter(
-        (handler) => handler !== payload.handler
-      ),
+      closeRequestHandlers: (
+        Normal.getOne(state, manager.getCombinedID(payload.id, payload.type))?.closeRequestHandlers ?? []
+      ).filter((handler) => handler !== payload.handler),
     })
   );
 
@@ -104,7 +118,13 @@ export const Provider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const prevAllKeysLengthRef = React.useRef(state.allKeys.length);
 
   const open = React.useCallback(
-    (id: string, type: string, props: AnyRecord, api: T.VoidInternalAPI<any> | T.ResultInternalAPI<any, any>, options: T.OpenOptions = {}) =>
+    (
+      id: string,
+      type: string,
+      props: AnyRecord,
+      api: T.VoidInternalAPI<any> | T.ResultInternalAPI<any, any>,
+      options: T.OpenOptions = {}
+    ) =>
       dispatch(
         actions.open({
           id,
@@ -128,9 +148,18 @@ export const Provider: React.FC<React.PropsWithChildren> = ({ children }) => {
     dispatch(actions.close({ id, type }));
   }, []);
   const remove = React.useCallback((id: string, type: string) => dispatch(actions.remove({ id, type })), []);
-  const update = React.useCallback((id: string, type: string, update: UpdateData) => dispatch(actions.update({ id, type, update })), []);
-  const enableClose = React.useCallback((id: string, type: string) => dispatch(actions.update({ id, type, update: { closePrevented: false } })), []);
-  const preventClose = React.useCallback((id: string, type: string) => dispatch(actions.update({ id, type, update: { closePrevented: true } })), []);
+  const update = React.useCallback(
+    (id: string, type: string, update: UpdateData) => dispatch(actions.update({ id, type, update })),
+    []
+  );
+  const enableClose = React.useCallback(
+    (id: string, type: string) => dispatch(actions.update({ id, type, update: { closePrevented: false } })),
+    []
+  );
+  const preventClose = React.useCallback(
+    (id: string, type: string) => dispatch(actions.update({ id, type, update: { closePrevented: true } })),
+    []
+  );
 
   React.useEffect(() => {
     prevAllKeysLengthRef.current = state.allKeys.length;
@@ -168,7 +197,10 @@ export const Provider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   const animated = state.allKeys.length <= 1 && prevAllKeysLengthRef.current <= 1;
 
-  const api = useMemo(() => ({ open, close, state, update, remove, animated, enableClose, preventClose }), [state, animated]);
+  const api = useMemo(
+    () => ({ open, close, state, update, remove, animated, enableClose, preventClose }),
+    [state, animated]
+  );
 
   return <Context.Provider value={api}>{children}</Context.Provider>;
 };

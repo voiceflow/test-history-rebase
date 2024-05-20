@@ -62,6 +62,8 @@ export enum Hotkey {
 
   BACK_TO_CMS = 'BACK_TO_CMS',
   BACK_TO_DESIGNER = 'BACK_TO_DESIGNER',
+  BACK_TO_KNOWLEDGE_BASE = 'BACK_TO_KNOWLEDGE_BASE',
+
   CANVAS_SHOW_HIDE_UI = 'CANVAS_SHOW_HIDE_UI',
   CANVAS_TOGGLE_SIDEBAR = 'CANVAS_TOGGLE_SIDEBAR',
 }
@@ -108,7 +110,7 @@ const HOTKEY_MAPPING: Record<Hotkey, string | string[]> = {
   [Hotkey.SEARCH]: [`${SpecialKey.CTRL}+k`, `${SpecialKey.META}+k`],
   [Hotkey.DUPLICATE]: [`${SpecialKey.CTRL}+d`, `${SpecialKey.META}+d`],
   [Hotkey.CREATE_SUBTOPIC]: [`${SpecialKey.CTRL}+g`, `${SpecialKey.META}+g`],
-  [Hotkey.CREATE_COMPONENT]: [`${SpecialKey.SHIFT}+${SpecialKey.CTRL}+k`, `${SpecialKey.SHIFT}+${SpecialKey.META}+k`],
+  [Hotkey.CREATE_COMPONENT]: [`${SpecialKey.SHIFT}+${SpecialKey.CTRL}+c`, `${SpecialKey.SHIFT}+${SpecialKey.META}+c`],
   [Hotkey.ADD_TO_LIBRARY]: [`${SpecialKey.SHIFT}+${SpecialKey.CTRL}+l`, `${SpecialKey.SHIFT}+${SpecialKey.META}+l`],
   [Hotkey.USER_SPEECH]: SpecialKey.SPACE,
   [Hotkey.MOVE_FORWARD]: SpecialKey.RIGHT,
@@ -123,7 +125,10 @@ const HOTKEY_MAPPING: Record<Hotkey, string | string[]> = {
   [Hotkey.CANVAS_TOGGLE_SIDEBAR]: [`${SpecialKey.CTRL}+\\`, `${SpecialKey.META}+\\`],
   [Hotkey.PROTOTYPE_CLOSE_FULL_SCREEN]: SpecialKey.ESC,
   [Hotkey.PROTOTYPE_FULL_SCREEN_TOGGLE]: 'f',
-  [Hotkey.OPEN_MANUAL_SAVE_MODAL]: [`${SpecialKey.SHIFT}+${SpecialKey.CTRL}+s`, `${SpecialKey.SHIFT}+${SpecialKey.META}+s`],
+  [Hotkey.OPEN_MANUAL_SAVE_MODAL]: [
+    `${SpecialKey.SHIFT}+${SpecialKey.CTRL}+s`,
+    `${SpecialKey.SHIFT}+${SpecialKey.META}+s`,
+  ],
   [Hotkey.SAVE]: [`${SpecialKey.META}+s`, `${SpecialKey.CTRL}+s`],
   [Hotkey.CLOSE_UPLOAD_MODAL]: SpecialKey.ESC,
   [Hotkey.HIDE_COMMENT_BUBBLES]: [`${SpecialKey.SHIFT}+c`],
@@ -146,6 +151,10 @@ const HOTKEY_MAPPING: Record<Hotkey, string | string[]> = {
   [Hotkey.TOGGLE_CHATBOT]: [`${SpecialKey.CTRL}+/`, `${SpecialKey.META}+/`],
   [Hotkey.BACK_TO_CMS]: [`${SpecialKey.CTRL}+[`, `${SpecialKey.META}+[`],
   [Hotkey.BACK_TO_DESIGNER]: [`${SpecialKey.CTRL}+]`, `${SpecialKey.META}+]`],
+  [Hotkey.BACK_TO_KNOWLEDGE_BASE]: [
+    `${SpecialKey.CTRL}+${SpecialKey.SHIFT}+k`,
+    `${SpecialKey.META}+${SpecialKey.SHIFT}+k`,
+  ],
 };
 
 const SPECIAL_KEY_LABEL: Record<SpecialKey, string> = {
@@ -189,10 +198,13 @@ export const getHotkeyLabel = (hotkey: Hotkey): string => {
     label = platformLabel ?? label[0];
   }
 
-  // for the mac platform remove '+' between ⌘ and ⌥ and hotkeys
-  const formattedLabel = IS_MAC
-    ? label.replace(`${PLATFORM_META_KEY}+`, PLATFORM_META_KEY).replace(`${SpecialKey.OPTION}+`, SpecialKey.OPTION)
-    : label;
+  let formattedLabel = label
+    .replace(`${PLATFORM_META_KEY}+`, PLATFORM_META_KEY)
+    .replace(`${SpecialKey.SHIFT}+`, SpecialKey.SHIFT);
+
+  if (IS_MAC) {
+    formattedLabel = formattedLabel.replace(`${SpecialKey.OPTION}+`, SpecialKey.OPTION);
+  }
 
   return replaceSpecials(formattedLabel.toUpperCase());
 };

@@ -7,9 +7,11 @@ import { AssistantNavigation } from './AssistantNavigation/AssistantNavigation.c
 
 interface AssistantLayoutProps extends React.PropsWithChildren {}
 
-export const AssistantLayout: React.FC<AssistantLayoutProps> = ({ children }) => (
-  <V3StyleContainer className={container}>
-    <AssistantNavigation />
-    <div className={content}>{children}</div>
-  </V3StyleContainer>
-);
+export const AssistantLayout: React.FC<AssistantLayoutProps> = ({ children }) => {
+  return (
+    <V3StyleContainer className={container}>
+      <AssistantNavigation />
+      <div className={content}>{children}</div>
+    </V3StyleContainer>
+  );
+};

@@ -21,7 +21,7 @@ export interface RegisteredModal<Props, ModalProps = never, ModalResult = never>
   __vfModalOptions?: CreateModalOptions;
 }
 
-export type CloseSource = 'esc' | 'api' | 'hook' | 'backdrop';
+export type CloseSource = 'esc' | 'api' | 'hook' | 'backdrop' | 'popstate';
 
 interface SharedAPI {
   id: string;

@@ -19,7 +19,7 @@ export class OrganizationIdentityService {
   public async getAll(creatorID: number): Promise<Organization[]> {
     const token = await this.user.getTokenByID(creatorID);
 
-    const allOrganizations = (await this.identityClient.organization.findManyByUserID(
+    const allOrganizations = (await this.identityClient.organization.findManyByUserIDThroughWorkspaces(
       {
         members: true,
         trial: true,

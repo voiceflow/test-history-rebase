@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.95.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.94.2...@voiceflow/ml-gateway@1.95.0) (2024-05-21)
+
+### Features
+
+* add gpt-4o to ml-gateway (ML-893) ([#8146](https://github.com/voiceflow/creator-app/issues/8146)) ([d6dd8f8](https://github.com/voiceflow/creator-app/commit/d6dd8f8a66e9c9eae8e656a2d1039724c2ec9aad))
+
 ## [1.94.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.94.1...@voiceflow/ml-gateway@1.94.2) (2024-05-21)
 
 **Note:** Version bump only for package @voiceflow/ml-gateway

@@ -1,11 +1,13 @@
 import { z } from 'zod';
 
+import { SlateTextValueDTO } from '@/text/text.dto';
+
 import { CardLayout } from '../card-layout.enum';
 import { ResponseVariantType } from '../response-variant-type.enum';
 import { BaseCompiledResponseVariantDTO } from './base-variant.compiled.dto';
 
 export const CompiledTextResponseVariantDataDTO = z.object({
-  text: z.string(),
+  text: SlateTextValueDTO,
   speed: z.number().nullable(),
   cardLayout: z.nativeEnum(CardLayout),
 }).strict();

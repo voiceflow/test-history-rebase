@@ -120,15 +120,20 @@ export class AssistantService extends MutableService<AssistantORM> {
     }
 
     if (!assistantID) {
-      throw new BadRequestException(`Could not resolve '${environmentID}' environment alias. The "assistantID" is not provided.`);
+      throw new BadRequestException(
+        `Could not resolve '${environmentID}' environment alias. The "assistantID" is not provided.`
+      );
     }
 
     const project = await this.project.findOneOrFail(assistantID);
 
-    const resolvedVersionID = environmentID === VersionIDAlias.PRODUCTION ? project.liveVersion?.toString() : project.devVersion?.toString();
+    const resolvedVersionID =
+      environmentID === VersionIDAlias.PRODUCTION ? project.liveVersion?.toString() : project.devVersion?.toString();
 
     if (!resolvedVersionID) {
-      throw new InternalServerErrorException(`Could not resolve '${environmentID}' environment alias. There is no environment under that alias.`);
+      throw new InternalServerErrorException(
+        `Could not resolve '${environmentID}' environment alias. There is no environment under that alias.`
+      );
     }
 
     return resolvedVersionID;
@@ -152,7 +157,8 @@ export class AssistantService extends MutableService<AssistantORM> {
     workspaceProperties?: { settingsDashboardKanban: boolean };
   }) {
     try {
-      const workspaceProperties = workspacePropertiesProp ?? (await this.fetchWorkspacePropertiesWithDefaults(workspaceID));
+      const workspaceProperties =
+        workspacePropertiesProp ?? (await this.fetchWorkspacePropertiesWithDefaults(workspaceID));
 
       let projectList: Realtime.DBProjectList | null = null;
       let projectListCreated = false;
@@ -197,7 +203,10 @@ export class AssistantService extends MutableService<AssistantORM> {
   public async findOneCMSData(assistantID: string, environmentID: string) {
     // using transaction to optimize connections
     return this.postgresEM.transactional(async () => {
-      const [assistant, cmsData] = await Promise.all([this.findOneOrFail(assistantID), this.environment.findOneCMSData(environmentID)]);
+      const [assistant, cmsData] = await Promise.all([
+        this.findOneOrFail(assistantID),
+        this.environment.findOneCMSData(environmentID),
+      ]);
 
       return {
         ...cmsData,
@@ -232,7 +241,12 @@ export class AssistantService extends MutableService<AssistantORM> {
     }
   ) {
     const project = {
-      ...Utils.object.omit(deepSetCreatorID(deepSetNewDate(data.project), userID), ['prototype', 'createdAt', 'liveVersion', 'previewVersion']),
+      ...Utils.object.omit(deepSetCreatorID(deepSetNewDate(data.project), userID), [
+        'prototype',
+        'createdAt',
+        'liveVersion',
+        'previewVersion',
+      ]),
       _id: assistantID,
       teamID: workspaceID,
       privacy: 'private' as const,
@@ -263,7 +277,10 @@ export class AssistantService extends MutableService<AssistantORM> {
     return {
       project,
       _version: data._version,
-      variableStates: data.variableStates?.map((variableState) => ({ ...Utils.object.omit(variableState, ['_id']), projectID: assistantID })),
+      variableStates: data.variableStates?.map((variableState) => ({
+        ...Utils.object.omit(variableState, ['_id']),
+        projectID: assistantID,
+      })),
     };
   }
 
@@ -346,7 +363,9 @@ export class AssistantService extends MutableService<AssistantORM> {
     environmentID: string;
     centerDiagrams?: boolean;
   }) {
-    if (!this.unleash.isEnabled(Realtime.FeatureFlag.RUN_MIGRATION_ON_IMPORT, { userID, workspaceID: project.teamID })) {
+    if (
+      !this.unleash.isEnabled(Realtime.FeatureFlag.RUN_MIGRATION_ON_IMPORT, { userID, workspaceID: project.teamID })
+    ) {
       return this.environment.prepareImportData(data, {
         userID,
         backup,
@@ -362,7 +381,7 @@ export class AssistantService extends MutableService<AssistantORM> {
     try {
       migrationResult = this.migrateEnvironmentJSON({ data, userID, project, assistant, environmentID });
     } catch {
-      throw new InternalServerErrorException(`Couldn't migrate assistant to latest scheme.`);
+      throw new InternalServerErrorException("Couldn't migrate assistant to latest scheme.");
     }
 
     try {
@@ -382,7 +401,7 @@ export class AssistantService extends MutableService<AssistantORM> {
         }
       );
     } catch {
-      throw new InternalServerErrorException(`Couldn't prepare environment import data.`);
+      throw new InternalServerErrorException("Couldn't prepare environment import data.");
     }
   }
 
@@ -414,7 +433,9 @@ export class AssistantService extends MutableService<AssistantORM> {
       settingsAiAssist: workspaceProperties.settingsAiAssist,
     });
 
-    const project = await this.project.createOne(this.project.fromJSON({ ...projectImportData.project, ...projectOverride }));
+    const project = await this.project.createOne(
+      this.project.fromJSON({ ...projectImportData.project, ...projectOverride })
+    );
 
     let assistant: AssistantObject;
 
@@ -431,10 +452,9 @@ export class AssistantService extends MutableService<AssistantORM> {
 
       await this.project.deleteOne(project._id.toJSON());
 
-      throw new InternalServerErrorException(`Couldn't create the assistant.`);
+      throw new InternalServerErrorException("Couldn't create the assistant.");
     }
 
-    // eslint-disable-next-line no-secrets/no-secrets
     let environmentMigratedImportData: ReturnType<AssistantService['migrateAndPrepareEnvironmentImportJSON']>;
 
     try {
@@ -469,7 +489,7 @@ export class AssistantService extends MutableService<AssistantORM> {
       await this.deleteOne(assistant.id);
       await this.project.deleteOne(project._id.toJSON());
 
-      throw new InternalServerErrorException(`Couldn't import the environment.`);
+      throw new InternalServerErrorException("Couldn't import the environment.");
     }
 
     let variableStates: VariableStateObject[];
@@ -485,7 +505,7 @@ export class AssistantService extends MutableService<AssistantORM> {
       await this.deleteOne(assistant.id);
       await this.project.deleteOne(project._id.toJSON());
 
-      throw new InternalServerErrorException(`Couldn't import variable states.`);
+      throw new InternalServerErrorException("Couldn't import variable states.");
     }
 
     const { projectList, projectListCreated } = await this.addOneToProjectListIfRequired({
@@ -583,7 +603,11 @@ export class AssistantService extends MutableService<AssistantORM> {
     clientID?: string;
     workspaceID: number;
   }) {
-    const { project, assistant, projectList, projectListCreated } = await this.importJSON({ data, userID, workspaceID });
+    const { project, assistant, projectList, projectListCreated } = await this.importJSON({
+      data,
+      userID,
+      workspaceID,
+    });
 
     if (!clientID) {
       return { project, assistant };
@@ -633,7 +657,12 @@ export class AssistantService extends MutableService<AssistantORM> {
     project.members = [];
     project.previewVersion = undefined;
 
-    const exportData = this.environment.prepareExportData(data, { backup, userID, workspaceID: data.project.teamID, centerDiagrams });
+    const exportData = this.environment.prepareExportData(data, {
+      backup,
+      userID,
+      workspaceID: data.project.teamID,
+      centerDiagrams,
+    });
 
     const buildProgramsRecord = (programs: ProgramJSON[]) =>
       Object.fromEntries(programs.map((program) => [program.diagramID, { ...program, _id: program.diagramID }]));
@@ -678,18 +707,16 @@ export class AssistantService extends MutableService<AssistantORM> {
         this.variableState.findManyByProject(projectID.toJSON()),
       ]);
 
-      const { cms, version, diagrams } = await this.environment.exportJSON({
-        userID,
-        workspaceID: project.teamID,
-        environmentID,
-      });
+      const { cms, version, diagrams } = await this.environment.exportJSON(environmentID);
 
       const diagramIDs = diagrams.map((diagram) => diagram.diagramID);
       diagramIDs.push(version._id);
 
       const [programs, prototypePrograms] = await Promise.all([
         withPrograms ? await this.program.findManyByVersionAndDiagramIDs(version._id, diagramIDs) : Promise.resolve([]),
-        withPrototypePrograms ? await this.prototypeProgram.findManyByVersionAndDiagramIDs(version._id, diagramIDs) : Promise.resolve([]),
+        withPrototypePrograms
+          ? await this.prototypeProgram.findManyByVersionAndDiagramIDs(version._id, diagramIDs)
+          : Promise.resolve([]),
       ]);
 
       const exportVersion = project._version ?? LATEST_PROJECT_VERSION;
@@ -721,17 +748,36 @@ export class AssistantService extends MutableService<AssistantORM> {
       const { projectID } = await this.version.findOneOrFailWithFields(environmentID, ['projectID']);
       const { teamID: workspaceID } = await this.project.findOneOrFailWithFields(projectID, ['teamID']);
 
-      const [assistant, cmsData] = await Promise.all([this.findOneOrFail(projectID.toJSON()), this.environment.findOneCMSData(environmentID)]);
+      const [assistant, cmsData] = await Promise.all([
+        this.findOneOrFail(projectID.toJSON()),
+        this.environment.findOneCMSData(environmentID),
+      ]);
 
       const intentsUpdatedFieldsMap = buildCMSTabularEntitiesUpdatedFieldsMap(cmsData.intents);
-      adjustCMSTabularEntitiesUpdatedFieldsMap(intentsUpdatedFieldsMap, cmsData.utterances, (utterance) => utterance.intentID);
-      adjustCMSTabularEntitiesUpdatedFieldsMap(intentsUpdatedFieldsMap, cmsData.requiredEntities, (utterance) => utterance.intentID);
+      adjustCMSTabularEntitiesUpdatedFieldsMap(
+        intentsUpdatedFieldsMap,
+        cmsData.utterances,
+        (utterance) => utterance.intentID
+      );
+      adjustCMSTabularEntitiesUpdatedFieldsMap(
+        intentsUpdatedFieldsMap,
+        cmsData.requiredEntities,
+        (utterance) => utterance.intentID
+      );
 
       const entitiesUpdatedFieldsMap = buildCMSTabularEntitiesUpdatedFieldsMap(cmsData.entities);
-      adjustCMSTabularEntitiesUpdatedFieldsMap(entitiesUpdatedFieldsMap, cmsData.entityVariants, (entityVariant) => entityVariant.entityID);
+      adjustCMSTabularEntitiesUpdatedFieldsMap(
+        entitiesUpdatedFieldsMap,
+        cmsData.entityVariants,
+        (entityVariant) => entityVariant.entityID
+      );
 
       const functionsUpdatedFieldsMap = buildCMSTabularEntitiesUpdatedFieldsMap(cmsData.functions);
-      adjustCMSTabularEntitiesUpdatedFieldsMap(functionsUpdatedFieldsMap, cmsData.functionPaths, (functionPath) => functionPath.functionID);
+      adjustCMSTabularEntitiesUpdatedFieldsMap(
+        functionsUpdatedFieldsMap,
+        cmsData.functionPaths,
+        (functionPath) => functionPath.functionID
+      );
       adjustCMSTabularEntitiesUpdatedFieldsMap(
         functionsUpdatedFieldsMap,
         cmsData.functionVariables,
@@ -752,8 +798,16 @@ export class AssistantService extends MutableService<AssistantORM> {
 
   /* Create  */
 
-  public async createOneForLegacyProject(workspaceID: string, projectID: string, data: Omit<CreateData<AssistantEntity>, 'workspaceID'>) {
-    const assistant = await this.orm.createOne({ ...data, id: projectID, workspaceID: this.assistantSerializer.decodeWorkspaceID(workspaceID) });
+  public async createOneForLegacyProject(
+    workspaceID: string,
+    projectID: string,
+    data: Omit<CreateData<AssistantEntity>, 'workspaceID'>
+  ) {
+    const assistant = await this.orm.createOne({
+      ...data,
+      id: projectID,
+      workspaceID: this.assistantSerializer.decodeWorkspaceID(workspaceID),
+    });
 
     return this.assistantSerializer.nullable(assistant);
   }
@@ -780,7 +834,7 @@ export class AssistantService extends MutableService<AssistantORM> {
     const sourceProject = await this.project.findOneOrFail(sourceAssistantID);
 
     if (!sourceProject.devVersion) {
-      throw new InternalServerErrorException(`The dev environment id doesn't exist.`);
+      throw new InternalServerErrorException("The dev environment id doesn't exist.");
     }
 
     const targetProject = targetAssistantID ? await this.version.findOne(targetAssistantID) : null;
@@ -796,7 +850,13 @@ export class AssistantService extends MutableService<AssistantORM> {
 
     const project = await this.project.createOne(
       this.project.fromJSON({
-        ...Utils.object.omit(sourceProjectJSON, ['privacy', 'apiPrivacy', 'prototype', 'liveVersion', 'previewVersion']),
+        ...Utils.object.omit(sourceProjectJSON, [
+          'privacy',
+          'apiPrivacy',
+          'prototype',
+          'liveVersion',
+          'previewVersion',
+        ]),
         _version: LATEST_PROJECT_VERSION,
         ...targetProjectOverride,
         _id: assistantID,
@@ -805,7 +865,13 @@ export class AssistantService extends MutableService<AssistantORM> {
         updatedAt: new Date().toJSON(),
         devVersion: environmentID,
         ...((sourceProjectJSON.knowledgeBase || targetProjectOverride?.knowledgeBase) && {
-          knowledgeBase: { ...sourceProjectJSON.knowledgeBase, documents: {}, faqSets: {}, tags: {}, ...targetProjectOverride?.knowledgeBase },
+          knowledgeBase: {
+            ...sourceProjectJSON.knowledgeBase,
+            documents: {},
+            faqSets: {},
+            tags: {},
+            ...targetProjectOverride?.knowledgeBase,
+          },
         }),
       })
     );
@@ -823,7 +889,7 @@ export class AssistantService extends MutableService<AssistantORM> {
     } catch {
       await this.project.deleteOne(project._id.toJSON());
 
-      throw new InternalServerErrorException(`Couldn't clone the assistant.`);
+      throw new InternalServerErrorException("Couldn't clone the assistant.");
     }
 
     let version: VersionObject;
@@ -843,7 +909,7 @@ export class AssistantService extends MutableService<AssistantORM> {
       await this.deleteOne(assistant.id);
       await this.project.deleteOne(project._id.toJSON());
 
-      throw new InternalServerErrorException(`Couldn't clone the assistant.`);
+      throw new InternalServerErrorException("Couldn't clone the assistant.");
     }
 
     try {
@@ -901,11 +967,16 @@ export class AssistantService extends MutableService<AssistantORM> {
   private async findOneTemplateVFFile(templatePlatform: string, templateTag = 'default') {
     try {
       // template name patter is `{platform}_{tag}.template.json`
-      const vfFile = await fs.readFile(new URL(`templates/${templatePlatform}_${templateTag}.template.json`, import.meta.url), 'utf8');
+      const vfFile = await fs.readFile(
+        new URL(`templates/${templatePlatform}_${templateTag}.template.json`, import.meta.url),
+        'utf8'
+      );
 
       return AssistantImportDataDTO.parse(JSON.parse(vfFile));
     } catch {
-      throw new BadRequestException(`Couldn't find a template with tag '${templateTag}' for platform '${templatePlatform}'.`);
+      throw new BadRequestException(
+        `Couldn't find a template with tag '${templateTag}' for platform '${templatePlatform}'.`
+      );
     }
   }
 
@@ -948,7 +1019,10 @@ export class AssistantService extends MutableService<AssistantORM> {
       ...(localeDefaultVoice && { defaultVoice: localeDefaultVoice }),
       ...(!storeLocalesInPublishing && { locales: projectLocales }),
     };
-    platformData.publishing = { ...platformData.publishing, ...(storeLocalesInPublishing && { locales: projectLocales }) };
+    platformData.publishing = {
+      ...platformData.publishing,
+      ...(storeLocalesInPublishing && { locales: projectLocales }),
+    };
 
     const { project, version, assistant, projectList, projectListCreated } = await this.importJSON({
       data: templateVFFle,
@@ -979,7 +1053,11 @@ export class AssistantService extends MutableService<AssistantORM> {
       };
 
       try {
-        await this.environment.upsertIntentsAndEntities(cmsData, { userID, assistantID: project._id.toJSON(), environmentID: version._id.toJSON() });
+        await this.environment.upsertIntentsAndEntities(cmsData, {
+          userID,
+          assistantID: project._id.toJSON(),
+          environmentID: version._id.toJSON(),
+        });
 
         await this.version.patchOnePlatformData(version._id, {
           slots: _.uniqBy([...version.platformData.slots, ...nlu.slots], (intent) => intent.key),
@@ -989,7 +1067,7 @@ export class AssistantService extends MutableService<AssistantORM> {
         await this.project.deleteOne(project._id.toJSON());
         await this.deleteOne(project._id.toJSON());
 
-        throw new InternalServerErrorException(`Couldn't import nlu data.`);
+        throw new InternalServerErrorException("Couldn't import nlu data.");
       }
     }
 

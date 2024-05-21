@@ -47,7 +47,12 @@ export class EnvironmentExportService {
       version: VersionObject;
       diagrams: DiagramObject[];
     },
-    { userID, backup, workspaceID, centerDiagrams = true }: { userID: number; backup?: boolean; workspaceID: number; centerDiagrams?: boolean }
+    {
+      userID,
+      backup,
+      workspaceID,
+      centerDiagrams = true,
+    }: { userID: number; backup?: boolean; workspaceID: number; centerDiagrams?: boolean }
   ): EnvironmentExportDTO {
     const version = this.version.toJSON(data.version);
     const diagrams = this.diagram
@@ -55,7 +60,11 @@ export class EnvironmentExportService {
       .map((diagram) => this.diagramUtil.cleanupNodes(centerDiagrams ? this.diagramUtil.center(diagram) : diagram));
 
     // Remove stored `variableStateID` to avoid referencing the state from another user
-    if (version.prototype && Utils.object.isObject(version.prototype) && Utils.object.isObject(version.prototype.settings)) {
+    if (
+      version.prototype &&
+      Utils.object.isObject(version.prototype) &&
+      Utils.object.isObject(version.prototype.settings)
+    ) {
       delete version.prototype.settings.variableStateID;
     }
 
@@ -71,7 +80,7 @@ export class EnvironmentExportService {
     };
   }
 
-  public async exportJSON({ environmentID }: { userID: number; workspaceID: number; environmentID: string }) {
+  public async exportJSON(environmentID: string) {
     const [cms, { version, diagrams }] = await Promise.all([
       this.environmentRepository.findOneCMSData(environmentID),
       this.version.exportOne(environmentID),
@@ -84,7 +93,10 @@ export class EnvironmentExportService {
     };
   }
 
-  public prepareExportCMSData(data: EnvironmentCMSData, { userID, backup, workspaceID }: { userID: number; backup?: boolean; workspaceID: number }) {
+  public prepareExportCMSData(
+    data: EnvironmentCMSData,
+    { userID, backup, workspaceID }: { userID: number; backup?: boolean; workspaceID: number }
+  ) {
     const cmsFunctionsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_FUNCTIONS, { userID, workspaceID });
 
     return {

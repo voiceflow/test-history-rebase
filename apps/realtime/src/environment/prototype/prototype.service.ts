@@ -1,9 +1,10 @@
 /* eslint-disable max-params */
-import { EntityManager, Platform } from '@mikro-orm/core';
+import { EntityManager } from '@mikro-orm/core';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
 import { DatabaseTarget } from '@voiceflow/orm-designer';
+import * as Platform from '@voiceflow/platform-config/backend';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 
 import { DiagramService } from '@/diagram/diagram.service';
@@ -44,7 +45,10 @@ export class EnvironmentPrototypeService {
     requiredEntities,
     responseDiscriminators,
   }: CMSResources) {
-    const { entities: entitiesJSON, entityVariants: entityVariantsJSON } = this.entity.toJSONWithSubResources({ entities, entityVariants });
+    const { entities: entitiesJSON, entityVariants: entityVariantsJSON } = this.entity.toJSONWithSubResources({
+      entities,
+      entityVariants,
+    });
     const { variables: variablesJSON } = this.variable.toJSONWithSubResources({ variables });
 
     const legacySlots = Realtime.Adapters.entityToLegacySlot.mapFromDB({
@@ -55,7 +59,12 @@ export class EnvironmentPrototypeService {
     const { intents: legacyIntents } = Realtime.Adapters.intentToLegacyIntent.mapFromDB(
       {
         ...this.intent.toJSONWithSubResources({ intents, utterances, requiredEntities }),
-        ...this.response.toJSONWithSubResources({ responses, responseVariants, responseAttachments: [], responseDiscriminators }),
+        ...this.response.toJSONWithSubResources({
+          responses,
+          responseVariants,
+          responseAttachments: [],
+          responseDiscriminators,
+        }),
       },
       {
         entities: entitiesJSON,
@@ -85,12 +94,15 @@ export class EnvironmentPrototypeService {
     const { legacySlots, legacyIntents, legacyVariables } = this.convertCMSResourcesToLegacyResources({
       ...cmsData,
       isVoiceAssistant:
-        Realtime.legacyPlatformToProjectType(project.platform, project.type, project.nlu).type === Platform.Constants.ProjectType.VOICE,
+        Realtime.legacyPlatformToProjectType(project.platform, project.type, project.nlu).type ===
+        Platform.Constants.ProjectType.VOICE,
     });
 
     await Promise.all([
       this.version.patchOnePlatformData(environmentID, { intents: legacyIntents, slots: legacySlots }),
-      this.version.patchOne(environmentID, { variables: Utils.array.unique([...version.variables, ...legacyVariables]) }),
+      this.version.patchOne(environmentID, {
+        variables: Utils.array.unique([...version.variables, ...legacyVariables]),
+      }),
     ]);
 
     // fetching version to get updated platformData

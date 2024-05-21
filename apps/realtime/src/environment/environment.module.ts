@@ -21,7 +21,9 @@ import { VersionModule } from '@/version/version.module';
 import { WorkflowModule } from '@/workflow/workflow.module';
 
 import { EnvironmentCloneService } from './clone/clone.service';
+import { EnvironmentAdapter } from './environment.adapter';
 import { EnvironmentLoguxController } from './environment.logux.controller';
+import { EnvironmentRepository } from './environment.repository';
 import { EnvironmentService } from './environment.service';
 import { EnvironmentPrivateHTTPController } from './environment-private.http.controller';
 import { EnvironmentPublicHTTPController } from './environment-public.http.controller';
@@ -61,7 +63,9 @@ import { EnvironmentPrototypeService } from './prototype/prototype.service';
     EnvironmentMigrationService,
     EnvironmentImportService,
     EnvironmentExportService,
-    EnvironmentCloneService
+    EnvironmentCloneService,
+    EnvironmentRepository,
+    EnvironmentAdapter,
   ],
   controllers: [EnvironmentLoguxController, EnvironmentPublicHTTPController, EnvironmentPrivateHTTPController],
 })

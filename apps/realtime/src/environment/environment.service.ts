@@ -1,5 +1,15 @@
 /* eslint-disable max-params */
 import { Inject, Injectable } from '@nestjs/common';
+import {
+  AnyResponseVariant,
+  Entity,
+  EntityVariant,
+  Intent,
+  RequiredEntity,
+  Response,
+  ResponseDiscriminator,
+  Utterance,
+} from '@voiceflow/dtos';
 import { DiagramObject, VersionJSON, VersionObject } from '@voiceflow/orm-designer';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { Patch } from 'immer';
@@ -7,124 +17,176 @@ import { Merge } from 'type-fest';
 
 import { EnvironmentCloneService } from './clone/clone.service';
 import { EnvironmentAdapter } from './environment.adapter';
-import { EnvironmentCMSData, IntentsAndEntitiesData, MigrationDataMeta } from './environment.interface';
+import { EnvironmentCMSData } from './environment.interface';
 import { EnvironmentRepository } from './environment.repository';
+import { EnvironmentCMSExportImportDataDTO } from './export/dtos/environment-cms-export-import-data.dto';
+import { EnvironmentExportDTO } from './export/dtos/environment-export-data.dto';
 import { EnvironmentExportService } from './export/export.service';
 import { EnvironmentImportDTO } from './import/dtos/environment-import-data.dto';
-import { EnvironmentImportService, ImportData } from './import/import.service';
+import { EnvironmentImportService } from './import/import.service';
 import { EnvironmentMigrationService } from './migration/migration.service';
+import { EnvironmentNLUTrainingService } from './nlu-training/nlu-training.service';
+import { EnvironmentPrototypeService } from './prototype/prototype.service';
 
 @Injectable()
 export class EnvironmentService {
   constructor(
-    @Inject(EnvironmentRepository)
-    private readonly environmentRepository: EnvironmentRepository,
-    @Inject(EnvironmentMigrationService)
-    private readonly environmentMigrationService: EnvironmentMigrationService,
-    @Inject(EnvironmentExportService)
-    private readonly environmentExportService: EnvironmentExportService,
-    @Inject(EnvironmentImportService)
-    private readonly environmentImportService: EnvironmentImportService,
-    @Inject(EnvironmentCloneService)
-    private readonly environmentCloneService: EnvironmentCloneService,
+    @Inject(EnvironmentPrototypeService)
+    private readonly prototype: EnvironmentPrototypeService,
     @Inject(EnvironmentAdapter)
-    private readonly environmentAdapter: EnvironmentAdapter
+    private readonly adapter: EnvironmentAdapter,
+    @Inject(EnvironmentRepository)
+    private readonly repository: EnvironmentRepository,
+    @Inject(EnvironmentImportService)
+    private readonly importService: EnvironmentImportService,
+    @Inject(EnvironmentExportService)
+    private readonly exportService: EnvironmentExportService,
+    @Inject(EnvironmentMigrationService)
+    private readonly migrationService: EnvironmentMigrationService,
+    @Inject(EnvironmentCloneService)
+    private readonly cloneService: EnvironmentCloneService,
+    @Inject(EnvironmentNLUTrainingService)
+    private readonly nluTrainingService: EnvironmentNLUTrainingService
   ) {}
 
-  public async findManyForAssistantID(assistantID: string) {
-    return this.environmentRepository.findManyForAssistantID(assistantID);
+  /* Adapter */
+
+  toJSONCMSData(data: EnvironmentCMSData) {
+    return this.adapter.toJSONCMSData(data);
   }
 
-  public async findOneCMSData(environmentID: string) {
-    return this.environmentRepository.findOneCMSData(environmentID);
+  /* Repository (query and mutations to environment) */
+
+  async findManyForAssistantID(assistantID: string) {
+    return this.repository.findManyForAssistantID(assistantID);
   }
 
-  public async findOneCMSDataToMigrate(environmentID: string) {
-    return this.environmentRepository.findOneCMSDataToMigrate(environmentID);
+  async findOneCMSData(environmentID: string) {
+    return this.repository.findOneCMSData(environmentID);
   }
 
-  public async deleteOne(environmentID: string) {
-    return this.environmentRepository.deleteOne(environmentID);
+  async findOneCMSDataToMigrate(environmentID: string) {
+    return this.repository.findOneCMSDataToMigrate(environmentID);
   }
 
   async upsertIntentsAndEntities(
-    {
-      intents,
-      entities,
-      responses,
-      utterances,
-      entityVariants,
-      requiredEntities,
-      responseVariants,
-      responseDiscriminators,
-    }: IntentsAndEntitiesData,
+    data: {
+      intents: Intent[];
+      entities: Entity[];
+      responses: Response[];
+      utterances: Utterance[];
+      entityVariants: EntityVariant[];
+      requiredEntities: RequiredEntity[];
+      responseVariants: AnyResponseVariant[];
+      responseDiscriminators: ResponseDiscriminator[];
+    },
     meta: { userID: number; assistantID: string; environmentID: string }
   ) {
-    return this.environmentRepository.upsertIntentsAndEntities({
-      intents,
-      entities,
-      responses,
-      utterances,
-      entityVariants,
-      requiredEntities,
-      responseVariants,
-      responseDiscriminators,
-    }, meta);
+    return this.repository.upsertIntentsAndEntities(data, meta);
   }
 
-  public async migrateCMSData(data: Realtime.Migrate.MigrationData, patches: Patch[], meta: MigrationDataMeta) {
-    return this.environmentMigrationService.migrateCMSData(data, patches, meta);
+  async deleteOneCMSData(environmentID: string) {
+    return this.repository.deleteOneCMSData(environmentID);
   }
 
-  public async prepareExportCMSData(data: EnvironmentCMSData, context: { userID: number; backup?: boolean; workspaceID: number }) {
-    return this.environmentExportService.prepareExportCMSData(data, context);
+  async deleteOne(environmentID: string) {
+    return this.repository.deleteOne(environmentID);
   }
 
-  public async exportJSON(context: { userID: number; workspaceID: number; environmentID: string }) {
-    return this.environmentExportService.exportJSON(context);
+  /* Prototype */
+
+  async preparePrototype(environmentID: string) {
+    return this.prototype.preparePrototype(environmentID);
   }
 
-  public async prepareExportData(data: {
-    cms: EnvironmentCMSData | null;
-    version: VersionObject;
-    diagrams: DiagramObject[];
-  },
-  context: { userID: number; backup?: boolean; workspaceID: number; centerDiagrams?: boolean }) {
-    return this.environmentExportService.prepareExportData(data, context);
+  /* Import  */
+
+  prepareImportData(
+    data: EnvironmentImportDTO,
+    context: {
+      userID: number;
+      backup?: boolean;
+      workspaceID: number;
+      assistantID: string;
+      environmentID: string;
+      centerDiagrams?: boolean;
+    }
+  ) {
+    return this.importService.prepareImportData(data, context);
   }
 
-  public async importJSON(params: {
-    data: ImportData;
+  public async importJSON({
+    data,
+    userID,
+    assistantID,
+    environmentID,
+  }: {
+    data: ReturnType<EnvironmentService['prepareImportData']>;
     userID: number;
-    workspaceID: number;
     assistantID: string;
     environmentID: string;
   }) {
-    return this.environmentImportService.importJSON(params);
+    return this.importService.importJSON({ data, userID, assistantID, environmentID });
   }
 
-  public async prepareImportData(data: EnvironmentImportDTO,
-    context: { userID: number; backup?: boolean; workspaceID: number; assistantID: string; environmentID: string; centerDiagrams?: boolean }) {
-    return this.environmentImportService.prepareImportCMSData(data, context);
+  prepareImportCMSData(
+    cms: EnvironmentCMSExportImportDataDTO,
+    context: { userID: number; backup?: boolean; workspaceID: number; assistantID: string; environmentID: string }
+  ) {
+    return this.importService.prepareImportCMSData(cms, context);
   }
 
-  public async cloneOne({
-    sourceEnvironmentID,
-    targetEnvironmentID,
-    targetVersionOverride = {},
-  }: {
+  async importCMSData(importData: ReturnType<EnvironmentService['prepareImportCMSData']>) {
+    return this.importService.importCMSData(importData);
+  }
+
+  /* Export  */
+
+  public prepareExportCMSData(
+    data: EnvironmentCMSData,
+    context: { userID: number; backup?: boolean; workspaceID: number }
+  ) {
+    return this.exportService.prepareExportCMSData(data, context);
+  }
+
+  public prepareExportData(
+    data: {
+      cms: EnvironmentCMSData | null;
+      version: VersionObject;
+      diagrams: DiagramObject[];
+    },
+    context: { userID: number; backup?: boolean; workspaceID: number; centerDiagrams?: boolean }
+  ): EnvironmentExportDTO {
+    return this.exportService.prepareExportData(data, context);
+  }
+
+  public async exportJSON(environmentID: string) {
+    return this.exportService.exportJSON(environmentID);
+  }
+
+  /* Migration */
+
+  async migrateCMSData(
+    data: Realtime.Migrate.MigrationData,
+    patches: Patch[],
+    meta: { userID: number; assistantID: string; environmentID: string }
+  ) {
+    return this.migrationService.migrateCMSData(data, patches, meta);
+  }
+
+  /* Clone */
+
+  async cloneOne(params: {
     sourceEnvironmentID: string;
     targetEnvironmentID?: string;
     targetVersionOverride?: Merge<Partial<Omit<VersionJSON, '_id' | 'prototype'>>, { prototype?: any }>;
   }) {
-    return this.environmentCloneService.cloneOne({ sourceEnvironmentID, targetEnvironmentID, targetVersionOverride });
+    return this.cloneService.cloneOne(params);
   }
 
-  public async toJSONCMSData(data: EnvironmentCMSData) {
-    return this.environmentAdapter.toJSONCMSData(data);
-  }
+  /* NLU */
 
-  toJSONWithSubResources(data: EnvironmentCMSData & { version: VersionObject; diagrams: DiagramObject[] }) {
-    return this.environmentAdapter.toJSONWithSubResources(data);
+  async getNLUTrainingDiff(environmentID: string) {
+    return this.nluTrainingService.getNLUTrainingDiff(environmentID);
   }
 }

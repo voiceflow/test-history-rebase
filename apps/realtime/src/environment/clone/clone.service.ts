@@ -1,7 +1,12 @@
 /* eslint-disable max-params */
+import { EntityManager } from '@mikro-orm/core';
+import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
+import { DatabaseTarget, VersionJSON } from '@voiceflow/orm-designer';
+import { Merge } from 'type-fest';
 
 import { AttachmentService } from '@/attachment/attachment.service';
+import { DiagramService } from '@/diagram/diagram.service';
 import { EntityService } from '@/entity/entity.service';
 import { FlowService } from '@/flow/flow.service';
 import { FolderService } from '@/folder/folder.service';
@@ -9,11 +14,16 @@ import { FunctionService } from '@/function/function.service';
 import { IntentService } from '@/intent/intent.service';
 import { ResponseService } from '@/response/response.service';
 import { VariableService } from '@/variable/variable.service';
+import { VersionService } from '@/version/version.service';
 import { WorkflowService } from '@/workflow/workflow.service';
+
+import { EnvironmentRepository } from '../environment.repository';
 
 @Injectable()
 export class EnvironmentCloneService {
   constructor(
+    @Inject(getEntityManagerToken(DatabaseTarget.POSTGRES))
+    private readonly postgresEM: EntityManager,
     @Inject(FlowService) private readonly flow: FlowService,
     @Inject(FolderService) private readonly folder: FolderService,
     @Inject(VariableService) private readonly variable: VariableService,
@@ -22,21 +32,29 @@ export class EnvironmentCloneService {
     @Inject(ResponseService) private readonly response: ResponseService,
     @Inject(IntentService) private readonly intent: IntentService,
     @Inject(EntityService) private readonly entity: EntityService,
-    @Inject(FunctionService) private readonly functions: FunctionService
+    @Inject(FunctionService) private readonly functions: FunctionService,
+    @Inject(EnvironmentRepository) private readonly environmentRepository: EnvironmentRepository,
+    @Inject(VersionService) private readonly version: VersionService,
+    @Inject(DiagramService) private readonly diagram: DiagramService
   ) {}
 
-  public async cloneCMSData(data: { sourceAssistantID: string; targetAssistantID: any; sourceEnvironmentID: string; targetEnvironmentID: any }) {
+  public async cloneCMSData(data: {
+    sourceAssistantID: string;
+    targetAssistantID: any;
+    sourceEnvironmentID: string;
+    targetEnvironmentID: any;
+  }) {
     const { flows } = await this.flow.cloneManyWithSubResourcesForEnvironment(data);
     const { folders } = await this.folder.cloneManyWithSubResourcesForEnvironment(data);
     const { variables } = await this.variable.cloneManyWithSubResourcesForEnvironment(data);
     const { workflows } = await this.workflow.cloneManyWithSubResourcesForEnvironment(data);
     const { attachments, cardButtons } = await this.attachment.cloneManyWithSubResourcesForEnvironment(data);
-    const { responses, responseVariants, responseAttachments, responseDiscriminators } = await this.response.cloneManyWithSubResourcesForEnvironment(
-      data
-    );
+    const { responses, responseVariants, responseAttachments, responseDiscriminators } =
+      await this.response.cloneManyWithSubResourcesForEnvironment(data);
     const { entities, entityVariants } = await this.entity.cloneManyWithSubResourcesForEnvironment(data);
     const { intents, utterances, requiredEntities } = await this.intent.cloneManyWithSubResourcesForEnvironment(data);
-    const { functions, functionPaths, functionVariables } = await this.functions.cloneManyWithSubResourcesForEnvironment(data);
+    const { functions, functionPaths, functionVariables } =
+      await this.functions.cloneManyWithSubResourcesForEnvironment(data);
 
     return {
       flows,
@@ -92,18 +110,22 @@ export class EnvironmentCloneService {
 
     const cmsData = await this.postgresEM.transactional(async () => {
       // clear existing data before cloning
-      await this.deleteOneCMSData(cmsCloneManyPayload.targetEnvironmentID);
+      await this.environmentRepository.deleteOneCMSData(cmsCloneManyPayload.targetEnvironmentID);
 
       const { flows } = await this.flow.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload);
       const { folders } = await this.folder.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload);
       const { variables } = await this.variable.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload);
       const { workflows } = await this.workflow.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload);
-      const { attachments, cardButtons } = await this.attachment.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload);
+      const { attachments, cardButtons } =
+        await this.attachment.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload);
       const { responses, responseVariants, responseAttachments, responseDiscriminators } =
         await this.response.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload);
-      const { entities, entityVariants } = await this.entity.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload);
-      const { intents, utterances, requiredEntities } = await this.intent.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload);
-      const { functions, functionPaths, functionVariables } = await this.functionService.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload);
+      const { entities, entityVariants } =
+        await this.entity.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload);
+      const { intents, utterances, requiredEntities } =
+        await this.intent.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload);
+      const { functions, functionPaths, functionVariables } =
+        await this.functions.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload);
 
       return {
         flows,
@@ -134,5 +156,4 @@ export class EnvironmentCloneService {
       liveDiagramIDs: VersionService.getLiveDiagramIDs(targetVersion, targetDiagrams),
     };
   }
-
 }

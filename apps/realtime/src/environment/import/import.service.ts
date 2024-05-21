@@ -20,9 +20,6 @@ import { WorkflowService } from '@/workflow/workflow.service';
 import { EnvironmentCMSExportImportDataDTO } from '../export/dtos/environment-cms-export-import-data.dto';
 import { EnvironmentImportDTO } from './dtos/environment-import-data.dto';
 
-export type ImportCMSData = ReturnType<EnvironmentImportService['prepareImportCMSData']>;
-export type ImportData = ReturnType<EnvironmentImportService['prepareImportData']>;
-
 @Injectable()
 export class EnvironmentImportService {
   constructor(
@@ -49,7 +46,14 @@ export class EnvironmentImportService {
       workspaceID,
       environmentID,
       centerDiagrams,
-    }: { userID: number; backup?: boolean; workspaceID: number; assistantID: string; environmentID: string; centerDiagrams?: boolean }
+    }: {
+      userID: number;
+      backup?: boolean;
+      workspaceID: number;
+      assistantID: string;
+      environmentID: string;
+      centerDiagrams?: boolean;
+    }
   ) {
     const createdAt = new Date().toJSON();
 
@@ -84,9 +88,8 @@ export class EnvironmentImportService {
     assistantID,
     environmentID,
   }: {
-    data: ImportData;
+    data: ReturnType<EnvironmentImportService['prepareImportData']>;
     userID: number;
-    workspaceID: number;
     assistantID: string;
     environmentID: string;
   }) {
@@ -128,11 +131,17 @@ export class EnvironmentImportService {
 
       ...(cms.attachments &&
         cms.cardButtons &&
-        this.attachment.prepareImportData({ attachments: cms.attachments, cardButtons: cms.cardButtons }, prepareDataContext)),
+        this.attachment.prepareImportData(
+          { attachments: cms.attachments, cardButtons: cms.cardButtons },
+          prepareDataContext
+        )),
 
       ...(cms.entities &&
         cms.entityVariants &&
-        this.entity.prepareImportData({ entities: cms.entities, entityVariants: cms.entityVariants }, prepareDataContext)),
+        this.entity.prepareImportData(
+          { entities: cms.entities, entityVariants: cms.entityVariants },
+          prepareDataContext
+        )),
 
       ...(cms.intents &&
         cms.utterances &&
@@ -165,11 +174,13 @@ export class EnvironmentImportService {
           prepareDataContext
         )),
 
-      ...(cmsWorkflowsEnabled && cms.workflows && this.workflow.prepareImportData({ workflows: cms.workflows }, prepareDataContext)),
+      ...(cmsWorkflowsEnabled &&
+        cms.workflows &&
+        this.workflow.prepareImportData({ workflows: cms.workflows }, prepareDataContext)),
     };
   }
 
-  async importCMSData(importData: ImportCMSData) {
+  async importCMSData(importData: ReturnType<EnvironmentImportService['prepareImportCMSData']>) {
     const {
       attachments,
       cardButtons = [],
@@ -196,13 +207,20 @@ export class EnvironmentImportService {
     if (attachments?.length) await this.attachment.importManyWithSubResourcesFromJSON({ attachments, cardButtons });
 
     if (responses?.length)
-      await this.response.importManyWithSubResourcesFromJSON({ responses, responseAttachments, responseDiscriminators, responseVariants });
+      await this.response.importManyWithSubResourcesFromJSON({
+        responses,
+        responseAttachments,
+        responseDiscriminators,
+        responseVariants,
+      });
 
     if (entities?.length) await this.entity.importManyWithSubResourcesFromJSON({ entities, entityVariants });
 
-    if (intents?.length) await this.intent.importManyWithSubResourcesFromJSON({ intents, utterances, requiredEntities });
+    if (intents?.length)
+      await this.intent.importManyWithSubResourcesFromJSON({ intents, utterances, requiredEntities });
 
-    if (functions?.length) await this.functions.importManyWithSubResourcesFromJSON({ functions, functionPaths, functionVariables });
+    if (functions?.length)
+      await this.functions.importManyWithSubResourcesFromJSON({ functions, functionPaths, functionVariables });
 
     if (variables?.length) await this.variable.importManyWithSubResourcesFromJSON({ variables });
 

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.76.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.75.0...@voiceflow/dtos@1.76.0) (2024-05-21)
+
+### Features
+
+* compiled response node (PL-951) ([#8136](https://github.com/voiceflow/creator-app/issues/8136)) ([dd49df7](https://github.com/voiceflow/creator-app/commit/dd49df7ce7eb6e01061b2e69b9d2b18904168dae))
+
 # [1.75.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.74.0...@voiceflow/dtos@1.75.0) (2024-05-21)
 
 ### Features

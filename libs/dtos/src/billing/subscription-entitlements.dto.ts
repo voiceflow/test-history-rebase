@@ -11,6 +11,7 @@ export const SubscriptionEntitlementsDTO = z.object({
   gpt: z.boolean().nullable(),
   gpt4: z.boolean().nullable(),
   gpt4Turbo: z.boolean().nullable(),
+  gpt4O: z.boolean().nullable(),
   agentsLimit: z.number().nullable(),
   versionHistoryLimit: z.number().nullable(),
   transcriptHistoryLimit: z.number().nullable(),

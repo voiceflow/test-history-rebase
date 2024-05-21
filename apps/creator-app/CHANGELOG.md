@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1525.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1525.1...@voiceflow/creator-app@1.1525.2) (2024-05-21)
+
+### Bug Fixes
+
+* keep block size persistent when editing title (COR-1147) ([#8131](https://github.com/voiceflow/creator-app/issues/8131)) ([91cbf94](https://github.com/voiceflow/creator-app/commit/91cbf9490cb2d3966ad5f07ca8bcf53c564f15b7))
+
 ## [1.1525.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1525.0...@voiceflow/creator-app@1.1525.1) (2024-05-20)
 
 **Note:** Version bump only for package @voiceflow/creator-app

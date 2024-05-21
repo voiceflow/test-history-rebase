@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.75.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.74.0...@voiceflow/dtos@1.75.0) (2024-05-21)
+
+### Features
+
+* add gpt-4o to enums and entitlements (ML-891) ([#8145](https://github.com/voiceflow/creator-app/issues/8145)) ([8d8d8f9](https://github.com/voiceflow/creator-app/commit/8d8d8f974c26b10663204de306f69e6535a9899e))
+
 # [1.74.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.73.1...@voiceflow/dtos@1.74.0) (2024-05-20)
 
 ### Features

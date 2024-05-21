@@ -16,6 +16,7 @@ import { GPT3_5 } from './openai/gpt3-5.client';
 import { GPT3_5_1106 } from './openai/gpt3-5-1106.client';
 import { GPT4 } from './openai/gpt4.client';
 import { GPT4Turbo } from './openai/gpt4-turbo.client';
+import { GPT4O } from './openai/gpt4o.client';
 
 @Injectable()
 export class LLMService {
@@ -35,6 +36,7 @@ export class LLMService {
       [AIModel.GPT_3_5_TURBO_1106]: GPT3_5_1106,
       [AIModel.GPT_4]: GPT4,
       [AIModel.GPT_4_TURBO]: GPT4Turbo,
+      [AIModel.GPT_4O]: GPT4O,
       [AIModel.CLAUDE_V1]: ClaudeV1,
       [AIModel.CLAUDE_V2]: ClaudeV2,
       [AIModel.CLAUDE_INSTANT_V1]: ClaudeV1Instant,

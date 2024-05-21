@@ -35,6 +35,10 @@ export const AI_MODEL_PARAMS: Record<AIModel, AIModelParam> = {
     ...DEFAULT_AI_MODEL_PARAM,
     maxTokens: 500,
   },
+  [AIModel.GPT_4O]: {
+    ...DEFAULT_AI_MODEL_PARAM,
+    maxTokens: 500,
+  },
 
   // Anthropic
   [AIModel.CLAUDE_INSTANT_V1]: {

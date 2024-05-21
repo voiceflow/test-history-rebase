@@ -51,7 +51,6 @@ const HeaderInput = styled(TextArea)<HeaderInputProps>`
   border: none !important;
   box-shadow: none;
   min-height: 23px;
-  line-height: 1.5;
 
   color: ${({ palette }) => palette[700]};
 `;

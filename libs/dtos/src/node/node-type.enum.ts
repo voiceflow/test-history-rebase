@@ -8,6 +8,7 @@ export const NodeType = {
   ACTIONS: 'actions',
   TRIGGER: 'trigger',
   FUNCTION: 'function',
+  RESPONSE: 'response',
 } as const;
 
 export type NodeType = Enum<typeof NodeType>;

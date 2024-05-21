@@ -6,6 +6,7 @@ export const BaseCompiledNodeDTO = z.object({
   id: z.string(),
   type: z.nativeEnum(NodeType),
   data: z.unknown().optional(),
+  ports: z.record(z.string()).optional()
 });
 
 export type BaseCompiledNode = z.infer<typeof BaseCompiledNodeDTO>;

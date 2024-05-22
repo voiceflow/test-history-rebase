@@ -1,6 +1,6 @@
 import { Nullable } from '@voiceflow/common';
-import { PlanName } from '@voiceflow/dtos';
-import { UserRole } from '@voiceflow/internal';
+import { PlanName, UserRole } from '@voiceflow/dtos';
+import { UserRole as InternalUserRole } from '@voiceflow/internal';
 import { PLAN_INFO } from '@voiceflow/schema-types';
 import { useContextApi } from '@voiceflow/ui';
 import React from 'react';
@@ -17,8 +17,8 @@ import { useProjectPreview } from './ProjectPreviewContext';
 
 export interface ProjectIdentityContextValue {
   projectID: Nullable<string>;
-  activeRole: Nullable<UserRole | VirtualRole>;
-  projectRole: Nullable<UserRole>;
+  activeRole: Nullable<UserRole | VirtualRole | InternalUserRole>;
+  projectRole: Nullable<UserRole | InternalUserRole>;
 }
 
 /**
@@ -26,12 +26,18 @@ export interface ProjectIdentityContextValue {
  */
 export const ProjectIdentityContext = React.createContext<ProjectIdentityContextValue | null>(null);
 
-export interface ProjectIdentityProviderProps extends React.PropsWithChildren, Omit<ProjectIdentityContextValue, 'activeRole'> {}
+export interface ProjectIdentityProviderProps
+  extends React.PropsWithChildren,
+    Omit<ProjectIdentityContextValue, 'activeRole'> {}
 
 /**
  * Can be use on the dashboard page to provide the project identity context for the project item
  */
-export const ProjectIdentityProvider: React.FC<ProjectIdentityProviderProps> = ({ children, projectID, projectRole }) => {
+export const ProjectIdentityProvider: React.FC<ProjectIdentityProviderProps> = ({
+  children,
+  projectID,
+  projectRole,
+}) => {
   const identity = React.useContext(IdentityContext);
   const isPreview = useProjectPreview();
 
@@ -50,7 +56,10 @@ export const ProjectIdentityProvider: React.FC<ProjectIdentityProviderProps> = (
 
     const { projectsLimit: starterProjectsLimit } = PLAN_INFO[PlanName.STARTER];
 
-    return getProjectIsLockedByBeyondLimit({ projectID, projectsLimit: workspaceLocked && subscription ? starterProjectsLimit : projectsLimit });
+    return getProjectIsLockedByBeyondLimit({
+      projectID,
+      projectsLimit: workspaceLocked && subscription ? starterProjectsLimit : projectsLimit,
+    });
   }, [orderedProjectsMap, projectID, identity.organizationTrialExpired, projectsLimit, workspaceLocked]);
 
   const activeRole = locked ? VirtualRole.LOCKED_PROJECT_VIEWER : projectRole;

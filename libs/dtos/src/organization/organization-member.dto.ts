@@ -1,5 +1,6 @@
-import { UserRole } from '@voiceflow/internal';
 import { z } from 'zod';
+
+import { UserRole } from '@/common';
 
 export const OrganizationMemberDTO = z.object({
   name: z.string(),

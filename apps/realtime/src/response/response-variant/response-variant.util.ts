@@ -1,7 +1,7 @@
 import { CardLayout, ResponseVariantType } from '@voiceflow/dtos';
 import { match } from 'ts-pattern';
 
-import { ResponseJSONVariantCreateData, ResponseTextVariantCreateData } from './response-variant.interface';
+import { ResponseTextVariantCreateData } from './response-variant.interface';
 
 export const emptyResponseVariantFactory = (data: { type: ResponseVariantType; discriminatorID: string }) =>
   match(data)
@@ -12,15 +12,6 @@ export const emptyResponseVariantFactory = (data: { type: ResponseVariantType; d
         text: [''],
         speed: null,
         cardLayout: CardLayout.CAROUSEL,
-        conditionID: null,
-        attachmentOrder: [],
-      })
-    )
-    .with(
-      { type: ResponseVariantType.JSON },
-      (payload): ResponseJSONVariantCreateData => ({
-        ...payload,
-        json: [''],
         conditionID: null,
         attachmentOrder: [],
       })

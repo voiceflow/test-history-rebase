@@ -1,5 +1,4 @@
 import { ResponseVariantType } from '@voiceflow/dtos';
-import { Text } from '@voiceflow/ui-next';
 import React from 'react';
 import { match } from 'ts-pattern';
 
@@ -25,5 +24,4 @@ export const ResponseCreateVariant: React.FC<IResponseCreateVariant> = ({
         testID={testID}
       />
     ))
-    .with({ type: ResponseVariantType.JSON }, () => <Text>TODO: Not implemented</Text>)
     .exhaustive();

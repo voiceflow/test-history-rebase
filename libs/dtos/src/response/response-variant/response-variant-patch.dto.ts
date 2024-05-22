@@ -1,12 +1,6 @@
 import type { z } from 'zod';
 
-import { JSONResponseVariantDTO, PromptResponseVariantDTO, TextResponseVariantDTO } from './response-variant.dto';
-
-export const JSONResponseVariantPatchDTO = JSONResponseVariantDTO.pick({ json: true, attachmentOrder: true })
-  .strict()
-  .partial();
-
-export type JSONResponseVariantPatch = z.infer<typeof JSONResponseVariantPatchDTO>;
+import { PromptResponseVariantDTO, TextResponseVariantDTO } from './response-variant.dto';
 
 export const TextResponseVariantPatchDTO = TextResponseVariantDTO.pick({
   text: true,

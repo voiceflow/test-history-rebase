@@ -32,11 +32,6 @@ export const ResponseVariantTypeDropdown: React.FC<IResponseVariantTypeDropdown>
             />
           )}
         </MenuItemWithTooltip>
-
-        <Menu.Item
-          label={RESPONSE_VARIANT_TYPE_LABEL_MAP[ResponseVariantType.JSON]}
-          onClick={Utils.functional.chain(onClose, () => onValueChange(ResponseVariantType.JSON))}
-        />
       </Menu>
     )}
   </Dropdown>

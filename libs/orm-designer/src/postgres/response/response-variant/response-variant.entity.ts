@@ -56,17 +56,6 @@ export class BaseResponseVariantEntity<DefaultOrNullColumn extends string = neve
 
 @Entity({
   tableName: TABLE_NAME,
-  discriminatorValue: ResponseVariantType.JSON,
-})
-export class JSONResponseVariantEntity extends BaseResponseVariantEntity {
-  type!: typeof ResponseVariantType.JSON;
-
-  @Property({ type: MarkupType })
-  json!: Markup;
-}
-
-@Entity({
-  tableName: TABLE_NAME,
   discriminatorValue: ResponseVariantType.PROMPT,
 })
 export class PromptResponseVariantEntity extends BaseResponseVariantEntity<'prompt'> {

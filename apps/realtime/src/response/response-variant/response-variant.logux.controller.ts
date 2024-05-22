@@ -1,5 +1,5 @@
 import { Controller, Inject } from '@nestjs/common';
-import { JSONResponseVariant, ResponseVariantType, TextResponseVariant } from '@voiceflow/dtos';
+import { ResponseVariantType, TextResponseVariant } from '@voiceflow/dtos';
 import { Action, AuthMeta, AuthMetaPayload, Broadcast, Payload } from '@voiceflow/nestjs-logux';
 import { Permission } from '@voiceflow/sdk-auth';
 import { Authorize } from '@voiceflow/sdk-auth/nestjs';
@@ -7,7 +7,6 @@ import { Actions, Channels } from '@voiceflow/sdk-logux-designer';
 
 import { BroadcastOnly, InjectRequestContext, UseRequestContext } from '@/common';
 
-import { ResponseJSONVariantService } from './response-json-variant.service';
 import { ResponseTextVariantService } from './response-text-variant.service';
 import { ResponseVariantService } from './response-variant.service';
 
@@ -17,26 +16,9 @@ export class ResponseVariantLoguxController {
   constructor(
     @Inject(ResponseVariantService)
     private readonly service: ResponseVariantService,
-    @Inject(ResponseJSONVariantService)
-    private readonly responseJSONVariant: ResponseJSONVariantService,
     @Inject(ResponseTextVariantService)
     private readonly responseTextVariant: ResponseTextVariantService
   ) {}
-
-  @Action.Async(Actions.ResponseVariant.CreateJSONOne)
-  @Authorize.Permissions<Actions.ResponseVariant.CreateJSONOne.Request>([Permission.PROJECT_UPDATE], ({ context }) => ({
-    id: context.environmentID,
-    kind: 'version',
-  }))
-  @UseRequestContext()
-  createJSONOne(
-    @Payload() { data, context, options }: Actions.ResponseVariant.CreateJSONOne.Request,
-    @AuthMeta() auth: AuthMetaPayload
-  ): Promise<Actions.ResponseVariant.CreateJSONOne.Response> {
-    return this.service
-      .createManyAndBroadcast([{ ...data, type: ResponseVariantType.JSON }], { ...options, auth, context })
-      .then(([result]) => ({ data: this.service.toJSON(result) as JSONResponseVariant, context }));
-  }
 
   @Action.Async(Actions.ResponseVariant.CreateTextOne)
   @Authorize.Permissions<Actions.ResponseVariant.CreateTextOne.Request>([Permission.PROJECT_UPDATE], ({ context }) => ({
@@ -71,18 +53,6 @@ export class ResponseVariantLoguxController {
       .then((result) => ({ data: this.service.mapToJSON(result) as TextResponseVariant[], context }));
   }
 
-  @Action(Actions.ResponseVariant.PatchOneJSON)
-  @Authorize.Permissions<Actions.ResponseVariant.PatchOneJSON>([Permission.PROJECT_UPDATE], ({ context }) => ({
-    id: context.environmentID,
-    kind: 'version',
-  }))
-  @Broadcast<Actions.ResponseVariant.PatchOneJSON>(({ context }) => ({ channel: Channels.assistant.build(context) }))
-  @BroadcastOnly()
-  @UseRequestContext()
-  async patchOneJSON(@Payload() { id, patch, context }: Actions.ResponseVariant.PatchOneJSON, @AuthMeta() auth: AuthMetaPayload) {
-    await this.responseJSONVariant.patchOneForUser(auth.userID, { id, environmentID: context.environmentID }, patch);
-  }
-
   @Action(Actions.ResponseVariant.PatchOneText)
   @Authorize.Permissions<Actions.ResponseVariant.PatchOneText>([Permission.PROJECT_UPDATE], ({ context }) => ({
     id: context.environmentID,
@@ -93,22 +63,6 @@ export class ResponseVariantLoguxController {
   @UseRequestContext()
   async patchOneText(@Payload() { id, patch, context }: Actions.ResponseVariant.PatchOneText, @AuthMeta() auth: AuthMetaPayload) {
     await this.responseTextVariant.patchOneForUser(auth.userID, { id, environmentID: context.environmentID }, patch);
-  }
-
-  @Action(Actions.ResponseVariant.PatchManyJSON)
-  @Authorize.Permissions<Actions.ResponseVariant.PatchManyJSON>([Permission.PROJECT_UPDATE], ({ context }) => ({
-    id: context.environmentID,
-    kind: 'version',
-  }))
-  @Broadcast<Actions.ResponseVariant.PatchManyJSON>(({ context }) => ({ channel: Channels.assistant.build(context) }))
-  @BroadcastOnly()
-  @UseRequestContext()
-  async patchManyJSON(@Payload() { ids, patch, context }: Actions.ResponseVariant.PatchManyJSON, @AuthMeta() auth: AuthMetaPayload) {
-    await this.responseJSONVariant.patchManyForUser(
-      auth.userID,
-      ids.map((id) => ({ id, environmentID: context.environmentID })),
-      patch
-    );
   }
 
   @Action(Actions.ResponseVariant.PatchManyText)

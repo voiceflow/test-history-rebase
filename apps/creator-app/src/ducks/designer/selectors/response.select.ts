@@ -43,9 +43,11 @@ export const allStringResponseVariantsByLanguageChannelResponseID = createSelect
           return markupToString.fromDB(variant.text, { entitiesMapByID: entitiesMap, variablesMapByID: variablesMap });
         }
 
-        return markupToString.fromDB(variant.json, { entitiesMapByID: entitiesMap, variablesMapByID: variablesMap });
+        return null;
       })
       .filter(Utils.array.isNotNullish) ?? []
 );
 
-export const getAllStringResponseVariantsByLanguageChannelResponseID = createCurriedSelector(allStringResponseVariantsByLanguageChannelResponseID);
+export const getAllStringResponseVariantsByLanguageChannelResponseID = createCurriedSelector(
+  allStringResponseVariantsByLanguageChannelResponseID
+);

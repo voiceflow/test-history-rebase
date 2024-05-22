@@ -21,13 +21,6 @@ const BaseResponseVariantDTO = CMSObjectResourceDTO.partial({
 
 // models
 
-export const JSONResponseVariantDTO = BaseResponseVariantDTO.extend({
-  type: z.literal(ResponseVariantType.JSON),
-  json: MarkupDTO,
-}).strict();
-
-export type JSONResponseVariant = z.infer<typeof JSONResponseVariantDTO>;
-
 export const TextResponseVariantDTO = BaseResponseVariantDTO.extend({
   type: z.literal(ResponseVariantType.TEXT),
   text: MarkupDTO,
@@ -46,6 +39,7 @@ export const PromptResponseVariantDTO = BaseResponseVariantDTO.extend({
 
 export type PromptResponseVariant = z.infer<typeof PromptResponseVariantDTO>;
 
-export const AnyResponseVariantDTO = z.union([JSONResponseVariantDTO, TextResponseVariantDTO]);
+// TODO: Add prompt response variant type
+export const AnyResponseVariantDTO = TextResponseVariantDTO;
 
 export type AnyResponseVariant = z.infer<typeof AnyResponseVariantDTO>;

@@ -15,8 +15,8 @@ import { ResponseService } from '@/response/response.service';
 import { VariableService } from '@/variable/variable.service';
 import { VersionService } from '@/version/version.service';
 
-import { CMSResources } from '../environment.interface';
-import { EnvironmentRepository } from '../environment.repository';
+import { CMSResources } from './environment.interface';
+import { EnvironmentRepository } from './environment.repository';
 
 @Injectable()
 export class EnvironmentPrototypeService {

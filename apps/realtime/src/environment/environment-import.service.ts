@@ -17,7 +17,7 @@ import { VariableService } from '@/variable/variable.service';
 import { VersionService } from '@/version/version.service';
 import { WorkflowService } from '@/workflow/workflow.service';
 
-import { EnvironmentCMSExportImportDataDTO } from '../export/dtos/environment-cms-export-import-data.dto';
+import { EnvironmentCMSExportImportDataDTO } from './dtos/environment-cms-export-import-data.dto';
 import { EnvironmentImportDTO } from './dtos/environment-import-data.dto';
 
 @Injectable()

@@ -6,7 +6,7 @@ import { MD5 } from 'object-hash';
 import { ProjectService } from '@/project/project.service';
 import { VersionService } from '@/version/version.service';
 
-import { HashedRecordDiff, ModelDiff } from './nlu-training.interface';
+import { HashedRecordDiff, ModelDiff } from './environment-nlu-training.interface';
 
 @Injectable()
 export class EnvironmentNLUTrainingService {

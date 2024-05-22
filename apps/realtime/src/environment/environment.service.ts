@@ -15,18 +15,18 @@ import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { Patch } from 'immer';
 import { Merge } from 'type-fest';
 
-import { EnvironmentCloneService } from './clone/clone.service';
+import { EnvironmentCMSExportImportDataDTO } from './dtos/environment-cms-export-import-data.dto';
+import { EnvironmentExportDTO } from './dtos/environment-export-data.dto';
+import { EnvironmentImportDTO } from './dtos/environment-import-data.dto';
 import { EnvironmentAdapter } from './environment.adapter';
 import { EnvironmentCMSData } from './environment.interface';
 import { EnvironmentRepository } from './environment.repository';
-import { EnvironmentCMSExportImportDataDTO } from './export/dtos/environment-cms-export-import-data.dto';
-import { EnvironmentExportDTO } from './export/dtos/environment-export-data.dto';
-import { EnvironmentExportService } from './export/export.service';
-import { EnvironmentImportDTO } from './import/dtos/environment-import-data.dto';
-import { EnvironmentImportService } from './import/import.service';
-import { EnvironmentMigrationService } from './migration/migration.service';
-import { EnvironmentNLUTrainingService } from './nlu-training/nlu-training.service';
-import { EnvironmentPrototypeService } from './prototype/prototype.service';
+import { EnvironmentCloneService } from './environment-clone.service';
+import { EnvironmentExportService } from './environment-export.service';
+import { EnvironmentImportService } from './environment-import.service';
+import { EnvironmentMigrationService } from './environment-migration.service';
+import { EnvironmentNLUTrainingService } from './environment-nlu-training.service';
+import { EnvironmentPrototypeService } from './environment-prototype.service';
 
 @Injectable()
 export class EnvironmentService {

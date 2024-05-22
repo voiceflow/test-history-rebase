@@ -4,9 +4,9 @@ import { ZodApiResponse } from '@voiceflow/nestjs-common';
 
 import { ProjectSerializer } from '@/project/project.serializer';
 
+import { EnvironmentPreparePrototypeResponse } from './dtos/environment-prepare-prototype.response';
 import { EnvironmentAdapter } from './environment.adapter';
-import { EnvironmentPreparePrototypeResponse } from './prototype/dtos/environment-prepare-prototype.response';
-import { EnvironmentPrototypeService } from './prototype/prototype.service';
+import { EnvironmentPrototypeService } from './environment-prototype.service';
 
 @Controller('private/environment')
 @ApiTags('Private/Environment')

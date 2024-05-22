@@ -5,8 +5,8 @@ import { Permission } from '@voiceflow/sdk-auth';
 import { Authorize } from '@voiceflow/sdk-auth/nestjs';
 import type { Request } from 'express';
 
-import { GetNLUTrainingDiffResponse } from './nlu-training/dtos/get-nlu-training-diff.response';
-import { EnvironmentNLUTrainingService } from './nlu-training/nlu-training.service';
+import { GetNLUTrainingDiffResponse } from './dtos/get-nlu-training-diff.response';
+import { EnvironmentNLUTrainingService } from './environment-nlu-training.service';
 
 @Controller('environment')
 @ApiTags('Environment')

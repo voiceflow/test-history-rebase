@@ -1,7 +1,7 @@
 import { ProgramDTO, ProjectDTO, VariableStateDTO } from '@voiceflow/dtos';
 import { z } from 'zod';
 
-import { EnvironmentExportDTO } from '@/environment/export/dtos/environment-export-data.dto';
+import { EnvironmentExportDTO } from '@/environment/dtos/environment-export-data.dto';
 
 export const AssistantOnlyExportDataDTO = z
   .object({

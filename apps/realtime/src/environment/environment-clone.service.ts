@@ -17,7 +17,7 @@ import { VariableService } from '@/variable/variable.service';
 import { VersionService } from '@/version/version.service';
 import { WorkflowService } from '@/workflow/workflow.service';
 
-import { EnvironmentRepository } from '../environment.repository';
+import { EnvironmentRepository } from './environment.repository';
 
 @Injectable()
 export class EnvironmentCloneService {

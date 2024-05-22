@@ -10,7 +10,7 @@ import { ResponseService } from '@/response/response.service';
 import { VariableService } from '@/variable/variable.service';
 import { WorkflowService } from '@/workflow/workflow.service';
 
-import { CMSOnlyMigrationData, InternalMigrationData } from './migration.interface';
+import { CMSOnlyMigrationData, InternalMigrationData } from './environment-migration.interface';
 
 @Injectable()
 export class EnvironmentMigrationService {
@@ -55,10 +55,16 @@ export class EnvironmentMigrationService {
       }
     });
 
-    return Object.fromEntries(Object.entries(data).map(([key, value]) => [key, Object.values(value)])) as Partial<CMSOnlyMigrationData>;
+    return Object.fromEntries(
+      Object.entries(data).map(([key, value]) => [key, Object.values(value)])
+    ) as Partial<CMSOnlyMigrationData>;
   }
 
-  async migrateCMSData(data: Realtime.Migrate.MigrationData, patches: Patch[], meta: { userID: number; assistantID: string; environmentID: string }) {
+  async migrateCMSData(
+    data: Realtime.Migrate.MigrationData,
+    patches: Patch[],
+    meta: { userID: number; assistantID: string; environmentID: string }
+  ) {
     const {
       flows = [],
       folders = [],
@@ -80,7 +86,10 @@ export class EnvironmentMigrationService {
     await this.workflow.upsertManyWithSubResources({ workflows }, meta);
     await this.variable.upsertManyWithSubResources({ variables }, meta);
     await this.entity.upsertManyWithSubResources({ entities, entityVariants }, meta);
-    await this.response.upsertManyWithSubResources({ responses, responseVariants, responseAttachments: [], responseDiscriminators }, meta);
+    await this.response.upsertManyWithSubResources(
+      { responses, responseVariants, responseAttachments: [], responseDiscriminators },
+      meta
+    );
     await this.intent.upsertManyWithSubResources({ intents, utterances, requiredEntities }, meta);
   }
 }

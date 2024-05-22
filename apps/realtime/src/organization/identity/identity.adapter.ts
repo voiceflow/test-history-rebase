@@ -3,7 +3,10 @@ import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { createMultiAdapter, createSimpleAdapter, notImplementedAdapter } from 'bidirectional-adapter';
 import uniqBy from 'lodash/uniqBy.js';
 
-export const organizationMemberSimpleAdapter = createSimpleAdapter<Realtime.Identity.OrganizationMember, OrganizationMember>(
+export const organizationMemberSimpleAdapter = createSimpleAdapter<
+  Realtime.Identity.OrganizationMember,
+  OrganizationMember
+>(
   ({ user, membership }) => ({
     name: user.name,
     role: membership.role,
@@ -22,7 +25,7 @@ export const organizationMemberAdapter = {
     uniqBy(
       members
         .map(organizationMemberSimpleAdapter.fromDB)
-        .sort((a, b) => Realtime.Utils.role.getRoleStrength(b.role) - Realtime.Utils.role.getRoleStrength(a.role)),
+        .sort((a, b) => Realtime.Utils.role.getRoleStrength(a.role) - Realtime.Utils.role.getRoleStrength(b.role)),
       (member) => member.creatorID
     ),
 

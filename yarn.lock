@@ -11144,7 +11144,6 @@ __metadata:
   resolution: "@voiceflow/dtos@workspace:libs/dtos"
   dependencies:
     "@voiceflow/default-prompt-wrappers": "workspace:*"
-    "@voiceflow/internal": 3.2.3
     zod: 3.22.4
   peerDependencies:
     zod: ^3

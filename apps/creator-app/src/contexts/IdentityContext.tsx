@@ -1,5 +1,6 @@
 import { Nullable } from '@voiceflow/common';
-import { PlanType, UserRole } from '@voiceflow/internal';
+import { UserRole } from '@voiceflow/dtos';
+import { PlanType, UserRole as InternalUserRole } from '@voiceflow/internal';
 import { useContextApi } from '@voiceflow/ui';
 import React from 'react';
 
@@ -9,10 +10,10 @@ import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector } from '@/hooks/redux';
 
 export interface IdentityContextValue {
-  activeRole: Nullable<UserRole | VirtualRole>;
+  activeRole: Nullable<UserRole | InternalUserRole | VirtualRole>;
   workspacePlan: Nullable<PlanType>;
-  workspaceRole: Nullable<UserRole>;
-  organizationRole: Nullable<UserRole>;
+  workspaceRole: Nullable<UserRole | InternalUserRole>;
+  organizationRole: Nullable<UserRole | InternalUserRole>;
   organizationTrialExpired: Nullable<boolean>;
 }
 
@@ -37,7 +38,10 @@ export const IdentityProvider: React.FC<React.PropsWithChildren> = ({ children }
   const activeRole = organizationTrialExpired ? UserRole.VIEWER : workspaceRole;
 
   const api = useContextApi({
-    activeRole: organizationRole === UserRole.ADMIN && activeRole === UserRole.ADMIN ? VirtualRole.ORGANIZATION_ADMIN : activeRole,
+    activeRole:
+      organizationRole === UserRole.ADMIN && activeRole === UserRole.ADMIN
+        ? VirtualRole.ORGANIZATION_ADMIN
+        : activeRole,
     workspacePlan,
     workspaceRole,
     organizationRole,

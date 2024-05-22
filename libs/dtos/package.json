@@ -30,8 +30,7 @@
     "test:types": "yarn g:tsd"
   },
   "dependencies": {
-    "@voiceflow/default-prompt-wrappers": "workspace:*",
-    "@voiceflow/internal": "3.2.3"
+    "@voiceflow/default-prompt-wrappers": "workspace:*"
   },
   "devDependencies": {
     "zod": "3.22.4"

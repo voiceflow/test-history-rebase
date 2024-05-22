@@ -1,4 +1,5 @@
 import { Nullish } from '@voiceflow/common';
+import { UserRole } from '@voiceflow/internal';
 
 import {
   Permission,
@@ -18,12 +19,12 @@ export const getPermission = <P extends Permission>(permission: Nullish<P>, iden
   const activeRole = rolePermissionConfig?.ignoreProjectIdentity ? identity.workspaceActiveRole : identity.activeRole;
 
   const planAllowed = !permission || (!!activePlan && hasPlanPermission(permission, activePlan));
-  const roleAllowed = !permission || (!!activeRole && hasRolePermission(permission, activeRole));
+  const roleAllowed = !permission || (!!activeRole && hasRolePermission(permission, activeRole as UserRole));
   const trialAllowed = !permission || !identity.organizationTrialExpired;
 
   return {
     allowed: planAllowed && roleAllowed && trialAllowed,
-    roleConfig: permission && activeRole ? verifyRolePermissionConfig<P>(permission, activeRole) : null,
+    roleConfig: permission && activeRole ? verifyRolePermissionConfig<P>(permission, activeRole as UserRole) : null,
     planConfig: permission && activePlan ? verifyPlanPermissionConfig<P>(permission, activePlan) : null,
     roleAllowed,
     planAllowed,

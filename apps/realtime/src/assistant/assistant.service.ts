@@ -424,7 +424,6 @@ export class AssistantService extends MutableService<AssistantORM> {
         name: project.name,
         updatedByID: userID,
         workspaceID,
-        activePersonaID: null,
         activeEnvironmentID: environmentID,
       });
     } catch (err) {
@@ -819,7 +818,6 @@ export class AssistantService extends MutableService<AssistantORM> {
         name: project.name,
         updatedByID: userID,
         workspaceID: targetWorkspaceID,
-        activePersonaID: null,
         activeEnvironmentID: environmentID,
       });
     } catch {

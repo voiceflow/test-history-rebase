@@ -8,7 +8,6 @@ export const assistant: EntityDTO<AssistantEntity> = {
   updatedAt: new Date(),
   updatedBy: { id: 1 } as any,
   name: 'first assistant',
-  activePersona: { id: 'persona-1' } as any,
   workspace: { id: 1 } as any,
   activeEnvironmentID: 'environment-1',
 };

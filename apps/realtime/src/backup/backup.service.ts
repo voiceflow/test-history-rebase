@@ -157,7 +157,6 @@ export class BackupService extends MutableService<BackupORM> {
         name: project.name,
         updatedByID: userID,
         workspaceID: project.teamID,
-        activePersonaID: null,
         activeEnvironmentID: project.devVersion!.toJSON(),
       });
     }
@@ -166,7 +165,10 @@ export class BackupService extends MutableService<BackupORM> {
   }
 
   private async restoreBackup(userID: number, backup: BackupObject, versionID: string) {
-    const [vfFile, project] = await Promise.all([this.getBackupFile(backup.s3ObjectRef), this.project.findOneOrFail(backup.assistantID)]);
+    const [vfFile, project] = await Promise.all([
+      this.getBackupFile(backup.s3ObjectRef),
+      this.project.findOneOrFail(backup.assistantID),
+    ]);
 
     // create backup before restoring
     await this.createOneForUser(userID, versionID, 'Automatic before restore');
@@ -195,7 +197,10 @@ export class BackupService extends MutableService<BackupORM> {
   async previewBackup(userID: number, backupID: number) {
     return this.postgresEM.transactional(async () => {
       const backup = await this.findOneOrFail(backupID);
-      const [vfFile, project] = await Promise.all([this.getBackupFile(backup.s3ObjectRef), this.project.findOneOrFail(backup.assistantID)]);
+      const [vfFile, project] = await Promise.all([
+        this.getBackupFile(backup.s3ObjectRef),
+        this.project.findOneOrFail(backup.assistantID),
+      ]);
 
       const previewVersionID = project.previewVersion?.toJSON() ?? new ObjectId().toString();
 

@@ -5255,7 +5255,6 @@
           "primary": false,
           "nullable": false,
           "length": 24,
-          "default": "null",
           "mappedType": "string"
         },
         "created_at": {
@@ -5332,16 +5331,15 @@
           "nullable": true,
           "mappedType": "integer"
         },
-        "prompt_id": {
-          "name": "prompt_id",
-          "type": "varchar(24)",
+        "prompt": {
+          "name": "prompt",
+          "type": "jsonb",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "length": 24,
           "default": "null",
-          "mappedType": "string"
+          "mappedType": "json"
         },
         "code": {
           "name": "code",
@@ -5421,21 +5419,6 @@
           ],
           "referencedTableName": "designer.assistant",
           "deleteRule": "cascade",
-          "updateRule": "cascade"
-        },
-        "condition_prompt_id_environment_id_foreign": {
-          "constraintName": "condition_prompt_id_environment_id_foreign",
-          "columnNames": [
-            "prompt_id",
-            "environment_id"
-          ],
-          "localTableName": "designer.condition",
-          "referencedColumnNames": [
-            "id",
-            "environment_id"
-          ],
-          "referencedTableName": "designer.prompt",
-          "deleteRule": "set default",
           "updateRule": "cascade"
         }
       }
@@ -5839,7 +5822,6 @@
           "primary": false,
           "nullable": false,
           "length": 24,
-          "default": "null",
           "mappedType": "string"
         },
         "created_at": {
@@ -5937,16 +5919,15 @@
           "nullable": true,
           "mappedType": "integer"
         },
-        "prompt_id": {
-          "name": "prompt_id",
-          "type": "varchar(24)",
+        "prompt": {
+          "name": "prompt",
+          "type": "jsonb",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "length": 24,
           "default": "null",
-          "mappedType": "string"
+          "mappedType": "json"
         },
         "context": {
           "name": "context",

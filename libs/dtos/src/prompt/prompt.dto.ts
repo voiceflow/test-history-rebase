@@ -2,9 +2,11 @@ import { z } from 'zod';
 
 import { CMSTabularResourceDTO, MarkupDTO } from '@/common';
 
+import { PromptSettingsDTO } from './prompt-settings.dto';
+
 export const PromptDTO = CMSTabularResourceDTO.extend({
   text: MarkupDTO,
-  personaID: z.string().nullable(),
+  settings: PromptSettingsDTO.nullable(),
 }).strict();
 
 export type Prompt = z.infer<typeof PromptDTO>;

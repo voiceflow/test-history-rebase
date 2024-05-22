@@ -129,6 +129,7 @@ export * from './project/project-user-role.dto';
 export * from './prompt/prompt.compiled.dto';
 export * from './prompt/prompt.dto';
 export * from './prompt/prompt-create.dto';
+export * from './prompt/prompt-settings.dto';
 export * from './prototype-program/prototype-program.dto';
 export * from './refresh-job/refresh-job.dto';
 export * from './refresh-job/refresh-job-message-priority.enum';

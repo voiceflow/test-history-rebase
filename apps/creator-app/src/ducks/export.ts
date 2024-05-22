@@ -18,11 +18,21 @@ import { jsonToCSV } from '@/utils/files';
 import { downloadVF } from '@/utils/vf';
 
 export const exportCanvas =
-  (type: ExportFormat, version?: string, projectId?: string | null): Thunk =>
+  ({
+    type,
+    versionID: propVersionID,
+    projectID,
+    diagramID: propDiagramID,
+  }: {
+    type: ExportFormat;
+    versionID?: string;
+    projectID?: string | null;
+    diagramID?: string | null;
+  }): Thunk =>
   async (_, getState) => {
     const state = getState();
-    const versionID = version || Session.activeVersionIDSelector(state);
-    const diagramID = CreatorV2.activeDiagramIDSelector(state);
+    const versionID = propVersionID || Session.activeVersionIDSelector(state);
+    const diagramID = propDiagramID || CreatorV2.activeDiagramIDSelector(state);
 
     Errors.assertVersionID(versionID);
 
@@ -59,7 +69,7 @@ export const exportCanvas =
 
     if (type === ExportFormat.VF) {
       const getProjectById = ProjectV2.getProjectByIDSelector(state);
-      const projectName = ProjectV2.active.nameSelector(state) || getProjectById({ id: projectId })?.name;
+      const projectName = ProjectV2.active.nameSelector(state) || getProjectById({ id: projectID })?.name;
 
       await downloadVF({
         name: projectName,
@@ -108,7 +118,8 @@ export const exportModel =
     try {
       const projectName = ProjectV2.active.nameSelector(state)?.replace(/ /g, '_');
 
-      // DO NOT REMOVE: We want to render all intents before exporting model. Exported model should include all intents whatever is used on canvas or not.
+      // DO NOT REMOVE: We want to render all intents before exporting model.
+      // Exported model should include all intents whatever is used on canvas or not.
       await dispatch(Prototype.compilePrototype({ renderUnusedIntents: true }));
 
       const data = await nlpConfig.export.method(versionID, intents?.length ? intents : undefined);

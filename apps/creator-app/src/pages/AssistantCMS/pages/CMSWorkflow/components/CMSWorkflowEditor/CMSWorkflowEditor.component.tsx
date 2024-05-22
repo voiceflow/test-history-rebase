@@ -1,6 +1,17 @@
 import { WorkflowStatus } from '@voiceflow/dtos';
 import { tid } from '@voiceflow/style';
-import { Box, Button, Divider, Editor, IEditorAPI, IndicatorStatus, notify, Scroll, Text, WorkflowManager } from '@voiceflow/ui-next';
+import {
+  Box,
+  Button,
+  Divider,
+  Editor,
+  IEditorAPI,
+  IndicatorStatus,
+  notify,
+  Scroll,
+  Text,
+  WorkflowManager,
+} from '@voiceflow/ui-next';
 import { IAssignee } from '@voiceflow/ui-next/build/next/components/Other/WorkflowManager/types';
 import React, { useMemo, useRef } from 'react';
 import { match } from 'ts-pattern';
@@ -111,7 +122,9 @@ export const CMSWorkflowEditor: React.FC = () => {
       title={workflow.name}
       testID={EDITOR_TEST_ID}
       onTitleChange={(name) => patchWorkflow({ name: name.trim() })}
-      headerActions={<CMSEditorMoreButton>{({ onClose }) => getMoreMenu({ id: workflowID, onClose })}</CMSEditorMoreButton>}
+      headerActions={
+        <CMSEditorMoreButton>{({ onClose }) => getMoreMenu({ id: workflowID, onClose })}</CMSEditorMoreButton>
+      }
     >
       <Scroll style={{ display: 'block' }}>
         <Box px={24} py={20} direction="column">

@@ -26,7 +26,13 @@ import { useOnAssistantDuplicate } from './assistant.hook';
 import { useDispatch } from './realtime';
 import { useTrackingEvents } from './tracking';
 
-export const useDeleteProject = ({ boardID, projectID }: { boardID?: string; projectID?: string | null }): (() => void) => {
+export const useDeleteProject = ({
+  boardID,
+  projectID,
+}: {
+  boardID?: string;
+  projectID?: string | null;
+}): (() => void) => {
   const [canManageProjects] = usePermission(Permission.PROJECTS_MANAGE);
 
   const deleteModal = ModalsV2.useModal(ModalsV2.Project.Delete);
@@ -125,13 +131,14 @@ export const useProjectOptions = ({
   const onExport = async () => {
     trackingEvents.trackExportButtonClick({ format: CanvasExportFormat.VF });
 
-    await exportCanvas(CanvasExportFormat.VF, versionID, projectID);
+    await exportCanvas({ type: CanvasExportFormat.VF, versionID, projectID });
   };
 
   const targetVersionID = versionID || currentVersionID;
 
   const isPreviewerOrLockedViewer = isPreviewer || isProjectLocked;
-  const withInviteOption = !isPreviewerOrLockedViewer && withInvite && canAddCollaborators && (!canvas || !!sharePopper);
+  const withInviteOption =
+    !isPreviewerOrLockedViewer && withInvite && canAddCollaborators && (!canvas || !!sharePopper);
   const withImportOption = !isPreviewerOrLockedViewer && isPartialImportEnabled;
   const withDeleteOption = !isPreviewer && withDelete && canManageProjects;
   const withExportOption = !isPreviewerOrLockedViewer && canExportProject && !!sharePopper && !hideExports.isEnabled;
@@ -149,11 +156,23 @@ export const useProjectOptions = ({
     return [
       ...Utils.array.conditionalItem(withRenameOption, { label: 'Rename', onClick: onRename, testID: 'rename' }),
 
-      ...Utils.array.conditionalItem(withDuplicateOption, { label: 'Duplicate', onClick: onDuplicate, testID: 'duplicate' }),
+      ...Utils.array.conditionalItem(withDuplicateOption, {
+        label: 'Duplicate',
+        onClick: onDuplicate,
+        testID: 'duplicate',
+      }),
 
-      ...Utils.array.conditionalItem(withDownloadOption, { label: 'Download (.vf)', onClick: onExport, testID: 'download' }),
+      ...Utils.array.conditionalItem(withDownloadOption, {
+        label: 'Download (.vf)',
+        onClick: onExport,
+        testID: 'download',
+      }),
 
-      ...Utils.array.conditionalItem(withCopyCloneLinkOption, { label: 'Copy clone link', onClick: onClone, testID: 'copy-clone-link' }),
+      ...Utils.array.conditionalItem(withCopyCloneLinkOption, {
+        label: 'Copy clone link',
+        onClick: onClone,
+        testID: 'copy-clone-link',
+      }),
 
       ...Utils.array.conditionalItem(hasDivider1, { label: 'divider-1', divider: true }),
 
@@ -163,7 +182,11 @@ export const useProjectOptions = ({
         testID: 'manage-access',
       }),
 
-      ...Utils.array.conditionalItem(withSettingsOption, { label: 'Settings', onClick: () => goToSettings(targetVersionID), testID: 'settings' }),
+      ...Utils.array.conditionalItem(withSettingsOption, {
+        label: 'Settings',
+        onClick: () => goToSettings(targetVersionID),
+        testID: 'settings',
+      }),
 
       ...Utils.array.conditionalItem(
         withDeleteOption,
@@ -201,16 +224,25 @@ export const useProjectOptions = ({
     }),
 
     ...Utils.array.conditionalItem(
-      (withHistoryOption || withSettingsOption || withInviteOption || withExportOption) && (withRenameOption || withDuplicateOption),
+      (withHistoryOption || withSettingsOption || withInviteOption || withExportOption) &&
+        (withRenameOption || withDuplicateOption),
       {
         label: 'divider-1',
         divider: true,
       }
     ),
 
-    ...Utils.array.conditionalItem(withRenameOption, { label: 'Rename assistant', onClick: onRename, testID: 'rename' }),
+    ...Utils.array.conditionalItem(withRenameOption, {
+      label: 'Rename assistant',
+      onClick: onRename,
+      testID: 'rename',
+    }),
 
-    ...Utils.array.conditionalItem(withDuplicateOption, { label: 'Duplicate assistant', onClick: onDuplicate, testID: 'duplicate' }),
+    ...Utils.array.conditionalItem(withDuplicateOption, {
+      label: 'Duplicate assistant',
+      onClick: onDuplicate,
+      testID: 'duplicate',
+    }),
 
     ...Utils.array.conditionalItem(withDuplicateOption && !hideExports.isEnabled, {
       label: 'Copy clone link',

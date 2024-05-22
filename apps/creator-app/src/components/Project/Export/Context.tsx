@@ -1,5 +1,6 @@
 import { Nullable } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { useContextApi } from '@voiceflow/ui';
 import _sortBy from 'lodash/sortBy';
 import React from 'react';
@@ -7,7 +8,13 @@ import React from 'react';
 import * as NLP from '@/config/nlp';
 import { ExportFormat as CanvasExportFormat, ExportType } from '@/constants';
 import * as Export from '@/ducks/export';
-import { useActiveProjectNLUConfig, useActiveProjectPlatformConfig, useDispatch, useTrackingEvents } from '@/hooks';
+import {
+  useActiveProjectNLUConfig,
+  useActiveProjectPlatformConfig,
+  useDispatch,
+  useFeature,
+  useTrackingEvents,
+} from '@/hooks';
 
 interface ContextValue {
   onExport: (origin: string) => void;
@@ -17,9 +24,11 @@ interface ContextValue {
   exportIntents: string[];
   exportNLPType: NLP.Constants.NLPType | null;
   setExportType: (exportType: ExportType) => void;
+  exportDiagramID: string | null;
   setExportNLPType: (provider: NLP.Constants.NLPType) => void;
   setExportIntents: (intents: string[]) => void;
   canvasExportFormat: CanvasExportFormat;
+  setExportDiagramID: (diagramID: string | null) => void;
   checkedExportIntents: string[];
   setCanvasExportFormat: (format: CanvasExportFormat) => void;
   setCheckedExportIntents: (intents: string[]) => void;
@@ -33,10 +42,12 @@ export const Provider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   const exportModel = useDispatch(Export.exportModel);
   const exportCanvas = useDispatch(Export.exportCanvas);
+  const exportSpecificObject = useFeature(Realtime.FeatureFlag.EXPORT_SPECIFIC_OBJECT);
 
   const [trackingEvents] = useTrackingEvents();
   const [exportType, setExportType] = React.useState<ExportType>(ExportType.MODEL);
   const [isExporting, setExporting] = React.useState(false);
+  const [exportDiagramID, setExportDiagramID] = React.useState<string | null>(null);
   const [canvasExportFormat, setCanvasExportFormat] = React.useState(CanvasExportFormat.PNG);
 
   const nlpTypes = React.useMemo(() => _sortBy(nluConfig.nlps, (nlp) => nlp.name).map((nlp) => nlp.type), [nluConfig]);
@@ -53,7 +64,11 @@ export const Provider: React.FC<React.PropsWithChildren> = ({ children }) => {
       setExporting(true);
 
       if (exportType === ExportType.CANVAS) {
-        await exportCanvas(canvasExportFormat);
+        if (!exportSpecificObject.isEnabled) {
+          await exportCanvas({ type: canvasExportFormat });
+        } else {
+          await exportCanvas({ type: canvasExportFormat, diagramID: exportDiagramID });
+        }
       } else if (exportNLPType) {
         await exportModel({
           origin,
@@ -66,7 +81,7 @@ export const Provider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
       setExporting(false);
     },
-    [nluConfig, exportType, exportNLPType, exportIntents, canvasExportFormat]
+    [nluConfig, exportType, exportDiagramID, exportNLPType, exportIntents, canvasExportFormat]
   );
 
   const api = useContextApi({
@@ -77,9 +92,11 @@ export const Provider: React.FC<React.PropsWithChildren> = ({ children }) => {
     setExportType,
     exportIntents,
     exportNLPType,
+    exportDiagramID,
     setExportIntents,
     setExportNLPType,
     canvasExportFormat,
+    setExportDiagramID,
     checkedExportIntents,
     setCanvasExportFormat,
     setCheckedExportIntents,

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1526.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1526.3...@voiceflow/creator-app@1.1526.4) (2024-05-22)
+
+### Bug Fixes
+
+* canvas infinity loading (COR-2113) ([#8156](https://github.com/voiceflow/creator-app/issues/8156)) ([a1fb912](https://github.com/voiceflow/creator-app/commit/a1fb912ed49f33e726a653f13532cd2c5cdc71a3))
+
 ## [1.1526.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1526.2...@voiceflow/creator-app@1.1526.3) (2024-05-22)
 
 **Note:** Version bump only for package @voiceflow/creator-app

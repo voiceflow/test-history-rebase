@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1527.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1527.0...@voiceflow/creator-app@1.1527.1) (2024-05-22)
+
+### Bug Fixes
+
+* removes vf internals dep from dtos lib [bugfix] (COR-000) ([#8158](https://github.com/voiceflow/creator-app/issues/8158)) ([f05bf63](https://github.com/voiceflow/creator-app/commit/f05bf63cf9b34793b8746b30fe73c06a8d73c0da))
+
 # [1.1527.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1526.4...@voiceflow/creator-app@1.1527.0) (2024-05-22)
 
 ### Features

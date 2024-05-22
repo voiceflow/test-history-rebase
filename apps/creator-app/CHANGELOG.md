@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1527.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1526.4...@voiceflow/creator-app@1.1527.0) (2024-05-22)
+
+### Features
+
+* add object selection when exporting to pdf/png (COR-2129) ([#8157](https://github.com/voiceflow/creator-app/issues/8157)) ([bcf58ad](https://github.com/voiceflow/creator-app/commit/bcf58ad265262276a1ff641b114b48fe21bedf0f))
+* remove kb be ffs (COR-2115) ([#8155](https://github.com/voiceflow/creator-app/issues/8155)) ([99a3185](https://github.com/voiceflow/creator-app/commit/99a3185b8686d03bd0d0a8ce740809366d5d3640))
+
 ## [1.1526.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1526.3...@voiceflow/creator-app@1.1526.4) (2024-05-22)
 
 ### Bug Fixes

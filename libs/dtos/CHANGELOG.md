@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.76.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.76.0...@voiceflow/dtos@1.76.1) (2024-05-22)
+
+**Note:** Version bump only for package @voiceflow/dtos
+
 # [1.76.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.75.0...@voiceflow/dtos@1.76.0) (2024-05-21)
 
 ### Features

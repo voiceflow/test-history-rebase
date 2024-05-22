@@ -77,4 +77,7 @@ export enum FeatureFlag {
   CMS_RESPONSES = 'cms_response',
 
   TRIGGER_STEP = 'trigger_step',
+
+  // Export
+  EXPORT_SPECIFIC_OBJECT = 'export_specific_object',
 }

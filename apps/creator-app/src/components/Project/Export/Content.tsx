@@ -19,7 +19,7 @@ export const Content: React.FC<{
   const Container = (disableAnimation ? Box : Animations.FadeLeft) as typeof Box;
 
   return (
-    <Container style={{ height: '100%' }} paddingTop={24} paddingX={32}>
+    <Container fullWidth style={{ height: '100%' }} paddingTop={24} paddingX={32}>
       <Title fontSize={15} mb={16} textAlign="left">
         Export Type
       </Title>

@@ -20,7 +20,6 @@ const migrateToV5_00: Transform = ({ cms, version }, { project, creatorID }) => 
     updatedAt: createdAt,
     updatedByID: creatorID,
     workspaceID: project.workspaceID,
-    activePersonaID: null,
     activeEnvironmentID: project.versionID,
   };
 

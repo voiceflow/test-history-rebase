@@ -34,7 +34,6 @@ export const CreateOne = organizationAction.crud.createOne<CreateOne.Request, Cr
 
 interface PatchData {
   name?: string;
-  activePersonaID?: string;
   image?: string;
 }
 

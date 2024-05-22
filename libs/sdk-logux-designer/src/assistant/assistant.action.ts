@@ -73,7 +73,6 @@ export const DuplicateOne = Utils.protocol.createAsyncAction<DuplicateOne.Reques
 
 interface PatchData {
   name?: string;
-  activePersonaID?: string;
 }
 
 export interface PatchOne extends PatchOneRequest<PatchData>, WorkspaceAction {}

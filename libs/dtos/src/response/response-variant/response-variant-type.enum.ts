@@ -1,5 +1,4 @@
 export const ResponseVariantType = {
-  JSON: 'json',
   PROMPT: 'prompt',
 
   /**

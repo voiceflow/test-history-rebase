@@ -1,4 +1,4 @@
-import type { AnyResponseVariant, JSONResponseVariant, TextResponseVariant } from '@voiceflow/dtos';
+import type { AnyResponseVariant, TextResponseVariant } from '@voiceflow/dtos';
 import { ResponseVariantType } from '@voiceflow/dtos';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 import { match } from 'ts-pattern';
@@ -6,11 +6,9 @@ import { match } from 'ts-pattern';
 import { waitAsync } from '@/ducks/utils';
 import { getActiveAssistantContext } from '@/ducks/versionV2/utils';
 import type { Thunk } from '@/store/types';
-import { responseJSONVariantCreateDataFactory, responseTextVariantCreateDataFactory } from '@/utils/response.util';
+import { responseTextVariantCreateDataFactory } from '@/utils/response.util';
 
 interface CreateTextData extends Partial<Omit<Actions.ResponseVariant.CreateTextData, 'discriminatorID'>> {}
-
-interface CreateJSONData extends Partial<Omit<Actions.ResponseVariant.CreateJSONData, 'discriminatorID'>> {}
 
 export const createOneText =
   (discriminatorID: string, data?: CreateTextData, options?: Actions.ResponseVariant.CreateOptions): Thunk<TextResponseVariant> =>
@@ -48,30 +46,11 @@ export const createManyText =
     return response.data;
   };
 
-export const createOneJSON =
-  (discriminatorID: string, data?: CreateJSONData, options?: Actions.ResponseVariant.CreateOptions): Thunk<JSONResponseVariant> =>
-  async (dispatch, getState) => {
-    const state = getState();
-
-    const context = getActiveAssistantContext(state);
-
-    const response = await dispatch(
-      waitAsync(Actions.ResponseVariant.CreateJSONOne, {
-        context,
-        data: { ...responseJSONVariantCreateDataFactory(data), discriminatorID },
-        options,
-      })
-    );
-
-    return response.data;
-  };
-
 export const createOneEmpty =
   (discriminatorID: string, variantType: ResponseVariantType, options?: Actions.ResponseVariant.CreateOptions): Thunk<AnyResponseVariant> =>
   (dispatch) =>
     match(variantType)
       .with(ResponseVariantType.TEXT, () => dispatch(createOneText(discriminatorID, undefined, options)))
-      .with(ResponseVariantType.JSON, () => dispatch(createOneJSON(discriminatorID, undefined, options)))
       .with(ResponseVariantType.PROMPT, () => {
         throw new Error('Not implemented');
       })

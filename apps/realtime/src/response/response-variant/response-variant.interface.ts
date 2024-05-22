@@ -1,5 +1,5 @@
 import type { AnyResponseVariantCreate, ResponseVariantType } from '@voiceflow/dtos';
-import type { ResponseJSONVariantORM, ResponseTextVariantORM } from '@voiceflow/orm-designer';
+import type { ResponseTextVariantORM } from '@voiceflow/orm-designer';
 
 import type { CMSCreateForUserData, CMSPatchData } from '@/common/types';
 
@@ -9,21 +9,13 @@ export interface ResponseTextVariantCreateData extends CMSCreateForUserData<Resp
   type: typeof ResponseVariantType.TEXT;
 }
 
-export interface ResponseJSONVariantCreateData extends CMSCreateForUserData<ResponseJSONVariantORM> {
-  type: typeof ResponseVariantType.JSON;
-}
-
-export type ResponseAnyVariantCreateData = ResponseTextVariantCreateData | ResponseJSONVariantCreateData;
+export type ResponseAnyVariantCreateData = ResponseTextVariantCreateData;
 
 export interface ResponseTextVariantPatchData extends CMSPatchData<ResponseTextVariantORM> {
   type: typeof ResponseVariantType.TEXT;
 }
 
-export interface ResponseJSONVariantPatchData extends CMSPatchData<ResponseJSONVariantORM> {
-  type: typeof ResponseVariantType.JSON;
-}
-
-export type ResponseAnyVariantPatchData = ResponseTextVariantPatchData | ResponseJSONVariantPatchData;
+export type ResponseAnyVariantPatchData = ResponseTextVariantPatchData;
 
 interface ResponseBaseVariantCreateWithSubResourcesData {
   condition: AnyResponseVariantCreate['condition'];
@@ -36,9 +28,4 @@ interface ResponseBaseVariantCreateWithSubResourcesData {
 export type ResponseTextVariantCreateWithSubResourcesData<Exclude extends keyof ResponseTextVariantCreateData = never> =
   ResponseBaseVariantCreateWithSubResourcesData & Omit<ResponseTextVariantCreateData, 'attachmentOrder' | 'conditionID' | Exclude>;
 
-export type ResponseJSONVariantCreateWithSubResourcesData<Exclude extends keyof ResponseJSONVariantCreateData = never> =
-  ResponseBaseVariantCreateWithSubResourcesData & Omit<ResponseJSONVariantCreateData, 'attachmentOrder' | 'conditionID' | Exclude>;
-
-export type ResponseAnyVariantCreateWithSubResourcesData =
-  | ResponseTextVariantCreateWithSubResourcesData
-  | ResponseJSONVariantCreateWithSubResourcesData;
+export type ResponseAnyVariantCreateWithSubResourcesData = ResponseTextVariantCreateWithSubResourcesData;

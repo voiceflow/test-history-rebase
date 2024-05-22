@@ -12,21 +12,11 @@ export const responseVariantReducer = reducerWithInitialState<ResponseVariantSta
   .case(Actions.ResponseVariant.DeleteMany, (state, { ids }) => removeMany(state, ids))
   .case(Actions.ResponseVariant.Replace, (state, { data }) => ({ ...state, ...normalize(data) }))
   .casesWithAction(
-    [
-      Actions.ResponseVariant.PatchOneJSON,
-      Actions.ResponseVariant.PatchOnePrompt,
-      Actions.ResponseVariant.PatchOneText,
-      Actions.ResponseVariant.PatchOne,
-    ],
+    [Actions.ResponseVariant.PatchOnePrompt, Actions.ResponseVariant.PatchOneText, Actions.ResponseVariant.PatchOne],
     (state, action) => patchOne(state, action.payload.id, patchWithUpdatedFields(action))
   )
   .casesWithAction(
-    [
-      Actions.ResponseVariant.PatchManyJSON,
-      Actions.ResponseVariant.PatchManyPrompt,
-      Actions.ResponseVariant.PatchManyText,
-      Actions.ResponseVariant.PatchMany,
-    ],
+    [Actions.ResponseVariant.PatchManyPrompt, Actions.ResponseVariant.PatchManyText, Actions.ResponseVariant.PatchMany],
     (state, action) =>
       patchMany(
         state,

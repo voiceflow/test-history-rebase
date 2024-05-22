@@ -1,7 +1,7 @@
-import { z } from 'zod';
+import type { z } from 'zod';
 
 import { PromptDTO } from '../../prompt/prompt.dto';
-import { JSONResponseVariantDTO, PromptResponseVariantDTO, TextResponseVariantDTO } from './response-variant.dto';
+import { PromptResponseVariantDTO, TextResponseVariantDTO } from './response-variant.dto';
 
 export const PromptResponseVariantWithPromptDTO = PromptResponseVariantDTO.extend({
   prompt: PromptDTO,
@@ -9,6 +9,7 @@ export const PromptResponseVariantWithPromptDTO = PromptResponseVariantDTO.exten
 
 export type PromptResponseVariantWithPrompt = z.infer<typeof PromptResponseVariantWithPromptDTO>;
 
-export const AnyResponseVariantWithDataDTO = z.union([JSONResponseVariantDTO, TextResponseVariantDTO]);
+// TODO: add prompt response variant type
+export const AnyResponseVariantWithDataDTO = TextResponseVariantDTO;
 
 export type AnyResponseVariantWithData = z.infer<typeof AnyResponseVariantWithDataDTO>;

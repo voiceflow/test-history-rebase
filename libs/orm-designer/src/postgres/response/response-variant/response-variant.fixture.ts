@@ -3,7 +3,6 @@ import { CardLayout, ResponseContext, ResponseVariantType } from '@voiceflow/dto
 
 import { responseAttachmentList } from '../response-attachment/response-attachment.fixture';
 import type {
-  JSONResponseVariantEntity,
   PromptResponseVariantEntity,
   TextResponseVariantEntity,
 } from './response-variant.entity';
@@ -18,15 +17,6 @@ const baseResponseVariant = {
   attachments: responseAttachmentList,
   assistant: { id: 'assistant-1' } as any,
   discriminator: { id: 'discriminator-1' } as any,
-};
-
-export const jsonResponseVariant: EntityDTO<JSONResponseVariantEntity> = {
-  ...baseResponseVariant,
-  id: 'response-variant-1',
-  type: ResponseVariantType.JSON,
-  json: ['{ "foo": "bar" }'],
-  condition: null,
-  environmentID: 'environment-1',
 };
 
 export const promptResponseVariant: EntityDTO<PromptResponseVariantEntity> = {
@@ -49,4 +39,4 @@ export const textResponseVariant: EntityDTO<TextResponseVariantEntity> = {
   environmentID: 'environment-1',
 };
 
-export const responseVariantList = [jsonResponseVariant, promptResponseVariant, textResponseVariant];
+export const responseVariantList = [promptResponseVariant, textResponseVariant];

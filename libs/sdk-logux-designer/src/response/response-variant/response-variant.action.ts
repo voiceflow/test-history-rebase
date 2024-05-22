@@ -1,9 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import type {
   AnyResponseVariant,
-  JSONResponseVariant,
-  JSONResponseVariantCreate,
-  JSONResponseVariantPatch,
   PromptResponseVariant,
   PromptResponseVariantCreate,
   PromptResponseVariantPatch,
@@ -32,13 +29,9 @@ interface BaseCreateData {
   discriminatorID: string;
 }
 
-export interface CreateJSONData extends BaseCreateData, JSONResponseVariantCreate {}
-
 export interface CreateTextData extends BaseCreateData, TextResponseVariantCreate {}
 
 export type CreatePromptData = BaseCreateData & PromptResponseVariantCreate;
-
-export interface PatchJSONData extends JSONResponseVariantPatch {}
 
 export interface PatchPromptData extends PromptResponseVariantPatch {}
 
@@ -55,21 +48,6 @@ export interface CreateOptions {
 /**
  * user-sent events
  */
-
-/* CreateJSONOne */
-
-export namespace CreateJSONOne {
-  export interface Request extends DesignerAction {
-    data: CreateJSONData;
-    options?: CreateOptions;
-  }
-
-  export interface Response extends CreateResponse<JSONResponseVariant>, DesignerAction {}
-}
-
-export const CreateJSONOne = responseVariantAction.crud.createOne<CreateJSONOne.Request, CreateJSONOne.Response>(
-  ResponseVariantType.JSON
-);
 
 /* CreatePromptOne */
 
@@ -132,12 +110,6 @@ export const CreateTextMany = responseVariantAction.crud.createMany<CreateTextMa
   ResponseVariantType.TEXT
 );
 
-/* PatchOneJSON */
-
-export interface PatchOneJSON extends PatchOneRequest<PatchJSONData>, DesignerAction {}
-
-export const PatchOneJSON = responseVariantAction.crud.patchOne<PatchOneJSON>(ResponseVariantType.JSON);
-
 /* PatchOnePrompt */
 
 export interface PatchOnePrompt extends PatchOneRequest<PatchPromptData>, DesignerAction {}
@@ -149,12 +121,6 @@ export const PatchOnePrompt = responseVariantAction.crud.patchOne<PatchOnePrompt
 export interface PatchOneText extends PatchOneRequest<PatchTextData>, DesignerAction {}
 
 export const PatchOneText = responseVariantAction.crud.patchOne<PatchOneText>(ResponseVariantType.TEXT);
-
-/* PatchManyJSON */
-
-export interface PatchManyJSON extends PatchManyRequest<PatchJSONData>, DesignerAction {}
-
-export const PatchManyJSON = responseVariantAction.crud.patchMany<PatchManyJSON>(ResponseVariantType.JSON);
 
 /* PatchManyPrompt */
 
@@ -179,13 +145,13 @@ export const ReplaceWithType = Utils.protocol.createAction<ReplaceWithType>(resp
 
 /* PatchOne */
 
-export interface PatchOne extends PatchOneRequest<PatchTextData | PatchPromptData | PatchJSONData>, DesignerAction {}
+export interface PatchOne extends PatchOneRequest<PatchTextData | PatchPromptData>, DesignerAction {}
 
 export const PatchOne = responseVariantAction.crud.patchOne<PatchOne>();
 
 /* PatchMany */
 
-export interface PatchMany extends PatchManyRequest<PatchTextData | PatchPromptData | PatchJSONData>, DesignerAction {}
+export interface PatchMany extends PatchManyRequest<PatchTextData | PatchPromptData>, DesignerAction {}
 
 /**
  * used for broadcast only

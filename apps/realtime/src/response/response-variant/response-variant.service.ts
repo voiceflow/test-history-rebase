@@ -24,7 +24,6 @@ import { cmsBroadcastContext, toPostgresEntityIDs } from '@/common/utils';
 import { CMSBroadcastMeta, CMSContext } from '@/types';
 
 import { ResponseAttachmentService } from '../response-attachment/response-attachment.service';
-import { ResponseJSONVariantService } from './response-json-variant.service';
 import { ResponseTextVariantService } from './response-text-variant.service';
 import type {
   ResponseAnyVariantCreateData,
@@ -35,17 +34,9 @@ import { emptyResponseVariantFactory } from './response-variant.util';
 
 @Injectable()
 export class ResponseVariantService {
-  toJSON = (data: AnyResponseVariantObject) =>
-    match(data)
-      .with({ type: ResponseVariantType.JSON }, this.responseJSONVariant.toJSON)
-      .with({ type: ResponseVariantType.TEXT }, this.responseTextVariant.toJSON)
-      .exhaustive();
+  toJSON = (data: AnyResponseVariantObject) => match(data).with({ type: ResponseVariantType.TEXT }, this.responseTextVariant.toJSON).exhaustive();
 
-  fromJSON = (data: AnyResponseVariant) =>
-    match(data)
-      .with({ type: ResponseVariantType.JSON }, this.responseJSONVariant.fromJSON)
-      .with({ type: ResponseVariantType.TEXT }, this.responseTextVariant.fromJSON)
-      .exhaustive();
+  fromJSON = (data: AnyResponseVariant) => match(data).with({ type: ResponseVariantType.TEXT }, this.responseTextVariant.fromJSON).exhaustive();
 
   mapToJSON = (data: AnyResponseVariantObject[]) => data.map(this.toJSON);
 
@@ -64,8 +55,6 @@ export class ResponseVariantService {
     protected readonly logux: LoguxService,
     @Inject(ResponseAttachmentService)
     protected readonly responseAttachment: ResponseAttachmentService,
-    @Inject(ResponseJSONVariantService)
-    protected readonly responseJSONVariant: ResponseJSONVariantService,
     @Inject(ResponseTextVariantService)
     protected readonly responseTextVariant: ResponseTextVariantService
   ) {}
@@ -296,7 +285,6 @@ export class ResponseVariantService {
 
   patchMany(ids: Primary<AnyResponseVariantEntity>[], patch: ResponseAnyVariantPatchData) {
     return match(patch)
-      .with({ type: ResponseVariantType.JSON }, (data) => this.responseJSONVariant.patchMany(ids, data))
       .with({ type: ResponseVariantType.TEXT }, (data) => this.responseTextVariant.patchMany(ids, data))
       .exhaustive();
   }

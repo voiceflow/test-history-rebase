@@ -12,16 +12,27 @@ import type { ICMSResponseTableTypeCell } from './CMSResponseTableTypeCell.inter
 
 const responseTypeMap = {
   [ResponseVariantType.TEXT]: 'Text',
-  [ResponseVariantType.JSON]: 'JSON',
   [ResponseVariantType.PROMPT]: 'Prompt',
 };
 
-export const CMSResponseTableTypeCell: React.FC<ICMSResponseTableTypeCell> = ({ responseID, language, channel, isFolder }) => {
+export const CMSResponseTableTypeCell: React.FC<ICMSResponseTableTypeCell> = ({
+  responseID,
+  language,
+  channel,
+  isFolder,
+}) => {
   const triggers = useAtomValue(getOneResponseDiscriminatorByLanguageChannelAtomResponseID);
   const [variantID] = triggers({ responseID, language, channel })?.variantOrder || [];
   const variant = useSelector(Designer.Response.ResponseVariant.selectors.oneByID, { id: variantID });
 
   if (!variant) return <Table.Cell.Empty />;
 
-  return <CMSTableNameCell type={variant.type} name={responseTypeMap[variant.type]} itemID={responseID} isFolder={isFolder} />;
+  return (
+    <CMSTableNameCell
+      type={variant.type}
+      name={responseTypeMap[variant.type]}
+      itemID={responseID}
+      isFolder={isFolder}
+    />
+  );
 };

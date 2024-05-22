@@ -5928,15 +5928,6 @@
           "nullable": false,
           "mappedType": "array"
         },
-        "json": {
-          "name": "json",
-          "type": "jsonb",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "json"
-        },
         "turns": {
           "name": "turns",
           "type": "int",

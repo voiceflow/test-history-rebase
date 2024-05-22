@@ -1,4 +1,3 @@
-import { ResponseVariantType } from '@voiceflow/dtos';
 import { markupToString } from '@voiceflow/utils-designer';
 import type { Descendant } from 'slate';
 
@@ -16,21 +15,16 @@ export const responseToVariantString = (
 
   if (!variant) return '';
 
-  if (variant.type === ResponseVariantType.JSON) {
-    return markupToString.fromDB(variant.json, { variablesMapByID, entitiesMapByID });
-  }
-
   return markupToString.fromDB(variant.text, { variablesMapByID, entitiesMapByID });
 };
 
-export const responseToVariantSlate = (item: CMSResponse, { getVariantByResponseID }: CMSResponseSortContext): Descendant[] => {
+export const responseToVariantSlate = (
+  item: CMSResponse,
+  { getVariantByResponseID }: CMSResponseSortContext
+): Descendant[] => {
   const variant = getVariantByResponseID({ responseID: item.id });
 
   if (!variant) return [];
-
-  if (variant.type === ResponseVariantType.JSON) {
-    return markupToSlate.fromDB(variant.json);
-  }
 
   return markupToSlate.fromDB(variant.text);
 };

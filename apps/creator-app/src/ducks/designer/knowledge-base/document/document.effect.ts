@@ -1,23 +1,20 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable sonarjs/no-duplicate-string */
 import { BaseModels } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { notify } from '@voiceflow/ui-next';
 import pluralize from 'pluralize';
 
 import { designerClient } from '@/client/designer';
-import { knowledgeBaseClient } from '@/client/knowledge-base';
 import * as Errors from '@/config/errors';
-import * as Feature from '@/ducks/feature';
 import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
-import type { DBKnowledgeBaseDocument, KnowledgeBaseDocument } from '@/models/KnowledgeBase.model';
+import type { KnowledgeBaseDocument } from '@/models/KnowledgeBase.model';
 import { pendingStatusSet } from '@/pages/AssistantCMS/pages/CMSKnowledgeBase/CMSKnowledgeBase.constants';
 import type { Thunk } from '@/store/types';
 import { downloadBlob } from '@/utils/download.util';
 
 import * as Actions from './document.action';
-import { documentAdapter, documentAdapterRealtime } from './document.adapter';
+import { documentAdapterRealtime } from './document.adapter';
 import { DOCUMENT_TYPE_MIME_FILE_TYPE_MAP } from './document.constant';
 import * as Selectors from './document.select';
 
@@ -38,7 +35,6 @@ export const replaceTextDocument =
   async (dispatch, getState) => {
     const state = getState();
 
-    const realtimeKBEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.KB_BE_DOC_FILE);
     const projectID = Session.activeProjectIDSelector(state);
 
     const file = new Blob([fileContent], { type: 'text/plain' });
@@ -50,22 +46,15 @@ export const replaceTextDocument =
 
     Errors.assertProjectID(projectID);
 
-    let document: KnowledgeBaseDocument;
-
-    if (realtimeKBEnabled) {
-      const formFile = formData.get('file');
-      if (!(formFile instanceof Blob)) {
-        throw new Error('unsupported');
-      }
-      const dbDocument = await designerClient.knowledgeBase.document.replaceOneFile(projectID, documentID, {
-        file: formFile,
-        canEdit: true,
-      });
-      document = documentAdapterRealtime.fromDB(dbDocument);
-    } else {
-      const dbDocument = await knowledgeBaseClient.replaceDocument(projectID, documentID, formData);
-      document = documentAdapter.fromDB(dbDocument);
+    const formFile = formData.get('file');
+    if (!(formFile instanceof Blob)) {
+      throw new Error('unsupported');
     }
+    const dbDocument = await designerClient.knowledgeBase.document.replaceOneFile(projectID, documentID, {
+      file: formFile,
+      canEdit: true,
+    });
+    const document = documentAdapterRealtime.fromDB(dbDocument);
 
     dispatch.local(Actions.SetProcessingIDs({ processingIDs: [documentID] }));
 
@@ -83,8 +72,6 @@ export const patchManyRefreshRate =
   async (dispatch, getState) => {
     const state = getState();
 
-    const realtimeKBEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.KB_BE_DOC_CRUD);
-
     const projectID = Session.activeProjectIDSelector(state);
 
     Errors.assertProjectID(projectID);
@@ -94,17 +81,10 @@ export const patchManyRefreshRate =
       data: { ...document.data, refreshRate } as BaseModels.Project.KnowledgeBaseURL,
     }));
 
-    if (realtimeKBEnabled) {
-      await designerClient.knowledgeBase.document.patchMany(projectID, {
-        documentIDs,
-        patch: { data: { refreshRate } },
-      });
-    } else {
-      await knowledgeBaseClient.updateManyDocuments(
-        projectID,
-        documents.map((doc) => ({ data: doc.data, documentID: doc.id }))
-      );
-    }
+    await designerClient.knowledgeBase.document.patchMany(projectID, {
+      documentIDs,
+      patch: { data: { refreshRate } },
+    });
 
     Tracking.trackAiKnowledgeBaseSourceUpdated({ documentIDs, Update_Type: 'Refresh rate' });
 
@@ -118,21 +98,12 @@ export const patchManyRefreshRate =
 export const getAll = (): Thunk<KnowledgeBaseDocument[]> => async (dispatch, getState) => {
   const state = getState();
 
-  const realtimeKBEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.KB_BE_DOC_CRUD);
-
   const projectID = Session.activeProjectIDSelector(state);
 
   Errors.assertProjectID(projectID);
 
-  let documents: KnowledgeBaseDocument[];
-
-  if (realtimeKBEnabled) {
-    const response = await designerClient.knowledgeBase.document.getMany(projectID, {});
-    documents = documentAdapterRealtime.mapFromDB(response.documents);
-  } else {
-    const dbDocuments = await knowledgeBaseClient.getAllDocuments(projectID);
-    documents = documentAdapter.mapFromDB(dbDocuments);
-  }
+  const response = await designerClient.knowledgeBase.document.getMany(projectID, {});
+  const documents = documentAdapterRealtime.mapFromDB(response.documents);
 
   dispatch.local(Actions.AddMany({ data: documents }));
 
@@ -141,8 +112,6 @@ export const getAll = (): Thunk<KnowledgeBaseDocument[]> => async (dispatch, get
 
 export const getAllPending = (): Thunk<KnowledgeBaseDocument[]> => async (dispatch, getState) => {
   const state = getState();
-
-  const realtimeKBEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.KB_BE_DOC_CRUD);
 
   const projectID = Session.activeProjectIDSelector(state);
 
@@ -154,16 +123,11 @@ export const getAllPending = (): Thunk<KnowledgeBaseDocument[]> => async (dispat
 
   if (documentIDs.length === 0) return [];
 
-  let documents: KnowledgeBaseDocument[];
 
-  if (realtimeKBEnabled) {
-    const response = await designerClient.knowledgeBase.document.retrieveMany(projectID, { documentIDs });
+  const response = await designerClient.knowledgeBase.document.retrieveMany(projectID, { documentIDs });
 
-    documents = documentAdapterRealtime.mapFromDB(response.documents);
-  } else {
-    const dbDocuments = await knowledgeBaseClient.getManyDocuments(projectID, documentIDs);
-    documents = documentAdapter.mapFromDB(dbDocuments);
-  }
+  const documents = documentAdapterRealtime.mapFromDB(response.documents);
+
 
   dispatch.local(Actions.AddMany({ data: documents }));
 
@@ -197,9 +161,6 @@ export const resyncMany =
     );
 
     if (!documents.length) return;
-    const state = getState();
-
-    const realtimeKBEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.KB_BE_DOC_REFRESH);
 
     dispatch.local(Actions.SetProcessingIDs({ processingIDs: documentIDs }));
 
@@ -208,11 +169,7 @@ export const resyncMany =
 
       Errors.assertProjectID(projectID);
 
-      if (realtimeKBEnabled) {
-        await designerClient.knowledgeBase.document.refreshManyURLs(projectID, { documentIDs });
-      } else {
-        await knowledgeBaseClient.refreshDocuments(projectID, documentIDs);
-      }
+      await designerClient.knowledgeBase.document.refreshManyURLs(projectID, { documentIDs });
 
       Tracking.trackAiKnowledgeBaseSourceResync({ documentIDs });
 
@@ -239,10 +196,6 @@ export const retryOne =
       })
     );
 
-    const state = getState();
-
-    const realtimeKBEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.KB_BE_DOC_REFRESH);
-
     Tracking.trackAiKnowledgeBaseSourceStatusUpdated({ documentID });
 
     try {
@@ -250,11 +203,8 @@ export const retryOne =
 
       Errors.assertProjectID(projectID);
 
-      if (realtimeKBEnabled) {
-        await designerClient.knowledgeBase.document.retryOne(projectID, documentID);
-      } else {
-        await knowledgeBaseClient.retryDocument(projectID, documentID);
-      }
+      await designerClient.knowledgeBase.document.retryOne(projectID, documentID);
+
     } catch {
       notify.short.error('Failed to retry data source');
     }
@@ -265,17 +215,11 @@ const createManyFromFormData =
   async (dispatch, getState) => {
     const state = getState();
 
-    const realtimeKBEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.KB_BE_DOC_CRUD);
-
     const projectID = Session.activeProjectIDSelector(state);
 
     Errors.assertProjectID(projectID);
 
-    let documents: KnowledgeBaseDocument[];
-    let result: PromiseSettledResult<DBKnowledgeBaseDocument | any>[] = [];
-
-    if (realtimeKBEnabled) {
-      result = await Promise.allSettled(
+    const result = await Promise.allSettled(
         manyFormData.map((data) => {
           const file = data.get('file');
           const canEdit = data.get('canEdit') === 'true';
@@ -288,16 +232,9 @@ const createManyFromFormData =
         })
       );
 
-      documents = documentAdapterRealtime.mapFromDB(
-        result.filter((res): res is PromiseFulfilledResult<any> => res.status === 'fulfilled').map((res) => res.value)
-      );
-    } else {
-      result = await Promise.allSettled(manyFormData.map((data) => knowledgeBaseClient.createOneDocumentFromFormFile(projectID, data)));
-
-      documents = result
-        .filter((res): res is PromiseFulfilledResult<DBKnowledgeBaseDocument> => res.status === 'fulfilled')
-        .map((res) => documentAdapter.fromDB(res.value));
-    }
+    const  documents = documentAdapterRealtime.mapFromDB(
+      result.filter((res): res is PromiseFulfilledResult<any> => res.status === 'fulfilled').map((res) => res.value)
+    );
 
     dispatch.local(Actions.SetProcessingIDs({ processingIDs: documents.map((d) => d.id) }));
 
@@ -365,32 +302,17 @@ export const createManyFromData =
   async (dispatch, getState) => {
     const state = getState();
 
-    const realtimeKBEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.KB_BE_DOC_CRUD);
-
     const projectID = Session.activeProjectIDSelector(state);
 
     Errors.assertProjectID(projectID);
 
-    let documents: KnowledgeBaseDocument[];
+    const dataUrls = data as BaseModels.Project.KnowledgeBaseURL[];
+    const response = await Promise.resolve(designerClient.knowledgeBase.document.createManyURLs(projectID, { data: dataUrls })).catch((error) => {
+      const err = error.response?.status === 406 ? error : null;
+      if (err) throw err;
+    });
 
-    if (realtimeKBEnabled) {
-      const dataUrls = data as BaseModels.Project.KnowledgeBaseURL[];
-
-      const response = await Promise.resolve(designerClient.knowledgeBase.document.createManyURLs(projectID, { data: dataUrls })).catch((error) => {
-        const err = error.response?.status === 406 ? error : null;
-
-        if (err) throw err;
-      });
-
-      documents = documentAdapterRealtime.mapFromDB(response?.map((res: any) => res) || []);
-    } else {
-      const result = await Promise.resolve(knowledgeBaseClient.createManyDocumentsFromURLs(projectID, data)).catch((error) => {
-        const err = error.response?.status === 406 ? error : null;
-        if (err) throw err;
-      });
-
-      documents = result?.map((res) => documentAdapter.fromDB(res)) || [];
-    }
+    const documents = documentAdapterRealtime.mapFromDB(response?.map((res: any) => res) || []);
 
     if (!documents || data.length !== documents.length) {
       const erroredCount = data.length - documents.length;
@@ -424,17 +346,9 @@ export const getOne =
 
     Errors.assertProjectID(projectID);
 
-    const realtimeKBEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.KB_BE_DOC_CRUD);
+    const dbDocument = await designerClient.knowledgeBase.document.getOne(projectID, documentID);
+    const document = documentAdapterRealtime.fromDB(dbDocument);
 
-    let document: KnowledgeBaseDocument;
-
-    if (realtimeKBEnabled) {
-      const dbDocument = await designerClient.knowledgeBase.document.getOne(projectID, documentID);
-      document = documentAdapterRealtime.fromDB(dbDocument);
-    } else {
-      const dbDocument = await knowledgeBaseClient.getOneDocument(projectID, documentID);
-      document = documentAdapter.fromDB(dbDocument);
-    }
 
     dispatch.local(Actions.AddOne({ data: document }));
 
@@ -446,8 +360,6 @@ export const getOneBlobData =
   async (_dispatch, getState) => {
     const state = getState();
 
-    const realtimeKBEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.KB_BE_DOC_FILE);
-
     const projectID = Session.activeProjectIDSelector(state);
 
     Errors.assertProjectID(projectID);
@@ -458,16 +370,9 @@ export const getOneBlobData =
       throw new Error('unknown data source type');
     }
 
-    let blob: Blob;
-
-    if (realtimeKBEnabled) {
-      const data = await designerClient.knowledgeBase.document.download(projectID, documentID);
-      const mappedData = Object.values(data ?? {}) as number[];
-      blob = new Blob([new Uint8Array(mappedData)], { type: DOCUMENT_TYPE_MIME_FILE_TYPE_MAP[document.data.type] });
-    } else {
-      const data: Buffer = await knowledgeBaseClient.getOneDocumentData(projectID, documentID);
-      blob = new Blob([new Uint8Array(data)], { type: DOCUMENT_TYPE_MIME_FILE_TYPE_MAP[document.data.type] });
-    }
+    const data = await designerClient.knowledgeBase.document.download(projectID, documentID);
+    const mappedData = Object.values(data ?? {}) as number[];
+    const blob = new Blob([new Uint8Array(mappedData)], { type: DOCUMENT_TYPE_MIME_FILE_TYPE_MAP[document.data.type] });
 
     return {
       blob,
@@ -505,17 +410,12 @@ export const deleteOne =
   (documentID: string): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
-    const realtimeKBEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.KB_BE_DOC_CRUD);
 
     const projectID = Session.activeProjectIDSelector(state);
 
     Errors.assertProjectID(projectID);
 
-    if (realtimeKBEnabled) {
-      await designerClient.knowledgeBase.document.deleteOne(projectID, documentID);
-    } else {
-      await knowledgeBaseClient.deleteOneDocument(projectID, documentID);
-    }
+    await designerClient.knowledgeBase.document.deleteOne(projectID, documentID);
 
     Tracking.trackAiKnowledgeBaseSourceDeleted({ documentIDs: [documentID] });
 
@@ -526,20 +426,13 @@ export const deleteMany =
   (documentIDs: string[]): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
-    const realtimeKBEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.KB_BE_DOC_CRUD);
 
     const projectID = Session.activeProjectIDSelector(state);
 
     Errors.assertProjectID(projectID);
 
-    let data: { deletedDocumentIDs: string[] } = { deletedDocumentIDs: [] };
+    const data = await designerClient.knowledgeBase.document.deleteMany(projectID, { documentIDs });
 
-    if (realtimeKBEnabled) {
-      data = await designerClient.knowledgeBase.document.deleteMany(projectID, { documentIDs });
-    } else {
-      const response = await knowledgeBaseClient.deleteManyDocuments(projectID, documentIDs);
-      data = response.data;
-    }
 
     Tracking.trackAiKnowledgeBaseSourceDeleted({ documentIDs: data.deletedDocumentIDs });
 
@@ -557,8 +450,6 @@ export const getURLsFromSitemap =
   async (_dispatch, getState) => {
     const state = getState();
 
-    const realtimeKBEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.KB_BE_DOC_FILE);
-
     const projectID = Session.activeProjectIDSelector(state);
 
     Errors.assertProjectID(projectID);
@@ -575,15 +466,8 @@ export const getURLsFromSitemap =
     }
 
     for (const url of urlsToTry) {
-      if (realtimeKBEnabled) {
-        const sites = await designerClient.knowledgeBase.document.sitemap(projectID, { sitemapURL: url });
-
-        if (sites?.length) return sites;
-      } else {
-        const sites = await knowledgeBaseClient.getURLsFromSitemap(projectID, url).catch<string[]>(() => []);
-
-        if (sites?.length) return sites;
-      }
+      const sites = await designerClient.knowledgeBase.document.sitemap(projectID, { sitemapURL: url });
+      if (sites?.length) return sites;
     }
 
     return [];

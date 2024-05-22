@@ -88,7 +88,11 @@ class NodeManager extends EngineConsumer {
       );
     },
 
-    addActions: async (node: CreatorV2.NodeDescriptor, data: CreatorV2.DataDescriptor, parentNode: CreatorV2.ParentNodeDescriptor): Promise<void> => {
+    addActions: async (
+      node: CreatorV2.NodeDescriptor,
+      data: CreatorV2.DataDescriptor,
+      parentNode: CreatorV2.ParentNodeDescriptor
+    ): Promise<void> => {
       const actionsID = parentNode.id;
 
       await this.dispatch.partialSync(
@@ -155,7 +159,9 @@ class NodeManager extends EngineConsumer {
       const removeNodes = !isActions && isAppend ? this.getActionNodesToRemove(stepIDs[stepIDs.length - 1]) : [];
       const nodePortRemaps = isAppend ? createPortRemap(this.engine.getNodeByID(stepIDs[stepIDs.length - 1])) : [];
 
-      await this.engine.comment.handleNodesDelete(Utils.array.unique(removeNodes.map((node) => node.stepID ?? node.parentNodeID)));
+      await this.engine.comment.handleNodesDelete(
+        Utils.array.unique(removeNodes.map((node) => node.stepID ?? node.parentNodeID))
+      );
       await this.dispatch.partialSync(
         Realtime.node.insertStep({
           ...this.engine.context,
@@ -191,7 +197,9 @@ class NodeManager extends EngineConsumer {
       const removeNodes = isAppend ? this.getActionNodesToRemove(stepIDs[stepIDs.length - 1]) : [];
       const nodePortRemaps = isAppend ? createPortRemap(this.engine.getNodeByID(stepIDs[stepIDs.length - 1])) : [];
 
-      await this.engine.comment.handleNodesDelete(Utils.array.unique(removeNodes.map((node) => node.stepID ?? node.parentNodeID)));
+      await this.engine.comment.handleNodesDelete(
+        Utils.array.unique(removeNodes.map((node) => node.stepID ?? node.parentNodeID))
+      );
       await this.dispatch.partialSync(
         Realtime.node.insertManySteps({
           ...this.engine.context,
@@ -250,7 +258,9 @@ class NodeManager extends EngineConsumer {
         ...((isMovingTargetLastStep && this.getActionNodesToRemove(targetBlockLastStepID)) || []),
       ];
 
-      await this.engine.comment.handleNodesDelete(Utils.array.unique(removeNodes.map((node) => node.stepID ?? node.parentNodeID)));
+      await this.engine.comment.handleNodesDelete(
+        Utils.array.unique(removeNodes.map((node) => node.stepID ?? node.parentNodeID))
+      );
       await this.dispatch.partialSync(
         Realtime.node.transplantSteps({
           ...this.engine.context,
@@ -283,7 +293,9 @@ class NodeManager extends EngineConsumer {
 
       const finalIndex = currentIndex < index ? index - 1 : index;
 
-      await this.engine.comment.handleNodesDelete(Utils.array.unique(removeNodes.map((node) => node.stepID ?? node.parentNodeID)));
+      await this.engine.comment.handleNodesDelete(
+        Utils.array.unique(removeNodes.map((node) => node.stepID ?? node.parentNodeID))
+      );
       await this.dispatch.partialSync(
         Realtime.node.reorderSteps({
           ...this.engine.context,
@@ -334,7 +346,9 @@ class NodeManager extends EngineConsumer {
       this.redrawNestedThreads(node.parentNode!);
     },
 
-    updateManyData: async (updates: { nodeID: string; patch: Partial<Realtime.NodeData<unknown>> }[]): Promise<void> => {
+    updateManyData: async (
+      updates: { nodeID: string; patch: Partial<Realtime.NodeData<unknown>> }[]
+    ): Promise<void> => {
       if (!updates.length) return;
 
       const projectMeta = this.engine.getActiveProjectMeta();
@@ -431,7 +445,9 @@ class NodeManager extends EngineConsumer {
    * check to see if a node is active
    */
   isActive(nodeID: string): boolean {
-    return this.engine.activation.hasTargets(EntityType.NODE) && this.engine.activation.isTarget(EntityType.NODE, nodeID);
+    return (
+      this.engine.activation.hasTargets(EntityType.NODE) && this.engine.activation.isTarget(EntityType.NODE, nodeID)
+    );
   }
 
   /**
@@ -451,7 +467,9 @@ class NodeManager extends EngineConsumer {
 
     return (
       this.isActive(nodeID) ||
-      [...(node?.combinedNodes ?? []), ...this.getAllLinkedOutActionsNodeIDs([nodeID])].some((childNodeID) => this.isActive(childNodeID))
+      [...(node?.combinedNodes ?? []), ...this.getAllLinkedOutActionsNodeIDs([nodeID])].some((childNodeID) =>
+        this.isActive(childNodeID)
+      )
     );
   }
 
@@ -475,6 +493,7 @@ class NodeManager extends EngineConsumer {
     menuType?: StepMenuType;
     diagramID?: string;
     autoFocus?: boolean;
+    // eslint-disable-next-line @typescript-eslint/ban-types
     factoryData?: Realtime.NodeDataMap[K] & Partial<Realtime.NodeData<{}>>;
     fromCanvasCoords?: boolean;
   }): Promise<string> {
@@ -488,7 +507,10 @@ class NodeManager extends EngineConsumer {
     const parentNodeID = Utils.id.objectID();
     const parentNode = {
       id: parentNodeID,
-      ports: { in: [{ id: Realtime.Utils.port.getInPortID(parentNodeID) }], out: { dynamic: [], builtIn: {}, byKey: {} } },
+      ports: {
+        in: [{ id: Realtime.Utils.port.getInPortID(parentNodeID) }],
+        out: { dynamic: [], builtIn: {}, byKey: {} },
+      },
     };
 
     this.log.debug(this.log.pending('adding node'), this.log.slug(nodeID));
@@ -586,7 +608,10 @@ class NodeManager extends EngineConsumer {
 
     await this.dispatch(History.transaction(() => this.internal.importSnapshot(centeredEntities, diagramID)));
 
-    this.log.info(this.log.success('added multiple entities from snapshot'), this.log.value(entities.nodesWithData.length));
+    this.log.info(
+      this.log.success('added multiple entities from snapshot'),
+      this.log.value(entities.nodesWithData.length)
+    );
   }
 
   /**
@@ -627,14 +652,14 @@ class NodeManager extends EngineConsumer {
   /**
    * patches a node's data by its ID
    */
-  async updateData<T extends unknown = unknown>(nodeID: string, patch: Partial<Realtime.NodeData<T>>): Promise<void> {
+  async updateData<T>(nodeID: string, patch: Partial<Realtime.NodeData<T>>): Promise<void> {
     await this.updateManyData([{ nodeID, patch }]);
   }
 
   /**
    * patches multiple nodes data by ID
    */
-  async updateManyData<T extends unknown = unknown>(updates: { nodeID: string; patch: Partial<Realtime.NodeData<T>> }[]): Promise<void> {
+  async updateManyData<T>(updates: { nodeID: string; patch: Partial<Realtime.NodeData<T>> }[]): Promise<void> {
     this.log.debug(this.log.pending('updating many node data'), this.log.value(updates.length));
     await this.internal.updateManyData(updates);
 
@@ -775,7 +800,12 @@ class NodeManager extends EngineConsumer {
   /**
    * relocates a step from one block to another at some index
    */
-  private async transplantStep(targetParentNodeID: string, sourceParentNodeID: string, stepID: string, index: number): Promise<void> {
+  private async transplantStep(
+    targetParentNodeID: string,
+    sourceParentNodeID: string,
+    stepID: string,
+    index: number
+  ): Promise<void> {
     const stepIDs = this.select(CreatorV2.stepIDsByParentNodeIDSelector, { id: sourceParentNodeID });
     const removeSource = Utils.array.hasIdenticalMembers(stepIDs, [stepID]);
 
@@ -828,7 +858,9 @@ class NodeManager extends EngineConsumer {
 
     this.select(CreatorV2.stepIDsByParentNodeIDSelector, { id: parentNodeID }).forEach(redraw);
 
-    this.getAllLinkedOutActionsNodeIDs([parentNodeID]).forEach((actionsNodeID) => this.iterateStepsAndLinkedActions(actionsNodeID, redraw));
+    this.getAllLinkedOutActionsNodeIDs([parentNodeID]).forEach((actionsNodeID) =>
+      this.iterateStepsAndLinkedActions(actionsNodeID, redraw)
+    );
   }
 
   /**
@@ -895,7 +927,9 @@ class NodeManager extends EngineConsumer {
 
   translateAllLinks(nodeID: string, movement: Pair<number>, { sync = false }: { sync?: boolean } = {}): void {
     this.translateLinks(nodeID, movement, { sync });
-    this.iterateStepsAndLinkedActions(nodeID, (combinedNodeID) => this.translateLinks(combinedNodeID, movement, { sync }));
+    this.iterateStepsAndLinkedActions(nodeID, (combinedNodeID) =>
+      this.translateLinks(combinedNodeID, movement, { sync })
+    );
   }
 
   private translateLinks(nodeID: string, movement: Pair<number>, { sync }: { sync: boolean }): void {
@@ -933,7 +967,8 @@ class NodeManager extends EngineConsumer {
     const linkIDs = nodeIDs.flatMap((nodeID) => {
       const node = this.engine.getNodeByID(nodeID);
       const nodeLinkIDs = this.engine.getLinkIDsByNodeID(nodeID);
-      const combinedNodes = node?.combinedNodes.flatMap((childNodeID) => this.engine.getLinkIDsByNodeID(childNodeID)) ?? [];
+      const combinedNodes =
+        node?.combinedNodes.flatMap((childNodeID) => this.engine.getLinkIDsByNodeID(childNodeID)) ?? [];
       return [...nodeLinkIDs, ...combinedNodes];
     });
 
@@ -954,7 +989,9 @@ class NodeManager extends EngineConsumer {
   translateThreads(nodeID: string, movement: Pair<number>): void {
     if (!this.engine.comment.isModeActive && !this.engine.comment.isVisible) return;
 
-    this.engine.getThreadIDsByNodeID(nodeID).forEach((threadID) => this.engine.comment.translateThread(threadID, movement));
+    this.engine
+      .getThreadIDsByNodeID(nodeID)
+      .forEach((threadID) => this.engine.comment.translateThread(threadID, movement));
   }
 
   translateDetachedThreads(threadIDs: string[], movement: Pair<number>): void {
@@ -963,7 +1000,11 @@ class NodeManager extends EngineConsumer {
     this.engine.comment.translateDetachedThreads(threadIDs, movement);
   }
 
-  async drag(nodeID: string, movement: Pair<number>, { translateFirst }: { translateFirst?: boolean } = {}): Promise<void> {
+  async drag(
+    nodeID: string,
+    movement: Pair<number>,
+    { translateFirst }: { translateFirst?: boolean } = {}
+  ): Promise<void> {
     if (this.engine.selection.isOneOfAnyTargets(nodeID)) {
       const nodeTargets = this.engine.selection.getTargets(EntityType.NODE);
       const threadTargets = this.engine.selection.getTargets(EntityType.THREAD);
@@ -1060,7 +1101,9 @@ class NodeManager extends EngineConsumer {
   getAllLinkedOutActionsNodeIDs(nodeIDs: string[]): Set<string> {
     const allPortIDs = nodeIDs
       .flatMap((nodeID) => [nodeID, ...(this.engine.getNodeByID(nodeID)?.combinedNodes ?? [])])
-      .flatMap((nodeID) => Realtime.Utils.port.flattenOutPorts(this.select(CreatorV2.portsByNodeIDSelector, { id: nodeID })));
+      .flatMap((nodeID) =>
+        Realtime.Utils.port.flattenOutPorts(this.select(CreatorV2.portsByNodeIDSelector, { id: nodeID }))
+      );
 
     const linkedOutActionsNodeIDs = new Set<string>();
 
@@ -1094,17 +1137,28 @@ class NodeManager extends EngineConsumer {
 
   private isRemovingLocked(nodeIDs: string[], remove: (nodeIDs: string[]) => Promise<void>): boolean {
     const lockedNodes = this.select(DiagramV2.activeDiagramDeletionLockedNodesSelector);
-    const combinedNodes = nodeIDs.map(this.engine.getNodeByID).filter((node): node is Realtime.Node => node?.type === BlockType.COMBINED);
+    const combinedNodes = nodeIDs
+      .map(this.engine.getNodeByID)
+      .filter((node): node is Realtime.Node => node?.type === BlockType.COMBINED);
 
     const unRemovableCombinedNodeIDs = new Set(
-      combinedNodes.filter((node) => node.combinedNodes.some((nestedNodeID) => !!lockedNodes[nestedNodeID])).map((node) => node.id)
+      combinedNodes
+        .filter((node) => node.combinedNodes.some((nestedNodeID) => !!lockedNodes[nestedNodeID]))
+        .map((node) => node.id)
     );
 
-    const [lockedNodeIDs, unlockedNodesIDs] = _partition(nodeIDs, (id) => !!lockedNodes[id] || unRemovableCombinedNodeIDs.has(id));
+    const [lockedNodeIDs, unlockedNodesIDs] = _partition(
+      nodeIDs,
+      (id) => !!lockedNodes[id] || unRemovableCombinedNodeIDs.has(id)
+    );
 
     if (lockedNodeIDs.length) {
       // eslint-disable-next-line no-nested-ternary
-      const text = unlockedNodesIDs.length ? 'Some blocks are' : nodeIDs.length > 1 ? 'These blocks are' : 'This block is';
+      const text = unlockedNodesIDs.length
+        ? 'Some blocks are'
+        : nodeIDs.length > 1
+          ? 'These blocks are'
+          : 'This block is';
 
       ModalsV2.openConfirm({
         body: `${text} being actively working on and cannot be deleted`,
@@ -1130,7 +1184,9 @@ class NodeManager extends EngineConsumer {
   private isRemovingDefaultCommand(nodes: Realtime.Node[]): boolean {
     const commandNodes = nodes.filter(Realtime.Utils.node.isCommandNode);
     const commandNodesIDs = commandNodes.map(({ id }) => id);
-    const commandNodeData = commandNodesIDs.map((nodeID) => this.engine.getDataByNodeID<Realtime.NodeData.Command>(nodeID));
+    const commandNodeData = commandNodesIDs.map((nodeID) =>
+      this.engine.getDataByNodeID<Realtime.NodeData.Command>(nodeID)
+    );
     // if the deleted node is not a help intent or a stop intent
     const deletingStopIntent = commandNodeData.some((data) => data?.intent === AlexaConstants.AmazonIntent.STOP);
     const deletingHelpIntent = commandNodeData.some((data) => data?.intent === AlexaConstants.AmazonIntent.HELP);
@@ -1142,13 +1198,17 @@ class NodeManager extends EngineConsumer {
         .map((nodeID) => this.engine.getDataByNodeID<Realtime.NodeData.Command>(nodeID));
 
       // logic: user deleting stop intent and there are no more stop intent left
-      const missingStopIntent = remainedCommandsData.every((data) => data?.intent !== AlexaConstants.AmazonIntent.STOP) && deletingStopIntent;
-      const missingHelpIntent = remainedCommandsData.every((data) => data?.intent !== AlexaConstants.AmazonIntent.HELP) && deletingHelpIntent;
-      const requiredCommand = (missingStopIntent && AlexaConstants.AmazonIntent.STOP) || (missingHelpIntent && AlexaConstants.AmazonIntent.HELP);
+      const missingStopIntent =
+        remainedCommandsData.every((data) => data?.intent !== AlexaConstants.AmazonIntent.STOP) && deletingStopIntent;
+      const missingHelpIntent =
+        remainedCommandsData.every((data) => data?.intent !== AlexaConstants.AmazonIntent.HELP) && deletingHelpIntent;
+      const requiredCommand =
+        (missingStopIntent && AlexaConstants.AmazonIntent.STOP) ||
+        (missingHelpIntent && AlexaConstants.AmazonIntent.HELP);
 
       if (requiredCommand) {
         ModalsV2.openConfirm({
-          header: `Required Commands`,
+          header: 'Required Commands',
 
           body: `${requiredCommand} is required by default`,
 
@@ -1189,7 +1249,9 @@ class NodeManager extends EngineConsumer {
   }
 
   private async validateRemove(nodeIDs: string[], remove: (nodeIDs: string[]) => Promise<void>): Promise<void> {
-    const removableNodes = this.engine.select(CreatorV2.nodesByIDsSelector, { ids: nodeIDs }).filter((node) => node.type !== BlockType.START);
+    const removableNodes = this.engine
+      .select(CreatorV2.nodesByIDsSelector, { ids: nodeIDs })
+      .filter((node) => node.type !== BlockType.START);
     const removableNodeIDs = removableNodes.map(({ id }) => id);
 
     if (this.isRemovingDefaultCommand(removableNodes) || this.isRemovingLocked(removableNodeIDs, remove)) return;

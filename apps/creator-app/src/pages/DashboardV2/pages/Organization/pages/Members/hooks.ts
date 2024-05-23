@@ -32,28 +32,28 @@ export const useWorkspacesAndMembers = () => {
   const onRemoveMember = async (member: Realtime.WorkspaceMember) => {
     if (activeWorkspaceID === null) return;
 
-    await deleteMember(activeWorkspaceID, member.creator_id);
+    await deleteMember(activeWorkspaceID, member.creatorID);
 
     setWorkspaceMembersMap((prev) => {
       const workspaceMembers = prev[activeWorkspaceID ?? ''];
 
       if (!workspaceMembers) return prev;
 
-      return { ...prev, [activeWorkspaceID ?? '']: Normal.remove(workspaceMembers, String(member.creator_id)) };
+      return { ...prev, [activeWorkspaceID ?? '']: Normal.remove(workspaceMembers, String(member.creatorID)) };
     });
   };
 
   const onUpdateMember = async (member: Realtime.WorkspaceMember, role: UserRole) => {
     if (activeWorkspaceID === null) return;
 
-    await updateMember(activeWorkspaceID, member.creator_id, role);
+    await updateMember(activeWorkspaceID, member.creatorID, role);
 
     setWorkspaceMembersMap((prev) => {
       const workspaceMembers = prev[activeWorkspaceID ?? ''];
 
       if (!workspaceMembers) return prev;
 
-      return { ...prev, [activeWorkspaceID ?? '']: Normal.patchOne(workspaceMembers, String(member.creator_id), { role }) };
+      return { ...prev, [activeWorkspaceID ?? '']: Normal.patchOne(workspaceMembers, String(member.creatorID), { role }) };
     });
   };
 
@@ -66,7 +66,7 @@ export const useWorkspacesAndMembers = () => {
     const editorMemberIDs = Object.values(workspaceMembersMap)
       .flatMap((member) => Normal.denormalize(member))
       .filter((member) => isEditorUserRole(member.role))
-      .map((member) => member.creator_id);
+      .map((member) => member.creatorID);
     return Utils.array.unique(editorMemberIDs).length;
   }, [workspaceMembersMap]);
 
@@ -74,8 +74,8 @@ export const useWorkspacesAndMembers = () => {
     () =>
       Normal.denormalize(workspaceMembersMap[activeWorkspaceID ?? ''] ?? Normal.createEmpty()).map((member) => ({
         ...member,
-        projects: projectEditorMembersMap[member.creator_id] ?? [],
-        isOrganizationAdmin: member.creator_id ? isAdminUserRole(getOrganizationMemberByID({ creatorID: member.creator_id })?.role) : false,
+        projects: projectEditorMembersMap[member.creatorID] ?? [],
+        isOrganizationAdmin: member.creatorID ? isAdminUserRole(getOrganizationMemberByID({ creatorID: member.creatorID })?.role) : false,
       })),
     [activeWorkspaceID, workspaceMembersMap, projectEditorMembersMap]
   );
@@ -96,7 +96,7 @@ export const useWorkspacesAndMembers = () => {
         Object.fromEntries(
           workspaces.map(({ id, members }) => [
             id,
-            Normal.normalize(Realtime.Adapters.Identity.workspaceMember.mapFromDB(members ?? []), (member) => String(member.creator_id)),
+            Normal.normalize(Realtime.Adapters.Identity.workspaceMember.mapFromDB(members ?? []), (member) => String(member.creatorID)),
           ])
         )
       );

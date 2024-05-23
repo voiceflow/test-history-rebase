@@ -60,8 +60,8 @@ const List = <M extends Member>({
         pendingLabel={renderPendingLabel?.(member)}
         onChangeRole={onChangeRole ? (role) => onChangeRole(member, role) : null}
         canEditOwner={canEditOwner}
-        isCurrentUser={currentUserID !== undefined && member.creator_id === currentUserID}
-        onResendInvite={!member.creator_id && onResendInvite ? () => onResendInvite(member) : null}
+        isCurrentUser={currentUserID !== undefined && member.creatorID === currentUserID}
+        onResendInvite={!member.creatorID && onResendInvite ? () => onResendInvite(member) : null}
       />
     ))}
   </div>

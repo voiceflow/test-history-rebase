@@ -41,7 +41,7 @@ const workspaceAdapter = createMultiAdapter<DBWorkspace, Workspace>(
       image,
       seats,
       state,
-      members: Normal.normalize(members.filter(isWorkspaceMember), (member) => String(member.creator_id)),
+      members: Normal.normalize(members.filter(isWorkspaceMember), (member) => String(member.creatorID)),
       created,
       projects,
       settings,

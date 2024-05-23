@@ -1,12 +1,15 @@
-import { UserRole } from '@voiceflow/internal';
 import { z } from 'zod';
 
-export const OrganizationMemberDTO = z.object({
-  name: z.string(),
-  role: z.nativeEnum(UserRole),
-  email: z.string(),
-  image: z.string().nullable(),
+import { RoleScope, UserRole } from '@/common';
+import { UserDTO } from '@/user/user.dto';
+
+export const OrganizationMemberDTO = UserDTO.extend({
   creatorID: z.number(),
+  scope: z.nativeEnum(RoleScope),
+  role: z.nativeEnum(UserRole),
+  organizationID: z.string(),
+  workspaceID: z.string().nullable(),
+  assistantID: z.string().nullable(),
 });
 
 export type OrganizationMember = z.infer<typeof OrganizationMemberDTO>;

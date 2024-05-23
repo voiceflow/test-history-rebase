@@ -57,7 +57,7 @@ const MemberRow = <T extends Member>({
           <S.Name>{member.name ?? member.email}</S.Name>
           {showBadge && (
             <>
-              {!member.creator_id ? (
+              {!member.creatorID ? (
                 <Badge.Descriptive ml={8} color="gray">
                   Pending
                 </Badge.Descriptive>
@@ -83,7 +83,7 @@ const MemberRow = <T extends Member>({
             label={member.isOrganizationAdmin ? 'Owner' : undefined}
             onRemove={member.isOrganizationAdmin && !canEditOwner ? null : onRemove}
             onChange={onChangeRole ?? Utils.functional.noop}
-            isInvite={!member.creator_id}
+            isInvite={!member.creatorID}
             disabled={!onChangeRole || isCurrentUser || (member.isOrganizationAdmin && !canEditOwner)}
             onResendInvite={onResendInvite}
           />

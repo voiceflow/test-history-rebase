@@ -17,7 +17,7 @@ export interface LockedEditorOverlayProps {
 const LockedEditorOverlay: React.FC<LockedEditorOverlayProps> = ({ lockOwner, prevOwner, acquireLock }) => {
   const userID = useSelector(Account.userIDSelector);
 
-  if (lockOwner && lockOwner.creator_id !== userID) {
+  if (lockOwner && lockOwner.creatorID !== userID) {
     return (
       <Container>
         <User user={lockOwner} large />
@@ -26,7 +26,7 @@ const LockedEditorOverlay: React.FC<LockedEditorOverlayProps> = ({ lockOwner, pr
     );
   }
 
-  if (prevOwner && prevOwner.creator_id !== userID) {
+  if (prevOwner && prevOwner.creatorID !== userID) {
     return (
       <Container>
         <p>{prevOwner.name} is all done, you can now takeover edit access</p>

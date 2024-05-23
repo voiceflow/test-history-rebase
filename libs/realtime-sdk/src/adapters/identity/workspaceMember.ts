@@ -10,7 +10,7 @@ const workspaceMemberSimpleAdapter = createSimpleAdapter<Identity.WorkspaceMembe
     email: user.email,
     image: user.image ?? '',
     created: user.createdAt,
-    creator_id: user.id,
+    creatorID: user.id,
   }),
   notImplementedAdapter.transformer
 );
@@ -21,7 +21,7 @@ const workspaceMemberAdapter = {
   mapFromDB: (members: Identity.WorkspaceMember[]): WorkspaceMember[] =>
     uniqBy(
       members.map(workspaceMemberSimpleAdapter.fromDB).sort((a, b) => getRoleStrength(b.role) - getRoleStrength(a.role)),
-      (member) => member.creator_id
+      (member) => member.creatorID
     ),
 
   mapToDB: notImplementedAdapter.multi.mapToDB,

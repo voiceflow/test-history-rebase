@@ -5,17 +5,19 @@ import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { Permission } from '@voiceflow/sdk-auth';
 import { Authorize } from '@voiceflow/sdk-auth/nestjs';
 
-import { OrganizationIdentityService } from './identity/identity.service';
+import { OrganizationService } from './organization.service';
 
 @Controller('/organizations')
 @ApiTags('Organization')
 export class OrganizationHTTPController {
-  constructor(@Inject(OrganizationIdentityService) private readonly service: OrganizationIdentityService) {}
+  constructor(@Inject(OrganizationService) private readonly service: OrganizationService) {}
 
   @Get('/:organizationID/workspaces')
   @Authorize.Permissions([Permission.ORGANIZATION_READ])
   @ZodApiResponse({ status: HttpStatus.OK })
-  async getOrganizationWorkspaces(@Param('organizationID') organizationID: string): Promise<Realtime.Identity.Workspace[]> {
+  async getOrganizationWorkspaces(
+    @Param('organizationID') organizationID: string
+  ): Promise<Realtime.Identity.Workspace[]> {
     return this.service.getWorkspacesByOrganizationID(organizationID);
   }
 }

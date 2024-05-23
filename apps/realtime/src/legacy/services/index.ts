@@ -6,7 +6,7 @@ import { BaseServiceMap } from '@voiceflow/socket-utils';
 import { AssistantService } from '@/assistant/assistant.service';
 import { CreatorService } from '@/creator/creator.service';
 import { FlowService } from '@/flow/flow.service';
-import { OrganizationIdentityService } from '@/organization/identity/identity.service';
+import { OrganizationService } from '@/organization/organization.service';
 import type { ProjectService as ProjectServiceV2 } from '@/project/project.service';
 import { ProjectListService } from '@/project-list/project-list.service';
 import { ThreadService } from '@/thread/thread.service';
@@ -58,7 +58,7 @@ export interface ServiceMap extends BaseServiceMap {
   assistant: AssistantService;
   customBlock: CustomBlockService;
   projectList: ProjectListService;
-  organization: OrganizationIdentityService;
+  organization: OrganizationService;
   variableState: VariableStateService;
   canvasTemplate: CanvasTemplateService;
   workspaceSettings: WorkspaceSettingsService;
@@ -84,7 +84,7 @@ interface Options {
     hashedID: HashedIDService;
     assistant: AssistantService;
     projectList: ProjectListService;
-    organization: OrganizationIdentityService;
+    organization: OrganizationService;
     requestContext: {
       createAsync: <T>(callback: () => Promise<T>) => Promise<T>;
     };

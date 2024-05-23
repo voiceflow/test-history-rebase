@@ -5,7 +5,7 @@ import { ServiceManagerOptions, SocketServer } from '@voiceflow/socket-utils';
 import type { AssistantService } from '@/assistant/assistant.service';
 import type { CreatorService } from '@/creator/creator.service';
 import type { FlowService } from '@/flow/flow.service';
-import type { OrganizationIdentityService } from '@/organization/identity/identity.service';
+import type { OrganizationService } from '@/organization/organization.service';
 import type { ProjectService } from '@/project/project.service';
 import type { ProjectListService } from '@/project-list/project-list.service';
 import type { ThreadService } from '@/thread/thread.service';
@@ -33,7 +33,7 @@ interface Options extends ServiceManagerOptions<LoguxControlOptions['config']> {
     hashedID: HashedIDService;
     assistant: AssistantService;
     projectList: ProjectListService;
-    organization: OrganizationIdentityService;
+    organization: OrganizationService;
     requestContext: {
       createAsync: <T>(callback: () => Promise<T>) => Promise<T>;
     };
@@ -66,8 +66,14 @@ class ServiceManager {
     const actions = {} as LoguxControlOptions['actions'];
     const channels = {} as LoguxControlOptions['channels'];
 
-    Object.assign(actions, buildActions({ server, config, services, clients, actions, channels, log } as LoguxControlOptions));
-    Object.assign(channels, buildChannels({ server, config, services, clients, actions, channels, log } as LoguxControlOptions));
+    Object.assign(
+      actions,
+      buildActions({ server, config, services, clients, actions, channels, log } as LoguxControlOptions)
+    );
+    Object.assign(
+      channels,
+      buildChannels({ server, config, services, clients, actions, channels, log } as LoguxControlOptions)
+    );
 
     this.log = log;
     this.config = config;

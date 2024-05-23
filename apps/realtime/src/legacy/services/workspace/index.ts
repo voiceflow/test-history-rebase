@@ -78,7 +78,7 @@ class WorkspaceService extends AbstractControl {
   public async getAll(creatorID: number): Promise<Realtime.DBWorkspace[]> {
     const client = await this.services.voiceflow.client.getByUserID(creatorID);
 
-    const workspaces = await client.identity.workspace.list({ members: true });
+    const workspaces = await client.identity.workspace.list();
 
     return workspaces.map((workspace) => {
       return {
@@ -90,7 +90,7 @@ class WorkspaceService extends AbstractControl {
         team_id: workspace.id,
         beta_flag: workspace.betaFlag,
         organization_trial_days_left: workspace.organizationTrialDaysLeft,
-        members: Realtime.Adapters.Identity.workspaceMember.mapFromDB(workspace.members ?? []),
+        members: [],
         settings: {},
       };
     });

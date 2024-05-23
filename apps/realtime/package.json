@@ -41,6 +41,9 @@
     "test:unit": "REPORTS_DIRECTORY=coverage/unit yarn g:vitest run .unit .test --silent --coverage",
     "types": "yarn g:tsc --project tsconfig.build.json --noEmit --skipLibCheck"
   },
+  "resolutions": {
+    "@voiceflow/sdk-auth": "portal:/Users/viniciusdacal/voiceflow/platform/libs/sdk-auth"
+  },
   "dependencies": {
     "@aws-sdk/client-s3": "3.425.0",
     "@liaoliaots/nestjs-redis": "9.0.5",
@@ -78,8 +81,8 @@
     "@voiceflow/realtime-sdk": "workspace:*",
     "@voiceflow/schema-types": "1.64.0",
     "@voiceflow/sdk-auth": "2.10.0",
-    "@voiceflow/sdk-billing": "1.26.3",
-    "@voiceflow/sdk-identity": "1.20.10",
+    "@voiceflow/sdk-billing": "1.26.16",
+    "@voiceflow/sdk-identity": "1.20.21",
     "@voiceflow/sdk-logux-designer": "workspace:*",
     "@voiceflow/sdk-message-queue": "1.7.0",
     "@voiceflow/socket-utils": "workspace:*",

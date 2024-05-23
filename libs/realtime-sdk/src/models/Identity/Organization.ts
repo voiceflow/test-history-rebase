@@ -1,4 +1,4 @@
-import { OrganizationMember } from './OrganizationMember';
+import { LegacyOrganizationMember } from './LegacyOrganizationMember';
 
 export interface Organization {
   id: string;
@@ -6,6 +6,6 @@ export interface Organization {
   updatedAt?: string;
   name: string;
   image: string;
-  members?: OrganizationMember[];
+  members?: LegacyOrganizationMember[];
   trial: { daysLeft: number; endAt: string } | null;
 }

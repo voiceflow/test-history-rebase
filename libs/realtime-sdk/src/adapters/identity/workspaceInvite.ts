@@ -9,7 +9,7 @@ const workspaceInviteAdapter = createMultiAdapter<Identity.WorkspaceInvite, Pend
     image: null,
     expiry,
     created: null,
-    creator_id: null,
+    creatorID: null,
   }),
   notImplementedAdapter.transformer
 );

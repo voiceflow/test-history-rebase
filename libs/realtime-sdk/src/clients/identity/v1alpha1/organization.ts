@@ -7,7 +7,7 @@ export class Organization extends NestResource {
     super({ ...options, path: '/organization' });
   }
 
-  public async list(params?: { members?: boolean; trial?: boolean }): Promise<Identity.Organization[]> {
+  public async list(params?: { trial?: boolean }): Promise<Identity.Organization[]> {
     const { data } = await this.get<Identity.Organization[]>('/', { params });
 
     return data;

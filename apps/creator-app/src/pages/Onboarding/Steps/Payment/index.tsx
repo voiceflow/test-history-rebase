@@ -76,7 +76,7 @@ const Payment: React.FC = () => {
 
     if (!workspace?.members) return false;
 
-    return Normal.denormalize(workspace.members).some((member) => member.creator_id === creatorID && isAdminUserRole(member.role));
+    return Normal.denormalize(workspace.members).some((member) => member.creatorID === creatorID && isAdminUserRole(member.role));
   };
 
   const handleStripeOnChange = ({ error }: any) => {

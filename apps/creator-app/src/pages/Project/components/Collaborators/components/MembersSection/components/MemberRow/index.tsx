@@ -21,7 +21,7 @@ interface MemberRowProps {
 
 const MemberRow: React.FC<MemberRowProps> = ({ member, resendInvite, isLast }) => {
   const userID = useSelector(Account.userIDSelector);
-  const organizationMember = useSelector(Organization.memberByIDSelector, { creatorID: member.creator_id });
+  const organizationMember = useSelector(Organization.memberByIDSelector, { creatorID: member.creatorId });
 
   const deleteMember = useDispatch(Workspace.deleteMemberOfActiveWorkspace);
   const cancelInvite = useDispatch(Workspace.cancelInviteToActiveWorkspace);
@@ -29,12 +29,12 @@ const MemberRow: React.FC<MemberRowProps> = ({ member, resendInvite, isLast }) =
 
   const [canAddCollaborators] = usePermission(Permission.ADD_COLLABORATORS);
 
-  const isPending = !member.creator_id;
+  const isPending = !member.creatorId;
 
   const onChangeRole = (role: UserRole) => updateMemberRole(member, role);
 
   const onRemove = () => {
-    if (!member.creator_id) {
+    if (!member.creatorId) {
       cancelInvite(member.email);
     } else {
       deleteMember(member.creator_id);
@@ -63,7 +63,7 @@ const MemberRow: React.FC<MemberRowProps> = ({ member, resendInvite, isLast }) =
       <Members.RoleSelect
         value={member.role}
         label={isAdminUserRole(organizationMember?.role) ? 'Owner' : undefined}
-        disabled={userID === member.creator_id || !canAddCollaborators}
+        disabled={userID === member.creatorId || !canAddCollaborators}
         isInvite={isPending}
         onChange={onChangeRole}
         onRemove={onRemove}

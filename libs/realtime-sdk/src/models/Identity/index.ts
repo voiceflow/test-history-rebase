@@ -1,4 +1,5 @@
 export * from './ApiKey';
+export * from './LegacyOrganizationMember';
 export * from './Organization';
 export * from './OrganizationMember';
 export * from './ProjectMember';

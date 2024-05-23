@@ -9,20 +9,16 @@ export const organizationReducer = reducerWithInitialState<OrganizationState>(IN
   .case(Actions.Organization.PatchOne, (state, { id, patch }) => patchOne(state, id, patch))
   .case(Actions.Organization.DeleteOne, (state, { id }) => removeOne(state, id))
   .case(Actions.Organization.Replace, (state, { data }) => ({ ...state, ...normalize(data) }))
-
-  // TODO: create members sub reducer
   .case(Actions.OrganizationMember.DeleteOne, (state, { context, id }) => {
     const organization = getOne(state, context.organizationID);
-    return !organization ? state : patchOne(state, context.organizationID, { members: organization.members.filter((m) => m.creatorID !== id) });
+    return !organization
+      ? state
+      : patchOne(state, context.organizationID, { members: organization.members.filter((m) => m.id !== id) });
   })
-
-  // TODO: create subscription sub reducer
   .case(Actions.OrganizationSubscription.Replace, (state, { context, subscription }) => {
     const organization = getOne(state, context.organizationID);
     return organization ? patchOne(state, context.organizationID, { subscription }) : state;
   })
-
-  // TODO: create subscription sub reducer
   .case(Actions.OrganizationSubscription.UpdatePaymentMethod, (state, { context, paymentMethod }) => {
     const { organizationID } = context;
     const organization = getOne(state, organizationID);
@@ -35,5 +31,11 @@ export const organizationReducer = reducerWithInitialState<OrganizationState>(IN
         paymentMethod,
       },
     });
+  })
+  .case(Actions.OrganizationMember.Replace, (state, { context, data }) => {
+    const organization = getOne(state, context.organizationID);
+    if (!organization) return state;
+
+    return patchOne(state, context.organizationID, { members: data });
   })
   .build();

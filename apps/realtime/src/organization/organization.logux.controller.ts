@@ -1,3 +1,4 @@
+import { ChannelContext } from '@logux/server';
 import { Controller, Inject } from '@nestjs/common';
 import { Action, AuthMeta, AuthMetaPayload, Broadcast, Channel, Context, Payload } from '@voiceflow/nestjs-logux';
 import { Permission } from '@voiceflow/sdk-auth';
@@ -8,35 +9,47 @@ import { InjectRequestContext, UseRequestContext } from '@/common';
 
 import subscriptionAdapter from './billing/subscription/adapters/subscription.adapter';
 import { BillingSubscriptionService } from './billing/subscription/subscription.service';
-import { OrganizationIdentityService } from './identity/identity.service';
-import { OrganizationIdentityMemberService } from './identity/member.service';
+import { OrganizationMemberService } from './member/organization-member.service';
+import { OrganizationService } from './organization.service';
 
 @Controller()
 @InjectRequestContext()
 export class OrganizationLoguxController {
   constructor(
-    @Inject(OrganizationIdentityService) private readonly organizationService: OrganizationIdentityService,
-    @Inject(BillingSubscriptionService) private readonly billingSubscriptionService: BillingSubscriptionService,
-    @Inject(OrganizationIdentityMemberService) private readonly organizationMemberService: OrganizationIdentityMemberService
+    @Inject(OrganizationService) private readonly organizationService: OrganizationService,
+    @Inject(OrganizationMemberService) private readonly organizationMembersService: OrganizationMemberService,
+    @Inject(BillingSubscriptionService) private readonly billingSubscriptionService: BillingSubscriptionService
   ) {}
 
   @Channel(Channels.organization)
-  @Authorize.Permissions<Channels.OrganizationParams>([Permission.ORGANIZATION_READ], ({ workspaceID }) => ({
-    // permission system doesn't support workspace members reading org resources.
-    // Passing workspace resource will resolve into an organization resource lookup, which then works.
-    id: workspaceID,
-    kind: 'workspace',
-  }))
+  @Authorize.Permissions<ChannelContext<{ workspaceID: string }, Channels.OrganizationParams, any>>(
+    [Permission.ORGANIZATION_READ],
+    ({ data }) => ({
+      // permission system doesn't support workspace members reading org resources.
+      // Passing workspace resource will resolve into an organization resource lookup, which then works.
+      id: data.workspaceID,
+      kind: 'workspace',
+    })
+  )
   async subscribe(@Context() ctx: Context.Channel<Channels.OrganizationParams>) {
     const { organizationID } = ctx.params;
     const subscriptionMeta = { id: ctx.server.log.generateId() };
+    const membersMeta = { id: ctx.server.log.generateId() };
 
-    const subscription = await this.billingSubscriptionService
-      .findOneByOrganizationID(organizationID)
-      .then(subscriptionAdapter.fromDB)
-      .catch(() => null);
+    const [subscription, members] = await Promise.all([
+      this.billingSubscriptionService
+        .findOneByOrganizationID(organizationID)
+        .then(subscriptionAdapter.fromDB)
+        .catch(() => null),
+      this.organizationMembersService.getAll(organizationID),
+    ]);
 
-    return subscription ? [[Actions.OrganizationSubscription.Replace({ subscription, context: ctx.params }), subscriptionMeta]] : [];
+    return [
+      subscription
+        ? [Actions.OrganizationSubscription.Replace({ subscription, context: ctx.params }), subscriptionMeta]
+        : null,
+      [Actions.OrganizationMember.Replace({ context: ctx.params, data: members }), membersMeta],
+    ];
   }
 
   @Action(Actions.Organization.PatchOne)
@@ -46,7 +59,10 @@ export class OrganizationLoguxController {
   }))
   @UseRequestContext()
   @Broadcast<Actions.Organization.PatchOne>(({ context }) => ({ channel: Channels.organization.build(context) }))
-  async patchOne(@Payload() { id, patch }: Actions.Organization.PatchOne, @AuthMeta() authMeta: AuthMetaPayload): Promise<void> {
+  async patchOne(
+    @Payload() { id, patch }: Actions.Organization.PatchOne,
+    @AuthMeta() authMeta: AuthMetaPayload
+  ): Promise<void> {
     await this.organizationService.patchOne(authMeta.userID, id, patch);
   }
 
@@ -57,7 +73,10 @@ export class OrganizationLoguxController {
   }))
   @UseRequestContext()
   @Broadcast<Actions.OrganizationMember.DeleteOne>(({ context }) => ({ channel: Channels.organization.build(context) }))
-  async deleteMember(@Payload() { id, context }: Actions.OrganizationMember.DeleteOne, @AuthMeta() authMeta: AuthMetaPayload): Promise<void> {
-    await this.organizationMemberService.remove(authMeta.userID, context.organizationID, id);
+  async deleteMember(
+    @Payload() { id, context }: Actions.OrganizationMember.DeleteOne,
+    @AuthMeta() authMeta: AuthMetaPayload
+  ): Promise<void> {
+    await this.organizationMembersService.remove(authMeta.userID, context.organizationID, id);
   }
 }

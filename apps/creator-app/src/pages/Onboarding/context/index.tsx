@@ -137,7 +137,7 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
     () =>
       workspaces.some(
         (workspace) =>
-          Normal.denormalize(workspace.members).some((member) => member.creator_id === account.creator_id && isAdminUserRole(member.role)) &&
+          Normal.denormalize(workspace.members).some((member) => member.creatorID === account.creator_id && isAdminUserRole(member.role)) &&
           // to fix the issue when the payment step is shown after coupon code was used
           // we are creating workspace (name = Personal) during the signup if the coupon code is used
           (!isLoginFlow || !(workspace.name === 'Personal' && workspace.plan !== PlanType.STARTER))
@@ -150,7 +150,7 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
       workspaces.some((workspace) => {
         if (workspace.plan !== PlanType.ENTERPRISE) return false;
 
-        return Normal.denormalize(workspace.members).some((member) => member.creator_id === account.creator_id && isAdminUserRole(member.role));
+        return Normal.denormalize(workspace.members).some((member) => member.creatorID === account.creator_id && isAdminUserRole(member.role));
       }),
     [workspaces, account.creator_id]
   );

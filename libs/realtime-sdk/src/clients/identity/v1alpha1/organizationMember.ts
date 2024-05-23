@@ -7,8 +7,8 @@ export class OrganizationMember extends NestResource {
     super({ ...options, path: '/organization-member' });
   }
 
-  public async list(organizationID: string): Promise<Models.Identity.OrganizationMember[]> {
-    const { data } = await this.get<Models.Identity.OrganizationMember[]>(`/${organizationID}`);
+  public async list(organizationID: string): Promise<Models.Identity.LegacyOrganizationMember[]> {
+    const { data } = await this.get<Models.Identity.LegacyOrganizationMember[]>(`/${organizationID}`);
 
     return data;
   }

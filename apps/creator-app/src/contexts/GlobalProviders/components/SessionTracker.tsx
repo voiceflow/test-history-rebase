@@ -1,5 +1,4 @@
 import { Utils } from '@voiceflow/common';
-import * as Normal from 'normal-store';
 import React from 'react';
 
 import * as Account from '@/ducks/account';
@@ -29,9 +28,10 @@ const SessionTracker: React.FC = () => {
     const creatorID = Account.userIDSelector(state)!;
     const workspaceIDs = WorkspaceV2.allWorkspaceIDsSelector(state);
     const allWorkspaces = WorkspaceV2.allWorkspacesSelector(state);
+    const getWorkspaceMembers = WorkspaceV2.active.getMembersByWorkspaceIDSelector(state);
 
     const roles = allWorkspaces
-      .map((workspace) => Normal.denormalize(workspace.members).find((member) => member.creator_id === creatorID)?.role)
+      .map((workspace) => getWorkspaceMembers(workspace.id).find((member) => member.creator_id === creatorID)?.role)
       .filter(Utils.array.isNotNullish);
 
     trackEvents.trackSessionBegin({ email, roles, creatorID, workspaceIDs });

@@ -5,10 +5,10 @@ import { IdentityClient } from '@voiceflow/sdk-identity';
 
 import { UserService } from '@/user/user.service';
 
-import { organizationAdapter } from './identity.adapter';
+import { organizationAdapter } from './organization.adapter';
 
 @Injectable()
-export class OrganizationIdentityService {
+export class OrganizationService {
   constructor(
     @Inject(UserService)
     private readonly user: UserService,
@@ -17,15 +17,12 @@ export class OrganizationIdentityService {
   ) {}
 
   public async getAll(creatorID: number): Promise<Organization[]> {
-    const token = await this.user.getTokenByID(creatorID);
-
     const allOrganizations = (await this.identityClient.organization.findManyByUserIDThroughWorkspaces(
       {
-        members: true,
         trial: true,
       },
       {
-        headers: { Authorization: token },
+        headers: await this.user.getAuthHeadersByID(creatorID),
       }
     )) as Realtime.Identity.Organization[];
 
@@ -38,10 +35,8 @@ export class OrganizationIdentityService {
   }
 
   public async patchOne(creatorID: number, organizationID: string, values: Partial<Organization>): Promise<void> {
-    const token = await this.user.getTokenByID(creatorID);
-
     await this.identityClient.organization.patchOne(organizationID, values, {
-      headers: { Authorization: token },
+      headers: await this.user.getAuthHeadersByID(creatorID),
     });
   }
 

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.369.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.368.4...@voiceflow/realtime@1.369.0) (2024-05-23)
+
+### Features
+
+* handle errors during kl parser call [bugfix] (COR-2144) ([#8159](https://github.com/voiceflow/creator-app/issues/8159)) ([10b623c](https://github.com/voiceflow/creator-app/commit/10b623cfb829592f14a28c465f308481ea957afd))
+
 ## [1.368.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.368.3...@voiceflow/realtime@1.368.4) (2024-05-22)
 
 ### Bug Fixes

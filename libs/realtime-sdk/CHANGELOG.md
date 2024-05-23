@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.401.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.401.0...@voiceflow/realtime-sdk@1.401.1) (2024-05-23)
+
+### Bug Fixes
+
+* invalid node reference during migration (COR-2147) ([#8168](https://github.com/voiceflow/creator-app/issues/8168)) ([b3b597e](https://github.com/voiceflow/creator-app/commit/b3b597e4f7cf4db1b5ef709ed681088a2628c2cd))
+
 # [1.401.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.400.1...@voiceflow/realtime-sdk@1.401.0) (2024-05-23)
 
 ### Features

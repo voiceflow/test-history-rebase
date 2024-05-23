@@ -20,7 +20,13 @@ interface SpeakProps extends Omit<BaseMessageProps, 'iconProps'> {
 }
 
 const MARKDOWN_OPTIONS: MarkdownToJSX.Options = {
-  overrides: { a: { component: (props: React.AnchorHTMLAttributes<HTMLAnchorElement>) => <Link {...props} onClick={stopPropagation()} /> } },
+  overrides: {
+    a: {
+      component: (props: React.AnchorHTMLAttributes<HTMLAnchorElement>) => (
+        <Link {...props} onClick={stopPropagation()} />
+      ),
+    },
+  },
   forceInline: true,
 };
 
@@ -39,7 +45,7 @@ const Speak: React.FC<SpeakProps> = ({ ai, src, audio, voice, message, className
   React.useEffect(() => {
     if (audioPlayer.playing) {
       onPause?.();
-    } else {
+    } else if (src) {
       onContinue?.();
     }
 
@@ -53,7 +59,12 @@ const Speak: React.FC<SpeakProps> = ({ ai, src, audio, voice, message, className
   }, [audioPlayer.playing, audio]);
 
   return formattedMessage ? (
-    <BaseMessage onClick={audioPlayer.onToggle} className={cn(ClassName.CHAT_DIALOG_SPEAK_MESSAGE, className)} {...props} isAiMessage={ai}>
+    <BaseMessage
+      onClick={audioPlayer.onToggle}
+      className={cn(ClassName.CHAT_DIALOG_SPEAK_MESSAGE, className)}
+      {...props}
+      isAiMessage={ai}
+    >
       <Markdown options={MARKDOWN_OPTIONS}>{formattedMessage}</Markdown>
     </BaseMessage>
   ) : null;

@@ -11,7 +11,7 @@ import { UserService } from '@/user/user.service';
 
 import subscriptionAdapter from './adapters/subscription.adapter';
 import { CreatePaymentIntentRequest } from './dto/create-payment-intent-request.dto';
-import { pollWithProgressiveTimeout } from './subscription.utils';
+import { findPlanItem, pollWithProgressiveTimeout } from './subscription.utils';
 
 const fromUnixTimestamp = (timestamp: number) => timestamp * 1000;
 
@@ -28,13 +28,17 @@ export class BillingSubscriptionService {
     private readonly hashedID: HashedIDService
   ) {}
 
-  private parseSubscription(subscription: SubscriptionsControllerGetSubscription200Subscription): Realtime.Identity.Subscription {
+  private parseSubscription(
+    subscription: SubscriptionsControllerGetSubscription200Subscription
+  ): Realtime.Identity.Subscription {
     return {
       id: subscription.id,
       status: subscription.status,
       onDunningPeriod: subscription.on_dunning_period,
       startDate: subscription.start_date ? fromUnixTimestamp(subscription.start_date) : undefined,
-      currentTermStart: subscription.current_term_start ? fromUnixTimestamp(subscription.current_term_start) : undefined,
+      currentTermStart: subscription.current_term_start
+        ? fromUnixTimestamp(subscription.current_term_start)
+        : undefined,
       currentTermEnd: subscription.current_term_end ? fromUnixTimestamp(subscription.current_term_end) : undefined,
       nextBillingAt: subscription.next_billing_at ? fromUnixTimestamp(subscription.next_billing_at) : undefined,
       billingPeriodUnit: subscription.billing_period_unit,
@@ -90,7 +94,10 @@ export class BillingSubscriptionService {
   }
 
   getInvoices(subscriptionID: string, { cursor, limit }: { cursor?: string; limit?: number } = {}) {
-    return this.billingClient.subscriptionsPrivate.getSubscriptionInvoices(subscriptionID, { ...(cursor && { cursor }), ...(limit && { limit }) });
+    return this.billingClient.subscriptionsPrivate.getSubscriptionInvoices(subscriptionID, {
+      ...(cursor && { cursor }),
+      ...(limit && { limit }),
+    });
   }
 
   async cancel(subscriptionID: string) {
@@ -121,7 +128,12 @@ export class BillingSubscriptionService {
   async createPaymentIntent(userID: number, payload: CreatePaymentIntentRequest) {
     const token = await this.user.getTokenByID(userID);
     return this.billingClient.paymentIntentsPrivate.createPaymentIntent(
-      { currency_code: 'USD', amount: payload.amount, reference_id: payload.referenceID, customer_id: payload.customerID },
+      {
+        currency_code: 'USD',
+        amount: payload.amount,
+        reference_id: payload.referenceID,
+        customer_id: payload.customerID,
+      },
       { headers: { Authorization: token } }
     );
   }
@@ -132,6 +144,20 @@ export class BillingSubscriptionService {
         paymentIntentID,
       },
     });
+  }
+
+  // if upgrading from starter or pro trial, do NOT prorate, charge full amount
+  getProrate(subscription: Realtime.Identity.Subscription) {
+    const planItem = findPlanItem(subscription.subscriptionItems);
+
+    if (!planItem) return false;
+
+    const { itemPriceID } = planItem;
+
+    const isProTrial = itemPriceID.includes(PlanName.PRO) && itemPriceID.includes('trial');
+    const isStarter = itemPriceID.includes(PlanName.STARTER);
+
+    return !isStarter && !isProTrial;
   }
 
   async checkoutAndBroadcast(
@@ -159,12 +185,7 @@ export class BillingSubscriptionService {
 
         trialEnd: 0,
         changeOption: 'immediately',
-        ...(data.itemPriceID.includes(PlanName.TEAM)
-          ? {
-              prorate: true,
-            }
-          : {}),
-
+        prorate: this.getProrate(subscription),
         ...(subscription.metaData?.downgradedFromTrial
           ? {
               metadata: {

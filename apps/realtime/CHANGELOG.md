@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.371.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.370.0...@voiceflow/realtime@1.371.0) (2024-05-23)
+
+### Features
+
+* do not prorate going to pro (COR-2148) ([#8170](https://github.com/voiceflow/creator-app/issues/8170)) ([95f2eb5](https://github.com/voiceflow/creator-app/commit/95f2eb55874b5ce2282e182f2df84206844bb152))
+
 # [1.370.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.369.0...@voiceflow/realtime@1.370.0) (2024-05-23)
 
 ### Features

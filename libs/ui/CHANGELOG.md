@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.314.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.313.2...@voiceflow/ui@1.314.0) (2024-05-23)
+
+### Features
+
+* add gpt-4o to AI model dropdown and settings (ML-892) ([#8147](https://github.com/voiceflow/creator-app/issues/8147)) ([cb18db7](https://github.com/voiceflow/creator-app/commit/cb18db7e3593c9032dedd33553ba6e53d2f5d4f1))
+
 ## [1.313.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.313.1...@voiceflow/ui@1.313.2) (2024-05-15)
 
 **Note:** Version bump only for package @voiceflow/ui

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.77.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.76.3...@voiceflow/dtos@1.77.0) (2024-05-23)
+
+### Features
+
+* add gpt-4o to AI model dropdown and settings (ML-892) ([#8147](https://github.com/voiceflow/creator-app/issues/8147)) ([cb18db7](https://github.com/voiceflow/creator-app/commit/cb18db7e3593c9032dedd33553ba6e53d2f5d4f1))
+
 ## [1.76.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.76.2...@voiceflow/dtos@1.76.3) (2024-05-22)
 
 ### Bug Fixes

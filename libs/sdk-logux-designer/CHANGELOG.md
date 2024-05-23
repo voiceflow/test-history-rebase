@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.56.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.55.10...@voiceflow/sdk-logux-designer@2.56.0) (2024-05-23)
+
+### Features
+
+* add gpt-4o to AI model dropdown and settings (ML-892) ([#8147](https://github.com/voiceflow/creator-app/issues/8147)) ([cb18db7](https://github.com/voiceflow/creator-app/commit/cb18db7e3593c9032dedd33553ba6e53d2f5d4f1))
+
 ## [2.55.10](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.55.9...@voiceflow/sdk-logux-designer@2.55.10) (2024-05-22)
 
 **Note:** Version bump only for package @voiceflow/sdk-logux-designer

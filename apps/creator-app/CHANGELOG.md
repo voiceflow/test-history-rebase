@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1528.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1527.3...@voiceflow/creator-app@1.1528.0) (2024-05-23)
+
+### Features
+
+* add gpt-4o to AI model dropdown and settings (ML-892) ([#8147](https://github.com/voiceflow/creator-app/issues/8147)) ([cb18db7](https://github.com/voiceflow/creator-app/commit/cb18db7e3593c9032dedd33553ba6e53d2f5d4f1))
+* workflow fixes 5 (COR-2110) ([#8154](https://github.com/voiceflow/creator-app/issues/8154)) ([936b23e](https://github.com/voiceflow/creator-app/commit/936b23e90aafd6ffe6180469822a5bc64b86f30f))
+
 ## [1.1527.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1527.2...@voiceflow/creator-app@1.1527.3) (2024-05-23)
 
 ### Bug Fixes

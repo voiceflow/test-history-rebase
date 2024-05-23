@@ -26,13 +26,23 @@ interface DisallowingActionConfig {
   tooltip?: IMenuItemWithTooltip['tooltip'] & { children: IMenuItemWithTooltip['children'] };
 }
 
+type CanGetMoreAction = (
+  resourceID: string,
+  options: { isFolder: boolean }
+) => boolean | AllowingActionConfig | DisallowingActionConfig;
+
+type GetMoreAction = (resourceID: string, options: { isFolder: boolean }) => void;
+
 export interface ICMSResourceGetMoreMenu {
-  onShare?: (resourceID: string) => void;
-  onExport?: (resourceID: string) => void;
-  onRename?: (resourceID: string) => void;
-  canDelete?: (resourceID: string) => boolean | AllowingActionConfig | DisallowingActionConfig;
-  canRename?: (resourceID: string) => boolean | AllowingActionConfig | DisallowingActionConfig;
-  onDuplicate?: (resourceID: string) => void;
+  onShare?: GetMoreAction;
+  onExport?: GetMoreAction;
+  onRename?: GetMoreAction;
+  canShare?: CanGetMoreAction;
+  canExport?: CanGetMoreAction;
+  canDelete?: CanGetMoreAction;
+  canRename?: CanGetMoreAction;
+  onDuplicate?: GetMoreAction;
+  canDuplicate?: CanGetMoreAction;
 }
 
 export const useCMSResourceGetPath = () => {
@@ -44,6 +54,7 @@ export const useCMSResourceGetPath = () => {
     const isFolder = getAtomValue(cmsManager.folders).some((folder) => getAtomValue(folder).id === resourceID);
 
     return {
+      // eslint-disable-next-line sonarjs/no-nested-template-literals
       path: `${baseURL}${isFolder ? `/folder/${resourceID}` : `/${resourceID}`}`,
       isFolder,
     };
@@ -70,7 +81,10 @@ export const useGetAllNestedResources = () => {
 
     const allFolderIDs = folderIDs.flatMap((id) => [
       id,
-      ...Designer.Folder.selectors.allDeeplyNestedIDsByScopeAndParentID(store.getState(), { folderScope, parentID: id }),
+      ...Designer.Folder.selectors.allDeeplyNestedIDsByScopeAndParentID(store.getState(), {
+        folderScope,
+        parentID: id,
+      }),
     ]);
 
     return {
@@ -145,9 +159,12 @@ export const useCMSResourceGetMoreMenu = ({
   onShare,
   onExport,
   onRename,
+  canShare = () => true,
   canDelete = () => true,
   canRename = () => true,
+  canExport = () => true,
   onDuplicate,
+  canDuplicate = () => true,
 }: ICMSResourceGetMoreMenu = {}) => {
   const TEST_ID = tid(CMS_TEST_ID, 'context-menu');
 
@@ -172,7 +189,7 @@ export const useCMSResourceGetMoreMenu = ({
     const onCopyLink = () => {
       clipboardCopy(`${window.location.origin}${path}`);
 
-      notify.short.success(`Copied`);
+      notify.short.success('Copied');
 
       onClose();
     };
@@ -183,7 +200,8 @@ export const useCMSResourceGetMoreMenu = ({
     };
 
     const renderActionConfig = (value: boolean | AllowingActionConfig | DisallowingActionConfig, action: IMenuItem) => {
-      const config: AllowingActionConfig | DisallowingActionConfig = typeof value === 'boolean' ? { allowed: value } : value;
+      const config: AllowingActionConfig | DisallowingActionConfig =
+        typeof value === 'boolean' ? { allowed: value } : value;
 
       return config.allowed ? (
         <MenuItem {...action} />
@@ -196,50 +214,50 @@ export const useCMSResourceGetMoreMenu = ({
       );
     };
 
-    const renameAction = renderActionConfig(canRename(id), {
+    const shareAction = renderActionConfig(canShare(id, { isFolder }), {
+      label: 'Share',
+      testID: tid(TEST_ID, 'share'),
+      onClick: Utils.functional.chainVoid(onClose, () => onShare?.(id, { isFolder })),
+      prefixIconName: 'Community',
+    });
+
+    const exportAction = renderActionConfig(canExport(id, { isFolder }), {
+      label: 'Export',
+      testID: tid(TEST_ID, 'export'),
+      onClick: Utils.functional.chainVoid(onClose, () => onExport?.(id, { isFolder })),
+      prefixIconName: 'Export',
+    });
+
+    const renameAction = renderActionConfig(canRename(id, { isFolder }), {
       label: 'Rename',
       testID: tid(TEST_ID, 'rename'),
-      onClick: Utils.functional.chainVoid(onClose, () => onRename?.(id)),
+      onClick: Utils.functional.chainVoid(onClose, () => onRename?.(id, { isFolder })),
       prefixIconName: 'Edit',
     });
 
-    const deleteAction = renderActionConfig(canDelete(id), {
+    const deleteAction = renderActionConfig(canDelete(id, { isFolder }), {
       label: 'Delete',
       testID: tid(TEST_ID, 'delete'),
       onClick: Utils.functional.chainVoid(onClose, onDelete),
       prefixIconName: 'Trash',
     });
 
+    const duplicateAction = renderActionConfig(canDuplicate(id, { isFolder }), {
+      label: 'Duplicate',
+      testID: tid(TEST_ID, 'duplicate'),
+      onClick: Utils.functional.chainVoid(onClose, () => onDuplicate?.(id, { isFolder })),
+      prefixIconName: 'Duplicate',
+    });
+
     return (
       <>
         {onRename && renameAction}
 
-        {!!onDuplicate && (
-          <MenuItem
-            label="Duplicate"
-            testID={tid(TEST_ID, 'duplicate')}
-            onClick={Utils.functional.chainVoid(onClose, () => onDuplicate(id))}
-            prefixIconName="Duplicate"
-          />
-        )}
+        {onDuplicate && duplicateAction}
 
-        {!isFolder && onShare && (
-          <MenuItem
-            label="Share"
-            testID={tid(TEST_ID, 'share')}
-            onClick={Utils.functional.chainVoid(onClose, () => onShare(id))}
-            prefixIconName="Community"
-          />
-        )}
+        {onShare && shareAction}
 
-        {onExport && (
-          <MenuItem
-            label="Export"
-            testID={tid(TEST_ID, 'export')}
-            onClick={Utils.functional.chainVoid(onClose, () => onExport(id))}
-            prefixIconName="Export"
-          />
-        )}
+        {onExport && exportAction}
 
         {hasByScope && (
           <MenuItem

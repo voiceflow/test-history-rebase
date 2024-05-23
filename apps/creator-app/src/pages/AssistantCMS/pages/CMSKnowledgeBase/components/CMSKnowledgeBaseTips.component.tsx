@@ -1,9 +1,10 @@
-import { Text, Tip, Tokens, useConst } from '@voiceflow/ui-next';
+import { Tip, useConst } from '@voiceflow/ui-next';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 
+import { TipHotkey } from '@/components/Tip/TipHotkey/TipHotkey.component';
 import { TipPortal } from '@/components/Tip/TipPortal/TipPortal.component';
-import { getHotkeyLabel, Hotkey } from '@/keymap';
+import { getHotkeys, Hotkey } from '@/keymap';
 import { stopPropagation } from '@/utils/handler.util';
 
 export const CMSKnowledgeBaseTips: React.FC = () => {
@@ -20,10 +21,7 @@ export const CMSKnowledgeBaseTips: React.FC = () => {
               description={
                 <>
                   Navigate to your knowledge base faster with the shortcut{' '}
-                  <Text as="span" color={Tokens.colors.black[100]}>
-                    {getHotkeyLabel(Hotkey.BACK_TO_KNOWLEDGE_BASE)}
-                  </Text>
-                  .
+                  <TipHotkey hotkeys={getHotkeys(Hotkey.BACK_TO_KNOWLEDGE_BASE)} />.
                 </>
               }
             >

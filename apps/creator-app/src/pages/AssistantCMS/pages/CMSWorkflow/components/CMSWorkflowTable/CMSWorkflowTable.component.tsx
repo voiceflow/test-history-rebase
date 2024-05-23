@@ -28,9 +28,6 @@ export const CMSWorkflowTable: React.FC = () => {
   const getOneByID = useGetValueSelector(Designer.Workflow.selectors.oneByID);
 
   const rowContextMenu = useCMSRowItemContextMenu({
-    nameColumnType: WorkflowTableColumn.NAME,
-    onDuplicate: duplicateOne,
-
     canDelete: (resourceID) => {
       const workflow = getOneByID({ id: resourceID });
 
@@ -44,6 +41,9 @@ export const CMSWorkflowTable: React.FC = () => {
         },
       };
     },
+    onDuplicate: duplicateOne,
+    canDuplicate: (_, { isFolder }) => !isFolder,
+    nameColumnType: WorkflowTableColumn.NAME,
   });
 
   const onRowDoubleClick = usePersistFunction((id: string) => {

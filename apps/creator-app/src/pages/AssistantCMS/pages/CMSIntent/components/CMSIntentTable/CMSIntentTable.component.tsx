@@ -7,7 +7,11 @@ import { EMPTY_TEST_ID, TABLE_TEST_ID } from '@/pages/AssistantCMS/AssistantCMS.
 import { isIntentBuiltIn } from '@/utils/intent.util';
 
 import { CMSEmpty } from '../../../../components/CMSEmpty/CMSEmpty.component';
-import { useCMSRowItemClick, useCMSRowItemContextMenu, useCMSRowItemNavigate } from '../../../../hooks/cms-row-item.hook';
+import {
+  useCMSRowItemClick,
+  useCMSRowItemContextMenu,
+  useCMSRowItemNavigate,
+} from '../../../../hooks/cms-row-item.hook';
 import { useIntentCMSManager, useOnIntentCreate } from '../../CMSIntent.hook';
 import { intentColumnsOrderAtom } from './CMSIntentTable.atom';
 import { INTENTS_TABLE_CONFIG } from './CMSIntentTable.config';
@@ -26,7 +30,11 @@ export const CMSIntentTable: React.FC = () => {
   return (
     <CMSEmpty
       title="No intents exist"
-      button={{ label: 'Create intent', onClick: (search) => onCreate({ name: search }), testID: tid(EMPTY_TEST_ID, 'create-intent') }}
+      button={{
+        label: 'Create intent',
+        onClick: (search) => onCreate({ name: search }),
+        testID: tid(EMPTY_TEST_ID, 'create-intent'),
+      }}
       searchTitle="No intents found"
       description="Intents are reusable collections of user says that aim to capture a users intention. "
       illustration="NoContent"

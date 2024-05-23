@@ -8,7 +8,11 @@ import { goToCMSResource } from '@/ducks/router';
 import { useDispatch } from '@/hooks';
 
 import { CMSEmpty } from '../../../../components/CMSEmpty/CMSEmpty.component';
-import { useCMSRowItemClick, useCMSRowItemContextMenu, useCMSRowItemNavigate } from '../../../../hooks/cms-row-item.hook';
+import {
+  useCMSRowItemClick,
+  useCMSRowItemContextMenu,
+  useCMSRowItemNavigate,
+} from '../../../../hooks/cms-row-item.hook';
 import { useOnResponseCreate, useResponseCMSManager } from '../../CMSResponse.hook';
 import { responseColumnsOrderAtom } from './CMSResponseTable.atom';
 import { CMS_RESPONSE_TABLE_CONFIG } from './CMSResponseTable.config';
@@ -22,13 +26,14 @@ export const CMSResponseTable: React.FC = () => {
   const duplicateOne = useDispatch(Designer.Response.effect.duplicateOne);
 
   const rowContextMenu = useCMSRowItemContextMenu({
-    nameColumnType: ResponseTableColumn.ALL,
+    canRename: (_, { isFolder }) => isFolder,
     onDuplicate: async (id) => {
       const data = await duplicateOne(id);
 
       goToCMSResource(CMSRoute.RESPONSE, data.responseResource.id);
     },
-    canRename: () => false,
+    canDuplicate: (_, { isFolder }) => !isFolder,
+    nameColumnType: ResponseTableColumn.ALL,
   });
 
   return (

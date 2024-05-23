@@ -38,7 +38,11 @@ import {
   DocumentUploadTableRequest,
   DocumentUploadTableResponse,
 } from './dtos/document-create.dto';
-import { DocumentFindManyPublicRequest, DocumentFindManyPublicResponse, DocumentFindOnePublicResponse } from './dtos/document-find.dto';
+import {
+  DocumentFindManyPublicRequest,
+  DocumentFindManyPublicResponse,
+  DocumentFindOnePublicResponse,
+} from './dtos/document-find.dto';
 import { DocumentAttachTagsRequest } from './dtos/document-tag.dto';
 import { VfChunksVariableBetaAccessInterceptor } from './vf-chunks-beta.interceptor';
 
@@ -66,7 +70,10 @@ export class KnowledgeBaseDocumentApiPublicHTTPController {
   })
   @ApiHeader({
     name: 'content-type',
-    schema: { type: 'string', description: 'The Content-Type header is used to indicate the media type of the resource' },
+    schema: {
+      type: 'string',
+      description: 'The Content-Type header is used to indicate the media type of the resource',
+    },
   })
   @ZodApiResponse({
     status: HttpStatus.CREATED,
@@ -156,7 +163,12 @@ export class KnowledgeBaseDocumentApiPublicHTTPController {
     @Body(new ZodValidationPipe(DocumentUploadTableRequest)) { data }: DocumentUploadTableRequest,
     @Query(new ZodValidationPipe(DocumentUploadTableQuery)) query: DocumentUploadTableQuery
   ): Promise<DocumentUploadTableResponse> {
-    return this.service.uploadTableDocument(principal.legacy.projectID, principal.createdBy, data, query.overwrite === 'true');
+    return this.service.uploadTableDocument(
+      principal.legacy.projectID,
+      principal.createdBy,
+      data,
+      query.overwrite === 'true'
+    );
   }
 
   /* Get */
@@ -181,18 +193,16 @@ export class KnowledgeBaseDocumentApiPublicHTTPController {
     @Param('documentID') documentID: string
   ): Promise<DocumentFindOnePublicResponse> {
     const document = await this.service.findOneDocumentWithTags(principal.legacy.projectID, documentID);
-    return document
-      ? {
-          data: {
-            tags: document.tags ?? [],
-            documentID: document.documentID,
-            data: document.data,
-            updatedAt: document.updatedAt ?? new Date().toString(),
-            status: document.status,
-          },
-          chunks: document.chunks,
-        }
-      : { data: null, chunks: [] };
+    return {
+      data: {
+        tags: document.tags ?? [],
+        documentID: document.documentID,
+        data: document.data,
+        updatedAt: document.updatedAt ?? new Date().toString(),
+        status: document.status,
+      },
+      chunks: document.chunks,
+    };
   }
 
   @Get()
@@ -243,7 +253,10 @@ export class KnowledgeBaseDocumentApiPublicHTTPController {
   @ApiParam({ name: 'documentID', type: 'string' })
   @ApiHeader({
     name: 'content-type',
-    schema: { type: 'string', description: 'The Content-Type header is used to indicate the media type of the resource' },
+    schema: {
+      type: 'string',
+      description: 'The Content-Type header is used to indicate the media type of the resource',
+    },
   })
   @ZodApiResponse({
     status: HttpStatus.CREATED,
@@ -330,7 +343,10 @@ export class KnowledgeBaseDocumentApiPublicHTTPController {
     status: HttpStatus.OK,
     description: 'Delete document by id in the target project',
   })
-  async deleteOne(@Principal() principal: Identity & { legacy: { projectID: string } }, @Param('documentID') documentID: string): Promise<void> {
+  async deleteOne(
+    @Principal() principal: Identity & { legacy: { projectID: string } },
+    @Param('documentID') documentID: string
+  ): Promise<void> {
     await this.service.validateDocumentExists(principal.legacy.projectID, documentID, true);
     await this.service.deleteManyDocuments([documentID], principal.legacy.projectID);
   }

@@ -616,22 +616,20 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
   }
 
   async findOneDocumentWithTags(assistantID: string, documentID: string) {
-    try {
-      const [document, chunks] = await Promise.all([
-        this.orm.findOneDocument(assistantID, documentID),
-        this.findDocumentChunks(assistantID, documentID),
-      ]);
+    const [document, chunks] = await Promise.all([
+      this.orm.findOneDocument(assistantID, documentID),
+      this.findDocumentChunks(assistantID, documentID),
+    ]);
 
-      return document
-        ? {
-            ...knowledgeBaseDocumentAdapter.fromDB(document),
-            chunks,
-            tags: Array.from(await this.tagService.tagObjectIdsToNames({ assistantID, tagIDs: document?.tags ?? [] })),
-          }
-        : undefined;
-    } catch (error) {
+    if (!document) {
       throw new NotFoundException("Document doesn't exist");
     }
+
+    return {
+      ...knowledgeBaseDocumentAdapter.fromDB(document),
+      chunks,
+      tags: Array.from(await this.tagService.tagObjectIdsToNames({ assistantID, tagIDs: document?.tags ?? [] })),
+    };
   }
 
   async findManyDocuments(assistantID: string, documentIDs?: string[]): Promise<KnowledgeBaseDocument[]> {

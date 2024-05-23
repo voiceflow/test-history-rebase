@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { BaseModels } from '@voiceflow/base-types';
+import { BadRequestException } from '@voiceflow/exception';
 import * as fetch from '@voiceflow/fetch';
 import { VersionKnowledgeBaseDocument } from '@voiceflow/orm-designer';
 import undici from 'undici';
@@ -27,13 +28,17 @@ export class KlParserClient {
   }
 
   public async deleteMany(projectID: string, documentIDs: string[], workspaceID: string) {
-    return this.client.post(`api/v1/projects/${projectID}/documents/delete-many`, {
-      json: {
-        documentIDs,
-        workspaceID,
-        bucket: this.options.bucket,
-      },
-    });
+    return this.client
+      .post(`api/v1/projects/${projectID}/documents/delete-many`, {
+        json: {
+          documentIDs,
+          workspaceID,
+          bucket: this.options.bucket,
+        },
+      })
+      .catch(() => {
+        throw new BadRequestException('Error during vector removal process');
+      });
   }
 
   public async updateDocument(
@@ -42,15 +47,19 @@ export class KlParserClient {
     workspaceID: string,
     settings: Pick<BaseModels.Project.KnowledgeBaseSettings, 'chunkStrategy'>
   ) {
-    return this.client.patch(`api/v1/projects/${projectID}/documents/${document.documentID}`, {
-      json: {
-        projectID,
-        workspaceID,
-        document,
-        settings,
-        bucket: this.options.bucket,
-      },
-    });
+    return this.client
+      .patch(`api/v1/projects/${projectID}/documents/${document.documentID}`, {
+        json: {
+          projectID,
+          workspaceID,
+          document,
+          settings,
+          bucket: this.options.bucket,
+        },
+      })
+      .catch(() => {
+        throw new BadRequestException('Error during update document metadata fields');
+      });
   }
 
   public async parse(
@@ -59,15 +68,17 @@ export class KlParserClient {
     workspaceID: string,
     settings: Pick<BaseModels.Project.KnowledgeBaseSettings, 'chunkStrategy'>
   ) {
-    return this.client.post('parse', {
-      json: {
-        projectID,
-        document,
-        workspaceID,
-        bucket: this.options.bucket,
-        settings,
-      },
-    });
+    return this.client
+      .post('parse', {
+        json: {
+          projectID,
+          document,
+          workspaceID,
+          bucket: this.options.bucket,
+          settings,
+        },
+      })
+      .catch(() => null);
   }
 
   // eslint-disable-next-line max-params
@@ -79,15 +90,17 @@ export class KlParserClient {
     items: object[],
     metadataFields?: string[]
   ) {
-    return this.client.post(`api/v1/projects/${projectID}/documents/table`, {
-      json: {
-        workspaceID,
-        document,
-        searchableFields,
-        items,
-        metadataFields,
-        bucket: this.options.bucket,
-      },
-    });
+    return this.client
+      .post(`api/v1/projects/${projectID}/documents/table`, {
+        json: {
+          workspaceID,
+          document,
+          searchableFields,
+          items,
+          metadataFields,
+          bucket: this.options.bucket,
+        },
+      })
+      .catch(() => null);
   }
 }

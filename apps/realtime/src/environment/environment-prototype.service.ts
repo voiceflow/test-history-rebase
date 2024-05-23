@@ -17,6 +17,7 @@ import { VersionService } from '@/version/version.service';
 
 import { CMSResources } from './environment.interface';
 import { EnvironmentRepository } from './environment.repository';
+import { ProgramResourcesResponseBuilder } from './environment-program-resources.adapter';
 
 @Injectable()
 export class EnvironmentPrototypeService {
@@ -108,9 +109,18 @@ export class EnvironmentPrototypeService {
     // fetching version to get updated platformData
     version = await this.version.findOneOrFail(environmentID);
 
+    const programResources = new ProgramResourcesResponseBuilder()
+      .addResponses(cmsData.responses)
+      .addDiscriminators(cmsData.responseDiscriminators)
+      .addVariants(cmsData.responseVariants)
+      .build();
+
     return {
       ...cmsData,
-      version,
+      version: {
+        ...version,
+        programResources,
+      },
       project,
       diagrams,
       liveDiagramIDs: VersionService.getLiveDiagramIDs(version, diagrams),

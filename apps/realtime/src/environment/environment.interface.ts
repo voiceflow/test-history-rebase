@@ -1,4 +1,13 @@
-import { AnyResponseVariant, Entity, EntityVariant, Intent, RequiredEntity, Response,ResponseDiscriminator, Utterance } from '@voiceflow/dtos';
+import {
+  AnyResponseVariant,
+  Entity,
+  EntityVariant,
+  Intent,
+  RequiredEntity,
+  Response,
+  ResponseDiscriminator,
+  Utterance,
+} from '@voiceflow/dtos';
 import {
   AnyResponseAttachmentObject,
   AnyResponseVariantObject,
@@ -22,37 +31,56 @@ import {
 import { AnyAttachmentObjectWithType } from '@/attachment/attachment.interface';
 
 export interface EnvironmentCMSData {
-  flows: FlowObject[];
-  folders: FolderObject[];
-  intents: IntentObject[];
-  entities: EntityObject[];
-  variables: VariableObject[];
-  functions: FunctionObject[];
-  responses: ResponseObject[];
-  workflows: WorkflowObject[];
-  utterances: UtteranceObject[];
-  attachments: AnyAttachmentObjectWithType[];
-  cardButtons: CardButtonObject[];
-  functionPaths: FunctionPathObject[];
-  entityVariants: EntityVariantObject[];
-  requiredEntities: RequiredEntityObject[];
-  responseVariants: AnyResponseVariantObject[];
-  functionVariables: FunctionVariableObject[];
-  responseAttachments: AnyResponseAttachmentObject[];
-  responseDiscriminators: ResponseDiscriminatorObject[];
+  flows: CMSFlow[];
+  folders: CMSFolder[];
+  intents: CMSIntent[];
+  entities: CMSEntity[];
+  variables: CMSVariable[];
+  functions: CMSFunction[];
+  responses: CMSResponse[];
+  workflows: CMSWorkflow[];
+  utterances: CMSUtterance[];
+  attachments: CMSAttachment[];
+  cardButtons: CMSCardButton[];
+  functionPaths: CMSFunctionPath[];
+  entityVariants: CMSEntityVariant[];
+  requiredEntities: CMSRequiredEntity[];
+  responseVariants: CMSResponseVariant[];
+  functionVariables: CMSFunctionVariable[];
+  responseAttachments: CMSResponseAttachment[];
+  responseDiscriminators: CMSResponseDiscriminator[];
 }
 
+export type CMSFlow = FlowObject;
+export type CMSFolder = FolderObject;
+export type CMSIntent = IntentObject;
+export type CMSEntity = EntityObject;
+export type CMSVariable = VariableObject;
+export type CMSFunction = FunctionObject;
+export type CMSResponse = ResponseObject;
+export type CMSWorkflow = WorkflowObject;
+export type CMSUtterance = UtteranceObject;
+export type CMSAttachment = AnyAttachmentObjectWithType;
+export type CMSCardButton = CardButtonObject;
+export type CMSFunctionPath = FunctionPathObject;
+export type CMSEntityVariant = EntityVariantObject;
+export type CMSRequiredEntity = RequiredEntityObject;
+export type CMSResponseVariant = AnyResponseVariantObject;
+export type CMSFunctionVariable = FunctionVariableObject;
+export type CMSResponseAttachment = AnyResponseAttachmentObject;
+export type CMSResponseDiscriminator = ResponseDiscriminatorObject;
+
 export interface CMSResources {
-  intents: IntentObject[];
-  entities: EntityObject[];
-  responses: ResponseObject[];
-  variables: VariableObject[];
-  utterances: UtteranceObject[];
-  entityVariants: EntityVariantObject[];
+  intents: CMSIntent[];
+  entities: CMSEntity[];
+  responses: CMSResponse[];
+  variables: CMSVariable[];
+  utterances: CMSUtterance[];
+  entityVariants: CMSEntityVariant[];
   isVoiceAssistant: boolean;
-  requiredEntities: RequiredEntityObject[];
-  responseVariants: AnyResponseVariantObject[];
-  responseDiscriminators: ResponseDiscriminatorObject[];
+  requiredEntities: CMSRequiredEntity[];
+  responseVariants: CMSResponseVariant[];
+  responseDiscriminators: CMSResponseDiscriminator[];
 }
 
 export interface IntentsAndEntitiesData {

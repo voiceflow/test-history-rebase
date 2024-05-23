@@ -30,7 +30,7 @@
     "test:types": "yarn g:tsd"
   },
   "dependencies": {
-    "@voiceflow/common": "8.2.8",
+    "@voiceflow/common": "8.3.0",
     "@voiceflow/dtos": "workspace:*",
     "bidirectional-adapter": "1.2.1",
     "ts-pattern": "5.0.5",

@@ -3,6 +3,7 @@ export type AIModelType =
   | 'gpt-3.5-turbo-1106'
   | 'gpt-3.5-turbo'
   | 'gpt-4'
+  | 'gpt-4o'
   | 'gpt-4-turbo'
   | 'claude-v1'
   | 'claude-v2'

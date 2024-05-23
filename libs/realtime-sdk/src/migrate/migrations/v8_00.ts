@@ -9,7 +9,7 @@ import { Transform } from './types';
 /**
  * migrates domains and topics to workflows
  */
-// eslint-disable-next-line sonarjs/cognitive-complexity
+
 const migrateToV8_00: Transform = ({ cms, version, diagrams }, { project, creatorID }) => {
   const createdAt = new Date().toJSON();
   const diagramMap = Utils.array.createMap(diagrams, (diagram) => diagram.diagramID);
@@ -52,7 +52,8 @@ const migrateToV8_00: Transform = ({ cms, version, diagrams }, { project, creato
 
     if (startNode) {
       domainRootDiagramIDStartNodeIDMap[rootDiagramID] = startNode.nodeID;
-      domainRootDiagramIDStartNextIDMap[rootDiagramID] = startNode.data.portsV2?.builtIn[BaseModels.PortType.NEXT]?.target ?? null;
+      domainRootDiagramIDStartNextIDMap[rootDiagramID] =
+        startNode.data.portsV2?.builtIn[BaseModels.PortType.NEXT]?.target ?? null;
     }
 
     // don't create folder for single domain projects
@@ -89,7 +90,9 @@ const migrateToV8_00: Transform = ({ cms, version, diagrams }, { project, creato
 
     if (isTopic) {
       const subTopicDiagramIDs =
-        menuItems?.filter((menuItem) => menuItem.type === BaseModels.Diagram.MenuItemType.DIAGRAM).map((menuItem) => menuItem.sourceID) ?? [];
+        menuItems
+          ?.filter((menuItem) => menuItem.type === BaseModels.Diagram.MenuItemType.DIAGRAM)
+          .map((menuItem) => menuItem.sourceID) ?? [];
 
       const workflow = workflowsDiagramIDMap[diagramID];
 
@@ -173,7 +176,7 @@ const migrateToV8_00: Transform = ({ cms, version, diagrams }, { project, creato
         startNode.data.steps?.forEach((stepID) => {
           const stepNode = nodes[stepID];
 
-          if (typeGuards.isCommandDBNode(stepNode)) {
+          if (stepNode && typeGuards.isCommandDBNode(stepNode)) {
             commandNodes.push({ ...stepNode, nodeID: Utils.id.objectID() });
           }
 

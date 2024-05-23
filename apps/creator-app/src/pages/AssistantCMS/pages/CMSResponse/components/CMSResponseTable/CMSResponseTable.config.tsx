@@ -2,13 +2,16 @@ import { Channel, Language } from '@voiceflow/dtos';
 import { Table, type TableConfig } from '@voiceflow/ui-next';
 import React from 'react';
 
-import { CMSTableHighlightedTooltip } from '@/pages/AssistantCMS/components/CMSTableHighlightedTooltip/CMSTableHighlightedTooltip.component';
-import { CMSManagerConsumer } from '@/pages/AssistantCMS/contexts/CMSManager/CMSManagerConsumer/CMSManagerConsumer.component';
+import { CMSTableNameCell } from '@/pages/AssistantCMS/components/CMSTableNameCell/CMSTableNameCell.component';
 
 import { CMSTableCellFromNowTooltip } from '../../../../components/CMSTableCellFromNowTooltip/CMSTableCellFromNowTooltip.component';
 import { CMSTableMemberCell } from '../../../../components/CMSTableMemberCell/CMSTableMemberCell.component';
 import type { CMSFolder, CMSResponse } from '../../../../contexts/CMSManager/CMSManager.interface';
-import { updatedAtSort, withFieldLocaleCompareSort, withFolderSort } from '../../../../contexts/CMSManager/CMSManager.util';
+import {
+  updatedAtSort,
+  withFieldLocaleCompareSort,
+  withFolderSort,
+} from '../../../../contexts/CMSManager/CMSManager.util';
 import { ResponseTableColumn } from './CMSResponseTable.constant';
 import { CMSResponseTableTypeCell } from './CMSResponseTableTypeCell/CMSResponseTableTypeCell.component';
 import { CMSResponseTableVariantCell } from './CMSResponseTableVariantCell/CMSResponseTableVariantCell.component';
@@ -27,14 +30,12 @@ export const CMS_RESPONSE_TABLE_CONFIG: TableConfig<ResponseTableColumn, CMSFold
       name: 'All responses',
       sorter: withFolderSort<CMSResponse>(withFieldLocaleCompareSort('name')),
 
-      cell: ({ item }) => (
-        <CMSManagerConsumer
-          field="search"
-          render={(search) =>
-            item.group ? <CMSTableHighlightedTooltip label={item.name} search={search} /> : <CMSResponseTableVariantCell response={item} />
-          }
-        />
-      ),
+      cell: ({ item, type }) =>
+        item.group ? (
+          <CMSTableNameCell type={type} name={item.name} isFolder={item.group} itemID={item.id} />
+        ) : (
+          <CMSResponseTableVariantCell response={item} />
+        ),
     },
 
     [ResponseTableColumn.ATTACHMENTS]: {
@@ -47,7 +48,12 @@ export const CMS_RESPONSE_TABLE_CONFIG: TableConfig<ResponseTableColumn, CMSFold
       type: ResponseTableColumn.TYPE,
       name: 'Type',
       cell: ({ item }) => (
-        <CMSResponseTableTypeCell responseID={item.id} language={Language.ENGLISH_US} channel={Channel.DEFAULT} isFolder={item.group} />
+        <CMSResponseTableTypeCell
+          responseID={item.id}
+          language={Language.ENGLISH_US}
+          channel={Channel.DEFAULT}
+          isFolder={item.group}
+        />
       ),
     },
 
@@ -61,7 +67,12 @@ export const CMS_RESPONSE_TABLE_CONFIG: TableConfig<ResponseTableColumn, CMSFold
       type: ResponseTableColumn.LAST_EDITOR,
       name: 'Last editor',
 
-      cell: ({ item }) => <Table.Cell.GroupEmpty item={item} label={({ updatedByID }) => <CMSTableMemberCell creatorID={updatedByID} />} />,
+      cell: ({ item }) => (
+        <Table.Cell.GroupEmpty
+          item={item}
+          label={({ updatedByID }) => <CMSTableMemberCell creatorID={updatedByID} />}
+        />
+      ),
     },
 
     [ResponseTableColumn.UPDATED]: {
@@ -69,7 +80,12 @@ export const CMS_RESPONSE_TABLE_CONFIG: TableConfig<ResponseTableColumn, CMSFold
       name: 'Updated',
       sorter: withFolderSort(updatedAtSort),
 
-      cell: ({ item }) => <Table.Cell.GroupEmpty item={item} label={({ updatedAt }) => <CMSTableCellFromNowTooltip updatedAt={updatedAt} />} />,
+      cell: ({ item }) => (
+        <Table.Cell.GroupEmpty
+          item={item}
+          label={({ updatedAt }) => <CMSTableCellFromNowTooltip updatedAt={updatedAt} />}
+        />
+      ),
     },
   },
 };

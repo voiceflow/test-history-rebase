@@ -26,13 +26,26 @@ export const CMSResourceActionsButtonMoveToFolder: React.FC = () => {
 
   const hasFolders = useSelector(Designer.Folder.selectors.hasByScope, { folderScope });
   const getOneByID = useSelector(Designer.Folder.selectors.getOneByID);
+  const getAllDeeplyNestedIDsByScopeAndParentID = useSelector(
+    Designer.Folder.selectors.getAllDeeplyNestedIDsByScopeAndParentID
+  );
 
   const patchManyFolders = useDispatch(Designer.Folder.effect.patchMany);
   const patchManyResources = useDispatch(effects.patchMany);
 
   const selectedIDs = useMemo(() => Array.from(selectedIDsSet), [selectedIDsSet]);
-  const folderIDs = useMemo(() => Array.from(selectedIDs).filter((id) => getOneByID({ id })), [getOneByID, selectedIDs]);
-  const menuExcludeFolderIDs = useMemo(() => (folderID ? [...folderIDs, folderID] : folderIDs), [folderID, folderIDs]);
+  const folderIDs = useMemo(
+    () => Array.from(selectedIDs).filter((id) => getOneByID({ id })),
+    [getOneByID, selectedIDs]
+  );
+  const menuExcludeFolderIDs = useMemo(
+    () =>
+      (folderID ? [...folderIDs, folderID] : folderIDs).flatMap((id) => [
+        id,
+        ...getAllDeeplyNestedIDsByScopeAndParentID({ parentID: id, folderScope }),
+      ]),
+    [folderID, folderIDs, folderScope, getAllDeeplyNestedIDsByScopeAndParentID]
+  );
 
   const onSelect = async (folder: Folder | null) => {
     const resourceIDs = Utils.array.withoutValues(Array.from(selectedIDs), folderIDs);
@@ -63,7 +76,13 @@ export const CMSResourceActionsButtonMoveToFolder: React.FC = () => {
       )}
     >
       {({ onClose }) => (
-        <FolderMenu scope={folderScope} parentID={folderID} onSelect={onSelect} onClose={onClose} excludeIDs={menuExcludeFolderIDs} />
+        <FolderMenu
+          scope={folderScope}
+          parentID={folderID}
+          onSelect={onSelect}
+          onClose={onClose}
+          excludeIDs={menuExcludeFolderIDs}
+        />
       )}
     </Popper>
   );

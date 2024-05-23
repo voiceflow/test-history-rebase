@@ -34,7 +34,7 @@ export const DiagramLayoutHeader: React.FC = () => {
 
   return (
     <Header className={headerStyle({ canvasOnly })}>
-      <Header.Section.Left mr={214}>
+      <Header.Section.Left minWidth={262}>
         <DiagramLayoutHeaderBack isPrototype={isPrototype} />
       </Header.Section.Left>
 

@@ -9,7 +9,11 @@ import { useDispatch, useTrackPageOpenedFirstTime } from '@/hooks';
 import { EMPTY_TEST_ID, TABLE_TEST_ID } from '@/pages/AssistantCMS/AssistantCMS.constant';
 
 import { CMSEmpty } from '../../../../components/CMSEmpty/CMSEmpty.component';
-import { useCMSRowItemClick, useCMSRowItemContextMenu, useCMSRowItemNavigate } from '../../../../hooks/cms-row-item.hook';
+import {
+  useCMSRowItemClick,
+  useCMSRowItemContextMenu,
+  useCMSRowItemNavigate,
+} from '../../../../hooks/cms-row-item.hook';
 import { useFunctionCMSManager, useOnFunctionCreate } from '../../CMSFunction.hook';
 import { CMSFunctionCodeEditor } from '../CMSFunctionCodeEditor/CMSFunctionCodeEditor.component';
 import { functionColumnsOrderAtom } from './CMSFunctionTable.atom';
@@ -23,9 +27,11 @@ export const CMSFunctionTable: React.FC = () => {
   const onCreate = useOnFunctionCreate();
   const onRowClick = useCMSRowItemClick();
   const rowContextMenu = useCMSRowItemContextMenu({
-    nameColumnType: FunctionTableColumn.NAME,
     onExport: (functionID) => exportMany([functionID]),
+    canExport: (_, { isFolder }) => !isFolder,
     onDuplicate: duplicateOne,
+    canDuplicate: (_, { isFolder }) => !isFolder,
+    nameColumnType: FunctionTableColumn.NAME,
   });
   const functionCMSManager = useFunctionCMSManager();
 
@@ -39,7 +45,11 @@ export const CMSFunctionTable: React.FC = () => {
   return (
     <CMSEmpty
       title="No functions exist"
-      button={{ label: 'Create function', onClick: (search) => onCreate({ name: search }), testID: tid(EMPTY_TEST_ID, 'create-function') }}
+      button={{
+        label: 'Create function',
+        onClick: (search) => onCreate({ name: search }),
+        testID: tid(EMPTY_TEST_ID, 'create-function'),
+      }}
       searchTitle="No functions found"
       description="Functions can be used to create reusable code, make API calls, and transforming data. "
       illustration="Functions"

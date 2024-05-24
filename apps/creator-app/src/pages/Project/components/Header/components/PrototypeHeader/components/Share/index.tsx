@@ -11,13 +11,14 @@ import { Identifier } from '@/styles/constants';
 
 const Share: React.FC = () => {
   const cmsWorkflows = useFeature(FeatureFlag.CMS_WORKFLOWS);
+  const hideExports = useFeature(FeatureFlag.HIDE_EXPORTS);
   const [canSharePrototype] = usePermission(Permission.SHARE_PROTOTYPE);
   const [isClosePrevented, setIsClosedPrevented] = React.useState(false);
 
   const preventClose = React.useCallback(() => setIsClosedPrevented(true), []);
   const enableClose = React.useCallback(() => setIsClosedPrevented(false), []);
 
-  if (cmsWorkflows.isEnabled) {
+  if (cmsWorkflows.isEnabled && !hideExports.isEnabled) {
     return (
       <AssistantSharePrototypePopper
         referenceElement={({ ref, isOpen, onToggle }) => (

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.372.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.371.1...@voiceflow/realtime@1.372.0) (2024-05-24)
+
+### Features
+
+* integrate org members (COR-2143) ([#8160](https://github.com/voiceflow/creator-app/issues/8160)) ([ea27b1b](https://github.com/voiceflow/creator-app/commit/ea27b1b3516953427a0433fcb50380d77b362f5b))
+
 ## [1.371.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.371.0...@voiceflow/realtime@1.371.1) (2024-05-23)
 
 **Note:** Version bump only for package @voiceflow/realtime

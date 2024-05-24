@@ -10,7 +10,10 @@ import { useActiveWorkspace } from '@/hooks/workspace';
 export const useGPTQuotas = () => {
   const workspace = useActiveWorkspace();
 
-  const quotaData = React.useMemo(() => workspace?.quotas?.find((quota: any) => quota.quotaDetails.name === QuotaNames.TOKENS), [workspace?.quotas]);
+  const quotaData = React.useMemo(
+    () => workspace?.quotas?.find((quota: any) => quota.quotaDetails.name === QuotaNames.TOKENS),
+    [workspace?.quotas]
+  );
 
   return {
     quota: quotaData?.quota ?? 0,
@@ -19,7 +22,8 @@ export const useGPTQuotas = () => {
 };
 
 export const useWorkspaceAIAssist = (): boolean => {
-  return useActiveWorkspace()?.settings?.aiAssist ?? false;
+  const assistantAiFlag = useFeature(Realtime.FeatureFlag.ASSISTANT_AI);
+  return assistantAiFlag.isEnabled;
 };
 
 export const useProjectAIPlayground = (): boolean => {

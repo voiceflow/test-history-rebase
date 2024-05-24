@@ -17,19 +17,30 @@ export class OrganizationIdentityService {
   ) {}
 
   public async getAll(creatorID: number): Promise<Organization[]> {
-    const token = await this.user.getTokenByID(creatorID);
-
+    const headers = await this.user.getAuthHeadersByID(creatorID);
     const allOrganizations = (await this.identityClient.organization.findManyByUserIDThroughWorkspaces(
       {
-        members: true,
         trial: true,
       },
       {
-        headers: { Authorization: token },
+        headers,
       }
     )) as Realtime.Identity.Organization[];
 
-    return organizationAdapter.mapFromDB(allOrganizations);
+    const orgsWithMembers = await Promise.all(
+      allOrganizations.map(async (o) => {
+        const members = await this.identityClient.private.getAllOrganizationMembers(o.id, {
+          headers,
+        });
+
+        return {
+          ...o,
+          members: members as unknown as Realtime.Identity.OrganizationMember[],
+        };
+      })
+    );
+
+    return organizationAdapter.mapFromDB(orgsWithMembers);
   }
 
   public async getOrganization(creatorID: number, organizationID: string): Promise<Organization | null> {
@@ -38,10 +49,8 @@ export class OrganizationIdentityService {
   }
 
   public async patchOne(creatorID: number, organizationID: string, values: Partial<Organization>): Promise<void> {
-    const token = await this.user.getTokenByID(creatorID);
-
     await this.identityClient.organization.patchOne(organizationID, values, {
-      headers: { Authorization: token },
+      headers: await this.user.getAuthHeadersByID(creatorID),
     });
   }
 

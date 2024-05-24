@@ -10,15 +10,10 @@ export const organizationReducer = reducerWithInitialState<OrganizationState>(IN
   .case(Actions.Organization.DeleteOne, (state, { id }) => removeOne(state, id))
   .case(Actions.Organization.Replace, (state, { data }) => ({ ...state, ...normalize(data) }))
 
+  // TODO: create members sub reducer
   .case(Actions.OrganizationMember.DeleteOne, (state, { context, id }) => {
     const organization = getOne(state, context.organizationID);
-    return !organization
-      ? state
-      : patchOne(state, context.organizationID, { members: organization.members.filter((m) => m.creatorID !== id) });
-  })
-  .case(Actions.OrganizationMember.Replace, (state, { context, data }) => {
-    const organization = getOne(state, context.organizationID);
-    return organization ? patchOne(state, context.organizationID, { members: data }) : state;
+    return !organization ? state : patchOne(state, context.organizationID, { members: organization.members.filter((m) => m.creatorID !== id) });
   })
 
   // TODO: create subscription sub reducer

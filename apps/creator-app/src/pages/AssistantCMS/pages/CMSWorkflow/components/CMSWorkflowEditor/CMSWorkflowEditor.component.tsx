@@ -77,7 +77,7 @@ export const CMSWorkflowEditor: React.FC = () => {
   );
 
   const assignee = useMemo(() => {
-    if (!workflow?.assigneeID) return { id: -1, name: 'Unassigned', variant: 'base' };
+    if (!workflow?.assigneeID) return null;
 
     const member = assignees.find(({ id }) => id === workflow.assigneeID);
 

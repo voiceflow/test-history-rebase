@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1529.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1529.1...@voiceflow/creator-app@1.1529.2) (2024-05-24)
+
+### Bug Fixes
+
+* hide share button for ff enabled (COR-2124) ([#8165](https://github.com/voiceflow/creator-app/issues/8165)) ([79674f9](https://github.com/voiceflow/creator-app/commit/79674f916fb1a1f38dd21f25fc7a7f44d7fa628f))
+* make the 'Assignee' column a little bit wider (COR-2125) ([#8161](https://github.com/voiceflow/creator-app/issues/8161)) ([298f989](https://github.com/voiceflow/creator-app/commit/298f98962d9daf68054c4f958810137246929350))
+
 ## [1.1529.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1529.0...@voiceflow/creator-app@1.1529.1) (2024-05-24)
 
 ### Bug Fixes

@@ -224,6 +224,14 @@ export class WorkflowService extends CMSTabularService<WorkflowORM> {
     };
   }
 
+  async importManyWithSubResourcesFromJSON({ workflows }: WorkflowExportImportDataDTO) {
+    await this.importManyWithSubResources(
+      this.fromJSONWithSubResources({
+        workflows,
+      })
+    );
+  }
+
   /* Create */
 
   async createManyAndSync(data: WorkflowCreateData[], { userID, context }: { userID: number; context: CMSContext }) {

@@ -259,6 +259,16 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
     };
   }
 
+  async importManyWithSubResourcesFromJSON({ functions, functionPaths, functionVariables }: FunctionExportImportDataDTO) {
+    await this.importManyWithSubResources(
+      this.fromJSONWithSubResources({
+        functions,
+        functionPaths: functionPaths ?? [],
+        functionVariables: functionVariables ?? [],
+      })
+    );
+  }
+
   importJSONAndSync(data: FunctionExportImportDataDTO, { userID, context }: { userID: number; context: CMSContext }) {
     return this.postgresEM.transactional(async () => {
       const { duplicatedFunctions, ...dataToImport } = await this.filterImportData(context.environmentID, data);

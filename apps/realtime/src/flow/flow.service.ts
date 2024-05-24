@@ -156,6 +156,14 @@ export class FlowService extends CMSTabularService<FlowORM> {
     };
   }
 
+  async importManyWithSubResourcesFromJSON({ flows }: FlowExportImportDataDTO) {
+    await this.importManyWithSubResources(
+      this.fromJSONWithSubResources({
+        flows,
+      })
+    );
+  }
+
   /* Create */
 
   async createManyAndSync(data: FlowCreateData[], { userID, context }: { userID: number; context: CMSContext }) {

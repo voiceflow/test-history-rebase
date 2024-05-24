@@ -129,6 +129,14 @@ export class VariableService extends CMSTabularService<VariableORM> {
     };
   }
 
+  async importManyWithSubResourcesFromJSON({ variables }: VariableExportImportDataDTO) {
+    await this.importManyWithSubResources(
+      this.fromJSONWithSubResources({
+        variables,
+      })
+    );
+  }
+
   /* Create */
 
   async createManyAndSync(data: VariableCreateData[], { userID, context }: { userID: number; context: CMSContext }) {

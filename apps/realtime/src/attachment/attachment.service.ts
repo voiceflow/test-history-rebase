@@ -280,6 +280,15 @@ export class AttachmentService {
     };
   }
 
+  async importManyWithSubResourcesFromJSON({ attachments, cardButtons }: AttachmentExportImportDataDTO) {
+    await this.importManyWithSubResources(
+      this.fromJSONWithSubResources({
+        attachments,
+        cardButtons,
+      })
+    );
+  }
+
   /* Create */
 
   async createMany(data: Array<AnyAttachmentCreateData & { updatedByID: number | null; assistantID: string; environmentID: string }>) {

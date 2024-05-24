@@ -198,6 +198,14 @@ export class FolderService extends CMSObjectService<FolderORM> {
     };
   }
 
+  async importManyWithSubResourcesFromJSON({ folders }: FolderExportImportDataDTO) {
+    await this.importManyWithSubResources(
+      this.fromJSONWithSubResources({
+        folders,
+      })
+    );
+  }
+
   /* Create */
 
   async createManyAndSync(data: FolderCreateData[], { userID, context }: { userID: number; context: CMSContext }) {

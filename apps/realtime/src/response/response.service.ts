@@ -284,6 +284,22 @@ export class ResponseService extends CMSTabularService<ResponseORM> {
     };
   }
 
+  async importManyWithSubResourcesFromJSON({
+    responses,
+    responseVariants,
+    responseAttachments,
+    responseDiscriminators,
+  }: ResponseExportImportDataDTO) {
+    await this.importManyWithSubResources(
+      this.fromJSONWithSubResources({
+        responses,
+        responseVariants: responseVariants ?? [],
+        responseAttachments: responseAttachments ?? [],
+        responseDiscriminators: responseDiscriminators ?? [],
+      })
+    );
+  }
+
   /* Create */
 
   async createManyWithSubResources(data: ResponseCreateWithSubResourcesData[], { userID, context }: { userID: number; context: CMSContext }) {

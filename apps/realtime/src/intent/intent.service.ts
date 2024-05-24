@@ -224,6 +224,16 @@ export class IntentService extends CMSTabularService<IntentORM> {
     };
   }
 
+  async importManyWithSubResourcesFromJSON({ intents, utterances, requiredEntities }: IntentExportImportDataDTO) {
+    await this.importManyWithSubResources(
+      this.fromJSONWithSubResources({
+        intents,
+        utterances,
+        requiredEntities,
+      })
+    );
+  }
+
   /* Create */
 
   async createManyAndSync(data: IntentCreateData[], { userID, context }: { userID: number; context: CMSContext }) {

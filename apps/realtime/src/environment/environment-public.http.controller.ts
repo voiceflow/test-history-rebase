@@ -5,15 +5,15 @@ import { Permission } from '@voiceflow/sdk-auth';
 import { Authorize } from '@voiceflow/sdk-auth/nestjs';
 import type { Request } from 'express';
 
-import { GetNLUTrainingDiffResponse } from './dtos/environment-get-nlu-training-diff.response';
-import { EnvironmentService } from './environment.service';
+import { GetNLUTrainingDiffResponse } from './dtos/get-nlu-training-diff.response';
+import { EnvironmentNLUTrainingService } from './environment-nlu-training.service';
 
 @Controller('environment')
 @ApiTags('Environment')
 export class EnvironmentPublicHTTPController {
   constructor(
-    @Inject(EnvironmentService)
-    private readonly service: EnvironmentService
+    @Inject(EnvironmentNLUTrainingService)
+    private readonly nluTrainingService: EnvironmentNLUTrainingService
   ) {}
 
   @Get(':environmentID/nlu-training-diff')
@@ -24,6 +24,6 @@ export class EnvironmentPublicHTTPController {
   @ApiParam({ name: 'environmentID', type: 'string' })
   @ZodApiResponse({ schema: GetNLUTrainingDiffResponse })
   getNluTrainingDiff(@Param('environmentID') environmentID: string): Promise<GetNLUTrainingDiffResponse> {
-    return this.service.getNLUTrainingDiff(environmentID);
+    return this.nluTrainingService.getNLUTrainingDiff(environmentID);
   }
 }

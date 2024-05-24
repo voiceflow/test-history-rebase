@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1529.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1529.0...@voiceflow/creator-app@1.1529.1) (2024-05-24)
+
+### Bug Fixes
+
+* send 'null' as assignee when no one is assigned (COR-2128) ([#8164](https://github.com/voiceflow/creator-app/issues/8164)) ([446276b](https://github.com/voiceflow/creator-app/commit/446276bff1d544e58854fed077cbdd9749bddcf2))
+
 # [1.1529.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1528.2...@voiceflow/creator-app@1.1529.0) (2024-05-24)
 
 ### Features

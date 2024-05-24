@@ -10,6 +10,6 @@ export const workflowColumnsOrderAtom = atom<TableColumnOrder<WorkflowTableColum
   { type: WorkflowTableColumn.DESCRIPTION, size: '3fr' },
   { type: WorkflowTableColumn.TRIGGERS, size: '2fr' },
   { type: WorkflowTableColumn.STATUS },
-  { type: WorkflowTableColumn.ASSIGNEE },
+  { type: WorkflowTableColumn.ASSIGNEE, size: '1.5fr' },
   { type: WorkflowTableColumn.UPDATED },
 ]);

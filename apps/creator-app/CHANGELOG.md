@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1529.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1528.2...@voiceflow/creator-app@1.1529.0) (2024-05-24)
+
+### Features
+
+* integrate org members (COR-2143) ([#8160](https://github.com/voiceflow/creator-app/issues/8160)) ([ea27b1b](https://github.com/voiceflow/creator-app/commit/ea27b1b3516953427a0433fcb50380d77b362f5b))
+
 ## [1.1528.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1528.1...@voiceflow/creator-app@1.1528.2) (2024-05-23)
 
 **Note:** Version bump only for package @voiceflow/creator-app

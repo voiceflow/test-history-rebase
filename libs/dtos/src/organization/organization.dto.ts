@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 import { SubscriptionDTO } from '@/billing/subscription.dto';
 
+import type { OrganizationMember } from './organization-member.dto';
 import { OrganizationMemberDTO } from './organization-member.dto';
 
 export const OrganizationDTO = z.object({
@@ -18,4 +19,6 @@ export const OrganizationDTO = z.object({
   subscription: SubscriptionDTO.optional().nullable(),
 });
 
-export type Organization = z.infer<typeof OrganizationDTO>;
+export interface Organization extends Omit<z.infer<typeof OrganizationDTO>, 'members'> {
+  members: OrganizationMember[];
+}

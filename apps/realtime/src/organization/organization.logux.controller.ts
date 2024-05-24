@@ -17,8 +17,7 @@ export class OrganizationLoguxController {
   constructor(
     @Inject(OrganizationIdentityService) private readonly organizationService: OrganizationIdentityService,
     @Inject(BillingSubscriptionService) private readonly billingSubscriptionService: BillingSubscriptionService,
-    @Inject(OrganizationIdentityMemberService)
-    private readonly organizationMemberService: OrganizationIdentityMemberService
+    @Inject(OrganizationIdentityMemberService) private readonly organizationMemberService: OrganizationIdentityMemberService
   ) {}
 
   @Channel(Channels.organization)
@@ -37,9 +36,7 @@ export class OrganizationLoguxController {
       .then(subscriptionAdapter.fromDB)
       .catch(() => null);
 
-    return subscription
-      ? [[Actions.OrganizationSubscription.Replace({ subscription, context: ctx.params }), subscriptionMeta]]
-      : [];
+    return subscription ? [[Actions.OrganizationSubscription.Replace({ subscription, context: ctx.params }), subscriptionMeta]] : [];
   }
 
   @Action(Actions.Organization.PatchOne)
@@ -49,10 +46,7 @@ export class OrganizationLoguxController {
   }))
   @UseRequestContext()
   @Broadcast<Actions.Organization.PatchOne>(({ context }) => ({ channel: Channels.organization.build(context) }))
-  async patchOne(
-    @Payload() { id, patch }: Actions.Organization.PatchOne,
-    @AuthMeta() authMeta: AuthMetaPayload
-  ): Promise<void> {
+  async patchOne(@Payload() { id, patch }: Actions.Organization.PatchOne, @AuthMeta() authMeta: AuthMetaPayload): Promise<void> {
     await this.organizationService.patchOne(authMeta.userID, id, patch);
   }
 
@@ -63,10 +57,7 @@ export class OrganizationLoguxController {
   }))
   @UseRequestContext()
   @Broadcast<Actions.OrganizationMember.DeleteOne>(({ context }) => ({ channel: Channels.organization.build(context) }))
-  async deleteMember(
-    @Payload() { id, context }: Actions.OrganizationMember.DeleteOne,
-    @AuthMeta() authMeta: AuthMetaPayload
-  ): Promise<void> {
+  async deleteMember(@Payload() { id, context }: Actions.OrganizationMember.DeleteOne, @AuthMeta() authMeta: AuthMetaPayload): Promise<void> {
     await this.organizationMemberService.remove(authMeta.userID, context.organizationID, id);
   }
 }

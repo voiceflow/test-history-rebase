@@ -1,6 +1,5 @@
 /* eslint-disable max-params */
 import { Inject, Injectable } from '@nestjs/common';
-import { DiagramObject,VersionObject } from '@voiceflow/orm-designer';
 
 import { AttachmentService } from '@/attachment/attachment.service';
 import { DiagramService } from '@/diagram/diagram.service';
@@ -14,7 +13,12 @@ import { VariableService } from '@/variable/variable.service';
 import { VersionService } from '@/version/version.service';
 import { WorkflowService } from '@/workflow/workflow.service';
 
-import { EnvironmentCMSData } from './environment.interface';
+import {
+  EnvironmentCMSData,
+  EnvironmentCMSJsonData,
+  EnvironmentJSONWithSubResources,
+  PrototypeData,
+} from './environment.interface';
 @Injectable()
 export class EnvironmentAdapter {
   constructor(
@@ -31,15 +35,18 @@ export class EnvironmentAdapter {
     @Inject(VariableService) private readonly variable: VariableService
   ) {}
 
-  toJSONWithSubResources(data: EnvironmentCMSData & { version: VersionObject; diagrams: DiagramObject[] }) {
+  toJSONWithSubResources(data: PrototypeData): EnvironmentJSONWithSubResources {
     return {
       ...this.toJSONCMSData(data),
-      version: this.version.toJSON(data.version),
+      version: {
+        ...this.version.toJSON(data.version),
+        programResources: data.programResources,
+      },
       diagrams: this.diagram.mapToJSON(data.diagrams),
     };
   }
 
-  toJSONCMSData(data: EnvironmentCMSData) {
+  toJSONCMSData(data: EnvironmentCMSData): EnvironmentCMSJsonData {
     return {
       ...this.flow.toJSONWithSubResources(data),
       ...this.entity.toJSONWithSubResources(data),

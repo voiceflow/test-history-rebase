@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.57.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.57.0...@voiceflow/sdk-logux-designer@2.57.1) (2024-05-24)
+
+### Bug Fixes
+
+* revert integrate org members (COR-2143) ([#8172](https://github.com/voiceflow/creator-app/issues/8172)) ([6f8c05c](https://github.com/voiceflow/creator-app/commit/6f8c05c04d076e6e995f0b83ecdd9861869b1729))
+
 # [2.57.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.56.1...@voiceflow/sdk-logux-designer@2.57.0) (2024-05-24)
 
 ### Features

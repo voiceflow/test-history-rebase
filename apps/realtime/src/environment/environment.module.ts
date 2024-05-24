@@ -11,7 +11,6 @@ import { FunctionModule } from '@/function/function.module';
 import { IntentModule } from '@/intent/intent.module';
 import { RequiredEntityModule } from '@/intent/required-entity/required-entity.module';
 import { UtteranceModule } from '@/intent/utterance/utterance.module';
-// eslint-disable-next-line import/no-cycle
 import { ProjectModule } from '@/project/project.module';
 import { ProjectSerializer } from '@/project/project.serializer';
 import { ResponseModule } from '@/response/response.module';
@@ -21,12 +20,18 @@ import { VariableModule } from '@/variable/variable.module';
 import { VersionModule } from '@/version/version.module';
 import { WorkflowModule } from '@/workflow/workflow.module';
 
+import { EnvironmentCloneService } from './environment-clone.service';
+import { EnvironmentAdapter } from './environment.adapter';
 import { EnvironmentLoguxController } from './environment.logux.controller';
+import { EnvironmentRepository } from './environment.repository';
 import { EnvironmentService } from './environment.service';
-import { EnvironmentUtil } from './environment.util';
-import { EnvironmentNLUTrainingUtil } from './environment-nlu-training.util';
 import { EnvironmentPrivateHTTPController } from './environment-private.http.controller';
 import { EnvironmentPublicHTTPController } from './environment-public.http.controller';
+import { EnvironmentExportService } from './environment-export.service';
+import { EnvironmentImportService } from './environment-import.service';
+import { EnvironmentMigrationService } from './environment-migration.service';
+import { EnvironmentNLUTrainingService } from './environment-nlu-training.service';
+import { EnvironmentPrototypeService } from './environment-prototype.service';
 
 @Module({
   imports: [
@@ -49,7 +54,19 @@ import { EnvironmentPublicHTTPController } from './environment-public.http.contr
     forwardRef(() => ProjectModule),
   ],
   exports: [EnvironmentService],
-  providers: [AssistantORM, EnvironmentService, ProjectSerializer, EnvironmentUtil, EnvironmentNLUTrainingUtil],
+  providers: [
+    AssistantORM,
+    EnvironmentService,
+    ProjectSerializer,
+    EnvironmentNLUTrainingService,
+    EnvironmentPrototypeService,
+    EnvironmentMigrationService,
+    EnvironmentImportService,
+    EnvironmentExportService,
+    EnvironmentCloneService,
+    EnvironmentRepository,
+    EnvironmentAdapter,
+  ],
   controllers: [EnvironmentLoguxController, EnvironmentPublicHTTPController, EnvironmentPrivateHTTPController],
 })
 export class EnvironmentModule {}

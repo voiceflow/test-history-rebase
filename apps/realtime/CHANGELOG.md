@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.372.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.372.2...@voiceflow/realtime@1.372.3) (2024-05-26)
+
+### Bug Fixes
+
+* encode filenames with utf-8 (COR-2105) ([#8150](https://github.com/voiceflow/creator-app/issues/8150)) ([80f4ef9](https://github.com/voiceflow/creator-app/commit/80f4ef95b6115b7eef4c68e94000b1e181345fe7))
+
 ## [1.372.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.372.1...@voiceflow/realtime@1.372.2) (2024-05-24)
 
 ### Bug Fixes

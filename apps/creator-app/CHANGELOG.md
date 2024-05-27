@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1529.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1529.6...@voiceflow/creator-app@1.1529.7) (2024-05-27)
+
+### Bug Fixes
+
+* hide variable name overflow with text ellipsis (COR-2135) ([#8178](https://github.com/voiceflow/creator-app/issues/8178)) ([8b1054a](https://github.com/voiceflow/creator-app/commit/8b1054ab735304f6d4023e15b4cad3c4bb7526c9))
+
 ## [1.1529.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1529.5...@voiceflow/creator-app@1.1529.6) (2024-05-26)
 
 **Note:** Version bump only for package @voiceflow/creator-app

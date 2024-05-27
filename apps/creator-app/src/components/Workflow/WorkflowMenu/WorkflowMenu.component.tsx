@@ -64,7 +64,7 @@ export const WorkflowMenu: React.FC<IWorkflowMenu> = ({ width = 'fit-content', m
       width={width}
       testID={TEST_ID}
       listRef={setListNode}
-      minWidth={search.hasItems ? maxWidth : 0}
+      maxWidth={maxWidth}
       maxHeight={310}
       searchSection={<Search value={search.value} placeholder="Search" onValueChange={search.setValue} testID={tid(TEST_ID, 'search')} />}
       actionButtons={

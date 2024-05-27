@@ -27,17 +27,20 @@ export const DocumentPatchManyRequest = z.object({
 export type DocumentPatchManyRequest = z.infer<typeof DocumentPatchManyRequest>;
 
 export const DocumentPatchData = KnowledgeBaseDocumentDTO.partial()
-  .omit({ updatedAt: true, data: true })
+  .omit({ updatedAt: true, data: true, creatorID: true })
   .and(
     z.object({
       checksum: z.string().optional(),
-      data: z.union([
-        KBDocumentPDFDataDTO.partial(),
-        KBDocumentDocxDataDTO.partial(),
-        KBDocumentTextDataDTO.partial(),
-        KBDocumentUrlDataDTO.partial(),
-        KBDocumentTableDataDTO.partial(),
-      ]),
+      creatorID: z.number().optional(),
+      data: z
+        .union([
+          KBDocumentPDFDataDTO.partial(),
+          KBDocumentDocxDataDTO.partial(),
+          KBDocumentTextDataDTO.partial(),
+          KBDocumentUrlDataDTO.partial(),
+          KBDocumentTableDataDTO.partial(),
+        ])
+        .optional(),
     })
   );
 

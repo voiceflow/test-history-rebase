@@ -54,7 +54,7 @@ export const DiagramLayoutHeader: React.FC = () => {
             </>
           ) : (
             <>
-              <PublishButton />
+              {canEditCanvas && <PublishButton />}
 
               <StartPrototypeButton />
             </>

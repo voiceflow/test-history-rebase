@@ -146,6 +146,7 @@ export const DiagramSidebar: React.FC = () => {
                 label="Workflows"
                 onClick={() => workflowCreateModal.openVoid({ folderID: null, jumpTo: true })}
                 tooltipText="New workflow"
+                readonly={!canEditCanvas}
               />
             }
             bottomHeader={
@@ -154,6 +155,7 @@ export const DiagramSidebar: React.FC = () => {
                 onClick={() => (footerCollapsed ? resizableSectionRef.current?.expand() : flowCreateModal.openVoid({ folderID: null, jumpTo: true }))}
                 tooltipText="New component"
                 isCollapsed={footerCollapsed}
+                readonly={!canEditCanvas}
               />
             }
           />

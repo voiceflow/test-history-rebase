@@ -2,10 +2,12 @@ import { Header, TooltipWithKeys, useTooltipModifiers } from '@voiceflow/ui-next
 import React, { useContext } from 'react';
 
 import { CMSRoute } from '@/config/routes';
+import { Permission } from '@/constants/permissions';
 import { PrototypeStatus } from '@/constants/prototype';
-import { Creator, Designer, Diagram, Router } from '@/ducks';
+import { Creator, Designer, Diagram, Router, Session } from '@/ducks';
 import { useHotkey } from '@/hooks/hotkeys';
 import { useDidUpdateEffect } from '@/hooks/lifecircle.hook';
+import { usePermission } from '@/hooks/permission';
 import { useDispatch, useGetValueSelector, useSelector } from '@/hooks/store.hook';
 import { useTrackingEvents } from '@/hooks/tracking';
 import { getHotkeyLabel, Hotkey } from '@/keymap';
@@ -19,14 +21,17 @@ export const DiagramLayoutHeaderBack: React.FC<IDiagramLayoutHeaderBack> = ({ is
   const prototype = useContext(PrototypeContext);
   const [trackingEvents] = useTrackingEvents();
   const tooltipModifiers = useTooltipModifiers([{ name: 'offset', options: { offset: [0, 11] } }]);
+  const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
 
   const isWorkflow = useSelector(Diagram.active.isTopicSelector);
   const activeDiagramID = useSelector(Creator.activeDiagramIDSelector);
   const { diagramID, nodeID } = useSelector(Creator.previousDiagramHistoryStateSelector) ?? {};
+  const activeWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
 
   const getFlowByDiagramID = useGetValueSelector(Designer.Flow.selectors.oneByDiagramID);
   const getWorkflowByDiagramID = useGetValueSelector(Designer.Workflow.selectors.oneByDiagramID);
 
+  const goToWorkspace = useDispatch(Router.goToWorkspace);
   const goToCMSResource = useDispatch(Router.goToCMSResource);
   const goToCurrentCanvas = useDispatch(Router.goToCurrentCanvas);
   const goToComponentInstance = useDispatch(Router.goToDiagramHistoryPop);
@@ -36,6 +41,11 @@ export const DiagramLayoutHeaderBack: React.FC<IDiagramLayoutHeaderBack> = ({ is
   const onBackClick = () => {
     if (isPrototype) {
       goToCurrentCanvas();
+      return;
+    }
+
+    if(!canEditCanvas && activeWorkspaceID) {
+      goToWorkspace(activeWorkspaceID);
       return;
     }
 

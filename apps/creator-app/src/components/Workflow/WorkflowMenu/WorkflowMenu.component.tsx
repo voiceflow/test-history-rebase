@@ -4,8 +4,10 @@ import { tid } from '@voiceflow/style';
 import { ActionButtons, Menu, MENU_ITEM_MIN_HEIGHT, Search, VirtualizedContent } from '@voiceflow/ui-next';
 import React, { useMemo, useState } from 'react';
 
+import { Permission } from '@/constants/permissions';
 import { Designer } from '@/ducks';
 import { useWorkflowCreateModal } from '@/hooks/modal.hook';
+import { usePermission } from '@/hooks/permission';
 import { useDeferredSearch } from '@/hooks/search.hook';
 import { useSelector } from '@/hooks/store.hook';
 
@@ -16,6 +18,7 @@ export const WorkflowMenu: React.FC<IWorkflowMenu> = ({ width = 'fit-content', m
 
   const storeWorkflows = useSelector(Designer.Workflow.selectors.all);
   const workflowCreateModal = useWorkflowCreateModal();
+  const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
 
   const [listNode, setListNode] = useState<HTMLDivElement | null>(null);
   const [isCreating, setIsCreating] = useState(false);
@@ -68,7 +71,7 @@ export const WorkflowMenu: React.FC<IWorkflowMenu> = ({ width = 'fit-content', m
       maxHeight={310}
       searchSection={<Search value={search.value} placeholder="Search" onValueChange={search.setValue} testID={tid(TEST_ID, 'search')} />}
       actionButtons={
-        search.hasItems && (
+        search.hasItems && canEditCanvas && (
           <ActionButtons
             firstButton={
               <ActionButtons.Button
@@ -103,7 +106,7 @@ export const WorkflowMenu: React.FC<IWorkflowMenu> = ({ width = 'fit-content', m
           })}
         </VirtualizedContent>
       ) : (
-        <Menu.CreateItem label={search.value} onClick={onCreate} disabled={isCreating} testID={tid(TEST_ID, 'item', 'add')} />
+        canEditCanvas && <Menu.CreateItem label={search.value} onClick={onCreate} disabled={isCreating} testID={tid(TEST_ID, 'item', 'add')} />
       )}
     </Menu>
   );

@@ -3,6 +3,45 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.372.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.372.2...@voiceflow/realtime@1.372.3) (2024-05-26)
+
+### Bug Fixes
+
+* encode filenames with utf-8 (COR-2105) ([#8150](https://github.com/voiceflow/creator-app/issues/8150)) ([80f4ef9](https://github.com/voiceflow/creator-app/commit/80f4ef95b6115b7eef4c68e94000b1e181345fe7))
+
+## [1.372.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.372.1...@voiceflow/realtime@1.372.2) (2024-05-24)
+
+### Bug Fixes
+
+* revert integrate org members (COR-2143) ([#8172](https://github.com/voiceflow/creator-app/issues/8172)) ([6f8c05c](https://github.com/voiceflow/creator-app/commit/6f8c05c04d076e6e995f0b83ecdd9861869b1729))
+
+## [1.372.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.372.0...@voiceflow/realtime@1.372.1) (2024-05-24)
+
+**Note:** Version bump only for package @voiceflow/realtime
+
+# [1.372.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.371.1...@voiceflow/realtime@1.372.0) (2024-05-24)
+
+### Features
+
+* integrate org members (COR-2143) ([#8160](https://github.com/voiceflow/creator-app/issues/8160)) ([ea27b1b](https://github.com/voiceflow/creator-app/commit/ea27b1b3516953427a0433fcb50380d77b362f5b))
+
+## [1.371.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.371.0...@voiceflow/realtime@1.371.1) (2024-05-23)
+
+**Note:** Version bump only for package @voiceflow/realtime
+
+# [1.371.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.370.0...@voiceflow/realtime@1.371.0) (2024-05-23)
+
+### Features
+
+* do not prorate going to pro (COR-2148) ([#8170](https://github.com/voiceflow/creator-app/issues/8170)) ([95f2eb5](https://github.com/voiceflow/creator-app/commit/95f2eb55874b5ce2282e182f2df84206844bb152))
+
+# [1.370.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.369.0...@voiceflow/realtime@1.370.0) (2024-05-23)
+
+### Features
+
+* add gpt-4o to AI model dropdown and settings (ML-892) ([#8147](https://github.com/voiceflow/creator-app/issues/8147)) ([cb18db7](https://github.com/voiceflow/creator-app/commit/cb18db7e3593c9032dedd33553ba6e53d2f5d4f1))
+* workflow fixes 5 (COR-2110) ([#8154](https://github.com/voiceflow/creator-app/issues/8154)) ([936b23e](https://github.com/voiceflow/creator-app/commit/936b23e90aafd6ffe6180469822a5bc64b86f30f))
+
 # [1.369.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.368.4...@voiceflow/realtime@1.369.0) (2024-05-23)
 
 ### Features

@@ -5,6 +5,7 @@ export const KBSettingsGptModel = {
   GPT_3_5_turbo: 'gpt-3.5-turbo',
   GPT_4: 'gpt-4',
   GPT_4_turbo: 'gpt-4-turbo',
+  GPT_4O: 'gpt-4o',
   CLAUDE_V1: 'claude-v1',
   CLAUDE_V2: 'claude-v2',
   CLAUDE_INSTANT_V1: 'claude-instant-v1',

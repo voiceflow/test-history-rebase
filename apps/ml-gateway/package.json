@@ -1,6 +1,6 @@
 {
   "name": "@voiceflow/ml-gateway",
-  "version": "1.95.4",
+  "version": "1.97.1",
   "private": true,
   "license": "UNLICENSED",
   "type": "module",
@@ -46,7 +46,7 @@
     "@nestjs/swagger": "6.3.0",
     "@nestjs/terminus": "9.2.2",
     "@nestjs/throttler": "5.0.1",
-    "@voiceflow/common": "8.2.8",
+    "@voiceflow/common": "8.3.0",
     "@voiceflow/dtos": "workspace:*",
     "@voiceflow/exception": "1.5.3",
     "@voiceflow/fetch": "1.5.2",

@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.57.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.57.0...@voiceflow/sdk-logux-designer@2.57.1) (2024-05-24)
+
+### Bug Fixes
+
+* revert integrate org members (COR-2143) ([#8172](https://github.com/voiceflow/creator-app/issues/8172)) ([6f8c05c](https://github.com/voiceflow/creator-app/commit/6f8c05c04d076e6e995f0b83ecdd9861869b1729))
+
+# [2.57.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.56.1...@voiceflow/sdk-logux-designer@2.57.0) (2024-05-24)
+
+### Features
+
+* integrate org members (COR-2143) ([#8160](https://github.com/voiceflow/creator-app/issues/8160)) ([ea27b1b](https://github.com/voiceflow/creator-app/commit/ea27b1b3516953427a0433fcb50380d77b362f5b))
+
+## [2.56.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.56.0...@voiceflow/sdk-logux-designer@2.56.1) (2024-05-23)
+
+**Note:** Version bump only for package @voiceflow/sdk-logux-designer
+
+# [2.56.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.55.10...@voiceflow/sdk-logux-designer@2.56.0) (2024-05-23)
+
+### Features
+
+* add gpt-4o to AI model dropdown and settings (ML-892) ([#8147](https://github.com/voiceflow/creator-app/issues/8147)) ([cb18db7](https://github.com/voiceflow/creator-app/commit/cb18db7e3593c9032dedd33553ba6e53d2f5d4f1))
+
 ## [2.55.10](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.55.9...@voiceflow/sdk-logux-designer@2.55.10) (2024-05-22)
 
 **Note:** Version bump only for package @voiceflow/sdk-logux-designer

@@ -1,6 +1,6 @@
 {
   "name": "@voiceflow/socket-utils",
-  "version": "1.42.2",
+  "version": "1.43.0",
   "homepage": "https://github.com/voiceflow/creator-app#readme",
   "bugs": {
     "url": "https://github.com/voiceflow/creator-app/issues"
@@ -37,7 +37,7 @@
     "@logux/actions": "0.3.1",
     "@logux/core": "0.8.5",
     "@logux/server": "0.12.5",
-    "@voiceflow/common": "8.2.8",
+    "@voiceflow/common": "8.3.0",
     "@voiceflow/logger": "2.0.0",
     "bidirectional-adapter": "1.2.1",
     "cbor": "8.1.0",

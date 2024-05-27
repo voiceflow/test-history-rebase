@@ -103,6 +103,10 @@ export class KnowledgeBaseDocumentInternalPublicHTTPController {
       limits: {
         fileSize: 1024 * 1024 * 10, // 10 MB limit
       },
+      fileFilter: (_, file, callback) => {
+        file.originalname = Buffer.from(file.originalname, 'latin1').toString('utf8');
+        callback(null, true);
+      },
     })
   )
   async createOneFile(

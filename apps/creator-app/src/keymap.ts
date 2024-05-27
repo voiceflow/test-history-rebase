@@ -151,10 +151,7 @@ const HOTKEY_MAPPING: Record<Hotkey, string | string[]> = {
   [Hotkey.TOGGLE_CHATBOT]: [`${SpecialKey.CTRL}+/`, `${SpecialKey.META}+/`],
   [Hotkey.BACK_TO_CMS]: [`${SpecialKey.CTRL}+[`, `${SpecialKey.META}+[`],
   [Hotkey.BACK_TO_DESIGNER]: [`${SpecialKey.CTRL}+]`, `${SpecialKey.META}+]`],
-  [Hotkey.BACK_TO_KNOWLEDGE_BASE]: [
-    `${SpecialKey.CTRL}+${SpecialKey.SHIFT}+k`,
-    `${SpecialKey.META}+${SpecialKey.SHIFT}+k`,
-  ],
+  [Hotkey.BACK_TO_KNOWLEDGE_BASE]: [`${SpecialKey.SHIFT}+k`],
 };
 
 const SPECIAL_KEY_LABEL: Record<SpecialKey, string> = {

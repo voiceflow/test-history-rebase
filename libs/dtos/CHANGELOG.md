@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.78.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.78.0...@voiceflow/dtos@1.78.1) (2024-05-24)
+
+### Bug Fixes
+
+* revert integrate org members (COR-2143) ([#8172](https://github.com/voiceflow/creator-app/issues/8172)) ([6f8c05c](https://github.com/voiceflow/creator-app/commit/6f8c05c04d076e6e995f0b83ecdd9861869b1729))
+
+# [1.78.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.77.0...@voiceflow/dtos@1.78.0) (2024-05-24)
+
+### Features
+
+* integrate org members (COR-2143) ([#8160](https://github.com/voiceflow/creator-app/issues/8160)) ([ea27b1b](https://github.com/voiceflow/creator-app/commit/ea27b1b3516953427a0433fcb50380d77b362f5b))
+
+# [1.77.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.76.3...@voiceflow/dtos@1.77.0) (2024-05-23)
+
+### Features
+
+* add gpt-4o to AI model dropdown and settings (ML-892) ([#8147](https://github.com/voiceflow/creator-app/issues/8147)) ([cb18db7](https://github.com/voiceflow/creator-app/commit/cb18db7e3593c9032dedd33553ba6e53d2f5d4f1))
+
 ## [1.76.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.76.2...@voiceflow/dtos@1.76.3) (2024-05-22)
 
 ### Bug Fixes

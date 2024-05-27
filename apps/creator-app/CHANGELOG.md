@@ -3,6 +3,60 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1529.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1529.5...@voiceflow/creator-app@1.1529.6) (2024-05-26)
+
+**Note:** Version bump only for package @voiceflow/creator-app
+
+## [1.1529.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1529.4...@voiceflow/creator-app@1.1529.5) (2024-05-24)
+
+### Bug Fixes
+
+* revert integrate org members (COR-2143) ([#8172](https://github.com/voiceflow/creator-app/issues/8172)) ([6f8c05c](https://github.com/voiceflow/creator-app/commit/6f8c05c04d076e6e995f0b83ecdd9861869b1729))
+
+## [1.1529.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1529.3...@voiceflow/creator-app@1.1529.4) (2024-05-24)
+
+### Bug Fixes
+
+* check assistant_ai FF in hook (COR-2136) ([#8162](https://github.com/voiceflow/creator-app/issues/8162)) ([aeffe04](https://github.com/voiceflow/creator-app/commit/aeffe045762292a8b7fada3ad7242d791100dd07))
+
+## [1.1529.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1529.2...@voiceflow/creator-app@1.1529.3) (2024-05-24)
+
+**Note:** Version bump only for package @voiceflow/creator-app
+
+## [1.1529.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1529.1...@voiceflow/creator-app@1.1529.2) (2024-05-24)
+
+### Bug Fixes
+
+* hide share button for ff enabled (COR-2124) ([#8165](https://github.com/voiceflow/creator-app/issues/8165)) ([79674f9](https://github.com/voiceflow/creator-app/commit/79674f916fb1a1f38dd21f25fc7a7f44d7fa628f))
+* make the 'Assignee' column a little bit wider (COR-2125) ([#8161](https://github.com/voiceflow/creator-app/issues/8161)) ([298f989](https://github.com/voiceflow/creator-app/commit/298f98962d9daf68054c4f958810137246929350))
+
+## [1.1529.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1529.0...@voiceflow/creator-app@1.1529.1) (2024-05-24)
+
+### Bug Fixes
+
+* send 'null' as assignee when no one is assigned (COR-2128) ([#8164](https://github.com/voiceflow/creator-app/issues/8164)) ([446276b](https://github.com/voiceflow/creator-app/commit/446276bff1d544e58854fed077cbdd9749bddcf2))
+
+# [1.1529.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1528.2...@voiceflow/creator-app@1.1529.0) (2024-05-24)
+
+### Features
+
+* integrate org members (COR-2143) ([#8160](https://github.com/voiceflow/creator-app/issues/8160)) ([ea27b1b](https://github.com/voiceflow/creator-app/commit/ea27b1b3516953427a0433fcb50380d77b362f5b))
+
+## [1.1528.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1528.1...@voiceflow/creator-app@1.1528.2) (2024-05-23)
+
+**Note:** Version bump only for package @voiceflow/creator-app
+
+## [1.1528.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1528.0...@voiceflow/creator-app@1.1528.1) (2024-05-23)
+
+**Note:** Version bump only for package @voiceflow/creator-app
+
+# [1.1528.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1527.3...@voiceflow/creator-app@1.1528.0) (2024-05-23)
+
+### Features
+
+* add gpt-4o to AI model dropdown and settings (ML-892) ([#8147](https://github.com/voiceflow/creator-app/issues/8147)) ([cb18db7](https://github.com/voiceflow/creator-app/commit/cb18db7e3593c9032dedd33553ba6e53d2f5d4f1))
+* workflow fixes 5 (COR-2110) ([#8154](https://github.com/voiceflow/creator-app/issues/8154)) ([936b23e](https://github.com/voiceflow/creator-app/commit/936b23e90aafd6ffe6180469822a5bc64b86f30f))
+
 ## [1.1527.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1527.2...@voiceflow/creator-app@1.1527.3) (2024-05-23)
 
 ### Bug Fixes

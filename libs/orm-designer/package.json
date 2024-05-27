@@ -1,6 +1,6 @@
 {
   "name": "@voiceflow/orm-designer",
-  "version": "2.61.5",
+  "version": "2.62.2",
   "exports": {
     ".": {
       "types": "./build/main.d.ts",
@@ -81,7 +81,7 @@
     "@mikro-orm/mongodb": "5.9.4",
     "@mikro-orm/postgresql": "5.9.4",
     "@mikro-orm/reflection": "5.9.4",
-    "@voiceflow/common": "8.2.8",
+    "@voiceflow/common": "8.3.0",
     "@voiceflow/dtos": "workspace:*",
     "bidirectional-adapter": "1.2.1",
     "zod": "3.22.4"

@@ -7,7 +7,11 @@ import { useDispatch } from '@/hooks';
 import { useGetValueSelector } from '@/hooks/store.hook';
 
 import { CMSEmpty } from '../../../../components/CMSEmpty/CMSEmpty.component';
-import { useCMSRowItemClick, useCMSRowItemContextMenu, useCMSRowItemNavigate } from '../../../../hooks/cms-row-item.hook';
+import {
+  useCMSRowItemClick,
+  useCMSRowItemContextMenu,
+  useCMSRowItemNavigate,
+} from '../../../../hooks/cms-row-item.hook';
 import { useFlowCMSManager, useOnFlowCreate } from '../../CMSFlow.hook';
 import { flowColumnsOrderAtom } from './CMSFlowTable.atom';
 import { CMS_FLOW_TABLE_CONFIG } from './CMSFlowTable.config';
@@ -26,6 +30,7 @@ export const CMSFlowTable: React.FC = () => {
 
   const rowContextMenu = useCMSRowItemContextMenu({
     onDuplicate: duplicateOne,
+    canDuplicate: (_, { isFolder }) => !isFolder,
     nameColumnType: FlowTableColumn.NAME,
   });
 

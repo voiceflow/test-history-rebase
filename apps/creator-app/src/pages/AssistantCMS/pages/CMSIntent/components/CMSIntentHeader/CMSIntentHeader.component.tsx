@@ -19,7 +19,6 @@ export const CMSIntentHeader: React.FC = () => {
 
   return (
     <CMSHeader
-      share={intentClassification.isEnabled ? null : undefined}
       searchPlaceholder="Search intents"
       rightActions={
         <>

@@ -1,11 +1,12 @@
 import { Box, UploadArea } from '@voiceflow/ui-next';
+import pluralize from 'pluralize';
 import React, { useState } from 'react';
 
 import { Modal } from '@/components/Modal';
 
 import modalsManager from '../../../manager';
 import { ACCEPT_TYPES } from './FunctionImportFile.constant';
-import { submitButtonStyles, uploadAreaStyles } from './FunctionImportFile.css';
+import { uploadAreaStyles } from './FunctionImportFile.css';
 
 interface ImportFileProps {
   onSave: (files: File[]) => void;
@@ -92,7 +93,7 @@ export const FunctionImportFile = modalsManager.create<ImportFileProps>(
           <Box direction="column" mt={20} mb={24} mx={24} gap={2}>
             <UploadArea
               files={files.length ? files : undefined}
-              label="Drop file here or"
+              label="Drop .json file(s) here or"
               error={!!error}
               variant="secondary"
               caption={error ? undefined : caption}
@@ -110,11 +111,10 @@ export const FunctionImportFile = modalsManager.create<ImportFileProps>(
             <Modal.Footer.Button label="Cancel" variant="secondary" onClick={api.onClose} />
 
             <Modal.Footer.Button
-              label="Import"
+              label={files.length ? `Import ${pluralize('function', files.length, true)}` : 'Import'}
               onClick={onSubmit}
               disabled={closePrevented}
               isLoading={closePrevented}
-              className={submitButtonStyles}
             />
           </Modal.Footer>
         </Modal.Container>

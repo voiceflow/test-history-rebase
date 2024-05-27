@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.372.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.372.3...@voiceflow/realtime@1.372.4) (2024-05-27)
+
+### Bug Fixes
+
+* import kb settings model fix (COR-2150) ([#8177](https://github.com/voiceflow/creator-app/issues/8177)) ([61e4cb2](https://github.com/voiceflow/creator-app/commit/61e4cb2d2334c7c1a84a541ec6c9e1291a703861))
+
 ## [1.372.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.372.2...@voiceflow/realtime@1.372.3) (2024-05-26)
 
 ### Bug Fixes

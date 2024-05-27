@@ -1,6 +1,6 @@
 {
   "name": "@voiceflow/dtos",
-  "version": "1.78.1",
+  "version": "1.78.2",
   "exports": {
     ".": {
       "types": "./build/cjs/main.d.ts",

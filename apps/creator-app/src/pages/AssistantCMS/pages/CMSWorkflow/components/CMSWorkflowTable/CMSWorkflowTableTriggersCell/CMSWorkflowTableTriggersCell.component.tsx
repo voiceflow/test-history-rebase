@@ -50,7 +50,7 @@ export const CMSWorkflowTableTriggersCell: React.FC<ICMSWorkflowTableTriggersCel
       )}
     >
       {() => (
-        <Menu onClick={(event) => event.stopPropagation()}>
+        <Menu minWidth={'auto'} onClick={(event) => event.stopPropagation()}>
           {triggers.map(({ label, nodeID }, index) => (
             <Menu.Item key={index} label={label} onClick={() => goToDiagram(nodeID)} />
           ))}

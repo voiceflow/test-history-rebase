@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1529.10](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1529.9...@voiceflow/creator-app@1.1529.10) (2024-05-27)
+
+### Bug Fixes
+
+* functions import modal ui (COR-2024) ([#8176](https://github.com/voiceflow/creator-app/issues/8176)) ([f40c0c3](https://github.com/voiceflow/creator-app/commit/f40c0c33a18a55561edce5fc6e23899077e506b2))
+* viewer workflow canvas ux (COR-2140) ([#8175](https://github.com/voiceflow/creator-app/issues/8175)) ([7a20a28](https://github.com/voiceflow/creator-app/commit/7a20a280041627b71d5e9b092bd7ba8abef9526b))
+
 ## [1.1529.9](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1529.8...@voiceflow/creator-app@1.1529.9) (2024-05-27)
 
 ### Bug Fixes

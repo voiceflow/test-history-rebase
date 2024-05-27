@@ -149,7 +149,7 @@ const HOTKEY_MAPPING: Record<Hotkey, string | string[]> = {
   [Hotkey.GPT_GEN_REJECT_ITEM]: [SpecialKey.DELETE, SpecialKey.BACKSPACE],
 
   [Hotkey.TOGGLE_CHATBOT]: [`${SpecialKey.CTRL}+/`, `${SpecialKey.META}+/`],
-  [Hotkey.BACK_TO_CMS]: [`${SpecialKey.CTRL}+[`, `${SpecialKey.META}+[`],
+  [Hotkey.BACK_TO_CMS]: [`${SpecialKey.CTRL}+[`, `${SpecialKey.META}+[`, SpecialKey.ESC],
   [Hotkey.BACK_TO_DESIGNER]: [`${SpecialKey.CTRL}+]`, `${SpecialKey.META}+]`],
   [Hotkey.BACK_TO_KNOWLEDGE_BASE]: [`${SpecialKey.SHIFT}+k`],
 };

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1529.8](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1529.7...@voiceflow/creator-app@1.1529.8) (2024-05-27)
+
+### Bug Fixes
+
+* use 'esc' to go back from canvas view (COR-2133) ([#8179](https://github.com/voiceflow/creator-app/issues/8179)) ([43c7017](https://github.com/voiceflow/creator-app/commit/43c7017cc9780846069c489940d329f535ea7822))
+
 ## [1.1529.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1529.6...@voiceflow/creator-app@1.1529.7) (2024-05-27)
 
 ### Bug Fixes

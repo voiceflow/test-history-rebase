@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.78.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.78.1...@voiceflow/dtos@1.78.2) (2024-05-27)
+
+### Bug Fixes
+
+* import kb settings model fix (COR-2150) ([#8177](https://github.com/voiceflow/creator-app/issues/8177)) ([61e4cb2](https://github.com/voiceflow/creator-app/commit/61e4cb2d2334c7c1a84a541ec6c9e1291a703861))
+
 ## [1.78.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.78.0...@voiceflow/dtos@1.78.1) (2024-05-24)
 
 ### Bug Fixes

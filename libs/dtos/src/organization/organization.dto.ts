@@ -7,7 +7,7 @@ import { OrganizationMemberDTO } from './organization-member.dto';
 export const OrganizationDTO = z.object({
   id: z.string(),
   name: z.string(),
-  image: z.string(),
+  image: z.string().nullable(),
   members: z.array(OrganizationMemberDTO),
   trial: z
     .object({

@@ -1,5 +1,4 @@
 import { Inject, Injectable } from '@nestjs/common';
-import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { IdentityClient } from '@voiceflow/sdk-identity';
 
 import { UserService } from '@/user/user.service';
@@ -17,9 +16,7 @@ export class OrganizationIdentityMemberService {
   public async getAll(organizationID: string) {
     return this.identityClient.private
       .getAllOrganizationMembers(organizationID)
-      .then((members) =>
-        organizationMemberAdapter.mapFromDB(members as unknown as Realtime.Identity.OrganizationMember[])
-      );
+      .then(organizationMemberAdapter.mapFromDB);
   }
 
   public async add(organizationID: string, memberID: number): Promise<void> {

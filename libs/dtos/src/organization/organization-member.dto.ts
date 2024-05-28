@@ -11,8 +11,8 @@ export const OrganizationMemberDTO = z.object({
 
   workspaceID: z.string().optional().nullable(),
   assistantID: z.string().optional().nullable(),
-  organizationID: z.string().optional(),
-  scope: z.nativeEnum(RoleScope).optional(),
+  organizationID: z.string(),
+  scope: z.nativeEnum(RoleScope),
 });
 
 export type OrganizationMember = z.infer<typeof OrganizationMemberDTO>;

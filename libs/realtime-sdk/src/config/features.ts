@@ -80,4 +80,8 @@ export enum FeatureFlag {
 
   // Export
   EXPORT_SPECIFIC_OBJECT = 'export_specific_object',
+
+  NEW_ORGANIZATION_MEMBERS = 'new_organization_members',
+  NEW_WORKSPACE_MEMBERS = 'new_workspace_members',
+  NEW_PROJECT_MEMBERS = 'new_project_members',
 }

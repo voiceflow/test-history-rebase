@@ -7,9 +7,9 @@ export interface OrganizationMember {
   user: User;
   membership: {
     role: UserRole;
+    scope: RoleScopeType;
     organizationID: string;
     workspaceID?: string | null;
     projectID?: string | null;
-    scope?: RoleScopeType;
   };
 }

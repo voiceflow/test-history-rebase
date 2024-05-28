@@ -27,7 +27,7 @@ export const organizationMemberAdapter = createMultiAdapter<Identity.Organizatio
     email: user.email,
     image: user.image,
     creatorID: user.id,
-    role: membership.role as UserRole,
+    role: membership.role,
     scope: membership.scope,
     organizationID: membership.organizationID,
     workspaceID: membership.workspaceID,

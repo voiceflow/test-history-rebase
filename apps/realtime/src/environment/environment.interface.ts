@@ -149,7 +149,7 @@ export interface EnvironmentCMSJsonData {
   requiredEntities: RequiredEntityJSON[];
   responseVariants: AnyResponseVariantJSON[];
   functionVariables: FunctionVariableJSON[];
-  responseAttachments: AnyResponseAttachmentJSON[];
+  responseAttachments: AnyResponseAttachmentJSON & { type: any }[];
   responseDiscriminators: ResponseDiscriminatorJSON[];
 }
 

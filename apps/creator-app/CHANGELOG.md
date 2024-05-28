@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1530.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1530.1...@voiceflow/creator-app@1.1530.2) (2024-05-28)
+
+### Bug Fixes
+
+* handle channel loading errors (COR-1986) ([#8181](https://github.com/voiceflow/creator-app/issues/8181)) ([acfab78](https://github.com/voiceflow/creator-app/commit/acfab781411115e6c8deb52d480beb52fbe155e4))
+
 ## [1.1530.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1530.0...@voiceflow/creator-app@1.1530.1) (2024-05-27)
 
 **Note:** Version bump only for package @voiceflow/creator-app

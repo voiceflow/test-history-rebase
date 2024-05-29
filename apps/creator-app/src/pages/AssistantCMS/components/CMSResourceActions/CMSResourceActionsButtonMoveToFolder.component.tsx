@@ -38,14 +38,14 @@ export const CMSResourceActionsButtonMoveToFolder: React.FC = () => {
     () => Array.from(selectedIDs).filter((id) => getOneByID({ id })),
     [getOneByID, selectedIDs]
   );
-  const menuExcludeFolderIDs = useMemo(
-    () =>
-      (folderID ? [...folderIDs, folderID] : folderIDs).flatMap((id) => [
-        id,
-        ...getAllDeeplyNestedIDsByScopeAndParentID({ parentID: id, folderScope }),
-      ]),
-    [folderID, folderIDs, folderScope, getAllDeeplyNestedIDsByScopeAndParentID]
-  );
+  const menuExcludeFolderIDs = useMemo(() => {
+    const foldersWithChildrenIDs = folderIDs.flatMap((id) => [
+      id,
+      ...getAllDeeplyNestedIDsByScopeAndParentID({ parentID: id, folderScope }),
+    ]);
+
+    return folderID ? [folderID, ...foldersWithChildrenIDs] : foldersWithChildrenIDs;
+  }, [folderID, folderIDs, selectedIDs, folderScope, getAllDeeplyNestedIDsByScopeAndParentID]);
 
   const onSelect = async (folder: Folder | null) => {
     const resourceIDs = Utils.array.withoutValues(Array.from(selectedIDs), folderIDs);

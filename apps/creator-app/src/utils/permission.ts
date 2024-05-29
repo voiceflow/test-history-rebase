@@ -1,5 +1,5 @@
 import { Nullish } from '@voiceflow/common';
-import { UserRole } from '@voiceflow/internal';
+import { UserRole } from '@voiceflow/dtos';
 
 import {
   Permission,

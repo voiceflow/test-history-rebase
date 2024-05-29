@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { UserRole } from '@voiceflow/internal';
+import { UserRole } from '@voiceflow/dtos';
 import { Box, Button, Members, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
@@ -65,7 +65,12 @@ const InviteByEmail: React.FC<InviteByEmailProps> = ({ buttonLabel = 'Add', onAd
           )}
         </SelectInputGroup>
 
-        <Button id={Identifier.COLLAB_SEND_INVITE_BUTTON} onClick={onSendInviteClick} disabled={!!error || !emails} variant={Button.Variant.PRIMARY}>
+        <Button
+          id={Identifier.COLLAB_SEND_INVITE_BUTTON}
+          onClick={onSendInviteClick}
+          disabled={!!error || !emails}
+          variant={Button.Variant.PRIMARY}
+        >
           {buttonLabel}
         </Button>
       </Box.Flex>

@@ -4,7 +4,7 @@ import Box from '@ui/components/Box';
 import { PROFILE_COLORS } from '@ui/styles/colors';
 import { getStringHashNumber } from '@ui/utils/string';
 import { Nullable, Utils } from '@voiceflow/common';
-import { UserRole } from '@voiceflow/internal';
+import { UserRole } from '@voiceflow/dtos';
 import React from 'react';
 
 import RoleSelect from '../RoleSelect';

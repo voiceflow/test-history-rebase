@@ -1,7 +1,7 @@
 import Box from '@ui/components/Box';
 import SvgIcon from '@ui/components/SvgIcon';
 import TippyTooltip from '@ui/components/TippyTooltip';
-import { UserRole } from '@voiceflow/internal';
+import { UserRole } from '@voiceflow/dtos';
 import pluralize from 'pluralize';
 import React from 'react';
 

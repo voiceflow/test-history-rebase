@@ -1,5 +1,6 @@
 import { Utils } from '@voiceflow/common';
-import { BillingPeriod, UserRole } from '@voiceflow/internal';
+import { UserRole } from '@voiceflow/dtos';
+import { BillingPeriod } from '@voiceflow/internal';
 import { Box, Button, ButtonVariant, Members, Modal, Spinner, System, Text, toast, withProvider } from '@voiceflow/ui';
 import pluralize from 'pluralize';
 import React from 'react';

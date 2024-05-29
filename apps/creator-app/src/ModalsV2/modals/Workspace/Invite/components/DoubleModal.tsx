@@ -1,4 +1,4 @@
-import { UserRole } from '@voiceflow/internal';
+import { UserRole } from '@voiceflow/dtos';
 import { Box, Button, Input, Members, Modal, OverflowText, System, toast } from '@voiceflow/ui';
 import React from 'react';
 

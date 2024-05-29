@@ -1,4 +1,4 @@
-import { UserRole } from '@voiceflow/internal';
+import { UserRole } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Members, OverflowTippyTooltip } from '@voiceflow/ui';
 import React from 'react';

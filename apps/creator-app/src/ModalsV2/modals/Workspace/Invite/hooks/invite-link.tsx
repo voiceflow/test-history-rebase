@@ -1,5 +1,5 @@
 import { datadogRum } from '@datadog/browser-rum';
-import { UserRole } from '@voiceflow/internal';
+import { UserRole } from '@voiceflow/dtos';
 import { Box, toast, useSetup } from '@voiceflow/ui';
 import React from 'react';
 

@@ -1,4 +1,4 @@
-import { UserRole } from '@voiceflow/internal';
+import { UserRole } from '@voiceflow/dtos';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 

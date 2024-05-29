@@ -1,5 +1,5 @@
 import { createDividerMenuItemOption, UIOnlyMenuItemOption } from '@ui/components/NestedMenu';
-import { UserRole } from '@voiceflow/internal';
+import { UserRole } from '@voiceflow/dtos';
 import React from 'react';
 
 import * as S from './styles';
@@ -11,10 +11,10 @@ interface Option {
 
 export const ROLE_LABEL_MAP: Record<UserRole, string> = {
   [UserRole.ADMIN]: 'Admin',
-  [UserRole.OWNER]: 'Owner',
   [UserRole.EDITOR]: 'Editor',
   [UserRole.VIEWER]: 'Viewer',
   [UserRole.BILLING]: 'Billing',
+  [UserRole.GUEST]: 'Guest',
 };
 
 interface RoleSelectProps<T extends UserRole> {

@@ -1,6 +1,6 @@
 import { BaseProject } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import { UserRole } from '@voiceflow/internal';
+import { UserRole } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast, useAsyncEffect } from '@voiceflow/ui';
 import * as Normal from 'normal-store';
@@ -26,7 +26,9 @@ export const useWorkspacesAndMembers = () => {
   const [loading, setLoading] = React.useState(true);
   const [workspaces, setWorkspaces] = React.useState<Realtime.Identity.Workspace[]>([]);
   const [activeWorkspaceID, setActiveWorkspaceID] = React.useState(sessionActiveWorkspaceID);
-  const [workspaceMembersMap, setWorkspaceMembersMap] = React.useState<Record<string, Normal.Normalized<Realtime.WorkspaceMember>>>({});
+  const [workspaceMembersMap, setWorkspaceMembersMap] = React.useState<
+    Record<string, Normal.Normalized<Realtime.WorkspaceMember>>
+  >({});
   const [projectEditorMembersMap, setProjectEditorMembersMap] = React.useState<Record<number, string[]>>({});
 
   const onRemoveMember = async (member: Realtime.WorkspaceMember) => {
@@ -53,7 +55,10 @@ export const useWorkspacesAndMembers = () => {
 
       if (!workspaceMembers) return prev;
 
-      return { ...prev, [activeWorkspaceID ?? '']: Normal.patchOne(workspaceMembers, String(member.creator_id), { role }) };
+      return {
+        ...prev,
+        [activeWorkspaceID ?? '']: Normal.patchOne(workspaceMembers, String(member.creator_id), { role }),
+      };
     });
   };
 
@@ -75,7 +80,9 @@ export const useWorkspacesAndMembers = () => {
       Normal.denormalize(workspaceMembersMap[activeWorkspaceID ?? ''] ?? Normal.createEmpty()).map((member) => ({
         ...member,
         projects: projectEditorMembersMap[member.creator_id] ?? [],
-        isOrganizationAdmin: member.creator_id ? isAdminUserRole(getOrganizationMemberByID({ creatorID: member.creator_id })?.role) : false,
+        isOrganizationAdmin: member.creator_id
+          ? isAdminUserRole(getOrganizationMemberByID({ creatorID: member.creator_id })?.role)
+          : false,
       })),
     [activeWorkspaceID, workspaceMembersMap, projectEditorMembersMap]
   );
@@ -87,7 +94,9 @@ export const useWorkspacesAndMembers = () => {
 
     try {
       // TODO: [organization refactor] fix types
-      const workspaces = (await designerClient.organization.getOrganizationWorkspaces(organizationID)) as unknown as Realtime.Identity.Workspace[];
+      const workspaces = (await designerClient.organization.getOrganizationWorkspaces(
+        organizationID
+      )) as unknown as Realtime.Identity.Workspace[];
       const hasActiveWorkspace = workspaces.some(({ id }) => id === sessionActiveWorkspaceID);
 
       setWorkspaces(workspaces);
@@ -96,7 +105,9 @@ export const useWorkspacesAndMembers = () => {
         Object.fromEntries(
           workspaces.map(({ id, members }) => [
             id,
-            Normal.normalize(Realtime.Adapters.Identity.workspaceMember.mapFromDB(members ?? []), (member) => String(member.creator_id)),
+            Normal.normalize(Realtime.Adapters.Identity.workspaceMember.mapFromDB(members ?? []), (member) =>
+              String(member.creator_id)
+            ),
           ])
         )
       );

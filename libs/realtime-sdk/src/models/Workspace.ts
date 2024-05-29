@@ -1,5 +1,6 @@
 import { WorkspaceActivationState } from '@realtime-sdk/constants';
-import { PlanType, UserRole } from '@voiceflow/internal';
+import { UserRole } from '@voiceflow/dtos';
+import { PlanType } from '@voiceflow/internal';
 import { Normalized } from 'normal-store';
 
 import * as Billing from './Billing';
@@ -20,7 +21,7 @@ export interface PendingWorkspaceMember extends BaseWorkspaceMember {
 
 export interface WorkspaceMember extends BaseWorkspaceMember {
   name: string;
-  image: string;
+  image: string | null;
   created: string;
   // TODO: refactor to creatorID
   creator_id: number;

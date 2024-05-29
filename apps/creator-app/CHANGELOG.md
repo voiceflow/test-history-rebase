@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1531.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1530.2...@voiceflow/creator-app@1.1531.0) (2024-05-29)
+
+### Bug Fixes
+
+* allow dragging selected markup node (COR-2039) ([#8193](https://github.com/voiceflow/creator-app/issues/8193)) ([9eaad5a](https://github.com/voiceflow/creator-app/commit/9eaad5a2bdc5337e977fb2db358ede5d2298dc9e))
+
+### Features
+
+* add subscription modified tracking (COR-2091) ([#8182](https://github.com/voiceflow/creator-app/issues/8182)) ([b303e1a](https://github.com/voiceflow/creator-app/commit/b303e1a404a2f8ba772d5e9dc6d7ca40f3ba6118))
+
 ## [1.1530.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1530.1...@voiceflow/creator-app@1.1530.2) (2024-05-28)
 
 ### Bug Fixes

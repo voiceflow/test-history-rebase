@@ -8,6 +8,7 @@ export const OrganizationMemberDTO = z.object({
   email: z.string(),
   image: z.string().nullable(),
   creatorID: z.number(),
+  createdAt: z.string(),
 
   workspaceID: z.string().optional().nullable(),
   assistantID: z.string().optional().nullable(),

@@ -1,5 +1,3 @@
-import * as Platform from '@voiceflow/platform-config';
-
 import client from '@/client';
 import { browserIDSelector } from '@/ducks/session/selectors';
 
@@ -14,23 +12,8 @@ export const trackOnboardingPersonalize = createBaseEventTracker((eventInfo) =>
   client.analytics.track(createBaseEvent(EventName.ONBOARDING_PERSONALIZE, eventInfo))
 );
 
-export const trackOnboardingCollaborators = createBaseEventTracker<{ skip: boolean; bookDemo: boolean; collaboratorCount: number }>(
-  ({ bookDemo, collaboratorCount, ...eventInfo }) =>
-    client.analytics.track(
-      createBaseEvent(EventName.ONBOARDING_COLLABORATORS, { ...eventInfo, book_demo: bookDemo, collaborator_count: collaboratorCount })
-    )
-);
-
-export const trackOnboardingPay = createBaseEventTracker<{ skip: boolean; plan: string }>((eventInfo) =>
-  client.analytics.track(createBaseEvent(EventName.ONBOARDING_PAY, eventInfo))
-);
-
 export const trackOnboardingJoin = createBaseEventTracker<{ skip: boolean; role: string }>((eventInfo) =>
   client.analytics.track(createBaseEvent(EventName.ONBOARDING_JOIN, eventInfo))
-);
-
-export const trackOnboardingSelectChannel = createBaseEventTracker<{ skip: boolean; platform: Platform.Constants.PlatformType }>((eventInfo) =>
-  client.analytics.track(createBaseEvent(EventName.ONBOARDING_SELECT_CHANNEL, eventInfo))
 );
 
 export const trackOnboardingComplete = createBaseEventTracker<{
@@ -53,7 +36,19 @@ export const trackOnboardingIdentify = createBaseEventTracker<{
   selfReportedAttribution: string;
 }>(
   (
-    { email, source, medium, content, campaign, workWithDevelopers, teamSize, creatorID, selfReportedAttribution, useCase, ...eventInfo },
+    {
+      email,
+      source,
+      medium,
+      content,
+      campaign,
+      workWithDevelopers,
+      teamSize,
+      creatorID,
+      selfReportedAttribution,
+      useCase,
+      ...eventInfo
+    },
     _,
     getState
   ) =>

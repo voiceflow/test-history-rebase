@@ -1,6 +1,5 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { Button, Modal, Select, StatusCode, toast, ToastCallToAction, useAsyncEffect } from '@voiceflow/ui';
 import React, { useMemo, useState } from 'react';
 
@@ -21,18 +20,7 @@ import manager from '../../manager';
 import Loading from '../Loading';
 import Upgrade from '../Upgrade';
 
-const allowedToClone = (workspace: Realtime.Workspace, creatorID: number | null): boolean => {
-  if (!creatorID) return false;
-
-  const member = workspace.members.byKey[creatorID];
-
-  if (!member) return false;
-
-  return hasRolePermission(Permission.PROJECTS_MANAGE, member.role);
-};
-
-const getCopyProjectTitle = (projectName?: string) =>
-  !projectName ? 'Copy Agent' : `Copy Agent: ${projectName}`;
+const getCopyProjectTitle = (projectName?: string) => (!projectName ? 'Copy Agent' : `Copy Agent: ${projectName}`);
 
 export interface Props {
   projectID?: string;
@@ -55,11 +43,19 @@ const ImportModal = manager.create<Props>(
       const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
       const allWorkspaces = useSelector(WorkspaceV2.allWorkspacesSelector);
       const getWorkspaceByID = useSelector(WorkspaceV2.getWorkspaceByIDSelector);
+      const workspaceMembers = useSelector(Organization.workspaceMembersSelector);
 
-      const workspaces = useMemo(
-        () => allWorkspaces.filter((workspace) => allowedToClone(workspace, creatorID)),
-        [allWorkspaces, creatorID]
-      );
+      const workspaces = useMemo(() => {
+        const workspacesForCreator = new Set(
+          workspaceMembers
+            .filter(
+              (member) => member.creatorID === creatorID && hasRolePermission(Permission.PROJECTS_MANAGE, member.role)
+            )
+            .map(({ workspaceID }) => workspaceID)
+        );
+
+        return allWorkspaces.filter((workspace) => workspacesForCreator.has(workspace.id));
+      }, [allWorkspaces, creatorID, workspaceMembers]);
 
       const workspaceOptions = useMemo(
         () => workspaces.map((workspace) => ({ value: workspace.id, label: workspace.name })),
@@ -132,7 +128,7 @@ const ImportModal = manager.create<Props>(
       useAsyncEffect(async () => {
         if (!projectID) return;
 
-          toast.error('You do not have permission to copy agent to any of your workspaces');
+        toast.error('You do not have permission to copy agent to any of your workspaces');
         // If user has 0 workspaces with Editor/Admin/Owner role, show toast
         if (workspaces.length === 0) {
           toast.error('You do not have permission to copy agent to any of your workspaces');

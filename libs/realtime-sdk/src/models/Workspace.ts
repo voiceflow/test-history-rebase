@@ -54,6 +54,9 @@ export interface Workspace {
   state: WorkspaceActivationState | null;
   image: string;
   quotas?: Billing.Quota[];
+  /**
+   * @deprecated Use selector instead of accessing directly, since we are using org level members now
+   */
   members: Normalized<WorkspaceMember>;
   created: string;
   projects: number;

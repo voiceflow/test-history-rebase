@@ -13,7 +13,10 @@ import { getHostName } from '@/utils/window';
 
 import { createBaseEventTracker, createWorkspaceEvent, createWorkspaceEventTracker } from '../utils';
 
-export const trackWorkspace = createBaseEventTracker<{ workspace: Realtime.Workspace }>(({ workspace, ...eventInfo }, _dispatch, getState) => {
+export const trackWorkspace = createBaseEventTracker<{
+  workspace: Realtime.Workspace;
+  members: Realtime.WorkspaceMember[];
+}>(({ workspace, members, ...eventInfo }, _dispatch, getState) => {
   const context = datadogRum.getInternalContext();
   const getOrganizationByID = getOrganizationByIDSelector(getState());
   const trialEndDate = organizationTrialEndAtSelector(getState());
@@ -26,7 +29,7 @@ export const trackWorkspace = createBaseEventTracker<{ workspace: Realtime.Works
   let editors = 0;
   let viewers = 0;
 
-  Object.values(workspace.members.byKey).forEach((member) => {
+  members.forEach((member) => {
     if (isAdminUserRole(member.role)) admins += 1;
     if (isEditorUserRole(member.role)) editors += 1;
     if (isViewerUserRole(member.role)) viewers += 1;

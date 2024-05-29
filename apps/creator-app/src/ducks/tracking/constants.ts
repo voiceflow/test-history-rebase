@@ -69,7 +69,6 @@ export enum EventName {
 
   ONBOARDING_PAY = 'Onboarding - Pay',
   ONBOARDING_JOIN = 'Onboarding - Join',
-  ONBOARDING_SELECT_CHANNEL = 'Onboarding - Select Channel',
   ONBOARDING_CREATE = 'Onboarding - Create',
   ONBOARDING_COMPLETE = 'Onboarding - Complete',
   ONBOARDING_PERSONALIZE = 'Onboarding - Personalize',

@@ -1,3 +1,4 @@
+import { RoleScope } from '@voiceflow/dtos';
 import * as Normal from 'normal-store';
 import { createSelector } from 'reselect';
 
@@ -15,6 +16,16 @@ export const organizationSelector = createSelector(
   (getOrganizationByID, organizationID) => getOrganizationByID({ id: organizationID })
 );
 
+const createMembersByScopeSelector = (scope: RoleScope) =>
+  createSelector(
+    [organizationSelector],
+    (organization) => organization?.members.filter((member) => member.scope === scope) ?? []
+  );
+
+export const organizationMembersSelector = createMembersByScopeSelector(RoleScope.ORGANIZATION);
+export const workspaceMembersSelector = createMembersByScopeSelector(RoleScope.WORKSPACE);
+export const projectMembersSelector = createMembersByScopeSelector(RoleScope.PROJECT);
+
 export const membersSelector = createSelector(
   [organizationSelector],
   (organization) => organization?.normalizedMembers
@@ -29,12 +40,13 @@ export const getMemberByIDSelector = createCurriedSelector(memberByIDSelector);
 export const currentMemberRoleByIDSelector = createSelector(
   [getOrganizationByIDSelector, idParamSelector, Account.userIDSelector],
   (getOrganization, organizationID, userID) => {
-    if (userID !== null) {
-      const organization = getOrganization({ id: organizationID ?? null });
-      return organization?.normalizedMembers?.byKey?.[userID]?.role ?? null;
-    }
+    if (!userID || !organizationID) return null;
 
-    return null;
+    const organization = getOrganization({ id: organizationID });
+
+    if (!organization) return null;
+
+    return Normal.getOne(organization?.normalizedMembers, userID.toString())?.role ?? null;
   }
 );
 

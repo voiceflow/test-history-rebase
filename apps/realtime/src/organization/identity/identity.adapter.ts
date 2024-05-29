@@ -1,4 +1,4 @@
-import { Organization, OrganizationMember, UserRole } from '@voiceflow/dtos';
+import { Organization, OrganizationMember } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import * as Identity from '@voiceflow/sdk-identity';
 import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter';
@@ -12,11 +12,12 @@ export const legacyOrganizationMemberAdapter = createMultiAdapter<LegacyOrganiza
     email: user.email,
     image: user.image,
     creatorID: user.id,
-    role: membership.role as UserRole,
+    role: membership.role,
     scope: 'organization',
     organizationID: membership.organizationID,
     workspaceID: null,
     assistantID: null,
+    createdAt: user.createdAt,
   }),
   notImplementedAdapter.transformer
 );
@@ -32,6 +33,7 @@ export const organizationMemberAdapter = createMultiAdapter<Identity.Organizatio
     organizationID: membership.organizationID,
     workspaceID: membership.workspaceID,
     assistantID: membership.assistantID,
+    createdAt: user.createdAt,
   }),
   notImplementedAdapter.transformer
 );

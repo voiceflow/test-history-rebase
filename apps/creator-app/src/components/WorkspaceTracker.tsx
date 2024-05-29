@@ -6,12 +6,13 @@ import { useTrackingEvents } from '@/hooks/tracking';
 
 const WorkspaceTracker: React.FC = () => {
   const workspace = useSelector(WorkspaceV2.active.workspaceSelector);
+  const members = useSelector(WorkspaceV2.active.members.membersListSelector);
   const [trackEvents] = useTrackingEvents();
 
   React.useEffect(() => {
     if (!workspace) return;
 
-    trackEvents.trackWorkspace({ workspace });
+    trackEvents.trackWorkspace({ workspace, members });
   }, [workspace?.id]);
 
   return null;

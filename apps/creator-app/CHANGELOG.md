@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1532.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1531.2...@voiceflow/creator-app@1.1532.0) (2024-05-29)
+
+### Features
+
+* add tracking event to 'Start Course' banner button (COR-1994) ([#8191](https://github.com/voiceflow/creator-app/issues/8191)) ([f1865b1](https://github.com/voiceflow/creator-app/commit/f1865b11c18f7396a66d2d6e216a7d0c844af0d3))
+
 ## [1.1531.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1531.1...@voiceflow/creator-app@1.1531.2) (2024-05-29)
 
 ### Bug Fixes

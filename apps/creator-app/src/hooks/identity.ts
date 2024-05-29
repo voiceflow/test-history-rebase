@@ -1,6 +1,6 @@
 import { Nullable } from '@voiceflow/common';
 import { UserRole } from '@voiceflow/dtos';
-import { PlanType, UserRole as InternalUserRole } from '@voiceflow/internal';
+import { PlanType } from '@voiceflow/internal';
 import React from 'react';
 
 import { VirtualRole } from '@/constants/roles';
@@ -9,10 +9,10 @@ import { ProjectIdentityContext, ProjectIdentityContextValue } from '@/pages/Pro
 import { isRoleAStrongerRoleB } from '@/utils/role';
 
 export interface Identity extends IdentityContextValue, ProjectIdentityContextValue {
-  activeRole: VirtualRole | UserRole | InternalUserRole;
+  activeRole: VirtualRole | UserRole;
   activePlan: PlanType;
-  projectActiveRole: Nullable<VirtualRole | UserRole | InternalUserRole>;
-  workspaceActiveRole: Nullable<VirtualRole | UserRole | InternalUserRole>;
+  projectActiveRole: Nullable<VirtualRole | UserRole>;
+  workspaceActiveRole: Nullable<VirtualRole | UserRole>;
 }
 
 export const useCreateIdentity = () => {
@@ -23,7 +23,7 @@ export const useCreateIdentity = () => {
       const localIdentity: Identity = {
         ...identity,
         projectID: projectIdentity?.projectID ?? null,
-        activeRole: identity.activeRole ?? InternalUserRole.VIEWER,
+        activeRole: identity.activeRole ?? UserRole.VIEWER,
         activePlan: identity.workspacePlan ?? PlanType.STARTER,
         projectRole: projectIdentity?.projectRole ?? null,
         projectActiveRole: projectIdentity?.activeRole ?? null,

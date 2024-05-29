@@ -1,5 +1,6 @@
 import { Utils } from '@voiceflow/common';
-import { PlanType, UserRole } from '@voiceflow/internal';
+import { UserRole } from '@voiceflow/dtos';
+import { PlanType } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
 
@@ -22,7 +23,15 @@ export * from './members';
 export * from './shared';
 
 export const createWorkspace =
-  ({ name, image, organizationID }: { name: string; image?: string | null; organizationID?: string | null }): Thunk<Realtime.Workspace> =>
+  ({
+    name,
+    image,
+    organizationID,
+  }: {
+    name: string;
+    image?: string | null;
+    organizationID?: string | null;
+  }): Thunk<Realtime.Workspace> =>
   (dispatch, getState) => {
     try {
       const activeOrganizationID = organizationIDSelector(getState());

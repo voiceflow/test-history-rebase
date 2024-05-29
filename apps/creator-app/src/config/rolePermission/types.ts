@@ -1,4 +1,4 @@
-import type { UserRole } from '@voiceflow/internal';
+import type { UserRole } from '@voiceflow/dtos';
 import React from 'react';
 
 import type { UpgradePopperData } from '@/components/UpgradePopper';
@@ -7,7 +7,7 @@ import type { Permission } from '@/constants/permissions';
 import type { VirtualRole } from '@/constants/roles';
 import type { UpgradeModal } from '@/ModalsV2/modals/Upgrade';
 
-export type ActionGetter<Data, Return> = Data extends {} ? (data: Data) => Return : () => Return;
+export type ActionGetter<Data, Return> = Data extends object ? (data: Data) => Return : () => Return;
 
 export interface BaseRolePermission {
   roles: ReadonlyArray<UserRole | VirtualRole>;

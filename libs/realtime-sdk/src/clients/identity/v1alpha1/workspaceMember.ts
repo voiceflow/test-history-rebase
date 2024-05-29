@@ -1,5 +1,5 @@
 import * as Models from '@realtime-sdk/models';
-import { UserRole } from '@voiceflow/internal';
+import { UserRole } from '@voiceflow/dtos';
 
 import { NestResource, NestResourceOptions } from '../../nest';
 

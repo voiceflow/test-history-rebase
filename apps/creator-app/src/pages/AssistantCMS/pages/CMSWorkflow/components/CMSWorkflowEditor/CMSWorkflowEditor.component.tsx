@@ -70,7 +70,7 @@ export const CMSWorkflowEditor: React.FC = () => {
       members.map((member) => ({
         id: member.creator_id,
         name: member.name,
-        avatar: isMemberColorImage(member.image) ? undefined : member.image,
+        avatar: !member.image || isMemberColorImage(member.image) ? undefined : member.image,
         variant: getMemberColorByCreatorID(member.creator_id, 'light'),
       })),
     [members]

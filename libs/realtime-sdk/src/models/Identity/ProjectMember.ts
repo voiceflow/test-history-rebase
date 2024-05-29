@@ -1,8 +1,8 @@
-import { UserRole } from '@voiceflow/internal';
+import { ProjectUserRole } from '@voiceflow/dtos';
 
 import { User } from './User';
 
 export interface ProjectMember {
   user: User;
-  membership: { role: UserRole.VIEWER | UserRole.EDITOR; projectID: string };
+  membership: { role: ProjectUserRole; projectID: string };
 }

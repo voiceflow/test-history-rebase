@@ -1,6 +1,6 @@
-import { UserRole } from '@voiceflow/internal';
+import { ProjectUserRole } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 export interface Member extends Realtime.WorkspaceMember {
-  role: UserRole.EDITOR | UserRole.VIEWER;
+  role: ProjectUserRole;
 }

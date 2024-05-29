@@ -1,4 +1,4 @@
-import { UserRole } from '@voiceflow/internal';
+import { UserRole } from '@voiceflow/dtos';
 import { Box, Button, ButtonVariant, Spinner, SvgIcon, Text, toast } from '@voiceflow/ui';
 import React from 'react';
 
@@ -11,7 +11,7 @@ import { useTrackingEvents } from '@/hooks/tracking';
 
 import * as S from './styles';
 
-const UPDATE_SUBSCRIPTION_ROLES = new Set([UserRole.ADMIN, UserRole.OWNER, UserRole.BILLING]);
+const UPDATE_SUBSCRIPTION_ROLES = new Set<UserRole>([UserRole.ADMIN, UserRole.BILLING]);
 
 const TrialExpiredPage: React.FC = () => {
   const workspace = useActiveWorkspace();

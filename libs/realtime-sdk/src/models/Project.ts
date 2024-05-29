@@ -1,13 +1,13 @@
 import { AlexaProject } from '@voiceflow/alexa-types';
 import { AnyRecord, BaseModels } from '@voiceflow/base-types';
+import { ProjectUserRole } from '@voiceflow/dtos';
 import { DFESProject } from '@voiceflow/google-dfes-types';
-import { UserRole } from '@voiceflow/internal';
 import * as Platform from '@voiceflow/platform-config/backend';
 import { VoiceflowProject } from '@voiceflow/voiceflow-types';
 import * as Normal from 'normal-store';
 
 export interface ProjectMember {
-  role: UserRole.VIEWER | UserRole.EDITOR;
+  role: ProjectUserRole;
   creatorID: number;
 }
 

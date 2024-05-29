@@ -1,6 +1,6 @@
 import { Nullable } from '@voiceflow/common';
 import { UserRole } from '@voiceflow/dtos';
-import { PlanType, UserRole as InternalUserRole } from '@voiceflow/internal';
+import { PlanType } from '@voiceflow/internal';
 import { useContextApi } from '@voiceflow/ui';
 import React from 'react';
 
@@ -10,10 +10,10 @@ import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector } from '@/hooks/redux';
 
 export interface IdentityContextValue {
-  activeRole: Nullable<UserRole | InternalUserRole | VirtualRole>;
+  activeRole: Nullable<UserRole | VirtualRole>;
   workspacePlan: Nullable<PlanType>;
-  workspaceRole: Nullable<UserRole | InternalUserRole>;
-  organizationRole: Nullable<UserRole | InternalUserRole>;
+  workspaceRole: Nullable<UserRole>;
+  organizationRole: Nullable<UserRole>;
   organizationTrialExpired: Nullable<boolean>;
 }
 

@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { UserRole } from '@voiceflow/internal';
+import { ProjectUserRole, UserRole } from '@voiceflow/dtos';
 import { Button, Flex, Members } from '@voiceflow/ui';
 import React from 'react';
 
@@ -18,7 +18,7 @@ interface InviteMemberProps {
 const InviteMember: React.FC<InviteMemberProps> = ({ onAdd: onAddProp, members }) => {
   const workspaceMembers = useSelector(WorkspaceV2.active.normalizedMembersSelector);
 
-  const [role, setRole] = React.useState<UserRole.VIEWER | UserRole.EDITOR>(UserRole.EDITOR);
+  const [role, setRole] = React.useState<ProjectUserRole>(UserRole.EDITOR);
   const [memberID, setMemberID] = React.useState<number | null>(null);
 
   const onAdd = () => {

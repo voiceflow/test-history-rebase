@@ -1,4 +1,4 @@
-import { UserRole } from '@voiceflow/internal';
+import { UserRole } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Avatar, Members, TippyTooltip } from '@voiceflow/ui';
 import pluralize from 'pluralize';

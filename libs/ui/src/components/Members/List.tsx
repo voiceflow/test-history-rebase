@@ -1,6 +1,6 @@
 import TippyTooltip from '@ui/components/TippyTooltip';
 import { Nullable } from '@voiceflow/common';
-import { UserRole } from '@voiceflow/internal';
+import { UserRole } from '@voiceflow/dtos';
 import dayjs from 'dayjs';
 import React from 'react';
 
@@ -51,7 +51,9 @@ const List = <M extends Member>({
         infoTooltip={
           member.expiry && dayjs(member.expiry).isBefore(new Date()) ? (
             <RowWarningTooltip width={232} placement="bottom">
-              <TippyTooltip.Multiline>The invitation has expired. Please resend the invite to the user.</TippyTooltip.Multiline>
+              <TippyTooltip.Multiline>
+                The invitation has expired. Please resend the invite to the user.
+              </TippyTooltip.Multiline>
             </RowWarningTooltip>
           ) : (
             <RowProjectsTooltip member={member} isEditorRole={isEditorRole} />

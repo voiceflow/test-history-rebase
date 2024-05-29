@@ -1,5 +1,5 @@
 import { Nullable } from '@voiceflow/common';
-import { UserRole } from '@voiceflow/internal';
+import { UserRole } from '@voiceflow/dtos';
 import * as Platform from '@voiceflow/platform-config';
 import { Modal, Portal, Switch, System, useSmartReducerV2 } from '@voiceflow/ui';
 import { TabLoader } from '@voiceflow/ui-next';

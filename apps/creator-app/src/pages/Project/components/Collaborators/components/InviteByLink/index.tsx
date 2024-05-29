@@ -1,6 +1,6 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { Utils } from '@voiceflow/common';
-import { UserRole } from '@voiceflow/internal';
+import { ProjectUserRole, UserRole } from '@voiceflow/dtos';
 import { Button, ButtonVariant, Menu, toast, useSetup } from '@voiceflow/ui';
 import React from 'react';
 
@@ -29,7 +29,7 @@ const inviteLimitMessage = (
   </span>
 );
 
-type LinkUserRole = UserRole.EDITOR | UserRole.VIEWER | UserRole.ADMIN;
+type LinkUserRole = ProjectUserRole | 'admin';
 
 const InviteByLinkFooter: React.FC = () => {
   const projectID = useSelector(Session.activeProjectIDSelector);

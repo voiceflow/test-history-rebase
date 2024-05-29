@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { UserRole } from '@voiceflow/internal';
+import { ProjectUserRole, UserRole } from '@voiceflow/dtos';
 import { Flex, Input, Select, toast, useEnableDisable } from '@voiceflow/ui';
 import React from 'react';
 
@@ -51,7 +51,7 @@ const SendInvite: React.FC<SendInviteProps> = ({ sendInvite }) => {
 
   const onAddSeats = useOnAddSeats();
 
-  const [role, setRole] = React.useState(UserRole.EDITOR);
+  const [role, setRole] = React.useState<ProjectUserRole | 'admin'>(UserRole.EDITOR);
   const [email, setEmail] = React.useState('');
   const [isInvalid, setInvalid, setValid] = useEnableDisable(false);
 

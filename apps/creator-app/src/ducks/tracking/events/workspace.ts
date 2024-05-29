@@ -87,3 +87,9 @@ export const trackSeatChange = createWorkspaceEventTracker<{ reduced: boolean; s
     createWorkspaceEvent(EventName.SEATS_CHANGE, { ...eventInfo, type: scheduled ? 'scheduled' : 'immediate', seats: reduced ? 'reduced' : 'added' })
   )
 );
+
+export const trackStartCourse = createWorkspaceEventTracker((eventInfo) => {
+  client.analytics.track(
+    createWorkspaceEvent(EventName.WORKSPACE_START_COURSE, {...eventInfo})
+  );
+})

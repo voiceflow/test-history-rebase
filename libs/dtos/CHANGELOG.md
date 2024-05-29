@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.79.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.78.2...@voiceflow/dtos@1.79.0) (2024-05-29)
+
+### Features
+
+* replace internal UserRole with dto UserRole (COR-2206) ([#8190](https://github.com/voiceflow/creator-app/issues/8190)) ([363abb0](https://github.com/voiceflow/creator-app/commit/363abb09d576d711aee1afa2135de68a641ce253))
+
 ## [1.78.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.78.1...@voiceflow/dtos@1.78.2) (2024-05-27)
 
 ### Bug Fixes

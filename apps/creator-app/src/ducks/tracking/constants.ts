@@ -118,6 +118,7 @@ export enum EventName {
   VARIABLE_STATE_APPLIED = 'Variable State Applied',
 
   SUBSCRIPTION_CREATED = 'Subscription Created',
+  SUBSCRIPTION_MODIFIED = 'Subscription Modified',
 
   SEARCH_BAR_QUERY = 'Search Bar Query',
   SEARCH_BAR_RESULT_SELECTED = 'Search Bar Result Selected',

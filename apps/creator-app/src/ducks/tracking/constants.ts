@@ -11,6 +11,7 @@ export enum EventName {
 
   WORKSPACE_DELETE = 'Delete Workspace',
   WORKSPACE_SESSION_BEGIN = 'Begin Workspace Session',
+  WORKSPACE_START_COURSE = 'Start Course',
 
   INVITATION_ACCEPT = 'Accept Invitation',
   INVITATION_COPY_LINK = 'Copy Invitation Link',

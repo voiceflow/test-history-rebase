@@ -132,9 +132,9 @@ const Conversations: React.FC = () => {
           ) : (
             <EmptyScreen
               id={Identifier.EMPTY_TRANSCRIPTS_CONTAINER}
-              body="Review conversations from your assistant. Save tests or share a prototype to generate reviewable conversations."
+              body="Review conversations from your agent. Save tests or share a prototype to generate reviewable conversations."
               title="No transcripts exist"
-              buttonText="Test Assistant"
+              buttonText="Test Agent"
               onClick={goToPrototype}
             />
           )}

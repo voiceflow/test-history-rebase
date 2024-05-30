@@ -10,7 +10,7 @@ const SubmittedStage = () => (
     <img id="rocket" alt="submitted" height={120} src={takeoffGraphic} />
 
     <Box mt={24} color="#8da2b5" px={16}>
-      Your assistant has been submitted for review. During this time you will see the action with the "Review" status.
+      Your agent has been submitted for review. During this time you will see the action with the "Review" status.
     </Box>
   </StageContainer>
 );

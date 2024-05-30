@@ -6,7 +6,7 @@ export const CONFIG = Base.Integration.extend({
 
   linkAccountButton: Google.Integration.LinkAccountButton.CONFIG,
 
-  connectDescription: 'Sign in with Google to connect this assistant to Dialogflow ES.',
+  connectDescription: 'Sign in with Google to connect this agent to Dialogflow ES.',
 })(Base.Integration.validate);
 
 export type Config = typeof CONFIG;

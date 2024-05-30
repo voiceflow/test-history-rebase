@@ -37,7 +37,7 @@ const VariableSelectV2: React.FC<VariableSelectProps> = ({ value, onChange, onCr
         defaultMenuLabelRenderer(option, searchLabel, (value) => value && variablesMap[value]?.name, getOptionValue, config)
       }
       clearOnSelectActive
-      renderEmpty={({ search }) => <Menu.NotFound>{!search ? 'No variables exist in your assistant. ' : 'No variables found. '}</Menu.NotFound>}
+      renderEmpty={({ search }) => <Menu.NotFound>{!search ? 'No variables exist in your agent. ' : 'No variables found. '}</Menu.NotFound>}
       renderSearchSuffix={({ close, searchLabel }) => (
         <System.IconButtonsGroup.Base>
           <System.IconButton.Base icon="plus" onClick={Utils.functional.chainVoid(close, () => onCreate(searchLabel))} />

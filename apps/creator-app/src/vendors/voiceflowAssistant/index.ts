@@ -133,7 +133,7 @@ class VoiceflowAssistant {
   }
 
   private enableDevelopmentMode() {
-    this.logger.info(`Reloading in DEVELOPMENT mode...`);
+    this.logger.info('Reloading in DEVELOPMENT mode...');
 
     localStorage.setItem('vfadevmode', 'development');
 
@@ -258,7 +258,7 @@ class VoiceflowAssistant {
     const firstScript = document.getElementsByTagName('script')[0];
     const widgetScript = document.createElement('script');
 
-    widgetScript.onerror = (error) => this.logger.debug('Error loading Voiceflow Assistant widget', error);
+    widgetScript.onerror = (error) => this.logger.debug('Error loading Voiceflow Agent widget', error);
     widgetScript.onload = () => {
       this.initialized = true;
 

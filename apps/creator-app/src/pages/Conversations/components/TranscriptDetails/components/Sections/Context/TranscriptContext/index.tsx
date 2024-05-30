@@ -51,7 +51,7 @@ const TranscriptContext: React.FC = () => {
         {image ? renderUserContainer() : <StyledUser icon="userConversation" size={48} color="#EDEDED" />}
       </Box.FlexApart>
 
-      <ContextTitle className={ClassName.TRANSCRIPT_USER_NAME}>Conversation between your assistant and {name || 'a test user'}</ContextTitle>
+      <ContextTitle className={ClassName.TRANSCRIPT_USER_NAME}>Conversation between your agent and {name || 'a test user'}</ContextTitle>
 
       <ContextSubtext className={ClassName.TRANSCRIPT_CONTEXT_META}>{transcriptContextMeta}</ContextSubtext>
     </>

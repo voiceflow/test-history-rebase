@@ -100,7 +100,7 @@ const LegacyMappings: React.FC<LegacyMappingsProps> = ({ intent, onDelete, mappi
           </Tooltip.Paragraph>
 
           <Tooltip.Paragraph marginBottomUnits={2}>
-            Mappings will eventually no longer be supported and this can cause issues with future versions of your assistant.
+            Mappings will eventually no longer be supported and this can cause issues with future versions of your agent.
           </Tooltip.Paragraph>
         </>
       }

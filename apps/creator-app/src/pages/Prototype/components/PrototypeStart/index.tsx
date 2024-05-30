@@ -40,11 +40,11 @@ const PrototypeStart: React.FC<PrototypeStartProps> = ({ isPublic, onStart, debu
           <img src={testingGraphic} alt="user" width="80" />
 
           <Text fontSize={16} color="#132144" fontWeight={600} mt={16}>
-            Run your assistant
+            Run your agent
           </Text>
 
           <Text fontSize={13} color="#62778c" mt={8} mb={16} lineHeight={1.54}>
-            Start a test to interact with your assistant using text, voice or buttons. <Link href={Documentation.TEST_TOOL}>See more.</Link>
+            Start a test to interact with your agent using text, voice or buttons. <Link href={Documentation.TEST_TOOL}>See more.</Link>
           </Text>
 
           {isModelTraining ? (

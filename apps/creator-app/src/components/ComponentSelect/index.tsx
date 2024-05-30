@@ -40,7 +40,7 @@ const ComponentSelect: React.FC<ComponentSelectProps> = ({ diagramID, onChange, 
       alwaysShowCreate
       clearOnSelectActive
       createInputPlaceholder="components"
-      renderEmpty={({ search }) => <Menu.NotFound>{!search ? 'No components exist in your assistant. ' : 'No components found. '}</Menu.NotFound>}
+      renderEmpty={({ search }) => <Menu.NotFound>{!search ? 'No components exist in your agent. ' : 'No components found. '}</Menu.NotFound>}
       renderSearchSuffix={({ close, searchLabel }) => (
         <System.IconButtonsGroup.Base>
           <System.IconButton.Base icon="plus" onClick={Utils.functional.chainVoid(close, () => onCreate(searchLabel))} />

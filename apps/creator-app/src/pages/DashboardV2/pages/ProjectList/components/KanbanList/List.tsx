@@ -212,7 +212,7 @@ export const List: React.FC<ListProps> = ({
             <div className={cn(DashboardClassName.LIST_FOOTER, { 'h-o-0': isDragging, __scrolling: isFooterShadowShown })}>
               <div className={DashboardClassName.LIST_FOOTER_CENTER}>
                 <Button variant={ButtonVariant.TERTIARY} onClick={() => createProject(id)}>
-                  Create Assistant
+                  Create Agent
                 </Button>
               </div>
             </div>

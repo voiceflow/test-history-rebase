@@ -17,7 +17,7 @@ const SuccessStage: React.FC<StageComponentProps<NLPTrainJob.SuccessStage>> = ()
   };
 
   return (
-    <UploadedStage description="A new version of your assistant has been successfully published">
+    <UploadedStage description="A new version of your agent has been successfully published">
       <Button squareRadius fullWidth variant={ButtonVariant.QUATERNARY} onClick={onApiButtonClick}>
         Dialog Manager API
       </Button>

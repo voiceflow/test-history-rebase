@@ -37,7 +37,7 @@ const getPlaceholder = (type: Realtime.BlockType): string => {
     case Realtime.BlockType.INTENT:
       return 'Select intent';
     case Realtime.BlockType.START:
-      return 'Assistant starts here';
+      return 'Agent starts here';
     default:
       return 'Select step';
   }

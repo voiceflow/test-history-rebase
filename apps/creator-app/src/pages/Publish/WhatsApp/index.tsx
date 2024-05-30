@@ -13,7 +13,7 @@ const WhatsApp: React.FC = () => (
       <Banner
         title="Publishing to WhatsApp Business"
         onClick={() => openInternalURLInANewTab(WHATSAPP_DOCUMENTATION)}
-        subtitle="Make your assistant instantly accessible on WhatsApp."
+        subtitle="Make your agent instantly accessible on WhatsApp."
         buttonText="Documentation"
       />
     </Settings.Section>

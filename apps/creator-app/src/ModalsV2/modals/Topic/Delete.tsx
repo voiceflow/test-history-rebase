@@ -37,7 +37,7 @@ const Delete = manager.create<Props>('TopicDelete', () => ({ api, type, opened, 
       <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />}>Delete Topic</Modal.Header>
 
       <Modal.Body>
-        <BlockText>Warning, "{topic?.name ?? 'Unknown'}" and all its subtopics will be removed from the assistant.</BlockText>
+        <BlockText>Warning, "{topic?.name ?? 'Unknown'}" and all its subtopics will be removed from the agent.</BlockText>
       </Modal.Body>
 
       <Modal.Footer gap={12}>

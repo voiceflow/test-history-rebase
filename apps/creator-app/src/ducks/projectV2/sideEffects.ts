@@ -85,7 +85,7 @@ export const createProject =
       if (isEnterprise && project.aiAssistSettings.aiPlayground) {
         client.apiV3.fetch.post(`/projects/${project.id}/sendAIAssistantProjectEmail`).catch((error) => {
           logger.error(error);
-          toast.error('unable to send AI assistant disclaimer email');
+          toast.error('unable to send AI agent disclaimer email');
         });
       }
 
@@ -103,8 +103,8 @@ export const createProject =
 
       return project;
     } catch (err) {
-      toast.error('Error creating assistant, please try again later or contact support.');
-      throw new Error('error creating assistant');
+      toast.error('Error creating agent, please try again later or contact support.');
+      throw new Error('error creating agent');
     }
   };
 
@@ -330,8 +330,8 @@ export const ejectUsersFromProject =
     if (creatorID !== userID) {
       const message =
         reason === Realtime.project.EjectUsersReason.BACKUP_RESTORE
-          ? 'The assistant has been restored to a previous version'
-          : 'Another user has deleted the assistant';
+          ? 'The agent has been restored to a previous version'
+          : 'Another user has deleted the agent';
 
       toast.info(message);
     }
@@ -351,7 +351,7 @@ export const checkEditorSeatLimit =
       .filter((memberID) => !memberID || !editorMemberIDs.includes(memberID));
 
     if (uniqueEditorMemberIDs.length + editorMemberIDs.length > numberOfSeats) {
-      toast.error(`All your editor seats are in use. Purchase additional seats to grant edit access for this Assistant.`);
+      toast.error('All your editor seats are in use. Purchase additional seats to grant edit access for this agent.');
 
       throw new Error('You have reached the maximum number of editor seats.');
     }

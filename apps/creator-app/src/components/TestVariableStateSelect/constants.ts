@@ -4,7 +4,7 @@ import * as VariableState from '@/ducks/variableState';
 
 export const baseOptions = [
   {
-    label: 'All assistant variables',
+    label: 'All agent variables',
     value: VariableState.ALL_PROJECT_VARIABLES_ID,
   },
 ];

@@ -13,7 +13,7 @@ const getPlatformLabel = createPlatformSelector(
     [Platform.Constants.PlatformType.ALEXA]: 'Skill',
     [Platform.Constants.PlatformType.GOOGLE]: 'Google Action',
   },
-  'Assistant'
+  'Agent'
 );
 
 const ExitStep: ConnectedStep = ({ data, platform, palette }) => (

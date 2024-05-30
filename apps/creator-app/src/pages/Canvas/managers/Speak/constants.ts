@@ -30,7 +30,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Speak, Realtime.NodeData.
   getTooltipText: (data) =>
     data?.dialogs[0]?.type === Realtime.DialogType.AUDIO
       ? 'Plays short audio files (less than 240s).'
-      : 'Text-to-speech messages spoken by the Voice assistant.',
+      : 'Text-to-speech messages spoken by the Voice agent.',
 
   getTooptipLink: (data) => (data?.dialogs[0]?.type === Realtime.DialogType.AUDIO ? Documentation.AUDIO_STEP : Documentation.SPEAK_STEP),
 

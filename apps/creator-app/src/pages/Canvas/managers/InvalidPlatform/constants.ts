@@ -7,5 +7,5 @@ export const getPlatformLabel = Utils.platform.createPlatformSelector(
     [Platform.Constants.PlatformType.GOOGLE]: 'Google Actions',
     [Platform.Constants.PlatformType.DIALOGFLOW_ES]: 'Dialogflow',
   },
-  'General Assistant'
+  'General Agent'
 );

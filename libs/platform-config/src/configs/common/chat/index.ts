@@ -12,7 +12,7 @@ export { Adapters, Models, Utils };
 export const CONFIG = Base.Type.extend({
   is: TypeGuards.isValueFactory(ProjectType.CHAT as const),
 
-  name: 'Chat Assistant',
+  name: 'Chat Agent',
 
   type: ProjectType.CHAT,
 
@@ -20,7 +20,7 @@ export const CONFIG = Base.Type.extend({
 
   adapters: Adapters.CONFIG,
 
-  description: 'Chat assistants can be connected to any channel or custom interface via API.',
+  description: 'Chat agents can be connected to any channel or custom interface via API.',
 })(Base.Type.validate);
 
 export type Config = typeof CONFIG;

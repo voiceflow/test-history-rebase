@@ -17,7 +17,7 @@ export const AllowRepeat: React.FC = () => (
 );
 
 export const DefaultVoice: React.FC = () => (
-  <Settings.SubSection.Description>The default text-to-speech voice used across your assistant.</Settings.SubSection.Description>
+  <Settings.SubSection.Description>The default text-to-speech voice used across your agent.</Settings.SubSection.Description>
 );
 
 export const RepeatDialog: React.FC = () => (

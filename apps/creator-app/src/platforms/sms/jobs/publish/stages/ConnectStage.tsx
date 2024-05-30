@@ -13,7 +13,7 @@ const ConnectStage: React.FC<StageComponentProps<any>> = () => {
   return (
     <UploadedStage
       title="Connect to Twilio SMS"
-      description="Connect your assistant to your Twilio Messaging account"
+      description="Connect your agent to your Twilio Messaging account"
       imageProps={{ src: linkGraphic, height: 67 }}
     >
       <Button fullWidth onClick={goToConsole}>

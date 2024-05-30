@@ -129,11 +129,11 @@ const SettingsBackups: React.FC = () => {
       <Settings.Card>
         <S.Heading>
           <>
-            New backups are created when you publish your assistant. To manually save a backup, use the shortcut{' '}
+            New backups are created when you publish your agent. To manually save a backup, use the shortcut{' '}
             <S.HotKeyContainer>Shift + {getHotkeyLabel(Hotkey.SAVE_BACKUP)}</S.HotKeyContainer>.{' '}
             {!hasFullVersionPermissions && (
               <>
-                Free users can only view 30 days of an assistant's backup history.{' '}
+                Free users can only view 30 days of an agent's backup history.{' '}
                 <System.Link.Button onClick={() => paymentModal.openVoid({})}>Upgrade to unlock unlimited backup history</System.Link.Button>
               </>
             )}

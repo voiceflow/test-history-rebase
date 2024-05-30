@@ -12,7 +12,7 @@ const InvalidPlatformEditor: React.FC = () => {
   return (
     <Content>
       <InfoSection>
-        This block is not supported by the {getPlatformLabel(platform)} channel. This assistant will still work, but we recommend you remove this
+        This block is not supported by the {getPlatformLabel(platform)} channel. This agent will still work, but we recommend you remove this
         block from your canvas.
       </InfoSection>
     </Content>

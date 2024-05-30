@@ -40,7 +40,7 @@ const Form: React.FC<FormProps> = ({ editor, header, footer }) => {
           clearOnSelectActive={true}
           createInputPlaceholder="domains"
           renderEmpty={({ search }: { search: string }) => (
-            <Menu.NotFound>{!search ? 'No domains exists in your assistant. ' : 'No domains found. '}</Menu.NotFound>
+            <Menu.NotFound>{!search ? 'No domains exists in your agent. ' : 'No domains found. '}</Menu.NotFound>
           )}
         />
       </SectionV2.SimpleSection>

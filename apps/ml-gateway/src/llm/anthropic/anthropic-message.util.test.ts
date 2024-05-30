@@ -51,7 +51,7 @@ describe('llm/anthropic/anthropic-message.util', () => {
       ]);
     });
 
-    it('prepends user message if assistant message is first', () => {
+    it('prepends user message if agent message is first', () => {
       const messages = [
         { role: AIMessageRole.ASSISTANT, content: 'hi' },
         { role: AIMessageRole.USER, content: 'hello' },
@@ -63,7 +63,7 @@ describe('llm/anthropic/anthropic-message.util', () => {
       ]);
     });
 
-    it('prepends user message if assistant message is first and there are multiple consecutive messages', () => {
+    it('prepends user message if agent message is first and there are multiple consecutive messages', () => {
       const messages = [
         { role: AIMessageRole.ASSISTANT, content: 'hi' },
         { role: AIMessageRole.USER, content: 'hello' },

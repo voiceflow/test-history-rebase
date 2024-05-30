@@ -57,7 +57,7 @@ const ImportButton: React.FC = () => {
               cmsWorkflows.isEnabled ? goToProjectCanvas({ versionID: project.versionID }) : goToDomain({ versionID: project.versionID })
             }
           >
-            Open Assistant
+            Open Agent
           </ToastCallToAction>
         </>
       );

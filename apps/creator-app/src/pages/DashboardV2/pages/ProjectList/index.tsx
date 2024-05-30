@@ -95,7 +95,7 @@ const ProjectList: React.FC = () => {
         {!search && <Banner />}
 
         <Box.FlexApart fullWidth mb={10}>
-          <SearchBar value={search} onSearch={setSearch} placeholder="Search assistants" noBorder animateIn={false} />
+          <SearchBar value={search} onSearch={setSearch} placeholder="Search agents" noBorder animateIn={false} />
           <S.StyledSelect
             value={sortBy}
             borderLess

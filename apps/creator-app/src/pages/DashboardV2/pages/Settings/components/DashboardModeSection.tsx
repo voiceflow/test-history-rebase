@@ -20,7 +20,7 @@ const OPTIONS = [
 
 const DESCRIPTIONS = {
   [DashboardTypes.KANBAN]: 'Use a Kanban board and swimlanes to create your teams customized workflow.',
-  [DashboardTypes.CARD]: 'Visualize your assistants as simple cards that can be searched and filtered.',
+  [DashboardTypes.CARD]: 'Visualize your agents as simple cards that can be searched and filtered.',
 };
 
 const DashboardModeSection: React.FC = () => {

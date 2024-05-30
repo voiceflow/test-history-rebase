@@ -33,7 +33,7 @@ const EntitySelector: React.FC<EntitySelectorProps> = ({ value, options, onEdit,
       renderOptionLabel={(option, searchLabel, _, getOptionValue, config) =>
         defaultMenuLabelRenderer<EntityOption, string>(option, searchLabel, (value) => value && optionsMap[value]?.name, getOptionValue, config)
       }
-      renderEmpty={({ search }) => <Menu.NotFound>{!search ? 'No entities exist in your assistant. ' : 'No entities found. '}</Menu.NotFound>}
+      renderEmpty={({ search }) => <Menu.NotFound>{!search ? 'No entities exist in your agent. ' : 'No entities found. '}</Menu.NotFound>}
       renderSearchSuffix={({ close, searchLabel }) => (
         <System.IconButtonsGroup.Base>
           <System.IconButton.Base icon="plus" onClick={Utils.functional.chainVoid(close, () => onCreate(searchLabel))} />

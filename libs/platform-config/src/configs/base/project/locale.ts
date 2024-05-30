@@ -82,7 +82,7 @@ export const CONFIG = Types.satisfies<Config>()({
 
   isLanguage: false,
 
-  description: 'The language(s) that your assistant supports.',
+  description: 'The language(s) that your agent supports.',
 
   defaultLocales: ['en'],
 

@@ -100,7 +100,7 @@ const CanvasHeader: React.FC = () => {
           active={search?.isVisible}
           onClick={() => search?.toggle()}
           tooltip={{
-            content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.SEARCH]}>Search Assistant</TippyTooltip.WithHotkey>,
+            content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.SEARCH]}>Search Agent</TippyTooltip.WithHotkey>,
             offset: [0, -6],
           }}
         />

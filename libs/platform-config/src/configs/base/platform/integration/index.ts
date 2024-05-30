@@ -19,13 +19,13 @@ export interface Config {
 }
 
 export const CONFIG = Types.satisfies<Config>()({
-  connectTitle: 'Connect to Assistant',
+  connectTitle: 'Connect to Agent',
 
-  disconnectTitle: 'Disconnect from Assistant',
+  disconnectTitle: 'Disconnect from Agent',
 
   linkAccountButton: LinkAccountButton.CONFIG,
 
-  connectDescription: 'Sign in with Voiceflow to upload your assistant.',
+  connectDescription: 'Sign in with Voiceflow to upload your agent.',
 
   disconnectDescription: 'Resetting your Voiceflow Account is potentially dangerous. Do not disconnect unless you understand the risk.',
 });

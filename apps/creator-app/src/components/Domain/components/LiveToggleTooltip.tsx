@@ -22,8 +22,8 @@ const LiveToggleTooltip: React.FC<Props> = ({ live, children, offset, position }
         buttonText="More"
       >
         {live
-          ? 'When toggled on, this domain is accessible during tests, and to customers if the assistant is in production.'
-          : 'When toggled off, this domains content is hidden during tests, or to customers if the assistant is in production.'}
+          ? 'When toggled on, this domain is accessible during tests, and to customers if the agent is in production.'
+          : 'When toggled off, this domains content is hidden during tests, or to customers if the agent is in production.'}
       </TippyTooltip.FooterButton>
     }
     delay={[500, 0]}

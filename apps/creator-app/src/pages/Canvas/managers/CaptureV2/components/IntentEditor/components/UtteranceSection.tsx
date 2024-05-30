@@ -96,7 +96,7 @@ const UtteranceSection: React.FC<UtteranceSectionProps> = ({ slot, utterances, o
                 <ErrorMessage mb={0}>{addError}</ErrorMessage>
               ) : (
                 <ErrorMessage mb={0}>
-                  Add utterances using the <Text color={ThemeColor.PRIMARY}>{`{${slot.name}}`}</Text> entity to improve your assistants capture
+                  Add utterances using the <Text color={ThemeColor.PRIMARY}>{`{${slot.name}}`}</Text> entity to improve your agents capture
                   accuracy.
                 </ErrorMessage>
               ))}

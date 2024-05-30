@@ -14,7 +14,7 @@ const getTrainText = createPlatformSelector(
     [Platform.Constants.PlatformType.ALEXA]: 'Train Alexa Skill',
     [Platform.Constants.PlatformType.GOOGLE]: 'Train Google Action',
   },
-  'Train Assistant'
+  'Train Agent'
 );
 
 interface TrainedProps {
@@ -40,11 +40,11 @@ const Trained: React.FC<TrainedProps> = ({ platform, isTrained, nluTrainingDiffD
           <img src={lightbulbGraphic} alt="user" width="80" />
 
           <Text fontSize={16} color="#132144" fontWeight={600} mt={16}>
-            Your assistant needs training
+            Your agent needs training
           </Text>
 
           <Text fontSize={13} color="#62778c" mt={8} mb={16} lineHeight={1.54}>
-            Train your assistant for the highest fidelity testing experience.{' '}
+            Train your agent for the highest fidelity testing experience.{' '}
             <System.Link.Anchor href={Documentation.ASSISTANT_TRAINING}>Learn more.</System.Link.Anchor>
           </Text>
         </>
@@ -55,7 +55,7 @@ const Trained: React.FC<TrainedProps> = ({ platform, isTrained, nluTrainingDiffD
           </Box>
 
           <Text fontSize={13} color="#62778c" mt={20} mb={16} lineHeight={1.54}>
-            {isTrained ? 'Assistant is trained and ready for testing.' : 'Assistant model has changed. We highly recommend training your assistant.'}
+            {isTrained ? 'Agent is trained and ready for testing.' : 'Agent model has changed. We highly recommend training your agent.'}
           </Text>
         </>
       )}

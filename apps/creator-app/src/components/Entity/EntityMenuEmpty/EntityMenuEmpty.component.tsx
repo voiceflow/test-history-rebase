@@ -24,7 +24,7 @@ export const EntityMenuEmpty: React.FC<IEntityMenuEmpty> = ({ width, onCreated }
       <EmptyPage
         title="No entities exist"
         button={{ label: 'Create entity', onClick: onCreate }}
-        description="Entities help your assistant know which data to pluck out from the users response. "
+        description="Entities help your agent know which data to pluck out from the users response. "
         illustration="NoContent"
         learnMoreLink={CMS_ENTITY_LEARN_MORE}
       />

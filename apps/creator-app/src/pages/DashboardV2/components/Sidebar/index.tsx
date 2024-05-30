@@ -53,7 +53,7 @@ const DashboardNavigationSidebar: React.FC = () => {
     <NavigationSidebar isMainMenu>
       <S.GroupsContainer>
         <S.Group>
-          <NavigationSidebar.NavItem to={generatePath(Path.WORKSPACE_DASHBOARD, { workspaceID })} icon="goToBlock" title="Assistants" exact />
+          <NavigationSidebar.NavItem to={generatePath(Path.WORKSPACE_DASHBOARD, { workspaceID })} icon="goToBlock" title="Agents" exact />
 
           <NavigationSidebar.NavItem
             to={generatePath(Path.WORKSPACE_MEMBERS, { workspaceID })}

@@ -7,7 +7,7 @@ import * as Voice from './voice';
 export const CONFIG = Base.Project.extend({
   ...VoiceflowCommon.Project.CONFIG,
 
-  name: 'Voice Assistant',
+  name: 'Voice Agent',
 
   voice: Voice.CONFIG,
 })(Base.Project.validate);

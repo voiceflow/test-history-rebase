@@ -99,7 +99,7 @@ export const AssistantCard = ({ project, isHovered, onClickCard, onClickDesigner
             onClick={stopPropagation(Utils.functional.chain(TippyTooltip.closeAll, () => paymentModal.openVoid({})))}
             buttonText="Upgrade to Pro"
           >
-            Assistant limit reached. Upgrade to Pro to unlock all assistants.
+            Agent limit reached. Upgrade to Pro to unlock all agents.
           </TippyTooltip.FooterButton>
         ),
       };

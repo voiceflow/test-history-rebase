@@ -57,7 +57,7 @@ const Basic: React.FC = () => {
   return (
     <Settings.Section title="Name & Language">
       <Settings.Card>
-        <Settings.SubSection header="Assistant Name" splitView>
+        <Settings.SubSection header="Agent Name" splitView>
           <Box.Flex gap={12} fullWidth>
             <Input value={projectName} onChangeText={setProjectName} onBlur={saveSettings} style={{ flexGrow: 1 }} />
 

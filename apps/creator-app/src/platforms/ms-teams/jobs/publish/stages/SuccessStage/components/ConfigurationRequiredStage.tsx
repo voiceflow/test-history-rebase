@@ -11,7 +11,7 @@ export interface ConfigurationRequiredStageProps extends StageComponentProps<NLP
 export const ConfigurationRequiredStage: React.FC<ConfigurationRequiredStageProps> = ({ onClick }) => (
   <StageConfigurationRequired
     platformName="Microsoft Teams"
-    description="Connect your assistant to your Microsoft Teams account."
+    description="Connect your agent to your Microsoft Teams account."
     buttonText="Connect to Microsoft Teams"
     redirectCallback={onClick}
   />

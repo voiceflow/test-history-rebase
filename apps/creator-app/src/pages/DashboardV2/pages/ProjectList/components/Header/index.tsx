@@ -51,7 +51,7 @@ const Header: React.FC<HeaderProps> = ({ search, onSearch, isKanban }) => {
 
   return (
     <Page.Header renderLogoButton={() => <WorkspaceSelector />}>
-      <Page.Header.Title leftOffset>All Assistants</Page.Header.Title>
+      <Page.Header.Title leftOffset>All Agents</Page.Header.Title>
 
       <Page.Header.RightSection rightOffset={false} mr={12}>
         <Box.Flex gap={4} mr={12}>
@@ -71,7 +71,7 @@ const Header: React.FC<HeaderProps> = ({ search, onSearch, isKanban }) => {
 
           {canCreateProject && (
             <Button variant={Button.Variant.PRIMARY} squareRadius onClick={onCreateProject}>
-              New Assistant
+              New Agent
             </Button>
           )}
         </Box.Flex>

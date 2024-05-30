@@ -5,7 +5,7 @@ const HelpTooltip: React.FC = () => (
   <>
     <Tooltip.Title>Response</Tooltip.Title>
     <Tooltip.Section marginBottomUnits={2}>
-      When selected, you can define ‘No Reply Responses’ for when a user takes no action. The delay time (seconds), determines how long the assistant
+      When selected, you can define ‘No Reply Responses’ for when a user takes no action. The delay time (seconds), determines how long the agent
       will wait before sending the first no reply response. If you have multiple no reply responses, this will also be time between each no reply
       response- assuming the user continues to take no action.
     </Tooltip.Section>

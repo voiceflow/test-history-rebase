@@ -15,7 +15,7 @@ const ErrorStage: React.FC<StageComponentProps<any>> = ({ stage }) => {
         <img alt="takeoff" height={80} src={uploadFail} />
       </Box.FlexCenter>
       <Text mt={16} mb={8} color={ThemeColor.PRIMARY} fontWeight={600}>
-        Assistant failed to upload
+        Agent failed to upload
       </Text>
       <Text textAlign="center" mb={20} color={ThemeColor.SECONDARY}>
         Please wait a moment and try again. If the issue continues please contact our support team.

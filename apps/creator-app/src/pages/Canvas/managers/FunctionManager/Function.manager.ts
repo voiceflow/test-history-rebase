@@ -16,7 +16,7 @@ const FunctionManager: NodeManagerConfigV3<Realtime.NodeData.Function> = {
 
   getSearchParams: ({ name }) => [name ?? ''],
 
-  tooltipText: 'Connect functions to your assistant.',
+  tooltipText: 'Connect functions to your agent.',
   tooltipLink: CMS_FUNCTIONS_LEARN_MORE,
 };
 

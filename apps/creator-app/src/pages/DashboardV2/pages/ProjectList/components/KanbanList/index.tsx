@@ -86,11 +86,11 @@ export const ProjectListList: React.FC = () => {
 
   const onDeleteBoard = React.useCallback(({ name, id, projects }: { id: string; name?: string; projects?: Realtime.AnyProject[] }) => {
     confirmModal.openVoid({
-      header: 'Delete Assistant List',
+      header: 'Delete Agent List',
 
       body: (
         <>
-          This action can not be undone, <b>"{name}"</b> and all {!!projects && projects.length} assistants can not be recovered.
+          This action can not be undone, <b>"{name}"</b> and all {!!projects && projects.length} agents can not be recovered.
         </>
       ),
 
@@ -213,10 +213,10 @@ export const ProjectListList: React.FC = () => {
         {projects.length === 0 ? (
           <EmptyScreen
             id={Identifier.NEW_PROJECT_BUTTON}
-            body="This workspace has no assistants, create one."
-            title="No Assistants Found"
+            body="This workspace has no agents, create one."
+            title="No Agents Found"
             onClick={() => onCreateProject()}
-            buttonText="New Assistant"
+            buttonText="New Agent"
           />
         ) : (
           <div className={DashboardClassName.LISTS_CONTAINER}>

@@ -23,7 +23,7 @@ const CardV2Manager: NodeManagerConfigV2<Realtime.NodeData.CardV2, Realtime.Node
       : serializeToText(description, { variablesMap: Diagram.active.allSlotsAndVariablesNormalizedSelector(state).byKey }),
   ],
 
-  tooltipText: 'Add card steps to your assistant.',
+  tooltipText: 'Add card steps to your agent.',
   tooltipLink: Documentation.CARD_STEP,
 };
 

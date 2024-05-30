@@ -12,7 +12,7 @@ export { Adapters, Models, Utils };
 export const CONFIG = Base.Type.extend({
   is: TypeGuards.isValueFactory(ProjectType.VOICE as const),
 
-  name: 'Voice Assistant',
+  name: 'Voice Agent',
 
   type: ProjectType.VOICE,
 
@@ -20,7 +20,7 @@ export const CONFIG = Base.Type.extend({
 
   adapters: Adapters.CONFIG,
 
-  description: 'Voice assistants can be connected to any channel or custom interface via API.',
+  description: 'Voice agents can be connected to any channel or custom interface via API.',
 })(Base.Type.validate);
 
 export type Config = typeof CONFIG;

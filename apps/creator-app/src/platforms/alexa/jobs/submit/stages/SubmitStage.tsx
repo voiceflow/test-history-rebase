@@ -24,7 +24,7 @@ const SubmitForReviewModal = manager.create<SubmitForReviewModalProps>(
           <Box.FlexCenter p={36} flexDirection="column" textAlign="center" color="#8da2b5">
             <img id="rocket" alt="submitted" height={120} src={takeoffGraphic} />
 
-            <Box mt={24}>Your assistant has been submitted for review. During this time, you will not be able to make any additional uploads.</Box>
+            <Box mt={24}>Your agent has been submitted for review. During this time, you will not be able to make any additional uploads.</Box>
             <Box mt={16}>
               <Link href={ALEXA_SUBMISSION_URL(skillID, locale)} target="_blank" rel="noopener noreferrer">
                 Check the status of your submission.

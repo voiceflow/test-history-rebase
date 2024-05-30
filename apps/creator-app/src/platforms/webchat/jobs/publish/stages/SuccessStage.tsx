@@ -25,7 +25,7 @@ const SuccessStage: React.FC<StageComponentProps<NLPTrainJob.SuccessStage>> = ({
   const goToConsole = useDispatch(Router.goToActivePlatformPublish);
 
   return (
-    <UploadedStage description="A new version of your assistant has been successfully published">
+    <UploadedStage description="A new version of your agent has been successfully published">
       {hideExports.isEnabled ? null : (
         <>
           {firstTime ? (

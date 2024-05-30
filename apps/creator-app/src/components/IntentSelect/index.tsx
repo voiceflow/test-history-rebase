@@ -117,7 +117,7 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
         formatInputValue={(value) => applyPlatformIntentNameFormatting(value, platform)}
         isButtonDisabled={({ value }) => isIntentNameTaken(value)}
         createInputPlaceholder={createInputPlaceholder}
-        renderEmpty={({ search }) => <Menu.NotFound>{!search ? 'No intents exist in your assistant. ' : 'No intents found. '}</Menu.NotFound>}
+        renderEmpty={({ search }) => <Menu.NotFound>{!search ? 'No intents exist in your agent. ' : 'No intents found. '}</Menu.NotFound>}
         renderOptionLabel={(option, searchLabel, getOptionLabel, getOptionValue, { isFocused }) => (
           <Option option={option} isFocused={isFocused} searchLabel={searchLabel} getOptionLabel={getOptionLabel} getOptionValue={getOptionValue} />
         )}

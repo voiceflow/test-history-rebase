@@ -805,7 +805,7 @@
       "publishing": {
         "avatar": "https://cdn.voiceflow.com/assets/logomark.png",
         "color": "#2E7FF1",
-        "description": "Our virtual assistant is here to help you.",
+        "description": "Our virtual agent is here to help you.",
         "feedback": false,
         "image": "https://cdn.voiceflow.com/assets/logomark.png",
         "persistence": "localStorage",

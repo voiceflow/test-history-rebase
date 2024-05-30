@@ -34,7 +34,7 @@ export const CMSEntityTable: React.FC = () => {
         testID: tid(EMPTY_TEST_ID, 'create-entity'),
       }}
       searchTitle="No entities found"
-      description="Entities help your assistant know which data to pluck out from the users response. "
+      description="Entities help your agent know which data to pluck out from the users response. "
       illustration="NoContent"
       learnMoreLink={CMS_ENTITY_LEARN_MORE}
     >

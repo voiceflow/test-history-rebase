@@ -13,7 +13,7 @@ const getPlatformLabel = createPlatformSelector(
     [Platform.Constants.PlatformType.ALEXA]: 'Skill',
     [Platform.Constants.PlatformType.GOOGLE]: 'Google Action',
   },
-  'Assistant'
+  'Agent'
 );
 
 const Action: ConnectedAction<Realtime.NodeData.Exit> = ({ data, reversed, platform, isActive }) => (

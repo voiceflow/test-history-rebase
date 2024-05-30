@@ -36,7 +36,7 @@ const IntentsCell: React.FC<TableTypes.ItemProps<Topic>> = ({ item }) => {
             {item.intents.length}
           </System.Link.Button>
         )}
-        renderEmpty={({ search }) => <Menu.NotFound>{!search ? 'No intents exist in your assistant. ' : 'No intents found. '}</Menu.NotFound>}
+        renderEmpty={({ search }) => <Menu.NotFound>{!search ? 'No intents exist in your agent. ' : 'No intents found. '}</Menu.NotFound>}
       />
     </Box.FlexEnd>
   );

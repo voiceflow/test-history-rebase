@@ -38,7 +38,7 @@ const Members: React.FC<MembersProps> = ({ onAdd, onNext, onClose, members, onRe
         </Button>
 
         <Button disabled={disabled} onClick={() => onNext()}>
-          Create Assistant
+          Create Agent
         </Button>
       </Modal.Footer>
     </>

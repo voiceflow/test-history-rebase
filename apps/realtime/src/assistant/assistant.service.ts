@@ -889,7 +889,7 @@ export class AssistantService extends MutableService<AssistantORM> {
     } catch {
       await this.project.deleteOne(project._id.toJSON());
 
-      throw new InternalServerErrorException("Couldn't clone the assistant.");
+      throw new InternalServerErrorException("Couldn't clone the agent.");
     }
 
     let version: VersionObject;
@@ -909,7 +909,7 @@ export class AssistantService extends MutableService<AssistantORM> {
       await this.deleteOne(assistant.id);
       await this.project.deleteOne(project._id.toJSON());
 
-      throw new InternalServerErrorException("Couldn't clone the assistant.");
+      throw new InternalServerErrorException("Couldn't clone the agent.");
     }
 
     try {

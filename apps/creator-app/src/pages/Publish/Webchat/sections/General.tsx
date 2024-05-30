@@ -58,7 +58,7 @@ export const GeneralSection: React.FC = () => {
   const isEntitled = React.useMemo(() => !!plan && isPlanFactory(PRO_PLUS_PLANS)(plan), [plan]);
 
   return (
-    <Section icon="filter" title="General" description="Add a name and description for your assistant">
+    <Section icon="filter" title="General" description="Add a name and description for your agent">
       <Settings.SubSection header="Name" headerProps={{ px: 0, pt: 0 }} contentProps={{ px: 0 }}>
         <Input value={title} onChangeText={setTitle} onBlur={withTargetValue(updateProperty('title'))} />
       </Settings.SubSection>

@@ -96,7 +96,7 @@ export const SHORTCUTS: ShortcutItem[] = [
     ),
   },
   {
-    title: 'Run Assistant',
+    title: 'Run Agent',
     command: <ShortcutCommand>R</ShortcutCommand>,
   },
   {

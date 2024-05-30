@@ -17,7 +17,7 @@ export const publishingSelector = createSelector(
   (publishing, projectName) => ({
     ...publishing,
     // default values
-    title: publishing?.title ?? projectName ?? 'Voiceflow Assistant',
+    title: publishing?.title ?? projectName ?? 'Voiceflow Agent',
     image: publishing?.image ?? DEFAULT_AVATAR,
     color: publishing?.color ?? '#2E7FF1',
     avatar: publishing?.avatar ?? DEFAULT_AVATAR,
@@ -29,7 +29,7 @@ export const publishingSelector = createSelector(
     watermark: publishing?.watermark ?? true,
     feedback: publishing?.feedback ?? false,
     persistence: publishing?.persistence ?? VoiceflowVersion.ChatPersistence.LOCAL_STORAGE,
-    description: publishing?.description ?? 'Our virtual assistant is here to help you.',
+    description: publishing?.description ?? 'Our virtual agent is here to help you.',
   })
 );
 

@@ -12,7 +12,7 @@ export const Tooltip: React.FC = () => (
     content={
       <TippyTooltip.FooterButton buttonText="More" onClick={onOpenInternalURLInANewTabFactory(CUSTOM_BLOCK_EDITOR)}>
         <TippyTooltip.Title>Custom Blocks</TippyTooltip.Title>
-        Add custom blocks that can be re-used and configured per instance in your assistant.
+        Add custom blocks that can be re-used and configured per instance in your agent.
       </TippyTooltip.FooterButton>
     }
   >

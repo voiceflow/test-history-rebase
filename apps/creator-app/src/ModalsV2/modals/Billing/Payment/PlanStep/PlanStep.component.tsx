@@ -47,7 +47,7 @@ export const PlanStep: React.FC<PlanStepProps> = ({ onClose, promptType }) => {
         <Box.Flex mb={20} gap={16} column fullWidth>
           {(!isOnPaidPlan || isOnTrial) && (
             <PlanCard title="Free" badge={<Badge.Descriptive color="gray">Current</Badge.Descriptive>} amount={0}>
-              For individuals and hobbyists creating a single assistant.{' '}
+              For individuals and hobbyists creating a single agent.{' '}
               <Link href="https://www.voiceflow.com/pricing" $hidden>
                 View details
               </Link>
@@ -70,7 +70,7 @@ export const PlanStep: React.FC<PlanStepProps> = ({ onClose, promptType }) => {
               active={selectedPlanID === id}
               onClick={id === plan && !isOnTrial ? undefined : () => setSelectedPlanID(id)}
             >
-              {teamsPlanSelfServeIsEnabled ? description : 'For individuals and small teams creating assistants'}{' '}
+              {teamsPlanSelfServeIsEnabled ? description : 'For individuals and small teams creating agents'}{' '}
               <Link href="https://www.voiceflow.com/pricing" $hidden>
                 View details
               </Link>

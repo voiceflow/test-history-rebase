@@ -100,7 +100,7 @@ const BlockSelect: React.FC<BlockSelectProps> = ({
         renderEmpty={
           renderEmpty ??
           (({ search }: { search: string }) => (
-            <Menu.NotFound>{!search ? 'No blocks exists in your assistant. ' : 'No blocks found. '}</Menu.NotFound>
+            <Menu.NotFound>{!search ? 'No blocks exists in your agent. ' : 'No blocks found. '}</Menu.NotFound>
           ))
         }
       />
@@ -128,7 +128,7 @@ const BlockSelect: React.FC<BlockSelectProps> = ({
       createInputPlaceholder={createInputPlaceholder}
       renderEmpty={
         renderEmpty ??
-        (({ search }: { search: string }) => <Menu.NotFound>{!search ? 'No blocks exists in your assistant. ' : 'No blocks found. '}</Menu.NotFound>)
+        (({ search }: { search: string }) => <Menu.NotFound>{!search ? 'No blocks exists in your agent. ' : 'No blocks found. '}</Menu.NotFound>)
       }
     />
   );

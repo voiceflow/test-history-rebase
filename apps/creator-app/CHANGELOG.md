@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1533.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1533.0...@voiceflow/creator-app@1.1533.1) (2024-05-30)
+
+### Bug Fixes
+
+* don't close the EditSidebar when pasting into a SlateEditor (COR-2205) ([#8192](https://github.com/voiceflow/creator-app/issues/8192)) ([cdd69ad](https://github.com/voiceflow/creator-app/commit/cdd69add9bf0fa0b595f3b06ef7af356cc7847b3))
+
 # [1.1533.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1532.0...@voiceflow/creator-app@1.1533.0) (2024-05-29)
 
 ### Features

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.375.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.375.0...@voiceflow/realtime@1.375.1) (2024-05-30)
+
+### Bug Fixes
+
+* update processing status of deleted kb document [bugfix] (COR-000) ([#8203](https://github.com/voiceflow/creator-app/issues/8203)) ([2090ac7](https://github.com/voiceflow/creator-app/commit/2090ac712edd50028e368a81f56d08e3387b5c84))
+
 # [1.375.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.374.0...@voiceflow/realtime@1.375.0) (2024-05-30)
 
 ### Features

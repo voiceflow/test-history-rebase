@@ -1,3 +1,4 @@
+import { stopImmediatePropagation } from '@voiceflow/ui';
 import { forwardRef, SlateEditor } from '@voiceflow/ui-next';
 import type { SlateEditorRef } from '@voiceflow/ui-next/build/cjs/components/Inputs/SlateEditor';
 import React from 'react';
@@ -21,6 +22,6 @@ export const MarkupInputWithVariables = forwardRef<SlateEditorRef, IMarkupInputW
       autoFocusIfEmpty,
     });
 
-    return <SlateEditor.Component {...props} {...markupWithVariablesProps} />;
+    return <SlateEditor.Component onPaste={stopImmediatePropagation()} {...props} {...markupWithVariablesProps} />;
   }
 );

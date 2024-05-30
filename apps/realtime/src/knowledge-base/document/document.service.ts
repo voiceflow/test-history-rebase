@@ -603,16 +603,16 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
   /* Find */
 
   async findOneDocument(assistantID: string, documentID: string) {
-    try {
-      const [document, chunks] = await Promise.all([
-        this.orm.findOneDocument(assistantID, documentID),
-        this.findDocumentChunks(assistantID, documentID),
-      ]);
+    const [document, chunks] = await Promise.all([
+      this.orm.findOneDocument(assistantID, documentID),
+      this.findDocumentChunks(assistantID, documentID),
+    ]);
 
-      return document ? { ...knowledgeBaseDocumentAdapter.fromDB(document), chunks } : undefined;
-    } catch (error) {
+    if (!document) {
       throw new NotFoundException("Document doesn't exist");
     }
+
+    return { ...knowledgeBaseDocumentAdapter.fromDB(document), chunks };
   }
 
   async findOneDocumentWithTags(assistantID: string, documentID: string) {

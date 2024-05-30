@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1533.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1533.1...@voiceflow/creator-app@1.1533.2) (2024-05-30)
+
+### Bug Fixes
+
+* dont add empty utterances on submit (COR-2163) ([#8185](https://github.com/voiceflow/creator-app/issues/8185)) ([b9891b8](https://github.com/voiceflow/creator-app/commit/b9891b806fca072177ca9e9263308d83b4d68740))
+
 ## [1.1533.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1533.0...@voiceflow/creator-app@1.1533.1) (2024-05-30)
 
 ### Bug Fixes

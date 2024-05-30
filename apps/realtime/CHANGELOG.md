@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.375.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.374.0...@voiceflow/realtime@1.375.0) (2024-05-30)
+
+### Features
+
+* replace assistant with agent (COR-2207) ([#8196](https://github.com/voiceflow/creator-app/issues/8196)) ([ef9a50d](https://github.com/voiceflow/creator-app/commit/ef9a50d9216ac6d9d30671985f9e1c6f2fca20b7))
+
 # [1.374.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.373.0...@voiceflow/realtime@1.374.0) (2024-05-29)
 
 ### Features

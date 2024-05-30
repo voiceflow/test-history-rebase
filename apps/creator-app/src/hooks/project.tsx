@@ -204,7 +204,7 @@ export const useProjectOptions = ({
     }),
 
     ...Utils.array.conditionalItem(withSettingsOption, {
-      label: 'Assistant settings',
+      label: 'Agent settings',
       onClick: () => goToSettings(targetVersionID),
       testID: 'settings',
     }),
@@ -233,13 +233,13 @@ export const useProjectOptions = ({
     ),
 
     ...Utils.array.conditionalItem(withRenameOption, {
-      label: 'Rename assistant',
+      label: 'Rename agent',
       onClick: onRename,
       testID: 'rename',
     }),
 
     ...Utils.array.conditionalItem(withDuplicateOption, {
-      label: 'Duplicate assistant',
+      label: 'Duplicate agent',
       onClick: onDuplicate,
       testID: 'duplicate',
     }),

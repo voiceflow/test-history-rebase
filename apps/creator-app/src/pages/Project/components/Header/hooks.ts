@@ -41,7 +41,7 @@ export const useLogoButtonOptions = ({
     { key: 'logo-divider-1', label: 'logo-divider-1', divider: true },
 
     toggleSearch
-      ? { key: 'search', icon: 'search' as const, label: 'Search assistant', onClick: toggleSearch, note: HOTKEY_LABEL_MAP[Hotkey.SEARCH] }
+      ? { key: 'search', icon: 'search' as const, label: 'Search agent', onClick: toggleSearch, note: HOTKEY_LABEL_MAP[Hotkey.SEARCH] }
       : null,
 
     toggleSearch && options.length ? { key: 'logo-divider-2', label: 'logo-divider-2', divider: true } : null,

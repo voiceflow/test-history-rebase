@@ -21,7 +21,7 @@ const AvailabilitySection: React.FC<AvailabilitySectionProps> = ({ isEnabled, on
         <TippyTooltip.Multiline>
           <TippyTooltip.Title>{isEnabled ? 'Enabled' : 'Disabled'}</TippyTooltip.Title>
           {isEnabled
-            ? "When toggled on, this intent acts as 'Global', meaning it can be triggered from anywhere in the assistant."
+            ? "When toggled on, this intent acts as 'Global', meaning it can be triggered from anywhere in the agent."
             : "When toggled off, this intent acts as 'Local', meaning it can only be triggered if the user is actively in this topic."}
         </TippyTooltip.Multiline>
       }

@@ -32,6 +32,6 @@ export const CANVAS_PAID_STEPS = {
 
   upgradeTooltip: ({ stepType }) => ({
     ...getUpgradeModalProps(PlanType.PRO, Tracking.UpgradePrompt.LOCKED_STEPS),
-    description: `Extend the power of your assistants by adding ${LOCKED_STEPS_LABELS[stepType]}.`,
+    description: `Extend the power of your agents by adding ${LOCKED_STEPS_LABELS[stepType]}.`,
   }),
 } satisfies CanvasPaidStepsPermission;

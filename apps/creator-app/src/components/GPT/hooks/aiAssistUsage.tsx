@@ -96,7 +96,7 @@ export const useAIUsageTooltip = ({ onOpenModal }: { onOpenModal: VoidFunction }
       </Box>
     ) : (
       <TippyTooltip.FooterButton buttonText="Contact Sales" onClick={() => openURLInANewTab(BOOK_DEMO_LINK)}>
-        This workspace doesn’t have access to this assistant type. To enable access, contact a workspace owner or admin.
+        This workspace doesn’t have access to this agent type. To enable access, contact a workspace owner or admin.
       </TippyTooltip.FooterButton>
     ),
   };

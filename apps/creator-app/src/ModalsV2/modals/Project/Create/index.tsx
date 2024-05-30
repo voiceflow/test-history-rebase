@@ -112,7 +112,7 @@ const Create = manager.create<{ listID?: string }>('CreateProject', () => ({ api
             </System.IconButtonsGroup.Base>
           )}
 
-          <Modal.Header.Title large>Create Assistant</Modal.Header.Title>
+          <Modal.Header.Title large>Create Agent</Modal.Header.Title>
         </Modal.Header>
 
         <Switch active={state.screen}>

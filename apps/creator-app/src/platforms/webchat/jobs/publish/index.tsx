@@ -30,7 +30,7 @@ const Webchat: React.FC = () => {
         message: (
           <>
             Publish this version to production and use it with your <System.Link.Anchor href={WEBCHAT_LEARN_MORE}>Web Chat</System.Link.Anchor>.
-            Publishing activates your Assistant wherever the widget is installed.
+            Publishing activates your agent wherever the widget is installed.
           </>
         ),
       });

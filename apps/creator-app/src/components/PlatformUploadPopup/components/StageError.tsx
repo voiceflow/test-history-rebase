@@ -22,7 +22,7 @@ const getTitle = ({ errorType, message }: AnyErrorStageData, platform: Platform.
   }
 
   if (isPublishJobSubmittingProjectError(errorType)) {
-    return 'Submitting assistant error';
+    return 'Submitting agent error';
   }
 
   if (isPublishJobSubmittingReviewError(errorType)) {
@@ -36,7 +36,7 @@ const getError = <E extends AnyErrorStageData>(stageError: E, defaultMessage: st
   const { errorType, error } = stageError;
 
   if (IsPublishJobRenderingError(errorType)) {
-    return 'Assistant structure unable to build, please wait a while and try again. If the issue persists, then please contact us';
+    return 'Agent structure unable to build, please wait a while and try again. If the issue persists, then please contact us';
   }
 
   const strError = _isString(error) ? error : error?.message;

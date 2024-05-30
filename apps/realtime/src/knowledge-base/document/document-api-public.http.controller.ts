@@ -213,12 +213,12 @@ export class KnowledgeBaseDocumentApiPublicHTTPController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
     summary: 'Get many documents',
-    description: 'Get all assistant documents or get many documents by filters',
+    description: 'Get all agent documents or get many documents by filters',
   })
   @ZodApiQuery({ schema: DocumentFindManyPublicRequest })
   @ZodApiResponse({
     status: HttpStatus.OK,
-    description: 'Get all assistant documents or get many documents by filters',
+    description: 'Get all agent documents or get many documents by filters',
     schema: DocumentFindManyPublicResponse,
   })
   async getMany(

@@ -30,7 +30,7 @@ const DashboardV2MembersAndBillingMembers: React.FC = () => {
           mb={32}
           title="Unlock your teams potential"
           onClick={() => paymentModal.open({})}
-          subtitle="Upgrade to unlock unlimited assistant and so much more."
+          subtitle="Upgrade to unlock unlimited agent and so much more."
           buttonText="Upgrade Now"
           backgroundImage={bannerBg}
         />

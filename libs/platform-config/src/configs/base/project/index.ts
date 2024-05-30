@@ -32,7 +32,7 @@ export interface Config {
 }
 
 export const CONFIG = Types.satisfies<Config>()({
-  name: 'Assistant',
+  name: 'Agent',
 
   chat: Chat.CONFIG,
 
@@ -40,7 +40,7 @@ export const CONFIG = Types.satisfies<Config>()({
 
   locale: Locale.CONFIG,
 
-  description: 'Your assistant name is the name of the project that you will see on your workspace dashboard.',
+  description: 'Your agent name is the name of the project that you will see on your workspace dashboard.',
 
   invocationName: null,
 

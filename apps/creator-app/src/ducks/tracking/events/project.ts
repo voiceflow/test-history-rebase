@@ -119,7 +119,7 @@ export const trackProjectExported = createVersionEventTracker<{ exportType: Expo
     client.analytics.track(
       createVersionEvent(EventName.PROJECT_EXPORTED, {
         ...eventInfo,
-        export_type: exportType === ExportType.CANVAS ? 'Assistant Content' : 'Interaction Model',
+        export_type: exportType === ExportType.CANVAS ? 'Agent Content' : 'Interaction Model',
         export_format: exportFormat,
       })
     )

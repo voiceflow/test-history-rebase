@@ -8,15 +8,15 @@ import { PlanLimit, UpgradeModalDynamicLimit } from './types';
 import { applyEnterpriseLimits, applyPersonalLimits, applyProLimits, applyStarterLimits, applyTeamLimits } from './utils';
 
 const DEFAULT_MODAL = {
-  title: 'Need more assistants?',
-  header: 'New Assistant',
+  title: 'Need more agents?',
+  header: 'New Agent',
 };
 
 const STARTER_LIMIT = {
   upgradeModal: ({ limit }) => ({
     ...DEFAULT_MODAL,
     ...getLegacyUpgradeModalProps(PlanType.PRO, Tracking.UpgradePrompt.PROJECT_LIMIT),
-    description: `You've reached your ${limit} free assistant limit. Upgrade to pro for unlimited assistants.`,
+    description: `You've reached your ${limit} free agent limit. Upgrade to pro for unlimited agents.`,
   }),
 } satisfies UpgradeModalDynamicLimit;
 
@@ -24,7 +24,7 @@ const PERSONAL_PLUS_LIMIT = {
   upgradeModal: ({ limit }) => ({
     ...DEFAULT_MODAL,
     ...getLegacyUpgradeModalProps(PlanType.ENTERPRISE, Tracking.UpgradePrompt.PROJECT_LIMIT),
-    description: `You've reached your ${limit} assistant limit. Contact us to increase assistant limits.`,
+    description: `You've reached your ${limit} agent limit. Contact us to increase agent limits.`,
   }),
 } satisfies UpgradeModalDynamicLimit;
 

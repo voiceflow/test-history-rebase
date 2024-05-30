@@ -165,7 +165,7 @@ const GoToIntentSelect: React.FC<GoToIntentSelectProps> = ({
           renderEmpty ??
           (({ close, search }: { close: VoidFunction; search: string }) => (
             <Menu.NotFound>
-              {!search ? 'No open intents exists in your assistant. ' : 'No open intents found. '}
+              {!search ? 'No open intents exists in your agent. ' : 'No open intents found. '}
               <Link href={Documentation.OPEN_INTENT} onClick={close}>
                 Learn more
               </Link>
@@ -201,7 +201,7 @@ const GoToIntentSelect: React.FC<GoToIntentSelectProps> = ({
         renderEmpty ??
         (({ close, search }: { close: VoidFunction; search: string }) => (
           <Menu.NotFound>
-            {!search ? 'No open intents exists in your assistant. ' : 'No open intents found. '}
+            {!search ? 'No open intents exists in your agent. ' : 'No open intents found. '}
             <Link href={Documentation.OPEN_INTENT} onClick={close}>
               Learn more
             </Link>

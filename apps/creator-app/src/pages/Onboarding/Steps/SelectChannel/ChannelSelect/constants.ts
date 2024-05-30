@@ -86,7 +86,7 @@ export const getChannelMeta = Realtime.Utils.platform.createPlatformAndProjectTy
     description: 'Design, test and export or publish conversational agents',
   },
   [`${Platform.Constants.PlatformType.VOICEFLOW}:${Platform.Constants.ProjectType.CHAT}`]: {
-    name: 'Chat Assistant',
+    name: 'Chat Agent',
     icon: 'speak',
     platform: Platform.Constants.PlatformType.VOICEFLOW,
     projectType: Platform.Constants.ProjectType.CHAT,
@@ -94,10 +94,10 @@ export const getChannelMeta = Realtime.Utils.platform.createPlatformAndProjectTy
     iconType: IconType.ICON,
     iconSize: 20,
     iconColor: '#85848c',
-    description: 'Design, test and export a custom chat assistant for any channel (Web, Mobile, SMS etc.)',
+    description: 'Design, test and export a custom chat agent for any channel (Web, Mobile, SMS etc.)',
   },
   [`${Platform.Constants.PlatformType.VOICEFLOW}:${Platform.Constants.ProjectType.VOICE}`]: {
-    name: 'Voice Assistant',
+    name: 'Voice Agent',
     icon: 'microphone',
     platform: Platform.Constants.PlatformType.VOICEFLOW,
     projectType: Platform.Constants.ProjectType.VOICE,
@@ -105,7 +105,7 @@ export const getChannelMeta = Realtime.Utils.platform.createPlatformAndProjectTy
     iconType: IconType.ICON,
     iconSize: 20,
     iconColor: '#85848c',
-    description: 'Design, test and export a custom voice assistant for any modality (IVR, In-App, In-Car, IOT etc.)',
+    description: 'Design, test and export a custom voice agent for any modality (IVR, In-App, In-Car, IOT etc.)',
   },
 });
 
@@ -113,7 +113,7 @@ export const PLATFORM_FEATURE_META: Record<PlatformFeature, PlatformFeatureMetaT
   [PlatformFeature.API]: {
     name: 'API',
     color: '#697986',
-    description: "Run your voice assistant on any custom interface with Voiceflow's Dialog Manager API",
+    description: "Run your voice agent on any custom interface with Voiceflow's Dialog Manager API",
   },
   [PlatformFeature.EXPORT]: {
     name: 'Export',

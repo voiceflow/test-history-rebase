@@ -35,7 +35,7 @@ export const CONFIG = Types.satisfies<Config>()({
 
   type: ProjectType.VOICE,
 
-  name: 'Voiceflow Assistant',
+  name: 'Voiceflow Agent',
 
   icon: { name: 'voiceflowLogomark' } as Icon,
 
@@ -45,5 +45,5 @@ export const CONFIG = Types.satisfies<Config>()({
 
   project: Project.CONFIG,
 
-  description: 'Voice assistants can be connected to any channel or custom interface via API.',
+  description: 'Voice agents can be connected to any channel or custom interface via API.',
 });

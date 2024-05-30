@@ -16,7 +16,7 @@ const SuccessStage: React.FC<StageComponentProps<NLPTrainJob.SuccessStage>> = ({
   const prototypeJob = React.useContext(PrototypeJobContext);
 
   return (
-    <UploadedStage description="A new version of your assistant has been published to WhatsApp">
+    <UploadedStage description="A new version of your agent has been published to WhatsApp">
       <Button fullWidth onClick={Utils.functional.chainVoid(prototypeJob?.start, cancel)}>
         Test on WhatsApp
       </Button>

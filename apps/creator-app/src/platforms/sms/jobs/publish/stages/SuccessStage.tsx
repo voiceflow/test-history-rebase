@@ -16,7 +16,7 @@ const SuccessStage: React.FC<StageComponentProps<SMSPublishJob.SuccessStage>> = 
   const prototypeJob = React.useContext(PrototypeJobContext);
 
   return (
-    <UploadedStage title="Successfully Published" description="A new version of your assistant has been published to Twilio SMS">
+    <UploadedStage title="Successfully Published" description="A new version of your agent has been published to Twilio SMS">
       <Button squareRadius fullWidth onClick={Utils.functional.chainVoid(prototypeJob?.start, cancel)}>
         Test on Phone
       </Button>

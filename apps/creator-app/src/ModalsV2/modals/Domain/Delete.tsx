@@ -36,7 +36,7 @@ const Delete = manager.create<Props>('DomainDelete', () => ({ api, type, opened,
       <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />}>Delete Domain</Modal.Header>
 
       <Modal.Body>
-        <BlockText>Warning, "{domain?.name ?? 'Unknown'}" and all its content will be removed from the assistant.</BlockText>
+        <BlockText>Warning, "{domain?.name ?? 'Unknown'}" and all its content will be removed from the agent.</BlockText>
       </Modal.Body>
 
       <Modal.Footer gap={12}>

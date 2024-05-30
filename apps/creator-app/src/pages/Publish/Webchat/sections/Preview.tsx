@@ -6,7 +6,7 @@ import * as Version from '@/ducks/versionV2';
 import { useSelector } from '@/hooks';
 
 const SYSTEM_MESSAGES = [
-  { type: 'text', text: 'Hi there, this is a sample message for your assistant.' },
+  { type: 'text', text: 'Hi there, this is a sample message for your agent.' },
   { type: 'text', text: 'How can I help you today?' },
 ] as React.ComponentProps<typeof SystemResponse>['messages'];
 

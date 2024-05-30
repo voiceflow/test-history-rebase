@@ -20,7 +20,7 @@ const CardForm: React.FC<CardFormProps> = ({ data, onChange, withImage }) => {
   return (
     <>
       <FormControl label="Title">
-        <VariablesInput value={data.title} onBlur={updateTitle} placeholder="Welcome to My Assistant!" />
+        <VariablesInput value={data.title} onBlur={updateTitle} placeholder="Welcome to My Agent!" />
       </FormControl>
 
       <FormControl label="Card Text" contentBottomUnits={!withImage ? 0 : undefined}>

@@ -76,7 +76,7 @@ export const STEP_META: StepMetaProps = {
     trackStep: ({ joinWorkspaceMeta }, { skip }) => Tracking.trackOnboardingJoin({ skip, role: joinWorkspaceMeta.role }),
   },
   [StepID.SELECT_CHANNEL]: {
-    title: () => 'Assistant Type',
+    title: () => 'Agent Type',
     canBack: true,
     canSkip: false,
     skipTo: () => null,

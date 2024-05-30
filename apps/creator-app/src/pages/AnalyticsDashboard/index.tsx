@@ -64,7 +64,7 @@ const AnalyticsDashboard: React.FC = () => {
           {/* Row 1 */}
           <AnalyticsDashboardTile
             title="Interactions"
-            description="Total number of engagements users have had with your assistant."
+            description="Total number of engagements users have had with your agent."
             width={2}
             height={1}
             query={interactions}
@@ -73,7 +73,7 @@ const AnalyticsDashboard: React.FC = () => {
           </AnalyticsDashboardTile>
           <AnalyticsDashboardTile
             title="Recognition rate"
-            description="The % of messages understood by your assistant."
+            description="The % of messages understood by your agent."
             labels={[
               { title: 'Recognized', color: DONUT_CHART_COLORS.GOOD },
               { title: 'Not understood', color: DONUT_CHART_COLORS.BAD },
@@ -86,15 +86,15 @@ const AnalyticsDashboard: React.FC = () => {
           </AnalyticsDashboardTile>
 
           {/* Row 2 */}
-          <AnalyticsDashboardTile title="Users" description="Unique user sessions with your assistant." width={1} height={1} query={users}>
+          <AnalyticsDashboardTile title="Users" description="Unique user sessions with your agent." width={1} height={1} query={users}>
             <Tiles.AnalyticsDashboardTileGraph query={users} size="small" testID="unique-users-chart" />
           </AnalyticsDashboardTile>
-          <AnalyticsDashboardTile title="Sessions" description="Unique user sessions with your assistant." width={1} height={1} query={sessions}>
+          <AnalyticsDashboardTile title="Sessions" description="Unique user sessions with your agent." width={1} height={1} query={sessions}>
             <Tiles.AnalyticsDashboardTileGraph query={sessions} size="small" testID="unique-sessions-chart" />
           </AnalyticsDashboardTile>
           <AnalyticsDashboardTile
             title="Top Intents"
-            description="The most popular queries users ask your assistant."
+            description="The most popular queries users ask your agent."
             width={1}
             height={1}
             query={topIntents}

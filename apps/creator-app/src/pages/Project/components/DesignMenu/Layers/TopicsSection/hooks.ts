@@ -190,7 +190,7 @@ export const useTopics = (): TopicsAPI & Omit<OpenedIDsToggleApi, 'onDragStart' 
           if (sharedNode?.type === Realtime.BlockType.START) {
             return {
               type,
-              name: sharedNode.name || (rootDiagramID === id ? 'Assistant starts here' : 'Start'),
+              name: sharedNode.name || (rootDiagramID === id ? 'Agent starts here' : 'Start'),
               nodeID: sharedNode.nodeID,
               nodeType: sharedNode.type,
               sourceID,

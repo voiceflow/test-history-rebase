@@ -18,7 +18,7 @@ const DangerZone: React.FC = () => {
         <Settings.SubSection contentProps={{ topOffset: 3 }}>
           <Box.FlexApart>
             <div>
-              <Settings.SubSection.Title>Delete Assistant</Settings.SubSection.Title>
+              <Settings.SubSection.Title>Delete Agent</Settings.SubSection.Title>
 
               <Settings.SubSection.Description>This action can't be reverted. Please proceed with caution.</Settings.SubSection.Description>
             </div>

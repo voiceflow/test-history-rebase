@@ -28,7 +28,7 @@ export const useNLUTrainingModelNotifications = () => {
             notify.long.warning(
               <>
                 Your slots <b>{message}</b> require custom values in order to be properly recognized during testing. Update the{' '}
-                <Link label="Interaction Model" onClick={() => goToCMSResource(CMSRoute.ENTITY, invalidSlotsIDs[0])} /> and train your assistant
+                <Link label="Interaction Model" onClick={() => goToCMSResource(CMSRoute.ENTITY, invalidSlotsIDs[0])} /> and train your agent
                 again.
               </>,
               { pauseOnHover: true, bodyClassName: 'vfui' }
@@ -46,7 +46,7 @@ export const useNLUTrainingModelNotifications = () => {
 
           if (nlpMessage === 'Training failed with reason: FewLabels') {
             message =
-              'Your Assistant was unable to be trained because you have Entities set as required, but you have not provided any Response Utterances. Please fix this and try training again.';
+              'Your agent was unable to be trained because you have Entities set as required, but you have not provided any Response Utterances. Please fix this and try training again.';
           }
 
           notify.long.warning(message, { pauseOnHover: true, bodyClassName: 'vfui' });

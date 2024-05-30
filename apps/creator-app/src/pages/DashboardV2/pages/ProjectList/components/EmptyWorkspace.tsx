@@ -6,11 +6,11 @@ const EmptyWorkspace: React.FC = () => (
     <SvgIcon icon="noContent" size={80} />
 
     <Text color="#132144" fontWeight={600} paddingTop="16px" paddingBottom="8px">
-      No assistants exist
+      No agents exist
     </Text>
 
     <Text color="#62778C" width="250px" textAlign="center">
-      Workspace assistants will appear here when one is created
+      Workspace agents will appear here when one is created
     </Text>
   </Box.FlexCenter>
 );

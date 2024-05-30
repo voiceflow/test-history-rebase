@@ -347,7 +347,7 @@
       "publishing": {
         "color": "#1E6BD8",
         "image": "https://cdn.voiceflow.com/assets/logomark.png",
-        "description": "Our virtual assistant is here to help you.",
+        "description": "Our virtual agent is here to help you.",
         "watermark": true,
         "position": "right",
         "persistence": "localStorage",

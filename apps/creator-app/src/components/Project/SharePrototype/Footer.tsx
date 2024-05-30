@@ -73,8 +73,8 @@ export const Footer: React.FC<FooterProps> = ({ isCanvas, testID }) => {
     if (!nluTrainingModel.isTrained) {
       toast.warn(
         <>
-          Assistant is not fully trained. This may cause unexpected behaviour when prototyping.
-          <ToastCallToAction onClick={() => nluTrainingModel.start({ origin: 'Share Prototype' })}>Train Assistant</ToastCallToAction>
+          Agent is not fully trained. This may cause unexpected behaviour when prototyping.
+          <ToastCallToAction onClick={() => nluTrainingModel.start({ origin: 'Share Prototype' })}>Train Agent</ToastCallToAction>
         </>
       );
     }

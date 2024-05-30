@@ -31,7 +31,7 @@ const allowedToClone = (workspace: Realtime.Workspace, creatorID: number | null)
   return hasRolePermission(Permission.PROJECTS_MANAGE, member.role);
 };
 
-const getCopyProjectTitle = (projectName?: string) => (!projectName ? 'Copy Assistant' : `Copy Assistant: ${projectName}`);
+const getCopyProjectTitle = (projectName?: string) => (!projectName ? 'Copy Agent' : `Copy Agent: ${projectName}`);
 
 export interface Props {
   projectID?: string;
@@ -93,7 +93,7 @@ const ImportModal = manager.create<Props>('ProjectImport', () => ({ api, type, o
 
       toast.success(
         <>
-          Cloned assistant <strong>"{importedProject.name}"</strong> successfully!
+          Cloned agent <strong>"{importedProject.name}"</strong> successfully!
           <ToastCallToAction
             onClick={() =>
               cmsWorkflows.isEnabled
@@ -101,7 +101,7 @@ const ImportModal = manager.create<Props>('ProjectImport', () => ({ api, type, o
                 : goToDomain({ versionID: importedProject.versionID })
             }
           >
-            Open Assistant
+            Open Agent
           </ToastCallToAction>
         </>
       );
@@ -114,7 +114,7 @@ const ImportModal = manager.create<Props>('ProjectImport', () => ({ api, type, o
         }
       } else {
         datadogRum.addError(err);
-        toast.error('unable to access assistant');
+        toast.error('unable to access agent');
       }
     } finally {
       loadingModal.close();
@@ -126,7 +126,7 @@ const ImportModal = manager.create<Props>('ProjectImport', () => ({ api, type, o
 
     // If user has 0 workspaces with Editor/Admin/Owner role, show toast
     if (workspaces.length === 0) {
-      toast.error('You do not have permission to copy assistant to any of your workspaces');
+      toast.error('You do not have permission to copy agent to any of your workspaces');
 
       // setTimeout needed to prevent race condition and creating unclickable overlay
       setTimeout(() => api.close(), 100);
@@ -145,7 +145,7 @@ const ImportModal = manager.create<Props>('ProjectImport', () => ({ api, type, o
 
       setProjectName(importingProject?.name);
     } catch {
-      toast.error('Not able to retrieve assistant information');
+      toast.error('Not able to retrieve agent information');
     }
   }, []);
 
@@ -173,7 +173,7 @@ const ImportModal = manager.create<Props>('ProjectImport', () => ({ api, type, o
         </Button>
 
         <Button onClick={() => cloneProject(targetWorkspace!)} squareRadius>
-          Copy Assistant
+          Copy Agent
         </Button>
       </Modal.Footer>
     </Modal>

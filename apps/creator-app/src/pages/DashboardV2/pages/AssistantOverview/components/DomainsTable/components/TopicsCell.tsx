@@ -37,7 +37,7 @@ const TopicCell: React.FC<TableTypes.ItemProps<Realtime.Domain>> = ({ item }) =>
             {item.topicIDs.length}
           </System.Link.Button>
         )}
-        renderEmpty={({ search }) => <Menu.NotFound>{!search ? 'No topics exist in your assistant. ' : 'No topics found. '}</Menu.NotFound>}
+        renderEmpty={({ search }) => <Menu.NotFound>{!search ? 'No topics exist in your agent. ' : 'No topics found. '}</Menu.NotFound>}
       />
     </Box.FlexEnd>
   );

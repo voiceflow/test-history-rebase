@@ -4,7 +4,7 @@ import React from 'react';
 const HelpTooltip: React.FC = () => (
   <>
     <Tooltip.Paragraph marginBottomUnits={3}>
-      The User Info block is used to fetch data that the user has given your assistant permission to access. In order to use the User Info block
+      The User Info block is used to fetch data that the user has given your agent permission to access. In order to use the User Info block
       effectively, you must first use the Permissions block to request access to the user's info. The Permissions block will send a card to the user's
       mobile phone where they can accept or decline the permissions request.
     </Tooltip.Paragraph>

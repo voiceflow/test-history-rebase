@@ -9,7 +9,7 @@ import HelpTooltip from './HelpTooltip';
 
 const Editor: NodeEditorV2<Realtime.NodeData.Exit> = () => (
   <EditorV2 header={<EditorV2.DefaultHeader />} footer={<EditorV2.DefaultFooter tutorial={{ content: <HelpTooltip /> }} />}>
-    <SectionV2.SimpleSection>End block ends the assistant in its current state.</SectionV2.SimpleSection>
+    <SectionV2.SimpleSection>End block ends the agent in its current state.</SectionV2.SimpleSection>
   </EditorV2>
 );
 

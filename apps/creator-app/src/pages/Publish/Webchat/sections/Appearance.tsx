@@ -56,7 +56,7 @@ export const AppearanceSection: React.FC = () => {
         </Box.Flex>
       </Settings.SubSection>
 
-      <Settings.SubSection header="Assistant Image" headerProps={{ px: 0, pt: 0 }} contentProps={{ px: 0 }}>
+      <Settings.SubSection header="Agent Image" headerProps={{ px: 0, pt: 0 }} contentProps={{ px: 0 }}>
         <Box.Flex>
           <Box.Flex position="relative">
             <S.PreviewCrop>
@@ -81,7 +81,7 @@ export const AppearanceSection: React.FC = () => {
         </Box.Flex>
       </Settings.SubSection>
 
-      <Settings.SubSection header="Assistant Avatar" headerProps={{ px: 0, pt: 0 }} contentProps={{ px: 0, pb: 0 }}>
+      <Settings.SubSection header="Agent Avatar" headerProps={{ px: 0, pt: 0 }} contentProps={{ px: 0, pb: 0 }}>
         <Box.Flex>
           <Box.Flex position="relative">
             <S.PreviewCrop>

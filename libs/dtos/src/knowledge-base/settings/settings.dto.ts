@@ -11,6 +11,7 @@ export const KnowledgeBaseSettingsDTO = z.object({
     model: z.nativeEnum(AIModel),
     temperature: z.number(),
     system: z.string(),
+    maxTokens: z.number().optional(),
   }),
   chunkStrategy: z.object({
     type: z.nativeEnum(KBSettingsChunkStrategy),

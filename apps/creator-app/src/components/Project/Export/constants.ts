@@ -8,7 +8,7 @@ export const CANVAS_EXPORT_OPTIONS_LABELS: Record<ExportFormat, string> = {
   [ExportFormat.PDF]: 'PDF',
   [ExportFormat.JSON]: 'JSON',
   [ExportFormat.DIALOGS]: 'Dialogs (CSV)',
-  [ExportFormat.VF]: 'Agent file (JSON)',
+  [ExportFormat.VF]: 'Agent file',
 };
 
 export const EXPORT_TYPE_OPTIONS = [

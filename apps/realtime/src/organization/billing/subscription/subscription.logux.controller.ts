@@ -15,24 +15,27 @@ export class BillingSubscriptionLoguxController {
   constructor(@Inject(BillingSubscriptionService) private readonly service: BillingSubscriptionService) {}
 
   @Action.Async(Actions.OrganizationSubscription.Checkout)
-  @Authorize.Permissions<Actions.Organization.PatchOne>([Permission.ORGANIZATION_UPDATE], ({ context }) => ({
-    id: context.organizationID,
-    kind: 'organization',
+  @Authorize.Permissions<Actions.Organization.PatchOne>([Permission.WORKSPACE_BILLING_UPDATE], ({ context }) => ({
+    id: context.workspaceID,
+    kind: 'workspace',
   }))
   @UseRequestContext()
   @Broadcast<Actions.OrganizationSubscription.CheckoutRequest>(({ context }) => ({
     channel: Channels.organization.build(context),
   }))
-  async checkout(@Payload() data: Actions.OrganizationSubscription.CheckoutRequest, @AuthMeta() authMeta: AuthMetaPayload): Promise<Subscription> {
+  async checkout(
+    @Payload() data: Actions.OrganizationSubscription.CheckoutRequest,
+    @AuthMeta() authMeta: AuthMetaPayload
+  ): Promise<Subscription> {
     const { organizationID, workspaceID } = data.context;
 
     return this.service.checkoutAndBroadcast(authMeta, organizationID, workspaceID, data);
   }
 
   @Action(Actions.OrganizationSubscription.Replace)
-  @Authorize.Permissions<Actions.OrganizationSubscription.Replace>([Permission.ORGANIZATION_UPDATE], ({ context }) => ({
-    id: context.organizationID,
-    kind: 'organization',
+  @Authorize.Permissions<Actions.OrganizationSubscription.Replace>([Permission.ORGANIZATION_READ], ({ context }) => ({
+    id: context.workspaceID,
+    kind: 'workspace',
   }))
   @Broadcast<Actions.OrganizationSubscription.Replace>(({ context }) => ({
     channel: Channels.organization.build(context),

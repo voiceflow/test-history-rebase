@@ -25,7 +25,9 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onClose, modalProps })
   const { selectedPlanPrice, selectedPeriod, selectedPlan } = usePricing();
   const { isEnabled: teamsPlanSelfServeIsEnabled } = useFeature(FeatureFlag.TEAMS_PLAN_SELF_SERVE);
   const [existingCardValue, setExistingCardValue] = React.useState<CardForm.ExistingCardValue>(
-    teamsPlanSelfServeIsEnabled && subscription?.paymentMethod ? CardForm.ExistingCardValue.EXISTING : CardForm.ExistingCardValue.NEW
+    teamsPlanSelfServeIsEnabled && subscription?.paymentMethod
+      ? CardForm.ExistingCardValue.EXISTING
+      : CardForm.ExistingCardValue.NEW
   );
   const [cardError, setCardError] = React.useState('');
 
@@ -53,10 +55,15 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onClose, modalProps })
     event.preventDefault();
     form.setSubmitting(true);
     await onSubmitForm(null, { shouldUseExistingCard: true });
+    if (modalProps.opened) {
+      form.setSubmitting(false);
+    }
   };
 
   return (
-    <form onSubmit={existingCardValue === CardForm.ExistingCardValue.EXISTING ? handleSubmitReusingCard : form.handleSubmit}>
+    <form
+      onSubmit={existingCardValue === CardForm.ExistingCardValue.EXISTING ? handleSubmitReusingCard : form.handleSubmit}
+    >
       <Modal.Body>
         <Box marginBottom={24}>
           <PlanCard
@@ -64,15 +71,22 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onClose, modalProps })
             amount={selectedPlanPrice?.amount ?? 0}
             period={selectedPeriod === BillingPeriodUnit.MONTH ? 'm' : 'y'}
           >
-            Your subscription will automatically renew every month. Next billing date: {dayjs(subscription?.nextBillingAt).format('MMM DD, YYYY')}.
+            Your subscription will automatically renew every month. Next billing date:{' '}
+            {dayjs(subscription?.nextBillingAt).format('MMM DD, YYYY')}.
           </PlanCard>
         </Box>
         {teamsPlanSelfServeIsEnabled && subscription?.paymentMethod && (
           <Box marginBottom={16}>
-            <CardForm.ExistingCard last4={subscription?.paymentMethod?.card?.last4} onChange={setExistingCardValue} value={existingCardValue} />
+            <CardForm.ExistingCard
+              last4={subscription?.paymentMethod?.card?.last4}
+              onChange={setExistingCardValue}
+              value={existingCardValue}
+            />
           </Box>
         )}
-        {existingCardValue === CardForm.ExistingCardValue.NEW && <CardForm.Base cardError={cardError} form={form} ref={cardRef} />}
+        {existingCardValue === CardForm.ExistingCardValue.NEW && (
+          <CardForm.Base cardError={cardError} form={form} ref={cardRef} />
+        )}
       </Modal.Body>
 
       <Modal.Footer gap={12}>
@@ -80,7 +94,14 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onClose, modalProps })
           Cancel
         </Button>
 
-        <Button width={144} type="submit" variant={Button.Variant.PRIMARY} disabled={form.isSubmitting} squareRadius isLoading={form.isSubmitting}>
+        <Button
+          width={144}
+          type="submit"
+          variant={Button.Variant.PRIMARY}
+          disabled={form.isSubmitting}
+          squareRadius
+          isLoading={form.isSubmitting}
+        >
           Confirm & Pay
         </Button>
       </Modal.Footer>

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1536.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1535.0...@voiceflow/creator-app@1.1536.0) (2024-05-31)
+
+### Features
+
+* use workspaceID for org permissions [bugfix] (COR-2231) ([#8197](https://github.com/voiceflow/creator-app/issues/8197)) ([997e987](https://github.com/voiceflow/creator-app/commit/997e98798352a215c0c30b5b22d74768b11c6f12))
+
 # [1.1535.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1534.1...@voiceflow/creator-app@1.1535.0) (2024-05-31)
 
 ### Features

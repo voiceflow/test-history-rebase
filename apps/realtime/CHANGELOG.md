@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.376.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.375.2...@voiceflow/realtime@1.376.0) (2024-05-31)
+
+### Features
+
+* use workspaceID for org permissions [bugfix] (COR-2231) ([#8197](https://github.com/voiceflow/creator-app/issues/8197)) ([997e987](https://github.com/voiceflow/creator-app/commit/997e98798352a215c0c30b5b22d74768b11c6f12))
+
 ## [1.375.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.375.1...@voiceflow/realtime@1.375.2) (2024-05-31)
 
 **Note:** Version bump only for package @voiceflow/realtime

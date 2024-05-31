@@ -6,12 +6,13 @@ import { useSelector } from '@/hooks/redux';
 import { useModal } from '@/ModalsV2/modal.hook';
 import type { Props as ConfirmProps } from '@/ModalsV2/modals/Confirm';
 import type { IConformV2Modal } from '@/ModalsV2/modals/ConfirmV2/ConfirmV2.interface';
+import type { IEntityBulkImportVariantsModal } from '@/ModalsV2/modals/Entity/EntityBulkImportVariants.modal';
 import type { IEntityCreateModal } from '@/ModalsV2/modals/Entity/EntityCreate.modal';
 import type { IEntityEditModal } from '@/ModalsV2/modals/Entity/EntityEdit.modal';
 import type { Props as ErrorProps } from '@/ModalsV2/modals/Error';
 import { IFlowCreateModal } from '@/ModalsV2/modals/Flow/FlowCreate/FlowCreate.modal';
 import type { IFolderCreateModal } from '@/ModalsV2/modals/Folder/FolderCreate.modal';
-import type { IntentBulkImportUtterancesModalProps } from '@/ModalsV2/modals/Intent/IntentBulkImportUtterances.modal';
+import type { IIntentBulkImportUtterancesModal } from '@/ModalsV2/modals/Intent/IntentBulkImportUtterances.modal';
 import type { IIntentCreateModal } from '@/ModalsV2/modals/Intent/IntentCreate/IntentCreate.interface';
 import type { IIntentEditModal } from '@/ModalsV2/modals/Intent/IntentEdit.modal';
 import type { Props as SuccessProps } from '@/ModalsV2/modals/Success';
@@ -50,6 +51,8 @@ export const useCreateVariableStateModal = () => useModal('VariableStateCreate')
 
 export const useEntityEditModal = () => useModal<IEntityEditModal>('EntityEditModal');
 export const useEntityCreateModal = () => useModal<IEntityCreateModal, Entity>('EntityCreateModal');
+export const useEntityBulkImportVariantsModal = () =>
+  useModal<IEntityBulkImportVariantsModal>('EntityBulkImportVariantsModal');
 
 export const useVariableEditModal = () => useModal<IVariableEditModal>('VariableEditModal');
 export const useVariableCreateModal = () => useModal<IVariableCreateModal, Variable>('VariableCreateModal');
@@ -58,11 +61,13 @@ export const useFolderCreateModal = () => useModal<IFolderCreateModal, Folder>('
 
 export const useFlowCreateModal = () => useModal<IFlowCreateModal, Flow>('FlowCreateModal');
 
-export const useWorkflowCreateModal = () => useModal<IWorkflowCreateModal, Workflow & { triggerNodeID: string | null }>('WorkflowCreateModal');
+export const useWorkflowCreateModal = () =>
+  useModal<IWorkflowCreateModal, Workflow & { triggerNodeID: string | null }>('WorkflowCreateModal');
 
 export const useIntentEditModal = () => useModal<IIntentEditModal>('IntentEditModal');
 export const useIntentCreateModal = () => useModal<IIntentCreateModal, Intent>('IntentCreateModal');
-export const useIntentBulkImportUtterancesModal = () => useModal<IntentBulkImportUtterancesModalProps>('IntentBulkImportUtterancesModal');
+export const useIntentBulkImportUtterancesModal = () =>
+  useModal<IIntentBulkImportUtterancesModal>('IntentBulkImportUtterancesModal');
 
 /**
  * @deprecated use useConfirmV2Modal instead

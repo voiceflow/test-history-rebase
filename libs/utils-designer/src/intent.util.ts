@@ -17,13 +17,13 @@ export const intentNameUniqIntentsValidator = validatorFactory(
 export const intentNameUniqEntitiesValidator = validatorFactory(
   (name: string, { entities }: { entities: Entity[] }) =>
     entities.every((entity) => entity.name.toLocaleLowerCase() !== name.toLocaleLowerCase()),
-  () => `Intent name already exists.`
+  (name) => `You have an entity defined with the '${name}' name.`
 );
 
 export const intentNameUniqVariablesValidator = validatorFactory(
   (name: string, { variables }: { variables: Variable[] }) =>
     variables.every((variable) => variable.name.toLocaleLowerCase() !== name.toLocaleLowerCase()),
-  (name) => `You have a variable defined with the '${name}' name already. Intent/Variable/Entity name must be unique.`
+  (name) => `You have a variable defined with the '${name}' name.`
 );
 
 export const intentNameValidator = composeValidators(

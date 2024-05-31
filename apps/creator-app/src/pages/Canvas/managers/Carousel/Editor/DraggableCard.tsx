@@ -7,7 +7,8 @@ import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandl
 import { SlateTextInput } from '@/components/SlateInputs';
 import VariablesInput from '@/components/VariablesInput';
 import { Diagram } from '@/ducks';
-import { useActiveProjectTypeConfig, useAutoScrollNodeIntoView, useImageDimensions } from '@/hooks';
+import { useActiveProjectTypeConfig, useAutoScrollNodeIntoView } from '@/hooks';
+import { useImageDimensions } from '@/hooks/file.hook';
 import { useSelector } from '@/hooks/store.hook';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
@@ -26,12 +27,27 @@ export interface CarouselStepDraggableCardrops
 }
 
 const CarouselStepDraggableCard: React.ForwardRefRenderFunction<HTMLElement, CarouselStepDraggableCardrops> = (
-  { item, index, editor, itemKey, onUpdate, isDragging, onContextMenu, connectedDragRef, latestCreatedKey, isDraggingPreview, isContextMenuOpen },
+  {
+    item,
+    index,
+    editor,
+    itemKey,
+    onUpdate,
+    isDragging,
+    onContextMenu,
+    connectedDragRef,
+    latestCreatedKey,
+    isDraggingPreview,
+    isContextMenuOpen,
+  },
   ref
 ) => {
   const dimensions = useImageDimensions({ url: item.imageUrl });
   const autofocus = latestCreatedKey === itemKey || editor.data.cards.length === 1;
-  const [sectionRef, scrollIntoView] = useAutoScrollNodeIntoView<HTMLDivElement>({ condition: autofocus, options: { block: 'end' } });
+  const [sectionRef, scrollIntoView] = useAutoScrollNodeIntoView<HTMLDivElement>({
+    condition: autofocus,
+    options: { block: 'end' },
+  });
   const isDF = isDialogflowPlatform(editor.platform);
   const config = useActiveProjectTypeConfig();
   const entitiesAndVariables = useSelector(Diagram.active.allSlotsAndVariablesNormalizedSelector);
@@ -54,9 +70,15 @@ const CarouselStepDraggableCard: React.ForwardRefRenderFunction<HTMLElement, Car
               <SectionV2.CollapseSection
                 ref={composeRef(ref, sectionRef) as React.Ref<HTMLDivElement>}
                 header={
-                  <SectionV2.Header ref={connectedDragRef} sticky sticked={sticked && !collapsed && !isDraggingPreview && !isDragging}>
+                  <SectionV2.Header
+                    ref={connectedDragRef}
+                    sticky
+                    sticked={sticked && !collapsed && !isDraggingPreview && !isDragging}
+                  >
                     <SectionV2.Title bold={!collapsed}>
-                      <OverflowText>{transformVariablesToReadable(item.title, entitiesAndVariables.byKey) || `Card ${index + 1}`}</OverflowText>
+                      <OverflowText>
+                        {transformVariablesToReadable(item.title, entitiesAndVariables.byKey) || `Card ${index + 1}`}
+                      </OverflowText>
                     </SectionV2.Title>
 
                     <SectionV2.CollapseArrowIcon collapsed={collapsed} />

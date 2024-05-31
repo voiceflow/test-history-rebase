@@ -1,6 +1,6 @@
 import composeRefs from '@seznam/compose-react-refs';
 import { Utils } from '@voiceflow/common';
-import { Utterance } from '@voiceflow/dtos';
+import { EntityVariant } from '@voiceflow/dtos';
 import { tid } from '@voiceflow/style';
 import { InputFormControl, notify, Scroll, TextArea } from '@voiceflow/ui-next';
 import pluralize from 'pluralize';
@@ -9,19 +9,18 @@ import React, { useMemo } from 'react';
 import { Modal } from '@/components/Modal';
 import { useDropCSVFile } from '@/hooks/file.hook';
 import { useInput, useInputState } from '@/hooks/input.hook';
-import { utteranceTextFactory } from '@/utils/utterance.util';
 
 import { modalsManager } from '../../manager';
 
-export interface IIntentBulkImportUtterancesModal {
-  onImport: (utterances: Pick<Utterance, 'text'>[]) => Promise<Utterance[]> | void;
+export interface IEntityBulkImportVariantsModal {
+  onImport: (variants: Pick<EntityVariant, 'value' | 'synonyms'>[]) => Promise<EntityVariant[]> | void;
 }
 
-export const IntentBulkImportUtterancesModal = modalsManager.create<IIntentBulkImportUtterancesModal>(
-  'IntentBulkImportUtterancesModal',
+export const EntityBulkImportVariantsModal = modalsManager.create<IEntityBulkImportVariantsModal>(
+  'EntityBulkImportVariantsModal',
   () =>
     ({ api, type, opened, hidden, animated, onImport, closePrevented }) => {
-      const TEST_ID = 'bulk-import-utterances-modal';
+      const TEST_ID = 'bulk-import-entity-variants-modal';
 
       const state = useInputState();
       const [dropProps, connectDrop] = useDropCSVFile({ onDrop: state.setValue, onError: state.setError });
@@ -40,37 +39,46 @@ export const IntentBulkImportUtterancesModal = modalsManager.create<IIntentBulkI
 
       const onImportClick = async () => {
         if (!lines.length) {
-          state.setError('Utterance(s) required.');
+          state.setError('Entity value(s) required.');
           return;
         }
 
         if (lines.length > 1000) {
-          state.setError('Maximum 1000 utterances allowed.');
+          state.setError('Maximum 1000 entity values allowed.');
           return;
         }
 
         try {
           api.preventClose();
 
-          await onImport(lines.map((text) => ({ text: utteranceTextFactory(text) })));
+          await onImport(
+            lines.map((text) => {
+              const [value, ...synonyms] = text.split(',');
+
+              return {
+                value: value.trim(),
+                synonyms: synonyms.map((synonym) => synonym.trim()),
+              };
+            })
+          );
 
           api.enableClose();
           api.close();
 
-          notify.short.success(`${pluralize('utterance', lines.length, true)} imported`);
+          notify.short.success(`${pluralize('entity value', lines.length, true)} imported`);
         } catch (err) {
           api.enableClose();
 
-          notify.short.error(`Failed to import ${pluralize('utterance', lines.length)}`);
+          notify.short.error(`Failed to import ${pluralize('entity value', lines.length)}`);
         }
       };
 
       const getCaption = () => {
         if (input.errorMessage) return undefined;
 
-        if (!lines.length) return 'One utterance per line.';
+        if (!lines.length) return 'One entity value per line.';
 
-        return `${pluralize('utterance', lines.length, true)} added.`;
+        return `${pluralize('entity value', lines.length, true)} added.`;
       };
 
       return (
@@ -84,20 +92,20 @@ export const IntentBulkImportUtterancesModal = modalsManager.create<IIntentBulkI
           onEnterSubmit={onImportClick}
           testID={TEST_ID}
         >
-          <Modal.Header title="Bulk import utterances" onClose={api.onClose} testID={tid(TEST_ID, 'header')} />
+          <Modal.Header title="Bulk import entity values" onClose={api.onClose} testID={tid(TEST_ID, 'header')} />
 
           <Scroll style={{ display: 'block' }}>
             <Modal.Body>
-              <InputFormControl label="Utterances" controlTestID={tid(TEST_ID, 'utterances')}>
+              <InputFormControl label="Entity values" controlTestID={tid(TEST_ID, 'values')}>
                 <TextArea
                   caption={getCaption()}
                   minHeight={36}
                   disabled={closePrevented}
-                  placeholder={dropProps.isOver ? 'Drop a .csv file here.' : 'Enter utterances or drop a CSV file here'}
+                  placeholder={`${dropProps.isOver ? 'Drop a .csv file here' : 'Enter values or drop a CSV file here.'}\nFormat: value1, synonym1, synonym2, ...`}
                   errorMessage={input.errorMessage}
                   {...input.attributes}
                   ref={composeRefs<HTMLTextAreaElement>(input.attributes.ref, connectDrop)}
-                  testID={tid(TEST_ID, 'utterances')}
+                  testID={tid(TEST_ID, 'values')}
                 />
               </InputFormControl>
             </Modal.Body>

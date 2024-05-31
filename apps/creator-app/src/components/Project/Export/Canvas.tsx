@@ -30,14 +30,14 @@ export const Canvas: React.FC = () => {
     if (workflows.length) {
       options.push(
         createUIOnlyMenuItemOption('workflows-header', { label: 'Workflows', groupHeader: true }),
-        ...workflows.map((workflow) => ({ id: workflow.diagramID, label: workflow.name }))
+        ...[...workflows].sort((a, b) => a.name.localeCompare(b.name)).map((workflow) => ({ id: workflow.diagramID, label: workflow.name }))
       );
     }
 
     if (components.length) {
       options.push(
         createUIOnlyMenuItemOption('components-header', { label: 'Components', groupHeader: true }),
-        ...components.map((component) => ({ id: component.diagramID, label: component.name }))
+        ...[...components].sort((a, b) => a.name.localeCompare(b.name)).map((component) => ({ id: component.diagramID, label: component.name }))
       );
     }
 

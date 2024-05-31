@@ -93,7 +93,7 @@ export const IntentBulkImportUtterancesModal = modalsManager.create<IIntentBulkI
                   caption={getCaption()}
                   minHeight={36}
                   disabled={closePrevented}
-                  placeholder={dropProps.isOver ? 'Drop a .csv file here.' : 'Enter utterances or drop a CSV file here'}
+                  placeholder={dropProps.isOver ? 'Drop a .csv file here.' : 'Enter utterances, or drop CSV here'}
                   errorMessage={input.errorMessage}
                   {...input.attributes}
                   ref={composeRefs<HTMLTextAreaElement>(input.attributes.ref, connectDrop)}

@@ -76,7 +76,7 @@ export const EntityBulkImportVariantsModal = modalsManager.create<IEntityBulkImp
       const getCaption = () => {
         if (input.errorMessage) return undefined;
 
-        if (!lines.length) return 'One entity value per line.';
+        if (!lines.length) return 'Format: value 1: synonym 1, 2, 3... One entity value per line.';
 
         return `${pluralize('entity value', lines.length, true)} added.`;
       };
@@ -101,7 +101,7 @@ export const EntityBulkImportVariantsModal = modalsManager.create<IEntityBulkImp
                   caption={getCaption()}
                   minHeight={36}
                   disabled={closePrevented}
-                  placeholder={`${dropProps.isOver ? 'Drop a .csv file here' : 'Enter values or drop a CSV file here.'}\nFormat: value1, synonym1, synonym2, ...`}
+                  placeholder={`${dropProps.isOver ? 'Drop a .csv file here' : 'Enter values, or drop CSV here'}`}
                   errorMessage={input.errorMessage}
                   {...input.attributes}
                   ref={composeRefs<HTMLTextAreaElement>(input.attributes.ref, connectDrop)}

@@ -62,11 +62,9 @@ export const loadSubscription =
   (organizationID: string, chargebeeSubscriptionID: string, workspaceID: string): Thunk<Subscription | null> =>
   async (dispatch) => {
     try {
-      const subscription = (await designerClient.billing.subscription.findOne(
-        organizationID,
-        chargebeeSubscriptionID,
-        workspaceID
-      )) as Subscription;
+      const subscription = (await designerClient.billing.subscription.findOne(organizationID, chargebeeSubscriptionID, {
+        workspaceID,
+      })) as Subscription;
 
       await dispatch.local(
         Actions.OrganizationSubscription.Replace({ subscription, context: { organizationID, workspaceID } })
@@ -85,7 +83,7 @@ export const cancelSubscription = (organizationID: string): Thunk<void> => {
 
     if (!subscription || !workspaceID) return;
 
-    await designerClient.billing.subscription.cancel(organizationID, subscription.id);
+    await designerClient.billing.subscription.cancel(organizationID, subscription.id, { workspaceID });
 
     await dispatch.local(
       Actions.OrganizationSubscription.Replace({
@@ -116,7 +114,7 @@ export const downgradeTrial = (organizationID: string, chargebeeSubscriptionID: 
 
     if (!subscription || !workspaceID) return;
 
-    await designerClient.billing.subscription.downgradeTrial(organizationID, chargebeeSubscriptionID);
+    await designerClient.billing.subscription.downgradeTrial(organizationID, chargebeeSubscriptionID, { workspaceID });
 
     await dispatch.local(
       Actions.OrganizationSubscription.Replace({
@@ -145,10 +143,14 @@ export const updateSubscriptionPaymentMethod =
     }
 
     try {
-      const { paymentMethod } = await designerClient.billing.subscription.upsertCustomerCard(organizationID, {
-        paymentIntentID,
-        customerID,
-      });
+      const { paymentMethod } = await designerClient.billing.subscription.upsertCustomerCard(
+        organizationID,
+        {
+          paymentIntentID,
+          customerID,
+        },
+        { workspaceID }
+      );
 
       dispatch.local(
         Actions.OrganizationSubscription.UpdatePaymentMethod({

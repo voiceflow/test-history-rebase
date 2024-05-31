@@ -1,4 +1,4 @@
-import { AdditionalData, Component, PaymentIntent as ChargebeePaymentIntent } from '@chargebee/chargebee-js-types';
+import { AdditionalData, PaymentIntent as ChargebeePaymentIntent, Component } from '@chargebee/chargebee-js-types';
 import { PaymentIntent } from '@voiceflow/dtos';
 import { CONTRIES_MAPPER, IS_DEVELOPMENT, toast } from '@voiceflow/ui';
 import { useRef } from 'react';
@@ -12,7 +12,8 @@ import * as chargebee from '@/vendors/chargebee';
 
 import * as CardForm from '../CardForm';
 
-const isMockedPaymentIntent = (paymentIntent: PaymentIntent) => isUUID4(paymentIntent.id) && !paymentIntent.gatewayAccountId;
+const isMockedPaymentIntent = (paymentIntent: PaymentIntent) =>
+  isUUID4(paymentIntent.id) && !paymentIntent.gatewayAccountId;
 
 const getDevAmount = (amount: number, address: string) => {
   console.log('Testing payment intent creation with amount:', amount, 'and address:', address); // eslint-disable-line no-console
@@ -38,7 +39,10 @@ const getCardAdditionalData = (cardValues: CardForm.Values): AdditionalData => (
   },
 });
 
-const fromChargebeePaymentIntent = (validatedPaymentIntent: ChargebeePaymentIntent, paymentIntent: PaymentIntent): PaymentIntent => ({
+const fromChargebeePaymentIntent = (
+  validatedPaymentIntent: ChargebeePaymentIntent,
+  paymentIntent: PaymentIntent
+): PaymentIntent => ({
   ...paymentIntent,
   amount: validatedPaymentIntent.amount,
   currencyCode: validatedPaymentIntent.currency_code,
@@ -64,6 +68,7 @@ const toChargebeePaymentIntent = (paymentIntent: PaymentIntent): ChargebeePaymen
 export const useCardPaymentMethod = () => {
   const cardRef = useRef<Component>();
   const organizationID = useSelector(WorkspaceV2.active.organizationIDSelector)!;
+  const workspace = useSelector(WorkspaceV2.active.workspaceSelector)!;
   const subscription = useSelector(Organization.chargebeeSubscriptionSelector)!;
   const updateSubscriptionPaymentMethod = useDispatch(Organization.subscription.updateSubscriptionPaymentMethod);
 
@@ -125,15 +130,15 @@ export const useCardPaymentMethod = () => {
     address?: string;
     shouldUseExistingCard?: boolean;
   }) => {
-    try {
-      return await designerClient.billing.subscription.createPaymentIntent(organizationID, {
+    return designerClient.billing.subscription.createPaymentIntent(
+      organizationID,
+      {
         amount: IS_DEVELOPMENT ? getDevAmount(amount, address ?? '') : amount,
         ...(shouldUseExistingCard ? { referenceID: subscription?.paymentMethod?.referenceID } : {}),
         customerID: subscription?.customerID,
-      });
-    } catch (error) {
-      throw new Error('Failed to create payment intent');
-    }
+      },
+      { workspaceID: workspace.id }
+    );
   };
 
   const updatePaymentMethod = async (amount: number, cardValues: CardForm.Values) => {

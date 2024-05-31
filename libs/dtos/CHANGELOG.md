@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.79.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.79.0...@voiceflow/dtos@1.79.1) (2024-05-31)
+
+### Bug Fixes
+
+* add maxTokens settings summarization field [bugfix] (COR-2267) ([#8209](https://github.com/voiceflow/creator-app/issues/8209)) ([431b60c](https://github.com/voiceflow/creator-app/commit/431b60cd563d4ea02b6b1b7c8c12c26a314ee124))
+
 # [1.79.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.78.2...@voiceflow/dtos@1.79.0) (2024-05-29)
 
 ### Features

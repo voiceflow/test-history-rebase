@@ -53,11 +53,11 @@ export const useAssistantNavigationLogoItems = (): NavigationLogoItem[] => {
 
   const projectMembersModal = useModal(Modals.Project.Members);
 
-  const withExport = !isPreviewerOrLockedViewer && canExportModel && canExportPrototype && !hideExports.isEnabled;
-  const withSharePrototype = !isPreviewerOrLockedViewer && canSharePrototype;
+  const withExport = !isPreviewerOrLockedViewer && canExportModel && canExportPrototype;
+  const withSharePrototype = !isPreviewerOrLockedViewer && canSharePrototype  && !hideExports.isEnabled;
   const withDuplicateOption = !isPreviewerOrLockedViewer && canManageProjects;
   const withInviteCollaborators = !isPreviewerOrLockedViewer && canAddCollaborators && !!projectID;
-  const withCopyCloneLinkOption = !isPreviewerOrLockedViewer && canManageProjects && !hideExports.isEnabled;
+  const withCopyCloneLinkOption = !isPreviewerOrLockedViewer && canManageProjects;
 
   return [
     { key: 'back', label: 'Back to dashboard', iconName: 'ArrowLeft', onClick: () => goToDashboard() },

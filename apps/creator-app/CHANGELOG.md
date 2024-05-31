@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1535.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1534.1...@voiceflow/creator-app@1.1535.0) (2024-05-31)
+
+### Features
+
+* bulk entity values upload (COR-2208) ([#8204](https://github.com/voiceflow/creator-app/issues/8204)) ([98361ec](https://github.com/voiceflow/creator-app/commit/98361ecf6b48126cb7592d4f3b203056e5e169b6))
+
 ## [1.1534.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1534.0...@voiceflow/creator-app@1.1534.1) (2024-05-30)
 
 **Note:** Version bump only for package @voiceflow/creator-app

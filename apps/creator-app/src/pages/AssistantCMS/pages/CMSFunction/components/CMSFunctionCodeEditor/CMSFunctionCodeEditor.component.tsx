@@ -59,8 +59,6 @@ export const CMSFunctionCodeEditor: React.FC<{ functionID: string }> = ({ functi
             value={[functionData?.code]}
             onChange={onCodeChange}
             isFunctionEditor
-            autofocus
-            autoFocusLineNumber={3}
             testID={TEST_ID}
           />
         }

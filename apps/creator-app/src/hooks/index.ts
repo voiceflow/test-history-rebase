@@ -7,7 +7,6 @@ export * from './engine';
 export * from './entitlements';
 export * from './expression';
 export * from './feature';
-export * from './files';
 export * from './focus';
 export * from './hotkeys';
 export * from './hover';

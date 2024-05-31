@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1537.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1536.3...@voiceflow/creator-app@1.1537.0) (2024-05-31)
+
+### Features
+
+* bump topup tokens [bugfix] (COR-2263) ([#8208](https://github.com/voiceflow/creator-app/issues/8208)) ([bfcd51c](https://github.com/voiceflow/creator-app/commit/bfcd51c52e3027e28d1ab10af2273cd0f82949f6))
+
 ## [1.1536.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1536.2...@voiceflow/creator-app@1.1536.3) (2024-05-31)
 
 ### Bug Fixes

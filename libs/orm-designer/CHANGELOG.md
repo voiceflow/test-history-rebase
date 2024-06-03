@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.64.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.63.1...@voiceflow/orm-designer@2.64.0) (2024-06-03)
+
+### Features
+
+* adds assertions column to expression condition schema (COR-2095) ([#8128](https://github.com/voiceflow/creator-app/issues/8128)) ([d61171c](https://github.com/voiceflow/creator-app/commit/d61171cc241e92ecf7ec54c5b43d950d55dfd851))
+
 ## [2.63.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.63.0...@voiceflow/orm-designer@2.63.1) (2024-06-03)
 
 **Note:** Version bump only for package @voiceflow/orm-designer

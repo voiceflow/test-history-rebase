@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1540.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1540.0...@voiceflow/creator-app@1.1540.1) (2024-06-03)
+
+### Bug Fixes
+
+* hide share prototype button in testing (COR-2284) ([#8211](https://github.com/voiceflow/creator-app/issues/8211)) ([b2e38ce](https://github.com/voiceflow/creator-app/commit/b2e38ce174fef9741898ac7496be2128657b306e))
+
 # [1.1540.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1539.0...@voiceflow/creator-app@1.1540.0) (2024-06-03)
 
 ### Features

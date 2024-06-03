@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1539.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1538.0...@voiceflow/creator-app@1.1539.0) (2024-06-03)
+
+### Features
+
+* implement step editor (COR-1941) ([#8153](https://github.com/voiceflow/creator-app/issues/8153)) ([38258cd](https://github.com/voiceflow/creator-app/commit/38258cd252408af766a955d818e00d4cdc184c0b))
+
 # [1.1538.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1537.2...@voiceflow/creator-app@1.1538.0) (2024-06-03)
 
 ### Features

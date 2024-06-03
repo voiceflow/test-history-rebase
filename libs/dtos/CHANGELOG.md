@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.81.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.80.0...@voiceflow/dtos@1.81.0) (2024-06-03)
+
+### Features
+
+* adds assertions column to expression condition schema (COR-2095) ([#8128](https://github.com/voiceflow/creator-app/issues/8128)) ([d61171c](https://github.com/voiceflow/creator-app/commit/d61171cc241e92ecf7ec54c5b43d950d55dfd851))
+
 # [1.80.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.79.1...@voiceflow/dtos@1.80.0) (2024-06-03)
 
 ### Features

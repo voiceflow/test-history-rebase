@@ -9,9 +9,9 @@ import { useHotkey } from '@/hooks/hotkeys';
 import { usePermission } from '@/hooks/permission';
 import { useSelector } from '@/hooks/store.hook';
 import { Hotkey } from '@/keymap';
-import StartPrototypeButton from '@/pages/Project/components/Header/components/CanvasHeader/components/Run';
-import PublishButton from '@/pages/Project/components/Header/components/CanvasHeader/components/Upload';
-import SharePrototypeButton from '@/pages/Project/components/Header/components/PrototypeHeader/components/Share';
+import { PrototypeShare } from '@/pages/Project/components/PrototypeShare';
+import StartPrototypeButton from '@/pages/Project/components/RunButton';
+import PublishButton from '@/pages/Project/components/Upload';
 import { SelectionTargetsContext } from '@/pages/Project/contexts';
 import { useDisableModes } from '@/pages/Project/hooks';
 
@@ -57,7 +57,7 @@ export const DiagramLayoutHeader: React.FC = () => {
             <>
               <DiagramLayoutHeaderPrototypeSettings />
 
-              <SharePrototypeButton />
+              <PrototypeShare />
             </>
           ) : (
             <>

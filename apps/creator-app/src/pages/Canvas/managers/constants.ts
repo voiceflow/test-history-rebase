@@ -24,7 +24,6 @@ import DisplayManager from './Display';
 import EventManager from './Event';
 import ExitManager from './Exit';
 import FunctionManager from './FunctionManager/Function.manager';
-import GoToDomainManager from './GoToDomain';
 import GoToIntentManager from './GoToIntent';
 import GoToNodeManager from './GoToNode';
 import IfManagerV2 from './IfV2';
@@ -94,8 +93,6 @@ export const MANAGERS_BY_TYPE = {
   [BlockType.URL]: UrlManager,
   [BlockType.GO_TO_INTENT]: GoToIntentManager,
   [BlockType.GO_TO_NODE]: GoToNodeManager,
-  // TODO: remove when FeatureFlag.CMS_WORKFLOWS is released
-  [BlockType.GO_TO_DOMAIN]: GoToDomainManager,
   [BlockType.CUSTOM_BLOCK_POINTER]: CustomBlockPointerManager,
   [BlockType.FUNCTION]: FunctionManager,
   [BlockType.TRIGGER]: TriggerManager,

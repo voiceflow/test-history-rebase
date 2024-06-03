@@ -19,7 +19,11 @@ export const addActions = (
   state.coordsByNodeID[actionsID] = coords;
   state.stepIDsByParentNodeID[actionsID] = [];
 
-  addNodeWithPorts(state, { nodeID: actionsID, data: nodeDataFactory(actionsID, { type: Realtime.BlockType.ACTIONS, name: 'Actions' }), ports });
+  addNodeWithPorts(state, {
+    nodeID: actionsID,
+    data: nodeDataFactory(actionsID, { type: Realtime.BlockType.ACTIONS, name: 'Actions' }),
+    ports,
+  });
 };
 
 const addActionsReducer = createActiveDiagramReducer(
@@ -29,7 +33,12 @@ const addActionsReducer = createActiveDiagramReducer(
     if (Normal.hasOne(state.nodes, stepID)) return;
 
     addActions(state, { actionsID, ports: actionsPorts, coords: actionsCoords });
-    addStep(state, (stepIDs) => Utils.array.append(stepIDs, stepID), { parentNodeID: actionsID, stepID, data: stepData, ports: stepPorts });
+    addStep(state, (stepIDs) => Utils.array.append(stepIDs, stepID), {
+      parentNodeID: actionsID,
+      stepID,
+      data: stepData,
+      ports: stepPorts,
+    });
   }
 );
 
@@ -38,12 +47,11 @@ export default addActionsReducer;
 export const addActionsReverted = createReverter(
   Realtime.node.addActions,
 
-  ({ workspaceID, projectID, versionID, domainID, diagramID, actionsID, stepID }) =>
+  ({ workspaceID, projectID, versionID, diagramID, actionsID, stepID }) =>
     Realtime.node.removeMany({
       workspaceID,
       projectID,
       versionID,
-      domainID,
       diagramID,
       nodes: [{ parentNodeID: actionsID }, { parentNodeID: actionsID, stepID }],
     }),

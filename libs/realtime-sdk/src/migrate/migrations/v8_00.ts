@@ -123,6 +123,7 @@ const migrateToV8_00: Transform = ({ cms, version, diagrams }, { project, creato
       }
     }
 
+    // eslint-disable-next-line sonarjs/cognitive-complexity
     Object.values(nodes).forEach((node) => {
       // update goto node that points to domain start node to point to next node in domain root diagram
       if (typeGuards.isGoToNodeDBNode(node)) {

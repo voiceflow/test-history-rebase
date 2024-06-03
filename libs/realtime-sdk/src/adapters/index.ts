@@ -4,7 +4,6 @@ export { default as creatorAdapter, nodeDataAdapter, stepPortsAdapter } from './
 export { default as alexaDisplayAdapter } from './creator/block/alexa/display';
 export { customBlockAdapter } from './customBlock';
 export { default as diagramAdapter } from './diagram';
-export { default as domainAdapter } from './domain';
 export * as Identity from './identity';
 export * from './legacy/entity-to-legacy-slot.adapter';
 export * from './legacy/intent-to-legacy-intent/intent-to-legacy-intent.adapter';

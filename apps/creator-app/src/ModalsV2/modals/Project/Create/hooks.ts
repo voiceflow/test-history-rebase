@@ -1,12 +1,11 @@
 import { ProjectAIAssistSettings } from '@voiceflow/dtos';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { FeatureFlag } from '@voiceflow/realtime-sdk';
 
 import * as NLU from '@/config/nlu';
 import * as Project from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
-import { useDispatch, useFeature, useModelTracking } from '@/hooks';
+import { useDispatch, useModelTracking } from '@/hooks';
 import { NLUImportModel } from '@/models';
 
 interface CreateProjectOptions {
@@ -21,19 +20,28 @@ interface CreateProjectOptions {
   aiAssistSettings: ProjectAIAssistSettings | null;
 }
 export const useProjectCreate = () => {
-  const cmsWorkflows = useFeature(FeatureFlag.CMS_WORKFLOWS);
-
   const createProject = useDispatch(Project.createProject);
-  const redirectToDomain = useDispatch(Router.redirectToDomain);
   const redirectToProjectCanvas = useDispatch(Router.redirectToProjectCanvas);
 
   const modelImportTracking = useModelTracking();
 
-  return async ({ type, name, image, listID = null, members, locales, platform, importedModel, aiAssistSettings }: CreateProjectOptions) => {
+  return async ({
+    type,
+    name,
+    image,
+    listID = null,
+    members,
+    locales,
+    platform,
+    importedModel,
+    aiAssistSettings,
+  }: CreateProjectOptions) => {
     const projectConfig = Platform.Config.getTypeConfig({ type, platform });
 
     const defaultedLocales = locales.length ? locales : projectConfig.project.locale.defaultLocales;
-    const projectLocales = projectConfig.project.locale.isLanguage ? projectConfig.utils.locale.fromLanguage(defaultedLocales[0]) : defaultedLocales;
+    const projectLocales = projectConfig.project.locale.isLanguage
+      ? projectConfig.utils.locale.fromLanguage(defaultedLocales[0])
+      : defaultedLocales;
 
     const project = await createProject({
       nlu: importedModel,
@@ -53,10 +61,6 @@ export const useProjectCreate = () => {
       modelImportTracking({ nluType: NLU.Voiceflow.CONFIG.type, projectID: project.id, importedModel });
     }
 
-    if (cmsWorkflows.isEnabled) {
-      redirectToProjectCanvas({ versionID: project.versionID });
-    } else {
-      redirectToDomain({ versionID: project.versionID });
-    }
+    redirectToProjectCanvas({ versionID: project.versionID });
   };
 };

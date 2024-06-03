@@ -8,7 +8,7 @@ import { BlockType } from '@/constants';
 import { NamespaceProvider } from '@/contexts/NamespaceContext';
 import { UI } from '@/ducks';
 import * as CreatorV2 from '@/ducks/creatorV2';
-import { useActiveProjectConfig, useFeature, useHideVoiceflowAssistant, useRAF, useTheme } from '@/hooks';
+import { useActiveProjectConfig, useHideVoiceflowAssistant, useRAF, useTheme } from '@/hooks';
 import { useSelector } from '@/hooks/store.hook';
 import { LockedBlockOverlay } from '@/pages/Canvas/components/LockedEditorOverlay';
 import { EngineContext, ManagerContext } from '@/pages/Canvas/contexts';
@@ -27,10 +27,9 @@ const EMPTY_HEADER_ACTIONS: SidebarHeaderAction[] = [];
 
 const FOCUSED_NODE_SIDEBAR_OFFSET = 20;
 
+// eslint-disable-next-line sonarjs/cognitive-complexity
 const EditSidebar = () => {
   const theme = useTheme();
-
-  const cmsWorkflows = useFeature(Realtime.FeatureFlag.CMS_WORKFLOWS);
 
   const data = useSelector(CreatorV2.focusedNodeDataSelector);
   const focus = useSelector(CreatorV2.creatorFocusSelector);
@@ -93,12 +92,19 @@ const EditSidebar = () => {
     const subManager = activePath.type ? editorsByPath?.[activePath.type] ?? null : null;
     let Manager: NodeEditor<any, any> | null = subManager || rootEditor || null;
 
-    if ((platforms.length && !platforms.includes(platform)) || (projectTypes.length && !projectTypes.includes(projectType))) {
+    if (
+      (platforms.length && !platforms.includes(platform)) ||
+      (projectTypes.length && !projectTypes.includes(projectType))
+    ) {
       Manager = getManager(BlockType.INVALID_PLATFORM).editor;
     }
 
     prevAnimationDistance.current =
-      prevPathLength.current < path.length ? 40 : prevPathLength.current > path.length ? -40 : prevAnimationDistance.current;
+      prevPathLength.current < path.length
+        ? 40
+        : prevPathLength.current > path.length
+          ? -40
+          : prevAnimationDistance.current;
 
     const managerEl = Manager && (
       <Manager
@@ -165,8 +171,8 @@ const EditSidebar = () => {
         direction={Drawer.Direction.LEFT}
         disableAnimation={!shouldRender}
         style={{
-          top: cmsWorkflows.isEnabled ? (isCanvasOnly ? 0 : theme.components.header.newHeight) : undefined,
-          height: cmsWorkflows.isEnabled ? (isCanvasOnly ? '100%' : `calc(100% - ${theme.components.header.newHeight}px)`) : undefined,
+          top: isCanvasOnly ? 0 : theme.components.header.newHeight,
+          height: isCanvasOnly ? '100%' : `calc(100% - ${theme.components.header.newHeight}px)`,
         }}
       >
         {!fullScreen && !!path.length && editor}

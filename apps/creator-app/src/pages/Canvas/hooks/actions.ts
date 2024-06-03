@@ -6,8 +6,7 @@ import React from 'react';
 
 import { BlockType } from '@/constants';
 import * as CreatorV2 from '@/ducks/creatorV2';
-import * as Domain from '@/ducks/domain';
-import { useFeature, useSelector, useTrackingEvents } from '@/hooks';
+import { useSelector, useTrackingEvents } from '@/hooks';
 import { EngineContext, LinkStepMenuContext } from '@/pages/Canvas/contexts';
 
 interface ActionsOptions {
@@ -102,7 +101,10 @@ const useOnAddAction = ({
     linkStepMenu.onHide();
   };
 
-  const onAdd = async <K extends BlockType>(type: K, factoryData?: Partial<Realtime.NodeData<Realtime.NodeDataMap[K]>>) => {
+  const onAdd = async <K extends BlockType>(
+    type: K,
+    factoryData?: Partial<Realtime.NodeData<Realtime.NodeDataMap[K]>>
+  ) => {
     if (!sourcePortID) return;
 
     const index = getNextActionIndex(type);
@@ -160,10 +162,7 @@ const useSourceNodeAndPort = (portID: string | null) => {
 export const useActionsOptions = ({ goToActions, sourcePortID }: ActionsOptions) => {
   const { sourceNode, sourcePort } = useSourceNodeAndPort(sourcePortID);
 
-  const cmsWorkflows = useFeature(Realtime.FeatureFlag.CMS_WORKFLOWS);
-
   const targetNode = useSelector(CreatorV2.targetNodeByPortID, { id: sourcePort?.id });
-  const domainsCount = useSelector(Domain.domainsCountSelector);
   const targetNodeSteps = useSelector(CreatorV2.stepDataByParentNodeIDSelector, { id: targetNode?.id });
 
   const hasURLStep = Realtime.Utils.typeGuards.isURLBlockType(targetNodeSteps[0]?.type);
@@ -172,7 +171,9 @@ export const useActionsOptions = ({ goToActions, sourcePortID }: ActionsOptions)
     Realtime.Utils.typeGuards.isCarouselBlockType(sourceNode?.type) ||
     Realtime.Utils.typeGuards.isCardV2BlockType(sourceNode?.type);
 
-  const hasNavigationStep = Realtime.Utils.typeGuards.isNavigationBlockType(targetNodeSteps[targetNodeSteps.length - 1]?.type);
+  const hasNavigationStep = Realtime.Utils.typeGuards.isNavigationBlockType(
+    targetNodeSteps[targetNodeSteps.length - 1]?.type
+  );
 
   const targetNodeIsActions = targetNode?.type === BlockType.ACTIONS;
 
@@ -198,12 +199,12 @@ export const useActionsOptions = ({ goToActions, sourcePortID }: ActionsOptions)
     targetNodeIsActions,
 
     options: [
-      hasNavigationStep ? null : { icon: 'goToBlock' as const, label: 'Go to Block', onClick: () => onAdd(BlockType.GO_TO_NODE) },
-      hasNavigationStep ? null : { icon: 'intentSmall' as const, label: 'Go to Intent', onClick: () => onAdd(BlockType.GO_TO_INTENT) },
-      // TODO: remove when FeatureFlag.CMS_WORKFLOWS is released
-      cmsWorkflows.isEnabled || hasNavigationStep || domainsCount <= 1
+      hasNavigationStep
         ? null
-        : { icon: 'goToDomain' as const, label: 'Go to Domain', onClick: () => onAdd(BlockType.GO_TO_DOMAIN) },
+        : { icon: 'goToBlock' as const, label: 'Go to Block', onClick: () => onAdd(BlockType.GO_TO_NODE) },
+      hasNavigationStep
+        ? null
+        : { icon: 'intentSmall' as const, label: 'Go to Intent', onClick: () => onAdd(BlockType.GO_TO_INTENT) },
       hasNavigationStep ? null : { icon: 'editorExit' as const, label: 'End', onClick: () => onAdd(BlockType.EXIT) },
       hasNavigationStep ? null : createDividerMenuItemOption(),
       { icon: 'setV2' as const, label: 'Set variable', onClick: () => onAdd(BlockType.SETV2) },

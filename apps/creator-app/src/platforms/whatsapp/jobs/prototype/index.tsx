@@ -5,12 +5,12 @@ import React from 'react';
 import JobInterface from '@/components/JobInterface';
 import { PrototypeJobContext } from '@/contexts/PrototypeJobContext';
 import { useSimulatedProgress } from '@/hooks/job';
-import RunButton from '@/pages/Project/components/Header/components/CanvasHeader/components/Run/button';
-import { useRunPrototype } from '@/pages/Project/components/Header/components/CanvasHeader/components/Run/hooks';
+import RunButton from '@/pages/Project/components/RunButton/button';
+import { useRunPrototype } from '@/pages/Project/components/RunButton/hooks';
 
 import { useTwilioPrototypeStageContent } from './stages';
 
-const TwilioPrototypeRun: React.FC<React.ComponentProps<typeof RunButton>> = ({ variant }) => {
+const TwilioPrototypeRun: React.FC<React.ComponentProps<typeof RunButton>> = () => {
   const runPrototype = useRunPrototype();
 
   const context = React.useContext(PrototypeJobContext)!;
@@ -21,7 +21,6 @@ const TwilioPrototypeRun: React.FC<React.ComponentProps<typeof RunButton>> = ({ 
   const progress = useSimulatedProgress(job);
 
   const buttonProps = {
-    variant,
     loading: active,
   };
 

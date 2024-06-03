@@ -1,12 +1,10 @@
 import { BaseButton } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
-import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { useContextApi } from '@voiceflow/ui';
 import React from 'react';
 
 import { PrototypeStatus } from '@/constants/prototype';
 import * as CreatorV2 from '@/ducks/creatorV2';
-import * as Domain from '@/ducks/domain';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Prototype from '@/ducks/prototype';
 import * as Recent from '@/ducks/recent';
@@ -14,7 +12,6 @@ import * as Session from '@/ducks/session';
 import * as Transcripts from '@/ducks/transcript';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useSelector } from '@/hooks';
-import { useFeature } from '@/hooks/feature';
 import * as ModalsV2 from '@/ModalsV2';
 
 import { ProtoConfigType, PrototypeActions, PrototypeAllTypes, PrototypeRuntimeState } from './types';
@@ -46,7 +43,9 @@ const defaultPrototypeContext: PrototypeAllTypes = {
     contextStep: 0,
   },
   actions: {
+    // eslint-disable-next-line no-empty-function
     updatePrototype: () => {},
+    // eslint-disable-next-line no-empty-function
     savePrototypeSession: () => {},
     getLinksByPortID: undefined,
     updatePrototypeVisualsData: undefined,
@@ -70,8 +69,6 @@ export const PrototypeProvider: React.FC<React.PropsWithChildren> = ({ children 
   const locales = useSelector(VersionV2.active.localesSelector);
   const platform = useSelector(ProjectV2.active.platformSelector);
   const projectType = useSelector(ProjectV2.active.projectTypeSelector);
-  const rootDomainID = useSelector(Domain.rootDomainIDSelector);
-  const getDomainIDByTopicID = useSelector(Domain.getDomainIDByTopicIDSelector);
   const config = useSelector(Recent.recentPrototypeSelector);
   const updatePrototype = useDispatch(Prototype.updatePrototype);
   const isMuted = useSelector(Prototype.prototypeMutedSelector);
@@ -88,24 +85,11 @@ export const PrototypeProvider: React.FC<React.PropsWithChildren> = ({ children 
   const updatePrototypeVisualsData = useDispatch(Prototype.updatePrototypeVisualData);
   const fetchContext = useDispatch(Prototype.fetchContext);
   const setActiveDiagramID = useDispatch(Session.setActiveDiagramID);
-  const setActiveDomainID = useDispatch(Session.setActiveDomainID);
   const updatePrototypeVisualsDataHistory = useDispatch(Prototype.updatePrototypeVisualDataHistory);
   const updatePrototypeStatus = useDispatch(Prototype.updatePrototypeStatus);
 
   const errorModal = ModalsV2.useModal(ModalsV2.Error);
   const setError = React.useCallback((error: string) => errorModal.open({ error }), [errorModal.open]);
-  const cmsWorkflows = useFeature(FeatureFlag.CMS_WORKFLOWS);
-
-  const setActiveDiagramAndDomainIDs = React.useCallback(
-    (diagramID: string) => {
-      setActiveDiagramID(diagramID);
-
-      if (!cmsWorkflows.isEnabled) {
-        setActiveDomainID(getDomainIDByTopicID({ topicID: diagramID }) ?? rootDomainID);
-      }
-    },
-    [rootDomainID, getDomainIDByTopicID, cmsWorkflows.isEnabled]
-  );
 
   const protoConfig = useContextApi<ProtoConfigType>({
     buttons,
@@ -137,7 +121,7 @@ export const PrototypeProvider: React.FC<React.PropsWithChildren> = ({ children 
     getLinksByPortID,
     updatePrototypeVisualsData,
     fetchContext,
-    setActiveDiagramID: setActiveDiagramAndDomainIDs,
+    setActiveDiagramID,
     updatePrototypeVisualsDataHistory,
     updatePrototypeStatus,
     setError,

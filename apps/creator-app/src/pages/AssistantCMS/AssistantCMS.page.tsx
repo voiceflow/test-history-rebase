@@ -12,6 +12,7 @@ import { useDispatch } from '@/hooks/store.hook';
 import { CMSLayout } from './components/CMSLayout/CMSLayout.component';
 import { CMSPageLoader } from './components/CMSPageLoader.component';
 import { useCMSRoute } from './hooks/cms-route.hook';
+import AssistantCMSWorkflow from './pages/CMSWorkflow/CMSWorkflow.page';
 
 const AssistantCMSIntent = withSuspense({ loader: <CMSPageLoader /> })(
   lazy({ name: 'CMSIntent', factory: () => import('./pages/CMSIntent/CMSIntent.page') })
@@ -24,9 +25,6 @@ const AssistantCMSVariable = withSuspense({ loader: <CMSPageLoader /> })(
 );
 const AssistantCMSFlow = withSuspense({ loader: <CMSPageLoader /> })(
   lazy({ name: 'CMSFlow', factory: () => import('./pages/CMSFlow/CMSFlow.page') })
-);
-const AssistantCMSWorkflow = withSuspense({ loader: <CMSPageLoader /> })(
-  lazy({ name: 'CMSWorkflow', factory: () => import('./pages/CMSWorkflow/CMSWorkflow.page') })
 );
 const AssistantCMSFunction = withSuspense({ loader: <CMSPageLoader /> })(
   lazy({ name: 'CMSFunction', factory: () => import('./pages/CMSFunction/CMSFunction.page') })
@@ -46,7 +44,6 @@ const AssistantCMS = () => {
 
   const { isEnabled: isKbEnabled } = useFeature(Realtime.FeatureFlag.KNOWLEDGE_BASE);
   const { isEnabled: isCMSResponsesEnabled } = useFeature(Realtime.FeatureFlag.CMS_RESPONSES);
-  const { isEnabled: isCMSWorkflowsEnabled } = useFeature(Realtime.FeatureFlag.CMS_WORKFLOWS);
   const { isEnabled: isCMSFunctionsEnabled } = useFeature(Realtime.FeatureFlag.CMS_FUNCTIONS);
 
   React.useEffect(() => {
@@ -59,6 +56,8 @@ const AssistantCMS = () => {
   return (
     <CMSLayout>
       <Switch>
+        <Route path={Path.CMS_WORKFLOW} component={AssistantCMSWorkflow} />
+
         <Route path={Path.CMS_INTENT} component={AssistantCMSIntent} />
 
         <Route path={Path.CMS_ENTITY} component={AssistantCMSEntity} />
@@ -72,8 +71,6 @@ const AssistantCMS = () => {
         {isCMSResponsesEnabled && <Route path={Path.CMS_RESPONSE} component={AssistantCMSResponse} />}
 
         {isCMSFunctionsEnabled && <Route path={Path.CMS_FUNCTION} component={AssistantCMSFunction} />}
-
-        {isCMSWorkflowsEnabled && <Route path={Path.CMS_WORKFLOW} component={AssistantCMSWorkflow} />}
 
         <Redirect to={`${Path.PROJECT_CMS}/${activeCMSRoute}`} />
       </Switch>

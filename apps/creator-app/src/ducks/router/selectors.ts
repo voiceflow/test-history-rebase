@@ -18,12 +18,11 @@ export const actionsMatchSelector = createSelector(pathnameSelector, (pathname) 
   matchPath<{ 0?: string; sourcePortID: string; actionNodeID: string }>(pathname, [
     `${Path.CANVAS_NODE}/${ACTIONS_PATH}`,
     `${Path.CANVAS_NODE}/*/${ACTIONS_PATH}`,
-    `${Path.DOMAIN_CANVAS_NODE}/${ACTIONS_PATH}`,
-    `${Path.DOMAIN_CANVAS_NODE}/*/${ACTIONS_PATH}`,
   ])
 );
 
 export const stateSelector = createSelector(
   locationSelector,
-  (location: Location): Record<string, any> => (location.state && typeof location.state === 'object' ? location.state : {})
+  (location: Location): Record<string, any> =>
+    location.state && typeof location.state === 'object' ? location.state : {}
 );

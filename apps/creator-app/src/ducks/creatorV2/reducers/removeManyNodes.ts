@@ -28,7 +28,7 @@ export default removeManyNodesReducer;
 export const removeManyNodesReverter = createReverter(
   Realtime.node.removeMany,
 
-  ({ workspaceID, projectID, versionID, domainID, diagramID, nodes }, getState) => {
+  ({ workspaceID, projectID, versionID, diagramID, nodes }, getState) => {
     const state = getState();
     const projectMeta = metaSelector(state);
     const schemaVersion = schemaVersionSelector(state);
@@ -47,7 +47,6 @@ export const removeManyNodesReverter = createReverter(
       workspaceID,
       projectID,
       versionID,
-      domainID,
       diagramID,
     };
 
@@ -110,7 +109,9 @@ export const removeManyNodesReverter = createReverter(
       ];
     }
 
-    const portsIDs = nodeIDs.flatMap((nodeID) => Realtime.Utils.port.flattenAllPorts(portsByNodeIDSelector(state, { id: nodeID })));
+    const portsIDs = nodeIDs.flatMap((nodeID) =>
+      Realtime.Utils.port.flattenAllPorts(portsByNodeIDSelector(state, { id: nodeID }))
+    );
     const ports = allPortsByIDsSelector(state, { ids: portsIDs });
     const links = uniqBy(
       nodeIDs.flatMap((nodeID) => linksByNodeIDSelector(state, { id: nodeID })),
@@ -127,5 +128,8 @@ export const removeManyNodesReverter = createReverter(
     });
   },
 
-  [...DIAGRAM_INVALIDATORS, ...createManyNodesRemovalInvalidators<Realtime.node.RemoveManyPayload>((origin) => origin.nodes)]
+  [
+    ...DIAGRAM_INVALIDATORS,
+    ...createManyNodesRemovalInvalidators<Realtime.node.RemoveManyPayload>((origin) => origin.nodes),
+  ]
 );

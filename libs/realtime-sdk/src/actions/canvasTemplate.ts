@@ -11,15 +11,23 @@ export interface CreateCanvasTemplatePayload extends BaseVersionPayload {
   canvasTemplate: BaseModels.Version.CanvasTemplate;
 }
 
-export interface SnapshotPayload extends Omit<BaseDiagramPayload, 'domainID'>, EntityMap {}
+export interface SnapshotPayload extends BaseDiagramPayload, EntityMap {}
 
 export interface PatchCanvasTemplatePayload extends Partial<Omit<BaseModels.Version.CanvasTemplate, 'id'>> {}
 
-export const crud = createCRUDActions<BaseModels.Version.CanvasTemplate, BaseVersionPayload, PatchCanvasTemplatePayload>(canvasTemplateType);
+export const crud = createCRUDActions<
+  BaseModels.Version.CanvasTemplate,
+  BaseVersionPayload,
+  PatchCanvasTemplatePayload
+>(canvasTemplateType);
 
-export const create = Utils.protocol.createAsyncAction<CreateCanvasTemplatePayload, BaseModels.Version.CanvasTemplate>(canvasTemplateType('CREATE'));
+export const create = Utils.protocol.createAsyncAction<CreateCanvasTemplatePayload, BaseModels.Version.CanvasTemplate>(
+  canvasTemplateType('CREATE')
+);
 
-export const patch = Utils.protocol.createAsyncAction<PatchCanvasTemplatePayload, BaseModels.Version.CanvasTemplate>(canvasTemplateType('PATCH'));
+export const patch = Utils.protocol.createAsyncAction<PatchCanvasTemplatePayload, BaseModels.Version.CanvasTemplate>(
+  canvasTemplateType('PATCH')
+);
 
 export const initialize = Utils.protocol.createAction<SnapshotPayload>(canvasTemplateType('INITIALIZE'));
 

@@ -20,7 +20,6 @@ export const CMSLayoutMenu: React.FC = () => {
   const onLinkClick = useOnLinkClick();
   const { isEnabled: isKbEnabled } = useFeature(Realtime.FeatureFlag.KNOWLEDGE_BASE);
   const { isEnabled: isCMSFunctionsEnabled } = useFeature(Realtime.FeatureFlag.CMS_FUNCTIONS);
-  const { isEnabled: isCMSWorkflowsEnabled } = useFeature(Realtime.FeatureFlag.CMS_WORKFLOWS);
   const { isEnabled: isResponsesEnabled } = useFeature(Realtime.FeatureFlag.CMS_RESPONSES);
 
   const { updateActiveCMSRoute } = useCMSRoute();
@@ -60,31 +59,27 @@ export const CMSLayoutMenu: React.FC = () => {
       onBackToDesignerClick={activeDiagramID ? () => goToDiagram(activeDiagramID) : undefined}
       returnToDesignerTooltip={{ text: 'Return', hotkeys: [{ iconName: 'Command' }, { label: ']' }] }}
     >
-      {(isKbEnabled || isCMSWorkflowsEnabled) && (
-        <SecondaryNavigation.Section title="Agent" isCollapsible={false}>
-          {isCMSWorkflowsEnabled && (
-            <SecondaryNavigation.Item
-              icon="Workflows"
-              label="Workflows"
-              testID={tid(TEST_ID, 'workflows')}
-              caption={String(workflowsCount)}
-              onClick={onTabClick(Path.CMS_WORKFLOW, CMSRoute.WORKFLOW)}
-              isActive={isItemActive(Path.CMS_WORKFLOW)}
-            />
-          )}
+      <SecondaryNavigation.Section title="Agent" isCollapsible={false}>
+        <SecondaryNavigation.Item
+          icon="Workflows"
+          label="Workflows"
+          testID={tid(TEST_ID, 'workflows')}
+          caption={String(workflowsCount)}
+          onClick={onTabClick(Path.CMS_WORKFLOW, CMSRoute.WORKFLOW)}
+          isActive={isItemActive(Path.CMS_WORKFLOW)}
+        />
 
-          {isKbEnabled && (
-            <SecondaryNavigation.Item
-              icon="Brain"
-              label="Knowledge"
-              testID={tid(TEST_ID, 'knowledge-base')}
-              caption={String(knowledgeBaseCount)}
-              onClick={onTabClick(Path.CMS_KNOWLEDGE_BASE, CMSRoute.KNOWLEDGE_BASE)}
-              isActive={isItemActive(Path.CMS_KNOWLEDGE_BASE)}
-            />
-          )}
-        </SecondaryNavigation.Section>
-      )}
+        {isKbEnabled && (
+          <SecondaryNavigation.Item
+            icon="Brain"
+            label="Knowledge"
+            testID={tid(TEST_ID, 'knowledge-base')}
+            caption={String(knowledgeBaseCount)}
+            onClick={onTabClick(Path.CMS_KNOWLEDGE_BASE, CMSRoute.KNOWLEDGE_BASE)}
+            isActive={isItemActive(Path.CMS_KNOWLEDGE_BASE)}
+          />
+        )}
+      </SecondaryNavigation.Section>
 
       <SecondaryNavigation.Section title="Content">
         {isResponsesEnabled && (

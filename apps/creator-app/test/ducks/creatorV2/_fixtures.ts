@@ -8,7 +8,6 @@ export const WORKSPACE_ID = 'workspaceID';
 export const PROJECT_ID = 'projectID';
 export const VERSION_ID = 'versionID';
 export const DIAGRAM_ID = 'diagramID';
-export const DOMAIN_ID = 'domainID';
 export const NODE_ID = 'nodeID';
 export const PORT_ID = 'portID';
 export const LINK_ID = 'linkID';
@@ -25,7 +24,6 @@ export const ACTION_CONTEXT = {
   projectID: PROJECT_ID,
   versionID: VERSION_ID,
   diagramID: DIAGRAM_ID,
-  domainID: DOMAIN_ID,
 };
 
 export const NODE: Realtime.Node = {
@@ -100,5 +98,4 @@ export const REVERT_NODE_PORT_REMAPS_ACTION = Realtime.link.addDynamic({
   targetNodeID: differentBlockStepID,
   targetPortID: differentBlockPortID,
   linkID: remappedLinkID,
-  domainID: DOMAIN_ID,
 });

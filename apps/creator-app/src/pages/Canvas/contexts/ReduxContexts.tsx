@@ -4,7 +4,6 @@ import * as CreatorV2 from '@/ducks/creatorV2';
 import * as CustomBlock from '@/ducks/customBlock';
 import * as Designer from '@/ducks/designer';
 import * as DiagramV2 from '@/ducks/diagramV2';
-import * as DomainV2 from '@/ducks/domain';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as UI from '@/ducks/ui';
@@ -113,15 +112,6 @@ export const {
   Consumer: SharedNodesConsumer,
 } = createSelectorContext(DiagramV2.sharedNodesSelector);
 
-/**
- * @deprecated remove when FeatureFlag.CMS_WORKFLOWS are released
- */
-export const {
-  Context: DomainMapContext,
-  Provider: DomainMapProvider,
-  Consumer: DomainMapConsumer,
-} = createSelectorContext(DomainV2.domainsMapSelector);
-
 export const {
   Context: CustomBlockMapContext,
   Provider: CustomBlockMapProvider,
@@ -148,22 +138,20 @@ export const ReduxContextsProviders: React.FC<React.PropsWithChildren> = ({ chil
                       <IntentIDNodeIDMapProvider>
                         <SharedNodesProvider>
                           <ActionsRouteMatchProvider>
-                            <DomainMapProvider>
-                              <CustomBlockMapProvider>
-                                <FlowMapByDiagramIDProvider>
-                                  <FunctionMapProvider>
-                                    <FunctionVariableMapProvider>
-                                      <FunctionPathMapProvider>
-                                        <ActiveDiagramNormalizedEntitiesAndVariablesProvider>
-                                          {/* comment to have a children on a new line */}
-                                          {children}
-                                        </ActiveDiagramNormalizedEntitiesAndVariablesProvider>
-                                      </FunctionPathMapProvider>
-                                    </FunctionVariableMapProvider>
-                                  </FunctionMapProvider>
-                                </FlowMapByDiagramIDProvider>
-                              </CustomBlockMapProvider>
-                            </DomainMapProvider>
+                            <CustomBlockMapProvider>
+                              <FlowMapByDiagramIDProvider>
+                                <FunctionMapProvider>
+                                  <FunctionVariableMapProvider>
+                                    <FunctionPathMapProvider>
+                                      <ActiveDiagramNormalizedEntitiesAndVariablesProvider>
+                                        {/* comment to have a children on a new line */}
+                                        {children}
+                                      </ActiveDiagramNormalizedEntitiesAndVariablesProvider>
+                                    </FunctionPathMapProvider>
+                                  </FunctionVariableMapProvider>
+                                </FunctionMapProvider>
+                              </FlowMapByDiagramIDProvider>
+                            </CustomBlockMapProvider>
                           </ActionsRouteMatchProvider>
                         </SharedNodesProvider>
                       </IntentIDNodeIDMapProvider>

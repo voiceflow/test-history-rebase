@@ -5,28 +5,45 @@ import { createReverter } from '@/ducks/utils';
 import { portsByNodeIDSelector } from '../selectors';
 import { removeManyByKeyPort, removeManyNodes } from '../utils';
 import { removeManyNodesReverter } from './removeManyNodes';
-import { createActiveDiagramReducer, createDiagramInvalidator, createNodeRemovalInvalidators, DIAGRAM_INVALIDATORS } from './utils';
+import {
+  createActiveDiagramReducer,
+  createDiagramInvalidator,
+  createNodeRemovalInvalidators,
+  DIAGRAM_INVALIDATORS,
+} from './utils';
 
-const removeManyByKeyPortReducer = createActiveDiagramReducer(Realtime.port.removeManyByKey, (state, { nodeID, keys, removeNodes }) => {
-  const removeNodeIDs = removeNodes.map((node) => node.stepID ?? node.parentNodeID);
+const removeManyByKeyPortReducer = createActiveDiagramReducer(
+  Realtime.port.removeManyByKey,
+  (state, { nodeID, keys, removeNodes }) => {
+    const removeNodeIDs = removeNodes.map((node) => node.stepID ?? node.parentNodeID);
 
-  removeManyNodes(state, removeNodeIDs);
-  removeManyByKeyPort(state, nodeID, keys);
-});
+    removeManyNodes(state, removeNodeIDs);
+    removeManyByKeyPort(state, nodeID, keys);
+  }
+);
 
 export default removeManyByKeyPortReducer;
 
 export const removeManyByKeyPortsReverter = createReverter(
   Realtime.port.removeManyByKey,
-  ({ workspaceID, projectID, versionID, domainID, diagramID, nodeID, keys, removeNodes }, getState) => {
+  ({ workspaceID, projectID, versionID, diagramID, nodeID, keys, removeNodes }, getState) => {
     const ports = portsByNodeIDSelector(getState(), { id: nodeID });
 
     const removeNodeActions =
-      removeManyNodesReverter.revert({ workspaceID, projectID, versionID, domainID, diagramID, nodes: removeNodes }, getState) ?? [];
+      removeManyNodesReverter.revert({ workspaceID, projectID, versionID, diagramID, nodes: removeNodes }, getState) ??
+      [];
 
     return [
       ...keys.map((key) =>
-        Realtime.port.addByKey({ workspaceID, projectID, versionID, domainID, diagramID, nodeID, portID: ports.out.byKey[key], key })
+        Realtime.port.addByKey({
+          workspaceID,
+          projectID,
+          versionID,
+          diagramID,
+          nodeID,
+          portID: ports.out.byKey[key],
+          key,
+        })
       ),
 
       ...(Array.isArray(removeNodeActions) ? removeNodeActions : [removeNodeActions]),
@@ -34,7 +51,9 @@ export const removeManyByKeyPortsReverter = createReverter(
   },
   [
     ...DIAGRAM_INVALIDATORS,
-    ...createNodeRemovalInvalidators<Realtime.port.RemoveManyByKeyPayload>((origin, nodeID) => origin.nodeID === nodeID),
+    ...createNodeRemovalInvalidators<Realtime.port.RemoveManyByKeyPayload>(
+      (origin, nodeID) => origin.nodeID === nodeID
+    ),
     createDiagramInvalidator(
       Realtime.port.removeManyByKey,
       (origin, subject) => origin.nodeID === subject.nodeID && origin.keys.some((key) => subject.keys.includes(key))

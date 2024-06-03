@@ -18,8 +18,3 @@ export const isWorkflowThreadsOnly = createSelector(
   ({ topicThreadsOnly, workflowThreadsOnly }) => workflowThreadsOnly ?? topicThreadsOnly
 );
 export const isMentionedThreadsOnly = createSelector(rootSelector, ({ mentionedThreadsOnly }) => mentionedThreadsOnly);
-
-/**
- * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
- */
-export const isDomainThreadsOnly = createSelector(rootSelector, ({ domainThreadsOnly }) => domainThreadsOnly);

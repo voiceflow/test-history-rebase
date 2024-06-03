@@ -10,7 +10,6 @@ import _findLast from 'lodash/findLast';
 import { GENERAL_RUNTIME_ENDPOINT, IS_TEST } from '@/config';
 import { BlockType } from '@/constants';
 import * as CreatorV2 from '@/ducks/creatorV2';
-import * as Domain from '@/ducks/domain';
 import * as Prototype from '@/ducks/prototype';
 import * as Router from '@/ducks/router';
 import * as TrackingEvents from '@/ducks/tracking/events';
@@ -44,7 +43,12 @@ import { appendActivePaths, getUpdatedActivePathContextHistory, isV1Trace } from
 const MUTED_MESSAGE_DELAY = 250;
 
 // Trace types that can have a faked delay
-const BOT_TRACE_TYPES = new Set([BaseTrace.TraceType.TEXT, BaseTrace.TraceType.SPEAK, BaseTrace.TraceType.CAROUSEL, BaseTrace.TraceType.CARD_V2]);
+const BOT_TRACE_TYPES = new Set([
+  BaseTrace.TraceType.TEXT,
+  BaseTrace.TraceType.SPEAK,
+  BaseTrace.TraceType.CAROUSEL,
+  BaseTrace.TraceType.CARD_V2,
+]);
 type BotTraceType = TextTrace | SpeakTrace | CarouselTrace | CardV2Trace;
 
 export enum StepDirection {
@@ -303,16 +307,8 @@ class TraceController {
     if (!diagramID || diagramID === this.props.activeDiagramID) {
       this.props.getEngine()?.store.dispatch(Router.goToCurrentCanvas());
       this.props.getEngine()?.focusNode(blockID, { open: true });
-    } else if (this.props.getEngine()?.isFeatureEnabled(Realtime.FeatureFlag.CMS_WORKFLOWS)) {
-      this.props.getEngine()?.store.dispatch(Router.goToDiagram(diagramID, blockID));
     } else {
-      const domainID =
-        this.props.getEngine()?.select(Domain.domainIDByTopicIDSelector, { topicID: diagramID }) ??
-        this.props.getEngine()?.select(Domain.rootDomainIDSelector);
-
-      if (domainID) {
-        this.props.getEngine()?.store.dispatch(Router.goToDomainDiagram(domainID, diagramID, blockID));
-      }
+      this.props.getEngine()?.store.dispatch(Router.goToDiagram(diagramID, blockID));
     }
   }
 
@@ -340,6 +336,7 @@ class TraceController {
     this.props.updateStatus(PMStatus.NAVIGATING);
   }
 
+  // eslint-disable-next-line sonarjs/cognitive-complexity
   private async processTrace(trace: Trace[], { onlyMessage = false }: { onlyMessage?: boolean } = {}): Promise<void> {
     if (this.stopped) return;
 
@@ -371,12 +368,15 @@ class TraceController {
     } else if (topTrace.type === BaseTrace.TraceType.STREAM && DTOs.StreamTraceDTO.safeParse(topTrace).success) {
       await this.processStreamTrace(topTrace, { onlyMessage });
     } else if (topTrace.type === BaseTrace.TraceType.SPEAK && DTOs.SpeakTraceDTO.safeParse(topTrace).success) {
-      const isNextTraceElicitEntityFilling = trace.find((trace) => trace.type === BaseTrace.TraceType.ENTITY_FILLING)?.payload.intent.ELICIT;
+      const isNextTraceElicitEntityFilling = trace.find((trace) => trace.type === BaseTrace.TraceType.ENTITY_FILLING)
+        ?.payload.intent.ELICIT;
       await this.processSpeakTrace(topTrace, { onlyMessage }, isNextTraceElicitEntityFilling ?? false);
     } else if (topTrace.type === BaseTrace.TraceType.TEXT && DTOs.TextTraceDTO.safeParse(topTrace).success) {
       await this.processTextTrace(topTrace, { onlyMessage });
     } else if (topTrace.type === ('knowledgeBase' as any)) {
-      const nextTrace = trace.find((trace) => [BaseTrace.TraceType.TEXT, BaseTrace.TraceType.SPEAK].includes(trace.type));
+      const nextTrace = trace.find((trace) =>
+        [BaseTrace.TraceType.TEXT, BaseTrace.TraceType.SPEAK].includes(trace.type)
+      );
       if (nextTrace && Array.isArray(topTrace.payload.chunks)) {
         nextTrace.payload.knowledgeBase = topTrace.payload.chunks.map((chunk: any) => chunk?.documentData);
       }
@@ -398,7 +398,10 @@ class TraceController {
       return; // don't process the rest of the traces
     } else if (topTrace.type === BaseTrace.TraceType.NO_REPLY && DTOs.NoReplyTraceDTO.safeParse(topTrace).success) {
       this.processNoReplyTrace(topTrace);
-    } else if (topTrace.type === BaseTrace.TraceType.CHANNEL_ACTION && DTOs.ChannelActionTraceDTO.safeParse(topTrace).success) {
+    } else if (
+      topTrace.type === BaseTrace.TraceType.CHANNEL_ACTION &&
+      DTOs.ChannelActionTraceDTO.safeParse(topTrace).success
+    ) {
       // map alexa display to visual to improve prototoype experience
       if (topTrace.payload.name === AlexaNode.NodeType.DISPLAY) {
         const visualTrace: VisualTrace = {
@@ -450,7 +453,10 @@ class TraceController {
     this.props.setInteractions(interactions ?? []);
   }
 
-  private async processBlockTrace(trace: BlockTrace, { onlyMessage }: { isLast?: boolean; onlyMessage?: boolean } = {}) {
+  private async processBlockTrace(
+    trace: BlockTrace,
+    { onlyMessage }: { isLast?: boolean; onlyMessage?: boolean } = {}
+  ) {
     const engine = this.props.getEngine();
     const node = engine?.getNodeByID(trace.payload.blockID);
 
@@ -505,7 +511,10 @@ class TraceController {
     this.props.setInteractions([
       { name: 'next', request: { type: RequestType.TEXT, payload: 'next' } },
       { name: 'previous', request: { type: RequestType.TEXT, payload: 'previous' } },
-      { name: pausing ? 'resume' : 'pause', request: { type: RequestType.TEXT, payload: pausing ? 'resume' : 'pause' } },
+      {
+        name: pausing ? 'resume' : 'pause',
+        request: { type: RequestType.TEXT, payload: pausing ? 'resume' : 'pause' },
+      },
     ]);
 
     this.props.updateStatus(PMStatus.WAITING_USER_INTERACTION);
@@ -547,7 +556,10 @@ class TraceController {
   }
 
   private async processTextTrace(trace: TextTrace, { onlyMessage }: { onlyMessage?: boolean } = {}) {
-    await this.simulateLoadingDelay(trace, { delay: trace.payload?.slate?.messageDelayMilliseconds, skip: onlyMessage });
+    await this.simulateLoadingDelay(trace, {
+      delay: trace.payload?.slate?.messageDelayMilliseconds,
+      skip: onlyMessage,
+    });
 
     await this.message.text(trace);
   }
@@ -564,7 +576,11 @@ class TraceController {
     await this.message.card(trace);
   }
 
-  private async processSpeakTrace(trace: SpeakTrace, { onlyMessage }: { onlyMessage?: boolean } = {}, isElicit = false) {
+  private async processSpeakTrace(
+    trace: SpeakTrace,
+    { onlyMessage }: { onlyMessage?: boolean } = {},
+    isElicit = false
+  ) {
     await this.simulateLoadingDelay(trace, { skip: onlyMessage });
 
     const projectPlatform = this.props.getEngine()?.getActivePlatform();
@@ -582,7 +598,9 @@ class TraceController {
     if (this.props.isMuted) {
       await Utils.promise.delay(MUTED_MESSAGE_DELAY);
     } else {
-      await this.audio?.play(trace.payload.src, { muted: this.props.isMuted, onError: this.setError }).catch(Utils.functional.noop);
+      await this.audio
+        ?.play(trace.payload.src, { muted: this.props.isMuted, onError: this.setError })
+        .catch(Utils.functional.noop);
     }
   }
 
@@ -627,8 +645,15 @@ class TraceController {
   }
 
   private saveActivePathBlock(nodeID: string) {
-    const updatedActivePaths = appendActivePaths(this.props.activePaths, { diagramID: this.props.activeDiagramID!, blockIDs: [nodeID] });
-    const updatedContextHistory = getUpdatedActivePathContextHistory(this.props.contextStep, this.props.contextHistory, updatedActivePaths);
+    const updatedActivePaths = appendActivePaths(this.props.activePaths, {
+      diagramID: this.props.activeDiagramID!,
+      blockIDs: [nodeID],
+    });
+    const updatedContextHistory = getUpdatedActivePathContextHistory(
+      this.props.contextStep,
+      this.props.contextHistory,
+      updatedActivePaths
+    );
 
     this.props.updatePrototype({
       activePaths: updatedActivePaths,
@@ -636,10 +661,13 @@ class TraceController {
     });
   }
 
+  // eslint-disable-next-line sonarjs/cognitive-complexity
   private async highlightBlock(node: Realtime.Node, skipDelay = false) {
     const hasParent = !!node.parentNode;
     const nodeType = node?.type;
-    const highlightedBlocks = this.props.getEngine()?.select(Prototype.activePathByDiagramIDSelector)(this.props.activeDiagramID!)?.blockIDs || [];
+    const highlightedBlocks =
+      this.props.getEngine()?.select(Prototype.activePathByDiagramIDSelector)(this.props.activeDiagramID!)?.blockIDs ||
+      [];
     const parentBlockAlreadyHighlighted = !!highlightedBlocks?.includes(node?.parentNode || '');
 
     if (parentBlockAlreadyHighlighted) {
@@ -720,8 +748,12 @@ class TraceController {
     const targetIDs = [targetID, ...(targetID === targetFirstChild ? [target!.parentNode!] : [])];
 
     const getJoiningLinks = (sourceNodeID: string, targetNodeID: string) =>
-      this.props.getEngine()?.select(CreatorV2.joiningLinkIDsSelector, { sourceNodeID, targetNodeID, directional: true }) ?? [];
-    const [linkID] = sourceIDs.flatMap((id) => targetIDs.flatMap((linkTargetID) => getJoiningLinks(id, linkTargetID) ?? []));
+      this.props
+        .getEngine()
+        ?.select(CreatorV2.joiningLinkIDsSelector, { sourceNodeID, targetNodeID, directional: true }) ?? [];
+    const [linkID] = sourceIDs.flatMap((id) =>
+      targetIDs.flatMap((linkTargetID) => getJoiningLinks(id, linkTargetID) ?? [])
+    );
 
     return linkID ?? null;
   }
@@ -734,7 +766,9 @@ class TraceController {
     // We need to prematurely highlight the out link of a node block (if it exists)
     // because the regular active path logic doesn't account for that case
     if (targetNode.type === BlockType.COMPONENT) {
-      const builtIn = (targetNode.ports.out.builtIn ?? {}) as Realtime.NodeData.FlowBuiltInPorts | Realtime.NodeData.ComponentBuiltInPorts;
+      const builtIn = (targetNode.ports.out.builtIn ?? {}) as
+        | Realtime.NodeData.FlowBuiltInPorts
+        | Realtime.NodeData.ComponentBuiltInPorts;
 
       const outPort = builtIn[BaseModels.PortType.NEXT] as unknown as IDSelectorParam;
       const linksByPortID = outPort ? this.props.getLinksByPortID(outPort) : [];
@@ -750,7 +784,11 @@ class TraceController {
       linkIDs: [...outLinkIDs, activePathLinkID],
     });
 
-    const updatedContextHistory = getUpdatedActivePathContextHistory(this.props.contextStep, this.props.contextHistory, updatedActivePaths);
+    const updatedContextHistory = getUpdatedActivePathContextHistory(
+      this.props.contextStep,
+      this.props.contextHistory,
+      updatedActivePaths
+    );
 
     this.props.updatePrototype({ activePaths: updatedActivePaths, contextHistory: updatedContextHistory });
   }

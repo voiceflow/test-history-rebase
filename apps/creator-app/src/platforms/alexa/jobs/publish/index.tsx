@@ -4,7 +4,7 @@ import JobInterface from '@/components/JobInterface';
 import { useHotkey } from '@/hooks';
 import { useSimulatedProgress } from '@/hooks/job';
 import { Hotkey } from '@/keymap';
-import PublishButton from '@/pages/Project/components/Header/components/CanvasHeader/components/Upload/components/PublishButton';
+import PublishButton from '@/pages/Project/components/Upload/components/PublishButton';
 
 import { useAlexaPublishContext } from './hooks';
 import { useAlexaPublishStageContent } from './stages';

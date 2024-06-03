@@ -104,7 +104,8 @@ export class KnowledgeBaseDocumentInternalPublicHTTPController {
         fileSize: 1024 * 1024 * 10, // 10 MB limit
       },
       fileFilter: (_, file, callback) => {
-        file.originalname = Buffer.from(file.originalname, 'latin1').toString('utf8');
+        Object.assign(file, { originalname: Buffer.from(file.originalname, 'latin1').toString('utf8') });
+
         callback(null, true);
       },
     })
@@ -209,7 +210,10 @@ export class KnowledgeBaseDocumentInternalPublicHTTPController {
     description: 'Get document by id in the target project',
     schema: DocumentFindOneResponse,
   })
-  async getOne(@Param('assistantID') assistantID: string, @Param('documentID') documentID: string): Promise<DocumentFindOneResponse> {
+  async getOne(
+    @Param('assistantID') assistantID: string,
+    @Param('documentID') documentID: string
+  ): Promise<DocumentFindOneResponse> {
     return this.service.findOneDocument(assistantID, documentID);
   }
 
@@ -403,7 +407,10 @@ export class KnowledgeBaseDocumentInternalPublicHTTPController {
     schema: DocumentRetryResponse,
     description: 'Retry document processing by id in the target project',
   })
-  async retryOne(@Param('assistantID') assistantID: string, @Param('documentID') documentID: string): Promise<DocumentRetryResponse> {
+  async retryOne(
+    @Param('assistantID') assistantID: string,
+    @Param('documentID') documentID: string
+  ): Promise<DocumentRetryResponse> {
     return this.service.retryOneDocument(assistantID, documentID);
   }
 
@@ -426,7 +433,10 @@ export class KnowledgeBaseDocumentInternalPublicHTTPController {
     description: 'Download document by id in the target project',
     schema: DocumentDownloadResponse,
   })
-  async download(@Param('assistantID') assistantID: string, @Param('documentID') documentID: string): Promise<DocumentDownloadResponse> {
+  async download(
+    @Param('assistantID') assistantID: string,
+    @Param('documentID') documentID: string
+  ): Promise<DocumentDownloadResponse> {
     return this.service.downloadDocument(assistantID, documentID);
   }
 
@@ -450,7 +460,9 @@ export class KnowledgeBaseDocumentInternalPublicHTTPController {
     description: 'Get many urls from one sitemap',
     schema: DocumentSitemapResponse,
   })
-  async sitemap(@Body(new ZodValidationPipe(DocumentSitemapRequest)) { sitemapURL }: DocumentSitemapRequest): Promise<DocumentSitemapResponse> {
+  async sitemap(
+    @Body(new ZodValidationPipe(DocumentSitemapRequest)) { sitemapURL }: DocumentSitemapRequest
+  ): Promise<DocumentSitemapResponse> {
     return this.service.sitemapUrlExraction(sitemapURL);
   }
 }

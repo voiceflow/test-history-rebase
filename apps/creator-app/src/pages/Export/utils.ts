@@ -8,7 +8,10 @@ import { BLOCK_WIDTH } from '@/styles/theme';
 import { Point } from '@/types';
 import { isMarkupBlockType, isRootOrMarkupBlockType } from '@/utils/typeGuards';
 
-const findCanvasExportOffsets = (nodes: Realtime.Node[], links: Realtime.Link[]): { maxPoint: Point; offsets: Point } => {
+const findCanvasExportOffsets = (
+  nodes: Realtime.Node[],
+  links: Realtime.Link[]
+): { maxPoint: Point; offsets: Point } => {
   let minX = Infinity;
   let minY = Infinity;
   let maxX = -Infinity;
@@ -52,7 +55,10 @@ const applyOffsetsToNodes = (nodes: Realtime.Node[], [offsetX, offsetY]: Point) 
     y: node.y + offsetY,
   }));
 
-const applyOffsetsToLinkData = (data: Realtime.LinkData | undefined, [offsetX, offsetY]: Point): Realtime.LinkData | undefined =>
+const applyOffsetsToLinkData = (
+  data: Realtime.LinkData | undefined,
+  [offsetX, offsetY]: Point
+): Realtime.LinkData | undefined =>
   !data
     ? undefined
     : {
@@ -84,11 +90,14 @@ export const initialize =
     const platform = ProjectV2.active.platformSelector(state);
     const projectType = ProjectV2.active.projectTypeSelector(state);
 
-    const { viewport, ...creator } = Realtime.Adapters.creatorAdapter.fromDB(await client.api.version.diagram.get(versionID, diagramID), {
-      platform,
-      projectType,
-      context: {},
-    });
+    const { viewport, ...creator } = Realtime.Adapters.creatorAdapter.fromDB(
+      await client.api.version.diagram.get(versionID, diagramID),
+      {
+        platform,
+        projectType,
+        context: {},
+      }
+    );
 
     const nodesWithCoordinates = creator.nodes.filter((node) => _isNumber(node.x) && _isNumber(node.y));
     const links = creator.links.filter((link) => !!link.data?.points?.length && !!link.target.nodeID);
@@ -100,7 +109,6 @@ export const initialize =
 
     dispatch(
       Realtime.creator.initialize({
-        domainID: '',
         diagramID,
         projectID: '',
         versionID: '',

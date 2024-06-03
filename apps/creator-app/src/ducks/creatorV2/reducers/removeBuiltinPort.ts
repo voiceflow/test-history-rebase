@@ -5,27 +5,36 @@ import { createReverter } from '@/ducks/utils';
 import { linksByPortIDSelector, parentNodeIDByStepIDSelector } from '../selectors';
 import { removeBuiltinPort, removeManyNodes } from '../utils';
 import { removeManyNodesReverter } from './removeManyNodes';
-import { createActiveDiagramReducer, createDiagramInvalidator, createNodeRemovalInvalidators, DIAGRAM_INVALIDATORS } from './utils';
+import {
+  createActiveDiagramReducer,
+  createDiagramInvalidator,
+  createNodeRemovalInvalidators,
+  DIAGRAM_INVALIDATORS,
+} from './utils';
 
-const removeBuiltinPortReducer = createActiveDiagramReducer(Realtime.port.removeBuiltin, (state, { nodeID, portID, removeNodes }) => {
-  const removeNodeIDs = removeNodes.map((node) => node.stepID ?? node.parentNodeID);
+const removeBuiltinPortReducer = createActiveDiagramReducer(
+  Realtime.port.removeBuiltin,
+  (state, { nodeID, portID, removeNodes }) => {
+    const removeNodeIDs = removeNodes.map((node) => node.stepID ?? node.parentNodeID);
 
-  removeManyNodes(state, removeNodeIDs);
-  removeBuiltinPort(state, nodeID, portID);
-});
+    removeManyNodes(state, removeNodeIDs);
+    removeBuiltinPort(state, nodeID, portID);
+  }
+);
 
 export default removeBuiltinPortReducer;
 
 export const removeBuiltinPortReverter = createReverter(
   Realtime.port.removeBuiltin,
 
-  ({ workspaceID, projectID, versionID, domainID, diagramID, nodeID, portID, type, removeNodes }, getState) => {
-    const ctx = { workspaceID, projectID, versionID, domainID, diagramID };
+  ({ workspaceID, projectID, versionID, diagramID, nodeID, portID, type, removeNodes }, getState) => {
+    const ctx = { workspaceID, projectID, versionID, diagramID };
     const state = getState();
     const links = linksByPortIDSelector(state, { id: portID });
 
     const removeNodeActions =
-      removeManyNodesReverter.revert({ workspaceID, projectID, versionID, domainID, diagramID, nodes: removeNodes }, getState) ?? [];
+      removeManyNodesReverter.revert({ workspaceID, projectID, versionID, diagramID, nodes: removeNodes }, getState) ??
+      [];
 
     return [
       Realtime.port.addBuiltin({ ...ctx, nodeID, portID, type }),
@@ -53,8 +62,14 @@ export const removeBuiltinPortReverter = createReverter(
   [
     ...DIAGRAM_INVALIDATORS,
     ...createNodeRemovalInvalidators<Realtime.port.RemoveBuiltinPayload>((origin, nodeID) => origin.nodeID === nodeID),
-    createDiagramInvalidator(Realtime.port.removeBuiltin, (origin, subject) => origin.nodeID === subject.nodeID && origin.type === subject.type),
-    createDiagramInvalidator(Realtime.link.addBuiltin, (origin, subject) => origin.nodeID === subject.sourceNodeID && origin.type === subject.type),
+    createDiagramInvalidator(
+      Realtime.port.removeBuiltin,
+      (origin, subject) => origin.nodeID === subject.nodeID && origin.type === subject.type
+    ),
+    createDiagramInvalidator(
+      Realtime.link.addBuiltin,
+      (origin, subject) => origin.nodeID === subject.sourceNodeID && origin.type === subject.type
+    ),
     createDiagramInvalidator(Realtime.link.patchMany, (origin, subject) =>
       subject.patches.some((patch) => origin.nodeID === patch.nodeID && origin.portID === patch.portID)
     ),

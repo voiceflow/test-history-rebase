@@ -23,7 +23,7 @@ export const DiagramLayoutHeaderTitle: React.FC = () => {
   );
 
   const updateName = useDispatch(Project.updateActiveProjectName);
-  const goToDiagram = useDispatch(Router.goToDiagram);
+  const goToDiagram = useDispatch(Router.goToDiagramHistoryClear);
 
   return (
     <Header.AgentNavigation.Title

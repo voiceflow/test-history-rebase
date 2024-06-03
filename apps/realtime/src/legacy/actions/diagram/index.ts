@@ -4,12 +4,10 @@ import AddDiagramControl from './add';
 import AddManyDiagramControl from './addMany';
 import HeartbeatDiagramControl from './heartbeat';
 import { LockEntitiesControl, UnlockEntitiesControl, UpdateLockedEntitiesControl } from './locks';
-import { AddMenuItemControl, RemoveMenuItemControl, ReorderMenuItemControl } from './menuItem';
 import PatchDiagramControl from './patch';
 import ReloadSharedNodesControl from './reloadSharedNodes';
 import RemoveDiagramControl from './remove';
 import RemoveManyDiagramControl from './removeMany';
-import { SubtopicCreateControl, SubtopicMoveControl, SubtopicRemoveControl } from './subtopic';
 import TemplateCreateControl from './templateCreate';
 import { AddLocalVariableControl, RemoveLocalVariableControl } from './variable';
 import { UpdateViewportControl } from './viewport';
@@ -21,11 +19,6 @@ const buildDiagramActionControls = (options: LoguxControlOptions) => ({
   removeDiagramControl: new RemoveDiagramControl(options),
   addManyDiagramControl: new AddManyDiagramControl(options),
   removeManyDiagramControl: new RemoveManyDiagramControl(options),
-
-  // subtopics
-  subtopicCreateControl: new SubtopicCreateControl(options),
-  subtopicRemoveControl: new SubtopicRemoveControl(options),
-  subtopicMoveControl: new SubtopicMoveControl(options),
 
   // variables
   addLocalVariableControl: new AddLocalVariableControl(options),
@@ -39,11 +32,6 @@ const buildDiagramActionControls = (options: LoguxControlOptions) => ({
 
   // viewport
   updateViewportControl: new UpdateViewportControl(options),
-
-  // menu items
-  addMenuItemControl: new AddMenuItemControl(options),
-  removeMenuItemControl: new RemoveMenuItemControl(options),
-  reorderMenuItemControl: new ReorderMenuItemControl(options),
 
   // other
   templateCreateControl: new TemplateCreateControl(options),

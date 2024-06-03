@@ -16,7 +16,6 @@ class RemoveManyNodes extends AbstractVersionDiagramAccessActionControl<Realtime
   protected finally = async (ctx: Context, { payload }: Action<Realtime.node.RemoveManyPayload>): Promise<void> => {
     await Promise.all([
       this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID),
-      this.services.domain.setUpdatedBy(payload.versionID, payload.domainID, ctx.data.creatorID),
       this.setCMSUpdatedBy(ctx, payload),
     ]);
   };

@@ -1,4 +1,4 @@
-import { AdditionalData, PaymentIntent as ChargebeePaymentIntent, Component } from '@chargebee/chargebee-js-types';
+import { AdditionalData, Component,PaymentIntent as ChargebeePaymentIntent } from '@chargebee/chargebee-js-types';
 import { PaymentIntent } from '@voiceflow/dtos';
 import { CONTRIES_MAPPER, IS_DEVELOPMENT, toast } from '@voiceflow/ui';
 import { useRef } from 'react';

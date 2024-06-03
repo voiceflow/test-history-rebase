@@ -66,8 +66,14 @@ class ServiceManager {
     const actions = {} as LoguxControlOptions['actions'];
     const channels = {} as LoguxControlOptions['channels'];
 
-    Object.assign(actions, buildActions({ server, config, services, clients, actions, channels, log } as LoguxControlOptions));
-    Object.assign(channels, buildChannels({ server, config, services, clients, actions, channels, log } as LoguxControlOptions));
+    Object.assign(
+      actions,
+      buildActions({ server, config, services, clients, actions, channels, log } as LoguxControlOptions)
+    );
+    Object.assign(
+      channels,
+      buildChannels({ server, config, services, clients, actions, channels, log } as LoguxControlOptions)
+    );
 
     this.log = log;
     this.config = config;

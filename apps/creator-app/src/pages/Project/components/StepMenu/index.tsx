@@ -19,7 +19,6 @@ const STEP_MENU_EXPANDED_LOCAL_STORAGE_KEY = 'stepMenuExpanded';
 
 const StepMenu: React.FC = () => {
   const triggerStep = useFeature(FeatureFlag.TRIGGER_STEP);
-  const cmsWorkflows = useFeature(FeatureFlag.CMS_WORKFLOWS);
   const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
   const aiPlaygroundEnabled = useProjectAIPlayground();
 
@@ -32,7 +31,7 @@ const StepMenu: React.FC = () => {
   const [isExpanded, toggleIsExpanded] = useLocalStorageState(STEP_MENU_EXPANDED_LOCAL_STORAGE_KEY, true);
   const [initialRender, setInitialRender] = useState(true);
 
-  const withEventSection = !triggerStep.isEnabled && (!cmsWorkflows.isEnabled || isTopic);
+  const withEventSection = !triggerStep.isEnabled && isTopic;
 
   const [eventSection, otherSections, numCollapsedSteps] = React.useMemo(() => {
     let numCollapsedSteps = 5;

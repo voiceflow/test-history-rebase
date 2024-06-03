@@ -169,6 +169,7 @@ class VoiceflowAssistant {
     this.logger.debug(`Received event: ${vfData.type}`);
 
     if (vfData.type === 'voiceflow:open') {
+      // eslint-disable-next-line no-empty-function
       await speedDetection.detect().catch(() => {});
 
       await this.updateInfo();

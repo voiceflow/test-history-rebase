@@ -14,12 +14,11 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import { useFeature } from '@/hooks/feature';
-import { usePartialImport } from '@/hooks/partialImport';
 import { useHasPermissions, useIsLockedProjectViewer, useIsPreviewer, usePermission } from '@/hooks/permission';
 import { useSelector } from '@/hooks/redux';
 import * as ModalsV2 from '@/ModalsV2';
-import { ShareProjectTab } from '@/pages/Project/components/Header/constants';
-import { SharePopperContext } from '@/pages/Project/components/Header/contexts';
+import { SharePopperContext } from '@/pages/Project/components/SharePopperContext';
+import { ShareProjectTab } from '@/pages/Project/constants';
 import { copy } from '@/utils/clipboard';
 
 import { useOnAssistantDuplicate } from './assistant.hook';
@@ -64,7 +63,6 @@ export const useProjectOptions = ({
   projectID?: string | null;
   withDelete?: boolean;
   withInvite?: boolean;
-  withConvertToDomain?: boolean;
   // eslint-disable-next-line sonarjs/cognitive-complexity
 }): ProjectOption[] => {
   const sharePopper = React.useContext(SharePopperContext);
@@ -93,10 +91,6 @@ export const useProjectOptions = ({
 
   const projectMembersModal = ModalsV2.useModal(ModalsV2.Project.Members);
   const projectDownloadModal = ModalsV2.useModal(ModalsV2.Project.Download);
-
-  const isPartialImportEnabled = !!useFeature(Realtime.FeatureFlag.PARTIAL_IMPORT)?.isEnabled;
-
-  const partialImport = usePartialImport();
 
   const onDelete = useDeleteProject({ boardID, projectID });
 
@@ -139,7 +133,6 @@ export const useProjectOptions = ({
   const isPreviewerOrLockedViewer = isPreviewer || isProjectLocked;
   const withInviteOption =
     !isPreviewerOrLockedViewer && withInvite && canAddCollaborators && (!canvas || !!sharePopper);
-  const withImportOption = !isPreviewerOrLockedViewer && isPartialImportEnabled;
   const withDeleteOption = !isPreviewer && withDelete && canManageProjects;
   const withExportOption = !isPreviewerOrLockedViewer && canExportProject && !!sharePopper && !hideExports.isEnabled;
   const withRenameOption = !isPreviewerOrLockedViewer && canEditProject && !!onRename;
@@ -214,8 +207,6 @@ export const useProjectOptions = ({
       onClick: () => sharePopper?.open(ShareProjectTab.INVITE),
       testID: 'invite-collaborators',
     }),
-
-    ...Utils.array.conditionalItem(withImportOption, { label: 'Import', onClick: partialImport, testID: 'import' }),
 
     ...Utils.array.conditionalItem(withExportOption, {
       label: 'Export as...',

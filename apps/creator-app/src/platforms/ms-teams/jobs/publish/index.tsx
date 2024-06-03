@@ -3,7 +3,7 @@ import React from 'react';
 import JobInterface from '@/components/JobInterface';
 import { PublishContext } from '@/contexts/PublishContext';
 import { useSimulatedProgress } from '@/hooks/job';
-import PublishButton from '@/pages/Project/components/Header/components/CanvasHeader/components/Upload/components/PublishButton';
+import PublishButton from '@/pages/Project/components/Upload/components/PublishButton';
 
 import { useTeamsPublish } from './hooks';
 import { useNLPTrainingStageContent } from './stages';

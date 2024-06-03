@@ -4,8 +4,6 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import * as Errors from '@/config/errors';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import { allCustomBlocksSelector } from '@/ducks/customBlock/selectors';
-import * as Feature from '@/ducks/feature';
-import * as Session from '@/ducks/session';
 import { getActiveVersionContext } from '@/ducks/versionV2/utils';
 import { Thunk } from '@/store/types';
 
@@ -67,12 +65,7 @@ export const syncCustomBlockPorts = (): Thunk<void> => async (dispatch, getState
   const state = getState();
 
   const context = getActiveVersionContext(state);
-  const activeDomainID = Session.activeDomainIDSelector(state);
   const activeDiagramID = CreatorV2.activeDiagramIDSelector(state);
-
-  if (!Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.CMS_WORKFLOWS)) {
-    Errors.assertDomainID(activeDomainID);
-  }
 
   Errors.assertDiagramID(activeDiagramID);
 
@@ -84,30 +77,26 @@ export const syncCustomBlockPorts = (): Thunk<void> => async (dispatch, getState
 
   const patchData = allPointers
     .filter((pointer) => allCustomBlocksMap.has(pointer.sourceID))
-    .reduce((updatePatch, pointer) => {
-      const sourceBlock = allCustomBlocksMap.get(pointer.sourceID)!;
-      const existingPorts = CreatorV2.portsByNodeIDSelector(state, { id: pointer.nodeID }).out.dynamic;
+    .reduce(
+      (updatePatch, pointer) => {
+        const sourceBlock = allCustomBlocksMap.get(pointer.sourceID)!;
+        const existingPorts = CreatorV2.portsByNodeIDSelector(state, { id: pointer.nodeID }).out.dynamic;
 
-      const newPaths = sourceBlock.paths.filter((_, index) => index >= existingPorts.length);
+        const newPaths = sourceBlock.paths.filter((_, index) => index >= existingPorts.length);
 
-      if (newPaths.length > 0) {
-        updatePatch[pointer.nodeID] = newPaths.map((pathname) => ({
-          portID: Utils.id.cuid(),
-          label: pathname,
-        }));
-      }
+        if (newPaths.length > 0) {
+          updatePatch[pointer.nodeID] = newPaths.map((pathname) => ({
+            portID: Utils.id.cuid(),
+            label: pathname,
+          }));
+        }
 
-      return updatePatch;
-    }, {} as Record<string, { label: string; portID: string }[]>);
+        return updatePatch;
+      },
+      {} as Record<string, { label: string; portID: string }[]>
+    );
 
   if (Object.keys(patchData).length > 0) {
-    await dispatch.sync(
-      Realtime.port.syncCustomBlockPorts({
-        ...context,
-        domainID: activeDomainID,
-        diagramID: activeDiagramID,
-        patchData,
-      })
-    );
+    await dispatch.sync(Realtime.port.syncCustomBlockPorts({ ...context, diagramID: activeDiagramID, patchData }));
   }
 };

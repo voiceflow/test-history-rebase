@@ -1,11 +1,9 @@
-/* eslint-disable no-nested-ternary */
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { stopImmediatePropagation } from '@voiceflow/ui';
 import React from 'react';
 
 import Drawer from '@/components/Drawer';
 import { UI } from '@/ducks';
-import { useFeature, useHideVoiceflowAssistant, useTheme } from '@/hooks';
+import { useHideVoiceflowAssistant, useTheme } from '@/hooks';
 import { useSelector } from '@/hooks/store.hook';
 
 import { useEditorSidebarV2 } from './hooks';
@@ -15,7 +13,6 @@ export { EditorSidebarContext } from './context';
 const EditorSidebarV2 = () => {
   const api = useEditorSidebarV2();
   const theme = useTheme();
-  const cmsWorkflows = useFeature(Realtime.FeatureFlag.CMS_WORKFLOWS);
   const isCanvasOnly = useSelector(UI.selectors.isCanvasOnly);
 
   useHideVoiceflowAssistant({ hide: api.isOpened });
@@ -31,9 +28,9 @@ const EditorSidebarV2 = () => {
         overflowHidden
         disableAnimation={!api.hasData}
         style={{
-          top: cmsWorkflows.isEnabled ? (isCanvasOnly ? 0 : theme.components.header.newHeight) : undefined,
+          top: isCanvasOnly ? 0 : theme.components.header.newHeight,
           width: api.isOpened && api.isFullscreen ? 'calc(100% - 355px' : undefined,
-          height: cmsWorkflows.isEnabled ? (isCanvasOnly ? '100%' : `calc(100% - ${theme.components.header.newHeight}px)`) : undefined,
+          height: isCanvasOnly ? '100%' : `calc(100% - ${theme.components.header.newHeight}px)`,
         }}
       >
         {api.editor}

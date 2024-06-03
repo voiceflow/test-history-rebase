@@ -30,7 +30,6 @@ const ProjectList: React.FC = () => {
   const [sortBy, setSortBy] = React.useState<SortOptionType>(SortByOptions[0]);
   const [canCreateAssistant] = usePermission(Permission.PROJECT_EDIT);
   const proReverseTrial = useFeature(Realtime.FeatureFlag.PRO_REVERSE_TRIAL);
-  const cmsWorkflows = useFeature(Realtime.FeatureFlag.CMS_WORKFLOWS);
   const isEnterprise = useSelector(WorkspaceV2.active.isEnterpriseSelector);
   const location = useLocation();
   const history = useHistory();
@@ -45,8 +44,6 @@ const ProjectList: React.FC = () => {
   const isTrialExpired = useSelector(WorkspaceV2.active.organizationTrialExpiredSelector);
 
   const goToCMSWorkflow = useDispatch(Router.goToCMSWorkflow);
-  const goToCanvasWithVersionID = useDispatch(Router.goToCanvasWithVersionID);
-  const goToAssistantOverview = useDispatch(Router.goToAssistantOverview);
 
   const activeViewersPerProject = React.useMemo(
     () =>
@@ -119,12 +116,20 @@ const ProjectList: React.FC = () => {
         {hasProjects && (
           <S.Grid>
             {projectToRender.map((item) => (
-              <ProjectIdentityProvider key={item.id} projectID={item.id} projectRole={Normal.getOne(item.members, String(userID))?.role ?? null}>
+              <ProjectIdentityProvider
+                key={item.id}
+                projectID={item.id}
+                projectRole={Normal.getOne(item.members, String(userID))?.role ?? null}
+              >
                 <AssistantCard
-                  {...getProjectStatusAndMembers({ project: item, activeViewers: activeViewersPerProject[item.id], getMemberByIDSelector })}
+                  {...getProjectStatusAndMembers({
+                    project: item,
+                    activeViewers: activeViewersPerProject[item.id],
+                    getMemberByIDSelector,
+                  })}
                   project={item}
-                  onClickCard={() => (cmsWorkflows.isEnabled ? goToCMSWorkflow(item.versionID) : goToAssistantOverview(item.versionID))}
-                  onClickDesigner={() => (cmsWorkflows.isEnabled ? goToCMSWorkflow(item.versionID) : goToCanvasWithVersionID(item.versionID))}
+                  onClickCard={() => goToCMSWorkflow(item.versionID)}
+                  onClickDesigner={() => goToCMSWorkflow(item.versionID)}
                 />
               </ProjectIdentityProvider>
             ))}

@@ -20,18 +20,18 @@ import { VariableModule } from '@/variable/variable.module';
 import { VersionModule } from '@/version/version.module';
 import { WorkflowModule } from '@/workflow/workflow.module';
 
-import { EnvironmentCloneService } from './environment-clone.service';
 import { EnvironmentAdapter } from './environment.adapter';
 import { EnvironmentLoguxController } from './environment.logux.controller';
 import { EnvironmentRepository } from './environment.repository';
 import { EnvironmentService } from './environment.service';
-import { EnvironmentPrivateHTTPController } from './environment-private.http.controller';
-import { EnvironmentPublicHTTPController } from './environment-public.http.controller';
+import { EnvironmentCloneService } from './environment-clone.service';
 import { EnvironmentExportService } from './environment-export.service';
 import { EnvironmentImportService } from './environment-import.service';
 import { EnvironmentMigrationService } from './environment-migration.service';
 import { EnvironmentNLUTrainingService } from './environment-nlu-training.service';
+import { EnvironmentPrivateHTTPController } from './environment-private.http.controller';
 import { EnvironmentPrototypeService } from './environment-prototype.service';
+import { EnvironmentPublicHTTPController } from './environment-public.http.controller';
 
 @Module({
   imports: [

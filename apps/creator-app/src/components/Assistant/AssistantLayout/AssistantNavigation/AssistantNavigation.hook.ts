@@ -61,7 +61,10 @@ export const useAssistantNavigationLogoItems = (): NavigationLogoItem[] => {
 
   return [
     { key: 'back', label: 'Back to dashboard', iconName: 'ArrowLeft', onClick: () => goToDashboard() },
-    ...conditionalArrayItems<NavigationLogoItem>(withSharePrototype || withInviteCollaborators || withExport, { key: 'divider-1', divider: true }),
+    ...conditionalArrayItems<NavigationLogoItem>(withSharePrototype || withInviteCollaborators || withExport, {
+      key: 'divider-1',
+      divider: true,
+    }),
     ...conditionalArrayItems<NavigationLogoItem>(withSharePrototype, {
       key: 'share',
       label: 'Share prototype',
@@ -80,7 +83,10 @@ export const useAssistantNavigationLogoItems = (): NavigationLogoItem[] => {
       onClick: (props) => props.export(),
       iconName: 'Export',
     }),
-    ...conditionalArrayItems<NavigationLogoItem>(withDuplicateOption || withCopyCloneLinkOption, { key: 'divider-2', divider: true }),
+    ...conditionalArrayItems<NavigationLogoItem>(withDuplicateOption || withCopyCloneLinkOption, {
+      key: 'divider-2',
+      divider: true,
+    }),
     ...conditionalArrayItems<NavigationLogoItem>(withDuplicateOption, {
       key: 'duplicate',
       label: 'Duplicate agent',
@@ -103,34 +109,20 @@ export const useAssistantNavigationItems = () => {
   const [canEditProject] = usePermission(Permission.PROJECT_EDIT);
   const [canViewConversations] = usePermission(Permission.VIEW_CONVERSATIONS);
 
-  const domainID = useSelector(Session.activeDomainIDSelector) ?? '';
   const diagramID = useSelector(Session.activeDiagramIDSelector) ?? '';
 
-  const cmsWorkflows = useFeature(Realtime.FeatureFlag.CMS_WORKFLOWS);
   const viewerAPIKeyAccess = useFeature(Realtime.FeatureFlag.ALLOW_VIEWER_APIKEY_ACCESS);
 
   return useMemo<IAssistantNavigationItem[]>(() => {
     const isItemActive = (path: string) => !!matchPath(location.pathname, { path, exact: false });
 
-    // eslint-disable-next-line no-nested-ternary
-    const designerPath = cmsWorkflows.isEnabled ? Path.PROJECT_CANVAS : domainID && diagramID ? Path.DOMAIN_CANVAS : Path.PROJECT_DOMAIN;
-
     return [
-      ...conditionalArrayItems<IAssistantNavigationItem>(!cmsWorkflows.isEnabled, {
-        path: designerPath,
-        testID: 'designer',
-        params: domainID && diagramID ? { domainID, diagramID } : {},
-        hotkey: '',
-        isActive: isItemActive(designerPath),
-        iconName: 'Designer',
-        tooltipLabel: 'Designer',
-      }),
       ...conditionalArrayItems<IAssistantNavigationItem>(canEditProject, {
         path: Path.PROJECT_CMS,
         testID: 'cms',
         hotkey: '',
         isActive: isItemActive(Path.PROJECT_CMS),
-        iconName: cmsWorkflows.isEnabled ? 'Designer' : 'Content',
+        iconName: 'Designer',
         tooltipLabel: 'Content',
       }),
       ...conditionalArrayItems<IAssistantNavigationItem>(canViewConversations, {
@@ -166,7 +158,7 @@ export const useAssistantNavigationItems = () => {
         tooltipLabel: 'Settings',
       }),
     ].map<IAssistantNavigationItem>((item, index) => ({ ...item, hotkey: String(index + 1) }));
-  }, [location.pathname, canViewConversations, canEditAPIKey, viewerAPIKeyAccess.isEnabled, canEditProject, domainID, diagramID]);
+  }, [location.pathname, canViewConversations, canEditAPIKey, viewerAPIKeyAccess.isEnabled, canEditProject, diagramID]);
 };
 
 export const useAssistantNavigationHotkeys = (items: IAssistantNavigationItem[]) => {

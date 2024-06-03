@@ -25,20 +25,34 @@ import { EnvironmentRepository } from './environment.repository';
 @Injectable()
 export class EnvironmentExportService {
   constructor(
-    @Inject(VersionService) private readonly version: VersionService,
-    @Inject(DiagramService) private readonly diagram: DiagramService,
-    @Inject(DiagramUtil) private readonly diagramUtil: DiagramUtil,
-    @Inject(FlowService) private readonly flow: FlowService,
-    @Inject(FolderService) private readonly folder: FolderService,
-    @Inject(VariableService) private readonly variable: VariableService,
-    @Inject(WorkflowService) private readonly workflow: WorkflowService,
-    @Inject(AttachmentService) private readonly attachment: AttachmentService,
-    @Inject(ResponseService) private readonly response: ResponseService,
-    @Inject(IntentService) private readonly intent: IntentService,
-    @Inject(EntityService) private readonly entity: EntityService,
-    @Inject(FunctionService) private readonly functions: FunctionService,
-    @Inject(UnleashFeatureFlagService) private readonly unleash: UnleashFeatureFlagService,
-    @Inject(EnvironmentRepository) private readonly environmentRepository: EnvironmentRepository
+    @Inject(VersionService)
+    private readonly version: VersionService,
+    @Inject(DiagramService)
+    private readonly diagram: DiagramService,
+    @Inject(DiagramUtil)
+    private readonly diagramUtil: DiagramUtil,
+    @Inject(FlowService)
+    private readonly flow: FlowService,
+    @Inject(FolderService)
+    private readonly folder: FolderService,
+    @Inject(VariableService)
+    private readonly variable: VariableService,
+    @Inject(WorkflowService)
+    private readonly workflow: WorkflowService,
+    @Inject(AttachmentService)
+    private readonly attachment: AttachmentService,
+    @Inject(ResponseService)
+    private readonly response: ResponseService,
+    @Inject(IntentService)
+    private readonly intent: IntentService,
+    @Inject(EntityService)
+    private readonly entity: EntityService,
+    @Inject(FunctionService)
+    private readonly functions: FunctionService,
+    @Inject(UnleashFeatureFlagService)
+    private readonly unleash: UnleashFeatureFlagService,
+    @Inject(EnvironmentRepository)
+    private readonly environmentRepository: EnvironmentRepository
   ) {}
 
   public prepareExportData(

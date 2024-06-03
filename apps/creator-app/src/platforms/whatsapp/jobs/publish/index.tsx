@@ -6,7 +6,7 @@ import { JobStatus } from '@/constants';
 import { NLPTrainStageType } from '@/constants/platforms';
 import { PublishContext } from '@/contexts/PublishContext';
 import { useSimulatedProgress } from '@/hooks/job';
-import PublishButton from '@/pages/Project/components/Header/components/CanvasHeader/components/Upload/components/PublishButton';
+import PublishButton from '@/pages/Project/components/Upload/components/PublishButton';
 
 import { useWhatsAppStageContent } from './stages';
 

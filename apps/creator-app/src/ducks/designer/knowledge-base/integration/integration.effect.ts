@@ -74,7 +74,7 @@ export const getIntegrationAuthUrl =
         redirectUrl: `${CREATOR_APP_ENDPOINT}${Path.INTEGRATION_ZENDESK_CALLBACK}`,
       },
     });
-    const data = response.data;
+    const {data} = response;
 
 
     return data.url;
@@ -94,7 +94,7 @@ export const getIntegrationAuthReconnectUrl =
         redirectUrl: `${CREATOR_APP_ENDPOINT}${Path.INTEGRATION_ZENDESK_CALLBACK}`,
       },
     });
-    const data = response.data;
+    const {data} = response;
 
     return data.url;
   };

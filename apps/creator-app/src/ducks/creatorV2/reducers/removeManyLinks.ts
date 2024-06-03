@@ -17,8 +17,8 @@ export default removeManyLinksReducer;
 export const removeManyLinksReverter = createReverter(
   Realtime.link.removeMany,
 
-  ({ workspaceID, projectID, versionID, domainID, diagramID, links }, getState) => {
-    const ctx = { workspaceID, projectID, versionID, domainID, diagramID };
+  ({ workspaceID, projectID, versionID, diagramID, links }, getState) => {
+    const ctx = { workspaceID, projectID, versionID, diagramID };
     const state = getState();
 
     return links.map((link) => {

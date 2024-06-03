@@ -8,7 +8,7 @@ class HeartbeatControl extends AbstractDiagramActionControl<Realtime.diagram.awa
   actionCreator = Realtime.diagram.awareness.heartbeat;
 
   protected process = async (ctx: Context, { payload }: Action<Realtime.diagram.awareness.HeartbeatPayload>) => {
-    const { lock, unlock, forceSync, diagramID, projectID, domainID, versionID, locksMap, workspaceID } = payload;
+    const { lock, unlock, forceSync, diagramID, projectID, versionID, locksMap, workspaceID } = payload;
 
     await Promise.all([
       this.services.diagram.connectNode(versionID, diagramID, ctx.nodeId),
@@ -21,7 +21,7 @@ class HeartbeatControl extends AbstractDiagramActionControl<Realtime.diagram.awa
       ),
     ]);
 
-    const context = { diagramID, domainID, projectID, versionID, loguxNodeID: ctx.nodeId, workspaceID };
+    const context = { diagramID, projectID, versionID, loguxNodeID: ctx.nodeId, workspaceID };
 
     if (lock) {
       // don't need to lock entities in the redis since it's already locked above

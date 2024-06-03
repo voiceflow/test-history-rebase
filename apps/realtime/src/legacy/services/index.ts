@@ -20,7 +20,6 @@ import BillingService from './billing';
 import CanvasTemplateService from './canvasTemplate';
 import CustomBlockService from './customBlock';
 import DiagramService from './diagram';
-import DomainService from './domain';
 import FeatureService from './feature';
 import LockService from './lock';
 import MigrateService from './migrate';
@@ -37,10 +36,6 @@ export interface ServiceMap extends BaseServiceMap {
   user: UserService;
   flow: FlowService;
   thread: ThreadService;
-  /**
-   * @deprecated remove when FeatureFlag.CMS_WORKFLOWS are released
-   */
-  domain: DomainService;
   viewer: ViewerService;
   billing: BillingService;
   diagram: DiagramService;
@@ -102,7 +97,6 @@ const buildServices = ({ config, clients, models, log, injectedServices }: Optio
     flow: injectedServices.flow,
     thread: injectedServices.thread,
     viewer: new ViewerService(serviceOptions),
-    domain: new DomainService(serviceOptions),
     billing: new BillingService(serviceOptions),
     diagram: new DiagramService(serviceOptions),
     project: new ProjectService(serviceOptions),

@@ -1,5 +1,4 @@
 import { Struct } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { generatePath } from 'react-router';
 
 import { PageProgress } from '@/components/PageProgressBar/utils';
@@ -8,8 +7,6 @@ import { CMSRoute, Path } from '@/config/routes';
 import { PageProgressBar } from '@/constants';
 import * as Creator from '@/ducks/creatorV2';
 import * as Designer from '@/ducks/designer';
-import * as DomainSelectors from '@/ducks/domain/selectors';
-import * as Feature from '@/ducks/feature';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import * as Version from '@/ducks/versionV2';
@@ -23,9 +20,6 @@ import {
   goToCanvasTextMarkup,
   goToConversations,
   goToDialogManagerAPI,
-  goToDomainCanvasCommenting,
-  goToDomainCanvasCommentingThread,
-  goToDomainCanvasTextMarkup,
   goToPath,
   goToPlatformPrototype,
   goToPrototype,
@@ -35,9 +29,7 @@ import {
   goToWorkspace,
   goToWorkspaceMembers,
   goToWorkspaceSettings,
-  redirectTo,
   redirectToCanvasCommentingThread,
-  redirectToDomainCanvasCommentingThread,
   redirectToPath,
 } from './actions';
 
@@ -86,7 +78,7 @@ export const goToCanvasDiagram =
     subpath,
     diagramID,
     versionID,
-    pageProgress = true,
+    pageProgress = false,
   }: GoToProjectCanvasOptions & { nodeID?: string; diagramID: string }): SyncThunk =>
   (dispatch, getState) => {
     const activeDiagramID = Creator.activeDiagramIDSelector(getState());
@@ -102,139 +94,18 @@ export const goToCanvasDiagram =
     }
   };
 
-/**
- * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
- */
-interface GoToDomainOptions {
-  domainID?: string;
-  versionID: string;
-}
-
-/**
- * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
- */
-export const goToDomain = ({ domainID, versionID }: GoToDomainOptions) =>
-  goTo(`${generatePath(Path.PROJECT_DOMAIN, { domainID, versionID })}${window.location.search}`);
-
-/**
- * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
- */
-export const redirectToDomain = ({ domainID, versionID }: GoToDomainOptions) =>
-  redirectTo(`${generatePath(Path.PROJECT_DOMAIN, { versionID, domainID })}${window.location.search}`);
-
-/**
- * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
- */
-interface GoToDomainCanvasOptions extends GoToDomainOptions {
-  domainID: string;
-  diagramID?: string;
-}
-
-/**
- * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
- */
-interface GoToDomainCanvasDiagramOptions extends GoToDomainCanvasOptions {
-  diagramID: string;
-}
-
-/**
- * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
- */
-export const goToDomainCanvas = ({ domainID, diagramID, versionID }: GoToDomainCanvasOptions) =>
-  goTo(`${generatePath(Path.DOMAIN_CANVAS, { domainID, diagramID, versionID })}${window.location.search}`);
-
-/**
- * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
- */
-export const redirectToDomainCanvas = ({
-  domainID,
-  diagramID,
-  versionID,
-  extraPath = '',
-}: GoToDomainCanvasOptions & { extraPath?: string }) =>
-  redirectTo(
-    `${generatePath(Path.DOMAIN_CANVAS, { versionID, diagramID, domainID })}${extraPath}${window.location.search}`
-  );
-
-/**
- * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
- */
-interface GoToDomainCanvasNodeOptions extends GoToDomainCanvasDiagramOptions {
-  nodeID: string;
-  routeState?: Struct;
-  nodeSubPath?: string;
-}
-
-/**
- * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
- */
-export const goToDomainCanvasNode = ({
-  nodeID,
-  domainID,
-  versionID,
-  diagramID,
-  routeState,
-  nodeSubPath,
-}: GoToDomainCanvasNodeOptions) =>
-  goTo(
-    // eslint-disable-next-line sonarjs/no-nested-template-literals
-    `${generatePath(Path.DOMAIN_CANVAS_NODE, { versionID, diagramID, domainID, nodeID })}${nodeSubPath ? `/${nodeSubPath.replace(/^\//, '')}` : ''}${
-      window.location.search
-    }`,
-    routeState
-  );
-
-/**
- * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
- */
-interface GoToCanvasSwitchRealtimeOptions extends GoToDomainCanvasDiagramOptions {
-  nodeID?: string;
-}
-
-/**
- * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
- */
-export const goToCanvasSwitchRealtime =
-  ({ nodeID, domainID, versionID, diagramID }: GoToCanvasSwitchRealtimeOptions): SyncThunk =>
-  (dispatch) => {
-    PageProgress.start(PageProgressBar.CANVAS_LOADING);
-
-    if (nodeID) {
-      dispatch(goToDomainCanvasNode({ nodeID, domainID, diagramID, versionID }));
-    } else {
-      dispatch(goToDomainCanvas({ domainID, diagramID, versionID }));
-    }
-  };
-
 export const goToCurrentCanvas = (): SyncThunk => (dispatch, getState) => {
   const state = getState();
 
   const versionID = Session.activeVersionIDSelector(state);
   const diagramID = Session.activeDiagramIDSelector(state);
+  const rootDiagramID = Version.active.rootDiagramIDSelector(state);
 
   Errors.assertVersionID(versionID);
 
-  if (Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.CMS_WORKFLOWS)) {
-    const rootDiagramID = Version.active.rootDiagramIDSelector(state);
+  Errors.assertDiagramID(diagramID ?? rootDiagramID);
 
-    Errors.assertDiagramID(diagramID ?? rootDiagramID);
-
-    dispatch(goToProjectCanvas({ versionID, diagramID: diagramID ?? rootDiagramID ?? undefined }));
-
-    return;
-  }
-
-  const domainID = Session.activeDomainIDSelector(state);
-  const rootDomain = DomainSelectors.rootDomainSelector(state);
-
-  if (domainID && diagramID) {
-    dispatch(goToDomainCanvas({ domainID, diagramID, versionID }));
-    return;
-  }
-
-  if (!rootDomain) throw Errors.noActiveDomainID();
-
-  dispatch(goToDomainCanvas({ domainID: rootDomain.id, diagramID: rootDomain.rootDiagramID, versionID }));
+  dispatch(goToProjectCanvas({ versionID, diagramID: diagramID ?? rootDiagramID ?? undefined }));
 };
 
 export const goToCurrentCanvasCommenting =
@@ -248,24 +119,10 @@ export const goToCurrentCanvasCommenting =
     Errors.assertVersionID(versionID);
     Errors.assertDiagramID(diagramID);
 
-    if (Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.CMS_WORKFLOWS)) {
-      if (threadID) {
-        dispatch(goToCanvasCommentingThread({ diagramID, versionID, threadID, commentID }));
-      } else {
-        dispatch(goToCanvasCommenting({ diagramID, versionID }));
-      }
-
-      return;
-    }
-
-    const domainID = Session.activeDomainIDSelector(state);
-
-    Errors.assertDomainID(domainID);
-
     if (threadID) {
-      dispatch(goToDomainCanvasCommentingThread({ domainID, diagramID, versionID, threadID, commentID }));
+      dispatch(goToCanvasCommentingThread({ diagramID, versionID, threadID, commentID }));
     } else {
-      dispatch(goToDomainCanvasCommenting({ domainID, diagramID, versionID }));
+      dispatch(goToCanvasCommenting({ diagramID, versionID }));
     }
   };
 
@@ -278,17 +135,7 @@ export const goToCurrentCanvasTextMarkup = (): SyncThunk => (dispatch, getState)
   Errors.assertVersionID(versionID);
   Errors.assertDiagramID(diagramID);
 
-  if (Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.CMS_WORKFLOWS)) {
-    dispatch(goToCanvasTextMarkup({ diagramID, versionID }));
-
-    return;
-  }
-
-  const domainID = Session.activeDomainIDSelector(state);
-
-  Errors.assertDomainID(domainID);
-
-  dispatch(goToDomainCanvasTextMarkup({ domainID, diagramID, versionID }));
+  dispatch(goToCanvasTextMarkup({ diagramID, versionID }));
 };
 
 export const redirectToCurrentCanvasCommentingThread =
@@ -302,17 +149,7 @@ export const redirectToCurrentCanvasCommentingThread =
     Errors.assertVersionID(versionID);
     Errors.assertDiagramID(diagramID);
 
-    if (Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.CMS_WORKFLOWS)) {
-      dispatch(redirectToCanvasCommentingThread({ diagramID, versionID, threadID, commentID }));
-
-      return;
-    }
-
-    const domainID = Session.activeDomainIDSelector(state);
-
-    Errors.assertDomainID(domainID);
-
-    dispatch(redirectToDomainCanvasCommentingThread({ domainID, diagramID, versionID, threadID, commentID }));
+    dispatch(redirectToCanvasCommentingThread({ diagramID, versionID, threadID, commentID }));
   };
 
 export const goToCanvasRootDiagram = (): SyncThunk => (dispatch, getState) => {
@@ -324,31 +161,8 @@ export const goToCanvasRootDiagram = (): SyncThunk => (dispatch, getState) => {
   Errors.assertVersionID(versionID);
   Errors.assertDiagramID(diagramID);
 
-  dispatch(
-    goToCanvasDiagram({
-      diagramID,
-      versionID,
-      pageProgress: !Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.CMS_WORKFLOWS),
-    })
-  );
-};
-
-/**
- * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
- */
-export const goToDomainRootDiagram = (): SyncThunk => (dispatch, getState) => {
-  const state = getState();
-
-  const domainID = Session.activeDomainIDSelector(state);
-  const versionID = Session.activeVersionIDSelector(state);
-  const rootDiagramID = DomainSelectors.active.rootDiagramIDSelector(state);
-
-  Errors.assertDomainID(domainID);
-  Errors.assertVersionID(versionID);
-
-  if (!rootDiagramID) throw new Error('no active root diagram ID');
-
-  dispatch(goToCanvasSwitchRealtime({ diagramID: rootDiagramID, domainID, versionID }));
+  dispatch(goToCanvasDiagram({ diagramID, versionID }));
+  dispatch(Creator.diagramsHistoryClear());
 };
 
 export const goToRootDiagramIfActive =
@@ -359,39 +173,7 @@ export const goToRootDiagramIfActive =
 
     if (diagramID !== activeDiagramID) return;
 
-    if (Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.CMS_WORKFLOWS)) {
-      dispatch(goToCanvasRootDiagram());
-    } else {
-      dispatch(goToDomainRootDiagram());
-    }
-  };
-
-/**
- * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
- */
-export const goToRootDomain = (): SyncThunk => (dispatch, getState) => {
-  const state = getState();
-
-  const versionID = Session.activeVersionIDSelector(state);
-  const rootDomain = DomainSelectors.rootDomainSelector(state);
-
-  Errors.assertDomainID(rootDomain?.id);
-  Errors.assertVersionID(versionID);
-
-  dispatch(goToCanvasSwitchRealtime({ diagramID: rootDomain.rootDiagramID, domainID: rootDomain.id, versionID }));
-};
-
-/**
- * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
- */
-export const goToDomainDiagram =
-  (domainID: string, diagramID: string, nodeID?: string): SyncThunk =>
-  (dispatch, getState) => {
-    const versionID = Session.activeVersionIDSelector(getState());
-
-    Errors.assertVersionID(versionID);
-
-    dispatch(goToCanvasSwitchRealtime({ nodeID, domainID, diagramID, versionID }));
+    dispatch(goToCanvasRootDiagram());
   };
 
 export const goToDiagram =
@@ -399,25 +181,12 @@ export const goToDiagram =
   (dispatch, getState) => {
     const state = getState();
 
-    if (Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.CMS_WORKFLOWS)) {
-      const versionID = Session.activeVersionIDSelector(getState());
+    const versionID = Session.activeVersionIDSelector(state);
 
-      Errors.assertVersionID(versionID);
+    Errors.assertVersionID(versionID);
 
-      dispatch(Creator.clearFocus());
-      dispatch(goToCanvasDiagram({ nodeID, diagramID, versionID, pageProgress: false }));
-
-      return;
-    }
-
-    const domainID =
-      DomainSelectors.domainIDByTopicIDSelector(state, { topicID: diagramID }) ??
-      Session.activeDomainIDSelector(state) ??
-      DomainSelectors.rootDomainIDSelector(state);
-
-    Errors.assertDomainID(domainID);
-
-    dispatch(goToDomainDiagram(domainID, diagramID, nodeID));
+    dispatch(Creator.clearFocus());
+    dispatch(goToCanvasDiagram({ nodeID, diagramID, versionID }));
   };
 
 export const goToDiagramHistoryPush =
@@ -459,28 +228,10 @@ export const goToDiagramCommenting =
 
     Errors.assertVersionID(versionID);
 
-    if (Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.CMS_WORKFLOWS)) {
-      if (threadID) {
-        dispatch(goToCanvasCommentingThread({ versionID, diagramID, threadID, commentID }));
-      } else {
-        dispatch(goToCanvasCommenting({ versionID, diagramID }));
-      }
-
-      return;
-    }
-
-    const domainID =
-      DomainSelectors.domainIDByTopicIDSelector(state, { topicID: diagramID }) ??
-      DomainSelectors.rootDomainIDSelector(state);
-
-    Errors.assertDomainID(domainID);
-
-    PageProgress.start(PageProgressBar.CANVAS_LOADING);
-
     if (threadID) {
-      dispatch(goToDomainCanvasCommentingThread({ domainID, versionID, diagramID, threadID, commentID }));
+      dispatch(goToCanvasCommentingThread({ versionID, diagramID, threadID, commentID }));
     } else {
-      dispatch(goToDomainCanvasCommenting({ domainID, versionID, diagramID }));
+      dispatch(goToCanvasCommenting({ versionID, diagramID }));
     }
   };
 
@@ -561,17 +312,7 @@ export const goToCurrentCanvasNode =
     Errors.assertVersionID(versionID);
     Errors.assertDiagramID(diagramID);
 
-    if (Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.CMS_WORKFLOWS)) {
-      dispatch(goToCanvasNode({ versionID, diagramID, nodeID, state: routeState, subpath }));
-
-      return;
-    }
-
-    const domainID = Session.activeDomainIDSelector(state);
-
-    Errors.assertDomainID(domainID);
-
-    dispatch(goToDomainCanvasNode({ domainID, versionID, diagramID, nodeID, nodeSubPath: subpath, routeState }));
+    dispatch(goToCanvasNode({ versionID, diagramID, nodeID, state: routeState, subpath }));
   };
 
 export const goToCurrentWorkspace = (): SyncThunk => (dispatch, getState) => {

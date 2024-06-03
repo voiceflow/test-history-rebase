@@ -160,7 +160,9 @@ class ClipboardEngine extends EngineConsumer {
       (node) => node.type !== BlockType.START && node.type !== BlockType.COMMAND
     );
     const soloNodes = allNodes.filter((node) => !node.parentNode);
-    const nestedNodes = soloNodes.flatMap(({ combinedNodes }) => CreatorV2.nodesByIDsSelector(state, { ids: combinedNodes }));
+    const nestedNodes = soloNodes.flatMap(({ combinedNodes }) =>
+      CreatorV2.nodesByIDsSelector(state, { ids: combinedNodes })
+    );
     const orphanedNodes: Realtime.Node[] = [];
 
     const extraLinks: Realtime.Link[] = [];
@@ -189,7 +191,10 @@ class ClipboardEngine extends EngineConsumer {
       });
 
     const copiedNodes = [...soloNodes, ...orphanedNodes, ...nestedNodes];
-    const copiedNodeIDMap = copiedNodes.reduce<Record<string, boolean>>((acc, node) => Object.assign(acc, { [node.id]: true }), {});
+    const copiedNodeIDMap = copiedNodes.reduce<Record<string, boolean>>(
+      (acc, node) => Object.assign(acc, { [node.id]: true }),
+      {}
+    );
 
     const ports = CreatorV2.allPortsByIDsSelector(state, {
       ids: copiedNodes.flatMap((node) => Realtime.Utils.port.flattenAllPorts(node.ports)),
@@ -239,7 +244,7 @@ class ClipboardEngine extends EngineConsumer {
   private cleanupCopyData(context: ClipboardContext): ClipboardContext {
     const isTopic = this.engine.isTopic();
 
-    if (isTopic || !this.engine.isFeatureEnabled(Realtime.FeatureFlag.CMS_WORKFLOWS)) {
+    if (isTopic) {
       return context;
     }
 
@@ -284,7 +289,9 @@ class ClipboardEngine extends EngineConsumer {
     return {
       ...context,
       data: Utils.object.omit(context.data, removedNodeIDs),
-      links: context.links.filter((link) => !removedNodeIDsSet.has(link.source.nodeID) && !removedNodeIDsSet.has(link.target.nodeID)),
+      links: context.links.filter(
+        (link) => !removedNodeIDsSet.has(link.source.nodeID) && !removedNodeIDsSet.has(link.target.nodeID)
+      ),
       ports: context.ports.filter((port) => !removedNodeIDsSet.has(port.nodeID)),
       nodes: context.nodes.filter((node) => !removedNodeIDsSet.has(node.id)),
     };

@@ -80,7 +80,6 @@ export const AssistantCard = ({ project, isHovered, onClickCard, onClickDesigner
     projectID: project?.id,
     versionID: project?.versionID,
     withInvite: true,
-    withConvertToDomain: true,
   });
 
   const getIconTooltip = () => {
@@ -91,7 +90,10 @@ export const AssistantCard = ({ project, isHovered, onClickCard, onClickDesigner
         placement: 'bottom' as TippyTooltipProps['placement'],
         interactive: true,
         content: isDeprecatedPlatform ? (
-          <TippyTooltip.FooterButton onClick={() => openURLInANewTab('https://insiders.voiceflow.com/google2voice')} buttonText="Convert File">
+          <TippyTooltip.FooterButton
+            onClick={() => openURLInANewTab('https://insiders.voiceflow.com/google2voice')}
+            buttonText="Convert File"
+          >
             Google Conversation Actions are no longer supported. Convert your file to access designs.
           </TippyTooltip.FooterButton>
         ) : (
@@ -110,7 +112,13 @@ export const AssistantCard = ({ project, isHovered, onClickCard, onClickDesigner
   return (
     <BaseAssistantCard
       icon={isLockedProject ? 'lockLocked' : logo || icon.name}
-      image={project.image ? <BaseAssistantCard.ProjectImage src={project.image} /> : <SvgIcon icon="systemImage" size={45} color="#393E42" />}
+      image={
+        project.image ? (
+          <BaseAssistantCard.ProjectImage src={project.image} />
+        ) : (
+          <SvgIcon icon="systemImage" size={45} color="#393E42" />
+        )
+      }
       isActive={active}
       isHovered={isHovered}
       iconTooltip={getIconTooltip()}

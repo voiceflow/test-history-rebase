@@ -8,12 +8,22 @@ import AbstractModel from '../_mongo';
 import { Adapter, Bson } from '../utils';
 import CanvasTemplate from './canvasTemplate';
 import Component from './component';
-import { DBVersionModel, VERSION_DOMAINS_KEYS, VERSION_DOUBLE_KEYS, VERSION_OBJECT_ID_KEYS, VERSION_READ_ONLY_KEYS } from './constants';
+import {
+  DBVersionModel,
+  VERSION_DOMAINS_KEYS,
+  VERSION_DOUBLE_KEYS,
+  VERSION_OBJECT_ID_KEYS,
+  VERSION_READ_ONLY_KEYS,
+} from './constants';
 import CustomBlock from './customBlock';
 import Domain from './domain';
 import Variable from './variable';
 
-class VersionModel extends AbstractModel<DBVersionModel, BaseVersion.Version, Realtime.ArrayItem<typeof VERSION_READ_ONLY_KEYS>> {
+class VersionModel extends AbstractModel<
+  DBVersionModel,
+  BaseVersion.Version,
+  Realtime.ArrayItem<typeof VERSION_READ_ONLY_KEYS>
+> {
   READ_ONLY_KEYS = VERSION_READ_ONLY_KEYS;
 
   domain = new Domain(this);
@@ -69,7 +79,10 @@ class VersionModel extends AbstractModel<DBVersionModel, BaseVersion.Version, Re
 
   async findManyByProjectID(projectID: string): Promise<DBVersionModel[]>;
 
-  async findManyByProjectID<Key extends keyof DBVersionModel>(projectID: string, fields: Key[]): Promise<Pick<DBVersionModel, Key>[]>;
+  async findManyByProjectID<Key extends keyof DBVersionModel>(
+    projectID: string,
+    fields: Key[]
+  ): Promise<Pick<DBVersionModel, Key>[]>;
 
   async findManyByProjectID(projectID: string, fields?: (keyof DBVersionModel)[]): Promise<Partial<DBVersionModel>[]>;
 

@@ -18,7 +18,6 @@ class AddDynamicLink extends AbstractDiagramActionControl<Realtime.link.AddDynam
   protected finally = async (ctx: Context, { payload }: Action<Realtime.link.AddDynamicPayload>): Promise<void> => {
     await Promise.all([
       this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID),
-      this.services.domain.setUpdatedBy(payload.versionID, payload.domainID, ctx.data.creatorID),
       this.setCMSUpdatedBy(ctx, payload),
     ]);
   };

@@ -5322,6 +5322,16 @@
           "nullable": true,
           "mappedType": "boolean"
         },
+        "assertions": {
+          "name": "assertions",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "'[]'",
+          "mappedType": "json"
+        },
         "turns": {
           "name": "turns",
           "type": "int",

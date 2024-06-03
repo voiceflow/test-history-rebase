@@ -21,7 +21,7 @@ export abstract class AnthropicMessageAIModel extends LLMModel {
     super(config);
 
     if (!config.ANTHROPIC_API_KEY) {
-      throw new Error(`Anthropic client not initialized`);
+      throw new Error('Anthropic client not initialized');
     }
 
     this.client = new Client({ apiKey: config.ANTHROPIC_API_KEY });
@@ -97,13 +97,16 @@ export abstract class AnthropicMessageAIModel extends LLMModel {
       ),
       filter((event): event is CompletionStreamOutput => event !== null),
       map((event) => {
+        const answerTokens = this.calculateTokenMultiplier(event.completion.answerTokens);
+        const queryTokens = this.calculateTokenMultiplier(event.completion.queryTokens);
+
         return {
           ...event,
           completion: {
             ...event.completion,
-            answerTokens: this.calculateTokenMultiplier(event!.completion.answerTokens),
-            queryTokens: this.calculateTokenMultiplier(event!.completion.queryTokens),
-            tokens: event!.completion.queryTokens + event!.completion.answerTokens,
+            answerTokens,
+            queryTokens,
+            tokens: answerTokens + queryTokens,
           },
         };
       })

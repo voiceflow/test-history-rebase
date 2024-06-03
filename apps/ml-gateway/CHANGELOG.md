@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.98.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.98.3...@voiceflow/ml-gateway@1.98.4) (2024-06-03)
+
+### Bug Fixes
+
+* **ml-gateway:** correctly add token usage (PL-1092) [bugfix] ([#8212](https://github.com/voiceflow/creator-app/issues/8212)) ([12ef2b0](https://github.com/voiceflow/creator-app/commit/12ef2b08983b5a62222004ad56e4305f158d5203))
+
 ## [1.98.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.98.2...@voiceflow/ml-gateway@1.98.3) (2024-06-03)
 
 **Note:** Version bump only for package @voiceflow/ml-gateway

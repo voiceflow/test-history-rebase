@@ -1,20 +1,14 @@
 import { z } from 'zod';
 
-import { CMSObjectResourceDTO, MarkupDTO } from '@/common';
+import { MarkupDTO } from '@/common';
 
 import { ConditionOperation } from '../condition-operation.enum';
 
-export const ConditionAssertionDTO = CMSObjectResourceDTO.partial({
-  updatedAt: true,
-  updatedByID: true,
-})
-  .extend({
+export const ConditionAssertionDTO = z
+  .object({
     lhs: MarkupDTO,
     rhs: MarkupDTO,
     operation: z.nativeEnum(ConditionOperation),
-    conditionID: z.string(),
-    assistantID: z.string().optional(),
-    environmentID: z.string().optional(),
   })
   .strict();
 

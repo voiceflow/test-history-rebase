@@ -47,6 +47,12 @@ export const {
 } = createSelectorContext(Designer.Flow.selectors.mapByDiagramID);
 
 export const {
+  Context: ResponseMapFirstVariantByResponseIDContext,
+  Provider: ResponseMapFirstVariantByResponseIDProvider,
+  Consumer: ResponseMapFirstVariantByResponseIDConsumer,
+} = createSelectorContext(Designer.Response.selectors.mapFirstVariantByResponseID);
+
+export const {
   Context: FunctionMapContext,
   Provider: FunctionMapProvider,
   Consumer: FunctionMapConsumer,
@@ -139,18 +145,20 @@ export const ReduxContextsProviders: React.FC<React.PropsWithChildren> = ({ chil
                         <SharedNodesProvider>
                           <ActionsRouteMatchProvider>
                             <CustomBlockMapProvider>
-                              <FlowMapByDiagramIDProvider>
-                                <FunctionMapProvider>
-                                  <FunctionVariableMapProvider>
-                                    <FunctionPathMapProvider>
-                                      <ActiveDiagramNormalizedEntitiesAndVariablesProvider>
-                                        {/* comment to have a children on a new line */}
-                                        {children}
-                                      </ActiveDiagramNormalizedEntitiesAndVariablesProvider>
-                                    </FunctionPathMapProvider>
-                                  </FunctionVariableMapProvider>
-                                </FunctionMapProvider>
-                              </FlowMapByDiagramIDProvider>
+                              <ResponseMapFirstVariantByResponseIDProvider>
+                                <FlowMapByDiagramIDProvider>
+                                  <FunctionMapProvider>
+                                    <FunctionVariableMapProvider>
+                                      <FunctionPathMapProvider>
+                                        <ActiveDiagramNormalizedEntitiesAndVariablesProvider>
+                                          {/* comment to have a children on a new line */}
+                                          {children}
+                                        </ActiveDiagramNormalizedEntitiesAndVariablesProvider>
+                                      </FunctionPathMapProvider>
+                                    </FunctionVariableMapProvider>
+                                  </FunctionMapProvider>
+                                </FlowMapByDiagramIDProvider>
+                              </ResponseMapFirstVariantByResponseIDProvider>
                             </CustomBlockMapProvider>
                           </ActionsRouteMatchProvider>
                         </SharedNodesProvider>

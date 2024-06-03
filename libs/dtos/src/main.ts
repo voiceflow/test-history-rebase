@@ -95,6 +95,7 @@ export * from './node/function/compiled/function-invocation.compiled.dto';
 export * from './node/function/compiled/function-node.compiled.dto';
 export * from './node/function/compiled/function-reference.compiled.dto';
 export * from './node/function/function-node.dto';
+export * from './node/response/response-node.dto';
 export * from './node/next/next-node.compiled.dto';
 export * from './node/node.dto';
 export * from './node/node-port.dto';

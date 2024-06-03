@@ -46,6 +46,7 @@ import { TriggerManager } from './TriggerManager/Trigger.manager';
 import UrlManager from './Url';
 import UserInfoManager from './UserInfo';
 import VisualManager from './Visual';
+import ResponseManager from './ResponseManager/Response.manager';
 
 export const MANAGERS_BY_TYPE = {
   [BlockType.START]: StartManager,
@@ -96,6 +97,7 @@ export const MANAGERS_BY_TYPE = {
   [BlockType.CUSTOM_BLOCK_POINTER]: CustomBlockPointerManager,
   [BlockType.FUNCTION]: FunctionManager,
   [BlockType.TRIGGER]: TriggerManager,
+  [BlockType.RESPONSE]: ResponseManager,
 };
 
 export const MANAGERS_BY_FEATURE: Partial<Record<BlockType, Realtime.FeatureFlag>> = {};

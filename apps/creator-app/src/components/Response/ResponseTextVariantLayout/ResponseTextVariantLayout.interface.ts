@@ -6,7 +6,5 @@ export interface IResponseTextVariantLayout extends Omit<IResponseTextInput, 'ch
   variantType: ResponseVariantType;
   removeButton?: React.ReactNode;
   settingsButton: React.ReactNode;
-  attachmentsList: React.ReactNode;
-  attachmentButton: React.ReactNode;
   onChangeVariantType: (type: ResponseVariantType) => void;
 }

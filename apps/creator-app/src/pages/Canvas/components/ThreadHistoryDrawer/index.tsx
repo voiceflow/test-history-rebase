@@ -1,6 +1,4 @@
-/* eslint-disable no-nested-ternary */
 import { Utils } from '@voiceflow/common';
-import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import {
   CustomScrollbars,
   CustomScrollbarsTypes,
@@ -19,7 +17,7 @@ import Drawer from '@/components/Drawer';
 import { Path } from '@/config/routes';
 import { Designer, UI } from '@/ducks';
 import * as CreatorV2 from '@/ducks/creatorV2';
-import { useFeature, useRAF, useTheme } from '@/hooks';
+import { useRAF, useTheme } from '@/hooks';
 import { useSelector } from '@/hooks/store.hook';
 import { EditorContentAnimation } from '@/pages/Canvas/components/Editor';
 import { FocusThreadContext } from '@/pages/Canvas/contexts';
@@ -43,13 +41,14 @@ export const ThreadHistoryDrawer: React.FC<ThreadHistoryDrawerProps> = () => {
   const focusThreadApi = React.useContext(FocusThreadContext);
   const isCommentingMode = useCommentingMode();
   const [focusScheduler] = useRAF();
-  const cmsWorkflows = useFeature(FeatureFlag.CMS_WORKFLOWS);
 
   const scrollbarsRef = React.useRef<CustomScrollbarsTypes.Scrollbars>(null);
   const [filter, updateFilter] = React.useState<FilterType>(FilterType.OPEN);
 
   const threads = useSelector((state) =>
-    filter === FilterType.RESOLVED ? Designer.Thread.selectors.allResolved(state) : Designer.Thread.selectors.allOpened(state)
+    filter === FilterType.RESOLVED
+      ? Designer.Thread.selectors.allResolved(state)
+      : Designer.Thread.selectors.allOpened(state)
   );
   const activeDiagramID = useSelector(CreatorV2.activeDiagramIDSelector);
 
@@ -58,7 +57,7 @@ export const ThreadHistoryDrawer: React.FC<ThreadHistoryDrawerProps> = () => {
   const [isFirstThreadFocused, toggleFocusedThread] = useToggle(false);
 
   React.useEffect(() => {
-    const match = matchPath(history.location.pathname, [Path.CANVAS_COMMENTING_THREAD, Path.DOMAIN_CANVAS_COMMENTING_THREAD]);
+    const match = matchPath(history.location.pathname, Path.CANVAS_COMMENTING_THREAD);
 
     if (canvasRendered && match && match.params.threadID) {
       focusScheduler(() => {
@@ -87,8 +86,8 @@ export const ThreadHistoryDrawer: React.FC<ThreadHistoryDrawerProps> = () => {
       style={{
         display: 'flex',
         flexDirection: 'column',
-        top: cmsWorkflows.isEnabled ? (isCanvasOnly ? 0 : theme.components.header.newHeight) : undefined,
-        height: cmsWorkflows.isEnabled ? (isCanvasOnly ? '100%' : `calc(100% - ${theme.components.header.newHeight}px)`) : undefined,
+        top: isCanvasOnly ? 0 : theme.components.header.newHeight,
+        height: isCanvasOnly ? '100%' : `calc(100% - ${theme.components.header.newHeight}px)`,
       }}
       onPaste={stopImmediatePropagation()}
       direction={Drawer.Direction.LEFT}
@@ -99,7 +98,11 @@ export const ThreadHistoryDrawer: React.FC<ThreadHistoryDrawerProps> = () => {
         </Text>
 
         {isCommentingMode && (
-          <Dropdown menu={(onToggle) => <FilterMenu filter={filter} setFilter={Utils.functional.chain(updateFilter, onToggle)} />}>
+          <Dropdown
+            menu={(onToggle) => (
+              <FilterMenu filter={filter} setFilter={Utils.functional.chain(updateFilter, onToggle)} />
+            )}
+          >
             {({ ref, onToggle, isOpen }) => (
               <System.IconButtonsGroup.Base>
                 <System.IconButton.Base ref={ref} icon="filter" active={isOpen} onClick={preventDefault(onToggle)} />

@@ -13,6 +13,7 @@ import { ResponseService } from '@/response/response.service';
 import { VariableService } from '@/variable/variable.service';
 import { VersionService } from '@/version/version.service';
 import { WorkflowService } from '@/workflow/workflow.service';
+
 import { IntentsAndEntitiesData } from './environment.interface';
 
 @Injectable()
@@ -24,19 +25,32 @@ export class EnvironmentRepository {
     private readonly project: ProjectService,
     @Inject(VersionService)
     private readonly version: VersionService,
-    @Inject(FlowService) private readonly flow: FlowService,
-    @Inject(FolderService) private readonly folder: FolderService,
-    @Inject(VariableService) private readonly variable: VariableService,
-    @Inject(WorkflowService) private readonly workflow: WorkflowService,
-    @Inject(AttachmentService) private readonly attachment: AttachmentService,
-    @Inject(ResponseService) private readonly response: ResponseService,
-    @Inject(IntentService) private readonly intent: IntentService,
-    @Inject(EntityService) private readonly entity: EntityService,
-    @Inject(FunctionService) private readonly functions: FunctionService
+    @Inject(FlowService)
+    private readonly flow: FlowService,
+    @Inject(FolderService)
+    private readonly folder: FolderService,
+    @Inject(VariableService)
+    private readonly variable: VariableService,
+    @Inject(WorkflowService)
+    private readonly workflow: WorkflowService,
+    @Inject(AttachmentService)
+    private readonly attachment: AttachmentService,
+    @Inject(ResponseService)
+    private readonly response: ResponseService,
+    @Inject(IntentService)
+    private readonly intent: IntentService,
+    @Inject(EntityService)
+    private readonly entity: EntityService,
+    @Inject(FunctionService)
+    private readonly functions: FunctionService
   ) {}
 
   async findManyForAssistantID(assistantID: string) {
-    const project = await this.project.findOneOrFailWithFields(assistantID, ['liveVersion', 'devVersion', 'previewVersion']);
+    const project = await this.project.findOneOrFailWithFields(assistantID, [
+      'liveVersion',
+      'devVersion',
+      'previewVersion',
+    ]);
 
     const tagsMap: Record<string, 'production' | 'development' | 'preview'> = {};
 
@@ -44,7 +58,12 @@ export class EnvironmentRepository {
     if (project.liveVersion) tagsMap[project.liveVersion.toJSON()] = 'production';
     if (project.previewVersion) tagsMap[project.previewVersion.toJSON()] = 'preview';
 
-    const versions = await this.version.findManyWithFields(Object.keys(tagsMap), ['_id', 'name', 'creatorID', 'updatedAt']);
+    const versions = await this.version.findManyWithFields(Object.keys(tagsMap), [
+      '_id',
+      'name',
+      'creatorID',
+      'updatedAt',
+    ]);
 
     return versions.map((version) => {
       const tag = tagsMap[version._id.toJSON()];
@@ -79,7 +98,10 @@ export class EnvironmentRepository {
       this.variable.deleteManyByEnvironment(environmentID),
     ]);
 
-    await Promise.all([this.folder.deleteManyByEnvironment(environmentID), this.attachment.deleteManyByEnvironment(environmentID)]);
+    await Promise.all([
+      this.folder.deleteManyByEnvironment(environmentID),
+      this.attachment.deleteManyByEnvironment(environmentID),
+    ]);
   }
 
   async deleteOne(environmentID: string) {
@@ -150,7 +172,10 @@ export class EnvironmentRepository {
   ) {
     // ORDER MATTERS
     await this.entity.upsertManyWithSubResources({ entities, entityVariants }, meta);
-    await this.response.upsertManyWithSubResources({ responses, responseVariants, responseAttachments: [], responseDiscriminators }, meta);
+    await this.response.upsertManyWithSubResources(
+      { responses, responseVariants, responseAttachments: [], responseDiscriminators },
+      meta
+    );
     await this.intent.upsertManyWithSubResources({ intents, utterances, requiredEntities }, meta);
   }
 }

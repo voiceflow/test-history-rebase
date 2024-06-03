@@ -27,9 +27,10 @@ export const useNLUTrainingModelNotifications = () => {
 
             notify.long.warning(
               <>
-                Your slots <b>{message}</b> require custom values in order to be properly recognized during testing. Update the{' '}
-                <Link label="Interaction Model" onClick={() => goToCMSResource(CMSRoute.ENTITY, invalidSlotsIDs[0])} /> and train your agent
-                again.
+                Your slots <b>{message}</b> require custom values in order to be properly recognized during testing.
+                Update the{' '}
+                <Link label="Interaction Model" onClick={() => goToCMSResource(CMSRoute.ENTITY, invalidSlotsIDs[0])} />{' '}
+                and train your agent again.
               </>,
               { pauseOnHover: true, bodyClassName: 'vfui' }
             );
@@ -42,6 +43,7 @@ export const useNLUTrainingModelNotifications = () => {
           const error = stage.data?.error?.message || stage.data?.error;
           const nlpMessage = typeof error === 'string' ? error : JSON.stringify(error);
 
+          // eslint-disable-next-line sonarjs/no-nested-template-literals
           let message = `An error occurred while training the model${nlpMessage ? `: ${nlpMessage}` : '.'}`;
 
           if (nlpMessage === 'Training failed with reason: FewLabels') {

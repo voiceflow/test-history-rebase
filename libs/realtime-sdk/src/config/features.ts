@@ -61,8 +61,6 @@ export enum FeatureFlag {
 
   VF_CHUNKS_VARIABLE = 'vf_chunks_variable',
 
-  CMS_WORKFLOWS = 'cms_workflows',
-
   UNLIMITED_KB_DOCS_FF = 'unlimited_kb_docs_ff',
 
   // functions

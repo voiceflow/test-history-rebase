@@ -1,6 +1,5 @@
 import { Utils } from '@voiceflow/common';
 import type { Backup as BackupEntity } from '@voiceflow/dtos';
-import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { Animations, Box, DataTypes, download, LoadCircle, SectionV2, System, toast } from '@voiceflow/ui';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
@@ -12,7 +11,6 @@ import { Path } from '@/config/routes';
 import { Permission } from '@/constants/permissions';
 import { Designer, Router, Session } from '@/ducks';
 import { useDispatch, useHotkey, usePermission, useSetup, useTrackingEvents } from '@/hooks';
-import { useFeature } from '@/hooks/feature';
 import { usePaymentModal } from '@/hooks/modal.hook';
 import { useSelector } from '@/hooks/redux';
 import { getHotkeyLabel, Hotkey } from '@/keymap';
@@ -42,7 +40,6 @@ const SettingsBackups: React.FC = () => {
   const manualSaveModal = ModalsV2.useModal(ModalsV2.Project.ManualSaveBackup);
 
   const paymentModal = usePaymentModal();
-  const cmsWorkflows = useFeature(FeatureFlag.CMS_WORKFLOWS);
 
   const fetchBackups = async (offset: number) => {
     try {
@@ -119,7 +116,7 @@ const SettingsBackups: React.FC = () => {
   const handlePreview = async (backup: BackupEntity) => {
     const { versionID } = await designerClient.backup.previewOne(projectID, backup.id);
 
-    openURLInANewTab(`${window.location.origin}${generatePath(cmsWorkflows.isEnabled ? Path.PROJECT_CANVAS : Path.PROJECT_DOMAIN, { versionID })}`);
+    openURLInANewTab(`${window.location.origin}${generatePath(Path.PROJECT_CANVAS, { versionID })}`);
 
     trackingEvents.trackBackupPreview({ versionID, backupID: backup.id });
   };

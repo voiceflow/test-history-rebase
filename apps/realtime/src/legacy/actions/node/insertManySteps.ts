@@ -10,8 +10,21 @@ import { extractNodes, ExtractNodesOptions } from './utils';
 class InsertManySteps extends AbstractVersionDiagramAccessActionControl<Realtime.node.InsertManyStepsPayload> {
   actionCreator = Realtime.node.insertManySteps;
 
-  protected process = async (_ctx: Context, { payload }: Action<Realtime.node.InsertManyStepsPayload>): Promise<void> => {
-    const { versionID, diagramID, parentNodeID, steps, index, projectMeta, schemaVersion, removeNodes, nodePortRemaps = [] } = payload;
+  protected process = async (
+    _ctx: Context,
+    { payload }: Action<Realtime.node.InsertManyStepsPayload>
+  ): Promise<void> => {
+    const {
+      versionID,
+      diagramID,
+      parentNodeID,
+      steps,
+      index,
+      projectMeta,
+      schemaVersion,
+      removeNodes,
+      nodePortRemaps = [],
+    } = payload;
 
     const creatorData: ExtractNodesOptions & { ports: Record<string, Realtime.PortsDescriptor> } = {
       data: {},
@@ -45,10 +58,12 @@ class InsertManySteps extends AbstractVersionDiagramAccessActionControl<Realtime
     });
   };
 
-  protected finally = async (ctx: Context, { payload }: Action<Realtime.node.InsertManyStepsPayload>): Promise<void> => {
+  protected finally = async (
+    ctx: Context,
+    { payload }: Action<Realtime.node.InsertManyStepsPayload>
+  ): Promise<void> => {
     await Promise.all([
       this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID),
-      this.services.domain.setUpdatedBy(payload.versionID, payload.domainID, ctx.data.creatorID),
       this.setCMSUpdatedBy(ctx, payload),
     ]);
   };

@@ -6,7 +6,12 @@ import * as Normal from 'normal-store';
 import { createReverter } from '@/ducks/utils';
 
 import { linksByIDsSelector } from '../selectors';
-import { createActiveDiagramReducer, createDiagramInvalidator, createNodeRemovalInvalidators, DIAGRAM_INVALIDATORS } from './utils';
+import {
+  createActiveDiagramReducer,
+  createDiagramInvalidator,
+  createNodeRemovalInvalidators,
+  DIAGRAM_INVALIDATORS,
+} from './utils';
 
 const patchManyLinksReducer = createActiveDiagramReducer(Realtime.link.patchMany, (state, { patches }) => {
   patches.forEach(({ linkID, data }) => {
@@ -26,7 +31,7 @@ export const remapTargetsPatchedLink = (portRemaps: Realtime.NodePortRemap[], pa
 export const patchManyLinksReverter = createReverter(
   Realtime.link.patchMany,
 
-  ({ workspaceID, projectID, versionID, domainID, diagramID, patches }, getState) => {
+  ({ workspaceID, projectID, versionID, diagramID, patches }, getState) => {
     const patchesByID = Utils.array.createMap(patches, (patch) => patch.linkID);
 
     const links = linksByIDsSelector(getState(), { ids: Object.keys(patchesByID) });
@@ -46,22 +51,32 @@ export const patchManyLinksReverter = createReverter(
 
     if (!prevPatches.length) return null;
 
-    return Realtime.link.patchMany({ workspaceID, projectID, versionID, domainID, diagramID, patches: prevPatches });
+    return Realtime.link.patchMany({ workspaceID, projectID, versionID, diagramID, patches: prevPatches });
   },
 
   [
     ...DIAGRAM_INVALIDATORS,
-    ...createNodeRemovalInvalidators<Realtime.link.PatchManyPayload>((origin, nodeID) => origin.patches.some((patch) => patch.nodeID === nodeID)),
-    createDiagramInvalidator(Realtime.node.insertStep, (origin, subject) => remapTargetsPatchedLink(subject.nodePortRemaps ?? [], origin.patches)),
+    ...createNodeRemovalInvalidators<Realtime.link.PatchManyPayload>((origin, nodeID) =>
+      origin.patches.some((patch) => patch.nodeID === nodeID)
+    ),
+    createDiagramInvalidator(Realtime.node.insertStep, (origin, subject) =>
+      remapTargetsPatchedLink(subject.nodePortRemaps ?? [], origin.patches)
+    ),
     createDiagramInvalidator(Realtime.node.transplantSteps, (origin, subject) =>
       remapTargetsPatchedLink(subject.nodePortRemaps ?? [], origin.patches)
     ),
-    createDiagramInvalidator(Realtime.node.reorderSteps, (origin, subject) => remapTargetsPatchedLink(subject.nodePortRemaps ?? [], origin.patches)),
-    createDiagramInvalidator(Realtime.port.removeBuiltin, (origin, subject) => origin.patches.some((patch) => patch.portID === subject.portID)),
+    createDiagramInvalidator(Realtime.node.reorderSteps, (origin, subject) =>
+      remapTargetsPatchedLink(subject.nodePortRemaps ?? [], origin.patches)
+    ),
+    createDiagramInvalidator(Realtime.port.removeBuiltin, (origin, subject) =>
+      origin.patches.some((patch) => patch.portID === subject.portID)
+    ),
     createDiagramInvalidator(Realtime.port.removeManyByKey, (origin, subject) =>
       origin.patches.some((patch) => patch.nodeID === subject.nodeID && patch.key && subject.keys.includes(patch.key))
     ),
-    createDiagramInvalidator(Realtime.port.removeDynamic, (origin, subject) => origin.patches.some((patch) => patch.portID === subject.portID)),
+    createDiagramInvalidator(Realtime.port.removeDynamic, (origin, subject) =>
+      origin.patches.some((patch) => patch.portID === subject.portID)
+    ),
     createDiagramInvalidator(Realtime.link.patchMany, (origin, subject) =>
       origin.patches.some((originPatch) => subject.patches.some((patch) => originPatch.linkID === patch.linkID))
     ),

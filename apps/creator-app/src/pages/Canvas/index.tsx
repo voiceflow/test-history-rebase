@@ -41,7 +41,7 @@ const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
   const selectionSetTargetsContext = React.useContext(SelectionSetTargetsContext);
 
   React.useEffect(() => {
-    const nodeMatch = matchPath(history.location.pathname, [Path.CANVAS_NODE, Path.DOMAIN_CANVAS_NODE]);
+    const nodeMatch = matchPath(history.location.pathname, Path.CANVAS_NODE);
 
     // This timeout is needed to prevent the focusNode from being called before the canvas is ready causing lines to not be drawn
     const focusTimeout = window.setTimeout(() => {
@@ -70,8 +70,14 @@ const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
 
   useIO(engine);
 
-  useRegistration(() => engine.register('diagramHeartbeat', diagramHeartbeatContext), [engine, diagramHeartbeatContext]);
-  useRegistration(() => engine.selection.register('selectionSetTargetsContext', selectionSetTargetsContext), [engine, selectionSetTargetsContext]);
+  useRegistration(
+    () => engine.register('diagramHeartbeat', diagramHeartbeatContext),
+    [engine, diagramHeartbeatContext]
+  );
+  useRegistration(
+    () => engine.selection.register('selectionSetTargetsContext', selectionSetTargetsContext),
+    [engine, selectionSetTargetsContext]
+  );
 
   useTeardown(() => CreatorV2.clearAllCache());
 

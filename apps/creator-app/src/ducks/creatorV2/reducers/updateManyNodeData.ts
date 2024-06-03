@@ -19,7 +19,7 @@ export default updateManyNodeDataReducer;
 export const updateManyNodeDataReverter = createReverter(
   Realtime.node.updateDataMany,
 
-  ({ workspaceID, projectID, versionID, domainID, diagramID, nodes, projectMeta }, getState) => {
+  ({ workspaceID, projectID, versionID, diagramID, nodes, projectMeta }, getState) => {
     const prevNodes = nodes.flatMap((node) => {
       const data = nodeDataByIDSelector(getState(), { id: node.nodeID });
 
@@ -31,7 +31,6 @@ export const updateManyNodeDataReverter = createReverter(
           workspaceID,
           projectID,
           versionID,
-          domainID,
           diagramID,
           nodes: prevNodes,
           projectMeta,

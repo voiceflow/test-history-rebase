@@ -9,8 +9,13 @@ import { TrainingProvider } from '@/contexts/TrainingContext';
 import { AnalyticsDashboardProvider } from '@/pages/AnalyticsDashboard/context';
 import { PrototypeProvider } from '@/pages/Prototype/context';
 
-import { SharePopperProvider } from './components/Header/contexts';
-import { ActiveProjectIdentityProvider, NLUTrainingModelProvider, ProjectPreviewProvider, SelectionProvider } from './contexts';
+import { SharePopperProvider } from './components/SharePopperContext';
+import {
+  ActiveProjectIdentityProvider,
+  NLUTrainingModelProvider,
+  ProjectPreviewProvider,
+  SelectionProvider,
+} from './contexts';
 
 const Providers: React.FC<React.PropsWithChildren> = ({ children }) => (
   <ProjectPreviewProvider>

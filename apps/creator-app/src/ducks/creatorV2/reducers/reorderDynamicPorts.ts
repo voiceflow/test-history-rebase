@@ -5,29 +5,45 @@ import * as Normal from 'normal-store';
 import { createReverter } from '@/ducks/utils';
 
 import { portsByNodeIDSelector } from '../selectors';
-import { createActiveDiagramReducer, createDiagramInvalidator, createNodeRemovalInvalidators, DIAGRAM_INVALIDATORS } from './utils';
+import {
+  createActiveDiagramReducer,
+  createDiagramInvalidator,
+  createNodeRemovalInvalidators,
+  DIAGRAM_INVALIDATORS,
+} from './utils';
 
-const reorderDynamicPortsReducer = createActiveDiagramReducer(Realtime.port.reorderDynamic, (state, { nodeID, portID, index }) => {
-  if (!Normal.hasOne(state.ports, portID)) return;
+const reorderDynamicPortsReducer = createActiveDiagramReducer(
+  Realtime.port.reorderDynamic,
+  (state, { nodeID, portID, index }) => {
+    if (!Normal.hasOne(state.ports, portID)) return;
 
-  const ports = state.portsByNodeID[nodeID];
+    const ports = state.portsByNodeID[nodeID];
 
-  if (!ports) return;
+    if (!ports) return;
 
-  const fromIndex = ports.out.dynamic.indexOf(portID);
+    const fromIndex = ports.out.dynamic.indexOf(portID);
 
-  ports.out.dynamic = Utils.array.reorder(ports.out.dynamic, fromIndex, index);
-});
+    ports.out.dynamic = Utils.array.reorder(ports.out.dynamic, fromIndex, index);
+  }
+);
 
 export default reorderDynamicPortsReducer;
 
 export const reorderDynamicPortsReverter = createReverter(
   Realtime.port.reorderDynamic,
 
-  ({ workspaceID, projectID, versionID, domainID, diagramID, nodeID, portID }, getState) => {
+  ({ workspaceID, projectID, versionID, diagramID, nodeID, portID }, getState) => {
     const prevIndex = portsByNodeIDSelector(getState(), { id: nodeID }).out.dynamic.indexOf(portID);
 
-    return Realtime.port.reorderDynamic({ workspaceID, projectID, versionID, domainID, diagramID, nodeID, portID, index: prevIndex });
+    return Realtime.port.reorderDynamic({
+      workspaceID,
+      projectID,
+      versionID,
+      diagramID,
+      nodeID,
+      portID,
+      index: prevIndex,
+    });
   },
 
   [

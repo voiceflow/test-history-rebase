@@ -1,19 +1,16 @@
-import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { LoadingGate } from '@/components/LoadingGate';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Session from '@/ducks/session';
-import { withFeatureSwitcher } from '@/hocs/feature.hoc';
-import { useDiagramSubscriptionV2, useSelector } from '@/hooks';
+import { useDiagramSubscription, useSelector } from '@/hooks';
 import { DiagramLoader } from '@/pages/Project/components/Diagram/DiagramLoader.component';
 import { DiagramHeartbeatProvider } from '@/pages/Project/contexts';
 
 import { CanvasBlurLoader } from '../components/CanvasBlurLoader/CanvasBlurLoader.component';
-import { LegacyDiagramSubscriptionGate } from './LegacyDiagramSubscription.gate';
 
-export const DiagramSubscriptionGateV2: React.FC<React.PropsWithChildren> = ({ children }) => {
+export const DiagramSubscriptionGate: React.FC<React.PropsWithChildren> = ({ children }) => {
   const params = useParams<{ diagramID?: string }>();
   const projectID = useSelector(Session.activeProjectIDSelector);
   const versionID = useSelector(Session.activeVersionIDSelector);
@@ -30,7 +27,7 @@ export const DiagramSubscriptionGateV2: React.FC<React.PropsWithChildren> = ({ c
     [projectID, versionID, diagramID, workspaceID]
   );
 
-  const isSubscribed = useDiagramSubscriptionV2(diagramContext, [diagramContext]);
+  const isSubscribed = useDiagramSubscription(diagramContext, [diagramContext]);
 
   useEffect(() => {
     if (!creatorDiagramID) return;
@@ -42,7 +39,7 @@ export const DiagramSubscriptionGateV2: React.FC<React.PropsWithChildren> = ({ c
     <LoadingGate
       key={creatorDiagramID}
       isLoaded={!!creatorDiagramID}
-      internalName={DiagramSubscriptionGateV2.name}
+      internalName={DiagramSubscriptionGate.name}
       loader={<DiagramLoader />}
     >
       <DiagramHeartbeatProvider isSubscribed={isSubscribed} diagramID={creatorDiagramID} context={diagramContext}>
@@ -53,8 +50,3 @@ export const DiagramSubscriptionGateV2: React.FC<React.PropsWithChildren> = ({ c
     </LoadingGate>
   );
 };
-
-export const DiagramSubscriptionGate = withFeatureSwitcher(
-  FeatureFlag.CMS_WORKFLOWS,
-  DiagramSubscriptionGateV2
-)(LegacyDiagramSubscriptionGate);

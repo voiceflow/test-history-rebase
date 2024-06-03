@@ -118,7 +118,6 @@ export class EnvironmentImportService {
     }: { userID: number; backup?: boolean; workspaceID: number; assistantID: string; environmentID: string }
   ) {
     const cmsFunctionsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_FUNCTIONS, { userID, workspaceID });
-    const cmsWorkflowsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_WORKFLOWS, { userID, workspaceID });
 
     const prepareDataContext = { userID, backup, assistantID, environmentID };
 
@@ -174,9 +173,7 @@ export class EnvironmentImportService {
           prepareDataContext
         )),
 
-      ...(cmsWorkflowsEnabled &&
-        cms.workflows &&
-        this.workflow.prepareImportData({ workflows: cms.workflows }, prepareDataContext)),
+      ...(cms.workflows && this.workflow.prepareImportData({ workflows: cms.workflows }, prepareDataContext)),
     };
   }
 

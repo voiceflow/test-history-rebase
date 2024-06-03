@@ -23,7 +23,7 @@ const SearchBar: React.FC = () => {
   const [query, setQuery] = React.useState('');
   const deferredQuery = React.useDeferredValue(query);
 
-  const goToDiagram = useDispatch(Router.goToDiagram);
+  const goToDiagram = useDispatch(Router.goToDiagramHistoryClear);
   const goToCMSResource = useDispatch(Router.goToCMSResource);
 
   const diagramID = useSelector(Creator.activeDiagramIDSelector)!;
@@ -105,7 +105,9 @@ const SearchBar: React.FC = () => {
     const state = store.getState();
     const entities = Designer.Entity.selectors.allWithVariants(state);
     const nodeData = Creator.allNodeDataSelector(state);
-    const diagrams = Diagram.allDiagramsSelector(state).filter(({ type }) => type !== BaseModels.Diagram.DiagramType.TEMPLATE);
+    const diagrams = Diagram.allDiagramsSelector(state).filter(
+      ({ type }) => type !== BaseModels.Diagram.DiagramType.TEMPLATE
+    );
 
     database.current[SearchTypes.SearchCategory.NODE] = search.syncNodeDatabases({
       [diagramID]: SearchUtils.buildNodeDatabase(nodeData, diagramID, state),

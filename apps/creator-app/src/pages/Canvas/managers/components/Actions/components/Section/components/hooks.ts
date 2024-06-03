@@ -6,7 +6,6 @@ import { useMemo } from 'react';
 import { match } from 'ts-pattern';
 
 import { Designer, Diagram } from '@/ducks';
-import * as Domain from '@/ducks/domain';
 import { useSelector } from '@/hooks';
 import type { ManagerGetter } from '@/pages/Canvas/contexts';
 import { getCustomAPIActionLabel } from '@/utils/customApi';
@@ -23,7 +22,6 @@ export const useItemConfig = (getManager: ManagerGetter, data: Realtime.NodeData
   const manager = getManager(data.type);
 
   const intentMap = useSelector(Designer.Intent.selectors.mapWithFormattedBuiltInName);
-  const domainMap = useSelector(Domain.domainsMapSelector);
   const diagramMap = useSelector(Diagram.diagramMapSelector);
   const sharedNodes = useSelector(Diagram.sharedNodesSelector);
   const entitiesAndVariables = useSelector(Diagram.active.allSlotsAndVariablesNormalizedSelector);
@@ -44,24 +42,14 @@ export const useItemConfig = (getManager: ManagerGetter, data: Realtime.NodeData
         .when(Realtime.Utils.typeGuards.isGoToNodeNodeData, ({ goToNodeID, diagramID }) => {
           const sharedNode = diagramID && goToNodeID ? sharedNodes[diagramID]?.[goToNodeID] ?? null : null;
           const name =
-            (sharedNode?.type === Realtime.BlockType.COMBINED && sharedNode.name) || (sharedNode?.type === Realtime.BlockType.START && 'Start');
+            (sharedNode?.type === Realtime.BlockType.COMBINED && sharedNode.name) ||
+            (sharedNode?.type === Realtime.BlockType.START && 'Start');
 
           return {
             icon: manager.icon,
             isEmpty: !sharedNode,
             defaultName: name ? `Go to '${name}' block` : 'Go to block',
             placeholder: 'Select go-to block',
-          };
-        })
-        // TODO: remove when FeatureFlag.CMS_WORKFLOWS is released
-        .when(Realtime.Utils.typeGuards.isGoToDomainNodeData, ({ domainID }) => {
-          const domain = domainID ? domainMap[domainID] ?? null : null;
-
-          return {
-            icon: manager.icon,
-            isEmpty: !domain,
-            defaultName: domain?.name ? `Go to '${domain.name}' domain` : 'Go to domain',
-            placeholder: 'Select go-to domain',
           };
         })
         .when(Realtime.Utils.typeGuards.isURLNodeData, ({ url }) => ({
@@ -132,6 +120,6 @@ export const useItemConfig = (getManager: ManagerGetter, data: Realtime.NodeData
           defaultName: (manager.factory?.()?.data.name as string) ?? '',
           placeholder: manager.label ?? 'Unknown action',
         })),
-    [data, manager, intentMap, domainMap, diagramMap, sharedNodes, entitiesAndVariables]
+    [data, manager, intentMap, diagramMap, sharedNodes, entitiesAndVariables]
   );
 };

@@ -1,6 +1,5 @@
 import { Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { Dropdown, OverflowTippyTooltip, stopPropagation, SvgIcon, TippyTooltip, useLinkedState } from '@voiceflow/ui';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
@@ -12,7 +11,6 @@ import { Path } from '@/config/routes';
 import { Permission } from '@/constants/permissions';
 import * as Project from '@/ducks/projectV2';
 import { InjectedDraggableProps, withDraggable } from '@/hocs/withDraggable';
-import { useFeature } from '@/hooks/feature';
 import { usePaymentModal } from '@/hooks/modal.hook';
 import { useIsLockedProjectViewer, usePermission } from '@/hooks/permission';
 import { useProjectOptions } from '@/hooks/project';
@@ -81,8 +79,6 @@ export const Item: React.FC<ItemProps> = ({
   const [isEditing, setIsEditing] = React.useState(false);
   const [formValue, updateFormValue] = useLinkedState(name);
 
-  const cmsWorkflows = useFeature(Realtime.FeatureFlag.CMS_WORKFLOWS);
-
   const titleEditableRef = React.useRef<EditableTextAPI | null>(null);
 
   const onRename = () => {
@@ -105,7 +101,6 @@ export const Item: React.FC<ItemProps> = ({
     projectID: id,
     versionID,
     withInvite: true,
-    withConvertToDomain: true,
   });
 
   const color = React.useMemo(() => {
@@ -117,12 +112,14 @@ export const Item: React.FC<ItemProps> = ({
   const nluName = NLU.Config.isSupported(platform) ? NLU.Config.get(nlu).name : platformConfig.name;
 
   const platformNameLabel =
-    platformConfig.oneClickPublish || NLU.Voiceflow.CONFIG.is(nlu) ? projectConfig.project.name : `${projectConfig.project.name}, ${nluName}`;
+    platformConfig.oneClickPublish || NLU.Voiceflow.CONFIG.is(nlu)
+      ? projectConfig.project.name
+      : `${projectConfig.project.name}, ${nluName}`;
 
   return (
     <div ref={canManageProjects && !isDraggingPreview ? connectedRootRef : undefined}>
       <ProjectListItem
-        to={generatePath(cmsWorkflows.isEnabled ? Path.CMS_WORKFLOW : Path.PROJECT_CANVAS, { versionID })}
+        to={generatePath(Path.CMS_WORKFLOW, { versionID })}
         locked={isLockedProject}
         hidden={isDragging}
         tabIndex={0}
@@ -136,12 +133,17 @@ export const Item: React.FC<ItemProps> = ({
             interactive
             content={
               platformConfig.isDeprecated ? (
-                <TippyTooltip.FooterButton onClick={() => openURLInANewTab('https://insiders.voiceflow.com/google2voice')} buttonText="Convert File">
+                <TippyTooltip.FooterButton
+                  onClick={() => openURLInANewTab('https://insiders.voiceflow.com/google2voice')}
+                  buttonText="Convert File"
+                >
                   Google Conversation Actions are no longer supported. Convert your file to access designs.
                 </TippyTooltip.FooterButton>
               ) : (
                 <TippyTooltip.FooterButton
-                  onClick={stopPropagation(Utils.functional.chain(TippyTooltip.closeAll, () => paymentModal.openVoid({})))}
+                  onClick={stopPropagation(
+                    Utils.functional.chain(TippyTooltip.closeAll, () => paymentModal.openVoid({}))
+                  )}
                   buttonText="Upgrade to Pro"
                 >
                   Agent limit reached. Upgrade to Pro to unlock all agents.
@@ -159,7 +161,11 @@ export const Item: React.FC<ItemProps> = ({
           <Dropdown options={options} selfDismiss>
             {({ ref, onToggle, isOpen }) =>
               options.length ? (
-                <DropdownIconWrapper className={DashboardClassName.PROJECT_LIST_ITEM_ACTIONS} onClick={stopPropagation(() => onToggle())} ref={ref}>
+                <DropdownIconWrapper
+                  className={DashboardClassName.PROJECT_LIST_ITEM_ACTIONS}
+                  onClick={stopPropagation(() => onToggle())}
+                  ref={ref}
+                >
                   {!isOpen && <Avatar url={avatarUrl} name={name} color={color} />}
 
                   <ProjectListItemActions active={isOpen}>
@@ -183,9 +189,7 @@ export const Item: React.FC<ItemProps> = ({
                   ref={(editableText) => {
                     titleEditableRef.current = editableText;
 
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-ignore
-                    ref.current = editableText?.titleRef?.current;
+                    Object.assign(ref, { current: editableText?.titleRef?.current });
                   }}
                   className={DashboardClassName.PROJECT_LIST_ITEM_TITLE}
                   readOnly={!isEditing}

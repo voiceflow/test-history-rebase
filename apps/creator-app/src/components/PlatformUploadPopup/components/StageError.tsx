@@ -1,5 +1,6 @@
 import * as Platform from '@voiceflow/platform-config';
 import { Box } from '@voiceflow/ui';
+// eslint-disable-next-line you-dont-need-lodash-underscore/is-string
 import _isString from 'lodash/isString';
 import React from 'react';
 

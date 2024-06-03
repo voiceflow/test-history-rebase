@@ -1,12 +1,10 @@
 import { SystemVariable } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { parseCMSVariableDefaultValue } from '@voiceflow/utils-designer';
+import { parseVariableDefaultValue } from '@voiceflow/utils-designer';
 
 import * as Errors from '@/config/errors';
 import * as Designer from '@/ducks/designer';
 import * as Diagram from '@/ducks/diagramV2';
-import * as Domain from '@/ducks/domain/selectors';
-import * as Feature from '@/ducks/feature';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Prototype from '@/ducks/prototype/sideEffects';
 import * as Session from '@/ducks/session';
@@ -103,7 +101,9 @@ export const deleteState =
 
     const selectedVariableStateID = selectedVariableStateSelector(state)?.id;
 
-    await dispatch.sync(Realtime.variableState.crud.remove({ ...getActiveVersionContext(state), key: variableStateID }));
+    await dispatch.sync(
+      Realtime.variableState.crud.remove({ ...getActiveVersionContext(state), key: variableStateID })
+    );
 
     if (selectedVariableStateID === variableStateID) {
       dispatch(updateSelectedVariableState(null));
@@ -135,9 +135,7 @@ export const defaultVariableState = (): SyncThunk => (dispatch, getState) => {
     return;
   }
 
-  const rootDiagramID = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.CMS_WORKFLOWS)
-    ? VersionV2.active.rootDiagramIDSelector(state)
-    : Domain.active.rootDiagramIDSelector(state);
+  const rootDiagramID = VersionV2.active.rootDiagramIDSelector(state);
 
   Errors.assertDiagramID(rootDiagramID);
 
@@ -161,7 +159,7 @@ export const applyVariableState =
     entitiesAndVariables.forEach((entityOrVar) => {
       const variable = cmsVariablesMapByName[entityOrVar.name];
 
-      variables[entityOrVar.name] = variable ? parseCMSVariableDefaultValue(variable.name, variable) ?? 0 : 0;
+      variables[entityOrVar.name] = variable ? parseVariableDefaultValue(variable.name, variable) ?? 0 : 0;
     });
 
     variables = {
@@ -178,7 +176,15 @@ export const applyVariableState =
     Errors.assertProjectID(projectID);
     Errors.assertDiagramID(diagramID);
 
-    dispatch(updateSelectedVariableState({ id: ALL_PROJECT_VARIABLES_ID, name: 'Default', projectID, startFrom: { stepID, diagramID }, variables }));
+    dispatch(
+      updateSelectedVariableState({
+        id: ALL_PROJECT_VARIABLES_ID,
+        name: 'Default',
+        projectID,
+        startFrom: { stepID, diagramID },
+        variables,
+      })
+    );
   };
 
 // if no variable state exists, apply new state

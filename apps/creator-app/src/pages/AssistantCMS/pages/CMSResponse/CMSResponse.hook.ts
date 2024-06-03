@@ -12,7 +12,7 @@ import { useCMSResourceGetPath } from '../../hooks/cms-resource.hook';
 
 export const useResponseCMSManager = useCMSManager<CMSResponse>;
 
-const DEFAULT_RESPONSE_VARIANT: Actions.Response.CreateData['variants'] = [
+export const DEFAULT_RESPONSE_VARIANT: Actions.Response.CreateData['variants'] = [
   {
     type: ResponseVariantType.TEXT,
     text: [''],

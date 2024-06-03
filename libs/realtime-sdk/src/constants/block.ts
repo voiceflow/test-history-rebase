@@ -45,6 +45,7 @@ export enum BlockType {
   URL = 'url',
   CUSTOM_BLOCK_POINTER = 'custom_block_pointer',
   FUNCTION = 'function',
+  RESPONSE = 'response',
 
   // visuals
   CARD = 'card',

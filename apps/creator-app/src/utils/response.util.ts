@@ -22,16 +22,20 @@ export const responseTextVariantCreateDataFactory = ({
   condition = null,
   cardLayout = CardLayout.CAROUSEL,
   attachments = [],
-}: Partial<TextResponseVariantCreate> = {}): TextResponseVariantCreate => ({
+  tempID,
+}: Partial<TextResponseVariantCreate> & { tempID?: string } = {}): TextResponseVariantCreate & { tempID?: string } => ({
   text,
   type: ResponseVariantType.TEXT,
   speed,
   condition,
   cardLayout,
   attachments,
+  tempID,
 });
 
-const isPromptData = (data: Partial<PromptResponseVariantCreate>): data is { promptID: string } | { prompt: PromptCreate } =>
+const isPromptData = (
+  data: Partial<PromptResponseVariantCreate>
+): data is { promptID: string } | { prompt: PromptCreate } =>
   ('promptID' in data && data.promptID !== undefined) || ('prompt' in data && data.prompt !== undefined);
 
 export const responsePromptVariantCreateDataFactory = ({
@@ -49,23 +53,29 @@ export const responsePromptVariantCreateDataFactory = ({
   attachments,
 });
 
-type PartialTextResponseVariant = Pick<TextResponseVariant, 'id' | 'type' | 'text'>;
+type PartialTextResponseVariant = Pick<TextResponseVariant, 'type' | 'text'>;
 type PartialPromptResponseVariant = Pick<PromptResponseVariantWithPrompt, 'id' | 'type' | 'prompt'>;
 
 type AnyPartialResponseVariant = PartialTextResponseVariant | PartialPromptResponseVariant;
 
-export const isCardResponseAttachment = (responseAttachment: AnyResponseAttachment): responseAttachment is ResponseCardAttachment =>
-  responseAttachment.type === AttachmentType.CARD;
+export const isCardResponseAttachment = (
+  responseAttachment: AnyResponseAttachment
+): responseAttachment is ResponseCardAttachment => responseAttachment.type === AttachmentType.CARD;
 
-export const isTextResponseVariant = (responseVariant: AnyResponseVariant): responseVariant is TextResponseVariant =>
-  responseVariant.type === ResponseVariantType.TEXT;
+export const isTextResponseVariant = (
+  responseVariant: AnyResponseVariant | PartialTextResponseVariant
+): responseVariant is TextResponseVariant => responseVariant.type === ResponseVariantType.TEXT;
 
-export const isTextResponseVariantEmpty = (responseVariant: TextResponseVariant | PartialTextResponseVariant) => isMarkupEmpty(responseVariant.text);
+export const isTextResponseVariantEmpty = (responseVariant: TextResponseVariant | PartialTextResponseVariant) =>
+  isMarkupEmpty(responseVariant.text);
 
-export const isPromptResponseVariantWidthDataEmpty = (responseVariant: PromptResponseVariantWithPrompt | PartialPromptResponseVariant) =>
-  isPromptEmpty(responseVariant.prompt);
+export const isPromptResponseVariantWidthDataEmpty = (
+  responseVariant: PromptResponseVariantWithPrompt | PartialPromptResponseVariant
+) => isPromptEmpty(responseVariant.prompt);
 
-export const isAnyResponseVariantWithDataEmpty = (responseVariant: AnyResponseVariantWithData | AnyPartialResponseVariant) =>
+export const isAnyResponseVariantWithDataEmpty = (
+  responseVariant: AnyResponseVariantWithData | AnyPartialResponseVariant
+) =>
   match(responseVariant)
     .with({ type: ResponseVariantType.TEXT }, isTextResponseVariantEmpty)
     .with({ type: ResponseVariantType.PROMPT }, isPromptResponseVariantWidthDataEmpty)

@@ -32,7 +32,9 @@ export const CMSResponseEditor: React.FC = () => {
     <Editor
       ref={editorRef}
       title="Agent says"
-      headerActions={<CMSEditorMoreButton>{({ onClose }) => getMoreMenu({ id: responseID, onClose })}</CMSEditorMoreButton>}
+      headerActions={
+        <CMSEditorMoreButton>{({ onClose }) => getMoreMenu({ id: responseID, onClose })}</CMSEditorMoreButton>
+      }
       testID={EDITOR_TEST_ID}
     >
       <Scroll style={{ display: 'block' }}>

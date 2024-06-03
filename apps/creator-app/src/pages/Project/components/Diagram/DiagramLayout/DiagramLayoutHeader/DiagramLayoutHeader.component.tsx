@@ -1,3 +1,4 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Header } from '@voiceflow/ui-next';
 import React from 'react';
 import { useRouteMatch } from 'react-router-dom';
@@ -5,6 +6,7 @@ import { useRouteMatch } from 'react-router-dom';
 import { Path } from '@/config/routes';
 import { Permission } from '@/constants/permissions';
 import { Creator, UI } from '@/ducks';
+import { useFeature } from '@/hooks/feature';
 import { useHotkey } from '@/hooks/hotkeys';
 import { usePermission } from '@/hooks/permission';
 import { useSelector } from '@/hooks/store.hook';
@@ -25,6 +27,7 @@ import { DiagramLayoutHeaderTitle } from './DiagramLayoutHeaderTitle.component';
 export const DiagramLayoutHeader: React.FC = () => {
   const isPrototype = !!useRouteMatch(Path.PROJECT_PROTOTYPE);
 
+  const hideExports = useFeature(Realtime.FeatureFlag.HIDE_EXPORTS);
   const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
   const selectedTargets = React.useContext(SelectionTargetsContext);
 
@@ -57,7 +60,7 @@ export const DiagramLayoutHeader: React.FC = () => {
             <>
               <DiagramLayoutHeaderPrototypeSettings />
 
-              <PrototypeShare />
+              {!hideExports.isEnabled && <PrototypeShare />}
             </>
           ) : (
             <>

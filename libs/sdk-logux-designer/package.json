@@ -1,6 +1,6 @@
 {
   "name": "@voiceflow/sdk-logux-designer",
-  "version": "2.57.10",
+  "version": "2.57.11",
   "type": "module",
   "main": "build/main.js",
   "types": "build/main.d.ts",

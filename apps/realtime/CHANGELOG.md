@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.378.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.377.3...@voiceflow/realtime@1.378.0) (2024-06-04)
+
+### Features
+
+* reset the term when upgrading from pro-trial or starter [bugfix] (COR-000) ([#8220](https://github.com/voiceflow/creator-app/issues/8220)) ([973c965](https://github.com/voiceflow/creator-app/commit/973c96523a4ea0488d2a020c83876d4cdaf7b8f6))
+
 ## [1.377.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.377.2...@voiceflow/realtime@1.377.3) (2024-06-04)
 
 **Note:** Version bump only for package @voiceflow/realtime

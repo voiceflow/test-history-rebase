@@ -6,7 +6,7 @@ import { Environment } from '@voiceflow/common';
 import { HealthModule, InternalExceptionFilter, LoggerOptions, ZodValidationExceptionFilter } from '@voiceflow/nestjs-common';
 import { ENVIRONMENT_VARIABLES, EnvModule } from '@voiceflow/nestjs-env';
 import { AuthGuard, AuthModule } from '@voiceflow/sdk-auth/nestjs';
-import { BillingModule } from '@voiceflow/sdk-billing/nestjs';
+import { BillingAuthorizeGuard,BillingModule } from '@voiceflow/sdk-billing/nestjs';
 import type { Request } from 'express';
 import { LoggerErrorInterceptor, LoggerModule } from 'nestjs-pino';
 import { ThrottlerStorageRedisService } from 'nestjs-throttler-storage-redis';
@@ -65,11 +65,15 @@ import { ModerationModule } from './moderation/moderation.module';
   providers: [
     {
       provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
+    {
+      provide: APP_GUARD,
       useClass: AuthGuard,
     },
     {
       provide: APP_GUARD,
-      useClass: ThrottlerGuard,
+      useClass: BillingAuthorizeGuard
     },
     {
       provide: APP_INTERCEPTOR,

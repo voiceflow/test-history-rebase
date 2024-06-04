@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.99.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.98.5...@voiceflow/ml-gateway@1.99.0) (2024-06-04)
+
+### Features
+
+* reset the term when upgrading from pro-trial or starter [bugfix] (COR-000) ([#8220](https://github.com/voiceflow/creator-app/issues/8220)) ([973c965](https://github.com/voiceflow/creator-app/commit/973c96523a4ea0488d2a020c83876d4cdaf7b8f6))
+
 ## [1.98.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.98.4...@voiceflow/ml-gateway@1.98.5) (2024-06-04)
 
 **Note:** Version bump only for package @voiceflow/ml-gateway

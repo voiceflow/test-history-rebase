@@ -146,8 +146,8 @@ export class BillingSubscriptionService {
     });
   }
 
-  // if upgrading from starter or pro trial, do NOT prorate, charge full amount
-  getProrate(subscription: Realtime.Identity.Subscription) {
+  // if upgrading from starter or pro trial, reset the term to charge full amount
+  shouldResetTerm(subscription: Realtime.Identity.Subscription) {
     const planItem = findPlanItem(subscription.subscriptionItems);
 
     if (!planItem) return false;
@@ -157,7 +157,7 @@ export class BillingSubscriptionService {
     const isProTrial = itemPriceID.includes(PlanName.PRO) && itemPriceID.includes('trial');
     const isStarter = itemPriceID.includes(PlanName.STARTER);
 
-    return !isStarter && !isProTrial;
+    return isStarter || isProTrial;
   }
 
   async checkoutAndBroadcast(
@@ -185,7 +185,8 @@ export class BillingSubscriptionService {
 
         trialEnd: 0,
         changeOption: 'immediately',
-        prorate: this.getProrate(subscription),
+        prorate: true,
+        ...(this.shouldResetTerm(subscription) ? { forceTermReset: true } : {}),
         ...(subscription.metaData?.downgradedFromTrial
           ? {
               metadata: {

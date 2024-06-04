@@ -19,7 +19,6 @@ export * from './postgres/intent/required-entity/required-entity.fixture';
 export * from './postgres/intent/utterance/utterance.fixture';
 export * from './postgres/persona/persona.fixture';
 export * from './postgres/persona/persona-override/persona-override.fixture';
-export * from './postgres/prompt/prompt.fixture';
 export * from './postgres/response/response.fixture';
 export * from './postgres/response/response-attachment/response-attachment.fixture';
 export * from './postgres/response/response-discriminator/response-discriminator.fixture';

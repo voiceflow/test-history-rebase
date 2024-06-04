@@ -3,7 +3,6 @@ import {
   AnyConditionORM,
   AnyResponseVariantORM,
   AssistantORM,
-  PromptORM,
   ResponseDiscriminatorORM,
   ResponseTextVariantORM,
 } from '@voiceflow/orm-designer';
@@ -17,7 +16,6 @@ import { ResponseVariantService } from './response-variant.service';
   imports: [ResponseAttachmentModule],
   exports: [ResponseVariantService, ResponseTextVariantService],
   providers: [
-    PromptORM,
     AssistantORM,
     AnyConditionORM,
     AnyResponseVariantORM,

@@ -2220,6 +2220,7 @@
             "gpt-3.5-turbo",
             "gpt-4",
             "gpt-4-turbo",
+            "gpt-4o",
             "claude-v1",
             "claude-v2",
             "claude-3-haiku",
@@ -2425,6 +2426,7 @@
             "gpt-3.5-turbo",
             "gpt-4",
             "gpt-4-turbo",
+            "gpt-4o",
             "claude-v1",
             "claude-v2",
             "claude-3-haiku",
@@ -2560,215 +2562,6 @@
           ],
           "referencedTableName": "designer.assistant",
           "deleteRule": "cascade",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "varchar(24)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 24,
-          "mappedType": "string"
-        },
-        "environment_id": {
-          "name": "environment_id",
-          "type": "varchar(24)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 24,
-          "default": "null",
-          "mappedType": "string"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 0,
-          "default": "now()",
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 0,
-          "default": "now()",
-          "mappedType": "datetime"
-        },
-        "updated_by_id": {
-          "name": "updated_by_id",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "name": {
-          "name": "name",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        },
-        "assistant_id": {
-          "name": "assistant_id",
-          "type": "varchar(24)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 24,
-          "mappedType": "string"
-        },
-        "created_by_id": {
-          "name": "created_by_id",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "folder_id": {
-          "name": "folder_id",
-          "type": "varchar(24)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 24,
-          "default": "null",
-          "mappedType": "string"
-        },
-        "text": {
-          "name": "text",
-          "type": "jsonb",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "json"
-        },
-        "persona_id": {
-          "name": "persona_id",
-          "type": "varchar(24)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 24,
-          "default": "null",
-          "mappedType": "string"
-        }
-      },
-      "name": "prompt",
-      "schema": "designer",
-      "indexes": [
-        {
-          "keyName": "prompt_id_environment_id_unique",
-          "columnNames": [
-            "id",
-            "environment_id"
-          ],
-          "composite": true,
-          "primary": false,
-          "unique": true
-        },
-        {
-          "keyName": "prompt_pkey",
-          "columnNames": [
-            "id",
-            "environment_id"
-          ],
-          "composite": true,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "prompt_updated_by_id_foreign": {
-          "constraintName": "prompt_updated_by_id_foreign",
-          "columnNames": [
-            "updated_by_id"
-          ],
-          "localTableName": "designer.prompt",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "identity.user",
-          "updateRule": "cascade"
-        },
-        "prompt_assistant_id_foreign": {
-          "constraintName": "prompt_assistant_id_foreign",
-          "columnNames": [
-            "assistant_id"
-          ],
-          "localTableName": "designer.prompt",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "designer.assistant",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        },
-        "prompt_created_by_id_foreign": {
-          "constraintName": "prompt_created_by_id_foreign",
-          "columnNames": [
-            "created_by_id"
-          ],
-          "localTableName": "designer.prompt",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "identity.user",
-          "updateRule": "cascade"
-        },
-        "prompt_folder_id_environment_id_foreign": {
-          "constraintName": "prompt_folder_id_environment_id_foreign",
-          "columnNames": [
-            "folder_id",
-            "environment_id"
-          ],
-          "localTableName": "designer.prompt",
-          "referencedColumnNames": [
-            "id",
-            "environment_id"
-          ],
-          "referencedTableName": "designer.folder",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        },
-        "prompt_persona_id_environment_id_foreign": {
-          "constraintName": "prompt_persona_id_environment_id_foreign",
-          "columnNames": [
-            "persona_id",
-            "environment_id"
-          ],
-          "localTableName": "designer.prompt",
-          "referencedColumnNames": [
-            "id",
-            "environment_id"
-          ],
-          "referencedTableName": "designer.persona_override",
-          "deleteRule": "set default",
           "updateRule": "cascade"
         }
       }
@@ -5874,7 +5667,6 @@
           "primary": false,
           "nullable": false,
           "enumItems": [
-            "json",
             "prompt",
             "text"
           ],
@@ -6084,21 +5876,6 @@
           ],
           "referencedTableName": "designer.response_discriminator",
           "deleteRule": "cascade",
-          "updateRule": "cascade"
-        },
-        "response_variant_prompt_id_environment_id_foreign": {
-          "constraintName": "response_variant_prompt_id_environment_id_foreign",
-          "columnNames": [
-            "prompt_id",
-            "environment_id"
-          ],
-          "localTableName": "designer.response_variant",
-          "referencedColumnNames": [
-            "id",
-            "environment_id"
-          ],
-          "referencedTableName": "designer.prompt",
-          "deleteRule": "set default",
           "updateRule": "cascade"
         }
       }

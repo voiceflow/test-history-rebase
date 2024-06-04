@@ -16,7 +16,10 @@ import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch, useFeature, useSelector, useStore, useTrackingEvents } from '@/hooks';
 import { useGetAIAssistSettings } from '@/ModalsV2/modals/Disclaimer/hooks/aiPlayground';
 
-import { OnboardingType, STEP_META, StepID, STEPS_BY_FLOW } from '../constants';
+import { OnboardingType } from '../onboardingType.enum';
+import { StepID } from '../stepID.enum';
+import { STEP_META } from '../stepMeta';
+import { STEPS_BY_FLOW } from './constants';
 import { OnboardingContextAPI, OnboardingContextState, OnboardingProviderProps } from './types';
 
 export const OnboardingContext = React.createContext<OnboardingContextAPI | null>(null);

@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { StepID } from '../../constants';
+import { StepID } from '../stepID.enum';
 import {
   OnboardingStepsCreateWorkspace,
   OnboardingStepsJoinWorkspace,
   OnboardingStepsPersonalizeWorkspace,
   OnboardingStepsWelcome,
-} from '../../Steps';
+} from '../Steps';
 
 export const STEP_COMPONENTS: Record<StepID, React.FC> = {
   [StepID.WELCOME]: OnboardingStepsWelcome,

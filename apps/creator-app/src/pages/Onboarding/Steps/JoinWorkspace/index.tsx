@@ -5,8 +5,8 @@ import React from 'react';
 import * as Account from '@/ducks/account';
 import { useDispatch, useSelector } from '@/hooks';
 
-import { UseCaseSelect } from '../../components';
 import { useOnboardingContext } from '../../context';
+import UseCaseSelect from '../../UseCaseSelect';
 import { FieldsContainer, Label, NameInput, ProfilePicUpload } from '../styles';
 import * as S from './styles';
 

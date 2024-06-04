@@ -538,15 +538,9 @@ class Engine extends ComponentManager<{
       this.saveActiveLocations();
     }
 
-    const hasFocusTarget = this.focus.hasTarget;
-
-    this.focus.reset();
+    this.focus.reset({ skipUrlSync });
     this.selection.reset();
     this.transformation.reset();
-
-    if (!skipUrlSync && hasFocusTarget) {
-      this.store.dispatch(Router.goToCurrentCanvas());
-    }
   }
 
   private getNextAvailableSibling(targetNodeID: string): string | null {

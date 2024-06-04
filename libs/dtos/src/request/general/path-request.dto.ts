@@ -1,9 +1,9 @@
 import { z } from 'zod';
 
 import { ActionAndLabelRequestPayloadDTO } from '../payload.dto';
-import { GeneralRequestDTO } from './general-request.dto';
+import { GeneralActionAndLabelRequestDTO } from './general-request.dto';
 
-export const PathRequestDTO = GeneralRequestDTO.extend({
+export const PathRequestDTO = GeneralActionAndLabelRequestDTO.extend({
   type: z.string().refine((val) => val.startsWith('path-')),
   payload: ActionAndLabelRequestPayloadDTO.passthrough().required({ label: true }),
 }).passthrough();

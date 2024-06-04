@@ -5,12 +5,22 @@ import React from 'react';
 import RadioGroup from '@/components/RadioGroup';
 import ContinueButton from '@/pages/Onboarding/components/ContinueButton';
 
-import { UseCaseSelect } from '../../components';
-import { TEAM_SIZE_OPTIONS, WORK_WITH_DEVELOPERS_OPTIONS } from '../../constants';
 import { useOnboardingContext } from '../../context';
-import { TeamSizeType } from '../../types';
+import { TeamSizeType } from '../../teamSizeType.enum';
+import UseCaseSelect from '../../UseCaseSelect';
 import { Label } from '../styles';
 import * as S from './styles';
+
+export const WORK_WITH_DEVELOPERS_OPTIONS = [
+  { id: true, label: 'Yes' },
+  { id: false, label: 'No' },
+];
+
+export const TEAM_SIZE_OPTIONS = [
+  { id: TeamSizeType.INDIVIDUAL, label: 'Just me' },
+  { id: TeamSizeType.SMALL, label: 'Small team (2-5)' },
+  { id: TeamSizeType.LARGE, label: 'Large team (5+)' },
+];
 
 const OnboardingStepsPersonalizeWorkspace: React.FC = () => {
   const {

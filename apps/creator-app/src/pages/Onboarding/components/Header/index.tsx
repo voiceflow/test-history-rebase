@@ -1,9 +1,10 @@
 import React from 'react';
 
-import { STEP_META, StepID } from '@/pages/Onboarding/constants';
 import { useOnboardingContext } from '@/pages/Onboarding/context';
 import { ClassName } from '@/styles/constants';
 
+import { StepID } from '../../stepID.enum';
+import { STEP_META } from '../../stepMeta';
 import ActionButton from './ActionButton';
 import StepStatus from './StepStatus';
 import * as StepStatusStyles from './StepStatus/styles';

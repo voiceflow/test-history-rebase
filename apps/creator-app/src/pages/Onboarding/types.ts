@@ -5,14 +5,6 @@ export interface CollaboratorType {
   permission: UserRole;
 }
 
-export interface OnboardingDataProps {
-  collaborators: CollaboratorType[];
-}
-
-export interface OnboardingStepProps {
-  data: OnboardingDataProps;
-}
-
 export enum TeamSizeType {
   INDIVIDUAL = 'individual',
   SMALL = 'small',

@@ -1,15 +1,14 @@
 import { Animations, FlexCenter } from '@voiceflow/ui';
-import React, { useContext } from 'react';
+import React from 'react';
 
 import { StepID } from '@/pages/Onboarding/constants';
-import { OnboardingContext } from '@/pages/Onboarding/context';
-import { OnboardingStepProps } from '@/pages/Onboarding/types';
+import { useOnboardingContext } from '@/pages/Onboarding/context';
 
 import { STEP_COMPONENTS } from './constants';
 
-const CurrentStep: React.FC<OnboardingStepProps> = (props) => {
-  const { state } = useContext(OnboardingContext);
-  const { currentStepID } = state;
+const CurrentStep: React.FC = () => {
+  const { getCurrentStepID } = useOnboardingContext();
+  const currentStepID = getCurrentStepID();
 
   const CurrentStepComponent = STEP_COMPONENTS[currentStepID]!;
   const AnimationContainer = currentStepID === StepID.WELCOME ? React.Fragment : Animations.FadeLeft;
@@ -17,7 +16,7 @@ const CurrentStep: React.FC<OnboardingStepProps> = (props) => {
   return (
     <FlexCenter key={currentStepID}>
       <AnimationContainer>
-        <CurrentStepComponent {...props} />
+        <CurrentStepComponent />
       </AnimationContainer>
     </FlexCenter>
   );

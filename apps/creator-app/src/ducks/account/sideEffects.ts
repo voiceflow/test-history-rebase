@@ -19,6 +19,13 @@ export const updateUserProfileImage =
     }
   };
 
+export const updateUserProfileName =
+  (name: string): Thunk =>
+  async (dispatch) => {
+    await client.identity.user.update({ name });
+    dispatch(updateAccount({ name }));
+  };
+
 export const verifySignupEmailToken =
   (token: string): Thunk =>
   async (dispatch) => {

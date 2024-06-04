@@ -2,7 +2,7 @@ import { Animations } from '@voiceflow/ui';
 import { layout, LayoutProps, space, SpaceProps } from 'styled-system';
 
 import { css, styled } from '@/hocs/styled';
-import { LogoContainer } from '@/pages/Onboarding/Steps/Welcome/components';
+import { LogoContainer } from '@/pages/Onboarding/Steps/Welcome/styles';
 
 export interface ContainerProps extends SpaceProps, LayoutProps {
   focused?: boolean;
@@ -109,7 +109,9 @@ export const LogoCircle = styled(LogoContainer)`
   position: absolute;
   bottom: -16px;
   left: -45px;
-  box-shadow: 0 0 0 1px #fff, 0 0 0 2px rgba(19, 33, 68, 0.04);
+  box-shadow:
+    0 0 0 1px #fff,
+    0 0 0 2px rgba(19, 33, 68, 0.04);
 
   & > * {
     padding: 16px;

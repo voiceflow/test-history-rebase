@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1540.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1540.2...@voiceflow/creator-app@1.1540.3) (2024-06-04)
+
+### Bug Fixes
+
+* close editors on drag (COR-2286) ([#8219](https://github.com/voiceflow/creator-app/issues/8219)) ([e9a4468](https://github.com/voiceflow/creator-app/commit/e9a4468b8b761abaabcc55c9068740162706de6f))
+
 ## [1.1540.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1540.1...@voiceflow/creator-app@1.1540.2) (2024-06-03)
 
 **Note:** Version bump only for package @voiceflow/creator-app

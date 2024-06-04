@@ -4,7 +4,15 @@ import type { AlexaNode } from '@voiceflow/alexa-types';
 import type { BaseButton, BaseModels, BaseNode } from '@voiceflow/base-types';
 import type { ChatNode } from '@voiceflow/chat-types';
 import type { EmptyObject, Nullable } from '@voiceflow/common';
-import type { FunctionNodeData, MessageNodeData, StartNodeData, TriggerNodeData } from '@voiceflow/dtos';
+import type {
+  ButtonsV2NodeData,
+  CaptureV3NodeData,
+  ChoiceV2NodeData,
+  FunctionNodeData,
+  MessageNodeData,
+  StartNodeData,
+  TriggerNodeData,
+} from '@voiceflow/dtos';
 import type * as Platform from '@voiceflow/platform-config/backend';
 import type { VoiceNode } from '@voiceflow/voice-types';
 import type { VoiceflowNode } from '@voiceflow/voiceflow-types';
@@ -515,6 +523,12 @@ export namespace NodeData {
   export type Trigger = DTONodeData<TriggerNodeData>;
 
   export type Message = DTONodeData<MessageNodeData>;
+
+  export type ChoiceV2 = DTONodeData<ChoiceV2NodeData>;
+
+  export type ButtonsV2 = DTONodeData<ButtonsV2NodeData>;
+
+  export type CaptureV3 = DTONodeData<CaptureV3NodeData>;
 }
 
 export interface NodeDataMap {
@@ -544,11 +558,19 @@ export interface NodeDataMap {
   [BlockType.RANDOMV2]: NodeData.RandomV2;
   [BlockType.URL]: NodeData.Url;
 
+  // listen steps
+  [BlockType.TRIGGER]: NodeData.Trigger;
+  [BlockType.CHOICE_V2]: NodeData.ChoiceV2;
+  [BlockType.CAPTURE_V3]: NodeData.CaptureV3;
+  [BlockType.BUTTONS_V2]: NodeData.ButtonsV2;
+
+  // deprecated listen steps
   [BlockType.CHOICE]: NodeData.Interaction;
+  [BlockType.INTENT]: NodeData.Intent;
   [BlockType.BUTTONS]: NodeData.Buttons;
   [BlockType.CAPTURE]: NodeData.Capture;
   [BlockType.CAPTUREV2]: NodeData.CaptureV2;
-  [BlockType.INTENT]: NodeData.Intent;
+
   [BlockType.STREAM]: NodeData.Stream;
   [BlockType.INTEGRATION]: NodeData.Integration;
   [BlockType.COMPONENT]: NodeData.Component;
@@ -581,5 +603,4 @@ export interface NodeDataMap {
   [BlockType.MARKUP_IMAGE]: Markup.NodeData.Image;
   [BlockType.MARKUP_VIDEO]: Markup.NodeData.Video;
   [BlockType.FUNCTION]: NodeData.Function;
-  [BlockType.TRIGGER]: NodeData.Trigger;
 }

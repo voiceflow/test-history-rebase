@@ -160,6 +160,10 @@ const useSourceNodeAndPort = (portID: string | null) => {
   };
 };
 
+const useCanHaveURLStep = (sourceNodeType?: BlockType) =>
+  !!sourceNodeType &&
+  [BlockType.BUTTONS, BlockType.CAROUSEL, BlockType.CARDV2, BlockType.BUTTONS_V2].includes(sourceNodeType);
+
 export const useActionsOptions = ({ goToActions, sourcePortID }: ActionsOptions) => {
   const { sourceNode, sourcePort } = useSourceNodeAndPort(sourcePortID);
 
@@ -167,10 +171,7 @@ export const useActionsOptions = ({ goToActions, sourcePortID }: ActionsOptions)
   const targetNodeSteps = useSelector(CreatorV2.stepDataByParentNodeIDSelector, { id: targetNode?.id });
 
   const hasURLStep = Realtime.Utils.typeGuards.isURLBlockType(targetNodeSteps[0]?.type);
-  const canHaveURLStep =
-    Realtime.Utils.typeGuards.isButtonsBlockType(sourceNode?.type) ||
-    Realtime.Utils.typeGuards.isCarouselBlockType(sourceNode?.type) ||
-    Realtime.Utils.typeGuards.isCardV2BlockType(sourceNode?.type);
+  const canHaveURLStep = useCanHaveURLStep(sourceNode?.type);
 
   const hasNavigationStep = Realtime.Utils.typeGuards.isNavigationBlockType(
     targetNodeSteps[targetNodeSteps.length - 1]?.type

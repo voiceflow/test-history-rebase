@@ -2,7 +2,6 @@ import {
   BlockType,
   CANVAS_CHIPS_NODES,
   CANVAS_TEMPLATE_NODES,
-  DIAGRAM_MENU_NODES,
   INTERNAL_NODES,
   MARKUP_AND_COMBINED_NODES,
   MARKUP_MEDIA_NODES,
@@ -30,9 +29,12 @@ export const isStep = <
   node: BaseModels.BaseDiagramNode
 ): node is BaseModels.BaseStep<Data, Ports, PortsOld> =>
   Array.isArray(node.data.ports) || Utils.object.isObject(node.data.portsV2);
+
 export const isBlock = (node: BaseModels.BaseDiagramNode): node is BaseModels.BaseBlock =>
   node.type === BaseModels.BaseNodeType.BLOCK;
+
 export const isStart = (node: BaseModels.BaseDiagramNode): node is DBNodeStart => node.type === BlockType.START;
+
 export const isActions = (node: BaseModels.BaseDiagramNode): node is BaseModels.BaseActions =>
   node.type === BaseModels.BaseNodeType.ACTIONS;
 
@@ -54,7 +56,6 @@ export const isInternalBlockType = createBlockTypeGuard(INTERNAL_NODES);
 export const isNavigationBlockType = createBlockTypeGuard(NAVIGATION_NODES);
 export const isCanvasChipBlockType = createBlockTypeGuard(CANVAS_CHIPS_NODES);
 export const isMarkupMediaBlockType = createBlockTypeGuard(MARKUP_MEDIA_NODES);
-export const isDiagramMenuBlockType = createBlockTypeGuard(DIAGRAM_MENU_NODES);
 export const isRootOrMarkupBlockType = createBlockTypeGuard(ROOT_AND_MARKUP_NODES);
 export const isStartingNodeBlockType = createBlockTypeGuard(STARTING_NODES);
 export const isMarkupTemplateBlockType = createBlockTypeGuard(CANVAS_TEMPLATE_NODES);

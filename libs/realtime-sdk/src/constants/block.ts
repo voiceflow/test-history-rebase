@@ -29,13 +29,13 @@ export enum BlockType {
   RANDOM = 'random',
   RANDOMV2 = 'randomV2',
 
-  // advanced
-  CHOICE = 'interaction',
-  BUTTONS = 'buttons',
-  CAPTURE = 'capture',
-  CAPTUREV2 = 'captureV2',
-  INTENT = 'intent',
+  // listen
   TRIGGER = 'trigger',
+  CHOICE_V2 = 'choice-v2',
+  BUTTONS_V2 = 'buttons-v2',
+  CAPTURE_V3 = 'capture-v3',
+
+  // advanced
   STREAM = 'stream',
   INTEGRATION = 'integration',
   COMPONENT = 'component',
@@ -72,6 +72,28 @@ export enum BlockType {
   MARKUP_TEXT = 'markup_text',
   MARKUP_IMAGE = 'markup_image',
   MARKUP_VIDEO = 'markup_video',
+
+  // deprecated listen steps
+  /**
+   * @deprecated Use `CHOICE_V2` instead
+   */
+  CHOICE = 'interaction',
+  /**
+   * @deprecated Use `TRIGGER` instead
+   */
+  INTENT = 'intent',
+  /**
+   * @deprecated Use `BUTTONS_V2` instead
+   */
+  BUTTONS = 'buttons',
+  /**
+   * @deprecated Use `CAPTUREV2` instead
+   */
+  CAPTURE = 'capture',
+  /**
+   * @deprecated Use `CAPTURE_V3` instead
+   */
+  CAPTUREV2 = 'captureV2',
 }
 
 export type DeprecatedBlockType = BlockType.COMMENT | BlockType.CHOICE_OLD;
@@ -125,19 +147,23 @@ export const CANVAS_CHIPS_NODES: ReadonlyArray<CanvasChipBlockType> = [
   BlockType.TRIGGER,
 ];
 
-export type DiagramMenuBlockType = BlockType.START | BlockType.INTENT | BlockType.COMPONENT | BlockType.TRIGGER;
-export const DIAGRAM_MENU_NODES: ReadonlyArray<DiagramMenuBlockType> = [
-  BlockType.START,
-  BlockType.INTENT,
-  BlockType.COMPONENT,
-  BlockType.TRIGGER,
-];
-
 export type StaringBlockType = BlockType.START | BlockType.COMBINED;
 export const STARTING_NODES: ReadonlyArray<StaringBlockType> = [BlockType.START, BlockType.COMBINED];
 
-export type SharedBlockType = DiagramMenuBlockType | BlockType.COMBINED;
-export const SHARED_NODES: ReadonlyArray<SharedBlockType> = [...DIAGRAM_MENU_NODES, BlockType.COMBINED];
+export type SharedBlockType =
+  | BlockType.START
+  | BlockType.INTENT
+  | BlockType.COMPONENT
+  | BlockType.TRIGGER
+  | BlockType.COMBINED;
+
+export const SHARED_NODES: ReadonlyArray<SharedBlockType> = [
+  BlockType.START,
+  BlockType.INTENT,
+  BlockType.TRIGGER,
+  BlockType.COMBINED,
+  BlockType.COMPONENT,
+];
 
 export type StepBlockType = Exclude<BlockType, RootOrMarkupBlockType | DeprecatedBlockType>;
 

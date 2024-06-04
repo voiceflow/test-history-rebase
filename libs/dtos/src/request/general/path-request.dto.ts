@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 import { ActionAndLabelRequestPayloadDTO } from '../payload.dto';
-import { GeneralActionAndLabelRequestDTO } from './general-request.dto';
+import { GeneralActionAndLabelRequestDTO } from './general-action-and-label-request.dto';
 
 export const PathRequestDTO = GeneralActionAndLabelRequestDTO.extend({
   type: z.string().refine((val) => val.startsWith('path-')),

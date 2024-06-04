@@ -12,7 +12,7 @@ export const GeneralUnknownRequestDTO = BaseRequestDTO.extend({
 export type GeneralUnknownRequest = z.infer<typeof GeneralUnknownRequestDTO>;
 
 export const GeneralActionAndLabelRequestDTO = BaseRequestDTO.extend({
-  payload: ActionAndLabelRequestPayloadDTO.passthrough().optional()
+  payload: ActionAndLabelRequestPayloadDTO.passthrough()
 });
 
 export type GeneralActionAndLabelRequest = z.infer<typeof GeneralActionAndLabelRequestDTO>;

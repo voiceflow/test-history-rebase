@@ -24,8 +24,12 @@ const TABLE_NAME = 'designer.response_variant';
 export class BaseResponseVariantEntity<DefaultOrNullColumn extends string = never> extends PostgresCMSObjectEntity<
   DefaultOrNullColumn | 'condition'
 > {
-  @Enum(() => ResponseVariantType)
-  type!: ResponseVariantType;
+  @Enum({
+    items: () => ResponseVariantType,
+    nullable: true,
+    default: ResponseVariantType.TEXT,
+  })
+  type!: ResponseVariantType | null;
 
   @ManyToOne(() => BaseConditionEntity, {
     name: 'condition_id',

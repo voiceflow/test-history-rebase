@@ -1,9 +1,9 @@
 import { z } from 'zod';
 
 import { ActionAndLabelRequestPayloadDTO } from '../payload.dto';
-import { BaseRequestDTO } from '../utils.dto';
+import { GeneralUnknownRequestDTO } from './general-unknown-request.dto';
 
-export const GeneralActionAndLabelRequestDTO = BaseRequestDTO.extend({
+export const GeneralActionAndLabelRequestDTO = GeneralUnknownRequestDTO.extend({
   payload: ActionAndLabelRequestPayloadDTO.passthrough()
 });
 

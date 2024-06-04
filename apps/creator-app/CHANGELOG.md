@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1541.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1540.5...@voiceflow/creator-app@1.1541.0) (2024-06-04)
+
+### Features
+
+* kill custom query onboarding flows [bugfix] (COR-2230) ([#8195](https://github.com/voiceflow/creator-app/issues/8195)) ([65f8ac6](https://github.com/voiceflow/creator-app/commit/65f8ac6cff26b1282ef103b583ed64c29ecd1268))
+
 ## [1.1540.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1540.4...@voiceflow/creator-app@1.1540.5) (2024-06-04)
 
 **Note:** Version bump only for package @voiceflow/creator-app

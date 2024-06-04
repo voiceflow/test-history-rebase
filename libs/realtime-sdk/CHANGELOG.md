@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.406.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.405.1...@voiceflow/realtime-sdk@1.406.0) (2024-06-04)
+
+### Features
+
+* add intent automatic reprompt settings (COR-000) ([#8218](https://github.com/voiceflow/creator-app/issues/8218)) ([fa7fa00](https://github.com/voiceflow/creator-app/commit/fa7fa0025eb8309d5a887608147033ff6262c41d))
+
 ## [1.405.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.405.0...@voiceflow/realtime-sdk@1.405.1) (2024-06-03)
 
 **Note:** Version bump only for package @voiceflow/realtime-sdk

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.82.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.81.0...@voiceflow/dtos@1.82.0) (2024-06-04)
+
+### Features
+
+* add intent automatic reprompt settings (COR-000) ([#8218](https://github.com/voiceflow/creator-app/issues/8218)) ([fa7fa00](https://github.com/voiceflow/creator-app/commit/fa7fa0025eb8309d5a887608147033ff6262c41d))
+
 # [1.81.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.80.0...@voiceflow/dtos@1.81.0) (2024-06-03)
 
 ### Features

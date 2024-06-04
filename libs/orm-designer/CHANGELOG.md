@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.65.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.64.0...@voiceflow/orm-designer@2.65.0) (2024-06-04)
+
+### Features
+
+* add intent automatic reprompt settings (COR-000) ([#8218](https://github.com/voiceflow/creator-app/issues/8218)) ([fa7fa00](https://github.com/voiceflow/creator-app/commit/fa7fa0025eb8309d5a887608147033ff6262c41d))
+
 # [2.64.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.63.1...@voiceflow/orm-designer@2.64.0) (2024-06-03)
 
 ### Features

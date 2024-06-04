@@ -1039,7 +1039,7 @@ export class AssistantService extends MutableService<AssistantORM> {
       const vfFile = await fs.readFile(new URL(templatePath, import.meta.url), 'utf8');
 
       return AssistantImportDataDTO.parse(JSON.parse(vfFile));
-    } catch {
+    } catch (err) {
       throw new BadRequestException(
         `Couldn't find a template with tag '${templateTag}' for platform '${templatePlatform}'.`
       );

@@ -7,6 +7,7 @@ import ActionManager from './Action';
 import AIResponseManager from './AIResponse';
 import AISetManager from './AISet';
 import ButtonsManager from './Buttons';
+import { ButtonsV2Manager } from './ButtonsV2Manager/ButtonsV2.manager';
 import CaptureManager from './Capture';
 import CaptureManagerV2 from './CaptureV2';
 import CardManager from './Card';
@@ -98,6 +99,7 @@ export const MANAGERS_BY_TYPE = {
   [BlockType.FUNCTION]: FunctionManager,
   [BlockType.TRIGGER]: TriggerManager,
   [BlockType.MESSAGE]: MessageManager,
+  [BlockType.BUTTONS_V2]: ButtonsV2Manager,
 };
 
 export const MANAGERS_BY_FEATURE: Partial<Record<BlockType, Realtime.FeatureFlag>> = {

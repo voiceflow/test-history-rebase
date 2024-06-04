@@ -6,6 +6,7 @@ import aiCaptureAdapter, { aiCaptureOutPortsAdapterV2 } from './aiCapture';
 import aiResponseAdapter, { aiResponseOutPortsAdapterV2 } from './aiResponse';
 import aiSetAdapater, { aiSetOutPortsAdapterV2 } from './aiSet';
 import { buttonsOutPortsAdapter, buttonsOutPortsAdapterV2 } from './buttons';
+import { buttonsV2Adapter, buttonsV2OutPortsAdapterV2 } from './buttons-v2.adapter';
 import { captureOutPortsAdapter, captureOutPortsAdapterV2 } from './capture';
 import { captureV2OutPortsAdapter, captureV2OutPortsAdapterV2 } from './captureV2';
 import cardAdapter, { cardOutPortsAdapter, cardOutPortsAdapterV2 } from './card';
@@ -77,6 +78,7 @@ export const baseBlockAdapter = {
   [BlockType.FUNCTION]: functionAdapter,
   [BlockType.TRIGGER]: triggerAdapter,
   [BlockType.MESSAGE]: messageAdapter,
+  [BlockType.BUTTONS_V2]: buttonsV2Adapter,
 };
 
 // adapters shared across all platforms
@@ -155,6 +157,7 @@ export const baseOutPortAdapterV2 = {
   [BlockType.FUNCTION]: functionOutPortsAdapterV2,
   [BlockType.TRIGGER]: triggerOutPortsAdapterV2,
   [BlockType.MESSAGE]: messageOutPortsAdapterV2,
+  [BlockType.BUTTONS_V2]: buttonsV2OutPortsAdapterV2,
 
   [BaseNode.NodeType.API]: integrationOutPortsAdapterV2,
 };

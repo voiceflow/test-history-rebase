@@ -274,6 +274,19 @@ export class AssistantService extends MutableService<AssistantORM> {
       project.aiAssistSettings = { ...project.aiAssistSettings, aiPlayground: false };
     }
 
+    if (this.unleash.isEnabled(Realtime.FeatureFlag.KB_EMBEDDING_MODEL_SETTING, { workspaceID })) {
+      const knowledgeBase = project.knowledgeBase || {};
+      const { settings } = knowledgeBase;
+
+      knowledgeBase.settings = {
+        ...Realtime.KB_SETTINGS_DEFAULT,
+        ...(settings ?? {}),
+        embeddingModel: settings?.embeddingModel ?? Realtime.KB_SETTINGS_NEW_EMBEDDING_MODEL,
+      };
+
+      project.knowledgeBase = knowledgeBase;
+    }
+
     return {
       project,
       _version: data._version,

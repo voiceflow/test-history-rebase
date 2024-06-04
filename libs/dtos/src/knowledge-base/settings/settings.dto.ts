@@ -27,6 +27,12 @@ export const KnowledgeBaseSettingsDTO = z
       limit: z.number(),
       metric: z.string(),
     }),
+    embeddingModel: z
+      .object({
+        model: z.string(),
+        size: z.number(),
+      })
+      .optional(),
   })
   .strict();
 

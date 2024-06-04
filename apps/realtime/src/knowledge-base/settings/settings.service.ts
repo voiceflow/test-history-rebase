@@ -1,51 +1,52 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { AIModel,KBSettingsChunkStrategy, KBSettingsPromptMode, KnowledgeBaseSettings } from '@voiceflow/dtos';
+import { KnowledgeBaseSettings } from '@voiceflow/dtos';
 import { NotFoundException } from '@voiceflow/exception';
-import { KnowledgeBaseORM, ProjectEntity } from '@voiceflow/orm-designer';
+import { UnleashFeatureFlagService } from '@voiceflow/nestjs-common';
+import { KnowledgeBaseORM, ProjectEntity, ProjectORM } from '@voiceflow/orm-designer';
+import * as Realtime from '@voiceflow/realtime-sdk/backend';
+import { FeatureFlag } from '@voiceflow/realtime-sdk/backend';
 
+import { CacheService, type KeyValueStrategy } from '@/cache/cache.service';
 import { MutableService } from '@/common';
 import { ProjectService } from '@/project/project.service';
 import { VersionService } from '@/version/version.service';
 
 @Injectable()
 export class KnowledgeBaseSettingsService extends MutableService<KnowledgeBaseORM> {
-  private DEFAULT_SETTINGS: KnowledgeBaseSettings = {
-    summarization: {
-      prompt: '',
-      mode: KBSettingsPromptMode.PROMPT,
-      model: AIModel.GPT_3_5_TURBO,
-      temperature: 0.1,
-      system:
-        "You are an FAQ AI chat assistant. Information will be provided to help answer the user's questions. Always summarize your response to be as brief as possible and be extremely concise. Your responses should be fewer than a couple of sentences.",
-    },
-    chunkStrategy: {
-      type: KBSettingsChunkStrategy.RECURSIVE_TEXT_SPLITTER,
-      size: 1200,
-      overlap: 200,
-    },
-    search: {
-      limit: 3,
-      metric: 'IP',
-    },
-  };
+  private static getKbSettingsKey({ assistantID }: { assistantID: string }): string {
+    return `kb-settings:${assistantID}`;
+  }
 
+  private settingsCache: KeyValueStrategy<typeof KnowledgeBaseSettingsService.getKbSettingsKey>;
+
+  // eslint-disable-next-line max-params
   constructor(
+    @Inject(CacheService)
+    private readonly cache: CacheService,
+    @Inject(UnleashFeatureFlagService)
+    private readonly unleash: UnleashFeatureFlagService,
     @Inject(KnowledgeBaseORM)
     protected readonly orm: KnowledgeBaseORM,
+    @Inject(ProjectORM)
+    protected readonly projectORM: ProjectORM,
     @Inject(VersionService)
     protected readonly version: VersionService,
     @Inject(ProjectService)
     protected readonly project: ProjectService
   ) {
     super();
+    this.settingsCache = this.cache.keyValueStrategyFactory({
+      expire: 60 * 60,
+      keyCreator: KnowledgeBaseSettingsService.getKbSettingsKey,
+    });
   }
 
   async getSettings(assistantID: string): Promise<KnowledgeBaseSettings> {
     const settings = await this.orm.findSettings(assistantID);
 
     if (!settings) {
-      await this.updateSettings(assistantID, this.DEFAULT_SETTINGS);
-      return this.DEFAULT_SETTINGS;
+      await this.updateSettings(assistantID, Realtime.KB_SETTINGS_DEFAULT);
+      return Realtime.KB_SETTINGS_DEFAULT;
     }
 
     return settings;
@@ -53,6 +54,12 @@ export class KnowledgeBaseSettingsService extends MutableService<KnowledgeBaseOR
 
   async updateSettings(assistantID: string, newSettings: KnowledgeBaseSettings): Promise<void> {
     await this.orm.updateSettings(assistantID, newSettings);
+
+    await this.updateCachedSettings(assistantID, newSettings);
+  }
+
+  async updateCachedSettings(assistantID: string, settings: KnowledgeBaseSettings) {
+    await this.settingsCache.set({ assistantID }, JSON.stringify(settings));
   }
 
   async getVersionSettings(versionID: string): Promise<KnowledgeBaseSettings> {
@@ -81,11 +88,48 @@ export class KnowledgeBaseSettingsService extends MutableService<KnowledgeBaseOR
     }
 
     // apply default settings if none are available
-    await this.updateVersionSettings(versionID, this.DEFAULT_SETTINGS);
-    return this.DEFAULT_SETTINGS;
+    await this.updateVersionSettings(versionID, Realtime.KB_SETTINGS_DEFAULT);
+    return Realtime.KB_SETTINGS_DEFAULT;
   }
 
   async updateVersionSettings(versionID: string, newSettings: KnowledgeBaseSettings) {
     await this.version.updateKnowledgeBaseSettings(versionID, newSettings);
+
+    const versionDocument = await this.version.findOne(versionID);
+    if (versionDocument) {
+      await this.updateCachedSettings(versionDocument.projectID.toString(), newSettings);
+    }
+  }
+
+  async getProjectSettingsFromCache(projectID: string): Promise<KnowledgeBaseSettings | undefined> {
+    const cachedSettings = await this.settingsCache.get({ assistantID: projectID });
+
+    if (cachedSettings) {
+      return JSON.parse(cachedSettings);
+    }
+
+    return undefined;
+  }
+
+  async getProjectSettings(projectID: string): Promise<KnowledgeBaseSettings> {
+    const cachedSettings = await this.getProjectSettingsFromCache(projectID);
+
+    if (cachedSettings) {
+      return cachedSettings;
+    }
+
+    const { devVersion, workspaceID } = await this.projectORM.getVersionAndWorkspaceID(projectID);
+
+    if (this.unleash.isEnabled(FeatureFlag.VERSIONED_KB_SETTINGS, { workspaceID }) && devVersion) {
+      const versionSettings = await this.getVersionSettings(devVersion);
+      await this.updateCachedSettings(projectID, versionSettings);
+
+      return versionSettings;
+    }
+
+    const settings = await this.getSettings(projectID);
+    await this.updateCachedSettings(projectID, settings);
+
+    return settings;
   }
 }

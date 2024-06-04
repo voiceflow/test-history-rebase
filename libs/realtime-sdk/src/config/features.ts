@@ -63,6 +63,8 @@ export enum FeatureFlag {
 
   UNLIMITED_KB_DOCS_FF = 'unlimited_kb_docs_ff',
 
+  KB_EMBEDDING_MODEL_SETTING = 'kb_embedding_model_setting',
+
   // functions
   FUNCTION_LISTEN = 'function_listen',
 

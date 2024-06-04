@@ -1,6 +1,7 @@
 import * as Platform from '@voiceflow/platform-config/backend';
 
 export * from './block';
+export * from './knowledge-base';
 export * from './platform';
 export * from './user';
 

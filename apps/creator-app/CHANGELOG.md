@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1542.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1541.0...@voiceflow/creator-app@1.1542.0) (2024-06-04)
+
+### Features
+
+* fix circ dependency issue (COR-000) ([#8226](https://github.com/voiceflow/creator-app/issues/8226)) ([a9bbc47](https://github.com/voiceflow/creator-app/commit/a9bbc47064e4f8773b24c861238b32d718f96198))
+
 # [1.1541.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1540.5...@voiceflow/creator-app@1.1541.0) (2024-06-04)
 
 ### Features

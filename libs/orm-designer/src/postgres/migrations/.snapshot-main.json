@@ -2072,6 +2072,20 @@
           "length": 24,
           "default": "null",
           "mappedType": "string"
+        },
+        "type": {
+          "name": "type",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "'text'",
+          "enumItems": [
+            "prompt",
+            "text"
+          ],
+          "mappedType": "enum"
         }
       },
       "name": "response",
@@ -3526,16 +3540,6 @@
           "nullable": true,
           "default": "null",
           "mappedType": "text"
-        },
-        "path_order": {
-          "name": "path_order",
-          "type": "text[]",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "'{}'",
-          "mappedType": "array"
         }
       },
       "name": "function",
@@ -6318,7 +6322,8 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
+          "default": "'text'",
           "enumItems": [
             "prompt",
             "text"

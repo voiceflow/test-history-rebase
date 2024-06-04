@@ -177,6 +177,7 @@ export * from './response/response-message/compiled/response-message.compiled.dt
 export * from './response/response-message/response-message.dto';
 export * from './response/response-message/response-message-create.dto';
 export * from './response/response-message/response-message-patch.dto';
+export * from './response/response-type.enum';
 export * from './response/response-variant/card-layout.enum';
 export * from './response/response-variant/compiled/base-variant.compiled.dto';
 export * from './response/response-variant/compiled/prompt-variant.compiled.dto';

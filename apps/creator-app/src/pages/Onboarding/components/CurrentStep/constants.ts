@@ -1,15 +1,16 @@
 import React from 'react';
 
-import { OnboardingStepProps } from '@/pages/Onboarding/types';
-
 import { StepID } from '../../constants';
-import { CreateWorkspace, JoinWorkspace, Payment, PersonalizeWorkspace, SelectChannel, Welcome } from '../../Steps';
+import {
+  OnboardingStepsCreateWorkspace,
+  OnboardingStepsJoinWorkspace,
+  OnboardingStepsPersonalizeWorkspace,
+  OnboardingStepsWelcome,
+} from '../../Steps';
 
-export const STEP_COMPONENTS: Record<StepID, React.FC<OnboardingStepProps>> = {
-  [StepID.WELCOME]: Welcome,
-  [StepID.CREATE_WORKSPACE]: CreateWorkspace,
-  [StepID.PERSONALIZE_WORKSPACE]: PersonalizeWorkspace,
-  [StepID.SELECT_CHANNEL]: SelectChannel,
-  [StepID.PAYMENT]: Payment,
-  [StepID.JOIN_WORKSPACE]: JoinWorkspace,
+export const STEP_COMPONENTS: Record<StepID, React.FC> = {
+  [StepID.WELCOME]: OnboardingStepsWelcome,
+  [StepID.CREATE_WORKSPACE]: OnboardingStepsCreateWorkspace,
+  [StepID.PERSONALIZE_WORKSPACE]: OnboardingStepsPersonalizeWorkspace,
+  [StepID.JOIN_WORKSPACE]: OnboardingStepsJoinWorkspace,
 };

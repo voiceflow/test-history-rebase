@@ -1,7 +1,7 @@
 import { SvgIcon, SvgIconTypes } from '@voiceflow/ui';
 import React from 'react';
 
-import { Container, IconContainer, InnerContainer, Label } from './components';
+import * as S from './styles';
 
 interface ActionButtonProps {
   icon: SvgIconTypes.Icon;
@@ -12,17 +12,17 @@ interface ActionButtonProps {
 }
 
 const ActionButton: React.FC<ActionButtonProps> = ({ className, shouldRender, icon, label, onClick }) => (
-  <Container className={className}>
+  <S.Container className={className}>
     {shouldRender && (
-      <InnerContainer onClick={onClick}>
-        <IconContainer>
+      <S.InnerContainer onClick={onClick}>
+        <S.IconContainer>
           <SvgIcon icon={icon} color="#becedc" />
-        </IconContainer>
+        </S.IconContainer>
 
-        <Label>{label}</Label>
-      </InnerContainer>
+        <S.Label>{label}</S.Label>
+      </S.InnerContainer>
     )}
-  </Container>
+  </S.Container>
 );
 
 export default ActionButton;

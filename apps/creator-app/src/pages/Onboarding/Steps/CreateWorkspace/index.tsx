@@ -2,64 +2,68 @@ import { ClickableText, FlexCenter, KeyName, toast, Upload, UploadIconVariant } 
 import React from 'react';
 
 import ContinueButton from '../../components/ContinueButton';
-import { OnboardingContext } from '../../context';
-import { Container, LabelContainer, NameInput } from './components';
+import { useOnboardingContext } from '../../context';
+import * as S from './styles';
 
-const CreateWorkspace: React.FC = () => {
-  const { state, actions } = React.useContext(OnboardingContext);
-  const { createWorkspaceMeta } = state;
-  const { stepForward, setCreateWorkspaceMeta } = actions;
-  const [workspaceName, setWorkspaceName] = React.useState(createWorkspaceMeta.workspaceName || '');
-  const [workspaceImage, setWorkspaceImage] = React.useState<string | null>(createWorkspaceMeta.workspaceImage);
-  const canContinue = !!workspaceName.trim() && workspaceName.length <= 32;
+const OnboardingStepsCreateWorkspace: React.FC = () => {
+  const {
+    state: { createWorkspaceMeta, sendingRequests },
+    stateAPI,
+    stepForward,
+  } = useOnboardingContext();
+  const canContinue = !!createWorkspaceMeta.workspaceName.trim() && createWorkspaceMeta.workspaceName.length <= 32;
   const iconUploadRef = React.useRef<HTMLDivElement>(null);
 
   const onBlur = () => {
-    if (workspaceName.length > 32) {
+    if (createWorkspaceMeta.workspaceName.length > 32) {
       toast.error('Workspace Name Too Long - 32 Characters Max');
     }
   };
 
-  const onContinue = () => {
-    setCreateWorkspaceMeta({ workspaceName, workspaceImage: workspaceImage ?? '' });
-    stepForward(null);
-  };
-
   const handleInputEnterPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === KeyName.ENTER && canContinue) {
-      onContinue();
+      stepForward();
     }
   };
 
   return (
-    <Container>
+    <S.Container>
       <FlexCenter>
-        <NameInput
-          value={workspaceName}
+        <S.WorkspaceNameInput
+          value={createWorkspaceMeta.workspaceName}
           onBlur={onBlur}
           autoFocus
           onKeyPress={handleInputEnterPress}
           placeholder="Give your workspace a name"
-          onChangeText={setWorkspaceName}
+          onChangeText={(value) => stateAPI.createWorkspaceMeta.update({ workspaceName: value })}
         />
       </FlexCenter>
 
       <FlexCenter>
-        <Upload.IconUpload image={workspaceImage} update={setWorkspaceImage} size={UploadIconVariant.LARGE} ref={iconUploadRef} />
+        <Upload.IconUpload
+          image={createWorkspaceMeta.workspaceImage}
+          update={(value) => stateAPI.createWorkspaceMeta.update({ workspaceImage: value ?? '' })}
+          size={UploadIconVariant.LARGE}
+          ref={iconUploadRef}
+        />
       </FlexCenter>
 
-      <LabelContainer>
+      <S.LabelContainer>
         Drop workspace icon here <br />
         or <ClickableText onClick={() => iconUploadRef.current?.click()}>Browse</ClickableText> (optional)
-      </LabelContainer>
+      </S.LabelContainer>
 
       <FlexCenter>
-        <ContinueButton disabled={!canContinue || state.sendingRequests} onClick={onContinue} isLoading={state.sendingRequests}>
+        <ContinueButton
+          disabled={!canContinue || sendingRequests}
+          onClick={() => stepForward()}
+          isLoading={sendingRequests}
+        >
           Continue
         </ContinueButton>
       </FlexCenter>
-    </Container>
+    </S.Container>
   );
 };
 
-export default CreateWorkspace;
+export default OnboardingStepsCreateWorkspace;

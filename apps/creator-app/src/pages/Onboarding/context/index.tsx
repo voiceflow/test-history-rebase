@@ -1,320 +1,91 @@
 import { datadogRum } from '@datadog/browser-rum';
-import * as stripeJs from '@stripe/stripe-js';
 import { Nullable } from '@voiceflow/common';
-import { BillingPeriod, PlanType } from '@voiceflow/internal';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { ButtonVariant, toast, withProvider } from '@voiceflow/ui';
-import _constant from 'lodash/constant';
-import * as Normal from 'normal-store';
+import { toast, useSmartReducerV2 } from '@voiceflow/ui';
 import queryString from 'query-string';
 import React from 'react';
 import { Redirect, useLocation } from 'react-router-dom';
 
-import { receiptGraphic } from '@/assets';
-import { IS_PRIVATE_CLOUD } from '@/config';
 import { Path } from '@/config/routes';
 import { COUPON_QUERY_PARAM } from '@/constants/payment';
-import * as Payment from '@/contexts/PaymentContext';
 import * as Account from '@/ducks/account';
 import * as Project from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
-import * as Session from '@/ducks/session';
-import * as Tracking from '@/ducks/tracking';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useDispatch, useFeature, useSelector, useSmartReducer, useStore, useTrackingEvents } from '@/hooks';
-import * as ModalsV2 from '@/ModalsV2';
+import { useDispatch, useFeature, useSelector, useStore, useTrackingEvents } from '@/hooks';
 import { useGetAIAssistSettings } from '@/ModalsV2/modals/Disclaimer/hooks/aiPlayground';
-import { getErrorMessage } from '@/utils/error';
-import { isAdminUserRole } from '@/utils/role';
 
-import { SELECTABLE_WORKSPACE_SPECIFIC_FLOW_TYPES, STEP_META, StepID } from '../constants';
-import {
-  OnboardingContextActions,
-  OnboardingContextProps,
-  OnboardingContextState,
-  OnboardingProviderProps,
-  OnboardingType,
-  SpecificFlowType,
-} from './types';
-import * as OnboardingUtils from './utils';
+import { OnboardingType, STEP_META, StepID, STEPS_BY_FLOW } from '../constants';
+import { OnboardingContextAPI, OnboardingContextState, OnboardingProviderProps } from './types';
 
-const UPGRADING_WORKSPACE_SPECIFIC_FLOWS = new Set([
-  SpecificFlowType.existing_user_general_upgrade,
-  SpecificFlowType.login_creator_existing,
-  SpecificFlowType.login_student_existing,
-]);
+export const OnboardingContext = React.createContext<OnboardingContextAPI | null>(null);
 
-export const OnboardingContext = React.createContext<OnboardingContextProps>({
-  actions: {
-    stepBack: _constant(null),
-    stepForward: _constant(null),
-    closeOnboarding: _constant(null),
-    setCreateWorkspaceMeta: _constant(null),
-    setPersonalizeWorkspaceMeta: _constant(null),
-    setPaymentMeta: _constant(null),
-    setJoinWorkspaceMeta: _constant(null),
-    setSelectChannelMeta: _constant(null),
-    finishCreateOnboarding: _constant(null),
-    finishJoiningWorkspace: _constant(null),
-    onCancel: _constant(null),
-    getNumberOfEditors: _constant(0),
-  },
-  state: {
-    selectableWorkspace: false,
-    specificFlowType: SpecificFlowType.create_workspace,
-    flow: OnboardingType.create,
-    stepStack: [],
-    currentStepID: StepID?.CREATE_WORKSPACE,
-    numberOfSteps: 0,
-    createWorkspaceMeta: { workspaceImage: 'string', workspaceName: 'string' },
-    personalizeWorkspaceMeta: {
-      channels: [],
-      useCase: '',
-      teamSize: '',
-      workWithDevelopers: undefined,
-      selfReportedAttribution: '',
-    },
-    paymentMeta: {
-      period: BillingPeriod.MONTHLY,
-      selectedWorkspaceId: '',
-    },
-    joinWorkspaceMeta: {
-      role: '',
-    },
-    selectChannelMeta: {
-      platform: Platform.Constants.PlatformType.ALEXA,
-      projectType: Platform.Constants.ProjectType.VOICE,
-    },
-    sendingRequests: false,
-    workspaceId: '',
-    justCreatingWorkspace: false,
-    hasFixedPeriod: false,
-    hasWorkspaces: false,
-    upgradingAWorkspace: false,
-  },
-});
+export const useOnboardingContext = () => {
+  const context = React.useContext(OnboardingContext);
 
-export const { Consumer: OnboardingConsumer } = OnboardingContext;
+  if (!context) {
+    throw new Error('useOnboardingContext must be used within a OnboardingProvider');
+  }
 
-const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<OnboardingProviderProps>> = ({
-  query,
-  children,
-  isLoginFlow, // This boolean represents if the user hits the onboarding flow from a link/new signup, or from the dashboard 'create workspace' button
-}) => {
+  return context;
+};
+
+export const OnboardingProvider: React.FC<OnboardingProviderProps> = ({ query, children }) => {
   const store = useStore();
   const location = useLocation();
   const search = queryString.parse(location.search);
   const workspaces = useSelector(WorkspaceV2.allWorkspacesSelector);
   const getWorkspaceByID = useSelector(WorkspaceV2.getWorkspaceByIDSelector);
   const account = useSelector(Account.userSelector);
-  const firstLogin = useSelector(Account.isFirstLoginSelector);
-  const currentWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
-  const paymentAPI = Payment.legacy.usePaymentAPI();
-  const checkoutWorkspace = useDispatch(WorkspaceV2.checkout);
   const createWorkspace = useDispatch(WorkspaceV2.createWorkspace);
   const acceptInvite = useDispatch(WorkspaceV2.acceptInvite);
   const goToDashboard = useDispatch(Router.goToDashboard);
   const goToProjectCanvas = useDispatch(Router.goToProjectCanvas);
   const goToDashboardWithSearch = useDispatch(Router.goToDashboardWithSearch);
   const setActiveWorkspace = useDispatch(WorkspaceV2.setActive);
-  const goToWorkspace = useDispatch(Router.goToWorkspace);
-  const trackInvitationAccepted = useDispatch(Tracking.trackInvitationAccepted);
   const createProject = useDispatch(Project.createProject);
   const { isEnabled: isKnowledgeBaseEnabled } = useFeature(Realtime.FeatureFlag.KNOWLEDGE_BASE);
 
   const getAIAssistSettings = useGetAIAssistSettings();
   const [trackingEvents] = useTrackingEvents();
-  const [isFinalizing, setIsFinalizing] = React.useState(false);
-  const hasFixedPeriod = !!query.ob_period;
-  const { plan, period, flow, seats } = OnboardingUtils.extractQueryParams(query);
-  const isFirstSession = firstLogin;
-  const successModal = ModalsV2.useModal(ModalsV2.Success);
-  const creatingRef = React.useRef(false);
 
-  // if the user has existing workspaces they are owners of
-  const hasWorkspaces = React.useMemo(
-    () =>
-      workspaces.some(
-        (workspace) =>
-          Normal.denormalize(workspace.members).some((member) => member.creator_id === account.creator_id && isAdminUserRole(member.role)) &&
-          // to fix the issue when the payment step is shown after coupon code was used
-          // we are creating workspace (name = Personal) during the signup if the coupon code is used
-          (!isLoginFlow || !(workspace.name === 'Personal' && workspace.plan !== PlanType.STARTER))
-      ),
-    [workspaces.length, account.creator_id, isLoginFlow]
-  );
+  const flow = query.invite ? OnboardingType.join : OnboardingType.create;
 
-  const isAdminOfEnterprisePlan = React.useMemo(
-    () =>
-      workspaces.some((workspace) => {
-        if (workspace.plan !== PlanType.ENTERPRISE) return false;
+  const steps = STEPS_BY_FLOW[flow];
 
-        return Normal.denormalize(workspace.members).some((member) => member.creator_id === account.creator_id && isAdminUserRole(member.role));
-      }),
-    [workspaces, account.creator_id]
-  );
-
-  const specificFlowType = OnboardingUtils.getSpecificFlowType(flow, isLoginFlow, isFirstSession);
-  const upgradingAWorkspace = UPGRADING_WORKSPACE_SPECIFIC_FLOWS.has(specificFlowType);
-  const numberOfSteps = OnboardingUtils.getNumberOfSteps({
-    specificFlowType,
-    hasPresetSeats: !!seats,
-    hasWorkspaces,
-    isAdminOfEnterprisePlan,
-  });
-
-  const firstStep = OnboardingUtils.getFirstStep({
+  const [state, stateAPI] = useSmartReducerV2<OnboardingContextState>({
+    steps,
     flow,
-    isLoginFlow,
-    isFirstSession,
-    hasPresetSeats: !!seats,
-  });
-  const selectableWorkspaceInPayment = !!query.choose_workspace || SELECTABLE_WORKSPACE_SPECIFIC_FLOW_TYPES.includes(specificFlowType);
-
-  const [state, actions] = useSmartReducer({
-    selectableWorkspace: selectableWorkspaceInPayment,
-    specificFlowType,
-    flow,
-    stepStack: [firstStep],
-    numberOfSteps,
-    createWorkspaceMeta: {},
-    personalizeWorkspaceMeta: {},
-    paymentMeta: {
-      plan,
-      period,
-      seats,
+    stepStack: [steps[0]],
+    sendingRequests: false,
+    createWorkspaceMeta: {
+      workspaceName: '',
+      workspaceImage: '',
+    },
+    personalizeWorkspaceMeta: {
+      selfReportedAttribution: '',
+      channels: [],
+      teamSize: '',
+      useCase: '',
+      workWithDevelopers: null,
     },
     joinWorkspaceMeta: {
       role: '',
     },
-    selectChannelMeta: {
-      platform: Platform.Constants.PlatformType.ALEXA,
-      projectType: Platform.Constants.ProjectType.VOICE,
-    },
-    sendingRequests: false,
-    workspaceId: '',
-    justCreatingWorkspace: !isLoginFlow,
-    hasFixedPeriod,
-    hasWorkspaces,
-    upgradingAWorkspace,
   });
 
-  const { stepStack, createWorkspaceMeta, paymentMeta, sendingRequests } = state;
-  const { setStepStack, setSendingRequests } = actions;
+  const { stepStack, createWorkspaceMeta, sendingRequests } = state;
 
-  const cache = React.useRef({ stepStack, state, skipped: false });
+  const handleCreateWorkspace = async () => {
+    try {
+      const { workspaceName, workspaceImage } = createWorkspaceMeta;
+      const workspace = await createWorkspace({ name: workspaceName, image: workspaceImage ?? undefined });
 
-  cache.current.state = state;
+      setActiveWorkspace(workspace.id);
 
-  const stepBack = () => {
-    if (stepStack.length > 1) {
-      const [, ...newStepStack] = stepStack;
-      setStepStack([...newStepStack]);
-    }
-  };
+      const { useCase, teamSize, workWithDevelopers, selfReportedAttribution } = state.personalizeWorkspaceMeta;
 
-  const checkPayment = async () => paymentAPI.createSource();
-
-  const getNumberOfEditors = () => Math.max(paymentMeta.seats, 1);
-
-  const handlePayment = async (workspaceID: string, source: stripeJs.Source) => {
-    const { plan, period, seats } = paymentMeta;
-
-    await checkoutWorkspace({
-      plan,
-      seats,
-      period,
-      sourceID: source?.id ?? '',
-      workspaceID,
-    });
-  };
-
-  const finishJoiningWorkspace = async () => {
-    const newWorkspaceID = await acceptInvite(query.invite || '');
-
-    const { role } = state.personalizeWorkspaceMeta;
-
-    if (!newWorkspaceID) {
-      toast.error('Error joining workspace');
-    } else {
-      goToWorkspace(newWorkspaceID);
-
-      trackInvitationAccepted({
-        role,
-        email: query.email ?? account.email ?? '',
-        source: query.email ? 'email' : 'link',
-        workspaceID: newWorkspaceID,
-        organizationID: getWorkspaceByID({ id: newWorkspaceID })?.organizationID ?? '',
-      });
-      toast.success('Successfully joined workspace');
-    }
-  };
-
-  const finishCreateOnboarding = async () => {
-    if (creatingRef.current) return;
-    setSendingRequests(true);
-    creatingRef.current = true;
-
-    const hasPaymentStep = stepStack.includes(StepID.PAYMENT);
-
-    const name = createWorkspaceMeta.workspaceName;
-    const { workspaceImage } = createWorkspaceMeta;
-    let source!: stripeJs.Source;
-
-    if (hasPaymentStep) {
-      try {
-        source = await checkPayment();
-      } catch (e) {
-        setSendingRequests(false);
-        creatingRef.current = false;
-
-        toast.error('Something went wrong when checking out, please try again later');
-        goToDashboard();
-
-        return null;
-      }
-    }
-
-    let workspace: Realtime.Workspace | null = null;
-
-    const selectedWorkspaceID = paymentMeta.selectedWorkspaceId as string | null;
-
-    if (selectedWorkspaceID) {
-      workspace = getWorkspaceByID({ id: selectedWorkspaceID });
-    }
-    if (!workspace) {
-      try {
-        workspace = await createWorkspace({ name, image: workspaceImage || undefined });
-
-        setActiveWorkspace(workspace.id);
-      } catch (e) {
-        setSendingRequests(false);
-        creatingRef.current = false;
-
-        toast.error('Error creating workspace, please try again later');
-        goToDashboard();
-        return;
-      }
-    }
-
-    if (hasPaymentStep) {
-      try {
-        await handlePayment(workspace.id, source);
-      } catch (err) {
-        setSendingRequests(false);
-        creatingRef.current = false;
-
-        toast.error(getErrorMessage(err));
-        goToDashboard();
-
-        return null;
-      }
-    }
-
-    const { useCase, teamSize, workWithDevelopers, selfReportedAttribution } = state.personalizeWorkspaceMeta;
-
-    if (isLoginFlow) {
       trackingEvents.trackOnboardingIdentify({
         email: account.email,
         source: search.utm_source as Nullable<string>,
@@ -327,161 +98,135 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
         creatorID: account.creator_id,
         selfReportedAttribution,
       });
+
+      return workspace;
+    } catch (error) {
+      toast.error('Error creating workspace, please try again later');
+      throw error;
+    }
+  };
+
+  const handleCreateInitialProject = async () => {
+    const { versionID } = await createProject({
+      nlu: null,
+      project: {
+        name: null,
+        image: null,
+        listID: null,
+        members: [],
+        locales: Platform.Voiceflow.CONFIG.types[Platform.Constants.ProjectType.CHAT].project.locale.defaultLocales,
+        aiAssistSettings: await getAIAssistSettings({ disclaimer: false }),
+      },
+      modality: {
+        type: Platform.Constants.ProjectType.CHAT,
+        platform: Platform.Constants.PlatformType.VOICEFLOW,
+      },
+      tracking: { onboarding: true },
+      templateTag: `onboarding:${Platform.Constants.ProjectType.CHAT}`,
+    });
+
+    return { versionID };
+  };
+
+  const finishCreateOnboarding = async () => {
+    const workspace = await handleCreateWorkspace();
+
+    if (query.import) {
+      goToDashboardWithSearch(`/?import=${query.import}`);
+    } else {
+      const result = await handleCreateInitialProject();
+
+      const coupon = search[COUPON_QUERY_PARAM] as Nullable<string>;
+
+      if (coupon) {
+        goToDashboardWithSearch(`/?${COUPON_QUERY_PARAM}=${coupon}`);
+      } else if (isKnowledgeBaseEnabled) {
+        goToProjectCanvas({ versionID: result.versionID });
+      } else {
+        goToDashboard();
+      }
     }
 
-    if (selectedWorkspaceID) {
-      goToWorkspace(selectedWorkspaceID);
-      toast.success('Successfully updated workspace');
-      setSendingRequests(false);
-      creatingRef.current = false;
-      return;
-    }
+    toast.success('Successfully created workspace');
+
+    return workspace.id;
+  };
+
+  const finishJoiningWorkspace = async () => {
+    await acceptInvite(query.invite || '', {
+      role: state.joinWorkspaceMeta.role,
+      email: query.email ?? account.email ?? '',
+      source: query.email ? 'email' : 'link',
+    });
+
+    goToDashboard();
+  };
+
+  const joinOrCreateWorkspace = async (currentStepID: StepID) => {
+    if (state.sendingRequests) return null;
+
+    stateAPI.sendingRequests.set(true);
 
     try {
-      if (isLoginFlow) {
-        if (query.import) {
-          goToDashboardWithSearch(`/?import=${query.import}`);
-        } else {
-          const { versionID } = await createProject({
-            nlu: null,
-            project: {
-              name: null,
-              image: null,
-              listID: null,
-              members: [],
-              locales: Platform.Voiceflow.CONFIG.types[Platform.Constants.ProjectType.CHAT].project.locale.defaultLocales,
-              aiAssistSettings: await getAIAssistSettings({ disclaimer: false }),
-            },
-            modality: { type: Platform.Constants.ProjectType.CHAT, platform: Platform.Constants.PlatformType.VOICEFLOW },
-            tracking: { onboarding: true },
-            templateTag: `onboarding:${Platform.Constants.ProjectType.CHAT}`,
-          });
+      const workspaceID =
+        currentStepID === StepID.CREATE_WORKSPACE ? await finishCreateOnboarding() : await finishJoiningWorkspace();
 
-          // eslint-disable-next-line max-depth
-          if (search[COUPON_QUERY_PARAM]) {
-            goToDashboardWithSearch(`/?${COUPON_QUERY_PARAM}=${search.coupon}`);
-          }
-
-          // eslint-disable-next-line max-depth
-          if (isKnowledgeBaseEnabled && !search.coupon) {
-            goToProjectCanvas({ versionID });
-          }
-        }
-      } else {
-        goToWorkspace(workspace.id);
-
-        if (!IS_PRIVATE_CLOUD && hasWorkspaces && !isAdminOfEnterprisePlan) {
-          const message = `Your Voiceflow ${state.paymentMeta.plan} subscription has been activated.`;
-
-          successModal.openVoid({ header: 'Payment Successful', message, icon: receiptGraphic, buttonVariant: ButtonVariant.TERTIARY });
-        }
-      }
-      toast.success('Successfully created workspace');
-    } catch (error) {
-      // if it fails to create a project for the user, go to dashboard
-      datadogRum.addError(error);
-      goToDashboard();
-    }
-
-    setSendingRequests(false);
-    creatingRef.current = false;
-
-    return workspace;
-  };
-
-  const handleLastStep = async (currentStepID: StepID) => {
-    let workspaceId: string | null = null;
-
-    if (currentStepID === StepID.CREATE_WORKSPACE || currentStepID === StepID.PAYMENT || currentStepID === StepID.SELECT_CHANNEL) {
-      const workspace = await finishCreateOnboarding();
-      workspaceId = workspace?.id ?? null;
-    } else if (currentStepID === StepID.JOIN_WORKSPACE) {
-      workspaceId = currentWorkspaceID ?? null;
-
-      await finishJoiningWorkspace();
-    }
-
-    return workspaceId;
-  };
-
-  const stepForward = async (stepID: StepID | null, { skip = false }: { skip?: boolean } = {}) => {
-    const isLastStep = stepStack.length === numberOfSteps;
-
-    if (isLastStep) {
-      setIsFinalizing(true);
-    } else if (stepID === null) {
-      goToDashboard();
-    } else if (!stepStack.includes(stepID)) {
-      cache.current.skipped = skip;
-      setStepStack([stepID, ...stepStack]);
-    }
-  };
-
-  React.useEffect(() => {
-    const isLastStep = stepStack.length === numberOfSteps;
-    const lastStepHandler = async () => {
-      const currentStepID: StepID = stepStack[0];
-      let workspaceID;
-      try {
-        workspaceID = await handleLastStep(currentStepID);
-      } catch (e) {
-        // If anything catastrophic goes wrong, fallback to dashboard
-        toast.error('Sorry, something went wrong, try again in a bit.');
-        goToDashboard();
-        return;
-      }
-
-      if (isLoginFlow) {
-        store.dispatch(STEP_META[currentStepID].trackStep(cache.current.state, { skip: false }));
-      }
-
-      if (workspaceID && isLoginFlow) {
+      if (workspaceID) {
         trackingEvents.trackOnboardingComplete({
           skip: false,
           workspaceID,
           organizationID: getWorkspaceByID({ id: workspaceID })?.organizationID ?? null,
           cohort: isKnowledgeBaseEnabled ? 'A' : 'B',
         });
+        stateAPI.sendingRequests.set(false);
       }
-    };
 
-    if (isFinalizing && isLastStep) {
-      lastStepHandler();
+      return workspaceID;
+    } catch (error) {
+      stateAPI.sendingRequests.set(false);
+      datadogRum.addError(error);
+      // if it fails to create a project or workspace for the user, go to dashboard
+      goToDashboard();
+
+      return null;
     }
-  }, [isFinalizing]);
-
-  React.useEffect(() => {
-    if (cache.current.stepStack.length < stepStack.length && isLoginFlow) {
-      const prevStepID: StepID = cache.current.stepStack[0];
-
-      store.dispatch(STEP_META[prevStepID].trackStep(cache.current.state, { skip: cache.current.skipped }));
-    }
-
-    cache.current.stepStack = stepStack;
-  }, [stepStack]);
-
-  const api: { state: OnboardingContextState; actions: OnboardingContextActions } = {
-    state: {
-      ...state,
-      currentStepID: stepStack[0],
-    },
-    actions: {
-      ...actions,
-      stepForward,
-      stepBack,
-      finishJoiningWorkspace,
-      finishCreateOnboarding,
-      onCancel: goToDashboard,
-      getNumberOfEditors,
-    },
   };
 
-  const alreadyHasFreeWorkspace = workspaces.length > 0;
+  const stepBack = () => {
+    if (stepStack.length > 1) {
+      const [, ...newStepStack] = stepStack;
+      stateAPI.stepStack.set(newStepStack);
+    }
+  };
 
-  const redirectToDashboard = isLoginFlow && !sendingRequests && alreadyHasFreeWorkspace;
-  return redirectToDashboard ? <Redirect to={Path.DASHBOARD} /> : <OnboardingContext.Provider value={api}>{children}</OnboardingContext.Provider>;
+  const stepForward = async ({ skip }: { skip: boolean } = { skip: false }) => {
+    const [currentStepID] = stepStack;
+    store.dispatch(STEP_META[currentStepID].trackStep(state, { skip }));
+
+    const nextStepID = state.steps[stepStack.length];
+
+    // If we're on the last step, finish the onboarding
+    if (!nextStepID) {
+      await joinOrCreateWorkspace(currentStepID);
+    } else if (!stepStack.includes(nextStepID)) {
+      stateAPI.stepStack.set([nextStepID, ...stepStack]);
+    }
+  };
+
+  const api: OnboardingContextAPI = {
+    state,
+    stateAPI,
+    getCurrentStepID: () => stepStack[0],
+    stepForward,
+    stepBack,
+  };
+
+  const alreadyHasWorkspace = workspaces.length > 0;
+
+  const redirectToDashboard = !sendingRequests && alreadyHasWorkspace;
+  return redirectToDashboard ? (
+    <Redirect to={Path.DASHBOARD} />
+  ) : (
+    <OnboardingContext.Provider value={api}>{children}</OnboardingContext.Provider>
+  );
 };
-
-export const OnboardingProvider = withProvider(Payment.legacy.PaymentProvider)(UnconnectedOnboardingProvider) as React.FC<
-  React.PropsWithChildren<OnboardingProviderProps>
->;

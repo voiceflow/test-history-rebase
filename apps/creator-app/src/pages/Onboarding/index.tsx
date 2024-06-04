@@ -1,9 +1,7 @@
-import { UserRole } from '@voiceflow/dtos';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-import * as Account from '@/ducks/account';
-import { useHideVoiceflowAssistant, useSelector } from '@/hooks';
+import { useHideVoiceflowAssistant } from '@/hooks';
 import * as Query from '@/utils/query';
 
 import { CurrentStep, Header, InnerContainer, OuterContainer } from './components';
@@ -11,22 +9,19 @@ import { OnboardingProvider } from './context';
 
 export interface OnboardingProps {
   location?: RouteComponentProps['location'];
-  firstTime?: boolean;
 }
 
-export const Onboarding: React.FC<OnboardingProps> = ({ location, firstTime = true }) => {
+export const Onboarding: React.FC<OnboardingProps> = ({ location }) => {
   useHideVoiceflowAssistant();
 
-  const user = useSelector(Account.userSelector);
-
-  const query = Query.parse(location?.search ?? '');
+  const query = React.useMemo(() => Query.parse(location?.search ?? ''), [location?.search]);
 
   return (
     <OuterContainer>
-      <OnboardingProvider isLoginFlow={firstTime} query={query}>
+      <OnboardingProvider query={query}>
         <InnerContainer>
           <Header />
-          <CurrentStep data={{ collaborators: [{ email: user.email!, permission: UserRole.ADMIN }] }} />
+          <CurrentStep />
         </InnerContainer>
       </OnboardingProvider>
     </OuterContainer>

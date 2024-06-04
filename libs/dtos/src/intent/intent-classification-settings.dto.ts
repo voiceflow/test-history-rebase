@@ -1,19 +1,16 @@
 import { z } from 'zod';
 
 import { AIParamsDTO } from '@/ai/ai-params.dto';
+import { AIPromptWrapperDTO } from '@/ai/ai-prompt-wrapper.dto';
 import { NLUParamsDTO } from '@/nlu/nlu-params.dto';
 
 import { IntentClassificationType } from './intent-classification-type.enum';
-
-export const IntentClassificationLLMPromptWrapperDTO = z.object({ content: z.string() });
-
-export type IntentClassificationLLMPromptWrapper = z.infer<typeof IntentClassificationLLMPromptWrapperDTO>;
 
 export const IntentClassificationLLMSettingsDTO = z
   .object({
     type: z.literal(IntentClassificationType.LLM),
     params: AIParamsDTO.pick({ model: true, temperature: true }).required(),
-    promptWrapper: z.nullable(IntentClassificationLLMPromptWrapperDTO),
+    promptWrapper: z.nullable(AIPromptWrapperDTO),
   })
   .strict();
 

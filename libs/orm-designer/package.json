@@ -58,6 +58,8 @@
     "db:init": "yarn db:migrate:new && yarn build && yarn db:migrate:up",
     "db:init:e2e": "yarn db:migrate:new && yarn build && yarn db:migrate:up:e2e",
     "db:init:local": "yarn db:migrate:new && yarn build && yarn db:migrate:up:local",
+    "db:migrate:down": "yarn db:postgres:run migration:down",
+    "db:migrate:down:e2e": "MIKRO_ORM_ENV=.env.e2e yarn db:migrate:down",
     "db:migrate:new": "MIKRO_ORM_ENV=.env.local yarn db:postgres:run migration:create",
     "db:migrate:up": "yarn db:postgres:run migration:up",
     "db:migrate:up:e2e": "MIKRO_ORM_ENV=.env.e2e yarn db:migrate:up",

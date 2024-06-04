@@ -1,6 +1,12 @@
 import { Global, Module } from '@nestjs/common';
 import { IntegrationOauthTokenORM, KnowledgeBaseORM, ProjectORM, RefreshJobsOrm } from '@voiceflow/orm-designer';
 
+import { CacheService } from '@/cache/cache.service';
+import { KnowledgeBaseSettingsModule } from '@/knowledge-base/settings/settings.module';
+import { KnowledgeBaseSettingsService } from '@/knowledge-base/settings/settings.service';
+import { ProjectModule } from '@/project/project.module';
+import { VersionModule } from '@/version/version.module';
+
 import { KnowledgeBaseDocumentService } from '../document/document.service';
 import { RefreshJobService } from '../document/refresh-job.service';
 import { KnowledgeBaseTagService } from '../tag/tag.service';
@@ -10,6 +16,7 @@ import { ZendeskOauthService } from './oauth/zendesk/zendesk-oauth.service';
 
 @Global()
 @Module({
+  imports: [KnowledgeBaseSettingsModule, VersionModule, ProjectModule],
   exports: [IntegrationOauthTokenService],
   providers: [
     KnowledgeBaseORM,
@@ -22,6 +29,8 @@ import { ZendeskOauthService } from './oauth/zendesk/zendesk-oauth.service';
     ProjectORM,
     KnowledgeBaseDocumentService,
     KnowledgeBaseTagService,
+    KnowledgeBaseSettingsService,
+    CacheService,
   ],
   controllers: [KnowledgeBaseIntegrationsPublicHTTPController],
 })

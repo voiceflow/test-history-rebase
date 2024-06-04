@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { BaseModels } from '@voiceflow/base-types';
+import { KnowledgeBaseSettings } from '@voiceflow/dtos';
 import { BadRequestException } from '@voiceflow/exception';
 import * as fetch from '@voiceflow/fetch';
 import { VersionKnowledgeBaseDocument } from '@voiceflow/orm-designer';
@@ -66,7 +67,7 @@ export class KlParserClient {
     projectID: string,
     document: Omit<VersionKnowledgeBaseDocument, 'documentID' | 'updatedAt'> & { documentID: string; updatedAt: Date },
     workspaceID: string,
-    settings: Pick<BaseModels.Project.KnowledgeBaseSettings, 'chunkStrategy'>
+    settings: Pick<KnowledgeBaseSettings, 'chunkStrategy' | 'embeddingModel'>
   ) {
     return this.client
       .post('parse', {

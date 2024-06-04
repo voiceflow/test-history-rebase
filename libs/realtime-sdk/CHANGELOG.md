@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.407.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.406.0...@voiceflow/realtime-sdk@1.407.0) (2024-06-04)
+
+### Features
+
+* add embedding model under ff (COR-2160) (COR-2161) (COR-2164) ([#8210](https://github.com/voiceflow/creator-app/issues/8210)) ([c925b21](https://github.com/voiceflow/creator-app/commit/c925b212ba795225c49534b793d412abd069f618))
+
 # [1.406.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.405.1...@voiceflow/realtime-sdk@1.406.0) (2024-06-04)
 
 ### Features

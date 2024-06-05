@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.67.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.66.0...@voiceflow/orm-designer@2.67.0) (2024-06-05)
+
+### Features
+
+* creates response message table (COR-2305) ([#8221](https://github.com/voiceflow/creator-app/issues/8221)) ([e773c4a](https://github.com/voiceflow/creator-app/commit/e773c4a24b3d6446a4879ba2448f602392a8f8ca))
+
 # [2.66.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.65.0...@voiceflow/orm-designer@2.66.0) (2024-06-04)
 
 ### Features

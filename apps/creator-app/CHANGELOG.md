@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1542.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1542.1...@voiceflow/creator-app@1.1542.2) (2024-06-05)
+
+### Bug Fixes
+
+* update the port to 3000 ([#8231](https://github.com/voiceflow/creator-app/issues/8231)) ([a0695d3](https://github.com/voiceflow/creator-app/commit/a0695d36cb257e70669f17dfe8ce76f7601bc7cc))
+
 ## [1.1542.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1542.0...@voiceflow/creator-app@1.1542.1) (2024-06-04)
 
 **Note:** Version bump only for package @voiceflow/creator-app

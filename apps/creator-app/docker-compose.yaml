@@ -7,7 +7,7 @@ services:
       - ./config/proxy.conf:/etc/nginx/includes/proxy.conf
       - ./certs:/certs
     ports:
-      - '3002:80'
+      - '3000:80'
     environment:
       - TARGET=host.docker.internal:3000
     command: /bin/bash -c "envsubst < /etc/nginx/conf.d/proxy.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
@@ -15,7 +15,7 @@ services:
   # e2e:
   #   image: nginx:stable
   #   ports:
-  #     - "3002:3002"
+  #     - "3000:3000"
   #   volumes:
   #   - ./build/.:/var/www
   #   - ./certs/.:/etc/nginx/ssl

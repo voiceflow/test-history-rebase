@@ -11411,7 +11411,7 @@ __metadata:
     "@voiceflow/exception": 1.5.3
     "@voiceflow/fetch": 1.5.2
     "@voiceflow/logger": 2.0.0
-    "@voiceflow/nestjs-common": 2.42.0
+    "@voiceflow/nestjs-common": 2.42.4
     "@voiceflow/nestjs-env": 1.6.2
     "@voiceflow/nestjs-openapi-extractor": 1.7.13
     "@voiceflow/sdk-auth": 2.10.0
@@ -11465,9 +11465,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voiceflow/nestjs-common@npm:2.42.0":
-  version: 2.42.0
-  resolution: "@voiceflow/nestjs-common@npm:2.42.0"
+"@voiceflow/nestjs-common@npm:2.42.4":
+  version: 2.42.4
+  resolution: "@voiceflow/nestjs-common@npm:2.42.4"
   dependencies:
     "@golevelup/nestjs-discovery": 4.0.0
     bcrypt: 5.1.0
@@ -11488,7 +11488,7 @@ __metadata:
     nestjs-pino: ^3
     nestjs-zod: ^2
     rxjs: ^7
-  checksum: 29615e139d63762b48a22c1e7a8fd355640011356f6d6ccc2fc247a11e1cf0f3efb42618d58cd3ae6785dd6ad8469ba8bfaa6743e828d6639099ebb1ed639f09
+  checksum: 8e8d7f07583703353e4a7660b590a8ca5e437f13745d9999f7736cae2c18a36880858af3f762cdae43990dbd94561954eb6ef29fe3d196bdd89172b40e21aa74
   languageName: node
   linkType: hard
 
@@ -11856,7 +11856,7 @@ __metadata:
     "@voiceflow/fetch": 1.5.2
     "@voiceflow/internal": 3.2.3
     "@voiceflow/logger": 2.0.0
-    "@voiceflow/nestjs-common": 2.42.0
+    "@voiceflow/nestjs-common": 2.42.4
     "@voiceflow/nestjs-env": 1.6.2
     "@voiceflow/nestjs-logux": 1.5.3
     "@voiceflow/nestjs-metrics": 2.9.6

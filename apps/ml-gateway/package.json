@@ -51,7 +51,7 @@
     "@voiceflow/exception": "1.5.3",
     "@voiceflow/fetch": "1.5.2",
     "@voiceflow/logger": "2.0.0",
-    "@voiceflow/nestjs-common": "2.42.0",
+    "@voiceflow/nestjs-common": "2.42.4",
     "@voiceflow/nestjs-env": "1.6.2",
     "@voiceflow/sdk-auth": "2.10.0",
     "@voiceflow/sdk-billing": "1.26.29",

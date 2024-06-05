@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.99.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.99.2...@voiceflow/ml-gateway@1.99.3) (2024-06-05)
+
+### Bug Fixes
+
+* update the regex ([011cddb](https://github.com/voiceflow/creator-app/commit/011cddb7e8d19f127045e845a0cc0ae8b211e62e))
+
 ## [1.99.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.99.1...@voiceflow/ml-gateway@1.99.2) (2024-06-05)
 
 ### Bug Fixes

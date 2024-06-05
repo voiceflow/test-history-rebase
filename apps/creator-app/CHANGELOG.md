@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1542.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1542.6...@voiceflow/creator-app@1.1542.7) (2024-06-05)
+
+### Bug Fixes
+
+* remove speed slider component [bugfix] (COR-000) ([#8225](https://github.com/voiceflow/creator-app/issues/8225)) ([a19bc89](https://github.com/voiceflow/creator-app/commit/a19bc89764ed9e379031522890af7c2e39a2b0a3))
+
 ## [1.1542.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1542.5...@voiceflow/creator-app@1.1542.6) (2024-06-05)
 
 **Note:** Version bump only for package @voiceflow/creator-app

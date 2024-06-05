@@ -10,7 +10,7 @@ For development this webapp can be meshed with your active `vfcli` environment.
 yarn local
 ```
 
-When running, the webapp will be available at <https://creator-local.development.voiceflow.com:3002>.
+When running, the webapp will be available at <https://creator-local.development.voiceflow.com:3000>.
 
 ## Configuration
 

@@ -28,7 +28,7 @@ export default defineConfig({
       : {}),
   }),
   serve: {
-    port: 3002,
+    port: 3000,
     https: {
       key: 'certs/localhost.key',
       cert: 'certs/localhost.crt',

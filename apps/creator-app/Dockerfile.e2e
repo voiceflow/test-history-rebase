@@ -1,6 +1,6 @@
 FROM cypress/base:16
 
-EXPOSE 3002
+EXPOSE 3000
 
 RUN echo 'VF_APP_API_HOST=creator-api-e2e' >> .env.local
 RUN echo 'VF_APP_FF_DATA_REFACTOR=true' >> .env.local

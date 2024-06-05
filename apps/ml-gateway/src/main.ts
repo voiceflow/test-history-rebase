@@ -23,7 +23,7 @@ async function bootstrap() {
   const __dirname = isE2E ? path.dirname(fileURLToPath(import.meta.url)) : '';
 
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
-    cors: isE2E ? true : { origin: [/\.voiceflow\.com$/, 'https://creator-local.development.voiceflow.com:3002'] },
+    cors: isE2E ? true : { origin: [/\.voiceflow\.com$/, /https:\/\/creator-local\.[^.]+\.development\.voiceflow\.com:\d{4}$/] },
     bufferLogs: true,
     httpsOptions: isE2E
       ? {

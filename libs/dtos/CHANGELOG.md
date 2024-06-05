@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.84.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.83.0...@voiceflow/dtos@1.84.0) (2024-06-05)
+
+### Features
+
+* creates response message dtos (COR-2307) ([#8224](https://github.com/voiceflow/creator-app/issues/8224)) ([84117b1](https://github.com/voiceflow/creator-app/commit/84117b1e7cd8ced2f41c472ed07669e359fdc576))
+
 # [1.83.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.82.0...@voiceflow/dtos@1.83.0) (2024-06-04)
 
 ### Features

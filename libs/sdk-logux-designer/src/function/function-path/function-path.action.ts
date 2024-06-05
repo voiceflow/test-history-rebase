@@ -21,6 +21,7 @@ export interface CreateData {
   functionID: string;
 }
 
+// TODO: Add 'order' param here
 export interface PatchData {
   name?: string;
   label?: string | null;

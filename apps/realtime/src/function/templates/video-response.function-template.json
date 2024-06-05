@@ -6,6 +6,7 @@
       "code": "export default async function main(args) {\n  // Send a custom video response on the Voiceflow webchat by using the video extension\n  // available at https://github.com/voiceflow-gallagan/vf-extensions-demo\n\t\n  // Sample video URL from YouTube - replace with a relevant video for your use case\n  const video = \"https://www.youtube.com/watch?v=dQw4w9WgXcQ\";\n\n  // Constructing the custom video trace\n  return {\n    next: { path: 'success' }, // Indicating the successful execution of the function\n    trace: [\n      {\n        type: \"ext_video\", // Custom trace type for video content\n        payload: {\n          videoUrl: video, // The URL of the video to be played\n          autoplay: true, // Optional: Set video to autoplay\n          controls: true // Optional: Enable video controls\n        }\n      }\n    ] \n  };\n}",
       "image": null,
       "description": "Demonstrates how to use a function to show a video to a user. This needs to be paired with the video extension to work as intended.",
+      "pathOrder": [],
       "createdAt": "2024-03-11T14:23:40.000Z",
       "updatedAt": "2024-03-11T14:24:05.000Z",
       "folderID": null,

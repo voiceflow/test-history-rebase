@@ -15,6 +15,7 @@ export const function_: EntityDTO<FunctionEntity> = {
   updatedBy: { id: 2 } as any,
   folder: null,
   environmentID: 'environment-1',
+  pathOrder: [],
 };
 
 export const functionList: EntityDTO<FunctionEntity>[] = [

@@ -16,12 +16,14 @@ import type { DesignerAction } from '@/types';
 
 const functionAction = createCRUD('function');
 
+// TODO: Do i need pathOrder here too ?
 export interface CreateData {
   name: string;
   code: string;
   image: string | null;
   folderID: string | null;
   description: string | null;
+  pathOrder: string[];
 }
 
 export interface PatchData {
@@ -30,6 +32,7 @@ export interface PatchData {
   image?: string | null;
   folderID?: string | null;
   description?: string | null;
+  pathOrder?: string[];
 }
 
 /**

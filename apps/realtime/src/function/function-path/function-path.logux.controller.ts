@@ -29,6 +29,7 @@ export class FunctionPathLoguxController {
     return this.service.createManyAndBroadcast([data], { auth, context }).then(([result]) => ({ data: this.service.toJSON(result), context }));
   }
 
+  // TODO: This method will be used for patching order
   @Action(Actions.FunctionPath.PatchOne)
   @Authorize.Permissions<Actions.FunctionPath.PatchOne>([Permission.PROJECT_UPDATE], ({ context }) => ({
     id: context.environmentID,

@@ -2220,6 +2220,7 @@
             "gpt-3.5-turbo",
             "gpt-4",
             "gpt-4-turbo",
+            "gpt-4o",
             "claude-v1",
             "claude-v2",
             "claude-3-haiku",
@@ -2425,6 +2426,7 @@
             "gpt-3.5-turbo",
             "gpt-4",
             "gpt-4-turbo",
+            "gpt-4o",
             "claude-v1",
             "claude-v2",
             "claude-3-haiku",
@@ -3279,6 +3281,16 @@
           "nullable": true,
           "default": "null",
           "mappedType": "text"
+        },
+        "path_order": {
+          "name": "path_order",
+          "type": "text[]",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "'{}'",
+          "mappedType": "array"
         }
       },
       "name": "function",
@@ -5874,7 +5886,6 @@
           "primary": false,
           "nullable": false,
           "enumItems": [
-            "json",
             "prompt",
             "text"
           ],
@@ -6084,21 +6095,6 @@
           ],
           "referencedTableName": "designer.response_discriminator",
           "deleteRule": "cascade",
-          "updateRule": "cascade"
-        },
-        "response_variant_prompt_id_environment_id_foreign": {
-          "constraintName": "response_variant_prompt_id_environment_id_foreign",
-          "columnNames": [
-            "prompt_id",
-            "environment_id"
-          ],
-          "localTableName": "designer.response_variant",
-          "referencedColumnNames": [
-            "id",
-            "environment_id"
-          ],
-          "referencedTableName": "designer.prompt",
-          "deleteRule": "set default",
           "updateRule": "cascade"
         }
       }

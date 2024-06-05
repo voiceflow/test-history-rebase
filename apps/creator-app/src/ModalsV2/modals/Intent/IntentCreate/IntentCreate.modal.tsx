@@ -34,8 +34,12 @@ export const IntentCreateModal = modalsManager.create<IIntentCreateModal, Intent
         examples: intentForm.utterances,
         intentName: intentForm.nameState.value,
         onGenerated: (items) =>
-          intentForm.utteranceState.setValue((prev) => [...items.map(({ text }) => ({ id: Utils.id.cuid.slug(), text })), ...prev]),
-        onIntentNameSuggested: (suggestedName) => !intentForm.nameState.value && intentForm.nameState.setValue(suggestedName),
+          intentForm.utteranceState.setValue((prev) => [
+            ...items.map(({ text }) => ({ id: Utils.id.cuid.slug(), text })),
+            ...prev,
+          ]),
+        onIntentNameSuggested: (suggestedName) =>
+          !intentForm.nameState.value && intentForm.nameState.setValue(suggestedName),
         successGeneratedMessage: 'Utterances generated',
       });
 
@@ -142,7 +146,9 @@ export const IntentCreateModal = modalsManager.create<IIntentCreateModal, Intent
                         utterances={intentForm.utterances}
                         attachments={intentForm.attachmentsPerEntityPerReprompt[item.entityID]}
                         onRepromptAdd={() => intentForm.onRepromptAdd(item.entityID)}
-                        onEntityReplace={({ oldEntityID, entityID }) => intentForm.onEntityReplace(oldEntityID, entityID)}
+                        onEntityReplace={({ oldEntityID, entityID }) =>
+                          intentForm.onEntityReplace(oldEntityID, entityID)
+                        }
                         onRepromptChange={(repromptID, data) => intentForm.onRepromptChange(repromptID, data)}
                         onRepromptDelete={(repromptID) => intentForm.onRepromptRemove(item.entityID, repromptID)}
                         automaticReprompt={intentForm.automaticReprompt}
@@ -167,7 +173,13 @@ export const IntentCreateModal = modalsManager.create<IIntentCreateModal, Intent
           </Scroll>
 
           <Modal.Footer>
-            <Modal.Footer.Button variant="secondary" onClick={api.onClose} disabled={closePrevented} label="Cancel" testID={tid(TEST_ID, 'cancel')} />
+            <Modal.Footer.Button
+              variant="secondary"
+              onClick={api.onClose}
+              disabled={closePrevented}
+              label="Cancel"
+              testID={tid(TEST_ID, 'cancel')}
+            />
 
             <Modal.Footer.Button
               label="Create intent"

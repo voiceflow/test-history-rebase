@@ -12,7 +12,8 @@ const root = createSubSelector(FunctionSelect.root, STATE_KEY);
 export const { hasOneByID, hasAllByIDs, oneByID, getOneByID, allByIDs, getAllByIDs, all, map, count, isEmpty } = createDesignerCRUDSelectors(root);
 
 export const allByFunctionID = createSelector(all, functionIDParamSelector, (functionVariables, functionID) => {
-  return !functionID ? [] : sortCreatableCMSResources(functionVariables.filter((functionVariable) => functionVariable.functionID === functionID));
+  return !functionID ? [] :
+    sortCreatableCMSResources(functionVariables.filter((functionVariable) => functionVariable.functionID === functionID));
 });
 
 export const countByFunctionID = createSelector(allByFunctionID, (functionVariables) => functionVariables.length);

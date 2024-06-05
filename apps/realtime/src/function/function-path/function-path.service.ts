@@ -1,6 +1,6 @@
 import type { EntityManager } from '@mikro-orm/core';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
-import { Inject, Injectable } from '@nestjs/common';
+import { forwardRef,Inject, Injectable } from '@nestjs/common';
 import { LoguxService } from '@voiceflow/nestjs-logux';
 import type { FunctionPathObject } from '@voiceflow/orm-designer';
 import { AssistantORM, DatabaseTarget, FunctionPathORM } from '@voiceflow/orm-designer';
@@ -10,6 +10,8 @@ import { CMSObjectService } from '@/common';
 import type { CMSCreateForUserData } from '@/common/types';
 import { cmsBroadcastContext, injectAssistantAndEnvironmentIDs, toPostgresEntityIDs } from '@/common/utils';
 import { CMSBroadcastMeta, CMSContext } from '@/types';
+
+import { FunctionService } from '../function.service';
 
 @Injectable()
 export class FunctionPathService extends CMSObjectService<FunctionPathORM> {
@@ -26,6 +28,8 @@ export class FunctionPathService extends CMSObjectService<FunctionPathORM> {
     private readonly postgresEM: EntityManager,
     @Inject(FunctionPathORM)
     protected readonly orm: FunctionPathORM,
+    @Inject(forwardRef(() => FunctionService))
+    protected readonly functionService: FunctionService,
     @Inject(LoguxService)
     protected readonly logux: LoguxService,
     @Inject(AssistantORM)
@@ -48,8 +52,10 @@ export class FunctionPathService extends CMSObjectService<FunctionPathORM> {
 
   /* Create */
 
-  async createManyAndSync(data: CMSCreateForUserData<FunctionPathORM>[], { userID, context }: { userID: number; context: CMSContext }) {
-    const functionPaths = await this.createManyForUser(userID, data.map(injectAssistantAndEnvironmentIDs(context)));
+  async createManyAndSync(data: CMSCreateForUserData<FunctionPathORM>[], { userID, meta }: { userID: number; meta: CMSBroadcastMeta }) {
+    // TODO: DB Transaction ?
+    const functionPaths = await this.createManyForUser(userID, data.map(injectAssistantAndEnvironmentIDs(meta.context)));
+    await this.functionService.addFunctionPathsAndBroadcast(userID, meta, data[0].functionID, functionPaths.map((f) => f.id));
 
     return {
       add: { functionPaths },
@@ -66,8 +72,9 @@ export class FunctionPathService extends CMSObjectService<FunctionPathORM> {
     );
   }
 
+  // TODO: --> Called when adding a function path
   async createManyAndBroadcast(data: CMSCreateForUserData<FunctionPathORM>[], meta: CMSBroadcastMeta) {
-    const result = await this.createManyAndSync(data, { userID: meta.auth.userID, context: meta.context });
+    const result = await this.createManyAndSync(data, { userID: meta.auth.userID, meta });
 
     await this.broadcastAddMany(result, meta);
 

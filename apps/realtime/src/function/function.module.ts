@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef,Module } from '@nestjs/common';
 import { FunctionORM, VersionORM } from '@voiceflow/orm-designer';
 
 import { FunctionLoguxController } from './function.logux.controller';
@@ -8,7 +8,7 @@ import { FunctionPublicHTTPController } from './function-public.http.controller'
 import { FunctionVariableModule } from './function-variable/function-variable.module';
 
 @Module({
-  imports: [FunctionPathModule, FunctionVariableModule],
+  imports: [forwardRef(() => FunctionPathModule), FunctionVariableModule],
   exports: [FunctionService],
   providers: [FunctionORM, VersionORM, FunctionService],
   controllers: [FunctionPublicHTTPController, FunctionLoguxController],

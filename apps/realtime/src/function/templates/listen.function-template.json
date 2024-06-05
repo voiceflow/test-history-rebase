@@ -8,6 +8,7 @@
       "code": "export default async function main(args) {\n  return {\n    // Choice trace\n    trace: [\n      {\n        type: 'choice',\n        payload: {\n          buttons: [\n            {\n              name: \"Button A\",\n              request: { type: 'event_A' }\n            },\n            {\n              name: \"Button B\",\n              request: { type: 'event_B', payload: { data: 100 } }\n            },\n            {\n              name: \"Button C\",\n              request: { type: 'event_B', payload: { data: 200 } }\n            }\n          ]\n        }\n      }\n    ],\n    \n    // Next many command\n    next: {\n      listen: true,\n      to: [\n        {\n          on: { 'event.type': 'event_A' },\n          dest: 'path-A'\n        },\n        {\n          on: { \n\t          'event.type': 'event_B',\n\t          'event.payload.data': 100\n\t        },\n          dest: 'path-B'\n        },\n        {\n          on: { \n\t          'event.type': 'event_B',\n\t          'event.payload.data': 200\n\t        },\n          dest: 'path-C'\n        }\n      ],\n      defaultTo: 'path-D'\n    }\n  }; \n}",
       "image": null,
       "description": "A starter template to get you started with functions.",
+      "pathOrder": [],
       "createdAt": "2024-04-12T15:38:30.000Z",
       "updatedAt": "2024-04-16T16:15:14.000Z",
       "updatedByID": 16

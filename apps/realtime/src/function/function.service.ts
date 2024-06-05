@@ -2,9 +2,10 @@
 
 import { EntityManager } from '@mikro-orm/core';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
-import { Inject, Injectable } from '@nestjs/common';
+import { forwardRef,Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
 import { Function as FunctionType, FunctionPath, FunctionVariable } from '@voiceflow/dtos';
+import { NotFoundException } from '@voiceflow/exception';
 import { LoguxService } from '@voiceflow/nestjs-logux';
 import type {
   FunctionJSON,
@@ -47,7 +48,7 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
     private readonly postgresEM: EntityManager,
     @Inject(LoguxService)
     private readonly logux: LoguxService,
-    @Inject(FunctionPathService)
+    @Inject(forwardRef(() => FunctionPathService))
     private readonly functionPath: FunctionPathService,
     @Inject(FunctionVariableService)
     private readonly functionVariable: FunctionVariableService
@@ -330,6 +331,9 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
       })),
     };
 
+    // We know there's only one function here
+    importData.functions[0].pathOrder = importData.functionPaths.map((p) => p.id);
+
     const { functions: createdFunctions } = await this.importJSONAndBroadcast(importData, { userID, clientID, environmentID });
 
     if (createdFunctions.length === 0) {
@@ -468,6 +472,26 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
     await this.broadcastAddMany(result, meta);
 
     return result.add.functions;
+  }
+
+  async addFunctionPathsAndBroadcast(userId: number, meta: CMSBroadcastMeta, functionId: string, pathIds: string[]) {
+    const functionObj = await this.findOne({ id: functionId, environmentID: meta.context.environmentID });
+
+    if (!functionObj) {
+      throw new NotFoundException(`Failed to find function by id: ${functionId}`);
+    }
+
+    const pathOrder = Utils.array.unique([...functionObj.pathOrder, ...pathIds]);
+    await this.orm.patchOneForUser(userId, {id: functionObj.id, environmentID: meta.context.environmentID}, {pathOrder})
+
+    await this.logux.processAs(
+      Actions.Function.PatchOne({
+        id: functionId,
+        patch: {pathOrder},
+        context: cmsBroadcastContext(meta.context)
+      }),
+      meta.auth
+    );
   }
 
   /* Delete */

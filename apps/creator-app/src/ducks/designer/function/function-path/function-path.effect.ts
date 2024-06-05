@@ -5,6 +5,8 @@ import { waitAsync } from '@/ducks/utils';
 import { getActiveAssistantContext } from '@/ducks/versionV2/utils';
 import type { Thunk } from '@/store/types';
 
+// TODO: Update pathOrder in all these methods
+
 export const createOne =
   (functionID: string, data: Pick<Actions.FunctionPath.CreateData, 'name' | 'label'>): Thunk<FunctionPath> =>
   async (dispatch, getState) => {

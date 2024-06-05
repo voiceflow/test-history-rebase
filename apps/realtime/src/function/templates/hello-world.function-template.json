@@ -6,6 +6,7 @@
       "code": "export default async function main(args) {\n    // Extracting input variables\n    const { key1, key2, key3 } = args.inputVars;\n    \n    // Preparing a debug message to mimic logging behavior\n    const debugMessage = `value1 = ${key1}, value2 = ${key2}, value3 = ${key3}`;\n    \n    // Echo back the first key value along with a debug message\n    return {\n        next: { path: 'success' }, // Directing the flow to continue on the 'success' path\n        trace: [\n            {\n                type: \"debug\",\n                payload: { message: debugMessage }\n            },\n            {\n                type: \"text\",\n                payload: { message: `Echo: ${key1}` } // Responding with the value of key1\n            }\n        ]\n    };\n    \n    // Note: In a production environment, consider removing or limiting debug traces\n    // to avoid exposing sensitive information or cluttering the user experience.\n}",
       "image": null,
       "description": "Demonstrates how to use listen functionality to leave from a certain path based on user input",
+      "pathOrder": [],
       "createdAt": "2024-03-06T19:03:59.000Z",
       "updatedAt": "2024-03-06T19:03:59.000Z",
       "folderID": null,

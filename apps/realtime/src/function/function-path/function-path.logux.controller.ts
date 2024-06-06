@@ -29,7 +29,6 @@ export class FunctionPathLoguxController {
     return this.service.createManyAndBroadcast([data], { auth, context }).then(([result]) => ({ data: this.service.toJSON(result), context }));
   }
 
-  // TODO: This method will be used for patching order
   @Action(Actions.FunctionPath.PatchOne)
   @Authorize.Permissions<Actions.FunctionPath.PatchOne>([Permission.PROJECT_UPDATE], ({ context }) => ({
     id: context.environmentID,
@@ -67,7 +66,7 @@ export class FunctionPathLoguxController {
   @BroadcastOnly()
   @UseRequestContext()
   async deleteOne(@Payload() { id, context }: Actions.FunctionPath.DeleteOne, @AuthMeta() auth: AuthMetaPayload) {
-    const result = await this.service.deleteManyAndSync([id], context);
+    const result = await this.service.deleteManyAndSync([id], auth.userID, context);
 
     // overriding functions cause it's broadcasted by decorator
     await this.service.broadcastDeleteMany({ ...result, delete: { ...result.delete, functionPaths: [] } }, { auth, context });
@@ -82,7 +81,7 @@ export class FunctionPathLoguxController {
   @BroadcastOnly()
   @UseRequestContext()
   async deleteMany(@Payload() { ids, context }: Actions.FunctionPath.DeleteMany, @AuthMeta() auth: AuthMetaPayload) {
-    const result = await this.service.deleteManyAndSync(ids, context);
+    const result = await this.service.deleteManyAndSync(ids, auth.userID, context);
 
     // overriding functions cause it's broadcasted by decorator
     await this.service.broadcastDeleteMany({ ...result, delete: { ...result.delete, functionPaths: [] } }, { auth, context });
@@ -91,7 +90,6 @@ export class FunctionPathLoguxController {
   @Action(Actions.FunctionPath.AddOne)
   @Broadcast<Actions.FunctionPath.AddOne>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async addOne(@Payload() _: Actions.FunctionPath.AddOne) {
     // broadcast only
   }
@@ -99,7 +97,6 @@ export class FunctionPathLoguxController {
   @Action(Actions.FunctionPath.AddMany)
   @Broadcast<Actions.FunctionPath.AddMany>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async addMany(@Payload() _: Actions.FunctionPath.AddMany) {
     // broadcast only
   }

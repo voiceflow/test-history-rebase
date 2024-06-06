@@ -133,7 +133,6 @@ export class FunctionPathService extends CMSObjectService<FunctionPathORM> {
     ]);
   }
 
-  // TODO: --> Called when adding a function path
   async createManyAndBroadcast(data: CMSCreateForUserData<FunctionPathORM>[], meta: CMSBroadcastMeta) {
     const result = await this.createManyAndSync(data, { userID: meta.auth.userID, meta });
 
@@ -148,31 +147,48 @@ export class FunctionPathService extends CMSObjectService<FunctionPathORM> {
     return this.orm.deleteManyByEnvironmentAndIDs(environmentID, ids);
   }
 
-  async broadcastDeleteMany({ delete: del }: { delete: { functionPaths: FunctionPathObject[] } }, meta: CMSBroadcastMeta) {
-    await this.logux.processAs(
-      Actions.FunctionPath.DeleteMany({
-        ids: toPostgresEntityIDs(del.functionPaths),
-        context: cmsBroadcastContext(meta.context),
-      }),
-      meta.auth
-    );
+  async broadcastDeleteMany({ delete: del, sync }: {
+    delete: { functionPaths: FunctionPathObject[] },
+    sync: { functions: FunctionObject[] }
+  }, meta: CMSBroadcastMeta) {
+    await Promise.all([
+      await this.logux.processAs(
+        Actions.FunctionPath.DeleteMany({
+          ids: toPostgresEntityIDs(del.functionPaths),
+          context: cmsBroadcastContext(meta.context),
+        }),
+        meta.auth
+      ),
+
+      ...(sync?.functions.map((func) =>
+        this.logux.processAs(
+          Actions.Function.PatchOne({
+            id: func.id,
+            patch: {pathOrder: func.pathOrder},
+            context: cmsBroadcastContext(meta.context)
+          }),
+          meta.auth
+        )
+      ) || [])
+    ]);
   }
 
-  async deleteManyAndSync(ids: string[], context: CMSContext) {
+  async deleteManyAndSync(ids: string[], userID: number, context: CMSContext) {
     return this.postgresEM.transactional(async () => {
       const functionPaths = await this.findManyByEnvironmentAndIDs(context.environmentID, ids);
 
       await this.deleteManyByEnvironmentAndIDs(context.environmentID, ids);
-      // await this.functionService.deleteFunctionPathsAndBroadcast(userID)
+      const syncedPaths = await this.syncFunctionPaths(functionPaths, { action: 'delete', userID, context })
 
       return {
         delete: { functionPaths },
+        sync: { functions: syncedPaths }
       };
     });
   }
 
   async deleteManyAndBroadcast(ids: string[], meta: CMSBroadcastMeta) {
-    const result = await this.deleteManyAndSync(ids, meta.context);
+    const result = await this.deleteManyAndSync(ids, meta.auth.userID, meta.context);
 
     await this.broadcastDeleteMany(result, meta);
   }

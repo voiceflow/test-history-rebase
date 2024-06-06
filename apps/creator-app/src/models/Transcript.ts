@@ -28,7 +28,7 @@ export type Annotations = Record<string, AnnotationTurnType>;
 export interface PersonaSnapshot {
   id: string;
   name: string;
-  startFrom: { diagramID: string; stepID: string } | null;
+  startFrom?: { diagramID: string; stepID: string } | null;
   variables: Record<string, any>;
 }
 export interface Transcript {

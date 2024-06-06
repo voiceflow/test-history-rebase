@@ -44,6 +44,8 @@ export class AssistantLoguxController {
   @UseRequestContext()
   async subscribe(@Context() ctx: Context.Channel<Channels.AssistantParams>) {
     Object.assign(ctx.data, { subscribed: true });
+
+    return [];
   }
 
   @Channel.Finally(Channels.assistant)

@@ -17,7 +17,11 @@ class CustomBlockService extends AbstractControl {
     return blocksData;
   }
 
-  public async update(versionID: string, blockID: string, blockData: Omit<Realtime.CustomBlock, 'id'>): Promise<Omit<Realtime.CustomBlock, 'id'>> {
+  public async update(
+    versionID: string,
+    blockID: string,
+    blockData: Omit<Realtime.CustomBlock, 'id'>
+  ): Promise<Omit<Realtime.CustomBlock, 'id'>> {
     await this.models.version.customBlock.update(versionID, blockID, this.adaptToDB(blockData));
 
     return blockData;

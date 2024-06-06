@@ -4,13 +4,21 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
-import { CreateData, PatchData, ThreadCommentEntity, ThreadCommentObject, ThreadCommentORM, ThreadObject, ThreadORM } from '@voiceflow/orm-designer';
+import {
+  AssistantORM,
+  CreateData,
+  PatchData,
+  ThreadCommentEntity,
+  ThreadCommentObject,
+  ThreadCommentORM,
+  ThreadObject,
+  ThreadORM,
+} from '@voiceflow/orm-designer';
 import { IdentityClient } from '@voiceflow/sdk-identity';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 import type { LegacyVersionActionContext } from '@voiceflow/sdk-logux-designer/build/types';
 import dayjs from 'dayjs';
 
-import { AssistantService } from '@/assistant/assistant.service';
 import { MutableService } from '@/common';
 import { legacyVersionBroadcastContext, toPostgresEntityIDs } from '@/common/utils';
 import { CreatorAppService } from '@/creator-app/creator-app.service';
@@ -32,14 +40,14 @@ export class ThreadCommentService extends MutableService<ThreadCommentORM> {
     protected readonly orm: ThreadCommentORM,
     @Inject(ThreadORM)
     protected readonly threadORM: ThreadORM,
+    @Inject(AssistantORM)
+    protected readonly assistantORM: AssistantORM,
     @Inject(IdentityClient)
     private readonly identity: IdentityClient,
     @Inject(LoguxService)
     protected readonly logux: LoguxService,
     @Inject(EmailService)
     protected readonly email: EmailService,
-    @Inject(AssistantService)
-    protected readonly assistant: AssistantService,
     @Inject(CreatorAppService)
     protected readonly creatorApp: CreatorAppService,
     @Inject(ProductUpdateService)
@@ -127,7 +135,10 @@ export class ThreadCommentService extends MutableService<ThreadCommentORM> {
             groupsToDisplay: [EmailSubscriptionGroup.COMMENTING, EmailSubscriptionGroup.PROJECT_ACTIVITY],
           },
           dynamicTemplateData: {
-            text: comment.text.replace(THREAD_COMMENT_MENTION_MARKUP_REGEX, (str) => str.match(THREAD_COMMENT_MENTION_REGEX)?.[0] ?? ''),
+            text: comment.text.replace(
+              THREAD_COMMENT_MENTION_MARKUP_REGEX,
+              (str) => str.match(THREAD_COMMENT_MENTION_REGEX)?.[0] ?? ''
+            ),
             created_at: dayjs(comment.createdAt).format('MMM Do YYYY'),
             projectName,
             commentLink: commentURL.toJSON(),
@@ -146,7 +157,7 @@ export class ThreadCommentService extends MutableService<ThreadCommentORM> {
 
     try {
       const thread = threadProp ?? (await this.threadORM.findOneOrFail(comment.threadID));
-      const assistant = await this.assistant.findOneOrFail(thread.assistantID);
+      const assistant = await this.assistantORM.findOneOrFail(thread.assistantID);
 
       const [author, mentions] = await Promise.all([
         this.identity.private.findUserByID(comment.authorID),
@@ -211,7 +222,10 @@ export class ThreadCommentService extends MutableService<ThreadCommentORM> {
     );
   }
 
-  async createManyAndBroadcast(data: CreateData<ThreadCommentEntity>[], meta: { auth: AuthMetaPayload; context: LegacyVersionActionContext }) {
+  async createManyAndBroadcast(
+    data: CreateData<ThreadCommentEntity>[],
+    meta: { auth: AuthMetaPayload; context: LegacyVersionActionContext }
+  ) {
     const result = await this.createManyAndSync(data);
 
     await this.broadcastAddMany(result, meta);

@@ -10,7 +10,9 @@ import crudReducers from './crud';
 
 const selectedVariablesReducer = createRootReducer<Realtime.VariableState | null>(null)
   .case(updateSelectedVariableState, (_, payload) => payload)
-  .case(updateVariables, (state, payload) => (state ? { ...state, variables: { ...state.variables, ...payload } } : null));
+  .case(updateVariables, (state, payload) =>
+    state ? { ...state, variables: { ...state.variables, ...payload } } : null
+  );
 
 const variableStateCRUDReducer = createRootCRUDReducer(INITIAL_STATE, crudReducers).build();
 

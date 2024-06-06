@@ -33,6 +33,7 @@ import { Patch } from 'immer';
 import _ from 'lodash';
 
 import { MutableService } from '@/common';
+import { DiagramService } from '@/diagram/diagram.service';
 import { EnvironmentCMSData } from '@/environment/environment.interface';
 import { EnvironmentService } from '@/environment/environment.service';
 import { ProgramService } from '@/program/program.service';
@@ -42,6 +43,7 @@ import { ProjectService } from '@/project/project.service';
 import { LegacyProjectSerializer } from '@/project/project-legacy/legacy-project.serializer';
 import { ProjectListService } from '@/project-list/project-list.service';
 import { PrototypeProgramService } from '@/prototype-program/prototype-program.service';
+import { ThreadService } from '@/thread/thread.service';
 import { deepSetCreatorID } from '@/utils/creator.util';
 import { deepSetNewDate } from '@/utils/date.util';
 import { VariableStateService } from '@/variable-state/variable-state.service';
@@ -81,12 +83,16 @@ export class AssistantService extends MutableService<AssistantORM> {
     private readonly identityClient: IdentityClient,
     @Inject(LoguxService)
     private readonly logux: LoguxService,
+    @Inject(ThreadService)
+    private readonly thread: ThreadService,
     @Inject(UnleashFeatureFlagService)
     private readonly unleash: UnleashFeatureFlagService,
     @Inject(ProjectService)
     private readonly project: ProjectService,
     @Inject(ProgramService)
     private readonly program: ProgramService,
+    @Inject(DiagramService)
+    private readonly diagram: DiagramService,
     @Inject(VersionService)
     private readonly version: VersionService,
     @Inject(EnvironmentService)
@@ -756,11 +762,11 @@ export class AssistantService extends MutableService<AssistantORM> {
     });
   }
 
-  public exportCMS({ userID, environmentID }: { userID: number; environmentID: string }) {
-    return this.postgresEM.transactional(async () => {
-      const { projectID } = await this.version.findOneOrFailWithFields(environmentID, ['projectID']);
-      const { teamID: workspaceID } = await this.project.findOneOrFailWithFields(projectID, ['teamID']);
+  public async exportCMS({ userID, environmentID }: { userID: number; environmentID: string }) {
+    const { projectID } = await this.version.findOneOrFailWithFields(environmentID, ['projectID']);
+    const { teamID: workspaceID } = await this.project.findOneOrFailWithFields(projectID, ['teamID']);
 
+    return this.postgresEM.transactional(async () => {
       const [assistant, cmsData] = await Promise.all([
         this.findOneOrFail(projectID.toJSON()),
         this.environment.findOneCMSData(environmentID),
@@ -807,6 +813,30 @@ export class AssistantService extends MutableService<AssistantORM> {
         assistant: this.assistantSerializer.nullable(assistant),
       };
     });
+  }
+
+  public async loadCreator({ userID, environmentID }: { userID: number; environmentID: string }) {
+    const { projectID } = await this.version.findOneOrFailWithFields(environmentID, ['projectID']);
+
+    const [project, version, diagrams, variableStates, threadData, cmsData, projectMembership] = await Promise.all([
+      this.project.findOneOrFail(projectID.toJSON()),
+      this.version.findOneOrFail(environmentID),
+      this.diagram.findManyByVersionID(environmentID),
+      this.variableState.findManyByProject(projectID.toJSON()),
+      this.thread.findAllWithCommentsByAssistant(projectID.toJSON()),
+      this.exportCMS({ userID, environmentID }),
+      this.identityClient.private.findAllProjectMembersForProject(projectID.toJSON()),
+    ]);
+
+    return {
+      ...threadData,
+      ...cmsData,
+      project: this.projectSerializer.serialize(project),
+      version: this.version.toJSON(version),
+      diagrams: this.diagram.mapToJSON(diagrams),
+      variableStates: this.variableState.mapToJSON(variableStates),
+      projectMembership,
+    };
   }
 
   /* Create  */

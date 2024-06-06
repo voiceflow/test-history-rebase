@@ -70,7 +70,12 @@ class DiagramService extends AbstractControl {
     }
 
     if (Realtime.Utils.typeGuards.isStartDBNode(node)) {
-      return { type: Realtime.BlockType.START, name: node.data.label || '', nodeID: node.nodeID, triggers: node.data.triggers ?? [] };
+      return {
+        type: Realtime.BlockType.START,
+        name: node.data.label || '',
+        nodeID: node.nodeID,
+        triggers: node.data.triggers ?? [],
+      };
     }
 
     if (Realtime.Utils.typeGuards.isBlockDBNode(node)) {
@@ -180,8 +185,9 @@ class DiagramService extends AbstractControl {
     versionID: string,
     filters?: DiagramFilter
   ): Promise<BaseModels.Diagram.Model | null> {
-    const version = await this.models.diagram.findOneByVersionID(versionID, filters);
-    return version ? this.models.diagram.adapter.fromDB(version) : null;
+    const diagram = await this.models.diagram.findOneByVersionID(versionID, filters);
+
+    return diagram ? this.models.diagram.adapter.fromDB(diagram) : null;
   }
 
   public async cloneManyWithIDsRemap({

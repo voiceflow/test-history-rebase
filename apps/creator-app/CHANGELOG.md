@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1546.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1545.0...@voiceflow/creator-app@1.1546.0) (2024-06-06)
+
+### Features
+
+* move workspace members selectors to a separate file (COR-2199) ([#8189](https://github.com/voiceflow/creator-app/issues/8189)) ([80c900a](https://github.com/voiceflow/creator-app/commit/80c900af8f9350e9612bcb8912388738885487db))
+
 # [1.1545.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1544.1...@voiceflow/creator-app@1.1545.0) (2024-06-06)
 
 ### Features

@@ -332,6 +332,9 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
 
     const { functions: createdFunctions } = await this.importJSONAndBroadcast(importData, { userID, clientID, environmentID });
 
+    // We know there's only one function here
+    importData.functions[0].pathOrder = importData.functionPaths.map((p) => p.id);
+
     if (createdFunctions.length === 0) {
       throw new Error('Realtime was unable to send back function created from template.');
     }

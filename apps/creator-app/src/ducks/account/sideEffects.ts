@@ -1,5 +1,3 @@
-import { Struct } from '@voiceflow/common';
-
 import client from '@/client';
 import { openError } from '@/ModalsV2/utils';
 import { Thunk } from '@/store/types';
@@ -35,9 +33,9 @@ export const verifySignupEmailToken =
   };
 
 export const resendSignupVerificationEmail =
-  ({ query = {} }: { query?: Struct } = {}): Thunk =>
+  ({ query = {}, partnerKey }: { query?: Record<any, any>; partnerKey?: string } = {}): Thunk =>
   async () => {
-    await client.identity.user.resendSignupVerificationEmail({ metadata: { inviteParams: query } });
+    await client.identity.user.resendSignupVerificationEmail({ metadata: { inviteParams: query, partnerKey } });
   };
 
 export const sendUpdateEmailEmail =

@@ -26,6 +26,7 @@ export class User extends NestResource {
     metadata?: {
       utm?: Record<string, unknown>;
       inviteParams?: Record<string, unknown>;
+      partnerKey?: string;
     };
   }): Promise<Models.Identity.User> {
     const { data } = await this.post<Models.Identity.User>('/', payload);
@@ -37,7 +38,7 @@ export class User extends NestResource {
     await this.patch('/', payload);
   }
 
-  public async resendSignupVerificationEmail(payload: { metadata?: { inviteParams?: Record<string, unknown> } }): Promise<void> {
+  public async resendSignupVerificationEmail(payload: { metadata?: { inviteParams?: Record<string, unknown>; partnerKey?: string } }): Promise<void> {
     await this.post(`/verify`, payload);
   }
 

@@ -267,7 +267,9 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ describeReducerV2, creat
 
       describe('usedEditorSeatsSelector()', () => {
         it('should select the number of occupied seats in the active workspace', () => {
-          expect(Workspace.active.usedEditorSeatsSelector(createState(MOCK_STATE, activeWorkspaceState))).toEqual(1);
+          expect(
+            Workspace.active.members.usedEditorSeatsSelector(createState(MOCK_STATE, activeWorkspaceState))
+          ).toEqual(1);
         });
 
         it('should always have at least 1 used seat', () => {

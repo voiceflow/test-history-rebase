@@ -6,7 +6,7 @@ import { voiceflowWordmark } from '@/assets';
 import client from '@/client';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
-import { useDispatch, useTrackingEvents } from '@/hooks';
+import { useDispatch, usePartnerStack, useTrackingEvents } from '@/hooks';
 import { Query } from '@/models';
 import { useHubspotInject } from '@/pages/Auth/components/useHubspotInject';
 import { getErrorMessage } from '@/utils/error';
@@ -41,6 +41,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({ query }) => {
   const signup = useDispatch(Session.signup);
   const goToLogin = useDispatch(Router.goToLogin);
   const getSamlLoginURL = useDispatch(Session.getSamlLoginURL);
+  const getPartnerKey = usePartnerStack();
 
   const [state, stateAPI] = useSmartReducerV2({
     email: query.email ? replaceSpaceWithPlus(query.email)! : '',
@@ -146,6 +147,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({ query }) => {
         password: state.password,
         lastName: state.lastName,
         firstName: state.firstName,
+        partnerKey: getPartnerKey(),
       });
 
       trackingEvents.identifySignup({

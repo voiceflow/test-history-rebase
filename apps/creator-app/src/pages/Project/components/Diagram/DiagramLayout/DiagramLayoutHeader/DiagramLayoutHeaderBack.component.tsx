@@ -90,6 +90,7 @@ export const DiagramLayoutHeaderBack: React.FC<IDiagramLayoutHeaderBack> = ({ is
           onClick={onBackClick}
           onMouseEnter={onOpen}
           onMouseLeave={onClose}
+          testID='back-button'
         />
       )}
     />

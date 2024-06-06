@@ -78,4 +78,6 @@ export enum FeatureFlag {
 
   // Export
   EXPORT_SPECIFIC_OBJECT = 'export_specific_object',
+
+  HTTP_LOAD_ENVIRONMENT = 'http_load_environment',
 }

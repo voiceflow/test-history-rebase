@@ -3,7 +3,7 @@ export interface DBVariableState {
   projectID: string;
   name: string;
   startFrom: { diagramID: string; stepID: string } | null;
-  variables: Record<string, string | number | boolean | null>;
+  variables: Record<string, unknown>;
 }
 
 export type VariableStateData = Omit<DBVariableState, '_id'>;

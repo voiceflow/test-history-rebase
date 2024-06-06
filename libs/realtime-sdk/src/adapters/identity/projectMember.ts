@@ -1,11 +1,12 @@
 import { Identity, ProjectMember } from '@realtime-sdk/models';
 import { getRoleStrength } from '@realtime-sdk/utils/role';
+import { ProjectUserRole } from '@voiceflow/dtos';
 import { createSimpleAdapter, notImplementedAdapter } from 'bidirectional-adapter';
 import uniqBy from 'lodash/uniqBy';
 
 const projectMemberSimpleAdapter = createSimpleAdapter<Identity.ProjectMember, ProjectMember>(
   ({ user, membership }) => ({
-    role: membership.role,
+    role: membership.role as ProjectUserRole,
     creatorID: user.id,
   }),
   notImplementedAdapter.transformer

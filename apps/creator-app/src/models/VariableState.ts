@@ -1,4 +1,4 @@
-export type VariableValue = string | boolean | number | null;
+export type VariableValue = unknown;
 
 export interface Variable {
   name: string;

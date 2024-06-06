@@ -37,10 +37,11 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
     ctx: ChannelContext<Realtime.Channels.VersionChannelParams>,
     action: ChannelSubscribeAction
   ): Promise<SendBackActions> => {
-    // do not reload if resubscribing
-    if (action.since) return [];
-
     const { workspaceID, projectID, versionID } = ctx.params;
+
+    // do not reload if resubscribing
+    if (action.since || this.services.feature.isEnabled(Realtime.FeatureFlag.HTTP_LOAD_ENVIRONMENT)) return [];
+
     const creatorID = Number(ctx.userId);
 
     const [projectMembers, dbCreator, { threads, threadComments }] = await Promise.all([
@@ -54,9 +55,7 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
       : null;
 
     const project = Realtime.Adapters.projectAdapter.fromDB(dbCreator.project, {
-      members: (projectMembers as unknown as Realtime.Identity.ProjectMember[]).map(
-        Realtime.Adapters.Identity.projectMember.fromDB
-      ),
+      members: projectMembers.map(Realtime.Adapters.Identity.projectMember.fromDB),
     });
     const projectConfig = Platform.Config.getTypeConfig(project);
 

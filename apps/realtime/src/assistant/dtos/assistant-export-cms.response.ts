@@ -7,6 +7,7 @@ export const AssistantExportCMSResponse = z
   .object({
     assistant: AssistantDTO,
   })
-  .merge(EnvironmentCMSExportDataDTO);
+  .merge(EnvironmentCMSExportDataDTO)
+  .strict();
 
 export type AssistantExportCMSResponse = z.infer<typeof AssistantExportCMSResponse>;

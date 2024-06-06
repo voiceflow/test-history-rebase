@@ -1,8 +1,8 @@
-import { ProjectUserRole } from '@voiceflow/dtos';
+import { UserRole } from '@voiceflow/dtos';
 
 import { User } from './User';
 
 export interface ProjectMember {
-  user: User;
-  membership: { role: ProjectUserRole; projectID: string };
+  user: Omit<User, 'createdAt' | 'updatedAt'>;
+  membership: { role: UserRole; projectID: string };
 }

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.68.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.67.1...@voiceflow/orm-designer@2.68.0) (2024-06-06)
+
+### Features
+
+* listen steps nodes (COR-000) ([#8200](https://github.com/voiceflow/creator-app/issues/8200)) ([ddda564](https://github.com/voiceflow/creator-app/commit/ddda564467f52b48506849199c30c6c1186fc816))
+
 ## [2.67.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.67.0...@voiceflow/orm-designer@2.67.1) (2024-06-05)
 
 **Note:** Version bump only for package @voiceflow/orm-designer

@@ -1,17 +1,17 @@
 import type { EntityManager } from '@mikro-orm/core';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
-import { forwardRef,Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
+import { Utils } from '@voiceflow/common';
+import { NotFoundException } from '@voiceflow/exception';
 import { LoguxService } from '@voiceflow/nestjs-logux';
-import type { FunctionEntity, FunctionPathObject } from '@voiceflow/orm-designer';
-import { AssistantORM, DatabaseTarget, FunctionPathORM } from '@voiceflow/orm-designer';
+import type { FunctionObject, FunctionPathObject } from '@voiceflow/orm-designer';
+import { AssistantORM, DatabaseTarget, FunctionORM, FunctionPathORM } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { CMSObjectService } from '@/common';
 import type { CMSCreateForUserData } from '@/common/types';
 import { cmsBroadcastContext, injectAssistantAndEnvironmentIDs, toPostgresEntityIDs } from '@/common/utils';
 import { CMSBroadcastMeta, CMSContext } from '@/types';
-
-import { FunctionService } from '../function.service';
 
 @Injectable()
 export class FunctionPathService extends CMSObjectService<FunctionPathORM> {
@@ -28,8 +28,8 @@ export class FunctionPathService extends CMSObjectService<FunctionPathORM> {
     private readonly postgresEM: EntityManager,
     @Inject(FunctionPathORM)
     protected readonly orm: FunctionPathORM,
-    @Inject(forwardRef(() => FunctionService))
-    protected readonly functionService: FunctionService,
+    @Inject(FunctionORM)
+    protected readonly functionOrm: FunctionORM,
     @Inject(LoguxService)
     protected readonly logux: LoguxService,
     @Inject(AssistantORM)
@@ -50,12 +50,55 @@ export class FunctionPathService extends CMSObjectService<FunctionPathORM> {
     return this.orm.findManyByEnvironmentAndIDs(environmentID, ids);
   }
 
+  /* Helpers */
+
+  async syncFunctionPaths(funcPaths: FunctionPathObject[], { action, userID, context }: {action: 'create' | 'delete'; userID: number; context: CMSContext }) {
+    const functionIds = Utils.array.unique(funcPaths.map((path) => path.functionID));
+    console.log(`funcIds: ${JSON.stringify(functionIds)}`);
+    const functions = await this.functionOrm.findManyByEnvironmentAndIDs(context.environmentID, functionIds);
+    console.log(`functions: ${JSON.stringify(functions)}`);
+
+    if (functionIds.length !== functions.length) {
+      throw new NotFoundException('Failed to find functions in db');
+    }
+
+    const funcPathsByFunctionId = funcPaths.reduce<Record<string, FunctionPathObject[]>>((acc, funcPath) => {
+      acc[funcPath.functionID] ??= [];
+      acc[funcPath.functionID].push(funcPath);
+
+      return acc;
+    }, {});
+
+    await Promise.all(
+      functions.map(async (func) => {
+        const funcPathIds = funcPathsByFunctionId[func.id].map((path) => path.id);
+        let pathOrder: string[];
+
+        if (action === 'create') {
+          pathOrder = Utils.array.unique([...func.pathOrder, ...funcPathIds]);
+        } else {
+          pathOrder = func.pathOrder.filter((pathId) => !funcPathIds.includes(pathId));
+        }
+
+        // eslint-disable-next-line no-param-reassign
+        func.pathOrder = pathOrder;
+
+        console.log(`patching ${func.id} with pathOrder: ${JSON.stringify(pathOrder)}`);
+        await this.functionOrm.patchOneForUser(userID, { id: func.id, environmentID: context.environmentID }, { pathOrder });
+      })
+    );
+
+    return functions;
+  }
+
   /* Create */
 
   async createManyAndSync(data: CMSCreateForUserData<FunctionPathORM>[], { userID, meta }: { userID: number; meta: CMSBroadcastMeta }) {
+    console.log('starting create many');
     return this.postgresEM.transactional(async () => {
       const functionPaths = await this.createManyForUser(userID, data.map(injectAssistantAndEnvironmentIDs(meta.context)));
-      const functions = await this.functionService.syncFunctionPaths(
+      console.log('paths created');
+      const functions = await this.syncFunctionPaths(
         functionPaths, {
           action: 'create',
           userID,
@@ -71,7 +114,7 @@ export class FunctionPathService extends CMSObjectService<FunctionPathORM> {
 
   async broadcastAddMany({ add, sync }: {
     add: { functionPaths: FunctionPathObject[] },
-    sync: { functions: FunctionEntity[] }
+    sync?: { functions: FunctionObject[] }
   }, meta: CMSBroadcastMeta) {
     await Promise.all([
       this.logux.processAs(
@@ -82,7 +125,7 @@ export class FunctionPathService extends CMSObjectService<FunctionPathORM> {
         meta.auth
       ),
 
-      ...sync.functions.map((func) =>
+      ...(sync?.functions.map((func) =>
         this.logux.processAs(
           Actions.Function.PatchOne({
             id: func.id,
@@ -91,7 +134,7 @@ export class FunctionPathService extends CMSObjectService<FunctionPathORM> {
           }),
           meta.auth
         )
-      )
+      ) || [])
     ]);
   }
 
@@ -125,7 +168,7 @@ export class FunctionPathService extends CMSObjectService<FunctionPathORM> {
       const functionPaths = await this.findManyByEnvironmentAndIDs(context.environmentID, ids);
 
       await this.deleteManyByEnvironmentAndIDs(context.environmentID, ids);
-      await this.functionService.deleteFunctionPathsAndBroadcast(userID)
+      // await this.functionService.deleteFunctionPathsAndBroadcast(userID)
 
       return {
         delete: { functionPaths },

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1545.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1544.1...@voiceflow/creator-app@1.1545.0) (2024-06-06)
+
+### Features
+
+* add load env endpoint (COR-000) ([#8229](https://github.com/voiceflow/creator-app/issues/8229)) ([6b0896c](https://github.com/voiceflow/creator-app/commit/6b0896cbf98cb8ded511132d36afe28ed27f8f63))
+
 ## [1.1544.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1544.0...@voiceflow/creator-app@1.1544.1) (2024-06-06)
 
 ### Bug Fixes

@@ -17,6 +17,7 @@ export const IntentDTO = CMSTabularResourceDTO.extend({
   description: z.string().nullable(),
   entityOrder: z.array(z.string()),
   automaticReprompt: z.boolean(),
+  automaticRepromptSettings: z.nullable(IntentAutomaticRepromptSettingsDTO),
 });
 
 export type Intent = z.infer<typeof IntentDTO>;

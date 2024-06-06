@@ -1,6 +1,6 @@
 import { ArrayType, Entity, Index, PrimaryKey, Property, Unique } from '@mikro-orm/core';
+import { IntentAutomaticRepromptSettings } from '@voiceflow/dtos';
 
-// import { IntentAutomaticRepromptSettings } from '@voiceflow/dtos';
 import { Environment, PostgresCMSTabularEntity } from '../common';
 
 @Entity({ tableName: 'designer.intent' })
@@ -24,6 +24,6 @@ export class IntentEntity extends PostgresCMSTabularEntity<'description' | 'auto
   @Property({ type: ArrayType })
   entityOrder!: string[];
 
-  // @Property({ type: 'jsonb', nullable: true, default: null })
-  // automaticRepromptSettings?: IntentAutomaticRepromptSettings | null;
+  @Property({ type: 'jsonb', nullable: true, default: null })
+  automaticRepromptSettings!: IntentAutomaticRepromptSettings | null;
 }

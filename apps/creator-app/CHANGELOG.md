@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1548.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1547.0...@voiceflow/creator-app@1.1548.0) (2024-06-06)
+
+### Bug Fixes
+
+* add test-id to navigation button in canvas header(DX-1786) ([#8245](https://github.com/voiceflow/creator-app/issues/8245)) ([deb35b2](https://github.com/voiceflow/creator-app/commit/deb35b273070b10531189bf0468f56dea7d9bbb3))
+
+### Features
+
+* allow teams to buy top up tokens (COR-2226) ([#8243](https://github.com/voiceflow/creator-app/issues/8243)) ([c1b2790](https://github.com/voiceflow/creator-app/commit/c1b279029cb25e04ef6fb08c078853b011545564))
+
 # [1.1547.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1546.0...@voiceflow/creator-app@1.1547.0) (2024-06-06)
 
 ### Features

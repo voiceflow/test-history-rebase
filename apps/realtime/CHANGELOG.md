@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.381.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.380.0...@voiceflow/realtime@1.381.0) (2024-06-06)
+
+### Features
+
+* remove http_assistant_cms ff (COR-000) ([#8228](https://github.com/voiceflow/creator-app/issues/8228)) ([8c796d8](https://github.com/voiceflow/creator-app/commit/8c796d8cdf83bf7a77e425626f358662b58c87da))
+
 # [1.380.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.379.4...@voiceflow/realtime@1.380.0) (2024-06-06)
 
 ### Features

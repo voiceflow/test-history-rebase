@@ -85,7 +85,7 @@ workflows:
           context: dev-test
           executor: vfcommon/node-large-executor
           name: {{ strings.KebabCase $testJob }}
-          run_on_root: {{ $.values.build_all_services }}
+          run_on_root: true
           requires:
             - build
           filters:

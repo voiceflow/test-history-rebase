@@ -1,7 +1,7 @@
 import { DiagramDTO, VersionDTO } from '@voiceflow/dtos';
 import { z } from 'zod';
 
-import { EnvironmentCMSExportImportDataDTO } from './environment-cms-export-import-data.dto';
+import { EnvironmentCMSExportDataDTO } from './environment-cms-export-data.dto';
 
 export const EnvironmentOnlyExportDTO = z
   .object({
@@ -10,6 +10,6 @@ export const EnvironmentOnlyExportDTO = z
   })
   .strict();
 
-export const EnvironmentExportDTO = EnvironmentOnlyExportDTO.merge(EnvironmentCMSExportImportDataDTO.partial()).strict();
+export const EnvironmentExportDTO = EnvironmentOnlyExportDTO.merge(EnvironmentCMSExportDataDTO.partial()).strict();
 
 export type EnvironmentExportDTO = z.infer<typeof EnvironmentExportDTO>;

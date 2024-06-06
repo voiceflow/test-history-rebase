@@ -15,7 +15,7 @@ export const intent: EntityDTO<IntentEntity> = {
   updatedBy: { id: 2 } as any,
   folder: null,
   environmentID: 'environment-1',
-  // automaticRepromptSettings: null,
+  automaticRepromptSettings: null,
 };
 
 export const intentList: EntityDTO<IntentEntity>[] = [

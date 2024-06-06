@@ -41,6 +41,7 @@ describe('Adapters | Legacy | intentToLegacyIntent', () => {
     assistantID,
     environmentID,
     automaticReprompt: false,
+    automaticRepromptSettings: null,
   };
 
   const legacyIntent1: BaseModels.Intent = {

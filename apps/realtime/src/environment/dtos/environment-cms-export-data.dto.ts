@@ -5,15 +5,15 @@ import { EntityExportImportDataDTO } from '@/entity/dtos/entity-export-import-da
 import { FlowExportImportDataDTO } from '@/flow/dtos/flow-export-import-data.dto';
 import { FolderExportImportDataDTO } from '@/folder/dtos/folder-export-import-data.dto';
 import { FunctionExportImportDataDTO } from '@/function/dtos/function-export-import-data.dto';
-import { IntentExportImportDataDTO } from '@/intent/dtos/intent-export-import-data.dto';
+import { IntentExportDataDTO } from '@/intent/dtos/intent-export-data.dto';
 import { ResponseExportImportDataDTO } from '@/response/dtos/response-export-import-data.dto';
 import { VariableExportImportDataDTO } from '@/variable/dtos/variable-export-import-data.dto';
 import { WorkflowExportImportDataDTO } from '@/workflow/dtos/workflow-export-import-data.dto';
 
-export const EnvironmentCMSExportImportDataDTO = z
+export const EnvironmentCMSExportDataDTO = z
   .object({})
   .merge(FlowExportImportDataDTO.partial())
-  .merge(IntentExportImportDataDTO.partial())
+  .merge(IntentExportDataDTO.partial())
   .merge(EntityExportImportDataDTO.partial())
   .merge(FolderExportImportDataDTO.partial())
   .merge(ResponseExportImportDataDTO.partial())
@@ -22,4 +22,4 @@ export const EnvironmentCMSExportImportDataDTO = z
   .merge(WorkflowExportImportDataDTO.partial())
   .merge(AttachmentExportImportDataDTO.partial());
 
-export type EnvironmentCMSExportImportDataDTO = z.infer<typeof EnvironmentCMSExportImportDataDTO>;
+export type EnvironmentCMSExportDataDTO = z.infer<typeof EnvironmentCMSExportDataDTO>;

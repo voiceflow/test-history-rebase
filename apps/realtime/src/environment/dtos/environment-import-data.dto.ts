@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 import { zodDeepStrip } from '@/utils/zod-deep-strip.util';
 
-import { EnvironmentCMSExportImportDataDTO } from './environment-cms-export-import-data.dto';
+import { EnvironmentCMSImportDataDTO } from './environment-cms-import-data.dto';
 import { EnvironmentOnlyExportDTO } from './environment-export-data.dto';
 
 export const EnvironmentImportDTO = zodDeepStrip(
@@ -12,6 +12,6 @@ export const EnvironmentImportDTO = zodDeepStrip(
     version: VersionDTO.extend({ prototype: z.record(z.any()).optional() }),
     diagrams: z.record(DiagramDTO.extend({ diagramID: z.string().optional() })),
   })
-).merge(EnvironmentCMSExportImportDataDTO.partial());
+).merge(EnvironmentCMSImportDataDTO.partial());
 
 export type EnvironmentImportDTO = z.infer<typeof EnvironmentImportDTO>;

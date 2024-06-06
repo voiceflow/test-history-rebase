@@ -1,7 +1,7 @@
 import { IntentDTO, RequiredEntityDTO, UtteranceDTO } from '@voiceflow/dtos';
 import { z } from 'zod';
 
-export const IntentExportImportDataDTO = z
+export const IntentExportDataDTO = z
   .object({
     intents: IntentDTO.array(),
     utterances: UtteranceDTO.array(),
@@ -9,4 +9,4 @@ export const IntentExportImportDataDTO = z
   })
   .strict();
 
-export type IntentExportImportDataDTO = z.infer<typeof IntentExportImportDataDTO>;
+export type IntentExportDataDTO = z.infer<typeof IntentExportDataDTO>;

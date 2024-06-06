@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.411.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.410.0...@voiceflow/realtime-sdk@1.411.0) (2024-06-06)
+
+### Features
+
+* add partnerKey to signup (COR-1891) ([#8152](https://github.com/voiceflow/creator-app/issues/8152)) ([5e6f9de](https://github.com/voiceflow/creator-app/commit/5e6f9de63a45f1b28bafd773e67b8fde07877164))
+
 # [1.410.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.409.0...@voiceflow/realtime-sdk@1.410.0) (2024-06-06)
 
 ### Features

@@ -54,9 +54,7 @@ export class FunctionPathService extends CMSObjectService<FunctionPathORM> {
 
   async syncFunctionPaths(funcPaths: FunctionPathObject[], { action, userID, context }: {action: 'create' | 'delete'; userID: number; context: CMSContext }) {
     const functionIds = Utils.array.unique(funcPaths.map((path) => path.functionID));
-    console.log(`funcIds: ${JSON.stringify(functionIds)}`);
     const functions = await this.functionOrm.findManyByEnvironmentAndIDs(context.environmentID, functionIds);
-    console.log(`functions: ${JSON.stringify(functions)}`);
 
     if (functionIds.length !== functions.length) {
       throw new NotFoundException('Failed to find functions in db');
@@ -83,7 +81,6 @@ export class FunctionPathService extends CMSObjectService<FunctionPathORM> {
         // eslint-disable-next-line no-param-reassign
         func.pathOrder = pathOrder;
 
-        console.log(`patching ${func.id} with pathOrder: ${JSON.stringify(pathOrder)}`);
         await this.functionOrm.patchOneForUser(userID, { id: func.id, environmentID: context.environmentID }, { pathOrder });
       })
     );
@@ -94,10 +91,8 @@ export class FunctionPathService extends CMSObjectService<FunctionPathORM> {
   /* Create */
 
   async createManyAndSync(data: CMSCreateForUserData<FunctionPathORM>[], { userID, meta }: { userID: number; meta: CMSBroadcastMeta }) {
-    console.log('starting create many');
     return this.postgresEM.transactional(async () => {
       const functionPaths = await this.createManyForUser(userID, data.map(injectAssistantAndEnvironmentIDs(meta.context)));
-      console.log('paths created');
       const functions = await this.syncFunctionPaths(
         functionPaths, {
           action: 'create',

@@ -262,7 +262,7 @@ export class IntentService extends CMSTabularService<IntentORM> {
 
   /* Create */
 
-  async createManyAndSync(data: IntentCreateData[], { userID, context }: { userID: number; context: CMSContext }) {
+  async createMany(data: IntentCreateData[], { userID, context }: { userID: number; context: CMSContext }) {
     return this.postgresEM.transactional(async () => {
       const dataWithIDs = data.map(({ id, utterances, requiredEntities, ...item }) => {
         const intentID = id ?? new ObjectId().toJSON();
@@ -311,65 +311,19 @@ export class IntentService extends CMSTabularService<IntentORM> {
       );
 
       return {
-        add: {
-          ...requiredEntitiesWithSubResources,
-          intents,
-          utterances,
-        },
+        ...requiredEntitiesWithSubResources,
+        intents,
+        utterances,
       };
     });
   }
 
-  async broadcastAddMany(
-    {
-      add,
-    }: {
-      add: {
-        intents: IntentObject[];
-        responses: ResponseObject[];
-        utterances: UtteranceObject[];
-        requiredEntities: RequiredEntityObject[];
-        responseVariants: AnyResponseVariantObject[];
-        responseAttachments: AnyResponseAttachmentObject[];
-        responseDiscriminators: ResponseDiscriminatorObject[];
-      };
-    },
-    meta: CMSBroadcastMeta
-  ) {
-    await Promise.all([
-      this.utterance.broadcastAddMany({ add: Utils.object.pick(add, ['utterances']) }, meta),
-
-      this.requiredEntity.broadcastAddMany(
-        {
-          add: Utils.object.pick(add, [
-            'responses',
-            'responseVariants',
-            'requiredEntities',
-            'responseAttachments',
-            'responseDiscriminators',
-          ]),
-          // no need to sync intents, since they should be synced in the create method
-          sync: { intents: [] },
-        },
-        meta
-      ),
-
-      this.logux.processAs(
-        Actions.Intent.AddMany({
-          data: this.mapToJSON(add.intents),
-          context: cmsBroadcastContext(meta.context),
-        }),
-        meta.auth
-      ),
-    ]);
-  }
-
   async createManyAndBroadcast(data: IntentCreateData[], meta: CMSBroadcastMeta) {
-    const result = await this.createManyAndSync(data, { userID: meta.auth.userID, context: meta.context });
+    const result = await this.createMany(data, { userID: meta.auth.userID, context: meta.context });
 
-    await this.broadcastAddMany(result, meta);
+    await this.broadcastAddMany({ add: { ...result } }, meta);
 
-    return result.add.intents;
+    return result.intents;
   }
 
   /* Delete */
@@ -399,36 +353,6 @@ export class IntentService extends CMSTabularService<IntentORM> {
         delete: { ...relations, intents },
       };
     });
-  }
-
-  async broadcastDeleteMany(
-    {
-      delete: del,
-    }: {
-      delete: {
-        intents: IntentObject[];
-        utterances: UtteranceObject[];
-        requiredEntities: RequiredEntityObject[];
-      };
-    },
-    meta: CMSBroadcastMeta
-  ) {
-    await Promise.all([
-      this.utterance.broadcastDeleteMany({ delete: Utils.object.pick(del, ['utterances']) }, meta),
-      // no need to sync intents, because they are deleted
-      this.requiredEntity.broadcastDeleteMany(
-        { sync: { intents: [] }, delete: Utils.object.pick(del, ['requiredEntities']) },
-        meta
-      ),
-
-      this.logux.processAs(
-        Actions.Intent.DeleteMany({
-          ids: toPostgresEntityIDs(del.intents),
-          context: cmsBroadcastContext(meta.context),
-        }),
-        meta.auth
-      ),
-    ]);
   }
 
   async deleteManyAndBroadcast(ids: string[], meta: CMSBroadcastMeta): Promise<void> {

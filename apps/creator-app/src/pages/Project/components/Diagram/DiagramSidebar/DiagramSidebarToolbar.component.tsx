@@ -51,14 +51,16 @@ export const DiagramSidebarToolbar: React.FC = () => {
         setMoveOption={onMoveTypeChange}
       />
 
-      <MarkupToolbar.Button
-        testID={tid(TEST_ID, 'note')}
-        onClick={isMarkupTextActive ? onDisableModes : markup?.toggleTextCreating}
-        iconName="Note"
-        isActive={isMarkupTextActive}
-        disabled={!canEditCanvas || !canUseHintFeatures}
-        tooltipContent={{ text: 'Note', hotkeys: [{ label: 'N' }] }}
-      />
+      {canEditCanvas && (
+        <MarkupToolbar.Button
+          testID={tid(TEST_ID, 'note')}
+          onClick={isMarkupTextActive ? onDisableModes : markup?.toggleTextCreating}
+          iconName="Note"
+          isActive={isMarkupTextActive}
+          disabled={!canUseHintFeatures}
+          tooltipContent={{ text: 'Note', hotkeys: [{ label: 'N' }] }}
+        />
+      )}
 
       <MarkupToolbar.Button
         testID={tid(TEST_ID, 'comment')}
@@ -69,14 +71,16 @@ export const DiagramSidebarToolbar: React.FC = () => {
         tooltipContent={{ text: 'Comment', hotkeys: [{ label: 'C' }] }}
       />
 
-      <MarkupToolbar.Button
-        testID={tid(TEST_ID, 'media')}
-        onClick={isMarkupMediaActive ? onDisableModes : markup?.triggerMediaUpload}
-        iconName="Image"
-        isActive={isMarkupMediaActive}
-        disabled={!canEditCanvas || !canUseHintFeatures}
-        tooltipContent={{ text: 'Image, GIF or video', hotkeys: [{ label: 'I' }] }}
-      />
+      {canEditCanvas && (
+        <MarkupToolbar.Button
+          testID={tid(TEST_ID, 'media')}
+          onClick={isMarkupMediaActive ? onDisableModes : markup?.triggerMediaUpload}
+          iconName="Image"
+          isActive={isMarkupMediaActive}
+          disabled={!canUseHintFeatures}
+          tooltipContent={{ text: 'Image, GIF or video', hotkeys: [{ label: 'I' }] }}
+        />
+      )}
 
       <MarkupToolbar.Button
         testID={tid(TEST_ID, 'search')}

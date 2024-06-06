@@ -56,6 +56,44 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
     super();
   }
 
+  /* Helpers */
+
+  async syncFunctionPaths(funcPaths: FunctionPathEntity[], { action, userID, context }: {action: 'create' | 'delete'; userID: nufmber; context: CMSContext }) {
+    const functionIds = Utils.array.unique(funcPaths.map((path) => path.functionID));
+    const functions = await this.orm.findManyByEnvironmentAndIDs(context.environmentID, functionIds);
+
+    if (functionIds.length !== functions.length) {
+      throw new NotFoundException('Failed to find functions in db');
+    }
+
+    const funcPathsByFunctionId = funcPaths.reduce<Record<string, FunctionPath[]>>((acc, funcPath) => {
+      acc[funcPath.functionID] ??= [];
+      acc[funcPath.functionID].push(funcPath);
+
+      return acc;
+    }, {});
+
+    await Promise.all(
+      functions.map(async (func) => {
+        const funcPathIds = funcPathsByFunctionId[func.id].map((path) => path.id);
+        let pathOrder: string[];
+
+        if (action === 'create') {
+          pathOrder = Utils.array.unique([...func.pathOrder, ...funcPathIds]);
+        } else {
+          pathOrder = func.pathOrder.filter((pathId) => !funcPathIds.includes(pathId));
+        }
+
+        // eslint-disable-next-line no-param-reassign
+        func.pathOrder = pathOrder;
+
+        await this.orm.patchOneForUser(userID, { id: func.id, environmentID: context.environmentID }, { pathOrder });
+      })
+    );
+
+    return functions;
+  }
+
   /* Find */
 
   async findManyWithSubResourcesByEnvironment(environmentID: string) {

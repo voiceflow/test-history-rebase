@@ -15,7 +15,7 @@ import * as S from '../Members/styles';
 
 // FIXME: remove FF https://voiceflow.atlassian.net/browse/CV3-994
 const DashboardV2MembersAndBillingLegacyMembers: React.FC = () => {
-  const membersCount = useSelector(WorkspaceV2.active.allNormalizedMembersCountSelector);
+  const membersCount = useSelector(WorkspaceV2.active.members.allMembersCountSelector);
   const isOnPaidPlanSelector = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
   const isOnProTrial = useSelector(WorkspaceV2.active.isOnProTrialSelector);
 

@@ -39,8 +39,8 @@ const SendInvite: React.FC<SendInviteProps> = ({ sendInvite }) => {
   const [canManageAdminCollaborators] = usePermission(Permission.MANAGE_ADMIN_COLLABORATORS);
 
   const numberOfSeats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);
-  const usedEditorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);
-  const usedViewerSeats = useSelector(WorkspaceV2.active.usedViewerSeatsSelector);
+  const usedEditorSeats = useSelector(WorkspaceV2.active.members.usedEditorSeatsSelector);
+  const usedViewerSeats = useSelector(WorkspaceV2.active.members.usedViewerSeatsSelector);
   const viewerPlanSeatLimits = useSelector(WorkspaceV2.active.viewerPlanSeatLimitsSelector);
   const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
 
@@ -122,7 +122,11 @@ const SendInvite: React.FC<SendInviteProps> = ({ sendInvite }) => {
           )}
         </SelectInputGroup>
 
-        <SendInviteButton id={Identifier.COLLAB_SEND_INVITE_BUTTON} onClick={onSendInviteClick} disabled={isInvalid || !canAddCollaborators}>
+        <SendInviteButton
+          id={Identifier.COLLAB_SEND_INVITE_BUTTON}
+          onClick={onSendInviteClick}
+          disabled={isInvalid || !canAddCollaborators}
+        >
           Send
         </SendInviteButton>
       </Flex>

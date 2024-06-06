@@ -18,14 +18,16 @@ const EnvironmentItem: React.FC<EnvironmentItemProps> = ({ environmentRef }) => 
     tag,
   } = environmentRef;
 
-  const member = useSelector(WorkspaceV2.active.memberByIDSelector, { creatorID });
+  const member = useSelector(WorkspaceV2.active.members.memberByIDSelector, { creatorID });
 
   const capitalizedTag = React.useMemo(() => tag.charAt(0).toUpperCase() + tag.slice(1), [tag]);
 
   return (
     <S.RowItem>
       <S.ColumnItemContainer>
-        <TippyTooltip content={dayjs(updatedAt).format('MMM DD, YYYY, h:mm A')}>{dayjs(updatedAt).fromNow()}</TippyTooltip>
+        <TippyTooltip content={dayjs(updatedAt).format('MMM DD, YYYY, h:mm A')}>
+          {dayjs(updatedAt).fromNow()}
+        </TippyTooltip>
       </S.ColumnItemContainer>
 
       <S.ColumnItemContainer>{name}</S.ColumnItemContainer>

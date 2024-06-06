@@ -40,7 +40,7 @@ const ProjectList: React.FC = () => {
   const userID = useSelector(Account.userIDSelector)!;
   const projects = useSelector(ProjectV2.allProjectsSelector);
   const awarenessViewers = useSelector(ProjectV2.awarenessViewersSelector);
-  const getMemberByIDSelector = useSelector(WorkspaceV2.active.getMemberByIDSelector);
+  const getMemberByIDSelector = useSelector(WorkspaceV2.active.members.getMemberByIDSelector);
   const isTrialExpired = useSelector(WorkspaceV2.active.organizationTrialExpiredSelector);
 
   const goToCMSWorkflow = useDispatch(Router.goToCMSWorkflow);

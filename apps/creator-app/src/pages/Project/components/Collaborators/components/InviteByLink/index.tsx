@@ -24,7 +24,8 @@ const PermissionText = {
 
 const inviteLimitMessage = (
   <span>
-    No available editor seats on this workspace. Collaborators will be added to this workspace as viewers if no editor seats are created.
+    No available editor seats on this workspace. Collaborators will be added to this workspace as viewers if no editor
+    seats are created.
     <div style={{ color: '#5d9df5', float: 'right', marginTop: '5px' }}>Add Editor Seats</div>
   </span>
 );
@@ -34,7 +35,7 @@ type LinkUserRole = ProjectUserRole | 'admin';
 const InviteByLinkFooter: React.FC = () => {
   const projectID = useSelector(Session.activeProjectIDSelector);
   const numberOfSeats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);
-  const usedEditorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);
+  const usedEditorSeats = useSelector(WorkspaceV2.active.members.usedEditorSeatsSelector);
   const [canAddCollaborators] = usePermission(Permission.ADD_COLLABORATORS);
   const [canManageAdminCollaborators] = usePermission(Permission.MANAGE_ADMIN_COLLABORATORS);
 
@@ -92,18 +93,29 @@ const InviteByLinkFooter: React.FC = () => {
           alwaysBlue
           menu={(onToggle) => (
             <Menu>
-              <Menu.Item onClick={Utils.functional.chainVoid(onToggle, onChangeRole(UserRole.EDITOR))}>can edit</Menu.Item>
-              <Menu.Item onClick={Utils.functional.chainVoid(onToggle, onChangeRole(UserRole.VIEWER))}>can view</Menu.Item>
+              <Menu.Item onClick={Utils.functional.chainVoid(onToggle, onChangeRole(UserRole.EDITOR))}>
+                can edit
+              </Menu.Item>
+              <Menu.Item onClick={Utils.functional.chainVoid(onToggle, onChangeRole(UserRole.VIEWER))}>
+                can view
+              </Menu.Item>
 
               {canManageAdminCollaborators && (
-                <Menu.Item onClick={Utils.functional.chainVoid(onToggle, onChangeRole(UserRole.ADMIN))}>can admin</Menu.Item>
+                <Menu.Item onClick={Utils.functional.chainVoid(onToggle, onChangeRole(UserRole.ADMIN))}>
+                  can admin
+                </Menu.Item>
               )}
             </Menu>
           )}
         />
       </DropdownContainer>
 
-      <Button id={Identifier.COPY_INVITE_BUTTON} variant={ButtonVariant.PRIMARY} onClick={onCopyLink} disabled={!inviteLink || !canAddCollaborators}>
+      <Button
+        id={Identifier.COPY_INVITE_BUTTON}
+        variant={ButtonVariant.PRIMARY}
+        onClick={onCopyLink}
+        disabled={!inviteLink || !canAddCollaborators}
+      >
         <span>Copy Link</span>
       </Button>
     </Container>

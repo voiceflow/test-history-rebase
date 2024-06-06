@@ -13,7 +13,7 @@ import List from './List.component';
 import * as S from './styles';
 
 const DashboardV2MembersAndBillingMembers: React.FC = () => {
-  const membersCount = useSelector(WorkspaceV2.active.allNormalizedMembersCountSelector);
+  const membersCount = useSelector(WorkspaceV2.active.members.allMembersCountSelector);
   const isOnPaidPlanSelector = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
   const isOnProTrial = useSelector(WorkspaceV2.active.isOnProTrialSelector);
 

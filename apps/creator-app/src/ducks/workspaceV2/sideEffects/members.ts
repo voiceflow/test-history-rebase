@@ -199,8 +199,8 @@ export const updateActiveWorkspaceMemberRole =
     const activePlan = active.planSelector(state);
     const numberOfSeats = active.numberOfSeatsSelector(state);
     const projectEditorMemberIDs = ProjectV2.allEditorMemberIDs(state);
-    const numberOfUsedViewerSeats = active.usedViewerSeatsSelector(state);
-    const numberOfUsedEditorSeats = active.usedEditorSeatsSelector(state);
+    const numberOfUsedViewerSeats = active.members.usedViewerSeatsSelector(state);
+    const numberOfUsedEditorSeats = active.members.usedEditorSeatsSelector(state);
     const viewerPlanSeatLimits = getLimitConfig(LimitType.VIEWER_SEATS, activePlan);
 
     if (

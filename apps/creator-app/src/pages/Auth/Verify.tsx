@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom';
 import { voiceflowWordmarkDark } from '@/assets';
 import * as Account from '@/ducks/account';
 import * as Session from '@/ducks/session';
-import { useDispatch, useHideVoiceflowAssistant, useSelector } from '@/hooks';
+import { useDispatch, useHideVoiceflowAssistant, usePartnerStack, useSelector } from '@/hooks';
 import { Identifier } from '@/styles/constants';
 import * as Query from '@/utils/query';
 
@@ -21,10 +21,11 @@ const Verify: React.FC = () => {
 
   const logout = useDispatch(Session.logout);
   const resendVerificationEmail = useDispatch(Account.resendSignupVerificationEmail);
+  const getPartnerKey = usePartnerStack();
 
   const onResendEmail = async () => {
     try {
-      await resendVerificationEmail({ query: Query.parse(location.search) });
+      await resendVerificationEmail({ query: Query.parse(location.search), partnerKey: getPartnerKey() });
 
       toast.success("We've sent a new confirmation link to your email");
     } catch (error) {

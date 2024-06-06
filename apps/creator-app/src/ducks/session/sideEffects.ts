@@ -230,10 +230,11 @@ interface SignupPayload {
   password: string;
   lastName: string;
   firstName: string;
+  partnerKey?: string;
 }
 
 export const signup =
-  ({ email, query, password, lastName, firstName }: SignupPayload): Thunk<{ creatorID: number; email: string }> =>
+  ({ email, query, password, lastName, firstName, partnerKey }: SignupPayload): Thunk<{ creatorID: number; email: string }> =>
   async (dispatch) => {
     const userName = `${firstName} ${lastName}`.trim();
 
@@ -242,6 +243,7 @@ export const signup =
       password,
       metadata: {
         utm: { utm_last_name: lastName, utm_first_name: firstName },
+        partnerKey,
         inviteParams: query,
       },
     });

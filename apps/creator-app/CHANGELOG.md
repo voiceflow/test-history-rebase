@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1543.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1542.7...@voiceflow/creator-app@1.1543.0) (2024-06-06)
+
+### Features
+
+* listen steps nodes (COR-000) ([#8200](https://github.com/voiceflow/creator-app/issues/8200)) ([ddda564](https://github.com/voiceflow/creator-app/commit/ddda564467f52b48506849199c30c6c1186fc816))
+
 ## [1.1542.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1542.6...@voiceflow/creator-app@1.1542.7) (2024-06-05)
 
 ### Bug Fixes

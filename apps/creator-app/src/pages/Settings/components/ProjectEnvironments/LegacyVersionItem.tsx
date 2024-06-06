@@ -20,7 +20,7 @@ interface VersionItemProps {
 }
 
 const VersionItem: React.FC<VersionItemProps> = ({ version, creatorID, projectID, deleteVersion }) => {
-  const member = useSelector(WorkspaceV2.active.memberByIDSelector, { creatorID });
+  const member = useSelector(WorkspaceV2.active.members.memberByIDSelector, { creatorID });
   const confirmModal = useConfirmModal();
 
   const { manualSave, autoSaveFromRestore } = version;
@@ -52,7 +52,10 @@ const VersionItem: React.FC<VersionItemProps> = ({ version, creatorID, projectID
         confirm: async () => {
           // create a backup of the version before deleting it
           if (options.convert) {
-            await designerClient.backup.createOne(projectID, { versionID: version.versionID, name: version.name || 'Converted from Legacy Version' });
+            await designerClient.backup.createOne(projectID, {
+              versionID: version.versionID,
+              name: version.name || 'Converted from Legacy Version',
+            });
           }
           await deleteVersion();
         },
@@ -63,7 +66,9 @@ const VersionItem: React.FC<VersionItemProps> = ({ version, creatorID, projectID
   return (
     <S.RowItem>
       <S.ColumnItemContainer>
-        <TippyTooltip content={dayjs(version.created).format('MMM DD, YYYY, h:mm A')}>{dayjs(version.created).fromNow()}</TippyTooltip>
+        <TippyTooltip content={dayjs(version.created).format('MMM DD, YYYY, h:mm A')}>
+          {dayjs(version.created).fromNow()}
+        </TippyTooltip>
       </S.ColumnItemContainer>
 
       <S.ColumnItemContainer style={{ color: getColor() }}>

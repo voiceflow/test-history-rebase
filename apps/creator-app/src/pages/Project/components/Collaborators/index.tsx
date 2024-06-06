@@ -7,7 +7,7 @@ import MemberSection from './components/MembersSection';
 import SendInvite from './components/SendInvite';
 
 const Collaborators: React.FC = () => {
-  const members = useSelector(WorkspaceV2.active.allNormalizedMembersSelector);
+  const members = useSelector(WorkspaceV2.active.members.allMembersListSelector);
   const sendInvite = useDispatch(WorkspaceV2.sendInviteToActiveWorkspace);
 
   return (

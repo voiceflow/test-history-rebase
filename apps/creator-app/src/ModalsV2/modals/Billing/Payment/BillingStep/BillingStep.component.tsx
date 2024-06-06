@@ -18,7 +18,7 @@ interface BillingStepProps {
 
 export const BillingStep: React.FC<BillingStepProps> = ({ isLoading }) => {
   const { isEnabled: teamsPlanSelfServeIsEnabled } = useFeature(FeatureFlag.TEAMS_PLAN_SELF_SERVE);
-  const usedViewerSeats = useSelector(Workspace.active.usedViewerSeatsSelector);
+  const usedViewerSeats = useSelector(Workspace.active.members.usedViewerSeatsSelector);
   const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
   const { onBack, onNext } = usePaymentSteps();
   const { selectedPlan, selectedPeriod, selectedPlanPrice, hasCard, onChangePeriod } = usePricing();
@@ -50,7 +50,14 @@ export const BillingStep: React.FC<BillingStepProps> = ({ isLoading }) => {
     <>
       <SectionV2.SimpleSection headerProps={{ topUnit: 0, bottomUnit: 2 }}>
         <Box.Flex gap={16} column fullWidth>
-          <RadioGroup column options={periods} checked={selectedPeriod} onChange={onChangePeriod} activeBar noPaddingLastItem={false} />
+          <RadioGroup
+            column
+            options={periods}
+            checked={selectedPeriod}
+            onChange={onChangePeriod}
+            activeBar
+            noPaddingLastItem={false}
+          />
         </Box.Flex>
       </SectionV2.SimpleSection>
 
@@ -65,7 +72,8 @@ export const BillingStep: React.FC<BillingStepProps> = ({ isLoading }) => {
               <Box.FlexApart fullWidth>
                 <SectionV2.Description>
                   <Text color="#62778C" paddingLeft="3px">
-                    {planSeats} Editor {pluralize('seats', planSeats)}, paid {selectedPeriod === BillingPeriodUnit.YEAR ? 'annually' : 'monthly'}
+                    {planSeats} Editor {pluralize('seats', planSeats)}, paid{' '}
+                    {selectedPeriod === BillingPeriodUnit.YEAR ? 'annually' : 'monthly'}
                   </Text>{' '}
                 </SectionV2.Description>
                 <SectionV2.Description>{currency.formatUSD(amount, { unit: 'cent' })}</SectionV2.Description>

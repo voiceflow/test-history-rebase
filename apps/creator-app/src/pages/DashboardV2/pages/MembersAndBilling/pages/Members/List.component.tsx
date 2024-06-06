@@ -7,7 +7,7 @@ import { useSelector } from '@/hooks';
 import { MembersList, RoleSelectWithCount } from '@/pages/DashboardV2/components';
 
 const WorkspaceMembersList: React.FC = () => {
-  const members = useSelector(WorkspaceV2.active.allNormalizedMembersSelector);
+  const members = useSelector(WorkspaceV2.active.members.allMembersListSelector);
 
   const [role, setRole] = React.useState('all');
   const [search, setSearch] = React.useState('');

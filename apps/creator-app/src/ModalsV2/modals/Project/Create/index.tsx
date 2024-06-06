@@ -19,7 +19,7 @@ import { Members, Setup } from './screens';
 
 const Create = manager.create<{ listID?: string }>('CreateProject', () => ({ api, type, opened, listID, hidden, animated, closePrevented }) => {
   const userID = useSelector(Account.userIDSelector)!;
-  const userMember = useSelector(WorkspaceV2.active.memberByIDSelector, { creatorID: userID });
+  const userMember = useSelector(WorkspaceV2.active.members.memberByIDSelector, { creatorID: userID });
 
   const [state, stateAPI] = useSmartReducerV2({
     name: '',

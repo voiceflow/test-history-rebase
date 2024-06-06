@@ -8,7 +8,7 @@ import { useSelector } from '@/hooks/store.hook';
 import type { ICMSTableMemberCell } from './CMSTableMemberCell.interface';
 
 export const CMSTableMemberCell: React.FC<ICMSTableMemberCell> = ({ creatorID }) => {
-  const member = useSelector(WorkspaceV2.active.memberByIDSelector, { creatorID });
+  const member = useSelector(WorkspaceV2.active.members.memberByIDSelector, { creatorID });
   const userID = useSelector(Account.userIDSelector);
 
   if (userID === creatorID) return <Table.Cell.Text label="You" overflow />;

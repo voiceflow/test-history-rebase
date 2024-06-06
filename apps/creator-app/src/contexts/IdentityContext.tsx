@@ -30,7 +30,7 @@ export const IdentityContext = React.createContext<IdentityContextValue>({
 
 export const IdentityProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const workspacePlan = useSelector(WorkspaceV2.active.planSelector);
-  const workspaceRole = useSelector(WorkspaceV2.active.userRoleSelector);
+  const workspaceRole = useSelector(WorkspaceV2.active.members.userRoleSelector);
   const organizationID = useSelector(WorkspaceV2.active.organizationIDSelector);
   const organizationRole = useSelector(Organization.currentMemberRoleByIDSelector, { id: organizationID });
   const organizationTrialExpired = useSelector(WorkspaceV2.active.organizationTrialExpiredSelector);

@@ -23,7 +23,7 @@ const BillingEditorSeats: React.FC<BillingEditorSeatsProps> = ({ nextBillingDate
   const trialEndAt = useSelector(WorkspaceV2.active.organizationTrialEndAtSelector);
   const isPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
   const isEnterprise = useSelector(WorkspaceV2.active.isEnterpriseSelector);
-  const usedViewerSeats = useSelector(WorkspaceV2.active.usedViewerSeatsSelector);
+  const usedViewerSeats = useSelector(WorkspaceV2.active.members.usedViewerSeatsSelector);
   const creditCard = useSelector(Organization.creditCardSelector);
 
   const amount = isPaidPlan ? planAmount ?? 0 : 0;
@@ -51,7 +51,7 @@ const BillingEditorSeats: React.FC<BillingEditorSeatsProps> = ({ nextBillingDate
                   </div>
                 )}
 
-                {isEnterprise && `Want to make changes to your next billing cycle? Contact sales@voiceflow.com.`}
+                {isEnterprise && 'Want to make changes to your next billing cycle? Contact sales@voiceflow.com.'}
 
                 {showBillingDateDescription && (
                   <>
@@ -71,7 +71,9 @@ const BillingEditorSeats: React.FC<BillingEditorSeatsProps> = ({ nextBillingDate
 
             {isPaidPlan && !isEnterprise ? (
               <div>
-                <SectionV2.Description>{currency.formatUSD(amount, { noDecimal: true, unit: 'cent' })} </SectionV2.Description>
+                <SectionV2.Description>
+                  {currency.formatUSD(amount, { noDecimal: true, unit: 'cent' })}{' '}
+                </SectionV2.Description>
                 <SectionV2.Description secondary> per Editor, per {billingPeriod}</SectionV2.Description>
               </div>
             ) : (
@@ -87,7 +89,9 @@ const BillingEditorSeats: React.FC<BillingEditorSeatsProps> = ({ nextBillingDate
 
       <SectionV2.SimpleSection headerProps={{ topUnit: 2, bottomUnit: 2 }} minHeight={50}>
         <SectionV2.Description>{isEnterprise ? 100 : seats} Editor seats</SectionV2.Description>
-        <SectionV2.Description>{isEnterprise ? 'Custom' : currency.formatUSD(amount, { unit: 'cent' })}</SectionV2.Description>
+        <SectionV2.Description>
+          {isEnterprise ? 'Custom' : currency.formatUSD(amount, { unit: 'cent' })}
+        </SectionV2.Description>
       </SectionV2.SimpleSection>
 
       <SectionV2.Divider inset />

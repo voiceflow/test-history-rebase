@@ -19,13 +19,23 @@ import { Step } from '../constants';
 import { PaymentModalAPIProps } from '../types';
 import { PaymentModal } from './PaymentModal.component';
 
-export const Payment = ({ id, api, type, opened, hidden, animated, closePrevented, promptType, isTrialExpired }: PaymentModalAPIProps) => {
+export const Payment = ({
+  id,
+  api,
+  type,
+  opened,
+  hidden,
+  animated,
+  closePrevented,
+  promptType,
+  isTrialExpired,
+}: PaymentModalAPIProps) => {
   const paymentAPI = PaymentContext.legacy.usePaymentAPI();
   const planPrices = React.useContext(PlanPricesContext);
   const [trackingEvents] = useTrackingEvents();
 
-  const editorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);
-  const viewerSeats = useSelector(WorkspaceV2.active.usedViewerSeatsSelector);
+  const editorSeats = useSelector(WorkspaceV2.active.members.usedEditorSeatsSelector);
+  const viewerSeats = useSelector(WorkspaceV2.active.members.usedViewerSeatsSelector);
   const numberOfSeats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);
   const editorPlanSeatLimits = useSelector(WorkspaceV2.active.editorPlanSeatLimitsSelector);
   const activeWorkspaceID = useSelector(Sessions.activeWorkspaceIDSelector);

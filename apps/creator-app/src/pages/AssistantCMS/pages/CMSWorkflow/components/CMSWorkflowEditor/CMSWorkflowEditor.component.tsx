@@ -31,7 +31,7 @@ import { workflowManagerContainer } from './CMSWorkflowEditor.css';
 export const CMSWorkflowEditor: React.FC = () => {
   const editorRef = useRef<IEditorAPI>(null);
 
-  const members = useSelector(Workspace.active.normalizedMembersSelector);
+  const members = useSelector(Workspace.active.members.membersListSelector);
   const getOneByID = useGetValueSelector(Designer.Workflow.selectors.oneByID);
   const workflowID = useCMSActiveResourceID();
 

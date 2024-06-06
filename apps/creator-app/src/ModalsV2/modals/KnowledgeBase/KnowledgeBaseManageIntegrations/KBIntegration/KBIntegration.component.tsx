@@ -1,5 +1,18 @@
 import { Utils } from '@voiceflow/common';
-import { Box, Divider, DotSeparator, Icon, Menu, MenuItem, notify, Popper, SquareButton, Text, Tokens, Tooltip } from '@voiceflow/ui-next';
+import {
+  Box,
+  Divider,
+  DotSeparator,
+  Icon,
+  Menu,
+  MenuItem,
+  notify,
+  Popper,
+  SquareButton,
+  Text,
+  Tokens,
+  Tooltip,
+} from '@voiceflow/ui-next';
 import dayjs from 'dayjs';
 import React from 'react';
 
@@ -26,7 +39,7 @@ export const KBIntegration: React.FC<IKBIntegration> = ({
   enableClose,
   preventClose,
 }) => {
-  const member = useSelector(WorkspaceV2.active.memberByIDSelector, { creatorID });
+  const member = useSelector(WorkspaceV2.active.members.memberByIDSelector, { creatorID });
 
   const deleteIntegration = useDispatch(Designer.KnowledgeBase.Integration.effect.deleteOne);
 
@@ -41,9 +54,9 @@ export const KBIntegration: React.FC<IKBIntegration> = ({
 
       enableClose();
       onRemoved();
-      notify.short.info(`Integration removed`, { showIcon: false });
+      notify.short.info('Integration removed', { showIcon: false });
     } catch {
-      notify.short.error(`Error removing integration`, { showIcon: false });
+      notify.short.error('Error removing integration', { showIcon: false });
     }
 
     enableClose();
@@ -51,8 +64,8 @@ export const KBIntegration: React.FC<IKBIntegration> = ({
 
   const onRemove = () => {
     confirmModal.openVoid({
-      body: `Removing integrations will not delete data sources previously imported through them. You’ll need to remove data sources from the knowledge base table view.`,
-      title: `Remove integration`,
+      body: 'Removing integrations will not delete data sources previously imported through them. You’ll need to remove data sources from the knowledge base table view.',
+      title: 'Remove integration',
       confirm: onConfirmRemove,
       confirmButtonLabel: 'Remove',
       confirmButtonVariant: 'alert',

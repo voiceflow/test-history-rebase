@@ -27,8 +27,8 @@ const ROLES = [UserRole.EDITOR, UserRole.VIEWER] satisfies UserRole[];
 const MembersList: React.FC<MembersListProps> = ({ members, onRemove, onChangeRole }) => {
   const userID = useSelector(Account.userIDSelector);
   const workspace = useSelector(WorkspaceV2.active.workspaceSelector);
-  const allMembersCount = useSelector(WorkspaceV2.active.allNormalizedMembersCountSelector);
-  const getWorkspaceMemberByID = useSelector(WorkspaceV2.active.getMemberByIDSelector);
+  const allMembersCount = useSelector(WorkspaceV2.active.members.allMembersCountSelector);
+  const getWorkspaceMemberByID = useSelector(WorkspaceV2.active.members.getMemberByIDSelector);
   const getOrganizationMemberByID = useSelector(Organization.getMemberByIDSelector);
 
   const [canEditRole] = usePermission(Permission.ADD_COLLABORATORS);

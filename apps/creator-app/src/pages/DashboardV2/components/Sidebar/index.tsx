@@ -38,7 +38,7 @@ const DashboardNavigationSidebar: React.FC = () => {
   const plan = useSelector(WorkspaceV2.active.planSelector) ?? PlanType.STARTER;
   const isPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
   const workspaceID = useSelector(Sessions.activeWorkspaceIDSelector) ?? 'unknown';
-  const membersCount = useSelector(WorkspaceV2.active.allNormalizedMembersCountSelector);
+  const membersCount = useSelector(WorkspaceV2.active.members.allMembersCountSelector);
   const isProWorkspace = useSelector(WorkspaceV2.active.isProSelector);
   const isEnterpriseWorkspace = useSelector(WorkspaceV2.active.isEnterpriseSelector);
   const organizationTrialDaysLeft = useSelector(WorkspaceV2.active.organizationTrialDaysLeftSelector);

@@ -8,7 +8,7 @@ import { useSelector } from '@/hooks/store.hook';
 import type { ICMSKnowledgeBaseTableImportedByCell } from './CMSKnowledgeBaseTableImportedByCell.interface';
 
 export const CMSKnowledgeBaseTableImportedByCell: React.FC<ICMSKnowledgeBaseTableImportedByCell> = ({ creatorID }) => {
-  const member = useSelector(WorkspaceV2.active.memberByIDSelector, { creatorID });
+  const member = useSelector(WorkspaceV2.active.members.memberByIDSelector, { creatorID });
   const userID = useSelector(Account.userIDSelector);
 
   if (userID === creatorID) return <Table.Cell.Text label="You" overflow />;

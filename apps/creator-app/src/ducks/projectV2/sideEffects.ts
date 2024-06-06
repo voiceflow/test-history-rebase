@@ -16,11 +16,8 @@ import * as Router from '@/ducks/router/actions';
 import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
 import { waitAsync } from '@/ducks/utils';
-import {
-  editorMemberIDsSelector,
-  isEnterpriseSelector,
-  numberOfSeatsSelector,
-} from '@/ducks/workspaceV2/selectors/active';
+import { isEnterpriseSelector, numberOfSeatsSelector } from '@/ducks/workspaceV2/selectors/active';
+import { editorMemberIDsSelector } from '@/ducks/workspaceV2/selectors/active.members';
 import { getActiveWorkspaceContext } from '@/ducks/workspaceV2/utils';
 import { NLUImportModel } from '@/models/NLU';
 import { SyncThunk, Thunk } from '@/store/types';

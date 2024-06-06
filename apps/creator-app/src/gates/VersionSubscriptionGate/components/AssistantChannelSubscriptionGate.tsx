@@ -1,11 +1,10 @@
 import { status as loguxStatus } from '@logux/client';
-import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { LoadingGate } from '@/components/LoadingGate';
 import * as Designer from '@/ducks/designer';
 import * as Session from '@/ducks/session';
-import { useAssistantSubscription, useDispatch, useFeature, useRealtimeClient, useSelector } from '@/hooks';
+import { useAssistantSubscription, useDispatch, useRealtimeClient, useSelector } from '@/hooks';
 
 import WorkspaceOrProjectLoader from '../../WorkspaceOrProjectLoader';
 
@@ -15,10 +14,14 @@ export interface AssistantChannelSubscriptionGateProps extends React.PropsWithCh
   workspaceID: string;
 }
 
-const AssistantChannelSubscriptionGate: React.FC<AssistantChannelSubscriptionGateProps> = ({ workspaceID, projectID, versionID, children }) => {
+const AssistantChannelSubscriptionGate: React.FC<AssistantChannelSubscriptionGateProps> = ({
+  children,
+  projectID,
+  versionID,
+  workspaceID,
+}) => {
   const client = useRealtimeClient();
 
-  const httpAssistantCMS = useFeature(FeatureFlag.HTTP_ASSISTANT_CMS);
   const activeVersionID = useSelector(Session.activeVersionIDSelector)!;
   const loadEnvironment = useDispatch(Designer.Environment.effect.load);
 
@@ -26,15 +29,9 @@ const AssistantChannelSubscriptionGate: React.FC<AssistantChannelSubscriptionGat
 
   const isLoaded = isSubscribed && versionID === activeVersionID;
 
-  const [cmsFetched, setCMSFetched] = React.useState(!httpAssistantCMS.isEnabled || isLoaded);
+  const [cmsFetched, setCMSFetched] = React.useState(isLoaded);
 
   React.useEffect(() => {
-    if (!httpAssistantCMS.isEnabled) {
-      setCMSFetched(isLoaded);
-
-      return undefined;
-    }
-
     if (!isLoaded) {
       setCMSFetched(false);
 
@@ -75,10 +72,14 @@ const AssistantChannelSubscriptionGate: React.FC<AssistantChannelSubscriptionGat
       abortController.abort();
       unsubscribe();
     };
-  }, [isLoaded, httpAssistantCMS.isEnabled]);
+  }, [isLoaded]);
 
   return (
-    <LoadingGate isLoaded={isLoaded && cmsFetched} loader={<WorkspaceOrProjectLoader />} internalName={AssistantChannelSubscriptionGate.name}>
+    <LoadingGate
+      isLoaded={isLoaded && cmsFetched}
+      loader={<WorkspaceOrProjectLoader />}
+      internalName={AssistantChannelSubscriptionGate.name}
+    >
       {children}
     </LoadingGate>
   );

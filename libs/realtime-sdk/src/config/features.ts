@@ -55,8 +55,6 @@ export enum FeatureFlag {
 
   AI_CAPTURE = 'ai_capture',
 
-  HTTP_ASSISTANT_CMS = 'http_assistant_cms',
-
   INTENT_CLASSIFICATION = 'intent_classification',
 
   VF_CHUNKS_VARIABLE = 'vf_chunks_variable',

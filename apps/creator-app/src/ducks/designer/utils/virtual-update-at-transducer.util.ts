@@ -1,4 +1,3 @@
-import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 import * as Normal from 'normal-store';
 import { ActionCreator } from 'typescript-fsa';
@@ -12,7 +11,6 @@ import type { STATE_KEY as INTENT_STATE_KEY } from '@/ducks/designer/intent/inte
 import type { STATE_KEY as PERSONA_STATE_KEY } from '@/ducks/designer/persona/persona.state';
 import type { STATE_KEY as RESPONSE_STATE_KEY } from '@/ducks/designer/response/response.state';
 import type { STATE_KEY as WORKFLOW_STATE_KEY } from '@/ducks/designer/workflow/workflow.state';
-import { isFeatureEnabledSelector } from '@/ducks/feature';
 import { Transducer } from '@/ducks/transducers/types';
 import type { State } from '@/store/types';
 
@@ -35,7 +33,7 @@ type AnyReferenceResourceStateKey<T extends SupportedDesignerState[AnyRootResour
 
 type ReferenceResource<
   RootResourceStateKey extends AnyRootResourceStateKey,
-  ReferenceResourceStateKey extends AnyReferenceResourceStateKey<SupportedDesignerState[RootResourceStateKey]>
+  ReferenceResourceStateKey extends AnyReferenceResourceStateKey<SupportedDesignerState[RootResourceStateKey]>,
 > = Normal.NormalizedValue<SupportedDesignerState[RootResourceStateKey][ReferenceResourceStateKey]> & { id: string };
 
 interface ReferenceVirtualUpdateAtTransducerFactoryOptions<
@@ -47,9 +45,13 @@ interface ReferenceVirtualUpdateAtTransducerFactoryOptions<
   PatchOneAction extends Actions.CRUD.PatchOneRequest<any>,
   PatchManyAction extends Actions.CRUD.PatchManyRequest<any>,
   DeleteOneAction extends Actions.CRUD.DeleteOneRequest,
-  UpdateOneAction extends Actions.CRUD.UpdateOneRequest<ReferenceResource<RootResourceStateKey, ReferenceResourceStateKey>>,
+  UpdateOneAction extends Actions.CRUD.UpdateOneRequest<
+    ReferenceResource<RootResourceStateKey, ReferenceResourceStateKey>
+  >,
   DeleteManyAction extends Actions.CRUD.DeleteManyRequest,
-  UpdateManyAction extends Actions.CRUD.UpdateManyRequest<ReferenceResource<RootResourceStateKey, ReferenceResourceStateKey>>
+  UpdateManyAction extends Actions.CRUD.UpdateManyRequest<
+    ReferenceResource<RootResourceStateKey, ReferenceResourceStateKey>
+  >,
 > {
   actions: {
     AddOne: ActionCreator<AddOneAction>;
@@ -76,14 +78,22 @@ interface IReferenceVirtualUpdateAtTransducerFactory {
     RootResourceStateKey extends AnyRootResourceStateKey,
     ReferenceResourceStateKey extends AnyReferenceResourceStateKey<SupportedDesignerState[RootResourceStateKey]>,
     AddOneAction extends Actions.CRUD.AddOneRequest<ReferenceResource<RootResourceStateKey, ReferenceResourceStateKey>>,
-    AddManyAction extends Actions.CRUD.AddManyRequest<ReferenceResource<RootResourceStateKey, ReferenceResourceStateKey>>,
-    ReplaceAction extends Actions.CRUD.ReplaceRequest<ReferenceResource<RootResourceStateKey, ReferenceResourceStateKey>>,
+    AddManyAction extends Actions.CRUD.AddManyRequest<
+      ReferenceResource<RootResourceStateKey, ReferenceResourceStateKey>
+    >,
+    ReplaceAction extends Actions.CRUD.ReplaceRequest<
+      ReferenceResource<RootResourceStateKey, ReferenceResourceStateKey>
+    >,
     PatchOneAction extends Actions.CRUD.PatchOneRequest<any>,
     PatchManyAction extends Actions.CRUD.PatchManyRequest<any>,
     DeleteOneAction extends Actions.CRUD.DeleteOneRequest,
-    UpdateOneAction extends Actions.CRUD.UpdateOneRequest<ReferenceResource<RootResourceStateKey, ReferenceResourceStateKey>>,
+    UpdateOneAction extends Actions.CRUD.UpdateOneRequest<
+      ReferenceResource<RootResourceStateKey, ReferenceResourceStateKey>
+    >,
     DeleteManyAction extends Actions.CRUD.DeleteManyRequest,
-    UpdateManyAction extends Actions.CRUD.UpdateManyRequest<ReferenceResource<RootResourceStateKey, ReferenceResourceStateKey>>
+    UpdateManyAction extends Actions.CRUD.UpdateManyRequest<
+      ReferenceResource<RootResourceStateKey, ReferenceResourceStateKey>
+    >,
   >(
     options: ReferenceVirtualUpdateAtTransducerFactoryOptions<
       RootResourceStateKey,
@@ -171,52 +181,6 @@ export const referenceVirtualUpdateAtTransducerFactory: IReferenceVirtualUpdateA
           rootReducer(state, action),
           action.payload.update.map((data) => data.id)
         );
-      if (actions.Replace.match(action)) {
-        const nextState = rootReducer(state, action);
-
-        // this logic is done on the backend
-        if (isFeatureEnabledSelector(nextState)(FeatureFlag.HTTP_ASSISTANT_CMS)) {
-          return nextState;
-        }
-
-        const referenceIDs = action.payload.data.map((data) => data.id);
-
-        let rootState = nextState[DESIGNER_STATE_KEY][rootStateKey];
-
-        if (!rootState) return nextState;
-
-        const referenceState = rootState[referenceStateKey] as Normal.Normalized<any> | undefined;
-
-        if (!referenceState) return nextState;
-
-        const references = Normal.getMany(referenceState, referenceIDs);
-
-        if (!references.length) return nextState;
-
-        return references.reduce((acc, reference) => {
-          rootState = acc[DESIGNER_STATE_KEY][rootStateKey];
-
-          if (!rootState) return acc;
-
-          const rootResourceID = getRootID(reference, rootState, acc);
-          const rootResource = Normal.get(rootState, rootResourceID);
-
-          if (!rootResource?.updatedAt) return acc;
-
-          if (!reference.updatedAt || new Date(reference.updatedAt) <= new Date(rootResource.updatedAt)) return acc;
-
-          return {
-            ...acc,
-            [DESIGNER_STATE_KEY]: {
-              ...acc[DESIGNER_STATE_KEY],
-              [rootStateKey]: Normal.patchOne(rootState, rootResourceID, {
-                updatedAt: reference.updatedAt,
-                ...(reference.updatedByID && { updatedByID: reference.updatedByID }),
-              } as any),
-            },
-          };
-        }, nextState);
-      }
 
       return rootReducer(state, action);
     },

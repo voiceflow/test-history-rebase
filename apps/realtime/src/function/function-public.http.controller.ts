@@ -8,7 +8,7 @@ import type { Request } from 'express';
 
 import { MulterFile } from '@/file/types';
 
-import { FunctionExportImportDataDTO } from './dtos/function-export-import-data.dto';
+import { FunctionImportDataDTO } from './dtos/function-export-import-data.dto';
 import { FunctionExportQuery } from './dtos/function-export-json.query';
 import { FunctionExportJSONResponse } from './dtos/function-export-json.response';
 import { FunctionImportJSONResponse } from './dtos/function-import-json.response';
@@ -55,7 +55,7 @@ export class FunctionPublicHTTPController {
     @UploadedFile() file: MulterFile,
     @Body() { clientID }: { clientID?: string }
   ): Promise<FunctionImportJSONResponse> {
-    const data = FunctionExportImportDataDTO.parse(JSON.parse(file.buffer.toString('utf8')));
+    const data = FunctionImportDataDTO.parse(JSON.parse(file.buffer.toString('utf8')));
 
     const { duplicatedFunctions, functions } = await this.service.importJSONAndBroadcast(data, { userID, clientID, environmentID });
 

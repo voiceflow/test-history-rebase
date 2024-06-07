@@ -1,17 +1,16 @@
 import type { EntityManager } from '@mikro-orm/core';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
+import { Utils } from '@voiceflow/common';
+import { NotFoundException } from '@voiceflow/exception';
 import { LoguxService } from '@voiceflow/nestjs-logux';
-import { FunctionORM, FunctionObject, FunctionPathObject } from '@voiceflow/orm-designer';
-import { AssistantORM, DatabaseTarget, FunctionPathORM } from '@voiceflow/orm-designer';
+import { AssistantORM, DatabaseTarget, FunctionObject, FunctionORM, FunctionPathObject , FunctionPathORM } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { CMSObjectService } from '@/common';
 import type { CMSCreateForUserData } from '@/common/types';
 import { cmsBroadcastContext, injectAssistantAndEnvironmentIDs, toPostgresEntityIDs } from '@/common/utils';
 import { CMSBroadcastMeta, CMSContext } from '@/types';
-import { Utils } from '@voiceflow/common';
-import { NotFoundException } from '@voiceflow/exception';
 
 @Injectable()
 export class FunctionPathService extends CMSObjectService<FunctionPathORM> {

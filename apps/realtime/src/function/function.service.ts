@@ -24,7 +24,7 @@ import type { CMSCreateForUserData } from '@/common/types';
 import { cmsBroadcastContext, injectAssistantAndEnvironmentIDs, toPostgresEntityIDs } from '@/common/utils';
 import { CMSBroadcastMeta, CMSContext } from '@/types';
 
-import { FunctionExportImportDataDTO } from './dtos/function-export-import-data.dto';
+import { FunctionExportDataDTO, FunctionImportDataDTO } from './dtos/function-export-import-data.dto';
 import { FunctionPathService } from './function-path/function-path.service';
 import { FunctionVariableService } from './function-variable/function-variable.service';
 
@@ -89,7 +89,7 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
     };
   }
 
-  fromJSONWithSubResources({ functions, functionPaths, functionVariables }: FunctionExportImportDataDTO) {
+  fromJSONWithSubResources({ functions, functionPaths, functionVariables }: FunctionImportDataDTO) {
     return {
       functions: this.mapFromJSON(functions),
       functionPaths: this.functionPath.mapFromJSON(functionPaths),
@@ -100,7 +100,7 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
   prepareExportData(
     data: { functions: FunctionObject[]; functionPaths: FunctionPathObject[]; functionVariables: FunctionVariableObject[] },
     { backup }: { backup?: boolean } = {}
-  ): FunctionExportImportDataDTO {
+  ): FunctionExportDataDTO {
     const json = this.toJSONWithSubResources(data);
 
     if (backup) {
@@ -156,7 +156,7 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
 
   /* Import */
 
-  async filterImportData(environmentID: string, { functions, functionPaths, functionVariables }: FunctionExportImportDataDTO) {
+  async filterImportData(environmentID: string, { functions, functionPaths, functionVariables }: FunctionImportDataDTO) {
     const currentFunctions = await this.findManyByEnvironmentAndIDs(environmentID, toPostgresEntityIDs(functions));
     const existingFunctions = functions.filter((item) => item.id && currentFunctions.find(({ id }) => id === item.id));
 
@@ -169,7 +169,7 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
   }
 
   prepareImportData(
-    { functions, functionPaths, functionVariables }: FunctionExportImportDataDTO,
+    { functions, functionPaths, functionVariables }: FunctionImportDataDTO,
     { userID, backup, assistantID, environmentID }: { userID: number; backup?: boolean; assistantID: string; environmentID: string }
   ): {
     functions: FunctionJSON[];
@@ -259,7 +259,7 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
     };
   }
 
-  async importManyWithSubResourcesFromJSON({ functions, functionPaths, functionVariables }: FunctionExportImportDataDTO) {
+  async importManyWithSubResourcesFromJSON({ functions, functionPaths, functionVariables }: FunctionImportDataDTO) {
     await this.importManyWithSubResources(
       this.fromJSONWithSubResources({
         functions,
@@ -269,7 +269,7 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
     );
   }
 
-  importJSONAndSync(data: FunctionExportImportDataDTO, { userID, context }: { userID: number; context: CMSContext }) {
+  importJSONAndSync(data: FunctionImportDataDTO, { userID, context }: { userID: number; context: CMSContext }) {
     return this.postgresEM.transactional(async () => {
       const { duplicatedFunctions, ...dataToImport } = await this.filterImportData(context.environmentID, data);
 
@@ -306,16 +306,17 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
     const { templateID, name, description } = data;
     const rawTemplate = JSON.parse((await fs.readFile(`./src/function/templates/${templateID}.function-template.json`)).toString());
 
-    const { functions, functionVariables, functionPaths } = FunctionExportImportDataDTO.parse(rawTemplate);
+    const { functions, functionVariables, functionPaths } = FunctionImportDataDTO.parse(rawTemplate);
 
     const functionID = new ObjectId().toString();
-    const importData: FunctionExportImportDataDTO = {
+    const importData: FunctionImportDataDTO = {
       functions: [
         {
           ...functions[0],
           id: functionID,
           name,
           description,
+          pathOrder: [],
         },
       ],
       functionVariables: functionVariables.map((variable) => ({
@@ -343,7 +344,7 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
   }
 
   async importJSONAndBroadcast(
-    data: FunctionExportImportDataDTO,
+    data: FunctionImportDataDTO,
     { userID, clientID, environmentID }: { userID: number; clientID?: string; environmentID: string }
   ) {
     const assistantID = await this.versionORM.findOneOrFailProjectID(environmentID);

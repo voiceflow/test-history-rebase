@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1549.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1548.2...@voiceflow/creator-app@1.1549.0) (2024-06-07)
+
+### Features
+
+* load env data via http (COR-000) ([#8230](https://github.com/voiceflow/creator-app/issues/8230)) ([2b8b1a2](https://github.com/voiceflow/creator-app/commit/2b8b1a254bdb9a09f747ff26227d1d79ae7acc66))
+
 ## [1.1548.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1548.1...@voiceflow/creator-app@1.1548.2) (2024-06-07)
 
 **Note:** Version bump only for package @voiceflow/creator-app

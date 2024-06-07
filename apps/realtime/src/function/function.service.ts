@@ -4,7 +4,7 @@ import { EntityManager } from '@mikro-orm/core';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
-import { Function as FunctionType, FunctionPath, FunctionVariable } from '@voiceflow/dtos';
+import { FunctionPath, FunctionVariable } from '@voiceflow/dtos';
 import { LoguxService } from '@voiceflow/nestjs-logux';
 import type {
   FunctionJSON,
@@ -24,7 +24,8 @@ import type { CMSCreateForUserData } from '@/common/types';
 import { cmsBroadcastContext, injectAssistantAndEnvironmentIDs, toPostgresEntityIDs } from '@/common/utils';
 import { CMSBroadcastMeta, CMSContext } from '@/types';
 
-import { FunctionExportDataDTO, FunctionImportDataDTO } from './dtos/function-export-import-data.dto';
+import type { FunctionExportDataDTO, FunctionImportDataDTO } from './dtos/function-export-import-data.dto';
+import { FunctionImportDataDTO as FunctionImportData } from './dtos/function-export-import-data.dto';
 import { FunctionPathService } from './function-path/function-path.service';
 import { FunctionVariableService } from './function-variable/function-variable.service';
 
@@ -182,6 +183,7 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
       return {
         functions: functions.map((item) => ({
           ...item,
+          pathOrder: [],
           assistantID,
           environmentID,
         })),
@@ -212,6 +214,7 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
     return {
       functions: functions.map((item) => ({
         ...item,
+        pathOrder: [],
         createdAt,
         updatedAt: createdAt,
         createdByID: userID,
@@ -306,7 +309,7 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
     const { templateID, name, description } = data;
     const rawTemplate = JSON.parse((await fs.readFile(`./src/function/templates/${templateID}.function-template.json`)).toString());
 
-    const { functions, functionVariables, functionPaths } = FunctionImportDataDTO.parse(rawTemplate);
+    const { functions, functionVariables, functionPaths } = FunctionImportData.parse(rawTemplate);
 
     const functionID = new ObjectId().toString();
     const importData: FunctionImportDataDTO = {
@@ -331,10 +334,10 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
       })),
     };
 
-    const { functions: createdFunctions } = await this.importJSONAndBroadcast(importData, { userID, clientID, environmentID });
-
     // We know there's only one function here
     importData.functions[0].pathOrder = importData.functionPaths.map((p) => p.id);
+
+    const { functions: createdFunctions } = await this.importJSONAndBroadcast(importData, { userID, clientID, environmentID });
 
     if (createdFunctions.length === 0) {
       throw new Error('Realtime was unable to send back function created from template.');
@@ -538,7 +541,7 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
   /* Upsert */
 
   async upsertManyWithSubResources(
-    data: { functions: FunctionType[]; functionPaths: FunctionPath[]; functionVariables: FunctionVariable[] },
+    data: { functions: FunctionImportDataDTO[]; functionPaths: FunctionPath[]; functionVariables: FunctionVariable[] },
     meta: { userID: number; assistantID: string; environmentID: string }
   ) {
     const { functions, functionPaths, functionVariables } = this.prepareImportData(data, meta);

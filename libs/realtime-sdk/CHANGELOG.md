@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.412.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.411.1...@voiceflow/realtime-sdk@1.412.0) (2024-06-07)
+
+### Features
+
+* load env data via http (COR-000) ([#8230](https://github.com/voiceflow/creator-app/issues/8230)) ([2b8b1a2](https://github.com/voiceflow/creator-app/commit/2b8b1a254bdb9a09f747ff26227d1d79ae7acc66))
+
 ## [1.411.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.411.0...@voiceflow/realtime-sdk@1.411.1) (2024-06-07)
 
 ### Bug Fixes

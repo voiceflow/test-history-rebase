@@ -1,9 +1,11 @@
-import type { z } from 'zod';
+import { z } from 'zod';
 
 import { IntentRequestDTO, IntentRequestPayloadDTO } from './intent-request.dto';
 
 export const LegacyIntentRequestDTO = IntentRequestDTO.extend({
-  payload: IntentRequestPayloadDTO.omit({ data: true }).required({ entities: true }),
+  payload: IntentRequestPayloadDTO.required({ entities: true }).extend({
+    data: z.never().optional()
+  }),
 })
   .passthrough()
   .describe('The legacy intent request type that `general-runtime` expects from its clients.');

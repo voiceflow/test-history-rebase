@@ -4,6 +4,8 @@ import { ActionRequestDTO } from './action-request.dto';
 import { GeneralActionAndLabelRequestDTO } from './general/general-action-and-label-request.dto';
 import { GeneralUnknownRequestDTO } from './general/general-unknown-request.dto';
 import { PathRequestDTO } from './general/path-request.dto';
+import { AlexaIntentRequestDTO } from './intent/alexa-intent-request.dto';
+import { LegacyIntentRequestDTO } from './intent/general-intent-request.dto';
 import { IntentRequestDTO } from './intent/intent-request.dto';
 import { LaunchRequestDTO } from './launch-request.dto';
 import { NoReplyRequestDTO } from './no-reply-request.dto';
@@ -14,6 +16,8 @@ export const AnyRequestDTO = z.union([
   LaunchRequestDTO,
   NoReplyRequestDTO,
   TextRequestDTO,
+  AlexaIntentRequestDTO,
+  LegacyIntentRequestDTO,
   IntentRequestDTO,
   GeneralUnknownRequestDTO,
   GeneralActionAndLabelRequestDTO,

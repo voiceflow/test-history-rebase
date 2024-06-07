@@ -11415,7 +11415,7 @@ __metadata:
     "@voiceflow/nestjs-env": 1.6.2
     "@voiceflow/nestjs-openapi-extractor": 1.7.13
     "@voiceflow/sdk-auth": 2.10.0
-    "@voiceflow/sdk-billing": 1.26.29
+    "@voiceflow/sdk-billing": 1.26.30
     axios: 1.6.0
     chance: 1.1.11
     dd-trace: 4.33.0
@@ -11867,8 +11867,8 @@ __metadata:
     "@voiceflow/realtime-sdk": "workspace:*"
     "@voiceflow/schema-types": 1.64.0
     "@voiceflow/sdk-auth": 2.10.0
-    "@voiceflow/sdk-billing": 1.26.29
-    "@voiceflow/sdk-identity": 1.20.10
+    "@voiceflow/sdk-billing": 1.26.30
+    "@voiceflow/sdk-identity": 1.22.12
     "@voiceflow/sdk-logux-designer": "workspace:*"
     "@voiceflow/sdk-message-queue": 1.7.0
     "@voiceflow/socket-utils": "workspace:*"
@@ -12039,9 +12039,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voiceflow/sdk-billing@npm:1.26.29":
-  version: 1.26.29
-  resolution: "@voiceflow/sdk-billing@npm:1.26.29"
+"@voiceflow/sdk-billing@npm:1.26.30":
+  version: 1.26.30
+  resolution: "@voiceflow/sdk-billing@npm:1.26.30"
   dependencies:
     "@voiceflow/orval-fetch": 1.6.2
     "@voiceflow/sdk-common": 1.12.2
@@ -12061,7 +12061,7 @@ __metadata:
       optional: true
     undici:
       optional: true
-  checksum: 7a52b88d4f4b425f26b834f9e130f6cb2216e99bf4d84cd0cc455ef0cbb1b8e6529129b3eeba95d31e6b0c05a227d914818e2d31146249fbe93bcfac0032b052
+  checksum: 678b7f4ed889d87dd8a1a42d48075de426a27791e6fa09257e796fd775d4fc14fd725924e56da38a0dd9a655d134e9c94c55964db528f7b0bd1e0c4194dc6efc
   languageName: node
   linkType: hard
 
@@ -12135,7 +12135,7 @@ __metadata:
     "@nestjs/common": 9.4.0
     "@voiceflow/orval-fetch": 1.5.2
     "@voiceflow/realtime": "workspace:*"
-    "@voiceflow/sdk-common": 1.12.0
+    "@voiceflow/sdk-common": 1.12.2
     nestjs-zod: 2.2.0
     undici: 5.28.4
   peerDependencies:
@@ -12162,7 +12162,7 @@ __metadata:
     "@nestjs/common": 9.4.0
     "@voiceflow/ml-gateway": "workspace:*"
     "@voiceflow/orval-fetch": 1.5.2
-    "@voiceflow/sdk-common": 1.12.0
+    "@voiceflow/sdk-common": 1.12.2
     eventsource-parser: ^1.1.2
     nestjs-zod: 2.2.0
     undici: 5.28.4
@@ -12183,12 +12183,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@voiceflow/sdk-identity@npm:1.20.10":
-  version: 1.20.10
-  resolution: "@voiceflow/sdk-identity@npm:1.20.10"
+"@voiceflow/sdk-identity@npm:1.22.12":
+  version: 1.22.12
+  resolution: "@voiceflow/sdk-identity@npm:1.22.12"
   dependencies:
-    "@voiceflow/orval-fetch": 1.6.0
-    "@voiceflow/sdk-common": 1.12.0
+    "@voiceflow/orval-fetch": 1.6.2
+    "@voiceflow/sdk-common": 1.12.2
   peerDependencies:
     "@nestjs/common": ^9
     nestjs-zod: ^2
@@ -12200,7 +12200,7 @@ __metadata:
       optional: true
     undici:
       optional: true
-  checksum: 04f215529b819de900486f6cf52f2b6217c67f9e1fb5720ea7124e9d75365d3d646396f73c1a80fd5135b105d2903ae0bc2e70a800fafd4c3c1431916062f4b2
+  checksum: c4f7ca09d0bb7f680d90200466633ecadedc19034ed3c50bf6036e73e2b365f31bffa81bfae787a36854026cfb94efdd8cf94c2ce003f9c1b26500bd9fabd5e3
   languageName: node
   linkType: hard
 

@@ -1,4 +1,12 @@
-import { COMPONENTS_KEY, DEFAULT_STEP_COLORS_KEY, PROTOTYPE_KEY, PUBLISHING_KEY, RPC_KEY, SESSION_KEY, SETTINGS_KEY } from '@realtime-sdk/constants';
+import {
+  COMPONENTS_KEY,
+  DEFAULT_STEP_COLORS_KEY,
+  PROTOTYPE_KEY,
+  PUBLISHING_KEY,
+  RPC_KEY,
+  SESSION_KEY,
+  SETTINGS_KEY,
+} from '@realtime-sdk/constants';
 import { PrototypeSettings } from '@realtime-sdk/models';
 import { BaseProjectPayload, BaseVersionPayload } from '@realtime-sdk/types';
 import { BaseModels } from '@voiceflow/base-types';
@@ -29,6 +37,9 @@ export interface ActivateVersionPayload {
   workspaceID: string;
 }
 
+/**
+ * @deprecated should be removed with HTTP_LOAD_ENVIRONMENT feature flag
+ */
 export const activateVersion = Utils.protocol.createAction<ActivateVersionPayload>(versionRPCType('ACTIVATE'));
 
 // Other
@@ -98,8 +109,12 @@ export const addManyComponents = Utils.protocol.createAction<AddManyComponentsPa
 
 export const reorderComponents = Utils.protocol.createAction<ReorderComponentsPayload>(componentsType('REORDER'));
 
-export const patchDefaultStepColors = Utils.protocol.createAction<PatchDefaultStepColorsPayload>(versionDefaultStepColorsType('PATCH'));
+export const patchDefaultStepColors = Utils.protocol.createAction<PatchDefaultStepColorsPayload>(
+  versionDefaultStepColorsType('PATCH')
+);
 
-export const replacePrototypeSettings = Utils.protocol.createAction<ReplacePrototypeSettingsPayload>(versionPrototypeType('REPLACE_SETTINGS'));
+export const replacePrototypeSettings = Utils.protocol.createAction<ReplacePrototypeSettingsPayload>(
+  versionPrototypeType('REPLACE_SETTINGS')
+);
 
 export const createBackup = Utils.protocol.createAction<CreateBackupPayload>(versionType('CREATE_BACKUP'));

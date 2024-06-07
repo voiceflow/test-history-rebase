@@ -2,7 +2,7 @@ export interface DBVariableState {
   _id: string;
   projectID: string;
   name: string;
-  startFrom: { diagramID: string; stepID: string } | null;
+  startFrom?: { diagramID: string; stepID: string } | null;
   variables: Record<string, unknown>;
 }
 

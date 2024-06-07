@@ -4,7 +4,6 @@ import * as Project from '@/components/Project';
 import { ExportProvider } from '@/contexts/ExportContext';
 import { PrototypeJobProvider } from '@/contexts/PrototypeJobContext';
 import { PublishProvider } from '@/contexts/PublishContext';
-import { SearchProvider } from '@/contexts/SearchContext';
 import { TrainingProvider } from '@/contexts/TrainingContext';
 import { AnalyticsDashboardProvider } from '@/pages/AnalyticsDashboard/context';
 import { PrototypeProvider } from '@/pages/Prototype/context';
@@ -28,11 +27,9 @@ const Providers: React.FC<React.PropsWithChildren> = ({ children }) => (
                 <Project.Export.Provider>
                   <NLUTrainingModelProvider>
                     <SelectionProvider>
-                      <SearchProvider>
-                        <AnalyticsDashboardProvider>
-                          <SharePopperProvider>{children}</SharePopperProvider>
-                        </AnalyticsDashboardProvider>
-                      </SearchProvider>
+                      <AnalyticsDashboardProvider>
+                        <SharePopperProvider>{children}</SharePopperProvider>
+                      </AnalyticsDashboardProvider>
                     </SelectionProvider>
                   </NLUTrainingModelProvider>
                 </Project.Export.Provider>

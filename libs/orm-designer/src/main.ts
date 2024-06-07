@@ -23,6 +23,7 @@ export * from './postgres/intent';
 export * from './postgres/persona';
 export * from './postgres/product-update';
 export * from './postgres/prompt';
+export * from './postgres/reference';
 export * from './postgres/response';
 export * from './postgres/stubs/user.stub';
 export * from './postgres/stubs/workspace.stub';

@@ -1,11 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Organization } from '@voiceflow/dtos';
+import { UnleashFeatureFlagService } from '@voiceflow/nestjs-common';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { IdentityClient } from '@voiceflow/sdk-identity';
 
 import { UserService } from '@/user/user.service';
 
-import { organizationAdapter } from './identity.adapter';
+import { organizationAdapter, organizationMemberAdapter } from './identity.adapter';
 
 @Injectable()
 export class OrganizationIdentityService {
@@ -13,23 +14,45 @@ export class OrganizationIdentityService {
     @Inject(UserService)
     private readonly user: UserService,
     @Inject(IdentityClient)
-    private readonly identityClient: IdentityClient
+    private readonly identityClient: IdentityClient,
+    @Inject(UnleashFeatureFlagService)
+    private readonly unleash: UnleashFeatureFlagService
   ) {}
 
   public async getAll(creatorID: number): Promise<Organization[]> {
-    const token = await this.user.getTokenByID(creatorID);
+    const isNewOrgMembersEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.NEW_ORGANIZATION_MEMBERS);
 
-    const allOrganizations = (await this.identityClient.organization.findManyByUserIDThroughWorkspaces(
-      {
-        members: true,
-        trial: true,
-      },
-      {
-        headers: { Authorization: token },
-      }
-    )) as Realtime.Identity.Organization[];
+    const headers = await this.user.getAuthHeadersByID(creatorID);
+    const organizations = await this.identityClient.organization
+      .findManyByUserIDThroughWorkspaces(
+        {
+          trial: true,
+          members: !isNewOrgMembersEnabled,
+        },
+        {
+          headers,
+        }
+      )
+      .then(organizationAdapter.mapFromDB);
 
-    return organizationAdapter.mapFromDB(allOrganizations);
+    if (!isNewOrgMembersEnabled) return organizations;
+
+    const orgsWithMembers = await Promise.all(
+      organizations.map(async (organization) => {
+        const members = await this.identityClient.private
+          .getAllOrganizationMembers(organization.id, {
+            headers,
+          })
+          .then(organizationMemberAdapter.mapFromDB);
+
+        return {
+          ...organization,
+          members,
+        };
+      })
+    );
+
+    return orgsWithMembers;
   }
 
   public async getOrganization(creatorID: number, organizationID: string): Promise<Organization | null> {
@@ -38,10 +61,8 @@ export class OrganizationIdentityService {
   }
 
   public async patchOne(creatorID: number, organizationID: string, values: Partial<Organization>): Promise<void> {
-    const token = await this.user.getTokenByID(creatorID);
-
     await this.identityClient.organization.patchOne(organizationID, values, {
-      headers: { Authorization: token },
+      headers: await this.user.getAuthHeadersByID(creatorID),
     });
   }
 

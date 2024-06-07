@@ -5,6 +5,7 @@ export * from './cms-tabular-resource.dto';
 export * from './enums/channel.enum';
 export * from './enums/entity-lock.enum';
 export * from './enums/language.enum';
+export * from './enums/role-scope.enum';
 export * from './enums/user-role.enum';
 export * from './markup.dto';
 export * from './prototype.dto';

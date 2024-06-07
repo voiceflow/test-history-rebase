@@ -3,6 +3,8 @@ import { IdentityClient } from '@voiceflow/sdk-identity';
 
 import { UserService } from '@/user/user.service';
 
+import { organizationMemberAdapter } from './identity.adapter';
+
 @Injectable()
 export class OrganizationIdentityMemberService {
   constructor(
@@ -12,7 +14,9 @@ export class OrganizationIdentityMemberService {
   ) {}
 
   public async getAll(organizationID: string) {
-    return this.identityClient.organizationMember.findAll(organizationID);
+    return this.identityClient.private
+      .getAllOrganizationMembers(organizationID)
+      .then(organizationMemberAdapter.mapFromDB);
   }
 
   public async add(organizationID: string, memberID: number): Promise<void> {
@@ -21,10 +25,8 @@ export class OrganizationIdentityMemberService {
 
   public async remove(userID: number, organizationID: string, memberID: number): Promise<void> {
     const token = await this.user.getTokenByID(userID);
-    return this.identityClient.organizationMember.deleteMember(organizationID, memberID, { headers: { Authorization: token } });
-  }
-
-  public async removeSelf(organizationID: string): Promise<void> {
-    return this.identityClient.organizationMember.leaveWorkspace(organizationID);
+    return this.identityClient.organizationMember.deleteMember(organizationID, memberID, {
+      headers: { Authorization: token },
+    });
   }
 }

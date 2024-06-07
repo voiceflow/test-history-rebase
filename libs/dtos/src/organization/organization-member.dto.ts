@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { UserRole } from '@/common';
+import { RoleScope, UserRole } from '@/common';
 
 export const OrganizationMemberDTO = z.object({
   name: z.string(),
@@ -8,6 +8,11 @@ export const OrganizationMemberDTO = z.object({
   email: z.string(),
   image: z.string().nullable(),
   creatorID: z.number(),
+
+  workspaceID: z.string().optional().nullable(),
+  assistantID: z.string().optional().nullable(),
+  organizationID: z.string(),
+  scope: z.nativeEnum(RoleScope),
 });
 
 export type OrganizationMember = z.infer<typeof OrganizationMemberDTO>;

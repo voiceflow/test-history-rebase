@@ -1,48 +1,58 @@
-import { Organization, OrganizationMember } from '@voiceflow/dtos';
+import { Organization, OrganizationMember, UserRole } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
-import { createMultiAdapter, createSimpleAdapter, notImplementedAdapter } from 'bidirectional-adapter';
+import * as Identity from '@voiceflow/sdk-identity';
+import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter';
 import uniqBy from 'lodash/uniqBy.js';
 
-export const organizationMemberSimpleAdapter = createSimpleAdapter<
-  Realtime.Identity.OrganizationMember,
-  OrganizationMember
->(
-  ({ user, membership }) => ({
+type LegacyOrganizationMember = Exclude<Identity.Organization['members'], undefined>[number];
+
+export const legacyOrganizationMemberAdapter = createMultiAdapter<LegacyOrganizationMember, OrganizationMember>(
+  ({ membership, user }) => ({
     name: user.name,
-    role: membership.role,
     email: user.email,
     image: user.image,
     creatorID: user.id,
+    role: membership.role as UserRole,
+    scope: 'organization',
+    organizationID: membership.organizationID,
+    workspaceID: null,
+    assistantID: null,
   }),
   notImplementedAdapter.transformer
 );
 
-// TODO [organization refactor] refactor adapter
-export const organizationMemberAdapter = {
-  ...organizationMemberSimpleAdapter,
+export const organizationMemberAdapter = createMultiAdapter<Identity.OrganizationMember, OrganizationMember>(
+  ({ user, membership }) => ({
+    name: user.name,
+    email: user.email,
+    image: user.image,
+    creatorID: user.id,
+    role: membership.role as UserRole,
+    scope: membership.scope,
+    organizationID: membership.organizationID,
+    workspaceID: membership.workspaceID,
+    assistantID: membership.assistantID,
+  }),
+  notImplementedAdapter.transformer
+);
 
-  mapFromDB: (members: Realtime.Identity.OrganizationMember[]): OrganizationMember[] =>
-    uniqBy(
-      members
-        .map(organizationMemberSimpleAdapter.fromDB)
-        .sort((a, b) => Realtime.Utils.role.getRoleStrength(a.role) - Realtime.Utils.role.getRoleStrength(b.role)),
-      (member) => member.creatorID
+const getUniqueSortedByRoleStrengthMembers = (members: LegacyOrganizationMember[]): LegacyOrganizationMember[] =>
+  uniqBy(
+    members.sort(
+      (a, b) =>
+        Realtime.Utils.role.getRoleStrength(a.membership.role) - Realtime.Utils.role.getRoleStrength(b.membership.role)
     ),
+    (member) => member.user.id
+  );
 
-  mapToDB: notImplementedAdapter.multi.mapToDB,
-};
-
-// TODO [organization refactor] refactor adapter
-export const organizationAdapter = createMultiAdapter<Realtime.Identity.Organization, Organization>(
-  ({ id, name, image, members = [], trial = null, createdAt, updatedAt }) => {
+export const organizationAdapter = createMultiAdapter<Identity.Organization, Organization>(
+  ({ id, name, image, members = [], trial = null }) => {
     return {
       id,
       name,
       image,
-      trial: trial ? { daysLeft: trial.daysLeft, endAt: trial.endAt } : null,
-      members: organizationMemberAdapter.mapFromDB(members),
-      createdAt,
-      updatedAt,
+      trial,
+      members: legacyOrganizationMemberAdapter.mapFromDB(getUniqueSortedByRoleStrengthMembers(members)),
     };
   },
   notImplementedAdapter.transformer

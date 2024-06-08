@@ -14,7 +14,7 @@ export class FunctionPathLoguxController {
   constructor(
     @Inject(FunctionPathService)
     private readonly service: FunctionPathService
-  ) {}
+  ) { }
 
   @Action.Async(Actions.FunctionPath.CreateOne)
   @Authorize.Permissions<Actions.FunctionPath.CreateOne.Request>([Permission.PROJECT_UPDATE], ({ context }) => ({
@@ -26,7 +26,9 @@ export class FunctionPathLoguxController {
     @Payload() { data, context }: Actions.FunctionPath.CreateOne.Request,
     @AuthMeta() auth: AuthMetaPayload
   ): Promise<Actions.FunctionPath.CreateOne.Response> {
-    return this.service.createManyAndBroadcast([data], { auth, context }).then(([result]) => ({ data: this.service.toJSON(result), context }));
+    return this.service
+      .createManyAndBroadcast([data], { auth, context })
+      .then(([result]) => ({ data: this.service.toJSON(result), context }));
   }
 
   @Action(Actions.FunctionPath.PatchOne)
@@ -49,7 +51,10 @@ export class FunctionPathLoguxController {
   @Broadcast<Actions.FunctionPath.PatchMany>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async patchMany(@Payload() { ids, patch, context }: Actions.FunctionPath.PatchMany, @AuthMeta() auth: AuthMetaPayload) {
+  async patchMany(
+    @Payload() { ids, patch, context }: Actions.FunctionPath.PatchMany,
+    @AuthMeta() auth: AuthMetaPayload
+  ) {
     await this.service.patchManyForUser(
       auth.userID,
       ids.map((id) => ({ id, environmentID: context.environmentID })),
@@ -66,10 +71,13 @@ export class FunctionPathLoguxController {
   @BroadcastOnly()
   @UseRequestContext()
   async deleteOne(@Payload() { id, context }: Actions.FunctionPath.DeleteOne, @AuthMeta() auth: AuthMetaPayload) {
-    const result = await this.service.deleteManyAndSync([id], auth.userID, context);
+    const result = await this.service.deleteManyAndSync([id], { userID: auth.userID, context });
 
     // overriding functions cause it's broadcasted by decorator
-    await this.service.broadcastDeleteMany({ ...result, delete: { ...result.delete, functionPaths: [] } }, { auth, context });
+    await this.service.broadcastDeleteMany(
+      { ...result, delete: { ...result.delete, functionPaths: [] } },
+      { auth, context }
+    );
   }
 
   @Action(Actions.FunctionPath.DeleteMany)
@@ -81,10 +89,13 @@ export class FunctionPathLoguxController {
   @BroadcastOnly()
   @UseRequestContext()
   async deleteMany(@Payload() { ids, context }: Actions.FunctionPath.DeleteMany, @AuthMeta() auth: AuthMetaPayload) {
-    const result = await this.service.deleteManyAndSync(ids, auth.userID, context);
+    const result = await this.service.deleteManyAndSync(ids, { userID: auth.userID, context });
 
     // overriding functions cause it's broadcasted by decorator
-    await this.service.broadcastDeleteMany({ ...result, delete: { ...result.delete, functionPaths: [] } }, { auth, context });
+    await this.service.broadcastDeleteMany(
+      { ...result, delete: { ...result.delete, functionPaths: [] } },
+      { auth, context }
+    );
   }
 
   @Action(Actions.FunctionPath.AddOne)

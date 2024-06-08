@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { FunctionExportDataDTO } from './function-export-import-data.dto';
+import { FunctionExportDataDTO } from './function-export-data.dto';
 
 export const FunctionExportJSONResponse = z.object({}).merge(FunctionExportDataDTO).strict();
 

@@ -25,6 +25,7 @@ import { cmsBroadcastContext, injectAssistantAndEnvironmentIDs, toPostgresEntity
 import { CMSBroadcastMeta, CMSContext } from '@/types';
 
 import type { FunctionExportDataDTO } from './dtos/function-export-data.dto';
+import type { FunctionImportDataDTO } from './dtos/function-import-data.dto';
 import { FunctionImportDataDTO as FunctionImportData } from './dtos/function-import-data.dto';
 import { FunctionPathService } from './function-path/function-path.service';
 import { FunctionVariableService } from './function-variable/function-variable.service';
@@ -210,12 +211,17 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
     functionVariables: FunctionVariableJSON[];
   } {
     const createdAt = new Date().toJSON();
+    const sortByCreatedAt = (itemA: { createdAt: string }, itemB: { createdAt: string }) =>
+      new Date(itemA.createdAt).getTime() - new Date(itemB.createdAt).getTime();
+
+    const orderedFunctionPaths = [...functionPaths].sort(sortByCreatedAt);
+    const functionPathsByFunction = _.groupBy(orderedFunctionPaths, (item) => item.functionID);
 
     if (backup) {
       return {
         functions: functions.map((item) => ({
           ...item,
-          pathOrder: [],
+          pathOrder: item.pathOrder ? item.pathOrder : functionPathsByFunction[item.id]?.map((path) => path.id) ?? [],
           assistantID,
           environmentID,
         })),
@@ -237,9 +243,6 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
         })),
       };
     }
-
-    const sortByCreatedAt = (itemA: { createdAt: string }, itemB: { createdAt: string }) =>
-      new Date(itemA.createdAt).getTime() - new Date(itemB.createdAt).getTime();
 
     const staggerDate = (date: Date, delta: number): string => new Date(date.getTime() + delta).toJSON();
 
@@ -345,6 +348,11 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
 
     const { functions, functionVariables, functionPaths } = FunctionImportData.parse(rawTemplate);
 
+    const functionPathsToCreate = functionPaths.map((path) => ({ ...path, id: new ObjectId().toString(), functionID }));
+    const functionPathIdsRemap = Object.fromEntries(
+      functionPaths.map((path, i) => [path.id, functionPathsToCreate[i].id])
+    );
+
     const functionID = new ObjectId().toString();
     const importData: FunctionImportDataDTO = {
       functions: [
@@ -353,7 +361,9 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
           id: functionID,
           name,
           description,
-          pathOrder: [],
+          pathOrder:
+            functions[0].pathOrder?.map((pathId) => functionPathIdsRemap[pathId]) ??
+            functionPathsToCreate.map((p) => p.id),
         },
       ],
       functionVariables: functionVariables.map((variable) => ({
@@ -367,9 +377,6 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
         functionID,
       })),
     };
-
-    // We know there's only one function here
-    importData.functions[0].pathOrder = importData.functionPaths.map((p) => p.id);
 
     const { functions: createdFunctions } = await this.importJSONAndBroadcast(importData, {
       userID,

@@ -6,7 +6,6 @@ import React from 'react';
 import { Designer } from '@/ducks';
 import { useInputAutoFocusKey } from '@/hooks/input.hook';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
-import { mapSort } from '@/utils/array.util';
 
 import { FunctionPathSection } from '../FunctionPathSection/FunctionPathSection.component';
 import { FunctionVariableSection } from '../FunctionVariableSection/FunctionVariableSection.component';
@@ -17,7 +16,9 @@ export const FunctionEditForm: React.FC<IFunctionEditForm> = ({ functionID }) =>
 
   const autofocus = useInputAutoFocusKey();
   const functionObj = useSelector(Designer.Function.selectors.oneByID, { id: functionID });
-  const functionPaths = useSelector(Designer.Function.FunctionPath.selectors.allByFunctionID, { functionID });
+  const functionPaths = useSelector(Designer.Function.FunctionPath.selectors.allByIDs, {
+    ids: functionObj?.pathOrder ?? [],
+  });
   const inputVariables = useSelector(Designer.Function.FunctionVariable.selectors.inputByFunctionID, { functionID });
   const outputVariables = useSelector(Designer.Function.FunctionVariable.selectors.outputByFunctionID, { functionID });
 
@@ -28,8 +29,6 @@ export const FunctionEditForm: React.FC<IFunctionEditForm> = ({ functionID }) =>
   const patchFunctionVariable = useDispatch(Designer.Function.FunctionVariable.effect.patchOne);
   const deleteFunctionVariable = useDispatch(Designer.Function.FunctionVariable.effect.deleteOne);
   const createFunctionVariable = useDispatch(Designer.Function.FunctionVariable.effect.createOne, functionID);
-
-  const pathsOrdered = mapSort(functionPaths, functionObj?.pathOrder || [], 'id');
 
   const onVariableAdd = async (type: FunctionVariableKind) => {
     const { id } = await createFunctionVariable({ type, name: '', description: '' });
@@ -76,7 +75,7 @@ export const FunctionEditForm: React.FC<IFunctionEditForm> = ({ functionID }) =>
       <FunctionPathSection
         title="Paths"
         autoFocusKey={autofocus.key}
-        functionPaths={pathsOrdered}
+        functionPaths={functionPaths}
         onFunctionPathAdd={onPathAdd}
         onDeleteFunctionPath={deleteFunctionPath}
         onFunctionPathChange={patchFunctionPath}

@@ -4,7 +4,7 @@ import { AttachmentExportImportDataDTO } from '@/attachment/dtos/attachment-expo
 import { EntityExportImportDataDTO } from '@/entity/dtos/entity-export-import-data.dto';
 import { FlowExportImportDataDTO } from '@/flow/dtos/flow-export-import-data.dto';
 import { FolderExportImportDataDTO } from '@/folder/dtos/folder-export-import-data.dto';
-import { FunctionImportDataDTO } from '@/function/dtos/function-export-import-data.dto';
+import { FunctionImportDataDTO } from '@/function/dtos/function-import-data.dto';
 import { IntentImportDataDTO } from '@/intent/dtos/intent-import-data.dto';
 import { ResponseExportImportDataDTO } from '@/response/dtos/response-export-import-data.dto';
 import { VariableExportImportDataDTO } from '@/variable/dtos/variable-export-import-data.dto';

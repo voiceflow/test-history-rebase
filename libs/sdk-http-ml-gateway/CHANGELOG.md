@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.18.32](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-ml-gateway@2.18.31...@voiceflow/sdk-http-ml-gateway@2.18.32) (2024-06-07)
+
+**Note:** Version bump only for package @voiceflow/sdk-http-ml-gateway
+
+## [2.18.31](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-ml-gateway@2.18.30...@voiceflow/sdk-http-ml-gateway@2.18.31) (2024-06-07)
+
+### Bug Fixes
+
+* retry integrate org members (COR-2143) ([#8183](https://github.com/voiceflow/creator-app/issues/8183)) ([2b5e0b4](https://github.com/voiceflow/creator-app/commit/2b5e0b4882240a03e64e5f9940cb76d26bf261da))
+
 ## [2.18.30](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-ml-gateway@2.18.29...@voiceflow/sdk-http-ml-gateway@2.18.30) (2024-06-06)
 
 **Note:** Version bump only for package @voiceflow/sdk-http-ml-gateway

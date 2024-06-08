@@ -1,6 +1,6 @@
 {
   "name": "@voiceflow/sdk-http-designer",
-  "version": "2.27.37",
+  "version": "2.27.42",
   "exports": {
     ".": {
       "types": "./build/cjs/main.d.ts",
@@ -56,7 +56,7 @@
   },
   "dependencies": {
     "@voiceflow/orval-fetch": "1.5.2",
-    "@voiceflow/sdk-common": "1.12.0"
+    "@voiceflow/sdk-common": "1.12.2"
   },
   "devDependencies": {
     "@nestjs/common": "9.4.0",

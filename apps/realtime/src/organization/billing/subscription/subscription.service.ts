@@ -77,6 +77,7 @@ export class BillingSubscriptionService {
         featureID: item.feature_id,
         value: item.value,
       })),
+      downgradedFromTrial: subscription.cf_downgraded_from_trial,
       metaData: subscription.meta_data,
     };
   }

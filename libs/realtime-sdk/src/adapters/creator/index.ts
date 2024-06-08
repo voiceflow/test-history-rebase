@@ -15,7 +15,10 @@ export { default as nodeDataAdapter } from './nodeData';
 export { default as stepPortsAdapter } from './stepPorts';
 
 // we will be doing a patch request.
-export type DBCreatorDiagram = Omit<BaseModels.Diagram.Model, 'created' | 'creatorID' | 'variables' | 'versionID' | 'name' | '_id' | 'diagramID'>;
+type DBCreatorDiagram = Omit<
+  BaseModels.Diagram.Model,
+  'created' | 'creatorID' | 'variables' | 'versionID' | 'name' | '_id' | 'diagramID' | 'type' | 'menuItems'
+>;
 
 const creatorAdapter = createSimpleAdapter<
   DBCreatorDiagram,
@@ -25,7 +28,7 @@ const creatorAdapter = createSimpleAdapter<
       platform: Platform.Constants.PlatformType;
       projectType: Platform.Constants.ProjectType;
       context: AdapterContext;
-    }
+    },
   ],
   [
     {
@@ -35,7 +38,7 @@ const creatorAdapter = createSimpleAdapter<
       projectType: Platform.Constants.ProjectType;
       context: VersionAdapterContext;
       partial?: boolean;
-    }
+    },
   ]
 >(
   (diagram, { platform, projectType, context }) => {
@@ -53,15 +56,18 @@ const creatorAdapter = createSimpleAdapter<
 
     const nodeList = cleanupDBNodes(diagram.nodes);
 
-    const parentNodes = nodeList.reduce<Record<string, BaseModels.BaseBlock | BaseModels.BaseActions | DBNodeStart>>((acc, node) => {
-      if (isBlock(node) || isActions(node) || isStart(node)) {
-        node.data.steps.forEach((id: string) => {
-          acc[id] = node;
-        });
-      }
+    const parentNodes = nodeList.reduce<Record<string, BaseModels.BaseBlock | BaseModels.BaseActions | DBNodeStart>>(
+      (acc, node) => {
+        if (isBlock(node) || isActions(node) || isStart(node)) {
+          node.data.steps.forEach((id: string) => {
+            acc[id] = node;
+          });
+        }
 
-      return acc;
-    }, {});
+        return acc;
+      },
+      {}
+    );
 
     const registerNode = (dbNode: BaseModels.BaseDiagramNode) => {
       const {
@@ -97,7 +103,10 @@ const creatorAdapter = createSimpleAdapter<
     // extra safeguard against targeting non-existent nodes or ports
     const validLinks = links.filter(
       (link) =>
-        nodeIDs.has(link.source.nodeID) && nodeIDs.has(link.target.nodeID) && portIDs.has(link.source.portID) && portIDs.has(link.target.portID)
+        nodeIDs.has(link.source.nodeID) &&
+        nodeIDs.has(link.target.nodeID) &&
+        portIDs.has(link.source.portID) &&
+        portIDs.has(link.target.portID)
     );
 
     return {

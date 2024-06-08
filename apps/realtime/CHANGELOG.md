@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.382.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.382.4...@voiceflow/realtime@1.382.5) (2024-06-07)
+
+**Note:** Version bump only for package @voiceflow/realtime
+
+## [1.382.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.382.3...@voiceflow/realtime@1.382.4) (2024-06-07)
+
+**Note:** Version bump only for package @voiceflow/realtime
+
+## [1.382.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.382.2...@voiceflow/realtime@1.382.3) (2024-06-07)
+
+**Note:** Version bump only for package @voiceflow/realtime
+
+## [1.382.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.382.1...@voiceflow/realtime@1.382.2) (2024-06-07)
+
+### Bug Fixes
+
+* retry integrate org members (COR-2143) ([#8183](https://github.com/voiceflow/creator-app/issues/8183)) ([2b5e0b4](https://github.com/voiceflow/creator-app/commit/2b5e0b4882240a03e64e5f9940cb76d26bf261da))
+
+## [1.382.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.382.0...@voiceflow/realtime@1.382.1) (2024-06-06)
+
+**Note:** Version bump only for package @voiceflow/realtime
+
 # [1.382.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.381.0...@voiceflow/realtime@1.382.0) (2024-06-06)
 
 ### Features

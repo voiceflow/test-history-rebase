@@ -10,13 +10,15 @@ import { isAdminUserRole } from '@/utils/role';
 
 import { allOrganizationsSelector, getOrganizationByIDSelector } from '../organization.select';
 
-export const organizationSelector = createSelector([getOrganizationByIDSelector, organizationIDSelector], (getOrganizationByID, organizationID) =>
-  getOrganizationByID({ id: organizationID })
+export const organizationSelector = createSelector(
+  [getOrganizationByIDSelector, organizationIDSelector],
+  (getOrganizationByID, organizationID) => getOrganizationByID({ id: organizationID })
 );
 
-export const membersSelector = createSelector([organizationSelector], (organization) => organization?.normalizedMembers);
-
-export const normalizedMembersSelector = createSelector([membersSelector], (members) => members ?? []);
+export const membersSelector = createSelector(
+  [organizationSelector],
+  (organization) => organization?.normalizedMembers
+);
 
 export const memberByIDSelector = createSelector([membersSelector, creatorIDParamSelector], (members, creatorID) => {
   return members && creatorID !== null ? Normal.getOne(members, String(creatorID)) : null;
@@ -36,8 +38,17 @@ export const currentMemberRoleByIDSelector = createSelector(
   }
 );
 
-export const organizationsWhereIsAdminSelector = createSelector([allOrganizationsSelector, userIDSelector], (organizations, userID) =>
-  userID === null ? [] : organizations.filter(({ normalizedMembers }) => isAdminUserRole(Normal.getOne(normalizedMembers, String(userID))?.role))
+export const organizationsWhereIsAdminSelector = createSelector(
+  [allOrganizationsSelector, userIDSelector],
+  (organizations, userID) =>
+    userID === null
+      ? []
+      : organizations.filter(({ normalizedMembers }) =>
+          isAdminUserRole(Normal.getOne(normalizedMembers, String(userID))?.role)
+        )
 );
 
-export const isAdminOfAnyOrganizationSelector = createSelector([organizationsWhereIsAdminSelector], (organizations) => organizations.length > 0);
+export const isAdminOfAnyOrganizationSelector = createSelector(
+  [organizationsWhereIsAdminSelector],
+  (organizations) => organizations.length > 0
+);

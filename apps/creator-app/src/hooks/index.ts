@@ -17,6 +17,7 @@ export * from './logux';
 export * from './mapManager';
 export * from './microphone';
 export * from './nlu';
+export * from './partnerstack';
 export * from './permission';
 export * from './planLimitV2';
 export * from './platformConfig';

@@ -3,6 +3,42 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1549.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1549.0...@voiceflow/creator-app@1.1549.1) (2024-06-07)
+
+**Note:** Version bump only for package @voiceflow/creator-app
+
+# [1.1549.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1548.2...@voiceflow/creator-app@1.1549.0) (2024-06-07)
+
+### Features
+
+* load env data via http (COR-000) ([#8230](https://github.com/voiceflow/creator-app/issues/8230)) ([2b8b1a2](https://github.com/voiceflow/creator-app/commit/2b8b1a254bdb9a09f747ff26227d1d79ae7acc66))
+
+## [1.1548.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1548.1...@voiceflow/creator-app@1.1548.2) (2024-06-07)
+
+**Note:** Version bump only for package @voiceflow/creator-app
+
+## [1.1548.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1548.0...@voiceflow/creator-app@1.1548.1) (2024-06-07)
+
+### Bug Fixes
+
+* retry integrate org members (COR-2143) ([#8183](https://github.com/voiceflow/creator-app/issues/8183)) ([2b5e0b4](https://github.com/voiceflow/creator-app/commit/2b5e0b4882240a03e64e5f9940cb76d26bf261da))
+
+# [1.1548.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1547.0...@voiceflow/creator-app@1.1548.0) (2024-06-06)
+
+### Bug Fixes
+
+* add test-id to navigation button in canvas header(DX-1786) ([#8245](https://github.com/voiceflow/creator-app/issues/8245)) ([deb35b2](https://github.com/voiceflow/creator-app/commit/deb35b273070b10531189bf0468f56dea7d9bbb3))
+
+### Features
+
+* allow teams to buy top up tokens (COR-2226) ([#8243](https://github.com/voiceflow/creator-app/issues/8243)) ([c1b2790](https://github.com/voiceflow/creator-app/commit/c1b279029cb25e04ef6fb08c078853b011545564))
+
+# [1.1547.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1546.0...@voiceflow/creator-app@1.1547.0) (2024-06-06)
+
+### Features
+
+* add partnerKey to signup (COR-1891) ([#8152](https://github.com/voiceflow/creator-app/issues/8152)) ([5e6f9de](https://github.com/voiceflow/creator-app/commit/5e6f9de63a45f1b28bafd773e67b8fde07877164))
+
 # [1.1546.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1545.0...@voiceflow/creator-app@1.1546.0) (2024-06-06)
 
 ### Features

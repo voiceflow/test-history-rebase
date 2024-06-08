@@ -53,6 +53,10 @@ defaults:
           template: basic_fail_1
           branch_pattern: master
 
+  executor: &node-executor
+    name: vfcommon/node-executor-node-20
+    tag: 20.11.1-vf-2
+
 workflows:
   test-and-release:
     jobs:
@@ -81,7 +85,7 @@ workflows:
           context: dev-test
           executor: vfcommon/node-large-executor
           name: {{ strings.KebabCase $testJob }}
-          run_on_root: {{ $.values.build_all_services }}
+          run_on_root: true
           requires:
             - build
           filters:
@@ -190,6 +194,13 @@ workflows:
       #       # - vfcommon/build-e2e-tests
       #       - vfcommon/prepare-env
       #     filters: *bors_branches_filters
+      - vfcommon/collect-e2e-logs:
+          context: dev-test
+          executor: *node-executor
+          e2e-env-name: {{ .values.e2e_env_name }}
+          requires:
+            - vfcommon/prepare-env
+          filters: *bors_branches_filters
       - vfcommon/run-smoke-tests:
           context: dev-test
           e2e-env-name: {{ .values.e2e_env_name }}

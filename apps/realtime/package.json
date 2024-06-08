@@ -1,6 +1,6 @@
 {
   "name": "@voiceflow/realtime",
-  "version": "1.382.0",
+  "version": "1.382.5",
   "private": true,
   "license": "UNLICENSED",
   "type": "module",
@@ -78,8 +78,8 @@
     "@voiceflow/realtime-sdk": "workspace:*",
     "@voiceflow/schema-types": "1.64.0",
     "@voiceflow/sdk-auth": "2.10.0",
-    "@voiceflow/sdk-billing": "1.26.29",
-    "@voiceflow/sdk-identity": "1.20.10",
+    "@voiceflow/sdk-billing": "1.26.30",
+    "@voiceflow/sdk-identity": "1.22.12",
     "@voiceflow/sdk-logux-designer": "workspace:*",
     "@voiceflow/sdk-message-queue": "1.7.0",
     "@voiceflow/socket-utils": "workspace:*",

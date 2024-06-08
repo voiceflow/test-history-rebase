@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.70.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.70.0...@voiceflow/orm-designer@2.70.1) (2024-06-07)
+
+### Bug Fixes
+
+* migrations (COR-000) ([#8247](https://github.com/voiceflow/creator-app/issues/8247)) ([ebb7535](https://github.com/voiceflow/creator-app/commit/ebb753503238efd636d519dbda0b44d84d23cda7))
+
+# [2.70.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.69.0...@voiceflow/orm-designer@2.70.0) (2024-06-07)
+
+### Features
+
+* reference entities (COR-000) ([#8236](https://github.com/voiceflow/creator-app/issues/8236)) ([d452956](https://github.com/voiceflow/creator-app/commit/d45295648d45c3ed92494d510c6a86576aa9c6ff))
+
+# [2.69.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.68.1...@voiceflow/orm-designer@2.69.0) (2024-06-07)
+
+### Features
+
+* add pathOrder to Function entity (COR-2268) ([#8239](https://github.com/voiceflow/creator-app/issues/8239)) ([6c01535](https://github.com/voiceflow/creator-app/commit/6c0153524f6dfe12293c834f3d7fa1f843a8be70))
+
+## [2.68.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.68.0...@voiceflow/orm-designer@2.68.1) (2024-06-07)
+
+**Note:** Version bump only for package @voiceflow/orm-designer
+
 # [2.68.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.67.1...@voiceflow/orm-designer@2.68.0) (2024-06-06)
 
 ### Features

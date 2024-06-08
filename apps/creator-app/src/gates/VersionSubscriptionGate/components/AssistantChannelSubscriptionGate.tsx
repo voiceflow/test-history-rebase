@@ -1,20 +1,23 @@
 import { status as loguxStatus } from '@logux/client';
-import React from 'react';
+import React, { useRef } from 'react';
 
 import { LoadingGate } from '@/components/LoadingGate';
-import * as Designer from '@/ducks/designer';
-import * as Session from '@/ducks/session';
+import { SearchProvider } from '@/contexts/SearchContext';
+import { DiagramNodeDatabaseMap } from '@/contexts/SearchContext/types';
+import { buildSearchDatabase } from '@/contexts/SearchContext/utils';
+import { Assistant, Session } from '@/ducks';
 import { useAssistantSubscription, useDispatch, useRealtimeClient, useSelector } from '@/hooks';
+import { useStore } from '@/hooks/store.hook';
 
 import WorkspaceOrProjectLoader from '../../WorkspaceOrProjectLoader';
 
-export interface AssistantChannelSubscriptionGateProps extends React.PropsWithChildren {
+interface IAssistantChannelSubscriptionGate extends React.PropsWithChildren {
   projectID: string;
   versionID: string;
   workspaceID: string;
 }
 
-const AssistantChannelSubscriptionGate: React.FC<AssistantChannelSubscriptionGateProps> = ({
+const AssistantChannelSubscriptionGate: React.FC<IAssistantChannelSubscriptionGate> = ({
   children,
   projectID,
   versionID,
@@ -22,17 +25,22 @@ const AssistantChannelSubscriptionGate: React.FC<AssistantChannelSubscriptionGat
 }) => {
   const client = useRealtimeClient();
 
-  const activeVersionID = useSelector(Session.activeVersionIDSelector)!;
-  const loadEnvironment = useDispatch(Designer.Environment.effect.load);
+  const store = useStore();
+  const searchDatabase = useRef<DiagramNodeDatabaseMap>({});
+  const activeVersionID = useSelector(Session.activeVersionIDSelector);
 
-  const isSubscribed = useAssistantSubscription({ versionID, projectID, workspaceID }, [versionID]);
+  const loadCreator = useDispatch(Assistant.effect.loadCreator);
 
-  const isLoaded = isSubscribed && versionID === activeVersionID;
+  const isSubscribed = useAssistantSubscription({ versionID, projectID, workspaceID }, [
+    versionID,
+    projectID,
+    workspaceID,
+  ]);
 
-  const [cmsFetched, setCMSFetched] = React.useState(isLoaded);
+  const [cmsFetched, setCMSFetched] = React.useState(false);
 
   React.useEffect(() => {
-    if (!isLoaded) {
+    if (!isSubscribed) {
       setCMSFetched(false);
 
       return undefined;
@@ -48,11 +56,13 @@ const AssistantChannelSubscriptionGate: React.FC<AssistantChannelSubscriptionGat
 
       fetching = true;
 
-      await loadEnvironment(activeVersionID);
+      const result = await loadCreator(versionID, abortController);
 
       fetching = false;
 
       if (abortController.signal.aborted) return;
+
+      searchDatabase.current = buildSearchDatabase(result.diagrams, store.getState());
 
       setCMSFetched(true);
     };
@@ -72,15 +82,15 @@ const AssistantChannelSubscriptionGate: React.FC<AssistantChannelSubscriptionGat
       abortController.abort();
       unsubscribe();
     };
-  }, [isLoaded]);
+  }, [versionID, isSubscribed]);
 
   return (
     <LoadingGate
-      isLoaded={isLoaded && cmsFetched}
-      loader={<WorkspaceOrProjectLoader />}
+      isLoaded={isSubscribed && cmsFetched && versionID === activeVersionID}
       internalName={AssistantChannelSubscriptionGate.name}
+      loader={<WorkspaceOrProjectLoader />}
     >
-      {children}
+      <SearchProvider database={searchDatabase.current}>{children}</SearchProvider>
     </LoadingGate>
   );
 };

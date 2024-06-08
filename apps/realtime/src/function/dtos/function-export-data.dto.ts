@@ -10,13 +10,3 @@ export const FunctionExportDataDTO = z
   .strict();
 
 export type FunctionExportDataDTO = z.infer<typeof FunctionExportDataDTO>;
-
-export const FunctionImportDataDTO = FunctionExportDataDTO.extend({
-  functions: z.array(
-    FunctionDTO.extend({
-      pathOrder: FunctionDTO.shape.pathOrder.optional().default([])
-    })
-  )
-}).strict();
-
-export type FunctionImportDataDTO = z.infer<typeof FunctionImportDataDTO>;

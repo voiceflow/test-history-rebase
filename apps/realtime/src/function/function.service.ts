@@ -4,7 +4,7 @@ import { EntityManager } from '@mikro-orm/core';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
-import { FunctionPath, FunctionVariable } from '@voiceflow/dtos';
+import { Function as FunctionType, FunctionPath, FunctionVariable } from '@voiceflow/dtos';
 import { LoguxService } from '@voiceflow/nestjs-logux';
 import type {
   FunctionJSON,
@@ -24,8 +24,8 @@ import type { CMSCreateForUserData } from '@/common/types';
 import { cmsBroadcastContext, injectAssistantAndEnvironmentIDs, toPostgresEntityIDs } from '@/common/utils';
 import { CMSBroadcastMeta, CMSContext } from '@/types';
 
-import type { FunctionExportDataDTO, FunctionImportDataDTO } from './dtos/function-export-import-data.dto';
-import { FunctionImportDataDTO as FunctionImportData } from './dtos/function-export-import-data.dto';
+import type { FunctionExportDataDTO } from './dtos/function-export-data.dto';
+import { FunctionImportDataDTO as FunctionImportData } from './dtos/function-import-data.dto';
 import { FunctionPathService } from './function-path/function-path.service';
 import { FunctionVariableService } from './function-variable/function-variable.service';
 
@@ -99,7 +99,11 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
   }
 
   prepareExportData(
-    data: { functions: FunctionObject[]; functionPaths: FunctionPathObject[]; functionVariables: FunctionVariableObject[] },
+    data: {
+      functions: FunctionObject[];
+      functionPaths: FunctionPathObject[];
+      functionVariables: FunctionVariableObject[];
+    },
     { backup }: { backup?: boolean } = {}
   ): FunctionExportDataDTO {
     const json = this.toJSONWithSubResources(data);
@@ -110,8 +114,12 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
 
     return {
       functions: json.functions.map((item) => Utils.object.omit(item, ['assistantID', 'environmentID'])),
-      functionPaths: json.functionPaths.map((item) => Utils.object.omit(item, ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'])),
-      functionVariables: json.functionVariables.map((item) => Utils.object.omit(item, ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'])),
+      functionPaths: json.functionPaths.map((item) =>
+        Utils.object.omit(item, ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'])
+      ),
+      functionVariables: json.functionVariables.map((item) =>
+        Utils.object.omit(item, ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'])
+      ),
     };
   }
 
@@ -149,29 +157,53 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
     } = await this.findManyWithSubResourcesByEnvironment(sourceEnvironmentID);
 
     return this.importManyWithSubResources({
-      functions: sourceFunctions.map((item) => ({ ...item, assistantID: targetAssistantID, environmentID: targetEnvironmentID })),
-      functionPaths: sourceFunctionPaths.map((item) => ({ ...item, assistantID: targetAssistantID, environmentID: targetEnvironmentID })),
-      functionVariables: sourceFunctionVariables.map((item) => ({ ...item, assistantID: targetAssistantID, environmentID: targetEnvironmentID })),
+      functions: sourceFunctions.map((item) => ({
+        ...item,
+        assistantID: targetAssistantID,
+        environmentID: targetEnvironmentID,
+      })),
+      functionPaths: sourceFunctionPaths.map((item) => ({
+        ...item,
+        assistantID: targetAssistantID,
+        environmentID: targetEnvironmentID,
+      })),
+      functionVariables: sourceFunctionVariables.map((item) => ({
+        ...item,
+        assistantID: targetAssistantID,
+        environmentID: targetEnvironmentID,
+      })),
     });
   }
 
   /* Import */
 
-  async filterImportData(environmentID: string, { functions, functionPaths, functionVariables }: FunctionImportDataDTO) {
+  async filterImportData(
+    environmentID: string,
+    { functions, functionPaths, functionVariables }: FunctionImportDataDTO
+  ) {
     const currentFunctions = await this.findManyByEnvironmentAndIDs(environmentID, toPostgresEntityIDs(functions));
     const existingFunctions = functions.filter((item) => item.id && currentFunctions.find(({ id }) => id === item.id));
 
     return {
       functions: functions.filter((item) => item.id && !currentFunctions.find(({ id }) => id === item.id)),
-      functionPaths: functionPaths.filter((item) => item.functionID && !existingFunctions.find(({ id }) => id === item.functionID)),
-      functionVariables: functionVariables.filter((item) => item.functionID && !existingFunctions.find(({ id }) => id === item.functionID)),
+      functionPaths: functionPaths.filter(
+        (item) => item.functionID && !existingFunctions.find(({ id }) => id === item.functionID)
+      ),
+      functionVariables: functionVariables.filter(
+        (item) => item.functionID && !existingFunctions.find(({ id }) => id === item.functionID)
+      ),
       duplicatedFunctions: existingFunctions,
     };
   }
 
   prepareImportData(
     { functions, functionPaths, functionVariables }: FunctionImportDataDTO,
-    { userID, backup, assistantID, environmentID }: { userID: number; backup?: boolean; assistantID: string; environmentID: string }
+    {
+      userID,
+      backup,
+      assistantID,
+      environmentID,
+    }: { userID: number; backup?: boolean; assistantID: string; environmentID: string }
   ): {
     functions: FunctionJSON[];
     functionPaths: FunctionPathJSON[];
@@ -307,7 +339,9 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
     environmentID: string;
   }): Promise<FunctionObject> {
     const { templateID, name, description } = data;
-    const rawTemplate = JSON.parse((await fs.readFile(`./src/function/templates/${templateID}.function-template.json`)).toString());
+    const rawTemplate = JSON.parse(
+      (await fs.readFile(`./src/function/templates/${templateID}.function-template.json`)).toString()
+    );
 
     const { functions, functionVariables, functionPaths } = FunctionImportData.parse(rawTemplate);
 
@@ -337,7 +371,11 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
     // We know there's only one function here
     importData.functions[0].pathOrder = importData.functionPaths.map((p) => p.id);
 
-    const { functions: createdFunctions } = await this.importJSONAndBroadcast(importData, { userID, clientID, environmentID });
+    const { functions: createdFunctions } = await this.importJSONAndBroadcast(importData, {
+      userID,
+      clientID,
+      environmentID,
+    });
 
     if (createdFunctions.length === 0) {
       throw new Error('Realtime was unable to send back function created from template.');
@@ -358,7 +396,10 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
     });
 
     if (clientID) {
-      await this.broadcastAddMany(result, { auth: { userID, clientID }, context: { assistantID: assistantID.toJSON(), environmentID } });
+      await this.broadcastAddMany(result, {
+        auth: { userID, clientID },
+        context: { assistantID: assistantID.toJSON(), environmentID },
+      });
     }
 
     return { functions: result.add.functions, duplicatedFunctions: result.duplicate.functions };
@@ -432,7 +473,10 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
 
   /* Create */
 
-  async createManyAndSync(data: CMSCreateForUserData<FunctionORM>[], { userID, context }: { userID: number; context: CMSContext }) {
+  async createManyAndSync(
+    data: CMSCreateForUserData<FunctionORM>[],
+    { userID, context }: { userID: number; context: CMSContext }
+  ) {
     const functions = await this.createManyForUser(userID, data.map(injectAssistantAndEnvironmentIDs(context)));
 
     return {
@@ -541,7 +585,7 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
   /* Upsert */
 
   async upsertManyWithSubResources(
-    data: { functions: FunctionImportDataDTO[]; functionPaths: FunctionPath[]; functionVariables: FunctionVariable[] },
+    data: { functions: FunctionType[]; functionPaths: FunctionPath[]; functionVariables: FunctionVariable[] },
     meta: { userID: number; assistantID: string; environmentID: string }
   ) {
     const { functions, functionPaths, functionVariables } = this.prepareImportData(data, meta);

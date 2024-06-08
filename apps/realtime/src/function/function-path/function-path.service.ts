@@ -4,7 +4,14 @@ import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
 import { NotFoundException } from '@voiceflow/exception';
 import { LoguxService } from '@voiceflow/nestjs-logux';
-import { AssistantORM, DatabaseTarget, FunctionObject, FunctionORM, FunctionPathObject , FunctionPathORM } from '@voiceflow/orm-designer';
+import {
+  AssistantORM,
+  DatabaseTarget,
+  FunctionObject,
+  FunctionORM,
+  FunctionPathObject,
+  FunctionPathORM,
+} from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { CMSObjectService } from '@/common';
@@ -51,7 +58,10 @@ export class FunctionPathService extends CMSObjectService<FunctionPathORM> {
 
   /* Helpers */
 
-  async syncFunctionPaths(funcPaths: FunctionPathObject[], { action, userID, context }: {action: 'create' | 'delete'; userID: number; context: CMSContext }) {
+  async syncFunctionPaths(
+    funcPaths: FunctionPathObject[],
+    { action, userID, context }: { action: 'create' | 'delete'; userID: number; context: CMSContext }
+  ) {
     const functionIds = Utils.array.unique(funcPaths.map((path) => path.functionID));
     const functions = await this.functionOrm.findManyByEnvironmentAndIDs(context.environmentID, functionIds);
 
@@ -80,7 +90,11 @@ export class FunctionPathService extends CMSObjectService<FunctionPathORM> {
         // eslint-disable-next-line no-param-reassign
         func.pathOrder = pathOrder;
 
-        await this.functionOrm.patchOneForUser(userID, { id: func.id, environmentID: context.environmentID }, { pathOrder });
+        await this.functionOrm.patchOneForUser(
+          userID,
+          { id: func.id, environmentID: context.environmentID },
+          { pathOrder }
+        );
       })
     );
 
@@ -89,27 +103,38 @@ export class FunctionPathService extends CMSObjectService<FunctionPathORM> {
 
   /* Create */
 
-  async createManyAndSync(data: CMSCreateForUserData<FunctionPathORM>[], { userID, meta }: { userID: number; meta: CMSBroadcastMeta }) {
+  async createManyAndSync(
+    data: CMSCreateForUserData<FunctionPathORM>[],
+    { userID, meta }: { userID: number; meta: CMSBroadcastMeta }
+  ) {
     return this.postgresEM.transactional(async () => {
-      const functionPaths = await this.createManyForUser(userID, data.map(injectAssistantAndEnvironmentIDs(meta.context)));
-      const functions = await this.syncFunctionPaths(
-        functionPaths, {
-          action: 'create',
-          userID,
-          context: meta.context
-        });
+      const functionPaths = await this.createManyForUser(
+        userID,
+        data.map(injectAssistantAndEnvironmentIDs(meta.context))
+      );
+      const functions = await this.syncFunctionPaths(functionPaths, {
+        action: 'create',
+        userID,
+        context: meta.context,
+      });
 
       return {
         add: { functionPaths },
-        sync: { functions }
+        sync: { functions },
       };
     });
   }
 
-  async broadcastAddMany({ add, sync }: {
-    add: { functionPaths: FunctionPathObject[] },
-    sync?: { functions: FunctionObject[] }
-  }, meta: CMSBroadcastMeta) {
+  async broadcastAddMany(
+    {
+      add,
+      sync,
+    }: {
+      add: { functionPaths: FunctionPathObject[] };
+      sync?: { functions: FunctionObject[] };
+    },
+    meta: CMSBroadcastMeta
+  ) {
     await Promise.all([
       this.logux.processAs(
         Actions.FunctionPath.AddMany({
@@ -123,12 +148,12 @@ export class FunctionPathService extends CMSObjectService<FunctionPathORM> {
         this.logux.processAs(
           Actions.Function.PatchOne({
             id: func.id,
-            patch: {pathOrder: func.pathOrder},
-            context: cmsBroadcastContext(meta.context)
+            patch: { pathOrder: func.pathOrder },
+            context: cmsBroadcastContext(meta.context),
           }),
           meta.auth
         )
-      ) || [])
+      ) || []),
     ]);
   }
 
@@ -146,10 +171,16 @@ export class FunctionPathService extends CMSObjectService<FunctionPathORM> {
     return this.orm.deleteManyByEnvironmentAndIDs(environmentID, ids);
   }
 
-  async broadcastDeleteMany({ delete: del, sync }: {
-    delete: { functionPaths: FunctionPathObject[] },
-    sync?: { functions: FunctionObject[] }
-  }, meta: CMSBroadcastMeta) {
+  async broadcastDeleteMany(
+    {
+      delete: del,
+      sync,
+    }: {
+      delete: { functionPaths: FunctionPathObject[] };
+      sync?: { functions: FunctionObject[] };
+    },
+    meta: CMSBroadcastMeta
+  ) {
     await Promise.all([
       await this.logux.processAs(
         Actions.FunctionPath.DeleteMany({
@@ -163,31 +194,31 @@ export class FunctionPathService extends CMSObjectService<FunctionPathORM> {
         this.logux.processAs(
           Actions.Function.PatchOne({
             id: func.id,
-            patch: {pathOrder: func.pathOrder},
-            context: cmsBroadcastContext(meta.context)
+            patch: { pathOrder: func.pathOrder },
+            context: cmsBroadcastContext(meta.context),
           }),
           meta.auth
         )
-      ) || [])
+      ) || []),
     ]);
   }
 
-  async deleteManyAndSync(ids: string[], userID: number, context: CMSContext) {
+  async deleteManyAndSync(ids: string[], { userID, context }: { userID: number; context: CMSContext }) {
     return this.postgresEM.transactional(async () => {
       const functionPaths = await this.findManyByEnvironmentAndIDs(context.environmentID, ids);
 
       await this.deleteManyByEnvironmentAndIDs(context.environmentID, ids);
-      const syncedPaths = await this.syncFunctionPaths(functionPaths, { action: 'delete', userID, context })
+      const syncedPaths = await this.syncFunctionPaths(functionPaths, { action: 'delete', userID, context });
 
       return {
         delete: { functionPaths },
-        sync: { functions: syncedPaths }
+        sync: { functions: syncedPaths },
       };
     });
   }
 
   async deleteManyAndBroadcast(ids: string[], meta: CMSBroadcastMeta) {
-    const result = await this.deleteManyAndSync(ids, meta.auth.userID, meta.context);
+    const result = await this.deleteManyAndSync(ids, { userID: meta.auth.userID, context: meta.context });
 
     await this.broadcastDeleteMany(result, meta);
   }

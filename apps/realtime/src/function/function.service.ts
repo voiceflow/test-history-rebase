@@ -249,7 +249,6 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
     return {
       functions: functions.map((item) => ({
         ...item,
-        pathOrder: [],
         createdAt,
         updatedAt: createdAt,
         createdByID: userID,
@@ -348,12 +347,15 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
 
     const { functions, functionVariables, functionPaths } = FunctionImportData.parse(rawTemplate);
 
+    const functionID = new ObjectId().toString();
+
     const functionPathsToCreate = functionPaths.map((path) => ({ ...path, id: new ObjectId().toString(), functionID }));
+
     const functionPathIdsRemap = Object.fromEntries(
       functionPaths.map((path, i) => [path.id, functionPathsToCreate[i].id])
     );
 
-    const functionID = new ObjectId().toString();
+    console.log(`pathOrder: ${functions[0].pathOrder}`);
     const importData: FunctionImportDataDTO = {
       functions: [
         {
@@ -373,10 +375,13 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
       })),
       functionPaths: functionPaths.map((path) => ({
         ...path,
-        id: new ObjectId().toString(),
+        id: functionPathIdsRemap[path.id],
         functionID,
       })),
     };
+
+    console.log(importData.functions[0].pathOrder);
+    console.log(`paths: ${importData.functionPaths.map((p) => p.id).join(',')}`);
 
     const { functions: createdFunctions } = await this.importJSONAndBroadcast(importData, {
       userID,

@@ -6,7 +6,7 @@ import { FunctionExportDataDTO } from './function-export-data.dto';
 export const FunctionImportDataDTO = FunctionExportDataDTO.extend({
   functions: z.array(
     FunctionDTO.extend({
-      pathOrder: FunctionDTO.shape.pathOrder.optional(),
+      pathOrder: FunctionDTO.shape.pathOrder.optional().default([]),
     })
   ),
 }).strict();

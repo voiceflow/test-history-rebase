@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.100.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.99.8...@voiceflow/ml-gateway@1.100.0) (2024-06-10)
+
+### Features
+
+* read from local only if we are using telepresence ([#8256](https://github.com/voiceflow/creator-app/issues/8256)) ([75babbe](https://github.com/voiceflow/creator-app/commit/75babbe628bcd5929dd644c97de13c98f08b963b))
+
 ## [1.99.8](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.99.7...@voiceflow/ml-gateway@1.99.8) (2024-06-07)
 
 **Note:** Version bump only for package @voiceflow/ml-gateway

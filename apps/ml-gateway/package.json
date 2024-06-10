@@ -27,7 +27,7 @@
     "schema:validate": "yarn g:openapi:validate ml-gateway",
     "start": "PORT=8015 CREATOR_API_ENDPOINT=https:// NODE_ENV=production yarn start:base",
     "start:base": "node --experimental-specifier-resolution=node --max-old-space-size=8192 build/main.js",
-    "start:meshed": "GOOGLE_APPLICATION_CREDENTIALS=/tmp/voiceflow/ml-gateway/secrets/credentials.json NODE_ENV=local IS_MESHED=true yarn dev",
+    "start:meshed": "./scripts/start_meshed.sh",
     "test": "yarn g:vitest run --coverage",
     "test:dependencies": "yarn g:depcruise --ignore-known",
     "test:integration": "exit 0",

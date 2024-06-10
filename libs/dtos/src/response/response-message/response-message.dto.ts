@@ -1,7 +1,6 @@
 import { z } from 'zod';
 
 import { CMSObjectResourceDTO, MarkupDTO } from '@/common';
-import { AnyConditionCreateDTO } from '@/condition/condition-create.dto';
 
 export const ResponseMessageDTO = CMSObjectResourceDTO.partial({
   updatedAt: true,
@@ -11,9 +10,10 @@ export const ResponseMessageDTO = CMSObjectResourceDTO.partial({
     assistantID: z.string().optional(),
     environmentID: z.string().optional(),
     discriminatorID: z.string(),
-
+    conditionID: z.string().nullable(),
     text: MarkupDTO,
-    delay: z.number().nullable(),
-    condition: z.nullable(AnyConditionCreateDTO),
+    delay: z.number().nullable().optional(),
   })
   .strict();
+
+export type ResponseMessage = z.infer<typeof ResponseMessageDTO>;

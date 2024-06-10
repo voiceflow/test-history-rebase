@@ -1,3 +1,15 @@
+import { z } from 'zod';
+
+import { AnyConditionCreateDTO } from '@/condition/condition-create.dto';
+
 import { ResponseMessageDTO } from './response-message.dto';
 
-export const ResponseMessageCreateDTO = ResponseMessageDTO.pick({ text: true, condition: true });
+const BaseResponseMessageCreateDTO = z.object({
+  condition: z.nullable(AnyConditionCreateDTO),
+});
+
+export const ResponseMessageCreateDTO = BaseResponseMessageCreateDTO.extend(
+  ResponseMessageDTO.pick({ text: true, condition: true }).shape
+);
+
+export type ResponseMessageCreate = z.infer<typeof ResponseMessageCreateDTO>;

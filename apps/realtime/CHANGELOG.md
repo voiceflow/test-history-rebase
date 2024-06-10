@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.383.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.382.7...@voiceflow/realtime@1.383.0) (2024-06-10)
+
+### Features
+
+* response message module (COR-2308) ([#8255](https://github.com/voiceflow/creator-app/issues/8255)) ([adbc2db](https://github.com/voiceflow/creator-app/commit/adbc2db63f2f5a3ddbe4f23e940043c6c51593e6))
+
 ## [1.382.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.382.6...@voiceflow/realtime@1.382.7) (2024-06-10)
 
 **Note:** Version bump only for package @voiceflow/realtime

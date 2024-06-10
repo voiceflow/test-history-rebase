@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1550.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1550.4...@voiceflow/creator-app@1.1550.5) (2024-06-10)
+
+### Bug Fixes
+
+* use proper entitlement for workspace limit (COR-2345) ([#8260](https://github.com/voiceflow/creator-app/issues/8260)) ([a56daca](https://github.com/voiceflow/creator-app/commit/a56daca2687f8962d52b00af0006c632d7fb6686)), closes [/github.com/voiceflow/creator-app/blob/a2110f4649b149c488e310953ecd74f2a12f20d8/apps/creator-app/src/hooks/planLimitV3.ts#L29-L34](https://github.com//github.com/voiceflow/creator-app/blob/a2110f4649b149c488e310953ecd74f2a12f20d8/apps/creator-app/src/hooks/planLimitV3.ts/issues/L29-L34)
+
 ## [1.1550.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1550.3...@voiceflow/creator-app@1.1550.4) (2024-06-10)
 
 ### Bug Fixes

@@ -76,9 +76,6 @@ export enum FeatureFlag {
 
   TRIGGER_STEP = 'trigger_step',
 
-  // Export
-  EXPORT_SPECIFIC_OBJECT = 'export_specific_object',
-
   HTTP_LOAD_ENVIRONMENT = 'http_load_environment',
 
   NEW_ORGANIZATION_MEMBERS = 'new_organization_members',

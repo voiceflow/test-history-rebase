@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.384.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.383.0...@voiceflow/realtime@1.384.0) (2024-06-10)
+
+### Features
+
+* remove locale variable from templates (COR-1996) ([#8188](https://github.com/voiceflow/creator-app/issues/8188)) ([9729247](https://github.com/voiceflow/creator-app/commit/9729247b2c70483647913af998348742b1b29afc))
+
 # [1.383.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.382.7...@voiceflow/realtime@1.383.0) (2024-06-10)
 
 ### Features

@@ -15,8 +15,13 @@ interface IVariableInput {
   value: Markup;
 }
 
-export const VariableInput: React.FC<IVariableInput> = ({ value, onChange, maxVariableWidth = '150px', placeholder = 'Value or {var}' }) => {
-  const variablesMap = useSelector(Designer.selectors.slateVariablesMapByID);
+export const VariableInput: React.FC<IVariableInput> = ({
+  value,
+  onChange,
+  maxVariableWidth = '150px',
+  placeholder = 'Value or {var}',
+}) => {
+  const variablesMap = useSelector(Designer.selectors.uniqueSlateEntitiesAndVariablesMapByID);
 
   return (
     <InputWithVariables

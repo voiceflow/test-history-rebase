@@ -1,5 +1,4 @@
 import { Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { BlockText, Box, createUIOnlyMenuItemOption, defaultMenuLabelRenderer, Select } from '@voiceflow/ui';
 import React, { useMemo } from 'react';
 
@@ -8,7 +7,7 @@ import Upgrade from '@/components/Upgrade';
 import { ExportFormat } from '@/constants';
 import { Permission } from '@/constants/permissions';
 import { Designer } from '@/ducks';
-import { useFeature, usePermission } from '@/hooks';
+import { usePermission } from '@/hooks';
 import { useSelector } from '@/hooks/store.hook';
 
 import { CANVAS_EXPORT_OPTIONS, CANVAS_EXPORT_OPTIONS_LABELS } from './constants';
@@ -20,7 +19,6 @@ export const Canvas: React.FC = () => {
   const { allowed: isAllowed, planConfig } = usePermission(Permission.CANVAS_EXPORT);
   const { canvasExportFormat, setCanvasExportFormat, exportDiagramID, setExportDiagramID } = React.useContext(Context)!;
 
-  const exportSpecificObject = useFeature(Realtime.FeatureFlag.EXPORT_SPECIFIC_OBJECT);
   const workflows = useSelector(Designer.Workflow.selectors.all);
   const components = useSelector(Designer.Flow.selectors.all);
 
@@ -30,14 +28,18 @@ export const Canvas: React.FC = () => {
     if (workflows.length) {
       options.push(
         createUIOnlyMenuItemOption('workflows-header', { label: 'Workflows', groupHeader: true }),
-        ...[...workflows].sort((a, b) => a.name.localeCompare(b.name)).map((workflow) => ({ id: workflow.diagramID, label: workflow.name }))
+        ...[...workflows]
+          .sort((a, b) => a.name.localeCompare(b.name))
+          .map((workflow) => ({ id: workflow.diagramID, label: workflow.name }))
       );
     }
 
     if (components.length) {
       options.push(
         createUIOnlyMenuItemOption('components-header', { label: 'Components', groupHeader: true }),
-        ...[...components].sort((a, b) => a.name.localeCompare(b.name)).map((component) => ({ id: component.diagramID, label: component.name }))
+        ...[...components]
+          .sort((a, b) => a.name.localeCompare(b.name))
+          .map((component) => ({ id: component.diagramID, label: component.name }))
       );
     }
 
@@ -69,7 +71,7 @@ export const Canvas: React.FC = () => {
         )}
       />
 
-      {exportSpecificObject.isEnabled && CANVAS_SPECIFIC_EXPORT_OPTIONS.includes(canvasExportFormat) && (
+      {CANVAS_SPECIFIC_EXPORT_OPTIONS.includes(canvasExportFormat) && (
         <Box mt={20}>
           <BlockText fontSize={15} color="#62778C" fontWeight={600} marginBottom={11}>
             Workflow / Component

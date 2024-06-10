@@ -20,7 +20,7 @@
   },
   "version": {
     "_id": "6328e94a64484143a984aefc",
-    "variables": ["sessions", "user_id", "timestamp", "platform", "locale"],
+    "variables": ["sessions", "user_id", "timestamp", "platform"],
     "platformData": {
       "slots": [],
       "intents": [

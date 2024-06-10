@@ -46,7 +46,7 @@
       "settings": {},
       "platform": "webchat"
     },
-    "variables": ["sessions", "user_id", "timestamp", "platform", "locale", "intent_confidence", "last_response", "last_event", "last_utterance"],
+    "variables": ["sessions", "user_id", "timestamp", "platform", "intent_confidence", "last_response", "last_event", "last_utterance"],
     "components": [],
     "manualSave": false,
     "platformData": {
@@ -4110,21 +4110,6 @@
       "isSystem": true,
       "datatype": "text",
       "description": "The platform your assistant is running on (voiceflow, alexa, ...).",
-      "defaultValue": null,
-      "createdAt": "2024-02-22T11:05:14.000Z",
-      "updatedAt": "2024-02-22T11:05:14.000Z",
-      "folderID": null,
-      "updatedByID": 4,
-      "createdByID": 4
-    },
-    {
-      "id": "locale",
-      "name": "locale",
-      "color": "#515A63",
-      "isArray": false,
-      "isSystem": true,
-      "datatype": "text",
-      "description": "The locale of the user (eg. en-US, en-CA, it-IT, fr-FR, ...).",
       "defaultValue": null,
       "createdAt": "2024-02-22T11:05:14.000Z",
       "updatedAt": "2024-02-22T11:05:14.000Z",

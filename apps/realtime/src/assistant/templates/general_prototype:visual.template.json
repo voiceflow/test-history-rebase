@@ -24,7 +24,7 @@
     "creatorID": 2,
     "projectID": "62fd390c4d3ab5000976bc93",
     "rootDiagramID": "62fd390c4d3ab5000976bc95",
-    "variables": ["sessions", "user_id", "timestamp", "platform", "locale"],
+    "variables": ["sessions", "user_id", "timestamp", "platform"],
     "platformData": {
       "slots": [],
       "intents": [

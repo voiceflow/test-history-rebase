@@ -11320,6 +11320,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@voiceflow/husky-config@npm:1.0.3":
+  version: 1.0.3
+  resolution: "@voiceflow/husky-config@npm:1.0.3"
+  dependencies:
+    husky: 9.0.11
+  checksum: 8da8c2e0b8b7d82c47066f628e11dfd727fed5aafc936c7dbbdc4c5ecf5935375b12f8905e28d2de3eaccaefb258361e0bee4deb0d78a5055b9139736d5d8409
+  languageName: node
+  linkType: hard
+
 "@voiceflow/icons@npm:1.20.0":
   version: 1.20.0
   resolution: "@voiceflow/icons@npm:1.20.0"
@@ -33265,6 +33274,7 @@ __metadata:
     "@voiceflow/dependency-cruiser-config": 1.8.4
     "@voiceflow/eslint-config": 7.5.0
     "@voiceflow/git-branch-check": 1.4.1
+    "@voiceflow/husky-config": 1.0.3
     "@voiceflow/package-scripts": 1.3.2
     "@voiceflow/prettier-config": 1.5.1
     "@voiceflow/semantic-release-config": 1.2.0
@@ -33278,7 +33288,6 @@ __metadata:
     deep-equal-in-any-order: 2.0.6
     dependency-cruiser: 13.1.5
     eslint: 8.57.0
-    husky: 9.0.11
     lint-staged: 15.2.2
     mocha: 10.2.0
     mocha-suite: 1.0.11

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1550.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1549.2...@voiceflow/creator-app@1.1550.0) (2024-06-10)
+
+### Features
+
+* remove export item feature flag (COR-2139) ([#8251](https://github.com/voiceflow/creator-app/issues/8251)) ([d40e089](https://github.com/voiceflow/creator-app/commit/d40e089d9ed39cc9b49f812e21f4ef437a1d050e))
+
 ## [1.1549.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1549.1...@voiceflow/creator-app@1.1549.2) (2024-06-10)
 
 **Note:** Version bump only for package @voiceflow/creator-app

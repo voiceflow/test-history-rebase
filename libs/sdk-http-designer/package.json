@@ -1,6 +1,6 @@
 {
   "name": "@voiceflow/sdk-http-designer",
-  "version": "2.27.42",
+  "version": "2.27.43",
   "exports": {
     ".": {
       "types": "./build/cjs/main.d.ts",

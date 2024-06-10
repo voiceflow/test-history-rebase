@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.413.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.412.0...@voiceflow/realtime-sdk@1.413.0) (2024-06-10)
+
+### Features
+
+* remove export item feature flag (COR-2139) ([#8251](https://github.com/voiceflow/creator-app/issues/8251)) ([d40e089](https://github.com/voiceflow/creator-app/commit/d40e089d9ed39cc9b49f812e21f4ef437a1d050e))
+
 # [1.412.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.411.1...@voiceflow/realtime-sdk@1.412.0) (2024-06-07)
 
 ### Features

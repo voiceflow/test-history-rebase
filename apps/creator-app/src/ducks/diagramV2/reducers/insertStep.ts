@@ -1,8 +1,10 @@
-/* eslint-disable no-param-reassign */
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { addSharedNodeAndMenuItem, createReducer, nodeDataToSharedNode, removeSharedNodes } from './utils';
 
+/**
+ * @deprecated remove with REFERENCE_SYSTEM ff removal
+ */
 const insertStepReducer = createReducer(Realtime.node.insertStep, (state, { diagramID, stepID, data, removeNodes }) => {
   state.sharedNodes[diagramID] ??= {};
 

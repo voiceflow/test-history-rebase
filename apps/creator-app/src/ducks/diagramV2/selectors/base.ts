@@ -21,21 +21,36 @@ export const {
 
 export const isTopicDiagramSelector = createSelector([diagramByIDSelector], (diagram) => isTopicDiagram(diagram?.type));
 
+/**
+ * @deprecated remove with REFERENCE_SYSTEM ff removal
+ */
 export const sharedNodesSelector = createSelector([rootDiagramSelector], ({ sharedNodes }) => sharedNodes);
 
+/**
+ * @deprecated remove with REFERENCE_SYSTEM ff removal
+ */
 export const sharedNodeByDiagramIDAndNodeIDSelector = createSelector(
   [sharedNodesSelector, diagramIDParamSelector, nodeIDParamSelector],
   (sharedNodes, diagramID, nodeID) => (nodeID && diagramID && sharedNodes[diagramID]?.[nodeID]) || null
 );
 
+/**
+ * @deprecated remove with REFERENCE_SYSTEM ff removal
+ */
 export const lastCreatedIDSelector = createSelector([rootDiagramSelector], ({ lastCreatedID }) => lastCreatedID);
 
+/**
+ * @deprecated remove with REFERENCE_SYSTEM ff removal
+ */
 export const sharedNodesStartIDSelector = createSelector(
   [sharedNodesSelector],
   (sharedNodes) => (diagramID: string) =>
     Object.values(sharedNodes[diagramID] || {})?.find((node) => node?.type === BlockType.START)?.nodeID ?? null
 );
 
+/**
+ * @deprecated remove with REFERENCE_SYSTEM ff removal
+ */
 export const globalIntentStepMapSelector = createSelector(
   [rootDiagramSelector],
   ({ globalIntentStepMap }) => globalIntentStepMap

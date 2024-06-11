@@ -5,4 +5,9 @@ interface SetLastCreatedIDPayload {
   id: string | null;
 }
 
-export const setLastCreatedID = Utils.protocol.createAction<SetLastCreatedIDPayload>(Realtime.diagram.utils.diagramType('set_last_created_id'));
+/**
+ * @deprecated remove with REFERENCE_SYSTEM ff removal
+ */
+export const setLastCreatedID = Utils.protocol.createAction<SetLastCreatedIDPayload>(
+  Realtime.diagram.utils.diagramType('set_last_created_id')
+);

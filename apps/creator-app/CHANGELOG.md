@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1554.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1554.0...@voiceflow/creator-app@1.1554.1) (2024-06-11)
+
+### Bug Fixes
+
+* header button test id (DX-1650) ([#8272](https://github.com/voiceflow/creator-app/issues/8272)) ([84e1386](https://github.com/voiceflow/creator-app/commit/84e1386a4246440d1852d75cc4ac900c8838c447))
+
 # [1.1554.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1553.2...@voiceflow/creator-app@1.1554.0) (2024-06-11)
 
 ### Features

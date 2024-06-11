@@ -5,6 +5,7 @@ export const NodeType = {
   NEXT: '_next',
   BLOCK: 'block',
   START: 'start',
+  INTENT: 'intent',
   ACTIONS: 'actions',
   TRIGGER: 'trigger',
   MESSAGE: 'message',

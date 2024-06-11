@@ -1,10 +1,7 @@
 import { z } from 'zod';
 
+import { ReferenceResourceMetadataDTO } from './reference-resource-metadata.dto';
 import { ReferenceResourceType } from './reference-resource-type.enum';
-
-export const ReferenceResourceMetadataDTO = z.record(z.unknown());
-
-export type ReferenceResourceMetadata = z.infer<typeof ReferenceResourceMetadataDTO>;
 
 export const ReferenceResourceDTO = z
   .object({

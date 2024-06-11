@@ -7,4 +7,12 @@ export class ReferenceORM extends PostgresObjectIDMutableORM<ReferenceEntity> {
   Entity = ReferenceEntity;
 
   jsonAdapter = ReferenceJSONAdapter;
+
+  findManyByEnvironment(environmentID: string) {
+    return this.find({ environmentID });
+  }
+
+  deleteManyByEnvironment(environmentID: string) {
+    return this.delete({ environmentID });
+  }
 }

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1552.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1552.0...@voiceflow/creator-app@1.1552.1) (2024-06-11)
+
+### Bug Fixes
+
+* add utm tracking via cookie [bugfix] (COR-2337) ([#8261](https://github.com/voiceflow/creator-app/issues/8261)) ([27ed66d](https://github.com/voiceflow/creator-app/commit/27ed66d05f5f4e67d22fe427b6e6c37a09e38559))
+
 # [1.1552.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1551.0...@voiceflow/creator-app@1.1552.0) (2024-06-11)
 
 ### Features

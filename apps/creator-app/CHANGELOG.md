@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1551.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1550.6...@voiceflow/creator-app@1.1551.0) (2024-06-11)
+
+### Features
+
+* make the function paths draggable in the CMS editor (COR-8227) ([#8249](https://github.com/voiceflow/creator-app/issues/8249)) ([a527447](https://github.com/voiceflow/creator-app/commit/a5274474fa454d8dbb95cb5124b8c97ad2054d97))
+
 ## [1.1550.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1550.5...@voiceflow/creator-app@1.1550.6) (2024-06-11)
 
 **Note:** Version bump only for package @voiceflow/creator-app

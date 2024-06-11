@@ -34,7 +34,9 @@ export const FunctionCreateModal = modalsManager.create<IFunctionCreateModal, Fu
       const functionListen = useFeature(Realtime.FeatureFlag.FUNCTION_LISTEN);
       const filteredTemplates = functionListen.isEnabled
         ? starterTemplates
-        : starterTemplates.filter((template) => ![TemplateID.LISTEN, TemplateID.LISTEN_WITH_CAROUSEL].includes(template.templateID));
+        : starterTemplates.filter(
+            (template) => ![TemplateID.LISTEN, TemplateID.LISTEN_WITH_CAROUSEL].includes(template.templateID)
+          );
 
       const createOne = useDispatch(Designer.Function.effect.createOne);
       const createOneFromTemplate = useDispatch(Designer.Function.effect.createOneFromTemplate);
@@ -59,6 +61,7 @@ export const FunctionCreateModal = modalsManager.create<IFunctionCreateModal, Fu
                   image: null,
                   folderID,
                   description,
+                  pathOrder: [],
                 })
               : await createOneFromTemplate(selectedTemplate.templateID, nameState.value, description);
 
@@ -133,7 +136,9 @@ export const FunctionCreateModal = modalsManager.create<IFunctionCreateModal, Fu
                             label={template.name}
                             onMouseEnter={onOpen}
                             onMouseLeave={onPopperClose}
-                            onClick={Utils.functional.chainVoid(onClose, () => onTemplateChange(filteredTemplates[index]))}
+                            onClick={Utils.functional.chainVoid(onClose, () =>
+                              onTemplateChange(filteredTemplates[index])
+                            )}
                             testID={tid(TEST_ID, 'menu-item')}
                           >
                             {popper}
@@ -169,7 +174,13 @@ export const FunctionCreateModal = modalsManager.create<IFunctionCreateModal, Fu
             </div>
           </Modal.Body>
           <Modal.Footer>
-            <Modal.Footer.Button variant="secondary" onClick={api.onClose} disabled={closePrevented} label="Cancel" testID={tid(TEST_ID, 'cancel')} />
+            <Modal.Footer.Button
+              variant="secondary"
+              onClick={api.onClose}
+              disabled={closePrevented}
+              label="Cancel"
+              testID={tid(TEST_ID, 'cancel')}
+            />
 
             <Modal.Footer.Button
               label="Create function"

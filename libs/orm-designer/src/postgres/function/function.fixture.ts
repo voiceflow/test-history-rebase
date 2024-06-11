@@ -8,6 +8,7 @@ export const function_: EntityDTO<FunctionEntity> = {
   updatedAt: new Date(),
   name: 'first function',
   description: 'function description',
+  pathOrder: ['function-path-1'],
   code: 'var x = 123;',
   image: null,
   assistant: { id: 'assistant-1' } as any,

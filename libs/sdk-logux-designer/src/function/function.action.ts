@@ -22,6 +22,7 @@ export interface CreateData {
   image: string | null;
   folderID: string | null;
   description: string | null;
+  pathOrder: string[];
 }
 
 export interface PatchData {
@@ -30,6 +31,7 @@ export interface PatchData {
   image?: string | null;
   folderID?: string | null;
   description?: string | null;
+  pathOrder?: string[];
 }
 
 /**

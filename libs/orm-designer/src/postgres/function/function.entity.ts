@@ -1,4 +1,4 @@
-import { Entity, Index, Property, Unique } from '@mikro-orm/core';
+import { ArrayType, Entity, Index, Property, Unique } from '@mikro-orm/core';
 
 import { PostgresCMSTabularEntity } from '../common';
 
@@ -14,4 +14,7 @@ export class FunctionEntity extends PostgresCMSTabularEntity<'image' | 'descript
 
   @Property({ type: 'text', default: null, nullable: true })
   description!: string | null;
+
+  @Property({ type: ArrayType, nullable: false, default: [] })
+  pathOrder!: string[];
 }

@@ -1,4 +1,16 @@
-import { Body, Controller, Get, HttpStatus, Inject, Param, ParseArrayPipe, Post, Query, UploadedFile, UseInterceptors } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpStatus,
+  Inject,
+  Param,
+  ParseArrayPipe,
+  Post,
+  Query,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiConsumes, ApiParam, ApiTags } from '@nestjs/swagger';
 import { ZodApiQuery, ZodApiResponse } from '@voiceflow/nestjs-common';
@@ -8,9 +20,9 @@ import type { Request } from 'express';
 
 import { MulterFile } from '@/file/types';
 
-import { FunctionExportImportDataDTO } from './dtos/function-export-import-data.dto';
 import { FunctionExportQuery } from './dtos/function-export-json.query';
 import { FunctionExportJSONResponse } from './dtos/function-export-json.response';
+import { FunctionImportDataDTO } from './dtos/function-import-data.dto';
 import { FunctionImportJSONResponse } from './dtos/function-import-json.response';
 import { FunctionService } from './function.service';
 
@@ -20,7 +32,7 @@ export class FunctionPublicHTTPController {
   constructor(
     @Inject(FunctionService)
     private readonly service: FunctionService
-  ) {}
+  ) { }
 
   @Get('export-json/:environmentID')
   @Authorize.Permissions<Request<{ environmentID: string }>>([Permission.PROJECT_READ], (request) => ({
@@ -43,7 +55,11 @@ export class FunctionPublicHTTPController {
     kind: 'version',
   }))
   @ApiBody({
-    schema: { type: 'object', required: ['file'], properties: { file: { type: 'string', format: 'binary' }, clientID: { type: 'string' } } },
+    schema: {
+      type: 'object',
+      required: ['file'],
+      properties: { file: { type: 'string', format: 'binary' }, clientID: { type: 'string' } },
+    },
   })
   @ApiParam({ name: 'environmentID', type: 'string' })
   @ApiConsumes('multipart/form-data')
@@ -55,9 +71,13 @@ export class FunctionPublicHTTPController {
     @UploadedFile() file: MulterFile,
     @Body() { clientID }: { clientID?: string }
   ): Promise<FunctionImportJSONResponse> {
-    const data = FunctionExportImportDataDTO.parse(JSON.parse(file.buffer.toString('utf8')));
+    const data = FunctionImportDataDTO.parse(JSON.parse(file.buffer.toString('utf8')));
 
-    const { duplicatedFunctions, functions } = await this.service.importJSONAndBroadcast(data, { userID, clientID, environmentID });
+    const { duplicatedFunctions, functions } = await this.service.importJSONAndBroadcast(data, {
+      userID,
+      clientID,
+      environmentID,
+    });
 
     return {
       functions: this.service.mapToJSON(functions),

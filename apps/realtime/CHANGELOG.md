@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.385.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.384.0...@voiceflow/realtime@1.385.0) (2024-06-11)
+
+### Features
+
+* reference module (COR-000) ([#8240](https://github.com/voiceflow/creator-app/issues/8240)) ([dfd4bba](https://github.com/voiceflow/creator-app/commit/dfd4bbafc7cb9cb2717ab35fb7313ea34d82721a))
+
 # [1.384.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.383.0...@voiceflow/realtime@1.384.0) (2024-06-10)
 
 ### Features

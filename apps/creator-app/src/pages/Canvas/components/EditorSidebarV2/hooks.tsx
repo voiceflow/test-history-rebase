@@ -70,7 +70,7 @@ export const useGetEditorWithCorrectVersion = () => {
   return (nodeType: Realtime.BlockType) => {
     const manager = getManager(nodeType);
     const { editorV3, editorV2 } = manager;
-    const isV3 = manager.editorV3FeaturFlag ? isEnabled(manager.editorV3FeaturFlag) : !!editorV3;
+    const isV3 = manager.editorV3FeatureFlag ? isEnabled(manager.editorV3FeatureFlag) : !!editorV3;
 
     return {
       isV3,

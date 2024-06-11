@@ -34,7 +34,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.SetV2, Realtime.NodeData.
     data: {
       name: '',
       title: '',
-      sets: [setFactory()],
+      sets: [],
     },
   }),
 };

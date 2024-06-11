@@ -14,5 +14,5 @@ export const StartManager: BaseNodeManagerConfig<Realtime.NodeData.Start> = {
   chip: StartChip,
   editorV2: Editor,
   editorV3: StartEditor,
-  editorV3FeaturFlag: Realtime.FeatureFlag.TRIGGER_STEP,
+  editorV3FeatureFlag: Realtime.FeatureFlag.TRIGGER_STEP,
 };

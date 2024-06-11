@@ -6,9 +6,11 @@ import { useDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
 import setupApp from '@/setup';
 
+import SessionTracker from './GlobalProviders/components/SessionTracker';
+
 export interface LifecycleProviderProps {
   history: History;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 const LifecycleProvider: React.FC<LifecycleProviderProps> = ({ history, children }) => {
@@ -26,7 +28,12 @@ const LifecycleProvider: React.FC<LifecycleProviderProps> = ({ history, children
     });
   }, []);
 
-  return <>{children}</>;
+  return (
+    <>
+      <SessionTracker />
+      {children}
+    </>
+  );
 };
 
 export default LifecycleProvider;

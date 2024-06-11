@@ -10,11 +10,11 @@ import ChatAssistant from '@/services/ChatAssistant';
 import DatadogRum from '@/services/DatadogRum';
 
 import { ChargebeeScript } from './components/ChargebeeScript.component';
-import { withGlobalProviders } from './contexts/GlobalProviders';
+import GlobalProviders, { GlobalProvidersProps } from './contexts/GlobalProviders';
 import Routes from './Routes';
 
-const App: React.FC = () => (
-  <>
+const App: React.FC<GlobalProvidersProps> = (props) => (
+  <GlobalProviders {...props}>
     <SeoHelmet page={SeoPage.ROOT} />
     <TippyTooltip.GlobalStyles />
     <ToastContainer />
@@ -25,7 +25,7 @@ const App: React.FC = () => (
     <WorkspaceTracker />
     <ChatAssistant />
     <ChargebeeScript />
-  </>
+  </GlobalProviders>
 );
 
-export default withGlobalProviders(App);
+export default App;

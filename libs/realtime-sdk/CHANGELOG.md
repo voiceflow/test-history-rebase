@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.414.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.413.4...@voiceflow/realtime-sdk@1.414.0) (2024-06-11)
+
+### Features
+
+* v3 set editor base UI (COR-2294) (COR-2192) ([#8244](https://github.com/voiceflow/creator-app/issues/8244)) ([44234d9](https://github.com/voiceflow/creator-app/commit/44234d964e1143be0559634087a9af6172682aa7))
+
 ## [1.413.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.413.3...@voiceflow/realtime-sdk@1.413.4) (2024-06-11)
 
 **Note:** Version bump only for package @voiceflow/realtime-sdk

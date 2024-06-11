@@ -1,10 +1,12 @@
-/* eslint-disable no-param-reassign */
 import { Utils } from '@voiceflow/common';
 import { TriggerNodeItemType } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { addSharedNode, createReducer, nodeDataToSharedNode } from './utils';
 
+/**
+ * @deprecated remove with REFERENCE_SYSTEM ff removal
+ */
 const updateManyNodesDataReducer = createReducer(Realtime.node.updateDataMany, (state, { diagramID, nodes }) => {
   if (!nodes.length) return;
 
@@ -20,8 +22,12 @@ const updateManyNodesDataReducer = createReducer(Realtime.node.updateDataMany, (
         state.globalIntentStepMap[diagramID][previousSharedNode.intentID],
         data.nodeID
       );
-    } else if (previousSharedNode?.type === Realtime.BlockType.TRIGGER || previousSharedNode?.type === Realtime.BlockType.START) {
-      const triggers = previousSharedNode.type === Realtime.BlockType.TRIGGER ? previousSharedNode.items : previousSharedNode.triggers;
+    } else if (
+      previousSharedNode?.type === Realtime.BlockType.TRIGGER ||
+      previousSharedNode?.type === Realtime.BlockType.START
+    ) {
+      const triggers =
+        previousSharedNode.type === Realtime.BlockType.TRIGGER ? previousSharedNode.items : previousSharedNode.triggers;
 
       triggers.forEach((item) => {
         if (item.type !== TriggerNodeItemType.INTENT || !item.resourceID) return;

@@ -1,8 +1,10 @@
-/* eslint-disable no-param-reassign */
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { addSharedNodeAndMenuItem, createReducer, nodeDataToSharedNode } from './utils';
 
+/**
+ * @deprecated remove with REFERENCE_SYSTEM ff removal
+ */
 const importSnapshotReducer = createReducer(Realtime.creator.importSnapshot, (state, { diagramID, nodesWithData }) => {
   if (!nodesWithData.length) return;
 

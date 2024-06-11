@@ -11,11 +11,17 @@ import { DiagramState } from '../types';
 export const createReducer = createReducerFactory<DiagramState>();
 export const createCombinedReducer = createCombinedReducerFactory<DiagramState>();
 
+/**
+ * @deprecated remove with REFERENCE_SYSTEM ff removal
+ */
 export const removeDiagramSharedNodes = (state: Draft<DiagramState>, diagramID: string) => {
   delete state.sharedNodes[diagramID];
   delete state.globalIntentStepMap[diagramID];
 };
 
+/**
+ * @deprecated remove with REFERENCE_SYSTEM ff removal
+ */
 export const addSharedNode = (
   state: Draft<DiagramState>,
   diagramID: string,
@@ -44,6 +50,9 @@ export const addSharedNode = (
   }
 };
 
+/**
+ * @deprecated remove with REFERENCE_SYSTEM ff removal
+ */
 export const addSharedNodeAndMenuItem = (
   state: Draft<DiagramState>,
   diagramID: string,
@@ -54,6 +63,9 @@ export const addSharedNodeAndMenuItem = (
   addSharedNode(state, diagramID, sharedNode);
 };
 
+/**
+ * @deprecated remove with REFERENCE_SYSTEM ff removal
+ */
 export const addSharedNodes = (
   state: Draft<DiagramState>,
   sharedNodes: Realtime.diagram.sharedNodes.DiagramSharedNodeMap
@@ -66,6 +78,9 @@ export const addSharedNodes = (
   });
 };
 
+/**
+ * @deprecated remove with REFERENCE_SYSTEM ff removal
+ */
 export const removeSharedNodes = (state: Draft<DiagramState>, diagramID: string, nodeIDs: string[]) => {
   const diagramSharedNodes = state.sharedNodes[diagramID];
   const diagramGlobalIntents = state.globalIntentStepMap[diagramID];
@@ -82,12 +97,16 @@ export const removeSharedNodes = (state: Draft<DiagramState>, diagramID: string,
     if (sharedNode.type === Realtime.BlockType.INTENT) {
       if (!sharedNode.intentID || !diagramGlobalIntents[sharedNode.intentID]) return;
 
-      diagramGlobalIntents[sharedNode.intentID] = Utils.array.withoutValue(diagramGlobalIntents[sharedNode.intentID], nodeID);
+      diagramGlobalIntents[sharedNode.intentID] = Utils.array.withoutValue(
+        diagramGlobalIntents[sharedNode.intentID],
+        nodeID
+      );
     } else if (sharedNode.type === Realtime.BlockType.TRIGGER || sharedNode.type === Realtime.BlockType.START) {
       const triggers = sharedNode.type === Realtime.BlockType.TRIGGER ? sharedNode.items : sharedNode.triggers;
 
       triggers.forEach((item) => {
-        if (item.type !== TriggerNodeItemType.INTENT || !item.resourceID || !diagramGlobalIntents[item.resourceID]) return;
+        if (item.type !== TriggerNodeItemType.INTENT || !item.resourceID || !diagramGlobalIntents[item.resourceID])
+          return;
 
         diagramGlobalIntents[item.resourceID] = Utils.array.withoutValue(diagramGlobalIntents[item.resourceID], nodeID);
       });
@@ -95,6 +114,9 @@ export const removeSharedNodes = (state: Draft<DiagramState>, diagramID: string,
   });
 };
 
+/**
+ * @deprecated remove with REFERENCE_SYSTEM ff removal
+ */
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const nodeDataToSharedNode = (data: Realtime.NodeData<{}>): Realtime.diagram.sharedNodes.SharedNode | null => {
   if (!Realtime.Utils.typeGuards.isSharedBlockType(data.type)) return null;

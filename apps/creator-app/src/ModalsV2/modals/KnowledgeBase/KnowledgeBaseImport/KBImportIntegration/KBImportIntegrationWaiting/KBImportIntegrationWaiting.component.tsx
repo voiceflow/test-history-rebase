@@ -1,13 +1,13 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { tid } from '@voiceflow/style';
 import { Box, LoadingSpinner, notify, Scroll, Text, Tokens } from '@voiceflow/ui-next';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { Modal } from '@/components/Modal';
 import { Designer } from '@/ducks';
+import { useAsyncEffect } from '@/hooks';
 import { useDispatch } from '@/hooks/store.hook';
 import { useTrackingEvents } from '@/hooks/tracking';
-import { KnowledgeBaseIntegration } from '@/models/KnowledgeBase.model';
 import { openURLInANewPopupWindow } from '@/utils/window';
 
 import { IKBImportIntegrationWaiting } from './KBImportIntegrationWaiting.interface';
@@ -17,85 +17,101 @@ const { colors } = Tokens;
 export const KBImportIntegrationWaiting: React.FC<IKBImportIntegrationWaiting> = ({
   onFail,
   onClose,
+  testID,
   disabled,
   reconnect = false,
   subdomain,
   onContinue,
-  testID,
 }) => {
   const getAuthUrl = useDispatch(Designer.KnowledgeBase.Integration.effect.getIntegrationAuthUrl);
   const getAuthReconnectUrl = useDispatch(Designer.KnowledgeBase.Integration.effect.getIntegrationAuthReconnectUrl);
   const getAll = useDispatch(Designer.KnowledgeBase.Integration.effect.getAll);
   const [trackingEvents] = useTrackingEvents();
 
-  const [popupWindow, setPopupWindow] = React.useState<Window | null>(null);
-  const [timeout, setTimeoutObject] = React.useState<NodeJS.Timeout | null>(null);
+  const pollTimeoutRef = React.useRef<number | null>(null);
+  const failTimeoutRef = React.useRef<number | null>(null);
+  const popupWindowRef = React.useRef<Window | null>(null);
 
-  const onConnectZendesk = async () => {
+  useAsyncEffect(async () => {
     try {
       const authUrl = reconnect
         ? await getAuthReconnectUrl(BaseModels.Project.IntegrationTypes.ZENDESK)
         : await getAuthUrl(BaseModels.Project.IntegrationTypes.ZENDESK, { subdomain });
 
-      const popup = openURLInANewPopupWindow(authUrl);
+      const now = new Date();
 
-      setPopupWindow(popup);
+      popupWindowRef.current = openURLInANewPopupWindow(authUrl);
 
-      const closeTimeout = setTimeout(() => onConnected(false), 300000);
-      setTimeoutObject(closeTimeout);
+      const failByTimeout = () => {
+        trackingEvents.trackAiKnowledgeBaseIntegrationFailed({ IntegrationType: 'zendesk' });
+        onFail();
+
+        if (pollTimeoutRef.current) {
+          window.clearTimeout(pollTimeoutRef.current);
+        }
+
+        try {
+          popupWindowRef.current?.close();
+        } catch {
+          // ignore
+        }
+      };
+
+      const pollIntegration = async () => {
+        const integrations = await getAll();
+
+        const zendeskIntegration = integrations.find(
+          (item) => item.type === BaseModels.Project.IntegrationTypes.ZENDESK
+        );
+
+        const timeDiff = zendeskIntegration ? now.getTime() - new Date(zendeskIntegration.createdAt).getTime() : null;
+        const createdRecently = timeDiff && timeDiff < 5 * 60 * 1000;
+
+        if (createdRecently) {
+          trackingEvents.trackAiKnowledgeBaseIntegrationConnected({ IntegrationType: 'zendesk' });
+
+          onContinue();
+
+          notify.short.success('Connected to Zendesk');
+
+          try {
+            popupWindowRef.current?.close();
+          } catch {
+            // ignore
+          }
+        } else {
+          pollTimeoutRef.current = window.setTimeout(pollIntegration, 1500);
+        }
+      };
+
+      // reject race timeout
+      failTimeoutRef.current = window.setTimeout(failByTimeout, 300000);
+      pollTimeoutRef.current = window.setTimeout(pollIntegration, 1500);
     } catch {
       trackingEvents.trackAiKnowledgeBaseIntegrationFailed({ IntegrationType: 'zendesk' });
       notify.short.error('Failed to connect to Zendesk');
       onFail();
     }
-  };
+  }, []);
 
-  const onConnected = (success?: boolean) => {
-    popupWindow?.close();
-
-    if (success) {
-      trackingEvents.trackAiKnowledgeBaseIntegrationConnected({ IntegrationType: 'zendesk' });
-      onContinue();
-    } else {
-      trackingEvents.trackAiKnowledgeBaseIntegrationFailed({ IntegrationType: 'zendesk' });
-      onFail();
-    }
-  };
-
-  React.useEffect(() => {
-    if (!popupWindow) return;
-
-    let integrations: KnowledgeBaseIntegration[] = [];
-
-    const checkPopup = setInterval(async () => {
-      const today = new Date();
-      const integrationCreatedAt = integrations.find((item) => item.type === BaseModels.Project.IntegrationTypes.ZENDESK)?.createdAt;
-
-      const timeDiff = integrationCreatedAt ? today.getTime() - new Date(integrationCreatedAt).getTime() : null;
-      const createdWithFiveMinutes = timeDiff && timeDiff < 5 * 60 * 1000;
-
-      if (createdWithFiveMinutes) {
-        clearInterval(checkPopup);
-        onConnected(true);
-
-        notify.short.success('Connected to Zendesk');
-      } else if (!popupWindow || !popupWindow.closed) {
-        integrations = await getAll();
-        return;
+  useEffect(
+    () => () => {
+      if (pollTimeoutRef.current) {
+        window.clearTimeout(pollTimeoutRef.current);
       }
-      clearInterval(checkPopup);
-    }, 1500);
 
-    // eslint-disable-next-line consistent-return
-    return () => {
-      clearInterval(checkPopup);
-      if (timeout) clearTimeout(timeout);
-    };
-  }, [popupWindow]);
+      if (failTimeoutRef.current) {
+        window.clearTimeout(failTimeoutRef.current);
+      }
 
-  React.useEffect(() => {
-    onConnectZendesk();
-  }, [getAuthUrl]);
+      try {
+        popupWindowRef.current?.close();
+      } catch {
+        // ignore
+      }
+    },
+    []
+  );
 
   return (
     <>
@@ -114,7 +130,13 @@ export const KBImportIntegrationWaiting: React.FC<IKBImportIntegrationWaiting> =
       </Scroll>
 
       <Modal.Footer>
-        <Modal.Footer.Button label="Cancel" variant="secondary" onClick={onClose} disabled={disabled} testID={tid(testID, 'cancel')} />
+        <Modal.Footer.Button
+          label="Cancel"
+          variant="secondary"
+          onClick={onClose}
+          disabled={disabled}
+          testID={tid(testID, 'cancel')}
+        />
       </Modal.Footer>
     </>
   );

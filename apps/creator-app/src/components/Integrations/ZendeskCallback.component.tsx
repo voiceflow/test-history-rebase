@@ -13,8 +13,13 @@ export const ZendeskCallback: React.FC = () => {
 
   React.useEffect(() => {
     const query = Query.parse(location.search);
+
     if (query.code && query.state) {
-      postZendeskToken('zendesk', query.code, query.state);
+      postZendeskToken('zendesk', query.code, query.state)
+        .then(() => window.close())
+        .catch(() => {
+          // ignore
+        });
     } else if (query.error) {
       notify.short.error(`Zendesk authentication failed: ${query.error}`);
     } else {

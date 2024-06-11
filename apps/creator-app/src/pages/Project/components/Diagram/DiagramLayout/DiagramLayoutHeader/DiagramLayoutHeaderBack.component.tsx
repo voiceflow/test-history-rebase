@@ -44,7 +44,7 @@ export const DiagramLayoutHeaderBack: React.FC<IDiagramLayoutHeaderBack> = ({ is
       return;
     }
 
-    if(!canEditCanvas && activeWorkspaceID) {
+    if (!canEditCanvas && activeWorkspaceID) {
       goToWorkspace(activeWorkspaceID);
       return;
     }
@@ -90,7 +90,7 @@ export const DiagramLayoutHeaderBack: React.FC<IDiagramLayoutHeaderBack> = ({ is
           onClick={onBackClick}
           onMouseEnter={onOpen}
           onMouseLeave={onClose}
-          testID='back-button'
+          testID="back-button"
         />
       )}
     />

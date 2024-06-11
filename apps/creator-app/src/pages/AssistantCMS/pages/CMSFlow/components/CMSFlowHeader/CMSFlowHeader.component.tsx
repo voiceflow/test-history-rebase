@@ -8,6 +8,11 @@ export const CMSFlowHeader: React.FC = () => {
   const onCreate = useOnFlowCreate();
 
   return (
-    <CMSHeader searchPlaceholder="Search components" rightActions={<Header.Button.Primary label="New component" onClick={() => onCreate()} />} />
+    <CMSHeader
+      searchPlaceholder="Search components"
+      rightActions={
+        <Header.Button.Primary label="New component" onClick={() => onCreate()} testID="new-component-button" />
+      }
+    />
   );
 };

@@ -2,7 +2,7 @@ import { datadogRum } from '@datadog/browser-rum';
 import { Nullable } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { toast, useSmartReducerV2 } from '@voiceflow/ui';
+import {getCookieByName, toast, useSmartReducerV2} from '@voiceflow/ui';
 import queryString from 'query-string';
 import React from 'react';
 import { Redirect, useLocation } from 'react-router-dom';
@@ -19,7 +19,7 @@ import { useGetAIAssistSettings } from '@/ModalsV2/modals/Disclaimer/hooks/aiPla
 import { OnboardingType } from '../onboardingType.enum';
 import { StepID } from '../stepID.enum';
 import { STEP_META } from '../stepMeta';
-import { STEPS_BY_FLOW } from './constants';
+import {STEPS_BY_FLOW, UTM_COOKIE_NAME, UTMCookieType} from './constants';
 import { OnboardingContextAPI, OnboardingContextState, OnboardingProviderProps } from './types';
 
 export const OnboardingContext = React.createContext<OnboardingContextAPI | null>(null);
@@ -38,6 +38,8 @@ export const OnboardingProvider: React.FC<OnboardingProviderProps> = ({ query, c
   const store = useStore();
   const location = useLocation();
   const search = queryString.parse(location.search);
+  const UTMCookie: UTMCookieType = getCookieByName(UTM_COOKIE_NAME) || {};
+
   const workspaces = useSelector(WorkspaceV2.allWorkspacesSelector);
   const getWorkspaceByID = useSelector(WorkspaceV2.getWorkspaceByIDSelector);
   const account = useSelector(Account.userSelector);
@@ -89,12 +91,15 @@ export const OnboardingProvider: React.FC<OnboardingProviderProps> = ({ query, c
 
       const { useCase, teamSize, workWithDevelopers, selfReportedAttribution } = state.personalizeWorkspaceMeta;
 
+      const UTMCookieValues = UTMCookie?.parameters;
+
       trackingEvents.trackOnboardingIdentify({
         email: account.email,
-        source: search.utm_source as Nullable<string>,
-        medium: search.utm_medium as Nullable<string>,
-        content: search.utm_content as Nullable<string>,
-        campaign: search.utm_campaign as Nullable<string>,
+        source: (search.utm_source || UTMCookieValues?.utm_source) as Nullable<string>,
+        medium: (search.utm_medium || UTMCookieValues?.utm_medium) as Nullable<string>,
+        content: (search.utm_content || UTMCookieValues?.utm_content) as Nullable<string>,
+        campaign: (search.utm_campaign || UTMCookieValues?.utm_campaign) as Nullable<string>,
+        term: (search.utm_term || UTMCookieValues?.utm_term) as Nullable<string>,
         useCase,
         teamSize,
         workWithDevelopers,

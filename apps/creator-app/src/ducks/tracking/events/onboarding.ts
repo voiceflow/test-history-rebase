@@ -47,13 +47,14 @@ export const trackOnboardingIdentify = createBaseEventTracker<{
   content: string | null;
   useCase: string | null;
   campaign: string | null;
+  term: string | null;
   workWithDevelopers: boolean | null;
   teamSize: string;
   creatorID: number | null;
   selfReportedAttribution: string;
 }>(
   (
-    { email, source, medium, content, campaign, workWithDevelopers, teamSize, creatorID, selfReportedAttribution, useCase, ...eventInfo },
+    { email, term, source, medium, content, campaign, workWithDevelopers, teamSize, creatorID, selfReportedAttribution, useCase, ...eventInfo },
     _,
     getState
   ) =>
@@ -66,6 +67,7 @@ export const trackOnboardingIdentify = createBaseEventTracker<{
         ...(medium && { medium }),
         ...(content && { content }),
         ...(campaign && { campaign }),
+        ...(term && { term }),
         use_case: useCase,
         team_size: teamSize,
         dev_resources: workWithDevelopers,

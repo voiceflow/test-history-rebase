@@ -1,8 +1,6 @@
 import { z } from 'zod';
 
-export const ReferenceMetadataDTO = z.record(z.unknown());
-
-export type ReferenceMetadata = z.infer<typeof ReferenceMetadataDTO>;
+import { ReferenceMetadataDTO } from './reference-metadata.dto';
 
 export const ReferenceDTO = z
   .object({

@@ -1,6 +1,5 @@
 import { Eventual, Utils } from '@voiceflow/common';
 import { ArrayItem, useCachedValue, useCreateConst, useForceUpdate, usePersistFunction } from '@voiceflow/ui';
-// eslint-disable-next-line lodash/import-scope
 import type { DebouncedFunc } from 'lodash';
 import _debounce from 'lodash/debounce';
 import moize from 'moize';
@@ -51,7 +50,9 @@ export interface MapManagedFactoryOptions<Item> extends MapManagedBaseOptions<It
   factory: () => Item;
 }
 
-export type MapManaged<Item> = (render: (item: Item, options: MapManagedRenderOptions<Item>) => React.ReactNode) => React.ReactNode[];
+export type MapManaged<Item> = (
+  render: (item: Item, options: MapManagedRenderOptions<Item>) => React.ReactNode
+) => React.ReactNode[];
 
 interface MapManagedBaseAPI<Item> {
   map: MapManaged<Item>;
@@ -83,8 +84,16 @@ export interface MapManagedFactoryAPI<Item> extends MapManagedBaseAPI<Item> {
 }
 
 interface MapManager {
-  <Item>(items: Item[], onChange: OnManagerChange<Item>, options?: MapManagedSimpleOptions<Item>): MapManagedSimpleAPI<Item>;
-  <Item>(items: Item[], onChange: OnManagerChange<Item>, options: MapManagedFactoryOptions<Item>): MapManagedFactoryAPI<Item>;
+  <Item>(
+    items: Item[],
+    onChange: OnManagerChange<Item>,
+    options?: MapManagedSimpleOptions<Item>
+  ): MapManagedSimpleAPI<Item>;
+  <Item>(
+    items: Item[],
+    onChange: OnManagerChange<Item>,
+    options: MapManagedFactoryOptions<Item>
+  ): MapManagedFactoryAPI<Item>;
 }
 
 export const useMapManager: MapManager = (
@@ -106,7 +115,6 @@ export const useMapManager: MapManager = (
     onReordered: handleReordered,
     maxVisibleItems,
   } = {}
-  // eslint-disable-next-line sonarjs/cognitive-complexity
 ) => {
   type Item = ArrayItem<typeof items>;
 
@@ -117,14 +125,18 @@ export const useMapManager: MapManager = (
   const defaultKeyLookup = useCreateConst<Map<Item | [Item, number], string>>(() => new Map());
   const defaultNormalized = useCreateConst<Normal.Normalized<Item>>(Normal.createEmpty);
   const generateLookupKey = useCreateConst(() =>
-    moize((value: Item, index: number): Item | [Item, number] => (value !== null && UNIQUE_TYPES.has(typeof value) ? value : [value, index]))
+    moize((value: Item, index: number): Item | [Item, number] =>
+      value !== null && UNIQUE_TYPES.has(typeof value) ? value : [value, index]
+    )
   );
 
   const keyLookup = React.useRef<Map<Item | [Item, number], string>>(defaultKeyLookup);
   const normalized = React.useRef<Normal.Normalized<Item>>(defaultNormalized);
   const latestCreatedKey = React.useRef<string>('');
 
-  const persistedClone = usePersistFunction((initialItem: Item, targetItem: Item): Item => clone?.(initialItem, targetItem) ?? { ...initialItem });
+  const persistedClone = usePersistFunction(
+    (initialItem: Item, targetItem: Item): Item => clone?.(initialItem, targetItem) ?? { ...initialItem }
+  );
   const persistedGetKey = usePersistFunction((item: Item) => getKey?.(item) || Utils.id.cuid.slug());
   const persistedFactory = usePersistFunction((item?: Item): Item => factory?.() ?? item!);
   const persistedGetItem = usePersistFunction((key: string) => normalized.current.byKey[key]);
@@ -153,8 +165,13 @@ export const useMapManager: MapManager = (
 
   const setDependencies = useLazy(
     () => {
-      keyLookup.current = new Map(items.map((item, index) => [generateLookupKey(item, index), IS_TEST ? String(index) : persistedGetKey(item)]));
-      normalized.current = Normal.normalize<Item>(items, (item, index) => keyLookup.current.get(generateLookupKey(item, index))!);
+      keyLookup.current = new Map(
+        items.map((item, index) => [generateLookupKey(item, index), IS_TEST ? String(index) : persistedGetKey(item)])
+      );
+      normalized.current = Normal.normalize<Item>(
+        items,
+        (item, index) => keyLookup.current.get(generateLookupKey(item, index))!
+      );
     },
     [items],
     ([nextItems], [prevItems]) => Utils.array.hasIdenticalMembers<Item>(nextItems, prevItems)
@@ -168,7 +185,10 @@ export const useMapManager: MapManager = (
   const isMaxReached = useCachedValue(maxItems == null ? false : normalized.current.allKeys.length >= maxItems);
 
   const debouncedOnChange = React.useMemo<OnManagerChange<Item> | DebouncedFunc<OnManagerChange<Item>>>(
-    () => (debounced ? _debounce((denormalized: Item[]) => persistedOnChanged(denormalized), DEBOUNCE_TIMEOUT) : persistedOnChanged),
+    () =>
+      debounced
+        ? _debounce((denormalized: Item[]) => persistedOnChanged(denormalized), DEBOUNCE_TIMEOUT)
+        : persistedOnChanged,
     [debounced]
   );
 
@@ -279,7 +299,8 @@ export const useMapManager: MapManager = (
 
       if (currValueIsObject && valueIsObject && Utils.object.shallowPartialEquals(currValue, value)) return;
 
-      const nextValue = currValue && !Array.isArray(currValue) && currValueIsObject ? { ...currValue, ...value } : (value as Item);
+      const nextValue =
+        currValue && !Array.isArray(currValue) && currValueIsObject ? { ...currValue, ...value } : (value as Item);
 
       if (validate?.(nextValue, { index, isUpdate: true, originalValue: currValue }) === false) return;
 
@@ -293,7 +314,10 @@ export const useMapManager: MapManager = (
     [onSave]
   );
 
-  const memoizedUpdate = React.useMemo(() => moize((key: string) => (value: Partial<Item>) => onUpdate(key, value)), [onUpdate]);
+  const memoizedUpdate = React.useMemo(
+    () => moize((key: string) => (value: Partial<Item>) => onUpdate(key, value)),
+    [onUpdate]
+  );
 
   const onRemove = React.useCallback(
     async (key: string) => {
@@ -312,13 +336,17 @@ export const useMapManager: MapManager = (
     },
     [onSave]
   );
+
   const getCachedItems = React.useCallback(() => Normal.denormalize(normalized.current), []);
 
   const memoizedRemove = React.useMemo(() => moize((key: string) => () => onRemove(key)), [onRemove]);
 
   const map = React.useCallback<MapManaged<Item>>(
     (render) => {
-      const keys = typeof maxVisibleItems === 'number' ? normalized.current.allKeys.slice(0, maxVisibleItems) : normalized.current.allKeys;
+      const keys =
+        typeof maxVisibleItems === 'number'
+          ? normalized.current.allKeys.slice(0, maxVisibleItems)
+          : normalized.current.allKeys;
 
       return keys.map((key, index) =>
         render(persistedGetItem(key), {

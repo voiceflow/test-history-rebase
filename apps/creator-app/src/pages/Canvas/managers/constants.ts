@@ -37,7 +37,8 @@ import PermissionManager from './Permission';
 import PromptManager from './Prompt';
 import RandomManagerV2 from './RandomV2';
 import ReminderManager from './Reminder';
-import SetManagerV2 from './SetV2';
+import ResponseManager from './ResponseManager/Response.manager';
+import { SetV2Manager } from './SetV2/SetV2.manager';
 import SpeakManager from './Speak';
 import { StartManager } from './Start/Start.manager';
 import StreamManager from './Stream';
@@ -46,7 +47,6 @@ import { TriggerManager } from './TriggerManager/Trigger.manager';
 import UrlManager from './Url';
 import UserInfoManager from './UserInfo';
 import VisualManager from './Visual';
-import ResponseManager from './ResponseManager/Response.manager';
 
 export const MANAGERS_BY_TYPE = {
   [BlockType.START]: StartManager,
@@ -58,8 +58,8 @@ export const MANAGERS_BY_TYPE = {
   [BlockType.COMMAND]: DeprecatedManager,
   [BlockType.PAYLOAD]: CustomPayloadManager,
   [BlockType.DEPRECATED_CUSTOM_PAYLOAD]: CustomPayloadManager,
-  [BlockType.SET]: SetManagerV2,
-  [BlockType.SETV2]: SetManagerV2,
+  [BlockType.SET]: SetV2Manager,
+  [BlockType.SETV2]: SetV2Manager,
   [BlockType.IF]: IfManagerV2,
   [BlockType.IFV2]: IfManagerV2,
   [BlockType.CAPTURE]: CaptureManager,

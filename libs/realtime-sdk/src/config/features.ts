@@ -81,4 +81,6 @@ export enum FeatureFlag {
   NEW_ORGANIZATION_MEMBERS = 'new_organization_members',
   NEW_WORKSPACE_MEMBERS = 'new_workspace_members',
   NEW_PROJECT_MEMBERS = 'new_project_members',
+
+  V3_SET_STEP = 'v3_set_step',
 }

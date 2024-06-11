@@ -3,7 +3,7 @@ import { Box, Flex, SvgIcon, TippyTooltip, useDidUpdateEffect } from '@voiceflow
 import React from 'react';
 
 import Drawer from '@/components/Drawer';
-import { SectionVariant, UncontrolledSection as Section } from '@/components/Section';
+import { UncontrolledSection as Section, SectionVariant } from '@/components/Section';
 import SoundToggle from '@/components/SoundToggle';
 import { Permission } from '@/constants/permissions';
 import { PrototypeStatus } from '@/constants/prototype';
@@ -23,7 +23,7 @@ import { Container, EmbedContainer, TrainingSection } from './components';
 const PrototypeSidebar: React.FC = () => {
   const theme = useTheme();
   const debugEnabled = useDebug();
-  const [canRenderPrototype] = usePermission(Permission.RENDER_PROTOTYPE);
+  const [canRenderPrototype] = usePermission(Permission.PROJECT_PROTOTYPE_RENDER);
   const prototypeAPI = React.useContext(PrototypeContext);
   const nluTrainingModel = React.useContext(NLUTrainingModelContext);
   const nluTrainingDiffData = useSelector(Designer.Environment.selectors.nluTrainingDiffData);

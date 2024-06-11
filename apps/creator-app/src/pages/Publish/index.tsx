@@ -1,7 +1,7 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Header, Scroll, SecondaryNavigation, TabLoader } from '@voiceflow/ui-next';
 import React, { Suspense } from 'react';
-import { matchPath, Redirect, Route, Switch, useLocation } from 'react-router-dom';
+import { Redirect, Route, Switch, matchPath, useLocation } from 'react-router-dom';
 import { match } from 'ts-pattern';
 
 import { AssistantLayout } from '@/components/Assistant/AssistantLayout/AssistantLayout.component';
@@ -32,7 +32,7 @@ const Publish: React.FC = () => {
 
   const [canCodeExport] = usePermission(Permission.CODE_EXPORT);
   const [canEditAPIKey] = usePermission(Permission.API_KEY_EDIT);
-  const [canEditProject] = usePermission(Permission.PROJECT_EDIT);
+  const [canEditProject] = usePermission(Permission.PROJECT_UPDATE);
 
   const name = useSelector(Project.active.nameSelector);
   const hasProject = useSelector(Project.active.hasSelector);

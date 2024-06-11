@@ -12,7 +12,6 @@ import { useSelector } from '@/hooks/redux';
 export interface IdentityContextValue {
   activeRole: Nullable<UserRole | VirtualRole>;
   workspacePlan: Nullable<PlanType>;
-  workspaceRole: Nullable<UserRole>;
   organizationRole: Nullable<UserRole>;
   organizationTrialExpired: Nullable<boolean>;
 }
@@ -23,7 +22,6 @@ export interface IdentityContextValue {
 export const IdentityContext = React.createContext<IdentityContextValue>({
   activeRole: null,
   workspacePlan: null,
-  workspaceRole: null,
   organizationRole: null,
   organizationTrialExpired: null,
 });
@@ -43,7 +41,6 @@ export const IdentityProvider: React.FC<React.PropsWithChildren> = ({ children }
         ? VirtualRole.ORGANIZATION_ADMIN
         : activeRole,
     workspacePlan,
-    workspaceRole,
     organizationRole,
     organizationTrialExpired,
   });

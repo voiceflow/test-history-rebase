@@ -2,6 +2,7 @@ import { datadogRum } from '@datadog/browser-rum';
 import { Utils } from '@voiceflow/common';
 
 import client from '@/client';
+import { designerClient } from '@/client/designer';
 import { CREATOR_APP_ENDPOINT } from '@/config';
 import { Path } from '@/config/routes';
 import { resetAccount, updateAccount } from '@/ducks/account/actions';
@@ -101,7 +102,7 @@ export const getUserAccount =
     creatorID: number;
   }> =>
   async () => {
-    const user = await client.identity.user.getSelf();
+    const [user, roles] = await Promise.all([client.identity.user.getSelf(), designerClient.user.getSelfRoles()]);
 
     datadogRum.setUser({
       id: user.id.toString(),
@@ -111,6 +112,7 @@ export const getUserAccount =
 
     return {
       ...user,
+      roles,
       verified: user.emailVerified,
       creatorID: user.id,
     };
@@ -234,7 +236,14 @@ interface SignupPayload {
 }
 
 export const signup =
-  ({ email, query, password, lastName, firstName, partnerKey }: SignupPayload): Thunk<{ creatorID: number; email: string }> =>
+  ({
+    email,
+    query,
+    password,
+    lastName,
+    firstName,
+    partnerKey,
+  }: SignupPayload): Thunk<{ creatorID: number; email: string }> =>
   async (dispatch) => {
     const userName = `${firstName} ${lastName}`.trim();
 

@@ -11,7 +11,15 @@ import { Permission } from '@/constants/permissions';
 import { PrototypeLayout } from '@/constants/prototype';
 import { SeoPage } from '@/constants/seo';
 import * as PrototypeDuck from '@/ducks/prototype';
-import { useDispatch, useGuestPermission, useHideVoiceflowAssistant, useSelector, useSetup, useToggle, useTrackingEvents } from '@/hooks';
+import {
+  useDispatch,
+  useGuestPermission,
+  useHideVoiceflowAssistant,
+  useSelector,
+  useSetup,
+  useToggle,
+  useTrackingEvents,
+} from '@/hooks';
 import { PrototypeContext, PrototypeProvider } from '@/pages/Prototype/context';
 
 import { Prototype } from './components';
@@ -25,7 +33,9 @@ const PublicPrototype: React.FC<RouteComponentProps<{ versionID: string }>> = ({
   const checkSharedProtoPassword = useDispatch(PrototypeDuck.checkSharedProtoPassword);
   const sessionID = useSelector(PrototypeDuck.prototypeSessionIDSelector);
   const [isLoaded, toggleLoaded] = useToggle(false);
-  const [settings, setSettings] = React.useState<PrototypeDuck.PrototypeSettings & { globalMessageDelayMilliseconds?: number }>({
+  const [settings, setSettings] = React.useState<
+    PrototypeDuck.PrototypeSettings & { globalMessageDelayMilliseconds?: number }
+  >({
     plan: PlanType.STARTER,
     layout: PrototypeLayout.TEXT_DIALOG,
     buttons: BaseButton.ButtonsLayout.STACKED,
@@ -46,7 +56,7 @@ const PublicPrototype: React.FC<RouteComponentProps<{ versionID: string }>> = ({
   const [isAuthenticated, setAuthenticated] = React.useState<boolean>(false);
   const [trackingEvents] = useTrackingEvents();
 
-  const [isAllowedPassword] = useGuestPermission(settings.plan, Permission.SHARE_PROTOTYPE_PASSWORD);
+  const [isAllowedPassword] = useGuestPermission(settings.plan, Permission.PROJECT_PROTOTYPE_PASSWORD);
   const canUseSharedPassword = isAllowedPassword && settings?.hasPassword;
 
   const checkLogin = React.useCallback(

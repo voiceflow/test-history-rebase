@@ -1,5 +1,7 @@
 import * as PlatformConfig from '@voiceflow/platform-config';
 
+import { Membership } from '@/permissions/permissions.types';
+
 export interface AccountState {
   creator_id: number | null;
   name: string | null;
@@ -11,4 +13,5 @@ export interface AccountState {
   loading: boolean;
   verified: boolean;
   first_login: boolean;
+  roles: Membership[];
 }

@@ -6,6 +6,8 @@ import type { MultiAdapter } from 'bidirectional-adapter';
 import type { KeyValueStrategy } from '@/cache/cache.service';
 import { CacheService } from '@/cache/cache.service';
 
+import { Membership } from './dto/membership.dto';
+
 export interface User extends Omit<Identity.User, 'createdAt' | 'updatedAt'> {
   creator_id: number;
 }
@@ -47,6 +49,17 @@ export class UserService {
     });
   }
 
+  public async getSelfRoles(userID: number): Promise<Membership[]> {
+    const authHeaders = await this.getAuthHeadersByID(userID);
+
+    // eslint-disable-next-line dot-notation
+    const roles = (await this.identityClient.user['fetch']
+      .get('/v1alpha1/user/roles', { headers: authHeaders })
+      .json()) as Membership[];
+
+    return roles;
+  }
+
   public async getByToken(token: string): Promise<User | null> {
     const cachedCreator = await this.userCache.get({ token });
 
@@ -54,7 +67,9 @@ export class UserService {
       return cachedCreator;
     }
 
-    const ownUser = await this.identityClient.user.findSelf({ headers: { Authorization: `Bearer ${token}` } }).catch(() => null);
+    const ownUser = await this.identityClient.user
+      .findSelf({ headers: { Authorization: `Bearer ${token}` } })
+      .catch(() => null);
 
     // add creator_id for legacy support
     const user: User | null = ownUser && { ...ownUser, creator_id: ownUser.id };

@@ -6,5 +6,6 @@ export const INITIAL_STATE: Omit<SessionState, 'token' | 'browserID' | 'tabID' |
   activeProjectID: null,
   activeVersionID: null,
   activeDiagramID: null,
+  activeOrganizationID: null,
   prototypeSidebarVisible: false,
 };

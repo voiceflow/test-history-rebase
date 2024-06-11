@@ -20,7 +20,7 @@ export const AssistantNavigationTokenUsage: React.FC<BaseProps> = ({ testID }) =
   const paymentModal = usePaymentModal();
   const [trackingEvents] = useTrackingEvents();
   const tokenPurchaseModal = useTokensPurchaseModal();
-  const [canConfigureWorkspaceBilling] = usePermission(Permission.CONFIGURE_WORKSPACE_BILLING);
+  const [canConfigureWorkspaceBilling] = usePermission(Permission.WORKSPACE_CONFIGURE_BILLING);
 
   const plan = useSelector(Workspace.active.planSelector);
   const isOnProTrial = useSelector(Workspace.active.isOnProTrialSelector);

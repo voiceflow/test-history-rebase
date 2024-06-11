@@ -28,11 +28,10 @@ const allowedToClone = (workspace: Realtime.Workspace, creatorID: number | null)
 
   if (!member) return false;
 
-  return hasRolePermission(Permission.PROJECTS_MANAGE, member.role);
+  return hasRolePermission(Permission.WORKSPACE_MANAGE_PROJECTS, member.role);
 };
 
-const getCopyProjectTitle = (projectName?: string) =>
-  !projectName ? 'Copy Agent' : `Copy Agent: ${projectName}`;
+const getCopyProjectTitle = (projectName?: string) => (!projectName ? 'Copy Agent' : `Copy Agent: ${projectName}`);
 
 export interface Props {
   projectID?: string;
@@ -132,7 +131,7 @@ const ImportModal = manager.create<Props>(
       useAsyncEffect(async () => {
         if (!projectID) return;
 
-          toast.error('You do not have permission to copy agent to any of your workspaces');
+        toast.error('You do not have permission to copy agent to any of your workspaces');
         // If user has 0 workspaces with Editor/Admin/Owner role, show toast
         if (workspaces.length === 0) {
           toast.error('You do not have permission to copy agent to any of your workspaces');

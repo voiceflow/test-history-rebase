@@ -31,7 +31,7 @@ const MembersList: React.FC<MembersListProps> = ({ members, onRemove, onChangeRo
   const getWorkspaceMemberByID = useSelector(WorkspaceV2.active.members.getMemberByIDSelector);
   const getOrganizationMemberByID = useSelector(Organization.getMemberByIDSelector);
 
-  const [canEditRole] = usePermission(Permission.ADD_COLLABORATORS);
+  const [canEditRole] = usePermission(Permission.MEMBER_ADD);
 
   const membersMetaMap = React.useMemo(
     () =>

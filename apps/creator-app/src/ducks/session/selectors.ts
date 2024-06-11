@@ -14,6 +14,12 @@ export const browserIDSelector = createSelector([rootSelector], ({ browserID }) 
 
 export const anonymousIDSelector = createSelector([rootSelector], ({ anonymousID }) => anonymousID);
 
+export const activeOrganizationIDSelector = createSelector(
+  [rootSelector],
+  ({ activeOrganizationID }) => activeOrganizationID
+);
+export const hasActiveOrganizationSelector = createSelector([activeOrganizationIDSelector], (id) => !!id);
+
 export const activeWorkspaceIDSelector = createSelector([rootSelector], ({ activeWorkspaceID }) => activeWorkspaceID);
 export const hasActiveWorkspaceSelector = createSelector([activeWorkspaceIDSelector], (id) => !!id);
 

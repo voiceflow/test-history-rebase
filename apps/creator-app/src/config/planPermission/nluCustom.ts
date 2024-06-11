@@ -15,7 +15,7 @@ export interface Data {
 
 export const NLU_CUSTOM_PERMISSIONS = {
   plans: ENTERPRISE_PLANS,
-  permission: Permission.NLU_CUSTOM,
+  permission: Permission.FEATURE_NLU_CUSTOM,
 
   upgradePopper: ({ nluType }) => ({
     ...getUpgradePopperProps(PlanType.ENTERPRISE, Tracking.UpgradePrompt.SUPPORTED_NLUS),

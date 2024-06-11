@@ -70,7 +70,7 @@ export const Item: React.FC<ItemProps> = ({
   const platformConfig = Platform.Config.get(platform);
 
   const paymentModal = usePaymentModal();
-  const [canManageProjects] = usePermission(Permission.PROJECTS_MANAGE);
+  const [canManageProjects] = usePermission(Permission.WORKSPACE_MANAGE_PROJECTS);
   const isLockedProjectViewer = useIsLockedProjectViewer();
   const isLockedProject = isLockedProjectViewer || platformConfig.isDeprecated;
 

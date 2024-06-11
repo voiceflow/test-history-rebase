@@ -6,7 +6,7 @@ import { Permission } from '@/constants/permissions';
 import { usePermission } from '@/hooks';
 
 export const PrototypeShare: React.FC = () => {
-  const [canSharePrototype] = usePermission(Permission.SHARE_PROTOTYPE);
+  const [canSharePrototype] = usePermission(Permission.PROJECT_PROTOTYPE_SHARE);
 
   return (
     <AssistantSharePrototypePopper

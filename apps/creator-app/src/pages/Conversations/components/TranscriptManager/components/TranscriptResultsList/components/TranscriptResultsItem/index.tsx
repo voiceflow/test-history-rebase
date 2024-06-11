@@ -25,7 +25,7 @@ const TranscriptResultsItem: React.FC<ListChildComponentProps<ListData>> = ({ da
   const isActive = String(currentTranscriptID) === String(id);
 
   const [trackingEvents] = useTrackingEvents();
-  const [canDeleteTranscript] = usePermission(Permission.DELETE_TRANSCRIPT);
+  const [canDeleteTranscript] = usePermission(Permission.PROJECT_DELETE_TRANSCRIPT);
   const hideExports = useFeature(Realtime.FeatureFlag.HIDE_EXPORTS);
 
   const confirmModel = useConfirmModal();
@@ -62,7 +62,12 @@ const TranscriptResultsItem: React.FC<ListChildComponentProps<ListData>> = ({ da
   };
 
   const [sentiment, isSaved, isReviewed] = React.useMemo(
-    () => [reportTags.find(isSentimentTag), reportTags.includes(SystemTag.SAVED), reportTags.includes(SystemTag.REVIEWED)] as const,
+    () =>
+      [
+        reportTags.find(isSentimentTag),
+        reportTags.includes(SystemTag.SAVED),
+        reportTags.includes(SystemTag.REVIEWED),
+      ] as const,
     [reportTags]
   );
 
@@ -94,7 +99,13 @@ const TranscriptResultsItem: React.FC<ListChildComponentProps<ListData>> = ({ da
             <InfoSection active={isActive} name={name} date={updatedAt} isRead={!unread} tags={reportTags} />
 
             <div className={ClassName.TRANSCRIPT_ITEM_DROPDOWN_BUTTON}>
-              <IconButton icon="ellipsis" variant={IconButtonVariant.SUBTLE} size={15} onClick={stopPropagation(onToggle)} ref={ref} />
+              <IconButton
+                icon="ellipsis"
+                variant={IconButtonVariant.SUBTLE}
+                size={15}
+                onClick={stopPropagation(onToggle)}
+                ref={ref}
+              />
             </div>
 
             {!isOpen && <StatusIcons id={id} reviewed={isReviewed} saved={isSaved} sentiment={sentiment} />}

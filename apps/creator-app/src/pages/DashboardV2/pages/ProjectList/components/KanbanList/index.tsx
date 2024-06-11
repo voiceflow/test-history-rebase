@@ -13,7 +13,14 @@ import * as ProjectListV2 from '@/ducks/projectListV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { DragItem } from '@/hocs/withDraggable';
-import { useDispatch, useDropLagFix, usePermission, usePlanLimitedConfig, useScrollHelpers, useSelector } from '@/hooks';
+import {
+  useDispatch,
+  useDropLagFix,
+  usePermission,
+  usePlanLimitedConfig,
+  useScrollHelpers,
+  useSelector,
+} from '@/hooks';
 import { useConditionalLimit } from '@/hooks/planLimitV3';
 import * as ModalsV2 from '@/ModalsV2';
 import { DashboardClassName, Identifier } from '@/styles/constants';
@@ -22,7 +29,7 @@ import { Sidebar } from '../../../../components';
 import Header from '../Header';
 import { Container } from './Container';
 import DragLayer from './DragLayer';
-import { Item as ListItem, ItemProps as ListItemProps, OwnItemProps as ListItemOwnProps } from './Item';
+import { Item as ListItem, OwnItemProps as ListItemOwnProps, ItemProps as ListItemProps } from './Item';
 import DraggableList, { List, ListProps, OwnListProps } from './List';
 
 export const ProjectListList: React.FC = () => {
@@ -38,10 +45,13 @@ export const ProjectListList: React.FC = () => {
   const moveProjectList = useDispatch(ProjectListV2.moveProjectList);
   const transplantProjectBetweenLists = useDispatch(ProjectListV2.transplantProjectBetweenLists);
 
-  const [canManageLists] = usePermission(Permission.PROJECT_LIST_MANAGE);
+  const [canManageLists] = usePermission(Permission.WORKSPACE_MANAGE_PROJECT_LIST);
 
   // FIXME: remove FF https://voiceflow.atlassian.net/browse/CV3-994
-  const legacyProjectsLimitConfig = usePlanLimitedConfig(LimitType.PROJECTS, { value: projects.length, limit: projectsLimit });
+  const legacyProjectsLimitConfig = usePlanLimitedConfig(LimitType.PROJECTS, {
+    value: projects.length,
+    limit: projectsLimit,
+  });
   const newProjectsLimitConfig = useConditionalLimit(LimitType.PROJECTS, { value: projects.length });
 
   const projectsLimitConfig = subscription ? newProjectsLimitConfig : legacyProjectsLimitConfig;
@@ -84,29 +94,33 @@ export const ProjectListList: React.FC = () => {
     [projectsLimitConfig]
   );
 
-  const onDeleteBoard = React.useCallback(({ name, id, projects }: { id: string; name?: string; projects?: Realtime.AnyProject[] }) => {
-    confirmModal.openVoid({
-      header: 'Delete Agent List',
+  const onDeleteBoard = React.useCallback(
+    ({ name, id, projects }: { id: string; name?: string; projects?: Realtime.AnyProject[] }) => {
+      confirmModal.openVoid({
+        header: 'Delete Agent List',
 
-      body: (
-        <>
-          This action can not be undone, <b>"{name}"</b> and all {!!projects && projects.length} agents can not be recovered.
-        </>
-      ),
+        body: (
+          <>
+            This action can not be undone, <b>"{name}"</b> and all {!!projects && projects.length} agents can not be
+            recovered.
+          </>
+        ),
 
-      confirm: async () => {
-        try {
-          await deleteList(id);
-        } catch (error) {
-          errorModal.openVoid({ error });
+        confirm: async () => {
+          try {
+            await deleteList(id);
+          } catch (error) {
+            errorModal.openVoid({ error });
 
-          throw error;
-        }
-      },
+            throw error;
+          }
+        },
 
-      confirmButtonText: 'Delete',
-    });
-  }, []);
+        confirmButtonText: 'Delete',
+      });
+    },
+    []
+  );
 
   const onDragStart = React.useCallback((item: DragItem<OwnListProps>) => {
     dragCache.current.fromListID = item.id;
@@ -164,7 +178,12 @@ export const ProjectListList: React.FC = () => {
   );
 
   const onDropProject = React.useCallback(() => {
-    if (!dragCache.current.toListID || !dragCache.current.fromListID || dragCache.current.toProjectIndex === -1 || !dragCache.current.fromProjectID) {
+    if (
+      !dragCache.current.toListID ||
+      !dragCache.current.fromListID ||
+      dragCache.current.toProjectIndex === -1 ||
+      !dragCache.current.fromProjectID
+    ) {
       return;
     }
 
@@ -208,7 +227,10 @@ export const ProjectListList: React.FC = () => {
   }, [search, projectListsWithProjects]);
 
   return (
-    <Page renderHeader={() => <Header search={search} onSearch={setSearch} isKanban />} renderSidebar={() => <Sidebar />}>
+    <Page
+      renderHeader={() => <Header search={search} onSearch={setSearch} isKanban />}
+      renderSidebar={() => <Sidebar />}
+    >
       <Container id="dashboard" ref={dropLagFixRef}>
         {projects.length === 0 ? (
           <EmptyScreen
@@ -261,7 +283,13 @@ export const ProjectListList: React.FC = () => {
                     </DragLayer>
 
                     {canManageLists && (
-                      <Box.Flex flex="0 0 auto" margin="15px 27px" minWidth="0" className={DashboardClassName.ADD_LIST_BUTTON} alignSelf="flex-start">
+                      <Box.Flex
+                        flex="0 0 auto"
+                        margin="15px 27px"
+                        minWidth="0"
+                        className={DashboardClassName.ADD_LIST_BUTTON}
+                        alignSelf="flex-start"
+                      >
                         <TippyTooltip offset={[0, 8]} content="Add new list" position="bottom">
                           <IconButton large icon="plus" onClick={onCreateList} size={13} />
                         </TippyTooltip>

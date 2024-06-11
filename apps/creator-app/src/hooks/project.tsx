@@ -32,7 +32,7 @@ export const useDeleteProject = ({
   boardID?: string;
   projectID?: string | null;
 }): (() => void) => {
-  const [canManageProjects] = usePermission(Permission.PROJECTS_MANAGE);
+  const [canManageProjects] = usePermission(Permission.WORKSPACE_MANAGE_PROJECTS);
 
   const deleteModal = ModalsV2.useModal(ModalsV2.Project.Delete);
 
@@ -70,11 +70,11 @@ export const useProjectOptions = ({
   const isPreviewer = useIsPreviewer();
   const hideExports = useFeature(Realtime.FeatureFlag.HIDE_EXPORTS);
   const canExportProject = useHasPermissions([Permission.CANVAS_EXPORT, Permission.MODEL_EXPORT]);
-  const [canEditProject] = usePermission(Permission.PROJECT_EDIT);
+  const [canEditProject] = usePermission(Permission.PROJECT_UPDATE);
   const [canShareProject] = usePermission(Permission.PROJECT_SHARE);
   const [canViewVersions] = usePermission(Permission.PROJECT_VERSIONS);
-  const [canManageProjects] = usePermission(Permission.PROJECTS_MANAGE);
-  const [canAddCollaborators] = usePermission(Permission.ADD_COLLABORATORS);
+  const [canManageProjects] = usePermission(Permission.WORKSPACE_MANAGE_PROJECTS);
+  const [canAddCollaborators] = usePermission(Permission.MEMBER_ADD);
   const isLockedProjectViewer = useIsLockedProjectViewer();
 
   const currentVersionID = useSelector(Session.activeVersionIDSelector);

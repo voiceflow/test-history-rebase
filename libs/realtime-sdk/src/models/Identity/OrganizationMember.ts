@@ -8,8 +8,8 @@ export interface OrganizationMember {
   membership: {
     role: UserRole;
     organizationID: string;
+    scope: RoleScopeType;
     workspaceID?: string | null;
     projectID?: string | null;
-    scope?: RoleScopeType;
   };
 }

@@ -19,7 +19,7 @@ const Dashboard: React.FC = () => {
   const clearSearch = useDispatch(Router.clearSearch);
 
   const [canConfigureSSO] = usePermission(Permission.ORGANIZATION_CONFIGURE_SSO);
-  const [canManageOrgMembers] = usePermission(Permission.ORGANIZATION_MANAGE_MEMBERS);
+  const [canManageOrgMembers] = usePermission(Permission.ORGANIZATION_MEMBER_MANAGE);
 
   const query = location?.search ? Query.parse(location.search) : null;
   const importModal = ModalsV2.useModal(ModalsV2.Project.Import);
@@ -36,10 +36,17 @@ const Dashboard: React.FC = () => {
       <Route path={[Path.WORKSPACE_PROFILE, Path.WORKSPACE_INTEGRATIONS]} component={Account} />
       <Route path={[Path.WORKSPACE_BILLING, Path.WORKSPACE_MEMBERS]} component={MembersAndBilling} />
       <Route path={Path.WORKSPACE_SETTINGS} component={Settings} />
-      {(canConfigureSSO || canManageOrgMembers) && <Route path={Path.WORKSPACE_ORGANIZATION} component={Organization} />}
+      {(canConfigureSSO || canManageOrgMembers) && (
+        <Route path={Path.WORKSPACE_ORGANIZATION} component={Organization} />
+      )}
       <Route path={Path.WORKSPACE_DASHBOARD} component={TemporaryProjectList} />
     </Switch>
   );
 };
 
-export default withBatchLoadingGate(DashboardGate, WorkspaceSubscriptionGate, OrganizationSubscriptionGate, BillingSubscriptionGate)(Dashboard);
+export default withBatchLoadingGate(
+  DashboardGate,
+  WorkspaceSubscriptionGate,
+  OrganizationSubscriptionGate,
+  BillingSubscriptionGate
+)(Dashboard);

@@ -1,7 +1,7 @@
 import { Eventual, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { serializeToText } from '@voiceflow/slate-serializer/text';
-import { Box, buildVirtualElement, NestedMenu, Text, useCache, useVirtualElementPopper } from '@voiceflow/ui';
+import { Box, NestedMenu, Text, buildVirtualElement, useCache, useVirtualElementPopper } from '@voiceflow/ui';
 import React from 'react';
 
 import { BlockType, CANVAS_ZOOM_DELTA, CLIPBOARD_DATA_KEY } from '@/constants';
@@ -131,7 +131,7 @@ const ContextMenu: React.FC = () => {
   const paymentModal = usePaymentModal();
 
   const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
-  const [canUseCommenting] = usePermission(Permission.COMMENTING);
+  const [canUseCommenting] = usePermission(Permission.FEATURE_COMMENTING);
   const [showHintFeatures] = usePermission(Permission.CANVAS_HINT_FEATURES);
 
   const cache = useCache({

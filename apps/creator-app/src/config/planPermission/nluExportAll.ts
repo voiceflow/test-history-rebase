@@ -14,7 +14,7 @@ export interface Data {
 
 export const NLU_EXPORT_ALL_PERMISSIONS = {
   plans: ENTERPRISE_PLANS,
-  permission: Permission.NLU_EXPORT_ALL,
+  permission: Permission.FEATURE_NLU_EXPORT_ALL,
 
   upgradeModal: ({ nlpType }) => ({
     ...getUpgradePopperProps(PlanType.ENTERPRISE, Tracking.UpgradePrompt.EXPORT_NLU),

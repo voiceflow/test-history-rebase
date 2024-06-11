@@ -21,6 +21,7 @@ import {
   PrivatePrototypeProgramClient,
   ProjectClient,
   UploadClient,
+  UserClient,
   VersionKnowledgeBaseSettingsClient,
 } from './generated';
 
@@ -32,6 +33,7 @@ export class DesignerClient extends BaseClient('https://realtime-api.voiceflow.c
   assistant: AssistantClient,
   environment: EnvironmentClient,
   organization: OrganizationClient,
+  user: UserClient,
 
   billing: NestedClient({
     plan: BillingPlanClient,

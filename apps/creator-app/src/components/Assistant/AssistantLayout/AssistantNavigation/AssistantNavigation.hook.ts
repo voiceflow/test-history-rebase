@@ -34,10 +34,10 @@ export const useAssistantNavigationLogoItems = (): NavigationLogoItem[] => {
 
   const hideExports = useFeature(Realtime.FeatureFlag.HIDE_EXPORTS);
   const [canExportModel] = usePermission(Permission.MODEL_EXPORT);
-  const [canSharePrototype] = usePermission(Permission.SHARE_PROTOTYPE);
-  const [canManageProjects] = usePermission(Permission.PROJECTS_MANAGE);
+  const [canSharePrototype] = usePermission(Permission.PROJECT_PROTOTYPE_SHARE);
+  const [canManageProjects] = usePermission(Permission.WORKSPACE_MANAGE_PROJECTS);
   const [canExportPrototype] = usePermission(Permission.CANVAS_EXPORT);
-  const [canAddCollaborators] = usePermission(Permission.ADD_COLLABORATORS);
+  const [canAddCollaborators] = usePermission(Permission.MEMBER_ADD);
 
   const platform = useSelector(Project.active.platformSelector);
   const projectID = useSelector(Session.activeProjectIDSelector);
@@ -54,7 +54,7 @@ export const useAssistantNavigationLogoItems = (): NavigationLogoItem[] => {
   const projectMembersModal = useModal(Modals.Project.Members);
 
   const withExport = !isPreviewerOrLockedViewer && canExportModel && canExportPrototype;
-  const withSharePrototype = !isPreviewerOrLockedViewer && canSharePrototype  && !hideExports.isEnabled;
+  const withSharePrototype = !isPreviewerOrLockedViewer && canSharePrototype && !hideExports.isEnabled;
   const withDuplicateOption = !isPreviewerOrLockedViewer && canManageProjects;
   const withInviteCollaborators = !isPreviewerOrLockedViewer && canAddCollaborators && !!projectID;
   const withCopyCloneLinkOption = !isPreviewerOrLockedViewer && canManageProjects;
@@ -106,8 +106,8 @@ export const useAssistantNavigationItems = () => {
   const location = useLocation();
 
   const [canEditAPIKey] = usePermission(Permission.API_KEY_EDIT);
-  const [canEditProject] = usePermission(Permission.PROJECT_EDIT);
-  const [canViewConversations] = usePermission(Permission.VIEW_CONVERSATIONS);
+  const [canEditProject] = usePermission(Permission.PROJECT_UPDATE);
+  const [canViewConversations] = usePermission(Permission.PROJECT_VIEW_TRANSCRIPT);
 
   const diagramID = useSelector(Session.activeDiagramIDSelector) ?? '';
 

@@ -21,8 +21,8 @@ const MemberList: React.FC<MemberListProps> = ({ inset, members, hideLastDivider
   const getOrganizationMemberByID = useSelector(Organization.getMemberByIDSelector);
   const editorRoleProjectsByUserID = useSelector(ProjectV2.editorRoleProjectsByUserIDSelector);
 
-  const [canEditRole] = usePermission(Permission.ADD_COLLABORATORS);
-  const [canManagerOrgMembers] = usePermission(Permission.ORGANIZATION_MANAGE_MEMBERS);
+  const [canEditRole] = usePermission(Permission.MEMBER_ADD);
+  const [canManagerOrgMembers] = usePermission(Permission.ORGANIZATION_MEMBER_MANAGE);
 
   const sendInvite = useDispatch(Workspace.sendInviteToActiveWorkspace);
   const deleteMember = useDispatch(Workspace.deleteMemberOfActiveWorkspace);
@@ -42,7 +42,9 @@ const MemberList: React.FC<MemberListProps> = ({ inset, members, hideLastDivider
       members.map((member) => ({
         ...member,
         projects: member.creator_id ? editorRoleProjectsByUserID[member.creator_id] : undefined,
-        isOrganizationAdmin: member.creator_id ? isAdminUserRole(getOrganizationMemberByID({ creatorID: member.creator_id })?.role) : false,
+        isOrganizationAdmin: member.creator_id
+          ? isAdminUserRole(getOrganizationMemberByID({ creatorID: member.creator_id })?.role)
+          : false,
       })),
     [members, getOrganizationMemberByID, editorRoleProjectsByUserID]
   );

@@ -15,14 +15,14 @@ export const useOrganizationSSOPagePath = () => {
 
 export const useOrganizationMembersPagePath = () => {
   const orgMembers = useFeature(Realtime.FeatureFlag.ORGANIZATION_MEMBERS);
-  const [canManageOrgMembers] = usePermission(Permission.ORGANIZATION_MANAGE_MEMBERS);
+  const [canManageOrgMembers] = usePermission(Permission.ORGANIZATION_MEMBER_MANAGE);
 
   return canManageOrgMembers && orgMembers.isEnabled ? Path.WORKSPACE_ORGANIZATION_MEMBERS : null;
 };
 
 export const useOrganizationSettingsPagePath = () => {
   const orgSettings = useFeature(Realtime.FeatureFlag.ORG_GENERAL_SETTINGS);
-  const [canConfigureOrganization] = usePermission(Permission.EDIT_ORGANIZATION);
+  const [canConfigureOrganization] = usePermission(Permission.ORGANIZATION_UPDATE);
 
   return canConfigureOrganization && orgSettings.isEnabled ? Path.WORKSPACE_ORGANIZATION_SETTINGS : null;
 };

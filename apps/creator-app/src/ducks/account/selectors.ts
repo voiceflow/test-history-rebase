@@ -23,6 +23,8 @@ export const googleAccountSelector = createSelector([userSelector], ({ google })
 
 export const googleEmailSelector = createSelector([googleAccountSelector], (google) => google?.profile?.email || '0');
 
+export const userRolesSelector = createSelector([userSelector], ({ roles }) => roles);
+
 export const isLoggingInSelector = createSelector(
   [authTokenSelector, userIDSelector],
   (token, creatorID) => !!token && creatorID === null

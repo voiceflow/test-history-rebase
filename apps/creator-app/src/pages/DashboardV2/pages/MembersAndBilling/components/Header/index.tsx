@@ -12,7 +12,7 @@ import { usePermission } from '@/hooks/permission';
 import { WorkspaceSelector } from '../../../../components';
 
 const Header: React.FC = () => {
-  const [isAdmin] = usePermission(Permission.CONFIGURE_WORKSPACE);
+  const [isAdmin] = usePermission(Permission.WORKSPACE_CONFIGURE);
   const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
 
   return (

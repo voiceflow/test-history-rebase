@@ -23,6 +23,7 @@ export const INITIAL_STATE: AccountState = {
   verified: false,
   creator_id: null,
   first_login: false,
+  roles: [],
 };
 
 // reducers

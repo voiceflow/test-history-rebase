@@ -21,7 +21,8 @@ interface FooterProps extends BaseProps {
 }
 
 export const Footer: React.FC<FooterProps> = ({ origin = 'Share Menu', linkURL, selectedItems, testID }) => {
-  const { onExport, exportType, isExporting, canvasExportFormat, exportNLPType, exportIntents } = React.useContext(Context)!;
+  const { onExport, exportType, isExporting, canvasExportFormat, exportNLPType, exportIntents } =
+    React.useContext(Context)!;
 
   const noModelData = exportType === ExportType.MODEL && exportIntents.length === 0 && !selectedItems?.length;
 
@@ -33,16 +34,18 @@ export const Footer: React.FC<FooterProps> = ({ origin = 'Share Menu', linkURL, 
     isAllowed: ({ planConfig }) => !planConfig?.isPaidExportFormat(canvasExportFormat),
 
     onPlanForbid: ({ planConfig }) =>
-      planConfig.isPaidExportFormat(canvasExportFormat) && upgradeModal.openVoid(planConfig.upgradeModal({ format: canvasExportFormat })),
+      planConfig.isPaidExportFormat(canvasExportFormat) &&
+      upgradeModal.openVoid(planConfig.upgradeModal({ format: canvasExportFormat })),
   });
 
-  const onExportNLUAll = usePermissionAction(Permission.NLU_EXPORT_ALL, {
+  const onExportNLUAll = usePermissionAction(Permission.FEATURE_NLU_EXPORT_ALL, {
     onAction: () => onExport(origin),
 
-    onPlanForbid: ({ planConfig }) => exportNLPType && upgradeModal.openVoid(planConfig.upgradeModal({ nlpType: exportNLPType })),
+    onPlanForbid: ({ planConfig }) =>
+      exportNLPType && upgradeModal.openVoid(planConfig.upgradeModal({ nlpType: exportNLPType })),
   });
 
-  const onExportNLUCSV = usePermissionAction(Permission.NLU_EXPORT_CSV, {
+  const onExportNLUCSV = usePermissionAction(Permission.FEATURE_NLU_EXPORT_CSV, {
     onAction: () => onExport(origin),
 
     onPlanForbid: ({ planConfig }) => upgradeModal.openVoid(planConfig.upgradeModal()),
@@ -69,7 +72,13 @@ export const Footer: React.FC<FooterProps> = ({ origin = 'Share Menu', linkURL, 
       <System.Link.Anchor href={linkURL || Documentation.PROJECT_EXPORT} data-testid={tid(testID, 'learn-more')}>
         Learn More
       </System.Link.Anchor>
-      <PlatformUploadButton icon="arrowSpin" label="Export" onClick={onExportClick} isActive={!!isExporting} disabled={noModelData} />
+      <PlatformUploadButton
+        icon="arrowSpin"
+        label="Export"
+        onClick={onExportClick}
+        isActive={!!isExporting}
+        disabled={noModelData}
+      />
     </Box.FlexApart>
   );
 };

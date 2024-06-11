@@ -9,7 +9,6 @@ import {
   PAID_PLANS,
   PRO_AND_TEAM_PLANS,
   PRO_PLUS_PLANS,
-  STARTER_PLANS,
 } from '@/constants/plans';
 
 import { ADVANCED_AI_MODELS_PERMISSIONS } from './advancedAIModels';
@@ -40,7 +39,6 @@ export const PLAN_PERMISSIONS = buildPlanPermissionRecord([
   // all plans
   { permission: Permission.COMMENTING, plans: ALL_PLANS },
   { permission: Permission.PROJECT_SHARE, plans: ALL_PLANS },
-  { permission: Permission.CANVAS_REALTIME, plans: ALL_PLANS },
   { permission: Permission.SHARE_PROTOTYPE, plans: ALL_PLANS },
 
   // non enterprise plans
@@ -57,7 +55,6 @@ export const PLAN_PERMISSIONS = buildPlanPermissionRecord([
 
   // pro+ plans
   { permission: Permission.CUSTOMIZE_PROTOTYPE, plans: PRO_PLUS_PLANS },
-  { permission: Permission.MODAL_PDF_PNG_EXPORT, plans: PRO_PLUS_PLANS },
   { permission: Permission.SHARE_PROTOTYPE_PASSWORD, plans: PRO_PLUS_PLANS },
 
   // enterprise only plans
@@ -68,9 +65,6 @@ export const PLAN_PERMISSIONS = buildPlanPermissionRecord([
   { permission: Permission.ORGANIZATION_CONFIGURE_SSO, plans: [PlanType.ENTERPRISE] },
   { permission: Permission.EDIT_ORGANIZATION, plans: [PlanType.ENTERPRISE] },
   { permission: Permission.ORGANIZATION_MANAGE_MEMBERS, plans: [PlanType.ENTERPRISE] },
-
-  // other
-  { permission: Permission.BILLING_MANAGE, plans: [...STARTER_PLANS, ...PRO_AND_TEAM_PLANS, PlanType.CREATOR] },
 ]);
 
 export type PlanPermissions = typeof PLAN_PERMISSIONS;

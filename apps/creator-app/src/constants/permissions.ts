@@ -2,7 +2,8 @@ export const ROLE_PERMISSION_DEFAULT_WARN_MESSAGE = 'You do not have permission 
 
 export const PLAN_PERMISSION_DEFAULT_WARN_MESSAGE = 'This feature is not available on your current plan';
 
-export const TRIAL_EXPIRED_PERMISSION_DEFAULT_WARN_MESSAGE = 'Your trial has expired. Please upgrade to continue using this feature.';
+export const TRIAL_EXPIRED_PERMISSION_DEFAULT_WARN_MESSAGE =
+  'Your trial has expired. Please upgrade to continue using this feature.';
 
 // TODO: refactor keys, should be prefixed with the domain name, FE WORKSPACE_, PROJECT_, etc
 export enum Permission {
@@ -14,9 +15,7 @@ export enum Permission {
   // workspace
   WORKSPACE_CREATE = 'workspace.CREATE',
   CONFIGURE_WORKSPACE = 'workspace.CONFIGURE',
-  CONFIGURE_WORKSPACE_DEVELOPER = 'workspace.CONFIGURE_DEVELOPER',
-  CONFIGURE_WORKSPACE_BILLING = 'workspace.CONFIGURE_DEVELOPER',
-  VIEW_SETTINGS_WORKSPACE = 'workspace.VIEW_SETTINGS',
+  CONFIGURE_WORKSPACE_BILLING = 'workspace.CONFIGURE_BILLING',
   UPGRADE_WORKSPACE = 'workspace.UPGRADE',
   DELETE_WORKSPACE = 'workspace.DELETE',
   INVITE_BY_LINK = 'workspace.INVITE_BY_LINK',
@@ -34,7 +33,6 @@ export enum Permission {
   PROJECT_SHARE = 'project.SHARE',
   PROJECT_VERSIONS = 'project.VERSIONS',
   PROJECT_FULL_VERSIONS = 'project.FULL_VERSIONS',
-  PROJECT_CONVERT_TO_DOMAIN = 'project.CONVERT_DO_DOMAIN',
 
   // projects
   PROJECTS_MANAGE = 'projects.MANAGE',
@@ -42,11 +40,9 @@ export enum Permission {
   // export
   CODE_EXPORT = 'export.CODE',
   MODEL_EXPORT = 'export.MODEL', // to be removed once revised permissions feature is implemented
-  MODAL_PDF_PNG_EXPORT = 'export.MODAL_ALL',
 
   // prototype
   SHARE_PROTOTYPE = 'prototype.SHARE',
-  TRAIN_PROTOTYPE = 'prototype.TRAIN',
   RENDER_PROTOTYPE = 'prototype.RENDER',
   CUSTOMIZE_PROTOTYPE = 'prototype.CUSTOMIZE',
   SHARE_PROTOTYPE_PASSWORD = 'prototype.SHARE_PASSWORD',
@@ -58,17 +54,10 @@ export enum Permission {
   BILLING_SEATS_SCHEDULE = 'billing.SEATS_SCHEDULE',
   BILLING_SEATS_ADD = 'billing.SEATS_ADD',
   BILLING_SEATS = 'billing.SEATS',
-  BILLING_MANAGE = 'billing.MANAGE',
-
-  // domain
-  DOMAIN_EDIT = 'domain.EDIT',
 
   // canvas
   CANVAS_EDIT = 'canvas.EDIT',
-  CANVAS_MARKUP = 'canvas.MARKUP',
   CANVAS_EXPORT = 'canvas.EXPORT',
-  CANVAS_PUBLISH = 'canvas.PUBLISH',
-  CANVAS_REALTIME = 'canvas.REALTIME',
   CANVAS_PAID_STEPS = 'canvas.PAID_STEPS',
   CANVAS_OPEN_EDITOR = 'canvas.OPEN_EDITOR',
   CANVAS_HINT_FEATURES = 'canvas.HINT_FEATURES',
@@ -83,9 +72,6 @@ export enum Permission {
 
   // private cloud
   PRIVATE_CLOUD_WORKSPACE_CREATE = 'private_cloud.workspace.CREATE',
-
-  // T&C
-  REORDER_TOPICS_AND_COMPONENTS = 'topics_components.REORDER',
 
   // NLU
   NLU_CUSTOM = 'nlu.CUSTOM_PROJECT',

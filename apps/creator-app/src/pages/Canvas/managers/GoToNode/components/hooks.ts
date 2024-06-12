@@ -4,18 +4,20 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { useFeature } from '@/hooks/feature';
-import { BlockResourceByNodeIDMapByDiagramIDMapContext, SharedNodesContext } from '@/pages/Canvas/contexts';
+import { BlockNodeResourceByNodeIDMapByDiagramIDMapContext, SharedNodesContext } from '@/pages/Canvas/contexts';
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export const useGoToNode = (nodeID: Nullable<string>, diagramID?: Nullable<string>) => {
   const referenceSystem = useFeature(Realtime.FeatureFlag.REFERENCE_SYSTEM);
 
   const sharedNodes = React.useContext(SharedNodesContext)!;
-  const blockResourceByNodeIDMapByDiagramIDMap = React.useContext(BlockResourceByNodeIDMapByDiagramIDMapContext)!;
+  const blockNodeResourceByNodeIDMapByDiagramIDMap = React.useContext(
+    BlockNodeResourceByNodeIDMapByDiagramIDMapContext
+  )!;
 
   if (referenceSystem.isEnabled) {
     const blockReference =
-      diagramID && nodeID ? blockResourceByNodeIDMapByDiagramIDMap[diagramID]?.[nodeID] ?? null : null;
+      diagramID && nodeID ? blockNodeResourceByNodeIDMapByDiagramIDMap[diagramID]?.[nodeID] ?? null : null;
 
     return blockReference
       ? {

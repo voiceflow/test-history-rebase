@@ -17,8 +17,8 @@ export const useOptionsTree = <Item extends Flow | Workflow>(
 ) => {
   const sharedNodes = useSelector(Diagram.sharedNodesSelector);
   const referenceSystem = useFeature(Realtime.FeatureFlag.REFERENCE_SYSTEM);
-  const blockResourceByNodeIDMapByDiagramIDMap = useSelector(
-    Designer.Reference.selectors.blockResourceByNodeIDMapByDiagramIDMap
+  const blockNodeResourceByNodeIDMapByDiagramIDMap = useSelector(
+    Designer.Reference.selectors.blockNodeResourceByNodeIDMapByDiagramIDMap
   );
 
   return useFolderTree<
@@ -50,7 +50,7 @@ export const useOptionsTree = <Item extends Flow | Workflow>(
         let options: Array<BlockOption | GroupOption>;
 
         if (referenceSystem.isEnabled) {
-          options = Object.values(blockResourceByNodeIDMapByDiagramIDMap[workflow.diagramID] ?? {})?.reduce<
+          options = Object.values(blockNodeResourceByNodeIDMapByDiagramIDMap[workflow.diagramID] ?? {})?.reduce<
             Array<BlockOption | GroupOption>
           >((acc, resource) => {
             if (!resource) return acc;
@@ -115,7 +115,7 @@ export const useOptionsTree = <Item extends Flow | Workflow>(
           ],
         };
       },
-      [sharedNodes, blockResourceByNodeIDMapByDiagramIDMap, referenceSystem.isEnabled]
+      [sharedNodes, blockNodeResourceByNodeIDMapByDiagramIDMap, referenceSystem.isEnabled]
     ),
   });
 };

@@ -5,6 +5,7 @@ import { parseVariableDefaultValue } from '@voiceflow/utils-designer';
 import * as Errors from '@/config/errors';
 import * as Designer from '@/ducks/designer';
 import * as Diagram from '@/ducks/diagramV2';
+import * as Feature from '@/ducks/feature';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Prototype from '@/ducks/prototype/sideEffects';
 import * as Session from '@/ducks/session';
@@ -124,10 +125,25 @@ export const currentDiagramVariableState =
 // go to the closest diagram with a start step
 export const defaultVariableState = (): SyncThunk => (dispatch, getState) => {
   const state = getState();
-  const sharedNodesStartIDSelector = Diagram.sharedNodesStartIDSelector(state);
+
+  const referenceSystemEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.REFERENCE_SYSTEM);
+
+  const blockNodeResourceByNodeIDMapByDiagramIDMap =
+    Designer.Reference.selectors.blockNodeResourceByNodeIDMapByDiagramIDMap(state);
+
+  const getStartNodeID = (diagramID: string) =>
+    Object.values(blockNodeResourceByNodeIDMapByDiagramIDMap[diagramID] ?? {}).find(
+      (resource) => resource?.metadata.nodeType === Realtime.BlockType.START
+    )?.resourceID;
+
+  const sharedNodesStartIDSelector = referenceSystemEnabled
+    ? getStartNodeID
+    : Diagram.sharedNodesStartIDSelector(state);
 
   const activeDiagramID = Session.activeDiagramIDSelector(state);
+
   Errors.assertDiagramID(activeDiagramID);
+
   const activeDiagramStartNodeID = sharedNodesStartIDSelector(activeDiagramID);
 
   if (activeDiagramStartNodeID) {

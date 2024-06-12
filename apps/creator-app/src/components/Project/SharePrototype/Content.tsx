@@ -38,12 +38,13 @@ export const Content: React.FC<ContentProps> = ({ preventClose, enableClose, dis
   const [activeSection, setActiveSection] = React.useState(ActiveModal.NONE);
   const variableStates = useSelector(VariableState.allVariableStatesSelector);
 
-  const [canCustomize] = usePermission(Permission.CUSTOMIZE_PROTOTYPE);
+  const [canCustomize] = usePermission(Permission.FEATURE_CUSTOMIZE_PROTOTYPE);
 
   const { bodyRef, innerRef, scrollHelpers } = useScrollHelpers<HTMLDivElement, HTMLDivElement>();
   const [isHeaderSticky] = useScrollStickySides(bodyRef);
 
-  const onToggleSection = (section: ActiveModal) => () => setActiveSection((prev) => (section !== prev ? section : ActiveModal.NONE));
+  const onToggleSection = (section: ActiveModal) => () =>
+    setActiveSection((prev) => (section !== prev ? section : ActiveModal.NONE));
 
   const ContainerComp = disableAnimation ? ContainerWithoutAnimation : Container;
 

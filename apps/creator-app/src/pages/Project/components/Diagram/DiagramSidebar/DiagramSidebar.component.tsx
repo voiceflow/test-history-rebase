@@ -46,7 +46,7 @@ export const DiagramSidebar = memo(() => {
   const getEngine = useEventualEngine();
   const isCommenting = useCommentingMode();
   const flowCreateModal = useFlowCreateModal();
-  const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
+  const [canEditCanvas] = usePermission(Permission.PROJECT_CANVAS_UPDATE);
   const workflowCreateModal = useWorkflowCreateModal();
 
   const resizableSectionRef = useRef<IResizableSectionAPI>(null);

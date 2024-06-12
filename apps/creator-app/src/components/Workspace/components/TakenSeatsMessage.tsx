@@ -25,7 +25,7 @@ const TakenSeatsMessage: React.FC<TakenSeatsMessageProps> = ({
   small,
   label = 'seats taken.',
 }) => {
-  const [canAddSeats] = usePermission(Permission.BILLING_SEATS_ADD);
+  const [canAddSeats] = usePermission(Permission.WORKSPACE_BILLING_ADD_SEATS);
 
   const usedEditorSeats = useSelector(WorkspaceV2.active.members.usedEditorSeatsSelector);
   const numberOfSeats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);

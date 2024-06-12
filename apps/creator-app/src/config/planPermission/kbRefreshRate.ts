@@ -9,7 +9,7 @@ import { UpgradeTooltipPlanPermission } from './types';
 
 export const KB_REFRESH_RATE_PERMISSIONS = {
   plans: PRO_PLUS_PLANS,
-  permission: Permission.KB_REFRESH_RATE,
+  permission: Permission.FEATURE_KB_REFRESH_RATE,
 
   upgradeTooltip: () => ({
     ...getUpgradeTooltipProps(PlanType.PRO, Tracking.UpgradePrompt.KB_REFRESH_RATE),

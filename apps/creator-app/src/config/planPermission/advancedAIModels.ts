@@ -26,7 +26,7 @@ export const getAdvancedAiModelUpgradeModal = (modelType: AIModel) => ({
 
 export const ADVANCED_AI_MODELS_PERMISSIONS = {
   plans: PRO_PLUS_PLANS,
-  permission: Permission.ADVANCED_LLM_MODELS,
+  permission: Permission.FEATURE_ADVANCED_LLM_MODELS,
 
   isAdvancedAIModel: (modelType: AIModel) => !!AI_MODEL_CONFIG_MAP[modelType].advanced,
 

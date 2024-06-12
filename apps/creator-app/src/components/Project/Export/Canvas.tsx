@@ -16,7 +16,7 @@ import { Context } from './Context';
 export const Canvas: React.FC = () => {
   const CANVAS_SPECIFIC_EXPORT_OPTIONS = [ExportFormat.PDF, ExportFormat.PNG];
 
-  const { allowed: isAllowed, planConfig } = usePermission(Permission.CANVAS_EXPORT);
+  const { allowed: isAllowed, planConfig } = usePermission(Permission.FEATURE_CANVAS_EXPORT);
   const { canvasExportFormat, setCanvasExportFormat, exportDiagramID, setExportDiagramID } = React.useContext(Context)!;
 
   const workflows = useSelector(Designer.Workflow.selectors.all);
@@ -65,7 +65,7 @@ export const Canvas: React.FC = () => {
             label={defaultMenuLabelRenderer(format, searchLabel, getOptionLabel, getOptionValue, options)}
             isFocused={options.isFocused}
             isAllowed={planConfig && !planConfig.isPaidExportFormat(format)}
-            permission={Permission.CANVAS_EXPORT}
+            permission={Permission.FEATURE_CANVAS_EXPORT}
             tooltipProps={{ offset: [0, 30] }}
           />
         )}

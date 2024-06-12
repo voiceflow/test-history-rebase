@@ -18,7 +18,7 @@ export const CONFIG = Base.extend({
 
   tooltip: Base.tooltip(NLP.Einstein.CONFIG),
 
-  permission: Permission.NLU_CUSTOM,
+  permission: Permission.FEATURE_NLU_CUSTOM,
 
   helpURL: 'https://voiceflow.zendesk.com/hc/en-us/articles/10827835195149',
 })(Base.validate);

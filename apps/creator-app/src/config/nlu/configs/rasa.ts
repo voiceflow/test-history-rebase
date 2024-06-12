@@ -18,7 +18,7 @@ export const CONFIG = Base.extend({
 
   tooltip: Base.tooltip(NLP.Rasa2.CONFIG),
 
-  permission: Permission.NLU_CUSTOM,
+  permission: Permission.FEATURE_NLU_CUSTOM,
 
   helpURL: 'https://voiceflow.zendesk.com/hc/en-us/articles/10827794283021',
 })(Base.validate);

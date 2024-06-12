@@ -15,7 +15,7 @@ interface WebhookFieldProps {
 }
 
 const WebhookField: React.FC<WebhookFieldProps> = ({ description, platformName }) => {
-  const [canEditApiKey] = usePermission(Permission.API_KEY_EDIT);
+  const [canEditApiKey] = usePermission(Permission.API_KEY_UPDATE);
   const [primaryKey, setPrimaryKey] = React.useState<string | null>(null);
 
   const projectID = useSelector(Session.activeProjectIDSelector)!;

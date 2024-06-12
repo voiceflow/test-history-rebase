@@ -15,7 +15,7 @@ interface ButtonsPreviewProps {
 }
 
 const ButtonPreview: React.FC<ButtonsPreviewProps> = ({ prompts, onOpenEditor, onClose }) => {
-  const [canOpenEditor] = usePermission(Permission.CANVAS_OPEN_EDITOR);
+  const [canOpenEditor] = usePermission(Permission.PROJECT_CANVAS_OPEN_EDITOR);
   const entityEditModal = useEntityEditModal();
 
   return (
@@ -39,7 +39,10 @@ const ButtonPreview: React.FC<ButtonsPreviewProps> = ({ prompts, onOpenEditor, o
             </Box.Flex>
 
             <Preview.ContentIcon>
-              <Preview.ButtonIcon icon="copy" onClick={Utils.functional.chain(copyWithToast(prompt.content), onClose)} />
+              <Preview.ButtonIcon
+                icon="copy"
+                onClick={Utils.functional.chain(copyWithToast(prompt.content), onClose)}
+              />
             </Preview.ContentIcon>
           </Preview.ContentItem>
         ))}

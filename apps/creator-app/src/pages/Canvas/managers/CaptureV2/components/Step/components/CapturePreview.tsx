@@ -15,12 +15,13 @@ interface ButtonsPreviewProps {
 }
 
 const CapturePreview: React.FC<ButtonsPreviewProps> = ({ prompt, onOpenEditor, onClose }) => {
-  const [canOpenEditor] = usePermission(Permission.CANVAS_OPEN_EDITOR);
+  const [canOpenEditor] = usePermission(Permission.PROJECT_CANVAS_OPEN_EDITOR);
   const entityEditModal = useEntityEditModal();
 
   if (!prompt) return null;
 
   return (
+    // eslint-disable-next-line no-empty-function
     <Preview onClick={stopPropagation(() => {})}>
       <Preview.Header>
         <Preview.Title>Entity reprompt</Preview.Title>

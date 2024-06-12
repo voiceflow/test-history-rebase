@@ -27,7 +27,7 @@ const Conversations: React.FC = () => {
   const history = useHistory();
 
   const [trackingEvents] = useTrackingEvents();
-  const [canViewConversations] = usePermission(Permission.VIEW_CONVERSATIONS);
+  const [canViewConversations] = usePermission(Permission.PROJECT_TRANSCRIPT_READ);
 
   const allTranscripts = useSelector(Transcripts.allTranscriptsSelector);
   const currentTranscriptID = useSelector(Transcripts.currentTranscriptIDSelector);

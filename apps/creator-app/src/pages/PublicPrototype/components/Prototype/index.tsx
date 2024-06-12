@@ -24,10 +24,17 @@ interface PrototypeProps {
   globalDelayInMilliseconds: number;
 }
 
-const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state, actions, settings, onInteract, globalDelayInMilliseconds }) => {
+const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({
+  config,
+  state,
+  actions,
+  settings,
+  onInteract,
+  globalDelayInMilliseconds,
+}) => {
   const startPrototype = useStartPublicPrototype(settings);
   const resetPrototype = useResetPrototype();
-  const [isCustomizedPrototypeAllowed] = useGuestPermission(settings.plan, Permission.CUSTOMIZE_PROTOTYPE);
+  const [isCustomizedPrototypeAllowed] = useGuestPermission(settings.plan, Permission.FEATURE_CUSTOMIZE_PROTOTYPE);
   const interactedRef = React.useRef(false);
   const [input, setInput] = React.useState<string>('');
   const selectedPersonaID = useSelector(PrototypeDuck.prototypeSelectedPersonaID);
@@ -100,7 +107,10 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state
   const canUseASR = useCanASR();
   const speechRecognition = useSpeechRecognition({ locale, onTranscript, askOnSetup: isVoicePrototype });
 
-  const checkPMStatus = React.useCallback((...args: PMStatus[]) => args.includes(prototypeMachineStatus as PMStatus), [prototypeMachineStatus]);
+  const checkPMStatus = React.useCallback(
+    (...args: PMStatus[]) => args.includes(prototypeMachineStatus as PMStatus),
+    [prototypeMachineStatus]
+  );
 
   const layout = settings.layout ?? Realtime.Utils.platform.getDefaultPrototypeLayout(settings.projectType);
 

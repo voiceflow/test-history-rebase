@@ -13,12 +13,18 @@ import { useSelector } from '@/hooks/store.hook';
 
 import type { IWorkflowMenu } from './WorkflowMenu.interface';
 
-export const WorkflowMenu: React.FC<IWorkflowMenu> = ({ width = 'fit-content', maxWidth, onClose, onSelect: onSelectProp, excludeIDs }) => {
+export const WorkflowMenu: React.FC<IWorkflowMenu> = ({
+  width = 'fit-content',
+  maxWidth,
+  onClose,
+  onSelect: onSelectProp,
+  excludeIDs,
+}) => {
   const TEST_ID = 'workflow-menu';
 
   const storeWorkflows = useSelector(Designer.Workflow.selectors.all);
   const workflowCreateModal = useWorkflowCreateModal();
-  const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
+  const [canEditCanvas] = usePermission(Permission.PROJECT_CANVAS_UPDATE);
 
   const [listNode, setListNode] = useState<HTMLDivElement | null>(null);
   const [isCreating, setIsCreating] = useState(false);
@@ -69,9 +75,17 @@ export const WorkflowMenu: React.FC<IWorkflowMenu> = ({ width = 'fit-content', m
       listRef={setListNode}
       maxWidth={maxWidth}
       maxHeight={310}
-      searchSection={<Search value={search.value} placeholder="Search" onValueChange={search.setValue} testID={tid(TEST_ID, 'search')} />}
+      searchSection={
+        <Search
+          value={search.value}
+          placeholder="Search"
+          onValueChange={search.setValue}
+          testID={tid(TEST_ID, 'search')}
+        />
+      }
       actionButtons={
-        search.hasItems && canEditCanvas && (
+        search.hasItems &&
+        canEditCanvas && (
           <ActionButtons
             firstButton={
               <ActionButtons.Button
@@ -106,7 +120,14 @@ export const WorkflowMenu: React.FC<IWorkflowMenu> = ({ width = 'fit-content', m
           })}
         </VirtualizedContent>
       ) : (
-        canEditCanvas && <Menu.CreateItem label={search.value} onClick={onCreate} disabled={isCreating} testID={tid(TEST_ID, 'item', 'add')} />
+        canEditCanvas && (
+          <Menu.CreateItem
+            label={search.value}
+            onClick={onCreate}
+            disabled={isCreating}
+            testID={tid(TEST_ID, 'item', 'add')}
+          />
+        )
       )}
     </Menu>
   );

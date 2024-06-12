@@ -16,7 +16,7 @@ interface ActionPreviewProps {
 }
 
 const ActionPreview: React.FC<ActionPreviewProps> = ({ onClose, content, onRemove, onOpenEditor, onOpenTarget }) => {
-  const [canOpenEditor] = usePermission(Permission.CANVAS_OPEN_EDITOR);
+  const [canOpenEditor] = usePermission(Permission.PROJECT_CANVAS_OPEN_EDITOR);
 
   useHotkey(Hotkey.DELETE, onRemove);
 
@@ -31,8 +31,12 @@ const ActionPreview: React.FC<ActionPreviewProps> = ({ onClose, content, onRemov
       </Preview.Content>
 
       <Preview.Footer>
-        {canOpenEditor && <Preview.ButtonIcon icon="edit" onClick={Utils.functional.chainVoid(onClose, onOpenEditor)} />}
-        {!!onOpenTarget && <Preview.ButtonIcon ml={8} icon="target" onClick={Utils.functional.chainVoid(onClose, onOpenTarget)} />}
+        {canOpenEditor && (
+          <Preview.ButtonIcon icon="edit" onClick={Utils.functional.chainVoid(onClose, onOpenEditor)} />
+        )}
+        {!!onOpenTarget && (
+          <Preview.ButtonIcon ml={8} icon="target" onClick={Utils.functional.chainVoid(onClose, onOpenTarget)} />
+        )}
       </Preview.Footer>
     </Preview>
   );

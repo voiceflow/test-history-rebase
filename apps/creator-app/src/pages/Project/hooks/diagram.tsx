@@ -32,7 +32,7 @@ export const useDiagramRename = ({
   onNameChanged,
 }: DiagramRenameOptions): DiagramRenameApi => {
   const inputRef = React.useRef<HTMLInputElement>(null);
-  const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
+  const [canEditCanvas] = usePermission(Permission.PROJECT_CANVAS_UPDATE);
   const [localName, _setLocalName] = useLinkedState(diagramName ?? '');
   const [renameEnabled, toggleRenameEnabled] = useToggle(false);
   const flow = useSelector(Designer.Flow.selectors.oneByDiagramID, { diagramID });

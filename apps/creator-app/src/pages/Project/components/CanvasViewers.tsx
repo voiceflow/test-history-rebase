@@ -6,7 +6,7 @@ import * as DiagramV2 from '@/ducks/diagramV2';
 import { usePermission, useSelector } from '@/hooks';
 
 const CanvasViewers: React.FC = () => {
-  const [canViewCollaborators] = usePermission(Permission.VIEW_COLLABORATORS);
+  const [canViewCollaborators] = usePermission(Permission.PROJECT_MEMBER_READ);
 
   const diagramIDs = useSelector(DiagramV2.allDiagramIDsSelector);
   const viewers = useSelector(DiagramV2.diagramsViewersByIDsSelector, { ids: diagramIDs });

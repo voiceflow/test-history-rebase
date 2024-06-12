@@ -53,7 +53,7 @@ export const AssistantCard = ({ project, isHovered, onClickCard, onClickDesigner
   const [isEditing, setIsEditing] = React.useState(false);
   const [formValue, updateFormValue] = useLinkedState(project?.name);
 
-  const editProject = usePermission(Permission.PROJECT_EDIT);
+  const editProject = usePermission(Permission.PROJECT_UPDATE);
   const paymentModal = usePaymentModal();
   const isLockedProjectViewer = useIsLockedProjectViewer();
   const isFree = !useSelector(WorkspaceV2.active.isOnPaidPlanSelector);

@@ -28,10 +28,10 @@ const SharePopper: React.FC<SharePopperProps> = ({ children, placement, modifier
 
   const sharePopper = React.useContext(SharePopperContext);
 
-  const [canSharePrototype] = usePermission(Permission.SHARE_PROTOTYPE);
+  const [canSharePrototype] = usePermission(Permission.PROJECT_PROTOTYPE_SHARE);
   const allowedAndCanSharePrototype = canSharePrototype && !hideExports.isEnabled;
 
-  const [canAddCollaborators] = usePermission(Permission.ADD_COLLABORATORS);
+  const [canAddCollaborators] = usePermission(Permission.WORKSPACE_MEMBER_ADD);
 
   const [isClosePrevented, setIsClosedPrevented] = React.useState(false);
 

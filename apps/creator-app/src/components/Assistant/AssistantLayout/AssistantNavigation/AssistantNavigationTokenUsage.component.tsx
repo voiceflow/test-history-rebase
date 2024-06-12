@@ -20,7 +20,7 @@ export const AssistantNavigationTokenUsage: React.FC<BaseProps> = ({ testID }) =
   const paymentModal = usePaymentModal();
   const [trackingEvents] = useTrackingEvents();
   const tokenPurchaseModal = useTokensPurchaseModal();
-  const [canConfigureWorkspaceBilling] = usePermission(Permission.CONFIGURE_WORKSPACE_BILLING);
+  const [canConfigureWorkspaceBilling] = usePermission(Permission.WORKSPACE_BILLING_MANAGE);
 
   const plan = useSelector(Workspace.active.planSelector);
   const isOnProTrial = useSelector(Workspace.active.isOnProTrialSelector);
@@ -37,7 +37,7 @@ export const AssistantNavigationTokenUsage: React.FC<BaseProps> = ({ testID }) =
   const onClick = () => {
     if (isOnProTrial || isStarterPlan(plan)) {
       paymentModal.openVoid({});
-    } else if (isProWorkspace) {
+    } else if (isProWorkspace || isTeamsWorkspace) {
       if (canConfigureWorkspaceBilling) {
         tokenPurchaseModal.openVoid({});
       }

@@ -18,7 +18,7 @@ export const CONFIG = Base.extend({
 
   tooltip: Base.tooltip(NLP.Watson.CONFIG),
 
-  permission: Permission.NLU_CUSTOM,
+  permission: Permission.FEATURE_NLU_CUSTOM,
 
   helpURL: 'https://voiceflow.zendesk.com/hc/en-us/articles/9497124882189-IBM-Watson-Imports-Exports',
 })(Base.validate);

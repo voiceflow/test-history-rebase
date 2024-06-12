@@ -17,7 +17,7 @@ export const CMSHeaderMembers: React.FC = () => {
   const viewers = useSelector(Assistant.Awareness.selectors.viewersByAssistantID, { assistantID: activeProjectID });
 
   const inviteModal = useModal(Modals.Workspace.Invite);
-  const [canInviteMembers] = usePermission(Permission.INVITE);
+  const [canInviteMembers] = usePermission(Permission.WORKSPACE_INVITE);
 
   const list = useMemo(
     () =>

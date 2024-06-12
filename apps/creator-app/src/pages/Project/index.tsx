@@ -37,7 +37,7 @@ const Project: React.FC = () => {
   const resetCreator = useLocalDispatch(Realtime.creator.reset);
   const resetCanvasTemplateData = useLocalDispatch(Realtime.canvasTemplate.reset);
 
-  const [canEditProject] = usePermission(Permission.PROJECT_EDIT);
+  const [canEditProject] = usePermission(Permission.PROJECT_UPDATE);
 
   const hideExports = useFeature(Realtime.FeatureFlag.HIDE_EXPORTS);
   const disableIntegration = useFeature(Realtime.FeatureFlag.DISABLE_INTEGRATION);

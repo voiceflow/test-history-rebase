@@ -16,7 +16,7 @@ import { captionStyles } from './CMSKnowledgeBaseTableRefreshCell.css';
 import { ICMSKnowledgeBaseTableRefreshCell } from './CMSKnowledgeBaseTableRefreshCell.interface';
 
 export const CMSKnowledgeBaseTableRefreshCell: React.FC<ICMSKnowledgeBaseTableRefreshCell> = ({ item }) => {
-  const refreshRatePermission = usePermission(Permission.KB_REFRESH_RATE);
+  const refreshRatePermission = usePermission(Permission.FEATURE_KB_REFRESH_RATE);
   const integrations = useSelector(Designer.KnowledgeBase.Integration.selectors.all);
   const store = useStore();
   const patchManyRefreshRate = useDispatch(Designer.KnowledgeBase.Document.effect.patchManyRefreshRate);
@@ -25,7 +25,9 @@ export const CMSKnowledgeBaseTableRefreshCell: React.FC<ICMSKnowledgeBaseTableRe
   const hasNeededIntegrations = React.useMemo(
     () =>
       item?.data?.type === BaseModels.Project.KnowledgeBaseDocumentType.URL && item.data.source
-        ? integrations.find((integration) => integration.type === (item.data as BaseModels.Project.KnowledgeBaseURL)?.source)
+        ? integrations.find(
+            (integration) => integration.type === (item.data as BaseModels.Project.KnowledgeBaseURL)?.source
+          )
         : true,
     [integrations, item]
   );
@@ -78,7 +80,9 @@ export const CMSKnowledgeBaseTableRefreshCell: React.FC<ICMSKnowledgeBaseTableRe
             <Box direction="column">
               <Tooltip.Caption>{upgradeTooltip.description}</Tooltip.Caption>
               {upgradeTooltip.upgradeButtonText && (
-                <Tooltip.Button onClick={() => upgradeTooltip.onUpgrade(store.dispatch)}>{upgradeTooltip.title}</Tooltip.Button>
+                <Tooltip.Button onClick={() => upgradeTooltip.onUpgrade(store.dispatch)}>
+                  {upgradeTooltip.title}
+                </Tooltip.Button>
               )}
             </Box>
           )}
@@ -140,7 +144,11 @@ export const CMSKnowledgeBaseTableRefreshCell: React.FC<ICMSKnowledgeBaseTableRe
       {({ onClose }) => (
         <Menu minWidth={0}>
           {refreshRateOptions.map(({ label, value }) => (
-            <MenuItem key={label} label={label} onClick={stopPropagation(Utils.functional.chainVoid(() => onSetRefreshRate(value), onClose))} />
+            <MenuItem
+              key={label}
+              label={label}
+              onClick={stopPropagation(Utils.functional.chainVoid(() => onSetRefreshRate(value), onClose))}
+            />
           ))}
         </Menu>
       )}

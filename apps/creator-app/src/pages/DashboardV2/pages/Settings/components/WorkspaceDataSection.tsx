@@ -16,7 +16,7 @@ const GeneralSettingsPage: React.FC = () => {
   const updateActiveWorkspaceName = useDispatch(WorkspaceV2.updateActiveWorkspaceName);
   const updateActiveWorkspaceImage = useDispatch(WorkspaceV2.updateActiveWorkspaceImage);
 
-  const [canConfigureWorkspace] = usePermission(Permission.CONFIGURE_WORKSPACE);
+  const [canConfigureWorkspace] = usePermission(Permission.WORKSPACE_MANAGE);
   const [name, updateName] = useLinkedState(workspace?.name ?? '');
 
   const saveName = React.useCallback(() => {

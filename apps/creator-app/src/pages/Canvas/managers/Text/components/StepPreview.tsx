@@ -15,7 +15,7 @@ interface StepPreviewProps {
 }
 
 const StepPreview: React.FC<StepPreviewProps> = ({ items, onClose, onOpenEditor }) => {
-  const [canOpenEditor] = usePermission(Permission.CANVAS_OPEN_EDITOR);
+  const [canOpenEditor] = usePermission(Permission.PROJECT_CANVAS_OPEN_EDITOR);
 
   const onCopyAll = () => {
     const allVariants = items.map((item) => item.text).join(' | ');
@@ -44,7 +44,9 @@ const StepPreview: React.FC<StepPreviewProps> = ({ items, onClose, onOpenEditor 
       </Preview.Content>
 
       <Preview.Footer>
-        {canOpenEditor && <Preview.ButtonIcon icon="edit" onClick={Utils.functional.chainVoid(onOpenEditor, onClose)} />}
+        {canOpenEditor && (
+          <Preview.ButtonIcon icon="edit" onClick={Utils.functional.chainVoid(onOpenEditor, onClose)} />
+        )}
 
         <Preview.ButtonIcon ml={8} icon="copy" onClick={onCopyAll} />
       </Preview.Footer>

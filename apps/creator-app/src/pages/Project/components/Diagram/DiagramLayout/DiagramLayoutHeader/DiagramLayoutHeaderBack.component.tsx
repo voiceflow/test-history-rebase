@@ -10,7 +10,7 @@ import { useDidUpdateEffect } from '@/hooks/lifecircle.hook';
 import { usePermission } from '@/hooks/permission';
 import { useDispatch, useGetValueSelector, useSelector } from '@/hooks/store.hook';
 import { useTrackingEvents } from '@/hooks/tracking';
-import { getHotkeyLabel, Hotkey } from '@/keymap';
+import { getHotkeyLabel,Hotkey } from '@/keymap';
 import { PrototypeContext } from '@/pages/Prototype/context';
 
 interface IDiagramLayoutHeaderBack {
@@ -21,7 +21,7 @@ export const DiagramLayoutHeaderBack: React.FC<IDiagramLayoutHeaderBack> = ({ is
   const prototype = useContext(PrototypeContext);
   const [trackingEvents] = useTrackingEvents();
   const tooltipModifiers = useTooltipModifiers([{ name: 'offset', options: { offset: [0, 11] } }]);
-  const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
+  const [canEditCanvas] = usePermission(Permission.PROJECT_CANVAS_UPDATE);
 
   const isWorkflow = useSelector(Diagram.active.isTopicSelector);
   const activeDiagramID = useSelector(Creator.activeDiagramIDSelector);

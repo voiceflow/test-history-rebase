@@ -29,7 +29,7 @@ export const useAnyModeOpen = () => {
 };
 
 export const useEditingMode = () => {
-  const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
+  const [canEditCanvas] = usePermission(Permission.PROJECT_CANVAS_UPDATE);
   const isInteractiveMode = useInteractiveMode();
 
   return canEditCanvas && !isInteractiveMode;

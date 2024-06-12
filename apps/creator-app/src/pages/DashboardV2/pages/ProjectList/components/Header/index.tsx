@@ -23,16 +23,19 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ search, onSearch, isKanban }) => {
-  const [canInviteMembers] = usePermission(Permission.INVITE);
-  const [canImportProject] = usePermission(Permission.IMPORT_PROJECT);
-  const [canCreateProject] = usePermission(Permission.PROJECT_EDIT);
+  const [canInviteMembers] = usePermission(Permission.WORKSPACE_INVITE);
+  const [canImportProject] = usePermission(Permission.WORKSPACE_IMPORT_PROJECT);
+  const [canCreateProject] = usePermission(Permission.PROJECT_UPDATE);
 
   const projectsCount = useSelector(ProjectV2.projectsCountSelector);
   const projectsLimit = useSelector(WorkspaceV2.active.projectsLimitSelector);
   const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
 
   // FIXME: remove FF https://voiceflow.atlassian.net/browse/CV3-994
-  const legacyProjectsLimitConfig = usePlanLimitedConfig(LimitType.PROJECTS, { value: projectsCount, limit: projectsLimit });
+  const legacyProjectsLimitConfig = usePlanLimitedConfig(LimitType.PROJECTS, {
+    value: projectsCount,
+    limit: projectsLimit,
+  });
   const newProjectsLimitConfig = useConditionalLimit(LimitType.PROJECTS, { value: projectsCount });
 
   const projectsLimitConfig = subscription ? newProjectsLimitConfig : legacyProjectsLimitConfig;

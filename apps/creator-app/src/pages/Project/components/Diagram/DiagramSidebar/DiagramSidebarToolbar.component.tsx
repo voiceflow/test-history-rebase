@@ -21,8 +21,8 @@ export const DiagramSidebarToolbar = memo(() => {
   const markup = React.useContext(MarkupContext);
   const search = React.useContext(SearchContext);
 
-  const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
-  const [canUseHintFeatures] = usePermission(Permission.CANVAS_HINT_FEATURES);
+  const [canEditCanvas] = usePermission(Permission.PROJECT_CANVAS_UPDATE);
+  const [canUseHintFeatures] = usePermission(Permission.PROJECT_CANVAS_HINT_FEATURES);
 
   const canvasNavigation = useSelector(UI.selectors.canvasNavigation);
   const setCanvasNavigation = useDispatch(UI.action.SetCanvasNavigation);

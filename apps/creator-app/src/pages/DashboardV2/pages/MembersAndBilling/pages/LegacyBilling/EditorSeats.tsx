@@ -23,7 +23,7 @@ const LegacyBillingEditorSeats: React.FC = () => {
   const isPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
   const isEnterprise = useSelector(WorkspaceV2.active.isEnterpriseSelector);
   const usedViewerSeats = useSelector(WorkspaceV2.active.members.usedViewerSeatsSelector);
-  const [canScheduleSeats] = usePermission(Permission.BILLING_SEATS_SCHEDULE);
+  const [canScheduleSeats] = usePermission(Permission.FEATURE_SCHEDULE_SEATS);
 
   const { nextBillingDate, quantity } = planSubscription ?? {};
   const scheduledSeat = quantity !== seats;

@@ -10,11 +10,11 @@ import { UpgradeModalAndTooltipPlanPermission } from './types';
 
 export const NLU_EXPORT_CSV_PERMISSIONS = {
   plans: PRO_PLUS_PLANS,
-  permission: Permission.NLU_EXPORT_CSV,
+  permission: Permission.FEATURE_NLU_EXPORT_CSV,
 
   upgradeModal: () => ({
     ...getUpgradePopperProps(PlanType.PRO, Tracking.UpgradePrompt.EXPORT_CSV_NLU),
-    title: `Need to export data as CSV?`,
+    title: 'Need to export data as CSV?',
     header: 'CSV Export',
     description: 'CSV export is a pro feature. Please upgrade to pro to continue.',
   }),

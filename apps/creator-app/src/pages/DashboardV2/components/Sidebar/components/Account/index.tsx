@@ -18,7 +18,7 @@ const Account: React.FC = () => {
   const isLastAdmin = useSelector(WorkspaceV2.active.members.isLastAdminSelector);
   const logout = useDispatch(Session.logout);
   const goToAccount = useDispatch(Router.goToAccountV2);
-  const [unableToLeaveWorkspace] = usePermission(Permission.UNABLE_TO_LEAVE_WORKSPACE);
+  const [unableToLeaveWorkspace] = usePermission(Permission.WORKSPACE_UNABLE_TO_LEAVE);
   const leaveWorkspaceModal = ModalsV2.useModal(ModalsV2.Workspace.Leave);
 
   const canLeaveWorkspace = !isLastAdmin && !unableToLeaveWorkspace;

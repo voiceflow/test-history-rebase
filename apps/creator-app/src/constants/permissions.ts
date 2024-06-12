@@ -5,87 +5,76 @@ export const PLAN_PERMISSION_DEFAULT_WARN_MESSAGE = 'This feature is not availab
 export const TRIAL_EXPIRED_PERMISSION_DEFAULT_WARN_MESSAGE =
   'Your trial has expired. Please upgrade to continue using this feature.';
 
-// TODO: refactor keys, should be prefixed with the domain name, FE WORKSPACE_, PROJECT_, etc
 export enum Permission {
   // organization
-  ORGANIZATION_CONFIGURE_SSO = 'organization.CONFIGURE_SSO',
-  ORGANIZATION_MANAGE_MEMBERS = 'organization.MANAGE_MEMBERS',
-  EDIT_ORGANIZATION = 'organization.EDIT',
+  ORGANIZATION_CONFIGURE_SSO = 'organization:CONFIGURE_SSO',
+  ORGANIZATION_MANAGE_MEMBERS = 'organization:MANAGE_MEMBERS',
+  ORGANIZATION_UPDATE = 'organization:UPDATE',
 
   // workspace
-  WORKSPACE_CREATE = 'workspace.CREATE',
-  CONFIGURE_WORKSPACE = 'workspace.CONFIGURE',
-  CONFIGURE_WORKSPACE_BILLING = 'workspace.CONFIGURE_BILLING',
-  UPGRADE_WORKSPACE = 'workspace.UPGRADE',
-  DELETE_WORKSPACE = 'workspace.DELETE',
-  INVITE_BY_LINK = 'workspace.INVITE_BY_LINK',
-  INVITE = 'workspace.INVITE',
-  IMPORT_PROJECT = 'workspace.IMPORT_PROJECT',
-  UNABLE_TO_LEAVE_WORKSPACE = 'workspace.UNABLE_TO_LEAVE',
+  WORKSPACE_CREATE = 'workspace:CREATE',
+  WORKSPACE_MANAGE = 'workspace:MANAGE',
+  WORKSPACE_UPGRADE = 'workspace:UPGRADE',
+  WORKSPACE_DELETE = 'workspace:DELETE',
+  WORKSPACE_INVITE = 'workspace:INVITE',
+  WORKSPACE_IMPORT_PROJECT = 'workspace:IMPORT_PROJECT',
+  WORKSPACE_UNABLE_TO_LEAVE = 'workspace:UNABLE_TO_LEAVE',
+  WORKSPACE_PROJECTS_MANAGE = 'workspace.projects:MANAGE',
 
-  // collaborator
-  ADD_COLLABORATORS = 'collaborator.ADD',
-  VIEW_COLLABORATORS = 'collaborator.VIEW',
-  MANAGE_ADMIN_COLLABORATORS = 'collaborator.MANAGE_ADMINS',
+  // billing
+  WORKSPACE_BILLING_MANAGE = 'workspace.billing:MANAGE',
+  WORKSPACE_BILLING_ADD_SEATS = 'workspace.billing:SEATS_ADD',
+
+  // workspace members
+  WORKSPACE_MEMBER_ADD = 'workspace.member:ADD',
+  WORKSPACE_MEMBER_MANAGE_ADMIN = 'workspace.member:MANAGE_ADMIN',
 
   // project
-  PROJECT_EDIT = 'project.EDIT',
-  PROJECT_SHARE = 'project.SHARE',
-  PROJECT_VERSIONS = 'project.VERSIONS',
-  PROJECT_FULL_VERSIONS = 'project.FULL_VERSIONS',
+  PROJECT_UPDATE = 'project:UPDATE',
+  PROJECT_COMMENT = 'project:COMMENT',
+  PROJECT_VERSIONS_READ = 'project.versions.READ',
 
-  // projects
-  PROJECTS_MANAGE = 'projects.MANAGE',
-
-  // export
-  CODE_EXPORT = 'export.CODE',
-  MODEL_EXPORT = 'export.MODEL', // to be removed once revised permissions feature is implemented
+  // project members
+  PROJECT_MEMBER_READ = 'project.member:READ',
 
   // prototype
-  SHARE_PROTOTYPE = 'prototype.SHARE',
-  RENDER_PROTOTYPE = 'prototype.RENDER',
-  CUSTOMIZE_PROTOTYPE = 'prototype.CUSTOMIZE',
-  SHARE_PROTOTYPE_PASSWORD = 'prototype.SHARE_PASSWORD',
+  PROJECT_PROTOTYPE_SHARE = 'project.prototype:SHARE',
+  PROJECT_PROTOTYPE_RENDER = 'project.prototype:RENDER',
+  PROJECT_PROTOTYPE_SHARE_PASSWORD = 'project.prototype:SHARE_PASSWORD',
+  PROJECT_CANVAS_OPEN_EDITOR = 'project.canvas:OPEN_EDITOR',
+  PROJECT_CANVAS_HINT_FEATURES = 'project.canvas:HINT_FEATURES',
+  PROJECT_CANVAS_UPDATE = 'project.canvas:UPDATE',
+
+  // Transcript
+  PROJECT_TRANSCRIPT_DELETE = 'project.transcript:DELETE',
+  PROJECT_TRANSCRIPT_READ = 'project.transcript:READ',
 
   // project list
   PROJECT_LIST_MANAGE = 'project_list.MANAGE',
 
-  // billing
-  BILLING_SEATS_SCHEDULE = 'billing.SEATS_SCHEDULE',
-  BILLING_SEATS_ADD = 'billing.SEATS_ADD',
-  BILLING_SEATS = 'billing.SEATS',
-
-  // canvas
-  CANVAS_EDIT = 'canvas.EDIT',
-  CANVAS_EXPORT = 'canvas.EXPORT',
-  CANVAS_PAID_STEPS = 'canvas.PAID_STEPS',
-  CANVAS_OPEN_EDITOR = 'canvas.OPEN_EDITOR',
-  CANVAS_HINT_FEATURES = 'canvas.HINT_FEATURES',
-
-  // features
-  COMMENTING = 'feature.COMMENTING',
-  BULK_UPLOAD = 'feature.BULK_UPLOAD',
-
-  // Transcript
-  DELETE_TRANSCRIPT = 'transcripts.DELETE',
-  VIEW_CONVERSATIONS = 'transcripts.VIEW',
-
   // private cloud
-  PRIVATE_CLOUD_WORKSPACE_CREATE = 'private_cloud.workspace.CREATE',
-
-  // NLU
-  NLU_CUSTOM = 'nlu.CUSTOM_PROJECT',
-  NLU_EXPORT_ALL = 'nlu.EXPORT_ALL',
-  NLU_EXPORT_CSV = 'nlu.EXPORT_CSV',
-
-  // KB
-  KB_REFRESH_RATE = 'kb.REFRESH_RATE',
+  PRIVATE_CLOUD_WORKSPACE_CREATE = 'private_cloud.workspace:CREATE',
 
   // API keys
-  API_KEY_EDIT = 'api_key.EDIT',
+  API_KEY_UPDATE = 'api_key.UPDATE',
 
-  // AI
-  AI_PLAYGROUND_DISCLAIMER = 'ai_playground.EDIT',
+  // features (when a permission is only plan based, it should be prefixed with FEATURE_)
+  FEATURE_BULK_UPLOAD = 'feature:BULK_UPLOAD',
+  FEATURE_NLU_CUSTOM = 'feature.nlu:CUSTOM_PROJECT',
+  FEATURE_NLU_EXPORT_ALL = 'feature.nlu:EXPORT_ALL',
+  FEATURE_NLU_EXPORT_CSV = 'feature.nlu:EXPORT_CSV',
+  FEATURE_KB_REFRESH_RATE = 'feature.kb:REFRESH_RATE',
+  FEATURE_AI_PLAYGROUND_DISCLAIMER = 'feature:AI_PLAYGROUND_DISCLAIMER',
+  FEATURE_CANVAS_EXPORT = 'feature.canvas:EXPORT',
+  FEATURE_CANVAS_PAID_STEPS = 'feature.canvas:PAID_STEPS',
+  FEATURE_SHARE_PROJECT = 'feature:SHARE_PROJECT',
+  FEATURE_EXPORT_CODE = 'feature:EXPORT_CODE',
+  FEATURE_EXPORT_MODEL = 'feature:EXPORT_MODEL', // to be removed once revised permissions feature is implemented
+  FEATURE_CUSTOMIZE_PROTOTYPE = 'feature:CUSTOMIZE_PROTOTYPE',
+  FEATURE_FULL_BACKUP_HISTORY = 'feature:FULL_BACKUP_HISTORY',
 
-  ADVANCED_LLM_MODELS = 'advanced_llm_models.EDIT',
+  // kill once everyone is on chargebee? confirm with proudct, since some customers will have extra seats
+  FEATURE_MANAGE_SEATS = 'feature:MANAGE_SEATS',
+  FEATURE_ADVANCED_LLM_MODELS = 'feature:ADVANCED_LLM_MODELS', // kill once everyone is on chargebee
+  FEATURE_SCHEDULE_SEATS = 'feature:SCHEDULE_SEATS', // kill once everyone is on chargebee
 }

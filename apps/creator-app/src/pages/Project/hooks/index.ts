@@ -22,7 +22,7 @@ export const useCommentingToggle = () => {
   const getEngine = useEventualEngine();
   const paymentModal = usePaymentModal();
   const isCommentingMode = useCommentingMode();
-  const [canUseCommenting] = usePermission(Permission.COMMENTING);
+  const [canUseCommenting] = usePermission(Permission.PROJECT_COMMENT);
 
   return useCallback(() => {
     if (isCommentingMode) {

@@ -28,7 +28,7 @@ import { getProjectSortFunction } from './utils';
 const ProjectList: React.FC = () => {
   const [search, setSearch] = React.useState('');
   const [sortBy, setSortBy] = React.useState<SortOptionType>(SortByOptions[0]);
-  const [canCreateAssistant] = usePermission(Permission.PROJECT_EDIT);
+  const [canCreateAssistant] = usePermission(Permission.PROJECT_UPDATE);
   const proReverseTrial = useFeature(Realtime.FeatureFlag.PRO_REVERSE_TRIAL);
   const isEnterprise = useSelector(WorkspaceV2.active.isEnterpriseSelector);
   const location = useLocation();

@@ -30,9 +30,9 @@ const Publish: React.FC = () => {
   const location = useLocation();
   const onLinkClick = useOnLinkClick();
 
-  const [canCodeExport] = usePermission(Permission.CODE_EXPORT);
-  const [canEditAPIKey] = usePermission(Permission.API_KEY_EDIT);
-  const [canEditProject] = usePermission(Permission.PROJECT_EDIT);
+  const [canCodeExport] = usePermission(Permission.FEATURE_EXPORT_CODE);
+  const [canEditAPIKey] = usePermission(Permission.API_KEY_UPDATE);
+  const [canEditProject] = usePermission(Permission.PROJECT_UPDATE);
 
   const name = useSelector(Project.active.nameSelector);
   const hasProject = useSelector(Project.active.hasSelector);

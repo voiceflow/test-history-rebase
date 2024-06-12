@@ -18,7 +18,7 @@ const DashboardV2Billing: React.FC = () => {
   const organizationID = useSelector(WorkspaceV2.active.organizationIDSelector);
   const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
 
-  const [canManageSeats] = usePermission(Permission.BILLING_SEATS);
+  const [canManageSeats] = usePermission(Permission.FEATURE_MANAGE_SEATS);
   const isProOrTeamPlan = useSelector(WorkspaceV2.active.isProOrTeamSelector);
   const isTrial = useSelector(WorkspaceV2.active.isOnTrialSelector);
   const paymentMethod = useSelector(Organization.paymentMethodSelector);

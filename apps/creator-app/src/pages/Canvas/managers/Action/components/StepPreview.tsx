@@ -14,7 +14,7 @@ interface CodePreviewProps {
 }
 
 const CodePreview: React.FC<CodePreviewProps> = ({ data: { name, body }, onOpenEditor, onClose }) => {
-  const [canOpenEditor] = usePermission(Permission.CANVAS_OPEN_EDITOR);
+  const [canOpenEditor] = usePermission(Permission.PROJECT_CANVAS_OPEN_EDITOR);
 
   return (
     <Preview onClick={stopPropagation()} id="canvas-preview">
@@ -27,9 +27,13 @@ const CodePreview: React.FC<CodePreviewProps> = ({ data: { name, body }, onOpenE
       </Preview.Content>
 
       <Preview.Footer>
-        {canOpenEditor && <Preview.ButtonIcon icon="edit" onClick={Utils.functional.chainVoid(onClose, onOpenEditor)} />}
+        {canOpenEditor && (
+          <Preview.ButtonIcon icon="edit" onClick={Utils.functional.chainVoid(onClose, onOpenEditor)} />
+        )}
 
-        {!!body && <Preview.ButtonIcon icon="copy" ml={8} onClick={Utils.functional.chainVoid(onClose, copyWithToast(body))} />}
+        {!!body && (
+          <Preview.ButtonIcon icon="copy" ml={8} onClick={Utils.functional.chainVoid(onClose, copyWithToast(body))} />
+        )}
       </Preview.Footer>
     </Preview>
   );

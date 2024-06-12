@@ -28,8 +28,8 @@ const SettingsBackups: React.FC = () => {
   const goToCanvasWithVersionID = useDispatch(Router.goToCanvasWithVersionID);
   const setGateSubscriptionRevision = useDispatch(Designer.Environment.action.SetGateSubscriptionRevision);
 
-  const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
-  const [hasFullVersionPermissions] = usePermission(Permission.PROJECT_FULL_VERSIONS);
+  const [canEditCanvas] = usePermission(Permission.PROJECT_CANVAS_UPDATE);
+  const [hasFullBackupHistory] = usePermission(Permission.FEATURE_FULL_BACKUP_HISTORY);
 
   const [backups, setBackups] = React.useState<BackupEntity[]>([]);
   const [loading, setLoading] = React.useState(true);
@@ -128,10 +128,12 @@ const SettingsBackups: React.FC = () => {
           <>
             New backups are created when you publish your agent. To manually save a backup, use the shortcut{' '}
             <S.HotKeyContainer>Shift + {getHotkeyLabel(Hotkey.SAVE_BACKUP)}</S.HotKeyContainer>.{' '}
-            {!hasFullVersionPermissions && (
+            {!hasFullBackupHistory && (
               <>
                 Free users can only view 30 days of an agent's backup history.{' '}
-                <System.Link.Button onClick={() => paymentModal.openVoid({})}>Upgrade to unlock unlimited backup history</System.Link.Button>
+                <System.Link.Button onClick={() => paymentModal.openVoid({})}>
+                  Upgrade to unlock unlimited backup history
+                </System.Link.Button>
               </>
             )}
           </>

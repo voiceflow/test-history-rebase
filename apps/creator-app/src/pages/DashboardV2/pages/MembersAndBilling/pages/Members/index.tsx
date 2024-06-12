@@ -17,8 +17,8 @@ const DashboardV2MembersAndBillingMembers: React.FC = () => {
   const isOnPaidPlanSelector = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
   const isOnProTrial = useSelector(WorkspaceV2.active.isOnProTrialSelector);
 
-  const [canAddSeats] = usePermission(Permission.BILLING_SEATS_ADD);
-  const [canInviteMembers] = usePermission(Permission.INVITE);
+  const [canAddSeats] = usePermission(Permission.WORKSPACE_BILLING_ADD_SEATS);
+  const [canInviteMembers] = usePermission(Permission.WORKSPACE_INVITE);
 
   const inviteModal = ModalsV2.useModal(ModalsV2.Workspace.Invite);
   const paymentModal = useCheckoutPaymentModal();

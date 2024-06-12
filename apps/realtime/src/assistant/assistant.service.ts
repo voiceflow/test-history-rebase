@@ -43,6 +43,7 @@ import { ProjectService } from '@/project/project.service';
 import { LegacyProjectSerializer } from '@/project/project-legacy/legacy-project.serializer';
 import { ProjectListService } from '@/project-list/project-list.service';
 import { PrototypeProgramService } from '@/prototype-program/prototype-program.service';
+import { ReferenceService } from '@/reference/reference.service';
 import { ThreadService } from '@/thread/thread.service';
 import { deepSetCreatorID } from '@/utils/creator.util';
 import { deepSetNewDate } from '@/utils/date.util';
@@ -59,6 +60,7 @@ import {
 } from './assistant.util';
 import { AssistantExportDataDTO } from './dtos/assistant-export-data.dto';
 import { AssistantImportDataDTO } from './dtos/assistant-import-data.dto';
+import { AssistantLoadCreatorResponse } from './dtos/assistant-load-creator.response';
 
 @Injectable()
 export class AssistantService extends MutableService<AssistantORM> {
@@ -95,6 +97,8 @@ export class AssistantService extends MutableService<AssistantORM> {
     private readonly diagram: DiagramService,
     @Inject(VersionService)
     private readonly version: VersionService,
+    @Inject(ReferenceService)
+    private readonly reference: ReferenceService,
     @Inject(EnvironmentService)
     private readonly environment: EnvironmentService,
     @Inject(ProjectListService)
@@ -828,7 +832,7 @@ export class AssistantService extends MutableService<AssistantORM> {
       this.identityClient.private.findAllProjectMembersForProject(projectID.toJSON()),
     ]);
 
-    return {
+    const creatorData: AssistantLoadCreatorResponse = {
       ...threadData,
       ...cmsData,
       project: this.projectSerializer.serialize(project),
@@ -837,6 +841,15 @@ export class AssistantService extends MutableService<AssistantORM> {
       variableStates: this.variableState.mapToJSON(variableStates),
       projectMembership,
     };
+
+    if (this.unleash.isEnabled(Realtime.FeatureFlag.REFERENCE_SYSTEM, { userID, workspaceID: project.teamID })) {
+      const { references, referenceResources } = await this.reference.buildForCreator(creatorData);
+
+      creatorData.references = references;
+      creatorData.referenceResources = referenceResources;
+    }
+
+    return creatorData;
   }
 
   /* Create  */

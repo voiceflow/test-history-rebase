@@ -1,6 +1,6 @@
 import { EntityManager } from '@mikro-orm/core';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
-import { Inject, Injectable, Optional } from '@nestjs/common';
+import { Inject, Injectable, Logger, Optional } from '@nestjs/common';
 import { Reference, ReferenceResource } from '@voiceflow/dtos';
 import { DatabaseTarget, ReferenceORM, ReferenceResourceORM } from '@voiceflow/orm-designer';
 
@@ -12,6 +12,8 @@ import { ReferenceCacheService } from './reference-cache.service';
 
 @Injectable()
 export class ReferenceService extends MutableService<ReferenceORM> {
+  private readonly logger = new Logger(ReferenceService.name);
+
   toJSON = this.orm.jsonAdapter.fromDB;
 
   fromJSON = this.orm.jsonAdapter.toDB;
@@ -30,7 +32,7 @@ export class ReferenceService extends MutableService<ReferenceORM> {
     @Inject(ReferenceCacheService)
     protected readonly referenceCache: ReferenceCacheService,
     @Optional()
-    protected readonly ReferenceBuilder: typeof ReferenceBuilderUtil
+    protected readonly ReferenceBuilder: typeof ReferenceBuilderUtil = ReferenceBuilderUtil
   ) {
     super();
   }
@@ -63,7 +65,7 @@ export class ReferenceService extends MutableService<ReferenceORM> {
     await this.orm.createMany(references);
   }
 
-  async buildReferences(
+  async buildForCreator(
     payload: AssistantLoadCreatorResponse,
     { exitOnAcquireLockFail = false }: { exitOnAcquireLockFail?: boolean } = {}
   ): Promise<{ references: Reference[]; referenceResources: ReferenceResource[] }> {
@@ -87,13 +89,13 @@ export class ReferenceService extends MutableService<ReferenceORM> {
       await this.referenceCache.waitUntilUnlocked(environmentID);
 
       // try again
-      return this.buildReferences(payload, { exitOnAcquireLockFail: true });
+      return this.buildForCreator(payload, { exitOnAcquireLockFail: true });
     }
 
     try {
       const { references, referenceResources } = new this.ReferenceBuilder(payload).build();
 
-      this.postgresEM.transactional(async () => {
+      await this.postgresEM.transactional(async () => {
         await this.deleteManyWithSubResourcesByEnvironment(environmentID);
 
         await this.createManyWithSubResourcesByEnvironment({ references, referenceResources });
@@ -103,7 +105,9 @@ export class ReferenceService extends MutableService<ReferenceORM> {
       await this.referenceCache.setExpire(environmentID);
 
       return { references, referenceResources };
-    } catch {
+    } catch (error) {
+      this.logger.error(error);
+
       // release the lock in case of an error
       await this.referenceCache.resetLockAndExpire(environmentID);
 

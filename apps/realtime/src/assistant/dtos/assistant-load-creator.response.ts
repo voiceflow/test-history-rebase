@@ -2,6 +2,8 @@ import {
   AssistantDTO,
   DiagramDTO,
   ProjectDTO,
+  ReferenceDTO,
+  ReferenceResourceDTO,
   ThreadCommentDTO,
   ThreadDTO,
   VariableStateDTO,
@@ -20,9 +22,11 @@ export const AssistantLoadCreatorResponse = z
     project: ProjectDTO,
     diagrams: z.array(DiagramDTO),
     assistant: AssistantDTO,
+    references: z.array(ReferenceDTO).optional(),
     variableStates: z.array(VariableStateDTO),
     threadComments: z.array(ThreadCommentDTO),
     projectMembership: z.array(ProjectMembershipDTO),
+    referenceResources: z.array(ReferenceResourceDTO).optional(),
   })
   .merge(AssistantExportCMSResponse)
   .strict();

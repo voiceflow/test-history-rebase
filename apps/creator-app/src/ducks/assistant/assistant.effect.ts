@@ -82,6 +82,13 @@ export const loadCreator =
     dispatch(Actions.Thread.Replace({ context: legacyContext, data: data.threads as Thread[] }));
     dispatch(Actions.ThreadComment.Replace({ context: legacyContext, data: data.threadComments }));
 
+    dispatch(
+      Actions.Reference.Replace({
+        context,
+        data: { references: data.references ?? [], referenceResources: data.referenceResources ?? [] },
+      })
+    );
+
     // custom blocks
     dispatch(
       Realtime.customBlock.crud.replace({

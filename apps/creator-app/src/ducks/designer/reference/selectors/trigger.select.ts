@@ -10,7 +10,12 @@ import { isFeatureEnabledSelector } from '@/ducks/feature';
 import { diagramIDParamSelector, nodeIDParamSelector } from '@/ducks/utils';
 
 import { ReferenceAnyTriggerNode, ReferenceTriggerNodeResource } from '../reference.interface';
-import { getResourcesByIDs, normalizedResources, resourceIDsByRefererID, triggerNodeResourceIDs } from './root.select';
+import {
+  getAllResourceIDsByRefererID,
+  getAllResourcesByIDs,
+  normalizedResources,
+  triggerNodeResourceIDs,
+} from './root.select';
 
 export const triggerNodeResources = createSelector(
   [normalizedResources, triggerNodeResourceIDs],
@@ -54,16 +59,16 @@ export const triggersMapByDiagramID = createSelector(
   [
     sharedNodesSelector,
     triggerNodeResources,
-    getResourcesByIDs,
-    resourceIDsByRefererID,
+    getAllResourcesByIDs,
+    getAllResourceIDsByRefererID,
     getOneIntentByID,
     isFeatureEnabledSelector,
   ],
   (
     sharedNodes,
     triggerNodeResources,
-    getResourcesByIDs,
-    resourceIDsByRefererID,
+    getAllResourcesByIDs,
+    getAllResourceIDsByRefererID,
     getOneIntentByID,
     isFeatureEnabled
     // eslint-disable-next-line max-params
@@ -78,16 +83,16 @@ export const triggersMapByDiagramID = createSelector(
         nodeID,
         nodeType,
         diagramID,
-        resourceID,
+        referrerID,
       }: {
         nodeID: string;
         nodeType: Realtime.BlockType.INTENT | Realtime.BlockType.TRIGGER | Realtime.BlockType.START;
         diagramID: string;
-        resourceID: string;
+        referrerID: string;
       }) => {
         let added = false;
 
-        const resources = getResourcesByIDs({ ids: resourceIDsByRefererID[resourceID] ?? [] });
+        const resources = getAllResourcesByIDs({ ids: getAllResourceIDsByRefererID({ referrerID }) });
 
         resources.forEach((resource) => {
           if (resource.type !== ReferenceResourceType.INTENT) return;
@@ -102,6 +107,7 @@ export const triggersMapByDiagramID = createSelector(
             nodeID,
             isEmpty: !intent,
             intentID: resource.resourceID,
+            resourceID: resource.id,
           });
 
           added = true;
@@ -123,27 +129,28 @@ export const triggersMapByDiagramID = createSelector(
             nodeID: resource.resourceID,
             isEmpty: false,
             intentID: null,
+            resourceID: resource.id,
           });
 
           addTriggerResources({
             nodeID: resource.resourceID,
             nodeType: Realtime.BlockType.START,
             diagramID: resource.diagramID,
-            resourceID: resource.id,
+            referrerID: resource.id,
           });
         } else if (resource.metadata.nodeType === NodeType.INTENT) {
           addTriggerResources({
             nodeID: resource.resourceID,
             nodeType: Realtime.BlockType.INTENT,
             diagramID: resource.diagramID,
-            resourceID: resource.id,
+            referrerID: resource.id,
           });
         } else if (resource.metadata.nodeType === NodeType.TRIGGER) {
           const added = addTriggerResources({
             nodeID: resource.resourceID,
             nodeType: Realtime.BlockType.TRIGGER,
             diagramID: resource.diagramID,
-            resourceID: resource.id,
+            referrerID: resource.id,
           });
 
           if (!added) {
@@ -154,6 +161,7 @@ export const triggersMapByDiagramID = createSelector(
               nodeID: resource.resourceID,
               isEmpty: true,
               intentID: null,
+              resourceID: resource.id,
             });
           }
         }
@@ -178,6 +186,7 @@ export const triggersMapByDiagramID = createSelector(
               nodeID: node.nodeID,
               isEmpty: false,
               intentID: null,
+              resourceID: node.nodeID,
             });
 
             node.triggers.forEach((item) => {
@@ -193,6 +202,7 @@ export const triggersMapByDiagramID = createSelector(
                 nodeID: node.nodeID,
                 isEmpty: !intent,
                 intentID: item.resourceID,
+                resourceID: node.nodeID,
               });
             });
           } else if (node.type === Realtime.BlockType.INTENT) {
@@ -205,6 +215,7 @@ export const triggersMapByDiagramID = createSelector(
               nodeID: node.nodeID,
               isEmpty: !intent,
               intentID: node.intentID,
+              resourceID: node.nodeID,
             });
           } else if (node.type === Realtime.BlockType.TRIGGER) {
             if (!node.items.length) {
@@ -215,6 +226,7 @@ export const triggersMapByDiagramID = createSelector(
                 nodeID: node.nodeID,
                 isEmpty: true,
                 intentID: null,
+                resourceID: node.nodeID,
               });
 
               return;
@@ -233,6 +245,7 @@ export const triggersMapByDiagramID = createSelector(
                 nodeID: node.nodeID,
                 isEmpty: !intent,
                 intentID: item.resourceID,
+                resourceID: node.nodeID,
               });
             });
           }

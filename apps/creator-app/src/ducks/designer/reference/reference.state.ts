@@ -7,11 +7,14 @@ export interface ReferenceState {
   resources: Normalized<ReferenceResource>;
   references: Normalized<Reference>;
 
+  // caches to optimize selectors
   blockNodeResourceIDs: string[];
   triggerNodeResourceIDs: string[];
-  resourceIDsByDiagramID: Partial<Record<string, string[]>>;
-  refererIDsByResourceID: Partial<Record<string, string[]>>;
-  resourceIDsByRefererID: Partial<Record<string, string[]>>;
+  resourceIDsByDiagramIDMap: Partial<Record<string, string[]>>;
+  refererIDsByResourceIDMap: Partial<Record<string, string[]>>;
+  resourceIDsByRefererIDMap: Partial<Record<string, string[]>>;
+  referenceIDsByResourceIDMap: Partial<Record<string, string[]>>;
+  referenceIDsByReferrerIDMap: Partial<Record<string, string[]>>;
 }
 
 export const INITIAL_STATE: ReferenceState = {
@@ -19,7 +22,9 @@ export const INITIAL_STATE: ReferenceState = {
   references: createEmpty(),
   blockNodeResourceIDs: [],
   triggerNodeResourceIDs: [],
-  resourceIDsByDiagramID: {},
-  refererIDsByResourceID: {},
-  resourceIDsByRefererID: {},
+  resourceIDsByDiagramIDMap: {},
+  refererIDsByResourceIDMap: {},
+  resourceIDsByRefererIDMap: {},
+  referenceIDsByResourceIDMap: {},
+  referenceIDsByReferrerIDMap: {},
 };

@@ -1,5 +1,5 @@
 import { FolderScope, Workflow } from '@voiceflow/dtos';
-import { BlockType } from '@voiceflow/realtime-sdk';
+import { BlockType, FeatureFlag } from '@voiceflow/realtime-sdk';
 import {
   BaseSelectProps,
   createUIOnlyMenuItemOption,
@@ -14,6 +14,7 @@ import React, { useCallback } from 'react';
 
 import * as Documentation from '@/config/documentation';
 import { Designer, Diagram } from '@/ducks';
+import { useFeature } from '@/hooks/feature';
 import { useFolderTree } from '@/hooks/folder.hook';
 import { useSelector } from '@/hooks/store.hook';
 
@@ -51,10 +52,15 @@ const GoToIntentSelect: React.FC<GoToIntentSelectProps> = ({
   createInputPlaceholder = 'intents',
   ...props
 }) => {
+  const referenceSystem = useFeature(FeatureFlag.REFERENCE_SYSTEM);
+
   const workflows = useSelector(Designer.Workflow.selectors.all);
   const getIntentByID = useSelector(Designer.Intent.selectors.getOneWithFormattedBuiltNameByID);
   const globalIntentStepMap = useSelector(Diagram.globalIntentStepMapSelector);
   const triggersMapByDiagramID = useSelector(Designer.Reference.selectors.triggersMapByDiagramID);
+  const globalIntentNodeIDsByIntentIDMapByDiagramIDMap = useSelector(
+    Designer.Reference.selectors.globalIntentNodeIDsByIntentIDMapByDiagramIDMap
+  );
 
   const [workflowOptions, workflowOptionMap] = useFolderTree<
     Workflow,
@@ -92,9 +98,11 @@ const GoToIntentSelect: React.FC<GoToIntentSelectProps> = ({
               return acc;
 
             const intent = getIntentByID({ id: triggerNode.intentID });
-            const diagramGlobalStepMap = globalIntentStepMap[workflow.diagramID];
+            const globalIntentNodeIDsByIntentID = referenceSystem.isEnabled
+              ? globalIntentNodeIDsByIntentIDMapByDiagramIDMap[workflow.diagramID]
+              : globalIntentStepMap[workflow.diagramID];
 
-            if (!intent || !diagramGlobalStepMap[intent.id]?.length) return acc;
+            if (!intent || !globalIntentNodeIDsByIntentID?.[intent.id]?.length) return acc;
 
             return [
               ...acc,
@@ -131,7 +139,7 @@ const GoToIntentSelect: React.FC<GoToIntentSelectProps> = ({
           ],
         };
       },
-      [getIntentByID, triggersMapByDiagramID]
+      [getIntentByID, triggersMapByDiagramID, referenceSystem.isEnabled, globalIntentNodeIDsByIntentIDMapByDiagramIDMap]
     ),
   });
 

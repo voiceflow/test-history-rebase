@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import type { AnyResponseVariantCreate, Response as ResponseData } from '@voiceflow/dtos';
+import type { AnyResponseVariantCreate, Response as ResponseData, ResponseMessageCreate } from '@voiceflow/dtos';
 
 import { createCRUD } from '@/crud/crud.action';
 import type {
@@ -20,6 +20,7 @@ export interface CreateData {
   name: string;
   folderID: string | null;
   variants: AnyResponseVariantCreate[];
+  messages?: ResponseMessageCreate[];
 }
 
 export interface PatchData {

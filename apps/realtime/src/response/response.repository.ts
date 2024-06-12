@@ -3,17 +3,26 @@ import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
 import { Channel, Language } from '@voiceflow/dtos';
-import { DatabaseTarget, ObjectId, ResponseORM } from '@voiceflow/orm-designer';
+import {
+  AnyResponseAttachmentObject,
+  AnyResponseVariantObject,
+  DatabaseTarget,
+  ObjectId,
+  RequiredEntityORM,
+  ResponseDiscriminatorObject,
+  ResponseObject,
+  ResponseORM,
+} from '@voiceflow/orm-designer';
 
 import { CMSTabularService } from '@/common';
 import { toPostgresEntityIDs } from '@/common/utils';
 import { CMSContext } from '@/types';
 
+import { ResponseExportImportDataDTO } from './dtos/response-export-import-data.dto';
 import { ResponseCreateWithSubResourcesData } from './response.interface';
 import { ResponseAttachmentService } from './response-attachment/response-attachment.service';
 import { ResponseDiscriminatorService } from './response-discriminator/response-discriminator.service';
 import { ResponseMessageRepository } from './response-message/response-message.repository';
-import { ResponseRequiredEntityService } from './response-required-entity.service';
 import { ResponseVariantService } from './response-variant/response-variant.service';
 
 @Injectable()
@@ -40,8 +49,8 @@ export class ResponseRepository extends CMSTabularService<ResponseORM> {
     private readonly responseAttachment: ResponseAttachmentService,
     @Inject(ResponseDiscriminatorService)
     private readonly responseDiscriminator: ResponseDiscriminatorService,
-    @Inject(ResponseRequiredEntityService)
-    private readonly requiredEntitiesService: ResponseRequiredEntityService
+    @Inject(RequiredEntityORM)
+    protected readonly requiredEntityORM: RequiredEntityORM
   ) {
     super();
   }
@@ -125,7 +134,7 @@ export class ResponseRepository extends CMSTabularService<ResponseORM> {
 
       const [relations, requiredEntities] = await Promise.all([
         this.collectRelationsToDelete(context.environmentID, ids),
-        this.requiredEntitiesService.removeResponseReferencesFromReprompts(userID, context.environmentID, ids),
+        this.removeRepromptsReferences(userID, context.environmentID, ids),
       ]);
 
       await this.deleteManyByEnvironmentAndIDs(context.environmentID, ids);
@@ -149,5 +158,50 @@ export class ResponseRepository extends CMSTabularService<ResponseORM> {
       ...relations,
       responseDiscriminators,
     };
+  }
+
+  toJSONWithSubResources({
+    responses,
+    responseVariants,
+    responseAttachments,
+    responseDiscriminators,
+  }: {
+    responses: ResponseObject[];
+    responseVariants: AnyResponseVariantObject[];
+    responseAttachments: AnyResponseAttachmentObject[];
+    responseDiscriminators: ResponseDiscriminatorObject[];
+  }) {
+    return {
+      responses: this.mapToJSON(responses),
+      responseVariants: this.responseVariant.mapToJSON(responseVariants),
+      responseAttachments: this.responseAttachment.mapToJSON(responseAttachments),
+      responseDiscriminators: this.responseDiscriminator.mapToJSON(responseDiscriminators),
+    };
+  }
+
+  fromJSONWithSubResources({
+    responses,
+    responseVariants,
+    responseAttachments,
+    responseDiscriminators,
+  }: ResponseExportImportDataDTO) {
+    return {
+      responses: this.mapFromJSON(responses),
+      responseVariants: this.responseVariant.mapFromJSON(responseVariants),
+      responseAttachments: this.responseAttachment.mapFromJSON(responseAttachments),
+      responseDiscriminators: this.responseDiscriminator.mapFromJSON(responseDiscriminators),
+    };
+  }
+
+  async removeRepromptsReferences(userID: number, environmentID: string, responseIDs: string[]) {
+    const requiredEntities = await this.requiredEntityORM.findManyByReprompts(environmentID, responseIDs);
+
+    await this.requiredEntityORM.patchManyForUser(
+      userID,
+      requiredEntities.map(({ id, environmentID }) => ({ id, environmentID })),
+      { repromptID: null }
+    );
+
+    return requiredEntities.map((item) => ({ ...item, repromptID: null }));
   }
 }

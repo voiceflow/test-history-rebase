@@ -1,5 +1,8 @@
 import { z } from 'zod';
 
+/**
+ * @deprecated not used anymore
+ */
 export const DiagramMenuItemDTO = z
   .object({
     type: z.string(),
@@ -7,4 +10,7 @@ export const DiagramMenuItemDTO = z
   })
   .strict();
 
+/**
+ * @deprecated not used anymore
+ */
 export type DiagramMenuItem = z.infer<typeof DiagramMenuItemDTO>;

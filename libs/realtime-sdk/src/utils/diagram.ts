@@ -4,13 +4,12 @@ import { AnyRecord, Utils } from '@voiceflow/common';
 
 export interface DiagramFactoryOptions {
   name: string;
-  menuItems?: BaseModels.Diagram.MenuItem[];
 }
 
 export type PrimitiveDiagram<T extends BaseModels.BaseDiagramNode = BaseModels.BaseDiagramNode> = Required<
   Omit<
     BaseModels.Diagram.Model<T>,
-    '_id' | 'creatorID' | 'versionID' | 'intentStepIDs' | 'menuNodeIDs' | 'children' | 'diagramID'
+    '_id' | 'creatorID' | 'versionID' | 'intentStepIDs' | 'menuNodeIDs' | 'children' | 'diagramID' | 'menuItems'
   >
 >;
 
@@ -54,7 +53,6 @@ export const diagramFactory = <T extends BaseModels.BaseDiagramNode>({
   name,
   type,
   nodes,
-  menuItems = [],
 }: DiagramFactoryOptions & {
   type: BaseModels.Diagram.DiagramType;
   nodes: BaseModels.BaseDiagramNode[];
@@ -67,7 +65,6 @@ export const diagramFactory = <T extends BaseModels.BaseDiagramNode>({
   offsetY: 0,
   modified: Utils.time.getCurrentTimestamp(),
   variables: [],
-  menuItems,
 });
 
 export const componentDiagramFactory = (name: string, startNodeCoords?: [number, number]) =>
@@ -83,7 +80,6 @@ export const topicDiagramFactory = (name: string, intentNodeCoords = START_NODE_
   return diagramFactory({
     name,
     type: BaseModels.Diagram.DiagramType.TOPIC,
-    menuItems: [{ type: BaseModels.Diagram.MenuItemType.NODE, sourceID: intentNodeID }],
     nodes: [
       {
         type: BaseModels.BaseNodeType.BLOCK,

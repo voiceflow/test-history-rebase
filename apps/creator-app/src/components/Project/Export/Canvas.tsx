@@ -48,49 +48,51 @@ export const Canvas: React.FC = () => {
 
   return (
     <>
-      <BlockText fontSize={15} color="#62778C" fontWeight={600} marginBottom={11}>
-        Export format
-      </BlockText>
+      <div>
+        <BlockText fontSize={15} color="#62778C" fontWeight={600} marginBottom={11}>
+          Export format
+        </BlockText>
 
-      <Select
-        fullWidth
-        value={canvasExportFormat}
-        label={CANVAS_EXPORT_OPTIONS_LABELS[canvasExportFormat]}
-        options={CANVAS_EXPORT_OPTIONS}
-        onSelect={setCanvasExportFormat}
-        getOptionLabel={(value) => value && CANVAS_EXPORT_OPTIONS_LABELS[value]}
-        renderOptionLabel={(format, searchLabel, getOptionLabel, getOptionValue, options) => (
-          <PermittedMenuItem
-            data={{ format }}
-            label={defaultMenuLabelRenderer(format, searchLabel, getOptionLabel, getOptionValue, options)}
-            isFocused={options.isFocused}
-            isAllowed={planConfig && !planConfig.isPaidExportFormat(format)}
-            permission={Permission.FEATURE_CANVAS_EXPORT}
-            tooltipProps={{ offset: [0, 30] }}
-          />
+        <Select
+          fullWidth
+          value={canvasExportFormat}
+          label={CANVAS_EXPORT_OPTIONS_LABELS[canvasExportFormat]}
+          options={CANVAS_EXPORT_OPTIONS}
+          onSelect={setCanvasExportFormat}
+          getOptionLabel={(value) => value && CANVAS_EXPORT_OPTIONS_LABELS[value]}
+          renderOptionLabel={(format, searchLabel, getOptionLabel, getOptionValue, options) => (
+            <PermittedMenuItem
+              data={{ format }}
+              label={defaultMenuLabelRenderer(format, searchLabel, getOptionLabel, getOptionValue, options)}
+              isFocused={options.isFocused}
+              isAllowed={planConfig && !planConfig.isPaidExportFormat(format)}
+              permission={Permission.FEATURE_CANVAS_EXPORT}
+              tooltipProps={{ offset: [0, 30] }}
+            />
+          )}
+        />
+
+        {CANVAS_SPECIFIC_EXPORT_OPTIONS.includes(canvasExportFormat) && (
+          <Box mt={20}>
+            <BlockText fontSize={15} color="#62778C" fontWeight={600} marginBottom={11}>
+              Workflow / Component
+            </BlockText>
+
+            <Select
+              fullWidth
+              value={exportDiagramID}
+              options={diagramOptions}
+              onSelect={setExportDiagramID}
+              placeholder="Select workflow or component"
+              getOptionValue={(option) => option?.id}
+              getOptionLabel={(id) => (id && diagramOptionsMap[id]?.label) ?? ''}
+            />
+          </Box>
         )}
-      />
-
-      {CANVAS_SPECIFIC_EXPORT_OPTIONS.includes(canvasExportFormat) && (
-        <Box mt={20}>
-          <BlockText fontSize={15} color="#62778C" fontWeight={600} marginBottom={11}>
-            Workflow / Component
-          </BlockText>
-
-          <Select
-            fullWidth
-            value={exportDiagramID}
-            options={diagramOptions}
-            onSelect={setExportDiagramID}
-            placeholder="Select workflow or component"
-            getOptionValue={(option) => option?.id}
-            getOptionLabel={(id) => (id && diagramOptionsMap[id]?.label) ?? ''}
-          />
-        </Box>
-      )}
+      </div>
 
       {!isAllowed && (
-        <Box position="absolute" left={0} right={0} bottom={0}>
+        <Box paddingTop={22} left={0} right={0} bottom={0} width={'430px'} height="50px" marginX="-24px">
           <Upgrade>Remove branding from PNG & PDF exports.</Upgrade>
         </Box>
       )}

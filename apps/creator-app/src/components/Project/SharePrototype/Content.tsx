@@ -98,7 +98,7 @@ export const Content: React.FC<ContentProps> = ({ preventClose, enableClose, dis
         </div>
 
         {!canCustomize && (
-          <Box position="absolute" left={0} right={0} bottom={0}>
+          <Box left={0} right={0} bottom={0}>
             <Upgrade>Customize prototype style and branding.</Upgrade>
           </Box>
         )}

@@ -418,22 +418,6 @@ class DiagramService extends AbstractControl {
     await this.models.diagram.addDynamicPort(versionID, diagramID, nodeID, port);
   }
 
-  public async addMenuItem(versionID: string, diagramID: string, value: BaseModels.Diagram.MenuItem, index?: number) {
-    await this.models.diagram.addMenuItem(versionID, diagramID, value, index);
-  }
-
-  public async removeMenuItem(versionID: string, diagramID: string, sourceID: string) {
-    await this.models.diagram.removeMenuItem(versionID, diagramID, sourceID);
-  }
-
-  public async reorderMenuItems(
-    versionID: string,
-    diagramID: string,
-    payload: { index: number; sourceID: string }
-  ): Promise<void> {
-    await this.models.diagram.reorderMenuItems(versionID, diagramID, payload);
-  }
-
   public getSharedNodes(diagrams: BaseModels.Diagram.Model[]): Realtime.diagram.sharedNodes.DiagramSharedNodeMap {
     const sharedNodes: Realtime.diagram.sharedNodes.DiagramSharedNodeMap = {};
 

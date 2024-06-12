@@ -1,7 +1,5 @@
 import { z } from 'zod';
 
-import { MarkupDTO } from '@/common';
-
 import type { InferNode } from '../base/base-node.dto';
 import { BaseNodeDataDTO, BaseNodeDTO } from '../base/base-node.dto';
 import { NodeType } from '../node-type.enum';

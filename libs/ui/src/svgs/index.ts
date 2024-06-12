@@ -76,6 +76,7 @@ export { default as customBlock } from './custom-block.svg';
 export { default as customResponseV2 } from './custom-response-v2.svg';
 export { default as checkmarkGreen } from './green-checkmark.svg';
 export { default as checkmark2 } from './success.svg';
+export { default as systemEnter } from './system-enter.svg';
 
 // d
 export { default as delay } from './delay.svg';

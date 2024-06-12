@@ -85,7 +85,7 @@ export class ZendeskOauthClient implements BaseOauthClient {
 
   getArticlesEndpoint(filters?: ZendeskUserSegmentFilters): { resourceKey: string; endpoint: string } {
     if (filters?.brands?.length !== 1) {
-      throw new BadRequestException(`The 'brands' filter must contain one brand value and cannot be empty.`);
+      throw new BadRequestException('The \'brands\' filter must contain one brand value and cannot be empty.');
     }
 
     let resourceKey = 'articles';
@@ -178,7 +178,7 @@ export class ZendeskOauthClient implements BaseOauthClient {
     subdomain: string;
   }): string {
     const baseUrl = this.buildBaseUrl(subdomain);
-    const endpoint = `/oauth/authorizations/new`;
+    const endpoint = '/oauth/authorizations/new';
 
     const stateParams = {
       creatorID,
@@ -311,7 +311,7 @@ export class ZendeskOauthClient implements BaseOauthClient {
       }
     }
 
-    throw new BadRequestException(`Max retries reached. Unable to fetch data.`);
+    throw new BadRequestException('Max retries reached. Unable to fetch data.');
   }
 
   async fetchAllItems({

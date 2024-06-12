@@ -8,7 +8,7 @@ export const diagramNodeFactory = <Node extends DiagramNode>(node: Omit<Node, 'n
   ({
     ...node,
     nodeID: node.nodeID ?? Utils.id.objectID(),
-  } as Node);
+  }) as Node;
 
 type NodeFactoryOptions<Node extends DiagramNode> = Pick<Node, 'coords'> & {
   data?: Partial<Node['data']>;
@@ -21,7 +21,7 @@ export const startNodeFactory = ({ data, coords = START_NODE_POSITION, ...rest }
     type: NodeType.START,
     data: {
       name: data?.name ?? 'Start',
-      color: data?.color ?? '#43494E',
+      color: data?.color ?? '#56b365',
       triggers: data?.triggers ?? [],
       portsV2:
         data?.portsV2 ??
@@ -51,6 +51,10 @@ export const triggerNodeFactory = ({ data, ...reset }: NodeFactoryOptions<Trigge
     data: {
       name: data?.name ?? '',
       items: data?.items ?? [],
-      portsV2: data?.portsV2 ?? nodePortsFactory(),
+      portsV2:
+        data?.portsV2 ??
+        nodePortsFactory({
+          byKey: { [NodeSystemPortType.NEXT]: nodePortFactory({ type: NodeSystemPortType.NEXT, target: null }) },
+        }),
     },
   });

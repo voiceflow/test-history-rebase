@@ -22,7 +22,7 @@ import { PrimitiveTagSelectProps, TagSelectInternalProps, TagSelectProps } from 
 
 const trimNulls = (list: Nullish<string>[]): string[] => list.filter(Boolean) as string[];
 
-const customMenuLabelRenderer = <Option extends unknown>(
+const customMenuLabelRenderer = <Option,>(
   option: Exclude<Option, UIOnlyMenuItemOption>,
   searchLabel: string,
   getOptionLabel: GetOptionLabel<string>,

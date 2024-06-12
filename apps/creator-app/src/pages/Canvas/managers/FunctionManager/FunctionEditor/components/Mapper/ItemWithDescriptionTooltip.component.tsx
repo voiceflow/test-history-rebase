@@ -2,12 +2,16 @@ import { Box, PopperModifiers, Text, Tokens, Tooltip } from '@voiceflow/ui-next'
 import React from 'react';
 
 interface IItemWithDescriptionTooltip {
-  description?: string;
   children: React.ReactNode;
   modifiers: PopperModifiers<'offset'>;
+  description: string | null;
 }
 
-export const ItemWithDescriptionTooltip: React.FC<IItemWithDescriptionTooltip> = ({ description, children, modifiers }) => {
+export const ItemWithDescriptionTooltip: React.FC<IItemWithDescriptionTooltip> = ({
+  children,
+  modifiers,
+  description,
+}) => {
   return (
     <Tooltip
       placement="left-start"

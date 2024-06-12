@@ -9,7 +9,7 @@ import {
   usePersistFunction,
 } from '@voiceflow/ui-next';
 import { IResizableSectionAPI } from '@voiceflow/ui-next/build/cjs/components/Section/ResizableSection/types';
-import React, { useRef } from 'react';
+import React, { memo, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { CMS_FLOW_LEARN_MORE, CMS_WORKFLOW_LEARN_MORE } from '@/constants/link.constant';
@@ -39,7 +39,7 @@ import {
 } from './DiagramSidebar.interface';
 import { DiagramSidebarToolbar } from './DiagramSidebarToolbar.component';
 
-export const DiagramSidebar: React.FC = () => {
+export const DiagramSidebar = memo(() => {
   const referenceSystem = useFeature(Realtime.FeatureFlag.REFERENCE_SYSTEM);
 
   const params = useParams<{ nodeID?: string; diagramID?: string }>();
@@ -216,4 +216,4 @@ export const DiagramSidebar: React.FC = () => {
       <TreeView.DragLayer />
     </>
   );
-};
+});

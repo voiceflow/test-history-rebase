@@ -4,25 +4,27 @@ import { ActionButtons, Box, Button, Divider, Dropdown, Menu, Search } from '@vo
 import React from 'react';
 
 import { CMSRoute } from '@/config/routes';
+import { Designer } from '@/ducks';
 import * as Router from '@/ducks/router';
 import { useDispatch } from '@/hooks';
 import { useGoToCMSResourceModal } from '@/hooks/cms-resource.hook';
 import { useDeferredSearch } from '@/hooks/search.hook';
+import { useSelector } from '@/hooks/store.hook';
 import * as ModalsV2 from '@/ModalsV2';
-import { FunctionMapContext } from '@/pages/Canvas/contexts';
-import { getItemFromMap } from '@/pages/Canvas/utils';
 
 interface FunctionSelectProps {
   onChange: (value: Partial<Realtime.NodeData.Function>) => void;
-  functionID?: string;
+  functionID: string | null;
 }
 
 export const FunctionSelect = ({ onChange, functionID }: FunctionSelectProps) => {
+  const functions = useSelector(Designer.Function.selectors.all);
+  const functionDef = useSelector(Designer.Function.selectors.oneByID, { id: functionID });
+
   const goToCMSResource = useDispatch(Router.goToCMSResource);
-  const functionMap = React.useContext(FunctionMapContext)!;
-  const functionData = getItemFromMap(functionMap, functionID!);
+
   const search = useDeferredSearch({
-    items: Object.values(functionMap),
+    items: functions,
     searchBy: (item) => item.name,
   });
   const hasSelectedFunction = !!functionID;
@@ -37,19 +39,23 @@ export const FunctionSelect = ({ onChange, functionID }: FunctionSelectProps) =>
     <>
       <Box justify="center" align="center" pt={20} px={24} direction="column">
         <Dropdown
-          value={functionData.name || null}
-          placeholder="Select existing function"
-          onPrefixIconClick={hasSelectedFunction ? () => goToCMSResource(CMSRoute.FUNCTION, functionID) : undefined}
-          prefixIconName={hasSelectedFunction ? 'EditS' : undefined}
+          value={functionDef?.name ?? null}
           prefixIcon={hasSelectedFunction}
+          placeholder="Select existing function"
+          prefixIconName={hasSelectedFunction ? 'EditS' : undefined}
+          onPrefixIconClick={hasSelectedFunction ? () => goToCMSResource(CMSRoute.FUNCTION, functionID) : undefined}
         >
           {({ onClose, referenceRef }) => (
             <Menu
+              width={referenceRef.current?.clientWidth}
               actionButtons={
-                search.hasItems && <ActionButtons firstButton={<ActionButtons.Button label="Create function" onClick={onCreateFunction} />} />
+                search.hasItems && (
+                  <ActionButtons
+                    firstButton={<ActionButtons.Button label="Create function" onClick={onCreateFunction} />}
+                  />
+                )
               }
               searchSection={<Search placeholder="Search" value={search.value} onValueChange={search.setValue} />}
-              width={referenceRef.current?.clientWidth}
             >
               {search.hasItems ? (
                 search.items.map((functionItem) => (

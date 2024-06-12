@@ -47,6 +47,8 @@ export const CommandsSection: React.FC = () => {
     });
   };
 
+  if (!commandsSize) return null;
+
   return (
     <>
       <Tooltip

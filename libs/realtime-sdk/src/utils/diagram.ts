@@ -8,7 +8,10 @@ export interface DiagramFactoryOptions {
 }
 
 export type PrimitiveDiagram<T extends BaseModels.BaseDiagramNode = BaseModels.BaseDiagramNode> = Required<
-  Omit<BaseModels.Diagram.Model<T>, '_id' | 'creatorID' | 'versionID' | 'intentStepIDs' | 'menuNodeIDs' | 'children' | 'diagramID'>
+  Omit<
+    BaseModels.Diagram.Model<T>,
+    '_id' | 'creatorID' | 'versionID' | 'intentStepIDs' | 'menuNodeIDs' | 'children' | 'diagramID'
+  >
 >;
 
 export const getUniqueCopyName = (originalName: string, existingNames: string[]) => {
@@ -73,17 +76,6 @@ export const componentDiagramFactory = (name: string, startNodeCoords?: [number,
     type: BaseModels.Diagram.DiagramType.COMPONENT,
     nodes: [startNodeFactory({ name: 'Continue', coords: startNodeCoords })],
   });
-
-export const rootTopicDiagramFactory = (name: string, startNodeCoords?: [number, number]) => {
-  const startNode = startNodeFactory({ coords: startNodeCoords });
-
-  return diagramFactory({
-    name,
-    type: BaseModels.Diagram.DiagramType.TOPIC,
-    nodes: [startNode],
-    menuItems: [{ type: BaseModels.Diagram.MenuItemType.NODE, sourceID: startNode.nodeID }],
-  });
-};
 
 export const topicDiagramFactory = (name: string, intentNodeCoords = START_NODE_POSITION) => {
   const intentNodeID = Utils.id.objectID();

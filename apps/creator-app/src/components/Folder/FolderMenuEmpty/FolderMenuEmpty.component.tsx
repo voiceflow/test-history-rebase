@@ -20,7 +20,15 @@ export const FolderMenuEmpty: React.FC<IFolderMenuEmpty> = ({ width, scope, pare
   };
 
   return (
-    <Surface px={24} pt={24} pb={8} width={width ? `${width}px` : undefined} justify="center" minWidth={0}>
+    <Surface
+      px={24}
+      pt={24}
+      pb={8}
+      width={width ? `${width}px` : undefined}
+      justify="center"
+      minWidth="fit-content"
+      className="vfui"
+    >
       <EmptyPage
         title="No folder exist"
         button={{ label: 'Create folder', onClick: onCreate }}

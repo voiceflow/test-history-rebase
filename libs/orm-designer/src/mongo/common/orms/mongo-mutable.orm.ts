@@ -10,7 +10,7 @@ import { MongoORM } from './mongo.orm';
 
 export abstract class MongoMutableORM<
     BaseEntity extends MongoEntity,
-    DiscriminatorEntity extends BaseEntity = BaseEntity
+    DiscriminatorEntity extends BaseEntity = BaseEntity,
   >
   extends MongoORM<BaseEntity, DiscriminatorEntity>
   implements MutableORM<BaseEntity, DiscriminatorEntity>
@@ -37,7 +37,7 @@ export abstract class MongoMutableORM<
     return result;
   }
 
-  async upsertMany(data: CreateData<DiscriminatorEntity>[]) {
+  async upsertMany(data: CreateData<DiscriminatorEntity>[]): Promise<ToObject<DiscriminatorEntity>[]> {
     if (!data.length) return [];
 
     const batchSize = this.em.config.get('batchSize');

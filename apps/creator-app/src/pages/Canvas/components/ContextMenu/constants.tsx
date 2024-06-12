@@ -38,6 +38,12 @@ export enum CanvasAction {
 
 export const CANVAS_OPTIONS: ContextMenuOption<CanvasAction>[] = [
   {
+    label: 'Add Trigger',
+    value: CanvasAction.ADD_TRIGGER,
+    shouldRender: (_, { engine, canEditCanvas }) =>
+      canEditCanvas && engine.isTopic() && engine.isFeatureEnabled(FeatureFlag.TRIGGER_STEP),
+  },
+  {
     label: 'Paste',
     value: CanvasAction.PASTE,
     hotkey: `${PLATFORM_META_KEY_LABEL}+V`,
@@ -66,11 +72,6 @@ export const CANVAS_OPTIONS: ContextMenuOption<CanvasAction>[] = [
     value: CanvasAction.ADD_COMMENT,
     hotkey: HOTKEY_LABEL_MAP[Hotkey.OPEN_COMMENTING],
     shouldRender: (_, { showHintFeatures }) => showHintFeatures,
-  },
-  {
-    label: 'Add Trigger',
-    value: CanvasAction.ADD_TRIGGER,
-    shouldRender: (_, { engine, canEditCanvas }) => canEditCanvas && engine.isTopic() && engine.isFeatureEnabled(FeatureFlag.TRIGGER_STEP),
   },
   {
     label: 'Divider 2',

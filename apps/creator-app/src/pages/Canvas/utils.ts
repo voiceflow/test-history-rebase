@@ -1,4 +1,3 @@
-import { Nullable } from '@voiceflow/common';
 import { Entity } from '@voiceflow/dtos';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
@@ -6,7 +5,10 @@ import { serializeToText } from '@voiceflow/slate-serializer/text';
 
 import { EntityPrompt } from './types';
 
-export const getIntentPromptContent = ([prompt]: unknown[], variablesMap: Record<string, { id: string; name: string }>) => {
+export const getIntentPromptContent = (
+  [prompt]: unknown[],
+  variablesMap: Record<string, { id: string; name: string }>
+) => {
   if (Platform.Common.Chat.CONFIG.utils.prompt.isPrompt(prompt)) {
     return serializeToText(prompt.content, { variablesMap, encodeVariables: true });
   }
@@ -36,16 +38,4 @@ export const transformSlotIntoPrompt = (
     content,
     entityID: slot.id,
   };
-};
-
-type MapType<T> = Record<string, T>;
-
-export const getItemFromMap = <T>(map: MapType<T> | undefined, id: Nullable<string>): T | Partial<T> => {
-  if (!map || Object.keys(map).length === 0 || !id) {
-    return {} as Partial<T>;
-  }
-
-  const item = map[id];
-
-  return item || ({} as Partial<T>);
 };

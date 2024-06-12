@@ -13,8 +13,8 @@ export const StartChip: ConnectedChip<Realtime.NodeData.Start> = ({ ports }) => 
 
   return (
     <Chip
-      name={isTopic ? 'Start' : 'Continue'}
-      icon="systemFlag"
+      name={isTopic ? 'Start' : 'Enter'}
+      icon={isTopic ? 'systemFlag' : 'systemEnter'}
       portID={ports.out.builtIn[BaseModels.PortType.NEXT]}
       className={isTopic ? HOME_CHIP_CLASSNAME : COMPONENT_CHIP_CLASSNAME}
     />

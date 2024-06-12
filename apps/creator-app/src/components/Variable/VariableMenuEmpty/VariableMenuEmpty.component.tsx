@@ -20,7 +20,15 @@ export const VariableMenuEmpty: React.FC<IVariableMenuEmpty> = ({ width, onCreat
   };
 
   return (
-    <Surface px={24} pt={24} pb={8} width={width ? `${width}px` : undefined} justify="center" minWidth={0}>
+    <Surface
+      px={24}
+      pt={24}
+      pb={8}
+      width={width ? `${width}px` : undefined}
+      justify="center"
+      minWidth="fit-content"
+      className="vfui"
+    >
       <EmptyPage
         title="No variables exist"
         button={{ label: 'Create variable', onClick: onCreate }}

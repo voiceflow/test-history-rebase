@@ -69,28 +69,29 @@ export const useWorkflowsTree = () => {
     ),
     buildDataTree: useCallback(
       (workflow): DiagramSidebarWorkflowTreeData | null => {
-        const children: DiagramSidebarWorkflowTreeData[] = [];
-        const nodeIDSet = new Set<string>();
+        const childrenMap: Record<string, DiagramSidebarWorkflowTreeData> = {};
 
         triggersMapByDiagramID[workflow.diagramID]?.forEach((node) => {
-          let id = `${workflow.diagramID}:${node.nodeID}`;
+          const id = `${workflow.diagramID}:${node.nodeID}`;
+          const isStart = node.type === BlockType.START;
 
-          if (nodeIDSet.has(id)) {
-            id = `${workflow.diagramID}:${node.nodeID}:${node.id}`;
+          if (!childrenMap[id]) {
+            childrenMap[id] = {
+              id,
+              type: isStart ? 'start' : 'intent',
+              label: node.label,
+              metaData: { type: 'node', nodeType: node.type, nodeID: node.nodeID, diagramID: workflow.diagramID },
+            };
+          } else {
+            childrenMap[id].label =
+              isStart && !node.isEmpty && !node.intentID
+                ? `${node.label}, ${childrenMap[id].label}`
+                : `${childrenMap[id].label}, ${node.label}`;
           }
-
-          children.push({
-            id,
-            type: node.type === BlockType.START ? 'start' : 'intent',
-            label: node.label,
-            metaData: { type: 'node', nodeType: node.type, nodeID: node.nodeID, diagramID: workflow.diagramID },
-          });
-
-          nodeIDSet.add(id);
         });
 
         if (workflow.diagramID === rootDiagramID) {
-          startNodeChildren.current = children;
+          startNodeChildren.current = Object.values(childrenMap);
 
           return null;
         }
@@ -99,7 +100,7 @@ export const useWorkflowsTree = () => {
           id: workflow.diagramID,
           type: 'workflow',
           label: workflow.name,
-          children: children.sort((a, b) => a.label.localeCompare(b.label)),
+          children: Object.values(childrenMap).sort((a, b) => a.label.localeCompare(b.label)),
           metaData: { id: workflow.id, type: 'workflow', diagramID: workflow.diagramID },
         };
       },

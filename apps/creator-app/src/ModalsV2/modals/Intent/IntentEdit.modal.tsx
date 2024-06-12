@@ -1,6 +1,6 @@
 import { UtteranceText } from '@voiceflow/dtos';
 import { tid } from '@voiceflow/style';
-import { Divider, notify, Scroll } from '@voiceflow/ui-next';
+import { Divider, notify, Scroll, Text } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { CMSFormDescription } from '@/components/CMS/CMSForm/CMSFormDescription/CMSFormDescription.component';
@@ -80,7 +80,9 @@ export const IntentEditModal = modalsManager.create<IIntentEditModal>(
                 notFoundLabel="intents"
               />
             }
-            secondaryButton={<Modal.HeaderMore options={[{ name: 'Delete', onClick: onIntentDelete }]} testID={tid(TEST_ID, 'more')} />}
+            secondaryButton={
+              <Modal.HeaderMore options={[{ name: 'Delete', onClick: onIntentDelete }]} testID={tid(TEST_ID, 'more')} />
+            }
           />
 
           {intent ? (
@@ -109,11 +111,19 @@ export const IntentEditModal = modalsManager.create<IIntentEditModal>(
               <IntentEditForm intent={intent} newUtterances={newUtterances} />
             </Scroll>
           ) : (
-            <Modal.Body testID={tid(TEST_ID, 'not-found')}>Intent not found</Modal.Body>
+            <Modal.Body testID={tid(TEST_ID, 'not-found')}>
+              <Text>Intent not found</Text>
+            </Modal.Body>
           )}
 
           <Modal.Footer>
-            <Modal.Footer.Button label="Close" testID={tid(TEST_ID, 'close')} variant="secondary" onClick={api.onClose} disabled={closePrevented} />
+            <Modal.Footer.Button
+              label="Close"
+              testID={tid(TEST_ID, 'close')}
+              variant="secondary"
+              onClick={api.onClose}
+              disabled={closePrevented}
+            />
           </Modal.Footer>
         </Modal.Container>
       );

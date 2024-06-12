@@ -40,18 +40,21 @@ const diagramPayloadFactory = <T extends DiagramNode>({
 });
 
 export const componentDiagramPayloadFactory = ({
+  startNode,
   diagramName,
-  startNodeName = 'Continue',
-  startNodeCoords = START_NODE_POSITION,
 }: {
+  startNode?: { name?: string; coords?: [number, number]; color?: string };
   diagramName: string;
-  startNodeName?: string;
-  startNodeCoords?: [number, number];
 }) =>
   diagramPayloadFactory({
     name: diagramName,
     type: DiagramType.COMPONENT,
-    nodes: [startNodeFactory({ coords: startNodeCoords, data: { name: startNodeName } })],
+    nodes: [
+      startNodeFactory({
+        coords: startNode?.coords ?? START_NODE_POSITION,
+        data: { name: startNode?.name ?? 'Enter', color: startNode?.color },
+      }),
+    ],
   });
 
 export const topicDiagramPayloadFactory = ({

@@ -190,6 +190,11 @@ export const SchemaVersion = {
    * migrates intent steps to triggers
    */
   V9_00: 9.0,
+
+  /**
+   * migrates setV2 steps to new format with labels
+   */
+  V8_01: 8.01,
 } as const;
 
 export type SchemaVersion = (typeof SchemaVersion)[keyof typeof SchemaVersion];

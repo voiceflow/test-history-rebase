@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1555.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1554.1...@voiceflow/creator-app@1.1555.0) (2024-06-12)
+
+### Features
+
+* reference duck (COR-000) ([#8248](https://github.com/voiceflow/creator-app/issues/8248)) ([9ebebbf](https://github.com/voiceflow/creator-app/commit/9ebebbfd555d2e9684699d648e90c34f5501dfb2))
+
 ## [1.1554.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1554.0...@voiceflow/creator-app@1.1554.1) (2024-06-11)
 
 ### Bug Fixes

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.60.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.59.2...@voiceflow/sdk-logux-designer@2.60.0) (2024-06-12)
+
+### Features
+
+* reference duck (COR-000) ([#8248](https://github.com/voiceflow/creator-app/issues/8248)) ([9ebebbf](https://github.com/voiceflow/creator-app/commit/9ebebbfd555d2e9684699d648e90c34f5501dfb2))
+
 ## [2.59.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.59.1...@voiceflow/sdk-logux-designer@2.59.2) (2024-06-11)
 
 **Note:** Version bump only for package @voiceflow/sdk-logux-designer

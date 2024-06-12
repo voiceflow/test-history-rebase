@@ -1,4 +1,5 @@
 import { BlockType } from '@voiceflow/realtime-sdk';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { clsx } from '@voiceflow/style';
 import {
   DraggablePanel,
@@ -15,6 +16,7 @@ import { CMS_FLOW_LEARN_MORE, CMS_WORKFLOW_LEARN_MORE } from '@/constants/link.c
 import { Permission } from '@/constants/permissions';
 import { Creator, Designer, Diagram, Router, UI } from '@/ducks';
 import { useEventualEngine } from '@/hooks/engine';
+import { useFeature } from '@/hooks/feature';
 import { useFlowCreateModal, useWorkflowCreateModal } from '@/hooks/modal.hook';
 import { usePermission } from '@/hooks/permission';
 import { useLocalStorageState } from '@/hooks/storage.hook';
@@ -38,6 +40,8 @@ import {
 import { DiagramSidebarToolbar } from './DiagramSidebarToolbar.component';
 
 export const DiagramSidebar: React.FC = () => {
+  const referenceSystem = useFeature(Realtime.FeatureFlag.REFERENCE_SYSTEM);
+
   const params = useParams<{ nodeID?: string; diagramID?: string }>();
   const getEngine = useEventualEngine();
   const isCommenting = useCommentingMode();
@@ -51,6 +55,12 @@ export const DiagramSidebar: React.FC = () => {
   const sidebarWidth = useSelector(UI.selectors.canvasSidebarWidth);
   const sidebarVisible = useSelector(UI.selectors.canvasSidebarVisible);
   const activeDiagramID = useSelector(Creator.activeDiagramIDSelector);
+  const activeDiagramIsTopic = useSelector(Diagram.active.isTopicSelector);
+  const activeTriggerNodeResource = useSelector(Designer.Reference.selectors.triggerNodeResourceByNodeIDAndDiagramID, {
+    nodeID: params.nodeID,
+    diagramID: params.diagramID,
+  });
+
   const activeSharedNode = useSelector(Diagram.sharedNodeByDiagramIDAndNodeIDSelector, {
     nodeID: params.nodeID,
     diagramID: params.diagramID,
@@ -117,13 +127,15 @@ export const DiagramSidebar: React.FC = () => {
   });
 
   const diagramID = params.diagramID ?? activeDiagramID;
-  const focusedNodeID =
+  const focusedSharedNodeID =
     activeSharedNode?.type === BlockType.INTENT ||
     activeSharedNode?.type === BlockType.TRIGGER ||
     activeSharedNode?.type === BlockType.START
       ? activeSharedNode.nodeID
       : null;
-  const selectedID = focusedNodeID ? `${diagramID}:${focusedNodeID}` : diagramID;
+
+  const focusedNodeID = referenceSystem.isEnabled ? activeTriggerNodeResource?.resourceID ?? null : focusedSharedNodeID;
+  const selectedID = activeDiagramIsTopic && focusedNodeID ? `${diagramID}:${focusedNodeID}` : diagramID;
 
   return (
     <>

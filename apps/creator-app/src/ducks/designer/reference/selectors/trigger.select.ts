@@ -7,66 +7,10 @@ import { createSelector } from 'reselect';
 import { getOneByID as getOneIntentByID } from '@/ducks/designer/intent/selectors/crud.select';
 import { sharedNodesSelector } from '@/ducks/diagramV2/selectors/base';
 import { isFeatureEnabledSelector } from '@/ducks/feature';
-import { createCurriedSelector } from '@/ducks/utils';
-import { idsParamSelector } from '@/ducks/utils/crudV2';
+import { diagramIDParamSelector, nodeIDParamSelector } from '@/ducks/utils';
 
-import { createDesignerSelector } from '../utils/selector.util';
-import {
-  ReferenceAnyTriggerNode,
-  ReferenceBlockNodeResource,
-  ReferenceTriggerNodeResource,
-} from './reference.interface';
-import { STATE_KEY } from './reference.state';
-
-export const root = createDesignerSelector(STATE_KEY);
-
-export const normalizedResources = createSelector([root], ({ resources }) => resources);
-
-export const normalizedReferences = createSelector([root], ({ references }) => references);
-
-export const blockNodeResourceIDs = createSelector([root], ({ blockNodeResourceIDs }) => blockNodeResourceIDs);
-
-export const triggerNodeResourceIDs = createSelector([root], ({ triggerNodeResourceIDs }) => triggerNodeResourceIDs);
-
-export const resourceIDsByDiagramID = createSelector([root], ({ resourceIDsByDiagramID }) => resourceIDsByDiagramID);
-
-export const refererIDsByResourceID = createSelector([root], ({ refererIDsByResourceID }) => refererIDsByResourceID);
-
-export const resourceIDsByRefererID = createSelector([root], ({ resourceIDsByRefererID }) => resourceIDsByRefererID);
-
-export const resourcesByIDs = createSelector([normalizedResources, idsParamSelector], (normalizedResources, ids) =>
-  Normal.getMany(normalizedResources, ids)
-);
-
-export const getResourcesByIDs = createCurriedSelector(resourcesByIDs);
-
-export const blockNodeResources = createSelector(
-  [normalizedResources, blockNodeResourceIDs],
-  (normalizedResources, blockNodeResourceIDs) =>
-    blockNodeResourceIDs
-      .map((id) => Normal.getOne(normalizedResources, id))
-      .filter(
-        (resource): resource is ReferenceBlockNodeResource =>
-          !!resource &&
-          resource.type === ReferenceResourceType.NODE &&
-          !!resource.metadata &&
-          (resource.metadata.nodeType === NodeType.BLOCK || resource.metadata.nodeType === NodeType.START)
-      )
-);
-
-export const blockResourceByNodeIDMapByDiagramIDMap = createSelector([blockNodeResources], (blockNodeResources) =>
-  blockNodeResources.reduce<Partial<Record<string, Partial<Record<string, ReferenceBlockNodeResource>>>>>(
-    (acc, resource) => {
-      if (!resource.diagramID) return acc;
-
-      acc[resource.diagramID] ??= {};
-      acc[resource.diagramID]![resource.resourceID] = resource;
-
-      return acc;
-    },
-    {}
-  )
-);
+import { ReferenceAnyTriggerNode, ReferenceTriggerNodeResource } from '../reference.interface';
+import { getResourcesByIDs, normalizedResources, resourceIDsByRefererID, triggerNodeResourceIDs } from './root.select';
 
 export const triggerNodeResources = createSelector(
   [normalizedResources, triggerNodeResourceIDs],
@@ -82,6 +26,28 @@ export const triggerNodeResources = createSelector(
             resource.metadata.nodeType === NodeType.INTENT ||
             resource.metadata.nodeType === NodeType.TRIGGER)
       )
+);
+
+export const triggerNodeResourceByNodeIDMapByDiagramIDMap = createSelector(
+  [triggerNodeResources],
+  (triggerNodeResources) =>
+    triggerNodeResources.reduce<Partial<Record<string, Partial<Record<string, ReferenceTriggerNodeResource>>>>>(
+      (acc, resource) => {
+        if (!resource.diagramID) return acc;
+
+        acc[resource.diagramID] ??= {};
+        acc[resource.diagramID]![resource.resourceID] = resource;
+
+        return acc;
+      },
+      {}
+    )
+);
+
+export const triggerNodeResourceByNodeIDAndDiagramID = createSelector(
+  [triggerNodeResourceByNodeIDMapByDiagramIDMap, nodeIDParamSelector, diagramIDParamSelector],
+  (triggerNodeResourceByNodeIDMapByDiagramIDMap, nodeID, diagramID) =>
+    diagramID && nodeID ? triggerNodeResourceByNodeIDMapByDiagramIDMap[diagramID]?.[nodeID] ?? null : null
 );
 
 export const triggersMapByDiagramID = createSelector(

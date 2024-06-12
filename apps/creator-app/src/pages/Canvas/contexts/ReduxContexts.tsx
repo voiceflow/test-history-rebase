@@ -125,9 +125,9 @@ export const {
 } = createSelectorContext(DiagramV2.sharedNodesSelector);
 
 export const {
-  Context: BlockResourceByNodeIDMapByDiagramIDMapContext,
-  Provider: BlockResourceByNodeIDMapByDiagramIDMapProvider,
-} = createSelectorContext(Designer.Reference.selectors.blockResourceByNodeIDMapByDiagramIDMap);
+  Context: BlockNodeResourceByNodeIDMapByDiagramIDMapContext,
+  Provider: BlockNodeResourceByNodeIDMapByDiagramIDMapProvider,
+} = createSelectorContext(Designer.Reference.selectors.blockNodeResourceByNodeIDMapByDiagramIDMap);
 
 export const {
   Context: CustomBlockMapContext,
@@ -154,7 +154,7 @@ export const ReduxContextsProviders: React.FC<React.PropsWithChildren> = ({ chil
                     <ActiveDiagramTypeProvider>
                       <IntentIDNodeIDMapProvider>
                         <SharedNodesProvider>
-                          <BlockResourceByNodeIDMapByDiagramIDMapProvider>
+                          <BlockNodeResourceByNodeIDMapByDiagramIDMapProvider>
                             <ActionsRouteMatchProvider>
                               <CustomBlockMapProvider>
                                 <ResponseMapFirstVariantByResponseIDProvider>
@@ -173,7 +173,7 @@ export const ReduxContextsProviders: React.FC<React.PropsWithChildren> = ({ chil
                                 </ResponseMapFirstVariantByResponseIDProvider>
                               </CustomBlockMapProvider>
                             </ActionsRouteMatchProvider>
-                          </BlockResourceByNodeIDMapByDiagramIDMapProvider>
+                          </BlockNodeResourceByNodeIDMapByDiagramIDMapProvider>
                         </SharedNodesProvider>
                       </IntentIDNodeIDMapProvider>
                     </ActiveDiagramTypeProvider>

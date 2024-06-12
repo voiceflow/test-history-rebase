@@ -27,8 +27,8 @@ export const useItemConfig = (getManager: ManagerGetter, data: Realtime.NodeData
   const diagramMap = useSelector(Diagram.diagramMapSelector);
   const sharedNodes = useSelector(Diagram.sharedNodesSelector);
   const entitiesAndVariables = useSelector(Diagram.active.allSlotsAndVariablesNormalizedSelector);
-  const blockResourceByNodeIDMapByDiagramIDMap = useSelector(
-    Designer.Reference.selectors.blockResourceByNodeIDMapByDiagramIDMap
+  const blockNodeResourceByNodeIDMapByDiagramIDMap = useSelector(
+    Designer.Reference.selectors.blockNodeResourceByNodeIDMapByDiagramIDMap
   );
 
   return useMemo(
@@ -47,7 +47,9 @@ export const useItemConfig = (getManager: ManagerGetter, data: Realtime.NodeData
         .when(Realtime.Utils.typeGuards.isGoToNodeNodeData, ({ goToNodeID, diagramID }) => {
           const sharedNode = diagramID && goToNodeID ? sharedNodes[diagramID]?.[goToNodeID] ?? null : null;
           const referenceNode =
-            diagramID && goToNodeID ? blockResourceByNodeIDMapByDiagramIDMap[diagramID]?.[goToNodeID] ?? null : null;
+            diagramID && goToNodeID
+              ? blockNodeResourceByNodeIDMapByDiagramIDMap[diagramID]?.[goToNodeID] ?? null
+              : null;
 
           const isEmpty = referenceSystem.isEnabled ? !referenceNode : !sharedNode;
           const sharedNodeName =
@@ -139,7 +141,7 @@ export const useItemConfig = (getManager: ManagerGetter, data: Realtime.NodeData
       diagramMap,
       sharedNodes,
       entitiesAndVariables,
-      blockResourceByNodeIDMapByDiagramIDMap,
+      blockNodeResourceByNodeIDMapByDiagramIDMap,
       referenceSystem.isEnabled,
     ]
   );

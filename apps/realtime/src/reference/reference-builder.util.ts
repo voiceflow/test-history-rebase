@@ -176,28 +176,31 @@ export class ReferenceBuilderUtil {
     intentID: string | null,
     metadata: ReferenceIntentNodeMetadata
   ) {
-    if (!intentID) return null;
+    if (!intentID) return;
 
     const intent = this.intentsMap[intentID];
 
-    if (!intent) return null;
+    if (!intent) return;
 
-    const intentResource = this.buildReferenceResource({
-      type: ReferenceResourceType.INTENT,
-      metadata: null,
-      diagramID: null,
-      resourceID: intent.id,
-    });
+    let intentResourceID = this.intentIDReferenceResourceIDMap[intentID];
+
+    if (!intentResourceID) {
+      const intentResource = this.buildReferenceResource({
+        type: ReferenceResourceType.INTENT,
+        metadata: null,
+        diagramID: null,
+        resourceID: intent.id,
+      });
+
+      intentResourceID = intentResource.id;
+      this.intentIDReferenceResourceIDMap[intentID] = intentResourceID;
+    }
 
     this.buildReference({
       metadata,
-      resourceID: intentResource.id,
+      resourceID: intentResourceID,
       referrerResourceID: referrerResource.id,
     });
-
-    this.intentIDReferenceResourceIDMap[intentID] = intentResource.id;
-
-    return intentResource;
   }
 
   private buildReference({ id = this.genID(), ...data }: Omit<Reference, 'id' | 'environmentID'> & { id?: string }) {

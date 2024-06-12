@@ -1,5 +1,5 @@
 import { AlexaConstants } from '@voiceflow/alexa-types';
-import { BaseButton, BaseModels } from '@voiceflow/base-types';
+import { BaseButton } from '@voiceflow/base-types';
 import { Nullable, Nullish } from '@voiceflow/common';
 import { Entity, Intent } from '@voiceflow/dtos';
 import { DFESConstants } from '@voiceflow/google-dfes-types';
@@ -10,7 +10,6 @@ import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { getPlatformIntentNameFormatter } from '@/platforms/selectors';
 
-import { isComponentDiagram } from '../diagram.utils';
 import { formatBuiltInIntentName } from '../intent.util';
 
 export * from './platform';
@@ -21,7 +20,10 @@ const amazonBuiltInIntentsArray = Object.values(AlexaConstants.AmazonIntent) as 
 const generalBuiltInIntentsArray = Object.values(VoiceflowConstants.IntentName) as string[];
 const dialogflowESBuiltInIntentsArray = Object.values(DFESConstants.DialogflowESIntent) as string[];
 const builtInIntentMap = new Map(
-  [...amazonBuiltInIntentsArray, ...generalBuiltInIntentsArray, ...dialogflowESBuiltInIntentsArray].map((id) => [id, true])
+  [...amazonBuiltInIntentsArray, ...generalBuiltInIntentsArray, ...dialogflowESBuiltInIntentsArray].map((id) => [
+    id,
+    true,
+  ])
 );
 
 const INTENT_LABELS: Partial<Record<string, string>> = {
@@ -60,7 +62,10 @@ export const intentFilter = (
   return true;
 };
 
-const fmtIntentName = (intent: Platform.Base.Models.Intent.Model | Intent, platform: Platform.Constants.PlatformType): string => {
+const fmtIntentName = (
+  intent: Platform.Base.Models.Intent.Model | Intent,
+  platform: Platform.Constants.PlatformType
+): string => {
   let { name } = intent ?? { name: '' };
 
   name = getIntentNameLabel(name);
@@ -81,7 +86,7 @@ export const validateIntentName = (
   }
 
   if (entities.some(({ name }) => name.toLowerCase() === lowerCasedIntentName)) {
-    return `Intent name already exists.`;
+    return 'Intent name already exists.';
   }
 
   return null;
@@ -113,40 +118,11 @@ export const getIntentConfidenceStrengthLevel = (count: number) => {
   return StrengthGauge.Level.NOT_SET;
 };
 
-export const intentButtonFactory = (): BaseButton.IntentButton => ({ name: '', type: BaseButton.ButtonType.INTENT, payload: { intentID: null } });
-
-export const getGoToIntentMeta = ({
-  intentID,
-  diagramID,
-  intentsMap,
-  diagramMap,
-  intentIDNodeIDMap,
-  activeDiagramType,
-  globalIntentStepMap,
-}: {
-  intentID?: Nullable<string>;
-  diagramID?: Nullable<string>;
-  intentsMap: Record<string, Intent>;
-  diagramMap: Record<string, Realtime.Diagram>;
-  intentIDNodeIDMap: Record<string, string>;
-  activeDiagramType: BaseModels.Diagram.DiagramType;
-  globalIntentStepMap: Record<string, Record<string, string[]>>;
-}) => {
-  const goToIntent = intentID ? intentsMap[intentID] ?? null : null;
-  const goToDiagram = diagramID ? diagramMap[diagramID] ?? null : null;
-
-  const topicGoToNodeID = goToIntent && goToDiagram ? globalIntentStepMap[goToDiagram.id]?.[goToIntent.id]?.[0] ?? null : null;
-  const componentGoToNodeID = topicGoToNodeID || (goToIntent ? intentIDNodeIDMap[goToIntent.id] ?? null : null);
-
-  const goToNodeID = isComponentDiagram(activeDiagramType) ? componentGoToNodeID : topicGoToNodeID;
-
-  return {
-    goToNodeID,
-    goToIntent,
-    goToDiagram,
-    goToIntentName: goToIntent?.name ?? '',
-  };
-};
+export const intentButtonFactory = (): BaseButton.IntentButton => ({
+  name: '',
+  type: BaseButton.ButtonType.INTENT,
+  payload: { intentID: null },
+});
 
 export const isPromptEmpty = (prompt?: unknown): boolean => {
   if (!prompt) return true;

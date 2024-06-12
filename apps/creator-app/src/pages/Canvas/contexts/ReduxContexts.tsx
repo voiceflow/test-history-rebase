@@ -124,6 +124,11 @@ export const {
 } = createSelectorContext(Designer.Reference.selectors.blockNodeResourceByNodeIDMapByDiagramIDMap);
 
 export const {
+  Context: GlobalIntentNodeIDsByIntentIDMapByDiagramIDMapContext,
+  Provider: GlobalIntentNodeIDsByIntentIDMapByDiagramIDMapProvider,
+} = createSelectorContext(Designer.Reference.selectors.globalIntentNodeIDsByIntentIDMapByDiagramIDMap);
+
+export const {
   Context: CustomBlockMapContext,
   Provider: CustomBlockMapProvider,
   Consumer: CustomBlockMapConsumer,
@@ -145,30 +150,32 @@ export const ReduxContextsProviders: React.FC<React.PropsWithChildren> = ({ chil
               <EntityMapProvider>
                 <DiagramMapProvider>
                   <GlobalIntentStepMapProvider>
-                    <ActiveDiagramTypeProvider>
-                      <IntentIDNodeIDMapProvider>
-                        <SharedNodesProvider>
-                          <BlockNodeResourceByNodeIDMapByDiagramIDMapProvider>
-                            <ActionsRouteMatchProvider>
-                              <CustomBlockMapProvider>
-                                <ResponseMapFirstVariantByResponseIDProvider>
-                                  <FlowMapByDiagramIDProvider>
-                                    <FunctionMapProvider>
-                                      <FunctionPathMapProvider>
-                                        <ActiveDiagramNormalizedEntitiesAndVariablesProvider>
-                                          {/* comment to have a children on a new line */}
-                                          {children}
-                                        </ActiveDiagramNormalizedEntitiesAndVariablesProvider>
-                                      </FunctionPathMapProvider>
-                                    </FunctionMapProvider>
-                                  </FlowMapByDiagramIDProvider>
-                                </ResponseMapFirstVariantByResponseIDProvider>
-                              </CustomBlockMapProvider>
-                            </ActionsRouteMatchProvider>
-                          </BlockNodeResourceByNodeIDMapByDiagramIDMapProvider>
-                        </SharedNodesProvider>
-                      </IntentIDNodeIDMapProvider>
-                    </ActiveDiagramTypeProvider>
+                    <GlobalIntentNodeIDsByIntentIDMapByDiagramIDMapProvider>
+                      <ActiveDiagramTypeProvider>
+                        <IntentIDNodeIDMapProvider>
+                          <SharedNodesProvider>
+                            <BlockNodeResourceByNodeIDMapByDiagramIDMapProvider>
+                              <ActionsRouteMatchProvider>
+                                <CustomBlockMapProvider>
+                                  <ResponseMapFirstVariantByResponseIDProvider>
+                                    <FlowMapByDiagramIDProvider>
+                                      <FunctionMapProvider>
+                                        <FunctionPathMapProvider>
+                                          <ActiveDiagramNormalizedEntitiesAndVariablesProvider>
+                                            {/* comment to have a children on a new line */}
+                                            {children}
+                                          </ActiveDiagramNormalizedEntitiesAndVariablesProvider>
+                                        </FunctionPathMapProvider>
+                                      </FunctionMapProvider>
+                                    </FlowMapByDiagramIDProvider>
+                                  </ResponseMapFirstVariantByResponseIDProvider>
+                                </CustomBlockMapProvider>
+                              </ActionsRouteMatchProvider>
+                            </BlockNodeResourceByNodeIDMapByDiagramIDMapProvider>
+                          </SharedNodesProvider>
+                        </IntentIDNodeIDMapProvider>
+                      </ActiveDiagramTypeProvider>
+                    </GlobalIntentNodeIDsByIntentIDMapByDiagramIDMapProvider>
                   </GlobalIntentStepMapProvider>
                 </DiagramMapProvider>
               </EntityMapProvider>

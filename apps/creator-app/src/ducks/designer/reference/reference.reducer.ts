@@ -10,22 +10,30 @@ export const referenceReducer = reducerWithInitialState<ReferenceState>(INITIAL_
   (_, { data }) => {
     const blockNodeResourceIDs: string[] = [];
     const triggerNodeResourceIDs: string[] = [];
-    const resourceIDsByDiagramID: Partial<Record<string, string[]>> = {};
-    const refererIDsByResourceID: Partial<Record<string, string[]>> = {};
-    const resourceIDsByRefererID: Partial<Record<string, string[]>> = {};
+    const resourceIDsByDiagramIDMap: Partial<Record<string, string[]>> = {};
+    const refererIDsByResourceIDMap: Partial<Record<string, string[]>> = {};
+    const resourceIDsByRefererIDMap: Partial<Record<string, string[]>> = {};
+    const referenceIDsByResourceIDMap: Partial<Record<string, string[]>> = {};
+    const referenceIDsByReferrerIDMap: Partial<Record<string, string[]>> = {};
 
     data.references.forEach((reference) => {
-      resourceIDsByRefererID[reference.referrerResourceID] ??= [];
-      resourceIDsByRefererID[reference.referrerResourceID]!.push(reference.resourceID);
+      resourceIDsByRefererIDMap[reference.referrerResourceID] ??= [];
+      resourceIDsByRefererIDMap[reference.referrerResourceID]!.push(reference.resourceID);
 
-      refererIDsByResourceID[reference.resourceID] ??= [];
-      refererIDsByResourceID[reference.resourceID]!.push(reference.referrerResourceID);
+      refererIDsByResourceIDMap[reference.resourceID] ??= [];
+      refererIDsByResourceIDMap[reference.resourceID]!.push(reference.referrerResourceID);
+
+      referenceIDsByResourceIDMap[reference.resourceID] ??= [];
+      referenceIDsByResourceIDMap[reference.resourceID]!.push(reference.id);
+
+      referenceIDsByReferrerIDMap[reference.referrerResourceID] ??= [];
+      referenceIDsByReferrerIDMap[reference.referrerResourceID]!.push(reference.id);
     });
 
     data.referenceResources.forEach((resource) => {
       if (resource.diagramID) {
-        resourceIDsByDiagramID[resource.diagramID] ??= [];
-        resourceIDsByDiagramID[resource.diagramID]!.push(resource.id);
+        resourceIDsByDiagramIDMap[resource.diagramID] ??= [];
+        resourceIDsByDiagramIDMap[resource.diagramID]!.push(resource.id);
       }
 
       if (resource.type === ReferenceResourceType.NODE) {
@@ -48,9 +56,11 @@ export const referenceReducer = reducerWithInitialState<ReferenceState>(INITIAL_
       references: normalize(data.references),
       blockNodeResourceIDs,
       triggerNodeResourceIDs,
-      resourceIDsByDiagramID,
-      resourceIDsByRefererID,
-      refererIDsByResourceID,
+      resourceIDsByDiagramIDMap,
+      resourceIDsByRefererIDMap,
+      refererIDsByResourceIDMap,
+      referenceIDsByResourceIDMap,
+      referenceIDsByReferrerIDMap,
     };
   }
 );

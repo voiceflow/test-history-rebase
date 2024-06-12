@@ -12,6 +12,7 @@ interface ReferenceBaseTriggerNode {
   label: string;
   nodeID: string;
   isEmpty: boolean;
+  resourceID: string;
 }
 
 export interface ReferenceIntentTriggerNode extends ReferenceBaseTriggerNode {

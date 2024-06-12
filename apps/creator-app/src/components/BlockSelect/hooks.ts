@@ -1,20 +1,25 @@
-import { Flow, FolderScope, Workflow } from '@voiceflow/dtos';
-import { BlockType } from '@voiceflow/realtime-sdk';
+import { Flow, FolderScope, NodeType, Workflow } from '@voiceflow/dtos';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { createUIOnlyMenuItemOption, UIOnlyMenuItemOption } from '@voiceflow/ui';
 import { useCallback } from 'react';
 
-import { Diagram } from '@/ducks';
+import { Designer, Diagram } from '@/ducks';
+import { useFeature } from '@/hooks/feature';
 import { useFolderTree } from '@/hooks/folder.hook';
-import { useSelector } from '@/hooks/redux';
-import { createGroupedSelectID } from '@/hooks/select';
+import { useSelector } from '@/hooks/store.hook';
 
 import { BlockOption, GroupOption } from './types';
+import { createGroupedSelectID } from './utils';
 
 export const useOptionsTree = <Item extends Flow | Workflow>(
   items: Item[],
   { label, folderScope }: { label: string; folderScope: FolderScope }
 ) => {
   const sharedNodes = useSelector(Diagram.sharedNodesSelector);
+  const referenceSystem = useFeature(Realtime.FeatureFlag.REFERENCE_SYSTEM);
+  const blockResourceByNodeIDMapByDiagramIDMap = useSelector(
+    Designer.Reference.selectors.blockResourceByNodeIDMapByDiagramIDMap
+  );
 
   return useFolderTree<
     Flow,
@@ -26,7 +31,10 @@ export const useOptionsTree = <Item extends Flow | Workflow>(
     dataSorter: (a, b) => a.label.localeCompare(b.label),
     folderScope,
     folderSorter: (a, b) => a.label.localeCompare(b.label),
-    buildFolderTree: useCallback((folder, children): GroupOption => ({ id: folder.id, label: folder.name, options: children }), []),
+    buildFolderTree: useCallback(
+      (folder, children): GroupOption => ({ id: folder.id, label: folder.name, options: children }),
+      []
+    ),
     buildFolderSeparator: useCallback(
       ([{ id }]: GroupOption[]): UIOnlyMenuItemOption =>
         createUIOnlyMenuItemOption(`${id}-header`, { label: 'Folders', groupHeader: true }),
@@ -39,24 +47,52 @@ export const useOptionsTree = <Item extends Flow | Workflow>(
     ),
     buildDataTree: useCallback(
       (workflow, _, cacheOption): GroupOption => {
-        const options = Object.values(sharedNodes?.[workflow.diagramID] ?? {}).reduce<Array<BlockOption | GroupOption>>(
-          (acc, sharedNode) => {
-            if (!sharedNode || (sharedNode.type !== BlockType.COMBINED && sharedNode.type !== BlockType.START))
-              return acc;
-            if (sharedNode.type !== BlockType.START && !sharedNode.name) return acc;
+        let options: Array<BlockOption | GroupOption>;
+
+        if (referenceSystem.isEnabled) {
+          options = Object.values(blockResourceByNodeIDMapByDiagramIDMap[workflow.diagramID] ?? {})?.reduce<
+            Array<BlockOption | GroupOption>
+          >((acc, resource) => {
+            if (!resource) return acc;
+
+            const isStart = resource.metadata.nodeType === NodeType.START;
+
+            if (!isStart && !resource.metadata.name) return acc;
 
             return [
               ...acc,
               cacheOption({
-                id: createGroupedSelectID(workflow.diagramID, sharedNode.nodeID),
-                label: sharedNode.type === BlockType.START ? sharedNode.name || 'Start' : sharedNode.name,
-                nodeID: sharedNode.nodeID,
+                id: createGroupedSelectID(workflow.diagramID, resource.resourceID),
+                label: isStart ? resource.metadata.name || 'Start' : resource.metadata.name,
+                nodeID: resource.resourceID,
                 diagramID: workflow.diagramID,
               }),
             ];
-          },
-          []
-        );
+          }, []);
+        } else {
+          options = Object.values(sharedNodes?.[workflow.diagramID] ?? {}).reduce<Array<BlockOption | GroupOption>>(
+            (acc, sharedNode) => {
+              if (
+                !sharedNode ||
+                (sharedNode.type !== Realtime.BlockType.COMBINED && sharedNode.type !== Realtime.BlockType.START)
+              )
+                return acc;
+
+              if (sharedNode.type !== Realtime.BlockType.START && !sharedNode.name) return acc;
+
+              return [
+                ...acc,
+                cacheOption({
+                  id: createGroupedSelectID(workflow.diagramID, sharedNode.nodeID),
+                  label: sharedNode.type === Realtime.BlockType.START ? sharedNode.name || 'Start' : sharedNode.name,
+                  nodeID: sharedNode.nodeID,
+                  diagramID: workflow.diagramID,
+                }),
+              ];
+            },
+            []
+          );
+        }
 
         return {
           id: workflow.id,
@@ -79,7 +115,7 @@ export const useOptionsTree = <Item extends Flow | Workflow>(
           ],
         };
       },
-      [sharedNodes]
+      [sharedNodes, blockResourceByNodeIDMapByDiagramIDMap, referenceSystem.isEnabled]
     ),
   });
 };

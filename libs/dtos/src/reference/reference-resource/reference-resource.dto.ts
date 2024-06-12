@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { ReferenceResourceMetadataDTO } from './reference-resource-metadata.dto';
+import { ReferenceResourceMetadata, ReferenceResourceMetadataDTO } from './reference-resource-metadata.dto';
 import { ReferenceResourceType } from './reference-resource-type.enum';
 
 export const ReferenceResourceDTO = z
@@ -15,4 +15,5 @@ export const ReferenceResourceDTO = z
   })
   .strict();
 
-export type ReferenceResource = z.infer<typeof ReferenceResourceDTO>;
+export type ReferenceResource<Metadata extends ReferenceResourceMetadata | null = ReferenceResourceMetadata | null> =
+  Omit<z.infer<typeof ReferenceResourceDTO>, 'metadata'> & { metadata: Metadata };

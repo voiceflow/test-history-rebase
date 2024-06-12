@@ -4,16 +4,22 @@ import { createEmpty, type Normalized } from 'normal-store';
 export const STATE_KEY = 'reference';
 
 export interface ReferenceState {
+  resources: Normalized<ReferenceResource>;
   references: Normalized<Reference>;
-  referenceResources: Normalized<ReferenceResource>;
 
-  referenceIDsByRefererID: Partial<Record<string, string[]>>; // refererID -> referenceID[]
-  refererIDsByReferenceID: Partial<Record<string, string[]>>; // referenceID -> refererID[]
+  blockNodeResourceIDs: string[];
+  triggerNodeResourceIDs: string[];
+  resourceIDsByDiagramID: Partial<Record<string, string[]>>;
+  refererIDsByResourceID: Partial<Record<string, string[]>>;
+  resourceIDsByRefererID: Partial<Record<string, string[]>>;
 }
 
 export const INITIAL_STATE: ReferenceState = {
+  resources: createEmpty(),
   references: createEmpty(),
-  referenceResources: createEmpty(),
-  referenceIDsByRefererID: {},
-  refererIDsByReferenceID: {},
+  blockNodeResourceIDs: [],
+  triggerNodeResourceIDs: [],
+  resourceIDsByDiagramID: {},
+  refererIDsByResourceID: {},
+  resourceIDsByRefererID: {},
 };

@@ -1,12 +1,13 @@
 import { BaseNode } from '@voiceflow/base-types';
 import { EmptyObject } from '@voiceflow/common';
+import { NodeType } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { SvgIconTypes } from '@voiceflow/ui';
 import { useMemo } from 'react';
 import { match } from 'ts-pattern';
 
 import { Designer, Diagram } from '@/ducks';
-import { useSelector } from '@/hooks';
+import { useFeature, useSelector } from '@/hooks';
 import type { ManagerGetter } from '@/pages/Canvas/contexts';
 import { getCustomAPIActionLabel } from '@/utils/customApi';
 import { transformVariablesToReadable } from '@/utils/slot';
@@ -20,11 +21,15 @@ interface ItemConfig {
 
 export const useItemConfig = (getManager: ManagerGetter, data: Realtime.NodeData<EmptyObject>): ItemConfig => {
   const manager = getManager(data.type);
+  const referenceSystem = useFeature(Realtime.FeatureFlag.REFERENCE_SYSTEM);
 
   const intentMap = useSelector(Designer.Intent.selectors.mapWithFormattedBuiltInName);
   const diagramMap = useSelector(Diagram.diagramMapSelector);
   const sharedNodes = useSelector(Diagram.sharedNodesSelector);
   const entitiesAndVariables = useSelector(Diagram.active.allSlotsAndVariablesNormalizedSelector);
+  const blockResourceByNodeIDMapByDiagramIDMap = useSelector(
+    Designer.Reference.selectors.blockResourceByNodeIDMapByDiagramIDMap
+  );
 
   return useMemo(
     () =>
@@ -41,13 +46,20 @@ export const useItemConfig = (getManager: ManagerGetter, data: Realtime.NodeData
         })
         .when(Realtime.Utils.typeGuards.isGoToNodeNodeData, ({ goToNodeID, diagramID }) => {
           const sharedNode = diagramID && goToNodeID ? sharedNodes[diagramID]?.[goToNodeID] ?? null : null;
-          const name =
+          const referenceNode =
+            diagramID && goToNodeID ? blockResourceByNodeIDMapByDiagramIDMap[diagramID]?.[goToNodeID] ?? null : null;
+
+          const isEmpty = referenceSystem.isEnabled ? !referenceNode : !sharedNode;
+          const sharedNodeName =
             (sharedNode?.type === Realtime.BlockType.COMBINED && sharedNode.name) ||
             (sharedNode?.type === Realtime.BlockType.START && 'Start');
+          const referencedNodeName =
+            referenceNode?.metadata.nodeType === NodeType.START ? 'Start' : referenceNode?.metadata.name;
+          const name = referenceSystem.isEnabled ? referencedNodeName : sharedNodeName;
 
           return {
             icon: manager.icon,
-            isEmpty: !sharedNode,
+            isEmpty,
             defaultName: name ? `Go to '${name}' block` : 'Go to block',
             placeholder: 'Select go-to block',
           };
@@ -120,6 +132,15 @@ export const useItemConfig = (getManager: ManagerGetter, data: Realtime.NodeData
           defaultName: (manager.factory?.()?.data.name as string) ?? '',
           placeholder: manager.label ?? 'Unknown action',
         })),
-    [data, manager, intentMap, diagramMap, sharedNodes, entitiesAndVariables]
+    [
+      data,
+      manager,
+      intentMap,
+      diagramMap,
+      sharedNodes,
+      entitiesAndVariables,
+      blockResourceByNodeIDMapByDiagramIDMap,
+      referenceSystem.isEnabled,
+    ]
   );
 };

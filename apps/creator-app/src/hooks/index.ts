@@ -27,7 +27,6 @@ export * from './reducer';
 export * from './redux';
 export * from './routes';
 export * from './scroll';
-export * from './select';
 export * from './speechRecognition';
 export * from './state';
 export * from './syncedLookup';

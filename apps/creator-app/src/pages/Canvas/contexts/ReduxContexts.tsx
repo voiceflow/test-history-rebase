@@ -106,17 +106,28 @@ export const {
   Consumer: IntentIDNodeIDMapConsumer,
 } = createSelectorContext(CreatorV2.intentIDNodeIDMapSelector);
 
+/**
+ * @deprecated remove with REFERENCE_SYSTEM ff removal
+ */
 export const {
   Context: GlobalIntentStepMapContext,
   Provider: GlobalIntentStepMapProvider,
   Consumer: GlobalIntentStepMapConsumer,
 } = createSelectorContext(DiagramV2.globalIntentStepMapSelector);
 
+/**
+ * @deprecated remove with REFERENCE_SYSTEM ff removal
+ */
 export const {
   Context: SharedNodesContext,
   Provider: SharedNodesProvider,
   Consumer: SharedNodesConsumer,
 } = createSelectorContext(DiagramV2.sharedNodesSelector);
+
+export const {
+  Context: BlockResourceByNodeIDMapByDiagramIDMapContext,
+  Provider: BlockResourceByNodeIDMapByDiagramIDMapProvider,
+} = createSelectorContext(Designer.Reference.selectors.blockResourceByNodeIDMapByDiagramIDMap);
 
 export const {
   Context: CustomBlockMapContext,
@@ -143,24 +154,26 @@ export const ReduxContextsProviders: React.FC<React.PropsWithChildren> = ({ chil
                     <ActiveDiagramTypeProvider>
                       <IntentIDNodeIDMapProvider>
                         <SharedNodesProvider>
-                          <ActionsRouteMatchProvider>
-                            <CustomBlockMapProvider>
-                              <ResponseMapFirstVariantByResponseIDProvider>
-                                <FlowMapByDiagramIDProvider>
-                                  <FunctionMapProvider>
-                                    <FunctionVariableMapProvider>
-                                      <FunctionPathMapProvider>
-                                        <ActiveDiagramNormalizedEntitiesAndVariablesProvider>
-                                          {/* comment to have a children on a new line */}
-                                          {children}
-                                        </ActiveDiagramNormalizedEntitiesAndVariablesProvider>
-                                      </FunctionPathMapProvider>
-                                    </FunctionVariableMapProvider>
-                                  </FunctionMapProvider>
-                                </FlowMapByDiagramIDProvider>
-                              </ResponseMapFirstVariantByResponseIDProvider>
-                            </CustomBlockMapProvider>
-                          </ActionsRouteMatchProvider>
+                          <BlockResourceByNodeIDMapByDiagramIDMapProvider>
+                            <ActionsRouteMatchProvider>
+                              <CustomBlockMapProvider>
+                                <ResponseMapFirstVariantByResponseIDProvider>
+                                  <FlowMapByDiagramIDProvider>
+                                    <FunctionMapProvider>
+                                      <FunctionVariableMapProvider>
+                                        <FunctionPathMapProvider>
+                                          <ActiveDiagramNormalizedEntitiesAndVariablesProvider>
+                                            {/* comment to have a children on a new line */}
+                                            {children}
+                                          </ActiveDiagramNormalizedEntitiesAndVariablesProvider>
+                                        </FunctionPathMapProvider>
+                                      </FunctionVariableMapProvider>
+                                    </FunctionMapProvider>
+                                  </FlowMapByDiagramIDProvider>
+                                </ResponseMapFirstVariantByResponseIDProvider>
+                              </CustomBlockMapProvider>
+                            </ActionsRouteMatchProvider>
+                          </BlockResourceByNodeIDMapByDiagramIDMapProvider>
                         </SharedNodesProvider>
                       </IntentIDNodeIDMapProvider>
                     </ActiveDiagramTypeProvider>

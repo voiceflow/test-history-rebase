@@ -66,12 +66,15 @@ export class RequiredEntityService extends CMSObjectService<RequiredEntityORM> {
       throw new NotFoundException("couldn't find intent to sync");
     }
 
-    const requiredEntitiesByIntentID = requiredEntities.reduce<Record<string, RequiredEntityObject[]>>((acc, entity) => {
-      acc[entity.intentID] ??= [];
-      acc[entity.intentID].push(entity);
+    const requiredEntitiesByIntentID = requiredEntities.reduce<Record<string, RequiredEntityObject[]>>(
+      (acc, entity) => {
+        acc[entity.intentID] ??= [];
+        acc[entity.intentID].push(entity);
 
-      return acc;
-    }, {});
+        return acc;
+      },
+      {}
+    );
 
     await Promise.all(
       intents.map(async (intent) => {
@@ -92,7 +95,11 @@ export class RequiredEntityService extends CMSObjectService<RequiredEntityORM> {
         // eslint-disable-next-line no-param-reassign
         intent.entityOrder = entityOrder;
 
-        await this.intentORM.patchOneForUser(userID, { id: intent.id, environmentID: intent.environmentID }, { entityOrder });
+        await this.intentORM.patchOneForUser(
+          userID,
+          { id: intent.id, environmentID: intent.environmentID },
+          { entityOrder }
+        );
       })
     );
 
@@ -103,7 +110,11 @@ export class RequiredEntityService extends CMSObjectService<RequiredEntityORM> {
     await Promise.all(
       sync.intents.map((intent) =>
         this.logux.processAs(
-          Actions.Intent.PatchOne({ id: intent.id, patch: { entityOrder: intent.entityOrder }, context: cmsBroadcastContext(meta.context) }),
+          Actions.Intent.PatchOne({
+            id: intent.id,
+            patch: { entityOrder: intent.entityOrder },
+            context: cmsBroadcastContext(meta.context),
+          }),
           meta.auth
         )
       )
@@ -130,7 +141,10 @@ export class RequiredEntityService extends CMSObjectService<RequiredEntityORM> {
 
   /* Create */
 
-  async createManyWithSubResources(requiredEntitiesData: RequiredEntityCreateData[], { userID, context }: { userID: number; context: CMSContext }) {
+  async createManyWithSubResources(
+    requiredEntitiesData: RequiredEntityCreateData[],
+    { userID, context }: { userID: number; context: CMSContext }
+  ) {
     const requiredEntitiesDataWithIDs = requiredEntitiesData.map((data) => {
       if (!('reprompts' in data)) {
         return { ...data, reprompts: [] };
@@ -143,13 +157,16 @@ export class RequiredEntityService extends CMSObjectService<RequiredEntityORM> {
       return { ...data, repromptID: new ObjectId().toJSON() };
     });
 
-    const responsesCreateData = requiredEntitiesDataWithIDs.reduce<ResponseCreateWithSubResourcesData[]>((acc, data) => {
-      if (data.reprompts.length && data.repromptID) {
-        acc.push({ id: data.repromptID, name: 'Required entity reprompt', variants: data.reprompts });
-      }
+    const responsesCreateData = requiredEntitiesDataWithIDs.reduce<ResponseCreateWithSubResourcesData[]>(
+      (acc, data) => {
+        if (data.reprompts.length && data.repromptID) {
+          acc.push({ id: data.repromptID, name: 'Required entity reprompt', variants: data.reprompts });
+        }
 
-      return acc;
-    }, []);
+        return acc;
+      },
+      []
+    );
 
     let responseWithSubResources: Awaited<ReturnType<ResponseService['createManyWithSubResources']>> = {
       responses: [],
@@ -159,7 +176,10 @@ export class RequiredEntityService extends CMSObjectService<RequiredEntityORM> {
     };
 
     if (responsesCreateData.length) {
-      responseWithSubResources = await this.response.createManyWithSubResources(responsesCreateData, { userID, context });
+      responseWithSubResources = await this.response.createManyWithSubResources(responsesCreateData, {
+        userID,
+        context,
+      });
     }
 
     const requiredEntities = await this.createManyForUser(
@@ -177,7 +197,10 @@ export class RequiredEntityService extends CMSObjectService<RequiredEntityORM> {
     };
   }
 
-  async createManyAndSync(data: RequiredEntityCreateData[], { userID, context }: { userID: number; context: CMSContext }) {
+  async createManyAndSync(
+    data: RequiredEntityCreateData[],
+    { userID, context }: { userID: number; context: CMSContext }
+  ) {
     return this.postgresEM.transactional(async () => {
       const result = await this.createManyWithSubResources(data, { userID, context });
       const intents = await this.syncIntents(result.requiredEntities, { action: 'create', userID, context });
@@ -207,7 +230,14 @@ export class RequiredEntityService extends CMSObjectService<RequiredEntityORM> {
   ) {
     await Promise.all([
       this.response.broadcastAddMany(
-        { add: Utils.object.pick(add, ['responses', 'responseVariants', 'responseAttachments', 'responseDiscriminators']) },
+        {
+          add: Utils.object.pick(add, [
+            'responses',
+            'responseVariants',
+            'responseAttachments',
+            'responseDiscriminators',
+          ]),
+        },
         meta
       ),
 
@@ -233,7 +263,10 @@ export class RequiredEntityService extends CMSObjectService<RequiredEntityORM> {
 
   /* Delete */
 
-  async syncOnDelete(requiredEntities: RequiredEntityObject[], { userID, context }: { userID: number; context: CMSContext }) {
+  async syncOnDelete(
+    requiredEntities: RequiredEntityObject[],
+    { userID, context }: { userID: number; context: CMSContext }
+  ) {
     const intents = await this.syncIntents(requiredEntities, { action: 'delete', userID, context });
 
     return { intents };

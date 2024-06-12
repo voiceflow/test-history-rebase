@@ -4,7 +4,14 @@ import type { EntityManager } from '@mikro-orm/core';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
-import { AnyResponseAttachment, AnyResponseVariant, Channel, Language, Response, ResponseDiscriminator } from '@voiceflow/dtos';
+import {
+  AnyResponseAttachment,
+  AnyResponseVariant,
+  Channel,
+  Language,
+  Response,
+  ResponseDiscriminator,
+} from '@voiceflow/dtos';
 import { LoguxService } from '@voiceflow/nestjs-logux';
 import type {
   AnyResponseAttachmentJSON,
@@ -109,7 +116,12 @@ export class ResponseService extends CMSTabularService<ResponseORM> {
     };
   }
 
-  fromJSONWithSubResources({ responses, responseVariants, responseAttachments, responseDiscriminators }: ResponseExportImportDataDTO) {
+  fromJSONWithSubResources({
+    responses,
+    responseVariants,
+    responseAttachments,
+    responseDiscriminators,
+  }: ResponseExportImportDataDTO) {
     return {
       responses: this.mapFromJSON(responses),
       responseVariants: this.responseVariant.mapFromJSON(responseVariants),
@@ -166,8 +178,16 @@ export class ResponseService extends CMSTabularService<ResponseORM> {
     } = await this.findManyWithSubResourcesByEnvironment(sourceEnvironmentID);
 
     return this.importManyWithSubResources({
-      responses: sourceResponses.map((item) => ({ ...item, assistantID: targetAssistantID, environmentID: targetEnvironmentID })),
-      responseVariants: sourceResponseVariants.map((item) => ({ ...item, assistantID: targetAssistantID, environmentID: targetEnvironmentID })),
+      responses: sourceResponses.map((item) => ({
+        ...item,
+        assistantID: targetAssistantID,
+        environmentID: targetEnvironmentID,
+      })),
+      responseVariants: sourceResponseVariants.map((item) => ({
+        ...item,
+        assistantID: targetAssistantID,
+        environmentID: targetEnvironmentID,
+      })),
       responseAttachments: sourceResponseAttachments.map((item) => ({
         ...item,
         assistantID: targetAssistantID,
@@ -185,7 +205,12 @@ export class ResponseService extends CMSTabularService<ResponseORM> {
 
   prepareImportData(
     { responses, responseVariants, responseAttachments, responseDiscriminators }: ResponseExportImportDataDTO,
-    { userID, backup, assistantID, environmentID }: { userID: number; backup?: boolean; assistantID: string; environmentID: string }
+    {
+      userID,
+      backup,
+      assistantID,
+      environmentID,
+    }: { userID: number; backup?: boolean; assistantID: string; environmentID: string }
   ): {
     responses: ResponseJSON[];
     responseVariants: AnyResponseVariantJSON[];
@@ -302,7 +327,10 @@ export class ResponseService extends CMSTabularService<ResponseORM> {
 
   /* Create */
 
-  async createManyWithSubResources(data: ResponseCreateWithSubResourcesData[], { userID, context }: { userID: number; context: CMSContext }) {
+  async createManyWithSubResources(
+    data: ResponseCreateWithSubResourcesData[],
+    { userID, context }: { userID: number; context: CMSContext }
+  ) {
     const dataWithIDs = data.map(({ id, variants, ...data }) => {
       const responseID = id ?? new ObjectId().toJSON();
       const discriminatorID = new ObjectId().toJSON();
@@ -355,7 +383,10 @@ export class ResponseService extends CMSTabularService<ResponseORM> {
     };
   }
 
-  async createManyAndSync(data: ResponseCreateWithSubResourcesData[], { userID, context }: { userID: number; context: CMSContext }) {
+  async createManyAndSync(
+    data: ResponseCreateWithSubResourcesData[],
+    { userID, context }: { userID: number; context: CMSContext }
+  ) {
     return this.postgresEM.transactional(async () => {
       const result = await this.createManyWithSubResources(data, { userID, context });
 
@@ -414,7 +445,10 @@ export class ResponseService extends CMSTabularService<ResponseORM> {
       ]);
 
       const discriminatorIDs = sourceDiscriminators.map((d) => d.id);
-      const sourceVariants = await this.responseVariant.findManyByDiscriminators(context.environmentID, discriminatorIDs);
+      const sourceVariants = await this.responseVariant.findManyByDiscriminators(
+        context.environmentID,
+        discriminatorIDs
+      );
 
       const variantIDs = sourceVariants.map((v) => v.id);
       const sourceAttachments = await this.responseAttachment.findManyByVariants(context.environmentID, variantIDs);
@@ -524,7 +558,10 @@ export class ResponseService extends CMSTabularService<ResponseORM> {
 
   async collectRelationsToDelete(environmentID: string, responseIDs: string[]) {
     const responseDiscriminators = await this.responseDiscriminator.findManyByResponses(environmentID, responseIDs);
-    const relations = await this.responseDiscriminator.collectRelationsToDelete(environmentID, toPostgresEntityIDs(responseDiscriminators));
+    const relations = await this.responseDiscriminator.collectRelationsToDelete(
+      environmentID,
+      toPostgresEntityIDs(responseDiscriminators)
+    );
 
     return {
       ...relations,
@@ -562,7 +599,10 @@ export class ResponseService extends CMSTabularService<ResponseORM> {
     });
   }
 
-  async broadcastSyncOnDelete({ sync }: { sync: { requiredEntities: RequiredEntityObject[] } }, meta: CMSBroadcastMeta) {
+  async broadcastSyncOnDelete(
+    { sync }: { sync: { requiredEntities: RequiredEntityObject[] } },
+    meta: CMSBroadcastMeta
+  ) {
     await this.logux.processAs(
       Actions.RequiredEntity.PatchMany({
         ids: toPostgresEntityIDs(sync.requiredEntities),
@@ -623,7 +663,10 @@ export class ResponseService extends CMSTabularService<ResponseORM> {
     },
     meta: { userID: number; assistantID: string; environmentID: string }
   ) {
-    const { responses, responseVariants, responseAttachments, responseDiscriminators } = this.prepareImportData(data, meta);
+    const { responses, responseVariants, responseAttachments, responseDiscriminators } = this.prepareImportData(
+      data,
+      meta
+    );
 
     await this.upsertMany(this.mapFromJSON(responses));
     await this.responseDiscriminator.upsertMany(this.responseDiscriminator.mapFromJSON(responseDiscriminators));

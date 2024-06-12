@@ -59,7 +59,6 @@ export enum Permission {
   API_KEY_UPDATE = 'api_key.UPDATE',
 
   // features (when a permission is only plan based, it should be prefixed with FEATURE_)
-  FEATURE_BULK_UPLOAD = 'feature:BULK_UPLOAD',
   FEATURE_NLU_CUSTOM = 'feature.nlu:CUSTOM_PROJECT',
   FEATURE_NLU_EXPORT_ALL = 'feature.nlu:EXPORT_ALL',
   FEATURE_NLU_EXPORT_CSV = 'feature.nlu:EXPORT_CSV',

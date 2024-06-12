@@ -12,7 +12,6 @@ import {
 } from '@/constants/plans';
 
 import { ADVANCED_AI_MODELS_PERMISSIONS } from './advancedAIModels';
-import { BULK_UPLOAD_PERMISSIONS } from './bulkUpload';
 import { CANVAS_EXPORT_PERMISSIONS } from './canvasExport';
 import { CANVAS_PAID_STEPS } from './canvasPaidSteps';
 import { KB_REFRESH_RATE_PERMISSIONS } from './kbRefreshRate';
@@ -28,7 +27,6 @@ export const PLAN_PERMISSIONS = buildPlanPermissionRecord([
   // configurable
   CANVAS_PAID_STEPS,
   NLU_CUSTOM_PERMISSIONS,
-  BULK_UPLOAD_PERMISSIONS,
   CANVAS_EXPORT_PERMISSIONS,
   NLU_EXPORT_ALL_PERMISSIONS,
   NLU_EXPORT_CSV_PERMISSIONS,

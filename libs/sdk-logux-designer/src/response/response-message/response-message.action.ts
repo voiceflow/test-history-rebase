@@ -9,6 +9,7 @@ import type {
   DeleteOneRequest,
   PatchManyRequest,
   PatchOneRequest,
+  ReplaceRequest,
 } from '@/crud/crud.interface';
 import type { DesignerAction, WithoutMeta } from '@/types';
 
@@ -83,6 +84,16 @@ export const DeleteOne = responseMessageAction.crud.deleteOne<DeleteOne>();
 export interface DeleteMany extends DeleteManyRequest, DesignerAction {}
 
 export const DeleteMany = responseMessageAction.crud.deleteMany<DeleteMany>();
+
+/**
+ * system-sent events
+ */
+
+/* Replace */
+
+export interface Replace extends ReplaceRequest<ResponseMessage>, DesignerAction {}
+
+export const Replace = responseMessageAction.crud.replace<Replace>();
 
 /**
  * universal events

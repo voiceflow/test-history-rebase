@@ -9,7 +9,7 @@ const BaseResponseMessageCreateDTO = z.object({
 });
 
 export const ResponseMessageCreateDTO = BaseResponseMessageCreateDTO.extend(
-  ResponseMessageDTO.pick({ text: true, condition: true }).shape
+  ResponseMessageDTO.pick({ text: true, condition: true, delay: true }).shape
 );
 
 export type ResponseMessageCreate = z.infer<typeof ResponseMessageCreateDTO>;

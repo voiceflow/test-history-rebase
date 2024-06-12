@@ -7,6 +7,7 @@ import type {
   PromptResponseVariantCreate,
   PromptResponseVariantWithPrompt,
   ResponseCardAttachment,
+  ResponseMessageCreate,
   TextResponseVariant,
   TextResponseVariantCreate,
 } from '@voiceflow/dtos';
@@ -15,6 +16,20 @@ import { isMarkupEmpty, markupFactory } from '@voiceflow/utils-designer';
 import { match } from 'ts-pattern';
 
 import { isPromptEmpty } from './prompt.util';
+
+export const responseMessageCreateDataFactory = ({
+  text = markupFactory(),
+  delay = null,
+  condition = null,
+  tempID,
+}: Partial<ResponseMessageCreate> & { tempID?: string } = {}): ResponseMessageCreate & { tempID?: string } => ({
+  text,
+  delay,
+  condition,
+  tempID,
+});
+
+// TODO: remove after response-variant migration
 
 export const responseTextVariantCreateDataFactory = ({
   text = markupFactory(),

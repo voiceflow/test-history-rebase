@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1560.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1559.0...@voiceflow/creator-app@1.1560.0) (2024-06-12)
+
+### Features
+
+* add proper prefix to permissions (COR-2357) ([#8273](https://github.com/voiceflow/creator-app/issues/8273)) ([af2c1b0](https://github.com/voiceflow/creator-app/commit/af2c1b0c3e3ad8252b9c168c7e5a74be88c7638e))
+
 # [1.1559.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1558.0...@voiceflow/creator-app@1.1559.0) (2024-06-12)
 
 ### Features

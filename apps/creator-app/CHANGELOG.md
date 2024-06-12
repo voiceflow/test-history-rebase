@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1561.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1561.1...@voiceflow/creator-app@1.1561.2) (2024-06-12)
+
+### Bug Fixes
+
+* update position of upgrade to show button (COR-2338) ([#8262](https://github.com/voiceflow/creator-app/issues/8262)) ([23f79f1](https://github.com/voiceflow/creator-app/commit/23f79f11f499b78d30cabe03e74feba352ace53b))
+
 ## [1.1561.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1561.0...@voiceflow/creator-app@1.1561.1) (2024-06-12)
 
 **Note:** Version bump only for package @voiceflow/creator-app

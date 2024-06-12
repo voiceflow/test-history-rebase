@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.75.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.74.1...@voiceflow/orm-designer@2.75.0) (2024-06-12)
+
+### Features
+
+* remove menu items (COR-000) ([#8264](https://github.com/voiceflow/creator-app/issues/8264)) ([2e6a83f](https://github.com/voiceflow/creator-app/commit/2e6a83f01b6b88d107b9b8c7610789ccb9cdaee8))
+
 ## [2.74.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.74.0...@voiceflow/orm-designer@2.74.1) (2024-06-12)
 
 **Note:** Version bump only for package @voiceflow/orm-designer

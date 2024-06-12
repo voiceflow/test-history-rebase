@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.416.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.415.1...@voiceflow/realtime-sdk@1.416.0) (2024-06-12)
+
+### Features
+
+* remove menu items (COR-000) ([#8264](https://github.com/voiceflow/creator-app/issues/8264)) ([2e6a83f](https://github.com/voiceflow/creator-app/commit/2e6a83f01b6b88d107b9b8c7610789ccb9cdaee8))
+
 ## [1.415.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.415.0...@voiceflow/realtime-sdk@1.415.1) (2024-06-12)
 
 **Note:** Version bump only for package @voiceflow/realtime-sdk

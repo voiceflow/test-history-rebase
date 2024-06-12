@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1562.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1561.2...@voiceflow/creator-app@1.1562.0) (2024-06-12)
+
+### Features
+
+* sunset BULK_UPLOAD (COR-2374) ([#8280](https://github.com/voiceflow/creator-app/issues/8280)) ([002dbfc](https://github.com/voiceflow/creator-app/commit/002dbfc0cc20db234050e63ee675284d59019c7a))
+
 ## [1.1561.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1561.1...@voiceflow/creator-app@1.1561.2) (2024-06-12)
 
 ### Bug Fixes

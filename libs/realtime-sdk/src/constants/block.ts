@@ -119,10 +119,19 @@ export const NAVIGATION_NODES: ReadonlyArray<NavigationBlockType> = [
 ];
 
 export type CanvasChipBlockType = BlockType.INTENT | BlockType.START | BlockType.TRIGGER;
-export const CANVAS_CHIPS_NODES: ReadonlyArray<CanvasChipBlockType> = [BlockType.INTENT, BlockType.START, BlockType.TRIGGER];
+export const CANVAS_CHIPS_NODES: ReadonlyArray<CanvasChipBlockType> = [
+  BlockType.INTENT,
+  BlockType.START,
+  BlockType.TRIGGER,
+];
 
 export type DiagramMenuBlockType = BlockType.START | BlockType.INTENT | BlockType.COMPONENT | BlockType.TRIGGER;
-export const DIAGRAM_MENU_NODES: ReadonlyArray<DiagramMenuBlockType> = [BlockType.START, BlockType.INTENT, BlockType.COMPONENT, BlockType.TRIGGER];
+export const DIAGRAM_MENU_NODES: ReadonlyArray<DiagramMenuBlockType> = [
+  BlockType.START,
+  BlockType.INTENT,
+  BlockType.COMPONENT,
+  BlockType.TRIGGER,
+];
 
 export type StaringBlockType = BlockType.START | BlockType.COMBINED;
 export const STARTING_NODES: ReadonlyArray<StaringBlockType> = [BlockType.START, BlockType.COMBINED];
@@ -132,4 +141,10 @@ export const SHARED_NODES: ReadonlyArray<SharedBlockType> = [...DIAGRAM_MENU_NOD
 
 export type StepBlockType = Exclude<BlockType, RootOrMarkupBlockType | DeprecatedBlockType>;
 
-export const NO_IN_PORT_NODES = new Set([BlockType.INTENT, BlockType.COMMAND, BlockType.EVENT, BlockType.START]);
+export const NO_IN_PORT_NODES = new Set([
+  BlockType.EVENT,
+  BlockType.START,
+  BlockType.INTENT,
+  BlockType.TRIGGER,
+  BlockType.COMMAND,
+]);

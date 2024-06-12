@@ -30,7 +30,13 @@ export const IntentRequiredEntitiesSection: React.FC<IIntentRequiredEntities> = 
             variant={entitiesSize ? 'active' : 'basic'}
             onHeaderClick={entitiesSize ? undefined : onOpen}
           >
-            <Section.Header.Button ref={ref} testID={tid(TEST_ID, 'add')} onClick={stopPropagation(onOpen)} isActive={isOpen} iconName="Plus" />
+            <Section.Header.Button
+              ref={ref}
+              testID={tid(TEST_ID, 'add')}
+              onClick={stopPropagation(onOpen)}
+              isActive={isOpen}
+              iconName="Plus"
+            />
           </Section.Header.Container>
         )}
       >

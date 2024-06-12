@@ -1,4 +1,5 @@
 *.log
+*.toml
 CHANGELOG.md
 
 # Node

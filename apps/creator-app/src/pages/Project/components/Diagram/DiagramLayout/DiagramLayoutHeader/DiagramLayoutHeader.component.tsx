@@ -1,6 +1,6 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Header } from '@voiceflow/ui-next';
-import React from 'react';
+import React, { memo } from 'react';
 import { useRouteMatch } from 'react-router-dom';
 
 import { Path } from '@/config/routes';
@@ -24,7 +24,7 @@ import { DiagramLayoutHeaderMembers } from './DiagramLayoutHeaderMembers.compone
 import { DiagramLayoutHeaderPrototypeSettings } from './DiagramLayoutHeaderPrototypeSettings.component copy';
 import { DiagramLayoutHeaderTitle } from './DiagramLayoutHeaderTitle.component';
 
-export const DiagramLayoutHeader: React.FC = () => {
+export const DiagramLayoutHeader = memo(() => {
   const isPrototype = !!useRouteMatch(Path.PROJECT_PROTOTYPE);
 
   const hideExports = useFeature(Realtime.FeatureFlag.HIDE_EXPORTS);
@@ -73,4 +73,4 @@ export const DiagramLayoutHeader: React.FC = () => {
       </Header.Section.Right>
     </Header>
   );
-};
+});

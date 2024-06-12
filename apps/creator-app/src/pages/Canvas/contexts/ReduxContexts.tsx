@@ -59,12 +59,6 @@ export const {
 } = createSelectorContext(Designer.Function.selectors.map);
 
 export const {
-  Context: FunctionVariableMapContext,
-  Provider: FunctionVariableMapProvider,
-  Consumer: FunctionVariableMapConsumer,
-} = createSelectorContext(Designer.Function.FunctionVariable.selectors.map);
-
-export const {
   Context: FunctionPathMapContext,
   Provider: FunctionPathMapProvider,
   Consumer: FunctionPathMapConsumer,
@@ -160,14 +154,12 @@ export const ReduxContextsProviders: React.FC<React.PropsWithChildren> = ({ chil
                                 <ResponseMapFirstVariantByResponseIDProvider>
                                   <FlowMapByDiagramIDProvider>
                                     <FunctionMapProvider>
-                                      <FunctionVariableMapProvider>
-                                        <FunctionPathMapProvider>
-                                          <ActiveDiagramNormalizedEntitiesAndVariablesProvider>
-                                            {/* comment to have a children on a new line */}
-                                            {children}
-                                          </ActiveDiagramNormalizedEntitiesAndVariablesProvider>
-                                        </FunctionPathMapProvider>
-                                      </FunctionVariableMapProvider>
+                                      <FunctionPathMapProvider>
+                                        <ActiveDiagramNormalizedEntitiesAndVariablesProvider>
+                                          {/* comment to have a children on a new line */}
+                                          {children}
+                                        </ActiveDiagramNormalizedEntitiesAndVariablesProvider>
+                                      </FunctionPathMapProvider>
                                     </FunctionMapProvider>
                                   </FlowMapByDiagramIDProvider>
                                 </ResponseMapFirstVariantByResponseIDProvider>

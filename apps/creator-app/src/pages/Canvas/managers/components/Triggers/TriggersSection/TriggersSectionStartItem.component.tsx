@@ -3,7 +3,7 @@ import React from 'react';
 
 import { CMSFormListItem } from '@/components/CMS/CMSForm/CMSFormListItem/CMSFormListItem.component';
 import { TooltipContentLearn } from '@/components/Tooltip/TooltipContentLearn/TooltipContentLearn.component';
-import { START_TRIGGER_LEARN_MORE } from '@/constants/link.constant';
+import { TRIGGERS_LEARN_MORE } from '@/constants/link.constant';
 import { popperPaddingModifierFactory } from '@/utils/popper.util';
 import { onOpenInternalURLInANewTabFactory } from '@/utils/window';
 
@@ -36,7 +36,7 @@ export const TriggersSectionStartItem: React.FC = () => {
       {() => (
         <TooltipContentLearn
           label="This is the default starting trigger for the agent."
-          onLearnClick={onOpenInternalURLInANewTabFactory(START_TRIGGER_LEARN_MORE)}
+          onLearnClick={onOpenInternalURLInANewTabFactory(TRIGGERS_LEARN_MORE)}
         />
       )}
     </Tooltip>

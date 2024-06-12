@@ -1,5 +1,5 @@
 import { tid } from '@voiceflow/style';
-import { Divider, notify, Scroll } from '@voiceflow/ui-next';
+import { Divider, notify, Scroll, Text } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { CMSFormName } from '@/components/CMS/CMSForm/CMSFormName/CMSFormName.component';
@@ -69,7 +69,10 @@ export const EntityEditModal = modalsManager.create<IEntityEditModal>(
               />
             }
             secondaryButton={
-              <Modal.HeaderMore options={[{ name: 'Delete', onClick: onEntityDelete, testID: 'delete' }]} testID={tid(TEST_ID, 'more')} />
+              <Modal.HeaderMore
+                options={[{ name: 'Delete', onClick: onEntityDelete, testID: 'delete' }]}
+                testID={tid(TEST_ID, 'more')}
+              />
             }
             testID={tid(TEST_ID, 'header')}
           />
@@ -102,12 +105,19 @@ export const EntityEditModal = modalsManager.create<IEntityEditModal>(
                 <EntityEditVariantsSection entity={entity} />
               </Scroll>
             ) : (
-              <Modal.Body testID={tid(TEST_ID, 'not-found')}>Entity not found</Modal.Body>
+              <Modal.Body testID={tid(TEST_ID, 'not-found')}>
+                <Text>Entity not found</Text>
+              </Modal.Body>
             )}
           </>
 
           <Modal.Footer>
-            <Modal.Footer.Button label="Close" variant="secondary" onClick={api.onClose} testID={tid(TEST_ID, 'close')} />
+            <Modal.Footer.Button
+              label="Close"
+              variant="secondary"
+              onClick={api.onClose}
+              testID={tid(TEST_ID, 'close')}
+            />
           </Modal.Footer>
         </Modal.Container>
       );

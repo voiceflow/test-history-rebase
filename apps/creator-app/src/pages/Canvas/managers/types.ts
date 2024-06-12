@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import { BaseNode } from '@voiceflow/base-types';
 import { Nullable, Struct } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';

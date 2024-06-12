@@ -151,14 +151,13 @@ const migrateToV8_00: Transform = ({ cms, version, diagrams }, { project, creato
         const nodeIDMap = nodeDiagramIsRoot ? domainRootDiagramIDStartNodeIDMap : domainRootDiagramIDStartNextIDMap;
 
         const goToNode: BaseNode.GoToNode.Step = {
+          ...Utils.object.pick(node, ['nodeID', 'coords']),
           type: BaseNode.NodeType.GOTO_NODE,
           data: {
             nodeID: nodeDiagramID ? nodeIDMap[nodeDiagramID] ?? null : null,
             portsV2: {},
             diagramID: nodeDiagramID,
           },
-          nodeID: node.nodeID,
-          coords: node.coords,
         };
 
         Object.assign(node, goToNode);

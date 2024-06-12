@@ -13,11 +13,11 @@ import Backups from './Backups';
 import GeneralSettings from './components/GeneralSettings';
 import ProjectEnvironments from './components/ProjectEnvironments';
 
-const width = 958;
-const padding = 32;
-const maxWidth = width + 2 * padding;
-
 const Settings: React.FC = () => {
+  const width = 958;
+  const padding = 32;
+  const maxWidth = width + 2 * padding;
+
   const location = useLocation();
   const onLinkClick = useOnLinkClick();
 

@@ -15,35 +15,46 @@ import type { IFolderMenu } from './FolderMenu.interface';
 import { FolderMenuItem } from './FolderMenuItem.component';
 import { FolderMenuRootItem } from './FolderMenuRootItem.component';
 
-export const FolderMenu: React.FC<IFolderMenu> = ({ width, scope, parentID, onClose, onSelect: onSelectProp, excludeIDs }) => {
+export const FolderMenu: React.FC<IFolderMenu> = ({
+  width,
+  scope,
+  parentID,
+  onClose,
+  onSelect: onSelectProp,
+  excludeIDs,
+}) => {
   const ROOT_FOLDER_ID = '__root_folder__';
 
-  const folders = useSelector(Designer.Folder.selectors.allByScope, { folderScope: scope });
+  const storeFolders = useSelector(Designer.Folder.selectors.allByScope, { folderScope: scope });
   const folderCreateModal = useFolderCreateModal();
 
   const [listNode, setListNode] = useState<HTMLDivElement | null>(null);
   const [isCreating, setIsCreating] = useState(false);
 
-  const foldersToSearch = useMemo(() => {
-    const orderedFolders = [...(excludeIDs?.length ? folders.filter((folder) => !excludeIDs.includes(folder.id)) : folders)].sort((a, b) =>
-      a.name.localeCompare(b.name)
-    );
+  const folders = useMemo(() => {
+    const orderedFolders = [
+      ...(excludeIDs?.length ? storeFolders.filter((folder) => !excludeIDs.includes(folder.id)) : storeFolders),
+    ].sort((a, b) => a.name.localeCompare(b.name));
 
     if (!parentID) {
       return orderedFolders;
     }
 
-    return [{ id: ROOT_FOLDER_ID, name: `All ${pluralize(getFolderScopeLabel(scope), 2)}` } as const, ...orderedFolders];
-  }, [scope, folders, parentID, excludeIDs]);
+    return [
+      { id: ROOT_FOLDER_ID, name: `All ${pluralize(getFolderScopeLabel(scope), 2)}` } as const,
+      ...orderedFolders,
+    ];
+  }, [scope, storeFolders, parentID, excludeIDs]);
 
   const search = useDeferredSearch({
-    items: foldersToSearch,
+    items: folders,
     searchBy: (item) => item.name,
   });
 
   const virtualizer = useVirtualizer({
     count: search.items.length,
-    estimateSize: (index) => MENU_ITEM_MIN_HEIGHT + (index !== search.items.length - 1 && search.items[index]?.id === ROOT_FOLDER_ID ? 9 : 0),
+    estimateSize: (index) =>
+      MENU_ITEM_MIN_HEIGHT + (index !== search.items.length - 1 && search.items[index]?.id === ROOT_FOLDER_ID ? 9 : 0),
     getScrollElement: () => listNode,
   });
 
@@ -68,9 +79,10 @@ export const FolderMenu: React.FC<IFolderMenu> = ({ width, scope, parentID, onCl
     }
   };
 
-  if (!foldersToSearch.length) return <FolderMenuEmpty width={width} scope={scope} parentID={parentID} onCreated={onSelect} />;
+  if (!folders.length) return <FolderMenuEmpty width={width} scope={scope} parentID={parentID} onCreated={onSelect} />;
 
-  const isRootFolder = (item: { id: string; name: string }): item is { id: typeof ROOT_FOLDER_ID; name: string } => item.id === ROOT_FOLDER_ID;
+  const isRootFolder = (item: { id: string; name: string }): item is { id: typeof ROOT_FOLDER_ID; name: string } =>
+    item.id === ROOT_FOLDER_ID;
 
   return (
     <Menu
@@ -83,7 +95,11 @@ export const FolderMenu: React.FC<IFolderMenu> = ({ width, scope, parentID, onCl
         search.hasItems && (
           <ActionButtons
             firstButton={
-              <ActionButtons.Button label={isCreating ? 'Creating folder...' : 'Create folder'} onClick={onCreate} disabled={isCreating} />
+              <ActionButtons.Button
+                label={isCreating ? 'Creating folder...' : 'Create folder'}
+                onClick={onCreate}
+                disabled={isCreating}
+              />
             }
           />
         )

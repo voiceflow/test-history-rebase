@@ -41,7 +41,7 @@ export const CommandsSectionItem: React.FC<ICommandsSectionItem> = ({ command, c
         <CMSFormListItem width="100%" testID={TEST_ID} onRemove={() => editor.engine.node.remove(commandNodeID)}>
           <EditorButton
             ref={ref}
-            label={intent?.name || 'Select trigger'}
+            label={intent?.name || 'Select a trigger'}
             testID={tid(TEST_ID, 'button')}
             onClick={onOpen}
             isActive={isOpen}

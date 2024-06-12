@@ -3,6 +3,7 @@ import type { SlateEditorRef } from '@voiceflow/ui-next/build/cjs/components/Inp
 import React, { useMemo } from 'react';
 
 import { MarkupInputWithVariables } from '@/components/MarkupInput/MarkupInputWithVariables/MarkupInputWithVariables';
+import { stopImmediatePropagation } from '@/utils/handler.util';
 import { ALL_URLS_REGEX } from '@/utils/string.util';
 
 import type { IResponseTextInput } from './ResponseTextInput.interface';
@@ -29,6 +30,7 @@ export const ResponseTextInput = forwardRef<SlateEditorRef, IResponseTextInput>(
       {...props}
       ref={ref}
       header={toolbar}
+      onPaste={stopImmediatePropagation()}
       plugins={[SlateEditor.PluginType.LINK]}
       placeholder={placeholder}
       pluginOptions={pluginsOptions}

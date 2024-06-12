@@ -1,7 +1,7 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { tid } from '@voiceflow/style';
 import { MarkupToolbar, MoveOptions, notify } from '@voiceflow/ui-next';
-import React from 'react';
+import React, { memo } from 'react';
 
 import { ControlScheme } from '@/components/Canvas/constants';
 import { BlockType } from '@/constants';
@@ -15,7 +15,7 @@ import { useCommentingMode, useCommentingToggle, useDisableModes } from '@/pages
 
 import { toolbarStyle } from './DiagramSidebar.css';
 
-export const DiagramSidebarToolbar: React.FC = () => {
+export const DiagramSidebarToolbar = memo(() => {
   const TEST_ID = 'diagram-sidebar-toolbar';
 
   const markup = React.useContext(MarkupContext);
@@ -91,4 +91,4 @@ export const DiagramSidebarToolbar: React.FC = () => {
       />
     </MarkupToolbar>
   );
-};
+});

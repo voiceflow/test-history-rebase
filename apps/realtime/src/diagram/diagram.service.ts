@@ -47,7 +47,12 @@ export class DiagramService extends MutableService<DiagramORM> {
     }
 
     if (Realtime.Utils.typeGuards.isStartDBNode(node)) {
-      return { type: Realtime.BlockType.START, name: node.data.label || '', nodeID: node.nodeID, triggers: node.data.triggers ?? [] };
+      return {
+        type: Realtime.BlockType.START,
+        name: node.data.label || '',
+        nodeID: node.nodeID,
+        triggers: node.data.triggers ?? [],
+      };
     }
 
     if (Realtime.Utils.typeGuards.isBlockDBNode(node)) {
@@ -156,11 +161,16 @@ export class DiagramService extends MutableService<DiagramORM> {
   }
 
   public async createManyComponents(
-    data: Partial<Omit<DiagramJSON, '_id' | 'creatorID' | 'versionID' | 'intentStepIDs' | 'menuNodeIDs' | 'children' | 'diagramID'>>[],
+    data: Partial<
+      Omit<DiagramJSON, '_id' | 'creatorID' | 'versionID' | 'intentStepIDs' | 'menuNodeIDs' | 'children' | 'diagramID'>
+    >[],
     { userID, context }: { userID: number; context: CMSContext }
   ) {
     const project = await this.projectORM.findOne(context.environmentID, { fields: ['teamID'] });
-    const isTriggerStepEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.TRIGGER_STEP, { userID, workspaceID: project?.teamID });
+    const isTriggerStepEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.TRIGGER_STEP, {
+      userID,
+      workspaceID: project?.teamID,
+    });
 
     return this.orm.createMany(
       data.map((item) => {
@@ -181,11 +191,16 @@ export class DiagramService extends MutableService<DiagramORM> {
   }
 
   public async createManyTopics(
-    data: Partial<Omit<DiagramJSON, '_id' | 'creatorID' | 'versionID' | 'intentStepIDs' | 'menuNodeIDs' | 'children' | 'diagramID'>>[],
+    data: Partial<
+      Omit<DiagramJSON, '_id' | 'creatorID' | 'versionID' | 'intentStepIDs' | 'menuNodeIDs' | 'children' | 'diagramID'>
+    >[],
     { userID, context }: { userID: number; context: CMSContext }
   ) {
     const project = await this.projectORM.findOne(context.environmentID, { fields: ['teamID'] });
-    const isTriggerStepEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.TRIGGER_STEP, { userID, workspaceID: project?.teamID });
+    const isTriggerStepEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.TRIGGER_STEP, {
+      userID,
+      workspaceID: project?.teamID,
+    });
 
     return this.orm.createMany(
       data.map((item) => {

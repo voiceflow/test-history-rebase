@@ -66,7 +66,7 @@ export const EntityMenu: React.FC<IEntityMenu> = ({ width, onClose, onSelect: on
   const virtualItems = virtualizer.getVirtualItems();
   const virtualStart = virtualItems[0]?.start ?? 0;
 
-  if (!storeEntities.length) return <EntityMenuEmpty width={width} onCreated={onSelect} />;
+  if (!entities.length) return <EntityMenuEmpty width={width} onCreated={onSelect} />;
 
   return (
     <Menu
@@ -74,7 +74,14 @@ export const EntityMenu: React.FC<IEntityMenu> = ({ width, onClose, onSelect: on
       listRef={setListNode}
       minWidth={search.hasItems ? undefined : 0}
       maxHeight={310}
-      searchSection={<Search value={search.value} placeholder="Search" onValueChange={search.setValue} testID={tid(TEST_ID, 'search')} />}
+      searchSection={
+        <Search
+          value={search.value}
+          testID={tid(TEST_ID, 'search')}
+          placeholder="Search"
+          onValueChange={search.setValue}
+        />
+      }
       testID={TEST_ID}
       actionButtons={
         search.hasItems && (
@@ -113,7 +120,12 @@ export const EntityMenu: React.FC<IEntityMenu> = ({ width, onClose, onSelect: on
           })}
         </VirtualizedContent>
       ) : (
-        <Menu.CreateItem label={search.value} onClick={onCreate} disabled={isCreating} testID={tid(TEST_ID, 'item', 'add')} />
+        <Menu.CreateItem
+          label={search.value}
+          testID={tid(TEST_ID, 'item', 'add')}
+          onClick={onCreate}
+          disabled={isCreating}
+        />
       )}
     </Menu>
   );

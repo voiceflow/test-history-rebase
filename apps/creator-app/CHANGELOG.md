@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1559.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1558.0...@voiceflow/creator-app@1.1559.0) (2024-06-12)
+
+### Features
+
+* replace global intent nodes selector (COR-000) ([#8259](https://github.com/voiceflow/creator-app/issues/8259)) ([562ed52](https://github.com/voiceflow/creator-app/commit/562ed52e0f170f1e16e0ca57337538bc8401f109))
+
 # [1.1558.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1557.0...@voiceflow/creator-app@1.1558.0) (2024-06-12)
 
 ### Features

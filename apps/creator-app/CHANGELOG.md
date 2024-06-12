@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1557.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1556.0...@voiceflow/creator-app@1.1557.0) (2024-06-12)
+
+### Features
+
+* replace other shared nodes selectors (COR-000) ([#8258](https://github.com/voiceflow/creator-app/issues/8258)) ([35e13fe](https://github.com/voiceflow/creator-app/commit/35e13fef24ec8f40b94dd6e4cfdfd4de32a314c8))
+
 # [1.1556.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1555.0...@voiceflow/creator-app@1.1556.0) (2024-06-12)
 
 ### Features

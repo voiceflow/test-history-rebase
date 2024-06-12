@@ -54,7 +54,7 @@ const GoToIntentSelect: React.FC<GoToIntentSelectProps> = ({
   const workflows = useSelector(Designer.Workflow.selectors.all);
   const getIntentByID = useSelector(Designer.Intent.selectors.getOneWithFormattedBuiltNameByID);
   const globalIntentStepMap = useSelector(Diagram.globalIntentStepMapSelector);
-  const triggersMapByDiagramID = useSelector(Designer.Workflow.selectors.triggersMapByDiagramID);
+  const triggersMapByDiagramID = useSelector(Designer.Reference.selectors.triggersMapByDiagramID);
 
   const [workflowOptions, workflowOptionMap] = useFolderTree<
     Workflow,

@@ -4,10 +4,10 @@ import React, { useMemo } from 'react';
 
 import { Creator, Designer, Version } from '@/ducks';
 import { useSelector } from '@/hooks/redux';
-import { createGroupedSelectID } from '@/hooks/select';
 
 import { useOptionsTree } from './hooks';
 import { Value } from './types';
+import { createGroupedSelectID } from './utils';
 
 export interface BlockSelectProps extends BaseSelectProps {
   value: Value | null;

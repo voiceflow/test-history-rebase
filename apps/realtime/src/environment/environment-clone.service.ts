@@ -112,8 +112,9 @@ export class EnvironmentCloneService {
       // clear existing data before cloning
       await this.environmentRepository.deleteOneCMSData(cmsCloneManyPayload.targetEnvironmentID);
 
-      const { flows } = await this.flow.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload);
+      // Cloning folders needs to be done before cloning any other resource, since other resources depend on folders
       const { folders } = await this.folder.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload);
+      const { flows } = await this.flow.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload);
       const { variables } = await this.variable.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload);
       const { workflows } = await this.workflow.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload);
       const { attachments, cardButtons } =

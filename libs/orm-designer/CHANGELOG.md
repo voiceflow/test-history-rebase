@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.73.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.73.0...@voiceflow/orm-designer@2.73.1) (2024-06-12)
+
+**Note:** Version bump only for package @voiceflow/orm-designer
+
 # [2.73.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.72.0...@voiceflow/orm-designer@2.73.0) (2024-06-12)
 
 ### Features

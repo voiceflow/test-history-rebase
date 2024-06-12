@@ -25,6 +25,7 @@ export * as OrganizationSubscription from './organization/organization-subscript
 export * as Persona from './persona/persona.action';
 export * as PersonaOverride from './persona/persona-override/persona-override.action';
 export * as Prompt from './prompt/prompt.action';
+export * as Reference from './reference/reference.action';
 export * as Response from './response/response.action';
 export * as ResponseAttachment from './response/response-attachment/response-attachment.action';
 export * as ResponseDiscriminator from './response/response-discriminator/response-discriminator.action';

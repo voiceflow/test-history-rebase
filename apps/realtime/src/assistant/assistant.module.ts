@@ -1,6 +1,7 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { AssistantORM, ProgramORM, PrototypeProgramORM } from '@voiceflow/orm-designer';
 
+import { BackupModule } from '@/backup/backup.module';
 import { CacheModule } from '@/cache/cache.module';
 import { DiagramModule } from '@/diagram/diagram.module';
 import { EnvironmentModule } from '@/environment/environment.module';
@@ -9,11 +10,11 @@ import { ProgramModule } from '@/program/program.module';
 import { ProjectModule } from '@/project/project.module';
 import { ProjectListModule } from '@/project-list/project-list.module';
 import { PrototypeProgramModule } from '@/prototype-program/prototype-program.module';
+import { ReferenceModule } from '@/reference/reference.module';
 import { ThreadModule } from '@/thread/thread.module';
 import { VariableStateModule } from '@/variable-state/variable-state.module';
 import { VersionModule } from '@/version/version.module';
 
-import { BackupModule } from '../backup/backup.module';
 import { AssistantLoguxController } from './assistant.logux.controller';
 import { AssistantSerializer } from './assistant.serializer';
 import { AssistantService } from './assistant.service';
@@ -32,6 +33,7 @@ import { AssistantViewerService } from './assistant-viewer.service';
     DiagramModule,
     ProgramModule,
     VersionModule,
+    ReferenceModule,
     ProjectListModule,
     OrganizationModule,
     VariableStateModule,

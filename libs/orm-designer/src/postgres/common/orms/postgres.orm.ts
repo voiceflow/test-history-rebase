@@ -26,7 +26,7 @@ interface ToDBOptions {
 
 export abstract class PostgresORM<
   BaseEntity extends PostgresPKEntity,
-  DiscriminatorEntity extends Omit<BaseEntity, typeof DEFAULT_OR_NULL_COLUMN> = BaseEntity
+  DiscriminatorEntity extends Omit<BaseEntity, typeof DEFAULT_OR_NULL_COLUMN> = BaseEntity,
 > implements ORM<BaseEntity, DiscriminatorEntity>
 {
   DiscriminatorEntity?: DiscriminatorEntity;
@@ -108,7 +108,7 @@ export abstract class PostgresORM<
     if (!this.cache.dbPrimaryKeys) {
       this.cache.dbPrimaryKeys = Object.values(this.jsKeyToDBPropertyMap)
         .filter((prop) => prop.primary)
-        .map((prop) => prop.fieldNames[0]);
+        .map((prop) => (prop as any).fieldName ?? prop.fieldNames[0]);
     }
 
     return this.cache.dbPrimaryKeys;
@@ -130,7 +130,7 @@ export abstract class PostgresORM<
     const jsKeyToProperty: Record<string, EntityProperty> = {};
 
     const builded = (prop: EntityProperty) => {
-      const dbName = prop.fieldNames[0];
+      const dbName = (prop as any).fieldName ?? prop.fieldNames[0];
       const jsName = this.propertyToObjectKey(prop);
 
       if (!dbToJSKey[dbName]) {
@@ -256,9 +256,11 @@ export abstract class PostgresORM<
   }
 
   protected getDiscriminatorConfigFromDB(value: Record<string, unknown>) {
-    return this.getDiscriminatorConfig(
-      ({ properties, discriminatorColumn }) => value[properties[discriminatorColumn].fieldNames[0]]
-    );
+    return this.getDiscriminatorConfig(({ properties, discriminatorColumn }) => {
+      const prop = properties[discriminatorColumn];
+
+      return value[(prop as any).fieldName ?? prop.fieldNames[0]];
+    });
   }
 
   protected getDiscriminatorConfigToDB(value: Record<string, unknown>) {
@@ -324,7 +326,6 @@ export abstract class PostgresORM<
     qb.returning(this.getSelect(fields));
   }
 
-  // eslint-disable-next-line sonarjs/cognitive-complexity
   protected buildWhere(qb: Knex.QueryBuilder, data: WhereData<BaseEntity> | WhereData<BaseEntity>[]) {
     const mappedData = this.mapToDB(Array.isArray(data) ? (data as any[]) : [data], {
       ignoreObjectAdapter: true,

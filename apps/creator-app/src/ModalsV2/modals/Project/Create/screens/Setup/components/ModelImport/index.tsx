@@ -19,7 +19,12 @@ interface ModelImportProps {
   setIsImportLoading: (isLoadingImport: boolean) => void;
 }
 
-const ModelImport: React.FC<ModelImportProps> = ({ onImportModel, importModel, isImportLoading, setIsImportLoading }) => {
+const ModelImport: React.FC<ModelImportProps> = ({
+  onImportModel,
+  importModel,
+  isImportLoading,
+  setIsImportLoading,
+}) => {
   const nluImport = useNLUImport({
     nluType: NLU.Voiceflow.CONFIG.type,
     platform: Platform.Constants.PlatformType.VOICEFLOW,
@@ -27,7 +32,7 @@ const ModelImport: React.FC<ModelImportProps> = ({ onImportModel, importModel, i
   });
   const upgradeModal = useUpgradeModal();
 
-  const onImport = usePermissionAction(Permission.BULK_UPLOAD, {
+  const onImport = usePermissionAction(Permission.FEATURE_BULK_UPLOAD, {
     onAction: () => nluImport.onUploadClick(NLUImportOrigin.PROJECT),
     onPlanForbid: ({ planConfig }) => upgradeModal.open(planConfig.upgradeModal()),
   });

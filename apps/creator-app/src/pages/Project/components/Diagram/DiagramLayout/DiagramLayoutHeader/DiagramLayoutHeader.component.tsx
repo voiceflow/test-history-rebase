@@ -28,7 +28,7 @@ export const DiagramLayoutHeader = memo(() => {
   const isPrototype = !!useRouteMatch(Path.PROJECT_PROTOTYPE);
 
   const hideExports = useFeature(Realtime.FeatureFlag.HIDE_EXPORTS);
-  const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
+  const [canEditCanvas] = usePermission(Permission.PROJECT_CANVAS_UPDATE);
   const selectedTargets = React.useContext(SelectionTargetsContext);
 
   const canvasOnly = useSelector(UI.selectors.isCanvasOnly);

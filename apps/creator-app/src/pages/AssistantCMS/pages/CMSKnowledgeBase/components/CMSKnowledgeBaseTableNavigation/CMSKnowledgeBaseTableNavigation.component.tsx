@@ -23,7 +23,7 @@ import { CMSKnowledgeBaseTableNavigationRefreshRateButton } from './CMSKnowledge
 
 export const CMSKnowledgeBaseTableNavigation: React.FC = () => {
   const { isEnabled: isIntegrationsEnabled } = useFeature(Realtime.FeatureFlag.KNOWLEDGE_BASE_INTEGRATIONS);
-  const refreshRatePermission = usePermission(Permission.KB_REFRESH_RATE);
+  const refreshRatePermission = usePermission(Permission.FEATURE_KB_REFRESH_RATE);
 
   const confirmModal = useConfirmV2Modal();
   const manageIntegrationsModal = useModal(Modals.KnowledgeBase.ManageIntegrations);

@@ -14,7 +14,7 @@ interface SharePasswordScreenProps {
 }
 
 const SharePasswordScreen: React.FC<SharePasswordScreenProps> = ({ settings, checkLogin }) => {
-  const [isCustomizedPrototypeAllowed] = useGuestPermission(settings.plan, Permission.CUSTOMIZE_PROTOTYPE);
+  const [isCustomizedPrototypeAllowed] = useGuestPermission(settings.plan, Permission.FEATURE_CUSTOMIZE_PROTOTYPE);
 
   return (
     <Box height="100%">

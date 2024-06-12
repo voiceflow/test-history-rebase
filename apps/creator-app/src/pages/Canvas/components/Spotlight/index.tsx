@@ -28,7 +28,7 @@ const Spotlight = () => {
   const { platform, projectType } = useActiveProjectConfig();
   // NOTE: extra protection against context being falsy needed for HMR
   const spotlight = React.useContext(SpotlightContext);
-  const paidStepsPermission = usePermission(Permission.CANVAS_PAID_STEPS);
+  const paidStepsPermission = usePermission(Permission.FEATURE_CANVAS_PAID_STEPS);
 
   const selectRef = React.useRef<SelectInstance<Option, false>>(null);
   const [inputValue, setInputValue] = React.useState('');
@@ -82,7 +82,8 @@ const Spotlight = () => {
       options
         .filter(({ value }) => value.toLowerCase().includes(trimmedValue))
         .sort(
-          (leftOption, rightOption) => leftOption.value.toLowerCase().indexOf(trimmedValue) - rightOption.value.toLowerCase().indexOf(trimmedValue)
+          (leftOption, rightOption) =>
+            leftOption.value.toLowerCase().indexOf(trimmedValue) - rightOption.value.toLowerCase().indexOf(trimmedValue)
         ),
     [options, trimmedValue]
   );

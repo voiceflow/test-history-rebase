@@ -26,9 +26,10 @@ export interface CanvasPaidStepsPermission extends UpgradeTooltipPlanPermission<
 
 export const CANVAS_PAID_STEPS = {
   plans: STUDENT_PLUS_PLANS,
-  permission: Permission.CANVAS_PAID_STEPS,
+  permission: Permission.FEATURE_CANVAS_PAID_STEPS,
 
-  isPaidStep: (blockType?: BlockType | null): blockType is PaidStepType => !!blockType && PAID_STEPS.has(blockType as PaidStepType),
+  isPaidStep: (blockType?: BlockType | null): blockType is PaidStepType =>
+    !!blockType && PAID_STEPS.has(blockType as PaidStepType),
 
   upgradeTooltip: ({ stepType }) => ({
     ...getUpgradeModalProps(PlanType.PRO, Tracking.UpgradePrompt.LOCKED_STEPS),

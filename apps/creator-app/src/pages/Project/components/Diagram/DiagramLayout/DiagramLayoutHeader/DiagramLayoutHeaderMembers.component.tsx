@@ -18,7 +18,7 @@ export const DiagramLayoutHeaderMembers: React.FC = () => {
   const self = useSelector(Account.userSelector);
 
   const inviteModal = useModal(Modals.Workspace.Invite);
-  const [canInviteMembers] = usePermission(Permission.INVITE);
+  const [canInviteMembers] = usePermission(Permission.WORKSPACE_INVITE);
 
   const list = useMemo(() => {
     const liveViewers = viewers.map((viewer) => ({

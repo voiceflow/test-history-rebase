@@ -130,9 +130,9 @@ const ContextMenu: React.FC = () => {
 
   const paymentModal = usePaymentModal();
 
-  const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
-  const [canUseCommenting] = usePermission(Permission.COMMENTING);
-  const [showHintFeatures] = usePermission(Permission.CANVAS_HINT_FEATURES);
+  const [canEditCanvas] = usePermission(Permission.PROJECT_CANVAS_UPDATE);
+  const [canUseCommenting] = usePermission(Permission.PROJECT_COMMENT);
+  const [showHintFeatures] = usePermission(Permission.PROJECT_CANVAS_HINT_FEATURES);
 
   const cache = useCache({
     engine,

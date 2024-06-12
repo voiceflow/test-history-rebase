@@ -19,7 +19,7 @@ const STEP_MENU_EXPANDED_LOCAL_STORAGE_KEY = 'stepMenuExpanded';
 
 const StepMenu: React.FC = () => {
   const triggerStep = useFeature(FeatureFlag.TRIGGER_STEP);
-  const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
+  const [canEditCanvas] = usePermission(Permission.PROJECT_CANVAS_UPDATE);
   const aiPlaygroundEnabled = useProjectAIPlayground();
 
   const isTopic = useSelector(Diagram.active.isTopicSelector);
@@ -56,7 +56,11 @@ const StepMenu: React.FC = () => {
       }
     });
 
-    return [withEventSection ? groupedSections.get(EVENT_LABEL)?.[0] : null, groupedSections.get('other'), numCollapsedSteps];
+    return [
+      withEventSection ? groupedSections.get(EVENT_LABEL)?.[0] : null,
+      groupedSections.get('other'),
+      numCollapsedSteps,
+    ];
   }, [platform, projectType, isExpanded, templates, customBlocks, aiPlaygroundEnabled, withEventSection]);
 
   const onToggle = () => {

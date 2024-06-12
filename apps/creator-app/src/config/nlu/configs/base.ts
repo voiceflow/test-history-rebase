@@ -25,7 +25,7 @@ export interface Config {
 
   tooltip: Tooltip;
 
-  permission: Permission.NLU_CUSTOM | null;
+  permission: Permission.FEATURE_NLU_CUSTOM | null;
 
   helpURL: string | null;
 }

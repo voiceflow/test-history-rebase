@@ -29,12 +29,17 @@ const StepSubMenuItem: React.FC<StepSubMenuItemProps> = ({ item, upgradePopperRe
   const [isHovered, , hoverHandlers] = useHover();
 
   const paymentModal = usePaymentModal();
-  const paidStepsPermission = usePermission(Permission.CANVAS_PAID_STEPS);
+  const paidStepsPermission = usePermission(Permission.FEATURE_CANVAS_PAID_STEPS);
 
   const popper = usePopper({ strategy: 'fixed', placement: 'right' });
 
   const onClick = useOnCreate(async ({ coords, engine, stepMenu }) => {
-    const nodeID = await engine.node.add({ type: item.type, coords, menuType: StepMenuType.LINK, factoryData: item.factoryData });
+    const nodeID = await engine.node.add({
+      type: item.type,
+      coords,
+      menuType: StepMenuType.LINK,
+      factoryData: item.factoryData,
+    });
 
     const portID = Realtime.Utils.port.getInPortID(nodeID);
 
@@ -61,10 +66,17 @@ const StepSubMenuItem: React.FC<StepSubMenuItemProps> = ({ item, upgradePopperRe
     >
       {isHovered && isLocked && !!upgradeTooltip && (
         <Portal portalNode={document.body}>
-          <div ref={popper.setPopperElement} style={{ ...popper.styles.popper, paddingLeft: '6px' }} {...popper.attributes.popper}>
+          <div
+            ref={popper.setPopperElement}
+            style={{ ...popper.styles.popper, paddingLeft: '6px' }}
+            {...popper.attributes.popper}
+          >
             <div ref={upgradePopperRef}>
               <TooltipContainer width={232}>
-                <TippyTooltip.FooterButton onClick={() => paymentModal.openVoid({})} buttonText={upgradeTooltip.upgradeButtonText}>
+                <TippyTooltip.FooterButton
+                  onClick={() => paymentModal.openVoid({})}
+                  buttonText={upgradeTooltip.upgradeButtonText}
+                >
                   {upgradeTooltip.description}
                 </TippyTooltip.FooterButton>
               </TooltipContainer>

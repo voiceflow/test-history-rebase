@@ -9,7 +9,7 @@ import { UpgradeModalPlanPermission } from './types';
 
 export const BULK_UPLOAD_PERMISSIONS = {
   plans: [...PRO_PLUS_PLANS, PlanType.STUDENT],
-  permission: Permission.BULK_UPLOAD,
+  permission: Permission.FEATURE_BULK_UPLOAD,
 
   upgradeModal: () => ({
     ...getUpgradeModalProps(PlanType.PRO, Tracking.UpgradePrompt.IMPORT_NLU),

@@ -179,7 +179,7 @@ export const useGetAIAssistSettings = () => {
   const settings = { aiPlayground: true };
   const workspace = useActiveWorkspace();
   const disclaimerModal = useModal(Disclaimer);
-  const aiPlaygroundDisclaimer = usePermission(Permission.AI_PLAYGROUND_DISCLAIMER);
+  const aiPlaygroundDisclaimer = usePermission(Permission.FEATURE_AI_PLAYGROUND_DISCLAIMER);
   const [allowedForWorkspace, setAllowedForWorkspace] = useLocalStorageState(`ai_assist_${workspace?.id}`, false);
 
   return async ({ disclaimer } = { disclaimer: true }): Promise<ProjectAIAssistSettings | null> => {

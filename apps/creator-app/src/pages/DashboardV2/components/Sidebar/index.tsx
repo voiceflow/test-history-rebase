@@ -50,7 +50,7 @@ const DashboardNavigationSidebar: React.FC = () => {
   const [, trackEventFactory] = useTrackingEvents();
   const organizationDefaultPagePath = useOrganizationDefaultPagePath();
 
-  const [canConfigureWorkspace] = usePermission(Permission.CONFIGURE_WORKSPACE);
+  const [canConfigureWorkspace] = usePermission(Permission.WORKSPACE_MANAGE);
 
   const teamsIsEnabled = teamsPlanSelfServeIsEnabled && subscription;
 

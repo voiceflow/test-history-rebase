@@ -18,7 +18,7 @@ const PAYMENT_FAILED_STRIPE_STATUS = new Set([StripeStatuses.UNPAID, StripeStatu
 
 // FIXME: remove FF https://voiceflow.atlassian.net/browse/CV3-994 (remove all legacy billing)
 const DashboardVLegacy2Billing: React.FC = () => {
-  const [canManageSeats] = usePermission(Permission.BILLING_SEATS);
+  const [canManageSeats] = usePermission(Permission.FEATURE_MANAGE_SEATS);
   const isProOrTeamPlan = useSelector(WorkspaceV2.active.isProOrTeamSelector);
   const isTrial = useSelector(WorkspaceV2.active.isOnTrialSelector);
   const stripeStatus = useSelector(WorkspaceV2.active.stripeStatusSelector);
@@ -27,7 +27,8 @@ const DashboardVLegacy2Billing: React.FC = () => {
   const billingHistory = useLegacyBillingHistory();
   const isReady = billingHistory.isReady && paymentAPI.isReady;
 
-  const showPaymentFailed = PAYMENT_FAILED_STRIPE_STATUS.has(stripeStatus as StripeStatuses) && isProOrTeamPlan && !isTrial;
+  const showPaymentFailed =
+    PAYMENT_FAILED_STRIPE_STATUS.has(stripeStatus as StripeStatuses) && isProOrTeamPlan && !isTrial;
 
   if (!isReady) {
     return (
@@ -43,7 +44,9 @@ const DashboardVLegacy2Billing: React.FC = () => {
 
       <EditorSeats />
 
-      {paymentAPI.paymentSource && <PaymentDetails source={paymentAPI.paymentSource} refetch={paymentAPI.refetchPaymentSource} />}
+      {paymentAPI.paymentSource && (
+        <PaymentDetails source={paymentAPI.paymentSource} refetch={paymentAPI.refetchPaymentSource} />
+      )}
 
       {!!billingHistory?.data?.length && (
         <BillingHistory
@@ -54,7 +57,9 @@ const DashboardVLegacy2Billing: React.FC = () => {
         />
       )}
 
-      {canManageSeats && isProOrTeamPlan && !isTrial && <CancelSubscription planSubscription={paymentAPI.planSubscription} />}
+      {canManageSeats && isProOrTeamPlan && !isTrial && (
+        <CancelSubscription planSubscription={paymentAPI.planSubscription} />
+      )}
     </Box>
   );
 };

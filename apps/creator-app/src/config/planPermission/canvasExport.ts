@@ -9,7 +9,11 @@ import { getUpgradePopperProps, getUpgradeTooltipProps } from '@/utils/upgrade';
 import { UpgradeModalAndTooltipPlanPermission } from './types';
 
 export type PaidExportFormat = ExportFormat.DIALOGS | ExportFormat.PDF | ExportFormat.PNG;
-export const PAID_EXPORT_FORMATS = new Set<PaidExportFormat>([ExportFormat.DIALOGS, ExportFormat.PDF, ExportFormat.PNG]);
+export const PAID_EXPORT_FORMATS = new Set<PaidExportFormat>([
+  ExportFormat.DIALOGS,
+  ExportFormat.PDF,
+  ExportFormat.PNG,
+]);
 
 export const PAID_EXPORT_LABELS: Record<ExportFormat, string> = {
   [ExportFormat.VF]: 'CSV',
@@ -29,9 +33,10 @@ export interface CanvasExportPermission extends UpgradeModalAndTooltipPlanPermis
 
 export const CANVAS_EXPORT_PERMISSIONS = {
   plans: STUDENT_PLUS_PLANS,
-  permission: Permission.CANVAS_EXPORT,
+  permission: Permission.FEATURE_CANVAS_EXPORT,
 
-  isPaidExportFormat: (format?: ExportFormat | null): format is PaidExportFormat => !!format && PAID_EXPORT_FORMATS.has(format as PaidExportFormat),
+  isPaidExportFormat: (format?: ExportFormat | null): format is PaidExportFormat =>
+    !!format && PAID_EXPORT_FORMATS.has(format as PaidExportFormat),
 
   upgradeModal: ({ format }) => ({
     ...getUpgradePopperProps(PlanType.PRO, Tracking.UpgradePrompt.EXPORT_PROJECT),

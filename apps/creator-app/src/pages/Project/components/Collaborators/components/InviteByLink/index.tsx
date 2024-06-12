@@ -36,8 +36,8 @@ const InviteByLinkFooter: React.FC = () => {
   const projectID = useSelector(Session.activeProjectIDSelector);
   const numberOfSeats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);
   const usedEditorSeats = useSelector(WorkspaceV2.active.members.usedEditorSeatsSelector);
-  const [canAddCollaborators] = usePermission(Permission.ADD_COLLABORATORS);
-  const [canManageAdminCollaborators] = usePermission(Permission.MANAGE_ADMIN_COLLABORATORS);
+  const [canAddCollaborators] = usePermission(Permission.WORKSPACE_MEMBER_ADD);
+  const [canManageAdminCollaborators] = usePermission(Permission.WORKSPACE_MEMBER_MANAGE_ADMIN);
 
   const getWorkspaceInviteLink = useDispatch(WorkspaceV2.getWorkspaceInviteLink);
 

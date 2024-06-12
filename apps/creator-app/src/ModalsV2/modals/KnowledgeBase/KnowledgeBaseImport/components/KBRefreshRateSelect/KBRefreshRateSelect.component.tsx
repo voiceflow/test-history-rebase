@@ -18,7 +18,7 @@ export const KBRefreshRateSelect: React.FC<IRefreshRateSelect> = ({
   testID,
 }) => {
   const store = useStore();
-  const refreshRatePermission = usePermission(Permission.KB_REFRESH_RATE);
+  const refreshRatePermission = usePermission(Permission.FEATURE_KB_REFRESH_RATE);
   const [isUpgradeModalOpen, setIsUpgradeModalOpen] = React.useState(false);
 
   const rateOrder = [
@@ -77,7 +77,9 @@ export const KBRefreshRateSelect: React.FC<IRefreshRateSelect> = ({
           <Box direction="column">
             <Tooltip.Caption>{upgradeTooltip.description}</Tooltip.Caption>
             {upgradeTooltip.upgradeButtonText && (
-              <Tooltip.Button onClick={() => upgradeTooltip.onUpgrade(store.dispatch)}>{upgradeTooltip.upgradeButtonText}</Tooltip.Button>
+              <Tooltip.Button onClick={() => upgradeTooltip.onUpgrade(store.dispatch)}>
+                {upgradeTooltip.upgradeButtonText}
+              </Tooltip.Button>
             )}
           </Box>
         )}

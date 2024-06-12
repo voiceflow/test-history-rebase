@@ -17,7 +17,7 @@ export { MentionPreview };
 
 const activeWorkspaceCommentingMembersSelector = createSelector(
   [WorkspaceV2.active.members.membersListSelector],
-  (members) => members.filter((member) => hasRolePermission(Permission.COMMENTING, member.role))
+  (members) => members.filter((member) => hasRolePermission(Permission.PROJECT_COMMENT, member.role))
 );
 
 export interface MentionEditorProps {

@@ -37,33 +37,33 @@ export const PLAN_PERMISSIONS = buildPlanPermissionRecord([
   KB_REFRESH_RATE_PERMISSIONS,
 
   // all plans
-  { permission: Permission.COMMENTING, plans: ALL_PLANS },
-  { permission: Permission.PROJECT_SHARE, plans: ALL_PLANS },
-  { permission: Permission.SHARE_PROTOTYPE, plans: ALL_PLANS },
+  { permission: Permission.PROJECT_COMMENT, plans: ALL_PLANS },
+  { permission: Permission.FEATURE_SHARE_PROJECT, plans: ALL_PLANS },
+  { permission: Permission.PROJECT_PROTOTYPE_SHARE, plans: ALL_PLANS },
 
   // non enterprise plans
-  { permission: Permission.BILLING_SEATS_ADD, plans: NON_ENTERPRISE_PLANS },
+  { permission: Permission.WORKSPACE_BILLING_ADD_SEATS, plans: NON_ENTERPRISE_PLANS },
 
-  { permission: Permission.BILLING_SEATS_SCHEDULE, plans: NON_ENTERPRISE_PAID_PLANS },
+  { permission: Permission.FEATURE_SCHEDULE_SEATS, plans: NON_ENTERPRISE_PAID_PLANS },
 
   // paid plans
-  { permission: Permission.MODEL_EXPORT, plans: PAID_PLANS },
-  { permission: Permission.PROJECT_FULL_VERSIONS, plans: PAID_PLANS },
+  { permission: Permission.FEATURE_EXPORT_MODEL, plans: PAID_PLANS },
+  { permission: Permission.FEATURE_FULL_BACKUP_HISTORY, plans: PAID_PLANS },
 
   // pro and team only plans
-  { permission: Permission.BILLING_SEATS, plans: PRO_AND_TEAM_PLANS },
+  { permission: Permission.FEATURE_MANAGE_SEATS, plans: PRO_AND_TEAM_PLANS },
 
   // pro+ plans
-  { permission: Permission.CUSTOMIZE_PROTOTYPE, plans: PRO_PLUS_PLANS },
-  { permission: Permission.SHARE_PROTOTYPE_PASSWORD, plans: PRO_PLUS_PLANS },
+  { permission: Permission.FEATURE_CUSTOMIZE_PROTOTYPE, plans: PRO_PLUS_PLANS },
+  { permission: Permission.PROJECT_PROTOTYPE_SHARE_PASSWORD, plans: PRO_PLUS_PLANS },
 
   // enterprise only plans
-  { permission: Permission.CODE_EXPORT, plans: ENTERPRISE_PLANS },
-  { permission: Permission.AI_PLAYGROUND_DISCLAIMER, plans: ENTERPRISE_PLANS },
+  { permission: Permission.FEATURE_EXPORT_CODE, plans: ENTERPRISE_PLANS },
+  { permission: Permission.FEATURE_AI_PLAYGROUND_DISCLAIMER, plans: ENTERPRISE_PLANS },
 
   // new enterprise only
   { permission: Permission.ORGANIZATION_CONFIGURE_SSO, plans: [PlanType.ENTERPRISE] },
-  { permission: Permission.EDIT_ORGANIZATION, plans: [PlanType.ENTERPRISE] },
+  { permission: Permission.ORGANIZATION_UPDATE, plans: [PlanType.ENTERPRISE] },
   { permission: Permission.ORGANIZATION_MANAGE_MEMBERS, plans: [PlanType.ENTERPRISE] },
 ]);
 

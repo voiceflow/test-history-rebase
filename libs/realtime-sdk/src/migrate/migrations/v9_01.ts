@@ -11,7 +11,7 @@ const isSetV2 = (dbNode: BaseModels.BaseDiagramNode) => dbNode.type === BlockTyp
 /** migrates setV2 to setV3 -> move the label field from the node to individual sets
  * and assign the node label if it exists to the first set
  * */
-const migrateToV8_01: Transform = ({ diagrams }) => {
+const migrateToV9_01: Transform = ({ diagrams }) => {
   diagrams.forEach((diagram) => {
     Object.values(diagram.nodes).forEach((node) => {
       if (isSetV2(node) && node.data.label && node.data.sets.length > 0) {
@@ -21,4 +21,4 @@ const migrateToV8_01: Transform = ({ diagrams }) => {
   });
 };
 
-export default migrateToV8_01;
+export default migrateToV9_01;

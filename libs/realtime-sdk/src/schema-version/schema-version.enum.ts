@@ -194,7 +194,7 @@ export const SchemaVersion = {
   /**
    * migrates setV2 steps to new format with labels
    */
-  V8_01: 8.01,
+  V9_01: 9.01,
 } as const;
 
 export type SchemaVersion = (typeof SchemaVersion)[keyof typeof SchemaVersion];

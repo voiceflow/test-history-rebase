@@ -87,7 +87,9 @@ export default React.forwardRef(
                 <Content>
                   {isEmpty ? (
                     <Menu.Item readOnly>
-                      <Menu.NotFound>{!searchValue ? notExistMessage ?? 'No items exist.' : notFoundMessage ?? 'Nothing found'}</Menu.NotFound>
+                      <Menu.NotFound>
+                        {!searchValue ? notExistMessage ?? 'No items exist.' : notFoundMessage ?? 'Nothing found'}
+                      </Menu.NotFound>
                     </Menu.Item>
                   ) : (
                     children

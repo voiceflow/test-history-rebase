@@ -118,7 +118,15 @@ const useIntrinsicState = (props: Pick<SubMenuButtonProps, 'tabData' | 'type' | 
   };
 };
 
-const LibrarySubMenuButton: React.FC<SubMenuButtonProps> = ({ label, type, tabData, onDrop, onEdit, onDelete, isDraggingPreview }) => {
+const LibrarySubMenuButton: React.FC<SubMenuButtonProps> = ({
+  label,
+  type,
+  tabData,
+  onDrop,
+  onEdit,
+  onDelete,
+  isDraggingPreview,
+}) => {
   const {
     dragAPI: { isDragging, connectDrag },
     clickAPI: { isClicked, clearClicked, onSubmenuButtonMouseDown },

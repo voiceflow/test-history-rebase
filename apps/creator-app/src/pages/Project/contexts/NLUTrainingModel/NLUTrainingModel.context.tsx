@@ -77,7 +77,9 @@ export const NLUTrainingModelProvider: React.FC<React.PropsWithChildren> = ({ ch
     start,
     cancel: training.cancel,
     isFailed: training?.job?.stage?.type === NLPTrainStageType.ERROR,
-    isTrained: nluTrainingDiffStatus === NLUTrainingDiffStatus.TRAINED && (!training.job || training.job.stage.type === NLPTrainStageType.SUCCESS),
+    isTrained:
+      nluTrainingDiffStatus === NLUTrainingDiffStatus.TRAINED &&
+      (!training.job || training.job.stage.type === NLPTrainStageType.SUCCESS),
     isTraining: training.active,
     diffStatus: nluTrainingDiffStatus,
     calculateDiff,

@@ -1,4 +1,4 @@
-import { Entity, ManyToOne, PrimaryKey, PrimaryKeyType, Property } from '@mikro-orm/core';
+import { Entity, ManyToOne, PrimaryKey, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
 import type { ReferenceMetadata } from '@voiceflow/dtos';
 
 import { Environment, PostgresAbstractEntity } from '@/postgres/common';
@@ -7,6 +7,7 @@ import type { Ref } from '@/types';
 import { ReferenceResourceEntity } from './reference-resource/reference-resource.entity';
 
 @Entity({ schema: 'designer', tableName: 'reference' })
+@Unique({ properties: ['environmentID', 'resource', 'referrerResource'] })
 export class ReferenceEntity extends PostgresAbstractEntity {
   @Environment()
   environmentID!: string;

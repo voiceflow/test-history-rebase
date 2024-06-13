@@ -985,6 +985,18 @@
       "schema": "designer",
       "indexes": [
         {
+          "keyName": "reference_resource_environment_id_type_diagram_id__00745_unique",
+          "columnNames": [
+            "environment_id",
+            "type",
+            "diagram_id",
+            "resource_id"
+          ],
+          "composite": true,
+          "primary": false,
+          "unique": true
+        },
+        {
           "keyName": "reference_resource_pkey",
           "columnNames": [
             "environment_id",
@@ -1068,6 +1080,17 @@
       "name": "reference",
       "schema": "designer",
       "indexes": [
+        {
+          "keyName": "reference_environment_id_resource_id_referrer_resource_id_unique",
+          "columnNames": [
+            "environment_id",
+            "resource_id",
+            "referrer_resource_id"
+          ],
+          "composite": true,
+          "primary": false,
+          "unique": true
+        },
         {
           "keyName": "reference_pkey",
           "columnNames": [

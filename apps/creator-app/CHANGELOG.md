@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1563.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1562.3...@voiceflow/creator-app@1.1563.0) (2024-06-13)
+
+### Features
+
+* sunset FEATURE_FULL_BACKUP_HISTORY (COR-2382) ([#8289](https://github.com/voiceflow/creator-app/issues/8289)) ([7caadc1](https://github.com/voiceflow/creator-app/commit/7caadc1a9ae2a7f3bd282db565d613051d8a1c40))
+
 ## [1.1562.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1562.2...@voiceflow/creator-app@1.1562.3) (2024-06-13)
 
 **Note:** Version bump only for package @voiceflow/creator-app

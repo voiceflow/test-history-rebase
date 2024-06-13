@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.390.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.390.4...@voiceflow/realtime@1.390.5) (2024-06-13)
+
+### Bug Fixes
+
+* add intent description to default templates (COR-2348) ([#8277](https://github.com/voiceflow/creator-app/issues/8277)) ([9e8275a](https://github.com/voiceflow/creator-app/commit/9e8275a4f7ca3a8eb8a80aee424cab7d4bff1ea1))
+
 ## [1.390.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.390.3...@voiceflow/realtime@1.390.4) (2024-06-13)
 
 **Note:** Version bump only for package @voiceflow/realtime

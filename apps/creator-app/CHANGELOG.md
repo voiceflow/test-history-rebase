@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1567.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1567.0...@voiceflow/creator-app@1.1567.1) (2024-06-13)
+
+### Bug Fixes
+
+* linting changes (COR-2360) ([#8302](https://github.com/voiceflow/creator-app/issues/8302)) ([b13f95e](https://github.com/voiceflow/creator-app/commit/b13f95e165144fa6b9047fbafc8f77d17dfb5ce9))
+
 # [1.1567.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1566.2...@voiceflow/creator-app@1.1567.0) (2024-06-13)
 
 ### Features

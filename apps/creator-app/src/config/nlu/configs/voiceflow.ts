@@ -17,10 +17,9 @@ export const CONFIG = Base.extend({
 
   tooltip: {
     title: 'Voiceflow NLU',
-    description: "If you don't already use one of these NLU providers, we recommend this option for the simplest experience.",
+    description:
+      "If you don't already use one of these NLU providers, we recommend this option for the simplest experience.",
   },
-
-  permission: null,
 
   helpURL: 'https://voiceflow.zendesk.com/hc/en-us/articles/10587264500877',
 })(Base.validate);

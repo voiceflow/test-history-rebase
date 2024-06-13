@@ -1,7 +1,6 @@
 import * as Platform from '@voiceflow/platform-config';
 
 import * as NLP from '@/config/nlp';
-import { Permission } from '@/constants/permissions';
 
 interface Tooltip {
   title: string;
@@ -24,8 +23,6 @@ export interface Config {
   nlps: [base: NLP.Base.Config, ...rest: NLP.Base.Config[]];
 
   tooltip: Tooltip;
-
-  permission: Permission.FEATURE_NLU_CUSTOM | null;
 
   helpURL: string | null;
 }
@@ -50,8 +47,6 @@ export const CONFIG = Platform.Utils.Types.satisfies<Config>()({
   nlps: [NLP.Voiceflow.CONFIG],
 
   tooltip: tooltip(NLP.Base.CONFIG),
-
-  permission: null,
 
   helpURL: null,
 });

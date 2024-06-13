@@ -59,13 +59,9 @@ export enum Permission {
   API_KEY_UPDATE = 'api_key.UPDATE',
 
   // features (when a permission is only plan based, it should be prefixed with FEATURE_)
-  FEATURE_NLU_CUSTOM = 'feature.nlu:CUSTOM_PROJECT',
-  FEATURE_NLU_EXPORT_ALL = 'feature.nlu:EXPORT_ALL',
-  FEATURE_NLU_EXPORT_CSV = 'feature.nlu:EXPORT_CSV',
   FEATURE_KB_REFRESH_RATE = 'feature.kb:REFRESH_RATE',
   FEATURE_AI_PLAYGROUND_DISCLAIMER = 'feature:AI_PLAYGROUND_DISCLAIMER',
-  FEATURE_CANVAS_EXPORT = 'feature.canvas:EXPORT',
-  FEATURE_CANVAS_PAID_STEPS = 'feature.canvas:PAID_STEPS',
+
   FEATURE_SHARE_PROJECT = 'feature:SHARE_PROJECT',
   FEATURE_EXPORT_MODEL = 'feature:EXPORT_MODEL', // to be removed once revised permissions feature is implemented
 

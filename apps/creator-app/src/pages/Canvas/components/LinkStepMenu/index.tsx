@@ -27,7 +27,6 @@ const LinkStepMenu: React.FC = () => {
     placement: 'right-start',
     modifiers: [{ name: 'offset', options: { offset: getPopperOffset } }],
   });
-  const upgradePopperRef = React.useRef<HTMLDivElement>(null);
   const popperContainerRef = React.useRef<HTMLUListElement>(null);
   const subMenuContainerRef = React.useRef<HTMLDivElement>(null);
 
@@ -60,7 +59,6 @@ const LinkStepMenu: React.FC = () => {
     (event: MouseEvent | TouchEvent) => {
       if (
         !subMenuContainerRef.current?.contains(event.target as Node) &&
-        !upgradePopperRef.current?.contains(event.target as Node) &&
         event instanceof MouseEvent &&
         event.clientX !== linkStepMenuAPI.position[0] &&
         event.clientY !== linkStepMenuAPI.position[1]
@@ -82,12 +80,7 @@ const LinkStepMenu: React.FC = () => {
               step.isLibrary ? (
                 <TemplateMenuItem key={step.label} item={step} popperContainerRef={subMenuContainerRef} />
               ) : (
-                <StepMenuItem
-                  key={step.label}
-                  item={step}
-                  upgradePopperRef={upgradePopperRef}
-                  popperContainerRef={subMenuContainerRef}
-                />
+                <StepMenuItem key={step.label} item={step} popperContainerRef={subMenuContainerRef} />
               )
             )}
 

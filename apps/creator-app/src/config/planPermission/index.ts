@@ -11,12 +11,7 @@ import {
 } from '@/constants/plans';
 
 import { ADVANCED_AI_MODELS_PERMISSIONS } from './advancedAIModels';
-import { CANVAS_EXPORT_PERMISSIONS } from './canvasExport';
-import { CANVAS_PAID_STEPS } from './canvasPaidSteps';
 import { KB_REFRESH_RATE_PERMISSIONS } from './kbRefreshRate';
-import { NLU_CUSTOM_PERMISSIONS } from './nluCustom';
-import { NLU_EXPORT_ALL_PERMISSIONS } from './nluExportAll';
-import { NLU_EXPORT_CSV_PERMISSIONS } from './nluExportCSV';
 import { buildPlanPermissionRecord } from './utils';
 import { WORKSPACE_CREATE_PERMISSIONS } from './workspaceCreate';
 
@@ -24,11 +19,6 @@ export * from './types';
 
 export const PLAN_PERMISSIONS = buildPlanPermissionRecord([
   // configurable
-  CANVAS_PAID_STEPS,
-  NLU_CUSTOM_PERMISSIONS,
-  CANVAS_EXPORT_PERMISSIONS,
-  NLU_EXPORT_ALL_PERMISSIONS,
-  NLU_EXPORT_CSV_PERMISSIONS,
   WORKSPACE_CREATE_PERMISSIONS,
   ADVANCED_AI_MODELS_PERMISSIONS,
   KB_REFRESH_RATE_PERMISSIONS,

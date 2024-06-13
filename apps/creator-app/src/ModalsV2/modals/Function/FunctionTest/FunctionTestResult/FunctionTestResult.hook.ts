@@ -61,11 +61,27 @@ export const useTestResultModalHeight = ({
 
     let maxHeights = calculateModalDefaultHeight();
 
-    if (isOutputVarsSectionOpened && outputVarsCount) maxHeights = { ...maxHeights, outputContent: calculateOutputVarsSectionHeight() };
-    if (isResolvedPathSectionOpened && paths.length) maxHeights = { ...maxHeights, resolvedPath: RESOLVED_PATH_CONTENT_HEIGHT };
+    if (isOutputVarsSectionOpened && outputVarsCount) {
+      maxHeights = { ...maxHeights, outputContent: calculateOutputVarsSectionHeight() };
+    }
+
+    if (isResolvedPathSectionOpened && paths.length) {
+      // This fixes long length traces
+      const tracesLength = Math.ceil(traces.length / 100);
+      const tracesSize = tracesLength > 3 ? 3 : tracesLength;
+      maxHeights = { ...maxHeights, resolvedPath: tracesSize * RESOLVED_PATH_CONTENT_HEIGHT };
+    }
 
     return maxHeights;
-  }, [isTracesSectionOpened, traces, outputVars, paths, isOutputVarsSectionOpened, isResolvedPathSectionOpened, numInputVariables]);
+  }, [
+    isTracesSectionOpened,
+    traces,
+    outputVars,
+    paths,
+    isOutputVarsSectionOpened,
+    isResolvedPathSectionOpened,
+    numInputVariables,
+  ]);
 };
 
 // TODO: find a better solution for this
@@ -98,14 +114,14 @@ export const useDynamicTracesCodeEditorHeight = ({
   const calculateCodeEditorMaxHeight = () => {
     const testFunctionInputsModalHeight = calculateTestFunctionInputsModalHeight();
     const paddings = PADDINGS + MARGIN_BETWEEN_MODALS;
-    let calcCss = `100vh - ${testFunctionInputsModalHeight}px - ${paddings}px`;
+    let calcCss = '100vh';
 
     Object.values(testResultModalHeights).forEach((height) => {
       calcCss += ` - ${height}px`;
     });
 
-    // TODO: magic number
-    if (isTracesSectionOpened) calcCss += ` + 14px`;
+    // TODO: fix 14px magic number
+    if (isTracesSectionOpened) calcCss += ` - ${testFunctionInputsModalHeight}px - ${paddings}px + 14px`;
 
     return `calc(${calcCss})`;
   };
@@ -138,5 +154,13 @@ export const useDynamicTracesCodeEditorHeight = ({
     } else {
       sectionElement?.setAttribute('style', 'max-height: 86px');
     }
-  }, [isTracesSectionOpened, traces, outputVars, paths, isOutputVarsSectionOpened, isResolvedPathSectionOpened, numInputVariables]);
+  }, [
+    isTracesSectionOpened,
+    traces,
+    outputVars,
+    paths,
+    isOutputVarsSectionOpened,
+    isResolvedPathSectionOpened,
+    numInputVariables,
+  ]);
 };

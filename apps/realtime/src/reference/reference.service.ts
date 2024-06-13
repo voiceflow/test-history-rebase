@@ -93,7 +93,7 @@ export class ReferenceService extends MutableService<ReferenceORM> {
     }
 
     try {
-      const { references, referenceResources } = new this.ReferenceBuilder(payload).build();
+      const { references, referenceResources } = await new this.ReferenceBuilder(payload).build();
 
       await this.postgresEM.transactional(async () => {
         await this.deleteManyWithSubResourcesByEnvironment(environmentID);

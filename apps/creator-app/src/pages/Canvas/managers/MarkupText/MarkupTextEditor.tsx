@@ -11,7 +11,11 @@ import { NodeEditorPropsType } from '@/pages/Canvas/managers/types';
 
 import { BackgroundColor, TextAligns, TextStyles } from './components';
 
-export const MarkupTextEditor: React.FC<NodeEditorPropsType<Realtime.Markup.NodeData.Text> & { engine: Engine }> = ({ nodeID, data, engine }) => {
+export const MarkupTextEditor: React.FC<NodeEditorPropsType<Realtime.Markup.NodeData.Text> & { engine: Engine }> = ({
+  nodeID,
+  data,
+  engine,
+}) => {
   const [key, editor] = engine.markup.useTextEditor(nodeID);
   const [trackingEvents] = useTrackingEvents();
 
@@ -37,7 +41,9 @@ export const MarkupTextEditor: React.FC<NodeEditorPropsType<Realtime.Markup.Node
 
           <Divider offset={10} height={16} isVertical />
 
-          <HyperlinkButton>{(props) => <System.IconButton.Base {...props} onClick={stopPropagation()} />}</HyperlinkButton>
+          <HyperlinkButton>
+            {(props) => <System.IconButton.Base {...props} onClick={stopPropagation()} />}
+          </HyperlinkButton>
         </SectionV2.SimpleSection>
 
         <SectionV2.Divider inset />

@@ -3543,16 +3543,6 @@
           "nullable": true,
           "default": "null",
           "mappedType": "text"
-        },
-        "path_order": {
-          "name": "path_order",
-          "type": "text[]",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "'{}'",
-          "mappedType": "array"
         }
       },
       "name": "function",
@@ -6344,8 +6334,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
-          "default": "'text'",
+          "nullable": false,
           "enumItems": [
             "prompt",
             "text"

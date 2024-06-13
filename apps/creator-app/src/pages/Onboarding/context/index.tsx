@@ -2,7 +2,7 @@ import { datadogRum } from '@datadog/browser-rum';
 import { Nullable } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import {getCookieByName, toast, useSmartReducerV2} from '@voiceflow/ui';
+import { getCookieByName, toast, useSmartReducerV2 } from '@voiceflow/ui';
 import queryString from 'query-string';
 import React from 'react';
 import { Redirect, useLocation } from 'react-router-dom';
@@ -14,12 +14,11 @@ import * as Project from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch, useFeature, useSelector, useStore, useTrackingEvents } from '@/hooks';
-import { useGetAIAssistSettings } from '@/ModalsV2/modals/Disclaimer/hooks/aiPlayground';
 
 import { OnboardingType } from '../onboardingType.enum';
 import { StepID } from '../stepID.enum';
 import { STEP_META } from '../stepMeta';
-import {STEPS_BY_FLOW, UTM_COOKIE_NAME, UTMCookieType} from './constants';
+import { STEPS_BY_FLOW, UTM_COOKIE_NAME, UTMCookieType } from './constants';
 import { OnboardingContextAPI, OnboardingContextState, OnboardingProviderProps } from './types';
 
 export const OnboardingContext = React.createContext<OnboardingContextAPI | null>(null);
@@ -52,7 +51,6 @@ export const OnboardingProvider: React.FC<OnboardingProviderProps> = ({ query, c
   const createProject = useDispatch(Project.createProject);
   const { isEnabled: isKnowledgeBaseEnabled } = useFeature(Realtime.FeatureFlag.KNOWLEDGE_BASE);
 
-  const getAIAssistSettings = useGetAIAssistSettings();
   const [trackingEvents] = useTrackingEvents();
 
   const flow = query.invite ? OnboardingType.join : OnboardingType.create;
@@ -123,7 +121,7 @@ export const OnboardingProvider: React.FC<OnboardingProviderProps> = ({ query, c
         listID: null,
         members: [],
         locales: Platform.Voiceflow.CONFIG.types[Platform.Constants.ProjectType.CHAT].project.locale.defaultLocales,
-        aiAssistSettings: await getAIAssistSettings({ disclaimer: false }),
+        aiAssistSettings: { aiPlayground: true },
       },
       modality: {
         type: Platform.Constants.ProjectType.CHAT,

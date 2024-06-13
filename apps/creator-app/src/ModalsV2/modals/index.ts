@@ -5,7 +5,6 @@ export * as Canvas from './Canvas';
 export { default as Confirm } from './Confirm';
 export * from './ConfirmV2/ConfirmV2.modal';
 export * as Conversation from './Conversation';
-export { default as Disclaimer } from './Disclaimer';
 export * as Entity from './Entity';
 export { default as Error } from './Error';
 export * as Flow from './Flow';

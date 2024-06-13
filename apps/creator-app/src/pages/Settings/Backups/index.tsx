@@ -1,6 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import type { Backup as BackupEntity } from '@voiceflow/dtos';
-import { Animations, Box, DataTypes, download, LoadCircle, SectionV2, System, toast } from '@voiceflow/ui';
+import { Animations, Box, DataTypes, download, LoadCircle, SectionV2, toast } from '@voiceflow/ui';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
 
@@ -11,7 +11,6 @@ import { Path } from '@/config/routes';
 import { Permission } from '@/constants/permissions';
 import { Designer, Router, Session } from '@/ducks';
 import { useDispatch, useHotkey, usePermission, useSetup, useTrackingEvents } from '@/hooks';
-import { usePaymentModal } from '@/hooks/modal.hook';
 import { useSelector } from '@/hooks/redux';
 import { getHotkeyLabel, Hotkey } from '@/keymap';
 import * as ModalsV2 from '@/ModalsV2';
@@ -29,7 +28,6 @@ const SettingsBackups: React.FC = () => {
   const setGateSubscriptionRevision = useDispatch(Designer.Environment.action.SetGateSubscriptionRevision);
 
   const [canEditCanvas] = usePermission(Permission.PROJECT_CANVAS_UPDATE);
-  const [hasFullBackupHistory] = usePermission(Permission.FEATURE_FULL_BACKUP_HISTORY);
 
   const [backups, setBackups] = React.useState<BackupEntity[]>([]);
   const [loading, setLoading] = React.useState(true);
@@ -38,8 +36,6 @@ const SettingsBackups: React.FC = () => {
   const [trackingEvents] = useTrackingEvents();
 
   const manualSaveModal = ModalsV2.useModal(ModalsV2.Project.ManualSaveBackup);
-
-  const paymentModal = usePaymentModal();
 
   const fetchBackups = async (offset: number) => {
     try {
@@ -128,14 +124,6 @@ const SettingsBackups: React.FC = () => {
           <>
             New backups are created when you publish your agent. To manually save a backup, use the shortcut{' '}
             <S.HotKeyContainer>Shift + {getHotkeyLabel(Hotkey.SAVE_BACKUP)}</S.HotKeyContainer>.{' '}
-            {!hasFullBackupHistory && (
-              <>
-                Free users can only view 30 days of an agent's backup history.{' '}
-                <System.Link.Button onClick={() => paymentModal.openVoid({})}>
-                  Upgrade to unlock unlimited backup history
-                </System.Link.Button>
-              </>
-            )}
           </>
         </S.Heading>
 

@@ -46,7 +46,6 @@ export const PLAN_PERMISSIONS = buildPlanPermissionRecord([
 
   // paid plans
   { permission: Permission.FEATURE_EXPORT_MODEL, plans: PAID_PLANS },
-  { permission: Permission.FEATURE_FULL_BACKUP_HISTORY, plans: PAID_PLANS },
 
   // pro and team only plans
   { permission: Permission.FEATURE_MANAGE_SEATS, plans: PRO_AND_TEAM_PLANS },

@@ -70,7 +70,6 @@ export enum Permission {
   FEATURE_EXPORT_CODE = 'feature:EXPORT_CODE',
   FEATURE_EXPORT_MODEL = 'feature:EXPORT_MODEL', // to be removed once revised permissions feature is implemented
   FEATURE_CUSTOMIZE_PROTOTYPE = 'feature:CUSTOMIZE_PROTOTYPE',
-  FEATURE_FULL_BACKUP_HISTORY = 'feature:FULL_BACKUP_HISTORY',
 
   // kill once everyone is on chargebee? confirm with proudct, since some customers will have extra seats
   FEATURE_MANAGE_SEATS = 'feature:MANAGE_SEATS',

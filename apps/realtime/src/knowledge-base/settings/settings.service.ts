@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { KnowledgeBaseSettings } from '@voiceflow/dtos';
+import { AI_MODEL_PARAMS, KnowledgeBaseSettings } from '@voiceflow/dtos';
 import { NotFoundException } from '@voiceflow/exception';
 import { UnleashFeatureFlagService } from '@voiceflow/nestjs-common';
 import { KnowledgeBaseORM, ProjectEntity, ProjectORM } from '@voiceflow/orm-designer';
@@ -53,6 +53,16 @@ export class KnowledgeBaseSettingsService extends MutableService<KnowledgeBaseOR
   }
 
   async updateSettings(assistantID: string, newSettings: KnowledgeBaseSettings): Promise<void> {
+    const updatedSettings = { ...newSettings };
+
+    if (updatedSettings.summarization.maxTokens) {
+      // maxTokens can't be higher than the model limit
+      updatedSettings.summarization.maxTokens = Math.min(
+        updatedSettings.summarization.maxTokens,
+        AI_MODEL_PARAMS[updatedSettings.summarization.model].maxTokens
+      );
+    }
+
     await this.orm.updateSettings(assistantID, newSettings);
 
     await this.updateCachedSettings(assistantID, newSettings);
@@ -93,6 +103,16 @@ export class KnowledgeBaseSettingsService extends MutableService<KnowledgeBaseOR
   }
 
   async updateVersionSettings(versionID: string, newSettings: KnowledgeBaseSettings) {
+    const updatedSettings = { ...newSettings };
+
+    if (updatedSettings.summarization.maxTokens) {
+      // maxTokens can't be higher than the model limit
+      updatedSettings.summarization.maxTokens = Math.min(
+        updatedSettings.summarization.maxTokens,
+        AI_MODEL_PARAMS[updatedSettings.summarization.model].maxTokens
+      );
+    }
+
     await this.version.updateKnowledgeBaseSettings(versionID, newSettings);
 
     const versionDocument = await this.version.findOne(versionID);

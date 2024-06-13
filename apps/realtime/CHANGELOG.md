@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.391.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.390.5...@voiceflow/realtime@1.391.0) (2024-06-13)
+
+### Features
+
+* split reference builder util (COR-000) ([#8266](https://github.com/voiceflow/creator-app/issues/8266)) ([a8a559b](https://github.com/voiceflow/creator-app/commit/a8a559b414205b60f749ac05b47534ce2eba6691))
+
 ## [1.390.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.390.4...@voiceflow/realtime@1.390.5) (2024-06-13)
 
 ### Bug Fixes

@@ -363,7 +363,10 @@ export class AssistantService extends MutableService<AssistantORM> {
     };
 
     return {
-      ...migratedData,
+      cms: {
+        ...Utils.object.omit(data, ['project', 'programs', '_version', 'diagrams', 'variableStates', 'version']),
+        ...migratedData.cms,
+      },
       version,
       diagrams: migratedData.diagrams.map((diagram) => ({ ...diagramsMap[diagram.diagramID], ...diagram })),
     };

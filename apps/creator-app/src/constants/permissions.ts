@@ -67,7 +67,6 @@ export enum Permission {
   FEATURE_CANVAS_EXPORT = 'feature.canvas:EXPORT',
   FEATURE_CANVAS_PAID_STEPS = 'feature.canvas:PAID_STEPS',
   FEATURE_SHARE_PROJECT = 'feature:SHARE_PROJECT',
-  FEATURE_EXPORT_CODE = 'feature:EXPORT_CODE',
   FEATURE_EXPORT_MODEL = 'feature:EXPORT_MODEL', // to be removed once revised permissions feature is implemented
   FEATURE_CUSTOMIZE_PROTOTYPE = 'feature:CUSTOMIZE_PROTOTYPE',
 

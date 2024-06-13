@@ -30,7 +30,6 @@ const Publish: React.FC = () => {
   const location = useLocation();
   const onLinkClick = useOnLinkClick();
 
-  const [canCodeExport] = usePermission(Permission.FEATURE_EXPORT_CODE);
   const [canEditAPIKey] = usePermission(Permission.API_KEY_UPDATE);
   const [canEditProject] = usePermission(Permission.PROJECT_UPDATE);
 
@@ -109,7 +108,7 @@ const Publish: React.FC = () => {
                   ))
                   .otherwise(() => null)}
 
-              {!disableCodeExports && canCodeExport && (
+              {!disableCodeExports && (
                 <SecondaryNavigation.Item
                   icon="Export"
                   label="Code Export"
@@ -149,9 +148,7 @@ const Publish: React.FC = () => {
                     <Route path={Path.PUBLISH_TEAMS} component={PublishTeams} />
                   )}
 
-                  {!disableCodeExports.isEnabled && canCodeExport && (
-                    <Route path={Path.PUBLISH_EXPORT} component={Export} />
-                  )}
+                  {!disableCodeExports.isEnabled && <Route path={Path.PUBLISH_EXPORT} component={Export} />}
 
                   <Redirect
                     to={canEditAPIKey || viewerAPIKeyAccess.isEnabled ? Path.PUBLISH_API : Path.PROJECT_VERSION}

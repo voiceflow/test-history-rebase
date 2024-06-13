@@ -55,7 +55,6 @@ export const PLAN_PERMISSIONS = buildPlanPermissionRecord([
   { permission: Permission.PROJECT_PROTOTYPE_SHARE_PASSWORD, plans: PRO_PLUS_PLANS },
 
   // enterprise only plans
-  { permission: Permission.FEATURE_EXPORT_CODE, plans: ENTERPRISE_PLANS },
   { permission: Permission.FEATURE_AI_PLAYGROUND_DISCLAIMER, plans: ENTERPRISE_PLANS },
 
   // new enterprise only

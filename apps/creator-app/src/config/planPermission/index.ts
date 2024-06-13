@@ -3,7 +3,6 @@ import { PlanType } from '@voiceflow/internal';
 import { Permission } from '@/constants/permissions';
 import {
   ALL_PLANS,
-  ENTERPRISE_PLANS,
   NON_ENTERPRISE_PAID_PLANS,
   NON_ENTERPRISE_PLANS,
   PAID_PLANS,
@@ -52,9 +51,6 @@ export const PLAN_PERMISSIONS = buildPlanPermissionRecord([
 
   // pro+ plans
   { permission: Permission.PROJECT_PROTOTYPE_SHARE_PASSWORD, plans: PRO_PLUS_PLANS },
-
-  // enterprise only plans
-  { permission: Permission.FEATURE_AI_PLAYGROUND_DISCLAIMER, plans: ENTERPRISE_PLANS },
 
   // new enterprise only
   { permission: Permission.ORGANIZATION_CONFIGURE_SSO, plans: [PlanType.ENTERPRISE] },

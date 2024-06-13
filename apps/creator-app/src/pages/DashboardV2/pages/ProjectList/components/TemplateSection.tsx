@@ -10,13 +10,11 @@ import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch, usePlanLimitedConfig, useSelector } from '@/hooks';
 import { useConditionalLimit } from '@/hooks/planLimitV3';
 import * as ModalsV2 from '@/ModalsV2';
-import { useGetAIAssistSettings } from '@/ModalsV2/modals/Disclaimer/hooks/aiPlayground';
 
 import * as S from '../styles';
 
 const TemplateSection: React.FC = () => {
   const upgradeModal = ModalsV2.useModal(ModalsV2.Upgrade);
-  const getAIAssistSettings = useGetAIAssistSettings();
 
   const projectsCount = useSelector(ProjectV2.projectsCountSelector);
   const projectsLimit = useSelector(WorkspaceV2.active.projectsLimitSelector);
@@ -46,10 +44,6 @@ const TemplateSection: React.FC = () => {
     if (projectsLimitConfig) {
       upgradeModal.openVoid(projectsLimitConfig.upgradeModal(projectsLimitConfig.payload));
     } else {
-      const aiAssistSettings = await getAIAssistSettings();
-
-      if (!aiAssistSettings) return;
-
       const platformConfig = Platform.Config.get(platform);
 
       const { versionID } = await createProject({
@@ -60,7 +54,7 @@ const TemplateSection: React.FC = () => {
           listID: null,
           members: [],
           locales: platformConfig.types[type]?.project.locale.defaultLocales ?? [],
-          aiAssistSettings,
+          aiAssistSettings: { aiPlayground: true },
         },
         modality: { platform, type },
         tracking: { onboarding: false },

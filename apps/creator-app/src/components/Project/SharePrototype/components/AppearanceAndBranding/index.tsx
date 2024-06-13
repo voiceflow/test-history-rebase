@@ -8,11 +8,7 @@ import { Identifier } from '@/styles/constants';
 
 import { NegativeMarginContainer, UploadContainer, UploadImage } from './components';
 
-interface AppearanceAndBrandingProps {
-  isAllowed: boolean;
-}
-
-const AppearanceAndBranding: React.FC<AppearanceAndBrandingProps> = ({ isAllowed }) => {
+const AppearanceAndBranding: React.FC = () => {
   const avatar = useSelector(Prototype.prototypeAvatarSelector);
   const brandImage = useSelector(Prototype.prototypeBrandImageSelector);
   const brandColor = useSelector(Prototype.prototypeBrandColorSelector);
@@ -20,11 +16,10 @@ const AppearanceAndBranding: React.FC<AppearanceAndBrandingProps> = ({ isAllowed
   const updateSettings = useDispatch(Prototype.updateSharePrototypeSettings);
 
   return (
-    <Box cursor={isAllowed ? 'default' : 'not-allowed'}>
+    <Box>
       <ColorInput
         value={brandColor}
         onChange={(brandColor) => updateSettings({ brandColor })}
-        isAllowed={isAllowed}
         disabledBorderColor="rgba(210, 218, 226, 0.65)"
       />
 
@@ -38,7 +33,6 @@ const AppearanceAndBranding: React.FC<AppearanceAndBrandingProps> = ({ isAllowed
             image={brandImage}
             onUpdate={(image) => updateSettings({ brandImage: image })}
             isSquare={true}
-            isAllowed={isAllowed}
             hasBorderRight={true}
           />
 
@@ -48,7 +42,6 @@ const AppearanceAndBranding: React.FC<AppearanceAndBrandingProps> = ({ isAllowed
             image={avatar}
             onUpdate={(image) => updateSettings({ avatar: image })}
             isSquare={false}
-            isAllowed={isAllowed}
             hasBorderRight={false}
           />
         </UploadContainer>

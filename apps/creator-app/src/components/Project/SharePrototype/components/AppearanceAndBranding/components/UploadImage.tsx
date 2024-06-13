@@ -12,11 +12,10 @@ interface UploadImageProps {
   image: string;
   onUpdate: (image: string) => void;
   isSquare: boolean;
-  isAllowed: boolean;
   hasBorderRight: boolean;
 }
 
-const UploadImage: React.FC<UploadImageProps> = ({ id, image: propImage, title, isAllowed, isSquare, hasBorderRight, onUpdate }) => {
+const UploadImage: React.FC<UploadImageProps> = ({ id, image: propImage, title, isSquare, hasBorderRight, onUpdate }) => {
   const [image, setImage] = useLinkedState(propImage);
 
   const updateImage = async (image: string | null) => {
@@ -27,11 +26,11 @@ const UploadImage: React.FC<UploadImageProps> = ({ id, image: propImage, title, 
 
   return (
     <UploadImageContainer id={id} hasBorderRight={hasBorderRight}>
-      <Title marginBottom={16} secondary={true} disabled={!isAllowed}>
+      <Title marginBottom={16} secondary={true}>
         {title}
       </Title>
 
-      <Upload.IconUpload image={image} update={updateImage} size={UploadIconVariant.SMALL} isSquare={isSquare} disabled={!isAllowed} />
+      <Upload.IconUpload image={image} update={updateImage} size={UploadIconVariant.SMALL} isSquare={isSquare} />
     </UploadImageContainer>
   );
 };

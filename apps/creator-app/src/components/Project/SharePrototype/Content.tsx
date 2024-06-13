@@ -2,11 +2,9 @@ import { Box } from '@voiceflow/ui';
 import React from 'react';
 
 import { SectionToggleVariant, UncontrolledSection } from '@/components/Section';
-import Upgrade from '@/components/Upgrade';
-import { Permission } from '@/constants/permissions';
 import { ScrollContextProvider } from '@/contexts/ScrollContext';
 import * as VariableState from '@/ducks/variableState';
-import { usePermission, useSelector } from '@/hooks';
+import { useSelector } from '@/hooks';
 import { useScrollHelpers, useScrollStickySides } from '@/hooks/scroll';
 import { Identifier } from '@/styles/constants';
 
@@ -37,8 +35,6 @@ interface ContentProps {
 export const Content: React.FC<ContentProps> = ({ preventClose, enableClose, disableAnimation }) => {
   const [activeSection, setActiveSection] = React.useState(ActiveModal.NONE);
   const variableStates = useSelector(VariableState.allVariableStatesSelector);
-
-  const [canCustomize] = usePermission(Permission.FEATURE_CUSTOMIZE_PROTOTYPE);
 
   const { bodyRef, innerRef, scrollHelpers } = useScrollHelpers<HTMLDivElement, HTMLDivElement>();
   const [isHeaderSticky] = useScrollStickySides(bodyRef);
@@ -71,7 +67,7 @@ export const Content: React.FC<ContentProps> = ({ preventClose, enableClose, dis
               collapseVariant={SectionToggleVariant.ARROW}
               customContentStyling={{ paddingLeft: 0 }}
             >
-              <AppearanceAndBranding isAllowed={canCustomize} />
+              <AppearanceAndBranding />
             </UncontrolledSection>
 
             <UncontrolledSection
@@ -96,12 +92,6 @@ export const Content: React.FC<ContentProps> = ({ preventClose, enableClose, dis
             onToggleCollapse={onToggleSection(ActiveModal.PASSWORD)}
           />
         </div>
-
-        {!canCustomize && (
-          <Box left={0} right={0} bottom={0}>
-            <Upgrade>Customize prototype style and branding.</Upgrade>
-          </Box>
-        )}
       </ContainerComp>
     </ScrollContextProvider>
   );

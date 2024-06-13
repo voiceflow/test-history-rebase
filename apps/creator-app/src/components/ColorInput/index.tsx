@@ -24,14 +24,12 @@ const getRGBAWithFallback = (hex: string) => {
 interface ColorInputProps {
   value: string;
   onChange: (color: string) => void;
-  isAllowed?: boolean;
   disabledBorderColor?: string;
 }
 
-const ColorInput: React.FC<ColorInputProps> = ({ isAllowed = true, disabledBorderColor, value, onChange }) => {
+const ColorInput: React.FC<ColorInputProps> = ({ disabledBorderColor, value, onChange }) => {
   const [localHex, setLocalHex] = React.useState(removeHashFromHex(value));
   const [isDisabled, setIsDisabled] = React.useState(false);
-  const disabled = isDisabled || !isAllowed;
 
   const debouncedOnChange = useDebouncedCallback(200, onChange, [localHex]);
 
@@ -49,12 +47,11 @@ const ColorInput: React.FC<ColorInputProps> = ({ isAllowed = true, disabledBorde
     <Input
       className={ClassName.COLOR_INPUT}
       value={localHex}
-      cursor={!disabled ? 'auto' : 'not-allowed'}
+      cursor={!isDisabled ? 'auto' : 'not-allowed'}
       leftAction={<InputAction>HEX</InputAction>}
       rightAction={
         <ColorSelect
           color={getRGBAWithFallback(`#${localHex}`)}
-          disabled={!isAllowed}
           onChange={(nextColor: RGBColor) => updateLocalHex(getHexColor(nextColor))}
           alphaSlider={false}
           colors={false}
@@ -63,7 +60,7 @@ const ColorInput: React.FC<ColorInputProps> = ({ isAllowed = true, disabledBorde
           onClose={() => setIsDisabled(false)}
         />
       }
-      disabled={disabled}
+      disabled={isDisabled}
       onChangeText={(value) => {
         setLocalHex(removeHashFromHex(value).substring(0, 6).toUpperCase());
       }}

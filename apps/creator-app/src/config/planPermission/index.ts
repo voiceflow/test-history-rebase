@@ -51,7 +51,6 @@ export const PLAN_PERMISSIONS = buildPlanPermissionRecord([
   { permission: Permission.FEATURE_MANAGE_SEATS, plans: PRO_AND_TEAM_PLANS },
 
   // pro+ plans
-  { permission: Permission.FEATURE_CUSTOMIZE_PROTOTYPE, plans: PRO_PLUS_PLANS },
   { permission: Permission.PROJECT_PROTOTYPE_SHARE_PASSWORD, plans: PRO_PLUS_PLANS },
 
   // enterprise only plans

@@ -68,7 +68,6 @@ export enum Permission {
   FEATURE_CANVAS_PAID_STEPS = 'feature.canvas:PAID_STEPS',
   FEATURE_SHARE_PROJECT = 'feature:SHARE_PROJECT',
   FEATURE_EXPORT_MODEL = 'feature:EXPORT_MODEL', // to be removed once revised permissions feature is implemented
-  FEATURE_CUSTOMIZE_PROTOTYPE = 'feature:CUSTOMIZE_PROTOTYPE',
 
   // kill once everyone is on chargebee? confirm with proudct, since some customers will have extra seats
   FEATURE_MANAGE_SEATS = 'feature:MANAGE_SEATS',

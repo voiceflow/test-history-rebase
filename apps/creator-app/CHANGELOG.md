@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1565.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1564.0...@voiceflow/creator-app@1.1565.0) (2024-06-13)
+
+### Features
+
+* sunset FEATURE_CUSTOMIZE_PROTOTYPE (COR-2381) ([#8288](https://github.com/voiceflow/creator-app/issues/8288)) ([c5b4fd1](https://github.com/voiceflow/creator-app/commit/c5b4fd177664372dc7313460aa8371b285e1916b))
+
 # [1.1564.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1563.1...@voiceflow/creator-app@1.1564.0) (2024-06-13)
 
 ### Features

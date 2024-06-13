@@ -7,14 +7,12 @@ import * as NLU from '@/config/nlu';
 export interface Option {
   type: Platform.Constants.NLUType;
   name: string;
-  permission: NLU.Base.Config['permission'];
   labelTooltip: TippyTooltipProps;
 }
 
 const buildOption = (nluConfig: NLU.Base.Config): Option => ({
   type: nluConfig.type,
   name: nluConfig.name,
-  permission: nluConfig.permission,
   labelTooltip: {
     width: 232,
     content: <TippyTooltip.Complex title={nluConfig.tooltip.title}>{nluConfig.tooltip.description}</TippyTooltip.Complex>,

@@ -2,12 +2,9 @@ import { Utils } from '@voiceflow/common';
 import { BlockText, Box, createUIOnlyMenuItemOption, defaultMenuLabelRenderer, Select } from '@voiceflow/ui';
 import React, { useMemo } from 'react';
 
-import PermittedMenuItem from '@/components/PermittedMenuItem';
-import Upgrade from '@/components/Upgrade';
+import { MenuItem } from '@/components/MenuItem';
 import { ExportFormat } from '@/constants';
-import { Permission } from '@/constants/permissions';
 import { Designer } from '@/ducks';
-import { usePermission } from '@/hooks';
 import { useSelector } from '@/hooks/store.hook';
 
 import { CANVAS_EXPORT_OPTIONS, CANVAS_EXPORT_OPTIONS_LABELS } from './constants';
@@ -16,7 +13,6 @@ import { Context } from './Context';
 export const Canvas: React.FC = () => {
   const CANVAS_SPECIFIC_EXPORT_OPTIONS = [ExportFormat.PDF, ExportFormat.PNG];
 
-  const { allowed: isAllowed, planConfig } = usePermission(Permission.FEATURE_CANVAS_EXPORT);
   const { canvasExportFormat, setCanvasExportFormat, exportDiagramID, setExportDiagramID } = React.useContext(Context)!;
 
   const workflows = useSelector(Designer.Workflow.selectors.all);
@@ -61,14 +57,7 @@ export const Canvas: React.FC = () => {
           onSelect={setCanvasExportFormat}
           getOptionLabel={(value) => value && CANVAS_EXPORT_OPTIONS_LABELS[value]}
           renderOptionLabel={(format, searchLabel, getOptionLabel, getOptionValue, options) => (
-            <PermittedMenuItem
-              data={{ format }}
-              label={defaultMenuLabelRenderer(format, searchLabel, getOptionLabel, getOptionValue, options)}
-              isFocused={options.isFocused}
-              isAllowed={planConfig && !planConfig.isPaidExportFormat(format)}
-              permission={Permission.FEATURE_CANVAS_EXPORT}
-              tooltipProps={{ offset: [0, 30] }}
-            />
+            <MenuItem label={defaultMenuLabelRenderer(format, searchLabel, getOptionLabel, getOptionValue, options)} />
           )}
         />
 
@@ -90,12 +79,6 @@ export const Canvas: React.FC = () => {
           </Box>
         )}
       </div>
-
-      {!isAllowed && (
-        <Box paddingTop={22} left={0} right={0} bottom={0} width={'430px'} height="50px" marginX="-24px">
-          <Upgrade>Remove branding from PNG & PDF exports.</Upgrade>
-        </Box>
-      )}
     </>
   );
 };

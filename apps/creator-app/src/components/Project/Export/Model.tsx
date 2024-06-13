@@ -11,9 +11,8 @@ import {
 import React from 'react';
 
 import IntentsSelect from '@/components/IntentsSelect';
-import PermittedMenuItem from '@/components/PermittedMenuItem';
+import { MenuItem } from '@/components/MenuItem';
 import * as NLP from '@/config/nlp';
-import { Permission } from '@/constants/permissions';
 
 import { Context } from './Context';
 
@@ -88,17 +87,7 @@ export const Model: React.FC<ModelProps> = ({ selectedIntentsIds }) => {
         getOptionLabel={(value) => value && NLP.Config.get(value).name}
         maxHeight="334px"
         renderOptionLabel={(nlpType, searchLabel, getOptionLabel, getOptionValue, options) => (
-          <PermittedMenuItem
-            data={{ nlpType }}
-            label={defaultMenuLabelRenderer(nlpType, searchLabel, getOptionLabel, getOptionValue, options)}
-            isFocused={options.isFocused}
-            permission={
-              nlpType === NLP.Constants.NLPType.VOICEFLOW
-                ? Permission.FEATURE_NLU_EXPORT_CSV
-                : Permission.FEATURE_NLU_EXPORT_ALL
-            }
-            tooltipProps={{ offset: [0, 30] }}
-          />
+          <MenuItem label={defaultMenuLabelRenderer(nlpType, searchLabel, getOptionLabel, getOptionValue, options)} />
         )}
       />
 

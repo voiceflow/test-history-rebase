@@ -69,7 +69,7 @@ export const useProjectOptions = ({
 
   const isPreviewer = useIsPreviewer();
   const hideExports = useFeature(Realtime.FeatureFlag.HIDE_EXPORTS);
-  const canExportProject = useHasPermissions([Permission.FEATURE_CANVAS_EXPORT, Permission.FEATURE_EXPORT_MODEL]);
+  const canExportProject = useHasPermissions([Permission.FEATURE_EXPORT_MODEL]);
   const [canEditProject] = usePermission(Permission.PROJECT_UPDATE);
   const [canShareProject] = usePermission(Permission.FEATURE_SHARE_PROJECT);
   const [canViewVersions] = usePermission(Permission.PROJECT_VERSIONS_READ);

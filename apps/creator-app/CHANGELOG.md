@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1566.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1565.0...@voiceflow/creator-app@1.1566.0) (2024-06-13)
+
+### Features
+
+* sunset FEATURE_AI_PLAYGROUND_DISCLAIMER (COR-2383) ([#8290](https://github.com/voiceflow/creator-app/issues/8290)) ([4ed74df](https://github.com/voiceflow/creator-app/commit/4ed74df4290d3d1dcb1977c968b6b0270ba70ad3))
+
 # [1.1565.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1564.0...@voiceflow/creator-app@1.1565.0) (2024-06-13)
 
 ### Features

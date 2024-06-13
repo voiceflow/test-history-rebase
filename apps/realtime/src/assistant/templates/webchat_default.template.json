@@ -3794,7 +3794,7 @@
     {
       "id": "6579c6bf984565862f64b783",
       "name": "Yes",
-      "description": null,
+      "description": "Trigger this intent when the user responds affirmatively or agrees to a question or statement using words like \"yes\", \"yea\", \"yup\", \"yep\", \"ya\", \"ok\", \"okay\", \"affirmative\", \"certainly\", or \"sure\".",
       "automaticReprompt": false,
       "entityOrder": [],
       "createdAt": "2024-02-22T11:05:14.000Z",
@@ -3806,7 +3806,7 @@
     {
       "id": "6579c778dd3cca0fe0e0b152",
       "name": "No",
-      "description": null,
+      "description": "Trigger this intent when the user responds negatively or declines something, using words like \"no\", \"nope\", \"nay\", \"nah\", \"not now\", \"no way\", \"no thanks\", \"not\", \"nevermind\", or \"negative\".",
       "automaticReprompt": false,
       "entityOrder": [],
       "createdAt": "2024-02-22T11:05:14.000Z",

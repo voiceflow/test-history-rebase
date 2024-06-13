@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1567.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1566.2...@voiceflow/creator-app@1.1567.0) (2024-06-13)
+
+### Features
+
+* fix `maxTokens` kb setting past limit (COR-2293) ([#8235](https://github.com/voiceflow/creator-app/issues/8235)) ([6a1bf4b](https://github.com/voiceflow/creator-app/commit/6a1bf4b15fe5fd5e22da157b9550cb002dc75ebc))
+
 ## [1.1566.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1566.1...@voiceflow/creator-app@1.1566.2) (2024-06-13)
 
 **Note:** Version bump only for package @voiceflow/creator-app

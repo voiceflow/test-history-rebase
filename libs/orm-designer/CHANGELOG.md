@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.76.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.75.0...@voiceflow/orm-designer@2.76.0) (2024-06-13)
+
+### Features
+
+* db migration for data in pathOrder column (COR-2269) ([#8253](https://github.com/voiceflow/creator-app/issues/8253)) ([3a5ff49](https://github.com/voiceflow/creator-app/commit/3a5ff495afe9d151264d12d01365269b16f6688d))
+
 # [2.75.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.74.1...@voiceflow/orm-designer@2.75.0) (2024-06-12)
 
 ### Features

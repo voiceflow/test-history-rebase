@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.392.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.391.0...@voiceflow/realtime@1.392.0) (2024-06-13)
+
+### Features
+
+* split datadog logs and apm for realtime services (IN-1135) ([#8291](https://github.com/voiceflow/creator-app/issues/8291)) ([7517384](https://github.com/voiceflow/creator-app/commit/7517384a46278a364890ad80b2c7bec4c31578e9))
+
 # [1.391.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.390.5...@voiceflow/realtime@1.391.0) (2024-06-13)
 
 ### Features

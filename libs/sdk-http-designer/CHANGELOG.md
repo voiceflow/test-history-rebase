@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.27.58](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-designer@2.27.57...@voiceflow/sdk-http-designer@2.27.58) (2024-06-13)
+
+**Note:** Version bump only for package @voiceflow/sdk-http-designer
+
 ## [2.27.57](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-designer@2.27.56...@voiceflow/sdk-http-designer@2.27.57) (2024-06-12)
 
 **Note:** Version bump only for package @voiceflow/sdk-http-designer

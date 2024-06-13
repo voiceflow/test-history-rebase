@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.390.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.390.1...@voiceflow/realtime@1.390.2) (2024-06-13)
+
+### Bug Fixes
+
+* migration during import [bugfix] (COR-000) ([#8286](https://github.com/voiceflow/creator-app/issues/8286)) ([96e6660](https://github.com/voiceflow/creator-app/commit/96e66604be0e7a998e25e1623b3ec4b9e2788400))
+
 ## [1.390.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.390.0...@voiceflow/realtime@1.390.1) (2024-06-12)
 
 ### Bug Fixes

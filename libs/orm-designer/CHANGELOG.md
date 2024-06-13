@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.77.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.76.0...@voiceflow/orm-designer@2.77.0) (2024-06-13)
+
+### Features
+
+* reference unique constraints (COR-000) ([#8265](https://github.com/voiceflow/creator-app/issues/8265)) ([cb4e8fb](https://github.com/voiceflow/creator-app/commit/cb4e8fb11bb55f92feda7364fd3f264da1f0c30e))
+
 # [2.76.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.75.0...@voiceflow/orm-designer@2.76.0) (2024-06-13)
 
 ### Features

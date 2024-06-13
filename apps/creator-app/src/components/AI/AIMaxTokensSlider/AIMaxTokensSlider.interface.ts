@@ -9,3 +9,7 @@ export interface IAIMaxTokensSlider {
   onValueSave: (value: number) => void;
   onValueChange: (value: number) => void;
 }
+
+export interface IAIMaxTokensWithLimitSlider extends IAIMaxTokensSlider {
+  limit: number;
+}

@@ -28,7 +28,7 @@ export const useGoToIntentMeta = (intentID: Nullable<string>, diagramID?: Nullab
   const goToIntent = intentID ? intentsMap[intentID] ?? null : null;
   const goToDiagram = diagramID ? diagramMap[diagramID] ?? null : null;
 
-  const map = referenceSystem ? globalIntentNodeIDsByIntentIDMapByDiagramIDMap : globalIntentStepMap;
+  const map = referenceSystem.isEnabled ? globalIntentNodeIDsByIntentIDMapByDiagramIDMap : globalIntentStepMap;
   const topicGoToNodeID = goToIntent && goToDiagram ? map[goToDiagram.id]?.[goToIntent.id]?.[0] ?? null : null;
   const componentGoToNodeID = topicGoToNodeID || (goToIntent ? intentIDNodeIDMap[goToIntent.id] ?? null : null);
 

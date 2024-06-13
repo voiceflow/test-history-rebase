@@ -24,7 +24,7 @@ const ColorSelect: React.FC<ColorSelectProps> = ({
   onPickerContainerMouseDown,
   ...colorPickerProps
 }) => (
-  <Popper onClose={onClose} renderContent={() => <ColorPicker {...colorPickerProps} />}>
+  <Popper onClose={onClose} renderContent={() => <ColorPicker {...colorPickerProps} />} portalNode={document.body}>
     {({ ref, onToggle, isOpened }) => (
       <ColorPreview
         ref={ref}

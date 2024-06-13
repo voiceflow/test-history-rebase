@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1568.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1567.1...@voiceflow/creator-app@1.1568.0) (2024-06-13)
+
+### Features
+
+* sunset NLU_EXPORT_ALL NLU_EXPORT_CSV and CANVAS_EXPORT (COR-2376) ([#8285](https://github.com/voiceflow/creator-app/issues/8285)) ([9c86e77](https://github.com/voiceflow/creator-app/commit/9c86e7740914d518b2c8ea1c5ba868a787912650))
+
 ## [1.1567.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1567.0...@voiceflow/creator-app@1.1567.1) (2024-06-13)
 
 ### Bug Fixes

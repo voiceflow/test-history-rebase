@@ -6,14 +6,23 @@ import { Actions, Channels } from '@voiceflow/sdk-logux-designer';
 
 import { BroadcastOnly, InjectRequestContext, UseRequestContext } from '@/common';
 
+import { ResponseLoguxService } from './response.logux.service';
+import { ResponseRepository } from './response.repository';
 import { ResponseService } from './response.service';
+import { ResponseDuplicateService } from './response-duplicate.service';
 
 @Controller()
 @InjectRequestContext()
 export class ResponseLoguxController {
   constructor(
     @Inject(ResponseService)
-    private readonly service: ResponseService
+    private readonly service: ResponseService,
+    @Inject(ResponseLoguxService)
+    private readonly logux: ResponseLoguxService,
+    @Inject(ResponseRepository)
+    private readonly repository: ResponseRepository,
+    @Inject(ResponseDuplicateService)
+    private readonly duplicateService: ResponseDuplicateService
   ) {}
 
   @Action.Async(Actions.Response.CreateOne)
@@ -22,13 +31,15 @@ export class ResponseLoguxController {
     kind: 'version',
   }))
   @UseRequestContext()
-  createOne(
+  async createOne(
     @Payload() { data, context }: Actions.Response.CreateOne.Request,
     @AuthMeta() auth: AuthMetaPayload
   ): Promise<Actions.Response.CreateOne.Response> {
-    return this.service
-      .createManyAndBroadcast([data], { auth, context })
-      .then(([result]) => ({ data: this.service.toJSON(result), context }));
+    const result = await this.repository.createManyResponses([data], { userID: auth.userID, context });
+
+    this.logux.broadcastAddMany({ add: result }, { auth, context });
+
+    return { data: this.repository.toJSON(result.responses[0]), context };
   }
 
   @Action.Async(Actions.Response.CreateMany)
@@ -37,13 +48,15 @@ export class ResponseLoguxController {
     kind: 'version',
   }))
   @UseRequestContext()
-  createMany(
+  async createMany(
     @Payload() { data, context }: Actions.Response.CreateMany.Request,
     @AuthMeta() auth: AuthMetaPayload
   ): Promise<Actions.Response.CreateMany.Response> {
-    return this.service
-      .createManyAndBroadcast(data, { auth, context })
-      .then((result) => ({ data: this.service.mapToJSON(result), context }));
+    const result = await this.repository.createManyResponses(data, { userID: auth.userID, context });
+
+    this.logux.broadcastAddMany({ add: result }, { auth, context });
+
+    return { data: this.repository.mapToJSON(result.responses), context };
   }
 
   @Action.Async(Actions.Response.DuplicateOne)
@@ -56,9 +69,8 @@ export class ResponseLoguxController {
     @Payload() { data, context }: Actions.Response.DuplicateOne.Request,
     @AuthMeta() auth: AuthMetaPayload
   ): Promise<Actions.Response.DuplicateOne.Response> {
-    return this.service
-      .duplicateManyAndBroadcast([data.responseID], { auth, context })
-      .then(([result]) => ({ data: { responseResource: this.service.toJSON(result) }, context }));
+    const result = await this.duplicateService.duplicate([data.responseID], { userID: auth.userID, context });
+    return { data: { responseResource: this.repository.toJSON(result.responses[0]) }, context };
   }
 
   @Action(Actions.Response.PatchOne)
@@ -70,7 +82,7 @@ export class ResponseLoguxController {
   @BroadcastOnly()
   @UseRequestContext()
   async patchOne(@Payload() { id, patch, context }: Actions.Response.PatchOne, @AuthMeta() auth: AuthMetaPayload) {
-    await this.service.patchOneForUser(auth.userID, { id, environmentID: context.environmentID }, patch);
+    await this.repository.patchOneForUser(auth.userID, { id, environmentID: context.environmentID }, patch);
   }
 
   @Action(Actions.Response.PatchMany)
@@ -82,7 +94,7 @@ export class ResponseLoguxController {
   @BroadcastOnly()
   @UseRequestContext()
   async patchMany(@Payload() { ids, patch, context }: Actions.Response.PatchMany, @AuthMeta() auth: AuthMetaPayload) {
-    await this.service.patchManyForUser(
+    await this.repository.patchManyForUser(
       auth.userID,
       ids.map((id) => ({ id, environmentID: context.environmentID })),
       patch
@@ -98,13 +110,20 @@ export class ResponseLoguxController {
   @BroadcastOnly()
   @UseRequestContext()
   async deleteOne(@Payload() { id, context }: Actions.Response.DeleteOne, @AuthMeta() auth: AuthMetaPayload) {
-    const result = await this.service.deleteManyAndSync([id], { userID: auth.userID, context });
+    const result = await this.repository.deleteManyResponsesAndRelations([id], { userID: auth.userID, context });
+
+    const broadcastResult = {
+      sync: { requiredEntities: result.requiredEntities },
+      delete: {
+        responseAttachments: result.responseAttachments,
+        responseDiscriminators: result.responseDiscriminators,
+        responseVariants: result.responseVariants,
+        responses: [],
+      },
+    };
 
     // overriding responses cause it's broadcasted by decorator
-    await this.service.broadcastDeleteMany(
-      { ...result, delete: { ...result.delete, responses: [] } },
-      { auth, context }
-    );
+    await this.logux.broadcastDeleteMany(broadcastResult, { auth, context });
   }
 
   @Action(Actions.Response.DeleteMany)
@@ -116,13 +135,20 @@ export class ResponseLoguxController {
   @BroadcastOnly()
   @UseRequestContext()
   async deleteMany(@Payload() { ids, context }: Actions.Response.DeleteMany, @AuthMeta() auth: AuthMetaPayload) {
-    const result = await this.service.deleteManyAndSync(ids, { userID: auth.userID, context });
+    const result = await this.repository.deleteManyResponsesAndRelations(ids, { userID: auth.userID, context });
+
+    const broadcastResult = {
+      sync: { requiredEntities: result.requiredEntities },
+      delete: {
+        responseAttachments: result.responseAttachments,
+        responseDiscriminators: result.responseDiscriminators,
+        responseVariants: result.responseVariants,
+        responses: [],
+      },
+    };
 
     // overriding responses cause it's broadcasted by decorator
-    await this.service.broadcastDeleteMany(
-      { ...result, delete: { ...result.delete, responses: [] } },
-      { auth, context }
-    );
+    await this.logux.broadcastDeleteMany(broadcastResult, { auth, context });
   }
 
   @Action(Actions.Response.AddOne)

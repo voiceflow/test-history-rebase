@@ -76,56 +76,58 @@ export class ResponseRepository extends CMSTabularService<ResponseORM> {
     data: ResponseCreateWithSubResourcesData[],
     { userID, context }: { userID: number; context: CMSContext }
   ) {
-    const dataWithIDs = data.map(({ id, variants, ...data }) => {
-      const responseID = id ?? new ObjectId().toJSON();
-      const discriminatorID = new ObjectId().toJSON();
+    return this.postgresEM.transactional(async () => {
+      const dataWithIDs = data.map(({ id, variants, ...data }) => {
+        const responseID = id ?? new ObjectId().toJSON();
+        const discriminatorID = new ObjectId().toJSON();
 
-      const variantsWithIDs = variants.map((variant) => ({
-        ...variant,
-        id: variant.id ?? new ObjectId().toJSON(),
-        assistantID: context.assistantID,
-        environmentID: context.environmentID,
-        discriminatorID,
-      }));
+        const variantsWithIDs = variants.map((variant) => ({
+          ...variant,
+          id: variant.id ?? new ObjectId().toJSON(),
+          assistantID: context.assistantID,
+          environmentID: context.environmentID,
+          discriminatorID,
+        }));
+
+        return {
+          ...data,
+          id: responseID,
+          variants: variantsWithIDs,
+          assistantID: context.assistantID,
+          environmentID: context.environmentID,
+          discriminator: {
+            id: discriminatorID,
+            channel: Channel.DEFAULT,
+            language: Language.ENGLISH_US,
+            responseID,
+            assistantID: context.assistantID,
+            variantOrder: toPostgresEntityIDs(variantsWithIDs),
+            environmentID: context.environmentID,
+          },
+        };
+      });
+
+      const responses = await this.createManyForUser(
+        userID,
+        dataWithIDs.map((data) => Utils.object.omit(data, ['variants', 'discriminator']))
+      );
+
+      const responseDiscriminators = await this.responseDiscriminator.createManyForUser(
+        userID,
+        dataWithIDs.map((data) => data.discriminator)
+      );
+
+      const responseVariantsWithSubResources = await this.responseVariant.createManyWithSubResources(
+        dataWithIDs.flatMap((data) => data.variants),
+        { userID, context }
+      );
 
       return {
-        ...data,
-        id: responseID,
-        variants: variantsWithIDs,
-        assistantID: context.assistantID,
-        environmentID: context.environmentID,
-        discriminator: {
-          id: discriminatorID,
-          channel: Channel.DEFAULT,
-          language: Language.ENGLISH_US,
-          responseID,
-          assistantID: context.assistantID,
-          variantOrder: toPostgresEntityIDs(variantsWithIDs),
-          environmentID: context.environmentID,
-        },
+        ...responseVariantsWithSubResources,
+        responses,
+        responseDiscriminators,
       };
     });
-
-    const responses = await this.createManyForUser(
-      userID,
-      dataWithIDs.map((data) => Utils.object.omit(data, ['variants', 'discriminator']))
-    );
-
-    const responseDiscriminators = await this.responseDiscriminator.createManyForUser(
-      userID,
-      dataWithIDs.map((data) => data.discriminator)
-    );
-
-    const responseVariantsWithSubResources = await this.responseVariant.createManyWithSubResources(
-      dataWithIDs.flatMap((data) => data.variants),
-      { userID, context }
-    );
-
-    return {
-      ...responseVariantsWithSubResources,
-      responses,
-      responseDiscriminators,
-    };
   }
 
   async deleteManyResponsesAndRelations(ids: string[], { userID, context }: { userID: number; context: CMSContext }) {

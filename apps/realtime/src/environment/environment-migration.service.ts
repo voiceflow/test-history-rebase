@@ -10,6 +10,7 @@ import { ResponseService } from '@/response/response.service';
 import { VariableService } from '@/variable/variable.service';
 import { WorkflowService } from '@/workflow/workflow.service';
 
+import { IntentsAndEntitiesData } from './environment.interface';
 import { CMSOnlyMigrationData, InternalMigrationData } from './environment-migration.interface';
 
 @Injectable()
@@ -85,6 +86,28 @@ export class EnvironmentMigrationService {
     await this.folder.upsertManyWithSubResources({ folders }, meta);
     await this.workflow.upsertManyWithSubResources({ workflows }, meta);
     await this.variable.upsertManyWithSubResources({ variables }, meta);
+    await this.entity.upsertManyWithSubResources({ entities, entityVariants }, meta);
+    await this.response.upsertManyWithSubResources(
+      { responses, responseVariants, responseAttachments: [], responseDiscriminators },
+      meta
+    );
+    await this.intent.upsertManyWithSubResources({ intents, utterances, requiredEntities }, meta);
+  }
+
+  async upsertIntentsAndEntities(
+    {
+      intents,
+      entities,
+      responses,
+      utterances,
+      entityVariants,
+      requiredEntities,
+      responseVariants,
+      responseDiscriminators,
+    }: IntentsAndEntitiesData,
+    meta: { userID: number; assistantID: string; environmentID: string }
+  ) {
+    // ORDER MATTERS
     await this.entity.upsertManyWithSubResources({ entities, entityVariants }, meta);
     await this.response.upsertManyWithSubResources(
       { responses, responseVariants, responseAttachments: [], responseDiscriminators },

@@ -13,7 +13,7 @@ export const response: EntityDTO<ResponseEntity> = {
   createdBy: { id: 1 } as any,
   updatedBy: { id: 2 } as any,
   folder: null,
-  type: ResponseType.TEXT,
+  type: ResponseType.MESSAGE,
 };
 
 export const responseList: EntityDTO<ResponseEntity>[] = [

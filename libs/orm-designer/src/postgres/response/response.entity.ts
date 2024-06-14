@@ -10,7 +10,7 @@ export class ResponseEntity extends PostgresCMSTabularEntity {
   @Enum({
     items: () => ResponseType,
     nullable: true,
-    default: ResponseType.TEXT,
+    default: ResponseType.MESSAGE,
   })
   type?: ResponseType | null;
 }

@@ -6,7 +6,7 @@ import * as VoiceflowCommon from '../../common';
 export const CONFIG = Base.Project.extend({
   ...VoiceflowCommon.Project.CONFIG,
 
-  name: 'Chat Assistant',
+  name: 'Chat Agent',
 })(Base.Project.validate);
 
 export type Config = typeof CONFIG;

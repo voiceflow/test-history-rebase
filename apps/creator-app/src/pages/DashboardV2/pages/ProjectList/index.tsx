@@ -28,9 +28,8 @@ import { getProjectSortFunction } from './utils';
 const ProjectList: React.FC = () => {
   const [search, setSearch] = React.useState('');
   const [sortBy, setSortBy] = React.useState<SortOptionType>(SortByOptions[0]);
-  const [canCreateAssistant] = usePermission(Permission.PROJECT_EDIT);
+  const [canCreateAssistant] = usePermission(Permission.PROJECT_UPDATE);
   const proReverseTrial = useFeature(Realtime.FeatureFlag.PRO_REVERSE_TRIAL);
-  const cmsWorkflows = useFeature(Realtime.FeatureFlag.CMS_WORKFLOWS);
   const isEnterprise = useSelector(WorkspaceV2.active.isEnterpriseSelector);
   const location = useLocation();
   const history = useHistory();
@@ -41,12 +40,10 @@ const ProjectList: React.FC = () => {
   const userID = useSelector(Account.userIDSelector)!;
   const projects = useSelector(ProjectV2.allProjectsSelector);
   const awarenessViewers = useSelector(ProjectV2.awarenessViewersSelector);
-  const getMemberByIDSelector = useSelector(WorkspaceV2.active.getMemberByIDSelector);
+  const getMemberByIDSelector = useSelector(WorkspaceV2.active.members.getMemberByIDSelector);
   const isTrialExpired = useSelector(WorkspaceV2.active.organizationTrialExpiredSelector);
 
   const goToCMSWorkflow = useDispatch(Router.goToCMSWorkflow);
-  const goToCanvasWithVersionID = useDispatch(Router.goToCanvasWithVersionID);
-  const goToAssistantOverview = useDispatch(Router.goToAssistantOverview);
 
   const activeViewersPerProject = React.useMemo(
     () =>
@@ -95,7 +92,7 @@ const ProjectList: React.FC = () => {
         {!search && <Banner />}
 
         <Box.FlexApart fullWidth mb={10}>
-          <SearchBar value={search} onSearch={setSearch} placeholder="Search assistants" noBorder animateIn={false} />
+          <SearchBar value={search} onSearch={setSearch} placeholder="Search agents" noBorder animateIn={false} />
           <S.StyledSelect
             value={sortBy}
             borderLess
@@ -119,12 +116,20 @@ const ProjectList: React.FC = () => {
         {hasProjects && (
           <S.Grid>
             {projectToRender.map((item) => (
-              <ProjectIdentityProvider key={item.id} projectID={item.id} projectRole={Normal.getOne(item.members, String(userID))?.role ?? null}>
+              <ProjectIdentityProvider
+                key={item.id}
+                projectID={item.id}
+                projectRole={Normal.getOne(item.members, String(userID))?.role ?? null}
+              >
                 <AssistantCard
-                  {...getProjectStatusAndMembers({ project: item, activeViewers: activeViewersPerProject[item.id], getMemberByIDSelector })}
+                  {...getProjectStatusAndMembers({
+                    project: item,
+                    activeViewers: activeViewersPerProject[item.id],
+                    getMemberByIDSelector,
+                  })}
                   project={item}
-                  onClickCard={() => (cmsWorkflows.isEnabled ? goToCMSWorkflow(item.versionID) : goToAssistantOverview(item.versionID))}
-                  onClickDesigner={() => (cmsWorkflows.isEnabled ? goToCMSWorkflow(item.versionID) : goToCanvasWithVersionID(item.versionID))}
+                  onClickCard={() => goToCMSWorkflow(item.versionID)}
+                  onClickDesigner={() => goToCMSWorkflow(item.versionID)}
                 />
               </ProjectIdentityProvider>
             ))}

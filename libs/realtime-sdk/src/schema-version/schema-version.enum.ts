@@ -185,6 +185,11 @@ export const SchemaVersion = {
    * migrates domains and topics to workflows
    */
   V8_00: 8.0,
+
+  /**
+   * migrates intent steps to triggers
+   */
+  V9_00: 9.0,
 } as const;
 
 export type SchemaVersion = (typeof SchemaVersion)[keyof typeof SchemaVersion];

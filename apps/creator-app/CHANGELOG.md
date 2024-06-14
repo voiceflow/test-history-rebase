@@ -3,6 +3,482 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1569.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1568.0...@voiceflow/creator-app@1.1569.0) (2024-06-14)
+
+### Features
+
+* remove trigger step ff (COR-2359) ([#8293](https://github.com/voiceflow/creator-app/issues/8293)) ([d51f93c](https://github.com/voiceflow/creator-app/commit/d51f93cb10020f9de507d9109d8100c26ae06a46))
+
+# [1.1568.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1567.1...@voiceflow/creator-app@1.1568.0) (2024-06-13)
+
+### Features
+
+* sunset NLU_EXPORT_ALL NLU_EXPORT_CSV and CANVAS_EXPORT (COR-2376) ([#8285](https://github.com/voiceflow/creator-app/issues/8285)) ([9c86e77](https://github.com/voiceflow/creator-app/commit/9c86e7740914d518b2c8ea1c5ba868a787912650))
+
+## [1.1567.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1567.0...@voiceflow/creator-app@1.1567.1) (2024-06-13)
+
+### Bug Fixes
+
+* linting changes (COR-2360) ([#8302](https://github.com/voiceflow/creator-app/issues/8302)) ([b13f95e](https://github.com/voiceflow/creator-app/commit/b13f95e165144fa6b9047fbafc8f77d17dfb5ce9))
+
+# [1.1567.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1566.2...@voiceflow/creator-app@1.1567.0) (2024-06-13)
+
+### Features
+
+* fix `maxTokens` kb setting past limit (COR-2293) ([#8235](https://github.com/voiceflow/creator-app/issues/8235)) ([6a1bf4b](https://github.com/voiceflow/creator-app/commit/6a1bf4b15fe5fd5e22da157b9550cb002dc75ebc))
+
+## [1.1566.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1566.1...@voiceflow/creator-app@1.1566.2) (2024-06-13)
+
+**Note:** Version bump only for package @voiceflow/creator-app
+
+## [1.1566.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1566.0...@voiceflow/creator-app@1.1566.1) (2024-06-13)
+
+### Bug Fixes
+
+* go to intent action [bugfix] (COR-2387) ([#8300](https://github.com/voiceflow/creator-app/issues/8300)) ([f015987](https://github.com/voiceflow/creator-app/commit/f015987e2c1f2e2f6b18689d79a7d5e3e0339141))
+
+# [1.1566.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1565.0...@voiceflow/creator-app@1.1566.0) (2024-06-13)
+
+### Features
+
+* sunset FEATURE_AI_PLAYGROUND_DISCLAIMER (COR-2383) ([#8290](https://github.com/voiceflow/creator-app/issues/8290)) ([4ed74df](https://github.com/voiceflow/creator-app/commit/4ed74df4290d3d1dcb1977c968b6b0270ba70ad3))
+
+# [1.1565.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1564.0...@voiceflow/creator-app@1.1565.0) (2024-06-13)
+
+### Features
+
+* sunset FEATURE_CUSTOMIZE_PROTOTYPE (COR-2381) ([#8288](https://github.com/voiceflow/creator-app/issues/8288)) ([c5b4fd1](https://github.com/voiceflow/creator-app/commit/c5b4fd177664372dc7313460aa8371b285e1916b))
+
+# [1.1564.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1563.1...@voiceflow/creator-app@1.1564.0) (2024-06-13)
+
+### Features
+
+* sunset FEATURE_EXPORT_CODE (COR-2380) ([#8287](https://github.com/voiceflow/creator-app/issues/8287)) ([4b8fb54](https://github.com/voiceflow/creator-app/commit/4b8fb54f2b6c7bfd6a6b2c765a07c32eafcf355f))
+
+## [1.1563.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1563.0...@voiceflow/creator-app@1.1563.1) (2024-06-13)
+
+**Note:** Version bump only for package @voiceflow/creator-app
+
+# [1.1563.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1562.3...@voiceflow/creator-app@1.1563.0) (2024-06-13)
+
+### Features
+
+* sunset FEATURE_FULL_BACKUP_HISTORY (COR-2382) ([#8289](https://github.com/voiceflow/creator-app/issues/8289)) ([7caadc1](https://github.com/voiceflow/creator-app/commit/7caadc1a9ae2a7f3bd282db565d613051d8a1c40))
+
+## [1.1562.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1562.2...@voiceflow/creator-app@1.1562.3) (2024-06-13)
+
+**Note:** Version bump only for package @voiceflow/creator-app
+
+## [1.1562.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1562.1...@voiceflow/creator-app@1.1562.2) (2024-06-13)
+
+**Note:** Version bump only for package @voiceflow/creator-app
+
+## [1.1562.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1562.0...@voiceflow/creator-app@1.1562.1) (2024-06-13)
+
+**Note:** Version bump only for package @voiceflow/creator-app
+
+# [1.1562.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1561.2...@voiceflow/creator-app@1.1562.0) (2024-06-12)
+
+### Features
+
+* sunset BULK_UPLOAD (COR-2374) ([#8280](https://github.com/voiceflow/creator-app/issues/8280)) ([002dbfc](https://github.com/voiceflow/creator-app/commit/002dbfc0cc20db234050e63ee675284d59019c7a))
+
+## [1.1561.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1561.1...@voiceflow/creator-app@1.1561.2) (2024-06-12)
+
+### Bug Fixes
+
+* update position of upgrade to show button (COR-2338) ([#8262](https://github.com/voiceflow/creator-app/issues/8262)) ([23f79f1](https://github.com/voiceflow/creator-app/commit/23f79f11f499b78d30cabe03e74feba352ace53b))
+
+## [1.1561.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1561.0...@voiceflow/creator-app@1.1561.1) (2024-06-12)
+
+**Note:** Version bump only for package @voiceflow/creator-app
+
+# [1.1561.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1560.0...@voiceflow/creator-app@1.1561.0) (2024-06-12)
+
+### Features
+
+* add message ducks (COR-2309) ([#8237](https://github.com/voiceflow/creator-app/issues/8237)) ([5d78786](https://github.com/voiceflow/creator-app/commit/5d787867f0aa07d07004f2dcb6a4c958c3e9f3d7))
+
+# [1.1560.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1559.0...@voiceflow/creator-app@1.1560.0) (2024-06-12)
+
+### Features
+
+* add proper prefix to permissions (COR-2357) ([#8273](https://github.com/voiceflow/creator-app/issues/8273)) ([af2c1b0](https://github.com/voiceflow/creator-app/commit/af2c1b0c3e3ad8252b9c168c7e5a74be88c7638e))
+
+# [1.1559.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1558.0...@voiceflow/creator-app@1.1559.0) (2024-06-12)
+
+### Features
+
+* replace global intent nodes selector (COR-000) ([#8259](https://github.com/voiceflow/creator-app/issues/8259)) ([562ed52](https://github.com/voiceflow/creator-app/commit/562ed52e0f170f1e16e0ca57337538bc8401f109))
+
+# [1.1558.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1557.0...@voiceflow/creator-app@1.1558.0) (2024-06-12)
+
+### Features
+
+* triggers migration [bugfix] (COR-2022) ([#8096](https://github.com/voiceflow/creator-app/issues/8096)) ([ed45ce0](https://github.com/voiceflow/creator-app/commit/ed45ce0fbc0b9c16f3cd25a3ac78a736a5ced4ba))
+
+# [1.1557.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1556.0...@voiceflow/creator-app@1.1557.0) (2024-06-12)
+
+### Features
+
+* replace other shared nodes selectors (COR-000) ([#8258](https://github.com/voiceflow/creator-app/issues/8258)) ([35e13fe](https://github.com/voiceflow/creator-app/commit/35e13fef24ec8f40b94dd6e4cfdfd4de32a314c8))
+
+# [1.1556.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1555.0...@voiceflow/creator-app@1.1556.0) (2024-06-12)
+
+### Features
+
+* replace shared node selector with reference system one (COR-000) ([#8252](https://github.com/voiceflow/creator-app/issues/8252)) ([e9857ea](https://github.com/voiceflow/creator-app/commit/e9857ea0f613fe9ef829dc6e0009b441f5c08014))
+
+# [1.1555.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1554.1...@voiceflow/creator-app@1.1555.0) (2024-06-12)
+
+### Features
+
+* reference duck (COR-000) ([#8248](https://github.com/voiceflow/creator-app/issues/8248)) ([9ebebbf](https://github.com/voiceflow/creator-app/commit/9ebebbfd555d2e9684699d648e90c34f5501dfb2))
+
+## [1.1554.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1554.0...@voiceflow/creator-app@1.1554.1) (2024-06-11)
+
+### Bug Fixes
+
+* header button test id (DX-1650) ([#8272](https://github.com/voiceflow/creator-app/issues/8272)) ([84e1386](https://github.com/voiceflow/creator-app/commit/84e1386a4246440d1852d75cc4ac900c8838c447))
+
+# [1.1554.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1553.2...@voiceflow/creator-app@1.1554.0) (2024-06-11)
+
+### Features
+
+* remove unused permissions (COR-2347) ([#8268](https://github.com/voiceflow/creator-app/issues/8268)) ([61019e5](https://github.com/voiceflow/creator-app/commit/61019e5e9c51c287a62d16788d587467e35cc71b))
+
+## [1.1553.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1553.1...@voiceflow/creator-app@1.1553.2) (2024-06-11)
+
+### Bug Fixes
+
+* zendesk integration (COR-000) ([#8269](https://github.com/voiceflow/creator-app/issues/8269)) ([eeec411](https://github.com/voiceflow/creator-app/commit/eeec411bda9668b6602114d4c75274400739bacc))
+
+## [1.1553.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1553.0...@voiceflow/creator-app@1.1553.1) (2024-06-11)
+
+**Note:** Version bump only for package @voiceflow/creator-app
+
+# [1.1553.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1552.1...@voiceflow/creator-app@1.1553.0) (2024-06-11)
+
+### Features
+
+* v3 set editor base UI (COR-2294) (COR-2192) ([#8244](https://github.com/voiceflow/creator-app/issues/8244)) ([44234d9](https://github.com/voiceflow/creator-app/commit/44234d964e1143be0559634087a9af6172682aa7))
+
+## [1.1552.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1552.0...@voiceflow/creator-app@1.1552.1) (2024-06-11)
+
+### Bug Fixes
+
+* add utm tracking via cookie [bugfix] (COR-2337) ([#8261](https://github.com/voiceflow/creator-app/issues/8261)) ([27ed66d](https://github.com/voiceflow/creator-app/commit/27ed66d05f5f4e67d22fe427b6e6c37a09e38559))
+
+# [1.1552.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1551.0...@voiceflow/creator-app@1.1552.0) (2024-06-11)
+
+### Features
+
+* implement compose component and use it on global providers (COR-2346) ([#8263](https://github.com/voiceflow/creator-app/issues/8263)) ([02e22e7](https://github.com/voiceflow/creator-app/commit/02e22e727261818dbcc90d7fdcdc422f917e8855))
+
+# [1.1551.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1550.6...@voiceflow/creator-app@1.1551.0) (2024-06-11)
+
+### Features
+
+* make the function paths draggable in the CMS editor (COR-8227) ([#8249](https://github.com/voiceflow/creator-app/issues/8249)) ([a527447](https://github.com/voiceflow/creator-app/commit/a5274474fa454d8dbb95cb5124b8c97ad2054d97))
+
+## [1.1550.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1550.5...@voiceflow/creator-app@1.1550.6) (2024-06-11)
+
+**Note:** Version bump only for package @voiceflow/creator-app
+
+## [1.1550.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1550.4...@voiceflow/creator-app@1.1550.5) (2024-06-10)
+
+### Bug Fixes
+
+* use proper entitlement for workspace limit (COR-2345) ([#8260](https://github.com/voiceflow/creator-app/issues/8260)) ([a56daca](https://github.com/voiceflow/creator-app/commit/a56daca2687f8962d52b00af0006c632d7fb6686)), closes [/github.com/voiceflow/creator-app/blob/a2110f4649b149c488e310953ecd74f2a12f20d8/apps/creator-app/src/hooks/planLimitV3.ts#L29-L34](https://github.com//github.com/voiceflow/creator-app/blob/a2110f4649b149c488e310953ecd74f2a12f20d8/apps/creator-app/src/hooks/planLimitV3.ts/issues/L29-L34)
+
+## [1.1550.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1550.3...@voiceflow/creator-app@1.1550.4) (2024-06-10)
+
+### Bug Fixes
+
+* kb preview disable sources  (COR-2330) ([#8234](https://github.com/voiceflow/creator-app/issues/8234)) ([abc7b36](https://github.com/voiceflow/creator-app/commit/abc7b36a1cad9198c62e60c5d09ad16587f04d5c))
+
+## [1.1550.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1550.2...@voiceflow/creator-app@1.1550.3) (2024-06-10)
+
+**Note:** Version bump only for package @voiceflow/creator-app
+
+## [1.1550.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1550.1...@voiceflow/creator-app@1.1550.2) (2024-06-10)
+
+**Note:** Version bump only for package @voiceflow/creator-app
+
+## [1.1550.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1550.0...@voiceflow/creator-app@1.1550.1) (2024-06-10)
+
+### Bug Fixes
+
+* ux package (COR-2302)(COR-2285) ([#8222](https://github.com/voiceflow/creator-app/issues/8222)) ([d56b274](https://github.com/voiceflow/creator-app/commit/d56b27411561b0ed9a6edf0bc78c0f06cfe3653a))
+
+# [1.1550.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1549.2...@voiceflow/creator-app@1.1550.0) (2024-06-10)
+
+### Features
+
+* remove export item feature flag (COR-2139) ([#8251](https://github.com/voiceflow/creator-app/issues/8251)) ([d40e089](https://github.com/voiceflow/creator-app/commit/d40e089d9ed39cc9b49f812e21f4ef437a1d050e))
+
+## [1.1549.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1549.1...@voiceflow/creator-app@1.1549.2) (2024-06-10)
+
+**Note:** Version bump only for package @voiceflow/creator-app
+
+## [1.1549.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1549.0...@voiceflow/creator-app@1.1549.1) (2024-06-07)
+
+**Note:** Version bump only for package @voiceflow/creator-app
+
+# [1.1549.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1548.2...@voiceflow/creator-app@1.1549.0) (2024-06-07)
+
+### Features
+
+* load env data via http (COR-000) ([#8230](https://github.com/voiceflow/creator-app/issues/8230)) ([2b8b1a2](https://github.com/voiceflow/creator-app/commit/2b8b1a254bdb9a09f747ff26227d1d79ae7acc66))
+
+## [1.1548.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1548.1...@voiceflow/creator-app@1.1548.2) (2024-06-07)
+
+**Note:** Version bump only for package @voiceflow/creator-app
+
+## [1.1548.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1548.0...@voiceflow/creator-app@1.1548.1) (2024-06-07)
+
+### Bug Fixes
+
+* retry integrate org members (COR-2143) ([#8183](https://github.com/voiceflow/creator-app/issues/8183)) ([2b5e0b4](https://github.com/voiceflow/creator-app/commit/2b5e0b4882240a03e64e5f9940cb76d26bf261da))
+
+# [1.1548.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1547.0...@voiceflow/creator-app@1.1548.0) (2024-06-06)
+
+### Bug Fixes
+
+* add test-id to navigation button in canvas header(DX-1786) ([#8245](https://github.com/voiceflow/creator-app/issues/8245)) ([deb35b2](https://github.com/voiceflow/creator-app/commit/deb35b273070b10531189bf0468f56dea7d9bbb3))
+
+### Features
+
+* allow teams to buy top up tokens (COR-2226) ([#8243](https://github.com/voiceflow/creator-app/issues/8243)) ([c1b2790](https://github.com/voiceflow/creator-app/commit/c1b279029cb25e04ef6fb08c078853b011545564))
+
+# [1.1547.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1546.0...@voiceflow/creator-app@1.1547.0) (2024-06-06)
+
+### Features
+
+* add partnerKey to signup (COR-1891) ([#8152](https://github.com/voiceflow/creator-app/issues/8152)) ([5e6f9de](https://github.com/voiceflow/creator-app/commit/5e6f9de63a45f1b28bafd773e67b8fde07877164))
+
+# [1.1546.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1545.0...@voiceflow/creator-app@1.1546.0) (2024-06-06)
+
+### Features
+
+* move workspace members selectors to a separate file (COR-2199) ([#8189](https://github.com/voiceflow/creator-app/issues/8189)) ([80c900a](https://github.com/voiceflow/creator-app/commit/80c900af8f9350e9612bcb8912388738885487db))
+
+# [1.1545.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1544.1...@voiceflow/creator-app@1.1545.0) (2024-06-06)
+
+### Features
+
+* add load env endpoint (COR-000) ([#8229](https://github.com/voiceflow/creator-app/issues/8229)) ([6b0896c](https://github.com/voiceflow/creator-app/commit/6b0896cbf98cb8ded511132d36afe28ed27f8f63))
+
+## [1.1544.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1544.0...@voiceflow/creator-app@1.1544.1) (2024-06-06)
+
+### Bug Fixes
+
+* small ux fixes package (COR-2332)(COR-2334) ([#8233](https://github.com/voiceflow/creator-app/issues/8233)) ([d05edf7](https://github.com/voiceflow/creator-app/commit/d05edf780d06066c2ebf5f027babdbea3afa7728))
+
+# [1.1544.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1543.0...@voiceflow/creator-app@1.1544.0) (2024-06-06)
+
+### Features
+
+* remove http_assistant_cms ff (COR-000) ([#8228](https://github.com/voiceflow/creator-app/issues/8228)) ([8c796d8](https://github.com/voiceflow/creator-app/commit/8c796d8cdf83bf7a77e425626f358662b58c87da))
+
+# [1.1543.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1542.7...@voiceflow/creator-app@1.1543.0) (2024-06-06)
+
+### Features
+
+* listen steps nodes (COR-000) ([#8200](https://github.com/voiceflow/creator-app/issues/8200)) ([ddda564](https://github.com/voiceflow/creator-app/commit/ddda564467f52b48506849199c30c6c1186fc816))
+
+## [1.1542.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1542.6...@voiceflow/creator-app@1.1542.7) (2024-06-05)
+
+### Bug Fixes
+
+* remove speed slider component [bugfix] (COR-000) ([#8225](https://github.com/voiceflow/creator-app/issues/8225)) ([a19bc89](https://github.com/voiceflow/creator-app/commit/a19bc89764ed9e379031522890af7c2e39a2b0a3))
+
+## [1.1542.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1542.5...@voiceflow/creator-app@1.1542.6) (2024-06-05)
+
+**Note:** Version bump only for package @voiceflow/creator-app
+
+## [1.1542.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1542.4...@voiceflow/creator-app@1.1542.5) (2024-06-05)
+
+**Note:** Version bump only for package @voiceflow/creator-app
+
+## [1.1542.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1542.3...@voiceflow/creator-app@1.1542.4) (2024-06-05)
+
+**Note:** Version bump only for package @voiceflow/creator-app
+
+## [1.1542.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1542.2...@voiceflow/creator-app@1.1542.3) (2024-06-05)
+
+**Note:** Version bump only for package @voiceflow/creator-app
+
+## [1.1542.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1542.1...@voiceflow/creator-app@1.1542.2) (2024-06-05)
+
+### Bug Fixes
+
+* update the port to 3000 ([#8231](https://github.com/voiceflow/creator-app/issues/8231)) ([a0695d3](https://github.com/voiceflow/creator-app/commit/a0695d36cb257e70669f17dfe8ce76f7601bc7cc))
+
+## [1.1542.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1542.0...@voiceflow/creator-app@1.1542.1) (2024-06-04)
+
+**Note:** Version bump only for package @voiceflow/creator-app
+
+# [1.1542.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1541.0...@voiceflow/creator-app@1.1542.0) (2024-06-04)
+
+### Features
+
+* fix circ dependency issue (COR-000) ([#8226](https://github.com/voiceflow/creator-app/issues/8226)) ([a9bbc47](https://github.com/voiceflow/creator-app/commit/a9bbc47064e4f8773b24c861238b32d718f96198))
+
+# [1.1541.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1540.5...@voiceflow/creator-app@1.1541.0) (2024-06-04)
+
+### Features
+
+* kill custom query onboarding flows [bugfix] (COR-2230) ([#8195](https://github.com/voiceflow/creator-app/issues/8195)) ([65f8ac6](https://github.com/voiceflow/creator-app/commit/65f8ac6cff26b1282ef103b583ed64c29ecd1268))
+
+## [1.1540.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1540.4...@voiceflow/creator-app@1.1540.5) (2024-06-04)
+
+**Note:** Version bump only for package @voiceflow/creator-app
+
+## [1.1540.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1540.3...@voiceflow/creator-app@1.1540.4) (2024-06-04)
+
+**Note:** Version bump only for package @voiceflow/creator-app
+
+## [1.1540.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1540.2...@voiceflow/creator-app@1.1540.3) (2024-06-04)
+
+### Bug Fixes
+
+* close editors on drag (COR-2286) ([#8219](https://github.com/voiceflow/creator-app/issues/8219)) ([e9a4468](https://github.com/voiceflow/creator-app/commit/e9a4468b8b761abaabcc55c9068740162706de6f))
+
+## [1.1540.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1540.1...@voiceflow/creator-app@1.1540.2) (2024-06-03)
+
+**Note:** Version bump only for package @voiceflow/creator-app
+
+## [1.1540.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1540.0...@voiceflow/creator-app@1.1540.1) (2024-06-03)
+
+### Bug Fixes
+
+* hide share prototype button in testing (COR-2284) ([#8211](https://github.com/voiceflow/creator-app/issues/8211)) ([b2e38ce](https://github.com/voiceflow/creator-app/commit/b2e38ce174fef9741898ac7496be2128657b306e))
+
+# [1.1540.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1539.0...@voiceflow/creator-app@1.1540.0) (2024-06-03)
+
+### Features
+
+* adds assertions column to expression condition schema (COR-2095) ([#8128](https://github.com/voiceflow/creator-app/issues/8128)) ([d61171c](https://github.com/voiceflow/creator-app/commit/d61171cc241e92ecf7ec54c5b43d950d55dfd851))
+
+# [1.1539.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1538.0...@voiceflow/creator-app@1.1539.0) (2024-06-03)
+
+### Features
+
+* implement step editor (COR-1941) ([#8153](https://github.com/voiceflow/creator-app/issues/8153)) ([38258cd](https://github.com/voiceflow/creator-app/commit/38258cd252408af766a955d818e00d4cdc184c0b))
+
+# [1.1538.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1537.2...@voiceflow/creator-app@1.1538.0) (2024-06-03)
+
+### Features
+
+* remove workflows ff [bugfix] (COR-000) ([#8142](https://github.com/voiceflow/creator-app/issues/8142)) ([1889fb7](https://github.com/voiceflow/creator-app/commit/1889fb7ee7471e6970a8e541038c2ab41c92eba5))
+
+## [1.1537.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1537.1...@voiceflow/creator-app@1.1537.2) (2024-06-01)
+
+**Note:** Version bump only for package @voiceflow/creator-app
+
+## [1.1537.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1537.0...@voiceflow/creator-app@1.1537.1) (2024-05-31)
+
+**Note:** Version bump only for package @voiceflow/creator-app
+
+# [1.1537.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1536.3...@voiceflow/creator-app@1.1537.0) (2024-05-31)
+
+### Features
+
+* bump topup tokens [bugfix] (COR-2263) ([#8208](https://github.com/voiceflow/creator-app/issues/8208)) ([bfcd51c](https://github.com/voiceflow/creator-app/commit/bfcd51c52e3027e28d1ab10af2273cd0f82949f6))
+
+## [1.1536.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1536.2...@voiceflow/creator-app@1.1536.3) (2024-05-31)
+
+### Bug Fixes
+
+* update copy for bulk utterance/entity upload modal (COR-2266) ([#8207](https://github.com/voiceflow/creator-app/issues/8207)) ([8cc5adc](https://github.com/voiceflow/creator-app/commit/8cc5adc3c1326d3c1b903af8b8df5234d4c4eb38))
+
+## [1.1536.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1536.1...@voiceflow/creator-app@1.1536.2) (2024-05-31)
+
+### Bug Fixes
+
+* small UI package (COR-2264)(COR-2242) ([#8205](https://github.com/voiceflow/creator-app/issues/8205)) ([2bdda06](https://github.com/voiceflow/creator-app/commit/2bdda06868f93eda3230d58f249d1e8df11ca33f))
+
+## [1.1536.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1536.0...@voiceflow/creator-app@1.1536.1) (2024-05-31)
+
+### Bug Fixes
+
+* small ui package (COR-2229)(COR-2204) ([#8202](https://github.com/voiceflow/creator-app/issues/8202)) ([82d00f2](https://github.com/voiceflow/creator-app/commit/82d00f26a8ece958cd9afb1c166c8cc126b82970))
+
+# [1.1536.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1535.0...@voiceflow/creator-app@1.1536.0) (2024-05-31)
+
+### Features
+
+* use workspaceID for org permissions [bugfix] (COR-2231) ([#8197](https://github.com/voiceflow/creator-app/issues/8197)) ([997e987](https://github.com/voiceflow/creator-app/commit/997e98798352a215c0c30b5b22d74768b11c6f12))
+
+# [1.1535.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1534.1...@voiceflow/creator-app@1.1535.0) (2024-05-31)
+
+### Features
+
+* bulk entity values upload (COR-2208) ([#8204](https://github.com/voiceflow/creator-app/issues/8204)) ([98361ec](https://github.com/voiceflow/creator-app/commit/98361ecf6b48126cb7592d4f3b203056e5e169b6))
+
+## [1.1534.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1534.0...@voiceflow/creator-app@1.1534.1) (2024-05-30)
+
+**Note:** Version bump only for package @voiceflow/creator-app
+
+# [1.1534.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1533.2...@voiceflow/creator-app@1.1534.0) (2024-05-30)
+
+### Features
+
+* replace assistant with agent (COR-2207) ([#8196](https://github.com/voiceflow/creator-app/issues/8196)) ([ef9a50d](https://github.com/voiceflow/creator-app/commit/ef9a50d9216ac6d9d30671985f9e1c6f2fca20b7))
+
+## [1.1533.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1533.1...@voiceflow/creator-app@1.1533.2) (2024-05-30)
+
+### Bug Fixes
+
+* dont add empty utterances on submit (COR-2163) ([#8185](https://github.com/voiceflow/creator-app/issues/8185)) ([b9891b8](https://github.com/voiceflow/creator-app/commit/b9891b806fca072177ca9e9263308d83b4d68740))
+
+## [1.1533.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1533.0...@voiceflow/creator-app@1.1533.1) (2024-05-30)
+
+### Bug Fixes
+
+* don't close the EditSidebar when pasting into a SlateEditor (COR-2205) ([#8192](https://github.com/voiceflow/creator-app/issues/8192)) ([cdd69ad](https://github.com/voiceflow/creator-app/commit/cdd69add9bf0fa0b595f3b06ef7af356cc7847b3))
+
+# [1.1533.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1532.0...@voiceflow/creator-app@1.1533.0) (2024-05-29)
+
+### Features
+
+* replace internal UserRole with dto UserRole (COR-2206) ([#8190](https://github.com/voiceflow/creator-app/issues/8190)) ([363abb0](https://github.com/voiceflow/creator-app/commit/363abb09d576d711aee1afa2135de68a641ce253))
+
+# [1.1532.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1531.2...@voiceflow/creator-app@1.1532.0) (2024-05-29)
+
+### Features
+
+* add tracking event to 'Start Course' banner button (COR-1994) ([#8191](https://github.com/voiceflow/creator-app/issues/8191)) ([f1865b1](https://github.com/voiceflow/creator-app/commit/f1865b11c18f7396a66d2d6e216a7d0c844af0d3))
+
+## [1.1531.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1531.1...@voiceflow/creator-app@1.1531.2) (2024-05-29)
+
+### Bug Fixes
+
+* remove ESC hotkey from canvas (COR-2184) ([#8184](https://github.com/voiceflow/creator-app/issues/8184)) ([3743a68](https://github.com/voiceflow/creator-app/commit/3743a68dabaf731818d041380b5326b3f0dab7ef))
+
+## [1.1531.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1531.0...@voiceflow/creator-app@1.1531.1) (2024-05-29)
+
+### Bug Fixes
+
+* folders (COR-2155) (COR-2154) ([#8187](https://github.com/voiceflow/creator-app/issues/8187)) ([75b672c](https://github.com/voiceflow/creator-app/commit/75b672c16f8f6549652b0c00fdafbd5bbe82b2a5))
+
+# [1.1531.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1530.2...@voiceflow/creator-app@1.1531.0) (2024-05-29)
+
+### Bug Fixes
+
+* allow dragging selected markup node (COR-2039) ([#8193](https://github.com/voiceflow/creator-app/issues/8193)) ([9eaad5a](https://github.com/voiceflow/creator-app/commit/9eaad5a2bdc5337e977fb2db358ede5d2298dc9e))
+
+### Features
+
+* add subscription modified tracking (COR-2091) ([#8182](https://github.com/voiceflow/creator-app/issues/8182)) ([b303e1a](https://github.com/voiceflow/creator-app/commit/b303e1a404a2f8ba772d5e9dc6d7ca40f3ba6118))
+
+## [1.1530.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1530.1...@voiceflow/creator-app@1.1530.2) (2024-05-28)
+
+### Bug Fixes
+
+* handle channel loading errors (COR-1986) ([#8181](https://github.com/voiceflow/creator-app/issues/8181)) ([acfab78](https://github.com/voiceflow/creator-app/commit/acfab781411115e6c8deb52d480beb52fbe155e4))
+
 ## [1.1530.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1530.0...@voiceflow/creator-app@1.1530.1) (2024-05-27)
 
 **Note:** Version bump only for package @voiceflow/creator-app

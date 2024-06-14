@@ -14,7 +14,7 @@ const EmptySearchPage: React.FC<SearchButtonProps> = ({ onClear }) => (
     </Text>
 
     <Text color="#62778C" width="250px" textAlign="center">
-      Create your first assistant, or get started with a tutorial.
+      Create your first agent, or get started with a tutorial.
       <Link onClick={onClear} paddingLeft="4px">
         Clear filters
       </Link>

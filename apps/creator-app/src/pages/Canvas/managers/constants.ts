@@ -24,7 +24,6 @@ import DisplayManager from './Display';
 import EventManager from './Event';
 import ExitManager from './Exit';
 import FunctionManager from './FunctionManager/Function.manager';
-import GoToDomainManager from './GoToDomain';
 import GoToIntentManager from './GoToIntent';
 import GoToNodeManager from './GoToNode';
 import IfManagerV2 from './IfV2';
@@ -38,7 +37,8 @@ import PermissionManager from './Permission';
 import PromptManager from './Prompt';
 import RandomManagerV2 from './RandomV2';
 import ReminderManager from './Reminder';
-import SetManagerV2 from './SetV2';
+import ResponseManager from './ResponseManager/Response.manager';
+import { SetV2Manager } from './SetV2/SetV2.manager';
 import SpeakManager from './Speak';
 import { StartManager } from './Start/Start.manager';
 import StreamManager from './Stream';
@@ -58,8 +58,8 @@ export const MANAGERS_BY_TYPE = {
   [BlockType.COMMAND]: DeprecatedManager,
   [BlockType.PAYLOAD]: CustomPayloadManager,
   [BlockType.DEPRECATED_CUSTOM_PAYLOAD]: CustomPayloadManager,
-  [BlockType.SET]: SetManagerV2,
-  [BlockType.SETV2]: SetManagerV2,
+  [BlockType.SET]: SetV2Manager,
+  [BlockType.SETV2]: SetV2Manager,
   [BlockType.IF]: IfManagerV2,
   [BlockType.IFV2]: IfManagerV2,
   [BlockType.CAPTURE]: CaptureManager,
@@ -94,11 +94,10 @@ export const MANAGERS_BY_TYPE = {
   [BlockType.URL]: UrlManager,
   [BlockType.GO_TO_INTENT]: GoToIntentManager,
   [BlockType.GO_TO_NODE]: GoToNodeManager,
-  // TODO: remove when FeatureFlag.CMS_WORKFLOWS is released
-  [BlockType.GO_TO_DOMAIN]: GoToDomainManager,
   [BlockType.CUSTOM_BLOCK_POINTER]: CustomBlockPointerManager,
   [BlockType.FUNCTION]: FunctionManager,
   [BlockType.TRIGGER]: TriggerManager,
+  [BlockType.RESPONSE]: ResponseManager,
 };
 
 export const MANAGERS_BY_FEATURE: Partial<Record<BlockType, Realtime.FeatureFlag>> = {};

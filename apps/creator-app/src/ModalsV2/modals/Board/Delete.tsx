@@ -50,7 +50,7 @@ const Delete = manager.create<Props>('BoardDelete', () => ({ api, type, opened, 
         ) : (
           <>
             <Box.FlexCenter pb={16}>
-              Warning, this is an undoable action. Deleting this workspace will permanently delete all assistants and content in this workspace.
+              Warning, this is an undoable action. Deleting this workspace will permanently delete all agents and content in this workspace.
             </Box.FlexCenter>
 
             <Input name="input" error={!isValidConfirmationName} onChangeText={setName} value={name} placeholder={workspace?.name} />

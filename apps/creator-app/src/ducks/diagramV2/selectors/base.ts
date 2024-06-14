@@ -1,4 +1,3 @@
-import { BaseModels } from '@voiceflow/base-types';
 import { BlockType } from '@voiceflow/realtime-sdk';
 import { createSelector } from 'reselect';
 
@@ -22,34 +21,37 @@ export const {
 
 export const isTopicDiagramSelector = createSelector([diagramByIDSelector], (diagram) => isTopicDiagram(diagram?.type));
 
-export const getRootTopicIDBySubtopicIDSelector = createSelector([allDiagramsSelector], (diagrams) => (diagramID: string | null) => {
-  if (!diagramID) return null;
-
-  for (const diagram of diagrams) {
-    if (!isTopicDiagram(diagram.type)) continue;
-
-    for (const item of diagram.menuItems) {
-      if (item.type !== BaseModels.Diagram.MenuItemType.DIAGRAM || item.sourceID !== diagramID) continue;
-
-      return { subtopicID: diagramID, rootTopicID: diagram.id };
-    }
-  }
-
-  return null;
-});
-
+/**
+ * @deprecated remove with REFERENCE_SYSTEM ff removal
+ */
 export const sharedNodesSelector = createSelector([rootDiagramSelector], ({ sharedNodes }) => sharedNodes);
 
+/**
+ * @deprecated remove with REFERENCE_SYSTEM ff removal
+ */
 export const sharedNodeByDiagramIDAndNodeIDSelector = createSelector(
   [sharedNodesSelector, diagramIDParamSelector, nodeIDParamSelector],
   (sharedNodes, diagramID, nodeID) => (nodeID && diagramID && sharedNodes[diagramID]?.[nodeID]) || null
 );
 
+/**
+ * @deprecated remove with REFERENCE_SYSTEM ff removal
+ */
 export const lastCreatedIDSelector = createSelector([rootDiagramSelector], ({ lastCreatedID }) => lastCreatedID);
 
+/**
+ * @deprecated remove with REFERENCE_SYSTEM ff removal
+ */
 export const sharedNodesStartIDSelector = createSelector(
   [sharedNodesSelector],
-  (sharedNodes) => (diagramID: string) => Object.values(sharedNodes[diagramID] || {})?.find((node) => node?.type === BlockType.START)?.nodeID ?? null
+  (sharedNodes) => (diagramID: string) =>
+    Object.values(sharedNodes[diagramID] || {})?.find((node) => node?.type === BlockType.START)?.nodeID ?? null
 );
 
-export const globalIntentStepMapSelector = createSelector([rootDiagramSelector], ({ globalIntentStepMap }) => globalIntentStepMap);
+/**
+ * @deprecated remove with REFERENCE_SYSTEM ff removal
+ */
+export const globalIntentStepMapSelector = createSelector(
+  [rootDiagramSelector],
+  ({ globalIntentStepMap }) => globalIntentStepMap
+);

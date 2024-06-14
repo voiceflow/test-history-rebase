@@ -37,6 +37,7 @@ import { KlParserClient } from '@/common/clients/kl-parser/kl-parser.client';
 import { FileService } from '@/file/file.service';
 import { MulterFile, UploadType } from '@/file/types';
 
+import { KnowledgeBaseSettingsService } from '../settings/settings.service';
 import { KnowledgeBaseTagService } from '../tag/tag.service';
 import { knowledgeBaseDocumentAdapter } from './document.adapter';
 import { KBDocumentInsertChunkDTO } from './dtos/document-chunk.dto';
@@ -94,6 +95,8 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
     private readonly tagService: KnowledgeBaseTagService,
     @Inject(AuthService)
     private readonly authService: AuthService,
+    @Inject(KnowledgeBaseSettingsService)
+    private readonly knowledgeBaseSettingsService: KnowledgeBaseSettingsService,
 
     @Inject(FileService)
     private readonly file: FileService
@@ -152,6 +155,32 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
     }
   }
 
+  async klParserProcessingCall({
+    projectID,
+    workspaceID,
+    document,
+    maxChunkSize,
+  }: {
+    projectID: string;
+    workspaceID: number;
+    document: Omit<VersionKnowledgeBaseDocument, 'documentID' | 'updatedAt'> & {
+      documentID: string;
+      updatedAt: Date;
+    };
+    maxChunkSize?: number;
+  }) {
+    const settings = await this.knowledgeBaseSettingsService.getProjectSettings(projectID);
+
+    await this.klParserClient.parse(projectID, document, workspaceID.toString(), {
+      chunkStrategy: {
+        type: BaseModels.Project.ChunkStrategyType.RECURSIVE_TEXT_SPLITTER,
+        size: maxChunkSize ?? settings.chunkStrategy.size,
+        overlap: settings.chunkStrategy.overlap,
+      },
+      embeddingModel: settings.embeddingModel,
+    });
+  }
+
   async checkDocsPlanLimit(workspaceID: number, projectID: string, existingDocsCount: number, newDocsCount: number) {
     const message = 'maximum number of documents reached';
 
@@ -171,7 +200,7 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
       if (!response[BillingAuthorizeItemName.KnowledgeBaseSources]) {
         throw new ForbiddenException(message);
       }
-    } catch (ForbiddenException) {
+    } catch (error) {
       throw new NotAcceptableException(message);
     }
   }
@@ -385,8 +414,11 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
     // could be in background, no need to wait on ui
     this.syncRefreshJobs(projectID, project.teamID, [document]);
 
-    this.klParserClient.parse(projectID, document, project.teamID.toString(), {
-      chunkStrategy: { type: BaseModels.Project.ChunkStrategyType.RECURSIVE_TEXT_SPLITTER, size: maxChunkSize },
+    this.klParserProcessingCall({
+      projectID,
+      workspaceID: project.teamID,
+      document,
+      maxChunkSize,
     });
 
     return knowledgeBaseDocumentAdapter.fromDB({
@@ -503,8 +535,11 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
 
     await this.orm.upsertManyDocuments(projectID, [document]);
 
-    this.klParserClient.parse(projectID, document, project.teamID.toString(), {
-      chunkStrategy: { type: BaseModels.Project.ChunkStrategyType.RECURSIVE_TEXT_SPLITTER, size: maxChunkSize },
+    this.klParserProcessingCall({
+      projectID,
+      workspaceID: project.teamID,
+      document,
+      maxChunkSize,
     });
 
     return knowledgeBaseDocumentAdapter.fromDB({
@@ -603,16 +638,16 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
   /* Find */
 
   async findOneDocument(assistantID: string, documentID: string) {
-    try {
-      const [document, chunks] = await Promise.all([
-        this.orm.findOneDocument(assistantID, documentID),
-        this.findDocumentChunks(assistantID, documentID),
-      ]);
+    const [document, chunks] = await Promise.all([
+      this.orm.findOneDocument(assistantID, documentID),
+      this.findDocumentChunks(assistantID, documentID),
+    ]);
 
-      return document ? { ...knowledgeBaseDocumentAdapter.fromDB(document), chunks } : undefined;
-    } catch (error) {
+    if (!document) {
       throw new NotFoundException("Document doesn't exist");
     }
+
+    return { ...knowledgeBaseDocumentAdapter.fromDB(document), chunks };
   }
 
   async findOneDocumentWithTags(assistantID: string, documentID: string) {
@@ -958,9 +993,12 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
       await this.refreshJobService.sendRefreshJobs(assistantID, [document], workspaceID);
     } else {
       await this.orm.patchManyDocuments(assistantID, [documentID], dataForUpdate);
+      const project = await this.projectOrm.findOneOrFail(assistantID);
 
-      this.klParserClient.parse(assistantID, updatedDocument, workspaceID.toString(), {
-        chunkStrategy: { type: BaseModels.Project.ChunkStrategyType.RECURSIVE_TEXT_SPLITTER },
+      this.klParserProcessingCall({
+        projectID: assistantID,
+        workspaceID: project.teamID,
+        document: updatedDocument,
       });
     }
 
@@ -1130,7 +1168,7 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
       if (!response[BillingAuthorizeItemName.KnowledgeBaseSourceRows]) {
         throw new ForbiddenException(message);
       }
-    } catch (ForbiddenException) {
+    } catch (error) {
       throw new NotAcceptableException(message);
     }
   }

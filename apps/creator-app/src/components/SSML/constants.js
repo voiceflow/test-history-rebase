@@ -751,7 +751,7 @@ const GOOGLE_SSML_META = {
 };
 
 const GOOGLE_DIALOGFLOW_SSML_META = {
-  fallbackPlaceholder: () => 'Enter assistant reply, {} to add variables',
+  fallbackPlaceholder: () => 'Enter agent reply, {} to add variables',
   canChangeVoice: true,
   platformTags: GOOGLE_DIALOGFLOW_DEFAULT_TAGS,
   addOptions: UNIVERSAL_ADD_OPTIONS,
@@ -759,7 +759,7 @@ const GOOGLE_DIALOGFLOW_SSML_META = {
 };
 
 const GENERAL_SSML_META = {
-  fallbackPlaceholder: () => 'Enter Assistant reply, {} to add variables',
+  fallbackPlaceholder: () => 'Enter agent reply, {} to add variables',
   canChangeVoice: true,
   platformTags: ALEXA_DEFAULT_TAGS,
   addOptions: ALEXA_ADD_OPTIONS,

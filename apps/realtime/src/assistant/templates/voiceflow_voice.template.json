@@ -1,26 +1,12 @@
 {
-  "_version": "1.2",
-  "project": {
-    "_id": "63068f725aced0000727d96a",
-    "name": "Voice Assistant",
-    "teamID": "eaE0zWKj6y",
-    "devVersion": "63068f71769976fe8ae0a58b",
-    "platform": "voiceflow",
-    "type": "voice",
-    "platformData": {
-      "invocationName": "template project general"
-    },
-    "members": [],
-    "linkType": "STRAIGHT",
-    "image": "",
-    "_version": 1.2,
-    "customThemes": [],
-    "creatorID": 5873,
-    "createdAt": "2022-08-24T20:52:02.000Z"
-  },
   "version": {
-    "_id": "63068f71769976fe8ae0a58b",
-    "variables": ["sessions", "user_id", "timestamp", "platform", "locale"],
+    "_version": 8,
+    "autoSaveFromRestore": false,
+    "components": [],
+    "creatorID": 16,
+    "folders": {},
+    "manualSave": false,
+    "name": "Initial Version",
     "platformData": {
       "slots": [],
       "intents": [
@@ -30,36 +16,47 @@
           "slots": [],
           "inputs": [
             {
-              "text": "sure"
+              "text": "sure",
+              "slots": []
             },
             {
-              "text": "certainly"
+              "text": "certainly",
+              "slots": []
             },
             {
-              "text": "affirmative"
+              "text": "affirmative",
+              "slots": []
             },
             {
-              "text": "okay"
+              "text": "okay",
+              "slots": []
             },
             {
-              "text": "ok"
+              "text": "ok",
+              "slots": []
             },
             {
-              "text": "ya"
+              "text": "ya",
+              "slots": []
             },
             {
-              "text": "yep"
+              "text": "yep",
+              "slots": []
             },
             {
-              "text": "yup"
+              "text": "yup",
+              "slots": []
             },
             {
-              "text": "yea"
+              "text": "yea",
+              "slots": []
             },
             {
-              "text": "yes"
+              "text": "yes",
+              "slots": []
             }
-          ]
+          ],
+          "noteID": null
         },
         {
           "key": "6579c778dd3cca0fe0e0b152",
@@ -67,72 +64,73 @@
           "slots": [],
           "inputs": [
             {
-              "text": "negative"
+              "text": "negative",
+              "slots": []
             },
             {
-              "text": "nevermind"
+              "text": "nevermind",
+              "slots": []
             },
             {
-              "text": "not"
+              "text": "not",
+              "slots": []
             },
             {
-              "text": "no thanks"
+              "text": "no thanks",
+              "slots": []
             },
             {
-              "text": "no way"
+              "text": "no way",
+              "slots": []
             },
             {
-              "text": "not now"
+              "text": "not now",
+              "slots": []
             },
             {
-              "text": "nah"
+              "text": "nah",
+              "slots": []
             },
             {
-              "text": "nay"
+              "text": "nay",
+              "slots": []
             },
             {
-              "text": "nope"
+              "text": "nope",
+              "slots": []
             },
             {
-              "text": "no"
+              "text": "no",
+              "slots": []
             }
-          ]
+          ],
+          "noteID": null
         },
         {
           "key": "None",
           "name": "None",
+          "slots": [],
           "inputs": [],
-          "slots": []
+          "noteID": null
         }
       ],
       "settings": {
         "restart": true,
         "repeat": 100,
-        "locales": ["en-US"],
+        "locales": [
+          "en-US"
+        ],
         "defaultVoice": "Alexa"
       },
       "publishing": {},
       "platform": "voiceflow"
     },
-    "name": "Initial Version",
-    "projectID": "63068f725aced0000727d96a",
-    "manualSave": false,
-    "autoSaveFromRestore": false,
-    "rootDiagramID": "63068f72769976fe8ae0a58c",
-    "creatorID": 5873,
-    "_version": 3.5,
-    "components": [],
-    "folders": {},
-    "topics": [
-      {
-        "sourceID": "63068f72769976fe8ae0a58c",
-        "type": "DIAGRAM"
-      }
-    ],
     "prototype": {
       "data": {
         "name": "Voice Assistant",
-        "locales": ["en-US"]
+        "locales": [
+          "en-US"
+        ]
       },
       "model": {
         "intents": [],
@@ -143,42 +141,133 @@
           {
             "programID": "63068f72769976fe8ae0a58c",
             "storage": {},
-            "variables": {}
+            "variables": {},
+            "diagramID": "63068f72769976fe8ae0a58c"
           }
         ],
         "variables": {}
       },
       "surveyorContext": {
+        "functionDefinitions": {},
         "slotsMap": {},
-        "extraSlots": [],
-        "extraIntents": [],
-        "usedIntentsSet": [],
         "platform": "voiceflow",
-        "goToIntentsSet": [],
         "products": {},
+        "extraSlots": [],
         "interfaces": [],
-        "permissions": []
+        "permissions": [],
+        "extraIntents": [],
+        "usedEventsSet": [],
+        "usedIntentsSet": [],
+        "goToIntentsSet": [],
+        "cmsVariables": {
+          "sessions": {
+            "isSystem": true,
+            "defaultValue": null
+          },
+          "user_id": {
+            "isSystem": true,
+            "defaultValue": null
+          },
+          "timestamp": {
+            "isSystem": true,
+            "defaultValue": null
+          },
+          "platform": {
+            "isSystem": true,
+            "defaultValue": null
+          },
+          "intent_confidence": {
+            "isSystem": true,
+            "defaultValue": null
+          },
+          "last_response": {
+            "isSystem": true,
+            "defaultValue": null
+          },
+          "last_event": {
+            "isSystem": true,
+            "defaultValue": null
+          },
+          "last_utterance": {
+            "isSystem": true,
+            "defaultValue": null
+          },
+          "vf_memory": {
+            "isSystem": true,
+            "defaultValue": null
+          },
+          "vf_chunks": {
+            "isSystem": true,
+            "defaultValue": null
+          }
+        }
       },
       "settings": {},
-      "platform": "voiceflow"
+      "platform": "voiceflow",
+      "type": "voice"
+    },
+    "topics": [
+      {
+        "type": "DIAGRAM",
+        "sourceID": "63068f72769976fe8ae0a58c"
+      }
+    ],
+    "variables": [
+      "sessions",
+      "user_id",
+      "timestamp",
+      "platform",
+      "intent_confidence",
+      "last_response",
+      "last_event",
+      "last_utterance",
+      "vf_memory",
+      "vf_chunks"
+    ],
+    "_id": "66561117647583d0e3da67e3",
+    "updatedAt": "2024-05-28T17:17:51.008Z",
+    "domains": [
+      {
+        "id": "clwqnrd880002cswz8jkq6foj",
+        "name": "Home",
+        "live": true,
+        "topicIDs": [
+          "63068f72769976fe8ae0a58c"
+        ],
+        "rootDiagramID": "63068f72769976fe8ae0a58c"
+      }
+    ],
+    "projectID": "66561117647583d0e3da67e2",
+    "rootDiagramID": "63068f72769976fe8ae0a58c",
+    "knowledgeBase": {
+      "settings": {
+        "chunkStrategy": {
+          "type": "recursive_text_splitter",
+          "size": 1200,
+          "overlap": 200
+        },
+        "search": {
+          "limit": 3,
+          "metric": "IP"
+        },
+        "summarization": {
+          "prompt": "",
+          "mode": "prompt",
+          "model": "gpt-3.5-turbo",
+          "temperature": 0.1,
+          "system": "You are an FAQ AI chat assistant. Information will be provided to help answer the user's questions. Always summarize your response to be as brief as possible and be extremely concise. Your responses should be fewer than a couple of sentences."
+        }
+      }
     }
   },
   "diagrams": {
     "63068f72769976fe8ae0a58c": {
-      "_id": "63068f72769976fe8ae0a58c",
-      "offsetX": 200,
-      "offsetY": 40,
-      "zoom": 100,
-      "variables": [],
       "name": "ROOT",
-      "versionID": "63068f71769976fe8ae0a58b",
-      "creatorID": 5873,
-      "modified": 1661374322,
+      "type": "TOPIC",
+      "zoom": 100,
       "nodes": {
         "start00000000000000000000": {
-          "nodeID": "start00000000000000000000",
           "type": "start",
-          "coords": [352.83308200176725, 149.56353674271045],
           "data": {
             "name": "Start",
             "color": "#56b365",
@@ -193,28 +282,40 @@
                   "data": {
                     "points": [
                       {
-                        "point": [417.46976085327276, 171.56353359873432],
+                        "point": [
+                          417.46976085327276,
+                          171.56353359873432
+                        ],
                         "toTop": false,
                         "locked": false,
                         "reversed": false,
                         "allowedToTop": false
                       },
                       {
-                        "point": [478.99091040096926, 171.56353359873432],
+                        "point": [
+                          478.99091040096926,
+                          171.56353359873432
+                        ],
                         "toTop": false,
                         "locked": false,
                         "reversed": false,
                         "allowedToTop": false
                       },
                       {
-                        "point": [478.99091040096926, 130.1257466268972],
+                        "point": [
+                          478.99091040096926,
+                          130.1257466268972
+                        ],
                         "toTop": false,
                         "locked": false,
                         "reversed": false,
                         "allowedToTop": false
                       },
                       {
-                        "point": [540.5120599486658, 130.1257466268972],
+                        "point": [
+                          540.5120599486658,
+                          130.1257466268972
+                        ],
                         "toTop": false,
                         "locked": false,
                         "reversed": false,
@@ -227,7 +328,12 @@
               "dynamic": []
             },
             "label": "Start"
-          }
+          },
+          "nodeID": "start00000000000000000000",
+          "coords": [
+            352.83308200176725,
+            149.56353674271045
+          ]
         },
         "63068fd6b9d93f34f5d1f12d": {
           "type": "speak",
@@ -259,17 +365,540 @@
           "type": "block",
           "data": {
             "name": "Welcome",
-            "steps": ["63068fd6b9d93f34f5d1f12d"],
+            "steps": [
+              "63068fd6b9d93f34f5d1f12d"
+            ],
             "color": ""
           },
           "nodeID": "63068fd6b9d93f34f5d1f12f",
-          "coords": [705.5120752240915, 103.12574662689721]
+          "coords": [
+            705.5120752240915,
+            103.12574662689721
+          ]
         }
       },
+      "offsetX": 277.7335343985862,
+      "offsetY": 180.34917060583163,
+      "modified": 1661374322,
       "children": [],
+      "creatorID": 16,
+      "variables": [],
       "intentStepIDs": [],
-      "type": "TOPIC"
+      "menuItems": [
+        {
+          "type": "NODE",
+          "sourceID": "start00000000000000000000"
+        }
+      ],
+      "menuNodeIDs": [],
+      "_id": "66561117647583d0e3da67e4",
+      "diagramID": "63068f72769976fe8ae0a58c",
+      "versionID": "66561117647583d0e3da67e3"
     }
   },
+  "flows": [],
+  "entities": [],
+  "entityVariants": [],
+  "intents": [
+    {
+      "id": "6579c6bf984565862f64b783",
+      "name": "Yes",
+      "createdByID": 16,
+      "folderID": null,
+      "description": "Trigger this intent when the user responds affirmatively or agrees to a question or statement using words like \"yes\", \"yea\", \"yup\", \"yep\", \"ya\", \"ok\", \"okay\", \"affirmative\", \"certainly\", or \"sure\".",
+      "automaticReprompt": false,
+      "entityOrder": [],
+      "createdAt": "2024-05-28T17:15:10.000Z",
+      "updatedAt": "2024-05-28T17:15:10.000Z",
+      "updatedByID": 16
+    },
+    {
+      "id": "6579c778dd3cca0fe0e0b152",
+      "name": "No",
+      "createdByID": 16,
+      "folderID": null,
+      "description": "Trigger this intent when the user responds negatively or declines something, using words like \"no\", \"nope\", \"nay\", \"nah\", \"not now\", \"no way\", \"no thanks\", \"not\", \"nevermind\", or \"negative\".",
+      "automaticReprompt": false,
+      "entityOrder": [],
+      "createdAt": "2024-05-28T17:15:10.000Z",
+      "updatedAt": "2024-05-28T17:15:10.000Z",
+      "updatedByID": 16
+    },
+    {
+      "id": "None",
+      "name": "None",
+      "createdByID": 16,
+      "folderID": null,
+      "description": null,
+      "automaticReprompt": false,
+      "entityOrder": [],
+      "createdAt": "2024-05-28T17:15:10.000Z",
+      "updatedAt": "2024-05-28T17:15:10.000Z",
+      "updatedByID": 16
+    }
+  ],
+  "utterances": [
+    {
+      "id": "6656111db2836a439cae2165",
+      "text": [
+        {
+          "text": [
+            "sure"
+          ]
+        }
+      ],
+      "intentID": "6579c6bf984565862f64b783",
+      "language": "en-us",
+      "createdAt": "2024-05-28T17:15:10.000Z"
+    },
+    {
+      "id": "6656111db2836a439cae2166",
+      "text": [
+        {
+          "text": [
+            "certainly"
+          ]
+        }
+      ],
+      "intentID": "6579c6bf984565862f64b783",
+      "language": "en-us",
+      "createdAt": "2024-05-28T17:15:10.000Z"
+    },
+    {
+      "id": "6656111db2836a439cae2167",
+      "text": [
+        {
+          "text": [
+            "affirmative"
+          ]
+        }
+      ],
+      "intentID": "6579c6bf984565862f64b783",
+      "language": "en-us",
+      "createdAt": "2024-05-28T17:15:10.000Z"
+    },
+    {
+      "id": "6656111db2836a439cae2168",
+      "text": [
+        {
+          "text": [
+            "okay"
+          ]
+        }
+      ],
+      "intentID": "6579c6bf984565862f64b783",
+      "language": "en-us",
+      "createdAt": "2024-05-28T17:15:10.000Z"
+    },
+    {
+      "id": "6656111db2836a439cae2169",
+      "text": [
+        {
+          "text": [
+            "ok"
+          ]
+        }
+      ],
+      "intentID": "6579c6bf984565862f64b783",
+      "language": "en-us",
+      "createdAt": "2024-05-28T17:15:10.000Z"
+    },
+    {
+      "id": "6656111db2836a439cae216a",
+      "text": [
+        {
+          "text": [
+            "ya"
+          ]
+        }
+      ],
+      "intentID": "6579c6bf984565862f64b783",
+      "language": "en-us",
+      "createdAt": "2024-05-28T17:15:10.000Z"
+    },
+    {
+      "id": "6656111db2836a439cae216b",
+      "text": [
+        {
+          "text": [
+            "yep"
+          ]
+        }
+      ],
+      "intentID": "6579c6bf984565862f64b783",
+      "language": "en-us",
+      "createdAt": "2024-05-28T17:15:10.000Z"
+    },
+    {
+      "id": "6656111db2836a439cae216c",
+      "text": [
+        {
+          "text": [
+            "yup"
+          ]
+        }
+      ],
+      "intentID": "6579c6bf984565862f64b783",
+      "language": "en-us",
+      "createdAt": "2024-05-28T17:15:10.000Z"
+    },
+    {
+      "id": "6656111db2836a439cae216d",
+      "text": [
+        {
+          "text": [
+            "yea"
+          ]
+        }
+      ],
+      "intentID": "6579c6bf984565862f64b783",
+      "language": "en-us",
+      "createdAt": "2024-05-28T17:15:10.000Z"
+    },
+    {
+      "id": "6656111db2836a439cae216e",
+      "text": [
+        {
+          "text": [
+            "yes"
+          ]
+        }
+      ],
+      "intentID": "6579c6bf984565862f64b783",
+      "language": "en-us",
+      "createdAt": "2024-05-28T17:15:10.000Z"
+    },
+    {
+      "id": "6656111db2836a439cae216f",
+      "text": [
+        {
+          "text": [
+            "negative"
+          ]
+        }
+      ],
+      "intentID": "6579c778dd3cca0fe0e0b152",
+      "language": "en-us",
+      "createdAt": "2024-05-28T17:15:10.000Z"
+    },
+    {
+      "id": "6656111db2836a439cae2170",
+      "text": [
+        {
+          "text": [
+            "nevermind"
+          ]
+        }
+      ],
+      "intentID": "6579c778dd3cca0fe0e0b152",
+      "language": "en-us",
+      "createdAt": "2024-05-28T17:15:10.000Z"
+    },
+    {
+      "id": "6656111db2836a439cae2171",
+      "text": [
+        {
+          "text": [
+            "not"
+          ]
+        }
+      ],
+      "intentID": "6579c778dd3cca0fe0e0b152",
+      "language": "en-us",
+      "createdAt": "2024-05-28T17:15:10.000Z"
+    },
+    {
+      "id": "6656111db2836a439cae2172",
+      "text": [
+        {
+          "text": [
+            "no thanks"
+          ]
+        }
+      ],
+      "intentID": "6579c778dd3cca0fe0e0b152",
+      "language": "en-us",
+      "createdAt": "2024-05-28T17:15:10.000Z"
+    },
+    {
+      "id": "6656111db2836a439cae2173",
+      "text": [
+        {
+          "text": [
+            "no way"
+          ]
+        }
+      ],
+      "intentID": "6579c778dd3cca0fe0e0b152",
+      "language": "en-us",
+      "createdAt": "2024-05-28T17:15:10.000Z"
+    },
+    {
+      "id": "6656111db2836a439cae2174",
+      "text": [
+        {
+          "text": [
+            "not now"
+          ]
+        }
+      ],
+      "intentID": "6579c778dd3cca0fe0e0b152",
+      "language": "en-us",
+      "createdAt": "2024-05-28T17:15:10.000Z"
+    },
+    {
+      "id": "6656111db2836a439cae2175",
+      "text": [
+        {
+          "text": [
+            "nah"
+          ]
+        }
+      ],
+      "intentID": "6579c778dd3cca0fe0e0b152",
+      "language": "en-us",
+      "createdAt": "2024-05-28T17:15:10.000Z"
+    },
+    {
+      "id": "6656111db2836a439cae2176",
+      "text": [
+        {
+          "text": [
+            "nay"
+          ]
+        }
+      ],
+      "intentID": "6579c778dd3cca0fe0e0b152",
+      "language": "en-us",
+      "createdAt": "2024-05-28T17:15:10.000Z"
+    },
+    {
+      "id": "6656111db2836a439cae2177",
+      "text": [
+        {
+          "text": [
+            "nope"
+          ]
+        }
+      ],
+      "intentID": "6579c778dd3cca0fe0e0b152",
+      "language": "en-us",
+      "createdAt": "2024-05-28T17:15:10.000Z"
+    },
+    {
+      "id": "6656111db2836a439cae2178",
+      "text": [
+        {
+          "text": [
+            "no"
+          ]
+        }
+      ],
+      "intentID": "6579c778dd3cca0fe0e0b152",
+      "language": "en-us",
+      "createdAt": "2024-05-28T17:15:10.000Z"
+    }
+  ],
+  "requiredEntities": [],
+  "folders": [],
+  "responses": [],
+  "responseVariants": [],
+  "responseAttachments": [],
+  "responseDiscriminators": [],
+  "variables": [
+    {
+      "id": "sessions",
+      "name": "sessions",
+      "createdByID": 16,
+      "folderID": null,
+      "color": "#515A63",
+      "isArray": false,
+      "isSystem": true,
+      "datatype": "number",
+      "description": "The number of times a particular user has opened the app.",
+      "defaultValue": null,
+      "createdAt": "2024-05-28T17:15:09.000Z",
+      "updatedAt": "2024-05-28T17:15:09.000Z",
+      "updatedByID": 16
+    },
+    {
+      "id": "user_id",
+      "name": "user_id",
+      "createdByID": 16,
+      "folderID": null,
+      "color": "#515A63",
+      "isArray": false,
+      "isSystem": true,
+      "datatype": "text",
+      "description": "The user's unique ID.",
+      "defaultValue": null,
+      "createdAt": "2024-05-28T17:15:09.000Z",
+      "updatedAt": "2024-05-28T17:15:09.000Z",
+      "updatedByID": 16
+    },
+    {
+      "id": "timestamp",
+      "name": "timestamp",
+      "createdByID": 16,
+      "folderID": null,
+      "color": "#515A63",
+      "isArray": false,
+      "isSystem": true,
+      "datatype": "text",
+      "description": "UNIX timestamp (number of seconds since January 1st, 1970 at UTC).",
+      "defaultValue": null,
+      "createdAt": "2024-05-28T17:15:09.000Z",
+      "updatedAt": "2024-05-28T17:15:09.000Z",
+      "updatedByID": 16
+    },
+    {
+      "id": "platform",
+      "name": "platform",
+      "createdByID": 16,
+      "folderID": null,
+      "color": "#515A63",
+      "isArray": false,
+      "isSystem": true,
+      "datatype": "text",
+      "description": "The platform your agent is running on (e.g. \"voiceflow\").",
+      "defaultValue": null,
+      "createdAt": "2024-05-28T17:15:09.000Z",
+      "updatedAt": "2024-05-28T17:15:09.000Z",
+      "updatedByID": 16
+    },
+    {
+      "id": "intent_confidence",
+      "name": "intent_confidence",
+      "createdByID": 16,
+      "folderID": null,
+      "color": "#515A63",
+      "isArray": false,
+      "isSystem": true,
+      "datatype": "number",
+      "description": "The confidence interval (measured as a value from 0 to 100) for the most recently matched intent.",
+      "defaultValue": null,
+      "createdAt": "2024-05-28T17:15:09.000Z",
+      "updatedAt": "2024-05-28T17:15:09.000Z",
+      "updatedByID": 16
+    },
+    {
+      "id": "last_response",
+      "name": "last_response",
+      "createdByID": 16,
+      "folderID": null,
+      "color": "#515A63",
+      "isArray": false,
+      "isSystem": true,
+      "datatype": "text",
+      "description": "The agent's last response (text/speak) in a string.",
+      "defaultValue": null,
+      "createdAt": "2024-05-28T17:15:09.000Z",
+      "updatedAt": "2024-05-28T17:15:09.000Z",
+      "updatedByID": 16
+    },
+    {
+      "id": "last_event",
+      "name": "last_event",
+      "createdByID": 16,
+      "folderID": null,
+      "color": "#515A63",
+      "isArray": false,
+      "isSystem": true,
+      "datatype": "any",
+      "description": "The object containing the last event that the user client has triggered.",
+      "defaultValue": null,
+      "createdAt": "2024-05-28T17:15:09.000Z",
+      "updatedAt": "2024-05-28T17:15:09.000Z",
+      "updatedByID": 16
+    },
+    {
+      "id": "last_utterance",
+      "name": "last_utterance",
+      "createdByID": 16,
+      "folderID": null,
+      "color": "#515A63",
+      "isArray": false,
+      "isSystem": true,
+      "datatype": "text",
+      "description": "The user's last utterance in a text string.",
+      "defaultValue": null,
+      "createdAt": "2024-05-28T17:15:09.000Z",
+      "updatedAt": "2024-05-28T17:15:09.000Z",
+      "updatedByID": 16
+    },
+    {
+      "id": "vf_memory",
+      "name": "vf_memory",
+      "createdByID": 16,
+      "folderID": null,
+      "color": "#515A63",
+      "isArray": false,
+      "isSystem": true,
+      "datatype": "text",
+      "description": "Last 10 user inputs and agent responses in a string (e.g. \"agent: How can i help?\"\nuser: What's the weather today?).",
+      "defaultValue": null,
+      "createdAt": "2024-05-28T17:15:09.000Z",
+      "updatedAt": "2024-05-28T17:15:09.000Z",
+      "updatedByID": 16
+    },
+    {
+      "id": "vf_chunks",
+      "name": "vf_chunks",
+      "createdByID": 16,
+      "folderID": null,
+      "color": "#515A63",
+      "isArray": true,
+      "isSystem": true,
+      "datatype": "any",
+      "description": "Dynamically stores the last chunks retrieved from the Knowledge Base whenever calling the KB from the canvas.",
+      "defaultValue": null,
+      "createdAt": "2024-05-28T17:15:09.000Z",
+      "updatedAt": "2024-05-28T17:15:09.000Z",
+      "updatedByID": 16
+    }
+  ],
+  "workflows": [
+    {
+      "id": "6656111db2836a439cae2179",
+      "name": "Home",
+      "createdByID": 16,
+      "folderID": null,
+      "status": null,
+      "isStart": true,
+      "diagramID": "63068f72769976fe8ae0a58c",
+      "assigneeID": null,
+      "description": null,
+      "createdAt": "2024-05-28T17:15:09.000Z",
+      "updatedAt": "2024-05-28T17:15:09.000Z",
+      "updatedByID": 16
+    }
+  ],
+  "attachments": [],
+  "cardButtons": [],
+  "functions": [],
+  "functionPaths": [],
+  "functionVariables": [],
+  "project": {
+    "type": "voice",
+    "name": "Voice Assistant",
+    "image": "",
+    "teamID": "g4DjZzjmbr",
+    "members": [],
+    "platform": "voiceflow",
+    "_version": 1.2,
+    "linkType": "STRAIGHT",
+    "creatorID": 16,
+    "platformData": {
+      "invocationName": "template project general"
+    },
+    "customThemes": [],
+    "privacy": "private",
+    "updatedBy": 16,
+    "apiPrivacy": "private",
+    "_id": "66561117647583d0e3da67e2",
+    "updatedAt": "2024-05-28T17:15:03.523Z",
+    "devVersion": "66561117647583d0e3da67e3"
+  },
+  "_version": "1.2",
   "variableStates": []
 }

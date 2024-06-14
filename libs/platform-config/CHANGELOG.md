@@ -3,6 +3,88 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.63.18](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.63.17...@voiceflow/platform-config@1.63.18) (2024-06-12)
+
+**Note:** Version bump only for package @voiceflow/platform-config
+
+## [1.63.17](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.63.16...@voiceflow/platform-config@1.63.17) (2024-06-12)
+
+**Note:** Version bump only for package @voiceflow/platform-config
+
+## [1.63.16](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.63.15...@voiceflow/platform-config@1.63.16) (2024-06-12)
+
+**Note:** Version bump only for package @voiceflow/platform-config
+
+## [1.63.15](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.63.14...@voiceflow/platform-config@1.63.15) (2024-06-12)
+
+**Note:** Version bump only for package @voiceflow/platform-config
+
+## [1.63.14](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.63.13...@voiceflow/platform-config@1.63.14) (2024-06-11)
+
+**Note:** Version bump only for package @voiceflow/platform-config
+
+## [1.63.13](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.63.12...@voiceflow/platform-config@1.63.13) (2024-06-11)
+
+**Note:** Version bump only for package @voiceflow/platform-config
+
+## [1.63.12](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.63.11...@voiceflow/platform-config@1.63.12) (2024-06-10)
+
+**Note:** Version bump only for package @voiceflow/platform-config
+
+## [1.63.11](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.63.10...@voiceflow/platform-config@1.63.11) (2024-06-10)
+
+**Note:** Version bump only for package @voiceflow/platform-config
+
+## [1.63.10](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.63.9...@voiceflow/platform-config@1.63.10) (2024-06-07)
+
+**Note:** Version bump only for package @voiceflow/platform-config
+
+## [1.63.9](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.63.8...@voiceflow/platform-config@1.63.9) (2024-06-07)
+
+**Note:** Version bump only for package @voiceflow/platform-config
+
+## [1.63.8](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.63.7...@voiceflow/platform-config@1.63.8) (2024-06-06)
+
+**Note:** Version bump only for package @voiceflow/platform-config
+
+## [1.63.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.63.6...@voiceflow/platform-config@1.63.7) (2024-06-05)
+
+**Note:** Version bump only for package @voiceflow/platform-config
+
+## [1.63.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.63.5...@voiceflow/platform-config@1.63.6) (2024-06-04)
+
+**Note:** Version bump only for package @voiceflow/platform-config
+
+## [1.63.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.63.4...@voiceflow/platform-config@1.63.5) (2024-06-04)
+
+**Note:** Version bump only for package @voiceflow/platform-config
+
+## [1.63.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.63.3...@voiceflow/platform-config@1.63.4) (2024-06-03)
+
+**Note:** Version bump only for package @voiceflow/platform-config
+
+## [1.63.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.63.2...@voiceflow/platform-config@1.63.3) (2024-06-03)
+
+**Note:** Version bump only for package @voiceflow/platform-config
+
+## [1.63.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.63.1...@voiceflow/platform-config@1.63.2) (2024-06-01)
+
+**Note:** Version bump only for package @voiceflow/platform-config
+
+## [1.63.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.63.0...@voiceflow/platform-config@1.63.1) (2024-05-31)
+
+**Note:** Version bump only for package @voiceflow/platform-config
+
+# [1.63.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.62.4...@voiceflow/platform-config@1.63.0) (2024-05-30)
+
+### Features
+
+* replace assistant with agent (COR-2207) ([#8196](https://github.com/voiceflow/creator-app/issues/8196)) ([ef9a50d](https://github.com/voiceflow/creator-app/commit/ef9a50d9216ac6d9d30671985f9e1c6f2fca20b7))
+
+## [1.62.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.62.3...@voiceflow/platform-config@1.62.4) (2024-05-29)
+
+**Note:** Version bump only for package @voiceflow/platform-config
+
 ## [1.62.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.62.2...@voiceflow/platform-config@1.62.3) (2024-05-27)
 
 **Note:** Version bump only for package @voiceflow/platform-config

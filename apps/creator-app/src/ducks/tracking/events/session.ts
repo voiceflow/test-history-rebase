@@ -1,4 +1,4 @@
-import { UserRole } from '@voiceflow/internal';
+import { UserRole } from '@voiceflow/dtos';
 import * as Platform from '@voiceflow/platform-config';
 
 import client from '@/client';
@@ -30,7 +30,17 @@ export const identifySignup = ({
 };
 
 export const trackSessionBegin =
-  ({ email, roles, creatorID, workspaceIDs = [] }: { email: string; creatorID: number; roles: UserRole[]; workspaceIDs: string[] }) =>
+  ({
+    email,
+    roles,
+    creatorID,
+    workspaceIDs = [],
+  }: {
+    email: string;
+    creatorID: number;
+    roles: UserRole[];
+    workspaceIDs: string[];
+  }) =>
   () => {
     const ctx = {
       envIDs: ['workspace_ids'],
@@ -47,13 +57,20 @@ export const trackSessionBegin =
 export const trackSessionDuration =
   ({ duration, creatorID }: { duration: number; creatorID: number }) =>
   () =>
-    client.analytics.track({ name: EventName.SESSION_DURATION, identity: { userID: creatorID }, properties: { duration } });
+    client.analytics.track({
+      name: EventName.SESSION_DURATION,
+      identity: { userID: creatorID },
+      properties: { duration },
+    });
 
-export const trackDeveloperAccountConnected = createWorkspaceEventTracker<{ platform: Platform.Constants.PlatformType; source: SourceType }>(
-  (eventInfo, _, getState) => {
-    const state = getState();
-    const projectID = Session.activeProjectIDSelector(state);
+export const trackDeveloperAccountConnected = createWorkspaceEventTracker<{
+  platform: Platform.Constants.PlatformType;
+  source: SourceType;
+}>((eventInfo, _, getState) => {
+  const state = getState();
+  const projectID = Session.activeProjectIDSelector(state);
 
-    return client.analytics.track(createWorkspaceEvent(EventName.DEVELOPER_ACCOUNT_CONNECTED, { ...eventInfo, project_id: projectID }));
-  }
-);
+  return client.analytics.track(
+    createWorkspaceEvent(EventName.DEVELOPER_ACCOUNT_CONNECTED, { ...eventInfo, project_id: projectID })
+  );
+});

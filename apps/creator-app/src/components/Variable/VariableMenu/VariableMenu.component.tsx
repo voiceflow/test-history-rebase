@@ -11,7 +11,12 @@ import { useSelector } from '@/hooks/store.hook';
 import { VariableMenuEmpty } from '../VariableMenuEmpty/VariableMenuEmpty.component';
 import type { IVariableMenu } from './VariableMenu.interface';
 
-export const VariableMenu: React.FC<IVariableMenu> = ({ width, onClose, onSelect: onSelectProp, excludeVariableIDs }) => {
+export const VariableMenu: React.FC<IVariableMenu> = ({
+  width,
+  onClose,
+  onSelect: onSelectProp,
+  excludeVariableIDs,
+}) => {
   const storeVariables = useSelector(Designer.Variable.selectors.all);
   const variableEditModal = useVariableEditModal();
   const variableCreateModal = useVariableCreateModal();
@@ -64,7 +69,7 @@ export const VariableMenu: React.FC<IVariableMenu> = ({ width, onClose, onSelect
   const virtualItems = virtualizer.getVirtualItems();
   const virtualStart = virtualItems[0]?.start ?? 0;
 
-  if (!storeVariables.length) return <VariableMenuEmpty width={width} onCreated={onSelect} />;
+  if (!variables.length) return <VariableMenuEmpty width={width} onCreated={onSelect} />;
 
   return (
     <Menu
@@ -77,7 +82,11 @@ export const VariableMenu: React.FC<IVariableMenu> = ({ width, onClose, onSelect
         search.hasItems && (
           <ActionButtons
             firstButton={
-              <ActionButtons.Button label={isCreating ? 'Creating variable...' : 'Create variable'} onClick={onCreate} disabled={isCreating} />
+              <ActionButtons.Button
+                label={isCreating ? 'Creating variable...' : 'Create variable'}
+                onClick={onCreate}
+                disabled={isCreating}
+              />
             }
           />
         )

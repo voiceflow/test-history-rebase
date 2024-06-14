@@ -3,7 +3,7 @@ import { BaseModels } from '@voiceflow/base-types';
 import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter';
 
 const diagramAdapter = createMultiAdapter<DBDiagram, Diagram, [{ rootDiagramID?: string }] | []>(
-  ({ diagramID, name, type, zoom, offsetX, offsetY, variables, menuItems = [] }, { rootDiagramID } = {}) => ({
+  ({ diagramID, name, type, zoom, offsetX, offsetY, variables }, { rootDiagramID } = {}) => ({
     id: diagramID,
     diagramID,
     name,
@@ -15,7 +15,6 @@ const diagramAdapter = createMultiAdapter<DBDiagram, Diagram, [{ rootDiagramID?:
     offsetX,
     offsetY,
     variables,
-    menuItems: menuItems as Diagram['menuItems'],
   }),
   notImplementedAdapter.transformer
 );

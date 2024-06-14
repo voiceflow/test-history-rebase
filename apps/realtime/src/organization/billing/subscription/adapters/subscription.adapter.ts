@@ -30,6 +30,7 @@ const subscriptionAdapter = createMultiAdapter<Realtime.Identity.Subscription, S
     trialEnd: trialEndAt,
     cancelledAt,
     onDunningPeriod,
+    downgradedFromTrial: subDowngradedFromTrial,
   }) => {
     const planItem = findPlanItem(subscriptionItems);
     const trialEnd = planItem?.trialEnd;
@@ -54,12 +55,15 @@ const subscriptionAdapter = createMultiAdapter<Realtime.Identity.Subscription, S
     const editorSeatsLimit = findNumberEntitlement(subscriptionEntitlements, 'limit-editor-count');
     const personasLimit = findNumberEntitlement(subscriptionEntitlements, 'limit-persona-count');
     const versionHistoryLimit = findNumberEntitlement(subscriptionEntitlements, 'limit-version-history');
-    const knowledgeBaseSourcesLimit = findNumberEntitlement(subscriptionEntitlements, 'limit-knowledge-base-source-count');
+    const knowledgeBaseSourcesLimit = findNumberEntitlement(
+      subscriptionEntitlements,
+      'limit-knowledge-base-source-count'
+    );
     const workspacesLimit = findNumberEntitlement(subscriptionEntitlements, 'limit-workspace-count');
 
     const nextBillingTimestamp = nextBillingAt || currentTermEnd;
 
-    const downgradedFromTrial = !!metaData?.downgradedFromTrial;
+    const downgradedFromTrial = subDowngradedFromTrial ?? !!metaData?.downgradedFromTrial;
 
     const result: Subscription = {
       id,
@@ -71,7 +75,10 @@ const subscriptionAdapter = createMultiAdapter<Realtime.Identity.Subscription, S
       nextBillingDate: nextBillingTimestamp ? Realtime.Utils.date.to_DD_MMM_YYYY(new Date(nextBillingTimestamp)) : null,
       nextBillingAt: nextBillingTimestamp ?? null,
       status: getStatus(status),
-      trial: isTrial && trialEnd ? { daysLeft: getDaysLeftToTrialEnd(trialEnd, downgradedFromTrial), endAt: new Date(trialEnd).toJSON() } : null,
+      trial:
+        isTrial && trialEnd
+          ? { daysLeft: getDaysLeftToTrialEnd(trialEnd, downgradedFromTrial), endAt: new Date(trialEnd).toJSON() }
+          : null,
       onDunningPeriod,
       paymentMethod: paymentSource && {
         id: paymentSource.id,

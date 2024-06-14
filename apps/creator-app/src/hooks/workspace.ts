@@ -14,7 +14,7 @@ export const useActiveWorkspace = () => useSelector(WorkspaceV2.active.workspace
 
 export const useOnAddSeats = () => {
   const numberOfSeats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);
-  const usedEditorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);
+  const usedEditorSeats = useSelector(WorkspaceV2.active.members.usedEditorSeatsSelector);
   const isPaid = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
   const isOnProTrial = useSelector(WorkspaceV2.active.isOnProTrialSelector);
   const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
@@ -54,7 +54,10 @@ export const useOnAddSeats = () => {
 export const useActiveWorkspaceTokenUsage = () => {
   const workspace = useActiveWorkspace();
 
-  const quotaData = useMemo(() => workspace?.quotas?.find((quota: any) => quota.quotaDetails.name === QuotaNames.TOKENS), [workspace?.quotas]);
+  const quotaData = useMemo(
+    () => workspace?.quotas?.find((quota: any) => quota.quotaDetails.name === QuotaNames.TOKENS),
+    [workspace?.quotas]
+  );
 
   return {
     quota: quotaData?.quota ?? 0,

@@ -2,6 +2,7 @@ import { BaseModels } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { SvgIconTypes } from '@voiceflow/ui';
+// eslint-disable-next-line you-dont-need-lodash-underscore/is-function
 import _isFunction from 'lodash/isFunction';
 
 import { DragItem } from '@/constants';
@@ -42,7 +43,10 @@ export interface LibraryDragItem<T = unknown> {
 
 export type TabData = BaseModels.Version.CanvasTemplate | Realtime.CustomBlock;
 
-export const isBlockTemplatesData = (_tabData: TabData, currentTab: LibraryStepType): _tabData is BaseModels.Version.CanvasTemplate => {
+export const isBlockTemplatesData = (
+  _tabData: TabData,
+  currentTab: LibraryStepType
+): _tabData is BaseModels.Version.CanvasTemplate => {
   return currentTab === LibraryStepType.BLOCK_TEMPLATES;
 };
 
@@ -85,10 +89,14 @@ const createMenuStep = (type: Realtime.StepBlockType, { publicOnly, factoryData 
     type,
     publicOnly,
     factoryData,
-    getIcon: (manager?: ReturnType<typeof getManager>) => getStepIcon({ factoryData, manager: manager || getManager(type) }),
-    getLabel: (manager?: ReturnType<typeof getManager>) => getStepLabel({ factoryData, manager: manager || getManager(type) }),
-    getStepTooltipText: (manager?: ReturnType<typeof getManager>) => getStepTooltipText({ factoryData, manager: manager || getManager(type) }),
-    getStepTooltipLink: (manager?: ReturnType<typeof getManager>) => getStepTooltipLink({ factoryData, manager: manager || getManager(type) }),
+    getIcon: (manager?: ReturnType<typeof getManager>) =>
+      getStepIcon({ factoryData, manager: manager || getManager(type) }),
+    getLabel: (manager?: ReturnType<typeof getManager>) =>
+      getStepLabel({ factoryData, manager: manager || getManager(type) }),
+    getStepTooltipText: (manager?: ReturnType<typeof getManager>) =>
+      getStepTooltipText({ factoryData, manager: manager || getManager(type) }),
+    getStepTooltipLink: (manager?: ReturnType<typeof getManager>) =>
+      getStepTooltipLink({ factoryData, manager: manager || getManager(type) }),
   };
 };
 
@@ -109,11 +117,11 @@ const CODE_STEP = createMenuStep(Realtime.BlockType.CODE);
 
 const FUNCTION_STEP = createMenuStep(Realtime.BlockType.FUNCTION);
 
+const RESPONSE_STEP = createMenuStep(Realtime.BlockType.RESPONSE);
+
 const DIRECTIVE_STEP = createMenuStep(Realtime.BlockType.DIRECTIVE);
 
 const DISPLAY_STEP = createMenuStep(Realtime.BlockType.DISPLAY);
-
-const EVENT_STEP = createMenuStep(Realtime.BlockType.EVENT);
 
 const CONDITION_STEP_V2 = createMenuStep(Realtime.BlockType.IFV2);
 
@@ -123,8 +131,6 @@ const COMPONENT_STEP = createMenuStep(Realtime.BlockType.COMPONENT);
 
 const API_STEP = createMenuStep(Realtime.BlockType.INTEGRATION);
 
-const INTENT_STEP = createMenuStep(Realtime.BlockType.INTENT);
-
 const RANDOM_STEP_V2 = createMenuStep(Realtime.BlockType.RANDOMV2);
 
 const AI_RESPONSE_STEP = createMenuStep(Realtime.BlockType.AI_RESPONSE);
@@ -133,9 +139,13 @@ const AI_SET_STEP = createMenuStep(Realtime.BlockType.AI_SET);
 
 const SET_STEP_V2 = createMenuStep(Realtime.BlockType.SETV2);
 
-const SPEAK_STEP = createMenuStep(Realtime.BlockType.SPEAK, { factoryData: { dialogs: [{ type: Realtime.DialogType.VOICE }] } });
+const SPEAK_STEP = createMenuStep(Realtime.BlockType.SPEAK, {
+  factoryData: { dialogs: [{ type: Realtime.DialogType.VOICE }] },
+});
 
-const AUDIO_STEP = createMenuStep(Realtime.BlockType.SPEAK, { factoryData: { dialogs: [{ type: Realtime.DialogType.AUDIO }] } });
+const AUDIO_STEP = createMenuStep(Realtime.BlockType.SPEAK, {
+  factoryData: { dialogs: [{ type: Realtime.DialogType.AUDIO }] },
+});
 
 const TEXT_STEP = createMenuStep(Realtime.BlockType.TEXT);
 
@@ -165,9 +175,6 @@ const LOGIC_ICON = 'systemLogic' as const;
 const LOGIC_ICON_SMALL = 'ifV2' as const;
 const LOGIC_LABEL = 'Logic';
 
-const EVENT_ICON = 'systemEvent' as const;
-export const EVENT_LABEL = 'Event';
-
 const DEV_ICON = 'systemDev' as const;
 const DEV_ICON_SMALL = 'systemDevSmall' as const;
 const DEV_LABEL = 'Dev';
@@ -177,11 +184,16 @@ interface CreateStepSectionsArguments {
   talkSteps: StepItem[];
   listenSteps: StepItem[];
   logicSteps: StepItem[];
-  eventSteps: StepItem[];
   devSteps: StepItem[];
 }
 
-const createStepSections = ({ aiSteps, talkSteps, listenSteps, logicSteps, eventSteps, devSteps }: CreateStepSectionsArguments): TopStepItem[] => [
+const createStepSections = ({
+  aiSteps,
+  talkSteps,
+  listenSteps,
+  logicSteps,
+  devSteps,
+}: CreateStepSectionsArguments): TopStepItem[] => [
   {
     icon: AI_ICON,
     smallIcon: AI_ICON_SMALL,
@@ -207,11 +219,6 @@ const createStepSections = ({ aiSteps, talkSteps, listenSteps, logicSteps, event
     steps: logicSteps,
   },
   {
-    icon: EVENT_ICON,
-    label: EVENT_LABEL,
-    steps: eventSteps,
-  },
-  {
     icon: DEV_ICON,
     smallIcon: DEV_ICON_SMALL,
     label: DEV_LABEL,
@@ -225,7 +232,6 @@ export const ALEXA_STEP_SECTIONS = createStepSections({
   talkSteps: [SPEAK_STEP, AUDIO_STEP, DISPLAY_STEP, CARDV2_STEP, STREAM_STEP],
   listenSteps: [CHOICE_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
-  eventSteps: [INTENT_STEP, EVENT_STEP],
   devSteps: [FUNCTION_STEP, API_STEP, CODE_STEP, TRACE_STEP, DIRECTIVE_STEP],
 });
 
@@ -235,17 +241,15 @@ export const GOOGLE_STEP_SECTIONS = createStepSections({
   talkSteps: [SPEAK_STEP, AUDIO_STEP, CARDV2_STEP, STREAM_STEP],
   listenSteps: [CHOICE_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
-  eventSteps: [INTENT_STEP],
   devSteps: [FUNCTION_STEP, API_STEP, CODE_STEP, TRACE_STEP, DIRECTIVE_STEP],
 });
 
 // chatbot menu sections
 export const CHATBOT_STEP_SECTIONS = createStepSections({
   aiSteps: [AI_RESPONSE_STEP, AI_SET_STEP],
-  talkSteps: [TEXT_STEP, VISUAL_STEP, CARDV2_STEP, CAROUSEL_STEP],
+  talkSteps: [RESPONSE_STEP, TEXT_STEP, VISUAL_STEP, CARDV2_STEP, CAROUSEL_STEP],
   listenSteps: [BUTTONS_STEP, CHOICE_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
-  eventSteps: [INTENT_STEP],
   devSteps: [FUNCTION_STEP, API_STEP, CODE_STEP, TRACE_STEP],
 });
 
@@ -255,17 +259,15 @@ export const GENERAL_STEP_SECTIONS = createStepSections({
   talkSteps: [SPEAK_STEP, AUDIO_STEP, VISUAL_STEP],
   listenSteps: [CHOICE_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
-  eventSteps: [INTENT_STEP],
   devSteps: [FUNCTION_STEP, API_STEP, CODE_STEP, TRACE_STEP],
 });
 
 // dialogflow chat menu sections
 export const DIALOGFLOW_ES_CHAT_STEP_SECTIONS = createStepSections({
   aiSteps: [AI_RESPONSE_STEP, AI_SET_STEP],
-  talkSteps: [TEXT_STEP, VISUAL_STEP, CARDV2_STEP, CAROUSEL_STEP, CUSTOM_PAYLOAD_STEP],
+  talkSteps: [RESPONSE_STEP, TEXT_STEP, VISUAL_STEP, CARDV2_STEP, CAROUSEL_STEP, CUSTOM_PAYLOAD_STEP],
   listenSteps: [CHOICE_STEP, BUTTONS_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
-  eventSteps: [INTENT_STEP],
   devSteps: [FUNCTION_STEP, API_STEP, CODE_STEP, TRACE_STEP],
 });
 
@@ -275,34 +277,30 @@ export const DIALOGFLOW_ES_VOICE_STEP_SECTIONS = createStepSections({
   talkSteps: [SPEAK_STEP, AUDIO_STEP, CUSTOM_PAYLOAD_STEP, CARDV2_STEP],
   listenSteps: [CHOICE_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
-  eventSteps: [INTENT_STEP],
   devSteps: [FUNCTION_STEP, API_STEP, CODE_STEP, TRACE_STEP],
 });
 
 export const MICROSOFT_TEAMS_STEP_SECTIONS = createStepSections({
   aiSteps: [AI_RESPONSE_STEP, AI_SET_STEP],
-  talkSteps: [TEXT_STEP, VISUAL_STEP, CARDV2_STEP],
+  talkSteps: [RESPONSE_STEP, TEXT_STEP, VISUAL_STEP, CARDV2_STEP],
   listenSteps: [BUTTONS_STEP, CHOICE_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
-  eventSteps: [INTENT_STEP],
   devSteps: [FUNCTION_STEP, API_STEP, CODE_STEP],
 });
 
 export const WHATSAPP_STEP_SECTIONS = createStepSections({
   aiSteps: [AI_RESPONSE_STEP, AI_SET_STEP],
-  talkSteps: [TEXT_STEP, VISUAL_STEP],
+  talkSteps: [RESPONSE_STEP, TEXT_STEP, VISUAL_STEP],
   listenSteps: [CHOICE_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
-  eventSteps: [INTENT_STEP],
   devSteps: [FUNCTION_STEP, API_STEP, CODE_STEP],
 });
 
 export const SMS_STEP_SECTIONS = createStepSections({
   aiSteps: [AI_RESPONSE_STEP, AI_SET_STEP],
-  talkSteps: [TEXT_STEP, VISUAL_STEP],
+  talkSteps: [RESPONSE_STEP, TEXT_STEP, VISUAL_STEP],
   listenSteps: [CHOICE_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
-  eventSteps: [INTENT_STEP],
   devSteps: [FUNCTION_STEP, API_STEP, CODE_STEP],
 });
 
@@ -311,8 +309,10 @@ export const getStepSections = Realtime.Utils.platform.createPlatformAndProjectT
     [Platform.Constants.PlatformType.ALEXA]: ALEXA_STEP_SECTIONS,
     [Platform.Constants.PlatformType.GOOGLE]: GOOGLE_STEP_SECTIONS,
     [`${Platform.Constants.PlatformType.VOICEFLOW}:${Platform.Constants.ProjectType.CHAT}`]: CHATBOT_STEP_SECTIONS,
-    [`${Platform.Constants.PlatformType.DIALOGFLOW_ES}:${Platform.Constants.ProjectType.CHAT}`]: DIALOGFLOW_ES_CHAT_STEP_SECTIONS,
-    [`${Platform.Constants.PlatformType.DIALOGFLOW_ES}:${Platform.Constants.ProjectType.VOICE}`]: DIALOGFLOW_ES_VOICE_STEP_SECTIONS,
+    [`${Platform.Constants.PlatformType.DIALOGFLOW_ES}:${Platform.Constants.ProjectType.CHAT}`]:
+      DIALOGFLOW_ES_CHAT_STEP_SECTIONS,
+    [`${Platform.Constants.PlatformType.DIALOGFLOW_ES}:${Platform.Constants.ProjectType.VOICE}`]:
+      DIALOGFLOW_ES_VOICE_STEP_SECTIONS,
     [Platform.Constants.PlatformType.MICROSOFT_TEAMS]: MICROSOFT_TEAMS_STEP_SECTIONS,
     [Platform.Constants.PlatformType.WHATSAPP]: WHATSAPP_STEP_SECTIONS,
     [Platform.Constants.PlatformType.SMS]: SMS_STEP_SECTIONS,
@@ -346,7 +346,11 @@ export enum LibraryStepType {
   BLOCK_TEMPLATES = 'BLOCK_TEMPLATES',
 }
 
-export const getAllSections = (platform: Platform.Constants.PlatformType, project: Platform.Constants.ProjectType, library: LibrarySections) => {
+export const getAllSections = (
+  platform: Platform.Constants.PlatformType,
+  project: Platform.Constants.ProjectType,
+  library: LibrarySections
+) => {
   const steps = getStepSections(platform, project);
   const librarySection = getLibrarySection(library);
 

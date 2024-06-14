@@ -1,4 +1,4 @@
-import type { AnyResponseVariant } from '@voiceflow/dtos';
+import type { AnyResponseVariant, AnyResponseVariantCreate } from '@voiceflow/dtos';
 import { markupToString } from '@voiceflow/utils-designer';
 
 import { mlGatewayClient } from '@/client/ml-gateway';
@@ -10,7 +10,7 @@ import type { AIGenerateTextResponseVariant } from '../ai.interface';
 import { useAIGenerate } from './ai-generate.hook';
 
 export interface IAIGenerateTextResponseVariants {
-  examples: AnyResponseVariant[];
+  examples: AnyResponseVariant[] | AnyResponseVariantCreate[];
   onGenerated: (items: AIGenerateTextResponseVariant[]) => void;
   generateBuiltIn?: (options: { quantity: number }) => Promise<string[]> | string[];
   successGeneratedMessage: string;
@@ -27,7 +27,7 @@ export const useAIGenerateTextResponseVariants = ({
   const entitiesMapByName = useSelector(Designer.Entity.selectors.mapByName);
   const variablesMapByName = useSelector(Designer.Variable.selectors.mapByName);
 
-  return useAIGenerate<AnyResponseVariant, AIGenerateTextResponseVariant>({
+  return useAIGenerate<AnyResponseVariant | AnyResponseVariantCreate, AIGenerateTextResponseVariant>({
     examples,
     transform: (items) => items.filter(isTextResponseVariant),
     onGenerated,
@@ -42,7 +42,9 @@ export const useAIGenerateTextResponseVariants = ({
         ({ results } = await mlGatewayClient.generation.generatePrompt({
           ...options,
           format: 'text',
-          examples: options.examples.map(({ text }) => markupToString.fromDB(text, { entitiesMapByID, variablesMapByID })).filter(Boolean),
+          examples: options.examples
+            .map(({ text }) => markupToString.fromDB(text, { entitiesMapByID, variablesMapByID }))
+            .filter(Boolean),
         }));
       }
 

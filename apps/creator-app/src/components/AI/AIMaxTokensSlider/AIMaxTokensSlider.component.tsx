@@ -1,29 +1,25 @@
 import { Slider } from '@voiceflow/ui-next';
 import React from 'react';
 
-import { AI_MODEL_CONFIG_MAP } from '@/config/ai-model';
+import { IAIMaxTokensWithLimitSlider } from './AIMaxTokensSlider.interface';
 
-import { IAIMaxTokensSlider } from './AIMaxTokensSlider.interface';
-
-export const AIMaxTokensSlider: React.FC<IAIMaxTokensSlider> = ({
-  model,
+export const AIMaxTokensSlider: React.FC<IAIMaxTokensWithLimitSlider> = ({
+  limit,
   value,
   testID = 'ai-max-tokens-slider',
   disabled,
   onValueSave,
   onValueChange,
 }) => {
-  const { maxTokens } = AI_MODEL_CONFIG_MAP[model];
-
   return (
     <Slider
       min={10}
-      max={maxTokens}
+      max={limit}
       step={1}
-      marks={[10, maxTokens]}
+      marks={[10, limit]}
       value={value}
       testID={testID}
-      endLabel={String(maxTokens)}
+      endLabel={String(limit)}
       disabled={disabled}
       startLabel="10"
       onAfterChange={onValueSave}

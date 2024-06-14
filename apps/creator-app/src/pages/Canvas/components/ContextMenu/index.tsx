@@ -39,7 +39,9 @@ const OPTION_HANDLERS: Record<CanvasAction, OptionHandler> = {
 
     let variants: string[] = [];
     if (node?.type === BlockType.TEXT) {
-      variants = (node as Realtime.NodeData.Text).texts?.map((text) => serializeToText(text.content, { variablesMap: variables.byKey }));
+      variants = (node as Realtime.NodeData.Text).texts?.map((text) =>
+        serializeToText(text.content, { variablesMap: variables.byKey })
+      );
     }
     if (node?.type === BlockType.SPEAK) {
       variants = (node as Realtime.NodeData.Speak).dialogs?.map((dialog) =>
@@ -48,7 +50,10 @@ const OPTION_HANDLERS: Record<CanvasAction, OptionHandler> = {
     }
 
     if (variants.length) {
-      Clipboard.copyWithToast(variants.join('\n\n'), variants.length > 1 ? 'All variants copied to clipboard' : 'Copied to clipboard')();
+      Clipboard.copyWithToast(
+        variants.join('\n\n'),
+        variants.length > 1 ? 'All variants copied to clipboard' : 'Copied to clipboard'
+      )();
     }
   },
 
@@ -77,8 +82,6 @@ const OPTION_HANDLERS: Record<CanvasAction, OptionHandler> = {
   [CanvasAction.SAVE_TO_LIBRARY]: Utils.functional.noop,
 
   [CanvasAction.CREATE_COMPONENT]: async (_, { engine }) => engine.createComponent(),
-
-  [CanvasAction.CREATE_SUB_TOPIC]: async (_, { engine }) => engine.createSubtopic(),
 
   [CanvasAction.RETURN_TO_HOME]: (_, { engine }) => engine.focusHome(),
 
@@ -114,7 +117,8 @@ const OPTION_HANDLERS: Record<CanvasAction, OptionHandler> = {
   },
 };
 
-const isCanvasActionValue = (value: string): value is CanvasAction => Object.values<string>(CanvasAction).includes(value);
+const isCanvasActionValue = (value: string): value is CanvasAction =>
+  Object.values<string>(CanvasAction).includes(value);
 
 const ContextMenu: React.FC = () => {
   const toggleCanvasOnly = useDispatch(UI.action.ToggleCanvasOnly);
@@ -126,9 +130,9 @@ const ContextMenu: React.FC = () => {
 
   const paymentModal = usePaymentModal();
 
-  const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
-  const [canUseCommenting] = usePermission(Permission.COMMENTING);
-  const [showHintFeatures] = usePermission(Permission.CANVAS_HINT_FEATURES);
+  const [canEditCanvas] = usePermission(Permission.PROJECT_CANVAS_UPDATE);
+  const [canUseCommenting] = usePermission(Permission.PROJECT_COMMENT);
+  const [showHintFeatures] = usePermission(Permission.PROJECT_CANVAS_HINT_FEATURES);
 
   const cache = useCache({
     engine,
@@ -151,7 +155,10 @@ const ContextMenu: React.FC = () => {
       .filter((option) => {
         return !option.shouldRender || option.shouldRender(contextMenu, cache.current);
       })
-      .map(({ render, ...option }) => ({ ...option, render: render ? () => render(cache.current.contextMenu, cache.current) : undefined }));
+      .map(({ render, ...option }) => ({
+        ...option,
+        render: render ? () => render(cache.current.contextMenu, cache.current) : undefined,
+      }));
 
     if (targetOptions[0]?.value === CanvasAction.DIVIDER) {
       targetOptions.shift();

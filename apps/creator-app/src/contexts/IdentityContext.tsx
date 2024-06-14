@@ -1,6 +1,6 @@
 import { Nullable } from '@voiceflow/common';
 import { UserRole } from '@voiceflow/dtos';
-import { PlanType, UserRole as InternalUserRole } from '@voiceflow/internal';
+import { PlanType } from '@voiceflow/internal';
 import { useContextApi } from '@voiceflow/ui';
 import React from 'react';
 
@@ -10,10 +10,10 @@ import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector } from '@/hooks/redux';
 
 export interface IdentityContextValue {
-  activeRole: Nullable<UserRole | InternalUserRole | VirtualRole>;
+  activeRole: Nullable<UserRole | VirtualRole>;
   workspacePlan: Nullable<PlanType>;
-  workspaceRole: Nullable<UserRole | InternalUserRole>;
-  organizationRole: Nullable<UserRole | InternalUserRole>;
+  workspaceRole: Nullable<UserRole>;
+  organizationRole: Nullable<UserRole>;
   organizationTrialExpired: Nullable<boolean>;
 }
 
@@ -30,7 +30,7 @@ export const IdentityContext = React.createContext<IdentityContextValue>({
 
 export const IdentityProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const workspacePlan = useSelector(WorkspaceV2.active.planSelector);
-  const workspaceRole = useSelector(WorkspaceV2.active.userRoleSelector);
+  const workspaceRole = useSelector(WorkspaceV2.active.members.userRoleSelector);
   const organizationID = useSelector(WorkspaceV2.active.organizationIDSelector);
   const organizationRole = useSelector(Organization.currentMemberRoleByIDSelector, { id: organizationID });
   const organizationTrialExpired = useSelector(WorkspaceV2.active.organizationTrialExpiredSelector);

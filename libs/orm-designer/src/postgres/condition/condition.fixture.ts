@@ -1,5 +1,5 @@
 import type { EntityDTO } from '@mikro-orm/core';
-import { ConditionType } from '@voiceflow/dtos';
+import { ConditionOperation, ConditionType } from '@voiceflow/dtos';
 
 import type { ExpressionConditionEntity, PromptConditionEntity, ScriptConditionEntity } from './condition.entity';
 
@@ -15,6 +15,13 @@ export const expressionCondition: EntityDTO<ExpressionConditionEntity> = {
   id: 'condition-1',
   type: ConditionType.EXPRESSION,
   matchAll: true,
+  assertions: [
+    {
+      lhs: ['test'],
+      rhs: ['test'],
+      operation: ConditionOperation.IS
+    }
+  ],
   environmentID: 'environment-1',
 };
 

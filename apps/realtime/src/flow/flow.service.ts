@@ -113,7 +113,11 @@ export class FlowService extends CMSTabularService<FlowORM> {
     const { flows: sourceFlows } = await this.findManyWithSubResourcesByEnvironment(sourceEnvironmentID);
 
     return this.importManyWithSubResources({
-      flows: sourceFlows.map((flow) => ({ ...flow, assistantID: targetAssistantID, environmentID: targetEnvironmentID })),
+      flows: sourceFlows.map((flow) => ({
+        ...flow,
+        assistantID: targetAssistantID,
+        environmentID: targetEnvironmentID,
+      })),
     });
   }
 
@@ -121,7 +125,12 @@ export class FlowService extends CMSTabularService<FlowORM> {
 
   prepareImportData(
     { flows }: FlowExportImportDataDTO,
-    { userID, backup, assistantID, environmentID }: { userID: number; backup?: boolean; assistantID: string; environmentID: string }
+    {
+      userID,
+      backup,
+      assistantID,
+      environmentID,
+    }: { userID: number; backup?: boolean; assistantID: string; environmentID: string }
   ): { flows: FlowJSON[] } {
     const createdAt = new Date().toJSON();
 
@@ -216,7 +225,9 @@ export class FlowService extends CMSTabularService<FlowORM> {
   /* Delete */
 
   async collectRelationsToDelete(flows: FlowObject[]) {
-    const diagrams = await this.diagram.findMany(flows.map((flow) => ({ diagramID: flow.diagramID, versionID: flow.environmentID })));
+    const diagrams = await this.diagram.findMany(
+      flows.map((flow) => ({ diagramID: flow.diagramID, versionID: flow.environmentID }))
+    );
 
     return {
       diagrams,
@@ -305,7 +316,6 @@ export class FlowService extends CMSTabularService<FlowORM> {
         offsetY: diagram.offsetY,
         modified: diagram.modified,
         variables: diagram.variables,
-        menuItems: diagram.menuItems,
       })),
       { userID, context }
     );
@@ -359,7 +369,10 @@ export class FlowService extends CMSTabularService<FlowORM> {
 
   /* Upsert */
 
-  async upsertManyWithSubResources(data: { flows: Flow[] }, meta: { userID: number; assistantID: string; environmentID: string }) {
+  async upsertManyWithSubResources(
+    data: { flows: Flow[] },
+    meta: { userID: number; assistantID: string; environmentID: string }
+  ) {
     const { flows } = this.prepareImportData(data, meta);
 
     await this.upsertMany(this.mapFromJSON(flows));

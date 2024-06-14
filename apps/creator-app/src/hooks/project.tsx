@@ -14,12 +14,11 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import { useFeature } from '@/hooks/feature';
-import { usePartialImport } from '@/hooks/partialImport';
 import { useHasPermissions, useIsLockedProjectViewer, useIsPreviewer, usePermission } from '@/hooks/permission';
 import { useSelector } from '@/hooks/redux';
 import * as ModalsV2 from '@/ModalsV2';
-import { ShareProjectTab } from '@/pages/Project/components/Header/constants';
-import { SharePopperContext } from '@/pages/Project/components/Header/contexts';
+import { SharePopperContext } from '@/pages/Project/components/SharePopperContext';
+import { ShareProjectTab } from '@/pages/Project/constants';
 import { copy } from '@/utils/clipboard';
 
 import { useOnAssistantDuplicate } from './assistant.hook';
@@ -33,7 +32,7 @@ export const useDeleteProject = ({
   boardID?: string;
   projectID?: string | null;
 }): (() => void) => {
-  const [canManageProjects] = usePermission(Permission.PROJECTS_MANAGE);
+  const [canManageProjects] = usePermission(Permission.WORKSPACE_PROJECTS_MANAGE);
 
   const deleteModal = ModalsV2.useModal(ModalsV2.Project.Delete);
 
@@ -64,19 +63,18 @@ export const useProjectOptions = ({
   projectID?: string | null;
   withDelete?: boolean;
   withInvite?: boolean;
-  withConvertToDomain?: boolean;
   // eslint-disable-next-line sonarjs/cognitive-complexity
 }): ProjectOption[] => {
   const sharePopper = React.useContext(SharePopperContext);
 
   const isPreviewer = useIsPreviewer();
   const hideExports = useFeature(Realtime.FeatureFlag.HIDE_EXPORTS);
-  const canExportProject = useHasPermissions([Permission.CANVAS_EXPORT, Permission.MODEL_EXPORT]);
-  const [canEditProject] = usePermission(Permission.PROJECT_EDIT);
-  const [canShareProject] = usePermission(Permission.PROJECT_SHARE);
-  const [canViewVersions] = usePermission(Permission.PROJECT_VERSIONS);
-  const [canManageProjects] = usePermission(Permission.PROJECTS_MANAGE);
-  const [canAddCollaborators] = usePermission(Permission.ADD_COLLABORATORS);
+  const canExportProject = useHasPermissions([Permission.FEATURE_EXPORT_MODEL]);
+  const [canEditProject] = usePermission(Permission.PROJECT_UPDATE);
+  const [canShareProject] = usePermission(Permission.FEATURE_SHARE_PROJECT);
+  const [canViewVersions] = usePermission(Permission.PROJECT_VERSIONS_READ);
+  const [canManageProjects] = usePermission(Permission.WORKSPACE_PROJECTS_MANAGE);
+  const [canAddCollaborators] = usePermission(Permission.WORKSPACE_MEMBER_ADD);
   const isLockedProjectViewer = useIsLockedProjectViewer();
 
   const currentVersionID = useSelector(Session.activeVersionIDSelector);
@@ -93,10 +91,6 @@ export const useProjectOptions = ({
 
   const projectMembersModal = ModalsV2.useModal(ModalsV2.Project.Members);
   const projectDownloadModal = ModalsV2.useModal(ModalsV2.Project.Download);
-
-  const isPartialImportEnabled = !!useFeature(Realtime.FeatureFlag.PARTIAL_IMPORT)?.isEnabled;
-
-  const partialImport = usePartialImport();
 
   const onDelete = useDeleteProject({ boardID, projectID });
 
@@ -139,7 +133,6 @@ export const useProjectOptions = ({
   const isPreviewerOrLockedViewer = isPreviewer || isProjectLocked;
   const withInviteOption =
     !isPreviewerOrLockedViewer && withInvite && canAddCollaborators && (!canvas || !!sharePopper);
-  const withImportOption = !isPreviewerOrLockedViewer && isPartialImportEnabled;
   const withDeleteOption = !isPreviewer && withDelete && canManageProjects;
   const withExportOption = !isPreviewerOrLockedViewer && canExportProject && !!sharePopper && !hideExports.isEnabled;
   const withRenameOption = !isPreviewerOrLockedViewer && canEditProject && !!onRename;
@@ -204,7 +197,7 @@ export const useProjectOptions = ({
     }),
 
     ...Utils.array.conditionalItem(withSettingsOption, {
-      label: 'Assistant settings',
+      label: 'Agent settings',
       onClick: () => goToSettings(targetVersionID),
       testID: 'settings',
     }),
@@ -214,8 +207,6 @@ export const useProjectOptions = ({
       onClick: () => sharePopper?.open(ShareProjectTab.INVITE),
       testID: 'invite-collaborators',
     }),
-
-    ...Utils.array.conditionalItem(withImportOption, { label: 'Import', onClick: partialImport, testID: 'import' }),
 
     ...Utils.array.conditionalItem(withExportOption, {
       label: 'Export as...',
@@ -233,13 +224,13 @@ export const useProjectOptions = ({
     ),
 
     ...Utils.array.conditionalItem(withRenameOption, {
-      label: 'Rename assistant',
+      label: 'Rename agent',
       onClick: onRename,
       testID: 'rename',
     }),
 
     ...Utils.array.conditionalItem(withDuplicateOption, {
-      label: 'Duplicate assistant',
+      label: 'Duplicate agent',
       onClick: onDuplicate,
       testID: 'duplicate',
     }),

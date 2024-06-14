@@ -9,7 +9,7 @@ import { useSelector, useTrackingEvents } from '@/hooks';
 import { useJob, useSimulatedProgress } from '@/hooks/job';
 import * as ModalsV2 from '@/ModalsV2';
 import { SMSPublishJob } from '@/models';
-import PublishButton from '@/pages/Project/components/Header/components/CanvasHeader/components/Upload/components/PublishButton';
+import PublishButton from '@/pages/Project/components/Upload/components/PublishButton';
 
 import { useSMSStageContent } from './stages';
 

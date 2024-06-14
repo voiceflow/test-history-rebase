@@ -19,7 +19,10 @@ export const useDispatch = <S extends any[], D extends any[], R extends Dispatch
 ) => {
   const store = useStore();
 
-  return useCallback((...dynamicArgs: D): DispatchResult<R> => store.dispatch(createAction(...staticArgs, ...dynamicArgs)), staticArgs);
+  return useCallback(
+    (...dynamicArgs: D): DispatchResult<R> => store.dispatch(createAction(...staticArgs, ...dynamicArgs)),
+    staticArgs
+  );
 };
 
 export const useLocalDispatch = <S extends any[], D extends any[], R extends AnyAction>(
@@ -28,7 +31,10 @@ export const useLocalDispatch = <S extends any[], D extends any[], R extends Any
 ) => {
   const store = useStore();
 
-  return useCallback((...dynamicArgs: D) => store.dispatch.local(createAction(...staticArgs, ...dynamicArgs)), staticArgs);
+  return useCallback(
+    (...dynamicArgs: D) => store.dispatch.local(createAction(...staticArgs, ...dynamicArgs)),
+    staticArgs
+  );
 };
 
 export const useCrossTabDispatch = <S extends any[], D extends any[], R extends AnyAction>(
@@ -37,7 +43,10 @@ export const useCrossTabDispatch = <S extends any[], D extends any[], R extends 
 ) => {
   const store = useStore();
 
-  return useCallback((...dynamicArgs: D) => store.dispatch.crossTab(createAction(...staticArgs, ...dynamicArgs)), staticArgs);
+  return useCallback(
+    (...dynamicArgs: D) => store.dispatch.crossTab(createAction(...staticArgs, ...dynamicArgs)),
+    staticArgs
+  );
 };
 
 export const useSyncDispatch = <S extends any[], D extends any[], R extends AnyAction>(
@@ -46,7 +55,10 @@ export const useSyncDispatch = <S extends any[], D extends any[], R extends AnyA
 ) => {
   const store = useStore();
 
-  return useCallback((...dynamicArgs: D) => store.dispatch.sync(createAction(...staticArgs, ...dynamicArgs)), staticArgs);
+  return useCallback(
+    (...dynamicArgs: D) => store.dispatch.sync(createAction(...staticArgs, ...dynamicArgs)),
+    staticArgs
+  );
 };
 
 const createSubscriptionHook =
@@ -67,16 +79,17 @@ const createSubscriptionHook =
     return !isLoading;
   };
 
-export const useCreatorSubscription = createSubscriptionHook<NullishRecord<Realtime.Channels.CreatorChannelParams>>(({ creatorID }) =>
-  creatorID ? [Realtime.Channels.creator.build({ creatorID })] : []
+export const useCreatorSubscription = createSubscriptionHook<NullishRecord<Realtime.Channels.CreatorChannelParams>>(
+  ({ creatorID }) => (creatorID ? [Realtime.Channels.creator.build({ creatorID })] : [])
 );
 
-export const useWorkspaceSubscription = createSubscriptionHook<NullishRecord<Realtime.Channels.WorkspaceChannelParams>>(({ workspaceID }) =>
-  workspaceID ? [Realtime.Channels.workspace.build({ workspaceID })] : []
+export const useWorkspaceSubscription = createSubscriptionHook<NullishRecord<Realtime.Channels.WorkspaceChannelParams>>(
+  ({ workspaceID }) => (workspaceID ? [Realtime.Channels.workspace.build({ workspaceID })] : [])
 );
 
-export const useOrganizationSubscription = createSubscriptionHook<NullishRecord<Channels.OrganizationParams>>(({ organizationID, workspaceID }) =>
-  organizationID && workspaceID ? [Channels.organization.build({ organizationID, workspaceID })] : []
+export const useOrganizationSubscription = createSubscriptionHook<NullishRecord<Channels.OrganizationParams>>(
+  ({ organizationID, workspaceID }) =>
+    organizationID && workspaceID ? [Channels.organization.build({ organizationID, workspaceID })] : []
 );
 
 export const useAssistantSubscription = createSubscriptionHook<NullishRecord<Realtime.Channels.VersionChannelParams>>(
@@ -91,18 +104,13 @@ export const useAssistantSubscription = createSubscriptionHook<NullishRecord<Rea
       : []
 );
 
-export const useSchemaSubscription = createSubscriptionHook<NullishRecord<Realtime.Channels.SchemaChannelParams>>(({ versionID }) =>
-  versionID ? [Realtime.Channels.schema.build({ versionID })] : []
+export const useSchemaSubscription = createSubscriptionHook<NullishRecord<Realtime.Channels.SchemaChannelParams>>(
+  ({ versionID }) => (versionID ? [Realtime.Channels.schema.build({ versionID })] : [])
 );
 
 export const useDiagramSubscription = createSubscriptionHook<NullishRecord<Realtime.Channels.DiagramChannelParams>>(
-  ({ workspaceID, projectID, versionID, diagramID, domainID }) =>
-    workspaceID && projectID && versionID && diagramID && domainID
-      ? [Realtime.Channels.diagram.build({ workspaceID, projectID, versionID, diagramID, domainID })]
-      : []
-);
-
-export const useDiagramSubscriptionV2 = createSubscriptionHook<NullishRecord<Realtime.Channels.DiagramChannelV2Params>>(
   ({ workspaceID, projectID, versionID, diagramID }) =>
-    workspaceID && projectID && versionID && diagramID ? [Realtime.Channels.diagramV2.build({ workspaceID, projectID, versionID, diagramID })] : []
+    workspaceID && projectID && versionID && diagramID
+      ? [Realtime.Channels.diagram.build({ workspaceID, projectID, versionID, diagramID })]
+      : []
 );

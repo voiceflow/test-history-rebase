@@ -38,12 +38,13 @@ const ENTITLEMENTS_BY_MODELS: Record<EntitlementModels, keyof Subscription['enti
   [AIModel.GPT_4O]: 'gpt4O',
 };
 
-const isEntitlementModel = (model: string): model is EntitlementModels => ENTITLEMENTS_MODELS.has(model as EntitlementModels);
+const isEntitlementModel = (model: string): model is EntitlementModels =>
+  ENTITLEMENTS_MODELS.has(model as EntitlementModels);
 
 export const useAIModelEntitlement = () => {
   const isTrial = useSelector(WorkspaceV2.active.isOnTrialSelector);
   const isEnterprise = useSelector(WorkspaceV2.active.isEnterpriseSelector);
-  const advancedLLMModelsPermission = usePermission(Permission.ADVANCED_LLM_MODELS);
+  const advancedLLMModelsPermission = usePermission(Permission.FEATURE_ADVANCED_LLM_MODELS);
   const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
 
   const isReverseTrial = isTrial && !isEnterprise;

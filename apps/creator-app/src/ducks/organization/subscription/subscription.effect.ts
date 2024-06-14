@@ -1,10 +1,11 @@
-import { Subscription } from '@voiceflow/dtos';
+import { PlanName, Subscription } from '@voiceflow/dtos';
 import { PlanType } from '@voiceflow/internal';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 import { toast } from '@voiceflow/ui';
 
 import { designerClient } from '@/client/designer';
 import { PLAN_TYPE_META } from '@/constants';
+import * as Tracking from '@/ducks/tracking';
 import { waitAsync } from '@/ducks/utils';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { ChargebeeSubscriptionStatus } from '@/models';
@@ -20,7 +21,13 @@ export const checkout = (
 ): Thunk<void> => {
   const { itemPriceID, paymentIntent } = data;
 
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const subscription = chargebeeSubscriptionSelector(getState());
+
+    if (!subscription) {
+      throw new Error('Subscription not found');
+    }
+
     try {
       const newSubscription = await dispatch(
         waitAsync(Actions.OrganizationSubscription.Checkout, {
@@ -28,6 +35,19 @@ export const checkout = (
           paymentIntent,
           couponIds: data.couponIds,
           context: { organizationID, workspaceID },
+        })
+      );
+
+      const previousPlan =
+        subscription.plan === PlanName.PRO && subscription.trial ? `${PlanName.PRO}-trial` : subscription.plan;
+
+      dispatch(
+        Tracking.trackSubscriptionModified({
+          id: newSubscription.id,
+          action: 'upgrade',
+          period: newSubscription.billingPeriodUnit,
+          newPlan: newSubscription.plan,
+          previousPlan,
         })
       );
 
@@ -42,9 +62,13 @@ export const loadSubscription =
   (organizationID: string, chargebeeSubscriptionID: string, workspaceID: string): Thunk<Subscription | null> =>
   async (dispatch) => {
     try {
-      const subscription = (await designerClient.billing.subscription.findOne(organizationID, chargebeeSubscriptionID, workspaceID)) as Subscription;
+      const subscription = (await designerClient.billing.subscription.findOne(organizationID, chargebeeSubscriptionID, {
+        workspaceID,
+      })) as Subscription;
 
-      await dispatch.local(Actions.OrganizationSubscription.Replace({ subscription, context: { organizationID, workspaceID } }));
+      await dispatch.local(
+        Actions.OrganizationSubscription.Replace({ subscription, context: { organizationID, workspaceID } })
+      );
 
       return subscription;
     } catch {
@@ -59,7 +83,7 @@ export const cancelSubscription = (organizationID: string): Thunk<void> => {
 
     if (!subscription || !workspaceID) return;
 
-    await designerClient.billing.subscription.cancel(organizationID, subscription.id);
+    await designerClient.billing.subscription.cancel(organizationID, subscription.id, { workspaceID });
 
     await dispatch.local(
       Actions.OrganizationSubscription.Replace({
@@ -68,6 +92,16 @@ export const cancelSubscription = (organizationID: string): Thunk<void> => {
           status: ChargebeeSubscriptionStatus.NON_RENEWING,
         },
         context: { organizationID, workspaceID },
+      })
+    );
+
+    dispatch(
+      Tracking.trackSubscriptionModified({
+        id: subscription.id,
+        action: 'downgrade',
+        period: subscription.billingPeriodUnit,
+        newPlan: PlanName.STARTER,
+        previousPlan: subscription.plan,
       })
     );
   };
@@ -80,7 +114,7 @@ export const downgradeTrial = (organizationID: string, chargebeeSubscriptionID: 
 
     if (!subscription || !workspaceID) return;
 
-    await designerClient.billing.subscription.downgradeTrial(organizationID, chargebeeSubscriptionID);
+    await designerClient.billing.subscription.downgradeTrial(organizationID, chargebeeSubscriptionID, { workspaceID });
 
     await dispatch.local(
       Actions.OrganizationSubscription.Replace({
@@ -109,10 +143,14 @@ export const updateSubscriptionPaymentMethod =
     }
 
     try {
-      const { paymentMethod } = await designerClient.billing.subscription.upsertCustomerCard(organizationID, {
-        paymentIntentID,
-        customerID,
-      });
+      const { paymentMethod } = await designerClient.billing.subscription.upsertCustomerCard(
+        organizationID,
+        {
+          paymentIntentID,
+          customerID,
+        },
+        { workspaceID }
+      );
 
       dispatch.local(
         Actions.OrganizationSubscription.UpdatePaymentMethod({

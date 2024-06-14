@@ -1,7 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import type { Backup as BackupEntity } from '@voiceflow/dtos';
-import { FeatureFlag } from '@voiceflow/realtime-sdk';
-import { Animations, Box, DataTypes, download, LoadCircle, SectionV2, System, toast } from '@voiceflow/ui';
+import { Animations, Box, DataTypes, download, LoadCircle, SectionV2, toast } from '@voiceflow/ui';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
 
@@ -12,8 +11,6 @@ import { Path } from '@/config/routes';
 import { Permission } from '@/constants/permissions';
 import { Designer, Router, Session } from '@/ducks';
 import { useDispatch, useHotkey, usePermission, useSetup, useTrackingEvents } from '@/hooks';
-import { useFeature } from '@/hooks/feature';
-import { usePaymentModal } from '@/hooks/modal.hook';
 import { useSelector } from '@/hooks/redux';
 import { getHotkeyLabel, Hotkey } from '@/keymap';
 import * as ModalsV2 from '@/ModalsV2';
@@ -30,8 +27,7 @@ const SettingsBackups: React.FC = () => {
   const goToCanvasWithVersionID = useDispatch(Router.goToCanvasWithVersionID);
   const setGateSubscriptionRevision = useDispatch(Designer.Environment.action.SetGateSubscriptionRevision);
 
-  const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
-  const [hasFullVersionPermissions] = usePermission(Permission.PROJECT_FULL_VERSIONS);
+  const [canEditCanvas] = usePermission(Permission.PROJECT_CANVAS_UPDATE);
 
   const [backups, setBackups] = React.useState<BackupEntity[]>([]);
   const [loading, setLoading] = React.useState(true);
@@ -40,9 +36,6 @@ const SettingsBackups: React.FC = () => {
   const [trackingEvents] = useTrackingEvents();
 
   const manualSaveModal = ModalsV2.useModal(ModalsV2.Project.ManualSaveBackup);
-
-  const paymentModal = usePaymentModal();
-  const cmsWorkflows = useFeature(FeatureFlag.CMS_WORKFLOWS);
 
   const fetchBackups = async (offset: number) => {
     try {
@@ -119,7 +112,7 @@ const SettingsBackups: React.FC = () => {
   const handlePreview = async (backup: BackupEntity) => {
     const { versionID } = await designerClient.backup.previewOne(projectID, backup.id);
 
-    openURLInANewTab(`${window.location.origin}${generatePath(cmsWorkflows.isEnabled ? Path.PROJECT_CANVAS : Path.PROJECT_DOMAIN, { versionID })}`);
+    openURLInANewTab(`${window.location.origin}${generatePath(Path.PROJECT_CANVAS, { versionID })}`);
 
     trackingEvents.trackBackupPreview({ versionID, backupID: backup.id });
   };
@@ -129,14 +122,8 @@ const SettingsBackups: React.FC = () => {
       <Settings.Card>
         <S.Heading>
           <>
-            New backups are created when you publish your assistant. To manually save a backup, use the shortcut{' '}
+            New backups are created when you publish your agent. To manually save a backup, use the shortcut{' '}
             <S.HotKeyContainer>Shift + {getHotkeyLabel(Hotkey.SAVE_BACKUP)}</S.HotKeyContainer>.{' '}
-            {!hasFullVersionPermissions && (
-              <>
-                Free users can only view 30 days of an assistant's backup history.{' '}
-                <System.Link.Button onClick={() => paymentModal.openVoid({})}>Upgrade to unlock unlimited backup history</System.Link.Button>
-              </>
-            )}
           </>
         </S.Heading>
 

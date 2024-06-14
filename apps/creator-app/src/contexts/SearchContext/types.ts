@@ -11,7 +11,11 @@ export enum NodeCategory {
   USER_INPUT = 'User inputs',
 }
 
-export const NODE_CATEGORY_ORDER: NodeCategory[] = [NodeCategory.BLOCK, NodeCategory.RESPONSES, NodeCategory.USER_INPUT];
+export const NODE_CATEGORY_ORDER: NodeCategory[] = [
+  NodeCategory.BLOCK,
+  NodeCategory.RESPONSES,
+  NodeCategory.USER_INPUT,
+];
 
 export interface NodeDatabaseEntry extends BaseDatabaseEntry {
   diagramID: string;
@@ -60,3 +64,5 @@ export interface SearchDatabase {
   [SearchCategory.ENTITIES]: EntityDatabaseEntry[];
   [SearchCategory.COMPONENT]: DiagramDatabaseEntry[];
 }
+
+export type DiagramNodeDatabaseMap = Record<string, NodeDatabaseEntry[]>;

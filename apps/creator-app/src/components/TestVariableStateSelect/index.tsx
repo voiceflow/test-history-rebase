@@ -28,27 +28,43 @@ interface TestVariableStateSelectProps extends BaseSelectProps {
   onUpdateStateValues: () => Promise<void>;
 }
 
-const TestVariableStateSelect: React.FC<TestVariableStateSelectProps> = ({ value, loading, onChange, onUpdateStateValues, className, ...props }) => {
+const TestVariableStateSelect: React.FC<TestVariableStateSelectProps> = ({
+  value,
+  loading,
+  onChange,
+  onUpdateStateValues,
+  className,
+  ...props
+}) => {
   const variableStates = useSelector(variableState.allVariableStatesSelector);
   const isSelectedStateUnsync = useSelector(variableState.IsVariableStateUnsyncSelector);
 
-  const [canRenderPrototype] = usePermission(Permission.RENDER_PROTOTYPE);
+  const [canRenderPrototype] = usePermission(Permission.PROJECT_PROTOTYPE_RENDER);
 
   const variableStateManageModal = ModalsV2.useModal(ModalsV2.VariableStates.Manage);
 
   const onCreateVariableState = useCreateVariableState();
 
   const options = React.useMemo(() => {
-    const statesOptions = variableStates.map((variableState) => ({ label: variableState.name, value: variableState.id }));
+    const statesOptions = variableStates.map((variableState) => ({
+      label: variableState.name,
+      value: variableState.id,
+    }));
 
     if (statesOptions.length === 0) return baseOptions;
 
     return [...baseOptions, dividerOption, ...statesOptions];
   }, [variableStates]);
 
-  const optionsMap = React.useMemo(() => Utils.array.createMap(options.filter(isNotUIOnlyMenuItemOption), Utils.object.selectValue), [options]);
+  const optionsMap = React.useMemo(
+    () => Utils.array.createMap(options.filter(isNotUIOnlyMenuItemOption), Utils.object.selectValue),
+    [options]
+  );
 
-  const selected = React.useMemo(() => options.find((option) => !isUIOnlyMenuItemOption(option) && option.value === value) || null, [options, value]);
+  const selected = React.useMemo(
+    () => options.find((option) => !isUIOnlyMenuItemOption(option) && option.value === value) || null,
+    [options, value]
+  );
 
   return (
     <SelectContainer
@@ -66,8 +82,11 @@ const TestVariableStateSelect: React.FC<TestVariableStateSelectProps> = ({ value
             {(overflowref) => <OverflowText ref={overflowref}>{option.label}</OverflowText>}
           </OverflowTippyTooltip>
 
-          {option.label !== 'All assistant variables' && (
-            <Menu.ItemActionIcon icon="edit" onClick={() => variableStateManageModal.openVoid({ variableStateID: option.value })} />
+          {option.label !== 'All agent variables' && (
+            <Menu.ItemActionIcon
+              icon="edit"
+              onClick={() => variableStateManageModal.openVoid({ variableStateID: option.value })}
+            />
           )}
         </>
       )}
@@ -86,7 +105,9 @@ const TestVariableStateSelect: React.FC<TestVariableStateSelectProps> = ({ value
       renderFooterAction={({ close }) =>
         canRenderPrototype && (
           <Menu.Footer>
-            <Menu.Footer.Action onClick={Utils.functional.chainVoid(close, onCreateVariableState)}>Create New Persona</Menu.Footer.Action>
+            <Menu.Footer.Action onClick={Utils.functional.chainVoid(close, onCreateVariableState)}>
+              Create New Persona
+            </Menu.Footer.Action>
           </Menu.Footer>
         )
       }

@@ -1,7 +1,7 @@
 import Box from '@ui/components/Box';
 import SvgIcon from '@ui/components/SvgIcon';
 import TippyTooltip from '@ui/components/TippyTooltip';
-import { UserRole } from '@voiceflow/internal';
+import { UserRole } from '@voiceflow/dtos';
 import pluralize from 'pluralize';
 import React from 'react';
 
@@ -24,7 +24,7 @@ const RowProjectsTooltip: React.FC<RowProjectsTooltipProps> = ({ member, isEdito
       interactive
       content={
         <TippyTooltip.Multiline>
-          <TippyTooltip.Title>Can edit {pluralize('assistant', member.projects.length, true)}:</TippyTooltip.Title>
+          <TippyTooltip.Title>Can edit {pluralize('agent', member.projects.length, true)}:</TippyTooltip.Title>
 
           <Box p="4px 0 8px 0">
             {member.projects.map((name, index) => (

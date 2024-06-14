@@ -1,6 +1,5 @@
 import { Nullable } from '@voiceflow/common';
 import { PlanName, UserRole } from '@voiceflow/dtos';
-import { UserRole as InternalUserRole } from '@voiceflow/internal';
 import { PLAN_INFO } from '@voiceflow/schema-types';
 import { useContextApi } from '@voiceflow/ui';
 import React from 'react';
@@ -17,8 +16,8 @@ import { useProjectPreview } from './ProjectPreviewContext';
 
 export interface ProjectIdentityContextValue {
   projectID: Nullable<string>;
-  activeRole: Nullable<UserRole | VirtualRole | InternalUserRole>;
-  projectRole: Nullable<UserRole | InternalUserRole>;
+  activeRole: Nullable<UserRole | VirtualRole>;
+  projectRole: Nullable<UserRole>;
 }
 
 /**

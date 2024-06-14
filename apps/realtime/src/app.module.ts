@@ -155,7 +155,7 @@ import { WorkflowModule } from './workflow/workflow.module';
 
           if (user?.id !== creatorID) {
             // TODO: remove this temporary logging after BUG-696
-            logger.warn({ token, user, creatorID }, `[authenticator] invalid session`);
+            logger.warn({ token, user, creatorID }, '[authenticator] invalid session');
             return false;
           }
 

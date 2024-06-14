@@ -33,6 +33,7 @@ import { Patch } from 'immer';
 import _ from 'lodash';
 
 import { MutableService } from '@/common';
+import { DiagramService } from '@/diagram/diagram.service';
 import { EnvironmentCMSData } from '@/environment/environment.interface';
 import { EnvironmentService } from '@/environment/environment.service';
 import { ProgramService } from '@/program/program.service';
@@ -42,6 +43,8 @@ import { ProjectService } from '@/project/project.service';
 import { LegacyProjectSerializer } from '@/project/project-legacy/legacy-project.serializer';
 import { ProjectListService } from '@/project-list/project-list.service';
 import { PrototypeProgramService } from '@/prototype-program/prototype-program.service';
+import { ReferenceService } from '@/reference/reference.service';
+import { ThreadService } from '@/thread/thread.service';
 import { deepSetCreatorID } from '@/utils/creator.util';
 import { deepSetNewDate } from '@/utils/date.util';
 import { VariableStateService } from '@/variable-state/variable-state.service';
@@ -57,6 +60,7 @@ import {
 } from './assistant.util';
 import { AssistantExportDataDTO } from './dtos/assistant-export-data.dto';
 import { AssistantImportDataDTO } from './dtos/assistant-import-data.dto';
+import { AssistantLoadCreatorResponse } from './dtos/assistant-load-creator.response';
 
 @Injectable()
 export class AssistantService extends MutableService<AssistantORM> {
@@ -81,14 +85,20 @@ export class AssistantService extends MutableService<AssistantORM> {
     private readonly identityClient: IdentityClient,
     @Inject(LoguxService)
     private readonly logux: LoguxService,
+    @Inject(ThreadService)
+    private readonly thread: ThreadService,
     @Inject(UnleashFeatureFlagService)
     private readonly unleash: UnleashFeatureFlagService,
     @Inject(ProjectService)
     private readonly project: ProjectService,
     @Inject(ProgramService)
     private readonly program: ProgramService,
+    @Inject(DiagramService)
+    private readonly diagram: DiagramService,
     @Inject(VersionService)
     private readonly version: VersionService,
+    @Inject(ReferenceService)
+    private readonly reference: ReferenceService,
     @Inject(EnvironmentService)
     private readonly environment: EnvironmentService,
     @Inject(ProjectListService)
@@ -274,6 +284,19 @@ export class AssistantService extends MutableService<AssistantORM> {
       project.aiAssistSettings = { ...project.aiAssistSettings, aiPlayground: false };
     }
 
+    if (this.unleash.isEnabled(Realtime.FeatureFlag.KB_EMBEDDING_MODEL_SETTING, { workspaceID })) {
+      const knowledgeBase = project.knowledgeBase || {};
+      const { settings } = knowledgeBase;
+
+      knowledgeBase.settings = {
+        ...Realtime.KB_SETTINGS_DEFAULT,
+        ...(settings ?? {}),
+        embeddingModel: settings?.embeddingModel ?? Realtime.KB_SETTINGS_NEW_EMBEDDING_MODEL,
+      };
+
+      project.knowledgeBase = knowledgeBase;
+    }
+
     return {
       project,
       _version: data._version,
@@ -340,7 +363,10 @@ export class AssistantService extends MutableService<AssistantORM> {
     };
 
     return {
-      ...migratedData,
+      cms: {
+        ...Utils.object.omit(data, ['project', 'programs', '_version', 'diagrams', 'variableStates', 'version']),
+        ...migratedData.cms,
+      },
       version,
       diagrams: migratedData.diagrams.map((diagram) => ({ ...diagramsMap[diagram.diagramID], ...diagram })),
     };
@@ -743,11 +769,11 @@ export class AssistantService extends MutableService<AssistantORM> {
     });
   }
 
-  public exportCMS({ userID, environmentID }: { userID: number; environmentID: string }) {
-    return this.postgresEM.transactional(async () => {
-      const { projectID } = await this.version.findOneOrFailWithFields(environmentID, ['projectID']);
-      const { teamID: workspaceID } = await this.project.findOneOrFailWithFields(projectID, ['teamID']);
+  public async exportCMS({ userID, environmentID }: { userID: number; environmentID: string }) {
+    const { projectID } = await this.version.findOneOrFailWithFields(environmentID, ['projectID']);
+    const { teamID: workspaceID } = await this.project.findOneOrFailWithFields(projectID, ['teamID']);
 
+    return this.postgresEM.transactional(async () => {
       const [assistant, cmsData] = await Promise.all([
         this.findOneOrFail(projectID.toJSON()),
         this.environment.findOneCMSData(environmentID),
@@ -794,6 +820,39 @@ export class AssistantService extends MutableService<AssistantORM> {
         assistant: this.assistantSerializer.nullable(assistant),
       };
     });
+  }
+
+  public async loadCreator({ userID, environmentID }: { userID: number; environmentID: string }) {
+    const { projectID } = await this.version.findOneOrFailWithFields(environmentID, ['projectID']);
+
+    const [project, version, diagrams, variableStates, threadData, cmsData, projectMembership] = await Promise.all([
+      this.project.findOneOrFail(projectID.toJSON()),
+      this.version.findOneOrFail(environmentID),
+      this.diagram.findManyByVersionID(environmentID),
+      this.variableState.findManyByProject(projectID.toJSON()),
+      this.thread.findAllWithCommentsByAssistant(projectID.toJSON()),
+      this.exportCMS({ userID, environmentID }),
+      this.identityClient.private.findAllProjectMembersForProject(projectID.toJSON()),
+    ]);
+
+    const creatorData: AssistantLoadCreatorResponse = {
+      ...threadData,
+      ...cmsData,
+      project: this.projectSerializer.serialize(project),
+      version: this.version.toJSON(version),
+      diagrams: this.diagram.mapToJSON(diagrams),
+      variableStates: this.variableState.mapToJSON(variableStates),
+      projectMembership,
+    };
+
+    if (this.unleash.isEnabled(Realtime.FeatureFlag.REFERENCE_SYSTEM, { userID, workspaceID: project.teamID })) {
+      const { references, referenceResources } = await this.reference.buildForCreator(creatorData);
+
+      creatorData.references = references;
+      creatorData.referenceResources = referenceResources;
+    }
+
+    return creatorData;
   }
 
   /* Create  */
@@ -889,7 +948,7 @@ export class AssistantService extends MutableService<AssistantORM> {
     } catch {
       await this.project.deleteOne(project._id.toJSON());
 
-      throw new InternalServerErrorException("Couldn't clone the assistant.");
+      throw new InternalServerErrorException("Couldn't clone the agent.");
     }
 
     let version: VersionObject;
@@ -909,7 +968,7 @@ export class AssistantService extends MutableService<AssistantORM> {
       await this.deleteOne(assistant.id);
       await this.project.deleteOne(project._id.toJSON());
 
-      throw new InternalServerErrorException("Couldn't clone the assistant.");
+      throw new InternalServerErrorException("Couldn't clone the agent.");
     }
 
     try {

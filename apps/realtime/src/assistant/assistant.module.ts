@@ -1,19 +1,20 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { AssistantORM, ProgramORM, PrototypeProgramORM } from '@voiceflow/orm-designer';
 
+import { BackupModule } from '@/backup/backup.module';
 import { CacheModule } from '@/cache/cache.module';
-// eslint-disable-next-line import/no-cycle
+import { DiagramModule } from '@/diagram/diagram.module';
 import { EnvironmentModule } from '@/environment/environment.module';
 import { OrganizationModule } from '@/organization/organization.module';
 import { ProgramModule } from '@/program/program.module';
 import { ProjectModule } from '@/project/project.module';
 import { ProjectListModule } from '@/project-list/project-list.module';
 import { PrototypeProgramModule } from '@/prototype-program/prototype-program.module';
+import { ReferenceModule } from '@/reference/reference.module';
+import { ThreadModule } from '@/thread/thread.module';
 import { VariableStateModule } from '@/variable-state/variable-state.module';
 import { VersionModule } from '@/version/version.module';
 
-// eslint-disable-next-line import/no-cycle
-import { BackupModule } from '../backup/backup.module';
 import { AssistantLoguxController } from './assistant.logux.controller';
 import { AssistantSerializer } from './assistant.serializer';
 import { AssistantService } from './assistant.service';
@@ -28,15 +29,26 @@ import { AssistantViewerService } from './assistant-viewer.service';
     forwardRef(() => ProjectModule),
     forwardRef(() => EnvironmentModule),
     CacheModule,
+    ThreadModule,
+    DiagramModule,
     ProgramModule,
     VersionModule,
+    ReferenceModule,
     ProjectListModule,
+    OrganizationModule,
     VariableStateModule,
     PrototypeProgramModule,
-    OrganizationModule,
   ],
   exports: [AssistantService, AssistantSerializer],
-  providers: [ProgramORM, AssistantORM, PrototypeProgramORM, AssistantService, AssistantPublishService, AssistantViewerService, AssistantSerializer],
+  providers: [
+    ProgramORM,
+    AssistantORM,
+    PrototypeProgramORM,
+    AssistantService,
+    AssistantViewerService,
+    AssistantPublishService,
+    AssistantSerializer,
+  ],
   controllers: [AssistantLoguxController, AssistantPublicHTTPController, AssistantPrivateHTTPController],
 })
 export class AssistantModule {}

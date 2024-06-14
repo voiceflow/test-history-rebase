@@ -1,11 +1,18 @@
 import { Utils } from '@voiceflow/common';
-import { BlockText, Box, createDividerMenuItemOption, defaultMenuLabelRenderer, isNotUIOnlyMenuItemOption, Select, SvgIcon } from '@voiceflow/ui';
+import {
+  BlockText,
+  Box,
+  createDividerMenuItemOption,
+  defaultMenuLabelRenderer,
+  isNotUIOnlyMenuItemOption,
+  Select,
+  SvgIcon,
+} from '@voiceflow/ui';
 import React from 'react';
 
 import IntentsSelect from '@/components/IntentsSelect';
-import PermittedMenuItem from '@/components/PermittedMenuItem';
+import { MenuItem } from '@/components/MenuItem';
 import * as NLP from '@/config/nlp';
-import { Permission } from '@/constants/permissions';
 
 import { Context } from './Context';
 
@@ -14,7 +21,8 @@ interface ModelProps {
 }
 
 export const Model: React.FC<ModelProps> = ({ selectedIntentsIds }) => {
-  const { exportNLPType, setExportNLPType, setExportIntents, exportIntents, nlpTypes, setCheckedExportIntents } = React.useContext(Context)!;
+  const { exportNLPType, setExportNLPType, setExportIntents, exportIntents, nlpTypes, setCheckedExportIntents } =
+    React.useContext(Context)!;
 
   const [selectedIntents, setSelectedIntents] = React.useState(exportIntents);
 
@@ -25,7 +33,11 @@ export const Model: React.FC<ModelProps> = ({ selectedIntentsIds }) => {
     const supported = nlpTypes.filter((nlpType) => !!NLP.Config.get(nlpType).export);
 
     return supported.includes(NLP.Constants.NLPType.VOICEFLOW) && supported.length > 1
-      ? [NLP.Constants.NLPType.VOICEFLOW, createDividerMenuItemOption(), ...Utils.array.withoutValue(supported, NLP.Constants.NLPType.VOICEFLOW)]
+      ? [
+          NLP.Constants.NLPType.VOICEFLOW,
+          createDividerMenuItemOption(),
+          ...Utils.array.withoutValue(supported, NLP.Constants.NLPType.VOICEFLOW),
+        ]
       : supported;
   }, [nlpTypes]);
 
@@ -62,7 +74,9 @@ export const Model: React.FC<ModelProps> = ({ selectedIntentsIds }) => {
 
       <Select
         value={exportNLPType}
-        prefix={exportNLPConfig ? <SvgIcon icon={exportNLPConfig.icon.name} color={exportNLPConfig.icon.color} /> : null}
+        prefix={
+          exportNLPConfig ? <SvgIcon icon={exportNLPConfig.icon.name} color={exportNLPConfig.icon.color} /> : null
+        }
         options={nluOptions}
         onSelect={modelExportSelection}
         disabled={nluOptions.length === 1}
@@ -73,13 +87,7 @@ export const Model: React.FC<ModelProps> = ({ selectedIntentsIds }) => {
         getOptionLabel={(value) => value && NLP.Config.get(value).name}
         maxHeight="334px"
         renderOptionLabel={(nlpType, searchLabel, getOptionLabel, getOptionValue, options) => (
-          <PermittedMenuItem
-            data={{ nlpType }}
-            label={defaultMenuLabelRenderer(nlpType, searchLabel, getOptionLabel, getOptionValue, options)}
-            isFocused={options.isFocused}
-            permission={nlpType === NLP.Constants.NLPType.VOICEFLOW ? Permission.NLU_EXPORT_CSV : Permission.NLU_EXPORT_ALL}
-            tooltipProps={{ offset: [0, 30] }}
-          />
+          <MenuItem label={defaultMenuLabelRenderer(nlpType, searchLabel, getOptionLabel, getOptionValue, options)} />
         )}
       />
 

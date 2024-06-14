@@ -1,14 +1,22 @@
 import { BlockType } from '@voiceflow/realtime-sdk';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { clsx } from '@voiceflow/style';
-import { DraggablePanel, ResizableSection, ResizableSectionHeader, TreeView, usePersistFunction } from '@voiceflow/ui-next';
+import {
+  DraggablePanel,
+  ResizableSection,
+  ResizableSectionHeader,
+  TreeView,
+  usePersistFunction,
+} from '@voiceflow/ui-next';
 import { IResizableSectionAPI } from '@voiceflow/ui-next/build/cjs/components/Section/ResizableSection/types';
-import React, { useRef } from 'react';
+import React, { memo, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { CMS_FLOW_LEARN_MORE, CMS_WORKFLOW_LEARN_MORE } from '@/constants/link.constant';
 import { Permission } from '@/constants/permissions';
 import { Creator, Designer, Diagram, Router, UI } from '@/ducks';
 import { useEventualEngine } from '@/hooks/engine';
+import { useFeature } from '@/hooks/feature';
 import { useFlowCreateModal, useWorkflowCreateModal } from '@/hooks/modal.hook';
 import { usePermission } from '@/hooks/permission';
 import { useLocalStorageState } from '@/hooks/storage.hook';
@@ -17,7 +25,12 @@ import { useCommentingMode } from '@/pages/Project/hooks';
 
 import StepMenu from '../../StepMenu';
 import { containerStyle } from './DiagramSidebar.css';
-import { useFlowsTree, useRenderFlowItemContextMenu, useRenderWorkflowItemContextMenu, useWorkflowsTree } from './DiagramSidebar.hook';
+import {
+  useFlowsTree,
+  useRenderFlowItemContextMenu,
+  useRenderWorkflowItemContextMenu,
+  useWorkflowsTree,
+} from './DiagramSidebar.hook';
 import {
   DiagramSidebarAnyFlowMetadata,
   DiagramSidebarAnyWorkflowMetadata,
@@ -26,12 +39,14 @@ import {
 } from './DiagramSidebar.interface';
 import { DiagramSidebarToolbar } from './DiagramSidebarToolbar.component';
 
-export const DiagramSidebar: React.FC = () => {
+export const DiagramSidebar = memo(() => {
+  const referenceSystem = useFeature(Realtime.FeatureFlag.REFERENCE_SYSTEM);
+
   const params = useParams<{ nodeID?: string; diagramID?: string }>();
   const getEngine = useEventualEngine();
   const isCommenting = useCommentingMode();
   const flowCreateModal = useFlowCreateModal();
-  const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
+  const [canEditCanvas] = usePermission(Permission.PROJECT_CANVAS_UPDATE);
   const workflowCreateModal = useWorkflowCreateModal();
 
   const resizableSectionRef = useRef<IResizableSectionAPI>(null);
@@ -40,9 +55,18 @@ export const DiagramSidebar: React.FC = () => {
   const sidebarWidth = useSelector(UI.selectors.canvasSidebarWidth);
   const sidebarVisible = useSelector(UI.selectors.canvasSidebarVisible);
   const activeDiagramID = useSelector(Creator.activeDiagramIDSelector);
-  const activeSharedNode = useSelector(Diagram.sharedNodeByDiagramIDAndNodeIDSelector, { nodeID: params.nodeID, diagramID: params.diagramID });
+  const activeDiagramIsTopic = useSelector(Diagram.active.isTopicSelector);
+  const activeTriggerNodeResource = useSelector(Designer.Reference.selectors.triggerNodeResourceByNodeIDAndDiagramID, {
+    nodeID: params.nodeID,
+    diagramID: params.diagramID,
+  });
 
-  const goToDiagram = useDispatch(Router.goToDiagram);
+  const activeSharedNode = useSelector(Diagram.sharedNodeByDiagramIDAndNodeIDSelector, {
+    nodeID: params.nodeID,
+    diagramID: params.diagramID,
+  });
+
+  const goToDiagram = useDispatch(Router.goToDiagramHistoryClear);
   const patchOneFlow = useDispatch(Designer.Flow.effect.patchOne);
   const patchOneFolder = useDispatch(Designer.Folder.effect.patchOne);
   const setSidebarWidth = useDispatch(UI.action.SetCanvasSidebarWidth);
@@ -103,8 +127,15 @@ export const DiagramSidebar: React.FC = () => {
   });
 
   const diagramID = params.diagramID ?? activeDiagramID;
-  const focusedNodeID = activeSharedNode?.type === BlockType.INTENT || activeSharedNode?.type === BlockType.TRIGGER || activeSharedNode?.type === BlockType.START ? activeSharedNode.nodeID : null;
-  const selectedID = focusedNodeID ? `${diagramID}:${focusedNodeID}` : diagramID;
+  const focusedSharedNodeID =
+    activeSharedNode?.type === BlockType.INTENT ||
+    activeSharedNode?.type === BlockType.TRIGGER ||
+    activeSharedNode?.type === BlockType.START
+      ? activeSharedNode.nodeID
+      : null;
+
+  const focusedNodeID = referenceSystem.isEnabled ? activeTriggerNodeResource?.resourceID ?? null : focusedSharedNodeID;
+  const selectedID = activeDiagramIsTopic && focusedNodeID ? `${diagramID}:${focusedNodeID}` : diagramID;
 
   return (
     <>
@@ -152,7 +183,11 @@ export const DiagramSidebar: React.FC = () => {
             bottomHeader={
               <ResizableSectionHeader
                 label="Components"
-                onClick={() => (footerCollapsed ? resizableSectionRef.current?.expand() : flowCreateModal.openVoid({ folderID: null, jumpTo: true }))}
+                onClick={() =>
+                  footerCollapsed
+                    ? resizableSectionRef.current?.expand()
+                    : flowCreateModal.openVoid({ folderID: null, jumpTo: true })
+                }
                 tooltipText="New component"
                 isCollapsed={footerCollapsed}
                 readonly={!canEditCanvas}
@@ -181,4 +216,4 @@ export const DiagramSidebar: React.FC = () => {
       <TreeView.DragLayer />
     </>
   );
-};
+});

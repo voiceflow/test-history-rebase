@@ -275,7 +275,10 @@ export const useIntentForm = ({
         const intent = await createOne({
           ...data,
           folderID,
-          utterances: utterancesForm.utterances.map(({ text }) => ({ text, language: Language.ENGLISH_US })).reverse(),
+          utterances: utterancesForm.utterances
+            .filter((u) => !isUtteranceLikeEmpty(u))
+            .map(({ text }) => ({ text, language: Language.ENGLISH_US }))
+            .reverse(),
           entityOrder: requiredEntitiesForm.requiredEntityIDs,
           description: descriptionState.value,
           requiredEntities: Object.entries(requiredEntitiesForm.repromptsByEntityID).map(([entityID, reprompts]) => ({

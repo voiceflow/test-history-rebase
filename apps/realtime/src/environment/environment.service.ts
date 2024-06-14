@@ -15,7 +15,7 @@ import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { Patch } from 'immer';
 import { Merge } from 'type-fest';
 
-import { EnvironmentCMSExportImportDataDTO } from './dtos/environment-cms-export-import-data.dto';
+import { EnvironmentCMSImportDataDTO } from './dtos/environment-cms-import-data.dto';
 import { EnvironmentExportDTO } from './dtos/environment-export-data.dto';
 import { EnvironmentImportDTO } from './dtos/environment-import-data.dto';
 import { EnvironmentAdapter } from './environment.adapter';
@@ -130,7 +130,7 @@ export class EnvironmentService {
   }
 
   prepareImportCMSData(
-    cms: EnvironmentCMSExportImportDataDTO,
+    cms: EnvironmentCMSImportDataDTO,
     context: { userID: number; backup?: boolean; workspaceID: number; assistantID: string; environmentID: string }
   ) {
     return this.importService.prepareImportCMSData(cms, context);

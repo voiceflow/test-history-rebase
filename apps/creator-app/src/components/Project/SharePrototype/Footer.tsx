@@ -10,7 +10,10 @@ import * as Session from '@/ducks/session';
 import { VariableStateAppliedType } from '@/ducks/tracking';
 import { useAsyncEffect, useDispatch, usePermission, useSelector, useTrackingEvents } from '@/hooks';
 import { usePaymentModal } from '@/hooks/modal.hook';
-import { Container, DropdownContainer } from '@/pages/Project/components/Collaborators/components/InviteByLink/components';
+import {
+  Container,
+  DropdownContainer,
+} from '@/pages/Project/components/Collaborators/components/InviteByLink/components';
 import { NLUTrainingModelContext } from '@/pages/Project/contexts';
 import { Identifier } from '@/styles/constants';
 import { copy } from '@/utils/clipboard';
@@ -42,8 +45,8 @@ export const Footer: React.FC<FooterProps> = ({ isCanvas, testID }) => {
   const [isCompiled, setIsCompiled] = React.useState(false);
 
   const paymentModal = usePaymentModal();
-  const [canSharePrototype] = usePermission(Permission.SHARE_PROTOTYPE);
-  const [canRenderPrototype] = usePermission(Permission.RENDER_PROTOTYPE);
+  const [canSharePrototype] = usePermission(Permission.PROJECT_PROTOTYPE_SHARE);
+  const [canRenderPrototype] = usePermission(Permission.PROJECT_PROTOTYPE_RENDER);
   const [trackingEvents] = useTrackingEvents();
 
   const testableLink = getTestableLink(versionID, selectedPersonaID, canSharePrototype);
@@ -73,8 +76,10 @@ export const Footer: React.FC<FooterProps> = ({ isCanvas, testID }) => {
     if (!nluTrainingModel.isTrained) {
       toast.warn(
         <>
-          Assistant is not fully trained. This may cause unexpected behaviour when prototyping.
-          <ToastCallToAction onClick={() => nluTrainingModel.start({ origin: 'Share Prototype' })}>Train Assistant</ToastCallToAction>
+          Agent is not fully trained. This may cause unexpected behaviour when prototyping.
+          <ToastCallToAction onClick={() => nluTrainingModel.start({ origin: 'Share Prototype' })}>
+            Train Agent
+          </ToastCallToAction>
         </>
       );
     }

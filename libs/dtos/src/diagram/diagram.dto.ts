@@ -32,7 +32,10 @@ export const DiagramDTO = z
 
     variables: z.array(z.string()),
 
-    menuItems: z.array(DiagramMenuItemDTO).optional(),
+    /**
+     * @deprecated not used anymore
+     */
+    menuItems: z.array(DiagramMenuItemDTO).optional().describe('@deprecated not used anymore'),
 
     /**
      * @deprecated use `menuItems` instead

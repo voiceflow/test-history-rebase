@@ -1,16 +1,21 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Header } from '@voiceflow/ui-next';
-import React from 'react';
+import React, { memo } from 'react';
 import { useRouteMatch } from 'react-router-dom';
 
 import { Path } from '@/config/routes';
 import { Permission } from '@/constants/permissions';
 import { Creator, UI } from '@/ducks';
+import { useFeature } from '@/hooks/feature';
+import { useHotkey } from '@/hooks/hotkeys';
 import { usePermission } from '@/hooks/permission';
 import { useSelector } from '@/hooks/store.hook';
-import StartPrototypeButton from '@/pages/Project/components/Header/components/CanvasHeader/components/Run';
-import PublishButton from '@/pages/Project/components/Header/components/CanvasHeader/components/Upload';
-import SharePrototypeButton from '@/pages/Project/components/Header/components/PrototypeHeader/components/Share';
+import { Hotkey } from '@/keymap';
+import { PrototypeShare } from '@/pages/Project/components/PrototypeShare';
+import StartPrototypeButton from '@/pages/Project/components/RunButton';
+import PublishButton from '@/pages/Project/components/Upload';
 import { SelectionTargetsContext } from '@/pages/Project/contexts';
+import { useDisableModes } from '@/pages/Project/hooks';
 
 import { headerStyle } from './DiagramLayoutHeader.css';
 import { DiagramLayoutHeaderActions } from './DiagramLayoutHeaderActions.component';
@@ -19,14 +24,19 @@ import { DiagramLayoutHeaderMembers } from './DiagramLayoutHeaderMembers.compone
 import { DiagramLayoutHeaderPrototypeSettings } from './DiagramLayoutHeaderPrototypeSettings.component copy';
 import { DiagramLayoutHeaderTitle } from './DiagramLayoutHeaderTitle.component';
 
-export const DiagramLayoutHeader: React.FC = () => {
+export const DiagramLayoutHeader = memo(() => {
   const isPrototype = !!useRouteMatch(Path.PROJECT_PROTOTYPE);
 
-  const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
+  const hideExports = useFeature(Realtime.FeatureFlag.HIDE_EXPORTS);
+  const [canEditCanvas] = usePermission(Permission.PROJECT_CANVAS_UPDATE);
   const selectedTargets = React.useContext(SelectionTargetsContext);
 
   const canvasOnly = useSelector(UI.selectors.isCanvasOnly);
   const startNodeID = useSelector(Creator.startNodeIDSelector);
+
+  const onDisableModes = useDisableModes();
+
+  useHotkey(Hotkey.CLOSE_CANVAS_MODE, onDisableModes, { disable: !isPrototype, preventDefault: true });
 
   const showActions =
     canEditCanvas &&
@@ -50,7 +60,7 @@ export const DiagramLayoutHeader: React.FC = () => {
             <>
               <DiagramLayoutHeaderPrototypeSettings />
 
-              <SharePrototypeButton />
+              {!hideExports.isEnabled && <PrototypeShare />}
             </>
           ) : (
             <>
@@ -63,4 +73,4 @@ export const DiagramLayoutHeader: React.FC = () => {
       </Header.Section.Right>
     </Header>
   );
-};
+});

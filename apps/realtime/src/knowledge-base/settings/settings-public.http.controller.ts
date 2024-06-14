@@ -45,7 +45,7 @@ export class KnowledgeBaseSettingsPublicHTTPController {
   @ZodApiBody({ schema: KnowledgeBaseSettingsDTO })
   @ZodApiResponse({
     status: HttpStatus.OK,
-    description: 'Update the users knowledge base settings for the assistant',
+    description: 'Update the users knowledge base settings for the agent',
   })
   async updateSettings(
     @Param('assistantID') assistantID: string,

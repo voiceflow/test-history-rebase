@@ -48,7 +48,7 @@ export const useWorkflowsTree = () => {
   const workflows = useSelector(Designer.Workflow.selectors.all);
   const rootDiagramID = useSelector(Version.active.rootDiagramIDSelector);
   const rootWorkflow = useSelector(Designer.Workflow.selectors.oneByDiagramID, { diagramID: rootDiagramID });
-  const triggersMapByDiagramID = useSelector(Designer.Workflow.selectors.triggersMapByDiagramID);
+  const triggersMapByDiagramID = useSelector(Designer.Reference.selectors.triggersMapByDiagramID);
 
   const startNodeChildren = useRef<DiagramSidebarWorkflowTreeData[]>([]);
 
@@ -69,28 +69,29 @@ export const useWorkflowsTree = () => {
     ),
     buildDataTree: useCallback(
       (workflow): DiagramSidebarWorkflowTreeData | null => {
-        const children: DiagramSidebarWorkflowTreeData[] = [];
-        const nodeIDSet = new Set<string>();
+        const childrenMap: Record<string, DiagramSidebarWorkflowTreeData> = {};
 
         triggersMapByDiagramID[workflow.diagramID]?.forEach((node) => {
-          let id = `${workflow.diagramID}:${node.nodeID}`;
+          const id = `${workflow.diagramID}:${node.nodeID}`;
+          const isStart = node.type === BlockType.START;
 
-          if (nodeIDSet.has(id)) {
-            id = `${workflow.diagramID}:${node.nodeID}:${node.id}`;
+          if (!childrenMap[id]) {
+            childrenMap[id] = {
+              id,
+              type: isStart ? 'start' : 'intent',
+              label: node.label,
+              metaData: { type: 'node', nodeType: node.type, nodeID: node.nodeID, diagramID: workflow.diagramID },
+            };
+          } else {
+            childrenMap[id].label =
+              isStart && !node.isEmpty && !node.intentID
+                ? `${node.label}, ${childrenMap[id].label}`
+                : `${childrenMap[id].label}, ${node.label}`;
           }
-
-          children.push({
-            id,
-            type: node.type === BlockType.START ? 'start' : 'intent',
-            label: node.label,
-            metaData: { type: 'node', nodeType: node.type, nodeID: node.nodeID, diagramID: workflow.diagramID },
-          });
-
-          nodeIDSet.add(id);
         });
 
         if (workflow.diagramID === rootDiagramID) {
-          startNodeChildren.current = children;
+          startNodeChildren.current = Object.values(childrenMap);
 
           return null;
         }
@@ -99,7 +100,7 @@ export const useWorkflowsTree = () => {
           id: workflow.diagramID,
           type: 'workflow',
           label: workflow.name,
-          children: children.sort((a, b) => a.label.localeCompare(b.label)),
+          children: Object.values(childrenMap).sort((a, b) => a.label.localeCompare(b.label)),
           metaData: { id: workflow.id, type: 'workflow', diagramID: workflow.diagramID },
         };
       },
@@ -120,7 +121,13 @@ export const useWorkflowsTree = () => {
   }, [foldersTree, rootWorkflow, foldersTreeMap, startNodeChildren.current]);
 };
 
-const useRenderFolderContextMenu = ({ folderScope, canEditCanvas }: { folderScope: FolderScope; canEditCanvas: boolean }) => {
+const useRenderFolderContextMenu = ({
+  folderScope,
+  canEditCanvas,
+}: {
+  folderScope: FolderScope;
+  canEditCanvas: boolean;
+}) => {
   const getFolderPath = useGetFolderPath(folderScope);
   const openCMSResourceDeleteConfirmModal = useOpenCMSResourceDeleteConfirmModal();
 
@@ -128,7 +135,15 @@ const useRenderFolderContextMenu = ({ folderScope, canEditCanvas }: { folderScop
   const deleteOne = useDispatch(Designer.Folder.effect.deleteOne);
   const goToCanvasRootDiagram = useDispatch(Router.goToCanvasRootDiagram);
 
-  return ({ folderID, onClose, onRename }: { folderID: string; onClose: VoidFunction; onRename: (event?: React.MouseEvent) => void }) => {
+  return ({
+    folderID,
+    onClose,
+    onRename,
+  }: {
+    folderID: string;
+    onClose: VoidFunction;
+    onRename: (event?: React.MouseEvent) => void;
+  }) => {
     const onCopyLink = () => {
       clipboardCopy(`${window.location.origin}${getFolderPath(folderID)}`);
 
@@ -137,7 +152,10 @@ const useRenderFolderContextMenu = ({ folderScope, canEditCanvas }: { folderScop
 
     const onDelete = () => {
       const state = store.getState();
-      const nestedFolderIDs = Designer.Folder.selectors.allDeeplyNestedIDsByScopeAndParentID(state, { parentID: folderID, folderScope });
+      const nestedFolderIDs = Designer.Folder.selectors.allDeeplyNestedIDsByScopeAndParentID(state, {
+        parentID: folderID,
+        folderScope,
+      });
       const allResources = Designer.utils.getCMSResourceAllByFolderIDsSelector(folderScope)(state, {
         folderIDs: [folderID, ...nestedFolderIDs],
       }) as Flow[] | Workflow[];
@@ -163,7 +181,9 @@ const useRenderFolderContextMenu = ({ folderScope, canEditCanvas }: { folderScop
 
     return (
       <>
-        {canEditCanvas && <Menu.Item label="Rename" onClick={Utils.functional.chain(onRename, onClose)} prefixIconName="Edit" />}
+        {canEditCanvas && (
+          <Menu.Item label="Rename" onClick={Utils.functional.chain(onRename, onClose)} prefixIconName="Edit" />
+        )}
 
         <Menu.Item label="Copy link" onClick={Utils.functional.chain(onCopyLink, onClose)} prefixIconName="Link" />
 
@@ -192,8 +212,13 @@ export const useRenderFlowItemContextMenu = ({ canEditCanvas }: { canEditCanvas:
   const goToCanvasRootDiagram = useDispatch(Router.goToCanvasRootDiagram);
 
   return usePersistFunction(
-    ({ item, onClose, onRename }: IContextMenuChildren & { item: DiagramSidebarFlowTreeData; onRename: (event?: React.MouseEvent) => void }) => {
-      if (item.metaData.type === 'folder') return renderFolderContextMenu({ folderID: item.metaData.id, onClose, onRename });
+    ({
+      item,
+      onClose,
+      onRename,
+    }: IContextMenuChildren & { item: DiagramSidebarFlowTreeData; onRename: (event?: React.MouseEvent) => void }) => {
+      if (item.metaData.type === 'folder')
+        return renderFolderContextMenu({ folderID: item.metaData.id, onClose, onRename });
       if (item.metaData.type !== 'flow' || !canEditCanvas) return null;
 
       const { id } = item.metaData;
@@ -224,7 +249,11 @@ export const useRenderFlowItemContextMenu = ({ canEditCanvas }: { canEditCanvas:
         <>
           <Menu.Item label="Rename" onClick={Utils.functional.chain(onRename, onClose)} prefixIconName="Edit" />
 
-          <Menu.Item label="Duplicate" onClick={Utils.functional.chain(onDuplicate, onClose)} prefixIconName="Duplicate" />
+          <Menu.Item
+            label="Duplicate"
+            onClick={Utils.functional.chain(onDuplicate, onClose)}
+            prefixIconName="Duplicate"
+          />
 
           <Menu.Divider />
 
@@ -249,8 +278,16 @@ export const useRenderWorkflowItemContextMenu = ({ canEditCanvas }: { canEditCan
   const goToCanvasRootDiagram = useDispatch(Router.goToCanvasRootDiagram);
 
   return usePersistFunction(
-    ({ item, onClose, onRename }: IContextMenuChildren & { item: DiagramSidebarWorkflowTreeData; onRename: (event?: React.MouseEvent) => void }) => {
-      if (item.metaData.type === 'folder') return renderFolderContextMenu({ folderID: item.metaData.id, onClose, onRename });
+    ({
+      item,
+      onClose,
+      onRename,
+    }: IContextMenuChildren & {
+      item: DiagramSidebarWorkflowTreeData;
+      onRename: (event?: React.MouseEvent) => void;
+    }) => {
+      if (item.metaData.type === 'folder')
+        return renderFolderContextMenu({ folderID: item.metaData.id, onClose, onRename });
       if (item.metaData.type !== 'workflow') return null;
 
       const { id } = item.metaData;
@@ -285,9 +322,17 @@ export const useRenderWorkflowItemContextMenu = ({ canEditCanvas }: { canEditCan
 
       return (
         <>
-          {canEditCanvas && <Menu.Item label="Rename" onClick={Utils.functional.chain(onRename, onClose)} prefixIconName="Edit" />}
+          {canEditCanvas && (
+            <Menu.Item label="Rename" onClick={Utils.functional.chain(onRename, onClose)} prefixIconName="Edit" />
+          )}
 
-          {canEditCanvas && <Menu.Item label="Duplicate" onClick={Utils.functional.chain(onDuplicate, onClose)} prefixIconName="Duplicate" />}
+          {canEditCanvas && (
+            <Menu.Item
+              label="Duplicate"
+              onClick={Utils.functional.chain(onDuplicate, onClose)}
+              prefixIconName="Duplicate"
+            />
+          )}
 
           <Menu.Item label="Copy link" onClick={Utils.functional.chain(onCopyLink, onClose)} prefixIconName="Link" />
 

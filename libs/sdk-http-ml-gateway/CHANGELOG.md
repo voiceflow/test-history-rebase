@@ -3,6 +3,104 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.18.40](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-ml-gateway@2.18.39...@voiceflow/sdk-http-ml-gateway@2.18.40) (2024-06-12)
+
+**Note:** Version bump only for package @voiceflow/sdk-http-ml-gateway
+
+## [2.18.39](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-ml-gateway@2.18.38...@voiceflow/sdk-http-ml-gateway@2.18.39) (2024-06-12)
+
+**Note:** Version bump only for package @voiceflow/sdk-http-ml-gateway
+
+## [2.18.38](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-ml-gateway@2.18.37...@voiceflow/sdk-http-ml-gateway@2.18.38) (2024-06-12)
+
+**Note:** Version bump only for package @voiceflow/sdk-http-ml-gateway
+
+## [2.18.37](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-ml-gateway@2.18.36...@voiceflow/sdk-http-ml-gateway@2.18.37) (2024-06-12)
+
+**Note:** Version bump only for package @voiceflow/sdk-http-ml-gateway
+
+## [2.18.36](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-ml-gateway@2.18.35...@voiceflow/sdk-http-ml-gateway@2.18.36) (2024-06-11)
+
+**Note:** Version bump only for package @voiceflow/sdk-http-ml-gateway
+
+## [2.18.35](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-ml-gateway@2.18.34...@voiceflow/sdk-http-ml-gateway@2.18.35) (2024-06-11)
+
+**Note:** Version bump only for package @voiceflow/sdk-http-ml-gateway
+
+## [2.18.34](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-ml-gateway@2.18.33...@voiceflow/sdk-http-ml-gateway@2.18.34) (2024-06-10)
+
+**Note:** Version bump only for package @voiceflow/sdk-http-ml-gateway
+
+## [2.18.33](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-ml-gateway@2.18.32...@voiceflow/sdk-http-ml-gateway@2.18.33) (2024-06-10)
+
+**Note:** Version bump only for package @voiceflow/sdk-http-ml-gateway
+
+## [2.18.32](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-ml-gateway@2.18.31...@voiceflow/sdk-http-ml-gateway@2.18.32) (2024-06-07)
+
+**Note:** Version bump only for package @voiceflow/sdk-http-ml-gateway
+
+## [2.18.31](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-ml-gateway@2.18.30...@voiceflow/sdk-http-ml-gateway@2.18.31) (2024-06-07)
+
+### Bug Fixes
+
+* retry integrate org members (COR-2143) ([#8183](https://github.com/voiceflow/creator-app/issues/8183)) ([2b5e0b4](https://github.com/voiceflow/creator-app/commit/2b5e0b4882240a03e64e5f9940cb76d26bf261da))
+
+## [2.18.30](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-ml-gateway@2.18.29...@voiceflow/sdk-http-ml-gateway@2.18.30) (2024-06-06)
+
+**Note:** Version bump only for package @voiceflow/sdk-http-ml-gateway
+
+## [2.18.29](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-ml-gateway@2.18.28...@voiceflow/sdk-http-ml-gateway@2.18.29) (2024-06-05)
+
+**Note:** Version bump only for package @voiceflow/sdk-http-ml-gateway
+
+## [2.18.28](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-ml-gateway@2.18.27...@voiceflow/sdk-http-ml-gateway@2.18.28) (2024-06-05)
+
+**Note:** Version bump only for package @voiceflow/sdk-http-ml-gateway
+
+## [2.18.27](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-ml-gateway@2.18.26...@voiceflow/sdk-http-ml-gateway@2.18.27) (2024-06-05)
+
+**Note:** Version bump only for package @voiceflow/sdk-http-ml-gateway
+
+## [2.18.26](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-ml-gateway@2.18.25...@voiceflow/sdk-http-ml-gateway@2.18.26) (2024-06-05)
+
+**Note:** Version bump only for package @voiceflow/sdk-http-ml-gateway
+
+## [2.18.25](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-ml-gateway@2.18.24...@voiceflow/sdk-http-ml-gateway@2.18.25) (2024-06-04)
+
+**Note:** Version bump only for package @voiceflow/sdk-http-ml-gateway
+
+## [2.18.24](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-ml-gateway@2.18.23...@voiceflow/sdk-http-ml-gateway@2.18.24) (2024-06-04)
+
+**Note:** Version bump only for package @voiceflow/sdk-http-ml-gateway
+
+## [2.18.23](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-ml-gateway@2.18.22...@voiceflow/sdk-http-ml-gateway@2.18.23) (2024-06-04)
+
+**Note:** Version bump only for package @voiceflow/sdk-http-ml-gateway
+
+## [2.18.22](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-ml-gateway@2.18.21...@voiceflow/sdk-http-ml-gateway@2.18.22) (2024-06-03)
+
+**Note:** Version bump only for package @voiceflow/sdk-http-ml-gateway
+
+## [2.18.21](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-ml-gateway@2.18.20...@voiceflow/sdk-http-ml-gateway@2.18.21) (2024-06-03)
+
+**Note:** Version bump only for package @voiceflow/sdk-http-ml-gateway
+
+## [2.18.20](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-ml-gateway@2.18.19...@voiceflow/sdk-http-ml-gateway@2.18.20) (2024-06-03)
+
+**Note:** Version bump only for package @voiceflow/sdk-http-ml-gateway
+
+## [2.18.19](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-ml-gateway@2.18.18...@voiceflow/sdk-http-ml-gateway@2.18.19) (2024-05-31)
+
+**Note:** Version bump only for package @voiceflow/sdk-http-ml-gateway
+
+## [2.18.18](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-ml-gateway@2.18.17...@voiceflow/sdk-http-ml-gateway@2.18.18) (2024-05-30)
+
+**Note:** Version bump only for package @voiceflow/sdk-http-ml-gateway
+
+## [2.18.17](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-ml-gateway@2.18.16...@voiceflow/sdk-http-ml-gateway@2.18.17) (2024-05-29)
+
+**Note:** Version bump only for package @voiceflow/sdk-http-ml-gateway
+
 ## [2.18.16](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-ml-gateway@2.18.15...@voiceflow/sdk-http-ml-gateway@2.18.16) (2024-05-27)
 
 **Note:** Version bump only for package @voiceflow/sdk-http-ml-gateway

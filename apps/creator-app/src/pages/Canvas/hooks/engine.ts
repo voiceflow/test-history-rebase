@@ -42,7 +42,10 @@ export const useEngine = (options?: { isExport?: boolean }): [Engine, number] =>
 
   const [engine, engineKey] = useCreateEngine(options);
 
-  useMouseMove((event) => engine.emitter.emit(CanvasAction.MOVE_MOUSE, new Coords([event.clientX, event.clientY])), [engine]);
+  useMouseMove(
+    (event) => engine.emitter.emit(CanvasAction.MOVE_MOUSE, new Coords([event.clientX, event.clientY])),
+    [engine]
+  );
 
   React.useEffect(
     () => () => {

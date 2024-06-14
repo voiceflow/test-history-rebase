@@ -1,4 +1,4 @@
-import { UserRole } from '@voiceflow/internal';
+import { UserRole } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Members, OverflowTippyTooltip } from '@voiceflow/ui';
 import React from 'react';
@@ -27,7 +27,7 @@ const MemberRow: React.FC<MemberRowProps> = ({ member, resendInvite, isLast }) =
   const cancelInvite = useDispatch(Workspace.cancelInviteToActiveWorkspace);
   const updateMemberRole = useDispatch(Workspace.updateActiveWorkspaceMemberRole);
 
-  const [canAddCollaborators] = usePermission(Permission.ADD_COLLABORATORS);
+  const [canAddCollaborators] = usePermission(Permission.WORKSPACE_MEMBER_ADD);
 
   const isPending = !member.creator_id;
 

@@ -56,11 +56,11 @@ const Delete = manager.create<Props>('ProjectDelete', () => ({ api, type, opened
 
   return (
     <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={400}>
-      <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />}>Delete Assistant</Modal.Header>
+      <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />}>Delete Agent</Modal.Header>
 
       <Modal.Body centered>
         <Box pb={16}>
-          Your assistant will be permanently deleted with no chance of recovery. Type <strong>{project?.name}</strong> in the input below to confirm.
+          Your agent will be permanently deleted with no chance of recovery. Type <strong>{project?.name}</strong> in the input below to confirm.
         </Box>
 
         <Input placeholder={project?.name || ''} value={confirmName} onChangeText={(value) => setConfirmName(value)} />

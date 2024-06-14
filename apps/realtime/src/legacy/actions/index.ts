@@ -4,7 +4,6 @@ import buildCanvasTemplateActionControls from './canvasTemplates';
 import buildCreatorActionControls from './creator';
 import buildCustomBlockActionControls from './customBlock';
 import buildDiagramActionControls from './diagram';
-import buildDomainActionControls from './domain';
 import buildFeatureActionControls from './feature';
 import buildLinkActionControls from './link';
 import buildNodeActionControls from './node';
@@ -28,7 +27,6 @@ const buildActions = (options: LoguxControlOptions) => ({
   ...buildWorkspaceActionControls(options),
   ...buildVariableStateActionControls(options),
   ...buildTranscriptActionControls(options),
-  ...buildDomainActionControls(options),
   ...buildFeatureActionControls(options),
 });
 

@@ -214,7 +214,12 @@ export const ssoSignIn =
 
     const userAccount = await dispatch(getUserAccount());
 
-    const user: Models.Account = { ...userAccount, created: userAccount.createdAt, creator_id: userAccount.creatorID, first_login: isNewUser };
+    const user: Models.Account = {
+      ...userAccount,
+      created: userAccount.createdAt,
+      creator_id: userAccount.creatorID,
+      first_login: isNewUser,
+    };
 
     dispatch(setSession({ user, token, redirectTo: options?.redirectTo }));
   };
@@ -225,10 +230,11 @@ interface SignupPayload {
   password: string;
   lastName: string;
   firstName: string;
+  partnerKey?: string;
 }
 
 export const signup =
-  ({ email, query, password, lastName, firstName }: SignupPayload): Thunk<{ creatorID: number; email: string }> =>
+  ({ email, query, password, lastName, firstName, partnerKey }: SignupPayload): Thunk<{ creatorID: number; email: string }> =>
   async (dispatch) => {
     const userName = `${firstName} ${lastName}`.trim();
 
@@ -237,6 +243,7 @@ export const signup =
       password,
       metadata: {
         utm: { utm_last_name: lastName, utm_first_name: firstName },
+        partnerKey,
         inviteParams: query,
       },
     });
@@ -250,13 +257,17 @@ export const signup =
   };
 
 export const googleLogin = (): Thunk => async () => {
-  const url = await client.auth.v1.sso.getGoogleLoginURL(`${CREATOR_APP_ENDPOINT}${Path.LOGIN_SSO_CALLBACK}${window.location.search}`);
+  const url = await client.auth.v1.sso.getGoogleLoginURL(
+    `${CREATOR_APP_ENDPOINT}${Path.LOGIN_SSO_CALLBACK}${window.location.search}`
+  );
 
   window.location.assign(url);
 };
 
 export const facebookLogin = (): Thunk => async () => {
-  const url = await client.auth.v1.sso.getFacebookLoginURL(`${CREATOR_APP_ENDPOINT}${Path.LOGIN_SSO_CALLBACK}${window.location.search}`);
+  const url = await client.auth.v1.sso.getFacebookLoginURL(
+    `${CREATOR_APP_ENDPOINT}${Path.LOGIN_SSO_CALLBACK}${window.location.search}`
+  );
 
   window.location.assign(url);
 };
@@ -266,5 +277,7 @@ export const getSamlLoginURL =
   async () => {
     if (!Utils.emails.isValidEmail(email)) return null;
 
-    return client.auth.v1.sso.getSaml2LoginURL(email, `${CREATOR_APP_ENDPOINT}${Path.LOGIN_SSO_CALLBACK}${window.location.search}`).catch(() => null);
+    return client.auth.v1.sso
+      .getSaml2LoginURL(email, `${CREATOR_APP_ENDPOINT}${Path.LOGIN_SSO_CALLBACK}${window.location.search}`)
+      .catch(() => null);
   };

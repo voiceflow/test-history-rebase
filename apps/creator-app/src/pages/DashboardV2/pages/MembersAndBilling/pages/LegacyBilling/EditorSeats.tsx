@@ -22,8 +22,8 @@ const LegacyBillingEditorSeats: React.FC = () => {
   const trialEndAt = useSelector(WorkspaceV2.active.organizationTrialEndAtSelector);
   const isPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
   const isEnterprise = useSelector(WorkspaceV2.active.isEnterpriseSelector);
-  const usedViewerSeats = useSelector(WorkspaceV2.active.usedViewerSeatsSelector);
-  const [canScheduleSeats] = usePermission(Permission.BILLING_SEATS_SCHEDULE);
+  const usedViewerSeats = useSelector(WorkspaceV2.active.members.usedViewerSeatsSelector);
+  const [canScheduleSeats] = usePermission(Permission.FEATURE_SCHEDULE_SEATS);
 
   const { nextBillingDate, quantity } = planSubscription ?? {};
   const scheduledSeat = quantity !== seats;
@@ -66,7 +66,7 @@ const LegacyBillingEditorSeats: React.FC = () => {
                   </div>
                 )}
 
-                {isEnterprise && `Want to make changes to your next billing cycle? Contact sales@voiceflow.com.`}
+                {isEnterprise && 'Want to make changes to your next billing cycle? Contact sales@voiceflow.com.'}
 
                 {showBillingDateDescription && (
                   <>

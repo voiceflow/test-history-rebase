@@ -17,8 +17,14 @@ const ICON_MAP: Record<Realtime.DialogType, SvgIconTypes.Icon> = {
   [Realtime.DialogType.VOICE]: 'systemMessage',
 };
 
-export const AUDIO_MOCK_DATA = { dialogs: [{ id: '', type: Realtime.DialogType.AUDIO as const, url: '' }], randomize: true };
-export const VOICE_MOCK_DATA = { dialogs: [{ id: '', type: Realtime.DialogType.VOICE as const, voice: '', content: '' }], randomize: true };
+export const AUDIO_MOCK_DATA = {
+  dialogs: [{ id: '', type: Realtime.DialogType.AUDIO as const, url: '' }],
+  randomize: true,
+};
+export const VOICE_MOCK_DATA = {
+  dialogs: [{ id: '', type: Realtime.DialogType.VOICE as const, voice: '', content: '' }],
+  randomize: true,
+};
 
 export const getLabelByType = (type?: Realtime.DialogType): string => NAME_MAP[type ?? Realtime.DialogType.VOICE];
 
@@ -30,10 +36,12 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Speak, Realtime.NodeData.
   getTooltipText: (data) =>
     data?.dialogs[0]?.type === Realtime.DialogType.AUDIO
       ? 'Plays short audio files (less than 240s).'
-      : 'Text-to-speech messages spoken by the Voice assistant.',
+      : 'Text-to-speech messages spoken by the Voice agent.',
 
-  getTooptipLink: (data) => (data?.dialogs[0]?.type === Realtime.DialogType.AUDIO ? Documentation.AUDIO_STEP : Documentation.SPEAK_STEP),
+  getTooptipLink: (data) =>
+    data?.dialogs[0]?.type === Realtime.DialogType.AUDIO ? Documentation.AUDIO_STEP : Documentation.SPEAK_STEP,
 
+  // eslint-disable-next-line default-param-last
   factory: ({ dialogs: [data] = [] } = {}, options) => ({
     node: {
       ports: {

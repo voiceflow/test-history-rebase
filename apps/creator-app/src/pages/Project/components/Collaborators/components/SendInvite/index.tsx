@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { UserRole } from '@voiceflow/internal';
+import { ProjectUserRole, UserRole } from '@voiceflow/dtos';
 import { Flex, Input, Select, toast, useEnableDisable } from '@voiceflow/ui';
 import React from 'react';
 
@@ -35,12 +35,12 @@ interface SendInviteProps {
 }
 
 const SendInvite: React.FC<SendInviteProps> = ({ sendInvite }) => {
-  const [canAddCollaborators] = usePermission(Permission.ADD_COLLABORATORS);
-  const [canManageAdminCollaborators] = usePermission(Permission.MANAGE_ADMIN_COLLABORATORS);
+  const [canAddCollaborators] = usePermission(Permission.WORKSPACE_MEMBER_ADD);
+  const [canManageAdminCollaborators] = usePermission(Permission.WORKSPACE_MEMBER_MANAGE_ADMIN);
 
   const numberOfSeats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);
-  const usedEditorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);
-  const usedViewerSeats = useSelector(WorkspaceV2.active.usedViewerSeatsSelector);
+  const usedEditorSeats = useSelector(WorkspaceV2.active.members.usedEditorSeatsSelector);
+  const usedViewerSeats = useSelector(WorkspaceV2.active.members.usedViewerSeatsSelector);
   const viewerPlanSeatLimits = useSelector(WorkspaceV2.active.viewerPlanSeatLimitsSelector);
   const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
 
@@ -51,7 +51,7 @@ const SendInvite: React.FC<SendInviteProps> = ({ sendInvite }) => {
 
   const onAddSeats = useOnAddSeats();
 
-  const [role, setRole] = React.useState(UserRole.EDITOR);
+  const [role, setRole] = React.useState<ProjectUserRole | 'admin'>(UserRole.EDITOR);
   const [email, setEmail] = React.useState('');
   const [isInvalid, setInvalid, setValid] = useEnableDisable(false);
 
@@ -122,7 +122,11 @@ const SendInvite: React.FC<SendInviteProps> = ({ sendInvite }) => {
           )}
         </SelectInputGroup>
 
-        <SendInviteButton id={Identifier.COLLAB_SEND_INVITE_BUTTON} onClick={onSendInviteClick} disabled={isInvalid || !canAddCollaborators}>
+        <SendInviteButton
+          id={Identifier.COLLAB_SEND_INVITE_BUTTON}
+          onClick={onSendInviteClick}
+          disabled={isInvalid || !canAddCollaborators}
+        >
           Send
         </SendInviteButton>
       </Flex>

@@ -1,5 +1,6 @@
 import { Utils } from '@voiceflow/common';
-import { BillingPeriod, UserRole } from '@voiceflow/internal';
+import { UserRole } from '@voiceflow/dtos';
+import { BillingPeriod } from '@voiceflow/internal';
 import { Box, Button, ButtonVariant, Members, Modal, Spinner, System, Text, toast, withProvider } from '@voiceflow/ui';
 import pluralize from 'pluralize';
 import React from 'react';
@@ -23,7 +24,7 @@ const SingleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, a
 
   const isPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
   const numberOfSeats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);
-  const usedEditorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);
+  const usedEditorSeats = useSelector(WorkspaceV2.active.members.usedEditorSeatsSelector);
   const editorPlanSeatLimits = useSelector(WorkspaceV2.active.editorPlanSeatLimitsSelector);
 
   const sendInvite = useDispatch(WorkspaceV2.sendInviteToActiveWorkspace);
@@ -58,7 +59,10 @@ const SingleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, a
   const onAddMembers = (emails: string[], role: UserRole) => {
     const newEmails = dedupeInvites(emails, invitees);
 
-    setInvitees((prev) => [...prev, ...newEmails.map((email) => ({ name: null, email, role, image: null, creator_id: null }))]);
+    setInvitees((prev) => [
+      ...prev,
+      ...newEmails.map((email) => ({ name: null, email, role, image: null, creator_id: null })),
+    ]);
   };
 
   const onRemoveMember = (member: Members.Types.Member) => {
@@ -76,7 +80,9 @@ const SingleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, a
         await paymentAPI.updatePlanSubscriptionSeats(numberOfSeats + paidSeats);
       }
 
-      await Promise.all(invitees.map((invitee) => sendInvite({ email: invitee.email, role: invitee.role, showToast: false })));
+      await Promise.all(
+        invitees.map((invitee) => sendInvite({ email: invitee.email, role: invitee.role, showToast: false }))
+      );
 
       api.enableClose();
       api.close();
@@ -158,7 +164,9 @@ const SingleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, a
                   items={items}
                   header={{
                     title: 'Summary',
-                    addon: paymentAPI.paymentSource && <CardDetails last4={paymentAPI.paymentSource.last4} brand={paymentAPI.paymentSource.brand} />,
+                    addon: paymentAPI.paymentSource && (
+                      <CardDetails last4={paymentAPI.paymentSource.last4} brand={paymentAPI.paymentSource.brand} />
+                    ),
                     description: (
                       <>
                         {currency.formatUSD(subscriptionInfo.unitPrice, { noDecimal: true })}

@@ -3,6 +3,254 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.394.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.393.0...@voiceflow/realtime@1.394.0) (2024-06-14)
+
+### Features
+
+* remove trigger step ff (COR-2359) ([#8293](https://github.com/voiceflow/creator-app/issues/8293)) ([d51f93c](https://github.com/voiceflow/creator-app/commit/d51f93cb10020f9de507d9109d8100c26ae06a46))
+
+# [1.393.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.392.0...@voiceflow/realtime@1.393.0) (2024-06-13)
+
+### Features
+
+* fix `maxTokens` kb setting past limit (COR-2293) ([#8235](https://github.com/voiceflow/creator-app/issues/8235)) ([6a1bf4b](https://github.com/voiceflow/creator-app/commit/6a1bf4b15fe5fd5e22da157b9550cb002dc75ebc))
+
+# [1.392.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.391.0...@voiceflow/realtime@1.392.0) (2024-06-13)
+
+### Features
+
+* split datadog logs and apm for realtime services (IN-1135) ([#8291](https://github.com/voiceflow/creator-app/issues/8291)) ([7517384](https://github.com/voiceflow/creator-app/commit/7517384a46278a364890ad80b2c7bec4c31578e9))
+
+# [1.391.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.390.5...@voiceflow/realtime@1.391.0) (2024-06-13)
+
+### Features
+
+* split reference builder util (COR-000) ([#8266](https://github.com/voiceflow/creator-app/issues/8266)) ([a8a559b](https://github.com/voiceflow/creator-app/commit/a8a559b414205b60f749ac05b47534ce2eba6691))
+
+## [1.390.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.390.4...@voiceflow/realtime@1.390.5) (2024-06-13)
+
+### Bug Fixes
+
+* add intent description to default templates (COR-2348) ([#8277](https://github.com/voiceflow/creator-app/issues/8277)) ([9e8275a](https://github.com/voiceflow/creator-app/commit/9e8275a4f7ca3a8eb8a80aee424cab7d4bff1ea1))
+
+## [1.390.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.390.3...@voiceflow/realtime@1.390.4) (2024-06-13)
+
+**Note:** Version bump only for package @voiceflow/realtime
+
+## [1.390.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.390.2...@voiceflow/realtime@1.390.3) (2024-06-13)
+
+**Note:** Version bump only for package @voiceflow/realtime
+
+## [1.390.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.390.1...@voiceflow/realtime@1.390.2) (2024-06-13)
+
+### Bug Fixes
+
+* migration during import [bugfix] (COR-000) ([#8286](https://github.com/voiceflow/creator-app/issues/8286)) ([96e6660](https://github.com/voiceflow/creator-app/commit/96e66604be0e7a998e25e1623b3ec4b9e2788400))
+
+## [1.390.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.390.0...@voiceflow/realtime@1.390.1) (2024-06-12)
+
+### Bug Fixes
+
+* clone logic (COR-2349) ([#8278](https://github.com/voiceflow/creator-app/issues/8278)) ([f14853b](https://github.com/voiceflow/creator-app/commit/f14853ba71161463c39f35e7d6b89ce27924bb9a))
+
+# [1.390.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.389.1...@voiceflow/realtime@1.390.0) (2024-06-12)
+
+### Features
+
+* remove menu items (COR-000) ([#8264](https://github.com/voiceflow/creator-app/issues/8264)) ([2e6a83f](https://github.com/voiceflow/creator-app/commit/2e6a83f01b6b88d107b9b8c7610789ccb9cdaee8))
+
+## [1.389.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.389.0...@voiceflow/realtime@1.389.1) (2024-06-12)
+
+**Note:** Version bump only for package @voiceflow/realtime
+
+# [1.389.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.388.0...@voiceflow/realtime@1.389.0) (2024-06-12)
+
+### Features
+
+* replace global intent nodes selector (COR-000) ([#8259](https://github.com/voiceflow/creator-app/issues/8259)) ([562ed52](https://github.com/voiceflow/creator-app/commit/562ed52e0f170f1e16e0ca57337538bc8401f109))
+
+# [1.388.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.387.1...@voiceflow/realtime@1.388.0) (2024-06-12)
+
+### Features
+
+* triggers migration [bugfix] (COR-2022) ([#8096](https://github.com/voiceflow/creator-app/issues/8096)) ([ed45ce0](https://github.com/voiceflow/creator-app/commit/ed45ce0fbc0b9c16f3cd25a3ac78a736a5ced4ba))
+
+## [1.387.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.387.0...@voiceflow/realtime@1.387.1) (2024-06-12)
+
+**Note:** Version bump only for package @voiceflow/realtime
+
+# [1.387.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.386.2...@voiceflow/realtime@1.387.0) (2024-06-12)
+
+### Features
+
+* reference duck (COR-000) ([#8248](https://github.com/voiceflow/creator-app/issues/8248)) ([9ebebbf](https://github.com/voiceflow/creator-app/commit/9ebebbfd555d2e9684699d648e90c34f5501dfb2))
+
+## [1.386.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.386.1...@voiceflow/realtime@1.386.2) (2024-06-11)
+
+**Note:** Version bump only for package @voiceflow/realtime
+
+## [1.386.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.386.0...@voiceflow/realtime@1.386.1) (2024-06-11)
+
+**Note:** Version bump only for package @voiceflow/realtime
+
+# [1.386.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.385.0...@voiceflow/realtime@1.386.0) (2024-06-11)
+
+### Features
+
+* make the function paths draggable in the CMS editor (COR-8227) ([#8249](https://github.com/voiceflow/creator-app/issues/8249)) ([a527447](https://github.com/voiceflow/creator-app/commit/a5274474fa454d8dbb95cb5124b8c97ad2054d97))
+
+# [1.385.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.384.0...@voiceflow/realtime@1.385.0) (2024-06-11)
+
+### Features
+
+* reference module (COR-000) ([#8240](https://github.com/voiceflow/creator-app/issues/8240)) ([dfd4bba](https://github.com/voiceflow/creator-app/commit/dfd4bbafc7cb9cb2717ab35fb7313ea34d82721a))
+
+# [1.384.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.383.0...@voiceflow/realtime@1.384.0) (2024-06-10)
+
+### Features
+
+* remove locale variable from templates (COR-1996) ([#8188](https://github.com/voiceflow/creator-app/issues/8188)) ([9729247](https://github.com/voiceflow/creator-app/commit/9729247b2c70483647913af998348742b1b29afc))
+
+# [1.383.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.382.7...@voiceflow/realtime@1.383.0) (2024-06-10)
+
+### Features
+
+* response message module (COR-2308) ([#8255](https://github.com/voiceflow/creator-app/issues/8255)) ([adbc2db](https://github.com/voiceflow/creator-app/commit/adbc2db63f2f5a3ddbe4f23e940043c6c51593e6))
+
+## [1.382.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.382.6...@voiceflow/realtime@1.382.7) (2024-06-10)
+
+**Note:** Version bump only for package @voiceflow/realtime
+
+## [1.382.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.382.5...@voiceflow/realtime@1.382.6) (2024-06-10)
+
+**Note:** Version bump only for package @voiceflow/realtime
+
+## [1.382.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.382.4...@voiceflow/realtime@1.382.5) (2024-06-07)
+
+**Note:** Version bump only for package @voiceflow/realtime
+
+## [1.382.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.382.3...@voiceflow/realtime@1.382.4) (2024-06-07)
+
+**Note:** Version bump only for package @voiceflow/realtime
+
+## [1.382.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.382.2...@voiceflow/realtime@1.382.3) (2024-06-07)
+
+**Note:** Version bump only for package @voiceflow/realtime
+
+## [1.382.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.382.1...@voiceflow/realtime@1.382.2) (2024-06-07)
+
+### Bug Fixes
+
+* retry integrate org members (COR-2143) ([#8183](https://github.com/voiceflow/creator-app/issues/8183)) ([2b5e0b4](https://github.com/voiceflow/creator-app/commit/2b5e0b4882240a03e64e5f9940cb76d26bf261da))
+
+## [1.382.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.382.0...@voiceflow/realtime@1.382.1) (2024-06-06)
+
+**Note:** Version bump only for package @voiceflow/realtime
+
+# [1.382.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.381.0...@voiceflow/realtime@1.382.0) (2024-06-06)
+
+### Features
+
+* add load env endpoint (COR-000) ([#8229](https://github.com/voiceflow/creator-app/issues/8229)) ([6b0896c](https://github.com/voiceflow/creator-app/commit/6b0896cbf98cb8ded511132d36afe28ed27f8f63))
+
+# [1.381.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.380.0...@voiceflow/realtime@1.381.0) (2024-06-06)
+
+### Features
+
+* remove http_assistant_cms ff (COR-000) ([#8228](https://github.com/voiceflow/creator-app/issues/8228)) ([8c796d8](https://github.com/voiceflow/creator-app/commit/8c796d8cdf83bf7a77e425626f358662b58c87da))
+
+# [1.380.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.379.4...@voiceflow/realtime@1.380.0) (2024-06-06)
+
+### Features
+
+* listen steps nodes (COR-000) ([#8200](https://github.com/voiceflow/creator-app/issues/8200)) ([ddda564](https://github.com/voiceflow/creator-app/commit/ddda564467f52b48506849199c30c6c1186fc816))
+
+## [1.379.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.379.3...@voiceflow/realtime@1.379.4) (2024-06-05)
+
+### Bug Fixes
+
+* bump versions ([#8232](https://github.com/voiceflow/creator-app/issues/8232)) ([5a27869](https://github.com/voiceflow/creator-app/commit/5a27869e7b8d9cc0be3cf1a58935c1d02208f0db))
+
+## [1.379.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.379.2...@voiceflow/realtime@1.379.3) (2024-06-05)
+
+**Note:** Version bump only for package @voiceflow/realtime
+
+## [1.379.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.379.1...@voiceflow/realtime@1.379.2) (2024-06-05)
+
+**Note:** Version bump only for package @voiceflow/realtime
+
+## [1.379.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.379.0...@voiceflow/realtime@1.379.1) (2024-06-05)
+
+### Bug Fixes
+
+* update the port to 3000 ([#8231](https://github.com/voiceflow/creator-app/issues/8231)) ([a0695d3](https://github.com/voiceflow/creator-app/commit/a0695d36cb257e70669f17dfe8ce76f7601bc7cc))
+
+# [1.379.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.378.0...@voiceflow/realtime@1.379.0) (2024-06-04)
+
+### Features
+
+* add embedding model under ff (COR-2160) (COR-2161) (COR-2164) ([#8210](https://github.com/voiceflow/creator-app/issues/8210)) ([c925b21](https://github.com/voiceflow/creator-app/commit/c925b212ba795225c49534b793d412abd069f618))
+
+# [1.378.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.377.3...@voiceflow/realtime@1.378.0) (2024-06-04)
+
+### Features
+
+* reset the term when upgrading from pro-trial or starter [bugfix] (COR-000) ([#8220](https://github.com/voiceflow/creator-app/issues/8220)) ([973c965](https://github.com/voiceflow/creator-app/commit/973c96523a4ea0488d2a020c83876d4cdaf7b8f6))
+
+## [1.377.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.377.2...@voiceflow/realtime@1.377.3) (2024-06-04)
+
+**Note:** Version bump only for package @voiceflow/realtime
+
+## [1.377.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.377.1...@voiceflow/realtime@1.377.2) (2024-06-03)
+
+**Note:** Version bump only for package @voiceflow/realtime
+
+## [1.377.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.377.0...@voiceflow/realtime@1.377.1) (2024-06-03)
+
+**Note:** Version bump only for package @voiceflow/realtime
+
+# [1.377.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.376.2...@voiceflow/realtime@1.377.0) (2024-06-03)
+
+### Features
+
+* remove workflows ff [bugfix] (COR-000) ([#8142](https://github.com/voiceflow/creator-app/issues/8142)) ([1889fb7](https://github.com/voiceflow/creator-app/commit/1889fb7ee7471e6970a8e541038c2ab41c92eba5))
+
+## [1.376.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.376.1...@voiceflow/realtime@1.376.2) (2024-06-01)
+
+**Note:** Version bump only for package @voiceflow/realtime
+
+## [1.376.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.376.0...@voiceflow/realtime@1.376.1) (2024-05-31)
+
+**Note:** Version bump only for package @voiceflow/realtime
+
+# [1.376.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.375.2...@voiceflow/realtime@1.376.0) (2024-05-31)
+
+### Features
+
+* use workspaceID for org permissions [bugfix] (COR-2231) ([#8197](https://github.com/voiceflow/creator-app/issues/8197)) ([997e987](https://github.com/voiceflow/creator-app/commit/997e98798352a215c0c30b5b22d74768b11c6f12))
+
+## [1.375.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.375.1...@voiceflow/realtime@1.375.2) (2024-05-31)
+
+**Note:** Version bump only for package @voiceflow/realtime
+
+## [1.375.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.375.0...@voiceflow/realtime@1.375.1) (2024-05-30)
+
+### Bug Fixes
+
+* update processing status of deleted kb document [bugfix] (COR-000) ([#8203](https://github.com/voiceflow/creator-app/issues/8203)) ([2090ac7](https://github.com/voiceflow/creator-app/commit/2090ac712edd50028e368a81f56d08e3387b5c84))
+
+# [1.375.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.374.0...@voiceflow/realtime@1.375.0) (2024-05-30)
+
+### Features
+
+* replace assistant with agent (COR-2207) ([#8196](https://github.com/voiceflow/creator-app/issues/8196)) ([ef9a50d](https://github.com/voiceflow/creator-app/commit/ef9a50d9216ac6d9d30671985f9e1c6f2fca20b7))
+
+# [1.374.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.373.0...@voiceflow/realtime@1.374.0) (2024-05-29)
+
+### Features
+
+* replace internal UserRole with dto UserRole (COR-2206) ([#8190](https://github.com/voiceflow/creator-app/issues/8190)) ([363abb0](https://github.com/voiceflow/creator-app/commit/363abb09d576d711aee1afa2135de68a641ce253))
+
 # [1.373.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.372.4...@voiceflow/realtime@1.373.0) (2024-05-27)
 
 ### Features

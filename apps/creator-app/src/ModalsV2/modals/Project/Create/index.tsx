@@ -1,5 +1,5 @@
 import { Nullable } from '@voiceflow/common';
-import { UserRole } from '@voiceflow/internal';
+import { UserRole } from '@voiceflow/dtos';
 import * as Platform from '@voiceflow/platform-config';
 import { Modal, Portal, Switch, System, useSmartReducerV2 } from '@voiceflow/ui';
 import { TabLoader } from '@voiceflow/ui-next';
@@ -19,7 +19,7 @@ import { Members, Setup } from './screens';
 
 const Create = manager.create<{ listID?: string }>('CreateProject', () => ({ api, type, opened, listID, hidden, animated, closePrevented }) => {
   const userID = useSelector(Account.userIDSelector)!;
-  const userMember = useSelector(WorkspaceV2.active.memberByIDSelector, { creatorID: userID });
+  const userMember = useSelector(WorkspaceV2.active.members.memberByIDSelector, { creatorID: userID });
 
   const [state, stateAPI] = useSmartReducerV2({
     name: '',
@@ -112,7 +112,7 @@ const Create = manager.create<{ listID?: string }>('CreateProject', () => ({ api
             </System.IconButtonsGroup.Base>
           )}
 
-          <Modal.Header.Title large>Create Assistant</Modal.Header.Title>
+          <Modal.Header.Title large>Create Agent</Modal.Header.Title>
         </Modal.Header>
 
         <Switch active={state.screen}>

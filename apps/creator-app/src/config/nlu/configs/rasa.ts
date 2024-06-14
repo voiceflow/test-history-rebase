@@ -1,7 +1,6 @@
 import * as Platform from '@voiceflow/platform-config';
 
 import * as NLP from '@/config/nlp';
-import { Permission } from '@/constants/permissions';
 
 import * as Base from './base';
 
@@ -17,8 +16,6 @@ export const CONFIG = Base.extend({
   nlps: [NLP.Rasa2.CONFIG, NLP.Rasa3.CONFIG, NLP.Voiceflow.CONFIG],
 
   tooltip: Base.tooltip(NLP.Rasa2.CONFIG),
-
-  permission: Permission.NLU_CUSTOM,
 
   helpURL: 'https://voiceflow.zendesk.com/hc/en-us/articles/10827794283021',
 })(Base.validate);

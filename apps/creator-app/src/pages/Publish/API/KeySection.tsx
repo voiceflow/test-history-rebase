@@ -50,7 +50,7 @@ const KeySection: React.FC<KeySectionProps> = ({ syncKeyState, page }) => {
 
   const { primaryKey, secondaryKey, showPrimaryKey, showSecondaryKey } = keyState;
 
-  const [canEditAPIKey] = usePermission(Permission.API_KEY_EDIT);
+  const [canEditAPIKey] = usePermission(Permission.API_KEY_UPDATE);
 
   const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
 
@@ -69,7 +69,9 @@ const KeySection: React.FC<KeySectionProps> = ({ syncKeyState, page }) => {
 
     setLoading(true);
 
-    const apiKeys = identityAPIKey.isEnabled ? await client.identity.apiKey.listAPIKeys(projectID) : await client.project.listAPIKeys(projectID);
+    const apiKeys = identityAPIKey.isEnabled
+      ? await client.identity.apiKey.listAPIKeys(projectID)
+      : await client.project.listAPIKeys(projectID);
 
     // TODO maybe refactor, tiny bit ugly
     let fetchedApiKey: ProjectAPIKey | null = null;
@@ -88,7 +90,9 @@ const KeySection: React.FC<KeySectionProps> = ({ syncKeyState, page }) => {
     }
 
     // find secondary key
-    const fetchedSecondaryKey = apiKeys.filter((key) => key.secondaryKeyID !== null).find((key) => fetchedApiKey!.secondaryKeyID === key._id);
+    const fetchedSecondaryKey = apiKeys
+      .filter((key) => key.secondaryKeyID !== null)
+      .find((key) => fetchedApiKey!.secondaryKeyID === key._id);
 
     updateKeyState({ primaryKey: fetchedApiKey, secondaryKey: fetchedSecondaryKey || null });
 

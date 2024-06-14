@@ -8,28 +8,32 @@ import { useSelector } from '@/hooks';
 import { mapperInputStyles } from '../../Function.css';
 
 interface IVariableInput {
-  onChange?: (value: Markup) => void;
-  maxVariableWidth?: string;
-  description?: string;
-  placeholder?: string;
   value: Markup;
+  onChange?: (value: Markup) => void;
+  placeholder?: string;
+  maxVariableWidth?: string;
 }
 
-export const VariableInput: React.FC<IVariableInput> = ({ value, onChange, maxVariableWidth = '150px', placeholder = 'Value or {var}' }) => {
-  const variablesMap = useSelector(Designer.selectors.slateVariablesMapByID);
+export const VariableInput: React.FC<IVariableInput> = ({
+  value,
+  onChange,
+  placeholder = 'Value or {var}',
+  maxVariableWidth = '150px',
+}) => {
+  const variablesMap = useSelector(Designer.selectors.uniqueSlateEntitiesAndVariablesMapByID);
 
   return (
     <InputWithVariables
-      onValueChange={(value) => onChange?.(value)}
-      maxVariableWidth={maxVariableWidth}
+      value={value}
+      ellipsis
       className={mapperInputStyles}
-      variablesMap={variablesMap}
+      singleLine
       placeholder={placeholder}
       inputVariant="ghost"
-      value={value}
+      variablesMap={variablesMap}
+      onValueChange={(value) => onChange?.(value)}
       resetBaseStyles
-      singleLine
-      ellipsis
+      maxVariableWidth={maxVariableWidth}
     />
   );
 };

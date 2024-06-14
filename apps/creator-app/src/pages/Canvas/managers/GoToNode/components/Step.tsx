@@ -23,7 +23,10 @@ const GoToNodeStep: ConnectedStep<Realtime.NodeData.GoToNode> = ({ data, palette
           palette={palette}
           attachment={
             goToNode ? (
-              <Attachment icon="clip" onClick={stopPropagation(() => engine.focusDiagramNode(data.diagramID ?? null, goToNode.nodeID))} />
+              <Attachment
+                icon="clip"
+                onClick={stopPropagation(() => engine.focusDiagramNode(data.diagramID ?? null, goToNode.nodeID))}
+              />
             ) : null
           }
           placeholder="Select go-to block"

@@ -7,7 +7,7 @@ import { PostgresORM } from './postgres.orm';
 
 export abstract class PostgresMutableORM<
     BaseEntity extends PostgresPKEntity,
-    DiscriminatorEntity extends Omit<BaseEntity, typeof DEFAULT_OR_NULL_COLUMN> = BaseEntity
+    DiscriminatorEntity extends Omit<BaseEntity, typeof DEFAULT_OR_NULL_COLUMN> = BaseEntity,
   >
   extends PostgresORM<BaseEntity, DiscriminatorEntity>
   implements MutableORM<BaseEntity, DiscriminatorEntity>
@@ -41,10 +41,12 @@ export abstract class PostgresMutableORM<
   }
 
   async delete(where: WhereData<BaseEntity> | WhereData<BaseEntity>[], returning?: false): Promise<number>;
+
   async delete(
     where: WhereData<BaseEntity> | WhereData<BaseEntity>[],
     returning: true
   ): Promise<ToObject<DiscriminatorEntity>[]>;
+
   async delete(where: WhereData<BaseEntity> | WhereData<BaseEntity>[], returning?: boolean) {
     const qb = this.qb.delete();
 

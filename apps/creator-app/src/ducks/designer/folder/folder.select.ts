@@ -42,7 +42,7 @@ export const idsByParentIDMapByScope = createSelector([allByScope], (folders) =>
 export const allDeeplyNestedIDsByScopeAndParentID = createSelector(
   [idsByParentIDMapByScope, parentIDParamSelector],
   (idsByParentIDMap, parentID) => {
-    const children = parentID ? idsByParentIDMap[parentID] ?? [] : [];
+    const children = parentID ? [...(idsByParentIDMap[parentID] ?? [])] : [];
 
     if (!children.length) return children;
 

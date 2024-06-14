@@ -13,12 +13,12 @@ import List from './List.component';
 import * as S from './styles';
 
 const DashboardV2MembersAndBillingMembers: React.FC = () => {
-  const membersCount = useSelector(WorkspaceV2.active.allNormalizedMembersCountSelector);
+  const membersCount = useSelector(WorkspaceV2.active.members.allMembersCountSelector);
   const isOnPaidPlanSelector = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
   const isOnProTrial = useSelector(WorkspaceV2.active.isOnProTrialSelector);
 
-  const [canAddSeats] = usePermission(Permission.BILLING_SEATS_ADD);
-  const [canInviteMembers] = usePermission(Permission.INVITE);
+  const [canAddSeats] = usePermission(Permission.WORKSPACE_BILLING_ADD_SEATS);
+  const [canInviteMembers] = usePermission(Permission.WORKSPACE_INVITE);
 
   const inviteModal = ModalsV2.useModal(ModalsV2.Workspace.Invite);
   const paymentModal = useCheckoutPaymentModal();
@@ -30,7 +30,7 @@ const DashboardV2MembersAndBillingMembers: React.FC = () => {
           mb={32}
           title="Unlock your teams potential"
           onClick={() => paymentModal.open({})}
-          subtitle="Upgrade to unlock unlimited assistant and so much more."
+          subtitle="Upgrade to unlock unlimited agent and so much more."
           buttonText="Upgrade Now"
           backgroundImage={bannerBg}
         />

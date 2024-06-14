@@ -1,4 +1,4 @@
-import { UserRole } from '@voiceflow/internal';
+import { UserRole } from '@voiceflow/dtos';
 
 export interface WorkspaceInvite {
   role: UserRole;

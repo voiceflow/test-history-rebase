@@ -133,7 +133,7 @@ class VoiceflowAssistant {
   }
 
   private enableDevelopmentMode() {
-    this.logger.info(`Reloading in DEVELOPMENT mode...`);
+    this.logger.info('Reloading in DEVELOPMENT mode...');
 
     localStorage.setItem('vfadevmode', 'development');
 
@@ -169,6 +169,7 @@ class VoiceflowAssistant {
     this.logger.debug(`Received event: ${vfData.type}`);
 
     if (vfData.type === 'voiceflow:open') {
+      // eslint-disable-next-line no-empty-function
       await speedDetection.detect().catch(() => {});
 
       await this.updateInfo();
@@ -258,7 +259,7 @@ class VoiceflowAssistant {
     const firstScript = document.getElementsByTagName('script')[0];
     const widgetScript = document.createElement('script');
 
-    widgetScript.onerror = (error) => this.logger.debug('Error loading Voiceflow Assistant widget', error);
+    widgetScript.onerror = (error) => this.logger.debug('Error loading Voiceflow Agent widget', error);
     widgetScript.onload = () => {
       this.initialized = true;
 

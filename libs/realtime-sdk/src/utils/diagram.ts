@@ -4,11 +4,13 @@ import { AnyRecord, Utils } from '@voiceflow/common';
 
 export interface DiagramFactoryOptions {
   name: string;
-  menuItems?: BaseModels.Diagram.MenuItem[];
 }
 
 export type PrimitiveDiagram<T extends BaseModels.BaseDiagramNode = BaseModels.BaseDiagramNode> = Required<
-  Omit<BaseModels.Diagram.Model<T>, '_id' | 'creatorID' | 'versionID' | 'intentStepIDs' | 'menuNodeIDs' | 'children' | 'diagramID'>
+  Omit<
+    BaseModels.Diagram.Model<T>,
+    '_id' | 'creatorID' | 'versionID' | 'intentStepIDs' | 'menuNodeIDs' | 'children' | 'diagramID' | 'menuItems'
+  >
 >;
 
 export const getUniqueCopyName = (originalName: string, existingNames: string[]) => {
@@ -51,7 +53,6 @@ export const diagramFactory = <T extends BaseModels.BaseDiagramNode>({
   name,
   type,
   nodes,
-  menuItems = [],
 }: DiagramFactoryOptions & {
   type: BaseModels.Diagram.DiagramType;
   nodes: BaseModels.BaseDiagramNode[];
@@ -64,7 +65,6 @@ export const diagramFactory = <T extends BaseModels.BaseDiagramNode>({
   offsetY: 0,
   modified: Utils.time.getCurrentTimestamp(),
   variables: [],
-  menuItems,
 });
 
 export const componentDiagramFactory = (name: string, startNodeCoords?: [number, number]) =>
@@ -74,24 +74,12 @@ export const componentDiagramFactory = (name: string, startNodeCoords?: [number,
     nodes: [startNodeFactory({ name: 'Continue', coords: startNodeCoords })],
   });
 
-export const rootTopicDiagramFactory = (name: string, startNodeCoords?: [number, number]) => {
-  const startNode = startNodeFactory({ coords: startNodeCoords });
-
-  return diagramFactory({
-    name,
-    type: BaseModels.Diagram.DiagramType.TOPIC,
-    nodes: [startNode],
-    menuItems: [{ type: BaseModels.Diagram.MenuItemType.NODE, sourceID: startNode.nodeID }],
-  });
-};
-
 export const topicDiagramFactory = (name: string, intentNodeCoords = START_NODE_POSITION) => {
   const intentNodeID = Utils.id.objectID();
 
   return diagramFactory({
     name,
     type: BaseModels.Diagram.DiagramType.TOPIC,
-    menuItems: [{ type: BaseModels.Diagram.MenuItemType.NODE, sourceID: intentNodeID }],
     nodes: [
       {
         type: BaseModels.BaseNodeType.BLOCK,

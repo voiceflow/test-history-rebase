@@ -11,17 +11,17 @@ export const variableNameSpellingValidator = validatorZodFactory(VariableDTO.sha
 export const variableNameUniqVariablesValidator = validatorFactory(
   (name: string, { variables, variableID }: { variables: Variable[]; variableID: string | null }) =>
     variables.every((variable) => variable.id === variableID || variable.name !== name),
-  () => `Variable name already exists.`
+  (name) => `The '${name}' variable already exists.`
 );
 
 export const variableNameUniqEntitiesValidator = validatorFactory(
   (name: string, { entities }: { entities: Entity[] }) => entities.every((entity) => entity.name !== name),
-  () => `Entity name already exists.`
+  (name) => `You have an entity defined with the '${name}' name.`
 );
 
 export const variableNameUniqIntentsValidator = validatorFactory(
   (name: string, { intents }: { intents: Intent[] }) => intents.every((intent) => intent.name !== name),
-  () => `Intent name already exists.`
+  (name) => `You have an intent defined with the '${name}' name.`
 );
 
 export const variableNameValidator = composeValidators(

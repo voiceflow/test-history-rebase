@@ -1,17 +1,25 @@
 import composeRef from '@seznam/compose-react-refs';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, ContextMenu, OptionsMenuOption, Portal, SvgIcon, SvgIconTypes, TippyTooltip, useEnableDisable, usePopper } from '@voiceflow/ui';
+import {
+  Box,
+  ContextMenu,
+  OptionsMenuOption,
+  Portal,
+  SvgIcon,
+  SvgIconTypes,
+  TippyTooltip,
+  useEnableDisable,
+  usePopper,
+} from '@voiceflow/ui';
 import React from 'react';
 import { useDrag } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 
 import { BlockType, DragItem } from '@/constants';
-import { Permission } from '@/constants/permissions';
 import { AutoPanningCacheContext } from '@/contexts/AutoPanningContext';
 import { useEventualEngine } from '@/hooks/engine';
 import { useHover } from '@/hooks/hover';
 import { usePaymentModal } from '@/hooks/modal.hook';
-import { usePermission } from '@/hooks/permission';
 import { StepDragItem } from '@/pages/Canvas/components/CanvasDiagram';
 import { ClassName } from '@/styles/constants';
 import { openInternalURLInANewTab } from '@/utils/window';
@@ -50,11 +58,8 @@ const SubMenuButton: React.FC<SubMenuButtonProps> = ({
   const isAutoPanning = React.useContext(AutoPanningCacheContext);
 
   const [isClicked, enableClicked, clearClicked] = useEnableDisable();
-  const paidStepsPermission = usePermission(Permission.CANVAS_PAID_STEPS);
 
-  const isLocked = !paidStepsPermission.allowed && paidStepsPermission.planConfig?.isPaidStep(type);
-
-  const [isHovered, , hoverHandlers] = useHover({ hoverDelay: isLocked ? 0 : 1600 });
+  const [isHovered, , hoverHandlers] = useHover({ hoverDelay: 1600 });
   const [showPopper, , popperHoverHandlers] = useHover();
 
   const popper = usePopper({ strategy: 'fixed', placement: 'right-start' });
@@ -96,8 +101,7 @@ const SubMenuButton: React.FC<SubMenuButtonProps> = ({
     connectPreview(getEmptyImage(), { captureDraggingState: true });
   }, []);
 
-  const containerRef = isLocked ? popper.setReferenceElement : composeRef<HTMLDivElement>(connectDrag, popper.setReferenceElement);
-  const upgradeTooltip = isLocked ? paidStepsPermission.planConfig?.upgradeTooltip({ stepType: type }) : null;
+  const containerRef = composeRef<HTMLDivElement>(connectDrag, popper.setReferenceElement);
 
   const button = (isOpen?: boolean, onContextMenu?: React.MouseEventHandler) => (
     <ClickNoDragTooltip>
@@ -105,7 +109,6 @@ const SubMenuButton: React.FC<SubMenuButtonProps> = ({
         <S.SubMenuButtonContainer
           {...hoverHandlers}
           ref={containerRef}
-          disabled={!!isLocked}
           className={ClassName.SUB_STEP_MENU_ITEM}
           isClicked={isClicked}
           onMouseUp={clearClicked}
@@ -116,21 +119,25 @@ const SubMenuButton: React.FC<SubMenuButtonProps> = ({
           isContextMenuOpen={isOpen && isFocused}
         >
           <Box.FlexStart width="100%" opacity={isDragging ? 0 : 1}>
-            <SvgIcon icon={icon} size={16} color={isLocked ? '#62778c' : '#132144'} />
+            <SvgIcon icon={icon} size={16} color="#132144" />
 
-            <StyledText disabled={isLocked}>{label}</StyledText>
+            <StyledText>{label}</StyledText>
           </Box.FlexStart>
 
           {!isClickNoDragTooltipOpen && !isDragging && isHovered && tooltipText && (
             <Portal portalNode={document.body}>
-              <div ref={popper.setPopperElement} style={{ ...popper.styles.popper, paddingLeft: '6px' }} {...popper.attributes.popper}>
-                <TooltipContainer width={tooltipLink || isLocked ? 232 : 200}>
-                  {tooltipLink || isLocked ? (
+              <div
+                ref={popper.setPopperElement}
+                style={{ ...popper.styles.popper, paddingLeft: '6px' }}
+                {...popper.attributes.popper}
+              >
+                <TooltipContainer width={tooltipLink ? 232 : 200}>
+                  {tooltipLink ? (
                     <TippyTooltip.FooterButton
-                      onClick={() => (tooltipLink && !isLocked ? openInternalURLInANewTab(tooltipLink) : paymentModal.openVoid({}))}
-                      buttonText={upgradeTooltip?.upgradeButtonText ?? 'Learn More'}
+                      onClick={() => (tooltipLink ? openInternalURLInANewTab(tooltipLink) : paymentModal.openVoid({}))}
+                      buttonText="Learn More"
                     >
-                      {upgradeTooltip?.description ?? tooltipText}
+                      {tooltipText}
                     </TippyTooltip.FooterButton>
                   ) : (
                     <TippyTooltip.Multiline>{tooltipText}</TippyTooltip.Multiline>
@@ -145,7 +152,9 @@ const SubMenuButton: React.FC<SubMenuButtonProps> = ({
   );
 
   if (isFocused) {
-    return <ContextMenu options={menuOptions}>{({ isOpen, onContextMenu }) => button(isOpen, onContextMenu)}</ContextMenu>;
+    return (
+      <ContextMenu options={menuOptions}>{({ isOpen, onContextMenu }) => button(isOpen, onContextMenu)}</ContextMenu>
+    );
   }
 
   return button();

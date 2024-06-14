@@ -903,6 +903,241 @@
     },
     {
       "columns": {
+        "environment_id": {
+          "name": "environment_id",
+          "type": "varchar(24)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 24,
+          "mappedType": "string"
+        },
+        "id": {
+          "name": "id",
+          "type": "varchar(24)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 24,
+          "mappedType": "string"
+        },
+        "type": {
+          "name": "type",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "enumItems": [
+            "node",
+            "flow",
+            "intent",
+            "diagram",
+            "response",
+            "workflow"
+          ],
+          "mappedType": "enum"
+        },
+        "metadata": {
+          "name": "metadata",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "json"
+        },
+        "assistant_id": {
+          "name": "assistant_id",
+          "type": "varchar(24)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 24,
+          "mappedType": "string"
+        },
+        "diagram_id": {
+          "name": "diagram_id",
+          "type": "varchar(24)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 24,
+          "default": "null",
+          "mappedType": "string"
+        },
+        "resource_id": {
+          "name": "resource_id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        }
+      },
+      "name": "reference_resource",
+      "schema": "designer",
+      "indexes": [
+        {
+          "keyName": "reference_resource_environment_id_type_diagram_id__00745_unique",
+          "columnNames": [
+            "environment_id",
+            "type",
+            "diagram_id",
+            "resource_id"
+          ],
+          "composite": true,
+          "primary": false,
+          "unique": true
+        },
+        {
+          "keyName": "reference_resource_pkey",
+          "columnNames": [
+            "environment_id",
+            "id"
+          ],
+          "composite": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "reference_resource_assistant_id_foreign": {
+          "constraintName": "reference_resource_assistant_id_foreign",
+          "columnNames": [
+            "assistant_id"
+          ],
+          "localTableName": "designer.reference_resource",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "designer.assistant",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "environment_id": {
+          "name": "environment_id",
+          "type": "varchar(24)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 24,
+          "mappedType": "string"
+        },
+        "id": {
+          "name": "id",
+          "type": "varchar(24)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 24,
+          "mappedType": "string"
+        },
+        "resource_id": {
+          "name": "resource_id",
+          "type": "varchar(24)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 24,
+          "mappedType": "string"
+        },
+        "metadata": {
+          "name": "metadata",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "json"
+        },
+        "referrer_resource_id": {
+          "name": "referrer_resource_id",
+          "type": "varchar(24)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 24,
+          "mappedType": "string"
+        }
+      },
+      "name": "reference",
+      "schema": "designer",
+      "indexes": [
+        {
+          "keyName": "reference_environment_id_resource_id_referrer_resource_id_unique",
+          "columnNames": [
+            "environment_id",
+            "resource_id",
+            "referrer_resource_id"
+          ],
+          "composite": true,
+          "primary": false,
+          "unique": true
+        },
+        {
+          "keyName": "reference_pkey",
+          "columnNames": [
+            "environment_id",
+            "id"
+          ],
+          "composite": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "reference_environment_id_resource_id_foreign": {
+          "constraintName": "reference_environment_id_resource_id_foreign",
+          "columnNames": [
+            "environment_id",
+            "resource_id"
+          ],
+          "localTableName": "designer.reference",
+          "referencedColumnNames": [
+            "environment_id",
+            "id"
+          ],
+          "referencedTableName": "designer.reference_resource",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        },
+        "reference_environment_id_referrer_resource_id_foreign": {
+          "constraintName": "reference_environment_id_referrer_resource_id_foreign",
+          "columnNames": [
+            "environment_id",
+            "referrer_resource_id"
+          ],
+          "localTableName": "designer.reference",
+          "referencedColumnNames": [
+            "environment_id",
+            "id"
+          ],
+          "referencedTableName": "designer.reference_resource",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
         "id": {
           "name": "id",
           "type": "varchar(24)",
@@ -2220,6 +2455,7 @@
             "gpt-3.5-turbo",
             "gpt-4",
             "gpt-4-turbo",
+            "gpt-4o",
             "claude-v1",
             "claude-v2",
             "claude-3-haiku",
@@ -2425,6 +2661,7 @@
             "gpt-3.5-turbo",
             "gpt-4",
             "gpt-4-turbo",
+            "gpt-4o",
             "claude-v1",
             "claude-v2",
             "claude-3-haiku",
@@ -2893,6 +3130,16 @@
           "primary": false,
           "nullable": false,
           "mappedType": "array"
+        },
+        "automatic_reprompt_settings": {
+          "name": "automatic_reprompt_settings",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "json"
         }
       },
       "name": "intent",
@@ -3279,6 +3526,16 @@
           "nullable": true,
           "default": "null",
           "mappedType": "text"
+        },
+        "path_order": {
+          "name": "path_order",
+          "type": "text[]",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "'{}'",
+          "mappedType": "array"
         }
       },
       "name": "function",
@@ -5322,6 +5579,16 @@
           "nullable": true,
           "mappedType": "boolean"
         },
+        "assertions": {
+          "name": "assertions",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "'[]'",
+          "mappedType": "json"
+        },
         "turns": {
           "name": "turns",
           "type": "int",
@@ -5419,6 +5686,195 @@
           ],
           "referencedTableName": "designer.assistant",
           "deleteRule": "cascade",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(24)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 24,
+          "mappedType": "string"
+        },
+        "environment_id": {
+          "name": "environment_id",
+          "type": "varchar(24)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 24,
+          "default": "null",
+          "mappedType": "string"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 0,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 0,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_by_id": {
+          "name": "updated_by_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "integer"
+        },
+        "assistant_id": {
+          "name": "assistant_id",
+          "type": "varchar(24)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 24,
+          "mappedType": "string"
+        },
+        "discriminator_id": {
+          "name": "discriminator_id",
+          "type": "varchar(24)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 24,
+          "mappedType": "string"
+        },
+        "text": {
+          "name": "text",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "json"
+        },
+        "condition_id": {
+          "name": "condition_id",
+          "type": "varchar(24)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 24,
+          "default": "null",
+          "mappedType": "string"
+        }
+      },
+      "name": "response_message",
+      "schema": "designer",
+      "indexes": [
+        {
+          "keyName": "response_message_environment_id_index",
+          "columnNames": [
+            "environment_id"
+          ],
+          "composite": false,
+          "primary": false,
+          "unique": false
+        },
+        {
+          "keyName": "response_message_id_environment_id_unique",
+          "columnNames": [
+            "id",
+            "environment_id"
+          ],
+          "composite": true,
+          "primary": false,
+          "unique": true
+        },
+        {
+          "keyName": "response_message_pkey",
+          "columnNames": [
+            "id",
+            "environment_id"
+          ],
+          "composite": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "response_message_updated_by_id_foreign": {
+          "constraintName": "response_message_updated_by_id_foreign",
+          "columnNames": [
+            "updated_by_id"
+          ],
+          "localTableName": "designer.response_message",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "identity.user",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "response_message_assistant_id_foreign": {
+          "constraintName": "response_message_assistant_id_foreign",
+          "columnNames": [
+            "assistant_id"
+          ],
+          "localTableName": "designer.response_message",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "designer.assistant",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        },
+        "response_message_discriminator_id_environment_id_foreign": {
+          "constraintName": "response_message_discriminator_id_environment_id_foreign",
+          "columnNames": [
+            "discriminator_id",
+            "environment_id"
+          ],
+          "localTableName": "designer.response_message",
+          "referencedColumnNames": [
+            "id",
+            "environment_id"
+          ],
+          "referencedTableName": "designer.response_discriminator",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        },
+        "response_message_condition_id_environment_id_foreign": {
+          "constraintName": "response_message_condition_id_environment_id_foreign",
+          "columnNames": [
+            "condition_id",
+            "environment_id"
+          ],
+          "localTableName": "designer.response_message",
+          "referencedColumnNames": [
+            "id",
+            "environment_id"
+          ],
+          "referencedTableName": "designer.condition",
+          "deleteRule": "set default",
           "updateRule": "cascade"
         }
       }
@@ -5864,7 +6320,6 @@
           "primary": false,
           "nullable": false,
           "enumItems": [
-            "json",
             "prompt",
             "text"
           ],
@@ -6074,21 +6529,6 @@
           ],
           "referencedTableName": "designer.response_discriminator",
           "deleteRule": "cascade",
-          "updateRule": "cascade"
-        },
-        "response_variant_prompt_id_environment_id_foreign": {
-          "constraintName": "response_variant_prompt_id_environment_id_foreign",
-          "columnNames": [
-            "prompt_id",
-            "environment_id"
-          ],
-          "localTableName": "designer.response_variant",
-          "referencedColumnNames": [
-            "id",
-            "environment_id"
-          ],
-          "referencedTableName": "designer.prompt",
-          "deleteRule": "set default",
           "updateRule": "cascade"
         }
       }

@@ -9,7 +9,14 @@ import * as OrganizationAtoms from '@/atoms/organization.atom';
 import NavigationSidebar from '@/components/NavigationSidebar';
 import TrialCountdownCard from '@/components/TrialCountdownCard';
 import { Path } from '@/config/routes';
-import { BOOK_DEMO_LINK, CHANGELOG_LINK, DISCORD_LINK, GET_HELP_LINK, LEARN_LINK, TEMPLATES_LINK } from '@/constants/link.constant';
+import {
+  BOOK_DEMO_LINK,
+  CHANGELOG_LINK,
+  DISCORD_LINK,
+  GET_HELP_LINK,
+  LEARN_LINK,
+  TEMPLATES_LINK,
+} from '@/constants/link.constant';
 import { Permission } from '@/constants/permissions';
 import * as Organization from '@/ducks/organization';
 import * as Sessions from '@/ducks/session';
@@ -25,12 +32,13 @@ import { getPlanTypeLabel } from '@/utils/plans';
 import { Account as AccountComponent } from './components';
 import * as S from './styles';
 
+// eslint-disable-next-line sonarjs/cognitive-complexity
 const DashboardNavigationSidebar: React.FC = () => {
   const { isEnabled: teamsPlanSelfServeIsEnabled } = useFeature(FeatureFlag.TEAMS_PLAN_SELF_SERVE);
   const plan = useSelector(WorkspaceV2.active.planSelector) ?? PlanType.STARTER;
   const isPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
   const workspaceID = useSelector(Sessions.activeWorkspaceIDSelector) ?? 'unknown';
-  const membersCount = useSelector(WorkspaceV2.active.allNormalizedMembersCountSelector);
+  const membersCount = useSelector(WorkspaceV2.active.members.allMembersCountSelector);
   const isProWorkspace = useSelector(WorkspaceV2.active.isProSelector);
   const isEnterpriseWorkspace = useSelector(WorkspaceV2.active.isEnterpriseSelector);
   const organizationTrialDaysLeft = useSelector(WorkspaceV2.active.organizationTrialDaysLeftSelector);
@@ -42,24 +50,32 @@ const DashboardNavigationSidebar: React.FC = () => {
   const [, trackEventFactory] = useTrackingEvents();
   const organizationDefaultPagePath = useOrganizationDefaultPagePath();
 
-  const [canConfigureWorkspace] = usePermission(Permission.CONFIGURE_WORKSPACE);
+  const [canConfigureWorkspace] = usePermission(Permission.WORKSPACE_MANAGE);
 
   const teamsIsEnabled = teamsPlanSelfServeIsEnabled && subscription;
 
   const isProTrial = isProWorkspace && organizationTrialDaysLeft !== null;
-  const canUpgrade = !isCheckoutDisabled && (!isPaidPlan || isProTrial || (teamsIsEnabled && isProWorkspace)) && canConfigureWorkspace;
+  const canUpgrade =
+    !isCheckoutDisabled && (!isPaidPlan || isProTrial || (teamsIsEnabled && isProWorkspace)) && canConfigureWorkspace;
 
   return (
     <NavigationSidebar isMainMenu>
       <S.GroupsContainer>
         <S.Group>
-          <NavigationSidebar.NavItem to={generatePath(Path.WORKSPACE_DASHBOARD, { workspaceID })} icon="goToBlock" title="Assistants" exact />
+          <NavigationSidebar.NavItem
+            to={generatePath(Path.WORKSPACE_DASHBOARD, { workspaceID })}
+            icon="goToBlock"
+            title="Agents"
+            exact
+          />
 
           <NavigationSidebar.NavItem
             to={generatePath(Path.WORKSPACE_MEMBERS, { workspaceID })}
             icon="team"
             title={canConfigureWorkspace ? 'Team & Billing' : 'Team'}
-            isActive={({ pathname, matchPath }) => !!matchPath(pathname, { path: [Path.WORKSPACE_MEMBERS, Path.WORKSPACE_BILLING] })}
+            isActive={({ pathname, matchPath }) =>
+              !!matchPath(pathname, { path: [Path.WORKSPACE_MEMBERS, Path.WORKSPACE_BILLING] })
+            }
           >
             <NavigationSidebar.Item.SubText>{membersCount}</NavigationSidebar.Item.SubText>
           </NavigationSidebar.NavItem>
@@ -134,7 +150,11 @@ const DashboardNavigationSidebar: React.FC = () => {
               title="Organization"
               isActive={({ pathname, matchPath }) =>
                 !!matchPath(pathname, {
-                  path: [Path.WORKSPACE_ORGANIZATION_SETTINGS, Path.WORKSPACE_ORGANIZATION_MEMBERS, Path.WORKSPACE_ORGANIZATION_SSO],
+                  path: [
+                    Path.WORKSPACE_ORGANIZATION_SETTINGS,
+                    Path.WORKSPACE_ORGANIZATION_MEMBERS,
+                    Path.WORKSPACE_ORGANIZATION_SSO,
+                  ],
                 })
               }
             />
@@ -157,7 +177,9 @@ const DashboardNavigationSidebar: React.FC = () => {
               ) : (
                 <NavigationSidebar.Item
                   icon="paid"
-                  title={canUpgrade ? `Upgrade to ${isProWorkspace ? 'Teams' : 'Pro'}` : `Plan: ${getPlanTypeLabel(plan)}`}
+                  title={
+                    canUpgrade ? `Upgrade to ${isProWorkspace ? 'Teams' : 'Pro'}` : `Plan: ${getPlanTypeLabel(plan)}`
+                  }
                   onClick={() => paymentModal.open({})}
                   disabled={!canUpgrade}
                 />

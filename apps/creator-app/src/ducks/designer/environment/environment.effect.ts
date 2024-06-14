@@ -9,6 +9,9 @@ import type { Thunk } from '@/store/types';
 
 import { SetNLUTrainingDiffStatus } from './environment.action';
 
+/**
+ * @deprecated remove with HTTP_LOAD_ENVIRONMENT ff
+ */
 export const load =
   (environmentID: string, abortController?: AbortController): Thunk =>
   // eslint-disable-next-line sonarjs/cognitive-complexity

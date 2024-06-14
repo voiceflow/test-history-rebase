@@ -57,7 +57,7 @@ const WhatsAppTesting: React.FC = () => {
     <Settings.PageContent>
       <Settings.Section>
         <Banner
-          title="Test Your Assistant on WhatsApp"
+          title="Test Your Agent on WhatsApp"
           onClick={() => openInternalURLInANewTab(WHATSAPP_DOCUMENTATION)}
           subtitle="Add your number and start testing with a single click."
           buttonText="Documentation"
@@ -77,7 +77,7 @@ const WhatsAppTesting: React.FC = () => {
               defaultCountry="US"
             />
 
-            <Settings.SubSection.Description>The WhatsApp number you'll use to test your assistant.</Settings.SubSection.Description>
+            <Settings.SubSection.Description>The WhatsApp number you'll use to test your agent.</Settings.SubSection.Description>
           </Settings.SubSection>
         </Settings.Card>
       </Settings.Section>

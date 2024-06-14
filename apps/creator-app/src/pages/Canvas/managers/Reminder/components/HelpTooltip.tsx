@@ -11,7 +11,7 @@ const HelpTooltip: React.FC = () => (
     <Tooltip.Title>Important Consideration</Tooltip.Title>
 
     <Tooltip.Paragraph>
-      To send a user a reminder, they must grant your assistant permission to do so. In order to gain this permission. You must use a Permissions
+      To send a user a reminder, they must grant your agent permission to do so. In order to gain this permission. You must use a Permissions
       block, and request the ability to send the user reminders.
     </Tooltip.Paragraph>
   </>

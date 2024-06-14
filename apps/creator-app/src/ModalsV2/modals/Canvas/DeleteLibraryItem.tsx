@@ -22,7 +22,7 @@ const DeleteLibraryItem = manager.create<DeleteLibraryItemProps>(
         <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={400} hideScrollbar>
           <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />}>Delete {entityType}</Modal.Header>
 
-          <div style={{ padding: '0 32px 32px 32px' }}>Warning, “{entityName}” and all its content will be removed from the assistant.</div>
+          <div style={{ padding: '0 32px 32px 32px' }}>Warning, “{entityName}” and all its content will be removed from the agent.</div>
 
           <Modal.Footer>
             <Button onClick={api.onClose} variant={ButtonVariant.TERTIARY} squareRadius style={{ marginRight: '10px' }}>

@@ -16,8 +16,3 @@ export const ToggleCanvasSidebar = Utils.protocol.createAction<boolean | undefin
 export const ToggleCommentVisibility = Utils.protocol.createAction(uiType('TOGGLE_COMMENT_VISIBILITY'));
 export const ToggleWorkflowThreadsOnly = Utils.protocol.createAction(uiType('TOGGLE_WORKFLOW_THREADS_ONLY'));
 export const ToggleMentionedThreadsOnly = Utils.protocol.createAction(uiType('TOGGLE_MENTIONED_THREADS_ONLY'));
-
-/**
- * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
- */
-export const ToggleDomainThreadsOnly = Utils.protocol.createAction(uiType('TOGGLE_DOMAIN_THREADS_ONLY'));

@@ -32,7 +32,6 @@ export enum Hotkey {
   ADD_MARKUP_IMAGE = 'ADD_MARKUP_IMAGE',
   DUPLICATE = 'DUPLICATE',
   CREATE_COMPONENT = 'CREATE_COMPONENT',
-  CREATE_SUBTOPIC = 'CREATE_SUBTOPIC',
   ADD_TO_LIBRARY = 'ADD_TO_LIBRARY',
   MOVE_FORWARD = 'MOVE_FORWARD',
   SAVE_BACKUP = 'SAVE_BACKUP',
@@ -109,7 +108,6 @@ const HOTKEY_MAPPING: Record<Hotkey, string | string[]> = {
   [Hotkey.NATIVE_SEARCH]: [`${SpecialKey.CTRL}+f`, `${SpecialKey.META}+f`],
   [Hotkey.SEARCH]: [`${SpecialKey.CTRL}+k`, `${SpecialKey.META}+k`],
   [Hotkey.DUPLICATE]: [`${SpecialKey.CTRL}+d`, `${SpecialKey.META}+d`],
-  [Hotkey.CREATE_SUBTOPIC]: [`${SpecialKey.CTRL}+g`, `${SpecialKey.META}+g`],
   [Hotkey.CREATE_COMPONENT]: [`${SpecialKey.SHIFT}+${SpecialKey.CTRL}+c`, `${SpecialKey.SHIFT}+${SpecialKey.META}+c`],
   [Hotkey.ADD_TO_LIBRARY]: [`${SpecialKey.SHIFT}+${SpecialKey.CTRL}+l`, `${SpecialKey.SHIFT}+${SpecialKey.META}+l`],
   [Hotkey.USER_SPEECH]: SpecialKey.SPACE,
@@ -149,7 +147,7 @@ const HOTKEY_MAPPING: Record<Hotkey, string | string[]> = {
   [Hotkey.GPT_GEN_REJECT_ITEM]: [SpecialKey.DELETE, SpecialKey.BACKSPACE],
 
   [Hotkey.TOGGLE_CHATBOT]: [`${SpecialKey.CTRL}+/`, `${SpecialKey.META}+/`],
-  [Hotkey.BACK_TO_CMS]: [`${SpecialKey.CTRL}+[`, `${SpecialKey.META}+[`, SpecialKey.ESC],
+  [Hotkey.BACK_TO_CMS]: [`${SpecialKey.CTRL}+[`, `${SpecialKey.META}+[`],
   [Hotkey.BACK_TO_DESIGNER]: [`${SpecialKey.CTRL}+]`, `${SpecialKey.META}+]`],
   [Hotkey.BACK_TO_KNOWLEDGE_BASE]: [`${SpecialKey.SHIFT}+k`],
 };

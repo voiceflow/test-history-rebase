@@ -1,5 +1,4 @@
 import { Utils } from '@voiceflow/common';
-import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { Box } from '@voiceflow/ui';
 import { TabLoader } from '@voiceflow/ui-next';
 import queryString from 'query-string';
@@ -16,10 +15,9 @@ import { Permission } from '@/constants/permissions';
 import * as ReportTag from '@/ducks/reportTag';
 import * as Router from '@/ducks/router';
 import * as Transcripts from '@/ducks/transcript';
-import { useAsyncDidUpdate, useDispatch, useFeature, usePermission, useTeardown, useTrackingEvents } from '@/hooks';
+import { useAsyncDidUpdate, useDispatch, usePermission, useTeardown, useTrackingEvents } from '@/hooks';
 import { useAssistantSessionStorageState } from '@/hooks/storage.hook';
 import { FilterTag } from '@/pages/Conversations/constants';
-import ProjectPage from '@/pages/Project/components/ProjectPage';
 import { Identifier } from '@/styles/constants';
 
 import { ConversationsContainer, TranscriptDetails, TranscriptDialog, TranscriptManager } from './components';
@@ -28,9 +26,8 @@ import { useFilters } from './hooks';
 const Conversations: React.FC = () => {
   const history = useHistory();
 
-  const cmsWorkflows = useFeature(FeatureFlag.CMS_WORKFLOWS);
   const [trackingEvents] = useTrackingEvents();
-  const [canViewConversations] = usePermission(Permission.VIEW_CONVERSATIONS);
+  const [canViewConversations] = usePermission(Permission.PROJECT_TRANSCRIPT_READ);
 
   const allTranscripts = useSelector(Transcripts.allTranscriptsSelector);
   const currentTranscriptID = useSelector(Transcripts.currentTranscriptIDSelector);
@@ -49,7 +46,10 @@ const Conversations: React.FC = () => {
 
   const loadTranscripts = async () => {
     // do not applying last filters if we opening the transcript by url
-    const [, transcripts] = await Promise.all([fetchReportTags(), fetchTranscripts(query ?? (!currentTranscriptID ? lastFilter : ''))]);
+    const [, transcripts] = await Promise.all([
+      fetchReportTags(),
+      fetchTranscripts(query ?? (!currentTranscriptID ? lastFilter : '')),
+    ]);
 
     const currentTranscript = transcripts.find(({ id }) => id === currentTranscriptID);
     const firstTranscriptID = transcripts[0]?.id;
@@ -101,15 +101,28 @@ const Conversations: React.FC = () => {
 
   if (!canViewConversations) return <Redirect to={Path.DASHBOARD} />;
 
-  const Container = cmsWorkflows.isEnabled ? AssistantLayout : ProjectPage;
-
   return (
-    <Container>
-      <ConversationsContainer id={Identifier.CONVERSATIONS_PAGE} isFilteredResultsEmpty={!filteredReportsExist} isNewLayout={cmsWorkflows.isEnabled}>
-        <LoadingGate internalName={Conversations.name} isLoaded={isLoaded} load={loadTranscripts} loader={<TabLoader variant="dark" />}>
+    <AssistantLayout>
+      <ConversationsContainer
+        id={Identifier.CONVERSATIONS_PAGE}
+        isNewLayout
+        isFilteredResultsEmpty={!filteredReportsExist}
+      >
+        <LoadingGate
+          internalName={Conversations.name}
+          isLoaded={isLoaded}
+          load={loadTranscripts}
+          loader={<TabLoader variant="dark" />}
+        >
           {!noTestRuns ? (
             <>
-              <TranscriptManager tags={tags} range={range} endDate={endDate} startDate={startDate} personas={personas} />
+              <TranscriptManager
+                tags={tags}
+                range={range}
+                endDate={endDate}
+                startDate={startDate}
+                personas={personas}
+              />
 
               {allTranscripts.length ? (
                 <>
@@ -132,15 +145,15 @@ const Conversations: React.FC = () => {
           ) : (
             <EmptyScreen
               id={Identifier.EMPTY_TRANSCRIPTS_CONTAINER}
-              body="Review conversations from your assistant. Save tests or share a prototype to generate reviewable conversations."
+              body="Review conversations from your agent. Save tests or share a prototype to generate reviewable conversations."
               title="No transcripts exist"
-              buttonText="Test Assistant"
+              buttonText="Test Agent"
               onClick={goToPrototype}
             />
           )}
         </LoadingGate>
       </ConversationsContainer>
-    </Container>
+    </AssistantLayout>
   );
 };
 

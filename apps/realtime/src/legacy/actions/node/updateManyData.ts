@@ -7,7 +7,10 @@ import { AbstractVersionDiagramAccessActionControl } from '@/legacy/actions/diag
 class UpdateManyNodeData extends AbstractVersionDiagramAccessActionControl<Realtime.node.UpdateManyDataPayload> {
   actionCreator = Realtime.node.updateDataMany;
 
-  protected process = async (_ctx: Context, { payload }: Action<Realtime.node.UpdateManyDataPayload>): Promise<void> => {
+  protected process = async (
+    _ctx: Context,
+    { payload }: Action<Realtime.node.UpdateManyDataPayload>
+  ): Promise<void> => {
     const nodes = payload.nodes.map((nodeData) => ({
       nodeID: nodeData.nodeID,
       ...Realtime.Adapters.nodeDataAdapter.toDB(nodeData, {
@@ -23,7 +26,6 @@ class UpdateManyNodeData extends AbstractVersionDiagramAccessActionControl<Realt
   protected finally = async (ctx: Context, { payload }: Action<Realtime.node.UpdateManyDataPayload>): Promise<void> => {
     await Promise.all([
       this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID),
-      this.services.domain.setUpdatedBy(payload.versionID, payload.domainID, ctx.data.creatorID),
       this.setCMSUpdatedBy(ctx, payload),
     ]);
   };

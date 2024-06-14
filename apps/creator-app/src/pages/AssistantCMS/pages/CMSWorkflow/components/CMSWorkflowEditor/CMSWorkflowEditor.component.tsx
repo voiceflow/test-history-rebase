@@ -31,7 +31,7 @@ import { workflowManagerContainer } from './CMSWorkflowEditor.css';
 export const CMSWorkflowEditor: React.FC = () => {
   const editorRef = useRef<IEditorAPI>(null);
 
-  const members = useSelector(Workspace.active.normalizedMembersSelector);
+  const members = useSelector(Workspace.active.members.membersListSelector);
   const getOneByID = useGetValueSelector(Designer.Workflow.selectors.oneByID);
   const workflowID = useCMSActiveResourceID();
 
@@ -70,7 +70,7 @@ export const CMSWorkflowEditor: React.FC = () => {
       members.map((member) => ({
         id: member.creator_id,
         name: member.name,
-        avatar: isMemberColorImage(member.image) ? undefined : member.image,
+        avatar: !member.image || isMemberColorImage(member.image) ? undefined : member.image,
         variant: getMemberColorByCreatorID(member.creator_id, 'light'),
       })),
     [members]

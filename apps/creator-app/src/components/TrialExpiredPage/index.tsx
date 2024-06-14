@@ -1,4 +1,4 @@
-import { UserRole } from '@voiceflow/internal';
+import { UserRole } from '@voiceflow/dtos';
 import { Box, Button, ButtonVariant, Spinner, SvgIcon, Text, toast } from '@voiceflow/ui';
 import React from 'react';
 
@@ -11,11 +11,11 @@ import { useTrackingEvents } from '@/hooks/tracking';
 
 import * as S from './styles';
 
-const UPDATE_SUBSCRIPTION_ROLES = new Set([UserRole.ADMIN, UserRole.OWNER, UserRole.BILLING]);
+const UPDATE_SUBSCRIPTION_ROLES = new Set<UserRole>([UserRole.ADMIN, UserRole.BILLING]);
 
 const TrialExpiredPage: React.FC = () => {
   const workspace = useActiveWorkspace();
-  const userRole = useSelector(WorkspaceV2.active.userRoleSelector);
+  const userRole = useSelector(WorkspaceV2.active.members.userRoleSelector);
   const organization = useSelector(Organization.organizationSelector);
   const paymentModal = useCheckoutPaymentModal();
   const [trackEvents] = useTrackingEvents();
@@ -74,7 +74,9 @@ const TrialExpiredPage: React.FC = () => {
                 </S.SvgShadow>
                 <Text fontWeight={600}>Your 14-day Pro trial has expired</Text>
                 <Box mt="8px" mb="20px" textAlign="center">
-                  <Text color="#132144">Upgrade to Pro, or downgrade to Free to regain full access to your workspace.</Text>
+                  <Text color="#132144">
+                    Upgrade to Pro, or downgrade to Free to regain full access to your workspace.
+                  </Text>
                 </Box>
                 {canUpgradeWorkspace ? (
                   <S.ButtonsContainer>
@@ -100,7 +102,12 @@ const TrialExpiredPage: React.FC = () => {
                     </Button>
                   </S.ButtonsContainer>
                 ) : (
-                  <Button variant={ButtonVariant.PRIMARY} onClick={notifyAdmins} disabled={notifyAdminButtonDisabled} fullWidth>
+                  <Button
+                    variant={ButtonVariant.PRIMARY}
+                    onClick={notifyAdmins}
+                    disabled={notifyAdminButtonDisabled}
+                    fullWidth
+                  >
                     Notify workspace admins
                   </Button>
                 )}

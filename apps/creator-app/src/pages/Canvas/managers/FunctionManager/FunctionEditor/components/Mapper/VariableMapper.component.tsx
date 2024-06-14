@@ -5,10 +5,10 @@ import { focusModifier, mapperModifier } from '../../Function.css';
 import { ItemWithDescriptionTooltip } from './ItemWithDescriptionTooltip.component';
 
 interface IVariableMapper {
-  rightHandInput: React.ReactNode;
-  leftHandInput: React.ReactNode;
-  description?: string;
   isError?: boolean;
+  description: string | null;
+  leftHandInput: React.ReactNode;
+  rightHandInput: React.ReactNode;
 }
 
 export const VariableMapper: React.FC<IVariableMapper> = ({ leftHandInput, rightHandInput, description, isError }) => {
@@ -18,12 +18,18 @@ export const VariableMapper: React.FC<IVariableMapper> = ({ leftHandInput, right
         <Mapper
           equalityIcon="arrow"
           leftHandSide={
-            <ItemWithDescriptionTooltip description={description} modifiers={[{ name: 'offset', options: { offset: [-6, 28] } }]}>
+            <ItemWithDescriptionTooltip
+              description={description}
+              modifiers={[{ name: 'offset', options: { offset: [-6, 28] } }]}
+            >
               {leftHandInput}
             </ItemWithDescriptionTooltip>
           }
           rightHandSide={
-            <ItemWithDescriptionTooltip description={description} modifiers={[{ name: 'offset', options: { offset: [-6, 12] } }]}>
+            <ItemWithDescriptionTooltip
+              description={description}
+              modifiers={[{ name: 'offset', options: { offset: [-6, 12] } }]}
+            >
               {rightHandInput}
             </ItemWithDescriptionTooltip>
           }

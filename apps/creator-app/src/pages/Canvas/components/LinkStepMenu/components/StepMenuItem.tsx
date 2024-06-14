@@ -7,13 +7,12 @@ import StepSubMenu from './StepSubMenu';
 
 interface StepMenuItemProps {
   item: TopStepItem;
-  upgradePopperRef?: React.Ref<HTMLDivElement>;
   popperContainerRef?: React.Ref<HTMLDivElement>;
 }
 
-const StepMenuItem: React.FC<StepMenuItemProps> = ({ item, popperContainerRef, upgradePopperRef }) => (
+const StepMenuItem: React.FC<StepMenuItemProps> = ({ item, popperContainerRef }) => (
   <MenuItem icon={item.smallIcon ?? item.icon} label={item.label}>
-    {!!item.steps.length && <StepSubMenu ref={popperContainerRef} items={item.steps} upgradePopperRef={upgradePopperRef} />}
+    {!!item.steps.length && <StepSubMenu ref={popperContainerRef} items={item.steps} />}
   </MenuItem>
 );
 

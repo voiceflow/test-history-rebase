@@ -20,11 +20,19 @@ export const EntityMenuEmpty: React.FC<IEntityMenuEmpty> = ({ width, onCreated }
   };
 
   return (
-    <Surface px={24} pt={24} pb={8} width={width ? `${width}px` : undefined} justify="center" minWidth={0}>
+    <Surface
+      px={24}
+      pt={24}
+      pb={8}
+      width={width ? `${width}px` : undefined}
+      justify="center"
+      minWidth="fit-content"
+      className="vfui"
+    >
       <EmptyPage
         title="No entities exist"
         button={{ label: 'Create entity', onClick: onCreate }}
-        description="Entities help your assistant know which data to pluck out from the users response. "
+        description="Entities help your agent know which data to pluck out from the users response. "
         illustration="NoContent"
         learnMoreLink={CMS_ENTITY_LEARN_MORE}
       />

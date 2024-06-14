@@ -1,4 +1,4 @@
-import { UserRole } from '@voiceflow/internal';
+import { UserRole } from '@voiceflow/dtos';
 import { Box, Button, Input, Members, Modal, OverflowText, System, toast } from '@voiceflow/ui';
 import React from 'react';
 
@@ -16,7 +16,7 @@ import { useDedupeInvites, useInviteLink } from '../hooks';
 
 const DoubleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, animated }) => {
   const numberOfSeats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);
-  const usedEditorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);
+  const usedEditorSeats = useSelector(WorkspaceV2.active.members.usedEditorSeatsSelector);
   const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
 
   const sendInvite = useDispatch(WorkspaceV2.sendInviteToActiveWorkspace);
@@ -70,7 +70,12 @@ const DoubleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, a
         <Modal.Header
           actions={
             <System.IconButtonsGroup.Base>
-              <System.IconButton.Base icon="arrowSpin" onClick={inviteLink.onRefetch} disabled={!inviteLink} iconProps={{ spin: !inviteLink }} />
+              <System.IconButton.Base
+                icon="arrowSpin"
+                onClick={inviteLink.onRefetch}
+                disabled={!inviteLink}
+                iconProps={{ spin: !inviteLink }}
+              />
             </System.IconButtonsGroup.Base>
           }
         >

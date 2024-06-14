@@ -9,11 +9,12 @@ import * as CustomBlocks from '@/ducks/customBlock';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { usePermission, useSelector } from '@/hooks';
 import { LinkStepMenuContext, ManagerContext } from '@/pages/Canvas/contexts';
-import { AI_LABEL, EVENT_LABEL, getAllSections, LibraryStepType } from '@/pages/Project/components/StepMenu/constants';
+import { AI_LABEL, getAllSections, LibraryStepType } from '@/pages/Project/components/StepMenu/constants';
 
 import { ActionsMenuItem, StepMenuItem, TemplateMenuItem } from './components';
 
-const getPopperOffset = ({ placement }: { placement: string }): [number, number] => (placement === 'right-end' ? [0, 14] : [-5, 14]);
+const getPopperOffset = ({ placement }: { placement: string }): [number, number] =>
+  placement === 'right-end' ? [0, 14] : [-5, 14];
 
 const LinkStepMenu: React.FC = () => {
   const getManager = React.useContext(ManagerContext)!;
@@ -26,7 +27,6 @@ const LinkStepMenu: React.FC = () => {
     placement: 'right-start',
     modifiers: [{ name: 'offset', options: { offset: getPopperOffset } }],
   });
-  const upgradePopperRef = React.useRef<HTMLDivElement>(null);
   const popperContainerRef = React.useRef<HTMLUListElement>(null);
   const subMenuContainerRef = React.useRef<HTMLDivElement>(null);
 
@@ -35,7 +35,7 @@ const LinkStepMenu: React.FC = () => {
   const sourceNode = useSelector(CreatorV2.nodeByPortIDSelector, { id: linkStepMenuAPI.sourcePortID });
   const projectType = useSelector(ProjectV2.active.projectTypeSelector);
   const customBlocks = useSelector(CustomBlocks.allCustomBlocksSelector);
-  const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
+  const [canEditCanvas] = usePermission(Permission.PROJECT_CANVAS_UPDATE);
 
   const aiPlaygroundEnabled = useProjectAIPlayground();
 
@@ -45,8 +45,8 @@ const LinkStepMenu: React.FC = () => {
         [LibraryStepType.CUSTOM_BLOCK]: customBlocks,
         [LibraryStepType.BLOCK_TEMPLATES]: templates,
       }).filter((step) => {
-        if (step.label === EVENT_LABEL) return false;
         if (!aiPlaygroundEnabled && step.label === AI_LABEL) return false;
+        // eslint-disable-next-line sonarjs/prefer-single-boolean-return
         if (step.isLibrary && !step.librarySections.templates.length) return false;
         return true;
       }),
@@ -58,7 +58,6 @@ const LinkStepMenu: React.FC = () => {
     (event: MouseEvent | TouchEvent) => {
       if (
         !subMenuContainerRef.current?.contains(event.target as Node) &&
-        !upgradePopperRef.current?.contains(event.target as Node) &&
         event instanceof MouseEvent &&
         event.clientX !== linkStepMenuAPI.position[0] &&
         event.clientY !== linkStepMenuAPI.position[1]
@@ -80,7 +79,7 @@ const LinkStepMenu: React.FC = () => {
               step.isLibrary ? (
                 <TemplateMenuItem key={step.label} item={step} popperContainerRef={subMenuContainerRef} />
               ) : (
-                <StepMenuItem key={step.label} item={step} upgradePopperRef={upgradePopperRef} popperContainerRef={subMenuContainerRef} />
+                <StepMenuItem key={step.label} item={step} popperContainerRef={subMenuContainerRef} />
               )
             )}
 

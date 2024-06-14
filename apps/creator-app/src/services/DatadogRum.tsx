@@ -20,7 +20,6 @@ const usePropertyTracking = (propertyName: string, propertySelector: (state: any
 };
 
 const DatadogRum: React.FC = () => {
-  usePropertyTracking('domain_id', Session.activeDomainIDSelector);
   usePropertyTracking('project_id', Session.activeProjectIDSelector);
   usePropertyTracking('version_id', Session.activeVersionIDSelector);
   usePropertyTracking('diagram_id', Session.activeDiagramIDSelector);

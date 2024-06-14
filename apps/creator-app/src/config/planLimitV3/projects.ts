@@ -7,15 +7,15 @@ import { getUpgradeModalProps } from '@/utils/upgrade';
 import { LimitV3, UpgradeModalEntitlementLimit } from './types';
 
 const DEFAULT_MODAL = {
-  title: 'Need more assistants?',
-  header: 'New Assistant',
+  title: 'Need more agents?',
+  header: 'New Agent',
 };
 
 const STARTER_LIMIT = {
   upgradeModal: ({ limit }) => ({
     ...DEFAULT_MODAL,
     ...getUpgradeModalProps(PlanType.PRO, Tracking.UpgradePrompt.PROJECT_LIMIT),
-    description: `You've reached your ${limit} free assistant limit. Upgrade to pro to increase assistant limits.`,
+    description: `You've reached your ${limit} free agent limit. Upgrade to pro to increase agent limits.`,
   }),
 } satisfies UpgradeModalEntitlementLimit;
 
@@ -23,8 +23,8 @@ const PRO_LIMIT = {
   upgradeModal: ({ limit, teamsPlanSelfServeIsEnabled }) => ({
     ...DEFAULT_MODAL,
     ...getUpgradeModalProps(PlanType.TEAM, Tracking.UpgradePrompt.PROJECT_LIMIT),
-    description: `You've reached your ${limit} assistant limit. ${
-      teamsPlanSelfServeIsEnabled ? 'Upgrade to teams to increase assistant limits.' : 'Contact us to increase assistant limits.'
+    description: `You've reached your ${limit} agent limit. ${
+      teamsPlanSelfServeIsEnabled ? 'Upgrade to teams to increase agent limits.' : 'Contact us to increase agent limits.'
     }`,
   }),
 } satisfies UpgradeModalEntitlementLimit;
@@ -33,7 +33,7 @@ const TEAMS_LIMIT = {
   upgradeModal: ({ limit }) => ({
     ...DEFAULT_MODAL,
     ...getUpgradeModalProps(PlanType.ENTERPRISE, Tracking.UpgradePrompt.PROJECT_LIMIT),
-    description: `You've reached your ${limit} assistant limit. Contact us to increase assistant limits.`,
+    description: `You've reached your ${limit} agent limit. Contact us to increase agent limits.`,
   }),
 } satisfies UpgradeModalEntitlementLimit;
 

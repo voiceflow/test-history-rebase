@@ -118,33 +118,40 @@ export abstract class MongoORM<BaseEntity extends MongoPKEntity, DiscriminatorEn
   }
 
   find(where: WhereData<BaseEntity>): Promise<ToObject<DiscriminatorEntity>[]>;
+
   find<Field extends keyof ToObject<DiscriminatorEntity>>(
     where: WhereData<BaseEntity>,
     options: { fields: Field[] }
   ): Promise<Pick<ToObject<DiscriminatorEntity>, Field>[]>;
+
   find(where: WhereData<BaseEntity>, { fields }: { fields?: string[] } = {}) {
     return this.collection.find(this.buildWhere(where), { projection: this.projection(fields) }).toArray() as any;
   }
 
   findOne(id: Primary<BaseEntity>): Promise<ToObject<DiscriminatorEntity> | null>;
+
   findOne<Field extends keyof ToObject<DiscriminatorEntity>>(
     id: Primary<BaseEntity>,
     options: { fields: Field[] }
   ): Promise<Pick<ToObject<DiscriminatorEntity>, Field> | null>;
+
   findOne(id: Primary<BaseEntity>, { fields }: { fields?: string[] } = {}) {
     return this.collection.findOne(this.idToFilter(id), { projection: this.projection(fields) }) as any;
   }
 
   findMany(ids: Primary<BaseEntity>[]): Promise<ToObject<DiscriminatorEntity>[]>;
+
   findMany<Field extends keyof ToObject<DiscriminatorEntity>>(
     ids: Primary<BaseEntity>[],
     options: { fields: Field[] }
   ): Promise<Pick<ToObject<DiscriminatorEntity>, Field>[]>;
+
   findMany(ids: Primary<BaseEntity>[], { fields }: { fields?: string[] } = {}) {
     return this.collection.find(this.idsToFilter(ids), { projection: this.projection(fields) }).toArray() as any;
   }
 
   findOneOrFail(id: Primary<BaseEntity>): Promise<ToObject<DiscriminatorEntity>>;
+
   findOneOrFail<Field extends keyof ToObject<DiscriminatorEntity>>(
     id: Primary<BaseEntity>,
     options: { fields: Field[] }

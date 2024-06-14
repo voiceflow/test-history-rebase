@@ -1,5 +1,4 @@
 import { Nullish } from '@voiceflow/common';
-import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { COLOR_PICKER_CONSTANTS } from '@voiceflow/ui';
 import React from 'react';
 
@@ -23,7 +22,6 @@ export enum CanvasAction {
   DELETE_BLOCK = 'delete_block',
   COLOR_BLOCK = 'color_block',
   SAVE_TO_LIBRARY = 'save_to_library',
-  CREATE_SUB_TOPIC = 'create_sub_topic',
   CREATE_COMPONENT = 'create_component',
   RETURN_TO_HOME = 'return_to_home',
   ZOOM_IN = 'zoom_in',
@@ -38,6 +36,11 @@ export enum CanvasAction {
 }
 
 export const CANVAS_OPTIONS: ContextMenuOption<CanvasAction>[] = [
+  {
+    label: 'Add Trigger',
+    value: CanvasAction.ADD_TRIGGER,
+    shouldRender: (_, { engine, canEditCanvas }) => canEditCanvas && engine.isTopic(),
+  },
   {
     label: 'Paste',
     value: CanvasAction.PASTE,
@@ -69,11 +72,6 @@ export const CANVAS_OPTIONS: ContextMenuOption<CanvasAction>[] = [
     shouldRender: (_, { showHintFeatures }) => showHintFeatures,
   },
   {
-    label: 'Add Trigger',
-    value: CanvasAction.ADD_TRIGGER,
-    shouldRender: (_, { engine, canEditCanvas }) => canEditCanvas && engine.isTopic() && engine.isFeatureEnabled(FeatureFlag.TRIGGER_STEP),
-  },
-  {
     label: 'Divider 2',
     value: CanvasAction.DIVIDER,
     menuItemProps: { divider: true },
@@ -94,12 +92,6 @@ export const CANVAS_OPTIONS: ContextMenuOption<CanvasAction>[] = [
     label: 'Zoom Out',
     value: CanvasAction.ZOOM_OUT,
     hotkey: HOTKEY_LABEL_MAP[Hotkey.ZOOM_OUT],
-  },
-  {
-    label: 'Hide/Show UI',
-    value: CanvasAction.TOGGLE_UI,
-    hotkey: HOTKEY_LABEL_MAP[Hotkey.CANVAS_SHOW_HIDE_UI],
-    shouldRender: (_, { engine }) => !engine.isFeatureEnabled(FeatureFlag.CMS_WORKFLOWS),
   },
 ];
 
@@ -131,12 +123,18 @@ export const BLOCK_OPTIONS: ContextMenuOption<CanvasAction>[] = [
     render: ({ target: nodeID }, { engine }) => {
       const node = engine.getNodeByID(nodeID);
       const isChip = isChipNode(engine.getNodeByID(node?.combinedNodes[0]), node);
-      const defaultColorScheme = isChip ? COLOR_PICKER_CONSTANTS.ColorScheme.DARK : COLOR_PICKER_CONSTANTS.ColorScheme.LIGHT;
-      const standardColor = isChip ? COLOR_PICKER_CONSTANTS.CHIP_STANDARD_COLOR : COLOR_PICKER_CONSTANTS.BLOCK_STANDARD_COLOR;
+      const defaultColorScheme = isChip
+        ? COLOR_PICKER_CONSTANTS.ColorScheme.DARK
+        : COLOR_PICKER_CONSTANTS.ColorScheme.LIGHT;
+      const standardColor = isChip
+        ? COLOR_PICKER_CONSTANTS.CHIP_STANDARD_COLOR
+        : COLOR_PICKER_CONSTANTS.BLOCK_STANDARD_COLOR;
 
       return (
         <ContextColorPicker
-          defaultColorScheme={node?.type === BlockType.START ? COLOR_PICKER_CONSTANTS.ColorScheme.BLACK : defaultColorScheme}
+          defaultColorScheme={
+            node?.type === BlockType.START ? COLOR_PICKER_CONSTANTS.ColorScheme.BLACK : defaultColorScheme
+          }
           standardColor={standardColor}
         />
       );
@@ -161,7 +159,9 @@ export const BLOCK_OPTIONS: ContextMenuOption<CanvasAction>[] = [
     value: CanvasAction.DIVIDER,
     menuItemProps: { divider: true },
     shouldRender: ({ target: nodeID }, { engine, showHintFeatures }) =>
-      (showHintFeatures && !isMarkup(nodeID, engine)) || isBlock(nodeID, engine) || engine.isNodeOfType(nodeID, BLOCKS_WITH_RENAME),
+      (showHintFeatures && !isMarkup(nodeID, engine)) ||
+      isBlock(nodeID, engine) ||
+      engine.isNodeOfType(nodeID, BLOCKS_WITH_RENAME),
   },
   {
     label: 'Rename',
@@ -226,17 +226,8 @@ export const SELECTION_OPTIONS: ContextMenuOption<CanvasAction>[] = [
     label: 'Create component',
     value: CanvasAction.CREATE_COMPONENT,
     hotkey: HOTKEY_LABEL_MAP[Hotkey.CREATE_COMPONENT],
-    shouldRender: (_, { engine }) => engine.selection.getTargets(EntityType.NODE).some((nodeID) => engine.isNodeOfType(nodeID, BlockType.COMBINED)),
-  },
-  {
-    label: 'Create sub topic',
-    value: CanvasAction.CREATE_SUB_TOPIC,
-    hotkey: HOTKEY_LABEL_MAP[Hotkey.CREATE_SUBTOPIC],
     shouldRender: (_, { engine }) =>
-      engine.selection.getTargets(EntityType.NODE).some((nodeID) => engine.isNodeOfType(nodeID, BlockType.COMBINED)) &&
-      engine.isTopic() &&
-      !engine.isSubtopic() &&
-      !engine.isFeatureEnabled(FeatureFlag.CMS_WORKFLOWS),
+      engine.selection.getTargets(EntityType.NODE).some((nodeID) => engine.isNodeOfType(nodeID, BlockType.COMBINED)),
   },
   {
     label: 'Divider 2',

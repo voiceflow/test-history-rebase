@@ -1,7 +1,6 @@
 export * from './canvas';
 export * from './conversations';
 export * from './customBlock';
-export * from './domain';
 export * from './export';
 export * from './gpt';
 export * from './invitation';

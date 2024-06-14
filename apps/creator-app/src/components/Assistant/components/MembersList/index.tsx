@@ -1,4 +1,4 @@
-import { UserRole } from '@voiceflow/internal';
+import { UserRole } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Avatar, Members, TippyTooltip } from '@voiceflow/ui';
 import pluralize from 'pluralize';
@@ -27,11 +27,11 @@ const ROLES = [UserRole.EDITOR, UserRole.VIEWER] satisfies UserRole[];
 const MembersList: React.FC<MembersListProps> = ({ members, onRemove, onChangeRole }) => {
   const userID = useSelector(Account.userIDSelector);
   const workspace = useSelector(WorkspaceV2.active.workspaceSelector);
-  const allMembersCount = useSelector(WorkspaceV2.active.allNormalizedMembersCountSelector);
-  const getWorkspaceMemberByID = useSelector(WorkspaceV2.active.getMemberByIDSelector);
+  const allMembersCount = useSelector(WorkspaceV2.active.members.allMembersCountSelector);
+  const getWorkspaceMemberByID = useSelector(WorkspaceV2.active.members.getMemberByIDSelector);
   const getOrganizationMemberByID = useSelector(Organization.getMemberByIDSelector);
 
-  const [canEditRole] = usePermission(Permission.ADD_COLLABORATORS);
+  const [canEditRole] = usePermission(Permission.WORKSPACE_MEMBER_ADD);
 
   const membersMetaMap = React.useMemo(
     () =>
@@ -92,7 +92,7 @@ const MembersList: React.FC<MembersListProps> = ({ members, onRemove, onChangeRo
               membersMetaMap[member.creator_id]?.rolesConflict ? (
                 <Members.RowWarningTooltip width={232} placement="bottom">
                   <TippyTooltip.Multiline>
-                    This member can still edit this assistant as they have edit access at the workspace level.
+                    This member can still edit this agent as they have edit access at the workspace level.
                   </TippyTooltip.Multiline>
                 </Members.RowWarningTooltip>
               ) : null

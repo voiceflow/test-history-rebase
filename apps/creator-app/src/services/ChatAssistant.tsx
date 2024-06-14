@@ -1,4 +1,4 @@
-import { UserRole } from '@voiceflow/internal';
+import { UserRole } from '@voiceflow/dtos';
 import React from 'react';
 
 import { CLOUD_ENV } from '@/config';
@@ -10,7 +10,7 @@ import VoiceflowAssistant from '@/vendors/voiceflowAssistant';
 
 const ChatAssistant: React.FC = () => {
   const user = useSelector(Account.userSelector);
-  const userRole = useSelector(WorkspaceV2.active.userRoleSelector);
+  const userRole = useSelector(WorkspaceV2.active.members.userRoleSelector);
   const activeProject = useSelector(ProjectV2.active.projectSelector);
   const activeWorkspace = useSelector(WorkspaceV2.active.workspaceSelector);
   const isLoggedIn = useSelector(Account.isLoggedInSelector);

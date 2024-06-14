@@ -9,7 +9,7 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import { useDispatch, useSelector, useTrackingEvents } from '@/hooks';
 import { useSimulatedProgress } from '@/hooks/job';
 import * as ModalsV2 from '@/ModalsV2';
-import PublishButton from '@/pages/Project/components/Header/components/CanvasHeader/components/Upload/components/PublishButton';
+import PublishButton from '@/pages/Project/components/Upload/components/PublishButton';
 
 import { useWebchatStageContent } from './stages';
 
@@ -30,7 +30,7 @@ const Webchat: React.FC = () => {
         message: (
           <>
             Publish this version to production and use it with your <System.Link.Anchor href={WEBCHAT_LEARN_MORE}>Web Chat</System.Link.Anchor>.
-            Publishing activates your Assistant wherever the widget is installed.
+            Publishing activates your agent wherever the widget is installed.
           </>
         ),
       });

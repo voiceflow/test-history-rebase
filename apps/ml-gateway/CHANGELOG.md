@@ -3,6 +3,118 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.100.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.100.6...@voiceflow/ml-gateway@1.100.7) (2024-06-12)
+
+**Note:** Version bump only for package @voiceflow/ml-gateway
+
+## [1.100.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.100.5...@voiceflow/ml-gateway@1.100.6) (2024-06-12)
+
+**Note:** Version bump only for package @voiceflow/ml-gateway
+
+## [1.100.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.100.4...@voiceflow/ml-gateway@1.100.5) (2024-06-12)
+
+**Note:** Version bump only for package @voiceflow/ml-gateway
+
+## [1.100.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.100.3...@voiceflow/ml-gateway@1.100.4) (2024-06-12)
+
+**Note:** Version bump only for package @voiceflow/ml-gateway
+
+## [1.100.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.100.2...@voiceflow/ml-gateway@1.100.3) (2024-06-11)
+
+**Note:** Version bump only for package @voiceflow/ml-gateway
+
+## [1.100.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.100.1...@voiceflow/ml-gateway@1.100.2) (2024-06-11)
+
+**Note:** Version bump only for package @voiceflow/ml-gateway
+
+## [1.100.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.100.0...@voiceflow/ml-gateway@1.100.1) (2024-06-10)
+
+**Note:** Version bump only for package @voiceflow/ml-gateway
+
+# [1.100.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.99.8...@voiceflow/ml-gateway@1.100.0) (2024-06-10)
+
+### Features
+
+* read from local only if we are using telepresence ([#8256](https://github.com/voiceflow/creator-app/issues/8256)) ([75babbe](https://github.com/voiceflow/creator-app/commit/75babbe628bcd5929dd644c97de13c98f08b963b))
+
+## [1.99.8](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.99.7...@voiceflow/ml-gateway@1.99.8) (2024-06-07)
+
+**Note:** Version bump only for package @voiceflow/ml-gateway
+
+## [1.99.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.99.6...@voiceflow/ml-gateway@1.99.7) (2024-06-07)
+
+### Bug Fixes
+
+* retry integrate org members (COR-2143) ([#8183](https://github.com/voiceflow/creator-app/issues/8183)) ([2b5e0b4](https://github.com/voiceflow/creator-app/commit/2b5e0b4882240a03e64e5f9940cb76d26bf261da))
+
+## [1.99.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.99.5...@voiceflow/ml-gateway@1.99.6) (2024-06-06)
+
+**Note:** Version bump only for package @voiceflow/ml-gateway
+
+## [1.99.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.99.4...@voiceflow/ml-gateway@1.99.5) (2024-06-05)
+
+### Bug Fixes
+
+* bump versions ([#8232](https://github.com/voiceflow/creator-app/issues/8232)) ([5a27869](https://github.com/voiceflow/creator-app/commit/5a27869e7b8d9cc0be3cf1a58935c1d02208f0db))
+
+## [1.99.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.99.3...@voiceflow/ml-gateway@1.99.4) (2024-06-05)
+
+**Note:** Version bump only for package @voiceflow/ml-gateway
+
+## [1.99.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.99.2...@voiceflow/ml-gateway@1.99.3) (2024-06-05)
+
+### Bug Fixes
+
+* update the regex ([011cddb](https://github.com/voiceflow/creator-app/commit/011cddb7e8d19f127045e845a0cc0ae8b211e62e))
+
+## [1.99.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.99.1...@voiceflow/ml-gateway@1.99.2) (2024-06-05)
+
+### Bug Fixes
+
+* update the port to 3000 ([#8231](https://github.com/voiceflow/creator-app/issues/8231)) ([a0695d3](https://github.com/voiceflow/creator-app/commit/a0695d36cb257e70669f17dfe8ce76f7601bc7cc))
+
+## [1.99.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.99.0...@voiceflow/ml-gateway@1.99.1) (2024-06-04)
+
+**Note:** Version bump only for package @voiceflow/ml-gateway
+
+# [1.99.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.98.5...@voiceflow/ml-gateway@1.99.0) (2024-06-04)
+
+### Features
+
+* reset the term when upgrading from pro-trial or starter [bugfix] (COR-000) ([#8220](https://github.com/voiceflow/creator-app/issues/8220)) ([973c965](https://github.com/voiceflow/creator-app/commit/973c96523a4ea0488d2a020c83876d4cdaf7b8f6))
+
+## [1.98.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.98.4...@voiceflow/ml-gateway@1.98.5) (2024-06-04)
+
+**Note:** Version bump only for package @voiceflow/ml-gateway
+
+## [1.98.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.98.3...@voiceflow/ml-gateway@1.98.4) (2024-06-03)
+
+### Bug Fixes
+
+* **ml-gateway:** correctly add token usage (PL-1092) [bugfix] ([#8212](https://github.com/voiceflow/creator-app/issues/8212)) ([12ef2b0](https://github.com/voiceflow/creator-app/commit/12ef2b08983b5a62222004ad56e4305f158d5203))
+
+## [1.98.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.98.2...@voiceflow/ml-gateway@1.98.3) (2024-06-03)
+
+**Note:** Version bump only for package @voiceflow/ml-gateway
+
+## [1.98.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.98.1...@voiceflow/ml-gateway@1.98.2) (2024-06-03)
+
+**Note:** Version bump only for package @voiceflow/ml-gateway
+
+## [1.98.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.98.0...@voiceflow/ml-gateway@1.98.1) (2024-05-31)
+
+**Note:** Version bump only for package @voiceflow/ml-gateway
+
+# [1.98.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.97.3...@voiceflow/ml-gateway@1.98.0) (2024-05-30)
+
+### Features
+
+* replace assistant with agent (COR-2207) ([#8196](https://github.com/voiceflow/creator-app/issues/8196)) ([ef9a50d](https://github.com/voiceflow/creator-app/commit/ef9a50d9216ac6d9d30671985f9e1c6f2fca20b7))
+
+## [1.97.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.97.2...@voiceflow/ml-gateway@1.97.3) (2024-05-29)
+
+**Note:** Version bump only for package @voiceflow/ml-gateway
+
 ## [1.97.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.97.1...@voiceflow/ml-gateway@1.97.2) (2024-05-27)
 
 **Note:** Version bump only for package @voiceflow/ml-gateway

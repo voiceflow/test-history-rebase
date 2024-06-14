@@ -28,7 +28,7 @@ export const useAIUsage = () => {
 
 export const useAIUsageTooltip = ({ onOpenModal }: { onOpenModal: VoidFunction }): TippyTooltipProps => {
   const chargebeeTokens = useFeature(Realtime.FeatureFlag.CHARGEBEE_TOKENS);
-  const [canConfigureWorkspaceBilling] = usePermission(Permission.CONFIGURE_WORKSPACE_BILLING);
+  const [canConfigureWorkspaceBilling] = usePermission(Permission.WORKSPACE_BILLING_MANAGE);
   const plan = useSelector(Workspace.active.planSelector);
   const isOnProTrial = useSelector(Workspace.active.isOnProTrialSelector);
   const isProWorkspace = useSelector(Workspace.active.isProSelector);
@@ -42,8 +42,10 @@ export const useAIUsageTooltip = ({ onOpenModal }: { onOpenModal: VoidFunction }
   // Conditionally show buttons. There is no collision between them and only one button is shown at a time.
   const showOldButton = !hasChargebeeTokensActive;
   const showUgradeButton = hasChargebeeTokensActive && (isOnProTrial || isStarterPlan(plan));
-  const showPurchaseButton = hasChargebeeTokensActive && isProWorkspace && canConfigureWorkspaceBilling && !showUgradeButton;
-  const showDisabledButton = hasChargebeeTokensActive && isProWorkspace && !canConfigureWorkspaceBilling && !showUgradeButton;
+  const showPurchaseButton =
+    hasChargebeeTokensActive && isProWorkspace && canConfigureWorkspaceBilling && !showUgradeButton;
+  const showDisabledButton =
+    hasChargebeeTokensActive && isProWorkspace && !canConfigureWorkspaceBilling && !showUgradeButton;
 
   React.useEffect(() => {
     let timer: number | null = null;
@@ -74,10 +76,16 @@ export const useAIUsageTooltip = ({ onOpenModal }: { onOpenModal: VoidFunction }
         <TippyTooltip.Title>Token Usage</TippyTooltip.Title>
 
         <Box>
-          {gptQuota.consumed.toLocaleString()} <Text color="#A2A7A8">/ {gptQuota.quota.toLocaleString()} tokens used.</Text>
+          {gptQuota.consumed.toLocaleString()}{' '}
+          <Text color="#A2A7A8">/ {gptQuota.quota.toLocaleString()} tokens used.</Text>
         </Box>
 
-        {showOldButton && <TippyTooltip.FooterButton buttonText="Request more tokens" onClick={() => openURLInANewTab(REQUEST_MORE_TOKENS_LINK)} />}
+        {showOldButton && (
+          <TippyTooltip.FooterButton
+            buttonText="Request more tokens"
+            onClick={() => openURLInANewTab(REQUEST_MORE_TOKENS_LINK)}
+          />
+        )}
 
         {showUgradeButton && (
           <TippyTooltip.FooterButton
@@ -96,7 +104,7 @@ export const useAIUsageTooltip = ({ onOpenModal }: { onOpenModal: VoidFunction }
       </Box>
     ) : (
       <TippyTooltip.FooterButton buttonText="Contact Sales" onClick={() => openURLInANewTab(BOOK_DEMO_LINK)}>
-        This workspace doesn’t have access to this assistant type. To enable access, contact a workspace owner or admin.
+        This workspace doesn’t have access to this agent type. To enable access, contact a workspace owner or admin.
       </TippyTooltip.FooterButton>
     ),
   };

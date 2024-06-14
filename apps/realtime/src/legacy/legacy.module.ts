@@ -8,11 +8,21 @@ import { ProjectListModule } from '@/project-list/project-list.module';
 import { ThreadModule } from '@/thread/thread.module';
 import { WorkflowModule } from '@/workflow/workflow.module';
 
+import { ReferenceModule } from '../reference/reference.module';
 import { IOServer } from './ioServer';
 import { LegacyService } from './legacy.service';
 
 @Module({
-  imports: [ProjectListModule, AssistantModule, ThreadModule, ProjectModule, OrganizationModule, FlowModule, WorkflowModule],
+  imports: [
+    ProjectListModule,
+    AssistantModule,
+    ThreadModule,
+    ProjectModule,
+    OrganizationModule,
+    FlowModule,
+    WorkflowModule,
+    ReferenceModule,
+  ],
   providers: [LegacyService, IOServer],
   exports: [LegacyService],
 })

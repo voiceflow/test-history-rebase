@@ -48,11 +48,9 @@ export class ReferenceNodeBuilderUtil extends ReferenceBaseBuilderUtil {
   }
 
   async build() {
-    const chunks = this.chunk(this.nodes);
-
-    for (const chunk of chunks) {
+    for (const node of this.nodes) {
       // eslint-disable-next-line no-await-in-loop
-      await this.buildChunk(chunk);
+      await this.buildNode(node);
     }
 
     return {
@@ -61,20 +59,16 @@ export class ReferenceNodeBuilderUtil extends ReferenceBaseBuilderUtil {
     };
   }
 
-  async buildChunk(chunk: DiagramNode[]) {
-    await Promise.all(
-      chunk.map(async (node) => {
-        if (Realtime.Utils.typeGuards.isIntentDBNode(node)) {
-          await this.buildIntentNodeReferences(node);
-        } else if (Realtime.Utils.typeGuards.isTriggerDBNode(node)) {
-          await this.buildTriggerNodeReferences(node);
-        } else if (Realtime.Utils.typeGuards.isStartDBNode(node)) {
-          await this.buildStartNodeReferences(node);
-        } else if (Realtime.Utils.typeGuards.isBlockDBNode(node)) {
-          await this.buildBlockNodeReferences(node as BlockNode);
-        }
-      })
-    );
+  async buildNode(node: DiagramNode) {
+    if (Realtime.Utils.typeGuards.isIntentDBNode(node)) {
+      await this.buildIntentNodeReferences(node);
+    } else if (Realtime.Utils.typeGuards.isTriggerDBNode(node)) {
+      await this.buildTriggerNodeReferences(node);
+    } else if (Realtime.Utils.typeGuards.isStartDBNode(node)) {
+      await this.buildStartNodeReferences(node);
+    } else if (Realtime.Utils.typeGuards.isBlockDBNode(node)) {
+      await this.buildBlockNodeReferences(node as BlockNode);
+    }
   }
 
   private async buildIntentNodeReferences(node: BaseNode.Intent.Step) {

@@ -1,6 +1,5 @@
 import { ObjectId } from '@mikro-orm/mongodb';
 import { Reference, ReferenceResource } from '@voiceflow/dtos';
-import _ from 'lodash';
 
 export abstract class ReferenceBaseBuilderUtil {
   protected readonly assistantID: string;
@@ -20,10 +19,6 @@ export abstract class ReferenceBaseBuilderUtil {
 
   protected genID() {
     return new ObjectId().toJSON();
-  }
-
-  protected chunk<T>(array: T[], size = 10) {
-    return _.chunk(array, size);
   }
 
   protected buildReference({ id = this.genID(), ...data }: Omit<Reference, 'id' | 'environmentID'> & { id?: string }) {

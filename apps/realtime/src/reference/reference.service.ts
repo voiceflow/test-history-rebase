@@ -1,14 +1,18 @@
 import { EntityManager } from '@mikro-orm/core';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable, Logger, Optional } from '@nestjs/common';
-import { Reference, ReferenceResource } from '@voiceflow/dtos';
-import { DatabaseTarget, ReferenceORM, ReferenceResourceORM } from '@voiceflow/orm-designer';
+import { DiagramNode, Reference, ReferenceResource, ReferenceResourceType } from '@voiceflow/dtos';
+import { NotFoundException } from '@voiceflow/exception';
+import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
+import { DatabaseTarget, ObjectId, ReferenceORM, ReferenceResourceORM } from '@voiceflow/orm-designer';
+import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { AssistantLoadCreatorResponse } from '@/assistant/dtos/assistant-load-creator.response';
 import { MutableService } from '@/common/mutable.service';
 
 import { ReferenceBuilderUtil } from './reference-builder.util';
 import { ReferenceCacheService } from './reference-cache.service';
+import { ReferenceNodeBuilderUtil } from './reference-node-builder.util';
 
 @Injectable()
 export class ReferenceService extends MutableService<ReferenceORM> {
@@ -22,6 +26,7 @@ export class ReferenceService extends MutableService<ReferenceORM> {
 
   mapFromJSON = this.orm.jsonAdapter.mapToDB;
 
+  // eslint-disable-next-line max-params
   constructor(
     @Inject(getEntityManagerToken(DatabaseTarget.POSTGRES))
     private readonly postgresEM: EntityManager,
@@ -29,10 +34,14 @@ export class ReferenceService extends MutableService<ReferenceORM> {
     protected readonly orm: ReferenceORM,
     @Inject(ReferenceResourceORM)
     protected readonly referenceResourceORM: ReferenceResourceORM,
+    @Inject(LoguxService)
+    protected readonly logux: LoguxService,
     @Inject(ReferenceCacheService)
     protected readonly referenceCache: ReferenceCacheService,
     @Optional()
-    protected readonly ReferenceBuilder: typeof ReferenceBuilderUtil = ReferenceBuilderUtil
+    protected readonly ReferenceBuilder: typeof ReferenceBuilderUtil = ReferenceBuilderUtil,
+    @Optional()
+    protected readonly ReferenceNodeBuilder: typeof ReferenceNodeBuilderUtil = ReferenceNodeBuilderUtil
   ) {
     super();
   }
@@ -54,7 +63,7 @@ export class ReferenceService extends MutableService<ReferenceORM> {
     await this.orm.deleteManyByEnvironment(environmentID);
   }
 
-  async createManyWithSubResourcesByEnvironment({
+  async createManyWithSubResources({
     references,
     referenceResources,
   }: {
@@ -98,7 +107,7 @@ export class ReferenceService extends MutableService<ReferenceORM> {
       await this.postgresEM.transactional(async () => {
         await this.deleteManyWithSubResourcesByEnvironment(environmentID);
 
-        await this.createManyWithSubResourcesByEnvironment({ references, referenceResources });
+        await this.createManyWithSubResources({ references, referenceResources });
       });
 
       // release the lock at the end
@@ -113,5 +122,89 @@ export class ReferenceService extends MutableService<ReferenceORM> {
 
       throw new Error('failed to build references');
     }
+  }
+
+  async addManyDiagramNodes({
+    nodes,
+    authMeta,
+    diagramID,
+    assistantID,
+    environmentID,
+  }: {
+    nodes: DiagramNode[];
+    authMeta: AuthMetaPayload;
+    diagramID: string;
+    assistantID: string;
+    environmentID: string;
+  }) {
+    const diagramResource = await this.referenceResourceORM.findOneByTypeDiagramIDAndResourceID({
+      type: ReferenceResourceType.DIAGRAM,
+      diagramID: null,
+      resourceID: diagramID,
+      environmentID,
+    });
+
+    if (!diagramResource) {
+      throw new NotFoundException('diagram resource not found');
+    }
+
+    const newReferences: Reference[] = [];
+    const newReferenceResources: ReferenceResource[] = [];
+    const intentReferenceResourceByIntentID: Partial<Record<string, ReferenceResource>> = {};
+
+    const nodeBuilder = new this.ReferenceNodeBuilder({
+      nodes,
+      diagramID,
+      assistantID,
+      environmentID,
+      diagramResourceID: diagramResource.id,
+
+      getIntentResource: async (intentID: string) => {
+        let intentResource = intentReferenceResourceByIntentID[intentID] ?? null;
+
+        if (!intentResource) {
+          intentResource = await this.referenceResourceORM.findOneByTypeDiagramIDAndResourceID({
+            type: ReferenceResourceType.INTENT,
+            diagramID: null,
+            resourceID: intentID,
+            environmentID,
+          });
+        }
+
+        if (!intentResource) {
+          intentResource = {
+            id: new ObjectId().toJSON(),
+            type: ReferenceResourceType.INTENT,
+            metadata: null,
+            diagramID: null,
+            resourceID: intentID,
+            assistantID,
+            environmentID,
+          };
+
+          newReferenceResources.push(intentResource);
+          intentReferenceResourceByIntentID[intentID] = intentResource;
+        }
+
+        return intentResource;
+      },
+    });
+
+    const result = await nodeBuilder.build();
+
+    newReferences.push(...result.references);
+    newReferenceResources.push(...result.referenceResources);
+
+    await this.postgresEM.transactional(() =>
+      this.createManyWithSubResources({ references: newReferences, referenceResources: newReferenceResources })
+    );
+
+    await this.logux.processAs(
+      Actions.Reference.AddMany({
+        data: { references: newReferences, referenceResources: newReferenceResources },
+        context: { assistantID, environmentID },
+      }),
+      authMeta
+    );
   }
 }

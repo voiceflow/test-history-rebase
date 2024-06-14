@@ -64,7 +64,7 @@ workflows:
             #     value-env-var: COMMON_ORB_VERSION
             - vfcommon/set-json-string:
                 field: common_orb_version
-                value: dev:44e9bc0a51c9f29ace993d659309d435f1cbbb9e
+                value: dev:3a534b445d90bb0e8e0941233f685f532faecd19
             - run: cat values.json
           contexts: values.json
           filters:

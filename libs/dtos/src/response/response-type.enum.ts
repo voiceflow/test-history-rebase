@@ -1,3 +1,5 @@
+import { Enum } from '@/utils/type/enum.util';
+
 export const ResponseType = {
   PROMPT: 'prompt',
   MESSAGE: 'message',

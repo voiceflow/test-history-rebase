@@ -13,7 +13,7 @@ import type {
   UtteranceText,
   Variable,
 } from '@voiceflow/dtos';
-import { CardLayout, Channel, Language, ResponseVariantType } from '@voiceflow/dtos';
+import { CardLayout, Channel, Language, ResponseType, ResponseVariantType } from '@voiceflow/dtos';
 import { VoiceModels } from '@voiceflow/voice-types';
 import { createSimpleAdapter } from 'bidirectional-adapter';
 import groupBy from 'lodash/groupBy';
@@ -202,6 +202,7 @@ const adapter = createSimpleAdapter<Input, Output, [FromDBOptions], [ToDBOptions
         createdByID: creatorID,
         updatedByID: creatorID,
         environmentID,
+        type: ResponseType.MESSAGE,
       };
 
       requiredEntity.repromptID = response.id;

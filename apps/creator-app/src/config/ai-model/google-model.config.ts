@@ -2,12 +2,12 @@ import { AIModel } from '@voiceflow/dtos';
 
 import { modelFactory } from './ai-model.util';
 
-export const GEMINI_PRO_MODE_CONFIG = modelFactory({
-  type: AIModel.GEMINI_PRO,
-  name: 'Gemini Pro (coming soon)',
-  info: '',
-  icon: 'OpenAi',
+export const GEMINI_PRO_1_5_MODEL_CONFIG = modelFactory({
+  type: AIModel.GEMINI_PRO_1_5,
+  name: 'Gemini Pro 1.5',
+  info: '8 x tokens',
+  icon: 'Google',
   disabled: true,
 });
 
-export const GOOGLE_MODEL_CONFIGS = [GEMINI_PRO_MODE_CONFIG];
+export const GOOGLE_MODEL_CONFIGS = [GEMINI_PRO_1_5_MODEL_CONFIG];

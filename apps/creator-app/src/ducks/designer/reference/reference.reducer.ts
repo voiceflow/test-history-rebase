@@ -1,66 +1,28 @@
-import { NodeType, ReferenceResourceType } from '@voiceflow/dtos';
 import { Actions } from '@voiceflow/sdk-logux-designer';
-import { normalize } from 'normal-store';
+import * as Normal from 'normal-store';
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
 
 import { INITIAL_STATE, type ReferenceState } from './reference.state';
+import { buildReferenceCache } from './reference.util';
 
-export const referenceReducer = reducerWithInitialState<ReferenceState>(INITIAL_STATE).case(
-  Actions.Reference.Replace,
-  (_, { data }) => {
-    const blockNodeResourceIDs: string[] = [];
-    const triggerNodeResourceIDs: string[] = [];
-    const resourceIDsByDiagramIDMap: Partial<Record<string, string[]>> = {};
-    const refererIDsByResourceIDMap: Partial<Record<string, string[]>> = {};
-    const resourceIDsByRefererIDMap: Partial<Record<string, string[]>> = {};
-    const referenceIDsByResourceIDMap: Partial<Record<string, string[]>> = {};
-    const referenceIDsByReferrerIDMap: Partial<Record<string, string[]>> = {};
-
-    data.references.forEach((reference) => {
-      resourceIDsByRefererIDMap[reference.referrerResourceID] ??= [];
-      resourceIDsByRefererIDMap[reference.referrerResourceID]!.push(reference.resourceID);
-
-      refererIDsByResourceIDMap[reference.resourceID] ??= [];
-      refererIDsByResourceIDMap[reference.resourceID]!.push(reference.referrerResourceID);
-
-      referenceIDsByResourceIDMap[reference.resourceID] ??= [];
-      referenceIDsByResourceIDMap[reference.resourceID]!.push(reference.id);
-
-      referenceIDsByReferrerIDMap[reference.referrerResourceID] ??= [];
-      referenceIDsByReferrerIDMap[reference.referrerResourceID]!.push(reference.id);
-    });
-
-    data.referenceResources.forEach((resource) => {
-      if (resource.diagramID) {
-        resourceIDsByDiagramIDMap[resource.diagramID] ??= [];
-        resourceIDsByDiagramIDMap[resource.diagramID]!.push(resource.id);
-      }
-
-      if (resource.type === ReferenceResourceType.NODE) {
-        if (resource.metadata?.nodeType === NodeType.BLOCK || resource.metadata?.nodeType === NodeType.START) {
-          blockNodeResourceIDs.push(resource.id);
-        }
-
-        if (
-          resource.metadata?.nodeType === NodeType.INTENT ||
-          resource.metadata?.nodeType === NodeType.START ||
-          resource.metadata?.nodeType === NodeType.TRIGGER
-        ) {
-          triggerNodeResourceIDs.push(resource.id);
-        }
-      }
-    });
+export const referenceReducer = reducerWithInitialState<ReferenceState>(INITIAL_STATE)
+  .case(Actions.Reference.Replace, (_, { data }) => ({
+    ...buildReferenceCache(data.references, data.referenceResources),
+    resources: Normal.normalize(data.referenceResources),
+    references: Normal.normalize(data.references),
+  }))
+  .case(Actions.Reference.AddMany, (state, { data }) => {
+    const cache = buildReferenceCache(data.references, data.referenceResources);
 
     return {
-      resources: normalize(data.referenceResources),
-      references: normalize(data.references),
-      blockNodeResourceIDs,
-      triggerNodeResourceIDs,
-      resourceIDsByDiagramIDMap,
-      resourceIDsByRefererIDMap,
-      refererIDsByResourceIDMap,
-      referenceIDsByResourceIDMap,
-      referenceIDsByReferrerIDMap,
+      resources: Normal.appendMany(state.resources, data.referenceResources),
+      references: Normal.appendMany(state.references, data.references),
+      blockNodeResourceIDs: [...state.blockNodeResourceIDs, ...cache.blockNodeResourceIDs],
+      triggerNodeResourceIDs: [...state.triggerNodeResourceIDs, ...cache.triggerNodeResourceIDs],
+      resourceIDsByDiagramIDMap: { ...state.resourceIDsByDiagramIDMap, ...cache.resourceIDsByDiagramIDMap },
+      resourceIDsByRefererIDMap: { ...state.resourceIDsByRefererIDMap, ...cache.resourceIDsByRefererIDMap },
+      refererIDsByResourceIDMap: { ...state.refererIDsByResourceIDMap, ...cache.refererIDsByResourceIDMap },
+      referenceIDsByResourceIDMap: { ...state.referenceIDsByResourceIDMap, ...cache.referenceIDsByResourceIDMap },
+      referenceIDsByReferrerIDMap: { ...state.referenceIDsByReferrerIDMap, ...cache.referenceIDsByReferrerIDMap },
     };
-  }
-);
+  });

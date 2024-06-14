@@ -8,6 +8,7 @@ import type { FlowService } from '@/flow/flow.service';
 import type { OrganizationIdentityService } from '@/organization/identity/identity.service';
 import type { ProjectService } from '@/project/project.service';
 import type { ProjectListService } from '@/project-list/project-list.service';
+import { ReferenceService } from '@/reference/reference.service';
 import type { ThreadService } from '@/thread/thread.service';
 import type { UserService } from '@/user/user.service';
 import type { WorkflowService } from '@/workflow/workflow.service';
@@ -31,6 +32,7 @@ interface Options extends ServiceManagerOptions<LoguxControlOptions['config']> {
     identity: IdentityClient;
     workflow: WorkflowService;
     hashedID: HashedIDService;
+    reference: ReferenceService;
     assistant: AssistantService;
     projectList: ProjectListService;
     organization: OrganizationIdentityService;

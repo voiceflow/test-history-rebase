@@ -1,5 +1,4 @@
 import { Nullish } from '@voiceflow/common';
-import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { COLOR_PICKER_CONSTANTS } from '@voiceflow/ui';
 import React from 'react';
 
@@ -40,8 +39,7 @@ export const CANVAS_OPTIONS: ContextMenuOption<CanvasAction>[] = [
   {
     label: 'Add Trigger',
     value: CanvasAction.ADD_TRIGGER,
-    shouldRender: (_, { engine, canEditCanvas }) =>
-      canEditCanvas && engine.isTopic() && engine.isFeatureEnabled(FeatureFlag.TRIGGER_STEP),
+    shouldRender: (_, { engine, canEditCanvas }) => canEditCanvas && engine.isTopic(),
   },
   {
     label: 'Paste',

@@ -123,8 +123,6 @@ const DIRECTIVE_STEP = createMenuStep(Realtime.BlockType.DIRECTIVE);
 
 const DISPLAY_STEP = createMenuStep(Realtime.BlockType.DISPLAY);
 
-const EVENT_STEP = createMenuStep(Realtime.BlockType.EVENT);
-
 const CONDITION_STEP_V2 = createMenuStep(Realtime.BlockType.IFV2);
 
 const EXIT_STEP = createMenuStep(Realtime.BlockType.EXIT);
@@ -132,8 +130,6 @@ const EXIT_STEP = createMenuStep(Realtime.BlockType.EXIT);
 const COMPONENT_STEP = createMenuStep(Realtime.BlockType.COMPONENT);
 
 const API_STEP = createMenuStep(Realtime.BlockType.INTEGRATION);
-
-const INTENT_STEP = createMenuStep(Realtime.BlockType.INTENT);
 
 const RANDOM_STEP_V2 = createMenuStep(Realtime.BlockType.RANDOMV2);
 
@@ -179,9 +175,6 @@ const LOGIC_ICON = 'systemLogic' as const;
 const LOGIC_ICON_SMALL = 'ifV2' as const;
 const LOGIC_LABEL = 'Logic';
 
-const EVENT_ICON = 'systemEvent' as const;
-export const EVENT_LABEL = 'Event';
-
 const DEV_ICON = 'systemDev' as const;
 const DEV_ICON_SMALL = 'systemDevSmall' as const;
 const DEV_LABEL = 'Dev';
@@ -191,7 +184,6 @@ interface CreateStepSectionsArguments {
   talkSteps: StepItem[];
   listenSteps: StepItem[];
   logicSteps: StepItem[];
-  eventSteps: StepItem[];
   devSteps: StepItem[];
 }
 
@@ -200,7 +192,6 @@ const createStepSections = ({
   talkSteps,
   listenSteps,
   logicSteps,
-  eventSteps,
   devSteps,
 }: CreateStepSectionsArguments): TopStepItem[] => [
   {
@@ -228,11 +219,6 @@ const createStepSections = ({
     steps: logicSteps,
   },
   {
-    icon: EVENT_ICON,
-    label: EVENT_LABEL,
-    steps: eventSteps,
-  },
-  {
     icon: DEV_ICON,
     smallIcon: DEV_ICON_SMALL,
     label: DEV_LABEL,
@@ -246,7 +232,6 @@ export const ALEXA_STEP_SECTIONS = createStepSections({
   talkSteps: [SPEAK_STEP, AUDIO_STEP, DISPLAY_STEP, CARDV2_STEP, STREAM_STEP],
   listenSteps: [CHOICE_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
-  eventSteps: [INTENT_STEP, EVENT_STEP],
   devSteps: [FUNCTION_STEP, API_STEP, CODE_STEP, TRACE_STEP, DIRECTIVE_STEP],
 });
 
@@ -256,7 +241,6 @@ export const GOOGLE_STEP_SECTIONS = createStepSections({
   talkSteps: [SPEAK_STEP, AUDIO_STEP, CARDV2_STEP, STREAM_STEP],
   listenSteps: [CHOICE_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
-  eventSteps: [INTENT_STEP],
   devSteps: [FUNCTION_STEP, API_STEP, CODE_STEP, TRACE_STEP, DIRECTIVE_STEP],
 });
 
@@ -266,7 +250,6 @@ export const CHATBOT_STEP_SECTIONS = createStepSections({
   talkSteps: [RESPONSE_STEP, TEXT_STEP, VISUAL_STEP, CARDV2_STEP, CAROUSEL_STEP],
   listenSteps: [BUTTONS_STEP, CHOICE_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
-  eventSteps: [INTENT_STEP],
   devSteps: [FUNCTION_STEP, API_STEP, CODE_STEP, TRACE_STEP],
 });
 
@@ -276,7 +259,6 @@ export const GENERAL_STEP_SECTIONS = createStepSections({
   talkSteps: [SPEAK_STEP, AUDIO_STEP, VISUAL_STEP],
   listenSteps: [CHOICE_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
-  eventSteps: [INTENT_STEP],
   devSteps: [FUNCTION_STEP, API_STEP, CODE_STEP, TRACE_STEP],
 });
 
@@ -286,7 +268,6 @@ export const DIALOGFLOW_ES_CHAT_STEP_SECTIONS = createStepSections({
   talkSteps: [RESPONSE_STEP, TEXT_STEP, VISUAL_STEP, CARDV2_STEP, CAROUSEL_STEP, CUSTOM_PAYLOAD_STEP],
   listenSteps: [CHOICE_STEP, BUTTONS_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
-  eventSteps: [INTENT_STEP],
   devSteps: [FUNCTION_STEP, API_STEP, CODE_STEP, TRACE_STEP],
 });
 
@@ -296,7 +277,6 @@ export const DIALOGFLOW_ES_VOICE_STEP_SECTIONS = createStepSections({
   talkSteps: [SPEAK_STEP, AUDIO_STEP, CUSTOM_PAYLOAD_STEP, CARDV2_STEP],
   listenSteps: [CHOICE_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
-  eventSteps: [INTENT_STEP],
   devSteps: [FUNCTION_STEP, API_STEP, CODE_STEP, TRACE_STEP],
 });
 
@@ -305,7 +285,6 @@ export const MICROSOFT_TEAMS_STEP_SECTIONS = createStepSections({
   talkSteps: [RESPONSE_STEP, TEXT_STEP, VISUAL_STEP, CARDV2_STEP],
   listenSteps: [BUTTONS_STEP, CHOICE_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
-  eventSteps: [INTENT_STEP],
   devSteps: [FUNCTION_STEP, API_STEP, CODE_STEP],
 });
 
@@ -314,7 +293,6 @@ export const WHATSAPP_STEP_SECTIONS = createStepSections({
   talkSteps: [RESPONSE_STEP, TEXT_STEP, VISUAL_STEP],
   listenSteps: [CHOICE_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
-  eventSteps: [INTENT_STEP],
   devSteps: [FUNCTION_STEP, API_STEP, CODE_STEP],
 });
 
@@ -323,7 +301,6 @@ export const SMS_STEP_SECTIONS = createStepSections({
   talkSteps: [RESPONSE_STEP, TEXT_STEP, VISUAL_STEP],
   listenSteps: [CHOICE_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
-  eventSteps: [INTENT_STEP],
   devSteps: [FUNCTION_STEP, API_STEP, CODE_STEP],
 });
 

@@ -3,7 +3,6 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { BlockType } from '@/constants';
 
 import { BaseNodeManagerConfig } from '../types';
-import { Editor } from './components';
 import { StartChip } from './Start.chip';
 import { StartEditor } from './StartEditor/Start.editor';
 
@@ -12,7 +11,5 @@ export const StartManager: BaseNodeManagerConfig<Realtime.NodeData.Start> = {
 
   type: BlockType.START,
   chip: StartChip,
-  editorV2: Editor,
   editorV3: StartEditor,
-  editorV3FeatureFlag: Realtime.FeatureFlag.TRIGGER_STEP,
 };

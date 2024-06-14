@@ -2,7 +2,6 @@ import { Inject, Injectable } from '@nestjs/common';
 import { BaseNode } from '@voiceflow/base-types';
 import { DiagramNode } from '@voiceflow/dtos';
 import { NotFoundException } from '@voiceflow/exception';
-import { UnleashFeatureFlagService } from '@voiceflow/nestjs-common';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
 import { DiagramJSON, DiagramObject, DiagramORM, ProjectORM } from '@voiceflow/orm-designer';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
@@ -28,9 +27,7 @@ export class DiagramService extends MutableService<DiagramORM> {
     @Inject(ProjectORM)
     protected readonly projectORM: ProjectORM,
     @Inject(LoguxService)
-    private readonly logux: LoguxService,
-    @Inject(UnleashFeatureFlagService)
-    private readonly unleash: UnleashFeatureFlagService
+    private readonly logux: LoguxService
   ) {
     super();
   }
@@ -166,20 +163,12 @@ export class DiagramService extends MutableService<DiagramORM> {
     >[],
     { userID, context }: { userID: number; context: CMSContext }
   ) {
-    const project = await this.projectORM.findOne(context.environmentID, { fields: ['teamID'] });
-    const isTriggerStepEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.TRIGGER_STEP, {
-      userID,
-      workspaceID: project?.teamID,
-    });
-
     return this.orm.createMany(
       data.map((item) => {
         const diagramID = new ObjectId().toJSON();
 
         return this.fromJSON({
-          ...(isTriggerStepEnabled
-            ? componentDiagramPayloadFactory({ diagramName: item.name ?? '' })
-            : Realtime.Utils.diagram.componentDiagramFactory(item.name ?? '')),
+          ...componentDiagramPayloadFactory({ diagramName: item.name ?? '' }),
           ...item,
           _id: diagramID,
           diagramID,
@@ -196,20 +185,12 @@ export class DiagramService extends MutableService<DiagramORM> {
     >[],
     { userID, context }: { userID: number; context: CMSContext }
   ) {
-    const project = await this.projectORM.findOne(context.environmentID, { fields: ['teamID'] });
-    const isTriggerStepEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.TRIGGER_STEP, {
-      userID,
-      workspaceID: project?.teamID,
-    });
-
     return this.orm.createMany(
       data.map((item) => {
         const diagramID = new ObjectId().toJSON();
 
         return this.fromJSON({
-          ...(isTriggerStepEnabled
-            ? topicDiagramPayloadFactory({ diagramName: item.name ?? '' })
-            : Realtime.Utils.diagram.topicDiagramFactory(item.name ?? '')),
+          ...topicDiagramPayloadFactory({ diagramName: item.name ?? '' }),
           ...item,
           _id: diagramID,
           diagramID,

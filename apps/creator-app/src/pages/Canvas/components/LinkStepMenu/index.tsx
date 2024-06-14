@@ -9,7 +9,7 @@ import * as CustomBlocks from '@/ducks/customBlock';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { usePermission, useSelector } from '@/hooks';
 import { LinkStepMenuContext, ManagerContext } from '@/pages/Canvas/contexts';
-import { AI_LABEL, EVENT_LABEL, getAllSections, LibraryStepType } from '@/pages/Project/components/StepMenu/constants';
+import { AI_LABEL, getAllSections, LibraryStepType } from '@/pages/Project/components/StepMenu/constants';
 
 import { ActionsMenuItem, StepMenuItem, TemplateMenuItem } from './components';
 
@@ -45,7 +45,6 @@ const LinkStepMenu: React.FC = () => {
         [LibraryStepType.CUSTOM_BLOCK]: customBlocks,
         [LibraryStepType.BLOCK_TEMPLATES]: templates,
       }).filter((step) => {
-        if (step.label === EVENT_LABEL) return false;
         if (!aiPlaygroundEnabled && step.label === AI_LABEL) return false;
         // eslint-disable-next-line sonarjs/prefer-single-boolean-return
         if (step.isLibrary && !step.librarySections.templates.length) return false;

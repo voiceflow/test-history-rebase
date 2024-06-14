@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.417.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.416.0...@voiceflow/realtime-sdk@1.417.0) (2024-06-14)
+
+### Features
+
+* remove trigger step ff (COR-2359) ([#8293](https://github.com/voiceflow/creator-app/issues/8293)) ([d51f93c](https://github.com/voiceflow/creator-app/commit/d51f93cb10020f9de507d9109d8100c26ae06a46))
+
 # [1.416.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.415.1...@voiceflow/realtime-sdk@1.416.0) (2024-06-12)
 
 ### Features

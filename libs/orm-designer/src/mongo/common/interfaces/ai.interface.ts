@@ -8,7 +8,7 @@ export type AIModelType =
   | 'claude-v1'
   | 'claude-v2'
   | 'claude-instant-v1'
-  | 'gemini-pro';
+  | 'gemini-pro-1.5';
 
 export interface AIParams {
   stop?: string[];

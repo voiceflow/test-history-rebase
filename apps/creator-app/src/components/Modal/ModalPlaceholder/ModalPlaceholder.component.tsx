@@ -2,7 +2,7 @@ import * as Normal from 'normal-store';
 import React, { memo, useContext, useMemo } from 'react';
 import type { DeepNonNullable } from 'utility-types';
 
-import { Context as ModalsContext } from '@/ModalsV2/context';
+import { ModalV2Context as ModalsContext } from '@/ModalsV2/context';
 import { modalsManager } from '@/ModalsV2/manager';
 
 import { ModalBackdrop } from '../ModalBackdrop/ModalBackdrop.component';

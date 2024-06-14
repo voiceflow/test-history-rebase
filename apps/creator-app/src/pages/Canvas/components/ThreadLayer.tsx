@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { AutoPanningStateContext } from '@/contexts/AutoPanningContext';
 import { Designer } from '@/ducks';
 import * as UI from '@/ducks/ui';
 import { useDispatch, useHotkey, useRAF, useSelector, useTrackingEvents } from '@/hooks';
@@ -10,6 +9,7 @@ import { EngineContext, FocusThreadContext, ThreadEntityProvider } from '@/pages
 import { useCanvasRendered } from '@/pages/Canvas/hooks';
 import { useCanvasIdle, useCanvasPan, useCanvasZoom } from '@/pages/Canvas/hooks/canvas';
 import { CommentDraftValue } from '@/pages/Canvas/types';
+import { AutoPanningStateContext } from '@/pages/Project/contexts/AutoPanningContext';
 import { useCommentingMode } from '@/pages/Project/hooks';
 import { Coords } from '@/utils/geometry';
 

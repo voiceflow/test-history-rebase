@@ -6,10 +6,10 @@ import { useDrag } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 
 import { BlockType, DragItem } from '@/constants';
-import { AutoPanningCacheContext } from '@/contexts/AutoPanningContext';
 import * as CanvasTemplate from '@/ducks/canvasTemplate';
 import { useDispatch, useEnableDisable, useEventualEngine } from '@/hooks';
 import TemplateEditorPopper from '@/pages/Canvas/components/TemplateEditor/Popper';
+import { AutoPanningCacheContext } from '@/pages/Project/contexts/AutoPanningContext';
 import { ClassName } from '@/styles/constants';
 import { pointerNodeDataFactory } from '@/utils/customBlock';
 

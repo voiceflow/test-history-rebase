@@ -1,15 +1,11 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { System, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { useIdleTimer } from 'react-idle-timer';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
-import InactivitySnackbar from '@/components/InactivitySnackbar';
 import { Modal } from '@/components/Modal';
 import { Path } from '@/config/routes';
 import { Permission } from '@/constants/permissions';
-import * as DiagramV2 from '@/ducks/diagramV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { OrganizationSubscriptionGate, VersionSubscriptionGate } from '@/gates';
 import { lazy } from '@/hocs/lazy';
@@ -18,12 +14,12 @@ import { withWorkspaceOrProjectAssetsSuspense } from '@/hocs/withWorkspaceOrProj
 import { useFeature, useLocalDispatch, usePermission, useSelector, useTeardown } from '@/hooks';
 import { ModalScope } from '@/ModalsV2/modal-scope.enum';
 import AssistantCMS from '@/pages/AssistantCMS/AssistantCMS.page';
-import Providers from '@/pages/Project/Providers';
+import { ProjectProviders } from '@/pages/Project/Providers';
 
 import Diagram from './components/Diagram';
 import ProjectExitTracker from './components/ProjectExitTracker';
-import { DIAGRAM_ROUTES, TIMEOUT_COUNT } from './constants';
-import { MarkupProvider } from './contexts';
+import { DIAGRAM_ROUTES } from './constants';
+import { IddleWarning } from './IddleWarning';
 import { useProjectHotkeys } from './Project.hook';
 
 const Publish = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/Publish')));
@@ -31,9 +27,8 @@ const Settings = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages
 const Conversations = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/Conversations')));
 const AnalyticsDashboard = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/AnalyticsDashboard')));
 
-const Project: React.FC = () => {
+const ProjectPage: React.FC = () => {
   const projectName = useSelector(ProjectV2.active.nameSelector);
-  const isOnlyViewer = useSelector(DiagramV2.isOnlyViewerSelector);
   const resetCreator = useLocalDispatch(Realtime.creator.reset);
   const resetCanvasTemplateData = useLocalDispatch(Realtime.canvasTemplate.reset);
 
@@ -41,42 +36,6 @@ const Project: React.FC = () => {
 
   const hideExports = useFeature(Realtime.FeatureFlag.HIDE_EXPORTS);
   const disableIntegration = useFeature(Realtime.FeatureFlag.DISABLE_INTEGRATION);
-
-  const inactivitySnackbar = System.Snackbar.useAPI();
-
-  const setActive = usePersistFunction(() => {
-    inactivitySnackbar.close();
-
-    if (isOnlyViewer) {
-      idleTimer.pause();
-      return;
-    }
-
-    idleTimer.activate();
-  });
-
-  const setIdle = usePersistFunction(() => {
-    inactivitySnackbar.open();
-    idleTimer.pause();
-  });
-
-  const idleTimer = useIdleTimer({
-    onIdle: setIdle,
-    element: document,
-    timeout: TIMEOUT_COUNT,
-    debounce: 250,
-    startOnMount: false,
-    startManually: true,
-  });
-
-  React.useEffect(() => {
-    if (isOnlyViewer) {
-      idleTimer.pause();
-      return;
-    }
-
-    idleTimer.start();
-  }, [isOnlyViewer]);
 
   useProjectHotkeys();
 
@@ -86,14 +45,13 @@ const Project: React.FC = () => {
   });
 
   return (
-    <MarkupProvider>
+    <>
       <Helmet>
         <title>{projectName}</title>
       </Helmet>
+      <IddleWarning />
 
-      {!isOnlyViewer && inactivitySnackbar.isOpen && <InactivitySnackbar onDismiss={setActive} />}
-
-      <Providers>
+      <ProjectProviders>
         <ProjectExitTracker />
 
         <Switch>
@@ -116,9 +74,9 @@ const Project: React.FC = () => {
 
         {/* allows rendering cms related modals in the cms page tree, so we can easily use cms related context in the modals */}
         <Modal.Placeholder scope={ModalScope.PROJECT} />
-      </Providers>
-    </MarkupProvider>
+      </ProjectProviders>
+    </>
   );
 };
 
-export default withBatchLoadingGate(VersionSubscriptionGate, OrganizationSubscriptionGate)(Project);
+export default withBatchLoadingGate(VersionSubscriptionGate, OrganizationSubscriptionGate)(ProjectPage);

@@ -7,7 +7,7 @@ import {
   ProjectPlatformContext,
   ProjectTypeConfigContext,
   ProjectTypeContext,
-} from '@/contexts/ProjectConfigProvider';
+} from '@/pages/Project/contexts/ProjectConfigProvider';
 
 export const useActiveProjectNLU = () => React.useContext(ProjectNLUTypeContext);
 export const useActiveProjectNLUConfig = () => React.useContext(ProjectNLUTypeConfigContext);

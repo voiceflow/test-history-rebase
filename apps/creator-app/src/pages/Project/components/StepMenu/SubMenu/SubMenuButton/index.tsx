@@ -16,11 +16,11 @@ import { useDrag } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 
 import { BlockType, DragItem } from '@/constants';
-import { AutoPanningCacheContext } from '@/contexts/AutoPanningContext';
 import { useEventualEngine } from '@/hooks/engine';
 import { useHover } from '@/hooks/hover';
 import { usePaymentModal } from '@/hooks/modal.hook';
 import { StepDragItem } from '@/pages/Canvas/components/CanvasDiagram';
+import { AutoPanningCacheContext } from '@/pages/Project/contexts/AutoPanningContext';
 import { ClassName } from '@/styles/constants';
 import { openInternalURLInANewTab } from '@/utils/window';
 

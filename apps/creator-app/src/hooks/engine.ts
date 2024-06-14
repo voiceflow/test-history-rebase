@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { EventualEngineContext } from '@/contexts/EventualEngineContext';
+import { EventualEngineContext } from '@/pages/Project/contexts/EventualEngineContext';
 
 export const useEventualEngine = () => {
   const eventualEngine = React.useContext(EventualEngineContext);

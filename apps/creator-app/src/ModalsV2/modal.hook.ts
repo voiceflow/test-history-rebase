@@ -2,7 +2,7 @@ import { AnyRecord, EmptyObject, Utils } from '@voiceflow/common';
 import { useCreateConst } from '@voiceflow/ui';
 import React from 'react';
 
-import { Context } from './context';
+import { ModalV2Context } from './context';
 import manager from './manager';
 import * as T from './types';
 
@@ -23,12 +23,15 @@ export function useModal<Props extends EmptyObject, Result>(
 ): T.PropsResultPublicAPI<Omit<Props, keyof T.InternalProps<T.ResultInternalAPI<Props, Result>>>, Result>;
 export function useModal<Props extends EmptyObject>(type: string, id?: string): T.PropsPublicAPI<Props>;
 export function useModal<Props extends void, Result>(type: string, id?: string): T.ResultPublicAPI<Props, Result>;
-export function useModal<Props extends EmptyObject, Result>(type: string, id?: string): T.PropsResultPublicAPI<Props, Result>;
+export function useModal<Props extends EmptyObject, Result>(
+  type: string,
+  id?: string
+): T.PropsResultPublicAPI<Props, Result>;
 export function useModal(
   registeredModal?: string | T.AnyModal<AnyRecord, any>,
   id?: string
 ): T.PropsPublicAPI<any> | T.ResultPublicAPI<any, any> | T.PropsResultPublicAPI<any, any> | T.VoidPublicAPI {
-  const modals = React.useContext(Context);
+  const modals = React.useContext(ModalV2Context);
 
   const type = typeof registeredModal === 'string' ? registeredModal : registeredModal?.__vfModalType || '';
   const modalID = useCreateConst(() => id || Utils.id.cuid.slug());
@@ -41,8 +44,14 @@ export function useModal(
   );
   const close = React.useCallback(() => manager.close(modalID, type, 'hook'), []);
   const remove = React.useCallback(() => manager.remove(modalID, type), []);
-  const openVoid = React.useCallback((props?: AnyRecord, options?: T.OpenOptions) => open(props, options).catch(() => null), []);
-  const updateProps = React.useCallback((props: AnyRecord = {}, options?: { reopen?: boolean }) => manager.update(modalID, type, props, options), []);
+  const openVoid = React.useCallback(
+    (props?: AnyRecord, options?: T.OpenOptions) => open(props, options).catch(() => null),
+    []
+  );
+  const updateProps = React.useCallback(
+    (props: AnyRecord = {}, options: { reopen?: boolean } = {}) => manager.update(modalID, type, props, options),
+    []
+  );
   const enableClose = React.useCallback(() => manager.enableClose(modalID, type), []);
   const preventClose = React.useCallback(() => manager.preventClose(modalID, type), []);
 
@@ -69,7 +78,7 @@ export function useModal(
 }
 
 export const useActiveModalID = (): string | null => {
-  const modals = React.useContext(Context);
+  const modals = React.useContext(ModalV2Context);
 
   return modals.state.allKeys[0];
 };

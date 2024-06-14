@@ -3,9 +3,9 @@ import React from 'react';
 
 import { CMSRoute } from '@/config/routes';
 import { NLPTrainStageType } from '@/constants/platforms';
-import { TrainingContext } from '@/contexts/TrainingContext';
 import { Designer, Router } from '@/ducks';
 import { useDispatch, useSelector } from '@/hooks';
+import { TrainingContext } from '@/pages/Project/contexts/TrainingContext';
 import { logger } from '@/utils/logger';
 
 export const useNLUTrainingModelNotifications = () => {

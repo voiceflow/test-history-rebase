@@ -1,12 +1,12 @@
 import { withProvider } from '@voiceflow/ui';
 import React from 'react';
 
-import { EventualEngineContext } from '@/contexts/EventualEngineContext';
 import * as Account from '@/ducks/account';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Session from '@/ducks/session';
 import { useSelector } from '@/hooks';
 import { OverlayType } from '@/pages/Canvas/constants';
+import { EventualEngineContext } from '@/pages/Project/contexts/EventualEngineContext';
 
 import { RealtimeCursor } from './components';
 import { RealtimeCursorContext } from './contexts';

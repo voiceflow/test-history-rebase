@@ -6,7 +6,7 @@ import * as Account from '@/ducks/account';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector, useStore, useTrackingEvents } from '@/hooks';
 
-const SessionTracker: React.FC = () => {
+const SessionTrackerProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [trackEvents] = useTrackingEvents();
   const store = useStore();
 
@@ -53,7 +53,7 @@ const SessionTracker: React.FC = () => {
     };
   }, [isLoggedIn]);
 
-  return null;
+  return <>{children}</>;
 };
 
-export default SessionTracker;
+export default SessionTrackerProvider;

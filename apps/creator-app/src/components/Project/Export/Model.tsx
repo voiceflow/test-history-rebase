@@ -14,7 +14,7 @@ import IntentsSelect from '@/components/IntentsSelect';
 import { MenuItem } from '@/components/MenuItem';
 import * as NLP from '@/config/nlp';
 
-import { Context } from './Context';
+import { ProjectExportContext } from './Context';
 
 interface ModelProps {
   selectedIntentsIds?: string[];
@@ -22,7 +22,7 @@ interface ModelProps {
 
 export const Model: React.FC<ModelProps> = ({ selectedIntentsIds }) => {
   const { exportNLPType, setExportNLPType, setExportIntents, exportIntents, nlpTypes, setCheckedExportIntents } =
-    React.useContext(Context)!;
+    React.useContext(ProjectExportContext)!;
 
   const [selectedIntents, setSelectedIntents] = React.useState(exportIntents);
 

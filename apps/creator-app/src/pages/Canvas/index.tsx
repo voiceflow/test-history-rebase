@@ -87,13 +87,7 @@ const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
         <DisableOverscrollBehavior />
         <ContextMenu />
 
-        <CanvasDiagram>
-          {!isPrototypingMode && (
-            <>
-              <ThreadLayer />
-            </>
-          )}
-        </CanvasDiagram>
+        <CanvasDiagram>{!isPrototypingMode && <ThreadLayer />}</CanvasDiagram>
 
         <RealtimeOverlay />
 

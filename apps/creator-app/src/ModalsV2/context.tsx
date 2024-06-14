@@ -25,7 +25,7 @@ interface UpdateData {
   closePrevented?: boolean;
 }
 
-interface ContextValue {
+interface ModalV2ContextValue {
   state: Normal.Normalized<Modal>;
   animated: boolean;
 
@@ -44,7 +44,7 @@ interface ContextValue {
 
 const initialState = Normal.createEmpty<Modal>();
 
-export const Context = React.createContext<ContextValue>({
+export const ModalV2Context = React.createContext<ModalV2ContextValue>({
   state: initialState,
   animated: false,
 
@@ -111,7 +111,7 @@ reducer
     })
   );
 
-export const Provider: React.FC<React.PropsWithChildren> = ({ children }) => {
+export const ModalV2Provider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [state, dispatch] = React.useReducer(reducer, initialState);
 
   const cache = useCachedValue(state);
@@ -202,5 +202,5 @@ export const Provider: React.FC<React.PropsWithChildren> = ({ children }) => {
     [state, animated]
   );
 
-  return <Context.Provider value={api}>{children}</Context.Provider>;
+  return <ModalV2Context.Provider value={api}>{children}</ModalV2Context.Provider>;
 };

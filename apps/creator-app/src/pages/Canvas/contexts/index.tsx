@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { RegisterEngine } from '@/contexts/EventualEngineContext';
 import type Engine from '@/pages/Canvas/engine';
+import { RegisterEngine } from '@/pages/Project/contexts/EventualEngineContext';
 
 import { getManager } from '../managers';
 import { ClipboardProvider } from './ClipboardContext';
@@ -24,7 +24,7 @@ export * from './SpotlightContext';
 
 export type ManagerGetter = typeof getManager;
 export const ManagerContext = React.createContext<ManagerGetter | null>(null);
-export const { Provider: ManagerProvider, Consumer: ManagerConsumer } = ManagerContext;
+export const { Provider: ManagerProvider } = ManagerContext;
 
 export interface CanvasProvidersProps extends React.PropsWithChildren {
   engine: Engine;
@@ -33,7 +33,6 @@ export interface CanvasProvidersProps extends React.PropsWithChildren {
 export const CanvasProviders: React.FC<CanvasProvidersProps> = ({ engine, children }) => (
   <EngineProvider value={engine}>
     <RegisterEngine engine={engine} />
-
     <ContextMenuProvider>
       <ClipboardProvider>
         <FocusThreadProvider>

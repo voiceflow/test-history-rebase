@@ -6,12 +6,10 @@ import { notify } from '@voiceflow/ui-next';
 import PageProgressBar, { PageProgress } from '@/components/PageProgressBar';
 import * as Errors from '@/config/errors';
 import { LimitType } from '@/constants/limits';
-import { Permission } from '@/constants/permissions';
 import { Organization, Project, Session, Workspace } from '@/ducks';
 import { clipboardCopyWithToast } from '@/utils/clipboard.util';
 
-import { useProjectDownloadModal, useUpgradeModal } from './modal.hook';
-import { usePermission } from './permission';
+import { useUpgradeModal } from './modal.hook';
 import { usePlanLimitedAction } from './planLimitV2';
 import { useConditionalLimitAction } from './planLimitV3';
 import { useDispatch, useSelector } from './store.hook';
@@ -19,8 +17,6 @@ import { useTrackingEvents } from './tracking';
 
 export const useOnAssistantCopyCloneLink = (projectID: string | null) => {
   const [trackingEvents] = useTrackingEvents();
-  const [canShareProject] = usePermission(Permission.FEATURE_SHARE_PROJECT);
-  const projectDownloadModal = useProjectDownloadModal();
 
   const updateProjectPrivacy = useDispatch(Project.updateProjectPrivacy);
 
@@ -28,11 +24,6 @@ export const useOnAssistantCopyCloneLink = (projectID: string | null) => {
     if (!projectID) {
       datadogRum.addError(Errors.noActiveProjectID());
       notify.short.genericError();
-      return;
-    }
-
-    if (!canShareProject) {
-      projectDownloadModal.openVoid();
       return;
     }
 

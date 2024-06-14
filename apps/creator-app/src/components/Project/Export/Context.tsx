@@ -9,7 +9,7 @@ import { ExportFormat as CanvasExportFormat, ExportType } from '@/constants';
 import * as Export from '@/ducks/export';
 import { useActiveProjectNLUConfig, useActiveProjectPlatformConfig, useDispatch, useTrackingEvents } from '@/hooks';
 
-interface ContextValue {
+interface ProjectExportContextValue {
   onExport: (origin: string) => void;
   nlpTypes: NLP.Constants.NLPType[];
   exportType: ExportType;
@@ -27,9 +27,9 @@ interface ContextValue {
   setCheckedExportIntents: (intents: string[]) => void;
 }
 
-export const Context = React.createContext<Nullable<ContextValue>>(null);
+export const ProjectExportContext = React.createContext<Nullable<ProjectExportContextValue>>(null);
 
-export const Provider: React.FC<React.PropsWithChildren> = ({ children }) => {
+export const ProjectExportProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const nluConfig = useActiveProjectNLUConfig();
   const platformConfig = useActiveProjectPlatformConfig();
 
@@ -90,5 +90,5 @@ export const Provider: React.FC<React.PropsWithChildren> = ({ children }) => {
     setCheckedExportIntents,
   });
 
-  return <Context.Provider value={api}>{children}</Context.Provider>;
+  return <ProjectExportContext.Provider value={api}>{children}</ProjectExportContext.Provider>;
 };

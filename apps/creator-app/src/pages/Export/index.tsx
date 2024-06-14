@@ -8,14 +8,14 @@ import { useHideVoiceflowAssistant, useSelector } from '@/hooks';
 import LinkLayer from '@/pages/Canvas/components/LinkLayer';
 import MarkupLayer from '@/pages/Canvas/components/MarkupLayer';
 import NodeLayer from '@/pages/Canvas/components/NodeLayer';
-import { CanvasProviders, ManagerProvider, PresentationModeProvider } from '@/pages/Canvas/contexts';
+import { CanvasProviders, ManagerProvider } from '@/pages/Canvas/contexts';
 import { useEngine } from '@/pages/Canvas/hooks/engine';
 import { useManager } from '@/pages/Canvas/managers/utils';
-import { MarkupProvider } from '@/pages/Project/contexts';
 import { endAll } from '@/vendors/userflow';
 
 import { ExportCanvasDiagram, ExportGlobalStyle, ExportWatermark } from './components';
 import InitializeExportGate from './gates/InitializeExportGate';
+import { ExportProviders } from './Providers';
 
 const ExportCanvas: React.FC = () => {
   const isOnPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
@@ -31,21 +31,19 @@ const ExportCanvas: React.FC = () => {
   }, []);
 
   return (
-    <PresentationModeProvider>
-      <MarkupProvider>
-        <ManagerProvider value={getManager}>
-          <CanvasProviders key={engineKey} engine={engine}>
-            <ExportGlobalStyle />
-            <ExportWatermark isOnPaidPlan={!!isOnPaidPlan} />
-            <ExportCanvasDiagram onRegister={registerCanvas}>
-              <MarkupLayer />
-              <LinkLayer />
-              <NodeLayer />
-            </ExportCanvasDiagram>
-          </CanvasProviders>
-        </ManagerProvider>
-      </MarkupProvider>
-    </PresentationModeProvider>
+    <ExportProviders>
+      <ManagerProvider value={getManager}>
+        <CanvasProviders key={engineKey} engine={engine}>
+          <ExportGlobalStyle />
+          <ExportWatermark isOnPaidPlan={!!isOnPaidPlan} />
+          <ExportCanvasDiagram onRegister={registerCanvas}>
+            <MarkupLayer />
+            <LinkLayer />
+            <NodeLayer />
+          </ExportCanvasDiagram>
+        </CanvasProviders>
+      </ManagerProvider>
+    </ExportProviders>
   );
 };
 

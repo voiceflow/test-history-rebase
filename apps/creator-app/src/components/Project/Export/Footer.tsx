@@ -7,7 +7,7 @@ import PlatformUploadButton from '@/components/PlatformUploadButton';
 import * as Documentation from '@/config/documentation';
 import { ExportType } from '@/constants';
 
-import { Context } from './Context';
+import { ProjectExportContext } from './Context';
 
 interface FooterProps extends BaseProps {
   origin?: string;
@@ -17,7 +17,7 @@ interface FooterProps extends BaseProps {
 }
 
 export const Footer: React.FC<FooterProps> = ({ origin = 'Share Menu', linkURL, selectedItems, testID }) => {
-  const { onExport, exportType, isExporting, exportIntents } = React.useContext(Context)!;
+  const { onExport, exportType, isExporting, exportIntents } = React.useContext(ProjectExportContext)!;
 
   const noModelData = exportType === ExportType.MODEL && exportIntents.length === 0 && !selectedItems?.length;
 

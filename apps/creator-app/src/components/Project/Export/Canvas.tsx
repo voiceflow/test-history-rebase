@@ -8,12 +8,13 @@ import { Designer } from '@/ducks';
 import { useSelector } from '@/hooks/store.hook';
 
 import { CANVAS_EXPORT_OPTIONS, CANVAS_EXPORT_OPTIONS_LABELS } from './constants';
-import { Context } from './Context';
+import { ProjectExportContext } from './Context';
 
 export const Canvas: React.FC = () => {
   const CANVAS_SPECIFIC_EXPORT_OPTIONS = [ExportFormat.PDF, ExportFormat.PNG];
 
-  const { canvasExportFormat, setCanvasExportFormat, exportDiagramID, setExportDiagramID } = React.useContext(Context)!;
+  const { canvasExportFormat, setCanvasExportFormat, exportDiagramID, setExportDiagramID } =
+    React.useContext(ProjectExportContext)!;
 
   const workflows = useSelector(Designer.Workflow.selectors.all);
   const components = useSelector(Designer.Flow.selectors.all);

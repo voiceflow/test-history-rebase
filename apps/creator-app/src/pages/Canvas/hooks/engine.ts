@@ -4,7 +4,6 @@ import React from 'react';
 import { useSelector, useStore } from 'react-redux';
 
 import { IS_DEVELOPMENT } from '@/config';
-import { MousePositionContext } from '@/contexts/MousePositionContext';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import { useForceUpdate } from '@/hooks';
 import { CanvasAction } from '@/pages/Canvas/constants';
@@ -12,6 +11,7 @@ import { Store } from '@/store/types';
 import { Coords } from '@/utils/geometry';
 
 import Engine from '../engine';
+import { useMousePosition } from './mosuePosition';
 
 const createEngine = moize((...args: ConstructorParameters<typeof Engine>) => new Engine(...args));
 
@@ -21,7 +21,7 @@ let $recreateEngine: ((Class: typeof Engine) => void) | null = null;
 const useCreateEngine = (options?: { isExport?: boolean }): [Engine, number] => {
   const store = useStore() as Store;
   const [forceUpdate, engineKey] = useForceUpdate();
-  const mousePosition = React.useContext(MousePositionContext);
+  const mousePosition = useMousePosition();
 
   const ref = React.useRef<Engine>();
 

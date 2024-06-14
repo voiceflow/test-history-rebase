@@ -1,12 +1,12 @@
 import { Utils } from '@voiceflow/common';
 import React from 'react';
 
-import { AutoPanningCacheContext } from '@/contexts/AutoPanningContext';
 import * as Account from '@/ducks/account';
 import { useRAF, useSelector } from '@/hooks';
 import { LinkedRects } from '@/pages/Canvas/components/Link';
 import { EngineContext, LinkStepMenuContext } from '@/pages/Canvas/contexts';
 import { NewLinkAPI } from '@/pages/Canvas/types';
+import { AutoPanningCacheContext } from '@/pages/Project/contexts/AutoPanningContext';
 
 type NewLinkInstance<T extends SVGElement> = NewLinkAPI & {
   ref: React.RefObject<T>;

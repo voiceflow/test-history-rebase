@@ -4,10 +4,10 @@ import React, { useEffect } from 'react';
 
 import { NLUTrainingDiffStatus } from '@/constants/enums/nlu-training-diff-status.enum';
 import { NLPTrainStageType } from '@/constants/platforms';
-import { TrainingContext } from '@/contexts/TrainingContext';
 import { Designer } from '@/ducks';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
 import { useTrackingEvents } from '@/hooks/tracking';
+import { TrainingContext } from '@/pages/Project/contexts/TrainingContext';
 import { logger } from '@/utils/logger';
 
 import { useNLUTrainingModelNotifications } from './NLUTrainingModel.hook';

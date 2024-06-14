@@ -25,19 +25,15 @@ import {
 import * as ModalsV2 from '@/ModalsV2';
 import THEME from '@/styles/theme';
 
-import { AutoPanningProvider } from '../AutoPanningContext';
-import { DragProvider } from '../DragContext';
-import { EventualEngineProvider } from '../EventualEngineContext';
-import { FeatureFlagsProvider } from '../FeatureFlagsContext';
-import { HotkeysContextProvider } from '../HotkeysContext';
-import { IdentityProvider } from '../IdentityContext';
-import LifecycleProvider from '../LifecycleProvider';
-import { MousePositionProvider } from '../MousePositionContext';
-import { PlanPricesProvider } from '../PlanPricesContext';
-import { ProjectConfigProvider } from '../ProjectConfigProvider';
-import StoreProvider, { StoreProviderProps } from '../StoreProvider';
-import { VoiceflowAssistantVisibilityProvider } from '../VoiceflowAssistantVisibility';
-import { PlatformProvider } from './PlatformProvider';
+import { DragProvider } from './DragContext';
+import { FeatureFlagsProvider } from './FeatureFlagsContext';
+import { HotkeysContextProvider } from './HotkeysContext';
+import { IdentityProvider } from './IdentityContext';
+import LifecycleProvider from './LifecycleProvider';
+import { PlanPricesProvider } from './PlanPricesContext';
+import SessionTrackerProvider from './SessionTrackerProvider';
+import StoreProvider, { StoreProviderProps } from './StoreProvider';
+import { VoiceflowAssistantVisibilityProvider } from './VoiceflowAssistantVisibility';
 
 export interface GlobalProvidersProps extends StoreProviderProps {
   history: History;
@@ -53,19 +49,16 @@ const GlobalProviders: React.FC<GlobalProvidersProps> = ({ history, store, persi
       [ThemeProvider, { theme: THEME }] satisfies ComponentTupple<typeof ThemeProvider>,
       CapabilitiesGate,
       MaintenanceGate,
+      SessionTrackerProvider,
       [LifecycleProvider, { history }] satisfies ComponentTupple<typeof LifecycleProvider>,
       FeatureFlagsProvider,
       FeatureLoadingGate,
       IdentityProvider,
       PlanPricesProvider,
-      EventualEngineProvider,
-      MousePositionProvider,
       DismissableLayersGlobalProvider,
       DragProvider,
-      AutoPanningProvider,
       HotkeysContextProvider,
-      ProjectConfigProvider,
-      PlatformProvider,
+
       ModalsV2.Provider,
       [Upload.Provider, { client: client.upload, onError: datadogRum.addError }] satisfies ComponentTupple<
         typeof Upload.Provider

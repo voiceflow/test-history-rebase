@@ -3,11 +3,11 @@ import { Divider, SectionV2, stopPropagation, System } from '@voiceflow/ui';
 import React from 'react';
 
 import { ControlledEditorProvider, FontStyles, HyperlinkButton, TextColor } from '@/components/SlateEditable';
-import { withRequiredEngine } from '@/contexts/EventualEngineContext';
 import { useTrackingEvents } from '@/hooks';
 import { Content } from '@/pages/Canvas/components/Editor';
 import type Engine from '@/pages/Canvas/engine';
 import { NodeEditorPropsType } from '@/pages/Canvas/managers/types';
+import { withRequiredEngine } from '@/pages/Project/contexts/EventualEngineContext';
 
 import { BackgroundColor, TextAligns, TextStyles } from './components';
 

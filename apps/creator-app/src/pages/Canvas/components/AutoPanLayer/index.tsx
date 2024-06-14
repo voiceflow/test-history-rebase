@@ -2,10 +2,10 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import _throttle from 'lodash/throttle';
 import React from 'react';
 
-import { AutoPanningCacheContext, AutoPanningSetContext } from '@/contexts/AutoPanningContext';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as UI from '@/ducks/ui';
 import { useEventualEngine, useRAF, useSelector } from '@/hooks';
+import { AutoPanningCacheContext, AutoPanningSetContext } from '@/pages/Project/contexts/AutoPanningContext';
 import { useEditingMode } from '@/pages/Project/hooks';
 import THEME from '@/styles/theme';
 import { HEADER_HEIGHT, SIDEBAR_WIDTH } from '@/styles/theme/page';

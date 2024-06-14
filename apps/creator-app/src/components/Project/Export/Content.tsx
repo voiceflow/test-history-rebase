@@ -6,7 +6,7 @@ import { ExportType } from '@/constants';
 
 import { Canvas } from './Canvas';
 import { EXPORT_TYPE_OPTIONS } from './constants';
-import { Context } from './Context';
+import { ProjectExportContext } from './Context';
 import { Model } from './Model';
 
 export const Content: React.FC<{
@@ -14,7 +14,7 @@ export const Content: React.FC<{
   withDataTypes?: boolean;
   disableAnimation?: boolean;
 }> = ({ checkedItems, withDataTypes = true, disableAnimation }) => {
-  const { exportType, setExportType } = React.useContext(Context)!;
+  const { exportType, setExportType } = React.useContext(ProjectExportContext)!;
 
   const Container = (disableAnimation ? Box : Animations.FadeLeft) as typeof Box;
 

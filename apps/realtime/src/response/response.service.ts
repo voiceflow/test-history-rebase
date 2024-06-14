@@ -3,7 +3,10 @@ import { Inject, Injectable } from '@nestjs/common';
 import { RequiredEntityORM, ResponseORM } from '@voiceflow/orm-designer';
 import _ from 'lodash';
 
+import { CMSTabularService } from '@/common';
+
 import { ResponseExportImportDataDTO } from './dtos/response-export-import-data.dto';
+import { ResponseLoguxService } from './response.logux.service';
 import { ResponseRepository } from './response.repository';
 import { ResponseCloneService } from './response-clone.service';
 import { ResponseExportService } from './response-export.service';
@@ -11,7 +14,7 @@ import { ResponseImportService } from './response-import.service';
 import { ResponseMigrationService } from './response-migration.service';
 
 @Injectable()
-export class ResponseService {
+export class ResponseService extends CMSTabularService<ResponseORM> {
   constructor(
     @Inject(ResponseORM)
     protected readonly orm: ResponseORM,
@@ -26,8 +29,12 @@ export class ResponseService {
     @Inject(ResponseImportService)
     private readonly importService: ResponseImportService,
     @Inject(ResponseMigrationService)
-    private readonly migrationService: ResponseMigrationService
-  ) {}
+    private readonly migrationService: ResponseMigrationService,
+    @Inject(ResponseLoguxService)
+    private readonly logux: ResponseLoguxService
+  ) {
+    super();
+  }
 
   toJSONWithSubResources(...data: Parameters<typeof this.repository.toJSONWithSubResources>) {
     return this.repository.toJSONWithSubResources(...data);
@@ -77,5 +84,17 @@ export class ResponseService {
 
   upsertManyWithSubResources(...data: Parameters<typeof this.migrationService.upsertManyWithSubResources>) {
     return this.migrationService.upsertManyWithSubResources(...data);
+  }
+
+  collectRelationsToDelete(...data: Parameters<typeof this.repository.collectRelationsToDelete>) {
+    return this.repository.collectRelationsToDelete(...data);
+  }
+
+  broadcastDeleteMany(...data: Parameters<typeof this.logux.broadcastDeleteMany>) {
+    return this.logux.broadcastDeleteMany(...data);
+  }
+
+  broadcastAddMany(...data: Parameters<typeof this.logux.broadcastAddMany>) {
+    return this.logux.broadcastAddMany(...data);
   }
 }

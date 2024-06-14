@@ -10,6 +10,7 @@ import {
   ObjectId,
   RequiredEntityORM,
   ResponseDiscriminatorObject,
+  ResponseMessageObject,
   ResponseObject,
   ResponseORM,
 } from '@voiceflow/orm-designer';
@@ -56,19 +57,21 @@ export class ResponseRepository extends CMSTabularService<ResponseORM> {
   }
 
   async findManyWithSubResourcesByEnvironment(environmentID: string) {
-    const [responses, responseVariants, responseAttachments, responseDiscriminators] = await Promise.all([
-      this.orm.findManyByEnvironment(environmentID),
-      this.responseVariant.findManyByEnvironment(environmentID),
-      this.responseAttachment.findManyByEnvironment(environmentID),
-      this.responseDiscriminator.findManyByEnvironment(environmentID),
-      this.responseMessage.findManyByEnvironment(environmentID),
-    ]);
+    const [responses, responseVariants, responseAttachments, responseDiscriminators, responseMessages] =
+      await Promise.all([
+        this.orm.findManyByEnvironment(environmentID),
+        this.responseVariant.findManyByEnvironment(environmentID),
+        this.responseAttachment.findManyByEnvironment(environmentID),
+        this.responseDiscriminator.findManyByEnvironment(environmentID),
+        this.responseMessage.findManyByEnvironment(environmentID),
+      ]);
 
     return {
       responses,
       responseVariants,
       responseAttachments,
       responseDiscriminators,
+      responseMessages,
     };
   }
 
@@ -77,7 +80,7 @@ export class ResponseRepository extends CMSTabularService<ResponseORM> {
     { userID, context }: { userID: number; context: CMSContext }
   ) {
     return this.postgresEM.transactional(async () => {
-      const dataWithIDs = data.map(({ id, variants, ...data }) => {
+      const dataWithIDs = data.map(({ id, variants, messages = [], ...data }) => {
         const responseID = id ?? new ObjectId().toJSON();
         const discriminatorID = new ObjectId().toJSON();
 
@@ -89,10 +92,19 @@ export class ResponseRepository extends CMSTabularService<ResponseORM> {
           discriminatorID,
         }));
 
+        const messagesWithIDs = messages.map((message) => ({
+          ...message,
+          id: message.id ?? new ObjectId().toJSON(),
+          assistantID: context.assistantID,
+          environmentID: context.environmentID,
+          discriminatorID,
+        }));
+
         return {
           ...data,
           id: responseID,
           variants: variantsWithIDs,
+          messages: messagesWithIDs,
           assistantID: context.assistantID,
           environmentID: context.environmentID,
           discriminator: {
@@ -122,11 +134,21 @@ export class ResponseRepository extends CMSTabularService<ResponseORM> {
         { userID, context }
       );
 
-      return {
+      const result = {
         ...responseVariantsWithSubResources,
         responses,
         responseDiscriminators,
       };
+
+      const messages = dataWithIDs.flatMap((data) => data.messages);
+
+      if (messages.length) {
+        const responseMessages = await this.responseMessage.createManyForUser(userID, messages);
+
+        return { ...result, responseMessages };
+      }
+
+      return result;
     });
   }
 
@@ -167,17 +189,20 @@ export class ResponseRepository extends CMSTabularService<ResponseORM> {
     responseVariants,
     responseAttachments,
     responseDiscriminators,
+    responseMessages,
   }: {
     responses: ResponseObject[];
     responseVariants: AnyResponseVariantObject[];
     responseAttachments: AnyResponseAttachmentObject[];
     responseDiscriminators: ResponseDiscriminatorObject[];
+    responseMessages?: ResponseMessageObject[];
   }) {
     return {
       responses: this.mapToJSON(responses),
       responseVariants: this.responseVariant.mapToJSON(responseVariants),
       responseAttachments: this.responseAttachment.mapToJSON(responseAttachments),
       responseDiscriminators: this.responseDiscriminator.mapToJSON(responseDiscriminators),
+      ...(responseMessages && { ...this.responseMessage.mapToJSON(responseMessages) }),
     };
   }
 
@@ -186,12 +211,14 @@ export class ResponseRepository extends CMSTabularService<ResponseORM> {
     responseVariants,
     responseAttachments,
     responseDiscriminators,
+    responseMessages,
   }: ResponseExportImportDataDTO) {
     return {
       responses: this.mapFromJSON(responses),
       responseVariants: this.responseVariant.mapFromJSON(responseVariants),
       responseAttachments: this.responseAttachment.mapFromJSON(responseAttachments),
       responseDiscriminators: this.responseDiscriminator.mapFromJSON(responseDiscriminators),
+      ...(responseMessages && { ...this.responseMessage.mapFromJSON(responseMessages) }),
     };
   }
 

@@ -212,6 +212,7 @@ workflows:
       - vfcommon/waiter:
           context: dev-test
           filters: *bors_branches_filters
+          wait-duration: 5
 
       - vfcommon/release-env:
           context: dev-test

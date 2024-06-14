@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.62.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.61.2...@voiceflow/sdk-logux-designer@2.62.0) (2024-06-14)
+
+### Features
+
+* reference add block action handler (COR-000) ([#8267](https://github.com/voiceflow/creator-app/issues/8267)) ([7e1312d](https://github.com/voiceflow/creator-app/commit/7e1312d3c656b6e3e89208b052bef6089dc2b6ff))
+
 ## [2.61.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.61.1...@voiceflow/sdk-logux-designer@2.61.2) (2024-06-14)
 
 **Note:** Version bump only for package @voiceflow/sdk-logux-designer

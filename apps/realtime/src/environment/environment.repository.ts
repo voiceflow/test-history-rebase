@@ -10,12 +10,10 @@ import { FunctionService } from '@/function/function.service';
 import { IntentService } from '@/intent/intent.service';
 import { ProjectService } from '@/project/project.service';
 import { ReferenceService } from '@/reference/reference.service';
-import { ResponseService } from '@/response/response.service';
+import { ResponseRepository } from '@/response/response.repository';
 import { VariableService } from '@/variable/variable.service';
 import { VersionService } from '@/version/version.service';
 import { WorkflowService } from '@/workflow/workflow.service';
-
-import { IntentsAndEntitiesData } from './environment.interface';
 
 @Injectable()
 export class EnvironmentRepository {
@@ -38,8 +36,8 @@ export class EnvironmentRepository {
     private readonly variable: VariableService,
     @Inject(WorkflowService)
     private readonly workflow: WorkflowService,
-    @Inject(ResponseService)
-    private readonly response: ResponseService,
+    @Inject(ResponseRepository)
+    private readonly response: ResponseRepository,
     @Inject(FunctionService)
     private readonly functions: FunctionService,
     @Inject(ReferenceService)
@@ -159,27 +157,5 @@ export class EnvironmentRepository {
       responseAttachments,
       responseDiscriminators,
     };
-  }
-
-  async upsertIntentsAndEntities(
-    {
-      intents,
-      entities,
-      responses,
-      utterances,
-      entityVariants,
-      requiredEntities,
-      responseVariants,
-      responseDiscriminators,
-    }: IntentsAndEntitiesData,
-    meta: { userID: number; assistantID: string; environmentID: string }
-  ) {
-    // ORDER MATTERS
-    await this.entity.upsertManyWithSubResources({ entities, entityVariants }, meta);
-    await this.response.upsertManyWithSubResources(
-      { responses, responseVariants, responseAttachments: [], responseDiscriminators },
-      meta
-    );
-    await this.intent.upsertManyWithSubResources({ intents, utterances, requiredEntities }, meta);
   }
 }

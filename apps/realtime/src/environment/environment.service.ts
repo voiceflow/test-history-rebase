@@ -82,7 +82,7 @@ export class EnvironmentService {
     },
     meta: { userID: number; assistantID: string; environmentID: string }
   ) {
-    return this.repository.upsertIntentsAndEntities(data, meta);
+    return this.migrationService.upsertIntentsAndEntities(data, meta);
   }
 
   async deleteOneCMSData(environmentID: string) {

@@ -7,6 +7,7 @@ import type {
   PromptResponseVariantCreate,
   PromptResponseVariantWithPrompt,
   ResponseCardAttachment,
+  ResponseMessage,
   ResponseMessageCreate,
   TextResponseVariant,
   TextResponseVariantCreate,
@@ -83,6 +84,8 @@ export const isTextResponseVariant = (
 
 export const isTextResponseVariantEmpty = (responseVariant: TextResponseVariant | PartialTextResponseVariant) =>
   isMarkupEmpty(responseVariant.text);
+
+export const isResponseMessageEmpty = (responseMessage: ResponseMessage) => isMarkupEmpty(responseMessage.text);
 
 export const isPromptResponseVariantWidthDataEmpty = (
   responseVariant: PromptResponseVariantWithPrompt | PartialPromptResponseVariant

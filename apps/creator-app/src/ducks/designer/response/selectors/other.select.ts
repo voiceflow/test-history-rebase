@@ -1,3 +1,4 @@
+import type { ResponseType } from '@voiceflow/dtos';
 import { createSelector } from 'reselect';
 
 import { createByFolderIDSelectors } from '../../utils/selector.util';
@@ -14,6 +15,12 @@ export const oneWithRelationsByID = createSelector(
       discriminators: [],
     }
 );
+
+export const allByFolderIDAndType = (type: ResponseType) =>
+  createSelector(allByFolderID, (responses) => responses.filter((response) => response.type === type));
+
+export const allByFolderIDsAndType = (type: ResponseType) =>
+  createSelector(allByFolderIDs, (responses) => responses.filter((response) => response.type === type));
 
 export const mapFirstVariantByResponseID = createSelector(
   [allResponses, allDiscriminators, mapVariants],

@@ -1,8 +1,6 @@
-import { Enum } from '@/utils/type/enum.util';
-
 export const ResponseType = {
   PROMPT: 'prompt',
-  TEXT: 'text',
+  MESSAGE: 'message',
 } as const;
 
 export type ResponseType = Enum<typeof ResponseType>;

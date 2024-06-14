@@ -1,7 +1,8 @@
 import { z } from 'zod';
 
-import { AnyCompiledConditionDTO } from '@/condition/compiled/condition.compiled.dto';
 import { SlateTextValueDTO } from '@/text/text.dto';
+
+import { BaseCompiledResponseVariantDTO } from './base-variant.compiled.dto';
 
 export const CompiledResponseMessageDataDTO = z
   .object({
@@ -12,11 +13,8 @@ export const CompiledResponseMessageDataDTO = z
 
 export type CompiledResponseMessageData = z.infer<typeof CompiledResponseMessageDataDTO>;
 
-export const CompiledResponseMessageDTO = z
-  .object({
-    conditions: AnyCompiledConditionDTO.array(),
-    data: CompiledResponseMessageDataDTO,
-  })
-  .strict();
+export const CompiledResponseMessageDTO = BaseCompiledResponseVariantDTO.extend({
+  data: CompiledResponseMessageDataDTO,
+}).strict();
 
 export type CompiledResponseMessage = z.infer<typeof CompiledResponseMessageDTO>;

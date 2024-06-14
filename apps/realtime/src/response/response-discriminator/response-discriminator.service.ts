@@ -8,6 +8,7 @@ import type {
   AnyResponseAttachmentObject,
   AnyResponseVariantObject,
   ResponseDiscriminatorObject,
+  ResponseMessageObject,
 } from '@voiceflow/orm-designer';
 import { AssistantORM, DatabaseTarget, ResponseDiscriminatorORM, ResponseORM } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
@@ -17,6 +18,7 @@ import type { CMSCreateForUserData } from '@/common/types';
 import { cmsBroadcastContext, injectAssistantAndEnvironmentIDs, toPostgresEntityIDs } from '@/common/utils';
 import { CMSBroadcastMeta, CMSContext } from '@/types';
 
+import { ResponseMessageRepository } from '../response-message/response-message.repository';
 import { ResponseVariantService } from '../response-variant/response-variant.service';
 
 @Injectable()
@@ -41,7 +43,9 @@ export class ResponseDiscriminatorService extends CMSObjectService<ResponseDiscr
     @Inject(LoguxService)
     protected readonly logux: LoguxService,
     @Inject(ResponseVariantService)
-    protected readonly responseVariant: ResponseVariantService
+    protected readonly responseVariant: ResponseVariantService,
+    @Inject(ResponseMessageRepository)
+    protected readonly responseMessage: ResponseMessageRepository
   ) {
     super();
   }
@@ -76,6 +80,7 @@ export class ResponseDiscriminatorService extends CMSObjectService<ResponseDiscr
         add: {
           prompts: [],
           responseVariants: [],
+          responseMessages: [],
           responseAttachments: [],
           responseDiscriminators,
         },
@@ -91,6 +96,7 @@ export class ResponseDiscriminatorService extends CMSObjectService<ResponseDiscr
         responseVariants: AnyResponseVariantObject[];
         responseAttachments: AnyResponseAttachmentObject[];
         responseDiscriminators: ResponseDiscriminatorObject[];
+        responseMessages?: ResponseMessageObject[];
       };
     },
     meta: CMSBroadcastMeta
@@ -98,7 +104,7 @@ export class ResponseDiscriminatorService extends CMSObjectService<ResponseDiscr
     await Promise.all([
       this.responseVariant.broadcastAddMany(
         {
-          add: Utils.object.pick(add, ['responseVariants', 'responseAttachments']),
+          add: Utils.object.pick(add, ['responseVariants', 'responseAttachments', 'responseMessages']),
           // no need to sync, cause should be synced on create
           sync: { responseDiscriminators: [] },
         },
@@ -131,6 +137,8 @@ export class ResponseDiscriminatorService extends CMSObjectService<ResponseDiscr
 
   async collectRelationsToDelete(environmentID: string, ids: string[]) {
     const responseVariants = await this.responseVariant.findManyByDiscriminators(environmentID, ids);
+    const responseMessages = await this.responseMessage.findManyByDiscriminators(environmentID, ids);
+
     const relations = await this.responseVariant.collectRelationsToDelete(
       environmentID,
       toPostgresEntityIDs(responseVariants)
@@ -138,6 +146,7 @@ export class ResponseDiscriminatorService extends CMSObjectService<ResponseDiscr
 
     return {
       ...relations,
+      responseMessages,
       responseVariants,
     };
   }
@@ -168,6 +177,7 @@ export class ResponseDiscriminatorService extends CMSObjectService<ResponseDiscr
         responseVariants: AnyResponseVariantObject[];
         responseAttachments: AnyResponseAttachmentObject[];
         responseDiscriminators: ResponseDiscriminatorObject[];
+        responseMessages: ResponseMessageObject[];
       };
     },
     meta: CMSBroadcastMeta
@@ -185,7 +195,7 @@ export class ResponseDiscriminatorService extends CMSObjectService<ResponseDiscr
         {
           // no need to sync discriminators, because they are deleted
           sync: { responseDiscriminators: [] },
-          delete: Utils.object.pick(del, ['responseVariants', 'responseAttachments']),
+          delete: Utils.object.pick(del, ['responseVariants', 'responseAttachments', 'responseMessages']),
         },
         meta
       ),

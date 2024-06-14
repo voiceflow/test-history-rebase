@@ -16,6 +16,7 @@ import { ProjectSerializer } from '@/project/project.serializer';
 import { ReferenceModule } from '@/reference/reference.module';
 import { ResponseModule } from '@/response/response.module';
 import { ResponseDiscriminatorModule } from '@/response/response-discriminator/response-discriminator.module';
+import { ResponseMessageModule } from '@/response/response-message/response-message.module';
 import { ResponseVariantModule } from '@/response/response-variant/response-variant.module';
 import { VariableModule } from '@/variable/variable.module';
 import { VersionModule } from '@/version/version.module';
@@ -52,6 +53,7 @@ import { EnvironmentPublicHTTPController } from './environment-public.http.contr
     EntityVariantModule,
     RequiredEntityModule,
     ResponseVariantModule,
+    ResponseMessageModule,
     ResponseDiscriminatorModule,
     forwardRef(() => ProjectModule),
   ],

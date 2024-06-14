@@ -17,7 +17,7 @@ import { ResponseVariantModule } from './response-variant/response-variant.modul
 
 @Module({
   imports: [ResponseVariantModule, ResponseAttachmentModule, ResponseDiscriminatorModule, ResponseMessageModule],
-  exports: [ResponseService],
+  exports: [ResponseService, ResponseRepository],
   providers: [
     ResponseORM,
     RequiredEntityORM,

@@ -6,6 +6,7 @@ import {
   AnyResponseVariantObject,
   RequiredEntityObject,
   ResponseDiscriminatorObject,
+  ResponseMessageObject,
   ResponseObject,
 } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
@@ -38,10 +39,18 @@ export class ResponseLoguxService {
         responseVariants: AnyResponseVariantObject[];
         responseAttachments: AnyResponseAttachmentObject[];
         responseDiscriminators: ResponseDiscriminatorObject[];
+        responseMessages?: ResponseMessageObject[];
       };
     },
     meta: CMSBroadcastMeta
   ) {
+    const toDelete = Utils.object.pick(del, [
+      'responseVariants',
+      'responseAttachments',
+      'responseDiscriminators',
+      'responseMessages',
+    ]);
+
     await Promise.all([
       this.broadcastSyncOnDelete({ sync }, meta),
 
@@ -54,7 +63,12 @@ export class ResponseLoguxService {
       ),
 
       this.responseDiscriminator.broadcastDeleteMany(
-        { delete: Utils.object.pick(del, ['responseVariants', 'responseAttachments', 'responseDiscriminators']) },
+        {
+          delete: {
+            ...toDelete,
+            responseMessages: toDelete.responseMessages || [],
+          },
+        },
         meta
       ),
     ]);

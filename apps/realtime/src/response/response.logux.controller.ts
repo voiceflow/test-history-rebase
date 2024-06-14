@@ -8,15 +8,12 @@ import { BroadcastOnly, InjectRequestContext, UseRequestContext } from '@/common
 
 import { ResponseLoguxService } from './response.logux.service';
 import { ResponseRepository } from './response.repository';
-import { ResponseService } from './response.service';
 import { ResponseDuplicateService } from './response-duplicate.service';
 
 @Controller()
 @InjectRequestContext()
 export class ResponseLoguxController {
   constructor(
-    @Inject(ResponseService)
-    private readonly service: ResponseService,
     @Inject(ResponseLoguxService)
     private readonly logux: ResponseLoguxService,
     @Inject(ResponseRepository)
@@ -35,7 +32,10 @@ export class ResponseLoguxController {
     @Payload() { data, context }: Actions.Response.CreateOne.Request,
     @AuthMeta() auth: AuthMetaPayload
   ): Promise<Actions.Response.CreateOne.Response> {
-    const result = await this.repository.createManyResponses([data], { userID: auth.userID, context });
+    const result = await this.repository.createManyResponses([data], {
+      userID: auth.userID,
+      context,
+    });
 
     this.logux.broadcastAddMany({ add: result }, { auth, context });
 

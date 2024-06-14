@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1571.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1570.1...@voiceflow/creator-app@1.1571.0) (2024-06-14)
+
+### Features
+
+* remove TextEditorVariablesPopoverContext (COR-2360) ([#8313](https://github.com/voiceflow/creator-app/issues/8313)) ([a2b8f27](https://github.com/voiceflow/creator-app/commit/a2b8f27fc60ff99999cd0f8d2325207fbf74c614))
+
 ## [1.1570.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1570.0...@voiceflow/creator-app@1.1570.1) (2024-06-14)
 
 **Note:** Version bump only for package @voiceflow/creator-app

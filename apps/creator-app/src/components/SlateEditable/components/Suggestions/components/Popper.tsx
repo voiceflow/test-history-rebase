@@ -22,7 +22,6 @@ import { denormalize,Normalized } from 'normal-store';
 import React from 'react';
 import { useDismissable } from 'react-dismissable-layers';
 
-import { TextEditorVariablesPopoverContext } from '@/contexts/TextEditorVariablesPopoverContext';
 import { useTheme } from '@/hooks/theme';
 
 import { useSlateEditor } from '../../../contexts';
@@ -82,7 +81,6 @@ const Popper = <T extends PopperItem>({
 
   const theme = useTheme();
   const editor = useSlateEditor();
-  const portalNode = React.useContext(TextEditorVariablesPopoverContext);
 
   const items = React.useMemo(() => _sortBy(suggestions ? denormalize(suggestions) : [], 'name'), [suggestions]);
   const formattedSearch = React.useMemo(() => formatter?.(search) ?? search, [search, formatter]);
@@ -186,7 +184,7 @@ const Popper = <T extends PopperItem>({
   }, []);
 
   return (
-    <Portal portalNode={portalNode}>
+    <Portal portalNode={document.body}>
       <div
         ref={popper.setPopperElement}
         style={{ ...popper.styles.popper, zIndex: theme.zIndex.popper }}

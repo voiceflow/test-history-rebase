@@ -1,6 +1,6 @@
 <!-- You can erase any parts of this template not applicable to your Pull Request. -->
 
-**Fixes or implements VF-XXX**
+**Fixes or implements COR-XXX**
 
 ### Brief description. What is this change?
 

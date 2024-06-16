@@ -25,7 +25,7 @@ import { cmsBroadcastContext, injectAssistantAndEnvironmentIDs, toPostgresEntity
 import { CMSBroadcastMeta, CMSContext } from '@/types';
 
 import type { FunctionExportDataDTO } from './dtos/function-export-data.dto';
-import type { FunctionImportDataDTO } from './dtos/function-import-data.dto';
+import type { FunctionImportDataDTO, FunctionImportDTO } from './dtos/function-import-data.dto';
 import { FunctionImportDataDTO as FunctionImportData } from './dtos/function-import-data.dto';
 import { FunctionPathService } from './function-path/function-path.service';
 import { FunctionVariableService } from './function-variable/function-variable.service';
@@ -183,7 +183,9 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
     { functions, functionPaths, functionVariables }: FunctionImportDataDTO
   ) {
     const currentFunctions = await this.findManyByEnvironmentAndIDs(environmentID, toPostgresEntityIDs(functions));
-    const existingFunctions = functions.filter((item) => item.id && currentFunctions.find(({ id }) => id === item.id));
+    const existingFunctions = functions
+      .filter((item) => item.id && currentFunctions.find(({ id }) => id === item.id))
+      .map((f) => ({ ...f, pathOrder: f.pathOrder ?? [] }));
 
     return {
       functions: functions.filter((item) => item.id && !currentFunctions.find(({ id }) => id === item.id)),
@@ -216,7 +218,7 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
 
     const orderedFunctionPaths = [...functionPaths].sort(sortByCreatedAt);
     const functionPathsByFunction = _.groupBy(orderedFunctionPaths, (item) => item.functionID);
-    const getPathOrder = (func: FunctionType) =>
+    const getPathOrder = (func: FunctionImportDTO) =>
       func.pathOrder ? func.pathOrder : functionPathsByFunction[func.id]?.map((path) => path.id) ?? [];
 
     if (backup) {

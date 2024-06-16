@@ -36,7 +36,6 @@ import { MousePositionProvider } from '../MousePositionContext';
 import { PlanPricesProvider } from '../PlanPricesContext';
 import { ProjectConfigProvider } from '../ProjectConfigProvider';
 import StoreProvider, { StoreProviderProps } from '../StoreProvider';
-import { TextEditorVariablesPopoverProvider } from '../TextEditorVariablesPopoverContext';
 import { VoiceflowAssistantVisibilityProvider } from '../VoiceflowAssistantVisibility';
 import { PlatformProvider } from './PlatformProvider';
 
@@ -60,9 +59,6 @@ const GlobalProviders: React.FC<GlobalProvidersProps> = ({ history, store, persi
       IdentityProvider,
       PlanPricesProvider,
       EventualEngineProvider,
-      [TextEditorVariablesPopoverProvider, { value: document.body }] satisfies ComponentTupple<
-        typeof TextEditorVariablesPopoverProvider
-      >,
       MousePositionProvider,
       DismissableLayersGlobalProvider,
       DragProvider,

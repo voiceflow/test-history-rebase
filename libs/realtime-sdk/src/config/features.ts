@@ -55,15 +55,13 @@ export enum FeatureFlag {
 
   AI_CAPTURE = 'ai_capture',
 
-  HTTP_ASSISTANT_CMS = 'http_assistant_cms',
-
   INTENT_CLASSIFICATION = 'intent_classification',
 
   VF_CHUNKS_VARIABLE = 'vf_chunks_variable',
 
-  CMS_WORKFLOWS = 'cms_workflows',
-
   UNLIMITED_KB_DOCS_FF = 'unlimited_kb_docs_ff',
+
+  KB_EMBEDDING_MODEL_SETTING = 'kb_embedding_model_setting',
 
   // functions
   FUNCTION_LISTEN = 'function_listen',
@@ -76,8 +74,12 @@ export enum FeatureFlag {
   // CMS
   CMS_RESPONSES = 'cms_response',
 
-  TRIGGER_STEP = 'trigger_step',
+  HTTP_LOAD_ENVIRONMENT = 'http_load_environment',
+  REFERENCE_SYSTEM = 'reference_system',
 
-  // Export
-  EXPORT_SPECIFIC_OBJECT = 'export_specific_object',
+  NEW_ORGANIZATION_MEMBERS = 'new_organization_members',
+  NEW_WORKSPACE_MEMBERS = 'new_workspace_members',
+  NEW_PROJECT_MEMBERS = 'new_project_members',
+
+  V3_SET_STEP = 'v3_set_step',
 }

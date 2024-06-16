@@ -1,6 +1,7 @@
 import * as Platform from '@voiceflow/platform-config/backend';
 
 export * from './block';
+export * from './knowledge-base';
 export * from './platform';
 export * from './user';
 
@@ -12,7 +13,6 @@ export const PROJECT_LIST_KEY = 'project_list';
 export const VERSION_KEY = 'version';
 export const SCHEMA_KEY = 'schema';
 export const DIAGRAM_KEY = 'diagram';
-export const DOMAIN_KEY = 'domain';
 export const INTENT_KEY = 'intent';
 export const THREAD_KEY = 'thread';
 export const SLOT_KEY = 'slot';
@@ -36,8 +36,6 @@ export const INVITE_KEY = 'invite';
 export const VARIABLES_KEY = 'variables';
 export const TOPIC_KEY = 'topic';
 export const COMPONENT_KEY = 'component';
-export const SUBTOPIC_KEY = 'subtopic';
-export const MENU_ITEM_KEY = 'menu_item';
 export const COMPONENTS_KEY = 'components';
 export const CANVAS_TEMPLATE_KEY = 'canvas_template';
 export const CANVAS_TEMPLATE_DATA_KEY = 'canvas_template_data';
@@ -60,7 +58,10 @@ export const DEFAULT_PROJECT_LIST_NAME = 'Default List';
 export const CUSTOM_SLOT_TYPE = 'Custom';
 export const LEGACY_CUSTOM_SLOT_TYPE = 'CUSTOM';
 
-export const PLATFORMS_WITH_EDITABLE_NO_REPLY_DELAY = [Platform.Constants.PlatformType.VOICEFLOW, Platform.Constants.PlatformType.WEBCHAT] as const;
+export const PLATFORMS_WITH_EDITABLE_NO_REPLY_DELAY = [
+  Platform.Constants.PlatformType.VOICEFLOW,
+  Platform.Constants.PlatformType.WEBCHAT,
+] as const;
 
 export enum DialogType {
   AUDIO = 'audio',

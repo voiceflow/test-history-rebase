@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-namespace */
 import { BlockType } from '@realtime-sdk/constants';
 import { AlexaNode } from '@voiceflow/alexa-types';
 import { BaseButton, BaseModels, BaseNode } from '@voiceflow/base-types';
 import { ChatNode } from '@voiceflow/chat-types';
 import { EmptyObject, Nullable } from '@voiceflow/common';
-import { FunctionNodeData, StartNodeData, TriggerNodeData } from '@voiceflow/dtos';
+import { FunctionNodeData, ResponseNodeData, StartNodeData, TriggerNodeData } from '@voiceflow/dtos';
 import * as Platform from '@voiceflow/platform-config/backend';
 import { VoiceNode } from '@voiceflow/voice-types';
 import { VoiceflowNode } from '@voiceflow/voiceflow-types';
@@ -201,6 +202,7 @@ export namespace NodeData {
     [BaseModels.PortType.NO_REPLY]?: string;
     [BaseModels.PortType.NEXT]?: string;
   }
+
   export namespace CardV2 {
     export type Button = BaseNode.CardV2.CardV2Button;
   }
@@ -362,6 +364,7 @@ export namespace NodeData {
   export interface IntentBuiltInPorts {
     [BaseModels.PortType.NEXT]: string;
   }
+
   export namespace Intent {
     export interface PlatformData {
       intent: string | null;
@@ -412,7 +415,8 @@ export namespace NodeData {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
   export interface Exit {}
 
-  export interface Buttons extends Omit<VoiceflowNode.Buttons.StepData, 'else' | 'noMatch' | 'reprompt' | 'noReply' | 'diagramID'> {
+  export interface Buttons
+    extends Omit<VoiceflowNode.Buttons.StepData, 'else' | 'noMatch' | 'reprompt' | 'noReply' | 'diagramID'> {
     noMatch: Nullable<NoMatch>;
     noReply: Nullable<NoReply>;
   }
@@ -467,10 +471,6 @@ export namespace NodeData {
     diagramID?: Nullable<string>;
   }
 
-  export interface GoToDomain {
-    domainID?: Nullable<string>;
-  }
-
   export interface Url {
     url: string;
   }
@@ -512,6 +512,8 @@ export namespace NodeData {
   export type Function = DTONodeData<FunctionNodeData>;
 
   export type Trigger = DTONodeData<TriggerNodeData>;
+
+  export type Response = DTONodeData<ResponseNodeData>;
 }
 
 export interface NodeDataMap {
@@ -521,6 +523,7 @@ export interface NodeDataMap {
   [BlockType.COMMENT]: unknown;
   [BlockType.ACTIONS]: NodeData.Actions;
 
+  [BlockType.RESPONSE]: NodeData.Response;
   [BlockType.TEXT]: NodeData.Text;
   [BlockType.SPEAK]: NodeData.Speak;
   [BlockType.AI_RESPONSE]: NodeData.AIResponse;
@@ -531,8 +534,6 @@ export interface NodeDataMap {
   [BlockType.EXIT]: NodeData.Exit;
   [BlockType.GO_TO_NODE]: NodeData.GoToNode;
   [BlockType.GO_TO_INTENT]: NodeData.GoToIntent;
-  // TODO: remove when FeatureFlag.CMS_WORKFLOWS is released
-  [BlockType.GO_TO_DOMAIN]: NodeData.GoToDomain;
 
   [BlockType.SET]: unknown;
   [BlockType.SETV2]: NodeData.SetV2;

@@ -8,7 +8,6 @@ import canvasTemplate, * as CanvasTemplate from '@/ducks/canvasTemplate';
 import creatorV2, * as CreatorV2 from '@/ducks/creatorV2';
 import customBlock, * as CustomBlock from '@/ducks/customBlock';
 import diagramV2, * as DiagramV2 from '@/ducks/diagramV2';
-import domain, * as Domain from '@/ducks/domain';
 import feature, * as Feature from '@/ducks/feature';
 import history, * as History from '@/ducks/history';
 import notifications, * as Notifications from '@/ducks/notifications';
@@ -83,7 +82,6 @@ const getCombinedReducer = (browserHistory: BrowserHistory) =>
     [ReportTag.STATE_KEY]: reportTag,
     [Transcript.STATE_KEY]: transcript,
     [History.STATE_KEY]: history,
-    [Domain.STATE_KEY]: domain,
     [CanvasTemplate.STATE_KEY]: canvasTemplate,
     [CustomBlock.STATE_KEY]: customBlock,
     [Organization.STATE_KEY]: Organization.reducer,

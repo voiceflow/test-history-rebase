@@ -10,7 +10,6 @@ import {
   ToggleCanvasOnly,
   ToggleCanvasSidebar,
   ToggleCommentVisibility,
-  ToggleDomainThreadsOnly,
   ToggleMentionedThreadsOnly,
   ToggleWorkflowThreadsOnly,
 } from './ui.action';
@@ -31,7 +30,6 @@ const baseUIReducer = reducerWithInitialState<UIState>(INITIAL_STATE)
     canvasSidebar: { ...state.canvasSidebar, visible: visible ?? !state.canvasSidebar?.visible },
   }))
   .case(ToggleCommentVisibility, (state) => ({ ...state, commentsVisible: !state.commentsVisible }))
-  .case(ToggleDomainThreadsOnly, (state) => ({ ...state, domainThreadsOnly: !state.domainThreadsOnly }))
   .case(ToggleMentionedThreadsOnly, (state) => ({ ...state, mentionedThreadsOnly: !state.mentionedThreadsOnly }))
   .case(ToggleWorkflowThreadsOnly, (state) => ({ ...state, workflowThreadsOnly: !state.workflowThreadsOnly }));
 

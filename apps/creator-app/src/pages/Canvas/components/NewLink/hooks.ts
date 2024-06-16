@@ -56,7 +56,10 @@ export const useNewLinkAPI = <T extends SVGElement>() => {
       show: (rect) => {
         const moveRect = DOMRect.fromRect(rect);
 
-        const newLinkedRects = engine.linkCreation.getLinkedRects(moveRect, { relative: true, targetIsCanvasRect: false });
+        const newLinkedRects = engine.linkCreation.getLinkedRects(moveRect, {
+          relative: true,
+          targetIsCanvasRect: false,
+        });
 
         if (!newLinkedRects) return;
 
@@ -65,13 +68,22 @@ export const useNewLinkAPI = <T extends SVGElement>() => {
         setVisible(true);
 
         const onMouseMove = () => {
-          if (isPinned.current || isAutoPanning.current || engine.linkCreation.isCompleting || engine.linkCreation.blockViaLinkMenuOpened) return;
+          if (
+            isPinned.current ||
+            isAutoPanning.current ||
+            engine.linkCreation.isCompleting ||
+            engine.linkCreation.blockViaLinkMenuOpened
+          )
+            return;
 
           const mousePosition = engine.getCanvasMousePosition();
 
           [moveRect.x, moveRect.y] = mousePosition;
 
-          linkedRects.current = engine.linkCreation.getLinkedRects(moveRect, { relative: true, targetIsCanvasRect: true });
+          linkedRects.current = engine.linkCreation.getLinkedRects(moveRect, {
+            relative: true,
+            targetIsCanvasRect: true,
+          });
 
           redrawScheduler(() => {
             engine.linkCreation.redrawNewLink(linkedRects.current);
@@ -85,7 +97,11 @@ export const useNewLinkAPI = <T extends SVGElement>() => {
 
           if (engine.linkCreation.activeTargetPortID) {
             engine.linkCreation.complete(engine.linkCreation.activeTargetPortID);
-          } else if (engine.linkCreation.blockViaLinkMode && !engine.linkCreation.blockViaLinkMenuOpened && event.button !== 2) {
+          } else if (
+            engine.linkCreation.blockViaLinkMode &&
+            !engine.linkCreation.blockViaLinkMenuOpened &&
+            event.button !== 2
+          ) {
             showStepMenu(event);
           } else if (!engine.linkCreation.isCompleting && !engine.linkCreation.blockViaLinkMenuOpened) {
             engine.linkCreation.abort();

@@ -47,20 +47,21 @@ export class DiagramEntity extends MongoEntity {
   @Property()
   variables!: string[];
 
+  /**
+   * @deprecated not used anymore
+   */
   @Property({ nullable: true })
   menuItems?: DiagramMenuItem[];
 
   /**
    * @deprecated use `menuItems` instead
    */
-
   @Property({ nullable: true })
   menuNodeIDs?: string[];
 
   /**
    * @deprecated use `menuNodeIDs` instead
    */
-
   @Property({ nullable: true })
   intentStepIDs?: string[];
 

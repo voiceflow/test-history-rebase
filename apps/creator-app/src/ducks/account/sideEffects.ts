@@ -1,5 +1,3 @@
-import { Struct } from '@voiceflow/common';
-
 import client from '@/client';
 import { openError } from '@/ModalsV2/utils';
 import { Thunk } from '@/store/types';
@@ -19,6 +17,13 @@ export const updateUserProfileImage =
     }
   };
 
+export const updateUserProfileName =
+  (name: string): Thunk =>
+  async (dispatch) => {
+    await client.identity.user.update({ name });
+    dispatch(updateAccount({ name }));
+  };
+
 export const verifySignupEmailToken =
   (token: string): Thunk =>
   async (dispatch) => {
@@ -28,9 +33,9 @@ export const verifySignupEmailToken =
   };
 
 export const resendSignupVerificationEmail =
-  ({ query = {} }: { query?: Struct } = {}): Thunk =>
+  ({ query = {}, partnerKey }: { query?: Record<any, any>; partnerKey?: string } = {}): Thunk =>
   async () => {
-    await client.identity.user.resendSignupVerificationEmail({ metadata: { inviteParams: query } });
+    await client.identity.user.resendSignupVerificationEmail({ metadata: { inviteParams: query, partnerKey } });
   };
 
 export const sendUpdateEmailEmail =

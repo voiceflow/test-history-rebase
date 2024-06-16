@@ -27,7 +27,6 @@ export interface ChipProps extends React.PropsWithChildren {
 }
 
 const Chip: React.FC<ChipProps> = ({ icon, name, portID, children, className, placeholder }) => {
-  // eslint-disable-next-line xss/no-mixed-html
   const api = React.useContext(ChipAPIContext)! as ChipAPI<HTMLDivElement>;
 
   const [label, setLabel] = useLinkedState(api.name || name || '');

@@ -25,7 +25,7 @@ const compilePrototype =
       await platformPrototypeService.renderSync(versionID, compilerOptions);
     } catch (err) {
       datadogRum.addError(err);
-      return openError({ error: 'Could Not Render Your Test Assistant' });
+      await openError({ error: 'Could Not Render Your Test Agent' });
     }
   };
 

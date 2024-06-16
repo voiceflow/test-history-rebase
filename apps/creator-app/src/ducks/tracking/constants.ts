@@ -29,7 +29,7 @@ export enum EventName {
   PROJECT_NEW_THREAD_REPLY = 'New Thread Reply Created',
   PROJECT_PUBLISH_ATTEMPT = 'Publish Attempt',
   INTERACTION_MODEL_EXPORTED = 'Interaction Model Exported',
-  PROJECT_TRAIN_ASSISTANT = 'Train Assistant',
+  PROJECT_TRAIN_ASSISTANT = 'Train Agent',
   PROJECT_MOVE_TYPE_CHANGED = 'Move Type',
   PROJECT_BLOCK_TEST_START = 'Start Test from Block',
   PROJECT_CANVAS_PROTOTYPE_END = 'Prototype Test Completed',

@@ -11,6 +11,7 @@ export * as Intent from './intent';
 export * as KnowledgeBase from './knowledge-base';
 export * as Persona from './persona';
 export * as Prompt from './prompt';
+export * as Reference from './reference';
 export * as Response from './response';
 export * as Thread from './thread';
 export * as Variable from './variable';

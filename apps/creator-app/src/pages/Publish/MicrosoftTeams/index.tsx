@@ -26,7 +26,7 @@ const MicrosoftTeams: React.FC = () => {
           small
           title="Publishing to Microsoft Teams"
           onClick={() => openInternalURLInANewTab(MS_TEAMS_DOCUMENTATION)}
-          subtitle="Make your assistant instantly accessible on Microsoft Teams."
+          subtitle="Make your agent instantly accessible on Microsoft Teams."
           buttonText="Documentation"
         />
       </Settings.Section>
@@ -41,7 +41,7 @@ const MicrosoftTeams: React.FC = () => {
         submitSecrets={submitSecrets}
         description={
           <>
-            Copy paste your Bot ID and Client Secret to connect your assistant to Microsoft Teams.{' '}
+            Copy paste your Bot ID and Client Secret to connect your agent to Microsoft Teams.{' '}
             <Link href={MS_TEAMS_DOCUMENTATION}>Learn more</Link>
           </>
         }

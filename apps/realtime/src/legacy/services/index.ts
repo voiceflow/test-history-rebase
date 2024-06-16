@@ -9,6 +9,7 @@ import { FlowService } from '@/flow/flow.service';
 import { OrganizationIdentityService } from '@/organization/identity/identity.service';
 import type { ProjectService as ProjectServiceV2 } from '@/project/project.service';
 import { ProjectListService } from '@/project-list/project-list.service';
+import { ReferenceService } from '@/reference/reference.service';
 import { ThreadService } from '@/thread/thread.service';
 import type { Config } from '@/types';
 import type { UserService } from '@/user/user.service';
@@ -20,7 +21,6 @@ import BillingService from './billing';
 import CanvasTemplateService from './canvasTemplate';
 import CustomBlockService from './customBlock';
 import DiagramService from './diagram';
-import DomainService from './domain';
 import FeatureService from './feature';
 import LockService from './lock';
 import MigrateService from './migrate';
@@ -37,10 +37,6 @@ export interface ServiceMap extends BaseServiceMap {
   user: UserService;
   flow: FlowService;
   thread: ThreadService;
-  /**
-   * @deprecated remove when FeatureFlag.CMS_WORKFLOWS are released
-   */
-  domain: DomainService;
   viewer: ViewerService;
   billing: BillingService;
   diagram: DiagramService;
@@ -56,6 +52,7 @@ export interface ServiceMap extends BaseServiceMap {
   voiceflow: VoiceflowService;
   workspace: WorkspaceService;
   assistant: AssistantService;
+  reference: ReferenceService;
   customBlock: CustomBlockService;
   projectList: ProjectListService;
   organization: OrganizationIdentityService;
@@ -83,6 +80,7 @@ interface Options {
     workflow: WorkflowService;
     hashedID: HashedIDService;
     assistant: AssistantService;
+    reference: ReferenceService;
     projectList: ProjectListService;
     organization: OrganizationIdentityService;
     requestContext: {
@@ -102,7 +100,6 @@ const buildServices = ({ config, clients, models, log, injectedServices }: Optio
     flow: injectedServices.flow,
     thread: injectedServices.thread,
     viewer: new ViewerService(serviceOptions),
-    domain: new DomainService(serviceOptions),
     billing: new BillingService(serviceOptions),
     diagram: new DiagramService(serviceOptions),
     project: new ProjectService(serviceOptions),
@@ -114,6 +111,7 @@ const buildServices = ({ config, clients, models, log, injectedServices }: Optio
     hashedID: injectedServices.hashedID,
     workflow: injectedServices.workflow,
     projectV2: injectedServices.project,
+    reference: injectedServices.reference,
     assistant: injectedServices.assistant,
     voiceflow: new VoiceflowService(serviceOptions),
     workspace: new WorkspaceService(serviceOptions),

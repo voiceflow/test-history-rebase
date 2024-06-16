@@ -2,10 +2,9 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { IS_IOS, toast, useDidUpdateEffect, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
-import { Permission } from '@/constants/permissions';
 import { PrototypeLayout, PrototypeStatus } from '@/constants/prototype';
 import * as PrototypeDuck from '@/ducks/prototype';
-import { useASR, useCanASR, useGuestPermission, useSelector, useSpeechRecognition, useTeardown } from '@/hooks';
+import { useASR, useCanASR, useSelector, useSpeechRecognition, useTeardown } from '@/hooks';
 import { UncontrolledSpeechBar } from '@/pages/Prototype/components/PrototypeSpeechBar';
 import ASRSpeechBar from '@/pages/Prototype/components/PrototypeSpeechBar/components/ASRSpeechBar';
 import { usePrototype, useResetPrototype, useStartPublicPrototype } from '@/pages/Prototype/hooks';
@@ -24,10 +23,16 @@ interface PrototypeProps {
   globalDelayInMilliseconds: number;
 }
 
-const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state, actions, settings, onInteract, globalDelayInMilliseconds }) => {
+const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({
+  config,
+  state,
+  actions,
+  settings,
+  onInteract,
+  globalDelayInMilliseconds,
+}) => {
   const startPrototype = useStartPublicPrototype(settings);
   const resetPrototype = useResetPrototype();
-  const [isCustomizedPrototypeAllowed] = useGuestPermission(settings.plan, Permission.CUSTOMIZE_PROTOTYPE);
   const interactedRef = React.useRef(false);
   const [input, setInput] = React.useState<string>('');
   const selectedPersonaID = useSelector(PrototypeDuck.prototypeSelectedPersonaID);
@@ -100,7 +105,10 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state
   const canUseASR = useCanASR();
   const speechRecognition = useSpeechRecognition({ locale, onTranscript, askOnSetup: isVoicePrototype });
 
-  const checkPMStatus = React.useCallback((...args: PMStatus[]) => args.includes(prototypeMachineStatus as PMStatus), [prototypeMachineStatus]);
+  const checkPMStatus = React.useCallback(
+    (...args: PMStatus[]) => args.includes(prototypeMachineStatus as PMStatus),
+    [prototypeMachineStatus]
+  );
 
   const layout = settings.layout ?? Realtime.Utils.platform.getDefaultPrototypeLayout(settings.projectType);
 
@@ -150,8 +158,6 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state
     }
   }, [isMuted]);
 
-  const brandColor = isCustomizedPrototypeAllowed ? settings.brandColor : undefined;
-
   return (
     <Layout
       layout={layout}
@@ -159,13 +165,13 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state
       isListening={canUseASR ? asr.listening : speechRecognition.isListening}
       renderSplashScreen={({ isMobile }) => (
         <SplashScreen
-          logoURL={isCustomizedPrototypeAllowed ? settings.brandImage : undefined}
+          logoURL={settings.brandImage}
           onStart={onStart}
           isMobile={isMobile}
           isVisuals={isVisuals}
-          colorScheme={brandColor}
+          colorScheme={settings.brandColor}
           projectName={settings.projectName}
-          hideVFBranding={isCustomizedPrototypeAllowed}
+          hideVFBranding
           withStartButton={isIdle}
         />
       )}
@@ -186,7 +192,7 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state
               disabled={isIdle}
               isListening={speechRecognition.isListening}
               isSupported={speechRecognition.isSupported}
-              colorScheme={brandColor}
+              colorScheme={settings.brandColor}
               finalTranscript={speechRecognition.finalTranscript}
               onStopListening={speechRecognition.onStopListening}
               onStartListening={speechRecognition.onStartListening}
@@ -197,7 +203,7 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state
           )}
         </Footer>
       )}
-      colorScheme={brandColor}
+      colorScheme={settings.brandColor}
     >
       {({ isMobile, isFullScreen }) =>
         isVisuals ? (
@@ -212,7 +218,7 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state
           <ChatDialog
             audio={audioController.audio}
             input={input}
-            color={brandColor}
+            color={settings.brandColor}
             layout={layout}
             onMute={onMute}
             isIdle={isIdle}
@@ -224,7 +230,7 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state
             pmStatus={prototypeMachineStatus}
             messages={messages}
             isMobile={isMobile}
-            avatarURL={isCustomizedPrototypeAllowed ? settings.avatar : undefined}
+            avatarURL={settings.avatar}
             isLoading={isLoading}
             testEnded={isFinished}
             onContinue={onContinue}

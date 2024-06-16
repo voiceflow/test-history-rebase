@@ -1,92 +1,45 @@
-import { BillingPeriod, PlanType } from '@voiceflow/internal';
-import * as Platform from '@voiceflow/platform-config';
+import { SmartReducerAPi } from '@voiceflow/ui';
 
 import { Query } from '@/models';
 
-import type { StepID } from '../constants';
-
-export enum OnboardingType {
-  create = 'create_workspace',
-  join = 'join_workpsace',
-  student = 'student',
-  creator = 'creator',
-  general_upgrade = 'general_upgrade',
-}
-
-export enum SpecificFlowType {
-  login_vanilla_new = 'login_vanilla_new',
-  login_student_new = 'login_student_new',
-  login_student_existing = 'login_student_existing',
-  login_invite = 'login_invite',
-  create_workspace = 'create_workspace',
-  login_creator_new = 'login_creator_new',
-  login_creator_existing = 'login_creator_existing',
-  existing_user_general_upgrade = 'existing_user_general_upgrade',
-}
+import { OnboardingType } from '../onboardingType.enum';
+import { StepID } from '../stepID.enum';
+import { STEPS_BY_FLOW } from './constants';
 
 export interface PersonalizeWorkspaceMeta {
   useCase: string;
-  channels?: string[];
-  teamSize?: string;
-  selfReportedAttribution?: string;
-  workWithDevelopers?: boolean | null;
+  channels: string[];
+  teamSize: string;
+  selfReportedAttribution: string;
+  workWithDevelopers: boolean | null;
 }
 
+type FlowSteps = (typeof STEPS_BY_FLOW)[OnboardingType];
+
 export interface OnboardingContextState {
-  selectableWorkspace: boolean;
-  specificFlowType: SpecificFlowType;
+  steps: FlowSteps;
   flow: OnboardingType;
   stepStack: StepID[];
-  currentStepID: StepID;
-  numberOfSteps: number;
+  sendingRequests: boolean;
   createWorkspaceMeta: {
     workspaceName: string;
     workspaceImage: string;
   };
   personalizeWorkspaceMeta: PersonalizeWorkspaceMeta;
-  paymentMeta: {
-    plan?: PlanType;
-    period: BillingPeriod;
-    selectedWorkspaceId: string;
-    seats?: number;
-  };
   joinWorkspaceMeta: {
     role: string;
   };
-  selectChannelMeta: {
-    platform: Platform.Constants.PlatformType;
-    projectType: Platform.Constants.ProjectType;
-  };
-  sendingRequests: boolean;
-  workspaceId: string;
-  justCreatingWorkspace: boolean;
-  hasFixedPeriod: boolean;
-  hasWorkspaces?: boolean;
-  upgradingAWorkspace: boolean;
 }
 
-export interface OnboardingContextActions {
-  stepBack: () => null;
-  stepForward: (stepID: StepID | null, options?: { skip: boolean }) => void;
-  closeOnboarding: VoidFunction;
-  setCreateWorkspaceMeta: (data: unknown) => void;
-  setPersonalizeWorkspaceMeta: (data: unknown) => void;
-  setPaymentMeta: (data: unknown) => void;
-  setJoinWorkspaceMeta: (data: unknown) => void;
-  setSelectChannelMeta: (data: OnboardingContextState['selectChannelMeta']) => void;
-  finishCreateOnboarding: VoidFunction;
-  finishJoiningWorkspace: VoidFunction;
-  onCancel: VoidFunction;
-  getNumberOfEditors: () => number;
-}
-
-export interface OnboardingContextProps {
+export interface OnboardingContextAPI {
   state: OnboardingContextState;
-  actions: OnboardingContextActions;
+  stateAPI: SmartReducerAPi<OnboardingContextState>;
+
+  stepBack: VoidFunction;
+  stepForward: (options?: { skip: boolean }) => void;
+  getCurrentStepID: () => StepID;
 }
 
-export interface OnboardingProviderProps {
+export interface OnboardingProviderProps extends React.PropsWithChildren {
   query: Query;
-  numberOfSteps?: number;
-  isLoginFlow: boolean;
 }

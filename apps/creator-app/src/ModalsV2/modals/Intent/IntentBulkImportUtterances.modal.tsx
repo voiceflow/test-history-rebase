@@ -1,3 +1,5 @@
+import composeRefs from '@seznam/compose-react-refs';
+import { Utils } from '@voiceflow/common';
 import { Utterance } from '@voiceflow/dtos';
 import { tid } from '@voiceflow/style';
 import { InputFormControl, notify, Scroll, TextArea } from '@voiceflow/ui-next';
@@ -5,22 +7,24 @@ import pluralize from 'pluralize';
 import React, { useMemo } from 'react';
 
 import { Modal } from '@/components/Modal';
+import { useDropCSVFile } from '@/hooks/file.hook';
 import { useInput, useInputState } from '@/hooks/input.hook';
 import { utteranceTextFactory } from '@/utils/utterance.util';
 
 import { modalsManager } from '../../manager';
 
-export interface IntentBulkImportUtterancesModalProps {
+export interface IIntentBulkImportUtterancesModal {
   onImport: (utterances: Pick<Utterance, 'text'>[]) => Promise<Utterance[]> | void;
 }
 
-export const IntentBulkImportUtterancesModal = modalsManager.create<IntentBulkImportUtterancesModalProps>(
+export const IntentBulkImportUtterancesModal = modalsManager.create<IIntentBulkImportUtterancesModal>(
   'IntentBulkImportUtterancesModal',
   () =>
     ({ api, type, opened, hidden, animated, onImport, closePrevented }) => {
       const TEST_ID = 'bulk-import-utterances-modal';
 
       const state = useInputState();
+      const [dropProps, connectDrop] = useDropCSVFile({ onDrop: state.setValue, onError: state.setError });
 
       const input = useInput<string, HTMLTextAreaElement>({
         value: state.value,
@@ -30,17 +34,18 @@ export const IntentBulkImportUtterancesModal = modalsManager.create<IntentBulkIm
       });
 
       const lines = useMemo(
-        () =>
-          state.value
-            .split('\n')
-            .map((line) => line.trim())
-            .filter(Boolean),
+        () => Utils.array.unique(state.value.split('\n').map((line) => line.trim())).filter(Boolean),
         [state.value]
       );
 
       const onImportClick = async () => {
         if (!lines.length) {
           state.setError('Utterance(s) required.');
+          return;
+        }
+
+        if (lines.length > 1000) {
+          state.setError('Maximum 1000 utterances allowed.');
           return;
         }
 
@@ -61,7 +66,7 @@ export const IntentBulkImportUtterancesModal = modalsManager.create<IntentBulkIm
       };
 
       const getCaption = () => {
-        if (input.errorMessage) return input.errorMessage;
+        if (input.errorMessage) return undefined;
 
         if (!lines.length) return 'One utterance per line.';
 
@@ -88,8 +93,10 @@ export const IntentBulkImportUtterancesModal = modalsManager.create<IntentBulkIm
                   caption={getCaption()}
                   minHeight={36}
                   disabled={closePrevented}
-                  placeholder="Enter utterances"
+                  placeholder={dropProps.isOver ? 'Drop a .csv file here.' : 'Enter utterances, or drop CSV here'}
+                  errorMessage={input.errorMessage}
                   {...input.attributes}
+                  ref={composeRefs<HTMLTextAreaElement>(input.attributes.ref, connectDrop)}
                   testID={tid(TEST_ID, 'utterances')}
                 />
               </InputFormControl>
@@ -97,7 +104,13 @@ export const IntentBulkImportUtterancesModal = modalsManager.create<IntentBulkIm
           </Scroll>
 
           <Modal.Footer>
-            <Modal.Footer.Button label="Close" variant="secondary" onClick={api.onClose} disabled={closePrevented} testID={tid(TEST_ID, 'close')} />
+            <Modal.Footer.Button
+              label="Close"
+              variant="secondary"
+              onClick={api.onClose}
+              disabled={closePrevented}
+              testID={tid(TEST_ID, 'close')}
+            />
 
             <Modal.Footer.Button
               label="Import"

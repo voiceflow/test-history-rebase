@@ -38,12 +38,16 @@ export default insertStepReducer;
 export const insertStepReverter = createReverter(
   Realtime.node.insertStep,
 
-  ({ workspaceID, projectID, versionID, domainID, diagramID, parentNodeID, stepID, removeNodes, nodePortRemaps = [] }, getState) => {
-    const ctx = { workspaceID, projectID, versionID, domainID, diagramID };
+  (
+    { workspaceID, projectID, versionID, diagramID, parentNodeID, stepID, removeNodes, nodePortRemaps = [] },
+    getState
+  ) => {
+    const ctx = { workspaceID, projectID, versionID, diagramID };
     const state = getState();
 
     const removeActions =
-      removeManyNodesReverter.revert({ workspaceID, projectID, versionID, domainID, diagramID, nodes: removeNodes }, getState) ?? [];
+      removeManyNodesReverter.revert({ workspaceID, projectID, versionID, diagramID, nodes: removeNodes }, getState) ??
+      [];
 
     return [
       Realtime.node.removeMany({ ...ctx, nodes: [{ parentNodeID, stepID }] }),
@@ -57,8 +61,13 @@ export const insertStepReverter = createReverter(
 
   [
     ...DIAGRAM_INVALIDATORS,
-    ...createNodeRemovalInvalidators<Realtime.node.InsertStepPayload>((origin, nodeID) => origin.parentNodeID === nodeID),
-    ...createNodeIndexInvalidators<Realtime.node.InsertStepPayload>(({ parentNodeID, index }) => ({ parentNodeID, index })),
+    ...createNodeRemovalInvalidators<Realtime.node.InsertStepPayload>(
+      (origin, nodeID) => origin.parentNodeID === nodeID
+    ),
+    ...createNodeIndexInvalidators<Realtime.node.InsertStepPayload>(({ parentNodeID, index }) => ({
+      parentNodeID,
+      index,
+    })),
     ...createNodePortRemapsInvalidators<Realtime.node.InsertStepPayload>(({ parentNodeID, nodePortRemaps = [] }) => ({
       parentNodeID,
       nodePortRemaps,

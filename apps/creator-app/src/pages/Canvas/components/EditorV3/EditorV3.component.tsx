@@ -14,6 +14,7 @@ export const EditorV3: React.FC<IEditorV3> = ({ header, dropLagAccept }) => {
       id={Identifier.BLOCK_EDITOR}
       ref={!dropLagAccept || !dropLagAccept?.length ? undefined : dropLagFixRef}
       onPaste={stopImmediatePropagation()}
+      className="vfui"
     >
       {header}
     </SidebarEditor.Container>

@@ -33,7 +33,7 @@ const VoiceflowFields: React.FC<{ acsURL: string; entityID: string }> = ({ acsUR
             />
           </Box.FlexAlignStart>
           <Box flex={1} ml={24} mt={25}>
-            <SectionV2.Description secondary>The name of the assistant as you will see it on your dashboard.</SectionV2.Description>
+            <SectionV2.Description secondary>The name of the agent as you will see it on your dashboard.</SectionV2.Description>
           </Box>
         </Box.FlexAlignStart>
       </SectionV2.SimpleSection>

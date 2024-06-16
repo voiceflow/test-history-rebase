@@ -3,6 +3,90 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.317.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.317.1...@voiceflow/ui@1.317.2) (2024-06-12)
+
+**Note:** Version bump only for package @voiceflow/ui
+
+## [1.317.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.317.0...@voiceflow/ui@1.317.1) (2024-06-12)
+
+**Note:** Version bump only for package @voiceflow/ui
+
+# [1.317.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.316.15...@voiceflow/ui@1.317.0) (2024-06-12)
+
+### Features
+
+* triggers migration [bugfix] (COR-2022) ([#8096](https://github.com/voiceflow/creator-app/issues/8096)) ([ed45ce0](https://github.com/voiceflow/creator-app/commit/ed45ce0fbc0b9c16f3cd25a3ac78a736a5ced4ba))
+
+## [1.316.15](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.316.14...@voiceflow/ui@1.316.15) (2024-06-12)
+
+**Note:** Version bump only for package @voiceflow/ui
+
+## [1.316.14](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.316.13...@voiceflow/ui@1.316.14) (2024-06-11)
+
+**Note:** Version bump only for package @voiceflow/ui
+
+## [1.316.13](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.316.12...@voiceflow/ui@1.316.13) (2024-06-11)
+
+**Note:** Version bump only for package @voiceflow/ui
+
+## [1.316.12](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.316.11...@voiceflow/ui@1.316.12) (2024-06-10)
+
+**Note:** Version bump only for package @voiceflow/ui
+
+## [1.316.11](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.316.10...@voiceflow/ui@1.316.11) (2024-06-10)
+
+### Bug Fixes
+
+* ux package (COR-2302)(COR-2285) ([#8222](https://github.com/voiceflow/creator-app/issues/8222)) ([d56b274](https://github.com/voiceflow/creator-app/commit/d56b27411561b0ed9a6edf0bc78c0f06cfe3653a))
+
+## [1.316.10](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.316.9...@voiceflow/ui@1.316.10) (2024-06-07)
+
+**Note:** Version bump only for package @voiceflow/ui
+
+## [1.316.9](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.316.8...@voiceflow/ui@1.316.9) (2024-06-07)
+
+**Note:** Version bump only for package @voiceflow/ui
+
+## [1.316.8](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.316.7...@voiceflow/ui@1.316.8) (2024-06-06)
+
+**Note:** Version bump only for package @voiceflow/ui
+
+## [1.316.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.316.6...@voiceflow/ui@1.316.7) (2024-06-05)
+
+**Note:** Version bump only for package @voiceflow/ui
+
+## [1.316.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.316.5...@voiceflow/ui@1.316.6) (2024-06-04)
+
+**Note:** Version bump only for package @voiceflow/ui
+
+## [1.316.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.316.4...@voiceflow/ui@1.316.5) (2024-06-04)
+
+**Note:** Version bump only for package @voiceflow/ui
+
+## [1.316.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.316.3...@voiceflow/ui@1.316.4) (2024-06-03)
+
+**Note:** Version bump only for package @voiceflow/ui
+
+## [1.316.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.316.2...@voiceflow/ui@1.316.3) (2024-06-03)
+
+**Note:** Version bump only for package @voiceflow/ui
+
+## [1.316.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.316.1...@voiceflow/ui@1.316.2) (2024-06-01)
+
+### Bug Fixes
+
+* remove unused deprecated components (ENG-48) ([#8206](https://github.com/voiceflow/creator-app/issues/8206)) ([e1596d7](https://github.com/voiceflow/creator-app/commit/e1596d718d6b5ff5503bdfaecf0e3124aac0e8d2))
+
+## [1.316.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.316.0...@voiceflow/ui@1.316.1) (2024-05-31)
+
+**Note:** Version bump only for package @voiceflow/ui
+
+# [1.316.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.315.0...@voiceflow/ui@1.316.0) (2024-05-30)
+
+### Features
+
+* replace assistant with agent (COR-2207) ([#8196](https://github.com/voiceflow/creator-app/issues/8196)) ([ef9a50d](https://github.com/voiceflow/creator-app/commit/ef9a50d9216ac6d9d30671985f9e1c6f2fca20b7))
+
 # [1.315.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.314.0...@voiceflow/ui@1.315.0) (2024-05-29)
 
 ### Features

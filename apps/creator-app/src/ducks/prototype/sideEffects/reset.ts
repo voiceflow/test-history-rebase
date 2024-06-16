@@ -1,14 +1,10 @@
 import { Utils } from '@voiceflow/common';
-import { FeatureFlag } from '@voiceflow/realtime-sdk';
 
 import { PrototypeStatus } from '@/constants/prototype';
-import * as Domain from '@/ducks/domain/selectors';
-import { isFeatureEnabledSelector } from '@/ducks/feature';
 import * as Router from '@/ducks/router/sideEffects';
 import * as Session from '@/ducks/session';
 import * as VariableState from '@/ducks/variableState/selectors';
 import { SyncThunk } from '@/store/types';
-import { findDomainIDByDiagramID } from '@/utils/domain';
 
 import { updatePrototype, updatePrototypeStatus } from '../actions';
 import { prototypeVisualSelector } from '../selectors';
@@ -23,11 +19,6 @@ export const redirectToPrototypeDiagram =
 
     dispatch(Session.setActiveDiagramID(diagramID));
     dispatch(Router.goToCurrentPrototype(nodeID));
-
-    if (!isFeatureEnabledSelector(state)(FeatureFlag.CMS_WORKFLOWS)) {
-      const newDomainID = findDomainIDByDiagramID(Domain.allDomainsSelector(state), diagramID);
-      if (newDomainID) dispatch(Session.setActiveDomainID(newDomainID));
-    }
   };
 
 export interface ResetOptions {

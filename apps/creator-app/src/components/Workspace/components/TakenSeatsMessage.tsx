@@ -19,10 +19,15 @@ export interface TakenSeatsMessageProps {
   label?: React.ReactNode;
 }
 
-const TakenSeatsMessage: React.FC<TakenSeatsMessageProps> = ({ error = false, seats, small, label = 'seats taken.' }) => {
-  const [canAddSeats] = usePermission(Permission.BILLING_SEATS_ADD);
+const TakenSeatsMessage: React.FC<TakenSeatsMessageProps> = ({
+  error = false,
+  seats,
+  small,
+  label = 'seats taken.',
+}) => {
+  const [canAddSeats] = usePermission(Permission.WORKSPACE_BILLING_ADD_SEATS);
 
-  const usedEditorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);
+  const usedEditorSeats = useSelector(WorkspaceV2.active.members.usedEditorSeatsSelector);
   const numberOfSeats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);
   const activePlan = useSelector(WorkspaceV2.active.planSelector);
   const subscription = useSelector(Organization.chargebeeSubscriptionSelector);

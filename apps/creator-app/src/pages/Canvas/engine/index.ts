@@ -185,7 +185,6 @@ class Engine extends ComponentManager<{
 
   get context() {
     return {
-      domainID: this.select(Session.activeDomainIDSelector)!,
       projectID: this.select(Session.activeProjectIDSelector)!,
       versionID: this.select(Session.activeVersionIDSelector)!,
       diagramID: this.getDiagramID()!,
@@ -281,8 +280,6 @@ class Engine extends ComponentManager<{
   getActiveSchemaVersion = () => this.select(Version.active.schemaVersionSelector);
 
   isTopic = () => this.select(DiagramV2.isTopicDiagramSelector, { id: this.getDiagramID() });
-
-  isSubtopic = () => !!this.select(DiagramV2.getRootTopicIDBySubtopicIDSelector)(this.getDiagramID());
 
   getTargetNodeByLinkID = (linkID: Nullish<string>) => this.getNodeByID(this.getLinkByID(linkID)?.target.nodeID);
 
@@ -541,15 +538,9 @@ class Engine extends ComponentManager<{
       this.saveActiveLocations();
     }
 
-    const hasFocusTarget = this.focus.hasTarget;
-
-    this.focus.reset();
+    this.focus.reset({ skipUrlSync });
     this.selection.reset();
     this.transformation.reset();
-
-    if (!skipUrlSync && hasFocusTarget) {
-      this.store.dispatch(Router.goToCurrentCanvas());
-    }
   }
 
   private getNextAvailableSibling(targetNodeID: string): string | null {
@@ -776,30 +767,6 @@ class Engine extends ComponentManager<{
     );
 
     PageProgress.stop(PageProgressBar.COMPONENT_CREATING);
-  }
-
-  async createSubtopic(): Promise<void> {
-    const topicDiagramID = this.getDiagramID();
-
-    if (
-      !topicDiagramID ||
-      !this.select(DiagramV2.isTopicDiagramSelector, { id: topicDiagramID }) ||
-      this.select(DiagramV2.getRootTopicIDBySubtopicIDSelector)(topicDiagramID)
-    )
-      return;
-
-    PageProgress.start(PageProgressBar.SUBTOPIC_CREATING);
-
-    const { targets, clipboardData } = this.getCreateDiagramFromSelectionData();
-
-    await this.store.dispatch(DiagramV2.convertToSubtopic({ ...clipboardData, rootTopicID: topicDiagramID }));
-
-    // TODO: would be good if we could have the removal of these targets
-    // and link creation as part of the component creation operation
-    // probably by creating its own explicit action on the realtime service
-    await this.store.dispatch(History.transaction(() => this.node.removeMany(targets)));
-
-    PageProgress.stop(PageProgressBar.SUBTOPIC_CREATING);
   }
 
   async reset(): Promise<void> {

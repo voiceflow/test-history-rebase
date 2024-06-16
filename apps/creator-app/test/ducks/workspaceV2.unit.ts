@@ -231,7 +231,7 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ describeReducerV2, creat
       describe('memberByIDSelector()', () => {
         it('should select a member from the active workspace by creator ID', () => {
           expect(
-            Workspace.active.memberByIDSelector(createState(MOCK_STATE, activeWorkspaceState), {
+            Workspace.active.members.memberByIDSelector(createState(MOCK_STATE, activeWorkspaceState), {
               creatorID: CREATOR_ID,
             })
           ).toBe(WORKSPACE_MEMBER);
@@ -239,14 +239,14 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ describeReducerV2, creat
 
         it('should return null if no member matches for active workspace', () => {
           expect(
-            Workspace.active.memberByIDSelector(createState(MOCK_STATE, activeWorkspaceState), {
+            Workspace.active.members.memberByIDSelector(createState(MOCK_STATE, activeWorkspaceState), {
               creatorID: 222,
             })
           ).toBeNull();
         });
 
         it('should return null members list', () => {
-          expect(Workspace.active.memberByIDSelector(createState(MOCK_STATE), { creatorID: 999 })).toBeNull();
+          expect(Workspace.active.members.memberByIDSelector(createState(MOCK_STATE), { creatorID: 999 })).toBeNull();
         });
       });
 
@@ -267,12 +267,14 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ describeReducerV2, creat
 
       describe('usedEditorSeatsSelector()', () => {
         it('should select the number of occupied seats in the active workspace', () => {
-          expect(Workspace.active.usedEditorSeatsSelector(createState(MOCK_STATE, activeWorkspaceState))).toEqual(1);
+          expect(
+            Workspace.active.members.usedEditorSeatsSelector(createState(MOCK_STATE, activeWorkspaceState))
+          ).toEqual(1);
         });
 
         it('should always have at least 1 used seat', () => {
           expect(
-            Workspace.active.usedEditorSeatsSelector(
+            Workspace.active.members.usedEditorSeatsSelector(
               createState(MOCK_STATE, { [Session.STATE_KEY]: { activeWorkspaceID: 'def' } })
             )
           ).toEqual(1);
@@ -281,7 +283,9 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ describeReducerV2, creat
 
       describe('usedViewerSeatsSelector()', () => {
         it('should select the number of viewers in the active workspace', () => {
-          expect(Workspace.active.usedViewerSeatsSelector(createState(MOCK_STATE, activeWorkspaceState))).toEqual(2);
+          expect(
+            Workspace.active.members.usedViewerSeatsSelector(createState(MOCK_STATE, activeWorkspaceState))
+          ).toEqual(2);
         });
       });
     });

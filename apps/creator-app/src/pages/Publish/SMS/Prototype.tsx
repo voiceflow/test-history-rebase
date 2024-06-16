@@ -57,7 +57,7 @@ const SMSTesting: React.FC = () => {
     <Settings.PageContent>
       <Settings.Section>
         <Banner
-          title="Test Your Assistant via SMS"
+          title="Test Your Agent via SMS"
           subtitle="Add your number and start testing with a single click."
           onClick={() => openInternalURLInANewTab(SMS_DOCUMENTATION)}
           buttonText="Documentation"
@@ -77,7 +77,7 @@ const SMSTesting: React.FC = () => {
               defaultCountry="US"
             />
 
-            <Settings.SubSection.Description>The phone number you'll use to test your assistant.</Settings.SubSection.Description>
+            <Settings.SubSection.Description>The phone number you'll use to test your agent.</Settings.SubSection.Description>
           </Settings.SubSection>
         </Settings.Card>
       </Settings.Section>

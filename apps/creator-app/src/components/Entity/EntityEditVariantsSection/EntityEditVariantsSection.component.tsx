@@ -9,7 +9,11 @@ import { EntityVariantInput } from '../EntityVariantInput/EntityVariantInput.com
 import { EntityVariantsSection } from '../EntityVariantsSection/EntityVariantsSection.component';
 import type { IEntityEditVariantsSection } from './EntityEditVariantsSection.interface';
 
-export const EntityEditVariantsSection: React.FC<IEntityEditVariantsSection> = ({ entity, variantsError, resetVariantsError }) => {
+export const EntityEditVariantsSection: React.FC<IEntityEditVariantsSection> = ({
+  entity,
+  variantsError,
+  resetVariantsError,
+}) => {
   const variants = useSelector(Designer.Entity.EntityVariant.selectors.allByEntityID, { entityID: entity.id });
 
   const patchOne = useDispatch(Designer.Entity.EntityVariant.effect.patchOne);
@@ -33,11 +37,12 @@ export const EntityEditVariantsSection: React.FC<IEntityEditVariantsSection> = (
   return (
     <EntityVariantsSection
       name={entity.name}
-      onAdd={onVariantAdd}
-      variants={variants}
-      onRemove={deleteOne}
       classifier={entity.classifier}
-      onGenerated={createMany}
+      variants={variants}
+      onVariantAdd={onVariantAdd}
+      onVariantRemove={deleteOne}
+      onVariantImportMany={createMany}
+      onVariantGeneratedMany={createMany}
       autoScrollToTopRevision={autofocus.key}
       renderVariantInput={({ item, onEmpty, disabled }) => (
         <EntityVariantInput

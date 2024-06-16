@@ -9,27 +9,27 @@ import { useTeardown } from '@/hooks/lifecycle';
 import { useRouteVersionID } from '@/hooks/routes';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
 
-import { AssistantChannelSubscriptionGate, MigrationGate, SchemaChannelSubscriptionGate } from './components';
+import {
+  AssistantChannelSubscriptionGate,
+  AssistantChannelSubscriptionGateLegacy,
+  MigrationGate,
+  SchemaChannelSubscriptionGate,
+} from './components';
 import { VersionSubscriptionContext } from './types';
 
 const VersionSubscriptionGate: React.FC<React.PropsWithChildren> = ({ children }) => {
   const versionID = useRouteVersionID();
-  const cmsWorkflows = useFeature(FeatureFlag.CMS_WORKFLOWS);
+  const httpLoadEnvironment = useFeature(FeatureFlag.HTTP_LOAD_ENVIRONMENT);
 
   const [context, setContext] = React.useState<VersionSubscriptionContext | null>(null);
 
   const subscriptionRevision = useSelector(Designer.Environment.selectors.gateSubscriptionRevision);
 
-  const setActiveDomainID = useDispatch(Session.setActiveDomainID);
   const setActiveProjectID = useDispatch(Session.setActiveProjectID);
   const setActiveVersionID = useDispatch(Session.setActiveVersionID);
   const setActiveDiagramID = useDispatch(Session.setActiveDiagramID);
 
   useTeardown(() => {
-    if (!cmsWorkflows.isEnabled) {
-      setActiveDomainID(null);
-    }
-
     setActiveProjectID(null);
     setActiveVersionID(null);
     setActiveDiagramID(null);
@@ -39,18 +39,22 @@ const VersionSubscriptionGate: React.FC<React.PropsWithChildren> = ({ children }
     return <Redirect to={Path.DASHBOARD} />;
   }
 
+  const AssistantChannelGate = httpLoadEnvironment.isEnabled
+    ? AssistantChannelSubscriptionGate
+    : AssistantChannelSubscriptionGateLegacy;
+
   return (
     <SchemaChannelSubscriptionGate versionID={versionID}>
       <MigrationGate versionID={versionID} context={context} setContext={setContext}>
         {context && (
-          <AssistantChannelSubscriptionGate
+          <AssistantChannelGate
             key={subscriptionRevision}
             projectID={context.projectID}
             versionID={versionID}
             workspaceID={context.workspaceID}
           >
             {children}
-          </AssistantChannelSubscriptionGate>
+          </AssistantChannelGate>
         )}
       </MigrationGate>
     </SchemaChannelSubscriptionGate>

@@ -27,7 +27,15 @@ export { EditorSidebarContext } from './context';
 
 const FOCUSED_NODE_SIDEBAR_OFFSET = 20;
 
-export const useUseAutopanBlockIntoView = ({ engine, blockID, isOpened }: { engine: Engine; blockID: Nullable<string>; isOpened: boolean }): void => {
+export const useUseAutopanBlockIntoView = ({
+  engine,
+  blockID,
+  isOpened,
+}: {
+  engine: Engine;
+  blockID: Nullable<string>;
+  isOpened: boolean;
+}): void => {
   const theme = useTheme();
   const [canvasPositionScheduler] = useRAF();
 
@@ -62,7 +70,7 @@ export const useGetEditorWithCorrectVersion = () => {
   return (nodeType: Realtime.BlockType) => {
     const manager = getManager(nodeType);
     const { editorV3, editorV2 } = manager;
-    const isV3 = manager.editorV3FeaturFlag ? isEnabled(manager.editorV3FeaturFlag) : !!editorV3;
+    const isV3 = manager.editorV3FeatureFlag ? isEnabled(manager.editorV3FeatureFlag) : !!editorV3;
 
     return {
       isV3,
@@ -76,7 +84,7 @@ export const useEditorSidebarV2 = () => {
   const location = useLocation();
   const transaction = useContext(TransactionContext);
   const isEditingMode = useEditingMode();
-  const canvasNodeRouteMatch = useRouteMatch([Path.DOMAIN_CANVAS_NODE, Path.CANVAS_NODE]);
+  const canvasNodeRouteMatch = useRouteMatch(Path.CANVAS_NODE);
   const getEditorWithCorrectVersion = useGetEditorWithCorrectVersion();
 
   const scrollbars = React.useRef<CustomScrollbarsTypes.Scrollbars>(null);
@@ -97,6 +105,7 @@ export const useEditorSidebarV2 = () => {
   const goToNode = useDispatch(Router.goToCurrentCanvasNode);
 
   const onChange = React.useCallback(
+    // eslint-disable-next-line @typescript-eslint/ban-types
     (value: Partial<Realtime.NodeData<{}>>) => (node?.id ? engine.node.updateData(node.id, value) : Promise.resolve()),
     [engine.node, node?.id]
   );
@@ -172,6 +181,7 @@ export const useEditorSidebarV2 = () => {
 
   useUseAutopanBlockIntoView({ engine, blockID, isOpened });
 
+  // eslint-disable-next-line @typescript-eslint/ban-types
   const getEditor = (node: Realtime.Node, data: Realtime.NodeData<{}>) => {
     const { Editor } = getEditorWithCorrectVersion(node.type);
     let manager = getManager(node.type);

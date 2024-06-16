@@ -105,7 +105,9 @@ export const PERMISSIONS = [
   },
 ];
 
-export const PERMISSIONS_WITH_VARIABLE_MAPS = PERMISSIONS.filter(({ variableMap }) => variableMap).map(({ value }) => value);
+export const PERMISSIONS_WITH_VARIABLE_MAPS = PERMISSIONS.filter(({ variableMap }) => variableMap).map(
+  ({ value }) => value
+);
 
 export const PERMISSION_LABELS: Record<AlexaNode.PermissionType, string> = PERMISSIONS.reduce<Record<string, string>>(
   (acc, permission) => Object.assign(acc, { [permission.value]: permission.name }),
@@ -197,11 +199,6 @@ export const CANVAS_ZOOM_DELTA = 15;
 
 export enum PageProgressBar {
   CANVAS_LOADING = 'CANVAS_LOADING',
-  TOPIC_CREATING = 'TOPIC_CREATING',
-  DOMAIN_CREATING = 'DOMAIN_CREATING',
-  DOMAIN_DELETING = 'DOMAIN_DELETING',
-  SUBTOPIC_CREATING = 'SUBTOPIC_CREATING',
-  DOMAIN_DUPLICATING = 'DOMAIN_DUPLICATING',
   COMPONENT_CREATING = 'COMPONENT_CREATING',
   NLU_MODEL_TRAINNING = 'NLU_MODEL_TRAINNING',
   ASSISTANT_DUPLICATING = 'ASSISTANT_DUPLICATING',

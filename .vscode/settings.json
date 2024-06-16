@@ -26,6 +26,7 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
   },
+  "editor.formatOnSave": true,
   "eslint.format.enable": true,
   "eslint.experimental.useFlatConfig": true,
   "search.exclude": {

@@ -33,11 +33,15 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
     return this.services.version.access.canRead(Number(ctx.userId), ctx.params.versionID);
   };
 
-  protected load = async (ctx: ChannelContext<Realtime.Channels.VersionChannelParams>, action: ChannelSubscribeAction): Promise<SendBackActions> => {
-    // do not reload if resubscribing
-    if (action.since) return [];
-
+  protected load = async (
+    ctx: ChannelContext<Realtime.Channels.VersionChannelParams>,
+    action: ChannelSubscribeAction
+  ): Promise<SendBackActions> => {
     const { workspaceID, projectID, versionID } = ctx.params;
+
+    // do not reload if resubscribing
+    if (action.since || this.services.feature.isEnabled(Realtime.FeatureFlag.HTTP_LOAD_ENVIRONMENT)) return [];
+
     const creatorID = Number(ctx.userId);
 
     const [projectMembers, dbCreator, { threads, threadComments }] = await Promise.all([
@@ -51,7 +55,7 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
       : null;
 
     const project = Realtime.Adapters.projectAdapter.fromDB(dbCreator.project, {
-      members: (projectMembers as unknown as Realtime.Identity.ProjectMember[]).map(Realtime.Adapters.Identity.projectMember.fromDB),
+      members: projectMembers.map(Realtime.Adapters.Identity.projectMember.fromDB),
     });
     const projectConfig = Platform.Config.getTypeConfig(project);
 
@@ -59,10 +63,13 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
       { ...dbCreator.version, templateDiagramID: templateDiagram?.diagramID },
       { globalVariables: projectConfig.project.globalVariables, defaultVoice: projectConfig.project.voice.default }
     );
-    const customBlocks = Realtime.Adapters.customBlockAdapter.mapFromDB(Object.values(dbCreator.version.customBlocks ?? {}));
+    const customBlocks = Realtime.Adapters.customBlockAdapter.mapFromDB(
+      Object.values(dbCreator.version.customBlocks ?? {})
+    );
 
-    const domains = Realtime.Adapters.domainAdapter.mapFromDB(dbCreator.version.domains ?? []);
-    const diagrams = Realtime.Adapters.diagramAdapter.mapFromDB(dbCreator.diagrams, { rootDiagramID: dbCreator.version.rootDiagramID });
+    const diagrams = Realtime.Adapters.diagramAdapter.mapFromDB(dbCreator.diagrams, {
+      rootDiagramID: dbCreator.version.rootDiagramID,
+    });
     const variableStates = Realtime.Adapters.variableStateAdapter.mapFromDB(dbCreator.variableStates);
     const canvasTemplates = Realtime.Adapters.canvasTemplateAdapter.mapFromDB(dbCreator.version.canvasTemplates ?? []);
 
@@ -80,7 +87,6 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
       Actions.Thread.Replace({ context: actionContext, data: threads }),
       Actions.ThreadComment.Replace({ context: actionContext, data: threadComments }),
       Realtime.customBlock.crud.replace({ ...actionContext, values: customBlocks }),
-      Realtime.domain.crud.replace({ ...actionContext, values: domains }),
       Realtime.canvasTemplate.crud.replace({ ...actionContext, values: canvasTemplates }),
       Realtime.diagram.crud.replace({ ...actionContext, values: diagrams }),
       Realtime.variableState.crud.replace({ ...actionContext, values: variableStates }),
@@ -90,7 +96,13 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
       Realtime.version.replacePrototypeSettings({ ...actionContext, settings: prototypeSettings }),
       Realtime.version.activateVersion({ ...actionContext, type: project.type, platform: project.platform }),
       ...(templateDiagram
-        ? [initializeTemplateDiagramAction(templateDiagram, { platform: project.platform, projectType: project.type }, actionContext)]
+        ? [
+            initializeTemplateDiagramAction(
+              templateDiagram,
+              { platform: project.platform, projectType: project.type },
+              actionContext
+            ),
+          ]
         : []),
     ];
   };

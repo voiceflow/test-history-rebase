@@ -1,12 +1,13 @@
 import { AssistantDTO } from '@voiceflow/dtos';
 import { z } from 'zod';
 
-import { EnvironmentCMSExportImportDataDTO } from '@/environment/dtos/environment-cms-export-import-data.dto';
+import { EnvironmentCMSExportDataDTO } from '@/environment/dtos/environment-cms-export-data.dto';
 
 export const AssistantExportCMSResponse = z
   .object({
     assistant: AssistantDTO,
   })
-  .merge(EnvironmentCMSExportImportDataDTO);
+  .merge(EnvironmentCMSExportDataDTO)
+  .strict();
 
 export type AssistantExportCMSResponse = z.infer<typeof AssistantExportCMSResponse>;

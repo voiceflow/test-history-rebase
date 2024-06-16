@@ -10,8 +10,6 @@ export const ResponseTextVariantLayout: React.FC<IResponseTextVariantLayout> = (
   variantType,
   removeButton,
   settingsButton,
-  attachmentsList,
-  attachmentButton,
   onChangeVariantType,
   ...props
 }) => {
@@ -32,15 +30,11 @@ export const ResponseTextVariantLayout: React.FC<IResponseTextVariantLayout> = (
             </Box>
 
             <Box gap={8} grow={1} justify="end">
-              {attachmentButton}
-
               {removeButton}
             </Box>
           </Box>
         }
       />
-
-      {attachmentsList}
 
       {!!settingsButton && (
         <Box pl={24} pt={10}>

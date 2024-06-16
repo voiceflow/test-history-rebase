@@ -90,7 +90,7 @@ const Setup: React.FC<SetupProps> = ({
           contentProps={{ px: 0, bottomOffset: 0 }}
         >
           <Box.Flex gap={12}>
-            <Input autoFocus value={name} placeholder="Enter assistant name" onChangeText={setName} />
+            <Input autoFocus value={name} placeholder="Enter agent name" onChangeText={setName} />
 
             <Upload.IconUpload size={UploadIconVariant.EXTRA_SMALL} image={image} update={setImage} isSquare />
           </Box.Flex>

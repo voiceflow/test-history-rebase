@@ -35,7 +35,12 @@ const addBlockReducer = createActiveDiagramReducer(
     if (Normal.hasOne(state.nodes, stepID)) return;
 
     addBlock(state, { blockID, ports: blockPorts, coords: blockCoords, name: blockName, blockColor });
-    addStep(state, (stepIDs) => Utils.array.append(stepIDs, stepID), { parentNodeID: blockID, stepID, data: stepData, ports: stepPorts });
+    addStep(state, (stepIDs) => Utils.array.append(stepIDs, stepID), {
+      parentNodeID: blockID,
+      stepID,
+      data: stepData,
+      ports: stepPorts,
+    });
   }
 );
 
@@ -44,12 +49,11 @@ export default addBlockReducer;
 export const addBlockReverter = createReverter(
   Realtime.node.addBlock,
 
-  ({ workspaceID, projectID, versionID, domainID, diagramID, blockID, stepID }) =>
+  ({ workspaceID, projectID, versionID, diagramID, blockID, stepID }) =>
     Realtime.node.removeMany({
       workspaceID,
       projectID,
       versionID,
-      domainID,
       diagramID,
       nodes: [{ parentNodeID: blockID }, { parentNodeID: blockID, stepID }],
     }),

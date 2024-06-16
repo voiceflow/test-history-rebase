@@ -8,8 +8,8 @@ const HelpTooltip = () => (
     <Tooltip.Section marginBottomUnits={2}>
       <p>When selected, the Reprompt type allow you to define ‘No Match’ responses for when a user fails to match an intent.</p>
       <p>
-        You can create multiple ‘No Match’ responses to further guide the user. ‘No Match 1’ is the response the assistant will deliver the first time
-        the user fails to match an intent. ‘No Match 2’ is the response the assistant will deliver the second time the user fails to match an intent-
+        You can create multiple ‘No Match’ responses to further guide the user. ‘No Match 1’ is the response the agent will deliver the first time
+        the user fails to match an intent. ‘No Match 2’ is the response the agent will deliver the second time the user fails to match an intent-
         and so on.
       </p>
     </Tooltip.Section>

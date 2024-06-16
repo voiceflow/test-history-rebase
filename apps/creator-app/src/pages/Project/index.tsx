@@ -29,9 +29,6 @@ import { useProjectHotkeys } from './Project.hook';
 const Publish = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/Publish')));
 const Settings = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/Settings')));
 const Conversations = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/Conversations')));
-const AssistantOverview = withWorkspaceOrProjectAssetsSuspense(
-  lazy(() => import('@/pages/DashboardV2/pages/AssistantOverview'))
-);
 const AnalyticsDashboard = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/AnalyticsDashboard')));
 
 const Project: React.FC = () => {
@@ -40,10 +37,9 @@ const Project: React.FC = () => {
   const resetCreator = useLocalDispatch(Realtime.creator.reset);
   const resetCanvasTemplateData = useLocalDispatch(Realtime.canvasTemplate.reset);
 
-  const [canEditProject] = usePermission(Permission.PROJECT_EDIT);
+  const [canEditProject] = usePermission(Permission.PROJECT_UPDATE);
 
   const hideExports = useFeature(Realtime.FeatureFlag.HIDE_EXPORTS);
-  const cmsWorkflows = useFeature(Realtime.FeatureFlag.CMS_WORKFLOWS);
   const disableIntegration = useFeature(Realtime.FeatureFlag.DISABLE_INTEGRATION);
 
   const inactivitySnackbar = System.Snackbar.useAPI();
@@ -113,11 +109,9 @@ const Project: React.FC = () => {
 
           <Route path={Path.PROJECT_SETTINGS} component={Settings} />
 
-          {!cmsWorkflows.isEnabled && <Route path={Path.PROJECT_ASSISTANT_OVERVIEW} component={AssistantOverview} />}
-
           {canEditProject && <Route path={Path.PROJECT_CMS} component={AssistantCMS} />}
 
-          <Redirect to={cmsWorkflows.isEnabled ? Path.PROJECT_CANVAS : Path.PROJECT_DOMAIN} />
+          <Redirect to={Path.PROJECT_CANVAS} />
         </Switch>
 
         {/* allows rendering cms related modals in the cms page tree, so we can easily use cms related context in the modals */}

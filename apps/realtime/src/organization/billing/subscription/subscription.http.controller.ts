@@ -1,11 +1,19 @@
 import { Body, Controller, Get, HttpStatus, Inject, Param, Post, Put, Query } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
-import { PaymentIntent, PaymentIntentDTO, Subscription, SubscriptionDTO, SubscriptionPaymentMethodStatusType } from '@voiceflow/dtos';
+import {
+  PaymentIntent,
+  PaymentIntentDTO,
+  Subscription,
+  SubscriptionDTO,
+  SubscriptionPaymentMethodStatusType,
+} from '@voiceflow/dtos';
 import { ZodApiBody, ZodApiQuery, ZodApiResponse } from '@voiceflow/nestjs-common';
 import { Permission } from '@voiceflow/sdk-auth';
 import { Authorize, UserID } from '@voiceflow/sdk-auth/nestjs';
 import type { Request } from 'express';
 import { ZodValidationPipe } from 'nestjs-zod';
+
+import { OrganizationBaseRequestQuery } from '@/organization/dto/organization-base-request-query.dto';
 
 import { invoiceAdapter } from './adapters/invoice.adapter';
 import subscriptionAdapter from './adapters/subscription.adapter';
@@ -25,7 +33,13 @@ export class BillingSubscriptionHTTPController {
   ) {}
 
   @Get(':subscriptionID/invoices')
-  @Authorize.Permissions([Permission.ORGANIZATION_READ])
+  @Authorize.Permissions<Request<object, object, object, GetInvoicesRequestQuery>>(
+    [Permission.ORGANIZATION_READ],
+    ({ query }) => ({
+      kind: 'workspace',
+      id: query.workspaceID,
+    })
+  )
   @ApiOperation({
     summary: 'Returns billing subscription invoices',
     description: 'Returns billing subscription invoices for the given subscriptionID',
@@ -34,8 +48,14 @@ export class BillingSubscriptionHTTPController {
   @ApiParam({ name: 'subscriptionID', type: 'string' })
   @ZodApiQuery({ schema: GetInvoicesRequestQuery })
   @ZodApiResponse({ status: HttpStatus.OK, schema: GetInvoicesResponse })
-  async getInvoices(@Param('subscriptionID') subscriptionID: string, @Query() query: GetInvoicesRequestQuery): Promise<GetInvoicesResponse> {
-    const { invoices, nextCursor } = await this.service.getInvoices(subscriptionID, { cursor: query.cursor, limit: query.limit });
+  async getInvoices(
+    @Param('subscriptionID') subscriptionID: string,
+    @Query() query: GetInvoicesRequestQuery
+  ): Promise<GetInvoicesResponse> {
+    const { invoices, nextCursor } = await this.service.getInvoices(subscriptionID, {
+      cursor: query.cursor,
+      limit: query.limit,
+    });
 
     const invoicesResponse = invoices.map(invoiceAdapter.fromDB);
 
@@ -46,39 +66,60 @@ export class BillingSubscriptionHTTPController {
   }
 
   @Put(':subscriptionID/cancel')
-  @Authorize.Permissions([Permission.ORGANIZATION_UPDATE])
+  @Authorize.Permissions<Request<object, object, object, OrganizationBaseRequestQuery>>(
+    [Permission.WORKSPACE_BILLING_UPDATE],
+    ({ query }) => ({
+      kind: 'workspace',
+      id: query.workspaceID,
+    })
+  )
   @ApiOperation({
     summary: 'Cancels billing subscription',
     description: 'Cancels billing subscription for the given subscriptionID',
   })
   @ApiParam({ name: 'organizationID', type: 'string' })
   @ApiParam({ name: 'subscriptionID', type: 'string' })
+  @ZodApiQuery({ schema: OrganizationBaseRequestQuery })
   @ZodApiResponse({ status: HttpStatus.OK, schema: SubscriptionDTO })
   async cancel(@Param('subscriptionID') subscriptionID: string): Promise<Subscription> {
     return this.service.cancel(subscriptionID).then(subscriptionAdapter.fromDB);
   }
 
   @Put(':subscriptionID/downgrade-trial')
-  @Authorize.Permissions([Permission.ORGANIZATION_UPDATE])
+  @Authorize.Permissions<Request<object, object, object, OrganizationBaseRequestQuery>>(
+    [Permission.WORKSPACE_BILLING_UPDATE],
+    ({ query }) => ({
+      kind: 'workspace',
+      id: query.workspaceID,
+    })
+  )
   @ApiOperation({
     summary: 'Downgrade trial subscription to starter plan',
     description: 'Downgrade trial subscription to starter plan for the given subscriptionID',
   })
   @ApiParam({ name: 'organizationID', type: 'string' })
   @ApiParam({ name: 'subscriptionID', type: 'string' })
+  @ZodApiQuery({ schema: OrganizationBaseRequestQuery })
   @ZodApiResponse({ status: HttpStatus.OK, schema: SubscriptionDTO })
   async downgradeTrial(@Param('subscriptionID') subscriptionID: string): Promise<Subscription> {
     return this.service.downgradeTrial(subscriptionID).then(subscriptionAdapter.fromDB);
   }
 
   @Post('payment-intent')
-  @Authorize.Permissions([Permission.ORGANIZATION_UPDATE])
+  @Authorize.Permissions<Request<object, object, object, OrganizationBaseRequestQuery>>(
+    [Permission.WORKSPACE_BILLING_UPDATE],
+    ({ query }) => ({
+      kind: 'workspace',
+      id: query.workspaceID,
+    })
+  )
   @ApiOperation({
     summary: 'Create payment intent',
     description: 'Create payment intent',
   })
   @ApiParam({ name: 'organizationID', type: 'string' })
   @ApiParam({ name: 'subscriptionID', type: 'string' })
+  @ZodApiQuery({ schema: OrganizationBaseRequestQuery })
   @ZodApiResponse({ status: HttpStatus.OK, schema: PaymentIntentDTO })
   @ZodApiBody({ schema: CreatePaymentIntentRequest })
   async createPaymentIntent(
@@ -105,19 +146,29 @@ export class BillingSubscriptionHTTPController {
   }
 
   @Post('card')
-  @Authorize.Permissions([Permission.ORGANIZATION_UPDATE])
+  @Authorize.Permissions<Request<object, object, object, OrganizationBaseRequestQuery>>(
+    [Permission.WORKSPACE_BILLING_UPDATE],
+    ({ query }) => ({
+      kind: 'workspace',
+      id: query.workspaceID,
+    })
+  )
   @ApiOperation({
     summary: 'Create or update customer card',
     description: 'Create or update customer card',
   })
   @ApiParam({ name: 'organizationID', type: 'string' })
+  @ZodApiQuery({ schema: OrganizationBaseRequestQuery })
   @ZodApiBody({ schema: UpsertCustomerCardRequest })
   @ZodApiResponse({ status: HttpStatus.OK, schema: UpsertCustomerCardResponse })
   async upsertCustomerCard(
     @Body(new ZodValidationPipe(UpsertCustomerCardRequest))
     paymentIntentRequest: UpsertCustomerCardRequest
   ): Promise<UpsertCustomerCardResponse> {
-    const data = await this.service.updateCustomerCard(paymentIntentRequest.customerID, paymentIntentRequest.paymentIntentID);
+    const data = await this.service.updateCustomerCard(
+      paymentIntentRequest.customerID,
+      paymentIntentRequest.paymentIntentID
+    );
     const { card, reference_id } = data.payment_source;
 
     if (!card) {
@@ -149,19 +200,21 @@ export class BillingSubscriptionHTTPController {
     };
   }
 
-  // keep as the last route to avoid collisions
-  @Get(':subscriptionID/:workspaceID')
-  @Authorize.Permissions<Request<{ workspaceID: string }>>([Permission.ORGANIZATION_READ], (request) => ({
-    id: request.params.workspaceID,
-    kind: 'workspace',
-  }))
+  @Get(':subscriptionID')
+  @Authorize.Permissions<Request<object, object, object, OrganizationBaseRequestQuery>>(
+    [Permission.ORGANIZATION_READ],
+    ({ query }) => ({
+      kind: 'workspace',
+      id: query.workspaceID,
+    })
+  )
   @ApiOperation({
     summary: 'Returns billing subscription',
     description: 'Returns billing subscription for the given subscriptionID',
   })
   @ApiParam({ name: 'organizationID', type: 'string' })
   @ApiParam({ name: 'subscriptionID', type: 'string' })
-  @ApiParam({ name: 'workspaceID', type: 'string' })
+  @ZodApiQuery({ schema: OrganizationBaseRequestQuery })
   @ZodApiResponse({ status: HttpStatus.OK, schema: SubscriptionDTO })
   async findOne(@Param('subscriptionID') subscriptionID: string): Promise<Subscription> {
     return this.service.findOne(subscriptionID).then(subscriptionAdapter.fromDB);

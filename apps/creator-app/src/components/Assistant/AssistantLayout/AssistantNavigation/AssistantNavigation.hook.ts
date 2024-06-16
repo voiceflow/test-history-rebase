@@ -33,11 +33,10 @@ export const useAssistantNavigationLogoItems = (): NavigationLogoItem[] => {
   const isLockedProjectViewer = useIsLockedProjectViewer();
 
   const hideExports = useFeature(Realtime.FeatureFlag.HIDE_EXPORTS);
-  const [canExportModel] = usePermission(Permission.MODEL_EXPORT);
-  const [canSharePrototype] = usePermission(Permission.SHARE_PROTOTYPE);
-  const [canManageProjects] = usePermission(Permission.PROJECTS_MANAGE);
-  const [canExportPrototype] = usePermission(Permission.CANVAS_EXPORT);
-  const [canAddCollaborators] = usePermission(Permission.ADD_COLLABORATORS);
+  const [canExportModel] = usePermission(Permission.FEATURE_EXPORT_MODEL);
+  const [canSharePrototype] = usePermission(Permission.PROJECT_PROTOTYPE_SHARE);
+  const [canManageProjects] = usePermission(Permission.WORKSPACE_PROJECTS_MANAGE);
+  const [canAddCollaborators] = usePermission(Permission.WORKSPACE_MEMBER_ADD);
 
   const platform = useSelector(Project.active.platformSelector);
   const projectID = useSelector(Session.activeProjectIDSelector);
@@ -53,15 +52,18 @@ export const useAssistantNavigationLogoItems = (): NavigationLogoItem[] => {
 
   const projectMembersModal = useModal(Modals.Project.Members);
 
-  const withExport = !isPreviewerOrLockedViewer && canExportModel && canExportPrototype && !hideExports.isEnabled;
-  const withSharePrototype = !isPreviewerOrLockedViewer && canSharePrototype;
+  const withExport = !isPreviewerOrLockedViewer && canExportModel;
+  const withSharePrototype = !isPreviewerOrLockedViewer && canSharePrototype && !hideExports.isEnabled;
   const withDuplicateOption = !isPreviewerOrLockedViewer && canManageProjects;
   const withInviteCollaborators = !isPreviewerOrLockedViewer && canAddCollaborators && !!projectID;
-  const withCopyCloneLinkOption = !isPreviewerOrLockedViewer && canManageProjects && !hideExports.isEnabled;
+  const withCopyCloneLinkOption = !isPreviewerOrLockedViewer && canManageProjects;
 
   return [
     { key: 'back', label: 'Back to dashboard', iconName: 'ArrowLeft', onClick: () => goToDashboard() },
-    ...conditionalArrayItems<NavigationLogoItem>(withSharePrototype || withInviteCollaborators || withExport, { key: 'divider-1', divider: true }),
+    ...conditionalArrayItems<NavigationLogoItem>(withSharePrototype || withInviteCollaborators || withExport, {
+      key: 'divider-1',
+      divider: true,
+    }),
     ...conditionalArrayItems<NavigationLogoItem>(withSharePrototype, {
       key: 'share',
       label: 'Share prototype',
@@ -80,7 +82,10 @@ export const useAssistantNavigationLogoItems = (): NavigationLogoItem[] => {
       onClick: (props) => props.export(),
       iconName: 'Export',
     }),
-    ...conditionalArrayItems<NavigationLogoItem>(withDuplicateOption || withCopyCloneLinkOption, { key: 'divider-2', divider: true }),
+    ...conditionalArrayItems<NavigationLogoItem>(withDuplicateOption || withCopyCloneLinkOption, {
+      key: 'divider-2',
+      divider: true,
+    }),
     ...conditionalArrayItems<NavigationLogoItem>(withDuplicateOption, {
       key: 'duplicate',
       label: 'Duplicate agent',
@@ -99,38 +104,24 @@ export const useAssistantNavigationLogoItems = (): NavigationLogoItem[] => {
 export const useAssistantNavigationItems = () => {
   const location = useLocation();
 
-  const [canEditAPIKey] = usePermission(Permission.API_KEY_EDIT);
-  const [canEditProject] = usePermission(Permission.PROJECT_EDIT);
-  const [canViewConversations] = usePermission(Permission.VIEW_CONVERSATIONS);
+  const [canEditAPIKey] = usePermission(Permission.API_KEY_UPDATE);
+  const [canEditProject] = usePermission(Permission.PROJECT_UPDATE);
+  const [canViewConversations] = usePermission(Permission.PROJECT_TRANSCRIPT_READ);
 
-  const domainID = useSelector(Session.activeDomainIDSelector) ?? '';
   const diagramID = useSelector(Session.activeDiagramIDSelector) ?? '';
 
-  const cmsWorkflows = useFeature(Realtime.FeatureFlag.CMS_WORKFLOWS);
   const viewerAPIKeyAccess = useFeature(Realtime.FeatureFlag.ALLOW_VIEWER_APIKEY_ACCESS);
 
   return useMemo<IAssistantNavigationItem[]>(() => {
     const isItemActive = (path: string) => !!matchPath(location.pathname, { path, exact: false });
 
-    // eslint-disable-next-line no-nested-ternary
-    const designerPath = cmsWorkflows.isEnabled ? Path.PROJECT_CANVAS : domainID && diagramID ? Path.DOMAIN_CANVAS : Path.PROJECT_DOMAIN;
-
     return [
-      ...conditionalArrayItems<IAssistantNavigationItem>(!cmsWorkflows.isEnabled, {
-        path: designerPath,
-        testID: 'designer',
-        params: domainID && diagramID ? { domainID, diagramID } : {},
-        hotkey: '',
-        isActive: isItemActive(designerPath),
-        iconName: 'Designer',
-        tooltipLabel: 'Designer',
-      }),
       ...conditionalArrayItems<IAssistantNavigationItem>(canEditProject, {
         path: Path.PROJECT_CMS,
         testID: 'cms',
         hotkey: '',
         isActive: isItemActive(Path.PROJECT_CMS),
-        iconName: cmsWorkflows.isEnabled ? 'Designer' : 'Content',
+        iconName: 'Designer',
         tooltipLabel: 'Content',
       }),
       ...conditionalArrayItems<IAssistantNavigationItem>(canViewConversations, {
@@ -166,7 +157,7 @@ export const useAssistantNavigationItems = () => {
         tooltipLabel: 'Settings',
       }),
     ].map<IAssistantNavigationItem>((item, index) => ({ ...item, hotkey: String(index + 1) }));
-  }, [location.pathname, canViewConversations, canEditAPIKey, viewerAPIKeyAccess.isEnabled, canEditProject, domainID, diagramID]);
+  }, [location.pathname, canViewConversations, canEditAPIKey, viewerAPIKeyAccess.isEnabled, canEditProject, diagramID]);
 };
 
 export const useAssistantNavigationHotkeys = (items: IAssistantNavigationItem[]) => {

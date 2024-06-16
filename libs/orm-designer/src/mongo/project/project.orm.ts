@@ -24,6 +24,12 @@ export class ProjectORM extends MongoAtomicORM<ProjectEntity> {
     return result.map(({ _id }) => _id.toJSON());
   }
 
+  async getVersionAndWorkspaceID(projectID: string): Promise<{ devVersion?: string; workspaceID: number }> {
+    const { devVersion, teamID } = await this.findOneOrFail(projectID, { fields: ['devVersion', 'teamID'] });
+
+    return { devVersion: devVersion?.toString(), workspaceID: teamID };
+  }
+
   async patchOnePlatformData(id: Primary<ProjectEntity>, data: AnyRecord) {
     await this.atomicUpdateOne(
       id,

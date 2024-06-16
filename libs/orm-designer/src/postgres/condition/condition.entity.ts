@@ -1,5 +1,6 @@
+/* eslint-disable max-classes-per-file */
 import { Entity, Enum, Index, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
-import type { Markup } from '@voiceflow/dtos';
+import type { ConditionAssertion, Markup } from '@voiceflow/dtos';
 import { ConditionType } from '@voiceflow/dtos';
 
 import { MarkupType } from '@/common';
@@ -17,7 +18,7 @@ import type { Prompt } from '../prompt';
 @Unique({ properties: ['id', 'environmentID'] })
 @Index({ properties: ['environmentID'] })
 export class BaseConditionEntity<
-  DefaultOrNullColumn extends string = never
+  DefaultOrNullColumn extends string = never,
 > extends PostgresCMSObjectEntity<DefaultOrNullColumn> {
   @Enum(() => ConditionType)
   type!: ConditionType;
@@ -32,11 +33,14 @@ export class BaseConditionEntity<
 }
 
 @Entity({ discriminatorValue: ConditionType.EXPRESSION })
-export class ExpressionConditionEntity extends BaseConditionEntity {
+export class ExpressionConditionEntity extends BaseConditionEntity<'assertions'> {
   type!: typeof ConditionType.EXPRESSION;
 
   @Property()
   matchAll!: boolean;
+
+  @Property({ type: 'jsonb', default: '[]' })
+  assertions!: ConditionAssertion[];
 }
 
 @Entity({ discriminatorValue: ConditionType.PROMPT })

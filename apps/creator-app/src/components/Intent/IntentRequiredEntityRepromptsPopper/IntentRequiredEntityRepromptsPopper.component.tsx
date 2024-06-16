@@ -1,6 +1,17 @@
+import { useDndContext } from '@dnd-kit/core';
 import { ResponseVariantType, TextResponseVariant } from '@voiceflow/dtos';
 import { tid } from '@voiceflow/style';
-import { Box, Divider, EditorButton, InputFormControl, Popper, Scroll, Section, useConst, usePopperContext } from '@voiceflow/ui-next';
+import {
+  Box,
+  Divider,
+  EditorButton,
+  InputFormControl,
+  Popper,
+  Scroll,
+  Section,
+  useConst,
+  usePopperContext,
+} from '@voiceflow/ui-next';
 import React, { useMemo } from 'react';
 
 import { AIGenerateResponseVariantButton } from '@/components/AI/AIGenerateResponseVariantButton/AIGenerateResponseVariantButton.component';
@@ -33,13 +44,16 @@ export const IntentRequiredEntityRepromptsPopper: React.FC<IIntentRequiredEntity
   const REPROMPT_SETTINGS_TEST_ID = 'reprompt-settings';
 
   const entity = useSelector(Designer.Entity.selectors.oneByID, { id: entityID });
+  const dndContext = useDndContext();
   const popperContext = usePopperContext();
   const aiFeaturesEnabled = useIsAIFeaturesEnabled();
 
   const textReprompts = useMemo(
     () =>
       reprompts.filter(
-        (response): response is Pick<TextResponseVariant, 'id' | 'text' | 'type' | 'attachmentOrder' | 'speed' | 'cardLayout'> =>
+        (
+          response
+        ): response is Pick<TextResponseVariant, 'id' | 'text' | 'type' | 'attachmentOrder' | 'speed' | 'cardLayout'> =>
           response.type === ResponseVariantType.TEXT
       ),
     [reprompts]
@@ -58,7 +72,10 @@ export const IntentRequiredEntityRepromptsPopper: React.FC<IIntentRequiredEntity
     { name: 'preventOverflow', options: { boundary: popperContext.portalNode, padding: 16 } },
     { name: 'offset', options: { offset: [0, 13] } },
   ]);
-  const isRepromptsEmpty = useMemo(() => !reprompts.length || reprompts.every(isAnyResponseVariantWithDataEmpty), [reprompts]);
+  const isRepromptsEmpty = useMemo(
+    () => !reprompts.length || reprompts.every(isAnyResponseVariantWithDataEmpty),
+    [reprompts]
+  );
   const isUtterancesEmpty = useMemo(() => !utterances.length || utterances.every(isUtteranceLikeEmpty), [utterances]);
 
   return (
@@ -74,7 +91,7 @@ export const IntentRequiredEntityRepromptsPopper: React.FC<IIntentRequiredEntity
             isActive={isOpen}
             isWarning={isRepromptsEmpty}
             fullWidth
-            buttonClassName={editorButtonStyle}
+            buttonClassName={editorButtonStyle({ isDragging: !!dndContext?.active })}
             warningTooltipContent="Missing reprompt"
             testID={tid(TEST_ID, 'input')}
           />
@@ -103,8 +120,17 @@ export const IntentRequiredEntityRepromptsPopper: React.FC<IIntentRequiredEntity
 
             <Divider noPadding />
 
-            <Section.Header.Container pt={11} title="Reprompts" testID={tid(REPROMPT_SETTINGS_TEST_ID, ['reprompts', 'header'])} variant="active">
-              <Section.Header.Button iconName="Plus" testID={tid(REPROMPT_SETTINGS_TEST_ID, ['reprompts', 'add'])} onClick={onRepromptAdd} />
+            <Section.Header.Container
+              pt={11}
+              title="Reprompts"
+              testID={tid(REPROMPT_SETTINGS_TEST_ID, ['reprompts', 'header'])}
+              variant="active"
+            >
+              <Section.Header.Button
+                iconName="Plus"
+                testID={tid(REPROMPT_SETTINGS_TEST_ID, ['reprompts', 'add'])}
+                onClick={onRepromptAdd}
+              />
             </Section.Header.Container>
 
             <Box gap={12} pr={24} direction="column">

@@ -5,11 +5,6 @@ export * as Canvas from './Canvas';
 export { default as Confirm } from './Confirm';
 export * from './ConfirmV2/ConfirmV2.modal';
 export * as Conversation from './Conversation';
-export { default as Disclaimer } from './Disclaimer';
-/**
- * @deprecated remove when FeatureFlag.CMS_WORKFLOWS are released
- */
-export * as Domain from './Domain';
 export * as Entity from './Entity';
 export { default as Error } from './Error';
 export * as Flow from './Flow';
@@ -26,7 +21,6 @@ export * as Publish from './Publish';
 export { default as Refresh } from './Refresh';
 export { default as Success } from './Success';
 export * as Tokens from './Tokens';
-export * as Topic from './Topic';
 export { default as Upgrade } from './Upgrade';
 export * as Variable from './Variable';
 export { default as VariablePrompt } from './VariablePrompt';

@@ -1,5 +1,6 @@
 import * as Platform from '@voiceflow/platform-config';
 import { Box } from '@voiceflow/ui';
+// eslint-disable-next-line you-dont-need-lodash-underscore/is-string
 import _isString from 'lodash/isString';
 import React from 'react';
 
@@ -22,7 +23,7 @@ const getTitle = ({ errorType, message }: AnyErrorStageData, platform: Platform.
   }
 
   if (isPublishJobSubmittingProjectError(errorType)) {
-    return 'Submitting assistant error';
+    return 'Submitting agent error';
   }
 
   if (isPublishJobSubmittingReviewError(errorType)) {
@@ -36,7 +37,7 @@ const getError = <E extends AnyErrorStageData>(stageError: E, defaultMessage: st
   const { errorType, error } = stageError;
 
   if (IsPublishJobRenderingError(errorType)) {
-    return 'Assistant structure unable to build, please wait a while and try again. If the issue persists, then please contact us';
+    return 'Agent structure unable to build, please wait a while and try again. If the issue persists, then please contact us';
   }
 
   const strError = _isString(error) ? error : error?.message;

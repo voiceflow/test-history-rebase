@@ -18,7 +18,7 @@
     "_id": "60cbccebf995ff001b57bfc6",
     "name": "Initial Version",
     "projectID": "60cbccebf995ff001b57bfc5",
-    "variables": ["sessions", "user_id", "timestamp", "platform", "locale"],
+    "variables": ["sessions", "user_id", "timestamp", "platform"],
     "platformData": {
       "slots": [],
       "intents": [

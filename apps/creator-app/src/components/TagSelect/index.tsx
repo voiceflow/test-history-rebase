@@ -22,7 +22,7 @@ import { PrimitiveTagSelectProps, TagSelectInternalProps, TagSelectProps } from 
 
 const trimNulls = (list: Nullish<string>[]): string[] => list.filter(Boolean) as string[];
 
-const customMenuLabelRenderer = <Option extends unknown>(
+const customMenuLabelRenderer = <Option,>(
   option: Exclude<Option, UIOnlyMenuItemOption>,
   searchLabel: string,
   getOptionLabel: GetOptionLabel<string>,
@@ -90,7 +90,9 @@ function TagSelect({
       ? {
           renderFooterAction: ({ close }) => (
             <Menu.Footer>
-              <Menu.Footer.Action onClick={stopImmediatePropagation(Utils.functional.chainVoid(close, toggleSelectAll))}>
+              <Menu.Footer.Action
+                onClick={stopImmediatePropagation(Utils.functional.chainVoid(close, toggleSelectAll))}
+              >
                 {selectedAllIntents ? 'Unselect All' : selectAllLabel}
               </Menu.Footer.Action>
             </Menu.Footer>
@@ -115,6 +117,7 @@ function TagSelect({
       options={options}
       isDropdown={isDropdown}
       labelSearchable={false}
+      clearSearchOnSelect={false}
       alwaysShowCreate
       autoDismiss={false}
       getOptionValue={getOptionValue}

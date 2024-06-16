@@ -9,7 +9,6 @@ export const toParam = <T extends string, O extends boolean = false>(param: T, o
 export const RouteParam = {
   NODE_ID: 'nodeID',
   THREAD_ID: 'threadID',
-  DOMAIN_ID: 'domainID',
   DIAGRAM_ID: 'diagramID',
   COMMENT_ID: 'commentID',
   VERSION_ID: 'versionID',
@@ -62,19 +61,6 @@ export const ProjectRoute = {
   ANALYTICS: 'analytics',
   PROTOTYPE: 'prototype',
   CONVERSATIONS: 'transcripts',
-  ASSISTANT_OVERVIEW: 'assistant-overview',
-
-  /**
-   * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
-   */
-  DOMAIN: 'domain',
-} as const;
-
-/**
- * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
- */
-export const DomainRoute = {
-  CANVAS: 'canvas',
 } as const;
 
 export const CanvasRoute = {
@@ -215,8 +201,18 @@ export const Path = {
   PROJECT_VERSION: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID)),
 
   PROJECT_CMS: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.CMS),
-  PROJECT_CANVAS: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.CANVAS, toParam(RouteParam.DIAGRAM_ID, true)),
-  PROJECT_EXPORT: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.EXPORT, toParam(RouteParam.DIAGRAM_ID)),
+  PROJECT_CANVAS: toPath(
+    RootRoute.PROJECT,
+    toParam(RouteParam.VERSION_ID),
+    ProjectRoute.CANVAS,
+    toParam(RouteParam.DIAGRAM_ID, true)
+  ),
+  PROJECT_EXPORT: toPath(
+    RootRoute.PROJECT,
+    toParam(RouteParam.VERSION_ID),
+    ProjectRoute.EXPORT,
+    toParam(RouteParam.DIAGRAM_ID)
+  ),
   PROJECT_PUBLISH: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.PUBLISH),
   PROJECT_SETTINGS: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.SETTINGS),
   PROJECT_PROTOTYPE: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.PROTOTYPE),
@@ -228,82 +224,29 @@ export const Path = {
     toParam(RouteParam.TRANSCRIPT_ID, true)
   ),
 
-  PROJECT_SETTINGS_BACKUP: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.SETTINGS, ProjectSettingsRoute.BACKUP),
-  PROJECT_SETTINGS_GENERAL: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.SETTINGS, ProjectSettingsRoute.GENERAL),
-  PROJECT_SETTINGS_VERSION: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.SETTINGS, ProjectSettingsRoute.VERSION),
-  PROJECT_SETTINGS_ENVIRONMENT: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.SETTINGS, ProjectSettingsRoute.ENVIRONMENT),
-
-  /**
-   * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
-   */
-  PROJECT_DOMAIN: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.DOMAIN, toParam(RouteParam.DOMAIN_ID, true)),
-  /**
-   * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
-   */
-  PROJECT_ASSISTANT_OVERVIEW: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.ASSISTANT_OVERVIEW),
-
-  // domain
-  /**
-   * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
-   */
-  DOMAIN_CANVAS: toPath(
+  PROJECT_SETTINGS_BACKUP: toPath(
     RootRoute.PROJECT,
     toParam(RouteParam.VERSION_ID),
-    ProjectRoute.DOMAIN,
-    toParam(RouteParam.DOMAIN_ID),
-    DomainRoute.CANVAS,
-    toParam(RouteParam.DIAGRAM_ID, true)
+    ProjectRoute.SETTINGS,
+    ProjectSettingsRoute.BACKUP
   ),
-  /**
-   * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
-   */
-  DOMAIN_CANVAS_TEXT_MARKUP: toPath(
+  PROJECT_SETTINGS_GENERAL: toPath(
     RootRoute.PROJECT,
     toParam(RouteParam.VERSION_ID),
-    ProjectRoute.DOMAIN,
-    toParam(RouteParam.DOMAIN_ID),
-    DomainRoute.CANVAS,
-    toParam(RouteParam.DIAGRAM_ID),
-    CanvasRoute.MARKUP
+    ProjectRoute.SETTINGS,
+    ProjectSettingsRoute.GENERAL
   ),
-  /**
-   * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
-   */
-  DOMAIN_CANVAS_NODE: toPath(
+  PROJECT_SETTINGS_VERSION: toPath(
     RootRoute.PROJECT,
     toParam(RouteParam.VERSION_ID),
-    ProjectRoute.DOMAIN,
-    toParam(RouteParam.DOMAIN_ID),
-    DomainRoute.CANVAS,
-    toParam(RouteParam.DIAGRAM_ID),
-    CanvasRoute.NODE,
-    toParam(RouteParam.NODE_ID)
+    ProjectRoute.SETTINGS,
+    ProjectSettingsRoute.VERSION
   ),
-  /**
-   * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
-   */
-  DOMAIN_CANVAS_COMMENTING: toPath(
+  PROJECT_SETTINGS_ENVIRONMENT: toPath(
     RootRoute.PROJECT,
     toParam(RouteParam.VERSION_ID),
-    ProjectRoute.DOMAIN,
-    toParam(RouteParam.DOMAIN_ID),
-    DomainRoute.CANVAS,
-    toParam(RouteParam.DIAGRAM_ID),
-    CanvasRoute.COMMENTING
-  ),
-  /**
-   * @deprecated remove when FeatureFlag.CMS_WORKFLOWS is released
-   */
-  DOMAIN_CANVAS_COMMENTING_THREAD: toPath(
-    RootRoute.PROJECT,
-    toParam(RouteParam.VERSION_ID),
-    ProjectRoute.DOMAIN,
-    toParam(RouteParam.DOMAIN_ID),
-    DomainRoute.CANVAS,
-    toParam(RouteParam.DIAGRAM_ID),
-    CanvasRoute.COMMENTING,
-    toParam(RouteParam.THREAD_ID),
-    toParam(RouteParam.COMMENT_ID, true)
+    ProjectRoute.SETTINGS,
+    ProjectSettingsRoute.ENVIRONMENT
   ),
 
   // canvas
@@ -343,21 +286,61 @@ export const Path = {
 
   PUBLISH: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.PUBLISH),
   PUBLISH_API: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.PUBLISH, PublishRoute.API),
-  PUBLISH_TEAMS: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.PUBLISH, PublishRoute.MICROSOFT_TEAMS),
+  PUBLISH_TEAMS: toPath(
+    RootRoute.PROJECT,
+    toParam(RouteParam.VERSION_ID),
+    ProjectRoute.PUBLISH,
+    PublishRoute.MICROSOFT_TEAMS
+  ),
   PUBLISH_EXPORT: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.PUBLISH, PublishRoute.EXPORT),
-  PUBLISH_GENERAL: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.PUBLISH, PublishRoute.GENERAL),
-  PUBLISH_WEBCHAT: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.PUBLISH, PublishRoute.WEBCHAT),
-  PUBLISH_DIALOGFLOW: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.PUBLISH, PublishRoute.DIALOGFLOW),
+  PUBLISH_GENERAL: toPath(
+    RootRoute.PROJECT,
+    toParam(RouteParam.VERSION_ID),
+    ProjectRoute.PUBLISH,
+    PublishRoute.GENERAL
+  ),
+  PUBLISH_WEBCHAT: toPath(
+    RootRoute.PROJECT,
+    toParam(RouteParam.VERSION_ID),
+    ProjectRoute.PUBLISH,
+    PublishRoute.WEBCHAT
+  ),
+  PUBLISH_DIALOGFLOW: toPath(
+    RootRoute.PROJECT,
+    toParam(RouteParam.VERSION_ID),
+    ProjectRoute.PUBLISH,
+    PublishRoute.DIALOGFLOW
+  ),
 
   PUBLISH_SMS: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.PUBLISH, PublishRoute.SMS),
-  PROTOTYPE_SMS: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.PUBLISH, PublishRoute.PROTOTYPE_SMS),
+  PROTOTYPE_SMS: toPath(
+    RootRoute.PROJECT,
+    toParam(RouteParam.VERSION_ID),
+    ProjectRoute.PUBLISH,
+    PublishRoute.PROTOTYPE_SMS
+  ),
 
-  PUBLISH_WHATSAPP: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.PUBLISH, PublishRoute.WHATSAPP),
-  PROTOTYPE_WHATSAPP: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.PUBLISH, PublishRoute.PROTOTYPE_WHATSAPP),
+  PUBLISH_WHATSAPP: toPath(
+    RootRoute.PROJECT,
+    toParam(RouteParam.VERSION_ID),
+    ProjectRoute.PUBLISH,
+    PublishRoute.WHATSAPP
+  ),
+  PROTOTYPE_WHATSAPP: toPath(
+    RootRoute.PROJECT,
+    toParam(RouteParam.VERSION_ID),
+    ProjectRoute.PUBLISH,
+    PublishRoute.PROTOTYPE_WHATSAPP
+  ),
 
   // cms
 
-  CMS_RESOURCE: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.CMS, toParam(RouteParam.RESOURCE_TYPE)),
+  CMS_RESOURCE: toPath(
+    RootRoute.PROJECT,
+    toParam(RouteParam.VERSION_ID),
+    ProjectRoute.CMS,
+    toParam(RouteParam.RESOURCE_TYPE)
+  ),
   CMS_RESOURCE_ACTIVE: toPath(
     RootRoute.PROJECT,
     toParam(RouteParam.VERSION_ID),
@@ -373,5 +356,10 @@ export const Path = {
   CMS_RESPONSE: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.CMS, CMSRoute.RESPONSE),
   CMS_VARIABLE: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.CMS, CMSRoute.VARIABLE),
   CMS_WORKFLOW: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.CMS, CMSRoute.WORKFLOW),
-  CMS_KNOWLEDGE_BASE: toPath(RootRoute.PROJECT, toParam(RouteParam.VERSION_ID), ProjectRoute.CMS, CMSRoute.KNOWLEDGE_BASE),
+  CMS_KNOWLEDGE_BASE: toPath(
+    RootRoute.PROJECT,
+    toParam(RouteParam.VERSION_ID),
+    ProjectRoute.CMS,
+    CMSRoute.KNOWLEDGE_BASE
+  ),
 } as const;

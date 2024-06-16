@@ -5,7 +5,12 @@ import { createReverter } from '@/ducks/utils';
 import { isPointEqual } from '@/utils/geometry';
 
 import { nodeCoordsByIDSelector } from '../selectors';
-import { createActiveDiagramReducer, createDiagramInvalidator, createNodeRemovalInvalidators, DIAGRAM_INVALIDATORS } from './utils';
+import {
+  createActiveDiagramReducer,
+  createDiagramInvalidator,
+  createNodeRemovalInvalidators,
+  DIAGRAM_INVALIDATORS,
+} from './utils';
 
 const moveManyNodesReducer = createActiveDiagramReducer(Realtime.node.moveMany, (state, { blocks }) => {
   Object.entries(blocks).forEach(([nodeID, coords]) => {
@@ -19,7 +24,7 @@ export default moveManyNodesReducer;
 
 export const moveManyNodesReverter = createReverter(
   Realtime.node.moveMany,
-  ({ workspaceID, projectID, versionID, domainID, diagramID, blocks }, getState) => {
+  ({ workspaceID, projectID, versionID, diagramID, blocks }, getState) => {
     const state = getState();
     const prevCoords = Object.keys(blocks)
       .map((nodeID): [string, Realtime.Point | null] => [nodeID, nodeCoordsByIDSelector(state, { id: nodeID })])
@@ -31,12 +36,20 @@ export const moveManyNodesReverter = createReverter(
 
     if (prevCoords.length === 0) return null;
 
-    return Realtime.node.moveMany({ workspaceID, projectID, versionID, domainID, diagramID, blocks: Object.fromEntries(prevCoords) });
+    return Realtime.node.moveMany({
+      workspaceID,
+      projectID,
+      versionID,
+      diagramID,
+      blocks: Object.fromEntries(prevCoords),
+    });
   },
 
   [
     ...DIAGRAM_INVALIDATORS,
     ...createNodeRemovalInvalidators<Realtime.node.TranslatePayload>((origin, nodeID) => !!origin.blocks[nodeID]),
-    createDiagramInvalidator(Realtime.node.moveMany, (origin, subject) => Object.keys(origin.blocks).some((nodeID) => !!subject.blocks[nodeID])),
+    createDiagramInvalidator(Realtime.node.moveMany, (origin, subject) =>
+      Object.keys(origin.blocks).some((nodeID) => !!subject.blocks[nodeID])
+    ),
   ]
 );

@@ -37,21 +37,8 @@ describe('Channels', () => {
     });
 
     it('build a channel using provided arguments', () => {
-      expect(Channels.version.build({ workspaceID: '123', projectID: '456', versionID: '789' })).to.eq('workspace/123/project/456/version/789');
-    });
-  });
-
-  describe('diagram', () => {
-    it('build a channel pattern based off its known arguments', () => {
-      expect(Channels.diagram.buildMatcher()).to.eq(
-        'workspace/:workspaceID/project/:projectID/version/:versionID/domain/:domainID/diagram/:diagramID'
-      );
-    });
-
-    it('build a channel using provided arguments', () => {
-      expect(Channels.diagram.build({ workspaceID: '123', projectID: '456', versionID: '789', diagramID: '000', domainID: '007' })).to.eq(
-        // eslint-disable-next-line no-secrets/no-secrets
-        'workspace/123/project/456/version/789/domain/007/diagram/000'
+      expect(Channels.version.build({ workspaceID: '123', projectID: '456', versionID: '789' })).to.eq(
+        'workspace/123/project/456/version/789'
       );
     });
   });

@@ -3,6 +3,102 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.93.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.92.0...@voiceflow/dtos@1.93.0) (2024-06-12)
+
+### Features
+
+* remove menu items (COR-000) ([#8264](https://github.com/voiceflow/creator-app/issues/8264)) ([2e6a83f](https://github.com/voiceflow/creator-app/commit/2e6a83f01b6b88d107b9b8c7610789ccb9cdaee8))
+
+# [1.92.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.91.0...@voiceflow/dtos@1.92.0) (2024-06-12)
+
+### Features
+
+* add message ducks (COR-2309) ([#8237](https://github.com/voiceflow/creator-app/issues/8237)) ([5d78786](https://github.com/voiceflow/creator-app/commit/5d787867f0aa07d07004f2dcb6a4c958c3e9f3d7))
+
+# [1.91.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.90.0...@voiceflow/dtos@1.91.0) (2024-06-12)
+
+### Features
+
+* triggers migration [bugfix] (COR-2022) ([#8096](https://github.com/voiceflow/creator-app/issues/8096)) ([ed45ce0](https://github.com/voiceflow/creator-app/commit/ed45ce0fbc0b9c16f3cd25a3ac78a736a5ced4ba))
+
+# [1.90.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.89.0...@voiceflow/dtos@1.90.0) (2024-06-12)
+
+### Features
+
+* replace shared node selector with reference system one (COR-000) ([#8252](https://github.com/voiceflow/creator-app/issues/8252)) ([e9857ea](https://github.com/voiceflow/creator-app/commit/e9857ea0f613fe9ef829dc6e0009b441f5c08014))
+
+# [1.89.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.88.0...@voiceflow/dtos@1.89.0) (2024-06-11)
+
+### Features
+
+* make the function paths draggable in the CMS editor (COR-8227) ([#8249](https://github.com/voiceflow/creator-app/issues/8249)) ([a527447](https://github.com/voiceflow/creator-app/commit/a5274474fa454d8dbb95cb5124b8c97ad2054d97))
+
+# [1.88.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.87.0...@voiceflow/dtos@1.88.0) (2024-06-11)
+
+### Features
+
+* reference module (COR-000) ([#8240](https://github.com/voiceflow/creator-app/issues/8240)) ([dfd4bba](https://github.com/voiceflow/creator-app/commit/dfd4bbafc7cb9cb2717ab35fb7313ea34d82721a))
+
+# [1.87.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.86.0...@voiceflow/dtos@1.87.0) (2024-06-10)
+
+### Features
+
+* response message module (COR-2308) ([#8255](https://github.com/voiceflow/creator-app/issues/8255)) ([adbc2db](https://github.com/voiceflow/creator-app/commit/adbc2db63f2f5a3ddbe4f23e940043c6c51593e6))
+
+# [1.86.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.85.1...@voiceflow/dtos@1.86.0) (2024-06-07)
+
+### Features
+
+* reference entities (COR-000) ([#8236](https://github.com/voiceflow/creator-app/issues/8236)) ([d452956](https://github.com/voiceflow/creator-app/commit/d45295648d45c3ed92494d510c6a86576aa9c6ff))
+
+## [1.85.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.85.0...@voiceflow/dtos@1.85.1) (2024-06-07)
+
+### Bug Fixes
+
+* retry integrate org members (COR-2143) ([#8183](https://github.com/voiceflow/creator-app/issues/8183)) ([2b5e0b4](https://github.com/voiceflow/creator-app/commit/2b5e0b4882240a03e64e5f9940cb76d26bf261da))
+
+# [1.85.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.84.0...@voiceflow/dtos@1.85.0) (2024-06-06)
+
+### Features
+
+* listen steps nodes (COR-000) ([#8200](https://github.com/voiceflow/creator-app/issues/8200)) ([ddda564](https://github.com/voiceflow/creator-app/commit/ddda564467f52b48506849199c30c6c1186fc816))
+
+# [1.84.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.83.0...@voiceflow/dtos@1.84.0) (2024-06-05)
+
+### Features
+
+* creates response message dtos (COR-2307) ([#8224](https://github.com/voiceflow/creator-app/issues/8224)) ([84117b1](https://github.com/voiceflow/creator-app/commit/84117b1e7cd8ced2f41c472ed07669e359fdc576))
+
+# [1.83.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.82.0...@voiceflow/dtos@1.83.0) (2024-06-04)
+
+### Features
+
+* add embedding model under ff (COR-2160) (COR-2161) (COR-2164) ([#8210](https://github.com/voiceflow/creator-app/issues/8210)) ([c925b21](https://github.com/voiceflow/creator-app/commit/c925b212ba795225c49534b793d412abd069f618))
+
+# [1.82.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.81.0...@voiceflow/dtos@1.82.0) (2024-06-04)
+
+### Features
+
+* add intent automatic reprompt settings (COR-000) ([#8218](https://github.com/voiceflow/creator-app/issues/8218)) ([fa7fa00](https://github.com/voiceflow/creator-app/commit/fa7fa0025eb8309d5a887608147033ff6262c41d))
+
+# [1.81.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.80.0...@voiceflow/dtos@1.81.0) (2024-06-03)
+
+### Features
+
+* adds assertions column to expression condition schema (COR-2095) ([#8128](https://github.com/voiceflow/creator-app/issues/8128)) ([d61171c](https://github.com/voiceflow/creator-app/commit/d61171cc241e92ecf7ec54c5b43d950d55dfd851))
+
+# [1.80.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.79.1...@voiceflow/dtos@1.80.0) (2024-06-03)
+
+### Features
+
+* implement step editor (COR-1941) ([#8153](https://github.com/voiceflow/creator-app/issues/8153)) ([38258cd](https://github.com/voiceflow/creator-app/commit/38258cd252408af766a955d818e00d4cdc184c0b))
+
+## [1.79.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.79.0...@voiceflow/dtos@1.79.1) (2024-05-31)
+
+### Bug Fixes
+
+* add maxTokens settings summarization field [bugfix] (COR-2267) ([#8209](https://github.com/voiceflow/creator-app/issues/8209)) ([431b60c](https://github.com/voiceflow/creator-app/commit/431b60cd563d4ea02b6b1b7c8c12c26a314ee124))
+
 # [1.79.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.78.2...@voiceflow/dtos@1.79.0) (2024-05-29)
 
 ### Features

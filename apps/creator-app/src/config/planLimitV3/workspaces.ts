@@ -15,7 +15,7 @@ export const STARTER_PRO_LIMIT = {
   upgradeModal: () => ({
     ...getUpgradeModalProps(PlanType.TEAM, Tracking.UpgradePrompt.WORKSPACE_LIMIT),
     ...DEFAULT_MODAL,
-    description: `Upgrade to the teams plan to unlock multiple workspaces.`,
+    description: 'Upgrade to the teams plan to unlock multiple workspaces.',
   }),
 } satisfies UpgradeModalEntitlementLimit;
 
@@ -29,7 +29,7 @@ export const TEAM_LIMIT = {
 
 export const WORKSPACES_LIMITS = {
   limit: LimitType.WORKSPACES,
-  entitlement: 'editorSeatsLimit',
+  entitlement: 'workspacesLimit',
   limits: {
     [PlanType.STARTER]: STARTER_PRO_LIMIT,
     [PlanType.PRO]: STARTER_PRO_LIMIT,

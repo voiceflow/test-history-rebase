@@ -12,7 +12,14 @@ import { useSelector } from '@/hooks/store.hook';
 import { IntentMenuEmpty } from '../IntentMenuEmpty/IntentMenuEmpty.component';
 import type { IIntentMenu } from './IntentMenu.interface';
 
-export const IntentMenu: React.FC<IIntentMenu> = ({ width, header, onClose, onSelect: onSelectProp, viewOnly, excludeIDs }) => {
+export const IntentMenu: React.FC<IIntentMenu> = ({
+  width,
+  header,
+  onClose,
+  onSelect: onSelectProp,
+  viewOnly,
+  excludeIDs,
+}) => {
   const TEST_ID = 'intent-menu';
 
   const storeIntents = useSelector(Designer.Intent.selectors.allWithoutNone);
@@ -67,7 +74,7 @@ export const IntentMenu: React.FC<IIntentMenu> = ({ width, header, onClose, onSe
     onClose();
   };
 
-  if (!intents.length)
+  if (!intents.length) {
     return viewOnly ? (
       <Menu width={width}>
         <Menu.NotFound label="intents" />
@@ -75,6 +82,7 @@ export const IntentMenu: React.FC<IIntentMenu> = ({ width, header, onClose, onSe
     ) : (
       <IntentMenuEmpty width={width} onCreated={onSelect} />
     );
+  }
 
   return (
     <Menu
@@ -83,7 +91,14 @@ export const IntentMenu: React.FC<IIntentMenu> = ({ width, header, onClose, onSe
       listRef={setListNode}
       minWidth={search.hasItems ? undefined : 0}
       maxHeight={310}
-      searchSection={<Search value={search.value} testID={tid(TEST_ID, 'search')} placeholder="Search" onValueChange={search.setValue} />}
+      searchSection={
+        <Search
+          value={search.value}
+          testID={tid(TEST_ID, 'search')}
+          placeholder="Search"
+          onValueChange={search.setValue}
+        />
+      }
       actionButtons={
         !viewOnly &&
         search.hasItems && (
@@ -132,7 +147,12 @@ export const IntentMenu: React.FC<IIntentMenu> = ({ width, header, onClose, onSe
       ) : (
         <>
           {!viewOnly ? (
-            <Menu.CreateItem label={search.value} onClick={onCreate} disabled={isCreating} testID={tid(TEST_ID, 'create-item')} />
+            <Menu.CreateItem
+              label={search.value}
+              onClick={onCreate}
+              disabled={isCreating}
+              testID={tid(TEST_ID, 'create-item')}
+            />
           ) : (
             <Menu.NotFound label="intents" testID={tid(TEST_ID, 'not-found')} />
           )}

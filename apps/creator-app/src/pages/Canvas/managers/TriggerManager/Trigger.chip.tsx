@@ -12,18 +12,23 @@ export const TriggerChip: ConnectedChip<Realtime.NodeData.Trigger> = ({ data, po
   const intentMap = React.useContext(IntentMapContext)!;
 
   const nonEmptyIntentItem = useMemo(
-    () => data.items.find((item): item is TriggerNodeItem & { resourceID: string } => item.type === TriggerNodeItemType.INTENT && !!item.resourceID),
+    () =>
+      data.items.find(
+        (item): item is TriggerNodeItem & { resourceID: string } =>
+          item.type === TriggerNodeItemType.INTENT && !!item.resourceID
+      ),
     [data.items]
   );
 
   const intent = nonEmptyIntentItem ? intentMap[nonEmptyIntentItem.resourceID] : null;
+  const isEmpty = !!data.items.length && !intent;
 
   return (
     <Chip
       name={intent?.name ?? null}
-      icon={nonEmptyIntentItem?.settings.local ? 'intentLocal' : TRIGGER_NODE_CONFIG.icon!}
+      icon={TRIGGER_NODE_CONFIG.icon!}
       portID={ports.out.byKey[NodeSystemPortType.NEXT]}
-      placeholder="Select a trigger..."
+      placeholder={isEmpty ? 'Empty intent' : 'Add trigger...'}
     />
   );
 };

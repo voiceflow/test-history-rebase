@@ -12,7 +12,11 @@ export const TriggerStep: ConnectedStep<Realtime.NodeData.Trigger> = ({ data, po
   const intentMap = React.useContext(IntentMapContext)!;
 
   const nonEmptyIntentItem = useMemo(
-    () => data.items.find((item): item is TriggerNodeItem & { resourceID: string } => item.type === TriggerNodeItemType.INTENT && !!item.resourceID),
+    () =>
+      data.items.find(
+        (item): item is TriggerNodeItem & { resourceID: string } =>
+          item.type === TriggerNodeItemType.INTENT && !!item.resourceID
+      ),
     [data.items]
   );
 

@@ -17,7 +17,7 @@ import { VariableService } from '@/variable/variable.service';
 import { VersionService } from '@/version/version.service';
 import { WorkflowService } from '@/workflow/workflow.service';
 
-import { EnvironmentCMSExportImportDataDTO } from './dtos/environment-cms-export-import-data.dto';
+import { EnvironmentCMSImportDataDTO } from './dtos/environment-cms-import-data.dto';
 import { EnvironmentImportDTO } from './dtos/environment-import-data.dto';
 
 @Injectable()
@@ -108,7 +108,7 @@ export class EnvironmentImportService {
   }
 
   prepareImportCMSData(
-    cms: EnvironmentCMSExportImportDataDTO,
+    cms: EnvironmentCMSImportDataDTO,
     {
       userID,
       backup,
@@ -118,7 +118,6 @@ export class EnvironmentImportService {
     }: { userID: number; backup?: boolean; workspaceID: number; assistantID: string; environmentID: string }
   ) {
     const cmsFunctionsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_FUNCTIONS, { userID, workspaceID });
-    const cmsWorkflowsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_WORKFLOWS, { userID, workspaceID });
 
     const prepareDataContext = { userID, backup, assistantID, environmentID };
 
@@ -174,9 +173,7 @@ export class EnvironmentImportService {
           prepareDataContext
         )),
 
-      ...(cmsWorkflowsEnabled &&
-        cms.workflows &&
-        this.workflow.prepareImportData({ workflows: cms.workflows }, prepareDataContext)),
+      ...(cms.workflows && this.workflow.prepareImportData({ workflows: cms.workflows }, prepareDataContext)),
     };
   }
 

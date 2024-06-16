@@ -19,7 +19,7 @@ import { useTrackingEvents } from './tracking';
 
 export const useOnAssistantCopyCloneLink = (projectID: string | null) => {
   const [trackingEvents] = useTrackingEvents();
-  const [canShareProject] = usePermission(Permission.PROJECT_SHARE);
+  const [canShareProject] = usePermission(Permission.FEATURE_SHARE_PROJECT);
   const projectDownloadModal = useProjectDownloadModal();
 
   const updateProjectPrivacy = useDispatch(Project.updateProjectPrivacy);

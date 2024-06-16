@@ -3,19 +3,21 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { BlockType } from '@/constants';
 
-import type { NodeConfig } from '../types';
+import type { NodeConfigWithoutInPorts } from '../types';
 
-export const TRIGGER_NODE_CONFIG: NodeConfig<Realtime.NodeData.Trigger> = {
+export const TRIGGER_NODE_CONFIG: NodeConfigWithoutInPorts<Realtime.NodeData.Trigger> = {
   type: BlockType.TRIGGER,
-  icon: 'intent',
+  icon: 'intentSmall',
 
-  mergeTerminator: true,
+  mergeInitializer: true,
 
   factory: () => ({
     node: {
       ports: {
-        in: [{}],
-        out: { ...Realtime.Utils.port.createEmptyNodeOutPorts(), byKey: { [NodeSystemPortType.NEXT]: { label: NodeSystemPortType.NEXT } } },
+        out: {
+          ...Realtime.Utils.port.createEmptyNodeOutPorts(),
+          byKey: { [NodeSystemPortType.NEXT]: { label: NodeSystemPortType.NEXT } },
+        },
       },
     },
     data: { name: '', items: [] },

@@ -1,14 +1,12 @@
-/* eslint-disable no-nested-ternary */
 import { Nullable } from '@voiceflow/common';
 import { ThreadComment } from '@voiceflow/dtos';
-import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { Box, KeyName, useCache } from '@voiceflow/ui';
 import React from 'react';
 
 import CommentPreview from '@/components/CommentPreview';
 import MentionEditor from '@/components/MentionEditor';
 import { UI } from '@/ducks';
-import { useFeature, useLinkedState, useTheme, useToggle } from '@/hooks';
+import { useLinkedState, useTheme, useToggle } from '@/hooks';
 import { useSelector } from '@/hooks/store.hook';
 import { CommentDraftValue } from '@/pages/Canvas/types';
 
@@ -55,8 +53,6 @@ const EditableComment: React.ForwardRefRenderFunction<EditableCommentRef, Editab
   },
   ref
 ) => {
-  const cmsWorkflows = useFeature(FeatureFlag.CMS_WORKFLOWS);
-
   const inputRef = React.useRef<HTMLTextAreaElement>(null);
 
   const theme = useTheme();
@@ -130,13 +126,18 @@ const EditableComment: React.ForwardRefRenderFunction<EditableCommentRef, Editab
         className={COMMENT_CLASSNAME}
         maxHeight={
           isEditing && isReplying
-            ? `calc(100vh - ${isCanvasOnly ? 0 : cmsWorkflows.isEnabled ? theme.components.header.newHeight : theme.components.header.height} - 96px)`
+            ? `calc(100vh - ${isCanvasOnly ? 0 : theme.components.header.newHeight} - 96px)`
             : undefined
         }
         overflowY={isEditing && isReplying ? 'auto' : undefined}
       >
         {isEditing ? (
-          <MentionEditor value={value} onChange={onChange} placeholder={placeholder} inputProps={{ inputRef, onKeyDown }} />
+          <MentionEditor
+            value={value}
+            onChange={onChange}
+            placeholder={placeholder}
+            inputProps={{ inputRef, onKeyDown }}
+          />
         ) : (
           <CommentPreview text={comment?.text} />
         )}

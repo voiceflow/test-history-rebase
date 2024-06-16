@@ -31,7 +31,7 @@ const SMS: React.FC = () => {
   const updateMessagingServiceID = async (messagingServiceID?: string | null) => {
     if (!messagingServiceID) return;
     await patchProjectPlatformData({ messagingServiceID });
-    toast.success('Messaging service connected, assistant ready for publishing.');
+    toast.success('Messaging service connected, agent ready for publishing.');
   };
 
   const updateServices = async () => {
@@ -58,7 +58,7 @@ const SMS: React.FC = () => {
       <Settings.Section>
         <Banner
           title="Publishing to Twilio SMS"
-          subtitle="Make your assistant instantly accessible on SMS via Twilio."
+          subtitle="Make your agent instantly accessible on SMS via Twilio."
           buttonText="Documentation"
           onClick={() => openInternalURLInANewTab(SMS_DOCUMENTATION)}
         />
@@ -71,7 +71,7 @@ const SMS: React.FC = () => {
         submitSecrets={submitSecrets}
         description={
           <>
-            Copy paste your Account SID, API Key and API Secret to connect your assistant to Twilio. <Link href={SMS_DOCUMENTATION}>Learn more</Link>
+            Copy paste your Account SID, API Key and API Secret to connect your agent to Twilio. <Link href={SMS_DOCUMENTATION}>Learn more</Link>
           </>
         }
         secrets={SECRETS_CONFIG}
@@ -80,7 +80,7 @@ const SMS: React.FC = () => {
         title="Messaging Service"
         description={
           <>
-            Select a Twilio messaging service to associate with this assistant. <Link href={SMS_DOCUMENTATION}>Learn more</Link>
+            Select a Twilio messaging service to associate with this agent. <Link href={SMS_DOCUMENTATION}>Learn more</Link>
           </>
         }
       >
@@ -109,7 +109,7 @@ const SMS: React.FC = () => {
                 placeholder="Select a service"
               />
             </TippyTooltip>
-            <Settings.SubSection.Description>The messaging service that will be integrated with this assistant.</Settings.SubSection.Description>
+            <Settings.SubSection.Description>The messaging service that will be integrated with this agent.</Settings.SubSection.Description>
           </Settings.SubSection>
         </Settings.Card>
       </Settings.Section>

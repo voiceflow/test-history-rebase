@@ -123,6 +123,7 @@ const migrateToV8_00: Transform = ({ cms, version, diagrams }, { project, creato
       }
     }
 
+    // eslint-disable-next-line sonarjs/cognitive-complexity
     Object.values(nodes).forEach((node) => {
       // update goto node that points to domain start node to point to next node in domain root diagram
       if (typeGuards.isGoToNodeDBNode(node)) {
@@ -150,14 +151,13 @@ const migrateToV8_00: Transform = ({ cms, version, diagrams }, { project, creato
         const nodeIDMap = nodeDiagramIsRoot ? domainRootDiagramIDStartNodeIDMap : domainRootDiagramIDStartNextIDMap;
 
         const goToNode: BaseNode.GoToNode.Step = {
+          ...Utils.object.pick(node, ['nodeID', 'coords']),
           type: BaseNode.NodeType.GOTO_NODE,
           data: {
             nodeID: nodeDiagramID ? nodeIDMap[nodeDiagramID] ?? null : null,
             portsV2: {},
             diagramID: nodeDiagramID,
           },
-          nodeID: node.nodeID,
-          coords: node.coords,
         };
 
         Object.assign(node, goToNode);

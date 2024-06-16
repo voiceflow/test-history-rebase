@@ -13,13 +13,6 @@ export interface ActiveVersionContext {
   versionID: string | null;
 }
 
-/**
- * @deprecated replace with ActiveVersionContext when FeatureFlag.CMS_WORKFLOWS is released
- */
-export interface ActiveDomainContext extends ActiveVersionContext {
-  domainID: string | null;
-}
-
 export interface ActivePlatformVersionContext extends ActiveVersionContext {
   nlu: Platform.Constants.NLUType;
   type: Platform.Constants.ProjectType;
@@ -27,13 +20,6 @@ export interface ActivePlatformVersionContext extends ActiveVersionContext {
 }
 
 export const activeVersionContextSelector = createStructuredSelector<State, ActiveVersionContext>({
-  projectID: Session.activeProjectIDSelector,
-  versionID: Session.activeVersionIDSelector,
-  workspaceID: Session.activeWorkspaceIDSelector,
-});
-
-export const activeDomainContextSelector = createStructuredSelector<State, ActiveDomainContext>({
-  domainID: Session.activeDomainIDSelector,
   projectID: Session.activeProjectIDSelector,
   versionID: Session.activeVersionIDSelector,
   workspaceID: Session.activeWorkspaceIDSelector,
@@ -48,19 +34,12 @@ export const activePlatformVersionContextSelector = createStructuredSelector<Sta
   workspaceID: Session.activeWorkspaceIDSelector,
 });
 
-export const assertVersionContext: (context: ActiveVersionContext) => asserts context is NonNullishRecord<ActiveVersionContext> = (context) => {
+export const assertVersionContext: (
+  context: ActiveVersionContext
+) => asserts context is NonNullishRecord<ActiveVersionContext> = (context) => {
   Errors.assertWorkspaceID(context.workspaceID);
   Errors.assertProjectID(context.projectID);
   Errors.assertVersionID(context.versionID);
-};
-
-/**
- * @deprecated replace with assertVersionContext when FeatureFlag.CMS_WORKFLOWS is released
- */
-export const assertDomainContext: (context: ActiveDomainContext) => asserts context is NonNullishRecord<ActiveDomainContext> = (context) => {
-  assertVersionContext(context);
-
-  Errors.assertDomainID(context.domainID);
 };
 
 export const assertPlatformVersionContext: (
@@ -75,14 +54,6 @@ export const getActiveVersionContext = (state: State): NonNullishRecord<ActiveVe
   const context = activeVersionContextSelector(state);
 
   assertVersionContext(context);
-
-  return context;
-};
-
-export const getActiveDomainContext = (state: State): NonNullishRecord<ActiveDomainContext> => {
-  const context = activeDomainContextSelector(state);
-
-  assertDomainContext(context);
 
   return context;
 };

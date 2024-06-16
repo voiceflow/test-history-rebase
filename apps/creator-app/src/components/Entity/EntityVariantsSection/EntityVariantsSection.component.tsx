@@ -1,6 +1,6 @@
 import { CUSTOM_SLOT_TYPE } from '@voiceflow/common';
 import { tid } from '@voiceflow/style';
-import { Box, Scroll, Section } from '@voiceflow/ui-next';
+import { Box, Scroll, Section, Text, Tooltip } from '@voiceflow/ui-next';
 import { isEntityVariantLikeEmpty } from '@voiceflow/utils-designer';
 import React from 'react';
 
@@ -10,29 +10,33 @@ import { CMSFormCollapsibleList } from '@/components/CMS/CMSForm/CMSFormCollapsi
 import { CMSFormVirtualListItem } from '@/components/CMS/CMSForm/CMSFormVirtualListItem/CMSFormVirtualListItem.component';
 import { useIsAIFeaturesEnabled } from '@/hooks/ai.hook';
 import { useIsListEmpty } from '@/hooks/list.hook';
+import { useEntityBulkImportVariantsModal } from '@/hooks/modal.hook';
 import { stopPropagation } from '@/utils/handler.util';
 
 import type { EntityVariantsSectionItem, IEntityVariantsSection } from './EntityVariantsSection.interface';
 
 export const EntityVariantsSection = <T extends EntityVariantsSectionItem>({
   name,
-  onAdd,
-  onRemove,
   variants,
   disabled,
   classifier,
-  onGenerated,
+  onVariantAdd,
+  onVariantRemove,
   renderVariantInput,
+  onVariantImportMany,
+  onVariantGeneratedMany,
   autoScrollToTopRevision,
 }: IEntityVariantsSection<T>): React.ReactElement => {
   const TEST_ID = tid('entity', 'variants');
 
   const listEmpty = useIsListEmpty(variants, isEntityVariantLikeEmpty);
   const aiFeaturesEnabled = useIsAIFeaturesEnabled();
+  const bulkImportVariantsModal = useEntityBulkImportVariantsModal();
+
   const aiGenerate = useAIGenerateEntityVariants({
     examples: variants,
     entityName: name,
-    onGenerated,
+    onGenerated: onVariantGeneratedMany,
     entityClassifier: classifier,
     successGeneratedMessage: 'Values generated',
   });
@@ -47,11 +51,33 @@ export const EntityVariantsSection = <T extends EntityVariantsSectionItem>({
         title="Values"
         testID={tid(TEST_ID, 'header')}
         variant={variantsSize ? 'active' : 'basic'}
-        onHeaderClick={variantsSize ? undefined : onAdd}
+        onHeaderClick={variantsSize ? undefined : onVariantAdd}
       >
+        <Tooltip
+          placement="top"
+          referenceElement={({ ref, isOpen, onOpen, onClose }) => (
+            <Section.Header.Button
+              ref={ref}
+              testID={tid(TEST_ID, 'bulk-import')}
+              onClick={() => bulkImportVariantsModal.openVoid({ onImport: onVariantImportMany })}
+              isActive={isOpen || bulkImportVariantsModal.opened}
+              iconName="BulkUpload"
+              onMouseEnter={onOpen}
+              onMouseLeave={onClose}
+              tabIndex={-1}
+            />
+          )}
+        >
+          {() => (
+            <Text variant="caption" breakWord>
+              Bulk import
+            </Text>
+          )}
+        </Tooltip>
+
         <Section.Header.Button
           testID={tid(TEST_ID, 'add')}
-          onClick={stopPropagation(onAdd)}
+          onClick={stopPropagation(onVariantAdd)}
           disabled={disabled || aiGenerate.fetching}
           iconName="Plus"
         />
@@ -73,8 +99,10 @@ export const EntityVariantsSection = <T extends EntityVariantsSectionItem>({
                 ref={virtualizer.measureElement}
                 key={virtualItem.key}
                 index={virtualItem.index}
-                onRemove={() => onRemove(item.id)}
-                removeDisabled={(classifier === CUSTOM_SLOT_TYPE && variantsSize === 1) || disabled || aiGenerate.fetching}
+                onRemove={() => onVariantRemove(item.id)}
+                removeDisabled={
+                  (classifier === CUSTOM_SLOT_TYPE && variantsSize === 1) || disabled || aiGenerate.fetching
+                }
                 testID={tid(TEST_ID, 'list-item')}
               >
                 {renderVariantInput({ item, disabled, onEmpty: listEmpty.container(virtualItem.index) })}

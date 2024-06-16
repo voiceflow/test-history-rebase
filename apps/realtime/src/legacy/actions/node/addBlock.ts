@@ -9,7 +9,7 @@ import { extractNodes } from './utils';
 class AddBlock extends AbstractVersionDiagramAccessActionControl<Realtime.node.AddBlockPayload> {
   actionCreator = Realtime.node.addBlock;
 
-  protected process = async (_ctx: Context, { payload }: Action<Realtime.node.AddBlockPayload>): Promise<void> => {
+  protected process = async (ctx: Context, { payload }: Action<Realtime.node.AddBlockPayload>): Promise<void> => {
     const {
       diagramID,
       blockID,
@@ -23,6 +23,8 @@ class AddBlock extends AbstractVersionDiagramAccessActionControl<Realtime.node.A
       projectMeta,
       schemaVersion,
       versionID,
+      projectID,
+      workspaceID,
     } = payload;
 
     const nodes = extractNodes(projectMeta, schemaVersion, {
@@ -66,12 +68,28 @@ class AddBlock extends AbstractVersionDiagramAccessActionControl<Realtime.node.A
     }
 
     await this.services.diagram.addManyNodes(versionID, diagramID, { nodes });
+
+    if (
+      this.services.feature.isEnabled(Realtime.FeatureFlag.REFERENCE_SYSTEM, {
+        userID: Number(ctx.userId),
+        workspaceID,
+      })
+    ) {
+      await this.services.requestContext.createAsync(() =>
+        this.services.reference.addManyDiagramNodes({
+          nodes,
+          authMeta: { userID: Number(ctx.userId), clientID: ctx.clientId },
+          diagramID,
+          assistantID: projectID,
+          environmentID: versionID,
+        })
+      );
+    }
   };
 
   protected finally = async (ctx: Context, { payload }: Action<Realtime.node.AddBlockPayload>): Promise<void> => {
     await Promise.all([
       this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID),
-      this.services.domain.setUpdatedBy(payload.versionID, payload.domainID, ctx.data.creatorID),
       this.setCMSUpdatedBy(ctx, payload),
     ]);
   };

@@ -9,10 +9,9 @@ import SubMenu from './SubMenu';
 
 interface StepSubMenuProps {
   items: StepItem[];
-  upgradePopperRef?: React.Ref<HTMLDivElement>;
 }
 
-const StepSubMenu = React.forwardRef<HTMLDivElement, StepSubMenuProps>(({ items, upgradePopperRef }, ref) => {
+const StepSubMenu = React.forwardRef<HTMLDivElement, StepSubMenuProps>(({ items }, ref) => {
   const nodeFilter = useCanvasNodeFilter();
 
   const processedItems = React.useMemo(
@@ -34,7 +33,7 @@ const StepSubMenu = React.forwardRef<HTMLDivElement, StepSubMenuProps>(({ items,
   return (
     <SubMenu ref={ref}>
       {processedItems.map((item) => (
-        <StepSubMenuItem key={item.label} item={item} upgradePopperRef={upgradePopperRef} />
+        <StepSubMenuItem key={item.label} item={item} />
       ))}
     </SubMenu>
   );

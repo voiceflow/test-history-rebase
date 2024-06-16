@@ -10,7 +10,7 @@ export interface PublishedStageProps extends StageComponentProps<NLPTrainJob.Suc
 }
 
 export const PublishedStage: React.FC<PublishedStageProps> = ({ onClick }) => (
-  <UploadedStage description="A new version of your assistant has been published to Teams">
+  <UploadedStage description="A new version of your agent has been published to Teams">
     <Button squareRadius fullWidth variant={ButtonVariant.QUATERNARY} onClick={onClick}>
       See Documentation
     </Button>

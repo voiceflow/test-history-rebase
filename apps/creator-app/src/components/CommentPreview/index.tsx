@@ -17,7 +17,7 @@ export interface CommentPreviewProps {
 const UNKNOWN_MEMBER_MENTION = WorkspaceV2.UNKNOWN_MEMBER_DATA.name.replace(' ', '').toLowerCase();
 
 const CommentPreview: React.FC<CommentPreviewProps> = ({ text = '' }) => {
-  const hasMemberByID = useSelector(WorkspaceV2.active.hasMemberByIDSelector);
+  const hasMemberByID = useSelector(WorkspaceV2.active.members.hasMemberByIDSelector);
 
   const theme = useTheme();
 

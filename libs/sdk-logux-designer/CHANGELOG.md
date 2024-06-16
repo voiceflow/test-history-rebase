@@ -3,6 +3,138 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.62.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.61.2...@voiceflow/sdk-logux-designer@2.62.0) (2024-06-14)
+
+### Features
+
+* reference add block action handler (COR-000) ([#8267](https://github.com/voiceflow/creator-app/issues/8267)) ([7e1312d](https://github.com/voiceflow/creator-app/commit/7e1312d3c656b6e3e89208b052bef6089dc2b6ff))
+
+## [2.61.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.61.1...@voiceflow/sdk-logux-designer@2.61.2) (2024-06-14)
+
+**Note:** Version bump only for package @voiceflow/sdk-logux-designer
+
+## [2.61.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.61.0...@voiceflow/sdk-logux-designer@2.61.1) (2024-06-12)
+
+**Note:** Version bump only for package @voiceflow/sdk-logux-designer
+
+# [2.61.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.60.2...@voiceflow/sdk-logux-designer@2.61.0) (2024-06-12)
+
+### Features
+
+* add message ducks (COR-2309) ([#8237](https://github.com/voiceflow/creator-app/issues/8237)) ([5d78786](https://github.com/voiceflow/creator-app/commit/5d787867f0aa07d07004f2dcb6a4c958c3e9f3d7))
+
+## [2.60.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.60.1...@voiceflow/sdk-logux-designer@2.60.2) (2024-06-12)
+
+**Note:** Version bump only for package @voiceflow/sdk-logux-designer
+
+## [2.60.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.60.0...@voiceflow/sdk-logux-designer@2.60.1) (2024-06-12)
+
+**Note:** Version bump only for package @voiceflow/sdk-logux-designer
+
+# [2.60.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.59.2...@voiceflow/sdk-logux-designer@2.60.0) (2024-06-12)
+
+### Features
+
+* reference duck (COR-000) ([#8248](https://github.com/voiceflow/creator-app/issues/8248)) ([9ebebbf](https://github.com/voiceflow/creator-app/commit/9ebebbfd555d2e9684699d648e90c34f5501dfb2))
+
+## [2.59.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.59.1...@voiceflow/sdk-logux-designer@2.59.2) (2024-06-11)
+
+**Note:** Version bump only for package @voiceflow/sdk-logux-designer
+
+## [2.59.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.59.0...@voiceflow/sdk-logux-designer@2.59.1) (2024-06-11)
+
+**Note:** Version bump only for package @voiceflow/sdk-logux-designer
+
+# [2.59.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.58.1...@voiceflow/sdk-logux-designer@2.59.0) (2024-06-11)
+
+### Features
+
+* make the function paths draggable in the CMS editor (COR-8227) ([#8249](https://github.com/voiceflow/creator-app/issues/8249)) ([a527447](https://github.com/voiceflow/creator-app/commit/a5274474fa454d8dbb95cb5124b8c97ad2054d97))
+
+## [2.58.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.58.0...@voiceflow/sdk-logux-designer@2.58.1) (2024-06-11)
+
+**Note:** Version bump only for package @voiceflow/sdk-logux-designer
+
+# [2.58.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.57.21...@voiceflow/sdk-logux-designer@2.58.0) (2024-06-10)
+
+### Features
+
+* response message module (COR-2308) ([#8255](https://github.com/voiceflow/creator-app/issues/8255)) ([adbc2db](https://github.com/voiceflow/creator-app/commit/adbc2db63f2f5a3ddbe4f23e940043c6c51593e6))
+
+## [2.57.21](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.57.20...@voiceflow/sdk-logux-designer@2.57.21) (2024-06-10)
+
+**Note:** Version bump only for package @voiceflow/sdk-logux-designer
+
+## [2.57.20](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.57.19...@voiceflow/sdk-logux-designer@2.57.20) (2024-06-10)
+
+**Note:** Version bump only for package @voiceflow/sdk-logux-designer
+
+## [2.57.19](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.57.18...@voiceflow/sdk-logux-designer@2.57.19) (2024-06-07)
+
+**Note:** Version bump only for package @voiceflow/sdk-logux-designer
+
+## [2.57.18](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.57.17...@voiceflow/sdk-logux-designer@2.57.18) (2024-06-07)
+
+### Bug Fixes
+
+* retry integrate org members (COR-2143) ([#8183](https://github.com/voiceflow/creator-app/issues/8183)) ([2b5e0b4](https://github.com/voiceflow/creator-app/commit/2b5e0b4882240a03e64e5f9940cb76d26bf261da))
+
+## [2.57.17](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.57.16...@voiceflow/sdk-logux-designer@2.57.17) (2024-06-06)
+
+**Note:** Version bump only for package @voiceflow/sdk-logux-designer
+
+## [2.57.16](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.57.15...@voiceflow/sdk-logux-designer@2.57.16) (2024-06-06)
+
+**Note:** Version bump only for package @voiceflow/sdk-logux-designer
+
+## [2.57.15](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.57.14...@voiceflow/sdk-logux-designer@2.57.15) (2024-06-06)
+
+**Note:** Version bump only for package @voiceflow/sdk-logux-designer
+
+## [2.57.14](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.57.13...@voiceflow/sdk-logux-designer@2.57.14) (2024-06-06)
+
+**Note:** Version bump only for package @voiceflow/sdk-logux-designer
+
+## [2.57.13](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.57.12...@voiceflow/sdk-logux-designer@2.57.13) (2024-06-05)
+
+**Note:** Version bump only for package @voiceflow/sdk-logux-designer
+
+## [2.57.12](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.57.11...@voiceflow/sdk-logux-designer@2.57.12) (2024-06-04)
+
+**Note:** Version bump only for package @voiceflow/sdk-logux-designer
+
+## [2.57.11](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.57.10...@voiceflow/sdk-logux-designer@2.57.11) (2024-06-04)
+
+**Note:** Version bump only for package @voiceflow/sdk-logux-designer
+
+## [2.57.10](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.57.9...@voiceflow/sdk-logux-designer@2.57.10) (2024-06-03)
+
+**Note:** Version bump only for package @voiceflow/sdk-logux-designer
+
+## [2.57.9](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.57.8...@voiceflow/sdk-logux-designer@2.57.9) (2024-06-03)
+
+**Note:** Version bump only for package @voiceflow/sdk-logux-designer
+
+## [2.57.8](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.57.7...@voiceflow/sdk-logux-designer@2.57.8) (2024-06-03)
+
+**Note:** Version bump only for package @voiceflow/sdk-logux-designer
+
+## [2.57.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.57.6...@voiceflow/sdk-logux-designer@2.57.7) (2024-06-01)
+
+**Note:** Version bump only for package @voiceflow/sdk-logux-designer
+
+## [2.57.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.57.5...@voiceflow/sdk-logux-designer@2.57.6) (2024-05-31)
+
+**Note:** Version bump only for package @voiceflow/sdk-logux-designer
+
+## [2.57.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.57.4...@voiceflow/sdk-logux-designer@2.57.5) (2024-05-31)
+
+**Note:** Version bump only for package @voiceflow/sdk-logux-designer
+
+## [2.57.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.57.3...@voiceflow/sdk-logux-designer@2.57.4) (2024-05-30)
+
+**Note:** Version bump only for package @voiceflow/sdk-logux-designer
+
 ## [2.57.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.57.2...@voiceflow/sdk-logux-designer@2.57.3) (2024-05-29)
 
 **Note:** Version bump only for package @voiceflow/sdk-logux-designer

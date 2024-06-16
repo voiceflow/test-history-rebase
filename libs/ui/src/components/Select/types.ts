@@ -99,6 +99,7 @@ export interface BaseSelectProps {
   renderTags?: Nullable<() => React.ReactNode | React.ReactNode[]>;
   borderLess?: boolean;
   searchable?: boolean;
+  clearSearchOnSelect?: boolean;
   leftAction?: {
     icon: SvgIconTypes.Icon;
     onClick: VoidFunction;
@@ -344,8 +345,10 @@ export interface SelectMultilevelValueWithIDProps<Option extends MenuItemWithID 
   getOptionLabel: GetOptionLabel<Value>;
 }
 
-export interface SelectMultilevelValueWithIDClearableProps<Option extends MenuItemWithID & MenuItemMultilevel<Option>, Value>
-  extends BaseSelectProps,
+export interface SelectMultilevelValueWithIDClearableProps<
+  Option extends MenuItemWithID & MenuItemMultilevel<Option>,
+  Value,
+> extends BaseSelectProps,
     OptionalProps<Option, Value>,
     GenericSelectProps<Option, Nullable<Value>> {
   clearable: boolean;
@@ -405,8 +408,10 @@ export interface SelectGroupedWithIDProps<Option extends MenuItemWithID, GroupOp
   getOptionLabel: GetOptionLabel<Option>;
 }
 
-export interface SelectGroupedWithIDClearableProps<Option extends MenuItemWithID, GroupOption extends MenuItemGrouped<Option>>
-  extends BaseSelectProps,
+export interface SelectGroupedWithIDClearableProps<
+  Option extends MenuItemWithID,
+  GroupOption extends MenuItemGrouped<Option>,
+> extends BaseSelectProps,
     OptionalProps<Option, Option>,
     GenericSelectProps<GroupOption, Nullable<Option>> {
   grouped: true;
@@ -414,8 +419,11 @@ export interface SelectGroupedWithIDClearableProps<Option extends MenuItemWithID
   getOptionLabel: GetOptionLabel<Option>;
 }
 
-export interface SelectGroupedValueWithIDProps<Option extends MenuItemWithID, GroupOption extends MenuItemGrouped<Option>, Value>
-  extends BaseSelectProps,
+export interface SelectGroupedValueWithIDProps<
+  Option extends MenuItemWithID,
+  GroupOption extends MenuItemGrouped<Option>,
+  Value,
+> extends BaseSelectProps,
     OptionalProps<Option, Value>,
     GenericSelectProps<GroupOption, Value> {
   grouped: true;
@@ -424,8 +432,11 @@ export interface SelectGroupedValueWithIDProps<Option extends MenuItemWithID, Gr
   getOptionLabel: GetOptionLabel<Value>;
 }
 
-export interface SelectGroupedValueWithIDClearableProps<Option extends MenuItemWithID, GroupOption extends MenuItemGrouped<Option>, Value>
-  extends BaseSelectProps,
+export interface SelectGroupedValueWithIDClearableProps<
+  Option extends MenuItemWithID,
+  GroupOption extends MenuItemGrouped<Option>,
+  Value,
+> extends BaseSelectProps,
     OptionalProps<Option, Value>,
     GenericSelectProps<GroupOption, Nullable<Value>> {
   grouped: true;
@@ -434,19 +445,28 @@ export interface SelectGroupedValueWithIDClearableProps<Option extends MenuItemW
   getOptionLabel: GetOptionLabel<Value>;
 }
 
-export interface SelectProps<Option> extends BaseSelectProps, OptionalProps<Option, Option>, GenericSelectProps<Option, Option> {
+export interface SelectProps<Option>
+  extends BaseSelectProps,
+    OptionalProps<Option, Option>,
+    GenericSelectProps<Option, Option> {
   clearable?: never;
   getOptionKey: GetOptionKey<Option>;
   getOptionLabel: GetOptionLabel<Option>;
 }
 
-export interface SelectClearableProps<Option> extends BaseSelectProps, OptionalProps<Option, Option>, GenericSelectProps<Option, Nullable<Option>> {
+export interface SelectClearableProps<Option>
+  extends BaseSelectProps,
+    OptionalProps<Option, Option>,
+    GenericSelectProps<Option, Nullable<Option>> {
   clearable: boolean;
   getOptionKey: GetOptionKey<Option>;
   getOptionLabel: GetOptionLabel<Option>;
 }
 
-export interface SelectValueProps<Option, Value> extends BaseSelectProps, OptionalProps<Option, Value>, GenericSelectProps<Option, Value> {
+export interface SelectValueProps<Option, Value>
+  extends BaseSelectProps,
+    OptionalProps<Option, Value>,
+    GenericSelectProps<Option, Value> {
   clearable?: never;
   getOptionKey: GetOptionKey<Option>;
   getOptionValue: GetOptionValue<Option, Value>;
@@ -463,7 +483,10 @@ export interface SelectValueClearableProps<Option, Value>
   getOptionLabel: GetOptionLabel<Value>;
 }
 
-export interface SelectCreatableProps<Option> extends BaseSelectProps, OptionalProps<Option, Option>, GenericSelectProps<Option, Option> {
+export interface SelectCreatableProps<Option>
+  extends BaseSelectProps,
+    OptionalProps<Option, Option>,
+    GenericSelectProps<Option, Option> {
   onCreate: (label: string) => void;
   creatable: true;
   clearable?: never;
@@ -482,7 +505,10 @@ export interface SelectCreatableClearableProps<Option>
   getOptionLabel: GetOptionLabel<Option>;
 }
 
-export interface SelectValueCreatableProps<Option, Value> extends BaseSelectProps, OptionalProps<Option, Value>, GenericSelectProps<Option, Value> {
+export interface SelectValueCreatableProps<Option, Value>
+  extends BaseSelectProps,
+    OptionalProps<Option, Value>,
+    GenericSelectProps<Option, Value> {
   onCreate: (label: string) => void;
   creatable: true;
   clearable?: never;
@@ -503,6 +529,9 @@ export interface SelectValueCreatableClearableProps<Option, Value>
   getOptionLabel: GetOptionLabel<Value>;
 }
 
-export interface SelectInternalProps extends BaseSelectProps, OptionalProps<unknown, unknown>, GenericSelectProps<unknown, unknown> {
+export interface SelectInternalProps
+  extends BaseSelectProps,
+    OptionalProps<unknown, unknown>,
+    GenericSelectProps<unknown, unknown> {
   clearable?: boolean;
 }

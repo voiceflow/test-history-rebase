@@ -31,6 +31,7 @@ export const EnvironmentVariables = BaseEnvironmentVariables.extend({
   /* environment */
   CLOUD_ENV: z.string(),
   DEPLOY_ENV: z.string(),
+  APP_NAME: z.string(),
 
   /* mongo */
   MONGO_DB: z.string(),

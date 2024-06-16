@@ -1023,7 +1023,9 @@ class NodeManager extends EngineConsumer {
     } else if (this.engine.transformation.isActive) {
       this.engine.focus.reset();
     } else {
-      if (!this.engine.selection.isTarget(EntityType.NODE, nodeID)) {
+      if (this.engine.focus.hasTarget) {
+        this.engine.focus.reset();
+      } else if (!this.engine.selection.isTarget(EntityType.NODE, nodeID)) {
         this.engine.selection.reset();
       }
 

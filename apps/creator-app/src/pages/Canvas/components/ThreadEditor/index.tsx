@@ -1,18 +1,24 @@
 import { Thread } from '@voiceflow/dtos';
-import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { stopPropagation, useDidUpdateEffect, useOnClickOutside } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 import { DismissableLayerContext } from 'react-dismissable-layers';
 
 import { Designer, UI } from '@/ducks';
-import { useEnableDisable, useFeature, useResizeObserver } from '@/hooks';
+import { useEnableDisable, useResizeObserver } from '@/hooks';
 import { useSelector } from '@/hooks/store.hook';
 import { EngineContext, FocusThreadContext } from '@/pages/Canvas/contexts';
 import { useCommentingMode } from '@/pages/Project/hooks';
 import { ClassName } from '@/styles/constants';
 
-import { CommentEditor, Container, EditableCommentRef, NewComment, ReplySection, ThreadCommentContainer } from './components';
+import {
+  CommentEditor,
+  Container,
+  EditableCommentRef,
+  NewComment,
+  ReplySection,
+  ThreadCommentContainer,
+} from './components';
 import { NEW_THREAD_EDITOR } from './constants';
 
 export type { EditableCommentRef } from './components';
@@ -25,14 +31,14 @@ export interface ThreadEditorProps {
 }
 
 const ThreadEditor: React.FC<ThreadEditorProps> = ({ thread, replyRef, isFocused, schedulePopperUpdate }) => {
-  const cmsWorkflows = useFeature(FeatureFlag.CMS_WORKFLOWS);
-
   const engine = React.useContext(EngineContext)!;
   const { dismiss } = React.useContext(DismissableLayerContext);
   const focusThread = React.useContext(FocusThreadContext)!;
 
   const isCanvasOnly = useSelector(UI.selectors.isCanvasOnly);
-  const comments = useSelector(Designer.Thread.ThreadComment.selectors.getAllByThreadID)({ threadID: thread?.id ?? null });
+  const comments = useSelector(Designer.Thread.ThreadComment.selectors.getAllByThreadID)({
+    threadID: thread?.id ?? null,
+  });
 
   const isCommentingMode = useCommentingMode();
 
@@ -69,7 +75,7 @@ const ThreadEditor: React.FC<ThreadEditorProps> = ({ thread, replyRef, isFocused
     <Container
       ref={ref}
       onClick={stopPropagation(dismiss, true)}
-      newLayout={cmsWorkflows.isEnabled}
+      newLayout
       canvasOnly={isCanvasOnly}
       className={cn(ClassName.THREAD_EDITOR, { [NEW_THREAD_EDITOR]: !thread })}
       onDragStart={stopPropagation(null, true)}

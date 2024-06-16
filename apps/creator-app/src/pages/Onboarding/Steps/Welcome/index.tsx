@@ -2,10 +2,9 @@ import { Animations, Description, FlexCenter, SvgIcon, Title } from '@voiceflow/
 import React from 'react';
 
 import ContinueButton from '@/pages/Onboarding/components/ContinueButton';
-import { OnboardingContext } from '@/pages/Onboarding/context';
 
-import { StepID } from '../../constants';
-import { Container, LogoContainer } from './components';
+import { useOnboardingContext } from '../../context';
+import * as S from './styles';
 
 const fadeConfig = {
   height: -30,
@@ -13,40 +12,38 @@ const fadeConfig = {
   animationFunction: 'ease',
 };
 
-const Welcome: React.FC = () => {
-  const { actions } = React.useContext(OnboardingContext);
+const OnboardingStepsWelcome: React.FC = () => {
+  const { stepForward } = useOnboardingContext();
 
   return (
-    <>
-      <Container>
-        <FlexCenter column>
-          <Animations.FadeDown delay={0} {...fadeConfig}>
-            <LogoContainer>
-              <SvgIcon icon="voiceflowLogomarkLight" size={24} color="#fff" />
-            </LogoContainer>
-          </Animations.FadeDown>
+    <S.Container>
+      <FlexCenter column>
+        <Animations.FadeDown delay={0} {...fadeConfig}>
+          <S.LogoContainer>
+            <SvgIcon icon="voiceflowLogomarkLight" size={24} color="#fff" />
+          </S.LogoContainer>
+        </Animations.FadeDown>
 
-          <Animations.FadeDown delay={0.12} {...fadeConfig}>
-            <Title mb={16}>Welcome to Voiceflow</Title>
-          </Animations.FadeDown>
+        <Animations.FadeDown delay={0.12} {...fadeConfig}>
+          <Title mb={16}>Welcome to Voiceflow</Title>
+        </Animations.FadeDown>
 
-          <Animations.FadeDown delay={0.24} {...fadeConfig}>
-            <Description width={370} lineHeight={1.47} textAlign="center" mb={40}>
-              The collaborative platform to build, launch, and scale AI Agents with your team.
-            </Description>
-          </Animations.FadeDown>
+        <Animations.FadeDown delay={0.24} {...fadeConfig}>
+          <Description width={370} lineHeight={1.47} textAlign="center" mb={40}>
+            The collaborative platform to build, launch, and scale AI Agents with your team.
+          </Description>
+        </Animations.FadeDown>
 
-          <Animations.FadeDown delay={0.36} {...fadeConfig}>
-            <FlexCenter>
-              <ContinueButton disabled={false} onClick={() => actions.stepForward(StepID.PERSONALIZE_WORKSPACE)}>
-                Get Started
-              </ContinueButton>
-            </FlexCenter>
-          </Animations.FadeDown>
-        </FlexCenter>
-      </Container>
-    </>
+        <Animations.FadeDown delay={0.36} {...fadeConfig}>
+          <FlexCenter>
+            <ContinueButton disabled={false} onClick={() => stepForward()}>
+              Get Started
+            </ContinueButton>
+          </FlexCenter>
+        </Animations.FadeDown>
+      </FlexCenter>
+    </S.Container>
   );
 };
 
-export default Welcome;
+export default OnboardingStepsWelcome;

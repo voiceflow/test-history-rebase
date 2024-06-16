@@ -16,7 +16,8 @@ import * as Router from '@/ducks/router/actions';
 import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
 import { waitAsync } from '@/ducks/utils';
-import { editorMemberIDsSelector, isEnterpriseSelector, numberOfSeatsSelector } from '@/ducks/workspaceV2/selectors/active';
+import { isEnterpriseSelector, numberOfSeatsSelector } from '@/ducks/workspaceV2/selectors/active';
+import { editorMemberIDsSelector } from '@/ducks/workspaceV2/selectors/active.members';
 import { getActiveWorkspaceContext } from '@/ducks/workspaceV2/utils';
 import { NLUImportModel } from '@/models/NLU';
 import { SyncThunk, Thunk } from '@/store/types';
@@ -78,14 +79,16 @@ export const createProject =
         })
       );
 
-      const project = Realtime.Adapters.projectAdapter.fromDB(projectToLegacyBaseProject(data.project), { members: projectData.members });
+      const project = Realtime.Adapters.projectAdapter.fromDB(projectToLegacyBaseProject(data.project), {
+        members: projectData.members,
+      });
       const projectConfig = Platform.Config.getTypeConfig({ type: project.type, platform: project.platform });
 
       // TODO: move to realtime
       if (isEnterprise && project.aiAssistSettings.aiPlayground) {
         client.apiV3.fetch.post(`/projects/${project.id}/sendAIAssistantProjectEmail`).catch((error) => {
           logger.error(error);
-          toast.error('unable to send AI assistant disclaimer email');
+          toast.error('unable to send AI agent disclaimer email');
         });
       }
 
@@ -95,7 +98,10 @@ export const createProject =
           source: Tracking.ProjectSourceType.NEW,
           channel: project.platform,
           modality: project.type,
-          language: projectConfig.project.locale.labelMap[projectData.locales[0] ?? projectConfig.project.locale.defaultLocales[0]],
+          language:
+            projectConfig.project.locale.labelMap[
+              projectData.locales[0] ?? projectConfig.project.locale.defaultLocales[0]
+            ],
           projectID: project.id,
           workspaceID,
         })
@@ -103,8 +109,8 @@ export const createProject =
 
       return project;
     } catch (err) {
-      toast.error('Error creating assistant, please try again later or contact support.');
-      throw new Error('error creating assistant');
+      toast.error('Error creating agent, please try again later or contact support.');
+      throw new Error('error creating agent');
     }
   };
 
@@ -114,7 +120,9 @@ export const importProjectFromFile =
     // use HTTP API to import project because payload is too large for websocket
     const result = await designerClient.assistant.importFile(workspaceID, { file, clientID: realtimeClient.clientId });
 
-    const project = Realtime.Adapters.projectAdapter.fromDB(projectToLegacyBaseProject(result.project), { members: [] });
+    const project = Realtime.Adapters.projectAdapter.fromDB(projectToLegacyBaseProject(result.project), {
+      members: [],
+    });
     const projectConfig = Platform.Config.getTypeConfig({ type: project.type, platform: project.platform });
 
     dispatch(
@@ -122,7 +130,10 @@ export const importProjectFromFile =
         source: Tracking.ProjectSourceType.IMPORT,
         channel: project.platform,
         modality: project.type,
-        language: projectConfig.project.locale.labelMap[project.locales.length ? project.locales[0] : projectConfig.project.locale.defaultLocales[0]],
+        language:
+          projectConfig.project.locale.labelMap[
+            project.locales.length ? project.locales[0] : projectConfig.project.locale.defaultLocales[0]
+          ],
         projectID: project.id,
         onboarding: false,
         workspaceID,
@@ -144,34 +155,6 @@ export const deleteProject =
     );
   };
 
-export const mergeProjects =
-  (sourceProjectID: string, targetProjectID: string): Thunk =>
-  async (dispatch, getState) => {
-    const state = getState();
-
-    const sourceProject = projectByIDSelector(state, { id: sourceProjectID });
-    const targetProject = projectByIDSelector(state, { id: targetProjectID });
-
-    dispatch(
-      Tracking.trackDomainConvert({
-        sourceNLUType: sourceProject?.nlu,
-        targetNLUType: targetProject?.nlu,
-        sourcePlatform: sourceProject?.platform,
-        targetPlatform: targetProject?.platform,
-        sourceProjectID,
-        targetProjectID,
-      })
-    );
-
-    await dispatch(
-      waitAsync(Realtime.project.merge, {
-        ...getActiveWorkspaceContext(state),
-        sourceProjectID,
-        targetProjectID,
-      })
-    );
-  };
-
 // mutations
 
 export const updateProjectPrivacy =
@@ -181,7 +164,9 @@ export const updateProjectPrivacy =
 
     if (project?.privacy === privacy) return;
 
-    await dispatch.sync(Realtime.project.crud.patch({ ...getActiveWorkspaceContext(getState()), key: projectID, value: { privacy } }));
+    await dispatch.sync(
+      Realtime.project.crud.patch({ ...getActiveWorkspaceContext(getState()), key: projectID, value: { privacy } })
+    );
   };
 
 export const updateProjectAPIPrivacy =
@@ -191,7 +176,9 @@ export const updateProjectAPIPrivacy =
 
     if (project?.apiPrivacy === apiPrivacy) return;
 
-    await dispatch.sync(Realtime.project.crud.patch({ ...getActiveWorkspaceContext(getState()), key: projectID, value: { apiPrivacy } }));
+    await dispatch.sync(
+      Realtime.project.crud.patch({ ...getActiveWorkspaceContext(getState()), key: projectID, value: { apiPrivacy } })
+    );
   };
 
 export const updateProjectImage =
@@ -201,13 +188,17 @@ export const updateProjectImage =
 
     if (project?.image === image) return;
 
-    await dispatch.sync(Realtime.project.crud.patch({ ...getActiveWorkspaceContext(getState()), key: projectID, value: { image } }));
+    await dispatch.sync(
+      Realtime.project.crud.patch({ ...getActiveWorkspaceContext(getState()), key: projectID, value: { image } })
+    );
   };
 
 export const updateProjectLinkType =
   (projectID: string, linkType: BaseModels.Project.LinkType): Thunk =>
   async (dispatch, getState) => {
-    await dispatch.sync(Realtime.project.crud.patch({ ...getActiveWorkspaceContext(getState()), key: projectID, value: { linkType } }));
+    await dispatch.sync(
+      Realtime.project.crud.patch({ ...getActiveWorkspaceContext(getState()), key: projectID, value: { linkType } })
+    );
   };
 
 export const updateProjectNLUSettings =
@@ -250,7 +241,9 @@ export const updateProjectNameByID =
   async (dispatch, getState) => {
     if (name === active.nameSelector(getState())) return;
 
-    await dispatch.sync(Realtime.project.crud.patch({ ...getActiveWorkspaceContext(getState()), key: projectID, value: { name } }));
+    await dispatch.sync(
+      Realtime.project.crud.patch({ ...getActiveWorkspaceContext(getState()), key: projectID, value: { name } })
+    );
   };
 
 export const addCustomThemeToProject =
@@ -264,7 +257,11 @@ export const addCustomThemeToProject =
     Errors.assertProjectID(projectID);
 
     await dispatch.sync(
-      Realtime.project.crud.patch({ ...getActiveWorkspaceContext(getState()), key: projectID, value: { customThemes: [...customThemes, theme] } })
+      Realtime.project.crud.patch({
+        ...getActiveWorkspaceContext(getState()),
+        key: projectID,
+        value: { customThemes: [...customThemes, theme] },
+      })
     );
   };
 
@@ -282,7 +279,11 @@ export const editCustomThemeOnProject =
       Realtime.project.crud.patch({
         ...getActiveWorkspaceContext(getState()),
         key: projectID,
-        value: { customThemes: customThemes.map((oldTheme) => (oldTheme.standardColor === theme.standardColor ? theme : oldTheme)) },
+        value: {
+          customThemes: customThemes.map((oldTheme) =>
+            oldTheme.standardColor === theme.standardColor ? theme : oldTheme
+          ),
+        },
       })
     );
   };
@@ -330,8 +331,8 @@ export const ejectUsersFromProject =
     if (creatorID !== userID) {
       const message =
         reason === Realtime.project.EjectUsersReason.BACKUP_RESTORE
-          ? 'The assistant has been restored to a previous version'
-          : 'Another user has deleted the assistant';
+          ? 'The agent has been restored to a previous version'
+          : 'Another user has deleted the agent';
 
       toast.info(message);
     }
@@ -351,7 +352,7 @@ export const checkEditorSeatLimit =
       .filter((memberID) => !memberID || !editorMemberIDs.includes(memberID));
 
     if (uniqueEditorMemberIDs.length + editorMemberIDs.length > numberOfSeats) {
-      toast.error(`All your editor seats are in use. Purchase additional seats to grant edit access for this Assistant.`);
+      toast.error('All your editor seats are in use. Purchase additional seats to grant edit access for this agent.');
 
       throw new Error('You have reached the maximum number of editor seats.');
     }
@@ -386,7 +387,9 @@ export const patchMemberRole =
       dispatch(checkEditorSeatLimit([member.creatorID]));
     }
 
-    await dispatch.sync(Realtime.project.member.patch({ ...getActiveWorkspaceContext(state), projectID, creatorID, member: { role } }));
+    await dispatch.sync(
+      Realtime.project.member.patch({ ...getActiveWorkspaceContext(state), projectID, creatorID, member: { role } })
+    );
   };
 
 export const removeMember =
@@ -427,7 +430,9 @@ export const duplicateProject =
       })
     );
 
-    const duplicatedProject = Realtime.Adapters.projectAdapter.fromDB(projectToLegacyBaseProject(data.project), { members: [] });
+    const duplicatedProject = Realtime.Adapters.projectAdapter.fromDB(projectToLegacyBaseProject(data.project), {
+      members: [],
+    });
 
     dispatch(
       Tracking.trackProjectCreated({
@@ -436,7 +441,9 @@ export const duplicateProject =
         modality: project.type,
         language:
           projectConfig.project.locale.labelMap[
-            duplicatedProject.locales.length ? duplicatedProject.locales[0] : projectConfig.project.locale.defaultLocales[0]
+            duplicatedProject.locales.length
+              ? duplicatedProject.locales[0]
+              : projectConfig.project.locale.defaultLocales[0]
           ],
         projectID: duplicatedProject.id,
         onboarding: false,
@@ -459,13 +466,16 @@ export const importProject =
         data: {
           sourceAssistantID: projectID,
           targetWorkspaceID,
-          targetAssistantOverride: project && workspaceID === targetWorkspaceID ? { name: `${project.name} (COPY)` } : undefined,
+          targetAssistantOverride:
+            project && workspaceID === targetWorkspaceID ? { name: `${project.name} (COPY)` } : undefined,
         },
         context: { workspaceID: workspaceID ?? targetWorkspaceID },
       })
     );
 
-    const duplicatedProject = Realtime.Adapters.projectAdapter.fromDB(projectToLegacyBaseProject(data.project), { members: [] });
+    const duplicatedProject = Realtime.Adapters.projectAdapter.fromDB(projectToLegacyBaseProject(data.project), {
+      members: [],
+    });
 
     dispatch(
       Tracking.trackProjectCreated({
@@ -474,7 +484,9 @@ export const importProject =
         modality: duplicatedProject.type,
         language:
           projectConfig.project.locale.labelMap[
-            duplicatedProject.locales.length ? duplicatedProject.locales[0] : projectConfig.project.locale.defaultLocales[0]
+            duplicatedProject.locales.length
+              ? duplicatedProject.locales[0]
+              : projectConfig.project.locale.defaultLocales[0]
           ],
         projectID: duplicatedProject.id,
         onboarding: false,

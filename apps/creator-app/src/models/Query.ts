@@ -1,5 +1,3 @@
-import { BillingPeriod } from '@voiceflow/internal';
-
 export type Query = Query.Onboarding &
   Query.Dashboard &
   Query.Auth &
@@ -10,13 +8,11 @@ export type Query = Query.Onboarding &
   Query.CMSResource &
   Query.ZendeskCallackResource;
 
+// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace Query {
   export type Onboarding = Partial<{
-    ob_period: BillingPeriod;
-    ob_seats: number;
     invite: string;
     email: string;
-    choose_workspace: boolean;
   }>;
 
   export type Dashboard = Partial<{

@@ -48,7 +48,9 @@ const AutoPanLayer: React.FC = () => {
   const [scheduler, schedulerAPI] = useRAF();
 
   React.useEffect(() => {
-    leftOffsetRef.current = !canvasSidebar?.visible ? SIDEBAR_WIDTH + THEME.components.leftSidebar.width : SIDEBAR_WIDTH;
+    leftOffsetRef.current = !canvasSidebar?.visible
+      ? SIDEBAR_WIDTH + THEME.components.leftSidebar.width
+      : SIDEBAR_WIDTH;
   }, [canvasSidebar]);
 
   React.useEffect(() => {
@@ -69,7 +71,10 @@ const AutoPanLayer: React.FC = () => {
     let movementY = 0;
     let isLeftClick = false;
 
-    const updateMergeDetection = _throttle((nodeID: string) => getEngine()?.merge.refreshCandidateDetection(nodeID), 150);
+    const updateMergeDetection = _throttle(
+      (nodeID: string) => getEngine()?.merge.refreshCandidateDetection(nodeID),
+      150
+    );
 
     const syncBlocksAndCursor = () => {
       const isDrawingLink = engine.linkCreation.isDrawing;
@@ -208,21 +213,30 @@ const AutoPanLayer: React.FC = () => {
       };
 
       if (inRightZone) {
-        const speedMultiplier = calculateSpeedMultiplier(right - horizontalHotZoneSize - rightOffset - clientX, horizontalHotZoneSize);
+        const speedMultiplier = calculateSpeedMultiplier(
+          right - horizontalHotZoneSize - rightOffset - clientX,
+          horizontalHotZoneSize
+        );
 
         movementY = (distanceFromYCenter / yMid) * AUTO_PAN_PIXEL_HOP_SIZE * speedMultiplier;
         movementX = -AUTO_PAN_PIXEL_HOP_SIZE * speedMultiplier;
 
         startPanning();
       } else if (inLeftZone) {
-        const speedMultiplier = calculateSpeedMultiplier(left + horizontalHotZoneSize + leftOffset - clientX, horizontalHotZoneSize);
+        const speedMultiplier = calculateSpeedMultiplier(
+          left + horizontalHotZoneSize + leftOffset - clientX,
+          horizontalHotZoneSize
+        );
 
         movementY = (distanceFromYCenter / yMid) * AUTO_PAN_PIXEL_HOP_SIZE * speedMultiplier;
         movementX = AUTO_PAN_PIXEL_HOP_SIZE * speedMultiplier;
 
         startPanning();
       } else if (inTopZone) {
-        const speedMultiplier = calculateSpeedMultiplier(verticalHotZoneSize + HEADER_HEIGHT - clientY, verticalHotZoneSize);
+        const speedMultiplier = calculateSpeedMultiplier(
+          verticalHotZoneSize + HEADER_HEIGHT - clientY,
+          verticalHotZoneSize
+        );
 
         movementX = (distanceFromXCenter / xMid) * AUTO_PAN_PIXEL_HOP_SIZE * speedMultiplier;
         movementY = AUTO_PAN_PIXEL_HOP_SIZE * speedMultiplier;

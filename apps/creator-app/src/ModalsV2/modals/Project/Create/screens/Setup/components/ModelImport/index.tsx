@@ -4,10 +4,7 @@ import React from 'react';
 
 import * as NLU from '@/config/nlu';
 import { NLUImportOrigin } from '@/constants';
-import { Permission } from '@/constants/permissions';
-import { useUpgradeModal } from '@/hooks/modal.hook';
 import { useNLUImport } from '@/hooks/nlu';
-import { usePermissionAction } from '@/hooks/permission';
 import { NLUImportModel } from '@/models';
 
 import * as S from './styles';
@@ -19,17 +16,16 @@ interface ModelImportProps {
   setIsImportLoading: (isLoadingImport: boolean) => void;
 }
 
-const ModelImport: React.FC<ModelImportProps> = ({ onImportModel, importModel, isImportLoading, setIsImportLoading }) => {
+const ModelImport: React.FC<ModelImportProps> = ({
+  onImportModel,
+  importModel,
+  isImportLoading,
+  setIsImportLoading,
+}) => {
   const nluImport = useNLUImport({
     nluType: NLU.Voiceflow.CONFIG.type,
     platform: Platform.Constants.PlatformType.VOICEFLOW,
     onImport: onImportModel,
-  });
-  const upgradeModal = useUpgradeModal();
-
-  const onImport = usePermissionAction(Permission.BULK_UPLOAD, {
-    onAction: () => nluImport.onUploadClick(NLUImportOrigin.PROJECT),
-    onPlanForbid: ({ planConfig }) => upgradeModal.open(planConfig.upgradeModal()),
   });
 
   const textColor = isImportLoading ? 'rgba(98, 119, 140, 0.5)' : 'rgba(98, 119, 140, 1)';
@@ -47,7 +43,7 @@ const ModelImport: React.FC<ModelImportProps> = ({ onImportModel, importModel, i
         </Text>
       ) : (
         <Flex>
-          <S.ImportLink disabled={isImportLoading} onClick={onImport}>
+          <S.ImportLink disabled={isImportLoading} onClick={() => nluImport.onUploadClick(NLUImportOrigin.PROJECT)}>
             Import Voiceflow NLU model
           </S.ImportLink>
 

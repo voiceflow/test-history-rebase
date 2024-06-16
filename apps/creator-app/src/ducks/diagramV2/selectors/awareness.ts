@@ -10,28 +10,38 @@ import { activeDiagramIDSelector } from '@/ducks/creatorV2/selectors';
 import { awarenessViewersSelector } from '@/ducks/projectV2/selectors/active';
 import { createCurriedSelector, createParameterSelector } from '@/ducks/utils';
 import { idParamSelector, idsParamSelector } from '@/ducks/utils/crudV2';
-import { getDistinctMemberByCreatorIDSelector, hasWorkspaceSelector } from '@/ducks/workspaceV2/selectors/active';
+import { hasWorkspaceSelector } from '@/ducks/workspaceV2/selectors/active';
+import { getDistinctMemberByCreatorIDSelector } from '@/ducks/workspaceV2/selectors/active.members';
 
 import { INITIAL_DIAGRAM_VIEWERS } from '../constants';
 import { rootDiagramSelector } from './base';
 
 const entityIDParamSelector = createParameterSelector((params: { entityID: string }) => params.entityID);
 
-const lockTypeParamSelector = createParameterSelector((params: { lockType: Realtime.diagram.awareness.LockEntityType }) => params.lockType);
+const lockTypeParamSelector = createParameterSelector(
+  (params: { lockType: Realtime.diagram.awareness.LockEntityType }) => params.lockType
+);
 
 export const awarenessStateSelector = createSelector([rootDiagramSelector], (state) => state.awareness);
 
 export const awarenessLocksSelector = createSelector([awarenessStateSelector], (awareness) => awareness.locks);
 
-export const diagramNormalizedViewersByIDSelector = createSelector([awarenessViewersSelector, idParamSelector], (awarenessViewers, diagramID) =>
-  diagramID && awarenessViewers && Utils.object.hasProperty(awarenessViewers, diagramID) ? awarenessViewers[diagramID] : INITIAL_DIAGRAM_VIEWERS
+export const diagramNormalizedViewersByIDSelector = createSelector(
+  [awarenessViewersSelector, idParamSelector],
+  (awarenessViewers, diagramID) =>
+    diagramID && awarenessViewers && Utils.object.hasProperty(awarenessViewers, diagramID)
+      ? awarenessViewers[diagramID]
+      : INITIAL_DIAGRAM_VIEWERS
 );
 
-export const allViewersCountSelector = createSelector([awarenessViewersSelector, hasWorkspaceSelector], (viewers, hasWorkspace) => {
-  if (!hasWorkspace || !viewers) return 1;
+export const allViewersCountSelector = createSelector(
+  [awarenessViewersSelector, hasWorkspaceSelector],
+  (viewers, hasWorkspace) => {
+    if (!hasWorkspace || !viewers) return 1;
 
-  return new Set(Object.values(viewers).flatMap((diagramViewers) => diagramViewers.allKeys)).size || 1;
-});
+    return new Set(Object.values(viewers).flatMap((diagramViewers) => diagramViewers.allKeys)).size || 1;
+  }
+);
 
 export const isOnlyViewerSelector = createSelector([allViewersCountSelector], (viewersCount) => viewersCount === 1);
 
@@ -39,11 +49,13 @@ export const diagramViewersByIDSelector = createSelector([diagramNormalizedViewe
   Normal.denormalize(normalizedViewers)
 );
 
-export const diagramsViewersByIDsSelector = createSelector([awarenessViewersSelector, idsParamSelector], (awarenessViewers, diagramIDs) =>
-  _uniqBy(
-    diagramIDs.flatMap((diagramID) => Normal.denormalize(awarenessViewers?.[diagramID] ?? INITIAL_DIAGRAM_VIEWERS)),
-    'creatorID'
-  )
+export const diagramsViewersByIDsSelector = createSelector(
+  [awarenessViewersSelector, idsParamSelector],
+  (awarenessViewers, diagramIDs) =>
+    _uniqBy(
+      diagramIDs.flatMap((diagramID) => Normal.denormalize(awarenessViewers?.[diagramID] ?? INITIAL_DIAGRAM_VIEWERS)),
+      'creatorID'
+    )
 );
 
 export const hasExternalDiagramViewersByIDSelector = createSelector(
@@ -51,8 +63,9 @@ export const hasExternalDiagramViewersByIDSelector = createSelector(
   (normalizedViewers) => normalizedViewers.allKeys.length > 1
 );
 
-export const activeDiagramLocksSelector = createSelector([awarenessLocksSelector, activeDiagramIDSelector], (locks, diagramID) =>
-  !diagramID ? {} : locks[diagramID] ?? {}
+export const activeDiagramLocksSelector = createSelector(
+  [awarenessLocksSelector, activeDiagramIDSelector],
+  (locks, diagramID) => (!diagramID ? {} : locks[diagramID] ?? {})
 );
 
 const isLockedByOther = (creatorID: Nullish<number>, clientNodeID: Nullish<string>) => {
@@ -115,15 +128,18 @@ export const activeDiagramLockOwnerSelector = createSelector(
 
 export const isNodeEditLockedSelector = createSelector(
   [createCurriedSelector(isActiveDiagramEntityLockedByIDAndTypeSelector)],
-  (isNodeLocked) => (entityID: string) => isNodeLocked({ entityID, lockType: Realtime.diagram.awareness.LockEntityType.NODE_EDIT })
+  (isNodeLocked) => (entityID: string) =>
+    isNodeLocked({ entityID, lockType: Realtime.diagram.awareness.LockEntityType.NODE_EDIT })
 );
 
 export const editLockOwnerSelector = createSelector(
   [createCurriedSelector(activeDiagramLockOwnerSelector)],
-  (isNodeLocked) => (entityID: string) => isNodeLocked({ entityID, lockType: Realtime.diagram.awareness.LockEntityType.NODE_EDIT })
+  (isNodeLocked) => (entityID: string) =>
+    isNodeLocked({ entityID, lockType: Realtime.diagram.awareness.LockEntityType.NODE_EDIT })
 );
 
 export const isNodeMovementLockedSelector = createSelector(
   [createCurriedSelector(isActiveDiagramEntityLockedByIDAndTypeSelector)],
-  (isNodeLocked) => (entityID: string) => isNodeLocked({ entityID, lockType: Realtime.diagram.awareness.LockEntityType.NODE_MOVEMENT })
+  (isNodeLocked) => (entityID: string) =>
+    isNodeLocked({ entityID, lockType: Realtime.diagram.awareness.LockEntityType.NODE_MOVEMENT })
 );

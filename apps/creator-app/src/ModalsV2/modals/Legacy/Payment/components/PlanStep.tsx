@@ -17,14 +17,14 @@ const PlanStep: React.FC<PlanStepProps> = ({ onNext, onClose, period, prices, on
     <Modal.Body>
       <Box.Flex mb={20} gap={16} column fullWidth>
         <PlanCard title="Free" badge={<Badge.Descriptive color="gray">Current</Badge.Descriptive>} price={0}>
-          For individuals and hobbyists creating a single assistant.{' '}
+          For individuals and hobbyists creating a single agent.{' '}
           <Link href="https://www.voiceflow.com/pricing" $hidden>
             View details
           </Link>
         </PlanCard>
 
         <PlanCard title="Pro" badge={<Badge.Descriptive>Popular</Badge.Descriptive>} price={prices?.[period] ?? null} active>
-          For individuals and small teams creating assistants.{' '}
+          For individuals and small teams creating agents.{' '}
           <Link href="https://www.voiceflow.com/pricing" $hidden>
             View details
           </Link>

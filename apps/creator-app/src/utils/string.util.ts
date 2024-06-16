@@ -166,4 +166,4 @@ export const matchAllAndProcess = (text: string, regexp: RegExp, processor: (res
   processor(text.substring(prevMatch ? (prevMatch.index ?? 0) + prevMatch[0].length : 0, text.length));
 };
 
-export const formatAssistantName = (value: string): string => value.trim() || 'Untitled Assistant';
+export const formatAssistantName = (value: string): string => value.trim() || 'Untitled Agent';

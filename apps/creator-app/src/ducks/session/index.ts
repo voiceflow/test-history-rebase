@@ -9,7 +9,6 @@ import {
   AnySessionAction,
   SessionAction,
   SetActiveDiagramID,
-  SetActiveDomainID,
   SetActiveProjectID,
   SetActiveVersionID,
   SetActiveWorkspaceID,
@@ -35,7 +34,11 @@ const createInitialAuthTokenState = () => ({
   value: Cookies.getAuthCookie() || null,
 });
 
-export const authTokenReducer: RootReducer<{ value: string | null }, SetAuthToken> = (state = createInitialAuthTokenState(), action) => {
+export const authTokenReducer: RootReducer<{ value: string | null }, SetAuthToken> = (
+  // eslint-disable-next-line default-param-last
+  state = createInitialAuthTokenState(),
+  action
+) => {
   if (action.type === SessionAction.SET_AUTH_TOKEN) {
     return { ...state, value: action.payload };
   }
@@ -43,6 +46,7 @@ export const authTokenReducer: RootReducer<{ value: string | null }, SetAuthToke
   return state;
 };
 
+// eslint-disable-next-line default-param-last
 export const setActiveWorkspaceIDReducer: RootReducer<string | null, SetActiveWorkspaceID> = (state = null, action) => {
   // eslint-disable-next-line sonarjs/no-small-switch
   switch (action.type) {
@@ -68,19 +72,15 @@ export const setActiveDiagramIDReducer: Reducer<SessionState, SetActiveDiagramID
   activeDiagramID: payload,
 });
 
-/**
- * @deprecated remove when FeatureFlag.CMS_WORKFLOWS are released
- */
-export const setActiveDomainIDReducer: Reducer<SessionState, SetActiveDomainID> = (state, { payload }) => ({
-  ...state,
-  activeDomainID: payload,
-});
-
-export const setPrototypeSidebarVisibleReducer: Reducer<SessionState, SetPrototypeSidebarVisible> = (state, { payload }) => ({
+export const setPrototypeSidebarVisibleReducer: Reducer<SessionState, SetPrototypeSidebarVisible> = (
+  state,
+  { payload }
+) => ({
   ...state,
   prototypeSidebarVisible: payload,
 });
 
+// eslint-disable-next-line default-param-last
 const sessionReducer: RootReducer<SessionState, AnySessionAction> = (state = INITIAL_STATE as SessionState, action) => {
   switch (action.type) {
     case SessionAction.SET_ACTIVE_PROJECT_ID:
@@ -89,8 +89,6 @@ const sessionReducer: RootReducer<SessionState, AnySessionAction> = (state = INI
       return setActiveVersionIDReducer(state, action);
     case SessionAction.SET_ACTIVE_DIAGRAM_ID:
       return setActiveDiagramIDReducer(state, action);
-    case SessionAction.SET_ACTIVE_DOMAIN_ID:
-      return setActiveDomainIDReducer(state, action);
     case SessionAction.SET_PROTOTYPE_SIDEBAR_VISIBLE:
       return setPrototypeSidebarVisibleReducer(state, action);
     default:

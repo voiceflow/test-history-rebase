@@ -1,3 +1,7 @@
+import { matchPath } from 'react-router';
+
+import { Path } from '@/config/routes';
+import { Router } from '@/ducks';
 import * as Creator from '@/ducks/creatorV2';
 
 import { ActivationMode, EntityType } from './constants';
@@ -42,7 +46,7 @@ class FocusEngine extends EngineConsumer {
     this.log.info(this.log.success('focused node'), this.log.slug(nodeID));
   }
 
-  reset() {
+  reset({ skipUrlSync }: { skipUrlSync?: boolean } = {}) {
     if (!this.hasTarget) return;
 
     const target = this.getTarget()!;
@@ -52,6 +56,10 @@ class FocusEngine extends EngineConsumer {
     this.engine.activation.reset();
     this.engine.transformation.reset();
     this.engine.node.redrawLinks(target);
+
+    if (!skipUrlSync && !!matchPath(this.select(Router.pathnameSelector), Path.CANVAS_NODE)) {
+      this.engine.store.dispatch(Router.goToCurrentCanvas());
+    }
 
     this.log.info(this.log.reset('reset focus'), this.log.slug(target));
   }

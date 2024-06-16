@@ -1,16 +1,15 @@
-/* eslint-disable no-nested-ternary */
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Flex, SvgIcon, TippyTooltip, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
 import Drawer from '@/components/Drawer';
-import { SectionVariant, UncontrolledSection as Section } from '@/components/Section';
+import { SectionVariant,UncontrolledSection as Section } from '@/components/Section';
 import SoundToggle from '@/components/SoundToggle';
 import { Permission } from '@/constants/permissions';
 import { PrototypeStatus } from '@/constants/prototype';
 import { Designer, UI } from '@/ducks';
 import * as PrototypeDuck from '@/ducks/prototype';
-import { useDispatch, useEventualEngine, useFeature, usePermission, useTheme } from '@/hooks';
+import { useDispatch, useEventualEngine, usePermission, useTheme } from '@/hooks';
 import { useSelector } from '@/hooks/store.hook';
 import { useToggle } from '@/hooks/toggle';
 import { NLUTrainingModelContext } from '@/pages/Project/contexts';
@@ -24,7 +23,7 @@ import { Container, EmbedContainer, TrainingSection } from './components';
 const PrototypeSidebar: React.FC = () => {
   const theme = useTheme();
   const debugEnabled = useDebug();
-  const [canRenderPrototype] = usePermission(Permission.RENDER_PROTOTYPE);
+  const [canRenderPrototype] = usePermission(Permission.PROJECT_PROTOTYPE_RENDER);
   const prototypeAPI = React.useContext(PrototypeContext);
   const nluTrainingModel = React.useContext(NLUTrainingModelContext);
   const nluTrainingDiffData = useSelector(Designer.Environment.selectors.nluTrainingDiffData);
@@ -35,7 +34,6 @@ const PrototypeSidebar: React.FC = () => {
   const { status } = state;
   const { updatePrototype } = actions;
 
-  const cmsWorkflows = useFeature(Realtime.FeatureFlag.CMS_WORKFLOWS);
   const canSeeSoundToggle = Realtime.Utils.typeGuards.isVoiceProjectType(projectType);
   const [trainingOpen, toggleTrainingOpen] = useToggle(false);
 
@@ -106,12 +104,14 @@ const PrototypeSidebar: React.FC = () => {
       width={theme.components.prototypeSidebar.width}
       direction={Drawer.Direction.LEFT}
       style={{
-        top: cmsWorkflows.isEnabled ? (isCanvasOnly ? 0 : theme.components.header.newHeight) : undefined,
-        height: cmsWorkflows.isEnabled ? (isCanvasOnly ? '100%' : `calc(100% - ${theme.components.header.newHeight}px)`) : undefined,
+        top: isCanvasOnly ? 0 : theme.components.header.newHeight,
+        height: isCanvasOnly ? '100%' : `calc(100% - ${theme.components.header.newHeight}px)`,
       }}
     >
       <Container>
-        {canRenderPrototype && <TrainingSection isOpen={trainingOpen} onOpen={openTraining} toggleOpen={toggleTrainingOpen} />}
+        {canRenderPrototype && (
+          <TrainingSection isOpen={trainingOpen} onOpen={openTraining} toggleOpen={toggleTrainingOpen} />
+        )}
 
         <Section
           header="DIALOG"
@@ -121,7 +121,11 @@ const PrototypeSidebar: React.FC = () => {
             <Flex>
               {canSeeSoundToggle && (
                 <Box display="inline-block" mr={4}>
-                  <SoundToggle projectType={projectType} isMuted={isMuted} onClick={() => updatePrototype({ muted: !isMuted })} />
+                  <SoundToggle
+                    projectType={projectType}
+                    isMuted={isMuted}
+                    onClick={() => updatePrototype({ muted: !isMuted })}
+                  />
                 </Box>
               )}
 

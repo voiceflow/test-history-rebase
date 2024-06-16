@@ -2,26 +2,39 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { createReverter } from '@/ducks/utils';
 
-import { linksByPortIDSelector, parentNodeIDByStepIDSelector, portByIDSelector, portsByNodeIDSelector } from '../selectors';
+import {
+  linksByPortIDSelector,
+  parentNodeIDByStepIDSelector,
+  portByIDSelector,
+  portsByNodeIDSelector,
+} from '../selectors';
 import { removeDynamicPort, removeManyNodes } from '../utils';
 import { removeManyNodesReverter } from './removeManyNodes';
-import { createActiveDiagramReducer, createDiagramInvalidator, createNodeRemovalInvalidators, DIAGRAM_INVALIDATORS } from './utils';
+import {
+  createActiveDiagramReducer,
+  createDiagramInvalidator,
+  createNodeRemovalInvalidators,
+  DIAGRAM_INVALIDATORS,
+} from './utils';
 
-const removeDynamicPortReducer = createActiveDiagramReducer(Realtime.port.removeDynamic, (state, { nodeID, portID, removeNodes }) => {
-  const removeNodeIDs = removeNodes.map((node) => node.stepID ?? node.parentNodeID);
+const removeDynamicPortReducer = createActiveDiagramReducer(
+  Realtime.port.removeDynamic,
+  (state, { nodeID, portID, removeNodes }) => {
+    const removeNodeIDs = removeNodes.map((node) => node.stepID ?? node.parentNodeID);
 
-  removeManyNodes(state, removeNodeIDs);
+    removeManyNodes(state, removeNodeIDs);
 
-  removeDynamicPort(state, nodeID, portID);
-});
+    removeDynamicPort(state, nodeID, portID);
+  }
+);
 
 export default removeDynamicPortReducer;
 
 export const removeDynamicPortReverter = createReverter(
   Realtime.port.removeDynamic,
 
-  ({ workspaceID, projectID, versionID, domainID, diagramID, nodeID, portID, removeNodes }, getState) => {
-    const ctx = { workspaceID, projectID, versionID, domainID, diagramID };
+  ({ workspaceID, projectID, versionID, diagramID, nodeID, portID, removeNodes }, getState) => {
+    const ctx = { workspaceID, projectID, versionID, diagramID };
     const state = getState();
     const port = portByIDSelector(state, { id: portID });
     const links = linksByPortIDSelector(state, { id: portID });
@@ -29,7 +42,8 @@ export const removeDynamicPortReverter = createReverter(
     const index = ports.out.dynamic.indexOf(portID);
 
     const removeNodeActions =
-      removeManyNodesReverter.revert({ workspaceID, projectID, versionID, domainID, diagramID, nodes: removeNodes }, getState) ?? [];
+      removeManyNodesReverter.revert({ workspaceID, projectID, versionID, diagramID, nodes: removeNodes }, getState) ??
+      [];
 
     return [
       Realtime.port.addDynamic({ ...ctx, nodeID, portID, index, label: port?.label }),
@@ -57,7 +71,10 @@ export const removeDynamicPortReverter = createReverter(
     ...DIAGRAM_INVALIDATORS,
     ...createNodeRemovalInvalidators<Realtime.BasePortPayload>((origin, nodeID) => origin.nodeID === nodeID),
     createDiagramInvalidator(Realtime.port.addDynamic, (origin, subject) => origin.nodeID === subject.nodeID),
-    createDiagramInvalidator(Realtime.port.removeDynamic, (origin, subject) => origin.nodeID === subject.nodeID && origin.portID === subject.portID),
+    createDiagramInvalidator(
+      Realtime.port.removeDynamic,
+      (origin, subject) => origin.nodeID === subject.nodeID && origin.portID === subject.portID
+    ),
     createDiagramInvalidator(Realtime.port.reorderDynamic, (origin, subject) => origin.nodeID === subject.nodeID),
     createDiagramInvalidator(
       Realtime.link.addDynamic,

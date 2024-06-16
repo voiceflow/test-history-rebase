@@ -81,7 +81,7 @@ export interface Subscription {
   subscriptionItems?: SubscriptionItem[];
   paymentSource?: SubscriptionPaymentSource;
   customer: {
-    cfOrganizationID?: string;
+    cfOrganizationID?: number;
   };
 
   customerID: string;
@@ -91,6 +91,8 @@ export interface Subscription {
   resourceVersion?: number;
 
   metaData?: Record<string, unknown>;
+
+  downgradedFromTrial?: boolean;
 
   onDunningPeriod: boolean;
 }

@@ -8,6 +8,7 @@ import { LimitType } from '@/constants/limits';
 import { organizationByIDSelector } from '@/ducks/organization/organization.select';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
+import { trackInvitationAccepted } from '@/ducks/tracking';
 import { waitAsync } from '@/ducks/utils';
 import { Thunk } from '@/store/types';
 import { getErrorMessage } from '@/utils/error';
@@ -18,16 +19,39 @@ import { active, workspaceByIDSelector } from '../selectors';
 import { setActive } from './shared';
 
 export const acceptInvite =
-  (invite: string, redirect?: () => void): Thunk<string | null> =>
-  async (dispatch) => {
+  (
+    invite: string,
+    metadata: { role?: string; email: string; source: 'email' | 'link' },
+    redirect?: VoidFunction
+  ): Thunk<string | null> =>
+  async (dispatch, getState) => {
     try {
       const workspaceID = await dispatch(waitAsync(Realtime.workspace.member.acceptInvite, { invite }));
 
       dispatch(setActive(workspaceID));
 
+      const workspace = workspaceByIDSelector(getState(), { id: workspaceID });
+
+      dispatch(
+        trackInvitationAccepted({
+          role: metadata.role,
+          email: metadata.email,
+          source: metadata.source,
+          workspaceID,
+          organizationID: workspace?.organizationID ?? '',
+        })
+      );
+
+      toast.success('Successfully joined workspace!');
+
       return workspaceID;
     } catch (err) {
-      if (err && typeof err === 'object' && 'code' in err && err.code === Realtime.ErrorCode.ALREADY_MEMBER_OF_WORKSPACE) {
+      if (
+        err &&
+        typeof err === 'object' &&
+        'code' in err &&
+        err.code === Realtime.ErrorCode.ALREADY_MEMBER_OF_WORKSPACE
+      ) {
         toast.success('You are already a member of this workspace.');
         redirect?.();
         return null;
@@ -35,8 +59,10 @@ export const acceptInvite =
 
       if (err instanceof Error && err.message.includes('unhandled error:')) {
         toast.error(getErrorMessage(err.message.split(':')[1]));
-      } else {
+      } else if (getErrorMessage(err)) {
         toast.error(getErrorMessage(err));
+      } else {
+        toast.error('Error joining workspace');
       }
 
       return null;
@@ -106,12 +132,17 @@ export const updateMember =
 
     const workspace = workspaceByIDSelector(state, { id: workspaceID });
     const organizationMember =
-      organizationByIDSelector(state, { id: workspace?.organizationID })?.members.find((m) => m.creatorID === creatorID) ?? null;
+      organizationByIDSelector(state, { id: workspace?.organizationID })?.members.find(
+        (m) => m.creatorID === creatorID
+      ) ?? null;
 
     try {
       if (workspace?.organizationID && isAdminUserRole(organizationMember?.role)) {
         await dispatch.sync(
-          Actions.OrganizationMember.DeleteOne({ id: creatorID, context: { organizationID: workspace.organizationID, workspaceID } })
+          Actions.OrganizationMember.DeleteOne({
+            id: creatorID,
+            context: { organizationID: workspace.organizationID, workspaceID },
+          })
         );
       }
 
@@ -168,8 +199,8 @@ export const updateActiveWorkspaceMemberRole =
     const activePlan = active.planSelector(state);
     const numberOfSeats = active.numberOfSeatsSelector(state);
     const projectEditorMemberIDs = ProjectV2.allEditorMemberIDs(state);
-    const numberOfUsedViewerSeats = active.usedViewerSeatsSelector(state);
-    const numberOfUsedEditorSeats = active.usedEditorSeatsSelector(state);
+    const numberOfUsedViewerSeats = active.members.usedViewerSeatsSelector(state);
+    const numberOfUsedEditorSeats = active.members.usedEditorSeatsSelector(state);
     const viewerPlanSeatLimits = getLimitConfig(LimitType.VIEWER_SEATS, activePlan);
 
     if (

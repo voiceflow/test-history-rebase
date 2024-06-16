@@ -1,18 +1,19 @@
 /* eslint-disable max-depth */
 
-import { Channel, EntityWithVariants, Language } from '@voiceflow/dtos';
+import { Channel, Diagram, EntityWithVariants, Language } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { SvgIconTypes } from '@voiceflow/ui';
 
-import { Designer } from '@/ducks';
+import { Designer, Project } from '@/ducks';
 import { getManager } from '@/pages/Canvas/managers';
 import type { State } from '@/store/types';
-import { isTopicDiagram } from '@/utils/diagram.utils';
+import { isTemplateDiagram, isTopicDiagram } from '@/utils/diagram.utils';
 import { utteranceTextToString } from '@/utils/utterance.util';
 
 import {
   DatabaseEntry,
   DiagramDatabaseEntry,
+  DiagramNodeDatabaseMap,
   EntityDatabaseEntry,
   Filters,
   IntentDatabaseEntry,
@@ -29,11 +30,15 @@ export const EmptySearchDatabase: SearchDatabase = SEARCH_CATEGORY_ORDER.reduce<
   return acc;
 }, {} as SearchDatabase);
 
-export const isNodeDatabaseEntry = (entry: DatabaseEntry & { nodeID?: string }): entry is NodeDatabaseEntry => !!entry.nodeID;
-export const isIntentDatabaseEntry = (entry: DatabaseEntry & { intentID?: string }): entry is IntentDatabaseEntry => !!entry.intentID;
-export const isEntityDatabaseEntry = (entry: DatabaseEntry & { entityID?: string }): entry is EntityDatabaseEntry => !!entry.entityID;
-export const isDiagramDatabaseEntry = (entry: DatabaseEntry & { diagramType?: string; diagramID?: string }): entry is DiagramDatabaseEntry =>
-  !!entry.diagramType && !!entry.diagramID;
+export const isNodeDatabaseEntry = (entry: DatabaseEntry & { nodeID?: string }): entry is NodeDatabaseEntry =>
+  !!entry.nodeID;
+export const isIntentDatabaseEntry = (entry: DatabaseEntry & { intentID?: string }): entry is IntentDatabaseEntry =>
+  !!entry.intentID;
+export const isEntityDatabaseEntry = (entry: DatabaseEntry & { entityID?: string }): entry is EntityDatabaseEntry =>
+  !!entry.entityID;
+export const isDiagramDatabaseEntry = (
+  entry: DatabaseEntry & { diagramType?: string; diagramID?: string }
+): entry is DiagramDatabaseEntry => !!entry.diagramType && !!entry.diagramID;
 
 export const buildNodeDatabase = (nodes: Realtime.NodeData<unknown>[], diagramID: string, state: State) => {
   const database: NodeDatabaseEntry[] = [];
@@ -90,7 +95,9 @@ export const buildEntityDatabase = (entities: EntityWithVariants[]): EntityDatab
     targets: [entity.name, ...entity.variants.flatMap((variant) => [variant.value, ...variant.synonyms])],
   }));
 
-export const buildDiagramDatabases = (diagrams: Realtime.Diagram[]): Pick<SearchDatabase, SearchCategory.COMPONENT | SearchCategory.TOPIC> => {
+export const buildDiagramDatabases = (
+  diagrams: Realtime.Diagram[]
+): Pick<SearchDatabase, SearchCategory.COMPONENT | SearchCategory.TOPIC> => {
   const database: Pick<SearchDatabase, SearchCategory.COMPONENT | SearchCategory.TOPIC> = {
     [SearchCategory.COMPONENT]: [],
     [SearchCategory.TOPIC]: [],
@@ -108,13 +115,18 @@ export const buildDiagramDatabases = (diagrams: Realtime.Diagram[]): Pick<Search
   return database;
 };
 
-export type CreateOption<T extends { index: number }> = (params: { target: string; index: number; entry: DatabaseEntry }) => T;
+export type CreateOption<T extends { index: number }> = (params: {
+  target: string;
+  index: number;
+  entry: DatabaseEntry;
+}) => T;
 
 export const find = <T extends { index: number }>(
   query: string,
   database: SearchDatabase,
   createOption: CreateOption<T>,
   filters: Filters = {}
+  // eslint-disable-next-line sonarjs/cognitive-complexity
 ): T[] => {
   if (!query.length) return [];
 
@@ -177,4 +189,25 @@ export const getDatabaseEntryIcon = (entry: DatabaseEntry): SvgIconTypes.Icon =>
     return isTopicDiagram(entry.diagramType) ? 'systemLayers' : 'componentOutline';
   }
   return 'search';
+};
+
+export const buildSearchDatabase = (diagrams: Diagram[], state: State) => {
+  const database: DiagramNodeDatabaseMap = {};
+
+  const platform = Project.active.platformSelector(state);
+  const projectType = Project.active.projectTypeSelector(state);
+
+  diagrams.forEach((diagram) => {
+    if (diagram.diagramID in database) return;
+    if (isTemplateDiagram(diagram.type as any)) return;
+
+    const { nodes, data } = Realtime.Adapters.creatorAdapter.fromDB(diagram, { platform, projectType, context: {} });
+    database[diagram.diagramID] = buildNodeDatabase(
+      nodes.map(({ id }) => data[id]).filter(Boolean),
+      diagram.diagramID,
+      state
+    );
+  });
+
+  return database;
 };

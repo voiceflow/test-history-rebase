@@ -7,7 +7,8 @@ import React from 'react';
 import SlateEditable from '@/components/SlateEditable';
 import { SlateTextInput } from '@/components/SlateInputs';
 import VariablesInput from '@/components/VariablesInput';
-import { useActiveProjectTypeConfig, useImageDimensions } from '@/hooks';
+import { useActiveProjectTypeConfig } from '@/hooks';
+import { useImageDimensions } from '@/hooks/file.hook';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
 
@@ -79,7 +80,9 @@ const CardV2: React.FC<CardV2Props> = ({ item, editor, onUpdate }) => {
           <Buttons.Section
             buttons={item.buttons}
             editor={editor}
-            onUpdate={({ buttons = [] }) => onUpdate({ buttons } as Partial<Realtime.NodeData<Realtime.NodeData.CardV2>>, true)}
+            onUpdate={({ buttons = [] }) =>
+              onUpdate({ buttons } as Partial<Realtime.NodeData<Realtime.NodeData.CardV2>>, true)
+            }
           />
         </>
       )}

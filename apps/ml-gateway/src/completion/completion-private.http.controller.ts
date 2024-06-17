@@ -4,7 +4,7 @@ import { ZodApiBody, ZodApiResponse } from '@voiceflow/nestjs-common';
 import { BillingClient, BillingResourceType, TrackUsageItemName } from '@voiceflow/sdk-billing';
 import { BillingAuthorize, BillingAuthorizeGuard } from '@voiceflow/sdk-billing/nestjs';
 import { ZodValidationPipe } from 'nestjs-zod';
-import { from, map, mergeMap, Observable, tap } from 'rxjs';
+import { finalize, from, map, mergeMap, Observable, tap } from 'rxjs';
 
 import { CompletionService } from './completion.service';
 import { ChatCompletionRequest } from './dtos/chat-completion.request';
@@ -101,26 +101,29 @@ export class CompletionPrivateHTTPController {
     @Body(new ZodValidationPipe(CompletionRequest))
     request: CompletionRequest
   ): Observable<MessageEvent> {
+    let tokens = 0;
     return from(this.service.generateCompletionStream(request)).pipe(
       mergeMap((response) => response),
-      tap((chunk) =>
-        this.billing.usagesPrivate
-          .trackUsage({
-            resourceType: BillingResourceType.WORKSPACE,
-            resourceID: String(request.workspaceID),
-            item: TrackUsageItemName.Tokens,
-            value: chunk.completion.tokens,
-          })
-          .catch((err) => {
-            this.logger.error('Error tracking usage for workspace: %s (%o)', request.workspaceID, err);
-          })
-      ),
+      tap((chunk) => {
+        tokens += chunk.completion.tokens;
+      }),
       map((chunk) => {
         return {
           type: chunk.type,
           data: chunk.completion,
         };
-      })
+      }),
+      finalize(() => this.billing.usagesPrivate
+        .trackUsage({
+          resourceType: BillingResourceType.WORKSPACE,
+          resourceID: String(request.workspaceID),
+          item: TrackUsageItemName.Tokens,
+          value: tokens,
+        })
+        .catch((err) => {
+          this.logger.error('Error tracking usage for workspace: %s (%s) %o', request.workspaceID, tokens, err);
+        })
+      )
     );
   }
 
@@ -140,26 +143,29 @@ export class CompletionPrivateHTTPController {
     @Body(new ZodValidationPipe(ChatCompletionRequest))
     request: ChatCompletionRequest
   ): Observable<MessageEvent> {
+    let tokens = 0;
     return from(this.service.generateChatCompletionStream(request)).pipe(
       mergeMap((response) => response),
-      tap((chunk) =>
-        this.billing.usagesPrivate
-          .trackUsage({
-            resourceType: BillingResourceType.WORKSPACE,
-            resourceID: String(request.workspaceID),
-            item: TrackUsageItemName.Tokens,
-            value: chunk.completion.tokens,
-          })
-          .catch((err) => {
-            this.logger.error('Error tracking usage for workspace: %s (%o)', request.workspaceID, err);
-          })
-      ),
+      tap((chunk) => {
+        tokens += chunk.completion.tokens;
+      }),
       map((chunk) => {
         return {
           type: chunk.type,
           data: chunk.completion,
         };
-      })
+      }),
+      finalize(() => this.billing.usagesPrivate
+        .trackUsage({
+          resourceType: BillingResourceType.WORKSPACE,
+          resourceID: String(request.workspaceID),
+          item: TrackUsageItemName.Tokens,
+          value: tokens,
+        })
+        .catch((err) => {
+          this.logger.error('Error tracking token usage for workspace: %s (%s) %o', request.workspaceID, tokens, err);
+        })
+      )
     );
   }
 }

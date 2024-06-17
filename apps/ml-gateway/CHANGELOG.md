@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.101.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.100.7...@voiceflow/ml-gateway@1.101.0) (2024-06-17)
+
+### Features
+
+* **ml-gateway:** send a single tracking call (PL-000) ([#8312](https://github.com/voiceflow/creator-app/issues/8312)) ([c21154e](https://github.com/voiceflow/creator-app/commit/c21154e478adbe8504feaa7d1eb03b7714d32a49))
+
 ## [1.100.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.100.6...@voiceflow/ml-gateway@1.100.7) (2024-06-12)
 
 **Note:** Version bump only for package @voiceflow/ml-gateway

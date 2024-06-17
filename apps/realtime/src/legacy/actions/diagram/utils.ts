@@ -1,9 +1,8 @@
-// eslint-disable-next-line max-classes-per-file
-import { BaseModels } from '@voiceflow/base-types';
+/* eslint-disable max-classes-per-file */
+
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { BaseContextData, Context, Resend } from '@voiceflow/socket-utils';
 import type { Action } from 'typescript-fsa';
-import type { Required } from 'utility-types';
 
 import { AbstractActionControl } from '@/legacy/actions/utils';
 import { AbstractVersionResourceControl } from '@/legacy/actions/version/utils';
@@ -77,44 +76,4 @@ export abstract class AbstractNoopDiagramActionControl<
 export abstract class AbstractDiagramResourceControl<
   P extends Realtime.BaseVersionPayload,
   D extends WorkspaceContextData = WorkspaceContextData,
-> extends AbstractVersionResourceControl<P, D> {
-  protected createComponent = async (
-    ctx: Context<BaseContextData>,
-    payload: P,
-    primitiveDiagram: Required<Partial<Realtime.Utils.diagram.PrimitiveDiagram>, 'name'>
-  ): Promise<Realtime.Diagram> => {
-    const { creatorID, clientID } = ctx.data;
-    const { versionID, projectID, workspaceID } = payload;
-
-    const newDBDiagram = await this.services.diagram.create({
-      ...Realtime.Utils.diagram.componentDiagramFactory(primitiveDiagram.name),
-      ...primitiveDiagram,
-      creatorID,
-      versionID,
-    });
-
-    const newDiagram = Realtime.Adapters.diagramAdapter.fromDB(newDBDiagram);
-
-    await this.services.version.addComponent(versionID, {
-      type: BaseModels.Version.FolderItemType.DIAGRAM,
-      sourceID: newDBDiagram._id,
-    });
-
-    await Promise.all([
-      this.reloadSharedNodes(ctx, payload, [newDBDiagram]),
-      this.server.processAs(
-        creatorID,
-        clientID,
-        Realtime.diagram.crud.add({
-          key: newDiagram.id,
-          value: newDiagram,
-          projectID,
-          versionID,
-          workspaceID,
-        })
-      ),
-    ]);
-
-    return newDiagram;
-  };
-}
+> extends AbstractVersionResourceControl<P, D> {}

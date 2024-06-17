@@ -69,13 +69,13 @@ class ImportSnapshot extends AbstractDiagramResourceControl<Realtime.creator.Imp
       })
     ) {
       await this.services.requestContext.createAsync(() =>
-        this.services.reference.addManyDiagramNodes({
-          nodes: dbNodes,
-          authMeta: { userID: Number(ctx.userId), clientID: ctx.clientId },
-          diagramID: payload.diagramID,
-          assistantID: payload.projectID,
-          environmentID: payload.versionID,
-        })
+        this.services.reference.createManyWithSubResourcesForDiagramNodesAndBroadcast(
+          { nodes: dbNodes, diagramID: payload.diagramID },
+          {
+            auth: { userID: Number(ctx.userId), clientID: ctx.clientId },
+            context: { assistantID: payload.projectID, environmentID: payload.versionID },
+          }
+        )
       );
     }
   };

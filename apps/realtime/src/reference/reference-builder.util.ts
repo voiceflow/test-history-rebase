@@ -1,10 +1,11 @@
 import { Utils } from '@voiceflow/common';
-import { Diagram, DiagramType, Intent, ReferenceResource, ReferenceResourceType } from '@voiceflow/dtos';
+import { Diagram, Intent, ReferenceResource, ReferenceResourceType } from '@voiceflow/dtos';
 
 import { AssistantLoadCreatorResponse } from '@/assistant/dtos/assistant-load-creator.response';
 
 import { ReferenceBaseBuilderUtil } from './reference-base-builder.util';
-import { ReferenceNodeBuilderUtil } from './reference-node-builder.util';
+import { ReferenceDiagramBuilderUtil } from './reference-diagram-builder.util';
+
 export class ReferenceBuilderUtil extends ReferenceBaseBuilderUtil {
   private readonly intents: Intent[];
 
@@ -37,33 +38,14 @@ export class ReferenceBuilderUtil extends ReferenceBaseBuilderUtil {
   }
 
   private async buildDiagramsReferences() {
-    for (const diagram of this.diagrams) {
-      // eslint-disable-next-line no-await-in-loop
-      await this.buildDiagramReferences(diagram);
-    }
-  }
-
-  private async buildDiagramReferences(diagram: Diagram) {
-    if (diagram.type !== DiagramType.COMPONENT && diagram.type !== DiagramType.TOPIC) return;
-
-    const diagramResource = this.buildReferenceResource({
-      type: ReferenceResourceType.DIAGRAM,
-      metadata: null,
-      diagramID: null,
-      resourceID: diagram.diagramID,
-    });
-
-    const nodeBuilder = new ReferenceNodeBuilderUtil({
-      nodes: Object.values(diagram.nodes),
-      diagramID: diagram.diagramID,
+    const builder = new ReferenceDiagramBuilderUtil({
+      diagrams: this.diagrams,
       assistantID: this.assistantID,
       environmentID: this.environmentID,
-      diagramResourceID: diagramResource.id,
-
       getIntentResource: async (intentID) => this.getIntentResource(intentID),
     });
 
-    const result = await nodeBuilder.build();
+    const result = await builder.build();
 
     this.references.push(...result.references);
     this.referenceResources.push(...result.referenceResources);

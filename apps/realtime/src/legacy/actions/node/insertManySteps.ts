@@ -65,21 +65,27 @@ class InsertManySteps extends AbstractVersionDiagramAccessActionControl<Realtime
     ) {
       await this.services.requestContext.createAsync(async () => {
         await Promise.all([
-          this.services.reference.removeManyDiagramNodes({
-            nodeIDs: removeNodes.map((node) => node.stepID ?? node.parentNodeID),
-            authMeta: { userID: Number(ctx.userId), clientID: ctx.clientId },
-            diagramID: payload.diagramID,
-            assistantID: payload.projectID,
-            environmentID: payload.versionID,
-          }),
+          this.services.reference.deleteManyWithSubResourcesByDiagramNodeIDsAndBroadcast(
+            {
+              nodeIDs: removeNodes.map((node) => node.stepID ?? node.parentNodeID),
+              diagramID: payload.diagramID,
+            },
+            {
+              auth: { userID: Number(ctx.userId), clientID: ctx.clientId },
+              context: { assistantID: payload.projectID, environmentID: payload.versionID },
+            }
+          ),
 
-          this.services.reference.addManyDiagramNodes({
-            nodes: stepsToCreate,
-            authMeta: { userID: Number(ctx.userId), clientID: ctx.clientId },
-            diagramID: payload.diagramID,
-            assistantID: payload.projectID,
-            environmentID: payload.versionID,
-          }),
+          this.services.reference.createManyWithSubResourcesForDiagramNodesAndBroadcast(
+            {
+              nodes: stepsToCreate,
+              diagramID: payload.diagramID,
+            },
+            {
+              auth: { userID: Number(ctx.userId), clientID: ctx.clientId },
+              context: { assistantID: payload.projectID, environmentID: payload.versionID },
+            }
+          ),
         ]);
       });
     }

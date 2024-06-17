@@ -337,6 +337,7 @@ export class AssistantService extends MutableService<AssistantORM> {
           entityVariants: data.entityVariants ?? [],
           requiredEntities: data.requiredEntities ?? [],
           responseVariants: data.responseVariants ?? [],
+          responseMessages: data.responseMessages ?? [],
           responseDiscriminators: data.responseDiscriminators ?? [],
         },
         version: { ...data.version, _id: environmentID } as BaseModels.Version.Model<any>,

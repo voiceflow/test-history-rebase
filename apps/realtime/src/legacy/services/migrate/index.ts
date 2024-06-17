@@ -18,7 +18,8 @@ class MigrateService extends AbstractControl {
   }
 
   public async acquireMigrationLock(versionID: string, nodeID: string): Promise<void> {
-    const lockAcquired = (await this.clients.redis.setnx(MigrateService.getMigrationLockKey({ versionID }), nodeID)) === 1;
+    const lockAcquired =
+      (await this.clients.redis.setnx(MigrateService.getMigrationLockKey({ versionID }), nodeID)) === 1;
 
     if (!lockAcquired) {
       throw new Error('migration lock exists already');
@@ -69,7 +70,10 @@ class MigrateService extends AbstractControl {
   /**
    * this is the best place to implement any feature-aware logic to allow or block a pending migration
    */
-  public async getTargetSchemaVersion(versionID: string, proposedVersion: Realtime.SchemaVersion): Promise<Realtime.SchemaVersion> {
+  public async getTargetSchemaVersion(
+    versionID: string,
+    proposedVersion: Realtime.SchemaVersion
+  ): Promise<Realtime.SchemaVersion> {
     const activeSchemaVersion = await this.getActiveSchemaVersion(versionID);
     if (activeSchemaVersion) return activeSchemaVersion;
 
@@ -131,7 +135,10 @@ class MigrateService extends AbstractControl {
     yield MigrationState.STARTED;
 
     try {
-      const [project, diagrams] = await Promise.all([this.services.project.get(creatorID, projectID), this.services.diagram.getAll(versionID)]);
+      const [project, diagrams] = await Promise.all([
+        this.services.project.get(creatorID, projectID),
+        this.services.diagram.getAll(versionID),
+      ]);
 
       const [migrationResult] = Realtime.Migrate.migrateProject(
         {
@@ -152,6 +159,7 @@ class MigrateService extends AbstractControl {
             entityVariants: [],
             requiredEntities: [],
             responseVariants: [],
+            responseMessages: [],
             responseDiscriminators: [],
           },
         },

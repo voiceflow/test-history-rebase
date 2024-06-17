@@ -150,6 +150,7 @@ export class EnvironmentImportService {
           prepareDataContext
         )),
 
+      // TODO: once we migrate everything to messages we need to make sure we have messages instead of variants here
       ...(cms.responses &&
         cms.responseVariants &&
         cms.responseAttachments &&
@@ -158,6 +159,7 @@ export class EnvironmentImportService {
           {
             responses: cms.responses,
             responseVariants: cms.responseVariants,
+            responseMessages: cms.responseMessages || [],
             responseAttachments: cms.responseAttachments,
             responseDiscriminators: cms.responseDiscriminators,
           },
@@ -186,6 +188,7 @@ export class EnvironmentImportService {
       responseAttachments = [],
       responseDiscriminators = [],
       responseVariants = [],
+      responseMessages = [],
       entities,
       entityVariants = [],
       intents,
@@ -209,6 +212,7 @@ export class EnvironmentImportService {
         responseAttachments,
         responseDiscriminators,
         responseVariants,
+        responseMessages,
       });
 
     if (entities?.length) await this.entity.importManyWithSubResourcesFromJSON({ entities, entityVariants });

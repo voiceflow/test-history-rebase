@@ -19,6 +19,10 @@ export const migrateUp = async () => {
   const migrator = orm.getMigrator();
 
   try {
+    const pendingMigrations = await migrator.getPendingMigrations();
+    // eslint-disable-next-line no-console
+    console.log('Pending Migrations:', pendingMigrations);
+
     await migrator.up();
   } finally {
     await orm.close(true);

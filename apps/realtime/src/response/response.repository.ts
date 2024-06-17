@@ -121,7 +121,7 @@ export class ResponseRepository extends CMSTabularService<ResponseORM> {
 
       const responses = await this.createManyForUser(
         userID,
-        dataWithIDs.map((data) => Utils.object.omit(data, ['variants', 'discriminator']))
+        dataWithIDs.map((data) => Utils.object.omit(data, ['variants', 'messages', 'discriminator']))
       );
 
       const responseDiscriminators = await this.responseDiscriminator.createManyForUser(
@@ -143,8 +143,10 @@ export class ResponseRepository extends CMSTabularService<ResponseORM> {
       const messages = dataWithIDs.flatMap((data) => data.messages);
 
       if (messages.length) {
-        const responseMessages = await this.responseMessage.createManyForUser(userID, messages);
-
+        const responseMessages = await this.responseMessage.createManyWithSubResources(
+          userID,
+          messages.map(({ condition: _, ...data }) => data)
+        );
         return { ...result, responseMessages };
       }
 

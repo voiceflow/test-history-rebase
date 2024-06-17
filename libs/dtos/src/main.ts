@@ -161,7 +161,7 @@ export * from './request/request-config.dto';
 export * from './request/request-type.enum';
 export * from './request/text-request.dto';
 export * from './request/utils.dto';
-export * from './response/response.compiled.dto';
+export * from './response/message.compiled.dto';
 export * from './response/response.dto';
 export * from './response/response-attachment/compiled/base-attachment.compiled.dto';
 export * from './response/response-attachment/compiled/card-attachment/card-attachment.compiled.dto';

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.79.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.78.0...@voiceflow/orm-designer@2.79.0) (2024-06-17)
+
+### Features
+
+* node reference handlers (COR-000) ([#8275](https://github.com/voiceflow/creator-app/issues/8275)) ([b98b7a1](https://github.com/voiceflow/creator-app/commit/b98b7a19696f40bdc322ac6bddf063c24d88ba26))
+
 # [2.78.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.77.0...@voiceflow/orm-designer@2.78.0) (2024-06-14)
 
 ### Features

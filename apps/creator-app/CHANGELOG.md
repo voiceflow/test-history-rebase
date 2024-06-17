@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1573.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1572.1...@voiceflow/creator-app@1.1573.0) (2024-06-17)
+
+### Bug Fixes
+
+* show user id in transcripts (COR-2203) ([#8317](https://github.com/voiceflow/creator-app/issues/8317)) ([8fd4539](https://github.com/voiceflow/creator-app/commit/8fd45399e364d4167e76b11ca88c74fc76d0697e))
+
+### Features
+
+* sunset remaining unused permissions (COR-2361) ([#8314](https://github.com/voiceflow/creator-app/issues/8314)) ([663d6c8](https://github.com/voiceflow/creator-app/commit/663d6c89b066d2f51b20a879db383e991fbf17af))
+
 ## [1.1572.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1572.0...@voiceflow/creator-app@1.1572.1) (2024-06-17)
 
 ### Bug Fixes

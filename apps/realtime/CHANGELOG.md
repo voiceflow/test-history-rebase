@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.397.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.396.0...@voiceflow/realtime@1.397.0) (2024-06-17)
+
+### Features
+
+* handle new diagram references (COR-000) ([#8292](https://github.com/voiceflow/creator-app/issues/8292)) ([9ef3586](https://github.com/voiceflow/creator-app/commit/9ef358620e432584f4fabebdeb2f5dc762f4e842))
+
 # [1.396.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.395.1...@voiceflow/realtime@1.396.0) (2024-06-17)
 
 ### Features

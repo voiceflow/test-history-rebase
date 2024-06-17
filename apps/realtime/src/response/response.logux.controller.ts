@@ -70,6 +70,18 @@ export class ResponseLoguxController {
     @AuthMeta() auth: AuthMetaPayload
   ): Promise<Actions.Response.DuplicateOne.Response> {
     const result = await this.duplicateService.duplicate([data.responseID], { userID: auth.userID, context });
+
+    this.logux.broadcastAddMany(
+      {
+        add: {
+          ...result,
+          responseAttachments: [],
+          responseVariants: [],
+        },
+      },
+      { auth, context }
+    );
+
     return { data: { responseResource: this.repository.toJSON(result.responses[0]) }, context };
   }
 

@@ -67,6 +67,7 @@ export class ResponseService extends CMSTabularService<ResponseORM> {
     responseVariants,
     responseAttachments,
     responseDiscriminators,
+    responseMessages,
   }: ResponseExportImportDataDTO) {
     await this.importManyWithSubResources(
       this.repository.fromJSONWithSubResources({
@@ -74,6 +75,7 @@ export class ResponseService extends CMSTabularService<ResponseORM> {
         responseVariants: responseVariants ?? [],
         responseAttachments: responseAttachments ?? [],
         responseDiscriminators: responseDiscriminators ?? [],
+        responseMessages: responseMessages ?? [],
       })
     );
   }

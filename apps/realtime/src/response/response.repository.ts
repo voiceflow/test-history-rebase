@@ -100,6 +100,10 @@ export class ResponseRepository extends CMSTabularService<ResponseORM> {
           discriminatorID,
         }));
 
+        const variantOrder = messagesWithIDs.length
+          ? toPostgresEntityIDs(messagesWithIDs)
+          : toPostgresEntityIDs(variantsWithIDs);
+
         return {
           ...data,
           id: responseID,
@@ -113,7 +117,7 @@ export class ResponseRepository extends CMSTabularService<ResponseORM> {
             language: Language.ENGLISH_US,
             responseID,
             assistantID: context.assistantID,
-            variantOrder: toPostgresEntityIDs(variantsWithIDs),
+            variantOrder,
             environmentID: context.environmentID,
           },
         };
@@ -204,7 +208,7 @@ export class ResponseRepository extends CMSTabularService<ResponseORM> {
       responseVariants: this.responseVariant.mapToJSON(responseVariants),
       responseAttachments: this.responseAttachment.mapToJSON(responseAttachments),
       responseDiscriminators: this.responseDiscriminator.mapToJSON(responseDiscriminators),
-      ...(responseMessages && { ...this.responseMessage.mapToJSON(responseMessages) }),
+      responseMessages: this.responseMessage.mapToJSON(responseMessages || []),
     };
   }
 
@@ -220,7 +224,7 @@ export class ResponseRepository extends CMSTabularService<ResponseORM> {
       responseVariants: this.responseVariant.mapFromJSON(responseVariants),
       responseAttachments: this.responseAttachment.mapFromJSON(responseAttachments),
       responseDiscriminators: this.responseDiscriminator.mapFromJSON(responseDiscriminators),
-      ...(responseMessages && { ...this.responseMessage.mapFromJSON(responseMessages) }),
+      responseMessages: this.responseMessage.mapFromJSON(responseMessages) || [],
     };
   }
 

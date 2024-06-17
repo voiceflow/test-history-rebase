@@ -122,7 +122,7 @@ export class EnvironmentRepository {
       { folders },
       { variables },
       { workflows },
-      { responses, responseVariants, responseAttachments, responseDiscriminators },
+      { responses, responseVariants, responseMessages, responseAttachments, responseDiscriminators },
       { attachments, cardButtons },
       { functions, functionPaths, functionVariables },
     ] = await Promise.all([
@@ -153,6 +153,7 @@ export class EnvironmentRepository {
       entityVariants,
       requiredEntities,
       responseVariants,
+      responseMessages,
       functionVariables,
       responseAttachments,
       responseDiscriminators,

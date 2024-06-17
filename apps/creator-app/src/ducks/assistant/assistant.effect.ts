@@ -1,5 +1,5 @@
 import { AnyRecord, BaseModels, BaseVersion } from '@voiceflow/base-types';
-import { AnyAttachment, AnyResponseVariant, CardButton, Diagram, Thread } from '@voiceflow/dtos';
+import { AnyAttachment, AnyResponseVariant, CardButton, Diagram, ResponseMessage, Thread } from '@voiceflow/dtos';
 import * as Platform from '@voiceflow/platform-config';
 import type { DBVersion } from '@voiceflow/platform-config/build/common/configs/base/adapters/version';
 import * as Realtime from '@voiceflow/realtime-sdk';
@@ -71,6 +71,7 @@ export const loadCreator =
     dispatch(Actions.Response.Replace({ data: data.responses ?? [], context }));
     dispatch(Actions.ResponseDiscriminator.Replace({ data: data.responseDiscriminators ?? [], context }));
     dispatch(Actions.ResponseVariant.Replace({ data: (data.responseVariants ?? []) as AnyResponseVariant[], context }));
+    dispatch(Actions.ResponseMessage.Replace({ data: (data.responseMessages ?? []) as ResponseMessage[], context }));
     dispatch(Actions.ResponseAttachment.Replace({ data: data.responseAttachments ?? [], context }));
 
     // function

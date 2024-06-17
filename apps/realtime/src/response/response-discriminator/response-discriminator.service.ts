@@ -18,6 +18,7 @@ import type { CMSCreateForUserData } from '@/common/types';
 import { cmsBroadcastContext, injectAssistantAndEnvironmentIDs, toPostgresEntityIDs } from '@/common/utils';
 import { CMSBroadcastMeta, CMSContext } from '@/types';
 
+import { ResponseMessageLoguxService } from '../response-message/response-message.logux.service';
 import { ResponseMessageRepository } from '../response-message/response-message.repository';
 import { ResponseVariantService } from '../response-variant/response-variant.service';
 
@@ -45,7 +46,9 @@ export class ResponseDiscriminatorService extends CMSObjectService<ResponseDiscr
     @Inject(ResponseVariantService)
     protected readonly responseVariant: ResponseVariantService,
     @Inject(ResponseMessageRepository)
-    protected readonly responseMessage: ResponseMessageRepository
+    protected readonly responseMessage: ResponseMessageRepository,
+    @Inject(ResponseMessageLoguxService)
+    protected readonly responseMessageLogux: ResponseMessageLoguxService
   ) {
     super();
   }
@@ -101,10 +104,23 @@ export class ResponseDiscriminatorService extends CMSObjectService<ResponseDiscr
     },
     meta: CMSBroadcastMeta
   ) {
+    const { responseMessages = [] } = Utils.object.pick(add, ['responseMessages']);
+
     await Promise.all([
       this.responseVariant.broadcastAddMany(
         {
-          add: Utils.object.pick(add, ['responseVariants', 'responseAttachments', 'responseMessages']),
+          add: Utils.object.pick(add, ['responseVariants', 'responseAttachments']),
+          // no need to sync, cause should be synced on create
+          sync: { responseDiscriminators: [] },
+        },
+        meta
+      ),
+
+      this.responseMessageLogux.broadcastAddMany(
+        {
+          add: {
+            responseMessages,
+          },
           // no need to sync, cause should be synced on create
           sync: { responseDiscriminators: [] },
         },

@@ -1,4 +1,14 @@
-import { AnyResponseVariant, Entity, EntityVariant, Intent, RequiredEntity, Response,ResponseDiscriminator, Utterance } from '@voiceflow/dtos';
+import {
+  AnyResponseVariant,
+  Entity,
+  EntityVariant,
+  Intent,
+  RequiredEntity,
+  Response,
+  ResponseDiscriminator,
+  ResponseMessage,
+  Utterance,
+} from '@voiceflow/dtos';
 import {
   AnyResponseAttachmentObject,
   AnyResponseVariantObject,
@@ -13,6 +23,7 @@ import {
   IntentObject,
   RequiredEntityObject,
   ResponseDiscriminatorObject,
+  ResponseMessageObject,
   ResponseObject,
   UtteranceObject,
   VariableObject,
@@ -37,6 +48,7 @@ export interface EnvironmentCMSData {
   entityVariants: EntityVariantObject[];
   requiredEntities: RequiredEntityObject[];
   responseVariants: AnyResponseVariantObject[];
+  responseMessages: ResponseMessageObject[];
   functionVariables: FunctionVariableObject[];
   responseAttachments: AnyResponseAttachmentObject[];
   responseDiscriminators: ResponseDiscriminatorObject[];
@@ -52,6 +64,7 @@ export interface CMSResources {
   isVoiceAssistant: boolean;
   requiredEntities: RequiredEntityObject[];
   responseVariants: AnyResponseVariantObject[];
+  responseMessages: ResponseMessageObject[];
   responseDiscriminators: ResponseDiscriminatorObject[];
 }
 
@@ -63,6 +76,7 @@ export interface IntentsAndEntitiesData {
   entityVariants: EntityVariant[];
   requiredEntities: RequiredEntity[];
   responseVariants: AnyResponseVariant[];
+  responseMessages: ResponseMessage[];
   responseDiscriminators: ResponseDiscriminator[];
 }
 

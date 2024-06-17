@@ -9,19 +9,16 @@ import _ from 'lodash';
 import { CMSContext } from '@/types';
 
 import {
-  DuplicateAttachment,
   DuplicateDiscriminator,
+  DuplicateMessage,
   DuplicateResponse,
-  DuplicateVariant,
-  OMIT_DUPLICATE_ATTACHMENT,
   OMIT_DUPLICATE_DISCRIMINATOR,
+  OMIT_DUPLICATE_MESSAGES,
   OMIT_DUPLICATE_RESPONSE,
-  OMIT_DUPLICATE_VARIANTS,
 } from './response.interface';
 import { ResponseRepository } from './response.repository';
-import { ResponseAttachmentService } from './response-attachment/response-attachment.service';
 import { ResponseDiscriminatorService } from './response-discriminator/response-discriminator.service';
-import { ResponseVariantService } from './response-variant/response-variant.service';
+import { ResponseMessageRepository } from './response-message/response-message.repository';
 
 @Injectable()
 export class ResponseDuplicateService {
@@ -32,10 +29,8 @@ export class ResponseDuplicateService {
     private readonly repository: ResponseRepository,
     @Inject(ResponseDiscriminatorService)
     private readonly responseDiscriminator: ResponseDiscriminatorService,
-    @Inject(ResponseVariantService)
-    private readonly responseVariant: ResponseVariantService,
-    @Inject(ResponseAttachmentService)
-    private readonly responseAttachment: ResponseAttachmentService
+    @Inject(ResponseMessageRepository)
+    private readonly responseMessage: ResponseMessageRepository
   ) {}
 
   duplicate(responseIDs: string[], { userID, context }: { userID: number; context: CMSContext }) {
@@ -47,23 +42,18 @@ export class ResponseDuplicateService {
       ]);
 
       const discriminatorIDs = sourceDiscriminators.map((d) => d.id);
-      const sourceVariants = await this.responseVariant.findManyByDiscriminators(
+      const sourceMessages = await this.responseMessage.findManyByDiscriminators(
         context.environmentID,
         discriminatorIDs
       );
 
-      const variantIDs = sourceVariants.map((v) => v.id);
-      const sourceAttachments = await this.responseAttachment.findManyByVariants(context.environmentID, variantIDs);
-
       // Group discriminators by response ID
       const sourceDiscriminatorsByResponseID = _.groupBy(sourceDiscriminators, (item) => item.responseID);
-      const sourceVariantsByDiscriminatorID = _.groupBy(sourceVariants, (item) => item.discriminatorID);
-      const sourceAttachmentsByVariantID = _.groupBy(sourceAttachments, (item) => item.variantID);
+      const sourceMessagesByDiscriminatorID = _.groupBy(sourceMessages, (item) => item.discriminatorID);
 
       const newResponsesData: Array<DuplicateResponse> = [];
       const newDiscriminatorsData: Array<DuplicateDiscriminator> = [];
-      const newVariantsData: Array<DuplicateVariant> = [];
-      const newAttachmentsData: Array<DuplicateAttachment> = [];
+      const newMessagesData: Array<DuplicateMessage> = [];
 
       sourceResponses.forEach((response) => {
         const newResponse = {
@@ -85,41 +75,20 @@ export class ResponseDuplicateService {
             environmentID: context.environmentID,
           };
 
-          sourceVariantsByDiscriminatorID[discriminator.id]?.forEach((variant) => {
-            const newVariantID = new ObjectId().toJSON();
-            const attachmentIDRemap: Record<string, string> = {};
+          sourceMessagesByDiscriminatorID[discriminator.id]?.forEach((message) => {
+            const newMessageID = new ObjectId().toJSON();
 
-            variantIDRemap[variant.id] = newVariantID;
+            variantIDRemap[message.id] = newMessageID;
 
-            const newVariant = {
-              ...Utils.object.omit(variant, [...OMIT_DUPLICATE_VARIANTS]),
-              id: newVariantID,
+            const newMessage = {
+              ...Utils.object.omit(message, [...OMIT_DUPLICATE_MESSAGES]),
+              id: newMessageID,
               assistantID: context.assistantID,
               environmentID: context.environmentID,
-              attachmentOrder: [],
               discriminatorID: newDiscriminator.id,
             };
 
-            sourceAttachmentsByVariantID[variant.id]?.forEach((attachment) => {
-              const newAttachmentID = new ObjectId().toJSON();
-
-              attachmentIDRemap[attachment.id] = newAttachmentID;
-
-              const newAttachment = {
-                ...Utils.object.omit(attachment, [...OMIT_DUPLICATE_ATTACHMENT]),
-                id: newAttachmentID,
-                variantID: newVariant.id,
-                assistantID: context.assistantID,
-                environmentID: context.environmentID,
-              };
-
-              newAttachmentsData.push(newAttachment);
-            });
-
-            newVariantsData.push({
-              ...newVariant,
-              attachmentOrder: variant.attachmentOrder.map((id) => attachmentIDRemap[id]).filter(Boolean),
-            });
+            newMessagesData.push(newMessage);
           });
 
           newDiscriminatorsData.push({
@@ -134,14 +103,12 @@ export class ResponseDuplicateService {
       // ORDER MATTERS
       const responses = await this.repository.createManyForUser(userID, newResponsesData);
       const responseDiscriminators = await this.responseDiscriminator.createManyForUser(userID, newDiscriminatorsData);
-      const responseVariants = await this.responseVariant.createMany(newVariantsData as any);
-      const responseAttachments = await this.responseAttachment.createMany(newAttachmentsData as any);
+      const responseMessages = await this.responseMessage.createManyForUser(userID, newMessagesData);
 
       return {
         responses,
         responseDiscriminators,
-        responseVariants,
-        responseAttachments,
+        responseMessages,
       };
     });
   }

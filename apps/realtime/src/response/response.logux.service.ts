@@ -81,6 +81,7 @@ export class ResponseLoguxService {
       add: {
         responses: ResponseObject[];
         responseVariants: AnyResponseVariantObject[];
+        responseMessages?: ResponseMessageObject[];
         responseAttachments: AnyResponseAttachmentObject[];
         responseDiscriminators: ResponseDiscriminatorObject[];
       };
@@ -90,7 +91,12 @@ export class ResponseLoguxService {
     await Promise.all([
       this.responseDiscriminator.broadcastAddMany(
         {
-          add: Utils.object.pick(add, ['responseVariants', 'responseAttachments', 'responseDiscriminators']),
+          add: Utils.object.pick(add, [
+            'responseVariants',
+            'responseMessages',
+            'responseAttachments',
+            'responseDiscriminators',
+          ]),
         },
         meta
       ),

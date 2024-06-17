@@ -15,7 +15,7 @@ import { ResponseMessageSerializer } from './response-message.serializer';
 import { ResponseMessageService } from './response-message.service';
 
 @Module({
-  exports: [ResponseMessageService, ResponseMessageRepository],
+  exports: [ResponseMessageService, ResponseMessageRepository, ResponseMessageLoguxService],
   providers: [
     AssistantORM,
     AnyConditionORM,

@@ -10,6 +10,10 @@ export const useResponseMessages = ({ responseID }: { responseID: string }) => {
     language: Language.ENGLISH_US,
     responseID,
   });
+  const allMessages = useSelector(Designer.Response.ResponseMessage.selectors.all);
+
+  // eslint-disable-next-line no-console
+  console.log({ allMessages });
 
   const messages = useSelector(Designer.Response.ResponseMessage.selectors.allByIDs, {
     ids: discriminator?.variantOrder ?? [],

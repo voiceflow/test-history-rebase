@@ -7,14 +7,14 @@ import { ResponseMessageLayout } from '../ResponseMessageLayout/ResponseMessageL
 import type { IResponseEditMessage } from './ResponseEditMessage.interface';
 
 export const ResponseEditMessage: React.FC<IResponseEditMessage> = ({ responseMessage, ...props }) => {
-  const patchVariant = useDispatch(Designer.Response.ResponseVariant.effect.patchOneText, responseMessage.id);
+  const patchMessage = useDispatch(Designer.Response.ResponseMessage.effect.patchOne, responseMessage.id);
   const replaceWithType = useDispatch(Designer.Response.ResponseVariant.effect.replaceWithType, responseMessage.id);
 
   return (
     <ResponseMessageLayout
       {...props}
       value={responseMessage.text}
-      onValueChange={(text) => patchVariant({ text })}
+      onValueChange={(text) => patchMessage({ text })}
       onChangeVariantType={replaceWithType}
     />
   );

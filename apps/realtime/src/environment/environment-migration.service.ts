@@ -78,6 +78,7 @@ export class EnvironmentMigrationService {
       entityVariants = [],
       requiredEntities = [],
       responseVariants = [],
+      responseMessages = [],
       responseDiscriminators = [],
     } = this.getUpdatedCMSData(data, patches);
 
@@ -88,7 +89,13 @@ export class EnvironmentMigrationService {
     await this.variable.upsertManyWithSubResources({ variables }, meta);
     await this.entity.upsertManyWithSubResources({ entities, entityVariants }, meta);
     await this.response.upsertManyWithSubResources(
-      { responses, responseVariants, responseAttachments: [], responseDiscriminators },
+      {
+        responses,
+        responseVariants,
+        responseMessages,
+        responseAttachments: [],
+        responseDiscriminators,
+      },
       meta
     );
     await this.intent.upsertManyWithSubResources({ intents, utterances, requiredEntities }, meta);
@@ -103,6 +110,7 @@ export class EnvironmentMigrationService {
       entityVariants,
       requiredEntities,
       responseVariants,
+      responseMessages,
       responseDiscriminators,
     }: IntentsAndEntitiesData,
     meta: { userID: number; assistantID: string; environmentID: string }
@@ -110,7 +118,13 @@ export class EnvironmentMigrationService {
     // ORDER MATTERS
     await this.entity.upsertManyWithSubResources({ entities, entityVariants }, meta);
     await this.response.upsertManyWithSubResources(
-      { responses, responseVariants, responseAttachments: [], responseDiscriminators },
+      {
+        responses,
+        responseVariants,
+        responseMessages: responseMessages ?? [],
+        responseAttachments: [],
+        responseDiscriminators,
+      },
       meta
     );
     await this.intent.upsertManyWithSubResources({ intents, utterances, requiredEntities }, meta);

@@ -12,6 +12,7 @@ import {
   RequiredEntity,
   Response,
   ResponseDiscriminator,
+  ResponseMessage,
   Utterance,
   Variable,
   Workflow,
@@ -56,6 +57,7 @@ export interface MigrationData {
     entityVariants: EntityVariant[];
     requiredEntities: RequiredEntity[];
     responseVariants: AnyResponseVariant[];
+    responseMessages: ResponseMessage[];
     responseDiscriminators: ResponseDiscriminator[];
   };
 

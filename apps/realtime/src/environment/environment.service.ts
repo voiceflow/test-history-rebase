@@ -8,6 +8,7 @@ import {
   RequiredEntity,
   Response,
   ResponseDiscriminator,
+  ResponseMessage,
   Utterance,
 } from '@voiceflow/dtos';
 import { DiagramObject, VersionJSON, VersionObject } from '@voiceflow/orm-designer';
@@ -78,6 +79,7 @@ export class EnvironmentService {
       entityVariants: EntityVariant[];
       requiredEntities: RequiredEntity[];
       responseVariants: AnyResponseVariant[];
+      responseMessages: ResponseMessage[];
       responseDiscriminators: ResponseDiscriminator[];
     },
     meta: { userID: number; assistantID: string; environmentID: string }

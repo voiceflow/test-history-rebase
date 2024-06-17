@@ -13,7 +13,7 @@ export const ResponseExportImportDataDTO = z
     responseVariants: AnyResponseVariantDTO.array(),
     responseAttachments: AnyResponseAttachmentDTO.array(),
     responseDiscriminators: ResponseDiscriminatorDTO.array(),
-    responseMessages: ResponseMessageDTO.array().optional(),
+    responseMessages: ResponseMessageDTO.array().default([]),
   })
   .strict();
 

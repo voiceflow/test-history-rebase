@@ -21,7 +21,7 @@ const TranscriptResultsItem: React.FC<ListChildComponentProps<ListData>> = ({ da
   const { transcripts, currentTranscriptID } = data;
   const item = transcripts[index];
   const isLastItem = transcripts.length === index + 1;
-  const { id, reportTags, unread, updatedAt, name } = item;
+  const { id, reportTags, unread, updatedAt, name, creatorID } = item;
   const isActive = String(currentTranscriptID) === String(id);
 
   const [trackingEvents] = useTrackingEvents();
@@ -96,7 +96,14 @@ const TranscriptResultsItem: React.FC<ListChildComponentProps<ListData>> = ({ da
           >
             <ReadStatusDot read={!unread} />
 
-            <InfoSection active={isActive} name={name} date={updatedAt} isRead={!unread} tags={reportTags} />
+            <InfoSection
+              active={isActive}
+              name={name}
+              userId={creatorID}
+              date={updatedAt}
+              isRead={!unread}
+              tags={reportTags}
+            />
 
             <div className={ClassName.TRANSCRIPT_ITEM_DROPDOWN_BUTTON}>
               <IconButton

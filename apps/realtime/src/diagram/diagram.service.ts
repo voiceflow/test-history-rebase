@@ -32,6 +32,9 @@ export class DiagramService extends MutableService<DiagramORM> {
     super();
   }
 
+  /**
+   * @deprecated remove with REFERENCE_SYSTEM ff removal
+   */
   private sharedNodeMapper(node: DiagramNode): Realtime.diagram.sharedNodes.SharedNode | null {
     if (Realtime.Utils.typeGuards.isIntentDBNode(node)) {
       const global = !node.data.availability || node.data.availability === BaseNode.Intent.IntentAvailability.GLOBAL;
@@ -59,6 +62,9 @@ export class DiagramService extends MutableService<DiagramORM> {
     return null;
   }
 
+  /**
+   * @deprecated remove with REFERENCE_SYSTEM ff removal
+   */
   getAllSharedNodes(diagrams: DiagramJSON[]): Realtime.diagram.sharedNodes.DiagramSharedNodeMap {
     const sharedNodes: Realtime.diagram.sharedNodes.DiagramSharedNodeMap = {};
 
@@ -79,6 +85,9 @@ export class DiagramService extends MutableService<DiagramORM> {
     return sharedNodes;
   }
 
+  /**
+   * @deprecated remove with REFERENCE_SYSTEM ff removal
+   */
   private async reloadSharedNodes(
     diagrams: DiagramJSON[],
     meta: { auth: AuthMetaPayload; context: { environmentID: string; assistantID: string; workspaceID: string } }

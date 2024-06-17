@@ -196,7 +196,7 @@ export class FlowService extends CMSTabularService<FlowORM> {
       }))
     );
 
-    const referenceResult = await this.reference.createManyWithSubResourcesForDiagrams({
+    const referenceResult = await this.reference.createManyWithSubResourcesAndSyncForDiagrams({
       userID,
       diagrams: this.diagram.mapToJSON(diagrams),
       assistantID: context.assistantID,
@@ -260,20 +260,47 @@ export class FlowService extends CMSTabularService<FlowORM> {
     };
   }
 
-  async deleteManyAndSync(ids: string[], { context }: { context: CMSContext }) {
-    return this.postgresEM.transactional(async () => {
-      const flows = await this.findManyByEnvironmentAndIDs(context.environmentID, ids);
+  async deleteManyAndSync(ids: string[], { userID, context }: { userID: number; context: CMSContext }) {
+    const flows = await this.findManyByEnvironmentAndIDs(context.environmentID, ids);
 
-      const diagramIDs = flows.map((flow) => flow.diagramID);
-      const diagrams = await this.diagram.findManyByVersionIDAndDiagramIDs(context.environmentID, diagramIDs);
+    const diagramIDs = flows.map((flow) => flow.diagramID);
 
-      await this.diagram.deleteManyByVersionIDAndDiagramIDs(context.environmentID, diagramIDs);
+    const diagrams = await this.diagram.findManyByVersionIDAndDiagramIDs(context.environmentID, diagramIDs);
+
+    const result = await this.postgresEM.transactional(async () => {
       await this.deleteMany(flows);
 
+      const referenceResult = await this.reference.deleteManyWithSubResourcesAndSyncByDiagramIDs({
+        userID,
+        diagramIDs,
+        assistantID: context.assistantID,
+        environmentID: context.environmentID,
+      });
+
       return {
-        delete: { flows, diagrams },
+        ...referenceResult,
+        delete: { ...referenceResult.delete, flows, diagrams },
       };
     });
+
+    // removing diagrams outside of transaction caus they are in mongo
+    try {
+      await this.diagram.deleteManyByVersionIDAndDiagramIDs(context.environmentID, diagramIDs);
+    } catch (error) {
+      // recreating flows and references if diagrams were not deleted
+      await this.createMany(flows);
+
+      await this.reference.createManyWithSubResourcesAndSyncForDiagrams({
+        userID,
+        diagrams: this.diagram.mapToJSON(diagrams),
+        assistantID: context.assistantID,
+        environmentID: context.environmentID,
+      });
+
+      throw error;
+    }
+
+    return result;
   }
 
   async broadcastDeleteMany(
@@ -283,6 +310,8 @@ export class FlowService extends CMSTabularService<FlowORM> {
       delete: {
         flows: FlowObject[];
         diagrams: DiagramObject[];
+        references: ReferenceObject[];
+        referenceResources: ReferenceResourceObject[];
       };
     },
     meta: CMSBroadcastMeta
@@ -304,11 +333,15 @@ export class FlowService extends CMSTabularService<FlowORM> {
           workspaceID: this.hashedID.encodeWorkspaceID(assistant.workspaceID),
         },
       }),
+      this.reference.broadcastDeleteMany(
+        { delete: Utils.object.pick(del, ['references', 'referenceResources']) },
+        meta
+      ),
     ]);
   }
 
   async deleteManyAndBroadcast(ids: string[], meta: CMSBroadcastMeta): Promise<void> {
-    const result = await this.deleteManyAndSync(ids, meta);
+    const result = await this.deleteManyAndSync(ids, { userID: meta.auth.userID, context: meta.context });
 
     await this.broadcastDeleteMany(result, meta);
   }
@@ -360,7 +393,7 @@ export class FlowService extends CMSTabularService<FlowORM> {
       }))
     );
 
-    const referenceResult = await this.reference.createManyWithSubResourcesForDiagrams({
+    const referenceResult = await this.reference.createManyWithSubResourcesAndSyncForDiagrams({
       userID,
       diagrams: this.diagram.mapToJSON(diagrams),
       assistantID: context.assistantID,

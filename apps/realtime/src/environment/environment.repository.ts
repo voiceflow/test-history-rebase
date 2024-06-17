@@ -9,6 +9,7 @@ import { FolderService } from '@/folder/folder.service';
 import { FunctionService } from '@/function/function.service';
 import { IntentService } from '@/intent/intent.service';
 import { ProjectService } from '@/project/project.service';
+import { ReferenceService } from '@/reference/reference.service';
 import { ResponseService } from '@/response/response.service';
 import { VariableService } from '@/variable/variable.service';
 import { VersionService } from '@/version/version.service';
@@ -19,30 +20,32 @@ import { IntentsAndEntitiesData } from './environment.interface';
 @Injectable()
 export class EnvironmentRepository {
   constructor(
+    @Inject(FlowService)
+    private readonly flow: FlowService,
+    @Inject(FolderService)
+    private readonly folder: FolderService,
+    @Inject(IntentService)
+    private readonly intent: IntentService,
+    @Inject(EntityService)
+    private readonly entity: EntityService,
     @Inject(DiagramService)
     private readonly diagram: DiagramService,
     @Inject(ProjectService)
     private readonly project: ProjectService,
     @Inject(VersionService)
     private readonly version: VersionService,
-    @Inject(FlowService)
-    private readonly flow: FlowService,
-    @Inject(FolderService)
-    private readonly folder: FolderService,
     @Inject(VariableService)
     private readonly variable: VariableService,
     @Inject(WorkflowService)
     private readonly workflow: WorkflowService,
-    @Inject(AttachmentService)
-    private readonly attachment: AttachmentService,
     @Inject(ResponseService)
     private readonly response: ResponseService,
-    @Inject(IntentService)
-    private readonly intent: IntentService,
-    @Inject(EntityService)
-    private readonly entity: EntityService,
     @Inject(FunctionService)
-    private readonly functions: FunctionService
+    private readonly functions: FunctionService,
+    @Inject(ReferenceService)
+    private readonly reference: ReferenceService,
+    @Inject(AttachmentService)
+    private readonly attachment: AttachmentService
   ) {}
 
   async findManyForAssistantID(assistantID: string) {
@@ -109,6 +112,7 @@ export class EnvironmentRepository {
       this.deleteOneCMSData(environmentID),
       this.version.deleteOne(environmentID),
       this.diagram.deleteManyByVersionID(environmentID),
+      this.reference.cleanupByEnvironmentID(environmentID),
     ]);
   }
 

@@ -290,7 +290,7 @@ export class WorkflowService extends CMSTabularService<WorkflowORM> {
       }))
     );
 
-    const referenceResult = await this.reference.createManyWithSubResourcesForDiagrams({
+    const referenceResult = await this.reference.createManyWithSubResourcesAndSyncForDiagrams({
       userID,
       diagrams: this.diagram.mapToJSON(diagrams),
       assistantID: context.assistantID,
@@ -362,22 +362,47 @@ export class WorkflowService extends CMSTabularService<WorkflowORM> {
     };
   }
 
-  async deleteManyAndSync(ids: string[], { context }: { context: CMSContext }) {
-    return this.postgresEM.transactional(async () => {
-      const workflows = await this.findManyByEnvironmentAndIDs(context.environmentID, ids);
+  async deleteManyAndSync(ids: string[], { userID, context }: { userID: number; context: CMSContext }) {
+    const workflows = await this.findManyByEnvironmentAndIDs(context.environmentID, ids);
 
-      const workflowsWithoutStart = workflows.filter((workflow) => !workflow.isStart);
-      const diagramIDs = workflowsWithoutStart.map((flow) => flow.diagramID);
+    const workflowsWithoutStart = workflows.filter((workflow) => !workflow.isStart);
+    const diagramIDs = workflowsWithoutStart.map((flow) => flow.diagramID);
 
-      const diagrams = await this.diagram.findManyByVersionIDAndDiagramIDs(context.environmentID, diagramIDs);
+    const diagrams = await this.diagram.findManyByVersionIDAndDiagramIDs(context.environmentID, diagramIDs);
 
-      await this.diagram.deleteManyByVersionIDAndDiagramIDs(context.environmentID, diagramIDs);
+    const result = await this.postgresEM.transactional(async () => {
       await this.deleteMany(workflowsWithoutStart);
 
+      const referenceResult = await this.reference.deleteManyWithSubResourcesAndSyncByDiagramIDs({
+        userID,
+        diagramIDs,
+        assistantID: context.assistantID,
+        environmentID: context.environmentID,
+      });
+
       return {
-        delete: { workflows: workflowsWithoutStart, diagrams },
+        delete: { ...referenceResult.delete, workflows: workflowsWithoutStart, diagrams },
       };
     });
+
+    // removing diagrams outside of transaction caus they are in mongo
+    try {
+      await this.diagram.deleteManyByVersionIDAndDiagramIDs(context.environmentID, diagramIDs);
+    } catch (error) {
+      // recreating workflows and references if diagrams were not deleted
+      await this.createMany(workflows);
+
+      await this.reference.createManyWithSubResourcesAndSyncForDiagrams({
+        userID,
+        diagrams: this.diagram.mapToJSON(diagrams),
+        assistantID: context.assistantID,
+        environmentID: context.environmentID,
+      });
+
+      throw error;
+    }
+
+    return result;
   }
 
   async broadcastDeleteMany(
@@ -387,6 +412,8 @@ export class WorkflowService extends CMSTabularService<WorkflowORM> {
       delete: {
         diagrams: DiagramObject[];
         workflows: WorkflowObject[];
+        references: ReferenceObject[];
+        referenceResources: ReferenceResourceObject[];
       };
     },
     meta: CMSBroadcastMeta
@@ -408,11 +435,15 @@ export class WorkflowService extends CMSTabularService<WorkflowORM> {
           workspaceID: this.hashedID.encodeWorkspaceID(assistant.workspaceID),
         },
       }),
+      this.reference.broadcastDeleteMany(
+        { delete: Utils.object.pick(del, ['references', 'referenceResources']) },
+        meta
+      ),
     ]);
   }
 
   async deleteManyAndBroadcast(ids: string[], meta: CMSBroadcastMeta): Promise<void> {
-    const result = await this.deleteManyAndSync(ids, meta);
+    const result = await this.deleteManyAndSync(ids, { userID: meta.auth.userID, context: meta.context });
 
     await this.broadcastDeleteMany(result, meta);
   }
@@ -466,7 +497,7 @@ export class WorkflowService extends CMSTabularService<WorkflowORM> {
       }))
     );
 
-    const referenceResult = await this.reference.createManyWithSubResourcesForDiagrams({
+    const referenceResult = await this.reference.createManyWithSubResourcesAndSyncForDiagrams({
       userID,
       diagrams: this.diagram.mapToJSON(diagrams),
       assistantID: context.assistantID,

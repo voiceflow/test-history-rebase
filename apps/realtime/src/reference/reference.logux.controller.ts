@@ -21,4 +21,15 @@ export class ReferenceLoguxController {
   async addMany(@Payload() _: Actions.Reference.AddMany) {
     // broadcast only
   }
+
+  @Action(Actions.Reference.DeleteMany)
+  @Authorize.Permissions<Actions.Reference.DeleteMany>([Permission.PROJECT_UPDATE], ({ context }) => ({
+    id: context.environmentID,
+    kind: 'version',
+  }))
+  @Broadcast<Actions.Reference.DeleteMany>(({ context }) => ({ channel: Channels.assistant.build(context) }))
+  @BroadcastOnly()
+  async deleteMany(@Payload() _: Actions.Reference.DeleteMany) {
+    // broadcast only
+  }
 }

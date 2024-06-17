@@ -27,7 +27,7 @@ export const referenceReducer = reducerWithInitialState<ReferenceState>(INITIAL_
       referenceIDsByReferrerIDMap: { ...state.referenceIDsByReferrerIDMap, ...cache.referenceIDsByReferrerIDMap },
     };
   })
-  .case(Actions.Reference.RemoveMany, (state, { data }) => {
+  .case(Actions.Reference.DeleteMany, (state, { data }) => {
     const resourceIDs = data.referenceResources.map((resource) => resource.id);
     const referenceIDs = Utils.array.unique([
       ...data.references.map((reference) => reference.id),

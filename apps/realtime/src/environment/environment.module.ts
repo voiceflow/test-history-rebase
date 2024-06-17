@@ -13,6 +13,7 @@ import { RequiredEntityModule } from '@/intent/required-entity/required-entity.m
 import { UtteranceModule } from '@/intent/utterance/utterance.module';
 import { ProjectModule } from '@/project/project.module';
 import { ProjectSerializer } from '@/project/project.serializer';
+import { ReferenceModule } from '@/reference/reference.module';
 import { ResponseModule } from '@/response/response.module';
 import { ResponseDiscriminatorModule } from '@/response/response-discriminator/response-discriminator.module';
 import { ResponseVariantModule } from '@/response/response-variant/response-variant.module';
@@ -46,6 +47,7 @@ import { EnvironmentPublicHTTPController } from './environment-public.http.contr
     VariableModule,
     WorkflowModule,
     UtteranceModule,
+    ReferenceModule,
     AttachmentModule,
     EntityVariantModule,
     RequiredEntityModule,

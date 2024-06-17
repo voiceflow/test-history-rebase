@@ -46,7 +46,10 @@ export class WorkflowLoguxController {
         data.map((item) => ({ ...item, isStart: false })),
         { auth, context }
       )
-      .then((results) => ({ data: results.map((result) => ({ ...this.service.toJSON(result), triggerNodeID: result.triggerNodeID })), context }));
+      .then((results) => ({
+        data: results.map((result) => ({ ...this.service.toJSON(result), triggerNodeID: result.triggerNodeID })),
+        context,
+      }));
   }
 
   @Action.Async(Actions.Workflow.DuplicateOne)
@@ -118,10 +121,13 @@ export class WorkflowLoguxController {
   @BroadcastOnly()
   @UseRequestContext()
   async deleteOne(@Payload() { id, context }: Actions.Workflow.DeleteOne, @AuthMeta() auth: AuthMetaPayload) {
-    const result = await this.service.deleteManyAndSync([id], { context });
+    const result = await this.service.deleteManyAndSync([id], { userID: auth.userID, context });
 
     // overriding entities cause it's broadcasted by decorator
-    await this.service.broadcastDeleteMany({ ...result, delete: { ...result.delete, workflows: [] } }, { auth, context });
+    await this.service.broadcastDeleteMany(
+      { ...result, delete: { ...result.delete, workflows: [] } },
+      { auth, context }
+    );
   }
 
   @Action(Actions.Workflow.DeleteMany)
@@ -133,10 +139,13 @@ export class WorkflowLoguxController {
   @BroadcastOnly()
   @UseRequestContext()
   async deleteMany(@Payload() { ids, context }: Actions.Workflow.DeleteMany, @AuthMeta() auth: AuthMetaPayload) {
-    const result = await this.service.deleteManyAndSync(ids, { context });
+    const result = await this.service.deleteManyAndSync(ids, { userID: auth.userID, context });
 
     // overriding entities cause it's broadcasted by decorator
-    await this.service.broadcastDeleteMany({ ...result, delete: { ...result.delete, workflows: [] } }, { auth, context });
+    await this.service.broadcastDeleteMany(
+      { ...result, delete: { ...result.delete, workflows: [] } },
+      { auth, context }
+    );
   }
 
   @Action(Actions.Workflow.AddOne)

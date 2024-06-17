@@ -76,6 +76,11 @@ export class ReferenceService extends MutableService<ReferenceORM> {
     await this.orm.deleteManyByEnvironment(environmentID);
   }
 
+  async cleanupByEnvironmentID(environmentID: string) {
+    await this.deleteManyWithSubResourcesByEnvironment(environmentID);
+    await this.referenceCache.resetLockAndExpire(environmentID);
+  }
+
   async createManyWithSubResources({
     references,
     referenceResources,
@@ -238,7 +243,7 @@ export class ReferenceService extends MutableService<ReferenceORM> {
     await this.broadcastAddMany(result, meta);
   }
 
-  async createManyWithSubResourcesForDiagrams({
+  async createManyWithSubResourcesAndSyncForDiagrams({
     userID,
     diagrams,
     assistantID,
@@ -284,7 +289,7 @@ export class ReferenceService extends MutableService<ReferenceORM> {
     });
   }
 
-  async deleteManyWithSubResourcesByDiagramNodeIDs({
+  async deleteManyWithSubResourcesAndSyncByDiagramNodeIDs({
     nodeIDs,
     diagramID,
     environmentID,
@@ -308,11 +313,51 @@ export class ReferenceService extends MutableService<ReferenceORM> {
     };
   }
 
+  async deleteManyWithSubResourcesAndSyncByDiagramIDs({
+    userID,
+    diagramIDs,
+    assistantID,
+    environmentID,
+  }: {
+    // delete with REFERENCE_SYSTEM ff
+    userID: number;
+    diagramIDs: string[];
+    // delete with REFERENCE_SYSTEM ff
+    assistantID: string;
+    environmentID: string;
+  }) {
+    const project = await this.projectORM.findOneOrFail(assistantID, { fields: ['teamID'] });
+
+    if (!this.unleash.isEnabled(FeatureFlag.REFERENCE_SYSTEM, { userID, workspaceID: project.teamID })) {
+      return { delete: { references: [], referenceResources: [] } };
+    }
+
+    const diagramReferenceResources = await this.referenceResourceORM.deleteManyByTypeDiagramIDAndResourceIDs({
+      type: ReferenceResourceType.DIAGRAM,
+      diagramID: null,
+      resourceIDs: diagramIDs,
+      environmentID,
+    });
+
+    const nodeReferenceResources = await this.referenceResourceORM.deleteManyByTypeAndDiagramIDs({
+      type: ReferenceResourceType.NODE,
+      diagramIDs,
+      environmentID,
+    });
+
+    return {
+      delete: {
+        references: [],
+        referenceResources: [...diagramReferenceResources, ...nodeReferenceResources],
+      },
+    };
+  }
+
   async broadcastDeleteMany(
     { delete: del }: { delete: { references: Reference[]; referenceResources: ReferenceResource[] } },
     meta: CMSBroadcastMeta
   ) {
-    await this.logux.processAs(Actions.Reference.AddMany({ data: del, context: meta.context }), meta.auth);
+    await this.logux.processAs(Actions.Reference.DeleteMany({ data: del, context: meta.context }), meta.auth);
   }
 
   async deleteManyWithSubResourcesByDiagramNodeIDsAndBroadcast(
@@ -325,7 +370,7 @@ export class ReferenceService extends MutableService<ReferenceORM> {
     },
     meta: CMSBroadcastMeta
   ) {
-    const result = await this.deleteManyWithSubResourcesByDiagramNodeIDs({
+    const result = await this.deleteManyWithSubResourcesAndSyncByDiagramNodeIDs({
       nodeIDs,
       diagramID,
       environmentID: meta.context.environmentID,

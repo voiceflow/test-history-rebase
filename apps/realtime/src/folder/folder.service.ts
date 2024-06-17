@@ -18,6 +18,8 @@ import type {
   FunctionPathObject,
   FunctionVariableObject,
   IntentObject,
+  ReferenceObject,
+  ReferenceResourceObject,
   RequiredEntityObject,
   ResponseDiscriminatorObject,
   ResponseObject,
@@ -35,6 +37,7 @@ import { EntityService } from '@/entity/entity.service';
 import { FlowService } from '@/flow/flow.service';
 import { FunctionService } from '@/function/function.service';
 import { IntentService } from '@/intent/intent.service';
+import { ReferenceService } from '@/reference/reference.service';
 import { ResponseService } from '@/response/response.service';
 import { CMSBroadcastMeta, CMSContext } from '@/types';
 import { VariableService } from '@/variable/variable.service';
@@ -72,6 +75,8 @@ export class FolderService extends CMSObjectService<FolderORM> {
     private readonly variable: VariableService,
     @Inject(WorkflowService)
     private readonly workflow: WorkflowService,
+    @Inject(ReferenceService)
+    private readonly reference: ReferenceService,
     @Inject(FunctionService)
     private readonly functionService: FunctionService,
     @Inject(ResponseService)
@@ -127,7 +132,10 @@ export class FolderService extends CMSObjectService<FolderORM> {
     };
   }
 
-  prepareExportData(data: { folders: FolderObject[] }, { backup }: { backup?: boolean } = {}): FolderExportImportDataDTO {
+  prepareExportData(
+    data: { folders: FolderObject[] },
+    { backup }: { backup?: boolean } = {}
+  ): FolderExportImportDataDTO {
     const json = this.toJSONWithSubResources(data);
 
     if (backup) {
@@ -135,7 +143,9 @@ export class FolderService extends CMSObjectService<FolderORM> {
     }
 
     return {
-      folders: json.folders.map((item) => Utils.object.omit(item, ['assistantID', 'environmentID', 'updatedAt', 'updatedByID'])),
+      folders: json.folders.map((item) =>
+        Utils.object.omit(item, ['assistantID', 'environmentID', 'updatedAt', 'updatedByID'])
+      ),
     };
   }
 
@@ -153,7 +163,11 @@ export class FolderService extends CMSObjectService<FolderORM> {
     const { folders: sourceFolders } = await this.findManyWithSubResourcesByEnvironment(sourceEnvironmentID);
 
     return this.importManyWithSubResources({
-      folders: sourceFolders.map((item) => ({ ...item, assistantID: targetAssistantID, environmentID: targetEnvironmentID })),
+      folders: sourceFolders.map((item) => ({
+        ...item,
+        assistantID: targetAssistantID,
+        environmentID: targetEnvironmentID,
+      })),
     });
   }
 
@@ -161,7 +175,12 @@ export class FolderService extends CMSObjectService<FolderORM> {
 
   prepareImportData(
     { folders }: FolderExportImportDataDTO,
-    { userID, backup, assistantID, environmentID }: { userID: number; backup?: boolean; assistantID: string; environmentID: string }
+    {
+      userID,
+      backup,
+      assistantID,
+      environmentID,
+    }: { userID: number; backup?: boolean; assistantID: string; environmentID: string }
   ): { folders: FolderJSON[] } {
     const createdAt = new Date().toJSON();
 
@@ -247,14 +266,15 @@ export class FolderService extends CMSObjectService<FolderORM> {
       this.responseService.findManyByFolders(environmentID, folderIDs),
     ]);
 
-    const [flowRelations, intentRelations, entityRelations, workflowsRelations, functionRelations, responseRelations] = await Promise.all([
-      this.flow.collectRelationsToDelete(flows),
-      this.intent.collectRelationsToDelete(environmentID, toPostgresEntityIDs(intents)),
-      this.entity.collectRelationsToDelete(environmentID, toPostgresEntityIDs(entities)),
-      this.workflow.collectRelationsToDelete(workflows),
-      this.functionService.collectRelationsToDelete(environmentID, toPostgresEntityIDs(functions)),
-      this.responseService.collectRelationsToDelete(environmentID, toPostgresEntityIDs(functions)),
-    ]);
+    const [flowRelations, intentRelations, entityRelations, workflowsRelations, functionRelations, responseRelations] =
+      await Promise.all([
+        this.flow.collectRelationsToDelete(flows),
+        this.intent.collectRelationsToDelete(environmentID, toPostgresEntityIDs(intents)),
+        this.entity.collectRelationsToDelete(environmentID, toPostgresEntityIDs(entities)),
+        this.workflow.collectRelationsToDelete(workflows),
+        this.functionService.collectRelationsToDelete(environmentID, toPostgresEntityIDs(functions)),
+        this.responseService.collectRelationsToDelete(environmentID, toPostgresEntityIDs(functions)),
+      ]);
 
     return {
       ...Utils.object.omit(flowRelations, ['diagrams']),
@@ -300,8 +320,27 @@ export class FolderService extends CMSObjectService<FolderORM> {
 
         // moving start workflow to the top level
         startWorkflow
-          ? this.workflow.patchOneForUser(userID, { id: startWorkflow.id, environmentID: startWorkflow.environmentID }, { folderID: null })
+          ? this.workflow.patchOneForUser(
+              userID,
+              { id: startWorkflow.id, environmentID: startWorkflow.environmentID },
+              { folderID: null }
+            )
           : Promise.resolve(),
+      ]);
+
+      const [flowReferencesResult, workflowReferencesResult] = await Promise.all([
+        this.reference.deleteManyWithSubResourcesAndSyncByDiagramIDs({
+          userID,
+          diagramIDs: relations.flows.map((flow) => flow.diagramID),
+          assistantID: context.assistantID,
+          environmentID: context.environmentID,
+        }),
+        this.reference.deleteManyWithSubResourcesAndSyncByDiagramIDs({
+          userID,
+          diagramIDs: relations.workflows.map((workflow) => workflow.diagramID),
+          assistantID: context.assistantID,
+          environmentID: context.environmentID,
+        }),
       ]);
 
       await this.deleteMany(folders);
@@ -321,6 +360,10 @@ export class FolderService extends CMSObjectService<FolderORM> {
           workflowDiagrams: startWorkflow
             ? relations.workflowDiagrams.filter((diagram) => startWorkflow.diagramID !== diagram.diagramID.toJSON())
             : relations.workflowDiagrams,
+          flowReferences: flowReferencesResult.delete.references,
+          workflowReferences: workflowReferencesResult.delete.references,
+          flowReferenceResources: flowReferencesResult.delete.referenceResources,
+          workflowReferenceResources: workflowReferencesResult.delete.referenceResources,
         },
       };
     });
@@ -357,12 +400,16 @@ export class FolderService extends CMSObjectService<FolderORM> {
         flowDiagrams: DiagramObject[];
         functionPaths: FunctionPathObject[];
         entityVariants: EntityVariantObject[];
+        flowReferences: ReferenceObject[];
         workflowDiagrams: DiagramObject[];
         requiredEntities: RequiredEntityObject[];
         functionVariables: FunctionVariableObject[];
         responseVariants: AnyResponseVariantObject[];
+        workflowReferences: ReferenceObject[];
         responseAttachments: AnyResponseAttachmentObject[];
         responseDiscriminators: ResponseDiscriminatorObject[];
+        flowReferenceResources: ReferenceResourceObject[];
+        workflowReferenceResources: ReferenceResourceObject[];
       };
     },
     meta: CMSBroadcastMeta
@@ -370,7 +417,12 @@ export class FolderService extends CMSObjectService<FolderORM> {
     await Promise.all([
       this.flow.broadcastDeleteMany(
         {
-          delete: { flows: del.flows, diagrams: del.flowDiagrams },
+          delete: {
+            flows: del.flows,
+            diagrams: del.flowDiagrams,
+            references: del.flowReferences,
+            referenceResources: del.flowReferenceResources,
+          },
         },
         meta
       ),
@@ -399,7 +451,12 @@ export class FolderService extends CMSObjectService<FolderORM> {
 
       this.workflow.broadcastDeleteMany(
         {
-          delete: { workflows: del.workflows, diagrams: del.workflowDiagrams },
+          delete: {
+            diagrams: del.workflowDiagrams,
+            workflows: del.workflows,
+            references: del.workflowReferences,
+            referenceResources: del.workflowReferenceResources,
+          },
         },
         meta
       ),
@@ -414,7 +471,12 @@ export class FolderService extends CMSObjectService<FolderORM> {
       this.responseService.broadcastDeleteMany(
         {
           sync: Utils.object.pick(sync, ['requiredEntities']),
-          delete: Utils.object.pick(del, ['responses', 'responseVariants', 'responseAttachments', 'responseDiscriminators']),
+          delete: Utils.object.pick(del, [
+            'responses',
+            'responseVariants',
+            'responseAttachments',
+            'responseDiscriminators',
+          ]),
         },
         meta
       ),
@@ -457,7 +519,10 @@ export class FolderService extends CMSObjectService<FolderORM> {
 
   /* Upsert */
 
-  async upsertManyWithSubResources(data: { folders: Folder[] }, meta: { userID: number; assistantID: string; environmentID: string }) {
+  async upsertManyWithSubResources(
+    data: { folders: Folder[] },
+    meta: { userID: number; assistantID: string; environmentID: string }
+  ) {
     const { folders } = this.prepareImportData(data, meta);
 
     await this.upsertMany(this.mapFromJSON(folders));

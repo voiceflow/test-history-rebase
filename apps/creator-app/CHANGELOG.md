@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1572.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1572.0...@voiceflow/creator-app@1.1572.1) (2024-06-17)
+
+### Bug Fixes
+
+* wrap function description in canvas (COR-2400) ([#8316](https://github.com/voiceflow/creator-app/issues/8316)) ([978856d](https://github.com/voiceflow/creator-app/commit/978856d6940ab84f6bcc4e17d3f2616cb78db1e2))
+
 # [1.1572.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1571.0...@voiceflow/creator-app@1.1572.0) (2024-06-17)
 
 ### Features

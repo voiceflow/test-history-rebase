@@ -59,6 +59,7 @@ export const FunctionStep: ConnectedStep<Realtime.NodeData.Function> = ({
           label={functionDef?.description}
           palette={palette}
           title={functionDef?.name}
+          multilineLabel
         />
       </Step.Section>
 

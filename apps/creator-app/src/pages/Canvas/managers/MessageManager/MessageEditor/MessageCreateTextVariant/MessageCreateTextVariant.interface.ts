@@ -1,10 +1,10 @@
-import { TextResponseVariantCreate } from '@voiceflow/dtos';
+import { ResponseMessageCreate } from '@voiceflow/dtos';
 
-import { IResponseTextVariantLayout } from '@/components/Response/ResponseTextVariantLayout/ResponseTextVariantLayout.interface';
+import { IResponseMessageLayout } from '@/components/ResponseV2/ResponseMessageLayout/ResponseMessageLayout.interface';
 
 export interface IResponseEditMessage
   extends Omit<
-    IResponseTextVariantLayout,
+    IResponseMessageLayout,
     | 'value'
     | 'children'
     | 'variantType'
@@ -14,6 +14,6 @@ export interface IResponseEditMessage
     | 'attachmentButton'
     | 'onChangeVariantType'
   > {
-  onVariantChange: (variant: Partial<TextResponseVariantCreate>) => void;
-  textVariant: TextResponseVariantCreate;
+  onVariantChange: (variant: Partial<ResponseMessageCreate>) => void;
+  textVariant: ResponseMessageCreate;
 }

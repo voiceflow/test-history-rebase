@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.64.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.63.0...@voiceflow/sdk-logux-designer@2.64.0) (2024-06-17)
+
+### Features
+
+* remove diagram references on diagram removal (COR-000) ([#8294](https://github.com/voiceflow/creator-app/issues/8294)) ([89fb842](https://github.com/voiceflow/creator-app/commit/89fb842faa3e844c04e708247a19bea2162c88c6))
+
 # [2.63.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.62.0...@voiceflow/sdk-logux-designer@2.63.0) (2024-06-17)
 
 ### Features

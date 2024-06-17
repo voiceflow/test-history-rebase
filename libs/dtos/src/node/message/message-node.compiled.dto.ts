@@ -15,7 +15,7 @@ export const CompiledMessageNodeDTO = BaseCompiledNodeDTO.extend({
   type: z.literal(NodeType.MESSAGE),
   data: CompiledMessageDataDTO,
   ports: z.object({
-    default: z.string()
+    default: z.string().nullable()
   })
 }).strict();
 

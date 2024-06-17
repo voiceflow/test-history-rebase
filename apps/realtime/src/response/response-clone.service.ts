@@ -24,6 +24,7 @@ export class ResponseCloneService {
     const {
       responses: sourceResponses,
       responseVariants: sourceResponseVariants,
+      responseMessages: sourceResponseMessages,
       responseAttachments: sourceResponseAttachments,
       responseDiscriminators: sourceResponseDiscriminators,
     } = await this.repository.findManyWithSubResourcesByEnvironment(sourceEnvironmentID);
@@ -35,6 +36,11 @@ export class ResponseCloneService {
         environmentID: targetEnvironmentID,
       })),
       responseVariants: sourceResponseVariants.map((item) => ({
+        ...item,
+        assistantID: targetAssistantID,
+        environmentID: targetEnvironmentID,
+      })),
+      responseMessages: sourceResponseMessages.map((item) => ({
         ...item,
         assistantID: targetAssistantID,
         environmentID: targetEnvironmentID,

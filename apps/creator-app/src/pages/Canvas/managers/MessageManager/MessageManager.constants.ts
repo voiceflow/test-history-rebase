@@ -6,7 +6,7 @@ import { BlockType } from '@/constants';
 import type { NodeConfig } from '../types';
 
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Response> = {
-  type: BlockType.RESPONSE,
+  type: BlockType.MESSAGE,
   icon: 'systemTalk',
 
   mergeTerminator: true,

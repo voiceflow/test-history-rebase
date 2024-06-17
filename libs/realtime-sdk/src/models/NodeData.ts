@@ -523,7 +523,7 @@ export interface NodeDataMap {
   [BlockType.COMMENT]: unknown;
   [BlockType.ACTIONS]: NodeData.Actions;
 
-  [BlockType.RESPONSE]: NodeData.Response;
+  [BlockType.MESSAGE]: NodeData.Response;
   [BlockType.TEXT]: NodeData.Text;
   [BlockType.SPEAK]: NodeData.Speak;
   [BlockType.AI_RESPONSE]: NodeData.AIResponse;

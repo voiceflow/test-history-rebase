@@ -3,14 +3,10 @@ import React from 'react';
 
 import { ResponseTextVariantLayout } from '@/components/Response/ResponseTextVariantLayout/ResponseTextVariantLayout.component';
 
-import { ResponseCreateTextVariantSettings } from '../ResponseCreateTextVariantSettings/ResponseCreateTextVariantSettings.component';
-import type { IResponseEditTextVariant } from './ResponseCreateTextVariant.interface';
+import { ResponseCreateMessageSettings } from '../MessageCreateTextVariantSettings/MessageCreateTextVariantSettings.component';
+import type { IResponseEditMessage } from './MessageCreateTextVariant.interface';
 
-export const ResponseCreateTextVariant: React.FC<IResponseEditTextVariant> = ({
-  onVariantChange,
-  textVariant,
-  ...props
-}) => (
+export const ResponseCreateMessage: React.FC<IResponseEditMessage> = ({ onVariantChange, textVariant, ...props }) => (
   <ResponseTextVariantLayout
     {...props}
     value={textVariant.text}
@@ -18,7 +14,7 @@ export const ResponseCreateTextVariant: React.FC<IResponseEditTextVariant> = ({
     variantType={ResponseVariantType.TEXT}
     onChangeVariantType={() => null}
     settingsButton={
-      <ResponseCreateTextVariantSettings
+      <ResponseCreateMessageSettings
         variant={textVariant}
         disabled={props.disabled}
         onVariantChange={({ speed }) => onVariantChange({ speed })}

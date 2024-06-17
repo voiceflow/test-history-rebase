@@ -17,7 +17,10 @@ interface TranscriptResultsListProps {
 const TranscriptResultsList: React.FC<TranscriptResultsListProps> = ({ transcriptList }) => {
   const currentTranscriptID = useSelector(currentTranscriptIDSelector);
 
-  const currentTranscriptIndex = React.useMemo(() => transcriptList.findIndex(({ id }) => id === currentTranscriptID), [currentTranscriptID]);
+  const currentTranscriptIndex = React.useMemo(
+    () => transcriptList.findIndex(({ id }) => id === currentTranscriptID),
+    [currentTranscriptID]
+  );
 
   const getItemKey = React.useCallback((index: number, { transcripts }: ListData) => transcripts[index].id, []);
 
@@ -35,7 +38,7 @@ const TranscriptResultsList: React.FC<TranscriptResultsListProps> = ({ transcrip
             height={height}
             itemKey={getItemKey}
             itemData={listData}
-            itemSize={90}
+            itemSize={100}
             itemCount={transcriptList.length}
             overscanCount={10}
             initialScrollOffset={currentTranscriptIndex * 90}

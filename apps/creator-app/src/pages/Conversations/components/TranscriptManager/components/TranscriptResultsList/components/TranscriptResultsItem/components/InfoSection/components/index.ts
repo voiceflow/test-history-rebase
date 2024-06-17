@@ -18,6 +18,13 @@ export const Name = styled.div`
   text-transform: capitalize;
 `;
 
+export const UserId = styled.div`
+  width: 100%;
+  font-size: 13px;
+  margin-bottom: 1px;
+  color: ${({ theme }) => theme.colors.secondary};
+`;
+
 export const MetaContainer = styled.div<{ isActive: boolean }>`
   width: 100%;
   color: ${({ theme, isActive }) => (isActive ? theme.colors.secondary : theme.colors.tertiary)};

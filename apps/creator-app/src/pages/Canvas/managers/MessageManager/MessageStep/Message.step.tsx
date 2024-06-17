@@ -6,10 +6,10 @@ import { ResponseMapFirstVariantByResponseIDContext } from '@/pages/Canvas/conte
 import { ConnectedStep } from '@/pages/Canvas/managers/types';
 import { isTextResponseVariant } from '@/utils/response.util';
 
-import { ResponseStepPlaceholder } from './ResponseStepPlaceholder.component';
-import { ResponseStepTextVariant } from './ResponseStepTextVariant.component';
+import { ResponseStepPlaceholder } from './MessageStepPlaceholder.component';
+import { ResponseStepTextVariant } from './MessageStepTextVariant.component';
 
-export const ResponseStep: ConnectedStep<Realtime.NodeData.Response> = ({ data, ports, palette }) => {
+export const MessageStep: ConnectedStep<Realtime.NodeData.Response> = ({ data, ports, palette }) => {
   const { responseID } = data;
   const responseMapFirstVariantByResponseID = React.useContext(ResponseMapFirstVariantByResponseIDContext)!;
   const variant = responseID ? responseMapFirstVariantByResponseID[responseID] : null;

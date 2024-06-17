@@ -2,9 +2,9 @@ import React from 'react';
 
 import { ResponseTextVariantSettings } from '@/components/Response/ResponseTextVariantSettings/ResponseTextVariantSettings.component';
 
-import type { IResponseCreateTextVariantSettings } from './ResponseCreateTextVariantSettings.interface';
+import type { IMessageCreateTextVariantSettings } from './MessageCreateTextVariantSettings.interface';
 
-export const ResponseCreateTextVariantSettings: React.FC<IResponseCreateTextVariantSettings> = ({
+export const ResponseCreateMessageSettings: React.FC<IMessageCreateTextVariantSettings> = ({
   variant,
   disabled,
   ...props

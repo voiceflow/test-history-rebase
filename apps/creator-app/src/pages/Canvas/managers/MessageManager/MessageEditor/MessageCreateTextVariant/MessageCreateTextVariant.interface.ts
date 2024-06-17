@@ -2,7 +2,7 @@ import { TextResponseVariantCreate } from '@voiceflow/dtos';
 
 import { IResponseTextVariantLayout } from '@/components/Response/ResponseTextVariantLayout/ResponseTextVariantLayout.interface';
 
-export interface IResponseEditTextVariant
+export interface IResponseEditMessage
   extends Omit<
     IResponseTextVariantLayout,
     | 'value'

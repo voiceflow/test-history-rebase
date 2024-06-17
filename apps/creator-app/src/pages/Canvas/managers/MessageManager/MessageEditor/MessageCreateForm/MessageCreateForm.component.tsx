@@ -15,8 +15,8 @@ import { useInputAutoFocusKey } from '@/hooks/input.hook';
 import { useIsListEmpty } from '@/hooks/list.hook';
 import { isTextResponseVariantEmpty, responseTextVariantCreateDataFactory } from '@/utils/response.util';
 
-import { ResponseCreateTextVariant } from '../ResponseCreateTextVariant/ResponseCreateTextVariant.component';
-import { IResponseCreateForm } from './ResponseCreateForm.interface';
+import { ResponseCreateMessage } from '../MessageCreateTextVariant/MessageCreateTextVariant.component';
+import { IResponseCreateForm } from './MessageCreateForm.interface';
 
 const initialState: Array<TextResponseVariantCreate & { tempID?: string }> = [responseTextVariantCreateDataFactory()];
 
@@ -76,7 +76,7 @@ export const ResponseCreateForm: React.FC<IResponseCreateForm> = ({ onResponseCr
   return (
     <>
       <Box pt={11} pr={24} pb={18} direction="column">
-        <ResponseCreateTextVariant
+        <ResponseCreateMessage
           onVariantChange={(updatedVariant) => onPatchVariant(0, updatedVariant)}
           textVariant={rootVariant}
           readOnly={loading}
@@ -134,7 +134,7 @@ export const ResponseCreateForm: React.FC<IResponseCreateForm> = ({ onResponseCr
             return (
               <Fragment key={variant.tempID}>
                 <Box pt={index === 1 ? 0 : 12} pb={20} pr={24} direction="column">
-                  <ResponseCreateTextVariant
+                  <ResponseCreateMessage
                     removeButton={<CMSFormListButtonRemove onClick={() => onRemoveVariant(index)} />}
                     onVariantChange={(updatedVariant) => onPatchVariant(index, updatedVariant)}
                     autoFocus={autofocus.key === variant.tempID}

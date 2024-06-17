@@ -21,3 +21,9 @@ export interface AddMany extends DesignerAction {
 }
 
 export const AddMany = protocol.createAction<AddMany>(typeFactory('add-many'));
+
+export interface RemoveMany extends DesignerAction {
+  data: ReferenceData;
+}
+
+export const RemoveMany = protocol.createAction<RemoveMany>(typeFactory('remove-many'));

@@ -10,7 +10,7 @@ import { extractNodes, ExtractNodesOptions } from './utils';
 class InsertStep extends AbstractVersionDiagramAccessActionControl<Realtime.node.InsertStepPayload> {
   actionCreator = Realtime.node.insertStep;
 
-  protected process = async (_ctx: Context, { payload }: Action<Realtime.node.InsertStepPayload>): Promise<void> => {
+  protected process = async (ctx: Context, { payload }: Action<Realtime.node.InsertStepPayload>): Promise<void> => {
     const {
       diagramID,
       parentNodeID,
@@ -50,9 +50,35 @@ class InsertStep extends AbstractVersionDiagramAccessActionControl<Realtime.node
       isActions,
       removeNodes,
       parentNodeID,
-
       nodePortRemaps,
     });
+
+    if (
+      this.services.feature.isEnabled(Realtime.FeatureFlag.REFERENCE_SYSTEM, {
+        userID: Number(ctx.userId),
+        workspaceID: payload.workspaceID,
+      })
+    ) {
+      await this.services.requestContext.createAsync(async () => {
+        await Promise.all([
+          this.services.reference.removeManyDiagramNodes({
+            nodeIDs: removeNodes.map((node) => node.stepID ?? node.parentNodeID),
+            authMeta: { userID: Number(ctx.userId), clientID: ctx.clientId },
+            diagramID: payload.diagramID,
+            assistantID: payload.projectID,
+            environmentID: payload.versionID,
+          }),
+
+          this.services.reference.addManyDiagramNodes({
+            nodes: [step],
+            authMeta: { userID: Number(ctx.userId), clientID: ctx.clientId },
+            diagramID: payload.diagramID,
+            assistantID: payload.projectID,
+            environmentID: payload.versionID,
+          }),
+        ]);
+      });
+    }
   };
 
   protected finally = async (ctx: Context, { payload }: Action<Realtime.node.InsertStepPayload>): Promise<void> => {

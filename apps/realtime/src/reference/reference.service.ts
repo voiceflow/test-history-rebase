@@ -124,6 +124,35 @@ export class ReferenceService extends MutableService<ReferenceORM> {
     }
   }
 
+  async removeManyDiagramNodes({
+    nodeIDs,
+    authMeta,
+    diagramID,
+    assistantID,
+    environmentID,
+  }: {
+    nodeIDs: string[];
+    authMeta: AuthMetaPayload;
+    diagramID: string;
+    assistantID: string;
+    environmentID: string;
+  }) {
+    const resources = await this.referenceResourceORM.deleteManyByTypeDiagramIDAndResourceIDs({
+      type: ReferenceResourceType.NODE,
+      diagramID,
+      resourceIDs: nodeIDs,
+      environmentID,
+    });
+
+    await this.logux.processAs(
+      Actions.Reference.AddMany({
+        data: { references: [], referenceResources: resources },
+        context: { assistantID, environmentID },
+      }),
+      authMeta
+    );
+  }
+
   async addManyDiagramNodes({
     nodes,
     authMeta,

@@ -33,7 +33,6 @@ export const useAssistantNavigationLogoItems = (): NavigationLogoItem[] => {
   const isLockedProjectViewer = useIsLockedProjectViewer();
 
   const hideExports = useFeature(Realtime.FeatureFlag.HIDE_EXPORTS);
-  const [canExportModel] = usePermission(Permission.FEATURE_EXPORT_MODEL);
   const [canSharePrototype] = usePermission(Permission.PROJECT_PROTOTYPE_SHARE);
   const [canManageProjects] = usePermission(Permission.WORKSPACE_PROJECTS_MANAGE);
   const [canAddCollaborators] = usePermission(Permission.WORKSPACE_MEMBER_ADD);
@@ -52,7 +51,7 @@ export const useAssistantNavigationLogoItems = (): NavigationLogoItem[] => {
 
   const projectMembersModal = useModal(Modals.Project.Members);
 
-  const withExport = !isPreviewerOrLockedViewer && canExportModel;
+  const withExport = !isPreviewerOrLockedViewer;
   const withSharePrototype = !isPreviewerOrLockedViewer && canSharePrototype && !hideExports.isEnabled;
   const withDuplicateOption = !isPreviewerOrLockedViewer && canManageProjects;
   const withInviteCollaborators = !isPreviewerOrLockedViewer && canAddCollaborators && !!projectID;

@@ -5,7 +5,6 @@ import {
   ALL_PLANS,
   NON_ENTERPRISE_PAID_PLANS,
   NON_ENTERPRISE_PLANS,
-  PAID_PLANS,
   PRO_AND_TEAM_PLANS,
   PRO_PLUS_PLANS,
 } from '@/constants/plans';
@@ -25,16 +24,12 @@ export const PLAN_PERMISSIONS = buildPlanPermissionRecord([
 
   // all plans
   { permission: Permission.PROJECT_COMMENT, plans: ALL_PLANS },
-  { permission: Permission.FEATURE_SHARE_PROJECT, plans: ALL_PLANS },
   { permission: Permission.PROJECT_PROTOTYPE_SHARE, plans: ALL_PLANS },
 
   // non enterprise plans
   { permission: Permission.WORKSPACE_BILLING_ADD_SEATS, plans: NON_ENTERPRISE_PLANS },
 
   { permission: Permission.FEATURE_SCHEDULE_SEATS, plans: NON_ENTERPRISE_PAID_PLANS },
-
-  // paid plans
-  { permission: Permission.FEATURE_EXPORT_MODEL, plans: PAID_PLANS },
 
   // pro and team only plans
   { permission: Permission.FEATURE_MANAGE_SEATS, plans: PRO_AND_TEAM_PLANS },

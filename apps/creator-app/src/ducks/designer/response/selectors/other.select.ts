@@ -3,7 +3,7 @@ import { createSelector } from 'reselect';
 
 import { createByFolderIDSelectors } from '../../utils/selector.util';
 import { all as allDiscriminators } from '../response-discriminator/response-discriminator.select';
-import { map as mapVariants } from '../response-variant/response-variant.select';
+import { map as mapMessages } from '../response-message/response-message.select';
 import { all as allResponses, oneByID } from './crud.select';
 export const { allByFolderID, allByFolderIDs, countByFolderID } = createByFolderIDSelectors(allResponses);
 
@@ -23,8 +23,8 @@ export const allByFolderIDsAndType = (type: ResponseType) =>
   createSelector(allByFolderIDs, (responses) => responses.filter((response) => response.type === type));
 
 export const mapFirstVariantByResponseID = createSelector(
-  [allResponses, allDiscriminators, mapVariants],
-  (allResponses, allDiscriminators, mapVariants) =>
+  [allResponses, allDiscriminators, mapMessages],
+  (allResponses, allDiscriminators, mapMessages) =>
     Object.fromEntries(
       allResponses.map((response) => {
         const discriminator = allDiscriminators.find((discriminator) => discriminator.responseID === response.id);
@@ -34,7 +34,7 @@ export const mapFirstVariantByResponseID = createSelector(
           return [response.id, null];
         }
 
-        return [response.id, mapVariants[firstVariantID]];
+        return [response.id, mapMessages[firstVariantID]];
       })
     )
 );

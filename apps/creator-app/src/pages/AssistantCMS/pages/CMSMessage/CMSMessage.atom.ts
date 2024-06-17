@@ -5,13 +5,13 @@ import { atom } from 'jotai';
 import { entitiesVariablesMapsAtom } from '@/atoms/other.atom';
 import {
   getOneResponseDiscriminatorByLanguageChannelAtomResponseID,
-  getOneResponseVariantByIDAtom,
+  getOneResponseMessageByIDAtom,
 } from '@/atoms/response.atom';
 
 import type { CMSMessageSortContext } from './CMSMessage.interface';
 
 export const cmsResponseGetVariantByResponseIDAtom = atom((get) => {
-  const getOneResponseVariant = get(getOneResponseVariantByIDAtom);
+  const getOneResponseMessage = get(getOneResponseMessageByIDAtom);
   const getOneResponseDiscriminator = get(getOneResponseDiscriminatorByLanguageChannelAtomResponseID);
 
   return ({ responseID }: { responseID: Nullish<string> }) => {
@@ -23,15 +23,8 @@ export const cmsResponseGetVariantByResponseIDAtom = atom((get) => {
 
     if (!discriminator) return null;
 
-    return getOneResponseVariant({ id: discriminator.variantOrder[0] });
+    return getOneResponseMessage({ id: discriminator.variantOrder[0] });
   };
-});
-
-export const cmsResponseGetVariantAttachmentOrderByResponseIDAtom = atom((get) => {
-  const getVariantByResponseID = get(cmsResponseGetVariantByResponseIDAtom);
-
-  return ({ responseID }: { responseID: Nullish<string> }) =>
-    getVariantByResponseID({ responseID })?.attachmentOrder ?? [];
 });
 
 export const cmsResponseSortContextAtom = atom(

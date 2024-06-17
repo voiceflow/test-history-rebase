@@ -1,7 +1,7 @@
 import type {
   AnyResponseAttachmentObject,
-  AnyResponseVariantObject,
   ResponseDiscriminatorObject,
+  ResponseMessageObject,
   ResponseObject,
   ResponseORM,
 } from '@voiceflow/orm-designer';
@@ -18,10 +18,10 @@ export interface ResponseCreateWithSubResourcesData extends CMSCreateForUserData
 
 export const OMIT_DUPLICATE_RESPONSE = ['id', 'createdAt', 'updatedAt', 'createdByID', 'updatedByID'] as const;
 export const OMIT_DUPLICATE_DISCRIMINATOR = ['id', 'createdAt', 'updatedAt', 'updatedByID'] as const;
-export const OMIT_DUPLICATE_VARIANTS = ['id', 'createdAt', 'updatedAt', 'updatedByID'] as const;
+export const OMIT_DUPLICATE_MESSAGES = ['id', 'createdAt', 'updatedAt', 'updatedByID'] as const;
 export const OMIT_DUPLICATE_ATTACHMENT = ['id', 'createdAt'] as const;
 
 export type DuplicateResponse = Omit<ResponseObject, (typeof OMIT_DUPLICATE_RESPONSE)[number]>;
 export type DuplicateDiscriminator = Omit<ResponseDiscriminatorObject, (typeof OMIT_DUPLICATE_DISCRIMINATOR)[number]>;
-export type DuplicateVariant = Omit<AnyResponseVariantObject, (typeof OMIT_DUPLICATE_VARIANTS)[number]>;
+export type DuplicateMessage = Omit<ResponseMessageObject, (typeof OMIT_DUPLICATE_MESSAGES)[number]>;
 export type DuplicateAttachment = Omit<AnyResponseAttachmentObject, (typeof OMIT_DUPLICATE_ATTACHMENT)[number]>;

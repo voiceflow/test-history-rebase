@@ -4,6 +4,7 @@ import {
   AnyResponseAttachmentObject,
   AnyResponseVariantObject,
   ResponseDiscriminatorObject,
+  ResponseMessageObject,
   ResponseObject,
 } from '@voiceflow/orm-designer';
 
@@ -21,6 +22,7 @@ export class ResponseExportService {
     data: {
       responses: ResponseObject[];
       responseVariants: AnyResponseVariantObject[];
+      responseMessages: ResponseMessageObject[];
       responseAttachments: AnyResponseAttachmentObject[];
       responseDiscriminators: ResponseDiscriminatorObject[];
     },
@@ -37,6 +39,9 @@ export class ResponseExportService {
       responseVariants: json.responseVariants.map((item) =>
         Utils.object.omit(item, ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'])
       ) as ResponseExportImportDataDTO['responseVariants'],
+      responseMessages: json.responseMessages.map((item) =>
+        Utils.object.omit(item, ['updatedAt', 'updatedByID', 'assistantID', 'environmentID'])
+      ) as ResponseExportImportDataDTO['responseMessages'],
       responseAttachments: json.responseAttachments.map((item) =>
         Utils.object.omit(item, ['assistantID', 'environmentID'])
       ) as ResponseExportImportDataDTO['responseAttachments'],

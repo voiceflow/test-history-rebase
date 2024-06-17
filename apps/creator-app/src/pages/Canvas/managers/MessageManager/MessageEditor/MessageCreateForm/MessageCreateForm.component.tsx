@@ -1,54 +1,55 @@
 import { Utils } from '@voiceflow/common';
-import { ResponseVariantType, TextResponseVariantCreate } from '@voiceflow/dtos';
+import { ResponseMessageCreate } from '@voiceflow/dtos';
 import { Box, Divider, Section } from '@voiceflow/ui-next';
 import React, { Fragment } from 'react';
 
 import { AIGenerateResponseVariantButton } from '@/components/AI/AIGenerateResponseVariantButton/AIGenerateResponseVariantButton.component';
-import { useAIGenerateTextResponseVariants } from '@/components/AI/hooks/ai-generate-text-response-variants.hook';
+import { useAIGenerateResponseMessages } from '@/components/AI/hooks/ai-generate-response-messages.hook';
 import { CMSFormListButtonRemove } from '@/components/CMS/CMSForm/CMSFormListButtonRemove/CMSFormListButtonRemove.component';
-import { ResponseEditFormSectionGenerateButton } from '@/components/Response/ResponseEditForm/ResponseEditFormSectionGenerateButton/ResponseEditFormSectionGenerateButton.component';
+import { ResponseEditFormSectionGenerateButton } from '@/components/ResponseV2/ResponseEditForm/ResponseEditFormSectionGenerateButton/ResponseEditFormSectionGenerateButton.component';
 import { SectionHeaderTitleWithLearnTooltip } from '@/components/Section/SectionHeaderTitleWithLearnTooltip/SectionHeaderTitleWithTooltip.component';
 import { Designer } from '@/ducks';
 import { useDebouncedCallback, useDispatch } from '@/hooks';
 import { useIsAIFeaturesEnabled } from '@/hooks/ai.hook';
 import { useInputAutoFocusKey } from '@/hooks/input.hook';
 import { useIsListEmpty } from '@/hooks/list.hook';
-import { isTextResponseVariantEmpty, responseTextVariantCreateDataFactory } from '@/utils/response.util';
+import { responseMessageCreateDataFactory } from '@/utils/response.util';
 
 import { ResponseCreateMessage } from '../MessageCreateTextVariant/MessageCreateTextVariant.component';
 import { IResponseCreateForm } from './MessageCreateForm.interface';
 
-const initialState: Array<TextResponseVariantCreate & { tempID?: string }> = [responseTextVariantCreateDataFactory()];
+const initialState: Array<ResponseMessageCreate & { tempID?: string }> = [responseMessageCreateDataFactory()];
 
 export const ResponseCreateForm: React.FC<IResponseCreateForm> = ({ onResponseCreate }) => {
   const createResponse = useDispatch(Designer.Response.effect.createOne);
   const aiFeaturesEnabled = useIsAIFeaturesEnabled();
   const [loading, setLoading] = React.useState(false);
-  const [variants, setResponseVariants] = React.useState(initialState);
+  const [messages, setResponseVariants] = React.useState(initialState);
 
-  const [rootVariant, ...otherVariants] = variants;
+  const [rootVariant, ...otherVariants] = messages;
   const hasVariants = otherVariants.length > 0;
   const autofocus = useInputAutoFocusKey();
-  const listEmpty = useIsListEmpty(variants, (variant) => isTextResponseVariantEmpty(variant));
+  const listEmpty = useIsListEmpty(messages, () => true);
 
-  const createReaponse = useDebouncedCallback(5000, async (variants: Array<TextResponseVariantCreate>) => {
+  const createReaponse = useDebouncedCallback(5000, async (messages: Array<ResponseMessageCreate>) => {
     setLoading(true);
 
     const { id } = await createResponse({
-      name: '',
       folderID: null,
-      variants,
+      variants: [],
+      messages,
+      name: '',
     });
 
     onResponseCreate(id);
   });
 
-  const aiGenerateTextVariant = useAIGenerateTextResponseVariants({
-    examples: variants,
+  const aiGenerateTextVariant = useAIGenerateResponseMessages({
+    examples: messages,
     onGenerated: async (newVariants) => {
       setResponseVariants([
-        ...variants,
-        ...newVariants.map(({ text }) => responseTextVariantCreateDataFactory({ text, tempID: Utils.id.objectID() })),
+        ...messages,
+        ...newVariants.map(({ text }) => responseMessageCreateDataFactory({ text, tempID: Utils.id.objectID() })),
       ]);
     },
     successGeneratedMessage: 'Variants generated',
@@ -57,21 +58,21 @@ export const ResponseCreateForm: React.FC<IResponseCreateForm> = ({ onResponseCr
   const onAddVariant = () => {
     const tempID = Utils.id.objectID();
 
-    setResponseVariants([rootVariant, responseTextVariantCreateDataFactory({ tempID }), ...otherVariants]);
+    setResponseVariants([rootVariant, responseMessageCreateDataFactory({ tempID }), ...otherVariants]);
     autofocus.setKey(tempID);
   };
 
-  const onPatchVariant = async (index: number, updatedVariant: Partial<TextResponseVariantCreate>) => {
-    setResponseVariants(variants.map((variant, i) => (i === index ? { ...variant, ...updatedVariant } : variant)));
+  const onPatchVariant = async (index: number, updatedVariant: Partial<ResponseMessageCreate>) => {
+    setResponseVariants(messages.map((variant, i) => (i === index ? { ...variant, ...updatedVariant } : variant)));
   };
 
-  const onRemoveVariant = (index: number) => setResponseVariants(variants.filter((_, i) => i !== index));
+  const onRemoveVariant = (index: number) => setResponseVariants(messages.filter((_, i) => i !== index));
 
   React.useEffect(() => {
-    if (JSON.stringify(variants) !== JSON.stringify(initialState)) {
-      createReaponse(variants.map(({ tempID, ...variant }) => variant));
+    if (JSON.stringify(messages) !== JSON.stringify(initialState)) {
+      createReaponse(messages.map(({ tempID, ...variant }) => variant));
     }
-  }, [JSON.stringify(variants)]);
+  }, [JSON.stringify(messages)]);
 
   return (
     <>
@@ -110,7 +111,6 @@ export const ResponseCreateForm: React.FC<IResponseCreateForm> = ({ onResponseCr
       >
         {!hasVariants && (
           <ResponseEditFormSectionGenerateButton
-            type={ResponseVariantType.TEXT}
             onClick={() => aiGenerateTextVariant.onGenerate({ quantity: 3 })}
             loading={aiGenerateTextVariant.fetching}
             disabled={loading}

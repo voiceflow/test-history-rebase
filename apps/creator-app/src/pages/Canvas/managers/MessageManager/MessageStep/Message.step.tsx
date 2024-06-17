@@ -4,7 +4,6 @@ import React from 'react';
 
 import { ResponseMapFirstVariantByResponseIDContext } from '@/pages/Canvas/contexts/ReduxContexts';
 import { ConnectedStep } from '@/pages/Canvas/managers/types';
-import { isTextResponseVariant } from '@/utils/response.util';
 
 import { ResponseStepPlaceholder } from './MessageStepPlaceholder.component';
 import { ResponseStepTextVariant } from './MessageStepTextVariant.component';
@@ -12,16 +11,12 @@ import { ResponseStepTextVariant } from './MessageStepTextVariant.component';
 export const MessageStep: ConnectedStep<Realtime.NodeData.Response> = ({ data, ports, palette }) => {
   const { responseID } = data;
   const responseMapFirstVariantByResponseID = React.useContext(ResponseMapFirstVariantByResponseIDContext)!;
-  const variant = responseID ? responseMapFirstVariantByResponseID[responseID] : null;
+  const message = responseID ? responseMapFirstVariantByResponseID[responseID] : null;
   const nextPortID = ports.out.byKey[NodeSystemPortType.NEXT];
 
-  if (!variant) {
+  if (!message) {
     return <ResponseStepPlaceholder nextPortID={nextPortID} palette={palette} nodeID={data.nodeID} />;
   }
 
-  if (isTextResponseVariant(variant)) {
-    return <ResponseStepTextVariant variant={variant} nextPortID={nextPortID} palette={palette} nodeID={data.nodeID} />;
-  }
-
-  return null;
+  return <ResponseStepTextVariant message={message} nextPortID={nextPortID} palette={palette} nodeID={data.nodeID} />;
 };

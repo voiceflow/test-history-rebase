@@ -55,13 +55,13 @@ class IsolateSteps extends AbstractVersionDiagramAccessActionControl<Realtime.no
       })
     ) {
       await this.services.requestContext.createAsync(async () => {
-        await this.services.reference.addManyDiagramNodes({
-          nodes: [parentNode],
-          authMeta: { userID: Number(ctx.userId), clientID: ctx.clientId },
-          diagramID: payload.diagramID,
-          assistantID: payload.projectID,
-          environmentID: payload.versionID,
-        });
+        await this.services.reference.createManyWithSubResourcesForDiagramNodesAndBroadcast(
+          { nodes: [parentNode], diagramID: payload.diagramID },
+          {
+            auth: { userID: Number(ctx.userId), clientID: ctx.clientId },
+            context: { assistantID: payload.projectID, environmentID: payload.versionID },
+          }
+        );
       });
     }
   };

@@ -6,13 +6,20 @@ import { Utils } from '@voiceflow/common';
 import { Flow } from '@voiceflow/dtos';
 import { HashedIDService } from '@voiceflow/nestjs-common';
 import { LoguxService } from '@voiceflow/nestjs-logux';
-import type { DiagramObject, FlowJSON, FlowObject } from '@voiceflow/orm-designer';
+import type {
+  DiagramObject,
+  FlowJSON,
+  FlowObject,
+  ReferenceObject,
+  ReferenceResourceObject,
+} from '@voiceflow/orm-designer';
 import { AssistantORM, DatabaseTarget, FlowORM } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { CMSTabularService } from '@/common';
 import { cmsBroadcastContext, toPostgresEntityIDs } from '@/common/utils';
 import { DiagramService } from '@/diagram/diagram.service';
+import { ReferenceService } from '@/reference/reference.service';
 import { CMSBroadcastMeta, CMSContext } from '@/types';
 
 import type { FlowExportImportDataDTO } from './dtos/flow-export-import-data.dto';
@@ -40,7 +47,9 @@ export class FlowService extends CMSTabularService<FlowORM> {
     @Inject(DiagramService)
     protected readonly diagram: DiagramService,
     @Inject(HashedIDService)
-    protected readonly hashedID: HashedIDService
+    protected readonly hashedID: HashedIDService,
+    @Inject(ReferenceService)
+    protected readonly reference: ReferenceService
   ) {
     super();
   }
@@ -56,7 +65,7 @@ export class FlowService extends CMSTabularService<FlowORM> {
     await this.logux.processAs(
       Actions.Flow.PatchOne({
         id: flowID,
-        patch: {},
+        patch: Utils.object.omit(patch, ['updatedByID']),
         context: cmsBroadcastContext(meta.context),
       }),
       meta.auth
@@ -166,11 +175,7 @@ export class FlowService extends CMSTabularService<FlowORM> {
   }
 
   async importManyWithSubResourcesFromJSON({ flows }: FlowExportImportDataDTO) {
-    await this.importManyWithSubResources(
-      this.fromJSONWithSubResources({
-        flows,
-      })
-    );
+    await this.importManyWithSubResources(this.fromJSONWithSubResources({ flows }));
   }
 
   /* Create */
@@ -191,12 +196,32 @@ export class FlowService extends CMSTabularService<FlowORM> {
       }))
     );
 
+    const referenceResult = await this.reference.createManyWithSubResourcesForDiagrams({
+      userID,
+      diagrams: this.diagram.mapToJSON(diagrams),
+      assistantID: context.assistantID,
+      environmentID: context.environmentID,
+    });
+
     return {
-      add: { flows, diagrams },
+      ...referenceResult,
+      add: { ...referenceResult.add, flows, diagrams },
     };
   }
 
-  async broadcastAddMany({ add }: { add: { flows: FlowObject[]; diagrams: DiagramObject[] } }, meta: CMSBroadcastMeta) {
+  async broadcastAddMany(
+    {
+      add,
+    }: {
+      add: {
+        flows: FlowObject[];
+        diagrams: DiagramObject[];
+        references: ReferenceObject[];
+        referenceResources: ReferenceResourceObject[];
+      };
+    },
+    meta: CMSBroadcastMeta
+  ) {
     const assistant = await this.assistantORM.findOneOrFail(meta.context.assistantID);
 
     await Promise.all([
@@ -211,6 +236,7 @@ export class FlowService extends CMSTabularService<FlowORM> {
         ...meta,
         context: { ...meta.context, workspaceID: this.hashedID.encodeWorkspaceID(assistant.workspaceID) },
       }),
+      this.reference.broadcastAddMany({ add: Utils.object.pick(add, ['references', 'referenceResources']) }, meta),
     ]);
   }
 
@@ -289,7 +315,7 @@ export class FlowService extends CMSTabularService<FlowORM> {
 
   /* Duplicate */
 
-  async duplicateMany(
+  async duplicateManyAndSync(
     sourceFlows: FlowObject[],
     {
       userID,
@@ -334,37 +360,44 @@ export class FlowService extends CMSTabularService<FlowORM> {
       }))
     );
 
+    const referenceResult = await this.reference.createManyWithSubResourcesForDiagrams({
+      userID,
+      diagrams: this.diagram.mapToJSON(diagrams),
+      assistantID: context.assistantID,
+      environmentID: context.environmentID,
+    });
+
     return {
-      flows,
-      diagrams,
+      ...referenceResult,
+      add: { ...referenceResult.add, flows, diagrams },
     };
   }
 
   async copyPasteManyAndBroadcast(data: Actions.Flow.CopyPasteMany.Request['data'], meta: CMSBroadcastMeta) {
     const sourceFlows = await this.orm.findManyByDiagramIDs(data.sourceEnvironmentID, data.sourceDiagramIDs);
 
-    const { flows, diagrams } = await this.duplicateMany(sourceFlows, {
+    const result = await this.duplicateManyAndSync(sourceFlows, {
       userID: meta.auth.userID,
       context: meta.context,
       sourceEnvironmentID: data.sourceEnvironmentID,
     });
 
-    await this.broadcastAddMany({ add: { flows, diagrams } }, meta);
+    await this.broadcastAddMany(result, meta);
 
-    return flows;
+    return result.add.flows;
   }
 
   async duplicateOneAndBroadcast(data: { flowID: string }, meta: CMSBroadcastMeta) {
     const flow = await this.findOneOrFail({ id: data.flowID, environmentID: meta.context.environmentID });
 
-    const { flows, diagrams } = await this.duplicateMany([flow], {
+    const result = await this.duplicateManyAndSync([flow], {
       userID: meta.auth.userID,
       context: meta.context,
     });
 
-    await this.broadcastAddMany({ add: { flows, diagrams } }, meta);
+    await this.broadcastAddMany(result, meta);
 
-    return flows[0];
+    return result.add.flows[0];
   }
 
   /* Upsert */

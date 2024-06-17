@@ -56,6 +56,9 @@ class DiagramService extends AbstractControl {
     };
   };
 
+  /**
+   * @deprecated remove with REFERENCE_SYSTEM ff removal
+   */
   private sharedNodeMapper = (
     node: BaseModels.BaseDiagramNode<AnyRecord>
   ): Realtime.diagram.sharedNodes.SharedNode | null => {
@@ -418,6 +421,9 @@ class DiagramService extends AbstractControl {
     await this.models.diagram.addDynamicPort(versionID, diagramID, nodeID, port);
   }
 
+  /**
+   * @deprecated remove with REFERENCE_SYSTEM ff removal
+   */
   public getSharedNodes(diagrams: BaseModels.Diagram.Model[]): Realtime.diagram.sharedNodes.DiagramSharedNodeMap {
     const sharedNodes: Realtime.diagram.sharedNodes.DiagramSharedNodeMap = {};
 

@@ -23,7 +23,6 @@ class AddBlock extends AbstractVersionDiagramAccessActionControl<Realtime.node.A
       projectMeta,
       schemaVersion,
       versionID,
-      projectID,
       workspaceID,
     } = payload;
 
@@ -76,13 +75,13 @@ class AddBlock extends AbstractVersionDiagramAccessActionControl<Realtime.node.A
       })
     ) {
       await this.services.requestContext.createAsync(() =>
-        this.services.reference.addManyDiagramNodes({
-          nodes,
-          authMeta: { userID: Number(ctx.userId), clientID: ctx.clientId },
-          diagramID,
-          assistantID: projectID,
-          environmentID: versionID,
-        })
+        this.services.reference.createManyWithSubResourcesForDiagramNodesAndBroadcast(
+          { nodes, diagramID },
+          {
+            auth: { userID: Number(ctx.userId), clientID: ctx.clientId },
+            context: { assistantID: payload.projectID, environmentID: payload.versionID },
+          }
+        )
       );
     }
   };

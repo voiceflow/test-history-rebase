@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.94.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.94.0...@voiceflow/dtos@1.94.1) (2024-06-18)
+
+### Bug Fixes
+
+* multiple conditions per variant (PL-1042) ([#8327](https://github.com/voiceflow/creator-app/issues/8327)) ([671e6ba](https://github.com/voiceflow/creator-app/commit/671e6ba590a059ad94c3f937411386207bb3f919))
+
 # [1.94.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.93.1...@voiceflow/dtos@1.94.0) (2024-06-18)
 
 ### Features

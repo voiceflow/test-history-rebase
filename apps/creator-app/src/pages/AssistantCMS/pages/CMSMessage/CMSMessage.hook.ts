@@ -1,3 +1,4 @@
+import { ResponseType } from '@voiceflow/dtos';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 import { useHistory } from 'react-router-dom';
 
@@ -30,6 +31,7 @@ export const useOnResponseCreate = () => {
     try {
       const entity = await createResponse({
         name,
+        type: ResponseType.MESSAGE,
         variants: [],
         messages: DEFAULT_MESSAGE,
         folderID: getAtomValue(cmsManager.folderID),

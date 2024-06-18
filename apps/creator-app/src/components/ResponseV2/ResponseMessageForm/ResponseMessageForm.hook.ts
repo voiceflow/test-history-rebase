@@ -5,7 +5,6 @@ import { Actions } from '@voiceflow/sdk-logux-designer';
 import { useAIGenerateResponseMessages } from '@/components/AI/hooks/ai-generate-response-messages.hook';
 import { Designer } from '@/ducks';
 import { useIsAIFeaturesEnabled } from '@/hooks/ai.hook';
-import { useInputAutoFocusKey } from '@/hooks/input.hook';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
 
 import { IResponseMessageForm } from './ResponseMessageForm.interface';
@@ -41,7 +40,6 @@ export const useResponseMessageEditForm = ({
   const patchResponse = useDispatch(Designer.Response.effect.patchOne);
   const getResponseByID = useSelector(Designer.Response.selectors.getOneByID);
 
-  const autofocus = useInputAutoFocusKey();
   const aiFeaturesEnabled = useIsAIFeaturesEnabled();
   const { messages, discriminatorID } = useResponseMessages({ responseID });
 
@@ -65,12 +63,13 @@ export const useResponseMessageEditForm = ({
   };
 
   const onAddMessage = async () => {
-    if (!discriminatorID) return;
+    if (!discriminatorID) return undefined;
 
     await checkAndUpdateResponseType();
 
     const res = await createMessage(discriminatorID);
-    autofocus.setKey(res.id);
+
+    return res;
   };
 
   const onUpdateMessage = async (messageID: string, data: Actions.ResponseMessage.PatchData) => {

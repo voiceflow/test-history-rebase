@@ -28,6 +28,14 @@ export const ResponseMessageForm: React.FC<IResponseMessageForm> = ({
 
   const hasMessages = otherMessages.length;
 
+  const handleAddMessage = async () => {
+    const newMessage = await onAddMessage();
+
+    if (newMessage) {
+      autofocus.setKey(newMessage.id);
+    }
+  };
+
   if (!rootMessage) return null;
 
   return (
@@ -74,7 +82,7 @@ export const ResponseMessageForm: React.FC<IResponseMessageForm> = ({
           />
         )}
 
-        <Section.Header.Button iconName="Plus" onClick={onAddMessage} disabled={aiGenerateMessage.isFetching} />
+        <Section.Header.Button iconName="Plus" onClick={handleAddMessage} disabled={aiGenerateMessage.isFetching} />
       </Section.Header.Container>
 
       {!hasMessages ? (

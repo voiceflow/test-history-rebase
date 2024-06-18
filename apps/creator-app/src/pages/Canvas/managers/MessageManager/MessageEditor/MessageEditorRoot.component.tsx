@@ -3,7 +3,7 @@ import { stopImmediatePropagation } from '@voiceflow/ui';
 import { Box, Editor, Scroll } from '@voiceflow/ui-next';
 import React, { useEffect } from 'react';
 
-import { ResponseEditForm } from '@/components/Response/ResponseEditForm/ResponseEditForm.component';
+import { ResponseEditForm } from '@/components/ResponseV2/ResponseEditForm/ResponseEditForm.component';
 import { Designer } from '@/ducks';
 import { useDispatch } from '@/hooks';
 import { DEFAULT_MESSAGE } from '@/pages/AssistantCMS/pages/CMSMessage/CMSMessage.hook';
@@ -35,10 +35,10 @@ export const MessageEditorRoot: NodeEditorV2<Realtime.NodeData.Response> = () =>
           // do nothing
         });
     }
-  }, []);
+  }, [responseID]);
 
   return (
-    <Editor title="Agent" readOnly className={editorStyles} headerActions={<EditorV3HeaderActions />}>
+    <Editor title="Message" readOnly className={editorStyles} headerActions={<EditorV3HeaderActions />}>
       <Scroll>
         {/* TODO: we need to fix on paste propagation for editor sidebar v3 component */}
         <Box

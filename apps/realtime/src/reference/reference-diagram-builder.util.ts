@@ -1,41 +1,38 @@
-import { Diagram, DiagramType, ReferenceResource, ReferenceResourceType } from '@voiceflow/dtos';
+import { Diagram, DiagramType, ReferenceResourceType } from '@voiceflow/dtos';
 
 import { ReferenceBaseBuilderUtil } from './reference-base-builder.util';
+import { ReferenceBuilderCacheUtil } from './reference-builder-cache.util';
 import { ReferenceNodeBuilderUtil } from './reference-node-builder.util';
 
 export class ReferenceDiagramBuilderUtil extends ReferenceBaseBuilderUtil {
   private readonly diagrams: Diagram[];
 
-  private resourceByIntentID: Partial<Record<string, ReferenceResource | null>> = {};
+  private readonly intentResourceCache: ReferenceBuilderCacheUtil;
 
-  private readonly getIntentResource: (intentID: string) => Promise<ReferenceResource | null>;
+  private readonly diagramResourceCache: ReferenceBuilderCacheUtil;
+
+  public static isSupportedDiagram(diagram: Diagram) {
+    return diagram.type === DiagramType.COMPONENT || diagram.type === DiagramType.TOPIC;
+  }
 
   constructor({
     diagrams,
     assistantID,
     environmentID,
-    getIntentResource,
+    intentResourceCache,
+    diagramResourceCache,
   }: {
     diagrams: Diagram[];
     assistantID: string;
     environmentID: string;
-    getIntentResource: (intentID: string) => Promise<ReferenceResource | null>;
+    intentResourceCache: ReferenceBuilderCacheUtil;
+    diagramResourceCache: ReferenceBuilderCacheUtil;
   }) {
     super({ assistantID, environmentID });
 
     this.diagrams = diagrams;
-
-    this.getIntentResource = async (intentID) => {
-      let resource = this.resourceByIntentID[intentID];
-
-      if (resource !== undefined) return resource;
-
-      resource = await getIntentResource(intentID);
-
-      this.resourceByIntentID[intentID] = resource;
-
-      return resource;
-    };
+    this.intentResourceCache = intentResourceCache;
+    this.diagramResourceCache = diagramResourceCache;
   }
 
   async build() {
@@ -48,21 +45,34 @@ export class ReferenceDiagramBuilderUtil extends ReferenceBaseBuilderUtil {
   }
 
   private async buildDiagramsReferences() {
+    // prebuild diagram resources so nodes from different diagrams can reference each other
+    this.diagrams.forEach((diagram) => {
+      if (!ReferenceDiagramBuilderUtil.isSupportedDiagram(diagram)) return;
+
+      const diagramResource = this.buildReferenceResource({
+        type: ReferenceResourceType.DIAGRAM,
+        metadata: null,
+        diagramID: null,
+        resourceID: diagram.diagramID,
+      });
+
+      this.diagramResourceCache.set(diagram.diagramID, diagramResource);
+    });
+
     for (const diagram of this.diagrams) {
       // eslint-disable-next-line no-await-in-loop
-      await this.buildDiagramReferences(diagram);
+      await this.buildDiagramNodesReferences(diagram);
     }
   }
 
-  private async buildDiagramReferences(diagram: Diagram) {
-    if (diagram.type !== DiagramType.COMPONENT && diagram.type !== DiagramType.TOPIC) return;
+  private async buildDiagramNodesReferences(diagram: Diagram) {
+    if (!ReferenceDiagramBuilderUtil.isSupportedDiagram(diagram)) return;
 
-    const diagramResource = this.buildReferenceResource({
-      type: ReferenceResourceType.DIAGRAM,
-      metadata: null,
-      diagramID: null,
-      resourceID: diagram.diagramID,
-    });
+    const diagramResource = this.diagramResourceCache.get(diagram.diagramID);
+
+    if (!diagramResource) {
+      throw new Error(`diagram resource not found for diagram "${diagram.diagramID}"`);
+    }
 
     const nodeBuilder = new ReferenceNodeBuilderUtil({
       nodes: Object.values(diagram.nodes),
@@ -70,8 +80,8 @@ export class ReferenceDiagramBuilderUtil extends ReferenceBaseBuilderUtil {
       assistantID: this.assistantID,
       environmentID: this.environmentID,
       diagramResourceID: diagramResource.id,
-
-      getIntentResource: async (intentID) => this.getIntentResource(intentID),
+      intentResourceCache: this.intentResourceCache,
+      diagramResourceCache: this.diagramResourceCache,
     });
 
     const result = await nodeBuilder.build();

@@ -7,6 +7,7 @@ import { UnleashFeatureFlagService } from '@voiceflow/nestjs-common';
 import { LoguxService } from '@voiceflow/nestjs-logux';
 import {
   DatabaseTarget,
+  DiagramORM,
   IntentORM,
   ObjectId,
   ProjectORM,
@@ -21,6 +22,7 @@ import { MutableService } from '@/common/mutable.service';
 import { CMSBroadcastMeta } from '@/types';
 
 import { ReferenceBuilderUtil } from './reference-builder.util';
+import { ReferenceBuilderCacheUtil } from './reference-builder-cache.util';
 import { ReferenceCacheService } from './reference-cache.service';
 import { ReferenceDiagramBuilderUtil } from './reference-diagram-builder.util';
 import { ReferenceNodeBuilderUtil } from './reference-node-builder.util';
@@ -47,6 +49,8 @@ export class ReferenceService extends MutableService<ReferenceORM> {
     protected readonly intentORM: IntentORM,
     @Inject(ProjectORM)
     protected readonly projectORM: ProjectORM,
+    @Inject(DiagramORM)
+    protected readonly diagramORM: DiagramORM,
     @Inject(ReferenceResourceORM)
     protected readonly referenceResourceORM: ReferenceResourceORM,
     @Inject(LoguxService)
@@ -59,6 +63,8 @@ export class ReferenceService extends MutableService<ReferenceORM> {
     protected readonly ReferenceBuilder: typeof ReferenceBuilderUtil = ReferenceBuilderUtil,
     @Optional()
     protected readonly ReferenceNodeBuilder: typeof ReferenceNodeBuilderUtil = ReferenceNodeBuilderUtil,
+    @Optional()
+    protected readonly ReferenceBuilderCache: typeof ReferenceBuilderCacheUtil = ReferenceBuilderCacheUtil,
     @Optional()
     protected readonly ReferenceDiagramBuilder: typeof ReferenceDiagramBuilderUtil = ReferenceDiagramBuilderUtil
   ) {
@@ -198,7 +204,6 @@ export class ReferenceService extends MutableService<ReferenceORM> {
 
     const newReferences: Reference[] = [];
     const newReferenceResources: ReferenceResource[] = [];
-    const intentReferenceResourceByIntentID: Partial<Record<string, ReferenceResource | null>> = {};
 
     const nodeBuilder = new this.ReferenceNodeBuilder({
       nodes,
@@ -206,22 +211,24 @@ export class ReferenceService extends MutableService<ReferenceORM> {
       assistantID,
       environmentID,
       diagramResourceID: diagramResource.id,
-
-      getIntentResource: async (intentID: string) => {
-        const cachedResource = intentReferenceResourceByIntentID[intentID];
-
-        if (cachedResource) return cachedResource;
-
+      intentResourceCache: new this.ReferenceBuilderCache(async (intentID) => {
         const { isNew, resource } = await this.findOrCreateIntentResource({ intentID, assistantID, environmentID });
 
         if (isNew && resource) {
           newReferenceResources.push(resource);
         }
 
-        intentReferenceResourceByIntentID[intentID] = resource;
+        return resource;
+      }),
+      diagramResourceCache: new this.ReferenceBuilderCache(async (diagramID) => {
+        const { isNew, resource } = await this.findOrCreateDiagramResource({ diagramID, assistantID, environmentID });
+
+        if (isNew && resource) {
+          newReferenceResources.push(resource);
+        }
 
         return resource;
-      },
+      }),
     });
 
     const result = await nodeBuilder.build();
@@ -273,7 +280,7 @@ export class ReferenceService extends MutableService<ReferenceORM> {
       diagrams,
       assistantID,
       environmentID,
-      getIntentResource: async (intentID) => {
+      intentResourceCache: new this.ReferenceBuilderCache(async (intentID) => {
         const { isNew, resource } = await this.findOrCreateIntentResource({ intentID, assistantID, environmentID });
 
         if (isNew && resource) {
@@ -281,7 +288,16 @@ export class ReferenceService extends MutableService<ReferenceORM> {
         }
 
         return resource;
-      },
+      }),
+      diagramResourceCache: new this.ReferenceBuilderCache(async (diagramID) => {
+        const { isNew, resource } = await this.findOrCreateDiagramResource({ diagramID, assistantID, environmentID });
+
+        if (isNew && resource) {
+          newReferenceResources.push(resource);
+        }
+
+        return resource;
+      }),
     });
 
     const result = await builder.build();
@@ -459,6 +475,49 @@ export class ReferenceService extends MutableService<ReferenceORM> {
     return {
       isNew,
       resource: intentResource,
+    };
+  }
+
+  private async findOrCreateDiagramResource({
+    diagramID,
+    assistantID,
+    environmentID,
+  }: {
+    diagramID: string;
+    assistantID: string;
+    environmentID: string;
+  }) {
+    let isNew = false;
+
+    // check if the diagram exists
+    const diagram = await this.diagramORM.findOneByVersionIDAndDiagramID(environmentID, diagramID);
+
+    if (!diagram) return { isNew: false, resource: null };
+
+    let diagramResource = await this.referenceResourceORM.findOneByTypeDiagramIDAndResourceID({
+      type: ReferenceResourceType.DIAGRAM,
+      diagramID: null,
+      resourceID: diagramID,
+      environmentID,
+    });
+
+    if (!diagramResource) {
+      isNew = true;
+
+      diagramResource = {
+        id: new ObjectId().toJSON(),
+        type: ReferenceResourceType.DIAGRAM,
+        metadata: null,
+        diagramID: null,
+        resourceID: diagramID,
+        assistantID,
+        environmentID,
+      };
+    }
+
+    return {
+      isNew,
+      resource: diagramResource,
     };
   }
 }

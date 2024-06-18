@@ -20,12 +20,19 @@ import { NodeType, StartNode, TriggerNode } from '@voiceflow/dtos';
 
 import { createTypedTypeGuardCreator, createTypeGuardCreator } from './utils';
 
-export const isStep = <Data extends AnyRecord = AnyRecord, Ports = BaseModels.NextStepPorts, PortsOld = BaseModels.BasePortList>(
+export const isStep = <
+  Data extends AnyRecord = AnyRecord,
+  Ports = BaseModels.NextStepPorts,
+  PortsOld = BaseModels.BasePortList,
+>(
   node: BaseModels.BaseDiagramNode
-): node is BaseModels.BaseStep<Data, Ports, PortsOld> => Array.isArray(node.data.ports) || Utils.object.isObject(node.data.portsV2);
-export const isBlock = (node: BaseModels.BaseDiagramNode): node is BaseModels.BaseBlock => node.type === BaseModels.BaseNodeType.BLOCK;
+): node is BaseModels.BaseStep<Data, Ports, PortsOld> =>
+  Array.isArray(node.data.ports) || Utils.object.isObject(node.data.portsV2);
+export const isBlock = (node: BaseModels.BaseDiagramNode): node is BaseModels.BaseBlock =>
+  node.type === BaseModels.BaseNodeType.BLOCK;
 export const isStart = (node: BaseModels.BaseDiagramNode): node is DBNodeStart => node.type === BlockType.START;
-export const isActions = (node: BaseModels.BaseDiagramNode): node is BaseModels.BaseActions => node.type === BaseModels.BaseNodeType.ACTIONS;
+export const isActions = (node: BaseModels.BaseDiagramNode): node is BaseModels.BaseActions =>
+  node.type === BaseModels.BaseNodeType.ACTIONS;
 
 const createBlockTypeGuard = createTypeGuardCreator<BlockType>();
 const createDBNodeTypeGuard = createTypedTypeGuardCreator<BaseModels.BaseDiagramNode>();
@@ -56,6 +63,7 @@ export const isIntentDBNode = createDBNodeTypeGuard<BaseNode.Intent.Step>(BaseNo
 export const isTriggerDBNode = createDBNodeTypeGuard<TriggerNode>(NodeType.TRIGGER);
 export const isCommandDBNode = createDBNodeTypeGuard<BaseNode.Command.Step>(BaseNode.NodeType.COMMAND);
 export const isGoToNodeDBNode = createDBNodeTypeGuard<BaseNode.GoToNode.Step>(BaseNode.NodeType.GOTO_NODE);
+export const isComponentDBNode = createDBNodeTypeGuard<BaseNode.Component.Step>(BaseNode.NodeType.COMPONENT);
 export const isGoToDomainDBNode = createDBNodeTypeGuard<BaseNode.GoToDomain.Step>(BaseNode.NodeType.GOTO_DOMAIN);
 export const isDiagramMenuDBNode = createDBNodeTypeGuard<BaseNode.Start.Step | BaseNode.Intent.Step>([
   BaseNode.NodeType.START,
@@ -75,7 +83,8 @@ export const isGoToNodeNodeData = createNodeDataTypeGuard<NodeData<NodeData.GoTo
 export const isRandomV1NodeData = createNodeDataTypeGuard<NodeData<NodeData.Random>>(BlockType.RANDOM);
 export const isRandomV2NodeData = createNodeDataTypeGuard<NodeData<NodeData.RandomV2>>(BlockType.RANDOMV2);
 export const isComponentNodeData = createNodeDataTypeGuard<NodeData<NodeData.Component>>(BlockType.COMPONENT);
-export const isStartingNodesData = createNodeDataTypeGuard<NodeData<NodeData.Start | NodeData.Combined>>(STARTING_NODES);
+export const isStartingNodesData =
+  createNodeDataTypeGuard<NodeData<NodeData.Start | NodeData.Combined>>(STARTING_NODES);
 export const isGoToIntentNodeData = createNodeDataTypeGuard<NodeData<NodeData.GoToIntent>>(BlockType.GO_TO_INTENT);
 export const isMarkupTextNodeData = createNodeDataTypeGuard<NodeData<Markup.NodeData.Text>>(BlockType.MARKUP_TEXT);
 export const isIntegrationNodeData = createNodeDataTypeGuard<NodeData<NodeData.Integration>>(BlockType.INTEGRATION);

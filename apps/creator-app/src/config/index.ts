@@ -266,3 +266,5 @@ export const PARTNER_STACK_PUBLIC_KEY =
 export const DATADOG_SITE = 'datadoghq.com';
 export const DATADOG_APP_ID = 'ef6859f3-2843-43c6-9abf-0157556ff84a';
 export const DATADOG_CLIENT_TOKEN = 'pubd54c024c3ce9f4333a328044b85c8154';
+
+export const OTEL_SERVICE = 'voiceflow-creator';

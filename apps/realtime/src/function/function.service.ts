@@ -322,7 +322,7 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
       });
 
       const result = await this.importManyWithSubResources({
-        functions: this.mapFromJSON(functions),
+        functions: this.mapFromJSON(functions).map((f) => ({ ...f, folderID: null })),
         functionPaths: this.functionPath.mapFromJSON(functionPaths),
         functionVariables: this.functionVariable.mapFromJSON(functionVariables),
       });

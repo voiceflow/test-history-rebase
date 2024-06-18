@@ -1,11 +1,9 @@
 import { z } from 'zod';
 
-import { MarkupDTO } from '@/common';
-
 import { ConditionOperation } from '../condition-operation.enum';
 
 export const CompiledConditionPredicateDTO = z.object({
-  rhs: MarkupDTO,
+  rhs: z.string(),
   operation: z.nativeEnum(ConditionOperation),
 }).strict();
 

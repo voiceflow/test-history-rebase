@@ -14,7 +14,7 @@ export type CompiledResponseMessageData = z.infer<typeof CompiledResponseMessage
 
 export const CompiledResponseMessageDTO = z
   .object({
-    conditions: AnyCompiledConditionDTO.array(),
+    condition: AnyCompiledConditionDTO.nullable(),
     data: CompiledResponseMessageDataDTO,
   })
   .strict();

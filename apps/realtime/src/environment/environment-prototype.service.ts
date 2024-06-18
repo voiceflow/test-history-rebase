@@ -15,8 +15,9 @@ import { ResponseService } from '@/response/response.service';
 import { VariableService } from '@/variable/variable.service';
 import { VersionService } from '@/version/version.service';
 
-import { CMSResources } from './environment.interface';
+import { CMSResources, PrototypeData } from './environment.interface';
 import { EnvironmentRepository } from './environment.repository';
+import { ProgramResourcesBuilder } from './program-resources.builder';
 
 @Injectable()
 export class EnvironmentPrototypeService {
@@ -89,7 +90,7 @@ export class EnvironmentPrototypeService {
     };
   }
 
-  async preparePrototype(environmentID: string) {
+  async preparePrototype(environmentID: string): Promise<PrototypeData> {
     let version = await this.version.findOneOrFail(environmentID);
 
     const [project, diagrams, cmsData] = await Promise.all([
@@ -116,9 +117,16 @@ export class EnvironmentPrototypeService {
     // fetching version to get updated platformData
     version = await this.version.findOneOrFail(environmentID);
 
+    const programResources = new ProgramResourcesBuilder()
+      .addResponses(cmsData.responses)
+      .addDiscriminators(cmsData.responseDiscriminators)
+      .addMessages(cmsData.responseMessages)
+      .build();
+
     return {
       ...cmsData,
       version,
+      programResources,
       project,
       diagrams,
       liveDiagramIDs: VersionService.getLiveDiagramIDs(version, diagrams),

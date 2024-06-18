@@ -1,4 +1,4 @@
-import { NodeSystemPortType } from '@voiceflow/dtos';
+import { NodeSystemPortType, ResponseType } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { BlockType } from '@/constants';
@@ -23,6 +23,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Response> = {
     },
     data: {
       responseID: null,
+      responseType: ResponseType.EMPTY,
       name: '',
     },
   }),

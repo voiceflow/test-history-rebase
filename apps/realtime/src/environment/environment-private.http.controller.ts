@@ -23,11 +23,15 @@ export class EnvironmentPrivateHTTPController {
   @Post(':environmentID/prepare-prototype')
   @ApiParam({ name: 'environmentID', type: 'string' })
   @ZodApiResponse({ status: HttpStatus.OK, schema: EnvironmentPreparePrototypeResponse })
-  preparePrototype(@Param('environmentID') environmentID: string): Promise<EnvironmentPreparePrototypeResponse> {
-    return this.prototypeService.preparePrototype(environmentID).then((result) => ({
-      ...this.adapter.toJSONWithSubResources(result),
-      project: this.projectSerializer.nullable(result.project),
-      liveDiagramIDs: result.liveDiagramIDs,
-    }));
+  async preparePrototype(@Param('environmentID') environmentID: string): Promise<EnvironmentPreparePrototypeResponse> {
+    const prototypeData = await this.prototypeService.preparePrototype(environmentID);
+
+    const result: EnvironmentPreparePrototypeResponse = {
+      ...this.adapter.toJSONWithSubResources(prototypeData),
+      project: this.projectSerializer.nullable(prototypeData.project),
+      liveDiagramIDs: prototypeData.liveDiagramIDs,
+    };
+
+    return result;
   }
 }

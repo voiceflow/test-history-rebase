@@ -1,9 +1,10 @@
 import { Logger } from '@nestjs/common';
 import { AIMessage, AIMessageRole, AIParams } from '@voiceflow/dtos';
 import Client from 'groq-sdk';
+import { from, map, Observable } from 'rxjs';
 
 import { LLMModel } from '../llm-model.abstract';
-import { CompletionOutput } from '../llm-model.dto';
+import { CompletionOutput, CompletionStreamOutput } from '../llm-model.dto';
 import { GroqConfig } from './groq.interface';
 import { GroqRoleMap } from './groq-message.constant';
 
@@ -64,11 +65,26 @@ export abstract class GroqMessageAIModel extends LLMModel {
     };
   }
 
-  generateCompletionStream() {
-    return null as any;
+  generateCompletionStream(prompt: string, params: AIParams): Observable<CompletionStreamOutput> {
+    const messages: AIMessage[] = [{ role: AIMessageRole.USER, content: prompt }];
+    if (params.system) messages.unshift({ role: AIMessageRole.SYSTEM, content: params.system });
+
+    return this.generateChatCompletionStream(messages, params);
   }
 
-  generateChatCompletionStream() {
-    return null as any;
+  generateChatCompletionStream(messages: AIMessage[], params: AIParams): Observable<CompletionStreamOutput> {
+    return from(this.generateChatCompletion(messages, params)).pipe(
+      map(({ output, tokens, queryTokens, answerTokens, multiplier, model }) => ({
+        type: 'completion',
+        completion: {
+          output,
+          tokens,
+          queryTokens,
+          answerTokens,
+          multiplier,
+          model,
+        },
+      }))
+    );
   }
 }

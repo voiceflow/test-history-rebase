@@ -1,6 +1,6 @@
 import { atom } from 'jotai';
 
-import { nonEmptyTriggersMapByDiagramIDAtom } from '@/atoms/workflow.atom';
+import { nonEmptyTriggersMapByDiagramIDAtom } from '@/atoms/reference.atom';
 import { activeWorkspaceNormalizedMembersAtom } from '@/atoms/workspace.atom';
 
 import type { CMSWorkflowSortContext } from './CMSWorkflow.interface';

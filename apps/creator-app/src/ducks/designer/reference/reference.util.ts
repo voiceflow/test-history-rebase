@@ -3,6 +3,7 @@ import { NodeType, Reference, ReferenceResource, ReferenceResourceType } from '@
 export const buildReferenceCache = (references: Reference[], referenceResources: ReferenceResource[]) => {
   const blockNodeResourceIDs: string[] = [];
   const triggerNodeResourceIDs: string[] = [];
+  const diagramIDResourceIDMap: Partial<Record<string, string>> = {};
   const resourceIDsByDiagramIDMap: Partial<Record<string, string[]>> = {};
   const refererIDsByResourceIDMap: Partial<Record<string, string[]>> = {};
   const resourceIDsByRefererIDMap: Partial<Record<string, string[]>> = {};
@@ -41,12 +42,15 @@ export const buildReferenceCache = (references: Reference[], referenceResources:
       ) {
         triggerNodeResourceIDs.push(resource.id);
       }
+    } else if (resource.type === ReferenceResourceType.DIAGRAM) {
+      diagramIDResourceIDMap[resource.resourceID] = resource.id;
     }
   });
 
   return {
     blockNodeResourceIDs,
     triggerNodeResourceIDs,
+    diagramIDResourceIDMap,
     resourceIDsByDiagramIDMap,
     refererIDsByResourceIDMap,
     resourceIDsByRefererIDMap,

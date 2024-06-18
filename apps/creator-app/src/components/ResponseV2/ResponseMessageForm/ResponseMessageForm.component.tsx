@@ -1,59 +1,44 @@
 import { Utils } from '@voiceflow/common';
 import { Box, Divider, Section } from '@voiceflow/ui-next';
-import React, { Fragment } from 'react';
+import React, { Fragment, useMemo } from 'react';
 
 import { AIGenerateResponseVariantButton } from '@/components/AI/AIGenerateResponseVariantButton/AIGenerateResponseVariantButton.component';
-import { useAIGenerateResponseMessages } from '@/components/AI/hooks/ai-generate-response-messages.hook';
 import { CMSFormListButtonRemove } from '@/components/CMS/CMSForm/CMSFormListButtonRemove/CMSFormListButtonRemove.component';
 import { SectionHeaderTitleWithLearnTooltip } from '@/components/Section/SectionHeaderTitleWithLearnTooltip/SectionHeaderTitleWithTooltip.component';
-import { Designer } from '@/ducks';
-import { useIsAIFeaturesEnabled } from '@/hooks/ai.hook';
 import { useInputAutoFocusKey } from '@/hooks/input.hook';
 import { useIsListEmpty } from '@/hooks/list.hook';
-import { useDispatch } from '@/hooks/store.hook';
 import { isResponseMessageEmpty } from '@/utils/response.util';
 
-import { ResponseEditMessage } from '../ResponseEditMessage/ResponseEditMessage.component';
-import { useResponseMessages } from './ResponseEditForm.hook';
-import type { IResponseEditForm } from './ResponseEditForm.interface';
-import { ResponseEditFormSectionGenerateButton } from './ResponseEditFormSectionGenerateButton/ResponseEditFormSectionGenerateButton.component';
+import { ResponseMessage } from '../ResponseMessage/ResponseMessage.component';
+import type { IResponseMessageForm } from './ResponseMessageForm.interface';
 
-export const ResponseEditForm: React.FC<IResponseEditForm> = ({ responseID }) => {
-  const deleteMessage = useDispatch(Designer.Response.ResponseMessage.effect.deleteOne);
-  const createMessage = useDispatch(Designer.Response.ResponseMessage.effect.createOne);
-  const createManyTextMessages = useDispatch(Designer.Response.ResponseMessage.effect.createMany);
+export const ResponseMessageForm: React.FC<IResponseMessageForm> = ({
+  rootMessage,
+  otherMessages = [],
+  aiGenerate: aiGenerateMessage,
+  onAddMessage,
+  onDeleteMessage,
+  onUpdateMessage,
+}) => {
+  const allMessages = useMemo(() => (rootMessage ? [rootMessage, ...otherMessages] : []), [rootMessage, otherMessages]);
 
   const autofocus = useInputAutoFocusKey();
-  const aiFeaturesEnabled = useIsAIFeaturesEnabled();
-  const { messages, discriminatorID } = useResponseMessages({ responseID });
 
-  const aiGenerateMessage = useAIGenerateResponseMessages({
-    examples: messages,
-    onGenerated: (newMessages) => discriminatorID && createManyTextMessages(discriminatorID, newMessages),
-    successGeneratedMessage: 'Messages generated',
-  });
+  const listEmpty = useIsListEmpty(allMessages, (message) => isResponseMessageEmpty(message));
 
-  const listEmpty = useIsListEmpty(messages, (message) => isResponseMessageEmpty(message));
+  const hasMessages = otherMessages.length;
 
-  if (!messages.length || discriminatorID === null) return null;
-
-  const [rootMessage, ...otherMessages] = messages;
-
-  const onAddMessage = async () => {
-    const res = await createMessage(discriminatorID);
-
-    autofocus.setKey(res.id);
-  };
-
-  const hasMessages = otherMessages.length > 0;
+  if (!rootMessage) return null;
 
   return (
     <>
       <Box pt={11} pr={24} pb={18} direction="column">
-        <ResponseEditMessage
-          responseMessage={rootMessage}
+        <ResponseMessage
           autoFocusIfEmpty={!hasMessages}
           onValueEmpty={listEmpty.container(0)}
+          value={rootMessage.text}
+          onValueChange={(text) => onUpdateMessage(rootMessage.id, { text })}
+          onChangeVariantType={() => null}
         />
       </Box>
 
@@ -81,13 +66,15 @@ export const ResponseEditForm: React.FC<IResponseEditForm> = ({ responseID }) =>
         )}
       >
         {!hasMessages && (
-          <ResponseEditFormSectionGenerateButton
+          <Section.Header.Button
             onClick={() => aiGenerateMessage.onGenerate({ quantity: 3 })}
-            loading={aiGenerateMessage.fetching}
+            iconName="Generate"
+            disabled={aiGenerateMessage.isFetching}
+            isLoading={aiGenerateMessage.isFetching}
           />
         )}
 
-        <Section.Header.Button iconName="Plus" onClick={onAddMessage} disabled={aiGenerateMessage.fetching} />
+        <Section.Header.Button iconName="Plus" onClick={onAddMessage} disabled={aiGenerateMessage.isFetching} />
       </Section.Header.Container>
 
       {!hasMessages ? (
@@ -97,11 +84,14 @@ export const ResponseEditForm: React.FC<IResponseEditForm> = ({ responseID }) =>
           {otherMessages.map((message, index) => (
             <Fragment key={message.id}>
               <Box pt={index === 0 ? 0 : 12} pb={20} pr={24} direction="column">
-                <ResponseEditMessage
-                  responseMessage={message}
+                <ResponseMessage
                   autoFocus={autofocus.key === message.id}
                   onValueEmpty={listEmpty.container(index + 1)}
-                  removeButton={<CMSFormListButtonRemove onClick={() => deleteMessage(message.id)} />}
+                  removeButton={<CMSFormListButtonRemove onClick={() => onDeleteMessage(message.id)} />}
+                  autoFocusIfEmpty={!hasMessages}
+                  value={message.text}
+                  onValueChange={(text) => onUpdateMessage(message.id, { text })}
+                  onChangeVariantType={() => null}
                 />
               </Box>
 
@@ -109,10 +99,10 @@ export const ResponseEditForm: React.FC<IResponseEditForm> = ({ responseID }) =>
             </Fragment>
           ))}
 
-          {aiFeaturesEnabled && (
+          {aiGenerateMessage.isEnabled && (
             <Box px={16} pb={16}>
               <AIGenerateResponseVariantButton
-                isLoading={aiGenerateMessage.fetching}
+                isLoading={aiGenerateMessage.isFetching}
                 onGenerate={aiGenerateMessage.onGenerate}
                 hasExtraContext={!listEmpty.value}
               />

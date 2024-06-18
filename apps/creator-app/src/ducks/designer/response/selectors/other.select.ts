@@ -22,6 +22,14 @@ export const allByFolderIDAndType = (type: ResponseType) =>
 export const allByFolderIDsAndType = (type: ResponseType) =>
   createSelector(allByFolderIDs, (responses) => responses.filter((response) => response.type === type));
 
+export const countByType = (type: ResponseType) =>
+  createSelector(allResponses, (responses) =>
+    responses.reduce((acc, response) => {
+      if (response.type === type) acc += 1;
+      return acc;
+    }, 0)
+  );
+
 export const mapFirstVariantByResponseID = createSelector(
   [allResponses, allDiscriminators, mapMessages],
   (allResponses, allDiscriminators, mapMessages) =>

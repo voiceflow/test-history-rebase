@@ -1,0 +1,17 @@
+import { ResponseMessage } from '@voiceflow/dtos';
+import { Actions } from '@voiceflow/sdk-logux-designer';
+
+export interface IResponseMessageForm {
+  rootMessage: ResponseMessage;
+  otherMessages: ResponseMessage[];
+
+  onAddMessage: () => void;
+  onDeleteMessage: (messageID: string) => void;
+  onUpdateMessage: (id: string, patch: Actions.ResponseMessage.PatchData) => void;
+
+  aiGenerate: {
+    isEnabled: boolean;
+    onGenerate: (options: { quantity: number }) => void;
+    isFetching: boolean;
+  };
+}

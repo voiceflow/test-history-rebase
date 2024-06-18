@@ -5,7 +5,7 @@ export interface IResponseMessageForm {
   rootMessage: ResponseMessage;
   otherMessages: ResponseMessage[];
 
-  onAddMessage: () => void;
+  onAddMessage: () => Promise<undefined | ResponseMessage>;
   onDeleteMessage: (messageID: string) => void;
   onUpdateMessage: (id: string, patch: Actions.ResponseMessage.PatchData) => void;
 

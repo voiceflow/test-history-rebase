@@ -31,7 +31,7 @@ export const CMSMessageEditor: React.FC = () => {
   return (
     <Editor
       ref={editorRef}
-      title="Agent says"
+      title="Message"
       headerActions={
         <CMSEditorMoreButton>{({ onClose }) => getMoreMenu({ id: responseID, onClose })}</CMSEditorMoreButton>
       }

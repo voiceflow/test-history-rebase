@@ -24,14 +24,14 @@ export const ResponseCreateForm: React.FC<IResponseCreateForm> = ({ onResponseCr
   const createResponse = useDispatch(Designer.Response.effect.createOne);
   const aiFeaturesEnabled = useIsAIFeaturesEnabled();
   const [loading, setLoading] = React.useState(false);
-  const [messages, setResponseVariants] = React.useState(initialState);
+  const [messages, setMessages] = React.useState(initialState);
 
   const [rootVariant, ...otherVariants] = messages;
   const hasVariants = otherVariants.length > 0;
   const autofocus = useInputAutoFocusKey();
   const listEmpty = useIsListEmpty(messages, () => true);
 
-  const createReaponse = useDebouncedCallback(5000, async (messages: Array<ResponseMessageCreate>) => {
+  const createReaponse = useDebouncedCallback(200, async (messages: Array<ResponseMessageCreate>) => {
     setLoading(true);
 
     const { id } = await createResponse({
@@ -47,7 +47,7 @@ export const ResponseCreateForm: React.FC<IResponseCreateForm> = ({ onResponseCr
   const aiGenerateTextVariant = useAIGenerateResponseMessages({
     examples: messages,
     onGenerated: async (newVariants) => {
-      setResponseVariants([
+      setMessages([
         ...messages,
         ...newVariants.map(({ text }) => responseMessageCreateDataFactory({ text, tempID: Utils.id.objectID() })),
       ]);
@@ -58,15 +58,15 @@ export const ResponseCreateForm: React.FC<IResponseCreateForm> = ({ onResponseCr
   const onAddVariant = () => {
     const tempID = Utils.id.objectID();
 
-    setResponseVariants([rootVariant, responseMessageCreateDataFactory({ tempID }), ...otherVariants]);
+    setMessages([rootVariant, responseMessageCreateDataFactory({ tempID }), ...otherVariants]);
     autofocus.setKey(tempID);
   };
 
   const onPatchVariant = async (index: number, updatedVariant: Partial<ResponseMessageCreate>) => {
-    setResponseVariants(messages.map((variant, i) => (i === index ? { ...variant, ...updatedVariant } : variant)));
+    setMessages(messages.map((variant, i) => (i === index ? { ...variant, ...updatedVariant } : variant)));
   };
 
-  const onRemoveVariant = (index: number) => setResponseVariants(messages.filter((_, i) => i !== index));
+  const onRemoveVariant = (index: number) => setMessages(messages.filter((_, i) => i !== index));
 
   React.useEffect(() => {
     if (JSON.stringify(messages) !== JSON.stringify(initialState)) {
@@ -76,6 +76,7 @@ export const ResponseCreateForm: React.FC<IResponseCreateForm> = ({ onResponseCr
 
   return (
     <>
+      fakeeee
       <Box pt={11} pr={24} pb={18} direction="column">
         <ResponseCreateMessage
           onVariantChange={(updatedVariant) => onPatchVariant(0, updatedVariant)}
@@ -85,9 +86,7 @@ export const ResponseCreateForm: React.FC<IResponseCreateForm> = ({ onResponseCr
           autoFocusIfEmpty
         />
       </Box>
-
       <Divider />
-
       <Section.Header.Container
         pt={11}
         pb={hasVariants ? 0 : 11}
@@ -123,7 +122,6 @@ export const ResponseCreateForm: React.FC<IResponseCreateForm> = ({ onResponseCr
           disabled={aiGenerateTextVariant.fetching || loading}
         />
       </Section.Header.Container>
-
       {!hasVariants ? (
         <Divider />
       ) : (

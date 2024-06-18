@@ -28,16 +28,12 @@ export const CMS_RESPONSE_TABLE_CONFIG: TableConfig<ResponseTableColumn, CMSFold
       name: 'All messages',
       sorter: withFolderSort<CMSMessage>(withFieldLocaleCompareSort('name')),
 
-      cell: ({ item, type }) => {
-        // eslint-disable-next-line no-console
-        console.log({ item });
-
-        return item.group ? (
+      cell: ({ item, type }) =>
+        item.group ? (
           <CMSTableNameCell type={type} name={item.name} isFolder={item.group} itemID={item.id} />
         ) : (
           <CMSResponseTableVariantCell response={item} />
-        );
-      },
+        ),
     },
 
     [ResponseTableColumn.STORIES_USING]: {

@@ -22,12 +22,10 @@ export const responseMessageCreateDataFactory = ({
   text = markupFactory(),
   delay = null,
   condition = null,
-  tempID,
-}: Partial<ResponseMessageCreate> & { tempID?: string } = {}): ResponseMessageCreate & { tempID?: string } => ({
+}: Partial<ResponseMessageCreate> = {}): ResponseMessageCreate => ({
   text,
   delay,
   condition,
-  tempID,
 });
 
 // TODO: remove after response-variant migration

@@ -4,13 +4,9 @@ import React from 'react';
 
 import { ResponseMessageInput } from '../ResponseMessageInput/ResponseMessageInput.component';
 // import { ResponseVariantTypeDropdown } from '../ResponseVariantTypeDropdown/ResponseVariantTypeDropdown.component';
-import type { IResponseMessageLayout } from './ResponseMessageLayout.interface';
+import type { IResponseMessage } from './ResponseMessage.interface';
 
-export const ResponseMessageLayout: React.FC<IResponseMessageLayout> = ({
-  removeButton,
-  onChangeVariantType,
-  ...props
-}) => {
+export const ResponseMessage: React.FC<IResponseMessage> = ({ removeButton, onChangeVariantType, ...props }) => {
   return (
     <>
       <ResponseMessageInput

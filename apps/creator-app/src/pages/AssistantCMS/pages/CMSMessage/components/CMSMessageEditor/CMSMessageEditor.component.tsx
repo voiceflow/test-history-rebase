@@ -1,7 +1,8 @@
 import { Editor, IEditorAPI, Scroll } from '@voiceflow/ui-next';
 import React, { useRef } from 'react';
 
-import { ResponseEditForm } from '@/components/ResponseV2/ResponseEditForm/ResponseEditForm.component';
+import { ResponseMessageForm } from '@/components/ResponseV2/ResponseMessageForm/ResponseMessageForm.component';
+import { useResponseMessageEditForm } from '@/components/ResponseV2/ResponseMessageForm/ResponseMessageForm.hook';
 import { CMSRoute } from '@/config/routes';
 import { Designer } from '@/ducks';
 import { goToCMSResource } from '@/ducks/router';
@@ -17,6 +18,7 @@ export const CMSMessageEditor: React.FC = () => {
   const responseID = useCMSActiveResourceID();
   const response = useSelector(Designer.Response.selectors.oneByID, { id: responseID });
   const duplicateOne = useDispatch(Designer.Response.effect.duplicateOne);
+  const editForm = useResponseMessageEditForm({ responseID: response?.id || null });
 
   const getMoreMenu = useCMSResourceGetMoreMenu({
     onDuplicate: async (id) => {
@@ -38,7 +40,7 @@ export const CMSMessageEditor: React.FC = () => {
       testID={EDITOR_TEST_ID}
     >
       <Scroll style={{ display: 'block' }}>
-        <ResponseEditForm responseID={response.id} />
+        <ResponseMessageForm {...editForm} />
       </Scroll>
     </Editor>
   );

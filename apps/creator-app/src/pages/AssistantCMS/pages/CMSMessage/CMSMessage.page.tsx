@@ -42,8 +42,8 @@ export default Utils.functional.compose(
     searchContext: cmsResponseSortContextAtom,
 
     effects: {
-      patchOne: Designer.Response.effect.patchOne,
-      patchMany: Designer.Response.effect.patchMany,
+      patchOne: Designer.Response.effect.patchOne as any,
+      patchMany: Designer.Response.effect.patchMany as any,
       deleteOne: Designer.Response.effect.deleteOne,
       deleteMany: Designer.Response.effect.deleteMany,
     },

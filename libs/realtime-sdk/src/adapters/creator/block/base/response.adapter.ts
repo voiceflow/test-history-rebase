@@ -6,8 +6,8 @@ import { ResponseNode } from '@voiceflow/dtos';
 import { createBlockAdapter, createOutPortsAdapterV2, outPortDataFromDB, outPortDataToDB } from '../utils';
 
 export const messageAdapter = createBlockAdapter<NodeData.Response, Omit<ResponseNode['data'], 'portsV2'>>(
-  ({ responseID, name }) => ({ responseID, name }),
-  ({ responseID, name }) => ({ responseID, name })
+  ({ responseID, responseType, name }) => ({ responseID, responseType, name }),
+  ({ responseID, responseType, name }) => ({ responseID, responseType, name })
 );
 
 export const messageOutPortsAdapterV2 = createOutPortsAdapterV2(

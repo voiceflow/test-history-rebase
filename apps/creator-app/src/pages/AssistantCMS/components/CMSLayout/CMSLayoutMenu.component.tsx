@@ -1,3 +1,4 @@
+import { ResponseType } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { tid } from '@voiceflow/style';
 import { SecondaryNavigation } from '@voiceflow/ui-next';
@@ -30,7 +31,7 @@ export const CMSLayoutMenu: React.FC = () => {
 
   const intentsCount = useSelector(Designer.Intent.selectors.countWithoutNone);
   const entitiesCount = useSelector(Designer.Entity.selectors.count);
-  const responsesCount = useSelector(Designer.Response.selectors.count);
+  const messagesCount = useSelector(Designer.Response.selectors.countByType(ResponseType.MESSAGE));
   const functionsCount = useSelector(Designer.Function.selectors.count);
   const variablesCount = useSelector(Designer.Variable.selectors.count);
   const workflowsCount = useSelector(Designer.Workflow.selectors.count);
@@ -87,7 +88,7 @@ export const CMSLayoutMenu: React.FC = () => {
             icon="Message"
             label="Messages"
             testID={tid(TEST_ID, 'messages')}
-            caption={String(responsesCount)}
+            caption={String(messagesCount)}
             onClick={onTabClick(Path.CMS_MESSAGE, CMSRoute.MESSAGE)}
             isActive={isItemActive(Path.CMS_MESSAGE)}
           />

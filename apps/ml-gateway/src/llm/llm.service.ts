@@ -11,6 +11,8 @@ import { Claude3Sonnet } from './anthropic/claude_3_sonnet.client';
 import { ClaudeV1 } from './anthropic/claude_v1.client';
 import { ClaudeV1Instant } from './anthropic/claude_v1_instant.client';
 import { ClaudeV2 } from './anthropic/claude_v2.client';
+import { GroqLlama3_70B } from './groq/groq-llama3-70b.client';
+import { GroqMixtral_8x7b } from './groq/groq-mixtral-8x7b.client';
 import { LLMModel } from './llm-model.abstract';
 import { GPT3_5 } from './openai/gpt3-5.client';
 import { GPT3_5_1106 } from './openai/gpt3-5-1106.client';
@@ -43,6 +45,8 @@ export class LLMService {
       [AIModel.CLAUDE_3_HAIKU]: Claude3Haiku,
       [AIModel.CLAUDE_3_OPUS]: Claude3Opus,
       [AIModel.CLAUDE_3_SONNET]: Claude3Sonnet,
+      [AIModel.GROQ_MIXTRAL_8X7B_32768]: GroqMixtral_8x7b,
+      [AIModel.GROQ_LLAMA3_70B_8192]: GroqLlama3_70B,
     };
   }
 

@@ -10978,7 +10978,7 @@ __metadata:
     "@voiceflow/slate-serializer": 1.6.0
     "@voiceflow/style": 1.7.0
     "@voiceflow/ui": "workspace:*"
-    "@voiceflow/ui-next": "npm:@voiceflow/ui@2.234.0"
+    "@voiceflow/ui-next": "npm:@voiceflow/ui@2.236.1"
     "@voiceflow/utils-designer": "workspace:*"
     "@voiceflow/voiceflow-types": 3.30.4
     axios: 1.6.0
@@ -11338,6 +11338,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@voiceflow/icons@npm:1.22.0":
+  version: 1.22.0
+  resolution: "@voiceflow/icons@npm:1.22.0"
+  peerDependencies:
+    react: ^18
+  checksum: 7f128977d2078f274f213b1db4976c7cb3f9f1a119a53337c6d7532b05aa9c32f147242c01685f0cf5f1bbe7da7d40a5451cc815e27273225682ed4391ef3e48
+  languageName: node
+  linkType: hard
+
 "@voiceflow/internal@npm:3.2.3":
   version: 3.2.3
   resolution: "@voiceflow/internal@npm:3.2.3"
@@ -11431,6 +11440,7 @@ __metadata:
     dedent: 1.5.1
     dotenv: 16.0.3
     gpt-tokens: ^1.3.6
+    groq-sdk: ^0.5.0
     ioredis: 5.3.2
     nanoevents: 7.0.1
     nestjs-pino: 3.3.0
@@ -12391,9 +12401,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voiceflow/ui-next@npm:@voiceflow/ui@2.234.0":
-  version: 2.234.0
-  resolution: "@voiceflow/ui@npm:2.234.0"
+"@voiceflow/ui-next@npm:@voiceflow/ui@2.236.1":
+  version: 2.236.1
+  resolution: "@voiceflow/ui@npm:2.236.1"
   dependencies:
     "@codemirror/autocomplete": 6.9.1
     "@codemirror/commands": 6.3.0
@@ -12408,7 +12418,7 @@ __metadata:
     "@tanstack/react-virtual": 3.0.0-beta.54
     "@uiw/codemirror-themes": 4.21.18
     "@uiw/react-codemirror": 4.21.18
-    "@voiceflow/icons": 1.20.0
+    "@voiceflow/icons": 1.22.0
     codemirror: 6.0.1
     codemirror-readonly-ranges: 0.1.0-alpha.2
     dayjs: 1.11.9
@@ -12439,7 +12449,7 @@ __metadata:
     jotai-molecules: ^1
     react: ^18
     react-dom: ^18
-  checksum: 4bc1837bb978b5878b83b3479c7bd10f3c69a0f086ff60f0ca376d18d11dc6a7ba003a8b6114b95d87d2b00e1c6bedc233402bb99d2bada7bc31c8bd0846977d
+  checksum: 2b5c83c5b3c1a49c55e299d311c5eb5ea4a2b6e322071eb660ba32a8f2d4cda2a8144f38a9c5b7d273d7d0eb1960668f0e92ff6368a7a951c39fff958a96b5da
   languageName: node
   linkType: hard
 
@@ -22110,6 +22120,22 @@ __metadata:
     section-matter: ^1.0.0
     strip-bom-string: ^1.0.0
   checksum: 37717bd424344487d655392251ce8d8878a1275ee087003e61208fba3bfd59cbb73a85b2159abf742ae95e23db04964813fdc33ae18b074208428b2528205222
+  languageName: node
+  linkType: hard
+
+"groq-sdk@npm:^0.5.0":
+  version: 0.5.0
+  resolution: "groq-sdk@npm:0.5.0"
+  dependencies:
+    "@types/node": ^18.11.18
+    "@types/node-fetch": ^2.6.4
+    abort-controller: ^3.0.0
+    agentkeepalive: ^4.2.1
+    form-data-encoder: 1.7.2
+    formdata-node: ^4.3.2
+    node-fetch: ^2.6.7
+    web-streams-polyfill: ^3.2.1
+  checksum: 051ca56e99e4a2440080943c831b109687dd346b24155d3f085113df1ad0639cb95724c14a05611f7314d340db8bf342af425eb11905c97bc6a6948cd7262f04
   languageName: node
   linkType: hard
 

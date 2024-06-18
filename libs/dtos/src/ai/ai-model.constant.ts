@@ -59,4 +59,6 @@ export const AI_MODEL_PARAMS: Record<AIModel, AIModelParam> = {
     ...DEFAULT_AI_MODEL_PARAM,
     maxTokens: 500,
   },
+  [AIModel.GROQ_MIXTRAL_8X7B_32768]: DEFAULT_AI_MODEL_PARAM,
+  [AIModel.GROQ_LLAMA3_70B_8192]: DEFAULT_AI_MODEL_PARAM,
 };

@@ -23,7 +23,7 @@ export abstract class AnthropicTextCompletionAIModel extends LLMModel {
     super(config);
 
     if (!config.ANTHROPIC_API_KEY) {
-      throw new Error(`Anthropic client not initialized`);
+      throw new Error('Anthropic client not initialized');
     }
 
     this.client = new Client({ apiKey: config.ANTHROPIC_API_KEY });

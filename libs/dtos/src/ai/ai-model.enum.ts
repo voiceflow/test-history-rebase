@@ -15,6 +15,8 @@ export const AIModel = {
   CLAUDE_3_OPUS: 'claude-3-opus',
   CLAUDE_INSTANT_V1: 'claude-instant-v1',
   GEMINI_PRO: 'gemini-pro',
+  GROQ_LLAMA3_70B_8192: 'groq-llama3-70b-8192',
+  GROQ_MIXTRAL_8X7B_32768: 'groq-mixtral-8x7b-32768',
 } as const;
 
 export type AIModel = Enum<typeof AIModel>;

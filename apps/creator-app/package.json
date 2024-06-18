@@ -96,7 +96,7 @@
     "@voiceflow/slate-serializer": "1.6.0",
     "@voiceflow/style": "1.7.0",
     "@voiceflow/ui": "workspace:*",
-    "@voiceflow/ui-next": "npm:@voiceflow/ui@2.234.0",
+    "@voiceflow/ui-next": "npm:@voiceflow/ui@2.236.1",
     "@voiceflow/utils-designer": "workspace:*",
     "@voiceflow/voiceflow-types": "3.30.4",
     "axios": "1.6.0",

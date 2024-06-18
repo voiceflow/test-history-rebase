@@ -7,10 +7,7 @@ import { AbstractVersionDiagramAccessActionControl } from '@/legacy/actions/diag
 class UpdateManyNodeData extends AbstractVersionDiagramAccessActionControl<Realtime.node.UpdateManyDataPayload> {
   actionCreator = Realtime.node.updateDataMany;
 
-  protected process = async (
-    _ctx: Context,
-    { payload }: Action<Realtime.node.UpdateManyDataPayload>
-  ): Promise<void> => {
+  protected process = async (ctx: Context, { payload }: Action<Realtime.node.UpdateManyDataPayload>): Promise<void> => {
     const nodes = payload.nodes.map((nodeData) => ({
       nodeID: nodeData.nodeID,
       ...Realtime.Adapters.nodeDataAdapter.toDB(nodeData, {
@@ -21,6 +18,31 @@ class UpdateManyNodeData extends AbstractVersionDiagramAccessActionControl<Realt
     }));
 
     await this.services.diagram.updateManyNodeData(payload.versionID, payload.diagramID, nodes);
+
+    if (
+      this.services.feature.isEnabled(Realtime.FeatureFlag.REFERENCE_SYSTEM, {
+        userID: Number(ctx.userId),
+        workspaceID: payload.workspaceID,
+      })
+    ) {
+      await this.services.requestContext.createAsync(async () => {
+        await this.services.reference.deleteManyWithSubResourcesByDiagramNodeIDsAndBroadcast(
+          { nodeIDs: nodes.map((node) => node.nodeID), diagramID: payload.diagramID },
+          {
+            auth: { userID: Number(ctx.userId), clientID: ctx.clientId },
+            context: { assistantID: payload.projectID, environmentID: payload.versionID },
+          }
+        );
+
+        await this.services.reference.createManyWithSubResourcesForDiagramNodesAndBroadcast(
+          { nodes, diagramID: payload.diagramID },
+          {
+            auth: { userID: Number(ctx.userId), clientID: ctx.clientId },
+            context: { assistantID: payload.projectID, environmentID: payload.versionID },
+          }
+        );
+      });
+    }
   };
 
   protected finally = async (ctx: Context, { payload }: Action<Realtime.node.UpdateManyDataPayload>): Promise<void> => {

@@ -28,4 +28,30 @@ export class ReferenceResourceORM extends PostgresObjectIDMutableORM<ReferenceRe
 
     return resource;
   }
+
+  async deleteManyByTypeAndDiagramIDs({
+    type,
+    diagramIDs,
+    environmentID,
+  }: {
+    type: ReferenceResourceType;
+    diagramIDs: string[];
+    environmentID: string;
+  }) {
+    return this.delete({ type, diagramID: diagramIDs, environmentID }, true);
+  }
+
+  async deleteManyByTypeDiagramIDAndResourceIDs({
+    type,
+    diagramID,
+    resourceIDs,
+    environmentID,
+  }: {
+    type: ReferenceResourceType;
+    diagramID: string | null;
+    resourceIDs: string[];
+    environmentID: string;
+  }) {
+    return this.delete({ type, diagramID, resourceID: resourceIDs, environmentID }, true);
+  }
 }

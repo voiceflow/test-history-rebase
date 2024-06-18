@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.27.73](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-designer@2.27.72...@voiceflow/sdk-http-designer@2.27.73) (2024-06-18)
+
+**Note:** Version bump only for package @voiceflow/sdk-http-designer
+
+## [2.27.72](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-designer@2.27.71...@voiceflow/sdk-http-designer@2.27.72) (2024-06-17)
+
+**Note:** Version bump only for package @voiceflow/sdk-http-designer
+
+## [2.27.71](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-designer@2.27.70...@voiceflow/sdk-http-designer@2.27.71) (2024-06-17)
+
+**Note:** Version bump only for package @voiceflow/sdk-http-designer
+
+## [2.27.70](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-designer@2.27.69...@voiceflow/sdk-http-designer@2.27.70) (2024-06-17)
+
+**Note:** Version bump only for package @voiceflow/sdk-http-designer
+
+## [2.27.69](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-designer@2.27.68...@voiceflow/sdk-http-designer@2.27.69) (2024-06-17)
+
+**Note:** Version bump only for package @voiceflow/sdk-http-designer
+
+## [2.27.68](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-designer@2.27.67...@voiceflow/sdk-http-designer@2.27.68) (2024-06-17)
+
+**Note:** Version bump only for package @voiceflow/sdk-http-designer
+
 ## [2.27.67](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-designer@2.27.66...@voiceflow/sdk-http-designer@2.27.67) (2024-06-14)
 
 **Note:** Version bump only for package @voiceflow/sdk-http-designer

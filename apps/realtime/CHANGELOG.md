@@ -3,6 +3,40 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.400.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.399.1...@voiceflow/realtime@1.400.0) (2024-06-18)
+
+### Features
+
+* cleanup intent refs on intent removal (COR-000) ([#8298](https://github.com/voiceflow/creator-app/issues/8298)) ([384f5ef](https://github.com/voiceflow/creator-app/commit/384f5ef223c62720426d6fbfe44197375339cb93))
+
+## [1.399.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.399.0...@voiceflow/realtime@1.399.1) (2024-06-17)
+
+**Note:** Version bump only for package @voiceflow/realtime
+
+# [1.399.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.398.0...@voiceflow/realtime@1.399.0) (2024-06-17)
+
+### Features
+
+* reference handle all node actions (COR-000) ([#8297](https://github.com/voiceflow/creator-app/issues/8297)) ([bde85cf](https://github.com/voiceflow/creator-app/commit/bde85cfea3951e2aa59b1661a7096309cfe818ed))
+
+# [1.398.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.397.0...@voiceflow/realtime@1.398.0) (2024-06-17)
+
+### Features
+
+* remove diagram references on diagram removal (COR-000) ([#8294](https://github.com/voiceflow/creator-app/issues/8294)) ([89fb842](https://github.com/voiceflow/creator-app/commit/89fb842faa3e844c04e708247a19bea2162c88c6))
+
+# [1.397.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.396.0...@voiceflow/realtime@1.397.0) (2024-06-17)
+
+### Features
+
+* handle new diagram references (COR-000) ([#8292](https://github.com/voiceflow/creator-app/issues/8292)) ([9ef3586](https://github.com/voiceflow/creator-app/commit/9ef358620e432584f4fabebdeb2f5dc762f4e842))
+
+# [1.396.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.395.1...@voiceflow/realtime@1.396.0) (2024-06-17)
+
+### Features
+
+* node reference handlers (COR-000) ([#8275](https://github.com/voiceflow/creator-app/issues/8275)) ([b98b7a1](https://github.com/voiceflow/creator-app/commit/b98b7a19696f40bdc322ac6bddf063c24d88ba26))
+
 ## [1.395.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.395.0...@voiceflow/realtime@1.395.1) (2024-06-14)
 
 ### Bug Fixes

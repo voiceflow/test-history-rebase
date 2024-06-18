@@ -1,17 +1,28 @@
 import { EntityManager } from '@mikro-orm/core';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable, Logger, Optional } from '@nestjs/common';
-import { DiagramNode, Reference, ReferenceResource, ReferenceResourceType } from '@voiceflow/dtos';
+import { Diagram, DiagramNode, Reference, ReferenceResource, ReferenceResourceType } from '@voiceflow/dtos';
 import { NotFoundException } from '@voiceflow/exception';
-import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
-import { DatabaseTarget, ObjectId, ReferenceORM, ReferenceResourceORM } from '@voiceflow/orm-designer';
+import { UnleashFeatureFlagService } from '@voiceflow/nestjs-common';
+import { LoguxService } from '@voiceflow/nestjs-logux';
+import {
+  DatabaseTarget,
+  IntentORM,
+  ObjectId,
+  ProjectORM,
+  ReferenceORM,
+  ReferenceResourceORM,
+} from '@voiceflow/orm-designer';
+import { FeatureFlag } from '@voiceflow/realtime-sdk/backend';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { AssistantLoadCreatorResponse } from '@/assistant/dtos/assistant-load-creator.response';
 import { MutableService } from '@/common/mutable.service';
+import { CMSBroadcastMeta } from '@/types';
 
 import { ReferenceBuilderUtil } from './reference-builder.util';
 import { ReferenceCacheService } from './reference-cache.service';
+import { ReferenceDiagramBuilderUtil } from './reference-diagram-builder.util';
 import { ReferenceNodeBuilderUtil } from './reference-node-builder.util';
 
 @Injectable()
@@ -32,16 +43,24 @@ export class ReferenceService extends MutableService<ReferenceORM> {
     private readonly postgresEM: EntityManager,
     @Inject(ReferenceORM)
     protected readonly orm: ReferenceORM,
+    @Inject(IntentORM)
+    protected readonly intentORM: IntentORM,
+    @Inject(ProjectORM)
+    protected readonly projectORM: ProjectORM,
     @Inject(ReferenceResourceORM)
     protected readonly referenceResourceORM: ReferenceResourceORM,
     @Inject(LoguxService)
     protected readonly logux: LoguxService,
+    @Inject(UnleashFeatureFlagService)
+    protected readonly unleash: UnleashFeatureFlagService,
     @Inject(ReferenceCacheService)
     protected readonly referenceCache: ReferenceCacheService,
     @Optional()
     protected readonly ReferenceBuilder: typeof ReferenceBuilderUtil = ReferenceBuilderUtil,
     @Optional()
-    protected readonly ReferenceNodeBuilder: typeof ReferenceNodeBuilderUtil = ReferenceNodeBuilderUtil
+    protected readonly ReferenceNodeBuilder: typeof ReferenceNodeBuilderUtil = ReferenceNodeBuilderUtil,
+    @Optional()
+    protected readonly ReferenceDiagramBuilder: typeof ReferenceDiagramBuilderUtil = ReferenceDiagramBuilderUtil
   ) {
     super();
   }
@@ -63,6 +82,11 @@ export class ReferenceService extends MutableService<ReferenceORM> {
     await this.orm.deleteManyByEnvironment(environmentID);
   }
 
+  async cleanupByEnvironmentID(environmentID: string) {
+    await this.deleteManyWithSubResourcesByEnvironment(environmentID);
+    await this.referenceCache.resetLockAndExpire(environmentID);
+  }
+
   async createManyWithSubResources({
     references,
     referenceResources,
@@ -70,8 +94,34 @@ export class ReferenceService extends MutableService<ReferenceORM> {
     references: Reference[];
     referenceResources: ReferenceResource[];
   }) {
-    await this.referenceResourceORM.createMany(referenceResources);
-    await this.orm.createMany(references);
+    const newReferenceResources = await this.referenceResourceORM.createMany(referenceResources);
+    const newReferences = await this.orm.createMany(references);
+
+    return {
+      references: newReferences,
+      referenceResources: newReferenceResources,
+    };
+  }
+
+  async createManyWithSubResourcesAndSync({
+    references,
+    referenceResources,
+  }: {
+    references: Reference[];
+    referenceResources: ReferenceResource[];
+  }) {
+    const referencesWithSubResources = await this.postgresEM.transactional(() =>
+      this.createManyWithSubResources({ references, referenceResources })
+    );
+
+    return { add: referencesWithSubResources };
+  }
+
+  async broadcastAddMany(
+    { add }: { add: { references: Reference[]; referenceResources: ReferenceResource[] } },
+    meta: CMSBroadcastMeta
+  ) {
+    await this.logux.processAs(Actions.Reference.AddMany({ data: add, context: meta.context }), meta.auth);
   }
 
   async buildForCreator(
@@ -102,18 +152,18 @@ export class ReferenceService extends MutableService<ReferenceORM> {
     }
 
     try {
-      const { references, referenceResources } = await new this.ReferenceBuilder(payload).build();
+      const dataToCreate = await new this.ReferenceBuilder(payload).build();
 
-      await this.postgresEM.transactional(async () => {
+      const result = await this.postgresEM.transactional(async () => {
         await this.deleteManyWithSubResourcesByEnvironment(environmentID);
 
-        await this.createManyWithSubResources({ references, referenceResources });
+        return this.createManyWithSubResources(dataToCreate);
       });
 
       // release the lock at the end
       await this.referenceCache.setExpire(environmentID);
 
-      return { references, referenceResources };
+      return result;
     } catch (error) {
       this.logger.error(error);
 
@@ -124,15 +174,13 @@ export class ReferenceService extends MutableService<ReferenceORM> {
     }
   }
 
-  async addManyDiagramNodes({
+  async createManyWithSubResourcesForDiagramNodes({
     nodes,
-    authMeta,
     diagramID,
     assistantID,
     environmentID,
   }: {
     nodes: DiagramNode[];
-    authMeta: AuthMetaPayload;
     diagramID: string;
     assistantID: string;
     environmentID: string;
@@ -150,7 +198,7 @@ export class ReferenceService extends MutableService<ReferenceORM> {
 
     const newReferences: Reference[] = [];
     const newReferenceResources: ReferenceResource[] = [];
-    const intentReferenceResourceByIntentID: Partial<Record<string, ReferenceResource>> = {};
+    const intentReferenceResourceByIntentID: Partial<Record<string, ReferenceResource | null>> = {};
 
     const nodeBuilder = new this.ReferenceNodeBuilder({
       nodes,
@@ -160,33 +208,19 @@ export class ReferenceService extends MutableService<ReferenceORM> {
       diagramResourceID: diagramResource.id,
 
       getIntentResource: async (intentID: string) => {
-        let intentResource = intentReferenceResourceByIntentID[intentID] ?? null;
+        const cachedResource = intentReferenceResourceByIntentID[intentID];
 
-        if (!intentResource) {
-          intentResource = await this.referenceResourceORM.findOneByTypeDiagramIDAndResourceID({
-            type: ReferenceResourceType.INTENT,
-            diagramID: null,
-            resourceID: intentID,
-            environmentID,
-          });
+        if (cachedResource) return cachedResource;
+
+        const { isNew, resource } = await this.findOrCreateIntentResource({ intentID, assistantID, environmentID });
+
+        if (isNew && resource) {
+          newReferenceResources.push(resource);
         }
 
-        if (!intentResource) {
-          intentResource = {
-            id: new ObjectId().toJSON(),
-            type: ReferenceResourceType.INTENT,
-            metadata: null,
-            diagramID: null,
-            resourceID: intentID,
-            assistantID,
-            environmentID,
-          };
+        intentReferenceResourceByIntentID[intentID] = resource;
 
-          newReferenceResources.push(intentResource);
-          intentReferenceResourceByIntentID[intentID] = intentResource;
-        }
-
-        return intentResource;
+        return resource;
       },
     });
 
@@ -195,16 +229,236 @@ export class ReferenceService extends MutableService<ReferenceORM> {
     newReferences.push(...result.references);
     newReferenceResources.push(...result.referenceResources);
 
-    await this.postgresEM.transactional(() =>
-      this.createManyWithSubResources({ references: newReferences, referenceResources: newReferenceResources })
-    );
+    return this.createManyWithSubResourcesAndSync({
+      references: newReferences,
+      referenceResources: newReferenceResources,
+    });
+  }
 
-    await this.logux.processAs(
-      Actions.Reference.AddMany({
-        data: { references: newReferences, referenceResources: newReferenceResources },
-        context: { assistantID, environmentID },
-      }),
-      authMeta
-    );
+  async createManyWithSubResourcesForDiagramNodesAndBroadcast(
+    { nodes, diagramID }: { nodes: DiagramNode[]; diagramID: string },
+    meta: CMSBroadcastMeta
+  ) {
+    const result = await this.createManyWithSubResourcesForDiagramNodes({
+      nodes,
+      diagramID,
+      assistantID: meta.context.assistantID,
+      environmentID: meta.context.environmentID,
+    });
+
+    await this.broadcastAddMany(result, meta);
+  }
+
+  async createManyWithSubResourcesAndSyncForDiagrams({
+    userID,
+    diagrams,
+    assistantID,
+    environmentID,
+  }: {
+    userID: number;
+    diagrams: Diagram[];
+    assistantID: string;
+    environmentID: string;
+  }) {
+    const project = await this.projectORM.findOneOrFail(assistantID, { fields: ['teamID'] });
+
+    if (!this.unleash.isEnabled(FeatureFlag.REFERENCE_SYSTEM, { userID, workspaceID: project.teamID })) {
+      return { add: { references: [], referenceResources: [] } };
+    }
+
+    const newReferences: Reference[] = [];
+    const newReferenceResources: ReferenceResource[] = [];
+
+    const builder = new this.ReferenceDiagramBuilder({
+      diagrams,
+      assistantID,
+      environmentID,
+      getIntentResource: async (intentID) => {
+        const { isNew, resource } = await this.findOrCreateIntentResource({ intentID, assistantID, environmentID });
+
+        if (isNew && resource) {
+          newReferenceResources.push(resource);
+        }
+
+        return resource;
+      },
+    });
+
+    const result = await builder.build();
+
+    newReferences.push(...result.references);
+    newReferenceResources.push(...result.referenceResources);
+
+    return this.createManyWithSubResourcesAndSync({
+      references: newReferences,
+      referenceResources: newReferenceResources,
+    });
+  }
+
+  async deleteManyWithSubResourcesAndSyncByDiagramNodeIDs({
+    nodeIDs,
+    diagramID,
+    environmentID,
+  }: {
+    nodeIDs: string[];
+    diagramID: string;
+    environmentID: string;
+  }) {
+    const referenceResources = await this.referenceResourceORM.deleteManyByTypeDiagramIDAndResourceIDs({
+      type: ReferenceResourceType.NODE,
+      diagramID,
+      resourceIDs: nodeIDs,
+      environmentID,
+    });
+
+    return {
+      delete: {
+        references: [],
+        referenceResources,
+      },
+    };
+  }
+
+  async deleteManyWithSubResourcesAndSyncByDiagramIDs({
+    userID,
+    diagramIDs,
+    assistantID,
+    environmentID,
+  }: {
+    // delete with REFERENCE_SYSTEM ff
+    userID: number;
+    diagramIDs: string[];
+    // delete with REFERENCE_SYSTEM ff
+    assistantID: string;
+    environmentID: string;
+  }) {
+    const project = await this.projectORM.findOneOrFail(assistantID, { fields: ['teamID'] });
+
+    if (!this.unleash.isEnabled(FeatureFlag.REFERENCE_SYSTEM, { userID, workspaceID: project.teamID })) {
+      return { delete: { references: [], referenceResources: [] } };
+    }
+
+    const diagramReferenceResources = await this.referenceResourceORM.deleteManyByTypeDiagramIDAndResourceIDs({
+      type: ReferenceResourceType.DIAGRAM,
+      diagramID: null,
+      resourceIDs: diagramIDs,
+      environmentID,
+    });
+
+    const nodeReferenceResources = await this.referenceResourceORM.deleteManyByTypeAndDiagramIDs({
+      type: ReferenceResourceType.NODE,
+      diagramIDs,
+      environmentID,
+    });
+
+    return {
+      delete: {
+        references: [],
+        referenceResources: [...diagramReferenceResources, ...nodeReferenceResources],
+      },
+    };
+  }
+
+  async deleteManyWithSubResourcesAndSyncByIntentIDs({
+    userID,
+    intentIDs,
+    assistantID,
+    environmentID,
+  }: {
+    // delete with REFERENCE_SYSTEM ff
+    userID: number;
+    intentIDs: string[];
+    // delete with REFERENCE_SYSTEM ff
+    assistantID: string;
+    environmentID: string;
+  }) {
+    const project = await this.projectORM.findOneOrFail(assistantID, { fields: ['teamID'] });
+
+    if (!this.unleash.isEnabled(FeatureFlag.REFERENCE_SYSTEM, { userID, workspaceID: project.teamID })) {
+      return { delete: { references: [], referenceResources: [] } };
+    }
+
+    const referenceResources = await this.referenceResourceORM.deleteManyByTypeDiagramIDAndResourceIDs({
+      type: ReferenceResourceType.INTENT,
+      diagramID: null,
+      resourceIDs: intentIDs,
+      environmentID,
+    });
+
+    return {
+      delete: {
+        references: [],
+        referenceResources,
+      },
+    };
+  }
+
+  async broadcastDeleteMany(
+    { delete: del }: { delete: { references: Reference[]; referenceResources: ReferenceResource[] } },
+    meta: CMSBroadcastMeta
+  ) {
+    await this.logux.processAs(Actions.Reference.DeleteMany({ data: del, context: meta.context }), meta.auth);
+  }
+
+  async deleteManyWithSubResourcesByDiagramNodeIDsAndBroadcast(
+    {
+      nodeIDs,
+      diagramID,
+    }: {
+      nodeIDs: string[];
+      diagramID: string;
+    },
+    meta: CMSBroadcastMeta
+  ) {
+    const result = await this.deleteManyWithSubResourcesAndSyncByDiagramNodeIDs({
+      nodeIDs,
+      diagramID,
+      environmentID: meta.context.environmentID,
+    });
+
+    await this.broadcastDeleteMany(result, meta);
+  }
+
+  private async findOrCreateIntentResource({
+    intentID,
+    assistantID,
+    environmentID,
+  }: {
+    intentID: string;
+    assistantID: string;
+    environmentID: string;
+  }) {
+    let isNew = false;
+
+    // check if the intent exists
+    const intent = await this.intentORM.findOne({ id: intentID, environmentID });
+
+    if (!intent) return { isNew: false, resource: null };
+
+    let intentResource = await this.referenceResourceORM.findOneByTypeDiagramIDAndResourceID({
+      type: ReferenceResourceType.INTENT,
+      diagramID: null,
+      resourceID: intentID,
+      environmentID,
+    });
+
+    if (!intentResource) {
+      isNew = true;
+
+      intentResource = {
+        id: new ObjectId().toJSON(),
+        type: ReferenceResourceType.INTENT,
+        metadata: null,
+        diagramID: null,
+        resourceID: intentID,
+        assistantID,
+        environmentID,
+      };
+    }
+
+    return {
+      isNew,
+      resource: intentResource,
+    };
   }
 }

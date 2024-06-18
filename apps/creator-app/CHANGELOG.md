@@ -3,6 +3,50 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1574.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1574.3...@voiceflow/creator-app@1.1574.4) (2024-06-18)
+
+**Note:** Version bump only for package @voiceflow/creator-app
+
+## [1.1574.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1574.2...@voiceflow/creator-app@1.1574.3) (2024-06-17)
+
+**Note:** Version bump only for package @voiceflow/creator-app
+
+## [1.1574.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1574.1...@voiceflow/creator-app@1.1574.2) (2024-06-17)
+
+**Note:** Version bump only for package @voiceflow/creator-app
+
+## [1.1574.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1574.0...@voiceflow/creator-app@1.1574.1) (2024-06-17)
+
+**Note:** Version bump only for package @voiceflow/creator-app
+
+# [1.1574.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1573.0...@voiceflow/creator-app@1.1574.0) (2024-06-17)
+
+### Features
+
+* remove diagram references on diagram removal (COR-000) ([#8294](https://github.com/voiceflow/creator-app/issues/8294)) ([89fb842](https://github.com/voiceflow/creator-app/commit/89fb842faa3e844c04e708247a19bea2162c88c6))
+
+# [1.1573.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1572.1...@voiceflow/creator-app@1.1573.0) (2024-06-17)
+
+### Bug Fixes
+
+* show user id in transcripts (COR-2203) ([#8317](https://github.com/voiceflow/creator-app/issues/8317)) ([8fd4539](https://github.com/voiceflow/creator-app/commit/8fd45399e364d4167e76b11ca88c74fc76d0697e))
+
+### Features
+
+* sunset remaining unused permissions (COR-2361) ([#8314](https://github.com/voiceflow/creator-app/issues/8314)) ([663d6c8](https://github.com/voiceflow/creator-app/commit/663d6c89b066d2f51b20a879db383e991fbf17af))
+
+## [1.1572.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1572.0...@voiceflow/creator-app@1.1572.1) (2024-06-17)
+
+### Bug Fixes
+
+* wrap function description in canvas (COR-2400) ([#8316](https://github.com/voiceflow/creator-app/issues/8316)) ([978856d](https://github.com/voiceflow/creator-app/commit/978856d6940ab84f6bcc4e17d3f2616cb78db1e2))
+
+# [1.1572.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1571.0...@voiceflow/creator-app@1.1572.0) (2024-06-17)
+
+### Features
+
+* node reference handlers (COR-000) ([#8275](https://github.com/voiceflow/creator-app/issues/8275)) ([b98b7a1](https://github.com/voiceflow/creator-app/commit/b98b7a19696f40bdc322ac6bddf063c24d88ba26))
+
 # [1.1571.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1570.1...@voiceflow/creator-app@1.1571.0) (2024-06-14)
 
 ### Features

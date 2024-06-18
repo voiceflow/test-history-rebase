@@ -11,7 +11,7 @@ class InsertManySteps extends AbstractVersionDiagramAccessActionControl<Realtime
   actionCreator = Realtime.node.insertManySteps;
 
   protected process = async (
-    _ctx: Context,
+    ctx: Context,
     { payload }: Action<Realtime.node.InsertManyStepsPayload>
   ): Promise<void> => {
     const {
@@ -56,6 +56,39 @@ class InsertManySteps extends AbstractVersionDiagramAccessActionControl<Realtime
       parentNodeID,
       nodePortRemaps,
     });
+
+    if (
+      this.services.feature.isEnabled(Realtime.FeatureFlag.REFERENCE_SYSTEM, {
+        userID: Number(ctx.userId),
+        workspaceID: payload.workspaceID,
+      })
+    ) {
+      await this.services.requestContext.createAsync(async () => {
+        await Promise.all([
+          this.services.reference.deleteManyWithSubResourcesByDiagramNodeIDsAndBroadcast(
+            {
+              nodeIDs: removeNodes.map((node) => node.stepID ?? node.parentNodeID),
+              diagramID: payload.diagramID,
+            },
+            {
+              auth: { userID: Number(ctx.userId), clientID: ctx.clientId },
+              context: { assistantID: payload.projectID, environmentID: payload.versionID },
+            }
+          ),
+
+          this.services.reference.createManyWithSubResourcesForDiagramNodesAndBroadcast(
+            {
+              nodes: stepsToCreate,
+              diagramID: payload.diagramID,
+            },
+            {
+              auth: { userID: Number(ctx.userId), clientID: ctx.clientId },
+              context: { assistantID: payload.projectID, environmentID: payload.versionID },
+            }
+          ),
+        ]);
+      });
+    }
   };
 
   protected finally = async (

@@ -6,13 +6,20 @@ import { Utils } from '@voiceflow/common';
 import { Flow } from '@voiceflow/dtos';
 import { HashedIDService } from '@voiceflow/nestjs-common';
 import { LoguxService } from '@voiceflow/nestjs-logux';
-import type { DiagramObject, FlowJSON, FlowObject } from '@voiceflow/orm-designer';
+import type {
+  DiagramObject,
+  FlowJSON,
+  FlowObject,
+  ReferenceObject,
+  ReferenceResourceObject,
+} from '@voiceflow/orm-designer';
 import { AssistantORM, DatabaseTarget, FlowORM } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { CMSTabularService } from '@/common';
 import { cmsBroadcastContext, toPostgresEntityIDs } from '@/common/utils';
 import { DiagramService } from '@/diagram/diagram.service';
+import { ReferenceService } from '@/reference/reference.service';
 import { CMSBroadcastMeta, CMSContext } from '@/types';
 
 import type { FlowExportImportDataDTO } from './dtos/flow-export-import-data.dto';
@@ -40,7 +47,9 @@ export class FlowService extends CMSTabularService<FlowORM> {
     @Inject(DiagramService)
     protected readonly diagram: DiagramService,
     @Inject(HashedIDService)
-    protected readonly hashedID: HashedIDService
+    protected readonly hashedID: HashedIDService,
+    @Inject(ReferenceService)
+    protected readonly reference: ReferenceService
   ) {
     super();
   }
@@ -56,7 +65,7 @@ export class FlowService extends CMSTabularService<FlowORM> {
     await this.logux.processAs(
       Actions.Flow.PatchOne({
         id: flowID,
-        patch: {},
+        patch: Utils.object.omit(patch, ['updatedByID']),
         context: cmsBroadcastContext(meta.context),
       }),
       meta.auth
@@ -166,11 +175,7 @@ export class FlowService extends CMSTabularService<FlowORM> {
   }
 
   async importManyWithSubResourcesFromJSON({ flows }: FlowExportImportDataDTO) {
-    await this.importManyWithSubResources(
-      this.fromJSONWithSubResources({
-        flows,
-      })
-    );
+    await this.importManyWithSubResources(this.fromJSONWithSubResources({ flows }));
   }
 
   /* Create */
@@ -191,12 +196,32 @@ export class FlowService extends CMSTabularService<FlowORM> {
       }))
     );
 
+    const referenceResult = await this.reference.createManyWithSubResourcesAndSyncForDiagrams({
+      userID,
+      diagrams: this.diagram.mapToJSON(diagrams),
+      assistantID: context.assistantID,
+      environmentID: context.environmentID,
+    });
+
     return {
-      add: { flows, diagrams },
+      ...referenceResult,
+      add: { ...referenceResult.add, flows, diagrams },
     };
   }
 
-  async broadcastAddMany({ add }: { add: { flows: FlowObject[]; diagrams: DiagramObject[] } }, meta: CMSBroadcastMeta) {
+  async broadcastAddMany(
+    {
+      add,
+    }: {
+      add: {
+        flows: FlowObject[];
+        diagrams: DiagramObject[];
+        references: ReferenceObject[];
+        referenceResources: ReferenceResourceObject[];
+      };
+    },
+    meta: CMSBroadcastMeta
+  ) {
     const assistant = await this.assistantORM.findOneOrFail(meta.context.assistantID);
 
     await Promise.all([
@@ -211,6 +236,7 @@ export class FlowService extends CMSTabularService<FlowORM> {
         ...meta,
         context: { ...meta.context, workspaceID: this.hashedID.encodeWorkspaceID(assistant.workspaceID) },
       }),
+      this.reference.broadcastAddMany({ add: Utils.object.pick(add, ['references', 'referenceResources']) }, meta),
     ]);
   }
 
@@ -234,20 +260,47 @@ export class FlowService extends CMSTabularService<FlowORM> {
     };
   }
 
-  async deleteManyAndSync(ids: string[], { context }: { context: CMSContext }) {
-    return this.postgresEM.transactional(async () => {
-      const flows = await this.findManyByEnvironmentAndIDs(context.environmentID, ids);
+  async deleteManyAndSync(ids: string[], { userID, context }: { userID: number; context: CMSContext }) {
+    const flows = await this.findManyByEnvironmentAndIDs(context.environmentID, ids);
 
-      const diagramIDs = flows.map((flow) => flow.diagramID);
-      const diagrams = await this.diagram.findManyByVersionIDAndDiagramIDs(context.environmentID, diagramIDs);
+    const diagramIDs = flows.map((flow) => flow.diagramID);
 
-      await this.diagram.deleteManyByVersionIDAndDiagramIDs(context.environmentID, diagramIDs);
+    const diagrams = await this.diagram.findManyByVersionIDAndDiagramIDs(context.environmentID, diagramIDs);
+
+    const result = await this.postgresEM.transactional(async () => {
       await this.deleteMany(flows);
 
+      const referenceResult = await this.reference.deleteManyWithSubResourcesAndSyncByDiagramIDs({
+        userID,
+        diagramIDs,
+        assistantID: context.assistantID,
+        environmentID: context.environmentID,
+      });
+
       return {
-        delete: { flows, diagrams },
+        ...referenceResult,
+        delete: { ...referenceResult.delete, flows, diagrams },
       };
     });
+
+    // removing diagrams outside of transaction caus they are in mongo
+    try {
+      await this.diagram.deleteManyByVersionIDAndDiagramIDs(context.environmentID, diagramIDs);
+    } catch (error) {
+      // recreating flows and references if diagrams were not deleted
+      await this.createMany(flows);
+
+      await this.reference.createManyWithSubResourcesAndSyncForDiagrams({
+        userID,
+        diagrams: this.diagram.mapToJSON(diagrams),
+        assistantID: context.assistantID,
+        environmentID: context.environmentID,
+      });
+
+      throw error;
+    }
+
+    return result;
   }
 
   async broadcastDeleteMany(
@@ -257,6 +310,8 @@ export class FlowService extends CMSTabularService<FlowORM> {
       delete: {
         flows: FlowObject[];
         diagrams: DiagramObject[];
+        references: ReferenceObject[];
+        referenceResources: ReferenceResourceObject[];
       };
     },
     meta: CMSBroadcastMeta
@@ -278,18 +333,22 @@ export class FlowService extends CMSTabularService<FlowORM> {
           workspaceID: this.hashedID.encodeWorkspaceID(assistant.workspaceID),
         },
       }),
+      this.reference.broadcastDeleteMany(
+        { delete: Utils.object.pick(del, ['references', 'referenceResources']) },
+        meta
+      ),
     ]);
   }
 
   async deleteManyAndBroadcast(ids: string[], meta: CMSBroadcastMeta): Promise<void> {
-    const result = await this.deleteManyAndSync(ids, meta);
+    const result = await this.deleteManyAndSync(ids, { userID: meta.auth.userID, context: meta.context });
 
     await this.broadcastDeleteMany(result, meta);
   }
 
   /* Duplicate */
 
-  async duplicateMany(
+  async duplicateManyAndSync(
     sourceFlows: FlowObject[],
     {
       userID,
@@ -334,37 +393,44 @@ export class FlowService extends CMSTabularService<FlowORM> {
       }))
     );
 
+    const referenceResult = await this.reference.createManyWithSubResourcesAndSyncForDiagrams({
+      userID,
+      diagrams: this.diagram.mapToJSON(diagrams),
+      assistantID: context.assistantID,
+      environmentID: context.environmentID,
+    });
+
     return {
-      flows,
-      diagrams,
+      ...referenceResult,
+      add: { ...referenceResult.add, flows, diagrams },
     };
   }
 
   async copyPasteManyAndBroadcast(data: Actions.Flow.CopyPasteMany.Request['data'], meta: CMSBroadcastMeta) {
     const sourceFlows = await this.orm.findManyByDiagramIDs(data.sourceEnvironmentID, data.sourceDiagramIDs);
 
-    const { flows, diagrams } = await this.duplicateMany(sourceFlows, {
+    const result = await this.duplicateManyAndSync(sourceFlows, {
       userID: meta.auth.userID,
       context: meta.context,
       sourceEnvironmentID: data.sourceEnvironmentID,
     });
 
-    await this.broadcastAddMany({ add: { flows, diagrams } }, meta);
+    await this.broadcastAddMany(result, meta);
 
-    return flows;
+    return result.add.flows;
   }
 
   async duplicateOneAndBroadcast(data: { flowID: string }, meta: CMSBroadcastMeta) {
     const flow = await this.findOneOrFail({ id: data.flowID, environmentID: meta.context.environmentID });
 
-    const { flows, diagrams } = await this.duplicateMany([flow], {
+    const result = await this.duplicateManyAndSync([flow], {
       userID: meta.auth.userID,
       context: meta.context,
     });
 
-    await this.broadcastAddMany({ add: { flows, diagrams } }, meta);
+    await this.broadcastAddMany(result, meta);
 
-    return flows[0];
+    return result.add.flows[0];
   }
 
   /* Upsert */

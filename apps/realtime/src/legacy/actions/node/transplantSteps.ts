@@ -8,7 +8,7 @@ class TransplantSteps extends AbstractVersionDiagramAccessActionControl<Realtime
   actionCreator = Realtime.node.transplantSteps;
 
   protected process = async (
-    _ctx: Context,
+    ctx: Context,
     { payload }: Action<Realtime.node.TransplantStepsPayload>
   ): Promise<void> => {
     await this.services.diagram.transplantSteps({
@@ -22,6 +22,29 @@ class TransplantSteps extends AbstractVersionDiagramAccessActionControl<Realtime
       sourceParentNodeID: payload.sourceParentNodeID,
       targetParentNodeID: payload.targetParentNodeID,
     });
+
+    if (
+      this.services.feature.isEnabled(Realtime.FeatureFlag.REFERENCE_SYSTEM, {
+        userID: Number(ctx.userId),
+        workspaceID: payload.workspaceID,
+      })
+    ) {
+      await this.services.requestContext.createAsync(async () => {
+        await this.services.reference.deleteManyWithSubResourcesByDiagramNodeIDsAndBroadcast(
+          {
+            nodeIDs: [
+              ...(payload.removeSource ? [payload.sourceParentNodeID] : []),
+              ...payload.removeNodes.map((node) => node.stepID ?? node.parentNodeID),
+            ],
+            diagramID: payload.diagramID,
+          },
+          {
+            auth: { userID: Number(ctx.userId), clientID: ctx.clientId },
+            context: { assistantID: payload.projectID, environmentID: payload.versionID },
+          }
+        );
+      });
+    }
   };
 
   protected finally = async (

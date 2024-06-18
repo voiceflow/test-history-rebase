@@ -60,11 +60,6 @@ export enum Permission {
 
   // features (when a permission is only plan based, it should be prefixed with FEATURE_)
   FEATURE_KB_REFRESH_RATE = 'feature.kb:REFRESH_RATE',
-  FEATURE_AI_PLAYGROUND_DISCLAIMER = 'feature:AI_PLAYGROUND_DISCLAIMER',
-
-  FEATURE_SHARE_PROJECT = 'feature:SHARE_PROJECT',
-  FEATURE_EXPORT_MODEL = 'feature:EXPORT_MODEL', // to be removed once revised permissions feature is implemented
-
   // kill once everyone is on chargebee? confirm with proudct, since some customers will have extra seats
   FEATURE_MANAGE_SEATS = 'feature:MANAGE_SEATS',
   FEATURE_ADVANCED_LLM_MODELS = 'feature:ADVANCED_LLM_MODELS', // kill once everyone is on chargebee

@@ -6,7 +6,15 @@ import { Utils } from '@voiceflow/common';
 import { Workflow } from '@voiceflow/dtos';
 import { HashedIDService } from '@voiceflow/nestjs-common';
 import { LoguxService } from '@voiceflow/nestjs-logux';
-import type { DiagramObject, ORMEntity, PatchData, WorkflowJSON, WorkflowObject } from '@voiceflow/orm-designer';
+import type {
+  DiagramObject,
+  ORMEntity,
+  PatchData,
+  ReferenceObject,
+  ReferenceResourceObject,
+  WorkflowJSON,
+  WorkflowObject,
+} from '@voiceflow/orm-designer';
 import { AssistantORM, DatabaseTarget, WorkflowORM } from '@voiceflow/orm-designer';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { IdentityClient } from '@voiceflow/sdk-identity';
@@ -20,6 +28,7 @@ import { DiagramUtil } from '@/diagram/diagram.util';
 import { EmailService } from '@/email/email.service';
 import { EmailSubscriptionGroup } from '@/email/enum/email-subscription-group.enum';
 import { EmailTemplate } from '@/email/enum/email-template.enum';
+import { ReferenceService } from '@/reference/reference.service';
 import { CMSBroadcastMeta, CMSContext } from '@/types';
 
 import type { WorkflowExportImportDataDTO } from './dtos/workflow-export-import-data.dto';
@@ -54,6 +63,8 @@ export class WorkflowService extends CMSTabularService<WorkflowORM> {
     protected readonly diagram: DiagramService,
     @Inject(HashedIDService)
     protected readonly hashedID: HashedIDService,
+    @Inject(ReferenceService)
+    protected readonly reference: ReferenceService,
     @Inject(CreatorAppService)
     protected readonly creatorApp: CreatorAppService,
     @Inject(DiagramUtil)
@@ -144,7 +155,7 @@ export class WorkflowService extends CMSTabularService<WorkflowORM> {
     await this.logux.processAs(
       Actions.Workflow.PatchOne({
         id: workflowID,
-        patch: {},
+        patch: Utils.object.omit(patch, ['updatedByID']),
         context: cmsBroadcastContext(meta.context),
       }),
       meta.auth
@@ -258,11 +269,7 @@ export class WorkflowService extends CMSTabularService<WorkflowORM> {
   }
 
   async importManyWithSubResourcesFromJSON({ workflows }: WorkflowExportImportDataDTO) {
-    await this.importManyWithSubResources(
-      this.fromJSONWithSubResources({
-        workflows,
-      })
-    );
+    await this.importManyWithSubResources(this.fromJSONWithSubResources({ workflows }));
   }
 
   /* Create */
@@ -283,13 +290,30 @@ export class WorkflowService extends CMSTabularService<WorkflowORM> {
       }))
     );
 
+    const referenceResult = await this.reference.createManyWithSubResourcesAndSyncForDiagrams({
+      userID,
+      diagrams: this.diagram.mapToJSON(diagrams),
+      assistantID: context.assistantID,
+      environmentID: context.environmentID,
+    });
+
     return {
-      add: { workflows, diagrams },
+      ...referenceResult,
+      add: { ...referenceResult.add, workflows, diagrams },
     };
   }
 
   async broadcastAddMany(
-    { add }: { add: { workflows: WorkflowObject[]; diagrams: DiagramObject[] } },
+    {
+      add,
+    }: {
+      add: {
+        diagrams: DiagramObject[];
+        workflows: WorkflowObject[];
+        references: ReferenceObject[];
+        referenceResources: ReferenceResourceObject[];
+      };
+    },
     meta: CMSBroadcastMeta
   ) {
     const assistant = await this.assistantORM.findOneOrFail(meta.context.assistantID);
@@ -306,6 +330,7 @@ export class WorkflowService extends CMSTabularService<WorkflowORM> {
         ...meta,
         context: { ...meta.context, workspaceID: this.hashedID.encodeWorkspaceID(assistant.workspaceID) },
       }),
+      this.reference.broadcastAddMany({ add: Utils.object.pick(add, ['references', 'referenceResources']) }, meta),
     ]);
   }
 
@@ -337,22 +362,47 @@ export class WorkflowService extends CMSTabularService<WorkflowORM> {
     };
   }
 
-  async deleteManyAndSync(ids: string[], { context }: { context: CMSContext }) {
-    return this.postgresEM.transactional(async () => {
-      const workflows = await this.findManyByEnvironmentAndIDs(context.environmentID, ids);
+  async deleteManyAndSync(ids: string[], { userID, context }: { userID: number; context: CMSContext }) {
+    const workflows = await this.findManyByEnvironmentAndIDs(context.environmentID, ids);
 
-      const workflowsWithoutStart = workflows.filter((workflow) => !workflow.isStart);
-      const diagramIDs = workflowsWithoutStart.map((flow) => flow.diagramID);
+    const workflowsWithoutStart = workflows.filter((workflow) => !workflow.isStart);
+    const diagramIDs = workflowsWithoutStart.map((flow) => flow.diagramID);
 
-      const diagrams = await this.diagram.findManyByVersionIDAndDiagramIDs(context.environmentID, diagramIDs);
+    const diagrams = await this.diagram.findManyByVersionIDAndDiagramIDs(context.environmentID, diagramIDs);
 
-      await this.diagram.deleteManyByVersionIDAndDiagramIDs(context.environmentID, diagramIDs);
+    const result = await this.postgresEM.transactional(async () => {
       await this.deleteMany(workflowsWithoutStart);
 
+      const referenceResult = await this.reference.deleteManyWithSubResourcesAndSyncByDiagramIDs({
+        userID,
+        diagramIDs,
+        assistantID: context.assistantID,
+        environmentID: context.environmentID,
+      });
+
       return {
-        delete: { workflows: workflowsWithoutStart, diagrams },
+        delete: { ...referenceResult.delete, workflows: workflowsWithoutStart, diagrams },
       };
     });
+
+    // removing diagrams outside of transaction caus they are in mongo
+    try {
+      await this.diagram.deleteManyByVersionIDAndDiagramIDs(context.environmentID, diagramIDs);
+    } catch (error) {
+      // recreating workflows and references if diagrams were not deleted
+      await this.createMany(workflows);
+
+      await this.reference.createManyWithSubResourcesAndSyncForDiagrams({
+        userID,
+        diagrams: this.diagram.mapToJSON(diagrams),
+        assistantID: context.assistantID,
+        environmentID: context.environmentID,
+      });
+
+      throw error;
+    }
+
+    return result;
   }
 
   async broadcastDeleteMany(
@@ -362,6 +412,8 @@ export class WorkflowService extends CMSTabularService<WorkflowORM> {
       delete: {
         diagrams: DiagramObject[];
         workflows: WorkflowObject[];
+        references: ReferenceObject[];
+        referenceResources: ReferenceResourceObject[];
       };
     },
     meta: CMSBroadcastMeta
@@ -383,18 +435,22 @@ export class WorkflowService extends CMSTabularService<WorkflowORM> {
           workspaceID: this.hashedID.encodeWorkspaceID(assistant.workspaceID),
         },
       }),
+      this.reference.broadcastDeleteMany(
+        { delete: Utils.object.pick(del, ['references', 'referenceResources']) },
+        meta
+      ),
     ]);
   }
 
   async deleteManyAndBroadcast(ids: string[], meta: CMSBroadcastMeta): Promise<void> {
-    const result = await this.deleteManyAndSync(ids, meta);
+    const result = await this.deleteManyAndSync(ids, { userID: meta.auth.userID, context: meta.context });
 
     await this.broadcastDeleteMany(result, meta);
   }
 
   /* Duplicate */
 
-  async duplicateMany(
+  async duplicateManyAndSync(
     sourceWorkflows: WorkflowObject[],
     {
       userID,
@@ -441,37 +497,44 @@ export class WorkflowService extends CMSTabularService<WorkflowORM> {
       }))
     );
 
+    const referenceResult = await this.reference.createManyWithSubResourcesAndSyncForDiagrams({
+      userID,
+      diagrams: this.diagram.mapToJSON(diagrams),
+      assistantID: context.assistantID,
+      environmentID: context.environmentID,
+    });
+
     return {
-      diagrams,
-      workflows,
+      ...referenceResult,
+      add: { ...referenceResult.add, diagrams, workflows },
     };
   }
 
   async copyPasteManyAndBroadcast(data: Actions.Workflow.CopyPasteMany.Request['data'], meta: CMSBroadcastMeta) {
     const sourceWorkflows = await this.orm.findManyByDiagramIDs(data.sourceEnvironmentID, data.sourceDiagramIDs);
 
-    const { workflows, diagrams } = await this.duplicateMany(sourceWorkflows, {
+    const result = await this.duplicateManyAndSync(sourceWorkflows, {
       userID: meta.auth.userID,
       context: meta.context,
       sourceEnvironmentID: data.sourceEnvironmentID,
     });
 
-    await this.broadcastAddMany({ add: { workflows, diagrams } }, meta);
+    await this.broadcastAddMany(result, meta);
 
-    return workflows;
+    return result.add.workflows;
   }
 
   async duplicateOneAndBroadcast(data: { workflowID: string }, meta: CMSBroadcastMeta) {
     const workflow = await this.findOneOrFail({ id: data.workflowID, environmentID: meta.context.environmentID });
 
-    const { workflows, diagrams } = await this.duplicateMany([workflow], {
+    const result = await this.duplicateManyAndSync([workflow], {
       userID: meta.auth.userID,
       context: meta.context,
     });
 
-    await this.broadcastAddMany({ add: { workflows, diagrams } }, meta);
+    await this.broadcastAddMany(result, meta);
 
-    return workflows[0];
+    return result.add.workflows[0];
   }
 
   /* Upsert */

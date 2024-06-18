@@ -57,13 +57,33 @@ export const getDBNodes = <T extends Realtime.creator.ImportSnapshotPayload>(pay
 class ImportSnapshot extends AbstractDiagramResourceControl<Realtime.creator.ImportSnapshotPayload> {
   protected actionCreator = Realtime.creator.importSnapshot;
 
-  protected process = async (_ctx: Context, { payload }: Action<Realtime.creator.ImportSnapshotPayload>) => {
-    const dbNodes = getDBNodes(payload);
+  protected process = async (ctx: Context, { payload }: Action<Realtime.creator.ImportSnapshotPayload>) => {
+    const dbNodes = Object.values(getDBNodes(payload));
 
-    await this.services.diagram.addManyNodes(payload.versionID, payload.diagramID, { nodes: Object.values(dbNodes) });
+    await this.services.diagram.addManyNodes(payload.versionID, payload.diagramID, { nodes: dbNodes });
+
+    if (
+      this.services.feature.isEnabled(Realtime.FeatureFlag.REFERENCE_SYSTEM, {
+        userID: Number(ctx.userId),
+        workspaceID: payload.workspaceID,
+      })
+    ) {
+      await this.services.requestContext.createAsync(() =>
+        this.services.reference.createManyWithSubResourcesForDiagramNodesAndBroadcast(
+          { nodes: dbNodes, diagramID: payload.diagramID },
+          {
+            auth: { userID: Number(ctx.userId), clientID: ctx.clientId },
+            context: { assistantID: payload.projectID, environmentID: payload.versionID },
+          }
+        )
+      );
+    }
   };
 
-  protected finally = async (ctx: Context, { payload }: Action<Realtime.creator.ImportSnapshotPayload>): Promise<void> => {
+  protected finally = async (
+    ctx: Context,
+    { payload }: Action<Realtime.creator.ImportSnapshotPayload>
+  ): Promise<void> => {
     await this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID);
   };
 }

@@ -1,6 +1,7 @@
 import { Utils } from '@voiceflow/common';
+import { ReferenceResourceType } from '@voiceflow/dtos';
 import { Actions } from '@voiceflow/sdk-logux-designer';
-import * as Normal from 'normal-store';
+import { appendMany, normalize, removeMany } from 'normal-store';
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
 
 import { INITIAL_STATE, type ReferenceState } from './reference.state';
@@ -9,16 +10,17 @@ import { buildReferenceCache } from './reference.util';
 export const referenceReducer = reducerWithInitialState<ReferenceState>(INITIAL_STATE)
   .case(Actions.Reference.Replace, (_, { data }) => ({
     ...buildReferenceCache(data.references, data.referenceResources),
-    resources: Normal.normalize(data.referenceResources),
-    references: Normal.normalize(data.references),
+    resources: normalize(data.referenceResources),
+    references: normalize(data.references),
   }))
   .case(Actions.Reference.AddMany, (state, { data }) => {
     const cache = buildReferenceCache(data.references, data.referenceResources);
 
     return {
-      resources: Normal.appendMany(state.resources, data.referenceResources),
-      references: Normal.appendMany(state.references, data.references),
+      resources: appendMany(state.resources, data.referenceResources),
+      references: appendMany(state.references, data.references),
       blockNodeResourceIDs: [...state.blockNodeResourceIDs, ...cache.blockNodeResourceIDs],
+      diagramIDResourceIDMap: { ...state.diagramIDResourceIDMap, ...cache.diagramIDResourceIDMap },
       triggerNodeResourceIDs: [...state.triggerNodeResourceIDs, ...cache.triggerNodeResourceIDs],
       resourceIDsByDiagramIDMap: { ...state.resourceIDsByDiagramIDMap, ...cache.resourceIDsByDiagramIDMap },
       resourceIDsByRefererIDMap: { ...state.resourceIDsByRefererIDMap, ...cache.resourceIDsByRefererIDMap },
@@ -35,10 +37,15 @@ export const referenceReducer = reducerWithInitialState<ReferenceState>(INITIAL_
       ...resourceIDs.flatMap((resourceID) => state.referenceIDsByReferrerIDMap[resourceID] ?? []),
     ]);
 
+    const diagramIDs = data.referenceResources
+      .filter((resource) => resource.type === ReferenceResourceType.DIAGRAM)
+      .map((resource) => resource.resourceID);
+
     return {
-      resources: Normal.removeMany(state.resources, resourceIDs),
-      references: Normal.removeMany(state.references, referenceIDs),
+      resources: removeMany(state.resources, resourceIDs),
+      references: removeMany(state.references, referenceIDs),
       blockNodeResourceIDs: Utils.array.withoutValues(state.blockNodeResourceIDs, resourceIDs),
+      diagramIDResourceIDMap: Utils.object.omit(state.diagramIDResourceIDMap, diagramIDs),
       triggerNodeResourceIDs: Utils.array.withoutValues(state.triggerNodeResourceIDs, resourceIDs),
       resourceIDsByDiagramIDMap: data.referenceResources.reduce((acc, resource) => {
         if (!resource.diagramID) return acc;

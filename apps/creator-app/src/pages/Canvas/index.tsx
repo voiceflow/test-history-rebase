@@ -52,7 +52,7 @@ const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
       // TODO: play with the number, probably needs to read user's available memory and adjust number based on the memory
       const animated = allNodeIDs.length < 1000;
 
-      if (nodeID) {
+      if (nodeID && engine.context.diagramID === nodeMatch.params.diagramID) {
         if (nodeID === 'start') {
           engine.focusHome({ open: true, animated, skipURLSync: true });
         } else {

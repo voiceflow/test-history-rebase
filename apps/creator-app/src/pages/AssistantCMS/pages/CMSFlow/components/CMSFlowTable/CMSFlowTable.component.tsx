@@ -1,10 +1,11 @@
+import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { Table, usePersistFunction } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { CMS_FLOW_LEARN_MORE } from '@/constants/link.constant';
 import { Designer, Router } from '@/ducks';
-import { useDispatch } from '@/hooks';
-import { useGetValueSelector } from '@/hooks/store.hook';
+import { useFeature } from '@/hooks/feature';
+import { useDispatch, useGetValueSelector } from '@/hooks/store.hook';
 
 import { CMSEmpty } from '../../../../components/CMSEmpty/CMSEmpty.component';
 import {
@@ -13,11 +14,13 @@ import {
   useCMSRowItemNavigate,
 } from '../../../../hooks/cms-row-item.hook';
 import { useFlowCMSManager, useOnFlowCreate } from '../../CMSFlow.hook';
-import { flowColumnsOrderAtom } from './CMSFlowTable.atom';
+import { flowColumnsOrderAtom, legacyFlowColumnsOrderAtom } from './CMSFlowTable.atom';
 import { CMS_FLOW_TABLE_CONFIG } from './CMSFlowTable.config';
 import { FlowTableColumn } from './CMSFlowTable.constant';
 
 export const CMSFlowTable: React.FC = () => {
+  const componentsUsedBY = useFeature(FeatureFlag.COMPONENTS_USED_BY);
+
   const onCreate = useOnFlowCreate();
   const onRowClick = useCMSRowItemClick();
   const cmsManager = useFlowCMSManager();
@@ -58,7 +61,7 @@ export const CMSFlowTable: React.FC = () => {
         onRowNavigate={onRowNavigate}
         rowContextMenu={rowContextMenu}
         onRowDoubleClick={onRowDoubleClick}
-        columnsOrderAtom={flowColumnsOrderAtom}
+        columnsOrderAtom={componentsUsedBY.isEnabled ? flowColumnsOrderAtom : legacyFlowColumnsOrderAtom}
       />
     </CMSEmpty>
   );

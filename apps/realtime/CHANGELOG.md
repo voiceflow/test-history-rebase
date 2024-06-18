@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.400.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.400.0...@voiceflow/realtime@1.400.1) (2024-06-18)
+
+### Bug Fixes
+
+* clear folderId when importing a function (COR-2343) ([#8318](https://github.com/voiceflow/creator-app/issues/8318)) ([0d05dfb](https://github.com/voiceflow/creator-app/commit/0d05dfbd111bc87a71d3f9e1414ae7ffbc8ff00e))
+
 # [1.400.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.399.1...@voiceflow/realtime@1.400.0) (2024-06-18)
 
 ### Features

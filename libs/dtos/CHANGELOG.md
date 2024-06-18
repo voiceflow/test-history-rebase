@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.94.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.93.1...@voiceflow/dtos@1.94.0) (2024-06-18)
+
+### Features
+
+* component reference (COR-000) ([#8310](https://github.com/voiceflow/creator-app/issues/8310)) ([3cc3c1b](https://github.com/voiceflow/creator-app/commit/3cc3c1be5f63021d54b90d727dafa696f7566e45))
+
 ## [1.93.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.93.0...@voiceflow/dtos@1.93.1) (2024-06-17)
 
 **Note:** Version bump only for package @voiceflow/dtos

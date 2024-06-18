@@ -14,6 +14,7 @@ import {
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 
 import { ReferenceBaseBuilderUtil } from './reference-base-builder.util';
+import { ReferenceBuilderCacheUtil } from './reference-builder-cache.util';
 
 export class ReferenceNodeBuilderUtil extends ReferenceBaseBuilderUtil {
   private readonly nodes: DiagramNode[];
@@ -22,7 +23,9 @@ export class ReferenceNodeBuilderUtil extends ReferenceBaseBuilderUtil {
 
   private readonly diagramResourceID: string;
 
-  private readonly getIntentResource: (intentID: string) => Promise<ReferenceResource | null>;
+  private readonly intentResourceCache: ReferenceBuilderCacheUtil;
+
+  private readonly diagramResourceCache: ReferenceBuilderCacheUtil;
 
   constructor({
     nodes,
@@ -30,21 +33,24 @@ export class ReferenceNodeBuilderUtil extends ReferenceBaseBuilderUtil {
     assistantID,
     environmentID,
     diagramResourceID,
-    getIntentResource,
+    intentResourceCache,
+    diagramResourceCache,
   }: {
     nodes: DiagramNode[];
     diagramID: string;
     assistantID: string;
     environmentID: string;
     diagramResourceID: string;
-    getIntentResource: (intentID: string) => Promise<ReferenceResource | null>;
+    intentResourceCache: ReferenceBuilderCacheUtil;
+    diagramResourceCache: ReferenceBuilderCacheUtil;
   }) {
     super({ assistantID, environmentID });
 
     this.nodes = nodes;
     this.diagramID = diagramID;
     this.diagramResourceID = diagramResourceID;
-    this.getIntentResource = getIntentResource;
+    this.intentResourceCache = intentResourceCache;
+    this.diagramResourceCache = diagramResourceCache;
   }
 
   async build() {
@@ -68,6 +74,8 @@ export class ReferenceNodeBuilderUtil extends ReferenceBaseBuilderUtil {
       await this.buildStartNodeReferences(node);
     } else if (Realtime.Utils.typeGuards.isBlockDBNode(node)) {
       await this.buildBlockNodeReferences(node as BlockNode);
+    } else if (Realtime.Utils.typeGuards.isComponentDBNode(node)) {
+      await this.buildComponentNodeReferences(node);
     }
   }
 
@@ -113,6 +121,17 @@ export class ReferenceNodeBuilderUtil extends ReferenceBaseBuilderUtil {
       diagramID: this.diagramID,
       referrerResourceID: this.diagramResourceID,
     });
+  }
+
+  private async buildComponentNodeReferences(node: BaseNode.Component.Step) {
+    const nodeReference = this.buildNodeReference({
+      nodeID: node.nodeID,
+      metadata: { nodeType: node.type },
+      diagramID: this.diagramID,
+      referrerResourceID: this.diagramResourceID,
+    });
+
+    await this.buildDiagramReference(nodeReference, node.data.diagramID);
   }
 
   private buildNodeReference<Data extends ReferenceResourceNodeMetadata>({
@@ -162,13 +181,27 @@ export class ReferenceNodeBuilderUtil extends ReferenceBaseBuilderUtil {
   ) {
     if (!intentID) return;
 
-    const intentResource = await this.getIntentResource(intentID);
+    const intentResource = await this.intentResourceCache.getOrCreate(intentID);
 
     if (!intentResource) return;
 
     this.buildReference({
       metadata,
       resourceID: intentResource.id,
+      referrerResourceID: referrerResource.id,
+    });
+  }
+
+  private async buildDiagramReference(referrerResource: ReferenceResource, diagramID: string | null) {
+    if (!diagramID) return;
+
+    const diagramResource = await this.diagramResourceCache.getOrCreate(diagramID);
+
+    if (!diagramResource) return;
+
+    this.buildReference({
+      metadata: null,
+      resourceID: diagramResource.id,
       referrerResourceID: referrerResource.id,
     });
   }

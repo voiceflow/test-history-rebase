@@ -1,30 +1,33 @@
-import { Utils } from '@voiceflow/common';
-import { Diagram, Intent, ReferenceResource, ReferenceResourceType } from '@voiceflow/dtos';
+import { Diagram, Intent, ReferenceResourceType } from '@voiceflow/dtos';
 
 import { AssistantLoadCreatorResponse } from '@/assistant/dtos/assistant-load-creator.response';
 
 import { ReferenceBaseBuilderUtil } from './reference-base-builder.util';
+import { ReferenceBuilderCacheUtil } from './reference-builder-cache.util';
 import { ReferenceDiagramBuilderUtil } from './reference-diagram-builder.util';
 
 export class ReferenceBuilderUtil extends ReferenceBaseBuilderUtil {
-  private readonly intents: Intent[];
-
   private readonly diagrams: Diagram[];
 
-  private intentsMap: Partial<Record<string, Intent>> = {};
+  private readonly intentMap: Map<string, Intent>;
 
-  private resourceByIntentID: Partial<Record<string, ReferenceResource>> = {};
+  private readonly diagramMap: Map<string, Diagram>;
+
+  private readonly intentResourceCache: ReferenceBuilderCacheUtil;
+
+  private readonly diagramResourceCache: ReferenceBuilderCacheUtil;
 
   constructor({ intents = [], diagrams, assistant, version }: AssistantLoadCreatorResponse) {
     super({ assistantID: assistant.id, environmentID: version._id });
 
-    this.intents = intents;
     this.diagrams = diagrams;
+    this.intentMap = new Map(intents.map((intent) => [intent.id, intent]));
+    this.diagramMap = new Map(diagrams.map((diagram) => [diagram.diagramID, diagram]));
+    this.intentResourceCache = new ReferenceBuilderCacheUtil(this.getIntentResource);
+    this.diagramResourceCache = new ReferenceBuilderCacheUtil(this.getDiagramResource);
   }
 
   async build() {
-    this.buildCache();
-
     await this.buildDiagramsReferences();
 
     return {
@@ -33,16 +36,13 @@ export class ReferenceBuilderUtil extends ReferenceBaseBuilderUtil {
     };
   }
 
-  private buildCache() {
-    this.intentsMap = Utils.array.createMap(this.intents, (intent) => intent.id);
-  }
-
   private async buildDiagramsReferences() {
     const builder = new ReferenceDiagramBuilderUtil({
       diagrams: this.diagrams,
       assistantID: this.assistantID,
       environmentID: this.environmentID,
-      getIntentResource: async (intentID) => this.getIntentResource(intentID),
+      intentResourceCache: this.intentResourceCache,
+      diagramResourceCache: this.diagramResourceCache,
     });
 
     const result = await builder.build();
@@ -51,24 +51,29 @@ export class ReferenceBuilderUtil extends ReferenceBaseBuilderUtil {
     this.referenceResources.push(...result.referenceResources);
   }
 
-  private getIntentResource(intentID: string) {
-    const intent = this.intentsMap[intentID];
+  private getIntentResource = async (intentID: string) => {
+    const intent = this.intentMap.get(intentID);
 
     if (!intent) return null;
 
-    let intentResource = this.resourceByIntentID[intentID];
+    return this.buildReferenceResource({
+      type: ReferenceResourceType.INTENT,
+      metadata: null,
+      diagramID: null,
+      resourceID: intent.id,
+    });
+  };
 
-    if (!intentResource) {
-      intentResource = this.buildReferenceResource({
-        type: ReferenceResourceType.INTENT,
-        metadata: null,
-        diagramID: null,
-        resourceID: intent.id,
-      });
+  private getDiagramResource = async (diagramID: string) => {
+    const diagram = this.diagramMap.get(diagramID);
 
-      this.resourceByIntentID[intentID] = intentResource;
-    }
+    if (!diagram || !ReferenceDiagramBuilderUtil.isSupportedDiagram(diagram)) return null;
 
-    return intentResource;
-  }
+    return this.buildReferenceResource({
+      type: ReferenceResourceType.DIAGRAM,
+      metadata: null,
+      diagramID: null,
+      resourceID: diagram.diagramID,
+    });
+  };
 }

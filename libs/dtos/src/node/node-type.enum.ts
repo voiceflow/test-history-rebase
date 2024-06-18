@@ -11,6 +11,7 @@ export const NodeType = {
   MESSAGE: 'message',
   FUNCTION: 'function',
   RESPONSE: 'response',
+  COMPONENT: 'component',
   CHOICE_V2: 'choice-v2',
   BUTTONS_V2: 'buttons-v2',
   CAPTURE_V3: 'capture-v3',

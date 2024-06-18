@@ -5,13 +5,19 @@ import { Diagram, DiagramNode, Reference, ReferenceResource, ReferenceResourceTy
 import { NotFoundException } from '@voiceflow/exception';
 import { UnleashFeatureFlagService } from '@voiceflow/nestjs-common';
 import { LoguxService } from '@voiceflow/nestjs-logux';
-import { DatabaseTarget, ObjectId, ProjectORM, ReferenceORM, ReferenceResourceORM } from '@voiceflow/orm-designer';
+import {
+  DatabaseTarget,
+  IntentORM,
+  ObjectId,
+  ProjectORM,
+  ReferenceORM,
+  ReferenceResourceORM,
+} from '@voiceflow/orm-designer';
 import { FeatureFlag } from '@voiceflow/realtime-sdk/backend';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { AssistantLoadCreatorResponse } from '@/assistant/dtos/assistant-load-creator.response';
 import { MutableService } from '@/common/mutable.service';
-import { IntentService } from '@/intent/intent.service';
 import { CMSBroadcastMeta } from '@/types';
 
 import { ReferenceBuilderUtil } from './reference-builder.util';
@@ -37,14 +43,14 @@ export class ReferenceService extends MutableService<ReferenceORM> {
     private readonly postgresEM: EntityManager,
     @Inject(ReferenceORM)
     protected readonly orm: ReferenceORM,
+    @Inject(IntentORM)
+    protected readonly intentORM: IntentORM,
     @Inject(ProjectORM)
     protected readonly projectORM: ProjectORM,
     @Inject(ReferenceResourceORM)
     protected readonly referenceResourceORM: ReferenceResourceORM,
     @Inject(LoguxService)
     protected readonly logux: LoguxService,
-    @Inject(IntentService)
-    protected readonly intent: IntentService,
     @Inject(UnleashFeatureFlagService)
     protected readonly unleash: UnleashFeatureFlagService,
     @Inject(ReferenceCacheService)
@@ -353,6 +359,40 @@ export class ReferenceService extends MutableService<ReferenceORM> {
     };
   }
 
+  async deleteManyWithSubResourcesAndSyncByIntentIDs({
+    userID,
+    intentIDs,
+    assistantID,
+    environmentID,
+  }: {
+    // delete with REFERENCE_SYSTEM ff
+    userID: number;
+    intentIDs: string[];
+    // delete with REFERENCE_SYSTEM ff
+    assistantID: string;
+    environmentID: string;
+  }) {
+    const project = await this.projectORM.findOneOrFail(assistantID, { fields: ['teamID'] });
+
+    if (!this.unleash.isEnabled(FeatureFlag.REFERENCE_SYSTEM, { userID, workspaceID: project.teamID })) {
+      return { delete: { references: [], referenceResources: [] } };
+    }
+
+    const referenceResources = await this.referenceResourceORM.deleteManyByTypeDiagramIDAndResourceIDs({
+      type: ReferenceResourceType.INTENT,
+      diagramID: null,
+      resourceIDs: intentIDs,
+      environmentID,
+    });
+
+    return {
+      delete: {
+        references: [],
+        referenceResources,
+      },
+    };
+  }
+
   async broadcastDeleteMany(
     { delete: del }: { delete: { references: Reference[]; referenceResources: ReferenceResource[] } },
     meta: CMSBroadcastMeta
@@ -391,7 +431,7 @@ export class ReferenceService extends MutableService<ReferenceORM> {
     let isNew = false;
 
     // check if the intent exists
-    const intent = await this.intent.findOne({ id: intentID, environmentID });
+    const intent = await this.intentORM.findOne({ id: intentID, environmentID });
 
     if (!intent) return { isNew: false, resource: null };
 

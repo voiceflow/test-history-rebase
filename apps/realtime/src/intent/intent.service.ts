@@ -21,6 +21,7 @@ import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { CMSTabularService } from '@/common';
 import { cmsBroadcastContext, toPostgresEntityIDs } from '@/common/utils';
+import { ReferenceService } from '@/reference/reference.service';
 import { CMSBroadcastMeta, CMSContext } from '@/types';
 
 import { IntentExportDataDTO } from './dtos/intent-export-data.dto';
@@ -39,6 +40,7 @@ export class IntentService extends CMSTabularService<IntentORM> {
 
   mapFromJSON = this.orm.jsonAdapter.mapToDB;
 
+  // eslint-disable-next-line max-params
   constructor(
     @Inject(getEntityManagerToken(DatabaseTarget.POSTGRES))
     private readonly postgresEM: EntityManager,
@@ -48,6 +50,8 @@ export class IntentService extends CMSTabularService<IntentORM> {
     private readonly logux: LoguxService,
     @Inject(UtteranceService)
     private readonly utterance: UtteranceService,
+    @Inject(ReferenceService)
+    private readonly reference: ReferenceService,
     @Inject(RequiredEntityService)
     private readonly requiredEntity: RequiredEntityService
   ) {
@@ -394,6 +398,8 @@ export class IntentService extends CMSTabularService<IntentORM> {
       ]);
 
       await this.deleteManyByEnvironmentAndIDs(context.environmentID, ids);
+
+      await this.reference.deleteManyWithSubResourcesAndSyncByDiagramIDs
 
       return {
         delete: { ...relations, intents },

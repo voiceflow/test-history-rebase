@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1575.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1574.6...@voiceflow/creator-app@1.1575.0) (2024-06-18)
+
+### Features
+
+* components used by column (COR-000) ([#8311](https://github.com/voiceflow/creator-app/issues/8311)) ([d8df1dc](https://github.com/voiceflow/creator-app/commit/d8df1dcc8d62c3451bee5fdf0d476f79c1ae66b7))
+
 ## [1.1574.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1574.5...@voiceflow/creator-app@1.1574.6) (2024-06-18)
 
 **Note:** Version bump only for package @voiceflow/creator-app

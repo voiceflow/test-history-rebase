@@ -8,13 +8,12 @@ import type {
   RequiredEntity,
   Response,
   ResponseDiscriminator,
-  ResponseMessage,
   TextResponseVariant,
   Utterance,
   UtteranceText,
   Variable,
 } from '@voiceflow/dtos';
-import { CardLayout, Channel, Language, ResponseType, ResponseVariantType } from '@voiceflow/dtos';
+import { CardLayout, Channel, Language, ResponseVariantType } from '@voiceflow/dtos';
 import { VoiceModels } from '@voiceflow/voice-types';
 import { createSimpleAdapter } from 'bidirectional-adapter';
 import groupBy from 'lodash/groupBy';
@@ -26,7 +25,6 @@ interface Input {
   utterances: Utterance[];
   responsesMap: { [responseID: string]: Nullable<Response> };
   responseVariantsMap: { [responseVariant: string]: Nullable<AnyResponseVariant> };
-  responseMessagesMap: { [responseMessage: string]: Nullable<ResponseMessage> };
   requiredEntitiesMap: { [requiredEntityID: string]: Nullable<RequiredEntity> };
   responseDiscriminatorsPerResponse: { [responseID: string]: ResponseDiscriminator[] };
 }
@@ -51,15 +49,7 @@ interface FromDBOptions {
 
 const adapter = createSimpleAdapter<Input, Output, [FromDBOptions], [ToDBOptions]>(
   (
-    {
-      intent,
-      utterances,
-      responsesMap,
-      responseVariantsMap,
-      responseMessagesMap,
-      requiredEntitiesMap,
-      responseDiscriminatorsPerResponse,
-    },
+    { intent, utterances, responsesMap, responseVariantsMap, requiredEntitiesMap, responseDiscriminatorsPerResponse },
     { entitiesMapByID, variablesMapByID, isVoiceAssistant }
   ) => {
     const inputs: BaseModels.IntentInput[] = utterances.map((utterance) => ({
@@ -116,26 +106,7 @@ const adapter = createSimpleAdapter<Input, Output, [FromDBOptions], [ToDBOptions
           .filter((variant): variant is TextResponseVariant => !!variant && variant.type === ResponseVariantType.TEXT)
       );
 
-      const messages = discriminators.flatMap((discriminator) =>
-        discriminator.variantOrder.map((messageID) => responseMessagesMap[messageID]).filter((message) => !!message)
-      ) as ResponseMessage[];
-
-      if (messages.length) {
-        intentSlot.dialog.prompt = isVoiceAssistant
-          ? messages.map(
-              (message): VoiceModels.IntentPrompt<any> => ({
-                text: markupToString.fromDB(message.text, { entitiesMapByID }),
-              })
-            )
-          : variants.map(
-              (variant): ChatModels.Prompt => ({
-                id: variant.id,
-                content: markupToSlate.fromDB(variant.text, { entitiesMapByID, variablesMapByID }),
-              })
-            );
-      }
-
-      if (variants.length) return;
+      if (!variants.length) return;
 
       intentSlot.dialog.prompt = isVoiceAssistant
         ? variants.map(
@@ -198,7 +169,6 @@ const adapter = createSimpleAdapter<Input, Output, [FromDBOptions], [ToDBOptions
 
     const responsesMap: { [responseID: string]: Nullable<Response> } = {};
     const responseVariantsMap: { [responseVariant: string]: Nullable<AnyResponseVariant> } = {};
-    const responseMessagesMap: { [responseMessage: string]: Nullable<ResponseMessage> } = {};
     const requiredEntitiesMap: { [requiredEntityID: string]: Nullable<RequiredEntity> } = {};
     const responseDiscriminatorsPerResponse: { [responseID: string]: ResponseDiscriminator[] } = {};
 
@@ -232,7 +202,6 @@ const adapter = createSimpleAdapter<Input, Output, [FromDBOptions], [ToDBOptions
         createdByID: creatorID,
         updatedByID: creatorID,
         environmentID,
-        type: ResponseType.MESSAGE,
       };
 
       requiredEntity.repromptID = response.id;
@@ -271,23 +240,8 @@ const adapter = createSimpleAdapter<Input, Output, [FromDBOptions], [ToDBOptions
           attachmentOrder: [],
         };
 
-        const responseMessage: ResponseMessage = {
-          id: Utils.id.objectID(),
-          text:
-            typeof prompt?.text === 'string' ? markupToString.toDB(prompt.text) : markupToSlate.toDB(prompt?.content),
-          createdAt,
-          updatedAt: createdAt,
-          conditionID: null,
-          assistantID,
-          updatedByID: creatorID,
-          environmentID,
-          discriminatorID: responseDiscriminator.id,
-          delay: null,
-        };
-
         responseDiscriminator.variantOrder.push(responseVariant.id);
         responseVariantsMap[responseVariant.id] = responseVariant;
-        responseMessagesMap[responseMessage.id] = responseMessage;
       });
     });
 
@@ -296,7 +250,6 @@ const adapter = createSimpleAdapter<Input, Output, [FromDBOptions], [ToDBOptions
       utterances,
       responsesMap,
       responseVariantsMap,
-      responseMessagesMap,
       requiredEntitiesMap,
       responseDiscriminatorsPerResponse,
     };
@@ -308,7 +261,6 @@ interface MapFromDBInput {
   responses: Response[];
   utterances: Utterance[];
   responseVariants: AnyResponseVariant[];
-  responseMessages: ResponseMessage[];
   requiredEntities: RequiredEntity[];
   responseDiscriminators: ResponseDiscriminator[];
 }
@@ -330,22 +282,13 @@ interface MapToDBOptions extends Omit<ToDBOptions, 'legacySlotMap'> {
 
 export const intentToLegacyIntent = Object.assign(adapter, {
   mapFromDB: (
-    {
-      intents,
-      responses,
-      utterances,
-      responseVariants,
-      responseMessages,
-      requiredEntities,
-      responseDiscriminators,
-    }: MapFromDBInput,
+    { intents, responses, utterances, responseVariants, requiredEntities, responseDiscriminators }: MapFromDBInput,
     { entities, variables, isVoiceAssistant }: MapFromDBOptions
   ): MapFromDBOutput => {
     const responsesMap = Utils.array.createMap(responses, (response) => response.id);
     const entitiesMapByID = Utils.array.createMap(entities, (entity) => entity.id);
     const variablesMapByID = Utils.array.createMap(variables, (variable) => variable.id);
     const responseVariantsMap = Utils.array.createMap(responseVariants, (responseVariant) => responseVariant.id);
-    const responseMessagesMap = Utils.array.createMap(responseMessages, (responseMessage) => responseMessage.id);
     const requiredEntitiesMap = Utils.array.createMap(requiredEntities, (requiredEntity) => requiredEntity.id);
     const utterancesPerIntent = groupBy(utterances, (utterance) => utterance.intentID);
     const responseDiscriminatorsPerResponse = groupBy(
@@ -361,7 +304,6 @@ export const intentToLegacyIntent = Object.assign(adapter, {
             utterances: utterancesPerIntent[intent.id] ?? [],
             responsesMap,
             responseVariantsMap,
-            responseMessagesMap,
             requiredEntitiesMap,
             responseDiscriminatorsPerResponse,
           },
@@ -395,7 +337,6 @@ export const intentToLegacyIntent = Object.assign(adapter, {
         acc.responses.push(...Object.values(result.responsesMap).filter(Utils.array.isNotNullish));
         acc.utterances.push(...result.utterances);
         acc.responseVariants.push(...Object.values(result.responseVariantsMap).filter(Utils.array.isNotNullish));
-        acc.responseMessages.push(...Object.values(result.responseMessagesMap).filter(Utils.array.isNotNullish));
         acc.requiredEntities.push(...Object.values(result.requiredEntitiesMap).filter(Utils.array.isNotNullish));
         acc.responseDiscriminators.push(
           ...Object.values(result.responseDiscriminatorsPerResponse).flat().filter(Utils.array.isNotNullish)
@@ -408,7 +349,6 @@ export const intentToLegacyIntent = Object.assign(adapter, {
         responses: [],
         utterances: [],
         responseVariants: [],
-        responseMessages: [],
         requiredEntities: [],
         responseDiscriminators: [],
       }

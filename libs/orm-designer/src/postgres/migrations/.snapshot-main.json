@@ -932,11 +932,10 @@
           "nullable": false,
           "enumItems": [
             "node",
-            "flow",
             "intent",
             "diagram",
-            "response",
-            "workflow"
+            "function",
+            "response"
           ],
           "mappedType": "enum"
         },

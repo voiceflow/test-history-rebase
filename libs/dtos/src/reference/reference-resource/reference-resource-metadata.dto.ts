@@ -54,11 +54,20 @@ export type ReferenceResourceComponentNodeMetadata = InferReferenceResourceBaseN
   typeof ReferenceResourceComponentNodeMetadataDTO
 >;
 
+export const ReferenceResourceFunctionNodeMetadataDTO = ReferenceResourceBaseNodeMetadataDTO.extend({
+  nodeType: z.literal(NodeType.FUNCTION),
+});
+
+export type ReferenceResourceFunctionNodeMetadata = InferReferenceResourceBaseNodeMetadata<
+  typeof ReferenceResourceFunctionNodeMetadataDTO
+>;
+
 export const ReferenceResourceNodeMetadataDTO = z.discriminatedUnion('nodeType', [
   ReferenceResourceBlockNodeMetadataDTO,
   ReferenceResourceStartNodeMetadataDTO,
   ReferenceResourceIntentNodeMetadataDTO,
   ReferenceResourceTriggerNodeMetadataDTO,
+  ReferenceResourceFunctionNodeMetadataDTO,
   ReferenceResourceComponentNodeMetadataDTO,
 ]);
 

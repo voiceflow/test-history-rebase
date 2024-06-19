@@ -2,6 +2,7 @@ import { BaseNode } from '@voiceflow/base-types';
 import {
   BlockNode,
   DiagramNode,
+  FunctionNode,
   ReferenceIntentNodeMetadata,
   ReferenceResource,
   ReferenceResourceNodeMetadata,
@@ -27,6 +28,8 @@ export class ReferenceNodeBuilderUtil extends ReferenceBaseBuilderUtil {
 
   private readonly diagramResourceCache: ReferenceBuilderCacheUtil;
 
+  private readonly functionResourceCache: ReferenceBuilderCacheUtil;
+
   constructor({
     nodes,
     diagramID,
@@ -35,6 +38,7 @@ export class ReferenceNodeBuilderUtil extends ReferenceBaseBuilderUtil {
     diagramResourceID,
     intentResourceCache,
     diagramResourceCache,
+    functionResourceCache,
   }: {
     nodes: DiagramNode[];
     diagramID: string;
@@ -43,6 +47,7 @@ export class ReferenceNodeBuilderUtil extends ReferenceBaseBuilderUtil {
     diagramResourceID: string;
     intentResourceCache: ReferenceBuilderCacheUtil;
     diagramResourceCache: ReferenceBuilderCacheUtil;
+    functionResourceCache: ReferenceBuilderCacheUtil;
   }) {
     super({ assistantID, environmentID });
 
@@ -51,6 +56,7 @@ export class ReferenceNodeBuilderUtil extends ReferenceBaseBuilderUtil {
     this.diagramResourceID = diagramResourceID;
     this.intentResourceCache = intentResourceCache;
     this.diagramResourceCache = diagramResourceCache;
+    this.functionResourceCache = functionResourceCache;
   }
 
   async build() {
@@ -76,6 +82,8 @@ export class ReferenceNodeBuilderUtil extends ReferenceBaseBuilderUtil {
       await this.buildBlockNodeReferences(node as BlockNode);
     } else if (Realtime.Utils.typeGuards.isComponentDBNode(node)) {
       await this.buildComponentNodeReferences(node);
+    } else if (Realtime.Utils.typeGuards.isFunctionDBNode(node)) {
+      await this.buildFunctionNodeReferences(node);
     }
   }
 
@@ -132,6 +140,17 @@ export class ReferenceNodeBuilderUtil extends ReferenceBaseBuilderUtil {
     });
 
     await this.buildDiagramReference(nodeReference, node.data.diagramID);
+  }
+
+  private async buildFunctionNodeReferences(node: FunctionNode) {
+    const nodeReference = this.buildNodeReference({
+      nodeID: node.nodeID,
+      metadata: { nodeType: node.type },
+      diagramID: this.diagramID,
+      referrerResourceID: this.diagramResourceID,
+    });
+
+    await this.buildFunctionReference(nodeReference, node.data.functionID);
   }
 
   private buildNodeReference<Data extends ReferenceResourceNodeMetadata>({
@@ -202,6 +221,20 @@ export class ReferenceNodeBuilderUtil extends ReferenceBaseBuilderUtil {
     this.buildReference({
       metadata: null,
       resourceID: diagramResource.id,
+      referrerResourceID: referrerResource.id,
+    });
+  }
+
+  private async buildFunctionReference(referrerResource: ReferenceResource, functionID: string | null) {
+    if (!functionID) return;
+
+    const functionResource = await this.functionResourceCache.getOrCreate(functionID);
+
+    if (!functionResource) return;
+
+    this.buildReference({
+      metadata: null,
+      resourceID: functionResource.id,
       referrerResourceID: referrerResource.id,
     });
   }

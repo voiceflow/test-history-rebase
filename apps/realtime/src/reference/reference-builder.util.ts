@@ -1,4 +1,4 @@
-import { Diagram, Intent, ReferenceResourceType } from '@voiceflow/dtos';
+import { Diagram, Function as CMSFunction, Intent, ReferenceResourceType } from '@voiceflow/dtos';
 
 import { AssistantLoadCreatorResponse } from '@/assistant/dtos/assistant-load-creator.response';
 
@@ -13,18 +13,24 @@ export class ReferenceBuilderUtil extends ReferenceBaseBuilderUtil {
 
   private readonly diagramMap: Map<string, Diagram>;
 
+  private readonly functionMap: Map<string, CMSFunction>;
+
   private readonly intentResourceCache: ReferenceBuilderCacheUtil;
 
   private readonly diagramResourceCache: ReferenceBuilderCacheUtil;
 
-  constructor({ intents = [], diagrams, assistant, version }: AssistantLoadCreatorResponse) {
+  private readonly functionResourceCache: ReferenceBuilderCacheUtil;
+
+  constructor({ intents = [], functions = [], diagrams, assistant, version }: AssistantLoadCreatorResponse) {
     super({ assistantID: assistant.id, environmentID: version._id });
 
     this.diagrams = diagrams;
     this.intentMap = new Map(intents.map((intent) => [intent.id, intent]));
     this.diagramMap = new Map(diagrams.map((diagram) => [diagram.diagramID, diagram]));
+    this.functionMap = new Map(functions.map((fn) => [fn.id, fn]));
     this.intentResourceCache = new ReferenceBuilderCacheUtil(this.getIntentResource);
     this.diagramResourceCache = new ReferenceBuilderCacheUtil(this.getDiagramResource);
+    this.functionResourceCache = new ReferenceBuilderCacheUtil(this.getFunctionResource);
   }
 
   async build() {
@@ -43,6 +49,7 @@ export class ReferenceBuilderUtil extends ReferenceBaseBuilderUtil {
       environmentID: this.environmentID,
       intentResourceCache: this.intentResourceCache,
       diagramResourceCache: this.diagramResourceCache,
+      functionResourceCache: this.functionResourceCache,
     });
 
     const result = await builder.build();
@@ -74,6 +81,19 @@ export class ReferenceBuilderUtil extends ReferenceBaseBuilderUtil {
       metadata: null,
       diagramID: null,
       resourceID: diagram.diagramID,
+    });
+  };
+
+  private getFunctionResource = async (functionID: string) => {
+    const fn = this.functionMap.get(functionID);
+
+    if (!fn) return null;
+
+    return this.buildReferenceResource({
+      type: ReferenceResourceType.FUNCTION,
+      metadata: null,
+      diagramID: null,
+      resourceID: fn.id,
     });
   };
 }

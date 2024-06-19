@@ -77,6 +77,7 @@ export enum FeatureFlag {
   HTTP_LOAD_ENVIRONMENT = 'http_load_environment',
   REFERENCE_SYSTEM = 'reference_system',
   COMPONENTS_USED_BY = 'components_used_by',
+  FUNCTIONS_USED_BY = 'functions_used_by',
 
   NEW_ORGANIZATION_MEMBERS = 'new_organization_members',
   NEW_WORKSPACE_MEMBERS = 'new_workspace_members',

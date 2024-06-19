@@ -6,6 +6,8 @@ export const normalizedResourcesAtom = atomWithSelector(Designer.Reference.selec
 
 export const diagramIDResourceIDMapAtom = atomWithSelector(Designer.Reference.selectors.diagramIDResourceIDMap);
 
+export const functionIDResourceIDMapAtom = atomWithSelector(Designer.Reference.selectors.functionIDResourceIDMap);
+
 export const refererIDsByResourceIDMapAtom = atomWithSelector(Designer.Reference.selectors.refererIDsByResourceIDMap);
 
 export const nonEmptyTriggersMapByDiagramIDAtom = atomWithSelector(

@@ -1,5 +1,12 @@
 import { Module } from '@nestjs/common';
-import { DiagramORM, IntentORM, ProjectORM, ReferenceORM, ReferenceResourceORM } from '@voiceflow/orm-designer';
+import {
+  DiagramORM,
+  FunctionORM,
+  IntentORM,
+  ProjectORM,
+  ReferenceORM,
+  ReferenceResourceORM,
+} from '@voiceflow/orm-designer';
 
 import { ReferenceLoguxController } from './reference.logux.controller';
 import { ReferenceService } from './reference.service';
@@ -11,6 +18,7 @@ import { ReferenceCacheService } from './reference-cache.service';
     IntentORM,
     DiagramORM,
     ProjectORM,
+    FunctionORM,
     ReferenceORM,
     ReferenceResourceORM,
     ReferenceService,

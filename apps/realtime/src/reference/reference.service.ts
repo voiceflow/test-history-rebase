@@ -8,6 +8,7 @@ import { LoguxService } from '@voiceflow/nestjs-logux';
 import {
   DatabaseTarget,
   DiagramORM,
+  FunctionORM,
   IntentORM,
   ObjectId,
   ProjectORM,
@@ -51,6 +52,8 @@ export class ReferenceService extends MutableService<ReferenceORM> {
     protected readonly projectORM: ProjectORM,
     @Inject(DiagramORM)
     protected readonly diagramORM: DiagramORM,
+    @Inject(FunctionORM)
+    protected readonly functionORM: FunctionORM,
     @Inject(ReferenceResourceORM)
     protected readonly referenceResourceORM: ReferenceResourceORM,
     @Inject(LoguxService)
@@ -229,6 +232,15 @@ export class ReferenceService extends MutableService<ReferenceORM> {
 
         return resource;
       }),
+      functionResourceCache: new this.ReferenceBuilderCache(async (functionID) => {
+        const { isNew, resource } = await this.findOrCreateFunctionResource({ functionID, assistantID, environmentID });
+
+        if (isNew && resource) {
+          newReferenceResources.push(resource);
+        }
+
+        return resource;
+      }),
     });
 
     const result = await nodeBuilder.build();
@@ -298,6 +310,15 @@ export class ReferenceService extends MutableService<ReferenceORM> {
 
         return resource;
       }),
+      functionResourceCache: new this.ReferenceBuilderCache(async (functionID) => {
+        const { isNew, resource } = await this.findOrCreateFunctionResource({ functionID, assistantID, environmentID });
+
+        if (isNew && resource) {
+          newReferenceResources.push(resource);
+        }
+
+        return resource;
+      }),
     });
 
     const result = await builder.build();
@@ -350,7 +371,10 @@ export class ReferenceService extends MutableService<ReferenceORM> {
   }) {
     const project = await this.projectORM.findOneOrFail(assistantID, { fields: ['teamID'] });
 
-    if (!this.unleash.isEnabled(FeatureFlag.REFERENCE_SYSTEM, { userID, workspaceID: project.teamID })) {
+    if (
+      !this.unleash.isEnabled(FeatureFlag.REFERENCE_SYSTEM, { userID, workspaceID: project.teamID }) ||
+      !diagramIDs.length
+    ) {
       return { delete: { references: [], referenceResources: [] } };
     }
 
@@ -390,7 +414,10 @@ export class ReferenceService extends MutableService<ReferenceORM> {
   }) {
     const project = await this.projectORM.findOneOrFail(assistantID, { fields: ['teamID'] });
 
-    if (!this.unleash.isEnabled(FeatureFlag.REFERENCE_SYSTEM, { userID, workspaceID: project.teamID })) {
+    if (
+      !this.unleash.isEnabled(FeatureFlag.REFERENCE_SYSTEM, { userID, workspaceID: project.teamID }) ||
+      !intentIDs.length
+    ) {
       return { delete: { references: [], referenceResources: [] } };
     }
 
@@ -398,6 +425,43 @@ export class ReferenceService extends MutableService<ReferenceORM> {
       type: ReferenceResourceType.INTENT,
       diagramID: null,
       resourceIDs: intentIDs,
+      environmentID,
+    });
+
+    return {
+      delete: {
+        references: [],
+        referenceResources,
+      },
+    };
+  }
+
+  async deleteManyWithSubResourcesAndSyncByFunctionIDs({
+    userID,
+    functionIDs,
+    assistantID,
+    environmentID,
+  }: {
+    // delete with REFERENCE_SYSTEM ff
+    userID: number;
+    functionIDs: string[];
+    // delete with REFERENCE_SYSTEM ff
+    assistantID: string;
+    environmentID: string;
+  }) {
+    const project = await this.projectORM.findOneOrFail(assistantID, { fields: ['teamID'] });
+
+    if (
+      !this.unleash.isEnabled(FeatureFlag.REFERENCE_SYSTEM, { userID, workspaceID: project.teamID }) ||
+      !functionIDs.length
+    ) {
+      return { delete: { references: [], referenceResources: [] } };
+    }
+
+    const referenceResources = await this.referenceResourceORM.deleteManyByTypeDiagramIDAndResourceIDs({
+      type: ReferenceResourceType.FUNCTION,
+      diagramID: null,
+      resourceIDs: functionIDs,
       environmentID,
     });
 
@@ -518,6 +582,49 @@ export class ReferenceService extends MutableService<ReferenceORM> {
     return {
       isNew,
       resource: diagramResource,
+    };
+  }
+
+  private async findOrCreateFunctionResource({
+    functionID,
+    assistantID,
+    environmentID,
+  }: {
+    functionID: string;
+    assistantID: string;
+    environmentID: string;
+  }) {
+    let isNew = false;
+
+    // check if the function exists
+    const fn = await this.functionORM.findOne({ id: functionID, environmentID });
+
+    if (!fn) return { isNew: false, resource: null };
+
+    let functionResource = await this.referenceResourceORM.findOneByTypeDiagramIDAndResourceID({
+      type: ReferenceResourceType.FUNCTION,
+      diagramID: null,
+      resourceID: functionID,
+      environmentID,
+    });
+
+    if (!functionResource) {
+      isNew = true;
+
+      functionResource = {
+        id: new ObjectId().toJSON(),
+        type: ReferenceResourceType.FUNCTION,
+        metadata: null,
+        diagramID: null,
+        resourceID: functionID,
+        assistantID,
+        environmentID,
+      };
+    }
+
+    return {
+      isNew,
+      resource: functionResource,
     };
   }
 }

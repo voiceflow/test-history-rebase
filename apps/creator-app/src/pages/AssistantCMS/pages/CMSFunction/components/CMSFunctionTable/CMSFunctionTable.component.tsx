@@ -1,3 +1,4 @@
+import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { tid } from '@voiceflow/style';
 import { Table } from '@voiceflow/ui-next';
 import { useAtomValue } from 'jotai';
@@ -5,7 +6,9 @@ import React from 'react';
 
 import { CMS_FUNCTIONS_LEARN_MORE } from '@/constants/link.constant';
 import { Designer } from '@/ducks';
-import { useDispatch, useTrackPageOpenedFirstTime } from '@/hooks';
+import { useFeature } from '@/hooks/feature';
+import { useDispatch } from '@/hooks/store.hook';
+import { useTrackPageOpenedFirstTime } from '@/hooks/tracking';
 import { EMPTY_TEST_ID, TABLE_TEST_ID } from '@/pages/AssistantCMS/AssistantCMS.constant';
 
 import { CMSEmpty } from '../../../../components/CMSEmpty/CMSEmpty.component';
@@ -16,16 +19,21 @@ import {
 } from '../../../../hooks/cms-row-item.hook';
 import { useFunctionCMSManager, useOnFunctionCreate } from '../../CMSFunction.hook';
 import { CMSFunctionCodeEditor } from '../CMSFunctionCodeEditor/CMSFunctionCodeEditor.component';
-import { functionColumnsOrderAtom } from './CMSFunctionTable.atom';
+import { functionColumnsOrderAtom, legacyFunctionColumnsOrderAtom } from './CMSFunctionTable.atom';
 import { FUNCTION_TABLE_CONFIG } from './CMSFunctionTable.config';
 import { FunctionTableColumn } from './CMSFunctionTable.constant';
 
 export const CMSFunctionTable: React.FC = () => {
+  const functionsUsedBy = useFeature(FeatureFlag.FUNCTIONS_USED_BY);
+
   const exportMany = useDispatch(Designer.Function.effect.exportMany);
   const duplicateOne = useDispatch(Designer.Function.effect.duplicateOne);
-  const onRowNavigate = useCMSRowItemNavigate();
+
   const onCreate = useOnFunctionCreate();
   const onRowClick = useCMSRowItemClick();
+  const onRowNavigate = useCMSRowItemNavigate();
+  const functionCMSManager = useFunctionCMSManager();
+
   const rowContextMenu = useCMSRowItemContextMenu({
     onExport: (functionID) => exportMany([functionID]),
     canExport: (_, { isFolder }) => !isFolder,
@@ -33,7 +41,6 @@ export const CMSFunctionTable: React.FC = () => {
     canDuplicate: (_, { isFolder }) => !isFolder,
     nameColumnType: FunctionTableColumn.NAME,
   });
-  const functionCMSManager = useFunctionCMSManager();
 
   const tableState = Table.useStateMolecule();
   const functionID = useAtomValue(tableState.activeID);
@@ -56,13 +63,13 @@ export const CMSFunctionTable: React.FC = () => {
       learnMoreLink={CMS_FUNCTIONS_LEARN_MORE}
     >
       <Table
+        testID={TABLE_TEST_ID}
         config={FUNCTION_TABLE_CONFIG}
         itemsAtom={functionCMSManager.dataToRender}
         onRowClick={onRowClick}
         onRowNavigate={onRowNavigate}
         rowContextMenu={rowContextMenu}
-        columnsOrderAtom={functionColumnsOrderAtom}
-        testID={TABLE_TEST_ID}
+        columnsOrderAtom={functionsUsedBy.isEnabled ? functionColumnsOrderAtom : legacyFunctionColumnsOrderAtom}
       />
     </CMSEmpty>
   );

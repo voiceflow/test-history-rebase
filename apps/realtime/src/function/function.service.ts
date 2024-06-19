@@ -4,7 +4,13 @@ import { EntityManager } from '@mikro-orm/core';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
-import { Function as FunctionType, FunctionPath, FunctionVariable } from '@voiceflow/dtos';
+import {
+  Function as FunctionType,
+  FunctionPath,
+  FunctionVariable,
+  Reference,
+  ReferenceResource,
+} from '@voiceflow/dtos';
 import { LoguxService } from '@voiceflow/nestjs-logux';
 import type {
   FunctionJSON,
@@ -22,6 +28,7 @@ import _ from 'lodash';
 import { CMSTabularService } from '@/common';
 import type { CMSCreateForUserData } from '@/common/types';
 import { cmsBroadcastContext, injectAssistantAndEnvironmentIDs, toPostgresEntityIDs } from '@/common/utils';
+import { ReferenceService } from '@/reference/reference.service';
 import { CMSBroadcastMeta, CMSContext } from '@/types';
 
 import type { FunctionExportDataDTO } from './dtos/function-export-data.dto';
@@ -49,6 +56,8 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
     private readonly postgresEM: EntityManager,
     @Inject(LoguxService)
     private readonly logux: LoguxService,
+    @Inject(ReferenceService)
+    private readonly reference: ReferenceService,
     @Inject(FunctionPathService)
     private readonly functionPath: FunctionPathService,
     @Inject(FunctionVariableService)
@@ -551,7 +560,7 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
     };
   }
 
-  async deleteManyAndSync(ids: string[], context: CMSContext) {
+  async deleteManyAndSync(ids: string[], { userID, context }: { userID: number; context: CMSContext }) {
     return this.postgresEM.transactional(async () => {
       const [functions, relations] = await Promise.all([
         this.findManyByEnvironmentAndIDs(context.environmentID, ids),
@@ -560,8 +569,16 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
 
       await this.deleteManyByEnvironmentAndIDs(context.environmentID, ids);
 
+      const referenceRelations = await this.reference.deleteManyWithSubResourcesAndSyncByFunctionIDs({
+        userID,
+        functionIDs: ids,
+        assistantID: context.assistantID,
+        environmentID: context.environmentID,
+      });
+
       return {
-        delete: { ...relations, functions },
+        ...referenceRelations,
+        delete: { ...relations, ...referenceRelations.delete, functions },
       };
     });
   }
@@ -572,8 +589,10 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
     }: {
       delete: {
         functions: FunctionObject[];
+        references: Reference[];
         functionPaths: FunctionPathObject[];
         functionVariables: FunctionVariableObject[];
+        referenceResources: ReferenceResource[];
       };
     },
     meta: CMSBroadcastMeta
@@ -582,6 +601,11 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
       this.functionVariable.broadcastDeleteMany({ delete: Utils.object.pick(del, ['functionVariables']) }, meta),
       this.functionPath.broadcastDeleteMany(
         { delete: Utils.object.pick(del, ['functionPaths']), sync: Utils.object.pick(del, ['functions']) },
+        meta
+      ),
+
+      this.reference.broadcastDeleteMany(
+        { delete: Utils.object.pick(del, ['references', 'referenceResources']) },
         meta
       ),
 
@@ -596,7 +620,7 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
   }
 
   async deleteManyAndBroadcast(ids: string[], meta: CMSBroadcastMeta): Promise<void> {
-    const result = await this.deleteManyAndSync(ids, meta.context);
+    const result = await this.deleteManyAndSync(ids, { userID: meta.auth.userID, context: meta.context });
 
     await this.broadcastDeleteMany(result, meta);
   }

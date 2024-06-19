@@ -69,7 +69,7 @@
     "reflect-metadata": "0.1.13",
     "rxjs": "^7.8.1",
     "ts-pattern": "^5.1.1",
-    "undici": "5.23.0",
+    "undici": "5.28.4",
     "zod": "3.22.4"
   },
   "devDependencies": {

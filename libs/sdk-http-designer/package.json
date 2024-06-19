@@ -79,6 +79,9 @@
       "optional": true
     }
   },
+  "optionalDependencies": {
+    "@voiceflow/realtime": "workspace:*"
+  },
   "engines": {
     "node": "16.20"
   },

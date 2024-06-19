@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useCanvasNodeFilter } from '@/hooks';
+import { useCanvasNodeFilter } from '@/hooks/canvas-node.hook';
 import { getManager } from '@/pages/Canvas/managers/utils';
 import { StepItem } from '@/pages/Project/components/StepMenu/constants';
 

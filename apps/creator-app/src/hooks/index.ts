@@ -1,4 +1,3 @@
-export * from './canvasNodes';
 export * from './dnd';
 export * from './dragPreview';
 export * from './engine';

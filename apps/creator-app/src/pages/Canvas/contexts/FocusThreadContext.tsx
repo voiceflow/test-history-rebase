@@ -1,7 +1,7 @@
 import { useContextApi } from '@voiceflow/ui';
 import React from 'react';
 
-import { EngineContext } from './EngineContext';
+import { EngineContext } from './Engine.context';
 
 export interface FocusThreadContextValue {
   focusedID: string | null;

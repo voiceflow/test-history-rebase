@@ -3,7 +3,7 @@ import { Flex, KeyName, preventDefault, SvgIcon, useDidUpdateEffect } from '@voi
 import React from 'react';
 import { SelectInstance } from 'react-select';
 
-import { useCanvasNodeFilter } from '@/hooks/canvasNodes';
+import { useCanvasNodeFilter } from '@/hooks/canvas-node.hook';
 import { useActiveProjectConfig } from '@/hooks/platformConfig';
 import { useTrackingEvents } from '@/hooks/tracking';
 import { EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';

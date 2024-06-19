@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1579.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1578.2...@voiceflow/creator-app@1.1579.0) (2024-06-19)
+
+### Features
+
+* refactor project and canvas providers (COR-2360) ([#8315](https://github.com/voiceflow/creator-app/issues/8315)) ([745a9d5](https://github.com/voiceflow/creator-app/commit/745a9d53e5b2d048902042dede3f242cdf24678f))
+
 ## [1.1578.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1578.1...@voiceflow/creator-app@1.1578.2) (2024-06-19)
 
 ### Bug Fixes

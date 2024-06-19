@@ -932,10 +932,11 @@
           "nullable": false,
           "enumItems": [
             "node",
+            "flow",
             "intent",
             "diagram",
-            "function",
-            "response"
+            "response",
+            "workflow"
           ],
           "mappedType": "enum"
         },
@@ -1374,6 +1375,7 @@
             "persona",
             "workflow",
             "response",
+            "message",
             "variable",
             "function",
             "knowledge-base"

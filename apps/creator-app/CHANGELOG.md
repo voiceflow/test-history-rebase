@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1577.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1576.0...@voiceflow/creator-app@1.1577.0) (2024-06-19)
+
+### Features
+
+* remove legacy atoms hooks (COR-000) ([#8333](https://github.com/voiceflow/creator-app/issues/8333)) ([12ac130](https://github.com/voiceflow/creator-app/commit/12ac130031ce8fdb28a1e2d91b7e0f7babf6cc2e))
+
 # [1.1576.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1575.2...@voiceflow/creator-app@1.1576.0) (2024-06-19)
 
 ### Features

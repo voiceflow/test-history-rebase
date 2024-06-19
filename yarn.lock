@@ -12149,7 +12149,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@voiceflow/realtime@workspace:apps/realtime":
+"@voiceflow/realtime@workspace:*, @voiceflow/realtime@workspace:apps/realtime":
   version: 0.0.0-use.local
   resolution: "@voiceflow/realtime@workspace:apps/realtime"
   dependencies:
@@ -12463,6 +12463,7 @@ __metadata:
   dependencies:
     "@nestjs/common": 9.4.0
     "@voiceflow/orval-fetch": 1.5.2
+    "@voiceflow/realtime": "workspace:*"
     "@voiceflow/sdk-common": 1.12.2
     nestjs-zod: 2.2.0
     undici: 5.28.4
@@ -12470,6 +12471,9 @@ __metadata:
     "@nestjs/common": ^9
     nestjs-zod: ^2
     undici: ^5
+  dependenciesMeta:
+    "@voiceflow/realtime":
+      optional: true
   peerDependenciesMeta:
     "@nestjs/common":
       optional: true

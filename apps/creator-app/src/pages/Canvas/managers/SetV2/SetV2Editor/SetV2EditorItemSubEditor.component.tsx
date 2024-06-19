@@ -12,7 +12,7 @@ interface ISetV2EditorItemSubEditor {
   onUpdateVariable: (variable: string) => void;
   expressionValidator: {
     error: string;
-    validate: (text: string) => boolean;
+    validate: (text: string, isSetV3?: boolean) => boolean;
     resetError: () => void;
   };
 }

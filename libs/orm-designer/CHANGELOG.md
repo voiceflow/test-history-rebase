@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.81.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.80.3...@voiceflow/orm-designer@2.81.0) (2024-06-19)
+
+### Features
+
+* add function reference type (COR-000) ([#8321](https://github.com/voiceflow/creator-app/issues/8321)) ([1dbaaf1](https://github.com/voiceflow/creator-app/commit/1dbaaf1391e3c46c57c05e26cc58f0cbca04679a))
+
 ## [2.80.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.80.2...@voiceflow/orm-designer@2.80.3) (2024-06-18)
 
 **Note:** Version bump only for package @voiceflow/orm-designer

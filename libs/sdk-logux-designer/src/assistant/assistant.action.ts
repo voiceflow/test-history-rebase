@@ -12,7 +12,7 @@ import type {
   PatchOneRequest,
   ReplaceRequest,
 } from '@/crud/crud.interface';
-import type { WorkspaceAction } from '@/workspace/workspace.action';
+import type { WorkspaceAction } from '@/workspace/workspace.types';
 
 export const assistantAction = createCRUD('assistant');
 

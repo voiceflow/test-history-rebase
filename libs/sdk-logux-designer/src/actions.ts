@@ -36,3 +36,6 @@ export * as ThreadComment from './thread/thread-comment/thread-comment.action';
 export * as Variable from './variable/variable.action';
 export * as Version from './version/version.action';
 export * as Workflow from './workflow/workflow.action';
+export * as WorkspaceInvitation from './workspace-invitation/workspace-invitation.action';
+export * as WorkspaceMember from './workspace-member/workspace-member.action';
+export * as WorkspaceQuota from './workspace-quota/workspace-quota.action';

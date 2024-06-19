@@ -84,8 +84,8 @@ export const useCreatorSubscription = createSubscriptionHook<NullishRecord<Realt
   ({ creatorID }) => (creatorID ? [Realtime.Channels.creator.build({ creatorID })] : [])
 );
 
-export const useWorkspaceSubscription = createSubscriptionHook<NullishRecord<Realtime.Channels.WorkspaceChannelParams>>(
-  ({ workspaceID }) => (workspaceID ? [Realtime.Channels.workspace.build({ workspaceID })] : [])
+export const useWorkspaceSubscription = createSubscriptionHook<NullishRecord<Channels.WorkspaceParams>>(
+  ({ workspaceID }) => (workspaceID ? [Channels.workspace.build({ workspaceID })] : [])
 );
 
 export const useOrganizationSubscription = createSubscriptionHook<NullishRecord<Channels.OrganizationParams>>(

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1582.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1581.0...@voiceflow/creator-app@1.1582.0) (2024-06-19)
+
+### Features
+
+* setV3 on canvas step (COR-2299) ([#8331](https://github.com/voiceflow/creator-app/issues/8331)) ([7485d51](https://github.com/voiceflow/creator-app/commit/7485d51c59d8cc4a1d764423b2317951aece3843))
+
 # [1.1581.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1580.0...@voiceflow/creator-app@1.1581.0) (2024-06-19)
 
 ### Features

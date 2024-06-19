@@ -1,4 +1,3 @@
-export * from './asr';
 export * from './canvasNodes';
 export * from './dnd';
 export * from './dragPreview';
@@ -26,7 +25,6 @@ export * from './reducer';
 export * from './redux';
 export * from './routes';
 export * from './scroll';
-export * from './speechRecognition';
 export * from './state';
 export * from './syncedLookup';
 export * from './theme';

@@ -4,7 +4,8 @@ import React from 'react';
 
 import { PrototypeLayout, PrototypeStatus } from '@/constants/prototype';
 import * as PrototypeDuck from '@/ducks/prototype';
-import { useASR, useCanASR, useSelector, useSpeechRecognition, useTeardown } from '@/hooks';
+import { useSelector, useTeardown } from '@/hooks';
+import { useASR, useCanASR, useSpeechRecognition } from '@/hooks/speech-recognition.hook';
 import { UncontrolledSpeechBar } from '@/pages/Prototype/components/PrototypeSpeechBar';
 import ASRSpeechBar from '@/pages/Prototype/components/PrototypeSpeechBar/components/ASRSpeechBar';
 import { usePrototype, useResetPrototype, useStartPublicPrototype } from '@/pages/Prototype/hooks';

@@ -1,4 +1,6 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast, useCache, usePersistFunction } from '@voiceflow/ui';
+import { useCreateConst } from '@voiceflow/ui-next';
 import React from 'react';
 import SpeechRecognition, { useSpeechRecognition as useReactSpeechRecognition } from 'react-speech-recognition';
 import RecordRTC from 'recordrtc';
@@ -6,47 +8,14 @@ import { io, Socket } from 'socket.io-client';
 
 import { GENERAL_SERVICE_ENDPOINT } from '@/config';
 
+import { useFeature } from './feature';
 import { useMicrophonePermission } from './microphone';
 
-const BCP_LANGUAGE_CODE = {
-  AR_SA: 'ar-SA',
-  CS_CZ: 'cs-CZ',
-  DA_DK: 'da-DK',
-  DE_DE: 'de-DE',
-  EL_GR: 'el-GR',
-  EN_AU: 'en-AU',
-  EN_GB: 'en-GB',
-  EN_IE: 'en-IE',
-  EN_US: 'en-US',
-  EN_ZA: 'en-ZA',
-  ES_ES: 'es-ES',
-  ES_MX: 'es-MX',
-  FI_FI: 'fi-FI',
-  FR_CA: 'fr-CA',
-  FR_FR: 'fr-FR',
-  HE_IL: 'he-IL',
-  HI_IN: 'hi-IN',
-  HU_HU: 'hu-HU',
-  ID_ID: 'id-ID',
-  IT_IT: 'it-IT',
-  JA_JP: 'ja-JP',
-  KO_KR: 'ko-KR',
-  NL_BE: 'nl-BE',
-  NL_NL: 'nl-NL',
-  NO_NO: 'no-NO',
-  PL_PL: 'pl-PL',
-  PT_BR: 'pt-BR',
-  PT_PT: 'pt-PT',
-  RO_RO: 'ro-RO',
-  RU_RU: 'ru-RU',
-  SK_SK: 'sk-SK',
-  SV_SE: 'sv-SE',
-  TH_TH: 'th-TH',
-  TR_TR: 'tr-TR',
-  ZH_CN: 'zh-CN',
-  ZH_HK: 'zh-HK',
-  ZH_TW: 'zh-TW',
-} as const;
+export const useCanASR = () => {
+  const asrBypass = useFeature(Realtime.FeatureFlag.ASR_BYPASS);
+
+  return asrBypass.isEnabled || !SpeechRecognition.browserSupportsSpeechRecognition();
+};
 
 export const useSpeechRecognition = ({
   locale,
@@ -58,7 +27,14 @@ export const useSpeechRecognition = ({
   onTranscript: (text: string) => void;
 }) => {
   const [microphonePermissionGranted, checkMicrophonePermission] = useMicrophonePermission({ askOnSetup });
-  const { listening, transcript, interimTranscript, finalTranscript, resetTranscript, browserSupportsSpeechRecognition } = useReactSpeechRecognition({
+  const {
+    listening,
+    transcript,
+    interimTranscript,
+    finalTranscript,
+    resetTranscript,
+    browserSupportsSpeechRecognition,
+  } = useReactSpeechRecognition({
     clearTranscriptOnListen: true,
   });
 
@@ -85,7 +61,10 @@ export const useSpeechRecognition = ({
       }
     }
 
-    await SpeechRecognition.startListening({ language: cache.current.locale?.length === 5 ? cache.current.locale : undefined, continuous: true });
+    await SpeechRecognition.startListening({
+      language: cache.current.locale?.length === 5 ? cache.current.locale : undefined,
+      continuous: true,
+    });
   }, []);
 
   const onStopListening = React.useCallback(() => {
@@ -121,9 +100,59 @@ export const useSpeechRecognition = ({
   };
 };
 
-const TRANSCRIPTION_TIMEOUT = 3000;
+export const useASR = ({
+  locale,
+  enabled = true,
+  onTranscript,
+}: {
+  locale: string;
+  enabled?: boolean;
+  onTranscript: (test: string) => void;
+}) => {
+  const LANGUAGE_CODES = useCreateConst(
+    () =>
+      new Set([
+        'ar-SA',
+        'cs-CZ',
+        'da-DK',
+        'de-DE',
+        'el-GR',
+        'en-AU',
+        'en-GB',
+        'en-IE',
+        'en-US',
+        'en-ZA',
+        'es-ES',
+        'es-MX',
+        'fi-FI',
+        'fr-CA',
+        'fr-FR',
+        'he-IL',
+        'hi-IN',
+        'hu-HU',
+        'id-ID',
+        'it-IT',
+        'ja-JP',
+        'ko-KR',
+        'nl-BE',
+        'nl-NL',
+        'no-NO',
+        'pl-PL',
+        'pt-BR',
+        'pt-PT',
+        'ro-RO',
+        'ru-RU',
+        'sk-SK',
+        'sv-SE',
+        'th-TH',
+        'tr-TR',
+        'zh-CN',
+        'zh-HK',
+        'zh-TW',
+      ])
+  );
+  const DEFAULT_LANGUAGE_CODE = 'en-US';
 
-export const useASR = ({ onTranscript, locale, enabled = true }: { onTranscript: (test: string) => void; locale: string; enabled?: boolean }) => {
   const [listeningASR, setListeningASR] = React.useState(false);
   const [processingTranscription, setProcessingTranscription] = React.useState(false);
 
@@ -142,7 +171,7 @@ export const useASR = ({ onTranscript, locale, enabled = true }: { onTranscript:
     setProcessingTranscription(true);
 
     await socketRef.current?.emit('startTranscription', {
-      languageCode: Object.values(BCP_LANGUAGE_CODE).includes(locale as any) ? locale : BCP_LANGUAGE_CODE.EN_US,
+      languageCode: LANGUAGE_CODES.has(locale) ? locale : DEFAULT_LANGUAGE_CODE,
     });
 
     await recordRef.current?.startRecording();
@@ -161,7 +190,7 @@ export const useASR = ({ onTranscript, locale, enabled = true }: { onTranscript:
 
     // If there is no transcription, or if transcription takes too long, reset.
     if (processingTranscription) {
-      setTimeout(() => setProcessingTranscription(false), TRANSCRIPTION_TIMEOUT);
+      setTimeout(() => setProcessingTranscription(false), 3000);
     }
   }, [listeningASR, processingTranscription]);
 

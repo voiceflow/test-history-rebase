@@ -1,4 +1,3 @@
-import { ResponseType } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { stopImmediatePropagation } from '@voiceflow/ui';
 import { Box, Editor, Scroll } from '@voiceflow/ui-next';
@@ -14,12 +13,12 @@ import { NodeEditorV2 } from '@/pages/Canvas/managers/types';
 
 import { editorStyles } from './MessageEditor.css';
 
-export const MessageEditorRoot: NodeEditorV2<Realtime.NodeData.Response> = () => {
-  const editor = useEditor<Realtime.NodeData.Response>();
-  const { responseID } = editor.data;
+export const MessageEditorRoot: NodeEditorV2<Realtime.NodeData.Message> = () => {
+  const editor = useEditor<Realtime.NodeData.Message>();
+  const { messageID: responseID } = editor.data;
   const createResponse = useDispatch(Designer.Response.effect.createOne);
 
-  const handleResponseChange = (patchData: Partial<Realtime.NodeData.Response>) => {
+  const handleResponseChange = (patchData: Partial<Realtime.NodeData.Message>) => {
     editor.onChange({ ...editor.data, ...patchData });
   };
 
@@ -38,9 +37,9 @@ export const MessageEditorRoot: NodeEditorV2<Realtime.NodeData.Response> = () =>
         folderID: null,
         variants: [],
         name: '',
-        type: ResponseType.EMPTY,
+        draft: true,
       })
-        .then(({ id }) => handleResponseChange({ responseID: id, responseType: ResponseType.EMPTY }))
+        .then(({ id }) => handleResponseChange({ messageID: id, draft: true }))
         .catch(() => {
           // do nothing
         });

@@ -9,7 +9,6 @@ import {
   ResponseMessage,
   Utterance,
   Version,
-  VersionProgramResources,
 } from '@voiceflow/dtos';
 import {
   AnyAttachmentJSON,
@@ -134,7 +133,6 @@ export interface MigrationDataMeta {
 export interface PrototypeData extends EnvironmentCMSData {
   version: VersionObject;
   diagrams: DiagramObject[];
-  programResources: VersionProgramResources;
   project: ProjectObject;
   liveDiagramIDs: string[];
 }

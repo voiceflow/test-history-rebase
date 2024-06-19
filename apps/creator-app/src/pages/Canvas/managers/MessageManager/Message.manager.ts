@@ -7,7 +7,7 @@ import { MessageEditor } from './MessageEditor/Message.editor';
 import { NODE_CONFIG } from './MessageManager.constants';
 import { MessageStep } from './MessageStep/Message.step';
 
-const MessageManager: NodeManagerConfigV3<Realtime.NodeData.Response> = {
+const MessageManager: NodeManagerConfigV3<Realtime.NodeData.Message> = {
   ...NODE_CONFIG,
   label: 'Message',
 

@@ -26,8 +26,10 @@ export class EnvironmentPrivateHTTPController {
   async preparePrototype(@Param('environmentID') environmentID: string): Promise<EnvironmentPreparePrototypeResponse> {
     const prototypeData = await this.prototypeService.preparePrototype(environmentID);
 
+    const json = this.adapter.toJSONWithSubResources(prototypeData);
+
     const result: EnvironmentPreparePrototypeResponse = {
-      ...this.adapter.toJSONWithSubResources(prototypeData),
+      ...json,
       project: this.projectSerializer.nullable(prototypeData.project),
       liveDiagramIDs: prototypeData.liveDiagramIDs,
     };

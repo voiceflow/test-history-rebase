@@ -1,4 +1,4 @@
-import { Entity, Enum, Index, Unique } from '@mikro-orm/core';
+import { Entity, Enum, Index, Property, Unique } from '@mikro-orm/core';
 import { ResponseType } from '@voiceflow/dtos';
 
 import { PostgresCMSTabularEntity } from '../common';
@@ -13,4 +13,7 @@ export class ResponseEntity extends PostgresCMSTabularEntity {
     default: ResponseType.MESSAGE,
   })
   type?: ResponseType | null;
+
+  @Property({ type: 'boolean', nullable: true, default: false })
+  draft?: boolean | null;
 }

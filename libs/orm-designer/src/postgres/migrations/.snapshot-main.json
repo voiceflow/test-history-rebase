@@ -2087,6 +2087,16 @@
             "message"
           ],
           "mappedType": "enum"
+        },
+        "draft": {
+          "name": "draft",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "false",
+          "mappedType": "boolean"
         }
       },
       "name": "response",

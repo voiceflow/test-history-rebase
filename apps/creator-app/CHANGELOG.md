@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1581.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1580.0...@voiceflow/creator-app@1.1581.0) (2024-06-19)
+
+### Features
+
+* update expression validator for setV3 (COR-2411) ([#8343](https://github.com/voiceflow/creator-app/issues/8343)) ([618f90c](https://github.com/voiceflow/creator-app/commit/618f90cc6fb246465f9990bca0fd30eeb4539959))
+
 # [1.1580.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1579.0...@voiceflow/creator-app@1.1580.0) (2024-06-19)
 
 ### Bug Fixes

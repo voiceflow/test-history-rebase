@@ -33,4 +33,5 @@ export interface ItemProps extends React.PropsWithChildren {
   newLineAttachment?: React.ReactNode;
   parentActionsPath?: string;
   parentActionsParams?: Record<string, string>;
+  noDivider?: boolean;
 }

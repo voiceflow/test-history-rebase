@@ -9,11 +9,11 @@ import { useEditor } from '@/pages/Canvas/components/EditorV3/EditorV3.hook';
 import { EditorV3HeaderActions } from '@/pages/Canvas/components/EditorV3/EditorV3HeaderActions.component';
 import { NodeEditorV2 } from '@/pages/Canvas/managers/types';
 
-import { SetV2EditorItem } from './SetV2EditorItem.component';
+import { SetV3EditorItem } from './SetV3EditorItem.component';
 
 const MAX_SETS = 20;
 
-export const SetV2EditorRoot: NodeEditorV2<Realtime.NodeData.SetV2> = () => {
+export const SetV3EditorRoot: NodeEditorV2<Realtime.NodeData.SetV2> = () => {
   const editor = useEditor<Realtime.NodeData.SetV2>();
 
   const sets = editor.data.sets ?? [];
@@ -87,7 +87,7 @@ export const SetV2EditorRoot: NodeEditorV2<Realtime.NodeData.SetV2> = () => {
             onItemsReorder={onSetsReorder}
             renderItem={({ ref, item, dragContainerProps, styles }) => (
               <div {...dragContainerProps} ref={ref} style={{ transition: styles.transition }}>
-                <SetV2EditorItem
+                <SetV3EditorItem
                   item={item}
                   onChange={onSetUpdate}
                   onDuplicate={isMaxSets ? undefined : onSetDuplicate}

@@ -6,12 +6,12 @@ import { CMSFormListItem } from '@/components/CMS/CMSForm/CMSFormListItem/CMSFor
 import { Diagram } from '@/ducks';
 import { useExpressionValidator, useSelector } from '@/hooks';
 
-import { SetV2EditorItemContextMenu } from './SetV2EditorItemContextMenu.component';
-import { SetV2EditorItemSubEditor } from './SetV2EditorItemSubEditor.component';
+import { SetV3EditorItemContextMenu } from './SetV3EditorItemContextMenu.component';
+import { SetV3EditorItemSubEditor } from './SetV3EditorItemSubEditor.component';
 
 const SET_STEP_VARIABLE_TEST_ID = 'set-step-variable';
 
-interface ISetV2EditorItem {
+interface ISetV3EditorItem {
   item: Realtime.NodeData.SetExpressionV2;
   isJustAdded: boolean;
   onChange: (itemID: string, item: Partial<Realtime.NodeData.SetExpressionV2>) => void;
@@ -20,7 +20,7 @@ interface ISetV2EditorItem {
   onSubEditorClose: VoidFunction;
 }
 
-export const SetV2EditorItem: React.FC<ISetV2EditorItem> = ({
+export const SetV3EditorItem: React.FC<ISetV3EditorItem> = ({
   item,
   isJustAdded,
   onChange,
@@ -75,7 +75,7 @@ export const SetV2EditorItem: React.FC<ISetV2EditorItem> = ({
       isOpen={isJustAdded}
       referenceElement={({ ref: popperRef, isOpen, onOpen }) => (
         <Box ref={popperRef} width="100%">
-          <SetV2EditorItemContextMenu
+          <SetV3EditorItemContextMenu
             onDuplicate={onDuplicate ? () => onDuplicate?.(item.id) : undefined}
             onRename={() => {
               onChange(item.id, { ...item, variable: '' });
@@ -103,7 +103,7 @@ export const SetV2EditorItem: React.FC<ISetV2EditorItem> = ({
       )}
     >
       {() => (
-        <SetV2EditorItemSubEditor
+        <SetV3EditorItemSubEditor
           item={item}
           onUpdateExpression={updateExpression(item)}
           onUpdateVariable={updateVariable(item)}

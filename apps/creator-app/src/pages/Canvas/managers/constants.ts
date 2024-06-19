@@ -100,7 +100,9 @@ export const MANAGERS_BY_TYPE = {
   [BlockType.RESPONSE]: ResponseManager,
 };
 
-export const MANAGERS_BY_FEATURE: Partial<Record<BlockType, Realtime.FeatureFlag>> = {};
+export const MANAGERS_BY_FEATURE: Partial<Record<BlockType, Realtime.FeatureFlag>> = {
+  [BlockType.SETV2]: Realtime.FeatureFlag.V3_SET_STEP,
+};
 
 export type ManagersMap = typeof MANAGERS_BY_TYPE;
 

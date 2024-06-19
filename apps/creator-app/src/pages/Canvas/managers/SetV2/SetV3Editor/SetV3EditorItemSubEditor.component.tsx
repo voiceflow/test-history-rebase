@@ -6,7 +6,7 @@ import VariableSelectV2 from '@/components/VariableSelectV2';
 import VariablesInput from '@/components/VariablesInput';
 import { useVariableCreateModal } from '@/hooks/modal.hook';
 
-interface ISetV2EditorItemSubEditor {
+interface ISetV3EditorItemSubEditor {
   item: Realtime.NodeData.SetExpressionV2;
   onUpdateExpression: ({ text }: { text: string }) => void;
   onUpdateVariable: (variable: string) => void;
@@ -17,7 +17,7 @@ interface ISetV2EditorItemSubEditor {
   };
 }
 
-export const SetV2EditorItemSubEditor: React.FC<ISetV2EditorItemSubEditor> = ({
+export const SetV3EditorItemSubEditor: React.FC<ISetV3EditorItemSubEditor> = ({
   item,
   onUpdateExpression,
   onUpdateVariable,

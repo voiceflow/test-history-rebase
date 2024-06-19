@@ -3,13 +3,13 @@ import type { IContextMenu } from '@voiceflow/ui-next';
 import { ContextMenu, MenuItem } from '@voiceflow/ui-next';
 import React from 'react';
 
-interface ISetV2EditorItemContextMenu extends Omit<IContextMenu, 'children'> {
+interface ISetV3EditorItemContextMenu extends Omit<IContextMenu, 'children'> {
   onRemove: VoidFunction;
   onDuplicate?: VoidFunction;
   onRename: VoidFunction;
 }
 
-export const SetV2EditorItemContextMenu: React.FC<ISetV2EditorItemContextMenu> = ({
+export const SetV3EditorItemContextMenu: React.FC<ISetV3EditorItemContextMenu> = ({
   width = 133,
   onRemove,
   onDuplicate,

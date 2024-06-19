@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.419.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.418.2...@voiceflow/realtime-sdk@1.419.0) (2024-06-19)
+
+### Features
+
+* functions used by column (COR-000) ([#8320](https://github.com/voiceflow/creator-app/issues/8320)) ([53d030f](https://github.com/voiceflow/creator-app/commit/53d030f546c21a73e90adee16cc8de24779af0e1))
+
 ## [1.418.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.418.1...@voiceflow/realtime-sdk@1.418.2) (2024-06-19)
 
 **Note:** Version bump only for package @voiceflow/realtime-sdk

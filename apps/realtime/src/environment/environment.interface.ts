@@ -120,7 +120,7 @@ export interface IntentsAndEntitiesData {
   entityVariants: EntityVariant[];
   requiredEntities: RequiredEntity[];
   responseVariants: AnyResponseVariant[];
-  responseMessages: ResponseMessage[];
+  responseMessages?: ResponseMessage[];
   responseDiscriminators: ResponseDiscriminator[];
 }
 

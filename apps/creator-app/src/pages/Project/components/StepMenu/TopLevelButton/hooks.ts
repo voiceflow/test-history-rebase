@@ -1,10 +1,10 @@
 import React from 'react';
 
+import { useDeferredSearch } from '@/hooks/search.hook';
+
 import { LibraryStepType, TabData } from '../constants';
-import Searchbar from '../Search';
 import Tabs from '../Tabs';
 import { LibrarySections } from './types';
-import { sortByName } from './utils';
 
 export const useLibrarySubMenuTabs = ({ librarySections }: { librarySections: LibrarySections }) => {
   const { templates, customBlocks } = librarySections;
@@ -25,8 +25,8 @@ export const useLibrarySubMenuTabs = ({ librarySections }: { librarySections: Li
     setCurrentTab,
   } = Tabs.useTabs<LibraryStepType, TabData>({
     tabToDataMap: {
-      [LibraryStepType.BLOCK_TEMPLATES]: templates,
       [LibraryStepType.CUSTOM_BLOCK]: customBlocks,
+      [LibraryStepType.BLOCK_TEMPLATES]: templates,
     },
     defaultTab: LibraryStepType.BLOCK_TEMPLATES,
   });
@@ -35,14 +35,16 @@ export const useLibrarySubMenuTabs = ({ librarySections }: { librarySections: Li
   const SEARCHBAR_VISIBILITY_THRESHOLD = 6;
   const showSearchbar = currentTabSteps.length > SEARCHBAR_VISIBILITY_THRESHOLD;
 
-  // Filter out items that don't fit our search query
-  const { filteredItems, searchText, setSearchText, cancelSearch } = Searchbar.useSearch<TabData>({
-    searchItems: currentTabSteps,
-    filterPredicate: showSearchbar ? (step, searchText) => step.name.includes(searchText) : () => true,
+  const search = useDeferredSearch({
+    items: currentTabSteps,
+    searchBy: (item) => item.name,
   });
 
   // Sort the list of items
-  const processedTabItems = React.useMemo(() => filteredItems.sort(sortByName), [filteredItems]);
+  const processedTabItems = React.useMemo(
+    () => search.items.sort((a, b) => a.name.localeCompare(b.name)),
+    [search.items]
+  );
 
   return {
     currentTab,
@@ -50,8 +52,8 @@ export const useLibrarySubMenuTabs = ({ librarySections }: { librarySections: Li
     tabsData,
     processedTabItems,
     showSearchbar,
-    searchText,
-    setSearchText,
-    cancelSearch,
+    searchText: search.value,
+    setSearchText: search.setValue,
+    cancelSearch: () => search.setValue(''),
   };
 };

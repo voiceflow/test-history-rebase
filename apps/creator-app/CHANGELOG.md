@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1578.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1577.0...@voiceflow/creator-app@1.1578.0) (2024-06-19)
+
+### Features
+
+* refactor asr hooks (COR-000) ([#8334](https://github.com/voiceflow/creator-app/issues/8334)) ([c9a6204](https://github.com/voiceflow/creator-app/commit/c9a62047702b4f2051a2cec707fcc14b4c06608b))
+
 # [1.1577.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1576.0...@voiceflow/creator-app@1.1577.0) (2024-06-19)
 
 ### Features

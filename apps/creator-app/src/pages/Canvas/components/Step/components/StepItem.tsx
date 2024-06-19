@@ -42,13 +42,21 @@ const StepItem: React.FC<ItemProps> = ({
   v2,
   parentActionsPath,
   parentActionsParams,
+  noDivider,
 }) => (
-  <Container className={ClassName.CANVAS_STEP_ITEM} nested={nested} nestedWithIcon={nestedWithIcon}>
+  <Container
+    className={ClassName.CANVAS_STEP_ITEM}
+    nested={nested}
+    nestedWithIcon={nestedWithIcon}
+    noDivider={noDivider}
+  >
     {children ?? (
       <>
         {prefix}
 
-        {v2 && icon && <StepIcon palette={palette} iconColor={iconColor} icon={icon} iconSize={iconSize} style={iconStyle} />}
+        {v2 && icon && (
+          <StepIcon palette={palette} iconColor={iconColor} icon={icon} iconSize={iconSize} style={iconStyle} />
+        )}
 
         {!v2 && <StepIcon palette={palette} iconColor={iconColor} icon={icon} iconSize={iconSize} style={iconStyle} />}
 

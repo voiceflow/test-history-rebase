@@ -4,11 +4,13 @@ import { styled } from '@/hocs/styled';
 
 import StepItemContainer from './StepItemContainer';
 
-const StepSection = styled.section<{ v2?: boolean; withIcon?: boolean }>`
+const StepSection = styled.section<{ v2?: boolean; withIcon?: boolean; noBorder?: boolean }>`
   ${flexStyles}
 
   flex-direction: column;
   width: 100%;
+
+  ${({ noBorder }) => noBorder && 'gap: 12px;'};
 
   ${StepItemContainer}:not(:first-of-type)::before {
     position: absolute;
@@ -24,7 +26,7 @@ const StepSection = styled.section<{ v2?: boolean; withIcon?: boolean }>`
 
     right: 0;
     content: '';
-    border-top: 1px solid #eaeff4;
+    ${({ noBorder }) => !noBorder && 'border-top: 1px solid #eaeff4;'};
   }
 `;
 

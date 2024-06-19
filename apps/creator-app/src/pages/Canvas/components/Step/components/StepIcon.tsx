@@ -14,7 +14,7 @@ export interface StepIconProps extends Omit<SvgIconTypes.Props, 'icon'> {
 
 const StepIcon: React.FC<StepIconProps> = ({ palette, icon, iconColor, iconSize = 18, style, ...props }) => (
   <IconContainer color={palette ? palette?.[600] : iconColor} style={style}>
-    {icon && <SvgIcon icon={icon} size={iconSize} {...props} />}
+    {icon && <SvgIcon icon={icon} size={iconSize} color={iconColor} {...props} />}
   </IconContainer>
 );
 

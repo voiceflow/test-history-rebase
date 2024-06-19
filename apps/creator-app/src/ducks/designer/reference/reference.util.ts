@@ -4,6 +4,7 @@ export const buildReferenceCache = (references: Reference[], referenceResources:
   const blockNodeResourceIDs: string[] = [];
   const triggerNodeResourceIDs: string[] = [];
   const diagramIDResourceIDMap: Partial<Record<string, string>> = {};
+  const functionIDResourceIDMap: Partial<Record<string, string>> = {};
   const resourceIDsByDiagramIDMap: Partial<Record<string, string[]>> = {};
   const refererIDsByResourceIDMap: Partial<Record<string, string[]>> = {};
   const resourceIDsByRefererIDMap: Partial<Record<string, string[]>> = {};
@@ -44,6 +45,8 @@ export const buildReferenceCache = (references: Reference[], referenceResources:
       }
     } else if (resource.type === ReferenceResourceType.DIAGRAM) {
       diagramIDResourceIDMap[resource.resourceID] = resource.id;
+    } else if (resource.type === ReferenceResourceType.FUNCTION) {
+      functionIDResourceIDMap[resource.resourceID] = resource.id;
     }
   });
 
@@ -51,6 +54,7 @@ export const buildReferenceCache = (references: Reference[], referenceResources:
     blockNodeResourceIDs,
     triggerNodeResourceIDs,
     diagramIDResourceIDMap,
+    functionIDResourceIDMap,
     resourceIDsByDiagramIDMap,
     refererIDsByResourceIDMap,
     resourceIDsByRefererIDMap,

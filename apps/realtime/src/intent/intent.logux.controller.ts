@@ -26,7 +26,9 @@ export class IntentLoguxController {
     @Payload() { context, data }: Actions.Intent.CreateOne.Request,
     @AuthMeta() auth: AuthMetaPayload
   ): Promise<Actions.Intent.CreateOne.Response> {
-    return this.service.createManyAndBroadcast([data], { auth, context }).then(([result]) => ({ data: this.service.toJSON(result), context }));
+    return this.service
+      .createManyAndBroadcast([data], { auth, context })
+      .then(([result]) => ({ data: this.service.toJSON(result), context }));
   }
 
   @Action.Async(Actions.Intent.CreateMany)
@@ -39,7 +41,9 @@ export class IntentLoguxController {
     @Payload() { data, context }: Actions.Intent.CreateMany.Request,
     @AuthMeta() auth: AuthMetaPayload
   ): Promise<Actions.Intent.CreateMany.Response> {
-    return this.service.createManyAndBroadcast(data, { auth, context }).then((results) => ({ data: this.service.mapToJSON(results), context }));
+    return this.service
+      .createManyAndBroadcast(data, { auth, context })
+      .then((results) => ({ data: this.service.mapToJSON(results), context }));
   }
 
   @Action(Actions.Intent.PatchOne)
@@ -79,7 +83,7 @@ export class IntentLoguxController {
   @BroadcastOnly()
   @UseRequestContext()
   async deleteOne(@Payload() { id, context }: Actions.Intent.DeleteOne, @AuthMeta() auth: AuthMetaPayload) {
-    const result = await this.service.deleteManyAndSync([id], context);
+    const result = await this.service.deleteManyAndSync([id], { userID: auth.userID, context });
 
     // overriding intents cause it's broadcasted by decorator
     await this.service.broadcastDeleteMany({ ...result, delete: { ...result.delete, intents: [] } }, { auth, context });
@@ -94,7 +98,7 @@ export class IntentLoguxController {
   @BroadcastOnly()
   @UseRequestContext()
   async deleteMany(@Payload() { ids, context }: Actions.Intent.DeleteMany, @AuthMeta() auth: AuthMetaPayload) {
-    const result = await this.service.deleteManyAndSync(ids, context);
+    const result = await this.service.deleteManyAndSync(ids, { userID: auth.userID, context });
 
     // overriding intents cause it's broadcasted by decorator
     await this.service.broadcastDeleteMany({ ...result, delete: { ...result.delete, intents: [] } }, { auth, context });

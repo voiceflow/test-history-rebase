@@ -22,6 +22,7 @@ export const referenceReducer = reducerWithInitialState<ReferenceState>(INITIAL_
       blockNodeResourceIDs: [...state.blockNodeResourceIDs, ...cache.blockNodeResourceIDs],
       diagramIDResourceIDMap: { ...state.diagramIDResourceIDMap, ...cache.diagramIDResourceIDMap },
       triggerNodeResourceIDs: [...state.triggerNodeResourceIDs, ...cache.triggerNodeResourceIDs],
+      functionIDResourceIDMap: { ...state.functionIDResourceIDMap, ...cache.functionIDResourceIDMap },
       resourceIDsByDiagramIDMap: { ...state.resourceIDsByDiagramIDMap, ...cache.resourceIDsByDiagramIDMap },
       resourceIDsByRefererIDMap: { ...state.resourceIDsByRefererIDMap, ...cache.resourceIDsByRefererIDMap },
       refererIDsByResourceIDMap: { ...state.refererIDsByResourceIDMap, ...cache.refererIDsByResourceIDMap },
@@ -30,16 +31,25 @@ export const referenceReducer = reducerWithInitialState<ReferenceState>(INITIAL_
     };
   })
   .case(Actions.Reference.DeleteMany, (state, { data }) => {
-    const resourceIDs = data.referenceResources.map((resource) => resource.id);
+    const diagramIDs: string[] = [];
+    const functionIDs: string[] = [];
+    const resourceIDs: string[] = [];
+
+    data.referenceResources.forEach((resource) => {
+      resourceIDs.push(resource.id);
+
+      if (resource.type === ReferenceResourceType.DIAGRAM) {
+        diagramIDs.push(resource.resourceID);
+      } else if (resource.type === ReferenceResourceType.FUNCTION) {
+        functionIDs.push(resource.resourceID);
+      }
+    });
+
     const referenceIDs = Utils.array.unique([
       ...data.references.map((reference) => reference.id),
       ...resourceIDs.flatMap((resourceID) => state.referenceIDsByResourceIDMap[resourceID] ?? []),
       ...resourceIDs.flatMap((resourceID) => state.referenceIDsByReferrerIDMap[resourceID] ?? []),
     ]);
-
-    const diagramIDs = data.referenceResources
-      .filter((resource) => resource.type === ReferenceResourceType.DIAGRAM)
-      .map((resource) => resource.resourceID);
 
     return {
       resources: removeMany(state.resources, resourceIDs),
@@ -47,6 +57,7 @@ export const referenceReducer = reducerWithInitialState<ReferenceState>(INITIAL_
       blockNodeResourceIDs: Utils.array.withoutValues(state.blockNodeResourceIDs, resourceIDs),
       diagramIDResourceIDMap: Utils.object.omit(state.diagramIDResourceIDMap, diagramIDs),
       triggerNodeResourceIDs: Utils.array.withoutValues(state.triggerNodeResourceIDs, resourceIDs),
+      functionIDResourceIDMap: Utils.object.omit(state.functionIDResourceIDMap, functionIDs),
       resourceIDsByDiagramIDMap: data.referenceResources.reduce((acc, resource) => {
         if (!resource.diagramID) return acc;
 

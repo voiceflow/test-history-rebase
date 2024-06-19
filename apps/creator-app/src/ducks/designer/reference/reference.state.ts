@@ -11,6 +11,7 @@ export interface ReferenceState {
   blockNodeResourceIDs: string[];
   triggerNodeResourceIDs: string[];
   diagramIDResourceIDMap: Partial<Record<string, string>>;
+  functionIDResourceIDMap: Partial<Record<string, string>>;
   resourceIDsByDiagramIDMap: Partial<Record<string, string[]>>;
   refererIDsByResourceIDMap: Partial<Record<string, string[]>>;
   resourceIDsByRefererIDMap: Partial<Record<string, string[]>>;
@@ -24,6 +25,7 @@ export const INITIAL_STATE: ReferenceState = {
   blockNodeResourceIDs: [],
   triggerNodeResourceIDs: [],
   diagramIDResourceIDMap: {},
+  functionIDResourceIDMap: {},
   resourceIDsByDiagramIDMap: {},
   refererIDsByResourceIDMap: {},
   resourceIDsByRefererIDMap: {},

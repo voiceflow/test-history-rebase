@@ -328,20 +328,33 @@ export class FolderService extends CMSObjectService<FolderORM> {
           : Promise.resolve(),
       ]);
 
-      const [flowReferencesResult, workflowReferencesResult] = await Promise.all([
-        this.reference.deleteManyWithSubResourcesAndSyncByDiagramIDs({
-          userID,
-          diagramIDs: relations.flows.map((flow) => flow.diagramID),
-          assistantID: context.assistantID,
-          environmentID: context.environmentID,
-        }),
-        this.reference.deleteManyWithSubResourcesAndSyncByDiagramIDs({
-          userID,
-          diagramIDs: relations.workflows.map((workflow) => workflow.diagramID),
-          assistantID: context.assistantID,
-          environmentID: context.environmentID,
-        }),
-      ]);
+      const [intentReferencesResult, flowReferencesResult, workflowReferencesResult, functionReferencesResult] =
+        await Promise.all([
+          this.reference.deleteManyWithSubResourcesAndSyncByIntentIDs({
+            userID,
+            intentIDs: relations.intents.map((intent) => intent.id),
+            assistantID: context.assistantID,
+            environmentID: context.environmentID,
+          }),
+          this.reference.deleteManyWithSubResourcesAndSyncByDiagramIDs({
+            userID,
+            diagramIDs: relations.flows.map((flow) => flow.diagramID),
+            assistantID: context.assistantID,
+            environmentID: context.environmentID,
+          }),
+          this.reference.deleteManyWithSubResourcesAndSyncByDiagramIDs({
+            userID,
+            diagramIDs: relations.workflows.map((workflow) => workflow.diagramID),
+            assistantID: context.assistantID,
+            environmentID: context.environmentID,
+          }),
+          this.reference.deleteManyWithSubResourcesAndSyncByFunctionIDs({
+            userID,
+            functionIDs: relations.functions.map((intent) => intent.id),
+            assistantID: context.assistantID,
+            environmentID: context.environmentID,
+          }),
+        ]);
 
       await this.deleteMany(folders);
 
@@ -361,9 +374,13 @@ export class FolderService extends CMSObjectService<FolderORM> {
             ? relations.workflowDiagrams.filter((diagram) => startWorkflow.diagramID !== diagram.diagramID.toJSON())
             : relations.workflowDiagrams,
           flowReferences: flowReferencesResult.delete.references,
+          intentReferences: intentReferencesResult.delete.references,
           workflowReferences: workflowReferencesResult.delete.references,
+          functionReferences: functionReferencesResult.delete.references,
           flowReferenceResources: flowReferencesResult.delete.referenceResources,
+          intentReferenceResources: intentReferencesResult.delete.referenceResources,
           workflowReferenceResources: workflowReferencesResult.delete.referenceResources,
+          functionReferenceResources: functionReferencesResult.delete.referenceResources,
         },
       };
     });
@@ -401,15 +418,19 @@ export class FolderService extends CMSObjectService<FolderORM> {
         functionPaths: FunctionPathObject[];
         entityVariants: EntityVariantObject[];
         flowReferences: ReferenceObject[];
+        intentReferences: ReferenceObject[];
         workflowDiagrams: DiagramObject[];
         requiredEntities: RequiredEntityObject[];
-        functionVariables: FunctionVariableObject[];
         responseVariants: AnyResponseVariantObject[];
+        functionVariables: FunctionVariableObject[];
         workflowReferences: ReferenceObject[];
+        functionReferences: ReferenceObject[];
         responseAttachments: AnyResponseAttachmentObject[];
         responseDiscriminators: ResponseDiscriminatorObject[];
         flowReferenceResources: ReferenceResourceObject[];
+        intentReferenceResources: ReferenceResourceObject[];
         workflowReferenceResources: ReferenceResourceObject[];
+        functionReferenceResources: ReferenceResourceObject[];
       };
     },
     meta: CMSBroadcastMeta
@@ -437,7 +458,13 @@ export class FolderService extends CMSObjectService<FolderORM> {
 
       this.intent.broadcastDeleteMany(
         {
-          delete: Utils.object.pick(del, ['intents', 'utterances', 'requiredEntities']),
+          delete: {
+            intents: del.intents,
+            utterances: del.utterances,
+            references: del.intentReferences,
+            requiredEntities: del.requiredEntities,
+            referenceResources: del.intentReferenceResources,
+          },
         },
         meta
       ),
@@ -463,7 +490,13 @@ export class FolderService extends CMSObjectService<FolderORM> {
 
       this.functionService.broadcastDeleteMany(
         {
-          delete: Utils.object.pick(del, ['functions', 'functionPaths', 'functionVariables']),
+          delete: {
+            functions: del.functions,
+            references: del.functionReferences,
+            functionPaths: del.functionPaths,
+            functionVariables: del.functionVariables,
+            referenceResources: del.functionReferenceResources,
+          },
         },
         meta
       ),

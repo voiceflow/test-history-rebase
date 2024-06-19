@@ -2,7 +2,7 @@ import type { EntityManager } from '@mikro-orm/core';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
-import { Intent, Language, RequiredEntity, Utterance } from '@voiceflow/dtos';
+import { Intent, Language, Reference, ReferenceResource, RequiredEntity, Utterance } from '@voiceflow/dtos';
 import { LoguxService } from '@voiceflow/nestjs-logux';
 import type {
   AnyResponseAttachmentObject,
@@ -390,7 +390,7 @@ export class IntentService extends CMSTabularService<IntentORM> {
     };
   }
 
-  async deleteManyAndSync(ids: string[], context: CMSContext) {
+  async deleteManyAndSync(ids: string[], { userID, context }: { userID: number; context: CMSContext }) {
     return this.postgresEM.transactional(async () => {
       const [intents, relations] = await Promise.all([
         this.findManyByEnvironmentAndIDs(context.environmentID, ids),
@@ -399,10 +399,16 @@ export class IntentService extends CMSTabularService<IntentORM> {
 
       await this.deleteManyByEnvironmentAndIDs(context.environmentID, ids);
 
-      await this.reference.deleteManyWithSubResourcesAndSyncByDiagramIDs
+      const referenceRelations = await this.reference.deleteManyWithSubResourcesAndSyncByIntentIDs({
+        userID,
+        intentIDs: ids,
+        assistantID: context.assistantID,
+        environmentID: context.environmentID,
+      });
 
       return {
-        delete: { ...relations, intents },
+        ...referenceRelations,
+        delete: { ...relations, ...referenceRelations.delete, intents },
       };
     });
   }
@@ -413,8 +419,10 @@ export class IntentService extends CMSTabularService<IntentORM> {
     }: {
       delete: {
         intents: IntentObject[];
+        references: Reference[];
         utterances: UtteranceObject[];
         requiredEntities: RequiredEntityObject[];
+        referenceResources: ReferenceResource[];
       };
     },
     meta: CMSBroadcastMeta
@@ -424,6 +432,11 @@ export class IntentService extends CMSTabularService<IntentORM> {
       // no need to sync intents, because they are deleted
       this.requiredEntity.broadcastDeleteMany(
         { sync: { intents: [] }, delete: Utils.object.pick(del, ['requiredEntities']) },
+        meta
+      ),
+
+      this.reference.broadcastDeleteMany(
+        { delete: Utils.object.pick(del, ['references', 'referenceResources']) },
         meta
       ),
 
@@ -438,7 +451,7 @@ export class IntentService extends CMSTabularService<IntentORM> {
   }
 
   async deleteManyAndBroadcast(ids: string[], meta: CMSBroadcastMeta): Promise<void> {
-    const result = await this.deleteManyAndSync(ids, meta.context);
+    const result = await this.deleteManyAndSync(ids, { userID: meta.auth.userID, context: meta.context });
 
     await this.broadcastDeleteMany(result, meta);
   }

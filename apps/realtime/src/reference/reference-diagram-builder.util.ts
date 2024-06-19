@@ -11,6 +11,8 @@ export class ReferenceDiagramBuilderUtil extends ReferenceBaseBuilderUtil {
 
   private readonly diagramResourceCache: ReferenceBuilderCacheUtil;
 
+  private readonly functionResourceCache: ReferenceBuilderCacheUtil;
+
   public static isSupportedDiagram(diagram: Diagram) {
     return diagram.type === DiagramType.COMPONENT || diagram.type === DiagramType.TOPIC;
   }
@@ -21,18 +23,21 @@ export class ReferenceDiagramBuilderUtil extends ReferenceBaseBuilderUtil {
     environmentID,
     intentResourceCache,
     diagramResourceCache,
+    functionResourceCache,
   }: {
     diagrams: Diagram[];
     assistantID: string;
     environmentID: string;
     intentResourceCache: ReferenceBuilderCacheUtil;
     diagramResourceCache: ReferenceBuilderCacheUtil;
+    functionResourceCache: ReferenceBuilderCacheUtil;
   }) {
     super({ assistantID, environmentID });
 
     this.diagrams = diagrams;
     this.intentResourceCache = intentResourceCache;
     this.diagramResourceCache = diagramResourceCache;
+    this.functionResourceCache = functionResourceCache;
   }
 
   async build() {
@@ -82,6 +87,7 @@ export class ReferenceDiagramBuilderUtil extends ReferenceBaseBuilderUtil {
       diagramResourceID: diagramResource.id,
       intentResourceCache: this.intentResourceCache,
       diagramResourceCache: this.diagramResourceCache,
+      functionResourceCache: this.functionResourceCache,
     });
 
     const result = await nodeBuilder.build();

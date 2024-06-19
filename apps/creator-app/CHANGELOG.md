@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1580.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1579.0...@voiceflow/creator-app@1.1580.0) (2024-06-19)
+
+### Bug Fixes
+
+* display trial expired lockscreen on kanban view (COR-2413) ([#8347](https://github.com/voiceflow/creator-app/issues/8347)) ([00d1e50](https://github.com/voiceflow/creator-app/commit/00d1e506805425e4c36357036f16b4e4d02e214a))
+
+### Features
+
+* refactor canvas node hook (COR-000) ([#8335](https://github.com/voiceflow/creator-app/issues/8335)) ([964081e](https://github.com/voiceflow/creator-app/commit/964081ee15957637e42e42e6e0d21c4d468c8b53))
+
 # [1.1579.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1578.2...@voiceflow/creator-app@1.1579.0) (2024-06-19)
 
 ### Features

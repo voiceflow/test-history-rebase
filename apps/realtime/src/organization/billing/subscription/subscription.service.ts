@@ -77,7 +77,10 @@ export class BillingSubscriptionService {
         featureID: item.feature_id,
         value: item.value,
       })),
-      downgradedFromTrial: subscription.cf_downgraded_from_trial,
+      // TODO: fix it and make sure we always receive a boolean
+      downgradedFromTrial:
+        (subscription as any).cf_downgraded_from_trial === 'True' ||
+        (subscription as any).cf_downgraded_from_trial === true,
       metaData: subscription.meta_data,
     };
   }

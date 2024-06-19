@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1578.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1578.1...@voiceflow/creator-app@1.1578.2) (2024-06-19)
+
+### Bug Fixes
+
+* nodes library search (COR-2406) ([#8346](https://github.com/voiceflow/creator-app/issues/8346)) ([9a5c1d7](https://github.com/voiceflow/creator-app/commit/9a5c1d79fb8cacaaea87eef315d415fa2b2ae031))
+
 ## [1.1578.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1578.0...@voiceflow/creator-app@1.1578.1) (2024-06-19)
 
 **Note:** Version bump only for package @voiceflow/creator-app

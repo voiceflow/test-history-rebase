@@ -1,4 +1,3 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box } from '@voiceflow/ui';
 import * as Normal from 'normal-store';
 import React, { useEffect } from 'react';
@@ -14,7 +13,7 @@ import * as Account from '@/ducks/account';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useDispatch, useFeature, usePermission, useSelector } from '@/hooks';
+import { useDispatch, usePermission, useSelector } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 import { ProjectIdentityProvider } from '@/pages/Project/contexts/ProjectIdentityContext';
 
@@ -25,12 +24,14 @@ import { SortByOptions, SortOptionType } from './constants';
 import * as S from './styles';
 import { getProjectSortFunction } from './utils';
 
-const ProjectList: React.FC = () => {
+interface ProjectListProps {
+  showLockScreen: boolean;
+}
+
+const ProjectList: React.FC<ProjectListProps> = ({ showLockScreen }) => {
   const [search, setSearch] = React.useState('');
   const [sortBy, setSortBy] = React.useState<SortOptionType>(SortByOptions[0]);
   const [canCreateAssistant] = usePermission(Permission.PROJECT_UPDATE);
-  const proReverseTrial = useFeature(Realtime.FeatureFlag.PRO_REVERSE_TRIAL);
-  const isEnterprise = useSelector(WorkspaceV2.active.isEnterpriseSelector);
   const location = useLocation();
   const history = useHistory();
   const { open: openPaymentModal } = ModalsV2.useModal(ModalsV2.Billing.Payment);
@@ -41,7 +42,6 @@ const ProjectList: React.FC = () => {
   const projects = useSelector(ProjectV2.allProjectsSelector);
   const awarenessViewers = useSelector(ProjectV2.awarenessViewersSelector);
   const getMemberByIDSelector = useSelector(WorkspaceV2.active.members.getMemberByIDSelector);
-  const isTrialExpired = useSelector(WorkspaceV2.active.organizationTrialExpiredSelector);
 
   const goToCMSWorkflow = useDispatch(Router.goToCMSWorkflow);
 
@@ -141,7 +141,7 @@ const ProjectList: React.FC = () => {
     </Page>
   );
 
-  if (proReverseTrial.isEnabled && isTrialExpired && !isEnterprise) {
+  if (showLockScreen) {
     return (
       <>
         <TrialExpiredPage />

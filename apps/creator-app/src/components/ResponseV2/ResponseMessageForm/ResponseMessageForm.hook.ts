@@ -1,4 +1,4 @@
-import { Channel, Language, ResponseType } from '@voiceflow/dtos';
+import { Channel, Language } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
@@ -31,7 +31,7 @@ export const useResponseMessageEditForm = ({
   onChangeResponse,
 }: {
   responseID: string | null;
-  onChangeResponse?: (data: Partial<Realtime.NodeData.Response>) => void;
+  onChangeResponse?: (data: Partial<Realtime.NodeData.Message>) => void;
 }): IResponseMessageForm => {
   const deleteMessage = useDispatch(Designer.Response.ResponseMessage.effect.deleteOne);
   const createMessage = useDispatch(Designer.Response.ResponseMessage.effect.createOne);
@@ -51,21 +51,21 @@ export const useResponseMessageEditForm = ({
 
   const [rootMessage, ...otherMessages] = messages;
 
-  const checkAndUpdateResponseType = async () => {
+  const checkAndUpdateDraftResponse = async () => {
     const response = getResponseByID({ id: responseID });
 
     if (!response) return;
 
-    if (response.type !== ResponseType.MESSAGE) {
-      onChangeResponse?.({ responseType: ResponseType.MESSAGE });
-      await patchResponse(response.id, { type: ResponseType.MESSAGE });
+    if (response.draft) {
+      onChangeResponse?.({ draft: false });
+      await patchResponse(response.id, { draft: false });
     }
   };
 
   const onAddMessage = async () => {
     if (!discriminatorID) return undefined;
 
-    await checkAndUpdateResponseType();
+    await checkAndUpdateDraftResponse();
 
     const res = await createMessage(discriminatorID);
 
@@ -74,7 +74,7 @@ export const useResponseMessageEditForm = ({
 
   const onUpdateMessage = async (messageID: string, data: Actions.ResponseMessage.PatchData) => {
     if (messageID === rootMessage.id) {
-      await checkAndUpdateResponseType();
+      await checkAndUpdateDraftResponse();
     }
 
     return patchMessage(messageID, data);

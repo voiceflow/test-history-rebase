@@ -27,12 +27,14 @@ export interface CreateData {
   variants: AnyResponseVariantCreate[];
   messages?: ResponseMessageCreate[];
   type?: ResponseType;
+  draft?: boolean;
 }
 
 export interface PatchData {
   name?: string;
   folderID?: string | null;
   type?: ResponseType;
+  draft?: boolean;
 }
 
 /**

@@ -1,11 +1,11 @@
-import { NodeSystemPortType, ResponseType } from '@voiceflow/dtos';
+import { NodeSystemPortType } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { BlockType } from '@/constants';
 
 import type { NodeConfig } from '../types';
 
-export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Response> = {
+export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Message> = {
   type: BlockType.MESSAGE,
   icon: 'systemTalk',
 
@@ -22,8 +22,8 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Response> = {
       },
     },
     data: {
-      responseID: null,
-      responseType: ResponseType.EMPTY,
+      messageID: null,
+      draft: true,
       name: '',
     },
   }),

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.95.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.95.0...@voiceflow/dtos@1.95.1) (2024-06-19)
+
+### Bug Fixes
+
+* wrong parent type for condition DTOs (PL-1042) ([#8339](https://github.com/voiceflow/creator-app/issues/8339)) ([5777131](https://github.com/voiceflow/creator-app/commit/5777131c6b8c036bcb622971ecd705b237928a67))
+
 # [1.95.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.94.1...@voiceflow/dtos@1.95.0) (2024-06-19)
 
 ### Features

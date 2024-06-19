@@ -4,7 +4,8 @@ import { Box, Flex, Text } from '@voiceflow/ui';
 import React from 'react';
 
 import { PrototypeLayout, PrototypeStatus } from '@/constants/prototype';
-import { useCanASR, useTheme } from '@/hooks';
+import { useTheme } from '@/hooks';
+import { useCanASR } from '@/hooks/speech-recognition.hook';
 import { ChatDisplay } from '@/pages/Prototype/components';
 import { ASRSpeechBar, UncontrolledSpeechBar } from '@/pages/Prototype/components/PrototypeSpeechBar';
 import { Interaction, Message, OnInteraction, PMStatus } from '@/pages/Prototype/types';
@@ -99,7 +100,8 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
   const canUseASR = useCanASR();
 
   const showInputContainer = !buttonsOnly || !isIdle || testEnded || layout !== PrototypeLayout.TEXT_DIALOG;
-  const showInput = !buttonsOnly || (buttonsOnly && pmStatus === PMStatus.WAITING_USER_INTERACTION && interactions.length === 0);
+  const showInput =
+    !buttonsOnly || (buttonsOnly && pmStatus === PMStatus.WAITING_USER_INTERACTION && interactions.length === 0);
 
   return (
     <Box height="100%" width="100%" position="relative">

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useASR, useCanASR, useSpeechRecognition } from '@/hooks';
+import { useASR, useCanASR, useSpeechRecognition } from '@/hooks/speech-recognition.hook';
 
 import { ASRSpeechBar, UncontrolledSpeechBar } from './components';
 

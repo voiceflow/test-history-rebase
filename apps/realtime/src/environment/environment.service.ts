@@ -79,7 +79,7 @@ export class EnvironmentService {
       entityVariants: EntityVariant[];
       requiredEntities: RequiredEntity[];
       responseVariants: AnyResponseVariant[];
-      responseMessages: ResponseMessage[];
+      responseMessages?: ResponseMessage[];
       responseDiscriminators: ResponseDiscriminator[];
     },
     meta: { userID: number; assistantID: string; environmentID: string }

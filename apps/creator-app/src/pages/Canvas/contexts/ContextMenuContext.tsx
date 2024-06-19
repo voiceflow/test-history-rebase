@@ -6,7 +6,7 @@ import { DismissableLayerContext } from 'react-dismissable-layers';
 import { ContextMenuTarget } from '@/pages/Canvas/constants';
 
 import { EntityType } from '../engine/constants';
-import { EngineContext } from './EngineContext';
+import { EngineContext } from './Engine.context';
 
 export interface MenuContext {
   type: ContextMenuTarget;
@@ -27,7 +27,11 @@ export const ContextMenuProvider: React.FC<React.PropsWithChildren> = ({ childre
   const engine = React.useContext(EngineContext)!;
   const dismissOverlay = React.useContext(DismissableLayerContext)!;
 
-  const [menuContext, menuContextApi] = useSmartReducerV2<Partial<MenuContext>>({ type: undefined, target: undefined, position: undefined });
+  const [menuContext, menuContextApi] = useSmartReducerV2<Partial<MenuContext>>({
+    type: undefined,
+    target: undefined,
+    position: undefined,
+  });
 
   const onHide = React.useCallback(() => {
     dismissOverlay.removeHandler('click', onHide);
@@ -45,7 +49,11 @@ export const ContextMenuProvider: React.FC<React.PropsWithChildren> = ({ childre
       dismissOverlay.addHandler('click', onHide);
 
       if (type === ContextMenuTarget.NODE && target && engine.selection.isOneOfManyTargets(EntityType.NODE, target)) {
-        menuContextApi.set({ position: [event.clientX, event.clientY], type: ContextMenuTarget.SELECTION, target: null });
+        menuContextApi.set({
+          position: [event.clientX, event.clientY],
+          type: ContextMenuTarget.SELECTION,
+          target: null,
+        });
 
         return;
       }

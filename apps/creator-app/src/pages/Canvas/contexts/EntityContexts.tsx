@@ -7,7 +7,7 @@ import NodeEntity from '@/pages/Canvas/engine/entities/nodeEntity';
 import PortEntity from '@/pages/Canvas/engine/entities/portEntity';
 import ThreadEntity from '@/pages/Canvas/engine/entities/threadEntity';
 
-import { EngineContext } from './EngineContext';
+import { EngineContext } from './Engine.context';
 
 const createResourceEntityProvider =
   <T extends ResourceEntity<any, any>>(

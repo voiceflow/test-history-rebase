@@ -3,7 +3,7 @@ import React from 'react';
 
 import { BlockType } from '@/constants';
 import { useSetup } from '@/hooks';
-import { EngineContext } from '@/pages/Canvas/contexts/EngineContext';
+import { EngineContext } from '@/pages/Canvas/contexts/Engine.context';
 
 import type Engine from '..';
 import { EntityType } from '../constants';
@@ -64,13 +64,20 @@ class PortEntity extends ResourceEntity<Realtime.Port, PortInstance> {
     return this.resolveLink()?.target.nodeID ?? null;
   }
 
-  constructor(engine: Engine, public portID: string) {
+  constructor(
+    engine: Engine,
+    public portID: string
+  ) {
     super(EntityType.PORT, engine, engine.log.child('port', portID.slice(-6)));
 
     this.log.debug(this.log.init('constructed port'), this.log.slug(portID));
   }
 
-  useLinkSubscription<T>(id: string, selector: () => T, isEqual: (lhs: T | null, rhs: T | null) => boolean = isDirectlyEqual) {
+  useLinkSubscription<T>(
+    id: string,
+    selector: () => T,
+    isEqual: (lhs: T | null, rhs: T | null) => boolean = isDirectlyEqual
+  ) {
     let prevState: T | null = null;
 
     return this.engine.dispatcher.useSubscription(EntityType.LINK, id, (isForced) => {

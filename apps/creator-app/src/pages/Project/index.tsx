@@ -18,12 +18,11 @@ import { withWorkspaceOrProjectAssetsSuspense } from '@/hocs/withWorkspaceOrProj
 import { useFeature, useLocalDispatch, usePermission, useSelector, useTeardown } from '@/hooks';
 import { ModalScope } from '@/ModalsV2/modal-scope.enum';
 import AssistantCMS from '@/pages/AssistantCMS/AssistantCMS.page';
-import Providers from '@/pages/Project/Providers';
+import ProjectProviders from '@/pages/Project/Providers';
 
 import Diagram from './components/Diagram';
 import ProjectExitTracker from './components/ProjectExitTracker';
 import { DIAGRAM_ROUTES, TIMEOUT_COUNT } from './constants';
-import { MarkupProvider } from './contexts';
 import { useProjectHotkeys } from './Project.hook';
 
 const Publish = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/Publish')));
@@ -86,14 +85,14 @@ const Project: React.FC = () => {
   });
 
   return (
-    <MarkupProvider>
+    <>
       <Helmet>
         <title>{projectName}</title>
       </Helmet>
 
       {!isOnlyViewer && inactivitySnackbar.isOpen && <InactivitySnackbar onDismiss={setActive} />}
 
-      <Providers>
+      <ProjectProviders>
         <ProjectExitTracker />
 
         <Switch>
@@ -116,8 +115,8 @@ const Project: React.FC = () => {
 
         {/* allows rendering cms related modals in the cms page tree, so we can easily use cms related context in the modals */}
         <Modal.Placeholder scope={ModalScope.PROJECT} />
-      </Providers>
-    </MarkupProvider>
+      </ProjectProviders>
+    </>
   );
 };
 

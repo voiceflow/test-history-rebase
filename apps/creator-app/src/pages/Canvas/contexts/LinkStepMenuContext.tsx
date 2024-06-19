@@ -5,7 +5,7 @@ import React from 'react';
 import { Point } from '@/types';
 import { Coords } from '@/utils/geometry';
 
-import { EngineContext } from './EngineContext';
+import { EngineContext } from './Engine.context';
 
 export interface LinkStepMenuValue {
   isOpen: boolean;

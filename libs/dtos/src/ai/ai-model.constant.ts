@@ -18,7 +18,14 @@ export const DEFAULT_AI_MODEL_PARAM: AIModelParam = {
 // the typing forces us to always have a param for each model
 export const AI_MODEL_PARAMS: Record<AIModel, AIModelParam> = {
   // Google
-  [AIModel.GEMINI_PRO]: DEFAULT_AI_MODEL_PARAM,
+  [AIModel.GEMINI_PRO_1_5]: {
+    ...DEFAULT_AI_MODEL_PARAM,
+    maxTokens: 500,
+  },
+  [AIModel.GEMINI_PRO]: {
+    ...DEFAULT_AI_MODEL_PARAM,
+    maxTokens: 500,
+  },
 
   // OpenAI
   [AIModel.DaVinci_003]: {

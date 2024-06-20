@@ -20,6 +20,7 @@ const ENTITLEMENTS_MODELS = new Set([
   AIModel.GPT_4,
   AIModel.GPT_4_TURBO,
   AIModel.GPT_4O,
+  AIModel.GEMINI_PRO_1_5,
 ]);
 
 type EntitlementModels = typeof ENTITLEMENTS_MODELS extends Set<infer T> ? T : never;
@@ -36,6 +37,7 @@ const ENTITLEMENTS_BY_MODELS: Record<EntitlementModels, keyof Subscription['enti
   [AIModel.GPT_4]: 'gpt4',
   [AIModel.GPT_4_TURBO]: 'gpt4Turbo',
   [AIModel.GPT_4O]: 'gpt4O',
+  [AIModel.GEMINI_PRO_1_5]: 'geminiPro15',
 };
 
 const isEntitlementModel = (model: string): model is EntitlementModels =>

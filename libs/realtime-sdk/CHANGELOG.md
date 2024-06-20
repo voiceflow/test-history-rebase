@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.423.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.422.1...@voiceflow/realtime-sdk@1.423.0) (2024-06-20)
+
+### Features
+
+* optimize global intents ref system (COR-000) ([#8323](https://github.com/voiceflow/creator-app/issues/8323)) ([5db6c5e](https://github.com/voiceflow/creator-app/commit/5db6c5e161cbf1201211480e129509fdc2f7c9ab))
+
 ## [1.422.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.422.0...@voiceflow/realtime-sdk@1.422.1) (2024-06-20)
 
 ### Bug Fixes

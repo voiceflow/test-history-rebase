@@ -21,6 +21,7 @@ export * from './billing/payment-intent.dto';
 export * from './billing/period-unit.dto';
 export * from './billing/plan.dto';
 export * from './billing/plan-name.dto';
+export * from './billing/quota.dto';
 export * from './billing/subscription.dto';
 export * from './billing/subscription-entitlements.dto';
 export * from './billing/subscription-payment-method.dto';
@@ -239,4 +240,6 @@ export * from './version/version-prototype/version-prototype-surveyor-context.dt
 export * from './version/version-settings.dto';
 export * from './workflow/workflow.dto';
 export * from './workflow/workflow-status.enum';
+export * from './workspace/workspace.dto';
+export * from './workspace/workspace-invitation.dto';
 export * from './workspace/workspace-quota-name.enum';

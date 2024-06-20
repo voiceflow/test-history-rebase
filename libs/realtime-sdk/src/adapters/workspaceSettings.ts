@@ -8,7 +8,10 @@ const workspaceSettingsAdapter = createMultiAdapter<DBWorkspaceProperties, Works
     aiAssist: settingsAiAssist == null ? true : settingsAiAssist,
     dashboardKanban: settingsDashboardKanban == null ? true : settingsDashboardKanban,
   }),
-  ({ aiAssist, dashboardKanban }) => ({ settingsAiAssist: aiAssist, settingsDashboardKanban: dashboardKanban })
+  ({ aiAssist, dashboardKanban }) => ({
+    settingsAiAssist: aiAssist ?? undefined,
+    settingsDashboardKanban: dashboardKanban ?? undefined,
+  })
 );
 
 export default workspaceSettingsAdapter;

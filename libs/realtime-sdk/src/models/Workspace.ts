@@ -1,5 +1,5 @@
 import { WorkspaceActivationState } from '@realtime-sdk/constants';
-import { UserRole } from '@voiceflow/dtos';
+import { StripeStatus, UserRole } from '@voiceflow/dtos';
 import { PlanType } from '@voiceflow/internal';
 import { Normalized } from 'normal-store';
 
@@ -35,8 +35,8 @@ export interface WorkspaceSettings {
 }
 
 export interface DBWorkspaceProperties {
-  settingsAiAssist?: boolean | null;
-  settingsDashboardKanban?: boolean | null;
+  settingsAiAssist?: boolean;
+  settingsDashboardKanban?: boolean;
 }
 
 export interface PlanSeatLimits {
@@ -44,40 +44,36 @@ export interface PlanSeatLimits {
   viewer: number;
 }
 
-export type StripeStatus = 'incomplete_expired' | 'incomplete' | 'unpaid' | 'past_due';
-
 export interface Workspace {
   id: string;
   name: string;
   plan: PlanType | null;
   seats: number;
   state: WorkspaceActivationState | null;
-  image: string;
+  image: string | null;
   quotas?: Billing.Quota[];
   members: Normalized<WorkspaceMember>;
   created: string;
   projects: number;
   settings: WorkspaceSettings;
   betaFlag?: number | null;
-  creatorID: number | null; // workspaces created via identity service do not have creator_id
   planSeatLimits: PlanSeatLimits;
   pendingMembers: Normalized<PendingWorkspaceMember>;
   organizationID: string | null;
   variableStatesLimit: number | null;
   organizationTrialDaysLeft: number | null;
-  stripeStatus: StripeStatus;
+  stripeStatus: StripeStatus | null;
 }
 
 export interface DBWorkspace {
-  creator_id: number | null;
   team_id: string;
-  stripe_status: StripeStatus;
+  stripe_status: StripeStatus | null;
   name: string;
   created: string;
   seatLimits: PlanSeatLimits;
   organization_id: string | null;
   organization_trial_days_left: number | null;
-  image: string;
+  image: string | null;
   projects: number;
   seats: number;
   plan: PlanType | null;

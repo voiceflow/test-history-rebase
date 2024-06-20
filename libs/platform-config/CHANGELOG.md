@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.65.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.65.3...@voiceflow/platform-config@1.65.4) (2024-06-20)
+
+### Bug Fixes
+
+* vite 5 (COR-1674) ([#8342](https://github.com/voiceflow/creator-app/issues/8342)) ([f9626f0](https://github.com/voiceflow/creator-app/commit/f9626f0e6cb1b552ad7ef63a0ae567053668266c))
+
 ## [1.65.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.65.2...@voiceflow/platform-config@1.65.3) (2024-06-20)
 
 **Note:** Version bump only for package @voiceflow/platform-config

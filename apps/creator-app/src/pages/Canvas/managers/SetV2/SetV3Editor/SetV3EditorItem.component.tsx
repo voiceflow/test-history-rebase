@@ -1,7 +1,11 @@
+import type { Markup } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, EditorButton, Popper, useConst, usePopperContext } from '@voiceflow/ui-next';
+import { markupToString } from '@voiceflow/utils-designer';
+import { useAtomValue } from 'jotai';
 import React from 'react';
 
+import { entitiesVariablesMapsAtom } from '@/atoms/other.atom';
 import { CMSFormListItem } from '@/components/CMS/CMSForm/CMSFormListItem/CMSFormListItem.component';
 import { Diagram } from '@/ducks';
 import { useExpressionValidator, useSelector } from '@/hooks';
@@ -28,6 +32,7 @@ export const SetV3EditorItem: React.FC<ISetV3EditorItem> = ({
   onRemove,
   onSubEditorClose,
 }) => {
+  const entitiesVariablesMaps = useAtomValue(entitiesVariablesMapsAtom);
   const variablesMap = useSelector(Diagram.active.entitiesAndVariablesMapSelector);
   const [error, setError] = React.useState<string>('');
 
@@ -38,13 +43,12 @@ export const SetV3EditorItem: React.FC<ISetV3EditorItem> = ({
 
   const expressionValidator = useExpressionValidator();
 
-  const updateExpression =
-    (item: Realtime.NodeData.SetExpressionV2) =>
-    ({ text: expression }: { text: string }) => {
-      if (!expression.trim() || !expressionValidator.validate(expression)) return;
+  const updateExpression = (item: Realtime.NodeData.SetExpressionV2) => (value: Markup) => {
+    const expression = markupToString.fromDB(value, entitiesVariablesMaps);
+    if (!expression.trim() || !expressionValidator.validate(expression)) return;
 
-      onChange(item.id, { expression });
-    };
+    onChange(item.id, { expression });
+  };
 
   const updateVariable = (item: Realtime.NodeData.SetExpressionV2) => (variable: string) => {
     onChange(item.id, { ...item, variable });
@@ -88,7 +92,7 @@ export const SetV3EditorItem: React.FC<ISetV3EditorItem> = ({
                     fullWidth
                     prefixIconName="Set"
                     label={item.variable ? variablesMap[item.variable].name : 'Set variable'}
-                    secondLabel={`${item.expression}`}
+                    secondLabel={String(item.expression)}
                     onClick={onOpen}
                     isActive={isOpen}
                     isEmpty={!item.variable && !item.expression}

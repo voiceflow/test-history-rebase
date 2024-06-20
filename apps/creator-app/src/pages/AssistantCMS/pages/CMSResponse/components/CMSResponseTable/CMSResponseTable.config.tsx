@@ -14,6 +14,7 @@ import {
 } from '../../../../contexts/CMSManager/CMSManager.util';
 import { ResponseTableColumn } from './CMSResponseTable.constant';
 import { CMSResponseTableTypeCell } from './CMSResponseTableTypeCell/CMSResponseTableTypeCell.component';
+import { CMSResponseTableUsedByCell } from './CMSResponseTableUsedByCell.component';
 import { CMSResponseTableVariantCell } from './CMSResponseTableVariantCell/CMSResponseTableVariantCell.component';
 
 export const CMS_RESPONSE_TABLE_CONFIG: TableConfig<ResponseTableColumn, CMSFolder | CMSResponse> = {
@@ -57,10 +58,13 @@ export const CMS_RESPONSE_TABLE_CONFIG: TableConfig<ResponseTableColumn, CMSFold
       ),
     },
 
-    [ResponseTableColumn.STORIES_USING]: {
-      type: ResponseTableColumn.STORIES_USING,
-      name: 'Stories using',
-      cell: () => <Table.Cell.Empty />,
+    [ResponseTableColumn.USED_BY]: {
+      type: ResponseTableColumn.USED_BY,
+      name: 'Used by',
+
+      cell: ({ item }) => (
+        <Table.Cell.GroupEmpty item={item} label={(item) => <CMSResponseTableUsedByCell messageID={item.id} />} />
+      ),
     },
 
     [ResponseTableColumn.LAST_EDITOR]: {

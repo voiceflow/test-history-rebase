@@ -12,6 +12,7 @@ export interface ReferenceState {
   intentIDResourceIDMap: Partial<Record<string, string>>;
   triggerNodeResourceIDs: string[];
   diagramIDResourceIDMap: Partial<Record<string, string>>;
+  messageIDResourceIDMap: Partial<Record<string, string>>;
   functionIDResourceIDMap: Partial<Record<string, string>>;
   resourceIDsByDiagramIDMap: Partial<Record<string, string[]>>;
   refererIDsByResourceIDMap: Partial<Record<string, string[]>>;
@@ -28,6 +29,7 @@ export const INITIAL_STATE: ReferenceState = {
   intentIDResourceIDMap: {},
   triggerNodeResourceIDs: [],
   diagramIDResourceIDMap: {},
+  messageIDResourceIDMap: {},
   functionIDResourceIDMap: {},
   resourceIDsByDiagramIDMap: {},
   refererIDsByResourceIDMap: {},

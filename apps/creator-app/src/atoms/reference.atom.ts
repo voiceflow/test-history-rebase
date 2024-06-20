@@ -6,6 +6,8 @@ export const normalizedResourcesAtom = atomWithSelector(Designer.Reference.selec
 
 export const intentIDResourceIDMapAtom = atomWithSelector(Designer.Reference.selectors.intentIDResourceIDMap);
 
+export const messageIDResourceIDMapAtom = atomWithSelector(Designer.Reference.selectors.messageIDResourceIDMap);
+
 export const diagramIDResourceIDMapAtom = atomWithSelector(Designer.Reference.selectors.diagramIDResourceIDMap);
 
 export const functionIDResourceIDMapAtom = atomWithSelector(Designer.Reference.selectors.functionIDResourceIDMap);

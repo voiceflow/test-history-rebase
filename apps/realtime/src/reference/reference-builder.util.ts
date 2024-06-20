@@ -1,10 +1,18 @@
-import { Diagram, Function as CMSFunction, Intent, ReferenceResourceType } from '@voiceflow/dtos';
+import {
+  Diagram,
+  Function as CMSFunction,
+  Intent,
+  ReferenceResourceType,
+  RequiredEntity,
+  Response,
+} from '@voiceflow/dtos';
 
 import { AssistantLoadCreatorResponse } from '@/assistant/dtos/assistant-load-creator.response';
 
 import { ReferenceBaseBuilderUtil } from './reference-base-builder.util';
 import { ReferenceBuilderCacheUtil } from './reference-builder-cache.util';
 import { ReferenceDiagramBuilderUtil } from './reference-diagram-builder.util';
+import { ReferenceRequiredEntityUtil } from './reference-required-entity-builder.util';
 
 export class ReferenceBuilderUtil extends ReferenceBaseBuilderUtil {
   private readonly diagrams: Diagram[];
@@ -13,27 +21,45 @@ export class ReferenceBuilderUtil extends ReferenceBaseBuilderUtil {
 
   private readonly diagramMap: Map<string, Diagram>;
 
+  private readonly responseMap: Map<string, Response>;
+
   private readonly functionMap: Map<string, CMSFunction>;
 
+  private readonly requiredEntities: RequiredEntity[];
+
   private readonly intentResourceCache: ReferenceBuilderCacheUtil;
+
+  private readonly messageResourceCache: ReferenceBuilderCacheUtil;
 
   private readonly diagramResourceCache: ReferenceBuilderCacheUtil;
 
   private readonly functionResourceCache: ReferenceBuilderCacheUtil;
 
-  constructor({ intents = [], functions = [], diagrams, assistant, version }: AssistantLoadCreatorResponse) {
+  constructor({
+    intents = [],
+    version,
+    diagrams,
+    assistant,
+    functions = [],
+    responses = [],
+    requiredEntities = [],
+  }: AssistantLoadCreatorResponse) {
     super({ assistantID: assistant.id, environmentID: version._id });
 
     this.diagrams = diagrams;
     this.intentMap = new Map(intents.map((intent) => [intent.id, intent]));
     this.diagramMap = new Map(diagrams.map((diagram) => [diagram.diagramID, diagram]));
+    this.responseMap = new Map(responses.map((response) => [response.id, response]));
     this.functionMap = new Map(functions.map((fn) => [fn.id, fn]));
+    this.requiredEntities = requiredEntities;
     this.intentResourceCache = new ReferenceBuilderCacheUtil(this.getIntentResource);
+    this.messageResourceCache = new ReferenceBuilderCacheUtil(this.getMessageResource);
     this.diagramResourceCache = new ReferenceBuilderCacheUtil(this.getDiagramResource);
     this.functionResourceCache = new ReferenceBuilderCacheUtil(this.getFunctionResource);
   }
 
   async build() {
+    await this.buildCMSReferences();
     await this.buildDiagramsReferences();
 
     return {
@@ -42,12 +68,32 @@ export class ReferenceBuilderUtil extends ReferenceBaseBuilderUtil {
     };
   }
 
+  private async buildCMSReferences() {
+    await this.buildRequiredEntitiesReferences();
+  }
+
+  private async buildRequiredEntitiesReferences() {
+    const builder = new ReferenceRequiredEntityUtil({
+      assistantID: this.assistantID,
+      environmentID: this.environmentID,
+      requiredEntities: this.requiredEntities,
+      intentResourceCache: this.intentResourceCache,
+      messageResourceCache: this.messageResourceCache,
+    });
+
+    const result = await builder.build();
+
+    this.references.push(...result.references);
+    this.referenceResources.push(...result.referenceResources);
+  }
+
   private async buildDiagramsReferences() {
     const builder = new ReferenceDiagramBuilderUtil({
       diagrams: this.diagrams,
       assistantID: this.assistantID,
       environmentID: this.environmentID,
       intentResourceCache: this.intentResourceCache,
+      messageResourceCache: this.messageResourceCache,
       diagramResourceCache: this.diagramResourceCache,
       functionResourceCache: this.functionResourceCache,
     });
@@ -94,6 +140,20 @@ export class ReferenceBuilderUtil extends ReferenceBaseBuilderUtil {
       metadata: null,
       diagramID: null,
       resourceID: fn.id,
+    });
+  };
+
+  private getMessageResource = async (messageID: string) => {
+    const response = this.responseMap.get(messageID);
+
+    // TODO: add response type check here
+    if (!response) return null;
+
+    return this.buildReferenceResource({
+      type: ReferenceResourceType.MESSAGE,
+      metadata: null,
+      diagramID: null,
+      resourceID: response.id,
     });
   };
 }

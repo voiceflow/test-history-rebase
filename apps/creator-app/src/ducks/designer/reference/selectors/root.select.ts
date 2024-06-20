@@ -21,6 +21,8 @@ export const triggerNodeResourceIDs = createSelector([root], ({ triggerNodeResou
 
 export const intentIDResourceIDMap = createSelector([root], ({ intentIDResourceIDMap }) => intentIDResourceIDMap);
 
+export const messageIDResourceIDMap = createSelector([root], ({ messageIDResourceIDMap }) => messageIDResourceIDMap);
+
 export const diagramIDResourceIDMap = createSelector([root], ({ diagramIDResourceIDMap }) => diagramIDResourceIDMap);
 
 export const functionIDResourceIDMap = createSelector([root], ({ functionIDResourceIDMap }) => functionIDResourceIDMap);

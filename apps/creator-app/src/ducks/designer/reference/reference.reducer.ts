@@ -51,6 +51,7 @@ export const referenceReducer = reducerWithInitialState<ReferenceState>(INITIAL_
       references: normalizedReferences,
       blockNodeResourceIDs: mergeArrays(state.blockNodeResourceIDs, cache.blockNodeResourceIDs),
       intentIDResourceIDMap: mergeSimpleMaps(state.intentIDResourceIDMap, cache.intentIDResourceIDMap),
+      messageIDResourceIDMap: mergeSimpleMaps(state.messageIDResourceIDMap, cache.messageIDResourceIDMap),
       diagramIDResourceIDMap: mergeSimpleMaps(state.diagramIDResourceIDMap, cache.diagramIDResourceIDMap),
       triggerNodeResourceIDs: mergeArrays(state.triggerNodeResourceIDs, cache.triggerNodeResourceIDs),
       functionIDResourceIDMap: mergeSimpleMaps(state.functionIDResourceIDMap, cache.functionIDResourceIDMap),
@@ -76,6 +77,7 @@ export const referenceReducer = reducerWithInitialState<ReferenceState>(INITIAL_
 
     const intentIDs: string[] = [];
     const diagramIDs: string[] = [];
+    const messageIDs: string[] = [];
     const functionIDs: string[] = [];
     const resourceIDs: string[] = [];
     const triggerNodeResources: ReferenceResource[] = [];
@@ -86,6 +88,10 @@ export const referenceReducer = reducerWithInitialState<ReferenceState>(INITIAL_
       switch (resource.type) {
         case ReferenceResourceType.INTENT:
           intentIDs.push(resource.resourceID);
+          break;
+
+        case ReferenceResourceType.MESSAGE:
+          messageIDs.push(resource.resourceID);
           break;
 
         case ReferenceResourceType.DIAGRAM:
@@ -119,6 +125,7 @@ export const referenceReducer = reducerWithInitialState<ReferenceState>(INITIAL_
       references: removeMany(state.references, referenceIDs),
       blockNodeResourceIDs: arrayWithoutValues(state.blockNodeResourceIDs, resourceIDs),
       intentIDResourceIDMap: omitMapKeys(state.intentIDResourceIDMap, intentIDs),
+      messageIDResourceIDMap: omitMapKeys(state.messageIDResourceIDMap, messageIDs),
       triggerNodeResourceIDs: arrayWithoutValues(state.triggerNodeResourceIDs, resourceIDs),
       diagramIDResourceIDMap: omitMapKeys(state.diagramIDResourceIDMap, diagramIDs),
       functionIDResourceIDMap: omitMapKeys(state.functionIDResourceIDMap, functionIDs),

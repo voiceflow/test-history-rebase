@@ -6,6 +6,7 @@ import {
   ProjectORM,
   ReferenceORM,
   ReferenceResourceORM,
+  ResponseORM,
 } from '@voiceflow/orm-designer';
 
 import { ReferenceLoguxController } from './reference.logux.controller';
@@ -19,6 +20,7 @@ import { ReferenceCacheService } from './reference-cache.service';
     DiagramORM,
     ProjectORM,
     FunctionORM,
+    ResponseORM,
     ReferenceORM,
     ReferenceResourceORM,
     ReferenceService,

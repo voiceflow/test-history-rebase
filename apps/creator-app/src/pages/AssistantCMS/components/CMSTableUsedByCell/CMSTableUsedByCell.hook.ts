@@ -11,7 +11,7 @@ import { useDispatch } from '@/hooks/store.hook';
 import { CMSTableUsedByCellItem } from './CMSTableUsedByCell.interface';
 import { CMSTableUsedByCellItemType } from './CMSTableUsedByCellItemType.enum';
 
-export const useCMStableUsedByCellGetItem = () => {
+export const useCMSTableUsedByCellGetItem = () => {
   const goToDiagram = useDispatch(Router.goToDiagram);
 
   const flowMapByDiagramID = useAtomValue(flowMapByDiagramIDAtom);

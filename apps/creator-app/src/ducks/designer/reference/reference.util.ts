@@ -99,9 +99,10 @@ export const buildReferenceCache = ({
   referenceResources: ReferenceResource[];
 }) => {
   const blockNodeResourceIDs: string[] = [];
-  const triggerNodeResourceIDs: string[] = [];
   const intentIDResourceIDMap: Partial<Record<string, string>> = {};
+  const messageIDResourceIDMap: Partial<Record<string, string>> = {};
   const diagramIDResourceIDMap: Partial<Record<string, string>> = {};
+  const triggerNodeResourceIDs: string[] = [];
   const functionIDResourceIDMap: Partial<Record<string, string>> = {};
   const resourceIDsByDiagramIDMap: Partial<Record<string, string[]>> = {};
   const refererIDsByResourceIDMap: Partial<Record<string, string[]>> = {};
@@ -164,6 +165,10 @@ export const buildReferenceCache = ({
         intentIDResourceIDMap[resource.resourceID] = resource.id;
         break;
 
+      case ReferenceResourceType.MESSAGE:
+        messageIDResourceIDMap[resource.resourceID] = resource.id;
+        break;
+
       case ReferenceResourceType.FUNCTION:
         functionIDResourceIDMap[resource.resourceID] = resource.id;
         break;
@@ -193,6 +198,7 @@ export const buildReferenceCache = ({
     blockNodeResourceIDs,
     intentIDResourceIDMap,
     triggerNodeResourceIDs,
+    messageIDResourceIDMap,
     diagramIDResourceIDMap,
     functionIDResourceIDMap,
     resourceIDsByDiagramIDMap,

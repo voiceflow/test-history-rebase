@@ -1,7 +1,14 @@
 import { EntityManager } from '@mikro-orm/core';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable, Logger, Optional } from '@nestjs/common';
-import { Diagram, DiagramNode, Reference, ReferenceResource, ReferenceResourceType } from '@voiceflow/dtos';
+import {
+  Diagram,
+  DiagramNode,
+  Reference,
+  ReferenceResource,
+  ReferenceResourceType,
+  RequiredEntity,
+} from '@voiceflow/dtos';
 import { NotFoundException } from '@voiceflow/exception';
 import { UnleashFeatureFlagService } from '@voiceflow/nestjs-common';
 import { LoguxService } from '@voiceflow/nestjs-logux';
@@ -14,6 +21,7 @@ import {
   ProjectORM,
   ReferenceORM,
   ReferenceResourceORM,
+  ResponseORM,
 } from '@voiceflow/orm-designer';
 import { FeatureFlag } from '@voiceflow/realtime-sdk/backend';
 import { Actions } from '@voiceflow/sdk-logux-designer';
@@ -27,6 +35,7 @@ import { ReferenceBuilderCacheUtil } from './reference-builder-cache.util';
 import { ReferenceCacheService } from './reference-cache.service';
 import { ReferenceDiagramBuilderUtil } from './reference-diagram-builder.util';
 import { ReferenceNodeBuilderUtil } from './reference-node-builder.util';
+import { ReferenceRequiredEntityUtil } from './reference-required-entity-builder.util';
 
 @Injectable()
 export class ReferenceService extends MutableService<ReferenceORM> {
@@ -54,6 +63,8 @@ export class ReferenceService extends MutableService<ReferenceORM> {
     protected readonly diagramORM: DiagramORM,
     @Inject(FunctionORM)
     protected readonly functionORM: FunctionORM,
+    @Inject(ResponseORM)
+    protected readonly responseORM: ResponseORM,
     @Inject(ReferenceResourceORM)
     protected readonly referenceResourceORM: ReferenceResourceORM,
     @Inject(LoguxService)
@@ -69,9 +80,17 @@ export class ReferenceService extends MutableService<ReferenceORM> {
     @Optional()
     protected readonly ReferenceBuilderCache: typeof ReferenceBuilderCacheUtil = ReferenceBuilderCacheUtil,
     @Optional()
-    protected readonly ReferenceDiagramBuilder: typeof ReferenceDiagramBuilderUtil = ReferenceDiagramBuilderUtil
+    protected readonly ReferenceDiagramBuilder: typeof ReferenceDiagramBuilderUtil = ReferenceDiagramBuilderUtil,
+    @Optional()
+    protected readonly ReferenceRequiredEntity: typeof ReferenceRequiredEntityUtil = ReferenceRequiredEntityUtil
   ) {
     super();
+  }
+
+  async isFeatureEnabled(userID: number, assistantID: string) {
+    const project = await this.projectORM.findOneOrFail(assistantID, { fields: ['teamID'] });
+
+    return this.unleash.isEnabled(FeatureFlag.REFERENCE_SYSTEM, { userID, workspaceID: project.teamID });
   }
 
   async findManyWithSubResourcesByEnvironment(environmentID: string) {
@@ -241,9 +260,65 @@ export class ReferenceService extends MutableService<ReferenceORM> {
 
         return resource;
       }),
+      messageResourceCache: new this.ReferenceBuilderCache(async (messageID) => {
+        const { isNew, resource } = await this.findOrCreateMessageResource({ messageID, assistantID, environmentID });
+
+        if (isNew && resource) {
+          newReferenceResources.push(resource);
+        }
+
+        return resource;
+      }),
     });
 
     const result = await nodeBuilder.build();
+
+    newReferences.push(...result.references);
+    newReferenceResources.push(...result.referenceResources);
+
+    return this.createManyWithSubResourcesAndSync({
+      references: newReferences,
+      referenceResources: newReferenceResources,
+    });
+  }
+
+  async createManyWithSubResourcesForRequiredEntities({
+    assistantID,
+    environmentID,
+    requiredEntities,
+  }: {
+    assistantID: string;
+    environmentID: string;
+    requiredEntities: RequiredEntity[];
+  }) {
+    const newReferences: Reference[] = [];
+    const newReferenceResources: ReferenceResource[] = [];
+
+    const builder = new this.ReferenceRequiredEntity({
+      assistantID,
+      environmentID,
+      requiredEntities,
+      intentResourceCache: new this.ReferenceBuilderCache(async (intentID) => {
+        const { isNew, resource } = await this.findOrCreateIntentResource({ intentID, assistantID, environmentID });
+
+        if (isNew && resource) {
+          newReferenceResources.push(resource);
+        }
+
+        return resource;
+      }),
+      messageResourceCache: new this.ReferenceBuilderCache(async (messageID) => {
+        const { isNew, resource } = await this.findOrCreateMessageResource({ messageID, assistantID, environmentID });
+
+        if (isNew && resource) {
+          newReferenceResources.push(resource);
+        }
+
+        return resource;
+      }),
+    });
+
+    const result = await builder.build();
 
     newReferences.push(...result.references);
     newReferenceResources.push(...result.referenceResources);
@@ -279,9 +354,7 @@ export class ReferenceService extends MutableService<ReferenceORM> {
     assistantID: string;
     environmentID: string;
   }) {
-    const project = await this.projectORM.findOneOrFail(assistantID, { fields: ['teamID'] });
-
-    if (!this.unleash.isEnabled(FeatureFlag.REFERENCE_SYSTEM, { userID, workspaceID: project.teamID })) {
+    if (!(await this.isFeatureEnabled(userID, assistantID)) || !diagrams.length) {
       return { add: { references: [], referenceResources: [] } };
     }
 
@@ -319,6 +392,15 @@ export class ReferenceService extends MutableService<ReferenceORM> {
 
         return resource;
       }),
+      messageResourceCache: new this.ReferenceBuilderCache(async (messageID) => {
+        const { isNew, resource } = await this.findOrCreateMessageResource({ messageID, assistantID, environmentID });
+
+        if (isNew && resource) {
+          newReferenceResources.push(resource);
+        }
+
+        return resource;
+      }),
     });
 
     const result = await builder.build();
@@ -341,6 +423,10 @@ export class ReferenceService extends MutableService<ReferenceORM> {
     diagramID: string;
     environmentID: string;
   }) {
+    if (!nodeIDs.length) {
+      return { delete: { references: [], referenceResources: [] } };
+    }
+
     const referenceResources = await this.referenceResourceORM.deleteManyByTypeDiagramIDAndResourceIDs({
       type: ReferenceResourceType.NODE,
       diagramID,
@@ -369,12 +455,7 @@ export class ReferenceService extends MutableService<ReferenceORM> {
     assistantID: string;
     environmentID: string;
   }) {
-    const project = await this.projectORM.findOneOrFail(assistantID, { fields: ['teamID'] });
-
-    if (
-      !this.unleash.isEnabled(FeatureFlag.REFERENCE_SYSTEM, { userID, workspaceID: project.teamID }) ||
-      !diagramIDs.length
-    ) {
+    if (!(await this.isFeatureEnabled(userID, assistantID)) || !diagramIDs.length) {
       return { delete: { references: [], referenceResources: [] } };
     }
 
@@ -412,12 +493,7 @@ export class ReferenceService extends MutableService<ReferenceORM> {
     assistantID: string;
     environmentID: string;
   }) {
-    const project = await this.projectORM.findOneOrFail(assistantID, { fields: ['teamID'] });
-
-    if (
-      !this.unleash.isEnabled(FeatureFlag.REFERENCE_SYSTEM, { userID, workspaceID: project.teamID }) ||
-      !intentIDs.length
-    ) {
+    if (!(await this.isFeatureEnabled(userID, assistantID)) || !intentIDs.length) {
       return { delete: { references: [], referenceResources: [] } };
     }
 
@@ -449,12 +525,7 @@ export class ReferenceService extends MutableService<ReferenceORM> {
     assistantID: string;
     environmentID: string;
   }) {
-    const project = await this.projectORM.findOneOrFail(assistantID, { fields: ['teamID'] });
-
-    if (
-      !this.unleash.isEnabled(FeatureFlag.REFERENCE_SYSTEM, { userID, workspaceID: project.teamID }) ||
-      !functionIDs.length
-    ) {
+    if (!(await this.isFeatureEnabled(userID, assistantID)) || !functionIDs.length) {
       return { delete: { references: [], referenceResources: [] } };
     }
 
@@ -469,6 +540,46 @@ export class ReferenceService extends MutableService<ReferenceORM> {
       delete: {
         references: [],
         referenceResources,
+      },
+    };
+  }
+
+  async deleteManyWithSubResourcesAndSyncByResponseIDs({
+    userID,
+    responseIDs,
+    assistantID,
+    environmentID,
+  }: {
+    // delete with REFERENCE_SYSTEM ff
+    userID: number;
+    responseIDs: string[];
+    // delete with REFERENCE_SYSTEM ff
+    assistantID: string;
+    environmentID: string;
+  }) {
+    if (!(await this.isFeatureEnabled(userID, assistantID)) || !responseIDs.length) {
+      return { delete: { references: [], referenceResources: [] } };
+    }
+
+    const [messageReferenceResources, promptReferenceResources] = await Promise.all([
+      this.referenceResourceORM.deleteManyByTypeDiagramIDAndResourceIDs({
+        type: ReferenceResourceType.MESSAGE,
+        diagramID: null,
+        resourceIDs: responseIDs,
+        environmentID,
+      }),
+      this.referenceResourceORM.deleteManyByTypeDiagramIDAndResourceIDs({
+        type: ReferenceResourceType.PROMPT,
+        diagramID: null,
+        resourceIDs: responseIDs,
+        environmentID,
+      }),
+    ]);
+
+    return {
+      delete: {
+        references: [],
+        referenceResources: [...messageReferenceResources, ...promptReferenceResources],
       },
     };
   }
@@ -625,6 +736,50 @@ export class ReferenceService extends MutableService<ReferenceORM> {
     return {
       isNew,
       resource: functionResource,
+    };
+  }
+
+  private async findOrCreateMessageResource({
+    messageID,
+    assistantID,
+    environmentID,
+  }: {
+    messageID: string;
+    assistantID: string;
+    environmentID: string;
+  }) {
+    let isNew = false;
+
+    // check if the response exists
+    const response = await this.responseORM.findOne({ id: messageID, environmentID });
+
+    // TODO: add response type check here
+    if (!response) return { isNew: false, resource: null };
+
+    let messageResource = await this.referenceResourceORM.findOneByTypeDiagramIDAndResourceID({
+      type: ReferenceResourceType.MESSAGE,
+      diagramID: null,
+      resourceID: response.id,
+      environmentID,
+    });
+
+    if (!messageResource) {
+      isNew = true;
+
+      messageResource = {
+        id: new ObjectId().toJSON(),
+        type: ReferenceResourceType.MESSAGE,
+        metadata: null,
+        diagramID: null,
+        resourceID: messageID,
+        assistantID,
+        environmentID,
+      };
+    }
+
+    return {
+      isNew,
+      resource: messageResource,
     };
   }
 }

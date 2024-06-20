@@ -86,12 +86,21 @@ export type ReferenceResourceChoiceV2NodeMetadata = InferReferenceResourceBaseNo
   typeof ReferenceResourceChoiceV2NodeMetadataDTO
 >;
 
+export const ReferenceResourceMessage2NodeMetadataDTO = ReferenceResourceBaseNodeMetadataDTO.extend({
+  nodeType: z.literal(NodeType.MESSAGE),
+});
+
+export type ReferenceResourceMessage2NodeMetadata = InferReferenceResourceBaseNodeMetadata<
+  typeof ReferenceResourceMessage2NodeMetadataDTO
+>;
+
 export const ReferenceResourceNodeMetadataDTO = z.discriminatedUnion('nodeType', [
   ReferenceResourceBlockNodeMetadataDTO,
   ReferenceResourceStartNodeMetadataDTO,
   ReferenceResourceIntentNodeMetadataDTO,
   ReferenceResourceTriggerNodeMetadataDTO,
   ReferenceResourceButtonsNodeMetadataDTO,
+  ReferenceResourceMessage2NodeMetadataDTO,
   ReferenceResourceFunctionNodeMetadataDTO,
   ReferenceResourceChoiceV2NodeMetadataDTO,
   ReferenceResourceComponentNodeMetadataDTO,

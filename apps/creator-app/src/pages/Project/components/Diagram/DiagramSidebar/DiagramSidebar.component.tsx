@@ -15,7 +15,7 @@ import { useParams } from 'react-router-dom';
 import { CMS_FLOW_LEARN_MORE, CMS_WORKFLOW_LEARN_MORE } from '@/constants/link.constant';
 import { Permission } from '@/constants/permissions';
 import { Creator, Designer, Diagram, Router, UI } from '@/ducks';
-import { useEventualEngine } from '@/hooks/engine';
+import { useEventualEngine } from '@/hooks/engine.hook';
 import { useFeature } from '@/hooks/feature';
 import { useFlowCreateModal, useWorkflowCreateModal } from '@/hooks/modal.hook';
 import { usePermission } from '@/hooks/permission';

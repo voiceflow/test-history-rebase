@@ -17,7 +17,7 @@ import { getEmptyImage } from 'react-dnd-html5-backend';
 
 import { BlockType, DragItem } from '@/constants';
 import { AutoPanningCacheContext } from '@/contexts/AutoPanningContext';
-import { useEventualEngine } from '@/hooks/engine';
+import { useEventualEngine } from '@/hooks/engine.hook';
 import { useHover } from '@/hooks/hover';
 import { usePaymentModal } from '@/hooks/modal.hook';
 import { StepDragItem } from '@/pages/Canvas/components/CanvasDiagram';

@@ -1,7 +1,7 @@
 import { Box, Header } from '@voiceflow/ui-next';
 import React from 'react';
 
-import { useEventualEngine } from '@/hooks/engine';
+import { useEventualEngine } from '@/hooks/engine.hook';
 import { getHotkeys, Hotkey } from '@/keymap';
 import CanvasTemplateEditorNewTemplate from '@/pages/Canvas/components/TemplateEditor/NewTemplate';
 import { SelectionSetTargetsContext, SelectionTargetsContext } from '@/pages/Project/contexts';
@@ -59,9 +59,19 @@ export const DiagramLayoutHeaderActions: React.FC = () => {
         )}
       </CanvasTemplateEditorNewTemplate>
 
-      <Header.Canvas.ActionButton onClick={onCopy} hotkeys={getHotkeys(Hotkey.COPY)} iconName="Copy" tooltipText="Copy" />
+      <Header.Canvas.ActionButton
+        onClick={onCopy}
+        hotkeys={getHotkeys(Hotkey.COPY)}
+        iconName="Copy"
+        tooltipText="Copy"
+      />
 
-      <Header.Canvas.ActionButton onClick={onDelete} hotkeys={getHotkeys(Hotkey.DELETE)} iconName="Trash" tooltipText="Delete" />
+      <Header.Canvas.ActionButton
+        onClick={onDelete}
+        hotkeys={getHotkeys(Hotkey.DELETE)}
+        iconName="Trash"
+        tooltipText="Delete"
+      />
     </Box>
   );
 };

@@ -3,7 +3,8 @@ import React from 'react';
 import { DismissableLayerContext } from 'react-dismissable-layers';
 
 import * as CreatorV2 from '@/ducks/creatorV2';
-import { useEventualEngine, useSelector } from '@/hooks';
+import { useSelector } from '@/hooks';
+import { useEventualEngine } from '@/hooks/engine.hook';
 import { Coords } from '@/utils/geometry';
 
 import TemplatePopperEditor from './index';
@@ -30,7 +31,8 @@ const CanvasTemplateEditorNewTemplate: React.FC<CanvasTemplateEditorNewTemplateP
 }) => {
   const { dismissAllGlobally } = React.useContext(DismissableLayerContext);
   const getEngine = useEventualEngine();
-  const blockColor = useSelector(CreatorV2.blockColorSelector, { id: nodeIDs[0] }) || COLOR_PICKER_CONSTANTS.BLOCK_STANDARD_COLOR;
+  const blockColor =
+    useSelector(CreatorV2.blockColorSelector, { id: nodeIDs[0] }) || COLOR_PICKER_CONSTANTS.BLOCK_STANDARD_COLOR;
 
   const [isSubmitting, setIsSubmitting] = React.useState(false);
 
@@ -56,7 +58,7 @@ const CanvasTemplateEditorNewTemplate: React.FC<CanvasTemplateEditorNewTemplateP
       setIsSubmitting(false);
 
       engine.enableInteractions();
-      toast.success(`Block template saved to library.`);
+      toast.success('Block template saved to library.');
 
       dismissAllGlobally();
       onClose?.();

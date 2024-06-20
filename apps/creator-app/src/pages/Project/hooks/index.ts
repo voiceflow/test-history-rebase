@@ -2,7 +2,8 @@ import * as Platform from '@voiceflow/platform-config';
 import { useCallback, useContext } from 'react';
 
 import { Permission } from '@/constants/permissions';
-import { useActiveProjectPlatform, useEventualEngine, usePermission } from '@/hooks';
+import { useActiveProjectPlatform, usePermission } from '@/hooks';
+import { useEventualEngine } from '@/hooks/engine.hook';
 import { usePaymentModal } from '@/hooks/modal.hook';
 
 import { MarkupContext } from '../contexts';

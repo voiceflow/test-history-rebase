@@ -157,7 +157,7 @@ export class DiagramService extends MutableService<DiagramORM> {
   ) {
     await this.logux.processAs(
       Realtime.diagram.crud.removeMany({
-        keys: diagrams.map((diagram) => diagram._id.toJSON()),
+        keys: diagrams.map((diagram) => diagram.diagramID.toJSON()),
         projectID: meta.context.assistantID,
         versionID: meta.context.environmentID,
         workspaceID: meta.context.workspaceID,

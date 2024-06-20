@@ -1,7 +1,6 @@
 import { BaseVersion } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
 import { VersionSettings } from '@voiceflow/dtos';
-import { Required } from 'utility-types';
 
 import * as Publishing from './publishing';
 import * as Settings from './settings';
@@ -17,19 +16,15 @@ export interface Session {
   resumePrompt: unknown;
 }
 
-export type ModelDBRequiredFields = 'folders' | 'components';
-
 export type ModelDBSharedFields =
-  | ModelDBRequiredFields
   | 'creatorID'
   | '_version'
-  | 'variables'
   | 'projectID'
   | 'rootDiagramID'
   | 'templateDiagramID'
   | 'defaultStepColors';
 
-export interface Model extends Required<Pick<BaseVersion.Version, ModelDBSharedFields>, ModelDBRequiredFields> {
+export interface Model extends Pick<BaseVersion.Version, ModelDBSharedFields> {
   id: string;
   status: Nullable<unknown>;
   session: Session;

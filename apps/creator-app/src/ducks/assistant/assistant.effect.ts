@@ -39,7 +39,7 @@ export const loadCreator =
         platformData: data.version.platformData as any,
         templateDiagramID: templateDiagram?.diagramID,
       } as DBVersion<BaseVersion.Version>,
-      { globalVariables: projectConfig.project.globalVariables, defaultVoice: projectConfig.project.voice.default }
+      { defaultVoice: projectConfig.project.voice.default }
     );
 
     // attachments

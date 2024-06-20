@@ -104,7 +104,11 @@ export const buildDiagramDatabases = (
   };
 
   diagrams.forEach((diagram) => {
-    const entry: DiagramDatabaseEntry = { diagramID: diagram.id, diagramType: diagram.type, targets: [diagram.name] };
+    const entry: DiagramDatabaseEntry = {
+      diagramID: diagram.diagramID,
+      diagramType: diagram.type,
+      targets: [diagram.name],
+    };
     if (isTopicDiagram(diagram.type)) {
       database[SearchCategory.TOPIC].push(entry);
     } else {

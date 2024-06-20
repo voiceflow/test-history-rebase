@@ -3,7 +3,6 @@ import { EntityManager } from '@mikro-orm/core';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Logger } from '@nestjs/common';
 import { BaseVersion } from '@voiceflow/base-types';
-import { Utils } from '@voiceflow/common';
 import { DatabaseTarget } from '@voiceflow/orm-designer';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 
@@ -47,7 +46,10 @@ export class MigrationService {
   /**
    * this is the best place to implement any feature-aware logic to allow or block a pending migration
    */
-  public async getTargetSchemaVersion(versionID: string, proposedVersion: Realtime.SchemaVersion): Promise<Realtime.SchemaVersion> {
+  public async getTargetSchemaVersion(
+    versionID: string,
+    proposedVersion: Realtime.SchemaVersion
+  ): Promise<Realtime.SchemaVersion> {
     const activeSchemaVersion = await this.migrationCache.getActiveSchemaVersion(versionID);
     if (activeSchemaVersion) return activeSchemaVersion;
 
@@ -166,7 +168,11 @@ export class MigrationService {
         );
 
         await this.assistant.migrateOne(result, patches);
-        await this.environment.migrateCMSData(result, patches, { userID: creatorID, assistantID: version.projectID, environmentID: version._id });
+        await this.environment.migrateCMSData(result, patches, {
+          userID: creatorID,
+          assistantID: version.projectID,
+          environmentID: version._id,
+        });
 
         return [result, patches];
       });
@@ -179,7 +185,7 @@ export class MigrationService {
           updatedDiagrams.map(({ diagramID, ...data }) =>
             this.legacy.models.diagram.updateOne(
               this.legacy.models.diagram.adapter.toDB({ versionID, diagramID }),
-              this.legacy.models.diagram.adapter.toDB(Utils.object.omit(data, ['_id']))
+              this.legacy.models.diagram.adapter.toDB(data)
             )
           )
         );

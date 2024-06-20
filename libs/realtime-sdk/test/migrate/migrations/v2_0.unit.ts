@@ -12,7 +12,7 @@ describe('Migrate service - v2 migration unit tests', () => {
   it('do not transform version', async () => {
     const data = {
       version: { _id: 'versionID' } as any,
-      diagrams: [{ _id: 'diagramID', nodes: {} }],
+      diagrams: [{ diagramID: 'diagramID', nodes: {} }],
     } as MigrationData;
 
     const result = produce(data, (draft) => migrateToV2(draft, migrationContext));
@@ -25,7 +25,7 @@ describe('Migrate service - v2 migration unit tests', () => {
     const data = {
       diagrams: [
         {
-          _id: 'diagramID',
+          diagramID: 'diagramID',
           nodes: {
             [nodeID]: {
               nodeID,
@@ -46,7 +46,7 @@ describe('Migrate service - v2 migration unit tests', () => {
     const data = {
       diagrams: [
         {
-          _id: 'diagramID',
+          diagramID: 'diagramID',
           nodes: {
             [nodeID]: {
               nodeID,
@@ -98,7 +98,7 @@ describe('Migrate service - v2 migration unit tests', () => {
     const data = {
       diagrams: [
         {
-          _id: diagramID,
+          diagramID,
           nodes: {
             [nodeID]: {
               nodeID,
@@ -116,7 +116,7 @@ describe('Migrate service - v2 migration unit tests', () => {
 
     expect(result.diagrams).to.eql([
       {
-        _id: diagramID,
+        diagramID,
         nodes: {
           [nodeID]: {
             nodeID,

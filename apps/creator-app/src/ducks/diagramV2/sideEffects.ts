@@ -18,7 +18,7 @@ export const createTemplateDiagram = (): Thunk<string> => async (dispatch, getSt
     })
   );
 
-  return diagram.id;
+  return diagram.diagramID;
 };
 
 export const renameDiagram =

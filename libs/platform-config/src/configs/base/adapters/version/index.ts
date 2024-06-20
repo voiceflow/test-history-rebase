@@ -10,8 +10,11 @@ import * as Settings from './settings';
 
 export { Publishing, Session, Settings };
 
-export type FromDBOptions = [{ defaultVoice: string; globalVariables: string[] }];
-export type DBVersion<V extends BaseVersion.Version<any>> = Pick<V, '_id' | 'platformData' | Models.Version.ModelDBSharedFields> & {
+export type FromDBOptions = [{ defaultVoice: string }];
+export type DBVersion<V extends BaseVersion.Version<any>> = Pick<
+  V,
+  '_id' | 'platformData' | Models.Version.ModelDBSharedFields
+> & {
   settings?: VersionSettings;
 };
 
@@ -19,33 +22,24 @@ export type DBVersion<V extends BaseVersion.Version<any>> = Pick<V, '_id' | 'pla
  * filters out default global variables
  */
 export const simple = createMultiAdapter<DBVersion<BaseVersion.Version>, Models.Version.Model, FromDBOptions>(
-  (
-    {
-      _id,
-      folders = {},
-      settings,
-      _version,
-      creatorID,
-      projectID,
-      variables,
-      components = [],
-      platformData,
-      rootDiagramID,
-      defaultStepColors = {},
-      templateDiagramID,
-    },
-    { globalVariables }
-  ) => ({
+  ({
+    _id,
+    settings,
+    _version,
+    creatorID,
+    projectID,
+    platformData,
+    rootDiagramID,
+    defaultStepColors = {},
+    templateDiagramID,
+  }) => ({
     id: _id,
     status: null,
     session: Session.simple.fromDB(platformData.settings.session, { defaultVoice: '' }),
-    folders,
     _version,
     settings: Settings.simple.fromDB(platformData.settings, { defaultVoice: '' }),
-    variables: variables.filter((variable) => !globalVariables.includes(variable)),
     creatorID,
     projectID,
-    components,
     settingsV2: settings,
     publishing: Publishing.simple.fromDB(platformData.publishing, { defaultVoice: '' }),
     rootDiagramID,

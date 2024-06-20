@@ -23,7 +23,10 @@ const GoToIntentStep: ConnectedStep<Realtime.NodeData.GoToIntent> = ({ data, pal
           palette={palette}
           attachment={
             goToNodeID ? (
-              <Attachment icon="clip" onClick={stopPropagation(() => engine.focusDiagramNode(goToDiagram?.id ?? null, goToNodeID))} />
+              <Attachment
+                icon="clip"
+                onClick={stopPropagation(() => engine.focusDiagramNode(goToDiagram?.diagramID ?? null, goToNodeID))}
+              />
             ) : null
           }
           placeholder="Select go-to intent"

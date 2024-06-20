@@ -1,6 +1,5 @@
 import { Config as ConfigUtils } from '@platform-config/configs/utils';
 import { Types } from '@platform-config/utils';
-import { SystemVariable } from '@voiceflow/dtos';
 import React from 'react';
 
 import * as Chat from './chat';
@@ -26,8 +25,6 @@ export interface Config {
 
   invocationName: null | InvocationName.Config;
 
-  globalVariables: SystemVariable[];
-
   noReply: boolean;
 }
 
@@ -43,18 +40,6 @@ export const CONFIG = Types.satisfies<Config>()({
   description: 'Your agent name is the name of the project that you will see on your workspace dashboard.',
 
   invocationName: null,
-
-  globalVariables: [
-    SystemVariable.SESSIONS,
-    SystemVariable.USER_ID,
-    SystemVariable.TIMESTAMP,
-    SystemVariable.PLATFORM,
-    SystemVariable.LOCALE,
-    SystemVariable.INTENT_CONFIDENCE,
-    SystemVariable.LAST_RESPONSE,
-    SystemVariable.LAST_EVENT,
-    SystemVariable.LAST_UTTERANCE,
-  ],
 
   noReply: true,
 });

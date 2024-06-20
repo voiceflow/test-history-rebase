@@ -12,8 +12,9 @@ const migrateToV3_91: Transform = ({ version, diagrams }) => {
 
   if (templateDiagrams.length <= 1) return;
 
-  const templateDiagram = templateDiagrams.find((diagram) => diagram._id === version.templateDiagramID) ?? templateDiagrams[0];
-  const templateDiagramsToMerge = templateDiagrams.filter((diagram) => diagram._id !== templateDiagram._id);
+  const templateDiagram =
+    templateDiagrams.find((diagram) => diagram.diagramID === version.templateDiagramID) ?? templateDiagrams[0];
+  const templateDiagramsToMerge = templateDiagrams.filter((diagram) => diagram.diagramID !== templateDiagram.diagramID);
 
   templateDiagramsToMerge.forEach((diagram) => {
     templateDiagram.nodes = {
@@ -23,7 +24,7 @@ const migrateToV3_91: Transform = ({ version, diagrams }) => {
   });
 
   // eslint-disable-next-line no-param-reassign
-  version.templateDiagramID = templateDiagram._id;
+  version.templateDiagramID = templateDiagram.diagramID;
 };
 
 export default migrateToV3_91;

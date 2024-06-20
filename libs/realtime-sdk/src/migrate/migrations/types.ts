@@ -36,7 +36,6 @@ export type VersionUpdateData = Pick<
 >;
 
 export type DiagramUpdateData = Omit<BaseModels.Diagram.Model, '_id' | 'creatorID' | 'versionID'> & {
-  readonly _id: string;
   readonly diagramID: string;
 };
 

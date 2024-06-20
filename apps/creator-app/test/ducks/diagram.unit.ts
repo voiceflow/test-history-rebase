@@ -10,22 +10,15 @@ import { State } from '@/store/types';
 import { MOCK_STATE as INITIAL_ROOT_MOCK_STATE } from './_fixtures';
 import suite from './_suite';
 
-const WORKSPACE_ID = 'workspaceID';
 const PROJECT_ID = 'projectID';
-const VERSION_ID = 'versionID';
 const DIAGRAM_ID = 'diagramID';
 const CREATOR_ID = 999;
-const ACTION_CONTEXT = {
-  workspaceID: WORKSPACE_ID,
-  projectID: PROJECT_ID,
-  versionID: VERSION_ID,
-  diagramID: DIAGRAM_ID,
-};
 
 const DIAGRAM: Realtime.Diagram = {
   id: DIAGRAM_ID,
   name: 'diagram',
   type: BaseModels.Diagram.DiagramType.COMPONENT,
+  diagramID: DIAGRAM_ID,
   variables: ['fizz', 'buzz'],
 };
 
@@ -79,40 +72,7 @@ const ROOT_MOCK_STATE: State = {
   },
 };
 
-suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ describeReducerV2, describeEffectV2, createState, ...utils }) => {
-  describe('reducer', () => {
-    utils.assertIgnoresOtherActions();
-    utils.assertInitialState(Diagram.INITIAL_STATE);
-
-    describeReducerV2(Realtime.diagram.addLocalVariable, ({ applyAction }) => {
-      it('append new variable', () => {
-        const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, variable: 'foo' });
-
-        expect(result.byKey[DIAGRAM_ID].variables).toEqual(['fizz', 'buzz', 'foo']);
-      });
-
-      it('do nothing if variable already exists', () => {
-        const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, variable: 'fizz' });
-
-        expect(result).toBe(MOCK_STATE);
-      });
-    });
-
-    describeReducerV2(Realtime.diagram.removeLocalVariable, ({ applyAction }) => {
-      it('remove a known variable', () => {
-        const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, variable: 'fizz' });
-
-        expect(result.byKey[DIAGRAM_ID].variables).toEqual(['buzz']);
-      });
-
-      it('do nothing if variable does not exist', () => {
-        const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, variable: 'foo' });
-
-        expect(result).toBe(MOCK_STATE);
-      });
-    });
-  });
-
+suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ createState }) => {
   describe('selectors', () => {
     describe('allDiagramsSelector()', () => {
       it('select all diagrams', () => {

@@ -4,7 +4,10 @@ import * as Platform from '@voiceflow/platform-config/backend';
 import { produce } from 'immer';
 
 describe('Migrate service - v4_04 migration unit tests', () => {
-  const migrationContext = { projectType: Platform.Constants.ProjectType.CHAT, platform: Platform.Constants.PlatformType.VOICEFLOW };
+  const migrationContext = {
+    projectType: Platform.Constants.ProjectType.CHAT,
+    platform: Platform.Constants.PlatformType.VOICEFLOW,
+  };
 
   it('removes duplicate menuItems and topicIDs', async () => {
     const domain1 = { topicIDs: ['topicID1', 'topicID2', 'topicID1'] };
@@ -12,7 +15,7 @@ describe('Migrate service - v4_04 migration unit tests', () => {
     const domain3 = { topicIDs: ['topicID1', 'topicID2', 'topicID3'] };
 
     const diagram1 = {
-      _id: 'diagramID1',
+      diagramID: 'diagramID1',
       menuItems: [
         { type: 'NODE', sourceID: 'nodeID1' },
         { type: 'NODE', sourceID: 'nodeID2' },
@@ -21,7 +24,7 @@ describe('Migrate service - v4_04 migration unit tests', () => {
     };
 
     const diagram2 = {
-      _id: 'diagramID2',
+      diagramID: 'diagramID2',
       menuItems: [
         { type: 'NODE', sourceID: 'nodeID1' },
         { type: 'NODE', sourceID: 'nodeID2' },
@@ -35,7 +38,7 @@ describe('Migrate service - v4_04 migration unit tests', () => {
     };
 
     const diagram3 = {
-      _id: 'diagramID3',
+      diagramID: 'diagramID3',
       menuItems: [
         { type: 'NODE', sourceID: 'nodeID1' },
         { type: 'NODE', sourceID: 'nodeID2' },
@@ -44,7 +47,7 @@ describe('Migrate service - v4_04 migration unit tests', () => {
     };
 
     const data = {
-      version: { _id: 'versionID', domains: [domain1, domain2, domain3] } as any,
+      version: { diagramID: 'versionID', domains: [domain1, domain2, domain3] } as any,
       diagrams: [diagram1, diagram2, diagram3],
     } as MigrationData;
 
@@ -52,7 +55,11 @@ describe('Migrate service - v4_04 migration unit tests', () => {
 
     expect(result.version).to.eql({
       ...data.version,
-      domains: [{ topicIDs: ['topicID1', 'topicID2'] }, { topicIDs: ['topicID3', 'topicID1', 'topicID2', 'topicID4'] }, domain3],
+      domains: [
+        { topicIDs: ['topicID1', 'topicID2'] },
+        { topicIDs: ['topicID3', 'topicID1', 'topicID2', 'topicID4'] },
+        domain3,
+      ],
     });
 
     expect(result.diagrams).to.eql([

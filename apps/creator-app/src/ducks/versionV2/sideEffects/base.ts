@@ -48,10 +48,12 @@ export const importProjectContext =
   async (dispatch) => {
     let mappedNodes = nodes;
 
-    const componentIDs = diagrams.filter(({ type }) => isComponentDiagram(type)).map((diagram) => diagram.id);
+    const componentIDs = diagrams.filter(({ type }) => isComponentDiagram(type)).map((diagram) => diagram.diagramID);
     let newComponentIDs: string[] = [];
 
-    const flows = await dispatch(Designer.Flow.effect.copyPasteMany({ sourceDiagramIDs: componentIDs, sourceEnvironmentID: sourceVersionID }));
+    const flows = await dispatch(
+      Designer.Flow.effect.copyPasteMany({ sourceDiagramIDs: componentIDs, sourceEnvironmentID: sourceVersionID })
+    );
     newComponentIDs = flows.map((flow) => flow.diagramID);
 
     componentIDs.forEach((componentID, index) => {
@@ -69,7 +71,9 @@ export const importProjectContext =
 export const negotiateTargetVersion =
   (versionID: string): Thunk<Realtime.version.schema.NegotiateResultPayload> =>
   async (dispatch) =>
-    dispatch(waitAsync(Realtime.version.schema.negotiate, { versionID, proposedSchemaVersion: Realtime.LATEST_SCHEMA_VERSION }));
+    dispatch(
+      waitAsync(Realtime.version.schema.negotiate, { versionID, proposedSchemaVersion: Realtime.LATEST_SCHEMA_VERSION })
+    );
 
 // active version
 
@@ -87,7 +91,9 @@ export const patchDefaultStepColors =
 
     Errors.assertVersionID(versionID);
 
-    await dispatch.sync(Realtime.version.patchDefaultStepColors({ ...getActivePlatformVersionContext(getState()), defaultStepColors }));
+    await dispatch.sync(
+      Realtime.version.patchDefaultStepColors({ ...getActivePlatformVersionContext(getState()), defaultStepColors })
+    );
   };
 
 export const updateInvocationName =
@@ -106,7 +112,8 @@ export const updateInvocationName =
       patchPublishing({
         invocationName,
         invocationNameSamples:
-          invocationNameSamples ?? Utils.string.arrayStringReplace(activeInvocationName, invocationName, activeInvocationNameSamples),
+          invocationNameSamples ??
+          Utils.string.arrayStringReplace(activeInvocationName, invocationName, activeInvocationNameSamples),
       })
     );
   };

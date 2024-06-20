@@ -1,10 +1,7 @@
-/* eslint-disable sonarjs/no-duplicate-string, mocha/no-identical-title */
 import { BaseNode, BaseVersion } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import * as Session from '@/ducks/session';
-import { CanvasCreationType } from '@/ducks/tracking/constants';
 import * as Version from '@/ducks/versionV2';
 
 import suite from './_suite';
@@ -54,36 +51,8 @@ const MOCK_STATE: Version.VersionState = {
   allKeys: [VERSION_ID],
 };
 
-suite(Version, MOCK_STATE)('Ducks - Version V2', ({ describeReducerV2, describeEffectV2, createState }) => {
+suite(Version, MOCK_STATE)('Ducks - Version V2', ({ describeReducerV2, createState }) => {
   describe('reducer', () => {
-    describeReducerV2(Realtime.version.variable.addGlobal, ({ applyAction }) => {
-      it('append new variable', () => {
-        const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, variable: 'foo' });
-
-        expect(result.byKey[VERSION_ID].variables).toEqual(['fizz', 'buzz', 'foo']);
-      });
-
-      it('do nothing if variable already exists', () => {
-        const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, variable: 'fizz' });
-
-        expect(result).toBe(MOCK_STATE);
-      });
-    });
-
-    describeReducerV2(Realtime.version.variable.removeGlobal, ({ applyAction }) => {
-      it('remove a known variable', () => {
-        const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, variable: 'fizz' });
-
-        expect(result.byKey[VERSION_ID].variables).toEqual(['buzz']);
-      });
-
-      it('do nothing if variable does not exist', () => {
-        const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, variable: 'foo' });
-
-        expect(result).toBe(MOCK_STATE);
-      });
-    });
-
     describeReducerV2(Realtime.version.patchPublishing, ({ applyAction }) => {
       it('partially update publishing data', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, publishing: { abc: 'def' } as any });
@@ -92,7 +61,11 @@ suite(Version, MOCK_STATE)('Ducks - Version V2', ({ describeReducerV2, describeE
       });
 
       it('do nothing if version does not exist', () => {
-        const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, versionID: 'foo', publishing: { abc: 'def' } as any });
+        const result = applyAction(MOCK_STATE, {
+          ...ACTION_CONTEXT,
+          versionID: 'foo',
+          publishing: { abc: 'def' } as any,
+        });
 
         expect(result).toBe(MOCK_STATE);
       });
@@ -106,7 +79,11 @@ suite(Version, MOCK_STATE)('Ducks - Version V2', ({ describeReducerV2, describeE
       });
 
       it('do nothing if version does not exist', () => {
-        const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, versionID: 'foo', settings: { defaultVoice: 'foo' as any } });
+        const result = applyAction(MOCK_STATE, {
+          ...ACTION_CONTEXT,
+          versionID: 'foo',
+          settings: { defaultVoice: 'foo' as any },
+        });
 
         expect(result).toBe(MOCK_STATE);
       });

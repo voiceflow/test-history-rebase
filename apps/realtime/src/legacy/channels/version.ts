@@ -61,7 +61,7 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
 
     const version = projectConfig.adapters.version.simple.fromDB(
       { ...dbCreator.version, templateDiagramID: templateDiagram?.diagramID },
-      { globalVariables: projectConfig.project.globalVariables, defaultVoice: projectConfig.project.voice.default }
+      { defaultVoice: projectConfig.project.voice.default }
     );
     const customBlocks = Realtime.Adapters.customBlockAdapter.mapFromDB(
       Object.values(dbCreator.version.customBlocks ?? {})

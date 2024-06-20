@@ -3,6 +3,8 @@ import React from 'react';
 import { matchPath, useLocation } from 'react-router-dom';
 
 import { Path } from '@/config/routes';
+import { Permission } from '@/constants/permissions';
+import { usePermission } from '@/hooks';
 import { AssistantLoader } from '@/pages/AssistantCMS/components/AssistantLoader.component';
 import DashboardLoader from '@/pages/DashboardV2/components/DashboardLoader';
 import { DiagramLayout } from '@/pages/Project/components/Diagram/DiagramLayout/DiagramLayout.component';
@@ -10,6 +12,7 @@ import { DiagramLoader } from '@/pages/Project/components/Diagram/DiagramLoader.
 
 const WorkspaceOrProjectLoader: React.FC<ITabLoader> = (props) => {
   const location = useLocation();
+  const [canEditProject] = usePermission(Permission.PROJECT_UPDATE);
 
   const [isExport, isCMS, isCanvas, isProject] = React.useMemo(
     () => [
@@ -29,16 +32,19 @@ const WorkspaceOrProjectLoader: React.FC<ITabLoader> = (props) => {
     [location.pathname]
   );
 
-  if (isExport) return <TabLoader variant="dark" {...props} />;
+  if (isExport) {
+    return <TabLoader variant="dark" {...props} />;
+  }
 
-  if (isCanvas)
+  if (isCanvas) {
     return (
       <DiagramLayout>
         <DiagramLoader variant="dark" {...props} />
       </DiagramLayout>
     );
+  }
 
-  return isProject ? <AssistantLoader isCMS={isCMS} /> : <DashboardLoader {...props} />;
+  return isProject ? <AssistantLoader isCMS={canEditProject && isCMS} /> : <DashboardLoader {...props} />;
 };
 
 export default WorkspaceOrProjectLoader;

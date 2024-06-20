@@ -83,7 +83,10 @@ workflows:
       - vfcommon/monorepo_{{ $testJob }}:
           <<: *slack-fail-post-step
           context: dev-test
-          executor: vfcommon/node-large-executor
+          executor:
+            <<: *node-executor
+            default_resource_class: xlarge
+            default_node_memory: "8096"
           name: {{ strings.KebabCase $testJob }}
           run_on_root: true
           requires:

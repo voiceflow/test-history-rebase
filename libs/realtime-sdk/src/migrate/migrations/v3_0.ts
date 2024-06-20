@@ -7,7 +7,10 @@ import { Draft } from 'immer';
 import type { DiagramUpdateData, VersionUpdateData } from './types';
 import { Transform } from './types';
 
-const createDiagramFolderItem = (diagram: Draft<DiagramUpdateData>) => ({ sourceID: diagram._id, type: BaseModels.Version.FolderItemType.DIAGRAM });
+const createDiagramFolderItem = (diagram: Draft<DiagramUpdateData>) => ({
+  type: BaseModels.Version.FolderItemType.DIAGRAM,
+  sourceID: diagram.diagramID,
+});
 
 const addIntentStepIDs = (diagram: Draft<DiagramUpdateData>) => {
   diagram.intentStepIDs = [];
@@ -25,7 +28,7 @@ const migrateToTopicsAndComponents = (version: Draft<VersionUpdateData>, diagram
   version.components = [];
 
   diagrams.forEach((diagram) => {
-    if (String(diagram._id) === String(version.rootDiagramID)) {
+    if (String(diagram.diagramID) === String(version.rootDiagramID)) {
       diagram.type = BaseModels.Diagram.DiagramType.TOPIC;
       version.topics!.push(createDiagramFolderItem(diagram));
 
@@ -39,7 +42,9 @@ const migrateToTopicsAndComponents = (version: Draft<VersionUpdateData>, diagram
 
 const syncTopicsAndComponents = (version: Draft<VersionUpdateData>, diagrams: Draft<DiagramUpdateData[]>) => {
   const topicsDiagrams = diagrams.filter((diagram) => diagram.type === BaseModels.Diagram.DiagramType.TOPIC);
-  const componentsDiagrams = diagrams.filter((diagram) => !diagram.type || diagram.type === BaseModels.Diagram.DiagramType.COMPONENT);
+  const componentsDiagrams = diagrams.filter(
+    (diagram) => !diagram.type || diagram.type === BaseModels.Diagram.DiagramType.COMPONENT
+  );
 
   version.topics = topicsDiagrams.map(createDiagramFolderItem);
   version.folders ??= {};
@@ -73,13 +78,18 @@ const migrateToV3_0: Transform = ({ version, diagrams }) => {
   }
 
   const topicsDiagrams = diagrams.filter(
-    (diagram) => String(diagram._id) === String(version.rootDiagramID) || diagram.type === BaseModels.Diagram.DiagramType.TOPIC
+    (diagram) =>
+      String(diagram.diagramID) === String(version.rootDiagramID) ||
+      diagram.type === BaseModels.Diagram.DiagramType.TOPIC
   );
   const componentsDiagrams = diagrams.filter(
-    (diagram) => (!diagram.type || diagram.type === BaseModels.Diagram.DiagramType.COMPONENT) && String(diagram._id) !== String(version.rootDiagramID)
+    (diagram) =>
+      (!diagram.type || diagram.type === BaseModels.Diagram.DiagramType.COMPONENT) &&
+      String(diagram.diagramID) !== String(version.rootDiagramID)
   );
 
-  if (version.topics.length === topicsDiagrams.length && version.components?.length === componentsDiagrams.length) return;
+  if (version.topics.length === topicsDiagrams.length && version.components?.length === componentsDiagrams.length)
+    return;
 
   syncTopicsAndComponents(version, diagrams);
 };

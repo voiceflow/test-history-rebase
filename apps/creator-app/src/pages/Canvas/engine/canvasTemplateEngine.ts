@@ -29,7 +29,8 @@ class CanvasTemplateEngine extends EngineConsumer {
   log = this.engine.log.child('canvas template');
 
   selectNestedSteps = (nodeIDs: string[]) => {
-    const getNodeByID = (id: string) => this.engine.getNodeByID(id) || this.select(CanvasTemplate.nodeByIDSelector, { id });
+    const getNodeByID = (id: string) =>
+      this.engine.getNodeByID(id) || this.select(CanvasTemplate.nodeByIDSelector, { id });
 
     return nodeIDs
       .flatMap((nodeID) => {
@@ -41,7 +42,15 @@ class CanvasTemplateEngine extends EngineConsumer {
       .filter(Utils.array.isNotNullish);
   };
 
-  trackTemplateUsed = ({ templateID, nodeIDs, droppedInto }: { templateID: string; nodeIDs: string[]; droppedInto: 'canvas' | 'block' }) =>
+  trackTemplateUsed = ({
+    templateID,
+    nodeIDs,
+    droppedInto,
+  }: {
+    templateID: string;
+    nodeIDs: string[];
+    droppedInto: 'canvas' | 'block';
+  }) =>
     this.dispatch(
       TrackingEvents.trackBlockTemplateUsed({
         templateID,
@@ -50,11 +59,20 @@ class CanvasTemplateEngine extends EngineConsumer {
       })
     );
 
-  async createTemplate(name: string, color: string | null, allNodeIDs: string[], coords: Coords): Promise<Realtime.CanvasTemplate | null> {
+  async createTemplate(
+    name: string,
+    color: string | null,
+    allNodeIDs: string[],
+    coords: Coords
+  ): Promise<Realtime.CanvasTemplate | null> {
     try {
-      const nodeIDs = [...allNodeIDs, ...this.engine.node.getAllLinkedOutActionsNodeIDs(allNodeIDs)].filter((id) => id !== Realtime.START_NODE_ID);
+      const nodeIDs = [...allNodeIDs, ...this.engine.node.getAllLinkedOutActionsNodeIDs(allNodeIDs)].filter(
+        (id) => id !== Realtime.START_NODE_ID
+      );
       const templateData = this.getCreatorContext(nodeIDs);
-      const templateDiagramID = this.select(VersionV2.active.templateDiagramIDSelector) ?? (await this.dispatch(DiagramV2.createTemplateDiagram()));
+      const templateDiagramID =
+        this.select(VersionV2.active.templateDiagramIDSelector) ??
+        (await this.dispatch(DiagramV2.createTemplateDiagram()));
 
       const { nodesWithData } = await this.cloneCanvasTemplateContext(templateData, coords, templateDiagramID);
 
@@ -99,7 +117,10 @@ class CanvasTemplateEngine extends EngineConsumer {
     };
   }
 
-  getDiagramContext(nodeIDs: string[], DiagramDataDuck: typeof CanvasTemplate | typeof CreatorV2): TemplateCanvasContext {
+  getDiagramContext(
+    nodeIDs: string[],
+    DiagramDataDuck: typeof CanvasTemplate | typeof CreatorV2
+  ): TemplateCanvasContext {
     const platform = this.select(ProjectV2.active.platformSelector);
 
     // cloning data to modify it later
@@ -112,7 +133,9 @@ class CanvasTemplateEngine extends EngineConsumer {
     const allNodes = this.select(DiagramDataDuck.nodesByIDsSelector, { ids: nodeIDs });
 
     const soloNodes = allNodes.filter((node) => !node.parentNode);
-    const nestedNodes = soloNodes.flatMap(({ combinedNodes }) => this.select(DiagramDataDuck.nodesByIDsSelector, { ids: combinedNodes }));
+    const nestedNodes = soloNodes.flatMap(({ combinedNodes }) =>
+      this.select(DiagramDataDuck.nodesByIDsSelector, { ids: combinedNodes })
+    );
     const orphanedNodes: Realtime.Node[] = [];
 
     const extraLinks: Realtime.Link[] = [];
@@ -147,7 +170,10 @@ class CanvasTemplateEngine extends EngineConsumer {
       ...orphanedNodes,
       ...nestedNodes,
     ];
-    const copiedNodeIDMap = copiedNodes.reduce<Record<string, boolean>>((acc, node) => Object.assign(acc, { [node.id]: true }), {});
+    const copiedNodeIDMap = copiedNodes.reduce<Record<string, boolean>>(
+      (acc, node) => Object.assign(acc, { [node.id]: true }),
+      {}
+    );
 
     const ports = this.select(DiagramDataDuck.allPortsByIDsSelector, {
       ids: copiedNodes.flatMap((node) => Realtime.Utils.port.flattenAllPorts(node.ports)),

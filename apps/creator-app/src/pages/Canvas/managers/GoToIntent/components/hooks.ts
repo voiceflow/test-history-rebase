@@ -29,7 +29,7 @@ export const useGoToIntentMeta = (intentID: Nullable<string>, diagramID?: Nullab
   const goToDiagram = diagramID ? diagramMap[diagramID] ?? null : null;
 
   const map = referenceSystem.isEnabled ? globalIntentNodeIDsByIntentIDMapByDiagramIDMap : globalIntentStepMap;
-  const topicGoToNodeID = goToIntent && goToDiagram ? map[goToDiagram.id]?.[goToIntent.id]?.[0] ?? null : null;
+  const topicGoToNodeID = goToIntent && goToDiagram ? map[goToDiagram.diagramID]?.[goToIntent.id]?.[0] ?? null : null;
   const componentGoToNodeID = topicGoToNodeID || (goToIntent ? intentIDNodeIDMap[goToIntent.id] ?? null : null);
 
   const goToNodeID = isComponentDiagram(activeDiagramType) ? componentGoToNodeID : topicGoToNodeID;

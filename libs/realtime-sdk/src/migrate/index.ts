@@ -25,9 +25,8 @@ const getVersionPatch = (version: BaseVersion.Version): VersionUpdateData => {
   ]);
 };
 
-const getDiagramPatch = (diagram: BaseModels.Diagram.Model): DiagramUpdateData => {
-  return Utils.object.omit(diagram, ['creatorID', 'versionID']);
-};
+const getDiagramPatch = (diagram: BaseModels.Diagram.Model): DiagramUpdateData =>
+  Utils.object.omit(diagram, ['_id', 'creatorID', 'versionID']);
 
 export const getPendingMigrations = (currentVersion: number, targetVersion: SchemaVersion): Migration[] => {
   return migrations.filter((migration) => migration.version > currentVersion && migration.version <= targetVersion);
@@ -41,7 +40,10 @@ interface MigrateProjectPayload {
   creatorID: number;
 }
 
-export const migrateProject = ({ cms, version, project, diagrams, creatorID }: MigrateProjectPayload, targetSchemaVersion: SchemaVersion) => {
+export const migrateProject = (
+  { cms, version, project, diagrams, creatorID }: MigrateProjectPayload,
+  targetSchemaVersion: SchemaVersion
+) => {
   const currentSchemaVersion = version._version ?? SchemaVersion.V1;
   const pendingMigrations = getPendingMigrations(currentSchemaVersion, targetSchemaVersion);
 

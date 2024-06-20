@@ -50,7 +50,7 @@ const aiResponse = {
 describe('Migrate service - v7_02 migration unit tests', () => {
   it('migrates kb steps', async () => {
     const diagram1 = {
-      _id: 'diagramID1',
+      diagramID: 'diagramID1',
       nodes: {
         aiSetDeprecated,
         aiResponseDeprecated,
@@ -65,7 +65,7 @@ describe('Migrate service - v7_02 migration unit tests', () => {
 
     expect(result.diagrams).to.eql([
       {
-        _id: 'diagramID1',
+        diagramID: 'diagramID1',
         nodes: {
           aiSet,
           aiResponse,

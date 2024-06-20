@@ -23,7 +23,6 @@ import setLastCreatedIDReducer from './setLastCreatedID';
 import transplantStepsReducer from './transplantSteps';
 import updateManyNodesDataReducer from './updateManyNodesData';
 import { createCombinedReducer } from './utils';
-import { addLocalVariable, removeLocalVariable } from './variables';
 
 export * from './awareness';
 
@@ -32,10 +31,6 @@ const realtimeDiagramReducer = createRootCRUDReducer(INITIAL_STATE, {
   remove: createCombinedReducer(crudReducers.remove, awarenessRemoveDiagram, removeDiagramReducer),
   removeMany: createCombinedReducer(crudReducers.removeMany, removeManyDiagramsReducer, awarenessRemoveManyDiagrams),
 })
-  // variables
-  .immerCase(...addLocalVariable)
-  .immerCase(...removeLocalVariable)
-
   // nodes
   .immerCase(...addBlockReducer)
   .immerCase(...insertStepReducer)

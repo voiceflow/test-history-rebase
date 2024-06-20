@@ -40,7 +40,13 @@ describe('Migrate service unit tests', () => {
       migrateService.isMigrationLocked = async () => false;
       migrateService.getActiveSchemaVersion = getActiveSchemaVersion;
 
-      const migrator = migrateService.migrateSchema(creatorID, projectID, versionID, clientNodeID, Realtime.SchemaVersion.V2);
+      const migrator = migrateService.migrateSchema(
+        creatorID,
+        projectID,
+        versionID,
+        clientNodeID,
+        Realtime.SchemaVersion.V2
+      );
 
       await expectMigrationStates(migrator, [MigrationState.NOT_REQUIRED]);
       expect(getActiveSchemaVersion).toBeCalledWith(versionID);
@@ -51,7 +57,13 @@ describe('Migrate service unit tests', () => {
       migrateService.isMigrationLocked = async () => false;
       migrateService.getActiveSchemaVersion = async () => Realtime.SchemaVersion.V2;
 
-      const migrator = migrateService.migrateSchema(creatorID, projectID, versionID, clientNodeID, Realtime.SchemaVersion.V1);
+      const migrator = migrateService.migrateSchema(
+        creatorID,
+        projectID,
+        versionID,
+        clientNodeID,
+        Realtime.SchemaVersion.V1
+      );
 
       await expectMigrationStates(migrator, [MigrationState.NOT_SUPPORTED]);
     });
@@ -71,7 +83,13 @@ describe('Migrate service unit tests', () => {
       migrateService.getActiveSchemaVersion = async () => null;
       migrateService.setActiveSchemaVersion = setActiveSchemaVersion;
 
-      const migrator = migrateService.migrateSchema(creatorID, projectID, versionID, clientNodeID, Realtime.SchemaVersion.V2);
+      const migrator = migrateService.migrateSchema(
+        creatorID,
+        projectID,
+        versionID,
+        clientNodeID,
+        Realtime.SchemaVersion.V2
+      );
 
       await expectMigrationStates(migrator, [MigrationState.NOT_REQUIRED]);
       expect(setActiveSchemaVersion).toBeCalledWith(versionID, version._version);
@@ -92,7 +110,13 @@ describe('Migrate service unit tests', () => {
       migrateService.getActiveSchemaVersion = async () => null;
       migrateService.acquireMigrationLock = acquireMigrationLock;
 
-      const migrator = migrateService.migrateSchema(creatorID, projectID, versionID, clientNodeID, Realtime.SchemaVersion.V2);
+      const migrator = migrateService.migrateSchema(
+        creatorID,
+        projectID,
+        versionID,
+        clientNodeID,
+        Realtime.SchemaVersion.V2
+      );
 
       await expectMigrationStates(migrator, [MigrationState.NOT_ALLOWED]);
       expect(acquireMigrationLock).toBeCalledWith(versionID, clientNodeID);
@@ -113,7 +137,13 @@ describe('Migrate service unit tests', () => {
       migrateService.acquireMigrationLock = () => Promise.resolve();
       migrateService.resetMigrationLock = resetMigrationLock;
 
-      const migrator = migrateService.migrateSchema(creatorID, projectID, versionID, clientNodeID, Realtime.SchemaVersion.V2);
+      const migrator = migrateService.migrateSchema(
+        creatorID,
+        projectID,
+        versionID,
+        clientNodeID,
+        Realtime.SchemaVersion.V2
+      );
       const generator = migrator[Symbol.asyncIterator]();
 
       await expect(generator.next()).resolves.toEqual({ done: false, value: MigrationState.STARTED });
@@ -127,7 +157,10 @@ describe('Migrate service unit tests', () => {
       const options = {
         services: {
           project: {
-            get: vi.fn().mockResolvedValue({ type: Platform.Constants.ProjectType.CHAT, platform: Platform.Constants.PlatformType.VOICEFLOW }),
+            get: vi.fn().mockResolvedValue({
+              type: Platform.Constants.ProjectType.CHAT,
+              platform: Platform.Constants.PlatformType.VOICEFLOW,
+            }),
           },
           version: {
             get: vi.fn().mockResolvedValue({
@@ -147,8 +180,8 @@ describe('Migrate service unit tests', () => {
               {
                 creatorID,
                 versionID,
-                _id: diagramID,
                 foo: 'bar',
+                diagramID,
               },
             ]),
           },
@@ -171,13 +204,9 @@ describe('Migrate service unit tests', () => {
           _version: targetSchemaVersion,
           name: 'bar',
           variables: ['first', 'second'],
-          folders: undefined,
-          components: undefined,
           rootDiagramID: 'diagramID',
           templateDiagramID: undefined,
           platformData: { fizz: 'buzz' },
-          topics: undefined,
-          domains: undefined,
         },
         [[diagramID, { foo: 'bar' }]]
       );

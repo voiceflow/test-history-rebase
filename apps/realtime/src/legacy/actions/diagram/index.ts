@@ -9,7 +9,6 @@ import ReloadSharedNodesControl from './reloadSharedNodes';
 import RemoveDiagramControl from './remove';
 import RemoveManyDiagramControl from './removeMany';
 import TemplateCreateControl from './templateCreate';
-import { AddLocalVariableControl, RemoveLocalVariableControl } from './variable';
 import { UpdateViewportControl } from './viewport';
 
 const buildDiagramActionControls = (options: LoguxControlOptions) => ({
@@ -19,10 +18,6 @@ const buildDiagramActionControls = (options: LoguxControlOptions) => ({
   removeDiagramControl: new RemoveDiagramControl(options),
   addManyDiagramControl: new AddManyDiagramControl(options),
   removeManyDiagramControl: new RemoveManyDiagramControl(options),
-
-  // variables
-  addLocalVariableControl: new AddLocalVariableControl(options),
-  removeLocalVariableControl: new RemoveLocalVariableControl(options),
 
   // awareness
   lockEntitiesControl: new LockEntitiesControl(options),

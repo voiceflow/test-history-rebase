@@ -11,10 +11,10 @@ import { platformSelectorsFactory } from './utils';
 export const { versionSelector, sessionSelector, settingsSelector, publishingSelector } =
   platformSelectorsFactory<Platform.Base.Models.Version.Model>();
 
-export const foldersSelector = createSelector([versionSelector], (version) => version?.folders ?? {});
-
-export const localesSelector = createSelector([projectConfigSelector, publishingSelector, settingsSelector], (projectConfig, publishing, settings) =>
-  projectConfig.project.locale.storedIn === 'publishing' ? publishing?.locales ?? [] : settings?.locales ?? []
+export const localesSelector = createSelector(
+  [projectConfigSelector, publishingSelector, settingsSelector],
+  (projectConfig, publishing, settings) =>
+    projectConfig.project.locale.storedIn === 'publishing' ? publishing?.locales ?? [] : settings?.locales ?? []
 );
 
 export const creatorIDSelector = createSelector([versionSelector], (version) => version?.creatorID ?? null);
@@ -35,20 +35,36 @@ export const schemaVersionSelector = createSelector(
   (version) => (version?._version ?? Realtime.SchemaVersion.V1) as Realtime.SchemaVersion
 );
 
-export const invocationNameSelector = createSelector([publishingSelector], (publishing) => publishing?.invocationName ?? null);
+export const invocationNameSelector = createSelector(
+  [publishingSelector],
+  (publishing) => publishing?.invocationName ?? null
+);
 
-export const carouselLayoutSelector = createSelector([settingsSelector], (settings) => settings?.defaultCarouselLayout ?? null);
+export const carouselLayoutSelector = createSelector(
+  [settingsSelector],
+  (settings) => settings?.defaultCarouselLayout ?? null
+);
 
-export const templateDiagramIDSelector = createSelector([versionSelector], (version) => version?.templateDiagramID ?? null);
+export const templateDiagramIDSelector = createSelector(
+  [versionSelector],
+  (version) => version?.templateDiagramID ?? null
+);
 
 const stepTypeParamSelector = createParameterSelector((params: { stepType: Realtime.BlockType }) => params.stepType);
 
-export const defaultStepColorByStepType = createSelector([defaultStepColors, stepTypeParamSelector], (defaultStepColors, stepType) =>
-  isKey(defaultStepColors, stepType) ? defaultStepColors[stepType] : undefined
+export const defaultStepColorByStepType = createSelector(
+  [defaultStepColors, stepTypeParamSelector],
+  (defaultStepColors, stepType) => (isKey(defaultStepColors, stepType) ? defaultStepColors[stepType] : undefined)
 );
 
-export const canvasNodeVisibilitySelector = createSelector([settingsSelector], (settings) => settings?.defaultCanvasNodeVisibility ?? null);
+export const canvasNodeVisibilitySelector = createSelector(
+  [settingsSelector],
+  (settings) => settings?.defaultCanvasNodeVisibility ?? null
+);
 
-export const invocationNameSamplesSelector = createSelector([publishingSelector], (publishing) => publishing?.invocationNameSamples ?? []);
+export const invocationNameSamplesSelector = createSelector(
+  [publishingSelector],
+  (publishing) => publishing?.invocationNameSamples ?? []
+);
 
 export const intentConfidenceSelector = createSelector([settingsSelector], (settings) => settings?.intentConfidence);

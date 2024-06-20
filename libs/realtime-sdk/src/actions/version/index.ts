@@ -1,5 +1,4 @@
 import {
-  COMPONENTS_KEY,
   DEFAULT_STEP_COLORS_KEY,
   PROTOTYPE_KEY,
   PUBLISHING_KEY,
@@ -17,10 +16,8 @@ import { createCRUDActions } from '../utils';
 import { versionType } from './utils';
 
 export * as schema from './schema';
-export * as variable from './variable';
 
 const versionRPCType = Utils.protocol.typeFactory(versionType(RPC_KEY));
-const componentsType = Utils.protocol.typeFactory(versionType(COMPONENTS_KEY));
 const versionSettingsType = Utils.protocol.typeFactory(versionType(SETTINGS_KEY));
 const versionSessionType = Utils.protocol.typeFactory(versionSettingsType(SESSION_KEY));
 const versionPrototypeType = Utils.protocol.typeFactory(versionType(PROTOTYPE_KEY));
@@ -69,26 +66,8 @@ export interface PatchPublishingPayload extends BaseVersionPayload {
   defaultVoice: string;
 }
 
-export interface ReorderTopicsPayload extends BaseVersionPayload {
-  fromID: string;
-  toIndex: number;
-}
-
-export interface ReorderComponentsPayload extends BaseVersionPayload {
-  fromID: string;
-  toIndex: number;
-}
-
 export interface ReplacePrototypeSettingsPayload extends BaseVersionPayload {
   settings: PrototypeSettings;
-}
-
-export interface ReloadFoldersPayload extends BaseVersionPayload {
-  folders: NonNullable<Platform.Base.Models.Version.Model['folders']>;
-}
-
-export interface AddManyComponentsPayload extends BaseVersionPayload {
-  components: NonNullable<Platform.Base.Models.Version.Model['components']>;
 }
 
 export interface CreateBackupPayload extends BaseVersionPayload {
@@ -101,13 +80,7 @@ export const patchSession = Utils.protocol.createAction<PatchSessionPayload>(ver
 
 export const patchSettings = Utils.protocol.createAction<PatchSettingsPayload>(versionSettingsType('PATCH'));
 
-export const reloadFolders = Utils.protocol.createAction<ReloadFoldersPayload>(versionType('RELOAD_FOLDERS'));
-
 export const patchPublishing = Utils.protocol.createAction<PatchPublishingPayload>(versionPublishingType('PATCH'));
-
-export const addManyComponents = Utils.protocol.createAction<AddManyComponentsPayload>(componentsType('ADD_MANY'));
-
-export const reorderComponents = Utils.protocol.createAction<ReorderComponentsPayload>(componentsType('REORDER'));
 
 export const patchDefaultStepColors = Utils.protocol.createAction<PatchDefaultStepColorsPayload>(
   versionDefaultStepColorsType('PATCH')

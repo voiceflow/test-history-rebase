@@ -11,12 +11,12 @@ const migrateToV3_92: Transform = ({ diagrams, version }) => {
   diagrams.forEach((dbDiagram) => {
     if (
       (dbDiagram.type && dbDiagram.type !== BaseModels.Diagram.DiagramType.COMPONENT) ||
-      version.components?.some(({ sourceID }) => sourceID === dbDiagram._id)
+      version.components?.some(({ sourceID }) => sourceID === dbDiagram.diagramID)
     )
       return;
 
     version.components ??= [];
-    version.components?.push({ sourceID: dbDiagram._id, type: BaseModels.Version.FolderItemType.DIAGRAM });
+    version.components?.push({ sourceID: dbDiagram.diagramID, type: BaseModels.Version.FolderItemType.DIAGRAM });
     dbDiagram.name = `[restored] ${dbDiagram.name}`;
   });
 };

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.98.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.98.0...@voiceflow/dtos@1.98.1) (2024-06-20)
+
+### Bug Fixes
+
+* update dtos (COR-2418) ([#8366](https://github.com/voiceflow/creator-app/issues/8366)) ([4bac88e](https://github.com/voiceflow/creator-app/commit/4bac88e761141c9427e7b5537a38d625db69a4e7))
+
 # [1.98.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.97.1...@voiceflow/dtos@1.98.0) (2024-06-20)
 
 ### Features

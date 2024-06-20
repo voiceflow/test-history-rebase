@@ -1,6 +1,6 @@
-import { BoxProps, boxStyles } from '@ui/components/Box';
-import { BlockText } from '@ui/components/Text';
-import { css, styled } from '@ui/styles';
+import { BoxProps, boxStyles } from '@/../../libs/ui/src/components/Box';
+import { BlockText } from '@/../../libs/ui/src/components/Text'
+import { css, styled } from '@/../../libs/ui/src/styles';
 
 export const Title = styled(BlockText)`
   font-weight: 600;

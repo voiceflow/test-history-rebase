@@ -1,7 +1,8 @@
-import { Alert, Box } from '@voiceflow/ui';
+import { Box } from '@voiceflow/ui';
 import dayjs from 'dayjs';
 import React from 'react';
 
+import Alert from '@/components/Alert';
 import Page from '@/components/Page';
 
 interface PaymentFailedProps {

@@ -1,6 +1,7 @@
-import { Alert, Button, Input, Modal, SectionV2, toast } from '@voiceflow/ui';
+import { Button, Input, Modal, SectionV2, toast } from '@voiceflow/ui';
 import React from 'react';
 
+import Alert from '@/components/Alert';
 import * as Account from '@/ducks/account';
 import { useDispatch } from '@/hooks/realtime';
 import { getErrorMessage } from '@/utils/error';

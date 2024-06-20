@@ -1,8 +1,9 @@
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Alert, Box } from '@voiceflow/ui';
+import { Box } from '@voiceflow/ui';
 import React from 'react';
 
+import Alert from '@/components/Alert';
 import * as GPT from '@/components/GPT';
 import TextArea from '@/components/TextArea';
 import { useActiveProjectType } from '@/hooks/platformConfig';

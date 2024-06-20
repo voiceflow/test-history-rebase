@@ -1,8 +1,9 @@
 import { BillingPeriod } from '@voiceflow/internal';
-import { Alert, Box, Button, Modal, SectionV2, Text } from '@voiceflow/ui';
+import { Box, Button, Modal, SectionV2, Text } from '@voiceflow/ui';
 import pluralize from 'pluralize';
 import React from 'react';
 
+import Alert from '@/components/Alert';
 import RadioGroup from '@/components/RadioGroup';
 import * as Workspace from '@/components/Workspace';
 import * as currency from '@/utils/currency';

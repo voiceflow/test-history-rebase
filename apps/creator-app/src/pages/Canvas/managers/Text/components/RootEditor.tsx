@@ -1,8 +1,9 @@
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Alert, Box, SectionV2 } from '@voiceflow/ui';
+import { Box, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
+import Alert from '@/components/Alert';
 import * as GPT from '@/components/GPT';
 import { useActiveProjectType } from '@/hooks/platformConfig';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';

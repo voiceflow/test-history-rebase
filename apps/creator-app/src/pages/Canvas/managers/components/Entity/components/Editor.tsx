@@ -1,6 +1,6 @@
-import { Alert } from '@voiceflow/ui';
 import React from 'react';
 
+import Alert from '@/components/Alert';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 
 interface EditorProps {

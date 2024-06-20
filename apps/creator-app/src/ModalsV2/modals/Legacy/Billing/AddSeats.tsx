@@ -1,8 +1,9 @@
 import { BillingPeriod } from '@voiceflow/internal';
-import { Alert, Button, Modal, SectionV2, Spinner, System, Text, toast, withProvider } from '@voiceflow/ui';
+import { Button, Modal, SectionV2, Spinner, System, Text, toast, withProvider } from '@voiceflow/ui';
 import pluralize from 'pluralize';
 import React from 'react';
 
+import Alert from '@/components/Alert';
 import * as Workspace from '@/components/Workspace';
 import * as Payment from '@/contexts/PaymentContext';
 import { UpgradePrompt } from '@/ducks/tracking/constants';

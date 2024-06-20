@@ -1,9 +1,10 @@
 import { Utils } from '@voiceflow/common';
 import { Intent } from '@voiceflow/dtos';
 import * as Platform from '@voiceflow/platform-config';
-import { Alert, BaseSelectProps, isUIOnlyMenuItemOption, Menu, Select, System, toast, UIOnlyMenuItemOption } from '@voiceflow/ui';
+import { BaseSelectProps, isUIOnlyMenuItemOption, Menu, Select, System, toast, UIOnlyMenuItemOption } from '@voiceflow/ui';
 import React from 'react';
 
+import Alert from '@/components/Alert';
 import { Designer, Project } from '@/ducks';
 import { useSelector } from '@/hooks';
 import { useIntentNameProcessor, useOnOpenIntentCreateModal } from '@/hooks/intent.hook';

@@ -1,8 +1,8 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Alert } from '@voiceflow/ui';
 import React from 'react';
 
 import AceEditor from '@/components/AceEditor';
+import Alert from '@/components/Alert';
 import Section, { SectionToggleVariant, SectionVariant } from '@/components/Section';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
 

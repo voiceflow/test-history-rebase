@@ -1,12 +1,13 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { Utils } from '@voiceflow/common';
-import { Alert, toast } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui';
 import { TabLoader } from '@voiceflow/ui-next';
 import axios, { AxiosError } from 'axios';
 import dayjs from 'dayjs';
 import React from 'react';
 
 import client from '@/client';
+import Alert from '@/components/Alert';
 import { LoadingGate } from '@/components/LoadingGate';
 import { MAINTENANCE_STATUS_SOURCE } from '@/config';
 import { useConfirmModal } from '@/hooks/modal.hook';

@@ -1,5 +1,6 @@
-import { BlockText, TextProps } from '@ui/components/Text';
 import React from 'react';
+
+import { BlockText, TextProps } from '@/../../libs/ui/src/components/Text';
 
 import * as S from './styles';
 

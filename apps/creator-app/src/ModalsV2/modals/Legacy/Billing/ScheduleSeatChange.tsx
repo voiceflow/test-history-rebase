@@ -1,8 +1,9 @@
 import { BillingPeriod } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Alert, Button, Modal, SectionV2, Text, toast } from '@voiceflow/ui';
+import { Button, Modal, SectionV2, Text, toast } from '@voiceflow/ui';
 import React from 'react';
 
+import Alert from '@/components/Alert';
 import * as Workspace from '@/components/Workspace';
 import * as Session from '@/ducks/session';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';

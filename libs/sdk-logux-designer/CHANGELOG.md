@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.65.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.64.6...@voiceflow/sdk-logux-designer@2.65.0) (2024-06-20)
+
+### Features
+
+* upgrade to node@20.11.1 (SEC-8) ([#8055](https://github.com/voiceflow/creator-app/issues/8055)) ([6d6317b](https://github.com/voiceflow/creator-app/commit/6d6317b593ad2d68659df014e5efb7c5c6dcdc10))
+
 ## [2.64.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.64.5...@voiceflow/sdk-logux-designer@2.64.6) (2024-06-19)
 
 **Note:** Version bump only for package @voiceflow/sdk-logux-designer

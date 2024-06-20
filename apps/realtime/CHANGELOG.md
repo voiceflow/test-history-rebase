@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.404.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.403.2...@voiceflow/realtime@1.404.0) (2024-06-20)
+
+### Features
+
+* upgrade to node@20.11.1 (SEC-8) ([#8055](https://github.com/voiceflow/creator-app/issues/8055)) ([6d6317b](https://github.com/voiceflow/creator-app/commit/6d6317b593ad2d68659df014e5efb7c5c6dcdc10))
+
 ## [1.403.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.403.1...@voiceflow/realtime@1.403.2) (2024-06-19)
 
 **Note:** Version bump only for package @voiceflow/realtime

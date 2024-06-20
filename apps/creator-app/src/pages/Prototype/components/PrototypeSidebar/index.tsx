@@ -3,13 +3,14 @@ import { Box, Flex, SvgIcon, TippyTooltip, useDidUpdateEffect } from '@voiceflow
 import React from 'react';
 
 import Drawer from '@/components/Drawer';
-import { SectionVariant,UncontrolledSection as Section } from '@/components/Section';
+import { SectionVariant, UncontrolledSection as Section } from '@/components/Section';
 import SoundToggle from '@/components/SoundToggle';
 import { Permission } from '@/constants/permissions';
 import { PrototypeStatus } from '@/constants/prototype';
 import { Designer, UI } from '@/ducks';
 import * as PrototypeDuck from '@/ducks/prototype';
-import { useDispatch, useEventualEngine, usePermission, useTheme } from '@/hooks';
+import { useDispatch, usePermission, useTheme } from '@/hooks';
+import { useEventualEngine } from '@/hooks/engine.hook';
 import { useSelector } from '@/hooks/store.hook';
 import { useToggle } from '@/hooks/toggle';
 import { NLUTrainingModelContext } from '@/pages/Project/contexts';

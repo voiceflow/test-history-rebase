@@ -3,7 +3,8 @@ import React from 'react';
 
 import * as UI from '@/ducks/ui';
 import { withBatchLoadingGate } from '@/hocs/withBatchLoadingGate';
-import { useDispatch, useEventualEngine, useSelector, useTeardown } from '@/hooks';
+import { useDispatch, useSelector, useTeardown } from '@/hooks';
+import { useEventualEngine } from '@/hooks/engine.hook';
 import Canvas from '@/pages/Canvas';
 import { ManagerProvider } from '@/pages/Canvas/contexts';
 import { useManager } from '@/pages/Canvas/managers/utils';

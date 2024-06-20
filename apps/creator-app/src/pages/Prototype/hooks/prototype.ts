@@ -1,11 +1,11 @@
 import { Utils } from '@voiceflow/common';
 import { BaseRequest } from '@voiceflow/dtos';
-import _isString from 'lodash/isString';
 import React from 'react';
 
 import { PrototypeStatus } from '@/constants/prototype';
 import { IDSelectorParam } from '@/ducks/utils/crudV2';
-import { useEventualEngine, useTrackingEvents } from '@/hooks';
+import { useTrackingEvents } from '@/hooks';
+import { useEventualEngine } from '@/hooks/engine.hook';
 
 import PrototypeTool, { PrototypeToolProps } from '../PrototypeTool';
 import { Interaction, Message, PMStatus, PrototypeAllTypes } from '../types';
@@ -18,9 +18,25 @@ interface Options extends PrototypeAllTypes {
   globalDelayInMilliseconds?: number;
 }
 
-const usePrototype = ({ debug, config, state, actions, isPublic, waitVisuals = true, prototypeStatus, globalDelayInMilliseconds }: Options) => {
+const usePrototype = ({
+  debug,
+  config,
+  state,
+  actions,
+  isPublic,
+  waitVisuals = true,
+  prototypeStatus,
+  globalDelayInMilliseconds,
+}: Options) => {
   const { isMuted } = config;
-  const { activeDiagramID = null, flowIDHistory, activePaths, contextHistory = [], visualDataHistory = [], contextStep } = state;
+  const {
+    activeDiagramID = null,
+    flowIDHistory,
+    activePaths,
+    contextHistory = [],
+    visualDataHistory = [],
+    contextStep,
+  } = state;
   const {
     updatePrototypeStatus,
     updatePrototypeVisualsDataHistory = Utils.functional.noop,
@@ -94,7 +110,7 @@ const usePrototype = ({ debug, config, state, actions, isPublic, waitVisuals = t
     ({ name, request }: { name?: string; request: BaseRequest | string }) => {
       let interaction = { name, request };
 
-      if (_isString(request)) {
+      if (typeof request === 'string') {
         const match = request.toLowerCase().trim();
         const button = interactions?.find(({ name }) => match === name.toLowerCase().trim());
 

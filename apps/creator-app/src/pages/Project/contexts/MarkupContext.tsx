@@ -7,14 +7,8 @@ import { LimitType } from '@/constants/limits';
 import { Permission } from '@/constants/permissions';
 import * as History from '@/ducks/history';
 import * as Organization from '@/ducks/organization';
-import {
-  useDispatch,
-  useEventualEngine,
-  usePermission,
-  usePlanLimitConfig,
-  useSelector,
-  useTrackingEvents,
-} from '@/hooks';
+import { useDispatch, usePermission, usePlanLimitConfig, useSelector, useTrackingEvents } from '@/hooks';
+import { useEventualEngine } from '@/hooks/engine.hook';
 import { useLimitConfig } from '@/hooks/planLimitV3';
 import { useAnyModeOpen, useTextMarkupMode } from '@/pages/Project/hooks/modes';
 import { upload, windowRefocused } from '@/utils/dom';

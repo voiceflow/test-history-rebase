@@ -3,7 +3,8 @@ import { useHistory, useLocation } from 'react-router-dom';
 
 import { PrototypeStatus } from '@/constants/prototype';
 import * as VariableState from '@/ducks/variableState';
-import { useDispatch, useEventualEngine, useHideVoiceflowAssistant, useSetup, useTeardown } from '@/hooks';
+import { useDispatch, useHideVoiceflowAssistant, useSetup, useTeardown } from '@/hooks';
+import { useEventualEngine } from '@/hooks/engine.hook';
 import { Identifier } from '@/styles/constants';
 import * as Query from '@/utils/query';
 
@@ -66,7 +67,10 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({
     globalDelayInMilliseconds: durationMilliseconds,
   });
 
-  const checkPMStatus = React.useCallback((...args: PMStatus[]) => args.includes(prototypeMachineStatus as PMStatus), [prototypeMachineStatus]);
+  const checkPMStatus = React.useCallback(
+    (...args: PMStatus[]) => args.includes(prototypeMachineStatus as PMStatus),
+    [prototypeMachineStatus]
+  );
   const isLoading = checkPMStatus(PMStatus.FETCHING_CONTEXT, PMStatus.FAKE_LOADING);
 
   const isBubbleMessageShown = React.useMemo(
@@ -121,7 +125,9 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({
   }, [nodeID, engine]);
 
   if (status === PrototypeStatus.IDLE && !autoplay) {
-    return <Start config={config} debug={debug} isModelTraining={isModelTraining} isPublic={isPublic} onStart={start} />;
+    return (
+      <Start config={config} debug={debug} isModelTraining={isModelTraining} isPublic={isPublic} onStart={start} />
+    );
   }
 
   return (

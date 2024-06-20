@@ -3,7 +3,8 @@ import { Box, ClickableText, Divider } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Prototype from '@/ducks/prototype';
-import { useEventualEngine, useSelector } from '@/hooks';
+import { useSelector } from '@/hooks';
+import { useEventualEngine } from '@/hooks/engine.hook';
 
 const INTENT_TRIGGERING_BLOCKS = [BlockType.CHOICE, BlockType.PROMPT, BlockType.CAPTURE];
 

@@ -58,8 +58,8 @@ const GoToIntentSelect: React.FC<GoToIntentSelectProps> = ({
   const getIntentByID = useSelector(Designer.Intent.selectors.getOneWithFormattedBuiltNameByID);
   const globalIntentStepMap = useSelector(Diagram.globalIntentStepMapSelector);
   const triggersMapByDiagramID = useSelector(Designer.Reference.selectors.triggersMapByDiagramID);
-  const globalIntentNodeIDsByIntentIDMapByDiagramIDMap = useSelector(
-    Designer.Reference.selectors.globalIntentNodeIDsByIntentIDMapByDiagramIDMap
+  const globalTriggerNodeIDsByIntentIDMapByDiagramIDMap = useSelector(
+    Designer.Reference.selectors.globalTriggerNodeIDsByIntentIDMapByDiagramIDMap
   );
 
   const [workflowOptions, workflowOptionMap] = useFolderTree<
@@ -99,7 +99,7 @@ const GoToIntentSelect: React.FC<GoToIntentSelectProps> = ({
 
             const intent = getIntentByID({ id: triggerNode.intentID });
             const globalIntentNodeIDsByIntentID = referenceSystem.isEnabled
-              ? globalIntentNodeIDsByIntentIDMapByDiagramIDMap[workflow.diagramID]
+              ? globalTriggerNodeIDsByIntentIDMapByDiagramIDMap[workflow.diagramID]
               : globalIntentStepMap[workflow.diagramID];
 
             if (!intent || !globalIntentNodeIDsByIntentID?.[intent.id]?.length) return acc;
@@ -139,7 +139,12 @@ const GoToIntentSelect: React.FC<GoToIntentSelectProps> = ({
           ],
         };
       },
-      [getIntentByID, triggersMapByDiagramID, referenceSystem.isEnabled, globalIntentNodeIDsByIntentIDMapByDiagramIDMap]
+      [
+        getIntentByID,
+        triggersMapByDiagramID,
+        referenceSystem.isEnabled,
+        globalTriggerNodeIDsByIntentIDMapByDiagramIDMap,
+      ]
     ),
   });
 

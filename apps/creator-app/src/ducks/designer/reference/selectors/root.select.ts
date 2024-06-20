@@ -50,6 +50,11 @@ export const referenceIDsByResourceIDMap = createSelector(
   ({ referenceIDsByResourceIDMap }) => referenceIDsByResourceIDMap
 );
 
+export const globalTriggerNodeIDsByIntentIDMapByDiagramIDMap = createSelector(
+  [root],
+  ({ globalTriggerNodeIDsByIntentIDMapByDiagramIDMap }) => globalTriggerNodeIDsByIntentIDMapByDiagramIDMap
+);
+
 export const oneResourceByID = createSelector([normalizedResources, idParamSelector], (normalizedResources, id) =>
   id ? Normal.getOne(normalizedResources, id) : null
 );

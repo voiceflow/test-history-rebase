@@ -124,9 +124,9 @@ export const {
 } = createSelectorContext(Designer.Reference.selectors.blockNodeResourceByNodeIDMapByDiagramIDMap);
 
 export const {
-  Context: GlobalIntentNodeIDsByIntentIDMapByDiagramIDMapContext,
-  Provider: GlobalIntentNodeIDsByIntentIDMapByDiagramIDMapProvider,
-} = createSelectorContext(Designer.Reference.selectors.globalIntentNodeIDsByIntentIDMapByDiagramIDMap);
+  Context: GlobalTriggerNodeIDsByIntentIDMapByDiagramIDMapContext,
+  Provider: GlobalTriggerNodeIDsByIntentIDMapByDiagramIDMapProvider,
+} = createSelectorContext(Designer.Reference.selectors.globalTriggerNodeIDsByIntentIDMapByDiagramIDMap);
 
 export const {
   Context: CustomBlockMapContext,
@@ -150,7 +150,7 @@ export const ReduxContextsProviders: React.FC<React.PropsWithChildren> = ({ chil
               <EntityMapProvider>
                 <DiagramMapProvider>
                   <GlobalIntentStepMapProvider>
-                    <GlobalIntentNodeIDsByIntentIDMapByDiagramIDMapProvider>
+                    <GlobalTriggerNodeIDsByIntentIDMapByDiagramIDMapProvider>
                       <ActiveDiagramTypeProvider>
                         <IntentIDNodeIDMapProvider>
                           <SharedNodesProvider>
@@ -175,7 +175,7 @@ export const ReduxContextsProviders: React.FC<React.PropsWithChildren> = ({ chil
                           </SharedNodesProvider>
                         </IntentIDNodeIDMapProvider>
                       </ActiveDiagramTypeProvider>
-                    </GlobalIntentNodeIDsByIntentIDMapByDiagramIDMapProvider>
+                    </GlobalTriggerNodeIDsByIntentIDMapByDiagramIDMapProvider>
                   </GlobalIntentStepMapProvider>
                 </DiagramMapProvider>
               </EntityMapProvider>

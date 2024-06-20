@@ -18,6 +18,7 @@ export interface ReferenceState {
   resourceIDsByRefererIDMap: Partial<Record<string, string[]>>;
   referenceIDsByResourceIDMap: Partial<Record<string, string[]>>;
   referenceIDsByReferrerIDMap: Partial<Record<string, string[]>>;
+  globalTriggerNodeIDsByIntentIDMapByDiagramIDMap: Partial<Record<string, Partial<Record<string, string[]>>>>;
 }
 
 export const INITIAL_STATE: ReferenceState = {
@@ -33,4 +34,5 @@ export const INITIAL_STATE: ReferenceState = {
   resourceIDsByRefererIDMap: {},
   referenceIDsByResourceIDMap: {},
   referenceIDsByReferrerIDMap: {},
+  globalTriggerNodeIDsByIntentIDMapByDiagramIDMap: {},
 };

@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1585.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1585.0...@voiceflow/creator-app@1.1585.1) (2024-06-20)
+
+### Bug Fixes
+
+* add new workpace dtos (COR-2418) ([#8362](https://github.com/voiceflow/creator-app/issues/8362)) ([0e7bbfc](https://github.com/voiceflow/creator-app/commit/0e7bbfc030b6ed1b3ed5ff3ece7955dad33cc3de))
+* show sessionID if the userID is not available (COR-2203) ([#8341](https://github.com/voiceflow/creator-app/issues/8341)) ([cf6f9a8](https://github.com/voiceflow/creator-app/commit/cf6f9a88da138990b45acd53fb9bb13edce110ef))
+
 # [1.1585.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1584.0...@voiceflow/creator-app@1.1585.0) (2024-06-20)
 
 ### Bug Fixes

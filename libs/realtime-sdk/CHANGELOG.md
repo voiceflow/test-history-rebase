@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.422.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.422.0...@voiceflow/realtime-sdk@1.422.1) (2024-06-20)
+
+### Bug Fixes
+
+* add new workpace dtos (COR-2418) ([#8362](https://github.com/voiceflow/creator-app/issues/8362)) ([0e7bbfc](https://github.com/voiceflow/creator-app/commit/0e7bbfc030b6ed1b3ed5ff3ece7955dad33cc3de))
+
 # [1.422.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.421.0...@voiceflow/realtime-sdk@1.422.0) (2024-06-20)
 
 ### Features

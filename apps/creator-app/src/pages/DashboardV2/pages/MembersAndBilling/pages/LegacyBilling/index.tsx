@@ -14,8 +14,6 @@ import EditorSeats from './EditorSeats';
 import PaymentDetails from './PaymentDetails';
 import PaymentFailed from './PaymentFailed';
 
-const PAYMENT_FAILED_STRIPE_STATUS = new Set([StripeStatus.UNPAID, StripeStatus.PAST_DUE]);
-
 // FIXME: remove FF https://voiceflow.atlassian.net/browse/CV3-994 (remove all legacy billing)
 const DashboardVLegacy2Billing: React.FC = () => {
   const [canManageSeats] = usePermission(Permission.FEATURE_MANAGE_SEATS);
@@ -26,6 +24,8 @@ const DashboardVLegacy2Billing: React.FC = () => {
   const paymentAPI = Payment.legacy.usePaymentAPI();
   const billingHistory = useLegacyBillingHistory();
   const isReady = billingHistory.isReady && paymentAPI.isReady;
+
+  const PAYMENT_FAILED_STRIPE_STATUS = new Set<StripeStatus>([StripeStatus.UNPAID, StripeStatus.PAST_DUE]);
 
   const showPaymentFailed =
     PAYMENT_FAILED_STRIPE_STATUS.has(stripeStatus as StripeStatus) && isProOrTeamPlan && !isTrial;

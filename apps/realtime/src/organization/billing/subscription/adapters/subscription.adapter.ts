@@ -49,6 +49,7 @@ const subscriptionAdapter = createMultiAdapter<Realtime.Identity.Subscription, S
     const gpt4 = findBooleanEntitlement(subscriptionEntitlements, 'feat-model-gpt-4');
     const gpt4Turbo = findBooleanEntitlement(subscriptionEntitlements, 'feat-model-gpt-4-turbo');
     const gpt4O = findBooleanEntitlement(subscriptionEntitlements, 'feat-model-gpt-4o');
+    const geminiPro15 = findBooleanEntitlement(subscriptionEntitlements, 'feat-model-gemini-pro-1-5');
 
     const agentsLimit = findNumberEntitlement(subscriptionEntitlements, 'limit-agent-count');
     const transcriptHistoryLimit = findNumberEntitlement(subscriptionEntitlements, 'limit-transcript-history');
@@ -114,6 +115,7 @@ const subscriptionAdapter = createMultiAdapter<Realtime.Identity.Subscription, S
         gpt4,
         gpt4Turbo,
         gpt4O,
+        geminiPro15,
         agentsLimit,
         versionHistoryLimit,
         transcriptHistoryLimit,

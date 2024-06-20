@@ -14,6 +14,7 @@ export const AIModel = {
   CLAUDE_3_SONNET: 'claude-3-sonnet',
   CLAUDE_3_OPUS: 'claude-3-opus',
   CLAUDE_INSTANT_V1: 'claude-instant-v1',
+  GEMINI_PRO_1_5: 'gemini-pro-1.5',
   GEMINI_PRO: 'gemini-pro',
 } as const;
 

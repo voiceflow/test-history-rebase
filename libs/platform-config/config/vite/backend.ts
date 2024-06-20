@@ -17,7 +17,7 @@ export default defineConfig({
       formats: ['cjs', 'es'],
     },
   },
-  plugins: [dts({ tsConfigFilePath: path.resolve(rootDir, 'tsconfig.build.json'), insertTypesEntry: true })],
+  plugins: [dts({ tsconfigPath: path.resolve(rootDir, 'tsconfig.build.json'), insertTypesEntry: true })],
 
   ssr: {
     noExternal: [

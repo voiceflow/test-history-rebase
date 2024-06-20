@@ -18,7 +18,7 @@
       "default": "./build/common/index.js"
     },
     "./backend": {
-      "types": "./build/backend/src/index.d.ts",
+      "types": "./build/backend/index.d.ts",
       "import": "./build/backend/index.mjs",
       "default": "./build/backend/index.js"
     }
@@ -28,7 +28,7 @@
   "typesVersions": {
     "*": {
       "backend": [
-        "./build/backend/src/index.d.ts"
+        "./build/backend/index.d.ts"
       ]
     }
   },
@@ -86,7 +86,7 @@
     "cooky-cutter": "1.5.4",
     "draft-js": "0.11.7",
     "polished": "4.2.2",
-    "vite-plugin-dts": "2.3.0"
+    "vite-plugin-dts": "3.7.3"
   },
   "peerDependencies": {
     "@voiceflow/api-sdk": "^3",

@@ -1026,10 +1026,8 @@ export class AssistantService extends MutableService<AssistantORM> {
   private async findOneTemplateVFFile(templatePlatform: string, templateTag = 'default') {
     try {
       // template name patter is `{platform}_{tag}.template.json`
-      const vfFile = await fs.readFile(
-        new URL(`templates/${templatePlatform}_${templateTag}.template.json`, import.meta.url),
-        'utf8'
-      );
+      const templatePath = `templates/${templatePlatform}_${templateTag}.template.json`;
+      const vfFile = await fs.readFile(new URL(templatePath, import.meta.url), 'utf8');
 
       return AssistantImportDataDTO.parse(JSON.parse(vfFile));
     } catch {

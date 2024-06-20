@@ -1,7 +1,6 @@
 import { vanillaExtractPlugin } from '@vanilla-extract/vite-plugin';
 import defineConfig, { esbuildResolveFixup } from '@voiceflow/vite-config';
 import path from 'path';
-import rewriteAll from 'vite-plugin-rewrite-all';
 
 import { loadEnv } from './env';
 
@@ -36,7 +35,7 @@ export default defineConfig({
   },
 })((config) => ({
   ...config,
-  plugins: [...(config.plugins ?? []), vanillaExtractPlugin(), rewriteAll()],
+  plugins: [...(config.plugins ?? []), vanillaExtractPlugin()],
 
   optimizeDeps: {
     ...config.optimizeDeps,

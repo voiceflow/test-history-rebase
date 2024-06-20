@@ -75,7 +75,7 @@ suite(Version, MOCK_STATE)('Ducks - Version V2', ({ describeReducerV2, createSta
       it('partially update settings data', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, settings: { defaultVoice: 'foo' as any } });
 
-        expect(result.byKey[VERSION_ID].settings).toContain({ defaultVoice: 'foo' });
+        expect(result.byKey[VERSION_ID].settings).toMatchObject({ defaultVoice: 'foo' });
       });
 
       it('do nothing if version does not exist', () => {
@@ -93,7 +93,7 @@ suite(Version, MOCK_STATE)('Ducks - Version V2', ({ describeReducerV2, createSta
       it('partially update session data', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, session: { restart: true } });
 
-        expect(result.byKey[VERSION_ID].session).toContain({ restart: true });
+        expect(result.byKey[VERSION_ID].session).toMatchObject({ restart: true });
       });
 
       it('do nothing if version does not exist', () => {

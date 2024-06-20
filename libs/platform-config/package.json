@@ -77,7 +77,7 @@
     "@testing-library/react": "14.0.0",
     "@types/login-with-amazon-sdk-browser": "1.0.3",
     "jest-styled-components": "7.1.1",
-    "vite-plugin-dts": "2.3.0"
+    "vite-plugin-dts": "3.7.3"
   },
   "engines": {
     "node": "20.11"

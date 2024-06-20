@@ -31,7 +31,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - initialize reducer', ({ descr
         links: [],
       });
 
-      expect(result).toContain({ activeDiagramID: DIAGRAM_ID });
+      expect(result).toMatchObject({ activeDiagramID: DIAGRAM_ID });
     });
 
     it('register a markup node', () => {

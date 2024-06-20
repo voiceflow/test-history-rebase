@@ -194,7 +194,7 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ describeReducerV2, creat
           role: UserRole.BILLING,
         });
 
-        expect(result.byKey[WORKSPACE_ID].pendingMembers.byKey['pending@voiceflow.com']).toContain({
+        expect(result.byKey[WORKSPACE_ID].pendingMembers.byKey['pending@voiceflow.com']).toMatchObject({
           role: UserRole.BILLING,
         });
       });

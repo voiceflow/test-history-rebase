@@ -34,7 +34,7 @@ export const isStart = (node: BaseModels.BaseDiagramNode): node is DBNodeStart =
 export const isActions = (node: BaseModels.BaseDiagramNode): node is BaseModels.BaseActions =>
   node.type === BaseModels.BaseNodeType.ACTIONS;
 
-const createBlockTypeGuard = createTypeGuardCreator<BlockType>();
+const createBlockTypeGuard = createTypeGuardCreator<BlockType | NodeType>();
 const createDBNodeTypeGuard = createTypedTypeGuardCreator<BaseModels.BaseDiagramNode>();
 const createNodeDataTypeGuard = createTypedTypeGuardCreator<NodeData<unknown>>();
 
@@ -46,6 +46,7 @@ export const isActionsBlockType = createBlockTypeGuard(BlockType.ACTIONS);
 export const isButtonsBlockType = createBlockTypeGuard(BlockType.BUTTONS);
 export const isCarouselBlockType = createBlockTypeGuard(BlockType.CAROUSEL);
 export const isCardV2BlockType = createBlockTypeGuard(BlockType.CARDV2);
+export const isTriggersNodeType = createBlockTypeGuard([NodeType.TRIGGER, NodeType.START, NodeType.INTENT]);
 export const isCombinedBlockType = createBlockTypeGuard(BlockType.COMBINED);
 export const isInternalBlockType = createBlockTypeGuard(INTERNAL_NODES);
 export const isNavigationBlockType = createBlockTypeGuard(NAVIGATION_NODES);

@@ -6,8 +6,8 @@ import { useFeature } from '@/hooks';
 import {
   ActiveDiagramTypeContext,
   DiagramMapContext,
-  GlobalIntentNodeIDsByIntentIDMapByDiagramIDMapContext,
   GlobalIntentStepMapContext,
+  GlobalTriggerNodeIDsByIntentIDMapByDiagramIDMapContext,
   IntentIDNodeIDMapContext,
   IntentMapContext,
 } from '@/pages/Canvas/contexts';
@@ -21,14 +21,14 @@ export const useGoToIntentMeta = (intentID: Nullable<string>, diagramID?: Nullab
   const intentIDNodeIDMap = React.useContext(IntentIDNodeIDMapContext)!;
   const activeDiagramType = React.useContext(ActiveDiagramTypeContext)!;
   const globalIntentStepMap = React.useContext(GlobalIntentStepMapContext)!;
-  const globalIntentNodeIDsByIntentIDMapByDiagramIDMap = React.useContext(
-    GlobalIntentNodeIDsByIntentIDMapByDiagramIDMapContext
+  const globalTriggerNodeIDsByIntentIDMapByDiagramIDMap = React.useContext(
+    GlobalTriggerNodeIDsByIntentIDMapByDiagramIDMapContext
   )!;
 
   const goToIntent = intentID ? intentsMap[intentID] ?? null : null;
   const goToDiagram = diagramID ? diagramMap[diagramID] ?? null : null;
 
-  const map = referenceSystem.isEnabled ? globalIntentNodeIDsByIntentIDMapByDiagramIDMap : globalIntentStepMap;
+  const map = referenceSystem.isEnabled ? globalTriggerNodeIDsByIntentIDMapByDiagramIDMap : globalIntentStepMap;
   const topicGoToNodeID = goToIntent && goToDiagram ? map[goToDiagram.diagramID]?.[goToIntent.id]?.[0] ?? null : null;
   const componentGoToNodeID = topicGoToNodeID || (goToIntent ? intentIDNodeIDMap[goToIntent.id] ?? null : null);
 

@@ -3,8 +3,8 @@ import { Animations } from '@voiceflow/ui';
 import React from 'react';
 
 import { BlockType, DragItem } from '@/constants';
-import { useDragPreview } from '@/hooks';
 import { useCanvasNodeFilter } from '@/hooks/canvas-node.hook';
+import { useDragPreview } from '@/hooks/dnd.hook';
 import { StepDragItem } from '@/pages/Canvas/components/CanvasDiagram';
 import { getManager } from '@/pages/Canvas/managers/utils';
 

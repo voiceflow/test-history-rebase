@@ -4,7 +4,8 @@ import React from 'react';
 
 import * as Documentation from '@/config/documentation';
 import { DragItem } from '@/constants';
-import { useDragPreview, useFeature } from '@/hooks';
+import { useFeature } from '@/hooks';
+import { useDragPreview } from '@/hooks/dnd.hook';
 
 import { LibraryDragItem, LibraryStepType, TabData } from '../constants';
 import Searchbar from '../Search';
@@ -50,7 +51,13 @@ const LibrarySubMenu: React.FC<LibrarySubMenuProps> = ({
     DragItem.LIBRARY,
     (dragProps) => (
       <div style={{ width: `${(menuRef.current?.clientWidth ?? 154) - 12}px` }}>
-        <LibrarySubMenuButton label={dragProps.tabData.name} tabData={dragProps.tabData} onDrop={onDrop} isDraggingPreview type={currentTab} />
+        <LibrarySubMenuButton
+          label={dragProps.tabData.name}
+          tabData={dragProps.tabData}
+          onDrop={onDrop}
+          isDraggingPreview
+          type={currentTab}
+        />
       </div>
     ),
     { horizontalEnabled: true }
@@ -94,7 +101,11 @@ const LibrarySubMenu: React.FC<LibrarySubMenuProps> = ({
       {processedTabItems.length === 0 && (
         <C.EmptyListContainer>
           <Animations.FadeDownDelayed delay={BASE_DELAY}>
-            {searchText !== '' ? <Searchbar.EmptyListText onClick={cancelSearch} /> : <EmptyList entityName={entityName} docLink={docLink} />}
+            {searchText !== '' ? (
+              <Searchbar.EmptyListText onClick={cancelSearch} />
+            ) : (
+              <EmptyList entityName={entityName} docLink={docLink} />
+            )}
           </Animations.FadeDownDelayed>
         </C.EmptyListContainer>
       )}

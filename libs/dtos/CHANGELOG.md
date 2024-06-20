@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.98.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.97.1...@voiceflow/dtos@1.98.0) (2024-06-20)
+
+### Features
+
+* add gemini 1.5 pro to enums and entitlements (ML-945) ([#8296](https://github.com/voiceflow/creator-app/issues/8296)) ([a1a4f4c](https://github.com/voiceflow/creator-app/commit/a1a4f4c6401147f844463fb0ea732c9a57171e16))
+
 ## [1.97.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.97.0...@voiceflow/dtos@1.97.1) (2024-06-20)
 
 ### Bug Fixes

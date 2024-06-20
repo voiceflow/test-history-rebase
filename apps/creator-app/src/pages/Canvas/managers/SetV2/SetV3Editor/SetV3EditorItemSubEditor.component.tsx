@@ -1,14 +1,15 @@
+import type { Markup } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Surface, Text, Tokens } from '@voiceflow/ui-next';
 import React from 'react';
 
+import { InputWithVariables } from '@/components/Input/InputWithVariables/InputWithVariables.component';
 import VariableSelectV2 from '@/components/VariableSelectV2';
-import VariablesInput from '@/components/VariablesInput';
 import { useVariableCreateModal } from '@/hooks/modal.hook';
 
 interface ISetV3EditorItemSubEditor {
   item: Realtime.NodeData.SetExpressionV2;
-  onUpdateExpression: ({ text }: { text: string }) => void;
+  onUpdateExpression: (value: Markup) => void;
   onUpdateVariable: (variable: string) => void;
   expressionValidator: {
     error: string;
@@ -23,6 +24,7 @@ export const SetV3EditorItemSubEditor: React.FC<ISetV3EditorItemSubEditor> = ({
   onUpdateVariable,
   expressionValidator,
 }) => {
+  const [expression, setExpression] = React.useState<Markup>([String(item.expression)]);
   const variableCreateModal = useVariableCreateModal();
 
   const createVariable = async (name: string): Promise<string> => {
@@ -51,13 +53,13 @@ export const SetV3EditorItemSubEditor: React.FC<ISetV3EditorItemSubEditor> = ({
             <Text variant="fieldLabel" color={Tokens.colors.neutralDark.neutralsDark100}>
               Set to
             </Text>
-            <VariablesInput
-              error={!!expressionValidator.error}
-              value={String(item.expression)}
-              onBlur={onUpdateExpression}
+            <InputWithVariables
+              placeholder="Enter value, {var} or expression"
+              value={expression}
+              onValueChange={setExpression}
               onFocus={expressionValidator.resetError}
-              multiline
-              placeholder="Enter value, {variable} or expression"
+              onBlur={() => onUpdateExpression(expression)}
+              error={!!expressionValidator.error}
             />
           </Box>
 

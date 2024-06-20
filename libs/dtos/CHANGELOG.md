@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.100.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.99.0...@voiceflow/dtos@1.100.0) (2024-06-20)
+
+### Features
+
+* message ref system (COR-000) ([#8325](https://github.com/voiceflow/creator-app/issues/8325)) ([86cd1a5](https://github.com/voiceflow/creator-app/commit/86cd1a533b6ebe811853f64a001bd145c39b5e16))
+
 # [1.99.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.98.1...@voiceflow/dtos@1.99.0) (2024-06-20)
 
 ### Features

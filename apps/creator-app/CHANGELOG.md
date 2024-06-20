@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1590.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1589.1...@voiceflow/creator-app@1.1590.0) (2024-06-20)
+
+### Features
+
+* message ref system (COR-000) ([#8325](https://github.com/voiceflow/creator-app/issues/8325)) ([86cd1a5](https://github.com/voiceflow/creator-app/commit/86cd1a533b6ebe811853f64a001bd145c39b5e16))
+
 ## [1.1589.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1589.0...@voiceflow/creator-app@1.1589.1) (2024-06-20)
 
 **Note:** Version bump only for package @voiceflow/creator-app

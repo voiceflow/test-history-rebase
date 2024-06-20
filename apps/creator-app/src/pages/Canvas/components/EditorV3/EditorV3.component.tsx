@@ -1,7 +1,7 @@
 import { SidebarEditor, stopImmediatePropagation } from '@voiceflow/ui';
 import React from 'react';
 
-import { useDropLagFix } from '@/hooks';
+import { useDropLagFix } from '@/hooks/dnd.hook';
 import { Identifier } from '@/styles/constants';
 
 import { IEditorV3 } from './EditorV3.interface';

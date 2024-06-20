@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { PreviewOptions, useDragPreview } from '@/hooks/dragPreview';
+import { DragPreviewOptions, useDragPreview } from '@/hooks/dnd.hook';
 
 import { DnDHandlers } from '../types';
 import DragPreviewWrapper from './DragPreviewWrapper';
@@ -12,7 +12,7 @@ export interface DragPreviewComponentProps {
 
 export interface DragPreviewProps<P> {
   type: string;
-  options?: PreviewOptions;
+  options?: DragPreviewOptions;
   handlers: { current: DnDHandlers<any> };
   component: React.FC<P & DragPreviewComponentProps>;
 }

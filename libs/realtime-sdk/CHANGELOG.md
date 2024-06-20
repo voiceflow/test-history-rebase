@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.422.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.421.0...@voiceflow/realtime-sdk@1.422.0) (2024-06-20)
+
+### Features
+
+* intents used by column (COR-000) ([#8322](https://github.com/voiceflow/creator-app/issues/8322)) ([582f7bd](https://github.com/voiceflow/creator-app/commit/582f7bda311dbdf70c54d5e65d353e74d9a9c5d3))
+
 # [1.421.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.420.0...@voiceflow/realtime-sdk@1.421.0) (2024-06-20)
 
 ### Features

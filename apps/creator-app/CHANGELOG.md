@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1589.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1588.2...@voiceflow/creator-app@1.1589.0) (2024-06-20)
+
+### Features
+
+* setV3 action editor (COR-2401) ([#8363](https://github.com/voiceflow/creator-app/issues/8363)) ([98aade5](https://github.com/voiceflow/creator-app/commit/98aade5c8671cdfe89ff19b2a76f5159c0484836))
+
 ## [1.1588.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1588.1...@voiceflow/creator-app@1.1588.2) (2024-06-20)
 
 ### Bug Fixes

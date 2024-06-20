@@ -16,7 +16,7 @@ import {
 import { DBNodeStart, Markup, NodeData } from '@realtime-sdk/models';
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import { AnyRecord, Utils } from '@voiceflow/common';
-import { FunctionNode, NodeType, StartNode, TriggerNode } from '@voiceflow/dtos';
+import { ChoiceV2Node, FunctionNode, NodeType, StartNode, TriggerNode } from '@voiceflow/dtos';
 
 import { createTypedTypeGuardCreator, createTypeGuardCreator } from './utils';
 
@@ -62,10 +62,13 @@ export const isStartDBNode = createDBNodeTypeGuard<StartNode>(BaseNode.NodeType.
 export const isIntentDBNode = createDBNodeTypeGuard<BaseNode.Intent.Step>(BaseNode.NodeType.INTENT);
 export const isTriggerDBNode = createDBNodeTypeGuard<TriggerNode>(NodeType.TRIGGER);
 export const isCommandDBNode = createDBNodeTypeGuard<BaseNode.Command.Step>(BaseNode.NodeType.COMMAND);
+export const isButtonsDBNode = createDBNodeTypeGuard<BaseNode.Buttons.Step>(BaseNode.NodeType.BUTTONS);
 export const isGoToNodeDBNode = createDBNodeTypeGuard<BaseNode.GoToNode.Step>(BaseNode.NodeType.GOTO_NODE);
 export const isFunctionDBNode = createDBNodeTypeGuard<FunctionNode>(NodeType.FUNCTION);
+export const isChoiceV2DBNode = createDBNodeTypeGuard<ChoiceV2Node>(NodeType.CHOICE_V2);
 export const isComponentDBNode = createDBNodeTypeGuard<BaseNode.Component.Step>(BaseNode.NodeType.COMPONENT);
 export const isGoToDomainDBNode = createDBNodeTypeGuard<BaseNode.GoToDomain.Step>(BaseNode.NodeType.GOTO_DOMAIN);
+export const isInteractionDBNode = createDBNodeTypeGuard<BaseNode.Interaction.Step>(BaseNode.NodeType.INTERACTION);
 export const isDiagramMenuDBNode = createDBNodeTypeGuard<BaseNode.Start.Step | BaseNode.Intent.Step>([
   BaseNode.NodeType.START,
   BaseNode.NodeType.INTENT,

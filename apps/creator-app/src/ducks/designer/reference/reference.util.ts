@@ -3,6 +3,7 @@ import { NodeType, Reference, ReferenceResource, ReferenceResourceType } from '@
 export const buildReferenceCache = (references: Reference[], referenceResources: ReferenceResource[]) => {
   const blockNodeResourceIDs: string[] = [];
   const triggerNodeResourceIDs: string[] = [];
+  const intentIDResourceIDMap: Partial<Record<string, string>> = {};
   const diagramIDResourceIDMap: Partial<Record<string, string>> = {};
   const functionIDResourceIDMap: Partial<Record<string, string>> = {};
   const resourceIDsByDiagramIDMap: Partial<Record<string, string[]>> = {};
@@ -31,27 +32,41 @@ export const buildReferenceCache = (references: Reference[], referenceResources:
       resourceIDsByDiagramIDMap[resource.diagramID]!.push(resource.id);
     }
 
-    if (resource.type === ReferenceResourceType.NODE) {
-      if (resource.metadata?.nodeType === NodeType.BLOCK || resource.metadata?.nodeType === NodeType.START) {
-        blockNodeResourceIDs.push(resource.id);
-      }
+    switch (resource.type) {
+      case ReferenceResourceType.INTENT:
+        intentIDResourceIDMap[resource.resourceID] = resource.id;
+        break;
 
-      if (
-        resource.metadata?.nodeType === NodeType.INTENT ||
-        resource.metadata?.nodeType === NodeType.START ||
-        resource.metadata?.nodeType === NodeType.TRIGGER
-      ) {
-        triggerNodeResourceIDs.push(resource.id);
-      }
-    } else if (resource.type === ReferenceResourceType.DIAGRAM) {
-      diagramIDResourceIDMap[resource.resourceID] = resource.id;
-    } else if (resource.type === ReferenceResourceType.FUNCTION) {
-      functionIDResourceIDMap[resource.resourceID] = resource.id;
+      case ReferenceResourceType.FUNCTION:
+        functionIDResourceIDMap[resource.resourceID] = resource.id;
+        break;
+
+      case ReferenceResourceType.DIAGRAM:
+        diagramIDResourceIDMap[resource.resourceID] = resource.id;
+        break;
+
+      case ReferenceResourceType.NODE:
+        if (resource.metadata?.nodeType === NodeType.BLOCK || resource.metadata?.nodeType === NodeType.START) {
+          blockNodeResourceIDs.push(resource.id);
+        }
+
+        if (
+          resource.metadata?.nodeType === NodeType.INTENT ||
+          resource.metadata?.nodeType === NodeType.START ||
+          resource.metadata?.nodeType === NodeType.TRIGGER
+        ) {
+          triggerNodeResourceIDs.push(resource.id);
+        }
+        break;
+
+      default:
+        break;
     }
   });
 
   return {
     blockNodeResourceIDs,
+    intentIDResourceIDMap,
     triggerNodeResourceIDs,
     diagramIDResourceIDMap,
     functionIDResourceIDMap,

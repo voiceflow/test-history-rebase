@@ -6,10 +6,15 @@ import { CMSTableCellTextTooltip } from '../../../../components/CMSTableCellText
 import { CMSTableMemberCell } from '../../../../components/CMSTableMemberCell/CMSTableMemberCell.component';
 import { CMSTableNameCell } from '../../../../components/CMSTableNameCell/CMSTableNameCell.component';
 import type { CMSFolder, CMSIntent } from '../../../../contexts/CMSManager/CMSManager.interface';
-import { updatedAtSort, withFieldLocaleCompareSort, withFolderSort } from '../../../../contexts/CMSManager/CMSManager.util';
+import {
+  updatedAtSort,
+  withFieldLocaleCompareSort,
+  withFolderSort,
+} from '../../../../contexts/CMSManager/CMSManager.util';
 import { CMSIntentSortContext } from '../../CMSIntent.interface';
 import { IntentTableColumn } from './CMSIntentTable.constant';
 import { CMSIntentTableConfidenceCell } from './CMSIntentTableConfidenceCell/CMSIntentTableConfidenceCell.component';
+import { CMSIntentTableUsedByCell } from './CMSIntentTableUsedByCell.component';
 
 export const INTENTS_TABLE_CONFIG: TableConfig<IntentTableColumn, CMSFolder | CMSIntent, CMSIntentSortContext> = {
   columns: {
@@ -25,7 +30,9 @@ export const INTENTS_TABLE_CONFIG: TableConfig<IntentTableColumn, CMSFolder | CM
       name: 'Name',
       sorter: withFolderSort<CMSIntent>(withFieldLocaleCompareSort('name')),
 
-      cell: ({ item, type }) => <CMSTableNameCell type={type} name={item.name} isFolder={item.group} itemID={item.id} />,
+      cell: ({ item, type }) => (
+        <CMSTableNameCell type={type} name={item.name} isFolder={item.group} itemID={item.id} />
+      ),
     },
 
     [IntentTableColumn.DESCRIPTION]: {
@@ -36,7 +43,9 @@ export const INTENTS_TABLE_CONFIG: TableConfig<IntentTableColumn, CMSFolder | CM
       cell: ({ item }) => (
         <Table.Cell.GroupEmpty
           item={item}
-          label={(item) => (item.description ? <CMSTableCellTextTooltip label={item.description} /> : <Table.Cell.Empty />)}
+          label={(item) =>
+            item.description ? <CMSTableCellTextTooltip label={item.description} /> : <Table.Cell.Empty />
+          }
         />
       ),
     },
@@ -44,29 +53,50 @@ export const INTENTS_TABLE_CONFIG: TableConfig<IntentTableColumn, CMSFolder | CM
     [IntentTableColumn.CLARITY]: {
       type: IntentTableColumn.CLARITY,
       name: 'Clarity',
-      cell: ({ item }) => <Table.Cell.GroupEmpty item={item} label={() => <Table.Cell.Text label="to do" overflow />} />,
+      cell: ({ item }) => (
+        <Table.Cell.GroupEmpty item={item} label={() => <Table.Cell.Text label="to do" overflow />} />
+      ),
     },
 
     [IntentTableColumn.CONFIDENCE]: {
       type: IntentTableColumn.CONFIDENCE,
       name: 'Confidence',
-      cell: ({ item }) => <Table.Cell.GroupEmpty item={item} label={() => <CMSIntentTableConfidenceCell intentID={item.id} />} />,
+      cell: ({ item }) => (
+        <Table.Cell.GroupEmpty item={item} label={() => <CMSIntentTableConfidenceCell intentID={item.id} />} />
+      ),
       sorter: withFolderSort(
         (left, right, { context }) =>
-          (context.notEmptyUtterancesCountByIntentID[left.id] ?? 0) - (context.notEmptyUtterancesCountByIntentID[right.id] ?? 0)
+          (context.notEmptyUtterancesCountByIntentID[left.id] ?? 0) -
+          (context.notEmptyUtterancesCountByIntentID[right.id] ?? 0)
       ),
     },
 
     [IntentTableColumn.FLOWS]: {
       type: IntentTableColumn.FLOWS,
       name: 'Flows using',
-      cell: ({ item }) => <Table.Cell.GroupEmpty item={item} label={() => <Table.Cell.Text label="to do" overflow />} />,
+      cell: ({ item }) => (
+        <Table.Cell.GroupEmpty item={item} label={() => <Table.Cell.Text label="to do" overflow />} />
+      ),
+    },
+
+    [IntentTableColumn.USED_BY]: {
+      type: IntentTableColumn.USED_BY,
+      name: 'Used by',
+
+      cell: ({ item }) => (
+        <Table.Cell.GroupEmpty item={item} label={(item) => <CMSIntentTableUsedByCell intentID={item.id} />} />
+      ),
     },
 
     [IntentTableColumn.LAST_EDITOR]: {
       type: IntentTableColumn.LAST_EDITOR,
       name: 'Last editor',
-      cell: ({ item }) => <Table.Cell.GroupEmpty item={item} label={({ updatedByID }) => <CMSTableMemberCell creatorID={updatedByID} />} />,
+      cell: ({ item }) => (
+        <Table.Cell.GroupEmpty
+          item={item}
+          label={({ updatedByID }) => <CMSTableMemberCell creatorID={updatedByID} />}
+        />
+      ),
     },
 
     [IntentTableColumn.UPDATED]: {
@@ -74,7 +104,12 @@ export const INTENTS_TABLE_CONFIG: TableConfig<IntentTableColumn, CMSFolder | CM
       name: 'Updated',
       sorter: withFolderSort(updatedAtSort),
 
-      cell: ({ item }) => <Table.Cell.GroupEmpty item={item} label={({ updatedAt }) => <CMSTableCellFromNowTooltip updatedAt={updatedAt} />} />,
+      cell: ({ item }) => (
+        <Table.Cell.GroupEmpty
+          item={item}
+          label={({ updatedAt }) => <CMSTableCellFromNowTooltip updatedAt={updatedAt} />}
+        />
+      ),
     },
   },
 };

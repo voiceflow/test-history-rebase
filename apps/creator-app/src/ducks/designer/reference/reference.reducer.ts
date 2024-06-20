@@ -20,6 +20,7 @@ export const referenceReducer = reducerWithInitialState<ReferenceState>(INITIAL_
       resources: appendMany(state.resources, data.referenceResources),
       references: appendMany(state.references, data.references),
       blockNodeResourceIDs: [...state.blockNodeResourceIDs, ...cache.blockNodeResourceIDs],
+      intentIDResourceIDMap: { ...state.intentIDResourceIDMap, ...cache.intentIDResourceIDMap },
       diagramIDResourceIDMap: { ...state.diagramIDResourceIDMap, ...cache.diagramIDResourceIDMap },
       triggerNodeResourceIDs: [...state.triggerNodeResourceIDs, ...cache.triggerNodeResourceIDs],
       functionIDResourceIDMap: { ...state.functionIDResourceIDMap, ...cache.functionIDResourceIDMap },
@@ -31,6 +32,7 @@ export const referenceReducer = reducerWithInitialState<ReferenceState>(INITIAL_
     };
   })
   .case(Actions.Reference.DeleteMany, (state, { data }) => {
+    const intentIDs: string[] = [];
     const diagramIDs: string[] = [];
     const functionIDs: string[] = [];
     const resourceIDs: string[] = [];
@@ -38,10 +40,21 @@ export const referenceReducer = reducerWithInitialState<ReferenceState>(INITIAL_
     data.referenceResources.forEach((resource) => {
       resourceIDs.push(resource.id);
 
-      if (resource.type === ReferenceResourceType.DIAGRAM) {
-        diagramIDs.push(resource.resourceID);
-      } else if (resource.type === ReferenceResourceType.FUNCTION) {
-        functionIDs.push(resource.resourceID);
+      switch (resource.type) {
+        case ReferenceResourceType.INTENT:
+          intentIDs.push(resource.resourceID);
+          break;
+
+        case ReferenceResourceType.DIAGRAM:
+          diagramIDs.push(resource.resourceID);
+          break;
+
+        case ReferenceResourceType.FUNCTION:
+          functionIDs.push(resource.resourceID);
+          break;
+
+        default:
+          break;
       }
     });
 
@@ -55,6 +68,7 @@ export const referenceReducer = reducerWithInitialState<ReferenceState>(INITIAL_
       resources: removeMany(state.resources, resourceIDs),
       references: removeMany(state.references, referenceIDs),
       blockNodeResourceIDs: Utils.array.withoutValues(state.blockNodeResourceIDs, resourceIDs),
+      intentIDResourceIDMap: Utils.object.omit(state.intentIDResourceIDMap, intentIDs),
       diagramIDResourceIDMap: Utils.object.omit(state.diagramIDResourceIDMap, diagramIDs),
       triggerNodeResourceIDs: Utils.array.withoutValues(state.triggerNodeResourceIDs, resourceIDs),
       functionIDResourceIDMap: Utils.object.omit(state.functionIDResourceIDMap, functionIDs),

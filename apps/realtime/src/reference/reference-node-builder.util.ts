@@ -1,6 +1,7 @@
 import { BaseNode } from '@voiceflow/base-types';
 import {
   BlockNode,
+  ChoiceV2Node,
   DiagramNode,
   FunctionNode,
   ReferenceIntentNodeMetadata,
@@ -84,6 +85,12 @@ export class ReferenceNodeBuilderUtil extends ReferenceBaseBuilderUtil {
       await this.buildComponentNodeReferences(node);
     } else if (Realtime.Utils.typeGuards.isFunctionDBNode(node)) {
       await this.buildFunctionNodeReferences(node);
+    } else if (Realtime.Utils.typeGuards.isInteractionDBNode(node)) {
+      await this.buildInteractionNodeReferences(node);
+    } else if (Realtime.Utils.typeGuards.isButtonsDBNode(node)) {
+      await this.buildButtonsNodeReferences(node);
+    } else if (Realtime.Utils.typeGuards.isChoiceV2DBNode(node)) {
+      await this.buildChoiceV2NodeReferences(node);
     }
   }
 
@@ -153,6 +160,41 @@ export class ReferenceNodeBuilderUtil extends ReferenceBaseBuilderUtil {
     await this.buildFunctionReference(nodeReference, node.data.functionID);
   }
 
+  private async buildInteractionNodeReferences(node: BaseNode.Interaction.Step) {
+    const nodeReference = this.buildNodeReference({
+      nodeID: node.nodeID,
+      metadata: { nodeType: node.type },
+      diagramID: this.diagramID,
+      referrerResourceID: this.diagramResourceID,
+    });
+
+    await Promise.all(node.data.choices.map((choice) => this.buildIntentReference(nodeReference, choice.intent)));
+  }
+
+  private async buildButtonsNodeReferences(node: BaseNode.Buttons.Step) {
+    const nodeReference = this.buildNodeReference({
+      nodeID: node.nodeID,
+      metadata: { nodeType: node.type },
+      diagramID: this.diagramID,
+      referrerResourceID: this.diagramResourceID,
+    });
+
+    await Promise.all(
+      node.data.buttons.map((button) => this.buildIntentReference(nodeReference, button.intent ?? null))
+    );
+  }
+
+  private async buildChoiceV2NodeReferences(node: ChoiceV2Node) {
+    const nodeReference = this.buildNodeReference({
+      nodeID: node.nodeID,
+      metadata: { nodeType: node.type },
+      diagramID: this.diagramID,
+      referrerResourceID: this.diagramResourceID,
+    });
+
+    await Promise.all(node.data.items.map((choice) => this.buildIntentReference(nodeReference, choice.intentID)));
+  }
+
   private buildNodeReference<Data extends ReferenceResourceNodeMetadata>({
     nodeID,
     metadata,
@@ -196,7 +238,7 @@ export class ReferenceNodeBuilderUtil extends ReferenceBaseBuilderUtil {
   private async buildIntentReference(
     referrerResource: ReferenceResource,
     intentID: string | null,
-    metadata: ReferenceIntentNodeMetadata
+    metadata: ReferenceIntentNodeMetadata | null = null
   ) {
     if (!intentID) return;
 

@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1585.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1584.0...@voiceflow/creator-app@1.1585.0) (2024-06-20)
+
+### Bug Fixes
+
+* do not show cms page for viewers (COR-2415) ([#8364](https://github.com/voiceflow/creator-app/issues/8364)) ([b15ddfb](https://github.com/voiceflow/creator-app/commit/b15ddfb2817e178f13a8e8e0aed12b5326caf51c))
+
+### Features
+
+* intents used by column (COR-000) ([#8322](https://github.com/voiceflow/creator-app/issues/8322)) ([582f7bd](https://github.com/voiceflow/creator-app/commit/582f7bda311dbdf70c54d5e65d353e74d9a9c5d3))
+
 # [1.1584.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1583.0...@voiceflow/creator-app@1.1584.0) (2024-06-20)
 
 ### Features

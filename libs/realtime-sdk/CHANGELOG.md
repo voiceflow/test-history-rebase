@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.421.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.420.0...@voiceflow/realtime-sdk@1.421.0) (2024-06-20)
+
+### Features
+
+* drop unused actions and replace _id with diagramID (COR-000) ([#8332](https://github.com/voiceflow/creator-app/issues/8332)) ([6258c8f](https://github.com/voiceflow/creator-app/commit/6258c8f4cf78320ac75eb883a147a7688cb5c095))
+
 # [1.420.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.419.1...@voiceflow/realtime-sdk@1.420.0) (2024-06-20)
 
 ### Features

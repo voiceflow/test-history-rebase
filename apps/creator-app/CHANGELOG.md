@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1584.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1583.0...@voiceflow/creator-app@1.1584.0) (2024-06-20)
+
+### Features
+
+* drop unused actions and replace _id with diagramID (COR-000) ([#8332](https://github.com/voiceflow/creator-app/issues/8332)) ([6258c8f](https://github.com/voiceflow/creator-app/commit/6258c8f4cf78320ac75eb883a147a7688cb5c095))
+* refactor dnd hooks (COR-000) ([#8336](https://github.com/voiceflow/creator-app/issues/8336)) ([870030c](https://github.com/voiceflow/creator-app/commit/870030cf5b4afe0c3eb81c30098e10addf16b483))
+
 # [1.1583.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1582.1...@voiceflow/creator-app@1.1583.0) (2024-06-20)
 
 ### Features

@@ -9,6 +9,7 @@ export interface ReferenceState {
 
   // caches to optimize selectors
   blockNodeResourceIDs: string[];
+  intentIDResourceIDMap: Partial<Record<string, string>>;
   triggerNodeResourceIDs: string[];
   diagramIDResourceIDMap: Partial<Record<string, string>>;
   functionIDResourceIDMap: Partial<Record<string, string>>;
@@ -23,6 +24,7 @@ export const INITIAL_STATE: ReferenceState = {
   resources: createEmpty(),
   references: createEmpty(),
   blockNodeResourceIDs: [],
+  intentIDResourceIDMap: {},
   triggerNodeResourceIDs: [],
   diagramIDResourceIDMap: {},
   functionIDResourceIDMap: {},

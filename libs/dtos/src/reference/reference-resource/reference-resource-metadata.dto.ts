@@ -62,13 +62,40 @@ export type ReferenceResourceFunctionNodeMetadata = InferReferenceResourceBaseNo
   typeof ReferenceResourceFunctionNodeMetadataDTO
 >;
 
+export const ReferenceResourceInteractionNodeMetadataDTO = ReferenceResourceBaseNodeMetadataDTO.extend({
+  nodeType: z.literal(NodeType.INTERACTION),
+});
+
+export type ReferenceResourceInteractionNodeMetadata = InferReferenceResourceBaseNodeMetadata<
+  typeof ReferenceResourceInteractionNodeMetadataDTO
+>;
+
+export const ReferenceResourceButtonsNodeMetadataDTO = ReferenceResourceBaseNodeMetadataDTO.extend({
+  nodeType: z.literal(NodeType.BUTTONS),
+});
+
+export type ReferenceResourceButtonsNodeMetadata = InferReferenceResourceBaseNodeMetadata<
+  typeof ReferenceResourceButtonsNodeMetadataDTO
+>;
+
+export const ReferenceResourceChoiceV2NodeMetadataDTO = ReferenceResourceBaseNodeMetadataDTO.extend({
+  nodeType: z.literal(NodeType.CHOICE_V2),
+});
+
+export type ReferenceResourceChoiceV2NodeMetadata = InferReferenceResourceBaseNodeMetadata<
+  typeof ReferenceResourceChoiceV2NodeMetadataDTO
+>;
+
 export const ReferenceResourceNodeMetadataDTO = z.discriminatedUnion('nodeType', [
   ReferenceResourceBlockNodeMetadataDTO,
   ReferenceResourceStartNodeMetadataDTO,
   ReferenceResourceIntentNodeMetadataDTO,
   ReferenceResourceTriggerNodeMetadataDTO,
+  ReferenceResourceButtonsNodeMetadataDTO,
   ReferenceResourceFunctionNodeMetadataDTO,
+  ReferenceResourceChoiceV2NodeMetadataDTO,
   ReferenceResourceComponentNodeMetadataDTO,
+  ReferenceResourceInteractionNodeMetadataDTO,
 ]);
 
 export type ReferenceResourceNodeMetadata = z.infer<typeof ReferenceResourceNodeMetadataDTO>;

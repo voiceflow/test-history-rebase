@@ -4,10 +4,20 @@ import { atom } from 'jotai';
 
 import { IntentTableColumn } from './CMSIntentTable.constant';
 
-export const intentColumnsOrderAtom = atom<TableColumnOrder<IntentTableColumn>[]>([
+export const legacyIntentColumnsOrderAtom = atom<TableColumnOrder<IntentTableColumn>[]>([
   { type: IntentTableColumn.SELECT, size: Table.Header.Cell.Select.CELL_WIDTH },
   { type: IntentTableColumn.NAME, size: '2fr' },
   { type: IntentTableColumn.DESCRIPTION, size: '2.5fr' },
+  { type: IntentTableColumn.CONFIDENCE },
+  { type: IntentTableColumn.LAST_EDITOR },
+  { type: IntentTableColumn.UPDATED },
+]);
+
+export const intentColumnsOrderAtom = atom<TableColumnOrder<IntentTableColumn>[]>([
+  { type: IntentTableColumn.SELECT, size: Table.Header.Cell.Select.CELL_WIDTH },
+  { type: IntentTableColumn.NAME, size: '1.5fr' },
+  { type: IntentTableColumn.DESCRIPTION, size: '2fr' },
+  { type: IntentTableColumn.USED_BY },
   { type: IntentTableColumn.CONFIDENCE },
   { type: IntentTableColumn.LAST_EDITOR },
   { type: IntentTableColumn.UPDATED },

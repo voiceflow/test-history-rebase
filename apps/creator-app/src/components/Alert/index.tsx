@@ -1,6 +1,5 @@
+import { BlockText, TextProps } from '@voiceflow/ui/src/components/Text';
 import React from 'react';
-
-import { BlockText, TextProps } from '@/../../libs/ui/src/components/Text';
 
 import * as S from './styles';
 

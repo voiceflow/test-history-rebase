@@ -1,6 +1,6 @@
 {
   "name": "@voiceflow/default-prompt-wrappers",
-  "version": "1.3.2",
+  "version": "1.4.0",
   "exports": {
     ".": {
       "types": "./build/cjs/main.d.ts",

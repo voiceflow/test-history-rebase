@@ -19,6 +19,3 @@ export const assistant = Utils.protocol.createChannel(
   ({ assistantID, environmentID }) => `assistant/${assistantID}/environment/${environmentID}`
 );
 export type AssistantParams = Utils.protocol.ChannelParams<typeof assistant>;
-
-export const assistantFlow = assistant.extend(['flowID'], ({ flowID }) => `flow/${flowID}`);
-export type AssistantFlowParams = Utils.protocol.ChannelParams<typeof assistantFlow>;

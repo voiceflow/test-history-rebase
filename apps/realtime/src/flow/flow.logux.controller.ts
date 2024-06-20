@@ -1,27 +1,19 @@
-import { Controller, Inject } from '@nestjs/common';
-import { Action, AuthMeta, AuthMetaPayload, Broadcast, Payload } from '@voiceflow/nestjs-logux';
-import { Permission } from '@voiceflow/sdk-auth';
-import { Authorize } from '@voiceflow/sdk-auth/nestjs';
-import { Actions, Channels } from '@voiceflow/sdk-logux-designer';
+import { Inject } from '@nestjs/common';
+import { AuthMeta, AuthMetaPayload, Payload } from '@voiceflow/nestjs-logux';
+import { Actions } from '@voiceflow/sdk-logux-designer';
 
-import { BroadcastOnly, InjectRequestContext, UseRequestContext } from '@/common';
+import { Action, LoguxController } from '@/common';
 
 import { FlowService } from './flow.service';
 
-@Controller()
-@InjectRequestContext()
+@LoguxController()
 export class FlowLoguxController {
   constructor(
     @Inject(FlowService)
     private readonly service: FlowService
   ) {}
 
-  @Action.Async(Actions.Flow.CreateOne)
-  @Authorize.Permissions<Actions.Flow.CreateOne.Request>([Permission.PROJECT_UPDATE], ({ context }) => ({
-    id: context.environmentID,
-    kind: 'version',
-  }))
-  @UseRequestContext()
+  @Action.Assistant.Update(Actions.Flow.CreateOne)
   createOne(
     @Payload() { data, context }: Actions.Flow.CreateOne.Request,
     @AuthMeta() auth: AuthMetaPayload
@@ -31,12 +23,7 @@ export class FlowLoguxController {
       .then(([result]) => ({ data: this.service.toJSON(result), context }));
   }
 
-  @Action.Async(Actions.Flow.CreateMany)
-  @Authorize.Permissions<Actions.Flow.CreateMany.Request>([Permission.PROJECT_UPDATE], ({ context }) => ({
-    id: context.environmentID,
-    kind: 'version',
-  }))
-  @UseRequestContext()
+  @Action.Assistant.Update(Actions.Flow.CreateMany)
   async createMany(
     @Payload() { data, context }: Actions.Flow.CreateMany.Request,
     @AuthMeta() auth: AuthMetaPayload
@@ -46,12 +33,7 @@ export class FlowLoguxController {
       .then((results) => ({ data: this.service.mapToJSON(results), context }));
   }
 
-  @Action.Async(Actions.Flow.DuplicateOne)
-  @Authorize.Permissions<Actions.Flow.DuplicateOne.Request>([Permission.PROJECT_UPDATE], ({ context }) => ({
-    id: context.environmentID,
-    kind: 'version',
-  }))
-  @UseRequestContext()
+  @Action.Assistant.Update(Actions.Flow.DuplicateOne)
   async duplicateOne(
     @Payload() { data, context }: Actions.Flow.DuplicateOne.Request,
     @AuthMeta() auth: AuthMetaPayload
@@ -62,12 +44,7 @@ export class FlowLoguxController {
     }));
   }
 
-  @Action.Async(Actions.Flow.CopyPasteMany)
-  @Authorize.Permissions<Actions.Flow.CopyPasteMany.Request>([Permission.PROJECT_UPDATE], ({ context }) => ({
-    id: context.environmentID,
-    kind: 'version',
-  }))
-  @UseRequestContext()
+  @Action.Assistant.Update(Actions.Flow.CopyPasteMany)
   async copyPasteMany(
     @Payload() { data, context }: Actions.Flow.CopyPasteMany.Request,
     @AuthMeta() auth: AuthMetaPayload
@@ -78,26 +55,12 @@ export class FlowLoguxController {
     }));
   }
 
-  @Action(Actions.Flow.PatchOne)
-  @Authorize.Permissions<Actions.Flow.PatchOne>([Permission.PROJECT_UPDATE], ({ context }) => ({
-    id: context.environmentID,
-    kind: 'version',
-  }))
-  @Broadcast<Actions.Flow.PatchOne>(({ context }) => ({ channel: Channels.assistant.build(context) }))
-  @BroadcastOnly()
-  @UseRequestContext()
+  @Action.Assistant.Update(Actions.Flow.PatchOne)
   async patchOne(@Payload() { id, patch, context }: Actions.Flow.PatchOne, @AuthMeta() auth: AuthMetaPayload) {
     await this.service.patchOneForUser(auth.userID, { id, environmentID: context.environmentID }, patch);
   }
 
-  @Action(Actions.Flow.PatchMany)
-  @Authorize.Permissions<Actions.Flow.PatchMany>([Permission.PROJECT_UPDATE], ({ context }) => ({
-    id: context.environmentID,
-    kind: 'version',
-  }))
-  @Broadcast<Actions.Flow.PatchMany>(({ context }) => ({ channel: Channels.assistant.build(context) }))
-  @BroadcastOnly()
-  @UseRequestContext()
+  @Action.Assistant.Update(Actions.Flow.PatchMany)
   async patchMany(@Payload() { ids, patch, context }: Actions.Flow.PatchMany, @AuthMeta() auth: AuthMetaPayload) {
     await this.service.patchManyForUser(
       auth.userID,
@@ -106,14 +69,7 @@ export class FlowLoguxController {
     );
   }
 
-  @Action(Actions.Flow.DeleteOne)
-  @Authorize.Permissions<Actions.Flow.DeleteOne>([Permission.PROJECT_UPDATE], ({ context }) => ({
-    id: context.environmentID,
-    kind: 'version',
-  }))
-  @Broadcast<Actions.Flow.DeleteOne>(({ context }) => ({ channel: Channels.assistant.build(context) }))
-  @BroadcastOnly()
-  @UseRequestContext()
+  @Action.Assistant.Update(Actions.Flow.DeleteOne)
   async deleteOne(@Payload() { id, context }: Actions.Flow.DeleteOne, @AuthMeta() auth: AuthMetaPayload) {
     const result = await this.service.deleteManyAndSync([id], { userID: auth.userID, context });
 
@@ -121,14 +77,7 @@ export class FlowLoguxController {
     await this.service.broadcastDeleteMany({ ...result, delete: { ...result.delete, flows: [] } }, { auth, context });
   }
 
-  @Action(Actions.Flow.DeleteMany)
-  @Authorize.Permissions<Actions.Flow.DeleteMany>([Permission.PROJECT_UPDATE], ({ context }) => ({
-    id: context.environmentID,
-    kind: 'version',
-  }))
-  @Broadcast<Actions.Flow.DeleteMany>(({ context }) => ({ channel: Channels.assistant.build(context) }))
-  @BroadcastOnly()
-  @UseRequestContext()
+  @Action.Assistant.Update(Actions.Flow.DeleteMany)
   async deleteMany(@Payload() { ids, context }: Actions.Flow.DeleteMany, @AuthMeta() auth: AuthMetaPayload) {
     const result = await this.service.deleteManyAndSync(ids, { userID: auth.userID, context });
 
@@ -136,24 +85,12 @@ export class FlowLoguxController {
     await this.service.broadcastDeleteMany({ ...result, delete: { ...result.delete, flows: [] } }, { auth, context });
   }
 
-  @Action(Actions.Flow.AddOne)
-  @Authorize.Permissions<Actions.Flow.AddOne>([Permission.PROJECT_UPDATE], ({ context }) => ({
-    id: context.environmentID,
-    kind: 'version',
-  }))
-  @Broadcast<Actions.Flow.AddOne>(({ context }) => ({ channel: Channels.assistant.build(context) }))
-  @BroadcastOnly()
+  @Action.Assistant.Update(Actions.Flow.AddOne, { requestContext: false })
   async addOne(@Payload() _: Actions.Flow.AddOne) {
     // for broadcast only
   }
 
-  @Action(Actions.Flow.AddMany)
-  @Authorize.Permissions<Actions.Flow.AddMany>([Permission.PROJECT_UPDATE], ({ context }) => ({
-    id: context.environmentID,
-    kind: 'version',
-  }))
-  @Broadcast<Actions.Flow.AddMany>(({ context }) => ({ channel: Channels.assistant.build(context) }))
-  @BroadcastOnly()
+  @Action.Assistant.Update(Actions.Flow.AddMany, { requestContext: false })
   async addMany(@Payload() _: Actions.Flow.AddMany) {
     // for broadcast only
   }

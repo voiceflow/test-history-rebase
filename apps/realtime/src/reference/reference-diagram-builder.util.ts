@@ -9,6 +9,8 @@ export class ReferenceDiagramBuilderUtil extends ReferenceBaseBuilderUtil {
 
   private readonly intentResourceCache: ReferenceBuilderCacheUtil;
 
+  private readonly messageResourceCache: ReferenceBuilderCacheUtil;
+
   private readonly diagramResourceCache: ReferenceBuilderCacheUtil;
 
   private readonly functionResourceCache: ReferenceBuilderCacheUtil;
@@ -22,6 +24,7 @@ export class ReferenceDiagramBuilderUtil extends ReferenceBaseBuilderUtil {
     assistantID,
     environmentID,
     intentResourceCache,
+    messageResourceCache,
     diagramResourceCache,
     functionResourceCache,
   }: {
@@ -29,6 +32,7 @@ export class ReferenceDiagramBuilderUtil extends ReferenceBaseBuilderUtil {
     assistantID: string;
     environmentID: string;
     intentResourceCache: ReferenceBuilderCacheUtil;
+    messageResourceCache: ReferenceBuilderCacheUtil;
     diagramResourceCache: ReferenceBuilderCacheUtil;
     functionResourceCache: ReferenceBuilderCacheUtil;
   }) {
@@ -36,6 +40,7 @@ export class ReferenceDiagramBuilderUtil extends ReferenceBaseBuilderUtil {
 
     this.diagrams = diagrams;
     this.intentResourceCache = intentResourceCache;
+    this.messageResourceCache = messageResourceCache;
     this.diagramResourceCache = diagramResourceCache;
     this.functionResourceCache = functionResourceCache;
   }
@@ -86,6 +91,7 @@ export class ReferenceDiagramBuilderUtil extends ReferenceBaseBuilderUtil {
       environmentID: this.environmentID,
       diagramResourceID: diagramResource.id,
       intentResourceCache: this.intentResourceCache,
+      messageResourceCache: this.messageResourceCache,
       diagramResourceCache: this.diagramResourceCache,
       functionResourceCache: this.functionResourceCache,
     });

@@ -12,14 +12,36 @@ export abstract class PostgresMutableORM<
   extends PostgresORM<BaseEntity, DiscriminatorEntity>
   implements MutableORM<BaseEntity, DiscriminatorEntity>
 {
-  patch(where: WhereData<BaseEntity> | WhereData<BaseEntity>[], patch: PatchData<BaseEntity>) {
+  async patch(
+    where: WhereData<BaseEntity> | WhereData<BaseEntity>[],
+    patch: PatchData<BaseEntity>,
+    returning?: false
+  ): Promise<number>;
+
+  async patch(
+    where: WhereData<BaseEntity> | WhereData<BaseEntity>[],
+    patch: PatchData<BaseEntity>,
+    returning: true
+  ): Promise<ToObject<DiscriminatorEntity>[]>;
+
+  async patch(
+    where: WhereData<BaseEntity> | WhereData<BaseEntity>[],
+    patch: PatchData<BaseEntity>,
+    returning?: boolean
+  ) {
     const qb = this.qb.update(this.toDB(this.onPatch(patch) as any));
 
     const ignore = this.buildWhere(qb, where);
 
-    if (ignore) return Promise.resolve(0);
+    if (ignore) return Promise.resolve(returning ? [] : 0);
 
-    return this.executeQB(qb);
+    if (!returning) return this.executeQB(qb);
+
+    this.buildReturning(qb);
+
+    const result = await this.executeQB(qb);
+
+    return this.mapFromDB(result);
   }
 
   patchOne(id: Primary<BaseEntity>, patch: PatchData<BaseEntity>) {
@@ -54,9 +76,7 @@ export abstract class PostgresMutableORM<
 
     if (ignore) return Promise.resolve(returning ? [] : 0);
 
-    if (!returning) {
-      return qb;
-    }
+    if (!returning) return this.executeQB(qb);
 
     this.buildReturning(qb);
 

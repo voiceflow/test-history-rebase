@@ -9,7 +9,7 @@ export const responseColumnsOrderAtom = atom<TableColumnOrder<ResponseTableColum
   { type: ResponseTableColumn.ALL, size: '2fr' },
   { type: ResponseTableColumn.ATTACHMENTS },
   { type: ResponseTableColumn.TYPE },
-  { type: ResponseTableColumn.STORIES_USING },
+  { type: ResponseTableColumn.USED_BY },
   { type: ResponseTableColumn.LAST_EDITOR },
   { type: ResponseTableColumn.UPDATED },
 ]);

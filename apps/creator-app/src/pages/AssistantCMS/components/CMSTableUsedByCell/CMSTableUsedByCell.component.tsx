@@ -6,7 +6,7 @@ import React, { useMemo } from 'react';
 import { refererIDsByResourceIDMapAtom } from '@/atoms/reference.atom';
 
 import { CMSTableLinkMenuCell } from '../CMSTableLinkMenuCell/CMSTableLinkMenuCell.component';
-import { useCMStableUsedByCellGetItem } from './CMSTableUsedByCell.hook';
+import { useCMSTableUsedByCellGetItem } from './CMSTableUsedByCell.hook';
 import { CMSTableUsedByCellItem, ICMSTableUsedByCell } from './CMSTableUsedByCell.interface';
 import { CMSTableUsedByCellItemType } from './CMSTableUsedByCellItemType.enum';
 
@@ -24,7 +24,7 @@ export const CMSTableUsedByCell: React.FC<ICMSTableUsedByCell> = ({
     : defaultRefererIDs;
   const firstRefererID = refererIDs[0];
 
-  const defaultGetReferrerItem = useCMStableUsedByCellGetItem();
+  const defaultGetReferrerItem = useCMSTableUsedByCellGetItem();
   const getReferrerItem = getItem ?? defaultGetReferrerItem;
 
   const getContentMemoized = useMemo(

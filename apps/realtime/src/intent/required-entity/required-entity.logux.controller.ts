@@ -26,7 +26,9 @@ export class RequiredEntityLoguxController {
     @Payload() { data, context }: Actions.RequiredEntity.CreateOne.Request,
     @AuthMeta() auth: AuthMetaPayload
   ): Promise<Actions.RequiredEntity.CreateOne.Response> {
-    return this.service.createManyAndBroadcast([data], { auth, context }).then(([result]) => ({ data: this.service.toJSON(result), context }));
+    return this.service
+      .createManyAndBroadcast([data], { auth, context })
+      .then(([result]) => ({ data: this.service.toJSON(result), context }));
   }
 
   @Action.Async(Actions.RequiredEntity.CreateMany)
@@ -39,7 +41,9 @@ export class RequiredEntityLoguxController {
     @Payload() { data, context }: Actions.RequiredEntity.CreateMany.Request,
     @AuthMeta() auth: AuthMetaPayload
   ): Promise<Actions.RequiredEntity.CreateMany.Response> {
-    return this.service.createManyAndBroadcast(data, { auth, context }).then((result) => ({ data: this.service.mapToJSON(result), context }));
+    return this.service
+      .createManyAndBroadcast(data, { auth, context })
+      .then((result) => ({ data: this.service.mapToJSON(result), context }));
   }
 
   @Action(Actions.RequiredEntity.PatchOne)
@@ -50,8 +54,16 @@ export class RequiredEntityLoguxController {
   @Broadcast<Actions.RequiredEntity.PatchOne>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async patchOne(@Payload() { id, patch, context }: Actions.RequiredEntity.PatchOne, @AuthMeta() auth: AuthMetaPayload) {
-    await this.service.patchOneForUser(auth.userID, { id, environmentID: context.environmentID }, patch);
+  async patchOne(
+    @Payload() { id, patch, context }: Actions.RequiredEntity.PatchOne,
+    @AuthMeta() auth: AuthMetaPayload
+  ) {
+    const result = await this.service.patchManyAndSync([{ id, environmentID: context.environmentID }], patch, {
+      userID: auth.userID,
+      context,
+    });
+
+    await this.service.broadcastPatchMany(result, { auth, context });
   }
 
   @Action(Actions.RequiredEntity.PatchMany)
@@ -62,12 +74,17 @@ export class RequiredEntityLoguxController {
   @Broadcast<Actions.RequiredEntity.PatchMany>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async patchMany(@Payload() { ids, patch, context }: Actions.RequiredEntity.PatchMany, @AuthMeta() auth: AuthMetaPayload) {
-    await this.service.patchManyForUser(
-      auth.userID,
+  async patchMany(
+    @Payload() { ids, patch, context }: Actions.RequiredEntity.PatchMany,
+    @AuthMeta() auth: AuthMetaPayload
+  ) {
+    const result = await this.service.patchManyAndSync(
       ids.map((id) => ({ id, environmentID: context.environmentID })),
-      patch
+      patch,
+      { userID: auth.userID, context }
     );
+
+    await this.service.broadcastPatchMany(result, { auth, context });
   }
 
   @Action(Actions.RequiredEntity.DeleteOne)
@@ -82,7 +99,10 @@ export class RequiredEntityLoguxController {
     const result = await this.service.deleteManyAndSync([id], { userID: auth.userID, context });
 
     // overriding requiredEntities cause it's broadcasted by decorator
-    await this.service.broadcastDeleteMany({ ...result, delete: { ...result.delete, requiredEntities: [] } }, { auth, context });
+    await this.service.broadcastDeleteMany(
+      { ...result, delete: { ...result.delete, requiredEntities: [] } },
+      { auth, context }
+    );
   }
 
   @Action(Actions.RequiredEntity.DeleteMany)
@@ -97,7 +117,10 @@ export class RequiredEntityLoguxController {
     const result = await this.service.deleteManyAndSync(ids, { userID: auth.userID, context });
 
     // overriding requiredEntities cause it's broadcasted by decorator
-    await this.service.broadcastDeleteMany({ ...result, delete: { ...result.delete, requiredEntities: [] } }, { auth, context });
+    await this.service.broadcastDeleteMany(
+      { ...result, delete: { ...result.delete, requiredEntities: [] } },
+      { auth, context }
+    );
   }
 
   @Action(Actions.RequiredEntity.AddOne)

@@ -4,6 +4,7 @@ import {
   ChoiceV2Node,
   DiagramNode,
   FunctionNode,
+  MessageNode,
   ReferenceIntentNodeMetadata,
   ReferenceResource,
   ReferenceResourceNodeMetadata,
@@ -27,6 +28,8 @@ export class ReferenceNodeBuilderUtil extends ReferenceBaseBuilderUtil {
 
   private readonly intentResourceCache: ReferenceBuilderCacheUtil;
 
+  private readonly messageResourceCache: ReferenceBuilderCacheUtil;
+
   private readonly diagramResourceCache: ReferenceBuilderCacheUtil;
 
   private readonly functionResourceCache: ReferenceBuilderCacheUtil;
@@ -38,6 +41,7 @@ export class ReferenceNodeBuilderUtil extends ReferenceBaseBuilderUtil {
     environmentID,
     diagramResourceID,
     intentResourceCache,
+    messageResourceCache,
     diagramResourceCache,
     functionResourceCache,
   }: {
@@ -47,6 +51,7 @@ export class ReferenceNodeBuilderUtil extends ReferenceBaseBuilderUtil {
     environmentID: string;
     diagramResourceID: string;
     intentResourceCache: ReferenceBuilderCacheUtil;
+    messageResourceCache: ReferenceBuilderCacheUtil;
     diagramResourceCache: ReferenceBuilderCacheUtil;
     functionResourceCache: ReferenceBuilderCacheUtil;
   }) {
@@ -56,6 +61,7 @@ export class ReferenceNodeBuilderUtil extends ReferenceBaseBuilderUtil {
     this.diagramID = diagramID;
     this.diagramResourceID = diagramResourceID;
     this.intentResourceCache = intentResourceCache;
+    this.messageResourceCache = messageResourceCache;
     this.diagramResourceCache = diagramResourceCache;
     this.functionResourceCache = functionResourceCache;
   }
@@ -91,6 +97,8 @@ export class ReferenceNodeBuilderUtil extends ReferenceBaseBuilderUtil {
       await this.buildButtonsNodeReferences(node);
     } else if (Realtime.Utils.typeGuards.isChoiceV2DBNode(node)) {
       await this.buildChoiceV2NodeReferences(node);
+    } else if (Realtime.Utils.typeGuards.isMessageDBNode(node)) {
+      await this.buildMessageNodeReferences(node);
     }
   }
 
@@ -195,6 +203,17 @@ export class ReferenceNodeBuilderUtil extends ReferenceBaseBuilderUtil {
     await Promise.all(node.data.items.map((choice) => this.buildIntentReference(nodeReference, choice.intentID)));
   }
 
+  private async buildMessageNodeReferences(node: MessageNode) {
+    const nodeReference = this.buildNodeReference({
+      nodeID: node.nodeID,
+      metadata: { nodeType: node.type },
+      diagramID: this.diagramID,
+      referrerResourceID: this.diagramResourceID,
+    });
+
+    await this.buildMessageReference(nodeReference, node.data.messageID);
+  }
+
   private buildNodeReference<Data extends ReferenceResourceNodeMetadata>({
     nodeID,
     metadata,
@@ -249,6 +268,20 @@ export class ReferenceNodeBuilderUtil extends ReferenceBaseBuilderUtil {
     this.buildReference({
       metadata,
       resourceID: intentResource.id,
+      referrerResourceID: referrerResource.id,
+    });
+  }
+
+  private async buildMessageReference(referrerResource: ReferenceResource, messageID: string | null) {
+    if (!messageID) return;
+
+    const messageResource = await this.messageResourceCache.getOrCreate(messageID);
+
+    if (!messageResource) return;
+
+    this.buildReference({
+      metadata: null,
+      resourceID: messageResource.id,
       referrerResourceID: referrerResource.id,
     });
   }

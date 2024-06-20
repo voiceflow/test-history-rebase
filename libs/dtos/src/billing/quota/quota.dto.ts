@@ -1,14 +1,6 @@
 import { z } from 'zod';
 
-export enum ResourceLevel {
-  Organization = 1,
-  Workspace = 2,
-  Assistant = 3,
-}
-
-export enum QuotaNames {
-  TOKENS = 'OpenAI Tokens',
-}
+import { ResourceLevel } from './quota-resource-level.enum';
 
 export const QuotaDetailsDTO = z.object({
   id: z.string(),

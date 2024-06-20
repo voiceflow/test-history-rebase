@@ -1,35 +1,11 @@
 import { z } from 'zod';
 
-import { QuotaDTO } from '@/billing/quota.dto';
+import { QuotaDTO } from '@/billing/quota/quota.dto';
 import { OrganizationMemberDTO } from '@/organization/organization-member.dto';
 
 import { WorkspaceInvitationDTO } from './workspace-invitation.dto';
-
-export enum StripePlanType {
-  OLD_STARTER = 'old_starter',
-  OLD_PRO = 'old_pro',
-  OLD_TEAM = 'old_team',
-  STARTER = 'starter',
-  STUDENT = 'student',
-  PRO = 'pro',
-  TEAM = 'team',
-  ENTERPRISE = 'enterprise',
-  CREATOR = 'creator',
-}
-
-export enum StripeStatus {
-  CANCELED = 'canceled',
-  ACTIVE = 'active',
-  UNPAID = 'unpaid',
-  INCOMPLETE_EXPIRED = 'incomplete_expired',
-  INCOMPLETE = 'incomplete',
-  PAST_DUE = 'past_due',
-}
-
-export enum StripeBillingPeriod {
-  MONTHLY = 'MO',
-  ANNUALLY = 'YR',
-}
+import { StripePlanType } from './workspace-stripe-plan-type.enum';
+import { StripeStatus } from './workspace-stripe-status.enum';
 
 export const WorkspaceSettingsDTO = z.object({
   aiAssist: z.boolean().nullable(),

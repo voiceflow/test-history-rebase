@@ -106,6 +106,7 @@ export * from './node/function/compiled/function-node.compiled.dto';
 export * from './node/function/compiled/function-reference.compiled.dto';
 export * from './node/function/function-node.dto';
 export * from './node/message/message-node.compiled.dto';
+export * from './node/message/message-node.dto';
 export * from './node/next/next-node.compiled.dto';
 export * from './node/node.dto';
 export * from './node/node-port.dto';

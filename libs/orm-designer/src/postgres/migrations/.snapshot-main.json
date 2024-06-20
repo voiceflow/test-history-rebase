@@ -933,9 +933,10 @@
           "enumItems": [
             "node",
             "intent",
+            "prompt",
+            "message",
             "diagram",
-            "function",
-            "response"
+            "function"
           ],
           "mappedType": "enum"
         },

@@ -16,7 +16,7 @@ import {
 import { DBNodeStart, Markup, NodeData } from '@realtime-sdk/models';
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import { AnyRecord, Utils } from '@voiceflow/common';
-import { ChoiceV2Node, FunctionNode, NodeType, StartNode, TriggerNode } from '@voiceflow/dtos';
+import { ChoiceV2Node, FunctionNode, MessageNode, NodeType, StartNode, TriggerNode } from '@voiceflow/dtos';
 
 import { createTypedTypeGuardCreator, createTypeGuardCreator } from './utils';
 
@@ -62,6 +62,7 @@ export const isBlockDBNode = createDBNodeTypeGuard<BaseModels.BaseBlock>(BaseMod
 export const isStartDBNode = createDBNodeTypeGuard<StartNode>(BaseNode.NodeType.START);
 export const isIntentDBNode = createDBNodeTypeGuard<BaseNode.Intent.Step>(BaseNode.NodeType.INTENT);
 export const isTriggerDBNode = createDBNodeTypeGuard<TriggerNode>(NodeType.TRIGGER);
+export const isMessageDBNode = createDBNodeTypeGuard<MessageNode>(NodeType.MESSAGE);
 export const isCommandDBNode = createDBNodeTypeGuard<BaseNode.Command.Step>(BaseNode.NodeType.COMMAND);
 export const isButtonsDBNode = createDBNodeTypeGuard<BaseNode.Buttons.Step>(BaseNode.NodeType.BUTTONS);
 export const isGoToNodeDBNode = createDBNodeTypeGuard<BaseNode.GoToNode.Step>(BaseNode.NodeType.GOTO_NODE);

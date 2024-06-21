@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1591.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1590.1...@voiceflow/creator-app@1.1591.0) (2024-06-21)
+
+### Features
+
+* drop order by triggers to improve table perf (COR-000) ([#8326](https://github.com/voiceflow/creator-app/issues/8326)) ([41b9691](https://github.com/voiceflow/creator-app/commit/41b9691ec9934a41f5f2e815343f7e9e642ff410))
+
 ## [1.1590.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1590.0...@voiceflow/creator-app@1.1590.1) (2024-06-21)
 
 **Note:** Version bump only for package @voiceflow/creator-app

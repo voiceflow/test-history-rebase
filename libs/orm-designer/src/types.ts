@@ -107,7 +107,7 @@ export type ExcludeCreateKeys =
   | 'toJSON'
   | typeof PrimaryKeyProp;
 
-export type Ref<T, PK extends keyof T | unknown = PrimaryProperty<T>> =
+export type Ref<T extends object, PK extends keyof T | unknown = PrimaryProperty<T>> =
   true extends IsUnknown<PK>
     ? Reference<T>
     : // check if PK is a object or record

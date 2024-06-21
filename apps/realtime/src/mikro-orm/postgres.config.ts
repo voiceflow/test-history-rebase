@@ -29,8 +29,8 @@ export const createPostgresConfig = (env: EnvironmentVariables): Options => ({
     max: 300,
   },
 
-  cache: {
-    ...postgresConfig.cache,
+  metadataCache: {
+    ...postgresConfig.metadataCache,
     adapter: CacheAdapter,
   },
 });

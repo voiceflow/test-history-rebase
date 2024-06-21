@@ -22,8 +22,8 @@ export const createMongoConfig = (env: EnvironmentVariables): Options => ({
 
   entities: MONGO_ENTITIES,
 
-  cache: {
-    ...mongoConfig.cache,
+  metadataCache: {
+    ...mongoConfig.metadataCache,
     adapter: CacheAdapter,
   },
 });

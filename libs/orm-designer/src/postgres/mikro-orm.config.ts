@@ -15,7 +15,7 @@ export default defineConfig({
     disableForeignKeys: false,
   },
 
-  cache: {
+  metadataCache: {
     enabled: true,
     options: {
       cacheDir: path.resolve(__dirname, '../../.mikro-orm'),

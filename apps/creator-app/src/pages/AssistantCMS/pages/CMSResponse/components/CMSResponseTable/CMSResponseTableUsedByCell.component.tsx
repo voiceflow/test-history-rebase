@@ -1,10 +1,9 @@
 import { ReferenceResourceType } from '@voiceflow/dtos';
 import { useAtomValue } from 'jotai';
-import { getOne } from 'normal-store';
 import React, { useCallback } from 'react';
 
 import { intentMapAtom } from '@/atoms/intent.atom';
-import { messageIDResourceIDMapAtom, normalizedResourcesAtom } from '@/atoms/reference.atom';
+import { messageIDResourceIDMapAtom, resourceMapAtom } from '@/atoms/reference.atom';
 import { CMSRoute } from '@/config/routes';
 import { Router } from '@/ducks';
 import { useDispatch } from '@/hooks/store.hook';
@@ -21,18 +20,18 @@ export const CMSResponseTableUsedByCell: React.FC<ICMSResponseTableUsedByCell> =
   const goToCMSIntent = useDispatch(Router.goToCMSResource, CMSRoute.INTENT);
 
   const intentMap = useAtomValue(intentMapAtom);
-  const normalizedResources = useAtomValue(normalizedResourcesAtom);
+  const resourceMap = useAtomValue(resourceMapAtom);
   const messageIDResourceIDMap = useAtomValue(messageIDResourceIDMapAtom);
 
   const defaultGetItem = useCMSTableUsedByCellGetItem();
 
   const getItem = useCallback(
     (id: string | null): null | CMSTableUsedByCellItem => {
-      const resource = id ? getOne(normalizedResources, id) : null;
+      const resource = id ? resourceMap[id] ?? null : null;
 
       if (!id || resource?.type !== ReferenceResourceType.INTENT) return defaultGetItem(id);
 
-      const intent = intentMap[id];
+      const intent = intentMap[resource.resourceID];
 
       if (!intent) return null;
 
@@ -43,7 +42,7 @@ export const CMSResponseTableUsedByCell: React.FC<ICMSResponseTableUsedByCell> =
         onClick: () => goToCMSIntent(resource.resourceID),
       };
     },
-    [normalizedResources, defaultGetItem, intentMap]
+    [resourceMap, defaultGetItem, intentMap]
   );
 
   return (

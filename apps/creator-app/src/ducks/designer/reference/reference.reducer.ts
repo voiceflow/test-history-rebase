@@ -2,7 +2,6 @@ import { Utils } from '@voiceflow/common';
 import { ReferenceResource, ReferenceResourceType } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Actions } from '@voiceflow/sdk-logux-designer';
-import { appendMany, normalize, removeMany } from 'normal-store';
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
 
 import { INITIAL_STATE, type ReferenceState } from './reference.state';
@@ -19,36 +18,45 @@ import {
 
 export const referenceReducer = reducerWithInitialState<ReferenceState>(INITIAL_STATE)
   .case(Actions.Reference.Replace, (_, { data }) => {
-    const normalizedReferences = normalize(data.references);
-    const normalizedReferenceResources = normalize(data.referenceResources);
+    const resourceMap = Utils.array.createMap(data.referenceResources, (resource) => resource.id);
+    const referenceMap = Utils.array.createMap(data.references, (reference) => reference.id);
 
     return {
       ...buildReferenceCache({
         references: data.references,
-        resourceMap: normalizedReferenceResources.byKey,
-        referenceMap: normalizedReferences.byKey,
+        resourceMap,
+        referenceMap,
         referenceResources: data.referenceResources,
       }),
-      resources: normalizedReferenceResources,
-      references: normalizedReferences,
+      resourceMap,
+      referenceMap,
     };
   })
   .case(Actions.Reference.AddMany, (state, { data }) => {
     if (!data.references.length && !data.referenceResources.length) return state;
 
-    const normalizedReferences = appendMany(state.references, data.references);
-    const normalizedReferenceResources = appendMany(state.resources, data.referenceResources);
+    const resourceMap = {
+      ...state.resourceMap,
+      ...Utils.array.createMap(data.referenceResources, (resource) => resource.id),
+    };
+
+    const referenceMap = {
+      ...state.referenceMap,
+      ...Utils.array.createMap(data.references, (resource) => resource.id),
+    };
 
     const cache = buildReferenceCache({
       references: data.references,
-      resourceMap: normalizedReferenceResources.byKey,
-      referenceMap: normalizedReferences.byKey,
+      resourceMap,
+      referenceMap,
       referenceResources: data.referenceResources,
     });
 
     return {
-      resources: normalizedReferenceResources,
-      references: normalizedReferences,
+      resourceMap,
+      referenceMap,
+
+      // caches
       blockNodeResourceIDs: mergeArrays(state.blockNodeResourceIDs, cache.blockNodeResourceIDs),
       intentIDResourceIDMap: mergeSimpleMaps(state.intentIDResourceIDMap, cache.intentIDResourceIDMap),
       messageIDResourceIDMap: mergeSimpleMaps(state.messageIDResourceIDMap, cache.messageIDResourceIDMap),
@@ -72,8 +80,16 @@ export const referenceReducer = reducerWithInitialState<ReferenceState>(INITIAL_
       ),
     };
   })
+  // eslint-disable-next-line sonarjs/cognitive-complexity
   .case(Actions.Reference.DeleteMany, (state, { data }) => {
     if (!data.references.length && !data.referenceResources.length) return state;
+
+    const newResourceMap = { ...state.resourceMap };
+    const newReferenceMap = { ...state.referenceMap };
+    const newRefererIDsByResourceIDMap = { ...state.refererIDsByResourceIDMap };
+    const newResourceIDsByRefererIDMap = { ...state.resourceIDsByRefererIDMap };
+    const newReferenceIDsByResourceIDMap = { ...state.referenceIDsByResourceIDMap };
+    const newReferenceIDsByReferrerIDMap = { ...state.referenceIDsByReferrerIDMap };
 
     const intentIDs: string[] = [];
     const diagramIDs: string[] = [];
@@ -83,6 +99,12 @@ export const referenceReducer = reducerWithInitialState<ReferenceState>(INITIAL_
     const triggerNodeResources: ReferenceResource[] = [];
 
     for (const resource of data.referenceResources) {
+      delete newResourceMap[resource.id];
+      delete newRefererIDsByResourceIDMap[resource.id];
+      delete newResourceIDsByRefererIDMap[resource.id];
+      delete newReferenceIDsByResourceIDMap[resource.id];
+      delete newReferenceIDsByReferrerIDMap[resource.id];
+
       resourceIDs.push(resource.id);
 
       switch (resource.type) {
@@ -120,24 +142,63 @@ export const referenceReducer = reducerWithInitialState<ReferenceState>(INITIAL_
       ...resourceIDs.flatMap((resourceID) => state.referenceIDsByReferrerIDMap[resourceID] ?? []),
     ]);
 
+    for (const id of referenceIDs) {
+      delete newReferenceMap[id];
+
+      const reference = state.referenceMap[id];
+
+      if (!reference) continue;
+
+      const { resourceID, referrerResourceID } = reference;
+
+      if (newRefererIDsByResourceIDMap[resourceID]?.length) {
+        newRefererIDsByResourceIDMap[resourceID] = arrayWithoutValues(newRefererIDsByResourceIDMap[resourceID]!, [
+          referrerResourceID,
+        ]);
+      }
+
+      if (newResourceIDsByRefererIDMap[referrerResourceID]?.length) {
+        newResourceIDsByRefererIDMap[referrerResourceID] = arrayWithoutValues(
+          newResourceIDsByRefererIDMap[referrerResourceID]!,
+          [resourceID]
+        );
+      }
+
+      if (newReferenceIDsByResourceIDMap[resourceID]?.length) {
+        newReferenceIDsByResourceIDMap[resourceID] = arrayWithoutValues(newReferenceIDsByResourceIDMap[resourceID]!, [
+          id,
+        ]);
+      }
+
+      if (newReferenceIDsByReferrerIDMap[referrerResourceID]?.length) {
+        newReferenceIDsByReferrerIDMap[referrerResourceID] = arrayWithoutValues(
+          newReferenceIDsByReferrerIDMap[referrerResourceID]!,
+          [id]
+        );
+      }
+    }
+
     return {
-      resources: removeMany(state.resources, resourceIDs),
-      references: removeMany(state.references, referenceIDs),
+      resourceMap: newResourceMap,
+      referenceMap: newReferenceMap,
       blockNodeResourceIDs: arrayWithoutValues(state.blockNodeResourceIDs, resourceIDs),
       intentIDResourceIDMap: omitMapKeys(state.intentIDResourceIDMap, intentIDs),
       messageIDResourceIDMap: omitMapKeys(state.messageIDResourceIDMap, messageIDs),
       triggerNodeResourceIDs: arrayWithoutValues(state.triggerNodeResourceIDs, resourceIDs),
       diagramIDResourceIDMap: omitMapKeys(state.diagramIDResourceIDMap, diagramIDs),
       functionIDResourceIDMap: omitMapKeys(state.functionIDResourceIDMap, functionIDs),
-      resourceIDsByDiagramIDMap: data.referenceResources.reduce((acc, resource) => {
-        if (!resource.diagramID || !acc[resource.diagramID]?.length) return acc;
+      resourceIDsByDiagramIDMap: data.referenceResources.reduce(
+        (acc, resource) => {
+          if (!resource.diagramID || !acc[resource.diagramID]?.length) return acc;
 
-        return { ...acc, [resource.diagramID]: Utils.array.withoutValue(acc[resource.diagramID] ?? [], resource.id) };
-      }, state.resourceIDsByDiagramIDMap),
-      resourceIDsByRefererIDMap: omitMapKeys(state.resourceIDsByRefererIDMap, resourceIDs),
-      refererIDsByResourceIDMap: omitMapKeys(state.refererIDsByResourceIDMap, resourceIDs),
-      referenceIDsByResourceIDMap: omitMapKeys(state.referenceIDsByResourceIDMap, resourceIDs),
-      referenceIDsByReferrerIDMap: omitMapKeys(state.referenceIDsByReferrerIDMap, resourceIDs),
+          return { ...acc, [resource.diagramID]: Utils.array.withoutValue(acc[resource.diagramID] ?? [], resource.id) };
+        },
+        omitMapKeys(state.resourceIDsByDiagramIDMap, diagramIDs)
+      ),
+      resourceIDsByRefererIDMap: newResourceIDsByRefererIDMap,
+      refererIDsByResourceIDMap: newRefererIDsByResourceIDMap,
+      referenceIDsByResourceIDMap: newReferenceIDsByResourceIDMap,
+      referenceIDsByReferrerIDMap: newReferenceIDsByReferrerIDMap,
       globalTriggerNodeIDsByIntentIDMapByDiagramIDMap: cleanupGlobalTriggerNodeIDsByIntentIDMapByDiagramIDMap({
         intentIDs,
         diagramIDs,

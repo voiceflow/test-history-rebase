@@ -1,7 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import { NodeType, ReferenceResourceType, TriggerNodeItemType } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import * as Normal from 'normal-store';
 import { createSelector } from 'reselect';
 
 import { getOneByID as getOneIntentByID } from '@/ducks/designer/intent/selectors/crud.select';
@@ -10,18 +9,13 @@ import { featureSelectorFactory } from '@/ducks/feature';
 import { diagramIDParamSelector, nodeIDParamSelector } from '@/ducks/utils';
 
 import { ReferenceAnyTriggerNode, ReferenceTriggerNodeResource } from '../reference.interface';
-import {
-  getAllResourceIDsByRefererID,
-  getAllResourcesByIDs,
-  normalizedResources,
-  triggerNodeResourceIDs,
-} from './root.select';
+import { getAllResourceIDsByRefererID, getAllResourcesByIDs, resourceMap, triggerNodeResourceIDs } from './root.select';
 
 export const triggerNodeResources = createSelector(
-  [normalizedResources, triggerNodeResourceIDs],
-  (normalizedResources, triggerNodeResourceIDs) =>
+  [resourceMap, triggerNodeResourceIDs],
+  (resourceMap, triggerNodeResourceIDs) =>
     triggerNodeResourceIDs
-      .map((id) => Normal.getOne(normalizedResources, id))
+      .map((id) => resourceMap[id])
       .filter(
         (resource): resource is ReferenceTriggerNodeResource =>
           !!resource &&

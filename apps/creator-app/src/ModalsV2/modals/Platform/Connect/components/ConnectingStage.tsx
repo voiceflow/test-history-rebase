@@ -4,7 +4,7 @@ import { Box, Button, ButtonVariant, LoadCircle, Modal } from '@voiceflow/ui';
 import React from 'react';
 
 import { linkGraphic } from '@/assets';
-import Alert from '@/components/Alert';
+import Alert from '@/components/legacy/Alert';
 
 import { PlatformAccount } from '../types';
 
@@ -65,7 +65,12 @@ const ConnectingStage: React.FC<ConnectingStageProps> = ({ onClose, onSuccess, p
             Cancel
           </Button>
 
-          <platformConfig.integration.linkAccountButton.Component onClick={onLoad} onError={onError} disabled={connecting} onSuccess={onSuccess} />
+          <platformConfig.integration.linkAccountButton.Component
+            onClick={onLoad}
+            onError={onError}
+            disabled={connecting}
+            onSuccess={onSuccess}
+          />
         </Box.Flex>
       </Modal.Footer>
     </>

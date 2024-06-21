@@ -7,7 +7,7 @@ import dayjs from 'dayjs';
 import React from 'react';
 
 import client from '@/client';
-import Alert from '@/components/Alert';
+import Alert from '@/components/legacy/Alert';
 import { LoadingGate } from '@/components/LoadingGate';
 import { MAINTENANCE_STATUS_SOURCE } from '@/config';
 import { useConfirmModal } from '@/hooks/modal.hook';

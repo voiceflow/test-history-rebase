@@ -3,7 +3,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box } from '@voiceflow/ui';
 import React from 'react';
 
-import Alert from '@/components/Alert';
+import Alert from '@/components/legacy/Alert';
 import * as GPT from '@/components/GPT';
 import TextArea from '@/components/TextArea';
 import { useActiveProjectType } from '@/hooks/platformConfig';
@@ -20,13 +20,20 @@ const RootEditor: React.FC = () => {
   const isVoiceEditor = isVoiceItem(editor.data.dialogs[0]);
   const promptSectionRef = React.useRef<PromptsSectionRef>(null);
 
-  const items = React.useMemo(() => Realtime.Adapters.voicePromptToSpeakDataAdapter.mapToDB(editor.data.dialogs), [editor.data.dialogs]);
+  const items = React.useMemo(
+    () => Realtime.Adapters.voicePromptToSpeakDataAdapter.mapToDB(editor.data.dialogs),
+    [editor.data.dialogs]
+  );
 
-  const canvasVisibilityOption = useCanvasVisibilityOption(editor.data.canvasVisibility, (canvasVisibility) => editor.onChange({ canvasVisibility }));
+  const canvasVisibilityOption = useCanvasVisibilityOption(editor.data.canvasVisibility, (canvasVisibility) =>
+    editor.onChange({ canvasVisibility })
+  );
 
   const onChangeItems = (newItems: Platform.Base.Models.Prompt.Model[]) =>
     editor.onChange({
-      dialogs: Realtime.Adapters.voicePromptToSpeakDataAdapter.mapFromDB(newItems as Platform.Common.Voice.Models.Prompt.Model[]),
+      dialogs: Realtime.Adapters.voicePromptToSpeakDataAdapter.mapFromDB(
+        newItems as Platform.Common.Voice.Models.Prompt.Model[]
+      ),
     });
 
   const gptResponseGen = GPT.useGPTGenFeatures();
@@ -43,10 +50,16 @@ const RootEditor: React.FC = () => {
       <EditorV2 header={<EditorV2.DefaultHeader />}>
         <Box.FlexColumn px={32} py={20} alignItems="stretch" gap={12}>
           <Alert>
-            This <b>speak</b> step does not function properly on text/chat based projects. Use a <b>text</b> step instead.
+            This <b>speak</b> step does not function properly on text/chat based projects. Use a <b>text</b> step
+            instead.
           </Alert>
           {editor.data.dialogs.map((dialog, index) => (
-            <TextArea key={index} value={dialog.type === Realtime.DialogType.VOICE ? dialog.content : dialog.url} readOnly disabled></TextArea>
+            <TextArea
+              key={index}
+              value={dialog.type === Realtime.DialogType.VOICE ? dialog.content : dialog.url}
+              readOnly
+              disabled
+            ></TextArea>
           ))}
         </Box.FlexColumn>
       </EditorV2>
@@ -55,7 +68,11 @@ const RootEditor: React.FC = () => {
 
   return (
     <EditorV2
-      header={<EditorV2.DefaultHeader title={getLabelByType(isVoiceEditor ? Realtime.DialogType.VOICE : Realtime.DialogType.AUDIO)} />}
+      header={
+        <EditorV2.DefaultHeader
+          title={getLabelByType(isVoiceEditor ? Realtime.DialogType.VOICE : Realtime.DialogType.AUDIO)}
+        />
+      }
       footer={
         <EditorV2.DefaultFooter>
           <EditorV2.FooterActionsButton actions={[canvasVisibilityOption]} />
@@ -96,7 +113,9 @@ const RootEditor: React.FC = () => {
                   label="variant"
                   disabled={!!gptGenVoicePrompt.items.length || gptGenVoicePrompt.fetching}
                   isLoading={gptGenVoicePrompt.fetching}
-                  onGenerate={({ quantity }) => gptGenVoicePrompt.onGenerate({ quantity, examples: promptSectionRef.current?.getCurrentValues() })}
+                  onGenerate={({ quantity }) =>
+                    gptGenVoicePrompt.onGenerate({ quantity, examples: promptSectionRef.current?.getCurrentValues() })
+                  }
                   pluralLabel="variants"
                   hasExtraContext={!isEmpty}
                 />

@@ -2,7 +2,7 @@ import { Box } from '@voiceflow/ui';
 import dayjs from 'dayjs';
 import React from 'react';
 
-import Alert from '@/components/Alert';
+import Alert from '@/components/legacy/Alert';
 import Page from '@/components/Page';
 
 interface PaymentFailedProps {
@@ -21,8 +21,8 @@ const PaymentFailed: React.FC<PaymentFailedProps> = ({ date }) => {
         <Page.Section.Header>
           <Box.FlexApart>
             <Alert title={<Alert.Title>Payment Failed</Alert.Title>} variant={Alert.Variant.DANGER}>
-              It looks like there was an issue with your payment method. Please update your card information by {deadlineDate.format(FORMAT)} to
-              continue using Pro features.
+              It looks like there was an issue with your payment method. Please update your card information by{' '}
+              {deadlineDate.format(FORMAT)} to continue using Pro features.
             </Alert>
           </Box.FlexApart>
         </Page.Section.Header>

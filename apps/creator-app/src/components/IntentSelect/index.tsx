@@ -1,10 +1,18 @@
 import { Utils } from '@voiceflow/common';
 import { Intent } from '@voiceflow/dtos';
 import * as Platform from '@voiceflow/platform-config';
-import { BaseSelectProps, isUIOnlyMenuItemOption, Menu, Select, System, toast, UIOnlyMenuItemOption } from '@voiceflow/ui';
+import {
+  BaseSelectProps,
+  isUIOnlyMenuItemOption,
+  Menu,
+  Select,
+  System,
+  toast,
+  UIOnlyMenuItemOption,
+} from '@voiceflow/ui';
 import React from 'react';
 
-import Alert from '@/components/Alert';
+import Alert from '@/components/legacy/Alert';
 import { Designer, Project } from '@/ducks';
 import { useSelector } from '@/hooks';
 import { useIntentNameProcessor, useOnOpenIntentCreateModal } from '@/hooks/intent.hook';
@@ -16,7 +24,13 @@ import { Option } from './components';
 interface IntentSelectProps
   extends Omit<
     BaseSelectProps,
-    'className' | 'options' | 'searchable' | 'optionsFilter' | 'formatInputValue' | 'isButtonDisabled' | 'renderOptionLabel'
+    | 'className'
+    | 'options'
+    | 'searchable'
+    | 'optionsFilter'
+    | 'formatInputValue'
+    | 'isButtonDisabled'
+    | 'renderOptionLabel'
   > {
   intent?: Platform.Base.Models.Intent.Model | Intent | null;
   options?: Array<Platform.Base.Models.Intent.Model | UIOnlyMenuItemOption | Intent>;
@@ -52,7 +66,9 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
     () =>
       options
         .filter((option) => isUIOnlyMenuItemOption(option) || intentFilter(option, intent, { noBuiltIns }))
-        .map((option) => (isUIOnlyMenuItemOption(option) ? { ...option, name: option.label } : { ...option, name: option.name })),
+        .map((option) =>
+          isUIOnlyMenuItemOption(option) ? { ...option, name: option.label } : { ...option, name: option.name }
+        ),
     [intent, options, platform, noBuiltIns]
   );
 
@@ -62,7 +78,10 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
     return filteredOptions.some(({ name }) => name.toLowerCase() === searchValueLower);
   };
 
-  const optionLookup = React.useMemo(() => Object.fromEntries(filteredOptions.map((option) => [option.id, option.name])), [filteredOptions]);
+  const optionLookup = React.useMemo(
+    () => Object.fromEntries(filteredOptions.map((option) => [option.id, option.name])),
+    [filteredOptions]
+  );
 
   const onSelectIntent = async (nextIntentID: string | null) => {
     onChange({ intent: nextIntentID });
@@ -118,9 +137,17 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
         formatInputValue={(value) => applyPlatformIntentNameFormatting(value, platform)}
         isButtonDisabled={({ value }) => isIntentNameTaken(value)}
         createInputPlaceholder={createInputPlaceholder}
-        renderEmpty={({ search }) => <Menu.NotFound>{!search ? 'No intents exist in your agent. ' : 'No intents found. '}</Menu.NotFound>}
+        renderEmpty={({ search }) => (
+          <Menu.NotFound>{!search ? 'No intents exist in your agent. ' : 'No intents found. '}</Menu.NotFound>
+        )}
         renderOptionLabel={(option, searchLabel, getOptionLabel, getOptionValue, { isFocused }) => (
-          <Option option={option} isFocused={isFocused} searchLabel={searchLabel} getOptionLabel={getOptionLabel} getOptionValue={getOptionValue} />
+          <Option
+            option={option}
+            isFocused={isFocused}
+            searchLabel={searchLabel}
+            getOptionLabel={getOptionLabel}
+            getOptionValue={getOptionValue}
+          />
         )}
         renderSearchSuffix={({ close, searchLabel }) => (
           <System.IconButtonsGroup.Base>
@@ -129,7 +156,9 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
         )}
         renderFooterAction={({ close, searchLabel }) => (
           <Menu.Footer>
-            <Menu.Footer.Action onClick={Utils.functional.chain(close, () => onCreateFromButton(searchLabel))}>Create New Intent</Menu.Footer.Action>
+            <Menu.Footer.Action onClick={Utils.functional.chain(close, () => onCreateFromButton(searchLabel))}>
+              Create New Intent
+            </Menu.Footer.Action>
           </Menu.Footer>
         )}
       />

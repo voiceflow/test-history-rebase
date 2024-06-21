@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Alert from '@/components/Alert';
+import Alert from '@/components/legacy/Alert';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 
 interface EditorProps {

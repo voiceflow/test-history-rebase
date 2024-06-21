@@ -3,7 +3,7 @@ import { type EntityManager, ObjectId } from '@mikro-orm/mongodb';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable, Module } from '@nestjs/common';
 import type { SmartMultiAdapter } from 'bidirectional-adapter';
-import type { Filter, MatchKeysAndValues } from 'mongodb-mikro';
+import type { Filter, MatchKeysAndValues } from 'mongodb';
 
 import { DatabaseTarget } from '@/common/enums/database-target.enum';
 import type { ORM } from '@/common/interfaces/orm.interface';

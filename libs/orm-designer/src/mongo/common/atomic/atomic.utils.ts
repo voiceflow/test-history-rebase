@@ -1,6 +1,6 @@
 import type { Struct } from '@voiceflow/common';
 import { Utils } from '@voiceflow/common';
-import type { ArrayOperator, PullAllOperator, PullOperator, PushOperator, SetFields } from 'mongodb-mikro';
+import type { ArrayOperator, PullAllOperator, PullOperator, PushOperator, SetFields } from 'mongodb';
 
 import type {
   AddToSetOperation,

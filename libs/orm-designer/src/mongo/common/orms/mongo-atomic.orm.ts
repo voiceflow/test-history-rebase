@@ -1,5 +1,5 @@
 import type { Primary } from '@mikro-orm/core';
-import type { Filter, FindOneAndUpdateOptions, UpdateOptions } from 'mongodb-mikro';
+import type { Filter, FindOneAndUpdateOptions, UpdateOptions } from 'mongodb';
 
 import type { MutableORM } from '@/common/interfaces/mutable-orm.interface';
 import type { ToObject } from '@/types';

@@ -1,5 +1,5 @@
 import type { Nullish, Struct } from '@voiceflow/common';
-import type { UpdateFilter } from 'mongodb-mikro';
+import type { UpdateFilter } from 'mongodb';
 
 export interface SetOperation {
   path: string | Array<string | Struct>;

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1594.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1594.5...@voiceflow/creator-app@1.1594.6) (2024-06-21)
+
+### Bug Fixes
+
+* useFeature hook replacement part 4 (COR-000) ([#8356](https://github.com/voiceflow/creator-app/issues/8356)) ([d27e023](https://github.com/voiceflow/creator-app/commit/d27e0233cffd70ebb1747938ce7f6766e30bcb54))
+
 ## [1.1594.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1594.4...@voiceflow/creator-app@1.1594.5) (2024-06-21)
 
 ### Bug Fixes

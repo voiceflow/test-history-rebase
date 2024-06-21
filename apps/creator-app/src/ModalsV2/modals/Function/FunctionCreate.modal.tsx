@@ -11,7 +11,7 @@ import { CMSFormName } from '@/components/CMS/CMSForm/CMSFormName/CMSFormName.co
 import { Modal } from '@/components/Modal';
 import { CMS_FUNCTION_DEFAULT_CODE } from '@/constants/cms/function.constant';
 import { Designer } from '@/ducks';
-import { useFeature } from '@/hooks';
+import { useFeature } from '@/hooks/feature.hook';
 import { useInputState } from '@/hooks/input.hook';
 import { useDispatch } from '@/hooks/store.hook';
 import { useValidators } from '@/hooks/validate.hook';
@@ -31,8 +31,8 @@ export const FunctionCreateModal = modalsManager.create<IFunctionCreateModal, Fu
     ({ api, type: typeProp, name: nameProp, opened, hidden, animated, folderID, closePrevented }) => {
       const TEST_ID = 'create-function';
 
-      const functionListen = useFeature(Realtime.FeatureFlag.FUNCTION_LISTEN);
-      const filteredTemplates = functionListen.isEnabled
+      const functionListenEnabled = useFeature(Realtime.FeatureFlag.FUNCTION_LISTEN);
+      const filteredTemplates = functionListenEnabled
         ? starterTemplates
         : starterTemplates.filter(
             (template) => ![TemplateID.LISTEN, TemplateID.LISTEN_WITH_CAROUSEL].includes(template.templateID)

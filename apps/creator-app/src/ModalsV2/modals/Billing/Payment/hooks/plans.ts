@@ -4,12 +4,12 @@ import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { useAtom, useAtomValue } from 'jotai/react';
 
 import { designerClient } from '@/client/designer';
-import { useFeature } from '@/hooks';
+import { useFeature } from '@/hooks/feature.hook';
 
 import * as atoms from '../Payment.atoms';
 
 export const usePlans = (coupon?: string) => {
-  const { isEnabled: teamsPlanSelfServeIsEnabled } = useFeature(FeatureFlag.TEAMS_PLAN_SELF_SERVE);
+  const teamsPlanSelfServeIsEnabled = useFeature(FeatureFlag.TEAMS_PLAN_SELF_SERVE);
   const [plans, setPlans] = useAtom(atoms.plansAtom);
   const plansByID = useAtomValue(atoms.plansByIDAtom);
 

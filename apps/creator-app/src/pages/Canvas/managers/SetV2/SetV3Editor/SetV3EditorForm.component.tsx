@@ -60,8 +60,8 @@ export const SetV3EditorForm: React.FC<ISetV3EditorForm> = ({ editor }) => {
 
   const isMaxSets = React.useMemo(() => sets.length >= MAX_SETS, [sets]);
 
-  const onSubEditorClose = () => {
-    setJustAddedSetID(null);
+  const onSubEditorClose = (setID: string) => {
+    if (setID === justAddedSetID) setJustAddedSetID(null);
   };
 
   return (
@@ -89,6 +89,7 @@ export const SetV3EditorForm: React.FC<ISetV3EditorForm> = ({ editor }) => {
                 onChange={onSetUpdate}
                 onDuplicate={isMaxSets ? undefined : onSetDuplicate}
                 onRemove={onSetRemove}
+                onSetAnother={() => onSetAdd()}
                 isJustAdded={justAddedSetID === item.id}
                 onSubEditorClose={onSubEditorClose}
               />

@@ -5,10 +5,9 @@ import { markupToString } from '@voiceflow/utils-designer';
 import { useAtomValue } from 'jotai';
 import React from 'react';
 
-import { entitiesVariablesMapsAtom } from '@/atoms/other.atom';
+import { variablesMapByIDAtom } from '@/atoms/variable.atom';
 import { CMSFormListItem } from '@/components/CMS/CMSForm/CMSFormListItem/CMSFormListItem.component';
-import { Diagram } from '@/ducks';
-import { useExpressionValidator, useSelector } from '@/hooks';
+import { useExpressionValidator } from '@/hooks';
 
 import { SetV3EditorItemContextMenu } from './SetV3EditorItemContextMenu.component';
 import { SetV3EditorItemSubEditor } from './SetV3EditorItemSubEditor.component';
@@ -21,7 +20,8 @@ interface ISetV3EditorItem {
   onChange: (itemID: string, item: Partial<Realtime.NodeData.SetExpressionV2>) => void;
   onDuplicate?: (itemID: string) => void;
   onRemove: (itemID: string) => void;
-  onSubEditorClose: VoidFunction;
+  onSubEditorClose: (itemID: string) => void;
+  onSetAnother: VoidFunction;
 }
 
 export const SetV3EditorItem: React.FC<ISetV3EditorItem> = ({
@@ -31,9 +31,9 @@ export const SetV3EditorItem: React.FC<ISetV3EditorItem> = ({
   onDuplicate,
   onRemove,
   onSubEditorClose,
+  onSetAnother,
 }) => {
-  const entitiesVariablesMaps = useAtomValue(entitiesVariablesMapsAtom);
-  const variablesMap = useSelector(Diagram.active.entitiesAndVariablesMapSelector);
+  const variablesMap = useAtomValue(variablesMapByIDAtom);
   const [error, setError] = React.useState<string>('');
 
   const popperContext = usePopperContext();
@@ -44,14 +44,15 @@ export const SetV3EditorItem: React.FC<ISetV3EditorItem> = ({
   const expressionValidator = useExpressionValidator();
 
   const updateExpression = (item: Realtime.NodeData.SetExpressionV2) => (value: Markup) => {
-    const expression = markupToString.fromDB(value, entitiesVariablesMaps);
+    const expression = markupToString.fromDB(value, { variablesMapByID: variablesMap, entitiesMapByID: {} });
+
     if (!expression.trim() || !expressionValidator.validate(expression)) return;
 
-    onChange(item.id, { expression });
+    onChange(item.id, { ...item, expression });
   };
 
-  const updateVariable = (item: Realtime.NodeData.SetExpressionV2) => (variable: string) => {
-    onChange(item.id, { ...item, variable });
+  const updateVariable = (item: Realtime.NodeData.SetExpressionV2) => (variableID: string) => {
+    onChange(item.id, { ...item, variable: variableID });
   };
 
   React.useEffect(() => {
@@ -75,14 +76,14 @@ export const SetV3EditorItem: React.FC<ISetV3EditorItem> = ({
       placement="left-start"
       modifiers={modifiers}
       testID={SET_STEP_VARIABLE_TEST_ID}
-      onClose={onSubEditorClose}
+      onClose={() => onSubEditorClose(item.id)}
       isOpen={isJustAdded}
       referenceElement={({ ref: popperRef, isOpen, onOpen }) => (
         <Box ref={popperRef} width="100%">
           <SetV3EditorItemContextMenu
             onDuplicate={onDuplicate ? () => onDuplicate?.(item.id) : undefined}
             onRename={() => {
-              onChange(item.id, { ...item, variable: '' });
+              onChange(item.id, { ...item });
             }}
             onRemove={() => onRemove(item.id)}
             referenceElement={({ ref: contextMenuPopperRef, onContextMenu }) => (
@@ -109,8 +110,10 @@ export const SetV3EditorItem: React.FC<ISetV3EditorItem> = ({
       {() => (
         <SetV3EditorItemSubEditor
           item={item}
+          isJustAdded={isJustAdded}
           onUpdateExpression={updateExpression(item)}
           onUpdateVariable={updateVariable(item)}
+          onSetAnother={isJustAdded ? onSetAnother : undefined}
           expressionValidator={expressionValidator}
         />
       )}

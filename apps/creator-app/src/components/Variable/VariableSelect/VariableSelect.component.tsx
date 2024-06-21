@@ -8,7 +8,16 @@ import { useSelector } from '@/hooks/store.hook';
 import { VariableMenu } from '../VariableMenu/VariableMenu.component';
 import type { IVariableSelect } from './VariableSelect.interface';
 
-export const VariableSelect: React.FC<IVariableSelect> = ({ onSelect, variableID, menuProps, excludeVariableIDs: excludeVariableIDsProp }) => {
+export const VariableSelect: React.FC<IVariableSelect> = ({
+  onSelect,
+  label,
+  error,
+  variableID,
+  prefixIcon,
+  editSelected,
+  menuProps,
+  excludeVariableIDs: excludeVariableIDsProp,
+}) => {
   const variable = useSelector(Designer.Variable.selectors.oneByID, { id: variableID });
 
   const variableEditModal = useVariableEditModal();
@@ -21,10 +30,11 @@ export const VariableSelect: React.FC<IVariableSelect> = ({ onSelect, variableID
   return (
     <Dropdown
       value={variable?.name ?? null}
-      label="variable"
+      error={error}
+      label={label || 'variable'}
       placeholder="Select variable"
-      prefixIconName={variable ? 'EditS' : undefined}
-      onPrefixIconClick={() => variable && variableEditModal.openVoid({ variableID: variable.id })}
+      prefixIconName={prefixIcon || (variable && editSelected ? 'EditS' : undefined)}
+      onPrefixIconClick={() => variable && editSelected && variableEditModal.openVoid({ variableID: variable.id })}
     >
       {({ onClose, referenceRef }) => (
         <VariableMenu

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1594.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1593.1...@voiceflow/creator-app@1.1594.0) (2024-06-21)
+
+### Features
+
+* refactor entitlements hook (COR-000) ([#8338](https://github.com/voiceflow/creator-app/issues/8338)) ([9fff74a](https://github.com/voiceflow/creator-app/commit/9fff74abd4eded84cba5a7cced390ea7717d519b))
+
 ## [1.1593.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1593.0...@voiceflow/creator-app@1.1593.1) (2024-06-21)
 
 ### Bug Fixes

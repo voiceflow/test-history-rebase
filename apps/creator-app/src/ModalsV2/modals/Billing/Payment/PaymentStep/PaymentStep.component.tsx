@@ -7,7 +7,8 @@ import pluralize from 'pluralize';
 import React from 'react';
 
 import * as Organization from '@/ducks/organization';
-import { useFeature, useSelector } from '@/hooks';
+import { useSelector } from '@/hooks';
+import { useFeature } from '@/hooks/feature.hook';
 
 import * as CardForm from '../CardForm';
 import { useCheckoutPayment, usePricing } from '../hooks';
@@ -23,7 +24,7 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onClose, modalProps })
   const { onSubmit: onSubmitForm, cardRef } = useCheckoutPayment({ modalProps });
   const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
   const { selectedPlanPrice, selectedPeriod, selectedPlan } = usePricing();
-  const { isEnabled: teamsPlanSelfServeIsEnabled } = useFeature(FeatureFlag.TEAMS_PLAN_SELF_SERVE);
+  const teamsPlanSelfServeIsEnabled = useFeature(FeatureFlag.TEAMS_PLAN_SELF_SERVE);
   const [existingCardValue, setExistingCardValue] = React.useState<CardForm.ExistingCardValue>(
     teamsPlanSelfServeIsEnabled && subscription?.paymentMethod
       ? CardForm.ExistingCardValue.EXISTING

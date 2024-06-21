@@ -7,7 +7,8 @@ import React from 'react';
 import { DEFAULT_PERIOD } from '@/constants';
 import * as Organization from '@/ducks/organization';
 import { UpgradePrompt } from '@/ducks/tracking';
-import { useFeature, useSelector } from '@/hooks';
+import { useSelector } from '@/hooks';
+import { useFeature } from '@/hooks/feature.hook';
 
 import manager from '../../../manager';
 import { BillingStep } from './BillingStep/BillingStep.component';
@@ -32,7 +33,7 @@ export const Payment = manager.create<PaymentModalProps>('Payment', () => (modal
   const setPlan = useSetAtom(atoms.selectedPlanIDAtom);
   const updateCoupons = useSetAtom(atoms.couponIdsAtom);
   const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
-  const { isEnabled: teamsPlanSelfServeIsEnabled } = useFeature(FeatureFlag.TEAMS_PLAN_SELF_SERVE);
+  const teamsPlanSelfServeIsEnabled = useFeature(FeatureFlag.TEAMS_PLAN_SELF_SERVE);
 
   const handleExited = () => {
     onReset();
@@ -43,7 +44,8 @@ export const Payment = manager.create<PaymentModalProps>('Payment', () => (modal
     setPeriod(DEFAULT_PERIOD);
 
     if (teamsPlanSelfServeIsEnabled) {
-      const defaultNextPlan = subscription?.plan === PlanName.STARTER || subscription?.trial ? PlanName.PRO : PlanName.TEAM;
+      const defaultNextPlan =
+        subscription?.plan === PlanName.STARTER || subscription?.trial ? PlanName.PRO : PlanName.TEAM;
 
       setPlan(nextPlan ?? defaultNextPlan);
     }
@@ -61,7 +63,10 @@ export const Payment = manager.create<PaymentModalProps>('Payment', () => (modal
 
   return (
     <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={handleExited} maxWidth={500}>
-      <Modal.Header actions={<Modal.Header.CloseButtonAction disabled={closePrevented} onClick={api.onClose} />} capitalizeText={false}>
+      <Modal.Header
+        actions={<Modal.Header.CloseButtonAction disabled={closePrevented} onClick={api.onClose} />}
+        capitalizeText={false}
+      >
         {activeStep !== Step.PLAN && (
           <System.IconButtonsGroup.Base mr={12}>
             <System.IconButton.Base icon="largeArrowLeft" disabled={closePrevented} onClick={onBack} />

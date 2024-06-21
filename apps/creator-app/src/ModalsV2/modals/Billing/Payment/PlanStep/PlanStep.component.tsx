@@ -6,7 +6,8 @@ import React from 'react';
 
 import { UpgradePrompt } from '@/ducks/tracking';
 import * as Workspace from '@/ducks/workspaceV2';
-import { useFeature, useSelector, useTrackingEvents } from '@/hooks';
+import { useSelector, useTrackingEvents } from '@/hooks';
+import { useFeature } from '@/hooks/feature.hook';
 import { onOpenBookDemoPage } from '@/utils/upgrade';
 
 import { usePaymentSteps, usePlans } from '../hooks';
@@ -29,7 +30,7 @@ export const PlanStep: React.FC<PlanStepProps> = ({ onClose, promptType }) => {
   const plan = useSelector(Workspace.active.planSelector);
   const isOnPaidPlan = useSelector(Workspace.active.isOnPaidPlanSelector);
   const isOnTrial = useSelector(Workspace.active.isOnTrialSelector);
-  const { isEnabled: teamsPlanSelfServeIsEnabled } = useFeature(FeatureFlag.TEAMS_PLAN_SELF_SERVE);
+  const teamsPlanSelfServeIsEnabled = useFeature(FeatureFlag.TEAMS_PLAN_SELF_SERVE);
 
   const onContactSales = () => {
     if (promptType) {

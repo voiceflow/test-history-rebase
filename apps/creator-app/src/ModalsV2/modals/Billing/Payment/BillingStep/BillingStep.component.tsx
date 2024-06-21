@@ -7,7 +7,8 @@ import React from 'react';
 import RadioGroup from '@/components/RadioGroup';
 import * as Organization from '@/ducks/organization';
 import * as Workspace from '@/ducks/workspaceV2';
-import { useFeature, useSelector } from '@/hooks';
+import { useSelector } from '@/hooks';
+import { useFeature } from '@/hooks/feature.hook';
 import * as currency from '@/utils/currency';
 
 import { usePaymentSteps, usePricing } from '../hooks';
@@ -17,7 +18,7 @@ interface BillingStepProps {
 }
 
 export const BillingStep: React.FC<BillingStepProps> = ({ isLoading }) => {
-  const { isEnabled: teamsPlanSelfServeIsEnabled } = useFeature(FeatureFlag.TEAMS_PLAN_SELF_SERVE);
+  const teamsPlanSelfServeIsEnabled = useFeature(FeatureFlag.TEAMS_PLAN_SELF_SERVE);
   const usedViewerSeats = useSelector(Workspace.active.members.usedViewerSeatsSelector);
   const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
   const { onBack, onNext } = usePaymentSteps();

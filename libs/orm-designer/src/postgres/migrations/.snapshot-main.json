@@ -1081,17 +1081,6 @@
       "schema": "designer",
       "indexes": [
         {
-          "keyName": "reference_environment_id_resource_id_referrer_resource_id_unique",
-          "columnNames": [
-            "environment_id",
-            "resource_id",
-            "referrer_resource_id"
-          ],
-          "composite": true,
-          "primary": false,
-          "unique": true
-        },
-        {
           "keyName": "reference_pkey",
           "columnNames": [
             "environment_id",

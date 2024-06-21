@@ -1,4 +1,4 @@
-import * as Normal from 'normal-store';
+import { Utils } from '@voiceflow/common';
 import { createSelector } from 'reselect';
 
 import { createCurriedSelector, referrerIDParamSelector } from '@/ducks/utils';
@@ -11,9 +11,9 @@ const DEFAULT_IDS: string[] = [];
 
 export const root = createDesignerSelector(STATE_KEY);
 
-export const normalizedResources = createSelector([root], ({ resources }) => resources);
+export const resourceMap = createSelector([root], ({ resourceMap }) => resourceMap);
 
-export const normalizedReferences = createSelector([root], ({ references }) => references);
+export const referenceMap = createSelector([root], ({ referenceMap }) => referenceMap);
 
 export const blockNodeResourceIDs = createSelector([root], ({ blockNodeResourceIDs }) => blockNodeResourceIDs);
 
@@ -57,21 +57,20 @@ export const globalTriggerNodeIDsByIntentIDMapByDiagramIDMap = createSelector(
   ({ globalTriggerNodeIDsByIntentIDMapByDiagramIDMap }) => globalTriggerNodeIDsByIntentIDMapByDiagramIDMap
 );
 
-export const oneResourceByID = createSelector([normalizedResources, idParamSelector], (normalizedResources, id) =>
-  id ? Normal.getOne(normalizedResources, id) : null
+export const oneResourceByID = createSelector([resourceMap, idParamSelector], (resourceMap, id) =>
+  id ? resourceMap[id] ?? null : null
 );
 
 export const getOneResourceByID = createCurriedSelector(oneResourceByID);
 
-export const allResourcesByIDs = createSelector([normalizedResources, idsParamSelector], (normalizedResources, ids) =>
-  Normal.getMany(normalizedResources, ids)
+export const allResourcesByIDs = createSelector([resourceMap, idsParamSelector], (resourceMap, ids) =>
+  ids.map((id) => resourceMap[id]).filter(Utils.array.isNotNullish)
 );
 
 export const getAllResourcesByIDs = createCurriedSelector(allResourcesByIDs);
 
-export const allReferencesByIDs = createSelector(
-  [normalizedReferences, idsParamSelector],
-  (normalizedReferences, ids) => Normal.getMany(normalizedReferences, ids)
+export const allReferencesByIDs = createSelector([referenceMap, idsParamSelector], (referenceMap, ids) =>
+  ids.map((id) => referenceMap[id]).filter(Utils.array.isNotNullish)
 );
 
 export const getAllReferencesByIDs = createCurriedSelector(allReferencesByIDs);

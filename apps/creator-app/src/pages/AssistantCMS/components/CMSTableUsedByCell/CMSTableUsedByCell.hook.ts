@@ -1,9 +1,8 @@
 import { useAtomValue } from 'jotai';
-import { getOne } from 'normal-store';
 import { useCallback } from 'react';
 
 import { flowMapByDiagramIDAtom } from '@/atoms/flow.atom';
-import { normalizedResourcesAtom } from '@/atoms/reference.atom';
+import { resourceMapAtom } from '@/atoms/reference.atom';
 import { workflowMapByDiagramIDAtom } from '@/atoms/workflow.atom';
 import { Router } from '@/ducks';
 import { useDispatch } from '@/hooks/store.hook';
@@ -14,13 +13,13 @@ import { CMSTableUsedByCellItemType } from './CMSTableUsedByCellItemType.enum';
 export const useCMSTableUsedByCellGetItem = () => {
   const goToDiagram = useDispatch(Router.goToDiagram);
 
+  const resourceMap = useAtomValue(resourceMapAtom);
   const flowMapByDiagramID = useAtomValue(flowMapByDiagramIDAtom);
-  const normalizedResources = useAtomValue(normalizedResourcesAtom);
   const workflowMapByDiagramID = useAtomValue(workflowMapByDiagramIDAtom);
 
   const getReferrerItem = useCallback(
     (id: string | null): null | CMSTableUsedByCellItem => {
-      const resource = id ? getOne(normalizedResources, id) : null;
+      const resource = id ? resourceMap[id] ?? null : null;
 
       if (!id || !resource?.diagramID) return null;
 
@@ -38,7 +37,7 @@ export const useCMSTableUsedByCellGetItem = () => {
         onClick: () => goToDiagram(flowOrWorkflow.diagramID, resource.resourceID),
       };
     },
-    [normalizedResources, flowMapByDiagramID, workflowMapByDiagramID]
+    [resourceMap, flowMapByDiagramID, workflowMapByDiagramID]
   );
 
   return getReferrerItem;

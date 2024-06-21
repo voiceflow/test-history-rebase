@@ -2,7 +2,9 @@ import { Designer } from '@/ducks';
 
 import { atomWithSelector } from './store.atom';
 
-export const normalizedResourcesAtom = atomWithSelector(Designer.Reference.selectors.normalizedResources);
+export const resourceMapAtom = atomWithSelector(Designer.Reference.selectors.resourceMap);
+
+export const referenceMapAtom = atomWithSelector(Designer.Reference.selectors.referenceMap);
 
 export const intentIDResourceIDMapAtom = atomWithSelector(Designer.Reference.selectors.intentIDResourceIDMap);
 

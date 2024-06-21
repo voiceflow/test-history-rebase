@@ -197,6 +197,16 @@ export class RequiredEntityService extends CMSObjectService<RequiredEntityORM> {
       }))
     );
 
+    const isReferenceEnabled = await this.reference.isFeatureEnabled(userID, context.assistantID);
+
+    if (isReferenceEnabled) {
+      await this.reference.createManyWithSubResourcesForRequiredEntities({
+        assistantID: context.assistantID,
+        environmentID: context.environmentID,
+        requiredEntities: this.mapToJSON(requiredEntities),
+      });
+    }
+
     return {
       ...responseWithSubResources,
       requiredEntities,

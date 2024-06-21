@@ -1,15 +1,14 @@
 import { NodeType, ReferenceResourceType } from '@voiceflow/dtos';
-import * as Normal from 'normal-store';
 import { createSelector } from 'reselect';
 
 import { ReferenceBlockNodeResource } from '../reference.interface';
-import { blockNodeResourceIDs, normalizedResources } from './root.select';
+import { blockNodeResourceIDs, resourceMap } from './root.select';
 
 export const blockNodeResources = createSelector(
-  [normalizedResources, blockNodeResourceIDs],
-  (normalizedResources, blockNodeResourceIDs) =>
+  [resourceMap, blockNodeResourceIDs],
+  (resourceMap, blockNodeResourceIDs) =>
     blockNodeResourceIDs
-      .map((id) => Normal.getOne(normalizedResources, id))
+      .map((id) => resourceMap[id])
       .filter(
         (resource): resource is ReferenceBlockNodeResource =>
           !!resource &&

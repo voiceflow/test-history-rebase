@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.22.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/utils-designer@1.22.6...@voiceflow/utils-designer@1.22.7) (2024-06-21)
+
+**Note:** Version bump only for package @voiceflow/utils-designer
+
 ## [1.22.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/utils-designer@1.22.5...@voiceflow/utils-designer@1.22.6) (2024-06-20)
 
 **Note:** Version bump only for package @voiceflow/utils-designer

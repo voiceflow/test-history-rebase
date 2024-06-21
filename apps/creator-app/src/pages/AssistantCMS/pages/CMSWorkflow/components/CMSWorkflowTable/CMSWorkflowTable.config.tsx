@@ -64,12 +64,6 @@ export const CMS_WORKFLOW_TABLE_CONFIG: TableConfig<
     [WorkflowTableColumn.TRIGGERS]: {
       type: WorkflowTableColumn.TRIGGERS,
       name: 'Triggers',
-      sorter: withFolderSort<CMSWorkflow, CMSWorkflowSortContext>((left, right, { context }) =>
-        withOptionalSort((left: number, right: number) => left - right)(
-          context.triggersMapByDiagramID[left.diagramID]?.length,
-          context.triggersMapByDiagramID[right.diagramID]?.length
-        )
-      ),
 
       cell: ({ item }) => (
         <Table.Cell.GroupEmpty

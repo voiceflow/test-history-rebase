@@ -1,4 +1,4 @@
-import { ArrayType, Entity, Enum, Index, ManyToOne, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
+import { ArrayType, Entity, Enum, Index, ManyToOne, PrimaryKeyProp, Property, Unique } from '@mikro-orm/core';
 import { Channel, Language } from '@voiceflow/dtos';
 
 import type { AssistantEntity } from '@/postgres/assistant';
@@ -33,5 +33,5 @@ export class ResponseDiscriminatorEntity extends PostgresCMSObjectEntity {
   @Environment()
   environmentID!: string;
 
-  [PrimaryKeyType]?: CMSCompositePK;
+  [PrimaryKeyProp]?: CMSCompositePK;
 }

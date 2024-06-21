@@ -1,4 +1,4 @@
-import { Entity, Index, ManyToOne, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
+import { Entity, Index, ManyToOne, PrimaryKeyProp, Property, Unique } from '@mikro-orm/core';
 import type { Markup } from '@voiceflow/dtos';
 
 import { MarkupType } from '@/common';
@@ -47,5 +47,5 @@ export class ResponseMessageEntity<DefaultOrNullColumn extends string = never> e
   @Property({ type: 'int', nullable: true })
   delay!: number | null;
 
-  [PrimaryKeyType]?: CMSCompositePK;
+  [PrimaryKeyProp]?: CMSCompositePK;
 }

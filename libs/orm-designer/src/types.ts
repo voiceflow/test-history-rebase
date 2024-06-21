@@ -1,4 +1,4 @@
-import type { Cast, Collection, IsUnknown, Primary, PrimaryKeyType, PrimaryProperty, Reference } from '@mikro-orm/core';
+import type { Cast, Collection, IsUnknown, Primary, PrimaryKeyProp, PrimaryProperty, Reference } from '@mikro-orm/core';
 import type { ExcludeFunctions } from '@mikro-orm/core/typings';
 import type { ObjectId } from '@mikro-orm/mongodb';
 import type { AnyRecord, Struct } from '@voiceflow/common';
@@ -30,7 +30,7 @@ export interface BasePKEntity {
 export interface PostgresPKEntity extends Omit<BasePKEntity, '_id'> {
   id: PostgresEntityPKValue;
 
-  [PrimaryKeyType]?: unknown;
+  [PrimaryKeyProp]?: unknown;
 }
 
 export interface MongoPKEntity extends Omit<BasePKEntity, 'id'> {
@@ -89,7 +89,7 @@ export type ToForeignKeys<T extends AnyRecord> = {
 };
 
 export type ResolvedForeignKeys<T extends AnyRecord, D extends AnyRecord> = {
-  [K in Exclude<keyof D, typeof PrimaryKeyType> as K extends `${keyof T & string}ID`
+  [K in Exclude<keyof D, typeof PrimaryKeyProp> as K extends `${keyof T & string}ID`
     ? K extends `${infer TK}ID`
       ? TK
       : K
@@ -105,13 +105,13 @@ export type ExcludeCreateKeys =
   | 'updatedAt'
   | 'deletedAt'
   | 'toJSON'
-  | typeof PrimaryKeyType;
+  | typeof PrimaryKeyProp;
 
 export type Ref<T, PK extends keyof T | unknown = PrimaryProperty<T>> =
   true extends IsUnknown<PK>
     ? Reference<T>
     : // check if PK is a object or record
-      T extends { [PrimaryKeyType]?: infer K }
+      T extends { [PrimaryKeyProp]?: infer K }
       ? K & Reference<T>
       : {
           [K in Cast<PK, keyof T>]: T[K];

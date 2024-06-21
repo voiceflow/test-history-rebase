@@ -1,4 +1,4 @@
-import { Entity, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
+import { Entity, PrimaryKeyProp, Property, Unique } from '@mikro-orm/core';
 import type { ObjectId } from '@mikro-orm/mongodb';
 import type { DiagramMenuItem, DiagramNode, DiagramType } from '@voiceflow/dtos';
 
@@ -65,5 +65,5 @@ export class DiagramEntity extends MongoEntity {
   @Property({ nullable: true })
   intentStepIDs?: string[];
 
-  [PrimaryKeyType]?: { diagramID: string; versionID: string };
+  [PrimaryKeyProp]?: { diagramID: string; versionID: string };
 }

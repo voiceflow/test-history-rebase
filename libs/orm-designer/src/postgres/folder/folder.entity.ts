@@ -1,4 +1,4 @@
-import { Entity, Enum, Index, ManyToOne, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
+import { Entity, Enum, Index, ManyToOne, PrimaryKeyProp, Property, Unique } from '@mikro-orm/core';
 import { FolderScope } from '@voiceflow/dtos';
 
 import type { CMSCompositePK, Ref } from '@/types';
@@ -33,5 +33,5 @@ export class FolderEntity extends PostgresCMSObjectEntity<'parent'> {
   @Environment()
   environmentID!: string;
 
-  [PrimaryKeyType]?: CMSCompositePK;
+  [PrimaryKeyProp]?: CMSCompositePK;
 }

@@ -1,4 +1,4 @@
-import { ManyToOne, PrimaryKeyType, Property } from '@mikro-orm/core';
+import { ManyToOne, PrimaryKeyProp, Property } from '@mikro-orm/core';
 
 import type { AssistantEntity } from '@/postgres/assistant/assistant.entity';
 import { FolderEntity } from '@/postgres/folder/folder.entity';
@@ -38,7 +38,7 @@ export abstract class PostgresCMSTabularEntity<
   })
   folder!: Ref<FolderEntity> | null;
 
-  [PrimaryKeyType]?: CMSCompositePK;
+  [PrimaryKeyProp]?: CMSCompositePK;
 }
 export type PostgresCMSTabularObject = ToObject<PostgresCMSTabularEntity>;
 export type PostgresCMSTabularJSON = ToJSON<PostgresCMSTabularObject>;

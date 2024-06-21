@@ -1,4 +1,5 @@
-import { Entity, Enum, ManyToOne, PrimaryKeyType, Unique } from '@mikro-orm/core';
+/* eslint-disable max-classes-per-file */
+import { Entity, Enum, ManyToOne, PrimaryKeyProp, Unique } from '@mikro-orm/core';
 import { AttachmentType } from '@voiceflow/dtos';
 
 import type { AssistantEntity } from '@/postgres/assistant';
@@ -33,7 +34,7 @@ export class BaseResponseAttachmentEntity extends PostgresCMSCreatableEntity {
   @Environment()
   environmentID!: string;
 
-  [PrimaryKeyType]?: CMSCompositePK;
+  [PrimaryKeyProp]?: CMSCompositePK;
 }
 
 @Entity({

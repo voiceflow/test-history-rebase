@@ -1,4 +1,4 @@
-import { PrimaryKeyType, Property } from '@mikro-orm/core';
+import { PrimaryKeyProp, Property } from '@mikro-orm/core';
 import type { ObjectId } from '@mikro-orm/mongodb';
 import type { ProgramCommand, ProgramLine } from '@voiceflow/dtos';
 
@@ -29,5 +29,5 @@ export abstract class AbstractProgramEntity extends MongoObjectEntity {
   @Property()
   variables!: string[];
 
-  [PrimaryKeyType]?: { diagramID: string; versionID: string };
+  [PrimaryKeyProp]?: { diagramID: string; versionID: string };
 }

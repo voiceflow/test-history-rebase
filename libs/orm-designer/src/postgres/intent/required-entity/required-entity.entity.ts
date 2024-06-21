@@ -1,4 +1,4 @@
-import { Entity as EntityDecorator, Index, ManyToOne, PrimaryKeyType } from '@mikro-orm/core';
+import { Entity as EntityDecorator, Index, ManyToOne, PrimaryKeyProp } from '@mikro-orm/core';
 
 import type { AssistantEntity } from '@/postgres/assistant';
 import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
@@ -40,5 +40,5 @@ export class RequiredEntityEntity extends PostgresCMSObjectEntity<'reprompt'> {
   @Environment()
   environmentID!: string;
 
-  [PrimaryKeyType]?: CMSCompositePK;
+  [PrimaryKeyProp]?: CMSCompositePK;
 }

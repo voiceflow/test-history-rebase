@@ -4,7 +4,7 @@ import {
   Enum,
   Index,
   ManyToOne,
-  PrimaryKeyType,
+  PrimaryKeyProp,
   Property,
 } from '@mikro-orm/core';
 import { Language } from '@voiceflow/dtos';
@@ -40,5 +40,5 @@ export class EntityVariantEntity extends PostgresCMSObjectEntity {
   @Environment()
   environmentID!: string;
 
-  [PrimaryKeyType]?: CMSCompositePK;
+  [PrimaryKeyProp]?: CMSCompositePK;
 }

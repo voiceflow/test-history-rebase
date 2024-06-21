@@ -1,4 +1,4 @@
-import { Entity, Enum, Index, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
+import { Entity, Enum, Index, PrimaryKeyProp, Property, Unique } from '@mikro-orm/core';
 import type { ConditionAssertion, Markup } from '@voiceflow/dtos';
 import { ConditionType } from '@voiceflow/dtos';
 
@@ -28,7 +28,7 @@ export class BaseConditionEntity<
   @Environment()
   environmentID!: string;
 
-  [PrimaryKeyType]?: CMSCompositePK;
+  [PrimaryKeyProp]?: CMSCompositePK;
 }
 
 @Entity({ discriminatorValue: ConditionType.EXPRESSION })

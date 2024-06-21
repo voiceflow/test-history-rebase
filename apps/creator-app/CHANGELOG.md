@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1593.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1592.2...@voiceflow/creator-app@1.1593.0) (2024-06-21)
+
+### Features
+
+* setV3 sub editor (COR-2295) ([#8372](https://github.com/voiceflow/creator-app/issues/8372)) ([af0eeb4](https://github.com/voiceflow/creator-app/commit/af0eeb4ed7fab65fae20098e612e4909e4b837ac))
+
 ## [1.1592.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1592.1...@voiceflow/creator-app@1.1592.2) (2024-06-21)
 
 **Note:** Version bump only for package @voiceflow/creator-app

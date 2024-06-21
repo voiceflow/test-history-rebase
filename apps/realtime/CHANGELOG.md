@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.409.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.408.0...@voiceflow/realtime@1.409.0) (2024-06-21)
+
+### Features
+
+* moved workspace billing to nestjs-logux (COR-2416) ([#8359](https://github.com/voiceflow/creator-app/issues/8359)) ([6f6e45a](https://github.com/voiceflow/creator-app/commit/6f6e45ab9cc440e24d1115517fca199a018a928b))
+
 # [1.408.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.407.3...@voiceflow/realtime@1.408.0) (2024-06-20)
 
 ### Features

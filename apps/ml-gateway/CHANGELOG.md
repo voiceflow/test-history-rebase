@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.102.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.102.6...@voiceflow/ml-gateway@1.102.7) (2024-06-21)
+
+**Note:** Version bump only for package @voiceflow/ml-gateway
+
 ## [1.102.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.102.5...@voiceflow/ml-gateway@1.102.6) (2024-06-20)
 
 **Note:** Version bump only for package @voiceflow/ml-gateway

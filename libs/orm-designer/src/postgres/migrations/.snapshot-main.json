@@ -2061,30 +2061,6 @@
           "length": 24,
           "default": "null",
           "mappedType": "string"
-        },
-        "type": {
-          "name": "type",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "'message'",
-          "enumItems": [
-            "prompt",
-            "message"
-          ],
-          "mappedType": "enum"
-        },
-        "draft": {
-          "name": "draft",
-          "type": "boolean",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "false",
-          "mappedType": "boolean"
         }
       },
       "name": "response",
@@ -2473,10 +2449,8 @@
             "claude-v2",
             "claude-3-haiku",
             "claude-3-sonnet",
-            "claude-3.5-sonnet",
             "claude-3-opus",
             "claude-instant-v1",
-            "gemini-pro-1.5",
             "gemini-pro"
           ],
           "mappedType": "enum"
@@ -2681,10 +2655,8 @@
             "claude-v2",
             "claude-3-haiku",
             "claude-3-sonnet",
-            "claude-3.5-sonnet",
             "claude-3-opus",
             "claude-instant-v1",
-            "gemini-pro-1.5",
             "gemini-pro"
           ],
           "mappedType": "enum"
@@ -5801,15 +5773,6 @@
           "length": 24,
           "default": "null",
           "mappedType": "string"
-        },
-        "delay": {
-          "name": "delay",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "integer"
         }
       },
       "name": "response_message",

@@ -1,6 +1,4 @@
-import { BoxProps, boxStyles } from '@voiceflow/ui/src/components/Box';
-import { BlockText } from '@voiceflow/ui/src/components/Text'
-import { css, styled } from '@voiceflow/ui/src/styles';
+import { BlockText , BoxProps, boxStyles , css, styled } from '@voiceflow/ui';
 
 export const Title = styled(BlockText)`
   font-weight: 600;

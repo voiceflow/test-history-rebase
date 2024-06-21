@@ -6,7 +6,7 @@ import { Path } from '@/config/routes';
 import { Designer } from '@/ducks';
 import { lazy } from '@/hocs/lazy.hoc';
 import { withSuspense } from '@/hocs/suspense.hoc';
-import { useFeature } from '@/hooks/feature';
+import { useFeature } from '@/hooks/feature.hook';
 import { useDispatch } from '@/hooks/store.hook';
 
 import { CMSLayout } from './components/CMSLayout/CMSLayout.component';
@@ -42,9 +42,9 @@ const AssistantCMS = () => {
   const loadKBSettings = useDispatch(Designer.KnowledgeBase.effect.loadSettings);
   const loadKBDocuments = useDispatch(Designer.KnowledgeBase.Document.effect.loadAll);
 
-  const { isEnabled: isKbEnabled } = useFeature(Realtime.FeatureFlag.KNOWLEDGE_BASE);
-  const { isEnabled: isCMSResponsesEnabled } = useFeature(Realtime.FeatureFlag.CMS_RESPONSES);
-  const { isEnabled: isCMSFunctionsEnabled } = useFeature(Realtime.FeatureFlag.CMS_FUNCTIONS);
+  const isKbEnabled = useFeature(Realtime.FeatureFlag.KNOWLEDGE_BASE);
+  const isCMSResponsesEnabled = useFeature(Realtime.FeatureFlag.CMS_RESPONSES);
+  const isCMSFunctionsEnabled = useFeature(Realtime.FeatureFlag.CMS_FUNCTIONS);
 
   React.useEffect(() => {
     if (isKbEnabled) {

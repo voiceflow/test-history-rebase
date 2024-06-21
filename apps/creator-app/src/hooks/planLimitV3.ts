@@ -6,14 +6,8 @@ import { LimitType } from '@/constants/limits';
 import * as Organization from '@/ducks/organization';
 import { getLimitConfig, getLimitEntitlement, isStaticLimitConfig, PlanLimitConfig } from '@/utils/planLimitV3.util';
 
-import { useFeature } from './feature';
-import { useSelector } from './redux';
-
-// @deprecated use useConditionalLimit instead
-export const usePlanLimitedConfig = () => {};
-
-// @deprecated use useGetConditionalLimit instead
-export const useGetPlanLimitedConfig = () => {};
+import { useFeature } from './feature.hook';
+import { useSelector } from './store.hook';
 
 type PlanLimitData<Limit extends LimitType> = PlanLimitConfig<Limit> & {
   teamsPlanSelfServeIsEnabled?: boolean;
@@ -22,7 +16,7 @@ type PlanLimitData<Limit extends LimitType> = PlanLimitConfig<Limit> & {
 };
 
 export const useLimitConfig = <Limit extends LimitType>(limitType: Limit): PlanLimitData<Limit> | null => {
-  const { isEnabled: teamsPlanSelfServeIsEnabled } = useFeature(FeatureFlag.TEAMS_PLAN_SELF_SERVE);
+  const teamsPlanSelfServeIsEnabled = useFeature(FeatureFlag.TEAMS_PLAN_SELF_SERVE);
   const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
   const activePlan = (subscription?.plan as PlanType) ?? PlanType.STARTER;
   const limitConfig = React.useMemo(() => getLimitConfig(limitType, activePlan), [limitType, activePlan]);
@@ -98,7 +92,8 @@ interface PlanLimitedActions<Limit extends LimitType, Args extends any[] = []> {
   onAction: (...args: Args) => void;
 }
 
-type PlanLimitedActionOptions<Limit extends LimitType, Args extends any[] = []> = PlanLimitedActions<Limit, Args> & ConditionalLimitOptions;
+type PlanLimitedActionOptions<Limit extends LimitType, Args extends any[] = []> = PlanLimitedActions<Limit, Args> &
+  ConditionalLimitOptions;
 
 export const useConditionalLimitAction = <Limit extends LimitType, Args extends any[] = void[]>(
   limitType: Limit,

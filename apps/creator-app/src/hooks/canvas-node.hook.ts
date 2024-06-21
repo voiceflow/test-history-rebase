@@ -5,7 +5,8 @@ import { usePersistFunction } from '@voiceflow/ui';
 import { useProjectAIPlayground } from '@/components/GPT/hooks/feature';
 import { IS_PRIVATE_CLOUD } from '@/config';
 import { BlockType } from '@/constants';
-import { useFeature } from '@/hooks/feature.hook';
+
+import { useFeature } from './feature.hook';
 
 export const useCanvasNodeFilter = () => {
   const aiPlaygroundEnabled = useProjectAIPlayground();

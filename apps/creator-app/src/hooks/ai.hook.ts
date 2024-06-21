@@ -1,9 +1,8 @@
 import { DEFAULT_AI_MODEL, DEFAULT_AI_MODEL_PAID_PLAN } from '@voiceflow/dtos';
 import { FeatureFlag } from '@voiceflow/realtime-sdk';
 
-import { useFeature } from '@/hooks/feature.hook';
-
 import { useAIModelEntitlement } from './entitlements.hook';
+import { useFeature } from './feature.hook';
 
 export const useIsAIFeaturesEnabled = () => {
   const assistantAI = useFeature(FeatureFlag.ASSISTANT_AI);

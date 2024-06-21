@@ -13,13 +13,13 @@ import * as Export from '@/ducks/export';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
-import { useFeature } from '@/hooks/feature';
 import { useIsLockedProjectViewer, useIsPreviewer, usePermission } from '@/hooks/permission';
 import { useSelector } from '@/hooks/redux';
 import * as ModalsV2 from '@/ModalsV2';
 import { copy } from '@/utils/clipboard';
 
 import { useOnAssistantDuplicate } from './assistant.hook';
+import { useFeature } from './feature.hook';
 import { useDispatch } from './realtime';
 import { useTrackingEvents } from './tracking';
 
@@ -119,9 +119,9 @@ export const useProjectOptions = ({
   const withDeleteOption = !isPreviewer && withDelete && canManageProjects;
   const withRenameOption = !isPreviewerOrLockedViewer && canEditProject && !!onRename;
   const withSettingsOption = !isPreviewerOrLockedViewer && canEditProject && !!targetVersionID;
-  const withDownloadOption = !isPreviewer && !hideExports.isEnabled;
+  const withDownloadOption = !isPreviewer && !hideExports;
   const withDuplicateOption = !isPreviewerOrLockedViewer && canManageProjects;
-  const withCopyCloneLinkOption = !isPreviewer && !isProjectLocked && canManageProjects && !hideExports.isEnabled;
+  const withCopyCloneLinkOption = !isPreviewer && !isProjectLocked && canManageProjects && !hideExports;
   const hasDivider1 =
     (withRenameOption || withDuplicateOption || withDownloadOption || withCopyCloneLinkOption) &&
     ((withInviteOption && canAddCollaborators) || withSettingsOption);

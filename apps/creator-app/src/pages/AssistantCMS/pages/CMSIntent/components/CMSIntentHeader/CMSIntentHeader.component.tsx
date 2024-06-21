@@ -3,7 +3,7 @@ import { tid } from '@voiceflow/style';
 import { Header } from '@voiceflow/ui-next';
 import React from 'react';
 
-import { useFeature } from '@/hooks/feature';
+import { useFeature } from '@/hooks/feature.hook';
 import { useModal } from '@/hooks/modal.hook';
 import { Modals } from '@/ModalsV2';
 import { HEADER_TEST_ID } from '@/pages/AssistantCMS/AssistantCMS.constant';
@@ -22,9 +22,13 @@ export const CMSIntentHeader: React.FC = () => {
       searchPlaceholder="Search intents"
       rightActions={
         <>
-          {intentClassification.isEnabled && (
+          {intentClassification && (
             <>
-              <Header.Button.IconSecondary testID={tid(HEADER_TEST_ID, 'settings')} iconName="Settings" onClick={() => settingsModal.openVoid()} />
+              <Header.Button.IconSecondary
+                testID={tid(HEADER_TEST_ID, 'settings')}
+                iconName="Settings"
+                onClick={() => settingsModal.openVoid()}
+              />
 
               <Header.Button.Secondary
                 label="Preview"
@@ -35,7 +39,11 @@ export const CMSIntentHeader: React.FC = () => {
             </>
           )}
 
-          <Header.Button.Primary label="New intent" testID={tid(HEADER_TEST_ID, 'new-intent')} onClick={() => onCreate()} />
+          <Header.Button.Primary
+            label="New intent"
+            testID={tid(HEADER_TEST_ID, 'new-intent')}
+            onClick={() => onCreate()}
+          />
         </>
       }
     />

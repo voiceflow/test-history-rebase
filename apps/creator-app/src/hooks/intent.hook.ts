@@ -10,14 +10,14 @@ import { useCreateConst } from '@voiceflow/ui-next';
 import React, { useEffect } from 'react';
 
 import { Designer, Project, Version } from '@/ducks';
-import { useDefaultAIModel, useIsAIFeaturesEnabled } from '@/hooks/ai.hook';
-import { useFeature } from '@/hooks/feature.hook';
-import { useIntentCreateModal, useIntentEditModal } from '@/hooks/modal.hook';
-import { useDispatch, useSelector } from '@/hooks/store.hook';
 import { getIntentStrengthLevel, validateIntentName } from '@/utils/intent';
 import { isIntentBuiltIn } from '@/utils/intent.util';
 
+import { useDefaultAIModel, useIsAIFeaturesEnabled } from './ai.hook';
+import { useFeature } from './feature.hook';
+import { useIntentCreateModal, useIntentEditModal } from './modal.hook';
 import { useActiveProjectTypeConfig } from './platformConfig';
+import { useDispatch, useSelector } from './store.hook';
 
 export const useIsLLMIntentClassificationEnabled = () => {
   const aiFeaturesEnabled = useIsAIFeaturesEnabled();

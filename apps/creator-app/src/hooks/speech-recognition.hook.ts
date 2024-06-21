@@ -8,13 +8,13 @@ import { io, Socket } from 'socket.io-client';
 
 import { GENERAL_SERVICE_ENDPOINT } from '@/config';
 
-import { useFeature } from './feature';
+import { useFeature } from './feature.hook';
 import { useMicrophonePermission } from './microphone';
 
 export const useCanASR = () => {
   const asrBypass = useFeature(Realtime.FeatureFlag.ASR_BYPASS);
 
-  return asrBypass.isEnabled || !SpeechRecognition.browserSupportsSpeechRecognition();
+  return asrBypass || !SpeechRecognition.browserSupportsSpeechRecognition();
 };
 
 export const useSpeechRecognition = ({

@@ -6,7 +6,8 @@ import { useRouteMatch } from 'react-router-dom';
 
 import { Path } from '@/config/routes';
 import * as ProjectV2 from '@/ducks/projectV2';
-import { useFeature, useSelector } from '@/hooks';
+import { useSelector } from '@/hooks';
+import { useFeature } from '@/hooks/feature.hook';
 
 import { QueryKind, QueryState } from '../constants';
 import { Filters, QueryResult, ResultData } from '../types';
@@ -97,7 +98,7 @@ export const AnalyticsDashboardProvider: React.FC<React.PropsWithChildren> = ({ 
     };
   }, [state.filters.period]);
 
-  const mockData = useFeature(Realtime.FeatureFlag.ANALYTICS_DASHBOARD_MOCK_DATA).isEnabled;
+  const mockData = useFeature(Realtime.FeatureFlag.ANALYTICS_DASHBOARD_MOCK_DATA);
 
   useAsyncEffect(async () => {
     if (!isActive || !projectID) {
@@ -108,11 +109,19 @@ export const AnalyticsDashboardProvider: React.FC<React.PropsWithChildren> = ({ 
     const queries: Record<QueryKind, () => Promise<void>> = {
       [QueryKind.INTERACTIONS]: async () =>
         stateAPI[dataField(QueryKind.INTERACTIONS)].set(
-          await Queries.fetchInteractions({ projectID, currentRange, previousRange, period: state.filters.period, mockData })
+          await Queries.fetchInteractions({
+            projectID,
+            currentRange,
+            previousRange,
+            period: state.filters.period,
+            mockData,
+          })
         ),
 
       [QueryKind.RECOGNITION_RATE]: async () =>
-        stateAPI[dataField(QueryKind.RECOGNITION_RATE)].set(await Queries.fetchRecognitionRate({ projectID, currentRange, previousRange, mockData })),
+        stateAPI[dataField(QueryKind.RECOGNITION_RATE)].set(
+          await Queries.fetchRecognitionRate({ projectID, currentRange, previousRange, mockData })
+        ),
 
       [QueryKind.USERS]: async () =>
         stateAPI[dataField(QueryKind.USERS)].set(
@@ -121,11 +130,19 @@ export const AnalyticsDashboardProvider: React.FC<React.PropsWithChildren> = ({ 
 
       [QueryKind.SESSIONS]: async () =>
         stateAPI[dataField(QueryKind.SESSIONS)].set(
-          await Queries.fetchSessions({ projectID, currentRange, previousRange, period: state.filters.period, mockData })
+          await Queries.fetchSessions({
+            projectID,
+            currentRange,
+            previousRange,
+            period: state.filters.period,
+            mockData,
+          })
         ),
 
       [QueryKind.TOP_INTENTS]: async () =>
-        stateAPI[dataField(QueryKind.TOP_INTENTS)].set(await Queries.fetchTopIntents({ projectID, currentRange, mockData })),
+        stateAPI[dataField(QueryKind.TOP_INTENTS)].set(
+          await Queries.fetchTopIntents({ projectID, currentRange, mockData })
+        ),
     };
 
     await Promise.all(

@@ -5,7 +5,8 @@ import React from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 
 import VariablesInput, { VariablesInputRef } from '@/components/VariablesInput';
-import { useFeature, useSetup } from '@/hooks';
+import { useSetup } from '@/hooks';
+import { useFeature } from '@/hooks/feature.hook';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 
@@ -93,10 +94,15 @@ const CarouselButtonsEditor: React.FC = () => {
             </FormControl>
           </SectionV2.Content>
 
-          {chatCarouselIntent.isEnabled && (
+          {chatCarouselIntent && (
             <>
               <SectionV2.Divider inset />
-              <IntentSection intentID={button?.intent} buttonID={params.buttonID} onChange={(intent) => onChangeButton({ intent })} editor={editor} />
+              <IntentSection
+                intentID={button?.intent}
+                buttonID={params.buttonID}
+                onChange={(intent) => onChangeButton({ intent })}
+                editor={editor}
+              />
             </>
           )}
 

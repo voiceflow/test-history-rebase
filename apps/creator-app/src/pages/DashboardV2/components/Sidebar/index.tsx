@@ -21,7 +21,7 @@ import { Permission } from '@/constants/permissions';
 import * as Organization from '@/ducks/organization';
 import * as Sessions from '@/ducks/session';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useFeature } from '@/hooks';
+import { useFeature } from '@/hooks/feature.hook';
 import { useOrganizationDefaultPagePath } from '@/hooks/organization';
 import { useCheckoutPaymentModal } from '@/hooks/payment';
 import { usePermission } from '@/hooks/permission';
@@ -34,7 +34,7 @@ import * as S from './styles';
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 const DashboardNavigationSidebar: React.FC = () => {
-  const { isEnabled: teamsPlanSelfServeIsEnabled } = useFeature(FeatureFlag.TEAMS_PLAN_SELF_SERVE);
+  const teamsPlanSelfServeIsEnabled = useFeature(FeatureFlag.TEAMS_PLAN_SELF_SERVE);
   const plan = useSelector(WorkspaceV2.active.planSelector) ?? PlanType.STARTER;
   const isPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
   const workspaceID = useSelector(Sessions.activeWorkspaceIDSelector) ?? 'unknown';

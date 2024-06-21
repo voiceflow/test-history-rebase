@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.425.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.424.3...@voiceflow/realtime-sdk@1.425.0) (2024-06-21)
+
+### Features
+
+* add chargebee_add_seats ff (COR-2439) ([#8370](https://github.com/voiceflow/creator-app/issues/8370)) ([fd58f43](https://github.com/voiceflow/creator-app/commit/fd58f43d060ea8234d9bce7e70adebf0e0f7248d))
+
 ## [1.424.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.424.2...@voiceflow/realtime-sdk@1.424.3) (2024-06-21)
 
 **Note:** Version bump only for package @voiceflow/realtime-sdk

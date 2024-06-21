@@ -7,7 +7,8 @@ import { useMemo } from 'react';
 import { match } from 'ts-pattern';
 
 import { Designer, Diagram } from '@/ducks';
-import { useFeature, useSelector } from '@/hooks';
+import { useSelector } from '@/hooks';
+import { useFeature } from '@/hooks/feature.hook';
 import type { ManagerGetter } from '@/pages/Canvas/contexts';
 import { getCustomAPIActionLabel } from '@/utils/customApi';
 import { transformVariablesToReadable } from '@/utils/slot';
@@ -51,13 +52,13 @@ export const useItemConfig = (getManager: ManagerGetter, data: Realtime.NodeData
               ? blockNodeResourceByNodeIDMapByDiagramIDMap[diagramID]?.[goToNodeID] ?? null
               : null;
 
-          const isEmpty = referenceSystem.isEnabled ? !referenceNode : !sharedNode;
+          const isEmpty = referenceSystem ? !referenceNode : !sharedNode;
           const sharedNodeName =
             (sharedNode?.type === Realtime.BlockType.COMBINED && sharedNode.name) ||
             (sharedNode?.type === Realtime.BlockType.START && 'Start');
           const referencedNodeName =
             referenceNode?.metadata.nodeType === NodeType.START ? 'Start' : referenceNode?.metadata.name;
-          const name = referenceSystem.isEnabled ? referencedNodeName : sharedNodeName;
+          const name = referenceSystem ? referencedNodeName : sharedNodeName;
 
           return {
             icon: manager.icon,
@@ -142,7 +143,7 @@ export const useItemConfig = (getManager: ManagerGetter, data: Realtime.NodeData
       sharedNodes,
       entitiesAndVariables,
       blockNodeResourceByNodeIDMapByDiagramIDMap,
-      referenceSystem.isEnabled,
+      referenceSystem,
     ]
   );
 };

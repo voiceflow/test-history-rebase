@@ -8,7 +8,8 @@ import { TranscriptExportFormat } from '@/client/transcript';
 import { Permission } from '@/constants/permissions';
 import * as Router from '@/ducks/router';
 import * as Transcript from '@/ducks/transcript';
-import { useDispatch, useFeature, usePermission, useTrackingEvents } from '@/hooks';
+import { useDispatch, usePermission, useTrackingEvents } from '@/hooks';
+import { useFeature } from '@/hooks/feature.hook';
 import { useConfirmModal } from '@/hooks/modal.hook';
 import { SystemTag } from '@/models';
 import { ClassName } from '@/styles/constants';
@@ -81,7 +82,7 @@ const TranscriptResultsItem: React.FC<ListChildComponentProps<ListData>> = ({ da
     <div style={style}>
       <Dropdown
         options={[
-          hideExports.isEnabled ? null : { value: 'export', label: 'Export', onClick: onExport },
+          hideExports ? null : { value: 'export', label: 'Export', onClick: onExport },
           ...(canDeleteTranscript ? [{ value: 'delete', label: 'Delete', onClick: onDelete }] : []),
         ]}
       >

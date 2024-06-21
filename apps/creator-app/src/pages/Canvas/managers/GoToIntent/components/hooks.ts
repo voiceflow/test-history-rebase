@@ -2,7 +2,7 @@ import { Nullable } from '@voiceflow/common';
 import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { useFeature } from '@/hooks';
+import { useFeature } from '@/hooks/feature.hook';
 import {
   ActiveDiagramTypeContext,
   DiagramMapContext,
@@ -28,7 +28,7 @@ export const useGoToIntentMeta = (intentID: Nullable<string>, diagramID?: Nullab
   const goToIntent = intentID ? intentsMap[intentID] ?? null : null;
   const goToDiagram = diagramID ? diagramMap[diagramID] ?? null : null;
 
-  const map = referenceSystem.isEnabled ? globalTriggerNodeIDsByIntentIDMapByDiagramIDMap : globalIntentStepMap;
+  const map = referenceSystem ? globalTriggerNodeIDsByIntentIDMapByDiagramIDMap : globalIntentStepMap;
   const topicGoToNodeID = goToIntent && goToDiagram ? map[goToDiagram.diagramID]?.[goToIntent.id]?.[0] ?? null : null;
   const componentGoToNodeID = topicGoToNodeID || (goToIntent ? intentIDNodeIDMap[goToIntent.id] ?? null : null);
 

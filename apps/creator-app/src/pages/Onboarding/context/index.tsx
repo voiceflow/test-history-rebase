@@ -13,7 +13,8 @@ import * as Account from '@/ducks/account';
 import * as Project from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useDispatch, useFeature, useSelector, useStore, useTrackingEvents } from '@/hooks';
+import { useDispatch, useSelector, useStore, useTrackingEvents } from '@/hooks';
+import { useFeature } from '@/hooks/feature.hook';
 
 import { OnboardingType } from '../onboardingType.enum';
 import { StepID } from '../stepID.enum';
@@ -49,7 +50,7 @@ export const OnboardingProvider: React.FC<OnboardingProviderProps> = ({ query, c
   const goToDashboardWithSearch = useDispatch(Router.goToDashboardWithSearch);
   const setActiveWorkspace = useDispatch(WorkspaceV2.setActive);
   const createProject = useDispatch(Project.createProject);
-  const { isEnabled: isKnowledgeBaseEnabled } = useFeature(Realtime.FeatureFlag.KNOWLEDGE_BASE);
+  const isKnowledgeBaseEnabled = useFeature(Realtime.FeatureFlag.KNOWLEDGE_BASE);
 
   const [trackingEvents] = useTrackingEvents();
 

@@ -3,7 +3,7 @@ import { NodeType } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { useFeature } from '@/hooks/feature';
+import { useFeature } from '@/hooks/feature.hook';
 import { BlockNodeResourceByNodeIDMapByDiagramIDMapContext, SharedNodesContext } from '@/pages/Canvas/contexts';
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
@@ -15,7 +15,7 @@ export const useGoToNode = (nodeID: Nullable<string>, diagramID?: Nullable<strin
     BlockNodeResourceByNodeIDMapByDiagramIDMapContext
   )!;
 
-  if (referenceSystem.isEnabled) {
+  if (referenceSystem) {
     const blockReference =
       diagramID && nodeID ? blockNodeResourceByNodeIDMapByDiagramIDMap[diagramID]?.[nodeID] ?? null : null;
 

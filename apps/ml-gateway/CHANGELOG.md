@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.102.8](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.102.7...@voiceflow/ml-gateway@1.102.8) (2024-06-21)
+
+### Bug Fixes
+
+* add claude 3.5 sonnet (ENG-156) ([#8369](https://github.com/voiceflow/creator-app/issues/8369)) ([0d38beb](https://github.com/voiceflow/creator-app/commit/0d38bebb53193d5db54ad649d69431d6d166f423))
+
 ## [1.102.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.102.6...@voiceflow/ml-gateway@1.102.7) (2024-06-21)
 
 **Note:** Version bump only for package @voiceflow/ml-gateway

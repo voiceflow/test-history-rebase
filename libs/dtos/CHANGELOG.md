@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.101.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.101.0...@voiceflow/dtos@1.101.1) (2024-06-21)
+
+### Bug Fixes
+
+* add claude 3.5 sonnet (ENG-156) ([#8369](https://github.com/voiceflow/creator-app/issues/8369)) ([0d38beb](https://github.com/voiceflow/creator-app/commit/0d38bebb53193d5db54ad649d69431d6d166f423))
+
 # [1.101.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.100.0...@voiceflow/dtos@1.101.0) (2024-06-21)
 
 ### Features

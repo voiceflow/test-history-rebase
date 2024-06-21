@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.426.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.425.2...@voiceflow/realtime-sdk@1.426.0) (2024-06-21)
+
+### Features
+
+* setV3 label functionality (COR-2298) ([#8371](https://github.com/voiceflow/creator-app/issues/8371)) ([8e13fbd](https://github.com/voiceflow/creator-app/commit/8e13fbd35bd77af10f757f23fda6de86e7e77c8a))
+
 ## [1.425.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.425.1...@voiceflow/realtime-sdk@1.425.2) (2024-06-21)
 
 **Note:** Version bump only for package @voiceflow/realtime-sdk

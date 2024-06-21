@@ -15,7 +15,10 @@ export const useFeatures = () => {
   const featureState = React.useContext(FeatureFlagsContext);
 
   const allFeatures = React.useMemo(() => {
-    Object.entries(featureState).reduce((acc, [featureKey, feature]) => ({ ...acc, [featureKey]: feature.isEnabled }), {});
+    Object.entries(featureState).reduce(
+      (acc, [featureKey, feature]) => ({ ...acc, [featureKey]: feature.isEnabled }),
+      {}
+    );
   }, [featureState]);
 
   const enabledFeatures = React.useMemo(() => {
@@ -31,6 +34,8 @@ export const useFeatures = () => {
 export const useFeature = (feature: Realtime.FeatureFlag): Feature => {
   const featureState = React.useContext(FeatureFlagsContext)[feature] ?? { isEnabled: false };
   const { isEnabled } = featureState;
+
+  if (feature === Realtime.FeatureFlag.CMS_RESPONSES) return { isEnabled: true };
 
   return { isEnabled };
 };

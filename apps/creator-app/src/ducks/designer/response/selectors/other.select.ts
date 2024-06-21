@@ -1,4 +1,4 @@
-import type { ResponseType } from '@voiceflow/dtos';
+import type { ResponseMessage, ResponseType } from '@voiceflow/dtos';
 import { createSelector } from 'reselect';
 
 import { createByFolderIDSelectors } from '../../utils/selector.util';
@@ -43,6 +43,28 @@ export const mapFirstVariantByResponseID = createSelector(
         }
 
         return [response.id, mapMessages[firstVariantID]];
+      })
+    )
+);
+
+export const mapVariantsByResponseID = createSelector(
+  [allResponses, allDiscriminators, mapMessages],
+  (allResponses, allDiscriminators, mapMessages) =>
+    Object.fromEntries(
+      allResponses.map((response) => {
+        const discriminator = allDiscriminators.find((discriminator) => discriminator.responseID === response.id);
+        const variantIDs = Array.from(discriminator?.variantOrder ?? []).slice(1);
+
+        if (!variantIDs || !variantIDs.length) {
+          return [response.id, []];
+        }
+
+        const variants = Object.entries(mapMessages).reduce((acc, [messageID, messageContent]) => {
+          if (variantIDs.includes(messageID)) return [...acc, messageContent];
+          return acc;
+        }, [] as ResponseMessage[]);
+
+        return [response.id, variants];
       })
     )
 );

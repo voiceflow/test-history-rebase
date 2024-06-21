@@ -1,4 +1,5 @@
 import type { EntityDTO } from '@mikro-orm/core';
+import { ResponseType } from '@voiceflow/dtos';
 
 import type { ResponseEntity } from './response.entity';
 
@@ -12,6 +13,8 @@ export const response: EntityDTO<ResponseEntity> = {
   createdBy: { id: 1 } as any,
   updatedBy: { id: 2 } as any,
   folder: null,
+  type: ResponseType.MESSAGE,
+  draft: false,
 };
 
 export const responseList: EntityDTO<ResponseEntity>[] = [

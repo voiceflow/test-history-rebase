@@ -4,8 +4,8 @@ import React from 'react';
 
 import * as Documentation from '@/config/documentation';
 import { DragItem } from '@/constants';
-import { useFeature } from '@/hooks';
 import { useDragPreview } from '@/hooks/dnd.hook';
+import { useFeature } from '@/hooks/feature.hook';
 
 import { LibraryDragItem, LibraryStepType, TabData } from '../constants';
 import Searchbar from '../Search';
@@ -79,7 +79,7 @@ const LibrarySubMenu: React.FC<LibrarySubMenuProps> = ({
 
   return (
     <S.SubMenuContainer ref={menuRef} defaultPadding={0} width={240}>
-      {mvpCustomBlocks.isEnabled && (
+      {mvpCustomBlocks && (
         <>
           <C.TabsContainer>
             <Tabs currentTab={currentTab} tabs={tabsData} onTabChange={setCurrentTab} />

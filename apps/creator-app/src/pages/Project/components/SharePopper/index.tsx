@@ -6,7 +6,8 @@ import { Route, Switch } from 'react-router-dom';
 
 import * as Project from '@/components/Project';
 import { Permission } from '@/constants/permissions';
-import { useFeature, usePermission } from '@/hooks';
+import { usePermission } from '@/hooks';
+import { useFeature } from '@/hooks/feature.hook';
 import { useAssistantSessionStorageState } from '@/hooks/storage.hook';
 import InviteContent from '@/pages/Project/components/Collaborators';
 import InviteFooter from '@/pages/Project/components/Collaborators/components/InviteByLink';
@@ -29,7 +30,7 @@ const SharePopper: React.FC<SharePopperProps> = ({ children, placement, modifier
   const sharePopper = React.useContext(SharePopperContext);
 
   const [canSharePrototype] = usePermission(Permission.PROJECT_PROTOTYPE_SHARE);
-  const allowedAndCanSharePrototype = canSharePrototype && !hideExports.isEnabled;
+  const allowedAndCanSharePrototype = canSharePrototype && !hideExports;
 
   const [canAddCollaborators] = usePermission(Permission.WORKSPACE_MEMBER_ADD);
 

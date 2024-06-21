@@ -5,7 +5,8 @@ import React from 'react';
 import { UploadedStage } from '@/components/PlatformUploadPopup/components';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
-import { useFeature, useSelector } from '@/hooks';
+import { useSelector } from '@/hooks';
+import { useFeature } from '@/hooks/feature.hook';
 import { useSyncProjectLiveVersion } from '@/hooks/project';
 import { useDispatch } from '@/hooks/realtime';
 import { useLocalStorageState } from '@/hooks/storage.hook';
@@ -26,7 +27,7 @@ const SuccessStage: React.FC<StageComponentProps<NLPTrainJob.SuccessStage>> = ({
 
   return (
     <UploadedStage description="A new version of your agent has been successfully published">
-      {hideExports.isEnabled ? null : (
+      {hideExports ? null : (
         <>
           {firstTime ? (
             <>

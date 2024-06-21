@@ -6,7 +6,7 @@ import { useRouteMatch } from 'react-router-dom';
 import { Path } from '@/config/routes';
 import { Permission } from '@/constants/permissions';
 import { Creator, UI } from '@/ducks';
-import { useFeature } from '@/hooks/feature';
+import { useFeature } from '@/hooks/feature.hook';
 import { useHotkey } from '@/hooks/hotkeys';
 import { usePermission } from '@/hooks/permission';
 import { useSelector } from '@/hooks/store.hook';
@@ -60,7 +60,7 @@ export const DiagramLayoutHeader = memo(() => {
             <>
               <DiagramLayoutHeaderPrototypeSettings />
 
-              {!hideExports.isEnabled && <PrototypeShare />}
+              {!hideExports && <PrototypeShare />}
             </>
           ) : (
             <>

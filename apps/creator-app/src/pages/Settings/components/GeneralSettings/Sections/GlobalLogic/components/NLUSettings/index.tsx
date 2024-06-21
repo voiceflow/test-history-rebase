@@ -6,7 +6,8 @@ import React from 'react';
 import RadioGroup from '@/components/RadioGroup';
 import * as Settings from '@/components/Settings';
 import * as ProjectV2 from '@/ducks/projectV2';
-import { useDispatch, useFeature, useSelector } from '@/hooks';
+import { useDispatch, useSelector } from '@/hooks';
+import { useFeature } from '@/hooks/feature.hook';
 
 import IntentConfidence from './IntentConfidence';
 
@@ -21,8 +22,8 @@ const CLASSIFY_OPTIONS = [
 ];
 
 const NLUSettings: React.FC = () => {
-  const hybridClassifyEnabled = useFeature(FeatureFlag.HYBRID_CLASSIFY).isEnabled;
-  const intentClassificationEnabled = useFeature(FeatureFlag.INTENT_CLASSIFICATION).isEnabled;
+  const hybridClassifyEnabled = useFeature(FeatureFlag.HYBRID_CLASSIFY);
+  const intentClassificationEnabled = useFeature(FeatureFlag.INTENT_CLASSIFICATION);
 
   const updateNLUSettings = useDispatch(ProjectV2.updateProjectNLUSettings);
   const nluSettings = useSelector(ProjectV2.active.nluSettings);

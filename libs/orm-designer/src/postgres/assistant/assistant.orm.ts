@@ -11,4 +11,8 @@ export class AssistantORM extends PostgresCMSObjectORM<AssistantEntity> {
   findManyByWorkspace(workspaceID: number) {
     return this.find({ workspaceID });
   }
+
+  async deleteManyByWorkspace(workspaceID: number) {
+    await this.delete({ workspaceID });
+  }
 }

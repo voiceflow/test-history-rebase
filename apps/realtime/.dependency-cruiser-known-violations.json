@@ -57,5 +57,25 @@
       "name": "no-circular"
     },
     "cycle": ["src/project/project.module.ts", "src/assistant/assistant.module.ts", "src/backup/backup.module.ts"]
+  },
+  {
+    "type": "cycle",
+    "from": "src/workspace/workspace.module.ts",
+    "to": "src/workspace/billing/billing.module.ts",
+    "rule": {
+      "severity": "error",
+      "name": "no-circular"
+    },
+    "cycle": ["src/workspace/workspace.module.ts", "src/workspace/billing/billing.module.ts"]
+  },
+  {
+    "type": "cycle",
+    "from": "src/workspace/billing/billing.module.ts",
+    "to": "src/workspace/workspace.module.ts",
+    "rule": {
+      "severity": "error",
+      "name": "no-circular"
+    },
+    "cycle": ["src/workspace/billing/billing.module.ts", "src/workspace/workspace.module.ts"]
   }
 ]

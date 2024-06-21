@@ -71,6 +71,7 @@ import { VariableModule } from './variable/variable.module';
 import { VariableStateModule } from './variable-state/variable-state.module';
 import { VersionModule } from './version/version.module';
 import { WorkflowModule } from './workflow/workflow.module';
+import { WorkspaceModule } from './workspace/workspace.module';
 
 @Module({
   imports: [
@@ -306,6 +307,7 @@ import { WorkflowModule } from './workflow/workflow.module';
     FlowModule,
     ProgramModule,
     WorkflowModule,
+    WorkspaceModule,
   ],
   providers: [
     {

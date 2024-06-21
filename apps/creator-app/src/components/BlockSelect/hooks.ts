@@ -4,7 +4,7 @@ import { createUIOnlyMenuItemOption, UIOnlyMenuItemOption } from '@voiceflow/ui'
 import { useCallback } from 'react';
 
 import { Designer, Diagram } from '@/ducks';
-import { useFeature } from '@/hooks/feature';
+import { useFeature } from '@/hooks/feature.hook';
 import { useFolderTree } from '@/hooks/folder.hook';
 import { useSelector } from '@/hooks/store.hook';
 
@@ -49,7 +49,7 @@ export const useOptionsTree = <Item extends Flow | Workflow>(
       (workflow, _, cacheOption): GroupOption => {
         let options: Array<BlockOption | GroupOption>;
 
-        if (referenceSystem.isEnabled) {
+        if (referenceSystem) {
           options = Object.values(blockNodeResourceByNodeIDMapByDiagramIDMap[workflow.diagramID] ?? {})?.reduce<
             Array<BlockOption | GroupOption>
           >((acc, resource) => {
@@ -115,7 +115,7 @@ export const useOptionsTree = <Item extends Flow | Workflow>(
           ],
         };
       },
-      [sharedNodes, blockNodeResourceByNodeIDMapByDiagramIDMap, referenceSystem.isEnabled]
+      [sharedNodes, blockNodeResourceByNodeIDMapByDiagramIDMap, referenceSystem]
     ),
   });
 };

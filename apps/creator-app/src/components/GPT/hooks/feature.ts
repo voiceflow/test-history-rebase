@@ -3,7 +3,7 @@ import { QuotaNames } from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import * as ProjectV2 from '@/ducks/projectV2';
-import { useFeature } from '@/hooks/feature';
+import { useFeature } from '@/hooks/feature.hook';
 import { useSelector } from '@/hooks/redux';
 import { useActiveWorkspace } from '@/hooks/workspace';
 
@@ -22,8 +22,7 @@ export const useGPTQuotas = () => {
 };
 
 export const useWorkspaceAIAssist = (): boolean => {
-  const assistantAiFlag = useFeature(Realtime.FeatureFlag.ASSISTANT_AI);
-  return assistantAiFlag.isEnabled;
+  return useFeature(Realtime.FeatureFlag.ASSISTANT_AI);
 };
 
 export const useProjectAIPlayground = (): boolean => {
@@ -35,25 +34,25 @@ export const useProjectAIPlayground = (): boolean => {
 
 export const useKnowledgeBase = (): boolean => {
   const aiPlayground = useProjectAIPlayground();
-  const knowledgeBase = useFeature(Realtime.FeatureFlag.KNOWLEDGE_BASE);
+  const knowledgeBaseEnabled = useFeature(Realtime.FeatureFlag.KNOWLEDGE_BASE);
   const platform = useSelector(ProjectV2.active.platformSelector);
 
   return (
     aiPlayground &&
-    knowledgeBase.isEnabled &&
+    knowledgeBaseEnabled &&
     !Realtime.Utils.typeGuards.isGooglePlatform(platform) &&
     !Realtime.Utils.typeGuards.isAlexaPlatform(platform)
   );
 };
 
 export const useGPTGenFeatures = () => {
-  const gptFeatures = useFeature(Realtime.FeatureFlag.ASSISTANT_AI);
+  const aiFeaturesEnabled = useFeature(Realtime.FeatureFlag.ASSISTANT_AI);
   const workspace = useActiveWorkspace();
   const workspaceAIAssist = useWorkspaceAIAssist();
 
   const quota = workspace?.quotas?.find((q) => q.quotaDetails.name === Realtime.QuotaNames.TOKENS);
   const hitCap = quota ? quota.consumed >= quota.quota : false;
-  const featureEnabled = gptFeatures.isEnabled && workspaceAIAssist;
+  const featureEnabled = aiFeaturesEnabled && workspaceAIAssist;
 
   return {
     isEnabled: featureEnabled,

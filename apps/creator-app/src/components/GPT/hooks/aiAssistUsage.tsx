@@ -6,7 +6,8 @@ import React from 'react';
 import { BOOK_DEMO_LINK, REQUEST_MORE_TOKENS_LINK } from '@/constants/link.constant';
 import { Permission } from '@/constants/permissions';
 import * as Workspace from '@/ducks/workspaceV2';
-import { useDispatch, useFeature, usePermission, useSelector, useTrackingEvents } from '@/hooks';
+import { useDispatch, usePermission, useSelector, useTrackingEvents } from '@/hooks';
+import { useFeature } from '@/hooks/feature.hook';
 import { usePaymentModal } from '@/hooks/modal.hook';
 import { isStarterPlan } from '@/utils/plans';
 import { openURLInANewTab } from '@/utils/window';
@@ -37,7 +38,7 @@ export const useAIUsageTooltip = ({ onOpenModal }: { onOpenModal: VoidFunction }
   const gptQuota = useGPTQuotas();
   const aiUsage = useAIUsage();
   const [trackingEvents] = useTrackingEvents();
-  const hasChargebeeTokensActive = chargebeeTokens.isEnabled;
+  const hasChargebeeTokensActive = chargebeeTokens;
 
   // Conditionally show buttons. There is no collision between them and only one button is shown at a time.
   const showOldButton = !hasChargebeeTokensActive;

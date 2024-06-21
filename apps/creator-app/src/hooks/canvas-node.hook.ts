@@ -5,8 +5,7 @@ import { usePersistFunction } from '@voiceflow/ui';
 import { useProjectAIPlayground } from '@/components/GPT/hooks/feature';
 import { IS_PRIVATE_CLOUD } from '@/config';
 import { BlockType } from '@/constants';
-
-import { useFeature } from './feature';
+import { useFeature } from '@/hooks/feature.hook';
 
 export const useCanvasNodeFilter = () => {
   const aiPlaygroundEnabled = useProjectAIPlayground();
@@ -18,8 +17,8 @@ export const useCanvasNodeFilter = () => {
     if (IS_PRIVATE_CLOUD && node.publicOnly) return false;
     if (!aiPlaygroundEnabled && [BlockType.AI_RESPONSE, BlockType.AI_SET].includes(node.type)) return false;
     if (node.type === BlockType.INTENT || node.type === BlockType.TRIGGER) return false;
-    if (!cmsFunctions.isEnabled && node.type === BlockType.FUNCTION) return false;
-    if (!cmsResponses.isEnabled && node.type === BlockType.RESPONSE) return false;
+    if (!cmsFunctions && node.type === BlockType.FUNCTION) return false;
+    if (!cmsResponses && node.type === BlockType.RESPONSE) return false;
 
     return true;
   });

@@ -84,5 +84,7 @@ export enum FeatureFlag {
   NEW_WORKSPACE_MEMBERS = 'new_workspace_members',
   NEW_PROJECT_MEMBERS = 'new_project_members',
 
+  CHARGEBEE_CONFIGURABLE_SEATS = 'chargebee_configurable_seats',
+
   V3_SET_STEP = 'v3_set_step',
 }

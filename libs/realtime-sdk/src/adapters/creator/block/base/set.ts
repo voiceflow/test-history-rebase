@@ -4,18 +4,26 @@ import { createMultiAdapter } from 'bidirectional-adapter';
 
 import { NodeData } from '../../../../models';
 import { sanitizeSetValue } from '../../../../utils/expression';
-import { createBlockAdapter, createOutPortsAdapter, createOutPortsAdapterV2, nextOnlyOutPortsAdapter, nextOnlyOutPortsAdapterV2 } from '../utils';
+import {
+  createBlockAdapter,
+  createOutPortsAdapter,
+  createOutPortsAdapterV2,
+  nextOnlyOutPortsAdapter,
+  nextOnlyOutPortsAdapterV2,
+} from '../utils';
 
 const setExpressionAdapter = createMultiAdapter<BaseNode.SetV2.Set, NodeData.SetExpressionV2>(
-  ({ expression, variable, type }) => ({
+  ({ expression, variable, type, label }) => ({
     id: Utils.id.cuid.slug(),
     type,
     variable,
+    label,
     expression: sanitizeSetValue(expression, type),
   }),
-  ({ expression, variable, type }) => ({
+  ({ expression, variable, type, label }) => ({
     type: type as BaseNode.Utils.ExpressionTypeV2.VALUE | BaseNode.Utils.ExpressionTypeV2.ADVANCE,
     variable: variable ?? null,
+    label: label ?? null,
     expression: sanitizeSetValue(String(expression), type) ?? '',
   })
 );

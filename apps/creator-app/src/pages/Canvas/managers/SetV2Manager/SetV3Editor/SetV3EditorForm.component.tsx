@@ -7,15 +7,15 @@ import React from 'react';
 
 import { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
 
-import { SetV3EditorItem } from './SetV3EditorItem.component';
-
-const MAX_SETS = 20;
+import { SetV3EditorItem } from './SetV3EditorItem/SetV3EditorItem.component';
 
 interface ISetV3EditorForm {
   editor: NodeEditorV2Props<Realtime.NodeData.SetV2, Realtime.BuiltInPortRecord<string>>;
 }
 
 export const SetV3EditorForm: React.FC<ISetV3EditorForm> = ({ editor }) => {
+  const MAX_SETS = 20;
+
   const sets = editor.data.sets ?? [];
   const [justAddedSetID, setJustAddedSetID] = React.useState<string | null>(null);
 
@@ -29,6 +29,7 @@ export const SetV3EditorForm: React.FC<ISetV3EditorForm> = ({ editor }) => {
       type: BaseNode.Utils.ExpressionTypeV2.ADVANCE,
       variable: item?.variable ?? null,
       expression: item?.expression ?? '',
+      label: item?.label ? `${item.label} copy` : null,
     };
 
     setJustAddedSetID(set.id);
@@ -61,7 +62,9 @@ export const SetV3EditorForm: React.FC<ISetV3EditorForm> = ({ editor }) => {
   const isMaxSets = React.useMemo(() => sets.length >= MAX_SETS, [sets]);
 
   const onSubEditorClose = (setID: string) => {
-    if (setID === justAddedSetID) setJustAddedSetID(null);
+    if (setID === justAddedSetID) {
+      setJustAddedSetID(null);
+    }
   };
 
   return (

@@ -11,16 +11,18 @@ export const SetV3StepItem: React.FC<{ item: Realtime.NodeData.SetExpressionV2; 
   item,
   withPort,
 }) => {
-  const { variable, expression } = item;
+  const { variable: variableID, expression, label } = item;
 
   const variablesMap = useSelector(Diagram.active.entitiesAndVariablesMapSelector);
+  const variable = variableID ? variablesMap[variableID] : null;
 
-  const variableContent = React.useMemo(() => {
+  if (label) return <>{label}</>;
+
+  const getVariableContent = () => {
     if (!variable) {
       return null;
     }
 
-    const variableName = variablesMap[variable].name;
     let maxWidth = '212px';
     let maxChars = 22;
     if (withPort && !expression) {
@@ -34,11 +36,11 @@ export const SetV3StepItem: React.FC<{ item: Realtime.NodeData.SetExpressionV2; 
       maxChars = 19;
     }
 
-    if (variableName.length > maxChars) {
+    if (variable.name.length > maxChars) {
       return (
         <div className={variableContainer} style={{ maxWidth }}>
           {'{'}
-          <Box>{variableName.slice(0, maxChars)}...</Box>
+          <Box>{variable.name.slice(0, maxChars)}...</Box>
           {'}'}
         </div>
       );
@@ -47,13 +49,13 @@ export const SetV3StepItem: React.FC<{ item: Realtime.NodeData.SetExpressionV2; 
     return (
       <div style={{ maxWidth }} className={variableContainer}>
         {' { '}
-        {variableName}
+        {variable.name}
         {' } '}
       </div>
     );
-  }, [item.variable, item.expression]);
+  };
 
-  const expressionContent = (to?: boolean) => {
+  const getExpressionContent = (to?: boolean) => {
     if (!expression) {
       return null;
     }
@@ -74,6 +76,8 @@ export const SetV3StepItem: React.FC<{ item: Realtime.NodeData.SetExpressionV2; 
     );
   };
 
+  const variableContent = getVariableContent();
+
   if (variableContent && expression) {
     return (
       <div>
@@ -84,7 +88,7 @@ export const SetV3StepItem: React.FC<{ item: Realtime.NodeData.SetExpressionV2; 
           </div>
         </div>
         <div className={expressionOverflow}>
-          <div>{expressionContent(true)}</div>
+          <div>{getExpressionContent(true)}</div>
         </div>
       </div>
     );
@@ -104,7 +108,7 @@ export const SetV3StepItem: React.FC<{ item: Realtime.NodeData.SetExpressionV2; 
     return (
       <div>
         <div className={setText}>Set variable to </div>
-        <div>{expressionContent(false)}</div>
+        <div>{getExpressionContent(false)}</div>
       </div>
     );
   }

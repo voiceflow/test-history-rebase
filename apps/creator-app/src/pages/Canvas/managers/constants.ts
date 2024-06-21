@@ -38,7 +38,7 @@ import PromptManager from './Prompt';
 import RandomManagerV2 from './RandomV2';
 import ReminderManager from './Reminder';
 import ResponseManager from './ResponseManager/Response.manager';
-import { SetV2Manager } from './SetV2/SetV2.manager';
+import { SetV2Manager } from './SetV2Manager/SetV2.manager';
 import SpeakManager from './Speak';
 import { StartManager } from './Start/Start.manager';
 import StreamManager from './Stream';

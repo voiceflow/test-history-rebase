@@ -281,6 +281,7 @@ export namespace NodeData {
     id: string;
     variable?: string | null;
     type: BaseNode.Utils.ExpressionTypeV2;
+    label?: string | null;
   }
 
   export interface SetV2 {

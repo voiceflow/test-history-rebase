@@ -4,8 +4,8 @@ import React from 'react';
 
 import Label from '@/components/Label';
 import VariablesInput from '@/components/VariablesInput';
-import { useExpressionValidator } from '@/hooks';
 
+import { useExpressionValidator } from '../hooks';
 import ConditionExpressionTooltip from './ConditionExpressionTooltip';
 
 export interface ConditionExpressionProps {

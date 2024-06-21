@@ -7,7 +7,7 @@ import React from 'react';
 
 import { variablesMapByIDAtom } from '@/atoms/variable.atom';
 import { CMSFormListItem } from '@/components/CMS/CMSForm/CMSFormListItem/CMSFormListItem.component';
-import { useExpressionValidator } from '@/hooks';
+import { useExpressionValidator } from '@/components/ConditionsBuilder/hooks';
 
 import { SetV3EditorItemContextMenu } from './SetV3EditorItemContextMenu.component';
 import { SetV3EditorItemSubEditor } from './SetV3EditorItemSubEditor.component';

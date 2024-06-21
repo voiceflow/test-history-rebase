@@ -1,4 +1,3 @@
-export * from './expression';
 export * from './feature';
 export * from './focus';
 export * from './hotkeys';

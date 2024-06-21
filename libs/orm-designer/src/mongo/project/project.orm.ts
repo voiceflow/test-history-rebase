@@ -24,6 +24,10 @@ export class ProjectORM extends MongoAtomicORM<ProjectEntity> {
     return result.map(({ _id }) => _id.toJSON());
   }
 
+  async deleteManyByWorkspaceID(workspaceID: number) {
+    await this.delete({ teamID: workspaceID });
+  }
+
   async getVersionAndWorkspaceID(projectID: string): Promise<{ devVersion?: string; workspaceID: number }> {
     const { devVersion, teamID } = await this.findOneOrFail(projectID, { fields: ['devVersion', 'teamID'] });
 

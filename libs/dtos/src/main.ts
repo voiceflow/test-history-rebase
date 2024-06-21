@@ -99,7 +99,6 @@ export * from './node/buttons-v2/buttons-v2-node.dto';
 export * from './node/capture-v3/capture-v3-node.dto';
 export * from './node/capture-v3/capture-v3-node-capture-type.enum';
 export * from './node/carousel/carousel-layout.enum';
-export * from './node/carousel/carousel-layout.enum';
 export * from './node/choice-v2/choice-v2-node.dto';
 export * from './node/function/compiled/function-invocation.compiled.dto';
 export * from './node/function/compiled/function-node.compiled.dto';

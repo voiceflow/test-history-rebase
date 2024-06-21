@@ -48,11 +48,20 @@ export const CLAUDE_3_OPUS_MODEL_CONFIG = modelFactory({
   advanced: true,
 });
 
+export const CLAUDE_3_5_SONNET_MODEL_CONFIG = modelFactory({
+  type: AIModel.CLAUDE_3_5_SONNET,
+  name: 'Claude 3.5 - Sonnet',
+  info: '5 x tokens',
+  icon: 'Anthropic',
+  advanced: true,
+});
+
 export const ANTHROPIC_MODEL_CONFIGS = [
   CLAUDE_INSTANT_V1_MODEL_CONFIG,
   CLAUDE_V1_MODEL_CONFIG,
   CLAUDE_V2_MODEL_CONFIG,
   CLAUDE_3_HAIKU_MODEL_CONFIG,
   CLAUDE_3_SONNET_MODEL_CONFIG,
+  CLAUDE_3_5_SONNET_MODEL_CONFIG,
   CLAUDE_3_OPUS_MODEL_CONFIG,
 ];

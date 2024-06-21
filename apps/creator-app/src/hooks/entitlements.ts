@@ -14,6 +14,7 @@ const ENTITLEMENTS_MODELS = new Set([
   AIModel.CLAUDE_V2,
   AIModel.CLAUDE_3_HAIKU,
   AIModel.CLAUDE_3_SONNET,
+  AIModel.CLAUDE_3_5_SONNET,
   AIModel.CLAUDE_3_OPUS,
   AIModel.GPT_3_5_TURBO,
   AIModel.GPT_3_5_TURBO_1106,
@@ -31,6 +32,7 @@ const ENTITLEMENTS_BY_MODELS: Record<EntitlementModels, keyof Subscription['enti
   [AIModel.CLAUDE_V2]: 'claude2',
   [AIModel.CLAUDE_3_HAIKU]: 'claude3Haiku',
   [AIModel.CLAUDE_3_SONNET]: 'claude3Sonnet',
+  [AIModel.CLAUDE_3_5_SONNET]: 'claude3Sonnet', // use same entitlement as CLAUDE_3_SONNET
   [AIModel.CLAUDE_3_OPUS]: 'claude3Opus',
   [AIModel.GPT_3_5_TURBO]: 'gpt',
   [AIModel.GPT_3_5_TURBO_1106]: 'gpt',

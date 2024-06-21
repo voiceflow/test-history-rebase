@@ -8,7 +8,8 @@ import { MenuItemWithTooltip } from '@/components/Menu/MenuItemWithTooltip/MenuI
 import { TooltipContentLearn } from '@/components/Tooltip/TooltipContentLearn/TooltipContentLearn.component';
 import { CMS_KNOWLEDGE_BASE_LEARN_MORE } from '@/constants/link.constant';
 import { Designer } from '@/ducks';
-import { useDispatch, useFeature, useSelector } from '@/hooks';
+import { useDispatch, useSelector } from '@/hooks';
+import { useFeature } from '@/hooks/feature.hook';
 import { useModal } from '@/hooks/modal.hook';
 import { usePopperModifiers } from '@/hooks/popper.hook';
 import { useTimer } from '@/hooks/timer.hook';
@@ -18,7 +19,10 @@ import { openInternalURLInANewTab } from '@/utils/window';
 
 import { ICMSKnowledgeBaseAddDataSourceButton } from './CMSKnowledgeBaseAddDataSourceButton.interface';
 
-export const CMSKnowledgeBaseAddDataSourceButton: React.FC<ICMSKnowledgeBaseAddDataSourceButton> = ({ variant = 'primary', testID }) => {
+export const CMSKnowledgeBaseAddDataSourceButton: React.FC<ICMSKnowledgeBaseAddDataSourceButton> = ({
+  variant = 'primary',
+  testID,
+}) => {
   const getAll = useDispatch(Designer.KnowledgeBase.Document.effect.getAll);
 
   const docsCount = useSelector(Designer.KnowledgeBase.Document.selectors.count);
@@ -29,7 +33,7 @@ export const CMSKnowledgeBaseAddDataSourceButton: React.FC<ICMSKnowledgeBaseAddD
   const plainTextModal = useModal(Modals.KnowledgeBase.Import.PlainText);
   const integrationModal = useModal(Modals.KnowledgeBase.Import.Integration);
 
-  const { isEnabled: isIntegrationsEnabled } = useFeature(Realtime.FeatureFlag.KNOWLEDGE_BASE_INTEGRATIONS);
+  const isIntegrationsEnabled = useFeature(Realtime.FeatureFlag.KNOWLEDGE_BASE_INTEGRATIONS);
 
   const checkForInitialDocumentsTimer = useTimer(
     async ({ state, unmounted }) => {
@@ -78,7 +82,8 @@ export const CMSKnowledgeBaseAddDataSourceButton: React.FC<ICMSKnowledgeBaseAddD
     {
       label: 'Sitemap',
       onClick: () => sitemapModal.openVoid(),
-      tooltipLabel: `Import your website's sitemap URL to automatically fetch and organize the URLs of your website's pages.`,
+      tooltipLabel:
+        "Import your website's sitemap URL to automatically fetch and organize the URLs of your website's pages.",
       onTooltipLearnClick: () => openInternalURLInANewTab(CMS_KNOWLEDGE_BASE_LEARN_MORE),
       testID: 'sitemap',
     },
@@ -94,7 +99,7 @@ export const CMSKnowledgeBaseAddDataSourceButton: React.FC<ICMSKnowledgeBaseAddD
           // closed
         }
       },
-      tooltipLabel: `Connect and import data from external platforms like Zendesk.`,
+      tooltipLabel: 'Connect and import data from external platforms like Zendesk.',
       onTooltipLearnClick: () => openInternalURLInANewTab(CMS_KNOWLEDGE_BASE_LEARN_MORE),
       shouldRender: () => isIntegrationsEnabled,
       testID: 'integration',
@@ -108,7 +113,14 @@ export const CMSKnowledgeBaseAddDataSourceButton: React.FC<ICMSKnowledgeBaseAddD
       modifiers={modifiers}
       testID={tid(testID, 'menu')}
       referenceElement={({ ref, popper, isOpen, onOpen }) => (
-        <Button ref={ref} variant={variant} label="Add data source" isActive={isOpen} onClick={() => onOpen()} testID={testID}>
+        <Button
+          ref={ref}
+          variant={variant}
+          label="Add data source"
+          isActive={isOpen}
+          onClick={() => onOpen()}
+          testID={testID}
+        >
           {popper}
         </Button>
       )}
@@ -126,7 +138,10 @@ export const CMSKnowledgeBaseAddDataSourceButton: React.FC<ICMSKnowledgeBaseAddD
                 testID={tid(testID, 'menu-item', option.testID)}
               >
                 {() => (
-                  <TooltipContentLearn label={option.tooltipLabel} onLearnClick={() => option.onTooltipLearnClick && option?.onTooltipLearnClick()} />
+                  <TooltipContentLearn
+                    label={option.tooltipLabel}
+                    onLearnClick={() => option.onTooltipLearnClick && option?.onTooltipLearnClick()}
+                  />
                 )}
               </MenuItemWithTooltip>
             ))}

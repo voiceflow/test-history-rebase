@@ -2,7 +2,8 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import * as CustomBlock from '@/ducks/customBlock';
-import { useDispatch, useFeature, useSelector } from '@/hooks';
+import { useDispatch, useSelector } from '@/hooks';
+import { useFeature } from '@/hooks/feature.hook';
 
 const CustomBlockSync: React.FC = () => {
   const syncCustomBlockPorts = useDispatch(CustomBlock.syncCustomBlockPorts);
@@ -10,10 +11,10 @@ const CustomBlockSync: React.FC = () => {
   const mvpCustomBlocks = useFeature(Realtime.FeatureFlag.MVP_CUSTOM_BLOCK);
 
   React.useEffect(() => {
-    if (mvpCustomBlocks.isEnabled) {
+    if (mvpCustomBlocks) {
       syncCustomBlockPorts();
     }
-  }, [allCustomBlocks]);
+  }, [allCustomBlocks, mvpCustomBlocks]);
 
   return null;
 };

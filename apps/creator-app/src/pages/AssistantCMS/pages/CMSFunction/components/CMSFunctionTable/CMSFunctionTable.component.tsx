@@ -6,7 +6,7 @@ import React from 'react';
 
 import { CMS_FUNCTIONS_LEARN_MORE } from '@/constants/link.constant';
 import { Designer } from '@/ducks';
-import { useFeature } from '@/hooks/feature';
+import { useFeature } from '@/hooks/feature.hook';
 import { useDispatch } from '@/hooks/store.hook';
 import { useTrackPageOpenedFirstTime } from '@/hooks/tracking';
 import { EMPTY_TEST_ID, TABLE_TEST_ID } from '@/pages/AssistantCMS/AssistantCMS.constant';
@@ -69,7 +69,7 @@ export const CMSFunctionTable: React.FC = () => {
         onRowClick={onRowClick}
         onRowNavigate={onRowNavigate}
         rowContextMenu={rowContextMenu}
-        columnsOrderAtom={functionsUsedBy.isEnabled ? functionColumnsOrderAtom : legacyFunctionColumnsOrderAtom}
+        columnsOrderAtom={functionsUsedBy ? functionColumnsOrderAtom : legacyFunctionColumnsOrderAtom}
       />
     </CMSEmpty>
   );

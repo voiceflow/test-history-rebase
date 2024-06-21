@@ -9,7 +9,7 @@ import { UpgradeTooltipPlanPermission } from '@/config/planPermission';
 import { Permission } from '@/constants/permissions';
 import { Designer } from '@/ducks';
 import { useGetAtomValue } from '@/hooks/atom.hook';
-import { useFeature } from '@/hooks/feature';
+import { useFeature } from '@/hooks/feature.hook';
 import { useConfirmV2Modal, useModal } from '@/hooks/modal.hook';
 import { usePermission } from '@/hooks/permission';
 import { useDispatch } from '@/hooks/store.hook';
@@ -22,7 +22,7 @@ import { useKBIntegrationSync, useKnowledgeBaseCMSManager } from '../../CMSKnowl
 import { CMSKnowledgeBaseTableNavigationRefreshRateButton } from './CMSKnowledgeBaseTableNavigationRefreshRateButton.component';
 
 export const CMSKnowledgeBaseTableNavigation: React.FC = () => {
-  const { isEnabled: isIntegrationsEnabled } = useFeature(Realtime.FeatureFlag.KNOWLEDGE_BASE_INTEGRATIONS);
+  const isIntegrationsEnabled = useFeature(Realtime.FeatureFlag.KNOWLEDGE_BASE_INTEGRATIONS);
   const refreshRatePermission = usePermission(Permission.FEATURE_KB_REFRESH_RATE);
 
   const confirmModal = useConfirmV2Modal();
@@ -61,7 +61,7 @@ export const CMSKnowledgeBaseTableNavigation: React.FC = () => {
     const { size } = getAtomValue(tableState.selectedIDs);
 
     confirmModal.openVoid({
-      body: `Deleted data sources won’t be recoverable. Please confirm that you want to continue.`,
+      body: 'Deleted data sources won’t be recoverable. Please confirm that you want to continue.',
       title: `Delete data sources (${size})`,
       confirm: onConfirmDelete,
       confirmButtonLabel: 'Delete forever',

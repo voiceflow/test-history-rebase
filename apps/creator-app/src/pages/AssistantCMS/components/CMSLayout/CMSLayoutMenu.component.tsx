@@ -6,7 +6,7 @@ import { matchPath, useLocation } from 'react-router-dom';
 
 import { CMSRoute, Path } from '@/config/routes';
 import { Creator, Designer, Project, Router } from '@/ducks';
-import { useFeature } from '@/hooks/feature';
+import { useFeature } from '@/hooks/feature.hook';
 import { useHotkey } from '@/hooks/hotkeys';
 import { useOnLinkClick } from '@/hooks/navigation.hook';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
@@ -18,9 +18,9 @@ export const CMSLayoutMenu: React.FC = () => {
 
   const location = useLocation<{ isBackFromCanvas?: boolean }>();
   const onLinkClick = useOnLinkClick();
-  const { isEnabled: isKbEnabled } = useFeature(Realtime.FeatureFlag.KNOWLEDGE_BASE);
-  const { isEnabled: isCMSFunctionsEnabled } = useFeature(Realtime.FeatureFlag.CMS_FUNCTIONS);
-  const { isEnabled: isResponsesEnabled } = useFeature(Realtime.FeatureFlag.CMS_RESPONSES);
+  const isKbEnabled = useFeature(Realtime.FeatureFlag.KNOWLEDGE_BASE);
+  const isCMSFunctionsEnabled = useFeature(Realtime.FeatureFlag.CMS_FUNCTIONS);
+  const isResponsesEnabled = useFeature(Realtime.FeatureFlag.CMS_RESPONSES);
 
   const { updateActiveCMSRoute } = useCMSRoute();
 

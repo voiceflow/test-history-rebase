@@ -3,7 +3,8 @@ import React from 'react';
 
 import { BlockType } from '@/constants';
 import * as CreatorV2 from '@/ducks/creatorV2';
-import { useFeature, useLinkedRef, useRAF } from '@/hooks';
+import { useLinkedRef, useRAF } from '@/hooks';
+import { useFeature } from '@/hooks/feature.hook';
 import { ContextMenuContext, EngineContext, NodeEntityContext } from '@/pages/Canvas/contexts';
 import { useElementInstance } from '@/pages/Canvas/engine/entities/utils';
 import { useEntityDrag } from '@/pages/Canvas/hooks/drag';
@@ -70,7 +71,7 @@ export const useNodeInstance = <T extends HTMLElement>(): InternalNodeInstance<T
 
           ref.current.style.transform = `translate(${position.current[0]}px, ${position.current[1]}px)`;
 
-          if (experimentalSyncLinks.isEnabled) {
+          if (experimentalSyncLinks) {
             engine.node.translateAllLinks(nodeEntity.nodeID, [movementX, movementY], { sync: true });
           }
 

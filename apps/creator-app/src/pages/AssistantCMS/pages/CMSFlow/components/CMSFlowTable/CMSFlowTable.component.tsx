@@ -4,7 +4,7 @@ import React from 'react';
 
 import { CMS_FLOW_LEARN_MORE } from '@/constants/link.constant';
 import { Designer, Router } from '@/ducks';
-import { useFeature } from '@/hooks/feature';
+import { useFeature } from '@/hooks/feature.hook';
 import { useDispatch, useGetValueSelector } from '@/hooks/store.hook';
 
 import { CMSEmpty } from '../../../../components/CMSEmpty/CMSEmpty.component';
@@ -61,7 +61,7 @@ export const CMSFlowTable: React.FC = () => {
         onRowNavigate={onRowNavigate}
         rowContextMenu={rowContextMenu}
         onRowDoubleClick={onRowDoubleClick}
-        columnsOrderAtom={componentsUsedBY.isEnabled ? flowColumnsOrderAtom : legacyFlowColumnsOrderAtom}
+        columnsOrderAtom={componentsUsedBY ? flowColumnsOrderAtom : legacyFlowColumnsOrderAtom}
       />
     </CMSEmpty>
   );

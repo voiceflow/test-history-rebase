@@ -210,7 +210,12 @@ export abstract class PostgresORM<
     if (!this.cache.onUpdateHandlers) {
       this.cache.onUpdateHandlers = this.entityMetadata.hydrateProps
         .filter((prop) => prop.onUpdate)
-        .map((prop) => ({ field: prop.name, handler: prop.onUpdate! }));
+        .map((prop) => ({
+          field: prop.name,
+          handler: prop.onUpdate as unknown as (
+            data: Partial<BaseEntity>,
+          ) => unknown,
+        }));
     }
 
     this.cache.onUpdateHandlers.forEach(({ field, handler }) => {

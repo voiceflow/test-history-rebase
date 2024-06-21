@@ -85,11 +85,15 @@ export abstract class MongoORM<BaseEntity extends MongoPKEntity, DiscriminatorEn
     const nextData = { ...data };
 
     if (!this.cache.onUpdateHandlers) {
-      this.cache.onUpdateHandlers = Object.values(this.entityMetadata.properties)
+      this.cache.onUpdateHandlers = Object.values(
+        this.entityMetadata.properties,
+      )
         .filter((property) => property.onUpdate)
         .map((property) => ({
           field: property.name,
-          handler: property.onUpdate!,
+          handler: property.onUpdate as unknown as (
+            data: Partial<BaseEntity>,
+          ) => unknown,
         }));
     }
 

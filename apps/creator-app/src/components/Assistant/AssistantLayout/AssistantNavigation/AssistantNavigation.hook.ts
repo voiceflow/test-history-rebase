@@ -8,7 +8,7 @@ import { Path } from '@/config/routes';
 import { Permission } from '@/constants/permissions';
 import { Project, Router, Session } from '@/ducks';
 import { useOnAssistantCopyCloneLink, useOnAssistantDuplicate } from '@/hooks/assistant.hook';
-import { useFeature } from '@/hooks/feature';
+import { useFeature } from '@/hooks/feature.hook';
 import { HotkeyItem, useHotkeyList } from '@/hooks/hotkeys';
 import { useModal } from '@/hooks/modal.hook';
 import { useGetResolvedPath } from '@/hooks/navigation.hook';
@@ -52,7 +52,7 @@ export const useAssistantNavigationLogoItems = (): NavigationLogoItem[] => {
   const projectMembersModal = useModal(Modals.Project.Members);
 
   const withExport = !isPreviewerOrLockedViewer;
-  const withSharePrototype = !isPreviewerOrLockedViewer && canSharePrototype && !hideExports.isEnabled;
+  const withSharePrototype = !isPreviewerOrLockedViewer && canSharePrototype && !hideExports;
   const withDuplicateOption = !isPreviewerOrLockedViewer && canManageProjects;
   const withInviteCollaborators = !isPreviewerOrLockedViewer && canAddCollaborators && !!projectID;
   const withCopyCloneLinkOption = !isPreviewerOrLockedViewer && canManageProjects;
@@ -138,7 +138,7 @@ export const useAssistantNavigationItems = () => {
         iconName: 'Measure' as const,
         tooltipLabel: 'Analytics',
       },
-      ...conditionalArrayItems<IAssistantNavigationItem>(canEditAPIKey || viewerAPIKeyAccess.isEnabled, {
+      ...conditionalArrayItems<IAssistantNavigationItem>(canEditAPIKey || viewerAPIKeyAccess, {
         path: Path.PUBLISH_API,
         testID: 'publishing',
         hotkey: '',
@@ -156,7 +156,7 @@ export const useAssistantNavigationItems = () => {
         tooltipLabel: 'Settings',
       }),
     ].map<IAssistantNavigationItem>((item, index) => ({ ...item, hotkey: String(index + 1) }));
-  }, [location.pathname, canViewConversations, canEditAPIKey, viewerAPIKeyAccess.isEnabled, canEditProject, diagramID]);
+  }, [location.pathname, canViewConversations, canEditAPIKey, viewerAPIKeyAccess, canEditProject, diagramID]);
 };
 
 export const useAssistantNavigationHotkeys = (items: IAssistantNavigationItem[]) => {

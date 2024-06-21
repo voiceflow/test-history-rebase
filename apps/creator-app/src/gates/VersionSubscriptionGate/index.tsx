@@ -4,7 +4,7 @@ import { Redirect } from 'react-router-dom';
 
 import { Path } from '@/config/routes';
 import { Designer, Session } from '@/ducks';
-import { useFeature } from '@/hooks/feature';
+import { useFeature } from '@/hooks/feature.hook';
 import { useTeardown } from '@/hooks/lifecycle';
 import { useRouteVersionID } from '@/hooks/routes';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
@@ -39,7 +39,7 @@ const VersionSubscriptionGate: React.FC<React.PropsWithChildren> = ({ children }
     return <Redirect to={Path.DASHBOARD} />;
   }
 
-  const AssistantChannelGate = httpLoadEnvironment.isEnabled
+  const AssistantChannelGate = httpLoadEnvironment
     ? AssistantChannelSubscriptionGate
     : AssistantChannelSubscriptionGateLegacy;
 

@@ -14,7 +14,7 @@ import React, { useCallback } from 'react';
 
 import * as Documentation from '@/config/documentation';
 import { Designer, Diagram } from '@/ducks';
-import { useFeature } from '@/hooks/feature';
+import { useFeature } from '@/hooks/feature.hook';
 import { useFolderTree } from '@/hooks/folder.hook';
 import { useSelector } from '@/hooks/store.hook';
 
@@ -98,7 +98,7 @@ const GoToIntentSelect: React.FC<GoToIntentSelectProps> = ({
               return acc;
 
             const intent = getIntentByID({ id: triggerNode.intentID });
-            const globalIntentNodeIDsByIntentID = referenceSystem.isEnabled
+            const globalIntentNodeIDsByIntentID = referenceSystem
               ? globalTriggerNodeIDsByIntentIDMapByDiagramIDMap[workflow.diagramID]
               : globalIntentStepMap[workflow.diagramID];
 
@@ -139,12 +139,7 @@ const GoToIntentSelect: React.FC<GoToIntentSelectProps> = ({
           ],
         };
       },
-      [
-        getIntentByID,
-        triggersMapByDiagramID,
-        referenceSystem.isEnabled,
-        globalTriggerNodeIDsByIntentIDMapByDiagramIDMap,
-      ]
+      [getIntentByID, triggersMapByDiagramID, referenceSystem, globalTriggerNodeIDsByIntentIDMapByDiagramIDMap]
     ),
   });
 

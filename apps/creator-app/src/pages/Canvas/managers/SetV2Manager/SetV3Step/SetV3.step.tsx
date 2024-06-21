@@ -7,7 +7,7 @@ import { StepLabelVariant } from '@/constants/canvas';
 import Step, { Item, Section } from '@/pages/Canvas/components/Step';
 import { ConnectedStep } from '@/pages/Canvas/managers/types';
 
-import { SetV3StepItem } from './SetV3StepItem.component';
+import { SetV3StepItem } from './SetV3StepItem/SetV3StepItem.component';
 
 interface StepItem {
   id: string;
@@ -33,7 +33,7 @@ export const SetV3Step: ConnectedStep<Realtime.NodeData.SetV2, Realtime.NodeData
           content: <SetV3StepItem item={item} withPort={withPorts && index === data.sets.length - 1} />,
         };
       }),
-    [data.sets]
+    [withPorts, data.sets]
   );
 
   return (

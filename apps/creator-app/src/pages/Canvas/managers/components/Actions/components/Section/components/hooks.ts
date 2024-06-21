@@ -81,16 +81,18 @@ export const useItemConfig = (getManager: ManagerGetter, data: Realtime.NodeData
         }))
         .when(Realtime.Utils.typeGuards.isSetV2NodeData, ({ sets }) => {
           const nonEmptySet = sets.find((set) => set.variable && entitiesAndVariables.byKey[set.variable]);
+          const displayLabel = nonEmptySet
+            ? nonEmptySet.label ||
+              `Set {${entitiesAndVariables.byKey[nonEmptySet.variable!].name}} to ${transformVariablesToReadable(
+                String(nonEmptySet.expression) || "''",
+                entitiesAndVariables.byKey
+              )}`
+            : '';
 
           return {
             icon: manager.icon,
             isEmpty: !nonEmptySet,
-            defaultName: nonEmptySet
-              ? `Set {${entitiesAndVariables.byKey[nonEmptySet.variable!].name}} to ${transformVariablesToReadable(
-                  String(nonEmptySet.expression) || "''",
-                  entitiesAndVariables.byKey
-                )}`
-              : '',
+            defaultName: displayLabel,
             placeholder: 'Select variable',
           };
         })

@@ -19,7 +19,7 @@
     "test:types": "yarn g:tsd"
   },
   "dependencies": {
-    "@voiceflow/base-types": "2.110.2",
+    "@voiceflow/base-types": "2.111.3",
     "@voiceflow/common": "8.3.0",
     "@voiceflow/dtos": "workspace:*",
     "@voiceflow/realtime-sdk": "workspace:*"

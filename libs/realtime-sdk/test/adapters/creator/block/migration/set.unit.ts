@@ -29,6 +29,7 @@ describe('Adapters | Creator | Block | Migration | setAdapter', () => {
           variable: set.variable,
           type: BaseNode.Utils.ExpressionTypeV2.VALUE,
           expression: expression.value,
+          label: null,
         },
       ]);
     });
@@ -48,6 +49,7 @@ describe('Adapters | Creator | Block | Migration | setAdapter', () => {
           variable: set.variable,
           type: BaseNode.Utils.ExpressionTypeV2.ADVANCE,
           expression: '{{[name].name}}',
+          label: null,
         },
       ]);
     });

@@ -1,5 +1,5 @@
 import type { Cast, Collection, IsUnknown, Primary, PrimaryKeyProp, PrimaryProperty, Reference } from '@mikro-orm/core';
-import type { ExcludeFunctions } from '@mikro-orm/core/typings';
+import type { CleanKeys } from '@mikro-orm/core/typings';
 import type { ObjectId } from '@mikro-orm/mongodb';
 import type { AnyRecord, Struct } from '@voiceflow/common';
 import type { Markup } from '@voiceflow/dtos';
@@ -136,11 +136,11 @@ export type JSONTypeRemap<Type> = Type extends JSONStringRemapTypes
           : Type;
 
 export type ToObject<Type extends AnyRecord> = ToForeignKeys<{
-  [Key in keyof Type as Exclude<ExcludeFunctions<Type, Key>, CollectionKeys<Type>>]: Type[Key];
+  [Key in keyof Type as Exclude<CleanKeys<Type, Key>, CollectionKeys<Type>>]: Type[Key];
 }>;
 
 export type ToJSON<Type> = {
-  [Key in keyof Type as Exclude<ExcludeFunctions<Type, Key>, CollectionKeys<Type>>]: JSONTypeRemap<Type[Key]>;
+  [Key in keyof Type as Exclude<CleanKeys<Type, Key>, CollectionKeys<Type>>]: JSONTypeRemap<Type[Key]>;
 };
 
 export type PrimaryObject<Entity extends BasePKEntity> =

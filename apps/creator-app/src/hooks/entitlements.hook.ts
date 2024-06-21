@@ -1,5 +1,6 @@
 import { AIModel, Subscription } from '@voiceflow/dtos';
 import React from 'react';
+import { SetValue } from 'ts-pattern/dist/types/helpers';
 
 import { AI_MODEL_CONFIG_MAP } from '@/config/ai-model';
 import { Permission } from '@/constants/permissions';
@@ -24,9 +25,9 @@ const ENTITLEMENTS_MODELS = new Set([
   AIModel.GEMINI_PRO_1_5,
 ]);
 
-type EntitlementModels = typeof ENTITLEMENTS_MODELS extends Set<infer T> ? T : never;
+type EntitlementModels = SetValue<typeof ENTITLEMENTS_MODELS>;
 
-const ENTITLEMENTS_BY_MODELS: Record<EntitlementModels, keyof Subscription['entitlements']> = {
+const ENTITLEMENTS_BY_MODELS = {
   [AIModel.CLAUDE_INSTANT_V1]: 'claudeInstant',
   [AIModel.CLAUDE_V1]: 'claude1',
   [AIModel.CLAUDE_V2]: 'claude2',
@@ -40,7 +41,7 @@ const ENTITLEMENTS_BY_MODELS: Record<EntitlementModels, keyof Subscription['enti
   [AIModel.GPT_4_TURBO]: 'gpt4Turbo',
   [AIModel.GPT_4O]: 'gpt4O',
   [AIModel.GEMINI_PRO_1_5]: 'geminiPro15',
-};
+} satisfies Record<EntitlementModels, keyof Subscription['entitlements']>;
 
 const isEntitlementModel = (model: string): model is EntitlementModels =>
   ENTITLEMENTS_MODELS.has(model as EntitlementModels);

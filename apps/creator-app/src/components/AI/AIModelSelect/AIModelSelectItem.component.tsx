@@ -4,7 +4,7 @@ import React from 'react';
 
 import { MenuItemWithTooltip } from '@/components/Menu/MenuItemWithTooltip/MenuItemWithTooltip.component';
 import { getAdvancedAiModelUpgradeModal } from '@/config/planPermission/advancedAIModels';
-import { useAIModelEntitlement } from '@/hooks';
+import { useAIModelEntitlement } from '@/hooks/entitlements.hook';
 import { useUpgradeModal } from '@/hooks/modal.hook';
 
 import { IAIModelSelectItem } from './AIModelSelect.interface';
@@ -31,7 +31,10 @@ export const AIModelSelectItem: React.FC<IAIModelSelectItem> = ({ model, onClick
           <Box direction="column">
             <Tooltip.Caption>This model can only be used on a paid plan.</Tooltip.Caption>
 
-            <Tooltip.Button onClick={() => upgradeModal.openVoid(getAdvancedAiModelUpgradeModal(model.type))} testID={tid(testID, 'upgrade')}>
+            <Tooltip.Button
+              onClick={() => upgradeModal.openVoid(getAdvancedAiModelUpgradeModal(model.type))}
+              testID={tid(testID, 'upgrade')}
+            >
               Upgrade
             </Tooltip.Button>
           </Box>

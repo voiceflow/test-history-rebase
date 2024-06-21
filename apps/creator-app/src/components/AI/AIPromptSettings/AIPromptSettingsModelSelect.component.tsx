@@ -5,7 +5,7 @@ import React from 'react';
 
 import { PRIVATE_LLM_MODELS } from '@/config';
 import { AI_MODEL_CONFIG_MAP } from '@/config/ai-model';
-import { useAIModelEntitlement } from '@/hooks';
+import { useAIModelEntitlement } from '@/hooks/entitlements.hook';
 import { usePaymentModal } from '@/hooks/modal.hook';
 
 interface IAIPromptSettingsModelSelect {

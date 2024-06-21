@@ -4,14 +4,13 @@ import { parseScript, Syntax } from 'esprima';
 import type * as estree from 'estree';
 import _isNumber from 'lodash/isNumber';
 import React from 'react';
-import { useSelector } from 'react-redux';
 
 import * as ERRORS from '@/constants/expressionValidationErrors.constant';
 import * as DiagramV2 from '@/ducks/diagramV2';
+import { useFeature } from '@/hooks/feature';
+import { useSelector } from '@/hooks/store.hook';
 import { getErrorMessage } from '@/utils/error';
 import { transformVariableToString } from '@/utils/slot';
-
-import { useFeature } from './feature';
 
 const VALID_STRING_REGEX = /'.+'/gi;
 

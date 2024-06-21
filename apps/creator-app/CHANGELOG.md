@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1594.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1594.0...@voiceflow/creator-app@1.1594.1) (2024-06-21)
+
+### Bug Fixes
+
+* move expression hook into a component (COR-000) ([#8350](https://github.com/voiceflow/creator-app/issues/8350)) ([f185879](https://github.com/voiceflow/creator-app/commit/f1858797ed519ffaa8faf310c85f5d3a443b05b2))
+
 # [1.1594.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1593.1...@voiceflow/creator-app@1.1594.0) (2024-06-21)
 
 ### Features

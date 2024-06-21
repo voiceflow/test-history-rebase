@@ -15,7 +15,8 @@ import { OrganizationSubscriptionGate, VersionSubscriptionGate } from '@/gates';
 import { lazy } from '@/hocs/lazy';
 import { withBatchLoadingGate } from '@/hocs/withBatchLoadingGate';
 import { withWorkspaceOrProjectAssetsSuspense } from '@/hocs/withWorkspaceOrProjectAssetsSuspense';
-import { useFeature, useLocalDispatch, usePermission, useSelector, useTeardown } from '@/hooks';
+import { useLocalDispatch, usePermission, useSelector, useTeardown } from '@/hooks';
+import { useFeature } from '@/hooks/feature.hook';
 import { ModalScope } from '@/ModalsV2/modal-scope.enum';
 import AssistantCMS from '@/pages/AssistantCMS/AssistantCMS.page';
 import ProjectProviders from '@/pages/Project/Providers';
@@ -102,9 +103,7 @@ const Project: React.FC = () => {
 
           <Route path={Path.PROJECT_ANALYTICS} component={AnalyticsDashboard} />
 
-          {!disableIntegration.isEnabled && !hideExports.isEnabled && (
-            <Route path={Path.PROJECT_PUBLISH} component={Publish} />
-          )}
+          {!disableIntegration && !hideExports && <Route path={Path.PROJECT_PUBLISH} component={Publish} />}
 
           <Route path={Path.PROJECT_SETTINGS} component={Settings} />
 

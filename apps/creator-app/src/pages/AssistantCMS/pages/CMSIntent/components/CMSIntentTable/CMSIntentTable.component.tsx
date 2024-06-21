@@ -4,7 +4,7 @@ import { Table } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { CMS_INTENT_LEARN_MORE } from '@/constants/link.constant';
-import { useFeature } from '@/hooks/feature';
+import { useFeature } from '@/hooks/feature.hook';
 import { EMPTY_TEST_ID, TABLE_TEST_ID } from '@/pages/AssistantCMS/AssistantCMS.constant';
 import { isIntentBuiltIn } from '@/utils/intent.util';
 
@@ -51,7 +51,7 @@ export const CMSIntentTable: React.FC = () => {
         onRowClick={onRowClick}
         onRowNavigate={onRowNavigate}
         rowContextMenu={rowContextMenu}
-        columnsOrderAtom={intentsUsedBy.isEnabled ? intentColumnsOrderAtom : legacyIntentColumnsOrderAtom}
+        columnsOrderAtom={intentsUsedBy ? intentColumnsOrderAtom : legacyIntentColumnsOrderAtom}
       />
     </CMSEmpty>
   );

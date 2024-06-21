@@ -6,7 +6,8 @@ import React from 'react';
 
 import OverflowMenu from '@/components/OverflowMenu';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useFeature, useSelector } from '@/hooks';
+import { useSelector } from '@/hooks';
+import { useFeature } from '@/hooks/feature.hook';
 import { useConfirmModal } from '@/hooks/modal.hook';
 import * as S from '@/pages/Settings/components/ProjectEnvironments/styles';
 
@@ -106,7 +107,7 @@ const SettingsBackupsListItem: React.FC<SettingsBackupsListItemProps> = ({
                 { label: '', divider: true },
                 { label: 'Restore', onClick: confirmRestore },
                 { label: 'Delete', onClick: confirmDelete },
-                hideExports.isEnabled ? null : { label: 'Download', onClick: () => onDownload(backup) },
+                hideExports ? null : { label: 'Download', onClick: () => onDownload(backup) },
               ]}
             />
           }

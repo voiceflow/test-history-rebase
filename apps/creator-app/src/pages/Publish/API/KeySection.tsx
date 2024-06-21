@@ -7,7 +7,8 @@ import client from '@/client';
 import * as Settings from '@/components/Settings';
 import { Permission } from '@/constants/permissions';
 import * as Session from '@/ducks/session';
-import { useAsyncEffect, useFeature, usePermission, useSetup, useTrackingEvents } from '@/hooks';
+import { useAsyncEffect, usePermission, useSetup, useTrackingEvents } from '@/hooks';
+import { useFeature } from '@/hooks/feature.hook';
 import { useConfirmModal } from '@/hooks/modal.hook';
 import { ProjectAPIKey } from '@/models';
 import { copy } from '@/utils/clipboard';
@@ -65,11 +66,11 @@ const KeySection: React.FC<KeySectionProps> = ({ syncKeyState, page }) => {
   });
 
   useAsyncEffect(async () => {
-    if (!canEditAPIKey && !viewerAPIKeyAccess.isEnabled) return;
+    if (!canEditAPIKey && !viewerAPIKeyAccess) return;
 
     setLoading(true);
 
-    const apiKeys = identityAPIKey.isEnabled
+    const apiKeys = identityAPIKey
       ? await client.identity.apiKey.listAPIKeys(projectID)
       : await client.project.listAPIKeys(projectID);
 
@@ -80,7 +81,7 @@ const KeySection: React.FC<KeySectionProps> = ({ syncKeyState, page }) => {
       // first look for key that has secondaryKeyID property
       fetchedApiKey = apiKeys.find((key) => key?.secondaryKeyID !== undefined) ?? apiKeys[0];
     } else if (canEditAPIKey) {
-      const apiKey = identityAPIKey.isEnabled
+      const apiKey = identityAPIKey
         ? await client.identity.apiKey.createAPIKey({ projectID })
         : await client.project.createAPIKey({ projectID, workspaceID });
 
@@ -97,12 +98,12 @@ const KeySection: React.FC<KeySectionProps> = ({ syncKeyState, page }) => {
     updateKeyState({ primaryKey: fetchedApiKey, secondaryKey: fetchedSecondaryKey || null });
 
     setLoading(false);
-  }, [projectID, viewerAPIKeyAccess.isEnabled, canEditAPIKey]);
+  }, [projectID, viewerAPIKeyAccess, canEditAPIKey]);
 
   const createSecondaryKey = async () => {
     if (!canEditAPIKey) return;
 
-    const fetchedSecondaryKey = identityAPIKey.isEnabled
+    const fetchedSecondaryKey = identityAPIKey
       ? await client.identity.apiKey.createSecondaryAPIKey({ projectID, apiKey: primaryKey!._id })
       : await client.project.createSecondaryAPIKey({ projectID, apiKey: primaryKey!._id });
 
@@ -120,7 +121,7 @@ const KeySection: React.FC<KeySectionProps> = ({ syncKeyState, page }) => {
       confirmButtonText: 'Continue',
 
       confirm: async () => {
-        if (identityAPIKey.isEnabled) {
+        if (identityAPIKey) {
           await client.identity.apiKey.deleteSecondaryAPIKey({ projectID, apiKey: primaryKey!._id });
         } else {
           await client.project.deleteSecondaryAPIKey({ projectID, apiKey: primaryKey!._id });
@@ -142,7 +143,7 @@ const KeySection: React.FC<KeySectionProps> = ({ syncKeyState, page }) => {
       confirmButtonText: 'Continue',
 
       confirm: async () => {
-        if (identityAPIKey.isEnabled) {
+        if (identityAPIKey) {
           await client.identity.apiKey.promoteSecondaryAPIKey({ projectID });
         } else {
           await client.project.promoteSecondaryAPIKey({ projectID, apiKey: primaryKey!._id });
@@ -164,7 +165,7 @@ const KeySection: React.FC<KeySectionProps> = ({ syncKeyState, page }) => {
       confirmButtonText: 'Continue',
 
       confirm: async () => {
-        const regeneratedPrimaryKey = identityAPIKey.isEnabled
+        const regeneratedPrimaryKey = identityAPIKey
           ? await client.identity.apiKey.regenerateAPIKey({ apiKey: primaryKey!._id, projectID })
           : await client.project.regeneratePrimaryAPIKey({ projectID, apiKey: primaryKey!._id });
 
@@ -184,7 +185,7 @@ const KeySection: React.FC<KeySectionProps> = ({ syncKeyState, page }) => {
       confirmButtonText: 'Continue',
 
       confirm: async () => {
-        const regeneratedSecondaryKey = identityAPIKey.isEnabled
+        const regeneratedSecondaryKey = identityAPIKey
           ? await client.identity.apiKey.regenerateAPIKey({ projectID, apiKey: secondaryKey!._id })
           : await client.project.regenerateSecondaryAPIKey({ projectID, apiKey: primaryKey!._id });
 
@@ -201,7 +202,7 @@ const KeySection: React.FC<KeySectionProps> = ({ syncKeyState, page }) => {
     trackingEvents.trackProjectAPIKeyCopied({ page });
   };
 
-  if (!canEditAPIKey && !viewerAPIKeyAccess.isEnabled) return null;
+  if (!canEditAPIKey && !viewerAPIKeyAccess) return null;
 
   return (
     <Settings.Section title="Keys">

@@ -3,7 +3,7 @@ import React from 'react';
 
 import TrialExpiredPage from '@/components/TrialExpiredPage';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useFeature } from '@/hooks/feature';
+import { useFeature } from '@/hooks/feature.hook';
 import { useSelector } from '@/hooks/redux';
 
 import ProjectList from '.';
@@ -13,7 +13,7 @@ const TemporaryProjectList: React.FC = () => {
   const isTrialExpired = useSelector(WorkspaceV2.active.organizationTrialExpiredSelector);
   const proReverseTrial = useFeature(Realtime.FeatureFlag.PRO_REVERSE_TRIAL);
   const isEnterprise = useSelector(WorkspaceV2.active.isEnterpriseSelector);
-  const showLockScreen = proReverseTrial.isEnabled && isTrialExpired && !isEnterprise;
+  const showLockScreen = proReverseTrial && isTrialExpired && !isEnterprise;
 
   const dashboardKanban = useSelector(WorkspaceV2.active.dashboardKanbanSettingsSelector);
 

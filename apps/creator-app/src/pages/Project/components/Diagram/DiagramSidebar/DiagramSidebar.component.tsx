@@ -16,7 +16,7 @@ import { CMS_FLOW_LEARN_MORE, CMS_WORKFLOW_LEARN_MORE } from '@/constants/link.c
 import { Permission } from '@/constants/permissions';
 import { Creator, Designer, Diagram, Router, UI } from '@/ducks';
 import { useEventualEngine } from '@/hooks/engine.hook';
-import { useFeature } from '@/hooks/feature';
+import { useFeature } from '@/hooks/feature.hook';
 import { useFlowCreateModal, useWorkflowCreateModal } from '@/hooks/modal.hook';
 import { usePermission } from '@/hooks/permission';
 import { useLocalStorageState } from '@/hooks/storage.hook';
@@ -134,7 +134,7 @@ export const DiagramSidebar = memo(() => {
       ? activeSharedNode.nodeID
       : null;
 
-  const focusedNodeID = referenceSystem.isEnabled ? activeTriggerNodeResource?.resourceID ?? null : focusedSharedNodeID;
+  const focusedNodeID = referenceSystem ? activeTriggerNodeResource?.resourceID ?? null : focusedSharedNodeID;
   const selectedID = activeDiagramIsTopic && focusedNodeID ? `${diagramID}:${focusedNodeID}` : diagramID;
 
   return (

@@ -9,7 +9,8 @@ import * as Settings from '@/components/Settings';
 import { PRO_PLUS_PLANS } from '@/constants';
 import * as VersionV2 from '@/ducks/versionV2';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useDispatch, useFeature, useLinkedState, useSelector } from '@/hooks';
+import { useDispatch, useLinkedState, useSelector } from '@/hooks';
+import { useFeature } from '@/hooks/feature.hook';
 import { usePaymentModal } from '@/hooks/modal.hook';
 import { withTargetValue } from '@/utils/dom';
 import { isPlanFactory } from '@/utils/plans';
@@ -50,7 +51,8 @@ export const GeneralSection: React.FC = () => {
 
   const chatUIFeedbackButtons = useFeature(Realtime.FeatureFlag.CHAT_UI_FEEDBAK_BUTTONS);
 
-  const updateSpacing = () => updateConfig({ spacing: { side: Number(sideSpacing), bottom: Number(bottomSpacing) } }, { track: true });
+  const updateSpacing = () =>
+    updateConfig({ spacing: { side: Number(sideSpacing), bottom: Number(bottomSpacing) } }, { track: true });
 
   const toggleWatermark = () => updateConfig({ watermark: !config.watermark }, { track: true });
   const toggleFeedback = () => updateConfig({ feedback: !config.feedback }, { track: false });
@@ -64,7 +66,11 @@ export const GeneralSection: React.FC = () => {
       </Settings.SubSection>
 
       <Settings.SubSection header="Description" headerProps={{ px: 0, pt: 0 }} contentProps={{ px: 0 }}>
-        <Input value={description} onChangeText={setDescription} onBlur={withTargetValue(updateProperty('description'))} />
+        <Input
+          value={description}
+          onChangeText={setDescription}
+          onBlur={withTargetValue(updateProperty('description'))}
+        />
       </Settings.SubSection>
 
       <Settings.SubSection header="Chat Persistence" headerProps={{ px: 0, pt: 0 }} contentProps={{ px: 0 }}>
@@ -89,11 +95,23 @@ export const GeneralSection: React.FC = () => {
         </Settings.SubSection>
 
         <Settings.SubSection header="Side Spacing" headerProps={{ px: 0, pt: 0 }} contentProps={{ px: 0 }}>
-          <Input type="number" value={sideSpacing} onChangeText={setSideSpacing} onBlur={updateSpacing} rightAction={pxLabel} />
+          <Input
+            type="number"
+            value={sideSpacing}
+            onChangeText={setSideSpacing}
+            onBlur={updateSpacing}
+            rightAction={pxLabel}
+          />
         </Settings.SubSection>
 
         <Settings.SubSection header="Bottom Spacing" headerProps={{ px: 0, pt: 0 }} contentProps={{ px: 0 }}>
-          <Input type="number" value={bottomSpacing} onChangeText={setBottomSpacing} onBlur={updateSpacing} rightAction={pxLabel} />
+          <Input
+            type="number"
+            value={bottomSpacing}
+            onChangeText={setBottomSpacing}
+            onBlur={updateSpacing}
+            rightAction={pxLabel}
+          />
         </Settings.SubSection>
       </Box.FlexApart>
 
@@ -101,7 +119,9 @@ export const GeneralSection: React.FC = () => {
         <Box.FlexApart gap={24}>
           <div>
             <Settings.SubSection.Title>Powered By</Settings.SubSection.Title>
-            <Settings.SubSection.Description>Display a Voiceflow link to help us spread the word.</Settings.SubSection.Description>
+            <Settings.SubSection.Description>
+              Display a Voiceflow link to help us spread the word.
+            </Settings.SubSection.Description>
           </div>
 
           <TippyTooltip
@@ -115,17 +135,25 @@ export const GeneralSection: React.FC = () => {
               </TippyTooltip.FooterButton>
             }
           >
-            <Toggle size={Toggle.Size.EXTRA_SMALL} checked={!!config.watermark} disabled={!isEntitled} onChange={toggleWatermark} hasLabel />
+            <Toggle
+              size={Toggle.Size.EXTRA_SMALL}
+              checked={!!config.watermark}
+              disabled={!isEntitled}
+              onChange={toggleWatermark}
+              hasLabel
+            />
           </TippyTooltip>
         </Box.FlexApart>
       </Settings.SubSection>
 
-      {chatUIFeedbackButtons.isEnabled && (
+      {chatUIFeedbackButtons && (
         <Settings.SubSection headerProps={{ px: 0 }} contentProps={{ px: 0, pt: 24, pb: 0 }}>
           <Box.FlexApart gap={24}>
             <div>
               <Settings.SubSection.Title>Ai Feedback</Settings.SubSection.Title>
-              <Settings.SubSection.Description>Enables collecting feedback from ai system messages.</Settings.SubSection.Description>
+              <Settings.SubSection.Description>
+                Enables collecting feedback from ai system messages.
+              </Settings.SubSection.Description>
             </div>
 
             <Toggle size={Toggle.Size.EXTRA_SMALL} checked={!!config.feedback} onChange={toggleFeedback} hasLabel />

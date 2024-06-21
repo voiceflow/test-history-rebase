@@ -7,7 +7,7 @@ import React from 'react';
 
 import * as ERRORS from '@/constants/expressionValidationErrors.constant';
 import * as DiagramV2 from '@/ducks/diagramV2';
-import { useFeature } from '@/hooks/feature';
+import { useFeature } from '@/hooks/feature.hook';
 import { useSelector } from '@/hooks/store.hook';
 import { getErrorMessage } from '@/utils/error';
 import { transformVariableToString } from '@/utils/slot';
@@ -100,7 +100,7 @@ export const useExpressionValidator = () => {
   const variablesMap = useSelector(DiagramV2.active.entitiesAndVariablesMapSelector);
   const variableNames = React.useMemo(() => variables.map(({ name }) => name), [variables]);
 
-  const { isEnabled: setV3Enabled } = useFeature(FeatureFlag.V3_SET_STEP);
+  const setV3Enabled = useFeature(FeatureFlag.V3_SET_STEP);
 
   const [error, setError] = React.useState<string>('');
 

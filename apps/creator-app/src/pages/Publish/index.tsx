@@ -10,7 +10,7 @@ import { Path } from '@/config/routes';
 import { Permission } from '@/constants/permissions';
 import { Project } from '@/ducks';
 import { lazy } from '@/hocs/lazy';
-import { useFeature } from '@/hooks/feature';
+import { useFeature } from '@/hooks/feature.hook';
 import { useOnLinkClick } from '@/hooks/navigation.hook';
 import { usePermission } from '@/hooks/permission';
 import { useSelector } from '@/hooks/store.hook';
@@ -46,7 +46,7 @@ const Publish: React.FC = () => {
         <Box height="100%" style={{ flexShrink: 0 }}>
           <SecondaryNavigation title={hasProject ? name ?? '' : 'Loading...'}>
             <SecondaryNavigation.Section title="Integrations" isCollapsible={false}>
-              {(canEditAPIKey || viewerAPIKeyAccess.isEnabled) && (
+              {(canEditAPIKey || viewerAPIKeyAccess) && (
                 <SecondaryNavigation.Item
                   icon="Api"
                   label="API Keys"
@@ -127,7 +127,7 @@ const Publish: React.FC = () => {
             <Suspense fallback={<TabLoader variant="dark" />}>
               <Page.Content>
                 <Switch>
-                  {(canEditAPIKey || viewerAPIKeyAccess.isEnabled) && <Route path={Path.PUBLISH_API} component={API} />}
+                  {(canEditAPIKey || viewerAPIKeyAccess) && <Route path={Path.PUBLISH_API} component={API} />}
 
                   {isSMSPlatform(platform) && canEditProject && (
                     <Route path={Path.PUBLISH_SMS} component={PublishSMS} />
@@ -148,11 +148,9 @@ const Publish: React.FC = () => {
                     <Route path={Path.PUBLISH_TEAMS} component={PublishTeams} />
                   )}
 
-                  {!disableCodeExports.isEnabled && <Route path={Path.PUBLISH_EXPORT} component={Export} />}
+                  {!disableCodeExports && <Route path={Path.PUBLISH_EXPORT} component={Export} />}
 
-                  <Redirect
-                    to={canEditAPIKey || viewerAPIKeyAccess.isEnabled ? Path.PUBLISH_API : Path.PROJECT_VERSION}
-                  />
+                  <Redirect to={canEditAPIKey || viewerAPIKeyAccess ? Path.PUBLISH_API : Path.PROJECT_VERSION} />
                 </Switch>
               </Page.Content>
             </Suspense>

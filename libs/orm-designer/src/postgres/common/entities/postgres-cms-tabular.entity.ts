@@ -32,7 +32,7 @@ export abstract class PostgresCMSTabularEntity<
   @ManyToOne(() => FolderEntity, {
     name: 'folder_id',
     default: null,
-    onDelete: 'cascade',
+    deleteRule: 'cascade',
     nullable: true,
     fieldNames: ['folder_id', 'environment_id'],
   })

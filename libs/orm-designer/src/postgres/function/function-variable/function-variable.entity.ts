@@ -22,7 +22,7 @@ export class FunctionVariableEntity extends PostgresCMSObjectEntity<'description
 
   @ManyToOne(() => FunctionEntity, {
     name: 'function_id',
-    onDelete: 'cascade',
+    deleteRule: 'cascade',
     fieldNames: ['function_id', 'environment_id'],
   })
   function!: Ref<FunctionEntity>;

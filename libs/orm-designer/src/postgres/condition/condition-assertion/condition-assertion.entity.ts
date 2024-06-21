@@ -24,7 +24,7 @@ export class ConditionAssertionEntity extends PostgresCMSObjectEntity {
 
   @ManyToOne(() => ExpressionConditionEntity, {
     name: 'condition_id',
-    onDelete: 'cascade',
+    deleteRule: 'cascade',
     fieldNames: ['condition_id', 'environment_id'],
   })
   condition!: Ref<ExpressionConditionEntity>;

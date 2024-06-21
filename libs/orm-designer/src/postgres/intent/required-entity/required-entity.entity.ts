@@ -13,14 +13,14 @@ import { IntentEntity } from '../intent.entity';
 export class RequiredEntityEntity extends PostgresCMSObjectEntity<'reprompt'> {
   @ManyToOne(() => EntityEntity, {
     name: 'entity_id',
-    onDelete: 'cascade',
+    deleteRule: 'cascade',
     fieldNames: ['entity_id', 'environment_id'],
   })
   entity!: Ref<EntityEntity>;
 
   @ManyToOne(() => IntentEntity, {
     name: 'intent_id',
-    onDelete: 'cascade',
+    deleteRule: 'cascade',
     fieldNames: ['intent_id', 'environment_id'],
   })
   intent!: Ref<IntentEntity>;
@@ -28,7 +28,7 @@ export class RequiredEntityEntity extends PostgresCMSObjectEntity<'reprompt'> {
   @ManyToOne(() => ResponseEntity, {
     name: 'reprompt_id',
     default: null,
-    onDelete: 'set default',
+    deleteRule: 'set default',
     nullable: true,
     fieldNames: ['reprompt_id', 'environment_id'],
   })

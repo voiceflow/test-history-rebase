@@ -16,7 +16,7 @@ export class ReferenceEntity extends PostgresAbstractEntity {
 
   @ManyToOne(() => ReferenceResourceEntity, {
     name: 'resource_id',
-    onDelete: 'cascade',
+    deleteRule: 'cascade',
     fieldNames: ['environment_id', 'resource_id'],
   })
   resource!: Ref<ReferenceResourceEntity>;
@@ -26,7 +26,7 @@ export class ReferenceEntity extends PostgresAbstractEntity {
 
   @ManyToOne(() => ReferenceResourceEntity, {
     name: 'referrer_resource_id',
-    onDelete: 'cascade',
+    deleteRule: 'cascade',
     fieldNames: ['environment_id', 'referrer_resource_id'],
   })
   referrerResource!: Ref<ReferenceResourceEntity>;

@@ -19,7 +19,7 @@ export class ResponseDiscriminatorEntity extends PostgresCMSObjectEntity {
 
   @ManyToOne(() => ResponseEntity, {
     name: 'response_id',
-    onDelete: 'cascade',
+    deleteRule: 'cascade',
     fieldNames: ['response_id', 'environment_id'],
   })
   response!: Ref<ResponseEntity>;

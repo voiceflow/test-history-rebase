@@ -14,7 +14,7 @@ import { CardAttachmentEntity } from '../card-attachment/card-attachment.entity'
 export class CardButtonEntity extends PostgresCMSObjectEntity {
   @ManyToOne(() => CardAttachmentEntity, {
     name: 'card_id',
-    onDelete: 'cascade',
+    deleteRule: 'cascade',
     fieldNames: ['card_id', 'environment_id'],
   })
   card!: Ref<CardAttachmentEntity>;

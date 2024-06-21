@@ -16,7 +16,7 @@ export class PromptEntity extends PostgresCMSTabularEntity<'persona'> {
   @ManyToOne(() => PersonaOverrideEntity, {
     name: 'persona_id',
     default: null,
-    onDelete: 'set default',
+    deleteRule: 'set default',
     nullable: true,
     fieldNames: ['persona_id', 'environment_id'],
   })

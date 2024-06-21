@@ -27,7 +27,7 @@ export class ResponseMessageEntity<DefaultOrNullColumn extends string = never> e
 
   @ManyToOne(() => ResponseDiscriminatorEntity, {
     name: 'discriminator_id',
-    onDelete: 'cascade',
+    deleteRule: 'cascade',
     fieldNames: ['discriminator_id', 'environment_id'],
   })
   discriminator!: Ref<ResponseDiscriminatorEntity>;
@@ -38,7 +38,7 @@ export class ResponseMessageEntity<DefaultOrNullColumn extends string = never> e
   @ManyToOne(() => BaseConditionEntity, {
     name: 'condition_id',
     default: null,
-    onDelete: 'set default',
+    deleteRule: 'set default',
     nullable: true,
     fieldNames: ['condition_id', 'environment_id'],
   })

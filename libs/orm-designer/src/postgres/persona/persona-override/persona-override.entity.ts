@@ -21,7 +21,7 @@ export class PersonaOverrideEntity extends PostgresCMSObjectEntity<
 
   @ManyToOne(() => PersonaEntity, {
     name: 'persona_id',
-    onDelete: 'cascade',
+    deleteRule: 'cascade',
     fieldNames: ['persona_id', 'environment_id'],
   })
   persona!: Ref<PersonaEntity>;

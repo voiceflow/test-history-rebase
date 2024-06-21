@@ -21,7 +21,7 @@ export class ConditionPredicateEntity extends PostgresCMSObjectEntity {
 
   @ManyToOne(() => PromptConditionEntity, {
     name: 'condition_id',
-    onDelete: 'cascade',
+    deleteRule: 'cascade',
     fieldNames: ['condition_id', 'environment_id'],
   })
   condition!: Ref<PromptConditionEntity>;

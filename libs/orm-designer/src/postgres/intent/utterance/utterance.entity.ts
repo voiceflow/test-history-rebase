@@ -18,7 +18,7 @@ export class UtteranceEntity extends PostgresCMSObjectEntity {
 
   @ManyToOne(() => IntentEntity, {
     name: 'intent_id',
-    onDelete: 'cascade',
+    deleteRule: 'cascade',
     fieldNames: ['intent_id', 'environment_id'],
   })
   intent!: Ref<IntentEntity>;

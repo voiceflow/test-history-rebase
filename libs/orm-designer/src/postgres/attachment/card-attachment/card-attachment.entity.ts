@@ -18,7 +18,7 @@ export class CardAttachmentEntity extends PostgresCMSObjectEntity<'media'> {
   @ManyToOne(() => MediaAttachmentEntity, {
     name: 'media_id',
     default: null,
-    onDelete: 'set default',
+    deleteRule: 'set default',
     nullable: true,
     fieldNames: ['media_id', 'environment_id'],
   })

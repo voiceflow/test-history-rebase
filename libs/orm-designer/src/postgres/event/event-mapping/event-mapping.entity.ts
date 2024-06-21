@@ -18,7 +18,7 @@ export class EventMappingEntity extends PostgresCMSObjectEntity<'variable'> {
 
   @ManyToOne(() => EventEntity, {
     name: 'event_id',
-    onDelete: 'cascade',
+    deleteRule: 'cascade',
     fieldNames: ['event_id', 'environment_id'],
   })
   event!: Ref<EventEntity>;
@@ -26,7 +26,7 @@ export class EventMappingEntity extends PostgresCMSObjectEntity<'variable'> {
   @ManyToOne(() => VariableEntity, {
     name: 'variable_id',
     default: null,
-    onDelete: 'set default',
+    deleteRule: 'set default',
     nullable: true,
     fieldNames: ['variable_id', 'environment_id'],
   })

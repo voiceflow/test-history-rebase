@@ -618,6 +618,7 @@ class Engine extends ComponentManager<{
     let startEntry: (typeof nodeEntries)[number] | null = null;
     let intentEntry: (typeof nodeEntries)[number] | null = null;
     let triggerEntry: (typeof nodeEntries)[number] | null = null;
+    let combinedEntry: (typeof nodeEntries)[number] | null = null;
 
     for (const nodeEntry of nodeEntries) {
       if (nodeEntry[1].type === BlockType.START) {
@@ -627,10 +628,12 @@ class Engine extends ComponentManager<{
         intentEntry = nodeEntry;
       } else if (!triggerEntry && nodeEntry[1].type === BlockType.TRIGGER) {
         triggerEntry = nodeEntry;
+      } else if (!combinedEntry && nodeEntry[1].type === BlockType.COMBINED) {
+        combinedEntry = nodeEntry;
       }
     }
 
-    return startEntry?.[0] ?? intentEntry?.[0] ?? triggerEntry?.[0] ?? null;
+    return startEntry?.[0] ?? intentEntry?.[0] ?? triggerEntry?.[0] ?? combinedEntry?.[0] ?? null;
   }
 
   focusHome(options: { open?: boolean; animated?: boolean; skipURLSync?: boolean } = {}): void {

@@ -12,7 +12,7 @@ export const ResponseMessageDTO = CMSObjectResourceDTO.partial({
     discriminatorID: z.string(),
     conditionID: z.string().nullable(),
     text: MarkupDTO,
-    delay: z.number().nullable().optional(),
+    delay: z.number().nullable(),
   })
   .strict();
 

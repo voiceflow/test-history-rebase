@@ -1,5 +1,5 @@
 import type { EntityProperty, Primary } from '@mikro-orm/core';
-import { ReferenceType } from '@mikro-orm/core';
+import { ReferenceKind } from '@mikro-orm/core';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import type { AbstractSqlPlatform, EntityManager, Knex } from '@mikro-orm/postgresql';
 import { Inject } from '@nestjs/common';
@@ -201,7 +201,7 @@ export abstract class PostgresORM<
   }
 
   protected propertyToObjectKey(property: EntityProperty<any>) {
-    return `${property.name}${property.reference !== ReferenceType.SCALAR ? 'ID' : ''}`;
+    return `${property.name}${property.kind !== ReferenceKind.SCALAR ? 'ID' : ''}`;
   }
 
   protected onPatch(data: Record<string, any>) {

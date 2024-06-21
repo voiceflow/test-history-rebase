@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1593.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1593.0...@voiceflow/creator-app@1.1593.1) (2024-06-21)
+
+### Bug Fixes
+
+* return to home hotkey [bugfix] (COR-2446) ([#8373](https://github.com/voiceflow/creator-app/issues/8373)) ([700d9e2](https://github.com/voiceflow/creator-app/commit/700d9e229e43207f29ab6f8d1bdd6e278a9ff768))
+
 # [1.1593.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1592.2...@voiceflow/creator-app@1.1593.0) (2024-06-21)
 
 ### Features

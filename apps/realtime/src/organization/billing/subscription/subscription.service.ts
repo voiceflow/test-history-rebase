@@ -77,11 +77,7 @@ export class BillingSubscriptionService {
         featureID: item.feature_id,
         value: item.value,
       })),
-      // TODO: fix it and make sure we always receive a boolean
-      downgradedFromTrial:
-        (subscription as any).cf_downgraded_from_trial === 'True' ||
-        (subscription as any).cf_downgraded_from_trial === true,
-      metaData: subscription.meta_data,
+      downgradedFromTrial: subscription.cf_downgraded_from_trial === 'True',
     };
   }
 
@@ -190,15 +186,9 @@ export class BillingSubscriptionService {
         trialEnd: 0,
         changeOption: 'immediately',
         prorate: true,
+
         ...(this.shouldResetTerm(subscription) ? { forceTermReset: true } : {}),
-        ...(subscription.metaData?.downgradedFromTrial
-          ? {
-              metadata: {
-                ...subscription.metaData,
-                downgradedFromTrial: false,
-              },
-            }
-          : {}),
+        ...(subscription.downgradedFromTrial ? { downgradedFromTrial: false } : {}),
 
         ...(data.couponIds ? { couponIds: data.couponIds } : {}),
       });
@@ -223,13 +213,8 @@ export class BillingSubscriptionService {
   }
 
   async downgradeTrial(subscriptionID: string) {
-    const subscription = await this.findOne(subscriptionID);
-
     await this.billingClient.subscriptionsPrivate.patchSubscription(subscriptionID, {
-      metadata: {
-        ...subscription.metaData,
-        downgradedFromTrial: false,
-      },
+      cf_downgraded_from_trial: 'False',
     });
 
     // TODO: remove it once we implement event subscription

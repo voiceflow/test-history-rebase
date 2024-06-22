@@ -92,7 +92,7 @@ export interface Subscription {
 
   metaData?: Record<string, unknown>;
 
-  downgradedFromTrial?: boolean;
+  downgradedFromTrial: boolean;
 
   onDunningPeriod: boolean;
 }

@@ -54,7 +54,7 @@
     "@voiceflow/nestjs-common": "2.42.4",
     "@voiceflow/nestjs-env": "1.6.2",
     "@voiceflow/sdk-auth": "2.10.0",
-    "@voiceflow/sdk-billing": "1.26.30",
+    "@voiceflow/sdk-billing": "1.26.49",
     "chance": "1.1.11",
     "dd-trace": "4.33.0",
     "dedent": "1.5.1",

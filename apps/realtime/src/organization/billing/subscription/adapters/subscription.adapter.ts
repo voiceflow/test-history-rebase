@@ -23,20 +23,19 @@ const subscriptionAdapter = createMultiAdapter<Realtime.Identity.Subscription, S
     nextBillingAt,
     currentTermEnd,
     subscriptionItems,
-    metaData,
     subscriptionEntitlements,
     paymentSource,
     customerID,
     trialEnd: trialEndAt,
     cancelledAt,
     onDunningPeriod,
-    downgradedFromTrial: subDowngradedFromTrial,
+    downgradedFromTrial,
   }) => {
     const planItem = findPlanItem(subscriptionItems);
     const trialEnd = planItem?.trialEnd;
 
     const plan = getPlanFromPriceID(planItem?.itemPriceID);
-    const isTrial = isChargebeeTrial(status, metaData, trialEndAt, cancelledAt);
+    const isTrial = isChargebeeTrial(status, downgradedFromTrial, trialEndAt, cancelledAt);
 
     const samlSSO = findBooleanEntitlement(subscriptionEntitlements, 'feat-saml-sso');
     const claude1 = findBooleanEntitlement(subscriptionEntitlements, 'feat-model-claude-1');
@@ -63,8 +62,6 @@ const subscriptionAdapter = createMultiAdapter<Realtime.Identity.Subscription, S
     const workspacesLimit = findNumberEntitlement(subscriptionEntitlements, 'limit-workspace-count');
 
     const nextBillingTimestamp = nextBillingAt || currentTermEnd;
-
-    const downgradedFromTrial = subDowngradedFromTrial ?? !!metaData?.downgradedFromTrial;
 
     const result: Subscription = {
       id,

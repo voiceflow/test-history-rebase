@@ -14,9 +14,12 @@ export const PAYMENT_METHOD_FAILED_STATUSES: Set<Partial<SubscriptionPaymentMeth
 ]);
 
 export const isChargebeePlanName = (plan: any): plan is PlanName => Object.values(PlanName).includes(plan);
-export const isChargebeeStatus = (status: any): status is SubscriptionStatus => Object.values(SubscriptionStatus).includes(status);
-export const isChargebeeBillingPeriodUnit = (unit: any): unit is BillingPeriodUnit => Object.values(BillingPeriodUnit).includes(unit);
-export const isPaymentMethodFailed = (status: SubscriptionPaymentMethodStatusType) => PAYMENT_METHOD_FAILED_STATUSES.has(status);
+export const isChargebeeStatus = (status: any): status is SubscriptionStatus =>
+  Object.values(SubscriptionStatus).includes(status);
+export const isChargebeeBillingPeriodUnit = (unit: any): unit is BillingPeriodUnit =>
+  Object.values(BillingPeriodUnit).includes(unit);
+export const isPaymentMethodFailed = (status: SubscriptionPaymentMethodStatusType) =>
+  PAYMENT_METHOD_FAILED_STATUSES.has(status);
 
 export function getDaysLeftToTrialEnd(trialEndDate: number, downgradedFromTrial?: boolean) {
   if (downgradedFromTrial) return 0;
@@ -57,16 +60,20 @@ export const getBillingPeriodUnit = (unit: string | undefined) => {
 
 export const isChargebeeTrial = (
   status: string,
-  metaData: Record<string, unknown> | undefined,
+  downgradedFromTrial: boolean,
   trialEndAt: number | undefined,
   cancelledAt: number | undefined
 ) => {
-  const cancelledByTrialExpiration = status === SubscriptionStatus.CANCELLED && cancelledAt && cancelledAt === trialEndAt;
+  const cancelledByTrialExpiration =
+    status === SubscriptionStatus.CANCELLED && cancelledAt && cancelledAt === trialEndAt;
 
-  return status === SubscriptionStatus.IN_TRIAL || metaData?.downgradedFromTrial || cancelledByTrialExpiration;
+  return status === SubscriptionStatus.IN_TRIAL || downgradedFromTrial || cancelledByTrialExpiration;
 };
 
-export const findBooleanEntitlement = (entitlements: Realtime.Identity.SubscriptionEntitlement[] | undefined, itemID: string) => {
+export const findBooleanEntitlement = (
+  entitlements: Realtime.Identity.SubscriptionEntitlement[] | undefined,
+  itemID: string
+) => {
   const entitlement = entitlements?.find((entitlement) => entitlement.featureID === itemID);
 
   if (!entitlement?.value) return null;
@@ -74,7 +81,10 @@ export const findBooleanEntitlement = (entitlements: Realtime.Identity.Subscript
   return entitlement?.value === 'true';
 };
 
-export const findNumberEntitlement = (entitlements: Realtime.Identity.SubscriptionEntitlement[] | undefined, itemID: string) => {
+export const findNumberEntitlement = (
+  entitlements: Realtime.Identity.SubscriptionEntitlement[] | undefined,
+  itemID: string
+) => {
   const entitlement = entitlements?.find((entitlement) => entitlement.featureID === itemID);
 
   if (!entitlement?.value) return null;

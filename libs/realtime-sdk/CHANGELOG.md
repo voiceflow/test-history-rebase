@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.427.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.426.0...@voiceflow/realtime-sdk@1.427.0) (2024-06-22)
+
+### Features
+
+* dowgrade trial using custom field (COR-2451) ([#8379](https://github.com/voiceflow/creator-app/issues/8379)) ([301c98a](https://github.com/voiceflow/creator-app/commit/301c98aa27ca0acc1aac8286c1d279ee85af7c2b))
+
 # [1.426.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.425.2...@voiceflow/realtime-sdk@1.426.0) (2024-06-21)
 
 ### Features

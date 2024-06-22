@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.103.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.102.10...@voiceflow/ml-gateway@1.103.0) (2024-06-22)
+
+### Features
+
+* dowgrade trial using custom field (COR-2451) ([#8379](https://github.com/voiceflow/creator-app/issues/8379)) ([301c98a](https://github.com/voiceflow/creator-app/commit/301c98aa27ca0acc1aac8286c1d279ee85af7c2b))
+
 ## [1.102.10](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.102.9...@voiceflow/ml-gateway@1.102.10) (2024-06-21)
 
 **Note:** Version bump only for package @voiceflow/ml-gateway

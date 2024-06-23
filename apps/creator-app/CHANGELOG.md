@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1595.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1595.1...@voiceflow/creator-app@1.1595.2) (2024-06-23)
+
+### Bug Fixes
+
+* typos in the Teams page banner (COR-2447) ([#8384](https://github.com/voiceflow/creator-app/issues/8384)) ([c540a5b](https://github.com/voiceflow/creator-app/commit/c540a5babd9705e991f8f7382da3932aff435bc4))
+
 ## [1.1595.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1595.0...@voiceflow/creator-app@1.1595.1) (2024-06-22)
 
 **Note:** Version bump only for package @voiceflow/creator-app

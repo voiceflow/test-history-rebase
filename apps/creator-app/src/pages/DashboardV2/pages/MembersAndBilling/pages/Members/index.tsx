@@ -28,9 +28,9 @@ const DashboardV2MembersAndBillingMembers: React.FC = () => {
       {(!isOnPaidPlanSelector || isOnProTrial) && canAddSeats && (
         <S.StyledBanner
           mb={32}
-          title="Unlock your teams potential"
+          title="Unlock your team's potential"
           onClick={() => paymentModal.open({})}
-          subtitle="Upgrade to unlock unlimited agent and so much more."
+          subtitle="Upgrade to unlock unlimited agents and so much more."
           buttonText="Upgrade Now"
           backgroundImage={bannerBg}
         />

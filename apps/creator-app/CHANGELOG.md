@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1596.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1595.6...@voiceflow/creator-app@1.1596.0) (2024-06-24)
+
+### Features
+
+* create ai message hook (COR-000) ([#8398](https://github.com/voiceflow/creator-app/issues/8398)) ([e90e49f](https://github.com/voiceflow/creator-app/commit/e90e49f9dc6af8a56e4cb78ae8f5438a705906cb))
+
 ## [1.1595.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1595.5...@voiceflow/creator-app@1.1595.6) (2024-06-24)
 
 **Note:** Version bump only for package @voiceflow/creator-app

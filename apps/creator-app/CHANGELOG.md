@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1597.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1596.0...@voiceflow/creator-app@1.1597.0) (2024-06-24)
+
+### Features
+
+* create response v2 editor (COR-000) ([#8395](https://github.com/voiceflow/creator-app/issues/8395)) ([18b3c50](https://github.com/voiceflow/creator-app/commit/18b3c5028e9373d37e13c62a81505436d1333664))
+
 # [1.1596.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1595.6...@voiceflow/creator-app@1.1596.0) (2024-06-24)
 
 ### Features

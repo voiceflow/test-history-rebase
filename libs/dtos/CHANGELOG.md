@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.102.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.101.4...@voiceflow/dtos@1.102.0) (2024-06-24)
+
+### Features
+
+* create response v2 editor (COR-000) ([#8395](https://github.com/voiceflow/creator-app/issues/8395)) ([18b3c50](https://github.com/voiceflow/creator-app/commit/18b3c5028e9373d37e13c62a81505436d1333664))
+
 ## [1.101.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.101.3...@voiceflow/dtos@1.101.4) (2024-06-24)
 
 **Note:** Version bump only for package @voiceflow/dtos

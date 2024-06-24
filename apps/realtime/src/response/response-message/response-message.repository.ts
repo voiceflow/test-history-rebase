@@ -4,6 +4,10 @@ import { ResponseMessageEntity, ResponseMessageObject, ResponseMessageORM } from
 
 import { CMSObjectService } from '@/common';
 
+import { ResponseMessageCreateData } from './response-message.interface';
+
+type CreateResponseMessagePayload = ResponseMessageCreateData & { assistantID: string; environmentID: string };
+
 @Injectable()
 export class ResponseMessageRepository extends CMSObjectService<ResponseMessageORM> {
   toJSON = this.orm.jsonAdapter.fromDB;
@@ -37,14 +41,21 @@ export class ResponseMessageRepository extends CMSObjectService<ResponseMessageO
     return this.orm.findManyByEnvironmentAndIDs(environmentID, ids);
   }
 
-  // TODO: fixme: add condition object
-  createOne(data: any) {
+  createOne(data: CreateResponseMessagePayload) {
     return this.orm.createOne(data);
   }
 
-  // TODO: fixme: add condition object
-  createMany(data: Array<any>) {
+  createMany(data: Array<CreateResponseMessagePayload>) {
     return this.orm.createMany(data);
+  }
+
+  createManyForUser(userID: number, data: Array<CreateResponseMessagePayload>) {
+    return this.orm.createManyForUser(userID, data);
+  }
+
+  createManyWithSubResources(userID: number, messages: Array<CreateResponseMessagePayload>) {
+    // TODO: add condition creation here
+    return this.createManyForUser(userID, messages);
   }
 
   deleteManyByEnvironmentAndIDs(environmentID: string, ids: string[]) {

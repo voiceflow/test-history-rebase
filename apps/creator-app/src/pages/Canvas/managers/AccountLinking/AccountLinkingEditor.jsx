@@ -1,4 +1,5 @@
-import { Input, Select, Spinner } from '@voiceflow/ui';
+import { Input, Select } from '@voiceflow/ui';
+import { Spinner } from '@/components/legacy/Spinner';
 import _filter from 'lodash/filter';
 import _find from 'lodash/find';
 import _isEmpty from 'lodash/isEmpty';

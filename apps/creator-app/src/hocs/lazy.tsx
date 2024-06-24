@@ -1,7 +1,9 @@
 import { Crypto } from '@voiceflow/common';
-import { IS_DEVELOPMENT, Spinner } from '@voiceflow/ui';
+import { IS_DEVELOPMENT } from '@voiceflow/ui';
 import { TabLoader } from '@voiceflow/ui-next';
 import React from 'react';
+
+import { Spinner } from '@/components/legacy/Spinner';
 
 const getForceRefreshKey = (hash: string) => `component-has-force-refreshed:${hash}`;
 

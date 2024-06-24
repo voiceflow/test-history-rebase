@@ -1,4 +1,4 @@
-import { styled } from '@ui/styles';
+import { styled } from '@voiceflow/ui';
 import React from 'react';
 
 import Spinner, { SpinnerProps } from './Spinner';

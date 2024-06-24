@@ -1,6 +1,7 @@
-import { Box, Spinner } from '@voiceflow/ui';
+import { Box } from '@voiceflow/ui';
 import React from 'react';
 
+import { Spinner } from '@/components/legacy/Spinner';
 import { Permission } from '@/constants/permissions';
 import * as Organization from '@/ducks/organization';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';

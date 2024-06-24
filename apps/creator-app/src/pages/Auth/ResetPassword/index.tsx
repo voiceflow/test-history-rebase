@@ -1,8 +1,9 @@
-import { ClickableText, isNetworkError, Spinner, toast } from '@voiceflow/ui';
+import { ClickableText, isNetworkError, toast } from '@voiceflow/ui';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
 import client from '@/client';
+import { Spinner } from '@/components/legacy/Spinner';
 import * as Router from '@/ducks/router';
 import { useAsyncMountUnmount } from '@/hooks';
 import { useDispatch } from '@/hooks/realtime';
@@ -37,7 +38,9 @@ const ResetPassword: React.FC<RouteComponentProps<{ id: string }>> = ({ match })
 
     [ResetPasswordStage.DONE]: (
       <>
-        <div className="confirm-helper">The confirmation link has been sent. If it doesn't appear within a few minutes, check your spam folder.</div>
+        <div className="confirm-helper">
+          The confirmation link has been sent. If it doesn't appear within a few minutes, check your spam folder.
+        </div>
 
         <div style={{ marginTop: '32px' }} className="auth__link">
           <ClickableText onClick={() => goToLogin()}>Back to Signing in</ClickableText>

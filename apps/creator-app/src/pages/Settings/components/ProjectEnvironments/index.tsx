@@ -1,7 +1,8 @@
-import { Box, SectionV2, Spinner, System, useOnScreenCallback } from '@voiceflow/ui';
+import { Box, SectionV2, System, useOnScreenCallback } from '@voiceflow/ui';
 import React from 'react';
 
 import { designerClient } from '@/client/designer';
+import { Spinner } from '@/components/legacy/Spinner';
 import * as Settings from '@/components/Settings';
 import { LEGACY_VERSIONS } from '@/config/documentation';
 import * as Session from '@/ducks/session';

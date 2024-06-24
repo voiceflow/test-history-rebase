@@ -1,7 +1,8 @@
 import { StripeStatus } from '@voiceflow/dtos';
-import { Box, Spinner, withProvider } from '@voiceflow/ui';
+import { Box, withProvider } from '@voiceflow/ui';
 import React from 'react';
 
+import { Spinner } from '@/components/legacy/Spinner';
 import { Permission } from '@/constants/permissions';
 import * as Payment from '@/contexts/PaymentContext';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';

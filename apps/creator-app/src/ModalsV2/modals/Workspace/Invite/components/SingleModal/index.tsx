@@ -1,10 +1,11 @@
 import { Utils } from '@voiceflow/common';
 import { UserRole } from '@voiceflow/dtos';
 import { BillingPeriod } from '@voiceflow/internal';
-import { Box, Button, ButtonVariant, Members, Modal, Spinner, System, Text, toast, withProvider } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, Members, Modal, System, Text, toast, withProvider } from '@voiceflow/ui';
 import pluralize from 'pluralize';
 import React from 'react';
 
+import { Spinner } from '@/components/legacy/Spinner';
 import * as WorkspaceUI from '@/components/Workspace';
 import * as Payment from '@/contexts/PaymentContext';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';

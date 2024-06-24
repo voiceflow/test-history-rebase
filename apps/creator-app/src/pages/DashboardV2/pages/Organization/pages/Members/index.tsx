@@ -1,7 +1,8 @@
-import { Box, Members, Spinner } from '@voiceflow/ui';
+import { Box, Members } from '@voiceflow/ui';
 import pluralize from 'pluralize';
 import React from 'react';
 
+import { Spinner } from '@/components/legacy/Spinner';
 import SearchBar from '@/components/SearchBar';
 import * as Workspace from '@/components/Workspace';
 import * as Account from '@/ducks/account';
@@ -27,7 +28,8 @@ const OrganizationMembers: React.FC = () => {
     uniqueOrganizationMembersCount,
     uniqueOrganizationEditorsCount,
   } = useWorkspacesAndMembers();
-  const { role, search, setRole, setSearch, filteredMembers, onClearFilters } = useMembersFilters(activeWorkspaceMembers);
+  const { role, search, setRole, setSearch, filteredMembers, onClearFilters } =
+    useMembersFilters(activeWorkspaceMembers);
 
   if (loading) {
     return (
@@ -41,9 +43,13 @@ const OrganizationMembers: React.FC = () => {
     <S.Container>
       <S.Header>
         <S.Title>
-          {pluralize('Member', uniqueOrganizationMembersCount, true)} across {pluralize('Workspace', workspaces.length, true)}
+          {pluralize('Member', uniqueOrganizationMembersCount, true)} across{' '}
+          {pluralize('Workspace', workspaces.length, true)}
         </S.Title>
-        <Workspace.TakenSeatsMessage seats={uniqueOrganizationEditorsCount} label="Editor seats being used in this Organization." />
+        <Workspace.TakenSeatsMessage
+          seats={uniqueOrganizationEditorsCount}
+          label="Editor seats being used in this Organization."
+        />
       </S.Header>
 
       <MembersList

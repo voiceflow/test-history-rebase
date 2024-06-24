@@ -1,4 +1,4 @@
-import Loader from '@ui/components/Loader';
+import { Loader } from '@voiceflow/ui';
 import React from 'react';
 
 import * as S from './styles';
@@ -14,7 +14,15 @@ export interface SpinnerProps {
   fillContainer?: boolean;
 }
 
-const Spinner: React.FC<SpinnerProps> = ({ message, name, isMd, color, className, borderLess, fillContainer = false }) => (
+const Spinner: React.FC<SpinnerProps> = ({
+  message,
+  name,
+  isMd,
+  color,
+  className,
+  borderLess,
+  fillContainer = false,
+}) => (
   <S.Container fillContainer={fillContainer} className={className}>
     <Loader isMd={isMd} color={color} borderLess={borderLess} />
     {!!(message || name) && <S.Text>{message || `Loading ${name}...`}</S.Text>}

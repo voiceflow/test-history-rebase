@@ -1,8 +1,9 @@
 import { UserRole } from '@voiceflow/dtos';
-import { Box, Button, ButtonVariant, Spinner, SvgIcon, Text, toast } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, SvgIcon, Text, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
+import { Spinner } from '@/components/legacy/Spinner';
 import * as Organization from '@/ducks/organization';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useActiveWorkspace, useDispatch, useSelector } from '@/hooks';

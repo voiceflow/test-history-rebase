@@ -1,10 +1,14 @@
-import { Spinner } from '@voiceflow/ui';
 import React from 'react';
+
+import { Spinner } from '@/components/legacy/Spinner';
 
 import { AnalyticsDashboardContext } from '../../context';
 import * as S from './styles';
 
-const AnalyticsDashboardLoadingScreen: React.FC<React.PropsWithChildren & { isNewLayout?: boolean }> = ({ children, isNewLayout }) => {
+const AnalyticsDashboardLoadingScreen: React.FC<React.PropsWithChildren & { isNewLayout?: boolean }> = ({
+  children,
+  isNewLayout,
+}) => {
   const analyticsDashboard = React.useContext(AnalyticsDashboardContext);
 
   return (

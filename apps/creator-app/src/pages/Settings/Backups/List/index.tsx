@@ -1,8 +1,9 @@
 import type { Backup } from '@voiceflow/dtos';
-import { Box, Spinner, useOnScreenCallback } from '@voiceflow/ui';
+import { Box, useOnScreenCallback } from '@voiceflow/ui';
 import React from 'react';
 
 import { noIntentsGraphic } from '@/assets';
+import { Spinner } from '@/components/legacy/Spinner';
 import * as S from '@/pages/Settings/components/ProjectEnvironments/styles';
 
 import BackupItem from './Item';
@@ -18,7 +19,16 @@ interface BackupsListProps {
   hasMore?: boolean;
 }
 
-const BackupsList: React.FC<BackupsListProps> = ({ data, onDelete, onRestore, onDownload, onLoadMore, onPreview, loadingMore, hasMore }) => {
+const BackupsList: React.FC<BackupsListProps> = ({
+  data,
+  onDelete,
+  onRestore,
+  onDownload,
+  onLoadMore,
+  onPreview,
+  loadingMore,
+  hasMore,
+}) => {
   const infiniteScrollRef = React.useRef<HTMLDivElement>(null);
 
   useOnScreenCallback(infiniteScrollRef, (entry) => entry.isIntersecting && onLoadMore());

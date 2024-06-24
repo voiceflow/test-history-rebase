@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.412.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.412.0...@voiceflow/realtime@1.412.1) (2024-06-24)
+
+### Bug Fixes
+
+* make sure imported project names are unique (COR-2402) ([#8330](https://github.com/voiceflow/creator-app/issues/8330)) ([b2a07cb](https://github.com/voiceflow/creator-app/commit/b2a07cbdae0a91445f1c92aa86e2433b4cd45b15))
+
 # [1.412.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.411.0...@voiceflow/realtime@1.412.0) (2024-06-22)
 
 ### Features

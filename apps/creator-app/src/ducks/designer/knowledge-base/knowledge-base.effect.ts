@@ -15,7 +15,7 @@ import * as Actions from './knowledge-base.action';
 
 const ERROR_MESSAGE = 'Unable to save Knowledge Base settings';
 
-export const getSettings = (): Thunk => async (dispatch, getState) => {
+export const getSettings = (): Thunk<BaseModels.Project.KnowledgeBaseSettings> => async (dispatch, getState) => {
   const state = getState();
 
   let settings: BaseModels.Project.KnowledgeBaseSettings;
@@ -25,23 +25,30 @@ export const getSettings = (): Thunk => async (dispatch, getState) => {
 
     Errors.assertProjectID(versionID);
 
-    settings = (await designerClient.knowledgeBase.version.getSettings(versionID)) as BaseModels.Project.KnowledgeBaseSettings;
-
+    settings = (await designerClient.knowledgeBase.version.getSettings(
+      versionID
+    )) as BaseModels.Project.KnowledgeBaseSettings;
   } else {
     const projectID = Session.activeProjectIDSelector(state);
 
     Errors.assertProjectID(projectID);
 
-    settings = (await designerClient.knowledgeBase.settings.getSettings(projectID)) as BaseModels.Project.KnowledgeBaseSettings;
-
+    settings = (await designerClient.knowledgeBase.settings.getSettings(
+      projectID
+    )) as BaseModels.Project.KnowledgeBaseSettings;
   }
 
   if (settings.summarization.model && !Object.keys(AI_MODEL_CONFIG_MAP).includes(settings.summarization.model)) {
-    settings = { ...settings, summarization: { ...settings.summarization, model: DEFAULT_SETTINGS.summarization.model } };
+    settings = {
+      ...settings,
+      summarization: { ...settings.summarization, model: DEFAULT_SETTINGS.summarization.model },
+    };
     patchSettings(settings);
   }
 
   dispatch(Actions.SetSettings({ settings }));
+
+  return settings;
 };
 
 export const loadSettings = (): Thunk => async (dispatch) => {
@@ -61,16 +68,16 @@ export const patchSettings =
       await designerClient.knowledgeBase.version.updateSettings(versionID, patch as KnowledgeBaseSettings).catch(() => {
         notify.short.error(ERROR_MESSAGE);
       });
-
     } else {
       const projectID = Session.activeProjectIDSelector(state);
 
       Errors.assertProjectID(projectID);
 
-      await designerClient.knowledgeBase.settings.updateSettings(projectID, patch as KnowledgeBaseSettings).catch(() => {
-        notify.short.error(ERROR_MESSAGE);
-      });
-
+      await designerClient.knowledgeBase.settings
+        .updateSettings(projectID, patch as KnowledgeBaseSettings)
+        .catch(() => {
+          notify.short.error(ERROR_MESSAGE);
+        });
     }
 
     dispatch(Actions.PatchSettings({ patch }));

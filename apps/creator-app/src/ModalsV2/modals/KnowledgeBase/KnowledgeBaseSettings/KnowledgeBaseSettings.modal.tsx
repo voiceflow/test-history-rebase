@@ -89,14 +89,17 @@ export const KnowledgeBaseSettings = manager.create(
 
       useAsyncEffect(async () => {
         try {
-          await getSettings();
+          if (!storeSettings) setSettings(await getSettings());
         } catch {
-          const systemMessageID = notify.long.warning('An error was encountered while fetching Knowledge Base settings', {
-            pauseOnHover: true,
-            autoClose: false,
-            actionButtonProps: { label: 'Reload', onClick: () => window.location.reload() },
-            secondaryButtonProps: { label: 'Dismiss', onClick: () => notify.long.dismiss(systemMessageID) },
-          });
+          const systemMessageID = notify.long.warning(
+            'An error was encountered while fetching Knowledge Base settings',
+            {
+              pauseOnHover: true,
+              autoClose: false,
+              actionButtonProps: { label: 'Reload', onClick: () => window.location.reload() },
+              secondaryButtonProps: { label: 'Dismiss', onClick: () => notify.long.dismiss(systemMessageID) },
+            }
+          );
         }
       }, []);
 
@@ -113,7 +116,11 @@ export const KnowledgeBaseSettings = manager.create(
           onEscClose={api.onEscClose}
           onEnterSubmit={onSubmit}
         >
-          <Modal.Header title="Knowledge base settings" onClose={api.onClose} testID={tid(SETTINGS_TEST_ID, 'header')} />
+          <Modal.Header
+            title="Knowledge base settings"
+            onClose={api.onClose}
+            testID={tid(SETTINGS_TEST_ID, 'header')}
+          />
 
           <Scroll style={{ display: 'block' }}>
             <Box pt={12} pb={24} gap={12} direction="column">

@@ -35,6 +35,13 @@ export default defineConfig({
   },
 })((config) => ({
   ...config,
+  server: {
+    ...config.server,
+    https: {
+      ...config.server?.https,
+      maxSessionMemory: 300,
+    },
+  },
   plugins: [...(config.plugins ?? []), vanillaExtractPlugin()],
 
   optimizeDeps: {

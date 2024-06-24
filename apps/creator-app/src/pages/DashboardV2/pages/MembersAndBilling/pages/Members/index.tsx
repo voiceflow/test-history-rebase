@@ -1,3 +1,4 @@
+import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { Button, ButtonVariant, FlexCenter } from '@voiceflow/ui';
 import React from 'react';
 
@@ -6,6 +7,7 @@ import * as Workspace from '@/components/Workspace';
 import { Permission } from '@/constants/permissions';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { usePermission, useSelector } from '@/hooks';
+import { useFeature } from '@/hooks/feature.hook';
 import { useCheckoutPaymentModal } from '@/hooks/payment';
 import * as ModalsV2 from '@/ModalsV2';
 
@@ -19,8 +21,12 @@ const DashboardV2MembersAndBillingMembers: React.FC = () => {
 
   const [canAddSeats] = usePermission(Permission.WORKSPACE_BILLING_ADD_SEATS);
   const [canInviteMembers] = usePermission(Permission.WORKSPACE_INVITE);
+  const [canManageSeats] = usePermission(Permission.FEATURE_MANAGE_SEATS);
+
+  const isConfigurableSeatsEnabled = useFeature(FeatureFlag.CHARGEBEE_CONFIGURABLE_SEATS);
 
   const inviteModal = ModalsV2.useModal(ModalsV2.Workspace.Invite);
+  const addSeatsModal = ModalsV2.useModal(ModalsV2.Billing.AddSeats);
   const paymentModal = useCheckoutPaymentModal();
 
   return (
@@ -44,6 +50,11 @@ const DashboardV2MembersAndBillingMembers: React.FC = () => {
         </div>
 
         <FlexCenter gap={10}>
+          {canAddSeats && canManageSeats && isConfigurableSeatsEnabled && (
+            <Button variant={ButtonVariant.SECONDARY} nowrap onClick={() => addSeatsModal.openVoid()}>
+              Add Seats
+            </Button>
+          )}
           {canInviteMembers && (
             <Button variant={ButtonVariant.PRIMARY} onClick={() => inviteModal.openVoid()}>
               Invite Members

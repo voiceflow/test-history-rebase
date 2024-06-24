@@ -20,7 +20,7 @@ export const checkout = (
   workspaceID: string,
   data: Omit<Actions.OrganizationSubscription.CheckoutRequest, 'context'>
 ): Thunk<void> => {
-  const { planItemPriceID, paymentIntent } = data;
+  const { planItemPriceID, paymentIntent, seats } = data;
 
   return async (dispatch, getState) => {
     const subscription = chargebeeSubscriptionSelector(getState());
@@ -34,7 +34,8 @@ export const checkout = (
         waitAsync(Actions.OrganizationSubscription.Checkout, {
           planItemPriceID,
           paymentIntent,
-          couponIDs: data.couponIds,
+          couponIDs: data.couponIDs,
+          seats,
           context: { organizationID, workspaceID },
         })
       );
@@ -55,6 +56,38 @@ export const checkout = (
       toast.success(`Upgraded to ${PLAN_TYPE_META[newSubscription.plan].label}!`);
     } catch (err) {
       toast.error(getErrorMessage(err, 'Failed to checkout'));
+    }
+  };
+};
+
+export const updateSeats = (
+  organizationID: string,
+  workspaceID: string,
+  data: Omit<Actions.OrganizationSubscription.CheckoutRequest, 'context'>
+): Thunk<void> => {
+  const { planItemPriceID, paymentIntent, seats } = data;
+
+  return async (dispatch, getState) => {
+    const subscription = chargebeeSubscriptionSelector(getState());
+
+    if (!subscription) {
+      throw new Error('Subscription not found');
+    }
+
+    try {
+      await dispatch(
+        waitAsync(Actions.OrganizationSubscription.Checkout, {
+          planItemPriceID,
+          paymentIntent,
+          couponIDs: data.couponIDs,
+          seats,
+          context: { organizationID, workspaceID },
+        })
+      );
+
+      toast.success('Successfully updated seats!');
+    } catch (err) {
+      toast.error(getErrorMessage(err, 'Failed to update seats'));
     }
   };
 };

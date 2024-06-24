@@ -1,4 +1,10 @@
-import { AnyResponseAttachmentDTO, AnyResponseVariantDTO, ResponseDiscriminatorDTO, ResponseDTO } from '@voiceflow/dtos';
+import {
+  AnyResponseAttachmentDTO,
+  AnyResponseVariantDTO,
+  ResponseDiscriminatorDTO,
+  ResponseDTO,
+  ResponseMessageDTO,
+} from '@voiceflow/dtos';
 import { z } from 'zod';
 
 export const ResponseExportImportDataDTO = z
@@ -7,6 +13,7 @@ export const ResponseExportImportDataDTO = z
     responseVariants: AnyResponseVariantDTO.array(),
     responseAttachments: AnyResponseAttachmentDTO.array(),
     responseDiscriminators: ResponseDiscriminatorDTO.array(),
+    responseMessages: ResponseMessageDTO.array().optional(),
   })
   .strict();
 

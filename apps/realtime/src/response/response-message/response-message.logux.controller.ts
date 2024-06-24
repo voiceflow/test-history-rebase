@@ -1,4 +1,5 @@
 import { Controller, Inject } from '@nestjs/common';
+import { Utils } from '@voiceflow/common';
 import { Action, AuthMeta, AuthMetaPayload, Broadcast, Payload } from '@voiceflow/nestjs-logux';
 import { Permission } from '@voiceflow/sdk-auth';
 import { Authorize } from '@voiceflow/sdk-auth/nestjs';
@@ -35,8 +36,11 @@ export class ResponseVariantLoguxController {
     @Payload() { data, context, options }: Actions.ResponseMessage.CreateOne.Request,
     @AuthMeta() auth: AuthMetaPayload
   ): Promise<Actions.ResponseMessage.CreateOne.Response> {
+    // TODO: implement condition creation
+    const message = Utils.object.omit(data, ['condition']);
+
     return this.service
-      .createManyAndBroadcast([data], { ...options, auth, context })
+      .createManyAndBroadcast([message], { ...options, auth, context })
       .then(([result]) => ({ data: this.serializer.serialize(result), context }));
   }
 
@@ -50,8 +54,11 @@ export class ResponseVariantLoguxController {
     @Payload() { data, context, options }: Actions.ResponseMessage.CreateMany.Request,
     @AuthMeta() auth: AuthMetaPayload
   ): Promise<Actions.ResponseMessage.CreateMany.Response> {
+    // TODO: implement condition creation
+    const messages = data.map((message) => Utils.object.omit(message, ['condition']));
+
     return this.service
-      .createManyAndBroadcast(data, { ...options, auth, context })
+      .createManyAndBroadcast(messages, { ...options, auth, context })
       .then((result) => ({ data: this.serializer.iterable(result), context }));
   }
 

@@ -23,9 +23,19 @@ export interface Replace extends BaseOrganizationSubscriptionAction {
 export const Replace = subscriptionAction.crud.replace<Replace>();
 
 export interface CheckoutRequest extends BaseOrganizationSubscriptionAction {
-  itemPriceID: string;
+  // @Deprecated kill after a couple of weeks after deploying this PR. Use planItemPriceID instead;
+  itemPriceID?: string;
+
+  planItemPriceID: string;
+
+  seats?: number;
+
   paymentIntent: PaymentIntent;
+
+  // @Deprecated kill after a couple of weeks after deploying this PR. Use couponIDs instead;
   couponIds?: string[];
+
+  couponIDs?: string[];
 }
 
 export const Checkout = Utils.protocol.createAsyncAction<CheckoutRequest, Subscription>(subscriptionAction('CHECKOUT'));

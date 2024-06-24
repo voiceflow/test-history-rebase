@@ -16,7 +16,7 @@ export const usePlans = (coupon?: string) => {
   const fetchPlans = async () => {
     const plans = await designerClient.billing.plan.getPlans({
       planIDs: teamsPlanSelfServeIsEnabled ? [PlanType.PRO, PlanType.TEAM] : [PlanType.PRO],
-      coupon,
+      coupons: coupon ? [coupon] : undefined,
     });
     setPlans(plans as BillingPlan[]);
   };

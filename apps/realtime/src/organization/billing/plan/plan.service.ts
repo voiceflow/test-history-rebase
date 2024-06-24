@@ -11,7 +11,7 @@ const getAnnualAmount = (price: number, period: string) => (period === BillingPe
 export class BillingPlanService {
   constructor(@Inject(BillingClient) private readonly billingClient: BillingClient) {}
 
-  private async getPlanEstimateAmount(itemPrice: PlanItemPrice, coupon?: string): Promise<number> {
+  private async getPlanEstimateAmount(itemPrice: PlanItemPrice, coupons?: string[]): Promise<number> {
     const response = await this.billingClient.estimatesPrivate
       .createSubscriptionEstimation({
         json: {
@@ -21,7 +21,7 @@ export class BillingPlanService {
               quantity: 1,
             },
           ],
-          coupon_ids: coupon && [coupon],
+          coupon_ids: coupons,
         },
       })
       .catch(() => null);
@@ -33,7 +33,7 @@ export class BillingPlanService {
     return originalAmount - discount;
   }
 
-  async getPlans(plans: PlanName[], coupon?: string): Promise<BillingPlan[]> {
+  async getPlans(plans: PlanName[], coupons?: string[]): Promise<BillingPlan[]> {
     const response = await this.billingClient.itemsPrivate.getItems({ type: 'plan' });
     const items = response.items as ChargebeePlan[];
 
@@ -43,7 +43,7 @@ export class BillingPlanService {
         .map(async (item) => {
           const prices = await Promise.all(
             item.item_prices.map(async (price) => {
-              const amount = !coupon ? price.price : await this.getPlanEstimateAmount(price, coupon);
+              const amount = !coupons?.length ? price.price : await this.getPlanEstimateAmount(price, coupons);
 
               return {
                 id: price.id,

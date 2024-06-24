@@ -19,7 +19,7 @@ export const checkout = (
   workspaceID: string,
   data: Omit<Actions.OrganizationSubscription.CheckoutRequest, 'context'>
 ): Thunk<void> => {
-  const { itemPriceID, paymentIntent } = data;
+  const { planItemPriceID, paymentIntent } = data;
 
   return async (dispatch, getState) => {
     const subscription = chargebeeSubscriptionSelector(getState());
@@ -31,9 +31,9 @@ export const checkout = (
     try {
       const newSubscription = await dispatch(
         waitAsync(Actions.OrganizationSubscription.Checkout, {
-          itemPriceID,
+          planItemPriceID,
           paymentIntent,
-          couponIds: data.couponIds,
+          couponIDs: data.couponIds,
           context: { organizationID, workspaceID },
         })
       );

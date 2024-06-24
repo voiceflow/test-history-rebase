@@ -5,10 +5,9 @@ import { ENVIRONMENT_VARIABLES } from '@voiceflow/nestjs-env';
 import { readFileSync } from 'fs';
 import { concatMap, from, map, Observable } from 'rxjs';
 
-import type { EnvironmentVariables } from '@/app.env';
-
 import { LLMModel } from '../llm-model.abstract';
 import { CompletionOutput, CompletionStreamOutput } from '../llm-model.dto';
+import { GoogleConfig } from './google.interface';
 
 @Injectable()
 export abstract class GoogleAIModel extends LLMModel {
@@ -20,7 +19,7 @@ export abstract class GoogleAIModel extends LLMModel {
 
   constructor(
     @Inject(ENVIRONMENT_VARIABLES)
-    config: EnvironmentVariables
+    config: Partial<GoogleConfig>
   ) {
     super(config);
 

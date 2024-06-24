@@ -160,6 +160,7 @@ export class EnvironmentImportService {
             responseVariants: cms.responseVariants,
             responseAttachments: cms.responseAttachments,
             responseDiscriminators: cms.responseDiscriminators,
+            responseMessages: cms.responseMessages || [],
           },
           prepareDataContext
         )),
@@ -186,6 +187,7 @@ export class EnvironmentImportService {
       responseAttachments = [],
       responseDiscriminators = [],
       responseVariants = [],
+      responseMessages = [],
       entities,
       entityVariants = [],
       intents,
@@ -209,6 +211,7 @@ export class EnvironmentImportService {
         responseAttachments,
         responseDiscriminators,
         responseVariants,
+        responseMessages,
       });
 
     if (entities?.length) await this.entity.importManyWithSubResourcesFromJSON({ entities, entityVariants });

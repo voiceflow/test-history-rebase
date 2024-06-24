@@ -156,6 +156,7 @@ export class MigrationService {
                 entityVariants: [],
                 requiredEntities: [],
                 responseVariants: [],
+                responseMessages: [],
                 functionVariables: [],
                 responseAttachments: [],
                 responseDiscriminators: [],

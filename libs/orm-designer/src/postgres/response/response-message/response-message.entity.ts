@@ -44,7 +44,7 @@ export class ResponseMessageEntity<DefaultOrNullColumn extends string = never> e
   })
   condition!: Ref<BaseConditionEntity> | null;
 
-  @Property({ type: 'int', nullable: true, hidden: true })
+  @Property({ type: 'int', nullable: true })
   delay!: number | null;
 
   [PrimaryKeyType]?: CMSCompositePK;

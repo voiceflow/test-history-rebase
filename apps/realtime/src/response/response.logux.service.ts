@@ -4,6 +4,8 @@ import { LoguxService } from '@voiceflow/nestjs-logux';
 import {
   AnyResponseAttachmentObject,
   AnyResponseVariantObject,
+  ReferenceObject,
+  ReferenceResourceObject,
   RequiredEntityObject,
   ResponseDiscriminatorObject,
   ResponseMessageObject,
@@ -39,7 +41,9 @@ export class ResponseLoguxService {
         responseVariants: AnyResponseVariantObject[];
         responseAttachments: AnyResponseAttachmentObject[];
         responseDiscriminators: ResponseDiscriminatorObject[];
-        responseMessages?: ResponseMessageObject[];
+        responseMessages: ResponseMessageObject[];
+        references: ReferenceObject[];
+        referenceResources: ReferenceResourceObject[];
       };
     },
     meta: CMSBroadcastMeta
@@ -64,11 +68,7 @@ export class ResponseLoguxService {
 
       this.responseDiscriminator.broadcastDeleteMany(
         {
-          delete: {
-            ...toDelete,
-            // TODO: add it back
-            // responseMessages: toDelete.responseMessages || [],
-          },
+          delete: toDelete,
         },
         meta
       ),

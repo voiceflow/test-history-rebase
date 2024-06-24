@@ -17,6 +17,7 @@ import {
 
 import { CMSTabularService } from '@/common';
 import { toPostgresEntityIDs } from '@/common/utils';
+import { ReferenceService } from '@/reference/reference.service';
 import { CMSContext } from '@/types';
 
 import { ResponseExportImportDataDTO } from './dtos/response-export-import-data.dto';
@@ -51,7 +52,9 @@ export class ResponseRepository extends CMSTabularService<ResponseORM> {
     @Inject(ResponseDiscriminatorService)
     private readonly responseDiscriminator: ResponseDiscriminatorService,
     @Inject(RequiredEntityORM)
-    protected readonly requiredEntityORM: RequiredEntityORM
+    protected readonly requiredEntityORM: RequiredEntityORM,
+    @Inject(ReferenceService)
+    private referenceService: ReferenceService
   ) {
     super();
   }
@@ -162,9 +165,15 @@ export class ResponseRepository extends CMSTabularService<ResponseORM> {
     return this.postgresEM.transactional(async () => {
       const responses = await this.findManyByEnvironmentAndIDs(context.environmentID, ids);
 
-      const [relations, requiredEntities] = await Promise.all([
+      const [relations, requiredEntities, references] = await Promise.all([
         this.collectRelationsToDelete(context.environmentID, ids),
         this.removeRepromptsReferences(userID, context.environmentID, ids),
+        this.referenceService.deleteManyWithSubResourcesByResponseIDs({
+          assistantID: context.assistantID,
+          environmentID: context.environmentID,
+          userID,
+          responseIDs: responses.map((r) => r.id),
+        }),
       ]);
 
       await this.deleteManyByEnvironmentAndIDs(context.environmentID, ids);
@@ -173,6 +182,7 @@ export class ResponseRepository extends CMSTabularService<ResponseORM> {
         ...relations,
         requiredEntities,
         responses,
+        references,
       };
     });
   }

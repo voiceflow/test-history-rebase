@@ -50,6 +50,7 @@ export class EnvironmentPrototypeService {
     entityVariants,
     isVoiceAssistant,
     responseVariants,
+    responseMessages,
     requiredEntities,
     responseDiscriminators,
   }: CMSResources) {
@@ -70,6 +71,7 @@ export class EnvironmentPrototypeService {
         ...this.response.toJSONWithSubResources({
           responses,
           responseVariants,
+          responseMessages,
           responseAttachments: [],
           responseDiscriminators,
         }),

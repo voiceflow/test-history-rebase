@@ -26,7 +26,9 @@ export class FolderLoguxController {
     @Payload() { data, context }: Actions.Folder.CreateOne.Request,
     @AuthMeta() auth: AuthMetaPayload
   ): Promise<Actions.Folder.CreateOne.Response> {
-    return this.service.createManyAndBroadcast([data], { auth, context }).then(([result]) => ({ data: this.service.toJSON(result), context }));
+    return this.service
+      .createManyAndBroadcast([data], { auth, context })
+      .then(([result]) => ({ data: this.service.toJSON(result), context }));
   }
 
   @Action.Async(Actions.Folder.CreateMany)
@@ -39,7 +41,9 @@ export class FolderLoguxController {
     @Payload() { data, context }: Actions.Folder.CreateMany.Request,
     @AuthMeta() auth: AuthMetaPayload
   ): Promise<Actions.Folder.CreateMany.Response> {
-    return this.service.createManyAndBroadcast(data, { auth, context }).then((results) => ({ data: this.service.mapToJSON(results), context }));
+    return this.service
+      .createManyAndBroadcast(data, { auth, context })
+      .then((results) => ({ data: this.service.mapToJSON(results), context }));
   }
 
   @Action(Actions.Folder.PatchOne)

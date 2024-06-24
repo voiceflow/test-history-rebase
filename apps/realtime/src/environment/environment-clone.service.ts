@@ -49,7 +49,7 @@ export class EnvironmentCloneService {
     const { variables } = await this.variable.cloneManyWithSubResourcesForEnvironment(data);
     const { workflows } = await this.workflow.cloneManyWithSubResourcesForEnvironment(data);
     const { attachments, cardButtons } = await this.attachment.cloneManyWithSubResourcesForEnvironment(data);
-    const { responses, responseVariants, responseAttachments, responseDiscriminators } =
+    const { responses, responseVariants, responseAttachments, responseDiscriminators, responseMessages } =
       await this.response.cloneManyWithSubResourcesForEnvironment(data);
     const { entities, entityVariants } = await this.entity.cloneManyWithSubResourcesForEnvironment(data);
     const { intents, utterances, requiredEntities } = await this.intent.cloneManyWithSubResourcesForEnvironment(data);
@@ -75,6 +75,7 @@ export class EnvironmentCloneService {
       functionVariables,
       responseAttachments,
       responseDiscriminators,
+      responseMessages,
     };
   }
 
@@ -119,7 +120,7 @@ export class EnvironmentCloneService {
       const { workflows } = await this.workflow.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload);
       const { attachments, cardButtons } =
         await this.attachment.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload);
-      const { responses, responseVariants, responseAttachments, responseDiscriminators } =
+      const { responses, responseVariants, responseAttachments, responseDiscriminators, responseMessages } =
         await this.response.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload);
       const { entities, entityVariants } =
         await this.entity.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload);
@@ -147,6 +148,7 @@ export class EnvironmentCloneService {
         functionVariables,
         responseAttachments,
         responseDiscriminators,
+        responseMessages,
       };
     });
 

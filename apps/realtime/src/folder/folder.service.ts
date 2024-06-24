@@ -22,6 +22,7 @@ import type {
   ReferenceResourceObject,
   RequiredEntityObject,
   ResponseDiscriminatorObject,
+  ResponseMessageObject,
   ResponseObject,
   UtteranceObject,
   VariableObject,
@@ -435,6 +436,7 @@ export class FolderService extends CMSObjectService<FolderORM> {
         workflowDiagrams: DiagramObject[];
         requiredEntities: RequiredEntityObject[];
         responseVariants: AnyResponseVariantObject[];
+        responseMessages: ResponseMessageObject[];
         functionVariables: FunctionVariableObject[];
         workflowReferences: ReferenceObject[];
         functionReferences: ReferenceObject[];
@@ -523,6 +525,7 @@ export class FolderService extends CMSObjectService<FolderORM> {
             responses: del.responses,
             references: del.responseReferences,
             responseVariants: del.responseVariants,
+            responseMessages: del.responseMessages,
             referenceResources: del.responseReferenceResources,
             responseAttachments: del.responseAttachments,
             responseDiscriminators: del.responseDiscriminators,

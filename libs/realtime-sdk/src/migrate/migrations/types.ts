@@ -12,6 +12,7 @@ import {
   RequiredEntity,
   Response,
   ResponseDiscriminator,
+  ResponseMessage,
   Utterance,
   Variable,
   Workflow,
@@ -57,6 +58,7 @@ export interface MigrationData {
     requiredEntities: RequiredEntity[];
     responseVariants: AnyResponseVariant[];
     responseDiscriminators: ResponseDiscriminator[];
+    responseMessages: ResponseMessage[];
   };
 
   // TODO: add cmsDelete if we need to delete any cms resources

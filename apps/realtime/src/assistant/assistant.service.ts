@@ -346,6 +346,7 @@ export class AssistantService extends MutableService<AssistantORM> {
           requiredEntities: data.requiredEntities ?? [],
           responseVariants: data.responseVariants ?? [],
           responseDiscriminators: data.responseDiscriminators ?? [],
+          responseMessages: data.responseMessages ?? [],
         },
         version: { ...data.version, _id: environmentID } as BaseModels.Version.Model<any>,
         project: {
@@ -580,14 +581,14 @@ export class AssistantService extends MutableService<AssistantORM> {
     await Promise.all([
       ...(assistant
         ? [
-          this.logux.processAs(
-            Actions.Assistant.AddOne({
-              data: this.assistantSerializer.nullable(assistant),
-              context: { workspaceID: legacyProject.workspaceID, broadcastOnly: true },
-            }),
-            authMeta
-          ),
-        ]
+            this.logux.processAs(
+              Actions.Assistant.AddOne({
+                data: this.assistantSerializer.nullable(assistant),
+                context: { workspaceID: legacyProject.workspaceID, broadcastOnly: true },
+              }),
+              authMeta
+            ),
+          ]
         : []),
 
       this.logux.processAs(
@@ -602,26 +603,26 @@ export class AssistantService extends MutableService<AssistantORM> {
 
       ...(projectList
         ? [
-          projectListCreated
-            ? this.logux.processAs(
-              Realtime.projectList.crud.add({
-                key: projectList.board_id,
-                value: { id: projectList.board_id, ...projectList },
-                context: { broadcastOnly: true },
-                workspaceID: legacyProject.workspaceID,
-              }),
-              authMeta
-            )
-            : this.logux.processAs(
-              Realtime.projectList.addProjectToList({
-                listID: projectList.board_id,
-                context: { broadcastOnly: true },
-                projectID: legacyProject.id,
-                workspaceID: legacyProject.workspaceID,
-              }),
-              authMeta
-            ),
-        ]
+            projectListCreated
+              ? this.logux.processAs(
+                  Realtime.projectList.crud.add({
+                    key: projectList.board_id,
+                    value: { id: projectList.board_id, ...projectList },
+                    context: { broadcastOnly: true },
+                    workspaceID: legacyProject.workspaceID,
+                  }),
+                  authMeta
+                )
+              : this.logux.processAs(
+                  Realtime.projectList.addProjectToList({
+                    listID: projectList.board_id,
+                    context: { broadcastOnly: true },
+                    projectID: legacyProject.id,
+                    workspaceID: legacyProject.workspaceID,
+                  }),
+                  authMeta
+                ),
+          ]
         : []),
     ]);
   }
@@ -1118,11 +1119,18 @@ export class AssistantService extends MutableService<AssistantORM> {
       };
 
       try {
-        await this.environment.upsertIntentsAndEntities(cmsData, {
-          userID,
-          assistantID: project._id.toJSON(),
-          environmentID: version._id.toJSON(),
-        });
+        await this.environment.upsertIntentsAndEntities(
+          {
+            ...cmsData,
+            // TODO: add response message to intent adapter
+            responseMessages: [],
+          },
+          {
+            userID,
+            assistantID: project._id.toJSON(),
+            environmentID: version._id.toJSON(),
+          }
+        );
 
         await this.version.patchOnePlatformData(version._id, {
           slots: _.uniqBy([...version.platformData.slots, ...nlu.slots], (intent) => intent.key),

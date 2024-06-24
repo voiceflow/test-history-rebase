@@ -1,7 +1,8 @@
 import { BaseNode } from '@voiceflow/base-types';
-import { Checkbox, OptionsMenuOption } from '@voiceflow/ui';
+import { OptionsMenuOption } from '@voiceflow/ui';
 import React from 'react';
 
+import Checkbox from '@/components/legacy/Checkbox';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useSelector } from '@/hooks';
 import MenuCheckboxOption from '@/pages/Canvas/managers/components/MenuCheckboxOption';

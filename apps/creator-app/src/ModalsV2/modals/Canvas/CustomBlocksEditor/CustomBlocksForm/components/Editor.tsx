@@ -1,8 +1,9 @@
-import { Checkbox, Input, Link, SectionV2, Text, ThemeColor } from '@voiceflow/ui';
+import { Input, Link, SectionV2, Text, ThemeColor } from '@voiceflow/ui';
 import React from 'react';
 
 import AceEditor, { InputMode } from '@/components/AceEditor';
 import DraggableList from '@/components/DraggableList';
+import Checkbox from '@/components/legacy/Checkbox';
 import * as Documentation from '@/config/documentation';
 import { useMapManager } from '@/hooks/mapManager';
 import THEME from '@/styles/theme';

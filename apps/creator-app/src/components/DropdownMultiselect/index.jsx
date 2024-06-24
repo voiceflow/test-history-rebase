@@ -1,4 +1,5 @@
-import { Checkbox, Dropdown, Menu, stopImmediatePropagation, SvgIcon } from '@voiceflow/ui';
+import { Dropdown, Menu, stopImmediatePropagation, SvgIcon } from '@voiceflow/ui';
+import CheckBox from '@/components/legacy/Checkbox';
 import React from 'react';
 
 import { useKeygen } from '@/hooks';

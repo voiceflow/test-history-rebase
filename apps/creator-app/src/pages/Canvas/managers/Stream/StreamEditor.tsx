@@ -1,9 +1,10 @@
 import { BaseModels } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Checkbox, ErrorMessageWithDivider } from '@voiceflow/ui';
+import { ErrorMessageWithDivider } from '@voiceflow/ui';
 import React from 'react';
 
+import Checkbox from '@/components/legacy/Checkbox';
 import OverflowMenu from '@/components/OverflowMenu';
 import Section from '@/components/Section';
 import VariablesInput from '@/components/VariablesInput';
@@ -17,7 +18,12 @@ import { HelpMessage, HelpTooltip, VisualsForm } from './components';
 
 const isValidURL = (url: string): boolean => isHTTPsURL(url) || containsVariable(url);
 
-const StreamEditor: NodeEditor<Realtime.NodeData.Stream, Realtime.NodeData.StreamBuiltInPorts> = ({ data, node, engine, onChange }) => {
+const StreamEditor: NodeEditor<Realtime.NodeData.Stream, Realtime.NodeData.StreamBuiltInPorts> = ({
+  data,
+  node,
+  engine,
+  onChange,
+}) => {
   const platform = useActiveProjectPlatform();
 
   const [invalidAudio, setValidAudio, setInvalidAudio] = useEnableDisable(false);
@@ -60,10 +66,18 @@ const StreamEditor: NodeEditor<Realtime.NodeData.Stream, Realtime.NodeData.Strea
     <Content
       footer={() => (
         <Controls
-          tutorial={{ content: <HelpTooltip />, blockType: data.type, helpTitle: 'Need Help?', helpMessage: <HelpMessage /> }}
+          tutorial={{
+            content: <HelpTooltip />,
+            blockType: data.type,
+            helpTitle: 'Need Help?',
+            helpMessage: <HelpMessage />,
+          }}
           {...(isAlexa && {
             menu: (
-              <OverflowMenu options={[{ label: hasPause ? 'Remove Custom Pause' : 'Add Custom Pause', onClick: togglePause }]} placement="auto" />
+              <OverflowMenu
+                options={[{ label: hasPause ? 'Remove Custom Pause' : 'Add Custom Pause', onClick: togglePause }]}
+                placement="auto"
+              />
             ),
           })}
         />

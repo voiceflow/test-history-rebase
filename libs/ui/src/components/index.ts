@@ -35,8 +35,6 @@ export {
 export { default as ButtonGroup } from './ButtonGroup';
 export { default as Canvas } from './Canvas';
 export { default as Card } from './Card';
-export type { CheckboxTypes } from './Checkbox';
-export { default as Checkbox } from './Checkbox';
 export { default as Collapse } from './Collapse';
 export type { ColorPickerProps } from './ColorPicker';
 export { default as ColorPicker } from './ColorPicker';

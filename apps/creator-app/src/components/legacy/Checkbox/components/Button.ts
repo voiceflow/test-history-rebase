@@ -1,6 +1,4 @@
-import SvgIcon from '@ui/components/SvgIcon';
-import { styled, transition } from '@ui/styles';
-import { fontResetStyle } from '@ui/styles/bootstrap';
+import { fontResetStyle, styled, SvgIcon, transition } from '@voiceflow/ui';
 
 const Button = styled.input`
   ${fontResetStyle};

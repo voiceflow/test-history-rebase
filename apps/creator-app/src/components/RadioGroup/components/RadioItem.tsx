@@ -1,6 +1,6 @@
-import { Checkbox, CheckboxTypes } from '@voiceflow/ui';
 import React, { ReactNode } from 'react';
 
+import Checkbox, { CheckboxTypes } from '@/components/legacy/Checkbox';
 import { ClassName } from '@/styles/constants';
 
 import RadioButtonContainer from './RadioButtonContainer';
@@ -26,7 +26,15 @@ const RadioItem = <T extends any>({
   ...props
 }: RadioItemProps<T>): React.ReactElement => (
   <RadioButtonContainer className={ClassName.RADIO_GROUP_ITEM} column={column} activeBar={activeBar}>
-    <Checkbox {...props} type={type} value={String(id)} checked={isChecked} onChange={() => onChange(id)} activeBar={activeBar} isFlat>
+    <Checkbox
+      {...props}
+      type={type}
+      value={String(id)}
+      checked={isChecked}
+      onChange={() => onChange(id)}
+      activeBar={activeBar}
+      isFlat
+    >
       <div>{label}</div>
     </Checkbox>
   </RadioButtonContainer>

@@ -1,5 +1,7 @@
-import { Box, Checkbox, Collapse } from '@voiceflow/ui';
+import { Box, Collapse } from '@voiceflow/ui';
 import React from 'react';
+
+import Checkbox from '@/components/legacy/Checkbox';
 
 import { ContentContainer, HeaderContainer } from './components';
 

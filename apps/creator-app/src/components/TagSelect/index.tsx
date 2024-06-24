@@ -1,7 +1,6 @@
 import { Nullish, Utils } from '@voiceflow/common';
 import {
   BaseSelectProps,
-  Checkbox,
   defaultMenuLabelRenderer,
   FlexApart,
   FlexStart,
@@ -17,6 +16,8 @@ import {
   useDidUpdateEffect,
 } from '@voiceflow/ui';
 import React from 'react';
+
+import Checkbox from '@/components/legacy/Checkbox';
 
 import { PrimitiveTagSelectProps, TagSelectInternalProps, TagSelectProps } from './types';
 

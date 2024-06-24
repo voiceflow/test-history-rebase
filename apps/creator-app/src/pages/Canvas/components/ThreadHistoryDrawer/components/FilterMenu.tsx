@@ -1,6 +1,7 @@
-import { Checkbox, Menu } from '@voiceflow/ui';
+import { Menu } from '@voiceflow/ui';
 import React from 'react';
 
+import Checkbox from '@/components/legacy/Checkbox';
 import { Designer } from '@/ducks';
 import * as UI from '@/ducks/ui';
 import { useDispatch, useSelector } from '@/hooks';

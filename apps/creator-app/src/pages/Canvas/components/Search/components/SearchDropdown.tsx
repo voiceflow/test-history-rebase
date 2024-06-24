@@ -1,6 +1,7 @@
-import { Checkbox, Dropdown, SvgIcon, swallowEvent, transition } from '@voiceflow/ui';
+import { Dropdown, SvgIcon, swallowEvent, transition } from '@voiceflow/ui';
 import React from 'react';
 
+import Checkbox from '@/components/legacy/Checkbox';
 import { SearchContext, SearchTypes } from '@/contexts/SearchContext';
 import { styled } from '@/hocs/styled';
 

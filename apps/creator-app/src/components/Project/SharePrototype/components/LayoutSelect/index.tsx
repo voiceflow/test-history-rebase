@@ -1,7 +1,8 @@
-import { Box, Checkbox, Menu } from '@voiceflow/ui';
+import { Box, Menu } from '@voiceflow/ui';
 import React from 'react';
 
 import DropdownWithCaret from '@/components/DropdownWithCaret';
+import Checkbox from '@/components/legacy/Checkbox';
 import { PrototypeLayout } from '@/constants/prototype';
 import * as Prototype from '@/ducks/prototype';
 import { useActiveProjectConfig, useDispatch, useLinkedState, useSelector } from '@/hooks';
@@ -32,7 +33,10 @@ const LayoutSelect: React.FC = () => {
     updateSettings({ buttonsOnly: !buttonsOnly });
   };
 
-  const layoutOptions = React.useMemo(() => getLayoutOptions(projectType).filter((option) => option !== layout), [layout, projectType]);
+  const layoutOptions = React.useMemo(
+    () => getLayoutOptions(projectType).filter((option) => option !== layout),
+    [layout, projectType]
+  );
 
   return (
     <Box pr={32}>

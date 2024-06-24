@@ -1,4 +1,4 @@
-import { css, styled } from '@ui/styles';
+import { css, styled } from '@voiceflow/ui';
 
 const IconContainer = styled.div<{ isCheckbox?: boolean }>`
   ${({ isCheckbox }) =>

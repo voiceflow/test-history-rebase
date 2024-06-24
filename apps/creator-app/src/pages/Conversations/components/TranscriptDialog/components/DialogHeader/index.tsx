@@ -1,5 +1,7 @@
-import { Checkbox, Dropdown, System } from '@voiceflow/ui';
+import { Dropdown, System } from '@voiceflow/ui';
 import React from 'react';
+
+import Checkbox from '@/components/legacy/Checkbox';
 
 import { Container, LabelContainer } from './components';
 
@@ -16,7 +18,13 @@ interface DialogHeaderProps {
   showIntentConfidence: boolean;
 }
 
-const DialogHeader: React.FC<DialogHeaderProps> = ({ showDebugs, showIntentConfidence, toggleDebugs, toggleIntentConf, isScrolling }) => {
+const DialogHeader: React.FC<DialogHeaderProps> = ({
+  showDebugs,
+  showIntentConfidence,
+  toggleDebugs,
+  toggleIntentConf,
+  isScrolling,
+}) => {
   const renderLabel = (label: string, checked: boolean, onToggle: VoidFunction) => (
     <Checkbox checked={checked} onChange={onToggle}>
       <LabelContainer>{label}</LabelContainer>

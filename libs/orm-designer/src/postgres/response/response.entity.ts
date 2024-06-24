@@ -17,4 +17,7 @@ export class ResponseEntity extends PostgresCMSTabularEntity {
 
   @Property({ type: 'boolean', nullable: true, default: false, hidden: true })
   draft?: boolean | null;
+
+  @Property({ type: 'text', nullable: true, default: null })
+  smokeTestRandom?: boolean | null;
 }

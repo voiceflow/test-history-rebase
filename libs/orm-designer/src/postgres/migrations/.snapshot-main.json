@@ -2086,6 +2086,16 @@
           "nullable": true,
           "default": "false",
           "mappedType": "boolean"
+        },
+        "smoke_test_random": {
+          "name": "smoke_test_random",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "text"
         }
       },
       "name": "response",

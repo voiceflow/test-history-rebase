@@ -47,6 +47,7 @@ export abstract class PostgresORM<
     platform: AbstractSqlPlatform;
     dbToJSKeyMap: Record<string, string>;
     jsToDBKeyMap: Record<string, string>;
+    hiddenJSKeys: Set<string>;
     dbPrimaryKeys: string[];
     jsKeyToPropertyMap: Record<string, EntityProperty>;
     allSelectQuery: string;
@@ -114,12 +115,22 @@ export abstract class PostgresORM<
     return this.cache.dbPrimaryKeys;
   }
 
+  protected get hiddenJSKeys() {
+    return this.cache.hiddenJSKeys ?? this.keyRemaps.hiddenJSKeys;
+  }
+
   protected get keyRemaps() {
-    if (this.cache.jsToDBKeyMap && this.cache.dbToJSKeyMap && this.cache.jsKeyToPropertyMap) {
+    if (
+      this.cache.jsToDBKeyMap &&
+      this.cache.dbToJSKeyMap &&
+      this.cache.jsKeyToPropertyMap &&
+      this.cache.hiddenJSKeys
+    ) {
       return {
         dbToJSKey: this.cache.dbToJSKeyMap,
         jsToDBKey: this.cache.jsToDBKeyMap,
         jsKeyToProperty: this.cache.jsKeyToPropertyMap,
+        hiddenJSKeys: this.cache.hiddenJSKeys,
       };
     }
 
@@ -128,10 +139,15 @@ export abstract class PostgresORM<
     const dbToJSKey: Record<string, string> = {};
     const jsToDBKey: Record<string, string> = {};
     const jsKeyToProperty: Record<string, EntityProperty> = {};
+    const hiddenJSKeys: Set<string> = new Set();
 
     const builded = (prop: EntityProperty) => {
       const dbName = (prop as any).fieldName ?? prop.fieldNames[0];
       const jsName = this.propertyToObjectKey(prop);
+
+      if (prop.hidden) {
+        hiddenJSKeys.add(jsName);
+      }
 
       if (!dbToJSKey[dbName]) {
         dbToJSKey[dbName] = jsName;
@@ -148,11 +164,13 @@ export abstract class PostgresORM<
 
     this.cache.dbToJSKeyMap = dbToJSKey;
     this.cache.jsToDBKeyMap = jsToDBKey;
+    this.cache.hiddenJSKeys = hiddenJSKeys;
 
     return {
       dbToJSKey,
       jsToDBKey,
       jsKeyToProperty,
+      hiddenJSKeys,
     };
   }
 
@@ -296,12 +314,14 @@ export abstract class PostgresORM<
     const adaptedData = objectAdapter && !ignoreObjectAdapter ? objectAdapter.toDB(data as any) : data;
 
     return Object.fromEntries(
-      Object.entries(adaptedData).map(([key, value]) => {
-        const dbName = this.jsToDBKeyMap[key];
-        const property = this.jsKeyToDBPropertyMap[key];
+      Object.entries(adaptedData)
+        .filter(([key]) => !this.hiddenJSKeys.has(key))
+        .map(([key, value]) => {
+          const dbName = this.jsToDBKeyMap[key];
+          const property = this.jsKeyToDBPropertyMap[key];
 
-        return [dbName ?? key, this.valueToDB(value, property, { ignoreValueTransform })];
-      })
+          return [dbName ?? key, this.valueToDB(value, property, { ignoreValueTransform })];
+        })
     );
   }
 
@@ -312,9 +332,9 @@ export abstract class PostgresORM<
   protected getSelect(fields?: string[]) {
     let select = this.allSelectQuery;
 
-    if (fields?.length) {
+    if (fields?.length || this.hiddenJSKeys.size) {
       select = Object.entries(this.dbToJSKeyMap)
-        .filter(([, value]) => fields.includes(value))
+        .filter(([, value]) => (!fields?.length || fields.includes(value)) && !this.hiddenJSKeys.has(value))
         .map(([key, value]) => `"${key}" as "${value}"`)
         .join(', ');
     }

@@ -9,14 +9,15 @@ import React from 'react';
 import * as Organization from '@/ducks/organization';
 import { useSelector } from '@/hooks';
 import { useFeature } from '@/hooks/feature.hook';
+import { VoidInternalProps } from '@/ModalsV2/types';
 
 import * as CardForm from '../CardForm';
 import { useCheckoutPayment, usePricing } from '../hooks';
-import { PaymentModalPropsAPI } from '../Payment.types';
+import { PaymentModalProps } from '../Payment.types';
 import { PlanCard } from '../PlanCard/PlanCard.component';
 
 interface PaymentStepProps {
-  modalProps: PaymentModalPropsAPI;
+  modalProps: VoidInternalProps<PaymentModalProps>;
   onClose: VoidFunction;
 }
 
@@ -36,7 +37,8 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onClose, modalProps })
     try {
       await cardRef.current?.tokenize();
 
-      return onSubmitForm(values, {
+      return onSubmitForm({
+        cardValues: values,
         shouldUseExistingCard: existingCardValue === CardForm.ExistingCardValue.EXISTING,
       });
     } catch (e: any) {
@@ -55,7 +57,7 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onClose, modalProps })
   const handleSubmitReusingCard = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     form.setSubmitting(true);
-    await onSubmitForm(null, { shouldUseExistingCard: true });
+    await onSubmitForm({ shouldUseExistingCard: true });
     if (modalProps.opened) {
       form.setSubmitting(false);
     }

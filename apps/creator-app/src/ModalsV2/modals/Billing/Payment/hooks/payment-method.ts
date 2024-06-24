@@ -1,6 +1,6 @@
-import { AdditionalData, Component,PaymentIntent as ChargebeePaymentIntent } from '@chargebee/chargebee-js-types';
+import { AdditionalData, Component, PaymentIntent as ChargebeePaymentIntent } from '@chargebee/chargebee-js-types';
 import { PaymentIntent } from '@voiceflow/dtos';
-import { CONTRIES_MAPPER, IS_DEVELOPMENT, toast } from '@voiceflow/ui';
+import { CONTRIES_MAPPER, toast } from '@voiceflow/ui';
 import { useRef } from 'react';
 
 import { designerClient } from '@/client/designer';
@@ -14,17 +14,6 @@ import * as CardForm from '../CardForm';
 
 const isMockedPaymentIntent = (paymentIntent: PaymentIntent) =>
   isUUID4(paymentIntent.id) && !paymentIntent.gatewayAccountId;
-
-const getDevAmount = (amount: number, address: string) => {
-  console.log('Testing payment intent creation with amount:', amount, 'and address:', address); // eslint-disable-line no-console
-
-  // for testing purpose we get the amount from the address
-  const amountFromAddress = Number.parseInt(address.split(' ').at(-1) ?? '', 10);
-
-  console.log('Amount from address:', amountFromAddress); // eslint-disable-line no-console
-
-  return !Number.isNaN(amountFromAddress) ? amountFromAddress : amount;
-};
 
 const getCardAdditionalData = (cardValues: CardForm.Values): AdditionalData => ({
   billingAddress: {
@@ -123,19 +112,23 @@ export const useCardPaymentMethod = () => {
 
   const createPaymentIntent = async ({
     amount,
-    address,
-    shouldUseExistingCard,
+    paymentMethodReferenceID,
   }: {
     amount: number;
-    address?: string;
-    shouldUseExistingCard?: boolean;
+    // for existing credit card only
+    paymentMethodReferenceID?: string;
   }) => {
     return designerClient.billing.subscription.createPaymentIntent(
       organizationID,
       {
-        amount: IS_DEVELOPMENT ? getDevAmount(amount, address ?? '') : amount,
-        ...(shouldUseExistingCard ? { referenceID: subscription?.paymentMethod?.referenceID } : {}),
+        amount,
         customerID: subscription?.customerID,
+        ...(paymentMethodReferenceID
+          ? {
+              // for existing credit card only
+              referenceID: paymentMethodReferenceID,
+            }
+          : {}),
       },
       { workspaceID: workspace.id }
     );
@@ -143,7 +136,7 @@ export const useCardPaymentMethod = () => {
 
   const updatePaymentMethod = async (amount: number, cardValues: CardForm.Values) => {
     try {
-      const paymentIntent = await createPaymentIntent({ amount, address: cardValues.address });
+      const paymentIntent = await createPaymentIntent({ amount });
       const authorizedPaymentIntent = await authorizeNewCard({ paymentIntent, cardValues });
 
       await updateSubscriptionPaymentMethod(authorizedPaymentIntent.id);
@@ -157,5 +150,29 @@ export const useCardPaymentMethod = () => {
     }
   };
 
-  return { cardRef, updatePaymentMethod, authorizeNewCard, authorizeExistingCard, createPaymentIntent };
+  const createAndAuthorizePaymentIntent = async (options: {
+    amount: number;
+    cardValues?: CardForm.Values;
+    shouldUseExistingCard: boolean;
+  }) => {
+    const paymentIntent = await createPaymentIntent({
+      amount: options.amount,
+      paymentMethodReferenceID: options.shouldUseExistingCard ? subscription?.paymentMethod?.referenceID : undefined,
+    });
+
+    if (!options.shouldUseExistingCard && options.cardValues) {
+      return authorizeNewCard({ paymentIntent, cardValues: options.cardValues });
+    }
+
+    return authorizeExistingCard(paymentIntent);
+  };
+
+  return {
+    cardRef,
+    updatePaymentMethod,
+    authorizeNewCard,
+    authorizeExistingCard,
+    createPaymentIntent,
+    createAndAuthorizePaymentIntent,
+  };
 };

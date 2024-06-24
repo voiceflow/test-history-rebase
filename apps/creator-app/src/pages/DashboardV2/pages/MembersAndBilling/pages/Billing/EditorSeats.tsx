@@ -1,3 +1,4 @@
+import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { Box, SectionV2, Text } from '@voiceflow/ui';
 import React from 'react';
 
@@ -5,7 +6,8 @@ import Page from '@/components/Page';
 import * as Workspace from '@/components/Workspace';
 import * as Organization from '@/ducks/organization';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useSelector } from '@/hooks';
+import { useFeature } from '@/hooks/feature.hook';
+import { useSelector } from '@/hooks/redux';
 import * as currency from '@/utils/currency';
 import * as date from '@/utils/date';
 
@@ -20,14 +22,19 @@ interface BillingEditorSeatsProps {
 const BillingEditorSeats: React.FC<BillingEditorSeatsProps> = ({ nextBillingDate, planAmount, billingPeriod }) => {
   const seats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);
   const isTrial = useSelector(WorkspaceV2.active.isOnTrialSelector);
+  const isTeam = useSelector(WorkspaceV2.active.isOnTeamSelector);
   const trialEndAt = useSelector(WorkspaceV2.active.organizationTrialEndAtSelector);
   const isPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
   const isEnterprise = useSelector(WorkspaceV2.active.isEnterpriseSelector);
   const usedViewerSeats = useSelector(WorkspaceV2.active.members.usedViewerSeatsSelector);
   const creditCard = useSelector(Organization.creditCardSelector);
+  const isConfigurableSeatsEnabled = useFeature(FeatureFlag.CHARGEBEE_CONFIGURABLE_SEATS);
 
-  const amount = isPaidPlan ? planAmount ?? 0 : 0;
+  const unitPrice = planAmount ?? 0;
   const showProTrialDescription = !isEnterprise && isTrial;
+
+  const perSeatsAmount = !isTeam || isConfigurableSeatsEnabled;
+  const totalAmount = perSeatsAmount ? unitPrice * seats : unitPrice;
   const showBillingDateDescription = isPaidPlan && !isEnterprise && !isTrial;
 
   return (
@@ -72,9 +79,12 @@ const BillingEditorSeats: React.FC<BillingEditorSeatsProps> = ({ nextBillingDate
             {isPaidPlan && !isEnterprise ? (
               <div>
                 <SectionV2.Description>
-                  {currency.formatUSD(amount, { noDecimal: true, unit: 'cent' })}{' '}
+                  {currency.formatUSD(unitPrice, { noDecimal: true, unit: 'cent' })}
                 </SectionV2.Description>
-                <SectionV2.Description secondary> per Editor, per {billingPeriod}</SectionV2.Description>
+                <SectionV2.Description secondary>
+                  {' '}
+                  {perSeatsAmount && 'per Editor, '} per {billingPeriod}
+                </SectionV2.Description>
               </div>
             ) : (
               <Workspace.TakenSeatsMessage small label="Editor seats taken." />
@@ -88,9 +98,9 @@ const BillingEditorSeats: React.FC<BillingEditorSeatsProps> = ({ nextBillingDate
       <SectionV2.Divider inset />
 
       <SectionV2.SimpleSection headerProps={{ topUnit: 2, bottomUnit: 2 }} minHeight={50}>
-        <SectionV2.Description>{isEnterprise ? 100 : seats} Editor seats</SectionV2.Description>
+        <SectionV2.Description>{seats} Editor seats</SectionV2.Description>
         <SectionV2.Description>
-          {isEnterprise ? 'Custom' : currency.formatUSD(amount, { unit: 'cent' })}
+          {isEnterprise ? 'Custom' : currency.formatUSD(totalAmount, { unit: 'cent' })}
         </SectionV2.Description>
       </SectionV2.SimpleSection>
 
@@ -111,7 +121,7 @@ const BillingEditorSeats: React.FC<BillingEditorSeatsProps> = ({ nextBillingDate
         <Box.FlexApart fullWidth>
           <SectionV2.Title bold>Total</SectionV2.Title>
           <SectionV2.Title bold fill={false}>
-            {isEnterprise ? 'Custom' : currency.formatUSD(amount, { unit: 'cent' })}
+            {isEnterprise ? 'Custom' : currency.formatUSD(totalAmount, { unit: 'cent' })}
           </SectionV2.Title>
         </Box.FlexApart>
       </SectionV2.SimpleSection>

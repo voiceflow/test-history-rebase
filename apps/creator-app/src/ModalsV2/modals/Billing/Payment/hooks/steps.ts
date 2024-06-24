@@ -1,10 +1,10 @@
 import { useAtom } from 'jotai';
 
-import * as atoms from '../Payment.atoms';
+import { stepAtom } from '../Payment.atoms';
 import { Step } from '../Payment.constants';
 
 export const usePaymentSteps = () => {
-  const [activeStep, setActiveStep] = useAtom(atoms.stepAtom);
+  const [activeStep, setActiveStep] = useAtom(stepAtom);
 
   const onNext = () => (activeStep === Step.PLAN ? setActiveStep(Step.BILLING) : setActiveStep(Step.PAYMENT));
 

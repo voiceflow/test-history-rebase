@@ -1,7 +1,7 @@
 import { BillingPeriodUnit, PlanName } from '@voiceflow/dtos';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 
-import * as atoms from '../Payment.atoms';
+import * as atoms from '../../../../../contexts/Plans/Plans.atoms';
 
 export const usePricing = () => {
   const [selectedPeriod, setSelectedPeriod] = useAtom(atoms.selectedPeriodAtom);

@@ -1,9 +1,9 @@
+import { PlanName } from '@voiceflow/dtos';
+
 import { UpgradePrompt } from '@/ducks/tracking/constants';
-import { VoidInternalProps } from '@/ModalsV2/types';
 
 export interface PaymentModalProps {
   promptType?: UpgradePrompt;
   isTrialExpired?: boolean;
+  nextPlan?: PlanName;
 }
-
-export type PaymentModalPropsAPI = VoidInternalProps<PaymentModalProps>;

@@ -6,7 +6,7 @@ import client from '@/client';
 import * as Organization from '@/ducks/organization';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useActiveWorkspace, useDispatch, useSelector } from '@/hooks';
-import { useCheckoutPaymentModal } from '@/hooks/payment';
+import { usePaymentModal } from '@/hooks/modal.hook';
 import { useTrackingEvents } from '@/hooks/tracking';
 
 import * as S from './styles';
@@ -17,7 +17,7 @@ const TrialExpiredPage: React.FC = () => {
   const workspace = useActiveWorkspace();
   const userRole = useSelector(WorkspaceV2.active.members.userRoleSelector);
   const organization = useSelector(Organization.organizationSelector);
-  const paymentModal = useCheckoutPaymentModal();
+  const paymentModal = usePaymentModal();
   const [trackEvents] = useTrackingEvents();
 
   const [isDowngrading, setIsDowngrading] = React.useState(false);

@@ -17,9 +17,9 @@ import { chargebeeSubscriptionSelector, customerIDSelector } from './subscriptio
 export const checkout = (
   organizationID: string,
   workspaceID: string,
-  data: Omit<Actions.OrganizationSubscription.CheckoutRequest, 'context'>
+  data: Omit<Actions.OrganizationSubscription.CheckoutRequest, 'context' | 'itemPriceID'>
 ): Thunk<void> => {
-  const { planItemPriceID, paymentIntent } = data;
+  const { planItemPriceID, seats, paymentIntent } = data;
 
   return async (dispatch, getState) => {
     const subscription = chargebeeSubscriptionSelector(getState());
@@ -32,8 +32,9 @@ export const checkout = (
       const newSubscription = await dispatch(
         waitAsync(Actions.OrganizationSubscription.Checkout, {
           planItemPriceID,
+          seats,
           paymentIntent,
-          couponIDs: data.couponIds,
+          couponIDs: data.couponIDs,
           context: { organizationID, workspaceID },
         })
       );

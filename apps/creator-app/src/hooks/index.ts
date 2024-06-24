@@ -1,6 +1,7 @@
 export * from './focus';
 export * from './hotkeys';
 export * from './hover';
+export * from './http';
 export * from './keygen';
 export * from './lazy';
 export * from './lifecycle';

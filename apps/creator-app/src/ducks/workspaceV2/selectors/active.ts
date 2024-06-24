@@ -74,6 +74,8 @@ export const isOnProTrialSelector = createSelector(
   (plan, isOnTrial) => isOnTrial && plan === PlanType.PRO
 );
 
+export const isOnTeamSelector = createSelector([planSelector], (plan) => plan === PlanType.TEAM);
+
 // FIXME: remove FF https://voiceflow.atlassian.net/browse/CV3-994
 export const numberOfSeatsSelector = createSelector(
   [workspaceSelector, activeOrganizationSelector],

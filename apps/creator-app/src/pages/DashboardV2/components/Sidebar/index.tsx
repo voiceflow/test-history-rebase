@@ -22,8 +22,8 @@ import * as Organization from '@/ducks/organization';
 import * as Sessions from '@/ducks/session';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useFeature } from '@/hooks/feature.hook';
+import { usePaymentModal } from '@/hooks/modal.hook';
 import { useOrganizationDefaultPagePath } from '@/hooks/organization';
-import { useCheckoutPaymentModal } from '@/hooks/payment';
 import { usePermission } from '@/hooks/permission';
 import { useSelector } from '@/hooks/redux';
 import { useTrackingEvents } from '@/hooks/tracking';
@@ -46,7 +46,7 @@ const DashboardNavigationSidebar: React.FC = () => {
   const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
   const isSubscribedToOrganization = useAtomValue(OrganizationAtoms.isSubscribedAtom);
 
-  const paymentModal = useCheckoutPaymentModal();
+  const paymentModal = usePaymentModal();
   const [, trackEventFactory] = useTrackingEvents();
   const organizationDefaultPagePath = useOrganizationDefaultPagePath();
 

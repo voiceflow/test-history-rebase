@@ -6,14 +6,15 @@ import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector } from '@/hooks/redux';
 import { useDispatch } from '@/hooks/store.hook';
 import { useTrackingEvents } from '@/hooks/tracking';
+import { VoidInternalProps } from '@/ModalsV2/types';
 
+import * as atoms from '../../../../../contexts/Plans/Plans.atoms';
 import * as CardForm from '../CardForm';
-import * as atoms from '../Payment.atoms';
-import { PaymentModalPropsAPI } from '../Payment.types';
+import { PaymentModalProps } from '../Payment.types';
 import { useCardPaymentMethod } from './payment-method';
 import { usePricing } from './pricing';
 
-export const useCheckoutPayment = ({ modalProps }: { modalProps: PaymentModalPropsAPI }) => {
+export const useCheckoutPayment = ({ modalProps }: { modalProps: VoidInternalProps<PaymentModalProps> }) => {
   const organization = useSelector(Organization.organizationSelector)!;
   const subscription = useSelector(Organization.chargebeeSubscriptionSelector)!;
   const workspace = useSelector(WorkspaceV2.active.workspaceSelector)!;
@@ -24,9 +25,9 @@ export const useCheckoutPayment = ({ modalProps }: { modalProps: PaymentModalPro
   const isTrialExpired = useSelector(WorkspaceV2.active.organizationTrialExpiredSelector);
   const [trackingEvents] = useTrackingEvents();
   const editorSeats = useAtomValue(atoms.editorSeatsAtom);
-  const { cardRef, authorizeNewCard, authorizeExistingCard, createPaymentIntent } = useCardPaymentMethod();
+  const { cardRef, createAndAuthorizePaymentIntent } = useCardPaymentMethod();
 
-  const onCheckout = async (cardValues: CardForm.Values | null, options: { shouldUseExistingCard: boolean }) => {
+  const onCheckout = async (options: { cardValues?: CardForm.Values; shouldUseExistingCard: boolean }) => {
     if (!organization?.id || !organization.subscription || !selectedPlanPrice) return;
     if (options.shouldUseExistingCard && !subscription.paymentMethod) return;
     if (!options.shouldUseExistingCard && !cardRef.current) return;
@@ -34,20 +35,18 @@ export const useCheckoutPayment = ({ modalProps }: { modalProps: PaymentModalPro
     modalProps.api.preventClose();
 
     try {
-      let paymentIntent = await createPaymentIntent({
-        amount: selectedPlanPrice.amount,
-        address: cardValues?.address,
+      const extraSeats = editorSeats - 1; // 1 is already included in the plan
+      const extraSeatsAmount = extraSeats * subscription.additionalSeatsUnitAmount;
+
+      const paymentIntent = await createAndAuthorizePaymentIntent({
+        amount: selectedPlanPrice.amount + extraSeatsAmount,
+        cardValues: options.cardValues,
         shouldUseExistingCard: options.shouldUseExistingCard,
       });
 
-      if (!options.shouldUseExistingCard && cardValues) {
-        paymentIntent = await authorizeNewCard({ paymentIntent, cardValues });
-      } else {
-        paymentIntent = await authorizeExistingCard(paymentIntent);
-      }
-
       await checkout(organization.id, workspace.id, {
         planItemPriceID: selectedPlanPrice.id,
+        seats: editorSeats,
         paymentIntent,
         couponIDs,
       });

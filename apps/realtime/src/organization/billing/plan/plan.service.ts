@@ -2,35 +2,35 @@ import { Inject, Injectable } from '@nestjs/common';
 import { BillingPeriodUnit, BillingPlan, PlanName } from '@voiceflow/dtos';
 import { BillingClient } from '@voiceflow/sdk-billing';
 
-import { ChargebeePlan, PlanItemPrice } from './plan.types';
+import { ChargebeePlan } from './plan.types';
 
 const getMontlyAmount = (price: number, period: string) => (period === BillingPeriodUnit.YEAR ? price / 12 : price);
 const getAnnualAmount = (price: number, period: string) => (period === BillingPeriodUnit.MONTH ? price * 12 : price);
+
+export interface SubscriptionItem {
+  itemPriceID: string;
+  quantity: number;
+}
 
 @Injectable()
 export class BillingPlanService {
   constructor(@Inject(BillingClient) private readonly billingClient: BillingClient) {}
 
-  private async getPlanEstimateAmount(itemPrice: PlanItemPrice, coupons?: string[]): Promise<number> {
+  private async getPlanEstimateAmount(items: SubscriptionItem[], coupons?: string[]): Promise<number | null> {
     const response = await this.billingClient.estimatesPrivate
       .createSubscriptionEstimation({
         json: {
-          subscription_items: [
-            {
-              item_price_id: itemPrice.id,
-              quantity: 1,
-            },
-          ],
+          subscription_items: items.map(({ itemPriceID, quantity }) => ({
+            item_price_id: itemPriceID,
+            quantity,
+          })),
+
           coupon_ids: coupons,
         },
       })
       .catch(() => null);
 
-    const estimate = response?.estimate.invoice_estimate?.line_items?.[0];
-    const discount = estimate?.discount_amount ?? 0;
-    const originalAmount = estimate?.amount ?? itemPrice.price;
-
-    return originalAmount - discount;
+    return response?.estimate.invoice_estimate?.total ?? null;
   }
 
   async getPlans(plans: PlanName[], coupons?: string[]): Promise<BillingPlan[]> {
@@ -42,15 +42,25 @@ export class BillingPlanService {
         .filter((item) => plans.includes(item.id as PlanName))
         .map(async (item) => {
           const prices = await Promise.all(
-            item.item_prices.map(async (price) => {
-              const amount = !coupons?.length ? price.price : await this.getPlanEstimateAmount(price, coupons);
+            item.item_prices.map(async (itemPrice) => {
+              const amount = !coupons?.length
+                ? itemPrice.price
+                : (await this.getPlanEstimateAmount(
+                    [
+                      {
+                        itemPriceID: itemPrice.id,
+                        quantity: 1,
+                      },
+                    ],
+                    coupons
+                  )) ?? itemPrice.price;
 
               return {
-                id: price.id,
+                id: itemPrice.id,
                 amount,
-                annualAmount: getAnnualAmount(amount, price.period_unit),
-                monthlyAmount: getMontlyAmount(amount, price.period_unit),
-                periodUnit: price.period_unit,
+                annualAmount: getAnnualAmount(amount, itemPrice.period_unit),
+                monthlyAmount: getMontlyAmount(amount, itemPrice.period_unit),
+                periodUnit: itemPrice.period_unit,
               };
             })
           );

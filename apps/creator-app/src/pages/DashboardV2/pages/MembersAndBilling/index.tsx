@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 
 import Page from '@/components/Page';
 import { Path } from '@/config/routes';
+import { PlansProvider } from '@/contexts/Plans/Plans.context';
 import * as Organization from '@/ducks/organization';
 import { useSelector } from '@/hooks';
 import RedirectWithSearch from '@/Routes/RedirectWithSearch';
@@ -21,10 +22,10 @@ const MembersAndBilling: React.FC = () => {
       <S.StyledPageContent>
         <Switch>
           {subscription ? (
-            <>
+            <PlansProvider>
               <Route path={Path.WORKSPACE_MEMBERS} component={Members} />
               <Route path={Path.WORKSPACE_BILLING} component={Billing} />
-            </>
+            </PlansProvider>
           ) : (
             <>
               <Route path={Path.WORKSPACE_MEMBERS} component={LegacyMembers} />

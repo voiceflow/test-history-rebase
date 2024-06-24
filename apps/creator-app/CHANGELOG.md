@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1595.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1595.3...@voiceflow/creator-app@1.1595.4) (2024-06-24)
+
+### Bug Fixes
+
+* kb model race condition (COR-2449) ([#8375](https://github.com/voiceflow/creator-app/issues/8375)) ([dab9f9d](https://github.com/voiceflow/creator-app/commit/dab9f9d44ec47fd77f342ea316cf6ea42f46d927))
+
 ## [1.1595.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1595.2...@voiceflow/creator-app@1.1595.3) (2024-06-24)
 
 **Note:** Version bump only for package @voiceflow/creator-app

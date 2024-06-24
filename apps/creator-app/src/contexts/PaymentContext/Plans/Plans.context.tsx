@@ -1,5 +1,4 @@
-import { BillingPeriodUnit, BillingPlan } from '@voiceflow/dtos';
-import { PlanType } from '@voiceflow/internal';
+import { BillingPeriodUnit, BillingPlan, PlanName } from '@voiceflow/dtos';
 import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { useAtomValue, useSetAtom } from 'jotai/react';
 import React from 'react';
@@ -25,17 +24,17 @@ interface PlansContext {
 const PlansContext = React.createContext<PlansContext | null>(null);
 
 export const PlansProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const [couponIDs] = useCoupon();
+  const [couponID] = useCoupon();
   const teamsPlanSelfServeIsEnabled = useFeature(FeatureFlag.TEAMS_PLAN_SELF_SERVE);
   const setPlans = useSetAtom(atoms.plansAtom);
   const plansByID = useAtomValue(atoms.plansByIDAtom);
 
-  const planIDs = teamsPlanSelfServeIsEnabled ? [PlanType.PRO, PlanType.TEAM] : [PlanType.PRO];
+  const planIDs = teamsPlanSelfServeIsEnabled ? [PlanName.PRO, PlanName.TEAM] : [PlanName.PRO];
 
   const { data, error, loading, fetch } = useHttp(() =>
     designerClient.billing.plan.getPlans({
       planIDs,
-      coupon: couponIDs,
+      ...(couponID ? { coupons: [couponID] } : {}),
     })
   );
 

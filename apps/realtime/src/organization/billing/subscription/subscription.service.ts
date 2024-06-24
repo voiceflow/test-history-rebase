@@ -10,7 +10,13 @@ import { UserService } from '@/user/user.service';
 
 import subscriptionAdapter from './adapters/subscription.adapter';
 import { CreatePaymentIntentRequest } from './dto/create-payment-intent-request.dto';
-import { findPlanItem, pollWithProgressiveTimeout } from './subscription.utils';
+import {
+  findNumberEntitlement,
+  findPlanAddon,
+  findPlanItem,
+  getAdditionalSeatAddonPriceID,
+  pollWithProgressiveTimeout,
+} from './subscription.utils';
 
 const fromUnixTimestamp = (timestamp: number) => timestamp * 1000;
 
@@ -157,12 +163,34 @@ export class BillingSubscriptionService {
     return isStarter || isProTrial;
   }
 
+  private getChangeOption(currentSeats: number, newSeats: number) {
+    // if reducing seats, schedule the change to end of term, to avoid refunds.
+    return newSeats < currentSeats ? 'end_of_term' : 'immediately';
+  }
+
   async checkout(organizationID: string, data: Actions.OrganizationSubscription.CheckoutRequest) {
     const subscription = await this.findOneByOrganizationID(organizationID);
 
     if (!subscription) {
       throw new Error('Subscription not found');
     }
+
+    const billingPeriod = data.planItemPriceID.split('-').at(-1);
+    const newTotalSeats = data.seats ?? 1;
+
+    const seatsAddonItemPriceID = getAdditionalSeatAddonPriceID(billingPeriod);
+
+    // we can have 1 seats from plan + n seats by override + n seats by addon
+    // overrides are free, that why it's not an addon.
+    const totalSeats = findNumberEntitlement(subscription.subscriptionEntitlements, 'limit-editor-count') ?? 1;
+    const addonSeats = findPlanAddon(subscription.subscriptionItems, seatsAddonItemPriceID)?.quantity ?? 0;
+
+    // base seats are seats from plan + seats from overrides;
+    const baseSeats = totalSeats - addonSeats;
+
+    const changeOption = this.getChangeOption(totalSeats, newTotalSeats);
+
+    const newAddonSeats = newTotalSeats - baseSeats;
 
     try {
       await this.billingClient.subscriptionsPrivate.checkout(subscription.id, {
@@ -171,13 +199,22 @@ export class BillingSubscriptionService {
             itemPriceID: data.itemPriceID ?? data.planItemPriceID,
             quantity: 1,
           },
+          // adding extra seats
+          ...(newAddonSeats > 0
+            ? [
+                {
+                  itemPriceID: seatsAddonItemPriceID,
+                  quantity: newAddonSeats,
+                },
+              ]
+            : []),
         ],
 
         paymentIntentID: data.paymentIntent.id,
 
         trialEnd: 0,
-        changeOption: 'immediately',
-        prorate: true,
+        changeOption,
+        prorate: changeOption === 'immediately',
 
         ...(this.shouldResetTerm(subscription) ? { forceTermReset: true } : {}),
         ...(subscription.downgradedFromTrial ? { downgradedFromTrial: false } : {}),

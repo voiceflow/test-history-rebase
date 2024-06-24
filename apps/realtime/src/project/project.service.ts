@@ -1,5 +1,6 @@
 import { Primary } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
+import type { Project } from '@voiceflow/dtos';
 import { ProjectEntity, ProjectObject, ProjectORM } from '@voiceflow/orm-designer';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { IdentityClient } from '@voiceflow/sdk-identity';
@@ -60,5 +61,16 @@ export class ProjectService extends MutableService<ProjectORM> {
     return projects.map((project) =>
       this.legacyProjectSerializer.serialize(project, membersPerProject[project._id.toJSON()] ?? [])
     );
+  }
+
+  async getUniqueProjectName(workspaceID: number, project: Project) {
+    let newProjectName = project.name;
+    let i = 0;
+    const projects = await this.findManyByWorkspaceID(workspaceID);
+    // eslint-disable-next-line no-loop-func
+    while (projects.find((w) => w.name === newProjectName)) {
+      newProjectName = `${project.name} (${++i})`;
+    }
+    return newProjectName;
   }
 }

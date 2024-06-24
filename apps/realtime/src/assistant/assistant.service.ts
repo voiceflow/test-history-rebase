@@ -191,7 +191,15 @@ export class AssistantService extends MutableService<AssistantORM> {
     }
   }
 
-  public parseImportData(raw: string): AssistantImportDataDTO {
+  public async importFileData(workspaceID: number, raw: string): Promise<AssistantImportDataDTO> {
+    const data = this.parseImportData(raw);
+
+    data.project.name = await this.project.getUniqueProjectName(workspaceID, data.project);
+
+    return data;
+  }
+
+  private parseImportData(raw: string): AssistantImportDataDTO {
     const data = JSON.parse(raw);
 
     // this is a temporary workaround for a problem database migration that resulted in corrupted VF files
@@ -572,14 +580,14 @@ export class AssistantService extends MutableService<AssistantORM> {
     await Promise.all([
       ...(assistant
         ? [
-            this.logux.processAs(
-              Actions.Assistant.AddOne({
-                data: this.assistantSerializer.nullable(assistant),
-                context: { workspaceID: legacyProject.workspaceID, broadcastOnly: true },
-              }),
-              authMeta
-            ),
-          ]
+          this.logux.processAs(
+            Actions.Assistant.AddOne({
+              data: this.assistantSerializer.nullable(assistant),
+              context: { workspaceID: legacyProject.workspaceID, broadcastOnly: true },
+            }),
+            authMeta
+          ),
+        ]
         : []),
 
       this.logux.processAs(
@@ -594,26 +602,26 @@ export class AssistantService extends MutableService<AssistantORM> {
 
       ...(projectList
         ? [
-            projectListCreated
-              ? this.logux.processAs(
-                  Realtime.projectList.crud.add({
-                    key: projectList.board_id,
-                    value: { id: projectList.board_id, ...projectList },
-                    context: { broadcastOnly: true },
-                    workspaceID: legacyProject.workspaceID,
-                  }),
-                  authMeta
-                )
-              : this.logux.processAs(
-                  Realtime.projectList.addProjectToList({
-                    listID: projectList.board_id,
-                    context: { broadcastOnly: true },
-                    projectID: legacyProject.id,
-                    workspaceID: legacyProject.workspaceID,
-                  }),
-                  authMeta
-                ),
-          ]
+          projectListCreated
+            ? this.logux.processAs(
+              Realtime.projectList.crud.add({
+                key: projectList.board_id,
+                value: { id: projectList.board_id, ...projectList },
+                context: { broadcastOnly: true },
+                workspaceID: legacyProject.workspaceID,
+              }),
+              authMeta
+            )
+            : this.logux.processAs(
+              Realtime.projectList.addProjectToList({
+                listID: projectList.board_id,
+                context: { broadcastOnly: true },
+                projectID: legacyProject.id,
+                workspaceID: legacyProject.workspaceID,
+              }),
+              authMeta
+            ),
+        ]
         : []),
     ]);
   }

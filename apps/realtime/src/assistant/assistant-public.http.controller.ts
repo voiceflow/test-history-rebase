@@ -50,7 +50,7 @@ export class AssistantPublicHTTPController {
     private readonly projectSerializer: ProjectSerializer,
     @Inject(EnvironmentService)
     private readonly environment: EnvironmentService
-  ) {}
+  ) { }
 
   @Get(':assistantID/environments')
   @Authorize.Permissions<Request<{ assistantID: string }>>([Permission.PROJECT_READ], (request) => ({
@@ -158,7 +158,7 @@ export class AssistantPublicHTTPController {
     @UploadedFile() file: Express.Multer.File,
     @Body() { clientID }: { clientID?: string }
   ): Promise<AssistantImportJSONResponse> {
-    const data = this.service.parseImportData(file.buffer.toString('utf8'));
+    const data = await this.service.importFileData(workspaceID, file.buffer.toString('utf8'));
 
     const { project, assistant } = await this.service.importJSONAndBroadcast({ data, userID, clientID, workspaceID });
 

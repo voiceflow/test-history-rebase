@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.87.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.86.5...@voiceflow/orm-designer@2.87.0) (2024-06-24)
+
+### Features
+
+* response messages logic (COR-2456) ([#8392](https://github.com/voiceflow/creator-app/issues/8392)) ([1aabc14](https://github.com/voiceflow/creator-app/commit/1aabc14a63fcf8888809e75e9bc51d16b3ed699a))
+
 ## [2.86.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.86.4...@voiceflow/orm-designer@2.86.5) (2024-06-24)
 
 **Note:** Version bump only for package @voiceflow/orm-designer

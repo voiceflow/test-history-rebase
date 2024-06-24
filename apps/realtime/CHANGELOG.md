@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.413.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.412.2...@voiceflow/realtime@1.413.0) (2024-06-24)
+
+### Features
+
+* create new response services (COR-2455) ([#8388](https://github.com/voiceflow/creator-app/issues/8388)) ([327f28f](https://github.com/voiceflow/creator-app/commit/327f28f5549c6f571a85db268d1e3cde2dd902d4))
+
 ## [1.412.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.412.1...@voiceflow/realtime@1.412.2) (2024-06-24)
 
 **Note:** Version bump only for package @voiceflow/realtime

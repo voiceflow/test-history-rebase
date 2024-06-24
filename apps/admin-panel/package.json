@@ -1,0 +1,30 @@
+{
+  "name": "admin-panel",
+  "version": "0.0.1",
+  "scripts": {
+    "build": "next build --turbo",
+    "dev": "NODE_TLS_REJECT_UNAUTHORIZED=0 next dev --turbo",
+    "lint": "next lint --turbo",
+    "start": "next start --turbo"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@fontsource/roboto": "^5.0.13",
+    "@mui/icons-material": "^5.15.20",
+    "@mui/lab": "^5.0.0-alpha.170",
+    "@mui/material": "^5.15.20",
+    "@mui/material-nextjs": "^5.15.11",
+    "@mui/x-tree-view": "^7.7.1",
+    "@paralleldrive/cuid2": "^2.2.2",
+    "@voiceflow/sdk-admin": "^1.12.57",
+    "@voiceflow/sdk-auth": "^2.10.12",
+    "@voiceflow/sdk-identity": "^1.22.33",
+    "hashids": "^2.3.0",
+    "next": "14.2.4",
+    "notistack": "^3.0.1",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "zod": "^3.23.8"
+  }
+}

@@ -25,6 +25,7 @@ export interface CreateData {
 export interface PatchData {
   name?: string;
   folderID?: string | null;
+  draft?: boolean | null;
 }
 
 /**

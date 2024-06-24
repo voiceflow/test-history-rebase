@@ -6,6 +6,7 @@ import { NodeType } from '../node-type.enum';
 
 export const MessageNodeDataDTO = BaseNodeDataDTO.extend({
   messageID: z.string().nullable(),
+  draft: z.boolean().nullable(),
 }).strict();
 
 export type MessageNodeData = z.infer<typeof MessageNodeDataDTO>;

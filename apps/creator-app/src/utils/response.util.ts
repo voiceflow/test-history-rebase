@@ -7,6 +7,7 @@ import type {
   PromptResponseVariantCreate,
   PromptResponseVariantWithPrompt,
   ResponseCardAttachment,
+  ResponseMessage,
   ResponseMessageCreate,
   TextResponseVariant,
   TextResponseVariantCreate,
@@ -21,12 +22,10 @@ export const responseMessageCreateDataFactory = ({
   text = markupFactory(),
   delay = null,
   condition = null,
-  tempID,
-}: Partial<ResponseMessageCreate> & { tempID?: string } = {}): ResponseMessageCreate & { tempID?: string } => ({
+}: Partial<ResponseMessageCreate> = {}): ResponseMessageCreate => ({
   text,
   delay,
   condition,
-  tempID,
 });
 
 // TODO: remove after response-variant migration
@@ -83,6 +82,8 @@ export const isTextResponseVariant = (
 
 export const isTextResponseVariantEmpty = (responseVariant: TextResponseVariant | PartialTextResponseVariant) =>
   isMarkupEmpty(responseVariant.text);
+
+export const isResponseMessageEmpty = (responseMessage: ResponseMessage) => isMarkupEmpty(responseMessage.text);
 
 export const isPromptResponseVariantWidthDataEmpty = (
   responseVariant: PromptResponseVariantWithPrompt | PartialPromptResponseVariant

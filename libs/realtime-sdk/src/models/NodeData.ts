@@ -4,7 +4,7 @@ import { AlexaNode } from '@voiceflow/alexa-types';
 import { BaseButton, BaseModels, BaseNode } from '@voiceflow/base-types';
 import { ChatNode } from '@voiceflow/chat-types';
 import { EmptyObject, Nullable } from '@voiceflow/common';
-import { FunctionNodeData, ResponseNodeData, StartNodeData, TriggerNodeData } from '@voiceflow/dtos';
+import { FunctionNodeData, MessageNodeData, ResponseNodeData, StartNodeData, TriggerNodeData } from '@voiceflow/dtos';
 import * as Platform from '@voiceflow/platform-config/backend';
 import { VoiceNode } from '@voiceflow/voice-types';
 import { VoiceflowNode } from '@voiceflow/voiceflow-types';
@@ -515,6 +515,8 @@ export namespace NodeData {
   export type Trigger = DTONodeData<TriggerNodeData>;
 
   export type Response = DTONodeData<ResponseNodeData>;
+
+  export type Message = DTONodeData<MessageNodeData>;
 }
 
 export interface NodeDataMap {

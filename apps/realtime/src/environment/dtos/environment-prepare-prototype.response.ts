@@ -12,6 +12,7 @@ import {
   RequiredEntityDTO,
   ResponseDiscriminatorDTO,
   ResponseDTO,
+  ResponseMessageDTO,
   UtteranceDTO,
   VariableDTO,
   VersionDTO,
@@ -37,6 +38,7 @@ export const EnvironmentPreparePrototypeResponse = z
     functionVariables: z.array(FunctionVariableDTO),
     responseAttachments: z.array(AnyResponseAttachmentDTO),
     responseDiscriminators: z.array(ResponseDiscriminatorDTO),
+    responseMessages: z.array(ResponseMessageDTO),
   })
   .strict();
 

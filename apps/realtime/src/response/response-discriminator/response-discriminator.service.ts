@@ -4,7 +4,12 @@ import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
 import { LoguxService } from '@voiceflow/nestjs-logux';
-import type { AnyResponseAttachmentObject, AnyResponseVariantObject, ResponseDiscriminatorObject } from '@voiceflow/orm-designer';
+import type {
+  AnyResponseAttachmentObject,
+  AnyResponseVariantObject,
+  ResponseDiscriminatorObject,
+  ResponseMessageObject,
+} from '@voiceflow/orm-designer';
 import { AssistantORM, DatabaseTarget, ResponseDiscriminatorORM, ResponseORM } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
@@ -13,6 +18,8 @@ import type { CMSCreateForUserData } from '@/common/types';
 import { cmsBroadcastContext, injectAssistantAndEnvironmentIDs, toPostgresEntityIDs } from '@/common/utils';
 import { CMSBroadcastMeta, CMSContext } from '@/types';
 
+import { ResponseMessageLoguxService } from '../response-message/response-message.logux.service';
+import { ResponseMessageRepository } from '../response-message/response-message.repository';
 import { ResponseVariantService } from '../response-variant/response-variant.service';
 
 @Injectable()
@@ -37,7 +44,11 @@ export class ResponseDiscriminatorService extends CMSObjectService<ResponseDiscr
     @Inject(LoguxService)
     protected readonly logux: LoguxService,
     @Inject(ResponseVariantService)
-    protected readonly responseVariant: ResponseVariantService
+    protected readonly responseVariant: ResponseVariantService,
+    @Inject(ResponseMessageRepository)
+    protected readonly responseMessage: ResponseMessageRepository,
+    @Inject(ResponseMessageLoguxService)
+    protected readonly responseMessageLogux: ResponseMessageLoguxService
   ) {
     super();
   }
@@ -58,14 +69,21 @@ export class ResponseDiscriminatorService extends CMSObjectService<ResponseDiscr
 
   /* Create */
 
-  async createManyAndSync(data: CMSCreateForUserData<ResponseDiscriminatorORM>[], { userID, context }: { userID: number; context: CMSContext }) {
+  async createManyAndSync(
+    data: CMSCreateForUserData<ResponseDiscriminatorORM>[],
+    { userID, context }: { userID: number; context: CMSContext }
+  ) {
     return this.postgresEM.transactional(async () => {
-      const responseDiscriminators = await this.createManyForUser(userID, data.map(injectAssistantAndEnvironmentIDs(context)));
+      const responseDiscriminators = await this.createManyForUser(
+        userID,
+        data.map(injectAssistantAndEnvironmentIDs(context))
+      );
 
       return {
         add: {
           prompts: [],
           responseVariants: [],
+          responseMessages: [],
           responseAttachments: [],
           responseDiscriminators,
         },
@@ -81,14 +99,28 @@ export class ResponseDiscriminatorService extends CMSObjectService<ResponseDiscr
         responseVariants: AnyResponseVariantObject[];
         responseAttachments: AnyResponseAttachmentObject[];
         responseDiscriminators: ResponseDiscriminatorObject[];
+        responseMessages?: ResponseMessageObject[];
       };
     },
     meta: CMSBroadcastMeta
   ) {
+    const { responseMessages = [] } = Utils.object.pick(add, ['responseMessages']);
+
     await Promise.all([
       this.responseVariant.broadcastAddMany(
         {
           add: Utils.object.pick(add, ['responseVariants', 'responseAttachments']),
+          // no need to sync, cause should be synced on create
+          sync: { responseDiscriminators: [] },
+        },
+        meta
+      ),
+
+      this.responseMessageLogux.broadcastAddMany(
+        {
+          add: {
+            responseMessages,
+          },
           // no need to sync, cause should be synced on create
           sync: { responseDiscriminators: [] },
         },
@@ -121,10 +153,16 @@ export class ResponseDiscriminatorService extends CMSObjectService<ResponseDiscr
 
   async collectRelationsToDelete(environmentID: string, ids: string[]) {
     const responseVariants = await this.responseVariant.findManyByDiscriminators(environmentID, ids);
-    const relations = await this.responseVariant.collectRelationsToDelete(environmentID, toPostgresEntityIDs(responseVariants));
+    const responseMessages = await this.responseMessage.findManyByDiscriminators(environmentID, ids);
+
+    const relations = await this.responseVariant.collectRelationsToDelete(
+      environmentID,
+      toPostgresEntityIDs(responseVariants)
+    );
 
     return {
       ...relations,
+      responseMessages,
       responseVariants,
     };
   }
@@ -155,6 +193,7 @@ export class ResponseDiscriminatorService extends CMSObjectService<ResponseDiscr
         responseVariants: AnyResponseVariantObject[];
         responseAttachments: AnyResponseAttachmentObject[];
         responseDiscriminators: ResponseDiscriminatorObject[];
+        responseMessages: ResponseMessageObject[];
       };
     },
     meta: CMSBroadcastMeta
@@ -172,7 +211,7 @@ export class ResponseDiscriminatorService extends CMSObjectService<ResponseDiscr
         {
           // no need to sync discriminators, because they are deleted
           sync: { responseDiscriminators: [] },
-          delete: Utils.object.pick(del, ['responseVariants', 'responseAttachments']),
+          delete: Utils.object.pick(del, ['responseVariants', 'responseAttachments', 'responseMessages']),
         },
         meta
       ),

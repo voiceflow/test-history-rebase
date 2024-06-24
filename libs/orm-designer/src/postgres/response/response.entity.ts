@@ -11,10 +11,9 @@ export class ResponseEntity extends PostgresCMSTabularEntity {
     items: () => ResponseType,
     nullable: true,
     default: ResponseType.MESSAGE,
-    hidden: true,
   })
   type?: ResponseType | null;
 
-  @Property({ type: 'boolean', nullable: true, default: false, hidden: true })
+  @Property({ type: 'boolean', nullable: true, default: false })
   draft?: boolean | null;
 }

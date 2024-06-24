@@ -79,6 +79,7 @@ describe('Migrate service unit tests', () => {
         entityVariants: [],
         requiredEntities: [],
         responseVariants: [],
+        responseMessages: [],
         responseDiscriminators: [],
       }),
     });
@@ -121,7 +122,12 @@ describe('Migrate service unit tests', () => {
     it('yield NOT_ALLOWED if migration in progress', async () => {
       migrationCacheService.isMigrationLocked.mockResolvedValueOnce(true);
 
-      const migrator = migrateService.migrateSchema({ creatorID, clientNodeID, targetSchemaVersion: schemaVersion, version });
+      const migrator = migrateService.migrateSchema({
+        creatorID,
+        clientNodeID,
+        targetSchemaVersion: schemaVersion,
+        version,
+      });
 
       await expectMigrationStates(migrator, [MigrationState.NOT_ALLOWED]);
 
@@ -129,7 +135,12 @@ describe('Migrate service unit tests', () => {
     });
 
     it('yield NOT_REQUIRED if active schema version already meets target version', async () => {
-      const migrator = migrateService.migrateSchema({ creatorID, version, clientNodeID, targetSchemaVersion: Realtime.SchemaVersion.V2 });
+      const migrator = migrateService.migrateSchema({
+        creatorID,
+        version,
+        clientNodeID,
+        targetSchemaVersion: Realtime.SchemaVersion.V2,
+      });
 
       await expectMigrationStates(migrator, [MigrationState.NOT_REQUIRED]);
       expect(migrationCacheService.getActiveSchemaVersion).toBeCalledWith(versionID);
@@ -138,7 +149,12 @@ describe('Migrate service unit tests', () => {
     it('yield NOT_SUPPORTED if active schema version is incompatible with target version', async () => {
       migrationCacheService.getActiveSchemaVersion.mockResolvedValueOnce(Realtime.SchemaVersion.V2);
 
-      const migrator = migrateService.migrateSchema({ creatorID, version, clientNodeID, targetSchemaVersion: Realtime.SchemaVersion.V1 });
+      const migrator = migrateService.migrateSchema({
+        creatorID,
+        version,
+        clientNodeID,
+        targetSchemaVersion: Realtime.SchemaVersion.V1,
+      });
 
       await expectMigrationStates(migrator, [MigrationState.NOT_SUPPORTED]);
     });
@@ -176,7 +192,12 @@ describe('Migrate service unit tests', () => {
 
       entityManager.transactional.mockImplementationOnce(async (cb) => cb());
 
-      const migrator = migrateService.migrateSchema({ creatorID, version, clientNodeID, targetSchemaVersion: Realtime.SchemaVersion.V2 });
+      const migrator = migrateService.migrateSchema({
+        creatorID,
+        version,
+        clientNodeID,
+        targetSchemaVersion: Realtime.SchemaVersion.V2,
+      });
       const generator = migrator[Symbol.asyncIterator]();
 
       await expect(generator.next()).resolves.toEqual({ done: false, value: MigrationState.STARTED });
@@ -200,7 +221,9 @@ describe('Migrate service unit tests', () => {
 
       migrationCacheService.getActiveSchemaVersion.mockResolvedValueOnce(null);
 
-      legacyService.models.diagram.findManyByVersionID.mockResolvedValueOnce([{ creatorID, versionID, _id: diagramID } as any]);
+      legacyService.models.diagram.findManyByVersionID.mockResolvedValueOnce([
+        { creatorID, versionID, _id: diagramID } as any,
+      ]);
       projectLegacyService.get.mockResolvedValueOnce({
         _id: '',
         creatorID: 1,
@@ -215,7 +238,12 @@ describe('Migrate service unit tests', () => {
 
       entityManager.transactional.mockImplementationOnce(async (cb) => cb());
 
-      const migrator = migrateService.migrateSchema({ creatorID, version: { ...version, ...versionData }, clientNodeID, targetSchemaVersion });
+      const migrator = migrateService.migrateSchema({
+        creatorID,
+        version: { ...version, ...versionData },
+        clientNodeID,
+        targetSchemaVersion,
+      });
 
       await expectMigrationStates(migrator, [MigrationState.STARTED, MigrationState.DONE]);
 

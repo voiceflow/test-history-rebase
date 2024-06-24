@@ -6,10 +6,11 @@ import { EntityService } from '@/entity/entity.service';
 import { FlowService } from '@/flow/flow.service';
 import { FolderService } from '@/folder/folder.service';
 import { IntentService } from '@/intent/intent.service';
-import { ResponseService } from '@/response/response.service';
+import { ResponseMigrationService } from '@/response/response-migration.service';
 import { VariableService } from '@/variable/variable.service';
 import { WorkflowService } from '@/workflow/workflow.service';
 
+import { IntentsAndEntitiesData } from './environment.interface';
 import { CMSOnlyMigrationData, InternalMigrationData } from './environment-migration.interface';
 
 @Injectable()
@@ -24,8 +25,8 @@ export class EnvironmentMigrationService {
     private readonly entity: EntityService,
     @Inject(FolderService)
     private readonly folder: FolderService,
-    @Inject(ResponseService)
-    private readonly response: ResponseService,
+    @Inject(ResponseMigrationService)
+    private readonly responseMigrationService: ResponseMigrationService,
     @Inject(VariableService)
     private readonly variable: VariableService,
     @Inject(WorkflowService)
@@ -77,6 +78,7 @@ export class EnvironmentMigrationService {
       entityVariants = [],
       requiredEntities = [],
       responseVariants = [],
+      responseMessages = [],
       responseDiscriminators = [],
     } = this.getUpdatedCMSData(data, patches);
 
@@ -86,8 +88,31 @@ export class EnvironmentMigrationService {
     await this.workflow.upsertManyWithSubResources({ workflows }, meta);
     await this.variable.upsertManyWithSubResources({ variables }, meta);
     await this.entity.upsertManyWithSubResources({ entities, entityVariants }, meta);
-    await this.response.upsertManyWithSubResources(
-      { responses, responseVariants, responseAttachments: [], responseDiscriminators },
+    await this.responseMigrationService.upsertManyWithSubResources(
+      { responses, responseVariants, responseAttachments: [], responseDiscriminators, responseMessages },
+      meta
+    );
+    await this.intent.upsertManyWithSubResources({ intents, utterances, requiredEntities }, meta);
+  }
+
+  async upsertIntentsAndEntities(
+    {
+      intents,
+      entities,
+      responses,
+      utterances,
+      entityVariants,
+      requiredEntities,
+      responseVariants,
+      responseDiscriminators,
+      responseMessages,
+    }: IntentsAndEntitiesData,
+    meta: { userID: number; assistantID: string; environmentID: string }
+  ) {
+    // ORDER MATTERS
+    await this.entity.upsertManyWithSubResources({ entities, entityVariants }, meta);
+    await this.responseMigrationService.upsertManyWithSubResources(
+      { responses, responseVariants, responseAttachments: [], responseMessages, responseDiscriminators },
       meta
     );
     await this.intent.upsertManyWithSubResources({ intents, utterances, requiredEntities }, meta);

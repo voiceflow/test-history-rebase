@@ -5,6 +5,8 @@ import { useSetAtom } from 'jotai';
 import React from 'react';
 
 import { DEFAULT_PERIOD } from '@/constants';
+import * as atoms from '@/contexts/PaymentContext/Plans/Plans.atoms';
+import { usePlans } from '@/contexts/PaymentContext/Plans/Plans.context';
 import * as Organization from '@/ducks/organization';
 import type { UpgradePrompt } from '@/ducks/tracking';
 import { useSelector } from '@/hooks';
@@ -12,8 +14,7 @@ import { useFeature } from '@/hooks/feature.hook';
 
 import manager from '../../../manager';
 import { BillingStep } from './BillingStep/BillingStep.component';
-import { usePaymentSteps, usePlans } from './hooks';
-import * as atoms from './Payment.atoms';
+import { usePaymentSteps } from './hooks';
 import { Step } from './Payment.constants';
 import { PaymentStep } from './PaymentStep/PaymentStep.component';
 import { PlanStep } from './PlanStep/PlanStep.component';
@@ -21,17 +22,16 @@ import { PlanStep } from './PlanStep/PlanStep.component';
 export interface PaymentModalProps {
   promptType?: UpgradePrompt;
   isTrialExpired?: boolean;
-  coupon?: string;
   nextPlan?: PlanName;
 }
 
 export const Payment = manager.create<PaymentModalProps>('Payment', () => (modalProps) => {
   const { type, opened, hidden, animated, api, closePrevented, promptType, nextPlan } = modalProps;
   const { activeStep, onBack, onReset } = usePaymentSteps();
-  const { plans, fetchPlans } = usePlans(modalProps.coupon);
+  const { plans } = usePlans();
   const setPeriod = useSetAtom(atoms.selectedPeriodAtom);
   const setPlan = useSetAtom(atoms.selectedPlanIDAtom);
-  const updateCoupons = useSetAtom(atoms.couponIDsAtom);
+
   const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
   const teamsPlanSelfServeIsEnabled = useFeature(FeatureFlag.TEAMS_PLAN_SELF_SERVE);
 
@@ -49,17 +49,9 @@ export const Payment = manager.create<PaymentModalProps>('Payment', () => (modal
 
       setPlan(nextPlan ?? defaultNextPlan);
     }
-
-    await fetchPlans();
-
-    updateCoupons(modalProps.coupon ? [modalProps.coupon] : []);
-
-    return () => {
-      updateCoupons([]);
-    };
   });
 
-  if (!plans.length) return null;
+  if (!plans?.length) return null;
 
   return (
     <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={handleExited} maxWidth={500}>

@@ -1,13 +1,14 @@
-import { Button, Modal, SectionV2, useAsyncMountUnmount } from '@voiceflow/ui';
+import { Button, Modal, SectionV2 } from '@voiceflow/ui';
 import { useFormik } from 'formik';
 import React from 'react';
 
+import { usePlans } from '@/contexts/PaymentContext/Plans/Plans.context';
 import * as Organization from '@/ducks/organization';
 import { useSelector } from '@/hooks/redux';
 import manager from '@/ModalsV2/manager';
 
 import * as CardForm from './Payment/CardForm';
-import { useCardPaymentMethod, usePlans } from './Payment/hooks';
+import { useCardPaymentMethod } from './Payment/hooks';
 
 interface AddCardProps {
   isUpdate?: boolean;
@@ -22,7 +23,7 @@ export const AddCard = manager.create<AddCardProps>(
       const [cardError, setCardError] = React.useState('');
 
       const { cardRef, updatePaymentMethod } = useCardPaymentMethod();
-      const { fetchPlans, getPlanPrice } = usePlans();
+      const { getPlanPrice } = usePlans();
 
       const form = useFormik({
         onSubmit: async (values) => {
@@ -48,10 +49,6 @@ export const AddCard = manager.create<AddCardProps>(
         initialValues: CardForm.INITIAL_VALUES,
         validationSchema: CardForm.SCHEME,
         enableReinitialize: true,
-      });
-
-      useAsyncMountUnmount(async () => {
-        await fetchPlans();
       });
 
       return (

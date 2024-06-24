@@ -1,14 +1,13 @@
 import { Box } from '@voiceflow/ui';
 import * as Normal from 'normal-store';
 import React, { useEffect } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
 
 import { AssistantCard } from '@/components/AssistantCard';
 import Page from '@/components/Page';
 import SearchBar from '@/components/SearchBar';
 import TrialExpiredPage from '@/components/TrialExpiredPage';
-import { COUPON_QUERY_PARAM } from '@/constants/payment';
 import { Permission } from '@/constants/permissions';
+import { useQueryCoupon } from '@/contexts/PaymentContext/Plans/Plans.hooks';
 import * as Account from '@/ducks/account';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
@@ -33,11 +32,9 @@ const ProjectList: React.FC<ProjectListProps> = ({ showLockScreen }) => {
   const [search, setSearch] = React.useState('');
   const [sortBy, setSortBy] = React.useState<SortOptionType>(SortByOptions[0]);
   const [canCreateAssistant] = usePermission(Permission.PROJECT_UPDATE);
-  const location = useLocation();
-  const history = useHistory();
+  const [coupon, clearQueryCoupons] = useQueryCoupon();
+
   const { open: openPaymentModal } = ModalsV2.useModal(ModalsV2.Billing.Payment);
-  const queryParams = new URLSearchParams(location.search);
-  const coupon = queryParams.get(COUPON_QUERY_PARAM);
 
   const userID = useSelector(Account.userIDSelector)!;
   const projects = useSelector(ProjectV2.allProjectsSelector);
@@ -71,14 +68,9 @@ const ProjectList: React.FC<ProjectListProps> = ({ showLockScreen }) => {
   }, [orderedProjects, search]);
 
   useEffect(() => {
-    if (queryParams.has(COUPON_QUERY_PARAM)) {
-      queryParams.delete(COUPON_QUERY_PARAM);
-
-      openPaymentModal({ isTrialExpired: false, coupon: coupon as string });
-
-      history.replace({
-        search: queryParams.toString(),
-      });
+    if (coupon) {
+      clearQueryCoupons();
+      openPaymentModal({ isTrialExpired: false });
     }
   }, [coupon]);
 

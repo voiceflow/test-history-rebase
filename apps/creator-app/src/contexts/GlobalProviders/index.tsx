@@ -34,6 +34,7 @@ import { HotkeysContextProvider } from '../HotkeysContext';
 import { IdentityProvider } from '../IdentityContext';
 import LifecycleProvider from '../LifecycleProvider';
 import { MousePositionProvider } from '../MousePositionContext';
+import { PlansProvider } from '../PaymentContext/Plans/Plans.context';
 import { PlanPricesProvider } from '../PlanPricesContext';
 import { ProjectConfigProvider } from '../ProjectConfigProvider';
 import type { StoreProviderProps } from '../StoreProvider';
@@ -60,6 +61,7 @@ const GlobalProviders: React.FC<GlobalProvidersProps> = ({ history, store, persi
       FeatureLoadingGate,
       IdentityProvider,
       PlanPricesProvider,
+      PlansProvider,
       EventualEngineProvider,
       MousePositionProvider,
       DismissableLayersGlobalProvider,

@@ -1,15 +1,15 @@
 import { toast } from '@voiceflow/ui';
 import { useAtomValue } from 'jotai';
 
+import * as atoms from '@/contexts/PaymentContext/Plans/Plans.atoms';
 import * as Organization from '@/ducks/organization';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector } from '@/hooks/redux';
 import { useDispatch } from '@/hooks/store.hook';
 import { useTrackingEvents } from '@/hooks/tracking';
 
-import type * as CardForm from '../CardForm';
-import * as atoms from '../Payment.atoms';
-import type { PaymentModalPropsAPI } from '../Payment.types';
+import * as CardForm from '../CardForm';
+import { PaymentModalPropsAPI } from '../Payment.types';
 import { useCardPaymentMethod } from './payment-method';
 import { usePricing } from './pricing';
 
@@ -19,7 +19,8 @@ export const useCheckoutPayment = ({ modalProps }: { modalProps: PaymentModalPro
   const workspace = useSelector(WorkspaceV2.active.workspaceSelector)!;
   const checkout = useDispatch(Organization.subscription.checkout);
   const { selectedPlanPrice } = usePricing();
-  const couponIDs = useAtomValue(atoms.couponIDsAtom);
+
+  const couponID = useAtomValue(atoms.couponIDAtom);
 
   const isTrialExpired = useSelector(WorkspaceV2.active.organizationTrialExpiredSelector);
   const [trackingEvents] = useTrackingEvents();
@@ -49,7 +50,7 @@ export const useCheckoutPayment = ({ modalProps }: { modalProps: PaymentModalPro
       await checkout(organization.id, workspace.id, {
         planItemPriceID: selectedPlanPrice.id,
         paymentIntent,
-        couponIDs,
+        couponIDs: couponID ? [couponID] : undefined,
       });
 
       if (isTrialExpired) {

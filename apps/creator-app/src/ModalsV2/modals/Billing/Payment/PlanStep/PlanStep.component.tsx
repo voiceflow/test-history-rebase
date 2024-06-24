@@ -4,14 +4,15 @@ import { Badge, BlockText, Box, Button, Link, Modal } from '@voiceflow/ui';
 import { useAtom, useAtomValue } from 'jotai';
 import React from 'react';
 
-import type { UpgradePrompt } from '@/ducks/tracking';
+import * as atoms from '@/contexts/PaymentContext/Plans/Plans.atoms';
+import { usePlans } from '@/contexts/PaymentContext/Plans/Plans.context';
+import { UpgradePrompt } from '@/ducks/tracking';
 import * as Workspace from '@/ducks/workspaceV2';
 import { useSelector, useTrackingEvents } from '@/hooks';
 import { useFeature } from '@/hooks/feature.hook';
 import { onOpenBookDemoPage } from '@/utils/upgrade';
 
-import { usePaymentSteps, usePlans } from '../hooks';
-import { selectedPeriodAtom, selectedPlanIDAtom } from '../Payment.atoms';
+import { usePaymentSteps } from '../hooks';
 import { PlanCard } from '../PlanCard/PlanCard.component';
 
 interface PlanStepProps {
@@ -21,9 +22,8 @@ interface PlanStepProps {
 
 export const PlanStep: React.FC<PlanStepProps> = ({ onClose, promptType }) => {
   const [trackingEvents] = useTrackingEvents();
-  const [selectedPlanID, setSelectedPlanID] = useAtom(selectedPlanIDAtom);
-  const period = useAtomValue(selectedPeriodAtom);
-
+  const [selectedPlanID, setSelectedPlanID] = useAtom(atoms.selectedPlanIDAtom);
+  const period = useAtomValue(atoms.selectedPeriodAtom);
   const { plans } = usePlans();
 
   const { onNext } = usePaymentSteps();
@@ -55,7 +55,7 @@ export const PlanStep: React.FC<PlanStepProps> = ({ onClose, promptType }) => {
             </PlanCard>
           )}
 
-          {plans.map(({ id, name, pricesByPeriodUnit, description }) => (
+          {plans?.map(({ id, name, pricesByPeriodUnit, description }) => (
             <PlanCard
               key={id}
               title={name}

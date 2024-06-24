@@ -6,5 +6,6 @@ import { BillingPlanService } from './plan.service';
 @Module({
   controllers: [BillingPlanHTTPController],
   providers: [BillingPlanService],
+  exports: [BillingPlanService],
 })
 export class BillingPlanModule {}

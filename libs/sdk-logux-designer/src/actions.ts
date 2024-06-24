@@ -2,6 +2,7 @@ export * as Assistant from './assistant/assistant.action';
 export * as AssistantAwareness from './assistant/assistant-awareness.action';
 export * as Attachment from './attachment/attachment.action';
 export * as CardButton from './attachment/card-button/card-button.action';
+export * as BillingPlan from './billing/plan/plan.action';
 export * as Condition from './condition/condition.action';
 export * as ConditionAssertion from './condition/condition-assertion/condition-assertion.action';
 export * as ConditionPredicate from './condition/condition-predicate/condition-predicate.action';

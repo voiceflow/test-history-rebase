@@ -1,4 +1,5 @@
 import type { SendBackActions } from '@logux/server';
+import { PlanName } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 import type { ChannelContext } from '@voiceflow/socket-utils';
@@ -14,19 +15,22 @@ class CreatorChannel extends AbstractChannelControl<Realtime.Channels.CreatorCha
 
   protected load = async (ctx: ChannelContext<Realtime.Channels.CreatorChannelParams>): Promise<SendBackActions> => {
     // the timestamp of Realtime.Channels.creator it is called, not when it is resolved
-    const [workspacesMeta, organizationsMeta] = [
+    const [workspacesMeta, organizationsMeta, plansMeta] = [
+      { id: this.server.log.generateId() },
       { id: this.server.log.generateId() },
       { id: this.server.log.generateId() },
     ];
 
-    const [workspaces, organizations] = await Promise.all([
+    const [workspaces, organizations, plans] = await Promise.all([
       this.services.workspace.getAll(Number(ctx.userId)).then(Realtime.Adapters.workspaceAdapter.mapFromDB),
       this.services.organization.getAll(Number(ctx.userId)),
+      this.services.plan.getPlans([PlanName.PRO, PlanName.TEAM]),
     ]);
 
     return [
       [Realtime.workspace.crud.replace({ values: workspaces }), workspacesMeta],
       [Actions.Organization.Replace({ data: organizations }), organizationsMeta],
+      [Actions.BillingPlan.Replace({ data: plans }), plansMeta],
     ];
   };
 }

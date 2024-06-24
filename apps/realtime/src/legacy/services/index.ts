@@ -6,6 +6,7 @@ import type { BaseServiceMap } from '@voiceflow/socket-utils';
 import type { AssistantService } from '@/assistant/assistant.service';
 import type { CreatorService } from '@/creator/creator.service';
 import type { FlowService } from '@/flow/flow.service';
+import type { BillingPlanService } from '@/organization/billing/plan/plan.service';
 import type { OrganizationIdentityService } from '@/organization/identity/identity.service';
 import type { ProjectService as ProjectServiceV2 } from '@/project/project.service';
 import type { ProjectListService } from '@/project-list/project-list.service';
@@ -59,6 +60,7 @@ export interface ServiceMap extends BaseServiceMap {
   variableState: VariableStateService;
   canvasTemplate: CanvasTemplateService;
   workspaceSettings: WorkspaceSettingsService;
+  plan: BillingPlanService;
   creator: CreatorService;
   requestContext: {
     createAsync: <T>(callback: () => Promise<T>) => Promise<T>;
@@ -77,6 +79,7 @@ interface Options {
     creator: CreatorService;
     project: ProjectServiceV2;
     identity: IdentityClient;
+    plan: BillingPlanService;
     workflow: WorkflowService;
     hashedID: HashedIDService;
     assistant: AssistantService;
@@ -107,6 +110,7 @@ const buildServices = ({ config, clients, models, log, injectedServices }: Optio
     migrate: new MigrateService(serviceOptions),
     feature: new FeatureService(serviceOptions),
     identity: injectedServices.identity,
+    plan: injectedServices.plan,
     variable: new VariableService(serviceOptions),
     hashedID: injectedServices.hashedID,
     workflow: injectedServices.workflow,

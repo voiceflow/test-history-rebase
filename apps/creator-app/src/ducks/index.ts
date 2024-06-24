@@ -4,6 +4,8 @@ import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
 
 import account, * as Account from '@/ducks/account';
+import { billingPlanReducer } from '@/ducks/billing-plan/billing-plan.reducer';
+import { STATE_KEY as BillingPlanKey } from '@/ducks/billing-plan/billing-plan.state';
 import canvasTemplate, * as CanvasTemplate from '@/ducks/canvasTemplate';
 import creatorV2, * as CreatorV2 from '@/ducks/creatorV2';
 import customBlock, * as CustomBlock from '@/ducks/customBlock';
@@ -61,32 +63,33 @@ export interface ReducerOptions {
 
 const getCombinedReducer = (browserHistory: BrowserHistory) =>
   combineReducers({
-    [Router.STATE_KEY]: connectRouter(browserHistory),
     form: formReducer,
-    [ProjectListV2.STATE_KEY]: projectListV2,
-    [WorkspaceV2.STATE_KEY]: workspaceV2,
     [Account.STATE_KEY]: account,
-    [Prototype.STATE_KEY]: prototype,
-    [Session.STATE_KEY]: session,
-    [CreatorV2.STATE_KEY]: creatorV2,
-    [DiagramV2.STATE_KEY]: diagramV2,
-    [ProjectV2.STATE_KEY]: projectV2,
-    [Recent.STATE_KEY]: recent,
-    [UI.STATE_KEY]: UI.reducer,
-    [Viewport.STATE_KEY]: viewport,
-    [Notifications.STATE_KEY]: notifications,
-    [Tracking.STATE_KEY]: tracking,
-    [VariableState.STATE_KEY]: variableState,
-    [Feature.STATE_KEY]: feature,
-    [VersionV2.STATE_KEY]: versionV2,
-    [ReportTag.STATE_KEY]: reportTag,
-    [Transcript.STATE_KEY]: transcript,
-    [History.STATE_KEY]: history,
-    [CanvasTemplate.STATE_KEY]: canvasTemplate,
-    [CustomBlock.STATE_KEY]: customBlock,
-    [Organization.STATE_KEY]: Organization.reducer,
-    [Designer.STATE_KEY]: Designer.reducer,
     [Assistant.STATE_KEY]: Assistant.reducer,
+    [BillingPlanKey]: billingPlanReducer,
+    [CanvasTemplate.STATE_KEY]: canvasTemplate,
+    [CreatorV2.STATE_KEY]: creatorV2,
+    [CustomBlock.STATE_KEY]: customBlock,
+    [Designer.STATE_KEY]: Designer.reducer,
+    [DiagramV2.STATE_KEY]: diagramV2,
+    [Feature.STATE_KEY]: feature,
+    [History.STATE_KEY]: history,
+    [Notifications.STATE_KEY]: notifications,
+    [Organization.STATE_KEY]: Organization.reducer,
+    [ProjectListV2.STATE_KEY]: projectListV2,
+    [ProjectV2.STATE_KEY]: projectV2,
+    [Prototype.STATE_KEY]: prototype,
+    [Recent.STATE_KEY]: recent,
+    [ReportTag.STATE_KEY]: reportTag,
+    [Router.STATE_KEY]: connectRouter(browserHistory),
+    [Session.STATE_KEY]: session,
+    [Tracking.STATE_KEY]: tracking,
+    [Transcript.STATE_KEY]: transcript,
+    [UI.STATE_KEY]: UI.reducer,
+    [VariableState.STATE_KEY]: variableState,
+    [VersionV2.STATE_KEY]: versionV2,
+    [Viewport.STATE_KEY]: viewport,
+    [WorkspaceV2.STATE_KEY]: workspaceV2,
   });
 
 const createReducer = ({ browserHistory, reverters, invalidators, getClientNodeID }: ReducerOptions) =>

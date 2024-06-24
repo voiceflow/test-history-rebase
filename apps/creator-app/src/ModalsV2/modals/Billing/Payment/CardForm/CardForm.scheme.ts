@@ -9,9 +9,9 @@ export const SCHEME = Yup.object({
   cardCompleted: Yup.boolean().required(),
 });
 
-export interface Values extends Yup.InferType<typeof SCHEME> {}
+export interface CardFormValues extends Yup.InferType<typeof SCHEME> {}
 
-export const INITIAL_VALUES: Values = {
+export const INITIAL_VALUES: CardFormValues = {
   name: '',
   city: '',
   state: '',

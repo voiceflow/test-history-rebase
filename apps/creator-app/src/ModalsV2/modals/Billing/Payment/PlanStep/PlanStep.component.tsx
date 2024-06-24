@@ -1,7 +1,7 @@
+import type { BillingPeriodUnit, BillingPlan, PlanName } from '@voiceflow/dtos';
 import { PlanType } from '@voiceflow/internal';
 import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { Badge, BlockText, Box, Button, Link, Modal } from '@voiceflow/ui';
-import { useAtom, useAtomValue } from 'jotai';
 import React from 'react';
 
 import type { UpgradePrompt } from '@/ducks/tracking';
@@ -10,23 +10,28 @@ import { useSelector, useTrackingEvents } from '@/hooks';
 import { useFeature } from '@/hooks/feature.hook';
 import { onOpenBookDemoPage } from '@/utils/upgrade';
 
-import { usePaymentSteps, usePlans } from '../hooks';
-import { selectedPeriodAtom, selectedPlanIDAtom } from '../Payment.atoms';
 import { PlanCard } from '../PlanCard/PlanCard.component';
 
 interface PlanStepProps {
   promptType?: UpgradePrompt;
   onClose: VoidFunction;
+  plans: BillingPlan[];
+  period: BillingPeriodUnit;
+  planID: PlanName;
+  onChangePlanID: (id: PlanName) => void;
+  onNext: VoidFunction;
 }
 
-export const PlanStep: React.FC<PlanStepProps> = ({ onClose, promptType }) => {
+export const PlanStep: React.FC<PlanStepProps> = ({
+  onClose,
+  promptType,
+  plans,
+  period,
+  planID,
+  onChangePlanID,
+  onNext,
+}) => {
   const [trackingEvents] = useTrackingEvents();
-  const [selectedPlanID, setSelectedPlanID] = useAtom(selectedPlanIDAtom);
-  const period = useAtomValue(selectedPeriodAtom);
-
-  const { plans } = usePlans();
-
-  const { onNext } = usePaymentSteps();
   const plan = useSelector(Workspace.active.planSelector);
   const isOnPaidPlan = useSelector(Workspace.active.isOnPaidPlanSelector);
   const isOnTrial = useSelector(Workspace.active.isOnTrialSelector);
@@ -68,8 +73,8 @@ export const PlanStep: React.FC<PlanStepProps> = ({ onClose, promptType }) => {
                 ) : null
               }
               amount={pricesByPeriodUnit?.[period]?.monthlyAmount ?? 0}
-              active={selectedPlanID === id}
-              onClick={id === plan && !isOnTrial ? undefined : () => setSelectedPlanID(id)}
+              active={planID === id}
+              onClick={id === plan && !isOnTrial ? undefined : () => onChangePlanID(id)}
             >
               {teamsPlanSelfServeIsEnabled ? description : 'For individuals and small teams creating agents'}{' '}
               <Link href="https://www.voiceflow.com/pricing" $hidden>

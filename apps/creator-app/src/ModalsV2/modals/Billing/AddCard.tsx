@@ -1,13 +1,15 @@
-import { Button, Modal, SectionV2, useAsyncMountUnmount } from '@voiceflow/ui';
+import { Button, Modal, SectionV2 } from '@voiceflow/ui';
 import { useFormik } from 'formik';
 import React from 'react';
 
+import { allPlansSelector } from '@/ducks/billing-plan/billing-plan.select';
 import * as Organization from '@/ducks/organization';
 import { useSelector } from '@/hooks/redux';
 import manager from '@/ModalsV2/manager';
 
-import * as CardForm from './Payment/CardForm';
-import { useCardPaymentMethod, usePlans } from './Payment/hooks';
+import { CardForm } from './Payment/CardForm/CardForm.component';
+import { INITIAL_VALUES, SCHEME } from './Payment/CardForm/CardForm.scheme';
+import { useCardPaymentMethod } from './Payment/hooks/payment-method.hook';
 
 interface AddCardProps {
   isUpdate?: boolean;
@@ -17,18 +19,18 @@ export const AddCard = manager.create<AddCardProps>(
   'BillingAddCard',
   () =>
     ({ isUpdate, api, type, opened, hidden, animated }) => {
-      const activePlan = useSelector(Organization.subscriptionPlanSelector);
-      const billingPeriodUnit = useSelector(Organization.subscriptionBillingPeriodUnitSelector);
+      const activePlan = useSelector(Organization.subscriptionPlanSelector)!;
+      const billingPeriodUnit = useSelector(Organization.subscriptionBillingPeriodUnitSelector)!;
+      const plans = useSelector(allPlansSelector);
       const [cardError, setCardError] = React.useState('');
 
       const { cardRef, updatePaymentMethod } = useCardPaymentMethod();
-      const { fetchPlans, getPlanPrice } = usePlans();
 
       const form = useFormik({
         onSubmit: async (values) => {
           try {
             await cardRef.current?.tokenize();
-            const planPrice = getPlanPrice(activePlan, billingPeriodUnit);
+            const planPrice = plans.find((plan) => plan.id === activePlan)?.pricesByPeriodUnit?.[billingPeriodUnit];
 
             if (!planPrice) return;
 
@@ -45,13 +47,9 @@ export const AddCard = manager.create<AddCardProps>(
             }
           }
         },
-        initialValues: CardForm.INITIAL_VALUES,
-        validationSchema: CardForm.SCHEME,
+        initialValues: INITIAL_VALUES,
+        validationSchema: SCHEME,
         enableReinitialize: true,
-      });
-
-      useAsyncMountUnmount(async () => {
-        await fetchPlans();
       });
 
       return (
@@ -61,7 +59,7 @@ export const AddCard = manager.create<AddCardProps>(
           </Modal.Header>
 
           <SectionV2.SimpleSection headerProps={{ topUnit: 3 }}>
-            <CardForm.Base ref={cardRef} form={form} disabled={form.isSubmitting} cardError={cardError} />
+            <CardForm ref={cardRef} form={form} disabled={form.isSubmitting} cardError={cardError} />
           </SectionV2.SimpleSection>
 
           <Modal.Footer gap={8}>

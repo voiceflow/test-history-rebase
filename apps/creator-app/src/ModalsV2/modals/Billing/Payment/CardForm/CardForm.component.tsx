@@ -6,12 +6,12 @@ import React from 'react';
 
 import { useFormikTouchedErrors } from '@/hooks/formik';
 
-import type { Values } from './CardForm.scheme';
+import type { CardFormValues } from './CardForm.scheme';
 import * as S from './CardForm.style';
 
 export interface CardFormProps {
   cardError: string;
-  form: ReturnType<typeof useFormik<Values>>;
+  form: ReturnType<typeof useFormik<CardFormValues>>;
   disabled?: boolean;
 }
 

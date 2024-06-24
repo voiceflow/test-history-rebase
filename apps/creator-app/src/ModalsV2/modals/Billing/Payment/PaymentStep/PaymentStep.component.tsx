@@ -1,5 +1,5 @@
+import type { BillingPlan } from '@voiceflow/dtos';
 import { BillingPeriodUnit } from '@voiceflow/dtos';
-import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { Box, Button, Modal } from '@voiceflow/ui';
 import dayjs from 'dayjs';
 import { useFormik } from 'formik';
@@ -8,37 +8,48 @@ import React from 'react';
 
 import * as Organization from '@/ducks/organization';
 import { useSelector } from '@/hooks';
-import { useFeature } from '@/hooks/feature.hook';
 
-import * as CardForm from '../CardForm';
-import { useCheckoutPayment, usePricing } from '../hooks';
+import { CardForm } from '../CardForm/CardForm.component';
+import type { CardFormValues } from '../CardForm/CardForm.scheme';
+import { INITIAL_VALUES, SCHEME } from '../CardForm/CardForm.scheme';
+import { ExistingCard, ExistingCardValue } from '../CardForm/ExistingCard';
+import { useCheckoutPayment } from '../hooks/checkout.hook';
 import type { PaymentModalPropsAPI } from '../Payment.types';
 import { PlanCard } from '../PlanCard/PlanCard.component';
 
 interface PaymentStepProps {
   modalProps: PaymentModalPropsAPI;
   onClose: VoidFunction;
+  couponID?: string;
+  amount: number;
+  period: BillingPeriodUnit;
+  plan: BillingPlan;
+  planPriceID: string;
 }
 
-export const PaymentStep: React.FC<PaymentStepProps> = ({ onClose, modalProps }) => {
-  const { onSubmit: onSubmitForm, cardRef } = useCheckoutPayment({ modalProps });
+export const PaymentStep: React.FC<PaymentStepProps> = ({
+  modalProps,
+  onClose,
+  couponID,
+  amount,
+  plan,
+  period,
+  planPriceID,
+}) => {
+  const { checkout, cardRef } = useCheckoutPayment({ modalProps });
   const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
-  const { selectedPlanPrice, selectedPeriod, selectedPlan } = usePricing();
-  const teamsPlanSelfServeIsEnabled = useFeature(FeatureFlag.TEAMS_PLAN_SELF_SERVE);
-  const [existingCardValue, setExistingCardValue] = React.useState<CardForm.ExistingCardValue>(
-    teamsPlanSelfServeIsEnabled && subscription?.paymentMethod
-      ? CardForm.ExistingCardValue.EXISTING
-      : CardForm.ExistingCardValue.NEW
+  const [existingCardValue, setExistingCardValue] = React.useState<ExistingCardValue>(
+    subscription?.paymentMethod ? ExistingCardValue.EXISTING : ExistingCardValue.NEW
   );
   const [cardError, setCardError] = React.useState('');
 
-  const onSubmit = async (values: CardForm.Values) => {
+  const submit = (options?: { cardValues?: CardFormValues }) =>
+    checkout({ ...options, amount, planPriceID, couponID, seats: 1 });
+
+  const onSubmit = async (cardValues: CardFormValues) => {
     try {
       await cardRef.current?.tokenize();
-
-      return onSubmitForm(values, {
-        shouldUseExistingCard: existingCardValue === CardForm.ExistingCardValue.EXISTING,
-      });
+      return submit({ cardValues });
     } catch (e: any) {
       setCardError(e.message);
       return null;
@@ -47,47 +58,44 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onClose, modalProps })
 
   const form = useFormik({
     onSubmit,
-    initialValues: CardForm.INITIAL_VALUES,
-    validationSchema: CardForm.SCHEME,
+    initialValues: INITIAL_VALUES,
+    validationSchema: SCHEME,
     enableReinitialize: true,
   });
 
   const handleSubmitReusingCard = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     form.setSubmitting(true);
-    await onSubmitForm(null, { shouldUseExistingCard: true });
+    await submit();
+
     if (modalProps.opened) {
       form.setSubmitting(false);
     }
   };
 
   return (
-    <form
-      onSubmit={existingCardValue === CardForm.ExistingCardValue.EXISTING ? handleSubmitReusingCard : form.handleSubmit}
-    >
+    <form onSubmit={existingCardValue === ExistingCardValue.EXISTING ? handleSubmitReusingCard : form.handleSubmit}>
       <Modal.Body>
         <Box marginBottom={24}>
           <PlanCard
-            title={`${selectedPlan?.name} (${selectedPlan?.seats} Editor ${pluralize('Seat', selectedPlan?.seats)})`}
-            amount={selectedPlanPrice?.amount ?? 0}
-            period={selectedPeriod === BillingPeriodUnit.MONTH ? 'm' : 'y'}
+            title={`${plan.name} (${plan.seats} Editor ${pluralize('Seat', plan.seats)})`}
+            amount={amount}
+            period={period === BillingPeriodUnit.MONTH ? 'm' : 'y'}
           >
             Your subscription will automatically renew every month. Next billing date:{' '}
             {dayjs(subscription?.nextBillingAt).format('MMM DD, YYYY')}.
           </PlanCard>
         </Box>
-        {teamsPlanSelfServeIsEnabled && subscription?.paymentMethod && (
+        {subscription?.paymentMethod && (
           <Box marginBottom={16}>
-            <CardForm.ExistingCard
+            <ExistingCard
               last4={subscription?.paymentMethod?.card?.last4}
               onChange={setExistingCardValue}
               value={existingCardValue}
             />
           </Box>
         )}
-        {existingCardValue === CardForm.ExistingCardValue.NEW && (
-          <CardForm.Base cardError={cardError} form={form} ref={cardRef} />
-        )}
+        {existingCardValue === ExistingCardValue.NEW && <CardForm cardError={cardError} form={form} ref={cardRef} />}
       </Modal.Body>
 
       <Modal.Footer gap={12}>

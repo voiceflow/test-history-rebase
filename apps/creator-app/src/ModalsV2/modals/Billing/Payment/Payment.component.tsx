@@ -1,19 +1,19 @@
+import type { BillingPeriodUnit } from '@voiceflow/dtos';
 import { PlanName } from '@voiceflow/dtos';
-import { FeatureFlag } from '@voiceflow/realtime-sdk';
-import { Modal, Switch, System, useAsyncMountUnmount } from '@voiceflow/ui';
-import { useSetAtom } from 'jotai';
-import React from 'react';
+import { Modal, Switch, System } from '@voiceflow/ui';
+import React, { useEffect, useMemo, useState } from 'react';
 
+import { designerClient } from '@/client/designer';
 import { DEFAULT_PERIOD } from '@/constants';
+import { allPlansSelector } from '@/ducks/billing-plan/billing-plan.select';
 import * as Organization from '@/ducks/organization';
 import type { UpgradePrompt } from '@/ducks/tracking';
 import { useSelector } from '@/hooks';
-import { useFeature } from '@/hooks/feature.hook';
+import { useFetch } from '@/hooks/fetch.hook';
 
 import manager from '../../../manager';
 import { BillingStep } from './BillingStep/BillingStep.component';
-import { usePaymentSteps, usePlans } from './hooks';
-import * as atoms from './Payment.atoms';
+import { usePaymentSteps } from './hooks/steps.hook';
 import { Step } from './Payment.constants';
 import { PaymentStep } from './PaymentStep/PaymentStep.component';
 import { PlanStep } from './PlanStep/PlanStep.component';
@@ -21,45 +21,54 @@ import { PlanStep } from './PlanStep/PlanStep.component';
 export interface PaymentModalProps {
   promptType?: UpgradePrompt;
   isTrialExpired?: boolean;
-  coupon?: string;
   nextPlan?: PlanName;
+  couponID?: string;
 }
 
 export const Payment = manager.create<PaymentModalProps>('Payment', () => (modalProps) => {
-  const { type, opened, hidden, animated, api, closePrevented, promptType, nextPlan } = modalProps;
-  const { activeStep, onBack, onReset } = usePaymentSteps();
-  const { plans, fetchPlans } = usePlans(modalProps.coupon);
-  const setPeriod = useSetAtom(atoms.selectedPeriodAtom);
-  const setPlan = useSetAtom(atoms.selectedPlanIDAtom);
-  const updateCoupons = useSetAtom(atoms.couponIDsAtom);
+  const { type, opened, hidden, animated, api, closePrevented, promptType, nextPlan, couponID } = modalProps;
+  const { activeStep, onBack, onReset, onNext } = usePaymentSteps();
+
   const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
-  const teamsPlanSelfServeIsEnabled = useFeature(FeatureFlag.TEAMS_PLAN_SELF_SERVE);
+
+  const reduxPlans = useSelector(allPlansSelector);
+
+  const { data: couponPlans, fetch: fetchPlans } = useFetch(() =>
+    designerClient.billing.plan.getPlans({
+      planIDs: [PlanName.PRO, PlanName.TEAM],
+      coupons: couponID ? [couponID] : undefined,
+    })
+  );
+
+  const plans = couponID ? couponPlans : reduxPlans;
+
+  const [selectedPeriod, setSelectedPeriod] = useState<BillingPeriodUnit>(DEFAULT_PERIOD);
+  const [selectedPlanID, setSelectedPlanID] = useState<PlanName>(() => {
+    const { plan, trial } = subscription ?? {};
+    const defaultNextPlan = plan === PlanName.STARTER || trial ? PlanName.PRO : PlanName.TEAM;
+
+    return nextPlan ?? defaultNextPlan;
+  });
+
+  const selectedPlan = useMemo(
+    () => plans?.find((plan) => plan.id === selectedPlanID) ?? null,
+    [plans, selectedPlanID]
+  );
+
+  const selectedPlanPrice = selectedPlan?.pricesByPeriodUnit?.[selectedPeriod];
 
   const handleExited = () => {
     onReset();
     api.remove();
   };
 
-  useAsyncMountUnmount(async () => {
-    setPeriod(DEFAULT_PERIOD);
-
-    if (teamsPlanSelfServeIsEnabled) {
-      const defaultNextPlan =
-        subscription?.plan === PlanName.STARTER || subscription?.trial ? PlanName.PRO : PlanName.TEAM;
-
-      setPlan(nextPlan ?? defaultNextPlan);
+  useEffect(() => {
+    if (couponID) {
+      fetchPlans();
     }
+  }, []);
 
-    await fetchPlans();
-
-    updateCoupons(modalProps.coupon ? [modalProps.coupon] : []);
-
-    return () => {
-      updateCoupons([]);
-    };
-  });
-
-  if (!plans.length) return null;
+  if (!plans || !selectedPlan || !selectedPlanPrice) return null;
 
   return (
     <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={handleExited} maxWidth={500}>
@@ -78,15 +87,39 @@ export const Payment = manager.create<PaymentModalProps>('Payment', () => (modal
 
       <Switch active={activeStep}>
         <Switch.Pane value={Step.PLAN}>
-          <PlanStep promptType={promptType} onClose={api.onClose} />
+          <PlanStep
+            promptType={promptType}
+            onClose={api.onClose}
+            plans={plans}
+            planID={selectedPlanID}
+            onChangePlanID={setSelectedPlanID}
+            period={selectedPeriod}
+            onNext={onNext}
+          />
         </Switch.Pane>
 
         <Switch.Pane value={Step.BILLING}>
-          <BillingStep isLoading={closePrevented} />
+          <BillingStep
+            isLoading={closePrevented}
+            onChangePeriod={setSelectedPeriod}
+            period={selectedPeriod}
+            plan={selectedPlan}
+            amount={selectedPlanPrice.amount}
+            onBack={onBack}
+            onNext={onNext}
+          />
         </Switch.Pane>
 
         <Switch.Pane value={Step.PAYMENT}>
-          <PaymentStep onClose={api.onClose} modalProps={modalProps} />
+          <PaymentStep
+            onClose={api.onClose}
+            modalProps={modalProps}
+            couponID={couponID}
+            amount={selectedPlanPrice.amount}
+            planPriceID={selectedPlanPrice.id}
+            period={selectedPeriod}
+            plan={selectedPlan}
+          />
         </Switch.Pane>
       </Switch>
     </Modal>

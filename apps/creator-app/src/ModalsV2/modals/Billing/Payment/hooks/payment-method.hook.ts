@@ -1,6 +1,6 @@
 import type { AdditionalData, Component, PaymentIntent as ChargebeePaymentIntent } from '@chargebee/chargebee-js-types';
 import type { PaymentIntent } from '@voiceflow/dtos';
-import { CONTRIES_MAPPER, IS_DEVELOPMENT, toast } from '@voiceflow/ui';
+import { CONTRIES_MAPPER, toast } from '@voiceflow/ui';
 import { useRef } from 'react';
 
 import { designerClient } from '@/client/designer';
@@ -10,23 +10,12 @@ import { useDispatch, useSelector } from '@/hooks';
 import { isUUID4 } from '@/utils/crypto';
 import * as chargebee from '@/vendors/chargebee';
 
-import type * as CardForm from '../CardForm';
+import type { CardFormValues } from '../CardForm/CardForm.scheme';
 
 const isMockedPaymentIntent = (paymentIntent: PaymentIntent) =>
   isUUID4(paymentIntent.id) && !paymentIntent.gatewayAccountId;
 
-const getDevAmount = (amount: number, address: string) => {
-  console.log('Testing payment intent creation with amount:', amount, 'and address:', address); // eslint-disable-line no-console
-
-  // for testing purpose we get the amount from the address
-  const amountFromAddress = Number.parseInt(address.split(' ').at(-1) ?? '', 10);
-
-  console.log('Amount from address:', amountFromAddress); // eslint-disable-line no-console
-
-  return !Number.isNaN(amountFromAddress) ? amountFromAddress : amount;
-};
-
-const getCardAdditionalData = (cardValues: CardForm.Values): AdditionalData => ({
+const getCardAdditionalData = (cardValues: CardFormValues): AdditionalData => ({
   billingAddress: {
     addressLine1: cardValues.address,
     city: cardValues.city,
@@ -87,7 +76,7 @@ export const useCardPaymentMethod = () => {
           success: (validatedPaymentIntent: ChargebeePaymentIntent) => {
             resolve(fromChargebeePaymentIntent(validatedPaymentIntent, paymentIntent));
           },
-          error: (error: Error) => {
+          error: (_paymentIntent: ChargebeePaymentIntent, error: Error) => {
             reject(error);
           },
         }
@@ -100,7 +89,7 @@ export const useCardPaymentMethod = () => {
     cardValues,
   }: {
     paymentIntent: PaymentIntent;
-    cardValues: CardForm.Values;
+    cardValues: CardFormValues;
   }): Promise<PaymentIntent> => {
     if (!cardRef.current) throw new Error('Card not found');
     if (isMockedPaymentIntent(paymentIntent)) return paymentIntent;
@@ -123,17 +112,15 @@ export const useCardPaymentMethod = () => {
 
   const createPaymentIntent = async ({
     amount,
-    address,
     shouldUseExistingCard,
   }: {
     amount: number;
-    address?: string;
     shouldUseExistingCard?: boolean;
   }) => {
     return designerClient.billing.subscription.createPaymentIntent(
       organizationID,
       {
-        amount: IS_DEVELOPMENT ? getDevAmount(amount, address ?? '') : amount,
+        amount,
         ...(shouldUseExistingCard ? { referenceID: subscription?.paymentMethod?.referenceID } : {}),
         customerID: subscription?.customerID,
       },
@@ -141,9 +128,9 @@ export const useCardPaymentMethod = () => {
     );
   };
 
-  const updatePaymentMethod = async (amount: number, cardValues: CardForm.Values) => {
+  const updatePaymentMethod = async (amount: number, cardValues: CardFormValues) => {
     try {
-      const paymentIntent = await createPaymentIntent({ amount, address: cardValues.address });
+      const paymentIntent = await createPaymentIntent({ amount });
       const authorizedPaymentIntent = await authorizeNewCard({ paymentIntent, cardValues });
 
       await updateSubscriptionPaymentMethod(authorizedPaymentIntent.id);

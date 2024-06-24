@@ -5,6 +5,7 @@ import type { ServiceManagerOptions, SocketServer } from '@voiceflow/socket-util
 import type { AssistantService } from '@/assistant/assistant.service';
 import type { CreatorService } from '@/creator/creator.service';
 import type { FlowService } from '@/flow/flow.service';
+import type { BillingPlanService } from '@/organization/billing/plan/plan.service';
 import type { OrganizationIdentityService } from '@/organization/identity/identity.service';
 import type { ProjectService } from '@/project/project.service';
 import type { ProjectListService } from '@/project-list/project-list.service';
@@ -36,6 +37,7 @@ interface Options extends ServiceManagerOptions<LoguxControlOptions['config']> {
     assistant: AssistantService;
     projectList: ProjectListService;
     organization: OrganizationIdentityService;
+    plan: BillingPlanService;
     requestContext: {
       createAsync: <T>(callback: () => Promise<T>) => Promise<T>;
     };

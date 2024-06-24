@@ -1,3 +1,4 @@
+import type { BillingPlan } from '@voiceflow/dtos';
 import { BillingPeriodUnit } from '@voiceflow/dtos';
 import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { Box, Button, Modal, SectionV2, Text } from '@voiceflow/ui';
@@ -11,22 +12,29 @@ import { useSelector } from '@/hooks';
 import { useFeature } from '@/hooks/feature.hook';
 import * as currency from '@/utils/currency';
 
-import { usePaymentSteps, usePricing } from '../hooks';
-
 interface BillingStepProps {
   isLoading: boolean;
+  period: BillingPeriodUnit;
+  onChangePeriod: (period: BillingPeriodUnit) => void;
+  plan: BillingPlan;
+  amount: number;
+  onBack: VoidFunction;
+  onNext: VoidFunction;
 }
 
-export const BillingStep: React.FC<BillingStepProps> = ({ isLoading }) => {
+export const BillingStep: React.FC<BillingStepProps> = ({
+  isLoading,
+  onChangePeriod,
+  plan,
+  period,
+  amount,
+  onBack,
+  onNext,
+}) => {
   const teamsPlanSelfServeIsEnabled = useFeature(FeatureFlag.TEAMS_PLAN_SELF_SERVE);
   const usedViewerSeats = useSelector(Workspace.active.members.usedViewerSeatsSelector);
   const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
-  const { onBack, onNext } = usePaymentSteps();
-  const { selectedPlan, selectedPeriod, selectedPlanPrice, hasCard, onChangePeriod } = usePricing();
-
-  const amount = selectedPlanPrice?.amount ?? 0;
-  const planSeats = selectedPlan?.seats ?? 1;
-  const pricesByPeriodUnit = selectedPlan?.pricesByPeriodUnit ?? {};
+  const { seats: planSeats, pricesByPeriodUnit } = plan;
 
   const getRadioOptionLabel = (id: 'month' | 'year', unit: string) => {
     return (
@@ -54,7 +62,7 @@ export const BillingStep: React.FC<BillingStepProps> = ({ isLoading }) => {
           <RadioGroup
             column
             options={periods}
-            checked={selectedPeriod}
+            checked={period}
             onChange={onChangePeriod}
             activeBar
             noPaddingLastItem={false}
@@ -74,7 +82,7 @@ export const BillingStep: React.FC<BillingStepProps> = ({ isLoading }) => {
                 <SectionV2.Description>
                   <Text color="#62778C" paddingLeft="3px">
                     {planSeats} Editor {pluralize('seats', planSeats)}, paid{' '}
-                    {selectedPeriod === BillingPeriodUnit.YEAR ? 'annually' : 'monthly'}
+                    {period === BillingPeriodUnit.YEAR ? 'annually' : 'monthly'}
                   </Text>{' '}
                 </SectionV2.Description>
                 <SectionV2.Description>{currency.formatUSD(amount, { unit: 'cent' })}</SectionV2.Description>
@@ -84,7 +92,7 @@ export const BillingStep: React.FC<BillingStepProps> = ({ isLoading }) => {
                 <SectionV2.Description>
                   {currency.formatUSD(amount, { noDecimal: true, unit: 'cent' })}
                   <Text color="#62778C" paddingLeft="3px">
-                    per Editor, per {selectedPeriod === BillingPeriodUnit.YEAR ? 'year' : 'month'}
+                    per Editor, per {period}
                   </Text>
                 </SectionV2.Description>
               </div>
@@ -143,14 +151,14 @@ export const BillingStep: React.FC<BillingStepProps> = ({ isLoading }) => {
         </Button>
 
         <Button
-          width={hasCard ? 144 : 194}
+          width={194}
           onClick={() => onNext()}
           variant={Button.Variant.PRIMARY}
           disabled={isLoading}
           isLoading={isLoading}
           squareRadius
         >
-          {hasCard ? 'Confirm & Pay' : 'Continue to Payment'}
+          Continue to Payment
         </Button>
       </Modal.Footer>
     </>

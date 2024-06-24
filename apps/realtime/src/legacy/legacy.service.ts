@@ -15,6 +15,7 @@ import { AssistantService } from '@/assistant/assistant.service';
 import { CreatorService } from '@/creator/creator.service';
 import { FlowService } from '@/flow/flow.service';
 import { createLogger } from '@/logger';
+import { BillingPlanService } from '@/organization/billing/plan/plan.service';
 import { OrganizationIdentityService } from '@/organization/identity/identity.service';
 import { ProjectService } from '@/project/project.service';
 import { ProjectListService } from '@/project-list/project-list.service';
@@ -52,6 +53,8 @@ export class LegacyService implements OnApplicationBootstrap, OnApplicationShutd
     private readonly project: ProjectService,
     @Inject(IdentityClient)
     private readonly identityClient: IdentityClient,
+    @Inject(BillingPlanService)
+    private readonly plan: BillingPlanService,
     @Inject(CreatorService)
     private readonly creator: CreatorService,
     @Inject(ThreadService)
@@ -86,6 +89,7 @@ export class LegacyService implements OnApplicationBootstrap, OnApplicationShutd
         workflow: this.workflow,
         reference: this.reference,
         organization: this.organization,
+        plan: this.plan,
         requestContext: {
           createAsync: <T>(callback: () => Promise<T>): Promise<T> =>
             RequestContext.createAsync([this.mongoEM, this.postgresEM], callback),

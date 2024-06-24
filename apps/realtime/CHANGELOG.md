@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.414.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.413.1...@voiceflow/realtime@1.414.0) (2024-06-24)
+
+### Features
+
+* response messages logic (COR-2456) ([#8392](https://github.com/voiceflow/creator-app/issues/8392)) ([1aabc14](https://github.com/voiceflow/creator-app/commit/1aabc14a63fcf8888809e75e9bc51d16b3ed699a))
+
 ## [1.413.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.413.0...@voiceflow/realtime@1.413.1) (2024-06-24)
 
 **Note:** Version bump only for package @voiceflow/realtime

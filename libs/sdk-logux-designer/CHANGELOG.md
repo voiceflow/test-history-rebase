@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.67.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.66.2...@voiceflow/sdk-logux-designer@2.67.0) (2024-06-24)
+
+### Features
+
+* create response v2 editor (COR-000) ([#8395](https://github.com/voiceflow/creator-app/issues/8395)) ([18b3c50](https://github.com/voiceflow/creator-app/commit/18b3c5028e9373d37e13c62a81505436d1333664))
+
 ## [2.66.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.66.1...@voiceflow/sdk-logux-designer@2.66.2) (2024-06-24)
 
 **Note:** Version bump only for package @voiceflow/sdk-logux-designer

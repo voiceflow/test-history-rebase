@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.428.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.427.1...@voiceflow/realtime-sdk@1.428.0) (2024-06-24)
+
+### Features
+
+* create response v2 editor (COR-000) ([#8395](https://github.com/voiceflow/creator-app/issues/8395)) ([18b3c50](https://github.com/voiceflow/creator-app/commit/18b3c5028e9373d37e13c62a81505436d1333664))
+
 ## [1.427.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.427.0...@voiceflow/realtime-sdk@1.427.1) (2024-06-24)
 
 **Note:** Version bump only for package @voiceflow/realtime-sdk

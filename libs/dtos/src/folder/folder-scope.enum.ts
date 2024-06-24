@@ -7,6 +7,7 @@ export const FolderScope = {
   PERSONA: 'persona',
   WORKFLOW: 'workflow',
   RESPONSE: 'response',
+  MESSAGE: 'message',
   VARIABLE: 'variable',
   FUNCTION: 'function',
   KNOWLEDGE_BASE: 'knowledge-base',

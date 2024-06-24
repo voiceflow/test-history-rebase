@@ -159,6 +159,7 @@ class MigrateService extends AbstractControl {
             entityVariants: [],
             requiredEntities: [],
             responseVariants: [],
+            responseMessages: [],
             responseDiscriminators: [],
           },
         },

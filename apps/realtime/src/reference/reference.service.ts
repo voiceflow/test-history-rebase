@@ -544,7 +544,7 @@ export class ReferenceService extends MutableService<ReferenceORM> {
     };
   }
 
-  async deleteManyWithSubResourcesAndSyncByResponseIDs({
+  async deleteManyWithSubResourcesByResponseIDs({
     userID,
     responseIDs,
     assistantID,
@@ -577,9 +577,35 @@ export class ReferenceService extends MutableService<ReferenceORM> {
     ]);
 
     return {
+      references: [],
+      referenceResources: [...messageReferenceResources, ...promptReferenceResources],
+    };
+  }
+
+  async deleteManyWithSubResourcesAndSyncByResponseIDs({
+    userID,
+    responseIDs,
+    assistantID,
+    environmentID,
+  }: {
+    // delete with REFERENCE_SYSTEM ff
+    userID: number;
+    responseIDs: string[];
+    // delete with REFERENCE_SYSTEM ff
+    assistantID: string;
+    environmentID: string;
+  }) {
+    const { referenceResources } = await this.deleteManyWithSubResourcesByResponseIDs({
+      userID,
+      responseIDs,
+      assistantID,
+      environmentID,
+    });
+
+    return {
       delete: {
         references: [],
-        referenceResources: [...messageReferenceResources, ...promptReferenceResources],
+        referenceResources: referenceResources || [],
       },
     };
   }

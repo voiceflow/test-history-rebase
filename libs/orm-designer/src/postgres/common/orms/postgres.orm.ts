@@ -212,9 +212,7 @@ export abstract class PostgresORM<
         .filter((prop) => prop.onUpdate)
         .map((prop) => ({
           field: prop.name,
-          handler: prop.onUpdate as unknown as (
-            data: Partial<BaseEntity>,
-          ) => unknown,
+          handler: prop.onUpdate as unknown as (data: Partial<BaseEntity>) => unknown,
         }));
     }
 

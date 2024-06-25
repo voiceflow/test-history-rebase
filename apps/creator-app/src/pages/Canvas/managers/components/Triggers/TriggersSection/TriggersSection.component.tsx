@@ -123,7 +123,9 @@ export const TriggersSection: React.FC = () => {
           </Tooltip>
         )}
       >
-        {({ onClose }) => <IntentMenu onClose={onClose} onSelect={onTriggerAdd} excludeIDs={triggerIntentIDs} />}
+        {({ onClose }) => (
+          <IntentMenu onClose={onClose} onSelect={onTriggerAdd} excludeIDs={triggerIntentIDs} excludeNone={false} />
+        )}
       </Popper>
 
       <Box pl={12} pb={triggersSize ? 11 : 0} direction="column">

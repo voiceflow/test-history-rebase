@@ -1,4 +1,4 @@
-import { css, styled } from '@ui/styles';
+import { css, styled } from '@voiceflow/ui';
 import { space, SpaceProps } from 'styled-system';
 
 enum Sizes {

@@ -167,7 +167,6 @@ export {
   default as Text,
   Title,
 } from './Text';
-export { default as Thumbnail } from './Thumbnail';
 export type { TippyTooltipProps } from './TippyTooltip';
 export { default as TippyTooltip, TooltipTheme } from './TippyTooltip';
 export { toast, ToastCallToAction, ToastContainer } from './Toast';

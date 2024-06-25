@@ -1,9 +1,10 @@
 import { BaseModels } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { OverflowText, Thumbnail } from '@voiceflow/ui';
+import { OverflowText } from '@voiceflow/ui';
 import React from 'react';
 
+import Thumbnail from '@/components/legacy/Thumbnail';
 import SlateEditable from '@/components/SlateEditable';
 import Step, {
   NoMatchNoReplyContainer,
@@ -18,7 +19,12 @@ import { isVariable, transformVariablesToReadable } from '@/utils/slot';
 
 import { PATH } from '../Editor/Buttons/constants';
 
-const CardV2Step: ConnectedStep<Realtime.NodeData.CardV2, Realtime.NodeData.CardV2BuiltInPorts> = ({ ports, data, isLast, projectType }) => {
+const CardV2Step: ConnectedStep<Realtime.NodeData.CardV2, Realtime.NodeData.CardV2BuiltInPorts> = ({
+  ports,
+  data,
+  isLast,
+  projectType,
+}) => {
   const entitiesAndVariables = React.useContext(ActiveDiagramNormalizedEntitiesAndVariablesContext)!;
 
   const isVoiceProject = projectType === Platform.Constants.ProjectType.VOICE;
@@ -49,7 +55,9 @@ const CardV2Step: ConnectedStep<Realtime.NodeData.CardV2, Realtime.NodeData.Card
           <Thumbnail src={isVariable(card.imageUrl) ? null : card.imageUrl} mr={16} />
           <Step.LabelTextContainer>
             <Step.LabelText>{card.title || 'Card title'}</Step.LabelText>
-            <Step.SubLabelText variant={card.description ? Step.StepLabelVariant.SECONDARY : Step.StepLabelVariant.PLACEHOLDER}>
+            <Step.SubLabelText
+              variant={card.description ? Step.StepLabelVariant.SECONDARY : Step.StepLabelVariant.PLACEHOLDER}
+            >
               {card.description || 'Card description'}
             </Step.SubLabelText>
           </Step.LabelTextContainer>

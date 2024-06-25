@@ -1,5 +1,4 @@
-import Popper from '@ui/components/Popper';
-import { useHover } from '@ui/hooks';
+import { Popper, useHover } from '@voiceflow/ui';
 import React from 'react';
 
 import * as S from './styles';

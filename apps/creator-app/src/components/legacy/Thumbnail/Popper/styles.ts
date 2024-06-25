@@ -1,4 +1,4 @@
-import { styled } from '@ui/styles';
+import { styled } from '@voiceflow/ui';
 
 export const Image = styled.img`
   max-width: 300px;

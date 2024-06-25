@@ -1,7 +1,7 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Thumbnail } from '@voiceflow/ui';
 import React from 'react';
 
+import Thumbnail from '@/components/legacy/Thumbnail';
 import Step from '@/pages/Canvas/components/Step';
 import { DEFAULT_BY_KEY_PORT } from '@/pages/Canvas/constants';
 import { FunctionMapContext, FunctionPathMapContext } from '@/pages/Canvas/contexts';

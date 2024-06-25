@@ -1,8 +1,9 @@
 import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { OverflowText, Thumbnail } from '@voiceflow/ui';
+import { OverflowText } from '@voiceflow/ui';
 import React from 'react';
 
+import Thumbnail from '@/components/legacy/Thumbnail';
 import SlateEditable from '@/components/SlateEditable';
 import Step, {
   NoMatchNoReplyContainer,
@@ -18,7 +19,12 @@ import { isDialogflowPlatform } from '@/utils/typeGuards';
 
 import { PATH } from '../Editor/Buttons/constants';
 
-const CarouselStep: ConnectedStep<Realtime.NodeData.Carousel, Realtime.NodeData.CarouselBuiltInPorts> = ({ ports, data, isLast, platform }) => {
+const CarouselStep: ConnectedStep<Realtime.NodeData.Carousel, Realtime.NodeData.CarouselBuiltInPorts> = ({
+  ports,
+  data,
+  isLast,
+  platform,
+}) => {
   const entitiesAndVariables = React.useContext(ActiveDiagramNormalizedEntitiesAndVariablesContext)!;
 
   const cards = React.useMemo(
@@ -48,7 +54,9 @@ const CarouselStep: ConnectedStep<Realtime.NodeData.Carousel, Realtime.NodeData.
             <Thumbnail src={isVariable(card.imageUrl) ? null : card.imageUrl} mr={16} />
             <Step.LabelTextContainer>
               <Step.LabelText>{card.title || 'Card title'}</Step.LabelText>
-              <Step.SubLabelText variant={card.description ? Step.StepLabelVariant.SECONDARY : Step.StepLabelVariant.PLACEHOLDER}>
+              <Step.SubLabelText
+                variant={card.description ? Step.StepLabelVariant.SECONDARY : Step.StepLabelVariant.PLACEHOLDER}
+              >
                 {card.description || 'Card description'}
               </Step.SubLabelText>
             </Step.LabelTextContainer>

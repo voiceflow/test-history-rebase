@@ -15,7 +15,6 @@ export const content = style({
 });
 
 export const drawer = style({
-  display: 'flex',
   maxHeight: '100%',
 });
 

@@ -40,19 +40,21 @@ export class DesignerClient extends BaseClient('https://realtime-api.voiceflow.c
   }),
 
   knowledgeBase: NestedClient({
+    tag: KnowledgeBaseTagClient,
     public: KbpublicApiDocumentClient,
+    settings: KnowledgeBaseSettingsClient,
     document: KnowledgeBaseDocumentClient,
     integration: KnowledgeBaseIntegrationsClient,
-    settings: KnowledgeBaseSettingsClient,
-    version: VersionKnowledgeBaseSettingsClient,
-    tag: KnowledgeBaseTagClient,
+    version: NestedClient({
+      settings: VersionKnowledgeBaseSettingsClient,
+    }),
   }),
 
   private: NestedClient({
     project: PrivateProjectClient,
     assistant: PrivateAssistantClient,
     environment: PrivateEnvironmentClient,
-    prototypeProgram: PrivatePrototypeProgramClient,
     knowledgeBase: KbprivateDocumentClient,
+    prototypeProgram: PrivatePrototypeProgramClient,
   }),
 }) {}

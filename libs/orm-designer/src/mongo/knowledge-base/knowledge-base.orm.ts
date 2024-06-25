@@ -21,13 +21,9 @@ export class KnowledgeBaseORM extends ProjectORM {
 
   static KNOWLEDGE_BASE_SETTINGS_PATH = 'settings' as const;
 
-  async getWorkspaceID(projectID: string) {
-    const { teamID } = await this.findOneOrFail(projectID, { fields: ['teamID'] });
-    return teamID;
-  }
-
   async findSettings(projectID: string): Promise<KnowledgeBaseSettings | undefined> {
     const document = await this.findOne(projectID, { fields: [KnowledgeBaseORM.KNOWLEDGE_BASE_DATA_PATH] });
+
     return document?.knowledgeBase?.settings;
   }
 

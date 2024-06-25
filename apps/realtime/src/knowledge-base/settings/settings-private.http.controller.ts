@@ -27,6 +27,6 @@ export class KnowledgeBaseSettingsPrivateHTTPController {
     description: 'Private endpoint for retrieve assistant kb settings',
   })
   async getOne(@Param('assistantID') assistantID: string): Promise<KnowledgeBaseSettings> {
-    return this.service.getProjectSettings(assistantID);
+    return this.service.findForAssistant(assistantID);
   }
 }

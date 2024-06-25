@@ -3,7 +3,6 @@ import { IntegrationOauthTokenORM, KnowledgeBaseORM, ProjectORM, RefreshJobsOrm 
 
 import { CacheService } from '@/cache/cache.service';
 import { KnowledgeBaseSettingsModule } from '@/knowledge-base/settings/settings.module';
-import { KnowledgeBaseSettingsService } from '@/knowledge-base/settings/settings.service';
 import { ProjectModule } from '@/project/project.module';
 import { VersionModule } from '@/version/version.module';
 
@@ -29,7 +28,6 @@ import { ZendeskOauthService } from './oauth/zendesk/zendesk-oauth.service';
     ProjectORM,
     KnowledgeBaseDocumentService,
     KnowledgeBaseTagService,
-    KnowledgeBaseSettingsService,
     CacheService,
   ],
   controllers: [KnowledgeBaseIntegrationsPublicHTTPController],

@@ -25,7 +25,7 @@ export const getSettings = (): Thunk<BaseModels.Project.KnowledgeBaseSettings> =
 
     Errors.assertProjectID(versionID);
 
-    settings = (await designerClient.knowledgeBase.version.getSettings(
+    settings = (await designerClient.knowledgeBase.version.settings.getOne(
       versionID
     )) as BaseModels.Project.KnowledgeBaseSettings;
   } else {
@@ -33,7 +33,7 @@ export const getSettings = (): Thunk<BaseModels.Project.KnowledgeBaseSettings> =
 
     Errors.assertProjectID(projectID);
 
-    settings = (await designerClient.knowledgeBase.settings.getSettings(
+    settings = (await designerClient.knowledgeBase.settings.getOne(
       projectID
     )) as BaseModels.Project.KnowledgeBaseSettings;
   }
@@ -65,19 +65,17 @@ export const patchSettings =
 
       Errors.assertProjectID(versionID);
 
-      await designerClient.knowledgeBase.version.updateSettings(versionID, patch as KnowledgeBaseSettings).catch(() => {
-        notify.short.error(ERROR_MESSAGE);
-      });
+      await designerClient.knowledgeBase.version.settings
+        .updateOne(versionID, patch as KnowledgeBaseSettings)
+        .catch(() => notify.short.error(ERROR_MESSAGE));
     } else {
       const projectID = Session.activeProjectIDSelector(state);
 
       Errors.assertProjectID(projectID);
 
       await designerClient.knowledgeBase.settings
-        .updateSettings(projectID, patch as KnowledgeBaseSettings)
-        .catch(() => {
-          notify.short.error(ERROR_MESSAGE);
-        });
+        .updateOne(projectID, patch as KnowledgeBaseSettings)
+        .catch(() => notify.short.error(ERROR_MESSAGE));
     }
 
     dispatch(Actions.PatchSettings({ patch }));

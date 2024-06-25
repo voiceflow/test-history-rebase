@@ -30,8 +30,8 @@ export class KnowledgeBaseSettingsPublicHTTPController {
     schema: KnowledgeBaseSettingsDTO,
     description: 'Get the users knowledge base settings',
   })
-  async getSettings(@Param('assistantID') assistantID: string): Promise<KnowledgeBaseSettings> {
-    return this.service.getSettings(assistantID);
+  async getOne(@Param('assistantID') assistantID: string): Promise<KnowledgeBaseSettings> {
+    return this.service.findForAssistant(assistantID);
   }
 
   @Patch()
@@ -47,10 +47,10 @@ export class KnowledgeBaseSettingsPublicHTTPController {
     status: HttpStatus.OK,
     description: 'Update the users knowledge base settings for the agent',
   })
-  async updateSettings(
+  async updateOne(
     @Param('assistantID') assistantID: string,
     @Body(new ZodValidationPipe(KnowledgeBaseSettingsDTO)) newSettings: KnowledgeBaseSettings
   ): Promise<void> {
-    return this.service.updateSettings(assistantID, newSettings);
+    return this.service.updateForAssistant(assistantID, newSettings);
   }
 }

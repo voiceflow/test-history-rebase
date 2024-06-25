@@ -33,6 +33,7 @@
     "@voiceflow/common": "8.3.0",
     "@voiceflow/dtos": "workspace:*",
     "bidirectional-adapter": "1.2.1",
+    "slate": "^0.103.0",
     "ts-pattern": "5.0.5",
     "zod": "3.22.4"
   },

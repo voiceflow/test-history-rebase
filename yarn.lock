@@ -12452,6 +12452,7 @@ __metadata:
     "@voiceflow/common": 8.3.0
     "@voiceflow/dtos": "workspace:*"
     bidirectional-adapter: 1.2.1
+    slate: ^0.103.0
     ts-pattern: 5.0.5
     zod: 3.22.4
   languageName: unknown
@@ -22600,6 +22601,13 @@ __metadata:
   version: 10.0.1
   resolution: "immer@npm:10.0.1"
   checksum: 24ab640e9d928385047f6f31bc77966117087236faf1a1f52b6b9a0159f78d543f648fecbf04d5e8c782a6f6cddd6eeb9e09c3b616a104632e701c7a22735654
+  languageName: node
+  linkType: hard
+
+"immer@npm:^10.0.3":
+  version: 10.1.1
+  resolution: "immer@npm:10.1.1"
+  checksum: 07c67970b7d22aded73607193d84861bf786f07d47f7d7c98bb10016c7a88f6654ad78ae1e220b3c623695b133aabbf24f5eb8d9e8060cff11e89ccd81c9c10b
   languageName: node
   linkType: hard
 
@@ -33538,6 +33546,17 @@ __metadata:
     is-plain-object: ^5.0.0
     tiny-warning: ^1.0.3
   checksum: 07666fe3373e59aaa19261366fd3cf1df546edfc0162fb88d675d71f158ebd1bf0630fd00ecc9152ab6547080f3e90c9f6d1504e09c25b3bf980cceb9b15c3c1
+  languageName: node
+  linkType: hard
+
+"slate@npm:^0.103.0":
+  version: 0.103.0
+  resolution: "slate@npm:0.103.0"
+  dependencies:
+    immer: ^10.0.3
+    is-plain-object: ^5.0.0
+    tiny-warning: ^1.0.3
+  checksum: 50a2f79f80b11be7f475c74d666bdccd39720354cb08932864161dd48094e991f10f66a4d8ecc455fff9327895a6d7cf8591d113c606ca2565404d56d4d7fea3
   languageName: node
   linkType: hard
 

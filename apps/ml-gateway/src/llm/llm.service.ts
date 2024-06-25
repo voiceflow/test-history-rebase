@@ -12,6 +12,7 @@ import { CLAUDE_3_5_SONNET } from './anthropic/claude_3-5_sonnet.client';
 import { ClaudeV1 } from './anthropic/claude_v1.client';
 import { ClaudeV1Instant } from './anthropic/claude_v1_instant.client';
 import { ClaudeV2 } from './anthropic/claude_v2.client';
+import { GeminiPro15 } from './google/gemini-pro-1-5.client';
 import { LLMModel } from './llm-model.abstract';
 import { GPT3_5 } from './openai/gpt3-5.client';
 import { GPT3_5_1106 } from './openai/gpt3-5-1106.client';
@@ -45,6 +46,7 @@ export class LLMService {
       [AIModel.CLAUDE_3_OPUS]: Claude3Opus,
       [AIModel.CLAUDE_3_SONNET]: Claude3Sonnet,
       [AIModel.CLAUDE_3_5_SONNET]: CLAUDE_3_5_SONNET,
+      [AIModel.GEMINI_PRO_1_5]: GeminiPro15,
     };
   }
 

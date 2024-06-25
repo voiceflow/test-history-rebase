@@ -4,10 +4,10 @@ import { CMSTableNavigation } from '@/pages/AssistantCMS/components/CMSTableNavi
 
 import { CMSResourceActions } from '../../../../components/CMSResourceActions';
 
-export const CMSResponseTableNavigation: React.FC = () => {
+export const CMSMessageTableNavigation: React.FC = () => {
   return (
     <CMSTableNavigation
-      label="All responses"
+      label="All messages"
       actions={
         <>
           <CMSResourceActions.CreateFolder />

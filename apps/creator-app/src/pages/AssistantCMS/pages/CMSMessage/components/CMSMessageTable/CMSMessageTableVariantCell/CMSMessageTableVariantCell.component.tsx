@@ -3,9 +3,9 @@ import React, { useMemo } from 'react';
 
 import { SlatePreviewWithVariables } from '@/components/State/SlatePreviewWithVariables';
 
-import { cmsResponseSortContextAtom } from '../../../CMSResponse.atom';
-import { responseToVariantSlate } from '../../../CMSResponse.util';
-import type { ICMSResponseTableVariantCell } from './CMSResponseTableVariantCell.interface';
+import { cmsResponseSortContextAtom } from '../../../CMSMessage.atom';
+import { responseToVariantSlate } from '../../../CMSMessage.util';
+import type { ICMSResponseTableVariantCell } from './CMSMessageTableVariantCell.interface';
 
 export const CMSResponseTableVariantCell: React.FC<ICMSResponseTableVariantCell> = ({ response }) => {
   const searchSortContext = useAtomValue(cmsResponseSortContextAtom);

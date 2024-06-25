@@ -22,7 +22,6 @@ export const CMSWorkflowTableTriggersCell: React.FC<ICMSWorkflowTableTriggersCel
       label={triggers[0]?.label}
       items={triggers}
       updates={triggers.length > 1 ? triggers.length : 0}
-      onClick={() => goToDiagram(triggers[0]?.nodeID)}
       iconName={triggers[0]?.type === BlockType.START ? 'Start' : 'IntentS'}
     >
       {({ items }) =>

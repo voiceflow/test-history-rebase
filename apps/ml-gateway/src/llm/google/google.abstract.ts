@@ -51,7 +51,7 @@ export abstract class GoogleAIModel extends LLMModel {
         role: item.role,
         parts: [{ text: item.content }],
       })),
-      systemInstruction: params.system ?? undefined,
+      systemInstruction: params.system || undefined,
     };
 
     const result = await model.generateContent(request).catch((error: unknown) => {
@@ -90,7 +90,7 @@ export abstract class GoogleAIModel extends LLMModel {
         role: item.role,
         parts: [{ text: item.content }],
       })),
-      systemInstruction: params.system ?? undefined,
+      systemInstruction: params.system || undefined,
     };
 
     return from(model.generateContentStream(request)).pipe(

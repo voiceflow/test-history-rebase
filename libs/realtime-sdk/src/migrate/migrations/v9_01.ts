@@ -1,10 +1,8 @@
 /* eslint-disable no-param-reassign */
 import { BlockType } from '@realtime-sdk/constants';
-import { BaseModels } from '@voiceflow/base-types';
+import type { BaseModels } from '@voiceflow/base-types';
 
-import { Transform } from './types';
-
-export const LAST_UTTERANCE = '{{[last_utterance].last_utterance}}';
+import type { Transform } from './types';
 
 const isSetV2 = (dbNode: BaseModels.BaseDiagramNode) => dbNode.type === BlockType.SETV2;
 

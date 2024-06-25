@@ -1,9 +1,12 @@
-import { GenerateContentRequest, VertexAI } from '@google-cloud/vertexai';
+import type { GenerateContentRequest } from '@google-cloud/vertexai';
+import { VertexAI } from '@google-cloud/vertexai';
 import { Inject, Injectable, Logger } from '@nestjs/common';
-import { AIMessage, AIMessageRole, AIParams } from '@voiceflow/dtos';
+import type { AIMessage, AIParams } from '@voiceflow/dtos';
+import { AIMessageRole } from '@voiceflow/dtos';
 import { ENVIRONMENT_VARIABLES } from '@voiceflow/nestjs-env';
 import { readFileSync } from 'fs';
-import { concatMap, from, map, Observable } from 'rxjs';
+import type { Observable } from 'rxjs';
+import { concatMap, from, map } from 'rxjs';
 
 import { LLMModel } from '../llm-model.abstract';
 import { CompletionOutput, CompletionStreamOutput } from '../llm-model.dto';

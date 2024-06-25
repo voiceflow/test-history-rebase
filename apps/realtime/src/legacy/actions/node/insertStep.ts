@@ -60,7 +60,7 @@ class InsertStep extends AbstractVersionDiagramAccessActionControl<Realtime.node
         workspaceID: payload.workspaceID,
       })
     ) {
-      await this.services.requestContext.createAsync(async () => {
+      await this.services.requestContext.create(async () => {
         await Promise.all([
           this.services.reference.deleteManyWithSubResourcesByDiagramNodeIDsAndBroadcast(
             {

@@ -17,7 +17,7 @@ class PatchProject extends AbstractWorkspaceChannelControl<PatchProjectPayload> 
     const fields = Utils.object.pick(payload.value, ['name', 'privacy', 'linkType', 'customThemes', 'apiPrivacy']);
     const { nluSettings, aiAssistSettings, image } = payload.value;
 
-    await this.services.requestContext.createAsync(() =>
+    await this.services.requestContext.create(() =>
       Promise.all([
         this.services.projectV2.patchOne(payload.key, {
           ...fields,

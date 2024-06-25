@@ -68,7 +68,7 @@ class ImportSnapshot extends AbstractDiagramResourceControl<Realtime.creator.Imp
         workspaceID: payload.workspaceID,
       })
     ) {
-      await this.services.requestContext.createAsync(() =>
+      await this.services.requestContext.create(() =>
         this.services.reference.createManyWithSubResourcesForDiagramNodesAndBroadcast(
           { nodes: dbNodes, diagramID: payload.diagramID },
           {

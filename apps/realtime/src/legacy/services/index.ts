@@ -61,7 +61,7 @@ export interface ServiceMap extends BaseServiceMap {
   workspaceSettings: WorkspaceSettingsService;
   creator: CreatorService;
   requestContext: {
-    createAsync: <T>(callback: () => Promise<T>) => Promise<T>;
+    create: <T>(callback: () => Promise<T>) => Promise<T>;
   };
 }
 
@@ -84,7 +84,7 @@ interface Options {
     projectList: ProjectListService;
     organization: OrganizationIdentityService;
     requestContext: {
-      createAsync: <T>(callback: () => Promise<T>) => Promise<T>;
+      create: <T>(callback: () => Promise<T>) => Promise<T>;
     };
   };
 }

@@ -152,7 +152,7 @@ class ProjectService extends AbstractControl {
 
     await client.project.deleteV2(projectID);
 
-    await this.services.requestContext.createAsync(() => this.services.assistant.deleteOne(projectID));
+    await this.services.requestContext.create(() => this.services.assistant.deleteOne(projectID));
   }
 
   public async toggleWorkspaceProjectsAiAssistOff(workspaceID: string): Promise<void> {

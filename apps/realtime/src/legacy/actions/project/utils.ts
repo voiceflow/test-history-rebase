@@ -55,7 +55,7 @@ export abstract class AbstractProjectResourceControl<
 
     // check for an existing default list
     if (!listID) {
-      const defaultList = await this.services.requestContext.createAsync(() =>
+      const defaultList = await this.services.requestContext.create(() =>
         this.services.projectList.getDefaultList(this.services.hashedID.decodeWorkspaceID(workspaceID))
       );
 

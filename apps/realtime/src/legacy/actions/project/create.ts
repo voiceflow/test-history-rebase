@@ -40,7 +40,7 @@ class CreateProject extends AbstractProjectResourceControl<Realtime.project.Crea
       throw new Error('devVersion is missing');
     }
 
-    const assistant = await this.services.requestContext.createAsync(() =>
+    const assistant = await this.services.requestContext.create(() =>
       this.services.assistant.createOneForLegacyProject(dbProject.teamID, dbProject._id, {
         name: dbProject.name,
         updatedByID: creatorID,

@@ -74,7 +74,7 @@ class AddBlock extends AbstractVersionDiagramAccessActionControl<Realtime.node.A
         workspaceID,
       })
     ) {
-      await this.services.requestContext.createAsync(() =>
+      await this.services.requestContext.create(() =>
         this.services.reference.createManyWithSubResourcesForDiagramNodesAndBroadcast(
           { nodes, diagramID },
           {

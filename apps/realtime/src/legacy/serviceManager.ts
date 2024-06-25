@@ -37,7 +37,7 @@ interface Options extends ServiceManagerOptions<LoguxControlOptions['config']> {
     projectList: ProjectListService;
     organization: OrganizationIdentityService;
     requestContext: {
-      createAsync: <T>(callback: () => Promise<T>) => Promise<T>;
+      create: <T>(callback: () => Promise<T>) => Promise<T>;
     };
   };
 }

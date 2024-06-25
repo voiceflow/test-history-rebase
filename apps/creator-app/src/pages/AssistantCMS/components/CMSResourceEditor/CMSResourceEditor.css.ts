@@ -19,6 +19,10 @@ export const drawer = style({
   maxHeight: '100%',
 });
 
+export const editorWrapper = style({
+  width: '100%',
+});
+
 globalStyle(`${drawer} > div`, {
   height: 'unset',
 });

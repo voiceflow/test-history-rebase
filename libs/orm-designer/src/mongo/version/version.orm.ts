@@ -16,7 +16,8 @@ export class VersionORM extends MongoAtomicORM<VersionEntity> {
   static PLATFORM_DATA_PATH = 'platformData' as const satisfies keyof VersionEntity;
 
   async findKnowledgeBaseSettings(versionID: string) {
-    const document = await this.findOne(versionID);
+    const document = await this.findOne(versionID, { fields: ['knowledgeBase'] });
+
     return document?.knowledgeBase?.settings;
   }
 

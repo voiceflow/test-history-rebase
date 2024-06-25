@@ -1,128 +1,72 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { AI_MODEL_PARAMS, KnowledgeBaseSettings } from '@voiceflow/dtos';
-import { NotFoundException } from '@voiceflow/exception';
 import { UnleashFeatureFlagService } from '@voiceflow/nestjs-common';
-import { KnowledgeBaseORM, ProjectEntity, ProjectORM } from '@voiceflow/orm-designer';
-import * as Realtime from '@voiceflow/realtime-sdk/backend';
-import { FeatureFlag } from '@voiceflow/realtime-sdk/backend';
+import { KnowledgeBaseORM, ProjectORM, VersionORM } from '@voiceflow/orm-designer';
+import { FeatureFlag, KB_SETTINGS_DEFAULT } from '@voiceflow/realtime-sdk/backend';
 
 import { CacheService, type KeyValueStrategy } from '@/cache/cache.service';
 import { MutableService } from '@/common';
-import { ProjectService } from '@/project/project.service';
-import { VersionService } from '@/version/version.service';
 
 @Injectable()
 export class KnowledgeBaseSettingsService extends MutableService<KnowledgeBaseORM> {
-  private static getKbSettingsKey({ assistantID }: { assistantID: string }): string {
+  private static getKBSettingsKey({ assistantID }: { assistantID: string }): string {
     return `kb-settings:${assistantID}`;
   }
 
-  private settingsCache: KeyValueStrategy<typeof KnowledgeBaseSettingsService.getKbSettingsKey>;
+  private static getKBEnvironmentSettingsKey({ environmentID }: { environmentID: string }): string {
+    return `kb-environment-settings:${environmentID}`;
+  }
 
-  // eslint-disable-next-line max-params
+  private settingsCache: KeyValueStrategy<typeof KnowledgeBaseSettingsService.getKBSettingsKey>;
+
+  private environmentSettingsCache: KeyValueStrategy<typeof KnowledgeBaseSettingsService.getKBEnvironmentSettingsKey>;
+
   constructor(
-    @Inject(CacheService)
-    private readonly cache: CacheService,
-    @Inject(UnleashFeatureFlagService)
-    private readonly unleash: UnleashFeatureFlagService,
     @Inject(KnowledgeBaseORM)
     protected readonly orm: KnowledgeBaseORM,
     @Inject(ProjectORM)
     protected readonly projectORM: ProjectORM,
-    @Inject(VersionService)
-    protected readonly version: VersionService,
-    @Inject(ProjectService)
-    protected readonly project: ProjectService
+    @Inject(VersionORM)
+    protected readonly versionORM: VersionORM,
+    @Inject(CacheService)
+    private readonly cache: CacheService,
+    @Inject(UnleashFeatureFlagService)
+    private readonly unleash: UnleashFeatureFlagService
   ) {
     super();
+
     this.settingsCache = this.cache.keyValueStrategyFactory({
       expire: 60 * 60,
-      keyCreator: KnowledgeBaseSettingsService.getKbSettingsKey,
+      keyCreator: KnowledgeBaseSettingsService.getKBSettingsKey,
+    });
+    this.environmentSettingsCache = this.cache.keyValueStrategyFactory({
+      expire: 60 * 60,
+      keyCreator: KnowledgeBaseSettingsService.getKBEnvironmentSettingsKey,
     });
   }
 
-  async getSettings(assistantID: string): Promise<KnowledgeBaseSettings> {
-    const settings = await this.orm.findSettings(assistantID);
+  private normalizeSettings(settings: KnowledgeBaseSettings): KnowledgeBaseSettings {
+    let normalizedSettings = settings;
 
-    if (!settings) {
-      await this.updateSettings(assistantID, Realtime.KB_SETTINGS_DEFAULT);
-      return Realtime.KB_SETTINGS_DEFAULT;
+    if (normalizedSettings.summarization.maxTokens) {
+      normalizedSettings = {
+        ...normalizedSettings,
+        summarization: {
+          ...normalizedSettings.summarization,
+          // maxTokens can't be higher than the model limit
+          maxTokens: Math.min(
+            normalizedSettings.summarization.maxTokens,
+            AI_MODEL_PARAMS[normalizedSettings.summarization.model].maxTokens
+          ),
+        },
+      };
     }
 
-    return settings;
+    return normalizedSettings;
   }
 
-  async updateSettings(assistantID: string, newSettings: KnowledgeBaseSettings): Promise<void> {
-    const updatedSettings = { ...newSettings };
-
-    if (updatedSettings.summarization.maxTokens) {
-      // maxTokens can't be higher than the model limit
-      updatedSettings.summarization.maxTokens = Math.min(
-        updatedSettings.summarization.maxTokens,
-        AI_MODEL_PARAMS[updatedSettings.summarization.model].maxTokens
-      );
-    }
-
-    await this.orm.updateSettings(assistantID, newSettings);
-
-    await this.updateCachedSettings(assistantID, newSettings);
-  }
-
-  async updateCachedSettings(assistantID: string, settings: KnowledgeBaseSettings) {
-    await this.settingsCache.set({ assistantID }, JSON.stringify(settings));
-  }
-
-  async getVersionSettings(versionID: string): Promise<KnowledgeBaseSettings> {
-    const versionDocument = await this.version.findOne(versionID);
-    if (!versionDocument) {
-      throw new NotFoundException('Version not found');
-    }
-
-    const versionSettings = versionDocument?.knowledgeBase?.settings;
-    if (versionSettings) {
-      return versionSettings;
-    }
-
-    // support both options for backward compatibility
-    const projectID = versionDocument?.projectID.toHexString();
-    let projectDocument: ProjectEntity | null = null;
-    if (projectID) {
-      projectDocument = await this.project.findOne(projectID);
-    }
-
-    const projectSettings = projectDocument?.knowledgeBase?.settings;
-    if (projectSettings) {
-      // copy data from project level to version level if version level is empty
-      await this.updateVersionSettings(versionID, projectSettings);
-      return projectSettings;
-    }
-
-    // apply default settings if none are available
-    await this.updateVersionSettings(versionID, Realtime.KB_SETTINGS_DEFAULT);
-    return Realtime.KB_SETTINGS_DEFAULT;
-  }
-
-  async updateVersionSettings(versionID: string, newSettings: KnowledgeBaseSettings) {
-    const updatedSettings = { ...newSettings };
-
-    if (updatedSettings.summarization.maxTokens) {
-      // maxTokens can't be higher than the model limit
-      updatedSettings.summarization.maxTokens = Math.min(
-        updatedSettings.summarization.maxTokens,
-        AI_MODEL_PARAMS[updatedSettings.summarization.model].maxTokens
-      );
-    }
-
-    await this.version.updateKnowledgeBaseSettings(versionID, newSettings);
-
-    const versionDocument = await this.version.findOne(versionID);
-    if (versionDocument) {
-      await this.updateCachedSettings(versionDocument.projectID.toString(), newSettings);
-    }
-  }
-
-  async getProjectSettingsFromCache(projectID: string): Promise<KnowledgeBaseSettings | undefined> {
-    const cachedSettings = await this.settingsCache.get({ assistantID: projectID });
+  private async findCacheForAssistant(assistantID: string): Promise<KnowledgeBaseSettings | undefined> {
+    const cachedSettings = await this.settingsCache.get({ assistantID });
 
     if (cachedSettings) {
       return JSON.parse(cachedSettings);
@@ -131,25 +75,98 @@ export class KnowledgeBaseSettingsService extends MutableService<KnowledgeBaseOR
     return undefined;
   }
 
-  async getProjectSettings(projectID: string): Promise<KnowledgeBaseSettings> {
-    const cachedSettings = await this.getProjectSettingsFromCache(projectID);
+  private async updateCacheForAssistant(assistantID: string, settings: KnowledgeBaseSettings) {
+    await this.settingsCache.set({ assistantID }, JSON.stringify(settings));
+  }
+
+  private async findCacheForEnvironment(environmentID: string): Promise<KnowledgeBaseSettings | undefined> {
+    const cachedSettings = await this.environmentSettingsCache.get({ environmentID });
+
+    if (cachedSettings) {
+      return JSON.parse(cachedSettings);
+    }
+
+    return undefined;
+  }
+
+  private async updateCacheForEnvironment(environmentID: string, settings: KnowledgeBaseSettings) {
+    await this.environmentSettingsCache.set({ environmentID }, JSON.stringify(settings));
+  }
+
+  private async findForAssistantOnly(assistantID: string): Promise<KnowledgeBaseSettings> {
+    let settings = await this.orm.findSettings(assistantID);
+
+    if (settings) {
+      await this.updateCacheForAssistant(assistantID, settings);
+    } else {
+      await this.updateForAssistant(assistantID, KB_SETTINGS_DEFAULT);
+
+      settings = KB_SETTINGS_DEFAULT;
+    }
+
+    return settings;
+  }
+
+  async findForAssistant(assistantID: string): Promise<KnowledgeBaseSettings> {
+    const { devVersion, workspaceID } = await this.projectORM.getVersionAndWorkspaceID(assistantID);
+
+    if (devVersion && this.unleash.isEnabled(FeatureFlag.VERSIONED_KB_SETTINGS, { workspaceID })) {
+      return this.findForEnvironment(devVersion);
+    }
+
+    const cachedSettings = await this.findCacheForAssistant(assistantID);
 
     if (cachedSettings) {
       return cachedSettings;
     }
 
-    const { devVersion, workspaceID } = await this.projectORM.getVersionAndWorkspaceID(projectID);
+    return this.findForAssistantOnly(assistantID);
+  }
 
-    if (this.unleash.isEnabled(FeatureFlag.VERSIONED_KB_SETTINGS, { workspaceID }) && devVersion) {
-      const versionSettings = await this.getVersionSettings(devVersion);
-      await this.updateCachedSettings(projectID, versionSettings);
+  async updateForAssistant(assistantID: string, settings: KnowledgeBaseSettings): Promise<void> {
+    const normalizedSettings = this.normalizeSettings(settings);
 
-      return versionSettings;
+    await this.orm.updateSettings(assistantID, normalizedSettings);
+    await this.updateCacheForAssistant(assistantID, normalizedSettings);
+  }
+
+  async findForEnvironment(environmentID: string): Promise<KnowledgeBaseSettings> {
+    const cachedSettings = await this.findCacheForEnvironment(environmentID);
+
+    if (cachedSettings) {
+      return cachedSettings;
     }
 
-    const settings = await this.getSettings(projectID);
-    await this.updateCachedSettings(projectID, settings);
+    const { projectID, knowledgeBase } = await this.versionORM.findOneOrFail(environmentID, {
+      fields: ['projectID', 'knowledgeBase'],
+    });
 
-    return settings;
+    if (knowledgeBase?.settings) {
+      await this.updateCacheForEnvironment(environmentID, knowledgeBase.settings);
+
+      return knowledgeBase.settings;
+    }
+
+    const projectSettings = await this.orm.findSettings(projectID.toJSON());
+
+    if (projectSettings) {
+      // copy data from project level to version level if version level is empty
+      await this.updateForEnvironment(environmentID, projectSettings);
+
+      return projectSettings;
+    }
+
+    // apply default settings if none are available
+    await this.updateForEnvironment(environmentID, KB_SETTINGS_DEFAULT);
+
+    return KB_SETTINGS_DEFAULT;
+  }
+
+  async updateForEnvironment(environmentID: string, settings: KnowledgeBaseSettings) {
+    const normalizedSettings = this.normalizeSettings(settings);
+
+    await this.versionORM.updateKnowledgeBaseSettings(environmentID, normalizedSettings);
+
+    await this.updateCacheForEnvironment(environmentID, normalizedSettings);
   }
 }

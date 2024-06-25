@@ -12,6 +12,12 @@ export class ProjectORM extends MongoAtomicORM<ProjectEntity> {
 
   static PLATFORM_DATA_PATH = 'platformData' as const;
 
+  async getWorkspaceID(projectID: string) {
+    const { teamID } = await this.findOneOrFail(projectID, { fields: ['teamID'] });
+
+    return teamID;
+  }
+
   async getPlatformAndType(projectID: string): Promise<{ type?: string; platform?: string }> {
     const project = await this.findOne(projectID);
 

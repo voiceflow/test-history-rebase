@@ -9,7 +9,7 @@ import { ZodValidationPipe } from 'nestjs-zod';
 
 import { KnowledgeBaseSettingsService } from './settings.service';
 
-@Controller('versions/:versionID/knowledge-base/settings')
+@Controller('versions/:environmentID/knowledge-base/settings')
 @ApiTags('VersionKnowledgeBaseSettings')
 export class KnowledgeBaseVersionSettingsPublicHTTPController {
   constructor(
@@ -18,39 +18,39 @@ export class KnowledgeBaseVersionSettingsPublicHTTPController {
   ) {}
 
   @Get()
-  @Authorize.Permissions<Request<{ versionID: string }>>([Permission.PROJECT_READ], (request) => ({
-    id: request.params.versionID,
+  @Authorize.Permissions<Request<{ environmentID: string }>>([Permission.PROJECT_READ], (request) => ({
+    id: request.params.environmentID,
     kind: 'version',
   }))
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Get version knowledge base settings' })
-  @ApiParam({ name: 'versionID', type: 'string' })
+  @ApiParam({ name: 'environmentID', type: 'string' })
   @ZodApiResponse({
     status: HttpStatus.OK,
     schema: KnowledgeBaseSettingsDTO,
     description: 'Get the users versioned knowledge base settings',
   })
-  async getSettings(@Param('versionID') versionID: string): Promise<KnowledgeBaseSettings> {
-    return this.service.getVersionSettings(versionID);
+  async getOne(@Param('environmentID') environmentID: string): Promise<KnowledgeBaseSettings> {
+    return this.service.findForEnvironment(environmentID);
   }
 
   @Patch()
-  @Authorize.Permissions<Request<{ versionID: string }>>([Permission.PROJECT_UPDATE], (request) => ({
-    id: request.params.versionID,
+  @Authorize.Permissions<Request<{ environmentID: string }>>([Permission.PROJECT_UPDATE], (request) => ({
+    id: request.params.environmentID,
     kind: 'version',
   }))
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Update version knowledge base settings' })
-  @ApiParam({ name: 'versionID', type: 'string' })
+  @ApiParam({ name: 'environmentID', type: 'string' })
   @ZodApiBody({ schema: KnowledgeBaseSettingsDTO })
   @ZodApiResponse({
     status: HttpStatus.OK,
     description: 'Update the users versioned knowledge base settings',
   })
-  async updateSettings(
-    @Param('versionID') versionID: string,
+  async updateOne(
+    @Param('environmentID') environmentID: string,
     @Body(new ZodValidationPipe(KnowledgeBaseSettingsDTO)) newSettings: KnowledgeBaseSettings
   ): Promise<void> {
-    return this.service.updateVersionSettings(versionID, newSettings);
+    return this.service.updateForEnvironment(environmentID, newSettings);
   }
 }

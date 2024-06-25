@@ -81,14 +81,15 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
     @Inject(KnowledgeBaseORM)
     protected readonly orm: KnowledgeBaseORM,
     @Inject(ProjectORM)
-    protected readonly projectOrm: ProjectORM,
+    protected readonly projectORM: ProjectORM,
     @Inject(RefreshJobsOrm)
-    protected readonly refreshJobsOrm: RefreshJobsOrm,
+    protected readonly refreshJobsORM: RefreshJobsOrm,
     @Inject(UnleashFeatureFlagService)
     private readonly unleash: UnleashFeatureFlagService,
     @Inject(RefreshJobService)
     private readonly refreshJobService: RefreshJobService,
-    @Inject(BillingClient) private readonly billingClient: BillingClient,
+    @Inject(BillingClient)
+    private readonly billingClient: BillingClient,
     @Inject(KlParserClient)
     private klParserClient: KlParserClient,
     @Inject(KnowledgeBaseTagService)
@@ -169,7 +170,7 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
     };
     maxChunkSize?: number;
   }) {
-    const settings = await this.knowledgeBaseSettingsService.getProjectSettings(projectID);
+    const settings = await this.knowledgeBaseSettingsService.findForAssistant(projectID);
 
     await this.klParserClient.parse(projectID, document, workspaceID.toString(), {
       chunkStrategy: {
@@ -287,7 +288,7 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
     await this.refreshJobService.updateMany(refreshJobsToUpdate);
 
     // Remove documents with refreshRate set to 'never' from refreshJobs collection
-    await this.refreshJobsOrm.deleteManyByDocumentIDs(projectID, deleteDocumentIDs);
+    await this.refreshJobsORM.deleteManyByDocumentIDs(projectID, deleteDocumentIDs);
   }
 
   /* Create */
@@ -297,7 +298,7 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
     userID: number,
     data: DocumentCreateManyURLsRequest
   ): Promise<KnowledgeBaseDocument[]> {
-    const project = await this.projectOrm.findOneOrFail(projectID);
+    const project = await this.projectORM.findOneOrFail(projectID);
     const existingDocuments: Omit<VersionKnowledgeBaseDocument, 'updatedAt'>[] = project?.knowledgeBase?.documents
       ? Object.values(project.knowledgeBase.documents)
       : [];
@@ -363,7 +364,7 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
       existingDocument = await this.validateDocumentExists(projectID, existingDocumentID, true);
     }
 
-    const project = await this.projectOrm.findOneOrFail(projectID);
+    const project = await this.projectORM.findOneOrFail(projectID);
     const urlData = data.data as KBDocumentUrlData;
 
     urlData.name = this.strippedURL(urlData.url);
@@ -476,7 +477,7 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
       existingDocument = await this.validateDocumentExists(projectID, existingDocumentID, true);
     }
 
-    const project = await this.projectOrm.findOneOrFail(projectID);
+    const project = await this.projectORM.findOneOrFail(projectID);
     const existingDocuments: Omit<VersionKnowledgeBaseDocument, 'updatedAt'>[] = project?.knowledgeBase?.documents
       ? Object.values(project.knowledgeBase.documents)
       : [];
@@ -559,7 +560,7 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
     data: DocumentUploadTableRequestData,
     overwrite = false
   ): Promise<DocumentUploadTableResponse> {
-    const project = await this.projectOrm.findOneOrFail(projectID);
+    const project = await this.projectORM.findOneOrFail(projectID);
     const existingDocuments: Omit<VersionKnowledgeBaseDocument, 'updatedAt'>[] = project?.knowledgeBase?.documents
       ? Object.values(project.knowledgeBase.documents)
       : [];
@@ -825,7 +826,7 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
   /* Patch */
 
   async patchOneDocument(assistantID: string, documentID: string, document: DocumentPatchOneRequest) {
-    const project = await this.projectOrm.findOneOrFail(assistantID);
+    const project = await this.projectORM.findOneOrFail(assistantID);
 
     const doc = await this.findOneDocument(assistantID, documentID);
 
@@ -869,7 +870,7 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
         | Partial<KBDocumentTextData>;
     }
   ) {
-    const project = await this.projectOrm.findOneOrFail(assistantID);
+    const project = await this.projectORM.findOneOrFail(assistantID);
     const documents = await this.findManyDocuments(assistantID, documentIDs);
     const refreshRatesDocuments: (Omit<VersionKnowledgeBaseDocument, 'documentID' | 'updatedAt'> & {
       documentID: string;
@@ -910,7 +911,7 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
     const workspaceID = await this.orm.getWorkspaceID(assistantID);
     await this.klParserClient.deleteMany(assistantID, ids, workspaceID.toString());
 
-    await this.refreshJobsOrm.deleteManyByDocumentIDs(assistantID, ids);
+    await this.refreshJobsORM.deleteManyByDocumentIDs(assistantID, ids);
 
     await this.orm.deleteManyDocuments(assistantID, ids);
   }
@@ -923,7 +924,7 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
       throw new BadRequestException('too many documents');
     }
 
-    const project = await this.projectOrm.findOneOrFail(assistantID);
+    const project = await this.projectORM.findOneOrFail(assistantID);
     const documents = project?.knowledgeBase?.documents ? Object.values(project.knowledgeBase.documents) : [];
 
     const filteredDocs = documents.filter(({ documentID, data, status }) => {
@@ -993,7 +994,7 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
       await this.refreshJobService.sendRefreshJobs(assistantID, [document], workspaceID);
     } else {
       await this.orm.patchManyDocuments(assistantID, [documentID], dataForUpdate);
-      const project = await this.projectOrm.findOneOrFail(assistantID);
+      const project = await this.projectORM.findOneOrFail(assistantID);
 
       this.klParserProcessingCall({
         projectID: assistantID,
@@ -1047,7 +1048,7 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
 
     await this.orm.attachManyTagsToDocument(assistantID, documentID, tagsToAdd);
 
-    await this.refreshJobsOrm.attachManyTags(assistantID, documentID, tagsToAdd);
+    await this.refreshJobsORM.attachManyTags(assistantID, documentID, tagsToAdd);
 
     this.updateKBParserTags(assistantID, workspaceID, {
       ...document,
@@ -1068,7 +1069,7 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
 
     await this.orm.detachManyTagsFromDocument(assistantID, documentID, tagsToRemove);
 
-    await this.refreshJobsOrm.detachManyTags(assistantID, documentID, tagsToRemove);
+    await this.refreshJobsORM.detachManyTags(assistantID, documentID, tagsToRemove);
 
     this.updateKBParserTags(assistantID, workspaceID, {
       ...document,

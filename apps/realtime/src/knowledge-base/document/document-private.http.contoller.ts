@@ -1,14 +1,12 @@
 import { Body, Controller, HttpCode, HttpStatus, Inject, Param, Patch } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { ZodApiBody, ZodApiResponse } from '@voiceflow/nestjs-common';
-// import { Authorize } from '@voiceflow/sdk-auth/nestjs';
 import { ZodValidationPipe } from 'nestjs-zod';
 
 import { KnowledgeBaseDocumentService } from './document.service';
 import { DocumentPatchOneRequest } from './dtos/document-patch.dto';
 
 @Controller('private/knowledge-base/:assistantID/document')
-// @Authorize.Identity()
 @ApiTags('KBPrivateDocument')
 export class KnowledgeBaseDocumentPrivateHTTPController {
   constructor(

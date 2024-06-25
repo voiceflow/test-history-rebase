@@ -1,5 +1,5 @@
-import { UpgradePrompt } from '@/ducks/tracking/constants';
-import { VoidInternalProps } from '@/ModalsV2/types';
+import type { UpgradePrompt } from '@/ducks/tracking/constants';
+import type { VoidInternalProps } from '@/ModalsV2/types';
 
 export interface PaymentModalProps {
   promptType?: UpgradePrompt;

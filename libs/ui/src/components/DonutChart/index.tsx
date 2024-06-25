@@ -3,11 +3,11 @@ import { Pie, PieChart, PolarGrid, ResponsiveContainer, Tooltip } from 'recharts
 
 import { DonutChartShape, DonutChartStatistics, DonutChartTooltip } from './components';
 import { PIE_PROPS, RADIAL_TICKS } from './constants';
-import { DonutChartDatum } from './types';
+import type { DonutChartDatum } from './types';
 
 export * from './types';
 
-const createUnits = (responsive: boolean) => (radius: number) => responsive ? `${radius}%` : radius;
+const createUnits = (responsive: boolean) => (radius: number) => (responsive ? `${radius}%` : radius);
 
 export interface DonutChartProps extends React.PropsWithChildren {
   data: DonutChartDatum[];
@@ -68,7 +68,9 @@ const DonutChart: React.FC<DonutChartProps> = ({
     <ResponsiveContainer width="100%" height="100%">
       <PieChart innerRadius={units(tickOuterRadius - tickLength)} outerRadius={units(tickOuterRadius)}>
         {/* renders radial ticks inside the donut */}
-        {withRadialTicks && <PolarGrid gridType="circle" polarAngles={RADIAL_TICKS} polarRadius={[]} stroke="#dbe0e4" />}
+        {withRadialTicks && (
+          <PolarGrid gridType="circle" polarAngles={RADIAL_TICKS} polarRadius={[]} stroke="#dbe0e4" />
+        )}
 
         {/* render the actual values of the donuts */}
         <Pie

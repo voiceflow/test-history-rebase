@@ -1,9 +1,10 @@
-import * as Platform from '@voiceflow/platform-config';
+import type * as Platform from '@voiceflow/platform-config';
 import React from 'react';
 
 import { useArePromptsEmpty } from '@/hooks';
 
-import Hover, { HoverButtonProps } from './Hover';
+import type { HoverButtonProps } from './Hover';
+import Hover from './Hover';
 
 export interface PromptButtonProps extends HoverButtonProps {
   contextPrompts?: Platform.Base.Models.Prompt.Model[];

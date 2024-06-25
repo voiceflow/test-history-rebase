@@ -1,14 +1,14 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { BaseModels } from '@voiceflow/base-types';
-import { KnowledgeBaseSettings } from '@voiceflow/dtos';
+import type { BaseModels } from '@voiceflow/base-types';
+import type { KnowledgeBaseSettings } from '@voiceflow/dtos';
 import { BadRequestException } from '@voiceflow/exception';
 import * as fetch from '@voiceflow/fetch';
-import { VersionKnowledgeBaseDocument } from '@voiceflow/orm-designer';
+import type { VersionKnowledgeBaseDocument } from '@voiceflow/orm-designer';
 import undici from 'undici';
 
-import { FetchClient } from '@/common/fetch';
+import type { FetchClient } from '@/common/fetch';
 
-import { KlParserModuleOptions } from './kl-parser.interface';
+import type { KlParserModuleOptions } from './kl-parser.interface';
 import { KL_PARSER_MODULE_OPTIONS_TOKEN } from './kl-parser.module-definition';
 
 @Injectable()

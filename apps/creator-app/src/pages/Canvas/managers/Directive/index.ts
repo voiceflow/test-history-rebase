@@ -1,6 +1,6 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 
-import { NodeManagerConfig } from '../types';
+import type { NodeManagerConfig } from '../types';
 import { NODE_CONFIG } from './constants';
 import DirectiveEditor from './DirectiveEditor';
 import DirectiveStep from './DirectiveStep';

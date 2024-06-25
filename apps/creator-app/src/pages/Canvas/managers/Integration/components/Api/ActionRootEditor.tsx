@@ -1,4 +1,4 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import * as Documentation from '@/config/documentation';

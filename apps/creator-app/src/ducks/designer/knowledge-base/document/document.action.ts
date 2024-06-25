@@ -1,7 +1,7 @@
 import { Utils } from '@voiceflow/common';
 import { CRUD } from '@voiceflow/sdk-logux-designer';
 
-import { KnowledgeBaseDocument } from '@/models/KnowledgeBase.model';
+import type { KnowledgeBaseDocument } from '@/models/KnowledgeBase.model';
 
 import { type as kbType } from '../knowledge-base.action';
 import { STATE_KEY } from './document.state';
@@ -26,7 +26,8 @@ export const PatchMany = documentAction.crud.patchMany<PatchMany>();
 
 /* UpdateMany */
 
-export type UpdateData = Partial<Pick<KnowledgeBaseDocument, 'tags' | 'status' | 'updatedAt' | 'data'>> & Pick<KnowledgeBaseDocument, 'id'>;
+export type UpdateData = Partial<Pick<KnowledgeBaseDocument, 'tags' | 'status' | 'updatedAt' | 'data'>> &
+  Pick<KnowledgeBaseDocument, 'id'>;
 
 export interface UpdateMany extends CRUD.UpdateManyRequest<UpdateData> {}
 

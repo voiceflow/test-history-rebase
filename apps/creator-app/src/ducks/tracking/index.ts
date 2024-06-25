@@ -1,4 +1,4 @@
-import { TrackingState } from './types';
+import type { TrackingState } from './types';
 
 export * from './constants';
 export * from './events';

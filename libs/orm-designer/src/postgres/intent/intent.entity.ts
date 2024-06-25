@@ -1,5 +1,5 @@
 import { ArrayType, Entity, Index, PrimaryKey, Property, Unique } from '@mikro-orm/core';
-import { IntentAutomaticRepromptSettings } from '@voiceflow/dtos';
+import type { IntentAutomaticRepromptSettings } from '@voiceflow/dtos';
 
 import { Environment, PostgresCMSTabularEntity } from '../common';
 

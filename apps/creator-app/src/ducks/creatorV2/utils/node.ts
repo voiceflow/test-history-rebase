@@ -1,11 +1,12 @@
-import { BaseModels } from '@voiceflow/base-types';
-import { Utils, WithRequired } from '@voiceflow/common';
+import type { BaseModels } from '@voiceflow/base-types';
+import type { WithRequired } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Draft } from 'immer';
+import type { Draft } from 'immer';
 import * as Normal from 'normal-store';
-import { Overwrite } from 'utility-types';
+import type { Overwrite } from 'utility-types';
 
-import { CreatorState } from '../types';
+import type { CreatorState } from '../types';
 import { addBuiltinPort, addByKeyPort, addDynamicPort, addPort, removePort } from './port';
 
 export const nodeFactory = <T extends string>(
@@ -28,24 +29,37 @@ export const nodeFactory = <T extends string>(
   id: nodeID,
 });
 
-export const nodeDataFactory = (nodeID: string, data: WithRequired<Partial<Realtime.NodeData<unknown>>, 'type'>): Realtime.NodeData<unknown> => ({
+export const nodeDataFactory = (
+  nodeID: string,
+  data: WithRequired<Partial<Realtime.NodeData<unknown>>, 'type'>
+): Realtime.NodeData<unknown> => ({
   name: 'Block',
   ...data,
   nodeID,
 });
 
-export const blockNodeDataFactory = (nodeID: string, data: Partial<Realtime.BlockNodeData<unknown>> = {}): Realtime.BlockNodeData<unknown> => ({
+export const blockNodeDataFactory = (
+  nodeID: string,
+  data: Partial<Realtime.BlockNodeData<unknown>> = {}
+): Realtime.BlockNodeData<unknown> => ({
   blockColor: '',
   ...nodeDataFactory(nodeID, { type: Realtime.BlockType.COMBINED, ...data }),
 });
 
-export const addNode = (state: Draft<CreatorState>, { nodeID, data }: { nodeID: string; data: Realtime.NodeDataDescriptor<unknown> }): void => {
+export const addNode = (
+  state: Draft<CreatorState>,
+  { nodeID, data }: { nodeID: string; data: Realtime.NodeDataDescriptor<unknown> }
+): void => {
   state.nodes = Normal.appendOne(state.nodes, nodeID, { ...data, nodeID });
 };
 
 export const addNodeWithPorts = (
   state: Draft<CreatorState>,
-  { nodeID, data, ports }: { nodeID: string; data: Realtime.NodeDataDescriptor<unknown>; ports: Realtime.PortsDescriptor }
+  {
+    nodeID,
+    data,
+    ports,
+  }: { nodeID: string; data: Realtime.NodeDataDescriptor<unknown>; ports: Realtime.PortsDescriptor }
 ): void => {
   state.portsByNodeID[nodeID] = Realtime.Utils.port.createEmptyNodePorts();
   state.linkIDsByNodeID[nodeID] = [];
@@ -104,7 +118,10 @@ export const addStepReferences = (
   state.stepIDsByParentNodeID[parentNodeID] = updateSteps(currentStepIDs);
 };
 
-export const removeStepReferences = (state: Draft<CreatorState>, { parentNodeID, stepIDs }: { parentNodeID: string; stepIDs: string[] }): void => {
+export const removeStepReferences = (
+  state: Draft<CreatorState>,
+  { parentNodeID, stepIDs }: { parentNodeID: string; stepIDs: string[] }
+): void => {
   const currentStepIDs = state.stepIDsByParentNodeID[parentNodeID] ?? [];
 
   stepIDs.forEach((stepID) => delete state.parentNodeIDByStepID[stepID]);

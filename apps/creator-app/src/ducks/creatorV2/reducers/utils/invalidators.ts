@@ -1,9 +1,10 @@
-import { BaseModels } from '@voiceflow/base-types';
+import type { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { ActionCreator } from 'typescript-fsa';
+import type { ActionCreator } from 'typescript-fsa';
 
 import type { State } from '@/ducks';
-import { ActionInvalidator, createInvalidator } from '@/ducks/utils';
+import type { ActionInvalidator } from '@/ducks/utils';
+import { createInvalidator } from '@/ducks/utils';
 
 import { linksByPortIDSelector, parentNodeIDByStepIDSelector } from '../../selectors';
 

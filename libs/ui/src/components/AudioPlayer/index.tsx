@@ -3,7 +3,15 @@ import TippyTooltip from '@ui/components/TippyTooltip';
 import { swallowEvent } from '@ui/utils';
 import React from 'react';
 
-import { CloseButton, Container, DurationText, FileNameContainer, PausePlayButton, ProgressBar, TextContainer } from './components';
+import {
+  CloseButton,
+  Container,
+  DurationText,
+  FileNameContainer,
+  PausePlayButton,
+  ProgressBar,
+  TextContainer,
+} from './components';
 import useAudioPlayer from './useAudioPlayer';
 import { formatTime } from './utils';
 
@@ -16,7 +24,14 @@ export interface AudioPlayerProps {
   showDuration?: boolean;
 }
 
-const AudioPlayer: React.FC<AudioPlayerProps> = ({ link, title, onClose, autoplay = false, showDuration = false, className }) => {
+const AudioPlayer: React.FC<AudioPlayerProps> = ({
+  link,
+  title,
+  onClose,
+  autoplay = false,
+  showDuration = false,
+  className,
+}) => {
   const containerRef = React.useRef<HTMLDivElement | null>(null);
 
   const audioPlayer = useAudioPlayer({ autoplay, audioURL: link });
@@ -37,7 +52,11 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ link, title, onClose, autopla
       <ProgressBar percent={audioPlayer.percent} />
 
       <Box.Flex fullWidth>
-        <PausePlayButton large onClick={swallowEvent(audioPlayer.onToggle)} icon={audioPlayer.playing ? 'pause' : 'playOutline'} />
+        <PausePlayButton
+          large
+          onClick={swallowEvent(audioPlayer.onToggle)}
+          icon={audioPlayer.playing ? 'pause' : 'playOutline'}
+        />
 
         <TextContainer>
           <FileNameContainer>

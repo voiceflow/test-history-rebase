@@ -4,12 +4,13 @@ import { useTrackingEvents } from '@/hooks';
 import { EngineContext } from '@/pages/Canvas/contexts';
 
 import Content from './Content';
-import EditableComment, { EditableCommentRef } from './EditableComment';
+import type { EditableCommentRef } from './EditableComment';
+import EditableComment from './EditableComment';
 
-const NewComment: React.ForwardRefRenderFunction<EditableCommentRef, { containerRef?: React.RefObject<HTMLDivElement> }> = (
-  { containerRef },
-  ref
-) => {
+const NewComment: React.ForwardRefRenderFunction<
+  EditableCommentRef,
+  { containerRef?: React.RefObject<HTMLDivElement> }
+> = ({ containerRef }, ref) => {
   const engine = React.useContext(EngineContext)!;
   const [trackEvents] = useTrackingEvents();
 
@@ -21,7 +22,13 @@ const NewComment: React.ForwardRefRenderFunction<EditableCommentRef, { container
 
   return (
     <Content ref={containerRef}>
-      <EditableComment ref={ref} onPost={onPost} isEditing placeholder="Comment or @mention" onCancel={() => engine.comment.resetCreating()} />
+      <EditableComment
+        ref={ref}
+        onPost={onPost}
+        isEditing
+        placeholder="Comment or @mention"
+        onCancel={() => engine.comment.resetCreating()}
+      />
     </Content>
   );
 };

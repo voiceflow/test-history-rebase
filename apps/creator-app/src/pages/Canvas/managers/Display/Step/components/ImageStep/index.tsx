@@ -1,11 +1,12 @@
-import { BaseModels, BaseNode } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type { BaseNode } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { HSLShades } from '@/constants';
+import type { HSLShades } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
 import Step, { Item, Section } from '@/pages/Canvas/components/Step';
-import { ConnectedStep } from '@/pages/Canvas/managers/types';
+import type { ConnectedStep } from '@/pages/Canvas/managers/types';
 
 import { NODE_CONFIG } from '../../../constants';
 import { getLabel } from './utils';
@@ -19,7 +20,11 @@ export interface ImageStepProps {
   palette: HSLShades;
 }
 
-const ConnectedImageStep: ConnectedStep<BaseNode.Visual.APLStepData, Realtime.NodeData.VisualBuiltInPorts> = ({ ports, data, palette }) => {
+const ConnectedImageStep: ConnectedStep<BaseNode.Visual.APLStepData, Realtime.NodeData.VisualBuiltInPorts> = ({
+  ports,
+  data,
+  palette,
+}) => {
   const label = getLabel(data);
 
   return (

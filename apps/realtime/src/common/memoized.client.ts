@@ -1,10 +1,13 @@
 import moize from 'moize';
 
 import { MAX_CACHE_AGE, MAX_CACHE_SIZE } from '@/common/fetch';
-import { UserService } from '@/user/user.service';
+import type { UserService } from '@/user/user.service';
 
 export class MemoizedClient<Client> {
-  constructor(private readonly user: UserService | (() => UserService), private readonly factory: (token: string) => Client) {}
+  constructor(
+    private readonly user: UserService | (() => UserService),
+    private readonly factory: (token: string) => Client
+  ) {}
 
   private getMoizedClient = moize(this.factory, {
     maxAge: MAX_CACHE_AGE,

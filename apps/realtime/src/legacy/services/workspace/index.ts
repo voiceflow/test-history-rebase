@@ -1,9 +1,10 @@
-import { Organization } from '@voiceflow/dtos';
+import type { Organization } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 
 import { HEARTBEAT_EXPIRE_TIMEOUT } from '@/constants';
 
-import { AbstractControl, ControlOptions } from '../../control';
+import type { ControlOptions } from '../../control';
+import { AbstractControl } from '../../control';
 import AccessCache from '../utils/accessCache';
 import WorkspaceMemberService from './member';
 import WorkspaceSettingsService from './settings';
@@ -45,9 +46,13 @@ class WorkspaceService extends AbstractControl {
     return this.connectedProjectsCache.values({ workspaceID });
   }
 
-  public async getConnectedViewersPerProject(workspaceID: string): Promise<Record<string, Record<string, Realtime.Viewer[]>>> {
+  public async getConnectedViewersPerProject(
+    workspaceID: string
+  ): Promise<Record<string, Record<string, Realtime.Viewer[]>>> {
     const projectIDs = await this.getConnectedProjects(workspaceID);
-    const projectsViewers = await Promise.all(projectIDs.map((projectID) => this.services.project.getConnectedViewersPerDiagram(projectID)));
+    const projectsViewers = await Promise.all(
+      projectIDs.map((projectID) => this.services.project.getConnectedViewersPerDiagram(projectID))
+    );
 
     return Object.fromEntries(projectIDs.map((projectID, index) => [projectID, projectsViewers[index]]));
   }
@@ -96,7 +101,12 @@ class WorkspaceService extends AbstractControl {
 
   public async create(
     creatorID: number,
-    { name, image, settings, organizationID }: { name: string; image?: string; settings?: Realtime.WorkspaceSettings; organizationID?: string }
+    {
+      name,
+      image,
+      settings,
+      organizationID,
+    }: { name: string; image?: string; settings?: Realtime.WorkspaceSettings; organizationID?: string }
   ): Promise<Realtime.DBWorkspace> {
     const [client] = await Promise.all([this.services.voiceflow.client.getByUserID(creatorID)]);
 
@@ -110,13 +120,20 @@ class WorkspaceService extends AbstractControl {
     return this.get(workspace.id);
   }
 
-  public async checkout(creatorID: number, { workspaceID, ...data }: Realtime.workspace.CheckoutPayload): Promise<void> {
+  public async checkout(
+    creatorID: number,
+    { workspaceID, ...data }: Realtime.workspace.CheckoutPayload
+  ): Promise<void> {
     const client = await this.services.voiceflow.client.getByUserID(creatorID);
 
     return client.billing.workspace.checkout(workspaceID, data);
   }
 
-  public async changeSeats(creatorID: number, workspaceID: string, data: { seats: number; schedule?: boolean }): Promise<void> {
+  public async changeSeats(
+    creatorID: number,
+    workspaceID: string,
+    data: { seats: number; schedule?: boolean }
+  ): Promise<void> {
     const client = await this.services.voiceflow.client.getByUserID(creatorID);
 
     return client.workspace.changeSeats(workspaceID, data);
@@ -137,10 +154,14 @@ class WorkspaceService extends AbstractControl {
     }
 
     await client.identity.workspace.remove(workspaceID);
-    await client.workspace.deleteStripeSubscription(workspaceID).catch((error) => this.log.warn(error, 'delete stripe subscription error'));
+    await client.workspace
+      .deleteStripeSubscription(workspaceID)
+      .catch((error) => this.log.warn(error, 'delete stripe subscription error'));
 
     // TODO: move to identity when creator-api gets phased out
-    await this.services.billing.deleteWorkspaceQuotas(creatorID, workspaceID).catch((error) => this.log.warn(error, 'delete workspace quotas error'));
+    await this.services.billing
+      .deleteWorkspaceQuotas(creatorID, workspaceID)
+      .catch((error) => this.log.warn(error, 'delete workspace quotas error'));
   }
 
   private async getOrganization(creatorID: number, workspaceID: string): Promise<Organization | undefined> {
@@ -149,7 +170,11 @@ class WorkspaceService extends AbstractControl {
     return client.identity.workspace.getOrganization(workspaceID);
   }
 
-  public async isFeatureEnabled(creatorID: number, workspaceID: string | undefined, feature: Realtime.FeatureFlag): Promise<boolean> {
+  public async isFeatureEnabled(
+    creatorID: number,
+    workspaceID: string | undefined,
+    feature: Realtime.FeatureFlag
+  ): Promise<boolean> {
     const [workspace, organization] = await Promise.all([
       workspaceID ? this.get(workspaceID) : null,
       workspaceID ? this.getOrganization(creatorID, workspaceID) : undefined,

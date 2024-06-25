@@ -1,6 +1,7 @@
 import { Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
+import type { TippyTooltipProps, UserData } from '@voiceflow/ui';
 import {
   AssistantCard as BaseAssistantCard,
   Box,
@@ -12,12 +13,10 @@ import {
   stopPropagation,
   SvgIcon,
   TippyTooltip,
-  TippyTooltipProps,
-  UserData,
 } from '@voiceflow/ui';
 import React from 'react';
 
-import { EditableTextAPI } from '@/components/EditableText';
+import type { EditableTextAPI } from '@/components/EditableText';
 import { Permission } from '@/constants/permissions';
 import * as Project from '@/ducks/projectV2';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';

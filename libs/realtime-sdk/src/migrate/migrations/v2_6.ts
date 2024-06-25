@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { BaseNode, BaseUtils } from '@voiceflow/base-types';
 
-import { Transform } from './types';
+import type { Transform } from './types';
 
 const SINGLE_QUOTE_PATTERN = /'/g;
 

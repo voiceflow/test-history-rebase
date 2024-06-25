@@ -3,12 +3,12 @@ import { Modal, toast, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
 import * as ProjectV2 from '@/ducks/projectV2';
-import { SourceType } from '@/ducks/tracking/constants';
+import type { SourceType } from '@/ducks/tracking/constants';
 import { useSelector, useTrackingEvents } from '@/hooks';
 
 import manager from '../../../manager';
 import { ConnectingStage } from './components';
-import { PlatformAccount } from './types';
+import type { PlatformAccount } from './types';
 
 export interface BaseConnectProps {
   source: SourceType;

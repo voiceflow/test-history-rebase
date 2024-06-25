@@ -1,5 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { KnowledgeBaseDocumentIntegrationType, KnowledgeBaseDocumentRefreshRate, KnowledgeBaseDocumentType } from '@voiceflow/dtos';
+import {
+  KnowledgeBaseDocumentIntegrationType,
+  KnowledgeBaseDocumentRefreshRate,
+  KnowledgeBaseDocumentType,
+} from '@voiceflow/dtos';
 import { BadRequestException } from '@voiceflow/exception';
 import { IntegrationOauthTokenORM, KnowledgeBaseORM, RefreshJobsOrm } from '@voiceflow/orm-designer';
 
@@ -69,16 +73,31 @@ export class IntegrationOauthTokenService extends MutableService<IntegrationOaut
   async getManyIntegrationTokens(assistantID: string): Promise<IntegrationFindManyResponse> {
     const integrations = await this.orm.findManyByAssistant(assistantID);
     return {
-      data: integrations.map(({ type, state, creatorID, createdAt }: { type: string; state: string; creatorID: number | null; createdAt: Date }) => ({
-        type: type as KnowledgeBaseDocumentIntegrationType,
-        state,
-        creatorID,
-        createdAt: createdAt?.toISOString(),
-      })),
+      data: integrations.map(
+        ({
+          type,
+          state,
+          creatorID,
+          createdAt,
+        }: {
+          type: string;
+          state: string;
+          creatorID: number | null;
+          createdAt: Date;
+        }) => ({
+          type: type as KnowledgeBaseDocumentIntegrationType,
+          state,
+          creatorID,
+          createdAt: createdAt?.toISOString(),
+        })
+      ),
     };
   }
 
-  async deleteIntegration(assistantID: string, integrationType: IntegrationType = IntegrationType.ZENDESK): Promise<void> {
+  async deleteIntegration(
+    assistantID: string,
+    integrationType: IntegrationType = IntegrationType.ZENDESK
+  ): Promise<void> {
     const { client } = this.resolveIntegrationHandler(integrationType);
 
     // get oauth integration token
@@ -88,7 +107,8 @@ export class IntegrationOauthTokenService extends MutableService<IntegrationOaut
     const existingDocuments = await this.knowledgeBaseOrm.findAllDocuments(assistantID);
 
     const existingURLDocuments = existingDocuments.filter(
-      ({ documentID, data }) => !!documentID && data?.type === KnowledgeBaseDocumentType.URL && data?.accessTokenID === integrationToken[0].id
+      ({ documentID, data }) =>
+        !!documentID && data?.type === KnowledgeBaseDocumentType.URL && data?.accessTokenID === integrationToken[0].id
     );
     const urlDocumentIds = existingURLDocuments.map((d) => d.documentID);
 
@@ -98,7 +118,11 @@ export class IntegrationOauthTokenService extends MutableService<IntegrationOaut
 
     await this.refreshJobs.deleteManyByDocumentIDs(assistantID, urlDocumentIds);
 
-    await this.knowledgeBaseOrm.updateDocumentsRefreshRate(assistantID, urlDocumentIds, KnowledgeBaseDocumentRefreshRate.NEVER);
+    await this.knowledgeBaseOrm.updateDocumentsRefreshRate(
+      assistantID,
+      urlDocumentIds,
+      KnowledgeBaseDocumentRefreshRate.NEVER
+    );
   }
 
   async getAuthUrlIntegration({
@@ -188,7 +212,9 @@ export class IntegrationOauthTokenService extends MutableService<IntegrationOaut
     }
 
     const accessToken = this.aesEncryptionClient.decrypt(integrationToken[0].accessToken);
-    return { data: await client.fetchCountByFilters(accessToken, body?.data?.filters) } as ZendeskCountByFiltersResponse;
+    return {
+      data: await client.fetchCountByFilters(accessToken, body?.data?.filters),
+    } as ZendeskCountByFiltersResponse;
   }
 
   async uploadDocsByFiltersIntegration({
@@ -253,6 +279,12 @@ export class IntegrationOauthTokenService extends MutableService<IntegrationOaut
     });
     const encryptedAccessToken = this.aesEncryptionClient.encrypt(accessToken);
 
-    await this.orm.upsertByAssistant(stateParams.projectID, client.type, encryptedAccessToken, stateParams.creatorID, stateParams.subdomain);
+    await this.orm.upsertByAssistant(
+      stateParams.projectID,
+      client.type,
+      encryptedAccessToken,
+      stateParams.creatorID,
+      stateParams.subdomain
+    );
   }
 }

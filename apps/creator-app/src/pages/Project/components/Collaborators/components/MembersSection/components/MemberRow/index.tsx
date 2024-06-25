@@ -1,5 +1,5 @@
-import { UserRole } from '@voiceflow/dtos';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type { UserRole } from '@voiceflow/dtos';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Members, OverflowTippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 

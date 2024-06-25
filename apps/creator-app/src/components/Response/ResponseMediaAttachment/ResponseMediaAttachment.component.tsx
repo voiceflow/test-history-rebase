@@ -12,10 +12,18 @@ import { ResponseAttachmentContextMenu } from '../ResponseAttachmentContextMenu/
 import { ResponseAttachmentPopper } from '../ResponseAttachmentPopper/ResponseAttachmentPopper.component';
 import type { IResponseMediaAttachment } from './ResponseMediaAttachment.interface';
 
-export const ResponseMediaAttachment: React.FC<IResponseMediaAttachment> = ({ onRemove, attachment, onAttachmentDuplicate, ...props }) => {
+export const ResponseMediaAttachment: React.FC<IResponseMediaAttachment> = ({
+  onRemove,
+  attachment,
+  onAttachmentDuplicate,
+  ...props
+}) => {
   const entitiesVariablesMaps = useAtomValue(entitiesVariablesMapsAtom);
 
-  const url = useMemo(() => markupToString.fromDB(attachment.url, entitiesVariablesMaps), [attachment.url, entitiesVariablesMaps]);
+  const url = useMemo(
+    () => markupToString.fromDB(attachment.url, entitiesVariablesMaps),
+    [attachment.url, entitiesVariablesMaps]
+  );
 
   const attachmentModifiers = usePopperModifiers([{ name: 'offset', options: { offset: [0, 12] } }]);
 
@@ -31,7 +39,14 @@ export const ResponseMediaAttachment: React.FC<IResponseMediaAttachment> = ({ on
           onRemove={() => onRemove()}
           onDuplicate={() => onAttachmentDuplicate(attachment.id)}
           referenceElement={({ ref: contextMenuRef, isOpen: isContextMenuOpen, onContextMenu }) => (
-            <CMSFormListItem pr={0} ref={RefUtil.composeRefs(ref, contextMenuRef)} gap={4} align="center" onRemove={() => onRemove()} showOnHover>
+            <CMSFormListItem
+              pr={0}
+              ref={RefUtil.composeRefs(ref, contextMenuRef)}
+              gap={4}
+              align="center"
+              onRemove={() => onRemove()}
+              showOnHover
+            >
               <Attachment
                 onClick={onOpen}
                 isActive={isOpen || isContextMenuOpen}

@@ -1,6 +1,6 @@
-import { Atom, PrimitiveAtom } from 'jotai';
+import type { Atom, PrimitiveAtom } from 'jotai';
 
-import { AnyModal } from '@/ModalsV2/types';
+import type { AnyModal } from '@/ModalsV2/types';
 
 export interface ICMSResourceEditor {
   Editor: React.FC;

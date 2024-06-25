@@ -1,13 +1,14 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { useSetup, useTeardown } from '@/hooks';
 import { EngineContext } from '@/pages/Canvas/contexts/Engine.context';
-import { Pair, PathPoints } from '@/types';
+import type { Pair, PathPoints } from '@/types';
 
 import type Engine from '..';
 import { EntityType } from '../constants';
-import { EntityInstance, ResourceEntity } from './entity';
+import type { EntityInstance } from './entity';
+import { ResourceEntity } from './entity';
 
 export interface TranslatePointData {
   sync: boolean;

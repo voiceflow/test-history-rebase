@@ -1,6 +1,6 @@
 /* eslint-disable no-bitwise */
 import { PROFILE_COLORS } from '@ui/styles/colors';
-import { Color } from '@ui/types';
+import type { Color } from '@ui/types';
 
 export const colorGetReadableAlfa = (color: Color): string => `${(color?.a ?? 1) * 100}`;
 
@@ -18,7 +18,8 @@ export const getAlternativeColor = (id: number | string) => {
 
 export const toHexString = (hexValue: number) => Math.round(hexValue).toString(16).padStart(2, '0');
 
-export const rgbaToHex = (color: Color) => `#${toHexString(color.r)}${toHexString(color.g)}${toHexString(color.b)}${toHexString(color.a * 0xff)}`;
+export const rgbaToHex = (color: Color) =>
+  `#${toHexString(color.r)}${toHexString(color.g)}${toHexString(color.b)}${toHexString(color.a * 0xff)}`;
 
 export const toRGBAString = (color: Color) => `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`;
 

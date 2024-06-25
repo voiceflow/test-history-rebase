@@ -1,6 +1,6 @@
-import * as Base from '@platform-config/configs/base';
-import { VoiceModels } from '@voiceflow/voice-types';
-import { Normalized } from 'normal-store';
+import type * as Base from '@platform-config/configs/base';
+import type { VoiceModels } from '@voiceflow/voice-types';
+import type { Normalized } from 'normal-store';
 
 export interface Prompt<Voice extends string = string> extends VoiceModels.IntentPrompt<Voice> {}
 

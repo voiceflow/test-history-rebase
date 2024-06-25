@@ -3,8 +3,8 @@ import React from 'react';
 
 import { supportGraphicSmall } from '@/assets';
 import { Description } from '@/components/PlatformUploadPopup/components';
-import { AlexaPublishJob } from '@/models';
-import { StageComponentProps } from '@/platforms/types';
+import type { AlexaPublishJob } from '@/models';
+import type { StageComponentProps } from '@/platforms/types';
 
 const WaitVendorsStage: React.FC<StageComponentProps<AlexaPublishJob.WaitVendorsStage>> = ({ cancel }) => (
   <Box.FlexCenter p={22} width={254} flexDirection="column" textAlign="center">

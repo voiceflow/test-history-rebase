@@ -4,8 +4,9 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
-import { PromptRef } from '@/components/Prompt/types';
-import { MapManagedSimpleAPI, useMapManager } from '@/hooks/mapManager';
+import type { PromptRef } from '@/components/Prompt/types';
+import type { MapManagedSimpleAPI } from '@/hooks/mapManager';
+import { useMapManager } from '@/hooks/mapManager';
 import { useActiveProjectTypeConfig } from '@/hooks/platformConfig';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 
@@ -34,10 +35,15 @@ export interface PromptsSectionRef {
 }
 
 const PromptsSection = React.forwardRef<PromptsSectionRef, PromptsSectionProps>(
-  ({ title, active = true, prompts, minItems, maxItems, onChange, children, readOnly, voiceMulti, dynamicPlaceholder }, ref) => {
+  (
+    { title, active = true, prompts, minItems, maxItems, onChange, children, readOnly, voiceMulti, dynamicPlaceholder },
+    ref
+  ) => {
     const editor = EditorV2.useEditor();
     const projectConfig = useActiveProjectTypeConfig();
-    const [isEmpty, setIsEmpty] = React.useState(() => !prompts.length || prompts.every(projectConfig.utils.prompt.isEmpty));
+    const [isEmpty, setIsEmpty] = React.useState(
+      () => !prompts.length || prompts.every(projectConfig.utils.prompt.isEmpty)
+    );
     const listItemRefs = React.useRef<Record<number, PromptRef | null>>({});
 
     const mapManager = useMapManager(prompts, onChange, {
@@ -47,7 +53,11 @@ const PromptsSection = React.forwardRef<PromptsSectionRef, PromptsSectionProps>(
     });
 
     const onListItemEmpty = (index: number) => (isEmpty: boolean) => {
-      setIsEmpty(prompts.every((prompt, promptIndex) => (index === promptIndex ? isEmpty : projectConfig.utils.prompt.isEmpty(prompt))));
+      setIsEmpty(
+        prompts.every((prompt, promptIndex) =>
+          index === promptIndex ? isEmpty : projectConfig.utils.prompt.isEmpty(prompt)
+        )
+      );
     };
 
     const onListItemRef = (index: number) => (ref: PromptRef | null) => {
@@ -80,7 +90,12 @@ const PromptsSection = React.forwardRef<PromptsSectionRef, PromptsSectionProps>(
               disabled={mapManager.isMaxReached}
             />
           ) : (
-            <VoiceAddButton items={mapManager.items} multi={voiceMulti} onAdd={mapManager.onAdd} disabled={mapManager.isMaxReached} />
+            <VoiceAddButton
+              items={mapManager.items}
+              multi={voiceMulti}
+              onAdd={mapManager.onAdd}
+              disabled={mapManager.isMaxReached}
+            />
           )
         }
         sticky

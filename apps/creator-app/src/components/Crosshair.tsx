@@ -6,7 +6,8 @@ import { CANVAS_CROSSHAIR_ENABLED } from '@/config';
 import { styled } from '@/hocs/styled';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { useCanvasMouse } from '@/pages/Canvas/hooks/canvas';
-import { CartesianPlane, Coords } from '@/utils/geometry';
+import type { CartesianPlane } from '@/utils/geometry';
+import { Coords } from '@/utils/geometry';
 
 interface ReticuleProps {
   color?: string;

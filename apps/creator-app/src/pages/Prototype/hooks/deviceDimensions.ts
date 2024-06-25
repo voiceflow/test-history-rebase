@@ -6,7 +6,7 @@ import React from 'react';
 import { ZOOM_FACTOR } from '@/components/Canvas/constants';
 import { useTheme } from '@/hooks';
 import { ALL_DEVICES } from '@/pages/Prototype/constants';
-import { Pair } from '@/types';
+import type { Pair } from '@/types';
 
 const DEFAULT_FILL_RATIO = 0.8;
 const DEFAULT_FRAME_DIMENSION = 400;
@@ -41,7 +41,13 @@ export const useDeviceDimension = ({
     };
   }, [device, data]);
 
-export const useInitialCanvas = ({ platform, dimension }: { platform: Platform.Constants.PlatformType; dimension: Dimension }) => {
+export const useInitialCanvas = ({
+  platform,
+  dimension,
+}: {
+  platform: Platform.Constants.PlatformType;
+  dimension: Dimension;
+}) => {
   const theme = useTheme();
 
   return React.useMemo(() => {
@@ -63,7 +69,8 @@ export const useInitialCanvas = ({ platform, dimension }: { platform: Platform.C
     const scale = Math.min(scaleX, scaleY);
 
     const settingsWidth = platformConfig.isVoiceflowBased ? 0 : theme.components.displaySettings.width;
-    const offsetXOffset = theme.components.prototypeSidebar.width - (theme.components.sidebarIconMenu.width + settingsWidth);
+    const offsetXOffset =
+      theme.components.prototypeSidebar.width - (theme.components.sidebarIconMenu.width + settingsWidth);
     const offsetX = (Math.abs(bodyWidth - frameWidth * scale) - offsetXOffset) / 2;
     const offsetY = Math.abs(canvasHeight - frameHeight * scale) / 2;
 

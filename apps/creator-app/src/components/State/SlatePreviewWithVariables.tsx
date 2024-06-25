@@ -1,6 +1,6 @@
 import { SlateEditor } from '@voiceflow/ui-next';
 import React from 'react';
-import { Descendant } from 'slate';
+import type { Descendant } from 'slate';
 
 import { Designer } from '@/ducks';
 import { useSelector } from '@/hooks';

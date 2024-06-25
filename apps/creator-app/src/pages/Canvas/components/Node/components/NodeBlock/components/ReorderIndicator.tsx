@@ -3,7 +3,7 @@ import React from 'react';
 import * as Step from '@/pages/Canvas/components/Step';
 
 import { useDnDHoverReorderIndicator, useMergeInfo } from '../hooks';
-import { ReorderIndicatorProps } from '../types';
+import type { ReorderIndicatorProps } from '../types';
 
 const ReorderIndicator: React.FC<ReorderIndicatorProps> = ({ index, onMouseUp, palette }) => {
   const { mustNotBe, mustBeFirst, mustBeLast } = useMergeInfo(index);
@@ -13,7 +13,13 @@ const ReorderIndicator: React.FC<ReorderIndicatorProps> = ({ index, onMouseUp, p
   const isActive = !(mustNotBe || mustBeFirst || mustBeLast);
 
   return (
-    <Step.ReorderIndicator isActive={isActive} onMouseUp={onMouseUp} isHovered={isHovered} captureZoneRef={connectBlockDrop} palette={palette} />
+    <Step.ReorderIndicator
+      isActive={isActive}
+      onMouseUp={onMouseUp}
+      isHovered={isHovered}
+      captureZoneRef={connectBlockDrop}
+      palette={palette}
+    />
   );
 };
 

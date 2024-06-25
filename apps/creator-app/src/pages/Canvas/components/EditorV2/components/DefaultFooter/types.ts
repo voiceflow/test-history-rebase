@@ -1,6 +1,6 @@
-import React from 'react';
+import type React from 'react';
 
-import { TutorialProps } from '../Tutorial';
+import type { TutorialProps } from '../Tutorial';
 
 export interface Tutorial extends TutorialProps {
   content: React.ReactNode;

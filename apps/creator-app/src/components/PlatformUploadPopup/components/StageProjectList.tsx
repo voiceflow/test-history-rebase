@@ -1,7 +1,7 @@
 import { Box, Text } from '@voiceflow/ui';
 import React from 'react';
 
-import { Project } from '../types';
+import type { Project } from '../types';
 import ProjectItem from './ProjectItem';
 import ProjectSelectionFooter from './ProjectSelectionFooter';
 import ProjectSelectionFooterLink from './ProjectSelectionFooterLink';
@@ -14,7 +14,13 @@ interface StageProjectListProps {
   onProjectSelected: (selectedProject: Project) => void;
 }
 
-const StageProjectList: React.FC<StageProjectListProps> = ({ projects, title, onFooterSubmit, footerSubmitText, onProjectSelected }) => {
+const StageProjectList: React.FC<StageProjectListProps> = ({
+  projects,
+  title,
+  onFooterSubmit,
+  footerSubmitText,
+  onProjectSelected,
+}) => {
   return (
     <>
       <Box height={42} display="flex" mb={10} alignItems="flex-end" pl={24}>

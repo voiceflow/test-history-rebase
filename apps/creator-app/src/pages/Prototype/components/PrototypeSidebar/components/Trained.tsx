@@ -55,7 +55,9 @@ const Trained: React.FC<TrainedProps> = ({ platform, isTrained, nluTrainingDiffD
           </Box>
 
           <Text fontSize={13} color="#62778c" mt={20} mb={16} lineHeight={1.54}>
-            {isTrained ? 'Agent is trained and ready for testing.' : 'Agent model has changed. We highly recommend training your agent.'}
+            {isTrained
+              ? 'Agent is trained and ready for testing.'
+              : 'Agent model has changed. We highly recommend training your agent.'}
           </Text>
         </>
       )}

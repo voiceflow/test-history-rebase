@@ -1,5 +1,5 @@
-import { ResponseMessage } from '@voiceflow/dtos';
-import { Actions } from '@voiceflow/sdk-logux-designer';
+import type { ResponseMessage } from '@voiceflow/dtos';
+import type { Actions } from '@voiceflow/sdk-logux-designer';
 
 export interface IResponseMessageForm {
   rootMessage: ResponseMessage;

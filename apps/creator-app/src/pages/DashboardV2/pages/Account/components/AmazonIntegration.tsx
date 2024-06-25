@@ -49,7 +49,9 @@ const AmazonIntegrations: React.FC = () => {
       return (
         <Button
           variant={ButtonVariant.PRIMARY}
-          onClick={() => connectModal.openVoid({ source: SourceType.ACCOUNT_PAGE, platform: Platform.Constants.PlatformType.ALEXA })}
+          onClick={() =>
+            connectModal.openVoid({ source: SourceType.ACCOUNT_PAGE, platform: Platform.Constants.PlatformType.ALEXA })
+          }
         >
           Connect
         </Button>

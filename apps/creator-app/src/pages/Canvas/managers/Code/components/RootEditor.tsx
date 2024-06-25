@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
@@ -24,7 +24,8 @@ const RootEditor: React.FC = () => {
   const mapManager = useMapManager<Realtime.ArrayItem<typeof paths>>(paths, (paths) => editor.onChange({ paths }), {
     factory: () => ({ label: `path${paths.length + 1}`, key: Utils.id.cuid.slug() }),
     onAdd: (path) => editor.engine.port.addByKey(editor.nodeID, path.key),
-    onRemove: (path) => editor.engine.port.removeManyByKey([{ key: path.key, portID: editor.node.ports.out.byKey[path.key] }]),
+    onRemove: (path) =>
+      editor.engine.port.removeManyByKey([{ key: path.key, portID: editor.node.ports.out.byKey[path.key] }]),
     maxItems: MAX_PATHS,
   });
 

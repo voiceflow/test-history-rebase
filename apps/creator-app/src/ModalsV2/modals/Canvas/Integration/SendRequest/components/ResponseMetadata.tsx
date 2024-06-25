@@ -3,7 +3,7 @@ import React from 'react';
 
 import { styled } from '@/hocs/styled';
 
-import { Response } from '../types';
+import type { Response } from '../types';
 
 interface ResponseMetadataProps {
   response: Response;

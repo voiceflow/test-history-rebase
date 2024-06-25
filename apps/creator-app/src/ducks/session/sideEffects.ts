@@ -7,9 +7,8 @@ import { Path } from '@/config/routes';
 import { resetAccount, updateAccount } from '@/ducks/account/actions';
 import { goTo, goToDashboardWithSearch, goToLogin, goToOnboarding } from '@/ducks/router/actions';
 import { locationSelector } from '@/ducks/router/selectors';
-import * as Models from '@/models';
-import { Query } from '@/models';
-import { SyncThunk, Thunk } from '@/store/types';
+import type * as Models from '@/models';
+import type { SyncThunk, Thunk } from '@/store/types';
 import * as Cookies from '@/utils/cookies';
 import { generateID } from '@/utils/env';
 import * as QueryUtil from '@/utils/query';
@@ -226,7 +225,7 @@ export const ssoSignIn =
 
 interface SignupPayload {
   email: string;
-  query: Query.Auth;
+  query: Models.Query.Auth;
   password: string;
   lastName: string;
   firstName: string;
@@ -234,7 +233,14 @@ interface SignupPayload {
 }
 
 export const signup =
-  ({ email, query, password, lastName, firstName, partnerKey }: SignupPayload): Thunk<{ creatorID: number; email: string }> =>
+  ({
+    email,
+    query,
+    password,
+    lastName,
+    firstName,
+    partnerKey,
+  }: SignupPayload): Thunk<{ creatorID: number; email: string }> =>
   async (dispatch) => {
     const userName = `${firstName} ${lastName}`.trim();
 

@@ -1,6 +1,14 @@
-import { hexToRGBA, Input, isHexColor, removeHashFromHex, rgbaToHex, useDebouncedCallback, useDidUpdateEffect } from '@voiceflow/ui';
+import {
+  hexToRGBA,
+  Input,
+  isHexColor,
+  removeHashFromHex,
+  rgbaToHex,
+  useDebouncedCallback,
+  useDidUpdateEffect,
+} from '@voiceflow/ui';
 import React from 'react';
-import { RGBColor } from 'react-color';
+import type { RGBColor } from 'react-color';
 
 import { InputAction } from '@/components/ColorPicker/components';
 import ColorSelect from '@/components/ColorSelect';

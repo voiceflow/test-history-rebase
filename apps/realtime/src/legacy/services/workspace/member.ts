@@ -1,4 +1,4 @@
-import { UserRole } from '@voiceflow/dtos';
+import type { UserRole } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 
 import { AbstractControl } from '../../control';

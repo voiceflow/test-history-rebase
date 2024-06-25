@@ -3,13 +3,17 @@ import Select from 'react-select';
 
 import { styled, transition } from '@/hocs/styled';
 
-import { SearchOption } from '../types';
+import type { SearchOption } from '../types';
 
 export const searchSelectFactory = <T>() => styled(Select<T, false>)`
   overflow: hidden;
   border-radius: 10px;
-  box-shadow: inset rgb(0 0 0 / 50%) 0px -1px 0px 0px, rgb(0 0 0 / 16%) 0px 1px 3px 0px;
-  animation: ${Animations.fadeInKeyframes} 0.15s ease, ${Animations.moveInTopKeyframes} 0.15s ease;
+  box-shadow:
+    inset rgb(0 0 0 / 50%) 0px -1px 0px 0px,
+    rgb(0 0 0 / 16%) 0px 1px 3px 0px;
+  animation:
+    ${Animations.fadeInKeyframes} 0.15s ease,
+    ${Animations.moveInTopKeyframes} 0.15s ease;
   transform-origin: top;
   background-color: #33373a;
 
@@ -46,7 +50,9 @@ export const searchSelectFactory = <T>() => styled(Select<T, false>)`
     padding: 0px 8px;
     margin: 0px;
     position: static;
-    box-shadow: inset rgb(0 0 0 / 50%) 0px -1px 0px 0px, rgb(0 0 0 / 16%) 0px 1px 3px 0px;
+    box-shadow:
+      inset rgb(0 0 0 / 50%) 0px -1px 0px 0px,
+      rgb(0 0 0 / 16%) 0px 1px 3px 0px;
     background-color: transparent;
   }
 

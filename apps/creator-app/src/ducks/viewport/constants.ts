@@ -1,7 +1,7 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import * as Normal from 'normal-store';
 
-import { ViewportState } from './types';
+import type { ViewportState } from './types';
 
 export const STATE_KEY = 'viewport';
 

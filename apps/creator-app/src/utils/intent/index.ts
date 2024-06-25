@@ -1,10 +1,10 @@
 import { AlexaConstants } from '@voiceflow/alexa-types';
 import { BaseButton } from '@voiceflow/base-types';
-import { Nullable, Nullish } from '@voiceflow/common';
-import { Entity, Intent } from '@voiceflow/dtos';
+import type { Nullable, Nullish } from '@voiceflow/common';
+import type { Entity, Intent } from '@voiceflow/dtos';
 import { DFESConstants } from '@voiceflow/google-dfes-types';
 import * as Platform from '@voiceflow/platform-config';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { StrengthGauge } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 

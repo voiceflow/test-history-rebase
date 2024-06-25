@@ -6,7 +6,7 @@ import React from 'react';
 
 import { DEFAULT_PERIOD } from '@/constants';
 import * as Organization from '@/ducks/organization';
-import { UpgradePrompt } from '@/ducks/tracking';
+import type { UpgradePrompt } from '@/ducks/tracking';
 import { useSelector } from '@/hooks';
 import { useFeature } from '@/hooks/feature.hook';
 

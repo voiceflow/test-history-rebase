@@ -4,7 +4,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { setDisplayName, wrapDisplayName } from 'recompose';
 
 import { modalsManager } from '@/ModalsV2/manager';
-import { AnyModal } from '@/ModalsV2/types';
+import type { AnyModal } from '@/ModalsV2/types';
 
 import { useCMSResourceGetPath } from '../hooks/cms-resource.hook';
 
@@ -16,7 +16,7 @@ type ModalDefinition<Modal extends AnyModal> =
         history: ReturnType<typeof useHistory>;
         result: Modal['__vfModalResult'];
         cmsResourceGetPath: ReturnType<typeof useCMSResourceGetPath>;
-      }) => void
+      }) => void,
     ];
 
 interface IWithCMSResourceModals {
@@ -24,9 +24,10 @@ interface IWithCMSResourceModals {
 
   <Modal extends AnyModal>(modal: ModalDefinition<Modal>): (Component: React.FC) => React.FC;
 
-  <Modal1 extends AnyModal, Modal2 extends AnyModal>(modal1: ModalDefinition<Modal1>, modal2: ModalDefinition<Modal2>): (
-    Component: React.FC
-  ) => React.FC;
+  <Modal1 extends AnyModal, Modal2 extends AnyModal>(
+    modal1: ModalDefinition<Modal1>,
+    modal2: ModalDefinition<Modal2>
+  ): (Component: React.FC) => React.FC;
 
   <Modal1 extends AnyModal, Modal2 extends AnyModal, Modal3 extends AnyModal>(
     modal1: ModalDefinition<Modal1>,
@@ -38,6 +39,7 @@ interface IWithCMSResourceModals {
 export const withCMSResourceModals: IWithCMSResourceModals =
   (...modals: Array<ModalDefinition<AnyModal>>) =>
   (Component: React.FC) => {
+    // eslint-disable-next-line no-empty-function
     const supportedModals = modals.map((modal) => (Array.isArray(modal) ? modal : ([modal, () => {}] as const)));
 
     return setDisplayName(wrapDisplayName(Component, 'withCMSResourceModals'))(() => {
@@ -62,7 +64,9 @@ export const withCMSResourceModals: IWithCMSResourceModals =
         modalsManager
           .open(Utils.id.cuid(), location.state.cmsResourceModalType, { props: cmsResourceModalProps ?? {} })
           .then((result) => modal[1]({ history, result, cmsResourceGetPath }))
-          .catch(() => {});
+          .catch(() => {
+            // ignore
+          });
       }, [location.state]);
 
       return <Component />;

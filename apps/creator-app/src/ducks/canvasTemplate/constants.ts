@@ -8,7 +8,7 @@
 import { createEmptyState } from '@/ducks/creatorV2/constants';
 import { createCRUDState } from '@/ducks/utils/crudV2';
 
-import { CanvasTemplateState } from './types';
+import type { CanvasTemplateState } from './types';
 
 export const STATE_KEY = 'canvasTemplate';
 

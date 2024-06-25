@@ -1,6 +1,6 @@
-import React from 'react';
+import type React from 'react';
 
-import { MarkupTransform } from '@/pages/Canvas/types';
+import type { MarkupTransform } from '@/pages/Canvas/types';
 
 export interface OverlayState {
   overlayRect: React.MutableRefObject<DOMRect | null>;

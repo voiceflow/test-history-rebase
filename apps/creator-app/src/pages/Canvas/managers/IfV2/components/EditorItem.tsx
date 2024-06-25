@@ -1,14 +1,18 @@
 import composeRef from '@seznam/compose-react-refs';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Input, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import ConditionsBuilder from '@/components/ConditionsBuilder';
-import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandlers } from '@/components/DraggableList';
+import type {
+  DragPreviewComponentProps,
+  ItemComponentProps,
+  MappedItemComponentHandlers,
+} from '@/components/DraggableList';
 import { useAutoScrollNodeIntoView } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { Actions } from '@/pages/Canvas/managers/components';
-import { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
+import type { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
 
 export interface EditorItemProps
   extends DragPreviewComponentProps,
@@ -19,11 +23,26 @@ export interface EditorItemProps
 }
 
 const EditorItem: React.ForwardRefRenderFunction<HTMLElement, EditorItemProps> = (
-  { isDragging, item, index, latestCreatedKey, itemKey, editor, isDraggingPreview, connectedDragRef, onContextMenu, isContextMenuOpen, onUpdate },
+  {
+    isDragging,
+    item,
+    index,
+    latestCreatedKey,
+    itemKey,
+    editor,
+    isDraggingPreview,
+    connectedDragRef,
+    onContextMenu,
+    isContextMenuOpen,
+    onUpdate,
+  },
   ref
 ) => {
   const autofocus = latestCreatedKey === itemKey || editor.data.expressions.length === 1;
-  const [sectionRef, scrollSectionIntoView] = useAutoScrollNodeIntoView<HTMLDivElement>({ condition: autofocus, options: { block: 'end' } });
+  const [sectionRef, scrollSectionIntoView] = useAutoScrollNodeIntoView<HTMLDivElement>({
+    condition: autofocus,
+    options: { block: 'end' },
+  });
 
   return (
     <EditorV2.PersistCollapse namespace={['ifEditorListItem', item.id || itemKey]} defaultCollapsed={!autofocus}>
@@ -36,7 +55,11 @@ const EditorItem: React.ForwardRefRenderFunction<HTMLElement, EditorItemProps> =
               <SectionV2.CollapseSection
                 ref={composeRef(ref, sectionRef) as React.Ref<HTMLDivElement>}
                 header={
-                  <SectionV2.Header ref={connectedDragRef} sticky sticked={sticked && !collapsed && !isDraggingPreview && !isDragging}>
+                  <SectionV2.Header
+                    ref={connectedDragRef}
+                    sticky
+                    sticked={sticked && !collapsed && !isDraggingPreview && !isDragging}
+                  >
                     <SectionV2.Title bold={!collapsed}>{item.name || `Condition ${index + 1}`}</SectionV2.Title>
 
                     <SectionV2.CollapseArrowIcon collapsed={collapsed} />
@@ -54,7 +77,11 @@ const EditorItem: React.ForwardRefRenderFunction<HTMLElement, EditorItemProps> =
                 {!isDragging && !isDraggingPreview && (
                   <>
                     <SectionV2.Content bottomOffset={2.5}>
-                      <Input value={item.name} placeholder="Enter condition label" onChangeText={(name) => onUpdate({ name })} />
+                      <Input
+                        value={item.name}
+                        placeholder="Enter condition label"
+                        onChangeText={(name) => onUpdate({ name })}
+                      />
                     </SectionV2.Content>
 
                     <SectionV2.Divider inset />

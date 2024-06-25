@@ -1,7 +1,12 @@
 import * as Platform from '@voiceflow/platform-config';
 import { Utils } from '@voiceflow/realtime-sdk';
 
-import { textAndDialogGraphic, textAndDialogGraphicInactive, voiceAndVisualsGraphic, voiceAndVisualsGraphicInactive } from '@/assets';
+import {
+  textAndDialogGraphic,
+  textAndDialogGraphicInactive,
+  voiceAndVisualsGraphic,
+  voiceAndVisualsGraphicInactive,
+} from '@/assets';
 import { PrototypeLayout } from '@/constants/prototype';
 
 interface OptionDetail {

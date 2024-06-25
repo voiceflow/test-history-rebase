@@ -12,4 +12,5 @@ import * as Platform from '@voiceflow/platform-config';
  *
  * @param platform The platform of the current project
  */
-export const isSlotsInRepromptValid = (platform: Platform.Constants.PlatformType) => platform !== Platform.Constants.PlatformType.GOOGLE;
+export const isSlotsInRepromptValid = (platform: Platform.Constants.PlatformType) =>
+  platform !== Platform.Constants.PlatformType.GOOGLE;

@@ -1,7 +1,7 @@
 import { NodeType, ReferenceResourceType } from '@voiceflow/dtos';
 import { createSelector } from 'reselect';
 
-import { ReferenceBlockNodeResource } from '../reference.interface';
+import type { ReferenceBlockNodeResource } from '../reference.interface';
 import { blockNodeResourceIDs, resourceMap } from './root.select';
 
 export const blockNodeResources = createSelector(

@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
-import { BaseNodeDataDTO, BaseNodeDTO, InferNode } from '../base/base-node.dto';
+import type { InferNode } from '../base/base-node.dto';
+import { BaseNodeDataDTO, BaseNodeDTO } from '../base/base-node.dto';
 import { BaseNodeDataButtonDTO } from '../base/base-node-data-button.dto';
 import { BaseNodeDataNoMatchDTO } from '../base/base-node-data-no-match.dto';
 import { BaseNodeDataNoReplyDTO } from '../base/base-node-data-no-reply.dto';

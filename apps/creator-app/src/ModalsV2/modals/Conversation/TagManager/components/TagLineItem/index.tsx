@@ -1,10 +1,18 @@
-import { Animations, ErrorMessage, IconButton, IconButtonVariant, Input, toast, ToastCallToAction } from '@voiceflow/ui';
+import {
+  Animations,
+  ErrorMessage,
+  IconButton,
+  IconButtonVariant,
+  Input,
+  toast,
+  ToastCallToAction,
+} from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 
 import * as ReportTagDuck from '@/ducks/reportTag';
 import { useDispatch } from '@/hooks';
-import { ReportTag } from '@/models';
+import type { ReportTag } from '@/models';
 import { ClassName } from '@/styles/constants';
 
 import { Container, TrashIconContainer } from './styles';

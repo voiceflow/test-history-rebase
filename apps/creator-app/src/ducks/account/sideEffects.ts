@@ -1,6 +1,6 @@
 import client from '@/client';
 import { openError } from '@/ModalsV2/utils';
-import { Thunk } from '@/store/types';
+import type { Thunk } from '@/store/types';
 
 import { updateAccount } from './actions';
 

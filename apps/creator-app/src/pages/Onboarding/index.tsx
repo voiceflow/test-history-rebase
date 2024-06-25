@@ -1,5 +1,5 @@
 import React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+import type { RouteComponentProps } from 'react-router-dom';
 
 import { useHideVoiceflowAssistant } from '@/hooks';
 import * as Query from '@/utils/query';

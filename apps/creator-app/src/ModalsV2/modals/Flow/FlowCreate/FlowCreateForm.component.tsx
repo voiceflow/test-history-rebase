@@ -16,7 +16,15 @@ export interface IFlowCreateForm {
   onDescriptionChange: (description: string) => void;
 }
 
-export const FlowCreateForm: React.FC<IFlowCreateForm> = ({ name, testID, disabled, nameError, description, onNameChange, onDescriptionChange }) => {
+export const FlowCreateForm: React.FC<IFlowCreateForm> = ({
+  name,
+  testID,
+  disabled,
+  nameError,
+  description,
+  onNameChange,
+  onDescriptionChange,
+}) => {
   return (
     <Scroll style={{ display: 'block' }}>
       <Modal.Body gap={16}>

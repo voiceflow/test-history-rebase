@@ -5,7 +5,7 @@ import { STATE_KEY as DESIGNER_STATE_KEY } from '@/ducks/designer/designer.state
 import { STATE_KEY as THREAD_STATE_KEY } from '@/ducks/designer/thread/thread.state';
 import type { State } from '@/store/types';
 
-import { Transducer } from './types';
+import type { Transducer } from './types';
 
 const threadAddTypes = new Set([Actions.Thread.AddOne.type, Actions.ThreadComment.AddOne]);
 export const threadTransducer: Transducer<State> = (rootReducer) => (state, action) => {

@@ -1,7 +1,7 @@
-import * as Base from '@platform-config/configs/base';
+import type * as Base from '@platform-config/configs/base';
 import { Config } from '@platform-config/configs/utils';
 import { Types } from '@platform-config/utils';
-import { DFESConstants, DFESVersion } from '@voiceflow/google-dfes-types';
+import type { DFESConstants, DFESVersion } from '@voiceflow/google-dfes-types';
 import { createSmartSimpleAdapter } from 'bidirectional-adapter';
 
 export type KeyRemap = [['agentName', 'invocationName'], ['triggerPhrase', 'invocationNameSamples']];
@@ -10,7 +10,9 @@ const PLATFORM_ONLY_FILES = Types.satisfies<keyof DFESVersion.BasePublishing>()(
 
 export const smart = createSmartSimpleAdapter<
   Pick<DFESVersion.BasePublishing, 'locales' | 'agentName' | 'triggerPhrase'>,
-  Pick<Base.Models.Version.Publishing.Model, 'invocationName' | 'invocationNameSamples'> & { locales: DFESConstants.Locale[] },
+  Pick<Base.Models.Version.Publishing.Model, 'invocationName' | 'invocationNameSamples'> & {
+    locales: DFESConstants.Locale[];
+  },
   [],
   [],
   KeyRemap

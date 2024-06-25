@@ -1,6 +1,7 @@
-import { ACTIONS_KEY, BLOCK_KEY, BlockType, NODE_KEY, STEP_KEY } from '@realtime-sdk/constants';
-import { Markup, NodeData, NodeDataDescriptor, PortsDescriptor } from '@realtime-sdk/models';
-import {
+import type { BlockType } from '@realtime-sdk/constants';
+import { ACTIONS_KEY, BLOCK_KEY, NODE_KEY, STEP_KEY } from '@realtime-sdk/constants';
+import type { Markup, NodeData, NodeDataDescriptor, PortsDescriptor } from '@realtime-sdk/models';
+import type {
   BaseActionsPayload,
   BaseBlockPayload,
   BaseDiagramPayload,
@@ -12,7 +13,8 @@ import {
   RemoveNode,
   SchemaVersionPayload,
 } from '@realtime-sdk/types';
-import { AnyRecord, Utils } from '@voiceflow/common';
+import type { AnyRecord } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
 
 const nodeType = Utils.protocol.typeFactory(NODE_KEY);
 const nodeMarkupType = Utils.protocol.typeFactory(nodeType('markup'));
@@ -70,7 +72,11 @@ export const addActions = Utils.protocol.createAction<AddActionsPayload>(nodeAct
 
 // steps
 
-export interface InsertStepPayload<T = unknown> extends BaseParentNodePayload, ProjectMetaPayload, SchemaVersionPayload, NodePortRemapsPayload {
+export interface InsertStepPayload<T = unknown>
+  extends BaseParentNodePayload,
+    ProjectMetaPayload,
+    SchemaVersionPayload,
+    NodePortRemapsPayload {
   data: NodeDataDescriptor<T>;
   ports: PortsDescriptor;
   index: number;
@@ -79,7 +85,11 @@ export interface InsertStepPayload<T = unknown> extends BaseParentNodePayload, P
   removeNodes: RemoveNode[];
 }
 
-export interface InsertManyStepsPayload<T = unknown> extends BaseParentNodePayload, ProjectMetaPayload, SchemaVersionPayload, NodePortRemapsPayload {
+export interface InsertManyStepsPayload<T = unknown>
+  extends BaseParentNodePayload,
+    ProjectMetaPayload,
+    SchemaVersionPayload,
+    NodePortRemapsPayload {
   steps: { data: NodeDataDescriptor<T>; ports: PortsDescriptor; stepID: string }[];
   index: number;
   removeNodes: RemoveNode[];

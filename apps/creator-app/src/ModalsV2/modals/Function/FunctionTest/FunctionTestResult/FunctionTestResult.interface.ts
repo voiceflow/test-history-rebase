@@ -1,4 +1,4 @@
-import { GeneralRuntimeFunctionTestResponse } from '@/client/general-runtime/general-runtime.interface';
+import type { GeneralRuntimeFunctionTestResponse } from '@/client/general-runtime/general-runtime.interface';
 
 export interface IFunctionTestResult {
   functionsTestResponse: GeneralRuntimeFunctionTestResponse;

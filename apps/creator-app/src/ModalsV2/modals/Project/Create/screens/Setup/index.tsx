@@ -1,4 +1,4 @@
-import { Nullable } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import {
@@ -18,7 +18,7 @@ import React from 'react';
 
 import LocalesSelect from '@/components/LocalesSelect';
 import { useFeature } from '@/hooks/feature.hook';
-import { NLUImportModel } from '@/models';
+import type { NLUImportModel } from '@/models';
 import { Identifier } from '@/styles/constants';
 
 import { ModelImport } from './components';

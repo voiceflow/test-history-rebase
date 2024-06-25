@@ -4,7 +4,8 @@ import { SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 
-import VariablesInput, { VariablesInputRef } from '@/components/VariablesInput';
+import type { VariablesInputRef } from '@/components/VariablesInput';
+import VariablesInput from '@/components/VariablesInput';
 import { useSetup } from '@/hooks';
 import { useFeature } from '@/hooks/feature.hook';
 import { FormControl } from '@/pages/Canvas/components/Editor';

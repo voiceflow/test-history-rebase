@@ -33,7 +33,6 @@ class Dispatcher extends EngineConsumer {
   }
 
   useSubscription(type: EntityType, id: string, handler: (isForced: boolean) => void) {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     React.useEffect(() => this.subscribe(type, id, handler), []);
   }
 

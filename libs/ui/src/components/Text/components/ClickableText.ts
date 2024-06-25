@@ -1,7 +1,9 @@
 import { styled } from '@ui/styles';
 
-import { LinkProps, linkStyles } from './Link';
-import Text, { TextProps } from './Text';
+import type { LinkProps } from './Link';
+import { linkStyles } from './Link';
+import type { TextProps } from './Text';
+import Text from './Text';
 
 /**
  * @deprecated Use `System.Link.Button` instead

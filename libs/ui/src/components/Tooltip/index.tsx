@@ -1,5 +1,6 @@
-import Popper, { PopperTypes } from '@ui/components/Popper';
-import { PopperPlacement } from '@ui/hooks';
+import type { PopperTypes } from '@ui/components/Popper';
+import Popper from '@ui/components/Popper';
+import type { PopperPlacement } from '@ui/hooks';
 import React from 'react';
 
 import { Container, JSONCode, Paragraph, Section, Title } from './components';
@@ -9,10 +10,21 @@ export interface TooltipProps {
   placement?: PopperPlacement;
   portalNode?: HTMLElement;
   initialOpened?: boolean;
-  anchorRenderer: (props: { ref: React.Ref<any>; isOpen: boolean; onToggle: VoidFunction; onClose: VoidFunction }) => React.ReactNode;
+  anchorRenderer: (props: {
+    ref: React.Ref<any>;
+    isOpen: boolean;
+    onToggle: VoidFunction;
+    onClose: VoidFunction;
+  }) => React.ReactNode;
 }
 
-const Tooltip: React.FC<TooltipProps> = ({ placement = 'auto-end', children, portalNode, anchorRenderer, initialOpened }) => (
+const Tooltip: React.FC<TooltipProps> = ({
+  placement = 'auto-end',
+  children,
+  portalNode,
+  anchorRenderer,
+  initialOpened,
+}) => (
   <Popper
     width="410px"
     maxHeight="500px"

@@ -1,20 +1,11 @@
-import { BuiltInPortRecord, DBPortWithLinkData } from '@realtime-sdk/models';
+import type { BuiltInPortRecord, DBPortWithLinkData } from '@realtime-sdk/models';
 import * as RealtimeUtilsPort from '@realtime-sdk/utils/port';
-import { BaseModels, Nullable } from '@voiceflow/base-types';
+import type { Nullable } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 
-import {
-  BuiltInPortData,
-  dbBuiltInPortFactory,
-  outPortDataFromDB,
-  outPortDataToDB,
-  outPortsDataFromDB,
-  outPortsDataToDB,
-  OutPortsFromDBOptions,
-  OutPortsToDBOptions,
-  PortData,
-  PortsInfo,
-} from './port';
+import type { BuiltInPortData, OutPortsFromDBOptions, OutPortsToDBOptions, PortData, PortsInfo } from './port';
+import { dbBuiltInPortFactory, outPortDataFromDB, outPortDataToDB, outPortsDataFromDB, outPortsDataToDB } from './port';
 
 export interface OutPortsAdapterV2<T extends BuiltInPortRecord<string> = BuiltInPortRecord<string>, D = unknown> {
   toDB: (
@@ -32,8 +23,10 @@ export const createOutPortsAdapterV2 = <T extends BuiltInPortRecord<string> = Bu
   toDB: OutPortsAdapterV2<T, D>['toDB']
 ): OutPortsAdapterV2<T, D> => ({ toDB, fromDB });
 
-export const withoutDBPortV2 = (ports: DBPortWithLinkData[], withoutPort: Nullable<DBPortWithLinkData>): DBPortWithLinkData[] =>
-  withoutPort === null ? ports : Utils.array.withoutValue(ports, withoutPort);
+export const withoutDBPortV2 = (
+  ports: DBPortWithLinkData[],
+  withoutPort: Nullable<DBPortWithLinkData>
+): DBPortWithLinkData[] => (withoutPort === null ? ports : Utils.array.withoutValue(ports, withoutPort));
 
 export const nextOnlyOutPortsAdapterV2 = createOutPortsAdapterV2<{ [BaseModels.PortType.NEXT]: string }>(
   (dbPorts, options) => {
@@ -179,7 +172,10 @@ export const noMatchNoReplyAndDynamicOutPortsAdapterV2 = createOutPortsAdapterV2
       },
     };
   },
-  ({ builtIn: { [BaseModels.PortType.NO_MATCH]: noMatchPortData, [BaseModels.PortType.NO_REPLY]: noReplyPortData }, dynamic }) => ({
+  ({
+    builtIn: { [BaseModels.PortType.NO_MATCH]: noMatchPortData, [BaseModels.PortType.NO_REPLY]: noReplyPortData },
+    dynamic,
+  }) => ({
     ...RealtimeUtilsPort.createEmptyNodeOutPorts(),
     builtIn: {
       ...(noMatchPortData && { [BaseModels.PortType.NO_MATCH]: outPortDataToDB(noMatchPortData) }),

@@ -1,11 +1,12 @@
 import { z } from 'zod';
 
-import { BaseCompiledNodeDTO, InferCompiledNode } from '../base/base-node.compiled.dto';
+import type { InferCompiledNode } from '../base/base-node.compiled.dto';
+import { BaseCompiledNodeDTO } from '../base/base-node.compiled.dto';
 import { NodeType } from '../node-type.enum';
 
 export const CompiledResponseDataDTO = z
   .object({
-    responseID: z.string()
+    responseID: z.string(),
   })
   .strict();
 
@@ -15,8 +16,8 @@ export const CompiledResponseNodeDTO = BaseCompiledNodeDTO.extend({
   type: z.literal(NodeType.RESPONSE),
   data: CompiledResponseDataDTO,
   ports: z.object({
-    default: z.string()
-  })
+    default: z.string(),
+  }),
 }).strict();
 
 export type CompiledResponseNode = InferCompiledNode<typeof CompiledResponseNodeDTO>;

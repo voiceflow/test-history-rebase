@@ -1,25 +1,27 @@
-import { Mock } from 'vitest';
+import type { Mock } from 'vitest';
 
 type DeepPartial<T> = {
   [P in keyof T]?: T[P] extends Array<infer U>
     ? Array<DeepPartial<U>>
     : T[P] extends ReadonlyArray<infer U>
-    ? ReadonlyArray<DeepPartial<U>>
-    : unknown extends T[P]
-    ? T[P]
-    : DeepPartial<T[P]>;
+      ? ReadonlyArray<DeepPartial<U>>
+      : unknown extends T[P]
+        ? T[P]
+        : DeepPartial<T[P]>;
 };
 
 export type PartialFuncReturn<T> = {
-  [K in keyof T]?: T[K] extends (...args: infer A) => infer U ? (...args: A) => PartialFuncReturn<U> : DeepPartial<T[K]>;
+  [K in keyof T]?: T[K] extends (...args: infer A) => infer U
+    ? (...args: A) => PartialFuncReturn<U>
+    : DeepPartial<T[K]>;
 };
 
 export type DeepMocked<T> = {
   [Key in keyof T]: T[Key] extends (...args: infer A) => infer U
     ? Mock & ((...args: A) => DeepMocked<U>)
     : T[Key] extends object
-    ? DeepMocked<T[Key]>
-    : T[Key];
+      ? DeepMocked<T[Key]>
+      : T[Key];
 } & T;
 
 export interface MockCreationOptions {
@@ -64,7 +66,11 @@ const createMockHandler = (name: string) => {
 
   return {
     get: (targetObject: DeepPartial<unknown>, prop: PropertyKey) => {
-      if (prop === 'inspect' || prop === 'then' || (typeof prop === 'symbol' && prop.toString() === 'Symbol(util.inspect.custom)')) {
+      if (
+        prop === 'inspect' ||
+        prop === 'then' ||
+        (typeof prop === 'symbol' && prop.toString() === 'Symbol(util.inspect.custom)')
+      ) {
         return undefined;
       }
 
@@ -97,7 +103,10 @@ const createMockHandler = (name: string) => {
   };
 };
 
-export const createMock = <T>(partialObject: PartialFuncReturn<T> = {}, options: MockCreationOptions = {}): DeepMocked<T> => {
+export const createMock = <T>(
+  partialObject: PartialFuncReturn<T> = {},
+  options: MockCreationOptions = {}
+): DeepMocked<T> => {
   const { name = 'mock' } = options;
   const proxyObject = new Proxy(partialObject, createMockHandler(name));
 

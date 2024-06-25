@@ -6,7 +6,7 @@ import SelectInputGroup from '@/components/SelectInputGroup';
 import VariablesInput from '@/components/VariablesInput';
 import { getCustomAPIActionLabel } from '@/utils/customApi';
 
-import { BaseFormProps } from '../types';
+import type { BaseFormProps } from '../types';
 
 const API_REQUEST_OPTIONS = [
   BaseNode.Api.APIActionType.GET,

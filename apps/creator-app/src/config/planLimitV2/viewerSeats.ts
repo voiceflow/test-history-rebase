@@ -4,7 +4,7 @@ import { LimitType } from '@/constants/limits';
 import * as Tracking from '@/ducks/tracking';
 import { getLegacyUpgradeModalProps } from '@/utils/upgrade';
 
-import { PlanLimit, UpgradeModalDynamicLimit } from './types';
+import type { PlanLimit, UpgradeModalDynamicLimit } from './types';
 import { applyAllLimits } from './utils';
 
 const ALL_PLANS_LIMIT = {

@@ -2,7 +2,8 @@ import composeRef from '@seznam/compose-react-refs';
 import React from 'react';
 
 import Divider from './Divider';
-import PanelContainer, { PanelContainerProps } from './PanelContainer';
+import type { PanelContainerProps } from './PanelContainer';
+import PanelContainer from './PanelContainer';
 import PanelContent from './PanelContent';
 
 export interface PanelProps extends PanelContainerProps, Omit<React.ComponentProps<'div'>, 'ref' | 'children'> {
@@ -38,4 +39,6 @@ const Panel = (
   </PanelContainer>
 );
 
-export default React.forwardRef(Panel) as React.ForwardRefExoticComponent<PanelProps & React.RefAttributes<HTMLDivElement>>;
+export default React.forwardRef(Panel) as React.ForwardRefExoticComponent<
+  PanelProps & React.RefAttributes<HTMLDivElement>
+>;

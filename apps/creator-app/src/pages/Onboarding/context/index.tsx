@@ -1,5 +1,5 @@
 import { datadogRum } from '@datadog/browser-rum';
-import { Nullable } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { getCookieByName, toast, useSmartReducerV2 } from '@voiceflow/ui';
@@ -19,8 +19,9 @@ import { useFeature } from '@/hooks/feature.hook';
 import { OnboardingType } from '../onboardingType.enum';
 import { StepID } from '../stepID.enum';
 import { STEP_META } from '../stepMeta';
-import { STEPS_BY_FLOW, UTM_COOKIE_NAME, UTMCookieType } from './constants';
-import { OnboardingContextAPI, OnboardingContextState, OnboardingProviderProps } from './types';
+import type { UTMCookieType } from './constants';
+import { STEPS_BY_FLOW, UTM_COOKIE_NAME } from './constants';
+import type { OnboardingContextAPI, OnboardingContextState, OnboardingProviderProps } from './types';
 
 export const OnboardingContext = React.createContext<OnboardingContextAPI | null>(null);
 

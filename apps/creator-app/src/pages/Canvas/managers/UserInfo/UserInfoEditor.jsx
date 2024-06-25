@@ -37,7 +37,11 @@ function UserInfoEditor({ data, onChange }) {
       <DraggableList
         type="user-info-editor"
         onEndDrag={toggleDragging}
-        itemProps={{ latestCreatedKey: mapManager.latestCreatedKey, selectedPermissions, isOnlyItem: mapManager.isOnlyItem }}
+        itemProps={{
+          latestCreatedKey: mapManager.latestCreatedKey,
+          selectedPermissions,
+          isOnlyItem: mapManager.isOnlyItem,
+        }}
         mapManager={mapManager}
         onStartDrag={toggleDragging}
         itemComponent={DraggableItem}

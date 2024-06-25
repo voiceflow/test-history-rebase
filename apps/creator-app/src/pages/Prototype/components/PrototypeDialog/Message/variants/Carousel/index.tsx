@@ -1,9 +1,9 @@
 import { BaseNode } from '@voiceflow/base-types';
 import React from 'react';
 
-import { OnInteraction } from '@/pages/Prototype/types';
+import type { OnInteraction } from '@/pages/Prototype/types';
 
-import { BaseMessageProps } from '../../Base';
+import type { BaseMessageProps } from '../../Base';
 import CarouselLayout from './CarouselLayout';
 import ListLayout from './ListLayout';
 

@@ -1,4 +1,4 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, SectionV2, TippyTooltip, Toggle } from '@voiceflow/ui';
 import React from 'react';
 
@@ -52,7 +52,9 @@ const RootEditor: React.FC = () => {
       <TippyTooltip
         width={208}
         content={
-          <TippyTooltip.Multiline>When on, the step will ignore paths that have already been activated in a given session.</TippyTooltip.Multiline>
+          <TippyTooltip.Multiline>
+            When on, the step will ignore paths that have already been activated in a given session.
+          </TippyTooltip.Multiline>
         }
         style={{ cursor: 'pointer' }}
         display="block"

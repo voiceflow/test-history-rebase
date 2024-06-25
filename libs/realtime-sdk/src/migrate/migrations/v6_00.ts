@@ -4,7 +4,7 @@ import { variableToLegacyVariableAdapter } from '@realtime-sdk/adapters';
 import { Utils } from '@voiceflow/common';
 import { SystemVariable } from '@voiceflow/dtos';
 
-import { Transform } from './types';
+import type { Transform } from './types';
 
 // migrates legacy variables to cms variables
 const migrateToV6_00: Transform = ({ cms, version }, { project, creatorID }) => {

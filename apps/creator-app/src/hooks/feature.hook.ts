@@ -1,6 +1,6 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
-import { Tail } from 'reselect/es/types';
+import type { Tail } from 'reselect/es/types';
 
 import { FeatureFlagsContext } from '@/contexts/FeatureFlagsContext';
 

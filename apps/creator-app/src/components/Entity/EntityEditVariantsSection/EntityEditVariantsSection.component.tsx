@@ -1,4 +1,4 @@
-import { EntityVariant } from '@voiceflow/dtos';
+import type { EntityVariant } from '@voiceflow/dtos';
 import React from 'react';
 
 import { Designer } from '@/ducks';

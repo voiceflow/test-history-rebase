@@ -1,4 +1,4 @@
-import { MigrationData } from '@realtime-sdk/migrate/migrations/types';
+import type { MigrationData } from '@realtime-sdk/migrate/migrations/types';
 import migrateToV4_04 from '@realtime-sdk/migrate/migrations/v4_04';
 import * as Platform from '@voiceflow/platform-config/backend';
 import { produce } from 'immer';

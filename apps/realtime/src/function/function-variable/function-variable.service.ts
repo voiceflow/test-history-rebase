@@ -48,9 +48,15 @@ export class FunctionVariableService extends CMSObjectService<FunctionVariableOR
 
   /* Create */
 
-  async createManyAndSync(data: CMSCreateForUserData<FunctionVariableORM>[], { userID, context }: { userID: number; context: CMSContext }) {
+  async createManyAndSync(
+    data: CMSCreateForUserData<FunctionVariableORM>[],
+    { userID, context }: { userID: number; context: CMSContext }
+  ) {
     return this.postgresEM.transactional(async () => {
-      const functionVariables = await this.createManyForUser(userID, data.map(injectAssistantAndEnvironmentIDs(context)));
+      const functionVariables = await this.createManyForUser(
+        userID,
+        data.map(injectAssistantAndEnvironmentIDs(context))
+      );
 
       return {
         add: { functionVariables },
@@ -82,7 +88,10 @@ export class FunctionVariableService extends CMSObjectService<FunctionVariableOR
     return this.orm.deleteManyByEnvironmentAndIDs(environmentID, ids);
   }
 
-  async broadcastDeleteMany({ delete: del }: { delete: { functionVariables: FunctionVariableObject[] } }, meta: CMSBroadcastMeta) {
+  async broadcastDeleteMany(
+    { delete: del }: { delete: { functionVariables: FunctionVariableObject[] } },
+    meta: CMSBroadcastMeta
+  ) {
     await this.logux.processAs(
       Actions.FunctionVariable.DeleteMany({
         ids: toPostgresEntityIDs(del.functionVariables),

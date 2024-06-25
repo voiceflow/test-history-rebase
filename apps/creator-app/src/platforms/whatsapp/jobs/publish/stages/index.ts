@@ -1,7 +1,7 @@
 import { createUseJobInterfaceContent } from '@/components/JobInterface';
 import { ErrorStage } from '@/components/PlatformUploadPopup/components';
 import { NLPTrainStageType } from '@/constants/platforms';
-import { NLPTrainJob } from '@/models';
+import type { NLPTrainJob } from '@/models';
 
 import ConnectStage from './ConnectStage';
 import SuccessStage from './SuccessStage';

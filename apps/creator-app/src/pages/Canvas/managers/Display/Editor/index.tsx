@@ -1,10 +1,10 @@
 import { BaseNode } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { SectionV2, Tabs } from '@voiceflow/ui';
 import React from 'react';
 
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
-import { NodeEditorV2 } from '@/pages/Canvas/managers/types';
+import type { NodeEditorV2 } from '@/pages/Canvas/managers/types';
 
 import { displayFactory } from '../constants';
 import { HelpTooltip, JSONEditor, SplashEditor } from './components';
@@ -19,7 +19,10 @@ const DisplayEditor: NodeEditorV2<BaseNode.Visual.APLStepData, Realtime.NodeData
   const { data } = editor;
 
   return (
-    <EditorV2 header={<EditorV2.DefaultHeader title="APL" />} footer={<EditorV2.DefaultFooter tutorial={{ content: <HelpTooltip /> }} />}>
+    <EditorV2
+      header={<EditorV2.DefaultHeader title="APL" />}
+      footer={<EditorV2.DefaultFooter tutorial={{ content: <HelpTooltip /> }} />}
+    >
       <SectionV2.SimpleSection isAccent>
         <Tabs value={data.aplType} onChange={(aplType) => editor.onChange({ ...data, ...displayFactory(aplType) })}>
           {tabs.map(({ label, type }) => (

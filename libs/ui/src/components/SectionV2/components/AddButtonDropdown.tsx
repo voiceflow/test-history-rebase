@@ -1,7 +1,10 @@
-import { defaultMenuLabelRenderer, UIOnlyMenuItemOption } from '@ui/components/NestedMenu';
-import { OptionsMenuOption } from '@ui/components/OptionsMenu';
-import Select, { BaseSelectProps } from '@ui/components/Select';
-import SvgIcon, { SvgIconTypes } from '@ui/components/SvgIcon';
+import type { UIOnlyMenuItemOption } from '@ui/components/NestedMenu';
+import { defaultMenuLabelRenderer } from '@ui/components/NestedMenu';
+import type { OptionsMenuOption } from '@ui/components/OptionsMenu';
+import type { BaseSelectProps } from '@ui/components/Select';
+import Select from '@ui/components/Select';
+import type { SvgIconTypes } from '@ui/components/SvgIcon';
+import SvgIcon from '@ui/components/SvgIcon';
 import { Utils } from '@voiceflow/common';
 import React from 'react';
 
@@ -33,7 +36,12 @@ const AddButtonDropdown: React.FC<Props> = ({ actions, disabled, placement = 'bo
       getOptionKey={(_, index) => String(index)}
       isMultiLevel
       renderTrigger={({ ref, isOpen, onClick }) => (
-        <AddButton ref={ref as React.RefObject<HTMLButtonElement>} onClick={onClick} disabled={disabled || !options.length} isActive={isOpen} />
+        <AddButton
+          ref={ref as React.RefObject<HTMLButtonElement>}
+          onClick={onClick}
+          disabled={disabled || !options.length}
+          isActive={isOpen}
+        />
       )}
       getOptionLabel={(option) => option?.label}
       renderOptionLabel={(option, searchLabel, getOptionLabel, getOptionValue, config) => (

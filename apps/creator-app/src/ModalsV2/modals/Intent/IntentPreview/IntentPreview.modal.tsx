@@ -1,7 +1,22 @@
-import { Nullable, Utils } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
 import { IntentClassificationType } from '@voiceflow/dtos';
 import { tid } from '@voiceflow/style';
-import { Box, Divider, Link, Notification, notify, Scroll, Section, SmallDataTable, Text, TextArea, Tip, Tokens, Tooltip } from '@voiceflow/ui-next';
+import {
+  Box,
+  Divider,
+  Link,
+  Notification,
+  notify,
+  Scroll,
+  Section,
+  SmallDataTable,
+  Text,
+  TextArea,
+  Tip,
+  Tokens,
+  Tooltip,
+} from '@voiceflow/ui-next';
 import { validatorFactory } from '@voiceflow/utils-designer';
 import React, { useRef, useState } from 'react';
 import { DismissableLayerContext } from 'react-dismissable-layers';
@@ -55,8 +70,14 @@ export const IntentPreviewModal = modalsManager.create(
       const [prototypeCompiled, setPrototypeCompiled] = useState(false);
       const [classifiedIntents, setClassifiedIntents] =
         useState<Nullable<{ nlu: Array<{ name: string; confidence: number }>; llm: Array<{ name: string }> }>>(null);
-      const [lastUsedUtterance, setLastUsedUtterance] = useEnvironmentSessionStorageState(`${MODAL_ID}-last-used-utterance`, '');
-      const [lastTrainingDiffHash, setLastTrainingDiffHash] = useEnvironmentSessionStorageState(`${MODAL_ID}-training-diff-hash`, '');
+      const [lastUsedUtterance, setLastUsedUtterance] = useEnvironmentSessionStorageState(
+        `${MODAL_ID}-last-used-utterance`,
+        ''
+      );
+      const [lastTrainingDiffHash, setLastTrainingDiffHash] = useEnvironmentSessionStorageState(
+        `${MODAL_ID}-training-diff-hash`,
+        ''
+      );
 
       const utteranceInput = useInput<string, HTMLTextAreaElement>({
         value: utteranceState.value,
@@ -67,7 +88,10 @@ export const IntentPreviewModal = modalsManager.create(
       });
 
       const validator = useValidators({
-        utterance: [validatorFactory((utterance: string) => utterance.trim(), 'Utterance is required.'), utteranceState.setError],
+        utterance: [
+          validatorFactory((utterance: string) => utterance.trim(), 'Utterance is required.'),
+          utteranceState.setError,
+        ],
       });
 
       const onSend = validator.container(async ({ utterance }) => {
@@ -103,10 +127,13 @@ export const IntentPreviewModal = modalsManager.create(
 
           setClassifyStatus('error');
           notify.short.error('Classification failed');
-          notify.long.warning('Intent classification failed, please try again. If the issue continues contact our support team.', {
-            pauseOnHover: true,
-            bodyClassName: 'vfui',
-          });
+          notify.long.warning(
+            'Intent classification failed, please try again. If the issue continues contact our support team.',
+            {
+              pauseOnHover: true,
+              bodyClassName: 'vfui',
+            }
+          );
         }
 
         setClassifyLatency(Date.now() - now);
@@ -161,7 +188,12 @@ export const IntentPreviewModal = modalsManager.create(
 
       const isLLMClassification = storeSettings.type === IntentClassificationType.LLM;
       const intentPreviewFeedback = !!classifiedIntents && (
-        <IntentPreviewFeedback key={feedbackKey} settings={settings} utterance={lastUsedUtterance} classifiedIntents={classifiedIntents} />
+        <IntentPreviewFeedback
+          key={feedbackKey}
+          settings={settings}
+          utterance={lastUsedUtterance}
+          classifiedIntents={classifiedIntents}
+        />
       );
 
       return (
@@ -189,7 +221,11 @@ export const IntentPreviewModal = modalsManager.create(
                 secondaryButton={
                   isLLMClassification &&
                   settings.type === IntentClassificationType.LLM && (
-                    <IntentPreviewSettings settings={settings} initialSettings={storeSettings} onSettingsChange={setSettings} />
+                    <IntentPreviewSettings
+                      settings={settings}
+                      initialSettings={storeSettings}
+                      onSettingsChange={setSettings}
+                    />
                   )
                 }
               />
@@ -202,7 +238,11 @@ export const IntentPreviewModal = modalsManager.create(
                       <Box pb={16}>
                         <Notification
                           type="alert"
-                          content={<Text>The agent has untrained data. Train the agent for an accurate preview experience.</Text>}
+                          content={
+                            <Text>
+                              The agent has untrained data. Train the agent for an accurate preview experience.
+                            </Text>
+                          }
                           actionButtonProps={{ label: 'Train', onClick: onTrain }}
                           secondaryButtonProps={{ label: 'Dismiss', onClick: onDismissTraining }}
                         />
@@ -297,7 +337,10 @@ export const IntentPreviewModal = modalsManager.create(
 
                 <Box px={12} pb={20}>
                   <SmallDataTable
-                    data={classifiedIntents.nlu.map((item) => ({ label: item.name, value: String(Math.round(item.confidence * 100)) }))}
+                    data={classifiedIntents.nlu.map((item) => ({
+                      label: item.name,
+                      value: String(Math.round(item.confidence * 100)),
+                    }))}
                   />
                 </Box>
 
@@ -313,7 +356,12 @@ export const IntentPreviewModal = modalsManager.create(
                 description={
                   <>
                     Only intents that are used in your agent will be seen in the results from intent previews.{' '}
-                    <Link style={{ display: 'inline-block' }} href={INTENT_PREVIEW_TIP_LEARN_LINK} label="Learn" target="_blank" />
+                    <Link
+                      style={{ display: 'inline-block' }}
+                      href={INTENT_PREVIEW_TIP_LEARN_LINK}
+                      label="Learn"
+                      target="_blank"
+                    />
                   </>
                 }
               >

@@ -17,7 +17,9 @@ const Item: React.FC<ItemProps> = ({ label, isLast, children, onClick }) => {
 
   return (
     <>
-      <ItemContainer onClick={canCopy ? stopPropagation(Utils.functional.chain(onClick, copyWithToast(children))) : undefined}>
+      <ItemContainer
+        onClick={canCopy ? stopPropagation(Utils.functional.chain(onClick, copyWithToast(children))) : undefined}
+      >
         <Box.FlexApart>
           <Text fontWeight="600">{label}</Text>
           {canCopy && <ClickableText>Copy</ClickableText>}

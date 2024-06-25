@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { HSLShades } from '@/constants';
+import type { HSLShades } from '@/constants';
 
 import PlayButton from '../PlayButton';
 import * as S from './styles';

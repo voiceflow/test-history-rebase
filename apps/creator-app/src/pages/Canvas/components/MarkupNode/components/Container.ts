@@ -1,4 +1,4 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { rgbaToHex } from '@voiceflow/ui';
 
 import { css, styled } from '@/hocs/styled';

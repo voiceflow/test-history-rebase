@@ -1,5 +1,5 @@
 declare module 'draft-js-plugins-utils' {
-  import { EditorState, EntityInstance } from 'draft-js';
+  import type { EditorState, EntityInstance } from 'draft-js';
 
   const Utils: {
     getCurrentEntity(editorState: EditorState): EntityInstance | null;

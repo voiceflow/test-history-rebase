@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { AIModel } from '@voiceflow/dtos';
+import type { AIModel } from '@voiceflow/dtos';
 import { Box, SectionV2, Select, ThemeColor, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 

@@ -1,4 +1,4 @@
-import * as Common from '@platform-config/configs/common';
+import type * as Common from '@platform-config/configs/common';
 
 import * as Publishing from './publishing';
 import * as Settings from './settings';

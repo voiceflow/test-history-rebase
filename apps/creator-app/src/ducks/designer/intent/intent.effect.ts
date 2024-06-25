@@ -2,7 +2,7 @@ import type { Intent, IntentClassificationSettings } from '@voiceflow/dtos';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { generalRuntimeClient } from '@/client/general-runtime/general-runtime.client';
-import { GeneralRuntimeIntentPreviewUtteranceResponse } from '@/client/general-runtime/general-runtime.interface';
+import type { GeneralRuntimeIntentPreviewUtteranceResponse } from '@/client/general-runtime/general-runtime.interface';
 import * as Errors from '@/config/errors';
 import * as Session from '@/ducks/session';
 import { waitAsync } from '@/ducks/utils';

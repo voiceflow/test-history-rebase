@@ -4,7 +4,7 @@ import { Badge, BlockText, Box, Button, Link, Modal } from '@voiceflow/ui';
 import { useAtom, useAtomValue } from 'jotai';
 import React from 'react';
 
-import { UpgradePrompt } from '@/ducks/tracking';
+import type { UpgradePrompt } from '@/ducks/tracking';
 import * as Workspace from '@/ducks/workspaceV2';
 import { useSelector, useTrackingEvents } from '@/hooks';
 import { useFeature } from '@/hooks/feature.hook';

@@ -1,6 +1,6 @@
 import { useEnableDisable } from '@ui/hooks/toggle';
 
-import * as I from './snackbar.interface';
+import type * as I from './snackbar.interface';
 
 interface Options {
   initialIsOpened?: boolean;

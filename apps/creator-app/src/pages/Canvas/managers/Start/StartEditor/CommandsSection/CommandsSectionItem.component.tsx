@@ -1,4 +1,4 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { tid } from '@voiceflow/style';
 import { Box, Divider, EditorButton, Popper, Scroll, Section, Surface, usePopperModifiers } from '@voiceflow/ui-next';
 import React from 'react';

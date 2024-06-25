@@ -1,6 +1,6 @@
-import React from 'react';
+import type React from 'react';
 
-import { ContainerProps } from './components';
+import type { ContainerProps } from './components';
 
 export type { ContentProps, DescriptionProps, HeaderProps, TitleProps } from './components';
 

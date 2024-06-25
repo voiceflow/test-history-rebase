@@ -1,7 +1,7 @@
 import composeRef from '@seznam/compose-react-refs';
 import { Utils } from '@voiceflow/common';
-import { Entity } from '@voiceflow/dtos';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type { Entity } from '@voiceflow/dtos';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, SectionV2, stopPropagation, usePersistFunction, usePopper } from '@voiceflow/ui';
 import React from 'react';
 
@@ -21,8 +21,20 @@ interface GPTEntityPromptProps {
   activeIndex?: number;
 }
 
-const GPTEntityPrompt: React.FC<GPTEntityPromptProps> = ({ index, prompt, onFocus, isActive, onChange, onReject, entities, activeIndex }) => {
-  const [ref] = useAutoScrollNodeIntoView<HTMLDivElement>({ condition: isActive, options: { block: 'nearest' } }, [isActive, activeIndex]);
+const GPTEntityPrompt: React.FC<GPTEntityPromptProps> = ({
+  index,
+  prompt,
+  onFocus,
+  isActive,
+  onChange,
+  onReject,
+  entities,
+  activeIndex,
+}) => {
+  const [ref] = useAutoScrollNodeIntoView<HTMLDivElement>({ condition: isActive, options: { block: 'nearest' } }, [
+    isActive,
+    activeIndex,
+  ]);
 
   const popper = usePopper({
     placement: 'left-start',

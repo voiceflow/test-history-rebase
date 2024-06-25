@@ -1,5 +1,6 @@
 import { Utils } from '@voiceflow/common';
-import { FeatureFlag, ObjectValue } from '@voiceflow/realtime-sdk';
+import type { ObjectValue } from '@voiceflow/realtime-sdk';
+import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { parseScript, Syntax } from 'esprima';
 import type * as estree from 'estree';
 import _isNumber from 'lodash/isNumber';

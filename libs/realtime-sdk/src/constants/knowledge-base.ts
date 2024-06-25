@@ -1,4 +1,5 @@
-import { AIModel, KBSettingsChunkStrategy, KBSettingsPromptMode, KnowledgeBaseSettings } from '@voiceflow/dtos';
+import type { KnowledgeBaseSettings } from '@voiceflow/dtos';
+import { AIModel, KBSettingsChunkStrategy, KBSettingsPromptMode } from '@voiceflow/dtos';
 
 export const KB_SETTINGS_DEFAULT: KnowledgeBaseSettings = {
   summarization: {

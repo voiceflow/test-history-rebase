@@ -1,7 +1,7 @@
-import { ResponseMessageCreate } from '@voiceflow/dtos';
-import { ResponseMessageORM } from '@voiceflow/orm-designer';
+import type { ResponseMessageCreate } from '@voiceflow/dtos';
+import type { ResponseMessageORM } from '@voiceflow/orm-designer';
 
-import { CMSCreateForUserData } from '@/common';
+import type { CMSCreateForUserData } from '@/common';
 
 export interface ResponseMessageCreateData extends CMSCreateForUserData<ResponseMessageORM> {}
 

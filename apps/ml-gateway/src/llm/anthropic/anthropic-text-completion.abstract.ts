@@ -1,11 +1,13 @@
 import Client, { AI_PROMPT, HUMAN_PROMPT } from '@anthropic-ai/sdk';
 import { Logger } from '@nestjs/common';
-import { AIMessage, AIMessageRole, AIParams } from '@voiceflow/dtos';
-import { from, map, mergeMap, Observable } from 'rxjs';
+import type { AIMessage, AIParams } from '@voiceflow/dtos';
+import { AIMessageRole } from '@voiceflow/dtos';
+import type { Observable } from 'rxjs';
+import { from, map, mergeMap } from 'rxjs';
 
 import { LLMModel } from '../llm-model.abstract';
-import { CompletionOutput, CompletionStreamOutput } from '../llm-model.dto';
-import { AnthropicConfig } from './anthropic.interface';
+import type { CompletionOutput, CompletionStreamOutput } from '../llm-model.dto';
+import type { AnthropicConfig } from './anthropic.interface';
 
 /**
  * @deprecated this is a legacy format, anthropic is transitioning to the messages API
@@ -23,7 +25,7 @@ export abstract class AnthropicTextCompletionAIModel extends LLMModel {
     super(config);
 
     if (!config.ANTHROPIC_API_KEY) {
-      throw new Error(`Anthropic client not initialized`);
+      throw new Error('Anthropic client not initialized');
     }
 
     this.client = new Client({ apiKey: config.ANTHROPIC_API_KEY });

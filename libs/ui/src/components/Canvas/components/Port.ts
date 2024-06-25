@@ -1,4 +1,4 @@
-import { HSLShades } from '@ui/components/ColorPicker/constants';
+import type { HSLShades } from '@ui/components/ColorPicker/constants';
 import { css, styled } from '@ui/styles';
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -26,7 +26,8 @@ const connectedDefaultStyles = css<PortTypes.Props>`
 const connectedChipStyles = css<PortTypes.Props>`
   width: 18px;
   height: 18px;
-  background: ${({ theme, palette, highlighted }) => (highlighted ? theme.colors.darkerBlue : palette?.[600] ?? '#6e849a')};
+  background: ${({ theme, palette, highlighted }) =>
+    highlighted ? theme.colors.darkerBlue : palette?.[600] ?? '#6e849a'};
 
   &:before {
     inset: 1px;
@@ -40,10 +41,16 @@ const Port = styled.div<PortTypes.Props>`
   position: relative;
   box-sizing: border-box;
   border: ${({ palette, chip }) => `${chip ? 3 : 2}px solid ${palette?.[500] ?? '#fff'}`};
-  transition: width 0.1s ease, height 0.1s ease, background 0.1s ease, border 0.1s ease;
+  transition:
+    width 0.1s ease,
+    height 0.1s ease,
+    background 0.1s ease,
+    border 0.1s ease;
 
   &:before {
-    transition: inset 0.1s ease, border 0.1s ease;
+    transition:
+      inset 0.1s ease,
+      border 0.1s ease;
     position: absolute;
     content: '';
     border-radius: 50%;

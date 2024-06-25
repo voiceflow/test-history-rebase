@@ -1,9 +1,9 @@
 import { PrototypeStatus } from '@/constants/prototype';
-import { SyncThunk } from '@/store/types';
+import type { SyncThunk } from '@/store/types';
 
 import { pushContextHistory, pushPrototypeVisualDataHistory, updatePrototype } from '../actions';
 import { prototypeSelectedPersonaID } from '../selectors';
-import { Context, PrototypeSettings } from '../types';
+import type { Context, PrototypeSettings } from '../types';
 
 const startPublicPrototype =
   (settings: PrototypeSettings): SyncThunk =>

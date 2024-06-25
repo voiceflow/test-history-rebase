@@ -1,7 +1,7 @@
 import { BlockType } from '@realtime-sdk/constants';
 import { BaseModels } from '@voiceflow/base-types';
 
-import { Transform } from './types';
+import type { Transform } from './types';
 
 /**
  * card and carousel steps have hidden next ports that can not be seen or edited by the user

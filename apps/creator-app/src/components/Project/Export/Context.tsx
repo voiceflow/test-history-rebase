@@ -1,10 +1,10 @@
-import { Nullable } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
 import { useContextApi } from '@voiceflow/ui';
 import _sortBy from 'lodash/sortBy';
 import React from 'react';
 
-import * as NLP from '@/config/nlp';
+import type * as NLP from '@/config/nlp';
 import { ExportFormat as CanvasExportFormat, ExportType } from '@/constants';
 import * as Export from '@/ducks/export';
 import { useActiveProjectNLUConfig, useActiveProjectPlatformConfig, useDispatch, useTrackingEvents } from '@/hooks';

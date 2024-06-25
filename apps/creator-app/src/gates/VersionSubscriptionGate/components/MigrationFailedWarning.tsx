@@ -21,7 +21,11 @@ const MigrationFailedWarning: React.FC<MigrationFailedWarningProps> = ({ onReset
 
   return (
     <FlexCenter style={{ height: '100%' }} fullWidth>
-      <PageError icon={<Spinner />} title="Agent Migration Failed" message="The agent will load automatically when the migration is complete">
+      <PageError
+        icon={<Spinner />}
+        title="Agent Migration Failed"
+        message="The agent will load automatically when the migration is complete"
+      >
         <Box mt={16}>
           <Button onClick={goToDashboard}>Go to Dashboard</Button>
         </Box>

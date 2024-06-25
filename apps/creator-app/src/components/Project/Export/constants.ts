@@ -1,5 +1,5 @@
 import { ExportFormat, ExportType } from '@/constants';
-import { PrototypeRenderSyncOptions } from '@/constants/prototype';
+import type { PrototypeRenderSyncOptions } from '@/constants/prototype';
 
 export const CANVAS_EXPORT_OPTIONS = [ExportFormat.VF, ExportFormat.PDF, ExportFormat.PNG, ExportFormat.DIALOGS];
 

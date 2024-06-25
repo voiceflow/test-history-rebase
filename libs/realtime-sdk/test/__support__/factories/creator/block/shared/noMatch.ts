@@ -1,9 +1,9 @@
 import { faker } from '@faker-js/faker';
-import { NodeData } from '@realtime-sdk/models';
+import type { NodeData } from '@realtime-sdk/models';
 import { getRandomEnumElement } from '@test/utils';
 import { BaseNode } from '@voiceflow/base-types';
-import { ChatNode } from '@voiceflow/chat-types';
-import { VoiceNode } from '@voiceflow/voice-types';
+import type { ChatNode } from '@voiceflow/chat-types';
+import type { VoiceNode } from '@voiceflow/voice-types';
 import { define, extend } from 'cooky-cutter';
 
 import { ChatPrompt, VoiceNodeDataPrompt, VoicePrompt } from './prompt';
@@ -18,9 +18,12 @@ export const ChatStepNoMatch = extend<ReturnType<typeof BaseStepNoMatch>, ChatNo
   reprompts: () => [ChatPrompt()],
 });
 
-export const VoiceStepNoMatch = extend<ReturnType<typeof BaseStepNoMatch>, VoiceNode.Utils.StepNoMatch<any>>(BaseStepNoMatch, {
-  reprompts: () => [VoicePrompt()],
-});
+export const VoiceStepNoMatch = extend<ReturnType<typeof BaseStepNoMatch>, VoiceNode.Utils.StepNoMatch<any>>(
+  BaseStepNoMatch,
+  {
+    reprompts: () => [VoicePrompt()],
+  }
+);
 
 export const BaseNodeDataNomatch = define<NodeData.BaseNoMatch>({
   types: () => [getRandomEnumElement(BaseNode.Utils.NoMatchType)],
@@ -28,10 +31,16 @@ export const BaseNodeDataNomatch = define<NodeData.BaseNoMatch>({
   randomize: () => faker.datatype.boolean(),
 });
 
-export const ChatNodeDataNoMatch = extend<ReturnType<typeof BaseNodeDataNomatch>, NodeData.ChatNoMatch>(BaseNodeDataNomatch, {
-  reprompts: () => [ChatPrompt()],
-});
+export const ChatNodeDataNoMatch = extend<ReturnType<typeof BaseNodeDataNomatch>, NodeData.ChatNoMatch>(
+  BaseNodeDataNomatch,
+  {
+    reprompts: () => [ChatPrompt()],
+  }
+);
 
-export const VoiceNodeDataNoMatch = extend<ReturnType<typeof BaseNodeDataNomatch>, NodeData.VoiceNoMatch>(BaseNodeDataNomatch, {
-  reprompts: () => [VoiceNodeDataPrompt()],
-});
+export const VoiceNodeDataNoMatch = extend<ReturnType<typeof BaseNodeDataNomatch>, NodeData.VoiceNoMatch>(
+  BaseNodeDataNomatch,
+  {
+    reprompts: () => [VoiceNodeDataPrompt()],
+  }
+);

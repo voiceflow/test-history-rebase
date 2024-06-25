@@ -1,6 +1,6 @@
 import { CANVAS_MARKUP_TRANSFORMING_CLASSNAME } from '@/pages/Canvas/constants';
-import { MarkupTransform, TransformOverlayAPI } from '@/pages/Canvas/types';
-import { Pair } from '@/types';
+import type { MarkupTransform, TransformOverlayAPI } from '@/pages/Canvas/types';
+import type { Pair } from '@/types';
 import { isMarkupBlockType } from '@/utils/typeGuards';
 
 import { EngineConsumer } from './utils';

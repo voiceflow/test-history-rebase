@@ -1,4 +1,4 @@
-import { WrappedFieldInputProps, WrappedFieldMetaProps } from 'redux-form';
+import type { WrappedFieldInputProps, WrappedFieldMetaProps } from 'redux-form';
 
 export interface WrappedFormControlProps
   extends Pick<WrappedFieldInputProps, 'value' | 'onChange'>,

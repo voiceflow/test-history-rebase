@@ -1,6 +1,7 @@
-import { AIModel, Subscription } from '@voiceflow/dtos';
+import type { Subscription } from '@voiceflow/dtos';
+import { AIModel } from '@voiceflow/dtos';
 import React from 'react';
-import { SetValue } from 'ts-pattern/dist/types/helpers';
+import type { SetValue } from 'ts-pattern/dist/types/helpers';
 
 import { AI_MODEL_CONFIG_MAP } from '@/config/ai-model';
 import { Permission } from '@/constants/permissions';

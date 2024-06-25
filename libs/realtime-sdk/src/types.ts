@@ -1,8 +1,8 @@
-import { SchemaVersion } from '@realtime-sdk/schema-version/schema-version.enum';
-import { BaseModels } from '@voiceflow/base-types';
-import { AnyRecord, Nullish, Struct, Utils } from '@voiceflow/common';
-import * as Platform from '@voiceflow/platform-config/backend';
-import { ActionCreator } from 'typescript-fsa';
+import type { SchemaVersion } from '@realtime-sdk/schema-version/schema-version.enum';
+import type { BaseModels } from '@voiceflow/base-types';
+import type { AnyRecord, Nullish, Struct, Utils } from '@voiceflow/common';
+import type * as Platform from '@voiceflow/platform-config/backend';
+import type { ActionCreator } from 'typescript-fsa';
 
 export enum ErrorCode {
   CANNOT_CONVERT_TO_TOPIC = 1000,

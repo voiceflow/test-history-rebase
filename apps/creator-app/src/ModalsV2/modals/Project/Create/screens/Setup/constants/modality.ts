@@ -1,6 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
-import { SvgIconTypes } from '@voiceflow/ui';
+import type { SvgIconTypes } from '@voiceflow/ui';
 
 export interface Option {
   type: Platform.Constants.ProjectType;

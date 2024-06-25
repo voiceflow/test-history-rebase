@@ -1,10 +1,14 @@
 import composeRef from '@seznam/compose-react-refs';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import { useExpressionValidator } from '@/components/ConditionsBuilder/hooks';
-import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandlers } from '@/components/DraggableList';
+import type {
+  DragPreviewComponentProps,
+  ItemComponentProps,
+  MappedItemComponentHandlers,
+} from '@/components/DraggableList';
 import VariableSelectV2 from '@/components/VariableSelectV2';
 import VariablesInput from '@/components/VariablesInput';
 import { Diagram } from '@/ducks';
@@ -12,7 +16,7 @@ import { useAutoScrollNodeIntoView } from '@/hooks';
 import { useVariableCreateModal } from '@/hooks/modal.hook';
 import { useSelector } from '@/hooks/store.hook';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
-import { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
+import type { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
 
 export interface DraggableItemProps
   extends DragPreviewComponentProps,

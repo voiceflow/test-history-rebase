@@ -1,4 +1,4 @@
-import { Point } from '@/types';
+import type { Point } from '@/types';
 
 // good old pythagoras
 export const getHypotenuse = (lhs: Point, rhs: Point) => {
@@ -17,7 +17,10 @@ export const pivotPoint = (point: Point, pivot: Point, rad: number): Point => {
   const sin = Math.sin(rad);
   const cos = Math.cos(rad);
 
-  return [cos * (point[0] - pivot[0]) - sin * (point[1] - pivot[1]) + pivot[0], sin * (point[0] - pivot[0]) + cos * (point[1] - pivot[1]) + pivot[1]];
+  return [
+    cos * (point[0] - pivot[0]) - sin * (point[1] - pivot[1]) + pivot[0],
+    sin * (point[0] - pivot[0]) + cos * (point[1] - pivot[1]) + pivot[1],
+  ];
 };
 
 // if distance from point to center is scaled by scale, calculate new scaled point

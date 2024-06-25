@@ -16,6 +16,7 @@ import manager from '../../../manager';
 import SeatsInput from '../../Billing/SeatsInput';
 
 const AddSeats = manager.create('LegacyBillingAddSeats', () =>
+  // eslint-disable-next-line sonarjs/cognitive-complexity
   withProvider(Payment.legacy.PaymentProvider)(({ api, type, opened, hidden, animated, closePrevented }) => {
     const isPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
     const isOnProTrial = useSelector(WorkspaceV2.active.isOnProTrialSelector);
@@ -73,8 +74,9 @@ const AddSeats = manager.create('LegacyBillingAddSeats', () =>
               <SectionV2.Description secondary lineHeight="20px">
                 {isPaidPlan || isOnProTrial ? (
                   <>
-                    Your workspace currently has {numberOfSeats} Editor {pluralize('seat', numberOfSeats)}. Seats you add here are available
-                    immediately and are billed on a pro-rata basis until the next billing date on {nextBillingDate}.
+                    Your workspace currently has {numberOfSeats} Editor {pluralize('seat', numberOfSeats)}. Seats you
+                    add here are available immediately and are billed on a pro-rata basis until the next billing date on{' '}
+                    {nextBillingDate}.
                   </>
                 ) : (
                   <>
@@ -88,8 +90,8 @@ const AddSeats = manager.create('LegacyBillingAddSeats', () =>
             {isReducing && (
               <SectionV2.SimpleSection headerProps={{ topUnit: 0, bottomUnit: 2.5 }}>
                 <Alert title={<Alert.Title>You're reducing the number of Editor seats</Alert.Title>}>
-                  If you are using more than {numSeats} Editor seats on your next billing date, we will downgrade {numberOfSeats - numSeats} Editor to
-                  Viewer.
+                  If you are using more than {numSeats} Editor seats on your next billing date, we will downgrade{' '}
+                  {numberOfSeats - numSeats} Editor to Viewer.
                 </Alert>
               </SectionV2.SimpleSection>
             )}
@@ -99,7 +101,9 @@ const AddSeats = manager.create('LegacyBillingAddSeats', () =>
             <Workspace.BillingSummary
               header={{
                 title: 'Summary',
-                addon: <SeatsInput min={1} value={numSeats} error={numSeats > editorPlanSeatLimits} onChange={setNumSeats} />,
+                addon: (
+                  <SeatsInput min={1} value={numSeats} error={numSeats > editorPlanSeatLimits} onChange={setNumSeats} />
+                ),
                 description: (
                   <div>
                     {numSeats > editorPlanSeatLimits ? (
@@ -120,7 +124,11 @@ const AddSeats = manager.create('LegacyBillingAddSeats', () =>
               footer={{
                 value: currency.formatUSD(totalPriceForEditors),
                 // eslint-disable-next-line no-nested-ternary
-                description: isOnProTrial ? 'Total Due During Pro Trial' : shouldProrate ? 'Due today' : 'Cost on Next Billing Date',
+                description: isOnProTrial
+                  ? 'Total Due During Pro Trial'
+                  : shouldProrate
+                    ? 'Due today'
+                    : 'Cost on Next Billing Date',
               }}
             />
 

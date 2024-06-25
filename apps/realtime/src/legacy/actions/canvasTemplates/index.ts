@@ -1,4 +1,4 @@
-import { LoguxControlOptions } from '../../control';
+import type { LoguxControlOptions } from '../../control';
 import AddCanvasTemplateControl from './add';
 import CreateCanvasTemplateControl from './create';
 import InitializeControl from './initialize';

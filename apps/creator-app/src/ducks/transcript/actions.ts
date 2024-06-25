@@ -1,7 +1,7 @@
 import { Utils } from '@voiceflow/common';
 import { actionUtils } from '@voiceflow/realtime-sdk';
 
-import { Transcript } from '@/models';
+import type { Transcript } from '@/models';
 
 import { STATE_KEY } from './constants';
 

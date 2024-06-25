@@ -1,5 +1,5 @@
-import { IButton } from '@voiceflow/ui-next';
-import React from 'react';
+import type { IButton } from '@voiceflow/ui-next';
+import type React from 'react';
 
 export interface IConformV2Modal {
   body: React.ReactNode;

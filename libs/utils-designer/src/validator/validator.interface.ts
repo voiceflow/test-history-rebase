@@ -83,7 +83,7 @@ export interface IComposeValidators {
   <T, C>(
     ...validators: [
       (value: T, context: C) => IValidatorResult<T>,
-      ...Array<(value: T, context: C) => IValidatorResult<T>>
+      ...Array<(value: T, context: C) => IValidatorResult<T>>,
     ]
   ): IValidatorWithContext<T, C>;
 }

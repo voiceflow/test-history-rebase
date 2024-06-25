@@ -53,7 +53,10 @@ class DragEngine extends EngineConsumer {
     this.log.debug(this.log.pending('setting drag group'), nodeIDs);
     nodeIDs.forEach((nodeID) => this.engine.node.redraw(nodeID));
 
-    await this.engine.components.diagramHeartbeat?.lockEntities(Realtime.diagram.awareness.LockEntityType.NODE_MOVEMENT, nodeIDs);
+    await this.engine.components.diagramHeartbeat?.lockEntities(
+      Realtime.diagram.awareness.LockEntityType.NODE_MOVEMENT,
+      nodeIDs
+    );
     this.addStyle();
 
     const focusedNode = this.engine.focus.getTarget();
@@ -76,7 +79,10 @@ class DragEngine extends EngineConsumer {
 
     this.engine.node.redraw(nodeID);
 
-    await this.engine.components.diagramHeartbeat?.lockEntities(Realtime.diagram.awareness.LockEntityType.NODE_MOVEMENT, [nodeID]);
+    await this.engine.components.diagramHeartbeat?.lockEntities(
+      Realtime.diagram.awareness.LockEntityType.NODE_MOVEMENT,
+      [nodeID]
+    );
 
     this.addStyle();
     if (this.engine.focus.getTarget() !== nodeID) {
@@ -99,7 +105,10 @@ class DragEngine extends EngineConsumer {
       this.engine.node.redraw(target);
       this.engine.node.translate([target], [0, 0]);
 
-      await this.engine.components.diagramHeartbeat?.unlockEntities(Realtime.diagram.awareness.LockEntityType.NODE_MOVEMENT, [target]);
+      await this.engine.components.diagramHeartbeat?.unlockEntities(
+        Realtime.diagram.awareness.LockEntityType.NODE_MOVEMENT,
+        [target]
+      );
 
       this.removeStyle();
 
@@ -114,7 +123,10 @@ class DragEngine extends EngineConsumer {
       group.forEach((nodeID) => this.engine.node.redraw(nodeID));
       this.engine.node.translate(group, [0, 0]);
 
-      await this.engine.components.diagramHeartbeat?.unlockEntities(Realtime.diagram.awareness.LockEntityType.NODE_MOVEMENT, group);
+      await this.engine.components.diagramHeartbeat?.unlockEntities(
+        Realtime.diagram.awareness.LockEntityType.NODE_MOVEMENT,
+        group
+      );
 
       this.removeStyle();
 

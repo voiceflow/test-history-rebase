@@ -1,5 +1,5 @@
 import { BaseModels } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Canvas, Popper, swallowEvent, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
@@ -7,7 +7,7 @@ import { ActiveDiagramNormalizedEntitiesAndVariablesContext } from '@/pages/Canv
 import { transformVariablesToReadable } from '@/utils/slot';
 
 import Step from '../../../components/Step';
-import { ConnectedAction } from '../../types';
+import type { ConnectedAction } from '../../types';
 import { SETV2_NODE_CONFIG } from '../SetV2Manager.constant';
 import ActionPreview from './ActionPreview';
 

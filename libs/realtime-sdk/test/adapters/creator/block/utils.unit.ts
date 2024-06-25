@@ -16,7 +16,10 @@ describe('Adapters | Creator | Block | Utils', () => {
 
     it('shorter length', () => {
       const ports = { dynamic: [{ id: 'port1' }, { id: 'port2' }, { id: 'port3' }], foo: 'bar' } as any;
-      expect(syncDynamicPortsLength({ nodeID: 'nodeID', ports, length: 1 })).eql({ ...ports, dynamic: [{ id: 'port1' }] });
+      expect(syncDynamicPortsLength({ nodeID: 'nodeID', ports, length: 1 })).eql({
+        ...ports,
+        dynamic: [{ id: 'port1' }],
+      });
     });
 
     it('longer length', () => {

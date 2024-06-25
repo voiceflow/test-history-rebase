@@ -1,4 +1,5 @@
-import { BaseProps, Box, TextField } from '@voiceflow/ui-next';
+import type { BaseProps } from '@voiceflow/ui-next';
+import { Box, TextField } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { useInput } from '@/hooks/input.hook';
@@ -9,7 +10,12 @@ interface IKBImportIntegrationSubdomainInput extends BaseProps {
   onValueChange: (value: string) => void;
 }
 
-export const KBImportIntegrationSubdomainInput: React.FC<IKBImportIntegrationSubdomainInput> = ({ value, error, onValueChange, testID }) => {
+export const KBImportIntegrationSubdomainInput: React.FC<IKBImportIntegrationSubdomainInput> = ({
+  value,
+  error,
+  onValueChange,
+  testID,
+}) => {
   const input = useInput({
     value,
     error,

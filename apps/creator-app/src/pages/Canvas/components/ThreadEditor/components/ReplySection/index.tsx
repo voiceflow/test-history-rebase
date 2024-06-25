@@ -3,11 +3,12 @@ import React from 'react';
 
 import { useTrackingEvents } from '@/hooks';
 import { EngineContext } from '@/pages/Canvas/contexts';
-import { CommentDraftValue } from '@/pages/Canvas/types';
+import type { CommentDraftValue } from '@/pages/Canvas/types';
 
 import { REPLY_CLASSNAME } from '../../constants';
 import Content from '../Content';
-import EditableComment, { EditableCommentRef } from '../EditableComment';
+import type { EditableCommentRef } from '../EditableComment';
+import EditableComment from '../EditableComment';
 import ReplySectionContainer from './ReplySectionContainer';
 
 interface ReplySectionProps {

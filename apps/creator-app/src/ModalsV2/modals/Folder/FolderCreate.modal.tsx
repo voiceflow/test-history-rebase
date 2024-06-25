@@ -1,5 +1,4 @@
-import type { Folder } from '@voiceflow/dtos';
-import { FolderScope } from '@voiceflow/dtos';
+import type { Folder, FolderScope } from '@voiceflow/dtos';
 import { notify, Scroll } from '@voiceflow/ui-next';
 import { folderNameValidator } from '@voiceflow/utils-designer';
 import React from 'react';
@@ -81,7 +80,13 @@ export const FolderCreateModal = modalsManager.create<IFolderCreateModal, Folder
           <Modal.Footer>
             <Modal.Footer.Button variant="secondary" onClick={api.onClose} disabled={closePrevented} label="Cancel" />
 
-            <Modal.Footer.Button label="Create folder" variant="primary" onClick={onSubmit} disabled={closePrevented} isLoading={closePrevented} />
+            <Modal.Footer.Button
+              label="Create folder"
+              variant="primary"
+              onClick={onSubmit}
+              disabled={closePrevented}
+              isLoading={closePrevented}
+            />
           </Modal.Footer>
         </Modal.Container>
       );

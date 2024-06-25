@@ -1,7 +1,10 @@
 import { BaseStrategy } from './base.strategy';
 import type { BaseAdapter, BaseKeyExtractor, KeyOptions, StringFromDB, StringToDB } from './strategy.interface';
 
-export class KeyValueStrategy<K extends BaseKeyExtractor, A extends BaseAdapter | undefined = undefined> extends BaseStrategy<K, A> {
+export class KeyValueStrategy<
+  K extends BaseKeyExtractor,
+  A extends BaseAdapter | undefined = undefined,
+> extends BaseStrategy<K, A> {
   private formatValue = (value: string | null): StringFromDB<A> | null => {
     if (value === null) {
       return null;
@@ -22,7 +25,11 @@ export class KeyValueStrategy<K extends BaseKeyExtractor, A extends BaseAdapter 
     return values.map(this.formatValue);
   }
 
-  public async set(keyOptions: KeyOptions<K>, value: StringToDB<A>, { expire = this.expire }: { expire?: number } = {}): Promise<void> {
+  public async set(
+    keyOptions: KeyOptions<K>,
+    value: StringToDB<A>,
+    { expire = this.expire }: { expire?: number } = {}
+  ): Promise<void> {
     const dbKey = this.keyCreator(keyOptions);
     const dbValue = this.adapter?.toDB(value) ?? value;
 
@@ -35,8 +42,13 @@ export class KeyValueStrategy<K extends BaseKeyExtractor, A extends BaseAdapter 
     }
   }
 
-  public async setMany(sets: [keyOptions: KeyOptions<K>, value: StringToDB<A>][], { expire = this.expire }: { expire?: number } = {}): Promise<void> {
-    const setsRecord = Object.fromEntries(sets.map(([key, value]) => [this.keyCreator(key), this.adapter?.toDB(value) ?? value]));
+  public async setMany(
+    sets: [keyOptions: KeyOptions<K>, value: StringToDB<A>][],
+    { expire = this.expire }: { expire?: number } = {}
+  ): Promise<void> {
+    const setsRecord = Object.fromEntries(
+      sets.map(([key, value]) => [this.keyCreator(key), this.adapter?.toDB(value) ?? value])
+    );
 
     if (expire) {
       const pipeline = this.redis.pipeline().mset(setsRecord);

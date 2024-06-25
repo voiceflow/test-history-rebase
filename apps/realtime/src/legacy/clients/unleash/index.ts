@@ -1,11 +1,12 @@
 import { Utils } from '@voiceflow/common';
-import { Logger } from '@voiceflow/logger';
+import type { Logger } from '@voiceflow/logger';
 import type { LoguxControl } from '@voiceflow/socket-utils';
 import * as Unleash from 'unleash-client';
-import { Required } from 'utility-types';
+import type { Required } from 'utility-types';
 
-import { BaseOptions } from '../types';
-import strategies, { StrategiesContext } from './strategies';
+import type { BaseOptions } from '../types';
+import type { StrategiesContext } from './strategies';
+import strategies from './strategies';
 
 const PRIVATE_CLOUD_CONFIG_NAME = 'private_cloud_config';
 const REFRESH_INTERVAL = 1000 * 30; // 30 seconds
@@ -85,7 +86,10 @@ class UnleashClient implements LoguxControl {
     const context = this.getContext(externalContext);
     const variant = this.getConfigVariant(this.getVariantContext(context));
 
-    if (variant && Object.entries(variant).some(([key, value]) => this.isVariantFeatureEnabled(featureID, key, value))) {
+    if (
+      variant &&
+      Object.entries(variant).some(([key, value]) => this.isVariantFeatureEnabled(featureID, key, value))
+    ) {
       return true;
     }
 
@@ -99,7 +103,9 @@ class UnleashClient implements LoguxControl {
   }
 
   getFeatureStatuses(context?: InternalContext): Record<string, { isEnabled: boolean }> {
-    return Object.fromEntries(this.getAllFeatures().map(({ name }) => [name, { isEnabled: this.isEnabled(name, context) }]));
+    return Object.fromEntries(
+      this.getAllFeatures().map(({ name }) => [name, { isEnabled: this.isEnabled(name, context) }])
+    );
   }
 
   getVariantConfig<Value>(userID: number, configName: string): Value | null {
@@ -116,7 +122,9 @@ class UnleashClient implements LoguxControl {
         throw new Error();
       }
 
-      this.log.warn('WARNING: failed to initialize unleash client, falling back to mock client; all feature flags will be disabled');
+      this.log.warn(
+        'WARNING: failed to initialize unleash client, falling back to mock client; all feature flags will be disabled'
+      );
 
       this.instance.destroy();
     }

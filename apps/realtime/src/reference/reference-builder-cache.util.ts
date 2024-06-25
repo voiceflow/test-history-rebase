@@ -1,4 +1,4 @@
-import { ReferenceResource } from '@voiceflow/dtos';
+import type { ReferenceResource } from '@voiceflow/dtos';
 
 export class ReferenceBuilderCacheUtil {
   private readonly cache: Partial<Record<string, ReferenceResource | null>> = {};

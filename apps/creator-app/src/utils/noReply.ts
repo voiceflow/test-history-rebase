@@ -1,6 +1,6 @@
 import { BaseNode } from '@voiceflow/base-types';
-import { ChatNode } from '@voiceflow/chat-types';
-import { Nullish } from '@voiceflow/common';
+import type { ChatNode } from '@voiceflow/chat-types';
+import type { Nullish } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
@@ -21,7 +21,10 @@ const chatNoReplyFactory = ({ reprompts, ...options }: NoReplyFactoryOptions = {
     : [Platform.Common.Chat.CONFIG.utils.prompt.factory(options)],
 });
 
-const voiceNoReplyFactory = ({ reprompts, ...options }: NoReplyFactoryOptions = {}): Realtime.NodeData.VoiceNoReply => ({
+const voiceNoReplyFactory = ({
+  reprompts,
+  ...options
+}: NoReplyFactoryOptions = {}): Realtime.NodeData.VoiceNoReply => ({
   ...BASE_NO_REPLY,
   reprompts: reprompts
     ? reprompts.map((prompt) => Platform.Common.Voice.CONFIG.utils.prompt.textFactory({ content: prompt, ...options }))
@@ -46,7 +49,13 @@ export const getPlatformNoReplyFactory = (
   const timeout = getDefaultNoReplyTimeoutSeconds(platform);
 
   return Realtime.Utils.platform.createProjectTypeSelector<PromptFactory>({
-    [Platform.Constants.ProjectType.CHAT]: (options?: NoReplyFactoryOptions) => ({ ...chatNoReplyFactory(options), timeout }),
-    [Platform.Constants.ProjectType.VOICE]: (options?: NoReplyFactoryOptions) => ({ ...voiceNoReplyFactory(options), timeout }),
+    [Platform.Constants.ProjectType.CHAT]: (options?: NoReplyFactoryOptions) => ({
+      ...chatNoReplyFactory(options),
+      timeout,
+    }),
+    [Platform.Constants.ProjectType.VOICE]: (options?: NoReplyFactoryOptions) => ({
+      ...voiceNoReplyFactory(options),
+      timeout,
+    }),
   })(projectType || undefined);
 };

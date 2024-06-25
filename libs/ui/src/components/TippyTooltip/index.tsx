@@ -1,13 +1,14 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import 'tippy.js/dist/tippy.css';
 import 'tippy.js/dist/backdrop.css';
 import 'tippy.js/animations/shift-away.css';
 
-import Tippy, { TippyProps } from '@tippyjs/react';
+import type { TippyProps } from '@tippyjs/react';
+import Tippy from '@tippyjs/react';
 import { IS_TEST } from '@ui/config';
 import { useCreateConst, useTeardown } from '@ui/hooks';
 import { ClassName } from '@ui/styles/constants';
-import { StringifyEnum, Utils } from '@voiceflow/common';
+import type { StringifyEnum } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
 import cns from 'classnames';
 import React from 'react';
 import type { Instance } from 'tippy.js';
@@ -94,7 +95,10 @@ const TippyTooltip = React.forwardRef<Element, TippyTooltipProps>(
         placement={placement ?? position}
         popperOptions={{
           ...popperOptions,
-          modifiers: [{ name: 'preventOverflow', options: { boundary: document.body, padding: 10 } }, ...(popperOptions?.modifiers ?? [])],
+          modifiers: [
+            { name: 'preventOverflow', options: { boundary: document.body, padding: 10 } },
+            ...(popperOptions?.modifiers ?? []),
+          ],
         }}
       >
         <Tag style={{ display, ...style }} className={cns(ClassName.TOOLTIP, className)}>

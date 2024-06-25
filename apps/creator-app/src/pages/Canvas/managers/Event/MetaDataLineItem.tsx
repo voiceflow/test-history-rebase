@@ -44,7 +44,12 @@ const MetaDataLineItem: React.FC<any> = ({ value, keyPlaceholder, onUpdate, onRe
   <Container>
     <LeftSection>
       <HeaderKeyContainer>
-        <VariablesInput space={false} placeholder={keyPlaceholder} value={value} onBlur={({ text }) => onUpdate(text)} />
+        <VariablesInput
+          space={false}
+          placeholder={keyPlaceholder}
+          value={value}
+          onBlur={({ text }) => onUpdate(text)}
+        />
       </HeaderKeyContainer>
 
       {children}

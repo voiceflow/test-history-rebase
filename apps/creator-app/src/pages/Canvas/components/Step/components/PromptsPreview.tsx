@@ -13,7 +13,10 @@ interface PromptPreviewProps {
   onOpenEditor: VoidFunction;
 }
 
-const getPromptContent = (prompt: Platform.Base.Models.Prompt.Model, variablesMap: Record<string, { id: string; name: string }>) => {
+const getPromptContent = (
+  prompt: Platform.Base.Models.Prompt.Model,
+  variablesMap: Record<string, { id: string; name: string }>
+) => {
   if (Platform.Common.Chat.CONFIG.utils.prompt.isPrompt(prompt)) {
     return serializeToText(prompt.content, { variablesMap, encodeVariables: true });
   }

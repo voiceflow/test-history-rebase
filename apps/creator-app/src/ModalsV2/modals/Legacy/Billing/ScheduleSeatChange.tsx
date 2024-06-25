@@ -24,7 +24,18 @@ interface ScheduleSeatChangeProps {
 const ScheduleSeatChange = manager.create<ScheduleSeatChangeProps>(
   'LegacyBillingScheduleSeatChange',
   () =>
-    ({ api, type, opened, hidden, animated, nextBillingDate, pricePerEditor, scheduleOrCurrentEditorSeats, billingPeriod, closePrevented }) => {
+    ({
+      api,
+      type,
+      opened,
+      hidden,
+      animated,
+      nextBillingDate,
+      pricePerEditor,
+      scheduleOrCurrentEditorSeats,
+      billingPeriod,
+      closePrevented,
+    }) => {
       const [tracking] = useTrackingEvents();
 
       const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
@@ -58,12 +69,14 @@ const ScheduleSeatChange = manager.create<ScheduleSeatChangeProps>(
 
       return (
         <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={450}>
-          <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />}>Schedule Seat Change</Modal.Header>
+          <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />}>
+            Schedule Seat Change
+          </Modal.Header>
 
           <SectionV2.SimpleSection headerProps={{ topUnit: 0, bottomUnit: 2 }}>
             <SectionV2.Description secondary lineHeight="20px">
-              You can schedule a change number of Editor Seats you have on your next billing date on {nextBillingDate}. You currently have{' '}
-              {scheduleOrCurrentEditorSeats} Editor seats.
+              You can schedule a change number of Editor Seats you have on your next billing date on {nextBillingDate}.
+              You currently have {scheduleOrCurrentEditorSeats} Editor seats.
             </SectionV2.Description>
           </SectionV2.SimpleSection>
 

@@ -5,7 +5,7 @@ import * as Errors from '@/config/errors';
 import { allReportTagsSelector } from '@/ducks/reportTag/selectors';
 import { activeProjectIDSelector } from '@/ducks/session';
 import { SystemTag } from '@/models';
-import { Thunk } from '@/store/types';
+import type { Thunk } from '@/store/types';
 import { getErrorMessage } from '@/utils/error';
 
 import { addReportTag, patchReportTag, removeReportTag, replaceReportTags } from './actions';

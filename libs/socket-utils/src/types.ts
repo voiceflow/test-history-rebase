@@ -2,11 +2,11 @@
 import type { LoguxSubscribeAction } from '@logux/actions';
 import type { ChannelContext as BaseChannelContext, Context as BaseContext, ServerMeta } from '@logux/server';
 import type { Resend } from '@logux/server/base-server';
-import { Eventual } from '@voiceflow/common';
+import type { Eventual } from '@voiceflow/common';
 import type { Action } from 'typescript-fsa';
 
 import type { AbstractActionControl } from './control/action';
-import { LoguxControlOptions } from './control/utils';
+import type { LoguxControlOptions } from './control/utils';
 
 export type { Resend };
 
@@ -34,7 +34,11 @@ export type BoundActionAccessor<T extends LoguxControlOptions, P, D extends Base
   meta: ServerMeta
 ) => Eventual<boolean>;
 
-export type Resender<P, D extends BaseContextData = BaseContextData> = (ctx: Context<D>, action: Action<P>, meta: ServerMeta) => Eventual<Resend>;
+export type Resender<P, D extends BaseContextData = BaseContextData> = (
+  ctx: Context<D>,
+  action: Action<P>,
+  meta: ServerMeta
+) => Eventual<Resend>;
 
 // channel control types
 

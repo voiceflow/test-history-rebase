@@ -10,7 +10,7 @@ import { isHTTPsURL, isValidURL } from '@/utils/string.util';
 import { KBRefreshRateSelect } from '../../components/KBRefreshRateSelect/KBRefreshRateSelect.component';
 import { sanitizeURL } from '../../KnowledgeBaseImport.utils';
 import { submitButtonStyles } from '../KBImportSitemap.css';
-import { IKBImportSitemapURL } from './KBImportSitemapURL.interface';
+import type { IKBImportSitemapURL } from './KBImportSitemapURL.interface';
 
 export const KBImportSitemapURL: React.FC<IKBImportSitemapURL> = ({
   addURLs,
@@ -99,12 +99,23 @@ export const KBImportSitemapURL: React.FC<IKBImportSitemapURL> = ({
             />
           </Box>
 
-          <KBRefreshRateSelect value={refreshRate} disabled={closePrevented} onValueChange={setRefreshRate} testID={tid(testID, 'refresh-rate')} />
+          <KBRefreshRateSelect
+            value={refreshRate}
+            disabled={closePrevented}
+            onValueChange={setRefreshRate}
+            testID={tid(testID, 'refresh-rate')}
+          />
         </Box>
       </Scroll>
 
       <Modal.Footer>
-        <Modal.Footer.Button label="Cancel" variant="secondary" onClick={onClose} disabled={closePrevented} testID={tid(testID, 'cancel')} />
+        <Modal.Footer.Button
+          label="Cancel"
+          variant="secondary"
+          onClick={onClose}
+          disabled={closePrevented}
+          testID={tid(testID, 'cancel')}
+        />
 
         <Modal.Footer.Button
           label="Continue"

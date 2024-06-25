@@ -1,9 +1,10 @@
 import * as Platform from '@voiceflow/platform-config';
-import React from 'react';
+import type React from 'react';
 
 import { projectTypeAware } from '@/hocs/platformAware';
 
-import { ChatList, ChatListProps, VoiceList, VoiceListProps } from './components';
+import type { ChatListProps, VoiceListProps } from './components';
+import { ChatList, VoiceList } from './components';
 
 type NoMatchAndNoReplyStepCopyListProps = ChatListProps | VoiceListProps;
 

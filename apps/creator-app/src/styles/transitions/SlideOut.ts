@@ -19,10 +19,9 @@ export interface SlideOutProps {
 export const SlideOut = styled.div<SlideOutProps>`
   position: absolute;
   ${!IS_SAFARI &&
-  (({ width }) =>
-    css`
-      width: ${width}px;
-    `)};
+  (({ width }) => css`
+    width: ${width}px;
+  `)};
   background-color: inherit;
   z-index: ${({ zIndex = 20 }) => zIndex};
 

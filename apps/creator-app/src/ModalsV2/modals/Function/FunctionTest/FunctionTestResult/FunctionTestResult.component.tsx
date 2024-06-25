@@ -1,4 +1,4 @@
-import { FunctionVariable } from '@voiceflow/dtos';
+import type { FunctionVariable } from '@voiceflow/dtos';
 import { clsx } from '@voiceflow/style';
 import { DataTypes, download } from '@voiceflow/ui';
 import {
@@ -30,7 +30,7 @@ import {
   testResults,
 } from './FunctionTestResult.css';
 import { useDynamicTracesCodeEditorHeight } from './FunctionTestResult.hook';
-import { IFunctionTestResult } from './FunctionTestResult.interface';
+import type { IFunctionTestResult } from './FunctionTestResult.interface';
 
 export interface IFunctionTestResultExtra {
   error?: boolean;
@@ -57,9 +57,12 @@ export const FunctionTestResult: React.FC<IFunctionTestResultExtra & IFunctionTe
   const next = functionsTestResponse?.runtimeCommands?.next;
   const latencyMS = Math.round(functionsTestResponse?.latencyMS);
   const outputVars = functionsTestResponse?.runtimeCommands?.outputVars ?? {};
-  const traces = React.useMemo(() => JSON.stringify(functionsTestResponse?.runtimeCommands.trace), [functionsTestResponse?.runtimeCommands.trace]);
+  const traces = React.useMemo(
+    () => JSON.stringify(functionsTestResponse?.runtimeCommands.trace),
+    [functionsTestResponse?.runtimeCommands.trace]
+  );
   const onDownloadLogsClick = () => {
-    download(`logs.json`, JSON.stringify(functionsTestResponse), DataTypes.JSON);
+    download('logs.json', JSON.stringify(functionsTestResponse), DataTypes.JSON);
   };
   const isListenPaths = !!next && 'listen' in next;
 
@@ -91,7 +94,7 @@ export const FunctionTestResult: React.FC<IFunctionTestResultExtra & IFunctionTe
     }
 
     if (typeof value === 'undefined') {
-      return `undefined`;
+      return 'undefined';
     }
 
     if (typeof value === 'object') {
@@ -166,7 +169,12 @@ export const FunctionTestResult: React.FC<IFunctionTestResultExtra & IFunctionTe
             contentClassName={clsx(sectionRecipe({ disabled }), outputVarsStyles)}
             header={
               <Box width="100%" onClick={() => setIsOutputVarsSectionOpened(!isOutputVarsSectionOpened)}>
-                <CollapsibleHeader isDisabled={disabled} label="Output variables" className={fullWidthStyle} isOpen={isOutputVarsSectionOpened}>
+                <CollapsibleHeader
+                  isDisabled={disabled}
+                  label="Output variables"
+                  className={fullWidthStyle}
+                  isOpen={isOutputVarsSectionOpened}
+                >
                   {() => <CollapsibleHeaderButton disabled={disabled} isOpen={isOutputVarsSectionOpened} />}
                 </CollapsibleHeader>
               </Box>
@@ -182,7 +190,9 @@ export const FunctionTestResult: React.FC<IFunctionTestResultExtra & IFunctionTe
                     <Text
                       variant="basic"
                       className={mapperTextStyles}
-                      color={outputVars[name] ? Theme.vars.color.font.default : Tokens.colors.neutralDark.neutralsDark100}
+                      color={
+                        outputVars[name] ? Theme.vars.color.font.default : Tokens.colors.neutralDark.neutralsDark100
+                      }
                     >
                       {`${formatFunctionValue(outputVars[name])}`}
                     </Text>
@@ -204,17 +214,37 @@ export const FunctionTestResult: React.FC<IFunctionTestResultExtra & IFunctionTe
         isOpen={isTracesSectionOpened}
         header={
           <Box width="100%" onClick={() => setIsTracesSectionOpened(!isTracesSectionOpened)}>
-            <CollapsibleHeader isDisabled={disabled} label="Traces" className={fullWidthStyle} isOpen={isTracesSectionOpened}>
+            <CollapsibleHeader
+              isDisabled={disabled}
+              label="Traces"
+              className={fullWidthStyle}
+              isOpen={isTracesSectionOpened}
+            >
               {() => <CollapsibleHeaderButton disabled={disabled} isOpen={isTracesSectionOpened} />}
             </CollapsibleHeader>
           </Box>
         }
       >
-        <CodeEditor className={jsonEditorStyles} disabled={disabled} readOnly theme="light" language="json" isFunctionEditor value={[traces]} />
+        <CodeEditor
+          className={jsonEditorStyles}
+          disabled={disabled}
+          readOnly
+          theme="light"
+          language="json"
+          isFunctionEditor
+          value={[traces]}
+        />
       </Collapsible>
 
       <PreviewResultFooter status={error ? 'error' : 'success'} latency={latencyMS} disabled={disabled}>
-        <Link size="small" label="Download logs" weight="semiBold" variant="primary" onClick={onDownloadLogsClick} disabled={disabled} />
+        <Link
+          size="small"
+          label="Download logs"
+          weight="semiBold"
+          variant="primary"
+          onClick={onDownloadLogsClick}
+          disabled={disabled}
+        />
       </PreviewResultFooter>
     </div>
   );

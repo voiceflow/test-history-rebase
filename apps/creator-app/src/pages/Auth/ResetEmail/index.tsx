@@ -23,7 +23,8 @@ const ResetEmail: React.FC = () => {
     [ResetEmailStage.SUCCESSFUL]: (
       <>
         <div className="confirm-helper">
-          The confirmation link has been sent to {email}. If it doesn't appear within a few minutes, check your spam folder.
+          The confirmation link has been sent to {email}. If it doesn't appear within a few minutes, check your spam
+          folder.
         </div>
 
         <div style={{ marginTop: '32px' }} className="auth__link">

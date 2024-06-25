@@ -1,12 +1,15 @@
-import Menu, { MenuTypes } from '@ui/components/Menu';
+import type { MenuTypes } from '@ui/components/Menu';
+import Menu from '@ui/components/Menu';
 import Portal from '@ui/components/Portal';
-import { PopperPlacement, useVirtualElementPopper } from '@ui/hooks';
+import type { PopperPlacement } from '@ui/hooks';
+import { useVirtualElementPopper } from '@ui/hooks';
 import { Identifier } from '@ui/styles/constants';
-import { Point } from '@ui/types';
+import type { Point } from '@ui/types';
 import { buildVirtualElement } from '@ui/utils/dom';
-import { Nullable } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
 import React from 'react';
-import { DismissEventType, useDismissable } from 'react-dismissable-layers';
+import type { DismissEventType } from 'react-dismissable-layers';
+import { useDismissable } from 'react-dismissable-layers';
 
 const EXCLUDED_TAG_NAME = new Set(['input', 'textarea']);
 
@@ -14,7 +17,10 @@ export const CONTEXT_MENU_IGNORED_CLASS_NAME = 'context-menu-exclude';
 
 export interface ContextMenuProps<Value = void> extends MenuTypes.BaseProps {
   options: Nullable<MenuTypes.Option<Value>>[];
-  children: (props: { isOpen: boolean; onContextMenu: (event: React.MouseEvent<HTMLElement>) => void }) => React.ReactNode;
+  children: (props: {
+    isOpen: boolean;
+    onContextMenu: (event: React.MouseEvent<HTMLElement>) => void;
+  }) => React.ReactNode;
   placement?: PopperPlacement;
   dismissEvent?: DismissEventType;
   disableLayers?: boolean;
@@ -34,11 +40,13 @@ const ContextMenu = <Value extends unknown = void>({
   const [isOpen, onToggle] = useDismissable(false, { disableLayers, dismissEvent });
 
   const onContextMenu = (event: React.MouseEvent<HTMLElement>) => {
-    // eslint-disable-next-line xss/no-mixed-html
     const target = event?.target as HTMLElement | null;
 
     // .closest() - supported in all browsers except IE
-    if (target && (EXCLUDED_TAG_NAME.has(target.tagName.toLowerCase()) || target.closest?.(`.${CONTEXT_MENU_IGNORED_CLASS_NAME}`))) {
+    if (
+      target &&
+      (EXCLUDED_TAG_NAME.has(target.tagName.toLowerCase()) || target.closest?.(`.${CONTEXT_MENU_IGNORED_CLASS_NAME}`))
+    ) {
       return;
     }
 
@@ -58,7 +66,12 @@ const ContextMenu = <Value extends unknown = void>({
 
       {isOpen && !!options.length && (
         <Portal portalNode={document.body}>
-          <div id={Identifier.CONTEXT_MENU} ref={popper.setPopperElement} style={{ ...popper.styles.popper }} {...popper.attributes.popper}>
+          <div
+            id={Identifier.CONTEXT_MENU}
+            ref={popper.setPopperElement}
+            style={{ ...popper.styles.popper }}
+            {...popper.attributes.popper}
+          >
             <Menu onToggle={onToggle} options={options} {...props} />
           </div>
         </Portal>

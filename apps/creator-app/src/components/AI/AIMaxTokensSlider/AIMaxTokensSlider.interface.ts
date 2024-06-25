@@ -1,4 +1,4 @@
-import { AIModel } from '@voiceflow/dtos';
+import type { AIModel } from '@voiceflow/dtos';
 
 export interface IAIMaxTokensSlider {
   model: AIModel;

@@ -63,11 +63,12 @@ const StepContainer = styled(Flex)<StepContainerProps>`
   }
 
   .${CANVAS_CREATING_LINK_CLASSNAME} .${ClassName.CANVAS_STEP}.${NODE_HOVERED_CLASSNAME} & {
-    ${({ theme }) =>
-      css`
-        box-shadow: 0 1px 3px 0 rgba(17, 49, 96, 0.06), 0 0 0 1.5px ${theme.components.blockStep.activeBorderColor};
-        cursor: copy;
-      `}
+    ${({ theme }) => css`
+      box-shadow:
+        0 1px 3px 0 rgba(17, 49, 96, 0.06),
+        0 0 0 1.5px ${theme.components.blockStep.activeBorderColor};
+      cursor: copy;
+    `}
   }
 
   .${ClassName.CANVAS_BLOCK}.${NODE_MERGE_TARGET_CLASSNAME} & {

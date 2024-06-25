@@ -7,9 +7,7 @@ import { openURLInANewTab } from '@/utils/window';
 
 import * as S from '../styles';
 
-
 const Banner: React.FC = () => {
-
   const [trackingEvents] = useTrackingEvents();
 
   const openYoutubeChannel = () => {
@@ -17,15 +15,17 @@ const Banner: React.FC = () => {
     openURLInANewTab(YOUTUBE_CHANNEL_LINK);
   };
 
-  return <S.StyledBanner
-    mb={14}
-    title="Learn Voiceflow with video tutorials"
-    subtitle="In this course you’ll find everything you need to get started with Voiceflow from the ground up."
-    closeKey="dashboard-learn-banner"
-    buttonText="Start Course"
-    backgroundImage={bannerBg}
-    onClick={openYoutubeChannel}
-  />;
+  return (
+    <S.StyledBanner
+      mb={14}
+      title="Learn Voiceflow with video tutorials"
+      subtitle="In this course you’ll find everything you need to get started with Voiceflow from the ground up."
+      closeKey="dashboard-learn-banner"
+      buttonText="Start Course"
+      backgroundImage={bannerBg}
+      onClick={openYoutubeChannel}
+    />
+  );
 };
 
 export default Banner;

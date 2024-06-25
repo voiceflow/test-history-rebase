@@ -51,8 +51,9 @@ const BillingStep: React.FC<BillingStepProps> = ({
         <Box.Flex gap={16} column fullWidth>
           {editorSeats < usedEditorSeats && (
             <Alert title={<Alert.Title>Your workspace currently has {usedEditorSeats} Editors</Alert.Title>}>
-              You’re about to remove {downgradedSeats} Editor {pluralize('seat', editorSeats)}, but there are {usedEditorSeats} in use. On removal,
-              we’ll automatically downgrade {downgradedSeats} {pluralize('Editor', downgradedSeats)} to {pluralize('Viewer', downgradedSeats)}.
+              You’re about to remove {downgradedSeats} Editor {pluralize('seat', editorSeats)}, but there are{' '}
+              {usedEditorSeats} in use. On removal, we’ll automatically downgrade {downgradedSeats}{' '}
+              {pluralize('Editor', downgradedSeats)} to {pluralize('Viewer', downgradedSeats)}.
             </Alert>
           )}
 
@@ -65,7 +66,8 @@ const BillingStep: React.FC<BillingStepProps> = ({
                   <>
                     Paid annually{' '}
                     <Text color="#62778C">
-                      - {currency.formatUSD(prices?.[BillingPeriod.ANNUALLY] ?? 0, { noDecimal: true })} per Editor/m, paid annually
+                      - {currency.formatUSD(prices?.[BillingPeriod.ANNUALLY] ?? 0, { noDecimal: true })} per Editor/m,
+                      paid annually
                     </Text>
                   </>
                 ),
@@ -76,7 +78,8 @@ const BillingStep: React.FC<BillingStepProps> = ({
                   <>
                     Paid monthly{' '}
                     <Text color="#62778C">
-                      - {currency.formatUSD(prices?.[BillingPeriod.MONTHLY] ?? 0, { noDecimal: true })} per Editor/m, paid monthly
+                      - {currency.formatUSD(prices?.[BillingPeriod.MONTHLY] ?? 0, { noDecimal: true })} per Editor/m,
+                      paid monthly
                     </Text>
                   </>
                 ),

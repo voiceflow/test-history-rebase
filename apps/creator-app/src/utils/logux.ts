@@ -1,6 +1,6 @@
-import { Client } from '@logux/client';
+import type { Client } from '@logux/client';
 import { Utils } from '@voiceflow/common';
-import { Action, AsyncActionCreators } from 'typescript-fsa';
+import type { Action, AsyncActionCreators } from 'typescript-fsa';
 
 import { getActionID, wrapOwnAction } from '@/store/utils';
 
@@ -30,8 +30,12 @@ export const waitAsyncAction = async <T, R, E extends Utils.protocol.AsyncError<
     const actionID = Utils.id.cuid();
     const action = actionCreators.started(payload);
 
-    const unsubscribeFailed = client.type<Action<E>>(actionCreators.failed.type, (action) => processedActions.push(action));
-    const unsubscribeProcessed = client.type<Action<R>>(actionCreators.done.type, (action) => processedActions.push(action));
+    const unsubscribeFailed = client.type<Action<E>>(actionCreators.failed.type, (action) =>
+      processedActions.push(action)
+    );
+    const unsubscribeProcessed = client.type<Action<R>>(actionCreators.done.type, (action) =>
+      processedActions.push(action)
+    );
 
     unsubscribe = () => {
       unsubscribeFailed();

@@ -36,13 +36,20 @@ describe('Adapters | Creator | Block | Chat | captureAdapter', () => {
 
       const chatNoReplyAdapterSpy = vi.spyOn(chatNoReplyAdapter, 'fromDB');
 
-      const data = Creator.Block.Chat.CaptureStepData({ noReply: null, reprompt: null, buttons: undefined, chips: [chip] });
+      const data = Creator.Block.Chat.CaptureStepData({
+        noReply: null,
+        reprompt: null,
+        buttons: undefined,
+        chips: [chip],
+      });
 
       const result = captureAdapter.fromDB(data, { context: {} });
 
       expect(chatNoReplyAdapterSpy).not.toBeCalled();
       expect(result.noReply).eql(null);
-      expect(result.buttons).eql([{ name: chip.label, type: BaseButton.ButtonType.INTENT, payload: { intentID: null } }]);
+      expect(result.buttons).eql([
+        { name: chip.label, type: BaseButton.ButtonType.INTENT, payload: { intentID: null } },
+      ]);
     });
   });
 

@@ -1,10 +1,11 @@
-import { Nullable } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
 import React from 'react';
 
 import client from '@/client';
-import { NLPTrainStageType } from '@/constants/platforms';
-import useJob, { JobContextValue } from '@/hooks/job';
-import { NLPTrainJob } from '@/models';
+import type { NLPTrainStageType } from '@/constants/platforms';
+import type { JobContextValue } from '@/hooks/job';
+import useJob from '@/hooks/job';
+import type { NLPTrainJob } from '@/models';
 
 export const TrainingContext = React.createContext<Nullable<JobContextValue<NLPTrainJob.AnyJob>>>(null);
 export const { Consumer: NLPConsumer } = TrainingContext;

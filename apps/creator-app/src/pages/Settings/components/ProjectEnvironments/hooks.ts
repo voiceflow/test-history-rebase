@@ -1,4 +1,4 @@
-import { BaseVersion } from '@voiceflow/base-types';
+import type { BaseVersion } from '@voiceflow/base-types';
 import { toast } from '@voiceflow/ui';
 import ObjectID from 'bson-objectid';
 import React from 'react';
@@ -36,7 +36,10 @@ export const useProjectVersions = (projectID: string) => {
 
   const fetchVersions = async (offset: number) => {
     try {
-      const nextVersions = await client.api.project.getVersionsV2<BaseVersion.PlatformData>(projectID, { offset, limit: DEFAULT_FETCH_LIMIT });
+      const nextVersions = await client.api.project.getVersionsV2<BaseVersion.PlatformData>(projectID, {
+        offset,
+        limit: DEFAULT_FETCH_LIMIT,
+      });
 
       setVersionList((prevList) => [...prevList, ...nextVersions.map((version) => versionAdapter(version))]);
 
@@ -77,5 +80,14 @@ export const useProjectVersions = (projectID: string) => {
     setVersionList((prevList) => prevList.filter((version) => version.versionID !== versionID));
   };
 
-  return { versionList, deleteVersion, resetState, initialFetching, loadingMore, noMoreVersions, onLoadMore, fetchInitialVersions };
+  return {
+    versionList,
+    deleteVersion,
+    resetState,
+    initialFetching,
+    loadingMore,
+    noMoreVersions,
+    onLoadMore,
+    fetchInitialVersions,
+  };
 };

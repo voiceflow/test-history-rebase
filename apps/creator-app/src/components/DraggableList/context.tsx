@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { BaseItemData } from './types';
+import type { BaseItemData } from './types';
 
 interface ChildrenContextValue<Item> {
   renderItem: (data: BaseItemData<Item>) => React.ReactNode;
@@ -10,4 +10,4 @@ const Context = React.createContext<ChildrenContextValue<any>>({ renderItem: () 
 
 export const { Provider: ChildrenContextProvider } = Context;
 
-export const useChildrenContext = <Item extends unknown>(): ChildrenContextValue<Item> => React.useContext(Context);
+export const useChildrenContext = <Item,>(): ChildrenContextValue<Item> => React.useContext(Context);

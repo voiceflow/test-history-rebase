@@ -18,11 +18,17 @@ export const useFilters = () => {
   const queryEndDate = queryParams[FilterTag.END_DATE];
   const queryStartDate = queryParams[FilterTag.START_DATE];
 
-  // eslint-disable-next-line no-nested-ternary
-  const tags = React.useMemo(() => (Array.isArray(queryTag) ? queryTag : queryTag ? [queryTag] : []).filter(Utils.array.isNotNullish), [queryTag]);
-  const personas = React.useMemo(
+  const tags = React.useMemo(
     // eslint-disable-next-line no-nested-ternary
-    () => (Array.isArray(queryPersona) ? queryPersona : queryPersona ? [queryPersona] : []).filter(Utils.array.isNotNullish),
+    () => (Array.isArray(queryTag) ? queryTag : queryTag ? [queryTag] : []).filter(Utils.array.isNotNullish),
+    [queryTag]
+  );
+  const personas = React.useMemo(
+    () =>
+      // eslint-disable-next-line no-nested-ternary
+      (Array.isArray(queryPersona) ? queryPersona : queryPersona ? [queryPersona] : []).filter(
+        Utils.array.isNotNullish
+      ),
     [queryPersona]
   );
   const range = isString(queryRange) ? queryRange : '';

@@ -1,6 +1,7 @@
-import { DBWorkspaceProperties } from '@realtime-sdk/models/Workspace';
+import type { DBWorkspaceProperties } from '@realtime-sdk/models/Workspace';
 
-import { NestResource, NestResourceOptions } from '../../nest';
+import type { NestResourceOptions } from '../../nest';
+import { NestResource } from '../../nest';
 
 export class WorkspaceProperty extends NestResource {
   constructor(options: NestResourceOptions) {

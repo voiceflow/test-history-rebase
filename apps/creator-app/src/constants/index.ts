@@ -2,7 +2,7 @@ import { AlexaNode } from '@voiceflow/alexa-types';
 import { BaseNode } from '@voiceflow/base-types';
 import { BillingPeriodUnit, PlanName } from '@voiceflow/dtos';
 import { BillingPeriod, PlanType } from '@voiceflow/internal';
-import { COLOR_PICKER_CONSTANTS } from '@voiceflow/ui';
+import type { COLOR_PICKER_CONSTANTS } from '@voiceflow/ui';
 
 export * from './file';
 export * from './payment';

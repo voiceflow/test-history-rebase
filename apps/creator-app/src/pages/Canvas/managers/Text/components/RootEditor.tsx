@@ -1,12 +1,13 @@
 import * as Platform from '@voiceflow/platform-config';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Alert, Box, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import * as GPT from '@/components/GPT';
 import { useActiveProjectType } from '@/hooks/platformConfig';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
-import { PromptsSection, PromptsSectionRef } from '@/pages/Canvas/managers/components';
+import type { PromptsSectionRef } from '@/pages/Canvas/managers/components';
+import { PromptsSection } from '@/pages/Canvas/managers/components';
 import useCanvasVisibilityOption from '@/pages/Canvas/managers/hooks/useCanvasVisibilityOption';
 
 const Editor: React.FC = () => {
@@ -22,7 +23,9 @@ const Editor: React.FC = () => {
     acceptAllOnChange: editor.isOpened,
   });
 
-  const canvasVisibilityOption = useCanvasVisibilityOption(editor.data.canvasVisibility, (canvasVisibility) => editor.onChange({ canvasVisibility }));
+  const canvasVisibilityOption = useCanvasVisibilityOption(editor.data.canvasVisibility, (canvasVisibility) =>
+    editor.onChange({ canvasVisibility })
+  );
 
   const projectType = useActiveProjectType();
 
@@ -80,7 +83,9 @@ const Editor: React.FC = () => {
                   label="variant"
                   disabled={!!gptGenChatPrompt.items.length || gptGenChatPrompt.fetching}
                   isLoading={gptGenChatPrompt.fetching}
-                  onGenerate={({ quantity }) => gptGenChatPrompt.onGenerate({ quantity, examples: promptSectionRef.current?.getCurrentValues() })}
+                  onGenerate={({ quantity }) =>
+                    gptGenChatPrompt.onGenerate({ quantity, examples: promptSectionRef.current?.getCurrentValues() })
+                  }
                   pluralLabel="variants"
                   hasExtraContext={!isEmpty}
                 />

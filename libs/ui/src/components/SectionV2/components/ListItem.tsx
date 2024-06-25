@@ -1,6 +1,8 @@
-import SvgIcon, { SvgIconTypes } from '@ui/components/SvgIcon';
+import type { SvgIconTypes } from '@ui/components/SvgIcon';
+import SvgIcon from '@ui/components/SvgIcon';
 import { OverflowText } from '@ui/components/Text';
-import TippyTooltip, { TippyTooltipProps } from '@ui/components/TippyTooltip';
+import type { TippyTooltipProps } from '@ui/components/TippyTooltip';
+import TippyTooltip from '@ui/components/TippyTooltip';
 import React from 'react';
 
 import ListItemActionsContainer from './ListItemActionsContainer';
@@ -43,7 +45,13 @@ const ListItem = React.forwardRef<HTMLDivElement, React.PropsWithChildren<ListIt
     ref
   ) => (
     <ListItemContainer ref={ref} isDragging={isDragging} isDraggingPreview={isDraggingPreview}>
-      <ListItemContent ref={contentRef} onClick={onClick} isActive={isActive} onContextMenu={onContextMenu} overflowHidden={overflowHidden}>
+      <ListItemContent
+        ref={contentRef}
+        onClick={onClick}
+        isActive={isActive}
+        onContextMenu={onContextMenu}
+        overflowHidden={overflowHidden}
+      >
         {!!icon && (
           <ListItemIconContainer>
             {iconTooltip ? (

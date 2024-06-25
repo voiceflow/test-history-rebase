@@ -1,13 +1,15 @@
-import Menu, { MenuTypes } from '@ui/components/Menu';
+import type { MenuTypes } from '@ui/components/Menu';
+import Menu from '@ui/components/Menu';
 import Portal from '@ui/components/Portal';
 import { useNestedPopperTheme } from '@ui/hooks';
 import { useCachedValue } from '@ui/hooks/cache';
-import { PopperPlacement, usePopper } from '@ui/hooks/popper';
+import type { PopperPlacement } from '@ui/hooks/popper';
+import { usePopper } from '@ui/hooks/popper';
 import { ThemeProvider } from '@ui/styles';
-import { Nullable } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
 import React, { Fragment } from 'react';
 import { DismissableLayerProvider, useDismissable } from 'react-dismissable-layers';
-import { StrictModifier } from 'react-popper';
+import type { StrictModifier } from 'react-popper';
 
 import { PopoverContainer } from './components';
 
@@ -118,7 +120,13 @@ const Dropdown = <Value extends unknown = void>({
 
   return (
     <>
-      {children({ ref: popper.setReferenceElement, isOpen, popper: inlinePopper ? popperElement : null, onClose, onToggle })}
+      {children({
+        ref: popper.setReferenceElement,
+        isOpen,
+        popper: inlinePopper ? popperElement : null,
+        onClose,
+        onToggle,
+      })}
 
       {!inlinePopper && popperElement}
     </>

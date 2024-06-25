@@ -29,7 +29,12 @@ const SearchButton: React.FC<SearchButtonProps> = ({ value, onSearch }) => {
             value={value}
             onBlur={() => !value && setOpen(false)}
             autoFocus
-            iconProps={{ size: 16, color: 'rgba(110, 132, 154)', onClick: () => value && onSearch(''), clickable: true }}
+            iconProps={{
+              size: 16,
+              color: 'rgba(110, 132, 154)',
+              onClick: () => value && onSearch(''),
+              clickable: true,
+            }}
             placeholder="Search"
             onChangeText={onSearch}
           />

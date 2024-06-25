@@ -8,7 +8,7 @@ import { AIPromptWrapperSection } from '@/components/AI/AIPromptWrapperSection/A
 import { AITemperatureSliderSection } from '@/components/AI/AITemperatureSliderSection/AITemperatureSlider.component';
 import { LLM_INTENT_CLASSIFICATION_LEARN_MORE } from '@/constants/link.constant';
 
-import { IIntentClassificationLLMSettings } from './IntentClassificationLLMSettings.interface';
+import type { IIntentClassificationLLMSettings } from './IntentClassificationLLMSettings.interface';
 
 export const IntentClassificationLLMSettings: React.FC<IIntentClassificationLLMSettings> = ({
   settings,

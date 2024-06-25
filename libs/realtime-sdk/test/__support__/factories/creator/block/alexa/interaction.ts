@@ -1,5 +1,5 @@
-import { NodeData } from '@realtime-sdk/models';
-import { AlexaNode } from '@voiceflow/alexa-types';
+import type { NodeData } from '@realtime-sdk/models';
+import type { AlexaNode } from '@voiceflow/alexa-types';
 import { extend } from 'cooky-cutter';
 
 import * as Base from '../base';
@@ -10,7 +10,10 @@ export const InteractionStepData = extend<ReturnType<typeof Voice.InteractionSte
   {}
 );
 
-export const InteractionNodeData = extend<ReturnType<typeof Voice.InteractionNodeData>, NodeData.Interaction>(Voice.InteractionNodeData, {
-  buttons: () => null,
-  choices: () => [Base.ChoiceData(Base.ChoicePlatformNodeData())],
-});
+export const InteractionNodeData = extend<ReturnType<typeof Voice.InteractionNodeData>, NodeData.Interaction>(
+  Voice.InteractionNodeData,
+  {
+    buttons: () => null,
+    choices: () => [Base.ChoiceData(Base.ChoicePlatformNodeData())],
+  }
+);

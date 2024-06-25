@@ -1,7 +1,8 @@
 import { css, styled, transition } from '@ui/styles';
 import { fontResetStyle, linkResetStyle } from '@ui/styles/bootstrap';
 import { Link } from 'react-router-dom';
-import { layout, LayoutProps, space, SpaceProps, typography, TypographyProps } from 'styled-system';
+import type { LayoutProps, SpaceProps, TypographyProps } from 'styled-system';
+import { layout, space, typography } from 'styled-system';
 
 export interface SystemProps extends LayoutProps, SpaceProps, TypographyProps {}
 

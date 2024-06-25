@@ -1,9 +1,9 @@
-import { BaseVersion } from '@voiceflow/base-types';
+import type { BaseVersion } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config/backend';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
-import { AxiosInstance } from 'axios';
+import type { AxiosInstance } from 'axios';
 
-import { ExtraOptions } from './types';
+import type { ExtraOptions } from './types';
 import createResourceClient from './utils/resource';
 
 export interface VersionPlatformClient {

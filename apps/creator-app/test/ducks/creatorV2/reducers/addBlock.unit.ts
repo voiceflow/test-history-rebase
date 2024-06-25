@@ -136,7 +136,9 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBlock reducer', ({ describ
         },
       });
 
-      expect(result.ports).toEqual(normalizeContaining([{ id: builtInPortID }, { id: dynamicPortID }, { id: inPortID }, { id: byKeyPortID }]));
+      expect(result.ports).toEqual(
+        normalizeContaining([{ id: builtInPortID }, { id: dynamicPortID }, { id: inPortID }, { id: byKeyPortID }])
+      );
       expect(result.portsByNodeID).toEqual({
         [blockID]: { in: [inPortID], out: { byKey: {}, dynamic: [], builtIn: {} } },
         [stepID]: {
@@ -150,8 +152,18 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBlock reducer', ({ describ
           },
         },
       });
-      expect(result.nodeIDByPortID).toEqual({ [inPortID]: blockID, [dynamicPortID]: stepID, [builtInPortID]: stepID, [byKeyPortID]: stepID });
-      expect(result.linkIDsByPortID).toEqual({ [inPortID]: [], [dynamicPortID]: [], [builtInPortID]: [], [byKeyPortID]: [] });
+      expect(result.nodeIDByPortID).toEqual({
+        [inPortID]: blockID,
+        [dynamicPortID]: stepID,
+        [builtInPortID]: stepID,
+        [byKeyPortID]: stepID,
+      });
+      expect(result.linkIDsByPortID).toEqual({
+        [inPortID]: [],
+        [dynamicPortID]: [],
+        [builtInPortID]: [],
+        [byKeyPortID]: [],
+      });
     });
   });
 });

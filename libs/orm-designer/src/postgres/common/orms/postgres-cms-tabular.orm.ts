@@ -6,7 +6,7 @@ import { PostgresCMSObjectORM } from './postgres-cms-object.orm';
 
 export abstract class PostgresCMSTabularORM<
     BaseEntity extends Omit<PostgresCMSTabularEntity, typeof DEFAULT_OR_NULL_COLUMN>,
-    DiscriminatorEntity extends Omit<BaseEntity, typeof DEFAULT_OR_NULL_COLUMN> = BaseEntity
+    DiscriminatorEntity extends Omit<BaseEntity, typeof DEFAULT_OR_NULL_COLUMN> = BaseEntity,
   >
   extends PostgresCMSObjectORM<BaseEntity, DiscriminatorEntity>
   implements CMSTabularORM<BaseEntity, DiscriminatorEntity>

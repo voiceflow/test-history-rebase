@@ -9,7 +9,6 @@ interface AudioPlayerProps {
   trackOnly?: boolean;
 }
 
-// eslint-disable-next-line sonarjs/cognitive-complexity
 function useAudioPlayer({ audio: audioProp, autoplay = false, audioURL, trackOnly }: AudioPlayerProps = {}) {
   const audio = React.useMemo(() => audioProp ?? new Audio(), [audioProp]);
 

@@ -5,9 +5,9 @@ import { BlockType } from '@/constants';
 import { useEnableDisable, useHover } from '@/hooks';
 import { ContextMenuTarget } from '@/pages/Canvas/constants';
 import { ContextMenuContext, EngineContext, NodeEntityContext } from '@/pages/Canvas/contexts';
-import { NodeInstance } from '@/pages/Canvas/engine/entities/nodeEntity';
+import type { NodeInstance } from '@/pages/Canvas/engine/entities/nodeEntity';
 import { useElementInstance } from '@/pages/Canvas/engine/entities/utils';
-import { StepAPI } from '@/pages/Canvas/types';
+import type { StepAPI } from '@/pages/Canvas/types';
 import { useEditingMode, useInteractiveMode } from '@/pages/Project/hooks';
 import { ClassName } from '@/styles/constants';
 import { Coords } from '@/utils/geometry';
@@ -49,7 +49,10 @@ export const useNodeInstance = () => {
 
         if (!engine.canvas || !rect) return null;
 
-        return engine.canvas.transformPoint([rect.x + rect.width / 2, rect.y + rect.height / 2], { relative: true, bounding: true });
+        return engine.canvas.transformPoint([rect.x + rect.width / 2, rect.y + rect.height / 2], {
+          relative: true,
+          bounding: true,
+        });
       },
     }),
     [elementInstance]
@@ -147,7 +150,10 @@ export const useStepAPI = <T extends HTMLElement>(
           dragEvent.preventDefault();
 
           const handleMouseUp = async (event: MouseEvent) => {
-            await Promise.all([event.defaultPrevented ? Promise.resolve() : engine.merge.unmerge(), engine.drag.reset()]);
+            await Promise.all([
+              event.defaultPrevented ? Promise.resolve() : engine.merge.unmerge(),
+              engine.drag.reset(),
+            ]);
           };
 
           document.addEventListener('mouseup', handleMouseUp, { once: true });

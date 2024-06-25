@@ -1,8 +1,9 @@
-import { Nullable } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
 import React from 'react';
 
 import type { TurnMap } from '@/pages/Conversations/components/TranscriptDialog';
-import { Message, MessageType, OnInteraction, PMStatus, UserMessage } from '@/pages/Prototype/types';
+import type { Message, OnInteraction, PMStatus, UserMessage } from '@/pages/Prototype/types';
+import { MessageType } from '@/pages/Prototype/types';
 
 import BaseMessage from './Base';
 import * as V from './variants';
@@ -93,7 +94,9 @@ const PrototypeDialogMessage: React.FC<PrototypeDialogMessageProps> = ({
         />
       );
     case MessageType.TEXT:
-      return <V.Text userSpeak={userSpeak} {...botMessageProps} {...message} pmStatus={pmStatus} avatarURL={avatarURL} />;
+      return (
+        <V.Text userSpeak={userSpeak} {...botMessageProps} {...message} pmStatus={pmStatus} avatarURL={avatarURL} />
+      );
     case MessageType.SPEAK:
       return (
         <V.Speak
@@ -154,7 +157,15 @@ const PrototypeDialogMessage: React.FC<PrototypeDialogMessageProps> = ({
         />
       );
     case MessageType.VISUAL:
-      return <V.Visual isTranscript={isTranscript} {...botMessageProps} pmStatus={pmStatus} visual={message} avatarURL={avatarURL} />;
+      return (
+        <V.Visual
+          isTranscript={isTranscript}
+          {...botMessageProps}
+          pmStatus={pmStatus}
+          visual={message}
+          avatarURL={avatarURL}
+        />
+      );
     case MessageType.CAROUSEL:
       return (
         <V.Carousel

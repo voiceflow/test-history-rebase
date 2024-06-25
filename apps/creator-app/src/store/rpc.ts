@@ -1,4 +1,4 @@
-import { Middleware, RPCHandler } from './types';
+import type { Middleware, RPCHandler } from './types';
 
 export class RPCController {
   handlers: RPCHandler[] = [];

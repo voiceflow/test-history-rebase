@@ -1,6 +1,6 @@
 import { intentToLegacyIntent } from '@realtime-sdk/adapters/legacy/intent-to-legacy-intent/intent-to-legacy-intent.adapter';
 import { BaseModels } from '@voiceflow/base-types';
-import { ChatModels } from '@voiceflow/chat-types';
+import type { ChatModels } from '@voiceflow/chat-types';
 import { Utils } from '@voiceflow/common';
 import type {
   AnyResponseVariant,
@@ -9,18 +9,11 @@ import type {
   RequiredEntity,
   Response,
   ResponseDiscriminator,
+  Utterance,
   Variable,
 } from '@voiceflow/dtos';
-import {
-  CardLayout,
-  Channel,
-  Language,
-  ResponseContext,
-  ResponseVariantType,
-  Utterance,
-  VariableDatatype,
-} from '@voiceflow/dtos';
-import { VoiceModels } from '@voiceflow/voice-types';
+import { CardLayout, Channel, Language, ResponseContext, ResponseVariantType, VariableDatatype } from '@voiceflow/dtos';
+import type { VoiceModels } from '@voiceflow/voice-types';
 
 describe('Adapters | Legacy | intentToLegacyIntent', () => {
   const creatorID = 1;

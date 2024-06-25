@@ -2,7 +2,7 @@ import { Utils } from '@voiceflow/common';
 
 import { PrototypeInputMode, PrototypeStatus } from '@/constants/prototype';
 
-import { PrototypeState } from './types';
+import type { PrototypeState } from './types';
 
 export const STATE_KEY = 'prototype';
 

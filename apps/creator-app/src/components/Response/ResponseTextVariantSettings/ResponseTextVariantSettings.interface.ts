@@ -1,5 +1,5 @@
 import type { TextResponseVariant } from '@voiceflow/dtos';
-import { Actions } from '@voiceflow/sdk-logux-designer';
+import type { Actions } from '@voiceflow/sdk-logux-designer';
 
 export interface IResponseTextVariantSettings {
   disabled?: boolean;

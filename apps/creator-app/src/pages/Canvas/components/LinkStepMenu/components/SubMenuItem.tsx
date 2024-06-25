@@ -1,4 +1,5 @@
-import { Box, Menu, SvgIcon, SvgIconTypes } from '@voiceflow/ui';
+import type { SvgIconTypes } from '@voiceflow/ui';
+import { Box, Menu, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import { ClassName } from '@/styles/constants';

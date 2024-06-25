@@ -1,5 +1,5 @@
 import { BaseNode } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Dropdown, Menu, Text } from '@voiceflow/ui';
 import React from 'react';
 
@@ -34,7 +34,9 @@ const ConditionSelect: React.FC<ConditionSelectProps> = ({ onChange, additional 
               </Text>
             </Menu.Item>
           )}
-          {!(additional || isLogicGroup) && <Menu.Item onClick={onSelect(BaseNode.Utils.ConditionsLogicInterface.EXPRESSION)}>Expression</Menu.Item>}
+          {!(additional || isLogicGroup) && (
+            <Menu.Item onClick={onSelect(BaseNode.Utils.ConditionsLogicInterface.EXPRESSION)}>Expression</Menu.Item>
+          )}
         </Menu>
       )}
     >

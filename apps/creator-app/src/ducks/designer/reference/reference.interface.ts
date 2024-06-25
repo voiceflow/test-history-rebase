@@ -1,11 +1,11 @@
-import {
+import type {
   ReferenceResource,
   ReferenceResourceBlockNodeMetadata,
   ReferenceResourceIntentNodeMetadata,
   ReferenceResourceStartNodeMetadata,
   ReferenceResourceTriggerNodeMetadata,
 } from '@voiceflow/dtos';
-import { BlockType } from '@voiceflow/realtime-sdk';
+import type { BlockType } from '@voiceflow/realtime-sdk';
 interface ReferenceBaseTriggerNode {
   id: string;
   type: BlockType.INTENT | BlockType.TRIGGER | BlockType.START;

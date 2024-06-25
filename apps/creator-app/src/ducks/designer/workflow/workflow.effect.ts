@@ -1,4 +1,4 @@
-import { Nullable } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
 import type { Workflow } from '@voiceflow/dtos';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 import { notify } from '@voiceflow/ui-next';
@@ -9,7 +9,8 @@ import * as Project from '@/ducks/projectV2';
 import { schemaVersionSelector } from '@/ducks/versionV2/selectors/active';
 import { getActiveAssistantContext } from '@/ducks/versionV2/utils';
 import type { Thunk } from '@/store/types';
-import { convertSelectionToComponent, DiagramSelectionPayload } from '@/utils/diagram.utils';
+import type { DiagramSelectionPayload } from '@/utils/diagram.utils';
+import { convertSelectionToComponent } from '@/utils/diagram.utils';
 
 import { waitAsync } from '../../utils';
 import * as selectors from './selectors';
@@ -97,7 +98,13 @@ export interface CreateOneFromSelectionResult {
 }
 
 export const createOneFromSelection =
-  ({ selection, data }: { selection: DiagramSelectionPayload; data: Actions.Workflow.CreateData }): Thunk<CreateOneFromSelectionResult> =>
+  ({
+    selection,
+    data,
+  }: {
+    selection: DiagramSelectionPayload;
+    data: Actions.Workflow.CreateData;
+  }): Thunk<CreateOneFromSelectionResult> =>
   async (dispatch, getState) => {
     const state = getState();
 

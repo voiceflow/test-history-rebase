@@ -1,11 +1,12 @@
 import { isActions, isBlock, isStart, isStep } from '@realtime-sdk/utils/typeGuards';
-import { AnyRecord, BaseModels } from '@voiceflow/base-types';
+import type { AnyRecord, BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 
 type NodesMap = Record<string, BaseModels.BaseDiagramNode>;
 type ValidNodeIDsMap = Record<string, boolean>;
 
-const cleanupBlockSteps = (nodesMap: NodesMap, stepsIDs: string[]): string[] => stepsIDs.filter((stepID) => !!(stepID in nodesMap));
+const cleanupBlockSteps = (nodesMap: NodesMap, stepsIDs: string[]): string[] =>
+  stepsIDs.filter((stepID) => !!(stepID in nodesMap));
 
 const cleanupStepPorts = (
   data: BaseModels.StepOnlyData<BaseModels.AnyBaseStepPorts, BaseModels.BasePort[]>,

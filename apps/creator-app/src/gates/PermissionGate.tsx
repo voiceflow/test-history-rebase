@@ -1,7 +1,8 @@
+// eslint-disable-next-line you-dont-need-lodash-underscore/is-function
 import _isFunction from 'lodash/isFunction';
-import React from 'react';
+import type React from 'react';
 
-import { Permission } from '@/constants/permissions';
+import type { Permission } from '@/constants/permissions';
 import { usePermission } from '@/hooks';
 
 export interface PermissionGateProps extends React.PropsWithChildren {

@@ -10,10 +10,16 @@ interface TimerAPI {
 
 interface UseTimer {
   (callback: (data: { unmounted: boolean }) => void): TimerAPI;
-  <State extends Record<string, any>>(callback: (data: { state: State; unmounted: boolean }) => void, state: State): TimerAPI;
+  <State extends Record<string, any>>(
+    callback: (data: { state: State; unmounted: boolean }) => void,
+    state: State
+  ): TimerAPI;
 }
 
-export const useTimer: UseTimer = (callback: (data: { state: Record<string, any>; unmounted: boolean }) => void, state = {}) => {
+export const useTimer: UseTimer = (
+  callback: (data: { state: Record<string, any>; unmounted: boolean }) => void,
+  state = {}
+) => {
   const ref = useRef({
     timer: null as number | null,
     state,
@@ -45,7 +51,10 @@ export const useTimer: UseTimer = (callback: (data: { state: Record<string, any>
         window.clearTimeout(ref.current.timer);
       }
 
-      ref.current.timer = window.setTimeout(() => ref.current.callback({ state: ref.current.state, unmounted: ref.current.unmounted }), time);
+      ref.current.timer = window.setTimeout(
+        () => ref.current.callback({ state: ref.current.state, unmounted: ref.current.unmounted }),
+        time
+      );
     },
 
     stop: () => {

@@ -2,7 +2,8 @@ import React from 'react';
 
 import { BLOCK_SECTION_CLASSNAME } from '@/pages/Canvas/constants';
 
-import Header, { BlockHeaderProps } from './BlockHeader';
+import type { BlockHeaderProps } from './BlockHeader';
+import Header from './BlockHeader';
 import Container from './BlockSectionContainer';
 
 export type BlockSectionProps = React.PropsWithChildren<BlockHeaderProps>;

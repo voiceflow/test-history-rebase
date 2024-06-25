@@ -1,9 +1,10 @@
-import { BaseModels } from '@voiceflow/base-types';
+import type { BaseModels } from '@voiceflow/base-types';
 import { createSmartMultiAdapter } from 'bidirectional-adapter';
 
 import { NestedMongoModel } from '../_mongo';
 import { Bson } from '../utils';
-import { DBDomainModel, DOMAIN_DATE_KEYS } from './constants';
+import type { DBDomainModel } from './constants';
+import { DOMAIN_DATE_KEYS } from './constants';
 import type VersionModel from './index';
 
 class DomainModel extends NestedMongoModel<VersionModel> {

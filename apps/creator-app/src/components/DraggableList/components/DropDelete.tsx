@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDrop } from 'react-dnd';
 
-import { DnDHandlers, DnDItem } from '../types';
+import type { DnDHandlers, DnDItem } from '../types';
 
 export interface DropDeleteProps<I, P> {
   type: string;
@@ -15,6 +15,7 @@ const DropDelete = <I, P>({ type, handlers, deleteProps, deleteComponent: Delete
 
   const [, connectDrop] = useDrop<DnDItem<I>, unknown, unknown>({
     drop: (item, monitor) => {
+      // eslint-disable-next-line no-param-reassign
       item.deleteHovered = false;
 
       handlers.current?.onDeleteDrop?.(item, monitor);
@@ -23,6 +24,7 @@ const DropDelete = <I, P>({ type, handlers, deleteProps, deleteComponent: Delete
     },
     accept: type,
     hover: (item) => {
+      // eslint-disable-next-line no-param-reassign
       item.deleteHovered = true;
     },
   });

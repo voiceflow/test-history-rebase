@@ -1,7 +1,7 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { VariableValue } from '@/models';
+import type { VariableValue } from '@/models';
 
 export const updateVariables = Utils.protocol.createAction<Record<string, VariableValue>>(
   Realtime.variableState.variableStateType('UPDATE_VARIABLES')

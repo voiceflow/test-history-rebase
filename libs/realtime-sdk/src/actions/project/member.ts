@@ -1,6 +1,6 @@
 import { MEMBER_KEY } from '@realtime-sdk/constants';
-import { ProjectMember } from '@realtime-sdk/models';
-import { BaseProjectPayload } from '@realtime-sdk/types';
+import type { ProjectMember } from '@realtime-sdk/models';
+import type { BaseProjectPayload } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
 
 import { projectType } from './utils';

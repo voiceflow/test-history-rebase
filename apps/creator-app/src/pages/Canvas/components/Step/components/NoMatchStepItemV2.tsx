@@ -1,5 +1,6 @@
-import { BaseNode, Nullable } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type { Nullable } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Popper, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
@@ -31,7 +32,12 @@ const NoMatchStepItemV2: React.FC<NoMatchStepItemProps> = ({ nodeID, noMatch, po
     <Popper
       placement="right"
       renderContent={({ onClose }) => (
-        <PromptsPreview title="No Match" onClose={onClose} prompts={noMatch.reprompts} onOpenEditor={handleOpenEditor} />
+        <PromptsPreview
+          title="No Match"
+          onClose={onClose}
+          prompts={noMatch.reprompts}
+          onOpenEditor={handleOpenEditor}
+        />
       )}
     >
       {({ ref, onToggle, isOpened }) => (

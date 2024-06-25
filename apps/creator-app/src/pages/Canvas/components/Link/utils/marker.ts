@@ -1,4 +1,4 @@
-import { PathPoints } from '@/types';
+import type { PathPoints } from '@/types';
 
 export const buildHeadID = (id: string): string => `#head-${id}`;
 

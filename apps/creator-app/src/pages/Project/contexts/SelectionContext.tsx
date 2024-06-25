@@ -4,6 +4,7 @@ export type SelectionTargetsContextValue = string[];
 export type SelectionSetTargetsContextValue = (targets: string[]) => void;
 
 export const SelectionTargetsContext = React.createContext<SelectionTargetsContextValue>([]);
+// eslint-disable-next-line no-empty-function
 export const SelectionSetTargetsContext = React.createContext<SelectionSetTargetsContextValue>(() => {});
 
 export const SelectionProvider: React.FC<React.PropsWithChildren> = ({ children }) => {

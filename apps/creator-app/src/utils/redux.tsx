@@ -1,4 +1,4 @@
-import { Nullable } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
 import React from 'react';
 import { useSelector } from 'react-redux';
 

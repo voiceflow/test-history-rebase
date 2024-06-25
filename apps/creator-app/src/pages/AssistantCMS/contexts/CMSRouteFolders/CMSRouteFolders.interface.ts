@@ -1,4 +1,4 @@
-import { FolderScope } from '@voiceflow/dtos';
+import type { FolderScope } from '@voiceflow/dtos';
 import type { Atom } from 'jotai';
 
 export interface CMSRouteFolder {

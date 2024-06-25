@@ -5,7 +5,8 @@ import { DESKTOP_INPUT_CONTAINER_HEIGHT, MOBILE_INPUT_CONTAINER_HEIGHT } from '.
 const DisplayContainer = styled.div<{ isMobile?: boolean; noPadding?: boolean }>`
   display: flex;
   position: relative;
-  height: ${({ isMobile }) => `calc(100% - ${isMobile ? MOBILE_INPUT_CONTAINER_HEIGHT : DESKTOP_INPUT_CONTAINER_HEIGHT}px)`};
+  height: ${({ isMobile }) =>
+    `calc(100% - ${isMobile ? MOBILE_INPUT_CONTAINER_HEIGHT : DESKTOP_INPUT_CONTAINER_HEIGHT}px)`};
 `;
 
 export default DisplayContainer;

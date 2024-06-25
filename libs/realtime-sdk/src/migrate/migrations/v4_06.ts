@@ -1,6 +1,6 @@
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
-import { Transform } from './types';
+import type { Transform } from './types';
 
 // add none intent to all VFNLU projects
 const migrateToV4_06: Transform = ({ version }, { project }) => {

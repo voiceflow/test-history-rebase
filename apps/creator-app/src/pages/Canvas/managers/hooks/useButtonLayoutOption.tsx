@@ -1,6 +1,7 @@
 import { BaseButton } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
-import { OptionsMenuOption, toast } from '@voiceflow/ui';
+import type { OptionsMenuOption } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Prototype from '@/ducks/prototype';

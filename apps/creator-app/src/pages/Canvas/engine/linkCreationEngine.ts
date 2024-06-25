@@ -1,11 +1,12 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { RefObject } from 'react';
+import type { RefObject } from 'react';
 
 import { BlockType } from '@/constants';
 import * as CreatorV2 from '@/ducks/creatorV2';
-import { buildPath, getMarkerAttrs, getPathPoints, LinkedRects } from '@/pages/Canvas/components/Link';
-import { NewLinkAPI } from '@/pages/Canvas/types';
+import type { LinkedRects } from '@/pages/Canvas/components/Link';
+import { buildPath, getMarkerAttrs, getPathPoints } from '@/pages/Canvas/components/Link';
+import type { NewLinkAPI } from '@/pages/Canvas/types';
 import { isChipNode } from '@/utils/node';
 
 import { CANVAS_CREATING_LINK_BLOCK_VIA_LINK_MODE_CLASSNAME, CANVAS_CREATING_LINK_CLASSNAME } from '../constants';
@@ -237,7 +238,10 @@ class LinkCreationEngine extends EngineConsumer<{ newLink: NewLinkAPI }> {
     }, 24);
   }
 
-  getLinkedRects(targetRect: DOMRect, { relative, targetIsCanvasRect }: { relative: boolean; targetIsCanvasRect: boolean }): LinkedRects | null {
+  getLinkedRects(
+    targetRect: DOMRect,
+    { relative, targetIsCanvasRect }: { relative: boolean; targetIsCanvasRect: boolean }
+  ): LinkedRects | null {
     if (!this.sourcePortID || !this.engine.canvas) return null;
 
     const port = this.engine.getPortByID(this.sourcePortID);

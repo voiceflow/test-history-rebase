@@ -3,8 +3,9 @@ import dayjs from 'dayjs';
 
 import client from '@/client';
 
-import { DONUT_CHART_COLORS, QueryKind } from '../constants';
-import { Query, ResultData } from '../types';
+import type { QueryKind } from '../constants';
+import { DONUT_CHART_COLORS } from '../constants';
+import type { Query, ResultData } from '../types';
 import * as MockQueries from './mock-queries';
 
 /** Base filters applied to all queries. */
@@ -29,7 +30,9 @@ export const fetchInteractions = async ({
 
   const days = dayjs(currentRange.end).diff(dayjs(currentRange.start), 'day');
 
-  const [previous, current, ...allCurrent] = await client.usageAnalytics.queryUsage<QueryUsage<UsageQueryKind.INTERACTIONS>>([
+  const [previous, current, ...allCurrent] = await client.usageAnalytics.queryUsage<
+    QueryUsage<UsageQueryKind.INTERACTIONS>
+  >([
     {
       name: UsageQueryKind.INTERACTIONS,
       filter: {
@@ -91,7 +94,9 @@ export const fetchUsers = async ({
 
   const days = dayjs(currentRange.end).diff(dayjs(currentRange.start), 'day');
 
-  const [previous, current, ...allCurrent] = await client.usageAnalytics.queryUsage<QueryUsage<UsageQueryKind.UNIQUE_USERS>>([
+  const [previous, current, ...allCurrent] = await client.usageAnalytics.queryUsage<
+    QueryUsage<UsageQueryKind.UNIQUE_USERS>
+  >([
     {
       name: UsageQueryKind.UNIQUE_USERS,
       filter: {
@@ -213,7 +218,9 @@ export const fetchSessions = async ({
 
   const days = dayjs(currentRange.end).diff(dayjs(currentRange.start), 'day');
 
-  const [previous, current, ...allCurrent] = await client.usageAnalytics.queryUsage<QueryUsage<UsageQueryKind.SESSIONS>>([
+  const [previous, current, ...allCurrent] = await client.usageAnalytics.queryUsage<
+    QueryUsage<UsageQueryKind.SESSIONS>
+  >([
     {
       name: UsageQueryKind.SESSIONS,
       filter: {

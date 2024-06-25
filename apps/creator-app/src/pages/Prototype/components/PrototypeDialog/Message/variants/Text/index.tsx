@@ -1,10 +1,11 @@
-import { BaseNode } from '@voiceflow/base-types';
+import type { BaseNode } from '@voiceflow/base-types';
 import { serializeToMarkdown } from '@voiceflow/slate-serializer/markdown';
 import React from 'react';
 
 import { Markdown } from '@/components/Markdown/Markdown.component';
 
-import BaseMessage, { BaseMessageProps } from '../../Base';
+import type { BaseMessageProps } from '../../Base';
+import BaseMessage from '../../Base';
 
 interface TextProps extends Omit<BaseMessageProps, 'iconProps'> {
   slate: BaseNode.Text.TextData;

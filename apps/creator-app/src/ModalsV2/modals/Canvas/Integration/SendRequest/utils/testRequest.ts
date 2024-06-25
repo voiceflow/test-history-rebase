@@ -1,9 +1,15 @@
-import { AxiosResponse } from 'axios';
+import type { AxiosResponse } from 'axios';
 import pretty from 'prettysize';
 
-import { Response, ResponseMetadata } from '../types';
+import type { Response, ResponseMetadata } from '../types';
 
-export const getResponseMetadata = ({ response, initTime }: { response?: AxiosResponse<any, any>; initTime: number }): ResponseMetadata => {
+export const getResponseMetadata = ({
+  response,
+  initTime,
+}: {
+  response?: AxiosResponse<any, any>;
+  initTime: number;
+}): ResponseMetadata => {
   const successResponse = response?.status && response?.status < 400;
 
   return {

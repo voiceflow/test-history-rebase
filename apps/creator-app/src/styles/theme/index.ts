@@ -101,6 +101,7 @@ const THEME = createTheme({
   transition(...propertyWhitelist: string[]): string {
     const properties = propertyWhitelist.length ? propertyWhitelist : ['all'];
 
+    // eslint-disable-next-line sonarjs/no-nested-template-literals
     return `transition: ${properties.map((property) => `${property} ${ANIMATION_SPEED}s ease`).join(',')};`;
   },
 });

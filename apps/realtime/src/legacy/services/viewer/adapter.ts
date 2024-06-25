@@ -1,5 +1,5 @@
-import * as Realtime from '@voiceflow/realtime-sdk/backend';
-import { Hash } from '@voiceflow/socket-utils';
+import type * as Realtime from '@voiceflow/realtime-sdk/backend';
+import type { Hash } from '@voiceflow/socket-utils';
 import { createMultiAdapter } from 'bidirectional-adapter';
 
 export const viewerAdapter = createMultiAdapter<Hash, Realtime.Viewer>(

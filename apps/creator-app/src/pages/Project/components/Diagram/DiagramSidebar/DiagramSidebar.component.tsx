@@ -8,7 +8,7 @@ import {
   TreeView,
   usePersistFunction,
 } from '@voiceflow/ui-next';
-import { IResizableSectionAPI } from '@voiceflow/ui-next/build/cjs/components/Section/ResizableSection/types';
+import type { IResizableSectionAPI } from '@voiceflow/ui-next/build/cjs/components/Section/ResizableSection/types';
 import React, { memo, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -31,7 +31,7 @@ import {
   useRenderWorkflowItemContextMenu,
   useWorkflowsTree,
 } from './DiagramSidebar.hook';
-import {
+import type {
   DiagramSidebarAnyFlowMetadata,
   DiagramSidebarAnyWorkflowMetadata,
   DiagramSidebarFlowTreeData,

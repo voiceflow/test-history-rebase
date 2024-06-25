@@ -1,10 +1,11 @@
 import { Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 
-import VariablesInput, { VariablesInputRef } from '@/components/VariablesInput';
+import type { VariablesInputRef } from '@/components/VariablesInput';
+import VariablesInput from '@/components/VariablesInput';
 import { useSetup } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
@@ -43,7 +44,10 @@ const CardV2ButtonsEditor: React.FC = () => {
   const params = useParams<{ buttonID: string }>();
   const { state } = useLocation<{ waitForData?: boolean; renaming?: boolean }>();
 
-  const { button, buttonIndex, card } = React.useMemo(() => findButtonInfo(editor.data, params.buttonID), [editor.data, params.buttonID]);
+  const { button, buttonIndex, card } = React.useMemo(
+    () => findButtonInfo(editor.data, params.buttonID),
+    [editor.data, params.buttonID]
+  );
 
   const onChangeButton = (partialButton: Partial<Realtime.NodeData.CardV2.Button>) => {
     if (!button || !card || buttonIndex == null) return;

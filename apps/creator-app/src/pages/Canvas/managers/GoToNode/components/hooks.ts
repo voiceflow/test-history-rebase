@@ -1,4 +1,4 @@
-import { Nullable } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
 import { NodeType } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';

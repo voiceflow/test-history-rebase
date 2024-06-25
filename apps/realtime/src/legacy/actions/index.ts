@@ -1,4 +1,4 @@
-import { LoguxControlOptions } from '@/legacy/control';
+import type { LoguxControlOptions } from '@/legacy/control';
 
 import buildCanvasTemplateActionControls from './canvasTemplates';
 import buildCreatorActionControls from './creator';

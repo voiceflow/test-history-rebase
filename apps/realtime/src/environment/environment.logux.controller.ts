@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Controller } from '@nestjs/common';
 import { Action, Broadcast, Payload } from '@voiceflow/nestjs-logux';
 import { Permission } from '@voiceflow/sdk-auth';
@@ -15,7 +14,9 @@ export class EnvironmentLoguxController {
     id: context.environmentID,
     kind: 'version',
   }))
-  @Broadcast<Actions.Environment.UpdateNLUTrainingDiff>(({ context }) => ({ channel: Channels.assistant.build(context) }))
+  @Broadcast<Actions.Environment.UpdateNLUTrainingDiff>(({ context }) => ({
+    channel: Channels.assistant.build(context),
+  }))
   @BroadcastOnly()
   async updateNLUTrainingDiff(@Payload() _: Actions.Environment.UpdateNLUTrainingDiff) {
     // for broadcast only

@@ -1,7 +1,7 @@
 import { TRANSCRIPT_KEY } from '@realtime-sdk/constants';
-import { BaseProjectPayload } from '@realtime-sdk/types';
+import type { BaseProjectPayload } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
-import { Thread } from '@voiceflow/dtos';
+import type { Thread } from '@voiceflow/dtos';
 
 import { createCRUDActions } from './utils';
 
@@ -13,4 +13,6 @@ export interface UpdateUnreadTranscriptsPayload extends BaseProjectPayload {
   unreadTranscripts: boolean;
 }
 
-export const updateUnreadTranscripts = Utils.protocol.createAction<UpdateUnreadTranscriptsPayload>(transcriptType('UPDATE_UNREAD_TRANSCRIPTS'));
+export const updateUnreadTranscripts = Utils.protocol.createAction<UpdateUnreadTranscriptsPayload>(
+  transcriptType('UPDATE_UNREAD_TRANSCRIPTS')
+);

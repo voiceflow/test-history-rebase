@@ -1,6 +1,6 @@
 import * as Normal from 'normal-store';
 
-import { CreatorState } from './types';
+import type { CreatorState } from './types';
 
 export const STATE_KEY = 'creatorV2';
 

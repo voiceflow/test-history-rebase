@@ -1,14 +1,14 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { useConst, useCreateConst } from '@voiceflow/ui';
 import React from 'react';
 
 import { BlockType } from '@/constants';
 import { useNodeInstance } from '@/pages/Canvas/components/Node/hooks';
-import { InternalNodeInstance } from '@/pages/Canvas/components/Node/types';
+import type { InternalNodeInstance } from '@/pages/Canvas/components/Node/types';
 import { EngineContext, NodeEntityContext } from '@/pages/Canvas/contexts';
-import { Pair, Point } from '@/types';
+import type { Pair, Point } from '@/types';
 
-import { ResizableMarkupNodeData } from './types';
+import type { ResizableMarkupNodeData } from './types';
 import { isResizableShape } from './utils';
 
 export interface InternalMarkupInstance<T extends HTMLElement> extends InternalNodeInstance<T> {
@@ -91,6 +91,7 @@ export const useMarkupInstance = <T extends HTMLElement>() => {
     window.requestAnimationFrame(() => {
       if (!transformRef.current) return;
 
+      // eslint-disable-next-line sonarjs/no-nested-template-literals
       const transformation = `${isText ? `scale(${scale.current[0]}, ${scale.current[1]})` : 'translate(-50%, -50%)'} rotate(${rotation.current}rad)`;
 
       transformRef.current.style.transformOrigin = 'center';

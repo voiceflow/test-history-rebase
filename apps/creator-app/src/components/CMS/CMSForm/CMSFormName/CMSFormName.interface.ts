@@ -1,4 +1,4 @@
-import { BaseProps } from '@voiceflow/ui-next';
+import type { BaseProps } from '@voiceflow/ui-next';
 
 export interface ICMSFormName extends BaseProps {
   value: string;

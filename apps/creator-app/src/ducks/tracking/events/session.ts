@@ -1,10 +1,11 @@
-import { UserRole } from '@voiceflow/dtos';
-import * as Platform from '@voiceflow/platform-config';
+import type { UserRole } from '@voiceflow/dtos';
+import type * as Platform from '@voiceflow/platform-config';
 
 import client from '@/client';
 import * as Session from '@/ducks/session';
 
-import { EventName, SourceType } from '../constants';
+import type { SourceType } from '../constants';
+import { EventName } from '../constants';
 import { createWorkspaceEvent, createWorkspaceEventTracker, getCurrentDate } from '../utils';
 
 export const identifySignup = ({

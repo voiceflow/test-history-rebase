@@ -1,4 +1,4 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Input, SectionV2, useLinkedState, withInputBlur } from '@voiceflow/ui';
 import React from 'react';
 

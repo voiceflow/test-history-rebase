@@ -1,9 +1,10 @@
-import { Nullable } from '@voiceflow/common';
-import { Box, Button, Dropdown, Input, MenuTypes, SvgIcon } from '@voiceflow/ui';
+import type { Nullable } from '@voiceflow/common';
+import type { MenuTypes } from '@voiceflow/ui';
+import { Box, Button, Dropdown, Input, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Settings from '@/components/Settings';
-import { ProjectAPIKey } from '@/models';
+import type { ProjectAPIKey } from '@/models';
 
 export interface ProjectAPIKeySectionProps extends React.PropsWithChildren {
   show: boolean;
@@ -14,7 +15,15 @@ export interface ProjectAPIKeySectionProps extends React.PropsWithChildren {
   onToggleShow: VoidFunction;
 }
 
-const ProjectAPIKeySection: React.FC<ProjectAPIKeySectionProps> = ({ show, title, apiKey, options, children, loading, onToggleShow }) => (
+const ProjectAPIKeySection: React.FC<ProjectAPIKeySectionProps> = ({
+  show,
+  title,
+  apiKey,
+  options,
+  children,
+  loading,
+  onToggleShow,
+}) => (
   <Settings.SubSection header={title}>
     <Box.Flex>
       <Input

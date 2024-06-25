@@ -31,7 +31,10 @@ const TimeoutSection: React.FC<TimeoutSectionProps> = ({ timeout: propTimeout, o
   return (
     <SectionV2.SimpleSection isAccent>
       <Box.Flex>
-        <TippyTooltip content={`This value is not editable as it's defined by ${platformConfig.name}`} disabled={isDelayEditable}>
+        <TippyTooltip
+          content={`This value is not editable as it's defined by ${platformConfig.name}`}
+          disabled={isDelayEditable}
+        >
           <Box.Flex width={52}>
             <Input
               value={timeout}

@@ -1,11 +1,11 @@
 import { BaseModels } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { HSLShades } from '@/constants';
+import type { HSLShades } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
 import Step, { FailureItem, Item, Section, SuccessItem } from '@/pages/Canvas/components/Step';
-import { ConnectedStep } from '@/pages/Canvas/managers/types';
+import type { ConnectedStep } from '@/pages/Canvas/managers/types';
 import { transformVariablesToReadable } from '@/utils/slot';
 
 import { NODE_CONFIG } from '../constants';
@@ -19,10 +19,23 @@ export interface ReminderStepProps {
   palette: HSLShades;
 }
 
-export const ReminderStep: React.FC<ReminderStepProps> = ({ label, withPorts, nodeID, successPortID, failurePortID, palette }) => (
+export const ReminderStep: React.FC<ReminderStepProps> = ({
+  label,
+  withPorts,
+  nodeID,
+  successPortID,
+  failurePortID,
+  palette,
+}) => (
   <Step nodeID={nodeID}>
     <Section>
-      <Item icon={NODE_CONFIG.icon} label={label} palette={palette} placeholder="Set a reminder" labelVariant={StepLabelVariant.SECONDARY} />
+      <Item
+        icon={NODE_CONFIG.icon}
+        label={label}
+        palette={palette}
+        placeholder="Set a reminder"
+        labelVariant={StepLabelVariant.SECONDARY}
+      />
     </Section>
     <Section>
       {withPorts && (

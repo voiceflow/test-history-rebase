@@ -1,10 +1,10 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import GoToIntentSelect from '@/components/GoToIntentSelect';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
-import { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
+import type { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
 
 interface FormProps {
   editor: NodeEditorV2Props<Realtime.NodeData.GoToIntent>;

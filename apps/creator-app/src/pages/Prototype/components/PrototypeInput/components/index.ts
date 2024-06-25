@@ -1,11 +1,12 @@
 import { Flex, FlexCenter, SvgIcon } from '@voiceflow/ui';
-import * as React from 'react';
+import type * as React from 'react';
 
 import TextArea from '@/components/TextArea';
 import { css, styled, transition } from '@/hocs/styled';
 
-// eslint-disable-next-line xss/no-mixed-html
-export const InputArea = styled(TextArea)<{ inputRef: ((node: HTMLTextAreaElement) => void) | React.RefObject<HTMLTextAreaElement> }>`
+export const InputArea = styled(TextArea)<{
+  inputRef: ((node: HTMLTextAreaElement) => void) | React.RefObject<HTMLTextAreaElement>;
+}>`
   padding: 24px;
   border-radius: 0;
   border: none;

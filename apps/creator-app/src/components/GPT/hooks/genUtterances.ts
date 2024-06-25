@@ -1,5 +1,5 @@
 import { READABLE_VARIABLE_REGEXP } from '@voiceflow/common';
-import * as Platform from '@voiceflow/platform-config';
+import type * as Platform from '@voiceflow/platform-config';
 import { useTeardown } from '@voiceflow/ui';
 
 import { mlGatewayClient } from '@/client/ml-gateway';
@@ -8,7 +8,8 @@ import { useSelector } from '@/hooks/store.hook';
 import { isDefaultIntentName } from '@/utils/intent';
 import { slotToString, transformVariablesToReadable } from '@/utils/slot';
 
-import { GenApi, useGen } from './gen';
+import type { GenApi } from './gen';
+import { useGen } from './gen';
 
 export const useGenUtterances = ({
   inputs,
@@ -31,7 +32,8 @@ export const useGenUtterances = ({
     disabled,
     examples: inputs,
 
-    examplesToDB: (items) => items.map((input) => transformVariablesToReadable(input.text, entitiesMap)).filter(Boolean),
+    examplesToDB: (items) =>
+      items.map((input) => transformVariablesToReadable(input.text, entitiesMap)).filter(Boolean),
 
     dbExamplesToTrack: (items) => items,
 

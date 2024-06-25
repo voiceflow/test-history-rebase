@@ -4,7 +4,7 @@ import type { CMSObjectORM } from './cms-object-orm.interface';
 
 export interface CMSTabularORM<
   BaseEntity extends PostgresPKEntity,
-  DiscriminatorEntity extends Omit<BaseEntity, typeof DEFAULT_OR_NULL_COLUMN>
+  DiscriminatorEntity extends Omit<BaseEntity, typeof DEFAULT_OR_NULL_COLUMN>,
 > extends CMSObjectORM<BaseEntity, DiscriminatorEntity> {
   findManyByFolders(environmentID: string, folderIDs: string[]): Promise<ToObject<DiscriminatorEntity>[]>;
 

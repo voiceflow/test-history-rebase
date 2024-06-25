@@ -1,4 +1,5 @@
-import { Callback, Utils } from '@voiceflow/common';
+import type { Callback } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
 import { useEffect, useRef } from 'react';
 
 import { useDidUpdateEffect, useTeardown } from './lifecycle';

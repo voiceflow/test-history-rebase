@@ -1,4 +1,4 @@
-import { ThreadComment } from '@voiceflow/dtos';
+import type { ThreadComment } from '@voiceflow/dtos';
 import React from 'react';
 
 import { useSetup } from '@/hooks';
@@ -17,7 +17,14 @@ interface CommentEditorProps {
   autoscrollIntoView?: boolean;
 }
 
-const CommentEditor: React.FC<CommentEditorProps> = ({ comment, isActive, isEditing, withResolve, setEditingID, isThreadEditing }) => {
+const CommentEditor: React.FC<CommentEditorProps> = ({
+  comment,
+  isActive,
+  isEditing,
+  withResolve,
+  setEditingID,
+  isThreadEditing,
+}) => {
   const engine = React.useContext(EngineContext)!;
   const contentRef = React.useRef<HTMLDivElement>(null);
 
@@ -38,7 +45,10 @@ const CommentEditor: React.FC<CommentEditorProps> = ({ comment, isActive, isEdit
   });
 
   return (
-    <Content ref={contentRef} onClick={() => !isThreadEditing && engine.comment.setFocusComment(isActive ? null : comment.id)}>
+    <Content
+      ref={contentRef}
+      onClick={() => !isThreadEditing && engine.comment.setFocusComment(isActive ? null : comment.id)}
+    >
       <EditableComment
         onPost={onPost}
         onEdit={() => setEditingID(comment.id)}

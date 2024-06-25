@@ -1,9 +1,12 @@
 import { ButtonContainer } from '@ui/components/Button';
-import { IconButtonVariant } from '@ui/components/IconButton/types';
+import type { IconButtonVariant } from '@ui/components/IconButton/types';
 import { colors, css, styled, ThemeColor, transition } from '@ui/styles';
 
 export interface BaseContainerProps
-  extends Pick<React.ComponentProps<'button'>, 'id' | 'className' | 'disabled' | 'onClick' | 'onMouseDown' | 'onMouseUp'> {
+  extends Pick<
+    React.ComponentProps<'button'>,
+    'id' | 'className' | 'disabled' | 'onClick' | 'onMouseDown' | 'onMouseUp'
+  > {
   variant?: IconButtonVariant;
 }
 
@@ -22,7 +25,8 @@ const SIZE = {
 };
 
 export const importantStyles = css`
-  background: linear-gradient(180deg, rgba(93, 157, 245, 0.14) 0%, rgba(44, 133, 255, 0.205899) 97.03%), ${colors(ThemeColor.WHITE)};
+  background: linear-gradient(180deg, rgba(93, 157, 245, 0.14) 0%, rgba(44, 133, 255, 0.205899) 97.03%),
+    ${colors(ThemeColor.WHITE)};
 `;
 
 export const activeStyle = css`
@@ -46,7 +50,9 @@ const IconButtonContainer = styled(ButtonContainer)<IconButtonContainerProps>`
   background-color: ${colors(ThemeColor.WHITE)};
   background-size: cover;
   border: 1px solid transparent;
-  box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.04), 0 2px 4px 0 rgba(17, 49, 96, 0.16);
+  box-shadow:
+    0 0 0 1px rgba(17, 49, 96, 0.04),
+    0 2px 4px 0 rgba(17, 49, 96, 0.16);
 
   &:hover {
     color: rgba(110, 132, 154, 1);
@@ -63,7 +69,9 @@ const IconButtonContainer = styled(ButtonContainer)<IconButtonContainerProps>`
         `
       : css`
           &:hover {
-            box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.04), 0 2px 6px 0 rgba(17, 49, 96, 0.24);
+            box-shadow:
+              0 0 0 1px rgba(17, 49, 96, 0.04),
+              0 2px 6px 0 rgba(17, 49, 96, 0.24);
           }
         `}
 

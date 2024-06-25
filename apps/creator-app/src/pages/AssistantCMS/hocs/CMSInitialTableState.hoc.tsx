@@ -3,7 +3,9 @@ import React, { useMemo } from 'react';
 import { setDisplayName, wrapDisplayName } from 'recompose';
 
 export const withCMSInitialTableState =
-  <ColumnType extends string, SortContext = unknown>(initialTableState: TableStateInitialValue<ColumnType, SortContext>) =>
+  <ColumnType extends string, SortContext = unknown>(
+    initialTableState: TableStateInitialValue<ColumnType, SortContext>
+  ) =>
   (Component: React.FC) =>
     setDisplayName(wrapDisplayName(Component, 'withCMSInitialTableState'))(() => {
       const config = useMemo(() => ({ ...initialTableState }), [initialTableState]);

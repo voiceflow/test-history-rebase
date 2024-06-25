@@ -3,7 +3,7 @@ import React from 'react';
 
 import { useRAF, useRegistration } from '@/hooks';
 import { EngineContext } from '@/pages/Canvas/contexts';
-import { Point } from '@/types';
+import type { Point } from '@/types';
 
 import SelectionArea from './components/SelectionArea';
 import { styleSelectionElement } from './constants';

@@ -1,6 +1,6 @@
-import { BaseNode, BaseTrace } from '@voiceflow/base-types';
+import type { BaseNode, BaseTrace } from '@voiceflow/base-types';
 
-import { StoreType } from '@/constants/prototype';
+import type { StoreType } from '@/constants/prototype';
 
 // trace types
 

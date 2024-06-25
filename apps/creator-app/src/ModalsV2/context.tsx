@@ -1,11 +1,13 @@
-import { AnyRecord, Utils } from '@voiceflow/common';
+import type { AnyRecord } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
 import { useCachedValue } from '@voiceflow/ui-next';
 import * as Normal from 'normal-store';
 import React, { useMemo } from 'react';
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
 
-import manager, { AddRemoveCloseRequestHandlerEvent, CloseRemoveEvent, Event, OpenEvent, UpdateEvent } from './manager';
-import * as T from './types';
+import type { AddRemoveCloseRequestHandlerEvent, CloseRemoveEvent, OpenEvent, UpdateEvent } from './manager';
+import manager, { Event } from './manager';
+import type * as T from './types';
 
 interface Modal {
   id: string;

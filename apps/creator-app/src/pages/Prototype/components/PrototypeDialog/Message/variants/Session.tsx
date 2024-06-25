@@ -1,7 +1,7 @@
 import { Divider, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import { BaseMessageProps } from '../Base';
+import type { BaseMessageProps } from '../Base';
 
 interface SessionProps extends Omit<BaseMessageProps, 'iconProps' | 'pmStatus'> {
   message: string;

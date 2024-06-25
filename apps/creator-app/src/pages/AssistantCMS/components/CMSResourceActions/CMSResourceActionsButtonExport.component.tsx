@@ -30,5 +30,12 @@ export const CMSResourceActionsButtonExport: React.FC = () => {
     setSelectedIDs(new Set());
   };
 
-  return <CMSResourceActionsButton label="Export" iconName="Export" onClick={onClick} testID={tid(TABLE_TEST_ID, 'export-selection')} />;
+  return (
+    <CMSResourceActionsButton
+      label="Export"
+      iconName="Export"
+      onClick={onClick}
+      testID={tid(TABLE_TEST_ID, 'export-selection')}
+    />
+  );
 };

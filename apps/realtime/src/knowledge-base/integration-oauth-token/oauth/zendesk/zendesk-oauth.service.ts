@@ -71,7 +71,13 @@ export class ZendeskOauthService extends MutableService<KnowledgeBaseORM> implem
 
     const subdomain = filters?.brands?.[0]?.subdomain;
 
-    const fetchedArticles = await this.zendeskClient.fetchAllItems({ accessToken, filters, resourceKey, endpoint, subdomain });
+    const fetchedArticles = await this.zendeskClient.fetchAllItems({
+      accessToken,
+      filters,
+      resourceKey,
+      endpoint,
+      subdomain,
+    });
 
     const documents = this.extractDocuments({
       articles: fetchedArticles as ZendeskArticle[],
@@ -129,7 +135,13 @@ export class ZendeskOauthService extends MutableService<KnowledgeBaseORM> implem
     });
 
     return filteredArticles.map((article) =>
-      this.extractDocument({ article: article as ZendeskArticle, integrationDocuments, refreshRate, integrationTokenID, creatorID })
+      this.extractDocument({
+        article: article as ZendeskArticle,
+        integrationDocuments,
+        refreshRate,
+        integrationTokenID,
+        creatorID,
+      })
     );
   }
 
@@ -197,7 +209,10 @@ export class ZendeskOauthService extends MutableService<KnowledgeBaseORM> implem
     filters?: ZendeskCountFilters;
     refreshRate?: KnowledgeBaseDocumentRefreshRate;
   }): Promise<void> {
-    const [documents, workspaceID] = await Promise.all([this.orm.findAllDocuments(projectID), this.orm.getWorkspaceID(projectID)]);
+    const [documents, workspaceID] = await Promise.all([
+      this.orm.findAllDocuments(projectID),
+      this.orm.getWorkspaceID(projectID),
+    ]);
 
     const existingDocsSetIDs: Set<string> = new Set();
 
@@ -206,7 +221,9 @@ export class ZendeskOauthService extends MutableService<KnowledgeBaseORM> implem
         ? documents.filter(({ documentID, data }) => {
             existingDocsSetIDs.add(documentID);
 
-            return !!documentID && data?.type === KnowledgeBaseDocumentType.URL && data?.source === IntegrationType.ZENDESK;
+            return (
+              !!documentID && data?.type === KnowledgeBaseDocumentType.URL && data?.source === IntegrationType.ZENDESK
+            );
           })
         : [];
 

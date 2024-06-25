@@ -18,7 +18,16 @@ interface BackupsListProps {
   hasMore?: boolean;
 }
 
-const BackupsList: React.FC<BackupsListProps> = ({ data, onDelete, onRestore, onDownload, onLoadMore, onPreview, loadingMore, hasMore }) => {
+const BackupsList: React.FC<BackupsListProps> = ({
+  data,
+  onDelete,
+  onRestore,
+  onDownload,
+  onLoadMore,
+  onPreview,
+  loadingMore,
+  hasMore,
+}) => {
   const infiniteScrollRef = React.useRef<HTMLDivElement>(null);
 
   useOnScreenCallback(infiniteScrollRef, (entry) => entry.isIntersecting && onLoadMore());

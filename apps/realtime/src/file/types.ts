@@ -1,4 +1,4 @@
-import { Enum } from '@voiceflow/dtos';
+import type { Enum } from '@voiceflow/dtos';
 
 export type MulterFile = Express.MulterS3.File;
 

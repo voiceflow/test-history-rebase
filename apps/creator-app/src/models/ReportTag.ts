@@ -1,4 +1,4 @@
-import { Sentiment, SystemTag } from '@/models/Transcript';
+import type { Sentiment, SystemTag } from '@/models/Transcript';
 
 export interface DBReportTag {
   tagID: string;

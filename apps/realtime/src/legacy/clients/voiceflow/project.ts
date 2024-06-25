@@ -1,18 +1,21 @@
-import { BaseModels } from '@voiceflow/base-types';
-import { Nullish } from '@voiceflow/common';
+import type { BaseModels } from '@voiceflow/base-types';
+import type { Nullish } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config/backend';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
-import { AxiosInstance } from 'axios';
+import type { AxiosInstance } from 'axios';
 
-import { ExtraOptions } from './types';
+import type { ExtraOptions } from './types';
 import createResourceClient from './utils/resource';
 
 export interface ProjectPlatformClient<P extends BaseModels.Project.Model<any, any>> {
   duplicate: (projectID: string, data: Realtime.NewProject, params?: Record<string, unknown>) => Promise<P>;
 }
 
-const PlatformClient = <P extends BaseModels.Project.Model<any, any>>(axios: AxiosInstance): ProjectPlatformClient<P> => ({
-  duplicate: (projectID, data, params) => axios.post<P>(`/project/${projectID}/copy`, data, { params }).then((res) => res.data),
+const PlatformClient = <P extends BaseModels.Project.Model<any, any>>(
+  axios: AxiosInstance
+): ProjectPlatformClient<P> => ({
+  duplicate: (projectID, data, params) =>
+    axios.post<P>(`/project/${projectID}/copy`, data, { params }).then((res) => res.data),
 });
 
 const Client = ({ api, alexa, general }: ExtraOptions) => {
@@ -24,14 +27,16 @@ const Client = ({ api, alexa, general }: ExtraOptions) => {
       [Platform.Constants.PlatformType.ALEXA]: alexaClient,
     },
     generalClient
-  ) as <P extends BaseModels.Project.Model<any, any>>(platform?: Nullish<Platform.Constants.PlatformType>) => ProjectPlatformClient<P>;
+  ) as <P extends BaseModels.Project.Model<any, any>>(
+    platform?: Nullish<Platform.Constants.PlatformType>
+  ) => ProjectPlatformClient<P>;
 
   return {
     ...createResourceClient(api, 'projects'),
 
     deleteV2: (projectID: string): Promise<boolean> => api.delete(`/v3/projects/${projectID}`),
 
-    deleteMany: (projectIDs: string[]): Promise<boolean> => api.post(`/v2/projects/delete-many`, { projectIDs }),
+    deleteMany: (projectIDs: string[]): Promise<boolean> => api.post('/v2/projects/delete-many', { projectIDs }),
 
     platform: Object.assign(getPlatform, {
       alexa: alexaClient,

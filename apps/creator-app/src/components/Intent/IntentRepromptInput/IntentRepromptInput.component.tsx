@@ -1,4 +1,13 @@
-import { Box, Button, Dropdown, FocusIndicator, SlateEditor, SquareButton, useCreateConst, usePersistFunction } from '@voiceflow/ui-next';
+import {
+  Box,
+  Button,
+  Dropdown,
+  FocusIndicator,
+  SlateEditor,
+  SquareButton,
+  useCreateConst,
+  usePersistFunction,
+} from '@voiceflow/ui-next';
 import React, { useMemo } from 'react';
 import type { Descendant } from 'slate';
 
@@ -13,7 +22,9 @@ import { slateEditorStyle } from './IntentRepromptInput.css';
 import type { IIntentRepromptInput } from './IntentRepromptInput.interface';
 
 export const IntentRepromptInput: React.FC<IIntentRepromptInput> = ({ value, onValueChange, onDelete }) => {
-  const editor = useCreateConst(() => SlateEditor.createEditor([SlateEditor.PluginType.VARIABLE, SlateEditor.PluginType.LINK]));
+  const editor = useCreateConst(() =>
+    SlateEditor.createEditor([SlateEditor.PluginType.VARIABLE, SlateEditor.PluginType.LINK])
+  );
   const entitiesMap = useSelector(Designer.selectors.slateEntitiesMapByID);
 
   const entityEditModal = useEntityEditModal();

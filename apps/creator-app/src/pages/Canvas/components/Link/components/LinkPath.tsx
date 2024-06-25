@@ -32,7 +32,9 @@ const LinkPath = React.forwardRef<SVGPathElement, LinkPathProps>((props, ref) =>
   const color = migrateColor(props.strokeColor);
   const palette = useColorPalette(color);
 
-  return <StyledLinkPath ref={ref} {...props} strokeColor={palette[PALETTE_SHADE]} isHighlighted={props.isHighlighted} />;
+  return (
+    <StyledLinkPath ref={ref} {...props} strokeColor={palette[PALETTE_SHADE]} isHighlighted={props.isHighlighted} />
+  );
 });
 
 export default LinkPath;

@@ -1,6 +1,7 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, stopPropagation, Text, TippyTooltip, TippyTooltipProps } from '@voiceflow/ui';
+import type { TippyTooltipProps } from '@voiceflow/ui';
+import { Box, stopPropagation, Text, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import { BOOK_DEMO_LINK, REQUEST_MORE_TOKENS_LINK } from '@/constants/link.constant';

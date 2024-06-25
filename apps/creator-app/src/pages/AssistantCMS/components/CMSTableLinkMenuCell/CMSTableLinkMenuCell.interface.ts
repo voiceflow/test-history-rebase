@@ -1,4 +1,4 @@
-import { IconName } from '@voiceflow/icons';
+import type { IconName } from '@voiceflow/icons';
 
 export interface ICMSTableLinkMenuCell<Item> {
   label: string;

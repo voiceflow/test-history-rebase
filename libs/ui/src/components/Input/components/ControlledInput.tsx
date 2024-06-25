@@ -5,7 +5,8 @@ import { withEnterPress, withTargetValue } from '@ui/utils/dom';
 import { Utils } from '@voiceflow/common';
 import React from 'react';
 
-import { NestedInput, NestedInputProps } from './DefaultInput';
+import type { NestedInputProps } from './DefaultInput';
+import { NestedInput } from './DefaultInput';
 
 const Message = styled(FadeLeft)`
   color: ${colors(ThemeColor.TERTIARY)};

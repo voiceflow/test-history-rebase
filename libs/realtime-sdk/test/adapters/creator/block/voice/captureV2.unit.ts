@@ -2,7 +2,7 @@ import { voiceNoMatchAdapter, voiceNoReplyAdapter } from '@realtime-sdk/adapters
 import captureV2Adapter from '@realtime-sdk/adapters/creator/block/voice/captureV2';
 import { Creator } from '@test/factories';
 import { BaseNode } from '@voiceflow/base-types';
-import { VoiceNode } from '@voiceflow/voice-types';
+import type { VoiceNode } from '@voiceflow/voice-types';
 
 const DEFAULT_INTENT = {
   key: '',

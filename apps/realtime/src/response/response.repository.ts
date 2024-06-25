@@ -1,27 +1,24 @@
-import { EntityManager } from '@mikro-orm/core';
+import type { EntityManager } from '@mikro-orm/core';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
 import { Channel, Language } from '@voiceflow/dtos';
-import {
+import type {
   AnyResponseAttachmentObject,
   AnyResponseVariantObject,
-  DatabaseTarget,
-  ObjectId,
-  RequiredEntityORM,
   ResponseDiscriminatorObject,
   ResponseMessageObject,
   ResponseObject,
-  ResponseORM,
 } from '@voiceflow/orm-designer';
+import { DatabaseTarget, ObjectId, RequiredEntityORM, ResponseORM } from '@voiceflow/orm-designer';
 
 import { CMSTabularService } from '@/common';
 import { toPostgresEntityIDs } from '@/common/utils';
 import { ReferenceService } from '@/reference/reference.service';
-import { CMSContext } from '@/types';
+import type { CMSContext } from '@/types';
 
-import { ResponseExportImportDataDTO } from './dtos/response-export-import-data.dto';
-import { ResponseCreateWithSubResourcesData } from './response.interface';
+import type { ResponseExportImportDataDTO } from './dtos/response-export-import-data.dto';
+import type { ResponseCreateWithSubResourcesData } from './response.interface';
 import { ResponseAttachmentService } from './response-attachment/response-attachment.service';
 import { ResponseDiscriminatorService } from './response-discriminator/response-discriminator.service';
 import { ResponseMessageRepository } from './response-message/response-message.repository';

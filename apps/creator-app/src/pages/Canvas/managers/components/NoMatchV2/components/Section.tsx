@@ -1,4 +1,5 @@
-import { ContextMenu, MenuTypes, SectionV2 } from '@voiceflow/ui';
+import type { MenuTypes } from '@voiceflow/ui';
+import { ContextMenu, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
 interface SectionProps {

@@ -1,4 +1,5 @@
-import { NestVersion, NestVersionOptions } from '../../nest';
+import type { NestVersionOptions } from '../../nest';
+import { NestVersion } from '../../nest';
 import { ApiKey } from './api-key';
 import { Organization } from './organization';
 import { OrganizationMember } from './organizationMember';

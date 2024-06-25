@@ -3,7 +3,7 @@ import { VoiceflowVersion } from '@voiceflow/voiceflow-types';
 import { createSimpleAdapter, createSmartSimpleAdapter } from 'bidirectional-adapter';
 
 import * as VoiceflowCommon from '../../../common';
-import * as Models from '../../models';
+import type * as Models from '../../models';
 
 export const smart = createSmartSimpleAdapter<
   VoiceflowVersion.ChatSettings,

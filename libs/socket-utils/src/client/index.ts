@@ -1,6 +1,6 @@
-import { Cache } from './cache';
-import { PubSub } from './pubsub';
-import { Redis } from './redis';
+import type { Cache } from './cache';
+import type { PubSub } from './pubsub';
+import type { Redis } from './redis';
 
 export * from './cache';
 export * from './pubsub';

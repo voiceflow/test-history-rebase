@@ -1,7 +1,7 @@
 import { Box } from '@voiceflow/ui';
 import React from 'react';
 
-import * as PrototypeDuck from '@/ducks/prototype';
+import type * as PrototypeDuck from '@/ducks/prototype';
 
 import FullPageTemplate from '../FullPageTemplate';
 import { PasswordInput } from './components';

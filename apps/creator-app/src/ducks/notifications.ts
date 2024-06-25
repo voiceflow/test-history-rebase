@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import { createSelector } from 'reselect';
 
 import { createAction, createRootSelector } from '@/ducks/utils';
-import { Action, RootReducer, SyncThunk, Thunk } from '@/store/types';
+import type { Action, RootReducer, SyncThunk, Thunk } from '@/store/types';
 
 export enum NotificationType {
   FEATURE = 'FEATURE',
@@ -47,6 +47,7 @@ export type AnyNotificationAction = SetNotifications | ReadNotifications;
 
 // reducers
 
+// eslint-disable-next-line default-param-last
 const notificationsReducer: RootReducer<NotificationState, AnyNotificationAction> = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case NotifcationAction.SET_NOTIFICATIONS:
@@ -82,7 +83,8 @@ export const notificationsSelector = createSelector([notificationsStateSelector]
 
 // action creators
 
-export const setNotifications = (notifications: Notification[]): SetNotifications => createAction(NotifcationAction.SET_NOTIFICATIONS, notifications);
+export const setNotifications = (notifications: Notification[]): SetNotifications =>
+  createAction(NotifcationAction.SET_NOTIFICATIONS, notifications);
 
 export const markNotificationAsRead = (): ReadNotifications => createAction(NotifcationAction.READ_NOTIFICATIONS);
 
@@ -91,7 +93,7 @@ export const markNotificationAsRead = (): ReadNotifications => createAction(Noti
 export const fetchNotifications = (): Thunk => async (dispatch) => {
   let {
     data: { rows: notifications, last_checked: lastChecked },
-  } = await axios.get(`/product_updates`);
+  } = await axios.get('/product_updates');
 
   lastChecked = lastChecked ? dayjs(lastChecked).unix() : 0;
 
@@ -104,7 +106,7 @@ export const fetchNotifications = (): Thunk => async (dispatch) => {
 };
 
 export const readNotifications = (): SyncThunk => (dispatch) => {
-  axios.patch(`/product_updates`);
+  axios.patch('/product_updates');
 
   dispatch(markNotificationAsRead());
 };

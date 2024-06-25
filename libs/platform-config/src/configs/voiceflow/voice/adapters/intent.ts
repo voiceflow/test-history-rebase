@@ -1,5 +1,5 @@
 import * as Common from '@platform-config/configs/common';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+import type { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 export const smart = Common.Voice.Adapters.Intent.smartFactory<VoiceflowConstants.Voice>();
 

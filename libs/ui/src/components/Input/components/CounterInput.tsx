@@ -2,7 +2,8 @@ import * as System from '@ui/system';
 import { stopPropagation } from '@ui/utils';
 import React from 'react';
 
-import DefaultInput, { DefaultInputProps } from './DefaultInput';
+import type { DefaultInputProps } from './DefaultInput';
+import DefaultInput from './DefaultInput';
 
 export interface CounterInputProps extends Omit<DefaultInputProps, 'onChange' | 'readOnly'> {
   onPlusClick?: () => void;

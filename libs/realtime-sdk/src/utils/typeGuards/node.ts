@@ -13,10 +13,12 @@ import {
   SHARED_NODES,
   STARTING_NODES,
 } from '@realtime-sdk/constants';
-import { DBNodeStart, Markup, NodeData } from '@realtime-sdk/models';
+import type { DBNodeStart, Markup, NodeData } from '@realtime-sdk/models';
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
-import { AnyRecord, Utils } from '@voiceflow/common';
-import { ChoiceV2Node, FunctionNode, MessageNode, NodeType, StartNode, TriggerNode } from '@voiceflow/dtos';
+import type { AnyRecord } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
+import type { ChoiceV2Node, FunctionNode, MessageNode, StartNode, TriggerNode } from '@voiceflow/dtos';
+import { NodeType } from '@voiceflow/dtos';
 
 import { createTypedTypeGuardCreator, createTypeGuardCreator } from './utils';
 

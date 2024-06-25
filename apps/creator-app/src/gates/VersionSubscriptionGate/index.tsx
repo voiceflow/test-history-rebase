@@ -15,7 +15,7 @@ import {
   MigrationGate,
   SchemaChannelSubscriptionGate,
 } from './components';
-import { VersionSubscriptionContext } from './types';
+import type { VersionSubscriptionContext } from './types';
 
 const VersionSubscriptionGate: React.FC<React.PropsWithChildren> = ({ children }) => {
   const versionID = useRouteVersionID();

@@ -1,7 +1,8 @@
 import { PlanType } from '@voiceflow/internal';
 import { QuotaNames } from '@voiceflow/realtime-sdk';
 import { tid } from '@voiceflow/style';
-import { BaseProps, PrimaryNavigation, Tooltip } from '@voiceflow/ui-next';
+import type { BaseProps } from '@voiceflow/ui-next';
+import { PrimaryNavigation, Tooltip } from '@voiceflow/ui-next';
 import React from 'react';
 import { match } from 'ts-pattern';
 

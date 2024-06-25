@@ -1,8 +1,8 @@
 /* eslint-disable no-await-in-loop */
-import { RequiredEntity } from '@voiceflow/dtos';
+import type { RequiredEntity } from '@voiceflow/dtos';
 
 import { ReferenceBaseBuilderUtil } from './reference-base-builder.util';
-import { ReferenceBuilderCacheUtil } from './reference-builder-cache.util';
+import type { ReferenceBuilderCacheUtil } from './reference-builder-cache.util';
 
 export class ReferenceRequiredEntityUtil extends ReferenceBaseBuilderUtil {
   private readonly requiredEntities: RequiredEntity[];

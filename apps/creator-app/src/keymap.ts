@@ -1,6 +1,6 @@
-import { IconName } from '@voiceflow/icons';
+import type { IconName } from '@voiceflow/icons';
 import { IS_MAC } from '@voiceflow/ui';
-import { IHotKey } from '@voiceflow/ui-next';
+import type { IHotKey } from '@voiceflow/ui-next';
 import moize from 'moize';
 
 export enum Hotkey {

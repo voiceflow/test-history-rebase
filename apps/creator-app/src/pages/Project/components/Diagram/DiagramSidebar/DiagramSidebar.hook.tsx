@@ -1,7 +1,9 @@
 import { Utils } from '@voiceflow/common';
-import { Flow, FolderScope, Workflow } from '@voiceflow/dtos';
+import type { Flow, Workflow } from '@voiceflow/dtos';
+import { FolderScope } from '@voiceflow/dtos';
 import { BlockType } from '@voiceflow/realtime-sdk';
-import { IContextMenuChildren, Menu, notify, usePersistFunction } from '@voiceflow/ui-next';
+import type { IContextMenuChildren } from '@voiceflow/ui-next';
+import { Menu, notify, usePersistFunction } from '@voiceflow/ui-next';
 import pluralize from 'pluralize';
 import React, { useCallback, useMemo, useRef } from 'react';
 
@@ -12,7 +14,7 @@ import { useDispatch, useGetValueSelector, useSelector, useStore } from '@/hooks
 import { clipboardCopy } from '@/utils/clipboard.util';
 import { getFolderScopeLabel } from '@/utils/cms.util';
 
-import { DiagramSidebarFlowTreeData, DiagramSidebarWorkflowTreeData } from './DiagramSidebar.interface';
+import type { DiagramSidebarFlowTreeData, DiagramSidebarWorkflowTreeData } from './DiagramSidebar.interface';
 
 export const useFlowsTree = () => {
   const flows = useSelector(Designer.Flow.selectors.all);

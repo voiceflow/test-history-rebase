@@ -5,7 +5,7 @@ import { useAtomValue, useSetAtom } from 'jotai';
 import pluralize from 'pluralize';
 import React from 'react';
 
-import { UpgradeTooltipPlanPermission } from '@/config/planPermission';
+import type { UpgradeTooltipPlanPermission } from '@/config/planPermission';
 import { Permission } from '@/constants/permissions';
 import { Designer } from '@/ducks';
 import { useGetAtomValue } from '@/hooks/atom.hook';

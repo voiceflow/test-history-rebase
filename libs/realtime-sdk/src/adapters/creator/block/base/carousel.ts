@@ -1,8 +1,9 @@
 import * as RealtimeUtilsPort from '@realtime-sdk/utils/port';
-import { BaseModels, BaseNode } from '@voiceflow/base-types';
+import type { BaseNode } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 
-import { NodeData } from '../../../../models';
+import type { NodeData } from '../../../../models';
 import {
   createBlockAdapter,
   createOutPortsAdapter,
@@ -14,7 +15,10 @@ import {
   outPortDataToDB,
 } from '../utils';
 
-const carouselAdapter = createBlockAdapter<Omit<BaseNode.Carousel.StepData, 'noMatch' | 'noReply'>, Omit<NodeData.Carousel, 'noMatch' | 'noReply'>>(
+const carouselAdapter = createBlockAdapter<
+  Omit<BaseNode.Carousel.StepData, 'noMatch' | 'noReply'>,
+  Omit<NodeData.Carousel, 'noMatch' | 'noReply'>
+>(
   ({ cards, layout }) => ({
     cards,
     layout,

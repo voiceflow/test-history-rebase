@@ -1,5 +1,16 @@
 import { Utils } from '@voiceflow/common';
-import { Box, Button, Input, preventDefault, System, ThemeColor, TippyTooltip, toast, useDebouncedCallback, useSmartReducerV2 } from '@voiceflow/ui';
+import {
+  Box,
+  Button,
+  Input,
+  preventDefault,
+  System,
+  ThemeColor,
+  TippyTooltip,
+  toast,
+  useDebouncedCallback,
+  useSmartReducerV2,
+} from '@voiceflow/ui';
 import React from 'react';
 
 import { voiceflowWordmark } from '@/assets';
@@ -7,7 +18,7 @@ import client from '@/client';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import { useDispatch, usePartnerStack, useTrackingEvents } from '@/hooks';
-import { Query } from '@/models';
+import type { Query } from '@/models';
 import { useHubspotInject } from '@/pages/Auth/components/useHubspotInject';
 import { getErrorMessage } from '@/utils/error';
 import * as QueryUtil from '@/utils/query';
@@ -121,7 +132,11 @@ export const SignupForm: React.FC<SignupFormProps> = ({ query }) => {
     try {
       stateAPI.submitting.set(true);
 
-      GoogleAnalytics.sendEvent(GoogleAnalytics.Category.AUTH_SIGNUP_PAGE, GoogleAnalytics.Action.CLICK, GoogleAnalytics.Label.SIGN_UP_BUTTON);
+      GoogleAnalytics.sendEvent(
+        GoogleAnalytics.Category.AUTH_SIGNUP_PAGE,
+        GoogleAnalytics.Action.CLICK,
+        GoogleAnalytics.Label.SIGN_UP_BUTTON
+      );
 
       const samlLoginURL = await getSamlLoginURL(state.email);
 
@@ -221,8 +236,14 @@ export const SignupForm: React.FC<SignupFormProps> = ({ query }) => {
               <TippyTooltip
                 offset={[0, 5]}
                 visible={state.showEmailError && state.emailFocused}
-                // eslint-disable-next-line no-nested-ternary
-                content={!state.email ? 'Email is required' : state.email.length >= 6 ? 'Email is invalid' : 'Email must be at least 6 characters'}
+                content={
+                  // eslint-disable-next-line no-nested-ternary
+                  !state.email
+                    ? 'Email is required'
+                    : state.email.length >= 6
+                      ? 'Email is invalid'
+                      : 'Email must be at least 6 characters'
+                }
                 placement="bottom-start"
               >
                 <EmailInput
@@ -279,8 +300,9 @@ export const SignupForm: React.FC<SignupFormProps> = ({ query }) => {
             </Box.FlexApart>
 
             <TermsAndConditionsContainer>
-              By clicking "Create account", I agree to Voiceflow's <System.Link.Anchor href="https://www.voiceflow.com/terms">TOS</System.Link.Anchor>{' '}
-              and <System.Link.Anchor href="https://www.voiceflow.com/privacy">Privacy Policy</System.Link.Anchor>.
+              By clicking "Create account", I agree to Voiceflow's{' '}
+              <System.Link.Anchor href="https://www.voiceflow.com/terms">TOS</System.Link.Anchor> and{' '}
+              <System.Link.Anchor href="https://www.voiceflow.com/privacy">Privacy Policy</System.Link.Anchor>.
             </TermsAndConditionsContainer>
           </div>
         </form>

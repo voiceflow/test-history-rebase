@@ -1,6 +1,6 @@
-import { EmptyObject } from '@voiceflow/common';
+import type { EmptyObject } from '@voiceflow/common';
 
-import { ModalScope } from './modal-scope.enum';
+import type { ModalScope } from './modal-scope.enum';
 
 export interface CreateModalOptions {
   /**

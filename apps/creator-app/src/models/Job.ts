@@ -1,5 +1,5 @@
-import { JobStatus } from '@/constants';
-import {
+import type { JobStatus } from '@/constants';
+import type {
   AlexaPublishJobErrorType,
   AlexaStageType,
   DialogflowCXPublishJobErrorType,
@@ -39,6 +39,7 @@ export interface JobClient<J extends Job<any>, S extends string = string> {
 
 export type JobStageData<S extends JobStage> = S extends JobStage<string, infer D> ? D : never;
 
+// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace AlexaPublishJob {
   export type IdleStage = JobStage<AlexaStageType.IDLE, Record<string, unknown>>;
 
@@ -80,9 +81,12 @@ export namespace AlexaPublishJob {
 
   export type SelectVendorsStage = JobStage<AlexaStageType.SELECT_VENDORS>;
 
-  export type AnyJob = Job<IdleStage | ErrorStage | SuccessStage | ProgressStage | WaitAccountStage | WaitVendorsStage | SelectVendorsStage>;
+  export type AnyJob = Job<
+    IdleStage | ErrorStage | SuccessStage | ProgressStage | WaitAccountStage | WaitVendorsStage | SelectVendorsStage
+  >;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace AlexaExportJob {
   export type IdleStage = AlexaPublishJob.IdleStage;
 
@@ -105,6 +109,7 @@ export namespace AlexaExportJob {
   export type AnyJob = Job<IdleStage | ErrorStage | SuccessStage | ProgressStage | WaitAccountStage | WaitVendorsStage>;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace DialogflowESPublishJob {
   export type IdleStage = JobStage<DialogflowESStageType.IDLE, Record<string, unknown>>;
 
@@ -146,6 +151,7 @@ export namespace DialogflowESPublishJob {
   export type AnyJob = Job<IdleStage | ErrorStage | SuccessStage | ProgressStage | WaitAccountStage | WaitProjectStage>;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace DialogflowCXPublishJob {
   export type IdleStage = JobStage<DialogflowCXStageType.IDLE, Record<string, unknown>>;
 
@@ -187,6 +193,7 @@ export namespace DialogflowCXPublishJob {
   export type AnyJob = Job<IdleStage | ErrorStage | SuccessStage | ProgressStage | WaitAccountStage | WaitAgentStage>;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace GooglePublishJob {
   export type IdleStage = JobStage<GoogleStageType.IDLE, Record<string, unknown>>;
 
@@ -228,6 +235,7 @@ export namespace GooglePublishJob {
   export type AnyJob = Job<IdleStage | ErrorStage | SuccessStage | ProgressStage | WaitAccountStage | WaitProjectStage>;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace GoogleExportJob {
   export type IdleStage = GooglePublishJob.IdleStage;
 
@@ -250,6 +258,7 @@ export namespace GoogleExportJob {
   export type AnyJob = Job<IdleStage | ErrorStage | SuccessStage | ProgressStage | WaitAccountStage | WaitProjectStage>;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace GeneralExportJob {
   export type IdleStage = JobStage<GeneralStageType.IDLE, Record<string, unknown>>;
 
@@ -281,6 +290,7 @@ export namespace GeneralExportJob {
   export type AnyJob = Job<IdleStage | ErrorStage | SuccessStage | ProgressStage>;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace NLPTrainJob {
   export type IdleStage = JobStage<NLPTrainStageType.IDLE, Record<string, unknown>>;
 
@@ -296,13 +306,17 @@ export namespace NLPTrainJob {
 
   export type ConfirmStage = JobStage<NLPTrainStageType.CONFIRM>;
 
-  export type SuccessStage = JobStage<NLPTrainStageType.SUCCESS, { validations?: { invalid: { intents: string[]; slots: string[] } } }>;
+  export type SuccessStage = JobStage<
+    NLPTrainStageType.SUCCESS,
+    { validations?: { invalid: { intents: string[]; slots: string[] } } }
+  >;
 
   export type ProgressStage = JobStage<NLPTrainStageType.PROGRESS, { message: string; progress: number }>;
 
   export type AnyJob = Job<IdleStage | ErrorStage | SuccessStage | ProgressStage>;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace TwilioPrototypeJob {
   export type IdleStage = JobStage<TwilioPrototypeStageType.IDLE>;
 
@@ -323,6 +337,7 @@ export namespace TwilioPrototypeJob {
   export type AnyJob = Job<IdleStage | ErrorStage | MessagingStage | WaitNumberStage>;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace SMSPublishJob {
   export type IdleStage = JobStage<SMSPublishStageType.IDLE>;
 

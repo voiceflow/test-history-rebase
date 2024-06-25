@@ -1,4 +1,5 @@
-import { Subscription, SubscriptionStatus } from '@voiceflow/dtos';
+import type { Subscription } from '@voiceflow/dtos';
+import { SubscriptionStatus } from '@voiceflow/dtos';
 
 export const getSubscriptionEntitlements = (subscription: Subscription) => {
   if (subscription.status !== SubscriptionStatus.CANCELLED) return subscription.entitlements;

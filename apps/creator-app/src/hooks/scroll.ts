@@ -1,7 +1,9 @@
-import { CustomScrollbarsTypes, useCache, useContextApi, useRAF } from '@voiceflow/ui';
+import type { CustomScrollbarsTypes } from '@voiceflow/ui';
+import { useCache, useContextApi, useRAF } from '@voiceflow/ui';
 import React from 'react';
 
-import { ScrollContext, ScrollContextValue } from '@/contexts/ScrollContext';
+import type { ScrollContextValue } from '@/contexts/ScrollContext';
+import { ScrollContext } from '@/contexts/ScrollContext';
 import { getOffsetLeftToNode, getOffsetToNode, scrollTo, setScrollbarOffset } from '@/utils/dom';
 import { xnor, xor } from '@/utils/logic';
 
@@ -13,12 +15,14 @@ interface ScrollHelpers<B extends HTMLElement | CustomScrollbarsTypes.Scrollbars
   scrollHelpers: ScrollContextValue<B>;
 }
 
-const isScrollbars = (value?: null | HTMLElement | CustomScrollbarsTypes.Scrollbars): value is CustomScrollbarsTypes.Scrollbars =>
-  !!value && 'getValues' in value;
+const isScrollbars = (
+  value?: null | HTMLElement | CustomScrollbarsTypes.Scrollbars
+): value is CustomScrollbarsTypes.Scrollbars => !!value && 'getValues' in value;
 
-export const useScrollHelpers = <B extends HTMLElement | CustomScrollbarsTypes.Scrollbars, I extends HTMLElement | null = null>({
-  enableScrollbarOffset,
-}: { enableScrollbarOffset?: boolean } = {}): ScrollHelpers<B, I> => {
+export const useScrollHelpers = <
+  B extends HTMLElement | CustomScrollbarsTypes.Scrollbars,
+  I extends HTMLElement | null = null,
+>({ enableScrollbarOffset }: { enableScrollbarOffset?: boolean } = {}): ScrollHelpers<B, I> => {
   const [scheduler] = useRAF();
 
   const bodyRef = React.useRef<B>(null);
@@ -102,8 +106,9 @@ export const useScrollStickySides = <T extends HTMLElement | CustomScrollbarsTyp
       return;
     }
 
-    // eslint-disable-next-line xss/no-mixed-html
-    const { scrollTop, clientHeight, scrollHeight } = isScrollbars(current) ? current.getValues() : (current as HTMLElement);
+    const { scrollTop, clientHeight, scrollHeight } = isScrollbars(current)
+      ? current.getValues()
+      : (current as HTMLElement);
 
     if (xor(!!scrollTop, cache.current.isHeaderSticky)) {
       toggleHeaderSticky();
@@ -112,7 +117,11 @@ export const useScrollStickySides = <T extends HTMLElement | CustomScrollbarsTyp
     const isScrollExists = scrollHeight > clientHeight;
     const clientHeightWithScrollTop = clientHeight + scrollTop;
 
-    if (isScrollExists ? xnor(clientHeightWithScrollTop >= scrollHeight, cache.current.isFooterSticky) : cache.current.isFooterSticky) {
+    if (
+      isScrollExists
+        ? xnor(clientHeightWithScrollTop >= scrollHeight, cache.current.isFooterSticky)
+        : cache.current.isFooterSticky
+    ) {
       toggleFooterSticky();
     }
   }, [cache]);
@@ -120,7 +129,6 @@ export const useScrollStickySides = <T extends HTMLElement | CustomScrollbarsTyp
   React.useEffect(() => {
     onScroll();
 
-    // eslint-disable-next-line xss/no-mixed-html
     const scrollNode = isScrollbars(bodyRef.current) ? bodyRef.current.view : (bodyRef.current as HTMLElement | null);
 
     scrollNode?.addEventListener('scroll', onScroll, { passive: true });
@@ -135,7 +143,7 @@ export const useScrollStickySides = <T extends HTMLElement | CustomScrollbarsTyp
 
 export const useScrollNodeIntoView = <Elm extends Element>(): [
   ref: React.RefObject<Elm>,
-  scrollIntoView: (options?: ScrollIntoViewOptions) => void
+  scrollIntoView: (options?: ScrollIntoViewOptions) => void,
 ] => {
   const ref = React.useRef<Elm>(null);
 

@@ -1,6 +1,6 @@
-import { Config } from '@/types';
+import type { Config } from '@/types';
 
-import { ClientMap } from '../clients';
+import type { ClientMap } from '../clients';
 import Diagram from './diagram';
 import Project from './project';
 import Version from './version';

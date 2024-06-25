@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { getAlternativeColor, isColorImage } from '@voiceflow/ui';
 import * as Normal from 'normal-store';
 import { createSelector } from 'reselect';

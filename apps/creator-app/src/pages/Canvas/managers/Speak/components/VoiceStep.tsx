@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Popper, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
@@ -10,7 +10,7 @@ import { ClassName } from '@/styles/constants';
 import { transformVariablesToReadable } from '@/utils/slot';
 
 import StepPreview from './StepPreview';
-import { BaseStepProps } from './types';
+import type { BaseStepProps } from './types';
 
 interface VoiceStepProps extends BaseStepProps {
   item: Realtime.SSMLData;
@@ -30,10 +30,18 @@ const VoiceStep: React.FC<VoiceStepProps> = ({ item, nextPortID, onOpenEditor, a
       {!!attachmentItems.length && (
         <Popper
           placement="right-start"
-          renderContent={({ onClose }) => <StepPreview items={attachmentItems} onClose={onClose} onOpenEditor={onOpenEditor} />}
+          renderContent={({ onClose }) => (
+            <StepPreview items={attachmentItems} onClose={onClose} onOpenEditor={onOpenEditor} />
+          )}
         >
           {({ onToggle, ref, isOpened }) => (
-            <StepButton ref={ref} onClick={stopPropagation(onToggle)} icon="randomV2" isActive={isOpened} style={{ marginBottom: 0, marginTop: 0 }} />
+            <StepButton
+              ref={ref}
+              onClick={stopPropagation(onToggle)}
+              icon="randomV2"
+              isActive={isOpened}
+              style={{ marginBottom: 0, marginTop: 0 }}
+            />
           )}
         </Popper>
       )}

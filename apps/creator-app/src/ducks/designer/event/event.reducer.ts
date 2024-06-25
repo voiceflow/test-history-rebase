@@ -12,7 +12,9 @@ const baseEventReducer = reducerWithInitialState<EventState>(createEmpty())
   .case(Actions.Event.DeleteOne, (state, { id }) => removeOne(state, id))
   .case(Actions.Event.DeleteMany, (state, { ids }) => removeMany(state, ids))
   .case(Actions.Event.Replace, (state, { data }) => ({ ...state, ...normalize(data) }))
-  .caseWithAction(Actions.Event.PatchOne, (state, action) => patchOne(state, action.payload.id, patchWithUpdatedFields(action)))
+  .caseWithAction(Actions.Event.PatchOne, (state, action) =>
+    patchOne(state, action.payload.id, patchWithUpdatedFields(action))
+  )
   .caseWithAction(Actions.Event.PatchMany, (state, action) =>
     patchMany(
       state,

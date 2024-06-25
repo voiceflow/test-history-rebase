@@ -1,4 +1,4 @@
-import { JSColorStyle } from './types';
+import type { JSColorStyle } from './types';
 
 export enum PreviewColors {
   // background
@@ -12,6 +12,7 @@ export enum PreviewColors {
   GREY_TITLE_COLOR = '#c0c5c6',
 
   // code
+  // eslint-disable-next-line @typescript-eslint/no-duplicate-enum-values
   CODE_COLOR = '#f2f7f7',
   SYNTAX_COLOR = '#70a9c2',
   STRING_COLOR = '#e4a398',

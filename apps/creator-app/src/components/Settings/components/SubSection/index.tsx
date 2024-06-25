@@ -1,4 +1,5 @@
-import { Box, SectionV2, SectionV2Types } from '@voiceflow/ui';
+import type { SectionV2Types } from '@voiceflow/ui';
+import { Box, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import { Description, RadioGroupContainer, RadioGroupDescription, Title } from './components';

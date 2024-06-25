@@ -17,7 +17,7 @@ import { Modals } from '@/ModalsV2';
 import { stopPropagation } from '@/utils/handler.util';
 import { openInternalURLInANewTab } from '@/utils/window';
 
-import { ICMSKnowledgeBaseAddDataSourceButton } from './CMSKnowledgeBaseAddDataSourceButton.interface';
+import type { ICMSKnowledgeBaseAddDataSourceButton } from './CMSKnowledgeBaseAddDataSourceButton.interface';
 
 export const CMSKnowledgeBaseAddDataSourceButton: React.FC<ICMSKnowledgeBaseAddDataSourceButton> = ({
   variant = 'primary',

@@ -1,6 +1,6 @@
 import React from 'react';
-import { ColorChangeHandler, RGBColor } from 'react-color';
-import { ExportedColorProps } from 'react-color/lib/components/common/ColorWrap';
+import type { ColorChangeHandler, RGBColor } from 'react-color';
+import type { ExportedColorProps } from 'react-color/lib/components/common/ColorWrap';
 
 import type { ColorPickerProps } from './index';
 
@@ -15,7 +15,10 @@ const withHexColor =
     const [rgba, setRGBa] = React.useState(color);
 
     const onLocalChange = React.useCallback<ColorChangeHandler>(({ rgb }) => setRGBa({ ...rgb, a: rgb.a ?? 1 }), []);
-    const onChangeComplete = React.useCallback<ColorChangeHandler>(({ rgb }) => onChange({ ...rgb, a: rgb.a ?? 1 }), [onChange]);
+    const onChangeComplete = React.useCallback<ColorChangeHandler>(
+      ({ rgb }) => onChange({ ...rgb, a: rgb.a ?? 1 }),
+      [onChange]
+    );
     const onChangeCompleted = React.useCallback(
       (rgb: RGBColor) => {
         setRGBa({ ...rgb, a: rgb.a ?? 1 });
@@ -29,7 +32,13 @@ const withHexColor =
     }, [color]);
 
     return (
-      <Component {...(props as P)} color={rgba} onChange={onLocalChange} onChangeComplete={onChangeComplete} onChangeCompleted={onChangeCompleted} />
+      <Component
+        {...(props as P)}
+        color={rgba}
+        onChange={onLocalChange}
+        onChangeComplete={onChangeComplete}
+        onChangeCompleted={onChangeCompleted}
+      />
     );
   };
 

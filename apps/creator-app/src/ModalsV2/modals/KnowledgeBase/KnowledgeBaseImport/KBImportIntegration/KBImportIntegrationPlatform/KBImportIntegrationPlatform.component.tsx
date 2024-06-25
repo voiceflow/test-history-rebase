@@ -15,10 +15,15 @@ import { useValidators } from '@/hooks/validate.hook';
 import { Hotkey } from '@/keymap';
 
 import { INTEGRATION_PLATFORMS, INTEGRATION_PLATFORMS_MAPPER } from './KBImportIntegrationPlatform.constant';
-import { IKBImportIntegrationPlatform } from './KBImportIntegrationPlatform.interface';
+import type { IKBImportIntegrationPlatform } from './KBImportIntegrationPlatform.interface';
 import { KBImportIntegrationSubdomainInput } from './KBImportIntegrationSubdomainInput.component';
 
-export const KBImportIntegrationPlatform: React.FC<IKBImportIntegrationPlatform> = ({ onClose, disabled, onContinue, testID }) => {
+export const KBImportIntegrationPlatform: React.FC<IKBImportIntegrationPlatform> = ({
+  onClose,
+  disabled,
+  onContinue,
+  testID,
+}) => {
   const ZENDESK_URL_REGEX = /^(?:https:\/\/)?(?:www\.)?([\da-z](?:[\da-z-]{0,61}[\da-z])?)\.zendesk\.com/;
 
   const integrations = useSelector(Designer.KnowledgeBase.Integration.selectors.all);
@@ -44,15 +49,24 @@ export const KBImportIntegrationPlatform: React.FC<IKBImportIntegrationPlatform>
         validatorFactory(
           (
             value: string,
-            { platform, hasZendeskIntegration }: { platform: BaseModels.Project.IntegrationTypes | null; hasZendeskIntegration: boolean }
+            {
+              platform,
+              hasZendeskIntegration,
+            }: { platform: BaseModels.Project.IntegrationTypes | null; hasZendeskIntegration: boolean }
           ) => platform !== BaseModels.Project.IntegrationTypes.ZENDESK || value || hasZendeskIntegration,
           'e.g. https://company.zendesk.com'
         ),
         validatorFactory(
           (
             value: string,
-            { platform, hasZendeskIntegration }: { platform: BaseModels.Project.IntegrationTypes | null; hasZendeskIntegration: boolean }
-          ) => platform !== BaseModels.Project.IntegrationTypes.ZENDESK || value.match(ZENDESK_URL_REGEX) || hasZendeskIntegration,
+            {
+              platform,
+              hasZendeskIntegration,
+            }: { platform: BaseModels.Project.IntegrationTypes | null; hasZendeskIntegration: boolean }
+          ) =>
+            platform !== BaseModels.Project.IntegrationTypes.ZENDESK ||
+            value.match(ZENDESK_URL_REGEX) ||
+            hasZendeskIntegration,
           'URL is not valid.'
         )
       ),
@@ -61,7 +75,10 @@ export const KBImportIntegrationPlatform: React.FC<IKBImportIntegrationPlatform>
   });
 
   const onSubmit = () => {
-    const result = validator.validate({ url: url.value, platform: platform.value }, { platform: platform.value, hasZendeskIntegration });
+    const result = validator.validate(
+      { url: url.value, platform: platform.value },
+      { platform: platform.value, hasZendeskIntegration }
+    );
 
     if (!result.success || !result.data.platform) return;
 
@@ -112,15 +129,32 @@ export const KBImportIntegrationPlatform: React.FC<IKBImportIntegrationPlatform>
           </Box>
 
           {platform.value === BaseModels.Project.IntegrationTypes.ZENDESK && !hasZendeskIntegration && (
-            <KBImportIntegrationSubdomainInput value={url.value} error={url.error} onValueChange={url.setValue} testID={tid(testID, 'subdomain')} />
+            <KBImportIntegrationSubdomainInput
+              value={url.value}
+              error={url.error}
+              onValueChange={url.setValue}
+              testID={tid(testID, 'subdomain')}
+            />
           )}
         </Box>
       </Scroll>
 
       <Modal.Footer>
-        <Modal.Footer.Button label="Cancel" variant="secondary" onClick={onClose} disabled={disabled} testID={tid(testID, 'cancel')} />
+        <Modal.Footer.Button
+          label="Cancel"
+          variant="secondary"
+          onClick={onClose}
+          disabled={disabled}
+          testID={tid(testID, 'cancel')}
+        />
 
-        <Modal.Footer.Button label="Connect" onClick={onSubmit} disabled={disabled} isLoading={disabled} testID={tid(testID, 'connect')} />
+        <Modal.Footer.Button
+          label="Connect"
+          onClick={onSubmit}
+          disabled={disabled}
+          isLoading={disabled}
+          testID={tid(testID, 'connect')}
+        />
       </Modal.Footer>
     </Box>
   );

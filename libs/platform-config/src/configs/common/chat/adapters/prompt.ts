@@ -1,14 +1,17 @@
 import * as Base from '@platform-config/configs/base';
 import { Config as ConfigUtils } from '@platform-config/configs/utils';
-import { ChatModels } from '@voiceflow/chat-types';
+import type { ChatModels } from '@voiceflow/chat-types';
 import { Utils } from '@voiceflow/common';
-import { VoiceModels } from '@voiceflow/voice-types';
+import type { VoiceModels } from '@voiceflow/voice-types';
 import { createMultiAdapter } from 'bidirectional-adapter';
 
-import { Prompt } from '../models';
+import type { Prompt } from '../models';
 
 export const promptContentFactory = (text = '') => [{ children: [{ text }] }];
-export const promptFactory = (text = ''): Prompt.Model => ({ id: Utils.id.cuid(), content: promptContentFactory(text) });
+export const promptFactory = (text = ''): Prompt.Model => ({
+  id: Utils.id.cuid(),
+  content: promptContentFactory(text),
+});
 
 /**
  * converts VoicePrompt and VoiceIntentPrompt into ChatPrompt

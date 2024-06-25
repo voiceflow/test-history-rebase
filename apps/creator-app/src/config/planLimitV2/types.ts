@@ -1,7 +1,7 @@
 import type { PlanType } from '@voiceflow/internal';
-import React from 'react';
+import type React from 'react';
 
-import { LimitType } from '@/constants/limits';
+import type { LimitType } from '@/constants/limits';
 import type { State } from '@/ducks';
 import type { UpgradeModal } from '@/ModalsV2/modals/Upgrade';
 
@@ -30,7 +30,11 @@ export interface UpgradeModalDynamicLimit {
 
 export interface UpgradeModalStaticLimit extends BaseStaticLimit, UpgradeModalDynamicLimit {}
 
-export type AnyLimit = ToastErrorStaticLimit | ToastErrorDynamicLimit | UpgradeModalStaticLimit | UpgradeModalDynamicLimit;
+export type AnyLimit =
+  | ToastErrorStaticLimit
+  | ToastErrorDynamicLimit
+  | UpgradeModalStaticLimit
+  | UpgradeModalDynamicLimit;
 
 export interface PlanLimit {
   limit: LimitType;

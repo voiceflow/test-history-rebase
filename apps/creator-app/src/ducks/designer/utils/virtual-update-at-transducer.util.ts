@@ -1,6 +1,6 @@
-import { Actions } from '@voiceflow/sdk-logux-designer';
+import type { Actions } from '@voiceflow/sdk-logux-designer';
 import * as Normal from 'normal-store';
-import { ActionCreator } from 'typescript-fsa';
+import type { ActionCreator } from 'typescript-fsa';
 
 import type { STATE_KEY as ATTACHMENT_STATE_KEY } from '@/ducks/designer/attachment/attachment.state';
 import type { DesignerState } from '@/ducks/designer/designer.state';
@@ -11,7 +11,7 @@ import type { STATE_KEY as INTENT_STATE_KEY } from '@/ducks/designer/intent/inte
 import type { STATE_KEY as PERSONA_STATE_KEY } from '@/ducks/designer/persona/persona.state';
 import type { STATE_KEY as RESPONSE_STATE_KEY } from '@/ducks/designer/response/response.state';
 import type { STATE_KEY as WORKFLOW_STATE_KEY } from '@/ducks/designer/workflow/workflow.state';
-import { Transducer } from '@/ducks/transducers/types';
+import type { Transducer } from '@/ducks/transducers/types';
 import type { State } from '@/store/types';
 
 import { STATE_KEY as DESIGNER_STATE_KEY } from '../designer.state';

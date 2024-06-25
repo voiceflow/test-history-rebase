@@ -1,4 +1,5 @@
-import { BaseSelectProps, stopPropagation } from '@voiceflow/ui';
+import type { BaseSelectProps } from '@voiceflow/ui';
+import { stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
 import * as S from './styles';

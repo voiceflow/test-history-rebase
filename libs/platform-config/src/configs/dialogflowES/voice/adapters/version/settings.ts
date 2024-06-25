@@ -1,9 +1,9 @@
 import * as Common from '@platform-config/configs/common';
 import { DFESVersion } from '@voiceflow/google-dfes-types';
-import { GoogleConstants } from '@voiceflow/google-types';
+import type { GoogleConstants } from '@voiceflow/google-types';
 import { createSimpleAdapter, createSmartSimpleAdapter } from 'bidirectional-adapter';
 
-import * as Models from '../../models';
+import type * as Models from '../../models';
 
 export const smart = createSmartSimpleAdapter<
   DFESVersion.VoiceSettings,

@@ -1,13 +1,17 @@
 import { Utils } from '@voiceflow/common';
 import React from 'react';
 
-import CollapseSection, { CollapseSectionProps, RendererProps } from './CollapseSection';
-import Content, { ContentProps } from './Content';
-import Header, { HeaderProps } from './Header';
+import type { CollapseSectionProps, RendererProps } from './CollapseSection';
+import CollapseSection from './CollapseSection';
+import type { ContentProps } from './Content';
+import Content from './Content';
+import type { HeaderProps } from './Header';
+import Header from './Header';
 
 type ReactNodeOrRenderer = React.ReactNode | ((props: RendererProps) => React.ReactNode);
 
-export interface ActionCollapseSectionProps extends Omit<CollapseSectionProps, 'onToggle' | 'header' | 'defaultCollapsed'> {
+export interface ActionCollapseSectionProps
+  extends Omit<CollapseSectionProps, 'onToggle' | 'header' | 'defaultCollapsed'> {
   title: ReactNodeOrRenderer;
   action: ReactNodeOrRenderer;
   children?: React.ReactNode;

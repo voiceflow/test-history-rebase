@@ -1,5 +1,6 @@
 import React from 'react';
-import { Redirect, Route, RouteComponentProps } from 'react-router-dom';
+import type { RouteComponentProps } from 'react-router-dom';
+import { Redirect, Route } from 'react-router-dom';
 
 import { Path } from '@/config/routes';
 import { authTokenSelector } from '@/ducks/session';

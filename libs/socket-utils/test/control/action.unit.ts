@@ -138,7 +138,9 @@ describe('Control | Action', () => {
       action.setup();
       await server.type.args[0][1].finally(MOCK_CONTEXT);
 
-      expect(server.logger.error).to.be.calledWithExactly("encountered error in 'finally' handler of action 'action.MOCK_ACTION'");
+      expect(server.logger.error).to.be.calledWithExactly(
+        "encountered error in 'finally' handler of action 'action.MOCK_ACTION'"
+      );
     });
 
     it('silently handles unauthorized error', async () => {
@@ -184,7 +186,9 @@ describe('Control | Action', () => {
       action.setup();
       await expect(server.type.args[0][1].resend(MOCK_CONTEXT)).to.eventually.eql({});
 
-      expect(server.logger.error).to.be.calledWithExactly("encountered error in 'resend' handler of action 'action.MOCK_ACTION'");
+      expect(server.logger.error).to.be.calledWithExactly(
+        "encountered error in 'resend' handler of action 'action.MOCK_ACTION'"
+      );
     });
 
     it('silently handles unauthorized error', async () => {

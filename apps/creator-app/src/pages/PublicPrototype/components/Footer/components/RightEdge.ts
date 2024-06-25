@@ -10,7 +10,9 @@ const RightEdge = styled.div`
   background-color: white;
   position: absolute;
   z-index: -1;
-  box-shadow: 0 0 3px 0 rgba(17, 49, 96, 0.08), 0 0 1px 1px rgba(17, 49, 96, 0.08);
+  box-shadow:
+    0 0 3px 0 rgba(17, 49, 96, 0.08),
+    0 0 1px 1px rgba(17, 49, 96, 0.08);
 `;
 
 export default RightEdge;

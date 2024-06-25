@@ -1,5 +1,6 @@
 import { tid } from '@voiceflow/style';
-import { Box, Divider, Editor, IEditorAPI, Scroll, Text } from '@voiceflow/ui-next';
+import type { IEditorAPI } from '@voiceflow/ui-next';
+import { Box, Divider, Editor, Scroll, Text } from '@voiceflow/ui-next';
 import { isSystemVariableName } from '@voiceflow/utils-designer';
 import React, { useRef } from 'react';
 
@@ -49,17 +50,26 @@ export const CMSVariableEditor: React.FC = () => {
       testID={EDITOR_TEST_ID}
       readOnly={variable.isSystem}
       onTitleChange={(name) => patchVariable({ name: name.trim() })}
-      headerActions={<CMSEditorMoreButton>{({ onClose }) => getMoreMenu({ id: variableID, onClose })}</CMSEditorMoreButton>}
+      headerActions={
+        <CMSEditorMoreButton>{({ onClose }) => getMoreMenu({ id: variableID, onClose })}</CMSEditorMoreButton>
+      }
       titleTransform={transformVariableName}
     >
       <Scroll style={{ display: 'block' }}>
         <Box px={24} py={20} direction="column">
-          <VariableColorSection name={variable.name} color={variable.color} onColorChange={(color) => patchVariable({ color })} />
+          <VariableColorSection
+            name={variable.name}
+            color={variable.color}
+            onColorChange={(color) => patchVariable({ color })}
+          />
         </Box>
 
         <Divider noPadding />
 
-        <VariableDefaultValueSection value={variable.defaultValue} onValueChange={(defaultValue) => patchVariable({ defaultValue })} />
+        <VariableDefaultValueSection
+          value={variable.defaultValue}
+          onValueChange={(defaultValue) => patchVariable({ defaultValue })}
+        />
 
         <Divider noPadding />
 

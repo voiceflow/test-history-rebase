@@ -1,12 +1,13 @@
 import { Utils } from '@voiceflow/common';
 import { tid } from '@voiceflow/style';
-import { Divider, IMenuItem, MenuItem, notify, Table, usePersistFunction } from '@voiceflow/ui-next';
+import type { IMenuItem } from '@voiceflow/ui-next';
+import { Divider, MenuItem, notify, Table, usePersistFunction } from '@voiceflow/ui-next';
 import { useAtomValue, useSetAtom } from 'jotai';
 import pluralize from 'pluralize';
 import React from 'react';
 
 import { MenuItemWithTooltip } from '@/components/Menu/MenuItemWithTooltip/MenuItemWithTooltip.component';
-import { IMenuItemWithTooltip } from '@/components/Menu/MenuItemWithTooltip/MenuItemWithTooltip.interface';
+import type { IMenuItemWithTooltip } from '@/components/Menu/MenuItemWithTooltip/MenuItemWithTooltip.interface';
 import { Designer } from '@/ducks';
 import { useGetAtomValue } from '@/hooks/atom.hook';
 import { useOpenCMSResourceDeleteConfirmModal } from '@/hooks/cms-resource.hook';

@@ -1,11 +1,17 @@
 /* eslint-disable no-param-reassign */
 import { NODE_LINK_WIDTH } from '@/pages/Canvas/components/Port/constants';
-import { PathPoint, PathPoints, Point } from '@/types';
+import type { PathPoint, PathPoints, Point } from '@/types';
 
 import { DOUBLE_STRAIGHT_PATH_OFFSET, HALF_BLOCK_WIDTH, STRAIGHT_PATH_OFFSET, TOP_PORT_OFFSET } from '../constants';
 import { createPoint, getPoint, getPointsOffset, getPointX, getPointY, isEqualPoints } from './helpers';
-import { getSourceNodeXCenter, getTargetEndTopX, getTargetEndTopY, getTargetEndY, getTargetNodeXCenter } from './pathPoints';
-import { LinkedRects } from './types';
+import {
+  getSourceNodeXCenter,
+  getTargetEndTopX,
+  getTargetEndTopY,
+  getTargetEndY,
+  getTargetNodeXCenter,
+} from './pathPoints';
+import type { LinkedRects } from './types';
 
 export type PathLine = [PathPoint, PathPoint];
 
@@ -23,10 +29,12 @@ export const getLineLength = (line: PathLine): number => {
 export const isVerticalLineReversed = ([start, end]: PathLine): boolean => start.point[1] > end.point[1];
 export const isHorizontalLineReversed = ([start, end]: PathLine): boolean => start.point[0] > end.point[0];
 
-export const isFirstLine = (points: PathPoints, [start, end]: PathLine): boolean => isEqualPoints(points[0], start) && isEqualPoints(points[1], end);
+export const isFirstLine = (points: PathPoints, [start, end]: PathLine): boolean =>
+  isEqualPoints(points[0], start) && isEqualPoints(points[1], end);
 export const isLastLine = (points: PathPoints, [start, end]: PathLine): boolean =>
   isEqualPoints(points[points.length - 2], start) && isEqualPoints(points[points.length - 1], end);
 
+// eslint-disable-next-line sonarjs/cognitive-complexity
 export const getActiveLine = (points: PathPoints, [pointX, pointY]: Point): PathLine | null => {
   const lines: PathLine[] = [];
 
@@ -45,9 +53,13 @@ export const getActiveLine = (points: PathPoints, [pointX, pointY]: Point): Path
     let matched = false;
 
     if (isVerticalLine(line)) {
-      matched = Math.abs(x - pointX) <= 12 && (isVerticalLineReversed(line) ? y >= pointY && nextY <= pointY : y <= pointY && nextY >= pointY);
+      matched =
+        Math.abs(x - pointX) <= 12 &&
+        (isVerticalLineReversed(line) ? y >= pointY && nextY <= pointY : y <= pointY && nextY >= pointY);
     } else {
-      matched = Math.abs(y - pointY) <= 12 && (isHorizontalLineReversed(line) ? x >= pointX && nextX <= pointX : x <= pointX && nextX >= pointX);
+      matched =
+        Math.abs(y - pointY) <= 12 &&
+        (isHorizontalLineReversed(line) ? x >= pointX && nextX <= pointX : x <= pointX && nextX >= pointX);
     }
 
     if (!matched) {
@@ -90,7 +102,11 @@ interface TransformActiveLineOptions {
   targetNodeIsCombined: boolean;
 }
 
-export const transformActiveLine = (points: PathPoints, linkedRects: LinkedRects, options: TransformActiveLineOptions): PathPoints =>
+export const transformActiveLine = (
+  points: PathPoints,
+  linkedRects: LinkedRects,
+  options: TransformActiveLineOptions
+): PathPoints =>
   isVerticalLine(options.activeLine)
     ? transformActiveVerticalLine(points, linkedRects, options)
     : transformActiveHorizontalLine(points, linkedRects, options);
@@ -109,7 +125,9 @@ const transformVerticalHeadLine = (
     point.reversed = false;
     point.point[0] = linkedRects.sourceNodeRect.right + offset;
   } else if (!point.reversed && getSourceNodeXCenter(linkedRects) > getPointX(activeLine[0])) {
-    const offset = sourceNodeIsAction ? linkedRects.sourcePortRect.right - linkedRects.sourceNodeRect.right : linkOffset;
+    const offset = sourceNodeIsAction
+      ? linkedRects.sourcePortRect.right - linkedRects.sourceNodeRect.right
+      : linkOffset;
 
     point.reversed = true;
     point.point[0] = linkedRects.sourceNodeRect.left - offset;
@@ -118,7 +136,8 @@ const transformVerticalHeadLine = (
   return points;
 };
 
-const isToTopByY = (startY: number, endY: number): boolean => endY >= startY + DOUBLE_STRAIGHT_PATH_OFFSET + TOP_PORT_OFFSET;
+const isToTopByY = (startY: number, endY: number): boolean =>
+  endY >= startY + DOUBLE_STRAIGHT_PATH_OFFSET + TOP_PORT_OFFSET;
 
 const transformVerticalTailLine = (
   points: PathPoints,
@@ -169,7 +188,11 @@ const transformVerticalTailLine = (
   return nextPoints;
 };
 
-export const transformVerticalHeadAndTailLine = (points: PathPoints, linkedRects: LinkedRects, options: TransformEdgeLineOptions): PathPoints => {
+export const transformVerticalHeadAndTailLine = (
+  points: PathPoints,
+  linkedRects: LinkedRects,
+  options: TransformEdgeLineOptions
+): PathPoints => {
   let nextPoints = points;
 
   // the line is the second line from the start - first vertical line
@@ -188,7 +211,13 @@ export const transformVerticalHeadAndTailLine = (points: PathPoints, linkedRects
 const transformActiveVerticalLine = (
   points: PathPoints,
   linkedRects: LinkedRects,
-  { activeLine, mouseCoords: [pointX], sourceNodeIsChip, sourceNodeIsAction, targetNodeIsCombined }: TransformActiveLineOptions
+  {
+    activeLine,
+    mouseCoords: [pointX],
+    sourceNodeIsChip,
+    sourceNodeIsAction,
+    targetNodeIsCombined,
+  }: TransformActiveLineOptions
 ): PathPoints => {
   let nextPoints = points;
 
@@ -210,7 +239,10 @@ const transformActiveVerticalLine = (
 
       point.point[1] -= STRAIGHT_PATH_OFFSET;
     } else {
-      nextPoints = [...nextPoints, createPoint(point.point, { reversed: point.reversed, allowedToTop: point.allowedToTop })];
+      nextPoints = [
+        ...nextPoints,
+        createPoint(point.point, { reversed: point.reversed, allowedToTop: point.allowedToTop }),
+      ];
     }
 
     point.toTop = false;
@@ -253,10 +285,14 @@ export const transformHorizontalHeadAndTailLine = (
   const reversed = activeLine[0].point[0] > point.point[0];
   const targetXOffset = targetNodeIsCombined ? 0 : NODE_LINK_WIDTH;
 
-  point.point[0] = reversed ? linkedRects.targetNodeRect.right + targetXOffset : linkedRects.targetNodeRect.left - targetXOffset;
+  point.point[0] = reversed
+    ? linkedRects.targetNodeRect.right + targetXOffset
+    : linkedRects.targetNodeRect.left - targetXOffset;
   point.point[1] = getTargetEndY(linkedRects, { isConnected: true });
 
-  if (reversed ? xOffset + HALF_BLOCK_WIDTH < -STRAIGHT_PATH_OFFSET : xOffset - HALF_BLOCK_WIDTH > -STRAIGHT_PATH_OFFSET) {
+  if (
+    reversed ? xOffset + HALF_BLOCK_WIDTH < -STRAIGHT_PATH_OFFSET : xOffset - HALF_BLOCK_WIDTH > -STRAIGHT_PATH_OFFSET
+  ) {
     nextPoints = [...nextPoints, createPoint(point.point, { reversed, allowedToTop: true })];
 
     point.point[0] += STRAIGHT_PATH_OFFSET * (reversed ? 1 : -1);
@@ -279,7 +315,13 @@ export const transformHorizontalHeadAndTailLine = (
 const transformActiveHorizontalLine = (
   points: PathPoints,
   linkedRects: LinkedRects,
-  { activeLine, mouseCoords: [, pointY], sourceNodeIsChip, sourceNodeIsAction, targetNodeIsCombined }: TransformActiveLineOptions
+  {
+    activeLine,
+    mouseCoords: [, pointY],
+    sourceNodeIsChip,
+    sourceNodeIsAction,
+    targetNodeIsCombined,
+  }: TransformActiveLineOptions
 ): PathPoints => {
   let nextPoints = points;
 

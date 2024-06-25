@@ -1,4 +1,4 @@
-import { AIModel } from '@voiceflow/dtos';
+import type { AIModel } from '@voiceflow/dtos';
 import { Input, SectionV2, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
@@ -11,7 +11,11 @@ export interface IAIPromptSettingsSystemInput {
   onValueChange: (value: string) => void;
 }
 
-export const AIPromptSettingsSystemInput: React.FC<IAIPromptSettingsSystemInput> = ({ model, value, onValueChange }) => {
+export const AIPromptSettingsSystemInput: React.FC<IAIPromptSettingsSystemInput> = ({
+  model,
+  value,
+  onValueChange,
+}) => {
   const [hasSystemContent, setHasSystemContent] = React.useState(false);
 
   if (!AI_MODEL_CONFIG_MAP[model].hasSystemPrompt) return null;

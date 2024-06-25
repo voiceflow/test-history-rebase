@@ -4,7 +4,12 @@ import React from 'react';
 
 import type { IResponseAttachmentContextMenu } from './ResponseAttachmentContextMenu.interface';
 
-export const ResponseAttachmentContextMenu: React.FC<IResponseAttachmentContextMenu> = ({ width = 133, onRemove, onDuplicate, ...props }) => (
+export const ResponseAttachmentContextMenu: React.FC<IResponseAttachmentContextMenu> = ({
+  width = 133,
+  onRemove,
+  onDuplicate,
+  ...props
+}) => (
   <ContextMenu width={width} {...props}>
     {({ onClose }) => (
       <>

@@ -1,5 +1,5 @@
-/* eslint-disable xss/no-mixed-html */
 import { genKey } from 'draft-js';
+// eslint-disable-next-line you-dont-need-lodash-underscore/to-lower
 import _toLower from 'lodash/toLower';
 
 import { SlateEditorAPI } from '@/components/SlateEditable';
@@ -18,8 +18,12 @@ const REGEX_CARRIAGE = /&#13;?/g;
 const REGEX_LEADING_LF = /^\n/g;
 const REGEX_SINGLE_TAG = /<([^ />]+)([^>]+?)\/>/g;
 
-const createSupportedOpenTagsRegex = (tags) => new RegExp(`(<)(?!\\b(${tags.map((tag) => `${tag}`).join('|')})\\b|/)`, 'g');
-const createSupportedCloseTagsRegex = (tags) => new RegExp(`(</)(?!\\b(${tags.map((tag) => `${tag}`).join('|')})\\b|/)`, 'g');
+const createSupportedOpenTagsRegex = (tags) =>
+  // eslint-disable-next-line sonarjs/no-nested-template-literals
+  new RegExp(`(<)(?!\\b(${tags.map((tag) => `${tag}`).join('|')})\\b|/)`, 'g');
+const createSupportedCloseTagsRegex = (tags) =>
+  // eslint-disable-next-line sonarjs/no-nested-template-literals
+  new RegExp(`(</)(?!\\b(${tags.map((tag) => `${tag}`).join('|')})\\b|/)`, 'g');
 
 const removeFunkyCharactersAndUnsupportedTags = (value, { tags, newLinesAllowed }) => {
   if (!value) return '';
@@ -47,8 +51,8 @@ function getSafeBodyFromHTML(html) {
   let root = null;
 
   // Provides a safe context
-  if (document.implementation && document.implementation.createHTMLDocument) {
-    doc = document.implementation.createHTMLDocument('foo');
+  if (globalThis.document.implementation && globalThis.document.implementation.createHTMLDocument) {
+    doc = globalThis.document.implementation.createHTMLDocument('foo');
     doc.documentElement.innerHTML = html;
     [root] = doc.getElementsByTagName('body');
   }
@@ -105,6 +109,7 @@ const fromTextConvertor =
       let addedText = getOpenTagText(nodeName, isSingle, attributes);
 
       if (!tags[nodeName]) {
+        // eslint-disable-next-line no-use-before-define
         return processNodes(node.childNodes);
       }
 
@@ -132,6 +137,7 @@ const fromTextConvertor =
         return addedText;
       }
 
+      // eslint-disable-next-line no-use-before-define
       addedText += processNodes(node.childNodes);
 
       const closeTag = `</${nodeName}>`;

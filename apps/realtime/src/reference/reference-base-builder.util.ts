@@ -1,5 +1,5 @@
 import { ObjectId } from '@mikro-orm/mongodb';
-import { Reference, ReferenceResource } from '@voiceflow/dtos';
+import type { Reference, ReferenceResource } from '@voiceflow/dtos';
 
 export abstract class ReferenceBaseBuilderUtil {
   protected readonly assistantID: string;

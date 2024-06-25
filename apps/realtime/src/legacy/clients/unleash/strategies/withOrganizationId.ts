@@ -1,4 +1,5 @@
-import Strategy, { Context } from './strategy';
+import type { Context } from './strategy';
+import Strategy from './strategy';
 
 class WithOrganizationID extends Strategy {
   constructor() {

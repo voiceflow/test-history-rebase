@@ -4,7 +4,7 @@ import * as Documentation from '@/config/documentation';
 import { BlockType } from '@/constants';
 import { NodeCategory } from '@/contexts/SearchContext/types';
 
-import { NodeManagerConfigV2 } from '../types';
+import type { NodeManagerConfigV2 } from '../types';
 import { Editor, Step } from './components';
 
 const TraceManager: NodeManagerConfigV2<Realtime.NodeData.Trace> = {

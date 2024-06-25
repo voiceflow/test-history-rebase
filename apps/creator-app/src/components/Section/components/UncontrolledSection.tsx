@@ -1,17 +1,21 @@
 import { Utils } from '@voiceflow/common';
-import { Collapse, SvgIcon, SvgIconTypes, swallowEvent, TutorialInfoIcon, TutorialInfoIconProps } from '@voiceflow/ui';
+import type { SvgIconTypes, TutorialInfoIconProps } from '@voiceflow/ui';
+import { Collapse, SvgIcon, swallowEvent, TutorialInfoIcon } from '@voiceflow/ui';
 import React from 'react';
-import { CSSProperties } from 'styled-components';
+import type { CSSProperties } from 'styled-components';
 
-import { SectionToggleVariant, SectionVariant } from '../constants';
+import type { SectionToggleVariant } from '../constants';
+import { SectionVariant } from '../constants';
 import CollapseTrigger from './CollapseTrigger';
 import ContentContainer from './ContentContainer';
 import DropdownContainer from './DropdownContainer';
 import FixNode from './FixNode';
 import HeaderContent from './HeaderContent';
-import HeaderLabel, { HeaderVariant } from './HeaderLabel';
+import type { HeaderVariant } from './HeaderLabel';
+import HeaderLabel from './HeaderLabel';
 import NumberContainer from './NumberContainer';
-import Container, { SectionContainerProps } from './SectionContainer';
+import type { SectionContainerProps } from './SectionContainer';
+import Container from './SectionContainer';
 import Header from './SectionHeader';
 import StatusContainer from './StatusContainer';
 import StatusContent from './StatusContent';
@@ -103,10 +107,19 @@ const UncontrolledSection: React.ForwardRefRenderFunction<HTMLDivElement, Uncont
   },
   ref
 ) => {
-  const hasHeader = !!(prefix || suffix || header || tooltip || dropdown || status || count || collapseVariant || isLink);
+  const hasHeader = !!(
+    prefix ||
+    suffix ||
+    header ||
+    tooltip ||
+    dropdown ||
+    status ||
+    count ||
+    collapseVariant ||
+    isLink
+  );
   const clickHandler = onClick || (headerToggle ? toggle : undefined);
 
-  // eslint-disable-next-line xss/no-mixed-html
   return (
     <Container
       ref={ref}
@@ -160,7 +173,9 @@ const UncontrolledSection: React.ForwardRefRenderFunction<HTMLDivElement, Uncont
           {(status || infix || suffix || count || collapseVariant || isLink || headerEnd) && (
             <StatusContent overflowHidden={hiddenStatusContent}>
               {infix && <FixNode fixNode={infix} color="#becedc" />}
-              {(isLink || status) && <StatusContainer>{isLink ? <SvgIcon icon="arrowRight" size={10} /> : status}</StatusContainer>}
+              {(isLink || status) && (
+                <StatusContainer>{isLink ? <SvgIcon icon="arrowRight" size={10} /> : status}</StatusContainer>
+              )}
               {Number.isInteger(count) && <NumberContainer>{count}</NumberContainer>}
               {suffix && <FixNode fixNode={suffix} color="#becedc" />}
               {collapseVariant && (
@@ -178,10 +193,17 @@ const UncontrolledSection: React.ForwardRefRenderFunction<HTMLDivElement, Uncont
       )}
 
       {(children || emptyChildren) && (
-        <ContentContainer noHeader={!hasHeader} isCollapsed={isCollapsed} sectionToggleVariant={collapseVariant} style={customContentStyling}>
+        <ContentContainer
+          noHeader={!hasHeader}
+          isCollapsed={isCollapsed}
+          sectionToggleVariant={collapseVariant}
+          style={customContentStyling}
+        >
           {contentPrefix}
 
-          <Collapse isOpen={!isCollapsed}>{Utils.functional.isFunction(children) ? children({ isCollapsed, toggle }) : children}</Collapse>
+          <Collapse isOpen={!isCollapsed}>
+            {Utils.functional.isFunction(children) ? children({ isCollapsed, toggle }) : children}
+          </Collapse>
 
           {contentSuffix}
         </ContentContainer>

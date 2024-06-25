@@ -1,14 +1,15 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Animations } from '@voiceflow/ui';
 import React from 'react';
 
-import { BlockType, DragItem } from '@/constants';
+import type { BlockType } from '@/constants';
+import { DragItem } from '@/constants';
 import { useCanvasNodeFilter } from '@/hooks/canvas-node.hook';
 import { useDragPreview } from '@/hooks/dnd.hook';
-import { StepDragItem } from '@/pages/Canvas/components/CanvasDiagram';
+import type { StepDragItem } from '@/pages/Canvas/components/CanvasDiagram';
 import { getManager } from '@/pages/Canvas/managers/utils';
 
-import { StepItem } from '../constants';
+import type { StepItem } from '../constants';
 import * as S from './styles';
 import SubMenuButton from './SubMenuButton';
 

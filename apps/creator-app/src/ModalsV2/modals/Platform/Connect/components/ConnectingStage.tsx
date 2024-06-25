@@ -1,11 +1,11 @@
 import { datadogRum } from '@datadog/browser-rum';
-import * as Platform from '@voiceflow/platform-config';
+import type * as Platform from '@voiceflow/platform-config';
 import { Alert, Box, Button, ButtonVariant, LoadCircle, Modal } from '@voiceflow/ui';
 import React from 'react';
 
 import { linkGraphic } from '@/assets';
 
-import { PlatformAccount } from '../types';
+import type { PlatformAccount } from '../types';
 
 interface ConnectingStageProps {
   onClose: VoidFunction;
@@ -64,7 +64,12 @@ const ConnectingStage: React.FC<ConnectingStageProps> = ({ onClose, onSuccess, p
             Cancel
           </Button>
 
-          <platformConfig.integration.linkAccountButton.Component onClick={onLoad} onError={onError} disabled={connecting} onSuccess={onSuccess} />
+          <platformConfig.integration.linkAccountButton.Component
+            onClick={onLoad}
+            onError={onError}
+            disabled={connecting}
+            onSuccess={onSuccess}
+          />
         </Box.Flex>
       </Modal.Footer>
     </>

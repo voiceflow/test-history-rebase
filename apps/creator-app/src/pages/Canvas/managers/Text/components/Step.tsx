@@ -1,5 +1,5 @@
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { serializeToMarkdown } from '@voiceflow/slate-serializer/markdown';
 import { serializeToText } from '@voiceflow/slate-serializer/text';
 import { Popper, stopPropagation } from '@voiceflow/ui';
@@ -9,12 +9,17 @@ import { Markdown } from '@/components/Markdown/Markdown.component';
 import { SlateEditorAPI } from '@/components/SlateEditable';
 import Step, { Item, Section, StepButton } from '@/pages/Canvas/components/Step';
 import { ActiveDiagramNormalizedEntitiesAndVariablesContext } from '@/pages/Canvas/contexts';
-import { ConnectedStep } from '@/pages/Canvas/managers/types';
+import type { ConnectedStep } from '@/pages/Canvas/managers/types';
 
 import StepPreview from './StepPreview';
-import { StepItem } from './types';
+import type { StepItem } from './types';
 
-const TextStep: ConnectedStep<Realtime.NodeData.Text, Realtime.NodeData.TextBuiltInPorts> = ({ ports, data, palette, engine }) => {
+const TextStep: ConnectedStep<Realtime.NodeData.Text, Realtime.NodeData.TextBuiltInPorts> = ({
+  ports,
+  data,
+  palette,
+  engine,
+}) => {
   const entitiesAndVariables = React.useContext(ActiveDiagramNormalizedEntitiesAndVariablesContext)!;
 
   const items = React.useMemo(
@@ -64,7 +69,9 @@ const TextStep: ConnectedStep<Realtime.NodeData.Text, Realtime.NodeData.TextBuil
               itemsWithContent.length > 1 && (
                 <Popper
                   placement="right-start"
-                  renderContent={({ onClose }) => <StepPreview onClose={onClose} onOpenEditor={() => engine.setActive(data.nodeID)} items={items} />}
+                  renderContent={({ onClose }) => (
+                    <StepPreview onClose={onClose} onOpenEditor={() => engine.setActive(data.nodeID)} items={items} />
+                  )}
                 >
                   {({ onToggle, ref, isOpened }) => (
                     <StepButton

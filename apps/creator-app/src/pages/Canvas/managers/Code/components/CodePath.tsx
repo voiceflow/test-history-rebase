@@ -1,4 +1,4 @@
-import { BaseNode } from '@voiceflow/base-types';
+import type { BaseNode } from '@voiceflow/base-types';
 import { Input, SectionV2, TippyTooltip, useLinkedState, withTargetValue } from '@voiceflow/ui';
 import React from 'react';
 
@@ -22,7 +22,12 @@ const CodePath: React.FC<CodePathProps> = ({ data, onUpdate, onRemove }) => {
         style={{ width: '100%' }}
         placement="left"
       >
-        <Input value={label} onChange={withTargetValue(setLabel)} placeholder="Add path name" onBlur={() => onUpdate({ label })} />
+        <Input
+          value={label}
+          onChange={withTargetValue(setLabel)}
+          placeholder="Add path name"
+          onBlur={() => onUpdate({ label })}
+        />
       </TippyTooltip>
     </SectionV2.ListItem>
   );

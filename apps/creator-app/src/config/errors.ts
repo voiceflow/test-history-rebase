@@ -1,6 +1,6 @@
-import { Nullish, Struct } from '@voiceflow/common';
-import * as Platform from '@voiceflow/platform-config';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type { Nullish, Struct } from '@voiceflow/common';
+import type * as Platform from '@voiceflow/platform-config';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export class StateInvariantError<T extends Struct = {}> extends Error {

@@ -6,7 +6,7 @@ import type { Ref, ToJSON, ToObject } from '@/types';
 import { PostgresCMSCreatableEntity } from './postgres-cms-creatable.entity';
 
 export abstract class PostgresCMSObjectEntity<
-  DefaultOrNullColumn extends string = never
+  DefaultOrNullColumn extends string = never,
 > extends PostgresCMSCreatableEntity<DefaultOrNullColumn | 'updatedAt' | 'updatedBy'> {
   @Property({ defaultRaw: 'now()', onUpdate: () => new Date() })
   updatedAt!: Date;

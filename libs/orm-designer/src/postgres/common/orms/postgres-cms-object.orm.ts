@@ -8,7 +8,7 @@ import { PostgresCMSMutableORM } from './postgres-cms-mutable.orm';
 
 export abstract class PostgresCMSObjectORM<
     BaseEntity extends Omit<PostgresCMSObjectEntity, typeof DEFAULT_OR_NULL_COLUMN>,
-    DiscriminatorEntity extends Omit<BaseEntity, typeof DEFAULT_OR_NULL_COLUMN> = BaseEntity
+    DiscriminatorEntity extends Omit<BaseEntity, typeof DEFAULT_OR_NULL_COLUMN> = BaseEntity,
   >
   extends PostgresCMSMutableORM<BaseEntity, DiscriminatorEntity>
   implements CMSObjectORM<BaseEntity, DiscriminatorEntity>
@@ -18,7 +18,7 @@ export abstract class PostgresCMSObjectORM<
   }
 
   createManyForUser(userID: number, data: Omit<CreateData<DiscriminatorEntity>, 'createdByID' | 'updatedByID'>[]) {
-    return this.createMany(data.map((item) => ({ ...item, updatedByID: userID } as CreateData<DiscriminatorEntity>)));
+    return this.createMany(data.map((item) => ({ ...item, updatedByID: userID }) as CreateData<DiscriminatorEntity>));
   }
 
   patchOneForUser(userID: number, id: Primary<BaseEntity>, data: PatchData<BaseEntity>) {

@@ -1,5 +1,5 @@
-import { ServerMeta } from '@logux/server';
-import { AnyAction } from 'typescript-fsa';
+import type { ServerMeta } from '@logux/server';
+import type { AnyAction } from 'typescript-fsa';
 
 declare module '@logux/server' {
   class Server {

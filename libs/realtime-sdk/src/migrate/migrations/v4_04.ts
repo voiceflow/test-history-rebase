@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 
-import { Transform } from './types';
+import type { Transform } from './types';
 
 /**
  * cleans duplicate topicIDs from domains and duplicate menuItems from diagrams

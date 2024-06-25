@@ -12,7 +12,11 @@ const AccountSubscriptionGate: React.FC<React.PropsWithChildren> = ({ children }
   const isSubscribed = useCreatorSubscription({ creatorID: String(creatorID) }, [creatorID]);
 
   return (
-    <LoadingGate internalName={AccountSubscriptionGate.name} isLoaded={isSubscribed} loader={<TabLoader variant="dark" />}>
+    <LoadingGate
+      internalName={AccountSubscriptionGate.name}
+      isLoaded={isSubscribed}
+      loader={<TabLoader variant="dark" />}
+    >
       {children}
     </LoadingGate>
   );

@@ -1,8 +1,8 @@
-import * as Redux from 'redux';
+import type * as Redux from 'redux';
 
 import type { State } from '@/ducks';
 
-import { AnyAction, Dispatch, Middleware, MiddlewareAPI, Store } from '../types';
+import type { AnyAction, Dispatch, Middleware, MiddlewareAPI, Store } from '../types';
 import { wrapDispatch } from '../utils';
 
 export const createIgnoreMiddleware =
@@ -19,6 +19,7 @@ export const createIgnoreMiddleware =
 
 export const mapMiddleware = (middleware: Middleware[], getStore: () => Store) =>
   middleware.map(
+    // eslint-disable-next-line @typescript-eslint/ban-types
     (callback): Redux.Middleware<{}, State, Dispatch> =>
       (api) =>
         callback({

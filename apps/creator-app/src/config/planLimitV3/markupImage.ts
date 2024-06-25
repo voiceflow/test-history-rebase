@@ -2,7 +2,7 @@ import { PlanType } from '@voiceflow/internal';
 
 import { LimitType } from '@/constants/limits';
 
-import { LimitV3, ToastErrorStaticLimit } from './types';
+import type { LimitV3, ToastErrorStaticLimit } from './types';
 
 const LIMIT = {
   limit: 4,

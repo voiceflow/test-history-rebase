@@ -1,7 +1,7 @@
-import { ProjectAwarenessState } from '@/ducks/projectV2/types';
+import type { ProjectAwarenessState } from '@/ducks/projectV2/types';
 import { createCRUDState } from '@/ducks/utils/crudV2';
 
-import { DiagramState } from './types';
+import type { DiagramState } from './types';
 
 export const STATE_KEY = 'diagramV2';
 

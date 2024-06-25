@@ -5,12 +5,13 @@ import React from 'react';
 import { generatePath } from 'react-router-dom';
 
 import Avatar from '@/components/Avatar';
-import { EditableTextAPI } from '@/components/EditableText';
+import type { EditableTextAPI } from '@/components/EditableText';
 import * as NLU from '@/config/nlu';
 import { Path } from '@/config/routes';
 import { Permission } from '@/constants/permissions';
 import * as Project from '@/ducks/projectV2';
-import { InjectedDraggableProps, withDraggable } from '@/hocs/withDraggable';
+import type { InjectedDraggableProps } from '@/hocs/withDraggable';
+import { withDraggable } from '@/hocs/withDraggable';
 import { usePaymentModal } from '@/hooks/modal.hook';
 import { useIsLockedProjectViewer, usePermission } from '@/hooks/permission';
 import { useProjectOptions } from '@/hooks/project';

@@ -8,7 +8,13 @@ export class IntegrationOauthTokenORM extends PostgresMutableORM<IntegrationOaut
 
   jsonAdapter = IntegrationOauthTokenJSONAdapter;
 
-  async upsertByAssistant(assistantID: string, type: string, accessToken: string, creatorID: number, subdomain: string) {
+  async upsertByAssistant(
+    assistantID: string,
+    type: string,
+    accessToken: string,
+    creatorID: number,
+    subdomain: string
+  ) {
     const result = await this.find({ scope: 'assistant', resourceID: assistantID, type });
 
     if (result.length !== 0) {

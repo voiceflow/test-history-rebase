@@ -6,7 +6,7 @@ import { Area, AreaChart as ReAreaChart, CartesianGrid, ResponsiveContainer, Too
 
 import { AreaChartDot, AreaChartGradient, AreaChartTick, AreaChartTooltip } from './components';
 import { MonthlyDateFormatter, SimpleFormatter, WeeklyDateFormatter, YearlyDateFormatter } from './formatters';
-import { AreaChartDatum, AreaChartFormatter } from './types';
+import type { AreaChartDatum, AreaChartFormatter } from './types';
 import { getMaxY } from './utils';
 
 export * from './types';
@@ -75,11 +75,20 @@ const AreaChart: React.FC<AreaChartProps> = ({
         )}
         {withTooltip && (
           <Tooltip
-            content={<AreaChartTooltip formatX={formatter.tooltip.formatX} formatY={formatter.tooltip.formatY ?? String} />}
+            content={
+              <AreaChartTooltip formatX={formatter.tooltip.formatX} formatY={formatter.tooltip.formatY ?? String} />
+            }
             cursor={{ stroke: '#dfe3ed' }}
           />
         )}
-        <Area dataKey="y" stroke={color} strokeWidth={2} fill={`url(#${gradientID})`} fillOpacity={0.2} activeDot={<AreaChartDot stroke={color} />} />
+        <Area
+          dataKey="y"
+          stroke={color}
+          strokeWidth={2}
+          fill={`url(#${gradientID})`}
+          fillOpacity={0.2}
+          activeDot={<AreaChartDot stroke={color} />}
+        />
       </ReAreaChart>
     </ResponsiveContainer>
   );

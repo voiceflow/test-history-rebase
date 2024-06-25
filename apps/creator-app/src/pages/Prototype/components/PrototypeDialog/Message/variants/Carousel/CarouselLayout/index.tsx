@@ -1,15 +1,16 @@
-import { BaseNode } from '@voiceflow/base-types';
+import type { BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import { ButtonGroup } from '@voiceflow/ui';
 import React from 'react';
 
 import SlateEditable from '@/components/SlateEditable';
 import { useResizeObserver } from '@/hooks';
-import { OnInteraction } from '@/pages/Prototype/types';
+import type { OnInteraction } from '@/pages/Prototype/types';
 import { textFieldHasValue } from '@/utils/prototypeMessage';
 
 import { handleRequestActions } from '../../../../utils';
-import BaseMessage, { BaseMessageProps } from '../../../Base';
+import type { BaseMessageProps } from '../../../Base';
+import BaseMessage from '../../../Base';
 import * as S from './styles';
 
 interface MessageVariantCarouselCarouselLayoutProps extends Omit<BaseMessageProps, 'iconProps'> {
@@ -53,7 +54,9 @@ const MessageVariantCarouselCarouselLayout: React.FC<MessageVariantCarouselCarou
       cards.map((card) => ({
         ...card,
         hasInfo: !!card.title || textFieldHasValue(card.description.slate ?? card.description.text),
-        description: card.description.slate ? SlateEditable.serializeToJSX(card.description.slate) : card.description.text,
+        description: card.description.slate
+          ? SlateEditable.serializeToJSX(card.description.slate)
+          : card.description.text,
       })),
     [cards]
   );
@@ -67,7 +70,12 @@ const MessageVariantCarouselCarouselLayout: React.FC<MessageVariantCarouselCarou
         </>
       )}
 
-      <S.Slide style={{ width: slideWidth, transform: hasOverflow ? `translateX(-${index * (CARDS_WIDTH + CARDS_GAP)}px)` : undefined }}>
+      <S.Slide
+        style={{
+          width: slideWidth,
+          transform: hasOverflow ? `translateX(-${index * (CARDS_WIDTH + CARDS_GAP)}px)` : undefined,
+        }}
+      >
         <BaseMessage {...messageProps} bubble={false}>
           <div style={{ flexGrow: 1, display: 'flex', gap: CARDS_GAP, alignItems: 'flex-start' }}>
             {cardsWithInfo.map(({ id, title, description, imageUrl, buttons, hasInfo }) => (
@@ -90,7 +98,9 @@ const MessageVariantCarouselCarouselLayout: React.FC<MessageVariantCarouselCarou
                       <S.Button
                         key={request.type}
                         color={color}
-                        onClick={Utils.functional.chainVoid(handleRequestActions(request), () => onInteraction({ name, request }))}
+                        onClick={Utils.functional.chainVoid(handleRequestActions(request), () =>
+                          onInteraction({ name, request })
+                        )}
                         hasInfo={hasInfo}
                       >
                         {name}

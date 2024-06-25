@@ -1,12 +1,12 @@
-import { BaseButton, BaseModels, BaseNode } from '@voiceflow/base-types';
-import { Nullable } from '@voiceflow/common';
-import { BaseRequest } from '@voiceflow/dtos';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type { BaseButton, BaseModels, BaseNode } from '@voiceflow/base-types';
+import type { Nullable } from '@voiceflow/common';
+import type { BaseRequest } from '@voiceflow/dtos';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 
-import { PrototypeStatus } from '@/constants/prototype';
+import type { PrototypeStatus } from '@/constants/prototype';
 import type { ActivePath, Context, PrototypeState, UpdatePrototypeVisualData } from '@/ducks/prototype';
 import type { PrototypeConfig } from '@/ducks/recent';
-import { CreateTranscriptOptions } from '@/ducks/transcript';
+import type { CreateTranscriptOptions } from '@/ducks/transcript';
 import type { IDSelectorParam } from '@/ducks/utils/crudV2';
 
 export type OnInteraction = (interaction: { name?: string | undefined; request: BaseRequest | string }) => void;
@@ -45,13 +45,27 @@ export enum MessageType {
 
 export type KnowledgeBaseSources = BaseModels.Project.KnowledgeBaseData[];
 
-export const BotMessageTypes = [MessageType.AUDIO, MessageType.SPEAK, MessageType.TEXT, MessageType.STREAM, MessageType.VISUAL, MessageType.CAROUSEL];
+export const BotMessageTypes = [
+  MessageType.AUDIO,
+  MessageType.SPEAK,
+  MessageType.TEXT,
+  MessageType.STREAM,
+  MessageType.VISUAL,
+  MessageType.CAROUSEL,
+];
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 type GenericMessage<T extends MessageType, D = {}> = { id: string; type: T; startTime: string; turnID?: string } & D;
 
-export type UserMessage = GenericMessage<MessageType.USER, { input: string; intentName?: string; confidence?: number | null }>;
+export type UserMessage = GenericMessage<
+  MessageType.USER,
+  { input: string; intentName?: string; confidence?: number | null }
+>;
 
-export type TextMessage = GenericMessage<MessageType.TEXT, { slate: BaseNode.Text.TextData; ai?: boolean; knowledgeBase?: KnowledgeBaseSources }>;
+export type TextMessage = GenericMessage<
+  MessageType.TEXT,
+  { slate: BaseNode.Text.TextData; ai?: boolean; knowledgeBase?: KnowledgeBaseSources }
+>;
 
 export type AudioMessage = GenericMessage<MessageType.AUDIO, { name: string; src?: string | null; ai?: boolean }>;
 
@@ -66,10 +80,14 @@ export type StreamMessage = GenericMessage<MessageType.STREAM, { audio: string }
 
 export type SessionMessage = GenericMessage<MessageType.SESSION, { message: string }>;
 
-export type VisualMessage = GenericMessage<MessageType.VISUAL, BaseNode.Visual.ImageStepData | BaseNode.Visual.APLStepData>;
+export type VisualMessage = GenericMessage<
+  MessageType.VISUAL,
+  BaseNode.Visual.ImageStepData | BaseNode.Visual.APLStepData
+>;
 
 export type PathMessage = GenericMessage<MessageType.PATH, { path: string }>;
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 export type LaunchMessage = GenericMessage<MessageType.LAUNCH, {}>;
 
 export type CarouselMessage = GenericMessage<
@@ -152,7 +170,11 @@ export interface PrototypeActions {
   getLinksByPortID?: (id: IDSelectorParam) => any[];
   getNodeByID?: (id: string) => Realtime.Node;
   updatePrototypeVisualsData?: (data: Nullable<BaseNode.Visual.StepData>) => UpdatePrototypeVisualData;
-  fetchContext?: (request: Nullable<BaseRequest>, config: PrototypeConfig, options?: { isPublic?: boolean }) => Promise<Nullable<Context>>;
+  fetchContext?: (
+    request: Nullable<BaseRequest>,
+    config: PrototypeConfig,
+    options?: { isPublic?: boolean }
+  ) => Promise<Nullable<Context>>;
   setActiveDiagramID?: (id: string) => void;
   updatePrototypeVisualsDataHistory?: (data: Nullable<BaseNode.Visual.StepData>[]) => void;
   updatePrototypeStatus?: (data: PrototypeStatus) => void;

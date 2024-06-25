@@ -1,5 +1,5 @@
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, createDividerMenuItemOption, SectionV2, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
@@ -68,7 +68,9 @@ const QueryEditor: React.FC<{ disableAnimation: boolean }> = ({ disableAnimation
       header={<EditorV2.DefaultHeader />}
       footer={
         <EditorV2.DefaultFooter tutorial={Documentation.CAPTURE_STEP}>
-          <EditorV2.FooterActionsButton actions={[intentScopeOption, createDividerMenuItemOption(), noReplyConfig.option]} />
+          <EditorV2.FooterActionsButton
+            actions={[intentScopeOption, createDividerMenuItemOption(), noReplyConfig.option]}
+          />
         </EditorV2.DefaultFooter>
       }
       dropLagAccept={Actions.Section.DRAG_TYPE}
@@ -91,7 +93,12 @@ const QueryEditor: React.FC<{ disableAnimation: boolean }> = ({ disableAnimation
                 containerToggle
               >
                 <SectionV2.Content bottomOffset={2.5}>
-                  <EntitySelector value={ENTIRE_USER_REPLY_ID} options={options} onCreate={onCreate} onSelect={onSelect} />
+                  <EntitySelector
+                    value={ENTIRE_USER_REPLY_ID}
+                    options={options}
+                    onCreate={onCreate}
+                    onSelect={onSelect}
+                  />
 
                   <Box mt={16}>
                     <VariableSelectV2

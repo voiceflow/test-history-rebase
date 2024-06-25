@@ -1,8 +1,14 @@
 import _shuffle from 'lodash/shuffle';
 
-import { GetOptionLabel, GetOptionValue, MenuItemGrouped, MenuItemMultilevel, UIOnlyMenuItemOption } from '../NestedMenu';
+import type {
+  GetOptionLabel,
+  GetOptionValue,
+  MenuItemGrouped,
+  MenuItemMultilevel,
+  UIOnlyMenuItemOption,
+} from '../NestedMenu';
 import { isMenuItemOption, isUIOnlyMenuItemOption } from '../NestedMenu/utils';
-import { FilterResult } from './types';
+import type { FilterResult } from './types';
 
 interface Params<Option, Value> {
   getOptionLabel: GetOptionLabel<Value>;
@@ -10,7 +16,11 @@ interface Params<Option, Value> {
 }
 
 const matchOption =
-  <Option, Value>(searchLabel: undefined | string, getOptionLabel: GetOptionLabel<Value>, getOptionValue: GetOptionValue<Option, Value>) =>
+  <Option, Value>(
+    searchLabel: undefined | string,
+    getOptionLabel: GetOptionLabel<Value>,
+    getOptionValue: GetOptionValue<Option, Value>
+  ) =>
   (option?: Option) => {
     if (!searchLabel) return true;
 
@@ -30,7 +40,10 @@ const multilevelSearch = <Option, Value>(
 ): void => {
   // ui elements can't be first or in a row
   if (isMenuItemOption(option) && isUIOnlyMenuItemOption(option)) {
-    if (matched.length !== 0 && !(isMenuItemOption(matched[matched.length - 1]) && isUIOnlyMenuItemOption(matched[matched.length - 1]))) {
+    if (
+      matched.length !== 0 &&
+      !(isMenuItemOption(matched[matched.length - 1]) && isUIOnlyMenuItemOption(matched[matched.length - 1]))
+    ) {
       matched.push(option);
     } else {
       notMatched.push(option);
@@ -38,7 +51,10 @@ const multilevelSearch = <Option, Value>(
   } else if (matchOption(searchLabel, params.getOptionLabel, params.getOptionValue)(option as Option)) {
     matched.push(option);
   } else {
-    const { matchedOptions } = searchableOptionsFilter(option.options ?? [], searchLabel, { ...params, isMultiLevel: true });
+    const { matchedOptions } = searchableOptionsFilter(option.options ?? [], searchLabel, {
+      ...params,
+      isMultiLevel: true,
+    });
 
     if (matchedOptions.length) {
       matched.push({ ...option, options: matchedOptions });
@@ -63,7 +79,10 @@ const groupedSearch = <Option, Value>(
       if (isMenuItemOption(option) && isUIOnlyMenuItemOption(option)) {
         if (
           childOptions.length !== 0 &&
-          !(isMenuItemOption(childOptions[childOptions.length - 1]) && isUIOnlyMenuItemOption(childOptions[childOptions.length - 1]))
+          !(
+            isMenuItemOption(childOptions[childOptions.length - 1]) &&
+            isUIOnlyMenuItemOption(childOptions[childOptions.length - 1])
+          )
         ) {
           childOptions.push(option);
         }
@@ -91,7 +110,10 @@ const simpleSearch = <Option, Value>(
     matched.push(option);
     // ui elements can't be first or in a row
   } else if (isMenuItemOption(option) && isUIOnlyMenuItemOption(option)) {
-    if (matched.length !== 0 && !(isMenuItemOption(matched[matched.length - 1]) && isUIOnlyMenuItemOption(matched[matched.length - 1]))) {
+    if (
+      matched.length !== 0 &&
+      !(isMenuItemOption(matched[matched.length - 1]) && isUIOnlyMenuItemOption(matched[matched.length - 1]))
+    ) {
       matched.push(option);
     } else {
       notMatched.push(option);
@@ -122,11 +144,18 @@ export const searchableOptionsFilter = <Option, Value>(
     showNotMatched?: boolean;
   }
 ): FilterResult<Option> => {
-  const [matchedOptions, notMatchedOptions] = options.reduce<[Array<Option | UIOnlyMenuItemOption>, Array<Option | UIOnlyMenuItemOption>]>(
+  const [matchedOptions, notMatchedOptions] = options.reduce<
+    [Array<Option | UIOnlyMenuItemOption>, Array<Option | UIOnlyMenuItemOption>]
+  >(
     ([matched, notMatched], option) => {
       let searchFunction = simpleSearch;
 
-      if (isMultiLevel && !isUIOnlyMenuItemOption(option) && (option as MenuItemMultilevel<Option>).options?.length && searchLabel) {
+      if (
+        isMultiLevel &&
+        !isUIOnlyMenuItemOption(option) &&
+        (option as MenuItemMultilevel<Option>).options?.length &&
+        searchLabel
+      ) {
         searchFunction = multilevelSearch as typeof simpleSearch;
       } else if (grouped && searchLabel) {
         searchFunction = groupedSearch as typeof simpleSearch;
@@ -153,7 +182,10 @@ export const searchableOptionsFilter = <Option, Value>(
   if (matchedOptions.length > maxSize) {
     filteredOptions = matchedOptions.slice(0, maxSize);
   } else if (showNotMatched && matchedOptions.length < maxSize) {
-    filteredOptions = [...matchedOptions, ...(searchLabel ? _shuffle(notMatchedOptions) : notMatchedOptions)].slice(0, maxSize);
+    filteredOptions = [...matchedOptions, ...(searchLabel ? _shuffle(notMatchedOptions) : notMatchedOptions)].slice(
+      0,
+      maxSize
+    );
   }
 
   return { filteredOptions, matchedOptions, notMatchedOptions };

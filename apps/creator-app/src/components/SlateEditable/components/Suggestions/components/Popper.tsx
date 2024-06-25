@@ -1,4 +1,5 @@
-import { Nullable, Utils } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
 import {
   Animations,
   Box,
@@ -18,7 +19,8 @@ import {
   useVirtualElementPopper,
 } from '@voiceflow/ui';
 import _sortBy from 'lodash/sortBy';
-import { denormalize,Normalized } from 'normal-store';
+import type { Normalized } from 'normal-store';
+import { denormalize } from 'normal-store';
 import React from 'react';
 import { useDismissable } from 'react-dismissable-layers';
 

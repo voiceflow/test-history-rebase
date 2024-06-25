@@ -1,9 +1,5 @@
-import {
-  AnyResponseVariantCreate,
-  type AnyResponseVariantWithData,
-  ResponseVariantType,
-  TextResponseVariant,
-} from '@voiceflow/dtos';
+import type { AnyResponseVariantCreate, AnyResponseVariantWithData, TextResponseVariant } from '@voiceflow/dtos';
+import { ResponseVariantType } from '@voiceflow/dtos';
 import React, { useMemo } from 'react';
 
 import { CMSFormListButtonRemove } from '@/components/CMS/CMSForm/CMSFormListButtonRemove/CMSFormListButtonRemove.component';

@@ -1,6 +1,6 @@
-import { HashedIDService } from '@voiceflow/nestjs-common';
+import type { HashedIDService } from '@voiceflow/nestjs-common';
 import type { IdentityClient } from '@voiceflow/sdk-identity';
-import { ServiceManagerOptions, SocketServer } from '@voiceflow/socket-utils';
+import type { ServiceManagerOptions, SocketServer } from '@voiceflow/socket-utils';
 
 import type { AssistantService } from '@/assistant/assistant.service';
 import type { CreatorService } from '@/creator/creator.service';
@@ -8,7 +8,7 @@ import type { FlowService } from '@/flow/flow.service';
 import type { OrganizationIdentityService } from '@/organization/identity/identity.service';
 import type { ProjectService } from '@/project/project.service';
 import type { ProjectListService } from '@/project-list/project-list.service';
-import { ReferenceService } from '@/reference/reference.service';
+import type { ReferenceService } from '@/reference/reference.service';
 import type { ThreadService } from '@/thread/thread.service';
 import type { UserService } from '@/user/user.service';
 import type { WorkflowService } from '@/workflow/workflow.service';

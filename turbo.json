@@ -87,10 +87,5 @@
       "cache": false
     }
   },
-  "globalDependencies": [
-    "meta/jest-config/*.js",
-    "meta/prettier-config/*.js",
-    "meta/swc-config/*.json",
-    "meta/typescript-config/*.json"
-  ]
+  "globalDependencies": ["meta/swc-config/*.json", "meta/typescript-config/*.json"]
 }

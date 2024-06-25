@@ -1,4 +1,4 @@
-import { Transform } from './types';
+import type { Transform } from './types';
 
 // sync diagramIDs
 const migrateToV4_07: Transform = () => {

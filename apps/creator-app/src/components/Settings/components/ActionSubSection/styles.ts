@@ -7,7 +7,13 @@ export const Container = styled(Card)`
   justify-content: space-between;
   padding: 24px 32px;
   background-color: rgb(249, 249, 249);
-  background-image: repeating-linear-gradient(132deg, transparent, transparent 34px, rgba(216, 216, 216, 0.1) 18px, rgba(216, 216, 216, 0.1) 52px);
+  background-image: repeating-linear-gradient(
+    132deg,
+    transparent,
+    transparent 34px,
+    rgba(216, 216, 216, 0.1) 18px,
+    rgba(216, 216, 216, 0.1) 52px
+  );
 `;
 
 export const LeftSection = styled.div`

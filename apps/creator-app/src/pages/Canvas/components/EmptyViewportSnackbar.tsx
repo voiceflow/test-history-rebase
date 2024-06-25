@@ -33,7 +33,9 @@ const EmptyViewportSnackbar: React.FC = () => {
 
       <System.Snackbar.Text>Can't find your blocks? Press 'S' to return</System.Snackbar.Text>
 
-      <System.Snackbar.CloseButton onClick={stopPropagation(Utils.functional.chain(snackbarAPI.close, () => setShown(true)))} />
+      <System.Snackbar.CloseButton
+        onClick={stopPropagation(Utils.functional.chain(snackbarAPI.close, () => setShown(true)))}
+      />
     </System.Snackbar.Base>
   );
 };

@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { BaseModels, BaseNode } from '@voiceflow/base-types';
+import type { BaseModels, BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import type { DiagramNode } from '@voiceflow/dtos';
 import { NodeType } from '@voiceflow/dtos';
-import { DiagramJSON } from '@voiceflow/orm-designer';
+import type { DiagramJSON } from '@voiceflow/orm-designer';
 
 @Injectable()
 export class DiagramUtil {
@@ -16,7 +16,10 @@ export class DiagramUtil {
 
     if (!startNode?.coords?.length) return [0, 0];
 
-    return [(CENTER_X_OFFSET - startNode.coords![0]) * CENTER_OFFSET_MULTIPLIER, CENTER_Y_OFFSET - startNode.coords![1] * CENTER_OFFSET_MULTIPLIER];
+    return [
+      (CENTER_X_OFFSET - startNode.coords![0]) * CENTER_OFFSET_MULTIPLIER,
+      CENTER_Y_OFFSET - startNode.coords![1] * CENTER_OFFSET_MULTIPLIER,
+    ];
   }
 
   center<T extends Pick<DiagramJSON, 'nodes' | 'offsetX' | 'offsetY'>>(diagram: T): T {
@@ -79,7 +82,9 @@ export class DiagramUtil {
       nodes: Object.fromEntries(
         cleanedNodes.map(([nodeID, node]) => [
           nodeID,
-          Array.isArray(node.data.ports) || Utils.object.isObject(node.data.portsV2) ? this.cleanupStepPorts(node, validNodesMap) : node,
+          Array.isArray(node.data.ports) || Utils.object.isObject(node.data.portsV2)
+            ? this.cleanupStepPorts(node, validNodesMap)
+            : node,
         ])
       ),
     };

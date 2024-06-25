@@ -1,5 +1,5 @@
 import Box from '@ui/components/Box';
-import { TextProps as BaseTextProps } from '@ui/components/Text/types';
+import type { TextProps as BaseTextProps } from '@ui/components/Text/types';
 import { css, styled } from '@ui/styles';
 import { color, layout, space, typography } from 'styled-system';
 

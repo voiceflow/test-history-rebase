@@ -127,7 +127,12 @@ const TranscriptFilters: React.FC<TranscriptFiltersProps> = ({ tags, personas, r
             <DatePicker currentRange={currentRange} onChange={setCurrentRange} placement="right" />
           </MenuSection>
 
-          <MenuSection title="Tags" enabled={tagsOpen} className={ClassName.TRANSCRIPT_FILTERS_TAGS_CHECKBOX} toggleSection={onToggleTags}>
+          <MenuSection
+            title="Tags"
+            enabled={tagsOpen}
+            className={ClassName.TRANSCRIPT_FILTERS_TAGS_CHECKBOX}
+            toggleSection={onToggleTags}
+          >
             <ReportTagInput variant={InputVariant.SELECT_ONLY} onChange={setCurrentTags} selectedTags={currentTags} />
           </MenuSection>
 
@@ -144,7 +149,13 @@ const TranscriptFilters: React.FC<TranscriptFiltersProps> = ({ tags, personas, r
     >
       {({ ref, isOpened, onToggle }) => (
         <System.IconButtonsGroup.Base>
-          <System.IconButton.Base ref={ref} icon="filter" active={isOpened} onClick={onToggle} className={ClassName.TRANSCRIPT_FILTERS_MENU_TEXT} />
+          <System.IconButton.Base
+            ref={ref}
+            icon="filter"
+            active={isOpened}
+            onClick={onToggle}
+            className={ClassName.TRANSCRIPT_FILTERS_MENU_TEXT}
+          />
         </System.IconButtonsGroup.Base>
       )}
     </SelectMenu>

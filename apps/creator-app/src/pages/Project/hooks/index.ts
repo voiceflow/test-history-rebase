@@ -1,4 +1,4 @@
-import * as Platform from '@voiceflow/platform-config';
+import type * as Platform from '@voiceflow/platform-config';
 import { useCallback, useContext } from 'react';
 
 import { Permission } from '@/constants/permissions';

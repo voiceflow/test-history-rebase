@@ -3,8 +3,9 @@ import React from 'react';
 
 import { IMAGE_FILE_TYPES } from '../../constants';
 import { validateFiles, validateImageUrl } from '../../utils';
-import UploadBase, { UploadBaseProps } from '../Base';
-import { InputRenderer } from '../LinkInput';
+import type { UploadBaseProps } from '../Base';
+import UploadBase from '../Base';
+import type { InputRenderer } from '../LinkInput';
 import * as S from './styles';
 
 export interface UploadImageProps extends Pick<UploadBaseProps, 'value' | 'onChange' | 'rootDropAreaProps'> {

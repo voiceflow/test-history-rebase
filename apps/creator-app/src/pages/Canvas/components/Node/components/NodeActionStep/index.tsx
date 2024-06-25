@@ -1,5 +1,5 @@
-import { Struct } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type { Struct } from '@voiceflow/common';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import * as CreatorV2 from '@/ducks/creatorV2';
@@ -20,7 +20,14 @@ export interface NodeActionStepProps {
   onOpenEditor: (actionNodeID: string, routeState?: Struct) => void;
 }
 
-const NodeActionStep: React.FC<NodeActionStepProps> = ({ isLast, reversed, isActive, sourcePortID, sourceNodeID, onOpenEditor }) => {
+const NodeActionStep: React.FC<NodeActionStepProps> = ({
+  isLast,
+  reversed,
+  isActive,
+  sourcePortID,
+  sourceNodeID,
+  onOpenEditor,
+}) => {
   const engine = React.useContext(EngineContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
   const getManager = React.useContext(ManagerContext)!;
@@ -56,7 +63,6 @@ const NodeActionStep: React.FC<NodeActionStepProps> = ({ isLast, reversed, isAct
 
   if (!ActionComponent) return null;
 
-  // eslint-disable-next-line xss/no-mixed-html
   return (
     <>
       <NodeLifecycle />

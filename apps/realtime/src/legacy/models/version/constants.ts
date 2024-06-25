@@ -1,7 +1,7 @@
-import { BaseModels, BaseVersion } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk/backend';
+import type { BaseModels, BaseVersion } from '@voiceflow/base-types';
+import type * as Realtime from '@voiceflow/realtime-sdk/backend';
 
-import { Bson } from '../utils';
+import type { Bson } from '../utils';
 
 export const DOMAIN_DATE_KEYS = ['updatedAt'] as const;
 

@@ -1,11 +1,13 @@
 import Client from '@anthropic-ai/sdk';
 import { Logger } from '@nestjs/common';
-import { AIMessage, AIMessageRole, AIParams } from '@voiceflow/dtos';
-import { filter, from, map, mergeMap, Observable } from 'rxjs';
+import type { AIMessage, AIParams } from '@voiceflow/dtos';
+import { AIMessageRole } from '@voiceflow/dtos';
+import type { Observable } from 'rxjs';
+import { filter, from, map, mergeMap } from 'rxjs';
 
 import { LLMModel } from '../llm-model.abstract';
-import { CompletionOutput, CompletionStreamOutput } from '../llm-model.dto';
-import { AnthropicConfig } from './anthropic.interface';
+import type { CompletionOutput, CompletionStreamOutput } from '../llm-model.dto';
+import type { AnthropicConfig } from './anthropic.interface';
 import { formatMessages, messageEventToCompletion } from './anthropic-message.util';
 
 export abstract class AnthropicMessageAIModel extends LLMModel {

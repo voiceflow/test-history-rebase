@@ -5,7 +5,7 @@ import React from 'react';
 import { Permission } from '@/constants/permissions';
 import { useEntityEditModal } from '@/hooks/modal.hook';
 import { usePermission } from '@/hooks/permission';
-import { EntityPrompt } from '@/pages/Canvas/types';
+import type { EntityPrompt } from '@/pages/Canvas/types';
 import { copyWithToast } from '@/utils/clipboard';
 
 interface ButtonsPreviewProps {

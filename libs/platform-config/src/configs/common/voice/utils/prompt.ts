@@ -6,7 +6,10 @@ import * as Models from '../models';
 
 const PromptTypeSet = new Set<string>(Object.values(Models.Prompt.PromptType));
 
-export const textFactory = ({ content = '', defaultVoice }: Base.Utils.Prompt.FactoryOptions = {}): Models.Prompt.Model => ({
+export const textFactory = ({
+  content = '',
+  defaultVoice,
+}: Base.Utils.Prompt.FactoryOptions = {}): Models.Prompt.Model => ({
   id: Utils.id.cuid.slug(),
   type: Models.Prompt.PromptType.TEXT,
   voice: defaultVoice ?? '',

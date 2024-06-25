@@ -1,9 +1,10 @@
 import composeRef from '@seznam/compose-react-refs';
-import { Nullish } from '@voiceflow/common';
+import type { Nullish } from '@voiceflow/common';
 import { Input } from '@voiceflow/ui';
 import React from 'react';
 
-import SlateEditable, { SlateEditableProps, SlateEditableRef, SlateValue } from '@/components/SlateEditable';
+import type { SlateEditableProps, SlateEditableRef, SlateValue } from '@/components/SlateEditable';
+import SlateEditable from '@/components/SlateEditable';
 import { ClassName } from '@/styles/constants';
 
 export interface SlateBaseInputProps extends Omit<SlateEditableProps, 'onBlur'> {
@@ -17,7 +18,12 @@ const SlateBaseInput: React.ForwardRefRenderFunction<SlateEditableRef, SlateBase
 ) => (
   <Input isActive={isActive} className={ClassName.TEXT_EDITOR}>
     {({ ref: inputRef }) => (
-      <SlateEditable ref={composeRef(ref, inputRef as any)} value={value} onBlur={(event) => onBlur?.(value, event)} {...props}>
+      <SlateEditable
+        ref={composeRef(ref, inputRef as any)}
+        value={value}
+        onBlur={(event) => onBlur?.(value, event)}
+        {...props}
+      >
         {children}
       </SlateEditable>
     )}

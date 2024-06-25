@@ -1,7 +1,9 @@
 import { AlexaNode } from '@voiceflow/alexa-types';
 import { BaseModels, BaseNode, BaseTrace } from '@voiceflow/base-types';
-import { Nullish, Utils } from '@voiceflow/common';
-import { BaseRequest, RequestType } from '@voiceflow/dtos';
+import type { Nullish } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
+import type { BaseRequest } from '@voiceflow/dtos';
+import { RequestType } from '@voiceflow/dtos';
 import * as DTOs from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
@@ -13,8 +15,8 @@ import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Prototype from '@/ducks/prototype';
 import * as Router from '@/ducks/router';
 import * as TrackingEvents from '@/ducks/tracking/events';
-import { IDSelectorParam } from '@/ducks/utils/crudV2';
-import {
+import type { IDSelectorParam } from '@/ducks/utils/crudV2';
+import type {
   BlockTrace,
   CardV2Trace,
   CarouselTrace,
@@ -32,12 +34,13 @@ import {
 } from '@/models';
 import type Engine from '@/pages/Canvas/engine';
 import { loadImage } from '@/utils/dom';
-import { Logger } from '@/utils/logger';
+import type { Logger } from '@/utils/logger';
 
-import { Interaction, PMStatus } from '../types';
-import AudioController from './Audio';
-import MessageController from './Message';
-import TimeoutController from './Timeout';
+import type { Interaction } from '../types';
+import { PMStatus } from '../types';
+import type AudioController from './Audio';
+import type MessageController from './Message';
+import type TimeoutController from './Timeout';
 import { appendActivePaths, getUpdatedActivePathContextHistory, isV1Trace } from './utils';
 
 const MUTED_MESSAGE_DELAY = 250;

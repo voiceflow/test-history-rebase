@@ -11,7 +11,9 @@ export const RemoveButton = styled(FlexCenter)<{ top?: number; right?: number }>
   width: 20px;
   height: 20px;
   background: white;
-  box-shadow: 0px 2px 4px rgba(17, 49, 96, 0.16), 0px 0px 0px rgba(17, 49, 96, 0.04);
+  box-shadow:
+    0px 2px 4px rgba(17, 49, 96, 0.16),
+    0px 0px 0px rgba(17, 49, 96, 0.04);
   z-index: 10;
 `;
 

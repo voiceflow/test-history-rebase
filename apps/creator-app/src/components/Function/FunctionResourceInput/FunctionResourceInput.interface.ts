@@ -1,4 +1,4 @@
-import { BaseProps } from '@voiceflow/ui-next';
+import type { BaseProps } from '@voiceflow/ui-next';
 
 export interface IFunctionResourceInput extends BaseProps {
   onDescriptionChange: (description: string) => void;

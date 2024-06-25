@@ -9,7 +9,14 @@ import { useSelector } from '@/hooks/store.hook';
 
 import type { IEntityClassifierDropdown } from './EntityClassifierDropdown.interface';
 
-export const EntityClassifierDropdown: React.FC<IEntityClassifierDropdown> = ({ error, value, onClick, minWidth, disabled, onValueChange }) => {
+export const EntityClassifierDropdown: React.FC<IEntityClassifierDropdown> = ({
+  error,
+  value,
+  onClick,
+  minWidth,
+  disabled,
+  onValueChange,
+}) => {
   const TEST_ID = tid('entity', 'classifier');
 
   const entityClassifiers = useSelector(Version.active.entityTypesSelector);
@@ -35,7 +42,14 @@ export const EntityClassifierDropdown: React.FC<IEntityClassifierDropdown> = ({ 
         {({ onClose, referenceRef }) => (
           <Menu
             width={referenceRef.current?.clientWidth}
-            searchSection={<Search value={search.value} testID={tid(TEST_ID, 'search')} onValueChange={search.setValue} placeholder="Search" />}
+            searchSection={
+              <Search
+                value={search.value}
+                testID={tid(TEST_ID, 'search')}
+                onValueChange={search.setValue}
+                placeholder="Search"
+              />
+            }
             numberOfItemsToShow={6}
           >
             {search.hasItems ? (

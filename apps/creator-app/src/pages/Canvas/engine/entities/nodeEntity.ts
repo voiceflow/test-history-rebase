@@ -8,13 +8,14 @@ import { createCachedSelector } from '@/ducks/creatorV2/utils/selector';
 import { idParamSelector } from '@/ducks/utils/crudV2';
 import { useTeardown } from '@/hooks';
 import { EngineContext } from '@/pages/Canvas/contexts/Engine.context';
-import { MarkupTransform } from '@/pages/Canvas/types';
-import { Pair, Point } from '@/types';
-import { Coords } from '@/utils/geometry';
+import type { MarkupTransform } from '@/pages/Canvas/types';
+import type { Pair, Point } from '@/types';
+import type { Coords } from '@/utils/geometry';
 
 import type Engine from '..';
 import { EntityType } from '../constants';
-import { EntityInstance, ResourceEntity } from './entity';
+import type { EntityInstance } from './entity';
+import { ResourceEntity } from './entity';
 
 export interface NodeInstance extends EntityInstance {
   ref: React.RefObject<HTMLElement>;

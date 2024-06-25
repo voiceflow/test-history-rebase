@@ -67,10 +67,9 @@ export const PullAll = (pulls: PullAllOperation[]): UpdateOperation<'$pullAll'> 
 export const Push = (pushes: PushOperation[]): UpdateOperation<'$push'> => {
   const query: PushOperator<unknown> = Object.fromEntries(
     pushes
-      .map<[string, ArrayOperator<unknown[]>]>(({ path, value, index }) => [
-        path,
-        { $each: Array.isArray(value) ? value : [value], ...(index != null && { $position: index }) },
-      ])
+      .map<
+        [string, ArrayOperator<unknown[]>]
+      >(({ path, value, index }) => [path, { $each: Array.isArray(value) ? value : [value], ...(index != null && { $position: index }) }])
       .filter(([, { $each }]) => $each && $each.length > 0)
   );
 
@@ -111,10 +110,9 @@ export const Unset = (
 export const AddToSet = (pushes: AddToSetOperation[]): UpdateOperation<'$addToSet'> => {
   const query: SetFields<unknown> = Object.fromEntries(
     pushes
-      .map<[string, ArrayOperator<unknown[]>]>(({ path, value }) => [
-        path,
-        { $each: Array.isArray(value) ? value : [value] },
-      ])
+      .map<
+        [string, ArrayOperator<unknown[]>]
+      >(({ path, value }) => [path, { $each: Array.isArray(value) ? value : [value] }])
       .filter(([, { $each }]) => $each && $each.length > 0)
   );
 

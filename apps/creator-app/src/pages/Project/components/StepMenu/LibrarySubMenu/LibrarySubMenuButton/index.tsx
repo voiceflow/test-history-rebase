@@ -1,5 +1,6 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, ContextMenu, OptionsMenuOption, usePersistFunction } from '@voiceflow/ui';
+import type * as Realtime from '@voiceflow/realtime-sdk';
+import type { OptionsMenuOption } from '@voiceflow/ui';
+import { Box, ContextMenu, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 import { DismissableLayerContext } from 'react-dismissable-layers';
 import { useDrag } from 'react-dnd';
@@ -15,7 +16,8 @@ import { ClassName } from '@/styles/constants';
 import { pointerNodeDataFactory } from '@/utils/customBlock';
 
 import ClickNoDragTooltip from '../../ClickNoDragTooltip';
-import { isCustomBlockData, LibraryDragItem, LibraryStepType, TabData } from '../../constants';
+import type { LibraryDragItem, TabData } from '../../constants';
+import { isCustomBlockData, LibraryStepType } from '../../constants';
 import * as S from '../../SubMenu/styles';
 import { SubMenuButtonContainer } from '../../SubMenu/SubMenuButton/styles';
 import { Label } from './components';

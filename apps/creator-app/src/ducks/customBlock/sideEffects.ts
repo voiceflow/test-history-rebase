@@ -5,7 +5,7 @@ import * as Errors from '@/config/errors';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import { allCustomBlocksSelector } from '@/ducks/customBlock/selectors';
 import { getActiveVersionContext } from '@/ducks/versionV2/utils';
-import { Thunk } from '@/store/types';
+import type { Thunk } from '@/store/types';
 
 type CreatePayload = Omit<Realtime.CustomBlock, 'id'>;
 

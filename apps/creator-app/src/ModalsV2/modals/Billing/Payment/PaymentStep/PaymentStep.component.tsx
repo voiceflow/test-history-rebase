@@ -12,7 +12,7 @@ import { useFeature } from '@/hooks/feature.hook';
 
 import * as CardForm from '../CardForm';
 import { useCheckoutPayment, usePricing } from '../hooks';
-import { PaymentModalPropsAPI } from '../Payment.types';
+import type { PaymentModalPropsAPI } from '../Payment.types';
 import { PlanCard } from '../PlanCard/PlanCard.component';
 
 interface PaymentStepProps {

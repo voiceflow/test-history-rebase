@@ -1,4 +1,5 @@
-import { Nullish, Utils } from '@voiceflow/common';
+import type { Nullish } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
 import {
   DEFAULT_INTENT_CLASSIFICATION_LLM_SETTINGS,
   DEFAULT_INTENT_CLASSIFICATION_NLU_SETTINGS,

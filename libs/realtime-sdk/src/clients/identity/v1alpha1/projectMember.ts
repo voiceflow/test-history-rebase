@@ -1,7 +1,8 @@
-import * as Models from '@realtime-sdk/models';
-import { ProjectUserRole } from '@voiceflow/dtos';
+import type * as Models from '@realtime-sdk/models';
+import type { ProjectUserRole } from '@voiceflow/dtos';
 
-import { NestResource, NestResourceOptions } from '../../nest';
+import type { NestResourceOptions } from '../../nest';
+import { NestResource } from '../../nest';
 
 export class ProjectMember extends NestResource {
   constructor(options: NestResourceOptions) {

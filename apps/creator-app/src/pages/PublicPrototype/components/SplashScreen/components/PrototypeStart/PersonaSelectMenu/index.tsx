@@ -1,4 +1,4 @@
-import { Nullish } from '@voiceflow/common';
+import type { Nullish } from '@voiceflow/common';
 import React from 'react';
 
 import * as Prototype from '@/ducks/prototype';
@@ -13,7 +13,11 @@ interface VariableStateOption {
 }
 
 interface PersonaSelectMenuProps {
-  render: (options: { ref: React.RefObject<HTMLElement>; isOpen: boolean; toggleSelectMenuOpen: () => void }) => JSX.Element;
+  render: (options: {
+    ref: React.RefObject<HTMLElement>;
+    isOpen: boolean;
+    toggleSelectMenuOpen: () => void;
+  }) => JSX.Element;
 }
 
 const PersonaSelectMenu: React.FC<PersonaSelectMenuProps> = ({ render }) => {
@@ -27,11 +31,16 @@ const PersonaSelectMenu: React.FC<PersonaSelectMenuProps> = ({ render }) => {
   );
 
   const variableStateOptionsMap = React.useMemo(
-    () => variableStateOptions.reduce<Record<string, VariableStateOption>>((acc, option) => Object.assign(acc, { [option.value]: option }), {}),
+    () =>
+      variableStateOptions.reduce<Record<string, VariableStateOption>>(
+        (acc, option) => Object.assign(acc, { [option.value]: option }),
+        {}
+      ),
     [variableStateOptions]
   );
 
-  const getOptionLabel = (variableStateID: Nullish<string>) => (variableStateID ? variableStateOptionsMap[variableStateID].label : '');
+  const getOptionLabel = (variableStateID: Nullish<string>) =>
+    variableStateID ? variableStateOptionsMap[variableStateID].label : '';
 
   const onSelect = (value: string) => {
     updatePrototypeSettings({

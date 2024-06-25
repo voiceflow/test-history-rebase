@@ -1,5 +1,5 @@
 import { useVirtualizer } from '@tanstack/react-virtual';
-import { Folder } from '@voiceflow/dtos';
+import type { Folder } from '@voiceflow/dtos';
 import { ActionButtons, Menu, MENU_ITEM_MIN_HEIGHT, Search, VirtualizedContent } from '@voiceflow/ui-next';
 import pluralize from 'pluralize';
 import React, { useMemo, useState } from 'react';

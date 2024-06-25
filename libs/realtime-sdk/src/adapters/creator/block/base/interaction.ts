@@ -1,6 +1,6 @@
-import { BaseNode } from '@voiceflow/base-types';
+import type { BaseNode } from '@voiceflow/base-types';
 
-import { NodeData } from '../../../../models';
+import type { NodeData } from '../../../../models';
 import {
   choiceAdapter,
   createBlockAdapter,
@@ -37,7 +37,10 @@ export const interactionOutPortsAdapter = createOutPortsAdapter<NodeData.Interac
   (dbPorts, options) => noMatchNoReplyAndDynamicOutPortsAdapter.toDB(dbPorts, options)
 );
 
-export const interactionOutPortsAdapterV2 = createOutPortsAdapterV2<NodeData.InteractionBuiltInPorts, NodeData.Interaction>(
+export const interactionOutPortsAdapterV2 = createOutPortsAdapterV2<
+  NodeData.InteractionBuiltInPorts,
+  NodeData.Interaction
+>(
   (dbPorts, options) =>
     syncDynamicPortsLength({
       nodeID: options.node.nodeID,

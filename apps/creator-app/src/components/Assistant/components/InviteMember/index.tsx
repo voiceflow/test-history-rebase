@@ -1,5 +1,6 @@
 import { Utils } from '@voiceflow/common';
-import { ProjectUserRole, UserRole } from '@voiceflow/dtos';
+import type { ProjectUserRole } from '@voiceflow/dtos';
+import { UserRole } from '@voiceflow/dtos';
 import { Button, Flex, Members } from '@voiceflow/ui';
 import React from 'react';
 
@@ -8,7 +9,7 @@ import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector } from '@/hooks/redux';
 import { Identifier } from '@/styles/constants';
 
-import { Member } from '../../types';
+import type { Member } from '../../types';
 
 interface InviteMemberProps {
   onAdd: (member: Member) => void;

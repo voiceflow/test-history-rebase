@@ -1,12 +1,16 @@
-import { AnyProject, ProjectMember } from '@realtime-sdk/models';
+import type { AnyProject, ProjectMember } from '@realtime-sdk/models';
 import { BaseModels } from '@voiceflow/base-types';
-import { AnyRecord } from '@voiceflow/common';
+import type { AnyRecord } from '@voiceflow/common';
 import { createSimpleAdapter, notImplementedAdapter } from 'bidirectional-adapter';
 import * as Normal from 'normal-store';
 
 import { legacyPlatformToProjectType } from '../constants/platform';
 
-const projectSimpleAdapter = createSimpleAdapter<BaseModels.Project.Model<AnyRecord, AnyRecord>, AnyProject, [{ members: ProjectMember[] }]>(
+const projectSimpleAdapter = createSimpleAdapter<
+  BaseModels.Project.Model<AnyRecord, AnyRecord>,
+  AnyProject,
+  [{ members: ProjectMember[] }]
+>(
   (
     {
       _id,
@@ -79,7 +83,8 @@ const projectAdapter = {
   mapFromDB: (
     projects: BaseModels.Project.Model<AnyRecord, AnyRecord>[],
     { membersPerProject }: { membersPerProject: Partial<Record<string, ProjectMember[]>> }
-  ) => projects.map((project) => projectSimpleAdapter.fromDB(project, { members: membersPerProject[project._id] ?? [] })),
+  ) =>
+    projects.map((project) => projectSimpleAdapter.fromDB(project, { members: membersPerProject[project._id] ?? [] })),
 };
 
 export default projectAdapter;

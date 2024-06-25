@@ -1,5 +1,5 @@
 import { BlockType } from '@realtime-sdk/constants';
-import { NodeData } from '@realtime-sdk/models';
+import type { NodeData } from '@realtime-sdk/models';
 
 const checkNodeType =
   <T>(type: BlockType) =>
@@ -8,7 +8,8 @@ const checkNodeType =
 
 export const isComponentNode = checkNodeType<NodeData.Component>(BlockType.COMPONENT);
 
-export const isDiagramNode = (data: NodeData<unknown>): data is NodeData<{ diagramID?: string }> => isComponentNode(data);
+export const isDiagramNode = (data: NodeData<unknown>): data is NodeData<{ diagramID?: string }> =>
+  isComponentNode(data);
 
 export const isCommandNode = checkNodeType<NodeData.Command>(BlockType.COMMAND);
 

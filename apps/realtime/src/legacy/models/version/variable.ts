@@ -9,7 +9,15 @@ class VariableModel extends NestedMongoModel<VersionModel> {
     await this.model.atomicUpdateByID(versionID, [Atomic.push([{ path: this.MODEL_PATH, value: variable, index }])]);
   }
 
-  async addMany({ index, variables, versionID }: { index?: number; variables: string[]; versionID: string }): Promise<void> {
+  async addMany({
+    index,
+    variables,
+    versionID,
+  }: {
+    index?: number;
+    variables: string[];
+    versionID: string;
+  }): Promise<void> {
     await this.model.atomicUpdateByID(versionID, [Atomic.push([{ path: this.MODEL_PATH, value: variables, index }])]);
   }
 

@@ -6,9 +6,9 @@ import * as VersionV2 from '@/ducks/versionV2';
 import { useSelector } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 import manager from '@/ModalsV2/manager';
-import { AlexaPublishJob } from '@/models';
+import type { AlexaPublishJob } from '@/models';
 import { ALEXA_SUBMISSION_URL } from '@/platforms/alexa/constants';
-import { StageComponentProps } from '@/platforms/types';
+import type { StageComponentProps } from '@/platforms/types';
 
 interface SubmitForReviewModalProps {
   skillID: string;

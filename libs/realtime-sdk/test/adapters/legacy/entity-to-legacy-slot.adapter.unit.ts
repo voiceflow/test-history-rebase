@@ -105,10 +105,12 @@ describe('Adapters | Legacy | entityToLegacySlot', () => {
 
   describe('mapFromDB', () => {
     it('returns correct data', () => {
-      expect(entityToLegacySlot.mapFromDB({ entities: [entity1, entity2], entityVariants: [variant1, variant3, variant4, variant2] })).toEqual([
-        slot1,
-        slot2,
-      ]);
+      expect(
+        entityToLegacySlot.mapFromDB({
+          entities: [entity1, entity2],
+          entityVariants: [variant1, variant3, variant4, variant2],
+        })
+      ).toEqual([slot1, slot2]);
     });
   });
 

@@ -1,10 +1,10 @@
-import { AlexaProject } from '@voiceflow/alexa-types';
-import { AnyRecord, BaseModels } from '@voiceflow/base-types';
-import { ProjectUserRole } from '@voiceflow/dtos';
-import { DFESProject } from '@voiceflow/google-dfes-types';
-import * as Platform from '@voiceflow/platform-config/backend';
-import { VoiceflowProject } from '@voiceflow/voiceflow-types';
-import * as Normal from 'normal-store';
+import type { AlexaProject } from '@voiceflow/alexa-types';
+import type { AnyRecord, BaseModels } from '@voiceflow/base-types';
+import type { ProjectUserRole } from '@voiceflow/dtos';
+import type { DFESProject } from '@voiceflow/google-dfes-types';
+import type * as Platform from '@voiceflow/platform-config/backend';
+import type { VoiceflowProject } from '@voiceflow/voiceflow-types';
+import type * as Normal from 'normal-store';
 
 export interface ProjectMember {
   role: ProjectUserRole;

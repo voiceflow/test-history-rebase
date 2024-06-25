@@ -1,8 +1,8 @@
 import { KeyName, useCache } from '@voiceflow/ui';
 import React from 'react';
-import { Editor } from 'slate';
+import type { Editor } from 'slate';
 
-import { Hotkey } from '../constants';
+import type { Hotkey } from '../constants';
 import { useStaticSlateEditor } from '../contexts';
 import { EditorAPI } from '../editor';
 

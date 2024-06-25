@@ -1,4 +1,4 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Button, ButtonVariant, Modal, System } from '@voiceflow/ui';
 import React from 'react';
 
@@ -6,7 +6,7 @@ import * as CustomBlock from '@/ducks/customBlock';
 import { useSelector, useToggle } from '@/hooks';
 
 import { Editor, Tooltip } from './components';
-import { PathData } from './components/Editor';
+import type { PathData } from './components/Editor';
 
 const DEFAULT_PATH: PathData = { label: 'Default path', isDefault: true };
 
@@ -38,7 +38,13 @@ export const CustomBlocksForm: React.FC<CustomBlocksFormProps> = ({
   style = {},
   detectDuplicateNames,
 }) => {
-  const { name: defaultName, body: defaultBody, stop: defaultStop, paths: defaultPathnames, defaultPath: defaultPathIndex } = currentFormVal;
+  const {
+    name: defaultName,
+    body: defaultBody,
+    stop: defaultStop,
+    paths: defaultPathnames,
+    defaultPath: defaultPathIndex,
+  } = currentFormVal;
 
   const defaultPaths = defaultPathnames?.map((pathname, index) => ({
     label: pathname,
@@ -61,7 +67,8 @@ export const CustomBlocksForm: React.FC<CustomBlocksFormProps> = ({
 
     const processedName = name.trim();
     const isEmptyName = processedName.length === 0;
-    const isDuplicateName = detectDuplicateNames && allCustomBlocks.some((block) => block.name.toLowerCase() === processedName.toLowerCase());
+    const isDuplicateName =
+      detectDuplicateNames && allCustomBlocks.some((block) => block.name.toLowerCase() === processedName.toLowerCase());
 
     if (isEmptyName) {
       setNameErrorMsg('Name required for custom block.');
@@ -117,7 +124,13 @@ export const CustomBlocksForm: React.FC<CustomBlocksFormProps> = ({
         <Button onClick={onCancel} variant={ButtonVariant.TERTIARY} squareRadius style={{ marginRight: '10px' }}>
           Cancel
         </Button>
-        <Button onClick={submitForm} squareRadius isLoading={isLoading} style={style.confirmButton ?? {}} disabled={isLoading}>
+        <Button
+          onClick={submitForm}
+          squareRadius
+          isLoading={isLoading}
+          style={style.confirmButton ?? {}}
+          disabled={isLoading}
+        >
           {confirmText}
         </Button>
       </Modal.Footer>

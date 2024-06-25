@@ -1,5 +1,6 @@
 import { useConst, useCreateConst } from '@voiceflow/ui';
-import { createNanoEvents, EventsMap } from 'nanoevents';
+import type { EventsMap } from 'nanoevents';
+import { createNanoEvents } from 'nanoevents';
 import React from 'react';
 
 export interface DispatcherContextValue<E extends EventsMap> {

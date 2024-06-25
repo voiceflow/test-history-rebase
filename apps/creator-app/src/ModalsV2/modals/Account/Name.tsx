@@ -51,7 +51,13 @@ const AccountName = manager.create('AccountName', () => ({ api, type, opened, hi
       <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />}>Edit Name</Modal.Header>
 
       <Modal.Body>
-        <Input autoFocus value={saveName} placeholder="Enter name" onChangeText={setSaveName} onEnterPress={handleSave} />
+        <Input
+          autoFocus
+          value={saveName}
+          placeholder="Enter name"
+          onChangeText={setSaveName}
+          onEnterPress={handleSave}
+        />
       </Modal.Body>
 
       <Modal.Footer gap={12}>

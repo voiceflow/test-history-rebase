@@ -7,7 +7,8 @@ import { DragItem } from '@/constants';
 import { useDragPreview } from '@/hooks/dnd.hook';
 import { useFeature } from '@/hooks/feature.hook';
 
-import { LibraryDragItem, LibraryStepType, TabData } from '../constants';
+import type { LibraryDragItem, TabData } from '../constants';
+import { LibraryStepType } from '../constants';
 import Searchbar from '../Search';
 import * as S from '../SubMenu/styles';
 import Tabs from '../Tabs';

@@ -1,7 +1,8 @@
 import { Box, Input, useLinkedState } from '@voiceflow/ui';
 import React from 'react';
 
-import Slider, { SliderProps } from '@/components/Slider';
+import type { SliderProps } from '@/components/Slider';
+import Slider from '@/components/Slider';
 
 export interface SliderInputGroupProps {
   value: number;
@@ -49,9 +50,20 @@ const SliderInputGroup: React.FC<SliderInputGroupProps> = ({
 
   return (
     <Box.Flex gap={16}>
-      <Slider ref={sliderRef} {...sliderProps} value={localValue} onChange={updateSlider} onBlur={() => applyValue(localInputValue)} />
+      <Slider
+        ref={sliderRef}
+        {...sliderProps}
+        value={localValue}
+        onChange={updateSlider}
+        onBlur={() => applyValue(localInputValue)}
+      />
       <Box width={inputWidth}>
-        <Input {...inputProps} value={localInputValue} onChangeText={updateInput} onBlur={() => applyValue(localInputValue)} />
+        <Input
+          {...inputProps}
+          value={localInputValue}
+          onChangeText={updateInput}
+          onBlur={() => applyValue(localInputValue)}
+        />
       </Box>
     </Box.Flex>
   );

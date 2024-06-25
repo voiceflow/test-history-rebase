@@ -3,8 +3,9 @@ import { readCSVFile } from '@ui/utils';
 import React from 'react';
 
 import { UPLOAD_ERROR } from '../../constants';
-import UploadDrop, { DropContent, UploadDropProps } from '../Drop';
-import { InputRenderer } from '../LinkInput';
+import type { UploadDropProps } from '../Drop';
+import UploadDrop, { DropContent } from '../Drop';
+import type { InputRenderer } from '../LinkInput';
 
 export interface CSVFile {
   data: string[];

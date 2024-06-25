@@ -2,7 +2,7 @@ import { datadogRum } from '@datadog/browser-rum';
 import { Upload } from '@voiceflow/ui';
 import { NotifyContainer } from '@voiceflow/ui-next';
 import { ConnectedRouter } from 'connected-react-router';
-import { History } from 'history';
+import type { History } from 'history';
 import React from 'react';
 import { DismissableLayersGlobalProvider } from 'react-dismissable-layers';
 import { DndProvider } from 'react-dnd';
@@ -10,7 +10,8 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { ThemeProvider } from 'styled-components';
 
 import client from '@/client';
-import { ComponentTupple, Compose } from '@/components/Compose/Compose.component';
+import type { ComponentTupple } from '@/components/Compose/Compose.component';
+import { Compose } from '@/components/Compose/Compose.component';
 import { PageLoaderProvider } from '@/components/Loader/PageLoader/PageLoader.provider';
 import { Modal } from '@/components/Modal';
 import RealtimeStatus from '@/components/RealtimeStatus';
@@ -35,7 +36,8 @@ import LifecycleProvider from '../LifecycleProvider';
 import { MousePositionProvider } from '../MousePositionContext';
 import { PlanPricesProvider } from '../PlanPricesContext';
 import { ProjectConfigProvider } from '../ProjectConfigProvider';
-import StoreProvider, { StoreProviderProps } from '../StoreProvider';
+import type { StoreProviderProps } from '../StoreProvider';
+import StoreProvider from '../StoreProvider';
 import { VoiceflowAssistantVisibilityProvider } from '../VoiceflowAssistantVisibility';
 import { PlatformProvider } from './PlatformProvider';
 

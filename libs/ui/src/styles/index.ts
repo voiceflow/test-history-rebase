@@ -1,6 +1,7 @@
-import _styled, { css as _css, DefaultTheme, ThemedCssFunction, ThemedStyledInterface, ThemedStyledProps } from 'styled-components';
+import type { DefaultTheme, ThemedCssFunction, ThemedStyledInterface, ThemedStyledProps } from 'styled-components';
+import _styled, { css as _css } from 'styled-components';
 
-import { ThemeColor } from './theme';
+import type { ThemeColor } from './theme';
 
 export { ClassName } from './constants';
 export { createTheme, ThemeColor } from './theme';

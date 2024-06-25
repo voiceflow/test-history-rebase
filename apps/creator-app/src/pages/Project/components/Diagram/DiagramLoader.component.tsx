@@ -18,7 +18,11 @@ export const DiagramLoader: React.FC = () => {
 
   return (
     <>
-      <Canvas viewport={viewport ?? { x: 0, y: 0, zoom: 75 }} getZoomType={() => zoomType} canvasGridEnabled={canvasGridEnabled} />
+      <Canvas
+        viewport={viewport ?? { x: 0, y: 0, zoom: 75 }}
+        getZoomType={() => zoomType}
+        canvasGridEnabled={canvasGridEnabled}
+      />
       <CanvasBlurLoader shown />
 
       {isDesignMode && <DiagramSidebar />}

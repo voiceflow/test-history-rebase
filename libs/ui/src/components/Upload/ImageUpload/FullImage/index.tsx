@@ -3,15 +3,18 @@ import SvgIcon from '@ui/components/SvgIcon';
 import TippyTooltip from '@ui/components/TippyTooltip';
 import { useEnableDisable } from '@ui/hooks';
 import { stopPropagation } from '@ui/utils';
-import { Nullable, READABLE_VARIABLE_REGEXP, Utils } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
+import { READABLE_VARIABLE_REGEXP, Utils } from '@voiceflow/common';
 import React from 'react';
 import { useDropzone } from 'react-dropzone';
 
 import { HTTPS_URL_REGEX, IMAGE_FILE_TYPES, UPLOAD_ERROR } from '../../constants';
 import { useFileTypesToMimeType } from '../../hooks';
-import DropUpload, { DropUploadProps } from '../../Primitive/DropUpload';
-import { InputRenderer } from '../../Primitive/LinkUpload';
-import { SingleUploadConfig, useUpload } from '../../useUpload';
+import type { DropUploadProps } from '../../Primitive/DropUpload';
+import DropUpload from '../../Primitive/DropUpload';
+import type { InputRenderer } from '../../Primitive/LinkUpload';
+import type { SingleUploadConfig } from '../../useUpload';
+import { useUpload } from '../../useUpload';
 import { validateFiles } from '../../utils';
 import { ErrorText, RemoveButton } from '../styles';
 import * as S from './styles';
@@ -32,13 +35,29 @@ interface FullImageOwnProps {
   renderInput: InputRenderer;
 }
 
-export interface FullImageProps extends Omit<SingleUploadConfig, 'fileType' | 'endpoint'>, FullImageOwnProps, Omit<DropUploadProps, 'renderInput'> {
+export interface FullImageProps
+  extends Omit<SingleUploadConfig, 'fileType' | 'endpoint'>,
+    FullImageOwnProps,
+    Omit<DropUploadProps, 'renderInput'> {
   endpoint?: string;
   update: (value: string | null) => void;
 }
 
 const FullImage = React.forwardRef<HTMLDivElement, FullImageProps>(
-  ({ image, ratio, update, canUseLink = true, showRemove = true, imageHeight, endpoint = 'image', errorMessage, renderInput }, ref) => {
+  (
+    {
+      image,
+      ratio,
+      update,
+      canUseLink = true,
+      showRemove = true,
+      imageHeight,
+      endpoint = 'image',
+      errorMessage,
+      renderInput,
+    },
+    ref
+  ) => {
     const { error, setError, isLoading, onDropAccepted, onDropRejected } = useUpload({
       update,
       fileType: 'image',
@@ -97,7 +116,12 @@ const FullImage = React.forwardRef<HTMLDivElement, FullImageProps>(
         isActive={isDragActive}
         autoHeight={!!ratio}
       >
-        <S.ImageUploadInput ref={imageUploadRef} type="file" accept={Object.keys(accept).join(',')} {...getInputProps()} />
+        <S.ImageUploadInput
+          ref={imageUploadRef}
+          type="file"
+          accept={Object.keys(accept).join(',')}
+          {...getInputProps()}
+        />
 
         {showRemove && removeButton && (
           <RemoveButton onClick={stopPropagation(() => update(''))}>

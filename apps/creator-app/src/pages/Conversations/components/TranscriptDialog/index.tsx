@@ -10,10 +10,12 @@ import { activeProjectIDSelector } from '@/ducks/session';
 import { currentTranscriptIDSelector } from '@/ducks/transcript';
 import { useLocalStorageState } from '@/hooks/storage.hook';
 import PrototypeChatDisplay from '@/pages/Prototype/components/PrototypeChatDisplay';
-import { Message, MessageType } from '@/pages/Prototype/types';
+import type { Message } from '@/pages/Prototype/types';
+import { MessageType } from '@/pages/Prototype/types';
 
 import { Container, DialogHeader, DialogLoader, NoData } from './components';
-import { generateTurnMap, transformDialogTimestamp, TurnMap } from './util';
+import type { TurnMap } from './util';
+import { generateTurnMap, transformDialogTimestamp } from './util';
 
 export type { TurnMap };
 
@@ -33,7 +35,10 @@ const TranscriptDialog: React.FC = () => {
   const [dialogTurnMap, setDialogTurnMap] = React.useState<TurnMap>(() => new Map());
 
   const [showDebugs, setShowDebugs] = useLocalStorageState(DEBUG_LOCAL_STORAGE_BOOL_KEY, false);
-  const [showIntentConfidence, setShowIntentConfidence] = useLocalStorageState(INTENT_CONF_LOCAL_STORAGE_BOOL_KEY, true);
+  const [showIntentConfidence, setShowIntentConfidence] = useLocalStorageState(
+    INTENT_CONF_LOCAL_STORAGE_BOOL_KEY,
+    true
+  );
 
   const cache = useCache({ currentTranscriptID });
 
@@ -64,6 +69,7 @@ const TranscriptDialog: React.FC = () => {
       return messages.filter((message: Message) => {
         if (showDebugs || message.type !== MessageType.DEBUG) return true;
         if (!message.message) return false;
+        // eslint-disable-next-line sonarjs/prefer-single-boolean-return
         if (message.message.startsWith('matched intent') && !showDebugs && showIntentConfidence) return true;
         return false;
       });

@@ -1,6 +1,6 @@
 import { tid } from '@voiceflow/style';
+import type { BaseProps } from '@voiceflow/ui-next';
 import {
-  BaseProps,
   Box,
   Chunk,
   Collapsible,

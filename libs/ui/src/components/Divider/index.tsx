@@ -1,7 +1,7 @@
 import React from 'react';
 
 import * as S from './styles';
-import * as T from './types';
+import type * as T from './types';
 
 export * as DividerTypes from './types';
 

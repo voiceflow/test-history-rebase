@@ -1,4 +1,4 @@
-import { BaseModels } from '@voiceflow/base-types';
+import type { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
@@ -9,7 +9,7 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import { waitAsync } from '@/ducks/utils';
 import * as Workspace from '@/ducks/workspaceV2';
-import { SyncThunk, Thunk } from '@/store/types';
+import type { SyncThunk, Thunk } from '@/store/types';
 import { isComponentDiagram } from '@/utils/diagram.utils';
 
 import { active } from '../selectors';

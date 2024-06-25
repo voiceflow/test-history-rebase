@@ -5,7 +5,7 @@ import { LimitType } from '@/constants/limits';
 import * as Tracking from '@/ducks/tracking';
 import { getUpgradeModalProps } from '@/utils/upgrade';
 
-import { LimitV3, UpgradeModalStaticLimit } from './types';
+import type { LimitV3, UpgradeModalStaticLimit } from './types';
 
 const ALL_PLANS_LIMIT = {
   limit: VIEWERS_DEFAULT_LIMIT,

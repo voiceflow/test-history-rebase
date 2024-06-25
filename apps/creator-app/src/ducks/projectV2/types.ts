@@ -1,7 +1,7 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
-import { Normalized } from 'normal-store';
+import type * as Realtime from '@voiceflow/realtime-sdk';
+import type { Normalized } from 'normal-store';
 
-import { CRUDState } from '@/ducks/utils/crudV2';
+import type { CRUDState } from '@/ducks/utils/crudV2';
 
 export interface DiagramViewer extends Realtime.Viewer {
   color: string;

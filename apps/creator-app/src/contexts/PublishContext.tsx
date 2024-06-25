@@ -4,8 +4,9 @@ import { useSelector } from 'react-redux';
 
 import client from '@/client';
 import * as ProjectV2 from '@/ducks/projectV2';
-import useJob, { JobContextValue } from '@/hooks/job';
-import { AlexaPublishJob, DialogflowESPublishJob, GooglePublishJob, Job, JobClient } from '@/models';
+import type { JobContextValue } from '@/hooks/job';
+import useJob from '@/hooks/job';
+import type { AlexaPublishJob, DialogflowESPublishJob, GooglePublishJob, Job, JobClient } from '@/models';
 
 export type AnyJob = AlexaPublishJob.AnyJob | GooglePublishJob.AnyJob | DialogflowESPublishJob.AnyJob;
 export interface PublishContextValue<T extends Job<any>> extends JobContextValue<T> {
@@ -18,6 +19,7 @@ export const PublishContext = React.createContext<PublishContextValue<Job<any>>>
   start: () => Promise.resolve(),
   active: false,
   cancel: () => Promise.resolve(),
+  // eslint-disable-next-line no-empty-function
   setJob: () => {},
   restart: () => Promise.resolve(),
   updateCurrentStage: () => Promise.resolve(),

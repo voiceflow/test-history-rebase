@@ -1,5 +1,5 @@
 import React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+import type { RouteComponentProps } from 'react-router-dom';
 
 import SeoHelmet from '@/components/SeoHelmet';
 import { SeoPage } from '@/constants/seo';

@@ -1,4 +1,5 @@
-import { Nullable, Utils } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
 // eslint-disable-next-line you-dont-need-lodash-underscore/is-function
 import _isFunction from 'lodash/isFunction';
 import _transform from 'lodash/transform';
@@ -92,7 +93,7 @@ export type SmartReducerAPi<S extends object> = {
 export const useSmartReducerV2 = <S extends object>(
   defaultState: S,
   customReducer: CustomReducer<S> = (s) => s,
-  customApiBuilder: <R extends object>(defaultState: S, api: { [K in keyof S]: KeyApi<S[K]> }) => R = () => ({} as any)
+  customApiBuilder: <R extends object>(defaultState: S, api: { [K in keyof S]: KeyApi<S[K]> }) => R = () => ({}) as any
 ) => {
   const apiRef = useRef(null as Nullable<SmartReducerAPi<S> & ReturnType<typeof customApiBuilder>>);
   const [state, dispatch] = useReducer(createSmartReducer(customReducer), defaultState);
@@ -102,10 +103,12 @@ export const useSmartReducerV2 = <S extends object>(
       (api, key) =>
         Object.assign(api, {
           [key]: {
-            set: (payload: S[typeof key] | SetCallback<S[typeof key]>) => dispatch({ type: ActionType.KEY_SET, key, payload }),
+            set: (payload: S[typeof key] | SetCallback<S[typeof key]>) =>
+              dispatch({ type: ActionType.KEY_SET, key, payload }),
             clear: () => dispatch({ type: ActionType.KEY_SET, key, payload: defaultState[key] }),
             toggle: () => dispatch({ type: ActionType.KEY_TOGGLE, key }),
-            update: (payload: Partial<S[typeof key]> | UpdateCallback<S[typeof key]>) => dispatch({ type: ActionType.KEY_UPDATE, key, payload }),
+            update: (payload: Partial<S[typeof key]> | UpdateCallback<S[typeof key]>) =>
+              dispatch({ type: ActionType.KEY_UPDATE, key, payload }),
           },
         }),
       {} as { [K in keyof S]: KeyApi<S[K]> }

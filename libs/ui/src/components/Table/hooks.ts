@@ -1,18 +1,18 @@
 import { Utils } from '@voiceflow/common';
 import React from 'react';
 
-import * as T from './types';
+import type { Column, Item } from './types';
 
-export interface FilterOrderProps<T extends string, I extends T.Item> {
+export interface FilterOrderProps<T extends string, I extends Item> {
   items: I[];
-  columns: T.Column<T, I>[];
+  columns: Column<T, I>[];
   filterBy?: string[];
   isDescending?: boolean;
   initialOrderBy?: T;
   getItemFilterBy?: (item: I) => string[];
 }
 
-export const useFilterOrderItems = <T extends string, I extends T.Item>({
+export const useFilterOrderItems = <T extends string, I extends Item>({
   items: propItems,
   columns,
   filterBy,
@@ -43,7 +43,9 @@ export const useFilterOrderItems = <T extends string, I extends T.Item>({
     const filteredItems =
       lowercasedFilterBy && getItemFilterBy
         ? propItems.filter((item) =>
-            getItemFilterBy(item).every((filterByItem, index) => filterByItem.toLowerCase().includes(lowercasedFilterBy[index]))
+            getItemFilterBy(item).every((filterByItem, index) =>
+              filterByItem.toLowerCase().includes(lowercasedFilterBy[index])
+            )
           )
         : propItems;
 

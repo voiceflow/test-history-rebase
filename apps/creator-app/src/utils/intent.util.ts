@@ -7,9 +7,11 @@ import type { QualityLevel } from '@voiceflow/ui-next/build/cjs/utils/quality-le
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 const BUILTIN_INTENT_ID_SET = new Set(
-  [...AlexaConstants.BUILT_IN_INTENTS, ...DFESConstants.BUILT_IN_INTENTS, ...Object.values(VoiceflowConstants.DEFAULT_INTENTS_MAP).flat()].map(
-    (intent) => intent.name
-  )
+  [
+    ...AlexaConstants.BUILT_IN_INTENTS,
+    ...DFESConstants.BUILT_IN_INTENTS,
+    ...Object.values(VoiceflowConstants.DEFAULT_INTENTS_MAP).flat(),
+  ].map((intent) => intent.name)
 );
 
 export const isIntentBuiltIn = (intentID: string): boolean => BUILTIN_INTENT_ID_SET.has(intentID);
@@ -56,5 +58,6 @@ export const formatBuiltInIntentName = Realtime.Utils.platform.createPlatformSel
         ? Utils.string.capitalizeFirstLetter(name.replace('actions.intent.', '').replace(/_/g, ' ').toLowerCase())
         : Utils.string.capitalizeFirstLetter(removeBuiltInIntentNamePrefix(name).replace(/_/g, ' ').toLowerCase()),
   },
-  (name: string) => Utils.string.capitalizeFirstLetter(removeBuiltInIntentNamePrefix(name).replace(/_/g, ' ').toLowerCase())
+  (name: string) =>
+    Utils.string.capitalizeFirstLetter(removeBuiltInIntentNamePrefix(name).replace(/_/g, ' ').toLowerCase())
 );

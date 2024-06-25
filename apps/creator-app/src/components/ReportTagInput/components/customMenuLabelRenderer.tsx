@@ -1,17 +1,8 @@
-import {
-  Checkbox,
-  defaultMenuLabelRenderer,
-  FlexApart,
-  FlexStart,
-  GetOptionLabel,
-  GetOptionValue,
-  SvgIcon,
-  SvgIconTypes,
-  UIOnlyMenuItemOption,
-} from '@voiceflow/ui';
+import type { GetOptionLabel, GetOptionValue, SvgIconTypes, UIOnlyMenuItemOption } from '@voiceflow/ui';
+import { Checkbox, defaultMenuLabelRenderer, FlexApart, FlexStart, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import { ReportTag } from '@/models';
+import type { ReportTag } from '@/models';
 import { isBuiltInTag, isSentimentTag } from '@/utils/reportTag';
 
 const customMenuLabelRenderer = (

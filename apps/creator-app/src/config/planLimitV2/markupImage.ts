@@ -1,6 +1,6 @@
 import { LimitType } from '@/constants/limits';
 
-import { PlanLimit, ToastErrorStaticLimit } from './types';
+import type { PlanLimit, ToastErrorStaticLimit } from './types';
 import { applyAllLimits } from './utils';
 
 const LIMIT = {

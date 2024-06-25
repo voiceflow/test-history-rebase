@@ -31,7 +31,7 @@ export const UseRequestContext = (): MethodDecorator =>
       const postgresEM = (this as any)[POSTGRES_FILED_NAME] as SqlEntityManager | undefined;
 
       if (!mongoEM || !postgresEM) {
-        throw new Error(`Request context ORMs not found, please use InjectRequestContext decorator to inject ORMs`);
+        throw new Error('Request context ORMs not found, please use InjectRequestContext decorator to inject ORMs');
       }
 
       return RequestContext.createAsync([mongoEM, postgresEM], async () => originalMethod.apply(this, args));

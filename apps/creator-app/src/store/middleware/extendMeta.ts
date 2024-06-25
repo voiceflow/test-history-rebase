@@ -1,7 +1,7 @@
-import { AnyRecord } from '@voiceflow/common';
-import { ActionCreator } from 'typescript-fsa';
+import type { AnyRecord } from '@voiceflow/common';
+import type { ActionCreator } from 'typescript-fsa';
 
-import { Middleware, State } from '@/store/types';
+import type { Middleware, State } from '@/store/types';
 import { extendMeta } from '@/store/utils';
 
 export const createExtendMetaMiddleware =

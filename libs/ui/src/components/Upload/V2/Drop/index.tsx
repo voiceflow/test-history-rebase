@@ -6,8 +6,8 @@ import { useDropzone } from 'react-dropzone';
 
 import { UPLOAD_ERROR } from '../../constants';
 import { useFileTypesToMimeType } from '../../hooks';
-import { RootDropAreaProps, ValueRendererProps } from '../../types';
-import { UploadAPI } from '../../useUpload';
+import type { RootDropAreaProps, ValueRendererProps } from '../../types';
+import type { UploadAPI } from '../../useUpload';
 import * as S from './styles';
 
 export { default as DropContent } from './components/Content';

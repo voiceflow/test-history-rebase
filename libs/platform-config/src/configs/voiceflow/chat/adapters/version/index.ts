@@ -1,14 +1,18 @@
 import * as Common from '@platform-config/configs/common';
-import { VoiceflowVersion } from '@voiceflow/voiceflow-types';
+import type { VoiceflowVersion } from '@voiceflow/voiceflow-types';
 import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter';
 
-import * as Models from '../../models';
+import type * as Models from '../../models';
 import * as Publishing from './publishing';
 import * as Settings from './settings';
 
 export { Publishing, Settings };
 
-export const simple = createMultiAdapter<VoiceflowVersion.ChatVersion, Models.Version.Model, Common.Chat.Adapters.Version.FromDBOptions>(
+export const simple = createMultiAdapter<
+  VoiceflowVersion.ChatVersion,
+  Models.Version.Model,
+  Common.Chat.Adapters.Version.FromDBOptions
+>(
   (version, options) => ({
     ...Common.Chat.Adapters.Version.simple.fromDB(version, options),
     status: null,

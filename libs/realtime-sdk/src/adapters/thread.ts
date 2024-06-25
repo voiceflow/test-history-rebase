@@ -1,6 +1,6 @@
 import { createMultiAdapter } from 'bidirectional-adapter';
 
-import { Comment, DBComment, DBThread, Thread } from '../models';
+import type { Comment, DBComment, DBThread, Thread } from '../models';
 
 export const commentAdapter = createMultiAdapter<DBComment, Comment>(
   ({ comment_id, thread_id, creator_id, created_at, ...comment }: DBComment) => ({

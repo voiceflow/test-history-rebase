@@ -1,4 +1,4 @@
-import { BaseUtils } from '@voiceflow/base-types';
+import type { BaseUtils } from '@voiceflow/base-types';
 import { AIModel } from '@voiceflow/dtos';
 import { Box } from '@voiceflow/ui';
 import React from 'react';
@@ -20,11 +20,21 @@ export const AIPromptSettings: React.FC<IAIPromptSettings> = ({
   containerProps,
 }) => (
   <Box.FlexColumn alignItems="stretch" gap={12} {...containerProps}>
-    <AIPromptSettingsModelSelect value={model} onValueChange={(model) => onValueChange({ model: model as unknown as BaseUtils.ai.GPT_MODEL })} />
+    <AIPromptSettingsModelSelect
+      value={model}
+      onValueChange={(model) => onValueChange({ model: model as unknown as BaseUtils.ai.GPT_MODEL })}
+    />
 
-    <AIPromptSettingsTemperatureSlider value={temperature} onValueChange={(temperature) => onValueChange({ temperature })} />
+    <AIPromptSettingsTemperatureSlider
+      value={temperature}
+      onValueChange={(temperature) => onValueChange({ temperature })}
+    />
 
-    <AIPromptSettingsMaxTokensSlider model={model} value={maxTokens} onValueChange={(maxTokens) => onValueChange({ maxTokens })} />
+    <AIPromptSettingsMaxTokensSlider
+      model={model}
+      value={maxTokens}
+      onValueChange={(maxTokens) => onValueChange({ maxTokens })}
+    />
 
     <AIPromptSettingsSystemInput model={model} value={system} onValueChange={(system) => onValueChange({ system })} />
   </Box.FlexColumn>

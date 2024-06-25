@@ -2,7 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 
 import * as Documentation from '@/config/documentation';
 
-import { NodeManagerConfigV3 } from '../types';
+import type { NodeManagerConfigV3 } from '../types';
 import { Action, ActionEditor, Editor, Step } from './components';
 import { SETV2_NODE_CONFIG } from './SetV2Manager.constant';
 import { SetV3ActionEditor } from './SetV3ActionEditor.component';

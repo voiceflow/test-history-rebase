@@ -1,5 +1,6 @@
 import { act, fireEvent, render, screen } from '@testing-library/react';
-import Input, { DefaultVariantInputProps } from '@ui/components/Input';
+import type { DefaultVariantInputProps } from '@ui/components/Input';
+import Input from '@ui/components/Input';
 import { Utils } from '@voiceflow/common';
 import React from 'react';
 

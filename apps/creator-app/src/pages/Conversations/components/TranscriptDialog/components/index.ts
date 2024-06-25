@@ -1,5 +1,6 @@
-import { Flex, LoadCircle } from '@voiceflow/ui';
+import { Flex } from '@voiceflow/ui';
 
+import { LoadCircle } from '@/components/legacy/Loader';
 import { styled } from '@/hocs/styled';
 
 export { default as DialogHeader } from './DialogHeader';

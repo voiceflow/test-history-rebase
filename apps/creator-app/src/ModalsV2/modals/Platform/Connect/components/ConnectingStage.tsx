@@ -1,10 +1,11 @@
 import { datadogRum } from '@datadog/browser-rum';
 import * as Platform from '@voiceflow/platform-config';
-import { Box, Button, ButtonVariant, LoadCircle, Modal } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, Modal } from '@voiceflow/ui';
 import React from 'react';
 
 import { linkGraphic } from '@/assets';
 import Alert from '@/components/legacy/Alert';
+import { LoadCircle } from '@/components/legacy/Loader';
 
 import { PlatformAccount } from '../types';
 

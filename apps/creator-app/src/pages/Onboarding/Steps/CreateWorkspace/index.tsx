@@ -1,5 +1,8 @@
-import { ClickableText, FlexCenter, KeyName, toast, Upload, UploadIconVariant } from '@voiceflow/ui';
+import { ClickableText, FlexCenter, KeyName, toast } from '@voiceflow/ui';
 import React from 'react';
+
+import Upload from '@/components/legacy/Upload';
+import { UploadIconVariant } from '@/components/legacy/Upload/ImageUpload/IconUpload';
 
 import ContinueButton from '../../components/ContinueButton';
 import { useOnboardingContext } from '../../context';

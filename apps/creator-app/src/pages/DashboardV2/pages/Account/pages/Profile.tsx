@@ -1,9 +1,11 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { ProviderType } from '@voiceflow/schema-types';
-import { Box, Button, Input, SectionV2, Upload, UploadIconVariant } from '@voiceflow/ui';
+import { Box, Button, Input, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
+import Upload from '@/components/legacy/Upload';
+import { UploadIconVariant } from '@/components/legacy/Upload/ImageUpload/IconUpload';
 import Page from '@/components/Page';
 import * as Account from '@/ducks/account';
 import { useAsyncMountUnmount, useDispatch, useSelector } from '@/hooks';
@@ -35,7 +37,10 @@ const Profile: React.FC = () => {
     >
       <SectionV2.SimpleSection headerProps={{ topUnit: 3, bottomUnit: 3 }}>
         <Box.Flex gap={24} fullWidth>
-          <Upload.Provider client={{ upload: (_endpoint, _fileType, formData) => updateUserProfileImage(formData) }} onError={datadogRum.addError}>
+          <Upload.Provider
+            client={{ upload: (_endpoint, _fileType, formData) => updateUserProfileImage(formData) }}
+            onError={datadogRum.addError}
+          >
             <Upload.IconUpload size={UploadIconVariant.SMALLER} isSquare user={user} />
           </Upload.Provider>
 

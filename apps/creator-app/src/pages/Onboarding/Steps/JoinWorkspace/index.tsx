@@ -1,7 +1,8 @@
 import { datadogRum } from '@datadog/browser-rum';
-import { Button, FlexCenter, Upload } from '@voiceflow/ui';
+import { Button, FlexCenter } from '@voiceflow/ui';
 import React from 'react';
 
+import Upload from '@/components/legacy/Upload';
 import * as Account from '@/ducks/account';
 import { useDispatch, useSelector } from '@/hooks';
 

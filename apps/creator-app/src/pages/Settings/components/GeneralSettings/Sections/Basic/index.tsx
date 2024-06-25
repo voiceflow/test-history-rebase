@@ -1,6 +1,8 @@
-import { Box, Input, SectionV2, Upload, UploadIconVariant, useDidUpdateEffect, useLinkedState } from '@voiceflow/ui';
+import { Box, Input, SectionV2, useDidUpdateEffect, useLinkedState } from '@voiceflow/ui';
 import React from 'react';
 
+import Upload from '@/components/legacy/Upload';
+import { UploadIconVariant } from '@/components/legacy/Upload/ImageUpload/IconUpload';
 import LocalesSelect from '@/components/LocalesSelect';
 import * as Settings from '@/components/Settings';
 import * as ProjectV2 from '@/ducks/projectV2';
@@ -21,7 +23,8 @@ const Basic: React.FC = () => {
   const updateInvocationName = useDispatch(VersionV2.updateInvocationName);
 
   const initialLocales = React.useMemo(
-    () => (projectConfig.project.locale.isLanguage ? [projectConfig.utils.locale.toLanguage(storedLocales)] : storedLocales),
+    () =>
+      projectConfig.project.locale.isLanguage ? [projectConfig.utils.locale.toLanguage(storedLocales)] : storedLocales,
     [projectConfig, storedLocales]
   );
 
@@ -38,9 +41,13 @@ const Basic: React.FC = () => {
     }
   };
 
-  const invocationError = projectConfig.utils.invocationName.validate({ value: invocationName, locales: storedLocales });
+  const invocationError = projectConfig.utils.invocationName.validate({
+    value: invocationName,
+    locales: storedLocales,
+  });
 
-  const onSaveInvocationName = () => projectConfig.project.invocationName && !invocationError && updateInvocationName(invocationName);
+  const onSaveInvocationName = () =>
+    projectConfig.project.invocationName && !invocationError && updateInvocationName(invocationName);
 
   const saveSettings = async () =>
     Promise.all([
@@ -61,7 +68,12 @@ const Basic: React.FC = () => {
           <Box.Flex gap={12} fullWidth>
             <Input value={projectName} onChangeText={setProjectName} onBlur={saveSettings} style={{ flexGrow: 1 }} />
 
-            <Upload.IconUpload size={UploadIconVariant.EXTRA_SMALL} isSquare update={setProjectImage} image={projectImage ?? ''} />
+            <Upload.IconUpload
+              size={UploadIconVariant.EXTRA_SMALL}
+              isSquare
+              update={setProjectImage}
+              image={projectImage ?? ''}
+            />
           </Box.Flex>
 
           <Settings.SubSection.Description>{projectConfig.project.description}</Settings.SubSection.Description>

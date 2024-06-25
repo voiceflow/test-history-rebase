@@ -1,7 +1,8 @@
-import { CustomScrollbars, Flex, FlexCenter, LoadCircle, toast } from '@voiceflow/ui';
+import { CustomScrollbars, Flex, FlexCenter, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import Drawer from '@/components/Drawer';
+import { LoadCircle } from '@/components/legacy/Loader';
 import TestVariableStateSelect from '@/components/TestVariableStateSelect';
 import VariableList from '@/components/VariableList';
 import * as Session from '@/ducks/session';

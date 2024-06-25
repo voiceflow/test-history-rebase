@@ -1,6 +1,6 @@
-import { Upload, UploadIconVariant } from '@voiceflow/ui';
 import React from 'react';
 
+import IconUpload, { UploadIconVariant } from '@/components/legacy/Upload/ImageUpload/IconUpload';
 import { useLinkedState } from '@/hooks';
 
 import Title from '../../Title';
@@ -15,7 +15,14 @@ interface UploadImageProps {
   hasBorderRight: boolean;
 }
 
-const UploadImage: React.FC<UploadImageProps> = ({ id, image: propImage, title, isSquare, hasBorderRight, onUpdate }) => {
+const UploadImage: React.FC<UploadImageProps> = ({
+  id,
+  image: propImage,
+  title,
+  isSquare,
+  hasBorderRight,
+  onUpdate,
+}) => {
   const [image, setImage] = useLinkedState(propImage);
 
   const updateImage = async (image: string | null) => {
@@ -30,7 +37,7 @@ const UploadImage: React.FC<UploadImageProps> = ({ id, image: propImage, title, 
         {title}
       </Title>
 
-      <Upload.IconUpload image={image} update={updateImage} size={UploadIconVariant.SMALL} isSquare={isSquare} />
+      <IconUpload image={image} update={updateImage} size={UploadIconVariant.SMALL} isSquare={isSquare} />
     </UploadImageContainer>
   );
 };

@@ -105,7 +105,6 @@ export {
   InputWrapper,
   NestedInputIconPosition,
 } from './Input';
-export { LoadCircle, LoadCircleSmall, default as Loader } from './Loader';
 export * as Members from './Members';
 export type { MenuTypes } from './Menu';
 export { default as Menu } from './Menu';
@@ -176,13 +175,5 @@ export type { TutorialInfoIconProps } from './TutorialInfoIcon';
 export { default as TutorialInfoIcon } from './TutorialInfoIcon';
 export type { TutorialTooltipProps } from './TutorialTooltip';
 export { default as TutorialTooltip } from './TutorialTooltip';
-export { default as Upload } from './Upload';
-export type { UploadClient, UploadFileType } from './Upload/Context';
-export type { IconUploadOwnProps } from './Upload/ImageUpload/IconUpload';
-export { UploadIconVariant } from './Upload/ImageUpload/IconUpload';
-export type { DropUploadProps } from './Upload/Primitive/DropUpload';
-export type { InputRenderer } from './Upload/Primitive/LinkUpload';
-export type { LinkUploadProps } from './Upload/Primitive/LinkUpload';
-export { default as UploadV2 } from './Upload/V2';
 export type { UserData, UserProps } from './User';
 export { MemberIcon, default as User } from './User';

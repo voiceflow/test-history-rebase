@@ -1,5 +1,4 @@
 import { datadogRum } from '@datadog/browser-rum';
-import { Upload } from '@voiceflow/ui';
 import { NotifyContainer } from '@voiceflow/ui-next';
 import { ConnectedRouter } from 'connected-react-router';
 import { History } from 'history';
@@ -11,6 +10,7 @@ import { ThemeProvider } from 'styled-components';
 
 import client from '@/client';
 import { ComponentTupple, Compose } from '@/components/Compose/Compose.component';
+import Upload from '@/components/legacy/Upload';
 import { PageLoaderProvider } from '@/components/Loader/PageLoader/PageLoader.provider';
 import { Modal } from '@/components/Modal';
 import RealtimeStatus from '@/components/RealtimeStatus';

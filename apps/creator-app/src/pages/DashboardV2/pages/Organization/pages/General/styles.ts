@@ -1,5 +1,4 @@
-import { Upload } from '@voiceflow/ui';
-
+import Upload from '@/components/legacy/Upload';
 import { styled } from '@/hocs/styled';
 
 export const UploadIcon = styled(Upload.IconUpload)`

@@ -1,11 +1,12 @@
 import { Utils } from '@voiceflow/common';
 import type { Backup as BackupEntity } from '@voiceflow/dtos';
-import { Animations, Box, DataTypes, download, LoadCircle, SectionV2, toast } from '@voiceflow/ui';
+import { Animations, Box, DataTypes, download, SectionV2, toast } from '@voiceflow/ui';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
 
 import { designerClient } from '@/client/designer';
 import { realtimeClient } from '@/client/realtime';
+import { LoadCircle } from '@/components/legacy/Loader';
 import * as Settings from '@/components/Settings';
 import { Path } from '@/config/routes';
 import { Permission } from '@/constants/permissions';

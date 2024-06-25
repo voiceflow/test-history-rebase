@@ -1,9 +1,10 @@
 import { BaseText } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, SectionV2, UploadV2 } from '@voiceflow/ui';
+import { Box, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
+import UploadV2 from '@/components/legacy/Upload/V2';
 import SlateEditable from '@/components/SlateEditable';
 import { SlateTextInput } from '@/components/SlateInputs';
 import VariablesInput from '@/components/VariablesInput';

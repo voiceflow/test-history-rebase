@@ -1,6 +1,7 @@
-import { Box, SectionV2, UploadV2 } from '@voiceflow/ui';
+import { Box, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
+import UploadV2 from '@/components/legacy/Upload/V2';
 import VariablesInput from '@/components/VariablesInput';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 
@@ -14,7 +15,12 @@ const SplashEditor: React.FC<SplashEditorProps> = ({ title, onChange, imageURL }
   <Box bg="#fdfdfd">
     <SectionV2.Content>
       <FormControl>
-        <VariablesInput value={title} onBlur={({ text }) => onChange({ title: text })} placeholder="Enter title, { to add variable" autoFocus />
+        <VariablesInput
+          value={title}
+          onBlur={({ text }) => onChange({ title: text })}
+          placeholder="Enter title, { to add variable"
+          autoFocus
+        />
       </FormControl>
 
       <FormControl>

@@ -1,8 +1,10 @@
 import { datadogRum } from '@datadog/browser-rum';
-import { Box, Input, SectionV2, Upload, UploadIconVariant } from '@voiceflow/ui';
+import { Box, Input, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import { voiceflowLogomark } from '@/assets';
+import Upload from '@/components/legacy/Upload';
+import { UploadIconVariant } from '@/components/legacy/Upload/ImageUpload/IconUpload';
 import Page from '@/components/Page';
 import * as Organization from '@/ducks/organization';
 import { useDispatch, useLinkedState, useSelector } from '@/hooks';
@@ -50,7 +52,13 @@ const OrganizationGeneral: React.FC = () => {
             </SectionV2.Title>
 
             <Box.FlexApart gap={16} fullWidth>
-              <Input name="name" value={name} onBlur={saveName} onChangeText={updateName} placeholder="Organization Name" />
+              <Input
+                name="name"
+                value={name}
+                onBlur={saveName}
+                onChangeText={updateName}
+                placeholder="Organization Name"
+              />
             </Box.FlexApart>
           </Box.FlexAlignStart>
         </Box.Flex>

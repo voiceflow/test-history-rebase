@@ -1,9 +1,15 @@
 import composeRef from '@seznam/compose-react-refs';
-import { InputRenderer, InputVariant, useSetup } from '@voiceflow/ui';
+import { InputVariant, useSetup } from '@voiceflow/ui';
 import React from 'react';
 
+import { InputRenderer } from '@/components/legacy/Upload/Primitive/LinkUpload';
 import TextEditor, { PluginType } from '@/components/TextEditor';
-import type { TextEditorBlurData, TextEditorProps, TextEditorRef, VariablesPluginsData } from '@/components/TextEditor/types';
+import type {
+  TextEditorBlurData,
+  TextEditorProps,
+  TextEditorRef,
+  VariablesPluginsData,
+} from '@/components/TextEditor/types';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import { useRAF, useSelector } from '@/hooks';
 import { useVariableCreateModal } from '@/hooks/modal.hook';
@@ -97,12 +103,14 @@ const VariablesInput = React.forwardRef<TextEditorRef, VariablesInputProps>(
     );
 
     const onBlurCallback = React.useCallback(
-      ({ text, pluginsData }: TextEditorBlurData) => onBlur?.({ text, variables: pluginsData[PluginType.VARIABLES]?.variables || [] }),
+      ({ text, pluginsData }: TextEditorBlurData) =>
+        onBlur?.({ text, variables: pluginsData[PluginType.VARIABLES]?.variables || [] }),
       [onBlur]
     );
 
     const onEnterPressCallback = React.useCallback(
-      ({ text, pluginsData }: TextEditorBlurData) => onEnterPress?.({ text, variables: pluginsData[PluginType.VARIABLES]?.variables || [] }),
+      ({ text, pluginsData }: TextEditorBlurData) =>
+        onEnterPress?.({ text, variables: pluginsData[PluginType.VARIABLES]?.variables || [] }),
       [onEnterPress]
     );
 

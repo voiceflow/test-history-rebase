@@ -1,5 +1,6 @@
-import { UploadClient } from '@voiceflow/ui';
 import { AxiosResponse } from 'axios';
+
+import { UploadClient } from '@/components/legacy/Upload/Context';
 
 import file from './file';
 

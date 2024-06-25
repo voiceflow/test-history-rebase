@@ -1,9 +1,10 @@
 import { BaseVersion } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
-import { Box, ClickableText, CONTEXT_MENU_IGNORED_CLASS_NAME, SectionV2, Toggle, Upload } from '@voiceflow/ui';
+import { Box, ClickableText, CONTEXT_MENU_IGNORED_CLASS_NAME, SectionV2, Toggle } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
+import Upload from '@/components/legacy/Upload';
 import RadioGroup from '@/components/RadioGroup';
 import * as Settings from '@/components/Settings';
 import SSML from '@/components/SSML';
@@ -59,7 +60,11 @@ const AssistantConversationLogic: React.FC<AssistantConversationLogicProps> = ({
     patchSession({ resumePrompt: { ...resumePrompt, ...value } });
 
   const onToggleFollowUp = () =>
-    onChangeResumePrompt(resumePrompt?.followVoice ? { followContent: null, followVoice: null } : { followContent: null, followVoice: defaultVoice });
+    onChangeResumePrompt(
+      resumePrompt?.followVoice
+        ? { followContent: null, followVoice: null }
+        : { followContent: null, followVoice: defaultVoice }
+    );
 
   return !canUseAlexaSettings ? null : (
     <>
@@ -69,7 +74,12 @@ const AssistantConversationLogic: React.FC<AssistantConversationLogicProps> = ({
         <Box.FlexAround gap={24}>
           {continuePrevious}
 
-          <Toggle checked={restart} size={Toggle.Size.SMALL} onChange={() => patchSession({ restart: !restart })} hasLabel />
+          <Toggle
+            checked={restart}
+            size={Toggle.Size.SMALL}
+            onChange={() => patchSession({ restart: !restart })}
+            hasLabel
+          />
         </Box.FlexAround>
       </Settings.SubSection>
 
@@ -86,7 +96,9 @@ const AssistantConversationLogic: React.FC<AssistantConversationLogicProps> = ({
                 ]}
                 name="multiple"
                 checked={resumePrompt.voice === VoiceflowConstants.Voice.AUDIO}
-                onChange={(checked) => onChangeResumePrompt({ content: '', voice: checked ? VoiceflowConstants.Voice.AUDIO : defaultVoice })}
+                onChange={(checked) =>
+                  onChangeResumePrompt({ content: '', voice: checked ? VoiceflowConstants.Voice.AUDIO : defaultVoice })
+                }
                 activeBar
                 noPaddingLastItem={false}
               />
@@ -125,7 +137,9 @@ const AssistantConversationLogic: React.FC<AssistantConversationLogicProps> = ({
           )}
 
           <Settings.SubSection contentProps={{ topOffset: 1.5 }}>
-            <ClickableText onClick={onToggleFollowUp}>{resumePrompt.followVoice ? 'Remove Follow Up' : 'Add Follow Up'}</ClickableText>
+            <ClickableText onClick={onToggleFollowUp}>
+              {resumePrompt.followVoice ? 'Remove Follow Up' : 'Add Follow Up'}
+            </ClickableText>
           </Settings.SubSection>
 
           {!!resumePrompt.followVoice && (
@@ -144,7 +158,10 @@ const AssistantConversationLogic: React.FC<AssistantConversationLogicProps> = ({
                     ]}
                     checked={resumePrompt.followVoice === VoiceflowConstants.Voice.AUDIO}
                     onChange={(checked) =>
-                      onChangeResumePrompt({ followContent: '', followVoice: checked ? VoiceflowConstants.Voice.AUDIO : defaultVoice })
+                      onChangeResumePrompt({
+                        followContent: '',
+                        followVoice: checked ? VoiceflowConstants.Voice.AUDIO : defaultVoice,
+                      })
                     }
                     activeBar
                     noPaddingLastItem={false}
@@ -193,7 +210,10 @@ const AssistantConversationLogic: React.FC<AssistantConversationLogicProps> = ({
             size={Toggle.Size.SMALL}
             checked={repeat !== BaseVersion.RepeatType.OFF}
             onChange={() =>
-              patchSettings({ repeat: repeat === BaseVersion.RepeatType.OFF ? BaseVersion.RepeatType.DIALOG : BaseVersion.RepeatType.OFF })
+              patchSettings({
+                repeat:
+                  repeat === BaseVersion.RepeatType.OFF ? BaseVersion.RepeatType.DIALOG : BaseVersion.RepeatType.OFF,
+              })
             }
             hasLabel
           />

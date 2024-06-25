@@ -1,5 +1,7 @@
-import { Input, Upload, UploadIconVariant } from '@voiceflow/ui';
+import { Input } from '@voiceflow/ui';
 
+import Upload from '@/components/legacy/Upload';
+import { UploadIconVariant } from '@/components/legacy/Upload/ImageUpload/IconUpload';
 import { styled } from '@/hocs/styled';
 
 export const FieldsContainer = styled.div`

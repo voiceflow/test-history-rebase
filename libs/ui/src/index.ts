@@ -1,3 +1,4 @@
+export { loader2Icon, spinnerSmall } from './assets';
 export * from './components';
 export * from './config';
 export { KeyName } from './constants';
@@ -16,11 +17,13 @@ export {
   linkResetStyle,
   listResetStyle,
   styled,
+  StyledProps,
   ThemeColor,
   transition,
   units,
 } from './styles';
 export * as Animations from './styles/animations';
+export { spinKeyframes } from './styles/animations/Spin';
 export * as SVG from './svgs';
 export * as System from './system';
 export * from './types';

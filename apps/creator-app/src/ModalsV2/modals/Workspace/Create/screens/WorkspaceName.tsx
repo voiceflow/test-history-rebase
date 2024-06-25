@@ -1,5 +1,8 @@
-import { Box, Button, ErrorMessage, Input, Modal, Upload, UploadIconVariant } from '@voiceflow/ui';
+import { Box, Button, ErrorMessage, Input, Modal } from '@voiceflow/ui';
 import React from 'react';
+
+import Upload from '@/components/legacy/Upload';
+import { UploadIconVariant } from '@/components/legacy/Upload/ImageUpload/IconUpload';
 
 interface WorkspaceNameProps {
   onClose: VoidFunction;
@@ -50,7 +53,12 @@ const WorkspaceName: React.FC<WorkspaceNameProps> = ({
             {nameError && <ErrorMessage mb={0}>{nameError}</ErrorMessage>}
           </Box>
 
-          <Upload.IconUpload image={workspaceImage} update={onChangeImage} size={UploadIconVariant.EXTRA_SMALL} isSquare />
+          <Upload.IconUpload
+            image={workspaceImage}
+            update={onChangeImage}
+            size={UploadIconVariant.EXTRA_SMALL}
+            isSquare
+          />
         </Box.FlexApart>
       </Modal.Body>
 

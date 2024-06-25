@@ -1,7 +1,8 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { SectionV2, UploadV2 } from '@voiceflow/ui';
+import { SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
+import UploadV2 from '@/components/legacy/Upload/V2';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 
 const PATH = 'tls';

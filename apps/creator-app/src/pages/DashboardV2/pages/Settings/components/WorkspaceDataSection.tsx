@@ -1,8 +1,10 @@
 import { datadogRum } from '@datadog/browser-rum';
-import { Box, Input, SectionV2, Upload, UploadIconVariant } from '@voiceflow/ui';
+import { Box, Input, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import { voiceflowLogomark } from '@/assets';
+import Upload from '@/components/legacy/Upload';
+import { UploadIconVariant } from '@/components/legacy/Upload/ImageUpload/IconUpload';
 import Page from '@/components/Page';
 import { Permission } from '@/constants/permissions';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';

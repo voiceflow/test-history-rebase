@@ -1,8 +1,9 @@
 import { BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { SectionV2, UploadV2 } from '@voiceflow/ui';
+import { SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
+import UploadV2 from '@/components/legacy/Upload/V2';
 import VariablesInput from '@/components/VariablesInput';
 import * as Documentation from '@/config/documentation';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
@@ -26,12 +27,17 @@ const RootEditor: React.FC = () => {
   };
 
   return (
-    <EditorV2 header={<EditorV2.DefaultHeader />} footer={<EditorV2.DefaultFooter tutorial={Documentation.IMAGE_STEP} />}>
+    <EditorV2
+      header={<EditorV2.DefaultHeader />}
+      footer={<EditorV2.DefaultFooter tutorial={Documentation.IMAGE_STEP} />}
+    >
       <SectionV2.SimpleSection isAccent>
         {editor.data.visualType === BaseNode.Visual.VisualType.IMAGE && (
           <UploadV2.Image
             value={editor.data.image}
-            ratio={editor.data?.dimensions ? (editor.data.dimensions.height / editor.data.dimensions.width) * 100 : null}
+            ratio={
+              editor.data?.dimensions ? (editor.data.dimensions.height / editor.data.dimensions.width) * 100 : null
+            }
             onChange={onChange}
             renderInput={VariablesInput.renderInput}
           />

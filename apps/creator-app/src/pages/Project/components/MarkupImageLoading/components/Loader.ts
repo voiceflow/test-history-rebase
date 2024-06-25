@@ -1,9 +1,8 @@
-import { Loader as BaseLoader } from '@voiceflow/ui';
-
+import Loader from '@/components/legacy/Loader';
 import { styled } from '@/hocs/styled';
 
-const Loader = styled(BaseLoader)`
+const StyledLoader = styled(Loader)`
   font-size: 42px;
 `;
 
-export default Loader;
+export default StyledLoader;

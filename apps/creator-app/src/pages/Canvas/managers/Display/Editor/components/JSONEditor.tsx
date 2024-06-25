@@ -1,7 +1,8 @@
-import { Box, SectionV2, UploadV2 } from '@voiceflow/ui';
+import { Box, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import AceEditor from '@/components/AceEditor';
+import UploadV2 from '@/components/legacy/Upload/V2';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 
@@ -30,7 +31,11 @@ const JSONEditor: React.FC<JSONEditorProps> = ({ onChange, datasource = '', aplC
   const [localAPL, setLocalAPL] = React.useState(aplCommands);
 
   const onUploadJSON = (file: JSONFile) => {
-    onChange({ jsonFileName: file.fileName, datasource: stringify(file.data.datasources), document: stringify(file.data.document) });
+    onChange({
+      jsonFileName: file.fileName,
+      datasource: stringify(file.data.datasources),
+      document: stringify(file.data.document),
+    });
     setLocalDatasource(stringify(file.data.datasources));
   };
 

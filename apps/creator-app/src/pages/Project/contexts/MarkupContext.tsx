@@ -1,8 +1,9 @@
 import { Nullable, Utils } from '@voiceflow/common';
 import { BlockType, MarkupBlockType } from '@voiceflow/realtime-sdk';
-import { toast, Upload, useCache, useContextApi, useDidUpdateEffect } from '@voiceflow/ui';
+import { toast, useCache, useContextApi, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
+import Upload from '@/components/legacy/Upload';
 import { LimitType } from '@/constants/limits';
 import { Permission } from '@/constants/permissions';
 import * as History from '@/ducks/history';

@@ -1,5 +1,6 @@
-import { Loader } from '@voiceflow/ui';
 import React from 'react';
+
+import Loader from '@/components/legacy/Loader';
 
 import * as S from './styles';
 

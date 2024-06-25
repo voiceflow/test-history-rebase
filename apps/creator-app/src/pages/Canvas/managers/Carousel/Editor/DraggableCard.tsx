@@ -1,9 +1,10 @@
 import composeRef from '@seznam/compose-react-refs';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { OverflowText, SectionV2, UploadV2 } from '@voiceflow/ui';
+import { OverflowText, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandlers } from '@/components/DraggableList';
+import UploadV2 from '@/components/legacy/Upload/V2';
 import { SlateTextInput } from '@/components/SlateInputs';
 import VariablesInput from '@/components/VariablesInput';
 import { Diagram } from '@/ducks';

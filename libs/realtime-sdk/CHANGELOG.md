@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.430.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.429.4...@voiceflow/realtime-sdk@1.430.0) (2024-06-25)
+
+### Features
+
+* add step and editor (COR-000) ([#8397](https://github.com/voiceflow/creator-app/issues/8397)) ([fca7083](https://github.com/voiceflow/creator-app/commit/fca7083e6e4d6aa104274d7eaea950b32945cadf))
+
 ## [1.429.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.429.3...@voiceflow/realtime-sdk@1.429.4) (2024-06-25)
 
 **Note:** Version bump only for package @voiceflow/realtime-sdk

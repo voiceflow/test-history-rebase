@@ -5,8 +5,8 @@ import { BlockType } from '@/constants';
 
 import type { NodeConfig } from '../types';
 
-export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Response> = {
-  type: BlockType.RESPONSE,
+export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Message> = {
+  type: BlockType.MESSAGE,
   icon: 'systemTalk',
 
   mergeTerminator: true,
@@ -22,7 +22,8 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Response> = {
       },
     },
     data: {
-      responseID: null,
+      messageID: null,
+      draft: true,
       name: '',
     },
   }),

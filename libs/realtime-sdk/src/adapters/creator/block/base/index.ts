@@ -27,9 +27,9 @@ import ifAdapter, { ifOutPortsAdapter, ifOutPortsAdapterV2 } from './if';
 import integrationAdapter, { integrationOutPortsAdapter, integrationOutPortsAdapterV2 } from './integration';
 import { intentOutPortsAdapter, intentOutPortsAdapterV2 } from './intent';
 import { interactionOutPortsAdapter, interactionOutPortsAdapterV2 } from './interaction';
+import { messageAdapter, messageOutPortsAdapterV2 } from './message.adapter';
 import { promptOutPortsAdapter, promptOutPortsAdapterV2 } from './prompt';
 import randomV2Adapter, { randomV2OutPortsAdapter, randomV2OutPortsAdapterV2 } from './randomV2';
-import { responseAdapter, responseOutPortsAdapterV2 } from './response.adapter';
 import setAdapter, { setOutPortsAdapter, setOutPortsAdapterV2 } from './set';
 import { speakOutPortsAdapter, speakOutPortsAdapterV2 } from './speak';
 import textAdapter, { textOutPortsAdapter, textOutPortsAdapterV2 } from './text';
@@ -76,7 +76,7 @@ export const baseBlockAdapter = {
   [BlockType.CUSTOM_BLOCK_POINTER]: customBlockPointerAdapter,
   [BlockType.FUNCTION]: functionAdapter,
   [BlockType.TRIGGER]: triggerAdapter,
-  [BlockType.RESPONSE]: responseAdapter,
+  [BlockType.MESSAGE]: messageAdapter,
 };
 
 // adapters shared across all platforms
@@ -154,7 +154,7 @@ export const baseOutPortAdapterV2 = {
   [BlockType.CUSTOM_BLOCK_POINTER]: customBlockPointerOutPortsAdapterV2,
   [BlockType.FUNCTION]: functionOutPortsAdapterV2,
   [BlockType.TRIGGER]: triggerOutPortsAdapterV2,
-  [BlockType.RESPONSE]: responseOutPortsAdapterV2,
+  [BlockType.MESSAGE]: messageOutPortsAdapterV2,
 
   [BaseNode.NodeType.API]: integrationOutPortsAdapterV2,
 };

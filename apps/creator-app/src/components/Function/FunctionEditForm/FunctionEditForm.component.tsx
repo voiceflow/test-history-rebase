@@ -15,14 +15,10 @@ export const FunctionEditForm: React.FC<IFunctionEditForm> = ({ functionID }) =>
   const TEST_ID = 'function';
 
   const autofocus = useInputAutoFocusKey();
-  const functionObj = useSelector(Designer.Function.selectors.oneByID, { id: functionID });
-  const functionPaths = useSelector(Designer.Function.FunctionPath.selectors.allByIDs, {
-    ids: functionObj?.pathOrder ?? [],
-  });
+  const functionPaths = useSelector(Designer.Function.FunctionPath.selectors.allByFunctionID, { functionID });
   const inputVariables = useSelector(Designer.Function.FunctionVariable.selectors.inputByFunctionID, { functionID });
   const outputVariables = useSelector(Designer.Function.FunctionVariable.selectors.outputByFunctionID, { functionID });
 
-  const patchFunction = useDispatch(Designer.Function.effect.patchOne, functionID);
   const patchFunctionPath = useDispatch(Designer.Function.FunctionPath.effect.patchOne);
   const deleteFunctionPath = useDispatch(Designer.Function.FunctionPath.effect.deleteOne);
   const createFunctionPath = useDispatch(Designer.Function.FunctionPath.effect.createOne, functionID);
@@ -40,10 +36,6 @@ export const FunctionEditForm: React.FC<IFunctionEditForm> = ({ functionID }) =>
     const { id } = await createFunctionPath({ name: '', label: '' });
 
     autofocus.setKey(id);
-  };
-
-  const onPathsReorder = async (pathIds: string[] = []) => {
-    return patchFunction({ pathOrder: pathIds });
   };
 
   return (
@@ -79,7 +71,6 @@ export const FunctionEditForm: React.FC<IFunctionEditForm> = ({ functionID }) =>
         onFunctionPathAdd={onPathAdd}
         onDeleteFunctionPath={deleteFunctionPath}
         onFunctionPathChange={patchFunctionPath}
-        onFunctionPathReorder={onPathsReorder}
       />
 
       <Divider noPadding />

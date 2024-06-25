@@ -1,6 +1,5 @@
-import type { FunctionPath } from '@voiceflow/dtos';
 import { tid } from '@voiceflow/style';
-import { Box, Section, SortableList } from '@voiceflow/ui-next';
+import { Box, Section } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { CMSFormListItem } from '@/components/CMS/CMSForm/CMSFormListItem/CMSFormListItem.component';
@@ -16,7 +15,6 @@ export const FunctionPathSection: React.FC<IFunctionPathSection> = ({
   onFunctionPathAdd,
   onDeleteFunctionPath,
   onFunctionPathChange,
-  onFunctionPathReorder,
 }) => {
   const TEST_ID = tid('function', 'paths');
 
@@ -41,33 +39,26 @@ export const FunctionPathSection: React.FC<IFunctionPathSection> = ({
 
       {hasPaths && (
         <Box pb={10} direction="column">
-          <SortableList
-            items={functionPaths}
-            getItemKey={(path) => path.id}
-            onItemsReorder={(item: FunctionPath[]) => onFunctionPathReorder(item.map((a) => a.id))}
-            renderItem={({ ref, item, dragContainerProps }) => (
-              <CMSFormListItem
-                ref={ref}
-                pt={9}
-                pb={7}
-                key={item.id}
-                onRemove={() => onDeleteFunctionPath(item.id)}
-                testID={tid(TEST_ID, 'list-item')}
-                {...dragContainerProps}
-              >
-                <FunctionResourceInput
-                  value={item.name}
-                  testID={tid('function', 'path')}
-                  autoFocus={item.id === autoFocusKey}
-                  description={item.label || ''}
-                  onValueChange={(name) => onFunctionPathChange(item.id, { name })}
-                  namePlaceholder="Enter return value to activate path"
-                  onDescriptionChange={(label) => onFunctionPathChange(item.id, { label })}
-                  descriptionPlaceholder="Add on-canvas label (optional)"
-                />
-              </CMSFormListItem>
-            )}
-          />
+          {functionPaths.map((functionPath, index) => (
+            <CMSFormListItem
+              pt={9}
+              pb={7}
+              key={index}
+              onRemove={() => onDeleteFunctionPath(functionPath.id)}
+              testID={tid(TEST_ID, 'list-item')}
+            >
+              <FunctionResourceInput
+                value={functionPath.name}
+                testID={tid('function', 'path')}
+                autoFocus={functionPath.id === autoFocusKey}
+                description={functionPath.label || ''}
+                onValueChange={(name) => onFunctionPathChange(functionPath.id, { name })}
+                namePlaceholder="Enter return value to activate path"
+                onDescriptionChange={(label) => onFunctionPathChange(functionPath.id, { label })}
+                descriptionPlaceholder="Add on-canvas label (optional)"
+              />
+            </CMSFormListItem>
+          ))}
         </Box>
       )}
     </>

@@ -5,7 +5,6 @@ export interface IFunctionPathSection {
   onFunctionPathChange: (id: string, functionPath: Partial<FunctionPath>) => void;
   onFunctionPathAdd: () => void;
   onDeleteFunctionPath: (functionPathID: string) => void;
-  onFunctionPathReorder: (pathIds: string[]) => void;
   title: string;
   autoFocusKey: string;
 }

@@ -13,12 +13,12 @@ import {
   useCMSRowItemContextMenu,
   useCMSRowItemNavigate,
 } from '../../../../hooks/cms-row-item.hook';
-import { useOnResponseCreate, useResponseCMSManager } from '../../CMSResponse.hook';
-import { responseColumnsOrderAtom } from './CMSResponseTable.atom';
-import { CMS_RESPONSE_TABLE_CONFIG } from './CMSResponseTable.config';
-import { ResponseTableColumn } from './CMSResponseTable.constant';
+import { useOnResponseCreate, useResponseCMSManager } from '../../CMSMessage.hook';
+import { responseColumnsOrderAtom } from './CMSMessageTable.atom';
+import { CMS_RESPONSE_TABLE_CONFIG } from './CMSMessageTable.config';
+import { ResponseTableColumn } from './CMSMessageTable.constant';
 
-export const CMSResponseTable: React.FC = () => {
+export const CMSMessageTable: React.FC = () => {
   const onCreate = useOnResponseCreate();
   const onRowClick = useCMSRowItemClick();
   const cmsManager = useResponseCMSManager();
@@ -30,7 +30,7 @@ export const CMSResponseTable: React.FC = () => {
     onDuplicate: async (id) => {
       const data = await duplicateOne(id);
 
-      goToCMSResource(CMSRoute.RESPONSE, data.responseResource.id);
+      goToCMSResource(CMSRoute.MESSAGE, data.responseResource.id);
     },
     canDuplicate: (_, { isFolder }) => !isFolder,
     nameColumnType: ResponseTableColumn.ALL,
@@ -38,10 +38,10 @@ export const CMSResponseTable: React.FC = () => {
 
   return (
     <CMSEmpty
-      title="No responses exist"
-      button={{ label: 'Create response', onClick: (search) => onCreate({ name: search }) }}
-      searchTitle="No responses found"
-      description="Responses determine how your agent will respond to the user. "
+      title="No messages exist"
+      button={{ label: 'Create message', onClick: (search) => onCreate({ name: search }) }}
+      searchTitle="No messages found"
+      description="Messages determine how your agent will respond to the user. "
       illustration="NoContent"
       learnMoreLink={CMS_RESPONSE_LEARN_MORE}
     >

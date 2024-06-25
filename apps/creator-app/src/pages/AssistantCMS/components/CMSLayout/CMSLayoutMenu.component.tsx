@@ -85,11 +85,11 @@ export const CMSLayoutMenu: React.FC = () => {
         {isResponsesEnabled && (
           <SecondaryNavigation.Item
             icon="Message"
-            label="Responses"
-            testID={tid(TEST_ID, 'responses')}
+            label="Messages"
+            testID={tid(TEST_ID, 'messages')}
             caption={String(responsesCount)}
-            onClick={onTabClick(Path.CMS_RESPONSE, CMSRoute.RESPONSE)}
-            isActive={isItemActive(Path.CMS_RESPONSE)}
+            onClick={onTabClick(Path.CMS_MESSAGE, CMSRoute.MESSAGE)}
+            isActive={isItemActive(Path.CMS_MESSAGE)}
           />
         )}
 

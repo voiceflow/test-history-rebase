@@ -1,4 +1,4 @@
-import { ResponseVariantType } from '@voiceflow/dtos';
+import { ResponseType } from '@voiceflow/dtos';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 import { useHistory } from 'react-router-dom';
 
@@ -7,19 +7,16 @@ import { useDispatch } from '@/hooks';
 import { useGetAtomValue } from '@/hooks/atom.hook';
 
 import { useCMSManager } from '../../contexts/CMSManager';
-import type { CMSResponse } from '../../contexts/CMSManager/CMSManager.interface';
+import type { CMSMessage } from '../../contexts/CMSManager/CMSManager.interface';
 import { useCMSResourceGetPath } from '../../hooks/cms-resource.hook';
 
-export const useResponseCMSManager = useCMSManager<CMSResponse>;
+export const useResponseCMSManager = useCMSManager<CMSMessage>;
 
-export const DEFAULT_RESPONSE_VARIANT: Actions.Response.CreateData['variants'] = [
+export const DEFAULT_MESSAGE: Actions.Response.CreateData['messages'] = [
   {
-    type: ResponseVariantType.TEXT,
     text: [''],
-    speed: 5,
-    cardLayout: 'list',
+    delay: 0,
     condition: null,
-    attachments: [],
   },
 ];
 
@@ -34,13 +31,15 @@ export const useOnResponseCreate = () => {
     try {
       const entity = await createResponse({
         name,
-        variants: DEFAULT_RESPONSE_VARIANT,
+        type: ResponseType.MESSAGE,
+        variants: [],
+        messages: DEFAULT_MESSAGE,
         folderID: getAtomValue(cmsManager.folderID),
       });
 
       history.push(getCMSResourcePath(entity.id).path);
     } catch {
-      // closed
+      // do nothing
     }
   };
 };

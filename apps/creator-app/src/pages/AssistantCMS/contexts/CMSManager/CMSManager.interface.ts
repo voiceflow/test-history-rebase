@@ -35,7 +35,7 @@ export interface CMSEntity extends Entity, BaseCMSResource {}
 
 export interface CMSPrompt extends Prompt, BaseCMSResource {}
 
-export interface CMSResponse extends Response, BaseCMSResource {}
+export interface CMSMessage extends Response, BaseCMSResource {}
 
 export interface CMSWorkflow extends Workflow, BaseCMSResource {}
 
@@ -52,7 +52,7 @@ export type CMSResource =
   | CMSEntity
   | CMSPrompt
   | CMSWorkflow
-  | CMSResponse
+  | CMSMessage
   | CMSFunction
   | CMSVariable
   | CMSKnowledgeBase;
@@ -61,23 +61,35 @@ export type CMSFolderSelector = (state: AppState) => Array<Folder>;
 
 export type CMSResourceCountSelector = (state: AppState) => number;
 
-export type CMSResourceByIDSelector<Item extends CMSResource> = (state: AppState, params: { id: string | null }) => Item | null;
+export type CMSResourceByIDSelector<Item extends CMSResource> = (
+  state: AppState,
+  params: { id: string | null }
+) => Item | null;
 
-export type CMSResourceByIDsSelector<Item extends CMSResource> = (state: AppState, params: { folderIDs: string[] }) => Item[];
+export type CMSResourceByIDsSelector<Item extends CMSResource> = (
+  state: AppState,
+  params: { folderIDs: string[] }
+) => Item[];
 
-export type CMSResourcesByFolderIDSelector<Item extends CMSResource> = (state: AppState, params: { folderID: string | null }) => Array<Item>;
+export type CMSResourcesByFolderIDSelector<Item extends CMSResource> = (
+  state: AppState,
+  params: { folderID: string | null }
+) => Array<Item>;
 
 export interface CMSResourceSearchContext {
   search: string;
   originalSearch: string;
 }
 
-export type CMSResourceSearch<Item extends CMSResource, SearchContext extends CMSResourceSearchContext = CMSResourceSearchContext> = (
-  item: Item | CMSFolder,
-  context: SearchContext
-) => boolean;
+export type CMSResourceSearch<
+  Item extends CMSResource,
+  SearchContext extends CMSResourceSearchContext = CMSResourceSearchContext,
+> = (item: Item | CMSFolder, context: SearchContext) => boolean;
 
-export interface CMSManagerConfig<Item extends CMSResource, SearchContext extends CMSResourceSearchContext = CMSResourceSearchContext> {
+export interface CMSManagerConfig<
+  Item extends CMSResource,
+  SearchContext extends CMSResourceSearchContext = CMSResourceSearchContext,
+> {
   /**
    * search function
    */
@@ -131,11 +143,15 @@ export interface CMSManagerConfig<Item extends CMSResource, SearchContext extend
   };
 }
 
-export interface CMSManagerStaticConfig<Item extends CMSResource, SearchContext extends CMSResourceSearchContext = CMSResourceSearchContext>
-  extends Omit<CMSManagerConfig<Item, SearchContext>, 'folderID' | 'versionID' | 'folderScope' | 'pathname'> {}
+export interface CMSManagerStaticConfig<
+  Item extends CMSResource,
+  SearchContext extends CMSResourceSearchContext = CMSResourceSearchContext,
+> extends Omit<CMSManagerConfig<Item, SearchContext>, 'folderID' | 'versionID' | 'folderScope' | 'pathname'> {}
 
-export interface ICMSManagerProvider<Item extends CMSResource, SearchContext extends CMSResourceSearchContext = CMSResourceSearchContext>
-  extends React.PropsWithChildren {
+export interface ICMSManagerProvider<
+  Item extends CMSResource,
+  SearchContext extends CMSResourceSearchContext = CMSResourceSearchContext,
+> extends React.PropsWithChildren {
   staticConfig: CMSManagerStaticConfig<Item, SearchContext>;
 }
 

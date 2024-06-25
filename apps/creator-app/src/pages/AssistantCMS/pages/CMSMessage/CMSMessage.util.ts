@@ -3,13 +3,13 @@ import type { Descendant } from 'slate';
 
 import { markupToSlate } from '@/utils/markup.util';
 
-import type { CMSResponse } from '../../contexts/CMSManager/CMSManager.interface';
+import type { CMSMessage } from '../../contexts/CMSManager/CMSManager.interface';
 import { withFolderSearch } from '../../contexts/CMSManager/CMSManager.util';
-import type { CMSResponseSearchContext, CMSResponseSortContext } from './CMSResponse.interface';
+import type { CMSMessageSearchContext, CMSMessageSortContext } from './CMSMessage.interface';
 
 export const responseToVariantString = (
-  item: CMSResponse,
-  { entitiesMapByID, variablesMapByID, getVariantByResponseID }: CMSResponseSortContext
+  item: CMSMessage,
+  { entitiesMapByID, variablesMapByID, getVariantByResponseID }: CMSMessageSortContext
 ): string => {
   const variant = getVariantByResponseID({ responseID: item.id });
 
@@ -19,8 +19,8 @@ export const responseToVariantString = (
 };
 
 export const responseToVariantSlate = (
-  item: CMSResponse,
-  { getVariantByResponseID }: CMSResponseSortContext
+  item: CMSMessage,
+  { getVariantByResponseID }: CMSMessageSortContext
 ): Descendant[] => {
   const variant = getVariantByResponseID({ responseID: item.id });
 
@@ -29,7 +29,7 @@ export const responseToVariantSlate = (
   return markupToSlate.fromDB(variant.text);
 };
 
-export const responseSearch = withFolderSearch<CMSResponse, CMSResponseSearchContext>((item, context) => {
+export const responseSearch = withFolderSearch<CMSMessage, CMSMessageSearchContext>((item, context) => {
   if (item.name.toLocaleLowerCase().includes(context.search)) return true;
 
   // TODO: add memoization

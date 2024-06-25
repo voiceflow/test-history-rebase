@@ -1,4 +1,3 @@
-import { Channel, Language } from '@voiceflow/dtos';
 import { Table, type TableConfig } from '@voiceflow/ui-next';
 import React from 'react';
 
@@ -6,18 +5,16 @@ import { CMSTableNameCell } from '@/pages/AssistantCMS/components/CMSTableNameCe
 
 import { CMSTableCellFromNowTooltip } from '../../../../components/CMSTableCellFromNowTooltip/CMSTableCellFromNowTooltip.component';
 import { CMSTableMemberCell } from '../../../../components/CMSTableMemberCell/CMSTableMemberCell.component';
-import type { CMSFolder, CMSResponse } from '../../../../contexts/CMSManager/CMSManager.interface';
+import type { CMSFolder, CMSMessage } from '../../../../contexts/CMSManager/CMSManager.interface';
 import {
   updatedAtSort,
   withFieldLocaleCompareSort,
   withFolderSort,
 } from '../../../../contexts/CMSManager/CMSManager.util';
-import { ResponseTableColumn } from './CMSResponseTable.constant';
-import { CMSResponseTableTypeCell } from './CMSResponseTableTypeCell/CMSResponseTableTypeCell.component';
-import { CMSResponseTableUsedByCell } from './CMSResponseTableUsedByCell.component';
-import { CMSResponseTableVariantCell } from './CMSResponseTableVariantCell/CMSResponseTableVariantCell.component';
+import { ResponseTableColumn } from './CMSMessageTable.constant';
+import { CMSResponseTableVariantCell } from './CMSMessageTableVariantCell/CMSMessageTableVariantCell.component';
 
-export const CMS_RESPONSE_TABLE_CONFIG: TableConfig<ResponseTableColumn, CMSFolder | CMSResponse> = {
+export const CMS_RESPONSE_TABLE_CONFIG: TableConfig<ResponseTableColumn, CMSFolder | CMSMessage> = {
   columns: {
     [ResponseTableColumn.SELECT]: {
       type: ResponseTableColumn.SELECT,
@@ -28,8 +25,8 @@ export const CMS_RESPONSE_TABLE_CONFIG: TableConfig<ResponseTableColumn, CMSFold
 
     [ResponseTableColumn.ALL]: {
       type: ResponseTableColumn.ALL,
-      name: 'All responses',
-      sorter: withFolderSort<CMSResponse>(withFieldLocaleCompareSort('name')),
+      name: 'All messages',
+      sorter: withFolderSort<CMSMessage>(withFieldLocaleCompareSort('name')),
 
       cell: ({ item, type }) =>
         item.group ? (
@@ -39,32 +36,10 @@ export const CMS_RESPONSE_TABLE_CONFIG: TableConfig<ResponseTableColumn, CMSFold
         ),
     },
 
-    [ResponseTableColumn.ATTACHMENTS]: {
-      type: ResponseTableColumn.ATTACHMENTS,
-      name: 'Attachments',
+    [ResponseTableColumn.STORIES_USING]: {
+      type: ResponseTableColumn.STORIES_USING,
+      name: 'Stories using',
       cell: () => <Table.Cell.Empty />,
-    },
-
-    [ResponseTableColumn.TYPE]: {
-      type: ResponseTableColumn.TYPE,
-      name: 'Type',
-      cell: ({ item }) => (
-        <CMSResponseTableTypeCell
-          responseID={item.id}
-          language={Language.ENGLISH_US}
-          channel={Channel.DEFAULT}
-          isFolder={item.group}
-        />
-      ),
-    },
-
-    [ResponseTableColumn.USED_BY]: {
-      type: ResponseTableColumn.USED_BY,
-      name: 'Used by',
-
-      cell: ({ item }) => (
-        <Table.Cell.GroupEmpty item={item} label={(item) => <CMSResponseTableUsedByCell messageID={item.id} />} />
-      ),
     },
 
     [ResponseTableColumn.LAST_EDITOR]: {

@@ -22,7 +22,7 @@ const TranscriptResultsItem: React.FC<ListChildComponentProps<ListData>> = ({ da
   const { transcripts, currentTranscriptID } = data;
   const item = transcripts[index];
   const isLastItem = transcripts.length === index + 1;
-  const { id, reportTags, unread, updatedAt, name, creatorID, sessionID } = item;
+  const { id, reportTags, unread, updatedAt, name, sessionID } = item;
   const isActive = String(currentTranscriptID) === String(id);
 
   const [trackingEvents] = useTrackingEvents();
@@ -100,7 +100,7 @@ const TranscriptResultsItem: React.FC<ListChildComponentProps<ListData>> = ({ da
             <InfoSection
               active={isActive}
               name={name}
-              userId={creatorID ?? sessionID}
+              userId={sessionID}
               date={updatedAt}
               isRead={!unread}
               tags={reportTags}

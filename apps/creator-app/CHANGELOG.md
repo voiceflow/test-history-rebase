@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1601.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1600.0...@voiceflow/creator-app@1.1601.0) (2024-06-25)
+
+### Features
+
+* refactor kb settings service (COR-000) ([#8408](https://github.com/voiceflow/creator-app/issues/8408)) ([779ea10](https://github.com/voiceflow/creator-app/commit/779ea102167ac7ae75602b46b2b376e5b91ef7b1))
+
 # [1.1600.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1599.1...@voiceflow/creator-app@1.1600.0) (2024-06-25)
 
 ### Features

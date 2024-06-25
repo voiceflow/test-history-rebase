@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.29.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-designer@2.28.28...@voiceflow/sdk-http-designer@2.29.0) (2024-06-25)
+
+### Features
+
+* refactor kb settings service (COR-000) ([#8408](https://github.com/voiceflow/creator-app/issues/8408)) ([779ea10](https://github.com/voiceflow/creator-app/commit/779ea102167ac7ae75602b46b2b376e5b91ef7b1))
+
 ## [2.28.28](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-designer@2.28.27...@voiceflow/sdk-http-designer@2.28.28) (2024-06-25)
 
 **Note:** Version bump only for package @voiceflow/sdk-http-designer

@@ -3,7 +3,12 @@ import { tid } from '@voiceflow/style';
 import { Dropdown, Menu } from '@voiceflow/ui-next';
 import React from 'react';
 
-import { AI_MODEL_CONFIG_MAP, ANTHROPIC_MODEL_CONFIGS, OPEN_AI_MODEL_CONFIGS } from '@/config/ai-model';
+import {
+  AI_MODEL_CONFIG_MAP,
+  ANTHROPIC_MODEL_CONFIGS,
+  GOOGLE_MODEL_CONFIGS,
+  OPEN_AI_MODEL_CONFIGS,
+} from '@/config/ai-model';
 
 import type { IAIModelSelect } from './AIModelSelect.interface';
 import { AIModelSelectItem } from './AIModelSelectItem.component';
@@ -39,6 +44,17 @@ export const AIModelSelect: React.FC<IAIModelSelect> = ({
           <Menu.Divider />
 
           {ANTHROPIC_MODEL_CONFIGS.map((model) => (
+            <AIModelSelectItem
+              key={model.type}
+              model={model}
+              testID={tid(testID, 'item', model.type)}
+              onClick={Utils.functional.chainVoid(onClose, () => onValueChange(model.type))}
+            />
+          ))}
+
+          <Menu.Divider />
+
+          {GOOGLE_MODEL_CONFIGS.map((model) => (
             <AIModelSelectItem
               key={model.type}
               model={model}

@@ -1,4 +1,5 @@
 import { css, styled } from '@/hocs/styled';
+import { HEADER_HEIGHT } from '@/styles/theme/page';
 
 import type * as T from './types';
 
@@ -15,7 +16,7 @@ export const Container = styled.section`
 export const Body = styled.div`
   display: flex;
   width: 100%;
-  height: 100%;
+  height: calc(100% - ${HEADER_HEIGHT}px);
   flex-grow: 1;
   flex-direction: row;
   overflow: hidden;

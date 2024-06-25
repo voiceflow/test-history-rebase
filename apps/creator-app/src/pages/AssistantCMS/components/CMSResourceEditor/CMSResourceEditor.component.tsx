@@ -12,7 +12,7 @@ import { useHideVoiceflowAssistant } from '@/hooks/voiceflowAssistant';
 
 import { useCMSManager } from '../../contexts/CMSManager';
 import { useCMSRouteFolders } from '../../contexts/CMSRouteFolders';
-import { container, content, drawer } from './CMSResourceEditor.css';
+import { container, content, drawer, editorWrapper } from './CMSResourceEditor.css';
 import type { ICMSResourceEditor } from './CMSResourceEditor.interface';
 
 export const CMSResourceEditor: React.FC<ICMSResourceEditor> = ({ Editor, children, drawerNode }) => {
@@ -60,7 +60,7 @@ export const CMSResourceEditor: React.FC<ICMSResourceEditor> = ({ Editor, childr
 
       <div className={content} onClick={onContentClick}>
         <Drawer isOpen={!!pathMatch.params.resourceID} className={drawer}>
-          <div ref={setDrawerNode}>
+          <div className={editorWrapper} ref={setDrawerNode}>
             <Editor key={activeID} />
           </div>
         </Drawer>

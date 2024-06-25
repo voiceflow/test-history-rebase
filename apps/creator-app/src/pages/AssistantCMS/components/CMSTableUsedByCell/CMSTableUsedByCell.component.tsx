@@ -63,11 +63,13 @@ export const CMSTableUsedByCell: React.FC<ICMSTableUsedByCell> = ({
           result.push(<Menu.Divider key="workflow-divider" label="Workflows" fullWidth={false} />);
 
           result.push(
-            ...workflowIDs.map((id) => {
-              const item = itemMap[id];
+            ...workflowIDs
+              .sort((a, b) => itemMap[a].label.localeCompare(itemMap[b].label))
+              .map((id) => {
+                const item = itemMap[id];
 
-              return <Menu.Item key={id} label={item.label} onClick={item.onClick} />;
-            })
+                return <Menu.Item key={id} label={item.label} onClick={item.onClick} />;
+              })
           );
         }
 
@@ -75,11 +77,13 @@ export const CMSTableUsedByCell: React.FC<ICMSTableUsedByCell> = ({
           result.push(<Menu.Divider key="flow-divider" label="Components" fullWidth={false} />);
 
           result.push(
-            ...flowIDs.map((id) => {
-              const item = itemMap[id];
+            ...flowIDs
+              .sort((a, b) => itemMap[a].label.localeCompare(itemMap[b].label))
+              .map((id) => {
+                const item = itemMap[id];
 
-              return <Menu.Item key={id} label={item.label} onClick={item.onClick} />;
-            })
+                return <Menu.Item key={id} label={item.label} onClick={item.onClick} />;
+              })
           );
         }
 
@@ -87,11 +91,13 @@ export const CMSTableUsedByCell: React.FC<ICMSTableUsedByCell> = ({
           result.push(<Menu.Divider key="intent-divider" label="Intents" fullWidth={false} />);
 
           result.push(
-            ...intentIDs.map((id) => {
-              const item = itemMap[id];
+            ...intentIDs
+              .sort((a, b) => itemMap[a].label.localeCompare(itemMap[b].label))
+              .map((id) => {
+                const item = itemMap[id];
 
-              return <Menu.Item key={id} label={item.label} onClick={item.onClick} />;
-            })
+                return <Menu.Item key={id} label={item.label} onClick={item.onClick} />;
+              })
           );
         }
 
@@ -109,7 +115,6 @@ export const CMSTableUsedByCell: React.FC<ICMSTableUsedByCell> = ({
       // eslint-disable-next-line sonarjs/no-nested-template-literals
       label={`${firstItem?.label ?? ''}${refererIDs.length > 1 ? ` (${refererIDs.length})` : ''}`}
       items={refererIDs}
-      onClick={firstItem?.onClick ?? (() => null)}
     >
       {getContent}
     </CMSTableLinkMenuCell>

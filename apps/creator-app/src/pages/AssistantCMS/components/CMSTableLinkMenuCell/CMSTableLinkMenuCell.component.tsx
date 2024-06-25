@@ -8,7 +8,6 @@ import type { ICMSTableLinkMenuCell } from './CMSTableLinkMenuCell.interface';
 export const CMSTableLinkMenuCell = <Item,>({
   label,
   items,
-  onClick,
   updates,
   iconName,
   children,
@@ -25,9 +24,7 @@ export const CMSTableLinkMenuCell = <Item,>({
               ref={composeRef(tooltipProps.ref, popperProps.ref)}
               label={label}
               updates={updates}
-              onClick={
-                items.length === 1 ? onClick : Utils.functional.chain(popperProps.onToggle, tooltipProps.onClose)
-              }
+              onClick={Utils.functional.chain(popperProps.onToggle, tooltipProps.onClose)}
               iconName={iconName}
               overflow
               isActive={popperProps.isOpen}
@@ -44,11 +41,7 @@ export const CMSTableLinkMenuCell = <Item,>({
         </Tooltip.Overflow>
       )}
     >
-      {() => (
-        <Menu minWidth="auto" onClick={(event) => event.stopPropagation()}>
-          {children({ items })}
-        </Menu>
-      )}
+      {() => <Menu onClick={(event) => event.stopPropagation()}>{children({ items })}</Menu>}
     </Popper>
   );
 };

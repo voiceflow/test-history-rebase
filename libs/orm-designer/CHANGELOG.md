@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.87.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.87.0...@voiceflow/orm-designer@2.87.1) (2024-06-25)
+
+### Bug Fixes
+
+* run linter across entire codebase (COR-2420) ([#8385](https://github.com/voiceflow/creator-app/issues/8385)) ([8fca85c](https://github.com/voiceflow/creator-app/commit/8fca85c8134d6ace1dee6753b766efc9cfb8eb06))
+
 # [2.87.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.86.5...@voiceflow/orm-designer@2.87.0) (2024-06-24)
 
 ### Features

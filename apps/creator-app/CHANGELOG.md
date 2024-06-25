@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1599.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1599.0...@voiceflow/creator-app@1.1599.1) (2024-06-25)
+
+### Bug Fixes
+
+* add none intent to triggers (COR-2485) ([#8409](https://github.com/voiceflow/creator-app/issues/8409)) ([3ed5f77](https://github.com/voiceflow/creator-app/commit/3ed5f771af9c554f5a86f26a6b682458f6888b48))
+
 # [1.1599.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1598.4...@voiceflow/creator-app@1.1599.0) (2024-06-25)
 
 ### Bug Fixes

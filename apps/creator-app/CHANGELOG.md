@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1598.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1597.1...@voiceflow/creator-app@1.1598.0) (2024-06-25)
+
+### Features
+
+* create cms page (COR-000) ([#8396](https://github.com/voiceflow/creator-app/issues/8396)) ([6c91d4a](https://github.com/voiceflow/creator-app/commit/6c91d4ac858116c16b63f643dedc837625648df1))
+
 ## [1.1597.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1597.0...@voiceflow/creator-app@1.1597.1) (2024-06-24)
 
 **Note:** Version bump only for package @voiceflow/creator-app

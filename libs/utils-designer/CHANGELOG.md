@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.23.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/utils-designer@1.22.13...@voiceflow/utils-designer@1.23.0) (2024-06-25)
+
+### Features
+
+* export markup to slate from utils designer (COR-2461) ([#8393](https://github.com/voiceflow/creator-app/issues/8393)) ([718c546](https://github.com/voiceflow/creator-app/commit/718c546f36f7b240c8cc8a253fefc25c749674de))
+
 ## [1.22.13](https://github.com/voiceflow/creator-app/compare/@voiceflow/utils-designer@1.22.12...@voiceflow/utils-designer@1.22.13) (2024-06-25)
 
 ### Bug Fixes

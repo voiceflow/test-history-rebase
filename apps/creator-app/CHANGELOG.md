@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1601.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1601.1...@voiceflow/creator-app@1.1601.2) (2024-06-25)
+
+### Reverts
+
+* Revert "feat: make function paths draggable - FE (COR-2270) (#8305)" (#8412) ([72638b5](https://github.com/voiceflow/creator-app/commit/72638b54cc55a46efbff372651a1a31d1795646f)), closes [#8305](https://github.com/voiceflow/creator-app/issues/8305) [#8412](https://github.com/voiceflow/creator-app/issues/8412)
+
 ## [1.1601.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1601.0...@voiceflow/creator-app@1.1601.1) (2024-06-25)
 
 ### Bug Fixes
